@@ -10,10 +10,10 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import utils.ReusableActions;
 
-/**
- * The type Base page class.
- */
-public class BasePage {
+	/**
+	 * The type Base page class.
+	 */
+	public class BasePage {
 	/**
 	 * The Wait.
 	 */
@@ -107,5 +107,4 @@ public class BasePage {
 	}
 
 	
-
 }
