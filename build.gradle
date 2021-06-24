@@ -1,0 +1,156 @@
+plugins {
+    id 'java'
+    id 'java-library'
+    id 'maven-publish'
+    id 'com.jfrog.artifactory' version '4.15.1'
+    id 'com.aditya.SauceConnectPlugin' version '0.0.15'
+}
+
+group 'org.rogersbiz'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = '1.8'
+
+repositories {
+    mavenLocal()
+    maven {
+        url = "${artifactory_url}/${artifactory_repoKey}"
+        credentials {
+            username "${artifactory_username}"
+            password "${artifactory_password}"
+        }
+    }
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.seleniumhq.selenium:selenium-java:3.141.59'
+    implementation 'org.testng:testng:6.14.3'
+    implementation 'automation-utils:common-utils:latest.release'
+    implementation 'org.yaml:snakeyaml:1.24'
+}
+
+def sauce = [
+        username: sauceconnect.username,
+        key     : sauceconnect.key,
+]
+
+sauceconnect {
+    username = System.getenv('SAUCE_USERNAME')
+    key = System.getenv('SAUCE_ACCESS_KEY')
+    options = "-D esfapi.rogers.com,www.rogers.com,bss.rogers.com -i myTunnel --no-remove-colliding-tunnels"
+}
+
+task "sauceTest"(dependsOn: startSauceConnect, type: Test) {
+    if(!test_browser){
+        test_browser='saucechrome'
+    }
+
+    if (!test_browser.contains('sauce')){
+        def browser = 'sauce'+test_browser
+        test_browser = browser
+    }
+
+    systemProperty 'Browser', test_browser
+    systemProperty 'Language', test_language
+    systemProperty 'TunnelRequired', TunnelRequired
+    systemProperty 'Environment', Environment
+
+    useTestNG(){
+        parallel = test_parallel
+        threadCount = test_threadCount as int
+        Set listeners = [ "com.tsc.test.listeners.TestListener" , "com.tsc.test.listeners.AnnotationTransformer"]
+        setListeners(listeners)
+        if (project.hasProperty('test_groupName')){
+            includeGroups test_groupName
+            System.out.println("**************************************"+test_groupName)
+        }
+    }
+}
+
+//To shutdown the sauceconnect
+sauceTest.finalizedBy stopSauceConnect
+
+task "localTest"(type: Test) {
+    if (test_browser && test_browser.contains('sauce')){
+        def browser = test_browser.replace('sauce','')
+        test_browser = browser
+    }
+    systemProperty 'Browser', test_browser
+    systemProperty 'Language', test_language
+    systemProperty 'Environment', Environment
+
+    systemProperties(System.getProperties())
+    outputs.upToDateWhen { false }  // Always run tests
+
+    useTestNG() {
+        parallel = test_parallel
+        threadCount = test_threadCount as int
+        Set listeners = [ "com.tsc.test.listeners.TestListener" , "com.tsc.test.listeners.AnnotationTransformer"]
+        setListeners(listeners)
+
+        if (project.hasProperty('test_groupName')){
+            includeGroups test_groupName
+            System.out.println("**************************************"+test_groupName)
+        }
+    }
+}
+
+configurations {
+    published
+}
+
+compileJava {
+    options.encoding = 'UTF-8'
+}
+
+task sourceJar(type: Jar) {
+    from sourceSets.main.allSource
+    archiveClassifier = 'sources'
+}
+
+javadoc {
+    source = sourceSets.main.allJava
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    archiveClassifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    published sourceJar
+    published javadocJar
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+            groupId = "${project.group}"
+        }
+    }
+}
+
+artifactory {
+    contextUrl = "${artifactory_url}"
+    publish {
+        repository {
+            repoKey = "${artifactory_repoKey}"
+            username = "${artifactory_username}"
+            password = "${artifactory_password}"
+        }
+        defaults {
+            publications('maven')
+            publishConfigs('archives', 'published')
+            publishBuildInfo = true
+            publishArtifacts = true
+            publishPom = true
+            publishIvy = false
+        }
+    }
+}
+
+artifactoryPublish {
+    dependsOn jar, sourceJar, javadocJar
+}
