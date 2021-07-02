@@ -19,6 +19,7 @@ import org.testng.annotations.Parameters;
 
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.GlobalheaderPage;
+import com.tsc.pages.OnAirSectionPage;
 
 import extentreport.ExtentTestManager;
 import utils.BrowserDrivers;
@@ -35,6 +36,7 @@ public class BaseTest {
 
 	protected static final ThreadLocal<WebDriver> webDriverThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<GlobalheaderPage> globalheaderPageThreadLocal = new ThreadLocal<>();
+	protected static final ThreadLocal<OnAirSectionPage> OnAirSectionPageThreadLocal = new ThreadLocal<>();
 	
 	public BaseTest() {
 		browserDrivers = new BrowserDrivers();
@@ -53,11 +55,16 @@ public class BaseTest {
 	protected static GlobalheaderPage getglobalheaderPageThreadLocal() {
 		return globalheaderPageThreadLocal.get();
 	}
-
+	
+	protected static OnAirSectionPage OnAirSectionPageThreadLocal() {
+		return OnAirSectionPageThreadLocal.get();
+	}
+//
 	
 
 	private void init() {
 		
+		OnAirSectionPageThreadLocal.set(new OnAirSectionPage(getDriver()));
 		globalheaderPageThreadLocal.set(new GlobalheaderPage(getDriver()));
 		reporter = new ExtentTestManager(getDriver());
 	}
@@ -179,6 +186,9 @@ public class BaseTest {
 			//deleteSessionStorage();
 			closeSession();
 		}
+	}
+	public void velidateText(String strActualText, String strExpectedText, String validationMsg) {
+	reporter.softAssert(strExpectedText.equals(strActualText), validationMsg + ":" + " Expected=" + strExpectedText +  " ; Actual="+ strActualText ,validationMsg + " expected=" + strExpectedText +  "; actual="+ strActualText);
 	}
 
 	/**
