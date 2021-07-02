@@ -187,6 +187,8 @@ public class BaseTest {
 			closeSession();
 		}
 	}
+	
+	//Method to validate content of Link and button
 	public void velidateText(String strActualText, String strExpectedText, String validationMsg) {
 	reporter.softAssert(strExpectedText.equals(strActualText), validationMsg + ":" + " Expected=" + strExpectedText +  " ; Actual="+ strActualText ,validationMsg + " expected=" + strExpectedText +  "; actual="+ strActualText);
 	}
