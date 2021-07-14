@@ -34,7 +34,7 @@ public class GlobalheaderPage extends BasePage{
 		super(driver);
 	}
 
-	//slivers [TS,Deals,OnAir,Programguide,WatchusLive]
+	//Sliver Links [Dynamic event, TS, Deals, OnAir, Program Guide, Watch Us Live]
 	@FindBy(xpath = "//*[@class='Sliver']//a[contains(@href, 'todaysshowstopper')]")
 	WebElement lnkTS;
 	
@@ -55,35 +55,29 @@ public class GlobalheaderPage extends BasePage{
 	
 	//Dynamic Event
 	@FindBy(xpath = "//*[@class='Sliver']//a[@class='slideLink']")
-	WebElement dynamicEventlnk;
-	
-	/*
-	 * 
-	 * 
-	 * @FindBy(xpath = " ") WebElement lnk;
-	 */
-	
+	WebElement lnkdynamicEvent;
+		
 	//TSC Logo
 	@FindBy(xpath = "//*[@class='Header']//div[@class='logo']")
 	WebElement lnkTSClogo;
 	
 	@FindBy(xpath = "//*[@class='Header']//div[@class='logo']//a")
 	WebElement lnkTSClogolink;
+	
 	//SerchBox
 	@FindBy(xpath = "//*[@class='Header']//form[@class='reactAppForm']//input[@class='tsc-search-input']")
 	WebElement searchBox;
 	
 	@FindBy(xpath = "//*[@class='Header']//form[@class='reactAppForm']//button[@class='submit-search-button']")
-	WebElement submitBtn;
+	WebElement btnSearchSubmit;
 	
-	//Favoritelink
+	//Favorite link
 	@FindBy(xpath = "//*[@class='Header']//a[contains(@href, 'favourites')]")
 	WebElement Favouriteslnk;
 	
 	//SignIn
 	@FindBy(xpath = "//*[@class='Header']//a[@id='myAccountBtn']")
 	WebElement Signinlnk;
-	//find element for mouseover action on sigin button , use List<WebElement>
 	
 	@FindBy(xpath = "//*[@class='Header']*[@class='svgSigninIcon']")
 	WebElement SigninIcon;
@@ -100,20 +94,7 @@ public class GlobalheaderPage extends BasePage{
 	
 	@FindBy(xpath = "//*[@class='Header']//div[@id='bagCounter']")
 	WebElement CartBagCounter;
-	
-	
-		
-	
-	/*
-	@FindBy(xpath = " ")
-	WebElement lnk;
-	
-	@FindBy(xpath = " ")
-	WebElement lnk;
-	*/
-	//String strUrl = URLDecoder.decode(getDriver().getCurrentUrl(), StandardCharsets.UTF_8.name());
-	
-	
+
 	
 	public void waitForPageLoad() {
 		new WebDriverWait(getDriver(), 1000).until(
@@ -128,19 +109,19 @@ public class GlobalheaderPage extends BasePage{
 		return false;
 		}
 	
-	//Sliver links are visible
+	//Sliver links are visible & Text is present
 	
 	public boolean DynamicEventLinkVisible() {
-		return getReusableActionsInstance().isElementVisible(dynamicEventlnk, 5);
+		return getReusableActionsInstance().isElementVisible(lnkdynamicEvent, 5);
 		}
 	public String validateDynamicEventLink() {
 		String emptyhref="NOA href is empty";
-		if (dynamicEventlnk.getAttribute("href").isEmpty()) {
+		if (lnkdynamicEvent.getAttribute("href").isEmpty()) {
 							
 			return emptyhref;
 			
 		}else{
-			return dynamicEventlnk.getAttribute("href");
+			return lnkdynamicEvent.getAttribute("href");
 			}
 		}
 		
@@ -222,14 +203,15 @@ public class GlobalheaderPage extends BasePage{
 		return getReusableActionsInstance().isElementVisible(lnkTSClogo, 5);
 				
 			}
+	
 	//Search box visible
 	public String validateSearchbox() {
 			getReusableActionsInstance().isElementVisible(searchBox, 5);
 				return searchBox.getAttribute("placeholder");
 			}
 		
-	public boolean validateSearchsubmitbtn() {
-		return getReusableActionsInstance().isElementVisible(submitBtn, 5);
+	public boolean validateSearchSubmitbtn() {
+		return getReusableActionsInstance().isElementVisible(btnSearchSubmit, 5);
 				
 			}
 		
@@ -246,8 +228,7 @@ public class GlobalheaderPage extends BasePage{
 			}
 		}
 
-	//Sign In Link
-	
+	//Sign In Link is visible
 	public String validateSignInLink() {
 		String emptySTAIbtn="Sign In link href is empty";
 		if (Signinlnk.getAttribute("href").isEmpty()) {
@@ -285,7 +266,7 @@ public class GlobalheaderPage extends BasePage{
 		return getReusableActionsInstance().isElementVisible(CartBagCounter, 5);
 		}
 	
-				
+	//Get the URL 			
 	public String URL() {
 		return getDriver().getCurrentUrl();
 		}
