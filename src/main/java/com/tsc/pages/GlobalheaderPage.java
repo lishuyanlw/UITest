@@ -285,48 +285,7 @@ public class GlobalheaderPage extends BasePage{
 		return getReusableActionsInstance().isElementVisible(CartBagCounter, 5);
 		}
 	
-	
-		
-	//Sliver links content
-	
-	public boolean veriylinkcont(String strActualText, String strExpectedText ){
-		
-			return (strActualText.equalsIgnoreCase(strExpectedText));
-		
-	}
-	public String getlnkTScntCont() {
-		return lnkTScnt.getText();
-	}
-	
-	public String getlnkDealskCont() {
-		return lnkDeals.getText();
-	}
-	
-	public String getlnkOnAirCont() {
-		return lnkOnAir.getText();
-	}
-	
-	public String getlnkProgramGuideCont() {
-		return lnkProgramGuide.getText();
-	}
-	
-	public String getlnkWatchUsLiveCont() {
-		return lnkWatchUsLive.getText();
-	}
-	
-	public String getlnkSigninCont() {
-		return Signinlnk.getText();
-	}
-	
-	public String getFavouriteslnkCont() {
-		return Favouriteslnk.getText();
-	}
-	
-	public String getMinicartIconcontCont() {
-		return MinicartIconcont.getText();
-	}
-	
-		
+				
 	public String URL() {
 		return getDriver().getCurrentUrl();
 		}
