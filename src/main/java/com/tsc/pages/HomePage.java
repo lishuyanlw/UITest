@@ -25,7 +25,7 @@ public class HomePage extends BasePage{
 	WebElement NOAsection;
 	
 	@FindBy(xpath = "//*[@class='Middle']//*[@class='onAirNowImg']")
-	WebElement NOAimg;
+	WebElement imgNOA;
 
 	@FindBy(xpath = "//*[@class='Middle']//div[@class='oanItemDesc']")
 	WebElement lblNOAProductName;
@@ -96,7 +96,7 @@ public class HomePage extends BasePage{
 	
 	public boolean validateNOAimg() {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(NOAsection);
-			return getReusableActionsInstance().isElementVisible(NOAimg, 10);
+			return getReusableActionsInstance().isElementVisible(imgNOA, 10);
 		}
 	
 	public boolean validatelblNOAProductName() {

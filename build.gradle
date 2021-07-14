@@ -51,10 +51,10 @@ task "sauceTest"(dependsOn: startSauceConnect, type: Test) {
         test_browser = browser
     }
 
+    systemProperty 'QaUrl', test_qaURL
     systemProperty 'Browser', test_browser
     systemProperty 'Language', test_language
     systemProperty 'TunnelRequired', TunnelRequired
-    systemProperty 'Environment', Environment
 
     useTestNG(){
         parallel = test_parallel
@@ -76,9 +76,9 @@ task "localTest"(type: Test) {
         def browser = test_browser.replace('sauce','')
         test_browser = browser
     }
+    systemProperty 'QaUrl', test_qaURL
     systemProperty 'Browser', test_browser
     systemProperty 'Language', test_language
-    systemProperty 'Environment', Environment
 
     systemProperties(System.getProperties())
     outputs.upToDateWhen { false }  // Always run tests
