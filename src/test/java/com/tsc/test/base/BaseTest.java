@@ -19,7 +19,7 @@ import org.testng.annotations.Parameters;
 
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.GlobalheaderPage;
-import com.tsc.pages.OnAirSectionPage;
+import com.tsc.pages.HomePage;
 
 import extentreport.ExtentTestManager;
 import utils.BrowserDrivers;
@@ -36,7 +36,7 @@ public class BaseTest {
 
 	protected static final ThreadLocal<WebDriver> webDriverThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<GlobalheaderPage> globalheaderPageThreadLocal = new ThreadLocal<>();
-	protected static final ThreadLocal<OnAirSectionPage> OnAirSectionPageThreadLocal = new ThreadLocal<>();
+	protected static final ThreadLocal<HomePage> HomePageThreadLocal = new ThreadLocal<>();
 	
 	public BaseTest() {
 		browserDrivers = new BrowserDrivers();
@@ -49,22 +49,23 @@ public class BaseTest {
 		return reporter;
 	}
 
-	/**
-	 * @return the globalheaderpagethreadlocal
-	 */
+	
+	// @return the globalheaderpagethreadlocal
+	
 	protected static GlobalheaderPage getglobalheaderPageThreadLocal() {
 		return globalheaderPageThreadLocal.get();
 	}
 	
-	protected static OnAirSectionPage OnAirSectionPageThreadLocal() {
-		return OnAirSectionPageThreadLocal.get();
+	//// @return the homepagethreadlocal
+	protected static HomePage HomePageThreadLocal() {
+		return HomePageThreadLocal.get();
 	}
 //
 	
 
 	private void init() {
 		
-		OnAirSectionPageThreadLocal.set(new OnAirSectionPage(getDriver()));
+		HomePageThreadLocal.set(new HomePage(getDriver()));
 		globalheaderPageThreadLocal.set(new GlobalheaderPage(getDriver()));
 		reporter = new ExtentTestManager(getDriver());
 	}
@@ -171,6 +172,7 @@ public class BaseTest {
 			ITestContext testContext, Method method) throws ClientProtocolException, IOException {
 		//String qaURL = TestDataHandler.headerFooterLinks.getBusiness();
 		String qaURL = "https://qa-tsc.tsc.ca/";
+		//String qaURL = "https://tsc.ca/";
 		System.setProperty("QaUrl", qaURL);
 		startSession(System.getProperty("QaUrl"), strBrowser, strLanguage, method, false);
 		getglobalheaderPageThreadLocal().waitForPageLoad();
@@ -189,7 +191,7 @@ public class BaseTest {
 	}
 	
 	//Method to validate content of Link and button
-	public void velidateText(String strActualText, String strExpectedText, String validationMsg) {
+	public void validateText(String strActualText, String strExpectedText, String validationMsg) {
 	reporter.softAssert(strExpectedText.equals(strActualText), validationMsg + ":" + " Expected=" + strExpectedText +  " ; Actual="+ strActualText ,validationMsg + " expected=" + strExpectedText +  "; actual="+ strActualText);
 	}
 
