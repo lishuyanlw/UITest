@@ -36,7 +36,7 @@ public class HP_TC01_Verify_Global_Header extends BaseTest {
 		validateText(getglobalheaderPageThreadLocal().validateFavouritesLink(), "Favourites", "Favourites Link is present & Text is visible");
 
 		validateText(getglobalheaderPageThreadLocal().validateSearchbox(), "Search", "Search box is visible");
-		reporter.softAssert(getglobalheaderPageThreadLocal().validateSearchsubmitbtn(), "Search submit button is visible", "Search submit button is not visible");
+		reporter.softAssert(getglobalheaderPageThreadLocal().validateSearchSubmitbtn(), "Search submit button is visible", "Search submit button is not visible");
 
 		validateText(getglobalheaderPageThreadLocal().validateMinicartLink(), "Bag", "Mini cart Link is present & Text is visible");
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateMinicartIcon(), "Mini cart icon is visible", "Mini cart icon is not visible");
