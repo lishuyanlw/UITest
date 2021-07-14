@@ -36,7 +36,7 @@ public class BaseTest {
 
 	protected static final ThreadLocal<WebDriver> webDriverThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<GlobalheaderPage> globalheaderPageThreadLocal = new ThreadLocal<>();
-	protected static final ThreadLocal<HomePage> HomePageThreadLocal = new ThreadLocal<>();
+	protected static final ThreadLocal<HomePage> homePageThreadLocal = new ThreadLocal<>();
 	
 	public BaseTest() {
 		browserDrivers = new BrowserDrivers();
@@ -56,16 +56,16 @@ public class BaseTest {
 		return globalheaderPageThreadLocal.get();
 	}
 	
-	//// @return the homepagethreadlocal
-	protected static HomePage HomePageThreadLocal() {
-		return HomePageThreadLocal.get();
+	//// @return the homePageThreadLocal
+	protected static HomePage homePageThreadLocal() {
+		return homePageThreadLocal.get();
 	}
 //
 	
 
 	private void init() {
 		
-		HomePageThreadLocal.set(new HomePage(getDriver()));
+		homePageThreadLocal.set(new HomePage(getDriver()));
 		globalheaderPageThreadLocal.set(new GlobalheaderPage(getDriver()));
 		reporter = new ExtentTestManager(getDriver());
 	}
@@ -176,8 +176,8 @@ public class BaseTest {
 		System.setProperty("QaUrl", qaURL);
 		startSession(System.getProperty("QaUrl"), strBrowser, strLanguage, method, false);
 		getglobalheaderPageThreadLocal().waitForPageLoad();
-		// getHomePageThreadLocal().waitforOverlayLoadingSpinnerToDisapper();
-		// reporter.hardAssert(getHomePageThreadLocal().validateLogoRogers(), "Home Page
+		// gethomePageThreadLocal().waitforOverlayLoadingSpinnerToDisapper();
+		// reporter.hardAssert(gethomePageThreadLocal().validateLogoRogers(), "Home Page
 		// Loaded", "Home Page Not Loaded");
 		//getglobalheaderPageThreadLocal().setLanguage(System.getProperty("Language"));
 	}
