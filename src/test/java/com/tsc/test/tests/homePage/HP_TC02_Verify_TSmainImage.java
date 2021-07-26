@@ -24,7 +24,7 @@ import com.tsc.test.base.BaseTest;
 
 	 	}
 	 
-	/*
+	
 	 validateText(homePageThreadLocal().validateTSimagesection(),"Today's Showstopper TM Offers","TS Main image bottom Section");
 
 	reporter.softAssert(homePageThreadLocal().verifyTSimglinkCount(),"TS image bottom section link & image Count is: "+homePageThreadLocal().getTSimgCount(),"TS image bottom section link & image Count is: "+homePageThreadLocal().getTSimgCount());
@@ -33,6 +33,6 @@ import com.tsc.test.base.BaseTest;
 		 reporter.softAssert(homePageThreadLocal().validateTSimage(i),"TS image is present for tile: "+(i+1),"TS image is not present for tile: "+(i+1));
 		 reporter.reportLog(homePageThreadLocal().validateTSimageLinks(i));
 
-	 	}*/
+	 	}
 	}
 }
