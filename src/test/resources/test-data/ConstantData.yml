@@ -1,0 +1,19 @@
+# HEADER SECTION
+NOT_FOUND_LINK: /pages/notfound
+TODAYSHOWSTOPPER_TEXT_ENGLISH: Today's Showstopper™
+TODAYS_SHOWSTOPPER_LINK: /pages/todaysshowstopper?ic=HP_TodaysShowstopper
+DEALS_TEXT_ENGLISH: Deals
+DEALS_TEXT_FRENCH: Aubaines
+DEALS_LINK: /pages/productresults?nav=n:2059928&ic=HP_Deals
+ONAIRPROD_TEXT_ENGLISH: On Air Products
+ONAIRPROD_TEXT_ENGLISH_MOBILE: ON AIR
+ONAIRPROD_TEXT_FRENCH: Sur les ondes
+ONAIRPROD_LINKS: /pages/productresults?ic=HP_OnAir_T&dimensions=2037548&page=1&pageSize=36&rd=false
+ONAIRPROD_ICON_PATH_MOBILE: /dist/svg.svg#onairitem
+PROGRAM_GUIDE_TEXT_ENGLISH: Program Guide
+PROGRAM_GUIDE_TEXT_FRENCH: Grille horaire
+PROGRAM_GUIDE_LINK: /pages/programguide?ic=HP_ProgramGuide
+PROGRAM_GUIDE_LINK_REDIRECT: /pages/programguide/daily?ic=HP_ProgramGuide
+WATCH_US_TEXT_ENGLISH: Watch Us Live
+WATCH_US_TEXT_FRENCH: En direct
+WATCH_US_LIVE_LINK: /pages/watchuslive?ic=HP_WatchUsLive
