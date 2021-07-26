@@ -47,7 +47,7 @@ import com.tsc.test.base.BaseTest;
 
 	 	}
 	 
-	/*
+	
 	 validateText(homePageThreadLocal().validateTSimagesection(),"Today's Showstopper TM Offers","TS Main image bottom Section");
 
 	reporter.softAssert(homePageThreadLocal().verifyTSimglinkCount(),"TS image bottom section link & image Count is: "+homePageThreadLocal().getTSimgCount(),"TS image bottom section link & image Count is: "+homePageThreadLocal().getTSimgCount());
@@ -57,6 +57,6 @@ import com.tsc.test.base.BaseTest;
 		 reporter.reportLog(homePageThreadLocal().validateTSimageLinks(i));
 >>>>>>> ffa51ea updated code
 
-	 	}*/
+	 	}
 	}
 }
