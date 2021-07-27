@@ -67,18 +67,7 @@ public class ConstantData {
 	private String smartCities;
 	
 	//Header Links getter and setter method
-	/**
-	 * @return the business
-	 */
-	public String getBusiness() {
-		return business;
-	}
-	/**
-	 * @param business the business to set
-	 */
-	public void setBusiness(String business) {
-		this.business = business;
-	}
+	
 	/**
 	 * @return the personal
 	 */
