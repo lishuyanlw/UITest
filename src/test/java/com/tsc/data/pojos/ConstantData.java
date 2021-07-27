@@ -2,7 +2,6 @@ package com.tsc.data.pojos;
 
 public class ConstantData {
 	
-	private String business;
 	private String personal;
 	private String wholesale;
 	private String logoRogers;
