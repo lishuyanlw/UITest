@@ -13,6 +13,7 @@ import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.function.Function;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -266,10 +267,36 @@ public class GlobalheaderPage extends BasePage{
 		return getReusableActionsInstance().isElementVisible(CartBagCounter, 5);
 		}
 	
+	//To validate url of new windows after clicking OnAirLink button
+	public boolean validateUrlAfterClickingOnAirLink() throws IOException {
+		String currentUrl=URL();
+		this.lnkOnAir.click();
+		waitForCondition(Driver->{return !currentUrl.equalsIgnoreCase(this.URL());},10000);
+		return !this.URL().contains("notfound");
+	}
+	
+	//To validate url of new windows after clicking WatchUsLive button
+	public boolean validateUrlAfterClickingWatchUsLiveLink() throws IOException {
+		String currentUrl=URL();
+		this.lnkWatchUsLive.click();
+		waitForCondition(Driver->{return !currentUrl.equalsIgnoreCase(this.URL());},10000);
+		return !this.URL().contains("notfound");
+	}
+		
 	//Get the URL 			
 	public String URL() {
 		return getDriver().getCurrentUrl();
 		}
+	
+	//To implement explicit wait using Lambda function
+	public Boolean waitForCondition(Function<WebDriver,Boolean> func, int timeOutInMillis) {    		    
+        return (new WebDriverWait(this.getDriver(), timeOutInMillis/1000)).until( new ExpectedCondition<Boolean>() {
+        	@Override
+            public Boolean apply(WebDriver d) {
+                return func.apply(d);            	
+            }
+        });
+    }
 		
 
 }
