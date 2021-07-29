@@ -282,6 +282,8 @@ public class GlobalheaderPage extends BasePage{
 	/**
 	 * This method will validate url of new windows after clicking WatchUsLive button
 	 *
+	 * @return true/false
+	 * 
 	 * @author Wei.Li
 	 */		
 	public boolean validateUrlAfterClickingWatchUsLiveLink() throws IOException {
@@ -298,7 +300,9 @@ public class GlobalheaderPage extends BasePage{
 	
 	/**
 	 * This method will be put into BasePage class, then remove it in this class.
-	 *
+	 * 
+	 * @return true/false
+	 * 
 	 * @author Wei.Li
 	 */	
 	public Boolean waitForCondition(Function<WebDriver,Boolean> func, int timeOutInMillis) {    		    
