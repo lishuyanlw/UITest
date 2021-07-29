@@ -270,6 +270,8 @@ public class GlobalheaderPage extends BasePage{
 	/**
 	 * This method will validate url of new windows after clicking OnAirLink button
 	 *
+	 * @return true/false
+	 * 
 	 * @author Wei.Li
 	 */	
 	public boolean validateUrlAfterClickingOnAirLink() throws IOException {
