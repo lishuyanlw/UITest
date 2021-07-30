@@ -275,10 +275,7 @@ public class GlobalheaderPage extends BasePage{
 	 * @author Wei.Li
 	 */	
 	public boolean validateUrlAfterClickingOnAirLink() throws IOException {
-		String currentUrl=URL();
-		this.lnkOnAir.click();
-		waitForCondition(Driver->{return !currentUrl.equalsIgnoreCase(this.URL());},10000);
-		return !this.URL().contains("notfound");
+		return verifyURLNotContainsNotFoundAfterClickingElement(this.lnkOnAir);		
 	}
 	
 	/**
@@ -289,10 +286,7 @@ public class GlobalheaderPage extends BasePage{
 	 * @author Wei.Li
 	 */		
 	public boolean validateUrlAfterClickingWatchUsLiveLink() throws IOException {
-		String currentUrl=URL();
-		this.lnkWatchUsLive.click();
-		waitForCondition(Driver->{return !currentUrl.equalsIgnoreCase(this.URL());},10000);
-		return !this.URL().contains("notfound");
+		return verifyURLNotContainsNotFoundAfterClickingElement(this.lnkWatchUsLive);		
 	}
 		
 	//Get the URL 			
@@ -300,21 +294,5 @@ public class GlobalheaderPage extends BasePage{
 		return getDriver().getCurrentUrl();
 		}
 	
-	/**
-	 * This method will be put into BasePage class, then remove it in this class.
-	 * 
-	 * @return true/false
-	 * 
-	 * @author Wei.Li
-	 */	
-	public Boolean waitForCondition(Function<WebDriver,Boolean> func, int timeOutInMillis) {    		    
-        return (new WebDriverWait(this.getDriver(), timeOutInMillis/1000)).until( new ExpectedCondition<Boolean>() {
-        	@Override
-            public Boolean apply(WebDriver d) {
-                return func.apply(d);            	
-            }
-        });
-    }
-		
 
 }
