@@ -5,7 +5,13 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.function.Function;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -238,5 +244,51 @@ import utils.ReusableActions;
 		getDriver().navigate().to(System.getProperty("QaUrl"));
 		waitForPageToLoad();
 
+	}
+	
+	/**
+	 * This method will implement explicit wait using Lambda function
+	 *
+	 * @param 
+	 * 1. Function<WebDriver,Boolean> func: Lambda expression
+	 * 2. int timeOutInMillis: wait time in millisecond
+	 * @return true/false
+	 * @author Wei.Li
+	 */	
+	public Boolean waitForCondition(Function<WebDriver,Boolean> func, int timeOutInMillis) {    		    
+        return (new WebDriverWait(this.getDriver(), timeOutInMillis/1000)).until( new ExpectedCondition<Boolean>() {
+        	@Override
+            public Boolean apply(WebDriver d) {
+                return func.apply(d);            	
+            }
+        });
+    }
+	
+	/**
+	 * This method will get base URL settings in gradle.properties
+	 * 
+	 * @return String: base URL
+	 * @author Wei.Li
+	 */	
+	public String getBaseURL() {    		    
+        String lsBaseURL=System.getProperty("QaUrl");
+        if(lsBaseURL.endsWith("/")) {
+        	return lsBaseURL.substring(0,lsBaseURL.length()-1);
+        }
+        return lsBaseURL;
+    }
+	
+	/**
+	 * This method will verify the page url doesn't contain "notfound" after clicking an element 
+	 *
+	 *@param WebElement element: the element will be clicked	 *
+	 * @return true/false
+	 * @author Wei.Li
+	 */			
+	public boolean verifyURLNotContainsNotFoundAfterClickingElement(WebElement element) {
+		String currentUrl=getDriver().getCurrentUrl();
+        element.click();
+        waitForCondition(Driver->{return !currentUrl.equalsIgnoreCase(getDriver().getCurrentUrl());},10000);
+        return !getDriver().getCurrentUrl().contains("notfound");						
 	}
 }

@@ -7,8 +7,7 @@ import org.testng.annotations.Test;
 import com.tsc.test.base.BaseTest;
 
 public class HP_TC01_Verify_Global_Header extends BaseTest {
-	
-	
+		
 	@Test(groups={"Home","Regression"})
 	    
 		public void validateGlobalHeaderLinks() throws IOException {
@@ -41,7 +40,27 @@ public class HP_TC01_Verify_Global_Header extends BaseTest {
 		validateText(getglobalheaderPageThreadLocal().validateMinicartLink(), "Bag", "Mini cart Link is present & Text is visible");
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateMinicartIcon(), "Mini cart icon is visible", "Mini cart icon is not visible");
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateMinicartBagCounter(), "Mini cart Bag counter is visible", "Mini cart Bag counter is not visible");
-				
 		
 		}
+	
+		/**
+		 * This method will validate Url After Clicking On AirLink
+		 *
+		 * @author Wei.Li
+		 */	
+		@Test(groups={"Home","Regression"})    
+		public void validateUrlAfterClickingOnAirLink() throws IOException {
+			reporter.softAssert(getglobalheaderPageThreadLocal().validateUrlAfterClickingOnAirLink(), "The link of <On Air Link> is valid", "The link of <On Air Link> is invalid");
+		}
+		
+		/**
+		 * This method will validate Url After Clicking On WatchUsLiveLink
+		 *
+		 * @author Wei.Li
+		 */	
+		@Test(groups={"Home","Regression"})    
+		public void validateUrlAfterClickingWatchUsLiveLink() throws IOException {
+			reporter.softAssert(getglobalheaderPageThreadLocal().validateUrlAfterClickingWatchUsLiveLink(), "The link of <On Air Link> is valid", "The link of <On Air Link> is invalid");
+		}
+	
 }

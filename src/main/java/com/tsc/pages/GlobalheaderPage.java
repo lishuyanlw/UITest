@@ -13,6 +13,7 @@ import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.function.Function;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -266,10 +267,32 @@ public class GlobalheaderPage extends BasePage{
 		return getReusableActionsInstance().isElementVisible(CartBagCounter, 5);
 		}
 	
+	/**
+	 * This method will validate url of new windows after clicking OnAirLink button
+	 *
+	 * @return true/false
+	 * 
+	 * @author Wei.Li
+	 */	
+	public boolean validateUrlAfterClickingOnAirLink() throws IOException {
+		return verifyURLNotContainsNotFoundAfterClickingElement(this.lnkOnAir);		
+	}
+	
+	/**
+	 * This method will validate url of new windows after clicking WatchUsLive button
+	 *
+	 * @return true/false
+	 * 
+	 * @author Wei.Li
+	 */		
+	public boolean validateUrlAfterClickingWatchUsLiveLink() throws IOException {
+		return verifyURLNotContainsNotFoundAfterClickingElement(this.lnkWatchUsLive);		
+	}
+		
 	//Get the URL 			
 	public String URL() {
 		return getDriver().getCurrentUrl();
 		}
-		
+	
 
 }
