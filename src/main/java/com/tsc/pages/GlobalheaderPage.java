@@ -51,8 +51,14 @@ public class GlobalheaderPage extends BasePage{
 	@FindBy(xpath = "//*[@class='Sliver']//a[contains(@href, 'ProgramGuide')]")
 	WebElement lnkProgramGuide;
 	
+	@FindBy(xpath = "//*[@class='Sliver']//a[contains(@href, 'ProgramGuide')]//div[contains(@class,'slvr-mnu-icon-container')]")
+	WebElement imgProgramGuideIcon;
+	
 	@FindBy(xpath = "//*[@class='Sliver']//a[contains(@href, 'WatchUsLive')]")
 	WebElement lnkWatchUsLive;
+	
+	@FindBy(xpath = "//*[@class='Sliver']//a[contains(@href, 'WatchUsLive')]//div[contains(@class,'slvr-mnu-icon-container')]")
+	WebElement imgWatchUsLiveIcon;
 	
 	//Dynamic Event
 	@FindBy(xpath = "//*[@class='Sliver']//a[@class='slideLink']")
@@ -138,6 +144,16 @@ public class GlobalheaderPage extends BasePage{
 			}
 		}
 	
+	/**
+	 * This method will validate url of new windows after clicking <Today's Showstopper> link.
+	 *
+	 * @return true/false
+	 * @author Wei.Li
+	 */	
+	public boolean validateUrlAfterClickingTodayShowstopperLink() throws IOException {
+		return verifyURLNotContainsNotFoundAfterClickingElement(this.lnkTS);		
+	}
+	
 	public String validateDealsLink() {
 		String emptySTAIbtn="Deals link href is empty";
 		if (lnkDeals.getAttribute("href").isEmpty()) {
@@ -162,6 +178,16 @@ public class GlobalheaderPage extends BasePage{
 			}
 		}
 	
+	/**
+	 * This method will validate ProgramGuide icon is visible.
+	 *
+	 * @return true/false
+	 * @author Wei.Li
+	 */	
+	public boolean validateProgramGuideIconVisible() {
+		return getReusableActionsInstance().isElementVisible(imgProgramGuideIcon, 5);
+		}
+	
 	public String validateProgramGuideLink() {
 		String emptySTAIbtn="Program Guide link href is empty";
 		if (lnkProgramGuide.getAttribute("href").isEmpty()) {
@@ -172,6 +198,35 @@ public class GlobalheaderPage extends BasePage{
 			getReusableActionsInstance().isElementVisible(lnkProgramGuide, 5);
 			return lnkProgramGuide.getText();
 			}
+		}
+	
+	/**
+	 * This method will validate WatchUsLive icon is visible.
+	 *
+	 * @return true/false
+	 * @author Wei.Li
+	 */
+	public boolean validateWatchUsLiveIconVisible() {
+		return getReusableActionsInstance().isElementVisible(imgWatchUsLiveIcon, 5);
+		}
+	
+	/**
+	 * This method will validate clicking TSCLogo can navigate page to HomePage.
+	 *
+	 * @return true/false
+	 * @author Wei.Li
+	 */
+	public boolean validateTSCLogoNavigateToHomePage() {
+		String currentUrl1=getDriver().getCurrentUrl();		        
+        this.lnkTS.click();
+        waitForCondition(Driver->{return !currentUrl1.equalsIgnoreCase(getDriver().getCurrentUrl());},30000);
+    	String currentUrl2=getDriver().getCurrentUrl();    
+        
+		getReusableActionsInstance().isElementVisible(this.lnkTSClogo, 10);
+		this.lnkTSClogo.click();	    
+        waitForCondition(Driver->{return !currentUrl2.equalsIgnoreCase(getDriver().getCurrentUrl());},10000);
+              
+        return this.getDriver().getCurrentUrl().equalsIgnoreCase(currentUrl1);		
 		}
 	
 	public String validateWatchUsLiveLink() {
@@ -185,7 +240,7 @@ public class GlobalheaderPage extends BasePage{
 			return lnkWatchUsLive.getText();
 			}
 		}
-	
+		
 	//TSC Logo & Logo link is visible		
 	
 	public String validateTSCLogoLink() {
