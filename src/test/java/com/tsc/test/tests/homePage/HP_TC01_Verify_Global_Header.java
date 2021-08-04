@@ -99,5 +99,31 @@ public class HP_TC01_Verify_Global_Header extends BaseTest {
 			
 			reporter.softAssert(getglobalheaderPageThreadLocal().validateTSCLogoNavigateToHomePage(), "TSCLogo can navigate To HomePage", "TSCLogo cannot navigate To HomePage");
 		}
+		
+		/**
+		 * This method will validate url pattern of new windows after clicking ProgramGuide link.
+		 *
+		 * @author Wei.Li
+		 */	
+		@Test(groups={"Home","Regression"})    
+		public void validateUrlPatternAfterClickingProgramGuideLink() throws IOException {
+			reporter.softAssert(getglobalheaderPageThreadLocal().validateURL((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");
+			reporter.reportLogWithScreenshot("Home Page");
+			
+			reporter.softAssert(getglobalheaderPageThreadLocal().validateUrlPatternAfterClickingProgramGuideLink(), "The Url is equal to the exepcted Url after clicking ProgramGuide link", "The Url isn't equal to the exepcted Url after clicking ProgramGuide link");
+		}
+		
+		/**
+		 * This method will validate url pattern of new windows after clicking Deals link.
+		 *
+		 * @author Wei.Li
+		 */	
+		@Test(groups={"Home","Regression"})    
+		public void validateUrlPatternAfterClickingDealsLink() throws IOException {
+			reporter.softAssert(getglobalheaderPageThreadLocal().validateURL((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");
+			reporter.reportLogWithScreenshot("Home Page");
+			
+			reporter.softAssert(getglobalheaderPageThreadLocal().validateUrlPatternAfterClickingDealsLink(), "The Url contains the exepcted keyword list after clicking Deals link", "The Url doesn't contain the exepcted keyword list after clicking Deals link");
+		}
 
 }

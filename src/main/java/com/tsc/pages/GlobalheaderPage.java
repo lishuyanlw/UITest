@@ -12,6 +12,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
@@ -342,6 +343,35 @@ public class GlobalheaderPage extends BasePage{
 	 */		
 	public boolean validateUrlAfterClickingWatchUsLiveLink() throws IOException {
 		return verifyURLNotContainsNotFoundAfterClickingElement(this.lnkWatchUsLive);		
+	}
+	
+	/**
+	 * This method will validate url pattern of new windows after clicking ProgramGuide button
+	 *
+	 * @return true/false
+	 * 
+	 * @author Wei.Li
+	 */		
+	public boolean validateUrlPatternAfterClickingProgramGuideLink() throws IOException {
+		String expectedUrl=(new BasePage(this.getDriver())).getBaseURL()+"/pages/programguide/daily?ic=HP_ProgramGuide";
+			
+		return verifyURLEqualToExpectedKeyword(this.lnkProgramGuide,expectedUrl);		
+	}
+	
+	/**
+	 * This method will validate url pattern of new windows after clicking Deals button
+	 *
+	 * @return true/false
+	 * 
+	 * @author Wei.Li
+	 */		
+	public boolean validateUrlPatternAfterClickingDealsLink() throws IOException {
+		ArrayList<String> keywordList=new ArrayList<String>();
+		keywordList.add(this.getBaseURL());
+		keywordList.add("/pages/productresults?nav=");
+		keywordList.add("ic=HP_Deals");
+			
+		return verifyURLContainExpectedKeywordList(this.lnkDeals,keywordList);		
 	}
 		
 	//Get the URL 			
