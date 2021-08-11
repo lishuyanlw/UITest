@@ -1,5 +1,7 @@
 package com.tsc.pages;
 
+import java.awt.AWTException;
+import java.awt.Robot;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -330,7 +332,7 @@ public class HomePage extends BasePage{
 			for(WebElement item:this.lnkShopByBrandAllActiveLinks) {
 				lnkListBefore.add(item.getAttribute("href"));
 			}
-			if(!this.elementExists(By.xpath("//div[contains(@class,'ImageAnchorCarousel') and not(contains(@class,'ImageAnchorCarouselData'))]//div[a[contains(@href,'ic=HP_BrandsCarousel')]]/ancestor::div[contains(@class,'ImageAnchorCarousel') and not(contains(@class,'ImageAnchorCarouselData'))]//button[contains(@class,'slick-prev')]"))) {
+			if(!this.getReusableActionsInstance().isElementVisible(By.xpath("//div[contains(@class,'ImageAnchorCarousel') and not(contains(@class,'ImageAnchorCarouselData'))]//div[a[contains(@href,'ic=HP_BrandsCarousel')]]/ancestor::div[contains(@class,'ImageAnchorCarousel') and not(contains(@class,'ImageAnchorCarouselData'))]//button[contains(@class,'slick-prev')]"),30)) {
 				return true;
 			}
 			
@@ -369,7 +371,7 @@ public class HomePage extends BasePage{
 			for(WebElement item:this.lnkShopByBrandAllActiveLinks) {
 				lnkListBefore.add(item.getAttribute("href"));
 			}
-			if(!this.elementExists(By.xpath("//div[contains(@class,'ImageAnchorCarousel') and not(contains(@class,'ImageAnchorCarouselData'))]//div[a[contains(@href,'ic=HP_BrandsCarousel')]]/ancestor::div[contains(@class,'ImageAnchorCarousel') and not(contains(@class,'ImageAnchorCarouselData'))]//button[contains(@class,'slick-next')]"))) {
+			if(!this.getReusableActionsInstance().isElementVisible(By.xpath("//div[contains(@class,'ImageAnchorCarousel') and not(contains(@class,'ImageAnchorCarouselData'))]//div[a[contains(@href,'ic=HP_BrandsCarousel')]]/ancestor::div[contains(@class,'ImageAnchorCarousel') and not(contains(@class,'ImageAnchorCarouselData'))]//button[contains(@class,'slick-next')]"),30)) {
 				return true;
 			}
 			this.btnShopByBrandNext.click();
@@ -478,7 +480,7 @@ public class HomePage extends BasePage{
 		 * @author Wei.Li
 		 */		
 		public boolean validateTopSellerIsAboveFooter() {
-			return this.elementExists(By.xpath("//div[@class='Footer']/preceding-sibling::div[@class='Middle']//product-recommendations-endeca//*[contains(@class,'prec-header')]"));
+			return this.getReusableActionsInstance().isElementVisible(By.xpath("//div[@class='Footer']/preceding-sibling::div[@class='Middle']//product-recommendations-endeca//*[contains(@class,'prec-header')]"),30);
 		}
 		
 		/**
@@ -557,7 +559,7 @@ public class HomePage extends BasePage{
 		 */			
 		public boolean validateTopSellerWasPrice() {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(lblTopSeller);
-			if(!elementExists(By.xpath("//product-recommendations-endeca//*[contains(@class,'prec-col')]//div[contains(@class,'was-price')]"))) {
+			if(!this.getReusableActionsInstance().isElementVisible(By.xpath("//product-recommendations-endeca//*[contains(@class,'prec-col')]//div[contains(@class,'was-price')]"),30)) {
 				return true;
 			}
 			for(WebElement item: this.lblTopSellerAllWasPrices) {
@@ -569,28 +571,6 @@ public class HomePage extends BasePage{
 			return true;
 		}
 		
-		/**
-		 * This method will check if the element exist with WebDrive
-		 *
-		 * @param By locator: parent element locator
-		 * @return true/false
-		 * @author Wei.Li
-		 */			
-		public boolean elementExists(By locator)
-		{
-		    return !getDriver().findElements(locator).isEmpty();
-		}
-		
-		/**
-		 * This method will check if the element exist with WebDrive
-		 *
-		 * @return true/false
-		 * @author Wei.Li
-		 */			
-		public boolean elementExists(WebElement element,By locator)
-		{
-		    return !element.findElements(locator).isEmpty();
-		}
 
 }
 

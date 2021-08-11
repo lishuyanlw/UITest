@@ -138,7 +138,7 @@ public class ProductResultsPage extends BasePage{
 	public boolean getSearchResultLoad() {		
 		GlobalheaderPage globalHeader=new GlobalheaderPage(this.getDriver());
 		
-		if(this.elementExists(byCloseEmailSignup)) {
+		if(this.getReusableActionsInstance().isElementVisible(byCloseEmailSignup,30)) {
 			this.btnCloseEmailSignup.click();
 			waitForCondition(Driver->{return globalHeader.lnkTSClogo.isDisplayed();},40000);
 		}
