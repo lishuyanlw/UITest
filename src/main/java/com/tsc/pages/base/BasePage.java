@@ -1,5 +1,8 @@
 package com.tsc.pages.base;
 
+import java.awt.AWTException;
+import java.awt.Robot;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -239,10 +242,14 @@ import utils.ReusableActions;
 		waitForPageToLoad();
 	}
 	
+	/**
+	 * This method will navigate to a specific URL using ReusableActions method.
+	 *
+	 * @return void
+	 * @author Wei.Li
+	 */	
 	public void navigateToURL(String strURL) {
-		waitForPageToLoad();
-		getDriver().navigate().to(System.getProperty("QaUrl"));
-		waitForPageToLoad();
+		getReusableActionsInstance().openSpecificUrl(strURL,30);
 
 	}
 	
@@ -345,5 +352,52 @@ import utils.ReusableActions;
         String afterUrl=getDriver().getCurrentUrl();
         
         return afterUrl.equalsIgnoreCase(keyword);						
+	}
+	
+	/**
+	 * This method will implement Escape key pressing action.
+	 *
+	 * @return void
+	 * @author Wei.Li
+	 */	
+	 public void pressEscapeKey() {
+		 Robot robot=null;
+		 try {
+			 robot=new Robot();
+		 }
+		 catch(AWTException e){
+			 e.printStackTrace();
+		 }		 
+		 robot.keyPress(KeyEvent.VK_ESCAPE);		
+		 robot.keyRelease(KeyEvent.VK_ESCAPE);
+	 }
+
+	/**
+	 * This method will implement CTRL+A+DELETE to clear element contents.
+	 *
+	 * @return void
+	 * @author Wei.Li
+	 */
+	 public void clearContent(WebElement element) {
+		 element.click();
+		 Robot robot=null;
+		 try {
+			 robot=new Robot();
+		 }
+		 catch(AWTException e){
+			 e.printStackTrace();
+		 }
+		 robot.keyPress(KeyEvent.VK_CONTROL);
+		 robot.keyPress(KeyEvent.VK_A);
+		 robot.keyRelease(KeyEvent.VK_CONTROL);
+		 robot.keyRelease(KeyEvent.VK_A);
+		 
+		 robot.keyPress(KeyEvent.VK_DELETE);
+		 robot.keyRelease(KeyEvent.VK_DELETE);
+	 }
+	 
+	//Get the URL 			
+	public String URL() {
+		return getDriver().getCurrentUrl();
 	}
 }
