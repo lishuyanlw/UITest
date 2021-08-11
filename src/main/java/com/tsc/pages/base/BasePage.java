@@ -242,10 +242,14 @@ import utils.ReusableActions;
 		waitForPageToLoad();
 	}
 	
+	/**
+	 * This method will navigate to a specific URL using ReusableActions method.
+	 *
+	 * @return void
+	 * @author Wei.Li
+	 */	
 	public void navigateToURL(String strURL) {
-		waitForPageToLoad();
-		getDriver().navigate().to(System.getProperty("QaUrl"));
-		waitForPageToLoad();
+		getReusableActionsInstance().openSpecificUrl(strURL,30);
 
 	}
 	
