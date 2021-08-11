@@ -29,6 +29,7 @@ import org.openqa.selenium.Cookie;
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.GlobalheaderPage;
 import com.tsc.pages.HomePage;
+import com.tsc.pages.ProductResultsPage;
 import com.tsc.pages.GlobalFooterPage;
 
 import extentreport.ExtentTestManager;
@@ -48,6 +49,7 @@ public class BaseTest {
 	protected static final ThreadLocal<GlobalheaderPage> globalheaderPageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<HomePage> homePageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<GlobalFooterPage> globalFooterPageThreadLocal = new ThreadLocal<>();
+	protected static final ThreadLocal<ProductResultsPage> productResultsPageThreadLocal = new ThreadLocal<>();
 
 	public BaseTest() {
 		browserDrivers = new BrowserDrivers();
@@ -76,12 +78,17 @@ public class BaseTest {
 	protected static GlobalFooterPage getGlobalFooterPageThreadLocal() {
 		return globalFooterPageThreadLocal.get();
 	}
+	
+	protected static ProductResultsPage getProductResultsPageThreadLocal() {
+		return productResultsPageThreadLocal.get();
+	}
 
 	private void init() {
 		
 		homePageThreadLocal.set(new HomePage(getDriver()));
 		globalheaderPageThreadLocal.set(new GlobalheaderPage(getDriver()));
 		globalFooterPageThreadLocal.set(new GlobalFooterPage(getDriver()));
+		productResultsPageThreadLocal.set(new ProductResultsPage(getDriver()));
 		reporter = new ExtentTestManager(getDriver());
 	}
 
@@ -174,7 +181,7 @@ public class BaseTest {
 
 	@BeforeSuite(alwaysRun = true)
 	public void beforeSuite() throws FileNotFoundException {
-		TestDataHandler.dataInit();
+		//TestDataHandler.dataInit();
 		System.out.println("Data File initialized at before Suite");
 	}
 
