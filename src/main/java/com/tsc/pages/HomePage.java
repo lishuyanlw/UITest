@@ -442,12 +442,12 @@ public class HomePage extends BasePage{
 		 * @return true/false
 		 * @author Wei.Li
 		 */			
-		public boolean validateShopByBrandViewAllLink() {
+		public boolean validateShopByBrandViewAllLink(String lnkViewAll) {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(btnViewAll);
 			String strLink=this.btnViewAll.getAttribute("href").trim();
 			System.out.println(strLink);
-			System.out.println(getBaseURL()+"/pages/brand");
-			return strLink.equalsIgnoreCase(getBaseURL()+"/pages/brand");					
+			System.out.println(getBaseURL()+lnkViewAll);
+			return strLink.equalsIgnoreCase(getBaseURL()+lnkViewAll);
 		}
 		
 		/**

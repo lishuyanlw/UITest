@@ -1,827 +1,406 @@
 package com.tsc.data.pojos;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.regex.Pattern;
+
 public class ConstantData {
 	
-	private String personal;
-	private String wholesale;
-	private String logoRogers;
-	private String contactUs;
-	private String login;
-	private String myBusinessAccount;
-	private String rogersBusinesselfServe;
-	private String rogersDirect;
-	private String rogersBusinessebilling;
-	private String wirelessForBusiness;
-	private String plans;
-	private String devices;
-	private String addons;
-	private String travelRoaming;
-	private String networkCoverage;
-	private String enterpriseMobilityManagement;
-	private String appleWatchImage;
-	private String internetServices;
-	private String businessInternet;
-	private String dedicatedInternet;
-	private String voiceSolutions;
-	private String businessPhonePlans;
-	private String bundles;
-	private String sipTrunking;
-	private String dataCenterCloud;
-	private String fiveGNetwork;
-	private String theInternetOfThings;
-	private String fleetManagement;
-	private String assetManagement;
-	private String lpwaNetworks;
-	private String iotConnectivity;
-	private String microsoft365;
-	private String gSuite;
-	private String virtualContactCentre;
-	private String rogersUnison;
-	private String privateNetworking;
-	private String tvForBusiness;
-	private String plansPricing;
-	private String activateNewService;
-	private String existingServices;
-	private String technicalSupport;
-	private String billingInquiries; 
-	private String unsubscribe;
-	private String rogersBizTwitter;
-	private String rogersLinkedin;
-	private String whatWeBelieve;
-	private String smallBusinessCentres;
-	private String customerStories;
-	private String support;
-	private String partnerProgram;
-	private String rogersBusinessBlog;
-	private String newsReleases;
-	private String stockInformation;
-	private String investorRelations;
-	private String corporateSocialResponsibility;
-	private String aboutRogers;
-	private String careers;
-	private String privacyPolicy;
-	private String termsAndConditions;
-	private String wirelessCodeOfConduct;
-	private String accessibilityServices;
-	private String sitemap;
-	private String smartCities;
+	private String lnk_NotFound;
+	private String lbl_TodaysShowstopper;
+	private String lnk_TodaysShowstopper;
+	private String lbl_Deals_English;
+	private String lbl_Deals_French;
+	private String lnk_Deals;
+	private String lbl_OnAirProducts_English;
+	private String lbl_OnAirProducts_EnglishMobile;
+	private String lbl_OnAirProducts_French;
+	private String lnk_OnAirProducts;
+	private String lnk_OnAirProductIcon_MOBILE;
+	private String lbl_ProgramGuide_English;
+	private String lbl_ProgramGuide_French;
+	private String lnk_ProgramGuide;
+	private String lbl_ProgramGuideRedirect;
+	private String lbl_WatchUsLive_English;
+	private String lbl_WatchUsLive_French;
+	private String lnk_WatchUsLive;
+	private String lbl_OnAirNow;
+	private String lbl_RecentlyAir;
+	private String lnk_RecentlyAir;
+	private String lnk_RecentlyAirShopAllItems;
+	private String txt_RecentlyAirShopAllItems;
+	private String lbl_ShopByBrand;
+	private String lbl_ShopByBrandViewAll;
+	private String lnk_ShopByBrandViewAll;
+	private String lbl_ShopByDepartment;
+	private List<String> lst_ShopByDepartmentCategories;
 	
 	//Header Links getter and setter method
 	
 	/**
-	 * @return the personal
+	 * @return the lnk_NotFound
 	 */
-	public String getPersonal() {
-		return personal;
+	public String getlnk_NotFound() {
+		return lnk_NotFound;
 	}
 	/**
-	 * @param personal the personal to set
+	 * @param lnk_NotFound the lnk_NotFound to set
 	 */
-	public void setPersonal(String personal) {
-		this.personal = personal;
+	public void setlnk_NotFound(String lnk_NotFound) {
+		this.lnk_NotFound = lnk_NotFound;
 	}
+
 	/**
-	 * @return the wholesale
+	 * @return the lbl_TodaysShowstopper
 	 */
-	public String getWholesale() {
-		return wholesale;
+	public String getlbl_TodaysShowstopper() {
+		return lbl_TodaysShowstopper;
 	}
 	/**
-	 * @param wholesale the wholesale to set
+	 * @param lbl_TodaysShowstopper the lbl_TodaysShowstopper to set
 	 */
-	public void setWholesale(String wholesale) {
-		this.wholesale = wholesale;
+	public void setlbl_TodaysShowstopper(String lbl_TodaysShowstopper) {
+		this.lbl_TodaysShowstopper = lbl_TodaysShowstopper;
 	}
-	
-	
+
 	/**
-	 * @return the contactUs
+	 * @return the lnk_TodaysShowstopper
 	 */
-	public String getContactUs() {
-		return contactUs;
+	public String getlnk_TodaysShowstopper() {
+		return lnk_TodaysShowstopper;
 	}
 	/**
-	 * @param contactUs the contactUs to set
+	 * @param lnk_TodaysShowstopper the lnk_TodaysShowstopper to set
 	 */
-	public void setContactUs(String contactUs) {
-		this.contactUs = contactUs;
+	public void setlnk_TodaysShowstopper(String lnk_TodaysShowstopper) {
+		this.lnk_TodaysShowstopper = lnk_TodaysShowstopper;
 	}
+
 	/**
-	 * @return the logoRogers
+	 * @return the lbl_Deals_English
 	 */
-	public String getLogoRogers() {
-		return logoRogers;
+	public String getlbl_Deals_English() {
+		return lbl_Deals_English;
 	}
 	/**
-	 * @param logoRogers the logoRogers to set
+	 * @param lbl_Deals_English the lbl_Deals_English to set
 	 */
-	public void setLogoRogers(String logoRogers) {
-		this.logoRogers = logoRogers;
+	public void setlbl_Deals_English(String lbl_Deals_English) {
+		this.lbl_Deals_English = lbl_Deals_English;
 	}
+
 	/**
-	 * @return the login
+	 * @return the lbl_Deals_French
 	 */
-	public String getLogin() {
-		return login;
+	public String getlbl_Deals_French() {
+		return lbl_Deals_French;
 	}
 	/**
-	 * @param login the login to set
+	 * @param lbl_Deals_French the lbl_Deals_French to set
 	 */
-	public void setLogin(String login) {
-		this.login = login;
+	public void setlbl_Deals_French(String lbl_Deals_French) {
+		this.lbl_Deals_French = lbl_Deals_French;
 	}
+
 	/**
-	 * @return the myBusinessAccount
+	 * @return the lnk_Deals
 	 */
-	public String getMyBusinessAccount() {
-		return myBusinessAccount;
+	public String getlnk_Deals() {
+		return lnk_Deals;
 	}
 	/**
-	 * @param myBusinessAccount the myBusinessAccount to set
+	 * @param lnk_Deals the lnk_Deals to set
 	 */
-	public void setMyBusinessAccount(String myBusinessAccount) {
-		this.myBusinessAccount = myBusinessAccount;
+	public void setlnk_Deals(String lnk_Deals) {
+		this.lnk_Deals = lnk_Deals;
 	}
+
 	/**
-	 * @return the rogersBusinesselfServe
+	 * @return the lbl_OnAirProducts_English
 	 */
-	public String getRogersBusinesselfServe() {
-		return rogersBusinesselfServe;
+	public String getlbl_OnAirProducts_English() {
+		return lbl_OnAirProducts_English;
 	}
 	/**
-	 * @param rogersBusinesselfServe the rogersBusinesselfServe to set
+	 * @param lbl_OnAirProducts_English the lbl_OnAirProducts_English to set
 	 */
-	public void setRogersBusinesselfServe(String rogersBusinesselfServe) {
-		this.rogersBusinesselfServe = rogersBusinesselfServe;
+	public void setlbl_OnAirProducts_English(String lbl_OnAirProducts_English) {
+		this.lbl_OnAirProducts_English = lbl_OnAirProducts_English;
 	}
+
 	/**
-	 * @return the rogersDirect
+	 * @return the lbl_OnAirProducts_EnglishMobile
 	 */
-	public String getRogersDirect() {
-		return rogersDirect;
+	public String getlbl_OnAirProducts_EnglishMobile() {
+		return lbl_OnAirProducts_EnglishMobile;
 	}
 	/**
-	 * @param rogersDirect the rogersDirect to set
+	 * @param lbl_OnAirProducts_EnglishMobile the lbl_OnAirProducts_EnglishMobile to set
 	 */
-	public void setRogersDirect(String rogersDirect) {
-		this.rogersDirect = rogersDirect;
+	public void setlbl_OnAirProducts_EnglishMobile(String lbl_OnAirProducts_EnglishMobile) {
+		this.lbl_OnAirProducts_EnglishMobile = lbl_OnAirProducts_EnglishMobile;
 	}
+
 	/**
-	 * @return the rogersBusinessebilling
+	 * @return the lbl_OnAirProducts_French
 	 */
-	public String getRogersBusinessebilling() {
-		return rogersBusinessebilling;
+	public String getlbl_OnAirProducts_French() {
+		return lbl_OnAirProducts_French;
 	}
 	/**
-	 * @param rogersBusinessebilling the rogersBusinessebilling to set
+	 * @param lbl_OnAirProducts_French the lbl_OnAirProducts_French to set
 	 */
-	public void setRogersBusinessebilling(String rogersBusinessebilling) {
-		this.rogersBusinessebilling = rogersBusinessebilling;
+	public void setlbl_OnAirProducts_French(String lbl_OnAirProducts_French) {
+		this.lbl_OnAirProducts_French = lbl_OnAirProducts_French;
 	}
+
 	/**
-	 * @return the wirelessForBusiness
+	 * @return the lnk_OnAirProducts
 	 */
-	public String getWirelessForBusiness() {
-		return wirelessForBusiness;
+	public String getlnk_OnAirProducts() {
+		return lnk_OnAirProducts;
 	}
 	/**
-	 * @param wirelessForBusiness the wirelessForBusiness to set
+	 * @param lnk_OnAirProducts the lnk_OnAirProducts to set
 	 */
-	public void setWirelessForBusiness(String wirelessForBusiness) {
-		this.wirelessForBusiness = wirelessForBusiness;
+	public void setlnk_OnAirProducts(String lnk_OnAirProducts) {
+		this.lnk_OnAirProducts = lnk_OnAirProducts;
 	}
+
 	/**
-	 * @return the plans
+	 * @return the lnk_OnAirProductIcon_MOBILE
 	 */
-	public String getPlans() {
-		return plans;
+	public String getlnk_OnAirProductIcon_MOBILE() {
+		return lnk_OnAirProductIcon_MOBILE;
 	}
 	/**
-	 * @param plans the plans to set
+	 * @param lnk_OnAirProductIcon_MOBILE the lnk_OnAirProductIcon_MOBILE to set
 	 */
-	public void setPlans(String plans) {
-		this.plans = plans;
+	public void setlnk_OnAirProductIcon_MOBILE(String lnk_OnAirProductIcon_MOBILE) {
+		this.lnk_OnAirProductIcon_MOBILE = lnk_OnAirProductIcon_MOBILE;
 	}
+
 	/**
-	 * @return the devices
+	 * @return the lbl_ProgramGuide_English
 	 */
-	public String getDevices() {
-		return devices;
+	public String getlbl_ProgramGuide_English() {
+		return lbl_ProgramGuide_English;
 	}
 	/**
-	 * @param devices the devices to set
+	 * @param lbl_ProgramGuide_English the lbl_ProgramGuide_English to set
 	 */
-	public void setDevices(String devices) {
-		this.devices = devices;
+	public void setlbl_ProgramGuide_English(String lbl_ProgramGuide_English) {
+		this.lbl_ProgramGuide_English = lbl_ProgramGuide_English;
 	}
-	
+
 	/**
-	 * @return the addons
+	 * @return the lbl_ProgramGuide_French
 	 */
-	public String getAddons() {
-		return addons;
+	public String getlbl_ProgramGuide_French() {
+		return lbl_ProgramGuide_French;
 	}
 	/**
-	 * @param addons the addons to set
+	 * @param lbl_ProgramGuide_French the lbl_ProgramGuide_French to set
 	 */
-	public void setAddons(String addons) {
-		this.addons = addons;
+	public void setlbl_ProgramGuide_French(String lbl_ProgramGuide_French) {
+		this.lbl_ProgramGuide_French = lbl_ProgramGuide_French;
 	}
+
 	/**
-	 * @return the travelRoaming
+	 * @return the lnk_ProgramGuide
 	 */
-	public String getTravelRoaming() {
-		return travelRoaming;
+	public String getlnk_ProgramGuide() {
+		return lnk_ProgramGuide;
 	}
 	/**
-	 * @param travelRoaming the travelRoaming to set
+	 * @param lnk_ProgramGuide the lnk_ProgramGuide to set
 	 */
-	public void setTravelRoaming(String travelRoaming) {
-		this.travelRoaming = travelRoaming;
+	public void setlnk_ProgramGuide(String lnk_ProgramGuide) {
+		this.lnk_ProgramGuide = lnk_ProgramGuide;
 	}
+
 	/**
-	 * @return the networkCoverage
+	 * @return the lbl_ProgramGuideRedirect
 	 */
-	public String getNetworkCoverage() {
-		return networkCoverage;
+	public String getlbl_ProgramGuideRedirect() {
+		return lbl_ProgramGuideRedirect;
 	}
 	/**
-	 * @param networkCoverage the networkCoverage to set
+	 * @param lbl_ProgramGuideRedirect the lbl_ProgramGuideRedirect to set
 	 */
-	public void setNetworkCoverage(String networkCoverage) {
-		this.networkCoverage = networkCoverage;
+	public void setlbl_ProgramGuideRedirect(String lbl_ProgramGuideRedirect) {
+		this.lbl_ProgramGuideRedirect = lbl_ProgramGuideRedirect;
 	}
+
 	/**
-	 * @return the enterpriseMobilityManagement
+	 * @return the lbl_WatchUsLive_English
 	 */
-	public String getEnterpriseMobilityManagement() {
-		return enterpriseMobilityManagement;
+	public String getlbl_WatchUsLive_English() {
+		return lbl_WatchUsLive_English;
 	}
 	/**
-	 * @param enterpriseMobilityManagement the enterpriseMobilityManagement to set
+	 * @param lbl_WatchUsLive_English the lbl_WatchUsLive_English to set
 	 */
-	public void setEnterpriseMobilityManagement(String enterpriseMobilityManagement) {
-		this.enterpriseMobilityManagement = enterpriseMobilityManagement;
+	public void setlbl_WatchUsLive_English(String lbl_WatchUsLive_English) {
+		this.lbl_WatchUsLive_English = lbl_WatchUsLive_English;
 	}
+
 	/**
-	 * @return the internetServices
+	 * @return the lbl_WatchUsLive_French
 	 */
-	public String getInternetServices() {
-		return internetServices;
+	public String getlbl_WatchUsLive_French() {
+		return lbl_WatchUsLive_French;
 	}
 	/**
-	 * @param appleWatchImage the appleWatchImage to set
+	 * @param lbl_WatchUsLive_French the lbl_WatchUsLive_French to set
 	 */
-	public void setInternetServices(String internetServices) {
-		this.internetServices = internetServices;
+	public void setlbl_WatchUsLive_French(String lbl_WatchUsLive_French) {
+		this.lbl_WatchUsLive_French = lbl_WatchUsLive_French;
 	}
+
 	/**
-	 * @return the internetServices
+	 * @return the lnk_WatchUsLive
 	 */
-	public String getAppleWatchImage() {
-		return appleWatchImage;
+	public String getlnk_WatchUsLive() {
+		return lnk_WatchUsLive;
 	}
 	/**
-	 * @param appleWatchImage the appleWatchImage to set
+	 * @param lnk_WatchUsLive the lnk_WatchUsLive to set
 	 */
-	public void setAppleWatchImage(String appleWatchImage) {
-		this.appleWatchImage = appleWatchImage;
+	public void setlnk_WatchUsLive(String lnk_WatchUsLive) {
+		this.lnk_WatchUsLive = lnk_WatchUsLive;
 	}
+
 	/**
-	 * @return the businessInternet
+	 * @return the lbl_OnAirNow
 	 */
-	public String getBusinessInternet() {
-		return businessInternet;
+	public String getlbl_OnAirNow() {
+		return lbl_OnAirNow;
 	}
 	/**
-	 * @param businessInternet the businessInternet to set
+	 * @param lbl_OnAirNow the lbl_OnAirNow to set
 	 */
-	public void setBusinessInternet(String businessInternet) {
-		this.businessInternet = businessInternet;
+	public void setlbl_OnAirNow(String lbl_OnAirNow) {
+		this.lbl_OnAirNow = lbl_OnAirNow;
 	}
+
 	/**
-	 * @return the dedicatedInternet
+	 * @return the lbl_RecentlyAir
 	 */
-	public String getDedicatedInternet() {
-		return dedicatedInternet;
+	public String getlbl_RecentlyAir() {
+		return lbl_RecentlyAir;
 	}
 	/**
-	 * @param dedicatedInternet the dedicatedInternet to set
+	 * @param lbl_RecentlyAir the lbl_RecentlyAir to set
 	 */
-	public void setDedicatedInternet(String dedicatedInternet) {
-		this.dedicatedInternet = dedicatedInternet;
+	public void setlbl_RecentlyAir(String lbl_RecentlyAir) {
+		this.lbl_RecentlyAir = lbl_RecentlyAir;
 	}
+
 	/**
-	 * @return the voiceSolutions
+	 * @return the lnk_RecentlyAir
 	 */
-	public String getVoiceSolutions() {
-		return voiceSolutions;
+	public String getlnk_RecentlyAir() {
+		return lnk_RecentlyAir;
 	}
 	/**
-	 * @param voiceSolutions the voiceSolutions to set
+	 * @param lnk_RecentlyAir the lnk_RecentlyAir to set
 	 */
-	public void setVoiceSolutions(String voiceSolutions) {
-		this.voiceSolutions = voiceSolutions;
+	public void setlnk_RecentlyAir(String lnk_RecentlyAir) {
+		this.lnk_RecentlyAir = lnk_RecentlyAir;
 	}
+
 	/**
-	 * @return the businessPhonePlans
+	 * @return the lnk_RecentlyAirShopAllItems
 	 */
-	public String getBusinessPhonePlans() {
-		return businessPhonePlans;
+	public String getlnk_RecentlyAirShopAllItems() {
+		return lnk_RecentlyAirShopAllItems;
 	}
 	/**
-	 * @param businessPhonePlans the businessPhonePlans to set
+	 * @param lnk_RecentlyAirShopAllItems the lnk_RecentlyAirShopAllItems to set
 	 */
-	public void setBusinessPhonePlans(String businessPhonePlans) {
-		this.businessPhonePlans = businessPhonePlans;
+	public void setlnk_RecentlyAirShopAllItems(String lnk_RecentlyAirShopAllItems) {
+		this.lnk_RecentlyAirShopAllItems = lnk_RecentlyAirShopAllItems;
 	}
+
 	/**
-	 * @return the bundles
+	 * @return the txt_RecentlyAirShopAllItems
 	 */
-	public String getBundles() {
-		return bundles;
+	public String gettxt_RecentlyAirShopAllItems() {
+		return txt_RecentlyAirShopAllItems;
 	}
 	/**
-	 * @param bundles the bundles to set
+	 * @param txt_RecentlyAirShopAllItems the txt_RecentlyAirShopAllItems to set
 	 */
-	public void setBundles(String bundles) {
-		this.bundles = bundles;
+	public void settxt_RecentlyAirShopAllItems(String txt_RecentlyAirShopAllItems) {
+		this.txt_RecentlyAirShopAllItems = txt_RecentlyAirShopAllItems;
 	}
+
 	/**
-	 * @return the sipTrunking
+	 * @return the lbl_ShopByBrand
 	 */
-	public String getSipTrunking() {
-		return sipTrunking;
+	public String getlbl_ShopByBrand() {
+		return lbl_ShopByBrand;
 	}
 	/**
-	 * @param sipTrunking the sipTrunking to set
+	 * @param lbl_ShopByBrand the lbl_ShopByBrand to set
 	 */
-	public void setSipTrunking(String sipTrunking) {
-		this.sipTrunking = sipTrunking;
+	public void setlbl_ShopByBrand(String lbl_ShopByBrand) {
+		this.lbl_ShopByBrand = lbl_ShopByBrand;
 	}
+
 	/**
-	 * @return the dataCenterCloud
+	 * @return the lbl_ShopByBrandViewAll
 	 */
-	public String getDataCenterCloud() {
-		return dataCenterCloud;
+	public String getlbl_ShopByBrandViewAll() {
+		return lbl_ShopByBrandViewAll;
 	}
 	/**
-	 * @param dataCenterCloud the dataCenterCloud to set
+	 * @param lbl_ShopByBrandViewAll the lbl_ShopByBrandViewAll to set
 	 */
-	public void setDataCenterCloud(String dataCenterCloud) {
-		this.dataCenterCloud = dataCenterCloud;
+	public void setlbl_ShopByBrandViewAll(String lbl_ShopByBrandViewAll) {
+		this.lbl_ShopByBrandViewAll = lbl_ShopByBrandViewAll;
 	}
+
 	/**
-	 * @return the fiveGNetwork
+	 * @return the lnk_ShopByBrandViewAll
 	 */
-	public String getFiveGNetwork() {
-		return fiveGNetwork;
+	public String getlnk_ShopByBrandViewAll() {
+		return lnk_ShopByBrandViewAll;
 	}
 	/**
-	 * @param fiveGNetwork the fiveGNetwork to set
+	 * @param lnk_ShopByBrandViewAll the lnk_ShopByBrandViewAll to set
 	 */
-	public void setFiveGNetwork(String fiveGNetwork) {
-		this.fiveGNetwork = fiveGNetwork;
+	public void setlnk_ShopByBrandViewAll(String lnk_ShopByBrandViewAll) {
+		this.lnk_ShopByBrandViewAll = lnk_ShopByBrandViewAll;
 	}
+
 	/**
-	 * @return the theInternetOfThings
+	 * @return the lbl_ShopByDepartment
 	 */
-	public String getTheInternetOfThings() {
-		return theInternetOfThings;
+	public String getlbl_ShopByDepartment() {
+		return lbl_ShopByDepartment;
 	}
 	/**
-	 * @param theInternetOfThings the theInternetOfThings to set
+	 * @param lbl_ShopByDepartment the lbl_ShopByDepartment to set
 	 */
-	public void setTheInternetOfThings(String theInternetOfThings) {
-		this.theInternetOfThings = theInternetOfThings;
+	public void setlbl_ShopByDepartment(String lbl_ShopByDepartment) {
+		this.lbl_ShopByDepartment = lbl_ShopByDepartment;
 	}
+
 	/**
-	 * @return the fleetManagement
+	 * @return the lst_ShopByDepartmentCategories
 	 */
-	public String getFleetManagement() {
-		return fleetManagement;
+	public List<String> getlst_ShopByDepartmentCategories() {
+		return lst_ShopByDepartmentCategories;
 	}
 	/**
-	 * @param fleetManagement the fleetManagement to set
+	 * @param lst_ShopByDepartmentCategories the lst_ShopByDepartmentCategories to set
 	 */
-	public void setFleetManagement(String fleetManagement) {
-		this.fleetManagement = fleetManagement;
+	public void setlst_ShopByDepartmentCategories(List<String> lst_ShopByDepartmentCategories) {
+		this.lst_ShopByDepartmentCategories = lst_ShopByDepartmentCategories;
 	}
-	/**
-	 * @return the assetManagement
-	 */
-	public String getAssetManagement() {
-		return assetManagement;
-	}
-	/**
-	 * @param assetManagement the assetManagement to set
-	 */
-	public void setAssetManagement(String assetManagement) {
-		this.assetManagement = assetManagement;
-	}
-	/**
-	 * @return the lpwaNetworks
-	 */
-	public String getLpwaNetworks() {
-		return lpwaNetworks;
-	}
-	/**
-	 * @param lpwaNetworks the lpwaNetworks to set
-	 */
-	public void setLpwaNetworks(String lpwaNetworks) {
-		this.lpwaNetworks = lpwaNetworks;
-	}
-	/**
-	 * @return the iotConnectivity
-	 */
-	public String getIotConnectivity() {
-		return iotConnectivity;
-	}
-	/**
-	 * @param iotConnectivity the iotConnectivity to set
-	 */
-	public void setIotConnectivity(String iotConnectivity) {
-		this.iotConnectivity = iotConnectivity;
-	}
-	/**
-	 * @return the microsoft365
-	 */
-	public String getMicrosoft365() {
-		return microsoft365;
-	}
-	/**
-	 * @param microsoft365 the microsoft365 to set
-	 */
-	public void setMicrosoft365(String microsoft365) {
-		this.microsoft365 = microsoft365;
-	}
-	/**
-	 * @return the gSuite
-	 */
-	public String getgSuite() {
-		return gSuite;
-	}
-	/**
-	 * @param gSuite the gSuite to set
-	 */
-	public void setgSuite(String gSuite) {
-		this.gSuite = gSuite;
-	}
-	/**
-	 * @return the virtualContactCentre
-	 */
-	public String getVirtualContactCentre() {
-		return virtualContactCentre;
-	}
-	/**
-	 * @param virtualContactCentre the virtualContactCentre to set
-	 */
-	public void setVirtualContactCentre(String virtualContactCentre) {
-		this.virtualContactCentre = virtualContactCentre;
-	}
-	/**
-	 * @return the rogersUnison
-	 */
-	public String getRogersUnison() {
-		return rogersUnison;
-	}
-	/**
-	 * @param rogersUnison the rogersUnison to set
-	 */
-	public void setRogersUnison(String rogersUnison) {
-		this.rogersUnison = rogersUnison;
-	}
-	/**
-	 * @return the privateNetworking
-	 */
-	public String getPrivateNetworking() {
-		return privateNetworking;
-	}
-	/**
-	 * @param privateNetworking the privateNetworking to set
-	 */
-	public void setPrivateNetworking(String privateNetworking) {
-		this.privateNetworking = privateNetworking;
-	}
-	/**
-	 * @return the tvForBusiness
-	 */
-	public String getTvForBusiness() {
-		return tvForBusiness;
-	}
-	/**
-	 * @param tvForBusiness the tvForBusiness to set
-	 */
-	public void setTvForBusiness(String tvForBusiness) {
-		this.tvForBusiness = tvForBusiness;
-	}
-	/**
-	 * @return the plansPricing
-	 */
-	public String getPlansPricing() {
-		return plansPricing;
-	}
-	/**
-	 * @param plansPricing the plansPricing to set
-	 */
-	public void setPlansPricing(String plansPricing) {
-		this.plansPricing = plansPricing;
-	}
-	
-	// Footer Links getter and setter method
-	/**
-	 * @return the activateNewService
-	 */
-	public String getActivateNewService() {
-		return activateNewService;
-	}
-	/**
-	 * @param activateNewService the activateNewService to set
-	 */
-	public void setActivateNewService(String activateNewService) {
-		this.activateNewService = activateNewService;
-	}
-	/**
-	 * @return the existingServices
-	 */
-	public String getExistingServices() {
-		return existingServices;
-	}
-	/**
-	 * @param existingServices the existingServices to set
-	 */
-	public void setExistingServices(String existingServices) {
-		this.existingServices = existingServices;
-	}
-	/**
-	 * @return the technicalSupport
-	 */
-	public String getTechnicalSupport() {
-		return technicalSupport;
-	}
-	/**
-	 * @param technicalSupport the technicalSupport to set
-	 */
-	public void setTechnicalSupport(String technicalSupport) {
-		this.technicalSupport = technicalSupport;
-	}
-	/**
-	 * @return the billingInquiries
-	 */
-	public String getBillingInquiries() {
-		return billingInquiries;
-	}
-	/**
-	 * @param billingInquiries the billingInquiries to set
-	 */
-	public void setBillingInquiries(String billingInquiries) {
-		this.billingInquiries = billingInquiries;
-	}
-	/**
-	 * @return the unsubscribe
-	 */
-	public String getUnsubscribe() {
-		return unsubscribe;
-	}
-	/**
-	 * @param unsubscribe the unsubscribe to set
-	 */
-	public void setUnsubscribe(String unsubscribe) {
-		this.unsubscribe = unsubscribe;
-	}
-	/**
-	 * @return the rogersBizTwitter
-	 */
-	public String getRogersBizTwitter() {
-		return rogersBizTwitter;
-	}
-	/**
-	 * @param rogersBizTwitter the rogersBizTwitter to set
-	 */
-	public void setRogersBizTwitter(String rogersBizTwitter) {
-		this.rogersBizTwitter = rogersBizTwitter;
-	}
-	/**
-	 * @return the rogersLinkedin
-	 */
-	public String getRogersLinkedin() {
-		return rogersLinkedin;
-	}
-	/**
-	 * @param rogersLinkedin the rogersLinkedin to set
-	 */
-	public void setRogersLinkedin(String rogersLinkedin) {
-		this.rogersLinkedin = rogersLinkedin;
-	}
-	/**
-	 * @return the whatWeBelieve
-	 */
-	public String getWhatWeBelieve() {
-		return whatWeBelieve;
-	}
-	/**
-	 * @param whatWeBelieve the whatWeBelieve to set
-	 */
-	public void setWhatWeBelieve(String whatWeBelieve) {
-		this.whatWeBelieve = whatWeBelieve;
-	}
-	/**
-	 * @return the smallBusinessCentres
-	 */
-	public String getSmallBusinessCentres() {
-		return smallBusinessCentres;
-	}
-	/**
-	 * @param smallBusinessCentres the smallBusinessCentres to set
-	 */
-	public void setSmallBusinessCentres(String smallBusinessCentres) {
-		this.smallBusinessCentres = smallBusinessCentres;
-	}
-	/**
-	 * @return the customerStories
-	 */
-	public String getCustomerStories() {
-		return customerStories;
-	}
-	/**
-	 * @param customerStories the customerStories to set
-	 */
-	public void setCustomerStories(String customerStories) {
-		this.customerStories = customerStories;
-	}
-	/**
-	 * @return the support
-	 */
-	public String getSupport() {
-		return support;
-	}
-	/**
-	 * @param support the support to set
-	 */
-	public void setSupport(String support) {
-		this.support = support;
-	}
-	/**
-	 * @return the partnerProgram
-	 */
-	public String getPartnerProgram() {
-		return partnerProgram;
-	}
-	/**
-	 * @param partnerProgram the partnerProgram to set
-	 */
-	public void setPartnerProgram(String partnerProgram) {
-		this.partnerProgram = partnerProgram;
-	}
-	/**
-	 * @return the rogersBusinessBlog
-	 */
-	public String getRogersBusinessBlog() {
-		return rogersBusinessBlog;
-	}
-	/**
-	 * @param rogersBusinessBlog the rogersBusinessBlog to set
-	 */
-	public void setRogersBusinessBlog(String rogersBusinessBlog) {
-		this.rogersBusinessBlog = rogersBusinessBlog;
-	}
-	/**
-	 * @return the newsReleases
-	 */
-	public String getNewsReleases() {
-		return newsReleases;
-	}
-	/**
-	 * @param newsReleases the newsReleases to set
-	 */
-	public void setNewsReleases(String newsReleases) {
-		this.newsReleases = newsReleases;
-	}
-	/**
-	 * @return the stockInformation
-	 */
-	public String getStockInformation() {
-		return stockInformation;
-	}
-	/**
-	 * @param stockInformation the stockInformation to set
-	 */
-	public void setStockInformation(String stockInformation) {
-		this.stockInformation = stockInformation;
-	}
-	/**
-	 * @return the investorRelations
-	 */
-	public String getInvestorRelations() {
-		return investorRelations;
-	}
-	/**
-	 * @param investorRelations the investorRelations to set
-	 */
-	public void setInvestorRelations(String investorRelations) {
-		this.investorRelations = investorRelations;
-	}
-	/**
-	 * @return the corporateSocialResponsibility
-	 */
-	public String getCorporateSocialResponsibility() {
-		return corporateSocialResponsibility;
-	}
-	/**
-	 * @param corporateSocialResponsibility the corporateSocialResponsibility to set
-	 */
-	public void setCorporateSocialResponsibility(String corporateSocialResponsibility) {
-		this.corporateSocialResponsibility = corporateSocialResponsibility;
-	}
-	/**
-	 * @return the aboutRogers
-	 */
-	public String getAboutRogers() {
-		return aboutRogers;
-	}
-	/**
-	 * @param aboutRogers the aboutRogers to set
-	 */
-	public void setAboutRogers(String aboutRogers) {
-		this.aboutRogers = aboutRogers;
-	}
-	/**
-	 * @return the careers
-	 */
-	public String getCareers() {
-		return careers;
-	}
-	/**
-	 * @param careers the careers to set
-	 */
-	public void setCareers(String careers) {
-		this.careers = careers;
-	}
-	/**
-	 * @return the privacyPolicy
-	 */
-	public String getPrivacyPolicy() {
-		return privacyPolicy;
-	}
-	/**
-	 * @param privacyPolicy the privacyPolicy to set
-	 */
-	public void setPrivacyPolicy(String privacyPolicy) {
-		this.privacyPolicy = privacyPolicy;
-	}
-	/**
-	 * @return the termsAndConditions
-	 */
-	public String getTermsAndConditions() {
-		return termsAndConditions;
-	}
-	/**
-	 * @param termsAndConditions the termsAndConditions to set
-	 */
-	public void setTermsAndConditions(String termsAndConditions) {
-		this.termsAndConditions = termsAndConditions;
-	}
-	/**
-	 * @return the wirelessCodeOfConduct
-	 */
-	public String getWirelessCodeOfConduct() {
-		return wirelessCodeOfConduct;
-	}
-	/**
-	 * @param wirelessCodeOfConduct the wirelessCodeOfConduct to set
-	 */
-	public void setWirelessCodeOfConduct(String wirelessCodeOfConduct) {
-		this.wirelessCodeOfConduct = wirelessCodeOfConduct;
-	}
-	/**
-	 * @return the accessibilityServices
-	 */
-	public String getAccessibilityServices() {
-		return accessibilityServices;
-	}
-	/**
-	 * @param accessibilityServices the accessibilityServices to set
-	 */
-	public void setAccessibilityServices(String accessibilityServices) {
-		this.accessibilityServices = accessibilityServices;
-	}
-	/**
-	 * @return the sitemap
-	 */
-	public String getSitemap() {
-		return sitemap;
-	}
-	/**
-	 * @param sitemap the sitemap to set
-	 */
-	public void setSitemap(String sitemap) {
-		this.sitemap = sitemap;
-	}
-	public String getSmartCities() {
-		return smartCities;
-	}
-	public void setSmartCities(String smartCities) {
-		this.smartCities = smartCities;
-	}
-		
 }
