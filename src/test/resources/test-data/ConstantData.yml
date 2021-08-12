@@ -1,19 +1,31 @@
 # HEADER SECTION
-NOT_FOUND_LINK: /pages/notfound
-TODAYSHOWSTOPPER_TEXT_ENGLISH: Today's Showstopper™
-TODAYS_SHOWSTOPPER_LINK: /pages/todaysshowstopper?ic=HP_TodaysShowstopper
-DEALS_TEXT_ENGLISH: Deals
-DEALS_TEXT_FRENCH: Aubaines
-DEALS_LINK: /pages/productresults?nav=n:2059928&ic=HP_Deals
-ONAIRPROD_TEXT_ENGLISH: On Air Products
-ONAIRPROD_TEXT_ENGLISH_MOBILE: ON AIR
-ONAIRPROD_TEXT_FRENCH: Sur les ondes
-ONAIRPROD_LINKS: /pages/productresults?ic=HP_OnAir_T&dimensions=2037548&page=1&pageSize=36&rd=false
-ONAIRPROD_ICON_PATH_MOBILE: /dist/svg.svg#onairitem
-PROGRAM_GUIDE_TEXT_ENGLISH: Program Guide
-PROGRAM_GUIDE_TEXT_FRENCH: Grille horaire
-PROGRAM_GUIDE_LINK: /pages/programguide?ic=HP_ProgramGuide
-PROGRAM_GUIDE_LINK_REDIRECT: /pages/programguide/daily?ic=HP_ProgramGuide
-WATCH_US_TEXT_ENGLISH: Watch Us Live
-WATCH_US_TEXT_FRENCH: En direct
-WATCH_US_LIVE_LINK: /pages/watchuslive?ic=HP_WatchUsLive
+lnk_NotFound: /pages/notfound
+lbl_TodaysShowstopper: Todays Showstopperï¿½
+lnk_TodaysShowstopper: /pages/todaysshowstopper?ic=HP_TodaysShowstopper
+lbl_Deals_English: Deals
+lbl_Deals_French: Aubaines
+lnk_Deals: /pages/productresults?nav=n:2059928&ic=HP_Deals
+lbl_OnAirProducts_English: On Air Products
+lbl_OnAirProducts_EnglishMobile: ON AIR
+lbl_OnAirProducts_French: Sur les ondes
+lnk_OnAirProducts: /pages/productresults?ic=HP_OnAir_T&dimensions=2037548&page=1&pageSize=36&rd=false
+lnk_OnAirProductIcon_MOBILE: /dist/svg.svg#onairitem
+lbl_ProgramGuide_English: Program Guide
+lbl_ProgramGuide_French: Grille horaire
+lnk_ProgramGuide: /pages/programguide?ic=HP_ProgramGuide
+lbl_ProgramGuideRedirect: /pages/programguide/daily?ic=HP_ProgramGuide
+lbl_WatchUsLive_English: Watch Us Live
+lbl_WatchUsLive_French: En direct
+lnk_WatchUsLive: /pages/watchuslive?ic=HP_WatchUsLive
+
+# HOME PAGE SECTION
+lbl_OnAirNow: ON AIR NOW
+lbl_RecentlyAir: RECENTLY AIRED
+lnk_RecentlyAir: /pages/productdetails?nav
+lnk_RecentlyAirShopAllItems: /pages/productresults?aliasdimension=onairtoday&ic=HP_OnAir_T
+txt_RecentlyAirShopAllItems: Shop All Today's Items
+lbl_ShopByBrand: SHOP BY BRAND
+lbl_ShopByBrandViewAll: View All
+lnk_ShopByBrandViewAll: /pages/brand
+lbl_ShopByDepartment: SHOP BY DEPARTMENT
+lst_ShopByDepartmentCategories: [FASHION, SHOES & HANDBAGS, JEWELLERY, BEAUTY, HOME & GARDEN, KITCHEN, HEALTH & FITNESS, ELECTRONICS, COINS & HOBBIES, CLEARANCE, SPORTS, MENS]
