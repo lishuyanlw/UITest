@@ -181,7 +181,7 @@ public class BaseTest {
 
 	@BeforeSuite(alwaysRun = true)
 	public void beforeSuite() throws FileNotFoundException {
-		//TestDataHandler.dataInit();
+		TestDataHandler.dataInit();
 		System.out.println("Data File initialized at before Suite");
 	}
 

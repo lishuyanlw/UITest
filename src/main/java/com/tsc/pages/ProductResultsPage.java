@@ -36,12 +36,6 @@ public class ProductResultsPage extends BasePage{
 		searchKeyword="dyson vacuum";
 	}
 	
-	//Search result page title
-	@FindBy(xpath = "//body[@class='ReactModal__Body--open']//button[@class='email-popup__button']")
-	WebElement btnCloseEmailSignup;
-	
-	By byCloseEmailSignup=By.xpath("//body[@class='ReactModal__Body--open']//button[@class='email-popup__button']");
-		
 	String searchKeyword;
 	
 	//Search result page title
@@ -137,12 +131,7 @@ public class ProductResultsPage extends BasePage{
 	 */
 	public boolean getSearchResultLoad() {		
 		GlobalheaderPage globalHeader=new GlobalheaderPage(this.getDriver());
-		
-		if(this.getReusableActionsInstance().isElementVisible(byCloseEmailSignup,30)) {
-			this.btnCloseEmailSignup.click();
-			waitForCondition(Driver->{return globalHeader.lnkTSClogo.isDisplayed();},40000);
-		}
-		
+				
 		this.clearContent(globalHeader.searchBox);	
 		globalHeader.searchBox.sendKeys(searchKeyword);
 		globalHeader.btnSearchSubmit.click();
