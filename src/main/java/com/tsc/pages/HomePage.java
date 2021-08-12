@@ -1,8 +1,11 @@
 <<<<<<< Upstream, based on branch 'master' of https://github.com/RogersCommunications/TSCWF-WebTestAutomation.git
+<<<<<<< Upstream, based on branch 'master' of https://github.com/RogersCommunications/TSCWF-WebTestAutomation.git
 =======
 
 
 >>>>>>> a9a7d84 TS main Image section verification
+=======
+>>>>>>> 616b91e HP_02_Verify_TSmainImage.java file created. Hard coded value replaced with yalml data file values in HP_03_Verify_OnAirSection.java file
 package com.tsc.pages;
 
 import java.io.IOException;
