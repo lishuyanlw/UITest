@@ -13,6 +13,7 @@ import com.tsc.test.base.BaseTest;
 	
 <<<<<<< Upstream, based on origin/master
 	public void validateTSmainImageSection() throws IOException, InterruptedException {
+<<<<<<< Upstream, based on origin/master
 		homePageThreadLocal().closeadd();
 =======
 	public void validateTSmainImageSection() throws IOException {
@@ -20,6 +21,11 @@ import com.tsc.test.base.BaseTest;
 >>>>>>> ffa51ea updated code
 	//reporter.softAssert(getglobalheaderPageThreadLocal().validateURL("https://qa-tsc.tsc.ca/"), "TSC url is correct", "TSC url is incorrect");
 	//reporter.reportLogWithScreenshot("Home Page");
+=======
+		//homePageThreadLocal().closeadd();
+	reporter.softAssert(getglobalheaderPageThreadLocal().validateURL((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");
+	reporter.reportLogWithScreenshot("Home Page");
+>>>>>>> a99416f URL hard coded value replaced
 	
 <<<<<<< Upstream, based on origin/master
 	reporter.softAssert(homePageThreadLocal().verifyTSmainimglinkCount(),"TS main upper section link & image Count is: "+homePageThreadLocal().getTSmainimgCount(),"TS main upper section link & image Count is: "+homePageThreadLocal().getTSmainimgCount());
@@ -30,7 +36,7 @@ import com.tsc.test.base.BaseTest;
 			reporter.softAssert(homePageThreadLocal().validateUrlAfterClickingTSmainImageLink(i),"TS Main Image link is loaded properly","TS Main Image link is not loaded properly");
 	 	}
 	 
-	/*
+	
 	validateText(homePageThreadLocal().validateTSimagesection(),"Today's Showstopper TM Offers","TS Main image bottom Section");
 
 	reporter.softAssert(homePageThreadLocal().verifyTSimglinkCount(),"TS image bottom section link & image Count is: "+homePageThreadLocal().getTSimgCount(),"TS image bottom section link & image Count is: "+homePageThreadLocal().getTSimgCount());
@@ -45,6 +51,7 @@ import com.tsc.test.base.BaseTest;
 		 reporter.softAssert(homePageThreadLocal().validateTSmainimage(i),"TS main image is present for tile: "+(i+1),"TS main image is not present for tile: "+(i+1));
 		 reporter.reportLog(homePageThreadLocal().validateTSmainimageLinks(i));
 
+<<<<<<< Upstream, based on origin/master
 	 	}
 	 
 	
@@ -60,3 +67,8 @@ import com.tsc.test.base.BaseTest;
 	 	}
 	}
 }
+=======
+		}
+	}
+}
+>>>>>>> a99416f URL hard coded value replaced
