@@ -1,3 +1,8 @@
+<<<<<<< Upstream, based on branch 'master' of https://github.com/RogersCommunications/TSCWF-WebTestAutomation.git
+=======
+
+
+>>>>>>> a9a7d84 TS main Image section verification
 package com.tsc.pages;
 
 import java.io.IOException;
@@ -763,3 +768,11 @@ public class HomePage extends BasePage{
 		}	
 		
 }
+<<<<<<< Upstream, based on branch 'master' of https://github.com/RogersCommunications/TSCWF-WebTestAutomation.git
+=======
+
+
+
+
+
+>>>>>>> a9a7d84 TS main Image section verification
