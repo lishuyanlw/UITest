@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.testng.annotations.Test;
 
+import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 
@@ -19,15 +20,15 @@ public class HP_TC01_Verify_ProductSearchResult extends BaseTest{
 	reporter.softAssert(getglobalheaderPageThreadLocal().validateURL((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");		
 	reporter.reportLogWithScreenshot("Home Page");
 	
-	getProductResultsPageThreadLocal().getSearchResultLoad();
+	getProductResultsPageThreadLocal().getSearchResultLoad(TestDataHandler.constantDataVariables.getlbl_SearchKeyword());
+		
+	reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageTitle(TestDataHandler.constantDataVariables.getlbl_SearchKeyword()), "Page title of search result contains searching keyword", "page title of search result doesn't contain searching keyword");
 	
-	reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageTitle(), "Page title of search result contains searching keyword", "page title of search result doesn't contain searching keyword");
-	
-	reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultUrl(), "Url of search result matches expected url", "Url of search result doesn't match expected url");
+	reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultUrl((new BasePage(this.getDriver())).getBaseURL()+TestDataHandler.constantDataVariables.getlbl_SearchResultExpectedUrl()), "Url of search result matches expected url", "Url of search result doesn't match expected url");
 	
 	reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(), "Showing text pattern in filters is correct", "Showing text pattern in filters is incorrect");
 	
-	reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(), "The default setting of items per page is 36", "The default setting of items per page isn't 36");
+	reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(TestDataHandler.constantDataVariables.getlbl_SearchResultPageDefaultSetting()), "The default setting of items per page is "+TestDataHandler.constantDataVariables.getlbl_SearchResultPageDefaultSetting(), "The default setting of items per page isn't "+TestDataHandler.constantDataVariables.getlbl_SearchResultPageDefaultSetting());
 	
 	reporter.softAssert(getProductResultsPageThreadLocal().verifyProductPriceBadge(), "PriceBadge in searching result is correct", "PriceBadge in searching result is incorrect");
 	
@@ -52,7 +53,8 @@ public class HP_TC01_Verify_ProductSearchResult extends BaseTest{
 	reporter.softAssert(getProductResultsPageThreadLocal().verifyProductSwatch(), "ProductSwatch in searching result is correct", "ProductSwatch in searching result is incorrect");
 	
 	reporter.softAssert(getProductResultsPageThreadLocal().verifyProductFreeShipping(), "ProductFreeShipping in searching result is correct", "ProductFreeShipping in searching result is incorrect");
-		
+	
+	
 	}
 	
 }

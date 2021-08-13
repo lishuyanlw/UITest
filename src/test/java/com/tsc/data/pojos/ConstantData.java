@@ -37,6 +37,9 @@ public class ConstantData {
 	private String lnk_ShopByBrandViewAll;
 	private String lbl_ShopByDepartment;
 	private List<String> lst_ShopByDepartmentCategories;
+	private String lbl_SearchKeyword;
+	private String lbl_SearchResultExpectedUrl;
+	private String lbl_SearchResultPageDefaultSetting;
 	
 	//Header Links getter and setter method
 	
@@ -402,5 +405,44 @@ public class ConstantData {
 	 */
 	public void setlst_ShopByDepartmentCategories(List<String> lst_ShopByDepartmentCategories) {
 		this.lst_ShopByDepartmentCategories = lst_ShopByDepartmentCategories;
+	}
+	
+	/**
+	 * @return the lbl_SearchKeyword
+	 */
+	public String getlbl_SearchKeyword() {
+		return lbl_SearchKeyword;
+	}
+	/**
+	 * @param lbl_SearchKeyword the lbl_SearchKeyword to set
+	 */
+	public void setlbl_SearchKeyword(String lbl_SearchKeyword) {
+		this.lbl_SearchKeyword = lbl_SearchKeyword;
+	}
+	
+	/**
+	 * @return the lbl_SearchResultExpectedUrl
+	 */
+	public String getlbl_SearchResultExpectedUrl() {
+		return lbl_SearchResultExpectedUrl;
+	}
+	/**
+	 * @param lbl_SearchResultExpectedUrl the lbl_SearchResultExpectedUrl to set
+	 */
+	public void setlbl_SearchResultExpectedUrl(String lbl_SearchResultExpectedUrl) {
+		this.lbl_SearchResultExpectedUrl = lbl_SearchResultExpectedUrl;
+	}
+	
+	/**
+	 * @return the lbl_SearchResultPageDefaultSetting
+	 */
+	public String getlbl_SearchResultPageDefaultSetting() {
+		return lbl_SearchResultPageDefaultSetting;
+	}
+	/**
+	 * @param lbl_SearchResultPageDefaultSetting the lbl_SearchResultPageDefaultSetting to set
+	 */
+	public void setlbl_SearchResultPageDefaultSetting(String lbl_SearchResultPageDefaultSetting) {
+		this.lbl_SearchResultPageDefaultSetting = lbl_SearchResultPageDefaultSetting;
 	}
 }

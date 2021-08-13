@@ -32,12 +32,8 @@ import java.util.List;
 public class ProductResultsPage extends BasePage{
 	public ProductResultsPage(WebDriver driver) {
 		super(driver);
-		
-		searchKeyword="dyson vacuum";
 	}
-	
-	String searchKeyword;
-	
+		
 	//Search result page title
 	@FindBy(xpath = "//product-results//div[contains(@class,'searchDiv')]")
 	WebElement lblSearchResultPageTitle;
@@ -129,7 +125,7 @@ public class ProductResultsPage extends BasePage{
 	 * @return true/false
 	 * @author Wei.Li
 	 */
-	public boolean getSearchResultLoad() {		
+	public boolean getSearchResultLoad(String searchKeyword) {		
 		GlobalheaderPage globalHeader=new GlobalheaderPage(this.getDriver());
 				
 		this.clearContent(globalHeader.searchBox);	
@@ -145,11 +141,8 @@ public class ProductResultsPage extends BasePage{
 	 * @return true/false
 	 * @author Wei.Li
 	 */
-	public boolean verifySearchResultUrl() {
-		String expectedURL=(new BasePage(this.getDriver())).getBaseURL()+"/pages/productresults?dimensions=0&searchterm=dyson%20vacuum";
-		
-		return this.getDriver().getCurrentUrl().equalsIgnoreCase(expectedURL);
-		
+	public boolean verifySearchResultUrl(String expectedURL) {				
+		return this.getDriver().getCurrentUrl().equalsIgnoreCase(expectedURL);		
 	}
 	
 	/**
@@ -169,22 +162,21 @@ public class ProductResultsPage extends BasePage{
 	 * @return true/false
 	 * @author Wei.Li
 	 */
-	public boolean verifySearchResultPageTitle() {
+	public boolean verifySearchResultPageTitle(String expectedPageTitle) {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSearchResultPageTitle);
-		String expectedPageTitle="Search Results For “"+this.searchKeyword+"”";
-				
-		return this.lblSearchResultPageTitle.getText().trim().equalsIgnoreCase(expectedPageTitle);		
+		String lsTitle=this.lblSearchResultPageTitle.getText().trim();				
+		return lsTitle.contains(expectedPageTitle);		
 	}
 	
 	/**
-	 * This method will verify the default setting of items per page is 36.
+	 * This method will verify the default setting of items per page.
 	 * @return true/false
 	 * @author Wei.Li
 	 */
-	public boolean verifySearchResultPageNumberDefaultSetting() {
+	public boolean verifySearchResultPageNumberDefaultSetting(String defaultSettingPageNumber) {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSearchResultPageTitle);
 						
-		return this.lblItemPerPageDefaultSettingNumber.getText().trim().equalsIgnoreCase("36");		
+		return this.lblItemPerPageDefaultSettingNumber.getText().trim().equalsIgnoreCase(defaultSettingPageNumber);		
 	}
 	
 	/**

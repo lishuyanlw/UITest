@@ -29,3 +29,9 @@ lbl_ShopByBrandViewAll: View All
 lnk_ShopByBrandViewAll: /pages/brand
 lbl_ShopByDepartment: SHOP BY DEPARTMENT
 lst_ShopByDepartmentCategories: [FASHION, SHOES & HANDBAGS, JEWELLERY, BEAUTY, HOME & GARDEN, KITCHEN, HEALTH & FITNESS, ELECTRONICS, COINS & HOBBIES, CLEARANCE, SPORTS, MENS]
+
+# SEARCH RESULTS SECTION
+lbl_SearchKeyword: dyson vacuum
+lbl_SearchResultExpectedUrl: /pages/productresults?dimensions=0&searchterm=dyson%20vacuum
+lbl_SearchResultPageDefaultSetting: 36
+
