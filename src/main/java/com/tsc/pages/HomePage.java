@@ -1,7 +1,5 @@
 package com.tsc.pages;
 
-import java.awt.AWTException;
-import java.awt.Robot;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -112,6 +110,28 @@ public class HomePage extends BasePage{
 	
 	@FindBy(xpath = "//product-recommendations-endeca//*[contains(@class,'prec-col')]//div[contains(@class,'was-price')]")
 	List<WebElement> lblTopSellerAllWasPrices;
+	
+	//For Shop By Department by Shruti.Desai
+	@FindBy(xpath = "//*[@class='Middle']//div[@class='PageTitleCentred']//descendant::*[contains(text(),'Department')]")
+	WebElement lblShopByDepartment;
+		
+	@FindBy(xpath = "//*[@class='Middle']//div[@class='PageTitleCentred']//descendant::*[contains(text(),'Department')]/ancestor::div[@class='PageTitleCentred']/parent::div")
+	WebElement locationShopByDepartment;
+		
+	@FindBy(xpath = "//div[contains(@class,'ImageAnchorCarousel') and not(contains(@class,'ImageAnchorCarouselData'))]//div[@class='slick-slide' or (contains(@class,'active'))]//div[a[contains(@href,'ic=HP_SBD')]]")
+	List<WebElement> imgShopByDepartmentAllImages;
+		
+	@FindBy(xpath = "//div[contains(@class,'ImageAnchorCarousel') and not(contains(@class,'ImageAnchorCarouselData'))]//div[contains(@class,'slick-active') and not(contains(@class,'slick-cloned'))]//div[a[contains(@href,'ic=HP_SBD')]]//a")
+	List<WebElement> lnkShopByDepartmentAllActiveLinks;
+		
+	@FindBy(xpath = "//div[contains(@class,'ImageAnchorCarousel') and not(contains(@class,'ImageAnchorCarouselData'))]//div[contains(@class,'slick-active') and not(contains(@class,'slick-cloned'))]//div[a[contains(@href,'ic=HP_SBD')]]//img")
+	List<WebElement> imgShopByDepartmentAllActiveImages;
+		
+	@FindBy(xpath = "//div[contains(@class,'ImageAnchorCarousel') and not(contains(@class,'ImageAnchorCarouselData'))]//div[a[contains(@href,'ic=HP_SBD')]]/ancestor::div[contains(@class,'ImageAnchorCarousel') and not(contains(@class,'ImageAnchorCarouselData'))]//button[contains(@class,'slick-prev')]")
+	WebElement btnShopByDepartmentPrev;
+		
+	@FindBy(xpath = "//div[contains(@class,'ImageAnchorCarousel') and not(contains(@class,'ImageAnchorCarouselData'))]//div[a[contains(@href,'ic=HP_SBD')]]/ancestor::div[contains(@class,'ImageAnchorCarousel') and not(contains(@class,'ImageAnchorCarouselData'))]//button[contains(@class,'slick-next')]")
+	WebElement btnShopByDepartmentNext;	
 			
 	public void closeadd() {
 		btnClose.click();
@@ -142,8 +162,7 @@ public class HomePage extends BasePage{
 			return lnkNOA.getAttribute("href");
 			}
 		}
-	
-	
+		
 	//Now On Air(NOA) Image is visible
 	
 	public boolean validateNOAimg() {
@@ -269,7 +288,7 @@ public class HomePage extends BasePage{
 			 	return	getReusableActionsInstance().isElementVisible(btnShopAllTodaysItem, 10);
 			}
 
-		//TS main Image Section 
+			//TS main Image Section 
 		
 		public String validateTSmainImagesection() {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(TSmainImagesection);
@@ -571,6 +590,176 @@ public class HomePage extends BasePage{
 			return true;
 		}
 
+	/*Shop By Department section
+	* @author Shruti Desai
+	*/
+		
+	/*Method to Validate Shop By Department section is in the middle of the webpage
+	 * @return true/false
+	 * @author Shruti Desai
+	 */
+	public String validateShopByDepartmentIsInMiddle() {
+		getReusableActionsInstance().javascriptScrollByVisibleElement(lblShopByDepartment);
+			return locationShopByDepartment.getAttribute("class");
+			}
+		
+	/*Method to get image count for Shop By Department section 
+	 * @return number of images available in SBD section
+	 * @author Shruti Desai
+	 */
+	public int getSBDimgCount() {
+		return imgShopByDepartmentAllImages.size();
+		}
+		
+	/*Method to get active image count for Shop By Department section 
+	 * @return number of active images available in SBD section
+	 * @author Shruti Desai
+	 */
+	public int getSBDactiveimgCount() {
+		return imgShopByDepartmentAllActiveImages.size();
+		}
+		
+	/*Method to verify image count for Shop By Department section 
+	 * @return true/false
+	 * @author Shruti Desai
+	 */
+	public boolean verifySBDactiveimgCount() {
+		if (imgShopByDepartmentAllActiveImages.size() >=1) {
+			getReusableActionsInstance().javascriptScrollByVisibleElement(imgShopByDepartmentAllActiveImages.get(1));
+			return true;
+			}
+			return false;
+		}
+		 
+	/*Method to verify Active image count for Shop By Department section
+	 * @return true/false
+	 * @author Shruti Desai
+	 */
+	public boolean verifySBDimgCount() {
+		if (imgShopByDepartmentAllImages.size() >=1) {
+			getReusableActionsInstance().javascriptScrollByVisibleElement(imgShopByDepartmentAllImages.get(1));
+			return true;
+			}
+			return false;
+		}
+		
+	/*Method to Validate Shop By Department section links href 
+	 * @return String : href of all links in the section
+	 * @author Shruti Desai
+	 */
+	public String validateSBDsectionLinks(int lnkNumber) {
+		String emptyimglink="Image link href is empty";
+		WebElement WebElement=imgShopByDepartmentAllImages.get(lnkNumber).findElement(By.xpath(".//a"));
+		getReusableActionsInstance().javascriptScrollByVisibleElement(WebElement);
+			if (!WebElement.getAttribute("href").isEmpty()) {
+				return WebElement.getAttribute("href");
+			}else {
+				return emptyimglink;
+	 		}
+		}
+	 /*Method to Validate Shop By Department section images src is not empty
+	  * @return true/false
+	  * @author Shruti Desai
+	  */	
+		public boolean validateSBDsectionImages(int imgNumber) {
+			WebElement WebElement=imgShopByDepartmentAllImages.get(imgNumber).findElement(By.xpath(".//img"));
+			getReusableActionsInstance().javascriptScrollByVisibleElement(WebElement);
+				if (!WebElement.getAttribute("src").isEmpty()) {
+					return true;
+					}
+					return false;
+				}
+		
+	 /*Method to Validate clicking Shop By Department section Prev button
+	  * @return true/false
+	  * @author Shruti Desai
+	  */
+		public boolean validateShopByDepartmentClickPrevButton() {
+			getReusableActionsInstance().javascriptScrollByVisibleElement(lblShopByDepartment);
+		
+			List<String> lnkListBefore= new ArrayList<String>();
+				for(WebElement item:this.lnkShopByDepartmentAllActiveLinks) {
+					lnkListBefore.add(item.getAttribute("href"));
+					}
+				if(!getReusableActionsInstance().isElementVisible(btnShopByDepartmentPrev)) {
+					return true;
+					}
+			getReusableActionsInstance().clickWhenVisible(btnShopByDepartmentPrev);
+			String lsCurrentHref=lnkListBefore.get(0);
+			waitForCondition(Driver->{return !lsCurrentHref.equalsIgnoreCase(this.lnkShopByDepartmentAllActiveLinks.get(0).getAttribute("href"));},10000);
+			List<String> lnkListAfter= new ArrayList<String>();
+				for(WebElement item:this.lnkShopByDepartmentAllActiveLinks) {
+					lnkListAfter.add(item.getAttribute("href"));
+				}
+				
+			Set<String> currentSet = new HashSet<String>(lnkListBefore);
+			Set<String> afterSet = new HashSet<String>(lnkListAfter);
+			currentSet.removeAll(afterSet);
+				if(currentSet.isEmpty()) {
+					return false;
+				}else {
+					return true;
+				}						
+			}
+			
+	 /*Method to Validate clicking Shop By Department section Next button
+	  * @return true/false
+	  * @author Shruti Desai
+	  */
+		public boolean validateShopByDepartmentClickNextButton() {
+			getReusableActionsInstance().javascriptScrollByVisibleElement(lblShopByDepartment);
+				
+			List<String> lnkListBefore= new ArrayList<String>();
+			for(WebElement item:this.lnkShopByDepartmentAllActiveLinks) {
+				lnkListBefore.add(item.getAttribute("href"));
+				}
+			if(!getReusableActionsInstance().isElementVisible(btnShopByDepartmentNext)) {
+				return true;
+				}
+			getReusableActionsInstance().clickWhenVisible(btnShopByDepartmentNext);
+			String lsCurrentHref=lnkListBefore.get(0);
+			waitForCondition(Driver->{return !lsCurrentHref.equalsIgnoreCase(this.lnkShopByDepartmentAllActiveLinks.get(0).getAttribute("href"));},10000);
+			List<String> lnkListAfter= new ArrayList<String>();
+				for(WebElement item:this.lnkShopByDepartmentAllActiveLinks) {
+					lnkListAfter.add(item.getAttribute("href"));
+				}
+					
+			Set<String> currentSet = new HashSet<String>(lnkListBefore);
+			Set<String> afterSet = new HashSet<String>(lnkListAfter);
+			currentSet.removeAll(afterSet);
+				if(currentSet.isEmpty()) {
+					return false;
+				}else {
+					return true;
+				}						
+			}
+		
+	/*Method to Validate Shop By Department section Automatic scrolling
+	 * @return true/false
+	 * @author Shruti Desai
+	 */
+		public boolean validateShopByDepartmentAutomaticScrollingAction() {
+		getReusableActionsInstance().javascriptScrollByVisibleElement(lblShopByDepartment);
+					
+		List<String> lnkListBefore= new ArrayList<String>();
+			for(WebElement item:this.lnkShopByDepartmentAllActiveLinks) {
+				lnkListBefore.add(item.getAttribute("href"));
+				}
+		String lsCurrentHref=lnkListBefore.get(0);
+		waitForCondition(Driver->{return !lsCurrentHref.equalsIgnoreCase(this.lnkShopByDepartmentAllActiveLinks.get(0).getAttribute("href"));},30000);
+		List<String> lnkListAfter= new ArrayList<String>();
+			for(WebElement item:this.lnkShopByDepartmentAllActiveLinks) {
+				lnkListAfter.add(item.getAttribute("href"));
+				}
+					
+		Set<String> currentSet = new HashSet<String>(lnkListBefore);
+		Set<String> afterSet = new HashSet<String>(lnkListAfter);
+		currentSet.removeAll(afterSet);
+			if(currentSet.isEmpty()) {
+				return false;
+			}else{
+				return true;
+			}						
+		}	
+		
 }
-
-
