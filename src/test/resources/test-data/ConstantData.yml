@@ -1,6 +1,6 @@
 # HEADER SECTION
 lnk_NotFound: /pages/notfound
-lbl_TodaysShowstopper: Today's Showstopper™
+lbl_TodaysShowstopper: Today's Showstopper
 lnk_TodaysShowstopper: /pages/todaysshowstopper?ic=HP_TodaysShowstopper
 lbl_Deals_English: Deals
 lbl_Deals_French: Aubaines
@@ -13,10 +13,15 @@ lnk_OnAirProductIcon_MOBILE: /dist/svg.svg#onairitem
 lbl_ProgramGuide_English: Program Guide
 lbl_ProgramGuide_French: Grille horaire
 lnk_ProgramGuide: /pages/programguide?ic=HP_ProgramGuide
-lbl_ProgramGuideRedirect: /pages/programguide/daily?ic=HP_ProgramGuide
+lnk_ProgramGuideRedirect: /pages/programguide/daily?ic=HP_ProgramGuide
 lbl_WatchUsLive_English: Watch Us Live
 lbl_WatchUsLive_French: En direct
 lnk_WatchUsLive: /pages/watchuslive?ic=HP_WatchUsLive
+lbl_Favourites: Favourites
+lbl_SignIn: Sign In
+lbl_SearchBoxPlaceholder: Search
+lbl_MinicartLinkName: Bag
+lnk_MinicarLink: /pages/shoppingcart
 
 # HOME PAGE SECTION
 lbl_OnAirNow: ON AIR NOW
@@ -29,3 +34,4 @@ lbl_ShopByBrandViewAll: View All
 lnk_ShopByBrandViewAll: /pages/brand
 lbl_ShopByDepartment: SHOP BY DEPARTMENT
 lst_ShopByDepartmentCategories: [FASHION, SHOES & HANDBAGS, JEWELLERY, BEAUTY, HOME & GARDEN, KITCHEN, HEALTH & FITNESS, ELECTRONICS, COINS & HOBBIES, CLEARANCE, SPORTS, MENS]
+lbl_TopSellers: TOP SELLERS

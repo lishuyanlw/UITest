@@ -23,10 +23,15 @@ public class ConstantData {
 	private String lbl_ProgramGuide_English;
 	private String lbl_ProgramGuide_French;
 	private String lnk_ProgramGuide;
-	private String lbl_ProgramGuideRedirect;
+	private String lnk_ProgramGuideRedirect;
 	private String lbl_WatchUsLive_English;
 	private String lbl_WatchUsLive_French;
-	private String lnk_WatchUsLive;
+	private String lnk_WatchUsLive;	
+	private String lbl_Favourites;
+	private String lbl_SignIn;
+	private String lbl_SearchBoxPlaceholder;
+	private String lbl_MinicartLinkName;
+	private String lnk_MinicarLink;
 	private String lbl_OnAirNow;
 	private String lbl_RecentlyAir;
 	private String lnk_RecentlyAir;
@@ -37,6 +42,7 @@ public class ConstantData {
 	private String lnk_ShopByBrandViewAll;
 	private String lbl_ShopByDepartment;
 	private List<String> lst_ShopByDepartmentCategories;
+	private String lbl_TopSellers;
 	
 	//Header Links getter and setter method
 	
@@ -223,16 +229,16 @@ public class ConstantData {
 	}
 
 	/**
-	 * @return the lbl_ProgramGuideRedirect
+	 * @return the lnk_ProgramGuideRedirect
 	 */
-	public String getlbl_ProgramGuideRedirect() {
-		return lbl_ProgramGuideRedirect;
+	public String getlnk_ProgramGuideRedirect() {
+		return lnk_ProgramGuideRedirect;
 	}
 	/**
-	 * @param lbl_ProgramGuideRedirect the lbl_ProgramGuideRedirect to set
+	 * @param lnk_ProgramGuideRedirect the lnk_ProgramGuideRedirect to set
 	 */
-	public void setlbl_ProgramGuideRedirect(String lbl_ProgramGuideRedirect) {
-		this.lbl_ProgramGuideRedirect = lbl_ProgramGuideRedirect;
+	public void setlnk_ProgramGuideRedirect(String lnk_ProgramGuideRedirect) {
+		this.lnk_ProgramGuideRedirect = lnk_ProgramGuideRedirect;
 	}
 
 	/**
@@ -272,6 +278,71 @@ public class ConstantData {
 	 */
 	public void setlnk_WatchUsLive(String lnk_WatchUsLive) {
 		this.lnk_WatchUsLive = lnk_WatchUsLive;
+	}
+		
+	/**
+	 * @return the lbl_Favourites
+	 */
+	public String getlbl_Favourites() {
+		return lbl_Favourites;
+	}
+	/**
+	 * @param lbl_Favourites the lbl_Favourites to set
+	 */
+	public void setlbl_Favourites(String lbl_Favourites) {
+		this.lbl_Favourites = lbl_Favourites;
+	}
+	
+	/**
+	 * @return the lbl_SignIn
+	 */
+	public String getlbl_SignIn() {
+		return lbl_SignIn;
+	}
+	/**
+	 * @param lbl_SignIn the lbl_SignIn to set
+	 */
+	public void setlbl_SignIn(String lbl_SignIn) {
+		this.lbl_SignIn = lbl_SignIn;
+	}
+	
+	/**
+	 * @return the lbl_SearchBoxPlaceholder
+	 */
+	public String getlbl_SearchBoxPlaceholder() {
+		return lbl_SearchBoxPlaceholder;
+	}
+	/**
+	 * @param lbl_SearchBoxPlaceholder the lbl_SearchBoxPlaceholder to set
+	 */
+	public void setlbl_SearchBoxPlaceholder(String lbl_SearchBoxPlaceholder) {
+		this.lbl_SearchBoxPlaceholder = lbl_SearchBoxPlaceholder;
+	}
+	
+	/**
+	 * @return the lnk_MinicarLink
+	 */
+	public String getlnk_MinicarLink() {
+		return lnk_MinicarLink;
+	}
+	/**
+	 * @param lnk_MinicarLink the lnk_MinicarLink to set
+	 */
+	public void setlnk_MinicarLink(String lnk_MinicarLink) {
+		this.lnk_MinicarLink = lnk_MinicarLink;
+	}
+	
+	/**
+	 * @return the lbl_MinicartLinkName
+	 */
+	public String getlbl_MinicartLinkName() {
+		return lbl_MinicartLinkName;
+	}
+	/**
+	 * @param lbl_MinicartLinkName the lbl_MinicartLinkName to set
+	 */
+	public void setlbl_MinicartLinkName(String lbl_MinicartLinkName) {
+		this.lbl_MinicartLinkName = lbl_MinicartLinkName;
 	}
 
 	/**
@@ -402,5 +473,18 @@ public class ConstantData {
 	 */
 	public void setlst_ShopByDepartmentCategories(List<String> lst_ShopByDepartmentCategories) {
 		this.lst_ShopByDepartmentCategories = lst_ShopByDepartmentCategories;
+	}
+	
+	/**
+	 * @return the lbl_TopSellers
+	 */
+	public String getlbl_TopSellers() {
+		return lbl_TopSellers;
+	}
+	/**
+	 * @param lbl_TopSellers the lbl_TopSellers to set
+	 */
+	public void setlbl_TopSellers(String lbl_TopSellers) {
+		this.lbl_TopSellers = lbl_TopSellers;
 	}
 }
