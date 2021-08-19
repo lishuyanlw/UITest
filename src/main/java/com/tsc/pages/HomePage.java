@@ -470,14 +470,14 @@ public class HomePage extends BasePage{
 		}
 		
 		/**
-		 * This method will validate URL after clicking ViewAll link of ShopByBrand.
+		 * This method will get URL after clicking ViewAll link of ShopByBrand.
 		 *
-		 * @return true/false
+		 * @return String: changed Url
 		 * @author Wei.Li
 		 */	
-		public boolean validateShopByBrandUrlAfterClickingViewAllLink() {
+		public String validateShopByBrandUrlAfterClickingViewAllLink() {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(btnViewAll);
-	        return verifyURLNotContainsNotFoundAfterClickingElement(this.btnViewAll);
+	        return waitForPageLoadingByUrlChange(this.btnViewAll);
 	    }
 	
 		/**

@@ -26,7 +26,6 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.tsc.pages.base.BasePage;
-import java.util.List;
 
 public class GlobalheaderPage extends BasePage{
 	
@@ -36,6 +35,9 @@ public class GlobalheaderPage extends BasePage{
 		super(driver);
 	}
 
+	@FindBy(xpath = "//div[@class='Footer']//div[contains(@class,'blockPageWrap')]")
+	WebElement pageLoadingIndicator;
+	
 	//Sliver Links [Dynamic event, TS, Deals, OnAir, Program Guide, Watch Us Live]
 	@FindBy(xpath = "//*[@class='Sliver']//a[contains(@href, 'todaysshowstopper')]")
 	WebElement lnkTS;
@@ -64,6 +66,8 @@ public class GlobalheaderPage extends BasePage{
 	//Dynamic Event
 	@FindBy(xpath = "//*[@class='Sliver']//a[@class='slideLink']")
 	WebElement lnkdynamicEvent;
+	
+	By byDynamicEvent=By.xpath("//*[@class='Sliver']//a[@class='slideLink']");
 		
 	//TSC Logo
 	@FindBy(xpath = "//*[@class='Header']//div[@class='logo']")
@@ -72,12 +76,26 @@ public class GlobalheaderPage extends BasePage{
 	@FindBy(xpath = "//*[@class='Header']//div[@class='logo']//a")
 	WebElement lnkTSClogolink;
 	
-	//SerchBox
+	//SearchBox
 	@FindBy(xpath = "//*[@class='Header']//form[@class='reactAppForm']//input[@class='tsc-search-input']")
 	WebElement searchBox;
 	
 	@FindBy(xpath = "//*[@class='Header']//form[@class='reactAppForm']//button[@class='submit-search-button']")
 	WebElement btnSearchSubmit;
+	
+	@FindBy(xpath = "//div[@class='searchContainer']//button[contains(@class,'clear-search-button')]")
+	WebElement btnSearchClear;
+	
+	@FindBy(xpath = "//div[@class='searchContainer']//div[contains(@class,'suggestions-container')]")
+	WebElement ctnSearchResult;
+	
+	@FindBy(xpath = "//div[@class='searchContainer']//div[contains(@class,'suggestions-container--open')]//div[@class='tsc-category-title']")
+	WebElement txtSearchResultCategoryHeader;
+	
+	@FindBy(xpath = "//div[@class='searchContainer']//div[contains(@class,'suggestions-container--open')]//ul//li")
+	List<WebElement> searchResultList;
+	
+	By byCategoryAboveSearchResultList=By.xpath("//div[@class='searchContainer']//div[contains(@class,'suggestions-container--open')]//ul/preceding-sibling::div[@class='tsc-category-title']");
 	
 	//Favorite link
 	@FindBy(xpath = "//*[@class='Header']//a[contains(@href, 'favourites')]")
@@ -87,7 +105,7 @@ public class GlobalheaderPage extends BasePage{
 	@FindBy(xpath = "//*[@class='Header']//a[@id='myAccountBtn']")
 	WebElement Signinlnk;
 	
-	@FindBy(xpath = "//*[@class='Header']*[@class='svgSigninIcon']")
+	@FindBy(xpath = "//*[@class='Header']//div[@class='bagContainer']//*[contains(@class,'svgSigninIcon')]")
 	WebElement SigninIcon;
 	
 	//MiniCart 
@@ -103,81 +121,117 @@ public class GlobalheaderPage extends BasePage{
 	@FindBy(xpath = "//*[@class='Header']//div[@id='bagCounter']")
 	WebElement CartBagCounter;
 
-	
 	public void waitForPageLoad() {
-		new WebDriverWait(getDriver(), 1000).until(
-				driver -> ((JavascriptExecutor) getDriver()).executeScript("return document.readyState").equals("complete"));
-		}
+		getReusableActionsInstance().waitForPageLoad();
+		waitForCondition(Driver->{return !this.pageLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},30000);
+	}	
 	
 	public boolean validateURL(String strExpectedUrl) {
-		waitForPageLoad();
+		getReusableActionsInstance().waitForPageLoad();
 		if (getDriver().getCurrentUrl().equalsIgnoreCase(strExpectedUrl)) {
 			return true;
-			}
+		}
 		return false;
-		}
-	
-	//Sliver links are visible & Text is present
-	
-	public boolean DynamicEventLinkVisible() {
-		return getReusableActionsInstance().isElementVisible(lnkdynamicEvent, 5);
-		}
-	public String validateDynamicEventLink() {
-		String emptyhref="NOA href is empty";
-		if (lnkdynamicEvent.getAttribute("href").isEmpty()) {
-							
-			return emptyhref;
-			
-		}else{
-			return lnkdynamicEvent.getAttribute("href");
-			}
-		}
-		
-	public String validateTSLink() {
-		String emptySTAIbtn="TS link href is empty";
-		if (lnkTS.getAttribute("href").isEmpty()) {
-							
-			return emptySTAIbtn;
-			
-		}else{
-			getReusableActionsInstance().isElementVisible(lnkTS, 5);
-			return lnkTS.getText();
-			}
-		}
-	
-	/**
-	 * This method will validate url of new windows after clicking <Today's Showstopper> link.
-	 *
-	 * @return true/false
-	 * @author Wei.Li
-	 */	
-	public boolean validateUrlAfterClickingTodayShowstopperLink() throws IOException {
-		return verifyURLNotContainsNotFoundAfterClickingElement(this.lnkTS);		
 	}
 	
-	public String validateDealsLink() {
-		String emptySTAIbtn="Deals link href is empty";
-		if (lnkDeals.getAttribute("href").isEmpty()) {
-							
-			return emptySTAIbtn;
-			
-		}else{
-			getReusableActionsInstance().isElementVisible(lnkDeals, 5);
-			return lnkDeals.getText();
-			}
+	//Sliver links are visible & Text is present
+	/**
+	 * This method will validate DynamicEvent  is visible.
+	 *
+	 * @return true/false
+	 * 
+	 * @author Wei.Li
+	 */	
+	public boolean DynamicEventLinkVisible() {
+		if(!this.getReusableActionsInstance().isElementVisible(this.byDynamicEvent,30)) {
+			return true;
 		}
+		return this.lnkdynamicEvent.isDisplayed();
+	}
 	
-	public String validateOnAirLink() {
-		String emptySTAIbtn="On Air link href is empty";
-		if (lnkOnAir.getAttribute("href").isEmpty()) {
-							
-			return emptySTAIbtn;
-			
-		}else{
-			getReusableActionsInstance().isElementVisible(lnkOnAir, 5);
-			return lnkOnAir.getText();
-			}
+	/**
+	 * This method will validate the href of DynamicEventLink is existing.
+	 *
+	 * @return true/false
+	 * 
+	 * @author Wei.Li
+	 */	
+	public boolean validateDynamicEventLink() {
+		if(!this.getReusableActionsInstance().isElementVisible(this.byDynamicEvent,30)) {
+			return true;
 		}
+		if (lnkdynamicEvent.getAttribute("href").isEmpty()) {							
+			return false;			
+		}
+		
+		return true;
+	}
+	
+	/**
+	 * This method will return TS text.
+	 * @author Wei.Li
+	 */
+	public String getTSText() {
+		getReusableActionsInstance().isElementVisible(lnkTS, 5);
+		return lnkTS.getText();		
+	}
+	
+	/**
+	 * This method will return TS link.
+	 * @author Wei.Li
+	 */
+	public String getTSLink() {
+		String emptySTAIbtn="TS link href is empty";
+		if (lnkTS.getAttribute("href").isEmpty()) {							
+			return emptySTAIbtn;			
+		}else{			
+			return lnkTS.getAttribute("href");
+		}
+	}
+	
+	/**
+	 * This method will return Deals text.
+	 * @author Wei.Li
+	 */
+	public String getDealsText() {
+		getReusableActionsInstance().isElementVisible(lnkDeals, 5);
+		return lnkDeals.getText();
+	}
+	
+	/**
+	 * This method will return Deals link.
+	 * @author Wei.Li
+	 */
+	public String getDealsLink() {
+		String emptySTAIbtn="Deals link href is empty";
+		if (lnkDeals.getAttribute("href").isEmpty()) {							
+			return emptySTAIbtn;			
+		}else{			
+			return lnkDeals.getAttribute("href");
+		}
+	}
+	
+	/**
+	 * This method will return OnAir text.
+	 * @author Wei.Li
+	 */
+	public String getOnAirText() {
+		getReusableActionsInstance().isElementVisible(lnkOnAir, 5);
+		return lnkOnAir.getText();
+	}
+	
+	/**
+	 * This method will return OnAir link.
+	 * @author Wei.Li
+	 */
+	public String getOnAirLink() {
+		String emptySTAIbtn="On Air link href is empty";
+		if (lnkOnAir.getAttribute("href").isEmpty()) {							
+			return emptySTAIbtn;			
+		}else{
+			return lnkOnAir.getAttribute("href");
+		}
+	}
 	
 	/**
 	 * This method will validate ProgramGuide icon is visible.
@@ -187,20 +241,52 @@ public class GlobalheaderPage extends BasePage{
 	 */	
 	public boolean validateProgramGuideIconVisible() {
 		return getReusableActionsInstance().isElementVisible(imgProgramGuideIcon, 5);
-		}
+	}
 	
-	public String validateProgramGuideLink() {
+	/**
+	 * This method will return ProgramGuide text.
+	 * @author Wei.Li
+	 */
+	public String getProgramGuideText() {
+		getReusableActionsInstance().isElementVisible(lnkProgramGuide, 5);
+		return lnkProgramGuide.getText();
+	}
+	
+	/**
+	 * This method will return ProgramGuide link.
+	 * @author Wei.Li
+	 */
+	public String getProgramGuideLink() {
 		String emptySTAIbtn="Program Guide link href is empty";
-		if (lnkProgramGuide.getAttribute("href").isEmpty()) {
-							
-			return emptySTAIbtn;
-			
+		if (lnkProgramGuide.getAttribute("href").isEmpty()) {							
+			return emptySTAIbtn;			
 		}else{
-			getReusableActionsInstance().isElementVisible(lnkProgramGuide, 5);
-			return lnkProgramGuide.getText();
-			}
+			return lnkProgramGuide.getAttribute("href");
 		}
+	}
 	
+	/**
+	 * This method will return WatchUsLive text.
+	 * @author Wei.Li
+	 */
+	public String getWatchUsLiveText() {
+		getReusableActionsInstance().isElementVisible(lnkWatchUsLive, 5);
+		return lnkWatchUsLive.getText();
+	}
+	
+	/**
+	 * This method will return WatchUsLive link.
+	 * @author Wei.Li
+	 */
+	public String getWatchUsLiveLink() {
+		String emptySTAIbtn="Watch Us Live link href is empty";
+		if (lnkWatchUsLive.getAttribute("href").isEmpty()) {							
+			return emptySTAIbtn;			
+		}else{
+			return lnkWatchUsLive.getAttribute("href");
+		}
+	}
+		
 	/**
 	 * This method will validate WatchUsLive icon is visible.
 	 *
@@ -218,48 +304,32 @@ public class GlobalheaderPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	public boolean validateTSCLogoNavigateToHomePage() {
-		String currentUrl1=getDriver().getCurrentUrl();		        
-        this.lnkTS.click();
-        waitForCondition(Driver->{return !currentUrl1.equalsIgnoreCase(getDriver().getCurrentUrl());},30000);
-    	String currentUrl2=getDriver().getCurrentUrl();    
-        
+		String lsHomePage=new BasePage(this.getDriver()).getBaseURL()+"/";				
+		String currentUrl=getDriver().getCurrentUrl();		        
+                
 		getReusableActionsInstance().isElementVisible(this.lnkTSClogo, 10);
 		this.lnkTSClogo.click();	    
-        waitForCondition(Driver->{return !currentUrl2.equalsIgnoreCase(getDriver().getCurrentUrl());},10000);
+        waitForCondition(Driver->{return !currentUrl.equalsIgnoreCase(getDriver().getCurrentUrl());},10000);
               
-        return this.getDriver().getCurrentUrl().equalsIgnoreCase(currentUrl1);		
+        return this.getDriver().getCurrentUrl().equalsIgnoreCase(lsHomePage);		
 		}
-	
-	public String validateWatchUsLiveLink() {
-		String emptySTAIbtn="Watch Us Live link href is empty";
-		if (lnkWatchUsLive.getAttribute("href").isEmpty()) {
-							
-			return emptySTAIbtn;
-			
-		}else{
-			getReusableActionsInstance().isElementVisible(lnkWatchUsLive, 5);
-			return lnkWatchUsLive.getText();
-			}
-		}
-		
-	//TSC Logo & Logo link is visible		
-	
+				
+	//TSC Logo & Logo link is visible	
 	public String validateTSCLogoLink() {
 		String emptySTAIbtn="TSC logo link href is empty";
-		if (lnkTSClogolink.getAttribute("href").isEmpty()) {
+		String lsUrl=lnkTSClogolink.getAttribute("href");
+		if (lsUrl.isEmpty()) {
 							
 			return emptySTAIbtn;
 			
 		}else{
-			getReusableActionsInstance().isElementVisible(lnkTSClogolink, 5);
-			return lnkTSClogolink.getText();
-			}
+			return lsUrl;
 		}
+	}
 	
 	public boolean validateTSCLogo() {
-		return getReusableActionsInstance().isElementVisible(lnkTSClogo, 5);
-				
-			}
+		return getReusableActionsInstance().isElementVisible(lnkTSClogo, 5);				
+	}
 	
 	//Search box visible
 	public String validateSearchbox() {
@@ -299,11 +369,11 @@ public class GlobalheaderPage extends BasePage{
 		}
 	
 	public boolean validateSiginIcon() {
-				return getReusableActionsInstance().isElementVisible(SigninIcon, 5);
-				}
+		return getReusableActionsInstance().isElementVisible(SigninIcon, 5);
+	}
 		
 	//Mini cart Link visible
-	public String validateMinicartLink() {
+	public String validateMinicartLinkName() {
 		String emptySTAIbtn="Mini cart link href is empty";
 		if (Minicartlnk.getAttribute("href").isEmpty()) {
 							
@@ -322,62 +392,111 @@ public class GlobalheaderPage extends BasePage{
 	public boolean validateMinicartBagCounter() {
 		return getReusableActionsInstance().isElementVisible(CartBagCounter, 5);
 		}
-	
-	/**
-	 * This method will validate url of new windows after clicking OnAirLink button
-	 *
-	 * @return true/false
-	 * 
-	 * @author Wei.Li
-	 */	
-	public boolean validateUrlAfterClickingOnAirLink() throws IOException {
-		return verifyURLNotContainsNotFoundAfterClickingElement(this.lnkOnAir);		
-	}
-	
-	/**
-	 * This method will validate url of new windows after clicking WatchUsLive button
-	 *
-	 * @return true/false
-	 * 
-	 * @author Wei.Li
-	 */		
-	public boolean validateUrlAfterClickingWatchUsLiveLink() throws IOException {
-		return verifyURLNotContainsNotFoundAfterClickingElement(this.lnkWatchUsLive);		
-	}
-	
-	/**
-	 * This method will validate url pattern of new windows after clicking ProgramGuide button
-	 *
-	 * @return true/false
-	 * 
-	 * @author Wei.Li
-	 */		
-	public boolean validateUrlPatternAfterClickingProgramGuideLink() throws IOException {
-		String expectedUrl=(new BasePage(this.getDriver())).getBaseURL()+"/pages/programguide/daily?ic=HP_ProgramGuide";
-			
-		return verifyURLEqualToExpectedKeyword(this.lnkProgramGuide,expectedUrl);		
-	}
-	
-	/**
-	 * This method will validate url pattern of new windows after clicking Deals button
-	 *
-	 * @return true/false
-	 * 
-	 * @author Wei.Li
-	 */		
-	public boolean validateUrlPatternAfterClickingDealsLink() throws IOException {
-		ArrayList<String> keywordList=new ArrayList<String>();
-		keywordList.add(this.getBaseURL());
-		keywordList.add("/pages/productresults?nav=");
-		keywordList.add("ic=HP_Deals");
-			
-		return verifyURLContainExpectedKeywordList(this.lnkDeals,keywordList);		
-	}
-		
+
 	//Get the URL 			
 	public String URL() {
 		return getDriver().getCurrentUrl();
-		}
+	}
 	
+	/**
+	 * This method will verify MiniCart link
+	 *
+	 * @return true/false
+	 * 
+	 * @author Wei.Li
+	 */
+	public boolean verifyMiniCartLink(String lsMinicartLink) {
+		String lsMiniCartLink=this.Minicartlnk.getAttribute("href");
+		if(lsMiniCartLink.isEmpty()) {
+			return false;
+		}
+		else {			
+			if(lsMiniCartLink.equalsIgnoreCase(lsMinicartLink)) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}	
+	}
+	
+	/**
+	 * This method will get url of new windows after clicking MiniCart link
+	 *
+	 * @return String: changed Url
+	 * 
+	 * @author Wei.Li
+	 */		
+	public String getUrlAfterClickingMiniCartLink() throws IOException {
+		getReusableActionsInstance().javascriptScrollToTopOfPage();
+		return waitForPageLoadingByUrlChange(this.Minicartlnk);		
+	}
+	
+	/**
+	 * This method will get search result list.
+	 * 
+	 * @param String lsKeyword: search keyword
+	 *
+	 * @return List<WebElement>: search dropdown menu list
+	 * 
+	 * @author Wei.Li
+	 */
+	public List<WebElement> getSearchResultList(String lsKeyword) {
+		pressEscapeKey();		
+		this.clearContent(searchBox);		
+		searchBox.sendKeys(lsKeyword);		
+		waitForCondition(Driver->{return ctnSearchResult.getAttribute("class").contains("suggestions-container--open");},30000);
+		
+		return this.searchResultList;			
+	}
+	
+	/**
+	 * This method will get full url after clicking TodayShowstopper link.
+	 * @return String: changed Url 
+	 * @author Wei.Li
+	 */
+	public String getUrlAfterClickingTSLink() {
+		getReusableActionsInstance().javascriptScrollToTopOfPage();
+		return waitForPageLoadingByUrlChange(this.lnkTS);
+	}
+	
+	/**
+	 * This method will get full url after clicking Deals link.
+	 * @return String: changed Url
+	 * @author Wei.Li
+	 */
+	public String getUrlAfterClickingDealsLink() {
+		getReusableActionsInstance().javascriptScrollToTopOfPage();
+		return waitForPageLoadingByUrlChange(this.lnkDeals);
+	}
+	
+	/**
+	 * This method will get full url after clicking OnAir link.
+	 * @return String: changed Url
+	 * @author Wei.Li
+	 */
+	public String getUrlAfterClickingOnAirLink() {
+		getReusableActionsInstance().javascriptScrollToTopOfPage();
+		return waitForPageLoadingByUrlChange(this.lnkOnAir);
+	}
+	
+	/**
+	 * This method will get full url after clicking ProgramGuide link.
+	 * @return String: changed Url
+	 * @author Wei.Li
+	 */
+	public String getUrlAfterClickingProgramGuideLink() {
+		getReusableActionsInstance().javascriptScrollToTopOfPage();
+		return waitForPageLoadingByUrlChange(this.lnkProgramGuide);
+	}
 
+	/**
+	 * This method will get full url after clicking WatchUsLive link.
+	 * @return String: changed Url
+	 * @author Wei.Li
+	 */
+	public String getUrlAfterClickingWatchUsLiveLink() {
+		getReusableActionsInstance().javascriptScrollToTopOfPage();
+		return waitForPageLoadingByUrlChange(this.lnkWatchUsLive);
+	}
 }

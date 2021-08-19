@@ -286,72 +286,20 @@ import utils.ReusableActions;
     }
 	
 	/**
-	 * This method will verify the page url doesn't contain "notfound" after clicking an element 
+	 * This method will verify the page loading by url changes
 	 *
 	 * @param WebElement element: the element will be clicked	 
-	 * @return true/false
+	 * @return String: changed url
 	 * @author Wei.Li
 	 */			
-	public boolean verifyURLNotContainsNotFoundAfterClickingElement(WebElement element) {
+	public String waitForPageLoadingByUrlChange(WebElement element) {
 		String currentUrl=getDriver().getCurrentUrl();
+		getReusableActionsInstance().javascriptScrollByVisibleElement(element);
         element.click();
         waitForCondition(Driver->{return !currentUrl.equalsIgnoreCase(getDriver().getCurrentUrl());},10000);
-        return !getDriver().getCurrentUrl().contains("notfound");						
-	}
-	
-	/**
-	 * This method will verify if the page url contains expected keyword list 
-	 *
-	 * @param WebElement element: the element will be clicked	
-	 * @param List<String> keywordList: expected keyword list in Url 
-	 * @return true/false
-	 * @author Wei.Li
-	 */			
-	public boolean verifyURLContainExpectedKeywordList(WebElement element,List<String> keywordList) {
-		String currentUrl=getDriver().getCurrentUrl();
-        element.click();
-        waitForCondition(Driver->{return !currentUrl.equalsIgnoreCase(getDriver().getCurrentUrl());},10000);
-        String afterUrl=getDriver().getCurrentUrl();
-        for(String keyword:keywordList) {
-        	if(!afterUrl.contains(keyword)) {
-        		return false;
-        	}
-        }
-        return true;						
-	}
-	
-	/**
-	 * This method will verify if the page url contains expected keyword 
-	 *
-	 * @param WebElement element: the element will be clicked	
-	 * @param String keywordList: expected keyword in Url 
-	 * @return true/false
-	 * @author Wei.Li
-	 */			
-	public boolean verifyURLContainExpectedKeyword(WebElement element,String keyword) {
-		String currentUrl=getDriver().getCurrentUrl();
-        element.click();
-        waitForCondition(Driver->{return !currentUrl.equalsIgnoreCase(getDriver().getCurrentUrl());},10000);
-        String afterUrl=getDriver().getCurrentUrl();
+        getReusableActionsInstance().waitForPageLoad();
         
-        return afterUrl.toLowerCase().contains(keyword.toLowerCase());						
-	}
-	
-	/**
-	 * This method will verify if the page url is equal to specific Url 
-	 *
-	 * @param WebElement element: the element will be clicked	
-	 * @param String keyword: expected Url 
-	 * @return true/false
-	 * @author Wei.Li
-	 */			
-	public boolean verifyURLEqualToExpectedKeyword(WebElement element,String keyword) {
-		String currentUrl=getDriver().getCurrentUrl();
-        element.click();
-        waitForCondition(Driver->{return !currentUrl.equalsIgnoreCase(getDriver().getCurrentUrl());},10000);
-        String afterUrl=getDriver().getCurrentUrl();
-        
-        return afterUrl.equalsIgnoreCase(keyword);						
+        return getDriver().getCurrentUrl();
 	}
 	
 	/**
@@ -400,4 +348,5 @@ import utils.ReusableActions;
 	public String URL() {
 		return getDriver().getCurrentUrl();
 	}
+
 }
