@@ -446,8 +446,35 @@ public class ProductResultsPage extends BasePage{
 		return Integer.parseInt(defaultItem);
 	}
 	
+	/**
+	 * This method will return search result account.	  
+	 * @author Wei.Li
+	 */
 	public int getProductResultCount() {
 		return this.productResultList.size();
 	}
 	
+	/**
+	 * This method will verify the itemNO in search results will just contain those with search product number.
+	 * @param String lsexpectedItemNO: expected ItemNO
+	 * @return true/false
+	 * @author Wei.Li
+	 */
+	public boolean VerifySearchResultWithProductItemNO(String lsexpectedItemNO) {
+		for(WebElement item: this.productItemNOList) {
+			String lsItem=item.getText();
+			List<String> list=this.getNumberFromString(lsItem);
+			String lsFinal="";
+			for(String lsSubItem:list) {
+				lsFinal+=lsSubItem;
+			}
+			
+			if(!lsFinal.equalsIgnoreCase(lsexpectedItemNO)) {
+				return false;
+			}			
+		}
+		return true;			
+	}
+	
 }
+	

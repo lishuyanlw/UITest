@@ -55,14 +55,21 @@ public class HP_TC01_Verify_ProductSearchResult extends BaseTest{
 	
 	reporter.softAssert(getProductResultsPageThreadLocal().verifyProductFreeShipping(), "ProductFreeShipping in searching result is correct", "ProductFreeShipping in searching result is incorrect");
 	
-	//Verify "!@#$%^&*()_+" keyword search
-	
+	//Verify "!@#$%^&*()_+" keyword search	
 	getProductResultsPageThreadLocal().getSearchResultLoad(TestDataHandler.constantDataVariables.getlbl_SearchKeyword_SpecialCharacters());
 		
 	reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultMessage(TestDataHandler.constantDataVariables.getlst_SearchResultMessage_SpecialCharacters()), "Search result message result matches the expected message", "Search result message result does not match the expected message");
 	
 	reporter.softAssert(getProductResultsPageThreadLocal().getProductResultCount()==0, "No search results return", "Still there are search results return");
 	
+	//Verify "100501" keyword search
+	getProductResultsPageThreadLocal().getSearchResultLoad(TestDataHandler.constantDataVariables.getlbl_SearchKeyword_100501());
+			
+	reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultMessage(TestDataHandler.constantDataVariables.getlst_SearchResultMessage_100501()), "Search result message result matches the expected message", "Search result message result does not match the expected message");
+		
+	reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultUrl((new BasePage(this.getDriver())).getBaseURL()+TestDataHandler.constantDataVariables.getlbl_SearchResultExpectedUrl_100501()), "Url of search result matches expected url", "Url of search result doesn't match expected url");
+
+	reporter.softAssert(getProductResultsPageThreadLocal().VerifySearchResultWithProductItemNO(TestDataHandler.constantDataVariables.getlbl_SearchKeyword_100501()), "The itemNO in search results just contains those with search product number", "the itemNO in search results don't just contain those with search product number");
 	
 	}
 	
