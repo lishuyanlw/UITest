@@ -36,7 +36,7 @@ public class ProductResultsPage extends BasePage{
 		
 	//Search result page title
 	@FindBy(xpath = "//product-results//div[contains(@class,'searchDiv')]")
-	WebElement lblSearchResultPageTitle;
+	WebElement lblSearchResultMessage;
 	
 	//Selected filters
 	@FindBy(xpath = "//product-results//div[contains(@class,'col-md-showing')]//div[contains(@class,'filterPrpLabel')]//b")
@@ -158,14 +158,19 @@ public class ProductResultsPage extends BasePage{
 	}
 
 	/**
-	 * This method will verify page title of search result contains searching keyword.
+	 * This method will verify searching result message matches expected message.
 	 * @return true/false
 	 * @author Wei.Li
 	 */
-	public boolean verifySearchResultPageTitle(String expectedPageTitle) {
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSearchResultPageTitle);
-		String lsTitle=this.lblSearchResultPageTitle.getText().trim();				
-		return lsTitle.contains(expectedPageTitle);		
+	public boolean verifySearchResultMessage(List<String> expectedMessage) {
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSearchResultMessage);
+		String lsMessage=this.lblSearchResultMessage.getText().trim();	
+		for(String message:expectedMessage) {
+			if(!lsMessage.contains(message)) {
+				return false;
+			}
+		}
+		return true;		
 	}
 	
 	/**
@@ -174,7 +179,7 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	public boolean verifySearchResultPageNumberDefaultSetting(String defaultSettingPageNumber) {
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSearchResultPageTitle);
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSearchResultMessage);
 						
 		return this.lblItemPerPageDefaultSettingNumber.getText().trim().equalsIgnoreCase(defaultSettingPageNumber);		
 	}
@@ -441,6 +446,8 @@ public class ProductResultsPage extends BasePage{
 		return Integer.parseInt(defaultItem);
 	}
 	
+	public int getProductResultCount() {
+		return this.productResultList.size();
+	}
 	
 }
-
