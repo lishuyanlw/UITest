@@ -49,6 +49,9 @@ public class ConstantData {
 	private List<String>  lst_SearchResultMessage_DysonVacuum;
 	private String lbl_SearchKeyword_SpecialCharacters;
 	private List<String>  lst_SearchResultMessage_SpecialCharacters;
+	private String lbl_SearchKeyword_100501;
+	private String lbl_SearchResultExpectedUrl_100501;	
+	private List<String>  lst_SearchResultMessage_100501;
 	
 	//Header Links getter and setter method
 	
@@ -508,7 +511,7 @@ public class ConstantData {
 	}
 	
 	/**
-	 * @return the lbl_SearchResultExpectedUrl
+	 * @return the lbl_SearchResultExpectedUrl_DysonVacuum
 	 */
 	public String getlbl_SearchResultExpectedUrl_DysonVacuum() {
 		return lbl_SearchResultExpectedUrl_DysonVacuum;
@@ -571,6 +574,45 @@ public class ConstantData {
 	 */	
 	public void setlst_SearchResultMessage_SpecialCharacters(List<String> lst_SearchResultMessage_SpecialCharacters) {
 		this.lst_SearchResultMessage_SpecialCharacters = lst_SearchResultMessage_SpecialCharacters;
+	}
+	
+	/**
+	 * @return the lbl_SearchKeyword_100501
+	 */
+	public String getlbl_SearchKeyword_100501() {
+		return lbl_SearchKeyword_100501;
+	}
+	/**
+	 * @param lbl_SearchKeyword_100501 the lbl_SearchKeyword_100501 to set
+	 */
+	public void setlbl_SearchKeyword_100501(String lbl_SearchKeyword_100501) {
+		this.lbl_SearchKeyword_100501 = lbl_SearchKeyword_100501;
+	}
+	
+	/**
+	 * @return the lbl_SearchResultExpectedUrl_100501
+	 */
+	public String getlbl_SearchResultExpectedUrl_100501() {
+		return lbl_SearchResultExpectedUrl_100501;
+	}
+	/**
+	 * @param lbl_SearchResultExpectedUrl_100501 the lbl_SearchResultExpectedUrl_100501 to set
+	 */
+	public void setlbl_SearchResultExpectedUrl_100501(String lbl_SearchResultExpectedUrl_100501) {
+		this.lbl_SearchResultExpectedUrl_100501 = lbl_SearchResultExpectedUrl_100501;
+	}
+		
+	/**
+	 * @return the lst_SearchResultMessage_100501
+	 */
+	public List<String> getlst_SearchResultMessage_100501() {
+		return lst_SearchResultMessage_100501;
+	}
+	/**
+	 * @param lst_SearchResultMessage_100501 the lst_SearchResultMessage_100501 to set
+	 */
+	public void setlst_SearchResultMessage_100501(List<String> lst_SearchResultMessage_100501) {
+		this.lst_SearchResultMessage_100501 = lst_SearchResultMessage_100501;
 	}
 	
 }
