@@ -43,9 +43,12 @@ public class ConstantData {
 	private String lbl_ShopByDepartment;
 	private List<String> lst_ShopByDepartmentCategories;
 	private String lbl_TopSellers;
-	private String lbl_SearchKeyword;
-	private String lbl_SearchResultExpectedUrl;
+	private String lbl_SearchKeyword_DysonVacuum;
+	private String lbl_SearchResultExpectedUrl_DysonVacuum;
 	private String lbl_SearchResultPageDefaultSetting;
+	private List<String>  lst_SearchResultMessage_DysonVacuum;
+	private String lbl_SearchKeyword_SpecialCharacters;
+	private List<String>  lst_SearchResultMessage_SpecialCharacters;
 	
 	//Header Links getter and setter method
 	
@@ -492,29 +495,29 @@ public class ConstantData {
 	}
 	
 	/**
-	 * @return the lbl_SearchKeyword
+	 * @return the lbl_SearchKeyword_DysonVacuum
 	 */
-	public String getlbl_SearchKeyword() {
-		return lbl_SearchKeyword;
+	public String getlbl_SearchKeyword_DysonVacuum() {
+		return lbl_SearchKeyword_DysonVacuum;
 	}
 	/**
-	 * @param lbl_SearchKeyword the lbl_SearchKeyword to set
+	 * @param lbl_SearchKeyword_DysonVacuum the lbl_SearchKeyword_DysonVacuum to set
 	 */
-	public void setlbl_SearchKeyword(String lbl_SearchKeyword) {
-		this.lbl_SearchKeyword = lbl_SearchKeyword;
+	public void setlbl_SearchKeyword_DysonVacuum(String lbl_SearchKeyword_DysonVacuum) {
+		this.lbl_SearchKeyword_DysonVacuum = lbl_SearchKeyword_DysonVacuum;
 	}
 	
 	/**
 	 * @return the lbl_SearchResultExpectedUrl
 	 */
-	public String getlbl_SearchResultExpectedUrl() {
-		return lbl_SearchResultExpectedUrl;
+	public String getlbl_SearchResultExpectedUrl_DysonVacuum() {
+		return lbl_SearchResultExpectedUrl_DysonVacuum;
 	}
 	/**
-	 * @param lbl_SearchResultExpectedUrl the lbl_SearchResultExpectedUrl to set
+	 * @param lbl_SearchResultExpectedUrl_DysonVacuum the lbl_SearchResultExpectedUrl_DysonVacuum to set
 	 */
-	public void setlbl_SearchResultExpectedUrl(String lbl_SearchResultExpectedUrl) {
-		this.lbl_SearchResultExpectedUrl = lbl_SearchResultExpectedUrl;
+	public void setlbl_SearchResultExpectedUrl_DysonVacuum(String lbl_SearchResultExpectedUrl_DysonVacuum) {
+		this.lbl_SearchResultExpectedUrl_DysonVacuum = lbl_SearchResultExpectedUrl_DysonVacuum;
 	}
 	
 	/**
@@ -529,5 +532,45 @@ public class ConstantData {
 	public void setlbl_SearchResultPageDefaultSetting(String lbl_SearchResultPageDefaultSetting) {
 		this.lbl_SearchResultPageDefaultSetting = lbl_SearchResultPageDefaultSetting;
 	}	
-    
+	
+	/**
+	 * @return the lst_SearchResultMessage_DysonVacuum
+	 */
+	public List<String> getlst_SearchResultMessage_DysonVacuum() {
+		return lst_SearchResultMessage_DysonVacuum;
+	}
+	/**
+	 * @param lst_SearchResultMessage_DysonVacuum the lst_SearchResultMessage_DysonVacuum to set
+	 */
+	public void setlst_SearchResultMessage_DysonVacuum(List<String> lst_SearchResultMessage_DysonVacuum) {
+		this.lst_SearchResultMessage_DysonVacuum = lst_SearchResultMessage_DysonVacuum;
+	}
+	
+	/**
+	 * @return the lbl_SearchKeyword_SpecialCharacters
+	 */
+	public String getlbl_SearchKeyword_SpecialCharacters() {
+		return lbl_SearchKeyword_SpecialCharacters;
+	}
+	/**
+	 * @param lbl_SearchKeyword_SpecialCharacters the lbl_SearchKeyword_SpecialCharacters to set
+	 */
+	public void setlbl_SearchKeyword_SpecialCharacters(String lbl_SearchKeyword_SpecialCharacters) {
+		this.lbl_SearchKeyword_SpecialCharacters = lbl_SearchKeyword_SpecialCharacters;
+	}
+
+	/**
+	 * @return the lst_SearchResultMessage_SpecialCharacters
+	 */	
+	public List<String> getlst_SearchResultMessage_SpecialCharacters() {
+		return lst_SearchResultMessage_SpecialCharacters;
+	}
+	
+	/**
+	 * @param lst_SearchResultMessage_SpecialCharacters the lst_SearchResultMessage_SpecialCharacters to set
+	 */	
+	public void setlst_SearchResultMessage_SpecialCharacters(List<String> lst_SearchResultMessage_SpecialCharacters) {
+		this.lst_SearchResultMessage_SpecialCharacters = lst_SearchResultMessage_SpecialCharacters;
+	}
+	
 }

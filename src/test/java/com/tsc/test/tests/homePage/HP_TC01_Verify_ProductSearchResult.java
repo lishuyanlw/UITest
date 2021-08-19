@@ -19,12 +19,13 @@ public class HP_TC01_Verify_ProductSearchResult extends BaseTest{
 	public void validateProductSearchResult() throws IOException {				
 	reporter.softAssert(getglobalheaderPageThreadLocal().validateURL((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");		
 	reporter.reportLogWithScreenshot("Home Page");
-	
-	getProductResultsPageThreadLocal().getSearchResultLoad(TestDataHandler.constantDataVariables.getlbl_SearchKeyword());
+
+	//Verify "dyson vacuum" keyword search
+	getProductResultsPageThreadLocal().getSearchResultLoad(TestDataHandler.constantDataVariables.getlbl_SearchKeyword_DysonVacuum());
 		
-	reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageTitle(TestDataHandler.constantDataVariables.getlbl_SearchKeyword()), "Page title of search result contains searching keyword", "page title of search result doesn't contain searching keyword");
+	reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultMessage(TestDataHandler.constantDataVariables.getlst_SearchResultMessage_DysonVacuum()), "Search result message result matches the expected message", "Search result message result does not match the expected message");
 	
-	reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultUrl((new BasePage(this.getDriver())).getBaseURL()+TestDataHandler.constantDataVariables.getlbl_SearchResultExpectedUrl()), "Url of search result matches expected url", "Url of search result doesn't match expected url");
+	reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultUrl((new BasePage(this.getDriver())).getBaseURL()+TestDataHandler.constantDataVariables.getlbl_SearchResultExpectedUrl_DysonVacuum()), "Url of search result matches expected url", "Url of search result doesn't match expected url");
 	
 	reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(), "Showing text pattern in filters is correct", "Showing text pattern in filters is incorrect");
 	
@@ -54,8 +55,15 @@ public class HP_TC01_Verify_ProductSearchResult extends BaseTest{
 	
 	reporter.softAssert(getProductResultsPageThreadLocal().verifyProductFreeShipping(), "ProductFreeShipping in searching result is correct", "ProductFreeShipping in searching result is incorrect");
 	
+	//Verify "!@#$%^&*()_+" keyword search
+	
+	getProductResultsPageThreadLocal().getSearchResultLoad(TestDataHandler.constantDataVariables.getlbl_SearchKeyword_SpecialCharacters());
+		
+	reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultMessage(TestDataHandler.constantDataVariables.getlst_SearchResultMessage_SpecialCharacters()), "Search result message result matches the expected message", "Search result message result does not match the expected message");
+	
+	reporter.softAssert(getProductResultsPageThreadLocal().getProductResultCount()==0, "No search results return", "Still there are search results return");
+	
 	
 	}
 	
 }
-
