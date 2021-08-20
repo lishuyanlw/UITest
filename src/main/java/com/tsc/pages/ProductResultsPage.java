@@ -15,6 +15,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -147,7 +149,10 @@ public class ProductResultsPage extends BasePage{
 	 * @return true/false
 	 * @author Wei.Li
 	 */
-	public boolean verifySearchResultUrl(String expectedURL) {				
+	public boolean verifySearchResultUrl(String expectedURL) {	
+		if(expectedURL.isEmpty()) {
+			return true;
+		}
 		return this.getDriver().getCurrentUrl().equalsIgnoreCase(expectedURL);		
 	}
 	
@@ -168,15 +173,40 @@ public class ProductResultsPage extends BasePage{
 	 * @return true/false
 	 * @author Wei.Li
 	 */
-	public boolean verifySearchResultMessage(List<String> expectedMessage) {
+	public boolean verifySearchResultMessage(String expectedMessage) {
+		if(expectedMessage.isEmpty()) {
+			return true;
+		}
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSearchResultMessage);
 		String lsMessage=this.lblSearchResultMessage.getText().trim();	
-		for(String message:expectedMessage) {
+		List<String> lstMessage=SplitMessage(expectedMessage,"|");
+		for(String message:lstMessage) {			
 			if(!lsMessage.contains(message)) {
 				return false;
 			}
 		}
 		return true;		
+	}
+	
+	/**
+	 * This method will split a string with a given special symbol.
+	 * @param:String lsMessage: input string
+	 * @param:String lsSplit: given given special symbol to used for splitting
+	 * @return List<String>: split result
+	 * @author Wei.Li
+	 */
+	public List<String> SplitMessage(String lsMessage,String lsSplit){
+		List<String> list= new ArrayList<String>();
+		int from=0;
+		int index = lsMessage.indexOf(lsSplit);
+		while (index >= 0) {
+			String lsItem=lsMessage.substring(from, index);
+			list.add(lsItem);
+			from=index+1;
+		    System.out.println(lsItem);
+		    index = lsMessage.indexOf(lsSplit, index + 1);
+		}
+		return list;
 	}
 	
 	/**
@@ -492,6 +522,9 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	public boolean verifyBannerImageContainSpecificWord(String lsSpecificWord) {
+		if(lsSpecificWord.isEmpty()) {
+			return true;
+		}
 		for(WebElement element : this.lstBannerImage) {
 			if(!element.getAttribute("src").contains(lsSpecificWord)) {
 				return false;
