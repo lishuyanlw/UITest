@@ -13,6 +13,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Cookie;
@@ -348,5 +350,25 @@ import utils.ReusableActions;
 	public String URL() {
 		return getDriver().getCurrentUrl();
 	}
+	
+	/**
+	 * This method will extract number in a target string.
+	 * @param String lsTarget: target string
+	 * @return the list of extracted numbers
+	 * @author Wei.Li
+	 */
+    public List<String> getNumberFromString(String lsTarget) {
+        Pattern p = Pattern.compile("\\d+");
+        Matcher m = p.matcher(lsTarget);
+        
+        List<String> list=new ArrayList<String>();
+        while(m.find()) {
+        	String lsGroup=m.group();
+        	list.add(lsGroup); 
+        	System.out.println(lsGroup);
+        }
+        
+        return list;
+    }
 
 }
