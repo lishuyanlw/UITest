@@ -173,40 +173,18 @@ public class ProductResultsPage extends BasePage{
 	 * @return true/false
 	 * @author Wei.Li
 	 */
-	public boolean verifySearchResultMessage(String expectedMessage) {
+	public boolean verifySearchResultMessage(List<String> expectedMessage) {
 		if(expectedMessage.isEmpty()) {
 			return true;
 		}
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSearchResultMessage);
-		String lsMessage=this.lblSearchResultMessage.getText().trim();	
-		List<String> lstMessage=SplitMessage(expectedMessage,"|");
-		for(String message:lstMessage) {			
+		String lsMessage=this.lblSearchResultMessage.getText().trim();			
+		for(String message:expectedMessage) {			
 			if(!lsMessage.contains(message)) {
 				return false;
 			}
 		}
 		return true;		
-	}
-	
-	/**
-	 * This method will split a string with a given special symbol.
-	 * @param:String lsMessage: input string
-	 * @param:String lsSplit: given given special symbol to used for splitting
-	 * @return List<String>: split result
-	 * @author Wei.Li
-	 */
-	public List<String> SplitMessage(String lsMessage,String lsSplit){
-		List<String> list= new ArrayList<String>();
-		int from=0;
-		int index = lsMessage.indexOf(lsSplit);
-		while (index >= 0) {
-			String lsItem=lsMessage.substring(from, index);
-			list.add(lsItem);
-			from=index+1;
-		    System.out.println(lsItem);
-		    index = lsMessage.indexOf(lsSplit, index + 1);
-		}
-		return list;
 	}
 	
 	/**

@@ -24,7 +24,7 @@ public class HP_TC01_Verify_ProductSearchResult extends BaseTest{
 	List<String> lstSearchModel=TestDataHandler.constantDataVariables.getlst_SearchModel();
 	List<String> lskeywordList=TestDataHandler.constantDataVariables.getlst_SearchKeyword();
 	List<String> lstSearchResultExpectedUrl=TestDataHandler.constantDataVariables.getlst_SearchResultExpectedUrl();
-	List<String> lstSearchResultMessage=TestDataHandler.constantDataVariables.getlst_SearchResultMessage();
+	List<List<String>> lstSearchResultMessage=TestDataHandler.constantDataVariables.getlst_SearchResultMessage();
 	List<String> lstBannerImagekeyword=TestDataHandler.constantDataVariables.getlst_BannerImagekeyword();
 	String lsSearchResultPageDefaultSetting=TestDataHandler.constantDataVariables.getlbl_SearchResultPageDefaultSetting();
 	
