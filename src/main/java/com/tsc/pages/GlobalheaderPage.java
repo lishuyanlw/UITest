@@ -23,6 +23,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindAll;
 
 import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.tsc.pages.base.BasePage;
@@ -120,7 +121,75 @@ public class GlobalheaderPage extends BasePage{
 	
 	@FindBy(xpath = "//*[@class='Header']//div[@id='bagCounter']")
 	WebElement CartBagCounter;
+	
+	/*
+	 * @author Shruti.Desai
+	 *Flyouts Headings
+	 */
+	@FindBy(xpath = "//div[@class='Header']//div[@id='megamenu']/ul/li")
+	List <WebElement> listFlyoutHeadings;
+	
+	@FindBy(xpath = "//div[@class='Header']//div[@id='megamenu']/ul/li//span")
+	WebElement listFlyoutHeadings1;
+	
+	@FindBy(xpath = "//*[@class='email-popup__button']")
+	WebElement btnClose;
+	public void closeadd() {
+		btnClose.click();
 
+	}
+	
+	/*Method to get list of elements for Flyouts Headings 
+	 * @return list of elements for Flyouts Headings
+	 * @author Shruti Desai
+	 */
+	public List<WebElement> getlistFlyoutHeadings() {
+		WebElement Flyouts = getDriver().findElement(By.xpath("//div[@class='Header']//div[@id='megamenu']/ul"));
+		getReusableActionsInstance().javascriptScrollByVisibleElement(Flyouts);
+			return listFlyoutHeadings;
+		}
+	
+	/*Method to get Flyouts Headings count 
+	 * @return number of Flyouts Headings
+	 * @author Shruti Desai
+	 */
+	public int getFlyoutHeadingCount() {
+		return listFlyoutHeadings.size();
+	}
+		
+
+	/*Method to validate list of Flyout headings
+	 * @return text:Flyout Headings
+	 * @author Shruti Desai
+	 */
+	public String getFlyoutHeadings(int headingNumber) { 
+		WebElement WebElement=listFlyoutHeadings.get(headingNumber).findElement(By.xpath(".//span"));
+	 	getReusableActionsInstance().javascriptScrollByVisibleElement(WebElement); 
+	 		return WebElement.getText(); 
+	}
+	
+	public void verifyfashion() {
+		
+	}
+	
+	
+	
+	
+	
+	
+	/*
+	public boolean verifyFlyoutHeading1(List<String> expectedFlyoutHeading) {
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.listFlyoutHeadings1);
+	 	String Flyoutheading =this.listFlyoutHeadings1.getText();	
+		for(String text:expectedFlyoutHeading) {
+			if(!Flyoutheading.contains(text)) {
+				return false;
+			}
+		}
+		return true;		
+	}
+	*/
+	
 	public void waitForPageLoad() {
 		getReusableActionsInstance().waitForPageLoad();
 		waitForCondition(Driver->{return !this.pageLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},30000);

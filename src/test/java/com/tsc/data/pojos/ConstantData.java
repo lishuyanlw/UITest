@@ -32,6 +32,7 @@ public class ConstantData {
 	private String lbl_SearchBoxPlaceholder;
 	private String lbl_MinicartLinkName;
 	private String lnk_MinicarLink;
+	private List<String> lst_FlyoutHeading;
 	private String lbl_OnAirNow;
 	private String lbl_RecentlyAir;
 	private String lnk_RecentlyAir;
@@ -353,7 +354,21 @@ public class ConstantData {
 	public void setlbl_MinicartLinkName(String lbl_MinicartLinkName) {
 		this.lbl_MinicartLinkName = lbl_MinicartLinkName;
 	}
-
+	
+	
+	/**
+	 * @return the lst_FlyoutHeading
+	 */
+	public List<String> getlst_FlyoutHeading() {
+		return lst_FlyoutHeading;
+	}
+	/**
+	 * @param lst_FlyoutHeading the lst_FlyoutHeading to set
+	 */
+	public void setlst_FlyoutHeading(List<String> lst_FlyoutHeading) {
+		this.lst_FlyoutHeading = lst_FlyoutHeading;
+	}
+	
 	/**
 	 * @return the lbl_OnAirNow
 	 */

@@ -22,6 +22,8 @@ lbl_SignIn: Sign In
 lbl_SearchBoxPlaceholder: Search
 lbl_MinicartLinkName: Bag
 lnk_MinicarLink: /pages/shoppingcart
+lst_FlyoutHeading: ["FASHION", "SHOES & HANDBAGS", "JEWELLERY", "BEAUTY", "HOME & GARDEN", "KITCHEN", "HEALTH & FITNESS", "ELECTRONICS", "COINS & HOBBIES", "CLEARANCE"]
+
 
 # HOME PAGE SECTION
 lbl_OnAirNow: ON AIR NOW
@@ -34,6 +36,7 @@ lbl_ShopByBrandViewAll: View All
 lnk_ShopByBrandViewAll: /pages/brand
 lbl_ShopByDepartment: SHOP BY DEPARTMENT
 lst_ShopByDepartmentCategories: [FASHION, SHOES & HANDBAGS, JEWELLERY, BEAUTY, HOME & GARDEN, KITCHEN, HEALTH & FITNESS, ELECTRONICS, COINS & HOBBIES, CLEARANCE, SPORTS, MENS]
+
 lbl_TopSellers: TOP SELLERS
 
 # SEARCH RESULTS SECTION
