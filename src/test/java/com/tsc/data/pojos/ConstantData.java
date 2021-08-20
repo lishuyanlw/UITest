@@ -52,6 +52,9 @@ public class ConstantData {
 	private String lbl_SearchKeyword_100501;
 	private String lbl_SearchResultExpectedUrl_100501;	
 	private List<String>  lst_SearchResultMessage_100501;
+	private String lbl_SearchKeyword_JoanRivers;
+	private String lbl_SearchResultExpectedUrl_JoanRivers;
+	private String lbl_BannerImagekeyword_JoanRivers;
 	
 	//Header Links getter and setter method
 	
@@ -613,6 +616,45 @@ public class ConstantData {
 	 */
 	public void setlst_SearchResultMessage_100501(List<String> lst_SearchResultMessage_100501) {
 		this.lst_SearchResultMessage_100501 = lst_SearchResultMessage_100501;
+	}
+	
+	/**
+	 * @return the lbl_SearchKeyword_JoanRivers
+	 */
+	public String getlbl_SearchKeyword_JoanRivers() {
+		return lbl_SearchKeyword_JoanRivers;
+	}
+	/**
+	 * @param lbl_SearchKeyword_JoanRivers the lbl_SearchKeyword_JoanRivers to set
+	 */
+	public void setlbl_SearchKeyword_JoanRivers(String lbl_SearchKeyword_JoanRivers) {
+		this.lbl_SearchKeyword_JoanRivers = lbl_SearchKeyword_JoanRivers;
+	}
+	
+	/**
+	 * @return the lbl_SearchResultExpectedUrl_JoanRivers
+	 */
+	public String getlbl_SearchResultExpectedUrl_JoanRivers() {
+		return lbl_SearchResultExpectedUrl_JoanRivers;
+	}
+	/**
+	 * @param lbl_SearchResultExpectedUrl_JoanRivers the lbl_SearchResultExpectedUrl_JoanRivers to set
+	 */
+	public void setlbl_SearchResultExpectedUrl_JoanRivers(String lbl_SearchResultExpectedUrl_JoanRivers) {
+		this.lbl_SearchResultExpectedUrl_JoanRivers = lbl_SearchResultExpectedUrl_JoanRivers;
+	}
+	
+	/**
+	 * @return the lbl_BannerImagekeyword_JoanRivers
+	 */
+	public String getlbl_BannerImagekeyword_JoanRivers() {
+		return lbl_BannerImagekeyword_JoanRivers;
+	}
+	/**
+	 * @param lbl_BannerImagekeyword_JoanRivers the lbl_BannerImagekeyword_JoanRivers to set
+	 */
+	public void setlbl_BannerImagekeyword_JoanRivers(String lbl_BannerImagekeyword_JoanRivers) {
+		this.lbl_BannerImagekeyword_JoanRivers = lbl_BannerImagekeyword_JoanRivers;
 	}
 	
 }

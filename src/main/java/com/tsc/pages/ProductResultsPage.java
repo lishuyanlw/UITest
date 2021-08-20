@@ -38,6 +38,12 @@ public class ProductResultsPage extends BasePage{
 	@FindBy(xpath = "//product-results//div[contains(@class,'searchDiv')]")
 	WebElement lblSearchResultMessage;
 	
+	@FindBy(xpath = "//span[contains(@class,'tagDimTitle')]")
+	WebElement lblSearchResultTitle;
+	
+	@FindBy(xpath = "//div[contains(@class,'showstopper-wrapper')]//div[contains(@class,'item')]//div[contains(@class,'visible')]//img")
+	List<WebElement> lstBannerImage;
+	
 	//Selected filters
 	@FindBy(xpath = "//product-results//div[contains(@class,'col-md-showing')]//div[contains(@class,'filterPrpLabel')]//b")
 	WebElement lblShowing;
@@ -55,7 +61,7 @@ public class ProductResultsPage extends BasePage{
 	WebElement lblItemsPerPage;
 	
 	@FindBy(xpath = "//product-results//div[contains(@class,'col-md-items')]//form//div[contains(@class,'recordsDiv')]")
-	WebElement lblItemPerPageDefaultSettingNumber;
+	WebElement lblItemPerPageDefaultSettingNumberWithoutDropdownMenu;
 	
 	@FindBy(xpath = "//product-results//div[contains(@class,'col-md-items')]//form//select//option")
 	List<WebElement> itemPerPageOptionList;
@@ -127,7 +133,7 @@ public class ProductResultsPage extends BasePage{
 	 */
 	public boolean getSearchResultLoad(String searchKeyword) {		
 		GlobalheaderPage globalHeader=new GlobalheaderPage(this.getDriver());
-				
+		getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeader.searchBox);		
 		this.clearContent(globalHeader.searchBox);	
 		globalHeader.searchBox.sendKeys(searchKeyword);
 		globalHeader.btnSearchSubmit.click();
@@ -179,9 +185,37 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	public boolean verifySearchResultPageNumberDefaultSetting(String defaultSettingPageNumber) {
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSearchResultMessage);
-						
-		return this.lblItemPerPageDefaultSettingNumber.getText().trim().equalsIgnoreCase(defaultSettingPageNumber);		
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblItemsPerPage);
+		if(getReusableActionsInstance().isElementVisible(this.lblItemPerPageDefaultSettingNumberWithoutDropdownMenu)) {
+			return getItemsPerPageValueWithoutDropdownMenu().equalsIgnoreCase(defaultSettingPageNumber);
+		}
+		else {
+			return getItemsPerPageValueWithDropdownMenu().equalsIgnoreCase(defaultSettingPageNumber);
+		}				
+	}
+	
+	/**
+	 * This method will return <items per page> value without dropdown menu.
+	 * @return String: the value of items per page
+	 * @author Wei.Li
+	 */
+	public String getItemsPerPageValueWithoutDropdownMenu() {		
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblItemsPerPage);
+		return lblItemPerPageDefaultSettingNumberWithoutDropdownMenu.getText().trim();
+	}
+	
+	/**
+	 * This method will return <items per page> value when there is a dropdown menu.
+	 * @return String: the value of items per page
+	 * @author Wei.Li
+	 */
+	public String getItemsPerPageValueWithDropdownMenu() {
+		Select select = new Select(this.getDriver().findElement(By. xpath("//product-results//div[contains(@class,'col-md-items')]//form//select")));
+		WebElement option = select.getFirstSelectedOption();
+		String defaultItem = option.getText();
+		System.out.println(defaultItem);
+		
+		return defaultItem.trim();
 	}
 	
 	/**
@@ -391,16 +425,7 @@ public class ProductResultsPage extends BasePage{
 		int pageSize=this.productResultList.size();
 		if(productReviewList.size()!=pageSize) {
 			return false;
-		}
-		else {
-			getReusableActionsInstance().javascriptScrollByVisibleElement(productResultList.get(0));
-			for(WebElement item: productReviewList) {	
-				getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-				if(item.getText().isEmpty()) {
-					return false;
-				}
-			}
-		}
+		}		
 		return true;
 	}
 	
@@ -431,21 +456,7 @@ public class ProductResultsPage extends BasePage{
 		}
 		return true;
 	}
-
-	/**
-	 * This method will return <items per page> value when there is a dropdown menu.
-	 * @return int: the value of items per page
-	 * @author Wei.Li
-	 */
-	public int getItemsPerPageValue() {
-		Select select = new Select(this.getDriver().findElement(By. xpath("//product-results//div[contains(@class,'col-md-items')]//form//select")));
-		WebElement option = select.getFirstSelectedOption();
-		String defaultItem = option.getText();
-		System.out.println(defaultItem);
 		
-		return Integer.parseInt(defaultItem);
-	}
-	
 	/**
 	 * This method will return search result account.	  
 	 * @author Wei.Li
@@ -476,5 +487,26 @@ public class ProductResultsPage extends BasePage{
 		return true;			
 	}
 	
+	/**
+	 * This method will verify if Banner image src is search keyword related.	  
+	 * @author Wei.Li
+	 */
+	public boolean verifyBannerImageContainSpecificWord(String lsSpecificWord) {
+		for(WebElement element : this.lstBannerImage) {
+			if(!element.getAttribute("src").contains(lsSpecificWord)) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	/**
+	 * This method will return search result page title.	  
+	 * @author Wei.Li
+	 */
+	public String getProductResultPageTitle() {
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSearchResultTitle);
+		return this.lblSearchResultTitle.getText().trim();
+	}
 }
 	

@@ -46,6 +46,9 @@ lst_SearchResultMessage_SpecialCharacters: ["We couldn","t find a match for","!@
 lbl_SearchKeyword_100501: 100501
 lbl_SearchResultExpectedUrl_100501: /pages/productresults?dimensions=0&searchterm=100501
 lst_SearchResultMessage_100501: ["Search Results For", "100501"]
+lbl_SearchKeyword_JoanRivers: joan rivers
+lbl_SearchResultExpectedUrl_JoanRivers: /pages/productresults?dimensions=100107&rd=1&searchterm=joan%2Brivers
+lbl_BannerImagekeyword_JoanRivers: JoanRivers
 
 
 
