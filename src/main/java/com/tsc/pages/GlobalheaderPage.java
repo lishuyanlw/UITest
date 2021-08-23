@@ -129,66 +129,11 @@ public class GlobalheaderPage extends BasePage{
 	@FindBy(xpath = "//div[@class='Header']//div[@id='megamenu']/ul/li")
 	List <WebElement> listFlyoutHeadings;
 	
-	@FindBy(xpath = "//div[@class='Header']//div[@id='megamenu']/ul/li//span")
-	WebElement listFlyoutHeadings1;
-	
 	@FindBy(xpath = "//*[@class='email-popup__button']")
 	WebElement btnClose;
 	public void closeadd() {
 		btnClose.click();
-
 	}
-	
-	/*Method to get list of elements for Flyouts Headings 
-	 * @return list of elements for Flyouts Headings
-	 * @author Shruti Desai
-	 */
-	public List<WebElement> getlistFlyoutHeadings() {
-		WebElement Flyouts = getDriver().findElement(By.xpath("//div[@class='Header']//div[@id='megamenu']/ul"));
-		getReusableActionsInstance().javascriptScrollByVisibleElement(Flyouts);
-			return listFlyoutHeadings;
-		}
-	
-	/*Method to get Flyouts Headings count 
-	 * @return number of Flyouts Headings
-	 * @author Shruti Desai
-	 */
-	public int getFlyoutHeadingCount() {
-		return listFlyoutHeadings.size();
-	}
-		
-
-	/*Method to validate list of Flyout headings
-	 * @return text:Flyout Headings
-	 * @author Shruti Desai
-	 */
-	public String getFlyoutHeadings(int headingNumber) { 
-		WebElement WebElement=listFlyoutHeadings.get(headingNumber).findElement(By.xpath(".//span"));
-	 	getReusableActionsInstance().javascriptScrollByVisibleElement(WebElement); 
-	 		return WebElement.getText(); 
-	}
-	
-	public void verifyfashion() {
-		
-	}
-	
-	
-	
-	
-	
-	
-	/*
-	public boolean verifyFlyoutHeading1(List<String> expectedFlyoutHeading) {
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.listFlyoutHeadings1);
-	 	String Flyoutheading =this.listFlyoutHeadings1.getText();	
-		for(String text:expectedFlyoutHeading) {
-			if(!Flyoutheading.contains(text)) {
-				return false;
-			}
-		}
-		return true;		
-	}
-	*/
 	
 	public void waitForPageLoad() {
 		getReusableActionsInstance().waitForPageLoad();
@@ -462,11 +407,7 @@ public class GlobalheaderPage extends BasePage{
 		return getReusableActionsInstance().isElementVisible(CartBagCounter, 5);
 		}
 
-	//Get the URL 			
-	public String URL() {
-		return getDriver().getCurrentUrl();
-	}
-	
+		
 	/**
 	 * This method will verify MiniCart link
 	 *
@@ -567,5 +508,51 @@ public class GlobalheaderPage extends BasePage{
 	public String getUrlAfterClickingWatchUsLiveLink() {
 		getReusableActionsInstance().javascriptScrollToTopOfPage();
 		return waitForPageLoadingByUrlChange(this.lnkWatchUsLive);
+	}
+	
+	
+	/*
+	 * @author Shruti.Desai
+	 *Flyouts Headings
+	 */
+
+	/*Method to get list of elements for Flyouts Headings 
+	 * @return list of elements for Flyouts Headings
+	 * @author Shruti Desai
+	 */
+	public List<WebElement> getlistFlyoutHeadings() {
+		WebElement Flyouts = getDriver().findElement(By.xpath("//div[@class='Header']//div[@id='megamenu']/ul"));
+		getReusableActionsInstance().javascriptScrollByVisibleElement(Flyouts);
+			return listFlyoutHeadings;
+		}
+	
+	/*Method to get Flyouts Headings count 
+	 * @return number of Flyouts Headings
+	 * @author Shruti Desai
+	 */
+	public int getFlyoutHeadingCount() {
+		return listFlyoutHeadings.size();
+	}
+		
+
+	/*Method to validate list of Flyout headings
+	 * @return text:Flyout Headings
+	 * @author Shruti Desai
+	 */
+	public String getFlyoutHeadings(int headingNumber) { 
+		WebElement WebElement=listFlyoutHeadings.get(headingNumber).findElement(By.xpath(".//span"));
+	 	getReusableActionsInstance().javascriptScrollByVisibleElement(WebElement); 
+	 		return WebElement.getText(); 
+	}
+	
+	/*Method to validate URL after clicking on category of Flyout heading
+	 *@return text: URL
+	 * @author Shruti Desai
+	 */
+	public String getURLafterClickFlyoutHeading(int headingNumber) {
+		WebElement WebElement=listFlyoutHeadings.get(headingNumber).findElement(By.xpath(".//a"));
+	 	getReusableActionsInstance().javascriptScrollByVisibleElement(WebElement); 
+	 	getReusableActionsInstance().clickWhenVisible(WebElement,5);
+	 		return (getDriver().getCurrentUrl());
 	}
 }

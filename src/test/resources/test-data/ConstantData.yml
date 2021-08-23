@@ -22,10 +22,8 @@ lbl_SignIn: Sign In
 lbl_SearchBoxPlaceholder: Search
 lbl_MinicartLinkName: Bag
 lnk_MinicarLink: /pages/shoppingcart
-lst_FlyoutHeading: ["FASHION", "SHOES & HANDBAGS", "JEWELLERY", "BEAUTY", "HOME & GARDEN", "KITCHEN", "HEALTH & FITNESS", "ELECTRONICS", "COINS & HOBBIES", "CLEARANCE"]
-
-
-# HOME PAGE SECTION
+lst_FlyoutHeading: ['FASHION','SHOES & HANDBAGS', 'JEWELLERY', 'BEAUTY', 'HOME & GARDEN', 'KITCHEN', 'HEALTH & FITNESS', 'ELECTRONICS', 'COINS & HOBBIES', 'CLEARANCE']
+lst_FlyoutLinks : ['/pages/category?nav=n:100047','/pages/category?nav=n:128153','/pages/category?nav=n:100101','/pages/category?nav=n:100038','/pages/category?nav=n:100071','/pages/category?nav=n:100072','/pages/category?nav=n:2058731','/pages/category?nav=n:100073','/pages/category?nav=n:3001781','/pages/category?nav=n:2037576']
 lbl_OnAirNow: ON AIR NOW
 lbl_RecentlyAir: RECENTLY AIRED
 lnk_RecentlyAir: /pages/productdetails?nav
@@ -36,7 +34,6 @@ lbl_ShopByBrandViewAll: View All
 lnk_ShopByBrandViewAll: /pages/brand
 lbl_ShopByDepartment: SHOP BY DEPARTMENT
 lst_ShopByDepartmentCategories: [FASHION, SHOES & HANDBAGS, JEWELLERY, BEAUTY, HOME & GARDEN, KITCHEN, HEALTH & FITNESS, ELECTRONICS, COINS & HOBBIES, CLEARANCE, SPORTS, MENS]
-
 lbl_TopSellers: TOP SELLERS
 
 # SEARCH RESULTS SECTION

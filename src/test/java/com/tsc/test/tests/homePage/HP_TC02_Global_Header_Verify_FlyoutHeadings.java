@@ -18,22 +18,11 @@ public class HP_TC02_Global_Header_Verify_FlyoutHeadings extends BaseTest {
 		String lsBaseUrl=(new BasePage(this.getDriver())).getBaseURL();
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl+"/"), "TSC url is correct", "TSC url is incorrect");
 		reporter.reportLogWithScreenshot("Home Page");
+		reporter.reportLog("Validating Flyouts all departments & it's URL after Clicking each category");
 		
-		for(int i=0; i<getglobalheaderPageThreadLocal().getFlyoutHeadingCount(); i++) {
-			//validateText(getglobalheaderPageThreadLocal().getFlyoutHeadings(i), TestDataHandler.constantDataVariables.getlst_lst_FlyoutHeading(), "Flyout Heading text is visible and valid");
-			 reporter.reportLog("Flyout Heading " + (i+1) +":" + getglobalheaderPageThreadLocal().getFlyoutHeadings(i));	 	
-			 System.out.println("value of i " + i);
-				System.out.println("get heading " +getglobalheaderPageThreadLocal().getFlyoutHeadings(i));
-				//System.out.println("get heading from yml "+TestDataHandler.constantDataVariables.getlbl_SearchKeyword_SpecialCharacters());
-				System.out.println(TestDataHandler.constantDataVariables.getlbl_ShopByDepartment());
-				//validateText(getglobalheaderPageThreadLocal().getFlyoutHeadings(i), TestDataHandler.constantDataVariables.getlst_FlyoutHeading().get(i), "Flyout Heading text is visible and valid");			
-			// reporter.reportLog("Flyout Heading " + (i+1) +":" + getglobalheaderPageThreadLocal().getFlyoutHeadings(i));	 	
-				 	
+			for(int i=0; i<getglobalheaderPageThreadLocal().getFlyoutHeadingCount(); i++) {
+				reporter.softAssert(getglobalheaderPageThreadLocal().getFlyoutHeadings(i), TestDataHandler.constantDataVariables.getlst_FlyoutHeading().get(i),"Flyout display " + getglobalheaderPageThreadLocal().getFlyoutHeadings(i) + " department. It's text is visible and valid","Flyout display " + getglobalheaderPageThreadLocal().getFlyoutHeadings(i) + " department. It's text is visible and valid");
+				reporter.softAssert(getglobalheaderPageThreadLocal().getURLafterClickFlyoutHeading(i), lsBaseUrl + TestDataHandler.constantDataVariables.getlst_FlyoutLinks().get(i), getglobalheaderPageThreadLocal().getFlyoutHeadings(i) + "'s URL is correct", getglobalheaderPageThreadLocal().getFlyoutHeadings(i) + "'s URL is incorrect");
+			}
 		}
-	//	reporter.softAssert(getglobalheaderPageThreadLocal().verifyFlyoutHeading1(TestDataHandler.constantDataVariables.getlst_FlyoutHeading()), "Flyout heading matches the expected result", "Flyout heading does not match the expected result");
-		
-	}
-
-		
-
 }
