@@ -32,15 +32,11 @@ public class HP_TC01_Verify_ProductSearchResult extends BaseTest{
 	for(int i=0;i<keyWordSize;i++) {
 		getProductResultsPageThreadLocal().getSearchResultLoad(lskeywordList.get(i));
 		
-		if(!lstSearchModel.get(i).equalsIgnoreCase("Product Name")) {
-			reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultMessage(lstSearchResultMessage.get(i)), "Search result message result matches the expected message", "Search result message result does not match the expected message");
-		}
-		
-		if(!lstSearchModel.get(i).equalsIgnoreCase("Special Characters")) {
-			reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultUrl((new BasePage(this.getDriver())).getBaseURL()+lstSearchResultExpectedUrl.get(i)), "Url of search result matches expected url", "Url of search result doesn't match expected url");
-		}
+		reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultMessage(lstSearchResultMessage.get(i)), "Search result message result matches the expected message", "Search result message result does not match the expected message");
 				
-		if(!lstSearchModel.get(i).equalsIgnoreCase("Special Characters")&&!lstSearchModel.get(i).equalsIgnoreCase("Product Number")) {
+		reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultUrl((new BasePage(this.getDriver())).getBaseURL()+lstSearchResultExpectedUrl.get(i)), "Url of search result matches expected url", "Url of search result doesn't match expected url");
+						
+		if(!lstSearchModel.get(i).equalsIgnoreCase("Special Characters")) {
 			
 			reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(), "Showing text pattern in filters is correct", "Showing text pattern in filters is incorrect");
 			
@@ -71,7 +67,9 @@ public class HP_TC01_Verify_ProductSearchResult extends BaseTest{
 			reporter.softAssert(getProductResultsPageThreadLocal().verifyProductFreeShipping(), "ProductFreeShipping in searching result is correct", "ProductFreeShipping in searching result is incorrect");
 
 		}
-				
+			
+		reporter.softAssert(getProductResultsPageThreadLocal().verifyBannerImageContainSpecificWord(lstBannerImagekeyword.get(i)), "Banner imgaes contain Joan Rivers related word", "Banner imgaes do not contain Joan Rivers related word");
+		
 		//Verify "!@#$%^&*()_+" special keyword search
 		if(lstSearchModel.get(i).equalsIgnoreCase("Special Characters")) {
 			reporter.softAssert(getProductResultsPageThreadLocal().getProductResultCount()==0, "No search results return", "Still there are search results return");
@@ -84,8 +82,6 @@ public class HP_TC01_Verify_ProductSearchResult extends BaseTest{
 				
 		//Verify "joan rivers" keyword search
 		if(lstSearchModel.get(i).equalsIgnoreCase("Product Name")) {
-			reporter.softAssert(getProductResultsPageThreadLocal().verifyBannerImageContainSpecificWord(lstBannerImagekeyword.get(i)), "Banner imgaes contain Joan Rivers related word", "Banner imgaes do not contain Joan Rivers related word");
-			
 			reporter.softAssert(getProductResultsPageThreadLocal().getProductResultPageTitle().equalsIgnoreCase(lskeywordList.get(i)), "Search result page title is dispalyed as search keyword", "Search result page title is not dispalyed as search keyword");
 		}
 				

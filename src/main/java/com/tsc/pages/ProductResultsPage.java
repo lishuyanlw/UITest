@@ -150,9 +150,10 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	public boolean verifySearchResultUrl(String expectedURL) {	
-		if(expectedURL.isEmpty()) {
+		String lsBaseUrl=(new BasePage(this.getDriver())).getBaseURL();
+		if(expectedURL.equalsIgnoreCase(lsBaseUrl)) {			
 			return true;
-		}
+		}		
 		return this.getDriver().getCurrentUrl().equalsIgnoreCase(expectedURL);		
 	}
 	
@@ -410,16 +411,7 @@ public class ProductResultsPage extends BasePage{
 		int pageSize=this.productResultList.size();
 		if(productEasyPayList.size()!=pageSize) {
 			return false;
-		}
-		else {
-			getReusableActionsInstance().javascriptScrollByVisibleElement(productResultList.get(0));
-			for(WebElement item: productEasyPayList) {	
-				getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-				if(item.getText().isEmpty()) {
-					return false;
-				}
-			}
-		}
+		}		
 		return true;
 	}
 	
