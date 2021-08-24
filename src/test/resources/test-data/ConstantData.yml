@@ -38,11 +38,10 @@ lbl_TopSellers: TOP SELLERS
 
 # SEARCH RESULTS SECTION
 lst_SearchKeyword: ["dyson vacuum","!@#$%^&*()_+","100501","joan rivers"]
-lst_SearchResultExpectedUrl: ["/pages/productresults?dimensions=0&searchterm=dyson%20vacuum","","/pages/productresults?dimensions=0&searchterm=100501","/pages/productresults?dimensions=100107&rd=1&searchterm=joan%2Brivers"]
 lbl_SearchResultPageDefaultSetting: 36
-lst_SearchResultMessage: [["Search Results For","dyson vacuum"],["We couldn","t find a match for","!@#$%^&*()_+","Please search again using a different term or browse by brand or category."],["Search Results For","100501"],[]]
-lst_BannerImagekeyword: ["","","","JoanRivers"]
-lst_SearchModel: ["General","Special Characters","Product Number","Product Name"]
+lst_SearchResultMessage: [["Search Results For"],["We couldn","t find a match for","Please search again using a different term or browse by brand or category."]]
+lbl_SearchResultExpectedUrl:  "/pages/productresults\\?dimensions=(\\d+)(&rd=[0-9]+)?&searchterm="
+
 
 
 

@@ -109,7 +109,7 @@ import utils.ReusableActions;
 	/**
 	 * This method returns the ReusableActions class instance from the ThreadLocal
 	 */
-	protected ReusableActions getReusableActionsInstance() {
+	public ReusableActions getReusableActionsInstance() {
 		return reusableActionsThreadLocal.get();
 	}
 
@@ -117,7 +117,7 @@ import utils.ReusableActions;
 	 * This method return the Actions class instance from the ThreadLocal
 	 */
 
-	protected Actions getActionsInstance() {
+	public Actions getActionsInstance() {
 		return actionsThreadLocal.get();
 	}
 

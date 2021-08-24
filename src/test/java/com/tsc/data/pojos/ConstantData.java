@@ -44,12 +44,10 @@ public class ConstantData {
 	private List<String> lst_ShopByDepartmentCategories;
 	private String lbl_TopSellers;
 	private List<String> lst_SearchKeyword;
-	private List<String> lst_SearchResultExpectedUrl;
+	private String lbl_SearchResultExpectedUrl;
 	private String lbl_SearchResultPageDefaultSetting;
 	private List<List<String>>  lst_SearchResultMessage;
-	private List<String> lst_BannerImagekeyword;
-	private List<String> lst_SearchModel;
-	
+		
 	//Header Links getter and setter method
 	
 	/**
@@ -508,16 +506,17 @@ public class ConstantData {
 	}
 	
 	/**
-	 * @return the lst_SearchResultExpectedUrl
-	 */
-	public List<String> getlst_SearchResultExpectedUrl() {
-		return lst_SearchResultExpectedUrl;
-	}
+	 * @return the lbl_SearchResultExpectedUrl
+	 */	
+	
+	public String getlbl_SearchResultExpectedUrl() {
+		return lbl_SearchResultExpectedUrl;
+	}	
 	/**
-	 * @param lst_SearchResultExpectedUrl the lst_SearchResultExpectedUrl to set
-	 */
-	public void setlst_SearchResultExpectedUrl(List<String> lst_SearchResultExpectedUrl) {
-		this.lst_SearchResultExpectedUrl = lst_SearchResultExpectedUrl;
+	 * @param lbl_SearchResultExpectedUrl the lbl_SearchResultExpectedUrl to set
+	 */	
+	public void setlbl_SearchResultExpectedUrl(String lbl_SearchResultExpectedUrl) {
+		this.lbl_SearchResultExpectedUrl = lbl_SearchResultExpectedUrl;
 	}
 	
 	/**
@@ -546,30 +545,4 @@ public class ConstantData {
 		this.lst_SearchResultMessage = lst_SearchResultMessage;
 	}
 		
-	/**
-	 * @return the lst_BannerImagekeyword
-	 */
-	public List<String> getlst_BannerImagekeyword() {
-		return lst_BannerImagekeyword;
-	}
-	/**
-	 * @param lst_BannerImagekeyword the lst_BannerImagekeyword to set
-	 */
-	public void setlst_BannerImagekeyword(List<String> lst_BannerImagekeyword) {
-		this.lst_BannerImagekeyword = lst_BannerImagekeyword;
-	}
-	
-	/**
-	 * @return the lst_SearchModel
-	 */
-	public List<String> getlst_SearchModel() {
-		return lst_SearchModel;
-	}
-	/**
-	 * @param lst_SearchModel the lst_SearchModel to set
-	 */
-	public void setlst_SearchModel(List<String> lst_SearchModel) {
-		this.lst_SearchModel = lst_SearchModel;
-	}
-	
 }
