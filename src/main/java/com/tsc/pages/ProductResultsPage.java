@@ -22,6 +22,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.CacheLookup;
 import org.openqa.selenium.support.FindAll;
 
 import org.openqa.selenium.support.ui.ExpectedCondition;
@@ -59,19 +60,19 @@ public class ProductResultsPage extends BasePage{
 	@FindBy(xpath = "//product-results//div[contains(@class,'col-md-sort')]//form//select//option")
 	List<WebElement> sortByOptionList;
 	
-	@FindBy(xpath = "//product-results//div[contains(@class,'search-filters-div')]//div[contains(@class,'col-md-items')]//select//option[1]//product-results//div[contains(@class,'col-md-items')]//form//div[contains(@class,'filterPrpLabel')]")
+	@FindBy(xpath = "//product-results//div[contains(@class,'col-md-items')]//form//div[contains(@class,'filterPrpLabel')]")
 	WebElement lblItemsPerPage;
 	
 	@FindBy(xpath = "//product-results//div[contains(@class,'search-filters-div')]//div[contains(@class,'col-md-items')]//select//option[1]|//product-results//div[contains(@class,'col-md-items')]//form//div[contains(@class,'recordsDiv')]")
 	WebElement lblItemPerPageDefaultSettingNumber;
-		
+			
 	//Product results
 	@FindBy(xpath = "//div[@class='Footer']//div[contains(@class,'blockPageWrap')]")
 	WebElement productResultLoadingIndicator;
 	
 	@FindBy(xpath = "//product-results//div[contains(@class,'productItems')]//div[contains(@class,'productItemWrap')]")
 	List<WebElement> productResultList;
-			
+				
 	public By byProductHref=By.xpath(".//a");
 	
 	public By byProductImage=By.xpath(".//div[contains(@class,'imgEmbedContainer')]//img[@class='productImg']");
@@ -138,7 +139,6 @@ public class ProductResultsPage extends BasePage{
 		globalHeader.btnSearchSubmit.click();
 		
 		return waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},30000);
-		
 	}
 
 	/**
@@ -162,7 +162,7 @@ public class ProductResultsPage extends BasePage{
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSearchResultMessage);
 		
 		String lsMessage=this.lblSearchResultMessage.getText().trim();	
-		if(!lsMessage.contains(lsMessage)) {
+		if(!lsMessage.contains(lsKeyword)) {
 			return false;		
 		}
 		for(String message:expectedMessage) {			
@@ -179,11 +179,9 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	public boolean verifySearchResultPageNumberDefaultSetting(String defaultSettingPageNumber) {
-		if(!getReusableActionsInstance().isElementVisible(this.lblItemsPerPage)) {
-			return true;
-		}
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblItemsPerPage);
-		return lblItemPerPageDefaultSettingNumber.getText().trim().equalsIgnoreCase(defaultSettingPageNumber);						
+		
+		return lblItemPerPageDefaultSettingNumber.getText().trim().equalsIgnoreCase(defaultSettingPageNumber);
 	}
 		
 	/**
