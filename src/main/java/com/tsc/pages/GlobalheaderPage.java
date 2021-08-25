@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.function.Function;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
 
 import org.openqa.selenium.interactions.Actions;
@@ -128,6 +129,9 @@ public class GlobalheaderPage extends BasePage{
 	 */
 	@FindBy(xpath = "//div[@class='Header']//div[@id='megamenu']/ul/li")
 	List <WebElement> listFlyoutHeadings;
+	
+	@FindBy(xpath = "//div[@class='Header']//div[@id='megamenu']/ul/li//div[@class='flyout']//ul//li[1]")
+	List <WebElement> listFlyoutSubMenu;
 	
 	@FindBy(xpath = "//*[@class='email-popup__button']")
 	WebElement btnClose;
@@ -516,16 +520,6 @@ public class GlobalheaderPage extends BasePage{
 	 *Flyouts Headings
 	 */
 
-	/*Method to get list of elements for Flyouts Headings 
-	 * @return list of elements for Flyouts Headings
-	 * @author Shruti Desai
-	 */
-	public List<WebElement> getlistFlyoutHeadings() {
-		WebElement Flyouts = getDriver().findElement(By.xpath("//div[@class='Header']//div[@id='megamenu']/ul"));
-		getReusableActionsInstance().javascriptScrollByVisibleElement(Flyouts);
-			return listFlyoutHeadings;
-		}
-	
 	/*Method to get Flyouts Headings count 
 	 * @return number of Flyouts Headings
 	 * @author Shruti Desai
@@ -533,9 +527,8 @@ public class GlobalheaderPage extends BasePage{
 	public int getFlyoutHeadingCount() {
 		return listFlyoutHeadings.size();
 	}
-		
-
-	/*Method to validate list of Flyout headings
+	
+	/*Method to get lable of Flyout headings
 	 * @return text:Flyout Headings
 	 * @author Shruti Desai
 	 */
@@ -544,6 +537,7 @@ public class GlobalheaderPage extends BasePage{
 	 	getReusableActionsInstance().javascriptScrollByVisibleElement(WebElement); 
 	 		return WebElement.getText(); 
 	}
+	
 	
 	/*Method to validate URL after clicking on category of Flyout heading
 	 *@return text: URL
