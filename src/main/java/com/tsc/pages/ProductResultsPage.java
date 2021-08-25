@@ -43,9 +43,6 @@ public class ProductResultsPage extends BasePage{
 	@FindBy(xpath = "//span[contains(@class,'tagDimTitle')]")
 	WebElement lblSearchResultTitle;
 	
-	@FindBy(xpath = "//div[contains(@class,'showstopper-wrapper')]//div[@class='carousel-inner']")
-	WebElement cntBannerImage;
-	
 	@FindBy(xpath = "//div[contains(@class,'showstopper-wrapper')]//div[contains(@class,'item')]//div[contains(@class,'visible')]//img")
 	List<WebElement> lstBannerImage;
 	
@@ -74,28 +71,26 @@ public class ProductResultsPage extends BasePage{
 	
 	@FindBy(xpath = "//product-results//div[contains(@class,'productItems')]//div[contains(@class,'productItemWrap')]")
 	List<WebElement> productResultList;
+			
+	public By byProductHref=By.xpath(".//a");
 	
-	@FindBy(xpath = "//product-results//div[contains(@class,'productItems')]//div[contains(@class,'badgeWrap')]")
-	List<WebElement> productPriceBadgeList;
+	public By byProductImage=By.xpath(".//div[contains(@class,'imgEmbedContainer')]//img[@class='productImg']");
 	
-	@FindBy(xpath = "//product-results//div[contains(@class,'productItems')]//a")
-	List<WebElement> productHrefList;
+	public By byProductName=By.xpath(".//div[contains(@class,'nameDiv')]");
 	
-	@FindBy(xpath = "//product-results//div[contains(@class,'productItems')]//div[contains(@class,'productItemWrap')]//div[contains(@class,'imgEmbedContainer')]//img[@class='productImg']")
-	List<WebElement> productImageList;
+	public By byProductItemNO=By.xpath(".//div[contains(@class,'itemNo')]");
 	
-	@FindBy(xpath = "//product-results//div[contains(@class,'productItems')]//div[contains(@class,'productItemWrap')]//div[contains(@class,'videoIcon')]")
-	List<WebElement> productVideoIconList;
-	
-	@FindBy(xpath = "//product-results//div[contains(@class,'productItems')]//div[contains(@class,'productItemWrap')]//div[contains(@class,'nameDiv')]")
-	List<WebElement> productNameList;
+	public By byProductNowPrice=By.xpath(".//div[contains(@class,'priceDiv')]//span");
 	
 	@FindBy(xpath = "//product-results//div[contains(@class,'productItems')]//div[contains(@class,'productItemWrap')]//div[contains(@class,'itemNo')]")
 	List<WebElement> productItemNOList;
+		
+	@FindBy(xpath = "//product-results//div[contains(@class,'productItems')]//div[contains(@class,'badgeWrap')]")
+	List<WebElement> productPriceBadgeList;
 	
-	@FindBy(xpath = "//product-results//div[contains(@class,'productItems')]//div[contains(@class,'productItemWrap')]//div[contains(@class,'priceDiv')]//span")
-	List<WebElement> productNowPriceList;
-	
+	@FindBy(xpath = "//product-results//div[contains(@class,'productItems')]//div[contains(@class,'productItemWrap')]//div[contains(@class,'videoIcon')]")
+	List<WebElement> productVideoIconList;
+		
 	@FindBy(xpath = "//product-results//div[contains(@class,'productItems')]//div[contains(@class,'productItemWrap')]//div[contains(@class,'priceDiv')]//del")
 	List<WebElement> productWasPriceList;
 	
@@ -113,6 +108,8 @@ public class ProductResultsPage extends BasePage{
 	
 	@FindBy(xpath = "//product-results//div[contains(@class,'productItems')]//div[contains(@class,'productItemWrap')]//div[contains(@class,'FreeShippingDiv')]")
 	List<WebElement> productFreeShippingList;
+	
+	
 	
 	//Pagination
 	@FindBy(xpath = "//product-results//nav[contains(@aria-label,'Page')]//li[contains(@id,'pages[') and not(contains(.,'...'))]")
@@ -398,13 +395,18 @@ public class ProductResultsPage extends BasePage{
 			}
 		}
 		else {
+			/*
 			if(lstBannerImage.size()>0) {
 				return "BannerImageSearch";
 			}
+			*/
+			return "BannerImageSearch";
 		}
 				
 		return "NormalSearch";		
 	}
+	
+	
 	
 	/**
 	 * This method will get encoding keyword.
@@ -446,6 +448,14 @@ public class ProductResultsPage extends BasePage{
 	 */	
 	public String[] splitSearchKeyword(String lsKeyword) {
 		return lsKeyword.trim().split(" ");
+	}
+	
+	/**
+	 * This method will get BannerImage list size.
+	 * @author Wei.Li
+	 */	
+	public int getBannerImageListSize() {
+		return this.lstBannerImage.size();
 	}
 }
 
