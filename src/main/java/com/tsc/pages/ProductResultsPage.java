@@ -83,6 +83,14 @@ public class ProductResultsPage extends BasePage{
 	
 	public By byProductNowPrice=By.xpath(".//div[contains(@class,'priceDiv')]//span");
 	
+	public By byProductEasyPay=By.xpath(".//div[contains(@class,'easyPay')]");
+	
+	public By byProductReview=By.xpath(".//div[contains(@class,'reviewDiv')]");
+	
+	public By byProductSwatch=By.xpath(".//div[@class='swatchWrapDiv']");
+	
+	public By byProductFreeShipping=By.xpath(".//div[contains(@class,'FreeShippingDiv')]");
+	
 	@FindBy(xpath = "//product-results//div[contains(@class,'productItems')]//div[contains(@class,'productItemWrap')]//div[contains(@class,'itemNo')]")
 	List<WebElement> productItemNOList;
 		
@@ -94,24 +102,7 @@ public class ProductResultsPage extends BasePage{
 		
 	@FindBy(xpath = "//product-results//div[contains(@class,'productItems')]//div[contains(@class,'productItemWrap')]//div[contains(@class,'priceDiv')]//del")
 	List<WebElement> productWasPriceList;
-	
-	@FindBy(xpath = "//product-results//div[contains(@class,'productItems')]//div[contains(@class,'productItemWrap')]//div[contains(@class,'easyPay')]")
-	List<WebElement> productEasyPayList;
-	
-	@FindBy(xpath = "//product-results//div[contains(@class,'productItems')]//div[contains(@class,'productItemWrap')]//div[contains(@class,'reviewDiv')]")
-	List<WebElement> productReviewList;
-	
-	@FindBy(xpath = "//product-results//div[contains(@class,'productItems')]//div[contains(@class,'productItemWrap')]//div[@class='swatchWrapDiv']")
-	List<WebElement> productColorSwatchList;
-	
-	@FindBy(xpath = "//product-results//div[contains(@class,'productItems')]//div[contains(@class,'productItemWrap')]//div[@class='swatchWrapDiv']//div[contains(@class,'swatchWrap')]//img")
-	List<WebElement> productColorSwatchImageList;
-	
-	@FindBy(xpath = "//product-results//div[contains(@class,'productItems')]//div[contains(@class,'productItemWrap')]//div[contains(@class,'FreeShippingDiv')]")
-	List<WebElement> productFreeShippingList;
-	
-	
-	
+			
 	//Pagination
 	@FindBy(xpath = "//product-results//nav[contains(@aria-label,'Page')]//li[contains(@id,'pages[') and not(contains(.,'...'))]")
 	List<WebElement> currentPageList;
@@ -247,62 +238,6 @@ public class ProductResultsPage extends BasePage{
 					return false;
 				}
 			}
-		}
-		return true;
-	}
-	
-	/**
-	 * This method will verify productEasyPay in searching result.
-	 * @return true/false
-	 * @author Wei.Li
-	 */
-	public boolean verifyProductEasyPay() {
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.txtShowingDynamicContent);
-		int pageSize=this.productResultList.size();
-		if(productEasyPayList.size()!=pageSize) {
-			return false;
-		}		
-		return true;
-	}
-	
-	/**
-	 * This method will verify productReview in searching result.
-	 * @return true/false
-	 * @author Wei.Li
-	 */
-	public boolean verifyProductReview() {
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.txtShowingDynamicContent);
-		int pageSize=this.productResultList.size();
-		if(productReviewList.size()!=pageSize) {
-			return false;
-		}		
-		return true;
-	}
-	
-	/**
-	 * This method will verify productSwatch in searching result.
-	 * @return true/false
-	 * @author Wei.Li
-	 */
-	public boolean verifyProductSwatch() {
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.txtShowingDynamicContent);
-		int pageSize=this.productResultList.size();
-		if(productColorSwatchList.size()!=pageSize) {
-			return false;
-		}
-		return true;
-	}
-	
-	/**
-	 * This method will verify productFreeShipping in searching result.
-	 * @return true/false
-	 * @author Wei.Li
-	 */
-	public boolean verifyProductFreeShipping() {
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.txtShowingDynamicContent);
-		int pageSize=this.productResultList.size();
-		if(productFreeShippingList.size()!=pageSize) {
-			return false;
 		}
 		return true;
 	}
