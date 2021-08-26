@@ -36,7 +36,8 @@ public class HP_TC01_Verify_ProductSearchResult extends BaseTest{
 	for(int i=0;i<keyWordSize;i++) {
 		getProductResultsPageThreadLocal().getSearchResultLoad(lskeywordList.get(i));
 		
-		String lsTestModel=getProductResultsPageThreadLocal().judgeTestModel();		
+		String lsTestModel=getProductResultsPageThreadLocal().judgeTestModel();	
+		System.out.println(lskeywordList.get(i)+":"+lsTestModel);
 		switch(lsTestModel) {
 		case "NormalSearch":
 			reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultUrl(lsSearchResultExpectedUrl,lskeywordList.get(i)), "Url of search result matches expected url", "Url of search result doesn't match expected url");
