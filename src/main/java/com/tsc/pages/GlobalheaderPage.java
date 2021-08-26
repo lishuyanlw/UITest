@@ -130,15 +130,6 @@ public class GlobalheaderPage extends BasePage{
 	@FindBy(xpath = "//div[@class='Header']//div[@id='megamenu']/ul/li")
 	List <WebElement> listFlyoutHeadings;
 	
-	@FindBy(xpath = "//div[@class='Header']//div[@id='megamenu']/ul/li//div[@class='flyout']//ul//li[1]")
-	List <WebElement> listFlyoutSubMenu;
-	
-	@FindBy(xpath = "//*[@class='email-popup__button']")
-	WebElement btnClose;
-	public void closeadd() {
-		btnClose.click();
-	}
-	
 	public void waitForPageLoad() {
 		getReusableActionsInstance().waitForPageLoad();
 		waitForCondition(Driver->{return !this.pageLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},30000);
@@ -539,6 +530,19 @@ public class GlobalheaderPage extends BasePage{
 	}
 	
 	
+	/*Method to get list of Flyout submenu
+	 * @return list:Flyout sub menu
+	 * @author Shruti Desai
+	 */
+	 public boolean validateFlyoutLinks(int headingNumber) {
+		WebElement WebElement=listFlyoutHeadings.get(headingNumber).findElement(By.xpath(".//a"));
+		getReusableActionsInstance().javascriptScrollByVisibleElement(WebElement);
+			if (!WebElement.getAttribute("href").isEmpty()) {
+				return true;
+			}
+				return false;
+		}
+	
 	/*Method to validate URL after clicking on category of Flyout heading
 	 *@return text: URL
 	 * @author Shruti Desai
@@ -549,4 +553,8 @@ public class GlobalheaderPage extends BasePage{
 	 	getReusableActionsInstance().clickWhenVisible(WebElement,5);
 	 		return (getDriver().getCurrentUrl());
 	}
+
+	
+	
 }
+
