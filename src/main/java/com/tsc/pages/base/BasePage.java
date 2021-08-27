@@ -109,7 +109,7 @@ import utils.ReusableActions;
 	/**
 	 * This method returns the ReusableActions class instance from the ThreadLocal
 	 */
-	protected ReusableActions getReusableActionsInstance() {
+	public ReusableActions getReusableActionsInstance() {
 		return reusableActionsThreadLocal.get();
 	}
 
@@ -117,7 +117,7 @@ import utils.ReusableActions;
 	 * This method return the Actions class instance from the ThreadLocal
 	 */
 
-	protected Actions getActionsInstance() {
+	public Actions getActionsInstance() {
 		return actionsThreadLocal.get();
 	}
 
@@ -370,5 +370,23 @@ import utils.ReusableActions;
         
         return list;
     }
+    
+    /**
+	 * This method will judge if ChildElement is visible.
+	 * @return true/false
+	 * @author Sachin.Sharma
+	 */	
+	public Boolean isChildElementVisible(WebElement element, String domProperty) {
+	   Object data = element.getAttribute(domProperty);
+	   if(data.equals("") || data == null) {
+	      return false;
+	   }
+	   if(data instanceof String) {
+	      return true;
+	   }else if(data instanceof Integer && ((Integer) data).intValue() > 1) {
+	      return true;
+	   }
+	   return false;
+	}
 
 }

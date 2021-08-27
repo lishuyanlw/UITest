@@ -15,11 +15,14 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.CacheLookup;
 import org.openqa.selenium.support.FindAll;
 
 import org.openqa.selenium.support.ui.ExpectedCondition;
@@ -38,6 +41,12 @@ public class ProductResultsPage extends BasePage{
 	@FindBy(xpath = "//product-results//div[contains(@class,'searchDiv')]")
 	WebElement lblSearchResultMessage;
 	
+	@FindBy(xpath = "//span[contains(@class,'tagDimTitle')]")
+	WebElement lblSearchResultTitle;
+	
+	@FindBy(xpath = "//div[contains(@class,'showstopper-wrapper')]//div[contains(@class,'item')]//div[contains(@class,'visible')]//img")
+	List<WebElement> lstBannerImage;
+	
 	//Selected filters
 	@FindBy(xpath = "//product-results//div[contains(@class,'col-md-showing')]//div[contains(@class,'filterPrpLabel')]//b")
 	WebElement lblShowing;
@@ -54,58 +63,46 @@ public class ProductResultsPage extends BasePage{
 	@FindBy(xpath = "//product-results//div[contains(@class,'col-md-items')]//form//div[contains(@class,'filterPrpLabel')]")
 	WebElement lblItemsPerPage;
 	
-	@FindBy(xpath = "//product-results//div[contains(@class,'col-md-items')]//form//div[contains(@class,'recordsDiv')]")
+	@FindBy(xpath = "//product-results//div[contains(@class,'search-filters-div')]//div[contains(@class,'col-md-items')]//select//option[1]|//product-results//div[contains(@class,'col-md-items')]//form//div[contains(@class,'recordsDiv')]")
 	WebElement lblItemPerPageDefaultSettingNumber;
-	
-	@FindBy(xpath = "//product-results//div[contains(@class,'col-md-items')]//form//select//option")
-	List<WebElement> itemPerPageOptionList;
-	
+			
 	//Product results
 	@FindBy(xpath = "//div[@class='Footer']//div[contains(@class,'blockPageWrap')]")
 	WebElement productResultLoadingIndicator;
 	
 	@FindBy(xpath = "//product-results//div[contains(@class,'productItems')]//div[contains(@class,'productItemWrap')]")
 	List<WebElement> productResultList;
+				
+	public By byProductHref=By.xpath(".//a");
 	
-	@FindBy(xpath = "//product-results//div[contains(@class,'productItems')]//div[contains(@class,'badgeWrap')]")
-	List<WebElement> productPriceBadgeList;
+	public By byProductImage=By.xpath(".//div[contains(@class,'imgEmbedContainer')]//img[@class='productImg']");
 	
-	@FindBy(xpath = "//product-results//div[contains(@class,'productItems')]//a")
-	List<WebElement> productHrefList;
+	public By byProductName=By.xpath(".//div[contains(@class,'nameDiv')]");
 	
-	@FindBy(xpath = "//product-results//div[contains(@class,'productItems')]//div[contains(@class,'productItemWrap')]//div[contains(@class,'imgEmbedContainer')]//img[@class='productImg']")
-	List<WebElement> productImageList;
+	public By byProductItemNO=By.xpath(".//div[contains(@class,'itemNo')]");
 	
-	@FindBy(xpath = "//product-results//div[contains(@class,'productItems')]//div[contains(@class,'productItemWrap')]//div[contains(@class,'videoIcon')]")
-	List<WebElement> productVedioIconList;
+	public By byProductNowPrice=By.xpath(".//div[contains(@class,'priceDiv')]//span");
 	
-	@FindBy(xpath = "//product-results//div[contains(@class,'productItems')]//div[contains(@class,'productItemWrap')]//div[contains(@class,'nameDiv')]")
-	List<WebElement> productNameList;
+	public By byProductEasyPay=By.xpath(".//div[contains(@class,'easyPay')]");
+	
+	public By byProductReview=By.xpath(".//div[contains(@class,'reviewDiv')]");
+	
+	public By byProductSwatch=By.xpath(".//div[@class='swatchWrapDiv']");
+	
+	public By byProductFreeShipping=By.xpath(".//div[contains(@class,'FreeShippingDiv')]");
 	
 	@FindBy(xpath = "//product-results//div[contains(@class,'productItems')]//div[contains(@class,'productItemWrap')]//div[contains(@class,'itemNo')]")
 	List<WebElement> productItemNOList;
+		
+	@FindBy(xpath = "//product-results//div[contains(@class,'productItems')]//div[contains(@class,'badgeWrap')]")
+	List<WebElement> productPriceBadgeList;
 	
-	@FindBy(xpath = "//product-results//div[contains(@class,'productItems')]//div[contains(@class,'productItemWrap')]//div[contains(@class,'priceDiv')]//span")
-	List<WebElement> productNowPriceList;
-	
+	@FindBy(xpath = "//product-results//div[contains(@class,'productItems')]//div[contains(@class,'productItemWrap')]//div[contains(@class,'videoIcon')]")
+	List<WebElement> productVideoIconList;
+		
 	@FindBy(xpath = "//product-results//div[contains(@class,'productItems')]//div[contains(@class,'productItemWrap')]//div[contains(@class,'priceDiv')]//del")
 	List<WebElement> productWasPriceList;
-	
-	@FindBy(xpath = "//product-results//div[contains(@class,'productItems')]//div[contains(@class,'productItemWrap')]//div[contains(@class,'easyPay')]")
-	List<WebElement> productEasyPayList;
-	
-	@FindBy(xpath = "//product-results//div[contains(@class,'productItems')]//div[contains(@class,'productItemWrap')]//div[contains(@class,'reviewDiv')]")
-	List<WebElement> productReviewList;
-	
-	@FindBy(xpath = "//product-results//div[contains(@class,'productItems')]//div[contains(@class,'productItemWrap')]//div[@class='swatchWrapDiv']")
-	List<WebElement> productColorSwatchList;
-	
-	@FindBy(xpath = "//product-results//div[contains(@class,'productItems')]//div[contains(@class,'productItemWrap')]//div[@class='swatchWrapDiv']//div[contains(@class,'swatchWrap')]//img")
-	List<WebElement> productColorSwatchImageList;
-	
-	@FindBy(xpath = "//product-results//div[contains(@class,'productItems')]//div[contains(@class,'productItemWrap')]//div[contains(@class,'FreeShippingDiv')]")
-	List<WebElement> productFreeShippingList;
-	
+			
 	//Pagination
 	@FindBy(xpath = "//product-results//nav[contains(@aria-label,'Page')]//li[contains(@id,'pages[') and not(contains(.,'...'))]")
 	List<WebElement> currentPageList;
@@ -127,24 +124,14 @@ public class ProductResultsPage extends BasePage{
 	 */
 	public boolean getSearchResultLoad(String searchKeyword) {		
 		GlobalheaderPage globalHeader=new GlobalheaderPage(this.getDriver());
-				
+		getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeader.searchBox);		
 		this.clearContent(globalHeader.searchBox);	
 		globalHeader.searchBox.sendKeys(searchKeyword);
 		globalHeader.btnSearchSubmit.click();
 		
 		return waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},30000);
-		
 	}
-	
-	/**
-	 * This method will verify Url of search result.
-	 * @return true/false
-	 * @author Wei.Li
-	 */
-	public boolean verifySearchResultUrl(String expectedURL) {				
-		return this.getDriver().getCurrentUrl().equalsIgnoreCase(expectedURL);		
-	}
-	
+
 	/**
 	 * This method will verify Showing text pattern in filters.
 	 * @return true/false
@@ -162,10 +149,14 @@ public class ProductResultsPage extends BasePage{
 	 * @return true/false
 	 * @author Wei.Li
 	 */
-	public boolean verifySearchResultMessage(List<String> expectedMessage) {
+	public boolean verifySearchResultMessage(List<String> expectedMessage,String lsKeyword) {		
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSearchResultMessage);
+		
 		String lsMessage=this.lblSearchResultMessage.getText().trim();	
-		for(String message:expectedMessage) {
+		if(!lsMessage.contains(lsKeyword)) {
+			return false;		
+		}
+		for(String message:expectedMessage) {			
 			if(!lsMessage.contains(message)) {
 				return false;
 			}
@@ -179,11 +170,11 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	public boolean verifySearchResultPageNumberDefaultSetting(String defaultSettingPageNumber) {
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSearchResultMessage);
-						
-		return this.lblItemPerPageDefaultSettingNumber.getText().trim().equalsIgnoreCase(defaultSettingPageNumber);		
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblItemsPerPage);
+		
+		return lblItemPerPageDefaultSettingNumber.getText().trim().equalsIgnoreCase(defaultSettingPageNumber);
 	}
-	
+		
 	/**
 	 * This method will verify PriceBadge in searching result.
 	 * @return true/false
@@ -205,133 +196,26 @@ public class ProductResultsPage extends BasePage{
 	}
 	
 	/**
-	 * This method will verify productHref in searching result.
-	 * @return true/false
+	 * This method will return Product list on the current page.	  
 	 * @author Wei.Li
 	 */
-	public boolean verifyProductHref() {
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.txtShowingDynamicContent);
-		int pageSize=this.productResultList.size();
-		if(productHrefList.size()!=pageSize) {
-			return false;
-		}
-		else {
-			getReusableActionsInstance().javascriptScrollByVisibleElement(productResultList.get(0));
-			for(WebElement item: productHrefList) {	
-				getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-				if(item.getAttribute("href").isEmpty()) {
-					return false;
-				}
-			}
-		}
-		return true;
+	public List<WebElement> getProductList(){
+		return productResultList;
 	}
 	
 	/**
-	 * This method will verify productImage in searching result.
+	 * This method will verify priceVideoIcon in searching result.
 	 * @return true/false
 	 * @author Wei.Li
 	 */
-	public boolean verifyProductImage() {
+	public boolean verifyProductVideoIcon() {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.txtShowingDynamicContent);
-		int pageSize=this.productResultList.size();
-		if(productImageList.size()!=pageSize) {
-			return false;
-		}
-		else {
+		if(productVideoIconList.size()>0) {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(productResultList.get(0));
-			for(WebElement item: productImageList) {	
-				getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-				if(item.getAttribute("src").isEmpty()) {
-					return false;
-				}
-			}
-		}
-		return true;
-	}
-	
-	/**
-	 * This method will verify priceVedioIcon in searching result.
-	 * @return true/false
-	 * @author Wei.Li
-	 */
-	public boolean verifyProductVedioIcon() {
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.txtShowingDynamicContent);
-		if(productVedioIconList.size()>0) {
-			getReusableActionsInstance().javascriptScrollByVisibleElement(productResultList.get(0));
-			for(WebElement item: productVedioIconList) {
+			for(WebElement item: productVideoIconList) {
 				getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 				WebElement link=item.findElement(By.xpath(".//*[name()='use']"));
 				if(!link.isDisplayed()) {
-					return false;
-				}
-			}
-		}
-		return true;
-	}
-	
-	/**
-	 * This method will verify productName in searching result.
-	 * @return true/false
-	 * @author Wei.Li
-	 */
-	public boolean verifyProductName() {
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.txtShowingDynamicContent);
-		int pageSize=this.productResultList.size();
-		if(productNameList.size()!=pageSize) {
-			return false;
-		}
-		else {
-			getReusableActionsInstance().javascriptScrollByVisibleElement(productResultList.get(0));
-			for(WebElement item: productNameList) {	
-				getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-				if(item.getText().isEmpty()) {
-					return false;
-				}
-			}
-		}
-		return true;
-	}
-	
-	/**
-	 * This method will verify productItemNO in searching result.
-	 * @return true/false
-	 * @author Wei.Li
-	 */
-	public boolean verifyProductItemNO() {
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.txtShowingDynamicContent);
-		int pageSize=this.productResultList.size();
-		if(productItemNOList.size()!=pageSize) {
-			return false;
-		}
-		else {
-			getReusableActionsInstance().javascriptScrollByVisibleElement(productResultList.get(0));
-			for(WebElement item: productItemNOList) {
-				getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-				if(item.getText().isEmpty()) {
-					return false;
-				}
-			}
-		}
-		return true;
-	}
-	
-	/**
-	 * This method will verify productNowPrice in searching result.
-	 * @return true/false
-	 * @author Wei.Li
-	 */
-	public boolean verifyProductNowPrice() {
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.txtShowingDynamicContent);
-		int pageSize=this.productResultList.size();
-		if(productNowPriceList.size()!=pageSize) {
-			return false;
-		}
-		else {
-			getReusableActionsInstance().javascriptScrollByVisibleElement(productResultList.get(0));
-			for(WebElement item: productNowPriceList) {	
-				getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-				if(item.getText().isEmpty()) {
 					return false;
 				}
 			}
@@ -357,95 +241,7 @@ public class ProductResultsPage extends BasePage{
 		}
 		return true;
 	}
-	
-	/**
-	 * This method will verify productEasyPay in searching result.
-	 * @return true/false
-	 * @author Wei.Li
-	 */
-	public boolean verifyProductEasyPay() {
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.txtShowingDynamicContent);
-		int pageSize=this.productResultList.size();
-		if(productEasyPayList.size()!=pageSize) {
-			return false;
-		}
-		else {
-			getReusableActionsInstance().javascriptScrollByVisibleElement(productResultList.get(0));
-			for(WebElement item: productEasyPayList) {	
-				getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-				if(item.getText().isEmpty()) {
-					return false;
-				}
-			}
-		}
-		return true;
-	}
-	
-	/**
-	 * This method will verify productReview in searching result.
-	 * @return true/false
-	 * @author Wei.Li
-	 */
-	public boolean verifyProductReview() {
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.txtShowingDynamicContent);
-		int pageSize=this.productResultList.size();
-		if(productReviewList.size()!=pageSize) {
-			return false;
-		}
-		else {
-			getReusableActionsInstance().javascriptScrollByVisibleElement(productResultList.get(0));
-			for(WebElement item: productReviewList) {	
-				getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-				if(item.getText().isEmpty()) {
-					return false;
-				}
-			}
-		}
-		return true;
-	}
-	
-	/**
-	 * This method will verify productSwatch in searching result.
-	 * @return true/false
-	 * @author Wei.Li
-	 */
-	public boolean verifyProductSwatch() {
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.txtShowingDynamicContent);
-		int pageSize=this.productResultList.size();
-		if(productColorSwatchList.size()!=pageSize) {
-			return false;
-		}
-		return true;
-	}
-	
-	/**
-	 * This method will verify productFreeShipping in searching result.
-	 * @return true/false
-	 * @author Wei.Li
-	 */
-	public boolean verifyProductFreeShipping() {
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.txtShowingDynamicContent);
-		int pageSize=this.productResultList.size();
-		if(productFreeShippingList.size()!=pageSize) {
-			return false;
-		}
-		return true;
-	}
-
-	/**
-	 * This method will return <items per page> value when there is a dropdown menu.
-	 * @return int: the value of items per page
-	 * @author Wei.Li
-	 */
-	public int getItemsPerPageValue() {
-		Select select = new Select(this.getDriver().findElement(By. xpath("//product-results//div[contains(@class,'col-md-items')]//form//select")));
-		WebElement option = select.getFirstSelectedOption();
-		String defaultItem = option.getText();
-		System.out.println(defaultItem);
 		
-		return Integer.parseInt(defaultItem);
-	}
-	
 	/**
 	 * This method will return search result account.	  
 	 * @author Wei.Li
@@ -461,6 +257,7 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	public boolean VerifySearchResultWithProductItemNO(String lsexpectedItemNO) {
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.productItemNOList.get(0));
 		for(WebElement item: this.productItemNOList) {
 			String lsItem=item.getText();
 			List<String> list=this.getNumberFromString(lsItem);
@@ -476,5 +273,137 @@ public class ProductResultsPage extends BasePage{
 		return true;			
 	}
 	
+	/**
+	 * This method will verify if Banner image src is search keyword related.	  
+	 * @author Wei.Li
+	 */
+	public boolean verifyBannerImageContainSpecificWord(String lsSpecificWord) {
+		String[] lsList=this.splitSearchKeyword(lsSpecificWord);
+		for(WebElement element : this.lstBannerImage) {
+			String lsSrc=element.getAttribute("src").toLowerCase();
+			for(String item:lsList) {
+				if(lsSrc.contains(item.toLowerCase())) {
+					return true;
+				}			
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * This method will return search result page title.	  
+	 * @author Wei.Li
+	 */
+	public String getProductResultPageTitle() {
+		if(getReusableActionsInstance().isElementVisible(this.lblSearchResultTitle)) {
+			getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSearchResultTitle);
+			return this.lblSearchResultTitle.getText().trim();
+		}
+		return "NoTitle";		
+	}
+	
+	/**
+	 * This method will judge test model for different scenarios.	
+	 * @return String: test model 
+	 * @author Wei.Li
+	 */
+	public String judgeTestModel() {
+		String lsUrl=this.URL();
+		if(lsUrl.contains("dimensions=0&")) {
+			if(getReusableActionsInstance().isElementVisible(this.lblSearchResultMessage)) {
+				getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSearchResultMessage);
+				if(this.lblSearchResultMessage.getText().contains("We couldn")) {
+					return "SpecialCharacterSearch";
+				}
+				else {					
+					if(getReusableActionsInstance().isElementVisible(this.lblShowing)) {
+						if(this.getProductResultCount()!=1) {
+							return "NormalSearch";
+						}
+						else {
+							return "ProductNumberSearch";
+						}
+					}				
+				}
+			}
+		}
+		else {
+			/*
+			if(lstBannerImage.size()>0) {
+				return "BannerImageSearch";
+			}
+			*/
+			return "BannerImageSearch";
+		}
+				
+		return "NormalSearch";		
+	}
+	
+	
+	
+	/**
+	 * This method will get encoding keyword.
+	 * @param String lsKeyword: input keyword
+	 * @return encoded keyword 
+	 * @author Wei.Li
+	 */
+	public String getEncodingKeyword(String lsKeyword) {
+		if(!lsKeyword.trim().contains(" ")) {
+			return lsKeyword.trim();
+		}
+		
+		String lsUrl=this.URL();
+		if(lsUrl.contains("dimensions=0&")) {
+			return lsKeyword.trim().replace(" ","%20");
+		}
+		else {
+			return lsKeyword.trim().replace(" ","%2B");
+		}
+	}
+	
+	/**
+	 * This method will verify Url of search result.
+	 * @return true/false
+	 * @author Wei.Li
+	 */
+	public boolean verifySearchResultUrl(String lsPattern, String lsKeyword) {
+		String lsEncodingKeyword=getEncodingKeyword(lsKeyword);
+		String lsMatchPattern=(new BasePage(this.getDriver())).getBaseURL()+lsPattern+lsEncodingKeyword;
+				
+		return this.URL().matches(lsMatchPattern);		
+	}
+	
+	/**
+	 * This method will split keyword using space.
+	 * @param String lsKeyword: input keyword
+	 * @return split array
+	 * @author Wei.Li
+	 */	
+	public String[] splitSearchKeyword(String lsKeyword) {
+		return lsKeyword.trim().split(" ");
+	}
+	
+	/**
+	 * This method will get BannerImage list size.
+	 * @author Wei.Li
+	 */	
+	public int getBannerImageListSize() {
+		return this.lstBannerImage.size();
+	}
+	
+	/**
+	 * This method will verify the element existence with content.
+	 * 
+	 * @author Wei.Li
+	 */	
+	public boolean verifyElementExistenceWithContent(WebElement element,String domProperty) {
+		if(this.isChildElementVisible(element,domProperty)) {
+			return this.getReusableActionsInstance().isElementVisible(element);
+		}
+		else {
+			return this.getReusableActionsInstance().isElementVisible(element);
+		}
+	}
 }
+
 	
