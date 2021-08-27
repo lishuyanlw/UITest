@@ -14,13 +14,13 @@ public class HP_TC02_Global_Header_Verify_FlyoutHeadings extends BaseTest {
 	
 		@Test(groups={"Home","Regression"})	    
 		public void verifyFlyoutHeadings() throws IOException {
-			
+			getglobalheaderPageThreadLocal().closeadd();
 		String lsBaseUrl=(new BasePage(this.getDriver())).getBaseURL();
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl+"/"), "TSC url is correct", "TSC url is incorrect");
 		reporter.reportLogWithScreenshot("Home Page");
 		reporter.reportLog("Validating Flyouts all departments & it's URL after Clicking each category");
 		
-		String FOHeading,lsUrl,lsYmlNotFound,lsYmlFullUrl,lsSuccessResult, lsFailResult;
+		String FOHeading,lsUrl,lsYmlNotFound,lsSuccessResult, lsFailResult;
 		lsYmlNotFound=TestDataHandler.constantDataVariables.getlnk_NotFound();
 
 		for(int i=0; i<getglobalheaderPageThreadLocal().getFlyoutHeadingCount(); i++) {

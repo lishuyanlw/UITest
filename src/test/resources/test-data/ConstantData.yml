@@ -23,8 +23,7 @@ lbl_SearchBoxPlaceholder: Search
 lbl_MinicartLinkName: Bag
 lnk_MinicarLink: /pages/shoppingcart
 lst_FlyoutHeading: ['FASHION','SHOES & HANDBAGS', 'JEWELLERY', 'BEAUTY', 'HOME & GARDEN', 'KITCHEN', 'HEALTH & FITNESS', 'ELECTRONICS', 'COINS & HOBBIES', 'CLEARANCE']
-lnk_FlyoutLink : /pages/category?nav=n
-lst_FlyoutsubMenu : ['SHOP BY PRODUCT', 'SPECIALTY SHOPS', 'LUGGAGE', 'SPECIAL PRICING', 'SHOP BY METAL', 'SHOP BY STONE', 'WELLNESS', 'SHOP PET BOUTIQUE', 'SHOP BY ROOM', 'SHOP SPORTS', 'TRAVEL', 'SPORTSNET SHOP', 'VITAMIN SELECTOR', 'SHOP COINS', 'SHOP BY PRICE', 'VIEW ALL >', 'FEATURED BRANDS']
+lnk_FlyoutLink: /pages/category?nav=n
 lbl_OnAirNow: ON AIR NOW
 lbl_RecentlyAir: RECENTLY AIRED
 lnk_RecentlyAir: /pages/productdetails?nav

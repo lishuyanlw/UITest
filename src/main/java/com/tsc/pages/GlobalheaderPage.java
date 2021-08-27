@@ -130,6 +130,12 @@ public class GlobalheaderPage extends BasePage{
 	@FindBy(xpath = "//div[@class='Header']//div[@id='megamenu']/ul/li")
 	List <WebElement> listFlyoutHeadings;
 	
+	@FindBy(xpath = "//*[@class='email-popup__button']")
+	WebElement btnClose;
+	public void closeadd() {
+		btnClose.click();
+	}
+	
 	public void waitForPageLoad() {
 		getReusableActionsInstance().waitForPageLoad();
 		waitForCondition(Driver->{return !this.pageLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},30000);

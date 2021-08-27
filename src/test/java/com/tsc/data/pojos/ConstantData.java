@@ -33,7 +33,7 @@ public class ConstantData {
 	private String lbl_MinicartLinkName;
 	private String lnk_MinicarLink;
 	private List<String> lst_FlyoutHeading;
-	private List<String> lst_FlyoutLinks;
+	private String lnk_FlyoutLink;
 	private String lbl_OnAirNow;
 	private String lbl_RecentlyAir;
 	private String lnk_RecentlyAir;
@@ -368,16 +368,16 @@ public class ConstantData {
 		this.lst_FlyoutHeading = lst_FlyoutHeading;
 	}
 	/**
-	 * @return the lst_FlyoutLinks
+	 * @return the lnk_FlyoutLink
 	 */
-	public List<String> getlst_FlyoutLinks() {
-		return lst_FlyoutLinks;
+	public String getlnk_FlyoutLink() {
+		return lnk_FlyoutLink;
 	}
 	/**
-	 * @param lst_FlyoutLinks the lst_FlyoutLinks to set
+	 * @param lnk_FlyoutLink the lnk_FlyoutLink to set
 	 */
-	public void setlst_FlyoutLinks(List<String> lst_FlyoutLinks) {
-		this.lst_FlyoutLinks = lst_FlyoutLinks;
+	public void setlnk_FlyoutLink(String lnk_FlyoutLink) {
+		this.lnk_FlyoutLink = lnk_FlyoutLink;
 	}
 	/**
 	 * @return the lbl_OnAirNow

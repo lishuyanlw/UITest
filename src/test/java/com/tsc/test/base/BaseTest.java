@@ -40,7 +40,7 @@ import utils.Reporter;
 public class BaseTest {
 
 	protected static Reporter reporter;
-	//protected HashMap<String, String> xmlTestParameters;
+	protected HashMap<String, String> xmlTestParameters;
 	Map<String, String> sauceParameters;
 	protected BrowserDrivers browserDrivers;
 	protected String suiteName;
@@ -114,11 +114,11 @@ public class BaseTest {
 		RunParameters = getExecutionParameters(strBrowser, strLanguage);
 		strBrowser = RunParameters.get("Browser").toLowerCase();
 		strLanguage = RunParameters.get("Language").toLowerCase();
-/*
+
 		if (strBrowser.toLowerCase().contains("sauce")) { 
 			sauceParameters =	initializeSauceParamsMap(strBrowser); 
 			}
-		*/
+		
 		webDriverThreadLocal.set(browserDrivers.driverInit(strBrowser, sauceParameters, currentTestMethodName, ""));
 		getDriver().get(strUrl);
 		if (!strBrowser.toLowerCase().contains("android") && !strBrowser.toLowerCase().contains("ios")
@@ -136,11 +136,11 @@ public class BaseTest {
 	 *
 	 * @return HashMap of test parameters
 	 **/
-	/*
+	
 	public HashMap<String, String> getXMLParameters() {
 		return xmlTestParameters;
 	}
-	*/
+	
 
 	/**
 	 * Declare the sauce capabilities as ENUM type
@@ -179,13 +179,13 @@ public class BaseTest {
 		TestParameters.put("Language", strLanguage);
 		return TestParameters;
 	}
-/*
+
 	@BeforeSuite(alwaysRun = true)
 	public void beforeSuite() throws FileNotFoundException {
 		TestDataHandler.dataInit();
 		System.out.println("Data File initialized at before Suite");
 	}
-*/
+
 	@BeforeMethod(alwaysRun = true)
 	@Parameters({ "strBrowser", "strLanguage" })
 	public void beforeTest(@Optional("chrome") String strBrowser, @Optional("en") String strLanguage,
@@ -215,10 +215,6 @@ public class BaseTest {
 	public void validateText(String strActualText, String strExpectedText, String validationMsg) {
 	reporter.softAssert(strExpectedText.equals(strActualText), validationMsg + ":" + " Expected=" + strExpectedText +  " ; Actual="+ strActualText ,validationMsg + " expected=" + strExpectedText +  "; actual="+ strActualText);
 	}
-/*
-	public void validateText(String strActualText, String strExpectedText, String validationMsg) {
-	reporter.softAssert(strExpectedText.equals(strActualText), validationMsg + ":" + " Expected=" + strExpectedText +  " ; Actual="+ strActualText ,validationMsg + " expected=" + strExpectedText +  "; actual="+ strActualText);
-	}*/
 
 	/**
 	 * This method will initialize a hash map with the sauce parameters
@@ -227,7 +223,7 @@ public class BaseTest {
 	 * @return Hash map with sauce capabilities
 	 * @author Mirza.Kamran
 	 */
-	/*
+	
 	private Map<String, String> initializeSauceParamsMap(String strBrowser) {
 		Map<String, String> sauceOptions = new HashMap<>();
 		sauceOptions.put(SauceCapabilities.seleniumVersion.toString(), TestDataHandler.sauceSettings.getSauceOptions().getSeleniumVersion());
@@ -272,5 +268,5 @@ public class BaseTest {
 		return sauceOptions;
 	}
 	
-	*/
+	
 }
