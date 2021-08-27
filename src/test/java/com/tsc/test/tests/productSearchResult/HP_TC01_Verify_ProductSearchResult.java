@@ -27,7 +27,7 @@ public class HP_TC01_Verify_ProductSearchResult extends BaseTest{
 	reporter.softAssert(getglobalheaderPageThreadLocal().validateURL((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");		
 	reporter.reportLogWithScreenshot("ProductSearch Page");
 	
-	List<String> lskeywordList=TestDataHandler.constantDataVariables.getlst_SearchKeyword();
+	List<String> lskeywordList=TestDataHandler.constantDataVariables.getlst_SearchKeyword();	
 	String lsSearchResultExpectedUrl=TestDataHandler.constantDataVariables.getlbl_SearchResultExpectedUrl();
 	List<List<String>> lstSearchResultMessage=TestDataHandler.constantDataVariables.getlst_SearchResultMessage();
 	String lsSearchResultPageDefaultSetting=TestDataHandler.constantDataVariables.getlbl_SearchResultPageDefaultSetting();
@@ -70,6 +70,18 @@ public class HP_TC01_Verify_ProductSearchResult extends BaseTest{
 			verifySearchResultContent();
 			break;		
 		}
+	}
+	
+	List<String> lskeywordDropdownList=TestDataHandler.constantDataVariables.getlst_SearchKeyword_DropDown();
+	int keyWordDropdownSize=lskeywordDropdownList.size();
+	for(int i=0;i<keyWordDropdownSize;i++) {
+		getProductResultsPageThreadLocal().selectSearchResultListInDropdownMenu(lskeywordDropdownList.get(i),0);
+		System.out.println(lskeywordDropdownList.get(i));
+		
+		reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(), "Showing text pattern in filters is correct", "Showing text pattern in filters is incorrect");
+		reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting), "The default setting of items per page is "+lsSearchResultPageDefaultSetting, "The default setting of items per page isn't "+lsSearchResultPageDefaultSetting);
+		reporter.softAssert(getProductResultsPageThreadLocal().verifyPageTitleForDropdown(), "Search result page title is dispalyed as search keyword in dropdown menu", "Search result page title is not dispalyed as search keyword in dropdown menu");
+		verifySearchResultContent();
 	}
 }
 	

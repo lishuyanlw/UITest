@@ -35,8 +35,9 @@ public class GlobalheaderPage extends BasePage{
 		super(driver);
 	}
 
+	//Product results
 	@FindBy(xpath = "//div[@class='Footer']//div[contains(@class,'blockPageWrap')]")
-	WebElement pageLoadingIndicator;
+	WebElement productResultLoadingIndicator;
 	
 	//Sliver Links [Dynamic event, TS, Deals, OnAir, Program Guide, Watch Us Live]
 	@FindBy(xpath = "//*[@class='Sliver']//a[contains(@href, 'todaysshowstopper')]")
@@ -123,7 +124,7 @@ public class GlobalheaderPage extends BasePage{
 
 	public void waitForPageLoad() {
 		getReusableActionsInstance().waitForPageLoad();
-		waitForCondition(Driver->{return !this.pageLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},30000);
+		waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},30000);
 	}	
 	
 	public boolean validateURL(String strExpectedUrl) {
@@ -430,24 +431,6 @@ public class GlobalheaderPage extends BasePage{
 	public String getUrlAfterClickingMiniCartLink() throws IOException {
 		getReusableActionsInstance().javascriptScrollToTopOfPage();
 		return waitForPageLoadingByUrlChange(this.Minicartlnk);		
-	}
-	
-	/**
-	 * This method will get search result list.
-	 * 
-	 * @param String lsKeyword: search keyword
-	 *
-	 * @return List<WebElement>: search dropdown menu list
-	 * 
-	 * @author Wei.Li
-	 */
-	public List<WebElement> getSearchResultList(String lsKeyword) {
-		pressEscapeKey();		
-		this.clearContent(searchBox);		
-		searchBox.sendKeys(lsKeyword);		
-		waitForCondition(Driver->{return ctnSearchResult.getAttribute("class").contains("suggestions-container--open");},30000);
-		
-		return this.searchResultList;			
 	}
 	
 	/**

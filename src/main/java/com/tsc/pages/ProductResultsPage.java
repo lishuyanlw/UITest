@@ -116,7 +116,9 @@ public class ProductResultsPage extends BasePage{
 	WebElement btnNextPage;
 	
 	By byNextPageButton=By.xpath("//product-results//nav[contains(@aria-label,'Page')]//li[contains(@class,'next')]//span");
-		
+	
+	public String searchkeyword;
+	
 	/**
 	 * This method will load product searching result.
 	 * @return true/false
@@ -131,7 +133,45 @@ public class ProductResultsPage extends BasePage{
 		
 		return waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},30000);
 	}
+	
+	/**
+	 * This method will get search results through dropdown menu.
+	 * @param String lsKeyword:input keyword
+	 * @param int optionIndex: selected index in dropdwon menu
+	 * @return true/false
+	 * @author Wei.Li
+	 */
+	public boolean selectSearchResultListInDropdownMenu(String lsKeyword,int optionIndex) {
+		List<WebElement> elementList=getSearchDropdownResultList(lsKeyword);
+		this.searchkeyword=elementList.get(optionIndex).getText();
+		elementList.get(optionIndex).click(); 			
+		
+		return waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},30000);
+	}
+	
+	public boolean verifyPageTitleForDropdown() {
+		String[] lstItem=this.searchkeyword.trim().split(" ");
+		String lastWord=lstItem[lstItem.length-1];
+		return lastWord.toUpperCase().equalsIgnoreCase(this.lblSearchResultTitle.getText().trim().toUpperCase());
+	}
 
+	/**
+	 * This method will get search result list.
+	 * @param String lsKeyword: search keyword
+	 * @return List<WebElement>: search dropdown menu list
+	 * @author Wei.Li
+	 */
+	public List<WebElement> getSearchDropdownResultList(String lsKeyword) {
+		GlobalheaderPage globalHeader=new GlobalheaderPage(this.getDriver());
+		getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeader.searchBox);
+		pressEscapeKey();		
+		this.clearContent(globalHeader.searchBox);		
+		globalHeader.searchBox.sendKeys(lsKeyword);		
+		waitForCondition(Driver->{return globalHeader.ctnSearchResult.getAttribute("class").contains("suggestions-container--open");},30000);
+		
+		return globalHeader.searchResultList;			
+	}
+	
 	/**
 	 * This method will verify Showing text pattern in filters.
 	 * @return true/false
