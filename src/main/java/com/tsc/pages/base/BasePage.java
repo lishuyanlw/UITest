@@ -350,7 +350,7 @@ import utils.ReusableActions;
 	public String URL() {
 		return getDriver().getCurrentUrl();
 	}
-	
+
 	/**
 	 * This method will extract number in a target string.
 	 * @param String lsTarget: target string

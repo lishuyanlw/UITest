@@ -120,7 +120,19 @@ public class GlobalheaderPage extends BasePage{
 	
 	@FindBy(xpath = "//*[@class='Header']//div[@id='bagCounter']")
 	WebElement CartBagCounter;
-
+	/*
+	 * @author Shruti.Desai
+	 *Flyouts Sub Menu
+	 */
+	@FindBy(xpath = "//div[@class='Header']//div[@id='megamenu']/ul/li")
+	List <WebElement> listFlyoutHeadings;
+	
+	@FindBy(xpath = "//*[@class='email-popup__button']")
+	WebElement btnClose;
+	public void closeadd() {
+		btnClose.click();
+	}
+	
 	public void waitForPageLoad() {
 		getReusableActionsInstance().waitForPageLoad();
 		waitForCondition(Driver->{return !this.pageLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},30000);
@@ -499,4 +511,45 @@ public class GlobalheaderPage extends BasePage{
 		getReusableActionsInstance().javascriptScrollToTopOfPage();
 		return waitForPageLoadingByUrlChange(this.lnkWatchUsLive);
 	}
+	
+	/*
+	 * @author Shruti.Desai
+	 *Flyouts Sub Menu
+	 */
+
+	/*Method to get Flyouts Headings count 
+	 * @return number of Flyouts Headings
+	 * @author Shruti Desai
+	 */
+	public int getFlyoutHeadingCount() {
+		return listFlyoutHeadings.size();
+	}
+	
+	/*Method to get lable of Flyout headings
+	 * @return text:Flyout Headings
+	 * @author Shruti Desai
+	 */
+	public String getFlyoutHeadings(int headingNumber) { 
+		WebElement WebElement=listFlyoutHeadings.get(headingNumber).findElement(By.xpath(".//span"));
+	 	getReusableActionsInstance().javascriptScrollByVisibleElement(WebElement); 
+	 		return WebElement.getText(); 
+	}
+			
+	/*Method to get list of Flyout submenu
+	 * @return list:Flyout sub menu
+	 * @author Shruti Desai
+	 */
+	public List<String> getListSubMenu(int headingNumber) { 
+		WebElement WebElement=listFlyoutHeadings.get(headingNumber).findElement(By.xpath(".//span"));
+		getReusableActionsInstance().scrollToElement(WebElement);	
+		List<WebElement> SubMenu=listFlyoutHeadings.get(headingNumber).findElements(By.xpath(".//div[@class='flyout']//ul//li//b"));
+		getReusableActionsInstance().waitForAllElementsVisible(SubMenu, 3);
+		List<String> SubMenulist =new ArrayList<String>();
+		 		for(WebElement e : SubMenu) {
+		 			SubMenulist.add(e.getText());
+		 		}
+		 
+	 		return SubMenulist;
+	}
+
 }
