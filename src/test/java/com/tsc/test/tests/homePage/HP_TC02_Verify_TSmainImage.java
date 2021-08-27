@@ -16,7 +16,7 @@ import com.tsc.test.base.BaseTest;
 	//reporter.softAssert(getglobalheaderPageThreadLocal().validateURL("https://qa-tsc.tsc.ca/"), "TSC url is correct", "TSC url is incorrect");
 	//reporter.reportLogWithScreenshot("Home Page");
 
-	
+	/*
 	 
 	
 	 validateText(homePageThreadLocal().validateTSimagesection(),"Today's Showstopper TM Offers","TS Main image bottom Section");
@@ -28,6 +28,6 @@ import com.tsc.test.base.BaseTest;
 		 reporter.reportLog(homePageThreadLocal().validateTSimageLinks(i));
 
 
-	 	}
+	 	}*/
 	}
 }

@@ -7,7 +7,7 @@ import org.testng.annotations.Test;
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
-public class HP_TC02_Global_Header_Verify_FlyoutSubMenu extends BaseTest {
+public class HP_TC02_GlobalHeader_VerifyFlyoutsSubMenuItems extends BaseTest {
 
 	
 	@Test(groups={"Home","Regression"})	    
@@ -24,6 +24,7 @@ public class HP_TC02_Global_Header_Verify_FlyoutSubMenu extends BaseTest {
 		FOHeading = getglobalheaderPageThreadLocal().getFlyoutHeadings(i);
 		
 		reporter.reportLog(FOHeading +"'s sub menu :"+  getglobalheaderPageThreadLocal().getListSubMenu(i));
+		reporter.reportLog("menu number:" + i);
 		reporter.softAssert(getglobalheaderPageThreadLocal().getListSubMenu(i).retainAll(TestDataHandler.constantDataVariables.getlst_FlyoutsubMenu()),FOHeading +"'s sub menu list is correct", FOHeading +"'s sub menu list is incorrect");
 		//reporter.softAssert(getglobalheaderPageThreadLocal().getListSubMenu(i).containsAll(TestDataHandler.constantDataVariables.getlst_FlyoutsubMenu()),FOHeading +"'s sub menu list is correct", FOHeading +"'s sub menu list is incorrect");
 		

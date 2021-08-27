@@ -542,7 +542,7 @@ public class GlobalheaderPage extends BasePage{
 	public List<String> getListSubMenu(int headingNumber) { 
 		WebElement WebElement=listFlyoutHeadings.get(headingNumber).findElement(By.xpath(".//span"));
 		getReusableActionsInstance().scrollToElement(WebElement);	
-		List<WebElement> SubMenu=listFlyoutHeadings.get(headingNumber).findElements(By.xpath(".//div[@class='flyout']//ul//li//b"));
+		List<WebElement> SubMenu=listFlyoutHeadings.get(headingNumber).findElements(By.xpath(".//div[@class='flyout']//ul//li[1]//b"));
 		getReusableActionsInstance().waitForAllElementsVisible(SubMenu, 3);
 		List<String> SubMenulist =new ArrayList<String>();
 		 		for(WebElement e : SubMenu) {
