@@ -390,6 +390,20 @@ public class ProductResultsPage extends BasePage{
 	public int getBannerImageListSize() {
 		return this.lstBannerImage.size();
 	}
+	
+	/**
+	 * This method will verify the element existence with content.
+	 * 
+	 * @author Wei.Li
+	 */	
+	public boolean verifyElementExistenceWithContent(WebElement element,String domProperty) {
+		if(this.isChildElementVisible(element,domProperty)) {
+			return this.getReusableActionsInstance().isElementVisible(element);
+		}
+		else {
+			return this.getReusableActionsInstance().isElementVisible(element);
+		}
+	}
 }
 
 	

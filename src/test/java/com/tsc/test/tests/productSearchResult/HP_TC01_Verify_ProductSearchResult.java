@@ -91,17 +91,17 @@ public class HP_TC01_Verify_ProductSearchResult extends BaseTest{
 			
 			reporter.softAssert(!item.findElement(getProductResultsPageThreadLocal().byProductNowPrice).getText().isEmpty(), "ProductNowPrice in searching result is correct", "ProductNowPrice in searching result is incorrect");
 			
-			elementList=item.findElements(getProductResultsPageThreadLocal().byProductEasyPay);			
-			reporter.softAssert((new BasePage(this.getDriver())).getReusableActionsInstance().isElementVisible(elementList.get(0)), "ProductEasyPay in searching result is correct", "ProductEasyPay in searching result is incorrect");
-			
+			elementList=item.findElements(getProductResultsPageThreadLocal().byProductEasyPay);	
+			reporter.softAssert(getProductResultsPageThreadLocal().verifyElementExistenceWithContent(elementList.get(0),"innerText"), "ProductEasyPay in searching result is correct", "ProductEasyPay in searching result is incorrect");
+						
 			elementList=item.findElements(getProductResultsPageThreadLocal().byProductReview);
-			reporter.softAssert((new BasePage(this.getDriver())).getReusableActionsInstance().isElementVisible(elementList.get(0)), "ProductReview in searching result is correct", "ProductReview in searching result is incorrect");
-			
+			reporter.softAssert(getProductResultsPageThreadLocal().verifyElementExistenceWithContent(elementList.get(0),"innerText"), "ProductReview in searching result is correct", "ProductReview in searching result is incorrect");
+						
 			elementList=item.findElements(getProductResultsPageThreadLocal().byProductSwatch);
-			reporter.softAssert((new BasePage(this.getDriver())).getReusableActionsInstance().isElementVisible(elementList.get(0)), "ProductSwatch in searching result is correct", "ProductSwatch in searching result is incorrect");
-			
+			reporter.softAssert(getProductResultsPageThreadLocal().verifyElementExistenceWithContent(elementList.get(0),"childElementCount"), "ProductSwatch in searching result is correct", "ProductSwatch in searching result is incorrect");
+						
 			elementList=item.findElements(getProductResultsPageThreadLocal().byProductFreeShipping);
-			reporter.softAssert((new BasePage(this.getDriver())).getReusableActionsInstance().isElementVisible(elementList.get(0)), "ProductFreeShipping in searching result is correct", "ProductFreeShipping in searching result is incorrect");
+			reporter.softAssert(getProductResultsPageThreadLocal().verifyElementExistenceWithContent(elementList.get(0),"innerText"), "ProductFreeShipping in searching result is correct", "ProductFreeShipping in searching result is incorrect");					
 		}
 							
 		reporter.softAssert(getProductResultsPageThreadLocal().verifyProductPriceBadge(), "PriceBadge in searching result is correct", "PriceBadge in searching result is incorrect");
