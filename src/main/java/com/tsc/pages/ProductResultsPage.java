@@ -135,44 +135,6 @@ public class ProductResultsPage extends BasePage{
 	}
 	
 	/**
-	 * This method will get search results through dropdown menu.
-	 * @param String lsKeyword:input keyword
-	 * @param int optionIndex: selected index in dropdwon menu
-	 * @return true/false
-	 * @author Wei.Li
-	 */
-	public boolean selectSearchResultListInDropdownMenu(String lsKeyword,int optionIndex) {
-		List<WebElement> elementList=getSearchDropdownResultList(lsKeyword);
-		this.searchkeyword=elementList.get(optionIndex).getText();
-		elementList.get(optionIndex).click(); 			
-		
-		return waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},30000);
-	}
-	
-	public boolean verifyPageTitleForDropdown() {
-		String[] lstItem=this.searchkeyword.trim().split(" ");
-		String lastWord=lstItem[lstItem.length-1];
-		return lastWord.toUpperCase().equalsIgnoreCase(this.lblSearchResultTitle.getText().trim().toUpperCase());
-	}
-
-	/**
-	 * This method will get search result list.
-	 * @param String lsKeyword: search keyword
-	 * @return List<WebElement>: search dropdown menu list
-	 * @author Wei.Li
-	 */
-	public List<WebElement> getSearchDropdownResultList(String lsKeyword) {
-		GlobalheaderPage globalHeader=new GlobalheaderPage(this.getDriver());
-		getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeader.searchBox);
-		pressEscapeKey();		
-		this.clearContent(globalHeader.searchBox);		
-		globalHeader.searchBox.sendKeys(lsKeyword);		
-		waitForCondition(Driver->{return globalHeader.ctnSearchResult.getAttribute("class").contains("suggestions-container--open");},30000);
-		
-		return globalHeader.searchResultList;			
-	}
-	
-	/**
 	 * This method will verify Showing text pattern in filters.
 	 * @return true/false
 	 * @author Wei.Li
@@ -367,12 +329,7 @@ public class ProductResultsPage extends BasePage{
 				}
 			}
 		}
-		else {
-			/*
-			if(lstBannerImage.size()>0) {
-				return "BannerImageSearch";
-			}
-			*/
+		else {			
 			return "BannerImageSearch";
 		}
 				
@@ -402,15 +359,27 @@ public class ProductResultsPage extends BasePage{
 	}
 	
 	/**
-	 * This method will verify Url of search result.
+	 * This method will verify Url of search result with Regex pattern.
+	 * @return true/false
+	 * @author Wei.Li
+	 */
+	public boolean verifySearchResultUrlWithRegexPattern(String lsPattern, String lsKeyword) {
+		String lsEncodingKeyword=getEncodingKeyword(lsKeyword);
+		String lsMatchPattern=(new BasePage(this.getDriver())).getBaseURL()+lsPattern+lsEncodingKeyword;
+		System.out.println("regex:"+lsMatchPattern);		
+		return this.URL().matches(lsMatchPattern);		
+	}
+	
+	/**
+	 * This method will verify Url of search result without Regex pattern.
 	 * @return true/false
 	 * @author Wei.Li
 	 */
 	public boolean verifySearchResultUrl(String lsPattern, String lsKeyword) {
 		String lsEncodingKeyword=getEncodingKeyword(lsKeyword);
-		String lsMatchPattern=(new BasePage(this.getDriver())).getBaseURL()+lsPattern+lsEncodingKeyword;
-				
-		return this.URL().matches(lsMatchPattern);		
+		String lsMatchUrl=(new BasePage(this.getDriver())).getBaseURL()+lsPattern+lsEncodingKeyword;
+		System.out.println("Url:"+lsMatchUrl);		
+		return this.URL().equalsIgnoreCase(lsMatchUrl);		
 	}
 	
 	/**

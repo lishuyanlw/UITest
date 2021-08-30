@@ -13,7 +13,7 @@ import com.tsc.pages.HomePage;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 
-public class HP_TC01_Verify_ProductSearchResult extends BaseTest{
+public class SR_TC01_Verify_ProductSearchResult extends BaseTest{
 	
 	/**
 	 * This method will test functions of product searching results
@@ -29,18 +29,21 @@ public class HP_TC01_Verify_ProductSearchResult extends BaseTest{
 	
 	List<String> lskeywordList=TestDataHandler.constantDataVariables.getlst_SearchKeyword();	
 	String lsSearchResultExpectedUrl=TestDataHandler.constantDataVariables.getlbl_SearchResultExpectedUrl();
+	String lsSearchResultExpectedUrlWithoutKeyword=TestDataHandler.constantDataVariables.getlbl_SearchResultExpectedUrlWithoutKeyword();
+	System.out.println("Url:"+lsSearchResultExpectedUrlWithoutKeyword);
 	List<List<String>> lstSearchResultMessage=TestDataHandler.constantDataVariables.getlst_SearchResultMessage();
 	String lsSearchResultPageDefaultSetting=TestDataHandler.constantDataVariables.getlbl_SearchResultPageDefaultSetting();
 	
 	int keyWordSize=lskeywordList.size();
 	for(int i=0;i<keyWordSize;i++) {
 		getProductResultsPageThreadLocal().getSearchResultLoad(lskeywordList.get(i));
-		
+		System.out.println("Keyword:"+lskeywordList.get(i));
 		String lsTestModel=getProductResultsPageThreadLocal().judgeTestModel();	
 		System.out.println(lskeywordList.get(i)+":"+lsTestModel);
 		switch(lsTestModel) {
 		case "NormalSearch":
-			reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultUrl(lsSearchResultExpectedUrl,lskeywordList.get(i)), "Url of search result matches expected url", "Url of search result doesn't match expected url");
+			reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultUrlWithRegexPattern(lsSearchResultExpectedUrl,lskeywordList.get(i)), "Url of search result matches expected url regex pattern", "Url of search result doesn't match expected url regex pattern");
+			reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultUrl(lsSearchResultExpectedUrlWithoutKeyword,lskeywordList.get(i)), "Url of search result matches expected url", "Url of search result doesn't match expected url");
 			reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultMessage(lstSearchResultMessage.get(0),lskeywordList.get(i)), "Search result message result matches the expected message", "Search result message result does not match the expected message");
 			reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting), "The default setting of items per page is "+lsSearchResultPageDefaultSetting, "The default setting of items per page isn't "+lsSearchResultPageDefaultSetting);
 			reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(), "Showing text pattern in filters is correct", "Showing text pattern in filters is incorrect");
@@ -51,13 +54,13 @@ public class HP_TC01_Verify_ProductSearchResult extends BaseTest{
 			reporter.softAssert(getProductResultsPageThreadLocal().getProductResultCount()==0, "No search results return", "Still there are search results return");
 			break;
 		case "ProductNumberSearch":
-			reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultUrl(lsSearchResultExpectedUrl,lskeywordList.get(i)), "Url of search result matches expected url", "Url of search result doesn't match expected url");
+			reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultUrlWithRegexPattern(lsSearchResultExpectedUrl,lskeywordList.get(i)), "Url of search result matches expected url", "Url of search result doesn't match expected url");
 			reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultMessage(lstSearchResultMessage.get(0),lskeywordList.get(i)), "Search result message result matches the expected message", "Search result message result does not match the expected message");
 			reporter.softAssert(getProductResultsPageThreadLocal().VerifySearchResultWithProductItemNO(lskeywordList.get(i)), "The itemNO in search results just contains those with search product number", "the itemNO in search results don't just contain those with search product number");
 			
 			break;
 		case "BannerImageSearch":
-			reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultUrl(lsSearchResultExpectedUrl,lskeywordList.get(i)), "Url of search result matches expected url", "Url of search result doesn't match expected url");
+			reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultUrlWithRegexPattern(lsSearchResultExpectedUrl,lskeywordList.get(i)), "Url of search result matches expected url", "Url of search result doesn't match expected url");
 			if(getProductResultsPageThreadLocal().getBannerImageListSize()>0) {
 				reporter.softAssert(getProductResultsPageThreadLocal().verifyBannerImageContainSpecificWord(lskeywordList.get(i)), "Banner imgaes contain Joan Rivers related word", "Banner imgaes do not contain Joan Rivers related word");
 			}
@@ -71,18 +74,7 @@ public class HP_TC01_Verify_ProductSearchResult extends BaseTest{
 			break;		
 		}
 	}
-	
-	List<String> lskeywordDropdownList=TestDataHandler.constantDataVariables.getlst_SearchKeyword_DropDown();
-	int keyWordDropdownSize=lskeywordDropdownList.size();
-	for(int i=0;i<keyWordDropdownSize;i++) {
-		getProductResultsPageThreadLocal().selectSearchResultListInDropdownMenu(lskeywordDropdownList.get(i),0);
-		System.out.println(lskeywordDropdownList.get(i));
-		
-		reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(), "Showing text pattern in filters is correct", "Showing text pattern in filters is incorrect");
-		reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting), "The default setting of items per page is "+lsSearchResultPageDefaultSetting, "The default setting of items per page isn't "+lsSearchResultPageDefaultSetting);
-		reporter.softAssert(getProductResultsPageThreadLocal().verifyPageTitleForDropdown(), "Search result page title is dispalyed as search keyword in dropdown menu", "Search result page title is not dispalyed as search keyword in dropdown menu");
-		verifySearchResultContent();
-	}
+
 }
 	
 	void verifySearchResultContent() {

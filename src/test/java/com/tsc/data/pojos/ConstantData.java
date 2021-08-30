@@ -43,9 +43,9 @@ public class ConstantData {
 	private String lbl_ShopByDepartment;
 	private List<String> lst_ShopByDepartmentCategories;
 	private String lbl_TopSellers;
-	private List<String> lst_SearchKeyword;
-	private List<String> lst_SearchKeyword_DropDown;
+	private List<String> lst_SearchKeyword;	
 	private String lbl_SearchResultExpectedUrl;
+	private String lbl_SearchResultExpectedUrlWithoutKeyword;
 	private String lbl_SearchResultPageDefaultSetting;
 	private List<List<String>>  lst_SearchResultMessage;
 		
@@ -507,22 +507,8 @@ public class ConstantData {
 	}
 	
 	/**
-	 * @return the lst_SearchKeyword_DropDown
-	 */
-	public List<String> getlst_SearchKeyword_DropDown() {
-		return lst_SearchKeyword_DropDown;
-	}
-	/**
-	 * @param lst_SearchKeyword_DropDown the lst_SearchKeyword_DropDown to set
-	 */
-	public void setlst_SearchKeyword_DropDown(List<String> lst_SearchKeyword_DropDown) {
-		this.lst_SearchKeyword_DropDown = lst_SearchKeyword_DropDown;
-	}
-	
-	/**
 	 * @return the lbl_SearchResultExpectedUrl
 	 */	
-	
 	public String getlbl_SearchResultExpectedUrl() {
 		return lbl_SearchResultExpectedUrl;
 	}	
@@ -531,6 +517,19 @@ public class ConstantData {
 	 */	
 	public void setlbl_SearchResultExpectedUrl(String lbl_SearchResultExpectedUrl) {
 		this.lbl_SearchResultExpectedUrl = lbl_SearchResultExpectedUrl;
+	}
+	
+	/**
+	 * @return the lbl_SearchResultExpectedUrlWithoutKeyword
+	 */	
+	public String getlbl_SearchResultExpectedUrlWithoutKeyword() {
+		return lbl_SearchResultExpectedUrlWithoutKeyword;
+	}	
+	/**
+	 * @param lbl_SearchResultExpectedUrlWithoutKeyword the lbl_SearchResultExpectedUrlWithoutKeyword to set
+	 */	
+	public void setlbl_SearchResultExpectedUrlWithoutKeyword(String lbl_SearchResultExpectedUrlWithoutKeyword) {
+		this.lbl_SearchResultExpectedUrlWithoutKeyword = lbl_SearchResultExpectedUrlWithoutKeyword;
 	}
 	
 	/**
