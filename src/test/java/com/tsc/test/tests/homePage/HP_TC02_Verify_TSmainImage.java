@@ -12,13 +12,12 @@ import com.tsc.test.base.BaseTest;
 
 	
 	public void validateTSmainImageSection() throws IOException, InterruptedException {
-			//homePageThreadLocal().closeadd();	
-	//reporter.softAssert(getglobalheaderPageThreadLocal().validateURL("https://qa-tsc.tsc.ca/"), "TSC url is correct", "TSC url is incorrect");
-	//reporter.reportLogWithScreenshot("Home Page");
+			homePageThreadLocal().closeadd();	
+	reporter.softAssert(getglobalheaderPageThreadLocal().validateURL("https://qa-tsc.tsc.ca/"), "TSC url is correct", "TSC url is incorrect");
+	reporter.reportLogWithScreenshot("Home Page");
 
-	
+	/*
 	 
-	
 	 validateText(homePageThreadLocal().validateTSimagesection(),"Today's Showstopper TM Offers","TS Main image bottom Section");
 
 	reporter.softAssert(homePageThreadLocal().verifyTSimglinkCount(),"TS image bottom section link & image Count is: "+homePageThreadLocal().getTSimgCount(),"TS image bottom section link & image Count is: "+homePageThreadLocal().getTSimgCount());
@@ -28,6 +27,6 @@ import com.tsc.test.base.BaseTest;
 		 reporter.reportLog(homePageThreadLocal().validateTSimageLinks(i));
 
 
-	 	}
+	 	} */
 	}
 }
