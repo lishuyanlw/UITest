@@ -23,7 +23,7 @@ lbl_SearchBoxPlaceholder: Search
 lbl_MinicartLinkName: Bag
 lnk_MinicarLink: /pages/shoppingcart
 lst_FlyoutHeading: ['FASHION','SHOES & HANDBAGS', 'JEWELLERY', 'BEAUTY', 'HOME & GARDEN', 'KITCHEN', 'HEALTH & FITNESS', 'ELECTRONICS', 'COINS & HOBBIES', 'CLEARANCE']
-lnk_FlyoutLink: /pages/category?nav=n
+lst_FlyoutLink: ['100047','128153','100101','100038','100071','100072','2058731','100073','3001781','2037576']
 lbl_OnAirNow: ON AIR NOW
 lbl_RecentlyAir: RECENTLY AIRED
 lnk_RecentlyAir: /pages/productdetails?nav

@@ -27,14 +27,14 @@ public class HP_TC02_Global_Header_Verify_FlyoutHeadings extends BaseTest {
 			FOHeading = getglobalheaderPageThreadLocal().getFlyoutHeadings(i);
 			
 			reporter.softAssert(FOHeading, TestDataHandler.constantDataVariables.getlst_FlyoutHeading().get(i),"Flyout display " + FOHeading + " department. It's text is visible and valid","Flyout display " + FOHeading + " department. It's text is visible and valid");
-			reporter.softAssert(getglobalheaderPageThreadLocal().validateFlyoutLinks(i),"Flyout Link is present for "+FOHeading,"Flyout Link is not present for "+FOHeading);
+			//reporter.softAssert(getglobalheaderPageThreadLocal().validateFlyoutLinks(i),"Flyout Link is present for "+FOHeading,"Flyout Link is not present for "+FOHeading);
 			
 			//Verify notfound and full url after clicking Flyout link
-			lsUrl=getglobalheaderPageThreadLocal().getURLafterClickFlyoutHeading(i);		
-			lsSuccessResult=String.format("The url of < %s > does not contain < %s > after clicking " + FOHeading + "'s link", lsUrl,lsYmlNotFound);
-			lsFailResult=String.format("The url of < %s > contains < %s > after clicking " + FOHeading + "'s link", lsUrl,lsYmlNotFound);
+			lsUrl=getglobalheaderPageThreadLocal().getFlyoutLink(i);		
+			lsSuccessResult=String.format("The href is not empty and is < %s > for url of " + FOHeading + " department", lsUrl,lsYmlNotFound);
+			lsFailResult=String.format("The href is empty for url of" + FOHeading + " department", lsUrl,lsYmlNotFound);
 			reporter.softAssert(!lsUrl.contains(lsYmlNotFound), lsSuccessResult,lsFailResult);
-			reporter.softAssert(lsUrl.contains(TestDataHandler.constantDataVariables.getlnk_FlyoutLink()), FOHeading + "'s URL is correct", FOHeading + "'s URL is incorrect");
+			reporter.softAssert(lsUrl.contains(TestDataHandler.constantDataVariables.getlst_FlyoutLink().get(i)), FOHeading + "'s URL is correct", FOHeading + "'s URL is incorrect");
 			
 			}
 		}

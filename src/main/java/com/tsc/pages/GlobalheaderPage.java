@@ -536,8 +536,8 @@ public class GlobalheaderPage extends BasePage{
 	}
 	
 	
-	/*Method to get list of Flyout submenu
-	 * @return list:Flyout sub menu
+	/*Method to validate href is not empty before clicking it
+	 * @return true/false
 	 * @author Shruti Desai
 	 */
 	 public boolean validateFlyoutLinks(int headingNumber) {
@@ -548,18 +548,24 @@ public class GlobalheaderPage extends BasePage{
 			}
 				return false;
 		}
-	
-	/*Method to validate URL after clicking on category of Flyout heading
-	 *@return text: URL
+	 
+	 /*Method to validate href is not empty before clicking it
+	 *@return  list:Flyout heading href
 	 * @author Shruti Desai
 	 */
-	public String getURLafterClickFlyoutHeading(int headingNumber) {
-		WebElement WebElement=listFlyoutHeadings.get(headingNumber).findElement(By.xpath(".//a"));
-	 	getReusableActionsInstance().javascriptScrollByVisibleElement(WebElement); 
-	 	getReusableActionsInstance().clickWhenVisible(WebElement,5);
-	 		return (getDriver().getCurrentUrl());
-	}
-
+	 public String getFlyoutLink(int headingNumber) {
+		 String emptyhref="Flyout heading's href is empty";
+		 WebElement WebElement=listFlyoutHeadings.get(headingNumber).findElement(By.xpath(".//a"));
+			getReusableActionsInstance().javascriptScrollByVisibleElement(WebElement);
+				
+		 if (WebElement.getAttribute("href").isEmpty()) {
+			return emptyhref;
+		 }else{
+			return WebElement.getAttribute("href");
+		 }
+	 }
+	
+	
 	
 	
 }
