@@ -37,15 +37,11 @@ lst_ShopByDepartmentCategories: [FASHION, SHOES & HANDBAGS, JEWELLERY, BEAUTY, H
 lbl_TopSellers: TOP SELLERS
 
 # SEARCH RESULTS SECTION
-lbl_SearchKeyword_DysonVacuum: dyson vacuum
-lbl_SearchResultExpectedUrl_DysonVacuum: /pages/productresults?dimensions=0&searchterm=dyson%20vacuum
+lst_SearchKeyword: ["dyson vacuum","!@#$%^&*()_+","100501","joan rivers","Nike","boots","dress"]
 lbl_SearchResultPageDefaultSetting: 36
-lst_SearchResultMessage_DysonVacuum: ["Search Results For", "dyson vacuum"]
-lbl_SearchKeyword_SpecialCharacters: "!@#$%^&*()_+"
-lst_SearchResultMessage_SpecialCharacters: ["We couldn","t find a match for","!@#$%^&*()_+","Please search again using a different term or browse by brand or category."]
-lbl_SearchKeyword_100501: 100501
-lbl_SearchResultExpectedUrl_100501: /pages/productresults?dimensions=0&searchterm=100501
-lst_SearchResultMessage_100501: ["Search Results For", "100501"]
+lst_SearchResultMessage: [["Search Results For"],["We couldn","t find a match for","Please search again using a different term or browse by brand or category."]]
+lbl_SearchResultExpectedUrl:  "/pages/productresults\\?dimensions=(\\d+)(&rd=[0-9]+)?&searchterm="
+
 
 
 
