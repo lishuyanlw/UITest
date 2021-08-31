@@ -526,16 +526,6 @@ public class GlobalheaderPage extends BasePage{
 		return listFlyoutHeadings.size();
 	}
 	
-	/*Method to validate Flyout heading is visible
-	 * @return true/false
-	 * @author Shruti Desai
-	 */
-	public boolean validateFlyoutHeadings(int headingNumber) { 
-		WebElement WebElement=listFlyoutHeadings.get(headingNumber);
-	 	getReusableActionsInstance().javascriptScrollByVisibleElement(WebElement); 
-	 	WebElement.isDisplayed();
-	 		return true; 
-	}
 	
 	/*Method to get lable of Flyout headings
 	 * @return text:Flyout Headings
@@ -543,9 +533,14 @@ public class GlobalheaderPage extends BasePage{
 	 */
 	public String getFlyoutHeadings(int headingNumber) { 
 		WebElement WebElement=listFlyoutHeadings.get(headingNumber).findElement(By.xpath(".//span"));
-	 	getReusableActionsInstance().javascriptScrollByVisibleElement(WebElement); 
-	 		return WebElement.getText(); 
+		if(getReusableActionsInstance().isElementVisible(WebElement,2)){
+		   getReusableActionsInstance().javascriptScrollByVisibleElement(WebElement);  
+		     return WebElement.getText();
+		 }else {
+		     return null;
+		 }    
 	}
+
 		
 	/*Method to validate href is not empty before clicking it
 	 * @return true/false
