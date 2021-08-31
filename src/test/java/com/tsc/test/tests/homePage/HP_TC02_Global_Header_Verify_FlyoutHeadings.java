@@ -18,24 +18,22 @@ public class HP_TC02_Global_Header_Verify_FlyoutHeadings extends BaseTest {
 		String lsBaseUrl=(new BasePage(this.getDriver())).getBaseURL();
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl+"/"), "TSC url is correct", "TSC url is incorrect");
 		reporter.reportLogWithScreenshot("Home Page");
-		reporter.reportLog("Validating Flyouts all departments & it's URL after Clicking each category");
+		reporter.reportLog("Validating Flyouts all departments & it's URL");
 		
-		String FOHeading,lsUrl,lsYmlNotFound,lsSuccessResult, lsFailResult;
-		lsYmlNotFound=TestDataHandler.constantDataVariables.getlnk_NotFound();
-
+		String FOHeading,lsUrl;
+		
 		for(int i=0; i<getglobalheaderPageThreadLocal().getFlyoutHeadingCount(); i++) {
 			FOHeading = getglobalheaderPageThreadLocal().getFlyoutHeadings(i);
-			
-			reporter.softAssert(FOHeading, TestDataHandler.constantDataVariables.getlst_FlyoutHeading().get(i),"Flyout display " + FOHeading + " department. It's text is visible and valid","Flyout display " + FOHeading + " department. It's text is visible and valid");
-			//reporter.softAssert(getglobalheaderPageThreadLocal().validateFlyoutLinks(i),"Flyout Link is present for "+FOHeading,"Flyout Link is not present for "+FOHeading);
-			
-			//Verify notfound and full url after clicking Flyout link
 			lsUrl=getglobalheaderPageThreadLocal().getFlyoutLink(i);		
-			lsSuccessResult=String.format("The href is not empty and is < %s > for url of " + FOHeading + " department", lsUrl,lsYmlNotFound);
-			lsFailResult=String.format("The href is empty for url of" + FOHeading + " department", lsUrl,lsYmlNotFound);
-			reporter.softAssert(!lsUrl.contains(lsYmlNotFound), lsSuccessResult,lsFailResult);
+			reporter.softAssert(getglobalheaderPageThreadLocal().validateFlyoutHeadings(i),"Flyout heading is present for grid "+ (i+1) ,"Flyout heading is not present for grid "+ (i+1));
+			reporter.softAssert(FOHeading, TestDataHandler.constantDataVariables.getlst_FlyoutHeading().get(i),"Flyout display " + FOHeading + " department. It's text is visible and valid","Flyout display " + FOHeading + " department. It's text is visible and valid");
+			
+			//Verify href is not empty and full url before clicking Flyout link
+			reporter.softAssert(getglobalheaderPageThreadLocal().validateFlyouthref(i),"Flyout href is present for Link of "+FOHeading,"Flyout href is not present for link of "+FOHeading);
 			reporter.softAssert(lsUrl.contains(TestDataHandler.constantDataVariables.getlst_FlyoutLink().get(i)), FOHeading + "'s URL is correct", FOHeading + "'s URL is incorrect");
 			
 			}
 		}
+
+		
 }

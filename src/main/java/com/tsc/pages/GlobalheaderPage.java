@@ -130,6 +130,7 @@ public class GlobalheaderPage extends BasePage{
 	@FindBy(xpath = "//div[@class='Header']//div[@id='megamenu']/ul/li")
 	List <WebElement> listFlyoutHeadings;
 	
+	
 	@FindBy(xpath = "//*[@class='email-popup__button']")
 	WebElement btnClose;
 	public void closeadd() {
@@ -525,6 +526,17 @@ public class GlobalheaderPage extends BasePage{
 		return listFlyoutHeadings.size();
 	}
 	
+	/*Method to validate Flyout heading is visible
+	 * @return true/false
+	 * @author Shruti Desai
+	 */
+	public boolean validateFlyoutHeadings(int headingNumber) { 
+		WebElement WebElement=listFlyoutHeadings.get(headingNumber);
+	 	getReusableActionsInstance().javascriptScrollByVisibleElement(WebElement); 
+	 	WebElement.isDisplayed();
+	 		return true; 
+	}
+	
 	/*Method to get lable of Flyout headings
 	 * @return text:Flyout Headings
 	 * @author Shruti Desai
@@ -534,13 +546,12 @@ public class GlobalheaderPage extends BasePage{
 	 	getReusableActionsInstance().javascriptScrollByVisibleElement(WebElement); 
 	 		return WebElement.getText(); 
 	}
-	
-	
+		
 	/*Method to validate href is not empty before clicking it
 	 * @return true/false
 	 * @author Shruti Desai
 	 */
-	 public boolean validateFlyoutLinks(int headingNumber) {
+	 public boolean validateFlyouthref(int headingNumber) {
 		WebElement WebElement=listFlyoutHeadings.get(headingNumber).findElement(By.xpath(".//a"));
 		getReusableActionsInstance().javascriptScrollByVisibleElement(WebElement);
 			if (!WebElement.getAttribute("href").isEmpty()) {

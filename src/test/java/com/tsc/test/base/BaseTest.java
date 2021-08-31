@@ -70,11 +70,11 @@ public class BaseTest {
 		return globalheaderPageThreadLocal.get();
 	}
 	
-	//// @return the homePageThreadLocal
+	// @return the homePageThreadLocal
 	protected static HomePage homePageThreadLocal() {
 		return homePageThreadLocal.get();
 	}
-//
+
 
 	protected static GlobalFooterPage getGlobalFooterPageThreadLocal() {
 		return globalFooterPageThreadLocal.get();
