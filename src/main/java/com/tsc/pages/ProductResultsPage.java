@@ -135,8 +135,8 @@ public class ProductResultsPage extends BasePage{
 	@FindBy(xpath = "//div[@class='TitleAndTextSeo']//*[contains(@class,'seoTextContent')]")
 	WebElement lblProductText;
 	
-	@FindBy(xpath = "//div[@class='TitleAndTextSeo']//button[contains(@class,'more')]")
-	WebElement btnProductTitleAndTextMore;
+	@FindBy(xpath = "//div[@class='TitleAndTextSeo']//button")
+	WebElement btnProductTitleAndTextMoreOrLess;
 		
 	/**
 	 * This method will load product searching result.
@@ -174,14 +174,19 @@ public class ProductResultsPage extends BasePage{
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSearchResultMessage);
 		
 		String lsMessage=this.lblSearchResultMessage.getText().trim();	
+		System.out.println("Result message:"+lsMessage);
 		if(!lsMessage.contains(lsKeyword)) {
 			return false;		
 		}
-		for(String message:expectedMessage) {			
-			if(!lsMessage.contains(message)) {
-				return false;
+		else {
+			for(String message:expectedMessage) {	
+				System.out.println("Expected message"+message);
+				if(!lsMessage.contains(message)) {
+					return false;
+				}
 			}
 		}
+		
 		return true;		
 	}
 	
@@ -381,6 +386,43 @@ public class ProductResultsPage extends BasePage{
 		return this.lblProductTitle.getText().toLowerCase().contains(lsKeyword.toLowerCase());
 	}
 	
+	/**
+	 * This method will verify Brand text contains keyword.
+	 * @param String lsKeyword: input keyword
+	 * @return true/false
+	 * @author Wei.Li
+	 */	
+	public boolean verifyProductBrandTextContainKeyword(String lsKeyword) {
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblProductText);
+		return this.lblProductTitle.getText().toLowerCase().contains(lsKeyword.toLowerCase());
+	}
+	
+	/**
+	 * This method will verify More/Less button.
+	 * @return true/false
+	 * @author Wei.Li
+	 */	
+	public boolean verifyProductBrandMoreOrLessButton() {
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnProductTitleAndTextMoreOrLess);
+		
+		if(this.btnProductTitleAndTextMoreOrLess.getAttribute("class").contains("more")) {
+			this.btnProductTitleAndTextMoreOrLess.click();
+			getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnProductTitleAndTextMoreOrLess);
+			return this.btnProductTitleAndTextMoreOrLess.getText().contains("Read Less");
+		}
+		else {
+			this.btnProductTitleAndTextMoreOrLess.click();
+			getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnProductTitleAndTextMoreOrLess);
+			return this.btnProductTitleAndTextMoreOrLess.getText().contains("Read More");
+		}
+	}
+	
+	/**
+	 * This method will verify Badge or Video existence.
+	 * @param WebElement parent: parent element
+	 * @return String: indicate type
+	 * @author Wei.Li
+	 */	
 	@SuppressWarnings("unchecked")
 	public String judgeProductBadgeAndVideo(WebElement parent) {
 		WebElement element=parent.findElement(this.byJudgeProductBadgeAndVideo);
@@ -404,6 +446,12 @@ public class ProductResultsPage extends BasePage{
 		return "WithBadgeAndVideo";		
 	}
 	
+	/**
+	 * This method will verify WasPrice existence.
+	 * @param WebElement parent: parent element
+	 * @return String: indicate type
+	 * @author Wei.Li
+	 */	
 	@SuppressWarnings("unchecked")
 	public String judgeProductWasPrice(WebElement parent) {
 		WebElement element=parent.findElement(this.byJudgeProductWasPrice);

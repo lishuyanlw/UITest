@@ -77,7 +77,9 @@ public class SR_TC01_Verify_ProductSearchResult extends BaseTest{
 			reporter.softAssert(getProductResultsPageThreadLocal().verifyProductPagination(), "Product pagination is existing", "Product pagination is not existing");
 			
 			if(this.getDriver().findElements(getProductResultsPageThreadLocal().byProductTitleAndText).size()==1) {
-				reporter.softAssert(getProductResultsPageThreadLocal().verifyProductBrandTitleContainKeyword(lskeywordList.get(i)), "The tilte in product title and text region contains search keyword", "The tilte in product title and text region does not contain search keyword");				
+				reporter.softAssert(getProductResultsPageThreadLocal().verifyProductBrandTitleContainKeyword(lskeywordList.get(i)), "The tilte in product title and text region contains search keyword", "The tilte in product title and text region does not contain search keyword");
+				reporter.softAssert(getProductResultsPageThreadLocal().verifyProductBrandTextContainKeyword(lskeywordList.get(i)), "The content in product title and text region contains search keyword", "The content in product title and text region does not contain search keyword");
+				reporter.softAssert(getProductResultsPageThreadLocal().verifyProductBrandMoreOrLessButton(), "The More/Less button works", "The More/Less button does not work");
 			}
 			break;		
 		}
