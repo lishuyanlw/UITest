@@ -91,34 +91,53 @@ public class ProductResultsPage extends BasePage{
 	
 	public By byProductFreeShipping=By.xpath(".//div[contains(@class,'FreeShippingDiv')]");
 	
+	public By byProductPriceBadge=By.xpath(".//div[contains(@class,'badgeWrap')]//img");
+	
+	public By byProductVideoIcon=By.xpath(".//div[contains(@class,'videoIcon')]//*[name()='use']");
+	
+	public By byProductWasPrice=By.xpath(".//div[contains(@class,'priceDiv')]//del");
+	
+	public By byJudgeProductBadgeAndVideo=By.xpath(".//div[contains(@class,'prImageWrap')]");
+	
+	public By byJudgeProductWasPrice=By.xpath(".//div[contains(@class,'priceDiv')]");
+	
 	@FindBy(xpath = "//product-results//div[contains(@class,'productItems')]//div[contains(@class,'productItemWrap')]//div[contains(@class,'itemNo')]")
 	List<WebElement> productItemNOList;
-		
-	@FindBy(xpath = "//product-results//div[contains(@class,'productItems')]//div[contains(@class,'badgeWrap')]")
-	List<WebElement> productPriceBadgeList;
-	
-	@FindBy(xpath = "//product-results//div[contains(@class,'productItems')]//div[contains(@class,'productItemWrap')]//div[contains(@class,'videoIcon')]")
-	List<WebElement> productVideoIconList;
-		
-	@FindBy(xpath = "//product-results//div[contains(@class,'productItems')]//div[contains(@class,'productItemWrap')]//div[contains(@class,'priceDiv')]//del")
-	List<WebElement> productWasPriceList;
-			
+					
 	//Pagination
+	@FindBy(xpath = "//product-results//nav[contains(@aria-label,'Page')]//ul[@class='pagination']")
+	WebElement cntPagination;
+	
+	public By byPagination=By.xpath("//product-results//nav[contains(@aria-label,'Page')]//ul[@class='pagination']");
+	
 	@FindBy(xpath = "//product-results//nav[contains(@aria-label,'Page')]//li[contains(@id,'pages[') and not(contains(.,'...'))]")
 	List<WebElement> currentPageList;
 	
 	@FindBy(xpath = "//product-results//nav[contains(@aria-label,'Page')]//li[contains(@class,'previous')]")
 	WebElement btnPreviousPage;
 	
-	By byPreviousPageButton=By.xpath("//product-results//nav[contains(@aria-label,'Page')]//li[contains(@class,'previous')]");
+	public By byPreviousPageButton=By.xpath("//product-results//nav[contains(@aria-label,'Page')]//li[contains(@class,'previous')]");
 	
 	@FindBy(xpath = "//product-results//nav[contains(@aria-label,'Page')]//li[contains(@class,'next')]//span")
 	WebElement btnNextPage;
 	
-	By byNextPageButton=By.xpath("//product-results//nav[contains(@aria-label,'Page')]//li[contains(@class,'next')]//span");
+	public By byNextPageButton=By.xpath("//product-results//nav[contains(@aria-label,'Page')]//li[contains(@class,'next')]//span");
 	
-	public String searchkeyword;
+	//Product title and text
+	@FindBy(xpath = "//div[@class='TitleAndTextSeo']")
+	WebElement cntProductTitleAndText;
 	
+	public By byProductTitleAndText=By.xpath("//div[@class='TitleAndTextSeo']");
+	
+	@FindBy(xpath = "//div[@class='TitleAndTextSeo']//*[contains(@class,'seoTextTitle')]")
+	WebElement lblProductTitle;
+	
+	@FindBy(xpath = "//div[@class='TitleAndTextSeo']//*[contains(@class,'seoTextContent')]")
+	WebElement lblProductText;
+	
+	@FindBy(xpath = "//div[@class='TitleAndTextSeo']//button[contains(@class,'more')]")
+	WebElement btnProductTitleAndTextMore;
+		
 	/**
 	 * This method will load product searching result.
 	 * @return true/false
@@ -176,26 +195,6 @@ public class ProductResultsPage extends BasePage{
 		
 		return lblItemPerPageDefaultSettingNumber.getText().trim().equalsIgnoreCase(defaultSettingPageNumber);
 	}
-		
-	/**
-	 * This method will verify PriceBadge in searching result.
-	 * @return true/false
-	 * @author Wei.Li
-	 */
-	public boolean verifyProductPriceBadge() {
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.txtShowingDynamicContent);
-		if(productPriceBadgeList.size()>0) {
-			getReusableActionsInstance().javascriptScrollByVisibleElement(productResultList.get(0));
-			for(WebElement item: productPriceBadgeList) {
-				getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-				WebElement img=item.findElement(By.xpath(".//img"));
-				if(img.getAttribute("src").isEmpty()) {
-					return false;
-				}
-			}
-		}
-		return true;
-	}
 	
 	/**
 	 * This method will return Product list on the current page.	  
@@ -205,45 +204,6 @@ public class ProductResultsPage extends BasePage{
 		return productResultList;
 	}
 	
-	/**
-	 * This method will verify priceVideoIcon in searching result.
-	 * @return true/false
-	 * @author Wei.Li
-	 */
-	public boolean verifyProductVideoIcon() {
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.txtShowingDynamicContent);
-		if(productVideoIconList.size()>0) {
-			getReusableActionsInstance().javascriptScrollByVisibleElement(productResultList.get(0));
-			for(WebElement item: productVideoIconList) {
-				getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-				WebElement link=item.findElement(By.xpath(".//*[name()='use']"));
-				if(!link.isDisplayed()) {
-					return false;
-				}
-			}
-		}
-		return true;
-	}
-	
-	/**
-	 * This method will verify productWasPrice in searching result.
-	 * @return true/false
-	 * @author Wei.Li
-	 */
-	public boolean verifyProductWasPrice() {
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.txtShowingDynamicContent);
-		if(productWasPriceList.size()>0) {
-			getReusableActionsInstance().javascriptScrollByVisibleElement(productResultList.get(0));
-			for(WebElement item: productWasPriceList) {
-				getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-				if(item.getText().isEmpty()) {
-					return false;
-				}
-			}
-		}
-		return true;
-	}
-		
 	/**
 	 * This method will return search result account.	  
 	 * @author Wei.Li
@@ -394,6 +354,7 @@ public class ProductResultsPage extends BasePage{
 	
 	/**
 	 * This method will get BannerImage list size.
+	 * @return true/false
 	 * @author Wei.Li
 	 */	
 	public int getBannerImageListSize() {
@@ -401,18 +362,62 @@ public class ProductResultsPage extends BasePage{
 	}
 	
 	/**
-	 * This method will verify the element existence with content.
-	 * 
+	 * This method will verify pagination.
+	 * @return true/false
 	 * @author Wei.Li
 	 */	
-	public boolean verifyElementExistenceWithContent(WebElement element,String domProperty) {
-		if(this.isChildElementVisible(element,domProperty)) {
-			return this.getReusableActionsInstance().isElementVisible(element);
-		}
-		else {
-			return this.getReusableActionsInstance().isElementVisible(element);
-		}
+	public boolean verifyProductPagination() {
+		return this.getDriver().findElements(this.byPagination).size()==1;
 	}
+	
+	/**
+	 * This method will verify Brand tile contains keyword.
+	 * @param String lsKeyword: input keyword
+	 * @return true/false
+	 * @author Wei.Li
+	 */	
+	public boolean verifyProductBrandTitleContainKeyword(String lsKeyword) {
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblProductTitle);
+		return this.lblProductTitle.getText().toLowerCase().contains(lsKeyword.toLowerCase());
+	}
+	
+	@SuppressWarnings("unchecked")
+	public String judgeProductBadgeAndVideo(WebElement parent) {
+		WebElement element=parent.findElement(this.byJudgeProductBadgeAndVideo);
+		JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
+		List<WebElement> childList=(List<WebElement>) jse.executeScript("return arguments[0].children;", element);
+		
+		System.out.println("Size:"+childList.size());
+		if(childList.size()==1) {
+			return "WithoutBadgeAndVideo";
+		}
+				
+		if(childList.size()==2) {
+			if(childList.get(1).getAttribute("class").contains("badgeWrap")) {
+				return "WithBadge";
+			}
+			else {
+				return "WithVideo";
+			}
+		}
+		
+		return "WithBadgeAndVideo";		
+	}
+	
+	@SuppressWarnings("unchecked")
+	public String judgeProductWasPrice(WebElement parent) {
+		WebElement element=parent.findElement(this.byJudgeProductWasPrice);
+		JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
+		List<WebElement> childList=(List<WebElement>) jse.executeScript("return arguments[0].children;", element);
+		
+		System.out.println("Size:"+childList.size());
+		if(childList.size()==1) {
+			return "WithoutWasPrice";
+		}
+		
+		return "WithWasPrice";		
+	}
+
 }
 
 	

@@ -25,7 +25,7 @@ public class SR_TC01_Verify_ProductSearchResult extends BaseTest{
 	(new HomePage(this.getDriver())).closeadd();
 	
 	reporter.softAssert(getglobalheaderPageThreadLocal().validateURL((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");		
-	reporter.reportLogWithScreenshot("ProductSearch Page");
+	reporter.reportLog("ProductSearch Page");
 	
 	List<String> lskeywordList=TestDataHandler.constantDataVariables.getlst_SearchKeyword();	
 	String lsSearchResultExpectedUrl=TestDataHandler.constantDataVariables.getlbl_SearchResultExpectedUrl();
@@ -36,6 +36,7 @@ public class SR_TC01_Verify_ProductSearchResult extends BaseTest{
 	
 	int keyWordSize=lskeywordList.size();
 	for(int i=0;i<keyWordSize;i++) {
+		reporter.reportLog("Search keyword:"+lskeywordList.get(i));
 		getProductResultsPageThreadLocal().getSearchResultLoad(lskeywordList.get(i));
 		System.out.println("Keyword:"+lskeywordList.get(i));
 		String lsTestModel=getProductResultsPageThreadLocal().judgeTestModel();	
@@ -48,6 +49,7 @@ public class SR_TC01_Verify_ProductSearchResult extends BaseTest{
 			reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting), "The default setting of items per page is "+lsSearchResultPageDefaultSetting, "The default setting of items per page isn't "+lsSearchResultPageDefaultSetting);
 			reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(), "Showing text pattern in filters is correct", "Showing text pattern in filters is incorrect");
 			verifySearchResultContent();
+			reporter.softAssert(getProductResultsPageThreadLocal().verifyProductPagination(), "Product pagination is existing", "Product pagination is not existing");
 			break;
 		case "SpecialCharacterSearch":
 			reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultMessage(lstSearchResultMessage.get(1),lskeywordList.get(i)), "Search result message result matches the expected message", "Search result message result does not match the expected message");
@@ -56,13 +58,14 @@ public class SR_TC01_Verify_ProductSearchResult extends BaseTest{
 		case "ProductNumberSearch":
 			reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultUrlWithRegexPattern(lsSearchResultExpectedUrl,lskeywordList.get(i)), "Url of search result matches expected url", "Url of search result doesn't match expected url");
 			reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultMessage(lstSearchResultMessage.get(0),lskeywordList.get(i)), "Search result message result matches the expected message", "Search result message result does not match the expected message");
+			reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting), "The default setting of items per page is "+lsSearchResultPageDefaultSetting, "The default setting of items per page isn't "+lsSearchResultPageDefaultSetting);
 			reporter.softAssert(getProductResultsPageThreadLocal().VerifySearchResultWithProductItemNO(lskeywordList.get(i)), "The itemNO in search results just contains those with search product number", "the itemNO in search results don't just contain those with search product number");
-			
+			reporter.softAssert(getProductResultsPageThreadLocal().verifyProductPagination(), "Product pagination is existing", "Product pagination is not existing");
 			break;
 		case "BannerImageSearch":
 			reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultUrlWithRegexPattern(lsSearchResultExpectedUrl,lskeywordList.get(i)), "Url of search result matches expected url", "Url of search result doesn't match expected url");
 			if(getProductResultsPageThreadLocal().getBannerImageListSize()>0) {
-				reporter.softAssert(getProductResultsPageThreadLocal().verifyBannerImageContainSpecificWord(lskeywordList.get(i)), "Banner imgaes contain Joan Rivers related word", "Banner imgaes do not contain Joan Rivers related word");
+				reporter.softAssert(getProductResultsPageThreadLocal().verifyBannerImageContainSpecificWord(lskeywordList.get(i)), "Banner imgaes contain keyword", "Banner imgaes do not contain keyword");
 			}
 						
 			String lsTitle=getProductResultsPageThreadLocal().getProductResultPageTitle();
@@ -71,6 +74,11 @@ public class SR_TC01_Verify_ProductSearchResult extends BaseTest{
 			reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting), "The default setting of items per page is "+lsSearchResultPageDefaultSetting, "The default setting of items per page isn't "+lsSearchResultPageDefaultSetting);
 			reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(), "Showing text pattern in filters is correct", "Showing text pattern in filters is incorrect");
 			verifySearchResultContent();
+			reporter.softAssert(getProductResultsPageThreadLocal().verifyProductPagination(), "Product pagination is existing", "Product pagination is not existing");
+			
+			if(this.getDriver().findElements(getProductResultsPageThreadLocal().byProductTitleAndText).size()==1) {
+				reporter.softAssert(getProductResultsPageThreadLocal().verifyProductBrandTitleContainKeyword(lskeywordList.get(i)), "The tilte in product title and text region contains search keyword", "The tilte in product title and text region does not contain search keyword");				
+			}
 			break;		
 		}
 	}
@@ -82,7 +90,7 @@ public class SR_TC01_Verify_ProductSearchResult extends BaseTest{
 		List<WebElement> elementList;
 		(new BasePage(this.getDriver())).getReusableActionsInstance().javascriptScrollByVisibleElement(productList.get(0));
 		for(WebElement item : productList) {
-			
+			reporter.reportLog("Product ItemNO:"+item.findElement(getProductResultsPageThreadLocal().byProductItemNO).getText());
 			(new BasePage(this.getDriver())).getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 			
 			reporter.softAssert(!item.findElement(getProductResultsPageThreadLocal().byProductHref).getAttribute("href").isEmpty(),"ProductHref in searching result is correct", "ProductHref in searching result is incorrect");
@@ -95,24 +103,52 @@ public class SR_TC01_Verify_ProductSearchResult extends BaseTest{
 			
 			reporter.softAssert(!item.findElement(getProductResultsPageThreadLocal().byProductNowPrice).getText().isEmpty(), "ProductNowPrice in searching result is correct", "ProductNowPrice in searching result is incorrect");
 			
+			//Use findElements to avoid test crash when the element is not existing
 			elementList=item.findElements(getProductResultsPageThreadLocal().byProductEasyPay);	
-			reporter.softAssert(getProductResultsPageThreadLocal().verifyElementExistenceWithContent(elementList.get(0),"innerText"), "ProductEasyPay in searching result is correct", "ProductEasyPay in searching result is incorrect");
-						
-			elementList=item.findElements(getProductResultsPageThreadLocal().byProductReview);
-			reporter.softAssert(getProductResultsPageThreadLocal().verifyElementExistenceWithContent(elementList.get(0),"innerText"), "ProductReview in searching result is correct", "ProductReview in searching result is incorrect");
-						
-			elementList=item.findElements(getProductResultsPageThreadLocal().byProductSwatch);
-			reporter.softAssert(getProductResultsPageThreadLocal().verifyElementExistenceWithContent(elementList.get(0),"childElementCount"), "ProductSwatch in searching result is correct", "ProductSwatch in searching result is incorrect");
-						
-			elementList=item.findElements(getProductResultsPageThreadLocal().byProductFreeShipping);
-			reporter.softAssert(getProductResultsPageThreadLocal().verifyElementExistenceWithContent(elementList.get(0),"innerText"), "ProductFreeShipping in searching result is correct", "ProductFreeShipping in searching result is incorrect");					
-		}
+			if((new BasePage(this.getDriver())).isChildElementVisible(elementList.get(0),"innerText")) {
+				reporter.softAssert(true, "ProductEasyPay in searching result is correct", "ProductEasyPay in searching result is incorrect");
+			}
 							
-		reporter.softAssert(getProductResultsPageThreadLocal().verifyProductPriceBadge(), "PriceBadge in searching result is correct", "PriceBadge in searching result is incorrect");
-		
-		reporter.softAssert(getProductResultsPageThreadLocal().verifyProductVideoIcon(), "ProductVideoIcon in searching result is correct", "ProductVideoIcon in searching result is incorrect");
-					
-		reporter.softAssert(getProductResultsPageThreadLocal().verifyProductWasPrice(), "ProductWasPrice in searching result is correct", "ProductWasPrice in searching result is incorrect");
+			//Use findElements to avoid test crash when the element is not existing
+			elementList=item.findElements(getProductResultsPageThreadLocal().byProductReview);
+			if((new BasePage(this.getDriver())).isChildElementVisible(elementList.get(0),"innerText")) {
+				reporter.softAssert(true, "ProductReview in searching result is correct", "ProductReview in searching result is incorrect");
+			}
+							
+			//Use findElements to avoid test crash when the element is not existing
+			elementList=item.findElements(getProductResultsPageThreadLocal().byProductSwatch);
+			if((new BasePage(this.getDriver())).isChildElementVisible(elementList.get(0),"childElementCount")) {
+				reporter.softAssert(true, "ProductSwatch in searching result is correct", "ProductSwatch in searching result is incorrect");
+			}
+							
+			//Use findElements to avoid test crash when the element is not existing
+			elementList=item.findElements(getProductResultsPageThreadLocal().byProductFreeShipping);
+			if((new BasePage(this.getDriver())).isChildElementVisible(elementList.get(0),"innerText")) {
+				reporter.softAssert(true, "ProductFreeShipping in searching result is correct", "ProductFreeShipping in searching result is incorrect");
+			}
+				
+			String judgeMode=getProductResultsPageThreadLocal().judgeProductBadgeAndVideo(item);
+			System.out.println("judgeMode:"+judgeMode);
+			switch(judgeMode) {
+			case "WithBadge":
+				reporter.softAssert(!item.findElement(getProductResultsPageThreadLocal().byProductPriceBadge).getAttribute("src").isEmpty(), "PriceBadge in searching result is correct", "PriceBadge in searching result is incorrect");
+				break;
+			case "WithVideo":
+				reporter.softAssert(!item.findElement(getProductResultsPageThreadLocal().byProductVideoIcon).getAttribute("xlink:href").isEmpty(), "ProductVideoIcon in searching result is correct", "ProductVideoIcon in searching result is incorrect");
+				break;
+			case "WithBadgeAndVideo":
+				reporter.softAssert(!item.findElement(getProductResultsPageThreadLocal().byProductPriceBadge).getAttribute("src").isEmpty(), "PriceBadge in searching result is correct", "PriceBadge in searching result is incorrect");
+				reporter.softAssert(!item.findElement(getProductResultsPageThreadLocal().byProductVideoIcon).getAttribute("xlink:href").isEmpty(), "ProductVideoIcon in searching result is correct", "ProductVideoIcon in searching result is incorrect");
+				break;
+			}
+			
+			judgeMode=getProductResultsPageThreadLocal().judgeProductWasPrice(item);
+			System.out.println("judgeMode:"+judgeMode);
+			if(judgeMode.equalsIgnoreCase("WithWasPrice")) {
+				reporter.softAssert(!item.findElement(getProductResultsPageThreadLocal().byProductWasPrice).getText().isEmpty(), "ProductWasPrice in searching result is correct", "ProductWasPrice in searching result is incorrect");
+			}
+			
+		}
 	}
 	
 }
