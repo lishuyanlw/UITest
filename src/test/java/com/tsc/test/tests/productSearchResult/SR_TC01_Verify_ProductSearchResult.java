@@ -35,11 +35,11 @@ public class SR_TC01_Verify_ProductSearchResult extends BaseTest{
 	String lsSearchResultPageDefaultSetting=TestDataHandler.constantDataVariables.getlbl_SearchResultPageDefaultSetting();
 	
 	int keyWordSize=lskeywordList.size();
-	for(int i=0;i<keyWordSize;i++) {
-		reporter.reportLog("Search keyword:"+lskeywordList.get(i));
+	for(int i=0;i<keyWordSize;i++) {		
 		getProductResultsPageThreadLocal().getSearchResultLoad(lskeywordList.get(i));
 		System.out.println("Keyword:"+lskeywordList.get(i));
 		String lsTestModel=getProductResultsPageThreadLocal().judgeTestModel();	
+		reporter.reportLog("Search Model and keyword : "+lsTestModel+" : "+lskeywordList.get(i));
 		System.out.println(lskeywordList.get(i)+":"+lsTestModel);
 		switch(lsTestModel) {
 		case "NormalSearch":
@@ -51,7 +51,7 @@ public class SR_TC01_Verify_ProductSearchResult extends BaseTest{
 			verifySearchResultContent();
 			reporter.softAssert(getProductResultsPageThreadLocal().verifyProductPagination(), "Product pagination is existing", "Product pagination is not existing");
 			break;
-		case "SpecialCharacterSearch":
+		case "NoSearchResult":
 			reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultMessage(lstSearchResultMessage.get(1),lskeywordList.get(i)), "Search result message result matches the expected message", "Search result message result does not match the expected message");
 			reporter.softAssert(getProductResultsPageThreadLocal().getProductResultCount()==0, "No search results return", "Still there are search results return");
 			break;

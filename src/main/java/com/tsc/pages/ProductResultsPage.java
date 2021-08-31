@@ -279,8 +279,8 @@ public class ProductResultsPage extends BasePage{
 		if(lsUrl.contains("dimensions=0&")) {
 			if(getReusableActionsInstance().isElementVisible(this.lblSearchResultMessage)) {
 				getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSearchResultMessage);
-				if(this.lblSearchResultMessage.getText().contains("We couldn")) {
-					return "SpecialCharacterSearch";
+				if(this.lblSearchResultMessage.getText().contains("Please search again")) {
+					   return "NoSearchResult";
 				}
 				else {					
 					if(getReusableActionsInstance().isElementVisible(this.lblShowing)) {
@@ -403,18 +403,26 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 */	
 	public boolean verifyProductBrandMoreOrLessButton() {
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnProductTitleAndTextMoreOrLess);
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblProductText);
 		
-		if(this.btnProductTitleAndTextMoreOrLess.getAttribute("class").contains("more")) {
+		if(getReusableActionsInstance().isElementVisible(this.btnProductTitleAndTextMoreOrLess)) {
 			this.btnProductTitleAndTextMoreOrLess.click();
 			getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnProductTitleAndTextMoreOrLess);
-			return this.btnProductTitleAndTextMoreOrLess.getText().contains("Read Less");
+			if(!this.btnProductTitleAndTextMoreOrLess.getText().contains("Read Less")) {
+				return false;
+			}
+			else {
+				this.btnProductTitleAndTextMoreOrLess.click();
+				getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnProductTitleAndTextMoreOrLess);
+				if(!this.btnProductTitleAndTextMoreOrLess.getText().contains("Read More")) {
+					return false;
+				}
+				else {
+					return true;
+				}
+			}
 		}
-		else {
-			this.btnProductTitleAndTextMoreOrLess.click();
-			getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnProductTitleAndTextMoreOrLess);
-			return this.btnProductTitleAndTextMoreOrLess.getText().contains("Read More");
-		}
+		return true;		
 	}
 	
 	/**
