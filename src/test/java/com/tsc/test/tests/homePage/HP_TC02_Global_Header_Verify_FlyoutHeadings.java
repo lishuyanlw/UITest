@@ -25,7 +25,7 @@ public class HP_TC02_Global_Header_Verify_FlyoutHeadings extends BaseTest {
 				reporter.softAssert(flyoutHeading, TestDataHandler.constantDataVariables.getlst_FlyoutHeading().get(i),"Flyout display " + flyoutHeading + " department. It's text is visible and valid","Flyout display " + flyoutHeading + " department. It's text is visible and valid");
 			//Verify href is not empty and full url before clicking Flyout link
 				reporter.softAssert(getglobalheaderPageThreadLocal().validateFlyouthref(i),"Flyout href is present for Link of "+flyoutHeading,"Flyout href is not present for link of "+flyoutHeading);
-				reporter.softAssert(lsUrl.equals(lsBaseUrl+"/pages/category?nav=n:"+(TestDataHandler.constantDataVariables.getlst_FlyoutLink().get(i))), flyoutHeading + "'s URL is correct", flyoutHeading + "'s URL is incorrect");
+				reporter.softAssert(lsUrl.equals(lsBaseUrl+(TestDataHandler.constantDataVariables.getlbl_FlyoutHeadingLandingPageLink())+(TestDataHandler.constantDataVariables.getlnk_FlyoutHeaderLinkConstant().get(i))), flyoutHeading + "'s URL is correct", flyoutHeading + "'s URL is incorrect");
 			}
 		}
 }
