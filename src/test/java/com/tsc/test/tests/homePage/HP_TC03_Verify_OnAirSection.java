@@ -4,9 +4,17 @@ import java.io.IOException;
 
 import org.testng.annotations.Test;
 
+<<<<<<< Upstream, based on origin/master
 
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
+=======
+<<<<<<< Upstream, based on origin/master
+=======
+import com.tsc.data.Handler.TestDataHandler;
+import com.tsc.pages.base.BasePage;
+>>>>>>> a99416f URL hard coded value replaced
+>>>>>>> 5dba459 URL hard coded value replaced
 import com.tsc.test.base.BaseTest;
 
 	public class HP_TC03_Verify_OnAirSection extends BaseTest {
