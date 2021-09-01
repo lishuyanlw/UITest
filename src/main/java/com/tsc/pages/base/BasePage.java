@@ -27,6 +27,8 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import extentreport.ExtentTestManager;
 import utils.Reporter;
 
 import utils.ReusableActions;
@@ -37,10 +39,10 @@ import utils.ReusableActions;
 	public class BasePage {
 		
 	protected static Reporter reporter;
+	
 	/**
 	 * The Wait.
-	 */
-	
+	 */	
 	protected WebDriverWait wait;
 	/**
 	 * The Driver.
@@ -73,6 +75,7 @@ import utils.ReusableActions;
 		PageFactory.initElements(getDriver(), this);
 		actionsThreadLocal.set(new Actions(getDriver()));
 		reusableActionsThreadLocal.set(new ReusableActions(getDriver()));
+		reporter = new ExtentTestManager(getDriver());
 	}
 
 	/*
@@ -88,6 +91,13 @@ import utils.ReusableActions;
 		return TIME_OUT_SECONDS;
 	}
 
+	/**
+	 * @return the reporter
+	 */
+	public static Reporter getReporter() {
+		return reporter;
+	}
+	
 	/**
 	 * Gets driver url.
 	 *
