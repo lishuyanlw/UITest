@@ -22,8 +22,9 @@ lbl_SignIn: Sign In
 lbl_SearchBoxPlaceholder: Search
 lbl_MinicartLinkName: Bag
 lnk_MinicarLink: /pages/shoppingcart
-
-# HOME PAGE SECTION
+lst_FlyoutHeading: ['FASHION','SHOES & HANDBAGS', 'JEWELLERY', 'BEAUTY', 'HOME & GARDEN', 'KITCHEN', 'HEALTH & FITNESS', 'ELECTRONICS', 'COINS & HOBBIES', 'CLEARANCE']
+lbl_FlyoutHeadingLandingPageLink : /pages/category?nav=n
+lnk_FlyoutHeaderLinkConstant: [':100047',':128153',':100101',':100038',':100071',':100072',':2058731',':100073',':3001781',':2037576']
 lbl_OnAirNow: ON AIR NOW
 lbl_RecentlyAir: RECENTLY AIRED
 lnk_RecentlyAir: /pages/productdetails?nav
@@ -37,10 +38,11 @@ lst_ShopByDepartmentCategories: [FASHION, SHOES & HANDBAGS, JEWELLERY, BEAUTY, H
 lbl_TopSellers: TOP SELLERS
 
 # SEARCH RESULTS SECTION
-lst_SearchKeyword: ["dyson vacuum","!@#$%^&*()_+","100501","joan rivers","Nike","boots","dress"]
+lst_SearchKeyword: ["dyson vacuum","!@#$%^&*()_+","100501","joan rivers","Nike","boots"]
 lbl_SearchResultPageDefaultSetting: 36
 lst_SearchResultMessage: [["Search Results For"],["We couldn","t find a match for","Please search again using a different term or browse by brand or category."]]
 lbl_SearchResultExpectedUrl:  "/pages/productresults\\?dimensions=(\\d+)(&rd=[0-9]+)?&searchterm="
+lbl_SearchResultExpectedUrlWithoutKeyword: "/pages/productresults?dimensions=0&searchterm="
 
 
 

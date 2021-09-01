@@ -376,17 +376,20 @@ import utils.ReusableActions;
 	 * @return true/false
 	 * @author Sachin.Sharma
 	 */	
-	public Boolean isChildElementVisible(WebElement element, String domProperty) {
-	   Object data = element.getAttribute(domProperty);
-	   if(data.equals("") || data == null) {
-	      return false;
-	   }
-	   if(data instanceof String) {
-	      return true;
-	   }else if(data instanceof Integer && ((Integer) data).intValue() > 1) {
-	      return true;
-	   }
-	   return false;
-	}
+    public Boolean isChildElementVisible(WebElement element, String domProperty) {
+        Object data = element.getAttribute(domProperty);
+        if(data.equals("") || data == null) {
+           return false;
+        }
+        switch(domProperty){
+            case "innerText":
+                return true;
+            case "childElementCount":
+                if(Integer.valueOf((String) data) > 1) {
+                    return true;
+             }
+        }
+        return false;
+     }
 
 }
