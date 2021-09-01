@@ -19,14 +19,13 @@ public class HP_TC02_Global_Header_Verify_FlyoutSubMenuDisplay extends BaseTest 
 	reporter.reportLogWithScreenshot("Home Page");
 	reporter.reportLog("Validating Flyout display all department & it's URL after Clicking each category");
 	String flyoutHeading,lsUrl,lsYmlNotFound,lsSuccessResult, lsFailResult;
-
 	lsYmlNotFound=TestDataHandler.constantDataVariables.getlnk_NotFound();
+		
 		for(int i=0; i<getglobalheaderPageThreadLocal().getFlyoutHeadingCount(); i++) {
 			flyoutHeading = getglobalheaderPageThreadLocal().getFlyoutHeadings(i);	
 			reporter.softAssert(flyoutHeading, TestDataHandler.constantDataVariables.getlst_FlyoutHeading().get(i),"Flyout is displayed for " + flyoutHeading + " department.","Flyout is not displayed for " + flyoutHeading + " department.");
 			
 			//Verify notfound and full url after clicking Flyout link
-								
 			lsUrl=getglobalheaderPageThreadLocal().getURLafterClickFlyoutHeading(i);		
 			lsSuccessResult=String.format("The url of < %s > does not contain < %s > after clicking " + flyoutHeading + "'s link", lsUrl,lsYmlNotFound);
 			lsFailResult=String.format("The url of < %s > contains < %s > after clicking " + flyoutHeading + "'s link", lsUrl,lsYmlNotFound);

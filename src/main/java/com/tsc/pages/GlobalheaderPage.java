@@ -551,7 +551,18 @@ public class GlobalheaderPage extends BasePage{
 			return WebElement.getAttribute("href");
 		 }
 	 }
-	
+	 
+	 /*Method to get URL after clicking on category of Flyout heading
+		 *@return text: URL
+		 * @author Shruti Desai
+		 */
+		public String getURLafterClickFlyoutHeading(int headingNumber) {
+			WebElement WebElement=listFlyoutHeadings.get(headingNumber).findElement(By.xpath(".//a"));
+		 	getReusableActionsInstance().javascriptScrollByVisibleElement(WebElement); 
+		 	getReusableActionsInstance().clickWhenVisible(WebElement,5);
+		 		return (getDriver().getCurrentUrl());
+		}
+
 		
 }
 
