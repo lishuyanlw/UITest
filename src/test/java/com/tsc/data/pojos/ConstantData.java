@@ -47,6 +47,7 @@ public class ConstantData {
 	private List<String> lst_ShopByDepartmentCategories;
 	private String lbl_TopSellers;
 	private List<String> lst_SearchKeyword;	
+	private List<String> lst_SearchKeyword_DropDown;
 	private String lbl_SearchResultExpectedUrl;
 	private String lbl_SearchResultExpectedUrlWithoutKeyword;
 	private String lbl_SearchResultPageDefaultSetting;
@@ -387,7 +388,7 @@ public class ConstantData {
 	 */
 	public void setlnk_FlyoutHeaderLinkConstant(List<String> lnk_FlyoutHeaderLinkConstant) {
 		this.lnk_FlyoutHeaderLinkConstant = lnk_FlyoutHeaderLinkConstant;
-	}
+}
 	/**
 	 * @return the lbl_OnAirNow
 	 */
@@ -542,6 +543,19 @@ public class ConstantData {
 	 */
 	public void setlst_SearchKeyword(List<String> lst_SearchKeyword) {
 		this.lst_SearchKeyword = lst_SearchKeyword;
+	}
+	
+	/**
+	 * @return the lst_SearchKeyword_DropDown
+	 */
+	public List<String> getlst_SearchKeyword_DropDown() {
+		return lst_SearchKeyword_DropDown;
+	}
+	/**
+	 * @param lst_SearchKeyword_DropDown the lst_SearchKeyword_DropDown to set
+	 */
+	public void setlst_SearchKeyword_DropDown(List<String> lst_SearchKeyword_DropDown) {
+		this.lst_SearchKeyword_DropDown = lst_SearchKeyword_DropDown;
 	}
 	
 	/**
