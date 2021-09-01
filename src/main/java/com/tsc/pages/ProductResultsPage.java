@@ -137,6 +137,8 @@ public class ProductResultsPage extends BasePage{
 	
 	@FindBy(xpath = "//div[@class='TitleAndTextSeo']//button")
 	WebElement btnProductTitleAndTextMoreOrLess;
+	
+	String searchkeyword;
 		
 	/**
 	 * This method will load product searching result.
@@ -152,6 +154,45 @@ public class ProductResultsPage extends BasePage{
 		
 		return waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},30000);
 	}
+	
+	/**
+	 * This method will get search results through dropdown menu.
+	 * @param String lsKeyword:input keyword
+	 * @param int optionIndex: selected index in dropdwon menu
+	 * @return true/false
+	 * @author Wei.Li
+	 */
+	public boolean selectSearchResultListInDropdownMenu(String lsKeyword,int optionIndex) {
+		List<WebElement> elementList=getSearchDropdownResultList(lsKeyword);
+		this.searchkeyword=elementList.get(optionIndex).getText();
+		elementList.get(optionIndex).click(); 			
+		
+		return waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},30000);
+	}
+	
+	public boolean verifyPageTitleForDropdown() {
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSearchResultTitle);
+		String[] lstItem=this.searchkeyword.trim().split(" ");
+		String lastWord=lstItem[lstItem.length-1];
+		return lastWord.toUpperCase().equalsIgnoreCase(this.lblSearchResultTitle.getText().trim().toUpperCase());
+	}
+
+	/**
+	 * This method will get search result list.
+	 * @param String lsKeyword: search keyword
+	 * @return List<WebElement>: search dropdown menu list
+	 * @author Wei.Li
+	 */
+	public List<WebElement> getSearchDropdownResultList(String lsKeyword) {
+		GlobalheaderPage globalHeader=new GlobalheaderPage(this.getDriver());
+		getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeader.searchBox);
+		pressEscapeKey();		
+		this.clearContent(globalHeader.searchBox);		
+		globalHeader.searchBox.sendKeys(lsKeyword);		
+		waitForCondition(Driver->{return globalHeader.ctnSearchResult.getAttribute("class").contains("suggestions-container--open");},30000);
+		
+		return globalHeader.searchResultList;			
+	}	
 	
 	/**
 	 * This method will verify Showing text pattern in filters.
@@ -472,6 +513,71 @@ public class ProductResultsPage extends BasePage{
 		}
 		
 		return "WithWasPrice";		
+	}
+	
+	public void verifySearchResultContent(List<WebElement> productList) {		
+		List<WebElement> elementList;
+		(new BasePage(this.getDriver())).getReusableActionsInstance().javascriptScrollByVisibleElement(productList.get(0));
+		for(WebElement item : productList) {
+			reporter.reportLog("Product ItemNO:"+item.findElement(byProductItemNO).getText());
+			(new BasePage(this.getDriver())).getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			
+			reporter.softAssert(!item.findElement(byProductHref).getAttribute("href").isEmpty(),"ProductHref in searching result is correct", "ProductHref in searching result is incorrect");
+			
+			reporter.softAssert(!item.findElement(byProductImage).getAttribute("src").isEmpty(), "ProductImage in searching result is correct", "ProductImage in searching result is incorrect");
+			
+			reporter.softAssert(!item.findElement(byProductName).getText().isEmpty(), "ProductName in searching result is correct", "ProductName in searching result is incorrect");
+			
+			reporter.softAssert(!item.findElement(byProductItemNO).getText().isEmpty(), "ProductItemNO in searching result is correct", "ProductItemNO in searching result is incorrect");
+			
+			reporter.softAssert(!item.findElement(byProductNowPrice).getText().isEmpty(), "ProductNowPrice in searching result is correct", "ProductNowPrice in searching result is incorrect");
+			
+			//Use findElements to avoid test crash when the element is not existing
+			elementList=item.findElements(byProductEasyPay);	
+			if((new BasePage(this.getDriver())).isChildElementVisible(elementList.get(0),"innerText")) {
+				reporter.softAssert(true, "ProductEasyPay in searching result is correct", "ProductEasyPay in searching result is incorrect");
+			}
+							
+			//Use findElements to avoid test crash when the element is not existing
+			elementList=item.findElements(byProductReview);
+			if((new BasePage(this.getDriver())).isChildElementVisible(elementList.get(0),"innerText")) {
+				reporter.softAssert(true, "ProductReview in searching result is correct", "ProductReview in searching result is incorrect");
+			}
+							
+			//Use findElements to avoid test crash when the element is not existing
+			elementList=item.findElements(byProductSwatch);
+			if((new BasePage(this.getDriver())).isChildElementVisible(elementList.get(0),"childElementCount")) {
+				reporter.softAssert(true, "ProductSwatch in searching result is correct", "ProductSwatch in searching result is incorrect");
+			}
+							
+			//Use findElements to avoid test crash when the element is not existing
+			elementList=item.findElements(byProductFreeShipping);
+			if((new BasePage(this.getDriver())).isChildElementVisible(elementList.get(0),"innerText")) {
+				reporter.softAssert(true, "ProductFreeShipping in searching result is correct", "ProductFreeShipping in searching result is incorrect");
+			}
+				
+			String judgeMode=judgeProductBadgeAndVideo(item);
+			System.out.println("judgeMode:"+judgeMode);
+			switch(judgeMode) {
+			case "WithBadge":
+				reporter.softAssert(!item.findElement(byProductPriceBadge).getAttribute("src").isEmpty(), "PriceBadge in searching result is correct", "PriceBadge in searching result is incorrect");
+				break;
+			case "WithVideo":
+				reporter.softAssert(!item.findElement(byProductVideoIcon).getAttribute("xlink:href").isEmpty(), "ProductVideoIcon in searching result is correct", "ProductVideoIcon in searching result is incorrect");
+				break;
+			case "WithBadgeAndVideo":
+				reporter.softAssert(!item.findElement(byProductPriceBadge).getAttribute("src").isEmpty(), "PriceBadge in searching result is correct", "PriceBadge in searching result is incorrect");
+				reporter.softAssert(!item.findElement(byProductVideoIcon).getAttribute("xlink:href").isEmpty(), "ProductVideoIcon in searching result is correct", "ProductVideoIcon in searching result is incorrect");
+				break;
+			}
+			
+			judgeMode=judgeProductWasPrice(item);
+			System.out.println("judgeMode:"+judgeMode);
+			if(judgeMode.equalsIgnoreCase("WithWasPrice")) {
+				reporter.softAssert(!item.findElement(byProductWasPrice).getText().isEmpty(), "ProductWasPrice in searching result is correct", "ProductWasPrice in searching result is incorrect");
+			}
+			
+		}
 	}
 
 }
