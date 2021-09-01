@@ -30,7 +30,9 @@ import com.tsc.test.base.BaseTest;
 		for(int i=0; i<homePageThreadLocal().getTSimgCount(); i++) {
 			reporter.softAssert(homePageThreadLocal().validateTSimage(i),"TS image is present for tile: "+(i+1),"TS image is not present for tile: "+(i+1));
 			reporter.reportLog(homePageThreadLocal().validateTSimageLinks(i));
+
 		}*/
+
 	}
 }
 
