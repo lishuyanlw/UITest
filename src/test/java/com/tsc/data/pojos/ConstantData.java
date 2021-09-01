@@ -52,6 +52,7 @@ public class ConstantData {
 	private String lbl_SearchResultExpectedUrlWithoutKeyword;
 	private String lbl_SearchResultPageDefaultSetting;
 	private List<List<String>>  lst_SearchResultMessage;
+	private List<String> lst_SortOption;	
 		
 	//Header Links getter and setter method
 	
@@ -608,6 +609,19 @@ public class ConstantData {
 	 */
 	public void setlst_SearchResultMessage(List<List<String>> lst_SearchResultMessage) {
 		this.lst_SearchResultMessage = lst_SearchResultMessage;
+	}
+	
+	/**
+	 * @return the lst_SortOption
+	 */
+	public List<String> getlst_SortOption() {
+		return lst_SortOption;
+	}
+	/**
+	 * @param lst_SortOption the lst_SortOption to set
+	 */
+	public void setlst_SortOption(List<String> lst_SortOption) {
+		this.lst_SortOption = lst_SortOption;
 	}
 		
 }

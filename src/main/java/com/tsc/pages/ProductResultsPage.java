@@ -57,6 +57,9 @@ public class ProductResultsPage extends BasePage{
 	@FindBy(xpath = "//product-results//div[contains(@class,'col-md-sort')]//form//div[contains(@class,'filterPrpLabel')]")
 	WebElement lblSortBy;
 	
+	@FindBy(xpath = "//product-results//div[contains(@class,'col-md-sort')]//form//select")
+	WebElement btnSortSelect;
+	
 	@FindBy(xpath = "//product-results//div[contains(@class,'col-md-sort')]//form//select//option")
 	List<WebElement> sortByOptionList;
 	
@@ -341,9 +344,7 @@ public class ProductResultsPage extends BasePage{
 				
 		return "NormalSearch";		
 	}
-	
-	
-	
+		
 	/**
 	 * This method will get encoding keyword.
 	 * @param String lsKeyword: input keyword
@@ -515,6 +516,11 @@ public class ProductResultsPage extends BasePage{
 		return "WithWasPrice";		
 	}
 	
+	/**
+	 * This method will verify the item content in product list.
+	 * @param List<WebElement> productList: the input product list 
+	 * @author Wei.Li
+	 */
 	public void verifySearchResultContent(List<WebElement> productList) {		
 		List<WebElement> elementList;
 		(new BasePage(this.getDriver())).getReusableActionsInstance().javascriptScrollByVisibleElement(productList.get(0));
@@ -578,6 +584,36 @@ public class ProductResultsPage extends BasePage{
 			}
 			
 		}
+	}
+	
+	/**
+	 * This method will verify sort options.
+	 * @param List<String> lstOption: input option list
+	 * @return true/false 
+	 * @author Wei.Li
+	 */
+	public boolean verifySortOptions(List<String> lstOption) {
+		if(!getReusableActionsInstance().isElementVisible(this.btnSortSelect)) {			
+			return false;
+		}
+		
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSortBy);
+		this.btnSortSelect.click();		
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.sortByOptionList.get(0));
+		
+		int listSize=this.sortByOptionList.size();
+		if(listSize!=lstOption.size()) {
+			return false;
+		}
+		
+		for(int i=0;i<listSize;i++) {
+			System.out.println(this.sortByOptionList.get(i).getText()+" : "+lstOption.get(i));
+			if(!this.sortByOptionList.get(i).getText().trim().equalsIgnoreCase(lstOption.get(i))) {
+				return false;
+			}
+		}
+		
+		return true;
 	}
 
 }

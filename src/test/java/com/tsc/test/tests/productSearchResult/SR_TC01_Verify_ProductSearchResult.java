@@ -33,6 +33,7 @@ public class SR_TC01_Verify_ProductSearchResult extends BaseTest{
 	System.out.println("Url:"+lsSearchResultExpectedUrlWithoutKeyword);
 	List<List<String>> lstSearchResultMessage=TestDataHandler.constantDataVariables.getlst_SearchResultMessage();
 	String lsSearchResultPageDefaultSetting=TestDataHandler.constantDataVariables.getlbl_SearchResultPageDefaultSetting();
+	List<String> lsSortOption=TestDataHandler.constantDataVariables.getlst_SortOption();
 	List<WebElement> productList;
 	
 	int keyWordSize=lsKeywordList.size();
@@ -49,6 +50,7 @@ public class SR_TC01_Verify_ProductSearchResult extends BaseTest{
 			reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultMessage(lstSearchResultMessage.get(0),lsKeywordList.get(i)), "Search result message result matches the expected message", "Search result message result does not match the expected message");
 			reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting), "The default setting of items per page is "+lsSearchResultPageDefaultSetting, "The default setting of items per page isn't "+lsSearchResultPageDefaultSetting);
 			reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(), "Showing text pattern in filters is correct", "Showing text pattern in filters is incorrect");
+			reporter.softAssert(getProductResultsPageThreadLocal().verifySortOptions(lsSortOption), "Sort options in search result filters are correct", "Sort options in search result filters are incorrect");
 			
 			productList=getProductResultsPageThreadLocal().getProductList();
 			if(productList.size()>0) {
@@ -79,6 +81,7 @@ public class SR_TC01_Verify_ProductSearchResult extends BaseTest{
 			
 			reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting), "The default setting of items per page is "+lsSearchResultPageDefaultSetting, "The default setting of items per page isn't "+lsSearchResultPageDefaultSetting);
 			reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(), "Showing text pattern in filters is correct", "Showing text pattern in filters is incorrect");
+			reporter.softAssert(getProductResultsPageThreadLocal().verifySortOptions(lsSortOption), "Sort options in search result filters are correct", "Sort options in search result filters are incorrect");
 			
 			productList=getProductResultsPageThreadLocal().getProductList();
 			if(productList.size()>0) {
