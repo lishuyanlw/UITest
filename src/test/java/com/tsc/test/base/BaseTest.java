@@ -114,11 +114,11 @@ public class BaseTest {
 		RunParameters = getExecutionParameters(strBrowser, strLanguage);
 		strBrowser = RunParameters.get("Browser").toLowerCase();
 		strLanguage = RunParameters.get("Language").toLowerCase();
-/*
+
 		if (strBrowser.toLowerCase().contains("sauce")) { 
 			sauceParameters =	initializeSauceParamsMap(strBrowser); 
 			}
-		*/
+		
 		webDriverThreadLocal.set(browserDrivers.driverInit(strBrowser, sauceParameters, currentTestMethodName, ""));
 		getDriver().get(strUrl);
 		if (!strBrowser.toLowerCase().contains("android") && !strBrowser.toLowerCase().contains("ios")
@@ -179,13 +179,13 @@ public class BaseTest {
 		TestParameters.put("Language", strLanguage);
 		return TestParameters;
 	}
-/*
+
 	@BeforeSuite(alwaysRun = true)
 	public void beforeSuite() throws FileNotFoundException {
 		TestDataHandler.dataInit();
 		System.out.println("Data File initialized at before Suite");
 	}
-*/
+
 	@BeforeMethod(alwaysRun = true)
 	@Parameters({ "strBrowser", "strLanguage" })
 	public void beforeTest(@Optional("chrome") String strBrowser, @Optional("en") String strLanguage,
@@ -223,7 +223,7 @@ public class BaseTest {
 	 * @return Hash map with sauce capabilities
 	 * @author Mirza.Kamran
 	 */
-	/*
+	
 	private Map<String, String> initializeSauceParamsMap(String strBrowser) {
 		Map<String, String> sauceOptions = new HashMap<>();
 		sauceOptions.put(SauceCapabilities.seleniumVersion.toString(), TestDataHandler.sauceSettings.getSauceOptions().getSeleniumVersion());
@@ -268,5 +268,5 @@ public class BaseTest {
 		return sauceOptions;
 	}
 	
-	*/
+	
 }

@@ -9,18 +9,16 @@ import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 
 public class HP_TC02_Global_Header_Verify_FlyoutSubMenuDisplay extends BaseTest {
-
 	
 	@Test(groups={"Home","Regression"})	    
 	public void verifyFlyoutHeadings() throws IOException {
 		
-	String lsBaseUrl=(new BasePage(this.getDriver())).getBaseURL();
-	reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl+"/"), "TSC url is correct", "TSC url is incorrect");
-	reporter.reportLogWithScreenshot("Home Page");
-	reporter.reportLog("Validating Flyout display all department & it's URL after Clicking each category");
-	String flyoutHeading,lsUrl,lsYmlNotFound,lsSuccessResult, lsFailResult;
-	lsYmlNotFound=TestDataHandler.constantDataVariables.getlnk_NotFound();
-		
+		String lsBaseUrl=(new BasePage(this.getDriver())).getBaseURL();
+		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl+"/"), "TSC url is correct", "TSC url is incorrect");
+		reporter.reportLogWithScreenshot("Home Page");
+		reporter.reportLog("Validating Flyout display all department & it's URL after Clicking each category");
+		String flyoutHeading,lsUrl,lsYmlNotFound,lsSuccessResult, lsFailResult;
+		lsYmlNotFound=TestDataHandler.constantDataVariables.getlnk_NotFound();
 		for(int i=0; i<getglobalheaderPageThreadLocal().getFlyoutHeadingCount(); i++) {
 			flyoutHeading = getglobalheaderPageThreadLocal().getFlyoutHeadings(i);	
 			reporter.softAssert(flyoutHeading, TestDataHandler.constantDataVariables.getlst_FlyoutHeading().get(i),"Flyout is displayed for " + flyoutHeading + " department.","Flyout is not displayed for " + flyoutHeading + " department.");

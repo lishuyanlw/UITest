@@ -558,11 +558,13 @@ public class GlobalheaderPage extends BasePage{
 		 */
 		public String getURLafterClickFlyoutHeading(int headingNumber) {
 			WebElement WebElement=listFlyoutHeadings.get(headingNumber).findElement(By.xpath(".//a"));
-		 	getReusableActionsInstance().javascriptScrollByVisibleElement(WebElement); 
-		 	getReusableActionsInstance().clickWhenVisible(WebElement,5);
+			if(getReusableActionsInstance().isElementVisible(WebElement,2)){
+				getReusableActionsInstance().javascriptScrollByVisibleElement(WebElement);  
+				getReusableActionsInstance().clickWhenVisible(WebElement,5);
 		 		return (getDriver().getCurrentUrl());
+			 }else {
+				return null;	
 		}
-
-		
+	}	
 }
 
