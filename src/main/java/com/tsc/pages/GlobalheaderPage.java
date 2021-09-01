@@ -507,8 +507,8 @@ public class GlobalheaderPage extends BasePage{
 		return listFlyoutHeadings.size();
 	}
 	
-	
-	/*Method to get lable of Flyout headings
+
+	/*Method to verify lable & get it for Flyout headings
 	 * @return text:Flyout Headings
 	 * @author Shruti Desai
 	 */
