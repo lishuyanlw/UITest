@@ -4,6 +4,9 @@ import java.io.IOException;
 
 import org.testng.annotations.Test;
 
+
+import com.tsc.data.Handler.TestDataHandler;
+import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 
 	public class HP_TC03_Verify_OnAirSection extends BaseTest {
@@ -13,7 +16,7 @@ import com.tsc.test.base.BaseTest;
 
 	public void validateNowOnAirSection() throws IOException {
 		//OnAirSectionPageThreadLocal().closeadd();
-	reporter.softAssert(getglobalheaderPageThreadLocal().validateURL("https://qa-tsc.tsc.ca/"), "TSC url is correct", "TSC url is incorrect");
+	reporter.softAssert(getglobalheaderPageThreadLocal().validateURL((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");
 	reporter.reportLogWithScreenshot("Home Page");
 					
 	

@@ -32,6 +32,9 @@ public class ConstantData {
 	private String lbl_SearchBoxPlaceholder;
 	private String lbl_MinicartLinkName;
 	private String lnk_MinicarLink;
+	private List<String> lst_FlyoutHeading;
+	private List<String> lnk_FlyoutHeaderLinkConstant;
+	private String lbl_FlyoutHeadingLandingPageLink;
 	private String lbl_OnAirNow;
 	private String lbl_RecentlyAir;
 	private String lnk_RecentlyAir;
@@ -348,7 +351,42 @@ public class ConstantData {
 	public void setlbl_MinicartLinkName(String lbl_MinicartLinkName) {
 		this.lbl_MinicartLinkName = lbl_MinicartLinkName;
 	}
-
+	/**
+	 * @return the lbl_MinicartLinkName
+	 */
+	public String getlbl_FlyoutHeadingLandingPageLink() {
+		return lbl_FlyoutHeadingLandingPageLink;
+	}
+	/**
+	 * @param lbl_FlyoutHeadingLandingPageLink the lbl_FlyoutHeadingLandingPageLink to set
+	 */
+	public void setlbl_FlyoutHeadingLandingPageLink(String lbl_FlyoutHeadingLandingPageLink) {
+		this.lbl_FlyoutHeadingLandingPageLink = lbl_FlyoutHeadingLandingPageLink;
+	}
+	/**
+	 * @return the lst_FlyoutHeading
+	 */
+	public List<String> getlst_FlyoutHeading() {
+		return lst_FlyoutHeading;
+	}
+	/**
+	 * @param lst_FlyoutHeading the lst_FlyoutHeading to set
+	 */
+	public void setlst_FlyoutHeading(List<String> lst_FlyoutHeading) {
+		this.lst_FlyoutHeading = lst_FlyoutHeading;
+	}
+	/**
+	 * @return the lnk_FlyoutHeaderLinkConstant
+	 */
+	public List<String> getlnk_FlyoutHeaderLinkConstant() {
+		return lnk_FlyoutHeaderLinkConstant;
+	}
+	/**
+	 * @param lnk_FlyoutHeaderLinkConstant the lnk_FlyoutHeaderLinkConstant to set
+	 */
+	public void setlnk_FlyoutHeaderLinkConstant(List<String> lnk_FlyoutHeaderLinkConstant) {
+		this.lnk_FlyoutHeaderLinkConstant = lnk_FlyoutHeaderLinkConstant;
+	}
 	/**
 	 * @return the lbl_OnAirNow
 	 */

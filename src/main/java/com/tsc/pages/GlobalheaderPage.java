@@ -17,12 +17,14 @@ import java.util.List;
 import java.util.function.Function;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
 
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindAll;
 
 import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.tsc.pages.base.BasePage;
@@ -120,7 +122,21 @@ public class GlobalheaderPage extends BasePage{
 	
 	@FindBy(xpath = "//*[@class='Header']//div[@id='bagCounter']")
 	WebElement CartBagCounter;
-
+	
+	/*
+	 * @author Shruti.Desai
+	 *Flyouts Headings
+	 */
+	@FindBy(xpath = "//div[@class='Header']//div[@id='megamenu']/ul/li")
+	List <WebElement> listFlyoutHeadings;
+	
+	
+	@FindBy(xpath = "//*[@class='email-popup__button']")
+	WebElement btnClose;
+	public void closeadd() {
+		btnClose.click();
+	}
+	
 	public void waitForPageLoad() {
 		getReusableActionsInstance().waitForPageLoad();
 		waitForCondition(Driver->{return !this.pageLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},30000);
@@ -393,11 +409,7 @@ public class GlobalheaderPage extends BasePage{
 		return getReusableActionsInstance().isElementVisible(CartBagCounter, 5);
 		}
 
-	//Get the URL 			
-	public String URL() {
-		return getDriver().getCurrentUrl();
-	}
-	
+		
 	/**
 	 * This method will verify MiniCart link
 	 *
@@ -499,4 +511,68 @@ public class GlobalheaderPage extends BasePage{
 		getReusableActionsInstance().javascriptScrollToTopOfPage();
 		return waitForPageLoadingByUrlChange(this.lnkWatchUsLive);
 	}
+	
+	
+	/*
+	 * @author Shruti.Desai
+	 *Flyouts Headings
+	 */
+
+	/*Method to get Flyouts Headings count 
+	 * @return number of Flyouts Headings
+	 * @author Shruti Desai
+	 */
+	public int getFlyoutHeadingCount() {
+		return listFlyoutHeadings.size();
+	}
+	
+	
+	/*Method to get lable of Flyout headings
+	 * @return text:Flyout Headings
+	 * @author Shruti Desai
+	 */
+	public String getFlyoutHeadings(int headingNumber) { 
+		WebElement WebElement=listFlyoutHeadings.get(headingNumber).findElement(By.xpath(".//span"));
+		if(getReusableActionsInstance().isElementVisible(WebElement,2)){
+		   getReusableActionsInstance().javascriptScrollByVisibleElement(WebElement);  
+		     return WebElement.getText();
+		 }else {
+		     return null;
+		 }    
+	}
+
+		
+	/*Method to validate href is not empty before clicking it
+	 * @return true/false
+	 * @author Shruti Desai
+	 */
+	 public boolean validateFlyouthref(int headingNumber) {
+		WebElement WebElement=listFlyoutHeadings.get(headingNumber).findElement(By.xpath(".//a"));
+		getReusableActionsInstance().javascriptScrollByVisibleElement(WebElement);
+			if (!WebElement.getAttribute("href").isEmpty()) {
+				return true;
+			}
+				return false;
+		}
+	 
+	 /*Method to validate href is not empty before clicking it
+	 *@return  list:Flyout heading href
+	 * @author Shruti Desai
+	 */
+	 public String getFlyoutLink(int headingNumber) {
+		 String emptyhref="Flyout heading's href is empty";
+		 WebElement WebElement=listFlyoutHeadings.get(headingNumber).findElement(By.xpath(".//a"));
+			getReusableActionsInstance().javascriptScrollByVisibleElement(WebElement);
+				
+		 if (WebElement.getAttribute("href").isEmpty()) {
+			return emptyhref;
+		 }else{
+			return WebElement.getAttribute("href");
+		 }
+	 }
+	
+	
+	
+	
 }
+
