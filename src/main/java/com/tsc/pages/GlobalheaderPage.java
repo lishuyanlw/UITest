@@ -123,7 +123,7 @@ public class GlobalheaderPage extends BasePage{
 	
 	@FindBy(xpath = "//*[@class='Header']//div[@id='bagCounter']")
 	WebElement CartBagCounter;
-	
+
 	/*
 	 * @author Shruti.Desai
 	 *Flyouts Headings
@@ -137,7 +137,6 @@ public class GlobalheaderPage extends BasePage{
 	public void closeadd() {
 		btnClose.click();
 	}
-	
 	public void waitForPageLoad() {
 		getReusableActionsInstance().waitForPageLoad();
 		waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},30000);
@@ -495,7 +494,6 @@ public class GlobalheaderPage extends BasePage{
 		return waitForPageLoadingByUrlChange(this.lnkWatchUsLive);
 	}
 	
-	
 	/*
 	 * @author Shruti.Desai
 	 *Flyouts Headings
@@ -554,8 +552,6 @@ public class GlobalheaderPage extends BasePage{
 		 }
 	 }
 	
-	
-	
-	
+		
 }
 
