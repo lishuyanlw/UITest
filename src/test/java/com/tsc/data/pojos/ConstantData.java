@@ -387,7 +387,7 @@ public class ConstantData {
 	 */
 	public void setlnk_FlyoutHeaderLinkConstant(List<String> lnk_FlyoutHeaderLinkConstant) {
 		this.lnk_FlyoutHeaderLinkConstant = lnk_FlyoutHeaderLinkConstant;
-	}
+}
 	/**
 	 * @return the lbl_OnAirNow
 	 */

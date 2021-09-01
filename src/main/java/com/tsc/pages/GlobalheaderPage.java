@@ -123,7 +123,7 @@ public class GlobalheaderPage extends BasePage{
 	
 	@FindBy(xpath = "//*[@class='Header']//div[@id='bagCounter']")
 	WebElement CartBagCounter;
-	
+
 	/*
 	 * @author Shruti.Desai
 	 *Flyouts Headings
@@ -137,7 +137,6 @@ public class GlobalheaderPage extends BasePage{
 	public void closeadd() {
 		btnClose.click();
 	}
-	
 	public void waitForPageLoad() {
 		getReusableActionsInstance().waitForPageLoad();
 		waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},30000);
@@ -495,7 +494,6 @@ public class GlobalheaderPage extends BasePage{
 		return waitForPageLoadingByUrlChange(this.lnkWatchUsLive);
 	}
 	
-	
 	/*
 	 * @author Shruti.Desai
 	 *Flyouts Headings
@@ -509,8 +507,8 @@ public class GlobalheaderPage extends BasePage{
 		return listFlyoutHeadings.size();
 	}
 	
-	
-	/*Method to get lable of Flyout headings
+
+	/*Method to verify lable & get it for Flyout headings
 	 * @return text:Flyout Headings
 	 * @author Shruti Desai
 	 */
@@ -553,9 +551,20 @@ public class GlobalheaderPage extends BasePage{
 			return WebElement.getAttribute("href");
 		 }
 	 }
-	
-	
-	
-	
+	 
+	 /*Method to get URL after clicking on category of Flyout heading
+		 *@return text: URL
+		 * @author Shruti Desai
+		 */
+		public String getURLafterClickFlyoutHeading(int headingNumber) {
+			WebElement WebElement=listFlyoutHeadings.get(headingNumber).findElement(By.xpath(".//a"));
+			if(getReusableActionsInstance().isElementVisible(WebElement,2)){
+				getReusableActionsInstance().javascriptScrollByVisibleElement(WebElement);  
+				getReusableActionsInstance().clickWhenVisible(WebElement,5);
+		 		return (getDriver().getCurrentUrl());
+			 }else {
+				return null;	
+		}
+	}	
 }
 
