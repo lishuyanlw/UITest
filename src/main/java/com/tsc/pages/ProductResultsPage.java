@@ -13,7 +13,9 @@ import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -592,7 +594,7 @@ public class ProductResultsPage extends BasePage{
 	 * @return true/false 
 	 * @author Wei.Li
 	 */
-	public boolean verifySortOptions(List<String> lstOption) {
+	public boolean verifySortOptions(List<String> lstOptionYml) {
 		if(!getReusableActionsInstance().isElementVisible(this.btnSortSelect)) {			
 			return false;
 		}
@@ -602,18 +604,20 @@ public class ProductResultsPage extends BasePage{
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.sortByOptionList.get(0));
 		
 		int listSize=this.sortByOptionList.size();
-		if(listSize!=lstOption.size()) {
+		if(listSize!=lstOptionYml.size()) {
 			return false;
 		}
 		
+		List<String> lstOption=new ArrayList<String>();
 		for(int i=0;i<listSize;i++) {
-			System.out.println(this.sortByOptionList.get(i).getText()+" : "+lstOption.get(i));
-			if(!this.sortByOptionList.get(i).getText().trim().equalsIgnoreCase(lstOption.get(i))) {
-				return false;
-			}
+			getReusableActionsInstance().javascriptScrollByVisibleElement(this.sortByOptionList.get(i));
+			lstOption.add(this.sortByOptionList.get(i).getText());
 		}
 		
-		return true;
+		Set<String> setOption=new HashSet<String>(lstOption);
+		Set<String> setOptionYml=new HashSet<String>(lstOptionYml);
+		
+		return setOption.containsAll(setOptionYml)&&setOptionYml.containsAll(setOption);
 	}
 
 }

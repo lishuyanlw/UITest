@@ -27,31 +27,16 @@ public class SR_TC03_Verify_ProductSearchResult_SortAndFilterSection extends Bas
 	reporter.softAssert(getglobalheaderPageThreadLocal().validateURL((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");		
 	reporter.reportLog("ProductSearch Page");
 	
-	List<String> lsKeywordList=TestDataHandler.constantDataVariables.getlst_SearchKeyword_SortAndFilter();	
+	List<String> lsKeywordList=TestDataHandler.constantDataVariables.getlst_SearchKeyword_DropDown();	
 	List<String> lsSortOption=TestDataHandler.constantDataVariables.getlst_SortOption();
 		
 	int keyWordSize=lsKeywordList.size();
 	for(int i=0;i<keyWordSize;i++) {		
 		getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(i));
 		System.out.println("Keyword:"+lsKeywordList.get(i));
-		String lsTestModel=getProductResultsPageThreadLocal().judgeTestModel();	
-		reporter.reportLog("Search Model and keyword : "+lsTestModel+" : "+lsKeywordList.get(i));
-		System.out.println(lsKeywordList.get(i)+":"+lsTestModel);
-		switch(lsTestModel) {
-		case "NormalSearch":
-			reporter.softAssert(getProductResultsPageThreadLocal().verifySortOptions(lsSortOption), "Sort options in search result filters are correct", "Sort options in search result filters are incorrect");
-			
-			break;
-		case "NoSearchResult":			
-			break;
-		case "ProductNumberSearch":
-			break;
-		case "BannerImageSearch":
-			reporter.softAssert(getProductResultsPageThreadLocal().verifySortOptions(lsSortOption), "Sort options in search result filters are correct", "Sort options in search result filters are incorrect");
-			
-			break;		
+		
+		reporter.softAssert(getProductResultsPageThreadLocal().verifySortOptions(lsSortOption), "Sort options in search result filters are correct", "Sort options in search result filters are incorrect");
 		}
-	}
 	
 	}
 }
