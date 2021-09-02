@@ -48,6 +48,7 @@ public class ConstantData {
 	private String lbl_TopSellers;
 	private List<String> lst_SearchKeyword;	
 	private List<String> lst_SearchKeyword_DropDown;
+	private List<String> lst_SearchKeyword_SortAndFilter;
 	private String lbl_SearchResultExpectedUrl;
 	private String lbl_SearchResultExpectedUrlWithoutKeyword;
 	private String lbl_SearchResultPageDefaultSetting;
@@ -557,6 +558,19 @@ public class ConstantData {
 	 */
 	public void setlst_SearchKeyword_DropDown(List<String> lst_SearchKeyword_DropDown) {
 		this.lst_SearchKeyword_DropDown = lst_SearchKeyword_DropDown;
+	}
+	
+	/**
+	 * @return the lst_SearchKeyword_SortAndFilter
+	 */
+	public List<String> getlst_SearchKeyword_SortAndFilter() {
+		return lst_SearchKeyword_SortAndFilter;
+	}
+	/**
+	 * @param lst_SearchKeyword_SortAndFilter the lst_SearchKeyword_SortAndFilter to set
+	 */
+	public void setlst_SearchKeyword_SortAndFilter(List<String> lst_SearchKeyword_SortAndFilter) {
+		this.lst_SearchKeyword_SortAndFilter = lst_SearchKeyword_SortAndFilter;
 	}
 	
 	/**

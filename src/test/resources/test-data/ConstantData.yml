@@ -42,6 +42,7 @@ lbl_TopSellers: TOP SELLERS
 # SEARCH RESULTS SECTION
 lst_SearchKeyword: ["dyson vacuum","!@#$%^&*()_+","100501","joan rivers","Nike","boots"]
 lst_SearchKeyword_DropDown: ["dress"]
+lst_SearchKeyword_SortAndFilter: ["dress"]
 lbl_SearchResultPageDefaultSetting: 36
 lst_SearchResultMessage: [["Search Results For"],["We couldn","t find a match for","Please search again using a different term or browse by brand or category."]]
 lbl_SearchResultExpectedUrl:  "/pages/productresults\\?dimensions=(\\d+)(&rd=[0-9]+)?&searchterm="
