@@ -30,13 +30,8 @@ public class SR_TC03_Verify_ProductSearchResult_SortAndFilterSection extends Bas
 	List<String> lsKeywordList=TestDataHandler.constantDataVariables.getlst_SearchKeyword_DropDown();	
 	List<String> lsSortOption=TestDataHandler.constantDataVariables.getlst_SortOption();
 		
-	int keyWordSize=lsKeywordList.size();
-	for(int i=0;i<keyWordSize;i++) {		
-		getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(i));
-		System.out.println("Keyword:"+lsKeywordList.get(i));
-		
-		reporter.softAssert(getProductResultsPageThreadLocal().verifySortOptions(lsSortOption), "Sort options in search result filters are correct", "Sort options in search result filters are incorrect");
-		}
-	
+	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0));
+	reporter.softAssert(getProductResultsPageThreadLocal().verifySortOptions(lsSortOption), "Sort options in search result filters are correct", "Sort options in search result filters are incorrect");
+			
 	}
 }

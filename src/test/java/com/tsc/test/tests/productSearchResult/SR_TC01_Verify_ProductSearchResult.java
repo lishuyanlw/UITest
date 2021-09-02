@@ -30,7 +30,7 @@ public class SR_TC01_Verify_ProductSearchResult extends BaseTest{
 	List<String> lsKeywordList=TestDataHandler.constantDataVariables.getlst_SearchKeyword();	
 	String lsSearchResultExpectedUrl=TestDataHandler.constantDataVariables.getlbl_SearchResultExpectedUrl();
 	String lsSearchResultExpectedUrlWithoutKeyword=TestDataHandler.constantDataVariables.getlbl_SearchResultExpectedUrlWithoutKeyword();
-	System.out.println("Url:"+lsSearchResultExpectedUrlWithoutKeyword);
+	
 	List<List<String>> lstSearchResultMessage=TestDataHandler.constantDataVariables.getlst_SearchResultMessage();
 	String lsSearchResultPageDefaultSetting=TestDataHandler.constantDataVariables.getlbl_SearchResultPageDefaultSetting();
 	List<WebElement> productList;
@@ -38,10 +38,10 @@ public class SR_TC01_Verify_ProductSearchResult extends BaseTest{
 	int keyWordSize=lsKeywordList.size();
 	for(int i=0;i<keyWordSize;i++) {		
 		getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(i));
-		System.out.println("Keyword:"+lsKeywordList.get(i));
+		
 		String lsTestModel=getProductResultsPageThreadLocal().judgeTestModel();	
 		reporter.reportLog("Search Model and keyword : "+lsTestModel+" : "+lsKeywordList.get(i));
-		System.out.println(lsKeywordList.get(i)+":"+lsTestModel);
+		
 		switch(lsTestModel) {
 		case "NormalSearch":
 			reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultUrlWithRegexPattern(lsSearchResultExpectedUrl,lsKeywordList.get(i)), "Url of search result matches expected url regex pattern", "Url of search result doesn't match expected url regex pattern");
