@@ -619,8 +619,8 @@ public class ProductResultsPage extends BasePage{
 	
 	/**
 	 * This method will verify filter option headers.
-	 * @param List<String> lstOption: input option list
-	 * @return true/false 
+	 * @param List<String> lstOption: input option list in yml file
+	 * @return String: error message 
 	 * @author Wei.Li
 	 */
 	public String verifyFilterOptions(List<String> lstOptionYml) {
