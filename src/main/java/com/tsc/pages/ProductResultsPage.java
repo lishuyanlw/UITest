@@ -143,6 +143,9 @@ public class ProductResultsPage extends BasePage{
 	@FindBy(xpath = "//div[@class='TitleAndTextSeo']//button")
 	WebElement btnProductTitleAndTextMoreOrLess;
 	
+	@FindBy(xpath = "//product-results//div[@class='modalBody']//div[@class='panel']//span[contains(@class,'section-header')]")
+	List<WebElement> productFilterList;
+	
 	String searchkeyword;
 		
 	/**
@@ -612,6 +615,30 @@ public class ProductResultsPage extends BasePage{
 		Set<String> setOptionYml=new HashSet<String>(lstOptionYml);
 		
 		return setOption.containsAll(setOptionYml)&&setOptionYml.containsAll(setOption);
+	}
+	
+	/**
+	 * This method will verify filter option headers.
+	 * @param List<String> lstOption: input option list
+	 * @return true/false 
+	 * @author Wei.Li
+	 */
+	public boolean verifyFilterOptions(List<String> lstOptionYml) {
+		int listSize=this.productFilterList.size();
+		if(listSize==0) {
+			return false;
+		}
+				
+		List<String> lstOption=new ArrayList<String>();
+		for(int i=0;i<listSize;i++) {
+			getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i));
+			lstOption.add(this.productFilterList.get(i).getText());
+		}
+		
+		Set<String> setOption=new HashSet<String>(lstOption);
+		Set<String> setOptionYml=new HashSet<String>(lstOptionYml);
+		
+		return setOption.containsAll(setOptionYml);
 	}
 
 }

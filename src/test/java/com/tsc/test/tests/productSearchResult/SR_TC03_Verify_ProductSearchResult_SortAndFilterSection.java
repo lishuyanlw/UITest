@@ -29,9 +29,11 @@ public class SR_TC03_Verify_ProductSearchResult_SortAndFilterSection extends Bas
 	
 	List<String> lsKeywordList=TestDataHandler.constantDataVariables.getlst_SearchKeyword_DropDown();	
 	List<String> lsSortOption=TestDataHandler.constantDataVariables.getlst_SortOption();
-		
+	List<String> lsFilterOption=TestDataHandler.constantDataVariables.getlst_FilterOption();
+			
 	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0));
 	reporter.softAssert(getProductResultsPageThreadLocal().verifySortOptions(lsSortOption), "Sort options in search result filters are correct", "Sort options in search result filters are incorrect");
+	reporter.softAssert(getProductResultsPageThreadLocal().verifyFilterOptions(lsFilterOption), "Filter option headers in left panel are correct", "Filter option headers in left panel are incorrect");
 			
 	}
 }
