@@ -374,8 +374,7 @@ import utils.ReusableActions;
         List<String> list=new ArrayList<String>();
         while(m.find()) {
         	String lsGroup=m.group();
-        	list.add(lsGroup); 
-        	System.out.println(lsGroup);
+        	list.add(lsGroup);         	
         }
         
         return list;
