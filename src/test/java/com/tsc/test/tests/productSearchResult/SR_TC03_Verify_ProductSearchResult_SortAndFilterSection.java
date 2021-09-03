@@ -33,7 +33,14 @@ public class SR_TC03_Verify_ProductSearchResult_SortAndFilterSection extends Bas
 			
 	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0));
 	reporter.softAssert(getProductResultsPageThreadLocal().verifySortOptions(lsSortOption), "Sort options in search result filters are correct", "Sort options in search result filters are incorrect");
-	reporter.softAssert(getProductResultsPageThreadLocal().verifyFilterOptions(lsFilterOption), "Filter option headers in left panel are correct", "Filter option headers in left panel are incorrect");
-			
+	
+	String lsMsg=getProductResultsPageThreadLocal().verifyFilterOptions(lsFilterOption);	
+	if(lsMsg.isEmpty()) {
+		reporter.reportLogPass("Filter option headers in left panel are correct");		
+	}
+	else {
+		reporter.reportLogFail(lsMsg);
+	}
+		
 	}
 }

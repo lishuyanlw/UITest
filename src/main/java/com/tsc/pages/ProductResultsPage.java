@@ -623,10 +623,11 @@ public class ProductResultsPage extends BasePage{
 	 * @return true/false 
 	 * @author Wei.Li
 	 */
-	public boolean verifyFilterOptions(List<String> lstOptionYml) {
+	public String verifyFilterOptions(List<String> lstOptionYml) {
+		String lsErrorMsg="";
 		int listSize=this.productFilterList.size();
 		if(listSize==0) {
-			return false;
+			return lsErrorMsg="No product list";
 		}
 				
 		List<String> lstOption=new ArrayList<String>();
@@ -634,11 +635,20 @@ public class ProductResultsPage extends BasePage{
 			getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i));
 			lstOption.add(this.productFilterList.get(i).getText());
 		}
+			
+		String lsItem="";
+		for(int i=0;i<lstOptionYml.size();i++) {
+			if(!lstOption.contains(lstOptionYml.get(i))) {
+				lsItem=lsItem+"'"+lstOptionYml.get(i)+"',";
+			}
+		}
 		
-		Set<String> setOption=new HashSet<String>(lstOption);
-		Set<String> setOptionYml=new HashSet<String>(lstOptionYml);
-		
-		return setOption.containsAll(setOptionYml);
+		if(!lsItem.isEmpty()) {			
+			lsItem=lsItem.substring(0, lsItem.length()-1);			
+			lsErrorMsg="Filter option headers in left panel does not contain "+lsItem;			
+		}
+				
+		return lsErrorMsg;
 	}
 
 }
