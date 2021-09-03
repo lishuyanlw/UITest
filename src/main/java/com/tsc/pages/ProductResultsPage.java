@@ -219,14 +219,12 @@ public class ProductResultsPage extends BasePage{
 	public boolean verifySearchResultMessage(List<String> expectedMessage,String lsKeyword) {		
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSearchResultMessage);
 		
-		String lsMessage=this.lblSearchResultMessage.getText().trim();	
-		System.out.println("Result message:"+lsMessage);
+		String lsMessage=this.lblSearchResultMessage.getText().trim();		
 		if(!lsMessage.contains(lsKeyword)) {
 			return false;		
 		}
 		else {
-			for(String message:expectedMessage) {	
-				System.out.println("Expected message"+message);
+			for(String message:expectedMessage) {				
 				if(!lsMessage.contains(message)) {
 					return false;
 				}
@@ -375,7 +373,7 @@ public class ProductResultsPage extends BasePage{
 	public boolean verifySearchResultUrlWithRegexPattern(String lsPattern, String lsKeyword) {
 		String lsEncodingKeyword=getEncodingKeyword(lsKeyword);
 		String lsMatchPattern=(new BasePage(this.getDriver())).getBaseURL()+lsPattern+lsEncodingKeyword;
-		System.out.println("regex:"+lsMatchPattern);		
+				
 		return this.URL().matches(lsMatchPattern);		
 	}
 	
@@ -387,7 +385,7 @@ public class ProductResultsPage extends BasePage{
 	public boolean verifySearchResultUrl(String lsPattern, String lsKeyword) {
 		String lsEncodingKeyword=getEncodingKeyword(lsKeyword);
 		String lsMatchUrl=(new BasePage(this.getDriver())).getBaseURL()+lsPattern+lsEncodingKeyword;
-		System.out.println("Url:"+lsMatchUrl);		
+			
 		return this.URL().equalsIgnoreCase(lsMatchUrl);		
 	}
 	
@@ -480,8 +478,7 @@ public class ProductResultsPage extends BasePage{
 		WebElement element=parent.findElement(this.byJudgeProductBadgeAndVideo);
 		JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
 		List<WebElement> childList=(List<WebElement>) jse.executeScript("return arguments[0].children;", element);
-		
-		System.out.println("Size:"+childList.size());
+				
 		if(childList.size()==1) {
 			return "WithoutBadgeAndVideo";
 		}
@@ -509,8 +506,7 @@ public class ProductResultsPage extends BasePage{
 		WebElement element=parent.findElement(this.byJudgeProductWasPrice);
 		JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
 		List<WebElement> childList=(List<WebElement>) jse.executeScript("return arguments[0].children;", element);
-		
-		System.out.println("Size:"+childList.size());
+				
 		if(childList.size()==1) {
 			return "WithoutWasPrice";
 		}
@@ -564,8 +560,7 @@ public class ProductResultsPage extends BasePage{
 				reporter.softAssert(true, "ProductFreeShipping in searching result is correct", "ProductFreeShipping in searching result is incorrect");
 			}
 				
-			String judgeMode=judgeProductBadgeAndVideo(item);
-			System.out.println("judgeMode:"+judgeMode);
+			String judgeMode=judgeProductBadgeAndVideo(item);			
 			switch(judgeMode) {
 			case "WithBadge":
 				reporter.softAssert(!item.findElement(byProductPriceBadge).getAttribute("src").isEmpty(), "PriceBadge in searching result is correct", "PriceBadge in searching result is incorrect");
@@ -579,8 +574,7 @@ public class ProductResultsPage extends BasePage{
 				break;
 			}
 			
-			judgeMode=judgeProductWasPrice(item);
-			System.out.println("judgeMode:"+judgeMode);
+			judgeMode=judgeProductWasPrice(item);			
 			if(judgeMode.equalsIgnoreCase("WithWasPrice")) {
 				reporter.softAssert(!item.findElement(byProductWasPrice).getText().isEmpty(), "ProductWasPrice in searching result is correct", "ProductWasPrice in searching result is incorrect");
 			}
