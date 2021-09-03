@@ -628,30 +628,39 @@ public class ProductResultsPage extends BasePage{
 	
 	/**
 	 * This method will verify Price: Highest first strategy. 
-	 * @return true/false 
+	 * @return String: error message
 	 * @author Wei.Li
 	 */
-	public boolean verifyHighestPriceFirstSort() {
+	public String verifyHighestPriceFirstSort() {
+		String lsErrorMsg="";
 		if(this.productResultList.size()==0) {
-			return false;
+			return lsErrorMsg="No product list";
 		}
 		
 		List<Float> priceList=new ArrayList<Float>();
+		List<String> productNOList=new ArrayList<String>();
 		for(WebElement element:this.productResultList) {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 			String nowPriceText=element.findElement(this.byProductNowPrice).getText();			
 			float nowPriceValue=this.getFloatFromString(nowPriceText);			
 			priceList.add(nowPriceValue);
+			String productNO=element.findElement(this.byProductItemNO).getText();
+			productNOList.add(productNO);
 		}
 		
+		String lsItem="";
 		int priceListSize=priceList.size();
 		for(int i=0;i<priceListSize-1;i++) {
 			if(priceList.get(i)<priceList.get(i+1)) {
-				return false;
+				lsItem=lsItem+productNOList.get(i)+" is greater than "+productNOList.get(i+1)+";";
 			}
 		}
 		
-		return true;
+		if(!lsItem.isEmpty()) {
+			lsErrorMsg="Sort option of Price: Highest first does not work: "+lsItem;			
+		}
+		
+		return lsErrorMsg;
 	}
 	
     /**

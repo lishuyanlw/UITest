@@ -36,9 +36,14 @@ public class SR_TC03_Verify_ProductSearchResult_SortAndFilterSection extends Bas
 	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0));
 	reporter.softAssert(getProductResultsPageThreadLocal().verifySortOptions(lsSortOption), "Sort options in search result filters are correct", "Sort options in search result filters are incorrect");
 	
-	if(getProductResultsPageThreadLocal().chooseSortOptionByVisibleText("Price: Highest first")) {		
-		reporter.softAssert(getProductResultsPageThreadLocal().verifyHighestPriceFirstSort(), "Sort option of Price: Highest first works", "Sort option of Price: Highest first does not work");
-		
+	if(getProductResultsPageThreadLocal().chooseSortOptionByVisibleText("Price: Highest first")) {
+		String lsMsg=getProductResultsPageThreadLocal().verifyHighestPriceFirstSort();
+		if(lsMsg.isEmpty()) {
+			reporter.reportLogPass("Sort option of Price: Highest first works");
+		}else {
+			reporter.reportLogFail(lsMsg);
+		}
+				
 		List<String> lstSortByHighestPriceUrl=TestDataHandler.constantDataVariables.getlst_SortByHighestPriceUrl();
 		reporter.softAssert(getProductResultsPageThreadLocal().verifyUrlAfterSelectHighestPriceSort(lsKeywordList.get(0),lstSortByHighestPriceUrl), "The Url contains keyword and sortKey=HighestPrice", "The Url does not contain keyword and sortKey=HighestPrice");
 		
