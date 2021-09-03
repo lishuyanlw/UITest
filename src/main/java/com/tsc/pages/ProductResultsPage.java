@@ -613,7 +613,90 @@ public class ProductResultsPage extends BasePage{
 		
 		return setOption.containsAll(setOptionYml)&&setOptionYml.containsAll(setOption);
 	}
-
+	
+    /**
+	 * This method will choose sort option by visible text.
+	 * @param String lsOption: visible option text
+	 * @return true/false
+	 * @author Wei.Li
+	 */	
+    public boolean chooseSortOptionByVisibleText(String lsOption) {  
+    	getReusableActionsInstance().isElementVisible(this.btnSortSelect);
+    	getReusableActionsInstance().selectWhenReadyByVisibleText(this.btnSortSelect,lsOption);
+		return waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},30000);		
+    }
+	
+	/**
+	 * This method will verify Price: Highest first strategy. 
+	 * @return true/false 
+	 * @author Wei.Li
+	 */
+	public boolean verifyHighestPriceFirstSort() {
+		if(this.productResultList.size()==0) {
+			return false;
+		}
+		
+		List<Float> priceList=new ArrayList<Float>();
+		for(WebElement element:this.productResultList) {
+			getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+			String nowPriceText=element.findElement(this.byProductNowPrice).getText();			
+			float nowPriceValue=this.getFloatFromString(nowPriceText);			
+			priceList.add(nowPriceValue);
+		}
+		
+		int priceListSize=priceList.size();
+		for(int i=0;i<priceListSize-1;i++) {
+			if(priceList.get(i)<priceList.get(i+1)) {
+				return false;
+			}
+		}
+		
+		return true;
+	}
+	
+    /**
+	 * This method will get float from string.
+	 * @param String lsTarget: target string
+	 * @return float value
+	 * @author Wei.Li
+	 */	
+    public float getFloatFromString(String lsTarget) {  
+    	lsTarget=lsTarget.replace(",", "").trim();
+    	
+    	String regex="\\d+\\.\\d+";
+    	String lsReturn="";
+    	Pattern pattern=Pattern.compile(regex);
+    	Matcher matcher=pattern.matcher(lsTarget);
+    	while(matcher.find())
+    	{
+    	    lsReturn=matcher.group();    	        	   
+    	}
+    	    			
+    	return Float.parseFloat(lsReturn);
+    }
+    
+    /**
+	 * This method will verify Url after selecting Price: Highest first option.
+	 * @param String lsKeyword: search keyword
+	 * @param List<String> lstUrlYml: Url parts in yml file
+	 * @return true/false
+	 * @author Wei.Li
+	 */	
+    public boolean verifyUrlAfterSelectHighestPriceSort(String lsKeyword,List<String> lstUrlYml) {  
+    	String lsUrl=this.URL();
+    	if(!lsUrl.toLowerCase().contains(lsKeyword.toLowerCase())) {
+    		return false;
+    	}
+    	
+    	for(String item:lstUrlYml) {
+    		if(!lsUrl.toLowerCase().contains(item.toLowerCase())) {
+    			return false;
+    		}
+    	}
+    	
+    	return true;
+    }    
+	
 }
 
 	
