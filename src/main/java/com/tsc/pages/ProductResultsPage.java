@@ -652,7 +652,7 @@ public class ProductResultsPage extends BasePage{
 		int priceListSize=priceList.size();
 		for(int i=0;i<priceListSize-1;i++) {
 			if(priceList.get(i)<priceList.get(i+1)) {
-				lsItem=lsItem+productNOList.get(i)+" is greater than "+productNOList.get(i+1)+";";
+				lsItem=lsItem+productNOList.get(i)+" is less than "+productNOList.get(i+1)+";";
 			}
 		}
 		
