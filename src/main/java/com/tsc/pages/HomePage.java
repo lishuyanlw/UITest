@@ -434,11 +434,9 @@ public class HomePage extends BasePage{
 				lnkListBefore.add(item.getAttribute("href"));
 			}
 			
-			String lsCurrentHref=lnkListBefore.get(0);
-			System.out.println("Current href:"+lsCurrentHref);
+			String lsCurrentHref=lnkListBefore.get(0);			
 			waitForCondition(Driver->{return !lsCurrentHref.equalsIgnoreCase(this.lnkShopByBrandAllActiveLinks.get(0).getAttribute("href"));},30000);
-			System.out.println("Change href:"+this.lnkShopByBrandAllActiveLinks.get(0).getAttribute("href"));
-			
+						
 			List<String> lnkListAfter= new ArrayList<String>();
 			for(WebElement item:this.lnkShopByBrandAllActiveLinks) {
 				lnkListAfter.add(item.getAttribute("href"));
@@ -464,8 +462,7 @@ public class HomePage extends BasePage{
 		public boolean validateShopByBrandViewAllLink(String lnkViewAll) {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(btnViewAll);
 			String strLink=this.btnViewAll.getAttribute("href").trim();
-			System.out.println(strLink);
-			System.out.println(getBaseURL()+lnkViewAll);
+			
 			return strLink.equalsIgnoreCase(getBaseURL()+lnkViewAll);
 		}
 		
@@ -488,7 +485,7 @@ public class HomePage extends BasePage{
 		 */	    
 		public String getTopSellerHeaderText() {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(lblTopSeller);
-			System.out.println("Top seller header:"+lblTopSeller.getText().trim());
+			
 			return lblTopSeller.getText().trim();
 		}
 		
@@ -510,8 +507,7 @@ public class HomePage extends BasePage{
 		 */			
 		public boolean validateTopSellerHref() {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(lblTopSeller);
-			for(WebElement item: this.lnkTopSellerAllLinks) {
-				System.out.println(item.getAttribute("href"));
+			for(WebElement item: this.lnkTopSellerAllLinks) {				
 				if(item.getAttribute("href").isEmpty()) {
 					return false;
 				}
@@ -527,8 +523,7 @@ public class HomePage extends BasePage{
 		 */			
 		public boolean validateTopSellerImg() {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(lblTopSeller);
-			for(WebElement item: this.imgTopSellerAllImages) {
-				System.out.println(item.getAttribute("src"));
+			for(WebElement item: this.imgTopSellerAllImages) {				
 				if(item.getAttribute("src").isEmpty()) {
 					return false;
 				}
@@ -544,8 +539,7 @@ public class HomePage extends BasePage{
 		 */			
 		public boolean validateTopSellerName() {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(lblTopSeller);
-			for(WebElement item: this.lblTopSellerAllNames) {
-				System.out.println(item.getText());
+			for(WebElement item: this.lblTopSellerAllNames) {				
 				if(item.getText().isEmpty()) {
 					return false;
 				}
@@ -561,8 +555,7 @@ public class HomePage extends BasePage{
 		 */			
 		public boolean validateTopSellerNowPrice() {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(lblTopSeller);
-			for(WebElement item: this.lblTopSellerAllNowPrices) {
-				System.out.println(item.getText());
+			for(WebElement item: this.lblTopSellerAllNowPrices) {				
 				if(item.getText().isEmpty()) {
 					return false;
 				}
@@ -581,8 +574,7 @@ public class HomePage extends BasePage{
 			if(!this.getReusableActionsInstance().isElementVisible(By.xpath("//product-recommendations-endeca//*[contains(@class,'prec-col')]//div[contains(@class,'was-price')]"),30)) {
 				return true;
 			}
-			for(WebElement item: this.lblTopSellerAllWasPrices) {
-				System.out.println(item.getText());
+			for(WebElement item: this.lblTopSellerAllWasPrices) {				
 				if(item.getText().isEmpty()) {
 					return false;
 				}

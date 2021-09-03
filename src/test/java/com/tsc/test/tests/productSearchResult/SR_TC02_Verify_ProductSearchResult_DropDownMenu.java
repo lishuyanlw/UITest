@@ -35,7 +35,7 @@ public class SR_TC02_Verify_ProductSearchResult_DropDownMenu extends BaseTest{
 	int keyWordDropdownSize=lsKeywordDropdownList.size();
 	for(int i=0;i<keyWordDropdownSize;i++) {
 		getProductResultsPageThreadLocal().selectSearchResultListInDropdownMenu(lsKeywordDropdownList.get(i),0);
-		System.out.println(lsKeywordDropdownList.get(i));
+		
 		reporter.reportLog("Search keyword : "+lsKeywordDropdownList.get(i));
 		
 		reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(), "Showing text pattern in filters is correct", "Showing text pattern in filters is incorrect");
