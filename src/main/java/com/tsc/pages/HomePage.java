@@ -1,16 +1,20 @@
 package com.tsc.pages;
 
 import java.io.IOException;
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -63,7 +67,20 @@ public class HomePage extends BasePage{
 	//TS Main Image section 
 	
 	@FindBy(xpath = "//*[@class='tsZoneBottom']//h3")
+	WebElement TSImagesection;
+	
+	@FindBy(xpath = "//*[@class='TsZone']//div[contains(@class,'tsZoneHero')]")
 	WebElement TSmainImagesection;
+	
+	@FindBy(xpath = "//div[@class='Header']/following::div[@class='swiper-wrapper'][1]//div[contains(@class,'swiper-slide-active')]")
+	WebElement linksTSmainImage;
+	
+	@FindBy(xpath = "//div[@class='Header']/following::div[@class='swiper-wrapper'][1]//div[contains(@class,'active')]")
+	List<WebElement> linksTSmainImage1;
+	
+	
+	@FindBy(xpath = "//div[@class='Header']/following::div[@class='swiper-wrapper'][1]//div[contains(@class,'active')]/a")
+	List<WebElement> totalTSmainImage;
 	
 	//For Shop by brand by Wei.Li
 	
@@ -761,5 +778,66 @@ public class HomePage extends BasePage{
 				return true;
 			}						
 		}	
+
+		/*
+		 * Method to validate TS main image upper section
+		 * @return true/false
+		 * @author Shruti Desai
+		 */	
+		public boolean validateTSmainimagesection() {
+		getReusableActionsInstance().javascriptScrollByVisibleElement(TSmainImagesection);
+			 return true;
+			}
+			
+	/*
+	 * Method to Get total number of images for TS upper section  
+	 * @return int: number of total images
+	 * @author Shruti Desai
+	 */	
+		public int getTSmainimgCount() {
+			return linksTSmainImage.findElements(By.tagName("a")).size();
+		}
+		
+	/*
+	 * Method to click on each image for TS upper section  
+	 * @author Shruti Desai
+	 */
+		public void clickallLinks() throws InterruptedException {
+			int totalTsimage = getTSmainimgCount();
+			for (int i=0;i<totalTsimage; i++) {
+				String clickonlinkTab = Keys.chord(Keys.CONTROL, Keys.ENTER);
+				linksTSmainImage.findElements(By.tagName("a")).get(i).sendKeys(clickonlinkTab);
+				Thread.sleep(3000L);
+				}
+		}
+		
+	/*
+	 * Method to Get total number of open tabs after clinking each images of TS image upper section 
+	 * @return int: number of total open tabs after clicking all images
+	 * @author Shruti Desai
+	 */
+		public int getNumberOftabs() {
+			return getReusableActionsInstance().getNumberOfOpenWindows();
+		}
+		
+	/*
+	 * Method to Get list of url for clicked TS images (upper section) open in different tabs  
+	 * @return list: url of all open images
+	 * @author Shruti Desai
+	 */
+		public List<String> getTabUrlList(){
+			String getMultiTabUrl = null;
+			ArrayList<String> returnList= new ArrayList<String>();
+			ArrayList<String> tabList = new ArrayList<String>(getDriver().getWindowHandles());
+			int numberOfWindow = getNumberOftabs();
+			for (int i=1; i<numberOfWindow; i++) {
+				getDriver().switchTo().window(tabList.get(i));
+				getMultiTabUrl = getDriver().getCurrentUrl();
+				getDriver().switchTo().window(tabList.get(0));
+				returnList.add(getMultiTabUrl);
+				}
+			return returnList;
+			}
+		
 		
 }
