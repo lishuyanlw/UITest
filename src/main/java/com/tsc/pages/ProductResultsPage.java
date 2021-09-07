@@ -143,6 +143,9 @@ public class ProductResultsPage extends BasePage{
 	@FindBy(xpath = "//div[@class='TitleAndTextSeo']//button")
 	WebElement btnProductTitleAndTextMoreOrLess;
 	
+	@FindBy(xpath = "//product-results//div[@class='modalBody']//div[@class='panel']//span[contains(@class,'section-header')]")
+	List<WebElement> productFilterList;
+	
 	String searchkeyword;
 		
 	/**
@@ -612,8 +615,8 @@ public class ProductResultsPage extends BasePage{
 		Set<String> setOptionYml=new HashSet<String>(lstOptionYml);
 		
 		return setOption.containsAll(setOptionYml)&&setOptionYml.containsAll(setOption);
-	}
-	
+	}	
+
     /**
 	 * This method will choose sort option by visible text.
 	 * @param String lsOption: visible option text
@@ -704,8 +707,32 @@ public class ProductResultsPage extends BasePage{
     	}
     	
     	return true;
-    }    
-	
+    }   	
+
+	/**
+	 * This method will verify filter option headers.
+	 * @param List<String> lstOption: input option list in yml file
+	 * @return String: error message 
+	 * @author Wei.Li
+	 */
+	public String verifyFilterOptions(List<String> lstOptionYml) {
+		String lsErrorMsg="";
+	      int listSize=this.productFilterList.size();
+	      if(listSize==0) {
+	         return lsErrorMsg="No product list";
+	      }
+	            
+	      List<String> lstOption=new ArrayList<String>();
+	      for(int i=0;i<listSize;i++) {
+	         getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i));
+	         if(lstOptionYml.contains(this.productFilterList.get(i).getText())) {
+	            continue;
+	         }else {
+	            return lsErrorMsg = "Filter option headers in left panel contain "+this.productFilterList.get(i).getText()+" that is not present in input list";
+	         }
+	      }      
+	      return lsErrorMsg;
+	}
 }
 
 	

@@ -31,13 +31,22 @@ public class SR_TC03_Verify_ProductSearchResult_SortAndFilterSection extends Bas
 	List<List<String>> lstSearchResultMessage=TestDataHandler.constantDataVariables.getlst_SearchResultMessage();
 	String lsSearchResultPageDefaultSetting=TestDataHandler.constantDataVariables.getlbl_SearchResultPageDefaultSetting();
 	List<String> lsSortOption=TestDataHandler.constantDataVariables.getlst_SortOption();
+	List<String> lsFilterOption=TestDataHandler.constantDataVariables.getlst_FilterOption();
 	List<WebElement> productList;
 		
 	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0));
 	reporter.softAssert(getProductResultsPageThreadLocal().verifySortOptions(lsSortOption), "Sort options in search result filters are correct", "Sort options in search result filters are incorrect");
 	
+	String lsMsg=getProductResultsPageThreadLocal().verifyFilterOptions(lsFilterOption);	
+	if(lsMsg.isEmpty()) {
+		reporter.reportLogPass("Filter option headers in left panel are correct");		
+	}
+	else {
+		reporter.reportLogFail(lsMsg);
+	}
+	
 	if(getProductResultsPageThreadLocal().chooseSortOptionByVisibleText("Price: Highest first")) {
-		String lsMsg=getProductResultsPageThreadLocal().verifyHighestPriceFirstSort();
+		lsMsg=getProductResultsPageThreadLocal().verifyHighestPriceFirstSort();
 		if(lsMsg.isEmpty()) {
 			reporter.reportLogPass("Sort option of Price: Highest first works");
 		}else {
@@ -58,7 +67,6 @@ public class SR_TC03_Verify_ProductSearchResult_SortAndFilterSection extends Bas
 		
 		reporter.softAssert(getProductResultsPageThreadLocal().verifyProductPagination(), "Product pagination is existing", "Product pagination is not existing");
 	}
-	
-			
+
 	}
 }
