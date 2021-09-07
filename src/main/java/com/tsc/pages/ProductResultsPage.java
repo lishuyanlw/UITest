@@ -636,16 +636,34 @@ public class ProductResultsPage extends BasePage{
 			lstOption.add(this.productFilterList.get(i).getText());
 		}
 			
-		String lsItem="";
+		String lsItemYml="";
 		for(int i=0;i<lstOptionYml.size();i++) {
 			if(!lstOption.contains(lstOptionYml.get(i))) {
-				lsItem=lsItem+"'"+lstOptionYml.get(i)+"',";
+				lsItemYml=lsItemYml+"'"+lstOptionYml.get(i)+"',";				
 			}
 		}
 		
-		if(!lsItem.isEmpty()) {			
-			lsItem=lsItem.substring(0, lsItem.length()-1);			
-			lsErrorMsg="Filter option headers in left panel does not contain "+lsItem;			
+		String lsItemOption="";
+		for(int i=0;i<lstOption.size();i++) {
+			if(!lstOptionYml.contains(lstOption.get(i))) {
+				lsItemOption=lsItemOption+"'"+lstOption.get(i)+"',";				
+			}
+		}
+		
+		if(!lsItemYml.isEmpty()) {			
+			lsItemYml=lsItemYml.substring(0, lsItemYml.length()-1);			
+			lsErrorMsg="Filter option headers in left panel do not contain "+lsItemYml;			
+		}
+		
+		if(!lsItemOption.isEmpty()) {			
+			lsItemOption=lsItemOption.substring(0, lsItemOption.length()-1);	
+			if(lsItemYml.isEmpty()) {
+				lsErrorMsg=lsErrorMsg+"Filter option headers in yml file do not contain "+lsItemOption;	
+			}
+			else {
+				lsErrorMsg=lsErrorMsg+", and Filter option headers in yml file do not contain "+lsItemOption;
+			}
+						
 		}
 				
 		return lsErrorMsg;
