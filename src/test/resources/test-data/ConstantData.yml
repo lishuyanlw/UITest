@@ -47,7 +47,7 @@ lst_SearchResultMessage: [["Search Results For"],["We couldn","t find a match fo
 lbl_SearchResultExpectedUrl:  "/pages/productresults\\?dimensions=(\\d+)(&rd=[0-9]+)?&searchterm="
 lbl_SearchResultExpectedUrlWithoutKeyword: "/pages/productresults?dimensions=0&searchterm="
 lst_SortOption: ["Featured Products","Newest first","Reviews: Highest first","Price: Lowest first","Price: Highest first","Brand Name: A to Z"]
-lst_FilterOption: ["SHOP BY PRODUCT","NEW ARRIVALS","SHOP BY BRAND","SHOP BY COLOUR","SHOP BY SHOE SIZE","SHOP BY SIZE FASHION","SHOP BY STONE","SHOP BY METAL","SHOP BY PRICE","SHOP BY SPECIAL OFFERS","SHOP BY REVIEWS"]
+lst_FilterOption: ["SHOP BY PRODUCT","NEW ARRIVALS","SHOP BY BRAND","SHOP BY COLOUR","SHOP BY SHOES SIZE","SHOP BY SIZE FASHION","SHOP BY STONE","SHOP BY METAL","SHOP BY PRICE","SHOP BY SPECIAL OFFERS","SHOP BY REVIEWS"]
 
 
 

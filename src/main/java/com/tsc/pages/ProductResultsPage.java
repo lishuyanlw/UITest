@@ -625,48 +625,21 @@ public class ProductResultsPage extends BasePage{
 	 */
 	public String verifyFilterOptions(List<String> lstOptionYml) {
 		String lsErrorMsg="";
-		int listSize=this.productFilterList.size();
-		if(listSize==0) {
-			return lsErrorMsg="No product list";
-		}
-				
-		List<String> lstOption=new ArrayList<String>();
-		for(int i=0;i<listSize;i++) {
-			getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i));
-			lstOption.add(this.productFilterList.get(i).getText());
-		}
-			
-		String lsItemYml="";
-		for(int i=0;i<lstOptionYml.size();i++) {
-			if(!lstOption.contains(lstOptionYml.get(i))) {
-				lsItemYml=lsItemYml+"'"+lstOptionYml.get(i)+"',";				
-			}
-		}
-		
-		String lsItemOption="";
-		for(int i=0;i<lstOption.size();i++) {
-			if(!lstOptionYml.contains(lstOption.get(i))) {
-				lsItemOption=lsItemOption+"'"+lstOption.get(i)+"',";				
-			}
-		}
-		
-		if(!lsItemYml.isEmpty()) {			
-			lsItemYml=lsItemYml.substring(0, lsItemYml.length()-1);			
-			lsErrorMsg="Filter option headers in left panel do not contain "+lsItemYml;			
-		}
-		
-		if(!lsItemOption.isEmpty()) {			
-			lsItemOption=lsItemOption.substring(0, lsItemOption.length()-1);	
-			if(lsItemYml.isEmpty()) {
-				lsErrorMsg=lsErrorMsg+"Filter option headers in yml file do not contain "+lsItemOption;	
-			}
-			else {
-				lsErrorMsg=lsErrorMsg+", and Filter option headers in yml file do not contain "+lsItemOption;
-			}
-						
-		}
-				
-		return lsErrorMsg;
+	      int listSize=this.productFilterList.size();
+	      if(listSize==0) {
+	         return lsErrorMsg="No product list";
+	      }
+	            
+	      List<String> lstOption=new ArrayList<String>();
+	      for(int i=0;i<listSize;i++) {
+	         getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i));
+	         if(lstOptionYml.contains(this.productFilterList.get(i).getText())) {
+	            continue;
+	         }else {
+	            return lsErrorMsg = "Filter option headers in left panel contain "+this.productFilterList.get(i).getText()+" that is not present in input list";
+	         }
+	      }      
+	      return lsErrorMsg;
 	}
 
 }
