@@ -650,17 +650,13 @@ public class ProductResultsPage extends BasePage{
 			String productNO=element.findElement(this.byProductItemNO).getText();
 			productNOList.add(productNO);
 		}
-		
-		String lsItem="";
+				
 		int priceListSize=priceList.size();
 		for(int i=0;i<priceListSize-1;i++) {
 			if(priceList.get(i)<priceList.get(i+1)) {
-				lsItem=lsItem+productNOList.get(i)+" is less than "+productNOList.get(i+1)+";";
+				lsErrorMsg="Sort option of Price: Highest first does not work: the price of "+productNOList.get(i)+" is less than "+productNOList.get(i+1);
+				return lsErrorMsg;
 			}
-		}
-		
-		if(!lsItem.isEmpty()) {
-			lsErrorMsg="Sort option of Price: Highest first does not work: "+lsItem;			
 		}
 		
 		return lsErrorMsg;
