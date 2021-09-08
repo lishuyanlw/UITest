@@ -688,15 +688,15 @@ public class ProductResultsPage extends BasePage{
     }
     
     /**
-	 * This method will verify Url after selecting Price: Highest first option.
+	 * This method will verify Url after selecting sort strategy.
 	 * @param String lsKeyword: search keyword
-	 * @param List<String> lstUrlYml: Url parts in yml file
+	 * @param String lsSortKey: sort key in dropdown menu
 	 * @return true/false
 	 * @author Wei.Li
 	 */	
-    public boolean verifyUrlAfterSelectHighestPriceSort(String lsKeyword) {  
+    public boolean verifyUrlAfterSelectSortStrategy(String lsKeyword,String lsSortKey) {  
     	String lsUrl=this.URL();
-    	String lsExpectedUrl="searchterm="+this.getEncodingKeyword(lsKeyword)+"&sortKey=HighestPrice";
+    	String lsExpectedUrl="searchterm="+this.getEncodingKeyword(lsKeyword)+"&sortKey="+lsSortKey;
     	
     	return lsUrl.toLowerCase().contains(lsExpectedUrl.toLowerCase());
     }   	
