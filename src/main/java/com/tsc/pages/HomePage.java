@@ -66,21 +66,11 @@ public class HomePage extends BasePage{
 	
 	//TS Main Image section 
 	
-	@FindBy(xpath = "//*[@class='tsZoneBottom']//h3")
-	WebElement TSImagesection;
-	
 	@FindBy(xpath = "//*[@class='TsZone']//div[contains(@class,'tsZoneHero')]")
 	WebElement TSmainImagesection;
 	
 	@FindBy(xpath = "//div[@class='Header']/following::div[@class='swiper-wrapper'][1]//div[contains(@class,'swiper-slide-active')]")
 	WebElement linksTSmainImage;
-	
-	@FindBy(xpath = "//div[@class='Header']/following::div[@class='swiper-wrapper'][1]//div[contains(@class,'active')]")
-	List<WebElement> linksTSmainImage1;
-	
-	
-	@FindBy(xpath = "//div[@class='Header']/following::div[@class='swiper-wrapper'][1]//div[contains(@class,'active')]/a")
-	List<WebElement> totalTSmainImage;
 	
 	//For Shop by brand by Wei.Li
 	
@@ -303,13 +293,6 @@ public class HomePage extends BasePage{
 		public boolean btnShopAllTodaysItemVisible() {
 			 getReusableActionsInstance().javascriptScrollByVisibleElement(RAsection);
 			 	return	getReusableActionsInstance().isElementVisible(btnShopAllTodaysItem, 10);
-			}
-
-			//TS main Image Section 
-		
-		public String validateTSmainImagesection() {
-			getReusableActionsInstance().javascriptScrollByVisibleElement(TSmainImagesection);
-			return TSmainImagesection.getText();
 			}
 		
 		/**
@@ -785,9 +768,9 @@ public class HomePage extends BasePage{
 		 * @author Shruti Desai
 		 */	
 		public boolean validateTSmainimagesection() {
-		getReusableActionsInstance().javascriptScrollByVisibleElement(TSmainImagesection);
+			getReusableActionsInstance().javascriptScrollByVisibleElement(TSmainImagesection);
 			 return true;
-			}
+		}
 			
 	/*
 	 * Method to Get total number of images for TS upper section  
@@ -837,7 +820,7 @@ public class HomePage extends BasePage{
 				returnList.add(getMultiTabUrl);
 				}
 			return returnList;
-			}
+		}
 		
 		
 }
