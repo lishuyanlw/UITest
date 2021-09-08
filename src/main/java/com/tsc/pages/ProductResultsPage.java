@@ -694,19 +694,11 @@ public class ProductResultsPage extends BasePage{
 	 * @return true/false
 	 * @author Wei.Li
 	 */	
-    public boolean verifyUrlAfterSelectHighestPriceSort(String lsKeyword,List<String> lstUrlYml) {  
+    public boolean verifyUrlAfterSelectHighestPriceSort(String lsKeyword) {  
     	String lsUrl=this.URL();
-    	if(!lsUrl.toLowerCase().contains(lsKeyword.toLowerCase())) {
-    		return false;
-    	}
+    	String lsExpectedUrl="searchterm="+this.getEncodingKeyword(lsKeyword)+"&sortKey=HighestPrice";
     	
-    	for(String item:lstUrlYml) {
-    		if(!lsUrl.toLowerCase().contains(item.toLowerCase())) {
-    			return false;
-    		}
-    	}
-    	
-    	return true;
+    	return lsUrl.toLowerCase().contains(lsExpectedUrl.toLowerCase());
     }   	
 
 	/**
@@ -721,8 +713,7 @@ public class ProductResultsPage extends BasePage{
 	      if(listSize==0) {
 	         return lsErrorMsg="No product list";
 	      }
-	            
-	      List<String> lstOption=new ArrayList<String>();
+	       	     
 	      for(int i=0;i<listSize;i++) {
 	         getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i));
 	         if(lstOptionYml.contains(this.productFilterList.get(i).getText())) {

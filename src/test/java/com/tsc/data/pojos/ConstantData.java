@@ -52,8 +52,7 @@ public class ConstantData {
 	private String lbl_SearchResultExpectedUrlWithoutKeyword;
 	private String lbl_SearchResultPageDefaultSetting;
 	private List<List<String>>  lst_SearchResultMessage;
-	private List<String> lst_SortOption;
-	private List<String> lst_SortByHighestPriceUrl;
+	private List<String> lst_SortOption;	
 	private List<String> lst_FilterOption;
 		
 	//Header Links getter and setter method
@@ -625,20 +624,7 @@ public class ConstantData {
 	public void setlst_SortOption(List<String> lst_SortOption) {
 		this.lst_SortOption = lst_SortOption;
 	}
-	
-	/**
-	 * @return the lst_SortByHighestPriceUrl
-	 */
-	public List<String> getlst_SortByHighestPriceUrl() {
-		return lst_SortByHighestPriceUrl;
-	}
-	/**
-	 * @param lst_SortByHighestPriceUrl the lst_SortByHighestPriceUrl to set
-	 */
-	public void setlst_SortByHighestPriceUrl(List<String> lst_SortByHighestPriceUrl) {
-		this.lst_SortByHighestPriceUrl = lst_SortByHighestPriceUrl;
-	}
-	
+		
 	/**
 	 * @return the lst_FilterOption
 	 */
