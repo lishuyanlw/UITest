@@ -69,9 +69,14 @@ public class HomePage extends BasePage{
 	@FindBy(xpath = "//*[@class='TsZone']//div[contains(@class,'tsZoneHero')]")
 	WebElement TSmainImagesection;
 	
-	@FindBy(xpath = "//div[@class='Header']/following::div[@class='swiper-wrapper'][1]//div[contains(@class,'swiper-slide-active')]")
-	WebElement linksTSmainImage;
+	@FindBy(xpath = "//div[@class='Header']/following::div[contains(@class,'swiper-pagination-bullets')][1]")
+	WebElement totalTSmainImage;
 	
+	@FindBy(xpath = "//div[@class='Header']/following::div[@class='swiper-wrapper'][1]//div[contains(@class,'swiper-slide-active')]/a[@class='slider-link--box']")
+	WebElement linksTSmainImage;
+
+	@FindBy(xpath = "//div[@class='Header']/following::div[@class='swiper-wrapper'][1]//div[contains(@class,'swiper-slide-active')]")
+	WebElement attriTSmainImage;	
 	//For Shop by brand by Wei.Li
 	
 	@FindBy(xpath = "//div[contains(@class,'ImageAnchorCarousel') and not(contains(@class,'ImageAnchorCarouselData'))]//div[a[contains(@href,'ic=HP_BrandsCarousel')]]/ancestor::div[contains(@class,'ImageAnchorCarousel') and not(contains(@class,'ImageAnchorCarouselData'))]//*[contains(@class,'anchor-carousel__title')]")
@@ -778,7 +783,7 @@ public class HomePage extends BasePage{
 	 * @author Shruti Desai
 	 */	
 		public int getTSmainimgCount() {
-			return linksTSmainImage.findElements(By.tagName("a")).size();
+			return totalTSmainImage.findElements(By.xpath("./span")).size();
 		}
 		
 	/*
@@ -786,14 +791,16 @@ public class HomePage extends BasePage{
 	 * @author Shruti Desai
 	 */
 		public void clickallLinks() throws InterruptedException {
+			//int totalTsimage = getTSmainimgCount();
 			int totalTsimage = getTSmainimgCount();
-			for (int i=0;i<totalTsimage; i++) {
+			for (int i=1;i<=totalTsimage; i++) {
 				String clickonlinkTab = Keys.chord(Keys.CONTROL, Keys.ENTER);
-				linksTSmainImage.findElements(By.tagName("a")).get(i).sendKeys(clickonlinkTab);
+				getReusableActionsInstance().waitForElementAttributeToContain(attriTSmainImage,"class","swiper-slide-active",2);
+				linksTSmainImage.sendKeys(clickonlinkTab);
 				Thread.sleep(3000L);
 				}
 		}
-		
+			
 	/*
 	 * Method to Get total number of open tabs after clinking each images of TS image upper section 
 	 * @return int: number of total open tabs after clicking all images
@@ -810,9 +817,10 @@ public class HomePage extends BasePage{
 	 */
 		public List<String> getTabUrlList(){
 			String getMultiTabUrl = null;
+			int numberOfWindow = getNumberOftabs();
 			ArrayList<String> returnList= new ArrayList<String>();
 			ArrayList<String> tabList = new ArrayList<String>(getDriver().getWindowHandles());
-			int numberOfWindow = getNumberOftabs();
+			
 			for (int i=1; i<numberOfWindow; i++) {
 				getDriver().switchTo().window(tabList.get(i));
 				getMultiTabUrl = getDriver().getCurrentUrl();
@@ -821,6 +829,7 @@ public class HomePage extends BasePage{
 				}
 			return returnList;
 		}
+		
 		
 		
 }
