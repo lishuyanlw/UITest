@@ -14,23 +14,23 @@ import com.tsc.pages.ProductResultsPage;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 
-public class SR_TC03_Verify_ProductSearchResult_SortAndFilterSection extends BaseTest{
+public class SR_TC03_Verify_ProductSearchResult_SortAndFilterSectionContent extends BaseTest{
 	
 	/**
-	 * This method will test sort and filter sections of product searching results.
+	 * This method will test the contents of sort and filter sections of product searching results.
 	 * @author Wei.Li
 	 */	
 	@Test(groups={"ProductSearch","Regression"})
-	public void validateProductSearchResult_FilterSection() throws IOException {	
+	public void validateProductSearchResult_FilterSectionContent() throws IOException {	
 	(new HomePage(this.getDriver())).closeadd();
 	
 	reporter.softAssert(getglobalheaderPageThreadLocal().validateURL((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");		
 	reporter.reportLog("ProductSearch Page");
 	
-	List<String> lsKeywordList=TestDataHandler.constantDataVariables.getlst_SearchKeyword_DropDown();	
+	List<String> lsKeywordList=TestDataHandler.constantDataVariables.getlst_SearchKeyword_DropDown();		
 	List<String> lsSortOption=TestDataHandler.constantDataVariables.getlst_SortOption();
 	List<String> lsFilterOption=TestDataHandler.constantDataVariables.getlst_FilterOption();
-			
+		
 	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0));
 	reporter.softAssert(getProductResultsPageThreadLocal().verifySortOptions(lsSortOption), "Sort options in search result filters are correct", "Sort options in search result filters are incorrect");
 	
@@ -40,7 +40,7 @@ public class SR_TC03_Verify_ProductSearchResult_SortAndFilterSection extends Bas
 	}
 	else {
 		reporter.reportLogFail(lsMsg);
-	}
-		
+	}	
+
 	}
 }

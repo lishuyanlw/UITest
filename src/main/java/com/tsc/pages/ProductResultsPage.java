@@ -615,8 +615,88 @@ public class ProductResultsPage extends BasePage{
 		Set<String> setOptionYml=new HashSet<String>(lstOptionYml);
 		
 		return setOption.containsAll(setOptionYml)&&setOptionYml.containsAll(setOption);
+	}	
+
+    /**
+	 * This method will choose sort option by visible text.
+	 * @param String lsOption: visible option text
+	 * @return true/false
+	 * @author Wei.Li
+	 */	
+    public boolean chooseSortOptionByVisibleText(String lsOption) {  
+    	getReusableActionsInstance().isElementVisible(this.btnSortSelect);
+    	getReusableActionsInstance().selectWhenReadyByVisibleText(this.btnSortSelect,lsOption);
+		return waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},30000);		
+    }
+	
+	/**
+	 * This method will verify Price: Highest first strategy. 
+	 * @return String: error message
+	 * @author Wei.Li
+	 */
+	public String verifyHighestPriceFirstSort() {
+		String lsErrorMsg="";
+		if(this.productResultList.size()==0) {
+			return lsErrorMsg="No product list";
+		}
+		
+		List<Float> priceList=new ArrayList<Float>();
+		List<String> productNOList=new ArrayList<String>();
+		for(WebElement element:this.productResultList) {
+			getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+			String nowPriceText=element.findElement(this.byProductNowPrice).getText();			
+			float nowPriceValue=this.getFloatFromString(nowPriceText);			
+			priceList.add(nowPriceValue);
+			String productNO=element.findElement(this.byProductItemNO).getText();
+			productNOList.add(productNO);
+		}
+				
+		int priceListSize=priceList.size();
+		for(int i=0;i<priceListSize-1;i++) {
+			if(priceList.get(i)<priceList.get(i+1)) {
+				lsErrorMsg="Sort option of Price: Highest first does not work: the price of "+productNOList.get(i)+" is less than "+productNOList.get(i+1);
+				return lsErrorMsg;
+			}
+		}
+		
+		return lsErrorMsg;
 	}
 	
+    /**
+	 * This method will get float from string.
+	 * @param String lsTarget: target string
+	 * @return float value
+	 * @author Wei.Li
+	 */	
+    public float getFloatFromString(String lsTarget) {  
+    	lsTarget=lsTarget.replace(",", "").trim();
+    	
+    	String regex="\\d+\\.\\d+";
+    	String lsReturn="";
+    	Pattern pattern=Pattern.compile(regex);
+    	Matcher matcher=pattern.matcher(lsTarget);
+    	while(matcher.find())
+    	{
+    	    lsReturn=matcher.group();    	        	   
+    	}
+    	    			
+    	return Float.parseFloat(lsReturn);
+    }
+    
+    /**
+	 * This method will verify Url after selecting sort strategy.
+	 * @param String lsKeyword: search keyword
+	 * @param String lsSortKey: sort key in dropdown menu
+	 * @return true/false
+	 * @author Wei.Li
+	 */	
+    public boolean verifyUrlAfterSelectSortStrategy(String lsKeyword,String lsSortKey) {  
+    	String lsUrl=this.URL();
+    	String lsExpectedUrl="searchterm="+this.getEncodingKeyword(lsKeyword)+"&sortKey="+lsSortKey;
+    	
+    	return lsUrl.toLowerCase().contains(lsExpectedUrl.toLowerCase());
+    }   	
+
 	/**
 	 * This method will verify filter option headers.
 	 * @param List<String> lstOption: input option list in yml file
@@ -629,8 +709,7 @@ public class ProductResultsPage extends BasePage{
 	      if(listSize==0) {
 	         return lsErrorMsg="No product list";
 	      }
-	            
-	      List<String> lstOption=new ArrayList<String>();
+	       	     
 	      for(int i=0;i<listSize;i++) {
 	         getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i));
 	         if(lstOptionYml.contains(this.productFilterList.get(i).getText())) {
@@ -641,7 +720,6 @@ public class ProductResultsPage extends BasePage{
 	      }      
 	      return lsErrorMsg;
 	}
-
 }
 
 	

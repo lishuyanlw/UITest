@@ -624,7 +624,7 @@ public class ConstantData {
 	public void setlst_SortOption(List<String> lst_SortOption) {
 		this.lst_SortOption = lst_SortOption;
 	}
-	
+		
 	/**
 	 * @return the lst_FilterOption
 	 */
