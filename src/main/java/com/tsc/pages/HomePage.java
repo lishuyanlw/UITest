@@ -67,16 +67,18 @@ public class HomePage extends BasePage{
 	//TS Main Image section 
 	
 	@FindBy(xpath = "//*[@class='TsZone']//div[contains(@class,'tsZoneHero')]")
-	WebElement TSmainImagesection;
+	WebElement TSimageUpperSection;
 	
 	@FindBy(xpath = "//div[@class='Header']/following::div[contains(@class,'swiper-pagination-bullets')][1]")
-	WebElement totalTSmainImage;
+	WebElement totalTSimageUpperSection;
 	
 	@FindBy(xpath = "//div[@class='Header']/following::div[@class='swiper-wrapper'][1]//div[contains(@class,'swiper-slide-active')]/a[@class='slider-link--box']")
-	WebElement linksTSmainImage;
+	WebElement linksTSimageUpperSection;
 
 	@FindBy(xpath = "//div[@class='Header']/following::div[@class='swiper-wrapper'][1]//div[contains(@class,'swiper-slide-active')]")
-	WebElement attriTSmainImage;	
+	WebElement attriTSimageUpperSection;	
+	
+		
 	//For Shop by brand by Wei.Li
 	
 	@FindBy(xpath = "//div[contains(@class,'ImageAnchorCarousel') and not(contains(@class,'ImageAnchorCarouselData'))]//div[a[contains(@href,'ic=HP_BrandsCarousel')]]/ancestor::div[contains(@class,'ImageAnchorCarousel') and not(contains(@class,'ImageAnchorCarouselData'))]//*[contains(@class,'anchor-carousel__title')]")
@@ -768,12 +770,12 @@ public class HomePage extends BasePage{
 		}	
 
 		/*
-		 * Method to validate TS main image upper section
+		 * Method to validate TS image upper section
 		 * @return true/false
 		 * @author Shruti Desai
 		 */	
-		public boolean validateTSmainimagesection() {
-			getReusableActionsInstance().javascriptScrollByVisibleElement(TSmainImagesection);
+		public boolean validateTSimageUpperSection() {
+			getReusableActionsInstance().javascriptScrollByVisibleElement(TSimageUpperSection);
 			 return true;
 		}
 			
@@ -782,40 +784,30 @@ public class HomePage extends BasePage{
 	 * @return int: number of total images
 	 * @author Shruti Desai
 	 */	
-		public int getTSmainimgCount() {
-			return totalTSmainImage.findElements(By.xpath("./span")).size();
+		public int getTSimgUpperSectionCount() {
+			return totalTSimageUpperSection.findElements(By.xpath("./span")).size();
 		}
 		
 	/*
 	 * Method to click on each image for TS upper section  
 	 * @author Shruti Desai
 	 */
-		public void clickallLinks() throws InterruptedException {
-			//int totalTsimage = getTSmainimgCount();
-			int totalTsimage = getTSmainimgCount();
+		public void clickallTSimageUpperSectionLinks() throws InterruptedException {
+			int totalTsimage = getTSimgUpperSectionCount();
 			for (int i=1;i<=totalTsimage; i++) {
 				String clickonlinkTab = Keys.chord(Keys.CONTROL, Keys.ENTER);
-				getReusableActionsInstance().waitForElementAttributeToContain(attriTSmainImage,"class","swiper-slide-active",2);
-				linksTSmainImage.sendKeys(clickonlinkTab);
+				getReusableActionsInstance().waitForElementAttributeToContain(attriTSimageUpperSection,"class","swiper-slide-active",2);
+				linksTSimageUpperSection.sendKeys(clickonlinkTab);
 				Thread.sleep(3000L);
 				}
 		}
 			
 	/*
-	 * Method to Get total number of open tabs after clinking each images of TS image upper section 
-	 * @return int: number of total open tabs after clicking all images
-	 * @author Shruti Desai
-	 */
-		public int getNumberOftabs() {
-			return getReusableActionsInstance().getNumberOfOpenWindows();
-		}
-		
-	/*
 	 * Method to Get list of url for clicked TS images (upper section) open in different tabs  
 	 * @return list: url of all open images
 	 * @author Shruti Desai
 	 */
-		public List<String> getTabUrlList(){
+		public List<String> getTabUrlListTSimageUpperSection(){
 			String getMultiTabUrl = null;
 			int numberOfWindow = getNumberOftabs();
 			ArrayList<String> returnList= new ArrayList<String>();
@@ -830,6 +822,13 @@ public class HomePage extends BasePage{
 			return returnList;
 		}
 		
-		
+		/*
+		 * Method to Get total number of open tabs after clicking each images of TS image  
+		 * @return int: number of total open tabs after clicking all images TS image 
+		 * @author Shruti Desai
+		 */
+			public int getNumberOftabs() {
+				return getReusableActionsInstance().getNumberOfOpenWindows();
+			}	
 		
 }
