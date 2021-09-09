@@ -143,9 +143,21 @@ public class ProductResultsPage extends BasePage{
 	@FindBy(xpath = "//div[@class='TitleAndTextSeo']//button")
 	WebElement btnProductTitleAndTextMoreOrLess;
 	
-	@FindBy(xpath = "//product-results//div[@class='modalBody']//div[@class='panel']//span[contains(@class,'section-header')]")
+	@FindBy(xpath = "//product-results//div[@class='modalBody']//div[@class='panel']//*[contains(@class,'panel-heading')]")
 	List<WebElement> productFilterList;
 	
+	@FindBy(xpath = "//product-results//div[@class='modalBody']//div[@class='panel']")
+	List<WebElement> productFilterContainerList;
+	
+	public By byMoreButtonOnLeftPanel=By.xpath(".//div[contains(@class,'panel-collapse')]//div[contains(@class,'seeMoreDiv') and not(contains(@class,'seeMoreTitle')) and not(@style='display: none;')][@id]");
+	
+	public By byLessButtonOnLeftPanel=By.xpath(".//div[contains(@class,'panel-collapse')]//div[contains(@class,'seeMoreDiv') and not(contains(@class,'seeMoreTitle')) and @aria-expanded='true' and not(@style='display: none;')]");
+	
+	public By bySubItemListOnLeftPanel=By.xpath(".//li");
+	
+	@FindBy(xpath = "//product-results//div[@class='modalBody']//div[@class='panel']//div[@class='panel-body']")
+	List<WebElement> panelItemContainerList;
+		
 	String searchkeyword;
 		
 	/**
@@ -499,18 +511,16 @@ public class ProductResultsPage extends BasePage{
 	}
 	
 	/**
-	 * This method will verify WasPrice existence.
+	 * This method will judge WasPrice existence.
 	 * @param WebElement parent: parent element
 	 * @return String: indicate type
 	 * @author Wei.Li
-	 */	
-	@SuppressWarnings("unchecked")
+	 */		
 	public String judgeProductWasPrice(WebElement parent) {
-		WebElement element=parent.findElement(this.byJudgeProductWasPrice);
-		JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
-		List<WebElement> childList=(List<WebElement>) jse.executeScript("return arguments[0].children;", element);
+		WebElement element=parent.findElement(this.byJudgeProductWasPrice);		
+		long childSize= (new BasePage(this.getDriver())).getchildElementCount(element);
 				
-		if(childList.size()==1) {
+		if(childSize==1) {
 			return "WithoutWasPrice";
 		}
 		
@@ -679,7 +689,7 @@ public class ProductResultsPage extends BasePage{
     	{
     	    lsReturn=matcher.group();    	        	   
     	}
-    	    			
+    	System.out.println("Float: "+lsReturn);    			
     	return Float.parseFloat(lsReturn);
     }
     
@@ -720,6 +730,71 @@ public class ProductResultsPage extends BasePage{
 	      }      
 	      return lsErrorMsg;
 	}
+	
+	/**
+	 * This method will judge MoreButton in left panel existence.
+	 * @param WebElement parent: parent element
+	 * @return true/false
+	 * @author Wei.Li
+	 */		
+	public boolean judgeMoreButtonExistenceInLeftPanel(WebElement parent) {				
+		long childSize= (new BasePage(this.getDriver())).getchildElementCount(parent);
+				
+		if(childSize==2) {
+			return false;
+		}
+		
+		return true;		
+	}
+	
+	/**
+	 * This method will select filter from left panel.
+	 * @param String lsFirstLevelItem: header filter keyword
+	 * @param String lsSecondLevelItem: subFilter keyword
+	 * @return true/false
+	 * @author Wei.Li
+	 */		
+	public boolean selectFilterItemInLeftPanel(String lsFirstLevelItem,String lsSecondLevelItem) {
+		int loopSize=this.productFilterList.size();
+		for(int i=0;i<loopSize;i++) {
+			getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i));
+			String lsHeader=this.productFilterList.get(i).getText().trim();
+			if(lsHeader.equalsIgnoreCase(lsFirstLevelItem)) {				
+				if(judgeMoreButtonExistenceInLeftPanel(this.panelItemContainerList.get(i))) {
+					WebElement moreButton=this.productFilterContainerList.get(i).findElement(this.byMoreButtonOnLeftPanel);
+					getReusableActionsInstance().javascriptScrollByVisibleElement(moreButton);
+					moreButton.click();
+				}
+				
+				List<WebElement> subItemList=this.productFilterContainerList.get(i).findElements(this.bySubItemListOnLeftPanel);				
+				for(WebElement subItem : subItemList) {
+					getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
+					String lsSubItem=subItem.getText().trim();
+					if(lsSubItem.equalsIgnoreCase(lsSecondLevelItem)) {						
+						subItem.click();
+						return waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},30000);
+					}
+				}
+			}
+		}
+		
+		return false;
+	}
+	
+    /**
+	 * This method will verify Url after selecting filter in left panel.
+	 * @param String lsKeyword: search keyword 
+	 * @return true/false
+	 * @author Wei.Li
+	 */	
+    public boolean verifyUrlAfterSelectFilterInLeftPanel(String lsKeyword) {  
+    	String lsUrl=this.URL();    	
+    	String lsExpectedUrlPattern="dimensions=\\d{6}&searchterm="+this.getEncodingKeyword(lsKeyword);
+    	Pattern pattern=Pattern.compile(lsExpectedUrlPattern);
+    	Matcher matcher=pattern.matcher(lsUrl);
+
+    	return matcher.find(); 
+    }  
 }
 
 	
