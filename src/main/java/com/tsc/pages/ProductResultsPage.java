@@ -77,6 +77,13 @@ public class ProductResultsPage extends BasePage{
 	
 	@FindBy(xpath = "//product-results//div[contains(@class,'productItems')]//div[contains(@class,'productItemWrap')]")
 	List<WebElement> productResultList;
+	
+	//Selected filters
+	@FindBy(xpath = "//div[contains(@class,'search-filters-div')]//div[contains(@class,'sortFilterWrap')]//div[contains(@class,'filterPrpLabel')]")
+	WebElement lblSelectedFilters;
+	
+	@FindBy(xpath = "//div[contains(@class,'search-filters-div')]//div[contains(@class,'sortFilterWrap')]//div[contains(@class,'filterTag')]")
+	List<WebElement> selectedFiltersList;
 				
 	public By byProductHref=By.xpath(".//a");
 	
@@ -159,6 +166,7 @@ public class ProductResultsPage extends BasePage{
 	List<WebElement> panelItemContainerList;
 		
 	String searchkeyword;
+	String firstLevelFilter,secondLevelFilter;
 		
 	/**
 	 * This method will load product searching result.
@@ -755,6 +763,9 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 */		
 	public boolean selectFilterItemInLeftPanel(String lsFirstLevelItem,String lsSecondLevelItem) {
+		this.firstLevelFilter=lsFirstLevelItem;
+		this.secondLevelFilter=lsSecondLevelItem;
+		
 		int loopSize=this.productFilterList.size();
 		for(int i=0;i<loopSize;i++) {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i));
@@ -769,7 +780,7 @@ public class ProductResultsPage extends BasePage{
 				List<WebElement> subItemList=this.productFilterContainerList.get(i).findElements(this.bySubItemListOnLeftPanel);				
 				for(WebElement subItem : subItemList) {
 					getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
-					String lsSubItem=subItem.getText().trim();
+					String lsSubItem=subItem.getText().trim();					
 					if(lsSubItem.equalsIgnoreCase(lsSecondLevelItem)) {						
 						subItem.click();
 						return waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},30000);
@@ -794,6 +805,68 @@ public class ProductResultsPage extends BasePage{
     	Matcher matcher=pattern.matcher(lsUrl);
 
     	return matcher.find(); 
+    }  
+    
+	/**
+	 * This method will verify filter by price. 
+	 * @param String lsPriceMode: Under/Between/Over
+	 * @return String: error message
+	 * @author Wei.Li
+	 */
+	public String verifyFilterByPrice(String lsPriceMode) {
+		String lsErrorMsg="";
+		if(this.productResultList.size()==0) {
+			return lsErrorMsg="No product list";
+		}
+
+		for(WebElement element:this.productResultList) {
+			getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+			String productNO=element.findElement(this.byProductItemNO).getText();
+			String nowPriceText=element.findElement(this.byProductNowPrice).getText();			
+			float nowPriceValue=this.getFloatFromString(nowPriceText);	
+			List<String> lstPrice=this.getNumberFromString(secondLevelFilter);
+			
+			switch(lsPriceMode) {
+			case "Under":				
+				int priceOptionValue=Integer.parseInt(lstPrice.get(0));
+				if(nowPriceValue>=priceOptionValue) {
+					lsErrorMsg="Filter by price does not work for productNO of "+productNO;
+				}
+				break;
+			case "Between":
+				int lowPriceOptionValue=Integer.parseInt(lstPrice.get(0));
+				int highPriceOptionValue=Integer.parseInt(lstPrice.get(1));
+				if(nowPriceValue<lowPriceOptionValue||nowPriceValue>highPriceOptionValue) {
+					lsErrorMsg="Filter by price does not work for productNO of "+productNO;
+				}
+				break;
+			case "Over":
+				priceOptionValue=Integer.parseInt(lstPrice.get(0));
+				if(nowPriceValue<priceOptionValue) {
+					lsErrorMsg="Filter by price does not work for productNO of "+productNO;
+				}
+				break;
+			}
+				
+			if(!lsErrorMsg.isEmpty()) {
+				return lsErrorMsg;
+			}
+		}
+			
+		return lsErrorMsg;
+	}
+	
+    /**
+	 * This method will verify the Url contains keyword.
+	 * @param String lsKeyword: search keyword 
+	 * @return true/false
+	 * @author Wei.Li
+	 */	
+    public boolean verifyUrlContainsKeyword(String lsKeyword) {  
+    	String lsUrl=this.URL();    	
+    	String lsExpectedUrlPattern="searchterm="+this.getEncodingKeyword(lsKeyword);
+    	
+    	return lsUrl.contains(lsExpectedUrlPattern);
     }  
 }
 
