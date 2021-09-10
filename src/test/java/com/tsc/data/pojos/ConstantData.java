@@ -54,7 +54,7 @@ public class ConstantData {
 	private List<List<String>>  lst_SearchResultMessage;
 	private List<String> lst_SortOption;	
 	private List<String> lst_FilterOption;
-		
+	private List<List<String>> lst_FilterByPrice;
 	//Header Links getter and setter method
 	
 	/**
@@ -636,6 +636,19 @@ public class ConstantData {
 	 */
 	public void setlst_FilterOption(List<String> lst_FilterOption) {
 		this.lst_FilterOption = lst_FilterOption;
+	}
+	
+	/**
+	 * @return the lst_FilterByPrice
+	 */
+	public List<List<String>> getlst_FilterByPrice() {
+		return lst_FilterByPrice;
+	}
+	/**
+	 * @param lst_FilterByPrice the lst_FilterByPrice to set
+	 */
+	public void setlst_FilterByPrice(List<List<String>> lst_FilterByPrice) {
+		this.lst_FilterByPrice = lst_FilterByPrice;
 	}
 		
 }
