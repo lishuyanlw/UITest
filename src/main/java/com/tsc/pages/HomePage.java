@@ -82,6 +82,18 @@ public class HomePage extends BasePage{
 	WebElement attriTSimageUpperSection;	
 	
 		
+	@FindBy(xpath = "//div[@class='Header']/following::div[contains(@class,'swiper-pagination-bullets')][2]")
+	WebElement totalTSimageLowerSection;
+	
+	@FindBy(xpath = "//div[@class='Header']/following::div[@class='swiper-wrapper'][2]//div[contains(@class,'swiper-slide-active')]/a[@class='slider-link--box']")
+	WebElement linksTSimageLowerSection;
+	
+	@FindBy(xpath = "//div[@class='Header']/following::div[@class='swiper-wrapper'][2]//div[contains(@class,'swiper-slide-next') or contains(@class,'swiper-slide-active')]/a[@class='slider-link--box']")
+	List<WebElement> hrefallTSimageLowerSection;
+	
+	@FindBy(xpath = "//div[@class='Header']/following::div[@class='swiper-wrapper'][2]//div[contains(@class,'swiper-slide-active')]")
+	WebElement attriTSimageLowerSection;
+		
 	//For Shop by brand by Wei.Li
 	
 	@FindBy(xpath = "//div[contains(@class,'ImageAnchorCarousel') and not(contains(@class,'ImageAnchorCarouselData'))]//div[a[contains(@href,'ic=HP_BrandsCarousel')]]/ancestor::div[contains(@class,'ImageAnchorCarousel') and not(contains(@class,'ImageAnchorCarouselData'))]//*[contains(@class,'anchor-carousel__title')]")
@@ -772,11 +784,11 @@ public class HomePage extends BasePage{
 			}						
 		}	
 			
-		/*
-		 * Method to validate TS image upper section
-		 * @return true/false
-		 * @author Shruti Desai
-		 */	
+	/*
+	 * Method to validate TS image upper section
+	 * @return true/false
+	 * @author Shruti Desai
+	 */	
 		public boolean validateTSimageUpperSection() {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(TSimageUpperSection);
 			 return true;
@@ -809,12 +821,13 @@ public class HomePage extends BasePage{
 	 */
 		public void clickallTSimageUpperSectionLinks() throws InterruptedException {
 			int totalTsimage = getTSimgUpperSectionCount();
-			
-			for (int i=1;i<=totalTsimage; i++) {
-				String clickonlinkTab = Keys.chord(Keys.CONTROL, Keys.ENTER);
-				getReusableActionsInstance().waitForElementAttributeToContain(attriTSimageUpperSection,"class","swiper-slide-active",2);
-				linksTSimageUpperSection.sendKeys(clickonlinkTab);
-				waitForCondition(Driver->{return !this.linksTSimageUpperSection.getAttribute("href").equalsIgnoreCase(gethrefListTSimageUpperSection().get(0));},30000);
+			if(gethrefListTSimageUpperSection().size()!=0) {
+				for (int i=1;i<=totalTsimage; i++) {
+					String clickonlinkTab = Keys.chord(Keys.CONTROL, Keys.ENTER);
+					getReusableActionsInstance().waitForElementAttributeToContain(attriTSimageUpperSection,"class","swiper-slide-active",2);
+					linksTSimageUpperSection.sendKeys(clickonlinkTab);
+					waitForCondition(Driver->{return !this.linksTSimageUpperSection.getAttribute("href").equalsIgnoreCase(gethrefListTSimageUpperSection().get(0));},30000);
+				}
 			}
 		}
 			
@@ -846,5 +859,65 @@ public class HomePage extends BasePage{
 			public int getNumberOftabs() {
 				return getReusableActionsInstance().getNumberOfOpenWindows();
 			}	
+			
+		/*
+		 * Method to Get total number of images for TS Lower Section  
+		 * @return int: number of total images
+		 * @author Shruti Desai
+		 */	
+			public int getTSimgLowerSectionCount() {
+				return totalTSimageLowerSection.findElements(By.xpath("./span")).size();
+			}
+			
+		/*
+		 * Method to Get list of href for TS images (Lower Section)  
+		 * @return list: href of all TS images (Lower Section)
+		 * @author Shruti Desai
+		 */	
+			public List<String> gethrefListTSimageLowerSection(){
+				List<String> hrefListTsimageLowerSection= new ArrayList<String>();
+				for(WebElement item:this.hrefallTSimageLowerSection) {
+					hrefListTsimageLowerSection.add(item.getAttribute("href"));
+				}
+				return hrefListTsimageLowerSection;
+			}
+		/*
+		 * Method to click on each image for TS Lower Section  
+		 * @author Shruti Desai
+		 */
+			public void clickallTSimageLowerSectionLinks() throws InterruptedException {
+				int totalTsimage = getTSimgLowerSectionCount();
+				if(gethrefListTSimageLowerSection().size()!=0) {
+					for (int i=1;i<=totalTsimage; i++) {
+						String clickonlinkTab = Keys.chord(Keys.CONTROL, Keys.ENTER);
+						getReusableActionsInstance().waitForElementAttributeToContain(attriTSimageLowerSection,"class","swiper-slide-active",2);
+						linksTSimageLowerSection.sendKeys(clickonlinkTab);
+						waitForCondition(Driver->{return !this.linksTSimageLowerSection.getAttribute("href").equalsIgnoreCase(gethrefListTSimageLowerSection().get(0));},30000);
+					}
+				}
+			}
+					
+		/*
+		 * Method to Get list of url for clicked TS images (Lower Section) open in different tabs  
+		 * @return list: url of all open images
+		 * @author Shruti Desai
+		 */
+			public List<String> getTabUrlListTSimageLowerSection(){
+				String getMultiTabUrl = null;
+				int totalTsimage = getTSimgLowerSectionCount();
+				int numberOfWindow = getNumberOftabs();
+				ArrayList<String> returnList= new ArrayList<String>();
+				ArrayList<String> tabList = new ArrayList<String>(getDriver().getWindowHandles());
+				
+				for (int i=(totalTsimage+1); i<numberOfWindow; i++) {
+					getDriver().switchTo().window(tabList.get(i));
+					getMultiTabUrl = getDriver().getCurrentUrl();
+					getDriver().switchTo().window(tabList.get(0));
+					returnList.add(getMultiTabUrl);
+				}
+				return returnList;
+			}
+					
+			
 		
 }
