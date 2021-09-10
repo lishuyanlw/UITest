@@ -71,7 +71,7 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction ext
 			reporter.softAssert(getProductResultsPageThreadLocal().verifyProductPagination(), "Product pagination is existing", "Product pagination is not existing");
 		}
 		else {
-			reporter.reportLogFail("Choosing filter of 'SHOP BY PRODUCT/Home & Garden' failed");
+			reporter.reportLogFail("Choosing filter of "+"'"+lstItem.get(0)+"/"+lstItem.get(1)+"' failed");
 		}
 	}
 	
