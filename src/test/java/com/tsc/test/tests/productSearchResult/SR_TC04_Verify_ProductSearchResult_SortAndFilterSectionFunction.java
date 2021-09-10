@@ -34,48 +34,48 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction ext
 	String lsMsg;
 		
 	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0));	
-//	//Test sort
-//	if(getProductResultsPageThreadLocal().chooseSortOptionByVisibleText("Price: Highest first")) {
-//		lsMsg=getProductResultsPageThreadLocal().verifyHighestPriceFirstSort();
-//		if(lsMsg.isEmpty()) {
-//			reporter.reportLogPass("Sort option of Price: Highest first works");
-//		}else {
-//			reporter.reportLogFail(lsMsg);
-//		}				
-//		
-//		reporter.softAssert(getProductResultsPageThreadLocal().verifyUrlAfterSelectSortStrategy(lsKeywordList.get(0),"HighestPrice"), "The Url contains keyword and sortKey=HighestPrice", "The Url does not contain keyword and sortKey=HighestPrice");		
-//		reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultMessage(lstSearchResultMessage.get(0),lsKeywordList.get(0)), "Search result message result matches the expected message", "Search result message result does not match the expected message");
-//		reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(), "Showing text pattern in filters is correct", "Showing text pattern in filters is incorrect");
-//		reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting), "The default setting of items per page is "+lsSearchResultPageDefaultSetting, "The default setting of items per page isn't "+lsSearchResultPageDefaultSetting);
-//		
-//		productList=getProductResultsPageThreadLocal().getProductList();
-//		if(productList.size()>0) {
-//			getProductResultsPageThreadLocal().verifySearchResultContent(productList);
-//		}	
-//		
-//		reporter.softAssert(getProductResultsPageThreadLocal().verifyProductPagination(), "Product pagination is existing", "Product pagination is not existing");
-//	}
-//	else {
-//		reporter.reportLogFail("Choosing Price: Highest first option failed");
-//	}
+	//Test sort
+	if(getProductResultsPageThreadLocal().chooseSortOptionByVisibleText("Price: Highest first")) {
+		lsMsg=getProductResultsPageThreadLocal().verifyHighestPriceFirstSort();
+		if(lsMsg.isEmpty()) {
+			reporter.reportLogPass("Sort option of Price: Highest first works");
+		}else {
+			reporter.reportLogFail(lsMsg);
+		}				
+		
+		reporter.softAssert(getProductResultsPageThreadLocal().verifyUrlAfterSelectSortStrategy(lsKeywordList.get(0),"HighestPrice"), "The Url contains keyword and sortKey=HighestPrice", "The Url does not contain keyword and sortKey=HighestPrice");		
+		reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultMessage(lstSearchResultMessage.get(0),lsKeywordList.get(0)), "Search result message result matches the expected message", "Search result message result does not match the expected message");
+		reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(), "Showing text pattern in filters is correct", "Showing text pattern in filters is incorrect");
+		reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting), "The default setting of items per page is "+lsSearchResultPageDefaultSetting, "The default setting of items per page isn't "+lsSearchResultPageDefaultSetting);
+		
+		productList=getProductResultsPageThreadLocal().getProductList();
+		if(productList.size()>0) {
+			getProductResultsPageThreadLocal().verifySearchResultContent(productList);
+		}	
+		
+		reporter.softAssert(getProductResultsPageThreadLocal().verifyProductPagination(), "Product pagination is existing", "Product pagination is not existing");
+	}
+	else {
+		reporter.reportLogFail("Choosing Price: Highest first option failed");
+	}
 
-//	//Test filter
-//	if(getProductResultsPageThreadLocal().selectFilterItemInLeftPanel("SHOP BY PRODUCT", "Home & Garden")) {
-//		reporter.softAssert(getProductResultsPageThreadLocal().verifyUrlAfterSelectFilterInLeftPanel(lsKeywordList.get(0)), "The Url contains correct dimensions and keyword", "The Url does not contain correct dimensions and keyword");
-//		reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultMessage(lstSearchResultMessage.get(0),lsKeywordList.get(0)), "Search result message result matches the expected message", "Search result message result does not match the expected message");
-//		reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(), "Showing text pattern in filters is correct", "Showing text pattern in filters is incorrect");
-//		reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting), "The default setting of items per page is "+lsSearchResultPageDefaultSetting, "The default setting of items per page isn't "+lsSearchResultPageDefaultSetting);
-//		
-//		productList=getProductResultsPageThreadLocal().getProductList();
-//		if(productList.size()>0) {
-//			getProductResultsPageThreadLocal().verifySearchResultContent(productList);
-//		}	
-//		
-//		reporter.softAssert(getProductResultsPageThreadLocal().verifyProductPagination(), "Product pagination is existing", "Product pagination is not existing");
-//	}
-//	else {
-//		reporter.reportLogFail("Choosing filter of 'SHOP BY PRODUCT/Home & Garden' failed");
-//	}
+	//Test filter
+	if(getProductResultsPageThreadLocal().selectFilterItemInLeftPanel("SHOP BY PRODUCT", "Home & Garden")) {
+		reporter.softAssert(getProductResultsPageThreadLocal().verifyUrlAfterSelectFilterInLeftPanel(lsKeywordList.get(0)), "The Url contains correct dimensions and keyword", "The Url does not contain correct dimensions and keyword");
+		reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultMessage(lstSearchResultMessage.get(0),lsKeywordList.get(0)), "Search result message result matches the expected message", "Search result message result does not match the expected message");
+		reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(), "Showing text pattern in filters is correct", "Showing text pattern in filters is incorrect");
+		reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting), "The default setting of items per page is "+lsSearchResultPageDefaultSetting, "The default setting of items per page isn't "+lsSearchResultPageDefaultSetting);
+		
+		productList=getProductResultsPageThreadLocal().getProductList();
+		if(productList.size()>0) {
+			getProductResultsPageThreadLocal().verifySearchResultContent(productList);
+		}	
+		
+		reporter.softAssert(getProductResultsPageThreadLocal().verifyProductPagination(), "Product pagination is existing", "Product pagination is not existing");
+	}
+	else {
+		reporter.reportLogFail("Choosing filter of 'SHOP BY PRODUCT/Home & Garden' failed");
+	}
 	
 	//Test filter by price
 	List<List<String>> lstFilterByPrice=TestDataHandler.constantDataVariables.getlst_FilterByPrice();
