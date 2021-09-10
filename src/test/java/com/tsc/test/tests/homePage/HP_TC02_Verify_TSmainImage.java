@@ -15,6 +15,10 @@ import com.tsc.test.base.BaseTest;
 			reporter.reportLogWithScreenshot("Home Page");
 			int totalTSimageUpperSection = homePageThreadLocal().getTSimgUpperSectionCount();
 			reporter.reportLog("Number of total TS image in the upper section: "+totalTSimageUpperSection);
+			List<String> lshref_UpperSection=homePageThreadLocal().gethrefListTSimageUpperSection();
+			for(int i=0; i<totalTSimageUpperSection; i++) {
+			}
+			
 			String lsYmlNotFound=TestDataHandler.constantDataVariables.getlnk_NotFound();
 			homePageThreadLocal().clickallTSimageUpperSectionLinks();
 			int numberOfWindows_UpperSection = homePageThreadLocal().getNumberOftabs();
@@ -29,6 +33,7 @@ import com.tsc.test.base.BaseTest;
 					if(i<lsUrl_UpperSection.size()-1) {
 						reporter.softAssert(!lsUrl_UpperSection.get(i).equals(lsUrl_UpperSection.get(i+1)), "URL of tab " +(i+1)+ " is different than URL of Tab "+((i+1)+1)+" for TS image upper section.","URL of Tab " +(i+1)+" is same as URL of Tab"+((i+1)+1)+" for TS image upper section.");
 					}
+					
 			}
 			
 			

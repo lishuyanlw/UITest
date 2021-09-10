@@ -74,7 +74,10 @@ public class HomePage extends BasePage{
 	
 	@FindBy(xpath = "//div[@class='Header']/following::div[@class='swiper-wrapper'][1]//div[contains(@class,'swiper-slide-active')]/a[@class='slider-link--box']")
 	WebElement linksTSimageUpperSection;
-
+	
+	@FindBy(xpath = "//div[@class='Header']/following::div[@class='swiper-wrapper'][1]//div[contains(@class,'swiper-slide-next') or contains(@class,'swiper-slide-active')]/a[@class='slider-link--box']")
+	List<WebElement> hrefallTSimageUpperSection;
+	
 	@FindBy(xpath = "//div[@class='Header']/following::div[@class='swiper-wrapper'][1]//div[contains(@class,'swiper-slide-active')]")
 	WebElement attriTSimageUpperSection;	
 	
@@ -768,7 +771,7 @@ public class HomePage extends BasePage{
 				return true;
 			}						
 		}	
-
+			
 		/*
 		 * Method to validate TS image upper section
 		 * @return true/false
@@ -789,17 +792,30 @@ public class HomePage extends BasePage{
 		}
 		
 	/*
+	 * Method to Get list of href for TS images (upper section)  
+	 * @return list: href of all TS images (upper section)
+	 * @author Shruti Desai
+	 */	
+		public List<String> gethrefListTSimageUpperSection(){
+			List<String> hrefListTsimageUpperSection= new ArrayList<String>();
+			for(WebElement item:this.hrefallTSimageUpperSection) {
+				hrefListTsimageUpperSection.add(item.getAttribute("href"));
+				}
+			return hrefListTsimageUpperSection;
+		}
+	/*
 	 * Method to click on each image for TS upper section  
 	 * @author Shruti Desai
 	 */
 		public void clickallTSimageUpperSectionLinks() throws InterruptedException {
 			int totalTsimage = getTSimgUpperSectionCount();
+			
 			for (int i=1;i<=totalTsimage; i++) {
 				String clickonlinkTab = Keys.chord(Keys.CONTROL, Keys.ENTER);
 				getReusableActionsInstance().waitForElementAttributeToContain(attriTSimageUpperSection,"class","swiper-slide-active",2);
 				linksTSimageUpperSection.sendKeys(clickonlinkTab);
-				Thread.sleep(3000L);
-				}
+				waitForCondition(Driver->{return !this.linksTSimageUpperSection.getAttribute("href").equalsIgnoreCase(gethrefListTSimageUpperSection().get(0));},30000);
+			}
 		}
 			
 	/*
