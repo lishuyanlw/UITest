@@ -1,16 +1,11 @@
 package com.tsc.test.tests.productSearchResult;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
-
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.HomePage;
-import com.tsc.pages.ProductResultsPage;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 
@@ -60,22 +55,26 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction ext
 	}
 
 	//Test filter
-	if(getProductResultsPageThreadLocal().selectFilterItemInLeftPanel("SHOP BY PRODUCT", "Home & Garden")) {
-		reporter.softAssert(getProductResultsPageThreadLocal().verifyUrlAfterSelectFilterInLeftPanel(lsKeywordList.get(0)), "The Url contains correct dimensions and keyword", "The Url does not contain correct dimensions and keyword");
-		reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultMessage(lstSearchResultMessage.get(0),lsKeywordList.get(0)), "Search result message result matches the expected message", "Search result message result does not match the expected message");
-		reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(), "Showing text pattern in filters is correct", "Showing text pattern in filters is incorrect");
-		reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting), "The default setting of items per page is "+lsSearchResultPageDefaultSetting, "The default setting of items per page isn't "+lsSearchResultPageDefaultSetting);
-		
-		productList=getProductResultsPageThreadLocal().getProductList();
-		if(productList.size()>0) {
-			getProductResultsPageThreadLocal().verifySearchResultContent(productList);
-		}	
-		
-		reporter.softAssert(getProductResultsPageThreadLocal().verifyProductPagination(), "Product pagination is existing", "Product pagination is not existing");
+	List<List<String>> lstGeneralTwoLevelFilterOption=TestDataHandler.constantDataVariables.getlst_GeneralTwoLevelFilterOption();
+	for(List<String> lstItem:lstGeneralTwoLevelFilterOption) {
+		if(getProductResultsPageThreadLocal().selectFilterItemInLeftPanel(lstItem.get(0), lstItem.get(1))) {
+			reporter.softAssert(getProductResultsPageThreadLocal().verifyUrlAfterSelectFilterInLeftPanel(lsKeywordList.get(0)), "The Url contains correct dimensions and keyword", "The Url does not contain correct dimensions and keyword");
+			reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultMessage(lstSearchResultMessage.get(0),lsKeywordList.get(0)), "Search result message result matches the expected message", "Search result message result does not match the expected message");
+			reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(), "Showing text pattern in filters is correct", "Showing text pattern in filters is incorrect");
+			reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting), "The default setting of items per page is "+lsSearchResultPageDefaultSetting, "The default setting of items per page isn't "+lsSearchResultPageDefaultSetting);
+			
+			productList=getProductResultsPageThreadLocal().getProductList();
+			if(productList.size()>0) {
+				getProductResultsPageThreadLocal().verifySearchResultContent(productList);
+			}	
+			
+			reporter.softAssert(getProductResultsPageThreadLocal().verifyProductPagination(), "Product pagination is existing", "Product pagination is not existing");
+		}
+		else {
+			reporter.reportLogFail("Choosing filter of 'SHOP BY PRODUCT/Home & Garden' failed");
+		}
 	}
-	else {
-		reporter.reportLogFail("Choosing filter of 'SHOP BY PRODUCT/Home & Garden' failed");
-	}
+	
 	
 	}
 }

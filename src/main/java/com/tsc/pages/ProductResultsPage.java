@@ -3,36 +3,15 @@ package com.tsc.pages;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-
-import utils.DigiAutoCustomException;
-import utils.ReusableActions;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.CacheLookup;
-import org.openqa.selenium.support.FindAll;
-
-import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
 import com.tsc.pages.base.BasePage;
-import java.util.List;
 
 public class ProductResultsPage extends BasePage{
 	public ProductResultsPage(WebDriver driver) {
@@ -689,7 +668,7 @@ public class ProductResultsPage extends BasePage{
     	{
     	    lsReturn=matcher.group();    	        	   
     	}
-    	System.out.println("Float: "+lsReturn);    			
+    	   			
     	return Float.parseFloat(lsReturn);
     }
     
@@ -789,7 +768,7 @@ public class ProductResultsPage extends BasePage{
 	 */	
     public boolean verifyUrlAfterSelectFilterInLeftPanel(String lsKeyword) {  
     	String lsUrl=this.URL();    	
-    	String lsExpectedUrlPattern="dimensions=\\d{6}&searchterm="+this.getEncodingKeyword(lsKeyword);
+    	String lsExpectedUrlPattern="(dimensions=\\d{6})?&searchterm="+this.getEncodingKeyword(lsKeyword);
     	Pattern pattern=Pattern.compile(lsExpectedUrlPattern);
     	Matcher matcher=pattern.matcher(lsUrl);
 
