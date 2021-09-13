@@ -3,36 +3,15 @@ package com.tsc.pages;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-
-import utils.DigiAutoCustomException;
-import utils.ReusableActions;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.CacheLookup;
-import org.openqa.selenium.support.FindAll;
-
-import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
 import com.tsc.pages.base.BasePage;
-import java.util.List;
 
 public class ProductResultsPage extends BasePage{
 	public ProductResultsPage(WebDriver driver) {
@@ -697,7 +676,7 @@ public class ProductResultsPage extends BasePage{
     	{
     	    lsReturn=matcher.group();    	        	   
     	}
-    	System.out.println("Float: "+lsReturn);    			
+    	   			
     	return Float.parseFloat(lsReturn);
     }
     
@@ -742,7 +721,7 @@ public class ProductResultsPage extends BasePage{
 	/**
 	 * This method will judge MoreButton in left panel existence.
 	 * @param WebElement parent: parent element
-	 * @return true/false
+	 * @return true/false: if the childSize of this.panelItemContainerList item is 2, means no More button exists. 
 	 * @author Wei.Li
 	 */		
 	public boolean judgeMoreButtonExistenceInLeftPanel(WebElement parent) {				
@@ -767,7 +746,7 @@ public class ProductResultsPage extends BasePage{
 		this.secondLevelFilter=lsSecondLevelItem;
 		
 		int loopSize=this.productFilterList.size();
-		for(int i=0;i<loopSize;i++) {
+		for(int i=0;i<loopSize;i++) {			
 			getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i));
 			String lsHeader=this.productFilterList.get(i).getText().trim();
 			if(lsHeader.equalsIgnoreCase(lsFirstLevelItem)) {				
@@ -800,7 +779,7 @@ public class ProductResultsPage extends BasePage{
 	 */	
     public boolean verifyUrlAfterSelectFilterInLeftPanel(String lsKeyword) {  
     	String lsUrl=this.URL();    	
-    	String lsExpectedUrlPattern="dimensions=\\d{6}&searchterm="+this.getEncodingKeyword(lsKeyword);
+    	String lsExpectedUrlPattern="(dimensions=\\d{6})?&searchterm="+this.getEncodingKeyword(lsKeyword);
     	Pattern pattern=Pattern.compile(lsExpectedUrlPattern);
     	Matcher matcher=pattern.matcher(lsUrl);
 
@@ -868,6 +847,25 @@ public class ProductResultsPage extends BasePage{
     	
     	return lsUrl.contains(lsExpectedUrlPattern);
     }  
+    
+    /**
+	 * This method will close all selected filters.  
+	 * @return true/false: The last one is ClearAllFiltersButton.
+	 * @author Wei.Li
+	 */	
+    public boolean closeAllSelectedFilters() {  
+    	this.selectedFiltersList.get(this.selectedFiltersList.size()-1).click();    	
+    	return waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},30000);
+    }
+    
+    /**
+	 * This method will get 'clear all filters' button existence status.  
+	 * @return true/false: if only return 1, means there is a hidden ClearAllFiltersButton; if return more than 1, means there is a displayed ClearAllFiltersButton.
+	 * @author Wei.Li
+	 */	
+    public boolean getClearAllFiltersButtonStatus() {  
+    	return this.selectedFiltersList.size()>1;
+    }
 }
 
 	

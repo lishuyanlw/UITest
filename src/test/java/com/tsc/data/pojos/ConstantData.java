@@ -53,8 +53,10 @@ public class ConstantData {
 	private String lbl_SearchResultPageDefaultSetting;
 	private List<List<String>>  lst_SearchResultMessage;
 	private List<String> lst_SortOption;	
-	private List<String> lst_FilterOption;
 	private List<List<String>> lst_FilterByPrice;
+	private List<String> lst_FilterOptionHeader;
+	private List<List<String>> lst_GeneralTwoLevelFilterOption;
+
 	//Header Links getter and setter method
 	
 	/**
@@ -626,16 +628,29 @@ public class ConstantData {
 	}
 		
 	/**
-	 * @return the lst_FilterOption
+	 * @return the lst_FilterOptionHeader
 	 */
-	public List<String> getlst_FilterOption() {
-		return lst_FilterOption;
+	public List<String> getlst_FilterOptionHeader() {
+		return lst_FilterOptionHeader;
 	}
 	/**
-	 * @param lst_FilterOption the lst_FilterOption to set
+	 * @param lst_FilterOptionHeader the lst_FilterOptionHeader to set
 	 */
-	public void setlst_FilterOption(List<String> lst_FilterOption) {
-		this.lst_FilterOption = lst_FilterOption;
+	public void setlst_FilterOptionHeader(List<String> lst_FilterOptionHeader) {
+		this.lst_FilterOptionHeader = lst_FilterOptionHeader;
+	}
+	
+	/**
+	 * @return the lst_GeneralTwoLevelFilterOption
+	 */
+	public List<List<String>> getlst_GeneralTwoLevelFilterOption() {
+		return lst_GeneralTwoLevelFilterOption;
+	}
+	/**
+	 * @param lst_GeneralTwoLevelFilterOption the lst_GeneralTwoLevelFilterOption to set
+	 */
+	public void setlst_GeneralTwoLevelFilterOption(List<List<String>> lst_GeneralTwoLevelFilterOption) {
+		this.lst_GeneralTwoLevelFilterOption = lst_GeneralTwoLevelFilterOption;
 	}
 	
 	/**
