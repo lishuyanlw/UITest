@@ -173,7 +173,12 @@ public class ProductResultsPage extends BasePage{
 	 * @return true/false
 	 * @author Wei.Li
 	 */
-	public boolean selectSearchResultListInDropdownMenu(String lsKeyword,int optionIndex) {			
+	public boolean selectSearchResultListInDropdownMenu(String lsKeyword,String lsOption,String lsOptionIndex) {
+		int optionIndex=0;
+		if(!lsOptionIndex.isEmpty()) {
+			optionIndex=Integer.parseInt(lsOptionIndex);
+		}
+		
 		if(this.isQASearch()) {			
 			GlobalheaderPage globalHeader=new GlobalheaderPage(this.getDriver());
 			this.clearContent(globalHeader.searchBox);	
@@ -181,21 +186,31 @@ public class ProductResultsPage extends BasePage{
 				globalHeader.searchBox.sendKeys(lsKeyword.substring(i,i+1));				
 				getReusableActionsInstance().staticWait(300);
 			}
-						
-			WebElement element=globalHeader.searchQADropdwonmenuList.get(2).findElements(By.xpath(".//li")).get(0);
-			getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-			String lsBrand=element.getText().trim();			
-			if(lsBrand.equalsIgnoreCase("No results")) {
+			
+			switch(lsOption) {
+			case "Top suggestions":
+				WebElement element=globalHeader.searchQADropdwonmenuList.get(0).findElements(By.xpath(".//li")).get(optionIndex);
+				getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+				this.searchkeyword=element.getText().trim();				
+				element.click();
+				break;
+			case "Categories":
 				element=globalHeader.searchQADropdwonmenuList.get(1).findElements(By.xpath(".//li")).get(optionIndex);
 				getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 				this.searchkeyword=element.getText().trim();				
 				element.click();
-			}
-			else {
-				element=globalHeader.searchQADropdwonmenuList.get(2).findElements(By.xpath(".//li")).get(optionIndex);
-				getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-				this.searchkeyword=element.getText().trim();				
-				element.click();
+				break;
+			case "Brands":
+				List<WebElement> list=globalHeader.searchQADropdwonmenuList.get(2).findElements(By.xpath(".//li"));
+				this.searchkeyword=lsKeyword;				
+				for(WebElement ele:list) {
+					getReusableActionsInstance().javascriptScrollByVisibleElement(ele);					
+					if(ele.getText().trim().equalsIgnoreCase(lsKeyword)) {						
+						ele.click();
+						break;
+					}
+				}
+				break;			
 			}
 		}
 		else {			
@@ -214,9 +229,14 @@ public class ProductResultsPage extends BasePage{
 	 */
 	public boolean verifyPageTitleForDropdown() {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSearchResultTitle);
+		String lsTitle=this.lblSearchResultTitle.getText().trim();
+		if(this.searchkeyword.equalsIgnoreCase(lsTitle)) {
+			return true;
+		}
+		
 		String[] lstItem=this.searchkeyword.trim().split(" ");
 		String lastWord=lstItem[lstItem.length-1];		
-		return lastWord.toUpperCase().equalsIgnoreCase(this.lblSearchResultTitle.getText().trim().toUpperCase());
+		return lastWord.equalsIgnoreCase(this.lblSearchResultTitle.getText().trim());
 	}
 
 	/**
