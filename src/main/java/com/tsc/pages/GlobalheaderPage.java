@@ -127,8 +127,17 @@ public class GlobalheaderPage extends BasePage{
 	@FindBy(xpath = "//div[@class='Header']//div[@id='megamenu']/ul/li")
 	List <WebElement> listFlyoutHeadings;
 	
+	
+	
 	@FindBy(xpath = "//*[@class='email-popup__button']")
 	WebElement btnClose;
+	public boolean add() {
+		if(btnClose.isDisplayed()) {
+			return true;
+		}else {
+			return false;
+		}
+	}
 	public void closeadd() {
 		btnClose.click();
 	}
@@ -534,22 +543,64 @@ public class GlobalheaderPage extends BasePage{
 	 	getReusableActionsInstance().javascriptScrollByVisibleElement(WebElement); 
 	 		return WebElement.getText(); 
 	}
+	public boolean validateFlyoutHeadings(int headingNumber) { 
+		WebElement WebElement=listFlyoutHeadings.get(headingNumber).findElement(By.xpath(".//span"));
+		if(WebElement.isDisplayed()) {
+			return true;
+			}else {
+				return false;
+			}
+		} 	
+
 			
 	/*Method to get list of Flyout submenu
 	 * @return list:Flyout sub menu
 	 * @author Shruti Desai
 	 */
-	public List<String> getListSubMenu(int headingNumber) { 
+	public List<String> getListSubMenu(int headingNumber) {
+			
 		WebElement WebElement=listFlyoutHeadings.get(headingNumber).findElement(By.xpath(".//span"));
 		getReusableActionsInstance().scrollToElement(WebElement);	
 		List<WebElement> SubMenu=listFlyoutHeadings.get(headingNumber).findElements(By.xpath(".//div[@class='flyout']//ul//li[1]//b"));
 		getReusableActionsInstance().waitForAllElementsVisible(SubMenu, 3);
 		List<String> SubMenulist =new ArrayList<String>();
-		 		for(WebElement e : SubMenu) {
-		 			SubMenulist.add(e.getText());
-		 		}
-		 
-	 		return SubMenulist;
+			for(WebElement e : SubMenu) {
+				SubMenulist.add(e.getText());
+		 	}
+		return SubMenulist;
+		
 	}
-
+	
+	
+	
+	/*Method to get list href of Flyout submenu
+	 * @return list:list of href Flyout sub menu
+	 * @author Shruti Desai
+	 */
+	 public boolean validateFlyoutSubMenuLinks(int headingNumber) {
+		WebElement WebElement=listFlyoutHeadings.get(headingNumber).findElement(By.xpath(".//span"));
+		getReusableActionsInstance().scrollToElement(WebElement);
+		List<WebElement> SubMenu=listFlyoutHeadings.get(headingNumber).findElements(By.xpath(".//div[@class='flyout']//ul//li//a"));
+		for(WebElement SubMenulink : SubMenu) {
+			SubMenulink.getAttribute("href").isEmpty();
+			return true;
+			}
+			return false;
+	 }
+	 
+	 public List<String> getFlyoutSubMenuLinks(int headingNumber) {
+		WebElement WebElement=listFlyoutHeadings.get(headingNumber).findElement(By.xpath(".//span"));
+		getReusableActionsInstance().scrollToElement(WebElement);	
+		List<WebElement> SubMenu=listFlyoutHeadings.get(headingNumber).findElements(By.xpath(".//div[@class='flyout']//ul//li//a"));
+		List<String> hreflistSubMenu =new ArrayList<String>();
+			String hrefs =null;
+			 		for(WebElement e : SubMenu) {
+			 		hrefs =	e.getAttribute("href");
+			 			hreflistSubMenu.add(hrefs);
+			 		}	
+			return hreflistSubMenu;
+	 
+	 }
+			 	
+	
 }

@@ -14,20 +14,40 @@ public class HP_TC02_GlobalHeader_VerifyFlyoutsSubMenuItems extends BaseTest {
 	public void verifyFlyoutHeadings() throws IOException {
 		getglobalheaderPageThreadLocal().closeadd();
 	String lsBaseUrl=(new BasePage(this.getDriver())).getBaseURL();
-	reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl+"/"), "TSC url is correct", "TSC url is incorrect");
-	reporter.reportLogWithScreenshot("Home Page");
+	
+
 	reporter.reportLog("Validating Flyout Sub Menu for each category");
 	
 	String FOHeading;
 	
+	
 	for(int i=0; i<getglobalheaderPageThreadLocal().getFlyoutHeadingCount(); i++) {
 		FOHeading = getglobalheaderPageThreadLocal().getFlyoutHeadings(i);
-		
-		reporter.reportLog(FOHeading +"'s sub menu :"+  getglobalheaderPageThreadLocal().getListSubMenu(i));
-		reporter.reportLog("menu number:" + i);
-		reporter.softAssert(getglobalheaderPageThreadLocal().getListSubMenu(i).retainAll(TestDataHandler.constantDataVariables.getlst_FlyoutsubMenu()),FOHeading +"'s sub menu list is correct", FOHeading +"'s sub menu list is incorrect");
-		//reporter.softAssert(getglobalheaderPageThreadLocal().getListSubMenu(i).containsAll(TestDataHandler.constantDataVariables.getlst_FlyoutsubMenu()),FOHeading +"'s sub menu list is correct", FOHeading +"'s sub menu list is incorrect");
-		
+		List<String> SubMenu = getglobalheaderPageThreadLocal().getListSubMenu(i);
+		List<String> SubMenuLinks = getglobalheaderPageThreadLocal().getFlyoutSubMenuLinks(i);
+			reporter.reportLog("menu number:" + (i+1)+ " is "+ FOHeading);
+			reporter.reportLog("submenu for " +FOHeading+" is"+getglobalheaderPageThreadLocal().getListSubMenu(i));
+			reporter.reportLog("Submenu list : "+ TestDataHandler.constantDataVariables.getlst_FlyoutsubMenu());
+			reporter.softAssert(getglobalheaderPageThreadLocal().getListSubMenu(i).containsAll(TestDataHandler.constantDataVariables.getlst_FlyoutsubMenu()),FOHeading +"'s sub menu list is correct", FOHeading +"'s sub menu list is incorrect");
 	}
+		
 	}
 }
+/*
+int	numberOfLinkssubMenu = SubMenu.size();
+for(String submenuheading : SubMenu) {
+	reporter.reportLog(submenuheading);
+	for(String link : SubMenuLinks) {
+		reporter.reportLog(link);
+	}
+	
+}*/
+//reporter.softAssert(getglobalheaderPageThreadLocal().getListSubMenu(i).retainAll(TestDataHandler.constantDataVariables.getlst_FlyoutsubMenu()),FOHeading +"'s sub menu list is correct", FOHeading +"'s sub menu list is incorrect");
+//reporter.softAssert(getglobalheaderPageThreadLocal().getListSubMenu(i).containsAll(TestDataHandler.constantDataVariables.getlst_FlyoutsubMenu()),FOHeading +"'s sub menu list is correct", FOHeading +"'s sub menu list is incorrect");
+
+
+/*for(String submenuheading : SubMenu) {
+reporter.reportLog(FOHeading +"'s sub menu heading "+submenuheading);
+reporter.softAssert(getglobalheaderPageThreadLocal().validateFlyoutSubMenuLinks(i),"href of all links in "+submenuheading+" are not empty", "href of one link in "+submenuheading+" is emapty");
+
+}*/
