@@ -406,7 +406,7 @@ import utils.ReusableActions;
 	 * @param WebElement parent: parent element 
 	 * @author Wei.Li
 	 */		
-	public long getchildElementCount(WebElement parent) {
+	public long getChildElementCount(WebElement parent) {
 		JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
 		long childSize= (long) jse.executeScript("return arguments[0].childElementCount;", parent);
 				

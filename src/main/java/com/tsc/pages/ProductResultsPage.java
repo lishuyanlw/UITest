@@ -505,7 +505,7 @@ public class ProductResultsPage extends BasePage{
 	 */		
 	public String judgeProductWasPrice(WebElement parent) {
 		WebElement element=parent.findElement(this.byJudgeProductWasPrice);		
-		long childSize= (new BasePage(this.getDriver())).getchildElementCount(element);
+		long childSize= (new BasePage(this.getDriver())).getChildElementCount(element);
 				
 		if(childSize==1) {
 			return "WithoutWasPrice";
@@ -725,7 +725,7 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 */		
 	public boolean judgeMoreButtonExistenceInLeftPanel(WebElement parent) {				
-		long childSize= (new BasePage(this.getDriver())).getchildElementCount(parent);
+		long childSize= (new BasePage(this.getDriver())).getChildElementCount(parent);
 				
 		if(childSize==2) {
 			return false;
