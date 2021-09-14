@@ -136,9 +136,21 @@ public class ProductResultsPage extends BasePage{
 	
 	@FindBy(xpath = "//product-results//div[@class='modalBody']//div[@class='panel']//div[@class='panel-body']")
 	List<WebElement> panelItemContainerList;
-		
+			
 	String searchkeyword;
+	
+	/**
+	 * This method will judge search type.
+	 * @return QA return true
+	 * @author Wei.Li
+	 */
+	public boolean isQASearch() {	
 		
+		GlobalheaderPage globalHeader=new GlobalheaderPage(this.getDriver());
+		getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeader.searchBox);
+		return !this.getElementProperty(globalHeader.searchBox, "aria-controls");			
+	}
+	
 	/**
 	 * This method will load product searching result.
 	 * @return true/false
@@ -147,8 +159,8 @@ public class ProductResultsPage extends BasePage{
 	public boolean getSearchResultLoad(String searchKeyword) {		
 		GlobalheaderPage globalHeader=new GlobalheaderPage(this.getDriver());
 		getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeader.searchBox);		
-		this.clearContent(globalHeader.searchBox);	
-		globalHeader.searchBox.sendKeys(searchKeyword);
+		this.clearContent(globalHeader.searchBox);
+		globalHeader.searchBox.sendKeys(searchKeyword);		
 		globalHeader.btnSearchSubmit.click();
 		
 		return waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},30000);
@@ -161,18 +173,49 @@ public class ProductResultsPage extends BasePage{
 	 * @return true/false
 	 * @author Wei.Li
 	 */
-	public boolean selectSearchResultListInDropdownMenu(String lsKeyword,int optionIndex) {
-		List<WebElement> elementList=getSearchDropdownResultList(lsKeyword);
-		this.searchkeyword=elementList.get(optionIndex).getText();
-		elementList.get(optionIndex).click(); 			
-		
+	public boolean selectSearchResultListInDropdownMenu(String lsKeyword,int optionIndex) {			
+		if(this.isQASearch()) {			
+			GlobalheaderPage globalHeader=new GlobalheaderPage(this.getDriver());
+			this.clearContent(globalHeader.searchBox);	
+			for(int i=0;i<lsKeyword.length();i++) {				
+				globalHeader.searchBox.sendKeys(lsKeyword.substring(i,i+1));				
+				getReusableActionsInstance().staticWait(300);
+			}
+						
+			WebElement element=globalHeader.searchQADropdwonmenuList.get(2).findElements(By.xpath(".//li")).get(0);
+			getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+			String lsBrand=element.getText().trim();			
+			if(lsBrand.equalsIgnoreCase("No results")) {
+				element=globalHeader.searchQADropdwonmenuList.get(1).findElements(By.xpath(".//li")).get(optionIndex);
+				getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+				this.searchkeyword=element.getText().trim();				
+				element.click();
+			}
+			else {
+				element=globalHeader.searchQADropdwonmenuList.get(2).findElements(By.xpath(".//li")).get(optionIndex);
+				getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+				this.searchkeyword=element.getText().trim();				
+				element.click();
+			}
+		}
+		else {			
+			List<WebElement> elementList=getSearchDropdownResultList(lsKeyword);
+			this.searchkeyword=elementList.get(optionIndex).getText().trim();
+			elementList.get(optionIndex).click(); 
+		}
+				
 		return waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},30000);
 	}
 	
+	/**
+	 * This method will verify page title for selecting from dropdown menu.
+	 * @return true/false
+	 * @author Wei.Li
+	 */
 	public boolean verifyPageTitleForDropdown() {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSearchResultTitle);
 		String[] lstItem=this.searchkeyword.trim().split(" ");
-		String lastWord=lstItem[lstItem.length-1];
+		String lastWord=lstItem[lstItem.length-1];		
 		return lastWord.toUpperCase().equalsIgnoreCase(this.lblSearchResultTitle.getText().trim().toUpperCase());
 	}
 
@@ -184,7 +227,7 @@ public class ProductResultsPage extends BasePage{
 	 */
 	public List<WebElement> getSearchDropdownResultList(String lsKeyword) {
 		GlobalheaderPage globalHeader=new GlobalheaderPage(this.getDriver());
-		getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeader.searchBox);
+		getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeader.searchBox);		
 		pressEscapeKey();		
 		this.clearContent(globalHeader.searchBox);		
 		globalHeader.searchBox.sendKeys(lsKeyword);		
@@ -497,7 +540,7 @@ public class ProductResultsPage extends BasePage{
 	 */		
 	public String judgeProductWasPrice(WebElement parent) {
 		WebElement element=parent.findElement(this.byJudgeProductWasPrice);		
-		long childSize= (new BasePage(this.getDriver())).getchildElementCount(element);
+		long childSize= (new BasePage(this.getDriver())).getChildElementCount(element);
 				
 		if(childSize==1) {
 			return "WithoutWasPrice";
@@ -717,7 +760,7 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 */		
 	public boolean judgeMoreButtonExistenceInLeftPanel(WebElement parent) {				
-		long childSize= (new BasePage(this.getDriver())).getchildElementCount(parent);
+		long childSize= (new BasePage(this.getDriver())).getChildElementCount(parent);
 				
 		if(childSize==2) {
 			return false;

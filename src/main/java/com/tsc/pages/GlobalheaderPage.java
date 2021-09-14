@@ -80,17 +80,20 @@ public class GlobalheaderPage extends BasePage{
 	WebElement lnkTSClogolink;
 	
 	//SearchBox
-	@FindBy(xpath = "//*[@class='Header']//form[@class='reactAppForm']//input[@class='tsc-search-input']")
+	@FindBy(xpath = "//*[@class='Header']//form[@class='reactAppForm']//input[@class='tsc-search-input']|//div[contains(@class,'searchContainer')]//input")
 	WebElement searchBox;
 	
-	@FindBy(xpath = "//*[@class='Header']//form[@class='reactAppForm']//button[@class='submit-search-button']")
+	@FindBy(xpath = "//*[@class='Header']//form[@class='reactAppForm']//button[@class='submit-search-button']|//div[contains(@class,'searchContainer')]//button[@type='submit']")
 	WebElement btnSearchSubmit;
 	
-	@FindBy(xpath = "//div[@class='searchContainer']//button[contains(@class,'clear-search-button')]")
+	@FindBy(xpath = "//div[@class='searchContainer']//button[contains(@class,'clear-search-button')]|//div[contains(@class,'searchContainer')]//button[@type='reset']")
 	WebElement btnSearchClear;
-	
-	@FindBy(xpath = "//div[@class='searchContainer']//div[contains(@class,'suggestions-container')]")
+		
+	@FindBy(xpath = "//div[@class='searchContainer']//div[contains(@class,'suggestions-container')]|//div[contains(@class,'aa-Panel--desktop')]")
 	WebElement ctnSearchResult;
+	
+	@FindBy(xpath = "//div[@class='searchContainer']//div[contains(@class,'suggestions-container')]|//div[contains(@class,'aa-Panel--desktop')]//ul")
+	List<WebElement> searchQADropdwonmenuList;
 	
 	@FindBy(xpath = "//div[@class='searchContainer']//div[contains(@class,'suggestions-container--open')]//div[@class='tsc-category-title']")
 	WebElement txtSearchResultCategoryHeader;
@@ -99,7 +102,7 @@ public class GlobalheaderPage extends BasePage{
 	List<WebElement> searchResultList;
 	
 	By byCategoryAboveSearchResultList=By.xpath("//div[@class='searchContainer']//div[contains(@class,'suggestions-container--open')]//ul/preceding-sibling::div[@class='tsc-category-title']");
-	
+		
 	//Favorite link
 	@FindBy(xpath = "//*[@class='Header']//a[contains(@href, 'favourites')]")
 	WebElement Favouriteslnk;
