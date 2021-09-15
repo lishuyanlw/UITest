@@ -550,15 +550,13 @@ public class GlobalheaderPage extends BasePage{
 			}else {
 				return false;
 			}
-		} 	
-
-			
+	}
+	
 	/*Method to get list of Flyout submenu
 	 * @return list:Flyout sub menu
 	 * @author Shruti Desai
 	 */
 	public List<String> getListSubMenu(int headingNumber) {
-			
 		WebElement WebElement=listFlyoutHeadings.get(headingNumber).findElement(By.xpath(".//span"));
 		getReusableActionsInstance().scrollToElement(WebElement);	
 		List<WebElement> SubMenu=listFlyoutHeadings.get(headingNumber).findElements(By.xpath(".//div[@class='flyout']//ul//li[1]//b"));
@@ -568,13 +566,10 @@ public class GlobalheaderPage extends BasePage{
 				SubMenulist.add(e.getText());
 		 	}
 		return SubMenulist;
-		
 	}
 	
-	
-	
-	/*Method to get list href of Flyout submenu
-	 * @return list:list of href Flyout sub menu
+	/* Method to validate all href for Flyout submenu is not empty
+	 * @return : true/false
 	 * @author Shruti Desai
 	 */
 	 public boolean validateFlyoutSubMenuLinks(int headingNumber) {
@@ -586,21 +581,64 @@ public class GlobalheaderPage extends BasePage{
 			return true;
 			}
 			return false;
-	 }
-	 
-	 public List<String> getFlyoutSubMenuLinks(int headingNumber) {
+	 }	
+	
+		 
+	 /* Method to Validate FEATURED BRANDS section is displayed on right side by extracting its class
+	  * @return text: class of Feature Brand section heading
+	  * @author Shruti Desai
+	  */
+	 public String validateFeatureBrandSectionIsOnTheRight(int headingNumber) {
 		WebElement WebElement=listFlyoutHeadings.get(headingNumber).findElement(By.xpath(".//span"));
-		getReusableActionsInstance().scrollToElement(WebElement);	
-		List<WebElement> SubMenu=listFlyoutHeadings.get(headingNumber).findElements(By.xpath(".//div[@class='flyout']//ul//li//a"));
-		List<String> hreflistSubMenu =new ArrayList<String>();
-			String hrefs =null;
-			 		for(WebElement e : SubMenu) {
-			 		hrefs =	e.getAttribute("href");
-			 			hreflistSubMenu.add(hrefs);
-			 		}	
-			return hreflistSubMenu;
-	 
+		getReusableActionsInstance().scrollToElement(WebElement);
+		WebElement SubMenu=listFlyoutHeadings.get(headingNumber).findElement(By.xpath(".//div[@class='flyout']//div[@class='flyoutRow2Right']//descendant::b//ancestor::div[@class='flyoutRow2Right']"));
+			return SubMenu.getAttribute("class");
 	 }
+	
+	 /*Method to get FEATURED BRANDS section heading
+	  * @return true/false
+	  * @author Shruti Desai
+	  */
+	 public String getFeatureBrandSectionHeading(int headingNumber) {
+		WebElement WebElement=listFlyoutHeadings.get(headingNumber).findElement(By.xpath(".//span"));
+		getReusableActionsInstance().scrollToElement(WebElement);
+		WebElement SubMenu=listFlyoutHeadings.get(headingNumber).findElement(By.xpath(".//div[@class='flyout']//div[@class='flyoutRow2Right']//ul//li//b"));
+			return SubMenu.getText();
+	 }
+
+	/*Method to validate src of all images in the Brand Section of Flyout submenu is not empty
+	 * @return : true/false
+	 * @author Shruti Desai
+	 */
+	 public boolean validateFlyoutSubMenuimages(int headingNumber) {
+		WebElement WebElement=listFlyoutHeadings.get(headingNumber).findElement(By.xpath(".//span"));
+		getReusableActionsInstance().scrollToElement(WebElement);
+		List<WebElement> SubMenu=listFlyoutHeadings.get(headingNumber).findElements(By.xpath(".//div[@class='flyout']//div[@class='flyoutRow2Right']//img"));
+		for(WebElement SubMenuimg : SubMenu) {
+			SubMenuimg.getAttribute("src").isEmpty();
+			return true;
+		}
+		return false;
+	 }
+	 
+	 
+	
+	 /* Method to validate all href in the Brand Section of Flyout submenu is not empty     
+	  * @return true/false
+	  * @author Shruti Desai
+	  */
+	 public boolean validateFlyoutSubMenuhref(int headingNumber) {
+		WebElement WebElement=listFlyoutHeadings.get(headingNumber).findElement(By.xpath(".//span"));
+		getReusableActionsInstance().scrollToElement(WebElement);
+		List<WebElement> SubMenu=listFlyoutHeadings.get(headingNumber).findElements(By.xpath(".//div[@class='flyout']//div[@class='flyoutRow2Right']//a"));
+		for(WebElement SubMenulink : SubMenu) {
+			SubMenulink.getAttribute("href").isEmpty();
+			return true;
+		}
+		return false;
+	 }
+	 
+	
 			 	
 	
 }
