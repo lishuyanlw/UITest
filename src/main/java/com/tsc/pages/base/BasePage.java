@@ -355,7 +355,7 @@ import utils.ReusableActions;
 		 robot.keyPress(KeyEvent.VK_DELETE);
 		 robot.keyRelease(KeyEvent.VK_DELETE);
 	 }
-	 
+ 
 	//Get the URL 			
 	public String URL() {
 		return getDriver().getCurrentUrl();
@@ -411,6 +411,18 @@ import utils.ReusableActions;
 		long childSize= (long) jse.executeScript("return arguments[0].childElementCount;", parent);
 				
 		return childSize;		
+	}
+	
+	/**
+	 * This method will identify if the element has a specific property.
+	 * @param WebElement element: the element
+	 * @param String lsProperty: the property
+	 * @return true/false
+	 * @author Wei.Li
+	 */		
+	public  boolean getElementProperty(WebElement element,String lsProperty) {
+		JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
+		return (boolean) jse.executeScript("return arguments[0].hasAttribute(arguments[1]);", element,lsProperty);			
 	}
 	
 

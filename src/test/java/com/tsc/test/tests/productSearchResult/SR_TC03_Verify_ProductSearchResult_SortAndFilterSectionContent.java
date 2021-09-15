@@ -21,11 +21,11 @@ public class SR_TC03_Verify_ProductSearchResult_SortAndFilterSectionContent exte
 	reporter.softAssert(getglobalheaderPageThreadLocal().validateURL((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");		
 	reporter.reportLog("ProductSearch Page");
 	
-	List<String> lsKeywordList=TestDataHandler.constantDataVariables.getlst_SearchKeyword_DropDown();		
+	List<List<String>> lsKeywordList=TestDataHandler.constantDataVariables.getlst_SearchKeyword_DropDown();		
 	List<String> lsSortOption=TestDataHandler.constantDataVariables.getlst_SortOption();
 	List<String> lsFilterOptionHeader=TestDataHandler.constantDataVariables.getlst_FilterOptionHeader();
 		
-	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0));
+	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0));
 	reporter.softAssert(getProductResultsPageThreadLocal().verifySortOptions(lsSortOption), "Sort options in search result filters are correct", "Sort options in search result filters are incorrect");
 	
 	String lsMsg=getProductResultsPageThreadLocal().verifyFilterOptions(lsFilterOptionHeader);	

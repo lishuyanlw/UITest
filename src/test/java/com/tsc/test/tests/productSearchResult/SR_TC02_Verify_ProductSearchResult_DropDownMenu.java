@@ -24,19 +24,26 @@ public class SR_TC02_Verify_ProductSearchResult_DropDownMenu extends BaseTest{
 	reporter.reportLog("ProductSearch Page");
 	
 	String lsSearchResultPageDefaultSetting=TestDataHandler.constantDataVariables.getlbl_SearchResultPageDefaultSetting();
-	List<String> lsKeywordDropdownList=TestDataHandler.constantDataVariables.getlst_SearchKeyword_DropDown();
+	List<List<String>> lsKeywordDropdownList=TestDataHandler.constantDataVariables.getlst_SearchKeyword_DropDown();
 	List<WebElement> productList;
 	
-	int keyWordDropdownSize=lsKeywordDropdownList.size();
+	int keyWordDropdownSize=lsKeywordDropdownList.size();	
 	for(int i=0;i<keyWordDropdownSize;i++) {
-		getProductResultsPageThreadLocal().selectSearchResultListInDropdownMenu(lsKeywordDropdownList.get(i),0);
-		
-		reporter.reportLog("Search keyword : "+lsKeywordDropdownList.get(i));
-		
+		reporter.reportLog("Search keyword : "+lsKeywordDropdownList.get(i));	
+		if(lsKeywordDropdownList.get(i).size()==3) {			
+			getProductResultsPageThreadLocal().selectSearchResultListInDropdownMenu(lsKeywordDropdownList.get(i).get(0),lsKeywordDropdownList.get(i).get(1),lsKeywordDropdownList.get(i).get(2));
+		}
+		else {			
+			getProductResultsPageThreadLocal().selectSearchResultListInDropdownMenu(lsKeywordDropdownList.get(i).get(0),lsKeywordDropdownList.get(i).get(1),"");
+		}
+				
 		reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(), "Showing text pattern in filters is correct", "Showing text pattern in filters is incorrect");
 		reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting), "The default setting of items per page is "+lsSearchResultPageDefaultSetting, "The default setting of items per page isn't "+lsSearchResultPageDefaultSetting);
-		reporter.softAssert(getProductResultsPageThreadLocal().verifyPageTitleForDropdown(), "Search result page title is displayed as search keyword in dropdown menu", "Search result page title is not displayed as search keyword in dropdown menu");
 		
+		if(getProductResultsPageThreadLocal().bVerifyTitle) {
+			reporter.softAssert(getProductResultsPageThreadLocal().verifyPageTitleForDropdown(), "Search result page title of "+getProductResultsPageThreadLocal().getPageTitle()+" is displayed as search keyword in dropdown menu", "Search result page title of "+getProductResultsPageThreadLocal().getPageTitle()+" is not displayed as search keyword in dropdown menu");
+		}
+						
 		productList=getProductResultsPageThreadLocal().getProductList();
 		if(productList.size()>0) {
 			getProductResultsPageThreadLocal().verifySearchResultContent(productList);

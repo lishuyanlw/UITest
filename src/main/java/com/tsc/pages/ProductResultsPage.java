@@ -143,10 +143,23 @@ public class ProductResultsPage extends BasePage{
 	
 	@FindBy(xpath = "//product-results//div[@class='modalBody']//div[@class='panel']//div[@class='panel-body']")
 	List<WebElement> panelItemContainerList;
-		
+			
 	String searchkeyword;
+	public boolean bVerifyTitle=true;
 	String firstLevelFilter,secondLevelFilter;
 		
+	/**
+	 * This method will judge search type.
+	 * @return QA return true
+	 * @author Wei.Li
+	 */
+	public boolean isQASearch() {	
+		
+		GlobalheaderPage globalHeader=new GlobalheaderPage(this.getDriver());
+		getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeader.searchBox);
+		return !this.getElementProperty(globalHeader.searchBox, "aria-controls");			
+	}
+	
 	/**
 	 * This method will load product searching result.
 	 * @return true/false
@@ -155,8 +168,8 @@ public class ProductResultsPage extends BasePage{
 	public boolean getSearchResultLoad(String searchKeyword) {		
 		GlobalheaderPage globalHeader=new GlobalheaderPage(this.getDriver());
 		getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeader.searchBox);		
-		this.clearContent(globalHeader.searchBox);	
-		globalHeader.searchBox.sendKeys(searchKeyword);
+		this.clearContent(globalHeader.searchBox);
+		globalHeader.searchBox.sendKeys(searchKeyword);		
 		globalHeader.btnSearchSubmit.click();
 		
 		return waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},30000);
@@ -169,19 +182,85 @@ public class ProductResultsPage extends BasePage{
 	 * @return true/false
 	 * @author Wei.Li
 	 */
-	public boolean selectSearchResultListInDropdownMenu(String lsKeyword,int optionIndex) {
-		List<WebElement> elementList=getSearchDropdownResultList(lsKeyword);
-		this.searchkeyword=elementList.get(optionIndex).getText();
-		elementList.get(optionIndex).click(); 			
+	public boolean selectSearchResultListInDropdownMenu(String lsKeyword,String lsOption,String lsOptionIndex) {
+		int optionIndex=0;
+		if(!lsOptionIndex.isEmpty()) {
+			optionIndex=Integer.parseInt(lsOptionIndex);
+		}	
 		
+		if(this.isQASearch()) {			
+			GlobalheaderPage globalHeader=new GlobalheaderPage(this.getDriver());
+			this.clearContent(globalHeader.searchBox);	
+			for(int i=0;i<lsKeyword.length();i++) {				
+				globalHeader.searchBox.sendKeys(lsKeyword.substring(i,i+1));				
+				getReusableActionsInstance().staticWait(300);
+			}
+			
+			switch(lsOption) {
+			case "Top suggestions":
+				WebElement element=globalHeader.searchQADropdwonmenuList.get(0).findElements(By.xpath(".//li")).get(optionIndex);
+				getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+				this.searchkeyword=element.getText().trim();	
+				this.bVerifyTitle=false;
+				element.click();
+				break;
+			case "Categories":
+				element=globalHeader.searchQADropdwonmenuList.get(1).findElements(By.xpath(".//li")).get(optionIndex);
+				getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+				this.searchkeyword=element.getText().trim();
+				this.bVerifyTitle=true;
+				element.click();
+				break;
+			case "Brands":
+				List<WebElement> list=globalHeader.searchQADropdwonmenuList.get(2).findElements(By.xpath(".//li"));
+				this.searchkeyword=lsKeyword;				
+				for(WebElement ele:list) {
+					getReusableActionsInstance().javascriptScrollByVisibleElement(ele);					
+					if(ele.getText().trim().equalsIgnoreCase(lsKeyword)) {	
+						this.bVerifyTitle=true;
+						ele.click();
+						break;
+					}
+				}
+				break;			
+			}
+		}
+		else {				
+			List<WebElement> elementList=getSearchDropdownResultList(lsKeyword);			
+			getReusableActionsInstance().javascriptScrollByVisibleElement(elementList.get(optionIndex));
+			this.searchkeyword=elementList.get(optionIndex).getText().trim();			
+			this.bVerifyTitle=true;
+			elementList.get(optionIndex).click(); 
+		}
+				
 		return waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},30000);
 	}
 	
+	/**
+	 * This method will verify page title for selecting from dropdown menu.
+	 * @return true/false
+	 * @author Wei.Li
+	 */
 	public boolean verifyPageTitleForDropdown() {
+		if(!this.bVerifyTitle) {
+			return true;
+		}
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSearchResultTitle);
-		String[] lstItem=this.searchkeyword.trim().split(" ");
-		String lastWord=lstItem[lstItem.length-1];
-		return lastWord.toUpperCase().equalsIgnoreCase(this.lblSearchResultTitle.getText().trim().toUpperCase());
+		String lsTitle=this.lblSearchResultTitle.getText().trim();
+		if(this.searchkeyword.equalsIgnoreCase(lsTitle)) {
+			return true;
+		}
+		
+		String[] lstItem;
+		if(this.searchkeyword.contains(">")) {
+			lstItem=this.searchkeyword.trim().split(">");
+		}
+		else {
+			lstItem=this.searchkeyword.trim().split(" ");
+		}				
+		String lastWord=lstItem[lstItem.length-1].trim();	
+		
+		return lastWord.equalsIgnoreCase(this.lblSearchResultTitle.getText().trim());
 	}
 
 	/**
@@ -192,10 +271,13 @@ public class ProductResultsPage extends BasePage{
 	 */
 	public List<WebElement> getSearchDropdownResultList(String lsKeyword) {
 		GlobalheaderPage globalHeader=new GlobalheaderPage(this.getDriver());
-		getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeader.searchBox);
+		getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeader.searchBox);		
 		pressEscapeKey();		
-		this.clearContent(globalHeader.searchBox);		
-		globalHeader.searchBox.sendKeys(lsKeyword);		
+		this.clearContent(globalHeader.searchBox);	
+		for(int i=0;i<lsKeyword.length();i++) {				
+			globalHeader.searchBox.sendKeys(lsKeyword.substring(i,i+1));				
+			getReusableActionsInstance().staticWait(300);
+		}				
 		waitForCondition(Driver->{return globalHeader.ctnSearchResult.getAttribute("class").contains("suggestions-container--open");},30000);
 		
 		return globalHeader.searchResultList;			
@@ -799,6 +881,16 @@ public class ProductResultsPage extends BasePage{
     	return matcher.find(); 
     }  
     
+    /**
+	 * This method will get page title. 
+	 * @return String: page title
+	 * @author Wei.Li
+	 */
+    public String getPageTitle() {
+    	getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSearchResultTitle);
+    	return this.lblSearchResultTitle.getText().trim();
+    }
+
 	/**
 	 * This method will verify filter by price. 
 	 * @param String lsPriceMode: Under/Between/Over
