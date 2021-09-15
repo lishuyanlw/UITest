@@ -138,8 +138,8 @@ public class ProductResultsPage extends BasePage{
 	List<WebElement> panelItemContainerList;
 			
 	String searchkeyword;
-	boolean bVerifyTitle=true;
-	
+	public boolean bVerifyTitle=true;
+		
 	/**
 	 * This method will judge search type.
 	 * @return QA return true
@@ -178,7 +178,7 @@ public class ProductResultsPage extends BasePage{
 		int optionIndex=0;
 		if(!lsOptionIndex.isEmpty()) {
 			optionIndex=Integer.parseInt(lsOptionIndex);
-		}
+		}	
 		
 		if(this.isQASearch()) {			
 			GlobalheaderPage globalHeader=new GlobalheaderPage(this.getDriver());
@@ -217,9 +217,10 @@ public class ProductResultsPage extends BasePage{
 				break;			
 			}
 		}
-		else {			
-			List<WebElement> elementList=getSearchDropdownResultList(lsKeyword);
-			this.searchkeyword=elementList.get(optionIndex).getText().trim();
+		else {				
+			List<WebElement> elementList=getSearchDropdownResultList(lsKeyword);			
+			getReusableActionsInstance().javascriptScrollByVisibleElement(elementList.get(optionIndex));
+			this.searchkeyword=elementList.get(optionIndex).getText().trim();			
 			this.bVerifyTitle=true;
 			elementList.get(optionIndex).click(); 
 		}
@@ -264,8 +265,11 @@ public class ProductResultsPage extends BasePage{
 		GlobalheaderPage globalHeader=new GlobalheaderPage(this.getDriver());
 		getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeader.searchBox);		
 		pressEscapeKey();		
-		this.clearContent(globalHeader.searchBox);		
-		globalHeader.searchBox.sendKeys(lsKeyword);		
+		this.clearContent(globalHeader.searchBox);	
+		for(int i=0;i<lsKeyword.length();i++) {				
+			globalHeader.searchBox.sendKeys(lsKeyword.substring(i,i+1));				
+			getReusableActionsInstance().staticWait(300);
+		}				
 		waitForCondition(Driver->{return globalHeader.ctnSearchResult.getAttribute("class").contains("suggestions-container--open");},30000);
 		
 		return globalHeader.searchResultList;			
@@ -852,6 +856,11 @@ public class ProductResultsPage extends BasePage{
 
     	return matcher.find(); 
     }  
+    
+    public String getPageTitle() {
+    	getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSearchResultTitle);
+    	return this.lblSearchResultTitle.getText().trim();
+    }
 }
 
 	
