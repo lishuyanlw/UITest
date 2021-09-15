@@ -138,6 +138,7 @@ public class ProductResultsPage extends BasePage{
 	List<WebElement> panelItemContainerList;
 			
 	String searchkeyword;
+	boolean bVerifyTitle=true;
 	
 	/**
 	 * This method will judge search type.
@@ -191,13 +192,15 @@ public class ProductResultsPage extends BasePage{
 			case "Top suggestions":
 				WebElement element=globalHeader.searchQADropdwonmenuList.get(0).findElements(By.xpath(".//li")).get(optionIndex);
 				getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-				this.searchkeyword=element.getText().trim();				
+				this.searchkeyword=element.getText().trim();	
+				this.bVerifyTitle=false;
 				element.click();
 				break;
 			case "Categories":
 				element=globalHeader.searchQADropdwonmenuList.get(1).findElements(By.xpath(".//li")).get(optionIndex);
 				getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-				this.searchkeyword=element.getText().trim();				
+				this.searchkeyword=element.getText().trim();
+				this.bVerifyTitle=true;
 				element.click();
 				break;
 			case "Brands":
@@ -205,7 +208,8 @@ public class ProductResultsPage extends BasePage{
 				this.searchkeyword=lsKeyword;				
 				for(WebElement ele:list) {
 					getReusableActionsInstance().javascriptScrollByVisibleElement(ele);					
-					if(ele.getText().trim().equalsIgnoreCase(lsKeyword)) {						
+					if(ele.getText().trim().equalsIgnoreCase(lsKeyword)) {	
+						this.bVerifyTitle=true;
 						ele.click();
 						break;
 					}
@@ -216,6 +220,7 @@ public class ProductResultsPage extends BasePage{
 		else {			
 			List<WebElement> elementList=getSearchDropdownResultList(lsKeyword);
 			this.searchkeyword=elementList.get(optionIndex).getText().trim();
+			this.bVerifyTitle=true;
 			elementList.get(optionIndex).click(); 
 		}
 				
@@ -228,14 +233,24 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	public boolean verifyPageTitleForDropdown() {
+		if(!this.bVerifyTitle) {
+			return true;
+		}
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSearchResultTitle);
 		String lsTitle=this.lblSearchResultTitle.getText().trim();
 		if(this.searchkeyword.equalsIgnoreCase(lsTitle)) {
 			return true;
 		}
 		
-		String[] lstItem=this.searchkeyword.trim().split(" ");
-		String lastWord=lstItem[lstItem.length-1];		
+		String[] lstItem;
+		if(this.searchkeyword.contains(">")) {
+			lstItem=this.searchkeyword.trim().split(">");
+		}
+		else {
+			lstItem=this.searchkeyword.trim().split(" ");
+		}				
+		String lastWord=lstItem[lstItem.length-1].trim();	
+		
 		return lastWord.equalsIgnoreCase(this.lblSearchResultTitle.getText().trim());
 	}
 
