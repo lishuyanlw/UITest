@@ -28,7 +28,8 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction ext
 	List<WebElement> productList;
 	String lsMsg;
 		
-	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0));	
+	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0));
+	
 	//Test sort
 	if(getProductResultsPageThreadLocal().chooseSortOptionByVisibleText("Price: Highest first")) {
 		lsMsg=getProductResultsPageThreadLocal().verifyHighestPriceFirstSort();
@@ -74,6 +75,7 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction ext
 			reporter.reportLogFail("Choosing filter of "+"'"+lstItem.get(0)+"/"+lstItem.get(1)+"' failed");
 		}
 		
+		//To recover the initial test environment
 		if(getProductResultsPageThreadLocal().getClearAllFiltersButtonStatus()) {
 			getProductResultsPageThreadLocal().closeAllSelectedFilters();
 		}

@@ -744,31 +744,44 @@ public class ProductResultsPage extends BasePage{
 	public boolean selectFilterItemInLeftPanel(String lsFirstLevelItem,String lsSecondLevelItem) {
 		this.firstLevelFilter=lsFirstLevelItem;
 		this.secondLevelFilter=lsSecondLevelItem;
-		
+				
 		int loopSize=this.productFilterList.size();
 		for(int i=0;i<loopSize;i++) {			
 			getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i));
 			String lsHeader=this.productFilterList.get(i).getText().trim();
+			
+			//If found lsFirstLevelItem
 			if(lsHeader.equalsIgnoreCase(lsFirstLevelItem)) {				
 				if(judgeMoreButtonExistenceInLeftPanel(this.panelItemContainerList.get(i))) {
 					WebElement moreButton=this.productFilterContainerList.get(i).findElement(this.byMoreButtonOnLeftPanel);
 					getReusableActionsInstance().javascriptScrollByVisibleElement(moreButton);
 					moreButton.click();
 				}
-				
+								
 				List<WebElement> subItemList=this.productFilterContainerList.get(i).findElements(this.bySubItemListOnLeftPanel);				
 				for(WebElement subItem : subItemList) {
 					getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
-					String lsSubItem=subItem.getText().trim();					
+					String lsSubItem=subItem.getText().trim();	
+					
+					//If found lsSecondLevelItem
 					if(lsSubItem.equalsIgnoreCase(lsSecondLevelItem)) {						
 						subItem.click();
 						return waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},30000);
 					}
 				}
+				
+				//If unable to find lsSecondLevelItem
+				getReusableActionsInstance().javascriptScrollByVisibleElement(subItemList.get(0));
+				subItemList.get(0).click();
+				return waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},30000);
 			}
 		}
 		
-		return false;
+		//If unable to find both lsFirstLevelItem and lsSecondLevelItem, then select the first choice
+		List<WebElement> subItemList=this.productFilterContainerList.get(0).findElements(this.bySubItemListOnLeftPanel);
+		getReusableActionsInstance().javascriptScrollByVisibleElement(subItemList.get(0));
+		subItemList.get(0).click();
+		return waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},30000);
 	}
 	
     /**
@@ -779,7 +792,7 @@ public class ProductResultsPage extends BasePage{
 	 */	
     public boolean verifyUrlAfterSelectFilterInLeftPanel(String lsKeyword) {  
     	String lsUrl=this.URL();    	
-    	String lsExpectedUrlPattern="(dimensions=\\d{6})?&searchterm="+this.getEncodingKeyword(lsKeyword);
+    	String lsExpectedUrlPattern="dimensions=.*&searchterm="+this.getEncodingKeyword(lsKeyword);
     	Pattern pattern=Pattern.compile(lsExpectedUrlPattern);
     	Matcher matcher=pattern.matcher(lsUrl);
 
