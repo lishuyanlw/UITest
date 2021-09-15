@@ -56,6 +56,7 @@ public class ConstantData {
 	private List<List<String>> lst_FilterByPrice;
 	private List<String> lst_FilterOptionHeader;
 	private List<List<String>> lst_GeneralTwoLevelFilterOption;
+	private List<List<List<String>>> lst_FilterCombination;
 
 	//Header Links getter and setter method
 	
@@ -664,6 +665,19 @@ public class ConstantData {
 	 */
 	public void setlst_FilterByPrice(List<List<String>> lst_FilterByPrice) {
 		this.lst_FilterByPrice = lst_FilterByPrice;
+	}
+	
+	/**
+	 * @return the lst_FilterCombination
+	 */
+	public List<List<List<String>>> getlst_FilterCombination() {
+		return lst_FilterCombination;
+	}
+	/**
+	 * @param lst_FilterCombination the lst_FilterCombination to set
+	 */
+	public void setlst_FilterCombination(List<List<List<String>>> lst_FilterCombination) {
+		this.lst_FilterCombination = lst_FilterCombination;
 	}
 		
 }

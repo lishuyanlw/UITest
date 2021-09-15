@@ -354,7 +354,7 @@ public class ProductResultsPage extends BasePage{
 	public boolean VerifySearchResultWithProductItemNO(String lsexpectedItemNO) {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.productItemNOList.get(0));
 		for(WebElement item: this.productItemNOList) {
-			String lsItem=item.getText();
+			String lsItem=item.getText().trim();
 			List<String> list=this.getNumberFromString(lsItem);
 			String lsFinal="";
 			for(String lsSubItem:list) {
@@ -407,7 +407,7 @@ public class ProductResultsPage extends BasePage{
 		if(lsUrl.contains("dimensions=0&")) {
 			if(getReusableActionsInstance().isElementVisible(this.lblSearchResultMessage)) {
 				getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSearchResultMessage);
-				if(this.lblSearchResultMessage.getText().contains("Please search again")) {
+				if(this.lblSearchResultMessage.getText().trim().contains("Please search again")) {
 					   return "NoSearchResult";
 				}
 				else {					
@@ -687,7 +687,7 @@ public class ProductResultsPage extends BasePage{
 		List<String> lstOption=new ArrayList<String>();
 		for(int i=0;i<listSize;i++) {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(this.sortByOptionList.get(i));
-			lstOption.add(this.sortByOptionList.get(i).getText());
+			lstOption.add(this.sortByOptionList.get(i).getText().trim());
 		}
 		
 		Set<String> setOption=new HashSet<String>(lstOption);
@@ -723,10 +723,10 @@ public class ProductResultsPage extends BasePage{
 		List<String> productNOList=new ArrayList<String>();
 		for(WebElement element:this.productResultList) {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-			String nowPriceText=element.findElement(this.byProductNowPrice).getText();			
+			String nowPriceText=element.findElement(this.byProductNowPrice).getText().trim();			
 			float nowPriceValue=this.getFloatFromString(nowPriceText);			
 			priceList.add(nowPriceValue);
-			String productNO=element.findElement(this.byProductItemNO).getText();
+			String productNO=element.findElement(this.byProductItemNO).getText().trim();
 			productNOList.add(productNO);
 		}
 				
@@ -791,10 +791,10 @@ public class ProductResultsPage extends BasePage{
 	       	     
 	      for(int i=0;i<listSize;i++) {
 	         getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i));
-	         if(lstOptionYml.contains(this.productFilterList.get(i).getText())) {
+	         if(lstOptionYml.contains(this.productFilterList.get(i).getText().trim())) {
 	            continue;
 	         }else {
-	            return lsErrorMsg = "Filter option headers in left panel contain "+this.productFilterList.get(i).getText()+" that is not present in input list";
+	            return lsErrorMsg = "Filter option headers in left panel contain "+this.productFilterList.get(i).getText().trim()+" that is not present in input list";
 	         }
 	      }      
 	      return lsErrorMsg;
@@ -827,10 +827,13 @@ public class ProductResultsPage extends BasePage{
 		this.firstLevelFilter=lsFirstLevelItem;
 		this.secondLevelFilter=lsSecondLevelItem;
 				
-		int loopSize=this.productFilterList.size();
+		int loopSize=this.productFilterList.size();		
 		for(int i=0;i<loopSize;i++) {			
 			getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i));
 			String lsHeader=this.productFilterList.get(i).getText().trim();
+			if(lsHeader.contains("(")) {
+				lsHeader=lsHeader.split("\\(")[0].trim();				
+			}
 			
 			//If found lsFirstLevelItem
 			if(lsHeader.equalsIgnoreCase(lsFirstLevelItem)) {				
@@ -905,8 +908,8 @@ public class ProductResultsPage extends BasePage{
 
 		for(WebElement element:this.productResultList) {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-			String productNO=element.findElement(this.byProductItemNO).getText();
-			String nowPriceText=element.findElement(this.byProductNowPrice).getText();			
+			String productNO=element.findElement(this.byProductItemNO).getText().trim();
+			String nowPriceText=element.findElement(this.byProductNowPrice).getText().trim();			
 			float nowPriceValue=this.getFloatFromString(nowPriceText);	
 			List<String> lstPrice=this.getNumberFromString(secondLevelFilter);
 			

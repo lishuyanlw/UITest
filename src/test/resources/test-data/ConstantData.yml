@@ -50,6 +50,7 @@ lst_SortOption: ["Featured Products","Newest first","Reviews: Highest first","Pr
 lst_FilterOptionHeader: ["On Air","SHOP BY PRODUCT","NEW ARRIVALS","SHOP BY BRAND","SHOP BY COLOUR","SHOP BY SHOES SIZE","SHOP BY SIZE FASHION","SHOP BY STONE","SHOP BY METAL","SHOP BY PRICE","SHOP BY SPECIAL OFFERS","SHOP BY REVIEWS"]
 lst_GeneralTwoLevelFilterOption: [["SHOP BY PRODUCT","Home & Garden"]]
 lst_FilterByPrice: [["SHOP BY PRICE","Under $50","Under"]]
+lst_FilterCombination: [[["SHOP BY SIZE FASHION","Regular XXS-XS"],["SHOP BY PRICE","Under $50"]]]
 
 
 
