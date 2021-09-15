@@ -559,7 +559,7 @@ public class GlobalheaderPage extends BasePage{
 	public List<String> getListSubMenu(int headingNumber) {
 		WebElement WebElement=listFlyoutHeadings.get(headingNumber).findElement(By.xpath(".//span"));
 		getReusableActionsInstance().scrollToElement(WebElement);	
-		List<WebElement> SubMenu=listFlyoutHeadings.get(headingNumber).findElements(By.xpath(".//div[@class='flyout']//ul//li[1]//b"));
+		List<WebElement> SubMenu=listFlyoutHeadings.get(headingNumber).findElements(By.xpath(".//div[@class='flyout']//div[@class='flyoutRow2Left']//ul//li[1]//b"));
 		getReusableActionsInstance().waitForAllElementsVisible(SubMenu, 3);
 		List<String> SubMenulist =new ArrayList<String>();
 			for(WebElement e : SubMenu) {
@@ -603,7 +603,9 @@ public class GlobalheaderPage extends BasePage{
 		WebElement WebElement=listFlyoutHeadings.get(headingNumber).findElement(By.xpath(".//span"));
 		getReusableActionsInstance().scrollToElement(WebElement);
 		WebElement SubMenu=listFlyoutHeadings.get(headingNumber).findElement(By.xpath(".//div[@class='flyout']//div[@class='flyoutRow2Right']//ul//li//b"));
-			return SubMenu.getText();
+		getReusableActionsInstance().waitForElementVisibility(SubMenu, 3);
+			
+		return SubMenu.getText();
 	 }
 
 	/*Method to validate src of all images in the Brand Section of Flyout submenu is not empty
