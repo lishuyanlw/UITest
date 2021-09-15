@@ -56,6 +56,13 @@ public class ProductResultsPage extends BasePage{
 	
 	@FindBy(xpath = "//product-results//div[contains(@class,'productItems')]//div[contains(@class,'productItemWrap')]")
 	List<WebElement> productResultList;
+	
+	//Selected filters
+	@FindBy(xpath = "//div[contains(@class,'search-filters-div')]//div[contains(@class,'sortFilterWrap')]//div[contains(@class,'filterPrpLabel')]")
+	WebElement lblSelectedFilters;
+	
+	@FindBy(xpath = "//div[contains(@class,'search-filters-div')]//div[contains(@class,'sortFilterWrap')]//div[contains(@class,'filterTag')]")
+	List<WebElement> selectedFiltersList;
 				
 	public By byProductHref=By.xpath(".//a");
 	
@@ -138,6 +145,7 @@ public class ProductResultsPage extends BasePage{
 	List<WebElement> panelItemContainerList;
 		
 	String searchkeyword;
+	String firstLevelFilter,secondLevelFilter;
 		
 	/**
 	 * This method will load product searching result.
@@ -497,7 +505,7 @@ public class ProductResultsPage extends BasePage{
 	 */		
 	public String judgeProductWasPrice(WebElement parent) {
 		WebElement element=parent.findElement(this.byJudgeProductWasPrice);		
-		long childSize= (new BasePage(this.getDriver())).getchildElementCount(element);
+		long childSize= (new BasePage(this.getDriver())).getChildElementCount(element);
 				
 		if(childSize==1) {
 			return "WithoutWasPrice";
@@ -713,11 +721,11 @@ public class ProductResultsPage extends BasePage{
 	/**
 	 * This method will judge MoreButton in left panel existence.
 	 * @param WebElement parent: parent element
-	 * @return true/false
+	 * @return true/false: if the childSize of this.panelItemContainerList item is 2, means no More button exists. 
 	 * @author Wei.Li
 	 */		
 	public boolean judgeMoreButtonExistenceInLeftPanel(WebElement parent) {				
-		long childSize= (new BasePage(this.getDriver())).getchildElementCount(parent);
+		long childSize= (new BasePage(this.getDriver())).getChildElementCount(parent);
 				
 		if(childSize==2) {
 			return false;
@@ -734,30 +742,46 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 */		
 	public boolean selectFilterItemInLeftPanel(String lsFirstLevelItem,String lsSecondLevelItem) {
+		this.firstLevelFilter=lsFirstLevelItem;
+		this.secondLevelFilter=lsSecondLevelItem;
+				
 		int loopSize=this.productFilterList.size();
-		for(int i=0;i<loopSize;i++) {
+		for(int i=0;i<loopSize;i++) {			
 			getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i));
 			String lsHeader=this.productFilterList.get(i).getText().trim();
+			
+			//If found lsFirstLevelItem
 			if(lsHeader.equalsIgnoreCase(lsFirstLevelItem)) {				
 				if(judgeMoreButtonExistenceInLeftPanel(this.panelItemContainerList.get(i))) {
 					WebElement moreButton=this.productFilterContainerList.get(i).findElement(this.byMoreButtonOnLeftPanel);
 					getReusableActionsInstance().javascriptScrollByVisibleElement(moreButton);
 					moreButton.click();
 				}
-				
+								
 				List<WebElement> subItemList=this.productFilterContainerList.get(i).findElements(this.bySubItemListOnLeftPanel);				
 				for(WebElement subItem : subItemList) {
 					getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
-					String lsSubItem=subItem.getText().trim();
+					String lsSubItem=subItem.getText().trim();	
+					
+					//If found lsSecondLevelItem
 					if(lsSubItem.equalsIgnoreCase(lsSecondLevelItem)) {						
 						subItem.click();
 						return waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},30000);
 					}
 				}
+				
+				//If unable to find lsSecondLevelItem
+				getReusableActionsInstance().javascriptScrollByVisibleElement(subItemList.get(0));
+				subItemList.get(0).click();
+				return waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},30000);
 			}
 		}
 		
-		return false;
+		//If unable to find both lsFirstLevelItem and lsSecondLevelItem, then select the first choice
+		List<WebElement> subItemList=this.productFilterContainerList.get(0).findElements(this.bySubItemListOnLeftPanel);
+		getReusableActionsInstance().javascriptScrollByVisibleElement(subItemList.get(0));
+		subItemList.get(0).click();
+		return waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},30000);
 	}
 	
     /**
@@ -768,12 +792,93 @@ public class ProductResultsPage extends BasePage{
 	 */	
     public boolean verifyUrlAfterSelectFilterInLeftPanel(String lsKeyword) {  
     	String lsUrl=this.URL();    	
-    	String lsExpectedUrlPattern="(dimensions=\\d{6})?&searchterm="+this.getEncodingKeyword(lsKeyword);
+    	String lsExpectedUrlPattern="dimensions=.*&searchterm="+this.getEncodingKeyword(lsKeyword);
     	Pattern pattern=Pattern.compile(lsExpectedUrlPattern);
     	Matcher matcher=pattern.matcher(lsUrl);
 
     	return matcher.find(); 
     }  
+    
+	/**
+	 * This method will verify filter by price. 
+	 * @param String lsPriceMode: Under/Between/Over
+	 * @return String: error message
+	 * @author Wei.Li
+	 */
+	public String verifyFilterByPrice(String lsPriceMode) {
+		String lsErrorMsg="";
+		if(this.productResultList.size()==0) {
+			return lsErrorMsg="No product list";
+		}
+
+		for(WebElement element:this.productResultList) {
+			getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+			String productNO=element.findElement(this.byProductItemNO).getText();
+			String nowPriceText=element.findElement(this.byProductNowPrice).getText();			
+			float nowPriceValue=this.getFloatFromString(nowPriceText);	
+			List<String> lstPrice=this.getNumberFromString(secondLevelFilter);
+			
+			switch(lsPriceMode) {
+			case "Under":				
+				int priceOptionValue=Integer.parseInt(lstPrice.get(0));
+				if(nowPriceValue>=priceOptionValue) {
+					lsErrorMsg="Filter by price does not work for productNO of "+productNO;
+				}
+				break;
+			case "Between":
+				int lowPriceOptionValue=Integer.parseInt(lstPrice.get(0));
+				int highPriceOptionValue=Integer.parseInt(lstPrice.get(1));
+				if(nowPriceValue<lowPriceOptionValue||nowPriceValue>highPriceOptionValue) {
+					lsErrorMsg="Filter by price does not work for productNO of "+productNO;
+				}
+				break;
+			case "Over":
+				priceOptionValue=Integer.parseInt(lstPrice.get(0));
+				if(nowPriceValue<priceOptionValue) {
+					lsErrorMsg="Filter by price does not work for productNO of "+productNO;
+				}
+				break;
+			}
+				
+			if(!lsErrorMsg.isEmpty()) {
+				return lsErrorMsg;
+			}
+		}
+			
+		return lsErrorMsg;
+	}
+	
+    /**
+	 * This method will verify the Url contains keyword.
+	 * @param String lsKeyword: search keyword 
+	 * @return true/false
+	 * @author Wei.Li
+	 */	
+    public boolean verifyUrlContainsKeyword(String lsKeyword) {  
+    	String lsUrl=this.URL();    	
+    	String lsExpectedUrlPattern="searchterm="+this.getEncodingKeyword(lsKeyword);
+    	
+    	return lsUrl.contains(lsExpectedUrlPattern);
+    }  
+    
+    /**
+	 * This method will close all selected filters.  
+	 * @return true/false: The last one is ClearAllFiltersButton.
+	 * @author Wei.Li
+	 */	
+    public boolean closeAllSelectedFilters() {  
+    	this.selectedFiltersList.get(this.selectedFiltersList.size()-1).click();    	
+    	return waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},30000);
+    }
+    
+    /**
+	 * This method will get 'clear all filters' button existence status.  
+	 * @return true/false: if only return 1, means there is a hidden ClearAllFiltersButton; if return more than 1, means there is a displayed ClearAllFiltersButton.
+	 * @author Wei.Li
+	 */	
+    public boolean getClearAllFiltersButtonStatus() {  
+    	return this.selectedFiltersList.size()>1;
+    }
 }
 
 	
