@@ -28,7 +28,9 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction ext
 	List<WebElement> productList;
 	String lsMsg;
 		
+
 	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0));	
+
 	//Test sort
 	if(getProductResultsPageThreadLocal().chooseSortOptionByVisibleText("Price: Highest first")) {
 		lsMsg=getProductResultsPageThreadLocal().verifyHighestPriceFirstSort();
@@ -54,7 +56,7 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction ext
 		reporter.reportLogFail("Choosing Price: Highest first option failed");
 	}
 
-	//Test filter
+	//Test General filter option
 	List<List<String>> lstGeneralTwoLevelFilterOption=TestDataHandler.constantDataVariables.getlst_GeneralTwoLevelFilterOption();
 	for(List<String> lstItem:lstGeneralTwoLevelFilterOption) {
 		if(getProductResultsPageThreadLocal().selectFilterItemInLeftPanel(lstItem.get(0), lstItem.get(1))) {
@@ -73,9 +75,45 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction ext
 		else {
 			reporter.reportLogFail("Choosing filter of "+"'"+lstItem.get(0)+"/"+lstItem.get(1)+"' failed");
 		}
+		
+		//To recover the initial test environment
+		if(getProductResultsPageThreadLocal().getClearAllFiltersButtonStatus()) {
+			getProductResultsPageThreadLocal().closeAllSelectedFilters();
+		}
+		else {
+			getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0));
+		}		
+	}	
+
+	//Test filter by price	
+	List<List<String>> lstFilterByPrice=TestDataHandler.constantDataVariables.getlst_FilterByPrice();
+	for(List<String> lstItem:lstFilterByPrice) {
+		if(getProductResultsPageThreadLocal().selectFilterItemInLeftPanel(lstItem.get(0), lstItem.get(1))) {
+			lsMsg=getProductResultsPageThreadLocal().verifyFilterByPrice(lstItem.get(2));
+			if(lsMsg.isEmpty()) {
+				reporter.reportLogPass("Filter by price works");
+			}else {
+				reporter.reportLogFail(lsMsg);
+			}	
+			reporter.softAssert(getProductResultsPageThreadLocal().verifyUrlContainsKeyword(lsKeywordList.get(0).get(0)), "The Url contains correct keyword", "The Url does not contain correct keyword");
+			reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultMessage(lstSearchResultMessage.get(0),lsKeywordList.get(0).get(0)), "Search result message result matches the expected message", "Search result message result does not match the expected message");
+			reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(), "Showing text pattern in filters is correct", "Showing text pattern in filters is incorrect");
+			reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting), "The default setting of items per page is "+lsSearchResultPageDefaultSetting, "The default setting of items per page isn't "+lsSearchResultPageDefaultSetting);
+			
+			productList=getProductResultsPageThreadLocal().getProductList();
+			if(productList.size()>0) {
+				getProductResultsPageThreadLocal().verifySearchResultContent(productList);
+			}	
+			
+			reporter.softAssert(getProductResultsPageThreadLocal().verifyProductPagination(), "Product pagination is existing", "Product pagination is not existing");
+		}
+		else {
+			reporter.reportLogFail("Choosing filter of "+lstItem.get(0)+"/"+lstItem.get(1)+" failed");
+		}
+		getProductResultsPageThreadLocal().closeAllSelectedFilters();
 	}
-	
-	
+		
+
 	}
 }
 

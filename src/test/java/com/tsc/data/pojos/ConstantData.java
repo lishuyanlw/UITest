@@ -53,9 +53,10 @@ public class ConstantData {
 	private String lbl_SearchResultPageDefaultSetting;
 	private List<List<String>>  lst_SearchResultMessage;
 	private List<String> lst_SortOption;	
+	private List<List<String>> lst_FilterByPrice;
 	private List<String> lst_FilterOptionHeader;
 	private List<List<String>> lst_GeneralTwoLevelFilterOption;
-		
+
 	//Header Links getter and setter method
 	
 	/**
@@ -650,6 +651,19 @@ public class ConstantData {
 	 */
 	public void setlst_GeneralTwoLevelFilterOption(List<List<String>> lst_GeneralTwoLevelFilterOption) {
 		this.lst_GeneralTwoLevelFilterOption = lst_GeneralTwoLevelFilterOption;
+	}
+	
+	/**
+	 * @return the lst_FilterByPrice
+	 */
+	public List<List<String>> getlst_FilterByPrice() {
+		return lst_FilterByPrice;
+	}
+	/**
+	 * @param lst_FilterByPrice the lst_FilterByPrice to set
+	 */
+	public void setlst_FilterByPrice(List<List<String>> lst_FilterByPrice) {
+		this.lst_FilterByPrice = lst_FilterByPrice;
 	}
 		
 }
