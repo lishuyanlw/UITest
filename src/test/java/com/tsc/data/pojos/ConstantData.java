@@ -47,12 +47,16 @@ public class ConstantData {
 	private List<String> lst_ShopByDepartmentCategories;
 	private String lbl_TopSellers;
 	private List<String> lst_SearchKeyword;	
-	private List<String> lst_SearchKeyword_DropDown;
+	private List<List<String>> lst_SearchKeyword_DropDown;
 	private String lbl_SearchResultExpectedUrl;
 	private String lbl_SearchResultExpectedUrlWithoutKeyword;
 	private String lbl_SearchResultPageDefaultSetting;
 	private List<List<String>>  lst_SearchResultMessage;
-		
+	private List<String> lst_SortOption;	
+	private List<List<String>> lst_FilterByPrice;
+	private List<String> lst_FilterOptionHeader;
+	private List<List<String>> lst_GeneralTwoLevelFilterOption;
+
 	//Header Links getter and setter method
 	
 	/**
@@ -548,16 +552,16 @@ public class ConstantData {
 	/**
 	 * @return the lst_SearchKeyword_DropDown
 	 */
-	public List<String> getlst_SearchKeyword_DropDown() {
+	public List<List<String>> getlst_SearchKeyword_DropDown() {
 		return lst_SearchKeyword_DropDown;
 	}
 	/**
 	 * @param lst_SearchKeyword_DropDown the lst_SearchKeyword_DropDown to set
 	 */
-	public void setlst_SearchKeyword_DropDown(List<String> lst_SearchKeyword_DropDown) {
+	public void setlst_SearchKeyword_DropDown(List<List<String>> lst_SearchKeyword_DropDown) {
 		this.lst_SearchKeyword_DropDown = lst_SearchKeyword_DropDown;
 	}
-	
+
 	/**
 	 * @return the lbl_SearchResultExpectedUrl
 	 */	
@@ -608,6 +612,58 @@ public class ConstantData {
 	 */
 	public void setlst_SearchResultMessage(List<List<String>> lst_SearchResultMessage) {
 		this.lst_SearchResultMessage = lst_SearchResultMessage;
+	}
+	
+	/**
+	 * @return the lst_SortOption
+	 */
+	public List<String> getlst_SortOption() {
+		return lst_SortOption;
+	}
+	/**
+	 * @param lst_SortOption the lst_SortOption to set
+	 */
+	public void setlst_SortOption(List<String> lst_SortOption) {
+		this.lst_SortOption = lst_SortOption;
+	}
+		
+	/**
+	 * @return the lst_FilterOptionHeader
+	 */
+	public List<String> getlst_FilterOptionHeader() {
+		return lst_FilterOptionHeader;
+	}
+	/**
+	 * @param lst_FilterOptionHeader the lst_FilterOptionHeader to set
+	 */
+	public void setlst_FilterOptionHeader(List<String> lst_FilterOptionHeader) {
+		this.lst_FilterOptionHeader = lst_FilterOptionHeader;
+	}
+	
+	/**
+	 * @return the lst_GeneralTwoLevelFilterOption
+	 */
+	public List<List<String>> getlst_GeneralTwoLevelFilterOption() {
+		return lst_GeneralTwoLevelFilterOption;
+	}
+	/**
+	 * @param lst_GeneralTwoLevelFilterOption the lst_GeneralTwoLevelFilterOption to set
+	 */
+	public void setlst_GeneralTwoLevelFilterOption(List<List<String>> lst_GeneralTwoLevelFilterOption) {
+		this.lst_GeneralTwoLevelFilterOption = lst_GeneralTwoLevelFilterOption;
+	}
+	
+	/**
+	 * @return the lst_FilterByPrice
+	 */
+	public List<List<String>> getlst_FilterByPrice() {
+		return lst_FilterByPrice;
+	}
+	/**
+	 * @param lst_FilterByPrice the lst_FilterByPrice to set
+	 */
+	public void setlst_FilterByPrice(List<List<String>> lst_FilterByPrice) {
+		this.lst_FilterByPrice = lst_FilterByPrice;
 	}
 		
 }
