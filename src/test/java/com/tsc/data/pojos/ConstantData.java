@@ -33,7 +33,12 @@ public class ConstantData {
 	private String lbl_MinicartLinkName;
 	private String lnk_MinicarLink;
 	private List<String> lst_FlyoutHeading;
+<<<<<<< HEAD
 	private List<String> lst_FlyoutsubMenu;
+=======
+	private List<String> lnk_FlyoutHeaderLinkConstant;
+	private String lbl_FlyoutHeadingLandingPageLink;
+>>>>>>> master
 	private String lbl_OnAirNow;
 	private String lbl_RecentlyAir;
 	private String lnk_RecentlyAir;
@@ -45,16 +50,17 @@ public class ConstantData {
 	private String lbl_ShopByDepartment;
 	private List<String> lst_ShopByDepartmentCategories;
 	private String lbl_TopSellers;
-	private String lbl_SearchKeyword_DysonVacuum;
-	private String lbl_SearchResultExpectedUrl_DysonVacuum;
+	private List<String> lst_SearchKeyword;	
+	private List<List<String>> lst_SearchKeyword_DropDown;
+	private String lbl_SearchResultExpectedUrl;
+	private String lbl_SearchResultExpectedUrlWithoutKeyword;
 	private String lbl_SearchResultPageDefaultSetting;
-	private List<String>  lst_SearchResultMessage_DysonVacuum;
-	private String lbl_SearchKeyword_SpecialCharacters;
-	private List<String>  lst_SearchResultMessage_SpecialCharacters;
-	private String lbl_SearchKeyword_100501;
-	private String lbl_SearchResultExpectedUrl_100501;	
-	private List<String>  lst_SearchResultMessage_100501;
-	
+	private List<List<String>>  lst_SearchResultMessage;
+	private List<String> lst_SortOption;	
+	private List<List<String>> lst_FilterByPrice;
+	private List<String> lst_FilterOptionHeader;
+	private List<List<String>> lst_GeneralTwoLevelFilterOption;
+
 	//Header Links getter and setter method
 	
 	/**
@@ -356,6 +362,21 @@ public class ConstantData {
 		this.lbl_MinicartLinkName = lbl_MinicartLinkName;
 	}
 	/**
+<<<<<<< HEAD
+=======
+	 * @return the lbl_MinicartLinkName
+	 */
+	public String getlbl_FlyoutHeadingLandingPageLink() {
+		return lbl_FlyoutHeadingLandingPageLink;
+	}
+	/**
+	 * @param lbl_FlyoutHeadingLandingPageLink the lbl_FlyoutHeadingLandingPageLink to set
+	 */
+	public void setlbl_FlyoutHeadingLandingPageLink(String lbl_FlyoutHeadingLandingPageLink) {
+		this.lbl_FlyoutHeadingLandingPageLink = lbl_FlyoutHeadingLandingPageLink;
+	}
+	/**
+>>>>>>> master
 	 * @return the lst_FlyoutHeading
 	 */
 	public List<String> getlst_FlyoutHeading() {
@@ -368,6 +389,7 @@ public class ConstantData {
 		this.lst_FlyoutHeading = lst_FlyoutHeading;
 	}
 	/**
+<<<<<<< HEAD
 	 * @return the lst_FlyoutsubMenu
 	 */
 	public List<String> getlst_FlyoutsubMenu() {
@@ -379,6 +401,19 @@ public class ConstantData {
 	public void setlst_FlyoutsubMenu(List<String> lst_FlyoutsubMenu) {
 		this.lst_FlyoutsubMenu = lst_FlyoutsubMenu;
 	}
+=======
+	 * @return the lnk_FlyoutHeaderLinkConstant
+	 */
+	public List<String> getlnk_FlyoutHeaderLinkConstant() {
+		return lnk_FlyoutHeaderLinkConstant;
+	}
+	/**
+	 * @param lnk_FlyoutHeaderLinkConstant the lnk_FlyoutHeaderLinkConstant to set
+	 */
+	public void setlnk_FlyoutHeaderLinkConstant(List<String> lnk_FlyoutHeaderLinkConstant) {
+		this.lnk_FlyoutHeaderLinkConstant = lnk_FlyoutHeaderLinkConstant;
+}
+>>>>>>> master
 	/**
 	 * @return the lbl_OnAirNow
 	 */
@@ -523,29 +558,55 @@ public class ConstantData {
 	}
 	
 	/**
-	 * @return the lbl_SearchKeyword_DysonVacuum
+	 * @return the lst_SearchKeyword
 	 */
-	public String getlbl_SearchKeyword_DysonVacuum() {
-		return lbl_SearchKeyword_DysonVacuum;
+	public List<String> getlst_SearchKeyword() {
+		return lst_SearchKeyword;
 	}
 	/**
-	 * @param lbl_SearchKeyword_DysonVacuum the lbl_SearchKeyword_DysonVacuum to set
+	 * @param lst_SearchKeyword the lst_SearchKeyword to set
 	 */
-	public void setlbl_SearchKeyword_DysonVacuum(String lbl_SearchKeyword_DysonVacuum) {
-		this.lbl_SearchKeyword_DysonVacuum = lbl_SearchKeyword_DysonVacuum;
+	public void setlst_SearchKeyword(List<String> lst_SearchKeyword) {
+		this.lst_SearchKeyword = lst_SearchKeyword;
 	}
 	
 	/**
-	 * @return the lbl_SearchResultExpectedUrl_DysonVacuum
+	 * @return the lst_SearchKeyword_DropDown
 	 */
-	public String getlbl_SearchResultExpectedUrl_DysonVacuum() {
-		return lbl_SearchResultExpectedUrl_DysonVacuum;
+	public List<List<String>> getlst_SearchKeyword_DropDown() {
+		return lst_SearchKeyword_DropDown;
 	}
 	/**
-	 * @param lbl_SearchResultExpectedUrl_DysonVacuum the lbl_SearchResultExpectedUrl_DysonVacuum to set
+	 * @param lst_SearchKeyword_DropDown the lst_SearchKeyword_DropDown to set
 	 */
-	public void setlbl_SearchResultExpectedUrl_DysonVacuum(String lbl_SearchResultExpectedUrl_DysonVacuum) {
-		this.lbl_SearchResultExpectedUrl_DysonVacuum = lbl_SearchResultExpectedUrl_DysonVacuum;
+	public void setlst_SearchKeyword_DropDown(List<List<String>> lst_SearchKeyword_DropDown) {
+		this.lst_SearchKeyword_DropDown = lst_SearchKeyword_DropDown;
+	}
+
+	/**
+	 * @return the lbl_SearchResultExpectedUrl
+	 */	
+	public String getlbl_SearchResultExpectedUrl() {
+		return lbl_SearchResultExpectedUrl;
+	}	
+	/**
+	 * @param lbl_SearchResultExpectedUrl the lbl_SearchResultExpectedUrl to set
+	 */	
+	public void setlbl_SearchResultExpectedUrl(String lbl_SearchResultExpectedUrl) {
+		this.lbl_SearchResultExpectedUrl = lbl_SearchResultExpectedUrl;
+	}
+	
+	/**
+	 * @return the lbl_SearchResultExpectedUrlWithoutKeyword
+	 */	
+	public String getlbl_SearchResultExpectedUrlWithoutKeyword() {
+		return lbl_SearchResultExpectedUrlWithoutKeyword;
+	}	
+	/**
+	 * @param lbl_SearchResultExpectedUrlWithoutKeyword the lbl_SearchResultExpectedUrlWithoutKeyword to set
+	 */	
+	public void setlbl_SearchResultExpectedUrlWithoutKeyword(String lbl_SearchResultExpectedUrlWithoutKeyword) {
+		this.lbl_SearchResultExpectedUrlWithoutKeyword = lbl_SearchResultExpectedUrlWithoutKeyword;
 	}
 	
 	/**
@@ -562,82 +623,68 @@ public class ConstantData {
 	}	
 	
 	/**
-	 * @return the lst_SearchResultMessage_DysonVacuum
+	 * @return the lst_SearchResultMessage
 	 */
-	public List<String> getlst_SearchResultMessage_DysonVacuum() {
-		return lst_SearchResultMessage_DysonVacuum;
+	public List<List<String>> getlst_SearchResultMessage() {
+		return lst_SearchResultMessage;
 	}
 	/**
-	 * @param lst_SearchResultMessage_DysonVacuum the lst_SearchResultMessage_DysonVacuum to set
+	 * @param lst_SearchResultMessage the lst_SearchResultMessage to set
 	 */
-	public void setlst_SearchResultMessage_DysonVacuum(List<String> lst_SearchResultMessage_DysonVacuum) {
-		this.lst_SearchResultMessage_DysonVacuum = lst_SearchResultMessage_DysonVacuum;
+	public void setlst_SearchResultMessage(List<List<String>> lst_SearchResultMessage) {
+		this.lst_SearchResultMessage = lst_SearchResultMessage;
 	}
 	
 	/**
-	 * @return the lbl_SearchKeyword_SpecialCharacters
+	 * @return the lst_SortOption
 	 */
-	public String getlbl_SearchKeyword_SpecialCharacters() {
-		return lbl_SearchKeyword_SpecialCharacters;
+	public List<String> getlst_SortOption() {
+		return lst_SortOption;
 	}
 	/**
-	 * @param lbl_SearchKeyword_SpecialCharacters the lbl_SearchKeyword_SpecialCharacters to set
+	 * @param lst_SortOption the lst_SortOption to set
 	 */
-	public void setlbl_SearchKeyword_SpecialCharacters(String lbl_SearchKeyword_SpecialCharacters) {
-		this.lbl_SearchKeyword_SpecialCharacters = lbl_SearchKeyword_SpecialCharacters;
-	}
-
-	/**
-	 * @return the lst_SearchResultMessage_SpecialCharacters
-	 */	
-	public List<String> getlst_SearchResultMessage_SpecialCharacters() {
-		return lst_SearchResultMessage_SpecialCharacters;
-	}
-	
-	/**
-	 * @param lst_SearchResultMessage_SpecialCharacters the lst_SearchResultMessage_SpecialCharacters to set
-	 */	
-	public void setlst_SearchResultMessage_SpecialCharacters(List<String> lst_SearchResultMessage_SpecialCharacters) {
-		this.lst_SearchResultMessage_SpecialCharacters = lst_SearchResultMessage_SpecialCharacters;
-	}
-	
-	/**
-	 * @return the lbl_SearchKeyword_100501
-	 */
-	public String getlbl_SearchKeyword_100501() {
-		return lbl_SearchKeyword_100501;
-	}
-	/**
-	 * @param lbl_SearchKeyword_100501 the lbl_SearchKeyword_100501 to set
-	 */
-	public void setlbl_SearchKeyword_100501(String lbl_SearchKeyword_100501) {
-		this.lbl_SearchKeyword_100501 = lbl_SearchKeyword_100501;
-	}
-	
-	/**
-	 * @return the lbl_SearchResultExpectedUrl_100501
-	 */
-	public String getlbl_SearchResultExpectedUrl_100501() {
-		return lbl_SearchResultExpectedUrl_100501;
-	}
-	/**
-	 * @param lbl_SearchResultExpectedUrl_100501 the lbl_SearchResultExpectedUrl_100501 to set
-	 */
-	public void setlbl_SearchResultExpectedUrl_100501(String lbl_SearchResultExpectedUrl_100501) {
-		this.lbl_SearchResultExpectedUrl_100501 = lbl_SearchResultExpectedUrl_100501;
+	public void setlst_SortOption(List<String> lst_SortOption) {
+		this.lst_SortOption = lst_SortOption;
 	}
 		
 	/**
-	 * @return the lst_SearchResultMessage_100501
+	 * @return the lst_FilterOptionHeader
 	 */
-	public List<String> getlst_SearchResultMessage_100501() {
-		return lst_SearchResultMessage_100501;
+	public List<String> getlst_FilterOptionHeader() {
+		return lst_FilterOptionHeader;
 	}
 	/**
-	 * @param lst_SearchResultMessage_100501 the lst_SearchResultMessage_100501 to set
+	 * @param lst_FilterOptionHeader the lst_FilterOptionHeader to set
 	 */
-	public void setlst_SearchResultMessage_100501(List<String> lst_SearchResultMessage_100501) {
-		this.lst_SearchResultMessage_100501 = lst_SearchResultMessage_100501;
+	public void setlst_FilterOptionHeader(List<String> lst_FilterOptionHeader) {
+		this.lst_FilterOptionHeader = lst_FilterOptionHeader;
 	}
 	
+	/**
+	 * @return the lst_GeneralTwoLevelFilterOption
+	 */
+	public List<List<String>> getlst_GeneralTwoLevelFilterOption() {
+		return lst_GeneralTwoLevelFilterOption;
+	}
+	/**
+	 * @param lst_GeneralTwoLevelFilterOption the lst_GeneralTwoLevelFilterOption to set
+	 */
+	public void setlst_GeneralTwoLevelFilterOption(List<List<String>> lst_GeneralTwoLevelFilterOption) {
+		this.lst_GeneralTwoLevelFilterOption = lst_GeneralTwoLevelFilterOption;
+	}
+	
+	/**
+	 * @return the lst_FilterByPrice
+	 */
+	public List<List<String>> getlst_FilterByPrice() {
+		return lst_FilterByPrice;
+	}
+	/**
+	 * @param lst_FilterByPrice the lst_FilterByPrice to set
+	 */
+	public void setlst_FilterByPrice(List<List<String>> lst_FilterByPrice) {
+		this.lst_FilterByPrice = lst_FilterByPrice;
+	}
+		
 }

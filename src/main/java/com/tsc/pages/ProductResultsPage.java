@@ -3,31 +3,15 @@ package com.tsc.pages;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-
-import utils.DigiAutoCustomException;
-import utils.ReusableActions;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-import java.util.function.Function;
-
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.FindAll;
-
-import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
 import com.tsc.pages.base.BasePage;
-import java.util.List;
 
 public class ProductResultsPage extends BasePage{
 	public ProductResultsPage(WebDriver driver) {
@@ -37,6 +21,12 @@ public class ProductResultsPage extends BasePage{
 	//Search result page title
 	@FindBy(xpath = "//product-results//div[contains(@class,'searchDiv')]")
 	WebElement lblSearchResultMessage;
+	
+	@FindBy(xpath = "//span[contains(@class,'tagDimTitle')]")
+	WebElement lblSearchResultTitle;
+	
+	@FindBy(xpath = "//div[contains(@class,'showstopper-wrapper')]//div[contains(@class,'item')]//div[contains(@class,'visible')]//img")
+	List<WebElement> lstBannerImage;
 	
 	//Selected filters
 	@FindBy(xpath = "//product-results//div[contains(@class,'col-md-showing')]//div[contains(@class,'filterPrpLabel')]//b")
@@ -48,18 +38,18 @@ public class ProductResultsPage extends BasePage{
 	@FindBy(xpath = "//product-results//div[contains(@class,'col-md-sort')]//form//div[contains(@class,'filterPrpLabel')]")
 	WebElement lblSortBy;
 	
+	@FindBy(xpath = "//product-results//div[contains(@class,'col-md-sort')]//form//select")
+	WebElement btnSortSelect;
+	
 	@FindBy(xpath = "//product-results//div[contains(@class,'col-md-sort')]//form//select//option")
 	List<WebElement> sortByOptionList;
 	
 	@FindBy(xpath = "//product-results//div[contains(@class,'col-md-items')]//form//div[contains(@class,'filterPrpLabel')]")
 	WebElement lblItemsPerPage;
 	
-	@FindBy(xpath = "//product-results//div[contains(@class,'col-md-items')]//form//div[contains(@class,'recordsDiv')]")
+	@FindBy(xpath = "//product-results//div[contains(@class,'search-filters-div')]//div[contains(@class,'col-md-items')]//select//option[1]|//product-results//div[contains(@class,'col-md-items')]//form//div[contains(@class,'recordsDiv')]")
 	WebElement lblItemPerPageDefaultSettingNumber;
-	
-	@FindBy(xpath = "//product-results//div[contains(@class,'col-md-items')]//form//select//option")
-	List<WebElement> itemPerPageOptionList;
-	
+			
 	//Product results
 	@FindBy(xpath = "//div[@class='Footer']//div[contains(@class,'blockPageWrap')]")
 	WebElement productResultLoadingIndicator;
@@ -67,59 +57,109 @@ public class ProductResultsPage extends BasePage{
 	@FindBy(xpath = "//product-results//div[contains(@class,'productItems')]//div[contains(@class,'productItemWrap')]")
 	List<WebElement> productResultList;
 	
-	@FindBy(xpath = "//product-results//div[contains(@class,'productItems')]//div[contains(@class,'badgeWrap')]")
-	List<WebElement> productPriceBadgeList;
+	//Selected filters
+	@FindBy(xpath = "//div[contains(@class,'search-filters-div')]//div[contains(@class,'sortFilterWrap')]//div[contains(@class,'filterPrpLabel')]")
+	WebElement lblSelectedFilters;
 	
-	@FindBy(xpath = "//product-results//div[contains(@class,'productItems')]//a")
-	List<WebElement> productHrefList;
+	@FindBy(xpath = "//div[contains(@class,'search-filters-div')]//div[contains(@class,'sortFilterWrap')]//div[contains(@class,'filterTag')]")
+	List<WebElement> selectedFiltersList;
+				
+	public By byProductHref=By.xpath(".//a");
 	
-	@FindBy(xpath = "//product-results//div[contains(@class,'productItems')]//div[contains(@class,'productItemWrap')]//div[contains(@class,'imgEmbedContainer')]//img[@class='productImg']")
-	List<WebElement> productImageList;
+	public By byProductImage=By.xpath(".//div[contains(@class,'imgEmbedContainer')]//img[@class='productImg']");
 	
-	@FindBy(xpath = "//product-results//div[contains(@class,'productItems')]//div[contains(@class,'productItemWrap')]//div[contains(@class,'videoIcon')]")
-	List<WebElement> productVedioIconList;
+	public By byProductName=By.xpath(".//div[contains(@class,'nameDiv')]");
 	
-	@FindBy(xpath = "//product-results//div[contains(@class,'productItems')]//div[contains(@class,'productItemWrap')]//div[contains(@class,'nameDiv')]")
-	List<WebElement> productNameList;
+	public By byProductItemNO=By.xpath(".//div[contains(@class,'itemNo')]");
+	
+	public By byProductNowPrice=By.xpath(".//div[contains(@class,'priceDiv')]//span");
+	
+	public By byProductEasyPay=By.xpath(".//div[contains(@class,'easyPay')]");
+	
+	public By byProductReview=By.xpath(".//div[contains(@class,'reviewDiv')]");
+	
+	public By byProductSwatch=By.xpath(".//div[@class='swatchWrapDiv']");
+	
+	public By byProductFreeShipping=By.xpath(".//div[contains(@class,'FreeShippingDiv')]");
+	
+	public By byProductPriceBadge=By.xpath(".//div[contains(@class,'badgeWrap')]//img");
+	
+	public By byProductVideoIcon=By.xpath(".//div[contains(@class,'videoIcon')]//*[name()='use']");
+	
+	public By byProductWasPrice=By.xpath(".//div[contains(@class,'priceDiv')]//del");
+	
+	public By byJudgeProductBadgeAndVideo=By.xpath(".//div[contains(@class,'prImageWrap')]");
+	
+	public By byJudgeProductWasPrice=By.xpath(".//div[contains(@class,'priceDiv')]");
 	
 	@FindBy(xpath = "//product-results//div[contains(@class,'productItems')]//div[contains(@class,'productItemWrap')]//div[contains(@class,'itemNo')]")
 	List<WebElement> productItemNOList;
-	
-	@FindBy(xpath = "//product-results//div[contains(@class,'productItems')]//div[contains(@class,'productItemWrap')]//div[contains(@class,'priceDiv')]//span")
-	List<WebElement> productNowPriceList;
-	
-	@FindBy(xpath = "//product-results//div[contains(@class,'productItems')]//div[contains(@class,'productItemWrap')]//div[contains(@class,'priceDiv')]//del")
-	List<WebElement> productWasPriceList;
-	
-	@FindBy(xpath = "//product-results//div[contains(@class,'productItems')]//div[contains(@class,'productItemWrap')]//div[contains(@class,'easyPay')]")
-	List<WebElement> productEasyPayList;
-	
-	@FindBy(xpath = "//product-results//div[contains(@class,'productItems')]//div[contains(@class,'productItemWrap')]//div[contains(@class,'reviewDiv')]")
-	List<WebElement> productReviewList;
-	
-	@FindBy(xpath = "//product-results//div[contains(@class,'productItems')]//div[contains(@class,'productItemWrap')]//div[@class='swatchWrapDiv']")
-	List<WebElement> productColorSwatchList;
-	
-	@FindBy(xpath = "//product-results//div[contains(@class,'productItems')]//div[contains(@class,'productItemWrap')]//div[@class='swatchWrapDiv']//div[contains(@class,'swatchWrap')]//img")
-	List<WebElement> productColorSwatchImageList;
-	
-	@FindBy(xpath = "//product-results//div[contains(@class,'productItems')]//div[contains(@class,'productItemWrap')]//div[contains(@class,'FreeShippingDiv')]")
-	List<WebElement> productFreeShippingList;
-	
+					
 	//Pagination
+	@FindBy(xpath = "//product-results//nav[contains(@aria-label,'Page')]//ul[@class='pagination']")
+	WebElement cntPagination;
+	
+	public By byPagination=By.xpath("//product-results//nav[contains(@aria-label,'Page')]//ul[@class='pagination']");
+	
 	@FindBy(xpath = "//product-results//nav[contains(@aria-label,'Page')]//li[contains(@id,'pages[') and not(contains(.,'...'))]")
 	List<WebElement> currentPageList;
 	
 	@FindBy(xpath = "//product-results//nav[contains(@aria-label,'Page')]//li[contains(@class,'previous')]")
 	WebElement btnPreviousPage;
 	
-	By byPreviousPageButton=By.xpath("//product-results//nav[contains(@aria-label,'Page')]//li[contains(@class,'previous')]");
+	public By byPreviousPageButton=By.xpath("//product-results//nav[contains(@aria-label,'Page')]//li[contains(@class,'previous')]");
 	
 	@FindBy(xpath = "//product-results//nav[contains(@aria-label,'Page')]//li[contains(@class,'next')]//span")
 	WebElement btnNextPage;
 	
-	By byNextPageButton=By.xpath("//product-results//nav[contains(@aria-label,'Page')]//li[contains(@class,'next')]//span");
+	public By byNextPageButton=By.xpath("//product-results//nav[contains(@aria-label,'Page')]//li[contains(@class,'next')]//span");
+	
+	//Product title and text
+	@FindBy(xpath = "//div[@class='TitleAndTextSeo']")
+	WebElement cntProductTitleAndText;
+	
+	public By byProductTitleAndText=By.xpath("//div[@class='TitleAndTextSeo']");
+	
+	@FindBy(xpath = "//div[@class='TitleAndTextSeo']//*[contains(@class,'seoTextTitle')]")
+	WebElement lblProductTitle;
+	
+	@FindBy(xpath = "//div[@class='TitleAndTextSeo']//*[contains(@class,'seoTextContent')]")
+	WebElement lblProductText;
+	
+	@FindBy(xpath = "//div[@class='TitleAndTextSeo']//button")
+	WebElement btnProductTitleAndTextMoreOrLess;
+	
+	@FindBy(xpath = "//product-results//div[@class='modalBody']//div[@class='panel']//*[contains(@class,'panel-heading')]")
+	List<WebElement> productFilterList;
+	
+	@FindBy(xpath = "//product-results//div[@class='modalBody']//div[@class='panel']")
+	List<WebElement> productFilterContainerList;
+	
+	public By byMoreButtonOnLeftPanel=By.xpath(".//div[contains(@class,'panel-collapse')]//div[contains(@class,'seeMoreDiv') and not(contains(@class,'seeMoreTitle')) and not(@style='display: none;')][@id]");
+	
+	public By byLessButtonOnLeftPanel=By.xpath(".//div[contains(@class,'panel-collapse')]//div[contains(@class,'seeMoreDiv') and not(contains(@class,'seeMoreTitle')) and @aria-expanded='true' and not(@style='display: none;')]");
+	
+	public By bySubItemListOnLeftPanel=By.xpath(".//li");
+	
+	@FindBy(xpath = "//product-results//div[@class='modalBody']//div[@class='panel']//div[@class='panel-body']")
+	List<WebElement> panelItemContainerList;
+			
+	String searchkeyword;
+	public boolean bVerifyTitle=true;
+	String firstLevelFilter,secondLevelFilter;
 		
+	/**
+	 * This method will judge search type.
+	 * @return QA return true
+	 * @author Wei.Li
+	 */
+	public boolean isQASearch() {	
+		
+		GlobalheaderPage globalHeader=new GlobalheaderPage(this.getDriver());
+		getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeader.searchBox);
+		return !this.getElementProperty(globalHeader.searchBox, "aria-controls");			
+	}
+	
 	/**
 	 * This method will load product searching result.
 	 * @return true/false
@@ -127,23 +167,121 @@ public class ProductResultsPage extends BasePage{
 	 */
 	public boolean getSearchResultLoad(String searchKeyword) {		
 		GlobalheaderPage globalHeader=new GlobalheaderPage(this.getDriver());
-				
-		this.clearContent(globalHeader.searchBox);	
-		globalHeader.searchBox.sendKeys(searchKeyword);
+		getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeader.searchBox);		
+		this.clearContent(globalHeader.searchBox);
+		globalHeader.searchBox.sendKeys(searchKeyword);		
 		globalHeader.btnSearchSubmit.click();
 		
 		return waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},30000);
-		
 	}
 	
 	/**
-	 * This method will verify Url of search result.
+	 * This method will get search results through dropdown menu.
+	 * @param String lsKeyword:input keyword
+	 * @param int optionIndex: selected index in dropdwon menu
 	 * @return true/false
 	 * @author Wei.Li
 	 */
-	public boolean verifySearchResultUrl(String expectedURL) {				
-		return this.getDriver().getCurrentUrl().equalsIgnoreCase(expectedURL);		
+	public boolean selectSearchResultListInDropdownMenu(String lsKeyword,String lsOption,String lsOptionIndex) {
+		int optionIndex=0;
+		if(!lsOptionIndex.isEmpty()) {
+			optionIndex=Integer.parseInt(lsOptionIndex);
+		}	
+		
+		if(this.isQASearch()) {			
+			GlobalheaderPage globalHeader=new GlobalheaderPage(this.getDriver());
+			this.clearContent(globalHeader.searchBox);	
+			for(int i=0;i<lsKeyword.length();i++) {				
+				globalHeader.searchBox.sendKeys(lsKeyword.substring(i,i+1));				
+				getReusableActionsInstance().staticWait(300);
+			}
+			
+			switch(lsOption) {
+			case "Top suggestions":
+				WebElement element=globalHeader.searchQADropdwonmenuList.get(0).findElements(By.xpath(".//li")).get(optionIndex);
+				getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+				this.searchkeyword=element.getText().trim();	
+				this.bVerifyTitle=false;
+				element.click();
+				break;
+			case "Categories":
+				element=globalHeader.searchQADropdwonmenuList.get(1).findElements(By.xpath(".//li")).get(optionIndex);
+				getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+				this.searchkeyword=element.getText().trim();
+				this.bVerifyTitle=true;
+				element.click();
+				break;
+			case "Brands":
+				List<WebElement> list=globalHeader.searchQADropdwonmenuList.get(2).findElements(By.xpath(".//li"));
+				this.searchkeyword=lsKeyword;				
+				for(WebElement ele:list) {
+					getReusableActionsInstance().javascriptScrollByVisibleElement(ele);					
+					if(ele.getText().trim().equalsIgnoreCase(lsKeyword)) {	
+						this.bVerifyTitle=true;
+						ele.click();
+						break;
+					}
+				}
+				break;			
+			}
+		}
+		else {				
+			List<WebElement> elementList=getSearchDropdownResultList(lsKeyword);			
+			getReusableActionsInstance().javascriptScrollByVisibleElement(elementList.get(optionIndex));
+			this.searchkeyword=elementList.get(optionIndex).getText().trim();			
+			this.bVerifyTitle=true;
+			elementList.get(optionIndex).click(); 
+		}
+				
+		return waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},30000);
 	}
+	
+	/**
+	 * This method will verify page title for selecting from dropdown menu.
+	 * @return true/false
+	 * @author Wei.Li
+	 */
+	public boolean verifyPageTitleForDropdown() {
+		if(!this.bVerifyTitle) {
+			return true;
+		}
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSearchResultTitle);
+		String lsTitle=this.lblSearchResultTitle.getText().trim();
+		if(this.searchkeyword.equalsIgnoreCase(lsTitle)) {
+			return true;
+		}
+		
+		String[] lstItem;
+		if(this.searchkeyword.contains(">")) {
+			lstItem=this.searchkeyword.trim().split(">");
+		}
+		else {
+			lstItem=this.searchkeyword.trim().split(" ");
+		}				
+		String lastWord=lstItem[lstItem.length-1].trim();	
+		
+		return lastWord.equalsIgnoreCase(this.lblSearchResultTitle.getText().trim());
+	}
+
+	/**
+	 * This method will get search result list.
+	 * @param String lsKeyword: search keyword
+	 * @return List<WebElement>: search dropdown menu list
+	 * @author Wei.Li
+	 */
+	public List<WebElement> getSearchDropdownResultList(String lsKeyword) {
+		GlobalheaderPage globalHeader=new GlobalheaderPage(this.getDriver());
+		getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeader.searchBox);		
+		pressEscapeKey();		
+		this.clearContent(globalHeader.searchBox);	
+		for(int i=0;i<lsKeyword.length();i++) {				
+			globalHeader.searchBox.sendKeys(lsKeyword.substring(i,i+1));				
+			getReusableActionsInstance().staticWait(300);
+		}				
+		waitForCondition(Driver->{return globalHeader.ctnSearchResult.getAttribute("class").contains("suggestions-container--open");},30000);
+		
+		return globalHeader.searchResultList;			
+	}	
 	
 	/**
 	 * This method will verify Showing text pattern in filters.
@@ -162,14 +300,21 @@ public class ProductResultsPage extends BasePage{
 	 * @return true/false
 	 * @author Wei.Li
 	 */
-	public boolean verifySearchResultMessage(List<String> expectedMessage) {
+	public boolean verifySearchResultMessage(List<String> expectedMessage,String lsKeyword) {		
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSearchResultMessage);
-		String lsMessage=this.lblSearchResultMessage.getText().trim();	
-		for(String message:expectedMessage) {
-			if(!lsMessage.contains(message)) {
-				return false;
+		
+		String lsMessage=this.lblSearchResultMessage.getText().trim();		
+		if(!lsMessage.contains(lsKeyword)) {
+			return false;		
+		}
+		else {
+			for(String message:expectedMessage) {				
+				if(!lsMessage.contains(message)) {
+					return false;
+				}
 			}
 		}
+		
 		return true;		
 	}
 	
@@ -179,271 +324,17 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	public boolean verifySearchResultPageNumberDefaultSetting(String defaultSettingPageNumber) {
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSearchResultMessage);
-						
-		return this.lblItemPerPageDefaultSettingNumber.getText().trim().equalsIgnoreCase(defaultSettingPageNumber);		
-	}
-	
-	/**
-	 * This method will verify PriceBadge in searching result.
-	 * @return true/false
-	 * @author Wei.Li
-	 */
-	public boolean verifyProductPriceBadge() {
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.txtShowingDynamicContent);
-		if(productPriceBadgeList.size()>0) {
-			getReusableActionsInstance().javascriptScrollByVisibleElement(productResultList.get(0));
-			for(WebElement item: productPriceBadgeList) {
-				getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-				WebElement img=item.findElement(By.xpath(".//img"));
-				if(img.getAttribute("src").isEmpty()) {
-					return false;
-				}
-			}
-		}
-		return true;
-	}
-	
-	/**
-	 * This method will verify productHref in searching result.
-	 * @return true/false
-	 * @author Wei.Li
-	 */
-	public boolean verifyProductHref() {
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.txtShowingDynamicContent);
-		int pageSize=this.productResultList.size();
-		if(productHrefList.size()!=pageSize) {
-			return false;
-		}
-		else {
-			getReusableActionsInstance().javascriptScrollByVisibleElement(productResultList.get(0));
-			for(WebElement item: productHrefList) {	
-				getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-				if(item.getAttribute("href").isEmpty()) {
-					return false;
-				}
-			}
-		}
-		return true;
-	}
-	
-	/**
-	 * This method will verify productImage in searching result.
-	 * @return true/false
-	 * @author Wei.Li
-	 */
-	public boolean verifyProductImage() {
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.txtShowingDynamicContent);
-		int pageSize=this.productResultList.size();
-		if(productImageList.size()!=pageSize) {
-			return false;
-		}
-		else {
-			getReusableActionsInstance().javascriptScrollByVisibleElement(productResultList.get(0));
-			for(WebElement item: productImageList) {	
-				getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-				if(item.getAttribute("src").isEmpty()) {
-					return false;
-				}
-			}
-		}
-		return true;
-	}
-	
-	/**
-	 * This method will verify priceVedioIcon in searching result.
-	 * @return true/false
-	 * @author Wei.Li
-	 */
-	public boolean verifyProductVedioIcon() {
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.txtShowingDynamicContent);
-		if(productVedioIconList.size()>0) {
-			getReusableActionsInstance().javascriptScrollByVisibleElement(productResultList.get(0));
-			for(WebElement item: productVedioIconList) {
-				getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-				WebElement link=item.findElement(By.xpath(".//*[name()='use']"));
-				if(!link.isDisplayed()) {
-					return false;
-				}
-			}
-		}
-		return true;
-	}
-	
-	/**
-	 * This method will verify productName in searching result.
-	 * @return true/false
-	 * @author Wei.Li
-	 */
-	public boolean verifyProductName() {
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.txtShowingDynamicContent);
-		int pageSize=this.productResultList.size();
-		if(productNameList.size()!=pageSize) {
-			return false;
-		}
-		else {
-			getReusableActionsInstance().javascriptScrollByVisibleElement(productResultList.get(0));
-			for(WebElement item: productNameList) {	
-				getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-				if(item.getText().isEmpty()) {
-					return false;
-				}
-			}
-		}
-		return true;
-	}
-	
-	/**
-	 * This method will verify productItemNO in searching result.
-	 * @return true/false
-	 * @author Wei.Li
-	 */
-	public boolean verifyProductItemNO() {
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.txtShowingDynamicContent);
-		int pageSize=this.productResultList.size();
-		if(productItemNOList.size()!=pageSize) {
-			return false;
-		}
-		else {
-			getReusableActionsInstance().javascriptScrollByVisibleElement(productResultList.get(0));
-			for(WebElement item: productItemNOList) {
-				getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-				if(item.getText().isEmpty()) {
-					return false;
-				}
-			}
-		}
-		return true;
-	}
-	
-	/**
-	 * This method will verify productNowPrice in searching result.
-	 * @return true/false
-	 * @author Wei.Li
-	 */
-	public boolean verifyProductNowPrice() {
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.txtShowingDynamicContent);
-		int pageSize=this.productResultList.size();
-		if(productNowPriceList.size()!=pageSize) {
-			return false;
-		}
-		else {
-			getReusableActionsInstance().javascriptScrollByVisibleElement(productResultList.get(0));
-			for(WebElement item: productNowPriceList) {	
-				getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-				if(item.getText().isEmpty()) {
-					return false;
-				}
-			}
-		}
-		return true;
-	}
-	
-	/**
-	 * This method will verify productWasPrice in searching result.
-	 * @return true/false
-	 * @author Wei.Li
-	 */
-	public boolean verifyProductWasPrice() {
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.txtShowingDynamicContent);
-		if(productWasPriceList.size()>0) {
-			getReusableActionsInstance().javascriptScrollByVisibleElement(productResultList.get(0));
-			for(WebElement item: productWasPriceList) {
-				getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-				if(item.getText().isEmpty()) {
-					return false;
-				}
-			}
-		}
-		return true;
-	}
-	
-	/**
-	 * This method will verify productEasyPay in searching result.
-	 * @return true/false
-	 * @author Wei.Li
-	 */
-	public boolean verifyProductEasyPay() {
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.txtShowingDynamicContent);
-		int pageSize=this.productResultList.size();
-		if(productEasyPayList.size()!=pageSize) {
-			return false;
-		}
-		else {
-			getReusableActionsInstance().javascriptScrollByVisibleElement(productResultList.get(0));
-			for(WebElement item: productEasyPayList) {	
-				getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-				if(item.getText().isEmpty()) {
-					return false;
-				}
-			}
-		}
-		return true;
-	}
-	
-	/**
-	 * This method will verify productReview in searching result.
-	 * @return true/false
-	 * @author Wei.Li
-	 */
-	public boolean verifyProductReview() {
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.txtShowingDynamicContent);
-		int pageSize=this.productResultList.size();
-		if(productReviewList.size()!=pageSize) {
-			return false;
-		}
-		else {
-			getReusableActionsInstance().javascriptScrollByVisibleElement(productResultList.get(0));
-			for(WebElement item: productReviewList) {	
-				getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-				if(item.getText().isEmpty()) {
-					return false;
-				}
-			}
-		}
-		return true;
-	}
-	
-	/**
-	 * This method will verify productSwatch in searching result.
-	 * @return true/false
-	 * @author Wei.Li
-	 */
-	public boolean verifyProductSwatch() {
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.txtShowingDynamicContent);
-		int pageSize=this.productResultList.size();
-		if(productColorSwatchList.size()!=pageSize) {
-			return false;
-		}
-		return true;
-	}
-	
-	/**
-	 * This method will verify productFreeShipping in searching result.
-	 * @return true/false
-	 * @author Wei.Li
-	 */
-	public boolean verifyProductFreeShipping() {
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.txtShowingDynamicContent);
-		int pageSize=this.productResultList.size();
-		if(productFreeShippingList.size()!=pageSize) {
-			return false;
-		}
-		return true;
-	}
-
-	/**
-	 * This method will return <items per page> value when there is a dropdown menu.
-	 * @return int: the value of items per page
-	 * @author Wei.Li
-	 */
-	public int getItemsPerPageValue() {
-		Select select = new Select(this.getDriver().findElement(By. xpath("//product-results//div[contains(@class,'col-md-items')]//form//select")));
-		WebElement option = select.getFirstSelectedOption();
-		String defaultItem = option.getText();
-		System.out.println(defaultItem);
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblItemsPerPage);
 		
-		return Integer.parseInt(defaultItem);
+		return lblItemPerPageDefaultSettingNumber.getText().trim().equalsIgnoreCase(defaultSettingPageNumber);
+	}
+	
+	/**
+	 * This method will return Product list on the current page.	  
+	 * @author Wei.Li
+	 */
+	public List<WebElement> getProductList(){
+		return productResultList;
 	}
 	
 	/**
@@ -461,6 +352,7 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	public boolean VerifySearchResultWithProductItemNO(String lsexpectedItemNO) {
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.productItemNOList.get(0));
 		for(WebElement item: this.productItemNOList) {
 			String lsItem=item.getText();
 			List<String> list=this.getNumberFromString(lsItem);
@@ -476,5 +368,609 @@ public class ProductResultsPage extends BasePage{
 		return true;			
 	}
 	
+	/**
+	 * This method will verify if Banner image src is search keyword related.	  
+	 * @author Wei.Li
+	 */
+	public boolean verifyBannerImageContainSpecificWord(String lsSpecificWord) {
+		String[] lsList=this.splitSearchKeyword(lsSpecificWord);
+		for(WebElement element : this.lstBannerImage) {
+			String lsSrc=element.getAttribute("src").toLowerCase();
+			for(String item:lsList) {
+				if(lsSrc.contains(item.toLowerCase())) {
+					return true;
+				}			
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * This method will return search result page title.	  
+	 * @author Wei.Li
+	 */
+	public String getProductResultPageTitle() {
+		if(getReusableActionsInstance().isElementVisible(this.lblSearchResultTitle)) {
+			getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSearchResultTitle);
+			return this.lblSearchResultTitle.getText().trim();
+		}
+		return "NoTitle";		
+	}
+	
+	/**
+	 * This method will judge test model for different scenarios.	
+	 * @return String: test model 
+	 * @author Wei.Li
+	 */
+	public String judgeTestModel() {
+		String lsUrl=this.URL();
+		if(lsUrl.contains("dimensions=0&")) {
+			if(getReusableActionsInstance().isElementVisible(this.lblSearchResultMessage)) {
+				getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSearchResultMessage);
+				if(this.lblSearchResultMessage.getText().contains("Please search again")) {
+					   return "NoSearchResult";
+				}
+				else {					
+					if(getReusableActionsInstance().isElementVisible(this.lblShowing)) {
+						if(this.getProductResultCount()!=1) {
+							return "NormalSearch";
+						}
+						else {
+							return "ProductNumberSearch";
+						}
+					}				
+				}
+			}
+		}
+		else {			
+			return "BannerImageSearch";
+		}
+				
+		return "NormalSearch";		
+	}
+		
+	/**
+	 * This method will get encoding keyword.
+	 * @param String lsKeyword: input keyword
+	 * @return encoded keyword 
+	 * @author Wei.Li
+	 */
+	public String getEncodingKeyword(String lsKeyword) {
+		if(!lsKeyword.trim().contains(" ")) {
+			return lsKeyword.trim();
+		}
+		
+		String lsUrl=this.URL();
+		if(lsUrl.contains("dimensions=0&")) {
+			return lsKeyword.trim().replace(" ","%20");
+		}
+		else {
+			return lsKeyword.trim().replace(" ","%2B");
+		}
+	}
+	
+	/**
+	 * This method will verify Url of search result with Regex pattern.
+	 * @return true/false
+	 * @author Wei.Li
+	 */
+	public boolean verifySearchResultUrlWithRegexPattern(String lsPattern, String lsKeyword) {
+		String lsEncodingKeyword=getEncodingKeyword(lsKeyword);
+		String lsMatchPattern=(new BasePage(this.getDriver())).getBaseURL()+lsPattern+lsEncodingKeyword;
+				
+		return this.URL().matches(lsMatchPattern);		
+	}
+	
+	/**
+	 * This method will verify Url of search result without Regex pattern.
+	 * @return true/false
+	 * @author Wei.Li
+	 */
+	public boolean verifySearchResultUrl(String lsPattern, String lsKeyword) {
+		String lsEncodingKeyword=getEncodingKeyword(lsKeyword);
+		String lsMatchUrl=(new BasePage(this.getDriver())).getBaseURL()+lsPattern+lsEncodingKeyword;
+			
+		return this.URL().equalsIgnoreCase(lsMatchUrl);		
+	}
+	
+	/**
+	 * This method will split keyword using space.
+	 * @param String lsKeyword: input keyword
+	 * @return split array
+	 * @author Wei.Li
+	 */	
+	public String[] splitSearchKeyword(String lsKeyword) {
+		return lsKeyword.trim().split(" ");
+	}
+	
+	/**
+	 * This method will get BannerImage list size.
+	 * @return true/false
+	 * @author Wei.Li
+	 */	
+	public int getBannerImageListSize() {
+		return this.lstBannerImage.size();
+	}
+	
+	/**
+	 * This method will verify pagination.
+	 * @return true/false
+	 * @author Wei.Li
+	 */	
+	public boolean verifyProductPagination() {
+		return this.getDriver().findElements(this.byPagination).size()==1;
+	}
+	
+	/**
+	 * This method will verify Brand tile contains keyword.
+	 * @param String lsKeyword: input keyword
+	 * @return true/false
+	 * @author Wei.Li
+	 */	
+	public boolean verifyProductBrandTitleContainKeyword(String lsKeyword) {
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblProductTitle);
+		return this.lblProductTitle.getText().toLowerCase().contains(lsKeyword.toLowerCase());
+	}
+	
+	/**
+	 * This method will verify Brand text contains keyword.
+	 * @param String lsKeyword: input keyword
+	 * @return true/false
+	 * @author Wei.Li
+	 */	
+	public boolean verifyProductBrandTextContainKeyword(String lsKeyword) {
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblProductText);
+		return this.lblProductTitle.getText().toLowerCase().contains(lsKeyword.toLowerCase());
+	}
+	
+	/**
+	 * This method will verify More/Less button.
+	 * @return true/false
+	 * @author Wei.Li
+	 */	
+	public boolean verifyProductBrandMoreOrLessButton() {
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblProductText);
+		
+		if(getReusableActionsInstance().isElementVisible(this.btnProductTitleAndTextMoreOrLess)) {
+			this.btnProductTitleAndTextMoreOrLess.click();
+			getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnProductTitleAndTextMoreOrLess);
+			if(!this.btnProductTitleAndTextMoreOrLess.getText().contains("Read Less")) {
+				return false;
+			}
+			else {
+				this.btnProductTitleAndTextMoreOrLess.click();
+				getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnProductTitleAndTextMoreOrLess);
+				if(!this.btnProductTitleAndTextMoreOrLess.getText().contains("Read More")) {
+					return false;
+				}
+				else {
+					return true;
+				}
+			}
+		}
+		return true;		
+	}
+	
+	/**
+	 * This method will verify Badge or Video existence.
+	 * @param WebElement parent: parent element
+	 * @return String: indicate type
+	 * @author Wei.Li
+	 */	
+	@SuppressWarnings("unchecked")
+	public String judgeProductBadgeAndVideo(WebElement parent) {
+		WebElement element=parent.findElement(this.byJudgeProductBadgeAndVideo);
+		JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
+		List<WebElement> childList=(List<WebElement>) jse.executeScript("return arguments[0].children;", element);
+				
+		if(childList.size()==1) {
+			return "WithoutBadgeAndVideo";
+		}
+				
+		if(childList.size()==2) {
+			if(childList.get(1).getAttribute("class").contains("badgeWrap")) {
+				return "WithBadge";
+			}
+			else {
+				return "WithVideo";
+			}
+		}
+		
+		return "WithBadgeAndVideo";		
+	}
+	
+	/**
+	 * This method will judge WasPrice existence.
+	 * @param WebElement parent: parent element
+	 * @return String: indicate type
+	 * @author Wei.Li
+	 */		
+	public String judgeProductWasPrice(WebElement parent) {
+		WebElement element=parent.findElement(this.byJudgeProductWasPrice);		
+		long childSize= (new BasePage(this.getDriver())).getChildElementCount(element);
+				
+		if(childSize==1) {
+			return "WithoutWasPrice";
+		}
+		
+		return "WithWasPrice";		
+	}
+	
+	/**
+	 * This method will verify the item content in product list.
+	 * @param List<WebElement> productList: the input product list 
+	 * @author Wei.Li
+	 */
+	public void verifySearchResultContent(List<WebElement> productList) {		
+		List<WebElement> elementList;
+		(new BasePage(this.getDriver())).getReusableActionsInstance().javascriptScrollByVisibleElement(productList.get(0));
+		for(WebElement item : productList) {
+			reporter.reportLog("Product ItemNO:"+item.findElement(byProductItemNO).getText());
+			(new BasePage(this.getDriver())).getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			
+			reporter.softAssert(!item.findElement(byProductHref).getAttribute("href").isEmpty(),"ProductHref in searching result is correct", "ProductHref in searching result is incorrect");
+			
+			reporter.softAssert(!item.findElement(byProductImage).getAttribute("src").isEmpty(), "ProductImage in searching result is correct", "ProductImage in searching result is incorrect");
+			
+			reporter.softAssert(!item.findElement(byProductName).getText().isEmpty(), "ProductName in searching result is correct", "ProductName in searching result is incorrect");
+			
+			reporter.softAssert(!item.findElement(byProductItemNO).getText().isEmpty(), "ProductItemNO in searching result is correct", "ProductItemNO in searching result is incorrect");
+			
+			reporter.softAssert(!item.findElement(byProductNowPrice).getText().isEmpty(), "ProductNowPrice in searching result is correct", "ProductNowPrice in searching result is incorrect");
+			
+			//Use findElements to avoid test crash when the element is not existing
+			elementList=item.findElements(byProductEasyPay);	
+			if((new BasePage(this.getDriver())).isChildElementVisible(elementList.get(0),"innerText")) {
+				reporter.softAssert(true, "ProductEasyPay in searching result is correct", "ProductEasyPay in searching result is incorrect");
+			}
+							
+			//Use findElements to avoid test crash when the element is not existing
+			elementList=item.findElements(byProductReview);
+			if((new BasePage(this.getDriver())).isChildElementVisible(elementList.get(0),"innerText")) {
+				reporter.softAssert(true, "ProductReview in searching result is correct", "ProductReview in searching result is incorrect");
+			}
+							
+			//Use findElements to avoid test crash when the element is not existing
+			elementList=item.findElements(byProductSwatch);
+			if((new BasePage(this.getDriver())).isChildElementVisible(elementList.get(0),"childElementCount")) {
+				reporter.softAssert(true, "ProductSwatch in searching result is correct", "ProductSwatch in searching result is incorrect");
+			}
+							
+			//Use findElements to avoid test crash when the element is not existing
+			elementList=item.findElements(byProductFreeShipping);
+			if((new BasePage(this.getDriver())).isChildElementVisible(elementList.get(0),"innerText")) {
+				reporter.softAssert(true, "ProductFreeShipping in searching result is correct", "ProductFreeShipping in searching result is incorrect");
+			}
+				
+			String judgeMode=judgeProductBadgeAndVideo(item);			
+			switch(judgeMode) {
+			case "WithBadge":
+				reporter.softAssert(!item.findElement(byProductPriceBadge).getAttribute("src").isEmpty(), "PriceBadge in searching result is correct", "PriceBadge in searching result is incorrect");
+				break;
+			case "WithVideo":
+				reporter.softAssert(!item.findElement(byProductVideoIcon).getAttribute("xlink:href").isEmpty(), "ProductVideoIcon in searching result is correct", "ProductVideoIcon in searching result is incorrect");
+				break;
+			case "WithBadgeAndVideo":
+				reporter.softAssert(!item.findElement(byProductPriceBadge).getAttribute("src").isEmpty(), "PriceBadge in searching result is correct", "PriceBadge in searching result is incorrect");
+				reporter.softAssert(!item.findElement(byProductVideoIcon).getAttribute("xlink:href").isEmpty(), "ProductVideoIcon in searching result is correct", "ProductVideoIcon in searching result is incorrect");
+				break;
+			}
+			
+			judgeMode=judgeProductWasPrice(item);			
+			if(judgeMode.equalsIgnoreCase("WithWasPrice")) {
+				reporter.softAssert(!item.findElement(byProductWasPrice).getText().isEmpty(), "ProductWasPrice in searching result is correct", "ProductWasPrice in searching result is incorrect");
+			}
+			
+		}
+	}
+	
+	/**
+	 * This method will verify sort options.
+	 * @param List<String> lstOption: input option list
+	 * @return true/false 
+	 * @author Wei.Li
+	 */
+	public boolean verifySortOptions(List<String> lstOptionYml) {
+		if(!getReusableActionsInstance().isElementVisible(this.btnSortSelect)) {			
+			return false;
+		}
+		
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSortBy);
+		this.btnSortSelect.click();		
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.sortByOptionList.get(0));
+		
+		int listSize=this.sortByOptionList.size();
+		if(listSize!=lstOptionYml.size()) {
+			return false;
+		}
+		
+		List<String> lstOption=new ArrayList<String>();
+		for(int i=0;i<listSize;i++) {
+			getReusableActionsInstance().javascriptScrollByVisibleElement(this.sortByOptionList.get(i));
+			lstOption.add(this.sortByOptionList.get(i).getText());
+		}
+		
+		Set<String> setOption=new HashSet<String>(lstOption);
+		Set<String> setOptionYml=new HashSet<String>(lstOptionYml);
+		
+		return setOption.containsAll(setOptionYml)&&setOptionYml.containsAll(setOption);
+	}	
+
+    /**
+	 * This method will choose sort option by visible text.
+	 * @param String lsOption: visible option text
+	 * @return true/false
+	 * @author Wei.Li
+	 */	
+    public boolean chooseSortOptionByVisibleText(String lsOption) {  
+    	getReusableActionsInstance().isElementVisible(this.btnSortSelect);
+    	getReusableActionsInstance().selectWhenReadyByVisibleText(this.btnSortSelect,lsOption);
+		return waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},30000);		
+    }
+	
+	/**
+	 * This method will verify Price: Highest first strategy. 
+	 * @return String: error message
+	 * @author Wei.Li
+	 */
+	public String verifyHighestPriceFirstSort() {
+		String lsErrorMsg="";
+		if(this.productResultList.size()==0) {
+			return lsErrorMsg="No product list";
+		}
+		
+		List<Float> priceList=new ArrayList<Float>();
+		List<String> productNOList=new ArrayList<String>();
+		for(WebElement element:this.productResultList) {
+			getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+			String nowPriceText=element.findElement(this.byProductNowPrice).getText();			
+			float nowPriceValue=this.getFloatFromString(nowPriceText);			
+			priceList.add(nowPriceValue);
+			String productNO=element.findElement(this.byProductItemNO).getText();
+			productNOList.add(productNO);
+		}
+				
+		int priceListSize=priceList.size();
+		for(int i=0;i<priceListSize-1;i++) {
+			if(priceList.get(i)<priceList.get(i+1)) {
+				lsErrorMsg="Sort option of Price: Highest first does not work: the price of "+productNOList.get(i)+" is less than "+productNOList.get(i+1);
+				return lsErrorMsg;
+			}
+		}
+		
+		return lsErrorMsg;
+	}
+	
+    /**
+	 * This method will get float from string.
+	 * @param String lsTarget: target string
+	 * @return float value
+	 * @author Wei.Li
+	 */	
+    public float getFloatFromString(String lsTarget) {  
+    	lsTarget=lsTarget.replace(",", "").trim();
+    	
+    	String regex="\\d+\\.\\d+";
+    	String lsReturn="";
+    	Pattern pattern=Pattern.compile(regex);
+    	Matcher matcher=pattern.matcher(lsTarget);
+    	while(matcher.find())
+    	{
+    	    lsReturn=matcher.group();    	        	   
+    	}
+    	   			
+    	return Float.parseFloat(lsReturn);
+    }
+    
+    /**
+	 * This method will verify Url after selecting sort strategy.
+	 * @param String lsKeyword: search keyword
+	 * @param String lsSortKey: sort key in dropdown menu
+	 * @return true/false
+	 * @author Wei.Li
+	 */	
+    public boolean verifyUrlAfterSelectSortStrategy(String lsKeyword,String lsSortKey) {  
+    	String lsUrl=this.URL();
+    	String lsExpectedUrl="searchterm="+this.getEncodingKeyword(lsKeyword)+"&sortKey="+lsSortKey;
+    	
+    	return lsUrl.toLowerCase().contains(lsExpectedUrl.toLowerCase());
+    }   	
+
+	/**
+	 * This method will verify filter option headers.
+	 * @param List<String> lstOption: input option list in yml file
+	 * @return String: error message 
+	 * @author Wei.Li
+	 */
+	public String verifyFilterOptions(List<String> lstOptionYml) {
+		String lsErrorMsg="";
+	      int listSize=this.productFilterList.size();
+	      if(listSize==0) {
+	         return lsErrorMsg="No product list";
+	      }
+	       	     
+	      for(int i=0;i<listSize;i++) {
+	         getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i));
+	         if(lstOptionYml.contains(this.productFilterList.get(i).getText())) {
+	            continue;
+	         }else {
+	            return lsErrorMsg = "Filter option headers in left panel contain "+this.productFilterList.get(i).getText()+" that is not present in input list";
+	         }
+	      }      
+	      return lsErrorMsg;
+	}
+	
+	/**
+	 * This method will judge MoreButton in left panel existence.
+	 * @param WebElement parent: parent element
+	 * @return true/false: if the childSize of this.panelItemContainerList item is 2, means no More button exists. 
+	 * @author Wei.Li
+	 */		
+	public boolean judgeMoreButtonExistenceInLeftPanel(WebElement parent) {				
+		long childSize= (new BasePage(this.getDriver())).getChildElementCount(parent);
+				
+		if(childSize==2) {
+			return false;
+		}
+		
+		return true;		
+	}
+	
+	/**
+	 * This method will select filter from left panel.
+	 * @param String lsFirstLevelItem: header filter keyword
+	 * @param String lsSecondLevelItem: subFilter keyword
+	 * @return true/false
+	 * @author Wei.Li
+	 */		
+	public boolean selectFilterItemInLeftPanel(String lsFirstLevelItem,String lsSecondLevelItem) {
+		this.firstLevelFilter=lsFirstLevelItem;
+		this.secondLevelFilter=lsSecondLevelItem;
+				
+		int loopSize=this.productFilterList.size();
+		for(int i=0;i<loopSize;i++) {			
+			getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i));
+			String lsHeader=this.productFilterList.get(i).getText().trim();
+			
+			//If found lsFirstLevelItem
+			if(lsHeader.equalsIgnoreCase(lsFirstLevelItem)) {				
+				if(judgeMoreButtonExistenceInLeftPanel(this.panelItemContainerList.get(i))) {
+					WebElement moreButton=this.productFilterContainerList.get(i).findElement(this.byMoreButtonOnLeftPanel);
+					getReusableActionsInstance().javascriptScrollByVisibleElement(moreButton);
+					moreButton.click();
+				}
+								
+				List<WebElement> subItemList=this.productFilterContainerList.get(i).findElements(this.bySubItemListOnLeftPanel);				
+				for(WebElement subItem : subItemList) {
+					getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
+					String lsSubItem=subItem.getText().trim();	
+					
+					//If found lsSecondLevelItem
+					if(lsSubItem.equalsIgnoreCase(lsSecondLevelItem)) {						
+						subItem.click();
+						return waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},30000);
+					}
+				}
+				
+				//If unable to find lsSecondLevelItem
+				getReusableActionsInstance().javascriptScrollByVisibleElement(subItemList.get(0));
+				subItemList.get(0).click();
+				return waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},30000);
+			}
+		}
+		
+		//If unable to find both lsFirstLevelItem and lsSecondLevelItem, then select the first choice
+		List<WebElement> subItemList=this.productFilterContainerList.get(0).findElements(this.bySubItemListOnLeftPanel);
+		getReusableActionsInstance().javascriptScrollByVisibleElement(subItemList.get(0));
+		subItemList.get(0).click();
+		return waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},30000);
+	}
+	
+    /**
+	 * This method will verify Url after selecting filter in left panel.
+	 * @param String lsKeyword: search keyword 
+	 * @return true/false
+	 * @author Wei.Li
+	 */	
+    public boolean verifyUrlAfterSelectFilterInLeftPanel(String lsKeyword) {  
+    	String lsUrl=this.URL();    	
+    	String lsExpectedUrlPattern="dimensions=.*&searchterm="+this.getEncodingKeyword(lsKeyword);
+    	Pattern pattern=Pattern.compile(lsExpectedUrlPattern);
+    	Matcher matcher=pattern.matcher(lsUrl);
+
+    	return matcher.find(); 
+    }  
+    
+    /**
+	 * This method will get page title. 
+	 * @return String: page title
+	 * @author Wei.Li
+	 */
+    public String getPageTitle() {
+    	getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSearchResultTitle);
+    	return this.lblSearchResultTitle.getText().trim();
+    }
+
+	/**
+	 * This method will verify filter by price. 
+	 * @param String lsPriceMode: Under/Between/Over
+	 * @return String: error message
+	 * @author Wei.Li
+	 */
+	public String verifyFilterByPrice(String lsPriceMode) {
+		String lsErrorMsg="";
+		if(this.productResultList.size()==0) {
+			return lsErrorMsg="No product list";
+		}
+
+		for(WebElement element:this.productResultList) {
+			getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+			String productNO=element.findElement(this.byProductItemNO).getText();
+			String nowPriceText=element.findElement(this.byProductNowPrice).getText();			
+			float nowPriceValue=this.getFloatFromString(nowPriceText);	
+			List<String> lstPrice=this.getNumberFromString(secondLevelFilter);
+			
+			switch(lsPriceMode) {
+			case "Under":				
+				int priceOptionValue=Integer.parseInt(lstPrice.get(0));
+				if(nowPriceValue>=priceOptionValue) {
+					lsErrorMsg="Filter by price does not work for productNO of "+productNO;
+				}
+				break;
+			case "Between":
+				int lowPriceOptionValue=Integer.parseInt(lstPrice.get(0));
+				int highPriceOptionValue=Integer.parseInt(lstPrice.get(1));
+				if(nowPriceValue<lowPriceOptionValue||nowPriceValue>highPriceOptionValue) {
+					lsErrorMsg="Filter by price does not work for productNO of "+productNO;
+				}
+				break;
+			case "Over":
+				priceOptionValue=Integer.parseInt(lstPrice.get(0));
+				if(nowPriceValue<priceOptionValue) {
+					lsErrorMsg="Filter by price does not work for productNO of "+productNO;
+				}
+				break;
+			}
+				
+			if(!lsErrorMsg.isEmpty()) {
+				return lsErrorMsg;
+			}
+		}
+			
+		return lsErrorMsg;
+	}
+	
+    /**
+	 * This method will verify the Url contains keyword.
+	 * @param String lsKeyword: search keyword 
+	 * @return true/false
+	 * @author Wei.Li
+	 */	
+    public boolean verifyUrlContainsKeyword(String lsKeyword) {  
+    	String lsUrl=this.URL();    	
+    	String lsExpectedUrlPattern="searchterm="+this.getEncodingKeyword(lsKeyword);
+    	
+    	return lsUrl.contains(lsExpectedUrlPattern);
+    }  
+    
+    /**
+	 * This method will close all selected filters.  
+	 * @return true/false: The last one is ClearAllFiltersButton.
+	 * @author Wei.Li
+	 */	
+    public boolean closeAllSelectedFilters() {  
+    	this.selectedFiltersList.get(this.selectedFiltersList.size()-1).click();    	
+    	return waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},30000);
+    }
+    
+    /**
+	 * This method will get 'clear all filters' button existence status.  
+	 * @return true/false: if only return 1, means there is a hidden ClearAllFiltersButton; if return more than 1, means there is a displayed ClearAllFiltersButton.
+	 * @author Wei.Li
+	 */	
+    public boolean getClearAllFiltersButtonStatus() {  
+    	return this.selectedFiltersList.size()>1;
+    }
 }
+
 	

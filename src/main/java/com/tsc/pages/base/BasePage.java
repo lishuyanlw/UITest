@@ -27,6 +27,8 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import extentreport.ExtentTestManager;
 import utils.Reporter;
 
 import utils.ReusableActions;
@@ -37,10 +39,10 @@ import utils.ReusableActions;
 	public class BasePage {
 		
 	protected static Reporter reporter;
+	
 	/**
 	 * The Wait.
-	 */
-	
+	 */	
 	protected WebDriverWait wait;
 	/**
 	 * The Driver.
@@ -73,6 +75,7 @@ import utils.ReusableActions;
 		PageFactory.initElements(getDriver(), this);
 		actionsThreadLocal.set(new Actions(getDriver()));
 		reusableActionsThreadLocal.set(new ReusableActions(getDriver()));
+		reporter = new ExtentTestManager(getDriver());
 	}
 
 	/*
@@ -88,6 +91,13 @@ import utils.ReusableActions;
 		return TIME_OUT_SECONDS;
 	}
 
+	/**
+	 * @return the reporter
+	 */
+	public static Reporter getReporter() {
+		return reporter;
+	}
+	
 	/**
 	 * Gets driver url.
 	 *
@@ -109,7 +119,7 @@ import utils.ReusableActions;
 	/**
 	 * This method returns the ReusableActions class instance from the ThreadLocal
 	 */
-	protected ReusableActions getReusableActionsInstance() {
+	public ReusableActions getReusableActionsInstance() {
 		return reusableActionsThreadLocal.get();
 	}
 
@@ -117,7 +127,7 @@ import utils.ReusableActions;
 	 * This method return the Actions class instance from the ThreadLocal
 	 */
 
-	protected Actions getActionsInstance() {
+	public Actions getActionsInstance() {
 		return actionsThreadLocal.get();
 	}
 
@@ -345,7 +355,7 @@ import utils.ReusableActions;
 		 robot.keyPress(KeyEvent.VK_DELETE);
 		 robot.keyRelease(KeyEvent.VK_DELETE);
 	 }
-	 
+ 
 	//Get the URL 			
 	public String URL() {
 		return getDriver().getCurrentUrl();
@@ -364,11 +374,56 @@ import utils.ReusableActions;
         List<String> list=new ArrayList<String>();
         while(m.find()) {
         	String lsGroup=m.group();
-        	list.add(lsGroup); 
-        	System.out.println(lsGroup);
+        	list.add(lsGroup);         	
         }
         
         return list;
     }
+    
+    /**
+	 * This method will judge if ChildElement is visible.
+	 * @return true/false
+	 * @author Sachin.Sharma
+	 */	
+    public Boolean isChildElementVisible(WebElement element, String domProperty) {
+        Object data = element.getAttribute(domProperty);
+        if(data.equals("") || data == null) {
+           return false;
+        }
+        switch(domProperty){
+            case "innerText":
+                return true;
+            case "childElementCount":
+                if(Integer.valueOf((String) data) > 1) {
+                    return true;
+             }
+        }
+        return false;
+     }
+    
+	/**
+	 * This method will return childElementCount.
+	 * @param WebElement parent: parent element 
+	 * @author Wei.Li
+	 */		
+	public long getChildElementCount(WebElement parent) {
+		JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
+		long childSize= (long) jse.executeScript("return arguments[0].childElementCount;", parent);
+				
+		return childSize;		
+	}
+	
+	/**
+	 * This method will identify if the element has a specific property.
+	 * @param WebElement element: the element
+	 * @param String lsProperty: the property
+	 * @return true/false
+	 * @author Wei.Li
+	 */		
+	public  boolean getElementProperty(WebElement element,String lsProperty) {
+		JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
+		return (boolean) jse.executeScript("return arguments[0].hasAttribute(arguments[1]);", element,lsProperty);			
+	}
+	
 
 }

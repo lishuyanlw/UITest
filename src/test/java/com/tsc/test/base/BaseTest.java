@@ -10,6 +10,7 @@ import java.nio.charset.StandardCharsets;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -69,11 +70,11 @@ public class BaseTest {
 		return globalheaderPageThreadLocal.get();
 	}
 	
-	//// @return the homePageThreadLocal
+	// @return the homePageThreadLocal
 	protected static HomePage homePageThreadLocal() {
 		return homePageThreadLocal.get();
 	}
-//
+
 
 	protected static GlobalFooterPage getGlobalFooterPageThreadLocal() {
 		return globalFooterPageThreadLocal.get();
@@ -205,6 +206,11 @@ public class BaseTest {
 		}
 	}
 
+	
+	public void validateText(String strActualText, List<String> listExpectedText, String validationMsg) {
+		reporter.softAssert(listExpectedText.equals(strActualText), validationMsg + ":" + " Expected=" + listExpectedText +  " ; Actual="+ strActualText ,validationMsg + " expected=" + listExpectedText +  "; actual="+ strActualText);
+		
+	}
 	//Method to validate content of Link and button
 	public void validateText(String strActualText, String strExpectedText, String validationMsg) {
 	reporter.softAssert(strExpectedText.equals(strActualText), validationMsg + ":" + " Expected=" + strExpectedText +  " ; Actual="+ strActualText ,validationMsg + " expected=" + strExpectedText +  "; actual="+ strActualText);
@@ -217,7 +223,7 @@ public class BaseTest {
 	 * @return Hash map with sauce capabilities
 	 * @author Mirza.Kamran
 	 */
-	
+
 	private Map<String, String> initializeSauceParamsMap(String strBrowser) {
 		Map<String, String> sauceOptions = new HashMap<>();
 		sauceOptions.put(SauceCapabilities.seleniumVersion.toString(), TestDataHandler.sauceSettings.getSauceOptions().getSeleniumVersion());
