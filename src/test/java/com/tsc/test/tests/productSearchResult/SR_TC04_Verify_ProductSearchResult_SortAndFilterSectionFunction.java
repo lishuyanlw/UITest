@@ -1,6 +1,7 @@
 package com.tsc.test.tests.productSearchResult;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
@@ -115,11 +116,14 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction ext
 	
 	//Test filter option combination
 	List<List<List<String>>> lstFilterCombination=TestDataHandler.constantDataVariables.getlst_FilterCombination();	
-	for(List<List<String>> lstItemCombination:lstFilterCombination) {		
+	for(List<List<String>> lstItemCombination:lstFilterCombination) {
+		List<String> lstFilter=new ArrayList<String>();
 		for(List<String> lstItem:lstItemCombination) {			
-			getProductResultsPageThreadLocal().selectFilterItemInLeftPanel(lstItem.get(0), lstItem.get(1));			
+			getProductResultsPageThreadLocal().selectFilterItemInLeftPanel(lstItem.get(0), lstItem.get(1));
+			lstFilter.add(lstItem.get(1));
 		}
 		
+		reporter.softAssert(getProductResultsPageThreadLocal().verifySlectedFiltersContainSecondlevelFilter(lstFilter), "The selected filters contain search second level filters", "The selected filters do not contain search second level filters");
 		reporter.softAssert(getProductResultsPageThreadLocal().verifyUrlAfterSelectFilterInLeftPanel(lsKeywordList.get(0).get(0)), "The Url contains correct dimensions and keyword", "The Url does not contain correct dimensions and keyword");
 		reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultMessage(lstSearchResultMessage.get(0),lsKeywordList.get(0).get(0)), "Search result message result matches the expected message", "Search result message result does not match the expected message");
 		reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(), "Showing text pattern in filters is correct", "Showing text pattern in filters is incorrect");

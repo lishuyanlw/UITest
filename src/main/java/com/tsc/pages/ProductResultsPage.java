@@ -974,6 +974,38 @@ public class ProductResultsPage extends BasePage{
     public boolean getClearAllFiltersButtonStatus() {  
     	return this.selectedFiltersList.size()>1;
     }
+    
+    /**
+	 * This method will verify if selected filters contain search second level filters. 
+	 * @param List<String> lstFilter: second level filter list 
+	 * @return true/false
+	 * @author Wei.Li
+	 */	
+    public boolean verifySlectedFiltersContainSecondlevelFilter(List<String> lstFilter) {
+    	List<String> lstSelectedFilter=new ArrayList<String>();
+    	int selctedFilterSize=this.selectedFiltersList.size()-1;
+    	for(int i=0;i<selctedFilterSize;i++) {
+    		lstSelectedFilter.add(this.selectedFiltersList.get(i).getText().trim());
+    	}
+    	
+    	if(selctedFilterSize!=lstFilter.size()) {
+    		return false;
+    	}
+    	    	
+    	for(String lsItem:lstFilter) {    		
+    		if(!lstSelectedFilter.contains(lsItem)) {    			
+    			return false;
+    		}
+    	}
+    	
+    	for(String lsItem:lstSelectedFilter) {
+    		if(!lstFilter.contains(lsItem)) {    			
+    			return false;
+    		}
+    	}
+    	
+    	return true;
+    }
 }
 
 	
