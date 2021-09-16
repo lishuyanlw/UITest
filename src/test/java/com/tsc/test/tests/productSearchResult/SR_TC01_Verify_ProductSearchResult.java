@@ -24,9 +24,6 @@ public class SR_TC01_Verify_ProductSearchResult extends BaseTest{
 	reporter.reportLog("ProductSearch Page");
 	
 	List<String> lsKeywordList=TestDataHandler.constantDataVariables.getlst_SearchKeyword();	
-	String lsSearchResultExpectedUrl=TestDataHandler.constantDataVariables.getlbl_SearchResultExpectedUrl();
-	String lsSearchResultExpectedUrlWithoutKeyword=TestDataHandler.constantDataVariables.getlbl_SearchResultExpectedUrlWithoutKeyword();
-	
 	List<List<String>> lstSearchResultMessage=TestDataHandler.constantDataVariables.getlst_SearchResultMessage();
 	String lsSearchResultPageDefaultSetting=TestDataHandler.constantDataVariables.getlbl_SearchResultPageDefaultSetting();
 	List<WebElement> productList;
@@ -40,8 +37,7 @@ public class SR_TC01_Verify_ProductSearchResult extends BaseTest{
 		
 		switch(lsTestModel) {
 		case "NormalSearch":
-			reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultUrlWithRegexPattern(lsSearchResultExpectedUrl,lsKeywordList.get(i)), "Url of search result matches expected url regex pattern", "Url of search result doesn't match expected url regex pattern");
-			reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultUrl(lsSearchResultExpectedUrlWithoutKeyword,lsKeywordList.get(i)), "Url of search result matches expected url", "Url of search result doesn't match expected url");
+			reporter.softAssert(getProductResultsPageThreadLocal().verifyUrlContainDimensionAndKeyword(lsKeywordList.get(i)), "Url of search result matches expected url regex pattern", "Url of search result doesn't match expected url regex pattern");			
 			reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultMessage(lstSearchResultMessage.get(0),lsKeywordList.get(i)), "Search result message result matches the expected message", "Search result message result does not match the expected message");
 			reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting), "The default setting of items per page is "+lsSearchResultPageDefaultSetting, "The default setting of items per page isn't "+lsSearchResultPageDefaultSetting);
 			reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(), "Showing text pattern in filters is correct", "Showing text pattern in filters is incorrect");
@@ -55,17 +51,17 @@ public class SR_TC01_Verify_ProductSearchResult extends BaseTest{
 			break;
 		case "NoSearchResult":
 			reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultMessage(lstSearchResultMessage.get(1),lsKeywordList.get(i)), "Search result message result matches the expected message", "Search result message result does not match the expected message");
-			reporter.softAssert(getProductResultsPageThreadLocal().getProductResultCount()==0, "No search results return", "Still there are search results return");
+			reporter.softAssert(getProductResultsPageThreadLocal().getProductList().size()==0, "No search results return", "Still there are search results return");
 			break;
 		case "ProductNumberSearch":
-			reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultUrlWithRegexPattern(lsSearchResultExpectedUrl,lsKeywordList.get(i)), "Url of search result matches expected url", "Url of search result doesn't match expected url");
+			reporter.softAssert(getProductResultsPageThreadLocal().verifyUrlContainDimensionAndKeyword(lsKeywordList.get(i)), "Url of search result matches expected url", "Url of search result doesn't match expected url");
 			reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultMessage(lstSearchResultMessage.get(0),lsKeywordList.get(i)), "Search result message result matches the expected message", "Search result message result does not match the expected message");
 			reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting), "The default setting of items per page is "+lsSearchResultPageDefaultSetting, "The default setting of items per page isn't "+lsSearchResultPageDefaultSetting);
 			reporter.softAssert(getProductResultsPageThreadLocal().VerifySearchResultWithProductItemNO(lsKeywordList.get(i)), "The itemNO in search results just contains those with search product number", "the itemNO in search results don't just contain those with search product number");
 			reporter.softAssert(getProductResultsPageThreadLocal().verifyProductPagination(), "Product pagination is existing", "Product pagination is not existing");
 			break;
 		case "BannerImageSearch":
-			reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultUrlWithRegexPattern(lsSearchResultExpectedUrl,lsKeywordList.get(i)), "Url of search result matches expected url", "Url of search result doesn't match expected url");
+			reporter.softAssert(getProductResultsPageThreadLocal().verifyUrlContainDimensionAndKeyword(lsKeywordList.get(i)), "Url of search result matches expected url", "Url of search result doesn't match expected url");
 			if(getProductResultsPageThreadLocal().getBannerImageListSize()>0) {
 				reporter.softAssert(getProductResultsPageThreadLocal().verifyBannerImageContainSpecificWord(lsKeywordList.get(i)), "Banner imgaes contain keyword", "Banner imgaes do not contain keyword");
 			}

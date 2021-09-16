@@ -313,8 +313,7 @@ public class ProductResultsPage extends BasePage{
 					return false;
 				}
 			}
-		}
-		
+		}		
 		return true;		
 	}
 	
@@ -335,14 +334,6 @@ public class ProductResultsPage extends BasePage{
 	 */
 	public List<WebElement> getProductList(){
 		return productResultList;
-	}
-	
-	/**
-	 * This method will return search result account.	  
-	 * @author Wei.Li
-	 */
-	public int getProductResultCount() {
-		return this.productResultList.size();
 	}
 	
 	/**
@@ -412,7 +403,7 @@ public class ProductResultsPage extends BasePage{
 				}
 				else {					
 					if(getReusableActionsInstance().isElementVisible(this.lblShowing)) {
-						if(this.getProductResultCount()!=1) {
+						if(this.productResultList.size()!=1) {
 							return "NormalSearch";
 						}
 						else {
@@ -449,39 +440,20 @@ public class ProductResultsPage extends BasePage{
 		}
 	}
 	
-	/**
-	 * This method will verify Url of search result with Regex pattern.
+    /**
+	 * This method will verify Url after selecting filter in left panel.
+	 * @param String lsKeyword: search keyword 
 	 * @return true/false
-	 * @author Wei.Li
-	 */
-	public boolean verifySearchResultUrlWithRegexPattern(String lsPattern, String lsKeyword) {
-		String lsEncodingKeyword=getEncodingKeyword(lsKeyword);
-		String lsMatchPattern=(new BasePage(this.getDriver())).getBaseURL()+lsPattern+lsEncodingKeyword;
-				
-		return this.URL().matches(lsMatchPattern);		
-	}
-	
-	/**
-	 * This method will verify Url of search result without Regex pattern.
-	 * @return true/false
-	 * @author Wei.Li
-	 */
-	public boolean verifySearchResultUrl(String lsPattern, String lsKeyword) {
-		String lsEncodingKeyword=getEncodingKeyword(lsKeyword);
-		String lsMatchUrl=(new BasePage(this.getDriver())).getBaseURL()+lsPattern+lsEncodingKeyword;
-			
-		return this.URL().equalsIgnoreCase(lsMatchUrl);		
-	}
-	
-	/**
-	 * This method will split keyword using space.
-	 * @param String lsKeyword: input keyword
-	 * @return split array
 	 * @author Wei.Li
 	 */	
-	public String[] splitSearchKeyword(String lsKeyword) {
-		return lsKeyword.trim().split(" ");
-	}
+    public boolean verifyUrlContainDimensionAndKeyword(String lsKeyword) {  
+    	String lsUrl=this.URL();    	
+    	String lsExpectedUrlPattern="dimensions=.*&searchterm="+this.getEncodingKeyword(lsKeyword);
+    	Pattern pattern=Pattern.compile(lsExpectedUrlPattern);
+    	Matcher matcher=pattern.matcher(lsUrl);
+
+    	return matcher.find(); 
+    } 
 	
 	/**
 	 * This method will get BannerImage list size.
@@ -491,6 +463,20 @@ public class ProductResultsPage extends BasePage{
 	public int getBannerImageListSize() {
 		return this.lstBannerImage.size();
 	}
+	
+    /**
+	 * This method will verify Url after selecting sort strategy.
+	 * @param String lsKeyword: search keyword
+	 * @param String lsSortKey: sort key in dropdown menu
+	 * @return true/false
+	 * @author Wei.Li
+	 */	
+    public boolean verifyUrlAfterSelectSortStrategy(String lsKeyword,String lsSortKey) {  
+    	String lsUrl=this.URL();
+    	String lsExpectedUrl="searchterm="+this.getEncodingKeyword(lsKeyword)+"&sortKey="+lsSortKey;
+    	
+    	return lsUrl.toLowerCase().contains(lsExpectedUrl.toLowerCase());
+    }
 	
 	/**
 	 * This method will verify pagination.
@@ -740,41 +726,6 @@ public class ProductResultsPage extends BasePage{
 		
 		return lsErrorMsg;
 	}
-	
-    /**
-	 * This method will get float from string.
-	 * @param String lsTarget: target string
-	 * @return float value
-	 * @author Wei.Li
-	 */	
-    public float getFloatFromString(String lsTarget) {  
-    	lsTarget=lsTarget.replace(",", "").trim();
-    	
-    	String regex="\\d+\\.\\d+";
-    	String lsReturn="";
-    	Pattern pattern=Pattern.compile(regex);
-    	Matcher matcher=pattern.matcher(lsTarget);
-    	while(matcher.find())
-    	{
-    	    lsReturn=matcher.group();    	        	   
-    	}
-    	   			
-    	return Float.parseFloat(lsReturn);
-    }
-    
-    /**
-	 * This method will verify Url after selecting sort strategy.
-	 * @param String lsKeyword: search keyword
-	 * @param String lsSortKey: sort key in dropdown menu
-	 * @return true/false
-	 * @author Wei.Li
-	 */	
-    public boolean verifyUrlAfterSelectSortStrategy(String lsKeyword,String lsSortKey) {  
-    	String lsUrl=this.URL();
-    	String lsExpectedUrl="searchterm="+this.getEncodingKeyword(lsKeyword)+"&sortKey="+lsSortKey;
-    	
-    	return lsUrl.toLowerCase().contains(lsExpectedUrl.toLowerCase());
-    }   	
 
 	/**
 	 * This method will verify filter option headers.
@@ -868,31 +819,6 @@ public class ProductResultsPage extends BasePage{
 		subItemList.get(0).click();
 		return waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},30000);
 	}
-	
-    /**
-	 * This method will verify Url after selecting filter in left panel.
-	 * @param String lsKeyword: search keyword 
-	 * @return true/false
-	 * @author Wei.Li
-	 */	
-    public boolean verifyUrlAfterSelectFilterInLeftPanel(String lsKeyword) {  
-    	String lsUrl=this.URL();    	
-    	String lsExpectedUrlPattern="dimensions=.*&searchterm="+this.getEncodingKeyword(lsKeyword);
-    	Pattern pattern=Pattern.compile(lsExpectedUrlPattern);
-    	Matcher matcher=pattern.matcher(lsUrl);
-
-    	return matcher.find(); 
-    }  
-    
-    /**
-	 * This method will get page title. 
-	 * @return String: page title
-	 * @author Wei.Li
-	 */
-    public String getPageTitle() {
-    	getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSearchResultTitle);
-    	return this.lblSearchResultTitle.getText().trim();
-    }
 
 	/**
 	 * This method will verify filter by price. 
@@ -942,19 +868,6 @@ public class ProductResultsPage extends BasePage{
 			
 		return lsErrorMsg;
 	}
-	
-    /**
-	 * This method will verify the Url contains keyword.
-	 * @param String lsKeyword: search keyword 
-	 * @return true/false
-	 * @author Wei.Li
-	 */	
-    public boolean verifyUrlContainsKeyword(String lsKeyword) {  
-    	String lsUrl=this.URL();    	
-    	String lsExpectedUrlPattern="searchterm="+this.getEncodingKeyword(lsKeyword);
-    	
-    	return lsUrl.contains(lsExpectedUrlPattern);
-    }  
     
     /**
 	 * This method will close all selected filters.  
@@ -992,11 +905,11 @@ public class ProductResultsPage extends BasePage{
     		return false;
     	}
     	    	
-    	for(String lsItem:lstFilter) {    		
-    		if(!lstSelectedFilter.contains(lsItem)) {    			
-    			return false;
-    		}
-    	}
+//    	for(String lsItem:lstFilter) {    		
+//    		if(!lstSelectedFilter.contains(lsItem)) {    			
+//    			return false;
+//    		}
+//    	}
     	
     	for(String lsItem:lstSelectedFilter) {
     		if(!lstFilter.contains(lsItem)) {    			

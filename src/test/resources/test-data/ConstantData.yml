@@ -44,13 +44,14 @@ lst_SearchKeyword: ["dyson vacuum","dfafasdfa","100501","joan rivers","Nike","bo
 lst_SearchKeyword_DropDown: [["dress","Categories","0"]]
 lbl_SearchResultPageDefaultSetting: 36
 lst_SearchResultMessage: [["Search Results For"],["We couldn","t find a match for","Please search again using a different term or browse by brand or category."]]
-lbl_SearchResultExpectedUrl:  "/pages/productresults\\?dimensions=(\\d+)(&rd=[0-9]+)?&searchterm="
-lbl_SearchResultExpectedUrlWithoutKeyword: "/pages/productresults?dimensions=0&searchterm="
 lst_SortOption: ["Featured Products","Newest first","Reviews: Highest first","Price: Lowest first","Price: Highest first","Brand Name: A to Z"]
 lst_FilterOptionHeader: ["On Air","SHOP BY PRODUCT","NEW ARRIVALS","SHOP BY BRAND","SHOP BY COLOUR","SHOP BY SHOES SIZE","SHOP BY SIZE FASHION","SHOP BY STONE","SHOP BY METAL","SHOP BY PRICE","SHOP BY SPECIAL OFFERS","SHOP BY REVIEWS"]
 lst_GeneralTwoLevelFilterOption: [["SHOP BY PRODUCT","Home & Garden"]]
 lst_FilterByPrice: [["SHOP BY PRICE","Under $50","Under"]]
 lst_FilterCombination: [[["SHOP BY SIZE FASHION","Regular XXS-XS"],["SHOP BY PRICE","Under $50"]]]
+
+
+
 
 
 
