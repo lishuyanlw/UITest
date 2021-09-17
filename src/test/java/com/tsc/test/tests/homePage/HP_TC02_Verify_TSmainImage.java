@@ -14,12 +14,12 @@ import com.tsc.test.base.BaseTest;
 			reporter.softAssert(getglobalheaderPageThreadLocal().validateURL((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");
 			reporter.reportLogWithScreenshot("Home Page");
 			String lsYmlNotFound=TestDataHandler.constantDataVariables.getlnk_NotFound();
-			
+				
 			//Method to validate TS image in the upper section	
-			int totalTSimageUpperSection = homePageThreadLocal().getTSimgUpperSectionCount();
+			int totalTSimageUpperSection = homePageThreadLocal().totalTSimage("Upper");
 			reporter.reportLog("Number of total TS image in the upper section: "+totalTSimageUpperSection);
-			List<String> lshref_UpperSection=homePageThreadLocal().gethrefListTSimageUpperSection();
-			homePageThreadLocal().clickallTSimageUpperSectionLinks();
+			List<String> lshref_UpperSection=homePageThreadLocal().gethrefListTSimage("Upper");
+			homePageThreadLocal().clickTSimage("Upper");
 			int numberOfWindows_UpperSection = homePageThreadLocal().getNumberOftabs();
 			List<String> lsUrl_UpperSection=homePageThreadLocal().getTabUrlListTSimageUpperSection();
 			reporter.reportLog("Total number of tabs open for TS image Upper Section: "+numberOfWindows_UpperSection);
@@ -32,11 +32,11 @@ import com.tsc.test.base.BaseTest;
 			}
 			
 			//Method to validate TS image in the Lower Section	
-			int totalTSimageLowerSection = homePageThreadLocal().getTSimgLowerSectionCount();
+			int totalTSimageLowerSection = homePageThreadLocal().totalTSimage("Lower");
 			reporter.reportLog("Number of total TS image in the upper section: "+totalTSimageLowerSection);
-			List<String> lshref_LowerSection=homePageThreadLocal().gethrefListTSimageLowerSection();
-			homePageThreadLocal().clickallTSimageLowerSectionLinks();
-			int numberOfWindows_LowerSection = homePageThreadLocal().getNumberOftabs()-totalTSimageUpperSection;
+			List<String> lshref_LowerSection=homePageThreadLocal().gethrefListTSimage("Lower");
+			homePageThreadLocal().clickTSimage("Lower");
+			int numberOfWindows_LowerSection = homePageThreadLocal().getNumberOftabs()-homePageThreadLocal().totalTSimage("Upper");
 			List<String> lsUrl_LowerSection=homePageThreadLocal().getTabUrlListTSimageLowerSection();
 			reporter.reportLog("Total number of tabs open for TS image Lower Section: "+numberOfWindows_LowerSection);
 			reporter.softAssert(totalTSimageLowerSection==(numberOfWindows_LowerSection-1), "All TS images in Lower Section have been clicked", "All TS images in Lower Section have not been clicked");
