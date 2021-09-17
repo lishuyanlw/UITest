@@ -488,25 +488,24 @@ public class ProductResultsPage extends BasePage{
 	}
 	
 	/**
-	 * This method will verify Brand tile contains keyword.
+	 * This method will verify Brand tile/text contains keyword.
 	 * @param String lsKeyword: input keyword
 	 * @return true/false
 	 * @author Wei.Li
 	 */	
-	public boolean verifyProductBrandTitleContainKeyword(String lsKeyword) {
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblProductTitle);
-		return this.lblProductTitle.getText().toLowerCase().contains(lsKeyword.toLowerCase());
-	}
-	
-	/**
-	 * This method will verify Brand text contains keyword.
-	 * @param String lsKeyword: input keyword
-	 * @return true/false
-	 * @author Wei.Li
-	 */	
-	public boolean verifyProductBrandTextContainKeyword(String lsKeyword) {
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblProductText);
-		return this.lblProductTitle.getText().toLowerCase().contains(lsKeyword.toLowerCase());
+	public boolean verifyProductBrandContainKeyword(String lsKeyword,String lsSection) {
+		boolean bReturn=true;
+		switch(lsSection) {
+		case "Title":
+			getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblProductTitle);
+			bReturn= this.lblProductTitle.getText().toLowerCase().contains(lsKeyword.toLowerCase());
+			break;
+		case "Text":
+			getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblProductText);
+			bReturn= this.lblProductTitle.getText().toLowerCase().contains(lsKeyword.toLowerCase());
+			break;		
+		}
+		return bReturn;		
 	}
 	
 	/**
