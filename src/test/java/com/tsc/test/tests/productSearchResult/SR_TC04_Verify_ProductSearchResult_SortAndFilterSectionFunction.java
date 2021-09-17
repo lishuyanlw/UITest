@@ -118,12 +118,19 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction ext
 	List<List<List<String>>> lstFilterCombination=TestDataHandler.constantDataVariables.getlst_FilterCombination();	
 	for(List<List<String>> lstItemCombination:lstFilterCombination) {
 		List<String> lstFilter=new ArrayList<String>();
+		List<String> lstSelectedSecondLevelFilter=new ArrayList<String>();		
 		for(List<String> lstItem:lstItemCombination) {			
 			getProductResultsPageThreadLocal().selectFilterItemInLeftPanel(lstItem.get(0), lstItem.get(1));
+			lstSelectedSecondLevelFilter.add(getProductResultsPageThreadLocal().secondLevelFilter);			
 			lstFilter.add(lstItem.get(1));
 		}
+		if(getProductResultsPageThreadLocal().bDefault) {
+			reporter.softAssert(getProductResultsPageThreadLocal().verifySlectedFiltersContainSecondlevelFilter(lstSelectedSecondLevelFilter), "The selected filters contain search second level filters", "The selected filters do not contain search second level filters");
+		}
+		else {
+			reporter.softAssert(getProductResultsPageThreadLocal().verifySlectedFiltersContainSecondlevelFilter(lstFilter), "The selected filters contain search second level filters", "The selected filters do not contain search second level filters");
+		}
 		
-		reporter.softAssert(getProductResultsPageThreadLocal().verifySlectedFiltersContainSecondlevelFilter(lstFilter), "The selected filters contain search second level filters", "The selected filters do not contain search second level filters");
 		reporter.softAssert(getProductResultsPageThreadLocal().verifyUrlContainDimensionAndKeyword(lsKeywordList.get(0).get(0)), "The Url contains correct dimensions and keyword", "The Url does not contain correct dimensions and keyword");
 		reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultMessage(lstSearchResultMessage.get(0),lsKeywordList.get(0).get(0)), "Search result message result matches the expected message", "Search result message result does not match the expected message");
 		reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(), "Showing text pattern in filters is correct", "Showing text pattern in filters is incorrect");

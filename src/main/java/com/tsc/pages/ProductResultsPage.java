@@ -132,8 +132,17 @@ public class ProductResultsPage extends BasePage{
 	@FindBy(xpath = "//product-results//div[@class='modalBody']//div[@class='panel']//*[contains(@class,'panel-heading')]")
 	List<WebElement> productFilterList;
 	
+	@FindBy(xpath = "//product-results//div[@class='modalBody']//div[@class='panel']//*[contains(@class,'panel-heading')]/following-sibling::div[contains(@class,'panel-collapse')]//div[contains(@class,'seeMoreDiv') and not(contains(@class,'seeMoreTitle')) and not(@style='display: none;')][@id]")
+	List<WebElement> productFilterMoreButtonList;
+	
+	@FindBy(xpath = "//product-results//div[@class='modalBody']//div[@class='panel']//*[contains(@class,'panel-heading')]/following-sibling::div[contains(@class,'panel-collapse')]//div[contains(@class,'seeMoreDiv') and not(contains(@class,'seeMoreTitle')) and @aria-expanded='true' and not(@style='display: none;')]")
+	List<WebElement> productFilterLessButtonList;
+	
 	@FindBy(xpath = "//product-results//div[@class='modalBody']//div[@class='panel']")
 	List<WebElement> productFilterContainerList;
+	
+	@FindBy(xpath = "//product-results//div[@class='modalBody']//div[@class='panel']//li//div")
+	List<WebElement> secondlevelFilterList;
 	
 	public By byMoreButtonOnLeftPanel=By.xpath(".//div[contains(@class,'panel-collapse')]//div[contains(@class,'seeMoreDiv') and not(contains(@class,'seeMoreTitle')) and not(@style='display: none;')][@id]");
 	
@@ -146,7 +155,8 @@ public class ProductResultsPage extends BasePage{
 			
 	String searchkeyword;
 	public boolean bVerifyTitle=true;
-	String firstLevelFilter,secondLevelFilter;
+	public String firstLevelFilter,secondLevelFilter;
+	public boolean bDefault=false;
 		
 	/**
 	 * This method will judge search type.
@@ -776,7 +786,7 @@ public class ProductResultsPage extends BasePage{
 	public boolean selectFilterItemInLeftPanel(String lsFirstLevelItem,String lsSecondLevelItem) {
 		this.firstLevelFilter=lsFirstLevelItem;
 		this.secondLevelFilter=lsSecondLevelItem;
-				
+		
 		int loopSize=this.productFilterList.size();		
 		for(int i=0;i<loopSize;i++) {			
 			getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i));
@@ -799,23 +809,39 @@ public class ProductResultsPage extends BasePage{
 					String lsSubItem=subItem.getText().trim();	
 					
 					//If found lsSecondLevelItem
-					if(lsSubItem.equalsIgnoreCase(lsSecondLevelItem)) {						
+					if(lsSubItem.equalsIgnoreCase(lsSecondLevelItem)) {	
+						this.bDefault=false;
 						subItem.click();
 						return waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},30000);
 					}
-				}
-				
-				//If unable to find lsSecondLevelItem
-				getReusableActionsInstance().javascriptScrollByVisibleElement(subItemList.get(0));
-				subItemList.get(0).click();
-				return waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},30000);
+				}	
 			}
 		}
 		
 		//If unable to find both lsFirstLevelItem and lsSecondLevelItem, then select the first choice
-		List<WebElement> subItemList=this.productFilterContainerList.get(0).findElements(this.bySubItemListOnLeftPanel);
-		getReusableActionsInstance().javascriptScrollByVisibleElement(subItemList.get(0));
-		subItemList.get(0).click();
+		this.bDefault=true;
+		for(WebElement moreButton:this.productFilterMoreButtonList) {
+			getReusableActionsInstance().javascriptScrollByVisibleElement(moreButton);
+			moreButton.click();
+			getReusableActionsInstance().staticWait(500);
+		}
+		int secondLevelFilterListSize=this.secondlevelFilterList.size();
+		int selectedIndex=-1;
+		for(int i=0;i<secondLevelFilterListSize;i++) {
+			if(this.secondlevelFilterList.get(i).getAttribute("class").contains("checked")) {
+				selectedIndex=i;
+				break;
+			}
+		}
+		WebElement btnSelected=this.secondlevelFilterList.get(selectedIndex+1);
+		getReusableActionsInstance().javascriptScrollByVisibleElement(btnSelected);
+		this.firstLevelFilter=btnSelected.findElement(By.xpath("./ancestor::div[@role='tabpanel']/preceding-sibling::*[contains(@class,'panel-heading')]")).getText().trim();
+		if(this.firstLevelFilter.contains("(")) {
+			this.firstLevelFilter=this.firstLevelFilter.split("\\(")[0].trim();				
+		}
+		this.secondLevelFilter=btnSelected.getText().trim();		
+		btnSelected.click();
+		
 		return waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},30000);
 	}
 
@@ -897,21 +923,15 @@ public class ProductResultsPage extends BasePage{
     	List<String> lstSelectedFilter=new ArrayList<String>();
     	int selctedFilterSize=this.selectedFiltersList.size()-1;
     	for(int i=0;i<selctedFilterSize;i++) {
-    		lstSelectedFilter.add(this.selectedFiltersList.get(i).getText().trim());
+    		lstSelectedFilter.add(this.selectedFiltersList.get(i).getText().trim());    		
     	}
     	
     	if(selctedFilterSize!=lstFilter.size()) {
     		return false;
     	}
     	    	
-//    	for(String lsItem:lstFilter) {    		
-//    		if(!lstSelectedFilter.contains(lsItem)) {    			
-//    			return false;
-//    		}
-//    	}
-    	
-    	for(String lsItem:lstSelectedFilter) {
-    		if(!lstFilter.contains(lsItem)) {    			
+    	for(String lsItem:lstFilter) {    		
+    		if(!lstSelectedFilter.contains(lsItem)) {    			
     			return false;
     		}
     	}
