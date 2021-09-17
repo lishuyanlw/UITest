@@ -141,7 +141,7 @@ public class ProductResultsPage extends BasePage{
 	@FindBy(xpath = "//product-results//div[@class='modalBody']//div[@class='panel']")
 	List<WebElement> productFilterContainerList;
 	
-	@FindBy(xpath = "//product-results//div[@class='modalBody']//div[@class='panel']//li//div")
+	@FindBy(xpath = "//product-results//div[@class='modalBody']//div[@class='panel']//li//div[not(contains(@class,'checked'))]")
 	List<WebElement> secondlevelFilterList;
 	
 	public By byMoreButtonOnLeftPanel=By.xpath(".//div[contains(@class,'panel-collapse')]//div[contains(@class,'seeMoreDiv') and not(contains(@class,'seeMoreTitle')) and not(@style='display: none;')][@id]");
@@ -825,15 +825,8 @@ public class ProductResultsPage extends BasePage{
 			moreButton.click();
 			getReusableActionsInstance().staticWait(500);
 		}
-		int secondLevelFilterListSize=this.secondlevelFilterList.size();
-		int selectedIndex=-1;
-		for(int i=0;i<secondLevelFilterListSize;i++) {
-			if(this.secondlevelFilterList.get(i).getAttribute("class").contains("checked")) {
-				selectedIndex=i;
-				break;
-			}
-		}
-		WebElement btnSelected=this.secondlevelFilterList.get(selectedIndex+1);
+		
+		WebElement btnSelected=this.secondlevelFilterList.get(0);
 		getReusableActionsInstance().javascriptScrollByVisibleElement(btnSelected);
 		this.firstLevelFilter=btnSelected.findElement(By.xpath("./ancestor::div[@role='tabpanel']/preceding-sibling::*[contains(@class,'panel-heading')]")).getText().trim();
 		if(this.firstLevelFilter.contains("(")) {
