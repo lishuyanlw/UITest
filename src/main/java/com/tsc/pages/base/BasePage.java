@@ -425,5 +425,36 @@ import utils.ReusableActions;
 		return (boolean) jse.executeScript("return arguments[0].hasAttribute(arguments[1]);", element,lsProperty);			
 	}
 	
+	/**
+	 * This method will split keyword using space.
+	 * @param String lsKeyword: input keyword
+	 * @return split array
+	 * @author Wei.Li
+	 */	
+	public String[] splitSearchKeyword(String lsKeyword) {
+		return lsKeyword.trim().split(" ");
+	}
+	
+    /**
+	 * This method will get float from string.
+	 * @param String lsTarget: target string
+	 * @return float value
+	 * @author Wei.Li
+	 */	
+    public float getFloatFromString(String lsTarget) {  
+    	lsTarget=lsTarget.replace(",", "").trim();
+    	
+    	String regex="\\d+\\.\\d+";
+    	String lsReturn="";
+    	Pattern pattern=Pattern.compile(regex);
+    	Matcher matcher=pattern.matcher(lsTarget);
+    	while(matcher.find())
+    	{
+    	    lsReturn=matcher.group();    	        	   
+    	}
+    	   			
+    	return Float.parseFloat(lsReturn);
+    }
+	
 
 }
