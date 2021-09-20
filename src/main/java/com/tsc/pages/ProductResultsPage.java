@@ -155,7 +155,7 @@ public class ProductResultsPage extends BasePage{
 			
 	String searchkeyword;
 	public boolean bVerifyTitle=true;
-	public String firstLevelFilter,secondLevelFilter;
+	public String firstLevelFilter,secondLevelFilter;	
 	public boolean bDefault=false;
 		
 	/**
@@ -809,8 +809,7 @@ public class ProductResultsPage extends BasePage{
 					String lsSubItem=subItem.getText().trim();	
 					
 					//If found lsSecondLevelItem
-					if(lsSubItem.equalsIgnoreCase(lsSecondLevelItem)) {	
-						this.bDefault=false;
+					if(lsSubItem.equalsIgnoreCase(lsSecondLevelItem)) {													
 						subItem.click();
 						return waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},30000);
 					}
@@ -916,7 +915,8 @@ public class ProductResultsPage extends BasePage{
     	List<String> lstSelectedFilter=new ArrayList<String>();
     	int selctedFilterSize=this.selectedFiltersList.size()-1;
     	for(int i=0;i<selctedFilterSize;i++) {
-    		lstSelectedFilter.add(this.selectedFiltersList.get(i).getText().trim());    		
+    		getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectedFiltersList.get(i));
+    		lstSelectedFilter.add(this.selectedFiltersList.get(i).getText().trim());     		
     	}
     	
     	if(selctedFilterSize!=lstFilter.size()) {
@@ -924,7 +924,7 @@ public class ProductResultsPage extends BasePage{
     	}
     	    	
     	for(String lsItem:lstFilter) {    		
-    		if(!lstSelectedFilter.contains(lsItem)) {    			
+    		if(!lstSelectedFilter.contains(lsItem)) {     			
     			return false;
     		}
     	}

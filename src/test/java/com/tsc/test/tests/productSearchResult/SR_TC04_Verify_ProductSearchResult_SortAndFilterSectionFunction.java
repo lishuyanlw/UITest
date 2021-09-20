@@ -117,12 +117,19 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction ext
 	//Test filter option combination
 	List<List<List<String>>> lstFilterCombination=TestDataHandler.constantDataVariables.getlst_FilterCombination();	
 	for(List<List<String>> lstItemCombination:lstFilterCombination) {
+		//Save selected firstLevelFilter and secondLevelFilter
+		ArrayList<ArrayList<String>> selectedFilters=new ArrayList<ArrayList<String>>();
+		getProductResultsPageThreadLocal().bDefault=false;		
 		List<String> lstFilter=new ArrayList<String>();
 		List<String> lstSelectedSecondLevelFilter=new ArrayList<String>();		
-		for(List<String> lstItem:lstItemCombination) {			
+		for(List<String> lstItem:lstItemCombination) {	
+			ArrayList<String> lstTwoLevelFilter=new ArrayList<String>();
 			getProductResultsPageThreadLocal().selectFilterItemInLeftPanel(lstItem.get(0), lstItem.get(1));
 			lstSelectedSecondLevelFilter.add(getProductResultsPageThreadLocal().secondLevelFilter);			
 			lstFilter.add(lstItem.get(1));
+			lstTwoLevelFilter.add(getProductResultsPageThreadLocal().firstLevelFilter);
+			lstTwoLevelFilter.add(getProductResultsPageThreadLocal().secondLevelFilter);
+			selectedFilters.add(lstTwoLevelFilter);
 		}
 		if(getProductResultsPageThreadLocal().bDefault) {
 			reporter.softAssert(getProductResultsPageThreadLocal().verifySlectedFiltersContainSecondlevelFilter(lstSelectedSecondLevelFilter), "The selected filters contain search second level filters", "The selected filters do not contain search second level filters");
@@ -140,7 +147,22 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction ext
 		if(productList.size()>0) {
 			getProductResultsPageThreadLocal().verifySearchResultContent(productList);
 		}	
-				
+		
+		//To uncheck the first filter in selected filter options
+		getProductResultsPageThreadLocal().selectFilterItemInLeftPanel(selectedFilters.get(0).get(0), selectedFilters.get(0).get(1));
+		//Remove the unchecked second level filter from saved second level filter list
+		lstSelectedSecondLevelFilter.remove(0);
+		reporter.softAssert(getProductResultsPageThreadLocal().verifySlectedFiltersContainSecondlevelFilter(lstSelectedSecondLevelFilter), "The selected filters contain search second level filters", "The selected filters do not contain search second level filters");
+		reporter.softAssert(getProductResultsPageThreadLocal().verifyUrlContainDimensionAndKeyword(lsKeywordList.get(0).get(0)), "The Url contains correct dimensions and keyword", "The Url does not contain correct dimensions and keyword");
+		reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultMessage(lstSearchResultMessage.get(0),lsKeywordList.get(0).get(0)), "Search result message result matches the expected message", "Search result message result does not match the expected message");
+		reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(), "Showing text pattern in filters is correct", "Showing text pattern in filters is incorrect");
+		reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting), "The default setting of items per page is "+lsSearchResultPageDefaultSetting, "The default setting of items per page isn't "+lsSearchResultPageDefaultSetting);
+		
+		productList=getProductResultsPageThreadLocal().getProductList();
+		if(productList.size()>0) {
+			getProductResultsPageThreadLocal().verifySearchResultContent(productList);
+		}
+		
 		//To recover the initial test environment
 		if(getProductResultsPageThreadLocal().getClearAllFiltersButtonStatus()) {
 			getProductResultsPageThreadLocal().closeAllSelectedFilters();
