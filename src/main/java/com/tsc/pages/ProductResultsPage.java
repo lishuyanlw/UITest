@@ -132,8 +132,17 @@ public class ProductResultsPage extends BasePage{
 	@FindBy(xpath = "//product-results//div[@class='modalBody']//div[@class='panel']//*[contains(@class,'panel-heading')]")
 	List<WebElement> productFilterList;
 	
+	@FindBy(xpath = "//product-results//div[@class='modalBody']//div[@class='panel']//*[contains(@class,'panel-heading')]/following-sibling::div[contains(@class,'panel-collapse')]//div[contains(@class,'seeMoreDiv') and not(contains(@class,'seeMoreTitle')) and not(@style='display: none;')][@id]")
+	List<WebElement> productFilterMoreButtonList;
+	
+	@FindBy(xpath = "//product-results//div[@class='modalBody']//div[@class='panel']//*[contains(@class,'panel-heading')]/following-sibling::div[contains(@class,'panel-collapse')]//div[contains(@class,'seeMoreDiv') and not(contains(@class,'seeMoreTitle')) and @aria-expanded='true' and not(@style='display: none;')]")
+	List<WebElement> productFilterLessButtonList;
+	
 	@FindBy(xpath = "//product-results//div[@class='modalBody']//div[@class='panel']")
 	List<WebElement> productFilterContainerList;
+	
+	@FindBy(xpath = "//product-results//div[@class='modalBody']//div[@class='panel']//li//div[not(contains(@class,'checked'))]")
+	List<WebElement> secondlevelFilterList;
 	
 	public By byMoreButtonOnLeftPanel=By.xpath(".//div[contains(@class,'panel-collapse')]//div[contains(@class,'seeMoreDiv') and not(contains(@class,'seeMoreTitle')) and not(@style='display: none;')][@id]");
 	
@@ -146,7 +155,8 @@ public class ProductResultsPage extends BasePage{
 			
 	String searchkeyword;
 	public boolean bVerifyTitle=true;
-	String firstLevelFilter,secondLevelFilter;
+	public String firstLevelFilter,secondLevelFilter;
+	public boolean bDefault=false;
 		
 	/**
 	 * This method will judge search type.
@@ -313,8 +323,7 @@ public class ProductResultsPage extends BasePage{
 					return false;
 				}
 			}
-		}
-		
+		}		
 		return true;		
 	}
 	
@@ -338,14 +347,6 @@ public class ProductResultsPage extends BasePage{
 	}
 	
 	/**
-	 * This method will return search result account.	  
-	 * @author Wei.Li
-	 */
-	public int getProductResultCount() {
-		return this.productResultList.size();
-	}
-	
-	/**
 	 * This method will verify the itemNO in search results will just contain those with search product number.
 	 * @param String lsexpectedItemNO: expected ItemNO
 	 * @return true/false
@@ -354,7 +355,7 @@ public class ProductResultsPage extends BasePage{
 	public boolean VerifySearchResultWithProductItemNO(String lsexpectedItemNO) {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.productItemNOList.get(0));
 		for(WebElement item: this.productItemNOList) {
-			String lsItem=item.getText();
+			String lsItem=item.getText().trim();
 			List<String> list=this.getNumberFromString(lsItem);
 			String lsFinal="";
 			for(String lsSubItem:list) {
@@ -407,12 +408,12 @@ public class ProductResultsPage extends BasePage{
 		if(lsUrl.contains("dimensions=0&")) {
 			if(getReusableActionsInstance().isElementVisible(this.lblSearchResultMessage)) {
 				getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSearchResultMessage);
-				if(this.lblSearchResultMessage.getText().contains("Please search again")) {
+				if(this.lblSearchResultMessage.getText().trim().contains("Please search again")) {
 					   return "NoSearchResult";
 				}
 				else {					
 					if(getReusableActionsInstance().isElementVisible(this.lblShowing)) {
-						if(this.getProductResultCount()!=1) {
+						if(this.productResultList.size()!=1) {
 							return "NormalSearch";
 						}
 						else {
@@ -449,39 +450,20 @@ public class ProductResultsPage extends BasePage{
 		}
 	}
 	
-	/**
-	 * This method will verify Url of search result with Regex pattern.
+    /**
+	 * This method will verify Url after selecting filter in left panel.
+	 * @param String lsKeyword: search keyword 
 	 * @return true/false
-	 * @author Wei.Li
-	 */
-	public boolean verifySearchResultUrlWithRegexPattern(String lsPattern, String lsKeyword) {
-		String lsEncodingKeyword=getEncodingKeyword(lsKeyword);
-		String lsMatchPattern=(new BasePage(this.getDriver())).getBaseURL()+lsPattern+lsEncodingKeyword;
-				
-		return this.URL().matches(lsMatchPattern);		
-	}
-	
-	/**
-	 * This method will verify Url of search result without Regex pattern.
-	 * @return true/false
-	 * @author Wei.Li
-	 */
-	public boolean verifySearchResultUrl(String lsPattern, String lsKeyword) {
-		String lsEncodingKeyword=getEncodingKeyword(lsKeyword);
-		String lsMatchUrl=(new BasePage(this.getDriver())).getBaseURL()+lsPattern+lsEncodingKeyword;
-			
-		return this.URL().equalsIgnoreCase(lsMatchUrl);		
-	}
-	
-	/**
-	 * This method will split keyword using space.
-	 * @param String lsKeyword: input keyword
-	 * @return split array
 	 * @author Wei.Li
 	 */	
-	public String[] splitSearchKeyword(String lsKeyword) {
-		return lsKeyword.trim().split(" ");
-	}
+    public boolean verifyUrlContainDimensionAndKeyword(String lsKeyword) {  
+    	String lsUrl=this.URL();    	
+    	String lsExpectedUrlPattern="dimensions=.*&searchterm="+this.getEncodingKeyword(lsKeyword);
+    	Pattern pattern=Pattern.compile(lsExpectedUrlPattern);
+    	Matcher matcher=pattern.matcher(lsUrl);
+
+    	return matcher.find(); 
+    } 
 	
 	/**
 	 * This method will get BannerImage list size.
@@ -491,6 +473,20 @@ public class ProductResultsPage extends BasePage{
 	public int getBannerImageListSize() {
 		return this.lstBannerImage.size();
 	}
+	
+    /**
+	 * This method will verify Url after selecting sort strategy.
+	 * @param String lsKeyword: search keyword
+	 * @param String lsSortKey: sort key in dropdown menu
+	 * @return true/false
+	 * @author Wei.Li
+	 */	
+    public boolean verifyUrlAfterSelectSortStrategy(String lsKeyword,String lsSortKey) {  
+    	String lsUrl=this.URL();
+    	String lsExpectedUrl="searchterm="+this.getEncodingKeyword(lsKeyword)+"&sortKey="+lsSortKey;
+    	
+    	return lsUrl.toLowerCase().contains(lsExpectedUrl.toLowerCase());
+    }
 	
 	/**
 	 * This method will verify pagination.
@@ -502,25 +498,24 @@ public class ProductResultsPage extends BasePage{
 	}
 	
 	/**
-	 * This method will verify Brand tile contains keyword.
+	 * This method will verify Brand tile/text contains keyword.
 	 * @param String lsKeyword: input keyword
 	 * @return true/false
 	 * @author Wei.Li
 	 */	
-	public boolean verifyProductBrandTitleContainKeyword(String lsKeyword) {
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblProductTitle);
-		return this.lblProductTitle.getText().toLowerCase().contains(lsKeyword.toLowerCase());
-	}
-	
-	/**
-	 * This method will verify Brand text contains keyword.
-	 * @param String lsKeyword: input keyword
-	 * @return true/false
-	 * @author Wei.Li
-	 */	
-	public boolean verifyProductBrandTextContainKeyword(String lsKeyword) {
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblProductText);
-		return this.lblProductTitle.getText().toLowerCase().contains(lsKeyword.toLowerCase());
+	public boolean verifyProductBrandContainKeyword(String lsKeyword,String lsSection) {
+		boolean bReturn=true;
+		switch(lsSection) {
+		case "Title":
+			getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblProductTitle);
+			bReturn= this.lblProductTitle.getText().toLowerCase().contains(lsKeyword.toLowerCase());
+			break;
+		case "Text":
+			getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblProductText);
+			bReturn= this.lblProductTitle.getText().toLowerCase().contains(lsKeyword.toLowerCase());
+			break;		
+		}
+		return bReturn;		
 	}
 	
 	/**
@@ -687,7 +682,7 @@ public class ProductResultsPage extends BasePage{
 		List<String> lstOption=new ArrayList<String>();
 		for(int i=0;i<listSize;i++) {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(this.sortByOptionList.get(i));
-			lstOption.add(this.sortByOptionList.get(i).getText());
+			lstOption.add(this.sortByOptionList.get(i).getText().trim());
 		}
 		
 		Set<String> setOption=new HashSet<String>(lstOption);
@@ -723,10 +718,10 @@ public class ProductResultsPage extends BasePage{
 		List<String> productNOList=new ArrayList<String>();
 		for(WebElement element:this.productResultList) {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-			String nowPriceText=element.findElement(this.byProductNowPrice).getText();			
+			String nowPriceText=element.findElement(this.byProductNowPrice).getText().trim();			
 			float nowPriceValue=this.getFloatFromString(nowPriceText);			
 			priceList.add(nowPriceValue);
-			String productNO=element.findElement(this.byProductItemNO).getText();
+			String productNO=element.findElement(this.byProductItemNO).getText().trim();
 			productNOList.add(productNO);
 		}
 				
@@ -740,41 +735,6 @@ public class ProductResultsPage extends BasePage{
 		
 		return lsErrorMsg;
 	}
-	
-    /**
-	 * This method will get float from string.
-	 * @param String lsTarget: target string
-	 * @return float value
-	 * @author Wei.Li
-	 */	
-    public float getFloatFromString(String lsTarget) {  
-    	lsTarget=lsTarget.replace(",", "").trim();
-    	
-    	String regex="\\d+\\.\\d+";
-    	String lsReturn="";
-    	Pattern pattern=Pattern.compile(regex);
-    	Matcher matcher=pattern.matcher(lsTarget);
-    	while(matcher.find())
-    	{
-    	    lsReturn=matcher.group();    	        	   
-    	}
-    	   			
-    	return Float.parseFloat(lsReturn);
-    }
-    
-    /**
-	 * This method will verify Url after selecting sort strategy.
-	 * @param String lsKeyword: search keyword
-	 * @param String lsSortKey: sort key in dropdown menu
-	 * @return true/false
-	 * @author Wei.Li
-	 */	
-    public boolean verifyUrlAfterSelectSortStrategy(String lsKeyword,String lsSortKey) {  
-    	String lsUrl=this.URL();
-    	String lsExpectedUrl="searchterm="+this.getEncodingKeyword(lsKeyword)+"&sortKey="+lsSortKey;
-    	
-    	return lsUrl.toLowerCase().contains(lsExpectedUrl.toLowerCase());
-    }   	
 
 	/**
 	 * This method will verify filter option headers.
@@ -791,10 +751,10 @@ public class ProductResultsPage extends BasePage{
 	       	     
 	      for(int i=0;i<listSize;i++) {
 	         getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i));
-	         if(lstOptionYml.contains(this.productFilterList.get(i).getText())) {
+	         if(lstOptionYml.contains(this.productFilterList.get(i).getText().trim())) {
 	            continue;
 	         }else {
-	            return lsErrorMsg = "Filter option headers in left panel contain "+this.productFilterList.get(i).getText()+" that is not present in input list";
+	            return lsErrorMsg = "Filter option headers in left panel contain "+this.productFilterList.get(i).getText().trim()+" that is not present in input list";
 	         }
 	      }      
 	      return lsErrorMsg;
@@ -826,11 +786,14 @@ public class ProductResultsPage extends BasePage{
 	public boolean selectFilterItemInLeftPanel(String lsFirstLevelItem,String lsSecondLevelItem) {
 		this.firstLevelFilter=lsFirstLevelItem;
 		this.secondLevelFilter=lsSecondLevelItem;
-				
-		int loopSize=this.productFilterList.size();
+		
+		int loopSize=this.productFilterList.size();		
 		for(int i=0;i<loopSize;i++) {			
 			getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i));
 			String lsHeader=this.productFilterList.get(i).getText().trim();
+			if(lsHeader.contains("(")) {
+				lsHeader=lsHeader.split("\\(")[0].trim();				
+			}
 			
 			//If found lsFirstLevelItem
 			if(lsHeader.equalsIgnoreCase(lsFirstLevelItem)) {				
@@ -846,50 +809,34 @@ public class ProductResultsPage extends BasePage{
 					String lsSubItem=subItem.getText().trim();	
 					
 					//If found lsSecondLevelItem
-					if(lsSubItem.equalsIgnoreCase(lsSecondLevelItem)) {						
+					if(lsSubItem.equalsIgnoreCase(lsSecondLevelItem)) {	
+						this.bDefault=false;
 						subItem.click();
 						return waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},30000);
 					}
-				}
-				
-				//If unable to find lsSecondLevelItem
-				getReusableActionsInstance().javascriptScrollByVisibleElement(subItemList.get(0));
-				subItemList.get(0).click();
-				return waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},30000);
+				}	
 			}
 		}
 		
 		//If unable to find both lsFirstLevelItem and lsSecondLevelItem, then select the first choice
-		List<WebElement> subItemList=this.productFilterContainerList.get(0).findElements(this.bySubItemListOnLeftPanel);
-		getReusableActionsInstance().javascriptScrollByVisibleElement(subItemList.get(0));
-		subItemList.get(0).click();
+		this.bDefault=true;
+		for(WebElement moreButton:this.productFilterMoreButtonList) {
+			getReusableActionsInstance().javascriptScrollByVisibleElement(moreButton);
+			moreButton.click();
+			getReusableActionsInstance().staticWait(500);
+		}
+		
+		WebElement btnSelected=this.secondlevelFilterList.get(0);
+		getReusableActionsInstance().javascriptScrollByVisibleElement(btnSelected);
+		this.firstLevelFilter=btnSelected.findElement(By.xpath("./ancestor::div[@role='tabpanel']/preceding-sibling::*[contains(@class,'panel-heading')]")).getText().trim();
+		if(this.firstLevelFilter.contains("(")) {
+			this.firstLevelFilter=this.firstLevelFilter.split("\\(")[0].trim();				
+		}
+		this.secondLevelFilter=btnSelected.getText().trim();		
+		btnSelected.click();
+		
 		return waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},30000);
 	}
-	
-    /**
-	 * This method will verify Url after selecting filter in left panel.
-	 * @param String lsKeyword: search keyword 
-	 * @return true/false
-	 * @author Wei.Li
-	 */	
-    public boolean verifyUrlAfterSelectFilterInLeftPanel(String lsKeyword) {  
-    	String lsUrl=this.URL();    	
-    	String lsExpectedUrlPattern="dimensions=.*&searchterm="+this.getEncodingKeyword(lsKeyword);
-    	Pattern pattern=Pattern.compile(lsExpectedUrlPattern);
-    	Matcher matcher=pattern.matcher(lsUrl);
-
-    	return matcher.find(); 
-    }  
-    
-    /**
-	 * This method will get page title. 
-	 * @return String: page title
-	 * @author Wei.Li
-	 */
-    public String getPageTitle() {
-    	getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSearchResultTitle);
-    	return this.lblSearchResultTitle.getText().trim();
-    }
 
 	/**
 	 * This method will verify filter by price. 
@@ -905,8 +852,8 @@ public class ProductResultsPage extends BasePage{
 
 		for(WebElement element:this.productResultList) {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-			String productNO=element.findElement(this.byProductItemNO).getText();
-			String nowPriceText=element.findElement(this.byProductNowPrice).getText();			
+			String productNO=element.findElement(this.byProductItemNO).getText().trim();
+			String nowPriceText=element.findElement(this.byProductNowPrice).getText().trim();			
 			float nowPriceValue=this.getFloatFromString(nowPriceText);	
 			List<String> lstPrice=this.getNumberFromString(secondLevelFilter);
 			
@@ -939,19 +886,6 @@ public class ProductResultsPage extends BasePage{
 			
 		return lsErrorMsg;
 	}
-	
-    /**
-	 * This method will verify the Url contains keyword.
-	 * @param String lsKeyword: search keyword 
-	 * @return true/false
-	 * @author Wei.Li
-	 */	
-    public boolean verifyUrlContainsKeyword(String lsKeyword) {  
-    	String lsUrl=this.URL();    	
-    	String lsExpectedUrlPattern="searchterm="+this.getEncodingKeyword(lsKeyword);
-    	
-    	return lsUrl.contains(lsExpectedUrlPattern);
-    }  
     
     /**
 	 * This method will close all selected filters.  
@@ -970,6 +904,32 @@ public class ProductResultsPage extends BasePage{
 	 */	
     public boolean getClearAllFiltersButtonStatus() {  
     	return this.selectedFiltersList.size()>1;
+    }
+    
+    /**
+	 * This method will verify if selected filters contain search second level filters. 
+	 * @param List<String> lstFilter: second level filter list 
+	 * @return true/false
+	 * @author Wei.Li
+	 */	
+    public boolean verifySlectedFiltersContainSecondlevelFilter(List<String> lstFilter) {
+    	List<String> lstSelectedFilter=new ArrayList<String>();
+    	int selctedFilterSize=this.selectedFiltersList.size()-1;
+    	for(int i=0;i<selctedFilterSize;i++) {
+    		lstSelectedFilter.add(this.selectedFiltersList.get(i).getText().trim());    		
+    	}
+    	
+    	if(selctedFilterSize!=lstFilter.size()) {
+    		return false;
+    	}
+    	    	
+    	for(String lsItem:lstFilter) {    		
+    		if(!lstSelectedFilter.contains(lsItem)) {    			
+    			return false;
+    		}
+    	}
+    	
+    	return true;
     }
 }
 
