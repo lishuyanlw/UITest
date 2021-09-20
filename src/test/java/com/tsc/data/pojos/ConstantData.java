@@ -33,12 +33,8 @@ public class ConstantData {
 	private String lbl_MinicartLinkName;
 	private String lnk_MinicarLink;
 	private List<String> lst_FlyoutHeading;
-<<<<<<< HEAD
-	private List<String> lst_FlyoutsubMenu;
-=======
 	private List<String> lnk_FlyoutHeaderLinkConstant;
 	private String lbl_FlyoutHeadingLandingPageLink;
->>>>>>> master
 	private String lbl_OnAirNow;
 	private String lbl_RecentlyAir;
 	private String lnk_RecentlyAir;
@@ -362,8 +358,6 @@ public class ConstantData {
 		this.lbl_MinicartLinkName = lbl_MinicartLinkName;
 	}
 	/**
-<<<<<<< HEAD
-=======
 	 * @return the lbl_MinicartLinkName
 	 */
 	public String getlbl_FlyoutHeadingLandingPageLink() {
@@ -376,7 +370,6 @@ public class ConstantData {
 		this.lbl_FlyoutHeadingLandingPageLink = lbl_FlyoutHeadingLandingPageLink;
 	}
 	/**
->>>>>>> master
 	 * @return the lst_FlyoutHeading
 	 */
 	public List<String> getlst_FlyoutHeading() {
@@ -389,19 +382,6 @@ public class ConstantData {
 		this.lst_FlyoutHeading = lst_FlyoutHeading;
 	}
 	/**
-<<<<<<< HEAD
-	 * @return the lst_FlyoutsubMenu
-	 */
-	public List<String> getlst_FlyoutsubMenu() {
-		return lst_FlyoutsubMenu;
-	}
-	/**
-	 * @param lst_FlyoutsubMenu the lst_FlyoutsubMenu to set
-	 */
-	public void setlst_FlyoutsubMenu(List<String> lst_FlyoutsubMenu) {
-		this.lst_FlyoutsubMenu = lst_FlyoutsubMenu;
-	}
-=======
 	 * @return the lnk_FlyoutHeaderLinkConstant
 	 */
 	public List<String> getlnk_FlyoutHeaderLinkConstant() {
@@ -413,7 +393,6 @@ public class ConstantData {
 	public void setlnk_FlyoutHeaderLinkConstant(List<String> lnk_FlyoutHeaderLinkConstant) {
 		this.lnk_FlyoutHeaderLinkConstant = lnk_FlyoutHeaderLinkConstant;
 }
->>>>>>> master
 	/**
 	 * @return the lbl_OnAirNow
 	 */
