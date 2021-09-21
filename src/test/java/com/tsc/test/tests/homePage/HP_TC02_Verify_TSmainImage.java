@@ -18,7 +18,6 @@ import com.tsc.test.base.BaseTest;
 			//Method to validate TS image in the upper section	
 			int totalTSimageUpperSection = homePageThreadLocal().totalTSimage("Upper");
 			reporter.reportLog("Number of total TS image in the upper section: "+totalTSimageUpperSection);
-			List<String> lshref_UpperSection=homePageThreadLocal().gethrefListTSimage("Upper");
 			homePageThreadLocal().clickTSimage("Upper");
 			int numberOfWindows_UpperSection = homePageThreadLocal().getNumberOftabs();
 			List<String> lsUrl_UpperSection=homePageThreadLocal().getTabUrlListTSimageUpperSection();
@@ -33,8 +32,7 @@ import com.tsc.test.base.BaseTest;
 			
 			//Method to validate TS image in the Lower Section	
 			int totalTSimageLowerSection = homePageThreadLocal().totalTSimage("Lower");
-			reporter.reportLog("Number of total TS image in the upper section: "+totalTSimageLowerSection);
-			List<String> lshref_LowerSection=homePageThreadLocal().gethrefListTSimage("Lower");
+			reporter.reportLog("Number of total TS image in the Lower Section: "+totalTSimageLowerSection);
 			homePageThreadLocal().clickTSimage("Lower");
 			int numberOfWindows_LowerSection = homePageThreadLocal().getNumberOftabs()-homePageThreadLocal().totalTSimage("Upper");
 			List<String> lsUrl_LowerSection=homePageThreadLocal().getTabUrlListTSimageLowerSection();
