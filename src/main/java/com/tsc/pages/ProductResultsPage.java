@@ -841,16 +841,17 @@ public class ProductResultsPage extends BasePage{
 	/**
 	 * This method will verify filter by price. 
 	 * @param String lsPriceMode: Under/Between/Over
+	 * @param boolean bFirst: true for first item and false for not first item
 	 * @return String: error message
 	 * @author Wei.Li
 	 */
-	public String verifyFilterByPrice(String lsPriceMode) {
+	public String verifyFilterByPrice(String lsPriceMode,boolean bFirst) {
 		String lsErrorMsg="";
 		if(this.productResultList.size()==0) {
 			return lsErrorMsg="No product list";
 		}
-
-		for(WebElement element:this.productResultList) {
+		
+		for(WebElement element:this.productResultList) {						
 			getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 			String productNO=element.findElement(this.byProductItemNO).getText().trim();
 			String nowPriceText=element.findElement(this.byProductNowPrice).getText().trim();			
@@ -878,7 +879,11 @@ public class ProductResultsPage extends BasePage{
 				}
 				break;
 			}
-				
+			
+			if(bFirst) {
+				return lsErrorMsg;
+			}
+			
 			if(!lsErrorMsg.isEmpty()) {
 				return lsErrorMsg;
 			}

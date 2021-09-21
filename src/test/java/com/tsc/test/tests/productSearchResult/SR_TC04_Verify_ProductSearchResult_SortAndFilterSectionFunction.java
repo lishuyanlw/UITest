@@ -90,7 +90,15 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction ext
 	List<List<String>> lstFilterByPrice=TestDataHandler.constantDataVariables.getlst_FilterByPrice();
 	for(List<String> lstItem:lstFilterByPrice) {
 		if(getProductResultsPageThreadLocal().selectFilterItemInLeftPanel(lstItem.get(0), lstItem.get(1))) {
-			lsMsg=getProductResultsPageThreadLocal().verifyFilterByPrice(lstItem.get(2));
+			//To verify the first item
+			lsMsg=getProductResultsPageThreadLocal().verifyFilterByPrice(lstItem.get(2),true);
+			if(lsMsg.isEmpty()) {
+				reporter.reportLogPass("The first item for filter by price works");
+			}else {
+				reporter.reportLogFail(lsMsg);
+			}
+			//To verify all items
+			lsMsg=getProductResultsPageThreadLocal().verifyFilterByPrice(lstItem.get(2),false);
 			if(lsMsg.isEmpty()) {
 				reporter.reportLogPass("Filter by price works");
 			}else {
