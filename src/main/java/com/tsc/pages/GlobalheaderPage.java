@@ -599,18 +599,7 @@ public class GlobalheaderPage extends BasePage{
 		return SubMenulist;
 	}
 	
-	public List<String> getListSubMenu(int headingNumber,String headingName) {
-		WebElement WebElement=listFlyoutHeadings.get(headingNumber).findElement(By.xpath(".//span"));
-		getReusableActionsInstance().scrollToElement(WebElement);	
-		List<WebElement> SubMenu=WebElement.getText().findElements(By.xpath(".//div[@class='flyout']//div[@class='flyoutRow2Left']//ul//li[1]//b"));
-		getReusableActionsInstance().waitForAllElementsVisible(SubMenu, 3);
-		List<String> SubMenulist =new ArrayList<String>();
-			for(WebElement e : SubMenu) {
-				SubMenulist.add(e.getText());
-		 	}
-		return SubMenulist;
-	}
-	
+		
 	/* Method to validate all href for Flyout submenu is not empty
 	 * @return : true/false
 	 * @author Shruti Desai
@@ -641,11 +630,11 @@ public class GlobalheaderPage extends BasePage{
 			
 	 }	
 	 
-	 public List<String> getFlyoutSubMenuLinks(int headingNumber, String headingName) {
+	 public List<String> getFlyoutSubMenuLinks(int headingNumber) {
 			String errorMsg = null;
 		 WebElement WebElement=New_listFlyoutHeadings.get(headingNumber).findElement(By.xpath(".//span"));
 			getReusableActionsInstance().scrollToElement(WebElement);
-			List<WebElement> SubMenu=New_listFlyoutHeadings.get.findElements(By.xpath(".//div/ul[1]/li/a"));
+			List<WebElement> SubMenu=New_listFlyoutHeadings.get(headingNumber).findElements(By.xpath(".//div/ul[1]/li/a"));
 			List<String> SubMenulink =new ArrayList<String>();
 			for(WebElement e : SubMenu) {
 				if(e.getAttribute("href").isEmpty()) {

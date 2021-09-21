@@ -19,7 +19,7 @@ public class HP_TC02_GlobalHeader_VerifyFlyoutsSubMenuItems extends BaseTest {
 		reporter.reportLog("Validating Flyout Sub Menu for each category");		String FOHeading, BrandSectionHeading;
 		for(int i=0; i<getglobalheaderPageThreadLocal().getFlyoutHeadingCount(); i++) {			FOHeading = getglobalheaderPageThreadLocal().getFlyoutHeadings(i);
 			
-			for (FOHeading=(getglobalheaderPageThreadLocal().getFlyoutHeadings(i)){
+		//	for (FOHeading=(getglobalheaderPageThreadLocal().getFlyoutHeadings(i)){
 				
 			BrandSectionHeading = getglobalheaderPageThreadLocal().getFeatureBrandSectionHeading(i);
 			List<String> SubMenuLinks = getglobalheaderPageThreadLocal().getFlyoutSubMenuLinks(i);			List<String> SubMenu = getglobalheaderPageThreadLocal().getListSubMenu(i);
@@ -58,6 +58,6 @@ public class HP_TC02_GlobalHeader_VerifyFlyoutsSubMenuItems extends BaseTest {
 			
 			}
 			
-		}
+		
 	}
 }
