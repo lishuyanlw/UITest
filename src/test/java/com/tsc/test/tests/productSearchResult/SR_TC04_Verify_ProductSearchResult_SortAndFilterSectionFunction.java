@@ -1,7 +1,6 @@
 package com.tsc.test.tests.productSearchResult;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
@@ -42,7 +41,14 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction ext
 		}				
 		
 		reporter.softAssert(getProductResultsPageThreadLocal().verifyUrlAfterSelectSortStrategy(lsKeywordList.get(0).get(0),"HighestPrice"), "The Url contains keyword and sortKey=HighestPrice", "The Url does not contain keyword and sortKey=HighestPrice");		
-		reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultMessage(lstSearchResultMessage.get(0),lsKeywordList.get(0).get(0)), "Search result message result matches the expected message", "Search result message result does not match the expected message");
+		
+		lsMsg=getProductResultsPageThreadLocal().verifySearchResultMessage(lstSearchResultMessage.get(0),lsKeywordList.get(0).get(0));
+		if(lsMsg.isEmpty()) {
+			reporter.reportLogPass("Search result message result of '"+getProductResultsPageThreadLocal().lsSearchResultMessage+"' matches the expected message");
+		}else {
+			reporter.reportLogFail(lsMsg);
+		}
+				
 		reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(), "Showing text pattern in filters is correct", "Showing text pattern in filters is incorrect");
 		reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting), "The default setting of items per page is "+lsSearchResultPageDefaultSetting, "The default setting of items per page isn't "+lsSearchResultPageDefaultSetting);
 		
@@ -62,7 +68,14 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction ext
 	for(List<String> lstItem:lstGeneralTwoLevelFilterOption) {
 		if(getProductResultsPageThreadLocal().selectFilterItemInLeftPanel(lstItem.get(0), lstItem.get(1))) {
 			reporter.softAssert(getProductResultsPageThreadLocal().verifyUrlContainDimensionAndKeyword(lsKeywordList.get(0).get(0)), "The Url contains correct dimensions and keyword", "The Url does not contain correct dimensions and keyword");
-			reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultMessage(lstSearchResultMessage.get(0),lsKeywordList.get(0).get(0)), "Search result message result matches the expected message", "Search result message result does not match the expected message");
+			
+			lsMsg=getProductResultsPageThreadLocal().verifySearchResultMessage(lstSearchResultMessage.get(0),lsKeywordList.get(0).get(0));
+			if(lsMsg.isEmpty()) {
+				reporter.reportLogPass("Search result message result of '"+getProductResultsPageThreadLocal().lsSearchResultMessage+"' matches the expected message");
+			}else {
+				reporter.reportLogFail(lsMsg);
+			}
+						
 			reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(), "Showing text pattern in filters is correct", "Showing text pattern in filters is incorrect");
 			reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting), "The default setting of items per page is "+lsSearchResultPageDefaultSetting, "The default setting of items per page isn't "+lsSearchResultPageDefaultSetting);
 			
@@ -97,7 +110,14 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction ext
 				reporter.reportLogFail(lsMsg);
 			}	
 			reporter.softAssert(getProductResultsPageThreadLocal().verifyUrlContainDimensionAndKeyword(lsKeywordList.get(0).get(0)), "The Url contains correct keyword", "The Url does not contain correct keyword");
-			reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultMessage(lstSearchResultMessage.get(0),lsKeywordList.get(0).get(0)), "Search result message result matches the expected message", "Search result message result does not match the expected message");
+			
+			lsMsg=getProductResultsPageThreadLocal().verifySearchResultMessage(lstSearchResultMessage.get(0),lsKeywordList.get(0).get(0));
+			if(lsMsg.isEmpty()) {
+				reporter.reportLogPass("Search result message result of '"+getProductResultsPageThreadLocal().lsSearchResultMessage+"' matches the expected message");
+			}else {
+				reporter.reportLogFail(lsMsg);
+			}
+						
 			reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(), "Showing text pattern in filters is correct", "Showing text pattern in filters is incorrect");
 			reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting), "The default setting of items per page is "+lsSearchResultPageDefaultSetting, "The default setting of items per page isn't "+lsSearchResultPageDefaultSetting);
 			
@@ -113,42 +133,6 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction ext
 		}
 		getProductResultsPageThreadLocal().closeAllSelectedFilters();
 	}
-	
-	//Test filter option combination
-	List<List<List<String>>> lstFilterCombination=TestDataHandler.constantDataVariables.getlst_FilterCombination();	
-	for(List<List<String>> lstItemCombination:lstFilterCombination) {
-		List<String> lstFilter=new ArrayList<String>();
-		List<String> lstSelectedSecondLevelFilter=new ArrayList<String>();		
-		for(List<String> lstItem:lstItemCombination) {			
-			getProductResultsPageThreadLocal().selectFilterItemInLeftPanel(lstItem.get(0), lstItem.get(1));
-			lstSelectedSecondLevelFilter.add(getProductResultsPageThreadLocal().secondLevelFilter);			
-			lstFilter.add(lstItem.get(1));
-		}
-		if(getProductResultsPageThreadLocal().bDefault) {
-			reporter.softAssert(getProductResultsPageThreadLocal().verifySlectedFiltersContainSecondlevelFilter(lstSelectedSecondLevelFilter), "The selected filters contain search second level filters", "The selected filters do not contain search second level filters");
-		}
-		else {
-			reporter.softAssert(getProductResultsPageThreadLocal().verifySlectedFiltersContainSecondlevelFilter(lstFilter), "The selected filters contain search second level filters", "The selected filters do not contain search second level filters");
-		}
-		
-		reporter.softAssert(getProductResultsPageThreadLocal().verifyUrlContainDimensionAndKeyword(lsKeywordList.get(0).get(0)), "The Url contains correct dimensions and keyword", "The Url does not contain correct dimensions and keyword");
-		reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultMessage(lstSearchResultMessage.get(0),lsKeywordList.get(0).get(0)), "Search result message result matches the expected message", "Search result message result does not match the expected message");
-		reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(), "Showing text pattern in filters is correct", "Showing text pattern in filters is incorrect");
-		reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting), "The default setting of items per page is "+lsSearchResultPageDefaultSetting, "The default setting of items per page isn't "+lsSearchResultPageDefaultSetting);
-		
-		productList=getProductResultsPageThreadLocal().getProductList();
-		if(productList.size()>0) {
-			getProductResultsPageThreadLocal().verifySearchResultContent(productList);
-		}	
-				
-		//To recover the initial test environment
-		if(getProductResultsPageThreadLocal().getClearAllFiltersButtonStatus()) {
-			getProductResultsPageThreadLocal().closeAllSelectedFilters();
-		}
-		else {
-			getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0));
-		}		
-	}	
 
 	}
 }
