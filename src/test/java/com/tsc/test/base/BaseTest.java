@@ -223,7 +223,7 @@ public class BaseTest {
 	 * @return Hash map with sauce capabilities
 	 * @author Mirza.Kamran
 	 */
-	
+
 	private Map<String, String> initializeSauceParamsMap(String strBrowser) {
 		Map<String, String> sauceOptions = new HashMap<>();
 		sauceOptions.put(SauceCapabilities.seleniumVersion.toString(), TestDataHandler.sauceSettings.getSauceOptions().getSeleniumVersion());
