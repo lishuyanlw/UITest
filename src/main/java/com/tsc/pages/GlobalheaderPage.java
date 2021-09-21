@@ -135,6 +135,10 @@ public class GlobalheaderPage extends BasePage{
 	@FindBy(xpath = "//div[@class='Header']//div[@id='megamenu']/ul/li")
 	List <WebElement> listFlyoutHeadings;
 	
+	@FindBy(xpath = "//div[@class='Header']//div[@id='megamenu']/ul/li//div[@class='flyout']//div[@class='flyoutRow2Top']")
+	List <WebElement> New_listFlyoutHeadings;
+	
+
 	
 	@FindBy(xpath = "//*[@class='email-popup__button']")
 	WebElement btnClose;
@@ -521,7 +525,54 @@ public class GlobalheaderPage extends BasePage{
 		getReusableActionsInstance().javascriptScrollByVisibleElement(WebElement); 
 	 		return WebElement.getText(); 
 	}
-	public boolean validateFlyoutHeadings(int headingNumber) { 
+	
+	
+	/*Method to validate href is not empty before clicking it
+	 * @return true/false
+	 * @author Shruti Desai
+	 */
+	 public boolean validateFlyouthref(int headingNumber) {
+		WebElement WebElement=listFlyoutHeadings.get(headingNumber).findElement(By.xpath(".//a"));
+		getReusableActionsInstance().javascriptScrollByVisibleElement(WebElement);
+			if (!WebElement.getAttribute("href").isEmpty()) {
+				return true;
+			}
+				return false;
+		}
+	 
+	 /*Method to validate href is not empty before clicking it
+	 *@return  list:Flyout heading href
+	 * @author Shruti Desai
+	 */
+	 public String getFlyoutLink(int headingNumber) {
+		 String emptyhref="Flyout heading's href is empty";
+		 WebElement WebElement=listFlyoutHeadings.get(headingNumber).findElement(By.xpath(".//a"));
+			getReusableActionsInstance().javascriptScrollByVisibleElement(WebElement);
+				
+		 if (WebElement.getAttribute("href").isEmpty()) {
+			return emptyhref;
+		 }else{
+			return WebElement.getAttribute("href");
+		 }
+	 }
+	 
+	 /*Method to get URL after clicking on category of Flyout heading
+	  *@return text: URL
+	  * @author Shruti Desai
+	  */
+	 public String getURLafterClickFlyoutHeading(int headingNumber) {
+		WebElement WebElement=listFlyoutHeadings.get(headingNumber).findElement(By.xpath(".//a"));
+		if(getReusableActionsInstance().isElementVisible(WebElement,2)){
+			getReusableActionsInstance().javascriptScrollByVisibleElement(WebElement);  
+			getReusableActionsInstance().clickWhenVisible(WebElement,5);
+			return (getDriver().getCurrentUrl());
+		 }else {
+			return null;	
+		 }
+	}
+	
+			
+		public boolean validateFlyoutHeadings(int headingNumber) { 
 		WebElement WebElement=listFlyoutHeadings.get(headingNumber).findElement(By.xpath(".//span"));
 		if(WebElement.isDisplayed()) {
 			return true;
@@ -529,6 +580,8 @@ public class GlobalheaderPage extends BasePage{
 				return false;
 			}
 	}
+	
+	
 	
 	/*Method to get list of Flyout submenu
 	 * @return list:Flyout sub menu
@@ -538,6 +591,18 @@ public class GlobalheaderPage extends BasePage{
 		WebElement WebElement=listFlyoutHeadings.get(headingNumber).findElement(By.xpath(".//span"));
 		getReusableActionsInstance().scrollToElement(WebElement);	
 		List<WebElement> SubMenu=listFlyoutHeadings.get(headingNumber).findElements(By.xpath(".//div[@class='flyout']//div[@class='flyoutRow2Left']//ul//li[1]//b"));
+		getReusableActionsInstance().waitForAllElementsVisible(SubMenu, 3);
+		List<String> SubMenulist =new ArrayList<String>();
+			for(WebElement e : SubMenu) {
+				SubMenulist.add(e.getText());
+		 	}
+		return SubMenulist;
+	}
+	
+	public List<String> getListSubMenu(int headingNumber,String headingName) {
+		WebElement WebElement=listFlyoutHeadings.get(headingNumber).findElement(By.xpath(".//span"));
+		getReusableActionsInstance().scrollToElement(WebElement);	
+		List<WebElement> SubMenu=WebElement.getText().findElements(By.xpath(".//div[@class='flyout']//div[@class='flyoutRow2Left']//ul//li[1]//b"));
 		getReusableActionsInstance().waitForAllElementsVisible(SubMenu, 3);
 		List<String> SubMenulist =new ArrayList<String>();
 			for(WebElement e : SubMenu) {
@@ -560,6 +625,38 @@ public class GlobalheaderPage extends BasePage{
 			}
 			return false;
 	 }	
+	 
+	 public List<String> New_getFlyoutSubMenuLinks(int headingNumber) {
+			String errorMsg = null;
+		 WebElement WebElement=listFlyoutHeadings.get(headingNumber).findElement(By.xpath(".//span"));
+			getReusableActionsInstance().scrollToElement(WebElement);
+			List<WebElement> SubMenu=listFlyoutHeadings.get(headingNumber).findElements(By.xpath(".//div[@class='flyout']//ul//li//a"));
+			List<String> SubMenulink =new ArrayList<String>();
+			for(WebElement e : SubMenu) {
+				if(e.getAttribute("href").isEmpty()) {
+					SubMenulink.add(e.getText());
+				}
+			}
+			return SubMenulink;
+			
+	 }	
+	 
+	 public List<String> getFlyoutSubMenuLinks(int headingNumber, String headingName) {
+			String errorMsg = null;
+		 WebElement WebElement=New_listFlyoutHeadings.get(headingNumber).findElement(By.xpath(".//span"));
+			getReusableActionsInstance().scrollToElement(WebElement);
+			List<WebElement> SubMenu=New_listFlyoutHeadings.get.findElements(By.xpath(".//div/ul[1]/li/a"));
+			List<String> SubMenulink =new ArrayList<String>();
+			for(WebElement e : SubMenu) {
+				if(e.getAttribute("href").isEmpty()) {
+					SubMenulink.add(e.getText());
+				}
+			}
+			return SubMenulink;
+			
+	 }
+			
+	//div[@class='flyout']//div[@class='flyoutRow2Top']//div[1]//ul[1]/li/a
 	
 		 
 	 /* Method to Validate FEATURED BRANDS section is displayed on right side by extracting its class
