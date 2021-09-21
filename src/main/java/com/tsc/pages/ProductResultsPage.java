@@ -157,6 +157,7 @@ public class ProductResultsPage extends BasePage{
 	public boolean bVerifyTitle=true;
 	public String firstLevelFilter,secondLevelFilter;	
 	public boolean bDefault=false;
+	public String lsSearchResultMessage="";
 		
 	/**
 	 * This method will judge search type.
@@ -307,24 +308,25 @@ public class ProductResultsPage extends BasePage{
 
 	/**
 	 * This method will verify searching result message matches expected message.
-	 * @return true/false
+	 * @return String: error message
 	 * @author Wei.Li
 	 */
-	public boolean verifySearchResultMessage(List<String> expectedMessage,String lsKeyword) {		
+	public String verifySearchResultMessage(List<String> expectedMessage,String lsKeyword) {		
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSearchResultMessage);
 		
-		String lsMessage=this.lblSearchResultMessage.getText().trim();		
+		String lsMessage=this.lblSearchResultMessage.getText().trim();	
+		this.lsSearchResultMessage=lsMessage;
 		if(!lsMessage.contains(lsKeyword)) {
-			return false;		
+			return "Search result message result of '"+lsMessage+"' does not contain keyword of "+lsKeyword;		
 		}
 		else {
 			for(String message:expectedMessage) {				
 				if(!lsMessage.contains(message)) {
-					return false;
+					return "Search result message result of '"+lsMessage+"' does not contain expected message of "+message;
 				}
 			}
 		}		
-		return true;		
+		return "";		
 	}
 	
 	/**
@@ -908,28 +910,28 @@ public class ProductResultsPage extends BasePage{
     /**
 	 * This method will verify if selected filters contain search second level filters. 
 	 * @param List<String> lstFilter: second level filter list 
-	 * @return true/false
+	 * @return String: error message
 	 * @author Wei.Li
 	 */	
-    public boolean verifySlectedFiltersContainSecondlevelFilter(List<String> lstFilter) {
+    public String verifySlectedFiltersContainSecondlevelFilter(List<String> lstFilter) {    	
     	List<String> lstSelectedFilter=new ArrayList<String>();
-    	int selctedFilterSize=this.selectedFiltersList.size()-1;
-    	for(int i=0;i<selctedFilterSize;i++) {
+    	int selectedFilterSize=this.selectedFiltersList.size()-1;
+    	for(int i=0;i<selectedFilterSize;i++) {
     		getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectedFiltersList.get(i));
     		lstSelectedFilter.add(this.selectedFiltersList.get(i).getText().trim());     		
     	}
     	
-    	if(selctedFilterSize!=lstFilter.size()) {
-    		return false;
+    	if(selectedFilterSize!=lstFilter.size()) {
+    		return "The size of selected filter options is not equal to the size of selected filters in the left panel.";
     	}
     	    	
     	for(String lsItem:lstFilter) {    		
     		if(!lstSelectedFilter.contains(lsItem)) {     			
-    			return false;
+    			return "The selected filters do not contain the search second level filters of '"+lsItem+"'";
     		}
     	}
     	
-    	return true;
+    	return "";
     }
 }
 
