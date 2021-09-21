@@ -829,7 +829,7 @@ public class HomePage extends BasePage{
 	 * @return list: url of all open images
 	 * @author Shruti Desai
 	 */
-		public List<String> getTabUrlListTSimageUpperSection(){
+		public List<String> getTabUrlListTSimage(){
 			String getMultiTabUrl = null;
 			int numberOfWindow = getNumberOftabs();
 			ArrayList<String> returnList= new ArrayList<String>();
@@ -838,34 +838,14 @@ public class HomePage extends BasePage{
 			for (int i=1; i<numberOfWindow; i++) {
 				getDriver().switchTo().window(tabList.get(i));
 				getMultiTabUrl = getDriver().getCurrentUrl();
+				getDriver().switchTo().window(tabList.get(i)).close();
 				getDriver().switchTo().window(tabList.get(0));
 				returnList.add(getMultiTabUrl);
+				
 				}
 			return returnList;
 		}
 		
-							
-	/*
-	 * Method to Get list of url for clicked TS images (Lower Section) open in different tabs  
-	 * @return list: url of all open images
-	 * @author Shruti Desai
-	 */
-		public List<String> getTabUrlListTSimageLowerSection(){
-			String getMultiTabUrl = null;
-			int totalTsimageUpperSection = getTSimgCount(totalTSimageUpperSection);
-			int numberOfWindow = getNumberOftabs();
-			ArrayList<String> returnList= new ArrayList<String>();
-			ArrayList<String> tabList = new ArrayList<String>(getDriver().getWindowHandles());
-			for (int i=(totalTsimageUpperSection+1); i<numberOfWindow; i++) {
-				getDriver().switchTo().window(tabList.get(i));
-				getMultiTabUrl = getDriver().getCurrentUrl();
-				getDriver().switchTo().window(tabList.get(0));
-				returnList.add(getMultiTabUrl);
-			}
-			return returnList;
-		}
-					
-			
 	/*
 	 * Method to Get total number of open tabs after clicking each images of TS image  
 	 * @return int: number of total open tabs after clicking all images TS image 
@@ -890,6 +870,8 @@ public class HomePage extends BasePage{
 				break;
 			}	
 		}
+		
+		
 		
 	/*
 	 * Method to Get href of images in TS image all sections 
