@@ -149,9 +149,7 @@ public class ProductResultsPage extends BasePage{
 	public By byLessButtonOnLeftPanel=By.xpath(".//div[contains(@class,'panel-collapse')]//div[contains(@class,'seeMoreDiv') and not(contains(@class,'seeMoreTitle')) and @aria-expanded='true' and not(@style='display: none;')]");
 	
 	public By bySubItemListOnLeftPanel=By.xpath(".//li");
-	
-	@FindBy(xpath = "//product-results//div[@class='modalBody']//div[@class='panel']//div[@class='panel-body']")
-	List<WebElement> panelItemContainerList;
+	public By bySubItemPanelBodyOnLeftPanel=By.xpath(".//div[@class='panel-body']");
 			
 	String searchkeyword;
 	public boolean bVerifyTitle=true;
@@ -798,8 +796,9 @@ public class ProductResultsPage extends BasePage{
 			}
 			
 			//If found lsFirstLevelItem
-			if(lsHeader.equalsIgnoreCase(lsFirstLevelItem)) {				
-				if(judgeMoreButtonExistenceInLeftPanel(this.panelItemContainerList.get(i))) {
+			if(lsHeader.equalsIgnoreCase(lsFirstLevelItem)) {
+				WebElement panelBody=this.productFilterContainerList.get(i).findElement(this.bySubItemPanelBodyOnLeftPanel);
+				if(judgeMoreButtonExistenceInLeftPanel(panelBody)) {
 					WebElement moreButton=this.productFilterContainerList.get(i).findElement(this.byMoreButtonOnLeftPanel);
 					getReusableActionsInstance().javascriptScrollByVisibleElement(moreButton);
 					moreButton.click();
@@ -938,6 +937,91 @@ public class ProductResultsPage extends BasePage{
     	
     	return "";
     }
+
+    /**
+	 * This method will get hidden element corresponding to an element container.  
+	 * @param WebElement elementContainer: element container
+	 * @return Hidden element count.
+	 * @author Wei.Li
+	 */	
+    public WebElement getHiddenFiltersCountInSecondLevel(WebElement elementContainer) {
+    	if(elementContainer==null) {
+    		System.out.println("null");
+    		return 0;
+    	}
+    	
+    	getReusableActionsInstance().javascriptScrollByVisibleElement(elementContainer);
+    	List<WebElement> elementList=elementContainer.findElements(By.xpath(".//li"));
+    	System.out.println("List size: "+elementList.size());
+    	int hiddenCount=0;
+    	for(WebElement element:elementList) {
+    		//if(element.getCssValue("height").toLowerCase()=="auto")
+    		if(!element.isDisplayed()){    		  		
+    			hiddenCount+=1;
+    		}
+    	}
+    	System.out.println("hiddenCount: "+hiddenCount);
+    	return hiddenCount;
+    }
+    
+	/**
+	 * This method will click More button corresponding to the specific first level filter.
+	 * @param String lsFirstLevelItem: header filter keyword	 
+	 * @return WebElement: the element container corresponding to the specific first level filter.
+	 * @author Wei.Li
+	 */		
+	public WebElement clickMoreButtonWithSpecificFirstlevelFilterInLeftPanel(String lsFirstLevelItem) {
+		int loopSize=this.productFilterList.size();		
+		for(int i=0;i<loopSize;i++) {			
+			getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i));
+			String lsHeader=this.productFilterList.get(i).getText().trim();
+			if(lsHeader.contains("(")) {
+				lsHeader=lsHeader.split("\\(")[0].trim();				
+			}
+			
+			//If found lsFirstLevelItem
+			if(lsHeader.equalsIgnoreCase(lsFirstLevelItem)) {
+				WebElement panelBody=this.productFilterContainerList.get(i).findElement(this.bySubItemPanelBodyOnLeftPanel);
+				if(judgeMoreButtonExistenceInLeftPanel(panelBody)) {
+					WebElement moreButton=this.productFilterContainerList.get(i).findElement(this.byMoreButtonOnLeftPanel);
+					getReusableActionsInstance().javascriptScrollByVisibleElement(moreButton);
+					moreButton.click();
+					getReusableActionsInstance().staticWait(300);
+					System.out.println("lsHeader: "+lsHeader);
+					return this.productFilterContainerList.get(i);
+				}	
+			}
+		}
+		return null;
+	}
+	
+    /**
+	 * This method will get hidden element corresponding to an element container.  
+	 * @param WebElement elementContainer: element container
+	 * @return Hidden element count.
+	 * @author Wei.Li
+	 */	
+    public int getHiddenFiltersCountInSecondLevel(WebElement elementContainer) {
+    	if(elementContainer==null) {
+    		System.out.println("null");
+    		return 0;
+    	}
+    	
+    	getReusableActionsInstance().javascriptScrollByVisibleElement(elementContainer);
+    	List<WebElement> elementList=elementContainer.findElements(By.xpath(".//li"));
+    	System.out.println("List size: "+elementList.size());
+    	int hiddenCount=0;
+    	for(WebElement element:elementList) {
+    		//if(element.getCssValue("height").toLowerCase()=="auto")
+    		if(!element.isDisplayed()){    		  		
+    			hiddenCount+=1;
+    		}
+    	}
+    	System.out.println("hiddenCount: "+hiddenCount);
+    	return hiddenCount;
+    }
+    
+
 }
 
 	
