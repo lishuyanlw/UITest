@@ -100,20 +100,16 @@ public class ProductResultsPage extends BasePage{
 	WebElement cntPagination;
 	
 	public By byPagination=By.xpath("//product-results//nav[contains(@aria-label,'Page')]//ul[@class='pagination']");
-	
+		
 	@FindBy(xpath = "//product-results//nav[contains(@aria-label,'Page')]//li[contains(@id,'pages[') and not(contains(.,'...'))]")
 	List<WebElement> currentPageList;
 	
-	@FindBy(xpath = "//product-results//nav[contains(@aria-label,'Page')]//li[contains(@class,'previous')]")
+	@FindBy(xpath = "//product-results//nav[contains(@aria-label,'Page')]//li[contains(@class,'previous')][span]")
 	WebElement btnPreviousPage;
 	
-	public By byPreviousPageButton=By.xpath("//product-results//nav[contains(@aria-label,'Page')]//li[contains(@class,'previous')]");
-	
-	@FindBy(xpath = "//product-results//nav[contains(@aria-label,'Page')]//li[contains(@class,'next')]//span")
+	@FindBy(xpath = "//product-results//nav[contains(@aria-label,'Page')]//li[contains(@class,'next')][span]")
 	WebElement btnNextPage;
-	
-	public By byNextPageButton=By.xpath("//product-results//nav[contains(@aria-label,'Page')]//li[contains(@class,'next')]//span");
-	
+		
 	//Product title and text
 	@FindBy(xpath = "//div[@class='TitleAndTextSeo']")
 	WebElement cntProductTitleAndText;
