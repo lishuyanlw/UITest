@@ -35,10 +35,25 @@ def sauce = [
         key     : sauceconnect.key,
 ]
 
+def getDate() {
+    return new Date().format('yyyyMMddHHmmss')
+}
+
+def getTunnelName() {
+    def tunnelName = "R4BTest" + System.getenv('BUILD_TIMESTAMP')
+    tunnelName = tunnelName.replaceAll(":","")
+    tunnelName = tunnelName.replaceAll(" ","")
+    return tunnelName
+}
+
+def tunnel_name() {
+    return "TSC_Automation-"+getDate()
+}
+
 sauceconnect {
     username = System.getenv('SAUCE_USERNAME')
     key = System.getenv('SAUCE_ACCESS_KEY')
-    options = "-D esfapi.rogers.com,www.rogers.com,bss.rogers.com -i myTunnel --no-remove-colliding-tunnels"
+    options = "-D esfapi.rogers.com,www.rogers.com,bss.rogers.com -i " + getTunnelName() + " --no-remove-colliding-tunnels"
 }
 
 task "sauceTest"(dependsOn: startSauceConnect, type: Test) {
@@ -55,6 +70,8 @@ task "sauceTest"(dependsOn: startSauceConnect, type: Test) {
     systemProperty 'Browser', test_browser
     systemProperty 'Language', test_language
     systemProperty 'TunnelRequired', TunnelRequired
+    systemProperty 'TunnelName', tunnelName
+    systemProperty 'Environment', Environment
 
     useTestNG(){
         parallel = test_parallel
