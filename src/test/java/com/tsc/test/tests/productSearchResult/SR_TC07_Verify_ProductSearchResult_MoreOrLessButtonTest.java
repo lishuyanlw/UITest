@@ -54,29 +54,29 @@ public class SR_TC07_Verify_ProductSearchResult_MoreOrLessButtonTest extends Bas
 		if(element==null) {
 			break;
 		}
-		int visibleElementCount1=getProductResultsPageThreadLocal().getFiltersCountInSecondLevel(element,true);
-		int hiddenElementCount1=getProductResultsPageThreadLocal().getFiltersCountInSecondLevel(element,false);
-		int sum=visibleElementCount1+hiddenElementCount1;
+		int visibleElementCountBeforeClick=getProductResultsPageThreadLocal().getFiltersCountInSecondLevel(element,true);
+		int hiddenElementCountBeforeClick=getProductResultsPageThreadLocal().getFiltersCountInSecondLevel(element,false);
+		int sum= visibleElementCountBeforeClick+hiddenElementCountBeforeClick;
 		
 		//Click More button to expand hidden subfilters
 		boolean bClick=getProductResultsPageThreadLocal().clickMoreOrLessButtonWithSpecificFirstlevelFilterInLeftPanel(element);
 		if(!bClick) {
 			break;
 		}
-		int visibleElementCount2=getProductResultsPageThreadLocal().getFiltersCountInSecondLevel(element,true);
-		reporter.softAssert(visibleElementCount2==sum,"The visible subfilter count is equal to "+sum,"The visible subfilter count is not equal to "+sum);
-		int hiddenElementCount2=getProductResultsPageThreadLocal().getFiltersCountInSecondLevel(element,false);
-		reporter.softAssert(hiddenElementCount2==0,"The invisible subfilter count is equal to 0","The invisible subfilter count is not equal to 0");
+		int visibleElementCountAfterClick=getProductResultsPageThreadLocal().getFiltersCountInSecondLevel(element,true);
+		reporter.softAssert(visibleElementCountAfterClick==sum,"The visible subfilter count is equal to "+sum,"The visible subfilter count is not equal to "+sum);
+		int hiddenElementCountAfterClick=getProductResultsPageThreadLocal().getFiltersCountInSecondLevel(element,false);
+		reporter.softAssert(hiddenElementCountAfterClick==0,"The invisible subfilter count is equal to 0","The invisible subfilter count is not equal to 0");
 		
 		//Click Less button to recover to the original status
 		bClick=getProductResultsPageThreadLocal().clickMoreOrLessButtonWithSpecificFirstlevelFilterInLeftPanel(element);
 		if(!bClick) {
 			break;
 		}
-		int visibleElementCount3=getProductResultsPageThreadLocal().getFiltersCountInSecondLevel(element,true);
-		reporter.softAssert(visibleElementCount3==visibleElementCount1,"The visible subfilter count is equal to "+visibleElementCount1,"The visible subfilter count is not equal to "+visibleElementCount1);
-		int hiddenElementCount3=getProductResultsPageThreadLocal().getFiltersCountInSecondLevel(element,false);
-		reporter.softAssert(hiddenElementCount3==hiddenElementCount1,"The invisible subfilter count is equal to "+hiddenElementCount1,"The invisible subfilter count is not equal to "+hiddenElementCount1);
+		int visibleElementCountAfterReClick=getProductResultsPageThreadLocal().getFiltersCountInSecondLevel(element,true);
+		reporter.softAssert(visibleElementCountAfterReClick== visibleElementCountBeforeClick,"The visible subfilter count is equal to "+ visibleElementCountBeforeClick,"The visible subfilter count is not equal to "+ visibleElementCountBeforeClick);
+		int hiddenElementCountAfterReClick=getProductResultsPageThreadLocal().getFiltersCountInSecondLevel(element,false);
+		reporter.softAssert(hiddenElementCountAfterReClick==hiddenElementCountBeforeClick,"The invisible subfilter count is equal to "+hiddenElementCountBeforeClick,"The invisible subfilter count is not equal to "+hiddenElementCountBeforeClick);
 		
 	}
 		
