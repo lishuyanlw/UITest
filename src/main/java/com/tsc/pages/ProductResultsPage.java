@@ -927,7 +927,7 @@ public class ProductResultsPage extends BasePage{
     	}
     	
     	if(selectedFilterSize!=lstFilter.size()) {
-    		return "The size of selected filter options is not equal to the size of selected filters in the left panel.";
+    		return "The size of "+ lstFilter.size()+" for selected filter options is not equal to "+" the size of "+selectedFilterSize+" for selected filters in the left panel.";
     	}
     	    	
     	for(String lsItem:lstFilter) {    		
