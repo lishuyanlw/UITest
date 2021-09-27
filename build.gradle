@@ -70,8 +70,7 @@ task "sauceTest"(dependsOn: startSauceConnect, type: Test) {
     systemProperty 'Browser', test_browser
     systemProperty 'Language', test_language
     systemProperty 'TunnelRequired', TunnelRequired
-    systemProperty 'TunnelName', tunnelName
-    systemProperty 'Environment', Environment
+    systemProperty 'TunnelName', tunnelName    
 
     useTestNG(){
         parallel = test_parallel

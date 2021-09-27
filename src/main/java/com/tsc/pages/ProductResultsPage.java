@@ -958,7 +958,7 @@ public class ProductResultsPage extends BasePage{
     	
     	if(bNext) {
     		WebElement lastPageButton=this.PageNumberList.get(this.PageNumberList.size()-1);
-    		if(lastPageButton.getAttribute("class").contains("active")) {
+    		if(lastPageButton.findElement(By.xpath("..")).getAttribute("class").contains("active")) {
     			return false;
     		}else {
     			getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnNextPage);
@@ -967,7 +967,7 @@ public class ProductResultsPage extends BasePage{
         
     	}else {
     		WebElement firstPageButton=this.PageNumberList.get(0);
-    		if(firstPageButton.getAttribute("class").contains("active")) {
+    		if(firstPageButton.findElement(By.xpath("..")).getAttribute("class").contains("active")) {
     			return false;
     		}else {
     			getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnPreviousPage);
