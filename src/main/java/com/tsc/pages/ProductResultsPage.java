@@ -101,14 +101,20 @@ public class ProductResultsPage extends BasePage{
 	
 	public By byPagination=By.xpath("//product-results//nav[contains(@aria-label,'Page')]//ul[@class='pagination']");
 		
-	@FindBy(xpath = "//product-results//nav[contains(@aria-label,'Page')]//li[contains(@id,'pages[') and not(contains(.,'...'))]")
-	List<WebElement> currentPageList;
+	@FindBy(xpath = "//product-results//nav[contains(@aria-label,'Page')]//li[contains(@id,'pages[') and not(contains(.,'...'))]//span")
+	List<WebElement> PageNumberList;
 	
-	@FindBy(xpath = "//product-results//nav[contains(@aria-label,'Page')]//li[contains(@class,'previous')][span]")
+	@FindBy(xpath = "//product-results//nav[contains(@aria-label,'Page')]//li[not(contains(.,'...'))]//span")
+	List<WebElement> containsPreAndNextButtonPageList;
+	
+	@FindBy(xpath = "//product-results//nav[contains(@aria-label,'Page')]//li[contains(@class,'previous')]//span")
 	WebElement btnPreviousPage;
 	
-	@FindBy(xpath = "//product-results//nav[contains(@aria-label,'Page')]//li[contains(@class,'next')][span]")
+	@FindBy(xpath = "//product-results//nav[contains(@aria-label,'Page')]//li[contains(@class,'next')]//span")
 	WebElement btnNextPage;
+	
+	@FindBy(xpath = "//product-results//nav[contains(@aria-label,'Page')]//li[not(contains(.,'...'))and contains(@class,'active')]//span")
+	WebElement btnCurrentPage;
 		
 	//Product title and text
 	@FindBy(xpath = "//div[@class='TitleAndTextSeo']")
@@ -933,6 +939,43 @@ public class ProductResultsPage extends BasePage{
     	}
     	
     	return "";
+    }
+    
+    /**
+	 * This method will switch page through clicking Pre/Next button.  
+	 * @param boolean bNext: true for next page and false for previous page 
+	 * @return true/false
+	 * @author Wei.Li
+	 */	
+    public boolean switchPage(boolean bNext) { 
+    	if(!this.verifyProductPagination()) {
+    		return false;
+    	}
+    	
+    	if(this.PageNumberList.size()==1) {
+    		return false;
+    	}  
+    	
+    	if(bNext) {
+    		WebElement lastPageButton=this.PageNumberList.get(this.PageNumberList.size()-1);
+    		if(lastPageButton.getAttribute("class").contains("active")) {
+    			return false;
+    		}else {
+    			getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnNextPage);
+    			this.btnNextPage.click();
+    		}    		
+        
+    	}else {
+    		WebElement firstPageButton=this.PageNumberList.get(0);
+    		if(firstPageButton.getAttribute("class").contains("active")) {
+    			return false;
+    		}else {
+    			getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnPreviousPage);
+    			this.btnPreviousPage.click();
+    		}  
+    	}
+    	
+    	return waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},30000);
     }
 }
 
