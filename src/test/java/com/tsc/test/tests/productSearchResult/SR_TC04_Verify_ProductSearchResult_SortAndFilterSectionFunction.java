@@ -29,7 +29,9 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction ext
 	String lsMsg;
 		
 
-	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0));	
+	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0));
+	reporter.softAssert(getProductResultsPageThreadLocal().verifySectionExisting(getProductResultsPageThreadLocal().getHeaderContainer()), "Header section is existing after keyword searching", "Header section is not existing after keyword searching");
+	reporter.softAssert(getProductResultsPageThreadLocal().verifySectionExisting(getProductResultsPageThreadLocal().getFooterContainer()), "Footer section is existing after keyword searching", "Footer section is not existing after keyword searching");
 
 	//Test sort
 	if(getProductResultsPageThreadLocal().chooseSortOptionByVisibleText("Price: Highest first")) {
@@ -58,6 +60,8 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction ext
 		}	
 		
 		reporter.softAssert(getProductResultsPageThreadLocal().verifyProductPagination(), "Product pagination is existing", "Product pagination is not existing");
+		reporter.softAssert(getProductResultsPageThreadLocal().verifySectionExisting(getProductResultsPageThreadLocal().getHeaderContainer()), "Header section is existing after choosing sorting options", "Header section is not existing after choosing sorting options");
+		reporter.softAssert(getProductResultsPageThreadLocal().verifySectionExisting(getProductResultsPageThreadLocal().getFooterContainer()), "Footer section is existing after choosing sorting options", "Footer section is not existing after choosing sorting options");
 	}
 	else {
 		reporter.reportLogFail("Choosing Price: Highest first option failed");
@@ -85,6 +89,8 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction ext
 			}	
 			
 			reporter.softAssert(getProductResultsPageThreadLocal().verifyProductPagination(), "Product pagination is existing", "Product pagination is not existing");
+			reporter.softAssert(getProductResultsPageThreadLocal().verifySectionExisting(getProductResultsPageThreadLocal().getHeaderContainer()), "Header section is existing after choosing filters", "Header section is not existing after choosing filters");
+			reporter.softAssert(getProductResultsPageThreadLocal().verifySectionExisting(getProductResultsPageThreadLocal().getFooterContainer()), "Footer section is existing after choosing filters", "Footer section is not existing after choosing filters");
 		}
 		else {
 			reporter.reportLogFail("Choosing filter of "+"'"+lstItem.get(0)+"/"+lstItem.get(1)+"' failed");
@@ -135,6 +141,8 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction ext
 			}	
 			
 			reporter.softAssert(getProductResultsPageThreadLocal().verifyProductPagination(), "Product pagination is existing", "Product pagination is not existing");
+			reporter.softAssert(getProductResultsPageThreadLocal().verifySectionExisting(getProductResultsPageThreadLocal().getHeaderContainer()), "Header section is existing after choosing filters", "Header section is not existing after choosing filters");
+			reporter.softAssert(getProductResultsPageThreadLocal().verifySectionExisting(getProductResultsPageThreadLocal().getFooterContainer()), "Footer section is existing after choosing filters", "Footer section is not existing after choosing filters");
 		}
 		else {
 			reporter.reportLogFail("Choosing filter of "+lstItem.get(0)+"/"+lstItem.get(1)+" failed");
