@@ -1050,17 +1050,6 @@ public class ProductResultsPage extends BasePage{
     public WebElement getFooterContainer() {  
     	return this.footerContainer;
     }
-    	
-    /**
-	 * This method will verify section existing. 
-	 * @param WebElement elementContainer: input section container 
-	 * @return true/false
-	 * @author Wei.Li
-	 */	
-    public boolean verifySectionExisting(WebElement elementContainer) {    	
-    	getReusableActionsInstance().javascriptScrollByVisibleElement(elementContainer);
-    	return getReusableActionsInstance().isElementVisible(elementContainer);
-    }
     
     
 }
