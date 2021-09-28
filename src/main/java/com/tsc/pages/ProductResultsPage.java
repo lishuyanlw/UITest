@@ -100,20 +100,22 @@ public class ProductResultsPage extends BasePage{
 	WebElement cntPagination;
 	
 	public By byPagination=By.xpath("//product-results//nav[contains(@aria-label,'Page')]//ul[@class='pagination']");
+		
+	@FindBy(xpath = "//product-results//nav[contains(@aria-label,'Page')]//li[contains(@id,'pages[') and not(contains(.,'...'))]//span")
+	List<WebElement> PageNumberList;
 	
-	@FindBy(xpath = "//product-results//nav[contains(@aria-label,'Page')]//li[contains(@id,'pages[') and not(contains(.,'...'))]")
-	List<WebElement> currentPageList;
+	@FindBy(xpath = "//product-results//nav[contains(@aria-label,'Page')]//li[not(contains(.,'...'))]//span")
+	List<WebElement> containsPreAndNextButtonPageList;
 	
-	@FindBy(xpath = "//product-results//nav[contains(@aria-label,'Page')]//li[contains(@class,'previous')]")
+	@FindBy(xpath = "//product-results//nav[contains(@aria-label,'Page')]//li[contains(@class,'previous')]//span")
 	WebElement btnPreviousPage;
-	
-	public By byPreviousPageButton=By.xpath("//product-results//nav[contains(@aria-label,'Page')]//li[contains(@class,'previous')]");
 	
 	@FindBy(xpath = "//product-results//nav[contains(@aria-label,'Page')]//li[contains(@class,'next')]//span")
 	WebElement btnNextPage;
 	
-	public By byNextPageButton=By.xpath("//product-results//nav[contains(@aria-label,'Page')]//li[contains(@class,'next')]//span");
-	
+	@FindBy(xpath = "//product-results//nav[contains(@aria-label,'Page')]//li[not(contains(.,'...'))and contains(@class,'active')]//span")
+	WebElement btnCurrentPage;
+		
 	//Product title and text
 	@FindBy(xpath = "//div[@class='TitleAndTextSeo']")
 	WebElement cntProductTitleAndText;
@@ -938,6 +940,43 @@ public class ProductResultsPage extends BasePage{
     	
     	return "";
     }
+    
+    /**
+	 * This method will switch page through clicking Pre/Next button.  
+	 * @param boolean bNext: true for next page and false for previous page 
+	 * @return true/false
+	 * @author Wei.Li
+	 */	
+    public boolean switchPage(boolean bNext) { 
+    	if(!this.verifyProductPagination()) {
+    		return false;
+    	}
+    	
+    	if(this.PageNumberList.size()==1) {
+    		return false;
+    	}  
+    	
+    	if(bNext) {
+    		WebElement lastPageButton=this.PageNumberList.get(this.PageNumberList.size()-1);
+    		if(lastPageButton.findElement(By.xpath("..")).getAttribute("class").contains("active")) {
+    			return false;
+    		}else {
+    			getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnNextPage);
+    			this.btnNextPage.click();
+    		}    		
+        
+    	}else {
+    		WebElement firstPageButton=this.PageNumberList.get(0);
+    		if(firstPageButton.findElement(By.xpath("..")).getAttribute("class").contains("active")) {
+    			return false;
+    		}else {
+    			getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnPreviousPage);
+    			this.btnPreviousPage.click();
+    		}  
+    	}
+    	
+    	return waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},30000);
+    }
 
 	/**
 	 * This method will get the filter container corresponding to the specific first level filter.
@@ -1014,7 +1053,6 @@ public class ProductResultsPage extends BasePage{
 		}		
 		return false;
 	}
-
 
 }
 
