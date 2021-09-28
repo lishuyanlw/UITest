@@ -12,7 +12,7 @@ import com.tsc.test.base.BaseTest;
 public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction extends BaseTest{
 	
 	/**
-	 * This method will test the functions of sort and filter sections of product searching results.
+	 * This method will test the functions of sort and filter sections of product searching results,as well as verifying Header and Footer sections.
 	 * @author Wei.Li
 	 */	
 	@Test(groups={"ProductSearch","Regression"})
