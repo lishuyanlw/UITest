@@ -30,6 +30,7 @@ public class HP_TC02_GlobalHeader_VerifyFlyoutsSubMenuItems extends BaseTest {
 			reporter.softAssert(getglobalheaderPageThreadLocal().validateFlyoutSubMenuLinkImagesforBrandSection(FOHeading,lsHeading),lsHeading+ " department's all links have images present.",lsHeading+ "department's link's image is not present.");
 			for (String lsSubmenu:subMenu) {
 				reporter.softAssert(getglobalheaderPageThreadLocal().validateFlyoutSubMenuLinks(FOHeading,lsHeading),lsSubmenu+ " 's validation for "+ lsHeading+ ".All items have href present.",lsSubmenu+  " ''s validation for "+ lsHeading+ ". Href for " +subMenulink+" is empty ");
+			
 			}
 			
 		}

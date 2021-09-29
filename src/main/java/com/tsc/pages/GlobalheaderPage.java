@@ -585,7 +585,7 @@ public class GlobalheaderPage extends BasePage{
 			}
 	}
 	
-//submenu
+//Sub Menu Section
 	
 	/*Method to get list of Flyout Headings
 	 * @return list:Flyout Heading
