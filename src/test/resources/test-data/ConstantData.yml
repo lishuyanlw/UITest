@@ -50,6 +50,9 @@ lst_FilterOptionHeader: ["On Air","SHOP BY PRODUCT","NEW ARRIVALS","SHOP BY BRAN
 lst_GeneralTwoLevelFilterOption: [["SHOP BY PRODUCT","Home & Garden"]]
 lst_FilterByPrice: [["SHOP BY PRICE","Under $50","Under"]]
 lst_FilterCombination: [[["SHOP BY SIZE FASHION","Regular XXS-XS"],["SHOP BY PRICE","Under $50"]]]
+lst_MoreButton: ["SHOP BY BRAND","SHOP BY SHOE SIZE","SHOP BY SIZE FASHION"]
+lst_FilterSequentialAction: [[["SHOP BY BRAND","Kim & Co."],["SHOP BY PRICE","Under $50"],["SHOP BY COLOUR","Black"]]]
+
 
 
 
