@@ -58,6 +58,7 @@ public class ConstantData {
 	private List<String> lst_MoreButton;
 	private List<List<List<String>>> lst_FilterSequentialAction;
 	private List<String> lst_SocialMediaLinks;
+	private List<List<String>> lst_SpecialOffers;
 
 	//Header Links getter and setter method
 	
@@ -682,6 +683,7 @@ public class ConstantData {
 	}
 	
 	/**
+
 	 * @return the lst_SocialMediaLinks
 	 */
 	public List<String> getlst_SocialMediaLinks() {
@@ -692,6 +694,19 @@ public class ConstantData {
 	 */
 	public void setlst_SocialMediaLinks(List<String> lst_SocialMediaLinks) {
 		this.lst_SocialMediaLinks = lst_SocialMediaLinks;
+	}
+	
+	/**
+	 * @return the lst_SpecialOffers
+	 */
+	public List<List<String>> getlst_SpecialOffers() {
+		return lst_SpecialOffers;
+	}
+	/**
+	 * @param lst_SpecialOffers the lst_SpecialOffers to set
+	 */
+	public void setlst_SpecialOffers(List<List<String>> lst_SpecialOffers) {
+		this.lst_SpecialOffers = lst_SpecialOffers;
 	}
 		
 }
