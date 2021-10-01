@@ -455,6 +455,17 @@ import utils.ReusableActions;
     	   			
     	return Float.parseFloat(lsReturn);
     }
+    
+    /**
+	 * This method will verify element existing. 
+	 * @param WebElement element: input element 
+	 * @return true/false
+	 * @author Wei.Li
+	 */	
+    public boolean verifySectionExisting(WebElement element) {    	
+    	getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+    	return getReusableActionsInstance().isElementVisible(element);
+    }
 	
 
 }
