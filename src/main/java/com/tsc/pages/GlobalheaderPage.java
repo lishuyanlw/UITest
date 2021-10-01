@@ -608,7 +608,6 @@ public class GlobalheaderPage extends BasePage{
 				}	
 				FlyoutHeadings.add(newHeading);
 		}
-		System.out.println(FlyoutHeadings);
 		return FlyoutHeadings;
 	}					
 							
@@ -627,11 +626,10 @@ public class GlobalheaderPage extends BasePage{
 	 * @return list:Flyout sub menu Headings
 	 * @author Shruti Desai
 	 */
-	public List<String> getFlyoutSubMenuHeadings(List<String> headinglist, String headingName) {
+	public List<String> getFlyoutSubMenuHeadings(String headingName) {
 		String xpathHeading =createXPath("//div[contains(@class,'header-desktop')]//div[contains(@class,'megamenu')]//ul[@class='navLinkWrap']/li[contains(.,'{0}')]" ,headingName); 
 		WebElement headingWebElement = getDriver().findElement(By.xpath(xpathHeading));
 		List<String> SubMenuHeadinglist =new ArrayList<String>();
-		System.out.println(headingWebElement.getText());
 		getReusableActionsInstance().scrollToElement(headingWebElement);
 		getReusableActionsInstance().staticWait(3000);
 		List<WebElement> SubMenuHeadings=headingWebElement.findElements(By.xpath(".//div[@class='flyout']//div[@class='flyoutRow2Left']//li//b[not(a)]"));
@@ -640,100 +638,122 @@ public class GlobalheaderPage extends BasePage{
 		}	
 		return SubMenuHeadinglist;
 	}	
-		 
+	 /*Method to get list of Flyout submenu heding in camel case 
+	 * @return list:Flyout sub menu camel case
+	 * @author Shruti Desai
+	 */
+
+ public List<String> getFlyoutSubMenu(String headingName) { 
+		String xpathHeading =createXPath("//li[@class='navLinkItem']//span[contains(text(),'{0}')]" ,headingName); 
+		WebElement headingWebElement = getDriver().findElement(By.xpath(xpathHeading));
+		getReusableActionsInstance().scrollToElement(headingWebElement);
+		getReusableActionsInstance().staticWait(3000);
+		List<WebElement> SubMenu=headingWebElement.findElements(By.xpath("./ancestor::li//div[@class='flyout']//div[@class='flyoutRow2Left']//ul//li[1]//b"));
+		List<String> SubMenulist =new ArrayList<String>();
+		String newSubmenu;
+		for(WebElement e:SubMenu) {
+			newSubmenu=e.getText().trim();
+			if(newSubmenu.contains(" ")) {
+				String[] words = newSubmenu.split(" ");
+				String camelCaseHeading= "";
+				for (String parString : words){
+				camelCaseHeading = camelCaseHeading+ " " + (parString.charAt(0)+parString.substring(1).toLowerCase()); 
+				}
+				newSubmenu = camelCaseHeading.trim();
+			}else{
+				newSubmenu = newSubmenu.charAt(0)+newSubmenu.substring(1).toLowerCase();
+			}	
+			SubMenulist.add(newSubmenu);
+		}
+		return SubMenulist;
+	}				 
 		 
 	/*Method to get list of Flyout submenu link's text
 	 * @return list:Flyout sub menu links
 	 * @author Shruti Desai
 	 */
-	public List<String> getFlyoutSubMenuLinkText(List<String> headinglist, String headingName) {
-		List<WebElement> headingWebElement = getDriver().findElements(By.xpath("//div[contains(@class,'header-desktop')]//div[contains(@class,'megamenu')]//ul[@class='navLinkWrap']/li"));
+	public List<String> getFlyoutSubMenuLinkText(String headingName, String subMenuHeadingName) {
+		String xpathHeading =createXPath("//div[contains(@class,'header-desktop')]//div[contains(@class,'megamenu')]//ul[@class='navLinkWrap']/li[contains(@class,'navLinkItem')]//span[contains(.,'{0}')]" ,headingName); 
+		WebElement headingWebElement = getDriver().findElement(By.xpath(xpathHeading));
+		String xpathSubMenuHeading =createXPath("./ancestor::li[contains(@class,'navLinkItem')]//div[@class='flyout']//ul//li/b[contains(.,'{0}')]" ,subMenuHeadingName); 
+		List<WebElement> subMenuHeadingWebElement = headingWebElement.findElements(By.xpath(xpathSubMenuHeading));
 		List<String> SubMenulist =new ArrayList<String>();
-		for(WebElement heading:headingWebElement) {
-			getReusableActionsInstance().scrollToElement(heading);
-			List<WebElement> SubMenuLinks=heading.findElements(By.xpath(".//div[@class='flyout']//div[@class='flyoutRow2Left']//ul//li//a|.//div[@class='flyout']//div[@class='flyoutRow2Right']//*[contains(@class,'viewAll')]"));
-			for (WebElement SBlinks:SubMenuLinks) {
-				SubMenulist.add(SBlinks.getText());
+		for(WebElement subMenuHeading:subMenuHeadingWebElement) {
+		getReusableActionsInstance().staticWait(3000);
+		List<WebElement> SubMenuLinks=subMenuHeading.findElements(By.xpath("./ancestor::ul[1]/li/a"));
+		for (WebElement SBlinks:SubMenuLinks) {
+			SubMenulist.add(SBlinks.getText());
 			}
 		}
 		return SubMenulist;
 	}	 
 	 
-	 /* Method to validate all href for Flyout submenu links are not empty
-	  * @return : true/false
-	  * @author Shruti Desai
-	  */
-	public boolean validateFlyoutSubMenuLinks(List<String> headinglist, String headingName) {
-		String xpathHeading =createXPath("//div[contains(@class,'header-desktop')]//div[contains(@class,'megamenu')]//ul[@class='navLinkWrap']/li[contains(.,'{0}')]" ,headingName); 
-		WebElement headingWebElement = getDriver().findElement(By.xpath(xpathHeading));
-		List<String> SubMenulinklist =new ArrayList<String>();
-		getReusableActionsInstance().scrollToElement(headingWebElement);
-		List<WebElement> SubMenuLinks=headingWebElement.findElements(By.xpath(".//div[@class='flyout']//div[@class='flyoutRow2Left']//ul//li//a"));
-		for (WebElement SBlinks:SubMenuLinks) {
-			SBlinks.getAttribute("href").isEmpty();
-			return true;
-			}
-			return false;
-	}	
-	 
-	   
-	 /* Method to Validate FEATURED BRANDS section is displayed on right side by extracting its class
+	/* Method to Validate FEATURED BRANDS section is displayed on right side by extracting its class
 	  * @return text: class of Feature Brand section heading
 	  * @author Shruti Desai
 	  */
-	 public String validateFeatureBrandSectionIsOnTheRight(List<String> headinglist, String headingName) {
+	 public String validateFeatureBrandSectionIsOnTheRight(String headingName) {
 		WebElement brandSubMenu=getDriver().findElement(By.xpath("//*[@class='flyout']//div[@class='flyoutRow2Right']//descendant::b//ancestor::div[@class='flyoutRow2Right']"));
-		System.out.println("Brandsection class: ---->" + brandSubMenu.getAttribute("class"));
 		return brandSubMenu.getAttribute("class");
- 	}
+	}
 	 
-	/*Method to get list of Flyout submenu Headings in the Brand Section
-	 * @return list:Flyout sub menu Headings in the Brand Section
-	 * @author Shruti Desai
-	 */
-	public String getFeatureBrandSectionHeading(List<String> headinglist, String headingName) {
-		String xpathHeading =createXPath("//div[contains(@class,'header-desktop')]//div[contains(@class,'megamenu')]//ul[@class='navLinkWrap']/li[contains(.,'{0}')]" ,headingName); 
-		WebElement headingWebElement = getDriver().findElement(By.xpath(xpathHeading));
-		getReusableActionsInstance().scrollToElement(headingWebElement);
-		WebElement SubMenuHeadings=headingWebElement.findElement(By.xpath(".//div[@class='flyout']//div[@class='flyoutRow2Right']//li//b[not(a)]"));
-		return SubMenuHeadings.getText();
-	 }	 
-	
-	/* Method to validate all href for Flyout Brand Section link is not empty
+	 /*Method to get list of Flyout submenu Headings in the Brand Section
+		 * @return list:Flyout sub menu Headings in the Brand Section
+		 * @author Shruti Desai
+		 */
+		public String getFeatureBrandSectionHeading(String headingName) {
+			String xpathHeading =createXPath("//div[contains(@class,'header-desktop')]//div[contains(@class,'megamenu')]//ul[@class='navLinkWrap']/li[contains(.,'{0}')]" ,headingName); 
+			WebElement headingWebElement = getDriver().findElement(By.xpath(xpathHeading));
+			getReusableActionsInstance().scrollToElement(headingWebElement);
+			WebElement SubMenuHeadings=headingWebElement.findElement(By.xpath(".//div[@class='flyout']//div[@class='flyoutRow2Right']//li//b[not(a)]"));
+			return SubMenuHeadings.getText();
+		 }	 
+		
+	 /* Method to validate all href & src for Flyout submenu links in both right hand side and Brand Section are not empty.
 	  * @return : true/false
 	  * @author Shruti Desai
 	  */
-	 public boolean validateFlyoutSubMenuLinksforBrandSection(List<String> headinglist, String headingName) {
-		 String xpathHeading =createXPath("//div[contains(@class,'header-desktop')]//div[contains(@class,'megamenu')]//ul[@class='navLinkWrap']/li[contains(.,'{0}')]" ,headingName); 
-		 WebElement headingWebElement = getDriver().findElement(By.xpath(xpathHeading));
-		 List<String> SubMenulinklist =new ArrayList<String>();
-		 getReusableActionsInstance().scrollToElement(headingWebElement);
-		 List<WebElement> SubMenuLinksBrandSection=headingWebElement.findElements(By.xpath(".//div[@class='flyout']//div[@class='flyoutRow2Right']//div[@class='brand-image']//a"));
-		 for (WebElement SBlinks:SubMenuLinksBrandSection) {
-			 SBlinks.getAttribute("href").isEmpty();
-			 return true;
-		 }
-			return false;
+	public String validateFlyoutSubMenuSRCandHREF(String headingName,String section) {
+		List<WebElement> SubMenuLinks =null;
+		List<WebElement> SubMenuLinkImages =null;
+		WebElement brandSectionViewAlllink =null;
+		if(section==null) {
+			String xpathHeading =createXPath("//*[@id='megamenu']//span[contains(text(),'{0}')]/parent::a/following-sibling::div//div[@class='flyoutRow2Container']/div[1]//li//a" ,headingName); 
+			SubMenuLinks =getDriver().findElements(By.xpath(xpathHeading));
+		}else{
+			String xpathlinks =createXPath("//*[@id='megamenu']//span[contains(text(),'{0}')]/parent::a/following-sibling::div//div[@class='flyoutRow2Container']/div[2]//div//a[contains(@href,'HDR')]" ,headingName); 
+			String xpathimages =createXPath("//*[@id='megamenu']//span[contains(text(),'{0}')]/parent::a/following-sibling::div//div[@class='flyoutRow2Container']/div[2]//div//img" ,headingName); 
+			String xpathViewAlllink =createXPath("//*[@id='megamenu']//span[contains(text(),'{0}')]/parent::a/following-sibling::div//div[@class='flyoutRow2Container']/div[2]//div//a[contains(text(),'View All >')]" ,headingName); 
+			SubMenuLinks=getDriver().findElements(By.xpath(xpathlinks));
+			SubMenuLinkImages=getDriver().findElements(By.xpath(xpathimages));
+			brandSectionViewAlllink = getDriver().findElement(By.xpath(xpathViewAlllink));
+		}
+		if(section==null) {
+			for (WebElement SBlinks:SubMenuLinks) {
+				if(SBlinks.getAttribute("href").isEmpty()) {
+				return ("href is not present for link: "+SBlinks.getText());
+				}
+			}
+			return ("href is present for all links in left hand side section");
+		}else {
+			String viewAlllinkText =brandSectionViewAlllink.getText();
+			for (int i=0; i<SubMenuLinkImages.size(); i++) {
+				String href = SubMenuLinks.get(i).getAttribute("href");
+				String src = SubMenuLinkImages.get(i).getAttribute("src");
+				if(href==null) {
+					if(src!=null){
+						return ("href is not present for the link "+src+" in Brand Section");
+				}else if(src==null) {
+					return("src is not present for the link: "+href);	
+					}
+				}
+			}
+			if(brandSectionViewAlllink.getAttribute("href").isEmpty()) {
+			return ("href of "+viewAlllinkText+ " is empty");
+			}
+		return("href and src are present for all links in the Brand Section");
+		}
 	}	
 	
-	 /* Method to validate all images for Flyout Brand Section are not empty
-	  * @return : true/false
-	  * @author Shruti Desai
-	  */
-	 public boolean validateFlyoutSubMenuLinkImagesforBrandSection(List<String> headinglist, String headingName) {
-		 String xpathHeading =createXPath("//div[contains(@class,'header-desktop')]//div[contains(@class,'megamenu')]//ul[@class='navLinkWrap']/li[contains(.,'{0}')]" ,headingName); 
-		 WebElement headingWebElement = getDriver().findElement(By.xpath(xpathHeading));
-		 List<String> SubMenulinklist =new ArrayList<String>();
-		 getReusableActionsInstance().scrollToElement(headingWebElement);
-		 List<WebElement> SubMenuLinksBrandSection=headingWebElement.findElements(By.xpath(".//div[@class='flyout']//div[@class='flyoutRow2Right']//div[@class='brand-image']//img"));
-		 for (WebElement SBlinks:SubMenuLinksBrandSection) {
-			SBlinks.getAttribute("src").isEmpty();
-			return true;
-			}
-			return false;
-	 }	
-		 	
-	 
-		
 }
 
