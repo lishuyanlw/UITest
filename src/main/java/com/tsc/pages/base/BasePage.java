@@ -456,5 +456,34 @@ import utils.ReusableActions;
     	return Float.parseFloat(lsReturn);
     }
 	
+	/**
+	 * This method is to verify element properties.
+	 * @param WebElement element: input element
+	 * @param String lsChoice: "Text"/"Image"/"Link"
+	 * @return true/false
+	 * @author Wei.Li
+	 */
+	public boolean verifyElementProperty(WebElement element,String lsChoice) {
+		boolean bReturn=false;
+		switch(lsChoice) {
+		case "Text":
+			getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+			if(!element.getText().trim().isEmpty()) {
+				bReturn=true;
+			}
+			break;
+		case "Image":
+			if(!element.getAttribute("src").isEmpty()) {
+				bReturn=true;
+			}
+			break;
+		case "Link":
+			if(!element.getAttribute("href").isEmpty()) {
+				bReturn=true;
+			}
+			break;		
+		}
+		return bReturn;
+	}
 
 }
