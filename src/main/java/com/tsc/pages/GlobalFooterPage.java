@@ -170,10 +170,8 @@ public class GlobalFooterPage extends BasePage {
 	 * @author Wei.Li
 	 */
 	public String removeProtocalHeaderFromUrl(String lsUrl) {
-		if(lsUrl.endsWith("/")) {
-			lsUrl=lsUrl.substring(0,lsUrl.length()-1);
-        }
-		
+		lsUrl=removeLastSlashFromUrl(lsUrl);
+				
 		if(!lsUrl.toLowerCase().contains("http")) {			
 			return lsUrl;
 		}
@@ -181,6 +179,19 @@ public class GlobalFooterPage extends BasePage {
 		String[] itemArray=lsUrl.split(":");
 		String lsLeft=itemArray[1].substring(2);		
 		return lsLeft;
+	}
+	
+	/**
+	 * This method is to remove last slash from Url
+	 * @param String lsUrl: input Url
+	 * @return String: Url
+	 * @author Wei.Li
+	 */
+	public String removeLastSlashFromUrl(String lsUrl) {
+		if(lsUrl.endsWith("/")) {
+			lsUrl=lsUrl.substring(0,lsUrl.length()-1);
+        }
+		return lsUrl;
 	}
 	
 	/**
@@ -212,4 +223,41 @@ public class GlobalFooterPage extends BasePage {
 		}
 		return "";
 	}
+	
+	/**
+	 * This method is to get the link from yml file.
+	 * @param List<String> lstlink: the link from yml file
+	 * @param String lsSpecificName: input link name
+	 * @return String: note that the empty string means not found
+	 * @author Wei.Li
+	 */
+	public String getLinkWithSpecificName(List<List<String>> lstLink, String lsSpecificName) {
+		for(List<String> lstItem:lstLink) {
+			if(lsSpecificName.equalsIgnoreCase(lstItem.get(0))) {
+				return lstItem.get(1);
+			}
+		}
+		
+		return "";
+	}
+	
+	/**
+	 * This method is to compare the link in front page and the one in yml file.
+	 * @param String lsCurrentLink: the link in front page
+	 * @param String lsYmlLink: the link in yml file
+	 * @return true/false
+	 * @author Wei.Li
+	 */
+	public boolean verifyLinks(String lsCurrentLink, String lsYmlLink) {
+		lsCurrentLink=removeLastSlashFromUrl(lsCurrentLink);
+		lsYmlLink=removeLastSlashFromUrl(lsYmlLink);
+		
+		if(lsYmlLink.startsWith("/")) {
+			lsYmlLink=this.getBaseURL()+lsYmlLink;
+			return lsCurrentLink.equalsIgnoreCase(lsYmlLink);
+		}else {
+			return lsCurrentLink.toLowerCase().contains(lsYmlLink.toLowerCase());
+		}		
+	}
+	
 }

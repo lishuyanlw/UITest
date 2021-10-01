@@ -59,7 +59,7 @@ public class ConstantData {
 	private List<List<List<String>>> lst_FilterSequentialAction;
 	private List<String> lst_SocialMediaLinks;
 	private List<List<String>> lst_SpecialOffers;
-	private List<List<String>> lst_Language;
+	private List<List<String>> lst_NameAndLinks;
 
 	//Header Links getter and setter method
 	
@@ -711,16 +711,16 @@ public class ConstantData {
 	}
 	
 	/**
-	 * @return the lst_Language
+	 * @return the lst_NameAndLinks
 	 */
-	public List<List<String>> getlst_Language() {
-		return lst_Language;
+	public List<List<String>> getlst_NameAndLinks() {
+		return lst_NameAndLinks;
 	}
 	/**
-	 * @param lst_Language the lst_Language to set
+	 * @param lst_NameAndLinks the lst_NameAndLinks to set
 	 */
-	public void setlst_Language(List<List<String>> lst_Language) {
-		this.lst_Language = lst_Language;
+	public void setlst_NameAndLinks(List<List<String>> lst_NameAndLinks) {
+		this.lst_NameAndLinks = lst_NameAndLinks;
 	}
 		
 }
