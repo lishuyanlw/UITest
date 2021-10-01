@@ -51,8 +51,7 @@ lst_FilterByPrice: [["SHOP BY PRICE","Under $50","Under"]]
 lst_FilterCombination: [[["SHOP BY SIZE FASHION","Regular XXS-XS"],["SHOP BY PRICE","Under $50"]]]
 lst_MoreButton: ["SHOP BY BRAND","SHOP BY SHOE SIZE","SHOP BY SIZE FASHION"]
 lst_FilterSequentialAction: [[["SHOP BY BRAND","Kim & Co."],["SHOP BY PRICE","Under $50"],["SHOP BY COLOUR","Black"]]]
-lst_SpecialOffers: [["SHOP BY SPECIAL OFFERS","Clearance Price Final Sale"]]
-
 
 # FOOTER PAGE SECTION
 lst_SocialMediaLinks: ["https://www.facebook.com/Shoptsc","https://twitter.com/shoptsc","https://www.instagram.com/shoptsc","https://www.youtube.com/Shoptsc","https://www.pinterest.ca/shoptsc"]
+lst_Language: [["Credit Card","Cartes-cadeaux","/pages/creditcard?ic=ftr_tsccreditcard"],["Gift Card","Inscrivez-vous maintenant","/pages/giftcard?ic=ftr_tscgiftcard-img"],["Send us feedback","Dites-nous ce que vous pensez","https://rogers.qualtrics.com/"],["Language - Fran\çais","Langue - English"]]

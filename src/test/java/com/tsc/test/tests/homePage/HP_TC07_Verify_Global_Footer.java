@@ -67,6 +67,8 @@ public class HP_TC07_Verify_Global_Footer extends BaseTest {
 		(new BasePage(this.getDriver())).navigateToURL(lsBaseUrl);
 		getGlobalFooterPageThreadLocal().waitForPageLoading();
 		
+		List<List<String>> lstLanguage=TestDataHandler.constantDataVariables.getlst_Language();
+		
 	}
 
 }
