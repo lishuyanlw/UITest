@@ -153,6 +153,15 @@ public class ProductResultsPage extends BasePage{
 		
 	public By bySubItemListOnLeftPanel=By.xpath(".//li");
 	public By bySubItemPanelBodyOnLeftPanel=By.xpath(".//div[@class='panel-body']");
+	
+	@FindBy(xpath = "//product-recommendations-endeca")
+	WebElement recommendationContainer;
+	
+	@FindBy(xpath = "//div[@class='Header']")
+	WebElement headerContainer;
+	
+	@FindBy(xpath = "//div[@class='Footer']")
+	WebElement footerContainer;
 			
 	String searchkeyword;
 	public boolean bVerifyTitle=true;
@@ -1053,6 +1062,33 @@ public class ProductResultsPage extends BasePage{
 		}		
 		return false;
 	}
+
+    /**
+	 * This method will get Recommendation container.  
+	 * @return  WebElement
+	 * @author Wei.Li
+	 */	
+    public WebElement getRecommendationContainer() {  
+    	return this.recommendationContainer;
+    }
+    
+    /**
+	 * This method will get Header container.  
+	 * @return  WebElement
+	 * @author Wei.Li
+	 */	
+    public WebElement getHeaderContainer() {  
+    	return this.headerContainer;
+    }
+    
+    /**
+	 * This method will get Footer container.  
+	 * @return  WebElement
+	 * @author Wei.Li
+	 */	
+    public WebElement getFooterContainer() {  
+    	return this.footerContainer;
+    }
 
 }
 
