@@ -147,11 +147,14 @@ public class GlobalFooterPage extends BasePage {
 	public WebElement txtCopyrightLine2;
 
 	/**
-	 * Close popup dialog through pressing escape key.
+	 * Close popup dialog through clicking close button.
 	 * @author Wei.Li
 	 */
-	public void closePopupDialog() {
-		this.pressEscapeKey();
+	public void closePopupDialog() {		
+		if(waitForCondition(Driver->{return (new HomePage(this.getDriver())).btnClose.isDisplayed();},40000)) {
+			(new HomePage(this.getDriver())).btnClose.click();
+		}
+		getReusableActionsInstance().staticWait(500);
 	}
 	
 	/**
@@ -192,7 +195,8 @@ public class GlobalFooterPage extends BasePage {
 		lsExpectedUrl=removeProtocalHeaderFromUrl(lsExpectedUrl);
 		String lsCurrentUrl=waitForPageLoadingByUrlChange(element);		
 		lsCurrentUrl=removeProtocalHeaderFromUrl(lsCurrentUrl);
-		return lsCurrentUrl.equalsIgnoreCase(lsExpectedUrl);		
+		
+		return lsCurrentUrl.equalsIgnoreCase(lsExpectedUrl)||lsCurrentUrl.toLowerCase().contains(lsExpectedUrl.toLowerCase());		
 	}
 
 	/**

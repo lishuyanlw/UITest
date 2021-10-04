@@ -462,7 +462,7 @@ import utils.ReusableActions;
 	 * @return true/false
 	 * @author Wei.Li
 	 */	
-    public boolean verifySectionExisting(WebElement element) {    	
+    public boolean verifyElementExisting(WebElement element) {    	
     	getReusableActionsInstance().javascriptScrollByVisibleElement(element);
     	return getReusableActionsInstance().isElementVisible(element);
     }

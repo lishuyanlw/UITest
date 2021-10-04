@@ -30,13 +30,6 @@ public class YamlHandler {
 		InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream, StandardCharsets.UTF_8);
 		ConstantData headerFooterLinks = yaml.load(inputStreamReader);
 		return headerFooterLinks;
-		
-//		Yaml yaml = new Yaml(new Constructor(ConstantData.class));
-//		InputStream inputStream;
-//
-//		inputStream = new FileInputStream(new File(System.getProperty("user.dir") + strConstantLocation));
-//		ConstantData headerFooterLinks = yaml.load(inputStream);
-//		return headerFooterLinks;
 	}
 	
 
