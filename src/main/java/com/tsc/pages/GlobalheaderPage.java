@@ -133,17 +133,9 @@ public class GlobalheaderPage extends BasePage{
 	 *Flyouts Headings
 	 */
 	@FindBy(xpath = "//div[contains(@class,'header-desktop')]//div[contains(@class,'megamenu')]//ul[@class='navLinkWrap']/li")
-					//div[@class='Header']//div[@id='megamenu']/ul/li
 	List<WebElement> listFlyoutHeadings;
 	
-	@FindBy(xpath = "//div[@class='Header']//div[@id='megamenu']/ul/li//div[@class='flyout']//div[@class='flyoutRow2Top']//div")
-	List<WebElement> listFlyoutSubmenuHeadingscolumns;
-	
-	@FindBy(xpath = "//div[@class='Header']//div[@id='megamenu']/ul/li//div[@class='flyout']//div[@class='flyoutRow2Left']//ul//li[1]//b")
-	List<WebElement> listFlyoutSubmenuHeadings;
-	//div[@class='flyout']//div[@class='flyoutRow2Top']//div//li[1]//b 
-
-	
+		
 	@FindBy(xpath = "//*[@class='email-popup__button']")
 	WebElement btnClose;
 	public void closeadd() {
