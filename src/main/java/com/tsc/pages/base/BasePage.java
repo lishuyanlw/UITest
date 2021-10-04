@@ -496,5 +496,62 @@ import utils.ReusableActions;
 		}
 		return bReturn;
 	}
+	
+    /**
+	 * This method is to get element text. 
+	 * @param WebElement element: input element 
+	 * @return String
+	 * @author Wei.Li
+	 */	
+    public String getElementText(WebElement element) {    	
+    	getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+    	return element.getText().trim();
+    }
+    
+    /**
+	 * This method is to get element href. 
+	 * @param WebElement element: input element 
+	 * @return String
+	 * @author Wei.Li
+	 */	
+    public String getElementHref(WebElement element) {    	
+    	getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+    	return this.removeLastSlashFromUrl(element.getAttribute("href").trim());
+    }
+    
+    /**
+	 * This method is to get element image src. 
+	 * @param WebElement element: input element 
+	 * @return String
+	 * @author Wei.Li
+	 */	
+    public String getElementImageSrc(WebElement element) {    	
+    	getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+    	return element.getAttribute("src").trim();
+    }
+    
+	/**
+	 * This method is to remove last slash from Url
+	 * @param String lsUrl: input Url
+	 * @return String: Url
+	 * @author Wei.Li
+	 */
+	public String removeLastSlashFromUrl(String lsUrl) {
+		if(lsUrl.endsWith("/")) {
+			lsUrl=lsUrl.substring(0,lsUrl.length()-1);
+        }
+		return lsUrl;
+	}
+	
+	/**
+	 * This method is to get UTF_8 format
+	 * @param String data: input data	  
+	 * @author Sachin.Sharma
+	 */
+	public String getUFTEnabledData(String data) {
+		   byte[] bytes = data.getBytes(StandardCharsets.UTF_8);
+		   String utf8EncodedString = new String(bytes);
+		   return utf8EncodedString;
+	}
 
 }

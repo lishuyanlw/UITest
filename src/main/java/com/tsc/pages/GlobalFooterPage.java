@@ -182,19 +182,6 @@ public class GlobalFooterPage extends BasePage {
 	}
 	
 	/**
-	 * This method is to remove last slash from Url
-	 * @param String lsUrl: input Url
-	 * @return String: Url
-	 * @author Wei.Li
-	 */
-	public String removeLastSlashFromUrl(String lsUrl) {
-		if(lsUrl.endsWith("/")) {
-			lsUrl=lsUrl.substring(0,lsUrl.length()-1);
-        }
-		return lsUrl;
-	}
-	
-	/**
 	 * This method is to verify the url after clicking element.
 	 * @param WebElement element: input element
 	 * @param String lsExpectedUrl: expected Url
@@ -226,15 +213,56 @@ public class GlobalFooterPage extends BasePage {
 	
 	/**
 	 * This method is to get the link from yml file.
-	 * @param List<String> lstlink: the link from yml file
-	 * @param String lsSpecificName: input link name
+	 * @param List<String> lstNameAndLink: the list from yml file
+	 * @param String lsSpecificName: input name
 	 * @return String: note that the empty string means not found
 	 * @author Wei.Li
 	 */
-	public String getLinkWithSpecificName(List<List<String>> lstLink, String lsSpecificName) {
-		for(List<String> lstItem:lstLink) {
+	public String getLinkWithSpecificName(List<List<String>> lstNameAndLink, String lsSpecificName) {
+		for(List<String> lstItem:lstNameAndLink) {			
 			if(lsSpecificName.equalsIgnoreCase(lstItem.get(0))) {
-				return lstItem.get(1);
+				if(lstItem.get(2).startsWith("/")) {
+					return this.removeLastSlashFromUrl(this.getBaseURL()+lstItem.get(2).trim());
+				}
+				else {
+					return this.removeLastSlashFromUrl(lstItem.get(2).trim());
+				}
+				
+			}
+		}
+		
+		return "";
+	}
+	
+	/**
+	 * This method is to verify if equal to a UTF-8 encoding text.
+	 * @param List<String> lstNameAndLink: the list from yml file
+	 * @param String lsSpecificName: input text
+	 * @return true/false
+	 * @author Wei.Li
+	 */
+	public boolean verifyEqualWithEncodingText(List<List<String>> lstNameAndLink, String lsSpecificName) {
+		for(List<String> lstItem:lstNameAndLink) {			
+			if(lsSpecificName.trim().equalsIgnoreCase(this.getUFTEnabledData(lstItem.get(0)))) {				
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * This method is to get the French name from yml file.
+	 * @param List<String> lstNameAndLink: the list from yml file
+	 * @param String lsSpecificName: input name
+	 * @return French name: note that the empty string means not found
+	 * @author Wei.Li
+	 */
+	public String getFrenchWithSpecificEnglishName(List<List<String>> lstNameAndLink, String lsSpecificName) {
+		System.out.println("lsSpecificName: "+lsSpecificName);
+		for(List<String> lstItem:lstNameAndLink) {			
+			if(lsSpecificName.equalsIgnoreCase(this.getUFTEnabledData(lstItem.get(0)))) {
+				return lstItem.get(1).trim();
 			}
 		}
 		
@@ -259,5 +287,17 @@ public class GlobalFooterPage extends BasePage {
 			return lsCurrentLink.toLowerCase().contains(lsYmlLink.toLowerCase());
 		}		
 	}
+		
+	/**
+	 * This method is to switch language.
+	 * @return true/false
+	 * @author Wei.Li
+	 */
+	public boolean switchlanguage() {
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkLanguage);
+		this.lnkLanguage.click();
+		return this.waitForPageLoading();
+	}
 	
+
 }
