@@ -24,10 +24,10 @@ public class HP_TC02_GlobalHeader_VerifyFlyoutsSubMenuItems extends BaseTest {
 			reporter.reportLog("Flyout displays " + lsHeading+" department.");
 			reporter.reportLog("It's Sub Menu display sections: " + subMenu);
 			reporter.softAssert(TestDataHandler.constantDataVariables.getlst_FlyoutsubMenu().containsAll(subMenu),lsHeading +"'s sub menu section list is correct", lsHeading +"'s sub menu section list is incorrect");
+			reporter.reportLog(getglobalheaderPageThreadLocal().validateFlyoutSubMenuSRCandHREF(lsHeading,null)+" of "+lsHeading);
 			reporter.softAssert(getglobalheaderPageThreadLocal().validateFeatureBrandSectionIsOnTheRight(lsHeading).equals("flyoutRow2Right"), "Brand section of the flyout "+lsHeading+ " is located on the Right side under the heading "+"'"+BrandSectionHeading+"'","Brand section of the flyout "+lsHeading+ " is not located on the Right side");
 			reporter.reportLog(getglobalheaderPageThreadLocal().validateFlyoutSubMenuSRCandHREF(lsHeading,BrandSectionHeading)+" of "+lsHeading);
-			reporter.reportLog(getglobalheaderPageThreadLocal().validateFlyoutSubMenuSRCandHREF(lsHeading,null)+" of "+lsHeading);
-		}
+			}
 	}	
 	
 }		

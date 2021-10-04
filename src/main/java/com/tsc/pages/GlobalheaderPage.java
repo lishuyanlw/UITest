@@ -19,7 +19,7 @@ import java.util.function.Function;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
-
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindAll;
 
@@ -567,15 +567,6 @@ public class GlobalheaderPage extends BasePage{
 		 }
 	}
 	
-			
-		public boolean validateFlyoutHeadings(int headingNumber) { 
-		WebElement WebElement=listFlyoutHeadings.get(headingNumber).findElement(By.xpath(".//span"));
-		if(WebElement.isDisplayed()) {
-			return true;
-			}else {
-				return false;
-			}
-	}
 	
 //Sub Menu Section
 	
@@ -745,7 +736,9 @@ public class GlobalheaderPage extends BasePage{
 			}
 		return("href and src are present for all links in the Brand Section");
 		}
-	}	
+	}
+	
+
 	
 }
 
