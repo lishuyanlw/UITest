@@ -724,5 +724,4 @@ public class ConstantData {
 		this.lst_SpecialOffers = lst_SpecialOffers;
 	}
 
-	
 }
