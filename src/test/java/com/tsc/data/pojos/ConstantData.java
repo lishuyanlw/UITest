@@ -1,4 +1,3 @@
-
 package com.tsc.data.pojos;
 
 import java.io.IOException;
@@ -34,7 +33,6 @@ public class ConstantData {
 	private String lbl_MinicartLinkName;
 	private String lnk_MinicarLink;
 	private List<String> lst_FlyoutHeading;
-	private List<String> lst_FlyoutsubMenu;
 	private List<String> lnk_FlyoutHeaderLinkConstant;
 	private String lbl_FlyoutHeadingLandingPageLink;
 	private String lbl_OnAirNow;
@@ -59,6 +57,8 @@ public class ConstantData {
 	private List<List<List<String>>> lst_FilterCombination;
 	private List<String> lst_MoreButton;
 	private List<List<List<String>>> lst_FilterSequentialAction;
+	private List<String> lst_SocialMediaLinks;
+	private List<List<String>> lst_SpecialOffers;
 
 	//Header Links getter and setter method
 	
@@ -361,7 +361,7 @@ public class ConstantData {
 		this.lbl_MinicartLinkName = lbl_MinicartLinkName;
 	}
 	/**
-	 * @return the lbl_FlyoutHeadingLandingPageLink
+	 * @return the lbl_MinicartLinkName
 	 */
 	public String getlbl_FlyoutHeadingLandingPageLink() {
 		return lbl_FlyoutHeadingLandingPageLink;
@@ -383,19 +383,6 @@ public class ConstantData {
 	 */
 	public void setlst_FlyoutHeading(List<String> lst_FlyoutHeading) {
 		this.lst_FlyoutHeading = lst_FlyoutHeading;
-	}
-	
-	/**
-	 * @return the lst_FlyoutsubMenu
-	 */
-	public List<String> getlst_FlyoutsubMenu() {
-		return lst_FlyoutsubMenu;
-	}
-	/**
-	 * @param lst_FlyoutsubMenu the lst_FlyoutsubMenu to set
-	 */
-	public void setlst_FlyoutsubMenu(List<String> lst_FlyoutsubMenu) {
-		this.lst_FlyoutsubMenu = lst_FlyoutsubMenu;
 	}
 	/**
 	 * @return the lnk_FlyoutHeaderLinkConstant
@@ -668,7 +655,6 @@ public class ConstantData {
 	public void setlst_FilterCombination(List<List<List<String>>> lst_FilterCombination) {
 		this.lst_FilterCombination = lst_FilterCombination;
 	}
-
 	
 	/**
 	 * @return the lst_MoreButton
@@ -695,6 +681,33 @@ public class ConstantData {
 	public void setlst_FilterSequentialAction(List<List<List<String>>> lst_FilterSequentialAction) {
 		this.lst_FilterSequentialAction = lst_FilterSequentialAction;
 	}
-		
+	
+	/**
 
+	 * @return the lst_SocialMediaLinks
+	 */
+	public List<String> getlst_SocialMediaLinks() {
+		return lst_SocialMediaLinks;
+	}
+	/**
+	 * @param lst_SocialMediaLinks the lst_SocialMediaLinks to set
+	 */
+	public void setlst_SocialMediaLinks(List<String> lst_SocialMediaLinks) {
+		this.lst_SocialMediaLinks = lst_SocialMediaLinks;
+	}
+	
+	/**
+	 * @return the lst_SpecialOffers
+	 */
+	public List<List<String>> getlst_SpecialOffers() {
+		return lst_SpecialOffers;
+	}
+	/**
+	 * @param lst_SpecialOffers the lst_SpecialOffers to set
+	 */
+	public void setlst_SpecialOffers(List<List<String>> lst_SpecialOffers) {
+		this.lst_SpecialOffers = lst_SpecialOffers;
+	}
+
+	
 }
