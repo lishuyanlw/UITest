@@ -54,10 +54,5 @@ lst_FilterSequentialAction: [[["SHOP BY BRAND","Kim & Co."],["SHOP BY PRICE","Un
 lst_SpecialOffers: [["SHOP BY SPECIAL OFFERS","Clearance Price Final Sale"]]
 
 
-
-
-
-
-
-
-
+# FOOTER PAGE SECTION
+lst_SocialMediaLinks: ["https://www.facebook.com/Shoptsc","https://twitter.com/shoptsc","https://www.instagram.com/shoptsc","https://www.youtube.com/Shoptsc","https://www.pinterest.ca/shoptsc"]
