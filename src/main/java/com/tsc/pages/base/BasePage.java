@@ -358,7 +358,7 @@ import utils.ReusableActions;
  
 	//Get the URL 			
 	public String URL() {
-		return getDriver().getCurrentUrl();
+		return this.removeLastSlashFromUrl(getDriver().getCurrentUrl());
 	}
 	
 	/**

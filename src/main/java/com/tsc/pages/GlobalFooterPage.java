@@ -142,6 +142,32 @@ public class GlobalFooterPage extends BasePage {
 	
 	@FindBy(xpath = "//div[@class='Footer']//div[contains(@class,'copyright-msg')][2]")
 	public WebElement txtCopyrightLine2;
+	
+	//Customer service page objects
+	@FindBy(xpath = "//div[@class='CustomerService']//*[contains(@class,'customer-service__title')]")
+	public WebElement lblCustomerService;
+	
+	@FindBy(xpath = "//div[@class='CustomerService']//*[contains(@class,'customer-service__title')]/following-sibling::h2")
+	public WebElement lblHowCanWeHelpYou;
+	
+	@FindBy(xpath = "//div[@class='CustomerService']//*[contains(@class,'customer-service__searchbox')]//input")
+	public WebElement inputSearchBox;
+	
+	@FindBy(xpath = "//div[@class='CustomerService']//*[contains(@class,'customer-service__searchbox')]//button[contains(@class,'customer-service__search-button')]")
+	public WebElement btnSearchButton;
+	
+	@FindBy(xpath = "//div[@class='CustomerService']//*[contains(@class,'customer-service__searchbox')]//button[contains(@class,'customer-service__search-button')]")
+	public WebElement lblFrequentlyAskedQuestions;
+	
+	@FindBy(xpath = "//div[@class='CustomerService']//ul[contains(@class,'customer-service__faq')]//li//a")
+	public List<WebElement> lstFrequentlyAskedQuestions;
+	
+	@FindBy(xpath = "//div[@class='CustomerService']//div[contains(@class,'customerService__faq-wrap')]//a")
+	public WebElement lnkBackToCutomerService;
+	
+	@FindBy(xpath = "//div[@class='CustomerService']//div[contains(@class,'customer-service__article')]")
+	public WebElement blkArticle;
+	
 
 	/**
 	 * Close popup dialog through clicking close button.
@@ -303,6 +329,36 @@ public class GlobalFooterPage extends BasePage {
 	public boolean switchlanguage() {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkLanguage);
 		this.lnkLanguage.click();
+		return this.waitForPageLoading();
+	}
+	
+	/**
+	 * This method is to get the element for specific service name.
+	 * @param String lsService: the service name
+	 * @return WebElement
+	 * @author Wei.Li
+	 */
+	public WebElement getServiceWebElement(String lsService) {
+		WebElement selectedItem=this.getElementFromList(this.lnkTSCCustomerHubAllLinks, lsService);
+		if(selectedItem==null) {
+			selectedItem=this.getElementFromList(this.lnkAboutTSCAllLinks, lsService);
+		}
+		return selectedItem;
+	}
+	
+	/**
+	 * This method is to go to a specific service.
+	 * @param String lsService: the service name
+	 * @return true/false
+	 * @author Wei.Li
+	 */
+	public boolean goToService(String lsService) {
+		WebElement selectedItem=this.getServiceWebElement(lsService);
+		if(selectedItem==null) {
+			return false;
+		}
+		getReusableActionsInstance().javascriptScrollByVisibleElement(selectedItem);
+		selectedItem.click();
 		return this.waitForPageLoading();
 	}
 	
