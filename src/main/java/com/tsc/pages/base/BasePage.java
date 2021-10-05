@@ -554,4 +554,22 @@ import utils.ReusableActions;
 		   return utf8EncodedString;
 	}
 
+	/*Method to convert words/string into camel case  
+	 * @return String
+	 * @author Shruti Desai
+	 */
+	public String createCamelCase(String headingName) {
+		if(headingName.contains(" ")) {
+			String[] words = headingName.split(" ");
+			String camelCaseHeading= "";
+			for (String parString : words){
+				camelCaseHeading = camelCaseHeading+" "+(parString.charAt(0)+parString.substring(1).toLowerCase()) ; 
+			}
+			headingName = camelCaseHeading.trim();
+			}else{
+				headingName = headingName.charAt(0)+headingName.substring(1).toLowerCase();
+			}	
+		return headingName;
+	}
+	
 }

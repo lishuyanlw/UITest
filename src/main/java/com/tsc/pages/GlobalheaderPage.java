@@ -603,7 +603,7 @@ public class GlobalheaderPage extends BasePage{
 	 * @return String
 	 * @author Shruti Desai
 	 */
-	public String createCamelCase(String headingName) {
+	/*public String createCamelCase(String headingName) {
 		if(headingName.contains(" ")) {
 			String[] words = headingName.split(" ");
 			String camelCaseHeading= "";
@@ -615,7 +615,7 @@ public class GlobalheaderPage extends BasePage{
 				headingName = headingName.charAt(0)+headingName.substring(1).toLowerCase();
 			}	
 		return headingName;
-	}
+	}*/
 	
 	 /*Method to get list of Flyout submenu heding in camel case 
 	  * @return list:Flyout sub menu camel case
