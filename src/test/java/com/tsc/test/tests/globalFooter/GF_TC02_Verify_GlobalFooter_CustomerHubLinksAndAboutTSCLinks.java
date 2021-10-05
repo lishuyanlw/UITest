@@ -64,12 +64,7 @@ public class GF_TC02_Verify_GlobalFooter_CustomerHubLinksAndAboutTSCLinks extend
 				reporter.reportLog("Unable to find "+lsText+" link in yml file.");
 			}
 			lsHref=basePage.getElementHref(item);	
-			if(lsYmlHref.startsWith("/")) {
-				reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current "+lsText+" href of "+lsHref+" is equal to "+lsYmlHref+ "in yml file","The current "+lsText+" href of "+lsHref+" is not equal to "+lsYmlHref+ "in yml file");
-			}else {
-				reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current "+lsText+" href of "+lsHref+" contains "+lsYmlHref+ "in yml file","The current "+lsText+" href of "+lsHref+" does not contain "+lsYmlHref+ "in yml file");
-			}
-			
+			reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref+ "in yml file","The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref+ "in yml file");			
 		}
 		
 		//About TSC links
@@ -79,21 +74,17 @@ public class GF_TC02_Verify_GlobalFooter_CustomerHubLinksAndAboutTSCLinks extend
 			if(lsYmlHref.isEmpty()) {
 				reporter.reportLog("Unable to find "+lsText+" link in yml file.");
 			}
-			lsHref=basePage.getElementHref(item);
-			if(lsYmlHref.startsWith("/")) {
-				reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current "+lsText+" href of "+lsHref+" is equal to "+lsYmlHref+ "in yml file","The current "+lsText+" href of "+lsHref+" is not equal to "+lsYmlHref+ "in yml file");
-			}else {
-				reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current "+lsText+" href of "+lsHref+" contains "+lsYmlHref+ "in yml file","The current "+lsText+" href of "+lsHref+" does not contain "+lsYmlHref+ "in yml file");
-			}			
+			lsHref=basePage.getElementHref(item);			
+			reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref+ "in yml file","The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref+ "in yml file");						
 		}
 		
 		//Rogers LOGO
 		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().imgRogersLogo), "Rogers Logo is existing", "Rogers Logo is not existing");		
 		
 		//Copyright text
-		lsText=basePage.getUFTEnabledData(basePage.getElementText(getGlobalFooterPageThreadLocal().txtCopyrightLine1));
+		lsText=basePage.getUTFEnabledData(basePage.getElementText(getGlobalFooterPageThreadLocal().txtCopyrightLine1));
 		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyEqualWithEncodingText(lstNameAndLinks, lsText),"The copyright text is equal to the text in yml","The copyright text is not equal to the text in yml");
-		lsText=basePage.getUFTEnabledData(basePage.getElementText(getGlobalFooterPageThreadLocal().txtCopyrightLine2));		
+		lsText=basePage.getUTFEnabledData(basePage.getElementText(getGlobalFooterPageThreadLocal().txtCopyrightLine2));		
 		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyEqualWithEncodingText(lstNameAndLinks, lsText),"The copyright text is equal to the text in yml","The copyright text is not equal to the text in yml");
 		
 	}

@@ -62,9 +62,6 @@ public class GlobalFooterPage extends BasePage {
 	//Language switch
 	@FindBy(xpath = "//div[@class='Footer']//div[@class='custom-footer']//a[contains(@href,'switchLanguage')]")
 	public WebElement lnkLanguage;
-	
-	@FindBy(xpath = "//div[@class='Footer']//div[@class='custom-footer']//a[contains(@href,'switchLanguage')]/span")
-	public WebElement lblLanguageHeadingText;
 			
 	//Facebook
 	@FindBy(xpath = "//div[@class='Footer']//div[@class='custom-footer']//a[contains(@href,'facebook')]/parent::div")
@@ -247,7 +244,7 @@ public class GlobalFooterPage extends BasePage {
 	 */
 	public boolean verifyEqualWithEncodingText(List<List<String>> lstNameAndLink, String lsSpecificName) {
 		for(List<String> lstItem:lstNameAndLink) {			
-			if(lsSpecificName.trim().equalsIgnoreCase(this.getUFTEnabledData(lstItem.get(0)))) {				
+			if(lsSpecificName.trim().equalsIgnoreCase(this.getUTFEnabledData(lstItem.get(0)))) {				
 				return true;
 			}
 		}
@@ -265,7 +262,7 @@ public class GlobalFooterPage extends BasePage {
 	public String getFrenchWithSpecificEnglishName(List<List<String>> lstNameAndLink, String lsSpecificName) {
 		System.out.println("lsSpecificName: "+lsSpecificName);
 		for(List<String> lstItem:lstNameAndLink) {			
-			if(lsSpecificName.equalsIgnoreCase(this.getUFTEnabledData(lstItem.get(0)))) {
+			if(lsSpecificName.equalsIgnoreCase(this.getUTFEnabledData(lstItem.get(0)))) {
 				return lstItem.get(1).trim();
 			}
 		}
