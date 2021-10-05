@@ -135,7 +135,10 @@ public class GlobalheaderPage extends BasePage{
 	@FindBy(xpath = "//div[contains(@class,'header-desktop')]//div[contains(@class,'megamenu')]//ul[@class='navLinkWrap']/li")
 	List<WebElement> listFlyoutHeadings;
 	
-		
+	@FindBy(xpath ="//*[@class='flyout']//div[@class='flyoutRow2Right']//descendant::b//ancestor::div[@class='flyoutRow2Right']")
+	WebElement brandSubMenu;
+	
+	
 	@FindBy(xpath = "//*[@class='email-popup__button']")
 	WebElement btnClose;
 	public void closeadd() {
@@ -579,20 +582,11 @@ public class GlobalheaderPage extends BasePage{
 		String newHeading;
 		for(WebElement item:listFlyoutHeadings) {
 			newHeading=item.getText().trim();
-			if(newHeading.contains("&")) {
-				String[] words = newHeading.split(" ");
-				String camelCaseHeading= "";
-				for (String parString : words){
-					camelCaseHeading = camelCaseHeading+ " " + (parString.charAt(0)+parString.substring(1).toLowerCase()); 
-				}
-				newHeading = camelCaseHeading.trim();
-				}else{
-					newHeading = newHeading.charAt(0)+newHeading.substring(1).toLowerCase();
-				}	
-				FlyoutHeadings.add(newHeading);
+			newHeading = createCamelCase(newHeading);
+			FlyoutHeadings.add(newHeading);
 		}
 		return FlyoutHeadings;
-	}					
+	}		
 							
 	/*Method to get String of XPath  
 	 * @return String:Xpath
@@ -604,93 +598,65 @@ public class GlobalheaderPage extends BasePage{
 		}
 		return xpathExp;
 	}
-			
-	/*Method to get list of Flyout submenu Headings
-	 * @return list:Flyout sub menu Headings
+		
+	/*Method to convert words/string into camel case  
+	 * @return String
 	 * @author Shruti Desai
 	 */
-	public List<String> getFlyoutSubMenuHeadings(String headingName) {
-		String xpathHeading =createXPath("//div[contains(@class,'header-desktop')]//div[contains(@class,'megamenu')]//ul[@class='navLinkWrap']/li[contains(.,'{0}')]" ,headingName); 
-		WebElement headingWebElement = getDriver().findElement(By.xpath(xpathHeading));
-		List<String> SubMenuHeadinglist =new ArrayList<String>();
-		getReusableActionsInstance().scrollToElement(headingWebElement);
-		getReusableActionsInstance().staticWait(3000);
-		List<WebElement> SubMenuHeadings=headingWebElement.findElements(By.xpath(".//div[@class='flyout']//div[@class='flyoutRow2Left']//li//b[not(a)]"));
-		for (WebElement SBheading:SubMenuHeadings) {
-			SubMenuHeadinglist.add(SBheading.getText());
-		}	
-		return SubMenuHeadinglist;
-	}	
-	 /*Method to get list of Flyout submenu heding in camel case 
-	 * @return list:Flyout sub menu camel case
-	 * @author Shruti Desai
-	 */
-
- public List<String> getFlyoutSubMenu(String headingName) { 
-		String xpathHeading =createXPath("//li[@class='navLinkItem']//span[contains(text(),'{0}')]" ,headingName); 
-		WebElement headingWebElement = getDriver().findElement(By.xpath(xpathHeading));
-		getReusableActionsInstance().scrollToElement(headingWebElement);
-		getReusableActionsInstance().staticWait(3000);
-		List<WebElement> SubMenu=headingWebElement.findElements(By.xpath("./ancestor::li//div[@class='flyout']//div[@class='flyoutRow2Left']//ul//li[1]//b"));
-		List<String> SubMenulist =new ArrayList<String>();
-		String newSubmenu;
-		for(WebElement e:SubMenu) {
-			newSubmenu=e.getText().trim();
-			if(newSubmenu.contains(" ")) {
-				String[] words = newSubmenu.split(" ");
-				String camelCaseHeading= "";
-				for (String parString : words){
-				camelCaseHeading = camelCaseHeading+ " " + (parString.charAt(0)+parString.substring(1).toLowerCase()); 
-				}
-				newSubmenu = camelCaseHeading.trim();
-			}else{
-				newSubmenu = newSubmenu.charAt(0)+newSubmenu.substring(1).toLowerCase();
-			}	
-			SubMenulist.add(newSubmenu);
-		}
-		return SubMenulist;
-	}				 
-		 
-	/*Method to get list of Flyout submenu link's text
-	 * @return list:Flyout sub menu links
-	 * @author Shruti Desai
-	 */
-	public List<String> getFlyoutSubMenuLinkText(String headingName, String subMenuHeadingName) {
-		String xpathHeading =createXPath("//div[contains(@class,'header-desktop')]//div[contains(@class,'megamenu')]//ul[@class='navLinkWrap']/li[contains(@class,'navLinkItem')]//span[contains(.,'{0}')]" ,headingName); 
-		WebElement headingWebElement = getDriver().findElement(By.xpath(xpathHeading));
-		String xpathSubMenuHeading =createXPath("./ancestor::li[contains(@class,'navLinkItem')]//div[@class='flyout']//ul//li/b[contains(.,'{0}')]" ,subMenuHeadingName); 
-		List<WebElement> subMenuHeadingWebElement = headingWebElement.findElements(By.xpath(xpathSubMenuHeading));
-		List<String> SubMenulist =new ArrayList<String>();
-		for(WebElement subMenuHeading:subMenuHeadingWebElement) {
-		getReusableActionsInstance().staticWait(3000);
-		List<WebElement> SubMenuLinks=subMenuHeading.findElements(By.xpath("./ancestor::ul[1]/li/a"));
-		for (WebElement SBlinks:SubMenuLinks) {
-			SubMenulist.add(SBlinks.getText());
+	public String createCamelCase(String headingName) {
+		if(headingName.contains(" ")) {
+			String[] words = headingName.split(" ");
+			String camelCaseHeading= "";
+			for (String parString : words){
+				camelCaseHeading = camelCaseHeading+" "+(parString.charAt(0)+parString.substring(1).toLowerCase()) ; 
 			}
-		}
-		return SubMenulist;
-	}	 
-	 
+			headingName = camelCaseHeading.trim();
+			}else{
+				headingName = headingName.charAt(0)+headingName.substring(1).toLowerCase();
+			}	
+		return headingName;
+	}
+	
+	 /*Method to get list of Flyout submenu heding in camel case 
+	  * @return list:Flyout sub menu camel case
+	  * @author Shruti Desai
+	  */
+	 public List<String> getFlyoutSubMenu(String headingName) { 
+			String xpathHeading =createXPath("//li[@class='navLinkItem']//span[contains(text(),'{0}')]" ,headingName); 
+			WebElement headingWebElement = getDriver().findElement(By.xpath(xpathHeading));
+			getReusableActionsInstance().scrollToElement(headingWebElement);
+			getReusableActionsInstance().staticWait(3000);
+			List<WebElement> SubMenu=headingWebElement.findElements(By.xpath("./ancestor::li//div[@class='flyout']//div[@class='flyoutRow2Left']//ul//li[1]//b"));
+			List<String> SubMenulist =new ArrayList<String>();
+			String newSubmenu;
+			for(WebElement e:SubMenu) {
+				newSubmenu=e.getText().trim();
+				newSubmenu = createCamelCase(newSubmenu);
+				SubMenulist.add(newSubmenu);
+			}
+			return SubMenulist;
+		}				 
+			 
+		
 	/* Method to Validate FEATURED BRANDS section is displayed on right side by extracting its class
 	  * @return text: class of Feature Brand section heading
 	  * @author Shruti Desai
 	  */
 	 public String validateFeatureBrandSectionIsOnTheRight(String headingName) {
-		WebElement brandSubMenu=getDriver().findElement(By.xpath("//*[@class='flyout']//div[@class='flyoutRow2Right']//descendant::b//ancestor::div[@class='flyoutRow2Right']"));
 		return brandSubMenu.getAttribute("class");
 	}
 	 
 	 /*Method to get list of Flyout submenu Headings in the Brand Section
-		 * @return list:Flyout sub menu Headings in the Brand Section
-		 * @author Shruti Desai
-		 */
-		public String getFeatureBrandSectionHeading(String headingName) {
-			String xpathHeading =createXPath("//div[contains(@class,'header-desktop')]//div[contains(@class,'megamenu')]//ul[@class='navLinkWrap']/li[contains(.,'{0}')]" ,headingName); 
-			WebElement headingWebElement = getDriver().findElement(By.xpath(xpathHeading));
-			getReusableActionsInstance().scrollToElement(headingWebElement);
-			WebElement SubMenuHeadings=headingWebElement.findElement(By.xpath(".//div[@class='flyout']//div[@class='flyoutRow2Right']//li//b[not(a)]"));
-			return SubMenuHeadings.getText();
-		 }	 
+	  * @return list:Flyout sub menu Headings in the Brand Section
+	  * @author Shruti Desai
+	  */
+	 public String getFeatureBrandSectionHeading(String headingName) {
+		 String xpathHeading =createXPath("//div[contains(@class,'header-desktop')]//div[contains(@class,'megamenu')]//ul[@class='navLinkWrap']/li[contains(.,'{0}')]" ,headingName); 
+		 WebElement headingWebElement = getDriver().findElement(By.xpath(xpathHeading));
+		 getReusableActionsInstance().scrollToElement(headingWebElement);
+		 WebElement SubMenuHeadings=headingWebElement.findElement(By.xpath(".//div[@class='flyout']//div[@class='flyoutRow2Right']//li//b[not(a)]"));
+		 return SubMenuHeadings.getText();
+	 }	 
 		
 	 /* Method to validate all href & src for Flyout submenu links in both right hand side and Brand Section are not empty.
 	  * @return : true/false
@@ -739,6 +705,5 @@ public class GlobalheaderPage extends BasePage{
 	}
 	
 
-	
 }
 
