@@ -544,14 +544,38 @@ import utils.ReusableActions;
 	}
 	
 	/**
-	 * This method is to get UTF_8 format
+	 * This method is to get UTF-8 format
 	 * @param String data: input data	  
 	 * @author Sachin.Sharma
 	 */
-	public String getUFTEnabledData(String data) {
+	public String getUTFEnabledData(String data) {
 		   byte[] bytes = data.getBytes(StandardCharsets.UTF_8);
 		   String utf8EncodedString = new String(bytes);
 		   return utf8EncodedString;
 	}
+	
+    /**
+	 * This method is to get element from element list with a expected text. 
+	 * @param List<WebElement> elementList: input element list
+	 * @param String lsExpectedText: input expected text
+	 * @return WebElement
+	 * @author Wei.Li
+	 */	
+    public WebElement getElementFromList(List<WebElement> elementList,String lsExpectedText) { 
+    	int listSize=elementList.size();
+    	if(listSize==0) {
+    		return null;
+    	}
+    	
+    	String lsItem;
+    	for(WebElement element:elementList) {
+    		getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+    		lsItem=element.getText().trim();
+    		if(lsItem.equalsIgnoreCase(lsExpectedText)) {
+    			return element;
+    		}
+    	}
+    	return null;
+    }
 
 }
