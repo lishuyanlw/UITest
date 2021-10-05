@@ -1,4 +1,4 @@
-package com.rogersbiz.data.pojos;
+package com.tsc.data.pojos;
 
 public class URL {
 	
