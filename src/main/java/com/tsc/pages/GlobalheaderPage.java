@@ -599,25 +599,7 @@ public class GlobalheaderPage extends BasePage{
 		return xpathExp;
 	}
 		
-	/*Method to convert words/string into camel case  
-	 * @return String
-	 * @author Shruti Desai
-	 */
-	/*public String createCamelCase(String headingName) {
-		if(headingName.contains(" ")) {
-			String[] words = headingName.split(" ");
-			String camelCaseHeading= "";
-			for (String parString : words){
-				camelCaseHeading = camelCaseHeading+" "+(parString.charAt(0)+parString.substring(1).toLowerCase()) ; 
-			}
-			headingName = camelCaseHeading.trim();
-			}else{
-				headingName = headingName.charAt(0)+headingName.substring(1).toLowerCase();
-			}	
-		return headingName;
-	}*/
-	
-	 /*Method to get list of Flyout submenu heding in camel case 
+		 /*Method to get list of Flyout submenu heding in camel case 
 	  * @return list:Flyout sub menu camel case
 	  * @author Shruti Desai
 	  */
