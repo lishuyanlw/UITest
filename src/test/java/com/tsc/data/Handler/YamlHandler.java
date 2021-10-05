@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
@@ -24,11 +26,11 @@ public class YamlHandler {
 
 	public static ConstantData getConstantDataVariables(String strConstantLocation) throws FileNotFoundException {
 		Yaml yaml = new Yaml(new Constructor(ConstantData.class));
-		InputStream inputStream;
-
-		inputStream = new FileInputStream(new File(System.getProperty("user.dir") + strConstantLocation));
-		ConstantData headerFooterLinks = yaml.load(inputStream);
+		FileInputStream fileInputStream = new FileInputStream(new File(System.getProperty("user.dir") + strConstantLocation));
+		InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream, StandardCharsets.UTF_8);
+		ConstantData headerFooterLinks = yaml.load(inputStreamReader);
 		return headerFooterLinks;
 	}
+	
 
 }
