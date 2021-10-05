@@ -63,7 +63,7 @@ public class SR_TC09_Verify_ProductSearchResult_SpecialOffersAndRecomendationSec
 			}
 						
 			reporter.softAssert(getProductResultsPageThreadLocal().verifyProductPagination(), "Product pagination is existing", "Product pagination is not existing");
-			reporter.softAssert(getProductResultsPageThreadLocal().verifySectionExisting(getProductResultsPageThreadLocal().getRecommendationContainer()), "Recommendation section is existing after choosing special offers", "Recommendation section is not existing after choosing special offers");
+			reporter.softAssert(getProductResultsPageThreadLocal().verifyElementExisting(getProductResultsPageThreadLocal().getRecommendationContainer()), "Recommendation section is existing after choosing special offers", "Recommendation section is not existing after choosing special offers");
 		}
 		else {
 			reporter.reportLogFail("Choosing filter of "+"'"+lstItem.get(0)+"/"+lstItem.get(1)+"' failed");
