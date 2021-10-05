@@ -62,9 +62,6 @@ public class GlobalFooterPage extends BasePage {
 	//Language switch
 	@FindBy(xpath = "//div[@class='Footer']//div[@class='custom-footer']//a[contains(@href,'switchLanguage')]")
 	public WebElement lnkLanguage;
-	
-	@FindBy(xpath = "//div[@class='Footer']//div[@class='custom-footer']//a[contains(@href,'switchLanguage')]/span")
-	public WebElement lblLanguageHeadingText;
 			
 	//Facebook
 	@FindBy(xpath = "//div[@class='Footer']//div[@class='custom-footer']//a[contains(@href,'facebook')]/parent::div")
@@ -173,10 +170,8 @@ public class GlobalFooterPage extends BasePage {
 	 * @author Wei.Li
 	 */
 	public String removeProtocalHeaderFromUrl(String lsUrl) {
-		if(lsUrl.endsWith("/")) {
-			lsUrl=lsUrl.substring(0,lsUrl.length()-1);
-        }
-		
+		lsUrl=removeLastSlashFromUrl(lsUrl);
+				
 		if(!lsUrl.toLowerCase().contains("http")) {			
 			return lsUrl;
 		}
@@ -197,7 +192,8 @@ public class GlobalFooterPage extends BasePage {
 		lsExpectedUrl=removeProtocalHeaderFromUrl(lsExpectedUrl);
 		String lsCurrentUrl=waitForPageLoadingByUrlChange(element);		
 		lsCurrentUrl=removeProtocalHeaderFromUrl(lsCurrentUrl);
-		return lsCurrentUrl.equalsIgnoreCase(lsExpectedUrl);		
+		
+		return lsCurrentUrl.equalsIgnoreCase(lsExpectedUrl)||lsCurrentUrl.toLowerCase().contains(lsExpectedUrl.toLowerCase());		
 	}
 
 	/**
@@ -215,4 +211,94 @@ public class GlobalFooterPage extends BasePage {
 		}
 		return "";
 	}
+	
+	/**
+	 * This method is to get the link from yml file.
+	 * @param List<String> lstNameAndLink: the list from yml file
+	 * @param String lsSpecificName: input name
+	 * @return String: note that the empty string means not found
+	 * @author Wei.Li
+	 */
+	public String getLinkWithSpecificName(List<List<String>> lstNameAndLink, String lsSpecificName) {
+		for(List<String> lstItem:lstNameAndLink) {			
+			if(lsSpecificName.equalsIgnoreCase(lstItem.get(0))) {
+				if(lstItem.get(2).startsWith("/")) {
+					return this.removeLastSlashFromUrl(this.getBaseURL()+lstItem.get(2).trim());
+				}
+				else {
+					return this.removeLastSlashFromUrl(lstItem.get(2).trim());
+				}
+				
+			}
+		}
+		
+		return "";
+	}
+	
+	/**
+	 * This method is to verify if equal to a UTF-8 encoding text.
+	 * @param List<String> lstNameAndLink: the list from yml file
+	 * @param String lsSpecificName: input text
+	 * @return true/false
+	 * @author Wei.Li
+	 */
+	public boolean verifyEqualWithEncodingText(List<List<String>> lstNameAndLink, String lsSpecificName) {
+		for(List<String> lstItem:lstNameAndLink) {			
+			if(lsSpecificName.trim().equalsIgnoreCase(this.getUTFEnabledData(lstItem.get(0)))) {				
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * This method is to get the French name from yml file.
+	 * @param List<String> lstNameAndLink: the list from yml file
+	 * @param String lsSpecificName: input name
+	 * @return French name: note that the empty string means not found
+	 * @author Wei.Li
+	 */
+	public String getFrenchWithSpecificEnglishName(List<List<String>> lstNameAndLink, String lsSpecificName) {
+		System.out.println("lsSpecificName: "+lsSpecificName);
+		for(List<String> lstItem:lstNameAndLink) {			
+			if(lsSpecificName.equalsIgnoreCase(this.getUTFEnabledData(lstItem.get(0)))) {
+				return lstItem.get(1).trim();
+			}
+		}
+		
+		return "";
+	}
+	
+	/**
+	 * This method is to compare the link in front page and the one in yml file.
+	 * @param String lsCurrentLink: the link in front page
+	 * @param String lsYmlLink: the link in yml file
+	 * @return true/false
+	 * @author Wei.Li
+	 */
+	public boolean verifyLinks(String lsCurrentLink, String lsYmlLink) {
+		lsCurrentLink=removeLastSlashFromUrl(lsCurrentLink);
+		lsYmlLink=removeLastSlashFromUrl(lsYmlLink);
+		
+		if(lsYmlLink.startsWith("/")) {
+			lsYmlLink=this.getBaseURL()+lsYmlLink;
+			return lsCurrentLink.equalsIgnoreCase(lsYmlLink);
+		}else {
+			return lsCurrentLink.toLowerCase().contains(lsYmlLink.toLowerCase());
+		}		
+	}
+		
+	/**
+	 * This method is to switch language.
+	 * @return true/false
+	 * @author Wei.Li
+	 */
+	public boolean switchlanguage() {
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkLanguage);
+		this.lnkLanguage.click();
+		return this.waitForPageLoading();
+	}
+	
+
 }
