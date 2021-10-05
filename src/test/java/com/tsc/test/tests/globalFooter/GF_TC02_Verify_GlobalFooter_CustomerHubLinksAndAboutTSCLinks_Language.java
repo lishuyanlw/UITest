@@ -85,11 +85,7 @@ public class GF_TC02_Verify_GlobalFooter_CustomerHubLinksAndAboutTSCLinks_Langua
 				reporter.reportLog("Unable to find "+lsText+" link in yml file.");
 			}
 			lsHref=basePage.getElementHref(item);	
-			if(lsYmlHref.startsWith("/")) {
-				reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current "+lsText+" href of "+lsHref+" is equal to "+lsYmlHref+ "in yml file","The current "+lsText+" href of "+lsHref+" is not equal to "+lsYmlHref+ "in yml file");
-			}else {
-				reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current "+lsText+" href of "+lsHref+" contains "+lsYmlHref+ "in yml file","The current "+lsText+" href of "+lsHref+" does not contain "+lsYmlHref+ "in yml file");
-			}
+			reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref+ "in yml file","The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref+ "in yml file");
 			
 		}
 		
@@ -107,11 +103,7 @@ public class GF_TC02_Verify_GlobalFooter_CustomerHubLinksAndAboutTSCLinks_Langua
 				reporter.reportLog("Unable to find "+lsText+" link in yml file.");
 			}
 			lsHref=basePage.getElementHref(item);
-			if(lsYmlHref.startsWith("/")) {
-				reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current "+lsText+" href of "+lsHref+" is equal to "+lsYmlHref+ "in yml file","The current "+lsText+" href of "+lsHref+" is not equal to "+lsYmlHref+ "in yml file");
-			}else {
-				reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current "+lsText+" href of "+lsHref+" contains "+lsYmlHref+ "in yml file","The current "+lsText+" href of "+lsHref+" does not contain "+lsYmlHref+ "in yml file");
-			}			
+			reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref+ "in yml file","The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref+ "in yml file");			
 		}
 		
 		//Rogers LOGO
@@ -187,11 +179,7 @@ public class GF_TC02_Verify_GlobalFooter_CustomerHubLinksAndAboutTSCLinks_Langua
 				reporter.reportLog("Unable to find "+lsText+" link in yml file.");
 			}
 			lsHref=basePage.getElementHref(getGlobalFooterPageThreadLocal().lnkTSCCustomerHubAllLinks.get(i));	
-			if(lsYmlHref.startsWith("/")) {
-				reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current "+lsText+" href of "+lsHref+" is equal to "+lsYmlHref+ "in yml file","The current "+lsText+" href of "+lsHref+" is not equal to "+lsYmlHref+ "in yml file");
-			}else {
-				reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current "+lsText+" href of "+lsHref+" contains "+lsYmlHref+ "in yml file","The current "+lsText+" href of "+lsHref+" does not contain "+lsYmlHref+ "in yml file");
-			}
+			reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref+ "in yml file","The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref+ "in yml file");
 		}
 		
 		//About TSC links
@@ -206,11 +194,7 @@ public class GF_TC02_Verify_GlobalFooter_CustomerHubLinksAndAboutTSCLinks_Langua
 				reporter.reportLog("Unable to find "+lsText+" link in yml file.");
 			}
 			lsHref=basePage.getElementHref(getGlobalFooterPageThreadLocal().lnkAboutTSCAllLinks.get(i));
-			if(lsYmlHref.startsWith("/")) {
-				reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current "+lsText+" href of "+lsHref+" is equal to "+lsYmlHref+ "in yml file","The current "+lsText+" href of "+lsHref+" is not equal to "+lsYmlHref+ "in yml file");
-			}else {
-				reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current "+lsText+" href of "+lsHref+" contains "+lsYmlHref+ "in yml file","The current "+lsText+" href of "+lsHref+" does not contain "+lsYmlHref+ "in yml file");
-			}
+			reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref+ "in yml file","The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref+ "in yml file");
 		}
 		
 		//Copyright text
