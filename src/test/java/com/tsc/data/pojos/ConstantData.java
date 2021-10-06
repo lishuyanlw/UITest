@@ -55,6 +55,11 @@ public class ConstantData {
 	private List<String> lst_FilterOptionHeader;
 	private List<List<String>> lst_GeneralTwoLevelFilterOption;
 	private List<List<List<String>>> lst_FilterCombination;
+	private List<String> lst_MoreButton;
+	private List<List<List<String>>> lst_FilterSequentialAction;
+	private List<String> lst_SocialMediaLinks;
+	private List<List<String>> lst_SpecialOffers;
+	private List<List<String>> lst_NameAndLinks;
 
 	//Header Links getter and setter method
 	
@@ -650,6 +655,72 @@ public class ConstantData {
 	 */
 	public void setlst_FilterCombination(List<List<List<String>>> lst_FilterCombination) {
 		this.lst_FilterCombination = lst_FilterCombination;
+	}
+	
+	/**
+	 * @return the lst_MoreButton
+	 */
+	public List<String> getlst_MoreButton() {
+		return lst_MoreButton;
+	}
+	/**
+	 * @param lst_MoreButton the lst_MoreButton to set
+	 */
+	public void setlst_MoreButton(List<String> lst_MoreButton) {
+		this.lst_MoreButton = lst_MoreButton;
+	}
+	
+	/**
+	 * @return the lst_FilterSequentialAction
+	 */
+	public List<List<List<String>>> getlst_FilterSequentialAction() {
+		return lst_FilterSequentialAction;
+	}
+	/**
+	 * @param lst_FilterSequentialAction the lst_FilterSequentialAction to set
+	 */
+	public void setlst_FilterSequentialAction(List<List<List<String>>> lst_FilterSequentialAction) {
+		this.lst_FilterSequentialAction = lst_FilterSequentialAction;
+	}
+	
+	/**
+
+	 * @return the lst_SocialMediaLinks
+	 */
+	public List<String> getlst_SocialMediaLinks() {
+		return lst_SocialMediaLinks;
+	}
+	/**
+	 * @param lst_SocialMediaLinks the lst_SocialMediaLinks to set
+	 */
+	public void setlst_SocialMediaLinks(List<String> lst_SocialMediaLinks) {
+		this.lst_SocialMediaLinks = lst_SocialMediaLinks;
+	}
+	
+	/**
+	 * @return the lst_SpecialOffers
+	 */
+	public List<List<String>> getlst_SpecialOffers() {
+		return lst_SpecialOffers;
+	}
+	/**
+	 * @param lst_SpecialOffers the lst_SpecialOffers to set
+	 */
+	public void setlst_SpecialOffers(List<List<String>> lst_SpecialOffers) {
+		this.lst_SpecialOffers = lst_SpecialOffers;
+	}
+	
+	/**
+	 * @return the lst_NameAndLinks
+	 */
+	public List<List<String>> getlst_NameAndLinks() {
+		return lst_NameAndLinks;
+	}
+	/**
+	 * @param lst_NameAndLinks the lst_NameAndLinks to set
+	 */
+	public void setlst_NameAndLinks(List<List<String>> lst_NameAndLinks) {
+		this.lst_NameAndLinks = lst_NameAndLinks;
 	}
 		
 }

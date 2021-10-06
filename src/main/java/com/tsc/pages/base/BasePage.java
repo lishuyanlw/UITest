@@ -455,6 +455,103 @@ import utils.ReusableActions;
     	   			
     	return Float.parseFloat(lsReturn);
     }
+    
+    /**
+	 * This method will verify element existing. 
+	 * @param WebElement element: input element 
+	 * @return true/false
+	 * @author Wei.Li
+	 */	
+    public boolean verifyElementExisting(WebElement element) {    	
+    	getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+    	return getReusableActionsInstance().isElementVisible(element);
+    }
 	
+	/**
+	 * This method is to verify element properties.
+	 * @param WebElement element: input element
+	 * @param String lsChoice: "Text"/"Image"/"Link"
+	 * @return true/false
+	 * @author Wei.Li
+	 */
+	public boolean verifyElementProperty(WebElement element,String lsChoice) {
+		boolean bReturn=false;
+		switch(lsChoice) {
+		case "Text":
+			getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+			if(!element.getText().trim().isEmpty()) {
+				bReturn=true;
+			}
+			break;
+		case "Image":
+			if(!element.getAttribute("src").isEmpty()) {
+				bReturn=true;
+			}
+			break;
+		case "Link":
+			if(!element.getAttribute("href").isEmpty()) {
+				bReturn=true;
+			}
+			break;		
+		}
+		return bReturn;
+	}
+	
+    /**
+	 * This method is to get element text. 
+	 * @param WebElement element: input element 
+	 * @return String
+	 * @author Wei.Li
+	 */	
+    public String getElementText(WebElement element) {    	
+    	getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+    	return element.getText().trim();
+    }
+    
+    /**
+	 * This method is to get element href. 
+	 * @param WebElement element: input element 
+	 * @return String
+	 * @author Wei.Li
+	 */	
+    public String getElementHref(WebElement element) {    	
+    	getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+    	return this.removeLastSlashFromUrl(element.getAttribute("href").trim());
+    }
+    
+    /**
+	 * This method is to get element image src. 
+	 * @param WebElement element: input element 
+	 * @return String
+	 * @author Wei.Li
+	 */	
+    public String getElementImageSrc(WebElement element) {    	
+    	getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+    	return element.getAttribute("src").trim();
+    }
+    
+	/**
+	 * This method is to remove last slash from Url
+	 * @param String lsUrl: input Url
+	 * @return String: Url
+	 * @author Wei.Li
+	 */
+	public String removeLastSlashFromUrl(String lsUrl) {
+		if(lsUrl.endsWith("/")) {
+			lsUrl=lsUrl.substring(0,lsUrl.length()-1);
+        }
+		return lsUrl;
+	}
+	
+	/**
+	 * This method is to get UTF-8 format
+	 * @param String data: input data	  
+	 * @author Sachin.Sharma
+	 */
+	public String getUTFEnabledData(String data) {
+		   byte[] bytes = data.getBytes(StandardCharsets.UTF_8);
+		   String utf8EncodedString = new String(bytes);
+		   return utf8EncodedString;
+	}
 
 }

@@ -5,7 +5,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Map;
-
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tsc.data.pojos.ConstantDataFile;
 import org.yaml.snakeyaml.Yaml;
@@ -27,12 +28,12 @@ public class YamlHandler {
 
 	public static ConstantData getConstantDataVariables(String strConstantLocation) throws FileNotFoundException {
 		Yaml yaml = new Yaml(new Constructor(ConstantData.class));
-		InputStream inputStream;
-
-		inputStream = new FileInputStream(new File(System.getProperty("user.dir") + strConstantLocation));
-		ConstantData headerFooterLinks = yaml.load(inputStream);
+		FileInputStream fileInputStream = new FileInputStream(new File(System.getProperty("user.dir") + strConstantLocation));
+		InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream, StandardCharsets.UTF_8);
+		ConstantData headerFooterLinks = yaml.load(inputStreamReader);
 		return headerFooterLinks;
 	}
+	
 
 	public static Map<String,Object> getConstantDataVariablesMap(String strConstantLocation) throws FileNotFoundException {
 		Yaml yaml = new Yaml();
