@@ -362,5 +362,26 @@ public class GlobalFooterPage extends BasePage {
 		return this.waitForPageLoading();
 	}
 	
+	/**
+	 * This method is to verify Links for FrequentlyAskedQuestions in CustomerService Page Objects.
+	 * @param WebElement element: the FrequentlyAskedQuestions link	 
+	 * @author Wei.Li
+	 */
+	public void verifyLinksForFrequentlyAskedQuestionsInCustomerServicePageObject(WebElement element) {
+		getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+		String lsOriginalUrl=this.URL();
+		String lsExpectedUrl=this.getBaseURL()+this.getElementHref(element);
+		lsExpectedUrl=this.removeLastSlashFromUrl(lsExpectedUrl);
+		element.click();
+		this.waitForPageLoading();
+		String lsCurrentUrl=this.URL();
+		reporter.softAssert(lsExpectedUrl.equalsIgnoreCase(lsCurrentUrl),"The navigated Url is equal to the expected Url","The navigated Url is not equal to the expected Url");
+		reporter.softAssert(this.verifyElementExisting(this.lnkBackToCutomerService),"Navigation link is existing","Navigation link is not existing");
+		reporter.softAssert(this.verifyElementExisting(this.blkArticle),"The details of related question is existing","The details of related question is not existing");
+		this.lnkBackToCutomerService.click();
+		this.waitForPageLoading();
+		reporter.softAssert(lsOriginalUrl.equalsIgnoreCase(this.URL()),"The navigation link works","The navigation link does not work");				
+	}
+	
 
 }

@@ -2,7 +2,6 @@ package com.tsc.test.tests.globalFooter;
 
 import org.testng.annotations.Test;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.tsc.data.Handler.TestDataHandler;
@@ -49,6 +48,7 @@ public class GF_TC03_Verify_GlobalFooter_CustomerHubServicePageObjects extends B
 				String lsItem=item.getText().trim();
 				reporter.softAssert(!lsItem.isEmpty(),"The item text is not empty","The item text is empty");
 				reporter.softAssert(!basePage.getElementHref(item).isEmpty(),"The link of "+lsItem+" is not empty","The link of "+lsItem+" is empty");
+				getGlobalFooterPageThreadLocal().verifyLinksForFrequentlyAskedQuestionsInCustomerServicePageObject(item);
 			}
 		}
 		
