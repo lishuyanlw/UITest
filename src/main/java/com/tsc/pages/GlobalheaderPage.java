@@ -607,6 +607,7 @@ public class GlobalheaderPage extends BasePage{
 			String xpathHeading =createXPath("//li[@class='navLinkItem']//span[contains(text(),'{0}')]" ,headingName); 
 			WebElement headingWebElement = getDriver().findElement(By.xpath(xpathHeading));
 			getReusableActionsInstance().scrollToElement(headingWebElement);
+			getReusableActionsInstance().waitForElementVisibility(headingWebElement, 2);
 			getReusableActionsInstance().staticWait(3000);
 			List<WebElement> SubMenu=headingWebElement.findElements(By.xpath("./ancestor::li//div[@class='flyout']//div[@class='flyoutRow2Left']//ul//li[1]//b"));
 			List<String> SubMenulist =new ArrayList<String>();
@@ -633,10 +634,10 @@ public class GlobalheaderPage extends BasePage{
 	  * @author Shruti Desai
 	  */
 	 public String getFeatureBrandSectionHeading(String headingName) {
-		 String xpathHeading =createXPath("//div[contains(@class,'header-desktop')]//div[contains(@class,'megamenu')]//ul[@class='navLinkWrap']/li[contains(.,'{0}')]" ,headingName); 
+		 String xpathHeading =createXPath("//div[contains(@class,'header-desktop')]//div[contains(@class,'megamenu')]//ul[@class='navLinkWrap']/li/a[contains(.,'{0}')]" ,headingName); 
 		 WebElement headingWebElement = getDriver().findElement(By.xpath(xpathHeading));
 		 getReusableActionsInstance().scrollToElement(headingWebElement);
-		 WebElement SubMenuHeadings=headingWebElement.findElement(By.xpath(".//div[@class='flyout']//div[@class='flyoutRow2Right']//li//b[not(a)]"));
+		 WebElement SubMenuHeadings=headingWebElement.findElement(By.xpath("./ancestor::li//div[@class='flyout']//div[@class='flyoutRow2Right']//li//b[not(a)]"));
 		 return SubMenuHeadings.getText();
 	 }	 
 		
@@ -644,48 +645,50 @@ public class GlobalheaderPage extends BasePage{
 	  * @return : true/false
 	  * @author Shruti Desai
 	  */
-	public String validateFlyoutSubMenuSRCandHREF(String headingName,String section) {
-		List<WebElement> SubMenuLinks =null;
-		List<WebElement> SubMenuLinkImages =null;
-		WebElement brandSectionViewAlllink =null;
-		if(section==null) {
-			String xpathHeading =createXPath("//*[@id='megamenu']//span[contains(text(),'{0}')]/parent::a/following-sibling::div//div[@class='flyoutRow2Container']/div[1]//li//a" ,headingName); 
-			SubMenuLinks =getDriver().findElements(By.xpath(xpathHeading));
-		}else{
-			String xpathlinks =createXPath("//*[@id='megamenu']//span[contains(text(),'{0}')]/parent::a/following-sibling::div//div[@class='flyoutRow2Container']/div[2]//div//a[contains(@href,'HDR')]" ,headingName); 
-			String xpathimages =createXPath("//*[@id='megamenu']//span[contains(text(),'{0}')]/parent::a/following-sibling::div//div[@class='flyoutRow2Container']/div[2]//div//img" ,headingName); 
-			String xpathViewAlllink =createXPath("//*[@id='megamenu']//span[contains(text(),'{0}')]/parent::a/following-sibling::div//div[@class='flyoutRow2Container']/div[2]//div//a[contains(text(),'View All >')]" ,headingName); 
-			SubMenuLinks=getDriver().findElements(By.xpath(xpathlinks));
-			SubMenuLinkImages=getDriver().findElements(By.xpath(xpathimages));
-			brandSectionViewAlllink = getDriver().findElement(By.xpath(xpathViewAlllink));
-		}
-		if(section==null) {
-			for (WebElement SBlinks:SubMenuLinks) {
-				if(SBlinks.getAttribute("href").isEmpty()) {
-				return ("href is not present for link: "+SBlinks.getText());
-				}
+	 public String validateFlyoutSubMenuSRCandHREF(String headingName,String section) {
+			List<WebElement> SubMenuLinks =null;
+			List<WebElement> SubMenuLinkImages =null;
+			WebElement brandSectionViewAlllink =null;
+			StringBuilder href_src  =new StringBuilder("All atributes are present ");
+			
+			if(section==null) {
+				String xpathHeading =createXPath("//*[@id='megamenu']//span[contains(text(),'{0}')]/parent::a/following-sibling::div//div[@class='flyoutRow2Container']/div[1]//li//a[(text())]" ,headingName); 
+				SubMenuLinks =getDriver().findElements(By.xpath(xpathHeading));
+			}else{
+				String xpathlinks =createXPath("//*[@id='megamenu']//span[contains(text(),'{0}')]/parent::a/following-sibling::div//div[@class='flyoutRow2Container']/div[2]//div//a[contains(@href,'HDR')]" ,headingName); 
+				String xpathimages =createXPath("//*[@id='megamenu']//span[contains(text(),'{0}')]/parent::a/following-sibling::div//div[@class='flyoutRow2Container']/div[2]//div//img" ,headingName); 
+				String xpathViewAlllink =createXPath("//*[@id='megamenu']//span[contains(text(),'{0}')]/parent::a/following-sibling::div//div[@class='flyoutRow2Container']/div[2]//div//a[contains(text(),'View All >')]" ,headingName); 
+				SubMenuLinks=getDriver().findElements(By.xpath(xpathlinks));
+				SubMenuLinkImages=getDriver().findElements(By.xpath(xpathimages));
+				brandSectionViewAlllink = getDriver().findElement(By.xpath(xpathViewAlllink));
 			}
-			return ("href is present for all links in left hand side section");
-		}else {
-			String viewAlllinkText =brandSectionViewAlllink.getText();
-			for (int i=0; i<SubMenuLinkImages.size(); i++) {
-				String href = SubMenuLinks.get(i).getAttribute("href");
-				String src = SubMenuLinkImages.get(i).getAttribute("src");
-				if(href==null) {
-					if(src!=null){
-						return ("href is not present for the link "+src+" in Brand Section");
-				}else if(src==null) {
-					return("src is not present for the link: "+href);	
+			if(section==null) {//Verification of left hand side section links under submenu headings
+				for (WebElement SBlinks:SubMenuLinks) {
+					if(!verifyElementProperty(SBlinks,"Link")) {//href not present
+						href_src.append('\n').append(SBlinks.getText());
 					}
 				}
+				//Return All attributes are present
+				return href_src.toString();
+			}else {//verification of links in the Brand Section.
+				String viewAlllinkText =brandSectionViewAlllink.getText();
+				for (int i=0; i<SubMenuLinkImages.size(); i++) {
+					if(!verifyElementProperty(SubMenuLinks.get(i),"Link")) {//href not present
+						//String: src of missing href 
+						href_src.append('\n').append(SubMenuLinks.get(i).getAttribute("src"));
+					}if(!verifyElementProperty(SubMenuLinkImages.get(i),"Image")) {//href not present and Src present
+						href_src.append('\n').append(SubMenuLinks.get(i).getAttribute("href"));
+					}
+				}	//verification of View All link in Brand section	
+				if(!verifyElementProperty(brandSectionViewAlllink,"Link")) {//href not present of View All link
+					//String: text of missing href for View All link in brand section
+					href_src.append('\n').append(viewAlllinkText);
+				}
 			}
-			if(brandSectionViewAlllink.getAttribute("href").isEmpty()) {
-			return ("href of "+viewAlllinkText+ " is empty");
-			}
-		return("href and src are present for all links in the Brand Section");
-		}
+			//Return All attributes are present
+			return href_src.toString();
 	}
-	
+		
 
 }
 
