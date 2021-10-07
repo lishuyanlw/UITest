@@ -7,8 +7,6 @@ import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 
-import io.appium.java_client.ios.ListensToSyslogMessages;
-
 public class HP_TC02_Global_Header_Verify_FlyoutHeadings extends BaseTest {
 
 	@Test(groups={"Home","Regression"})	    
@@ -22,10 +20,10 @@ public class HP_TC02_Global_Header_Verify_FlyoutHeadings extends BaseTest {
 		for(int i=0; i<getglobalheaderPageThreadLocal().getFlyoutHeadingCount(); i++) {
 			flyoutHeading = getglobalheaderPageThreadLocal().getFlyoutHeadings(i);
 			lsUrl=getglobalheaderPageThreadLocal().getFlyoutLink(i);		
-			reporter.softAssert(flyoutHeading, TestDataHandler.constantDataVariables.getlst_FlyoutHeading().get(i),"Flyout display " + flyoutHeading + " department. It's text is visible and valid","Flyout display " + flyoutHeading + " department. It's text is visible and valid");
+			reporter.softAssert(flyoutHeading, TestDataHandler.constantDataFile.getHeaderSection().getFlyout().getLst_FlyoutHeading().get(i),"Flyout display " + flyoutHeading + " department. It's text is visible and valid","Flyout display " + flyoutHeading + " department. It's text is visible and valid");
 			//Verify href is not empty and full url before clicking Flyout link
 			reporter.softAssert(getglobalheaderPageThreadLocal().validateFlyouthref(i),"Flyout href is present for Link of "+flyoutHeading,"Flyout href is not present for link of "+flyoutHeading);
-			reporter.softAssert(lsUrl.equals(lsBaseUrl+(TestDataHandler.constantDataVariables.getlbl_FlyoutHeadingLandingPageLink())+(TestDataHandler.constantDataVariables.getlnk_FlyoutHeaderLinkConstant().get(i))), flyoutHeading + "'s URL is correct", flyoutHeading + "'s URL is incorrect");
+			reporter.softAssert(lsUrl.equals(lsBaseUrl+(TestDataHandler.constantDataFile.getHeaderSection().getFlyout().getLbl_FlyoutHeadingLandingPageLink())+(TestDataHandler.constantDataFile.getHeaderSection().getFlyout().getLnk_FlyoutHeaderLinkConstant().get(i))), flyoutHeading + "'s URL is correct", flyoutHeading + "'s URL is incorrect");
 		}
 	}
 }

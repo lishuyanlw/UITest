@@ -40,19 +40,15 @@ public class YamlHandler {
 		InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream, StandardCharsets.UTF_8);
 		ConstantDataFile constantDataFile = yaml.load(inputStreamReader);
 		return constantDataFile;
-	}
-	
+	}	
 
 //	public static Map<String,Object> getConstantDataVariablesMap(String strConstantLocation) throws FileNotFoundException {
-////		Yaml yaml = new Yaml(new Constructor(ConstantDataFile.class));
-////		FileInputStream fileInputStream = new FileInputStream(new File(System.getProperty("user.dir") + strConstantLocation));
-////		InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream, StandardCharsets.UTF_8);
-////		return yaml.load(inputStreamReader);
 //		Yaml yaml = new Yaml();
 //		InputStream inputStream;
 //
 //		inputStream = new FileInputStream(new File(System.getProperty("user.dir") + strConstantLocation));
 //		return yaml.load(inputStream);
+//		//return headerFooterLinks.entrySet().stream().map(Map.Entry::getKey).collect(Collectors.toSet());
 //	}
 //
 //	public static ConstantDataFile getConstantDataVariable(String strConstantLocation) throws FileNotFoundException {
