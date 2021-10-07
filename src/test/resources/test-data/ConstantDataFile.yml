@@ -40,21 +40,22 @@ homePage:
   lbl_TopSellers: TOP SELLERS
 searchResultPage:
   lst_SearchKeyword: [ "dyson vacuum","dfafasdfa","100501","joan rivers","Nike","boots" ]
-  lst_SearchKeyword_DropDown: [ "dress","Categories","0" ]
+  lst_SearchKeyword_DropDown: [[ "dress","Categories","0" ]]
   lbl_SearchResultPageDefaultSetting: 36
   lst_SearchResultMessage: [ [ "Search Results For" ],[ "We couldn","t find a match for","Please search again using a different term or browse by brand or category." ] ]
   lst_SortOption: [ "Featured Products","Newest first","Reviews: Highest first","Price: Lowest first","Price: Highest first","Brand Name: A to Z" ]
-  lst_FilterOptionHeader: [ "On Air","SHOP BY PRODUCT","NEW ARRIVALS","SHOP BY BRAND","SHOP BY COLOUR","SHOP BY SHOES SIZE","SHOP BY SIZE FASHION","SHOP BY STONE","SHOP BY METAL","SHOP BY PRICE","SHOP BY SPECIAL OFFERS","SHOP BY REVIEWS" ]
+  lst_FilterOptionHeader: [ "ON AIR","SHOP BY PRODUCT","NEW ARRIVALS","SHOP BY BRAND","SHOP BY COLOUR","SHOP BY SHOES SIZE","SHOP BY SIZE FASHION","SHOP BY STONE","SHOP BY METAL","SHOP BY PRICE","SHOP BY SPECIAL OFFERS","SHOP BY REVIEWS" ]
   lst_SearchOption:
     - filterType: Product
       filterOption: [[ "SHOP BY PRODUCT","Home & Garden" ]]
     - filterType: Price
       filterOption: [[ "SHOP BY PRICE","Under $50","Under" ]]
-    - filterType: MultipleFilter
-      filterOption: [[ "SHOP BY SIZE FASHION","Regular XXS-XS" ],[ "SHOP BY PRICE","Under $50" ]]
+  lst_MutipleFilter: 
+    - filterType: CombinatedAction
+      filterOption: [[["SHOP BY SIZE FASHION","Regular XXS-XS"],["SHOP BY PRICE","Under $50"]]]
+    - filterType: SequentialAction
+      filterOption: [[["SHOP BY BRAND","Kim & Co."],["SHOP BY PRICE","Under $50"],["SHOP BY COLOUR","Black"]]]
   lst_MoreButton: ["SHOP BY BRAND","SHOP BY SHOE SIZE","SHOP BY SIZE FASHION"]
-  lst_FilterSequentialAction: 
-    - [["SHOP BY BRAND","Kim & Co."],["SHOP BY PRICE","Under $50"],["SHOP BY COLOUR","Black"]]
 footerSection: 
   lst_SocialMediaLinks: ["https://www.facebook.com/Shoptsc","https://twitter.com/shoptsc","https://instagram.com/shoptsc","www.youtube.com","https://www.pinterest.ca/shoptsc"]
   lst_NameAndLinks: 

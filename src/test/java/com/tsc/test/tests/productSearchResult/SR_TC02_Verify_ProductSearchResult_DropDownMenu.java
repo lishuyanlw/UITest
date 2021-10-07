@@ -22,9 +22,9 @@ public class SR_TC02_Verify_ProductSearchResult_DropDownMenu extends BaseTest{
 	
 	reporter.softAssert(getglobalheaderPageThreadLocal().validateURL((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");		
 	reporter.reportLog("ProductSearch Page");
-	
-	String lsSearchResultPageDefaultSetting=TestDataHandler.constantDataVariables.getlbl_SearchResultPageDefaultSetting();
-	List<List<String>> lsKeywordDropdownList=TestDataHandler.constantDataVariables.getlst_SearchKeyword_DropDown();
+		
+	String lsSearchResultPageDefaultSetting=TestDataHandler.constantDataFile.getSearchResultPage().getLbl_SearchResultPageDefaultSetting();
+	List<List<String>> lsKeywordDropdownList=TestDataHandler.constantDataFile.getSearchResultPage().getLst_SearchKeyword_DropDown();
 	List<WebElement> productList;
 	
 	int keyWordDropdownSize=lsKeywordDropdownList.size();	

@@ -754,7 +754,7 @@ public class ProductResultsPage extends BasePage{
 	 * @return String: error message 
 	 * @author Wei.Li
 	 */
-	public String verifyFilterOptions(List<String> lstOptionYml) {
+	public String verifyFilterOptions(List<String> lstOptionYml) {		
 		String lsErrorMsg="";
 	      int listSize=this.productFilterList.size();
 	      if(listSize==0) {
@@ -765,7 +765,7 @@ public class ProductResultsPage extends BasePage{
 	         getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i));
 	         if(lstOptionYml.contains(this.productFilterList.get(i).getText().trim())) {
 	            continue;
-	         }else {
+	         }else {	        	 
 	            return lsErrorMsg = "Filter option headers in left panel contain "+this.productFilterList.get(i).getText().trim()+" that is not present in input list";
 	         }
 	      }      

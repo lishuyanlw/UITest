@@ -20,7 +20,7 @@ public class GF_TC01_Verify_GlobalFooter_SocialMedia extends BaseTest {
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl), "TSC url is correct", "TSC url is incorrect");		
 		reporter.reportLog("Global Footer Section");	
 		
-		List<String> lstSocialMediaLinks=TestDataHandler.constantDataVariables.getlst_SocialMediaLinks();
+		List<String> lstSocialMediaLinks=TestDataHandler.constantDataFile.getFooterSection().getLst_SocialMediaLinks();
 		
 		//Facebook
 		String lsUrl=getGlobalFooterPageThreadLocal().getUrlWithSocialMediaName(lstSocialMediaLinks, "Facebook");		

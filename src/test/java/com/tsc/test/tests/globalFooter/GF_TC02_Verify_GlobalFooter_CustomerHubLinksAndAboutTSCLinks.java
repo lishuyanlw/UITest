@@ -21,7 +21,7 @@ public class GF_TC02_Verify_GlobalFooter_CustomerHubLinksAndAboutTSCLinks extend
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl), "TSC url is correct", "TSC url is incorrect");		
 		reporter.reportLog("Global Footer Section");		
 
-		List<List<String>> lstNameAndLinks=TestDataHandler.constantDataVariables.getlst_NameAndLinks();
+		List<List<String>> lstNameAndLinks=TestDataHandler.constantDataFile.getFooterSection().getLst_NameAndLinks();
 		
 		//Credit card
 		String lsText=basePage.getElementText(getGlobalFooterPageThreadLocal().lnkCreditCard);

@@ -23,15 +23,15 @@ public class SR_TC06_Verify_ProductSearchResult_MultiFiltersSequentialActionTest
 	reporter.softAssert(getglobalheaderPageThreadLocal().validateURL((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");		
 	reporter.reportLog("ProductSearch Page");
 	
-	List<List<String>> lsKeywordList=TestDataHandler.constantDataVariables.getlst_SearchKeyword_DropDown();
-	List<List<String>> lstSearchResultMessage=TestDataHandler.constantDataVariables.getlst_SearchResultMessage();
-	String lsSearchResultPageDefaultSetting=TestDataHandler.constantDataVariables.getlbl_SearchResultPageDefaultSetting();	
+	List<List<String>> lsKeywordList=TestDataHandler.constantDataFile.getSearchResultPage().getLst_SearchKeyword_DropDown();
+	List<List<String>> lstSearchResultMessage=TestDataHandler.constantDataFile.getSearchResultPage().getLst_SearchResultMessage();
+	String lsSearchResultPageDefaultSetting=TestDataHandler.constantDataFile.getSearchResultPage().getLbl_SearchResultPageDefaultSetting();
 	List<WebElement> productList;
 	
 	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0));	
 	
 	//Test filter option for sequential actions
-	List<List<List<String>>> lstFilterSequentialAction=TestDataHandler.constantDataVariables.getlst_FilterSequentialAction();	
+	List<List<List<String>>> lstFilterSequentialAction=TestDataHandler.constantDataFile.getSearchResultPage().getLst_MutipleFilter().get(1).getFilterOption();	
 	String lsMsg="";
 	for(List<List<String>> lstItemCombination:lstFilterSequentialAction) {		
 		getProductResultsPageThreadLocal().bDefault=false;		

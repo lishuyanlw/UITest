@@ -21,10 +21,10 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction ext
 	
 	reporter.softAssert(getglobalheaderPageThreadLocal().validateURL((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");		
 	reporter.reportLog("ProductSearch Page");
-	
-	List<List<String>> lsKeywordList=TestDataHandler.constantDataVariables.getlst_SearchKeyword_DropDown();
-	List<List<String>> lstSearchResultMessage=TestDataHandler.constantDataVariables.getlst_SearchResultMessage();
-	String lsSearchResultPageDefaultSetting=TestDataHandler.constantDataVariables.getlbl_SearchResultPageDefaultSetting();	
+		
+	List<List<String>> lsKeywordList=TestDataHandler.constantDataFile.getSearchResultPage().getLst_SearchKeyword_DropDown();
+	List<List<String>> lstSearchResultMessage=TestDataHandler.constantDataFile.getSearchResultPage().getLst_SearchResultMessage();
+	String lsSearchResultPageDefaultSetting=TestDataHandler.constantDataFile.getSearchResultPage().getLbl_SearchResultPageDefaultSetting();
 	List<WebElement> productList;
 	String lsMsg;
 		
@@ -68,7 +68,7 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction ext
 	}
 
 	//Test General filter option
-	List<List<String>> lstGeneralTwoLevelFilterOption=TestDataHandler.constantDataVariables.getlst_GeneralTwoLevelFilterOption();
+	List<List<String>> lstGeneralTwoLevelFilterOption=TestDataHandler.constantDataFile.getSearchResultPage().getLst_SearchOption().get(0).getFilterOption();
 	for(List<String> lstItem:lstGeneralTwoLevelFilterOption) {
 		if(getProductResultsPageThreadLocal().selectFilterItemInLeftPanel(lstItem.get(0), lstItem.get(1))) {
 			reporter.softAssert(getProductResultsPageThreadLocal().verifyUrlContainDimensionAndKeyword(lsKeywordList.get(0).get(0)), "The Url contains correct dimensions and keyword", "The Url does not contain correct dimensions and keyword");
@@ -106,7 +106,7 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction ext
 	}	
 
 	//Test filter by price	
-	List<List<String>> lstFilterByPrice=TestDataHandler.constantDataVariables.getlst_FilterByPrice();
+	List<List<String>> lstFilterByPrice=TestDataHandler.constantDataFile.getSearchResultPage().getLst_SearchOption().get(1).getFilterOption();
 	for(List<String> lstItem:lstFilterByPrice) {
 		if(getProductResultsPageThreadLocal().selectFilterItemInLeftPanel(lstItem.get(0), lstItem.get(1))) {
 			//To verify the first item

@@ -30,22 +30,35 @@ public class YamlHandler {
 		Yaml yaml = new Yaml(new Constructor(ConstantData.class));
 		FileInputStream fileInputStream = new FileInputStream(new File(System.getProperty("user.dir") + strConstantLocation));
 		InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream, StandardCharsets.UTF_8);
-		ConstantData headerFooterLinks = yaml.load(inputStreamReader);
-		return headerFooterLinks;
+		ConstantData constantData = yaml.load(inputStreamReader);
+		return constantData;
 	}
 	
-
-	public static Map<String,Object> getConstantDataVariablesMap(String strConstantLocation) throws FileNotFoundException {
+	public static ConstantDataFile getConstantDataVariable(String strConstantLocation) throws FileNotFoundException {
 		Yaml yaml = new Yaml(new Constructor(ConstantDataFile.class));
 		FileInputStream fileInputStream = new FileInputStream(new File(System.getProperty("user.dir") + strConstantLocation));
 		InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream, StandardCharsets.UTF_8);
-		return yaml.load(inputStreamReader);
+		ConstantDataFile constantDataFile = yaml.load(inputStreamReader);
+		return constantDataFile;
 	}
+	
 
-	public static ConstantDataFile getConstantDataVariable(String strConstantLocation) throws FileNotFoundException {
-		Map<String, Object> dataMap = getConstantDataVariablesMap(strConstantLocation);
-		ObjectMapper objectMapper = new ObjectMapper();
-		return objectMapper.convertValue(dataMap, ConstantDataFile.class);
-	}
+//	public static Map<String,Object> getConstantDataVariablesMap(String strConstantLocation) throws FileNotFoundException {
+////		Yaml yaml = new Yaml(new Constructor(ConstantDataFile.class));
+////		FileInputStream fileInputStream = new FileInputStream(new File(System.getProperty("user.dir") + strConstantLocation));
+////		InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream, StandardCharsets.UTF_8);
+////		return yaml.load(inputStreamReader);
+//		Yaml yaml = new Yaml();
+//		InputStream inputStream;
+//
+//		inputStream = new FileInputStream(new File(System.getProperty("user.dir") + strConstantLocation));
+//		return yaml.load(inputStream);
+//	}
+//
+//	public static ConstantDataFile getConstantDataVariable(String strConstantLocation) throws FileNotFoundException {
+//		Map<String, Object> dataMap = getConstantDataVariablesMap(strConstantLocation);
+//		ObjectMapper objectMapper = new ObjectMapper();
+//		return objectMapper.convertValue(dataMap, ConstantDataFile.class);
+//	}
 
 }
