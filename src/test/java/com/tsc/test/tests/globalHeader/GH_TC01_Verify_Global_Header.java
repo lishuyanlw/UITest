@@ -1,4 +1,4 @@
-package com.tsc.test.tests.homePage;
+package com.tsc.test.tests.globalHeader;
 
 import java.io.IOException;
 
@@ -8,7 +8,7 @@ import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 
-public class HP_TC01_Verify_Global_Header extends BaseTest {
+public class GH_TC01_Verify_Global_Header extends BaseTest {
 	
 	@Test(groups={"Home","Regression"})	    
 		public void validateGlobalHeaderLinks() throws IOException {

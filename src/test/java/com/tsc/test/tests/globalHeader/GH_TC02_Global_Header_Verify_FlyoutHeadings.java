@@ -1,4 +1,4 @@
-package com.tsc.test.tests.homePage;
+package com.tsc.test.tests.globalHeader;
 
 import java.io.IOException;
 import java.util.List;
@@ -9,7 +9,7 @@ import com.tsc.test.base.BaseTest;
 
 import io.appium.java_client.ios.ListensToSyslogMessages;
 
-public class HP_TC02_Global_Header_Verify_FlyoutHeadings extends BaseTest {
+public class GH_TC02_Global_Header_Verify_FlyoutHeadings extends BaseTest {
 
 	@Test(groups={"Home","Regression"})	    
 	public void verifyFlyoutHeadings() throws IOException {

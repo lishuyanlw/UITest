@@ -1,4 +1,4 @@
-package com.tsc.test.tests.homePage;
+package com.tsc.test.tests.globalHeader;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -7,7 +7,7 @@ import org.testng.annotations.Test;
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
-public class HP_TC02_GlobalHeader_VerifyFlyoutsSubMenuItems extends BaseTest {
+public class GH_TC02_Global_Header_Verify_FlyoutsSubMenuItems extends BaseTest {
 
 	
 	@Test(groups={"Home","Regression"})	    
