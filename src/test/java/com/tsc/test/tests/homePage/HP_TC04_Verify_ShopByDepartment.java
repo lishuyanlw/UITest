@@ -19,7 +19,7 @@ public class HP_TC04_Verify_ShopByDepartment extends BaseTest{
 	reporter.softAssert(getglobalheaderPageThreadLocal().validateURL((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");
 	reporter.reportLogWithScreenshot("Home Page");
 	validateText(homePageThreadLocal().validateShopByDepartmentIsInMiddle(),"Middle", "Shop By Department section is located in the Middle class of the webpage");
-	reporter.softAssert(homePageThreadLocal().validateShopByDepartmentAutomaticScrollingAction(),"The automatic scrolling function in Shop By Department section is working well","The The automatic scrolling function in Shop By Department section is not working well");
+	//reporter.softAssert(homePageThreadLocal().validateShopByDepartmentAutomaticScrollingAction(),"The automatic scrolling function in Shop By Department section is working well","The The automatic scrolling function in Shop By Department section is not working well");
 	
 	reporter.softAssert(homePageThreadLocal().verifySBDimgCount(),"Image Count for this section is: "+homePageThreadLocal().getSBDimgCount(),"Image Count is: "+homePageThreadLocal().getSBDimgCount());
 	reporter.softAssert(homePageThreadLocal().verifySBDactiveimgCount(),"Active Image Count for this section is: "+homePageThreadLocal().getSBDactiveimgCount(),"Active Image Count is: "+homePageThreadLocal().getSBDactiveimgCount());
