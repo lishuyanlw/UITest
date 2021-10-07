@@ -8,7 +8,7 @@ import com.tsc.test.base.BaseTest;
 
 	public class HP_TC02_Verify_TSmainImage extends BaseTest{
 		@Test(groups={"Home","Regression"})
-	
+
 		public void validateTSmainImageSection() throws IOException, InterruptedException {
 			homePageThreadLocal().closeadd();	
 			reporter.softAssert(getglobalheaderPageThreadLocal().validateURL((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");
@@ -31,6 +31,7 @@ import com.tsc.test.base.BaseTest;
 						
 					}
 			}
+
 		
 			//Method to validate TS image in the Lower Section	
 			int totalTSimageLowerSection = homePageThreadLocal().totalTSimage("Lower");
@@ -50,4 +51,5 @@ import com.tsc.test.base.BaseTest;
 			
 		}
 	}
+
 
