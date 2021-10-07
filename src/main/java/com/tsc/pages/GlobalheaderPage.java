@@ -651,10 +651,10 @@ public class GlobalheaderPage extends BasePage{
 			WebElement brandSectionViewAlllink =null;
 			StringBuilder href_src  =new StringBuilder("All atributes are present ");
 			
-			if(section==null) {
+			if(section==null) {//Xpath for links in the Left hand side section
 				String xpathHeading =createXPath("//*[@id='megamenu']//span[contains(text(),'{0}')]/parent::a/following-sibling::div//div[@class='flyoutRow2Container']/div[1]//li//a[(text())]" ,headingName); 
 				SubMenuLinks =getDriver().findElements(By.xpath(xpathHeading));
-			}else{
+			}else{//Xpath for links in the Brand Section
 				String xpathlinks =createXPath("//*[@id='megamenu']//span[contains(text(),'{0}')]/parent::a/following-sibling::div//div[@class='flyoutRow2Container']/div[2]//div//a[contains(@href,'HDR')]" ,headingName); 
 				String xpathimages =createXPath("//*[@id='megamenu']//span[contains(text(),'{0}')]/parent::a/following-sibling::div//div[@class='flyoutRow2Container']/div[2]//div//img" ,headingName); 
 				String xpathViewAlllink =createXPath("//*[@id='megamenu']//span[contains(text(),'{0}')]/parent::a/following-sibling::div//div[@class='flyoutRow2Container']/div[2]//div//a[contains(text(),'View All >')]" ,headingName); 
@@ -670,13 +670,14 @@ public class GlobalheaderPage extends BasePage{
 				}
 				//Return All attributes are present
 				return href_src.toString();
+			
 			}else {//verification of links in the Brand Section.
 				String viewAlllinkText =brandSectionViewAlllink.getText();
 				for (int i=0; i<SubMenuLinkImages.size(); i++) {
 					if(!verifyElementProperty(SubMenuLinks.get(i),"Link")) {//href not present
 						//String: src of missing href 
 						href_src.append('\n').append(SubMenuLinks.get(i).getAttribute("src"));
-					}if(!verifyElementProperty(SubMenuLinkImages.get(i),"Image")) {//href not present and Src present
+					}if(!verifyElementProperty(SubMenuLinkImages.get(i),"Image")) {//href present and Src not present
 						href_src.append('\n').append(SubMenuLinks.get(i).getAttribute("href"));
 					}
 				}	//verification of View All link in Brand section	
