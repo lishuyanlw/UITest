@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
+import org.apache.poi.util.SystemOutLogger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
@@ -664,6 +665,7 @@ public class GlobalheaderPage extends BasePage{
 			}
 			if(section==null) {//Verification of left hand side section links under submenu headings
 				for (WebElement SBlinks:SubMenuLinks) {
+					System.out.println("Lef hand side section-----"+SBlinks.getText());
 					if(!verifyElementProperty(SBlinks,"Link")) {//href not present
 						href_src.append('\n').append(SBlinks.getText());
 					}
@@ -673,6 +675,7 @@ public class GlobalheaderPage extends BasePage{
 			
 			}else {//verification of links in the Brand Section.
 				String viewAlllinkText =brandSectionViewAlllink.getText();
+				System.out.println(viewAlllinkText);
 				for (int i=0; i<SubMenuLinkImages.size(); i++) {
 					if(!verifyElementProperty(SubMenuLinks.get(i),"Link")) {//href not present
 						//String: src of missing href 
@@ -689,6 +692,88 @@ public class GlobalheaderPage extends BasePage{
 			//Return All attributes are present
 			return href_src.toString();
 	}
+		
+	 
+	 
+	 
+	 
+	 
+//View All Links
+	public String validateViewAllLinks(String headingName,String section) {
+		List<WebElement> viewAllLinks =null;
+		WebElement brandSectionViewAlllink = null;
+		StringBuilder hrefViewAll =new StringBuilder("View All link present ");
+		
+		if(section==null) {//Xpath for View all links in the Left hand side section
+			String xpathViewAllLink =createXPath("//*[@id='megamenu']//span[contains(text(),'{0}')]/parent::a/following-sibling::div//div[@class='flyoutRow2Container']/div[1]//li//a[contains(text(),'View All >')]" ,headingName); 
+			viewAllLinks =getDriver().findElements(By.xpath(xpathViewAllLink));
+		}else{//Xpath for View all link in the Brand Section
+			String xpathViewAlllink =createXPath("//*[@id='megamenu']//span[contains(text(),'{0}')]/parent::a/following-sibling::div//div[@class='flyoutRow2Container']/div[2]//div//a[contains(text(),'View All >')]" ,headingName); 
+			brandSectionViewAlllink = getDriver().findElement(By.xpath(xpathViewAlllink));
+		}
+		
+		if(section==null) {//Verification of View All links in the left hand side section 
+			for (WebElement VAinks:viewAllLinks) {
+				System.out.println("Lef hand side link-----"+VAinks.getAttribute("href"));
+				if(!verifyElementProperty(VAinks,"Link")) {//href not present for View All link
+					hrefViewAll.append('\n').append(VAinks.getText());
+				}
+			}
+			//Return View All link present
+			return hrefViewAll.toString();
+		}else {//verification of View All link the Brand Section
+			String viewAlllinkText =brandSectionViewAlllink.getText();
+			if(!verifyElementProperty(brandSectionViewAlllink,"Link")) {//href not present of View All link
+				//String: text of missing href for View All link in brand section
+				hrefViewAll.append('\n').append(viewAlllinkText);
+			}
+		}
+		//Return All attributes are present
+		return hrefViewAll.toString();
+	}
+	 
+	 
+	public void clickViewAllLinks(String headingName) {
+		List<WebElement> viewAllLinks =null;
+		String xpathViewAllLink =createXPath("//*[@id='megamenu']//span[contains(text(),'{0}')]/parent::a/following-sibling::div//div[@class='flyoutRow2Container']/div[1]//li//a[contains(text(),'View All >')]" ,headingName); 
+		viewAllLinks =getDriver().findElements(By.xpath(xpathViewAllLink));
+	
+			for (int i=0;i<viewAllLinks.size(); i++) {
+				String clickonlinkTab = Keys.chord(Keys.CONTROL, Keys.ENTER);
+				viewAllLinks.get(i).sendKeys(clickonlinkTab);
+			}
+	}
+			
+	/*
+	 * Method to Get total number of open tabs after clicking each images of TS image  
+	 * @return int: number of total open tabs after clicking all images TS image 
+	 * @author Shruti Desai
+	 */
+		public int getNumberOftabs() {
+			return getReusableActionsInstance().getNumberOfOpenWindows();
+		}
+		
+		/*
+		 * Method to Get list of url for clicked TS images (upper section) open in different tabs  
+		 * @return list: url of all open images
+		 * @author Shruti Desai
+		 */
+			public List<String> getTitleofViewAllLink(){
+				String getMultititle = null;
+				int numberOfWindow = getNumberOftabs();
+				ArrayList<String> titleList= new ArrayList<String>();
+				ArrayList<String> tabList = new ArrayList<String>(getDriver().getWindowHandles());
+				
+				for (int i=1; i<numberOfWindow; i++) {
+					getDriver().switchTo().window(tabList.get(i));
+					getMultititle = getDriver().getTitle();
+					getDriver().switchTo().window(tabList.get(i)).close();
+					getDriver().switchTo().window(tabList.get(0));
+					titleList.add(getMultititle);
+					
+					}
+				return titleList;
+			}
 		
 
 }
