@@ -331,6 +331,25 @@ import utils.ReusableActions;
 		 robot.keyPress(KeyEvent.VK_ESCAPE);		
 		 robot.keyRelease(KeyEvent.VK_ESCAPE);
 	 }
+	 
+	/**
+	 * This method will implement ENTER key pressing action.
+	 *
+	 * @return void
+	 * @author Wei.Li
+    */ 
+	 
+	 public void pressEnterKey() {
+		 Robot robot=null;
+		 try {
+			 robot=new Robot();
+		 }
+		 catch(AWTException e){
+			 e.printStackTrace();
+		 }		 
+		 robot.keyPress(KeyEvent.VK_ENTER);		
+		 robot.keyRelease(KeyEvent.VK_ENTER);
+	 }	 
 
 	/**
 	 * This method will implement CTRL+A+DELETE to clear element contents.

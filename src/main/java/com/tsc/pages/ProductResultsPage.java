@@ -191,7 +191,8 @@ public class ProductResultsPage extends BasePage{
 		getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeader.searchBox);		
 		this.clearContent(globalHeader.searchBox);
 		globalHeader.searchBox.sendKeys(searchKeyword);		
-		globalHeader.btnSearchSubmit.click();
+		//globalHeader.btnSearchSubmit.click();
+		(new BasePage(this.getDriver())).pressEnterKey();
 		
 		return waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},60000);
 	}
