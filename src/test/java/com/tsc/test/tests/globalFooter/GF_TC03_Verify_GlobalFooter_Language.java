@@ -80,10 +80,10 @@ public class GF_TC03_Verify_GlobalFooter_Language extends BaseTest {
 		reporter.softAssert(lsText.equalsIgnoreCase(lsText_CreditCard_Fr),"Credit card French transaltion is correct","Credit card French transaltion is not correct");
 		String lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsText,false);
 		if(lsYmlHref.isEmpty()) {
-			reporter.reportLog("Unable to find credit card link in yml file.");
+			reporter.reportLogFail("Unable to find credit card link.");
 		}
 		String lsHref=basePage.getElementHref(getGlobalFooterPageThreadLocal().lnkCreditCard);
-		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current credit card href of "+lsHref+" is equal to "+lsYmlHref+ "in yml file","The current credit card href of "+lsHref+" is not equal to "+lsYmlHref+ "in yml file");
+		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current credit card href of "+lsHref+" is equal to "+lsYmlHref,"The current credit card href of "+lsHref+" is not equal to "+lsYmlHref);
 		String lsImageSrc=basePage.getElementImageSrc(getGlobalFooterPageThreadLocal().imgCreditCard);
 		reporter.softAssert(!lsImageSrc.isEmpty(),"The credit card image is not empty.","The credit card image is empty.");
 				
@@ -92,10 +92,10 @@ public class GF_TC03_Verify_GlobalFooter_Language extends BaseTest {
 		reporter.softAssert(lsText.equalsIgnoreCase(lsText_GiftCard_Fr),"Gift card French transaltion is correct","Gift card French transaltion is not correct");
 		lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsText,false);
 		if(lsYmlHref.isEmpty()) {
-			reporter.reportLog("Unable to find Gift card link in yml file.");
+			reporter.reportLogFail("Unable to find Gift card link.");
 		}
 		lsHref=basePage.getElementHref(getGlobalFooterPageThreadLocal().lnkGiftCard);
-		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current Gift card href of "+lsHref+" is equal to "+lsYmlHref+ "in yml file","The current Gift card href of "+lsHref+" is not equal to "+lsYmlHref+ "in yml file");
+		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current Gift card href of "+lsHref+" is equal to "+lsYmlHref,"The current Gift card href of "+lsHref+" is not equal to "+lsYmlHref);
 		lsImageSrc=basePage.getElementImageSrc(getGlobalFooterPageThreadLocal().imgGiftCard);
 		reporter.softAssert(!lsImageSrc.isEmpty(),"The Gift card image is not empty.","The Gift card image is empty.");
 		
@@ -104,10 +104,10 @@ public class GF_TC03_Verify_GlobalFooter_Language extends BaseTest {
 		reporter.softAssert(lsText.equalsIgnoreCase(lsText_SendUsFeedback_Fr),"SendUsFeedback French transaltion is correct","SendUsFeedback French transaltion is not correct");
 		lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsText,false);
 		if(lsYmlHref.isEmpty()) {
-			reporter.reportLog("Unable to find Send us feedback link in yml file.");
+			reporter.reportLogFail("Unable to find Send us feedback link.");
 		}
 		lsHref=basePage.getElementHref(getGlobalFooterPageThreadLocal().lnkSendUsFeedback);
-		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current Send us feedback href of "+lsHref+" contains "+lsYmlHref+ "in yml file","The current Send us feedback href of "+lsHref+" does not contain "+lsYmlHref+ "in yml file");
+		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current Send us feedback href of "+lsHref+" is correct","The current Send us feedback href of "+lsHref+" is not correct");
 		lsImageSrc=basePage.getElementImageSrc(getGlobalFooterPageThreadLocal().imgSendUsFeedback);
 		reporter.softAssert(!lsImageSrc.isEmpty(),"The Send us feedback image is not empty.","The Send us feedback image is empty.");
 		
@@ -116,10 +116,10 @@ public class GF_TC03_Verify_GlobalFooter_Language extends BaseTest {
 		reporter.softAssert(lsText.equalsIgnoreCase(lsText_LanguageSwitch_En),"Language switch French transaltion is correct","Language switch French transaltion is not correct");
 		lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsText,false);
 		if(lsYmlHref.isEmpty()) {
-			reporter.reportLog("Unable to find Language switch link in yml file.");
+			reporter.reportLogFail("Unable to find Language switch link.");
 		}
 		lsHref=basePage.getElementHref(getGlobalFooterPageThreadLocal().lnkLanguage);
-		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current Language switch href of "+lsHref+" contains "+lsYmlHref+ "in yml file","The current Language switch href of "+lsHref+" does not contain "+lsYmlHref+ "in yml file");
+		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current Language switch href of "+lsHref+" is correct","The current Language switch href of "+lsHref+" is not correct");
 				
 		//TSC customer hub links
 		lsText=basePage.getUTFEnabledData(basePage.getElementText(getGlobalFooterPageThreadLocal().lblTSCCustomerHubText));
@@ -130,10 +130,10 @@ public class GF_TC03_Verify_GlobalFooter_Language extends BaseTest {
 			reporter.softAssert(lsText.equalsIgnoreCase(lstCustomerHubFr.get(i)),"The "+i+" CustomerHubLink French transaltion of "+lsText+" is the same as "+lstCustomerHubFr.get(i),"The "+i+" CustomerHubLink French transaltion of "+lsText+" is the same as "+lstCustomerHubFr.get(i));
 			lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsText,false);			
 			if(lsYmlHref.isEmpty()) {
-				reporter.reportLog("Unable to find "+lsText+" link in yml file.");
+				reporter.reportLogFail("Unable to find "+lsText+" link.");
 			}
 			lsHref=basePage.getElementHref(getGlobalFooterPageThreadLocal().lnkTSCCustomerHubAllLinks.get(i));	
-			reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref+ "in yml file","The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref+ "in yml file");
+			reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref,"The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref);
 		}
 		
 		//About TSC links
@@ -143,12 +143,12 @@ public class GF_TC03_Verify_GlobalFooter_Language extends BaseTest {
 		for(int i=0;i<getGlobalFooterPageThreadLocal().lnkAboutTSCAllLinks.size();i++) {
 			lsText=basePage.getUTFEnabledData(basePage.getElementText(getGlobalFooterPageThreadLocal().lnkAboutTSCAllLinks.get(i)));	
 			reporter.softAssert(lsText.equalsIgnoreCase(lstAboutTSCFr.get(i)),"The "+i+" AboutTSLink French transaltion of "+lsText+" is the same as "+lstAboutTSCFr.get(i),"The "+i+" AboutTSLink French transaltion of "+lsText+" is the same as "+lstAboutTSCFr.get(i));
-			lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsText,true);
+			lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsText,false);
 			if(lsYmlHref.isEmpty()) {
-				reporter.reportLog("Unable to find "+lsText+" link in yml file.");
+				reporter.reportLogFail("Unable to find "+lsText+" link.");
 			}
 			lsHref=basePage.getElementHref(getGlobalFooterPageThreadLocal().lnkAboutTSCAllLinks.get(i));
-			reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref+ "in yml file","The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref+ "in yml file");
+			reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref,"The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref);
 		}
 		
 		//Copyright text
@@ -166,10 +166,10 @@ public class GF_TC03_Verify_GlobalFooter_Language extends BaseTest {
 		reporter.softAssert(lsText.equalsIgnoreCase(lsText_CreditCard_En),"The English text of "+lsText+" is correct","The English text of "+lsText+" is not correct");
 		lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsText,true);
 		if(lsYmlHref.isEmpty()) {
-			reporter.reportLog("Unable to find credit card link in yml file.");
+			reporter.reportLogFail("Unable to find credit card link.");
 		}
 		lsHref=basePage.getElementHref(getGlobalFooterPageThreadLocal().lnkCreditCard);
-		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current credit card href of "+lsHref+" is equal to "+lsYmlHref+ "in yml file","The current credit card href of "+lsHref+" is not equal to "+lsYmlHref+ "in yml file");
+		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current credit card href of "+lsHref+" is equal to "+lsYmlHref,"The current credit card href of "+lsHref+" is not equal to "+lsYmlHref);
 		lsImageSrc=basePage.getElementImageSrc(getGlobalFooterPageThreadLocal().imgCreditCard);
 		reporter.softAssert(!lsImageSrc.isEmpty(),"The credit card image is not empty.","The credit card image is empty.");
 
