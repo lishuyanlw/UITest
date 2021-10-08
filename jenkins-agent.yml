@@ -1,0 +1,25 @@
+metadata:
+  namespace: cbc-builds
+spec:
+  imagePullSecrets:
+    - name: artifactory-buyflows-docker-virtual
+  volumes:
+    - name: ns-key
+      secret:
+        secretName: "daws-netstorage-key"
+        defaultMode: 256
+        items:
+          - key: nskey.pem
+            path: nskey.pem
+  containers:
+    - name: java-buildtools
+      image: buyflows-docker-virtual.artifactory.rogers.com/oraclelinux-openjdk11-buildtools:latest
+      tty: true
+      command: ['cat']
+    - name: tools
+      image: buyflows-docker-virtual.artifactory.rogers.com/eks-deploytools:latest
+      tty: true
+      command: ['cat']
+      volumeMounts:
+          - name: ns-key
+            mountPath: "/mnt/ns"

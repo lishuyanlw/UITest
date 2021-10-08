@@ -303,6 +303,24 @@ public class GlobalFooterPage extends BasePage {
 	}
 	
 	/**
+	 * This method is to get the English name from yml file.
+	 * @param List<String> lstNameAndLink: the list from yml file
+	 * @param String lsSpecificName: input name
+	 * @return French name: note that the empty string means not found
+	 * @author Wei.Li
+	 */
+	public String getEnglishWithSpecificFrenchName(List<List<String>> lstNameAndLink, String lsSpecificName) {		
+		for(List<String> lstItem:lstNameAndLink) {
+			String lsCompare=this.getUTFEnabledData(lstItem.get(1));						
+			if(lsSpecificName.equalsIgnoreCase(lsCompare)) {				
+				return this.getUTFEnabledData(lstItem.get(0).trim());
+			}
+		}
+		
+		return "";
+	}
+	
+	/**
 	 * This method is to compare the link in front page and the one in yml file.
 	 * @param String lsCurrentLink: the link in front page
 	 * @param String lsYmlLink: the link in yml file
