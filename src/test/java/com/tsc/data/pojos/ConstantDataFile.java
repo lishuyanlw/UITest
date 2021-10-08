@@ -369,8 +369,7 @@ public class ConstantDataFile {
         private List<List<String>> lst_SearchResultMessage;
         private List<String> lst_SortOption;
         private List<String> lst_FilterOptionHeader;
-        private List<SearchOption> lst_SearchOption;
-        private List<MultiSearchOption> lst_MutipleFilter;        
+        private List<SearchOption> lst_SearchOption;               
         private List<String> lst_MoreButton;       
 
         public List<String> getLst_SearchKeyword() {
@@ -429,14 +428,6 @@ public class ConstantDataFile {
             this.lst_SearchOption = lst_SearchOption;
         }
         
-        public List<MultiSearchOption> getLst_MutipleFilter() {
-            return lst_MutipleFilter;
-        }
-
-        public void setLst_MutipleFilter(List<MultiSearchOption> lst_MutipleFilter) {
-            this.lst_MutipleFilter = lst_MutipleFilter;
-        }       
-        
         public List<String> getLst_MoreButton() {
             return lst_MoreButton;
         }
@@ -493,27 +484,6 @@ public class ConstantDataFile {
         }
 
         public void setFilterOption(List<List<String>> filterOption) {
-            this.filterOption = filterOption;
-        }
-    }
-    
-    public static class MultiSearchOption {
-        private String filterType;
-        private List<List<List<String>>> filterOption;
-
-        public String getFilterType() {
-            return filterType;
-        }
-
-        public void setFilterType(String filterType) {
-            this.filterType = filterType;
-        }
-
-        public List<List<List<String>>> getFilterOption() {
-            return filterOption;
-        }
-
-        public void setFilterOption(List<List<List<String>>> filterOption) {
             this.filterOption = filterOption;
         }
     }
