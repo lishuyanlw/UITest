@@ -37,9 +37,8 @@ pipeline {
         string(name: 'ThreadCount', defaultValue: "1", description: 'Number of parallel test sessions')
         choice(name: 'TunnelRequired', choices: ['No', 'Yes'], description: 'Is Sauce Tunnel required? Select No if AUT is public facing')
         string(name: 'Groups', defaultValue: "Sanity", description: 'Groups names separated by comma')
-        string(name: 'TestProfile', defaultValue: "RogersForBusiness(R4B)", description: 'Only used for reporting - has no impact on test runs')
+        string(name: 'TestProfile', defaultValue: "TSCWF Automation", description: 'Only used for reporting - has no impact on test runs')
         string(name: 'IndividualTests', defaultValue: "", description: "Individual tests to be passed as Test1 Test2 Test3 Test4 and so on ")
-        choice(name: 'Environment', choices: ['prod', 'qa', 'stage'], description: 'Environment')
 
     }
 
@@ -49,7 +48,7 @@ pipeline {
                     # leave spaces where you want them around the parameters. They'll be trimmed.
                     # we let the build run with the default name
                     
-		    		20 19 * * 1-5 %Browser=saucechrome;Language=en;IndividualTests=Validate_Header_Wireless_Level1_Home_Page;ThreadCount=1;TunnelRequired=No;Environment=prod;TestProfile=RogersForBusiness(R4B)
+		    		#20 19 * * 1-5 %Browser=saucechrome;Language=en;IndividualTests=Validate_Header_Wireless_Level1_Home_Page;ThreadCount=1;TunnelRequired=No;Environment=prod;TestProfile=RogersForBusiness(R4B)
 
                 ''':'')
     }
@@ -90,9 +89,9 @@ pipeline {
                     steps {
                         script {
                             if(params.IndividualTests.isEmpty())
-                                toolSh "gradle sauceTest -PEnvironment=${params.Environment} -Ptest_browser=${params.Browser} -Ptest_language=${params.Language} -Ptest_groupName='${params.Groups}' -Ptest_threadCount=${params.ThreadCount} -PTunnelRequired='${params.TunnelRequired}' -i --stacktrace"
+                                toolSh "gradle sauceTest -Ptest_browser=${params.Browser} -Ptest_language=${params.Language} -Ptest_groupName='${params.Groups}' -Ptest_threadCount=${params.ThreadCount} -PTunnelRequired='${params.TunnelRequired}' -i --stacktrace"
                             else
-                                toolSh "gradle sauceTest -PEnvironment=${params.Environment} -Ptest_browser=${params.Browser} -Ptest_language=${params.Language} ${generateTestString(params.IndividualTests)} -Ptest_threadCount=${params.ThreadCount} -PTunnelRequired='${params.TunnelRequired}' -i --stacktrace"
+                                toolSh "gradle sauceTest -Ptest_browser=${params.Browser} -Ptest_language=${params.Language} ${generateTestString(params.IndividualTests)} -Ptest_threadCount=${params.ThreadCount} -PTunnelRequired='${params.TunnelRequired}' -i --stacktrace"
 
                         }
                     }
@@ -123,18 +122,15 @@ pipeline {
 
         success {
             echo "${env.BUILD_URL} has result success"
-            office365ConnectorSend message: "Finished ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${REPORT_URL}>)", webhookUrl: 'https://outlook.office.com/webhook/e3556c59-ec6f-42ad-b0e7-7e48d22625f9@0ab4cbbf-4bc7-4826-b52c-a14fed5286b9/JenkinsCI/5d661927cebd40b7aa69763ce38023d4/151ebd21-71c4-47a1-b389-3a13bf9ccbf1', status: "SUCCESS"
-            office365ConnectorSend message: "Finished ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${REPORT_URL}>)", webhookUrl: 'https://rcirogers.webhook.office.com/webhookb2/fc1cf214-7905-48f5-a928-363057789435@0ab4cbbf-4bc7-4826-b52c-a14fed5286b9/IncomingWebhook/8749aee2085b4f79acd771fa946778ea/79e29d92-4686-45ef-81a6-f2d1cc6ac806', status: "SUCCESS"
+            #office365ConnectorSend message: "Finished ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${REPORT_URL}>)", webhookUrl: 'https://outlook.office.com/webhook/e3556c59-ec6f-42ad-b0e7-7e48d22625f9@0ab4cbbf-4bc7-4826-b52c-a14fed5286b9/JenkinsCI/5d661927cebd40b7aa69763ce38023d4/151ebd21-71c4-47a1-b389-3a13bf9ccbf1', status: "SUCCESS"
         }
         failure {
             echo "${env.BUILD_URL} has result fail"
-            office365ConnectorSend message: "Finished ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${REPORT_URL}>)", webhookUrl: 'https://outlook.office.com/webhook/e3556c59-ec6f-42ad-b0e7-7e48d22625f9@0ab4cbbf-4bc7-4826-b52c-a14fed5286b9/JenkinsCI/5d661927cebd40b7aa69763ce38023d4/151ebd21-71c4-47a1-b389-3a13bf9ccbf1', status: "FAIL"
-            office365ConnectorSend message: "Finished ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${REPORT_URL}>)", webhookUrl: 'https://rcirogers.webhook.office.com/webhookb2/fc1cf214-7905-48f5-a928-363057789435@0ab4cbbf-4bc7-4826-b52c-a14fed5286b9/IncomingWebhook/8749aee2085b4f79acd771fa946778ea/79e29d92-4686-45ef-81a6-f2d1cc6ac806', status: "FAIL"
+            #office365ConnectorSend message: "Finished ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${REPORT_URL}>)", webhookUrl: 'https://outlook.office.com/webhook/e3556c59-ec6f-42ad-b0e7-7e48d22625f9@0ab4cbbf-4bc7-4826-b52c-a14fed5286b9/JenkinsCI/5d661927cebd40b7aa69763ce38023d4/151ebd21-71c4-47a1-b389-3a13bf9ccbf1', status: "FAIL"
         }
         unstable {
             echo "${env.BUILD_URL} is unstable"
-            office365ConnectorSend message: "Finished ${env.JOB_NAME} build #${env.BUILD_NUMBER} (<${REPORT_URL}>)", webhookUrl: 'https://outlook.office.com/webhook/e3556c59-ec6f-42ad-b0e7-7e48d22625f9@0ab4cbbf-4bc7-4826-b52c-a14fed5286b9/JenkinsCI/5d661927cebd40b7aa69763ce38023d4/151ebd21-71c4-47a1-b389-3a13bf9ccbf1', status: "UNSTABLE"
-            office365ConnectorSend message: "Finished ${env.JOB_NAME} build #${env.BUILD_NUMBER} (<${REPORT_URL}>)", webhookUrl: 'https://rcirogers.webhook.office.com/webhookb2/fc1cf214-7905-48f5-a928-363057789435@0ab4cbbf-4bc7-4826-b52c-a14fed5286b9/IncomingWebhook/8749aee2085b4f79acd771fa946778ea/79e29d92-4686-45ef-81a6-f2d1cc6ac806', status: "UNSTABLE"
+            #office365ConnectorSend message: "Finished ${env.JOB_NAME} build #${env.BUILD_NUMBER} (<${REPORT_URL}>)", webhookUrl: 'https://outlook.office.com/webhook/e3556c59-ec6f-42ad-b0e7-7e48d22625f9@0ab4cbbf-4bc7-4826-b52c-a14fed5286b9/JenkinsCI/5d661927cebd40b7aa69763ce38023d4/151ebd21-71c4-47a1-b389-3a13bf9ccbf1', status: "UNSTABLE"
         }
     }
 }
