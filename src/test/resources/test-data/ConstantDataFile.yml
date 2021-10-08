@@ -49,12 +49,16 @@ searchResultPage:
     - filterType: Product
       filterOption: [[ "SHOP BY PRODUCT","Home & Garden" ]]
     - filterType: Price
-      filterOption: [[ "SHOP BY PRICE","Under $50","Under" ]]
-  lst_MutipleFilter: 
+      filterOption: [[ "SHOP BY PRICE","Under $50","Under" ]]   
     - filterType: CombinatedAction
-      filterOption: [[["SHOP BY SIZE FASHION","Regular XXS-XS"],["SHOP BY PRICE","Under $50"]]]
+      filterOption: 
+        - ["SHOP BY SIZE FASHION","Regular XXS-XS"]
+        - ["SHOP BY PRICE","Under $50"]
     - filterType: SequentialAction
-      filterOption: [[["SHOP BY BRAND","Kim & Co."],["SHOP BY PRICE","Under $50"],["SHOP BY COLOUR","Black"]]]
+      filterOption: 
+        - ["SHOP BY BRAND","Kim & Co."]
+        - ["SHOP BY PRICE","Under $50"]
+        - ["SHOP BY COLOUR","Black"]
   lst_MoreButton: ["SHOP BY BRAND","SHOP BY SHOE SIZE","SHOP BY SIZE FASHION"]
 footerSection: 
   lst_SocialMediaLinks: ["https://www.facebook.com/Shoptsc","https://twitter.com/shoptsc","https://instagram.com/shoptsc","www.youtube.com","https://www.pinterest.ca/shoptsc"]
