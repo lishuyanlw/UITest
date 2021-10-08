@@ -156,7 +156,7 @@ public class GlobalFooterPage extends BasePage {
 	@FindBy(xpath = "//div[@class='CustomerService']//*[contains(@class,'customer-service__searchbox')]//button[contains(@class,'customer-service__search-button')]")
 	public WebElement btnSearchButton;
 	
-	@FindBy(xpath = "//div[@class='CustomerService']//*[contains(@class,'customer-service__searchbox')]//button[contains(@class,'customer-service__search-button')]")
+	@FindBy(xpath = "//div[@class='CustomerService']//div[contains(@class,'customer-service__faq-wrap')]//h3")
 	public WebElement lblFrequentlyAskedQuestions;
 	
 	@FindBy(xpath = "//div[@class='CustomerService']//ul[contains(@class,'customer-service__faq')]//li//a")
