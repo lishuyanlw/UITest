@@ -553,6 +553,30 @@ import utils.ReusableActions;
 		   String utf8EncodedString = new String(bytes);
 		   return utf8EncodedString;
 	}
+	
+    /**
+	 * This method is to get element from element list with a expected text. 
+	 * @param List<WebElement> elementList: input element list
+	 * @param String lsExpectedText: input expected text
+	 * @return WebElement
+	 * @author Wei.Li
+	 */	
+    public WebElement getElementFromList(List<WebElement> elementList,String lsExpectedText) { 
+    	int listSize=elementList.size();
+    	if(listSize==0) {
+    		return null;
+    	}
+    	
+    	String lsItem;
+    	for(WebElement element:elementList) {
+    		getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+    		lsItem=element.getText().trim();
+    		if(lsItem.equalsIgnoreCase(lsExpectedText)) {
+    			return element;
+    		}
+    	}
+    	return null;
+    }
 
 	/*Method to convert words/string into camel case  
 	 * @return String

@@ -216,12 +216,19 @@ public class GlobalFooterPage extends BasePage {
 	 * This method is to get the link from yml file.
 	 * @param List<String> lstNameAndLink: the list from yml file
 	 * @param String lsSpecificName: input name
+	 * @param boolean bEnglish: true for English while false for French
 	 * @return String: note that the empty string means not found
 	 * @author Wei.Li
 	 */
-	public String getLinkWithSpecificName(List<List<String>> lstNameAndLink, String lsSpecificName) {
-		for(List<String> lstItem:lstNameAndLink) {			
-			if(lsSpecificName.equalsIgnoreCase(lstItem.get(0))) {
+	public String getLinkWithSpecificName(List<List<String>> lstNameAndLink, String lsSpecificName,boolean bEnglish) {
+		String lsCompare;
+		for(List<String> lstItem:lstNameAndLink) {	
+			if(bEnglish) {
+				lsCompare=this.getUTFEnabledData(lstItem.get(0));
+			}else {
+				lsCompare=this.getUTFEnabledData(lstItem.get(1));
+			}
+			if(lsSpecificName.equalsIgnoreCase(lsCompare)) {
 				if(lstItem.get(2).startsWith("/")) {
 					return this.removeLastSlashFromUrl(this.getBaseURL()+lstItem.get(2).trim());
 				}
@@ -259,11 +266,28 @@ public class GlobalFooterPage extends BasePage {
 	 * @return French name: note that the empty string means not found
 	 * @author Wei.Li
 	 */
-	public String getFrenchWithSpecificEnglishName(List<List<String>> lstNameAndLink, String lsSpecificName) {
-		System.out.println("lsSpecificName: "+lsSpecificName);
+	public String getFrenchWithSpecificEnglishName(List<List<String>> lstNameAndLink, String lsSpecificName) {		
 		for(List<String> lstItem:lstNameAndLink) {			
 			if(lsSpecificName.equalsIgnoreCase(this.getUTFEnabledData(lstItem.get(0)))) {
-				return lstItem.get(1).trim();
+				return this.getUTFEnabledData(lstItem.get(1).trim());
+			}
+		}
+		
+		return "";
+	}
+	
+	/**
+	 * This method is to get the English name from yml file.
+	 * @param List<String> lstNameAndLink: the list from yml file
+	 * @param String lsSpecificName: input name
+	 * @return French name: note that the empty string means not found
+	 * @author Wei.Li
+	 */
+	public String getEnglishWithSpecificFrenchName(List<List<String>> lstNameAndLink, String lsSpecificName) {		
+		for(List<String> lstItem:lstNameAndLink) {
+			String lsCompare=this.getUTFEnabledData(lstItem.get(1));						
+			if(lsSpecificName.equalsIgnoreCase(lsCompare)) {				
+				return this.getUTFEnabledData(lstItem.get(0).trim());
 			}
 		}
 		
