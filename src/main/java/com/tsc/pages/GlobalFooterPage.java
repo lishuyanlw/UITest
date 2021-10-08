@@ -357,7 +357,7 @@ public class GlobalFooterPage extends BasePage {
 	 * @author Wei.Li
 	 */
 	public WebElement getServiceWebElement(String lsService) {
-		WebElement selectedItem=this.getElementFromList(this.lnkTSCCustomerHubAllLinks, lsService);
+		WebElement selectedItem=this.getElementFromList(this.lnkTSCCustomerHubAllLinks, lsService);		
 		if(selectedItem==null) {
 			selectedItem=this.getElementFromList(this.lnkAboutTSCAllLinks, lsService);
 		}
@@ -371,13 +371,14 @@ public class GlobalFooterPage extends BasePage {
 	 * @author Wei.Li
 	 */
 	public boolean goToService(String lsService) {
-		WebElement selectedItem=this.getServiceWebElement(lsService);
+		WebElement selectedItem=this.getServiceWebElement(lsService);		
 		if(selectedItem==null) {
 			return false;
 		}
+		
 		getReusableActionsInstance().javascriptScrollByVisibleElement(selectedItem);
-		selectedItem.click();
-		return this.waitForPageLoading();
+		selectedItem.click();		
+		return waitForCondition(Driver->{return this.lblCustomerService.isDisplayed();},60000);		
 	}
 	
 	/**
@@ -387,17 +388,17 @@ public class GlobalFooterPage extends BasePage {
 	 */
 	public void verifyLinksForFrequentlyAskedQuestionsInCustomerServicePageObject(WebElement element) {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-		String lsOriginalUrl=this.URL();
-		String lsExpectedUrl=this.getBaseURL()+this.getElementHref(element);
+		String lsOriginalUrl=this.URL();		
+		String lsExpectedUrl=this.getElementHref(element);
 		lsExpectedUrl=this.removeLastSlashFromUrl(lsExpectedUrl);
 		element.click();
-		this.waitForPageLoading();
-		String lsCurrentUrl=this.URL();
+		this.waitForCondition(Driver->{return this.lnkBackToCutomerService.isDisplayed();},60000);	
+		String lsCurrentUrl=this.URL();		
 		reporter.softAssert(lsExpectedUrl.equalsIgnoreCase(lsCurrentUrl),"The navigated Url is equal to the expected Url","The navigated Url is not equal to the expected Url");
 		reporter.softAssert(this.verifyElementExisting(this.lnkBackToCutomerService),"Navigation link is existing","Navigation link is not existing");
 		reporter.softAssert(this.verifyElementExisting(this.blkArticle),"The details of related question is existing","The details of related question is not existing");
 		this.lnkBackToCutomerService.click();
-		this.waitForPageLoading();
+		this.waitForCondition(Driver->{return this.lblFrequentlyAskedQuestions.isDisplayed();},60000);
 		reporter.softAssert(lsOriginalUrl.equalsIgnoreCase(this.URL()),"The navigation link works","The navigation link does not work");				
 	}
 	
