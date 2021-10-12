@@ -25,14 +25,13 @@ public class GF_TC04_Verify_GlobalFooter_CustomerHubServicePageObjects extends B
 		
 		//Customer service
 		lsService="Customer Service";
-		WebElement selectedItem=getGlobalFooterPageThreadLocal().getServiceWebElement(lsService);
-		String lsText=selectedItem.getText().trim();
+		WebElement selectedItem=getGlobalFooterPageThreadLocal().getServiceWebElement(lsService);		
 		String lsHref=basePage.getElementHref(selectedItem);		
-		String lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsText,true);
+		String lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsService,true);
 		if(lsYmlHref.isEmpty()) {
-			reporter.reportLogFail("Unable to find credit card link.");
+			reporter.reportLogFail("Unable to find Customer Service link.");
 		}		
-		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current credit card href of "+lsHref+" is equal to "+lsYmlHref,"The current credit card href of "+lsHref+" is not equal to "+lsYmlHref);
+		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current Customer Service href of "+lsHref+" is equal to "+lsYmlHref,"The current Customer Service href of "+lsHref+" is not equal to "+lsYmlHref);
 		
 		if(!getGlobalFooterPageThreadLocal().goToService(lsService)) {
 			reporter.reportLogFail("Unable to navigate to Customer service page objects.");

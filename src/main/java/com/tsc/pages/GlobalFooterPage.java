@@ -397,6 +397,7 @@ public class GlobalFooterPage extends BasePage {
 		reporter.softAssert(lsExpectedUrl.equalsIgnoreCase(lsCurrentUrl),"The navigated Url is equal to the expected Url","The navigated Url is not equal to the expected Url");
 		reporter.softAssert(this.verifyElementExisting(this.lnkBackToCutomerService),"Navigation link is existing","Navigation link is not existing");
 		reporter.softAssert(this.verifyElementExisting(this.blkArticle),"The details of related question is existing","The details of related question is not existing");
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkBackToCutomerService);
 		this.lnkBackToCutomerService.click();
 		this.waitForCondition(Driver->{return this.lblFrequentlyAskedQuestions.isDisplayed();},60000);
 		reporter.softAssert(lsOriginalUrl.equalsIgnoreCase(this.URL()),"The navigation link works","The navigation link does not work");				
