@@ -31,6 +31,7 @@ public class SR_TC05_Verify_ProductSearchResult_MultiFiltersTest extends BaseTes
 	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0));	
 	
 	//Test filter option combination
+	List<String> lstDisappearAfterSelectFilter=TestDataHandler.constantDataVariables.getlst_DisappearAfterSelectFilter();
 	List<List<List<String>>> lstFilterCombination=TestDataHandler.constantDataVariables.getlst_FilterCombination();	
 	String lsMsg="";
 	for(List<List<String>> lstItemCombination:lstFilterCombination) {
@@ -50,10 +51,10 @@ public class SR_TC05_Verify_ProductSearchResult_MultiFiltersTest extends BaseTes
 		}
 		
 		if(getProductResultsPageThreadLocal().bDefault) {
-			lsMsg=getProductResultsPageThreadLocal().verifySlectedFiltersContainSecondlevelFilter(lstSelectedSecondLevelFilter);		
+			lsMsg=getProductResultsPageThreadLocal().verifySlectedFiltersContainSecondlevelFilter(lstSelectedSecondLevelFilter,lstDisappearAfterSelectFilter);		
 		}
 		else {
-			lsMsg=getProductResultsPageThreadLocal().verifySlectedFiltersContainSecondlevelFilter(lstFilter);			
+			lsMsg=getProductResultsPageThreadLocal().verifySlectedFiltersContainSecondlevelFilter(lstFilter,lstDisappearAfterSelectFilter);			
 		}
 		if(lsMsg.isEmpty()) {
 			reporter.reportLogPass("The selected filters contain all search second level filters");
@@ -82,7 +83,7 @@ public class SR_TC05_Verify_ProductSearchResult_MultiFiltersTest extends BaseTes
 		getProductResultsPageThreadLocal().selectFilterItemInLeftPanel(selectedFilters.get(0).get(0), selectedFilters.get(0).get(1));
 		//Remove the unchecked second level filter from saved second level filter list
 		lstSelectedSecondLevelFilter.remove(0);
-		lsMsg=getProductResultsPageThreadLocal().verifySlectedFiltersContainSecondlevelFilter(lstSelectedSecondLevelFilter);
+		lsMsg=getProductResultsPageThreadLocal().verifySlectedFiltersContainSecondlevelFilter(lstSelectedSecondLevelFilter,lstDisappearAfterSelectFilter);
 		if(lsMsg.isEmpty()) {
 			reporter.reportLogPass("The selected filters contain all search second level filters");
 		}else {

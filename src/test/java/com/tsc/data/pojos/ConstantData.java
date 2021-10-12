@@ -63,6 +63,7 @@ public class ConstantData {
 	private List<List<String>> lst_NameAndLinks;
 	private String lbl_Username;
 	private String lbl_Password;
+	private List<String> lst_DisappearAfterSelectFilter;
 
 	//Header Links getter and setter method
 	
@@ -764,6 +765,20 @@ public class ConstantData {
 	 */
 	public void setlbl_Password(String lbl_Password) {
 		this.lbl_Password = lbl_Password;
+	}
+	
+	/**
+
+	 * @return the lst_DisappearAfterSelectFilter
+	 */
+	public List<String> getlst_DisappearAfterSelectFilter() {
+		return lst_DisappearAfterSelectFilter;
+	}
+	/**
+	 * @param lst_DisappearAfterSelectFilter the lst_DisappearAfterSelectFilter to set
+	 */
+	public void setlst_DisappearAfterSelectFilter(List<String> lst_DisappearAfterSelectFilter) {
+		this.lst_DisappearAfterSelectFilter = lst_DisappearAfterSelectFilter;
 	}
 		
 }

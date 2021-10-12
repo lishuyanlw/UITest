@@ -31,6 +31,7 @@ public class SR_TC06_Verify_ProductSearchResult_MultiFiltersSequentialActionTest
 	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0));	
 	
 	//Test filter option for sequential actions
+	List<String> lstDisappearAfterSelectFilter=TestDataHandler.constantDataVariables.getlst_DisappearAfterSelectFilter();
 	List<List<List<String>>> lstFilterSequentialAction=TestDataHandler.constantDataVariables.getlst_FilterSequentialAction();	
 	String lsMsg="";
 	for(List<List<String>> lstItemCombination:lstFilterSequentialAction) {		
@@ -40,7 +41,7 @@ public class SR_TC06_Verify_ProductSearchResult_MultiFiltersSequentialActionTest
 			getProductResultsPageThreadLocal().selectFilterItemInLeftPanel(lstItem.get(0), lstItem.get(1));
 			lstSelectedSecondLevelFilter.add(getProductResultsPageThreadLocal().secondLevelFilter);			
 						
-			lsMsg=getProductResultsPageThreadLocal().verifySlectedFiltersContainSecondlevelFilter(lstSelectedSecondLevelFilter);
+			lsMsg=getProductResultsPageThreadLocal().verifySlectedFiltersContainSecondlevelFilter(lstSelectedSecondLevelFilter,lstDisappearAfterSelectFilter);
 			if(lsMsg.isEmpty()) {
 				reporter.reportLogPass("The selected filters contain all search second level filters");
 			}else {
