@@ -61,6 +61,9 @@ public class ConstantData {
 	private List<String> lst_SocialMediaLinks;
 	private List<List<String>> lst_SpecialOffers;
 	private List<List<String>> lst_NameAndLinks;
+	private String lbl_Username;
+	private String lbl_Password;
+	private List<String> lst_DisappearAfterSelectFilter;
 
 	//Header Links getter and setter method
 	
@@ -736,6 +739,46 @@ public class ConstantData {
 	 */
 	public void setlst_NameAndLinks(List<List<String>> lst_NameAndLinks) {
 		this.lst_NameAndLinks = lst_NameAndLinks;
+	}
+	
+	/**
+	 * @return the lbl_Username
+	 */
+	public String getlbl_Username() {
+		return lbl_Username;
+	}
+	/**
+	 * @param lbl_Username the lbl_Username to set
+	 */
+	public void setlbl_Username(String lbl_Username) {
+		this.lbl_Username = lbl_Username;
+	}
+	
+	/**
+	 * @return the lbl_Password
+	 */
+	public String getlbl_Password() {
+		return lbl_Password;
+	}
+	/**
+	 * @param lbl_Password the lbl_Password to set
+	 */
+	public void setlbl_Password(String lbl_Password) {
+		this.lbl_Password = lbl_Password;
+	}
+	
+	/**
+
+	 * @return the lst_DisappearAfterSelectFilter
+	 */
+	public List<String> getlst_DisappearAfterSelectFilter() {
+		return lst_DisappearAfterSelectFilter;
+	}
+	/**
+	 * @param lst_DisappearAfterSelectFilter the lst_DisappearAfterSelectFilter to set
+	 */
+	public void setlst_DisappearAfterSelectFilter(List<String> lst_DisappearAfterSelectFilter) {
+		this.lst_DisappearAfterSelectFilter = lst_DisappearAfterSelectFilter;
 	}
 		
 }

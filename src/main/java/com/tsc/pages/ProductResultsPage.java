@@ -191,7 +191,8 @@ public class ProductResultsPage extends BasePage{
 		getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeader.searchBox);		
 		this.clearContent(globalHeader.searchBox);
 		globalHeader.searchBox.sendKeys(searchKeyword);		
-		globalHeader.btnSearchSubmit.click();
+		//globalHeader.btnSearchSubmit.click();
+		(new BasePage(this.getDriver())).pressEnterKey();
 		
 		return waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},60000);
 	}
@@ -924,26 +925,29 @@ public class ProductResultsPage extends BasePage{
     }
     
     /**
-	 * This method will verify if selected filters contain search second level filters. 
-	 * @param List<String> lstFilter: second level filter list 
+	 * This method will verify if selected filters contain suitable search second level filters. 
+	 * @param List<String> lstFilterIncluded: second level filter list 
+	 * @param List<String> lstFilterExcluded: the filters should not appear in selected filters option 
 	 * @return String: error message
 	 * @author Wei.Li
 	 */	
-    public String verifySlectedFiltersContainSecondlevelFilter(List<String> lstFilter) {    	
-    	List<String> lstSelectedFilter=new ArrayList<String>();
+    public String verifySlectedFiltersContainSecondlevelFilter(List<String> lstFilterIncluded, List<String> lstFilterExcluded) {    	
+    	List<String> lstSelectedFilterOption=new ArrayList<String>();
     	int selectedFilterSize=this.selectedFiltersList.size()-1;
     	for(int i=0;i<selectedFilterSize;i++) {
     		getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectedFiltersList.get(i));
-    		lstSelectedFilter.add(this.selectedFiltersList.get(i).getText().trim());     		
+    		lstSelectedFilterOption.add(this.selectedFiltersList.get(i).getText().trim());     		
+    	}
+  
+    	for(String lsItem:lstSelectedFilterOption) {    		
+    		if(!lstFilterIncluded.contains(lsItem)) {     			
+    			return "The search second level filters do not contain the selected filter of '"+lsItem+"'";
+    		}
     	}
     	
-    	if(selectedFilterSize!=lstFilter.size()) {
-    		return "The size of "+ lstFilter.size()+" for selected filter options is not equal to "+" the size of "+selectedFilterSize+" for selected filters in the left panel.";
-    	}
-    	    	
-    	for(String lsItem:lstFilter) {    		
-    		if(!lstSelectedFilter.contains(lsItem)) {     			
-    			return "The selected filters do not contain the search second level filters of '"+lsItem+"'";
+    	for(String lsItem:lstFilterExcluded) {    		
+    		if(lstSelectedFilterOption.contains(lsItem)) {     			
+    			return "The selected filters should not contain the excluded filter of '"+lsItem+"'";
     		}
     	}
     	
