@@ -31,6 +31,7 @@ public class SR_TC05_Verify_ProductSearchResult_MultiFiltersTest extends BaseTes
 	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0));	
 	
 	//Test filter option combination
+	List<String> lstDisappearAfterSelectFilter=TestDataHandler.constantDataFile.getSearchResultPage().getLst_DisappearAfterSelectFilter();
 	List<List<String>> lstFilterCombination=TestDataHandler.constantDataFile.getSearchResultPage().getLst_SearchOption().get(2).getFilterOption();	
 	String lsMsg="";
 	
@@ -50,10 +51,10 @@ public class SR_TC05_Verify_ProductSearchResult_MultiFiltersTest extends BaseTes
 	}
 	
 	if(getProductResultsPageThreadLocal().bDefault) {
-		lsMsg=getProductResultsPageThreadLocal().verifySlectedFiltersContainSecondlevelFilter(lstSelectedSecondLevelFilter);		
+		lsMsg=getProductResultsPageThreadLocal().verifySlectedFiltersContainSecondlevelFilter(lstSelectedSecondLevelFilter,lstDisappearAfterSelectFilter);		
 	}
 	else {
-		lsMsg=getProductResultsPageThreadLocal().verifySlectedFiltersContainSecondlevelFilter(lstFilter);			
+		lsMsg=getProductResultsPageThreadLocal().verifySlectedFiltersContainSecondlevelFilter(lstFilter,lstDisappearAfterSelectFilter);			
 	}
 	if(lsMsg.isEmpty()) {
 		reporter.reportLogPass("The selected filters contain all search second level filters");
@@ -76,13 +77,13 @@ public class SR_TC05_Verify_ProductSearchResult_MultiFiltersTest extends BaseTes
 	productList=getProductResultsPageThreadLocal().getProductList();
 	if(productList.size()>0) {
 		getProductResultsPageThreadLocal().verifySearchResultContent(productList);
-	}	
+	}
 	
 	//To uncheck the first filter in selected filter options
 	getProductResultsPageThreadLocal().selectFilterItemInLeftPanel(selectedFilters.get(0).get(0), selectedFilters.get(0).get(1));
 	//Remove the unchecked second level filter from saved second level filter list
 	lstSelectedSecondLevelFilter.remove(0);
-	lsMsg=getProductResultsPageThreadLocal().verifySlectedFiltersContainSecondlevelFilter(lstSelectedSecondLevelFilter);
+	lsMsg=getProductResultsPageThreadLocal().verifySlectedFiltersContainSecondlevelFilter(lstSelectedSecondLevelFilter,lstDisappearAfterSelectFilter);
 	if(lsMsg.isEmpty()) {
 		reporter.reportLogPass("The selected filters contain all search second level filters");
 	}else {

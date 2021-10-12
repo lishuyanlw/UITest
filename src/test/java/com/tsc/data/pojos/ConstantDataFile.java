@@ -370,7 +370,8 @@ public class ConstantDataFile {
         private List<String> lst_SortOption;
         private List<String> lst_FilterOptionHeader;
         private List<SearchOption> lst_SearchOption;               
-        private List<String> lst_MoreButton;       
+        private List<String> lst_MoreButton;  
+        private List<String> lst_DisappearAfterSelectFilter;
 
         public List<String> getLst_SearchKeyword() {
             return lst_SearchKeyword;
@@ -434,6 +435,14 @@ public class ConstantDataFile {
 
         public void setLst_MoreButton(List<String> lst_MoreButton) {
             this.lst_MoreButton = lst_MoreButton;
+        }
+        
+        public List<String> getLst_DisappearAfterSelectFilter() {
+            return lst_DisappearAfterSelectFilter;
+        }
+
+        public void setLst_DisappearAfterSelectFilter(List<String> lst_DisappearAfterSelectFilter) {
+            this.lst_DisappearAfterSelectFilter = lst_DisappearAfterSelectFilter;
         }
     }
 
