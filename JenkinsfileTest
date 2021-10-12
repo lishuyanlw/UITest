@@ -121,16 +121,13 @@ pipeline {
     post {
 
         success {
-            echo "${env.BUILD_URL} has result success"
-            #office365ConnectorSend message: "Finished ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${REPORT_URL}>)", webhookUrl: 'https://outlook.office.com/webhook/e3556c59-ec6f-42ad-b0e7-7e48d22625f9@0ab4cbbf-4bc7-4826-b52c-a14fed5286b9/JenkinsCI/5d661927cebd40b7aa69763ce38023d4/151ebd21-71c4-47a1-b389-3a13bf9ccbf1', status: "SUCCESS"
+            echo "${env.BUILD_URL} has result success"            
         }
         failure {
-            echo "${env.BUILD_URL} has result fail"
-            #office365ConnectorSend message: "Finished ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${REPORT_URL}>)", webhookUrl: 'https://outlook.office.com/webhook/e3556c59-ec6f-42ad-b0e7-7e48d22625f9@0ab4cbbf-4bc7-4826-b52c-a14fed5286b9/JenkinsCI/5d661927cebd40b7aa69763ce38023d4/151ebd21-71c4-47a1-b389-3a13bf9ccbf1', status: "FAIL"
+            echo "${env.BUILD_URL} has result fail"            
         }
         unstable {
-            echo "${env.BUILD_URL} is unstable"
-            #office365ConnectorSend message: "Finished ${env.JOB_NAME} build #${env.BUILD_NUMBER} (<${REPORT_URL}>)", webhookUrl: 'https://outlook.office.com/webhook/e3556c59-ec6f-42ad-b0e7-7e48d22625f9@0ab4cbbf-4bc7-4826-b52c-a14fed5286b9/JenkinsCI/5d661927cebd40b7aa69763ce38023d4/151ebd21-71c4-47a1-b389-3a13bf9ccbf1', status: "UNSTABLE"
+            echo "${env.BUILD_URL} is unstable"            
         }
     }
 }
