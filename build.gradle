@@ -40,14 +40,15 @@ def getDate() {
 }
 
 def getTunnelName() {
-    def tunnelName = "R4BTest" + System.getenv('BUILD_TIMESTAMP')
-    tunnelName = tunnelName.replaceAll(":","")
-    tunnelName = tunnelName.replaceAll(" ","")
-    return tunnelName
+//    def tunnelName = "TSCWF-WebAutomation" + System.getenv('BUILD_TIMESTAMP')
+//    tunnelName = tunnelName.replaceAll(":","")
+//    tunnelName = tunnelName.replaceAll(" ","")
+//    return tunnelName
+    return "Digital_Mobile_QA"
 }
 
 def tunnel_name() {
-    return "TSC_Automation-"+getDate()
+    return "Digital_Mobile_QA"
 }
 
 sauceconnect {
@@ -56,7 +57,8 @@ sauceconnect {
     options = "-D esfapi.rogers.com,www.rogers.com,bss.rogers.com -i " + getTunnelName() + " --no-remove-colliding-tunnels"
 }
 
-task "sauceTest"(dependsOn: startSauceConnect, type: Test) {
+//task "sauceTest"(dependsOn: startSauceConnect, type: Test) {
+task "sauceTest"(type: Test) {
     if(!test_browser){
         test_browser='saucechrome'
     }
@@ -85,7 +87,7 @@ task "sauceTest"(dependsOn: startSauceConnect, type: Test) {
 }
 
 //To shutdown the sauceconnect
-sauceTest.finalizedBy stopSauceConnect
+//sauceTest.finalizedBy stopSauceConnect
 
 task "localTest"(type: Test) {
     if (test_browser && test_browser.contains('sauce')){
