@@ -30,6 +30,7 @@ import org.openqa.selenium.Cookie;
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.GlobalheaderPage;
 import com.tsc.pages.HomePage;
+import com.tsc.pages.LoginPage;
 import com.tsc.pages.ProductResultsPage;
 import com.tsc.pages.GlobalFooterPage;
 
@@ -51,6 +52,7 @@ public class BaseTest {
 	protected static final ThreadLocal<HomePage> homePageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<GlobalFooterPage> globalFooterPageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<ProductResultsPage> productResultsPageThreadLocal = new ThreadLocal<>();
+	protected static final ThreadLocal<LoginPage> loginPageThreadLocal = new ThreadLocal<>();
 
 	public BaseTest() {
 		browserDrivers = new BrowserDrivers();
@@ -83,6 +85,10 @@ public class BaseTest {
 	protected static ProductResultsPage getProductResultsPageThreadLocal() {
 		return productResultsPageThreadLocal.get();
 	}
+	
+	protected static LoginPage getGlobalLoginPageThreadLocal() {
+		return loginPageThreadLocal.get();
+	}
 
 	private void init() {
 		
@@ -90,6 +96,7 @@ public class BaseTest {
 		globalheaderPageThreadLocal.set(new GlobalheaderPage(getDriver()));
 		globalFooterPageThreadLocal.set(new GlobalFooterPage(getDriver()));
 		productResultsPageThreadLocal.set(new ProductResultsPage(getDriver()));
+		loginPageThreadLocal.set(new LoginPage(getDriver()));
 		reporter = new ExtentTestManager(getDriver());
 	}
 
