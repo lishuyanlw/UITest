@@ -11,19 +11,52 @@ import com.tsc.test.base.BaseTest;
 public class HP_TC01_Verify_Global_Header extends BaseTest {
 	
 	@Test(groups={"Home","Regression"})	    
-		public void validateGlobalHeaderLinks() throws IOException {
+		public void validateGlobalHeaderLinks() throws IOException {		
+		getGlobalFooterPageThreadLocal().closePopupDialog();
 		
-		String lsBaseUrl=(new BasePage(this.getDriver())).getBaseURL();
+		BasePage basePage=new BasePage(this.getDriver());
+		String lsBaseUrl=basePage.getBaseURL();
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl+"/"), "TSC url is correct", "TSC url is incorrect");
-		reporter.reportLogWithScreenshot("Home Page");
+		reporter.reportLog("Home Page");
 		
+		reporter.reportLog("Verify Black headers");
+		//Verify Black headers
+		getglobalheaderPageThreadLocal().verifyTSHeaderAndLinkInBlackHeader(getglobalheaderPageThreadLocal().lnkTSBlackHeader,getglobalheaderPageThreadLocal().lnkTS,true);
+		getglobalheaderPageThreadLocal().goBackHomePage();
+		
+		getglobalheaderPageThreadLocal().hoverOnWatchTSC();
+		getglobalheaderPageThreadLocal().verifyTSHeaderAndLinkInBlackHeader(getglobalheaderPageThreadLocal().lnkWatchUsLiveDpdMenu,getglobalheaderPageThreadLocal().lnkWatchUsLive,true);
+		getglobalheaderPageThreadLocal().goBackHomePage();
+		
+		getglobalheaderPageThreadLocal().hoverOnWatchTSC();
+		getglobalheaderPageThreadLocal().verifyTSHeaderAndLinkInBlackHeader(getglobalheaderPageThreadLocal().lnkDealsDpdMenu,getglobalheaderPageThreadLocal().lnkDeals,true);
+		getglobalheaderPageThreadLocal().goBackHomePage();
+		
+		getglobalheaderPageThreadLocal().hoverOnWatchTSC();
+		getglobalheaderPageThreadLocal().verifyTSHeaderAndLinkInBlackHeader(getglobalheaderPageThreadLocal().lnkProgramGuideDpdMenu,getglobalheaderPageThreadLocal().lnkProgramGuide,false);
+		getglobalheaderPageThreadLocal().goBackHomePage();
+		
+		getglobalheaderPageThreadLocal().hoverOnWatchTSC();
+		getglobalheaderPageThreadLocal().verifyTSHeaderAndLinkInBlackHeader(getglobalheaderPageThreadLocal().lnkCarGadgetsDpdMenu,null,true);
+		getglobalheaderPageThreadLocal().goBackHomePage();
+		
+		getglobalheaderPageThreadLocal().hoverOnWatchTSC();
+		getglobalheaderPageThreadLocal().verifyTSHeaderAndLinkInBlackHeader(getglobalheaderPageThreadLocal().lnkDesignerFootwearDpdMenu,null,true);
+		getglobalheaderPageThreadLocal().goBackHomePage();
+		
+		getglobalheaderPageThreadLocal().hoverOnWatchTSC();
+		getglobalheaderPageThreadLocal().verifyTSHeaderAndLinkInBlackHeader(getglobalheaderPageThreadLocal().lnkOnAirProductsDpdMenu,getglobalheaderPageThreadLocal().lnkOnAir,true);
+			
+		reporter.reportLog("Verify Silver headers");
+		//Verify Silver headers
 		String lsUrl,lsYmlNotFound,lsYmlFullUrl,lsSuccessResult, lsFailResult;
 		lsYmlNotFound=TestDataHandler.constantDataVariables.getlnk_NotFound();
-		
+				
 		reporter.softAssert(getglobalheaderPageThreadLocal().DynamicEventLinkVisible(), "Dynamic Event Link is visible", "Dynamic Event Link is not visible");
 		
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateDynamicEventLink(), "Dynamic Event href is existing", "Dynamic Event href is not existing");
 	
+		reporter.reportLog("Sliver headers text");
 		//Verify headers text
 		reporter.softAssert(getglobalheaderPageThreadLocal().getTSText().startsWith(TestDataHandler.constantDataVariables.getlbl_TodaysShowstopper()), "TS Link is present & Text is visible","TS Link is present & Text is not visible");
 		
@@ -35,6 +68,7 @@ public class HP_TC01_Verify_Global_Header extends BaseTest {
 				
 		validateText(getglobalheaderPageThreadLocal().getWatchUsLiveText(), TestDataHandler.constantDataVariables.getlbl_WatchUsLive_English(), "Watch Us Live Link is present & Text is visible");
 		
+		reporter.reportLog("Verify TodaysShowstopper link");
 		//Verify TodaysShowstopper link
 		lsUrl=getglobalheaderPageThreadLocal().getTSLink();	
 		lsYmlFullUrl=lsBaseUrl+TestDataHandler.constantDataVariables.getlnk_TodaysShowstopper();
@@ -74,6 +108,7 @@ public class HP_TC01_Verify_Global_Header extends BaseTest {
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateProgramGuideIconVisible(), "Program Guide icon is visible", "Program Guide icon is not visible");
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateWatchUsLiveIconVisible(), "Watch Us icon is visible", "Watch Us icon is  not visible");
 		
+		reporter.reportLog("Verify notfound and full url after clicking TodayShowstopper link");
 		//Verify notfound and full url after clicking TodayShowstopper link
 		lsUrl=getglobalheaderPageThreadLocal().getUrlAfterClickingTSLink();		
 		lsSuccessResult=String.format("The url of < %s > does not contain < %s > after clicking TodayShowstopper link", lsUrl,lsYmlNotFound);
@@ -125,6 +160,8 @@ public class HP_TC01_Verify_Global_Header extends BaseTest {
 		reporter.softAssert(lsUrl.equalsIgnoreCase(lsYmlFullUrl), lsSuccessResult,lsFailResult);
 		
 		(new BasePage(this.getDriver())).navigateToURL(lsBaseUrl+"/");
+		getglobalheaderPageThreadLocal().waitForPageLoad();
+		getglobalheaderPageThreadLocal().switchWatchTSCDropdownOption(getglobalheaderPageThreadLocal().lnkCarGadgetsDpdMenu);
 			
 		//Verify notfound and full url after clicking WatchUsLive link
 		lsUrl=getglobalheaderPageThreadLocal().getUrlAfterClickingWatchUsLiveLink();		
@@ -138,7 +175,8 @@ public class HP_TC01_Verify_Global_Header extends BaseTest {
 		reporter.softAssert(lsUrl.equalsIgnoreCase(lsYmlFullUrl), lsSuccessResult,lsFailResult);
 		
 		getglobalheaderPageThreadLocal().waitForPageLoad();
-			
+		
+		reporter.reportLog("Verify Logo section");
 		//Verify Logo section
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateTSCLogo(), "TSC icon is visible", "TSC icon is not visible");
 		
@@ -146,19 +184,23 @@ public class HP_TC01_Verify_Global_Header extends BaseTest {
 		
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateTSCLogoNavigateToHomePage(), "TSCLogo can navigate To HomePage", "TSCLogo cannot navigate To HomePage");
 		
+		reporter.reportLog("Verify searchBox section");
 		//Verify searchBox section
 		validateText(getglobalheaderPageThreadLocal().validateSearchbox(), TestDataHandler.constantDataVariables.getlbl_SearchBoxPlaceholder(), "Search box is visible");
 		
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateSearchSubmitbtn(), "Search submit button is visible", "Search submit button is not visible");
 		
+		reporter.reportLog("Verify Sign in section");
 		//Verify Sign in section
 		validateText(getglobalheaderPageThreadLocal().validateSignInLink(), TestDataHandler.constantDataVariables.getlbl_SignIn(), "SignIn Link is present & Text is visible");
 		
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateSiginIcon(), "SignIn icon is visible", "SignIn icon is not visible");
 		
+		reporter.reportLog("Verify Favourites section");
 		//Verify Favourites section
 		validateText(getglobalheaderPageThreadLocal().validateFavouritesLink(), TestDataHandler.constantDataVariables.getlbl_Favourites(), "Favourites Link is present & Text is visible");
 		
+		reporter.reportLog("Verify Minicart section");
 		//Verify Minicart section
 		validateText(getglobalheaderPageThreadLocal().validateMinicartLinkName(), TestDataHandler.constantDataVariables.getlbl_MinicartLinkName(), "Mini cart Link is present & Text is visible");
 		
