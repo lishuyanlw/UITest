@@ -69,6 +69,7 @@ public class GF_TC04_Verify_GlobalFooter_TSCCustomerHub_LinksAndPageObjects exte
 		//Track Your Order
 		lsService="Track Your Order";
 		reporter.reportLog(lsService);
+		List<String> lstTrackYourOrderObjectSectionTitle=TestDataHandler.constantDataVariables.getlst_TrackYourOrderObjectSectionTitle();
 		selectedItem=getGlobalFooterPageThreadLocal().getServiceWebElement(lsService);		
 		lsHref=basePage.getElementHref(selectedItem);		
 		lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsService,true);
@@ -81,7 +82,13 @@ public class GF_TC04_Verify_GlobalFooter_TSCCustomerHub_LinksAndPageObjects exte
 			reporter.reportLogFail("Unable to navigate to '"+lsService+"' page objects.");
 		}
 		else {
-			getGlobalFooterPageThreadLocal().displayAlertMessageForOrderNumberAndSignInInput();;
+			List<WebElement> mandotoryFieldList=new ArrayList<WebElement>();
+			mandotoryFieldList.add(getGlobalFooterPageThreadLocal().cntOrderNumber);
+			mandotoryFieldList.add(getGlobalFooterPageThreadLocal().cntBillingPostalCode);
+			mandotoryFieldList.add(getGlobalFooterPageThreadLocal().btnTrackYourOrderSubmit);
+			getGlobalFooterPageThreadLocal().verifyServiceObjectSectionTitle(mandotoryFieldList, lstTrackYourOrderObjectSectionTitle, false);
+			
+			getGlobalFooterPageThreadLocal().displayAlertMessageForOrderNumberAndSignInInput();
 			ArrayList<WebElement> elementList=new ArrayList<WebElement>();
 			elementList.add(getGlobalFooterPageThreadLocal().lblTrackYourOrder);
 			elementList.add(getGlobalFooterPageThreadLocal().lblRequiredFieldsInfo);
@@ -148,6 +155,7 @@ public class GF_TC04_Verify_GlobalFooter_TSCCustomerHub_LinksAndPageObjects exte
 		//My Account 
 		lsService="My Account";
 		reporter.reportLog("Not login for "+lsService);
+		List<String> lstMyAccountObjectSectionTitle=TestDataHandler.constantDataVariables.getlst_MyAccountObjectSectionTitle();
 		selectedItem=getGlobalFooterPageThreadLocal().getServiceWebElement(lsService);		
 		lsHref=basePage.getElementHref(selectedItem);		
 		lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsService,true);
@@ -155,12 +163,15 @@ public class GF_TC04_Verify_GlobalFooter_TSCCustomerHub_LinksAndPageObjects exte
 			reporter.reportLogFail("Unable to find '"+lsService+"' link.");
 		}		
 		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current '"+lsService+"' href of "+lsHref+" is equal to "+lsYmlHref,"The current '"+lsService+"' href of "+lsHref+" is not equal to "+lsYmlHref);
-		
+				
 		if(!getGlobalFooterPageThreadLocal().goToService(lsService,getGlobalFooterPageThreadLocal().lblMyAccount)) {
 			reporter.reportLogFail("Unable to navigate to '"+lsService+"' page objects.");
 		}
 		else {
+			reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(basePage.URL(),lsYmlHref),"The current Url of "+basePage.URL()+" for '"+lsService+" is equal to "+lsYmlHref,"The current Url of "+basePage.URL()+" for '"+lsService+" is not equal to "+lsYmlHref);
 			getGlobalFooterPageThreadLocal().expandPanelItems(getGlobalFooterPageThreadLocal().lstMyAccountItemTitle,getGlobalFooterPageThreadLocal().lstMyAccountItemContent);
+			getGlobalFooterPageThreadLocal().verifyServiceObjectSectionTitle(getGlobalFooterPageThreadLocal().lstMyAccountItemTitle, lstMyAccountObjectSectionTitle, true);
+			
 			ArrayList<WebElement> elementList=new ArrayList<WebElement>();
 			elementList.add(getGlobalFooterPageThreadLocal().lblMyAccount);
 			for(WebElement item:getGlobalFooterPageThreadLocal().lstMyAccountItemTitle) {
@@ -185,12 +196,15 @@ public class GF_TC04_Verify_GlobalFooter_TSCCustomerHub_LinksAndPageObjects exte
 			reporter.reportLogFail("Unable to find '"+lsService+"' link.");
 		}		
 		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current '"+lsService+"' href of "+lsHref+" is equal to "+lsYmlHref,"The current '"+lsService+"' href of "+lsHref+" is not equal to "+lsYmlHref);
-		
+				
 		if(!getGlobalFooterPageThreadLocal().goToService(lsService,getGlobalFooterPageThreadLocal().lblMyAccount)) {
 			reporter.reportLogFail("Unable to navigate to '"+lsService+"' page objects.");
 		}
 		else {
+			reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(basePage.URL(),lsYmlHref),"The current Url of "+basePage.URL()+" for '"+lsService+" is equal to "+lsYmlHref,"The current Url of "+basePage.URL()+" for '"+lsService+" is not equal to "+lsYmlHref);
 			getGlobalFooterPageThreadLocal().expandPanelItems(getGlobalFooterPageThreadLocal().lstMyAccountItemTitle,getGlobalFooterPageThreadLocal().lstMyAccountItemContent);
+			getGlobalFooterPageThreadLocal().verifyServiceObjectSectionTitle(getGlobalFooterPageThreadLocal().lstMyAccountItemTitle, lstMyAccountObjectSectionTitle, true);
+			
 			ArrayList<WebElement> elementList=new ArrayList<WebElement>();
 			elementList.add(getGlobalFooterPageThreadLocal().lblMyAccount);
 			for(WebElement item:getGlobalFooterPageThreadLocal().lstMyAccountItemTitle) {

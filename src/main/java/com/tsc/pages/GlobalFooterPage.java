@@ -1,5 +1,6 @@
 package com.tsc.pages;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -191,6 +192,9 @@ public class GlobalFooterPage extends BasePage {
 	@FindBy(xpath = "//div[contains(@class,'order-lookup__wrap')]//h2")
 	public WebElement lblOrderNumberTitle;
 	
+	@FindBy(xpath = "//div[contains(@class,'order-lookup__wrap')]//input[@id='OrderNumber']//ancestor::div[@class='form-group']")
+	public WebElement cntOrderNumber;
+	
 	@FindBy(xpath = "//div[contains(@class,'order-lookup__wrap')]//label[@id='OrderNumberlbl']")
 	public WebElement lblOrderNumberLable;
 	
@@ -199,6 +203,9 @@ public class GlobalFooterPage extends BasePage {
 	
 	@FindBy(xpath = "//div[contains(@class,'order-lookup__wrap')]//input[@id='OrderNumber']/following-sibling::div[contains(@class,'alert')]")
 	public WebElement lblOrderNumberAlertMsg;
+	
+	@FindBy(xpath = "//div[contains(@class,'order-lookup__wrap')]//input[@id='BillingPostal']//ancestor::div[@class='form-group']")
+	public WebElement cntBillingPostalCode;
 	
 	@FindBy(xpath = "//div[contains(@class,'order-lookup__wrap')]//label[@id='BillingPostallbl']")
 	public WebElement lblBillingPostalCodeLabel;
@@ -219,6 +226,9 @@ public class GlobalFooterPage extends BasePage {
 	@FindBy(xpath = "//div[contains(@class,'signin__wrap')]//form/preceding-sibling::div")
 	public WebElement lblGetAllDetailsInfo;
 	
+	@FindBy(xpath = "//div[contains(@class,'signin__wrap')]//input[@id='EmailAddress']//ancestor::div[@class='form-group']")
+	public WebElement cntEmailAddress;
+	
 	@FindBy(xpath = "//div[contains(@class,'signin__wrap')]//label[@id='EmailAddresslbl']")
 	public WebElement lblEmailAddressLable;
 	
@@ -227,6 +237,9 @@ public class GlobalFooterPage extends BasePage {
 	
 	@FindBy(xpath = "//div[contains(@class,'signin__wrap')]//input[@id='EmailAddress']/following-sibling::div[contains(@class,'alert')]")
 	public WebElement lblEmailAddressAlertMsg;
+	
+	@FindBy(xpath = "//div[contains(@class,'signin__wrap')]//input[@id='Password']//ancestor::div[@class='form-group']")
+	public WebElement cntPassword;
 	
 	@FindBy(xpath = "//div[contains(@class,'signin__wrap')]//label[@id='Passwordlbl']")
 	public WebElement lblPasswordLabel;
@@ -648,6 +661,48 @@ public class GlobalFooterPage extends BasePage {
 				reporter.softAssert(getReusableActionsInstance().isElementVisible(contentSection),"The dropdown option of '"+lsOption+"' displays correctly","The dropdown option of '"+lsOption+"' does not display correctly");
 			}			
 		}						
+	}
+	
+	/**
+	 * This method is to verify Service object section titles.
+	 * @param List<WebElement> lstSection: Section element list
+	 * @param List<String> lstExpectedTitle: expected section title list
+	 * @param boolean bFullMatch: Decide fully matched or partially matched
+	 * @author Wei.Li
+	 */
+	public void verifyServiceObjectSectionTitle(List<WebElement> lstSection,List<String> lstExpectedTitle,boolean bFullMatch) {		
+		List<String> lstSectionTitle=new ArrayList<String>();
+		for(WebElement element:lstSection) {
+			getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+			lstSectionTitle.add(element.getText().toUpperCase().trim());
+		}
+		
+		boolean bMatch=false;
+		String lsNotMatch="";
+		for(String lsTitle:lstExpectedTitle) {
+			bMatch=false;
+			for(String lsItem:lstSectionTitle) {
+				if(bFullMatch) {
+					if(lsItem.equalsIgnoreCase(lsTitle)) {
+						bMatch=true;
+					}
+				}
+				else {
+					if(lsItem.contains(lsTitle)) {
+						bMatch=true;
+					}
+				}				
+			}
+			if(bMatch) {
+				continue;
+			}
+			else {
+				lsNotMatch=lsTitle;
+				break;
+			}
+		}
+		
+		reporter.softAssert(bMatch,"All sections are displayed correctly",lsNotMatch+" is not displayed correctly");
 	}
 	
 }
