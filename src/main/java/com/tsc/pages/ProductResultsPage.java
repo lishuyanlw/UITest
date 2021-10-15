@@ -3,6 +3,8 @@ package com.tsc.pages;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.Select;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -162,6 +164,21 @@ public class ProductResultsPage extends BasePage{
 	
 	@FindBy(xpath = "//div[@class='Footer']")
 	WebElement footerContainer;
+	
+	//Godwin
+	@FindBy(xpath="//a[@class='mega-sub-items__item-link mega-sub-items__item-link-first' and contains(text(),'Shop all')]")
+	WebElement shopAllFasionOption;
+	
+	@FindBy(xpath="//a[@role=\"button\" and contains(text(),'Fashion')]")
+	WebElement fasionOption;
+	
+	@FindBy(xpath="//h1//child::span[contains(text(),'Clearance')]")
+	WebElement clearanceTitle;
+	
+	@FindBy(xpath="//select[@id='ItemsPerPageDD']")
+	WebElement itemPaginationCount;
+	
+	
 			
 	String searchkeyword;
 	public boolean bVerifyTitle=true;
@@ -1089,6 +1106,44 @@ public class ProductResultsPage extends BasePage{
     public WebElement getFooterContainer() {  
     	return this.footerContainer;
     }
+    
+    /**
+	 * This method will verify clearance.  
+	 * @return  WebElement
+	 * @author godwin.gopi
+	 */	
+    public String verifyClearanceOption() {
+		getReusableActionsInstance().clickIfAvailable(fasionOption);
+		getReusableActionsInstance().clickIfAvailable(shopAllFasionOption);
+		waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},60000);
+		String clearanceTitleText = getReusableActionsInstance().getNameText(clearanceTitle);
+		return clearanceTitleText;
+    }
+    
+    
+    /**
+	 * This method will contain clearance title .  
+	 * @return  WebElement
+	 * @author godwin.gopi
+	 */	
+    public String verifyClearanceOptionURLTitle() {
+		String clearanceURLTitleText = getDriver().getCurrentUrl();
+		return clearanceURLTitleText;
+    }
+    
+    /**
+   	 * This method will contain page count.  
+   	 * @return  WebElement
+   	 * @author godwin.gopi
+   	 */	
+       public String captureItemPaginationCount() {
+    	   Select dropDown= new Select(itemPaginationCount);
+    	   return dropDown.getFirstSelectedOption().getText();
+    	   
+       }
+    
+    
+    
 
 }
 
