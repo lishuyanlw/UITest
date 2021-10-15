@@ -10,12 +10,9 @@ import com.tsc.pages.base.BasePage;
 import com.tsc.data.Handler.TestDataHandler;
 
 public class HP_TC05_Verify_ShopByBrand extends BaseTest{
-	
-	/**
-	 * This method will test all verifying methods
-	 *
-	 * @author Wei.Li
-	 */	
+	/*
+	 * CER-203
+	 */
 	@Test(groups={"Home","Regression"})
 	public void validateShopByBrand() throws IOException {
 				

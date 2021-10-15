@@ -11,7 +11,15 @@ import com.tsc.test.base.BaseTest;
 import org.openqa.selenium.WebElement;
 
 public class GF_TC04_Verify_GlobalFooter_TSCCustomerHub_LinksAndPageObjects extends BaseTest {
-	
+	/*
+	 * CER-171
+	 * CER-172
+	 * CER-174
+	 * CER-175
+	 * CER-178
+	 * CER-181
+	 * CER-182	 
+	 */
 	@Test(groups={"Home","Regression","GlobalFooter"})
 	public void Verify_GlobalFooter_LinksAndPageObjects() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
