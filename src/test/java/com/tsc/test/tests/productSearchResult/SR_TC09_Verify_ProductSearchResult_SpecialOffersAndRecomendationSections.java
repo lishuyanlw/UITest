@@ -7,6 +7,7 @@ import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.HomePage;
+import com.tsc.pages.ProductResultsPage;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 
@@ -29,13 +30,40 @@ public class SR_TC09_Verify_ProductSearchResult_SpecialOffersAndRecomendationSec
 	List<WebElement> productList;
 	String lsMsg;		
 
-	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0));	
+//	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0));	
 
 
 	//Need to add more actions for clicking Clearance and fashion in Heading menu
 	//Corresponding actions (Clearance>>Fashion>>Shop all fashion)
-	getglobalheaderPageThreadLocal().hoverOnClearanceHeaderOption();
+	getglobalheaderPageThreadLocal().clickOnClearanceHeaderOption();
 	getProductResultsPageThreadLocal().verifyClearanceOption();
+	
+	String value=getProductResultsPageThreadLocal().getProductResultPageTitle();
+	
+	if(value.equalsIgnoreCase(ProductResultsPage.clearancePageTitle)) {
+		reporter.hardAssert(true, "Product Result Title Verified and title is "+value+"", "");
+	}else {
+		reporter.hardAssert(false, "Product Result Title Verified and title is "+value+"", "Result is Failed !!");
+	}
+	
+
+	
+	String baseUrl=getProductResultsPageThreadLocal().verifyClearanceOptionURLTitle();
+	if(baseUrl.contains("productresults?nav") && baseUrl.contains("CL_FLY_ALLProducts")) {
+		reporter.hardAssert(true, "Title Verified", "");
+		reporter.reportLogPass("Search result message result of '"+getProductResultsPageThreadLocal().lsSearchResultMessage+"' matches the expected message");
+		
+	}else {
+		reporter.hardAssert(false, "Failed", "");
+		reporter.reportLogFail("");
+	}
+	
+	String pageCount=getProductResultsPageThreadLocal().captureItemPaginationCount();
+	if(pageCount.equalsIgnoreCase("36")) {
+		reporter.hardAssert(true, "Title Verified", "");
+	}else {
+		reporter.hardAssert(false, "Failed", "");
+	}
 		
 	//reporter.softAssert(getProductResultsPageThreadLocal().verifyUrlContainDimensionAndKeyword(lsKeywordList.get(0).get(0)), "The Url contains correct dimensions and keyword", "The Url does not contain correct dimensions and keyword");
 		

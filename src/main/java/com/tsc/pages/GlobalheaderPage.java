@@ -150,8 +150,8 @@ public class GlobalheaderPage extends BasePage{
 	@FindBy(xpath="//span[contains(text(),'Clearance')]")
 	WebElement clearanceHeader;
 	
-	public void hoverOnClearanceHeaderOption() {
-		getReusableActionsInstance().scrollToElement(clearanceHeader);
+	public void clickOnClearanceHeaderOption() {
+		getReusableActionsInstance().clickIfAvailable(clearanceHeader);
 
 	}
 	

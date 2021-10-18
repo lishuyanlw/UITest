@@ -19,6 +19,9 @@ public class ProductResultsPage extends BasePage{
 	public ProductResultsPage(WebDriver driver) {
 		super(driver);
 	}
+	
+	//Global Variable
+	public static String clearancePageTitle="Clearance";
 		
 	//Search result page title
 	@FindBy(xpath = "//product-results//div[contains(@class,'searchDiv')]")
@@ -1112,12 +1115,11 @@ public class ProductResultsPage extends BasePage{
 	 * @return  WebElement
 	 * @author godwin.gopi
 	 */	
-    public String verifyClearanceOption() {
+    public void verifyClearanceOption() {
 		getReusableActionsInstance().clickIfAvailable(fasionOption);
 		getReusableActionsInstance().clickIfAvailable(shopAllFasionOption);
-		waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},60000);
-		String clearanceTitleText = getReusableActionsInstance().getNameText(clearanceTitle);
-		return clearanceTitleText;
+//		waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},60000);
+		
     }
     
     
