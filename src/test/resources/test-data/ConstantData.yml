@@ -26,6 +26,7 @@ lst_FlyoutHeading: ['FASHION','SHOES & HANDBAGS', 'JEWELLERY', 'BEAUTY', 'HOME &
 lst_FlyoutsubMenu: ['Shop By Product','Specialty Shops','Luggage','Special Pricing','Shop By Metal','Shop By Stone','Wellness','Shop Pet Boutique','Shop By Room','Sports Shop','Shop By Brand','Shop Sports','Travel','Featured Brands','Sportsnet Shop','Vitamin Selector','Shop Coins','Shop By Price','View All >']
 lbl_FlyoutHeadingLandingPageLink: /pages/category?nav=n
 lnk_FlyoutHeaderLinkConstant: [':100047',':128153',':100101',':100038',':100071',':100072',':2058731',':100073',':3001781',':2037576']
+lnk_product_result: /pages/productresults?
 
 # HOME PAGE SECTION
 lbl_OnAirNow: ON AIR NOW

@@ -64,6 +64,7 @@ public class ConstantData {
 	private String lbl_Username;
 	private String lbl_Password;
 	private List<String> lst_DisappearAfterSelectFilter;
+	private String lnk_product_result;
 	private List<String> lst_MyAccountObjectSectionTitle;
 	private List<String> lst_TrackYourOrderObjectSectionTitle;
 
@@ -781,7 +782,11 @@ public class ConstantData {
 	public void setlst_DisappearAfterSelectFilter(List<String> lst_DisappearAfterSelectFilter) {
 		this.lst_DisappearAfterSelectFilter = lst_DisappearAfterSelectFilter;
 	}
-	
+
+	public String getLnk_product_result() {		return lnk_product_result; }
+
+	public void setLnk_product_result(String lnk_product_result) { this.lnk_product_result = lnk_product_result; }
+
 	/**
 	 * @return the lst_MyAccountObjectSectionTitle
 	 */
@@ -794,7 +799,7 @@ public class ConstantData {
 	public void setlst_MyAccountObjectSectionTitle(List<String> lst_MyAccountObjectSectionTitle) {
 		this.lst_MyAccountObjectSectionTitle = lst_MyAccountObjectSectionTitle;
 	}
-	
+
 	/**
 	 * @return the lst_TrackYourOrderObjectSectionTitle
 	 */
@@ -807,5 +812,4 @@ public class ConstantData {
 	public void setlst_TrackYourOrderObjectSectionTitle(List<String> lst_TrackYourOrderObjectSectionTitle) {
 		this.lst_TrackYourOrderObjectSectionTitle = lst_TrackYourOrderObjectSectionTitle;
 	}
-		
 }
