@@ -141,8 +141,38 @@ public class GlobalheaderPage extends BasePage{
 	
 	@FindBy(xpath = "//*[@class='email-popup__button']")
 	WebElement btnClose;
+
+	/*
+	 * @author godwin.gopi
+	 * Header Options
+	 */
+	@FindBy(xpath="//span[contains(text(),'Clearance')]")
+	WebElement clearanceHeader;
+
+	//Godwin
+	@FindBy(xpath="//a[@class='mega-sub-items__item-link mega-sub-items__item-link-first' and contains(text(),'Shop all')]")
+	WebElement shopAllFasionOption;
+
+	@FindBy(xpath="//a[@role=\"button\" and contains(text(),'Fashion')]")
+	WebElement fasionOption;
+
 	public void closeadd() {
 		btnClose.click();
+	}
+
+	public void clickOnClearanceHeaderOption() {
+		getReusableActionsInstance().clickIfAvailable(clearanceHeader);
+	}
+
+	/**
+	 * This method will verify clearance.
+	 * @return  WebElement
+	 * @author godwin.gopi
+	 */
+	public void clickSubMenuLink() {
+		getReusableActionsInstance().clickIfAvailable(fasionOption);
+		getReusableActionsInstance().clickIfAvailable(shopAllFasionOption);
+		waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},60000);
 	}
 
 	public void waitForPageLoad() {
