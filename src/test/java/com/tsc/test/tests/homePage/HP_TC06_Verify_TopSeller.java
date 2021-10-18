@@ -9,10 +9,8 @@ import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 
 public class HP_TC06_Verify_TopSeller extends BaseTest{
-	/**
-	 * This method will test all verifying methods
-	 *
-	 * @author Wei.Li
+	/*
+	 * CER-204
 	 */
 	@Test(groups={"Home","Regression"})
 	public void validateTopSeller() throws IOException {

@@ -9,7 +9,18 @@ import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 
 public class HP_TC01_Verify_Global_Header extends BaseTest {
-	
+	/*
+	 * CER-146
+	 * CER-151
+	 * CER-147
+	 * CER-150
+	 * CER-148
+	 * CER-149
+	 * CER-152
+	 * CER-156
+	 * CER-162
+	 * CER-565
+	 */
 	@Test(groups={"Home","Regression"})	    
 		public void validateGlobalHeaderLinks() throws IOException {		
 		getGlobalFooterPageThreadLocal().closePopupDialog();

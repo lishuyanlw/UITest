@@ -64,6 +64,8 @@ public class ConstantData {
 	private String lbl_Username;
 	private String lbl_Password;
 	private List<String> lst_DisappearAfterSelectFilter;
+	private List<String> lst_MyAccountObjectSectionTitle;
+	private List<String> lst_TrackYourOrderObjectSectionTitle;
 
 	//Header Links getter and setter method
 	
@@ -768,7 +770,6 @@ public class ConstantData {
 	}
 	
 	/**
-
 	 * @return the lst_DisappearAfterSelectFilter
 	 */
 	public List<String> getlst_DisappearAfterSelectFilter() {
@@ -779,6 +780,32 @@ public class ConstantData {
 	 */
 	public void setlst_DisappearAfterSelectFilter(List<String> lst_DisappearAfterSelectFilter) {
 		this.lst_DisappearAfterSelectFilter = lst_DisappearAfterSelectFilter;
+	}
+	
+	/**
+	 * @return the lst_MyAccountObjectSectionTitle
+	 */
+	public List<String> getlst_MyAccountObjectSectionTitle() {
+		return lst_MyAccountObjectSectionTitle;
+	}
+	/**
+	 * @param lst_MyAccountObjectSectionTitle the lst_MyAccountObjectSectionTitle to set
+	 */
+	public void setlst_MyAccountObjectSectionTitle(List<String> lst_MyAccountObjectSectionTitle) {
+		this.lst_MyAccountObjectSectionTitle = lst_MyAccountObjectSectionTitle;
+	}
+	
+	/**
+	 * @return the lst_TrackYourOrderObjectSectionTitle
+	 */
+	public List<String> getlst_TrackYourOrderObjectSectionTitle() {
+		return lst_TrackYourOrderObjectSectionTitle;
+	}
+	/**
+	 * @param lst_TrackYourOrderObjectSectionTitle the lst_TrackYourOrderObjectSectionTitle to set
+	 */
+	public void setlst_TrackYourOrderObjectSectionTitle(List<String> lst_TrackYourOrderObjectSectionTitle) {
+		this.lst_TrackYourOrderObjectSectionTitle = lst_TrackYourOrderObjectSectionTitle;
 	}
 		
 }

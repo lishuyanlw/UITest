@@ -12,7 +12,9 @@ import org.openqa.selenium.WebElement;
 
 
 public class GF_TC03_Verify_GlobalFooter_Language extends BaseTest {
-	
+	/*
+	 * CER-168
+	 */
 	@Test(groups={"Home","Regression","GlobalFooter"})
 	public void Verify_GlobalFooter_CustomerHubLinksAndAboutTSCLinks_Language() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
