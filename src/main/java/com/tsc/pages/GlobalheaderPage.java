@@ -135,26 +135,12 @@ public class GlobalheaderPage extends BasePage{
 	@FindBy(xpath = "//div[contains(@class,'header-desktop')]//div[contains(@class,'megamenu')]//ul[@class='navLinkWrap']/li")
 	List<WebElement> listFlyoutHeadings;
 	
-	
 	@FindBy(xpath ="//*[@class='flyout']//div[@class='flyoutRow2Right']//descendant::b//ancestor::div[@class='flyoutRow2Right']")
 	WebElement brandSubMenu;
 	
 	
 	@FindBy(xpath = "//*[@class='email-popup__button']")
 	WebElement btnClose;
-	
-	/*
-	 * @author godwin.gopi
-	 * Header Options
-	 */
-	@FindBy(xpath="//span[contains(text(),'Clearance')]")
-	WebElement clearanceHeader;
-	
-	public void clickOnClearanceHeaderOption() {
-		getReusableActionsInstance().clickIfAvailable(clearanceHeader);
-
-	}
-	
 	public void closeadd() {
 		btnClose.click();
 	}
