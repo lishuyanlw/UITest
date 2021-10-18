@@ -11,11 +11,9 @@ import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 
 public class SR_TC08_Verify_ProductSearchResult_PaginationTest extends BaseTest{
-	
-	/**
-	 * This method will test pagination function.
-	 * @author Wei.Li
-	 */	
+	/*
+	 * CER-232
+	 */
 	@Test(groups={"ProductSearch","Regression"})
 	public void validateProductSearchResult_PaginationFunction() throws IOException {	
 	(new HomePage(this.getDriver())).closeadd();

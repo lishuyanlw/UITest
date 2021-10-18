@@ -10,7 +10,9 @@ import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 
 public class GF_TC01_Verify_GlobalFooter_SocialMedia extends BaseTest {
-	
+	/*
+	 * CER-167
+	 */
 	@Test(groups={"Home","Regression","GlobalFooter"})
 	public void Verify_GlobalFooter_SocialMedia() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();		

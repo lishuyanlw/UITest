@@ -92,12 +92,15 @@ public class GlobalheaderPage extends BasePage{
 	@FindBy(xpath = "//div[@class='searchContainer']//div[contains(@class,'suggestions-container')]|//div[contains(@class,'aa-Panel--desktop')]")
 	WebElement ctnSearchResult;
 	
+	//For QA website
 	@FindBy(xpath = "//div[@class='searchContainer']//div[contains(@class,'suggestions-container')]|//div[contains(@class,'aa-Panel--desktop')]//ul")
 	List<WebElement> searchQADropdwonmenuList;
 	
+	//For Staging website
 	@FindBy(xpath = "//div[@class='searchContainer']//div[contains(@class,'suggestions-container--open')]//div[@class='tsc-category-title']")
 	WebElement txtSearchResultCategoryHeader;
 	
+	//For Staging website
 	@FindBy(xpath = "//div[@class='searchContainer']//div[contains(@class,'suggestions-container--open')]//ul//li")
 	List<WebElement> searchResultList;
 	
