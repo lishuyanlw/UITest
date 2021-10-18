@@ -771,7 +771,6 @@ public class ConstantData {
 	}
 	
 	/**
-
 	 * @return the lst_DisappearAfterSelectFilter
 	 */
 	public List<String> getlst_DisappearAfterSelectFilter() {

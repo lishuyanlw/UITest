@@ -10,12 +10,11 @@ import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 
 public class SR_TC02_Verify_ProductSearchResult_DropDownMenu extends BaseTest{
-	
-	/**
-	 * This method will test functions of product searching results from select searching item from dropdwon menu.
-	 *
-	 * @author Wei.Li
-	 */	
+	/*
+	 * CER-213
+	 * CER-219
+	 * CER-513
+	 */
 	@Test(groups={"ProductSearch","Regression"})
 	public void validateProductSearchResult_DropdownMenu() throws IOException {	
 	(new HomePage(this.getDriver())).closeadd();

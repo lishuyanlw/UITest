@@ -10,10 +10,10 @@ import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 
 public class SR_TC09_Verify_ProductSearchResult_SpecialOffersAndRecomendationSections extends BaseTest{
-
 	/**
 	 * This method will test Clearance in Special Offers and Recommendation sections.
 	 * @author Wei.Li
+
 	/*
 	 * CER-231
 	 */
