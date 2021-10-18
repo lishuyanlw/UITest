@@ -124,6 +124,46 @@ public class GlobalheaderPage extends BasePage{
 	@FindBy(xpath = "//div[@class='searchContainer']//div[contains(@class,'suggestions-container')]|//div[contains(@class,'aa-Panel--desktop')]//ul")
 	public List<WebElement> searchQADropdwonmenuList;
 	
+	//Top suggestions
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Top suggestions') and contains(@class,'ac__section__title search-title')]")
+	public WebElement lblTopSuggestions;
+	
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Top suggestions') and contains(@class,'ac__section__title search-title')]/following-sibling::ul//li//a")
+	public List<WebElement> lstTopSuggestionsLink;
+	
+	public By byUnmarkedTextForTopSuggestions = By.xpath(".//span[contains(@class,'unmark-text')]");
+	
+	//Categories
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Categories') and contains(@class,'ac__section__title search-title')]")
+	public WebElement lblCategories;
+	
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Categories') and contains(@class,'ac__section__title search-title')]/following-sibling::ul//li//a")
+	public List<WebElement> lstCategoriesLink;
+	
+	//Brands
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Brands') and contains(@class,'ac__section__title search-title')]")
+	public WebElement lblBrands;
+	
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Brands') and contains(@class,'ac__section__title search-title')]/following-sibling::ul//li//a")
+	public List<WebElement> lstBrandsLink;
+	
+	//Possible item matches
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--right')]//*[contains(.,'Possible item matches') and contains(@class,'search-title')]")
+	public WebElement lblPossibleItemMatches;
+	
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--right')]//*[contains(.,'Possible item matches') and contains(@class,'search-title')]/following-sibling::ul//li//a")
+	public List<WebElement> lstPossibleItemMatchesLink;
+	
+	public By byProductImgForPossibleItemMatchesItem= By.xpath(".//div[@class='ac-productlist__row']//div[contains(@class,'ac-productlist__left')]//img");
+	
+	public By byProductBadgeForPossibleItemMatchesItem= By.xpath(".//div[@class='ac-productlist__row']//div[contains(@class,'ac-productlist__right')]//div[contains(@class,'ac-productlist__badge')]");
+	
+	public By byProductDescriptionForPossibleItemMatchesItem= By.xpath(".//div[@class='ac-productlist__row']//div[contains(@class,'ac-productlist__right')]//div[contains(@class,'ac-productlist__description')]");
+	
+	public By byProductNumberForPossibleItemMatchesItem= By.xpath(".//div[@class='ac-productlist__row']//div[contains(@class,'ac-productlist__right')]//div[contains(@class,'ac-productlist__item-number2')]");
+	
+	public By byProductPriceForPossibleItemMatchesItem= By.xpath(".//div[@class='ac-productlist__row']//div[contains(@class,'ac-productlist__right')]//div[@class='ac-productlist__price']");
+	
 	@FindBy(xpath = "//div[@class='searchContainer']//div[contains(@class,'suggestions-container--open')]//div[@class='tsc-category-title']")
 	public WebElement txtSearchResultCategoryHeader;
 	
