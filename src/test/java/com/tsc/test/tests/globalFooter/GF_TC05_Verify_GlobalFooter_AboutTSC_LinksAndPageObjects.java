@@ -25,6 +25,7 @@ public class GF_TC05_Verify_GlobalFooter_AboutTSC_LinksAndPageObjects extends Ba
 
 		List<List<String>> lstNameAndLinks=TestDataHandler.constantDataVariables.getlst_NameAndLinks();
 		String lsService;
+		ArrayList<WebElement> elementList=new ArrayList<WebElement>();
 		
 		//Terms of Use
 		lsService="Terms of Use";
@@ -42,17 +43,22 @@ public class GF_TC05_Verify_GlobalFooter_AboutTSC_LinksAndPageObjects extends Ba
 		}
 		else {			
 			getGlobalFooterPageThreadLocal().expandPanelItems(getGlobalFooterPageThreadLocal().lstTermsOfUseItemTitle,getGlobalFooterPageThreadLocal().lstTermsOfUseItemContent);
-			ArrayList<WebElement> elementList=new ArrayList<WebElement>();
+			
 			elementList.add(getGlobalFooterPageThreadLocal().lblTermsOfUseAboutOurService);
+			
+			//Add item section titles in Terms of Use 
 			for(WebElement item:getGlobalFooterPageThreadLocal().lstTermsOfUseItemTitle) {
 				elementList.add(item);
 			}
+			
+			//Add item section contents in Terms of Use 
 			for(WebElement item:getGlobalFooterPageThreadLocal().lstTermsOfUseItemContent) {
 				elementList.add(item);
 			}
 			
 			getGlobalFooterPageThreadLocal().verifyElementListExistence(elementList);
 		}
+		elementList.clear();
 
 
 		
