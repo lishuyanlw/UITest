@@ -14,6 +14,8 @@ public class SR_TC09_Verify_ProductSearchResult_SpecialOffersAndRecomendationSec
 	/**
 	 * This method will test Clearance in Special Offers and Recommendation sections.
 	 * @author Wei.Li
+	/*
+	 * CER-231
 	 */
 	@Test(groups={"ProductSearch","Regression"})
 	public void validateProductSearchResult_SpecialOffersAndRecomendationSections() throws IOException {
