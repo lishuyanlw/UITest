@@ -232,7 +232,7 @@ public class HP_TC01_Verify_Global_Header extends BaseTest {
 		reporter.softAssert(!lsUrl.contains(lsYmlNotFound), lsSuccessResult,lsFailResult);
 		
 		getglobalheaderPageThreadLocal().waitForPageLoad();
-				
+						
 				
 	}
 		

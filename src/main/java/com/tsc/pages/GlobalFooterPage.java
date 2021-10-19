@@ -306,6 +306,7 @@ public class GlobalFooterPage extends BasePage {
 	 * @author Wei.Li
 	 */
 	public boolean waitForPageLoading() {
+		this.waitForPageToLoad();
 		return waitForCondition(Driver->{return !this.pageLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},60000);		
 	}
 	
