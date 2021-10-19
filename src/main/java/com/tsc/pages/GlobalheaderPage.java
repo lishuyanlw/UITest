@@ -121,9 +121,10 @@ public class GlobalheaderPage extends BasePage{
 	@FindBy(xpath = "//div[@class='searchContainer']//div[contains(@class,'suggestions-container')]|//div[contains(@class,'aa-Panel--desktop')]")
 	public WebElement ctnSearchResult;
 	
+	//For QA website
 	@FindBy(xpath = "//div[@class='searchContainer']//div[contains(@class,'suggestions-container')]|//div[contains(@class,'aa-Panel--desktop')]//ul")
 	public List<WebElement> searchQADropdwonmenuList;
-	
+
 	//Top suggestions
 	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Top suggestions') or contains(.,'Trending')][contains(@class,'ac__section__title search-title')]")
 	public WebElement lblTopSuggestions;
@@ -176,9 +177,11 @@ public class GlobalheaderPage extends BasePage{
 	
 	public By byProductPriceForPossibleItemMatchesItem= By.xpath(".//div[@class='ac-productlist__row']//div[contains(@class,'ac-productlist__right')]//div[@class='ac-productlist__price']");
 	
+	//For Staging website
 	@FindBy(xpath = "//div[@class='searchContainer']//div[contains(@class,'suggestions-container--open')]//div[@class='tsc-category-title']")
 	public WebElement txtSearchResultCategoryHeader;
 	
+	//For Staging website
 	@FindBy(xpath = "//div[@class='searchContainer']//div[contains(@class,'suggestions-container--open')]//ul//li")
 	public List<WebElement> searchResultList;
 	
@@ -225,8 +228,38 @@ public class GlobalheaderPage extends BasePage{
 	
 	@FindBy(xpath = "//*[@class='email-popup__button']")
 	WebElement btnClose;
+
+	/*
+	 * @author godwin.gopi
+	 * Header Options
+	 */
+	@FindBy(xpath="//span[contains(text(),'Clearance')]")
+	WebElement clearanceHeader;
+
+	//Godwin
+	@FindBy(xpath="//a[@class='mega-sub-items__item-link mega-sub-items__item-link-first' and contains(text(),'Shop all')]")
+	WebElement shopAllFasionOption;
+
+	@FindBy(xpath="//a[@role=\"button\" and contains(text(),'Fashion')]")
+	WebElement fasionOption;
+
 	public void closeadd() {
 		btnClose.click();
+	}
+
+	public void clickOnClearanceHeaderOption() {
+		getReusableActionsInstance().clickIfAvailable(clearanceHeader);
+	}
+
+	/**
+	 * This method will verify clearance.
+	 * @return  WebElement
+	 * @author godwin.gopi
+	 */
+	public void clickSubMenuLink() {
+		getReusableActionsInstance().clickIfAvailable(fasionOption);
+		getReusableActionsInstance().clickIfAvailable(shopAllFasionOption);
+		waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},60000);
 	}
 
 	public void waitForPageLoad() {
@@ -825,6 +858,7 @@ public class GlobalheaderPage extends BasePage{
 		 lsHrefInBlackHeader=this.removeLastSlashFromUrl(lsHrefInBlackHeader);
 		 
 		 blackItem.click();
+		 this.waitForPageToLoad();
 		 (new GlobalFooterPage(this.getDriver())).waitForPageLoading();
 		 
 		 String lsUrlInSilverHeader=this.removeLastSlashFromUrl(this.URL());
@@ -861,8 +895,8 @@ public class GlobalheaderPage extends BasePage{
 			 getReusableActionsInstance().scrollToElement(element);
 			 getReusableActionsInstance().staticWait(300);
 			 lsItem=element.getText();
-			 reporter.softAssert(getReusableActionsInstance().isElementVisible(this.lblPossibleItemMatches),"The title of Top selling products is displaying correctly by selcting item of '"+lsItem+"'", "The title of Top selling products is not displaying correctly by selcting item of '"+lsItem+"'");
-			 reporter.softAssert(getReusableActionsInstance().isElementVisible(this.cntPossibleItemMatchesList),"The Top selling products list is displaying correctly by selcting item of '"+lsItem+"'","The Top selling products list is not displaying correctly by selcting item of '"+lsItem+"'");			 
+			 reporter.softAssert(getReusableActionsInstance().isElementVisible(this.lblPossibleItemMatches),"The title of Top selling products is displaying correctly by selecting item of '"+lsItem+"'", "The title of Top selling products is not displaying correctly by selcting item of '"+lsItem+"'");
+			 reporter.softAssert(getReusableActionsInstance().isElementVisible(this.cntPossibleItemMatchesList),"The Top selling products list is displaying correctly by selecting item of '"+lsItem+"'","The Top selling products list is not displaying correctly by selcting item of '"+lsItem+"'");			 
 		 }	
 	 }
 	 

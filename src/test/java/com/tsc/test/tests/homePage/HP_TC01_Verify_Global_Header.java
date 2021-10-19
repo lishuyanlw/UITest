@@ -9,7 +9,18 @@ import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 
 public class HP_TC01_Verify_Global_Header extends BaseTest {
-	
+	/*
+	 * CER-146
+	 * CER-151
+	 * CER-147
+	 * CER-150
+	 * CER-148
+	 * CER-149
+	 * CER-152
+	 * CER-156
+	 * CER-162
+	 * CER-565
+	 */
 	@Test(groups={"Home","Regression"})	    
 		public void validateGlobalHeaderLinks() throws IOException {		
 		getGlobalFooterPageThreadLocal().closePopupDialog();
@@ -201,11 +212,11 @@ public class HP_TC01_Verify_Global_Header extends BaseTest {
 			reporter.softAssert(basePage.getReusableActionsInstance().isElementVisible(getglobalheaderPageThreadLocal().cntPossibleItemMatchesList),"Top selling products section is displaying correctly in search popup window","Top selling products section is not displaying correctly in search popup window");
 			
 			getglobalheaderPageThreadLocal().verifyTopSellingProductsExistingByChangingItemInTrendingOrFeaturedBrandsList(getglobalheaderPageThreadLocal().lstTopSuggestionsLink);	
-			getglobalheaderPageThreadLocal().verifyTopSellingProductsExistingByChangingItemInTrendingOrFeaturedBrandsList(getglobalheaderPageThreadLocal().lstCategoriesLink);
+			getglobalheaderPageThreadLocal().verifyTopSellingProductsExistingByChangingItemInTrendingOrFeaturedBrandsList(getglobalheaderPageThreadLocal().lstCategoriesLink);			
 		}else {
 			reporter.reportLogFail("Unable to get popup window by clicking search box");
 		}
-		
+		basePage.pressEscapeKey();
 		
 		reporter.reportLog("Verify Favourites section");
 		//Verify Favourites section
@@ -232,7 +243,7 @@ public class HP_TC01_Verify_Global_Header extends BaseTest {
 		reporter.softAssert(!lsUrl.contains(lsYmlNotFound), lsSuccessResult,lsFailResult);
 		
 		getglobalheaderPageThreadLocal().waitForPageLoad();
-				
+						
 				
 	}
 		
