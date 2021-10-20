@@ -652,19 +652,8 @@ public class GlobalheaderPage extends BasePage{
 		}
 		return FlyoutHeadings;
 	}		
-							
-	/*Method to get String of XPath  
-	 * @return String:Xpath
-	 * @author Shruti Desai
-	 */						
-	public String createXPath(String xpathExp, Object ...args){
-		for(int i=0; i<args.length; i++) {
-			xpathExp = xpathExp.replace("{"+i+"}", (CharSequence) args[i]);
-		}
-		return xpathExp;
-	}
 		
-		 /*Method to get list of Flyout submenu heding in camel case 
+	 /*Method to get list of Flyout submenu heding in camel case 
 	  * @return list:Flyout sub menu camel case
 	  * @author Shruti Desai
 	  */

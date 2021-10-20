@@ -8,21 +8,19 @@ import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 
-public class HP_TC01_Verify_Global_Header extends BaseTest {
+public class HP_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo extends BaseTest {
 	/*
 	 * CER-146
 	 * CER-151
 	 * CER-147
 	 * CER-150
 	 * CER-148
-	 * CER-149
-	 * CER-152
-	 * CER-156
+	 * CER-149	
 	 * CER-162
 	 * CER-565
 	 */
 	@Test(groups={"Home","Regression"})	    
-		public void validateGlobalHeaderLinks() throws IOException {		
+		public void validateGlobalHeaderBlackMenu_SilverMenu_TSCLogoLinks() throws IOException {		
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 		
 		BasePage basePage=new BasePage(this.getDriver());
@@ -194,45 +192,7 @@ public class HP_TC01_Verify_Global_Header extends BaseTest {
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateTSCLogoLink().trim().equalsIgnoreCase((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC link matches expected url", "TSC link does not matche expected url");
 		
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateTSCLogoNavigateToHomePage(), "TSCLogo can navigate To HomePage", "TSCLogo cannot navigate To HomePage");
-		
-		reporter.reportLog("Verify searchBox section");
-		//Verify searchBox section
-		validateText(getglobalheaderPageThreadLocal().validateSearchbox(), TestDataHandler.constantDataVariables.getlbl_SearchBoxPlaceholder(), "Search box is visible");
-		
-		reporter.softAssert(getglobalheaderPageThreadLocal().validateSearchSubmitbtn(), "Search submit button is visible", "Search submit button is not visible");
-		
-		reporter.reportLog("Verify Sign in section");
-		//Verify Sign in section
-		validateText(getglobalheaderPageThreadLocal().validateSignInLink(), TestDataHandler.constantDataVariables.getlbl_SignIn(), "SignIn Link is present & Text is visible");
-		
-		reporter.softAssert(getglobalheaderPageThreadLocal().validateSiginIcon(), "SignIn icon is visible", "SignIn icon is not visible");
-		
-		reporter.reportLog("Verify Favourites section");
-		//Verify Favourites section
-		validateText(getglobalheaderPageThreadLocal().validateFavouritesLink(), TestDataHandler.constantDataVariables.getlbl_Favourites(), "Favourites Link is present & Text is visible");
-		
-		reporter.reportLog("Verify Minicart section");
-		//Verify Minicart section
-		validateText(getglobalheaderPageThreadLocal().validateMinicartLinkName(), TestDataHandler.constantDataVariables.getlbl_MinicartLinkName(), "Mini cart Link is present & Text is visible");
-		
-		reporter.softAssert(getglobalheaderPageThreadLocal().validateMinicartIcon(), "Mini cart icon is visible", "Mini cart icon is not visible");
-		
-		reporter.softAssert(getglobalheaderPageThreadLocal().validateMinicartBagCounter(), "Mini cart Bag counter is visible", "Mini cart Bag counter is not visible");
-		
-		//Verify Minicart href matches correct pattern
-		lsUrl=lsBaseUrl+TestDataHandler.constantDataVariables.getlnk_MinicarLink();
-		lsSuccessResult=String.format("MiniCart link matches correct pattern of %s", lsUrl);
-		lsFailResult=String.format("MiniCart link does not match correct pattern of %s", lsUrl);
-		reporter.softAssert(getglobalheaderPageThreadLocal().verifyMiniCartLink(lsUrl), lsSuccessResult, lsFailResult);
-		
-		//Verify url does not contain notfound after clicking MiniCart link
-		lsUrl=getglobalheaderPageThreadLocal().getUrlAfterClickingMiniCartLink();
-		lsSuccessResult=String.format("The url of < %s > does not contain < %s > after clicking MiniCart link", lsUrl,lsYmlNotFound);
-		lsFailResult=String.format("The url of < %s > contains < %s > after clicking MiniCart link", lsUrl,lsYmlNotFound);
-		reporter.softAssert(!lsUrl.contains(lsYmlNotFound), lsSuccessResult,lsFailResult);
-		
-		getglobalheaderPageThreadLocal().waitForPageLoad();
-						
+
 				
 	}
 		

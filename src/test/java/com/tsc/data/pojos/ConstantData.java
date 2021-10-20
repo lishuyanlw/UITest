@@ -29,6 +29,7 @@ public class ConstantData {
 	private String lnk_WatchUsLive;	
 	private String lbl_Favourites;
 	private String lbl_SignIn;
+	private List<String> lst_SignInPopover;
 	private String lbl_SearchBoxPlaceholder;
 	private String lbl_MinicartLinkName;
 	private String lnk_MinicarLink;
@@ -63,6 +64,8 @@ public class ConstantData {
 	private List<List<String>> lst_NameAndLinks;
 	private String lbl_Username;
 	private String lbl_Password;
+	private String lbl_FirstName;
+	private String lbl_LastName;
 	private List<String> lst_DisappearAfterSelectFilter;
 	private String lnk_product_result;
 	private List<String> lst_MyAccountObjectSectionTitle;
@@ -328,6 +331,19 @@ public class ConstantData {
 	 */
 	public void setlbl_SignIn(String lbl_SignIn) {
 		this.lbl_SignIn = lbl_SignIn;
+	}
+	
+	/**
+	 * @return the lst_SignInPopover
+	 */
+	public List<String> getlst_SignInPopover() {
+		return lst_SignInPopover;
+	}
+	/**
+	 * @param lst_SignInPopover the lst_SignInPopover to set
+	 */
+	public void setlst_SignInPopover(List<String> lst_SignInPopover) {
+		this.lst_SignInPopover = lst_SignInPopover;
 	}
 	
 	/**
@@ -768,6 +784,32 @@ public class ConstantData {
 	 */
 	public void setlbl_Password(String lbl_Password) {
 		this.lbl_Password = lbl_Password;
+	}
+	
+	/**
+	 * @return the lbl_FirstName
+	 */
+	public String getlbl_FirstName() {
+		return lbl_FirstName;
+	}
+	/**
+	 * @param lbl_FirstName the lbl_FirstName to set
+	 */
+	public void setlbl_FirstName(String lbl_FirstName) {
+		this.lbl_FirstName = lbl_FirstName;
+	}
+	
+	/**
+	 * @return the lbl_LastName
+	 */
+	public String getlbl_LastName() {
+		return lbl_LastName;
+	}
+	/**
+	 * @param lbl_LastName the lbl_LastName to set
+	 */
+	public void setlbl_LastName(String lbl_LastName) {
+		this.lbl_LastName = lbl_LastName;
 	}
 	
 	/**
