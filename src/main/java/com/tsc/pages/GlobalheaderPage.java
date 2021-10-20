@@ -192,7 +192,12 @@ public class GlobalheaderPage extends BasePage{
 	WebElement fasionOption;
 
 	public void closeadd() {
-		btnClose.click();
+		try {
+			btnClose.click();
+		}
+		catch(Exception e) {
+			
+		}		
 	}
 
 	public void clickOnClearanceHeaderOption() {

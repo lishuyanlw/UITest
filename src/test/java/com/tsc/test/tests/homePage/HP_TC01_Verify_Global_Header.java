@@ -26,8 +26,8 @@ public class HP_TC01_Verify_Global_Header extends BaseTest {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 		
 		BasePage basePage=new BasePage(this.getDriver());
-		String lsBaseUrl=basePage.getBaseURL();
-		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl+"/"), "TSC url is correct", "TSC url is incorrect");
+		String lsBaseUrl=basePage.getBaseURL()+"/";
+		reporter.softAssert(basePage.URL().contains(basePage.removeLastSlashFromUrl(lsBaseUrl)), "TSC url is correct", "TSC url is incorrect");
 		reporter.reportLog("Home Page");
 		
 		reporter.reportLog("Verify Black headers");

@@ -293,11 +293,16 @@ public class GlobalFooterPage extends BasePage {
 	 * Close popup dialog through clicking close button.
 	 * @author Wei.Li
 	 */
-	public void closePopupDialog() {		
-		if(waitForCondition(Driver->{return (new HomePage(this.getDriver())).btnClose.isDisplayed();},40000)) {
-			(new HomePage(this.getDriver())).btnClose.click();
+	public void closePopupDialog() {
+		try {
+			if(waitForCondition(Driver->{return (new HomePage(this.getDriver())).btnClose.isDisplayed();},40000)) {
+				(new HomePage(this.getDriver())).btnClose.click();
+			}
+			getReusableActionsInstance().staticWait(500);
 		}
-		getReusableActionsInstance().staticWait(500);
+		catch(Exception e) {
+			
+		}		
 	}
 	
 	/**
@@ -705,5 +710,5 @@ public class GlobalFooterPage extends BasePage {
 		
 		reporter.softAssert(bMatch,"All sections are displayed correctly",lsNotMatch+" is not displayed correctly");
 	}
-	
+		
 }

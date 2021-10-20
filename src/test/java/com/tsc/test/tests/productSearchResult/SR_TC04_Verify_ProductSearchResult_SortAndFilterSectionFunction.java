@@ -33,9 +33,7 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction ext
 		
 
 	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0));
-	reporter.softAssert(getProductResultsPageThreadLocal().verifyElementExisting(getProductResultsPageThreadLocal().getHeaderContainer()), "Header section is existing after keyword searching", "Header section is not existing after keyword searching");
-	reporter.softAssert(getProductResultsPageThreadLocal().verifyElementExisting(getProductResultsPageThreadLocal().getFooterContainer()), "Footer section is existing after keyword searching", "Footer section is not existing after keyword searching");
-
+	
 	//Test sort
 	if(getProductResultsPageThreadLocal().chooseSortOptionByVisibleText("Price: Highest first")) {
 		lsMsg=getProductResultsPageThreadLocal().verifyHighestPriceFirstSort();

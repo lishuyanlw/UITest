@@ -17,9 +17,9 @@ public class GF_TC01_Verify_GlobalFooter_SocialMedia extends BaseTest {
 	public void Verify_GlobalFooter_SocialMedia() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();		
 		
-		String lsBaseUrl=(new BasePage(this.getDriver())).getBaseURL()+"/";
-		
-		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl), "TSC url is correct", "TSC url is incorrect");		
+		BasePage basePage=new BasePage(this.getDriver());
+		String lsBaseUrl=basePage.getBaseURL()+"/";		
+		reporter.softAssert(basePage.URL().contains(basePage.removeLastSlashFromUrl(lsBaseUrl)), "TSC url is correct", "TSC url is incorrect");		
 		reporter.reportLog("Global Footer Section");	
 		
 		List<String> lstSocialMediaLinks=TestDataHandler.constantDataVariables.getlst_SocialMediaLinks();
@@ -30,7 +30,7 @@ public class GF_TC01_Verify_GlobalFooter_SocialMedia extends BaseTest {
 		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementProperty(getGlobalFooterPageThreadLocal().imgFacebook,"Image"),"Facebook icon in Global footer is not empty","Facebook icon in Global footer is empty");		
 		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyUrlAfterClickingElement(getGlobalFooterPageThreadLocal().lnkFacebook,lsUrl),"The Url after clicking Facebook link is "+lsUrl,"The Url after clicking Facebook link is not "+lsUrl);
 
-		(new BasePage(this.getDriver())).navigateToURL(lsBaseUrl);
+		basePage.navigateToURL(lsBaseUrl);
 		getGlobalFooterPageThreadLocal().waitForPageLoading();
 		
 		//Twitter
@@ -39,7 +39,7 @@ public class GF_TC01_Verify_GlobalFooter_SocialMedia extends BaseTest {
 		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementProperty(getGlobalFooterPageThreadLocal().imgTwitter,"Image"),"Twitter icon in Global footer is not empty","Twitter icon in Global footer is empty");		
 		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyUrlAfterClickingElement(getGlobalFooterPageThreadLocal().lnkTwitter,lsUrl),"The Url after clicking Twitter link is "+lsUrl,"The Url after clicking Twitter link is not "+lsUrl);
 
-		(new BasePage(this.getDriver())).navigateToURL(lsBaseUrl);
+		basePage.navigateToURL(lsBaseUrl);
 		getGlobalFooterPageThreadLocal().waitForPageLoading();
 
 		//Instagram
@@ -48,7 +48,7 @@ public class GF_TC01_Verify_GlobalFooter_SocialMedia extends BaseTest {
 		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementProperty(getGlobalFooterPageThreadLocal().imgInstagram,"Image"),"Instagram icon in Global footer is not empty","Instagram icon in Global footer is empty");		
 		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyUrlAfterClickingElement(getGlobalFooterPageThreadLocal().lnkInstagram,lsUrl),"The Url after clicking Instagram link is "+lsUrl,"The Url after clicking Instagram link is not "+lsUrl);
 
-		(new BasePage(this.getDriver())).navigateToURL(lsBaseUrl);
+		basePage.navigateToURL(lsBaseUrl);
 		getGlobalFooterPageThreadLocal().waitForPageLoading();
 		
 		//Youtube
@@ -57,7 +57,7 @@ public class GF_TC01_Verify_GlobalFooter_SocialMedia extends BaseTest {
 		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementProperty(getGlobalFooterPageThreadLocal().imgYoutube,"Image"),"Youtube icon in Global footer is not empty","Youtube icon in Global footer is empty");		
 		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyUrlAfterClickingElement(getGlobalFooterPageThreadLocal().lnkYoutube,lsUrl),"The Url after clicking Youtube link is "+lsUrl,"The Url after clicking Youtube link is not "+lsUrl);
 
-		(new BasePage(this.getDriver())).navigateToURL(lsBaseUrl);
+		basePage.navigateToURL(lsBaseUrl);
 		getGlobalFooterPageThreadLocal().waitForPageLoading();
 		
 		//Pinterest
@@ -66,7 +66,7 @@ public class GF_TC01_Verify_GlobalFooter_SocialMedia extends BaseTest {
 		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementProperty(getGlobalFooterPageThreadLocal().imgPinterest,"Image"),"Pinterest icon in Global footer is not empty","Pinterest icon in Global footer is empty");		
 		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyUrlAfterClickingElement(getGlobalFooterPageThreadLocal().lnkPinterest,lsUrl),"The Url after clicking Pinterest link is "+lsUrl,"The Url after clicking Pinterest link is not "+lsUrl);
 
-		(new BasePage(this.getDriver())).navigateToURL(lsBaseUrl);
+		basePage.navigateToURL(lsBaseUrl);
 		getGlobalFooterPageThreadLocal().waitForPageLoading();
 		
 	}
