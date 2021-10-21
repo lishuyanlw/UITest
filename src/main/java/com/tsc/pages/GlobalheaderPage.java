@@ -149,12 +149,12 @@ public class GlobalheaderPage extends BasePage{
 	@FindBy(xpath = "//div[contains(@class,'secondary-navigation__rhs-account')]//a//*[@class='secondary-navigation__rhs-account-icon']")
 	public WebElement SigninIcon;
 	
-	//MiniCart 
+	//Shopping Cart 
 	@FindBy(xpath = "//*[@class='Header']//a[contains(@class, 'secondary-navigation__rhs-bag')]")
-	public WebElement Minicartlnk;
+	public WebElement ShoppingCartlnk;
  
 	@FindBy(xpath ="//*[@class='Header']//a[contains(@class, 'secondary-navigation__rhs-bag')]/span")
-	public WebElement MinicartIconcont;			
+	public WebElement ShoppingCartIconcont;			
 
 	@FindBy(xpath = "//*[@class='Header']//a[contains(@class, 'secondary-navigation__rhs-bag')]//*[@class='secondary-navigation__rhs-bag__item-icon']")
 	public WebElement CartBagIcon;
@@ -461,37 +461,37 @@ public class GlobalheaderPage extends BasePage{
 		return getReusableActionsInstance().isElementVisible(SigninIcon, 5);
 	}
 		
-	//Mini cart Link visible
-	public String validateMinicartLinkName() {
-		String emptySTAIbtn="Mini cart link href is empty";
-		if (Minicartlnk.getAttribute("href").isEmpty()) {
+	//Shopping cart Link visible
+	public String validateShoppingCartLinkName() {
+		String emptySTAIbtn="Shopping cart link href is empty";
+		if (ShoppingCartlnk.getAttribute("href").isEmpty()) {
 							
 			return emptySTAIbtn;
 			
 		}else{
-			getReusableActionsInstance().isElementVisible(Minicartlnk, 5);
-			return MinicartIconcont.getText();
+			getReusableActionsInstance().isElementVisible(ShoppingCartlnk, 5);
+			return ShoppingCartIconcont.getText();
 			}
 		}
 	
-	public boolean validateMinicartIcon() {
+	public boolean validateShoppingCartIcon() {
 			return getReusableActionsInstance().isElementVisible(CartBagIcon, 5);
 			 }
 	
-	public boolean validateMinicartBagCounter() {
+	public boolean validateShoppingCartBagCounter() {
 		return getReusableActionsInstance().isElementVisible(CartBagCounter, 5);
 		}
 
 		
 	/**
-	 * This method will verify MiniCart link
+	 * This method will verify Shopping Cart link
 	 *
 	 * @return true/false
 	 * 
 	 * @author Wei.Li
 	 */
-	public boolean verifyMiniCartLink(String lsMinicartLink) {
-		String lsMiniCartLink=this.Minicartlnk.getAttribute("href");
+	public boolean verifyShoppingCartLink(String lsMinicartLink) {
+		String lsMiniCartLink=this.ShoppingCartlnk.getAttribute("href");
 		if(lsMiniCartLink.isEmpty()) {
 			return false;
 		}
@@ -506,15 +506,15 @@ public class GlobalheaderPage extends BasePage{
 	}
 	
 	/**
-	 * This method will get url of new windows after clicking MiniCart link
+	 * This method will get url of new windows after clicking Shopping Cart link
 	 *
 	 * @return String: changed Url
 	 * 
 	 * @author Wei.Li
 	 */		
-	public String getUrlAfterClickingMiniCartLink() throws IOException {
+	public String getUrlAfterClickingShoppingCartLink() throws IOException {
 		getReusableActionsInstance().javascriptScrollToTopOfPage();
-		return waitForPageLoadingByUrlChange(this.Minicartlnk);		
+		return waitForPageLoadingByUrlChange(this.ShoppingCartlnk);		
 	}
 	
 	/**
@@ -652,19 +652,8 @@ public class GlobalheaderPage extends BasePage{
 		}
 		return FlyoutHeadings;
 	}		
-							
-	/*Method to get String of XPath  
-	 * @return String:Xpath
-	 * @author Shruti Desai
-	 */						
-	public String createXPath(String xpathExp, Object ...args){
-		for(int i=0; i<args.length; i++) {
-			xpathExp = xpathExp.replace("{"+i+"}", (CharSequence) args[i]);
-		}
-		return xpathExp;
-	}
 		
-		 /*Method to get list of Flyout submenu heding in camel case 
+	 /*Method to get list of Flyout submenu heding in camel case 
 	  * @return list:Flyout sub menu camel case
 	  * @author Shruti Desai
 	  */

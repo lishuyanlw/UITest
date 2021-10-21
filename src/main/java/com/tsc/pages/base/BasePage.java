@@ -597,7 +597,8 @@ import utils.ReusableActions;
     	return null;
     }
 
-	/*Method to convert words/string into camel case  
+	/**
+	 * Method to convert words/string into camel case  
 	 * @return String
 	 * @author Shruti Desai
 	 */
@@ -613,6 +614,18 @@ import utils.ReusableActions;
 				headingName = headingName.charAt(0)+headingName.substring(1).toLowerCase();
 			}	
 		return headingName;
+	}
+	
+	/**
+	 * Method to get String of XPath  
+	 * @return String:Xpath
+	 * @author Shruti Desai
+	 */						
+	public String createXPath(String xpathExp, Object ...args){
+		for(int i=0; i<args.length; i++) {
+			xpathExp = xpathExp.replace("{"+i+"}", (CharSequence) args[i]);
+		}
+		return xpathExp;
 	}
 	
 }
