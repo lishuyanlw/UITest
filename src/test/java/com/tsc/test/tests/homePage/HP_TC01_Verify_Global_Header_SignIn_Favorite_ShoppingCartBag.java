@@ -9,7 +9,7 @@ import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 
-public class HP_TC01_Verify_Global_Header_SignIn_Favorite_MiniCar extends BaseTest {
+public class HP_TC01_Verify_Global_Header_SignIn_Favorite_ShoppingCartBag extends BaseTest {
 	/*
 	 * CER-152
 	 * CER-156
@@ -18,7 +18,7 @@ public class HP_TC01_Verify_Global_Header_SignIn_Favorite_MiniCar extends BaseTe
 	 * CER-154
 	 */
 	@Test(groups={"Home","Regression"})	    
-		public void validateGlobalHeader_SignIn_Favorite_MiniCar_TSCLogoLinks() throws IOException {		
+		public void validateGlobalHeader_SignIn_Favorite_ShoppingCartBag() throws IOException {		
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 		
 		BasePage basePage=new BasePage(this.getDriver());
@@ -57,22 +57,22 @@ public class HP_TC01_Verify_Global_Header_SignIn_Favorite_MiniCar extends BaseTe
 		//Verify Favourites section
 		validateText(getglobalheaderPageThreadLocal().validateFavouritesLink(), TestDataHandler.constantDataVariables.getlbl_Favourites(), "Favourites Link is present & Text is visible");
 		
-		reporter.reportLog("Verify Minicart section");
-		//Verify Minicart section
-		validateText(getglobalheaderPageThreadLocal().validateMinicartLinkName(), TestDataHandler.constantDataVariables.getlbl_MinicartLinkName(), "Mini cart Link is present & Text is visible");
+		reporter.reportLog("Verify Shopping Cart section");
+		//Verify Shopping Cart section
+		validateText(getglobalheaderPageThreadLocal().validateShoppingCartLinkName(), TestDataHandler.constantDataVariables.getlbl_ShoppingCartLinkName(), "Sopping cart Link is present & Text is visible");
 		
-		reporter.softAssert(getglobalheaderPageThreadLocal().validateMinicartIcon(), "Mini cart icon is visible", "Mini cart icon is not visible");
+		reporter.softAssert(getglobalheaderPageThreadLocal().validateShoppingCartIcon(), "Shopping cart icon is visible", "Shopping cart icon is not visible");
 		
-		reporter.softAssert(getglobalheaderPageThreadLocal().validateMinicartBagCounter(), "Mini cart Bag counter is visible", "Mini cart Bag counter is not visible");
+		reporter.softAssert(getglobalheaderPageThreadLocal().validateShoppingCartBagCounter(), "Shopping cart Bag counter is visible", "Shopping cart Bag counter is not visible");
 		
-		//Verify Minicart href matches correct pattern
-		lsUrl=lsBaseUrl+TestDataHandler.constantDataVariables.getlnk_MinicarLink();
-		lsSuccessResult=String.format("MiniCart link matches correct pattern of %s", lsUrl);
-		lsFailResult=String.format("MiniCart link does not match correct pattern of %s", lsUrl);
-		reporter.softAssert(getglobalheaderPageThreadLocal().verifyMiniCartLink(lsUrl), lsSuccessResult, lsFailResult);
+		//Verify Shopping Cart href matches correct pattern
+		lsUrl=lsBaseUrl+TestDataHandler.constantDataVariables.getlnk_ShoppingCartLink();
+		lsSuccessResult=String.format("Shopping Cart link matches correct pattern of %s", lsUrl);
+		lsFailResult=String.format("Shopping Cart link does not match correct pattern of %s", lsUrl);
+		reporter.softAssert(getglobalheaderPageThreadLocal().verifyShoppingCartLink(lsUrl), lsSuccessResult, lsFailResult);
 		
-		//Verify url does not contain notfound after clicking MiniCart link
-		lsUrl=getglobalheaderPageThreadLocal().getUrlAfterClickingMiniCartLink();
+		//Verify url does not contain notfound after clicking Shopping Cart link
+		lsUrl=getglobalheaderPageThreadLocal().getUrlAfterClickingShoppingCartLink();
 		lsSuccessResult=String.format("The url of < %s > does not contain < %s > after clicking MiniCart link", lsUrl,lsYmlNotFound);
 		lsFailResult=String.format("The url of < %s > contains < %s > after clicking MiniCart link", lsUrl,lsYmlNotFound);
 		reporter.softAssert(!lsUrl.contains(lsYmlNotFound), lsSuccessResult,lsFailResult);
