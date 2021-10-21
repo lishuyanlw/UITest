@@ -10,7 +10,7 @@ import com.tsc.test.base.BaseTest;
 		@Test(groups={"Home","Regression"})
 
 		public void validateTSmainImageSection() throws IOException, InterruptedException {
-			homePageThreadLocal().closeadd();	
+			getGlobalFooterPageThreadLocal().closePopupDialog();	
 			reporter.softAssert(getglobalheaderPageThreadLocal().validateURL((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");
 			reporter.reportLogWithScreenshot("Home Page");
 			String lsYmlNotFound=TestDataHandler.constantDataVariables.getlnk_NotFound();

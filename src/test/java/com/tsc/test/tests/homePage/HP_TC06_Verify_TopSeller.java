@@ -14,7 +14,7 @@ public class HP_TC06_Verify_TopSeller extends BaseTest{
 	 */
 	@Test(groups={"Home","Regression"})
 	public void validateTopSeller() throws IOException {
-		//OnAirSectionPageThreadLocal().closeadd();
+	getGlobalFooterPageThreadLocal().closePopupDialog();
 	reporter.softAssert(getglobalheaderPageThreadLocal().validateURL((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");
 	reporter.reportLogWithScreenshot("Home Page");
 	

@@ -301,7 +301,7 @@ public class GlobalFooterPage extends BasePage {
 			getReusableActionsInstance().staticWait(500);
 		}
 		catch(Exception e) {
-			
+			reporter.reportLog("Unable to find Popup dialog.");
 		}		
 	}
 	
