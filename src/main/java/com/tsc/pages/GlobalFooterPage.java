@@ -294,15 +294,10 @@ public class GlobalFooterPage extends BasePage {
 	 * @author Wei.Li
 	 */
 	public void closePopupDialog() {
-		try {
-			if(waitForCondition(Driver->{return (new HomePage(this.getDriver())).btnClose.isDisplayed();},40000)) {
-				(new HomePage(this.getDriver())).btnClose.click();
-			}
-			getReusableActionsInstance().staticWait(500);
+		if(waitForCondition(Driver->{return (new HomePage(this.getDriver())).btnClose.isDisplayed();},40000)) {
+			(new HomePage(this.getDriver())).btnClose.click();
 		}
-		catch(Exception e) {
-			reporter.reportLog("Unable to find Popup dialog.");
-		}		
+		getReusableActionsInstance().staticWait(500);
 	}
 	
 	/**

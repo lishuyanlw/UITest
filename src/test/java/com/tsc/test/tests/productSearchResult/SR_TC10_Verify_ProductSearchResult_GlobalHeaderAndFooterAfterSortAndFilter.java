@@ -5,12 +5,12 @@ import java.util.List;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 import com.tsc.data.Handler.TestDataHandler;
-import com.tsc.pages.HomePage;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 import com.tsc.test.tests.globalFooter.GF_TC01_Verify_GlobalFooter_SocialMedia;
 import com.tsc.test.tests.globalFooter.GF_TC02_Verify_GlobalFooter_CustomerHubLinksAndAboutTSCLinks;
-import com.tsc.test.tests.homePage.HP_TC01_Verify_Global_Header;
+import com.tsc.test.tests.homePage.HP_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo;
+import com.tsc.test.tests.homePage.HP_TC01_Verify_Global_Header_SignIn_Favorite_ShoppingCartBag;
 
 public class SR_TC10_Verify_ProductSearchResult_GlobalHeaderAndFooterAfterSortAndFilter extends BaseTest{
 	/*
@@ -64,16 +64,21 @@ public class SR_TC10_Verify_ProductSearchResult_GlobalHeaderAndFooterAfterSortAn
 	else {
 		reporter.reportLogFail("Choosing Price: Highest first option failed");
 	}
-	System.out.println("Product sorting finished!");
-	HP_TC01_Verify_Global_Header headerSectionTest= new HP_TC01_Verify_Global_Header();
-	//headerSectionTest.validateGlobalHeaderLinks();
 	
+	//Verify header section
+	HP_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo headerSectionMenuAndLogoTest= new HP_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo();
+	headerSectionMenuAndLogoTest.validateContents();
+	
+	HP_TC01_Verify_Global_Header_SignIn_Favorite_ShoppingCartBag headerSectionOthersTest= new HP_TC01_Verify_Global_Header_SignIn_Favorite_ShoppingCartBag();
+	headerSectionOthersTest.validateContents();
+	
+	//Verify footer section
 	GF_TC01_Verify_GlobalFooter_SocialMedia footerSectionTest_SocialMedia=new GF_TC01_Verify_GlobalFooter_SocialMedia();
-	footerSectionTest_SocialMedia.Verify_GlobalFooter_SocialMedia();
-	System.out.println("Footer1 finished!");
+	footerSectionTest_SocialMedia.validateContents();
+	
 	GF_TC02_Verify_GlobalFooter_CustomerHubLinksAndAboutTSCLinks footerSectionTest_CustomerHubLinksAndAboutTSCLinks=new GF_TC02_Verify_GlobalFooter_CustomerHubLinksAndAboutTSCLinks();
-	footerSectionTest_CustomerHubLinksAndAboutTSCLinks.Verify_GlobalFooter_CustomerHubLinksAndAboutTSCLinks_Language();
-	System.out.println("Footer2 finished!");	
+	footerSectionTest_CustomerHubLinksAndAboutTSCLinks.validateContents();
+		
 	//Test filter by price	
 	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0));
 	List<List<String>> lstFilterByPrice=TestDataHandler.constantDataVariables.getlst_FilterByPrice();
@@ -109,19 +114,20 @@ public class SR_TC10_Verify_ProductSearchResult_GlobalHeaderAndFooterAfterSortAn
 			getProductResultsPageThreadLocal().verifySearchResultContent(productList);
 		}	
 		
-		reporter.softAssert(getProductResultsPageThreadLocal().verifyProductPagination(), "Product pagination is existing", "Product pagination is not existing");
-		reporter.softAssert(getProductResultsPageThreadLocal().verifyElementExisting(getProductResultsPageThreadLocal().getHeaderContainer()), "Header section is existing after choosing filters", "Header section is not existing after choosing filters");
-		reporter.softAssert(getProductResultsPageThreadLocal().verifyElementExisting(getProductResultsPageThreadLocal().getFooterContainer()), "Footer section is existing after choosing filters", "Footer section is not existing after choosing filters");
+		reporter.softAssert(getProductResultsPageThreadLocal().verifyProductPagination(), "Product pagination is existing", "Product pagination is not existing");		
 	}
 	else {
 		reporter.reportLogFail("Choosing filter of "+lstFilterByPrice.get(0).get(0)+"/"+lstFilterByPrice.get(0).get(1)+" failed");
 	}
-	System.out.println("Product filter finished!");
-	//headerSectionTest.validateGlobalHeaderLinks();
-	footerSectionTest_SocialMedia.Verify_GlobalFooter_SocialMedia();
-	System.out.println("Footer3 finished!");
-	footerSectionTest_CustomerHubLinksAndAboutTSCLinks.Verify_GlobalFooter_CustomerHubLinksAndAboutTSCLinks_Language();
-	System.out.println("Footer4 finished!");	
+	
+	//Verify header section
+	headerSectionMenuAndLogoTest.validateContents();
+	headerSectionOthersTest.validateContents();
+
+	//Verify footer section
+	footerSectionTest_SocialMedia.validateContents();
+	footerSectionTest_CustomerHubLinksAndAboutTSCLinks.validateContents();
+	
 
 	}
 }

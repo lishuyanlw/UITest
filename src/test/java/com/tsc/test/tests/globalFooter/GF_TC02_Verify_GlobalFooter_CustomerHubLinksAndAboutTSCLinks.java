@@ -22,9 +22,18 @@ public class GF_TC02_Verify_GlobalFooter_CustomerHubLinksAndAboutTSCLinks extend
 		BasePage basePage=new BasePage(this.getDriver());		
 		String lsBaseUrl=basePage.getBaseURL()+"/";
 		
-		reporter.softAssert(basePage.URL().contains(basePage.removeLastSlashFromUrl(lsBaseUrl)), "TSC url is correct", "TSC url is incorrect");		
-		reporter.reportLog("Global Footer Section");		
+		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl), "TSC url is correct", "TSC url is incorrect");
+		reporter.reportLog("Global Footer Section");
+		
+		validateContents();
 
+	}
+	
+	public void validateContents() {
+		reporter.reportLog("Global Footer Section contents for CustomerHubLinks_AboutTSCLinks");
+		
+		BasePage basePage=new BasePage(this.getDriver());		
+		
 		List<List<String>> lstNameAndLinks=TestDataHandler.constantDataVariables.getlst_NameAndLinks();
 		
 		//Credit card
@@ -100,7 +109,6 @@ public class GF_TC02_Verify_GlobalFooter_CustomerHubLinksAndAboutTSCLinks extend
 		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyEqualWithEncodingText(lstNameAndLinks, lsText),"The copyright text is correct","The copyright text is not correct");
 		lsText=basePage.getUTFEnabledData(basePage.getElementText(getGlobalFooterPageThreadLocal().txtCopyrightLine2));
 		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyEqualWithEncodingText(lstNameAndLinks, lsText),"The copyright text is correct","The copyright text is not correct");
-
 	}
 
 }

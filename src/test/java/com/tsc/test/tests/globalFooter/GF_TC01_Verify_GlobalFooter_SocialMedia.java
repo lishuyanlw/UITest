@@ -15,12 +15,22 @@ public class GF_TC01_Verify_GlobalFooter_SocialMedia extends BaseTest {
 	 */
 	@Test(groups={"Sanity","Home","Regression","GlobalFooter"})
 	public void Verify_GlobalFooter_SocialMedia() throws IOException {
-		getGlobalFooterPageThreadLocal().closePopupDialog();		
+		getGlobalFooterPageThreadLocal().closePopupDialog();
+		BasePage basePage=new BasePage(this.getDriver());		
+		String lsBaseUrl=basePage.getBaseURL()+"/";
 		
-		BasePage basePage=new BasePage(this.getDriver());
-		String lsBaseUrl=basePage.getBaseURL()+"/";		
-		reporter.softAssert(basePage.URL().contains(basePage.removeLastSlashFromUrl(lsBaseUrl)), "TSC url is correct", "TSC url is incorrect");		
+		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl), "TSC url is correct", "TSC url is incorrect");
 		reporter.reportLog("Global Footer Section");	
+		
+		validateContents();
+		
+	}
+	
+	public void validateContents() {
+		reporter.reportLog("Global Footer Section contents for SocialMedia");
+		
+		BasePage basePage=new BasePage(this.getDriver());		
+		String lsBaseUrl=basePage.getBaseURL()+"/";
 		
 		List<String> lstSocialMediaLinks=TestDataHandler.constantDataVariables.getlst_SocialMediaLinks();
 		
@@ -68,7 +78,6 @@ public class GF_TC01_Verify_GlobalFooter_SocialMedia extends BaseTest {
 
 		basePage.navigateToURL(lsBaseUrl);
 		getGlobalFooterPageThreadLocal().waitForPageLoading();
-		
 	}
 
 }

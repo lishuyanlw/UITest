@@ -20,11 +20,21 @@ public class HP_TC01_Verify_Global_Header_SignIn_Favorite_ShoppingCartBag extend
 	@Test(groups={"Home","Regression"})	    
 		public void validateGlobalHeader_SignIn_Favorite_ShoppingCartBag() throws IOException {		
 		getGlobalFooterPageThreadLocal().closePopupDialog();
+		BasePage basePage=new BasePage(this.getDriver());		
+		String lsBaseUrl=basePage.getBaseURL()+"/";
+		
+		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl), "TSC url is correct", "TSC url is incorrect");
+		reporter.reportLog("Home Page");
+		
+		validateContents();		
+				
+	}
+	
+	public void validateContents() {
+		reporter.reportLog("Global Header Section contents for SignIn_Favorite_ShoppingCartBag");
 		
 		BasePage basePage=new BasePage(this.getDriver());
-		String lsBaseUrl=basePage.getBaseURL();
-		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl+"/"), "TSC url is correct", "TSC url is incorrect");
-		reporter.reportLog("Home Page");
+		String lsBaseUrl=basePage.getBaseURL()+"/";
 		
 		String lsUrl,lsYmlNotFound,lsSuccessResult, lsFailResult;
 		lsYmlNotFound=TestDataHandler.constantDataVariables.getlnk_NotFound();
@@ -66,7 +76,7 @@ public class HP_TC01_Verify_Global_Header_SignIn_Favorite_ShoppingCartBag extend
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateShoppingCartBagCounter(), "Shopping cart Bag counter is visible", "Shopping cart Bag counter is not visible");
 		
 		//Verify Shopping Cart href matches correct pattern
-		lsUrl=lsBaseUrl+TestDataHandler.constantDataVariables.getlnk_ShoppingCartLink();
+		lsUrl=basePage.removeLastSlashFromUrl(lsBaseUrl)+TestDataHandler.constantDataVariables.getlnk_ShoppingCartLink();
 		lsSuccessResult=String.format("Shopping Cart link matches correct pattern of %s", lsUrl);
 		lsFailResult=String.format("Shopping Cart link does not match correct pattern of %s", lsUrl);
 		reporter.softAssert(getglobalheaderPageThreadLocal().verifyShoppingCartLink(lsUrl), lsSuccessResult, lsFailResult);
@@ -78,8 +88,6 @@ public class HP_TC01_Verify_Global_Header_SignIn_Favorite_ShoppingCartBag extend
 		reporter.softAssert(!lsUrl.contains(lsYmlNotFound), lsSuccessResult,lsFailResult);
 		
 		getglobalheaderPageThreadLocal().waitForPageLoad();
-						
-				
 	}
 		
 }

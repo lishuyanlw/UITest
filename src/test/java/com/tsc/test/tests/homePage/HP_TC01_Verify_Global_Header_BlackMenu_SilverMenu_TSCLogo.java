@@ -22,11 +22,20 @@ public class HP_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo extends B
 	@Test(groups={"Home","Regression"})	    
 		public void validateGlobalHeaderBlackMenu_SilverMenu_TSCLogoLinks() throws IOException {		
 		getGlobalFooterPageThreadLocal().closePopupDialog();
+		BasePage basePage=new BasePage(this.getDriver());		
+		String lsBaseUrl=basePage.getBaseURL()+"/";
+		
+		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl), "TSC url is correct", "TSC url is incorrect");
+		reporter.reportLog("Home Page");
+		
+		validateContents();				
+	}
+	
+	public void validateContents() {
+		reporter.reportLog("Global Header Section contents for BlackMenu_SilverMenu_TSCLogoLinks");
 		
 		BasePage basePage=new BasePage(this.getDriver());
 		String lsBaseUrl=basePage.getBaseURL()+"/";
-		reporter.softAssert(basePage.URL().contains(basePage.removeLastSlashFromUrl(lsBaseUrl)), "TSC url is correct", "TSC url is incorrect");
-		reporter.reportLog("Home Page");
 		
 		reporter.reportLog("Verify Black headers");
 		//Verify Black headers
@@ -193,7 +202,6 @@ public class HP_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo extends B
 		
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateTSCLogoNavigateToHomePage(), "TSCLogo can navigate To HomePage", "TSCLogo cannot navigate To HomePage");
 
-				
 	}
 		
 }

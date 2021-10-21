@@ -495,13 +495,13 @@ public class GlobalheaderPage extends BasePage{
 	 * 
 	 * @author Wei.Li
 	 */
-	public boolean verifyShoppingCartLink(String lsMinicartLink) {
-		String lsMiniCartLink=this.ShoppingCartlnk.getAttribute("href");
-		if(lsMiniCartLink.isEmpty()) {
+	public boolean verifyShoppingCartLink(String lsExpectedShoppingCartLink) {
+		String lsShoppingCartLink=this.ShoppingCartlnk.getAttribute("href");
+		if(lsShoppingCartLink.isEmpty()) {
 			return false;
 		}
 		else {			
-			if(lsMiniCartLink.equalsIgnoreCase(lsMinicartLink)) {
+			if(lsShoppingCartLink.equalsIgnoreCase(lsExpectedShoppingCartLink)) {
 				return true;
 			}
 			else {
@@ -517,7 +517,7 @@ public class GlobalheaderPage extends BasePage{
 	 * 
 	 * @author Wei.Li
 	 */		
-	public String getUrlAfterClickingShoppingCartLink() throws IOException {
+	public String getUrlAfterClickingShoppingCartLink() {
 		getReusableActionsInstance().javascriptScrollToTopOfPage();
 		return waitForPageLoadingByUrlChange(this.ShoppingCartlnk);		
 	}
