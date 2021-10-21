@@ -22,11 +22,11 @@ public class GF_TC01_Verify_GlobalFooter_SocialMedia extends BaseTest {
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl), "TSC url is correct", "TSC url is incorrect");
 		reporter.reportLog("Global Footer Section");	
 		
-		validateContents();
+		validateFullContents();
 		
 	}
 	
-	public void validateContents() {
+	public void validateFullContents() {
 		reporter.reportLog("Global Footer Section contents for SocialMedia");
 		
 		BasePage basePage=new BasePage(this.getDriver());		
@@ -78,6 +78,41 @@ public class GF_TC01_Verify_GlobalFooter_SocialMedia extends BaseTest {
 
 		basePage.navigateToURL(lsBaseUrl);
 		getGlobalFooterPageThreadLocal().waitForPageLoading();
+	}
+	
+	public void validateMajorNameAndLinks() {
+		reporter.reportLog("Global Footer Section contents for SocialMedia");
+		
+		BasePage basePage=new BasePage(this.getDriver());		
+		String lsBaseUrl=basePage.getBaseURL()+"/";
+		
+		List<String> lstSocialMediaLinks=TestDataHandler.constantDataVariables.getlst_SocialMediaLinks();
+		
+		//Facebook
+		String lsUrl=getGlobalFooterPageThreadLocal().getUrlWithSocialMediaName(lstSocialMediaLinks, "Facebook");		
+		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementProperty(getGlobalFooterPageThreadLocal().lnkFacebook,"Link"),"Facebook link in Global footer is not empty","Facebook link in Global footer is empty");
+		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementProperty(getGlobalFooterPageThreadLocal().imgFacebook,"Image"),"Facebook icon in Global footer is not empty","Facebook icon in Global footer is empty");		
+
+		//Twitter
+		lsUrl=getGlobalFooterPageThreadLocal().getUrlWithSocialMediaName(lstSocialMediaLinks, "Twitter");		
+		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementProperty(getGlobalFooterPageThreadLocal().lnkTwitter,"Link"),"Twitter link in Global footer is not empty","Twitter link in Global footer is empty");
+		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementProperty(getGlobalFooterPageThreadLocal().imgTwitter,"Image"),"Twitter icon in Global footer is not empty","Twitter icon in Global footer is empty");		
+
+		//Instagram
+		lsUrl=getGlobalFooterPageThreadLocal().getUrlWithSocialMediaName(lstSocialMediaLinks, "Instagram");		
+		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementProperty(getGlobalFooterPageThreadLocal().lnkInstagram,"Link"),"Instagram link in Global footer is not empty","Instagram link in Global footer is empty");
+		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementProperty(getGlobalFooterPageThreadLocal().imgInstagram,"Image"),"Instagram icon in Global footer is not empty","Instagram icon in Global footer is empty");		
+	
+		//Youtube
+		lsUrl=getGlobalFooterPageThreadLocal().getUrlWithSocialMediaName(lstSocialMediaLinks, "Youtube");		
+		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementProperty(getGlobalFooterPageThreadLocal().lnkYoutube,"Link"),"Youtube link in Global footer is not empty","Youtube link in Global footer is empty");
+		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementProperty(getGlobalFooterPageThreadLocal().imgYoutube,"Image"),"Youtube icon in Global footer is not empty","Youtube icon in Global footer is empty");		
+		
+		//Pinterest
+		lsUrl=getGlobalFooterPageThreadLocal().getUrlWithSocialMediaName(lstSocialMediaLinks, "Pinterest");		
+		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementProperty(getGlobalFooterPageThreadLocal().lnkPinterest,"Link"),"Pinterest link in Global footer is not empty","Pinterest link in Global footer is empty");
+		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementProperty(getGlobalFooterPageThreadLocal().imgPinterest,"Image"),"Pinterest icon in Global footer is not empty","Pinterest icon in Global footer is empty");		
+		
 	}
 
 }

@@ -1,6 +1,7 @@
 package com.tsc.test.tests.productSearchResult;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
@@ -33,13 +34,6 @@ public class SR_TC10_Verify_ProductSearchResult_GlobalHeaderAndFooterAfterSortAn
 	
 	//Test sort
 	if(getProductResultsPageThreadLocal().chooseSortOptionByVisibleText("Price: Highest first")) {
-		lsMsg=getProductResultsPageThreadLocal().verifyHighestPriceFirstSort();
-		if(lsMsg.isEmpty()) {
-			reporter.reportLogPass("Sort option of Price: Highest first works");
-		}else {
-			reporter.reportLogFail(lsMsg);
-		}				
-		
 		reporter.softAssert(getProductResultsPageThreadLocal().verifyUrlAfterSelectSortStrategy(lsKeywordList.get(0).get(0),"HighestPrice"), "The Url contains keyword and sortKey=HighestPrice", "The Url does not contain keyword and sortKey=HighestPrice");		
 		
 		lsMsg=getProductResultsPageThreadLocal().verifySearchResultMessage(lstSearchResultMessage.get(0),lsKeywordList.get(0).get(0));
@@ -52,9 +46,11 @@ public class SR_TC10_Verify_ProductSearchResult_GlobalHeaderAndFooterAfterSortAn
 		reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(), "Showing text pattern in filters is correct", "Showing text pattern in filters is incorrect");
 		reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting), "The default setting of items per page is "+lsSearchResultPageDefaultSetting, "The default setting of items per page isn't "+lsSearchResultPageDefaultSetting);
 		
-		productList=getProductResultsPageThreadLocal().getProductList();
+		productList=getProductResultsPageThreadLocal().getProductList();		
 		if(productList.size()>0) {
-			getProductResultsPageThreadLocal().verifySearchResultContent(productList);
+			List<WebElement> lstFirstproduct=new ArrayList<WebElement>();
+			lstFirstproduct.add(productList.get(0));
+			getProductResultsPageThreadLocal().verifySearchResultContent(lstFirstproduct);
 		}	
 		
 		reporter.softAssert(getProductResultsPageThreadLocal().verifyProductPagination(), "Product pagination is existing", "Product pagination is not existing");
@@ -67,14 +63,14 @@ public class SR_TC10_Verify_ProductSearchResult_GlobalHeaderAndFooterAfterSortAn
 	
 	//Verify header section
 	HP_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo headerSectionMenuAndLogoTest= new HP_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo();
-	headerSectionMenuAndLogoTest.validateContents();
+	headerSectionMenuAndLogoTest.validateMajorNameAndLinks();
 	
 	HP_TC01_Verify_Global_Header_SignIn_Favorite_ShoppingCartBag headerSectionOthersTest= new HP_TC01_Verify_Global_Header_SignIn_Favorite_ShoppingCartBag();
-	headerSectionOthersTest.validateContents();
+	headerSectionOthersTest.validateMajorNameAndLinks();
 	
 	//Verify footer section
 	GF_TC01_Verify_GlobalFooter_SocialMedia footerSectionTest_SocialMedia=new GF_TC01_Verify_GlobalFooter_SocialMedia();
-	footerSectionTest_SocialMedia.validateContents();
+	footerSectionTest_SocialMedia.validateMajorNameAndLinks();
 	
 	GF_TC02_Verify_GlobalFooter_CustomerHubLinksAndAboutTSCLinks footerSectionTest_CustomerHubLinksAndAboutTSCLinks=new GF_TC02_Verify_GlobalFooter_CustomerHubLinksAndAboutTSCLinks();
 	footerSectionTest_CustomerHubLinksAndAboutTSCLinks.validateContents();
@@ -83,20 +79,6 @@ public class SR_TC10_Verify_ProductSearchResult_GlobalHeaderAndFooterAfterSortAn
 	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0));
 	List<List<String>> lstFilterByPrice=TestDataHandler.constantDataVariables.getlst_FilterByPrice();
 	if(getProductResultsPageThreadLocal().selectFilterItemInLeftPanel(lstFilterByPrice.get(0).get(0), lstFilterByPrice.get(0).get(1))) {
-		//To verify the first item
-		lsMsg=getProductResultsPageThreadLocal().verifyFilterByPrice(lstFilterByPrice.get(0).get(2),true);
-		if(lsMsg.isEmpty()) {
-			reporter.reportLogPass("The first item for filter by price works");
-		}else {
-			reporter.reportLogFail(lsMsg);
-		}
-		//To verify all items
-		lsMsg=getProductResultsPageThreadLocal().verifyFilterByPrice(lstFilterByPrice.get(0).get(2),false);
-		if(lsMsg.isEmpty()) {
-			reporter.reportLogPass("Filter by price works");
-		}else {
-			reporter.reportLogFail(lsMsg);
-		}	
 		reporter.softAssert(getProductResultsPageThreadLocal().verifyUrlContainDimensionAndKeyword(lsKeywordList.get(0).get(0)), "The Url contains correct keyword", "The Url does not contain correct keyword");
 		
 		lsMsg=getProductResultsPageThreadLocal().verifySearchResultMessage(lstSearchResultMessage.get(0),lsKeywordList.get(0).get(0));
@@ -111,7 +93,9 @@ public class SR_TC10_Verify_ProductSearchResult_GlobalHeaderAndFooterAfterSortAn
 		
 		productList=getProductResultsPageThreadLocal().getProductList();
 		if(productList.size()>0) {
-			getProductResultsPageThreadLocal().verifySearchResultContent(productList);
+			List<WebElement> lstFirstproduct=new ArrayList<WebElement>();
+			lstFirstproduct.add(productList.get(0));
+			getProductResultsPageThreadLocal().verifySearchResultContent(lstFirstproduct);
 		}	
 		
 		reporter.softAssert(getProductResultsPageThreadLocal().verifyProductPagination(), "Product pagination is existing", "Product pagination is not existing");		
@@ -121,11 +105,11 @@ public class SR_TC10_Verify_ProductSearchResult_GlobalHeaderAndFooterAfterSortAn
 	}
 	
 	//Verify header section
-	headerSectionMenuAndLogoTest.validateContents();
-	headerSectionOthersTest.validateContents();
+	headerSectionMenuAndLogoTest.validateMajorNameAndLinks();
+	headerSectionOthersTest.validateMajorNameAndLinks();
 
 	//Verify footer section
-	footerSectionTest_SocialMedia.validateContents();
+	footerSectionTest_SocialMedia.validateMajorNameAndLinks();
 	footerSectionTest_CustomerHubLinksAndAboutTSCLinks.validateContents();
 	
 

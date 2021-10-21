@@ -28,14 +28,14 @@ public class HP_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo extends B
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl), "TSC url is correct", "TSC url is incorrect");
 		reporter.reportLog("Home Page");
 		
-		validateContents();				
+		validateFullContents();				
 	}
 	
-	public void validateContents() {
+	public void validateFullContents() {
 		reporter.reportLog("Global Header Section contents for BlackMenu_SilverMenu_TSCLogoLinks");
 		
 		BasePage basePage=new BasePage(this.getDriver());
-		String lsBaseUrl=basePage.getBaseURL()+"/";
+		//String lsBaseUrl=basePage.getBaseURL()+"/";
 		
 		reporter.reportLog("Verify Black headers");
 		//Verify Black headers
@@ -201,6 +201,33 @@ public class HP_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo extends B
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateTSCLogoLink().trim().equalsIgnoreCase((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC link matches expected url", "TSC link does not matche expected url");
 		
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateTSCLogoNavigateToHomePage(), "TSCLogo can navigate To HomePage", "TSCLogo cannot navigate To HomePage");
+
+	}
+	
+	public void validateMajorNameAndLinks() {
+		reporter.reportLog("Global Header Section contents for BlackMenu_SilverMenu_TSCLogoLinks");
+		
+		BasePage basePage=new BasePage(this.getDriver());
+		String lsBaseUrl=basePage.getBaseURL()+"/";
+		
+		reporter.reportLog("Verify Black headers");
+		//Verify Black headers
+		getglobalheaderPageThreadLocal().hoverOnWatchTSC();		
+		getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkWatchUsLiveDpdMenu);
+		getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkDealsDpdMenu);
+		getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkProgramGuideDpdMenu);
+		getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkCarGadgetsDpdMenu);
+		getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkDesignerFootwearDpdMenu);
+		getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkOnAirProductsDpdMenu);
+		
+		basePage.getReusableActionsInstance().javascriptScrollByVisibleElement(getglobalheaderPageThreadLocal().lnkTSBlackHeader);		
+		getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkTSBlackHeader);
+			
+		reporter.reportLog("Verify Logo section");
+		//Verify Logo section
+		reporter.softAssert(getglobalheaderPageThreadLocal().validateTSCLogo(), "TSC icon is visible", "TSC icon is not visible");
+		
+		reporter.softAssert(getglobalheaderPageThreadLocal().validateTSCLogoLink().trim().equalsIgnoreCase((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC link matches expected url", "TSC link does not matche expected url");
 
 	}
 		

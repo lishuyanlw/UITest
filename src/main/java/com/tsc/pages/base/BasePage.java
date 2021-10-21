@@ -628,4 +628,15 @@ import utils.ReusableActions;
 		return xpathExp;
 	}
 	
+	/**
+	 *Method to verify element link  	 
+	 * @param WebElement element: input element
+	 * @author Wei.Li
+	 */	
+	 public void verifyElementLink(WebElement element) {
+		 String lsTitle=element.getText().trim();
+		 String lsLink=this.getElementHref(element);
+		 reporter.softAssert(!lsLink.isEmpty(),"The href of element of '"+lsTitle+"' is not empty","The href of element of '"+lsTitle+"' is empty");		 
+	 }
+	
 }
