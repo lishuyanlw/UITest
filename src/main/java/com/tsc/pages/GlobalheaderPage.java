@@ -191,10 +191,6 @@ public class GlobalheaderPage extends BasePage{
 	@FindBy(xpath="//a[@role=\"button\" and contains(text(),'Fashion')]")
 	WebElement fasionOption;
 
-	public void closeadd() {
-		btnClose.click();
-	}
-
 	public void clickOnClearanceHeaderOption() {
 		getReusableActionsInstance().clickIfAvailable(clearanceHeader);
 	}
@@ -490,13 +486,13 @@ public class GlobalheaderPage extends BasePage{
 	 * 
 	 * @author Wei.Li
 	 */
-	public boolean verifyShoppingCartLink(String lsMinicartLink) {
-		String lsMiniCartLink=this.ShoppingCartlnk.getAttribute("href");
-		if(lsMiniCartLink.isEmpty()) {
+	public boolean verifyShoppingCartLink(String lsExpectedShoppingCartLink) {
+		String lsShoppingCartLink=this.ShoppingCartlnk.getAttribute("href");
+		if(lsShoppingCartLink.isEmpty()) {
 			return false;
 		}
 		else {			
-			if(lsMiniCartLink.equalsIgnoreCase(lsMinicartLink)) {
+			if(lsShoppingCartLink.equalsIgnoreCase(lsExpectedShoppingCartLink)) {
 				return true;
 			}
 			else {
@@ -512,7 +508,7 @@ public class GlobalheaderPage extends BasePage{
 	 * 
 	 * @author Wei.Li
 	 */		
-	public String getUrlAfterClickingShoppingCartLink() throws IOException {
+	public String getUrlAfterClickingShoppingCartLink() {
 		getReusableActionsInstance().javascriptScrollToTopOfPage();
 		return waitForPageLoadingByUrlChange(this.ShoppingCartlnk);		
 	}
@@ -803,12 +799,13 @@ public class GlobalheaderPage extends BasePage{
 			 reporter.softAssert(lsUrlInSilverHeader.equalsIgnoreCase(lsHrefInBlackHeader), "The Url of "+lsUrlInSilverHeader+"  after clicking "+lsTitle+" in Black headers is equal to the href of "+lsHrefInBlackHeader, "The Url of "+lsUrlInSilverHeader+"  after clicking "+lsTitle+" in Black headers is not equal to the href of "+lsHrefInBlackHeader);
 		 }
 
-		 if(silverItem!=null) {
-			 String lsStyle=silverItem.findElement(By.xpath(".//span")).getAttribute("style");			
-			 reporter.softAssert(lsStyle.equalsIgnoreCase("color:#fff;")||lsStyle.equalsIgnoreCase("color: rgb(255, 255, 255);"), lsTitle+" in Silver headers is being selected", lsTitle+" in Silver headers is not being selected");		 		 
-		 }
+//		 if(silverItem!=null) {
+//			 String lsStyle=silverItem.findElement(By.xpath(".//span")).getAttribute("style");			
+//			 reporter.softAssert(lsStyle.equalsIgnoreCase("color:#fff;")||lsStyle.equalsIgnoreCase("color: rgb(255, 255, 255);"), lsTitle+" in Silver headers is being selected", lsTitle+" in Silver headers is not being selected");		 		 
+//		 }
 
 	 }
+	 
 	 
 }
 

@@ -195,10 +195,12 @@ public class LoginPage extends BasePage {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputPassword);
 		this.inputPassword.sendKeys(lsPassword);
 		
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInMainMenu);
 		String lsSignInMsg=this.btnSignInMainMenu.getText();
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSubmit);
 		this.btnSubmit.click();
-
+		
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInMainMenu);
 		waitForCondition(Driver->{return !lsSignInMsg.equalsIgnoreCase(this.btnSignInMainMenu.getText())&&!this.btnSignInMainMenu.getText().isEmpty();},30000);
 		
 		reporter.softAssert(this.btnSignInMainMenu.getText().toUpperCase().contains(lsFirstName.toUpperCase()),"The user first name of '"+lsFirstName+"' is displaying in SignIn heading menu","The user first name of '"+lsFirstName+"' is not displaying in SignIn heading menu");

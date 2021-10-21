@@ -15,7 +15,7 @@ public class HP_TC05_Verify_ShopByBrand extends BaseTest{
 	 */
 	@Test(groups={"Home","Regression"})
 	public void validateShopByBrand() throws IOException {
-				
+	getGlobalFooterPageThreadLocal().closePopupDialog();			
 	reporter.softAssert(getglobalheaderPageThreadLocal().validateURL((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");
 	
 	reporter.softAssert(homePageThreadLocal().validateShopByBrandAutomaticScrollingAction(),"The automatic scrolling function in ShopByBrand works well","The The automatic scrolling function in ShopByBrand doesn't work");

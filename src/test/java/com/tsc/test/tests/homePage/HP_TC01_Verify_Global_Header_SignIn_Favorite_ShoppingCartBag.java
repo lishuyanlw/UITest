@@ -20,11 +20,51 @@ public class HP_TC01_Verify_Global_Header_SignIn_Favorite_ShoppingCartBag extend
 	@Test(groups={"Home","Regression"})	    
 		public void validateGlobalHeader_SignIn_Favorite_ShoppingCartBag() throws IOException {		
 		getGlobalFooterPageThreadLocal().closePopupDialog();
+		BasePage basePage=new BasePage(this.getDriver());		
+		String lsBaseUrl=basePage.getBaseURL()+"/";
+		
+		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl), "TSC url is correct", "TSC url is incorrect");
+		reporter.reportLog("Home Page");
+		
+		validateMajorNameAndLinks();
+		validateActionContents();		
+				
+	}
+	
+	public void validateActionContents() {
+		reporter.reportLog("Global Header Section contents for SignIn_Favorite_ShoppingCartBag");
 		
 		BasePage basePage=new BasePage(this.getDriver());
-		String lsBaseUrl=basePage.getBaseURL();
-		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl+"/"), "TSC url is correct", "TSC url is incorrect");
-		reporter.reportLog("Home Page");
+		String lsBaseUrl=basePage.getBaseURL()+"/";
+		
+		String lsUrl,lsYmlNotFound,lsSuccessResult, lsFailResult;
+		lsYmlNotFound=TestDataHandler.constantDataVariables.getlnk_NotFound();
+		
+		reporter.reportLog("Verify Sign in section");
+		String lsUserName=TestDataHandler.constantDataVariables.getlbl_Username();
+		String lsPassword=TestDataHandler.constantDataVariables.getlbl_Password();
+		String lsFirstName=TestDataHandler.constantDataVariables.getlbl_FirstName();
+				
+		//Verify Sign in Text and Icon
+		getGlobalLoginPageThreadLocal().verifySignInSection();		
+		getGlobalLoginPageThreadLocal().verifyShowingUserFirstNameAfterSignin(lsUserName, lsPassword,lsFirstName);		
+		getGlobalLoginPageThreadLocal().SignOut();		
+	
+		reporter.reportLog("Verify Shopping Cart section");
+		//Verify url does not contain notfound after clicking Shopping Cart link
+		lsUrl=getglobalheaderPageThreadLocal().getUrlAfterClickingShoppingCartLink();
+		lsSuccessResult=String.format("The url of < %s > does not contain < %s > after clicking MiniCart link", lsUrl,lsYmlNotFound);
+		lsFailResult=String.format("The url of < %s > contains < %s > after clicking MiniCart link", lsUrl,lsYmlNotFound);
+		reporter.softAssert(!lsUrl.contains(lsYmlNotFound), lsSuccessResult,lsFailResult);
+		
+		getglobalheaderPageThreadLocal().waitForPageLoad();
+	}
+	
+	public void validateMajorNameAndLinks() {
+		reporter.reportLog("Global Header Section contents for SignIn_Favorite_ShoppingCartBag");
+		
+		BasePage basePage=new BasePage(this.getDriver());
+		String lsBaseUrl=basePage.getBaseURL()+"/";
 		
 		String lsUrl,lsYmlNotFound,lsSuccessResult, lsFailResult;
 		lsYmlNotFound=TestDataHandler.constantDataVariables.getlnk_NotFound();
@@ -36,23 +76,14 @@ public class HP_TC01_Verify_Global_Header_SignIn_Favorite_ShoppingCartBag extend
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateSearchSubmitbtn(), "Search submit button is visible", "Search submit button is not visible");
 		
 		reporter.reportLog("Verify Sign in section");
-		String lsUserName=TestDataHandler.constantDataVariables.getlbl_Username();
-		String lsPassword=TestDataHandler.constantDataVariables.getlbl_Password();
-		String lsFirstName=TestDataHandler.constantDataVariables.getlbl_FirstName();
+
 		List<String> lstSignInPopover=TestDataHandler.constantDataVariables.getlst_SignInPopover();
 				
 		//Verify Sign in Text and Icon
 		validateText(getglobalheaderPageThreadLocal().validateSignInLink(), TestDataHandler.constantDataVariables.getlbl_SignIn(), "SignIn Link is present & Text is visible");		
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateSiginIcon(), "SignIn icon is visible", "SignIn icon is not visible");
-		
 		getGlobalLoginPageThreadLocal().verifyMenuItemInPopover(lstSignInPopover);
-		
-		getGlobalLoginPageThreadLocal().verifySignInSection();
-		
-		getGlobalLoginPageThreadLocal().verifyShowingUserFirstNameAfterSignin(lsUserName, lsPassword,lsFirstName); 
-		
-		getGlobalLoginPageThreadLocal().SignOut();		
-		
+			
 		reporter.reportLog("Verify Favourites section");
 		//Verify Favourites section
 		validateText(getglobalheaderPageThreadLocal().validateFavouritesLink(), TestDataHandler.constantDataVariables.getlbl_Favourites(), "Favourites Link is present & Text is visible");
@@ -66,20 +97,11 @@ public class HP_TC01_Verify_Global_Header_SignIn_Favorite_ShoppingCartBag extend
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateShoppingCartBagCounter(), "Shopping cart Bag counter is visible", "Shopping cart Bag counter is not visible");
 		
 		//Verify Shopping Cart href matches correct pattern
-		lsUrl=lsBaseUrl+TestDataHandler.constantDataVariables.getlnk_ShoppingCartLink();
+		lsUrl=basePage.removeLastSlashFromUrl(lsBaseUrl)+TestDataHandler.constantDataVariables.getlnk_ShoppingCartLink();
 		lsSuccessResult=String.format("Shopping Cart link matches correct pattern of %s", lsUrl);
 		lsFailResult=String.format("Shopping Cart link does not match correct pattern of %s", lsUrl);
 		reporter.softAssert(getglobalheaderPageThreadLocal().verifyShoppingCartLink(lsUrl), lsSuccessResult, lsFailResult);
-		
-		//Verify url does not contain notfound after clicking Shopping Cart link
-		lsUrl=getglobalheaderPageThreadLocal().getUrlAfterClickingShoppingCartLink();
-		lsSuccessResult=String.format("The url of < %s > does not contain < %s > after clicking MiniCart link", lsUrl,lsYmlNotFound);
-		lsFailResult=String.format("The url of < %s > contains < %s > after clicking MiniCart link", lsUrl,lsYmlNotFound);
-		reporter.softAssert(!lsUrl.contains(lsYmlNotFound), lsSuccessResult,lsFailResult);
-		
-		getglobalheaderPageThreadLocal().waitForPageLoad();
-						
-				
+
 	}
 		
 }
