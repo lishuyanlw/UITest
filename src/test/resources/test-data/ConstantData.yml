@@ -19,9 +19,10 @@ lbl_WatchUsLive_French: En direct
 lnk_WatchUsLive: /pages/watchuslive?ic=HP_WatchUsLive
 lbl_Favourites: Favourites
 lbl_SignIn: Sign in
+lst_SignInPopover: ["Sign in","Create an account","Transfer a phone account","Track your order"]
 lbl_SearchBoxPlaceholder: Search
-lbl_MinicartLinkName: Bag
-lnk_MinicarLink: /pages/shoppingcart
+lbl_ShoppingCartLinkName: Bag
+lnk_ShoppingCartLink: /pages/shoppingcart
 lst_FlyoutHeading: ['FASHION','SHOES & HANDBAGS', 'JEWELLERY', 'BEAUTY', 'HOME & GARDEN', 'KITCHEN', 'HEALTH & FITNESS', 'ELECTRONICS', 'COINS & HOBBIES', 'CLEARANCE']
 lst_FlyoutsubMenu: ['Shop By Product','Specialty Shops','Luggage','Special Pricing','Shop By Metal','Shop By Stone','Wellness','Shop Pet Boutique','Shop By Room','Sports Shop','Shop By Brand','Shop Sports','Travel','Featured Brands','Sportsnet Shop','Vitamin Selector','Shop Coins','Shop By Price','View All >']
 lbl_FlyoutHeadingLandingPageLink: /pages/category?nav=n
@@ -64,3 +65,4 @@ lst_TrackYourOrderObjectSectionTitle: ["ORDER NUMBER","BILLING POSTAL CODE","SUB
 # LOGIN USER
 lbl_Username: testMail@test.com
 lbl_Password: testMail123
+lbl_FirstName: David
