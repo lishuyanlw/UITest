@@ -17,7 +17,7 @@ public class SR_TC09_Verify_ProductSearchResult_SpecialOffersAndRecomendationSec
 	/*
 	 * CER-231
 	 */
-	@Test(groups={"ProductSearch","Regression"})
+	@Test(groups={"ProductSearchToBeFix","ToBeFixedForMenuClick"})
 	public void validateProductSearchResult_SpecialOffersAndRecomendationSections() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 
