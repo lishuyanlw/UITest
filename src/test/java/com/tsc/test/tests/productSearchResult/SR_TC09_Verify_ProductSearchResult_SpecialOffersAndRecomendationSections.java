@@ -17,9 +17,9 @@ public class SR_TC09_Verify_ProductSearchResult_SpecialOffersAndRecomendationSec
 	/*
 	 * CER-231
 	 */
-	@Test(groups={"ProductSearch","Regression"})
+	@Test(groups={"ProductSearchToBeFix","ToBeFixedForMenuClick"})
 	public void validateProductSearchResult_SpecialOffersAndRecomendationSections() throws IOException {
-		(new HomePage(this.getDriver())).closeadd();
+		getGlobalFooterPageThreadLocal().closePopupDialog();
 
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");
 		reporter.reportLog("ProductSearch Page");

@@ -1,5 +1,8 @@
 package com.tsc.pages;
 
+import java.util.List;
+
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -21,12 +24,9 @@ public class LoginPage extends BasePage {
 	@FindBy(xpath = "//div[contains(@class,'secondary-navigation__rhs-account')]//nav//a[contains(@href,'signin')]")
 	public WebElement btnSignInNav;
 	
-	@FindBy(xpath = "//div[contains(@class,'secondary-navigation__rhs-account')]//nav//a[contains(@href,'createphoneaccount')]")
-	public WebElement btnTransferaPhoneAccountNav;
-	
-	@FindBy(xpath = "//div[contains(@class,'secondary-navigation__rhs-account')]//nav//a[contains(@href,'orderstatus')]")
-	public WebElement btnTrackYourOderNav;
-	
+	@FindBy(xpath = "//div[contains(@class,'secondary-navigation__rhs-account')]//nav")
+	public WebElement cntSignInPopover;
+		
 	//Sign in window
 	@FindBy(xpath = "//ng-component/div[@class='tsc-forms']/div[1]//h1")
 	public WebElement lblSignIn;
@@ -87,11 +87,18 @@ public class LoginPage extends BasePage {
 	
 	@FindBy(xpath = "//div[contains(@class,'secondary-navigation__rhs-account')]//nav//a[contains(@href,'easypay')]")
 	public WebElement btnEasyPayScheduleNav;
-	
-	//Will be modified later for href part
-	@FindBy(xpath = "//div[contains(@class,'secondary-navigation__rhs-account')]//nav//a[contains(@href,' ')]")
+		
+	@FindBy(xpath = "//div[contains(@class,'secondary-navigation__rhs-account')]//nav//a[contains(@class,'secondary-navigation__rhs-account-panel-link--sign-out')]")
 	public WebElement btnSignOutNav;	
 	
+	
+	/**
+	 * Method to login
+	 * @param String lsUserName: user name
+	 * @param String lsPassword: password  
+	 * @return true/false
+	 * @author Wei.Li
+	 */
 	public boolean Login(String lsUserName, String lsPassword) {
 		getReusableActionsInstance().scrollToElement(this.btnSignInMainMenu);
 		getReusableActionsInstance().staticWait(300);
@@ -107,10 +114,14 @@ public class LoginPage extends BasePage {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSubmit);
 		this.btnSubmit.click();
 		
-		return waitForCondition(Driver->{return lsSignInMsg.equalsIgnoreCase(this.btnSignInMainMenu.getText());},30000);
+		return waitForCondition(Driver->{return !lsSignInMsg.equalsIgnoreCase(this.btnSignInMainMenu.getText());},30000);
 	}
 	
-	//Not finished
+	/**
+	 * Method to logout	 
+	 * @return true/false
+	 * @author Wei.Li
+	 */
 	public boolean SignOut() {
 		getReusableActionsInstance().scrollToElement(this.btnSignInMainMenu);
 		getReusableActionsInstance().staticWait(300);
@@ -118,8 +129,81 @@ public class LoginPage extends BasePage {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignOutNav);
 		this.btnSignOutNav.click();
 				
-		return waitForCondition(Driver->{return lsUserMsg.equalsIgnoreCase(this.btnSignInMainMenu.getText());},30000);
+		return waitForCondition(Driver->{return !lsUserMsg.equalsIgnoreCase(this.btnSignInMainMenu.getText());},30000);
 	}
 	
+	/**
+	 * Method to hover on Sign in heading menu	  
+	 * @author Wei.Li
+	 */
+	public void hoverOnSignInHeadingMenu() {
+		getReusableActionsInstance().scrollToElement(this.btnSignInMainMenu);
+		getReusableActionsInstance().staticWait(300);		
+	}
+	
+	/**
+	 * Method to get a menu item in popover
+	 * @param String lsItemTitle: menu item text	 
+	 * @return WebElement
+	 * @author Wei.Li
+	 */
+	public WebElement getMenuItemInPopover(String lsItemTitle) {
+		String lsXpath=this.createXPath(".//a[normalize-space(.)='{0}']",lsItemTitle);
+		return this.cntSignInPopover.findElement(By.xpath(lsXpath));		
+	}
+	
+	/**
+	 * Method to verify menu item list in popover
+	 * @param List<String> lstMenuItemPopover: menu item list	 
+	 * @return void
+	 * @author Wei.Li
+	 */
+	public void verifyMenuItemInPopover(List<String> lstMenuItemPopover) {
+		this.hoverOnSignInHeadingMenu();
+		WebElement element;
+		for(String lsItem:lstMenuItemPopover) {			
+			element=this.getMenuItemInPopover(lsItem);			
+			reporter.softAssert(element.getText().trim().equalsIgnoreCase(lsItem),"'"+lsItem+"' in SignIn popver is existing","'"+lsItem+"' in SignIn popver is not existing");
+			reporter.softAssert(!element.getAttribute("href").isEmpty(),"The href of '"+lsItem+"' in SignIn popver is not empty","The href of '"+lsItem+"' in SignIn popver is empty");
+		}			
+	}
+	
+	/**
+	 * Method to verify Username and Password sections are existing 	 
+	 * @return void
+	 * @author Wei.Li
+	 */
+	public void verifySignInSection() {
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInNav);
+		this.btnSignInNav.click();
+		(new GlobalFooterPage(this.getDriver())).waitForPageLoading();
+		reporter.softAssert(getReusableActionsInstance().isElementVisible(this.inputUserName),"Input field is existing","Input field is not existing");
+		reporter.softAssert(getReusableActionsInstance().isElementVisible(this.inputPassword),"Password field is existing","Password field is not existing");
+	}
+	
+	/**
+	 * Method to verify user first name is showing in SignIn heading menu
+	 * @param String lsUserName: user name 
+	 * @param String lsPassword: password 
+	 * @param String lsFirstName: user's first name	 
+	 * @return void
+	 * @author Wei.Li
+	 */
+	public void verifyShowingUserFirstNameAfterSignin(String lsUserName, String lsPassword,String lsFirstName) {		
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputUserName);
+		this.inputUserName.sendKeys(lsUserName);
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputPassword);
+		this.inputPassword.sendKeys(lsPassword);
+		
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInMainMenu);
+		String lsSignInMsg=this.btnSignInMainMenu.getText();
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSubmit);
+		this.btnSubmit.click();
+		
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInMainMenu);
+		waitForCondition(Driver->{return !lsSignInMsg.equalsIgnoreCase(this.btnSignInMainMenu.getText())&&!this.btnSignInMainMenu.getText().isEmpty();},30000);
+		
+		reporter.softAssert(this.btnSignInMainMenu.getText().toUpperCase().contains(lsFirstName.toUpperCase()),"The user first name of '"+lsFirstName+"' is displaying in SignIn heading menu","The user first name of '"+lsFirstName+"' is not displaying in SignIn heading menu");
+	}
 	
 }

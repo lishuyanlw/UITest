@@ -597,7 +597,8 @@ import utils.ReusableActions;
     	return null;
     }
 
-	/*Method to convert words/string into camel case  
+	/**
+	 * Method to convert words/string into camel case  
 	 * @return String
 	 * @author Shruti Desai
 	 */
@@ -614,5 +615,28 @@ import utils.ReusableActions;
 			}	
 		return headingName;
 	}
+	
+	/**
+	 * Method to get String of XPath  
+	 * @return String:Xpath
+	 * @author Shruti Desai
+	 */						
+	public String createXPath(String xpathExp, Object ...args){
+		for(int i=0; i<args.length; i++) {
+			xpathExp = xpathExp.replace("{"+i+"}", (CharSequence) args[i]);
+		}
+		return xpathExp;
+	}
+	
+	/**
+	 *Method to verify element link  	 
+	 * @param WebElement element: input element
+	 * @author Wei.Li
+	 */	
+	 public void verifyElementLink(WebElement element) {
+		 String lsTitle=element.getText().trim();
+		 String lsLink=this.getElementHref(element);
+		 reporter.softAssert(!lsLink.isEmpty(),"The href of element of '"+lsTitle+"' is not empty","The href of element of '"+lsTitle+"' is empty");		 
+	 }
 	
 }

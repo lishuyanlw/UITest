@@ -167,8 +167,12 @@ public class GF_TC04_Verify_GlobalFooter_TSCCustomerHub_LinksAndPageObjects exte
 		reporter.reportLog("Login for "+lsService);
 		String lsUserName=TestDataHandler.constantDataVariables.getlbl_Username();
 		String lsPassword=TestDataHandler.constantDataVariables.getlbl_Password();
-		getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword);
-		verifyMyAccountContents(lsService, lstNameAndLinks);
+		if(getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword)) {
+			verifyMyAccountContents(lsService, lstNameAndLinks);
+		}
+		else {
+			reporter.reportLogFail("Login failed");
+		}
 
 	}
 	
