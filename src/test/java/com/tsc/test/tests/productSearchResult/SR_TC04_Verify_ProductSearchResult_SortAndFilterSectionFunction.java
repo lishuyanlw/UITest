@@ -10,14 +10,17 @@ import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 
 public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction extends BaseTest{
-	
-	/**
-	 * This method will test the functions of sort and filter sections of product searching results,as well as verifying Header and Footer sections.
-	 * @author Wei.Li
-	 */	
+	/*
+	 * CER-220
+	 * CER-221
+	 * CER-229
+	 * CER-223
+	 * CER-224
+	 * CER-233
+	 */
 	@Test(groups={"ProductSearch","Regression"})
 	public void validateProductSearchResult_FilterSectionFunction() throws IOException {	
-	(new HomePage(this.getDriver())).closeadd();
+	getGlobalFooterPageThreadLocal().closePopupDialog();
 	
 	reporter.softAssert(getglobalheaderPageThreadLocal().validateURL((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");		
 	reporter.reportLog("ProductSearch Page");
@@ -26,13 +29,10 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction ext
 	List<List<String>> lstSearchResultMessage=TestDataHandler.constantDataFile.getSearchResultPage().getLst_SearchResultMessage();
 	String lsSearchResultPageDefaultSetting=TestDataHandler.constantDataFile.getSearchResultPage().getLbl_SearchResultPageDefaultSetting();
 	List<WebElement> productList;
-	String lsMsg;
-		
+	String lsMsg;		
 
 	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0));
-	reporter.softAssert(getProductResultsPageThreadLocal().verifyElementExisting(getProductResultsPageThreadLocal().getHeaderContainer()), "Header section is existing after keyword searching", "Header section is not existing after keyword searching");
-	reporter.softAssert(getProductResultsPageThreadLocal().verifyElementExisting(getProductResultsPageThreadLocal().getFooterContainer()), "Footer section is existing after keyword searching", "Footer section is not existing after keyword searching");
-
+	
 	//Test sort
 	if(getProductResultsPageThreadLocal().chooseSortOptionByVisibleText("Price: Highest first")) {
 		lsMsg=getProductResultsPageThreadLocal().verifyHighestPriceFirstSort();
@@ -140,9 +140,7 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction ext
 				getProductResultsPageThreadLocal().verifySearchResultContent(productList);
 			}	
 			
-			reporter.softAssert(getProductResultsPageThreadLocal().verifyProductPagination(), "Product pagination is existing", "Product pagination is not existing");
-			reporter.softAssert(getProductResultsPageThreadLocal().verifyElementExisting(getProductResultsPageThreadLocal().getHeaderContainer()), "Header section is existing after choosing filters", "Header section is not existing after choosing filters");
-			reporter.softAssert(getProductResultsPageThreadLocal().verifyElementExisting(getProductResultsPageThreadLocal().getFooterContainer()), "Footer section is existing after choosing filters", "Footer section is not existing after choosing filters");
+			reporter.softAssert(getProductResultsPageThreadLocal().verifyProductPagination(), "Product pagination is existing", "Product pagination is not existing");			
 		}
 		else {
 			reporter.reportLogFail("Choosing filter of "+lstItem.get(0)+"/"+lstItem.get(1)+" failed");

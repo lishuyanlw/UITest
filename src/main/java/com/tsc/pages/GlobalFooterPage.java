@@ -1,11 +1,14 @@
 package com.tsc.pages;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.Select;
 
 import com.tsc.pages.base.BasePage;
 
@@ -168,12 +171,129 @@ public class GlobalFooterPage extends BasePage {
 	@FindBy(xpath = "//div[@class='CustomerService']//div[contains(@class,'customer-service__article')]")
 	public WebElement blkArticle;
 	
+	//My Account
+	@FindBy(xpath = "//*[contains(@class,'titleLink')]")
+	public WebElement lblMyAccount;
+	
+	@FindBy(xpath = "//div[contains(@class,'singleOpenable')]//div[contains(@class,'panTitleContainer')]//a")
+	public List<WebElement> lstMyAccountItemTitle;
+	
+	@FindBy(xpath = "//div[contains(@class,'singleOpenable')]//div[contains(@class,'panHTMLContainer')]")
+	public List<WebElement> lstMyAccountItemContent;
+	
+	//Track Your Order
+	@FindBy(xpath = "//div[contains(@class,'trackorder__wrap')]//h1")
+	public WebElement lblTrackYourOrder;
+	
+	@FindBy(xpath = "//div[contains(@class,'trackorder__wrap')]//div[contains(@class,'required-fields')]")
+	public WebElement lblRequiredFieldsInfo;
+	
+	//For Order number
+	@FindBy(xpath = "//div[contains(@class,'order-lookup__wrap')]//h2")
+	public WebElement lblOrderNumberTitle;
+	
+	@FindBy(xpath = "//div[contains(@class,'order-lookup__wrap')]//input[@id='OrderNumber']//ancestor::div[@class='form-group']")
+	public WebElement cntOrderNumber;
+	
+	@FindBy(xpath = "//div[contains(@class,'order-lookup__wrap')]//label[@id='OrderNumberlbl']")
+	public WebElement lblOrderNumberLable;
+	
+	@FindBy(xpath = "//div[contains(@class,'order-lookup__wrap')]//input[@id='OrderNumber']")
+	public WebElement inputOrderNumber;
+	
+	@FindBy(xpath = "//div[contains(@class,'order-lookup__wrap')]//input[@id='OrderNumber']/following-sibling::div[contains(@class,'alert')]")
+	public WebElement lblOrderNumberAlertMsg;
+	
+	@FindBy(xpath = "//div[contains(@class,'order-lookup__wrap')]//input[@id='BillingPostal']//ancestor::div[@class='form-group']")
+	public WebElement cntBillingPostalCode;
+	
+	@FindBy(xpath = "//div[contains(@class,'order-lookup__wrap')]//label[@id='BillingPostallbl']")
+	public WebElement lblBillingPostalCodeLabel;
+	
+	@FindBy(xpath = "//div[contains(@class,'order-lookup__wrap')]//input[@id='BillingPostal']")
+	public WebElement inputBillingPostalCode;
+	
+	@FindBy(xpath = "//div[contains(@class,'order-lookup__wrap')]//input[@id='BillingPostal']/following-sibling::div[contains(@class,'alert')]")
+	public WebElement lblBillingPostalCodeAlertMsg;
+	
+	@FindBy(xpath = "//div[contains(@class,'order-lookup__wrap')]//button[@type='submit']")
+	public WebElement btnTrackYourOrderSubmit;
+	
+	//For Sign in
+	@FindBy(xpath = "//div[contains(@class,'signin__wrap')]//h2")
+	public WebElement lblTrackYourOrderSignUpTitle;
+	
+	@FindBy(xpath = "//div[contains(@class,'signin__wrap')]//form/preceding-sibling::div")
+	public WebElement lblGetAllDetailsInfo;
+	
+	@FindBy(xpath = "//div[contains(@class,'signin__wrap')]//input[@id='EmailAddress']//ancestor::div[@class='form-group']")
+	public WebElement cntEmailAddress;
+	
+	@FindBy(xpath = "//div[contains(@class,'signin__wrap')]//label[@id='EmailAddresslbl']")
+	public WebElement lblEmailAddressLable;
+	
+	@FindBy(xpath = "//div[contains(@class,'signin__wrap')]//input[@id='EmailAddress']")
+	public WebElement inputEmailAddress;
+	
+	@FindBy(xpath = "//div[contains(@class,'signin__wrap')]//input[@id='EmailAddress']/following-sibling::div[contains(@class,'alert')]")
+	public WebElement lblEmailAddressAlertMsg;
+	
+	@FindBy(xpath = "//div[contains(@class,'signin__wrap')]//input[@id='Password']//ancestor::div[@class='form-group']")
+	public WebElement cntPassword;
+	
+	@FindBy(xpath = "//div[contains(@class,'signin__wrap')]//label[@id='Passwordlbl']")
+	public WebElement lblPasswordLabel;
+	
+	@FindBy(xpath = "//div[contains(@class,'signin__wrap')]//input[@id='Password']")
+	public WebElement inputPassword;
+	
+	@FindBy(xpath = "//div[contains(@class,'signin__wrap')]//input[@id='Password']/following-sibling::div[contains(@class,'alert')]")
+	public WebElement lblPasswordAlertMsg;
+	
+	@FindBy(xpath = "//div[contains(@class,'signin__wrap')]//button[contains(@class,'form__button-show-password')]")
+	public WebElement btnShowOrHidePassword;
+	
+	@FindBy(xpath = "//div[contains(@class,'signin__wrap')]//button[@type='submit']")
+	public WebElement btnTrackYourOderSignIn;
+	
+	//Contact Us
+	@FindBy(xpath = "//div[@id='contactus']//h1")
+	public WebElement lblContactUS;
+	
+	@FindBy(xpath = "//div[@id='contactus']//h2")
+	public WebElement lblWhatCanWeHelpYouWith;
+	
+	@FindBy(xpath = "//div[@id='contactus']//select")
+	public WebElement selectContactUS;
+	
+	@FindBy(xpath = "//div[@id='contactus']//select/option")
+	public List<WebElement> lstContactUSOption;
+	
+	@FindBy(xpath = "//div[@id='contactus']//div[(contains(@class,'row_below_dropdown') and not(contains(@class,'billing_or_refunds_inquiries'))) or contains(@class,'row_below_form') or @id='formHandle' ]")
+	public List<WebElement> lstContactUSOptionText;
+	
+	@FindBy(xpath = "//div[@id='contactus']//label[contains(@class,'label_please_visit')]")
+	public WebElement lblPleaseVisitUSInfo;
+	
+	@FindBy(xpath = "//div[@id='contactus']//label[contains(@class,'label_please_visit')]/a")
+	public WebElement lnkPleaseVisitUS;
+	
+	//Terms of Use
+	@FindBy(xpath = "//div[@class='Middle']//h2")
+	public WebElement lblTermsOfUseAboutOurService;
+	
+	@FindBy(xpath = "//div[@class='Middle']//div[contains(@class,'singleOpenable')]//div[contains(@class,'panTitleContainer')]//a")
+	public List<WebElement> lstTermsOfUseItemTitle;
+	
+	@FindBy(xpath = "//div[@class='Middle']//div[contains(@class,'singleOpenable')]//div[contains(@class,'panHTMLContainer')]")
+	public List<WebElement> lstTermsOfUseItemContent;
+	
 
 	/**
 	 * Close popup dialog through clicking close button.
 	 * @author Wei.Li
 	 */
-	public void closePopupDialog() {		
+	public void closePopupDialog() {
 		if(waitForCondition(Driver->{return (new HomePage(this.getDriver())).btnClose.isDisplayed();},40000)) {
 			(new HomePage(this.getDriver())).btnClose.click();
 		}
@@ -186,6 +306,7 @@ public class GlobalFooterPage extends BasePage {
 	 * @author Wei.Li
 	 */
 	public boolean waitForPageLoading() {
+		this.waitForPageToLoad();
 		return waitForCondition(Driver->{return !this.pageLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},60000);		
 	}
 	
@@ -367,10 +488,11 @@ public class GlobalFooterPage extends BasePage {
 	/**
 	 * This method is to go to a specific service.
 	 * @param String lsService: the service name
+	 * @param WebElement lblIndicator: page loading indicator
 	 * @return true/false
 	 * @author Wei.Li
 	 */
-	public boolean goToService(String lsService) {
+	public boolean goToService(String lsService,WebElement lblIndicator) {
 		WebElement selectedItem=this.getServiceWebElement(lsService);		
 		if(selectedItem==null) {
 			return false;
@@ -378,7 +500,38 @@ public class GlobalFooterPage extends BasePage {
 		
 		getReusableActionsInstance().javascriptScrollByVisibleElement(selectedItem);
 		selectedItem.click();		
-		return waitForCondition(Driver->{return this.lblCustomerService.isDisplayed();},60000);		
+		return waitForCondition(Driver->{return lblIndicator.isDisplayed();},60000);		
+	}
+	
+	/**
+	 * This method is to compare the url in the new window to the expected Url.
+	 * @param String lsService: the service name
+	 * @param String lsExpectedUrl: expected Url
+	 * @return true/false
+	 * @author Wei.Li
+	 */
+	public boolean compareUrlInNewWindow(String lsService,String lsExpectedUrl) {
+		WebElement selectedItem=this.getServiceWebElement(lsService);		
+		if(selectedItem==null) {
+			return false;
+		}
+		
+		String lsMainWindowHandle=this.getDriver().getWindowHandle();
+		getReusableActionsInstance().javascriptScrollByVisibleElement(selectedItem);
+		selectedItem.click();	
+		getReusableActionsInstance().waitForNumberOfWindowsToBe(2,30);
+		Set<String> lstWindowHandle=this.getDriver().getWindowHandles();
+		for(String windowHandle:lstWindowHandle) {
+			if(!windowHandle.equalsIgnoreCase(lsMainWindowHandle)) {
+				this.getDriver().switchTo().window(windowHandle);
+				break;
+			}
+		}	
+		String lsCurrentUrl=this.removeLastSlashFromUrl(this.getDriver().getCurrentUrl());
+		lsExpectedUrl=this.removeLastSlashFromUrl(lsExpectedUrl);
+		this.getDriver().switchTo().window(lsMainWindowHandle);
+		
+		return lsCurrentUrl.equalsIgnoreCase(lsExpectedUrl);
 	}
 	
 	/**
@@ -403,5 +556,154 @@ public class GlobalFooterPage extends BasePage {
 		reporter.softAssert(lsOriginalUrl.equalsIgnoreCase(this.URL()),"The navigation link works","The navigation link does not work");				
 	}
 	
-
+	/**
+	 * This method is to verify existence of element list.
+	 * @param List<WebElement> elementList: input element list
+	 * @return void
+	 * @author Wei.Li
+	 */
+	public void verifyElementListExistence(List<WebElement> elementList) {
+		for(WebElement element:elementList) {
+			getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+			String lsTitle,lsSuccessMsg,lsFailureMsg;
+			
+			String lsTagName=element.getTagName().toLowerCase();
+			switch(lsTagName) {
+			case "select":
+				lsSuccessMsg="The dropdown element is existing";
+				lsFailureMsg="The dropdown element is not existing";
+				reporter.softAssert(getReusableActionsInstance().isElementVisible(element),lsSuccessMsg,lsFailureMsg);
+				break;
+			case "input":
+				lsTitle=element.getAttribute("name");
+				lsSuccessMsg="The input element of '"+lsTitle+"' is existing";
+				lsFailureMsg="The input element of '"+lsTitle+"' is not existing";
+				reporter.softAssert(getReusableActionsInstance().isElementVisible(element),lsSuccessMsg,lsFailureMsg);
+				break;
+			case "a":
+				lsTitle=element.getText().trim();				
+				lsSuccessMsg="The href of element of '"+lsTitle+"' is not empty";
+				lsFailureMsg="The href of element of '"+lsTitle+"' is empty";
+				reporter.softAssert(!this.getElementHref(element).isEmpty(),lsSuccessMsg,lsFailureMsg);
+				break;
+			case "img":
+				lsSuccessMsg="The src of image element is not empty";
+				lsFailureMsg="The src of image element is empty";
+				reporter.softAssert(!this.getElementImageSrc(element).isEmpty(),lsSuccessMsg,lsFailureMsg);
+				break;
+			default:
+				lsTitle=element.getText().trim();
+				if(lsTitle.length()>100) {
+					lsTitle=lsTitle.substring(0,100)+"...";
+				}				
+				lsSuccessMsg="The element of '"+lsTitle+"' is existing";
+				lsFailureMsg="The element of '"+lsTitle+"' is not existing";
+				reporter.softAssert(getReusableActionsInstance().isElementVisible(element),lsSuccessMsg,lsFailureMsg);
+				break;
+			}
+		}
+	}
+	
+	/**
+	 * This method is to make alert messages occur for order number and sign in input in Track Your Order service.
+	 * @author Wei.Li
+	 */
+	public void displayAlertMessageForOrderNumberAndSignInInput() {
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputOrderNumber);
+		this.inputOrderNumber.sendKeys("1");
+		
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputBillingPostalCode);
+		this.inputBillingPostalCode.sendKeys("1");
+		
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputEmailAddress);
+		this.inputEmailAddress.sendKeys("1");
+		
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputPassword);
+		this.inputPassword.sendKeys("1");
+		
+		getReusableActionsInstance().staticWait(300);				
+	}
+	
+	/**
+	 * This method is to expand panel items.
+	 * @author Wei.Li
+	 */
+	public void expandPanelItems(List<WebElement> lstPanelItem,List<WebElement> lstPanelItemContent) {
+		getReusableActionsInstance().staticWait(3000);
+		for(int i=0;i<lstPanelItem.size();i++) {			
+			WebElement item=lstPanelItem.get(i);			
+			String lsClass=item.getAttribute("class");
+			if(lsClass.equalsIgnoreCase("collapsed")) {
+				getReusableActionsInstance().javascriptScrollByVisibleElement(item);				
+				item.click();
+				WebElement itemContent=lstPanelItemContent.get(i);
+				waitForCondition(Driver->{return itemContent.getAttribute("aria-expanded").equalsIgnoreCase("true");},10000);
+				getReusableActionsInstance().staticWait(1000);												
+			}			
+		}						
+	}
+	
+	/**
+	 * This method is to verify dropdown content in Contact US service.
+	 * @author Wei.Li
+	 */
+	public void verifyDropdownOptionContent() {		
+		String lsOption;
+		Select drpOption= new Select(this.selectContactUS);		
+		for(int i=1;i<this.lstContactUSOption.size();i++) {
+			String lsFirstSection=this.lstContactUSOptionText.get(0).getText();			
+			getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectContactUS);			
+			drpOption.selectByIndex(i);
+			lsOption=drpOption.getFirstSelectedOption().getText();	
+			reporter.reportLog("Dropdown option: "+lsOption);
+			waitForCondition(Driver->{return !lsFirstSection.equalsIgnoreCase(this.lstContactUSOptionText.get(0).getText());},5000);			
+			for(WebElement contentSection:this.lstContactUSOptionText) {
+				getReusableActionsInstance().javascriptScrollByVisibleElement(contentSection);
+				reporter.softAssert(getReusableActionsInstance().isElementVisible(contentSection),"The dropdown option of '"+lsOption+"' displays correctly","The dropdown option of '"+lsOption+"' does not display correctly");
+			}			
+		}						
+	}
+	
+	/**
+	 * This method is to verify Service object section titles.
+	 * @param List<WebElement> lstSection: Section element list
+	 * @param List<String> lstExpectedTitle: expected section title list
+	 * @param boolean bFullMatch: Decide fully matched or partially matched
+	 * @author Wei.Li
+	 */
+	public void verifyServiceObjectSectionTitle(List<WebElement> lstSection,List<String> lstExpectedTitle,boolean bFullMatch) {		
+		List<String> lstSectionTitle=new ArrayList<String>();
+		for(WebElement element:lstSection) {
+			getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+			lstSectionTitle.add(element.getText().toUpperCase().trim());
+		}
+		
+		boolean bMatch=false;
+		String lsNotMatch="";
+		for(String lsTitle:lstExpectedTitle) {
+			bMatch=false;
+			for(String lsItem:lstSectionTitle) {
+				if(bFullMatch) {
+					if(lsItem.equalsIgnoreCase(lsTitle)) {
+						bMatch=true;
+					}
+				}
+				else {
+					if(lsItem.contains(lsTitle)) {
+						bMatch=true;
+					}
+				}				
+			}
+			if(bMatch) {
+				continue;
+			}
+			else {
+				lsNotMatch=lsTitle;
+				break;
+			}
+		}
+		
+		reporter.softAssert(bMatch,"All sections are displayed correctly",lsNotMatch+" is not displayed correctly");
+	}
+		
 }

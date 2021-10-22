@@ -10,15 +10,16 @@ import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 
 public class SR_TC01_Verify_ProductSearchResult extends BaseTest{
-	
-	/**
-	 * This method will test functions of product searching results
-	 *
-	 * @author Wei.Li
-	 */	
+	/*
+	 * CER-211
+	 * CER-212
+	 * CER-217
+	 * CER-216
+	 * CER-218
+	 */
 	@Test(groups={"ProductSearch","Regression"})
 	public void validateProductSearchResult() throws IOException {	
-	(new HomePage(this.getDriver())).closeadd();
+	getGlobalFooterPageThreadLocal().closePopupDialog();
 	
 	reporter.softAssert(getglobalheaderPageThreadLocal().validateURL((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");		
 	reporter.reportLog("ProductSearch Page");

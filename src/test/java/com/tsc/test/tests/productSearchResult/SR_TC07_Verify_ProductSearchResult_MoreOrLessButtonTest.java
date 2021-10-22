@@ -11,14 +11,14 @@ import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 
 public class SR_TC07_Verify_ProductSearchResult_MoreOrLessButtonTest extends BaseTest{
-	
-	/**
-	 * This method will test the More and Less button.
-	 * @author Wei.Li
-	 */	
+	/*
+	 * CER-234
+	 * CER-235
+	 * CER-236
+	 */
 	@Test(groups={"ProductSearch","Regression"})
 	public void validateProductSearchResult_MoreOrLessButtonTest() throws IOException {	
-	(new HomePage(this.getDriver())).closeadd();
+	getGlobalFooterPageThreadLocal().closePopupDialog();
 	
 	reporter.softAssert(getglobalheaderPageThreadLocal().validateURL((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");		
 	reporter.reportLog("ProductSearch Page");

@@ -39,93 +39,180 @@ public class GlobalheaderPage extends BasePage{
 
 	//Product results
 	@FindBy(xpath = "//div[@class='Footer']//div[contains(@class,'blockPageWrap')]")
-	WebElement productResultLoadingIndicator;
+	public WebElement productResultLoadingIndicator;
+	
+	//Black header
+	@FindBy(xpath = "//div[contains(@class,'black-header')]//a[contains(@class,'black-header__showstopper')]")
+	public WebElement lnkTSBlackHeader;
+	
+	@FindBy(xpath = "//div[contains(@class,'black-header')]//*[contains(@class,'black-header__promotion-text')]")
+	public WebElement lblPromotionTextBlackHeader;
+	
+	@FindBy(xpath = "//div[contains(@class,'black-header')]//button[contains(@class,'black-header__watch-tsc')]")
+	public WebElement btnWatchTSCBlackHeader;
+	
+	//Watch TSC dropdown menu
+	@FindBy(xpath = "//div[contains(@class,'black-header')]//nav//li//a[contains(@href,'WatchUsLive')]")
+	public WebElement lnkWatchUsLiveDpdMenu;
+	
+	@FindBy(xpath = "//div[contains(@class,'black-header')]//nav//li//a[contains(@href,'Deals')]")
+	public WebElement lnkDealsDpdMenu;
+	
+	@FindBy(xpath = "//div[contains(@class,'black-header')]//nav//li//a[contains(@href,'ProgramGuide')]")
+	public WebElement lnkProgramGuideDpdMenu;
+	
+	@FindBy(xpath = "//div[contains(@class,'black-header')]//nav//li//a[contains(@href,'Gadgets')]")
+	public WebElement lnkCarGadgetsDpdMenu;
+	
+	@FindBy(xpath = "//div[contains(@class,'black-header')]//nav//li//a[contains(@href,'Footwear')]")
+	public WebElement lnkDesignerFootwearDpdMenu;
+	
+	@FindBy(xpath = "//div[contains(@class,'black-header')]//nav//li//a[contains(@href,'OnAir')]")
+	public WebElement lnkOnAirProductsDpdMenu;
 	
 	//Sliver Links [Dynamic event, TS, Deals, OnAir, Program Guide, Watch Us Live]
 	@FindBy(xpath = "//*[@class='Sliver']//a[contains(@href, 'todaysshowstopper')]")
-	WebElement lnkTS;
+	public WebElement lnkTS;
 	
 	@FindBy(xpath="//*[@class='Sliver']//a[contains(@href, 'todaysshowstopper')]//span")
-	WebElement lnkTScnt;
+	public WebElement lnkTScnt;
 	
 	@FindBy(xpath = "//*[@class='Sliver']//a[contains(@href, 'Deals')]")
-	WebElement lnkDeals;
+	public WebElement lnkDeals;
 	
 	@FindBy(xpath = "//*[@class='Sliver']//a[contains(@href, 'OnAir')]")
-	WebElement lnkOnAir;
+	public WebElement lnkOnAir;
 	
 	@FindBy(xpath = "//*[@class='Sliver']//a[contains(@href, 'ProgramGuide')]")
-	WebElement lnkProgramGuide;
+	public WebElement lnkProgramGuide;
 	
 	@FindBy(xpath = "//*[@class='Sliver']//a[contains(@href, 'ProgramGuide')]//div[contains(@class,'slvr-mnu-icon-container')]")
-	WebElement imgProgramGuideIcon;
+	public WebElement imgProgramGuideIcon;
 	
 	@FindBy(xpath = "//*[@class='Sliver']//a[contains(@href, 'WatchUsLive')]")
-	WebElement lnkWatchUsLive;
+	public WebElement lnkWatchUsLive;
 	
 	@FindBy(xpath = "//*[@class='Sliver']//a[contains(@href, 'WatchUsLive')]//div[contains(@class,'slvr-mnu-icon-container')]")
-	WebElement imgWatchUsLiveIcon;
+	public WebElement imgWatchUsLiveIcon;
 	
 	//Dynamic Event
 	@FindBy(xpath = "//*[@class='Sliver']//a[@class='slideLink']")
-	WebElement lnkdynamicEvent;
+	public WebElement lnkdynamicEvent;
 	
 	By byDynamicEvent=By.xpath("//*[@class='Sliver']//a[@class='slideLink']");
 		
 	//TSC Logo
-	@FindBy(xpath = "//*[@class='Header']//div[@class='logo']")
-	WebElement lnkTSClogo;
+	@FindBy(xpath = "//div[contains(@class,'secondary-navigation__logo')]")
+	public WebElement lnkTSClogo;
 	
-	@FindBy(xpath = "//*[@class='Header']//div[@class='logo']//a")
-	WebElement lnkTSClogolink;
+	@FindBy(xpath = "//div[contains(@class,'secondary-navigation__logo')]//a")
+	public WebElement lnkTSClogolink;
 	
 	//SearchBox
 	@FindBy(xpath = "//*[@class='Header']//form[@class='reactAppForm']//input[@class='tsc-search-input']|//div[contains(@class,'searchContainer')]//input")
-	WebElement searchBox;
+	public WebElement searchBox;
 	
 	@FindBy(xpath = "//*[@class='Header']//form[@class='reactAppForm']//button[@class='submit-search-button']|//div[contains(@class,'searchContainer')]//button[@type='submit']")
-	WebElement btnSearchSubmit;
+	public WebElement btnSearchSubmit;
 	
 	@FindBy(xpath = "//div[@class='searchContainer']//button[contains(@class,'clear-search-button')]|//div[contains(@class,'searchContainer')]//button[@type='reset']")
-	WebElement btnSearchClear;
+	public WebElement btnSearchClear;
 		
 	@FindBy(xpath = "//div[@class='searchContainer']//div[contains(@class,'suggestions-container')]|//div[contains(@class,'aa-Panel--desktop')]")
-	WebElement ctnSearchResult;
+	public WebElement ctnSearchResult;
 	
+	//For QA website
 	@FindBy(xpath = "//div[@class='searchContainer']//div[contains(@class,'suggestions-container')]|//div[contains(@class,'aa-Panel--desktop')]//ul")
-	List<WebElement> searchQADropdwonmenuList;
+	public List<WebElement> searchQADropdwonmenuList;
+
+	//Top suggestions
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Top suggestions') or contains(.,'Trending')][contains(@class,'ac__section__title search-title')]")
+	public WebElement lblTopSuggestions;
 	
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Top suggestions') or contains(.,'Trending')][contains(@class,'ac__section__title search-title')]/following-sibling::ul")
+	public WebElement cntTopSuggestionsList;
+	
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Top suggestions') or contains(.,'Trending')][contains(@class,'ac__section__title search-title')]/following-sibling::ul//li//a")
+	public List<WebElement> lstTopSuggestionsLink;
+	
+	public By byUnmarkedTextForTopSuggestions = By.xpath(".//span[contains(@class,'unmark-text')]");
+	
+	//Categories
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Categories') or contains(.,'Featured brands')][contains(@class,'ac__section__title search-title')]")
+	public WebElement lblCategories;
+	
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Categories') or contains(.,'Featured brands')][contains(@class,'ac__section__title search-title')]/following-sibling::ul")
+	public WebElement cntCategoriesList;
+	
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Categories') or contains(.,'Featured brands')][contains(@class,'ac__section__title search-title')]/following-sibling::ul//li//a")
+	public List<WebElement> lstCategoriesLink;
+	
+	//Brands
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Brands') and contains(@class,'ac__section__title search-title')]")
+	public WebElement lblBrands;
+	
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Brands') and contains(@class,'ac__section__title search-title')]/following-sibling::ul")
+	public WebElement cntBrandsList;
+	
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Brands') and contains(@class,'ac__section__title search-title')]/following-sibling::ul//li//a")
+	public List<WebElement> lstBrandsLink;
+	
+	//Possible item matches
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--right')]//*[contains(.,'Possible item matches') or contains(.,'Top Selling Products')][contains(@class,'search-title')]")
+	public WebElement lblPossibleItemMatches;
+	
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--right')]//*[contains(.,'Possible item matches') or contains(.,'Top Selling Products')][contains(@class,'search-title')]/following-sibling::ul")
+	public WebElement cntPossibleItemMatchesList;
+	
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--right')]//*[contains(.,'Possible item matches') or contains(.,'Top Selling Products')][contains(@class,'search-title')]/following-sibling::ul//li//a")
+	public List<WebElement> lstPossibleItemMatchesLink;
+	
+	public By byProductImgForPossibleItemMatchesItem= By.xpath(".//div[@class='ac-productlist__row']//div[contains(@class,'ac-productlist__left')]//img");
+	
+	public By byProductBadgeForPossibleItemMatchesItem= By.xpath(".//div[@class='ac-productlist__row']//div[contains(@class,'ac-productlist__right')]//div[contains(@class,'ac-productlist__badge')]");
+	
+	public By byProductDescriptionForPossibleItemMatchesItem= By.xpath(".//div[@class='ac-productlist__row']//div[contains(@class,'ac-productlist__right')]//div[contains(@class,'ac-productlist__description')]");
+	
+	public By byProductNumberForPossibleItemMatchesItem= By.xpath(".//div[@class='ac-productlist__row']//div[contains(@class,'ac-productlist__right')]//div[contains(@class,'ac-productlist__item-number2')]");
+	
+	public By byProductPriceForPossibleItemMatchesItem= By.xpath(".//div[@class='ac-productlist__row']//div[contains(@class,'ac-productlist__right')]//div[@class='ac-productlist__price']");
+	
+	//For Staging website
 	@FindBy(xpath = "//div[@class='searchContainer']//div[contains(@class,'suggestions-container--open')]//div[@class='tsc-category-title']")
-	WebElement txtSearchResultCategoryHeader;
+	public WebElement txtSearchResultCategoryHeader;
 	
+	//For Staging website
 	@FindBy(xpath = "//div[@class='searchContainer']//div[contains(@class,'suggestions-container--open')]//ul//li")
-	List<WebElement> searchResultList;
+	public List<WebElement> searchResultList;
 	
 	By byCategoryAboveSearchResultList=By.xpath("//div[@class='searchContainer']//div[contains(@class,'suggestions-container--open')]//ul/preceding-sibling::div[@class='tsc-category-title']");
 		
 	//Favorite link
 	@FindBy(xpath = "//*[@class='Header']//a[contains(@href, 'favourites')]")
-	WebElement Favouriteslnk;
+	public WebElement Favouriteslnk;
+	
+	@FindBy(xpath = "//*[@class='Header']//a[contains(@href, 'favourites')]//*[@class='secondary-navigation__rhs-container__logo']")
+	public WebElement FavouritesIcon;
 	
 	//SignIn
-	@FindBy(xpath = "//*[@class='Header']//a[@id='myAccountBtn']")
-	WebElement Signinlnk;
+	@FindBy(xpath = "//div[contains(@class,'secondary-navigation__rhs-account')]//a")
+	public WebElement Signinlnk;
 	
-	@FindBy(xpath = "//*[@class='Header']//div[@class='bagContainer']//*[contains(@class,'svgSigninIcon')]")
-	WebElement SigninIcon;
+	@FindBy(xpath = "//div[contains(@class,'secondary-navigation__rhs-account')]//a//*[@class='secondary-navigation__rhs-account-icon']")
+	public WebElement SigninIcon;
 	
-	//MiniCart 
-	@FindBy(xpath = "//*[@class='Header']//a[@id='tagCartButton']")
-	WebElement Minicartlnk;
+	//Shopping Cart 
+	@FindBy(xpath = "//*[@class='Header']//a[contains(@class, 'secondary-navigation__rhs-bag')]")
+	public WebElement ShoppingCartlnk;
  
-	@FindBy(xpath ="//*[@class='Header']//a[@id='tagCartButton']//span")
-	WebElement MinicartIconcont;			
+	@FindBy(xpath ="//*[@class='Header']//a[contains(@class, 'secondary-navigation__rhs-bag')]/span")
+	public WebElement ShoppingCartIconcont;			
 
-	@FindBy(xpath = "//*[@class='Header']//*[@class='svgBagIcon']")
-	WebElement CartBagIcon;
+	@FindBy(xpath = "//*[@class='Header']//a[contains(@class, 'secondary-navigation__rhs-bag')]//*[@class='secondary-navigation__rhs-bag__item-icon']")
+	public WebElement CartBagIcon;
 	
-	@FindBy(xpath = "//*[@class='Header']//div[@id='bagCounter']")
-	WebElement CartBagCounter;
+	@FindBy(xpath = "//*[@class='Header']//a[contains(@class, 'secondary-navigation__rhs-bag')]//div[contains(@class,'secondary-navigation__rhs-bag__item')]//span[contains(@class,'secondary-navigation__rhs-bag__item-badge')]//span[not(contains(@class,'visually-hidden'))]")
+	public WebElement CartBagCounter;
 
 
 	/*
@@ -141,8 +228,34 @@ public class GlobalheaderPage extends BasePage{
 	
 	@FindBy(xpath = "//*[@class='email-popup__button']")
 	WebElement btnClose;
-	public void closeadd() {
-		btnClose.click();
+
+	/*
+	 * @author godwin.gopi
+	 * Header Options
+	 */
+	@FindBy(xpath="//span[contains(text(),'Clearance')]")
+	WebElement clearanceHeader;
+
+	//Godwin
+	@FindBy(xpath="//a[@class='mega-sub-items__item-link mega-sub-items__item-link-first' and contains(text(),'Shop all')]")
+	WebElement shopAllFasionOption;
+
+	@FindBy(xpath="//a[@role=\"button\" and contains(text(),'Fashion')]")
+	WebElement fasionOption;
+
+	public void clickOnClearanceHeaderOption() {
+		getReusableActionsInstance().clickIfAvailable(clearanceHeader);
+	}
+
+	/**
+	 * This method will verify clearance.
+	 * @return  WebElement
+	 * @author godwin.gopi
+	 */
+	public void clickSubMenuLink() {
+		getReusableActionsInstance().clickIfAvailable(fasionOption);
+		getReusableActionsInstance().clickIfAvailable(shopAllFasionOption);
+		waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},60000);
 	}
 
 	public void waitForPageLoad() {
@@ -396,42 +509,42 @@ public class GlobalheaderPage extends BasePage{
 		return getReusableActionsInstance().isElementVisible(SigninIcon, 5);
 	}
 		
-	//Mini cart Link visible
-	public String validateMinicartLinkName() {
-		String emptySTAIbtn="Mini cart link href is empty";
-		if (Minicartlnk.getAttribute("href").isEmpty()) {
+	//Shopping cart Link visible
+	public String validateShoppingCartLinkName() {
+		String emptySTAIbtn="Shopping cart link href is empty";
+		if (ShoppingCartlnk.getAttribute("href").isEmpty()) {
 							
 			return emptySTAIbtn;
 			
 		}else{
-			getReusableActionsInstance().isElementVisible(Minicartlnk, 5);
-			return MinicartIconcont.getText();
+			getReusableActionsInstance().isElementVisible(ShoppingCartlnk, 5);
+			return ShoppingCartIconcont.getText();
 			}
 		}
 	
-	public boolean validateMinicartIcon() {
+	public boolean validateShoppingCartIcon() {
 			return getReusableActionsInstance().isElementVisible(CartBagIcon, 5);
 			 }
 	
-	public boolean validateMinicartBagCounter() {
+	public boolean validateShoppingCartBagCounter() {
 		return getReusableActionsInstance().isElementVisible(CartBagCounter, 5);
 		}
 
 		
 	/**
-	 * This method will verify MiniCart link
+	 * This method will verify Shopping Cart link
 	 *
 	 * @return true/false
 	 * 
 	 * @author Wei.Li
 	 */
-	public boolean verifyMiniCartLink(String lsMinicartLink) {
-		String lsMiniCartLink=this.Minicartlnk.getAttribute("href");
-		if(lsMiniCartLink.isEmpty()) {
+	public boolean verifyShoppingCartLink(String lsExpectedShoppingCartLink) {
+		String lsShoppingCartLink=this.ShoppingCartlnk.getAttribute("href");
+		if(lsShoppingCartLink.isEmpty()) {
 			return false;
 		}
 		else {			
-			if(lsMiniCartLink.equalsIgnoreCase(lsMinicartLink)) {
+			if(lsShoppingCartLink.equalsIgnoreCase(lsExpectedShoppingCartLink)) {
 				return true;
 			}
 			else {
@@ -441,15 +554,15 @@ public class GlobalheaderPage extends BasePage{
 	}
 	
 	/**
-	 * This method will get url of new windows after clicking MiniCart link
+	 * This method will get url of new windows after clicking Shopping Cart link
 	 *
 	 * @return String: changed Url
 	 * 
 	 * @author Wei.Li
 	 */		
-	public String getUrlAfterClickingMiniCartLink() throws IOException {
+	public String getUrlAfterClickingShoppingCartLink() {
 		getReusableActionsInstance().javascriptScrollToTopOfPage();
-		return waitForPageLoadingByUrlChange(this.Minicartlnk);		
+		return waitForPageLoadingByUrlChange(this.ShoppingCartlnk);		
 	}
 	
 	/**
@@ -587,19 +700,8 @@ public class GlobalheaderPage extends BasePage{
 		}
 		return FlyoutHeadings;
 	}		
-							
-	/*Method to get String of XPath  
-	 * @return String:Xpath
-	 * @author Shruti Desai
-	 */						
-	public String createXPath(String xpathExp, Object ...args){
-		for(int i=0; i<args.length; i++) {
-			xpathExp = xpathExp.replace("{"+i+"}", (CharSequence) args[i]);
-		}
-		return xpathExp;
-	}
 		
-		 /*Method to get list of Flyout submenu heding in camel case 
+	 /*Method to get list of Flyout submenu heding in camel case 
 	  * @return list:Flyout sub menu camel case
 	  * @author Shruti Desai
 	  */
@@ -689,7 +791,100 @@ public class GlobalheaderPage extends BasePage{
 			//Return All attributes are present
 			return href_src.toString();
 	}
-		
+	 
+	/**
+	 *Method to go to home page  
+	 * @return true/false
+	 * @author Wei.Li
+	 */	
+	 public boolean goBackHomePage() {
+		 getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkTSClogo);
+		 this.lnkTSClogo.click();
+		 return (new GlobalFooterPage(this.getDriver())).waitForPageLoading();
+	 }
 
+	/**
+	 *Method to hover on WatchTSC in Black headers  
+	 * @author Wei.Li
+	 */	
+	 public void hoverOnWatchTSC() {
+		 getReusableActionsInstance().scrollToElement(this.btnWatchTSCBlackHeader);
+		 getReusableActionsInstance().staticWait(100);		 
+	 }	
+	 
+	/**
+	 *Method to go to Black headers  
+	 * @param WebElement element: dropdown menu option	
+	 * @return true/false
+	 * @author Wei.Li
+	 */	
+	 public boolean switchWatchTSCDropdownOption(WebElement element) {
+		 getReusableActionsInstance().scrollToElement(this.btnWatchTSCBlackHeader);
+		 getReusableActionsInstance().staticWait(100);
+		 getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+		 element.click();
+		 return (new GlobalFooterPage(this.getDriver())).waitForPageLoading();
+	 }	 
+		
+	/**
+	 *Method to verify TS header and link in Black headers  	 
+	 * @param WebElement blackItem: the header in Black headers
+	 * @param WebElement silverItem: the header in Silver headers 
+	 * @param boolean bCheckUrl: to decide if check Url after clicking the header in Black headers 
+	 * @author Wei.Li
+	 */	
+	 public void verifyTSHeaderAndLinkInBlackHeader(WebElement blackItem,WebElement silverItem,boolean bCheckUrl) {
+		 getReusableActionsInstance().javascriptScrollByVisibleElement(blackItem);
+		 String lsTitle=blackItem.getText().trim();
+		 reporter.softAssert(getReusableActionsInstance().isElementVisible(blackItem), "The element of "+lsTitle+" in Black headers is visible","The element of "+lsTitle+" in Black headers is not visible");
+		 reporter.softAssert(!lsTitle.isEmpty(), lsTitle+" text in Black headers is not empty", lsTitle+" text in Black headers is empty");
+		 String lsHrefInBlackHeader=this.getElementHref(blackItem);	
+		 reporter.softAssert(!lsHrefInBlackHeader.isEmpty(), "The href of "+lsTitle+" in Black headers is not empty", "The href of "+lsTitle+" in Black headers is empty");
+		 lsHrefInBlackHeader=this.removeLastSlashFromUrl(lsHrefInBlackHeader);
+		 
+		 blackItem.click();
+		 this.waitForPageToLoad();
+		 (new GlobalFooterPage(this.getDriver())).waitForPageLoading();
+		 
+		 String lsUrlInSilverHeader=this.removeLastSlashFromUrl(this.URL());
+		 if(bCheckUrl) {
+			 reporter.softAssert(lsUrlInSilverHeader.equalsIgnoreCase(lsHrefInBlackHeader), "The Url of "+lsUrlInSilverHeader+"  after clicking "+lsTitle+" in Black headers is equal to the href of "+lsHrefInBlackHeader, "The Url of "+lsUrlInSilverHeader+"  after clicking "+lsTitle+" in Black headers is not equal to the href of "+lsHrefInBlackHeader);
+		 }
+
+//		 if(silverItem!=null) {
+//			 String lsStyle=silverItem.findElement(By.xpath(".//span")).getAttribute("style");			
+//			 reporter.softAssert(lsStyle.equalsIgnoreCase("color:#fff;")||lsStyle.equalsIgnoreCase("color: rgb(255, 255, 255);"), lsTitle+" in Silver headers is being selected", lsTitle+" in Silver headers is not being selected");		 		 
+//		 }
+	 }
+
+	 
+	/**
+	 *Method to show popup window by clicking search box 	
+	 * @return true/false
+	 * @author Wei.Li
+	 */	
+	 public boolean getPopupWindowByClickingSearchBox() {
+		 this.searchBox.click();
+		 return waitForCondition(Driver->{return this.lblTopSuggestions.isDisplayed();},5000);
+	 }
+	 
+	/**
+	 *Method to verify TopSellingProducts existing by changing item in Trending or Featured brands list   
+	 * @param List<WebElement> elementList: element list	
+	 * @return void
+	 * @author Wei.Li
+	 */	
+	 public void verifyTopSellingProductsExistingByChangingItemInTrendingOrFeaturedBrandsList(List<WebElement> elementList) {
+		 String lsItem;
+		 for(WebElement element:elementList) {
+			 getReusableActionsInstance().scrollToElement(element);
+			 getReusableActionsInstance().staticWait(300);
+			 lsItem=element.getText();
+			 reporter.softAssert(getReusableActionsInstance().isElementVisible(this.lblPossibleItemMatches),"The title of Top selling products is displaying correctly by selecting item of '"+lsItem+"'", "The title of Top selling products is not displaying correctly by selcting item of '"+lsItem+"'");
+			 reporter.softAssert(getReusableActionsInstance().isElementVisible(this.cntPossibleItemMatchesList),"The Top selling products list is displaying correctly by selecting item of '"+lsItem+"'","The Top selling products list is not displaying correctly by selcting item of '"+lsItem+"'");			 
+		 }	
+	 }
+	 
+	 
 }
 

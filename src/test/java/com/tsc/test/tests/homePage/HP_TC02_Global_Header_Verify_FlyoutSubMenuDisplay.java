@@ -12,7 +12,7 @@ public class HP_TC02_Global_Header_Verify_FlyoutSubMenuDisplay extends BaseTest 
 	
 	@Test(groups={"Home","Regression"})	    
 	public void verifyFlyoutHeadings() throws IOException {
-		
+		getGlobalFooterPageThreadLocal().closePopupDialog();
 		String lsBaseUrl=(new BasePage(this.getDriver())).getBaseURL();
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl+"/"), "TSC url is correct", "TSC url is incorrect");
 		reporter.reportLogWithScreenshot("Home Page");

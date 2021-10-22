@@ -1094,6 +1094,16 @@ public class ProductResultsPage extends BasePage{
     	return this.footerContainer;
     }
 
+	/**
+	 * This method will contain clearance title .
+	 * @return  WebElement
+	 * @author godwin.gopi
+	 */
+	public String getClearanceOptionURLTitle() {
+		String clearanceURLTitleText = getDriver().getCurrentUrl();
+		return clearanceURLTitleText;
+	}
+
 }
 
 	

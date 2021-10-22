@@ -61,6 +61,7 @@ searchResultPage:
         - ["SHOP BY COLOUR","Black"]
   lst_MoreButton: ["SHOP BY BRAND","SHOP BY SHOE SIZE","SHOP BY SIZE FASHION"]
   lst_DisappearAfterSelectFilter: ["SHOP BY BRAND"]
+  lnk_product_result: /pages/productresults?
 footerSection: 
   lst_SocialMediaLinks: ["https://www.facebook.com/Shoptsc","https://twitter.com/shoptsc","https://instagram.com/shoptsc","www.youtube.com","https://www.pinterest.ca/shoptsc"]
   lst_NameAndLinks: 

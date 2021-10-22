@@ -29,9 +29,10 @@ public class ConstantData {
 	private String lnk_WatchUsLive;	
 	private String lbl_Favourites;
 	private String lbl_SignIn;
+	private List<String> lst_SignInPopover;
 	private String lbl_SearchBoxPlaceholder;
-	private String lbl_MinicartLinkName;
-	private String lnk_MinicarLink;
+	private String lbl_ShoppingCartLinkName;
+	private String lnk_ShoppingCartLink;
 	private List<String> lst_FlyoutHeading;
 	private List<String> lst_FlyoutsubMenu;
 	private List<String> lnk_FlyoutHeaderLinkConstant;
@@ -63,7 +64,11 @@ public class ConstantData {
 	private List<List<String>> lst_NameAndLinks;
 	private String lbl_Username;
 	private String lbl_Password;
+	private String lbl_FirstName;	
 	private List<String> lst_DisappearAfterSelectFilter;
+	private String lnk_product_result;
+	private List<String> lst_MyAccountObjectSectionTitle;
+	private List<String> lst_TrackYourOrderObjectSectionTitle;
 
 	//Header Links getter and setter method
 	
@@ -328,6 +333,19 @@ public class ConstantData {
 	}
 	
 	/**
+	 * @return the lst_SignInPopover
+	 */
+	public List<String> getlst_SignInPopover() {
+		return lst_SignInPopover;
+	}
+	/**
+	 * @param lst_SignInPopover the lst_SignInPopover to set
+	 */
+	public void setlst_SignInPopover(List<String> lst_SignInPopover) {
+		this.lst_SignInPopover = lst_SignInPopover;
+	}
+	
+	/**
 	 * @return the lbl_SearchBoxPlaceholder
 	 */
 	public String getlbl_SearchBoxPlaceholder() {
@@ -341,29 +359,29 @@ public class ConstantData {
 	}
 	
 	/**
-	 * @return the lnk_MinicarLink
+	 * @return the lnk_ShoppingCartLink
 	 */
-	public String getlnk_MinicarLink() {
-		return lnk_MinicarLink;
+	public String getlnk_ShoppingCartLink() {
+		return lnk_ShoppingCartLink;
 	}
 	/**
-	 * @param lnk_MinicarLink the lnk_MinicarLink to set
+	 * @param lnk_ShoppingCartLink the lnk_ShoppingCartLink to set
 	 */
-	public void setlnk_MinicarLink(String lnk_MinicarLink) {
-		this.lnk_MinicarLink = lnk_MinicarLink;
+	public void setlnk_ShoppingCartLink(String lnk_ShoppingCartLink) {
+		this.lnk_ShoppingCartLink = lnk_ShoppingCartLink;
 	}
 	
 	/**
-	 * @return the lbl_MinicartLinkName
+	 * @return the lbl_ShoppingCartLinkName
 	 */
-	public String getlbl_MinicartLinkName() {
-		return lbl_MinicartLinkName;
+	public String getlbl_ShoppingCartLinkName() {
+		return lbl_ShoppingCartLinkName;
 	}
 	/**
-	 * @param lbl_MinicartLinkName the lbl_MinicartLinkName to set
+	 * @param lbl_ShoppingCartLinkName the lbl_ShoppingCartLinkName to set
 	 */
-	public void setlbl_MinicartLinkName(String lbl_MinicartLinkName) {
-		this.lbl_MinicartLinkName = lbl_MinicartLinkName;
+	public void setlbl_ShoppingCartLinkName(String lbl_ShoppingCartLinkName) {
+		this.lbl_ShoppingCartLinkName = lbl_ShoppingCartLinkName;
 	}
 	/**
 	 * @return the lbl_MinicartLinkName
@@ -768,7 +786,19 @@ public class ConstantData {
 	}
 	
 	/**
+	 * @return the lbl_FirstName
+	 */
+	public String getlbl_FirstName() {
+		return lbl_FirstName;
+	}
+	/**
+	 * @param lbl_FirstName the lbl_FirstName to set
+	 */
+	public void setlbl_FirstName(String lbl_FirstName) {
+		this.lbl_FirstName = lbl_FirstName;
+	}
 
+	/**
 	 * @return the lst_DisappearAfterSelectFilter
 	 */
 	public List<String> getlst_DisappearAfterSelectFilter() {
@@ -780,5 +810,36 @@ public class ConstantData {
 	public void setlst_DisappearAfterSelectFilter(List<String> lst_DisappearAfterSelectFilter) {
 		this.lst_DisappearAfterSelectFilter = lst_DisappearAfterSelectFilter;
 	}
-		
+
+	public String getLnk_product_result() {		
+		return lnk_product_result; 
+	}
+
+	public void setLnk_product_result(String lnk_product_result) { this.lnk_product_result = lnk_product_result; }
+
+	/**
+	 * @return the lst_MyAccountObjectSectionTitle
+	 */
+	public List<String> getlst_MyAccountObjectSectionTitle() {
+		return lst_MyAccountObjectSectionTitle;
+	}
+	/**
+	 * @param lst_MyAccountObjectSectionTitle the lst_MyAccountObjectSectionTitle to set
+	 */
+	public void setlst_MyAccountObjectSectionTitle(List<String> lst_MyAccountObjectSectionTitle) {
+		this.lst_MyAccountObjectSectionTitle = lst_MyAccountObjectSectionTitle;
+	}
+
+	/**
+	 * @return the lst_TrackYourOrderObjectSectionTitle
+	 */
+	public List<String> getlst_TrackYourOrderObjectSectionTitle() {
+		return lst_TrackYourOrderObjectSectionTitle;
+	}
+	/**
+	 * @param lst_TrackYourOrderObjectSectionTitle the lst_TrackYourOrderObjectSectionTitle to set
+	 */
+	public void setlst_TrackYourOrderObjectSectionTitle(List<String> lst_TrackYourOrderObjectSectionTitle) {
+		this.lst_TrackYourOrderObjectSectionTitle = lst_TrackYourOrderObjectSectionTitle;
+	}
 }
