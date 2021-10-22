@@ -36,7 +36,6 @@ public class HP_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo extends B
 		reporter.reportLog("Global Header Section contents for BlackMenu_SilverMenu_TSCLogoLinks");
 		
 		BasePage basePage=new BasePage(this.getDriver());
-		//String lsBaseUrl=basePage.getBaseURL()+"/";
 		
 		reporter.reportLog("Verify Black headers");
 		//Verify Black headers

@@ -7,6 +7,7 @@ public class ConstantDataFile {
     public HomePage homePage;
     public SearchResultPage searchResultPage;
     public FooterSection footerSection;
+    public LoginUser loginUser;
 
     public HeaderSection getHeaderSection() {
         return headerSection;
@@ -39,6 +40,14 @@ public class ConstantDataFile {
     public void setFooterSection(FooterSection footerSection) {
         this.footerSection = footerSection;
     }
+    
+    public LoginUser getLoginUser() {
+        return loginUser;
+    }
+
+    public void setLoginUser(LoginUser loginUser) {
+        this.loginUser = loginUser;
+    }
 
     public static class HeaderSection {
         private String lnk_NotFound;
@@ -60,26 +69,27 @@ public class ConstantDataFile {
         private String lbl_WatchUsLive_French;
         private String lnk_WatchUsLive;
         private String lbl_Favourites;
+        private List<String> lst_SignInPopover;
         private String lbl_SignIn;
         private String lbl_SearchBoxPlaceholder;
-        private String lbl_MinicartLinkName;
-        private String lnk_MinicarLink;
+        private String lbl_ShoppingCartLinkName;
+        private String lnk_ShoppingCartLink;
         private Flyout flyout;
 
-        public String getLbl_MinicartLinkName() {
-            return lbl_MinicartLinkName;
+        public String getLbl_ShoppingCartLinkName() {
+            return lbl_ShoppingCartLinkName;
         }
 
-        public void setLbl_MinicartLinkName(String lbl_MinicartLinkName) {
-            this.lbl_MinicartLinkName = lbl_MinicartLinkName;
+        public void setLbl_ShoppingCartLinkName(String lbl_ShoppingCartLinkName) {
+            this.lbl_ShoppingCartLinkName = lbl_ShoppingCartLinkName;
         }
 
-        public String getLnk_MinicarLink() {
-            return lnk_MinicarLink;
+        public String getLnk_ShoppingCartLink() {
+            return lnk_ShoppingCartLink;
         }
 
-        public void setLnk_MinicarLink(String lnk_MinicarLink) {
-            this.lnk_MinicarLink = lnk_MinicarLink;
+        public void setLnk_ShoppingCartLink(String lnk_ShoppingCartLink) {
+            this.lnk_ShoppingCartLink = lnk_ShoppingCartLink;
         }
 
         public Flyout getFlyout() {
@@ -242,6 +252,14 @@ public class ConstantDataFile {
             this.lbl_Favourites = lbl_Favourites;
         }
 
+        public List<String> getLst_SignInPopover() {
+            return lst_SignInPopover;
+        }
+
+        public void setLst_SignInPopover(List<String> lst_SignInPopover) {
+            this.lst_SignInPopover = lst_SignInPopover;
+        }
+        
         public String getLbl_SignIn() {
             return lbl_SignIn;
         }
@@ -509,6 +527,8 @@ public class ConstantDataFile {
     public static class FooterSection {
         private List<String> lst_SocialMediaLinks;
         private List<List<String>> lst_NameAndLinks;
+        private List<String> lst_MyAccountObjectSectionTitle;
+        private List<String> lst_TrackYourOrderObjectSectionTitle;
 
         public List<String> getLst_SocialMediaLinks() {
             return lst_SocialMediaLinks;
@@ -517,6 +537,22 @@ public class ConstantDataFile {
         public void setLst_SocialMediaLinks(List<String> lst_SocialMediaLinks) {
             this.lst_SocialMediaLinks = lst_SocialMediaLinks;
         }
+        
+        public List<String> getLst_MyAccountObjectSectionTitle() {
+            return lst_MyAccountObjectSectionTitle;
+        }
+
+        public void setLst_MyAccountObjectSectionTitle(List<String> lst_MyAccountObjectSectionTitle) {
+            this.lst_MyAccountObjectSectionTitle = lst_MyAccountObjectSectionTitle;
+        }
+        
+        public List<String> getLst_TrackYourOrderObjectSectionTitle() {
+            return lst_TrackYourOrderObjectSectionTitle;
+        }
+
+        public void setLst_TrackYourOrderObjectSectionTitle(List<String> lst_TrackYourOrderObjectSectionTitle) {
+            this.lst_TrackYourOrderObjectSectionTitle = lst_TrackYourOrderObjectSectionTitle;
+        }
 
         public List<List<String>> getLst_NameAndLinks() {
             return lst_NameAndLinks;
@@ -524,6 +560,36 @@ public class ConstantDataFile {
 
         public void setLst_NameAndLinks(List<List<String>> lst_NameAndLinks) {
             this.lst_NameAndLinks = lst_NameAndLinks;
+        }
+    }
+    
+    public static class LoginUser {
+        private String lbl_Username;
+        private String lbl_Password;
+        private String lbl_FirstName;
+        
+        public String getLbl_Username() {
+            return lbl_Username;
+        }
+
+        public void setLbl_Username(String lbl_Username) {
+            this.lbl_Username = lbl_Username;
+        }
+        
+        public String getLbl_Password() {
+            return lbl_Password;
+        }
+
+        public void setLbl_Password(String lbl_Password) {
+            this.lbl_Password = lbl_Password;
+        }
+        
+        public String getLbl_FirstName() {
+            return lbl_FirstName;
+        }
+
+        public void setLbl_FirstName(String lbl_FirstName) {
+            this.lbl_FirstName = lbl_FirstName;
         }
 
     }

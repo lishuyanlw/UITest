@@ -23,7 +23,7 @@ public class GF_TC05_Verify_GlobalFooter_AboutTSC_LinksAndPageObjects extends Ba
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl), "TSC url is correct", "TSC url is incorrect");		
 		reporter.reportLog("Global Footer Section");		
 
-		List<List<String>> lstNameAndLinks=TestDataHandler.constantDataVariables.getlst_NameAndLinks();
+		List<List<String>> lstNameAndLinks=TestDataHandler.constantDataFile.getFooterSection().getLst_NameAndLinks();
 		String lsService;
 		ArrayList<WebElement> elementList=new ArrayList<WebElement>();
 		

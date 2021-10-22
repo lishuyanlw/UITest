@@ -18,10 +18,11 @@ headerSection:
   lbl_WatchUsLive_French: En direct
   lnk_WatchUsLive: /pages/watchuslive?ic=HP_WatchUsLive
   lbl_Favourites: Favourites
+  lst_SignInPopover: ["Sign in","Create an account","Transfer a phone account","Track your order"]
   lbl_SignIn: Sign In
   lbl_SearchBoxPlaceholder: Search
-  lbl_MinicartLinkName: Bag
-  lnk_MinicarLink: /pages/shoppingcart
+  lbl_ShoppingCartLinkName: Bag
+  lnk_ShoppingCartLink: /pages/shoppingcart
   flyout:
     lst_FlyoutHeading: [ 'FASHION','SHOES & HANDBAGS', 'JEWELLERY', 'BEAUTY', 'HOME & GARDEN', 'KITCHEN', 'HEALTH & FITNESS', 'ELECTRONICS', 'COINS & HOBBIES', 'CLEARANCE' ]
     lbl_FlyoutHeadingLandingPageLink: /pages/category?nav=n
@@ -85,3 +86,9 @@ footerSection:
     - ["Meet the Hosts","Nos animateurs","/pages/hosts"]
     - ["© 1999 -2021 Rogers Media - Proudly Canadian","© 1999 -2021 Rogers Media - entreprise fièrement canadienne"]
     - ["All prices in Canadian dollars - TSC.ca","Tous les prix sont en dollars canadiens - TSC.ca"]
+  lst_MyAccountObjectSectionTitle: ["SETTING UP AN ACCOUNT","PHONE BASED ACCOUNTS","PASSWORD RECOVERY"]
+  lst_TrackYourOrderObjectSectionTitle: ["ORDER NUMBER","BILLING POSTAL CODE","SUBMIT"]  
+loginUser:
+  lbl_Username: testMail@test.com
+  lbl_Password: testMail123
+  lbl_FirstName: David
