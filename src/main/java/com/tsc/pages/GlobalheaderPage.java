@@ -124,6 +124,58 @@ public class GlobalheaderPage extends BasePage{
 	//For QA website
 	@FindBy(xpath = "//div[@class='searchContainer']//div[contains(@class,'suggestions-container')]|//div[contains(@class,'aa-Panel--desktop')]//ul")
 	public List<WebElement> searchQADropdwonmenuList;
+
+	//Top suggestions
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Top suggestions') or contains(.,'Trending')][contains(@class,'ac__section__title search-title')]")
+	public WebElement lblTopSuggestions;
+	
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Top suggestions') or contains(.,'Trending')][contains(@class,'ac__section__title search-title')]/following-sibling::ul")
+	public WebElement cntTopSuggestionsList;
+	
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Top suggestions') or contains(.,'Trending')][contains(@class,'ac__section__title search-title')]/following-sibling::ul//li//a")
+	public List<WebElement> lstTopSuggestionsLink;
+	
+	public By byUnmarkedTextForTopSuggestions = By.xpath(".//span[contains(@class,'unmark-text')]");
+	
+	//Categories
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Categories') or contains(.,'Featured brands')][contains(@class,'ac__section__title search-title')]")
+	public WebElement lblCategories;
+	
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Categories') or contains(.,'Featured brands')][contains(@class,'ac__section__title search-title')]/following-sibling::ul")
+	public WebElement cntCategoriesList;
+	
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Categories') or contains(.,'Featured brands')][contains(@class,'ac__section__title search-title')]/following-sibling::ul//li//a")
+	public List<WebElement> lstCategoriesLink;
+	
+	//Brands
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Brands') and contains(@class,'ac__section__title search-title')]")
+	public WebElement lblBrands;
+	
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Brands') and contains(@class,'ac__section__title search-title')]/following-sibling::ul")
+	public WebElement cntBrandsList;
+	
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Brands') and contains(@class,'ac__section__title search-title')]/following-sibling::ul//li//a")
+	public List<WebElement> lstBrandsLink;
+	
+	//Possible item matches
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--right')]//*[contains(.,'Possible item matches') or contains(.,'Top Selling Products')][contains(@class,'search-title')]")
+	public WebElement lblPossibleItemMatches;
+	
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--right')]//*[contains(.,'Possible item matches') or contains(.,'Top Selling Products')][contains(@class,'search-title')]/following-sibling::ul")
+	public WebElement cntPossibleItemMatchesList;
+	
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--right')]//*[contains(.,'Possible item matches') or contains(.,'Top Selling Products')][contains(@class,'search-title')]/following-sibling::ul//li//a")
+	public List<WebElement> lstPossibleItemMatchesLink;
+	
+	public By byProductImgForPossibleItemMatchesItem= By.xpath(".//div[@class='ac-productlist__row']//div[contains(@class,'ac-productlist__left')]//img");
+	
+	public By byProductBadgeForPossibleItemMatchesItem= By.xpath(".//div[@class='ac-productlist__row']//div[contains(@class,'ac-productlist__right')]//div[contains(@class,'ac-productlist__badge')]");
+	
+	public By byProductDescriptionForPossibleItemMatchesItem= By.xpath(".//div[@class='ac-productlist__row']//div[contains(@class,'ac-productlist__right')]//div[contains(@class,'ac-productlist__description')]");
+	
+	public By byProductNumberForPossibleItemMatchesItem= By.xpath(".//div[@class='ac-productlist__row']//div[contains(@class,'ac-productlist__right')]//div[contains(@class,'ac-productlist__item-number2')]");
+	
+	public By byProductPriceForPossibleItemMatchesItem= By.xpath(".//div[@class='ac-productlist__row']//div[contains(@class,'ac-productlist__right')]//div[@class='ac-productlist__price']");
 	
 	//For Staging website
 	@FindBy(xpath = "//div[@class='searchContainer']//div[contains(@class,'suggestions-container--open')]//div[@class='tsc-category-title']")
@@ -803,7 +855,34 @@ public class GlobalheaderPage extends BasePage{
 //			 String lsStyle=silverItem.findElement(By.xpath(".//span")).getAttribute("style");			
 //			 reporter.softAssert(lsStyle.equalsIgnoreCase("color:#fff;")||lsStyle.equalsIgnoreCase("color: rgb(255, 255, 255);"), lsTitle+" in Silver headers is being selected", lsTitle+" in Silver headers is not being selected");		 		 
 //		 }
+	 }
 
+	 
+	/**
+	 *Method to show popup window by clicking search box 	
+	 * @return true/false
+	 * @author Wei.Li
+	 */	
+	 public boolean getPopupWindowByClickingSearchBox() {
+		 this.searchBox.click();
+		 return waitForCondition(Driver->{return this.lblTopSuggestions.isDisplayed();},5000);
+	 }
+	 
+	/**
+	 *Method to verify TopSellingProducts existing by changing item in Trending or Featured brands list   
+	 * @param List<WebElement> elementList: element list	
+	 * @return void
+	 * @author Wei.Li
+	 */	
+	 public void verifyTopSellingProductsExistingByChangingItemInTrendingOrFeaturedBrandsList(List<WebElement> elementList) {
+		 String lsItem;
+		 for(WebElement element:elementList) {
+			 getReusableActionsInstance().scrollToElement(element);
+			 getReusableActionsInstance().staticWait(300);
+			 lsItem=element.getText();
+			 reporter.softAssert(getReusableActionsInstance().isElementVisible(this.lblPossibleItemMatches),"The title of Top selling products is displaying correctly by selecting item of '"+lsItem+"'", "The title of Top selling products is not displaying correctly by selcting item of '"+lsItem+"'");
+			 reporter.softAssert(getReusableActionsInstance().isElementVisible(this.cntPossibleItemMatchesList),"The Top selling products list is displaying correctly by selecting item of '"+lsItem+"'","The Top selling products list is not displaying correctly by selcting item of '"+lsItem+"'");			 
+		 }	
 	 }
 	 
 	 

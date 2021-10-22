@@ -33,10 +33,7 @@ public class HP_TC01_Verify_Global_Header_SignIn_Favorite_ShoppingCartBag extend
 	
 	public void validateActionContents() {
 		reporter.reportLog("Global Header Section contents for SignIn_Favorite_ShoppingCartBag");
-		
-		BasePage basePage=new BasePage(this.getDriver());
-		String lsBaseUrl=basePage.getBaseURL()+"/";
-		
+			
 		String lsUrl,lsYmlNotFound,lsSuccessResult, lsFailResult;
 		lsYmlNotFound=TestDataHandler.constantDataVariables.getlnk_NotFound();
 		
@@ -66,14 +63,23 @@ public class HP_TC01_Verify_Global_Header_SignIn_Favorite_ShoppingCartBag extend
 		BasePage basePage=new BasePage(this.getDriver());
 		String lsBaseUrl=basePage.getBaseURL()+"/";
 		
-		String lsUrl,lsYmlNotFound,lsSuccessResult, lsFailResult;
-		lsYmlNotFound=TestDataHandler.constantDataVariables.getlnk_NotFound();
+		String lsUrl,lsSuccessResult, lsFailResult;
 		
 		reporter.reportLog("Verify searchBox section");
 		//Verify searchBox section
 		validateText(getglobalheaderPageThreadLocal().validateSearchbox(), TestDataHandler.constantDataVariables.getlbl_SearchBoxPlaceholder(), "Search box is visible");
-		
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateSearchSubmitbtn(), "Search submit button is visible", "Search submit button is not visible");
+		if(getglobalheaderPageThreadLocal().getPopupWindowByClickingSearchBox()) {
+			reporter.softAssert(basePage.getReusableActionsInstance().isElementVisible(getglobalheaderPageThreadLocal().cntTopSuggestionsList),"Trending section is displaying correctly in search popup window","Trending section is not displaying correctly in search popup window");
+			reporter.softAssert(basePage.getReusableActionsInstance().isElementVisible(getglobalheaderPageThreadLocal().cntCategoriesList),"Featured brands section is displaying correctly in search popup window","Featured brands section is not displaying correctly in search popup window");
+			reporter.softAssert(basePage.getReusableActionsInstance().isElementVisible(getglobalheaderPageThreadLocal().cntPossibleItemMatchesList),"Top selling products section is displaying correctly in search popup window","Top selling products section is not displaying correctly in search popup window");
+			
+			getglobalheaderPageThreadLocal().verifyTopSellingProductsExistingByChangingItemInTrendingOrFeaturedBrandsList(getglobalheaderPageThreadLocal().lstTopSuggestionsLink);	
+			getglobalheaderPageThreadLocal().verifyTopSellingProductsExistingByChangingItemInTrendingOrFeaturedBrandsList(getglobalheaderPageThreadLocal().lstCategoriesLink);			
+		}else {
+			reporter.reportLogFail("Unable to get popup window by clicking search box");
+		}
+		basePage.pressEscapeKey();
 		
 		reporter.reportLog("Verify Sign in section");
 
