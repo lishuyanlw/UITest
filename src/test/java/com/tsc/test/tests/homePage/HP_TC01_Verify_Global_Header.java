@@ -198,14 +198,7 @@ public class HP_TC01_Verify_Global_Header extends BaseTest {
 		reporter.reportLog("Verify searchBox section");
 		//Verify searchBox section
 		validateText(getglobalheaderPageThreadLocal().validateSearchbox(), TestDataHandler.constantDataVariables.getlbl_SearchBoxPlaceholder(), "Search box is visible");
-		
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateSearchSubmitbtn(), "Search submit button is visible", "Search submit button is not visible");
-		
-		reporter.reportLog("Verify Sign in section");
-		//Verify Sign in section
-		validateText(getglobalheaderPageThreadLocal().validateSignInLink(), TestDataHandler.constantDataVariables.getlbl_SignIn(), "SignIn Link is present & Text is visible");		
-		reporter.softAssert(getglobalheaderPageThreadLocal().validateSiginIcon(), "SignIn icon is visible", "SignIn icon is not visible");
-		
 		if(getglobalheaderPageThreadLocal().getPopupWindowByClickingSearchBox()) {
 			reporter.softAssert(basePage.getReusableActionsInstance().isElementVisible(getglobalheaderPageThreadLocal().cntTopSuggestionsList),"Trending section is displaying correctly in search popup window","Trending section is not displaying correctly in search popup window");
 			reporter.softAssert(basePage.getReusableActionsInstance().isElementVisible(getglobalheaderPageThreadLocal().cntCategoriesList),"Featured brands section is displaying correctly in search popup window","Featured brands section is not displaying correctly in search popup window");
@@ -218,6 +211,11 @@ public class HP_TC01_Verify_Global_Header extends BaseTest {
 		}
 		basePage.pressEscapeKey();
 		
+		reporter.reportLog("Verify Sign in section");
+		//Verify Sign in section
+		validateText(getglobalheaderPageThreadLocal().validateSignInLink(), TestDataHandler.constantDataVariables.getlbl_SignIn(), "SignIn Link is present & Text is visible");		
+		reporter.softAssert(getglobalheaderPageThreadLocal().validateSiginIcon(), "SignIn icon is visible", "SignIn icon is not visible");
+			
 		reporter.reportLog("Verify Favourites section");
 		//Verify Favourites section
 		validateText(getglobalheaderPageThreadLocal().validateFavouritesLink(), TestDataHandler.constantDataVariables.getlbl_Favourites(), "Favourites Link is present & Text is visible");
