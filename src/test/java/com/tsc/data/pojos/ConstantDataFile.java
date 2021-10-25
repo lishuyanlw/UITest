@@ -477,6 +477,7 @@ public class ConstantDataFile {
         private List<String> lst_FlyoutHeading;
         private String lbl_FlyoutHeadingLandingPageLink;
         private List<String> lnk_FlyoutHeaderLinkConstant;
+        private List<String> lst_FlyoutSubMenu;
 
         public String getLbl_FlyoutHeadingLandingPageLink() {
             return lbl_FlyoutHeadingLandingPageLink;
@@ -500,6 +501,14 @@ public class ConstantDataFile {
 
         public void setLnk_FlyoutHeaderLinkConstant(List<String> lnk_FlyoutHeaderLinkConstant) {
             this.lnk_FlyoutHeaderLinkConstant = lnk_FlyoutHeaderLinkConstant;
+        }
+        
+        public List<String> getLst_FlyoutSubMenu() {
+            return lst_FlyoutSubMenu;
+        }
+
+        public void setLst_FlyoutSubMenu(List<String> lst_FlyoutSubMenu) {
+            this.lst_FlyoutSubMenu = lst_FlyoutSubMenu;
         }
     }
 

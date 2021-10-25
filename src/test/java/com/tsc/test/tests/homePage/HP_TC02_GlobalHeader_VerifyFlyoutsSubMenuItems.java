@@ -27,7 +27,7 @@ public class HP_TC02_GlobalHeader_VerifyFlyoutsSubMenuItems extends BaseTest {
 				String brandSectionHrefAndSrc=getglobalheaderPageThreadLocal().validateFlyoutSubMenuSRCandHREF(lsHeading,BrandSectionHeading);
 				reporter.reportLog("Flyout displays " + lsHeading+" department.");
 				reporter.reportLog("It's Sub Menu display sections: " + subMenu);
-				reporter.softAssert(TestDataHandler.constantDataVariables.getlst_FlyoutsubMenu().containsAll(subMenu),lsHeading +"'s sub menu section list is correct", lsHeading +"'s sub menu section list is incorrect");
+				reporter.softAssert(TestDataHandler.constantDataFile.getHeaderSection().getFlyout().getLst_FlyoutSubMenu().containsAll(subMenu),lsHeading +"'s sub menu section list is correct", lsHeading +"'s sub menu section list is incorrect");
 				reporter.softAssert(HrefAndSrc,"All atributes are present ", HrefAndSrc+" for "+lsHeading+" in the left hand side section.",HrefAndSrc+" for "+lsHeading+" in the left hand side section.");
 				reporter.softAssert(getglobalheaderPageThreadLocal().validateFeatureBrandSectionIsOnTheRight(lsHeading).equals("flyoutRow2Right"), "Brand section of the flyout "+lsHeading+ " is located on the Right side under the heading "+"'"+BrandSectionHeading+"'","Brand section of the flyout "+lsHeading+ " is not located on the Right side");
 				reporter.softAssert(brandSectionHrefAndSrc,"All atributes are present ",brandSectionHrefAndSrc+" for "+lsHeading+" in the Brand Section.",brandSectionHrefAndSrc+" for "+lsHeading+" in the Brand Section.");

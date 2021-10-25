@@ -66,7 +66,7 @@ public class HP_TC01_Verify_Global_Header_SignIn_Favorite_ShoppingCartBag extend
 		
 		reporter.reportLog("Verify searchBox section");
 		//Verify searchBox section
-		validateText(getglobalheaderPageThreadLocal().validateSearchbox(), TestDataHandler.constantDataVariables.getlbl_SearchBoxPlaceholder(), "Search box is visible");
+		validateText(getglobalheaderPageThreadLocal().validateSearchbox(), TestDataHandler.constantDataFile.getHeaderSection().getLbl_SearchBoxPlaceholder(), "Search box is visible");
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateSearchSubmitbtn(), "Search submit button is visible", "Search submit button is not visible");
 		if(getglobalheaderPageThreadLocal().getPopupWindowByClickingSearchBox()) {
 			reporter.softAssert(basePage.getReusableActionsInstance().isElementVisible(getglobalheaderPageThreadLocal().cntTopSuggestionsList),"Trending section is displaying correctly in search popup window","Trending section is not displaying correctly in search popup window");
