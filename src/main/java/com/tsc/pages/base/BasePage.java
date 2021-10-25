@@ -19,6 +19,7 @@ import java.util.regex.Pattern;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -84,7 +85,6 @@ import utils.ReusableActions;
 	*/
 	/**
 	 * Gets default time out.
-	 *
 	 * @return the default time out
 	 */
 	protected long getDefaultTimeOut() {
@@ -100,7 +100,6 @@ import utils.ReusableActions;
 	
 	/**
 	 * Gets driver url.
-	 *
 	 * @return the driver url
 	 */
 	protected String get_Driver_Url() {
@@ -109,7 +108,6 @@ import utils.ReusableActions;
 
 	/**
 	 * Gets driver.
-	 *
 	 * @return the driver
 	 */
 	protected WebDriver getDriver() {
@@ -141,7 +139,6 @@ import utils.ReusableActions;
 
 	/**
 	 * This method will validate current URL
-	 *
 	 * @param strExpectedUrl string containing URL
 	 * @author Waji.Abbas
 	 */
@@ -157,7 +154,6 @@ import utils.ReusableActions;
 
 	/**
 	 * This method will validate text in current URL
-	 *
 	 * @param strExpectedUrl string containing URL
 	 * @author Waji.Abbas
 	 */
@@ -174,7 +170,6 @@ import utils.ReusableActions;
 	
 	/**
 	 * Verify that loaded page should return response code less 400
-	 *
 	 * @return false if response code greater than or equal to 400 else true
 	 * @throws IOException
 	 * @author Vedachalam.Vasudevan
@@ -256,7 +251,6 @@ import utils.ReusableActions;
 	
 	/**
 	 * This method will navigate to a specific URL using ReusableActions method.
-	 *
 	 * @return void
 	 * @author Wei.Li
 	 */	
@@ -267,7 +261,6 @@ import utils.ReusableActions;
 	
 	/**
 	 * This method will implement explicit wait using Lambda function
-	 *
 	 * @param 
 	 * 1. Function<WebDriver,Boolean> func: Lambda expression
 	 * 2. int timeOutInMillis: wait time in millisecond
@@ -285,7 +278,6 @@ import utils.ReusableActions;
 	
 	/**
 	 * This method will get base URL settings in gradle.properties
-	 * 
 	 * @return String: base URL
 	 * @author Wei.Li
 	 */	
@@ -299,7 +291,6 @@ import utils.ReusableActions;
 	
 	/**
 	 * This method will verify the page loading by url changes
-	 *
 	 * @param WebElement element: the element will be clicked	 
 	 * @return String: changed url
 	 * @author Wei.Li
@@ -316,7 +307,6 @@ import utils.ReusableActions;
 	
 	/**
 	 * This method will implement Escape key pressing action.
-	 *
 	 * @return void
 	 * @author Wei.Li
 	 */	
@@ -334,45 +324,25 @@ import utils.ReusableActions;
 	 
 	/**
 	 * This method will implement ENTER key pressing action.
-	 *
+	 * @param WebElement element: the action related element
 	 * @return void
 	 * @author Wei.Li
     */ 
 	 
-	 public void pressEnterKey() {
-		 Robot robot=null;
-		 try {
-			 robot=new Robot();
-		 }
-		 catch(AWTException e){
-			 e.printStackTrace();
-		 }		 
-		 robot.keyPress(KeyEvent.VK_ENTER);		
-		 robot.keyRelease(KeyEvent.VK_ENTER);
+	 public void pressEnterKey(WebElement element) {
+		 element.sendKeys(Keys.chord(Keys.ENTER));
 	 }	 
 
 	/**
 	 * This method will implement CTRL+A+DELETE to clear element contents.
-	 *
+	 * @param WebElement element: the action related element
 	 * @return void
 	 * @author Wei.Li
 	 */
 	 public void clearContent(WebElement element) {
 		 element.click();
-		 Robot robot=null;
-		 try {
-			 robot=new Robot();
-		 }
-		 catch(AWTException e){
-			 e.printStackTrace();
-		 }
-		 robot.keyPress(KeyEvent.VK_CONTROL);
-		 robot.keyPress(KeyEvent.VK_A);
-		 robot.keyRelease(KeyEvent.VK_CONTROL);
-		 robot.keyRelease(KeyEvent.VK_A);
-		 
-		 robot.keyPress(KeyEvent.VK_DELETE);
-		 robot.keyRelease(KeyEvent.VK_DELETE);
+		 element.sendKeys(Keys.chord(Keys.CONTROL, "a"));
+		 element.sendKeys(Keys.chord(Keys.DELETE));
 	 }
  
 	//Get the URL 			
