@@ -11,6 +11,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
+
 import com.tsc.pages.base.BasePage;
 
 public class ProductResultsPage extends BasePage{
@@ -192,7 +194,7 @@ public class ProductResultsPage extends BasePage{
 		this.clearContent(globalHeader.searchBox);
 		globalHeader.searchBox.sendKeys(searchKeyword);		
 		//globalHeader.btnSearchSubmit.click();
-		(new BasePage(this.getDriver())).pressEnterKey();
+		(new BasePage(this.getDriver())).pressEnterKey(globalHeader.searchBox);		
 		
 		return waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},60000);
 	}
