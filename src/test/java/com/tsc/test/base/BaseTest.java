@@ -142,10 +142,10 @@ public class BaseTest {
 		webDriverThreadLocal.set(browserDrivers.driverInit(strBrowser, sauceParameters, currentTestMethodName, ""));
 		getDriver().get(strUrl);
 		strBrowser=System.getProperty("Browser").trim();
+		String lsTestDevice=System.getProperty("Device").trim();
+		TestDeviceThreadLocal.set(lsTestDevice);
 		if (!strBrowser.toLowerCase().contains("android") && !strBrowser.toLowerCase().contains("ios")
 		      && !strBrowser.toLowerCase().contains("mobile")) {
-		   String lsTestDevice=System.getProperty("Device").trim();
-		   TestDeviceThreadLocal.set(lsTestDevice);
 		   switch(lsTestDevice) {
 		      case "iPad":
 		         getDriver().manage().window().setSize(new Dimension(800, 600));
@@ -159,6 +159,8 @@ public class BaseTest {
 		         productResultsPageThreadLocal.set(new ProductResultsPage(getDriver()));
 		         break;
 		   }
+		}else{
+			productResultsPageThreadLocal.set(new ProductResultsPage_iPad(getDriver()));
 		}
 		
 		setImplictWait(getDriver(), 60);
