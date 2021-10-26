@@ -111,25 +111,6 @@ public class BaseTest {
 		globalFooterPageThreadLocal.set(new GlobalFooterPage(getDriver()));
 		loginPageThreadLocal.set(new LoginPage(getDriver()));
 		reporter = new ExtentTestManager(getDriver());
-		
-		String lsTestDevice=System.getProperty("Device").trim();
-		TestDeviceThreadLocal.set(lsTestDevice);
-		switch(lsTestDevice) {
-		case "iPad":
-			getDriver().manage().window().setSize(new Dimension(800, 600));
-			productResultsPageThreadLocal.set(new ProductResultsPage_iPad(getDriver()));
-			break;
-		case "Mobile":
-			getDriver().manage().window().setSize(new Dimension(500, 600));
-			break;
-		default:
-			getDriver().manage().window().maximize();
-			productResultsPageThreadLocal.set(new ProductResultsPage(getDriver()));
-			break;
-		}
-
-		setImplictWait(getDriver(), 60);
-		//setSessionStorage(strUrl);
 	}
 
 	public WebDriver getDriver() {
@@ -160,10 +141,28 @@ public class BaseTest {
 		
 		webDriverThreadLocal.set(browserDrivers.driverInit(strBrowser, sauceParameters, currentTestMethodName, ""));
 		getDriver().get(strUrl);
-//		if (!strBrowser.toLowerCase().contains("android") && !strBrowser.toLowerCase().contains("ios")
-//				&& !strBrowser.toLowerCase().contains("mobile")) {
-//			getDriver().manage().window().maximize();
-//		}
+		strBrowser=System.getProperty("Browser").trim();
+		if (!strBrowser.toLowerCase().contains("android") && !strBrowser.toLowerCase().contains("ios")
+		      && !strBrowser.toLowerCase().contains("mobile")) {
+		   String lsTestDevice=System.getProperty("Device").trim();
+		   TestDeviceThreadLocal.set(lsTestDevice);
+		   switch(lsTestDevice) {
+		      case "iPad":
+		         getDriver().manage().window().setSize(new Dimension(800, 600));
+		         productResultsPageThreadLocal.set(new ProductResultsPage_iPad(getDriver()));
+		         break;
+		      case "Mobile":
+		         getDriver().manage().window().setSize(new Dimension(500, 600));
+		         break;
+		      default:
+		         getDriver().manage().window().maximize();
+		         productResultsPageThreadLocal.set(new ProductResultsPage(getDriver()));
+		         break;
+		   }
+		}
+		
+		setImplictWait(getDriver(), 60);
+		//setSessionStorage(strUrl);
 		
 		init();
 	}
