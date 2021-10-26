@@ -1,6 +1,7 @@
 package com.tsc.test.tests.globalHeader;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.testng.annotations.Test;
 
@@ -17,19 +18,19 @@ public class GH_TC02_Global_Header_Verify_FlyoutSubMenuDisplay extends BaseTest 
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl+"/"), "TSC url is correct", "TSC url is incorrect");
 		reporter.reportLogWithScreenshot("Home Page");
 		reporter.reportLog("Validating Flyout display all department & it's URL after Clicking each category");
-		String flyoutHeading,lsUrl,lsYmlNotFound,lsSuccessResult, lsFailResult;
+		String lsUrl,FlyoutUrl,lsYmlNotFound,lsSuccessResult, lsFailResult;
 		lsYmlNotFound=TestDataHandler.constantDataVariables.getlnk_NotFound();
-		for(int i=0; i<getglobalheaderPageThreadLocal().getFlyoutHeadingCount(); i++) {
-			flyoutHeading = getglobalheaderPageThreadLocal().getFlyoutHeadings(i);	
-			reporter.softAssert(flyoutHeading, TestDataHandler.constantDataVariables.getlst_FlyoutHeading().get(i),"Flyout is displayed for " + flyoutHeading + " department.","Flyout is not displayed for " + flyoutHeading + " department.");
+		List<String>flyoutHeading = getglobalheaderPageThreadLocal().getFlyoutHeadings();
+		reporter.reportLog("Flyout diplyas drpartment: "+flyoutHeading+" and they all are validated.");
+		for(String lsHeading:flyoutHeading) {
+			reporter.softAssert(getglobalheaderPageThreadLocal().validateFlyouthref(lsHeading),"href is present for Flyout Link "+lsHeading,"href is not present for Flyout link "+lsHeading);
+			FlyoutUrl = getglobalheaderPageThreadLocal().getUrlAfterclickingFlyoutHeading(lsHeading);
+			 lsUrl=getglobalheaderPageThreadLocal().validateUrlAfterclickingFlyoutHeading(lsHeading);
+			lsSuccessResult=String.format("The url of [ %s ] does not contain [ %s ] after clicking Flyout" + lsHeading + "'s link", FlyoutUrl,lsYmlNotFound);
+			lsFailResult=String.format("The url of [ %s ] contains [ %s ] after clicking Flyout " + lsHeading + "'s link", FlyoutUrl,lsYmlNotFound);
+			reporter.softAssert(FlyoutUrl.contains(TestDataHandler.constantDataVariables.getlbl_FlyoutHeadingLandingPageLink()+":"+(lsUrl)), lsHeading + "'s URL is correct", lsHeading + "'s URL is incorrect");
+			reporter.softAssert(!FlyoutUrl.contains(lsYmlNotFound), lsSuccessResult,lsFailResult);
 			
-			//Verify notfound and full url after clicking Flyout link
-			lsUrl=getglobalheaderPageThreadLocal().getURLafterClickFlyoutHeading(i);		
-			lsSuccessResult=String.format("The url of < %s > does not contain < %s > after clicking " + flyoutHeading + "'s link", lsUrl,lsYmlNotFound);
-			lsFailResult=String.format("The url of < %s > contains < %s > after clicking " + flyoutHeading + "'s link", lsUrl,lsYmlNotFound);
-			reporter.softAssert(!lsUrl.contains(lsYmlNotFound), lsSuccessResult,lsFailResult);
-			reporter.softAssert(lsUrl.equals(lsBaseUrl+(TestDataHandler.constantDataVariables.getlbl_FlyoutHeadingLandingPageLink())+(TestDataHandler.constantDataVariables.getlnk_FlyoutHeaderLinkConstant().get(i))), flyoutHeading + "'s URL is correct", flyoutHeading + "'s URL is incorrect");
-
 		}
 	}
 }

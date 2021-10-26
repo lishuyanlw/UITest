@@ -2,6 +2,8 @@ package com.tsc.test.tests.globalHeader;
 import java.io.IOException;
 import java.util.List;
 import org.testng.annotations.Test;
+
+import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 
@@ -13,27 +15,19 @@ public class GH_TC01_Verify_Global_Header_VerifyFlyoutsViewAll extends BaseTest 
 		String lsBaseUrl=(new BasePage(this.getDriver())).getBaseURL();
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl+"/"), "TSC url is correct", "TSC url is incorrect");
 		reporter.reportLogWithScreenshot("Home Page");
-		reporter.reportLog("Validating View All links for each category");
+		reporter.reportLog("Validating all links for each category");
 		List<String> FOHeading=getglobalheaderPageThreadLocal().getFlyoutHeadings();
+		reporter.reportLog("Flyout header diplyas drpartment: "+FOHeading);
+		String lsUrl,shopallUrl,lsYmlNotFound,lsSuccessResult, lsFailResult;
+		lsYmlNotFound=TestDataHandler.constantDataVariables.getlnk_NotFound();
 		for(String lsHeading:FOHeading) {
-			String BrandSectionHeading= getglobalheaderPageThreadLocal().getFeatureBrandSectionHeading(lsHeading);
-			
-				String VielwAll=getglobalheaderPageThreadLocal().validateViewAllLinks(lsHeading,null);
-				String brandSectionViewAll=getglobalheaderPageThreadLocal().validateViewAllLinks(lsHeading,BrandSectionHeading);
-				reporter.reportLog("Flyout displays " + lsHeading+" department.");
-				reporter.softAssert(VielwAll,"View All link present ", VielwAll+" for "+lsHeading+" in the left hand side section.",VielwAll+" for "+VielwAll+" in the left hand side section.");
-				reporter.softAssert(brandSectionViewAll,"View All link present ",brandSectionViewAll+" for "+lsHeading+" in the Brand Section.",brandSectionViewAll+" for "+lsHeading+" in the Brand Section.");
-				getglobalheaderPageThreadLocal().clickViewAllLinks(lsHeading);
-				int numberOfWindows = getglobalheaderPageThreadLocal().getNumberOftabs();
-				System.out.println("number of tabs open:  "+numberOfWindows);
-				List<String> lsTitle=getglobalheaderPageThreadLocal().getTitleofViewAllLink();
-				//System.out.println("size of list of title:   "+lsTitle);
-				reporter.reportLog("Total number of tabs open: "+numberOfWindows);
-				reporter.softAssert(lsTitle.size()==(numberOfWindows-1), "All View All links have been clicked", "All View All links have not been clicked");
-				for(int i=0; i<numberOfWindows-1; i++) {
-					reporter.softAssert(lsTitle.get(i).contains(lsHeading), "Title of View All link page is correct for "+lsHeading, "Title of View All link page is incorrect for "+lsHeading);
-				}
-			}
+			reporter.softAssert(getglobalheaderPageThreadLocal().validateShopAllPupularBrandhref(lsHeading,"Popular Brands",null,null,"href"),lsHeading + " > Popular Brands > "+" shop all brands href is present.",lsHeading + " > Popular Brands > "+" shop all brands href is not present.");
+			lsUrl = getglobalheaderPageThreadLocal().validateUrlAfterclickingFlyoutHeading(lsHeading);
+			shopallUrl=getglobalheaderPageThreadLocal().getURLshopallPupularBrand(lsHeading,"Popular Brands",null,null,"href");
+			lsSuccessResult=String.format("The url [ %s ] does not contain [ %s ] after clicking shop all brands under >" + lsHeading + " > Popular Brands", shopallUrl,lsYmlNotFound);
+			lsFailResult=String.format("The url of [ %s ] contains [ %s ] after clicking shop all brands under > " + lsHeading + " > Popular Brands", shopallUrl,lsYmlNotFound);
+			reporter.softAssert(shopallUrl.contains(TestDataHandler.constantDataVariables.getlbl_shopallbrandsLandingPageLink()+lsUrl), lsHeading +" > Popular Brands > shop all brands's URL is correct", lsHeading +" > Popular Brands > shop all brands's URL is incorrect");
+			reporter.softAssert(!lsUrl.contains(lsYmlNotFound), lsSuccessResult,lsFailResult);
+		}
 	}
-
-}
+}	

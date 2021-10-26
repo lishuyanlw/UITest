@@ -36,6 +36,7 @@ public class ConstantData {
 	private List<String> lst_FlyoutsubMenu;
 	private List<String> lnk_FlyoutHeaderLinkConstant;
 	private String lbl_FlyoutHeadingLandingPageLink;
+	private String lbl_shopallbrandsLandingPageLink;
 	private String lbl_OnAirNow;
 	private String lbl_RecentlyAir;
 	private String lnk_RecentlyAir;
@@ -366,16 +367,16 @@ public class ConstantData {
 		this.lbl_MinicartLinkName = lbl_MinicartLinkName;
 	}
 	/**
-	 * @return the lbl_MinicartLinkName
+	 * @return the lbl_shopallbrandsLandingPageLink
 	 */
-	public String getlbl_FlyoutHeadingLandingPageLink() {
-		return lbl_FlyoutHeadingLandingPageLink;
+	public String getlbl_shopallbrandsLandingPageLink() {
+		return lbl_shopallbrandsLandingPageLink;
 	}
 	/**
-	 * @param lbl_FlyoutHeadingLandingPageLink the lbl_FlyoutHeadingLandingPageLink to set
+	 * @param lbl_shopallbrandsLandingPageLink the lbl_shopallbrandsLandingPageLink to set
 	 */
-	public void setlbl_FlyoutHeadingLandingPageLink(String lbl_FlyoutHeadingLandingPageLink) {
-		this.lbl_FlyoutHeadingLandingPageLink = lbl_FlyoutHeadingLandingPageLink;
+	public void setlbl_shopallbrandsLandingPageLink(String lbl_shopallbrandsLandingPageLink) {
+		this.lbl_shopallbrandsLandingPageLink = lbl_shopallbrandsLandingPageLink;
 	}
 	/**
 	 * @return the lst_FlyoutHeading
@@ -414,7 +415,19 @@ public class ConstantData {
 	 */
 	public void setlnk_FlyoutHeaderLinkConstant(List<String> lnk_FlyoutHeaderLinkConstant) {
 		this.lnk_FlyoutHeaderLinkConstant = lnk_FlyoutHeaderLinkConstant;
-}
+	}
+	/**
+	 * @return the lbl_FlyoutHeadingLandingPageLink
+	 */
+	public String getlbl_FlyoutHeadingLandingPageLink() {
+		return lbl_FlyoutHeadingLandingPageLink;
+	}
+	/**
+	 * @param lbl_FlyoutHeadingLandingPageLink the lbl_FlyoutHeadingLandingPageLink to set
+	 */
+	public void setlbl_FlyoutHeadingLandingPageLink(String lbl_FlyoutHeadingLandingPageLink) {
+		this.lbl_FlyoutHeadingLandingPageLink = lbl_FlyoutHeadingLandingPageLink;
+	}
 	/**
 	 * @return the lbl_OnAirNow
 	 */

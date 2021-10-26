@@ -19,20 +19,47 @@ public class GH_TC02_Global_Header_Verify_FlyoutsSubMenuItems extends BaseTest {
 		reporter.reportLogWithScreenshot("Home Page");
 		reporter.reportLog("Validating Flyout Sub Menu for each category");
 		List<String> FOHeading=getglobalheaderPageThreadLocal().getFlyoutHeadings();
-		reporter.reportLog("Flyout heading list:"+FOHeading);
-		for(String lsHeading:FOHeading) {
-				List<String> subMenu= getglobalheaderPageThreadLocal().getFlyoutSubMenu(lsHeading);
-				String HrefAndSrc=getglobalheaderPageThreadLocal().validateFlyoutSubMenuSRCandHREF(lsHeading,null);
-				String BrandSectionHeading= getglobalheaderPageThreadLocal().getFeatureBrandSectionHeading(lsHeading);
-				String brandSectionHrefAndSrc=getglobalheaderPageThreadLocal().validateFlyoutSubMenuSRCandHREF(lsHeading,BrandSectionHeading);
-				reporter.reportLog("Flyout displays " + lsHeading+" department.");
-				reporter.reportLog("It's Sub Menu display sections: " + subMenu);
-				reporter.softAssert(TestDataHandler.constantDataVariables.getlst_FlyoutsubMenu().containsAll(subMenu),lsHeading +"'s sub menu section list is correct", lsHeading +"'s sub menu section list is incorrect");
-				reporter.softAssert(HrefAndSrc,"All atributes are present ", HrefAndSrc+" for "+lsHeading+" in the left hand side section.",HrefAndSrc+" for "+lsHeading+" in the left hand side section.");
-				reporter.softAssert(getglobalheaderPageThreadLocal().validateFeatureBrandSectionIsOnTheRight(lsHeading).equals("flyoutRow2Right"), "Brand section of the flyout "+lsHeading+ " is located on the Right side under the heading "+"'"+BrandSectionHeading+"'","Brand section of the flyout "+lsHeading+ " is not located on the Right side");
-				reporter.softAssert(brandSectionHrefAndSrc,"All atributes are present ",brandSectionHrefAndSrc+" for "+lsHeading+" in the Brand Section.",brandSectionHrefAndSrc+" for "+lsHeading+" in the Brand Section.");
-		}
+		reporter.reportLog("Flyout header diplyas drpartment: "+FOHeading);
 		
+		
+		//below commented lines are used for providing specific flyout heading, category and itemname perameters.
+		//String SubmenuItemlinktext=getglobalheaderPageThreadLocal().getSubMenuItemlist("Clearance","","Fashion","Casualwear").get(0);
+		//reporter.reportLog("On moving mouse over "+ "Clearance"+", "+ "Fashion"+" section has links :"+SubmenuItemlinktext);
+		//String LefthandsideSectionLinks=getglobalheaderPageThreadLocal().validateFlyoutSubMenuItemSRCandHREF_new("Clearance","","Fashion","Casualwear",null);
+		//reporter.softAssert(LefthandsideSectionLinks,"All atributes are present", LefthandsideSectionLinks+" for "+"Clearance >"+"Fashion >"+"Casualwear "+"in the lef hand side section." ,"Element missing for "+"Clearance >"+"Fashion >"+LefthandsideSectionLinks+ " in the left hand side section");
+		//List<String> Submenulinktext_Curated=getglobalheaderPageThreadLocal().getSubMenuItemlist("Kitchen","Curated Collections",null,"Outdoor Dining",null);
+		//List<String> Submenulinktext_PopularBrands=getglobalheaderPageThreadLocal().getSubMenuItemlist("Kitchen","Popular Brands",null,"KitchenAid","href");
+		
+		for(String lsHeading:FOHeading) {
+			List<String> Category=getglobalheaderPageThreadLocal().getCategorieslist(lsHeading,null);
+			List<String> Submenulinktext_PopularBrandsLinks=getglobalheaderPageThreadLocal().getSubMenuItemlist(lsHeading,"Popular Brands",null,null,"src");
+			List<String> Submenulinktext_CuratedCollections=getglobalheaderPageThreadLocal().getSubMenuItemlist(lsHeading,"Curated Collections",null,null,null);
+			String PopularBrandsLinks_href=getglobalheaderPageThreadLocal().validateFlyoutSubMenuItemSRCandHREF(lsHeading,"Popular Brands",null,null,"href");
+			String PopularBrandsLinks_src=getglobalheaderPageThreadLocal().validateFlyoutSubMenuItemSRCandHREF(lsHeading,"Popular Brands",null,null,"src");
+			String CuratedCollectionsLinks=getglobalheaderPageThreadLocal().validateFlyoutSubMenuItemSRCandHREF(lsHeading,"Curated Collections",null,null,null);
+			
+			//validation of Popular Brand section
+			reporter.reportLog("Flyout heading "+  lsHeading+" > Popular Brand >"+"  "+Submenulinktext_PopularBrandsLinks);
+			reporter.softAssert(PopularBrandsLinks_href,"href present for all elements",PopularBrandsLinks_href+" in the Popular Brand Section of "+lsHeading,"For "+lsHeading+" > Popular Brand > "+PopularBrandsLinks_href+"href is missing");
+			reporter.softAssert(PopularBrandsLinks_src,"src present for all elements",PopularBrandsLinks_src+" in the Popular Brand Section of "+lsHeading,"For "+lsHeading+" > Popular Brand > "+PopularBrandsLinks_src);
+			
+			//validation of Curated Collections section
+			reporter.reportLog("Flyout heading "+  lsHeading+" > Curated Collections >"+"  "+Submenulinktext_CuratedCollections);
+			reporter.softAssert(CuratedCollectionsLinks,"All atributes are present",CuratedCollectionsLinks+" in the Curated Collections Section of "+lsHeading,"Element missing for "+lsHeading+" > Curated Collections > " +CuratedCollectionsLinks);
+		
+			//validation of Left Hand side category section(//for this section test case is getting failed due to stale element exception)
+			reporter.reportLog("Flyout displays " + lsHeading+" department.");
+			reporter.reportLog("Flyout heading "+  lsHeading+" > "+"  "+Category);
+			for(String lsCategory:Category) {
+				List<String> Submenulinktext=getglobalheaderPageThreadLocal().getSubMenuItemlist(lsHeading,"",lsCategory,null,null);
+				reporter.reportLog("On moving mouse over > "+ lsHeading+" > "+ lsCategory+" > "+Submenulinktext);
+			}
+			//refreshing the Browser due to instability of website for Havas changes. Will remove it once website more stable.
+			//getDriver().navigate().refresh();		
+		}
 	}	
 }
+
+
+
 		
