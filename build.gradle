@@ -73,6 +73,7 @@ task "sauceTest"(type: Test) {
     systemProperty 'Language', test_language
     systemProperty 'TunnelRequired', TunnelRequired
     systemProperty 'TunnelName', tunnelName
+    systemProperty 'Device', test_device
 
     useTestNG(){
         parallel = test_parallel
@@ -97,6 +98,7 @@ task "localTest"(type: Test) {
     systemProperty 'QaUrl', test_qaURL
     systemProperty 'Browser', test_browser
     systemProperty 'Language', test_language
+    systemProperty 'Device', test_device
 
     systemProperties(System.getProperties())
     outputs.upToDateWhen { false }  // Always run tests

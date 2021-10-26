@@ -37,12 +37,13 @@ public class HP_TC01_Verify_Global_Header_SignIn_Favorite_ShoppingCartBag extend
 		String lsUrl,lsYmlNotFound,lsSuccessResult, lsFailResult;
 		lsYmlNotFound=TestDataHandler.constantDataVariables.getlnk_NotFound();
 		
-		reporter.reportLog("Verify Sign in section");
+		reporter.reportLog("Verify Sign in section");		
 		String lsUserName=TestDataHandler.constantDataVariables.getlbl_Username();
 		String lsPassword=TestDataHandler.constantDataVariables.getlbl_Password();
 		String lsFirstName=TestDataHandler.constantDataVariables.getlbl_FirstName();
 				
 		//Verify Sign in Text and Icon
+		getGlobalLoginPageThreadLocal().hoverOnSignInHeadingMenu();
 		getGlobalLoginPageThreadLocal().verifySignInSection();		
 		getGlobalLoginPageThreadLocal().verifyShowingUserFirstNameAfterSignin(lsUserName, lsPassword,lsFirstName);		
 		getGlobalLoginPageThreadLocal().SignOut();		
@@ -82,7 +83,6 @@ public class HP_TC01_Verify_Global_Header_SignIn_Favorite_ShoppingCartBag extend
 		basePage.pressEscapeKey();
 		
 		reporter.reportLog("Verify Sign in section");
-
 		List<String> lstSignInPopover=TestDataHandler.constantDataVariables.getlst_SignInPopover();
 				
 		//Verify Sign in Text and Icon
@@ -91,6 +91,7 @@ public class HP_TC01_Verify_Global_Header_SignIn_Favorite_ShoppingCartBag extend
 		getGlobalLoginPageThreadLocal().verifyMenuItemInPopover(lstSignInPopover);
 			
 		reporter.reportLog("Verify Favourites section");
+		basePage.getReusableActionsInstance().scrollToElement(getglobalheaderPageThreadLocal().Favouriteslnk);
 		//Verify Favourites section
 		validateText(getglobalheaderPageThreadLocal().validateFavouritesLink(), TestDataHandler.constantDataVariables.getlbl_Favourites(), "Favourites Link is present & Text is visible");
 		
