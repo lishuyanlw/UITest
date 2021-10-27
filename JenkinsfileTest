@@ -107,6 +107,7 @@ pipeline {
                                 netstorage-upload.sh /mnt/ns/nskey.pem ./report Digital-QE/
                                 """
                                 REPORT_URL="${REPORT_URL}"+"/report/"+destinationFolder+"/results.html"
+                                echo "${REPORT_URL}"
                             }
 
                         }

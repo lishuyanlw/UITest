@@ -57,7 +57,7 @@ public class BaseTest {
 	protected static final ThreadLocal<ProductResultsPage> productResultsPageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<ProductResultsPage_iPad> productResultsPage_iPadThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<LoginPage> loginPageThreadLocal = new ThreadLocal<>();
-	protected static final ThreadLocal<String> TestDeviceThreadLocal = new ThreadLocal<>();
+	//protected static final ThreadLocal<String> TestDeviceThreadLocal = new ThreadLocal<>();
 	
 
 	public BaseTest() {
@@ -100,9 +100,11 @@ public class BaseTest {
 		return loginPageThreadLocal.get();
 	}
 	
+	/*
 	protected static String getTestDeviceThreadLocal() {
-		return TestDeviceThreadLocal.get();
+	 	return TestDeviceThreadLocal.get();
 	}
+	*/
 
 	private void init() {
 		
@@ -130,10 +132,10 @@ public class BaseTest {
 	}
 
 	public void startSession(String strUrl, String strBrowser, String strLanguage, Method currentTestMethodName,
-			boolean bypassCaptcha) throws ClientProtocolException, IOException {
+			boolean bypassCaptcha) throws IOException {
 		RunParameters = getExecutionParameters(strBrowser, strLanguage);
 		strBrowser = RunParameters.get("Browser").toLowerCase();
-		strLanguage = RunParameters.get("Language").toLowerCase();
+		//strLanguage = RunParameters.get("Language").toLowerCase();
 
 		if (strBrowser.toLowerCase().contains("sauce")) { 
 			sauceParameters =	initializeSauceParamsMap(strBrowser); 
@@ -142,6 +144,7 @@ public class BaseTest {
 		webDriverThreadLocal.set(browserDrivers.driverInit(strBrowser, sauceParameters, currentTestMethodName, ""));
 		getDriver().get(strUrl);
 		strBrowser=System.getProperty("Browser").trim();
+		/*
 		String lsTestDevice=System.getProperty("Device").trim();
 		TestDeviceThreadLocal.set(lsTestDevice);
 		if (!strBrowser.toLowerCase().contains("android") && !strBrowser.toLowerCase().contains("ios")
@@ -162,7 +165,12 @@ public class BaseTest {
 		}else{
 			productResultsPageThreadLocal.set(new ProductResultsPage_iPad(getDriver()));
 		}
-		
+		*/
+		if (!strBrowser.toLowerCase().contains("android") && !strBrowser.toLowerCase().contains("ios")
+				&& !strBrowser.toLowerCase().contains("mobile")) {
+			getDriver().manage().window().maximize();
+		}
+
 		setImplictWait(getDriver(), 60);
 		//setSessionStorage(strUrl);
 		
@@ -228,7 +236,7 @@ public class BaseTest {
 	@BeforeMethod(alwaysRun = true)
 	@Parameters({ "strBrowser", "strLanguage" })
 	public void beforeTest(@Optional("chrome") String strBrowser, @Optional("en") String strLanguage,
-			ITestContext testContext, Method method) throws ClientProtocolException, IOException {
+			ITestContext testContext, Method method) throws IOException {
 		startSession(System.getProperty("QaUrl"), strBrowser, strLanguage, method, false);
 		getglobalheaderPageThreadLocal().waitForPageLoad();
 		// getHomePageThreadLocal().waitforOverlayLoadingSpinnerToDisapper();
