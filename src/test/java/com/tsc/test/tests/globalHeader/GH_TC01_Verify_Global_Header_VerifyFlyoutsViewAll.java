@@ -15,7 +15,7 @@ public class GH_TC01_Verify_Global_Header_VerifyFlyoutsViewAll extends BaseTest 
 		String lsBaseUrl=(new BasePage(this.getDriver())).getBaseURL();
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl+"/"), "TSC url is correct", "TSC url is incorrect");
 		reporter.reportLogWithScreenshot("Home Page");
-		reporter.reportLog("Validating all links for each category");
+		reporter.reportLog("Validating shop all brand links.");
 		List<String> FOHeading=getglobalheaderPageThreadLocal().getFlyoutHeadings();
 		reporter.reportLog("Flyout header diplyas drpartment: "+FOHeading);
 		String lsUrl,shopallUrl,lsYmlNotFound,lsSuccessResult, lsFailResult;

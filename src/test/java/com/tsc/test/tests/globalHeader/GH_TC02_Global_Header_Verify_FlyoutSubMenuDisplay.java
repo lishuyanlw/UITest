@@ -13,7 +13,7 @@ public class GH_TC02_Global_Header_Verify_FlyoutSubMenuDisplay extends BaseTest 
 	
 	@Test(groups={"Home","Regression"})	    
 	public void verifyFlyoutHeadings() throws IOException {
-		
+		getglobalheaderPageThreadLocal().closeadd();
 		String lsBaseUrl=(new BasePage(this.getDriver())).getBaseURL();
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl+"/"), "TSC url is correct", "TSC url is incorrect");
 		reporter.reportLogWithScreenshot("Home Page");
@@ -23,9 +23,8 @@ public class GH_TC02_Global_Header_Verify_FlyoutSubMenuDisplay extends BaseTest 
 		List<String>flyoutHeading = getglobalheaderPageThreadLocal().getFlyoutHeadings();
 		reporter.reportLog("Flyout diplyas drpartment: "+flyoutHeading+" and they all are validated.");
 		for(String lsHeading:flyoutHeading) {
-			reporter.softAssert(getglobalheaderPageThreadLocal().validateFlyouthref(lsHeading),"href is present for Flyout Link "+lsHeading,"href is not present for Flyout link "+lsHeading);
 			FlyoutUrl = getglobalheaderPageThreadLocal().getUrlAfterclickingFlyoutHeading(lsHeading);
-			 lsUrl=getglobalheaderPageThreadLocal().validateUrlAfterclickingFlyoutHeading(lsHeading);
+			lsUrl=getglobalheaderPageThreadLocal().validateUrlAfterclickingFlyoutHeading(lsHeading);
 			lsSuccessResult=String.format("The url of [ %s ] does not contain [ %s ] after clicking Flyout" + lsHeading + "'s link", FlyoutUrl,lsYmlNotFound);
 			lsFailResult=String.format("The url of [ %s ] contains [ %s ] after clicking Flyout " + lsHeading + "'s link", FlyoutUrl,lsYmlNotFound);
 			reporter.softAssert(FlyoutUrl.contains(TestDataHandler.constantDataVariables.getlbl_FlyoutHeadingLandingPageLink()+":"+(lsUrl)), lsHeading + "'s URL is correct", lsHeading + "'s URL is incorrect");
