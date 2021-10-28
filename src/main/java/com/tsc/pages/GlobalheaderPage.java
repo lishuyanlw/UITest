@@ -608,12 +608,12 @@ public class GlobalheaderPage extends BasePage{
 		 	CategoriesList = headingWebElement.findElements(By.xpath("./ancestor::div[contains(@id,'contentPlaceHolder')]"+xpathCatagories));
 		 	return CategoriesList; 
 	 }
-	 
 	 /*Method to get list of categories(submenu) under flyout heading
 	  * @return list:categories(submenu)
 	  * @author Shruti Desai
 	  */
-	/* public List<String> getCategorieslist(String headingName,String submenu) {
+	 
+	 public List<String> getCategorieslist(String headingName,String submenu) {
 		 List<WebElement> CategoriesList=getWebElementCatergoryItem(headingName,submenu);
 		 List<String> Categories =new ArrayList<String>();
 		 AtomicReference<String> first_flyout_menu_text =new  AtomicReference<String>();
@@ -625,32 +625,9 @@ public class GlobalheaderPage extends BasePage{
 			 Categories.add(newCategoryName);
 		 }
 		 return Categories;
-	 }*/
-	 
-	 public List<String> getCategorieslist_try(String headingName,String submenu) {
-		 List<String> Categories =new ArrayList<String>();
-		 try{
-			  List<WebElement> CategoriesList=getWebElementCatergoryItem(headingName,submenu);
-			  AtomicReference<String> first_flyout_menu_text =new  AtomicReference<String>();
-			  first_flyout_menu_text.set(headingName.split(" ")[0]);
-			  String newCategoryName;
-			  for(WebElement Category:CategoriesList) {
-				  if(!Category.getAttribute("href").isEmpty()) {
-				  waitForCondition(Driver->{return Category.getAttribute("href").contains(first_flyout_menu_text.get());},30000);
-//----------------commented
-				  //getReusableActionsInstance().scrollToElement(Category);
-				  newCategoryName=Category.getText().trim();
-				  }else {
-					  continue;
-				  }
-				  Categories.add(newCategoryName);
-			  }
-		  }catch(Exception e){
-			  e.getMessage();
-		  }
-		 return Categories;
 	 }
 	 
+		 
 	 /*Method to get WebElement for Submenu Item for each category
 	  * @return list of WebElements
 	  * @author Shruti Desai
@@ -662,8 +639,6 @@ public class GlobalheaderPage extends BasePage{
 		 String sectionXpathSubmenuItem=null;
 		 switch(section) {
 		 	case "Curated Collections":
-		 		 
-					
 		 		xpathCatagories =createXPath("//nav[contains(@class,'mega-curated mega-column')]//div//h4[contains(text(),'{0}')]" ,section); 
 		 		categoryWebElement = 	getDriver().findElement(By.xpath(xpathCatagories));
 		 		if(itemName==null) {
@@ -691,12 +666,13 @@ public class GlobalheaderPage extends BasePage{
 	 			
 		 	case "":
 		 		categoryWebElement =getWebElementCatergoryItem(headingName,submenu).get(0);
-
 		 		getReusableActionsInstance().scrollToElement(categoryWebElement);
 				if(itemName==null) {
-//-----------------------			//----use here child element cout method from base class to check child ele of ul-----------------------
-				SubMenuiteamList=categoryWebElement.findElements(By.xpath("./ancestor::div[contains(@class,'mega-containers')]//nav[contains(@class,'mega-sub')]/ul"));
-					
+					WebElement parentElement=categoryWebElement.findElement(By.xpath("./ancestor::div[contains(@class,'mega-containers')]//nav[contains(@class,'mega-sub')]/ul"));
+					Long childElement =getChildElementCount(parentElement);
+					if(childElement>0) {
+						SubMenuiteamList=parentElement.findElements(By.xpath("./li/a"));
+					}
 					return SubMenuiteamList;
 	 			}
 	 				String xpathSubmenuItem=createXPath("//a[contains(text(),'{0}')]",itemName);
@@ -715,34 +691,22 @@ public class GlobalheaderPage extends BasePage{
 		 String newSubMenuItemName=null;
 		 try {
 			 List<WebElement> SubMenuItemList=getWebElementSubmenuItem(headingName,section,submenu,itemName,element);
-			 System.out.println("Sub menu item number--------"+SubMenuItemList.size());
 			 for(WebElement Item:SubMenuItemList) {
-				 System.out.println("----------------This is for loop-------");
-				 switch(section) {
+				  switch(section) {
 				 	case "Popular Brands":
-				 		System.out.println("Pupular brand link text----->"+Item.getAttribute("alt"));
 				 		newSubMenuItemName=Item.getAttribute("alt");
 				 		break;
 				 	case "Curated Collections":
-				 		//getReusableActionsInstance().scrollToElement(Item);
-				 		System.out.println("curated collection link text----->"+Item.getText().trim());
-				 		
 				 		newSubMenuItemName=Item.getText().trim();
 				 		break;
 				 	case "":
-/*------------------------------				 		/*use child size method here for lefhandsie section
-				 		 * if(childSize==1) {
-				 			return "WithoutWasPrice";
-				 			}/*/
-				 		WebElement itemElement =Item.findElement(By.xpath(".//li/a"));
-				 		
-				 		getReusableActionsInstance().scrollToElement(itemElement);
-				 		System.out.println("WebElement ------->"+Item);
-				 		System.out.println("left hand side item ----------"+headingName+">>>>>>>>>>>"+submenu+">>>>"+Item.getText().trim());
-				 		newSubMenuItemName=Item.getText().trim();
-				 		break;
+				 		getReusableActionsInstance().scrollToElement(Item);
+				 		getReusableActionsInstance().waitForElementVisibility(Item);
+				 		System.out.println(headingName+">>>>"+submenu);
+						System.out.println(Item.getText().trim());
+					 	newSubMenuItemName=Item.getText().trim();
+					 	break;
 				 }
-				
 				SubMenuItem.add(newSubMenuItemName);
 			 }
 	 	}catch(Exception e){
@@ -751,45 +715,7 @@ public class GlobalheaderPage extends BasePage{
 	 	return SubMenuItem;
 	 }
 	 
-	 
-	 
-	 /*
 	
-	 public List<String> getSubMenuItemlist(String headingName,String section,String submenu, String itemName, String element) {
-		 	List<WebElement> SubMenuItemList=getWebElementSubmenuItem(headingName,section,submenu,itemName,element);
-			List<String> SubMenuItem =new ArrayList<String>();
-			String newSubMenuItemName=null;
-			 System.out.println("Sub menu item number--------"+SubMenuItemList.size()+section);
-			try {
-			for(WebElement Item:SubMenuItemList) {
-				 System.out.println("----------------This is for loop-------"+"  " +section);
-		 		//if(section=="Popular Brands") {
-				switch(section) {
-				case "Popular Brands":
-				newSubMenuItemName=Item.getAttribute("alt");
-					//System.out.println("popular brand WEBELEMENT------->"+Item);
-		 			//System.out.println("popular brand link list------->"+newSubMenuItemName);
-				break;
-				 case "Curated Collections":
-				//} else {
-		 			newSubMenuItemName=Item.getText().trim();
-		 			break;
-				}
-	 			SubMenuItem.add(newSubMenuItemName);
-			}
-		 			/*if(section=="") {
-		 				//System.out.println("submenu item list Text for "+submenu+SubMenuItem);
-		 			
-		 			}
-			}catch(Exception e){
-			     e.getMessage();
-			 }
-			return SubMenuItem;
-		 }*/
-	 
-	 
-	 
-	 
 	 /*Method to to click on WebElement for Submenu Item 
 	  * @author Shruti Desai
 	  */
