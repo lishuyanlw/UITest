@@ -16,6 +16,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.http.client.ClientProtocolException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.ITestContext;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -125,6 +126,11 @@ public class BaseTest {
 		if (strBrowser.toLowerCase().contains("sauce")) { 
 			sauceParameters =	initializeSauceParamsMap(strBrowser); 
 			}
+		
+//		System.setProperty("webdriver.gecko.driver","C:\\Selenium\\geckodriver-v0.29.1-win64\\geckodriver.exe"); // Setting system properties of FirefoxDriver
+//				WebDriver driver = new FirefoxDriver();
+//				webDriverThreadLocal.set(driver);
+//				getDriver().get(strUrl);
 		
 		webDriverThreadLocal.set(browserDrivers.driverInit(strBrowser, sauceParameters, currentTestMethodName, ""));
 		getDriver().get(strUrl);

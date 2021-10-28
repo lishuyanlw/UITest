@@ -80,6 +80,10 @@ public class ProductResultsPage extends BasePage{
 	
 	public By byProductReview=By.xpath(".//div[contains(@class,'reviewDiv')]");
 	
+	public By byProductReviewAccessibleText=By.xpath(".//div[contains(@class,'reviewDiv')]//span[contains(@class,'pr-accessible-text')]");
+	
+	public By byProductReviewStarList=By.xpath(".//div[contains(@class,'reviewDiv')]//div[contains(@class,'pr-star-v4')]");
+	
 	public By byProductSwatch=By.xpath(".//div[@class='swatchWrapDiv']");
 	
 	public By byProductFreeShipping=By.xpath(".//div[contains(@class,'FreeShippingDiv')]");
@@ -170,6 +174,7 @@ public class ProductResultsPage extends BasePage{
 	public String firstLevelFilter,secondLevelFilter;	
 	public boolean bDefault=false;
 	public String lsSearchResultMessage="";
+	public ProductItem selectedProductItem= new ProductItem();
 		
 	/**
 	 * This method will judge search type.
@@ -1105,7 +1110,96 @@ public class ProductResultsPage extends BasePage{
 		String clearanceURLTitleText = getDriver().getCurrentUrl();
 		return clearanceURLTitleText;
 	}
+	
+	/**
+	 * This method will get the review number amount of product item
+	 * @param List<WebElement> lstReviewStar: review star list
+	 * @return  int: review number amount
+	 * @author Wei.Li
+	 */
+	public int getProductItemReviewNumberAmountFromStarImage(List<WebElement> lstReviewStar) {		
+		int sum=0;
+		for(WebElement item:lstReviewStar) {
+			String[] lstClass=item.getAttribute("class").split(" ");
+			String lsFilledClass="";
+			for(String lsClass:lstClass) {
+				if(lsClass.contains("filled")) {
+					lsFilledClass=lsClass;
+					break;
+				}
+			}
+			String[] lstSubItem=lsFilledClass.split("-");
+			sum=sum+Integer.parseInt(lstSubItem[3]);
+		}
+		return sum;
+	}
+	
+	/**
+	 * This method will get the review number amount of product item
+	 * @param List<WebElement> lstReviewStar: review star list
+	 * @return  float: review number amount
+	 * @author Wei.Li
+	 */
+	public float getProductItemReviewNumberAmountFromAccessibleText(WebElement productItem) {		
+		return Float.parseFloat(productItem.findElement(this.byProductReviewAccessibleText).getText().trim().split(" ")[1]);
+	}
+	
+	/**
+	 * This method will go to the product with Review, EasyPay, Swatch item>=4 and Video
+	 * @return true/false
+	 * @author Wei.Li
+	 */
+	public boolean goToProductItemWithReviewAndSwatchAndVideo() {
+		this.selectedProductItem.productName="";
+		this.selectedProductItem.productNumber="";
+		this.selectedProductItem.productNowPrice="";
+		this.selectedProductItem.productEasyPay="";
+		
+		WebElement element;
+		do {
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productResultList.get(0));
+			for(WebElement item : this.productResultList) {
+				String lsMsg=judgeProductBadgeAndVideo(item);
+				if(!(lsMsg.equalsIgnoreCase("WithBadgeAndVideo")||lsMsg.equalsIgnoreCase("WithVideo"))) {
+					continue;
+				}
+				
+				element=item.findElement(this.byProductReview);
+				if(this.getChildElementCount(element)==0) {
+					continue;
+				}
+				
+				element=item.findElement(this.byProductEasyPay);
+				if(this.getChildElementCount(element)==0) {
+					continue;
+				}
+				
+				element=item.findElement(this.byProductSwatch);
+				if(this.getChildElementCount(element)<4) {
+					continue;
+				}
+				
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+				this.selectedProductItem.productName=item.findElement(this.byProductName).getText().trim();
+				this.selectedProductItem.productNumber=item.findElement(this.byProductItemNO).getText().trim();
+				this.selectedProductItem.productNowPrice=item.findElement(this.byProductNowPrice).getText().trim();
+				this.selectedProductItem.productEasyPay=item.findElement(this.byProductEasyPay).getText().trim();
+				
+				item.click();
+				return waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},60000);						
+			}
+		}
+		while(this.switchPage(true));
+			
+		return false;
+	}
 
+	public class ProductItem{
+		String productName;
+		String productNumber;
+		String productNowPrice;
+		String productEasyPay;
+	}
 }
 
 	
