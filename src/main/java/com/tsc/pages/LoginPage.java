@@ -100,6 +100,9 @@ public class LoginPage extends BasePage {
 	 * @author Wei.Li
 	 */
 	public boolean Login(String lsUserName, String lsPassword) {
+		if(System.getProperty("Browser").toLowerCase().contains("firefox")) {
+			getReusableActionsInstance().javascriptScrollToTopOfPage();
+		}
 		getReusableActionsInstance().scrollToElement(this.btnSignInMainMenu);
 		getReusableActionsInstance().staticWait(300);
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInNav);
