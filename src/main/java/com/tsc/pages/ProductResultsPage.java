@@ -1169,6 +1169,10 @@ public class ProductResultsPage extends BasePage{
 					continue;
 				}
 				
+				if(!this.judgeProductWasPrice(item).equalsIgnoreCase("WithWasPrice")) {
+					continue;
+				}
+				
 				element=item.findElement(this.byProductEasyPay);
 				if(this.getChildElementCount(element)==0) {
 					continue;
