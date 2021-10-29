@@ -523,6 +523,7 @@ public class GlobalFooterPage extends BasePage {
 		Set<String> lstWindowHandle=this.getDriver().getWindowHandles();
 		for(String windowHandle:lstWindowHandle) {
 			if(!windowHandle.equalsIgnoreCase(lsMainWindowHandle)) {
+				getReusableActionsInstance().staticWait(5000);
 				this.getDriver().switchTo().window(windowHandle);
 				break;
 			}
