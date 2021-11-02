@@ -44,7 +44,7 @@ def getTunnelName() {
 //    tunnelName = tunnelName.replaceAll(":","")
 //    tunnelName = tunnelName.replaceAll(" ","")
 //    return tunnelName
-    return "Digital_Mobile_QA"
+    return "TSCWF_Automation_Test_Tunnel_Sachin"
 }
 
 def tunnel_name() {
@@ -97,7 +97,7 @@ task "localTest"(type: Test) {
     systemProperty 'QaUrl', test_qaURL
     systemProperty 'Browser', test_browser
     systemProperty 'Language', test_language
-
+    systemProperty 'chromeMobileDevice', chromeMobileDevice
     systemProperties(System.getProperties())
     outputs.upToDateWhen { false }  // Always run tests
 
