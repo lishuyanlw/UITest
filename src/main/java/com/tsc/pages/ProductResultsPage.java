@@ -1135,16 +1135,6 @@ public class ProductResultsPage extends BasePage{
 	}
 	
 	/**
-	 * This method will get the review number amount of product item
-	 * @param List<WebElement> lstReviewStar: review star list
-	 * @return  float: review number amount
-	 * @author Wei.Li
-	 */
-	public float getProductItemReviewNumberAmountFromAccessibleText(WebElement productItem) {		
-		return Float.parseFloat(productItem.findElement(this.byProductReviewAccessibleText).getText().trim().split(" ")[1]);
-	}
-	
-	/**
 	 * This method will go to the product with Review, EasyPay, Swatch item>=4 and Video
 	 * @return true/false
 	 * @author Wei.Li
@@ -1186,6 +1176,12 @@ public class ProductResultsPage extends BasePage{
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 				this.selectedProductItem.productName=item.findElement(this.byProductName).getText().trim();
 				this.selectedProductItem.productNumber=item.findElement(this.byProductItemNO).getText().trim();
+				List<String> list=this.getNumberFromString(this.selectedProductItem.productNumber);
+				String lsFinal="";
+				for(String lsSubItem:list) {
+					lsFinal+=lsSubItem;
+				}
+				this.selectedProductItem.productConvertedNumber=lsFinal;
 				this.selectedProductItem.productNowPrice=item.findElement(this.byProductNowPrice).getText().trim();
 				this.selectedProductItem.productEasyPay=item.findElement(this.byProductEasyPay).getText().trim();
 				
@@ -1199,10 +1195,12 @@ public class ProductResultsPage extends BasePage{
 	}
 
 	public class ProductItem{
-		String productName;
-		String productNumber;
-		String productNowPrice;
-		String productEasyPay;
+		public String productName;
+		public String productNumber;
+		public String productConvertedNumber;
+		public String productNowPrice;
+		public boolean bProductWasPrice; 
+		public String productEasyPay;
 	}
 }
 
