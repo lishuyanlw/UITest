@@ -2,6 +2,8 @@ package com.tsc.test.tests.globalHeader;
 
 import java.io.IOException;
 import java.util.List;
+
+import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
@@ -18,10 +20,12 @@ public class GH_TC02_Global_Header_Verify_FlyoutHeadings extends BaseTest {
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl+"/"), "TSC url is correct", "TSC url is incorrect");
 		reporter.reportLogWithScreenshot("Home Page");
 		reporter.reportLog("Validating Flyouts all departments & it's URL");
-		List<String>flyoutHeading = getglobalheaderPageThreadLocal().getFlyoutHeadings();
-		reporter.softAssert((TestDataHandler.constantDataVariables.getlst_FlyoutHeading().containsAll(flyoutHeading)),"Flyout diplyas drpartment: "+flyoutHeading+" and they all are validated.","Flyout is not displaying heading properly");
-		for(String lsHeading:flyoutHeading) {
-			reporter.softAssert(getglobalheaderPageThreadLocal().validateFlyouthref(lsHeading),"href is present for Flyout Link "+lsHeading,"href is not present for Flyout link "+lsHeading);
+		
+		List<WebElement> headingsElement=getglobalheaderPageThreadLocal().getFlyoutHeadingsWebelement();
+		for(WebElement lsHeading:headingsElement) {
+			String flyoutHeading=lsHeading.getText();
+			reporter.softAssert((TestDataHandler.constantDataVariables.getlst_FlyoutHeading().contains(flyoutHeading)),"Flyout diplyas drpartment  "+flyoutHeading+" and it's validated.","Flyout is not displaying heading properly");
+			reporter.softAssert(getglobalheaderPageThreadLocal().verifyhrefFlyoutHeading(lsHeading), "href is present for Flyout Heading "+flyoutHeading, "href is not preset for "+flyoutHeading);
 		}
-	}
+	}	
 }

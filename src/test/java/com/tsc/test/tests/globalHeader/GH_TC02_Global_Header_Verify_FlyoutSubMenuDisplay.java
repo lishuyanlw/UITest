@@ -3,6 +3,7 @@ package com.tsc.test.tests.globalHeader;
 import java.io.IOException;
 import java.util.List;
 
+import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 
 import com.tsc.data.Handler.TestDataHandler;
@@ -18,7 +19,24 @@ public class GH_TC02_Global_Header_Verify_FlyoutSubMenuDisplay extends BaseTest 
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl+"/"), "TSC url is correct", "TSC url is incorrect");
 		reporter.reportLogWithScreenshot("Home Page");
 		reporter.reportLog("Validating Flyout display all department & it's URL after Clicking each category");
-		String lsUrl,FlyoutUrl,lsYmlNotFound,lsSuccessResult, lsFailResult;
+		String FlyoutUrl,lsYmlNotFound,lsSuccessResult, lsFailResult;//
+		lsYmlNotFound=TestDataHandler.constantDataVariables.getlnk_NotFound();
+		
+		List<WebElement> headingsElement=getglobalheaderPageThreadLocal().getFlyoutHeadingsWebelement();
+		for(WebElement lsHeading:headingsElement) {
+			String flyoutHeading=lsHeading.getText();
+			FlyoutUrl = getglobalheaderPageThreadLocal().getUrlAfterclickingFlyoutHeading(lsHeading);
+			lsSuccessResult=String.format("The url [ %s ] does not contain [ %s ] after clicking " + flyoutHeading + "'s link", FlyoutUrl,lsYmlNotFound);
+			lsFailResult=String.format("The url [ %s ] contains [ %s ] after clicking " + flyoutHeading + "'s link", FlyoutUrl,lsYmlNotFound);
+			reporter.reportLog("Flyout displays heading "+flyoutHeading);
+			reporter.reportLog("URL of the landing page for Flyout heading "+flyoutHeading+" is "+FlyoutUrl);
+			
+			reporter.softAssert(!FlyoutUrl.contains(lsYmlNotFound), lsSuccessResult,lsFailResult);
+			
+		}
+		
+		
+		/*String lsUrl,FlyoutUrl,lsYmlNotFound,lsSuccessResult, lsFailResult;
 		lsYmlNotFound=TestDataHandler.constantDataVariables.getlnk_NotFound();
 		List<String>flyoutHeading = getglobalheaderPageThreadLocal().getFlyoutHeadings();
 		reporter.reportLog("Flyout diplyas drpartment: "+flyoutHeading+" and they all are validated.");
@@ -30,6 +48,6 @@ public class GH_TC02_Global_Header_Verify_FlyoutSubMenuDisplay extends BaseTest 
 			reporter.softAssert(FlyoutUrl.contains(TestDataHandler.constantDataVariables.getlbl_FlyoutHeadingLandingPageLink()+":"+(lsUrl)), lsHeading + "'s URL is correct", lsHeading + "'s URL is incorrect");
 			reporter.softAssert(!FlyoutUrl.contains(lsYmlNotFound), lsSuccessResult,lsFailResult);
 			
-		}
+		}*/
 	}
 }

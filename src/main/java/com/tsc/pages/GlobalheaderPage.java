@@ -135,14 +135,22 @@ public class GlobalheaderPage extends BasePage{
 	 * @author Shruti.Desai
 	 *Flyouts Headings
 	 */
-	@FindBy(xpath = "//div[contains(@class,'Header')]//*[contains(@id,'megamenu')]//ul[contains(@class,'wrapper')]/li/a/span/span")
-			//div[contains(@class,'header-desktop')]//div[contains(@class,'megamenu')]//ul[@class='navLinkWrap']/li
+	/*@FindBy(xpath = "//ul[contains(@class,'primary-navigation__wrapper')]//li")
 	List<WebElement> listFlyoutHeadings;
 	
+	@FindBy(xpath = "//nav[contains(@class,'mega-categories mega-column')]//ul/li")
+	List<WebElement> listCategories;
 	
+	@FindBy(xpath = "//nav[contains(@class,'mega-sub-items mega-column')]//ul/li")
+	List<WebElement> listSubItems;
 	
+	@FindBy(xpath = "//nav[contains(@class,'mega-curated mega-column')]//ul/li")
+	List<WebElement> listSubItemsCuratedCollection;
 	
+	@FindBy(xpath = "//nav[contains(@class,'mega-popular mega-column')]//ul/li")
+	List<WebElement> listSubItemsPopularBrands;
 	
+	*/
 	@FindBy(xpath = "//*[@class='email-popup__button']")
 	WebElement btnClose;
 	public void closeadd() {
@@ -510,310 +518,195 @@ public class GlobalheaderPage extends BasePage{
 	 * @author Shruti.Desai
 	 *Flyouts Sub Menu
 	 */
-
+	@FindBy(xpath = "//ul[contains(@class,'primary-navigation__wrapper')]//li//a")
+	List<WebElement> listFlyoutHeadings;
 	
-
+	@FindBy(xpath = "//nav[contains(@class,'mega-categories mega-column')]//ul/li")
+	List<WebElement> listCategories;
 	
-	/*Method to get list of Flyout Headings
-	 * @return list:Flyout Heading
-	 * @author Shruti Desai
-	 */		
-	public List<String> getFlyoutHeadings() { 
-		List<String> FlyoutHeadings= new ArrayList<String>();
-		String newHeading;
-		for(WebElement item:listFlyoutHeadings) {
-			newHeading=item.getText().trim();
-			//newHeading = createCamelCase(newHeading);
-			FlyoutHeadings.add(newHeading);
-		}
-		return FlyoutHeadings;
-	}		
+	@FindBy(xpath = "//nav[contains(@class,'mega-sub-items mega-column')]//ul/li")
+	List<WebElement> listSubItems;
 	
-	/*Method to get WebElement for flyout heading  
-	 * @return WebElement
-	 * @author Shruti Desai
-	 */	
-	 public WebElement getWebElementFlyoutHeading(String headingName) {
-		String xpathHeading =createXPath("//li[contains(@class,'primary-navigation__item')]//a[contains(@class,'primary-navigation__link')]//span[contains(text(),'{0}')]" ,headingName); 
-		WebElement headingWebElement = getDriver().findElement(By.xpath(xpathHeading));
-		return headingWebElement;
-	 }
-	 							
-	 /*Method to verify href is empty or not before clicking flyout heading link
-	  * @return true/false
-	  * @author Shruti Desai
-	  */
-	 public boolean validateFlyouthref(String headingName) {
-		WebElement headingWebElement = getWebElementFlyoutHeading(headingName).findElement(By.xpath("./ancestor::a"));
-		getReusableActionsInstance().scrollToElement(headingWebElement);
-		if(!verifyElementProperty(headingWebElement,"Link")) {//href not present
-		 	return false;
-		 }
-			return true;
-	 }
-	 
-	 /*Method to verify url after clicking flyout heading link
-	  * @return String:href(only get unique part for each heading)
-	  * @author Shruti Desai
-	  */
-	 public String getUrlAfterclickingFlyoutHeading(String headingName) {
-		 String currentUrl;
-		 WebElement headingWebElement = getWebElementFlyoutHeading(headingName).findElement(By.xpath("./ancestor::a"));
-		 getReusableActionsInstance().javascriptScrollByVisibleElement(headingWebElement);
-		 headingWebElement.click();
-		 currentUrl = getDriver().getCurrentUrl();
-		 return currentUrl;
-	 }
-	 
-	 /*Method to get part of href for flyout heading link
-	  * @return String:href(only get unique part (number) for each Flyout heading)
-	  * @author Shruti Desai
-	  */
-	 public String validateUrlAfterclickingFlyoutHeading(String headingName) {
-		 String currentUrl;
-		 WebElement headingWebElement = getWebElementFlyoutHeading(headingName).findElement(By.xpath("./ancestor::a"));
-		 getReusableActionsInstance().javascriptScrollByVisibleElement(headingWebElement);
-		 currentUrl = headingWebElement.getAttribute("href").split("n:")[1];
-		 return currentUrl;
-	 }
+	@FindBy(xpath = "//nav[contains(@class,'mega-curated mega-column')]//h4")
+	WebElement headingCuratedCollection;
+	
+	@FindBy(xpath = "//nav[contains(@class,'mega-popular mega-column')]//h4")
+	WebElement headingPopularBrands;
+	
+	
+	@FindBy(xpath = "//nav[contains(@class,'mega-curated mega-column')]//ul/li")
+	List<WebElement> listSubItemsCuratedCollection;
+	
+	@FindBy(xpath = "//nav[contains(@class,'mega-popular mega-column')]//ul/li")
+	List<WebElement> listSubItemsPopularBrands;
 	/*Method to get String of XPath  
-	 * @return String:Xpath
-	 * @author Shruti Desai
-	 */						
+	* @return String:Xpath
+	* @author Shruti Desai
+	*/						
 	public String createXPath(String xpathExp, Object ...args){
 		for(int i=0; i<args.length; i++) {
 			xpathExp = xpathExp.replace("{"+i+"}", (CharSequence) args[i]);
 		}
 		return xpathExp;
 	}
-
 	
-//Sub Menu Section and its links	 
-	
-	/*Method to get WebElement for Category items(submenu)  
-	 * @return list of WebElements
-	 * @author Shruti Desai
-	 */
-	 public List<WebElement> getWebElementCatergoryItem(String headingName,String submenu) {
-		 List<WebElement> CategoriesList =null;
-		 String xpathCatagories =null;
-		 WebElement headingWebElement =getWebElementFlyoutHeading(headingName);
-		 getReusableActionsInstance().scrollToElement(headingWebElement);
-		 if(submenu==null) {
-			xpathCatagories=createXPath("//nav[contains(@class,'mega-categories')]//a[contains(@href,'{0}')]",headingName.split(" ")[0]);
-			CategoriesList = headingWebElement.findElements(By.xpath("./ancestor::div[contains(@id,'contentPlaceHolder')]"+xpathCatagories));
-			return	CategoriesList;
-	 	}
-		 	xpathCatagories =createXPath("//nav[contains(@class,'mega-categories')]//a[contains(text(),\"{0}\")]" ,submenu); 
-		 	CategoriesList = headingWebElement.findElements(By.xpath("./ancestor::div[contains(@id,'contentPlaceHolder')]"+xpathCatagories));
-		 	return CategoriesList; 
-	 }
-	 /*Method to get list of categories(submenu) under flyout heading
-	  * @return list:categories(submenu)
-	  * @author Shruti Desai
-	  */
-	 
-	 public List<String> getCategorieslist(String headingName,String submenu) {
-		 List<WebElement> CategoriesList=getWebElementCatergoryItem(headingName,submenu);
-		 List<String> Categories =new ArrayList<String>();
-		 AtomicReference<String> first_flyout_menu_text =new  AtomicReference<String>();
-		 first_flyout_menu_text.set(headingName.split(" ")[0]);
-		 String newCategoryName;
-		 for(WebElement Category:CategoriesList) {
-			 waitForCondition(Driver->{return Category.getAttribute("href").contains(first_flyout_menu_text.get());},60000);
-			 newCategoryName=Category.getText().trim();
-			 Categories.add(newCategoryName);
-		 }
-		 return Categories;
-	 }
-	 
-		 
-	 /*Method to get WebElement for Submenu Item for each category
-	  * @return list of WebElements
-	  * @author Shruti Desai
-	  */
-	 public List<WebElement> getWebElementSubmenuItem(String headingName,String section,String submenu, String itemName, String element) {
-		 List<WebElement> SubMenuiteamList =null;
-		 String xpathCatagories =null;
-		 WebElement categoryWebElement =null;
-		 String sectionXpathSubmenuItem=null;
-		 switch(section) {
-		 	case "Curated Collections":
-		 		xpathCatagories =createXPath("//nav[contains(@class,'mega-curated mega-column')]//div//h4[contains(text(),'{0}')]" ,section); 
-		 		categoryWebElement = 	getDriver().findElement(By.xpath(xpathCatagories));
-		 		if(itemName==null) {
-		 			SubMenuiteamList=categoryWebElement.findElements(By.xpath("./parent::div//a[contains(@href,'HDR') or contains(@href,'productresults')]"));
-		 			return SubMenuiteamList;
-		 		}
-		 			sectionXpathSubmenuItem=createXPath("//a[contains(text(),'{0}')]",itemName);
-		 			SubMenuiteamList=categoryWebElement.findElements(By.xpath("./parent::div"+sectionXpathSubmenuItem));
-		 			return SubMenuiteamList;
-			 	
-		 	case "Popular Brands":
-		 		xpathCatagories =createXPath("//nav[contains(@class,'mega-popular mega-column')]//div//h4[contains(text(),'{0}')]" ,section); 
-	 			categoryWebElement = getDriver().findElement(By.xpath(xpathCatagories));
-	 			if(itemName==null) {
-	 				if(element=="href"){
-	 					SubMenuiteamList=categoryWebElement.findElements(By.xpath("./parent::div//a[contains(@href,'HDR')]"));
-	 				}else {
-	 					SubMenuiteamList=categoryWebElement.findElements(By.xpath("./parent::div//a[contains(@href,'HDR')]/span/img"));
-					}
-	 				return SubMenuiteamList;
-	 			}	
-	 				sectionXpathSubmenuItem=createXPath("//a[contains(@href,'HDR')]/span/img[contains(@alt,'{0}')]",itemName);
-	 				SubMenuiteamList=categoryWebElement.findElements(By.xpath("./parent::div"+sectionXpathSubmenuItem));
-	 				return SubMenuiteamList;
-	 			
-		 	case "":
-		 		categoryWebElement =getWebElementCatergoryItem(headingName,submenu).get(0);
-		 		getReusableActionsInstance().scrollToElement(categoryWebElement);
-				if(itemName==null) {
-					WebElement parentElement=categoryWebElement.findElement(By.xpath("./ancestor::div[contains(@class,'mega-containers')]//nav[contains(@class,'mega-sub')]/ul"));
-					Long childElement =getChildElementCount(parentElement);
-					if(childElement>0) {
-						SubMenuiteamList=parentElement.findElements(By.xpath("./li/a"));
-					}
-					return SubMenuiteamList;
-	 			}
-	 				String xpathSubmenuItem=createXPath("//a[contains(text(),'{0}')]",itemName);
-	 				SubMenuiteamList=categoryWebElement.findElements(By.xpath("./ancestor::div[contains(@class,'mega-containers')]//nav[contains(@class,'mega-sub')]/ul/li"+xpathSubmenuItem));
-	 				return SubMenuiteamList;
-	 		}
-		return SubMenuiteamList; 
-	 }
-	 
-	 /*Method to get list of Submenu Item under each category for left hand side an for link under popular brand/ curated collection section.
-	  * @return list:Submenu item link text
-	  * @author Shruti Desai
-	  */
-	 public List<String> getSubMenuItemlist(String headingName,String section,String submenu, String itemName, String element) {
-		 List<String> SubMenuItem =new ArrayList<String>();
-		 String newSubMenuItemName=null;
-		 try {
-			 List<WebElement> SubMenuItemList=getWebElementSubmenuItem(headingName,section,submenu,itemName,element);
-			 for(WebElement Item:SubMenuItemList) {
-				  switch(section) {
-				 	case "Popular Brands":
-				 		newSubMenuItemName=Item.getAttribute("alt");
-				 		break;
-				 	case "Curated Collections":
-				 		newSubMenuItemName=Item.getText().trim();
-				 		break;
-				 	case "":
-				 		getReusableActionsInstance().scrollToElement(Item);
-				 		getReusableActionsInstance().waitForElementVisibility(Item);
-				 		System.out.println(headingName+">>>>"+submenu);
-						System.out.println(Item.getText().trim());
-					 	newSubMenuItemName=Item.getText().trim();
-					 	break;
-				 }
-				SubMenuItem.add(newSubMenuItemName);
-			 }
-	 	}catch(Exception e){
-		     e.getMessage();
-		 }
-	 	return SubMenuItem;
-	 }
-	 
-	
-	 /*Method to to click on WebElement for Submenu Item 
-	  * @author Shruti Desai
-	  */
-	 public void clickSubMenuItem(String headingName,String section,String submenu, String itemName, String element) {
-		List<WebElement> SubMenuItemList=getWebElementSubmenuItem(headingName,section,submenu,itemName,element);
-	 	WebElement SubMenuItem=SubMenuItemList.get(0);
-	 	SubMenuItem.click();
-	 }
-	 
-	 /*Method to verify href is empty or not before submenu iteam in left hand side Section
-	  * @return String
-	  * @author Shruti Desai
-	  */
-	 public String validateFlyoutSubMenuItemSRCandHREF(String headingName,String section,String submenu, String itemName, String element) {
-			StringBuilder href_src  =new StringBuilder();
-			String elempresent ="All atributes are present";
-			List<WebElement> SubMenuItemList=getWebElementSubmenuItem(headingName,section,submenu,itemName,element);
-	 		switch(section) {
-			 	case "Curated Collections":
-			 		for (WebElement SBlinks:SubMenuItemList) {
-						if(!verifyElementProperty(SBlinks,"Link")) {//href not present
-							href_src.append('\n').append(SBlinks.getText());
-						}
-					}
-					//Return All attributes are present for curated collections
-			 		return (elempresent);
-			 	
-			 	case "Popular Brands":	
-			 		if(element =="href") {
-			 			for (int i=0; i<SubMenuItemList.size(); i++) {
-			 				if(!verifyElementProperty(SubMenuItemList.get(i),"Link")) {//href not present
-			 					href_src.append('\n').append(SubMenuItemList.get(i).getAttribute("href").split("FlyoutNav_")[1]);
-			 				}
-			 			}
-			 			return ("href present for all elements");
-			 		}else{	
-			 			for (int i=0; i<SubMenuItemList.size(); i++) {
-			 				if(!verifyElementProperty(SubMenuItemList.get(i),"Image")) {//href present and Src not present
-			 					//System.out.println(verifyElementProperty(SubMenuItemList.get(i),"Link"));
-								href_src.append('\n').append(SubMenuItemList.get(i).getAttribute("alt"));
-			 				}
-			 			}
-			 			return ("Src present for all elements");
-			 		}
-			 		
-			 	case ""://Verification of left hand side section links under submenu headings
-			 		for (WebElement SBlinks:SubMenuItemList) {
-			 			//System.out.println("Left hand side section-----"+SBlinks.getText());
-			 			//System.out.println("Left hand side section-----"+SBlinks.getAttribute("href"));
-			 			if(!verifyElementProperty(SBlinks,"Link")) {//href not present
-			 				System.out.println("href is not present condition.................>" +verifyElementProperty( SBlinks,"Link"));
-			 				//return (SBlinks.getText());//
-			 				href_src.append('\n').append(SBlinks.getText());
-			 			}
-			 		}
-			 		return (elempresent);
-			 	//	href_src.toString();
-			 		
-			 }	
-			return elempresent;	
-	}
+	public List<WebElement> getFlyoutHeadingsWebelement() {
+		List<WebElement> headingElements =getDriver().findElements(By.xpath("//ul[contains(@class,'primary-navigation__wrapper')]//li//a//span[contains(@class,'primary-navigation__link-text')]"));
 		
-	 /*Method to verify href is empty or not before clicking shop all brands in Popular Brand Section
-	  * @return true/false
-	  * @author Shruti Desai
-	  */
-	 public boolean validateShopAllPupularBrandhref(String headingName,String section,String submenu, String itemName, String element) {
-		 WebElement headingWebElement =getWebElementFlyoutHeading(headingName);
-		 getReusableActionsInstance().scrollToElement(headingWebElement);
-		 AtomicReference<String> first_flyout_menu_text =new  AtomicReference<String>();
-		 first_flyout_menu_text.set(headingName.split(" ")[0]);
-		 List<WebElement> SubMenuItemList=getWebElementSubmenuItem(headingName,section,submenu,itemName,element);
-		 WebElement linkPopularBrand = SubMenuItemList.get(0);
-		 WebElement ShopAllWebElement = getDriver().findElement(By.xpath("//nav[contains(@class,'mega-popular mega-column')]/a[contains(@class,'mega-popular__cta')]"));
-		 waitForCondition(Driver->{return linkPopularBrand.getAttribute("href").contains(first_flyout_menu_text.get());},30000);
-		 if(!verifyElementProperty(ShopAllWebElement,"Link")) {
-			 return false;
-		 }
-		 return true;
-	 }
-	 
-	 /*Method to verify url after clicking shop all brands link in Popular Brand Section
+		return headingElements;
+		
+
+	}
+	public boolean verifyhrefFlyoutHeading(WebElement webElement) {
+		getReusableActionsInstance().scrollToElement(webElement);
+		getReusableActionsInstance().waitForElementVisibility(webElement, 2);
+		WebElement headinghref= webElement.findElement(By.xpath("./ancestor::a"));
+		System.out.println(headinghref.getAttribute("href"));
+		if(!verifyElementProperty(headinghref,"Link")) {
+			return false;
+		}
+		return true;
+	}
+	
+	
+	 /*Method to verify url after clicking flyout heading link
 	  * @return String:href(only get unique part for each heading)
 	  * @author Shruti Desai
 	  */
-	 public String getURLshopallPupularBrand(String headingName,String section,String submenu, String itemName, String element) {
+	public String getUrlAfterclickingFlyoutHeading(WebElement webElement) {
 		 String currentUrl;
-		 List<WebElement> CategoriesList=getWebElementCatergoryItem(headingName,submenu);
-		 WebElement eleCategory = CategoriesList.get(0);
-		 AtomicReference<String> first_flyout_menu_text =new  AtomicReference<String>();
-		 first_flyout_menu_text.set(headingName.split(" ")[0]);
-		 waitForCondition(Driver->{return eleCategory.getAttribute("href").contains(first_flyout_menu_text.get());},30000);
-		 WebElement ShopAllWebElement = getDriver().findElement(By.xpath("//nav[contains(@class,'mega-popular mega-column')]/a[contains(@class,'mega-popular__cta')]"));
-		 getReusableActionsInstance().scrollToElement(ShopAllWebElement);
-		 ShopAllWebElement.click();
-		 currentUrl = getDriver().getCurrentUrl();
-		 System.out.println(currentUrl);
-		 	return currentUrl;
+		getReusableActionsInstance().scrollToElement(webElement);
+		//getReusableActionsInstance().javascriptScrollByVisibleElement(webElement);
+		//getReusableActionsInstance().waitForElementVisibility(webElement, 2);
+		webElement.click();
+		currentUrl = getDriver().getCurrentUrl();
+		return currentUrl;
 	 }
 	 
+	public boolean validateSubMenuHeadings(WebElement webElement,String section) { 
+		getReusableActionsInstance().scrollToElement(webElement);
+		if(section== "Curated Collection") {
+			if(!verifyElementProperty(headingCuratedCollection,"Text")) {
+				return false;
+			}
+			return true;
+		}else {
+			if(!verifyElementProperty(headingPopularBrands,"Text")) {
+				return false;
+			}
+				return true;
+		}
+	}
+	 
+	public String verify_subMenu_Item(List<WebElement> webElements, String sectionName) {
+		StringBuilder href_src  =new StringBuilder();
+		for(WebElement element : webElements) {
+			getReusableActionsInstance().scrollToElement(element);
+			//href
+			if(sectionName=="PopularBrands") {
+				System.out.println("I am in popular brand section");
+				if(verifyElementProperty(element,"Link")) {//href not present
+					System.out.println("Element   "+element.getAttribute("alt")); 
+					 href_src.append("href not present for popular brand: ").append(element.getAttribute("alt")).append('\n');
+					// System.out.println( href_src.append("href not present for popular brand : ").append(element.getAttribute("alt")).append('\n'));
+				}//src
+				 if(verifyElementProperty(element,"Image")) {//href not present
+					 System.out.println("Element   "+element.getAttribute("alt")); 
+					 href_src.append("src not present for popular brand: ").append(element.getAttribute("alt")).append('\n');
+					 //System.out.println( href_src.append("src not present  popular brand: ").append(element.getAttribute("alt")).append('\n'));
+				}
+				
+			 }else {
+				// System.out.println("I am in else section");
+					
+				 if(verifyElementProperty(element,"Link"))
+					 href_src.append("href not present for heading: ").append(element.getText()).append('\n');
+				// System.out.println( href_src.append("href not present for: ").append(element.getText()).append('\n'));
+			 } 
+		}
+		//System.out.println("href missing for >>>>>>"+href_src.toString());
+		return  href_src.toString();
+	}
+	
+	
+	public String verify_Header_SubMenu(String sectionName){
+		String textMissing= null;
+		switch(sectionName){
+		   /*	case "Heading":
+		   		textMissing =verify_subMenu_Item( getFlyoutHeadingsWebelement(),sectionName);
+		   		System.out.println("textMissing  ---->"+ verify_subMenu_Item_1(this.listFlyoutHeadings,sectionName));
+			       
+		   		return textMissing ;
+		          //// break;
+		      */case "SubMenu":
+		    	  textMissing=verify_subMenu_Item_1(this.listSubItems,sectionName);
+		    	  return textMissing;
+		        // break;
+		      case "CuratedCollection":
+		    	  textMissing =verify_subMenu_Item_1(this.listSubItemsCuratedCollection,sectionName);
+		    	  return textMissing;
+		       //  break;
+		      case "PopularBrands":
+		    	  textMissing =verify_subMenu_Item_1(this.listSubItemsPopularBrands,sectionName);
+		    	  return textMissing;
+		        // break;
+		   }
+		   return textMissing;
+		}
+	/*Method to verify href/src is empty or not before clicking link
+	  * @return true/false
+	  * @author Shruti Desai
+	  */
+	public String verify_subMenu_Item_1(List<WebElement> webElements, String sectionName) {
+		StringBuilder href_src  =new StringBuilder();
+		for(WebElement element : webElements) {
+			getReusableActionsInstance().scrollToElement(element);
+			//href
+			if(sectionName=="PopularBrands") {
+				System.out.println("I am in popular brand section");
+				if(verifyElementProperty(element,"Link")) {//href not present
+					System.out.println("Element   "+element.getAttribute("alt")); 
+					 href_src.append("href not present for popular brand: ").append(element.getAttribute("alt")).append('\n');
+					// System.out.println( href_src.append("href not present for popular brand : ").append(element.getAttribute("alt")).append('\n'));
+				}//src
+				 if(verifyElementProperty(element,"Image")) {//href not present
+					 System.out.println("Element   "+element.getAttribute("alt")); 
+					 href_src.append("src not present for popular brand: ").append(element.getAttribute("alt")).append('\n');
+					 //System.out.println( href_src.append("src not present  popular brand: ").append(element.getAttribute("alt")).append('\n'));
+				}
+				
+			 }else {
+				// System.out.println("I am in else section");
+					
+				 if(verifyElementProperty(element,"Link"))
+					 href_src.append("href not present for heading: ").append(element.getText()).append('\n');
+				System.out.println( href_src.append("href not present for: ").append(element.getText()).append('\n'));
+			 } 
+		}
+		System.out.println("href missing for >>>>>>"+href_src.toString());
+		return  href_src.toString();
+	}
+	
+	 /*Method to get part of href for flyout heading link (instead of using yaml data use run time data )
+	  * @return String:href(only get unique part (number) for each Flyout heading)
+	  * @author Shruti Desai
+	  */
+	 public String gethrefBeforclickingFlyoutHeading(String headingName) {
+		 String currentUrl;
+		 String xpathHeading =createXPath("//li[contains(@class,'primary-navigation__item')]//a[contains(@class,'primary-navigation__link')]//span[contains(text(),'{0}')]" ,headingName); 
+		 WebElement headingWebElement = getDriver().findElement(By.xpath(xpathHeading+"//ancestor::a"));
+		getReusableActionsInstance().javascriptScrollByVisibleElement(headingWebElement);
+		 currentUrl = headingWebElement.getAttribute("href").split("n:")[1];
+		 return currentUrl;
+	 }
+	 
+	 						
+		
+		
+		 	
+
+		 
+		 
+		 
+
 }	 
