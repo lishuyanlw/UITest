@@ -1150,7 +1150,7 @@ public class ProductResultsPage extends BasePage{
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productResultList.get(0));
 			for(WebElement item : this.productResultList) {
 				String lsMsg=judgeProductBadgeAndVideo(item);
-				if(!(lsMsg.equalsIgnoreCase("WithBadgeAndVideo")||lsMsg.equalsIgnoreCase("WithVideo"))) {
+				if(!(lsMsg.equalsIgnoreCase("WithBadgeAndVideo"))) {
 					continue;
 				}
 				

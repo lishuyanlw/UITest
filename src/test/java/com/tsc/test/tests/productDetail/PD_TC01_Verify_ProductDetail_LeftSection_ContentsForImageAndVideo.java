@@ -32,17 +32,18 @@ public class PD_TC01_Verify_ProductDetail_LeftSection_ContentsForImageAndVideo e
 	
 	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0));
 	reporter.reportLog("Switch to ProductDetail page");
+	String lsProductNumber,lsUrl;
+	
 	if(getProductResultsPageThreadLocal().goToProductItemWithReviewAndSwatchAndVideo()) {
 		reporter.reportLog("Verify URL");
-		String lsProductNumber=getProductResultsPageThreadLocal().selectedProductItem.productConvertedNumber;
-		String lsUrl=basePage.URL();
+		lsProductNumber=getProductResultsPageThreadLocal().selectedProductItem.productConvertedNumber;
+		lsUrl=basePage.URL();
 		reporter.softAssert(lsUrl.contains("productdetails"),"The Url is containing productdetails","The Url is not containing productdetails");
 		reporter.softAssert(lsUrl.contains(lsProductNumber),"The Url is containing selected product number of "+lsProductNumber,"The Url is not containing selected product number of "+lsProductNumber);
 				
 		reporter.reportLog("Verify Video");		
-		if(basePage.getChildElementCount(getProductDetailPageThreadLocal().cntJudgeVideoBoxControlBadgeExisting)>3) {
-			reporter.softAssert(basePage.getReusableActionsInstance().isElementVisible(getProductDetailPageThreadLocal().imgVideoBoxControlBadge),"The video control badge is displaying correctly","The video control badge is not displaying correctly");
-		}
+		reporter.softAssert(basePage.getReusableActionsInstance().isElementVisible(getProductDetailPageThreadLocal().imgProductBadge),"The product badge is displaying correctly","The product badge is not displaying correctly");
+		reporter.softAssert(!getProductDetailPageThreadLocal().imgProductBadge.getAttribute("src").isEmpty(),"The product badge image source is not empty","The product badge image source is empty");
 		reporter.softAssert(basePage.getReusableActionsInstance().isElementVisible(getProductDetailPageThreadLocal().videoBoxControl),"The video control section is displaying correctly","The video control section is not displaying correctly");
 		reporter.softAssert(!getProductDetailPageThreadLocal().lnkVideo.getAttribute("src").isEmpty(),"The product video source is not empty","The product video source is empty");
 		reporter.softAssert(!basePage.getElementText(getProductDetailPageThreadLocal().lblVideoDisclaim).isEmpty(),"The product video disclaim text is not empty","The product video disclaim text is empty");

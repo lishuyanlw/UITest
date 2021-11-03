@@ -50,7 +50,7 @@ public class ProductDetailPage extends BasePage {
 	public WebElement cntJudgeVideoBoxControlBadgeExisting;	
 	
 	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'pdImageSection') and not(contains(@class,'pdImageSection__zoom')) and not(@style='display: none;')]//div[@id='divItemBadge']/img")
-	public WebElement imgVideoBoxControlBadge;
+	public WebElement imgProductBadge;
 	
 	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'pdImageSection') and not(contains(@class,'pdImageSection__zoom')) and not(@style='display: none;')]//div[@class='videoBox']")
 	public WebElement videoBoxControl;
@@ -493,7 +493,7 @@ public class ProductDetailPage extends BasePage {
 	public boolean goToProductReviewTab() {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productReviewSection);
 		this.productReviewSection.click();
-		return this.waitForCondition(Driver->{return this.imgStickyIcon.isDisplayed();},5000);		
+		return this.waitForCondition(Driver->{return this.btnStickyTabProductReview.getAttribute("class").contains("selected");},5000);		
 	}
 	
 	/**

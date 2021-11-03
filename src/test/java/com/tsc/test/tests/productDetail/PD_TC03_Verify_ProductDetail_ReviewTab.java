@@ -31,10 +31,11 @@ public class PD_TC03_Verify_ProductDetail_ReviewTab extends BaseTest{
 	
 	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0));
 	reporter.reportLog("Switch to ProductDetail page");
+	String lsProductNumber,lsUrl;
 	if(getProductResultsPageThreadLocal().goToProductItemWithReviewAndSwatchAndVideo()) {
 		reporter.reportLog("Verify URL");
-		String lsProductNumber=getProductResultsPageThreadLocal().selectedProductItem.productConvertedNumber;
-		String lsUrl=basePage.URL();
+		lsProductNumber=getProductResultsPageThreadLocal().selectedProductItem.productConvertedNumber;
+		lsUrl=basePage.URL();
 		reporter.softAssert(lsUrl.contains("productdetails"),"The Url is containing productdetails","The Url is not containing productdetails");
 		reporter.softAssert(lsUrl.contains(lsProductNumber),"The Url is containing selected product number of "+lsProductNumber,"The Url is not containing selected product number of "+lsProductNumber);
 		
