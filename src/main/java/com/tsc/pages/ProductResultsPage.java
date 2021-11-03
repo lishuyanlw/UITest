@@ -70,11 +70,17 @@ public class ProductResultsPage extends BasePage{
 	
 	public By byProductImage=By.xpath(".//div[contains(@class,'imgEmbedContainer')]//img[@class='productImg']");
 	
+	public By byRecommendationImage = By.xpath(".//div[contains(@class,'imgEmbedContainer')]//img[@class='img-responsive pprec-img']");
+	
 	public By byProductName=By.xpath(".//div[contains(@class,'nameDiv')]");
+	
+	public By byRecommendationName=By.xpath(".//div[contains(@class,'prec-name')]");
 	
 	public By byProductItemNO=By.xpath(".//div[contains(@class,'itemNo')]");
 	
 	public By byProductNowPrice=By.xpath(".//div[contains(@class,'priceDiv')]//span");
+	
+	public By byRecommendationNowPrice=By.xpath(".//div[contains(@class,'now-price')]//span");
 	
 	public By byProductEasyPay=By.xpath(".//div[contains(@class,'easyPay')]");
 	
@@ -89,6 +95,10 @@ public class ProductResultsPage extends BasePage{
 	public By byProductVideoIcon=By.xpath(".//div[contains(@class,'videoIcon')]//*[name()='use']");
 	
 	public By byProductWasPrice=By.xpath(".//div[contains(@class,'priceDiv')]//del");
+	
+	public By byWasPrice=By.xpath(".//div[@class='prec-price']");
+	
+	public By byRecommendationWasPrice =By.xpath("//div[@class='prec-price']/div[@class='was-price']");
 	
 	public By byJudgeProductBadgeAndVideo=By.xpath(".//div[contains(@class,'prImageWrap')]");
 	
@@ -123,6 +133,9 @@ public class ProductResultsPage extends BasePage{
 	WebElement cntProductTitleAndText;
 	
 	public By byProductTitleAndText=By.xpath("//div[@class='TitleAndTextSeo']");
+	
+	@FindBy(xpath = "//h2[@class='prec-header' and contains(text(),'Top Sellers')]")
+	public static WebElement productRecommendationTitle;
 	
 	@FindBy(xpath = "//div[@class='TitleAndTextSeo']//*[contains(@class,'seoTextTitle')]")
 	WebElement lblProductTitle;
@@ -164,6 +177,10 @@ public class ProductResultsPage extends BasePage{
 	
 	@FindBy(xpath = "//div[@class='Footer']")
 	WebElement footerContainer;
+	
+	//People Also Viewed items
+	@FindBy(xpath="//*[contains(@class,'prec clearfix')]/div")
+	List<WebElement> lstPeopleAlsoBoughtItems;
 			
 	String searchkeyword;
 	public boolean bVerifyTitle=true;
@@ -414,6 +431,19 @@ public class ProductResultsPage extends BasePage{
 	}
 	
 	/**
+	 * This method will return search result page title.	  
+	 * @author godwin.gopi
+	 */
+	public String getProductResultPageTitle(WebElement element) {
+		if(getReusableActionsInstance().isElementVisible(element)) {
+			getReusableActionsInstance().waitForElementVisibility(element);
+			getReusableActionsInstance().getElementText(element);
+			return element.getText().trim();
+		}
+		return "NoTitle";		
+	}
+	
+	/**
 	 * This method will judge test model for different scenarios.	
 	 * @return String: test model 
 	 * @author Wei.Li
@@ -606,7 +636,7 @@ public class ProductResultsPage extends BasePage{
 		return "WithWasPrice";		
 	}
 	
-	/**
+    /**
 	 * This method will verify the item content in product list.
 	 * @param List<WebElement> productList: the input product list 
 	 * @author Wei.Li
@@ -615,10 +645,10 @@ public class ProductResultsPage extends BasePage{
 		List<WebElement> elementList;
 		(new BasePage(this.getDriver())).getReusableActionsInstance().javascriptScrollByVisibleElement(productList.get(0));
 		for(WebElement item : productList) {
-			reporter.reportLog("Product ItemNO:"+item.findElement(byProductItemNO).getText());
-			(new BasePage(this.getDriver())).getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+		    reporter.reportLog("Product ItemNO:"+item.findElement(byProductItemNO).getText());
+		    (new BasePage(this.getDriver())).getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 			
-			reporter.softAssert(!item.findElement(byProductHref).getAttribute("href").isEmpty(),"ProductHref in searching result is correct", "ProductHref in searching result is incorrect");
+		    reporter.softAssert(!item.findElement(byProductHref).getAttribute("href").isEmpty(),"ProductHref in searching result is correct", "ProductHref in searching result is incorrect");
 			
 			reporter.softAssert(!item.findElement(byProductImage).getAttribute("src").isEmpty(), "ProductImage in searching result is correct", "ProductImage in searching result is incorrect");
 			
@@ -1105,7 +1135,43 @@ public class ProductResultsPage extends BasePage{
 		String clearanceURLTitleText = getDriver().getCurrentUrl();
 		return clearanceURLTitleText;
 	}
+	
+	/**
+	 * This method will verify Product Recommendation section and validate section Images, and Prices .
+	 * @return  WebElement
+	 * @author godwin.gopi
+	 */
+	public void verify_ProductRecommendationSection() {
+		 for(WebElement item: this.lstPeopleAlsoBoughtItems) {
+		 getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+		 //Verifying Image of the Product
+		 reporter.softAssert(!item.findElement(byRecommendationImage).getAttribute("src").isEmpty(), "ProductImage in Recommendation result is correct", "ProductImage in Recommendation result is incorrect");
 
-}
+		 //Verifying Name of the Product
+		 reporter.softAssert(!item.findElement(byRecommendationName).getText().isEmpty(), "ProductName in Recommendation result is correct", "ProductName in Recommendation result is incorrect");
+		    
+		 //Verifying Price of the Product
+		 reporter.softAssert(!item.findElement(byRecommendationNowPrice).getText().isEmpty(), "ProductNowPrice in Recommendation result is correct", "ProductNowPrice in Recommendation result is incorrect");
+		    
+		 //Verifying Was Price is Displayed
+		 WebElement element=item.findElement(this.byWasPrice);
+		 long childSize=(new BasePage(this.getDriver())).getChildElementCount(element);
+		 if(childSize > 1){
+	     reporter.softAssert(!item.findElement(byRecommendationWasPrice).getText().isEmpty(), "ProductWasPrice in Recommendation result is correct", "ProductWasPrice in Recommendation result is incorrect");
+
+		      }
+		   }
+	}
+				
+}		      
+		
+			
+		
+		
+	
+	
+	
+
+
 
 	
