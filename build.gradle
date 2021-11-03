@@ -44,7 +44,7 @@ def getTunnelName() {
 //    tunnelName = tunnelName.replaceAll(":","")
 //    tunnelName = tunnelName.replaceAll(" ","")
 //    return tunnelName
-    return "TSCWF_Automation_Test_Tunnel_Sachin"
+    return "DigitalQETunnel"
 }
 
 def tunnel_name() {
