@@ -808,6 +808,7 @@ public class GlobalheaderPage extends BasePage{
 	 * @author Wei.Li
 	 */	
 	 public void hoverOnWatchTSC() {
+		 getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnWatchTSCBlackHeader);
 		 getReusableActionsInstance().scrollToElement(this.btnWatchTSCBlackHeader);
 		 getReusableActionsInstance().staticWait(100);		 
 	 }	
@@ -819,6 +820,7 @@ public class GlobalheaderPage extends BasePage{
 	 * @author Wei.Li
 	 */	
 	 public boolean switchWatchTSCDropdownOption(WebElement element) {
+		 getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnWatchTSCBlackHeader);
 		 getReusableActionsInstance().scrollToElement(this.btnWatchTSCBlackHeader);
 		 getReusableActionsInstance().staticWait(100);
 		 getReusableActionsInstance().javascriptScrollByVisibleElement(element);
