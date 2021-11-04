@@ -15,10 +15,8 @@ public class SR_TC09_Verify_ProductSearchResult_SpecialOffersAndRecomendationSec
 	/**
 	 * This method will test Clearance in Special Offers and Recommendation
 	 * sections.
-	 * 
 	 * @author Wei.Li
 	 * CER-231
-	 
 	 */
 
 	@Test(groups = { "ProductSearch", "Regression" })
@@ -30,8 +28,7 @@ public class SR_TC09_Verify_ProductSearchResult_SpecialOffersAndRecomendationSec
 		List<WebElement> productList;
 
 		// Corresponding actions (Clearance>>Fashion)
-		getglobalheaderPageThreadLocal().clickOnClearanceHeaderOption();
-		getglobalheaderPageThreadLocal().clickSubMenuLink();
+		//Need to insert function here written by Shruti to click on expected sub-menu
 
 		// Verifying that landing page is product results page after navigation
 		reporter.softAssert(getProductResultsPageThreadLocal().getClearanceOptionURLTitle().contains(lnkProductResult),"Verified that landing page is Product Result Page", "Verified that landing page is not Product Result Page");

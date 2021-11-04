@@ -1144,23 +1144,21 @@ public class ProductResultsPage extends BasePage{
 	public void verify_ProductRecommendationSection() {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.productRecommendationTitle);
 		for(WebElement item: this.lstPeopleAlsoBoughtItems) {
-		 //Verifying Image of the Product
-		 reporter.softAssert(!item.findElement(byRecommendationImage).getAttribute("src").isEmpty(), "ProductImage in Recommendation result is correct", "ProductImage in Recommendation result is incorrect");
+			//Verifying Image of the Product
+			reporter.softAssert(!item.findElement(byRecommendationImage).getAttribute("src").isEmpty(), "ProductImage in Recommendation result is correct", "ProductImage in Recommendation result is incorrect");
 
-		 //Verifying Name of the Product
-		 reporter.softAssert(!item.findElement(byRecommendationName).getText().isEmpty(), "ProductName in Recommendation result is correct", "ProductName in Recommendation result is incorrect");
-		    
-		 //Verifying Price of the Product
-		 reporter.softAssert(!item.findElement(byRecommendationNowPrice).getText().isEmpty(), "ProductNowPrice in Recommendation result is correct", "ProductNowPrice in Recommendation result is incorrect");
-		    
-		 //Verifying Was Price is Displayed
-		 WebElement element=item.findElement(this.byWasPrice);
-		 long childSize=(new BasePage(this.getDriver())).getChildElementCount(element);
-		 if(childSize > 1){
-	     reporter.softAssert(!item.findElement(byRecommendationWasPrice).getText().isEmpty(), "ProductWasPrice in Recommendation result is correct", "ProductWasPrice in Recommendation result is incorrect");
+			//Verifying Name of the Product
+			reporter.softAssert(!item.findElement(byRecommendationName).getText().isEmpty(), "ProductName in Recommendation result is correct", "ProductName in Recommendation result is incorrect");
 
-		      }
-		   }
+			//Verifying Price of the Product
+			reporter.softAssert(!item.findElement(byRecommendationNowPrice).getText().isEmpty(), "ProductNowPrice in Recommendation result is correct", "ProductNowPrice in Recommendation result is incorrect");
+
+			//Verifying Was Price is Displayed
+			WebElement element=item.findElement(this.byWasPrice);
+			long childSize=(new BasePage(this.getDriver())).getChildElementCount(element);
+			if(childSize > 1) {
+				reporter.softAssert(!item.findElement(byRecommendationWasPrice).getText().isEmpty(), "ProductWasPrice in Recommendation result is correct", "ProductWasPrice in Recommendation result is incorrect");
+			}
+		}
 	}
-				
-}		      	
+}
