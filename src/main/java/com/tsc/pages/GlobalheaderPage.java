@@ -574,118 +574,13 @@ public class GlobalheaderPage extends BasePage{
 	  * @author Shruti Desai
 	  */
 	public String getUrlAfterclickingFlyoutHeading(WebElement webElement) {
-		 String currentUrl;
+		String currentUrl;
 		getReusableActionsInstance().scrollToElement(webElement);
-		//getReusableActionsInstance().javascriptScrollByVisibleElement(webElement);
-		//getReusableActionsInstance().waitForElementVisibility(webElement, 2);
 		webElement.click();
 		currentUrl = getDriver().getCurrentUrl();
 		return currentUrl;
 	 }
 	 
-	public boolean validateSubMenuHeadings(WebElement webElement,String section) { 
-		getReusableActionsInstance().scrollToElement(webElement);
-		if(section== "Curated Collection") {
-			if(!verifyElementProperty(headingCuratedCollection,"Text")) {
-				return false;
-			}
-			return true;
-		}else {
-			if(!verifyElementProperty(headingPopularBrands,"Text")) {
-				return false;
-			}
-				return true;
-		}
-	}
-	 
-	public String verify_subMenu_Item(List<WebElement> webElements, String sectionName) {
-		StringBuilder href_src  =new StringBuilder();
-		for(WebElement element : webElements) {
-			getReusableActionsInstance().scrollToElement(element);
-			//href
-			if(sectionName=="PopularBrands") {
-				System.out.println("I am in popular brand section");
-				if(verifyElementProperty(element,"Link")) {//href not present
-					System.out.println("Element   "+element.getAttribute("alt")); 
-					 href_src.append("href not present for popular brand: ").append(element.getAttribute("alt")).append('\n');
-					// System.out.println( href_src.append("href not present for popular brand : ").append(element.getAttribute("alt")).append('\n'));
-				}//src
-				 if(verifyElementProperty(element,"Image")) {//href not present
-					 System.out.println("Element   "+element.getAttribute("alt")); 
-					 href_src.append("src not present for popular brand: ").append(element.getAttribute("alt")).append('\n');
-					 //System.out.println( href_src.append("src not present  popular brand: ").append(element.getAttribute("alt")).append('\n'));
-				}
-				
-			 }else {
-				// System.out.println("I am in else section");
-					
-				 if(verifyElementProperty(element,"Link"))
-					 href_src.append("href not present for heading: ").append(element.getText()).append('\n');
-				// System.out.println( href_src.append("href not present for: ").append(element.getText()).append('\n'));
-			 } 
-		}
-		//System.out.println("href missing for >>>>>>"+href_src.toString());
-		return  href_src.toString();
-	}
-	
-	
-	public String verify_Header_SubMenu(String sectionName){
-		String textMissing= null;
-		switch(sectionName){
-		   /*	case "Heading":
-		   		textMissing =verify_subMenu_Item( getFlyoutHeadingsWebelement(),sectionName);
-		   		System.out.println("textMissing  ---->"+ verify_subMenu_Item_1(this.listFlyoutHeadings,sectionName));
-			       
-		   		return textMissing ;
-		          //// break;
-		      */case "SubMenu":
-		    	  textMissing=verify_subMenu_Item_1(this.listSubItems,sectionName);
-		    	  return textMissing;
-		        // break;
-		      case "CuratedCollection":
-		    	  textMissing =verify_subMenu_Item_1(this.listSubItemsCuratedCollection,sectionName);
-		    	  return textMissing;
-		       //  break;
-		      case "PopularBrands":
-		    	  textMissing =verify_subMenu_Item_1(this.listSubItemsPopularBrands,sectionName);
-		    	  return textMissing;
-		        // break;
-		   }
-		   return textMissing;
-		}
-	/*Method to verify href/src is empty or not before clicking link
-	  * @return true/false
-	  * @author Shruti Desai
-	  */
-	public String verify_subMenu_Item_1(List<WebElement> webElements, String sectionName) {
-		StringBuilder href_src  =new StringBuilder();
-		for(WebElement element : webElements) {
-			getReusableActionsInstance().scrollToElement(element);
-			//href
-			if(sectionName=="PopularBrands") {
-				System.out.println("I am in popular brand section");
-				if(verifyElementProperty(element,"Link")) {//href not present
-					System.out.println("Element   "+element.getAttribute("alt")); 
-					 href_src.append("href not present for popular brand: ").append(element.getAttribute("alt")).append('\n');
-					// System.out.println( href_src.append("href not present for popular brand : ").append(element.getAttribute("alt")).append('\n'));
-				}//src
-				 if(verifyElementProperty(element,"Image")) {//href not present
-					 System.out.println("Element   "+element.getAttribute("alt")); 
-					 href_src.append("src not present for popular brand: ").append(element.getAttribute("alt")).append('\n');
-					 //System.out.println( href_src.append("src not present  popular brand: ").append(element.getAttribute("alt")).append('\n'));
-				}
-				
-			 }else {
-				// System.out.println("I am in else section");
-					
-				 if(verifyElementProperty(element,"Link"))
-					 href_src.append("href not present for heading: ").append(element.getText()).append('\n');
-				System.out.println( href_src.append("href not present for: ").append(element.getText()).append('\n'));
-			 } 
-		}
-		System.out.println("href missing for >>>>>>"+href_src.toString());
-		return  href_src.toString();
-	}
 	
 	 /*Method to get part of href for flyout heading link (instead of using yaml data use run time data )
 	  * @return String:href(only get unique part (number) for each Flyout heading)
@@ -695,7 +590,7 @@ public class GlobalheaderPage extends BasePage{
 		 String currentUrl;
 		 String xpathHeading =createXPath("//li[contains(@class,'primary-navigation__item')]//a[contains(@class,'primary-navigation__link')]//span[contains(text(),'{0}')]" ,headingName); 
 		 WebElement headingWebElement = getDriver().findElement(By.xpath(xpathHeading+"//ancestor::a"));
-		getReusableActionsInstance().javascriptScrollByVisibleElement(headingWebElement);
+		 getReusableActionsInstance().javascriptScrollByVisibleElement(headingWebElement);
 		 currentUrl = headingWebElement.getAttribute("href").split("n:")[1];
 		 return currentUrl;
 	 }

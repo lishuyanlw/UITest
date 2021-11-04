@@ -33,12 +33,10 @@ public class GH_TC02_Global_Header_Verify_FlyoutSubMenuDisplay extends BaseTest 
 			
 			reporter.softAssert(!FlyoutUrl.contains(lsYmlNotFound), lsSuccessResult,lsFailResult);
 			
-		}
 		
 		
-		/*String lsUrl,FlyoutUrl,lsYmlNotFound,lsSuccessResult, lsFailResult;
-		lsYmlNotFound=TestDataHandler.constantDataVariables.getlnk_NotFound();
-		List<String>flyoutHeading = getglobalheaderPageThreadLocal().getFlyoutHeadings();
+		
+			List<String>flyoutHeading = new Arrey
 		reporter.reportLog("Flyout diplyas drpartment: "+flyoutHeading+" and they all are validated.");
 		for(String lsHeading:flyoutHeading) {
 			FlyoutUrl = getglobalheaderPageThreadLocal().getUrlAfterclickingFlyoutHeading(lsHeading);
@@ -48,6 +46,6 @@ public class GH_TC02_Global_Header_Verify_FlyoutSubMenuDisplay extends BaseTest 
 			reporter.softAssert(FlyoutUrl.contains(TestDataHandler.constantDataVariables.getlbl_FlyoutHeadingLandingPageLink()+":"+(lsUrl)), lsHeading + "'s URL is correct", lsHeading + "'s URL is incorrect");
 			reporter.softAssert(!FlyoutUrl.contains(lsYmlNotFound), lsSuccessResult,lsFailResult);
 			
-		}*/
+		}
 	}
 }
