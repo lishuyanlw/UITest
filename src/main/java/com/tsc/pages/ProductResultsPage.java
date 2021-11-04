@@ -134,7 +134,7 @@ public class ProductResultsPage extends BasePage{
 	
 	public By byProductTitleAndText=By.xpath("//div[@class='TitleAndTextSeo']");
 	
-	@FindBy(xpath = "//h2[@class='prec-header' and contains(text(),'Top Sellers')]")
+	@FindBy(xpath = "//h2[@class='prec-header']")
 	public static WebElement productRecommendationTitle;
 	
 	@FindBy(xpath = "//div[@class='TitleAndTextSeo']//*[contains(@class,'seoTextTitle')]")
@@ -1142,8 +1142,8 @@ public class ProductResultsPage extends BasePage{
 	 * @author godwin.gopi
 	 */
 	public void verify_ProductRecommendationSection() {
-		 for(WebElement item: this.lstPeopleAlsoBoughtItems) {
-		 getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.productRecommendationTitle);
+		for(WebElement item: this.lstPeopleAlsoBoughtItems) {
 		 //Verifying Image of the Product
 		 reporter.softAssert(!item.findElement(byRecommendationImage).getAttribute("src").isEmpty(), "ProductImage in Recommendation result is correct", "ProductImage in Recommendation result is incorrect");
 
@@ -1163,15 +1163,4 @@ public class ProductResultsPage extends BasePage{
 		   }
 	}
 				
-}		      
-		
-			
-		
-		
-	
-	
-	
-
-
-
-	
+}		      	

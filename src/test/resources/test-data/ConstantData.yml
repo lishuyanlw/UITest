@@ -55,7 +55,7 @@ lst_FilterCombination: [[["SHOP BY SIZE FASHION","Regular XXS-XS"],["SHOP BY PRI
 lst_MoreButton: ["SHOP BY BRAND","SHOP BY SHOE SIZE","SHOP BY SIZE FASHION"]
 lst_FilterSequentialAction: [[["SHOP BY BRAND","Kim & Co."],["SHOP BY PRICE","Under $50"],["SHOP BY COLOUR","Black"]]]
 lst_DisappearAfterSelectFilter: ["SHOP BY BRAND"]
-lbl_ProductRecommendationTitlePage: Top Sellers
+lbl_ProductRecommendationTitlePage: ["People who viewed this item also viewed","TOP SELLERS"]
 
 # FOOTER PAGE SECTION
 lst_SocialMediaLinks: ["https://www.facebook.com/Shoptsc","https://twitter.com/shoptsc","https://instagram.com/shoptsc","www.youtube.com","https://www.pinterest.ca/shoptsc"]
