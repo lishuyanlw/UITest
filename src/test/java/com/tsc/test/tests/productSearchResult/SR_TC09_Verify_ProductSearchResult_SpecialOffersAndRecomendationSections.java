@@ -2,6 +2,7 @@ package com.tsc.test.tests.productSearchResult;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 import com.tsc.data.Handler.TestDataHandler;
@@ -16,8 +17,8 @@ public class SR_TC09_Verify_ProductSearchResult_SpecialOffersAndRecomendationSec
 	 * sections.
 	 * 
 	 * @author Wei.Li
-	 * 
-	 *         /* CER-231
+	 * CER-231
+	 
 	 */
 
 	@Test(groups = { "ProductSearch", "Regression" })
@@ -25,21 +26,21 @@ public class SR_TC09_Verify_ProductSearchResult_SpecialOffersAndRecomendationSec
 		(new HomePage(this.getDriver())).closeadd();
 		String lsSearchResultPageDefaultSetting = TestDataHandler.constantDataVariables.getlbl_SearchResultPageDefaultSetting();
 		String lnkProductResult = TestDataHandler.constantDataVariables.getLnk_product_result();
-		String productRecommendationTitleText = TestDataHandler.constantDataVariables.getLbl_ProductRecommendationTitlePage();
+		List<String> productRecommendationTitleText = TestDataHandler.constantDataVariables.getLbl_ProductRecommendationTitlePage();		
 		List<WebElement> productList;
 
 		// Corresponding actions (Clearance>>Fashion)
 		getglobalheaderPageThreadLocal().clickOnClearanceHeaderOption();
 		getglobalheaderPageThreadLocal().clickSubMenuLink();
 
-		// Verifying title of the page after navigating from header link as Clearance
+		// Verifying that landing page is product results page after navigation
+		reporter.softAssert(getProductResultsPageThreadLocal().getClearanceOptionURLTitle().contains(lnkProductResult),"Verified that landing page is Product Result Page", "Verified that landing page is not Product Result Page");
+
+		// Verifying title of the page after navigation
 		String value = getProductResultsPageThreadLocal().getProductResultPageTitle();
 		reporter.softAssert(value.equalsIgnoreCase("FASHION"), "Product Result Title Verified and title is " + value,"Product Result Title is not as expected and title is " + value);
 
-		// Verifying that landing page is product results page after navigation
-		reporter.softAssert(getProductResultsPageThreadLocal().getClearanceOptionURLTitle().contains(lnkProductResult),"", "");
-
-		// Verifying Search Result message and default Page Number Count on Page
+        // Verifying Search Result message and default Page Number Count on Page
 		reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(),"Showing text pattern in filters is correct","Showing text pattern in filters is incorrect");
 		reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting),"The default setting of items per page is "+lsSearchResultPageDefaultSetting,"The default setting of items per page isn't "+lsSearchResultPageDefaultSetting);
 		  
@@ -52,8 +53,9 @@ public class SR_TC09_Verify_ProductSearchResult_SpecialOffersAndRecomendationSec
 		 
 		// Verifying title of the Product Recommendation page
 		String pageTitleValue = getProductResultsPageThreadLocal().getProductResultPageTitle(ProductResultsPage.productRecommendationTitle);
-		reporter.softAssert(pageTitleValue.equalsIgnoreCase(productRecommendationTitleText.trim()),"Product Recommendation Title is Verified and title is " + pageTitleValue,"Product Recommendation Title is Verified and title is " + pageTitleValue);
-	
+		boolean title_Value = pageTitleValue.equalsIgnoreCase(productRecommendationTitleText.get(0)) || pageTitleValue.equalsIgnoreCase(productRecommendationTitleText.get(1));
+		reporter.softAssert(title_Value,"Product Recommendation Title is Verified and title is " + pageTitleValue,"Product Recommendation Title is Verified and title is " + pageTitleValue);
+		
 		// Verifying Product Recommendation section details
 		getProductResultsPageThreadLocal().verify_ProductRecommendationSection();
 	}
