@@ -199,7 +199,12 @@ public class ProductResultsPage extends BasePage{
 		//globalHeader.btnSearchSubmit.click();
 		(new BasePage(this.getDriver())).pressEnterKey(globalHeader.searchBox);		
 		
-		return waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;")&&!lsUrl.equalsIgnoreCase(this.URL());},60000);
+		return waitForCondition(Driver->{
+			String lsStyle=this.productResultLoadingIndicator.getAttribute("style");
+			if(lsStyle==null||lsStyle.isEmpty()) {
+				lsStyle="display: none;";
+			}
+			return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;")&&!lsUrl.equalsIgnoreCase(this.URL());},60000);
 	}
 	
 	/**
@@ -261,7 +266,12 @@ public class ProductResultsPage extends BasePage{
 			elementList.get(optionIndex).click(); 
 		}
 				
-		return waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;")&&!lsUrl.equalsIgnoreCase(this.URL());},60000);
+		return waitForCondition(Driver->{
+			String lsStyle=this.productResultLoadingIndicator.getAttribute("style");
+			if(lsStyle==null||lsStyle.isEmpty()) {
+				lsStyle="display: none;";
+			}
+			return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;")&&!lsUrl.equalsIgnoreCase(this.URL());},60000);
 	}
 	
 	/**
