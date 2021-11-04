@@ -19,11 +19,12 @@ public class GH_TC02_Global_Header_Verify_FlyoutHeadings extends BaseTest {
 		String lsBaseUrl=(new BasePage(this.getDriver())).getBaseURL();
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl+"/"), "TSC url is correct", "TSC url is incorrect");
 		reporter.reportLogWithScreenshot("Home Page");
-		reporter.reportLog("Validating Flyouts all departments & it's URL");
+		reporter.reportLog("Validating Flyouts all departments & it's URL before clicking it");
 		
 		List<WebElement> headingsElement=getglobalheaderPageThreadLocal().getFlyoutHeadingsWebelement();
 		for(WebElement lsHeading:headingsElement) {
-			String flyoutHeading=lsHeading.getText();
+			getglobalheaderPageThreadLocal().scrolltoWebElement(lsHeading);
+			String flyoutHeading =lsHeading.getText();
 			reporter.softAssert((TestDataHandler.constantDataVariables.getlst_FlyoutHeading().contains(flyoutHeading)),"Flyout diplyas drpartment  "+flyoutHeading+" and it's validated.","Flyout is not displaying heading properly");
 			reporter.softAssert(getglobalheaderPageThreadLocal().verifyhrefFlyoutHeading(lsHeading), "href is present for Flyout Heading "+flyoutHeading, "href is not preset for "+flyoutHeading);
 		}
