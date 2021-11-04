@@ -430,7 +430,10 @@ import utils.ReusableActions;
 	 * @return float value
 	 * @author Wei.Li
 	 */	
-    public float getFloatFromString(String lsTarget) {  
+    public float getFloatFromString(String lsTarget) {
+    	if(lsTarget.contains("-")) {
+    		lsTarget=lsTarget.split("-")[0].trim();
+    	}
     	lsTarget=lsTarget.replace(",", "").trim();
     	
     	String regex="\\d+\\.\\d+";

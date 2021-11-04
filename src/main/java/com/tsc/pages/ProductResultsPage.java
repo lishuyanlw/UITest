@@ -3,6 +3,8 @@ package com.tsc.pages;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.Select;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -193,7 +195,8 @@ public class ProductResultsPage extends BasePage{
 	 * @return true/false
 	 * @author Wei.Li
 	 */
-	public boolean getSearchResultLoad(String searchKeyword) {		
+	public boolean getSearchResultLoad(String searchKeyword) {	
+		String lsUrl=this.URL();
 		GlobalheaderPage globalHeader=new GlobalheaderPage(this.getDriver());
 		getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeader.searchBox);		
 		this.clearContent(globalHeader.searchBox);
@@ -201,7 +204,12 @@ public class ProductResultsPage extends BasePage{
 		//globalHeader.btnSearchSubmit.click();
 		(new BasePage(this.getDriver())).pressEnterKey(globalHeader.searchBox);		
 		
-		return waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},60000);
+		return waitForCondition(Driver->{
+			String lsStyle=this.productResultLoadingIndicator.getAttribute("style");
+			if(lsStyle==null||lsStyle.isEmpty()) {
+				lsStyle="display: none;";
+			}
+			return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;")&&!lsUrl.equalsIgnoreCase(this.URL());},60000);
 	}
 	
 	/**
@@ -213,6 +221,7 @@ public class ProductResultsPage extends BasePage{
 	 */
 	public boolean selectSearchResultListInDropdownMenu(String lsKeyword,String lsOption,String lsOptionIndex) {
 		int optionIndex=0;
+		String lsUrl=this.URL();
 		if(!lsOptionIndex.isEmpty()) {
 			optionIndex=Integer.parseInt(lsOptionIndex);
 		}	
@@ -262,7 +271,12 @@ public class ProductResultsPage extends BasePage{
 			elementList.get(optionIndex).click(); 
 		}
 				
-		return waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},60000);
+		return waitForCondition(Driver->{
+			String lsStyle=this.productResultLoadingIndicator.getAttribute("style");
+			if(lsStyle==null||lsStyle.isEmpty()) {
+				lsStyle="display: none;";
+			}
+			return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;")&&!lsUrl.equalsIgnoreCase(this.URL());},60000);
 	}
 	
 	/**
@@ -477,12 +491,19 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 */	
     public boolean verifyUrlContainDimensionAndKeyword(String lsKeyword) {  
-    	String lsUrl=this.URL();    	
-    	String lsExpectedUrlPattern="dimensions=.*&searchterm="+this.getEncodingKeyword(lsKeyword);
-    	Pattern pattern=Pattern.compile(lsExpectedUrlPattern);
-    	Matcher matcher=pattern.matcher(lsUrl);
+    	String lsUrl=this.URL(); 
+    	String lsExpectedUrlPattern;
+    	String lsBrowser=System.getProperty("Browser");    	
+       	if(lsBrowser.trim().equalsIgnoreCase("Chrome")) {
+       		lsExpectedUrlPattern="dimensions=.*&searchterm="+this.getEncodingKeyword(lsKeyword);
+       		Pattern pattern=Pattern.compile(lsExpectedUrlPattern);
+        	Matcher matcher=pattern.matcher(lsUrl);
 
-    	return matcher.find(); 
+        	return matcher.find();
+        }
+    	else {
+    		return lsUrl.contains("dimensions=")&&lsUrl.contains("searchterm=")&&lsUrl.contains(this.getEncodingKeyword(lsKeyword));    		
+    	}        	        
     } 
 	
 	/**
@@ -503,9 +524,15 @@ public class ProductResultsPage extends BasePage{
 	 */	
     public boolean verifyUrlAfterSelectSortStrategy(String lsKeyword,String lsSortKey) {  
     	String lsUrl=this.URL();
-    	String lsExpectedUrl="searchterm="+this.getEncodingKeyword(lsKeyword)+"&sortKey="+lsSortKey;
+    	String lsBrowser=System.getProperty("Browser");    	
+       	if(lsBrowser.trim().equalsIgnoreCase("Chrome")) {
+       		String lsExpectedUrl="searchterm="+this.getEncodingKeyword(lsKeyword)+"&sortKey="+lsSortKey;        	
+        	return lsUrl.toLowerCase().contains(lsExpectedUrl.toLowerCase());
+       	}
+       	else {
+       		return lsUrl.contains("searchterm=")&&lsUrl.contains(this.getEncodingKeyword(lsKeyword))&&lsUrl.contains("&sortKey="+lsSortKey);
+       	}
     	
-    	return lsUrl.toLowerCase().contains(lsExpectedUrl.toLowerCase());
     }
 	
 	/**
@@ -633,12 +660,8 @@ public class ProductResultsPage extends BasePage{
 			
 			reporter.softAssert(!item.findElement(byProductNowPrice).getText().isEmpty(), "ProductNowPrice in searching result is correct", "ProductNowPrice in searching result is incorrect");
 			
-			//Use findElements to avoid test crash when the element is not existing
-			elementList=item.findElements(byProductEasyPay);	
-			if((new BasePage(this.getDriver())).isChildElementVisible(elementList.get(0),"innerText")) {
-				reporter.softAssert(true, "ProductEasyPay in searching result is correct", "ProductEasyPay in searching result is incorrect");
-			}
-							
+			reporter.softAssert(!item.findElement(byProductEasyPay).getText().isEmpty(), "ProductEasyPay in searching result is correct", "ProductEasyPay in searching result is incorrect");
+													
 			//Use findElements to avoid test crash when the element is not existing
 			elementList=item.findElements(byProductReview);
 			if((new BasePage(this.getDriver())).isChildElementVisible(elementList.get(0),"innerText")) {
@@ -711,17 +734,19 @@ public class ProductResultsPage extends BasePage{
 		return setOption.containsAll(setOptionYml)&&setOptionYml.containsAll(setOption);
 	}	
 
-    /**
-	 * This method will choose sort option by visible text.
-	 * @param String lsOption: visible option text
-	 * @return true/false
-	 * @author Wei.Li
-	 */	
-    public boolean chooseSortOptionByVisibleText(String lsOption) {  
-    	getReusableActionsInstance().isElementVisible(this.btnSortSelect);
-    	getReusableActionsInstance().selectWhenReadyByVisibleText(this.btnSortSelect,lsOption);
-		return waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},60000);		
-    }
+	/**
+	* This method will choose sort option by visible text.
+	* @param String lsOption: visible option text
+	* @return true/false
+	* @author Wei.Li
+	*/
+	public boolean chooseSortOptionByVisibleText(String lsOption) {
+	getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSortSelect);
+	Select sortOption= new Select(this.btnSortSelect);
+	sortOption.selectByVisibleText(lsOption);
+
+	return waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},60000);
+	}
 	
 	/**
 	 * This method will verify Price: Highest first strategy. 

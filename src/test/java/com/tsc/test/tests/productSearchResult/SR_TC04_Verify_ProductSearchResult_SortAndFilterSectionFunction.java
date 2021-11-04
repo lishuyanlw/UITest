@@ -17,6 +17,7 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction ext
 	 * CER-223
 	 * CER-224
 	 * CER-233
+	 * CER-631
 	 */
 	@Test(groups={"ProductSearch","Regression"})
 	public void validateProductSearchResult_FilterSectionFunction() throws IOException {	
@@ -34,10 +35,10 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction ext
 	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0));
 	
 	//Test sort
-	if(getProductResultsPageThreadLocal().chooseSortOptionByVisibleText("Price: Highest first")) {
+	if(getProductResultsPageThreadLocal().chooseSortOptionByVisibleText("Price: Highest First")) {
 		lsMsg=getProductResultsPageThreadLocal().verifyHighestPriceFirstSort();
 		if(lsMsg.isEmpty()) {
-			reporter.reportLogPass("Sort option of Price: Highest first works");
+			reporter.reportLogPass("Sort option of Price: Highest First works");
 		}else {
 			reporter.reportLogFail(lsMsg);
 		}				

@@ -33,7 +33,7 @@ public class SR_TC10_Verify_ProductSearchResult_GlobalHeaderAndFooterAfterSortAn
 	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0));
 	
 	//Test sort
-	if(getProductResultsPageThreadLocal().chooseSortOptionByVisibleText("Price: Highest first")) {
+	if(getProductResultsPageThreadLocal().chooseSortOptionByVisibleText("Price: Highest First")) {
 		reporter.softAssert(getProductResultsPageThreadLocal().verifyUrlAfterSelectSortStrategy(lsKeywordList.get(0).get(0),"HighestPrice"), "The Url contains keyword and sortKey=HighestPrice", "The Url does not contain keyword and sortKey=HighestPrice");		
 		
 		lsMsg=getProductResultsPageThreadLocal().verifySearchResultMessage(lstSearchResultMessage.get(0),lsKeywordList.get(0).get(0));
