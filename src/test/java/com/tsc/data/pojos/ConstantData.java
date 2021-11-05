@@ -34,7 +34,6 @@ public class ConstantData {
 	private String lbl_ShoppingCartLinkName;
 	private String lnk_ShoppingCartLink;
 	private List<String> lst_FlyoutHeading;
-	private List<String> lst_FlyoutsubMenu;
 	private List<String> lnk_FlyoutHeaderLinkConstant;
 	private String lbl_FlyoutHeadingLandingPageLink;
 	private String lbl_OnAirNow;
@@ -407,23 +406,10 @@ public class ConstantData {
 	public void setlst_FlyoutHeading(List<String> lst_FlyoutHeading) {
 		this.lst_FlyoutHeading = lst_FlyoutHeading;
 	}
+	
 	/**
 	 * @return the lnk_FlyoutHeaderLinkConstant
 	 */
-	
-	/**
-	 * @return the lst_FlyoutsubMenu
-	 */
-	public List<String> getlst_FlyoutsubMenu() {
-		return lst_FlyoutsubMenu;
-	}
-	/**
-	 * @param lst_FlyoutsubMenu the lst_FlyoutsubMenu to set
-	 */
-	public void setlst_FlyoutsubMenu(List<String> lst_FlyoutsubMenu) {
-		this.lst_FlyoutsubMenu = lst_FlyoutsubMenu;
-	}
-	
 	public List<String> getlnk_FlyoutHeaderLinkConstant() {
 		return lnk_FlyoutHeaderLinkConstant;
 	}
