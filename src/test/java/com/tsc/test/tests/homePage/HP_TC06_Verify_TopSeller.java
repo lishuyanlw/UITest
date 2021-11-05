@@ -9,14 +9,12 @@ import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 
 public class HP_TC06_Verify_TopSeller extends BaseTest{
-	/**
-	 * This method will test all verifying methods
-	 *
-	 * @author Wei.Li
+	/*
+	 * CER-204
 	 */
 	@Test(groups={"Home","Regression"})
 	public void validateTopSeller() throws IOException {
-		//OnAirSectionPageThreadLocal().closeadd();
+	getGlobalFooterPageThreadLocal().closePopupDialog();
 	reporter.softAssert(getglobalheaderPageThreadLocal().validateURL((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");
 	reporter.reportLogWithScreenshot("Home Page");
 	

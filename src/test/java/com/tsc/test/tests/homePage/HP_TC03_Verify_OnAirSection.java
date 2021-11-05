@@ -14,7 +14,9 @@ import com.tsc.test.base.BaseTest;
     
 
 	public void validateNowOnAirSection() throws IOException {
-	homePageThreadLocal().closeadd();
+
+	getGlobalFooterPageThreadLocal().closePopupDialog();
+
 	reporter.softAssert(getglobalheaderPageThreadLocal().validateURL((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");
 	reporter.reportLogWithScreenshot("Home Page");
 					

@@ -15,7 +15,9 @@ public class HP_TC04_Verify_ShopByDepartment extends BaseTest{
 	 */
 	@Test(groups={"Home","Regression"})
 	public void validateShopByDepartmentSection() throws IOException {
-	//homePageThreadLocal().closeadd();
+
+	getGlobalFooterPageThreadLocal().closePopupDialog();
+
 	reporter.softAssert(getglobalheaderPageThreadLocal().validateURL((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");
 	reporter.reportLogWithScreenshot("Home Page");
 	

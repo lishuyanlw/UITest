@@ -9,14 +9,13 @@ import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 
 public class SR_TC03_Verify_ProductSearchResult_SortAndFilterSectionContent extends BaseTest{
-	
-	/**
-	 * This method will test the contents of sort and filter sections of product searching results.
-	 * @author Wei.Li
-	 */	
+	/*
+	 * CER-214
+	 * CER-215
+	 */
 	@Test(groups={"ProductSearch","Regression"})
 	public void validateProductSearchResult_FilterSectionContent() throws IOException {	
-	(new HomePage(this.getDriver())).closeadd();
+	getGlobalFooterPageThreadLocal().closePopupDialog();
 	
 	reporter.softAssert(getglobalheaderPageThreadLocal().validateURL((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");		
 	reporter.reportLog("ProductSearch Page");

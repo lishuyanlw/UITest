@@ -11,14 +11,13 @@ import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 
 public class SR_TC05_Verify_ProductSearchResult_MultiFiltersTest extends BaseTest{
-	
-	/**
-	 * This method will test multiple filters combination.
-	 * @author Wei.Li
-	 */	
+	/*
+	 * CER-225
+	 * CER-226
+	 */
 	@Test(groups={"ProductSearch","Regression"})
 	public void validateProductSearchResult_MultiFiltersFunction() throws IOException {	
-	(new HomePage(this.getDriver())).closeadd();
+	getGlobalFooterPageThreadLocal().closePopupDialog();
 	
 	reporter.softAssert(getglobalheaderPageThreadLocal().validateURL((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");		
 	reporter.reportLog("ProductSearch Page");
