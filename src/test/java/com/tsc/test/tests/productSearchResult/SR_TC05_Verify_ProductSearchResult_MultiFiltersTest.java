@@ -106,6 +106,7 @@ public class SR_TC05_Verify_ProductSearchResult_MultiFiltersTest extends BaseTes
 		getProductResultsPageThreadLocal().verifySearchResultContent(productList);
 	}
 
+
 	}
 }
 

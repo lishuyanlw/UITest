@@ -47,7 +47,7 @@ def getTunnelName() {
 //    tunnelName = tunnelName.replaceAll(":","")
 //    tunnelName = tunnelName.replaceAll(" ","")
 //    return tunnelName
-    return "Digital_Mobile_QA"
+    return "DigitalQETunnel"
 }
 
 def tunnel_name() {
@@ -91,7 +91,7 @@ task "sauceTest"(type: Test) {
 
 //To shutdown the sauceconnect
 //sauceTest.finalizedBy stopSauceConnect
-
+ 
 task "localTest"(type: Test) {
     if (test_browser && test_browser.contains('sauce')){
         def browser = test_browser.replace('sauce','')
@@ -100,7 +100,7 @@ task "localTest"(type: Test) {
     systemProperty 'QaUrl', test_qaURL
     systemProperty 'Browser', test_browser
     systemProperty 'Language', test_language
-
+    systemProperty 'chromeMobileDevice', chromeMobileDevice
     systemProperties(System.getProperties())
     outputs.upToDateWhen { false }  // Always run tests
 

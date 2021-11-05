@@ -17,6 +17,7 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction ext
 	 * CER-223
 	 * CER-224
 	 * CER-233
+	 * CER-631
 	 */
 	@Test(groups={"ProductSearch","Regression"})
 	public void validateProductSearchResult_FilterSectionFunction() throws IOException {	
@@ -32,12 +33,13 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction ext
 	String lsMsg;		
 
 	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0));
-	
+		
 	//Test sort
-	if(getProductResultsPageThreadLocal().chooseSortOptionByVisibleText("Price: Highest first")) {
+	reporter.reportLog("Price: Highest First");
+	if(getProductResultsPageThreadLocal().chooseSortOptionByVisibleText("Price: Highest First")) {
 		lsMsg=getProductResultsPageThreadLocal().verifyHighestPriceFirstSort();
 		if(lsMsg.isEmpty()) {
-			reporter.reportLogPass("Sort option of Price: Highest first works");
+			reporter.reportLogPass("Sort option of Price: Highest First works");
 		}else {
 			reporter.reportLogFail(lsMsg);
 		}				
@@ -68,8 +70,10 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction ext
 	}
 
 	//Test General filter option
+	reporter.reportLog("General Filters");
 	List<List<String>> lstGeneralTwoLevelFilterOption=TestDataHandler.constantDataFile.getSearchResultPage().getLst_SearchOption().get(0).getFilterOption();
 	for(List<String> lstItem:lstGeneralTwoLevelFilterOption) {
+		reporter.reportLog(lstItem.get(0)+" : "+lstItem.get(1));
 		if(getProductResultsPageThreadLocal().selectFilterItemInLeftPanel(lstItem.get(0), lstItem.get(1))) {
 			reporter.softAssert(getProductResultsPageThreadLocal().verifyUrlContainDimensionAndKeyword(lsKeywordList.get(0).get(0)), "The Url contains correct dimensions and keyword", "The Url does not contain correct dimensions and keyword");
 			
@@ -106,8 +110,10 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction ext
 	}	
 
 	//Test filter by price	
+	reporter.reportLog("Price filter");
 	List<List<String>> lstFilterByPrice=TestDataHandler.constantDataFile.getSearchResultPage().getLst_SearchOption().get(1).getFilterOption();
 	for(List<String> lstItem:lstFilterByPrice) {
+		reporter.reportLog(lstItem.get(0)+" : "+lstItem.get(1));
 		if(getProductResultsPageThreadLocal().selectFilterItemInLeftPanel(lstItem.get(0), lstItem.get(1))) {
 			//To verify the first item
 			lsMsg=getProductResultsPageThreadLocal().verifyFilterByPrice(lstItem.get(2),true);

@@ -37,10 +37,6 @@ public class GlobalheaderPage extends BasePage{
 		super(driver);
 	}
 
-	//Product results
-	@FindBy(xpath = "//div[@class='Footer']//div[contains(@class,'blockPageWrap')]")
-	public WebElement productResultLoadingIndicator;
-	
 	//Black header
 	@FindBy(xpath = "//div[contains(@class,'black-header')]//a[contains(@class,'black-header__showstopper')]")
 	public WebElement lnkTSBlackHeader;
@@ -255,12 +251,12 @@ public class GlobalheaderPage extends BasePage{
 	public void clickSubMenuLink() {
 		getReusableActionsInstance().clickIfAvailable(fasionOption);
 		getReusableActionsInstance().clickIfAvailable(shopAllFasionOption);
-		waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},60000);
+		(new ProductResultsPage(this.getDriver())).waitForPageLoading();	
 	}
 
 	public void waitForPageLoad() {
 		getReusableActionsInstance().waitForPageLoad();
-		waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},30000);
+		(new ProductResultsPage(this.getDriver())).waitForPageLoading();	
 	}	
 	
 	public boolean validateURL(String strExpectedUrl) {
@@ -808,6 +804,7 @@ public class GlobalheaderPage extends BasePage{
 	 * @author Wei.Li
 	 */	
 	 public void hoverOnWatchTSC() {
+		 getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnWatchTSCBlackHeader);
 		 getReusableActionsInstance().scrollToElement(this.btnWatchTSCBlackHeader);
 		 getReusableActionsInstance().staticWait(100);		 
 	 }	
@@ -819,6 +816,7 @@ public class GlobalheaderPage extends BasePage{
 	 * @author Wei.Li
 	 */	
 	 public boolean switchWatchTSCDropdownOption(WebElement element) {
+		 getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnWatchTSCBlackHeader);
 		 getReusableActionsInstance().scrollToElement(this.btnWatchTSCBlackHeader);
 		 getReusableActionsInstance().staticWait(100);
 		 getReusableActionsInstance().javascriptScrollByVisibleElement(element);

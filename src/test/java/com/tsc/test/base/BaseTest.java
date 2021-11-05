@@ -16,6 +16,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.http.client.ClientProtocolException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.ITestContext;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -31,6 +32,7 @@ import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.GlobalheaderPage;
 import com.tsc.pages.HomePage;
 import com.tsc.pages.LoginPage;
+import com.tsc.pages.ProductDetailPage;
 import com.tsc.pages.ProductResultsPage;
 import com.tsc.pages.GlobalFooterPage;
 
@@ -52,6 +54,7 @@ public class BaseTest {
 	protected static final ThreadLocal<HomePage> homePageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<GlobalFooterPage> globalFooterPageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<ProductResultsPage> productResultsPageThreadLocal = new ThreadLocal<>();
+	protected static final ThreadLocal<ProductDetailPage> productDetailPageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<LoginPage> loginPageThreadLocal = new ThreadLocal<>();
 
 	public BaseTest() {
@@ -86,6 +89,10 @@ public class BaseTest {
 		return productResultsPageThreadLocal.get();
 	}
 	
+	protected static ProductDetailPage getProductDetailPageThreadLocal() {
+		return productDetailPageThreadLocal.get();
+	}
+	
 	protected static LoginPage getGlobalLoginPageThreadLocal() {
 		return loginPageThreadLocal.get();
 	}
@@ -96,6 +103,7 @@ public class BaseTest {
 		globalheaderPageThreadLocal.set(new GlobalheaderPage(getDriver()));
 		globalFooterPageThreadLocal.set(new GlobalFooterPage(getDriver()));
 		productResultsPageThreadLocal.set(new ProductResultsPage(getDriver()));
+		productDetailPageThreadLocal.set(new ProductDetailPage(getDriver()));
 		loginPageThreadLocal.set(new LoginPage(getDriver()));
 		reporter = new ExtentTestManager(getDriver());
 	}
@@ -124,8 +132,8 @@ public class BaseTest {
 
 		if (strBrowser.toLowerCase().contains("sauce")) { 
 			sauceParameters =	initializeSauceParamsMap(strBrowser); 
-			}
-		
+		}
+	
 		webDriverThreadLocal.set(browserDrivers.driverInit(strBrowser, sauceParameters, currentTestMethodName, ""));
 		getDriver().get(strUrl);
 		if (!strBrowser.toLowerCase().contains("android") && !strBrowser.toLowerCase().contains("ios")
