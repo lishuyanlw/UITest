@@ -201,7 +201,7 @@ public class ProductResultsPage extends BasePage{
 		
 		GlobalheaderPage globalHeader=new GlobalheaderPage(this.getDriver());
 		getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeader.searchBox);
-		return !this.getElementProperty(globalHeader.searchBox, "aria-controls");			
+		return !this.getElementAttribute(globalHeader.searchBox, "aria-controls");			
 	}
 	
 	/**

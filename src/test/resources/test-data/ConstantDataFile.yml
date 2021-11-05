@@ -45,24 +45,24 @@ searchResultPage:
   lst_SearchKeyword_DropDown: [[ "dress","Categories","0" ]]
   lbl_SearchResultPageDefaultSetting: 36
   lst_SearchResultMessage: [ [ "Search Results For" ],[ "We couldn","t find a match for","Please search again using a different term or browse by brand or category." ] ]
-  lst_SortOption: [ "Featured Products","Newest first","Reviews: Highest first","Price: Lowest first","Price: Highest first","Brand Name: A to Z" ]
-  lst_FilterOptionHeader: [ "ON AIR","SHOP BY PRODUCT","NEW ARRIVALS","SHOP BY BRAND","SHOP BY COLOUR","SHOP BY SHOES SIZE","SHOP BY SIZE FASHION","SHOP BY STONE","SHOP BY METAL","SHOP BY PRICE","SHOP BY SPECIAL OFFERS","SHOP BY REVIEWS" ]
+  lst_SortOption: ["Featured Products","Newest First","Reviews: Highest First","Price: Lowest First","Price: Highest First","Brand Name: A to Z"]
+  lst_FilterOptionHeader: ["SHOP BY CATEGORY","SHOP BY BRAND","SHOP BY CLEARANCE","SHOP BY COLLECTION","SHOP BY COLOUR","METAL","SHOP BY MORE WAYS","PRICE","SHOP BY PRICE LABEL","PRODUCT LIST","SHOP BY PROMO","REVIEWS","ROLLUP SIZE","ROLLUP SIZE FASHION","SIZE","SHOP BY SPECIALTY","STONE"]
   lst_SearchOption:
     - filterType: Product
-      filterOption: [[ "SHOP BY PRODUCT","Home & Garden" ]]
+      filterOption: [["SHOP BY BRAND","Joan Rivers"],["SHOP BY CLEARANCE","Clearance"]]
     - filterType: Price
-      filterOption: [[ "SHOP BY PRICE","Under $50","Under" ]]   
+      filterOption: [["PRICE","Under $100","Under"]]
     - filterType: CombinatedAction
       filterOption: 
-        - ["SHOP BY SIZE FASHION","Regular XXS-XS"]
-        - ["SHOP BY PRICE","Under $50"]
+        - ["SIZE","XL"]
+        - ["PRICE","Under $100"]
     - filterType: SequentialAction
       filterOption: 
-        - ["SHOP BY BRAND","Kim & Co."]
-        - ["SHOP BY PRICE","Under $50"]
+        - ["SHOP BY BRAND","Joan Rivers"]
+        - ["PRICE","Under $100"]
         - ["SHOP BY COLOUR","Black"]
-  lst_MoreButton: ["SHOP BY BRAND","SHOP BY SHOE SIZE","SHOP BY SIZE FASHION"]
-  lst_DisappearAfterSelectFilter: ["SHOP BY BRAND"]
+  lst_MoreButton: ["SHOP BY BRAND","SHOP BY COLLECTION","SHOP BY COLOUR"]
+  lst_DisappearAfterSelectFilter: ["SHOP BY CATEGORY"]
   lnk_product_result: /pages/productresults?
 footerSection: 
   lst_SocialMediaLinks: ["https://www.facebook.com/Shoptsc","https://twitter.com/shoptsc","https://instagram.com/shoptsc","www.youtube.com","https://www.pinterest.ca/shoptsc"]

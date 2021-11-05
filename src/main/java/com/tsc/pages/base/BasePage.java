@@ -435,15 +435,60 @@ import utils.ReusableActions;
 	}
 	
 	/**
-	 * This method will identify if the element has a specific property.
+	 * This method will check if a childElement is existing by some specific Attribute.
+	 * @param WebElement parent: parent element 
+	 * @param String lsAttribute: Attribute
+	 * @param String lsAttributeValue: Attribute value 
+	 * @return boolean
+	 * @author Wei.Li
+	 */		
+	@SuppressWarnings("unchecked")
+	public boolean checkChildElementExistingByAttribute(WebElement parent,String lsAttribute,String lsAttributeValue) {
+		List<WebElement> lstChild=this.getChildrenList(parent);
+		for(WebElement child:lstChild) {
+			if(this.getElementAttribute(child,lsAttribute)) {
+				String lsValue=this.getChildElementAttribute(child,lsAttribute);
+				if(lsValue.isEmpty()||lsValue==null) {
+					return false;
+				}
+				else {
+					if(lsValue.equalsIgnoreCase(lsAttribute)) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * This method will check if a childElement is existing by some specific TagName.
+	 * @param WebElement parent: parent element 
+	 * @param String lsTagName: TagName
+	 * @return boolean
+	 * @author Wei.Li
+	 */		
+	@SuppressWarnings("unchecked")
+	public boolean checkChildElementExistingByTagName(WebElement parent,String lsTagName) {
+		List<WebElement> lstChild=this.getChildrenList(parent);
+		for(WebElement child:lstChild) {
+			if(child.getTagName().equalsIgnoreCase(lsTagName)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * This method will identify if the element has a specific Attribute.
 	 * @param WebElement element: the element
-	 * @param String lsProperty: the property
+	 * @param String lsAttribute: the Attribute
 	 * @return true/false
 	 * @author Wei.Li
 	 */		
-	public  boolean getElementProperty(WebElement element,String lsProperty) {
+	public  boolean getElementAttribute(WebElement element,String lsAttribute) {
 		JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
-		return (boolean) jse.executeScript("return arguments[0].hasAttribute(arguments[1]);", element,lsProperty);			
+		return (boolean) jse.executeScript("return arguments[0].hasAttribute(arguments[1]);", element,lsAttribute);			
 	}
 	
 	/**
