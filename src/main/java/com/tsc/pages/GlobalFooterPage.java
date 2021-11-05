@@ -288,6 +288,12 @@ public class GlobalFooterPage extends BasePage {
 	@FindBy(xpath = "//div[@class='Middle']//div[contains(@class,'singleOpenable')]//div[contains(@class,'panHTMLContainer')]")
 	public List<WebElement> lstTermsOfUseItemContent;
 	
+	//More About  TSC
+	@FindBy(xpath = "(//h4//span[contains(@id,'contentPlaceHolder_ctl39_ctlListTitle')]//ancestor::div[@class='quickLinkPanelWrap']//ul[@class='quickLinkUL col3Divs ']//li//a)[1]")
+	public WebElement lstMoreAboutTSCPartner;
+	
+	@FindBy(xpath = "(//div[@class='quickLinkPanelWrap']//ul[@class='quickLinkUL col3Divs ']//li//a)[4]")
+	public WebElement lstMoreAboutTSCAboutOurService;
 
 	/**
 	 * Close popup dialog through clicking close button.
