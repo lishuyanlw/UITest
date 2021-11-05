@@ -845,9 +845,7 @@ public class ProductResultsPage extends BasePage{
 	public boolean selectFilterItemInLeftPanel(String lsFirstLevelItem,String lsSecondLevelItem) {
 		this.firstLevelFilter=lsFirstLevelItem;
 		this.secondLevelFilter=lsSecondLevelItem;
-		
-		int loopSize=this.productFilterList.size();	
-		System.out.println("loopSize: "+loopSize);
+			
 		for(int i=0;i<this.productFilterList.size();i++) {			
 			getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i));
 			String lsHeader=this.productFilterList.get(i).getText().trim();
@@ -858,14 +856,13 @@ public class ProductResultsPage extends BasePage{
 			//If found lsFirstLevelItem
 			if(lsHeader.equalsIgnoreCase(lsFirstLevelItem)) {
 				WebElement panelBody=this.productFilterContainerList.get(i).findElement(this.bySubItemPanelBodyOnLeftPanel);
-				if(judgeMoreButtonExistenceInLeftPanel(panelBody)) {
-					System.out.println("More button");
+				if(judgeMoreButtonExistenceInLeftPanel(panelBody)) {					
 					WebElement moreButton=this.productFilterContainerList.get(i).findElement(this.byMoreButtonOnLeftPanel);
 					getReusableActionsInstance().javascriptScrollByVisibleElement(moreButton);
 					moreButton.click();
 					getReusableActionsInstance().staticWait(500);
 				}
-				System.out.println("lsHeader: "+lsHeader);			
+					
 				List<WebElement> subItemList=this.productFilterContainerList.get(i).findElements(this.bySubItemListOnLeftPanel);	
 				System.out.println("subItemList size: "+subItemList.size());	
 				for(WebElement subItem : subItemList) {
