@@ -144,15 +144,6 @@ public class GlobalheaderPage extends BasePage{
 	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--right')]//*[contains(.,'Possible item matches') or contains(.,'Top Selling Products')][contains(@class,'search-title')]/following-sibling::ul//li//a")
 	public List<WebElement> lstPossibleItemMatchesLink;
 	
-	public By byProductImgForPossibleItemMatchesItem= By.xpath(".//div[@class='ac-productlist__row']//div[contains(@class,'ac-productlist__left')]//img");
-	
-	public By byProductBadgeForPossibleItemMatchesItem= By.xpath(".//div[@class='ac-productlist__row']//div[contains(@class,'ac-productlist__right')]//div[contains(@class,'ac-productlist__badge')]");
-	
-	public By byProductDescriptionForPossibleItemMatchesItem= By.xpath(".//div[@class='ac-productlist__row']//div[contains(@class,'ac-productlist__right')]//div[contains(@class,'ac-productlist__description')]");
-	
-	public By byProductNumberForPossibleItemMatchesItem= By.xpath(".//div[@class='ac-productlist__row']//div[contains(@class,'ac-productlist__right')]//div[contains(@class,'ac-productlist__item-number2')]");
-	
-	public By byProductPriceForPossibleItemMatchesItem= By.xpath(".//div[@class='ac-productlist__row']//div[contains(@class,'ac-productlist__right')]//div[@class='ac-productlist__price']");
 	
 	//For Staging website
 	@FindBy(xpath = "//div[@class='searchContainer']//div[contains(@class,'suggestions-container--open')]//div[@class='tsc-category-title']")
@@ -204,8 +195,8 @@ public class GlobalheaderPage extends BasePage{
 	WebElement Categories;
 	
 	
-	@FindBy(xpath = "//*[@class='email-popup__button']")
-	WebElement btnClose;
+	@FindBy(xpath = "//h2[contains(@class,'gatewayTitle xs-vw8')]")
+	WebElement flyoutHeadingLandigPageHeading;
 
 	/*
 	 * @author godwin.gopi
@@ -664,7 +655,12 @@ public class GlobalheaderPage extends BasePage{
 		 currentUrl = getDriver().getCurrentUrl();
 		 return currentUrl;
 	}
-
+	
+	public String getHeadingOfLandingPageforFlyoutHeading() {
+		String pageHeading =getProductResultPageTitle(flyoutHeadingLandigPageHeading);
+		return pageHeading;
+		}
+	
 
 	/**
 	 *Method to go to home page  

@@ -11,7 +11,7 @@ import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 
-public class GH_TC03_Global_Header_Verify_FlyoutSubMenuDisplay extends BaseTest {
+public class GH_TC04_Global_Header_Verify_FlyoutSubMenuDisplay extends BaseTest {
 	
 	@Test(groups={"Home","Regression"})	    
 	public void verifyFlyoutHeadings() throws IOException {
@@ -20,7 +20,7 @@ public class GH_TC03_Global_Header_Verify_FlyoutSubMenuDisplay extends BaseTest 
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl+"/"), "TSC url is correct", "TSC url is incorrect");
 		reporter.reportLogWithScreenshot("Home Page");
 		reporter.reportLog("Validating Flyout display all department & it's URL after Clicking each category");
-		String FlyoutUrl,lsYmlNotFound,lsSuccessResult, lsFailResult;
+		String FlyoutUrl,lsYmlNotFound,lsSuccessResult, lsFailResult, pageHeading;
 		lsYmlNotFound=TestDataHandler.constantDataVariables.getlnk_NotFound();
 		List<WebElement> headingsElement=getglobalheaderPageThreadLocal().getFlyoutHeadingsWebelement();
 		//Fetching heading name and iterating over it,because whenever trying to iterate over the WebElement it throws Stale Element exception.
@@ -36,8 +36,11 @@ public class GH_TC03_Global_Header_Verify_FlyoutSubMenuDisplay extends BaseTest 
 			FlyoutUrl = getglobalheaderPageThreadLocal().getUrlAfterclickingFlyoutHeading(lsHeading);
 			lsSuccessResult=String.format("The url [ %s ] does not contain [ %s ] after clicking " + lsHeading + "'s link", FlyoutUrl,lsYmlNotFound);
 			lsFailResult=String.format("The url [ %s ] contains [ %s ] after clicking " + lsHeading + "'s link", FlyoutUrl,lsYmlNotFound);
+			pageHeading=getglobalheaderPageThreadLocal().getHeadingOfLandingPageforFlyoutHeading();
 			reporter.reportLog("URL of the landing page for Flyout heading "+lsHeading+" is "+FlyoutUrl);
 			reporter.softAssert(!FlyoutUrl.contains(lsYmlNotFound), lsSuccessResult,lsFailResult);
+			reporter.softAssert(lsHeading.contains(pageHeading), "Landing page is loded correctly of "+lsHeading+" flyout heading link.","Landing page is not loaded correctly for "+lsHeading+" flyout heading link.");
+			
 		}
 	}
 }

@@ -8,7 +8,7 @@ import com.tsc.test.base.BaseTest;
 
 import com.tsc.pages.base.BasePage;
 
-public class HP_TC04_Verify_ShopByDepartment extends BaseTest{
+public class HP_TC03_Verify_ShopByDepartment extends BaseTest{
 	/*
 	 * Method to verify shop by Department section and its automatic scrolling action
 	 * @author Shruti Desai
