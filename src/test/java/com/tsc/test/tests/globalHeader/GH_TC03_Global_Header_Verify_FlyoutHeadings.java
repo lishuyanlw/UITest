@@ -10,7 +10,7 @@ import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 
 
-public class GH_TC02_Global_Header_Verify_FlyoutHeadings extends BaseTest {
+public class GH_TC03_Global_Header_Verify_FlyoutHeadings extends BaseTest {
 
 	@Test(groups={"Home","Regression"})	    
 	public void verifyFlyoutHeadings() throws IOException {
@@ -24,7 +24,7 @@ public class GH_TC02_Global_Header_Verify_FlyoutHeadings extends BaseTest {
 		for(WebElement lsHeading:headingsElement) {
 			getglobalheaderPageThreadLocal().scrolltoWebElement(lsHeading);
 			String flyoutHeading =lsHeading.getText();
-			reporter.softAssert((TestDataHandler.constantDataVariables.getlst_FlyoutHeading().contains(flyoutHeading)),"Flyout diplyas drpartment  "+flyoutHeading+" and it's validated.","Flyout is not displaying heading properly");
+			reporter.softAssert((TestDataHandler.constantDataVariables.getlst_FlyoutHeading().contains(flyoutHeading)),"Flyout displays drpartment  "+flyoutHeading+" and it's validated.","Flyout is not displaying heading properly for "+flyoutHeading);
 			reporter.softAssert(getglobalheaderPageThreadLocal().verifyhrefFlyoutHeading(lsHeading), "href is present for Flyout Heading "+flyoutHeading, "href is not preset for "+flyoutHeading);
 		}
 	}	

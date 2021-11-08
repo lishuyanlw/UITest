@@ -8,7 +8,7 @@ import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 
-public class HP_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo extends BaseTest {
+public class GH_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo extends BaseTest {
 	/*
 	 * CER-146
 	 * CER-151
