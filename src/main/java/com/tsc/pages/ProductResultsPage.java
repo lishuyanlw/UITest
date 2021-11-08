@@ -201,7 +201,7 @@ public class ProductResultsPage extends BasePage{
 		
 		GlobalheaderPage globalHeader=new GlobalheaderPage(this.getDriver());
 		getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeader.searchBox);
-		return !this.getElementAttribute(globalHeader.searchBox, "aria-controls");			
+		return !this.hasElementAttribute(globalHeader.searchBox, "aria-controls");			
 	}
 	
 	/**
@@ -357,7 +357,7 @@ public class ProductResultsPage extends BasePage{
 	 * @return String: error message
 	 * @author Wei.Li
 	 */
-	public String verifySearchResultMessage(List<String> expectedMessage,String lsKeyword) {		
+	public String verifySearchResultMessage(String expectedMessage,String lsKeyword) {		
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSearchResultMessage);
 		
 		String lsMessage=this.lblSearchResultMessage.getText().trim();	
@@ -366,11 +366,9 @@ public class ProductResultsPage extends BasePage{
 			return "Search result message result of '"+lsMessage+"' does not contain keyword of "+lsKeyword;		
 		}
 		else {
-			for(String message:expectedMessage) {				
-				if(!lsMessage.contains(message)) {
-					return "Search result message result of '"+lsMessage+"' does not contain expected message of "+message;
-				}
-			}
+			if(!lsMessage.contains(expectedMessage)) {
+				return "Search result message result of '"+lsMessage+"' does not contain expected message of "+expectedMessage;
+			}			
 		}		
 		return "";		
 	}
@@ -778,7 +776,7 @@ public class ProductResultsPage extends BasePage{
 		for(WebElement element:this.productResultList) {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 			String nowPriceText=element.findElement(this.byProductNowPrice).getText().trim();			
-			float nowPriceValue=this.getFloatFromString(nowPriceText);			
+			float nowPriceValue=this.getFloatFromString(nowPriceText,true);			
 			priceList.add(nowPriceValue);
 			String productNO=element.findElement(this.byProductItemNO).getText().trim();
 			productNOList.add(productNO);
@@ -916,7 +914,7 @@ public class ProductResultsPage extends BasePage{
 			getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 			String productNO=element.findElement(this.byProductItemNO).getText().trim();
 			String nowPriceText=element.findElement(this.byProductNowPrice).getText().trim();			
-			float nowPriceValue=this.getFloatFromString(nowPriceText);	
+			float nowPriceValue=this.getFloatFromString(nowPriceText,false);	
 			List<String> lstPrice=this.getNumberFromString(secondLevelFilter);
 			
 			switch(lsPriceMode) {

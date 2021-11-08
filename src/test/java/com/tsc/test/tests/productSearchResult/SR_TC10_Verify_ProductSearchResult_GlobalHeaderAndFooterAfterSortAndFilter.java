@@ -25,7 +25,7 @@ public class SR_TC10_Verify_ProductSearchResult_GlobalHeaderAndFooterAfterSortAn
 	reporter.reportLog("ProductSearch Page");
 	
 	List<List<String>> lsKeywordList=TestDataHandler.constantDataFile.getSearchResultPage().getLst_SearchKeyword_DropDown();
-	List<List<String>> lstSearchResultMessage=TestDataHandler.constantDataFile.getSearchResultPage().getLst_SearchResultMessage();
+	List<String> lstSearchResultMessage=TestDataHandler.constantDataFile.getSearchResultPage().getLst_SearchResultMessage();
 	String lsSearchResultPageDefaultSetting=TestDataHandler.constantDataFile.getSearchResultPage().getLbl_SearchResultPageDefaultSetting();	
 	List<WebElement> productList;
 	String lsMsg;

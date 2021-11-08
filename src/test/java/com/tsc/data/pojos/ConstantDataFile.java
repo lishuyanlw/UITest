@@ -384,7 +384,7 @@ public class ConstantDataFile {
         private List<String> lst_SearchKeyword;
         private List<List<String>> lst_SearchKeyword_DropDown;
         private String lbl_SearchResultPageDefaultSetting;
-        private List<List<String>> lst_SearchResultMessage;
+        private List<String> lst_SearchResultMessage;
         private List<String> lst_SortOption;
         private List<String> lst_FilterOptionHeader;
         private List<SearchOption> lst_SearchOption;               
@@ -416,11 +416,11 @@ public class ConstantDataFile {
             this.lbl_SearchResultPageDefaultSetting = lbl_SearchResultPageDefaultSetting;
         }
 
-        public List<List<String>> getLst_SearchResultMessage() {
+        public List<String> getLst_SearchResultMessage() {
             return lst_SearchResultMessage;
         }
 
-        public void setLst_SearchResultMessage(List<List<String>> lst_SearchResultMessage) {
+        public void setLst_SearchResultMessage(List<String> lst_SearchResultMessage) {
             this.lst_SearchResultMessage = lst_SearchResultMessage;
         }
 

@@ -502,12 +502,18 @@ import utils.ReusableActions;
     /**
 	 * This method will get float from string.
 	 * @param String lsTarget: target string
+	 * @param boolean bHighestFirst
 	 * @return float value
 	 * @author Wei.Li
 	 */	
-    public float getFloatFromString(String lsTarget) {
+    public float getFloatFromString(String lsTarget,boolean bHighestFirst) {
     	if(lsTarget.contains("-")) {
-    		lsTarget=lsTarget.split("-")[0].trim();
+    		if(bHighestFirst) {
+    			lsTarget=lsTarget.split("-")[1].trim();
+    		}
+    		else {
+    			lsTarget=lsTarget.split("-")[0].trim();
+    		}    		
     	}
     	lsTarget=lsTarget.replace(",", "").trim();
     	

@@ -51,7 +51,7 @@ public class ConstantData {
 	private List<String> lst_SearchKeyword;	
 	private List<List<String>> lst_SearchKeyword_DropDown;	
 	private String lbl_SearchResultPageDefaultSetting;
-	private List<List<String>>  lst_SearchResultMessage;
+	private List<String>  lst_SearchResultMessage;
 	private List<String> lst_SortOption;	
 	private List<List<String>> lst_FilterByPrice;
 	private List<String> lst_FilterOptionHeader;
@@ -618,13 +618,13 @@ public class ConstantData {
 	/**
 	 * @return the lst_SearchResultMessage
 	 */
-	public List<List<String>> getlst_SearchResultMessage() {
+	public List<String> getlst_SearchResultMessage() {
 		return lst_SearchResultMessage;
 	}
 	/**
 	 * @param lst_SearchResultMessage the lst_SearchResultMessage to set
 	 */
-	public void setlst_SearchResultMessage(List<List<String>> lst_SearchResultMessage) {
+	public void setlst_SearchResultMessage(List<String> lst_SearchResultMessage) {
 		this.lst_SearchResultMessage = lst_SearchResultMessage;
 	}
 	
