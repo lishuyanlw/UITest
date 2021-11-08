@@ -616,7 +616,7 @@ import utils.ReusableActions;
 	  * This method will return search result page title.	  
 	  * @author Wei.Li
 	  */
-	 public String getProductResultPageTitle(WebElement webelement) {
+	 public String getPageTitle(WebElement webelement) {
 		 if(getReusableActionsInstance().isElementVisible(webelement)) {
 			 getReusableActionsInstance().javascriptScrollByVisibleElement(webelement);
 			 return webelement.getText().trim();
