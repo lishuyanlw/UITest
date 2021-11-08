@@ -37,7 +37,8 @@ public class SR_TC06_Verify_ProductSearchResult_MultiFiltersSequentialActionTest
 	for(List<List<String>> lstItemCombination:lstFilterSequentialAction) {		
 		getProductResultsPageThreadLocal().bDefault=false;		
 		List<String> lstSelectedSecondLevelFilter=new ArrayList<String>();		
-		for(List<String> lstItem:lstItemCombination) {			
+		for(List<String> lstItem:lstItemCombination) {	
+			reporter.reportLog(lstItem.get(0)+" : "+lstItem.get(1));
 			getProductResultsPageThreadLocal().selectFilterItemInLeftPanel(lstItem.get(0), lstItem.get(1));
 			lstSelectedSecondLevelFilter.add(getProductResultsPageThreadLocal().secondLevelFilter);			
 						

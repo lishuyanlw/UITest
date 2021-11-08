@@ -47,6 +47,7 @@ lst_SearchKeyword: ["dyson vacuum","dfafasdfa","100501","joan rivers","Nike","bo
 lst_SearchKeyword_DropDown: [["dress","Categories","0"]]
 lbl_SearchResultPageDefaultSetting: 36
 lst_SearchResultMessage: [["Search Results For"],["We couldn","t find a match for","Please search again using a different term or browse by brand or category."]]
+<<<<<<< HEAD
 lst_SortOption: ["Featured Products","Newest first","Reviews: Highest first","Price: Lowest first","Price: Highest first","Brand Name: A to Z"]
 lst_FilterOptionHeader: ["ON AIR","SHOP BY PRODUCT","NEW ARRIVALS","SHOP BY BRAND","SHOP BY COLOUR","SHOP BY SHOES SIZE","SHOP BY SIZE FASHION","SHOP BY STONE","SHOP BY METAL","SHOP BY PRICE","SHOP BY SPECIAL OFFERS","SHOP BY REVIEWS"]
 lst_GeneralTwoLevelFilterOption: [["SHOP BY PRODUCT","Home & Garden"],["SHOP BY SPECIAL OFFERS","Clearance Price Final Sale"]]
@@ -56,6 +57,16 @@ lst_MoreButton: ["SHOP BY BRAND","SHOP BY SHOE SIZE","SHOP BY SIZE FASHION"]
 lst_FilterSequentialAction: [[["SHOP BY BRAND","Kim & Co."],["SHOP BY PRICE","Under $50"],["SHOP BY COLOUR","Black"]]]
 lst_DisappearAfterSelectFilter: ["SHOP BY BRAND"]
 lbl_ProductRecommendationTitlePage: ["People who viewed this item also viewed","TOP SELLERS"]
+=======
+lst_SortOption: ["Featured Products","Newest First","Reviews: Highest First","Price: Lowest First","Price: Highest First","Brand Name: A to Z"]
+lst_FilterOptionHeader: ["SHOP BY CATEGORY","SHOP BY BRAND","SHOP BY CLEARANCE","SHOP BY COLLECTION","SHOP BY COLOUR","METAL","SHOP BY MORE WAYS","PRICE","SHOP BY PRICE LABEL","PRODUCT LIST","SHOP BY PROMO","REVIEWS","ROLLUP SIZE","ROLLUP SIZE FASHION","SIZE","SHOP BY SPECIALTY","STONE"]
+lst_GeneralTwoLevelFilterOption: [["SHOP BY BRAND","Joan Rivers"],["SHOP BY CLEARANCE","Clearance"]]
+lst_FilterByPrice: [["PRICE","Under $100","Under"]]
+lst_FilterCombination: [[["SIZE","XL"],["PRICE","Under $100"]]]
+lst_MoreButton: ["SHOP BY BRAND","SHOP BY COLLECTION","SHOP BY COLOUR"]
+lst_FilterSequentialAction: [[["SHOP BY BRAND","Joan Rivers"],["PRICE","Under $100"],["SHOP BY COLOUR","Black"]]]
+lst_DisappearAfterSelectFilter: ["SHOP BY CATEGORY"]
+>>>>>>> master
 
 # FOOTER PAGE SECTION
 lst_SocialMediaLinks: ["https://www.facebook.com/Shoptsc","https://twitter.com/shoptsc","https://instagram.com/shoptsc","www.youtube.com","https://www.pinterest.ca/shoptsc"]

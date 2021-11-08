@@ -40,6 +40,7 @@ public class SR_TC05_Verify_ProductSearchResult_MultiFiltersTest extends BaseTes
 		List<String> lstFilter=new ArrayList<String>();
 		List<String> lstSelectedSecondLevelFilter=new ArrayList<String>();		
 		for(List<String> lstItem:lstItemCombination) {	
+			reporter.reportLog(lstItem.get(0)+" : "+lstItem.get(1));
 			ArrayList<String> lstTwoLevelFilter=new ArrayList<String>();
 			getProductResultsPageThreadLocal().selectFilterItemInLeftPanel(lstItem.get(0), lstItem.get(1));
 			lstSelectedSecondLevelFilter.add(getProductResultsPageThreadLocal().secondLevelFilter);			

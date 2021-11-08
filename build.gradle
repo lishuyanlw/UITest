@@ -44,7 +44,7 @@ def getTunnelName() {
 //    tunnelName = tunnelName.replaceAll(":","")
 //    tunnelName = tunnelName.replaceAll(" ","")
 //    return tunnelName
-    return "TSCWF_Automation_Test_Tunnel_Sachin"
+    return "DigitalQETunnel"
 }
 
 def tunnel_name() {
@@ -88,7 +88,7 @@ task "sauceTest"(type: Test) {
 
 //To shutdown the sauceconnect
 //sauceTest.finalizedBy stopSauceConnect
-
+ 
 task "localTest"(type: Test) {
     if (test_browser && test_browser.contains('sauce')){
         def browser = test_browser.replace('sauce','')
