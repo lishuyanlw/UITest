@@ -23,10 +23,15 @@ public class SR_TC03_Verify_ProductSearchResult_SortAndFilterSectionContent exte
 	List<List<String>> lsKeywordList=TestDataHandler.constantDataVariables.getlst_SearchKeyword_DropDown();		
 	List<String> lsSortOption=TestDataHandler.constantDataVariables.getlst_SortOption();
 	List<String> lsFilterOptionHeader=TestDataHandler.constantDataVariables.getlst_FilterOptionHeader();
-		
+	List<String> lsSortOptionMobile=TestDataHandler.constantDataVariables.getLst_SortOptionMobile();
 	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0));
-	reporter.softAssert(getProductResultsPageThreadLocal().verifySortOptions(lsSortOption), "Sort options in search result filters are correct", "Sort options in search result filters are incorrect");
-	
+
+	if (System.getProperty("chromeMobileDevice")=="iPhone X"){
+		reporter.softAssert(getProductResultsPageThreadLocal().verifySortOptions(lsSortOptionMobile), "Sort options in search result filters are correct", "Sort options in search result filters are incorrect");
+	}else {
+		reporter.softAssert(getProductResultsPageThreadLocal().verifySortOptions(lsSortOption), "Sort options in search result filters are correct", "Sort options in search result filters are incorrect");
+	}
+
 	String lsMsg=getProductResultsPageThreadLocal().verifyFilterOptions(lsFilterOptionHeader);	
 	if(lsMsg.isEmpty()) {
 		reporter.reportLogPass("Filter option headers in left panel are correct");		
