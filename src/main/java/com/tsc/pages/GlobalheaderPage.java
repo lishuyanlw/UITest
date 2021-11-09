@@ -799,7 +799,7 @@ public class GlobalheaderPage extends BasePage{
 			AtomicReference<String> first_flyout_menu_text =new  AtomicReference<String>();
 			first_flyout_menu_text.set(headingName.split(" ")[0]);
 			WebElement linkPopularBrand = listSubItemsPopularBrands.get(0);
-			waitForCondition(Driver->{return (linkPopularBrand.getAttribute("href").contains(first_flyout_menu_text.get()) && linkPopularBrand.getAttribute("class").contains(section));} ,30000);
+			waitForCondition(Driver->{return (linkPopularBrand.getAttribute("href").contains(first_flyout_menu_text.get()) && linkPopularBrand.getAttribute("class").contains(section.split(" ")[0].trim().toLowerCase()));} ,30000);
 			WebElement ShopAllWebElement = getWebElementShopAllPupularBrand();
 			if(verifyElementProperty(ShopAllWebElement,"Link")) {
 				if(System.getProperty("Browser").toLowerCase().contains("firefox")) {
@@ -812,19 +812,6 @@ public class GlobalheaderPage extends BasePage{
 			return currentUrl;
 		}
 
-		/*Method to verify page title after clicking shop all link in Popular Brand Section
-		 * @return String:href(only get unique part for each heading)
-		 * @author Shruti Desai
-		 */
-		public String getPageHeadingshopAllPupularBrand() {
-			String currentPageHeading;
-			WebElement headingofshopalllandingpage = getDriver().findElement(By.xpath("//h2[contains(@class,'titleLink')]//b"));
-			String Heading = headingofshopalllandingpage.getText();
-			currentPageHeading=createCamelCase(Heading);
-			return currentPageHeading;
-		}
-		
-		
 		public String getHeadingOfLandingPageforFlyoutHeading() {
 			String currentPageHeading,pageHeading;
 			pageHeading =getPageTitle(flyoutHeadingLandigPageHeading);
@@ -837,6 +824,11 @@ public class GlobalheaderPage extends BasePage{
 			pageHeading =getPageTitle(shopAllBrandsLandigPageHeading);
 			currentPageHeading=createCamelCase(pageHeading);
 			return currentPageHeading;
+		}
+
+		public String getHeadingForLandingPage(String pageName) {
+			WebElement webElement = getWebElementFlyoutHeading(pageName);
+			return createCamelCase(getPageTitle(webElement));
 		}
 }
 	

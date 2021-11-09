@@ -13,7 +13,7 @@ import com.tsc.test.base.BaseTest;
 public class GH_TC03_Global_Header_Verify_FlyoutHeadings extends BaseTest {
 
 	@Test(groups={"Home","Regression"})	    
-	public void verifyFlyoutHeadings() throws IOException {
+	public void verifyFlyoutHeadings() {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 		String lsBaseUrl=(new BasePage(this.getDriver())).getBaseURL();
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl+"/"), "TSC url is correct", "TSC url is incorrect");
@@ -25,7 +25,7 @@ public class GH_TC03_Global_Header_Verify_FlyoutHeadings extends BaseTest {
 			getglobalheaderPageThreadLocal().scrolltoWebElement(lsHeading);
 			String flyoutHeading =lsHeading.getText();
 			reporter.softAssert((TestDataHandler.constantDataVariables.getlst_FlyoutHeading().contains(flyoutHeading)),"Flyout displays drpartment  "+flyoutHeading+" and it's validated.","Flyout is not displaying heading properly for "+flyoutHeading);
-			reporter.softAssert(getglobalheaderPageThreadLocal().verifyhrefFlyoutHeading(lsHeading), "href is present for Flyout Heading "+flyoutHeading, "href is not preset for "+flyoutHeading);
+			reporter.softAssert(getglobalheaderPageThreadLocal().verifyhrefFlyoutHeading(lsHeading), "Href is present for Flyout Heading "+flyoutHeading, "Href is not preset for "+flyoutHeading);
 		}
 	}	
 }

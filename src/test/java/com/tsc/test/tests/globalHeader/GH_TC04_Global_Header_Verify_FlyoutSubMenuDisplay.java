@@ -14,11 +14,10 @@ import com.tsc.test.base.BaseTest;
 public class GH_TC04_Global_Header_Verify_FlyoutSubMenuDisplay extends BaseTest {
 	
 	@Test(groups={"Home","Regression"})	    
-	public void verifyFlyoutHeadings() throws IOException {
+	public void verifyFlyoutHeadings() {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 		String lsBaseUrl=(new BasePage(this.getDriver())).getBaseURL();
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl+"/"), "TSC url is correct", "TSC url is incorrect");
-		reporter.reportLogWithScreenshot("Home Page");
 		reporter.reportLog("Validating Flyout display all department & it's URL after Clicking each category");
 		String FlyoutUrl,lsYmlNotFound,lsSuccessResult, lsFailResult, pageHeading;
 		lsYmlNotFound=TestDataHandler.constantDataVariables.getlnk_NotFound();
@@ -36,10 +35,10 @@ public class GH_TC04_Global_Header_Verify_FlyoutSubMenuDisplay extends BaseTest 
 			FlyoutUrl = getglobalheaderPageThreadLocal().getUrlAfterclickingFlyoutHeading(lsHeading);
 			lsSuccessResult=String.format("The url [ %s ] does not contain [ %s ] after clicking " + lsHeading + "'s link", FlyoutUrl,lsYmlNotFound);
 			lsFailResult=String.format("The url [ %s ] contains [ %s ] after clicking " + lsHeading + "'s link", FlyoutUrl,lsYmlNotFound);
-			pageHeading=getglobalheaderPageThreadLocal().getHeadingOfLandingPageforFlyoutHeading();
+			pageHeading=getglobalheaderPageThreadLocal().getHeadingForLandingPage(lsHeading);
 			reporter.reportLog("URL of the landing page for Flyout heading "+lsHeading+" is "+FlyoutUrl);
 			reporter.softAssert(!FlyoutUrl.contains(lsYmlNotFound), lsSuccessResult,lsFailResult);
-			reporter.softAssert(lsHeading.contains(pageHeading), "Landing page is loded correctly of "+lsHeading+" flyout heading link.","Landing page is not loaded correctly for "+lsHeading+" flyout heading link.");
+			reporter.softAssert(lsHeading.contains(pageHeading), "Landing page is loaded correctly for "+lsHeading+" flyout heading link.","Landing page is not loaded correctly for "+lsHeading+" flyout heading link.");
 			
 		}
 	}
