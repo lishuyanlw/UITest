@@ -28,7 +28,7 @@ public class SR_TC09_Verify_ProductSearchResult_SpecialOffersAndRecomendationSec
 		List<WebElement> productList;
 
 		// Corresponding actions (Clearance>>Fashion)
-		//Need to insert function here written by Shruti to click on expected sub-menu
+		getglobalheaderPageThreadLocal().clickSubMenuItem("Clearance","Fashion",null);
 
 		// Verifying that landing page is product results page after navigation
 		reporter.softAssert(getProductResultsPageThreadLocal().getClearanceOptionURLTitle().contains(lnkProductResult),"Verified that landing page is Product Result Page", "Verified that landing page is not Product Result Page");

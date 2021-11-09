@@ -403,6 +403,38 @@ import utils.ReusableActions;
 	}
 	
 	/**
+	 * This method will get element attribute.
+	 * @param WebElement parent: parent element 
+	 * @author Wei.Li
+	 */		
+	public String getChildElementAttribute(WebElement parent,String lsAttribute) {
+		JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
+		return (String)jse.executeScript("return arguments[0].getAttribute(arguments[1]);", parent,lsAttribute);				
+	}
+	
+	/**
+	 * This method will set element attribute.
+	 * @param WebElement parent: parent element 
+	 * @author Wei.Li
+	 */		
+	public void setChildElementAttribute(WebElement parent,String lsAttribute,String lsValue) {
+		JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
+		jse.executeScript("return arguments[0].setAttribute(arguments[1],arguments[2]);", parent,lsAttribute,lsValue);				
+	}
+	
+	/**
+	 * This method will return childElement.
+	 * @param WebElement parent: parent element 
+	 * @return List<WebElement>: children element
+	 * @author Wei.Li
+	 */		
+	@SuppressWarnings("unchecked")
+	public List<WebElement> getChildrenList(WebElement parent) {
+		JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
+		return (List<WebElement>) jse.executeScript("return arguments[0].children;", parent);			
+	}
+	
+	/**
 	 * This method will identify if the element has a specific property.
 	 * @param WebElement element: the element
 	 * @param String lsProperty: the property
@@ -430,7 +462,10 @@ import utils.ReusableActions;
 	 * @return float value
 	 * @author Wei.Li
 	 */	
-    public float getFloatFromString(String lsTarget) {  
+    public float getFloatFromString(String lsTarget) {
+    	if(lsTarget.contains("-")) {
+    		lsTarget=lsTarget.split("-")[0].trim();
+    	}
     	lsTarget=lsTarget.replace(",", "").trim();
     	
     	String regex="\\d+\\.\\d+";
@@ -608,5 +643,17 @@ import utils.ReusableActions;
 		 String lsLink=this.getElementHref(element);
 		 reporter.softAssert(!lsLink.isEmpty(),"The href of element of '"+lsTitle+"' is not empty","The href of element of '"+lsTitle+"' is empty");		 
 	 }
+	 
+	 /**
+	  * This method will return search result page title.	  
+	  * @author Wei.Li
+	  */
+	 public String getPageTitle(WebElement webelement) {
+		 if(getReusableActionsInstance().isElementVisible(webelement)) {
+			 getReusableActionsInstance().javascriptScrollByVisibleElement(webelement);
+			 return webelement.getText().trim();
+		 }
+			return "NoTitle";		
+		}
 	
 }

@@ -88,7 +88,7 @@ task "sauceTest"(type: Test) {
 
 //To shutdown the sauceconnect
 //sauceTest.finalizedBy stopSauceConnect
-
+ 
 task "localTest"(type: Test) {
     if (test_browser && test_browser.contains('sauce')){
         def browser = test_browser.replace('sauce','')
