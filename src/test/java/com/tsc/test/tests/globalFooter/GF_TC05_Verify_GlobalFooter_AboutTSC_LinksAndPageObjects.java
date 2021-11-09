@@ -85,12 +85,12 @@ public class GF_TC05_Verify_GlobalFooter_AboutTSC_LinksAndPageObjects extends Ba
 
 			elementList.add(getGlobalFooterPageThreadLocal().lblTermsOfUseAboutOurService);
 
-			//Add item section titles in Terms of Use 
+			//Add item section titles in Privacy Policy 
 			for(WebElement item:getGlobalFooterPageThreadLocal().lstTermsOfUseItemTitle) {
 				elementList.add(item);
 			}
 
-			//Add item section contents in Terms of Use 
+			//Add item section contents in Privacy Policy 
 			for(WebElement item:getGlobalFooterPageThreadLocal().lstTermsOfUseItemContent) {
 				elementList.add(item);
 			}
@@ -118,12 +118,12 @@ public class GF_TC05_Verify_GlobalFooter_AboutTSC_LinksAndPageObjects extends Ba
 
 			elementList.add(getGlobalFooterPageThreadLocal().lblTermsOfUseAboutOurService);
 
-			//Add item section titles in Terms of Use 
+			//Add item section titles in Become a Vendor 
 			for(WebElement item:getGlobalFooterPageThreadLocal().lstTermsOfUseItemTitle) {
 				elementList.add(item);
 			}
 
-			//Add item section contents in Terms of Use 
+			//Add item section contents in Become a Vendor
 			for(WebElement item:getGlobalFooterPageThreadLocal().lstTermsOfUseItemContent) {
 				elementList.add(item);
 			}
@@ -155,12 +155,12 @@ public class GF_TC05_Verify_GlobalFooter_AboutTSC_LinksAndPageObjects extends Ba
 
 			elementList.add(getGlobalFooterPageThreadLocal().lblTermsOfUseAboutOurService);
 
-			//Add item section titles in Terms of Use 
+			//Add item section titles in Become a Vendor in More about TSC 
 			for(WebElement item:getGlobalFooterPageThreadLocal().lstTermsOfUseItemTitle) {
 				elementList.add(item);
 			}
 
-			//Add item section contents in Terms of Use 
+			//Add item section contents in Become a Vendor in More about TSC
 			for(WebElement item:getGlobalFooterPageThreadLocal().lstTermsOfUseItemContent) {
 				elementList.add(item);
 			}
@@ -179,12 +179,12 @@ public class GF_TC05_Verify_GlobalFooter_AboutTSC_LinksAndPageObjects extends Ba
 
 			elementList.add(getGlobalFooterPageThreadLocal().lblTermsOfUseAboutOurService);
 
-			//Add item section titles in Terms of Use 
+			//Add item section titles in About Our Service in More about TSC 
 			for(WebElement item:getGlobalFooterPageThreadLocal().lstTermsOfUseItemTitle) {
 				elementList.add(item);
 			}
 
-			//Add item section contents in Terms of Use 
+			//Add item section contents in About Our Service in More about TSC 
 			for(WebElement item:getGlobalFooterPageThreadLocal().lstTermsOfUseItemContent) {
 				elementList.add(item);
 			}
