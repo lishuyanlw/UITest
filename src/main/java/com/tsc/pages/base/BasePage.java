@@ -446,17 +446,30 @@ import utils.ReusableActions;
 		List<WebElement> lstChild=this.getChildrenList(parent);
 		for(WebElement child:lstChild) {
 			if(this.hasElementAttribute(child,lsAttribute)) {
-				String lsValue=this.getChildElementAttribute(child,lsAttribute);
+				String lsValue=this.getChildElementAttribute(child,lsAttribute).trim();
 				if(lsValue.isEmpty()||lsValue==null) {
 					return false;
 				}
 				else {
-					if(lsValue.equalsIgnoreCase(lsAttribute)) {
-						return true;
+					if(lsValue.contains(" ")) {
+						if(lsValue.toLowerCase().contains(lsAttributeValue.toLowerCase())) {
+							return true;
+						}
+						else {
+							return false;
+						}
 					}
+					else {
+						if(lsValue.equalsIgnoreCase(lsAttributeValue)) {
+							return true;
+						}
+						else {
+							return false;
+						}
+					}					
 				}
 			}
-		}
+		}	
 		return false;
 	}
 	
