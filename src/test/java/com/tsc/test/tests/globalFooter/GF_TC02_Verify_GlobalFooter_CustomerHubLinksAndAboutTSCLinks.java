@@ -79,31 +79,57 @@ public class GF_TC02_Verify_GlobalFooter_CustomerHubLinksAndAboutTSCLinks extend
 		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current Language switch href of "+lsHref+" contains "+lsYmlHref,"The current Language switch href of "+lsHref+" does not contain "+lsYmlHref);
 				
 		//TSC customer hub links
-		for(WebElement item:getGlobalFooterPageThreadLocal().lnkTSCCustomerHubAllLinks) {
-			lsText=basePage.getElementText(item);	
-			lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsText,true);			
-			if(lsYmlHref.isEmpty()) {
-				reporter.reportLogFail("Unable to find "+lsText+" link.");
+		if (System.getProperty("chromeMobileDevice")=="iPhone X"){
+			for(WebElement item:getGlobalFooterPageThreadLocal().lnkTSCCustomerHubAllLinksMobile) {
+				lsText=basePage.getElementText(item);
+				lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsText,true);
+				if(lsYmlHref.isEmpty()) {
+					reporter.reportLogFail("Unable to find "+lsText+" link.");
+				}
+				lsHref=basePage.getElementHref(item);
+				reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref,"The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref);
+
 			}
-			lsHref=basePage.getElementHref(item);	
-			reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref,"The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref);
-			
+		}else {
+			for(WebElement item:getGlobalFooterPageThreadLocal().lnkTSCCustomerHubAllLinks) {
+				lsText=basePage.getElementText(item);
+				lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsText,true);
+				if(lsYmlHref.isEmpty()) {
+					reporter.reportLogFail("Unable to find "+lsText+" link.");
+				}
+				lsHref=basePage.getElementHref(item);
+				reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref,"The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref);
+
+			}
 		}
+
 		
 		//About TSC links
-		for(WebElement item:getGlobalFooterPageThreadLocal().lnkAboutTSCAllLinks) {
-			lsText=basePage.getElementText(item);
-			lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsText,true);
-			if(lsYmlHref.isEmpty()) {
-				reporter.reportLogFail("Unable to find "+lsText+" link.");
+		if (System.getProperty("chromeMobileDevice")=="iPhone X"){
+			for(WebElement item:getGlobalFooterPageThreadLocal().lnkAboutTSCAllLinksMobile) {
+				lsText=basePage.getElementText(item);
+				lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsText,true);
+				if(lsYmlHref.isEmpty()) {
+					reporter.reportLogFail("Unable to find "+lsText+" link.");
+				}
+				lsHref=basePage.getElementHref(item);
+				reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref,"The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref);
 			}
-			lsHref=basePage.getElementHref(item);
-			reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref,"The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref);			
+		}else{
+			for(WebElement item:getGlobalFooterPageThreadLocal().lnkAboutTSCAllLinks) {
+				lsText=basePage.getElementText(item);
+				lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsText,true);
+				if(lsYmlHref.isEmpty()) {
+					reporter.reportLogFail("Unable to find "+lsText+" link.");
+				}
+				lsHref=basePage.getElementHref(item);
+				reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref,"The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref);
+			}
+			//Rogers LOGO
+			reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().imgRogersLogo), "Rogers Logo is existing", "Rogers Logo is not existing");
 		}
-		
-		//Rogers LOGO
-		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().imgRogersLogo), "Rogers Logo is existing", "Rogers Logo is not existing");		
-		
+
+
 		//Copyright text
 		lsText=basePage.getUTFEnabledData(basePage.getElementText(getGlobalFooterPageThreadLocal().txtCopyrightLine1));
 		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyEqualWithEncodingText(lstNameAndLinks, lsText),"The copyright text is correct","The copyright text is not correct");

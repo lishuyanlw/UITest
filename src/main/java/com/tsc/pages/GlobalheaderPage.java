@@ -44,7 +44,10 @@ public class GlobalheaderPage extends BasePage{
 	//Black header
 	@FindBy(xpath = "//div[contains(@class,'black-header')]//a[contains(@class,'black-header__showstopper')]")
 	public WebElement lnkTSBlackHeader;
-	
+
+	@FindBy(xpath = "//section//li[@class='mega-nav-mobile__watch-tsc__showstopper']//a")
+	public WebElement lnkTSBlackHeaderMobile;
+
 	@FindBy(xpath = "//div[contains(@class,'black-header')]//*[contains(@class,'black-header__promotion-text')]")
 	public WebElement lblPromotionTextBlackHeader;
 	
@@ -60,7 +63,7 @@ public class GlobalheaderPage extends BasePage{
 	
 	@FindBy(xpath = "//div[contains(@class,'black-header')]//nav//li//a[contains(@href,'ProgramGuide')]")
 	public WebElement lnkProgramGuideDpdMenu;
-	
+
 	@FindBy(xpath = "//div[contains(@class,'black-header')]//nav//li//a[contains(@href,'Gadgets')]")
 	public WebElement lnkCarGadgetsDpdMenu;
 	
@@ -69,6 +72,24 @@ public class GlobalheaderPage extends BasePage{
 	
 	@FindBy(xpath = "//div[contains(@class,'black-header')]//nav//li//a[contains(@href,'OnAir')]")
 	public WebElement lnkOnAirProductsDpdMenu;
+
+	@FindBy(xpath = "//section//span[contains(@class,'mega-nav-mobile__w') and contains(text(),'Program')]")
+	public WebElement lnkProgramGuideDpdMenuMobile;
+
+	@FindBy(xpath = "//section//span[contains(@class,'mega-nav-mobile__w') and contains(text(),'Watch')]")
+	public WebElement lnkWatchUsLiveDpdMenuMobile;
+
+	@FindBy(xpath = "//section//span[contains(@class,'mega-nav-mobile__w') and contains(text(),'Meet')]")
+	public WebElement meetTheHostsMobile;
+
+	@FindBy(xpath = "//section//span[contains(@class,'mega-nav-mobile__w') and contains(text(),'Channel')]")
+	public WebElement channelFinderMobile;
+
+	@FindBy(xpath = "//section//span[contains(@class,'mega-nav-mobile__w') and contains(text(),'On Air')]")
+	public WebElement onAirProductsMobile;
+
+	@FindBy(xpath = "//button[@class='mega-nav-mobile__heading__close']")
+	public WebElement headingCloseMobile;
 	
 	//Sliver Links [Dynamic event, TS, Deals, OnAir, Program Guide, Watch Us Live]
 	@FindBy(xpath = "//*[@class='Sliver']//a[contains(@href, 'todaysshowstopper')]")
@@ -233,7 +254,9 @@ public class GlobalheaderPage extends BasePage{
 	 * @author godwin.gopi
 	 * Header Options
 	 */
-	@FindBy(xpath="//span[contains(text(),'Clearance')]")
+
+	//Added OR condition for mobile and Tablet
+	@FindBy(xpath="//span[@class='primary-navigation__link-text primary-navigation__link-text--bold'] | //span[contains(text(),'Clearance') and not(contains(@id,'contentPlaceHolder'))]")
 	WebElement clearanceHeader;
 
 	//Godwin
@@ -242,6 +265,12 @@ public class GlobalheaderPage extends BasePage{
 
 	@FindBy(xpath="//a[@role=\"button\" and contains(text(),'Fashion')]")
 	WebElement fasionOption;
+
+	@FindBy(xpath="//button[@id='secondary-navigation-mobile-hamburger']")
+	public WebElement menuButton;
+
+	@FindBy(xpath="//li[@class='mega-nav-mobile__watch-tsc__watch']")
+	WebElement watchTscMobile;
 
 	public void clickOnClearanceHeaderOption() {
 		getReusableActionsInstance().clickIfAvailable(clearanceHeader);
@@ -808,8 +837,13 @@ public class GlobalheaderPage extends BasePage{
 	 * @author Wei.Li
 	 */	
 	 public void hoverOnWatchTSC() {
-		 getReusableActionsInstance().scrollToElement(this.btnWatchTSCBlackHeader);
-		 getReusableActionsInstance().staticWait(100);		 
+		 if (System.getProperty("chromeMobileDevice")=="iPhone X"){
+			 this.menuButton.click();
+			 this.watchTscMobile.click();
+		 }else {
+			 getReusableActionsInstance().scrollToElement(this.btnWatchTSCBlackHeader);
+			 getReusableActionsInstance().staticWait(100);
+		 }
 	 }	
 	 
 	/**

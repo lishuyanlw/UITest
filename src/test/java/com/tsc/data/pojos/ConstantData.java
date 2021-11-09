@@ -69,9 +69,30 @@ public class ConstantData {
 	private String lnk_product_result;
 	private List<String> lst_MyAccountObjectSectionTitle;
 	private List<String> lst_TrackYourOrderObjectSectionTitle;
+	private List<String> lst_Filter_Data;
+	private List<String> lst_SortOptionMobile;
 
-	//Header Links getter and setter method
-	
+
+//Header Links getter and setter method
+
+	/**
+	 * @return lst_Filter_Data
+	 */
+	public List<String> getLst_Filter_Data() {
+		return lst_Filter_Data;
+	}
+
+	public void setLst_Filter_Data(List<String> lst_Filter_Data) {
+		this.lst_Filter_Data = lst_Filter_Data;
+	}
+
+	/**
+	 * @return lst_SortOptionMobile
+	 */
+	public List<String> getLst_SortOptionMobile() {return lst_SortOptionMobile;}
+
+	public void setLst_SortOptionMobile(List<String> lst_SortOptionMobile) {this.lst_SortOptionMobile = lst_SortOptionMobile;}
+
 	/**
 	 * @return the lnk_NotFound
 	 */
@@ -606,6 +627,7 @@ public class ConstantData {
 	 * @return the lbl_SearchResultPageDefaultSetting
 	 */
 	public String getlbl_SearchResultPageDefaultSetting() {
+
 		return lbl_SearchResultPageDefaultSetting;
 	}
 	/**

@@ -89,7 +89,10 @@ public class LoginPage extends BasePage {
 	public WebElement btnEasyPayScheduleNav;
 		
 	@FindBy(xpath = "//div[contains(@class,'secondary-navigation__rhs-account')]//nav//a[contains(@class,'secondary-navigation__rhs-account-panel-link--sign-out')]")
-	public WebElement btnSignOutNav;	
+	public WebElement btnSignOutNav;
+
+	@FindBy(xpath = "//div[contains(@class,'secondary-navigation__rhs-account')]//a//*[@class='secondary-navigation__rhs-account-icon']")
+	public WebElement SigninIcon;
 	
 	
 	/**
@@ -149,7 +152,11 @@ public class LoginPage extends BasePage {
 	 */
 	public WebElement getMenuItemInPopover(String lsItemTitle) {
 		String lsXpath=this.createXPath(".//a[normalize-space(.)='{0}']",lsItemTitle);
-		return this.cntSignInPopover.findElement(By.xpath(lsXpath));		
+		if (System.getProperty("chromeMobileDevice")=="iPhone X"||(System.getProperty("chromeMobileDevice")=="iPad")){
+			this.SigninIcon.click();
+		}
+
+		return this.cntSignInPopover.findElement(By.xpath(lsXpath));
 	}
 	
 	/**

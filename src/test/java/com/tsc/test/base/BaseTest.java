@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import com.tsc.pages.*;
 import org.apache.http.client.ClientProtocolException;
 import org.openqa.selenium.WebDriver;
 import org.testng.ITestContext;
@@ -30,12 +31,7 @@ import org.openqa.selenium.Cookie;
 import org.openqa.selenium.Dimension;
 
 import com.tsc.data.Handler.TestDataHandler;
-import com.tsc.pages.GlobalheaderPage;
-import com.tsc.pages.HomePage;
-import com.tsc.pages.LoginPage;
-import com.tsc.pages.ProductResultsPage;
-import com.tsc.pages.ProductResultsPage_iPad;
-import com.tsc.pages.GlobalFooterPage;
+import com.tsc.pages.ProductResultsPage_Tablet;
 
 import extentreport.ExtentTestManager;
 import utils.BrowserDrivers;
@@ -55,9 +51,10 @@ public class BaseTest {
 	protected static final ThreadLocal<HomePage> homePageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<GlobalFooterPage> globalFooterPageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<ProductResultsPage> productResultsPageThreadLocal = new ThreadLocal<>();
-	protected static final ThreadLocal<ProductResultsPage_iPad> productResultsPage_iPadThreadLocal = new ThreadLocal<>();
+	protected static final ThreadLocal<ProductResultsPage_Tablet> productResultsPage_TabletThreadLocal = new ThreadLocal<>();
+	protected static final ThreadLocal<ProductResultsPage_Mobile> productResultsPage_MobileThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<LoginPage> loginPageThreadLocal = new ThreadLocal<>();
-	//protected static final ThreadLocal<String> TestDeviceThreadLocal = new ThreadLocal<>();
+	protected static final ThreadLocal<String> TestDeviceThreadLocal = new ThreadLocal<>();
 	
 
 	public BaseTest() {
@@ -83,28 +80,30 @@ public class BaseTest {
 		return homePageThreadLocal.get();
 	}
 
+	//@return the GlobalFooterThreadLocal
+	protected static GlobalFooterPage getGlobalFooterPageThreadLocal() {return globalFooterPageThreadLocal.get();}
 
-	protected static GlobalFooterPage getGlobalFooterPageThreadLocal() {
-		return globalFooterPageThreadLocal.get();
+	//@return the ProductResultsPageThreadLocal
+	protected static ProductResultsPage getProductResultsPageThreadLocal() {return productResultsPageThreadLocal.get();}
+
+	//@return the ProductResultsPage_TabletThreadLocal
+	protected static ProductResultsPage_Tablet getProductResultsPage_TabletThreadLocal() {
+		return productResultsPage_TabletThreadLocal.get();
 	}
-	
-	protected static ProductResultsPage getProductResultsPageThreadLocal() {
-		return productResultsPageThreadLocal.get();
+
+	//@return the ProductResultsPage_MobileThreadLocal
+	protected static ProductResultsPage_Mobile getProductResultsPage_MobileThreadLocal() {
+		return productResultsPage_MobileThreadLocal.get();
 	}
-	
-	protected static ProductResultsPage_iPad getProductResultsPage_iPadThreadLocal() {
-		return productResultsPage_iPadThreadLocal.get();
-	}
-		
-	protected static LoginPage getGlobalLoginPageThreadLocal() {
-		return loginPageThreadLocal.get();
-	}
-	
-	/*
+
+	//@return the LoginPageThreadLocal
+	protected static LoginPage getGlobalLoginPageThreadLocal() {return loginPageThreadLocal.get();}
+
+	//@return the TestDeviceThreadLocal
 	protected static String getTestDeviceThreadLocal() {
 	 	return TestDeviceThreadLocal.get();
 	}
-	*/
+
 
 	private void init() {
 		
@@ -144,32 +143,40 @@ public class BaseTest {
 		webDriverThreadLocal.set(browserDrivers.driverInit(strBrowser, sauceParameters, currentTestMethodName, ""));
 		getDriver().get(strUrl);
 		strBrowser=System.getProperty("Browser").trim();
-		/*
-		String lsTestDevice=System.getProperty("Device").trim();
+		System.out.println(strBrowser);
+
+		String lsTestDevice=System.getProperty("chromeMobileDevice").trim();
 		TestDeviceThreadLocal.set(lsTestDevice);
-		if (!strBrowser.toLowerCase().contains("android") && !strBrowser.toLowerCase().contains("ios")
-		      && !strBrowser.toLowerCase().contains("mobile")) {
-		   switch(lsTestDevice) {
-		      case "iPad":
-		         getDriver().manage().window().setSize(new Dimension(800, 600));
-		         productResultsPageThreadLocal.set(new ProductResultsPage_iPad(getDriver()));
-		         break;
-		      case "Mobile":
-		         getDriver().manage().window().setSize(new Dimension(500, 600));
-		         break;
-		      default:
-		         getDriver().manage().window().maximize();
-		         productResultsPageThreadLocal.set(new ProductResultsPage(getDriver()));
-		         break;
-		   }
-		}else{
-			productResultsPageThreadLocal.set(new ProductResultsPage_iPad(getDriver()));
+		strBrowser=System.getProperty("Browser").trim();
+		if (strBrowser.toLowerCase().contains("android") || strBrowser.toLowerCase().contains("ios")
+				|| strBrowser.toLowerCase().contains("mobile")) {
+			lsTestDevice=System.getProperty("chromeMobileDevice").trim();
+			TestDeviceThreadLocal.set(lsTestDevice);
+			switch(lsTestDevice) {
+				case "iPad":
+					//getDriver().manage().window().setSize(new Dimension(800, 600));
+					productResultsPageThreadLocal.set(new ProductResultsPage_Tablet(getDriver()));
+					break;
+				case "iPhone X":
+					//getDriver().manage().window().setSize(new Dimension(500, 600));
+					productResultsPageThreadLocal.set(new ProductResultsPage_Mobile(getDriver()));
+					break;
+			}
 		}
-		*/
-		if (!strBrowser.toLowerCase().contains("android") && !strBrowser.toLowerCase().contains("ios")
+		else{
+			productResultsPageThreadLocal.set(new ProductResultsPage(getDriver()));
+		}
+
+		/*if (!strBrowser.toLowerCase().contains("android") && !strBrowser.toLowerCase().contains("ios")
 				&& !strBrowser.toLowerCase().contains("mobile")) {
 			getDriver().manage().window().maximize();
-		}
+			getDriver().manage().window().setSize(new Dimension(500, 600));
+			productResultsPageThreadLocal.set(new ProductResultsPage(getDriver()));
+
+		}else{
+
+			productResultsPageThreadLocal.set(new ProductResultsPage_Tablet(getDriver()));
+		}*/
 
 		setImplictWait(getDriver(), 60);
 		//setSessionStorage(strUrl);

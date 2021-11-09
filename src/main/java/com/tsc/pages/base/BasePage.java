@@ -66,6 +66,7 @@ import utils.ReusableActions;
 	 */
 	private static final ThreadLocal<ReusableActions> reusableActionsThreadLocal = new ThreadLocal<>();
 
+	
 	/**
 	 * Instantiates a new Base page class.
 	 *

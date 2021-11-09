@@ -208,16 +208,28 @@ public class HP_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo extends B
 		
 		reporter.reportLog("Verify Black headers");
 		//Verify Black headers
-		getglobalheaderPageThreadLocal().hoverOnWatchTSC();		
-		getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkWatchUsLiveDpdMenu);
-		getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkDealsDpdMenu);
-		getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkProgramGuideDpdMenu);
-		getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkCarGadgetsDpdMenu);
-		getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkDesignerFootwearDpdMenu);
-		getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkOnAirProductsDpdMenu);
-		
-		basePage.getReusableActionsInstance().javascriptScrollByVisibleElement(getglobalheaderPageThreadLocal().lnkTSBlackHeader);		
-		getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkTSBlackHeader);
+		getglobalheaderPageThreadLocal().hoverOnWatchTSC();
+		if (System.getProperty("chromeMobileDevice")=="iPhone X"){
+			getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkWatchUsLiveDpdMenuMobile);
+			getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkProgramGuideDpdMenuMobile);
+			getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().meetTheHostsMobile);
+			getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().channelFinderMobile);
+			getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().onAirProductsMobile);
+			getglobalheaderPageThreadLocal().headingCloseMobile.click();
+			getglobalheaderPageThreadLocal().menuButton.click();
+			getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkTSBlackHeaderMobile);
+			getglobalheaderPageThreadLocal().headingCloseMobile.click();
+		}else {
+			getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkWatchUsLiveDpdMenu);
+			getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkDealsDpdMenu);
+			getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkProgramGuideDpdMenu);
+			getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkCarGadgetsDpdMenu);
+			getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkDesignerFootwearDpdMenu);
+			getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkOnAirProductsDpdMenu);
+			basePage.getReusableActionsInstance().javascriptScrollByVisibleElement(getglobalheaderPageThreadLocal().lnkTSBlackHeader);
+			getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkTSBlackHeader);
+		}
+
 			
 		reporter.reportLog("Verify Logo section");
 		//Verify Logo section
