@@ -286,7 +286,7 @@ public class GlobalFooterPage extends BasePage {
 	
 	//More About  TSC
 	@FindBy(xpath = "(//h4//span[contains(@id,'contentPlaceHolder_ctl39_ctlListTitle')]//ancestor::div[@class='quickLinkPanelWrap']//ul[@class='quickLinkUL col3Divs ']//li//a)[1]")
-	public WebElement lstMoreAboutTSCPartner;
+	public WebElement lstMoreAboutTSCPBecomeAVendor;
 	
 	@FindBy(xpath = "(//div[@class='quickLinkPanelWrap']//ul[@class='quickLinkUL col3Divs ']//li//a)[4]")
 	public WebElement lstMoreAboutTSCAboutOurService;
@@ -642,7 +642,13 @@ public class GlobalFooterPage extends BasePage {
 				WebElement itemContent=lstPanelItemContent.get(i);
 				waitForCondition(Driver->{return itemContent.getAttribute("aria-expanded").equalsIgnoreCase("true");},10000);
 				getReusableActionsInstance().staticWait(1000);												
-			}			
+			}else {
+				String url= getDriver().getCurrentUrl();	
+				String hashTag=item.getAttribute("hashtag");
+				if(url.contains(hashTag)) {
+					reporter.softAssert(true, " Current URL is "+url+" and "+hashTag+" Content status is not collapsed", ""+hashTag+" Content status is  collapsed");
+				}
+			}
 		}						
 	}
 	

@@ -1204,7 +1204,9 @@ public class ProductResultsPage extends BasePage{
 		 long childSize=(new BasePage(this.getDriver())).getChildElementCount(element);
 		 if(childSize > 1){
 	     reporter.softAssert(!item.findElement(byRecommendationWasPrice).getText().isEmpty(), "ProductWasPrice in Recommendation result is correct", "ProductWasPrice in Recommendation result is incorrect");
-
+		 }
+		}
+	}
 	 
     /**
 	 * This method will get the review number amount of product item
@@ -1297,11 +1299,4 @@ public class ProductResultsPage extends BasePage{
 		public boolean bProductWasPrice; 
 		public String productEasyPay;
 	}
-}
->>>>>>> master
-
-		      }
-		   }
-	}
-				
 }		      	

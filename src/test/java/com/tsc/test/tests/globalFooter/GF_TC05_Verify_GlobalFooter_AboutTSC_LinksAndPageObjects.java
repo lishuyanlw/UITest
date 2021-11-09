@@ -148,8 +148,8 @@ public class GF_TC05_Verify_GlobalFooter_AboutTSC_LinksAndPageObjects extends Ba
 		}
 		else {	
 			
-			//Become a Partner
-			getGlobalFooterPageThreadLocal().lstMoreAboutTSCPartner.click();
+			//Become a Vendor
+			getGlobalFooterPageThreadLocal().lstMoreAboutTSCPBecomeAVendor.click();
 
 			getGlobalFooterPageThreadLocal().expandPanelItems(getGlobalFooterPageThreadLocal().lstTermsOfUseItemTitle,getGlobalFooterPageThreadLocal().lstTermsOfUseItemContent);
 
