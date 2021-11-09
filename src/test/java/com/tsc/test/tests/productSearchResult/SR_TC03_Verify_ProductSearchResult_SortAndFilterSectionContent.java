@@ -26,7 +26,7 @@ public class SR_TC03_Verify_ProductSearchResult_SortAndFilterSectionContent exte
 	List<String> lsSortOptionMobile=TestDataHandler.constantDataVariables.getLst_SortOptionMobile();
 	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0));
 
-	if (System.getProperty("chromeMobileDevice")=="iPhone X"){
+	if (System.getProperty("Device")=="Mobile"){
 		reporter.softAssert(getProductResultsPageThreadLocal().verifySortOptions(lsSortOptionMobile), "Sort options in search result filters are correct", "Sort options in search result filters are incorrect");
 	}else {
 		reporter.softAssert(getProductResultsPageThreadLocal().verifySortOptions(lsSortOption), "Sort options in search result filters are correct", "Sort options in search result filters are incorrect");
