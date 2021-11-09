@@ -759,7 +759,7 @@ public class HomePage extends BasePage{
 				lnkListBefore.add(item.getAttribute("href"));
 			}
 			String lsCurrentHref=lnkListBefore.get(0);
-			waitForCondition(Driver->{return !lsCurrentHref.equalsIgnoreCase(this.lnkShopByDepartmentAllActiveLinks.get(0).getAttribute("href"));},30000);
+			waitForCondition(Driver->{return !lsCurrentHref.equalsIgnoreCase(this.lnkShopByDepartmentAllActiveLinks.get(0).getAttribute("href"));},3000);
 			List<String> lnkListAfter= new ArrayList<String>();
 			for(WebElement item:this.lnkShopByDepartmentAllActiveLinks) {
 				lnkListAfter.add(item.getAttribute("href"));
