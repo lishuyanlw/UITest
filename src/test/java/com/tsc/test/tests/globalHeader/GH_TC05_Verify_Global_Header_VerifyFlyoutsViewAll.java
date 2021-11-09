@@ -1,5 +1,4 @@
 package com.tsc.test.tests.globalHeader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import org.openqa.selenium.WebElement;
