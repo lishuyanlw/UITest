@@ -391,6 +391,7 @@ public class ConstantDataFile {
         private List<String> lst_MoreButton;  
         private List<String> lst_DisappearAfterSelectFilter;
         private String lnk_product_result;
+        private List<String> lbl_ProductRecommendationTitlePage;
 
         public List<String> getLst_SearchKeyword() {
             return lst_SearchKeyword;
@@ -470,6 +471,14 @@ public class ConstantDataFile {
 
         public void setLnk_product_result(String lnk_product_result) {
             this.lnk_product_result = lnk_product_result;
+        }
+        
+        public List<String> getLbl_ProductRecommendationTitlePage() {
+            return lbl_ProductRecommendationTitlePage;
+        }
+
+        public void setLbl_ProductRecommendationTitlePage(List<String> lbl_ProductRecommendationTitlePage) {
+            this.lbl_ProductRecommendationTitlePage = lbl_ProductRecommendationTitlePage;
         }
     }
 

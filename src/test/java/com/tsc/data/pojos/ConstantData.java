@@ -68,7 +68,7 @@ public class ConstantData {
 	private String lnk_product_result;
 	private List<String> lst_MyAccountObjectSectionTitle;
 	private List<String> lst_TrackYourOrderObjectSectionTitle;
-
+	private List<String> lbl_ProductRecommendationTitlePage;
 	//Header Links getter and setter method
 	
 	/**
@@ -406,7 +406,7 @@ public class ConstantData {
 	public void setlst_FlyoutHeading(List<String> lst_FlyoutHeading) {
 		this.lst_FlyoutHeading = lst_FlyoutHeading;
 	}
-	
+
 	/**
 	 * @return the lnk_FlyoutHeaderLinkConstant
 	 */
@@ -706,7 +706,6 @@ public class ConstantData {
 	}
 	
 	/**
-
 	 * @return the lst_SocialMediaLinks
 	 */
 	public List<String> getlst_SocialMediaLinks() {
@@ -827,6 +826,12 @@ public class ConstantData {
 	 */
 	public void setlst_TrackYourOrderObjectSectionTitle(List<String> lst_TrackYourOrderObjectSectionTitle) {
 		this.lst_TrackYourOrderObjectSectionTitle = lst_TrackYourOrderObjectSectionTitle;
+	}
+	public List<String> getLbl_ProductRecommendationTitlePage() {
+		return lbl_ProductRecommendationTitlePage;
+	}
+	public void setLbl_ProductRecommendationTitlePage(List<String> lbl_ProductRecommendationTitlePage) {
+		this.lbl_ProductRecommendationTitlePage = lbl_ProductRecommendationTitlePage;
 	}
 
 }
