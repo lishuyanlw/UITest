@@ -436,6 +436,11 @@ public class ProductResultsPage extends BasePage{
 	 * This method will return search result page title.	  
 	 * @author Wei.Li
 	 */
+	
+	/*public String getProductResultPageTitle() {
+		return getPageTitle(lblSearchResultTitle).trim();
+	}*/
+	
 	public String getProductResultPageTitle() {
 		if(getReusableActionsInstance().isElementVisible(this.lblSearchResultTitle)) {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSearchResultTitle);

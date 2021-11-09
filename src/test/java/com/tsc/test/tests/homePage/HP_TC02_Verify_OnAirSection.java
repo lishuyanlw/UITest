@@ -5,13 +5,15 @@ import org.testng.annotations.Test;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 
-	public class HP_TC03_Verify_OnAirSection extends BaseTest {
+	public class HP_TC02_Verify_OnAirSection extends BaseTest {
 
 	@Test(groups={"Home","Regression"})
     
 
 	public void validateNowOnAirSection() throws IOException {
+
 	getGlobalFooterPageThreadLocal().closePopupDialog();
+
 	reporter.softAssert(getglobalheaderPageThreadLocal().validateURL((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");
 	reporter.reportLogWithScreenshot("Home Page");
 					
@@ -22,10 +24,10 @@ import com.tsc.test.base.BaseTest;
 
 	reporter.reportLog(homePageThreadLocal().validatelnkNOA());
 	
-	 if(homePageThreadLocal().validateNowPricetag()) {
-		 if(homePageThreadLocal().validateWasPricetag()) {
-			 reporter.softAssert(homePageThreadLocal().validateWasPricetag(), "Was Price tag is visible", "Was Price tag is not visible"); 
-			 reporter.softAssert(homePageThreadLocal().validateNowPricetag(), "Now Price tag is visible", "Now Price tag is not visible"); 
+	 if(homePageThreadLocal().validateNowPricetag()==true) {
+		 if(homePageThreadLocal().validateWasPricetag()==true) {
+			reporter.softAssert(homePageThreadLocal().validateWasPricetag(), "Was Price tag is visible", "Was Price tag is not visible"); 
+			reporter.softAssert(homePageThreadLocal().validateNowPricetag(), "Now Price tag is visible", "Now Price tag is not visible"); 
 
 		 }else {
 			 reporter.softAssert(homePageThreadLocal().validateNowPricetag(), "Now Price tag is visible", "Now Price tag is not visible"); 
@@ -40,7 +42,7 @@ import com.tsc.test.base.BaseTest;
 	 reporter.softAssert(homePageThreadLocal().verifyRAimgCount(),"Image Count is: "+homePageThreadLocal().getRAimgCount(),"Image Count is: "+homePageThreadLocal().getRAimgCount());
 	 for(int i=0; i<homePageThreadLocal().getRAimgCount(); i++) {
 		 
-		// reporter.softAssert(OnAirSectionPageThreadLocal().validateRAsectionLinks(i),"Link is present for tile: "+(i+1),"Link is not present for tile: "+(i+1));
+		// reporter.softAssert(homePageThreadLocal().validateRAsectionLinks(i),"Link is present for tile: "+(i+1),"Link is not present for tile: "+(i+1));
 		 reporter.softAssert(homePageThreadLocal().validateRAsectionImages(i),"Image & Link is present for tile: "+(i+1),"Image & Link is not present for tile: "+(i+1));
 		 reporter.reportLog(homePageThreadLocal().validateRAsectionLinks(i));
 

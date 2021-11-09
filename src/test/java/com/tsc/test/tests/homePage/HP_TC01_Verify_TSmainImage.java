@@ -6,7 +6,7 @@ import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 
-	public class HP_TC02_Verify_TSmainImage extends BaseTest{
+	public class HP_TC01_Verify_TSmainImage extends BaseTest{
 		@Test(groups={"Home","Regression"})
 
 		public void validateTSmainImageSection() throws IOException, InterruptedException {

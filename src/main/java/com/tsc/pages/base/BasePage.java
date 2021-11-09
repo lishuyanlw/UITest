@@ -705,5 +705,17 @@ import utils.ReusableActions;
 		 String lsLink=this.getElementHref(element);
 		 reporter.softAssert(!lsLink.isEmpty(),"The href of element of '"+lsTitle+"' is not empty","The href of element of '"+lsTitle+"' is empty");		 
 	 }
+	 
+	 /**
+	  * This method will return search result page title.	  
+	  * @author Wei.Li
+	  */
+	 public String getPageTitle(WebElement webelement) {
+		 if(getReusableActionsInstance().isElementVisible(webelement)) {
+			 getReusableActionsInstance().javascriptScrollByVisibleElement(webelement);
+			 return webelement.getText().trim();
+		 }
+			return "NoTitle";		
+		}
 	
 }
