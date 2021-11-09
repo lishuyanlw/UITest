@@ -5,7 +5,6 @@ import java.util.List;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 import com.tsc.data.Handler.TestDataHandler;
-import com.tsc.pages.HomePage;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 
@@ -26,9 +25,9 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction ext
 	reporter.softAssert(getglobalheaderPageThreadLocal().validateURL((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");		
 	reporter.reportLog("ProductSearch Page");
 		
-	List<List<String>> lsKeywordList=TestDataHandler.constantDataFile.getSearchResultPage().getLst_SearchKeyword_DropDown();
-	List<String> lstSearchResultMessage=TestDataHandler.constantDataFile.getSearchResultPage().getLst_SearchResultMessage();
-	String lsSearchResultPageDefaultSetting=TestDataHandler.constantDataFile.getSearchResultPage().getLbl_SearchResultPageDefaultSetting();
+	List<List<String>> lsKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_SearchKeyword_DropDown();
+	List<String> lstSearchResultMessage=TestDataHandler.constantData.getSearchResultPage().getLst_SearchResultMessage();
+	String lsSearchResultPageDefaultSetting=TestDataHandler.constantData.getSearchResultPage().getLbl_SearchResultPageDefaultSetting();
 	List<WebElement> productList;
 	String lsMsg;		
 
@@ -71,7 +70,7 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction ext
 
 	//Test General filter option
 	reporter.reportLog("General Filters");
-	List<List<String>> lstGeneralTwoLevelFilterOption=TestDataHandler.constantDataFile.getSearchResultPage().getLst_SearchOption().get(0).getFilterOption();
+	List<List<String>> lstGeneralTwoLevelFilterOption=TestDataHandler.constantData.getSearchResultPage().getLst_SearchOption().get(0).getFilterOption();
 	for(List<String> lstItem:lstGeneralTwoLevelFilterOption) {
 		reporter.reportLog(lstItem.get(0)+" : "+lstItem.get(1));
 		if(getProductResultsPageThreadLocal().selectFilterItemInLeftPanel(lstItem.get(0), lstItem.get(1))) {
@@ -111,7 +110,7 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction ext
 
 	//Test filter by price	
 	reporter.reportLog("Price filter");
-	List<List<String>> lstFilterByPrice=TestDataHandler.constantDataFile.getSearchResultPage().getLst_SearchOption().get(1).getFilterOption();
+	List<List<String>> lstFilterByPrice=TestDataHandler.constantData.getSearchResultPage().getLst_SearchOption().get(1).getFilterOption();
 	for(List<String> lstItem:lstFilterByPrice) {
 		reporter.reportLog(lstItem.get(0)+" : "+lstItem.get(1));
 		if(getProductResultsPageThreadLocal().selectFilterItemInLeftPanel(lstItem.get(0), lstItem.get(1))) {

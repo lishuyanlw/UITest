@@ -18,7 +18,7 @@ public class HP_TC05_Verify_TopSeller extends BaseTest{
 	reporter.softAssert(getglobalheaderPageThreadLocal().validateURL((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");
 	reporter.reportLogWithScreenshot("Home Page");
 	
-	validateText(homePageThreadLocal().getTopSellerHeaderText(), TestDataHandler.constantDataFile.getHomePage().getLbl_TopSellers(), "<Recommentdation product> text is visible and valid");
+	validateText(homePageThreadLocal().getTopSellerHeaderText(), TestDataHandler.constantData.getHomePage().getLbl_TopSellers(), "<Recommentdation product> text is visible and valid");
 	
 	reporter.softAssert(homePageThreadLocal().validateTopSellerIsAboveFooter(),"The TopSeller section is above Footer section","The TopSeller section isn't above Footer section");
 	

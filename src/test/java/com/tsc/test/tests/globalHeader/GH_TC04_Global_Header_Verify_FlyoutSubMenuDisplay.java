@@ -1,6 +1,5 @@
 package com.tsc.test.tests.globalHeader;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +19,7 @@ public class GH_TC04_Global_Header_Verify_FlyoutSubMenuDisplay extends BaseTest 
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl+"/"), "TSC url is correct", "TSC url is incorrect");
 		reporter.reportLog("Validating Flyout display all department & it's URL after Clicking each category");
 		String FlyoutUrl,lsYmlNotFound,lsSuccessResult, lsFailResult, pageHeading;		
-		lsYmlNotFound=TestDataHandler.constantDataFile.headerSection.getLnk_NotFound();
+		lsYmlNotFound=TestDataHandler.constantData.headerSection.getLnk_NotFound();
 		List<WebElement> headingsElement=getglobalheaderPageThreadLocal().getFlyoutHeadingsWebelement();
 		//Fetching heading name and iterating over it,because whenever trying to iterate over the WebElement it throws Stale Element exception.
 		List<String> flyoutHeading = new ArrayList<String>();

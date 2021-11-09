@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.List;
 import org.testng.annotations.Test;
 import com.tsc.data.Handler.TestDataHandler;
-import com.tsc.pages.HomePage;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 
@@ -20,9 +19,9 @@ public class SR_TC03_Verify_ProductSearchResult_SortAndFilterSectionContent exte
 	reporter.softAssert(getglobalheaderPageThreadLocal().validateURL((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");		
 	reporter.reportLog("ProductSearch Page");
 			
-	List<List<String>> lsKeywordList=TestDataHandler.constantDataFile.getSearchResultPage().getLst_SearchKeyword_DropDown();
-	List<String> lsSortOption=TestDataHandler.constantDataFile.getSearchResultPage().getLst_SortOption();
-	List<String> lsFilterOptionHeader=TestDataHandler.constantDataFile.getSearchResultPage().getLst_FilterOptionHeader();
+	List<List<String>> lsKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_SearchKeyword_DropDown();
+	List<String> lsSortOption=TestDataHandler.constantData.getSearchResultPage().getLst_SortOption();
+	List<String> lsFilterOptionHeader=TestDataHandler.constantData.getSearchResultPage().getLst_FilterOptionHeader();
 		
 	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0));
 	reporter.softAssert(getProductResultsPageThreadLocal().verifySortOptions(lsSortOption), "Sort options in search result filters are correct", "Sort options in search result filters are incorrect");

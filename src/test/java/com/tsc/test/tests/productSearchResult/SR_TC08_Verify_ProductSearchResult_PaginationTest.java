@@ -1,12 +1,10 @@
 package com.tsc.test.tests.productSearchResult;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 import com.tsc.data.Handler.TestDataHandler;
-import com.tsc.pages.HomePage;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 
@@ -21,9 +19,9 @@ public class SR_TC08_Verify_ProductSearchResult_PaginationTest extends BaseTest{
 	reporter.softAssert(getglobalheaderPageThreadLocal().validateURL((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");		
 	reporter.reportLog("ProductSearch Page");
 	
-	List<List<String>> lsKeywordList=TestDataHandler.constantDataFile.getSearchResultPage().getLst_SearchKeyword_DropDown();
-	List<String> lstSearchResultMessage=TestDataHandler.constantDataFile.getSearchResultPage().getLst_SearchResultMessage();
-	String lsSearchResultPageDefaultSetting=TestDataHandler.constantDataFile.getSearchResultPage().getLbl_SearchResultPageDefaultSetting();
+	List<List<String>> lsKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_SearchKeyword_DropDown();
+	List<String> lstSearchResultMessage=TestDataHandler.constantData.getSearchResultPage().getLst_SearchResultMessage();
+	String lsSearchResultPageDefaultSetting=TestDataHandler.constantData.getSearchResultPage().getLbl_SearchResultPageDefaultSetting();
 	List<WebElement> productList;
 	
 	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0));

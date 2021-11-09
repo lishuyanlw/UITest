@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.List;
 
 import com.tsc.data.Handler.TestDataHandler;
-import com.tsc.pages.HomePage;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 
@@ -33,7 +32,7 @@ public class GF_TC01_Verify_GlobalFooter_SocialMedia extends BaseTest {
 		BasePage basePage=new BasePage(this.getDriver());		
 		String lsBaseUrl=basePage.getBaseURL()+"/";
 		
-		List<String> lstSocialMediaLinks=TestDataHandler.constantDataFile.getFooterSection().getLst_SocialMediaLinks();
+		List<String> lstSocialMediaLinks=TestDataHandler.constantData.getFooterSection().getLst_SocialMediaLinks();
 		
 		//Facebook
 		String lsUrl=getGlobalFooterPageThreadLocal().getUrlWithSocialMediaName(lstSocialMediaLinks, "Facebook");		

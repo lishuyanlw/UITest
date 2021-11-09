@@ -1,6 +1,5 @@
 package com.tsc.test.tests.globalHeader;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.openqa.selenium.WebElement;
@@ -24,7 +23,7 @@ public class GH_TC03_Global_Header_Verify_FlyoutHeadings extends BaseTest {
 		for(WebElement lsHeading:headingsElement) {
 			getglobalheaderPageThreadLocal().scrolltoWebElement(lsHeading);
 			String flyoutHeading =lsHeading.getText();
-			reporter.softAssert((TestDataHandler.constantDataFile.headerSection.getFlyout().getLst_FlyoutHeading().contains(flyoutHeading)),"Flyout displays drpartment  "+flyoutHeading+" and it's validated.","Flyout is not displaying heading properly for "+flyoutHeading);
+			reporter.softAssert((TestDataHandler.constantData.headerSection.getFlyout().getLst_FlyoutHeading().contains(flyoutHeading)),"Flyout displays drpartment  "+flyoutHeading+" and it's validated.","Flyout is not displaying heading properly for "+flyoutHeading);
 			reporter.softAssert(getglobalheaderPageThreadLocal().verifyhrefFlyoutHeading(lsHeading), "Href is present for Flyout Heading "+flyoutHeading, "Href is not preset for "+flyoutHeading);
 		}
 	}	

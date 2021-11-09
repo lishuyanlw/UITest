@@ -2,13 +2,12 @@ package com.tsc.test.tests.productSearchResult;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Locale;
+
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.HomePage;
 import com.tsc.pages.ProductResultsPage;
-import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 
 public class SR_TC09_Verify_ProductSearchResult_SpecialOffersAndRecomendationSections extends BaseTest {
@@ -20,9 +19,9 @@ public class SR_TC09_Verify_ProductSearchResult_SpecialOffersAndRecomendationSec
 	@Test(groups = { "ProductSearch", "Regression" })
 	public void validateProductSearchResult_SpecialOffersAndRecomendationSections() throws IOException {
 		(new HomePage(this.getDriver())).closeadd();
-		String lsSearchResultPageDefaultSetting = TestDataHandler.constantDataFile.getSearchResultPage().getLbl_SearchResultPageDefaultSetting();
-		String lnkProductResult = TestDataHandler.constantDataFile.getSearchResultPage().getLnk_product_result();
-		List<String> productRecommendationTitleText = TestDataHandler.constantDataFile.getSearchResultPage().getLbl_ProductRecommendationTitlePage();		
+		String lsSearchResultPageDefaultSetting = TestDataHandler.constantData.getSearchResultPage().getLbl_SearchResultPageDefaultSetting();
+		String lnkProductResult = TestDataHandler.constantData.getSearchResultPage().getLnk_product_result();
+		List<String> productRecommendationTitleText = TestDataHandler.constantData.getSearchResultPage().getLbl_ProductRecommendationTitlePage();
 		List<WebElement> productList;
 
 		// Corresponding actions (Clearance>>Fashion)

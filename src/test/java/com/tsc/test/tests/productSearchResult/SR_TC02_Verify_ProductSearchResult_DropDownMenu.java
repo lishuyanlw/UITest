@@ -5,7 +5,6 @@ import java.util.List;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 import com.tsc.data.Handler.TestDataHandler;
-import com.tsc.pages.HomePage;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 
@@ -22,8 +21,8 @@ public class SR_TC02_Verify_ProductSearchResult_DropDownMenu extends BaseTest{
 	reporter.softAssert(getglobalheaderPageThreadLocal().validateURL((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");		
 	reporter.reportLog("ProductSearch Page");
 		
-	String lsSearchResultPageDefaultSetting=TestDataHandler.constantDataFile.getSearchResultPage().getLbl_SearchResultPageDefaultSetting();
-	List<List<String>> lsKeywordDropdownList=TestDataHandler.constantDataFile.getSearchResultPage().getLst_SearchKeyword_DropDown();
+	String lsSearchResultPageDefaultSetting=TestDataHandler.constantData.getSearchResultPage().getLbl_SearchResultPageDefaultSetting();
+	List<List<String>> lsKeywordDropdownList=TestDataHandler.constantData.getSearchResultPage().getLst_SearchKeyword_DropDown();
 	List<WebElement> productList;
 	
 	int keyWordDropdownSize=lsKeywordDropdownList.size();	

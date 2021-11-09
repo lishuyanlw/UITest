@@ -1,0 +1,68 @@
+# HEADER SECTION
+lnk_NotFound: /pages/notfound
+lbl_TodaysShowstopper: Today's Showstopper
+lnk_TodaysShowstopper: /pages/todaysshowstopper?ic=HP_TodaysShowstopper
+lbl_Deals_English: Deals
+lbl_Deals_French: Aubaines
+lnk_Deals: /pages/productresults?nav=n:2059928&ic=HP_Deals
+lbl_OnAirProducts_English: On Air Products
+lbl_OnAirProducts_EnglishMobile: ON AIR
+lbl_OnAirProducts_French: Sur les ondes
+lnk_OnAirProducts: /pages/productresults?ic=HP_OnAir_T&dimensions=2037548&page=1&pageSize=36&rd=false
+lnk_OnAirProductIcon_MOBILE: /dist/svg.svg#onairitem
+lbl_ProgramGuide_English: Program Guide
+lbl_ProgramGuide_French: Grille horaire
+lnk_ProgramGuide: /pages/programguide?ic=HP_ProgramGuide
+lnk_ProgramGuideRedirect: /pages/programguide/daily?ic=HP_ProgramGuide
+lbl_WatchUsLive_English: Watch Us Live
+lbl_WatchUsLive_French: En direct
+lnk_WatchUsLive: /pages/watchuslive?ic=HP_WatchUsLive
+lbl_Favourites: Favourites
+lbl_SignIn: Sign in
+lst_SignInPopover: ["Sign in","Create an account","Transfer a phone account","Track your order"]
+lbl_SearchBoxPlaceholder: Search
+lbl_ShoppingCartLinkName: Bag
+lnk_ShoppingCartLink: /pages/shoppingcart
+lst_FlyoutHeading: ['Fashion', 'Shoes & Handbags', 'Jewellery', 'Beauty', 'Home & Garden', 'Kitchen', 'Health & Fitness', 'Electronics', 'Coins & Hobbies', 'Clearance']
+lbl_FlyoutHeadingLandingPageLink: /pages/category?nav=n
+lnk_FlyoutHeaderLinkConstant: [':100047',':128153',':100101',':100038',':100071',':100072',':2058731',':100073',':3001781',':2037576']
+lnk_product_result: /pages/productresults?
+
+# HOME PAGE SECTION
+lbl_OnAirNow: ON AIR NOW
+lbl_RecentlyAir: RECENTLY AIRED
+lnk_RecentlyAir: /pages/productdetails?nav
+lnk_RecentlyAirShopAllItems: /pages/productresults?aliasdimension=onairtoday&ic=HP_OnAir_T
+txt_RecentlyAirShopAllItems: Shop All Today's Items
+lbl_ShopByBrand: SHOP BY BRAND
+lbl_ShopByBrandViewAll: View All
+lnk_ShopByBrandViewAll: /pages/brand
+lbl_ShopByDepartment: SHOP BY DEPARTMENT
+lst_ShopByDepartmentCategories: [FASHION, SHOES & HANDBAGS, JEWELLERY, BEAUTY, HOME & GARDEN, KITCHEN, HEALTH & FITNESS, ELECTRONICS, COINS & HOBBIES, CLEARANCE, SPORTS, MENS]
+lbl_TopSellers: TOP SELLERS
+
+# SEARCH RESULTS SECTION
+lst_SearchKeyword: ["dyson vacuum","dfafasdfa","100501","joan rivers","Nike","boots"]
+lst_SearchKeyword_DropDown: [["dress","Categories","0"]]
+lbl_SearchResultPageDefaultSetting: 36
+lst_SearchResultMessage: ["Search Results For","We couldn","t find a match for","Please search again using a different term or browse by brand or category."]
+lst_SortOption: ["Featured Products","Newest First","Reviews: Highest First","Price: Lowest First","Price: Highest First","Brand Name: A to Z"]
+lst_FilterOptionHeader: ["SHOP BY CATEGORY","SHOP BY BRAND","SHOP BY CLEARANCE","SHOP BY COLLECTION","SHOP BY COLOUR","METAL","SHOP BY MORE WAYS","PRICE","SHOP BY PRICE LABEL","PRODUCT LIST","SHOP BY PROMO","REVIEWS","ROLLUP SIZE","ROLLUP SIZE FASHION","SIZE","SHOP BY SPECIALTY","STONE"]
+lst_GeneralTwoLevelFilterOption: [["SHOP BY BRAND","Joan Rivers"],["SHOP BY CLEARANCE","Clearance"]]
+lst_FilterByPrice: [["PRICE","Under $100","Under"]]
+lst_FilterCombination: [[["SIZE","XL"],["PRICE","Under $100"]]]
+lst_MoreButton: ["SHOP BY BRAND","SHOP BY COLLECTION","SHOP BY COLOUR"]
+lst_FilterSequentialAction: [[["SHOP BY BRAND","Joan Rivers"],["PRICE","Under $100"],["SHOP BY COLOUR","Black"]]]
+lst_DisappearAfterSelectFilter: ["SHOP BY CATEGORY"]
+lbl_ProductRecommendationTitlePage: ["People who viewed this item also viewed","TOP SELLERS"]
+
+# FOOTER PAGE SECTION
+lst_SocialMediaLinks: ["https://www.facebook.com/Shoptsc","https://twitter.com/shoptsc","https://instagram.com/shoptsc","www.youtube.com","https://www.pinterest.ca/shoptsc"]
+lst_NameAndLinks: [["Credit Card","Cartes-cadeaux","/pages/creditcard?ic=ftr_tsccreditcard"],["Gift Card","Inscrivez-vous maintenant","/pages/giftcard?ic=ftr_tscgiftcard-img"],["Send us feedback","Dites-nous ce que vous pensez","https://rogers.qualtrics.com/"],["Language - Fran�ais","Langue - English","javascript:switchLanguage();"],["TSC CUSTOMER HUB","ESPACE CLIENT TSC"],["Customer Service","Service � la client�le","/pages/customer-service"],["My Account","Mon compte","/go/customerservice/myaccountpage"],["Track Your Order","Suivre une commande","/pages/trackorder"],["Contact Us","Contactez-Nous","/pages/contact-us"],["Blog","Blog","https://blog.tsc.ca"],["ABOUT TSC","� PROPOS DE TSC"],["Terms of Use","Modalit�s d�utilisation","/go/aboutus/aboutustandc"],["Privacy Policy","Politique de confidentialit�","/go/aboutus/aboutusprivacy"],["Become a Vendor","Devenir un fournisseur","/go/aboutus/aboutusvendor"],["More About TSC","En savoir plus sur TSC","/go/aboutus/aboutus"],["Shop by Brand","Magasiner par marque","/pages/brand"],["Channel Finder","Guide des cha�nes","/pages/channelfinder"],["Meet the Hosts","Nos animateurs","/pages/hosts"],["� 1999 -2021 Rogers Media - Proudly Canadian","� 1999 -2021 Rogers Media - entreprise fi�rement canadienne"],["All prices in Canadian dollars - TSC.ca","Tous les prix sont en dollars canadiens - TSC.ca"]]
+lst_MyAccountObjectSectionTitle: ["SETTING UP AN ACCOUNT","PHONE BASED ACCOUNTS","PASSWORD RECOVERY"]
+lst_TrackYourOrderObjectSectionTitle: ["ORDER NUMBER","BILLING POSTAL CODE","SUBMIT"]
+
+# LOGIN USER
+lbl_Username: testMail@test.com
+lbl_Password: testMail123
+lbl_FirstName: David

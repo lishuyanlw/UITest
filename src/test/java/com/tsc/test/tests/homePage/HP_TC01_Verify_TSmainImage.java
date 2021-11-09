@@ -13,7 +13,7 @@ import com.tsc.test.base.BaseTest;
 			getGlobalFooterPageThreadLocal().closePopupDialog();	
 			reporter.softAssert(getglobalheaderPageThreadLocal().validateURL((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");
 			reporter.reportLogWithScreenshot("Home Page");
-			String lsYmlNotFound=TestDataHandler.constantDataFile.getHeaderSection().getLnk_NotFound();			
+			String lsYmlNotFound=TestDataHandler.constantData.getHeaderSection().getLnk_NotFound();
 				
 			//Method to validate TS image in the upper section	
 			int totalTSimageUpperSection = homePageThreadLocal().totalTSimage("Upper");
