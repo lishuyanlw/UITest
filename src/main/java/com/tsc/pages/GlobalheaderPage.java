@@ -5,7 +5,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
-
 import org.openqa.selenium.By;
 import com.tsc.pages.base.BasePage;
 public class GlobalheaderPage extends BasePage{
@@ -180,12 +179,6 @@ public class GlobalheaderPage extends BasePage{
 	@FindBy(xpath = "//*[@class='Header']//a[contains(@class, 'secondary-navigation__rhs-bag')]//div[contains(@class,'secondary-navigation__rhs-bag__item')]//span[contains(@class,'secondary-navigation__rhs-bag__item-badge')]//span[not(contains(@class,'visually-hidden'))]")
 	public WebElement CartBagCounter;
 
-
-	/*
-	 * @author Shruti.Desai
-	 *Flyouts Headings
-	 */
-
 	@FindBy(xpath = "//ul[contains(@class,'primary-navigation__wrapper')]//li//a")
 	WebElement FlyoutHeadings;
 	
@@ -216,13 +209,12 @@ public class GlobalheaderPage extends BasePage{
 	
 	@FindBy(xpath = "//h2[contains(@class,'titleLink')]//b")
 	WebElement shopAllBrandsLandigPageHeading;
-	
-	
-	
+
 	/*
 	 * @author godwin.gopi
 	 * Header Options
 	 */
+
 	@FindBy(xpath="//span[contains(text(),'Clearance')]")
 	WebElement clearanceHeader;
 
@@ -233,20 +225,8 @@ public class GlobalheaderPage extends BasePage{
 	@FindBy(xpath="//a[@role=\"button\" and contains(text(),'Fashion')]")
 	WebElement fasionOption;
 
-	
 	public void clickOnClearanceHeaderOption() {
 		getReusableActionsInstance().clickIfAvailable(clearanceHeader);
-	}
-
-	/**
-	 * This method will verify clearance.
-	 * @return  WebElement
-	 * @author godwin.gopi
-	 */
-	public void clickSubMenuLink() {
-		getReusableActionsInstance().clickIfAvailable(fasionOption);
-		getReusableActionsInstance().clickIfAvailable(shopAllFasionOption);
-		(new ProductResultsPage(this.getDriver())).waitForPageLoading();	
 	}
 
 	public void waitForPageLoad() {
@@ -605,8 +585,6 @@ public class GlobalheaderPage extends BasePage{
 		getReusableActionsInstance().javascriptScrollToTopOfPage();
 		return waitForPageLoadingByUrlChange(this.lnkWatchUsLive);
 	}
-	
-	
 
 	/**
 	 *Method to go to home page  
@@ -702,9 +680,7 @@ public class GlobalheaderPage extends BasePage{
 			 reporter.softAssert(getReusableActionsInstance().isElementVisible(this.cntPossibleItemMatchesList),"The Top selling products list is displaying correctly by selecting item of '"+lsItem+"'","The Top selling products list is not displaying correctly by selcting item of '"+lsItem+"'");			 
 		 }	
 	 }
-	 
-	 
-	 /*
+/*
 		 * @author Shruti.Desai
 		 *Flyouts Sub Menu
 		 */
@@ -712,14 +688,17 @@ public class GlobalheaderPage extends BasePage{
 	 public StringBuilder href_src_submenu  =new StringBuilder();
 	 public StringBuilder  href_src_section  =new StringBuilder();
 
-		/*Method to click on WebElement for Submenu Item by providing Flyout heading name , category and item as parameters. 
-		 * @author Shruti Desai
-		 */
+	 /*Method to click on WebElement for Submenu Item by providing Flyout heading name , category and item as parameters.
+	  * @author Shruti Desai
+	  */
 		public void clickSubMenuItem(String headingName,String submenuHeading, String itemName) {
 			String xpathHeading =createXPath("//span[contains(text(),'{0}')]" ,headingName); 
 			WebElement headingWebElement = FlyoutHeadings.findElement(By.xpath(xpathHeading));
 			getReusableActionsInstance().scrollToElement(headingWebElement);
-			
+
+			if(headingWebElement!=null && submenuHeading==null) {
+				headingWebElement.click();
+			}
 			if(submenuHeading!=null) {
 				String xpathSubMenu =createXPath("//a[contains(text(),\"{0}\")]" ,submenuHeading); 
 				WebElement SubMenu = Categories.findElement(By.xpath(xpathSubMenu));
@@ -732,8 +711,7 @@ public class GlobalheaderPage extends BasePage{
 				}else {
 					SubMenu.click();
 				}
-			}	
-			headingWebElement.click();
+			}
 		}
 		
 		/*Method to get list of Flyout heading WebElements
@@ -741,7 +719,7 @@ public class GlobalheaderPage extends BasePage{
 		 * @author Shruti Desai
 		 */
 		public List<WebElement> getFlyoutHeadingsWebelement() {
-			List<WebElement> headingElements =FlyoutHeadings.findElements(By.xpath("//a//span[contains(@class,'primary-navigation__link-text')]"));
+			List<WebElement> headingElements =FlyoutHeadings.findElements(By.xpath("//span[contains(@class,'primary-navigation__link-text')]"));
 			return headingElements;
 		}
 		
@@ -777,8 +755,11 @@ public class GlobalheaderPage extends BasePage{
 			 currentUrl = getDriver().getCurrentUrl();
 			 return currentUrl;
 		}
+		/*Method to apply static wait  
+		 * @author Shruti Desai
+		 */
 		public void staticwait() {
-			getReusableActionsInstance().staticWait(3000);
+			applyStaticWait(3000);
 		}
 		
 		/*Method to get WebElement for flyout heading  

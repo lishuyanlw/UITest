@@ -17,7 +17,7 @@ public class GH_TC05_Verify_Global_Header_VerifyFlyoutsViewAll extends BaseTest 
 		//reporter.reportLogWithScreenshot("Home Page");
 		reporter.reportLog("Validating shop all brand links.");
 		String shopAllUrl,lsYmlNotFound,lsSuccessResult, lsFailResult,pageHeading;
-		lsYmlNotFound=TestDataHandler.constantDataVariables.getlnk_NotFound();
+		lsYmlNotFound=TestDataHandler.constantData.headerSection.getLnk_NotFound();
 		List<WebElement> headingsElement=getglobalheaderPageThreadLocal().getFlyoutHeadingsWebelement();
 		//Fetching heading name and iterating over it,because whenever trying to iterate over the WebElement it throws Stale Element exception.
 		List<String> flyoutHeading = new ArrayList<String>();

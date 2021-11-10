@@ -29,7 +29,7 @@ public class GH_TC06_Global_Header_Verify_FlyoutsSubMenuItems extends BaseTest {
 				getglobalheaderPageThreadLocal().scrolltoWebElement(category);
 				categoryName=category.getText();
 				smHref=getglobalheaderPageThreadLocal().verifysubMenuhref(subMenuElement);
-				reporter.softAssert(smHref=="","href is present for all elements of submenu > "+categoryName+" >  "+headingName,"href missing for "+headingName+" > "+categoryName+" > "+smHref);
+				reporter.softAssert(smHref=="","href is present for all elements  "+headingName+" > "+categoryName,"href missing for "+headingName+" > "+categoryName+" > "+smHref);
 			}
 			ccHref=getglobalheaderPageThreadLocal().verifyBrand_Curated_Section(headingName,"CuratedCollection",curatedCollectionElement,null);
 			reporter.softAssert(ccHref=="","href is present for all elements > "+headingName+" > Curated Collection","href missing for "+headingName+" > "+ccHref);
