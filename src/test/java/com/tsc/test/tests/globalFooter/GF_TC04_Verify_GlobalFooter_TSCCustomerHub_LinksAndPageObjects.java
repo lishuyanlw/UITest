@@ -28,8 +28,8 @@ public class GF_TC04_Verify_GlobalFooter_TSCCustomerHub_LinksAndPageObjects exte
 		
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl), "TSC url is correct", "TSC url is incorrect");		
 		reporter.reportLog("Global Footer Section");		
-
-		List<List<String>> lstNameAndLinks=TestDataHandler.constantDataVariables.getlst_NameAndLinks();
+		
+		List<List<String>> lstNameAndLinks=TestDataHandler.constantData.getFooterSection().getLst_NameAndLinks();
 		String lsService;
 		ArrayList<WebElement> elementList=new ArrayList<WebElement>();
 		
@@ -70,7 +70,7 @@ public class GF_TC04_Verify_GlobalFooter_TSCCustomerHub_LinksAndPageObjects exte
 		//Track Your Order
 		lsService="Track Your Order";
 		reporter.reportLog(lsService);
-		List<String> lstTrackYourOrderObjectSectionTitle=TestDataHandler.constantDataVariables.getlst_TrackYourOrderObjectSectionTitle();
+		List<String> lstTrackYourOrderObjectSectionTitle=TestDataHandler.constantData.getFooterSection().getLst_TrackYourOrderObjectSectionTitle();
 		selectedItem=getGlobalFooterPageThreadLocal().getServiceWebElement(lsService);		
 		lsHref=basePage.getElementHref(selectedItem);		
 		lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsService,true);
@@ -165,8 +165,8 @@ public class GF_TC04_Verify_GlobalFooter_TSCCustomerHub_LinksAndPageObjects exte
 		verifyMyAccountContents(lsService, lstNameAndLinks); 
 
 		reporter.reportLog("Login for "+lsService);
-		String lsUserName=TestDataHandler.constantDataVariables.getlbl_Username();
-		String lsPassword=TestDataHandler.constantDataVariables.getlbl_Password();
+		String lsUserName=TestDataHandler.constantData.getLoginUser().getLbl_Username();
+		String lsPassword=TestDataHandler.constantData.getLoginUser().getLbl_Password();
 		if(getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword)) {
 			verifyMyAccountContents(lsService, lstNameAndLinks);
 		}
@@ -179,8 +179,8 @@ public class GF_TC04_Verify_GlobalFooter_TSCCustomerHub_LinksAndPageObjects exte
 	void verifyMyAccountContents(String lsService, List<List<String>> lstNameAndLinks) {
 		BasePage basePage=new BasePage(this.getDriver());	
 		ArrayList<WebElement> elementList=new ArrayList<WebElement>();
-		
-		List<String> lstMyAccountObjectSectionTitle=TestDataHandler.constantDataVariables.getlst_MyAccountObjectSectionTitle();
+
+		List<String> lstMyAccountObjectSectionTitle=TestDataHandler.constantData.getFooterSection().getLst_MyAccountObjectSectionTitle();
 		WebElement selectedItem=getGlobalFooterPageThreadLocal().getServiceWebElement(lsService);		
 		String lsHref=basePage.getElementHref(selectedItem);		
 		String lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsService,true);

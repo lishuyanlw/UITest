@@ -180,12 +180,6 @@ public class GlobalheaderPage extends BasePage{
 	@FindBy(xpath = "//*[@class='Header']//a[contains(@class, 'secondary-navigation__rhs-bag')]//div[contains(@class,'secondary-navigation__rhs-bag__item')]//span[contains(@class,'secondary-navigation__rhs-bag__item-badge')]//span[not(contains(@class,'visually-hidden'))]")
 	public WebElement CartBagCounter;
 
-
-	/*
-	 * @author Shruti.Desai
-	 *Flyouts Headings
-	 */
-
 	@FindBy(xpath = "//ul[contains(@class,'primary-navigation__wrapper')]//li//a")
 	WebElement FlyoutHeadings;
 	
@@ -200,12 +194,7 @@ public class GlobalheaderPage extends BasePage{
 	
 	@FindBy(xpath = "//h2[contains(@class,'titleLink')]//b")
 	WebElement shopAllBrandsLandigPageHeading;
-	
-	
-	/*
-	 * @author godwin.gopi
-	 * Header Options
-	 */
+
 	@FindBy(xpath="//span[contains(text(),'Clearance')]")
 	WebElement clearanceHeader;
 
@@ -216,20 +205,8 @@ public class GlobalheaderPage extends BasePage{
 	@FindBy(xpath="//a[@role=\"button\" and contains(text(),'Fashion')]")
 	WebElement fasionOption;
 
-	
 	public void clickOnClearanceHeaderOption() {
 		getReusableActionsInstance().clickIfAvailable(clearanceHeader);
-	}
-
-	/**
-	 * This method will verify clearance.
-	 * @return  WebElement
-	 * @author godwin.gopi
-	 */
-	public void clickSubMenuLink() {
-		getReusableActionsInstance().clickIfAvailable(fasionOption);
-		getReusableActionsInstance().clickIfAvailable(shopAllFasionOption);
-		(new ProductResultsPage(this.getDriver())).waitForPageLoading();	
 	}
 
 	public void waitForPageLoad() {
@@ -588,8 +565,6 @@ public class GlobalheaderPage extends BasePage{
 		getReusableActionsInstance().javascriptScrollToTopOfPage();
 		return waitForPageLoadingByUrlChange(this.lnkWatchUsLive);
 	}
-	
-	
 
 	/**
 	 *Method to go to home page  
@@ -685,21 +660,19 @@ public class GlobalheaderPage extends BasePage{
 			 reporter.softAssert(getReusableActionsInstance().isElementVisible(this.cntPossibleItemMatchesList),"The Top selling products list is displaying correctly by selecting item of '"+lsItem+"'","The Top selling products list is not displaying correctly by selcting item of '"+lsItem+"'");			 
 		 }	
 	 }
-	 
-	 
-	 /*
-		 * @author Shruti.Desai
-		 *Flyouts Sub Menu
-		 */
-		
-		/*Method to click on WebElement for Submenu Item by providing Flyout heading name , category and item as parameters. 
+
+	 /**
+		/*Method to click on WebElement for Submenu Item by providing Flyout heading name , category and item as parameters.
 		 * @author Shruti Desai
-		 */
+	 */
 		public void clickSubMenuItem(String headingName,String submenuHeading, String itemName) {
 			String xpathHeading =createXPath("//span[contains(text(),'{0}')]" ,headingName); 
 			WebElement headingWebElement = FlyoutHeadings.findElement(By.xpath(xpathHeading));
 			getReusableActionsInstance().scrollToElement(headingWebElement);
-			
+
+			if(headingWebElement!=null && submenuHeading==null) {
+				headingWebElement.click();
+			}
 			if(submenuHeading!=null) {
 				String xpathSubMenu =createXPath("//a[contains(text(),\"{0}\")]" ,submenuHeading); 
 				WebElement SubMenu = Categories.findElement(By.xpath(xpathSubMenu));
@@ -712,8 +685,7 @@ public class GlobalheaderPage extends BasePage{
 				}else {
 					SubMenu.click();
 				}
-			}	
-			headingWebElement.click();
+			}
 		}
 		
 		/*Method to get list of Flyout heading WebElements

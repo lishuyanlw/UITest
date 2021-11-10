@@ -3,14 +3,9 @@ package com.tsc.test.tests.productDetail;
 import java.io.IOException;
 import java.util.List;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 
-import com.sun.mail.imap.protocol.Item;
 import com.tsc.data.Handler.TestDataHandler;
-import com.tsc.pages.ProductDetailPage;
-import com.tsc.pages.ProductResultsPage;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 
@@ -28,7 +23,7 @@ public class PD_TC01_Verify_ProductDetail_LeftSection_ContentsForImageAndVideo e
 	reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(basePage.getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");		
 	reporter.reportLog("ProductDetail Page");
 	
-	List<List<String>> lsKeywordList=TestDataHandler.constantDataVariables.getlst_SearchKeyword_DropDown();	
+	List<List<String>> lsKeywordList=TestDataHandler.constantDataOldVariables.getlst_SearchKeyword_DropDown();
 	
 	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0));
 	reporter.reportLog("Switch to ProductDetail page");
