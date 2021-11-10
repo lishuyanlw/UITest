@@ -30,7 +30,8 @@ public class GH_TC05_Verify_Global_Header_VerifyFlyoutsViewAll extends BaseTest 
 			getglobalheaderPageThreadLocal().scrollToHeadingElement(lsHeading);
 			reporter.reportLog("Flyout header displays department: "+lsHeading);
 			shopAllUrl=getglobalheaderPageThreadLocal().getURLshopAllPupularBrand(lsHeading,"Popular Brand");
-			pageHeading=getglobalheaderPageThreadLocal().getHeadingOfLandingPageforShopAllBrands();
+			//pageHeading=getglobalheaderPageThreadLocal().getHeadingOfLandingPageforShopAllBrands();
+			pageHeading=getglobalheaderPageThreadLocal().getHeadingForLandingPage(lsHeading);
 			lsSuccessResult=String.format("The url [ %s ] does not contain [ %s ] after clicking shop all brands under >" + lsHeading + " > Popular Brands", shopAllUrl,lsYmlNotFound);
 			lsFailResult=String.format("The url of [ %s ] contains [ %s ] after clicking shop all brands under > " + lsHeading + " > Popular Brands", shopAllUrl,lsYmlNotFound);
 			reporter.softAssert(!shopAllUrl.contains(lsYmlNotFound), lsSuccessResult,lsFailResult);

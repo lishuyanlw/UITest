@@ -189,17 +189,34 @@ public class GlobalheaderPage extends BasePage{
 	@FindBy(xpath = "//ul[contains(@class,'primary-navigation__wrapper')]//li//a")
 	WebElement FlyoutHeadings;
 	
-	@FindBy(xpath = "//nav[contains(@class,'mega-categories mega-column')]//ul/li")
+	@FindBy(xpath = "//*[contains(@class,'mega-categories mega-column')]//a")
 	WebElement Categories;
 	
-	@FindBy(xpath = "//a[contains(@class,'mega-popular__brand-link')]")
-	List<WebElement> listSubItemsPopularBrands;
+	@FindBy(xpath = "//*[contains(@class,'primary-navigation__wrapper')]//a//span[contains(@class,'primary-navigation__link-text')]")
+	public List<WebElement> headingLinks;
+	
+	@FindBy(xpath = "//*[contains(@class,'mega-categories mega-column')]//a")
+	public List<WebElement> CategoriesLinks;
+	
+	@FindBy(xpath = "//*[contains(@class,'mega-sub-items mega-column')]//a")
+	public List<WebElement> subMenuLinks;
+	
+	@FindBy(xpath = "//*[contains(@class,'mega-sub-items mega-column')]//ul")
+	WebElement subMenuSection;
+	
+	@FindBy(xpath = "//a[contains(@class,'mega-curated__item-link')]")
+	public List<WebElement> listCuratedCollectionLinks;
+	
+	
+	@FindBy(xpath = "//a[contains(@class,'mega-popular__brand-link')]//img")
+	public List<WebElement> listPopularBrandsLinks;
 	
 	@FindBy(xpath = "//h2[contains(@class,'gatewayTitle xs-vw8')]")
 	WebElement flyoutHeadingLandigPageHeading;
 	
 	@FindBy(xpath = "//h2[contains(@class,'titleLink')]//b")
 	WebElement shopAllBrandsLandigPageHeading;
+	
 	
 	
 	/*
@@ -691,7 +708,10 @@ public class GlobalheaderPage extends BasePage{
 		 * @author Shruti.Desai
 		 *Flyouts Sub Menu
 		 */
-		
+	 public StringBuilder href_src_category  =new StringBuilder();
+	 public StringBuilder href_src_submenu  =new StringBuilder();
+	 public StringBuilder  href_src_section  =new StringBuilder();
+
 		/*Method to click on WebElement for Submenu Item by providing Flyout heading name , category and item as parameters. 
 		 * @author Shruti Desai
 		 */
@@ -757,7 +777,9 @@ public class GlobalheaderPage extends BasePage{
 			 currentUrl = getDriver().getCurrentUrl();
 			 return currentUrl;
 		}
-		
+		public void staticwait() {
+			getReusableActionsInstance().staticWait(3000);
+		}
 		
 		/*Method to get WebElement for flyout heading  
 		 * @return WebElement
@@ -777,6 +799,7 @@ public class GlobalheaderPage extends BasePage{
 			  getReusableActionsInstance().scrollToElement(headingWebElement);
 		}
 		
+		
 		/*Method to get WebElement for shop all brand in Popular Brand section  
 		 * @return WebElement
 		 * @author Shruti Desai
@@ -794,7 +817,7 @@ public class GlobalheaderPage extends BasePage{
 			String currentUrl=null;
 			AtomicReference<String> first_flyout_menu_text =new  AtomicReference<String>();
 			first_flyout_menu_text.set(headingName.split(" ")[0]);
-			WebElement linkPopularBrand = listSubItemsPopularBrands.get(0);
+			WebElement linkPopularBrand = listPopularBrandsLinks.get(0);
 			waitForCondition(Driver->{return (linkPopularBrand.getAttribute("href").contains(first_flyout_menu_text.get()) && linkPopularBrand.getAttribute("class").contains(section.split(" ")[0].trim().toLowerCase()));} ,30000);
 			WebElement ShopAllWebElement = getWebElementShopAllPupularBrand();
 			if(verifyElementProperty(ShopAllWebElement,"Link")) {
@@ -807,25 +830,89 @@ public class GlobalheaderPage extends BasePage{
 			}
 			return currentUrl;
 		}
-
-		public String getHeadingOfLandingPageforFlyoutHeading() {
-			String currentPageHeading,pageHeading;
-			pageHeading =getPageTitle(flyoutHeadingLandigPageHeading);
-			currentPageHeading=createCamelCase(pageHeading);
-			return currentPageHeading;
-		}
 		
-		public String getHeadingOfLandingPageforShopAllBrands() {
-			String currentPageHeading,pageHeading; 
-			pageHeading =getPageTitle(shopAllBrandsLandigPageHeading);
-			currentPageHeading=createCamelCase(pageHeading);
-			return currentPageHeading;
+	/*Method to get heading of landing page
+	 * @parameter : pageName
+	 * @return String:Heading of the page
+	 * @author Sachin Sharma
+	 */
+	public String getHeadingForLandingPage(String pageName) {
+		WebElement webElement = getWebElementFlyoutHeading(pageName);
+		return createCamelCase(getPageTitle(webElement));
+	}
+	
+	/*Method to verify href/src is empty or not before clicking sub menu link
+	 * @return true/false
+	 * @author Shruti Desai
+	 */
+	public String verifysubMenuhref(List<WebElement> webElements) {
+		for (WebElement element:webElements) {
+			getReusableActionsInstance().scrollToElement(element);
+			if(isChildElementVisible(subMenuSection, "childElementCount")) {
+				if(!verifyElementProperty(element,"Link")) {//href is not present
+				href_src_submenu.append(element.getText()).append('\n');
+				} 
+			}	
 		}
+		return  href_src_submenu.toString(); 
+	}	
+		
+	/*Method to verify href/src is empty or not before clicking category link
+	 * @return true/false
+	 * @author Shruti Desai
+	 */
+	public String verifyCategoryhref(String headingName,List<WebElement> webElements) {
+		AtomicReference<String> first_flyout_menu_text =new  AtomicReference<String>();
+		first_flyout_menu_text.set(headingName.split(" ")[0]);
+		waitForCondition(Driver->{return (webElements.get(0).getAttribute("href").contains(first_flyout_menu_text.get()));} ,30000);
+		for (WebElement element:webElements) {
+			getReusableActionsInstance().scrollToElement(element);
+			if(!verifyElementProperty(element,"Link")) {
+				//if(System.getProperty("Browser").toLowerCase().contains("firefox")) {
+				href_src_category.append(element.getText()).append('\n');
+				//}
+			}
+		}
+		return  href_src_category.toString(); 
+	}
+		
+	/*Method to verify href/src is empty or not before clicking Popular Brand/Curated Collection link
+	 * @return true/false
+	 * @author Shruti Desai
+	 */
+	public String verifyBrand_Curated_Section(String headingName, String section,List<WebElement> webElements,String attribute) {
+		AtomicReference<String> first_flyout_menu_text =new  AtomicReference<String>();
+		first_flyout_menu_text.set(headingName.split(" ")[0]);
+		waitForCondition(Driver->{return (CategoriesLinks.get(0).getAttribute("href").contains(first_flyout_menu_text.get()));} ,30000);
+		for (WebElement element:webElements) {
+			getReusableActionsInstance().scrollToElement(element);
+			switch(section) {
+				case "PopularBrands":
+					if(attribute=="href") {//href is not present
+						WebElement hreffattri =element.findElement(By.xpath("./ancestor::a"));
+						if(!verifyElementProperty(hreffattri,"Link")) {//href not present
+							href_src_section.append(element.getAttribute("alt")).append('\n');
+						}
+					}else{//src is not present
+						if(!verifyElementProperty(element,"Image")) {//href not present
+							href_src_section.append(element.getAttribute("alt")).append('\n');
+						}
+					}	
+				break;
+				case "CuratedCollection":	
+					if(!verifyElementProperty(element,"Link")) {//href is not present
+						href_src_section.append(element.getText()).append('\n');
+					} 
+				break;
+			}
+		}
+		return  href_src_section.toString();
+	}
+		
+		
 
-		public String getHeadingForLandingPage(String pageName) {
-			WebElement webElement = getWebElementFlyoutHeading(pageName);
-			return createCamelCase(getPageTitle(webElement));
-		}
+		
+		
 }
 	
 
