@@ -693,7 +693,7 @@ public class GlobalheaderPage extends BasePage{
 		 * @author Shruti Desai
 		 */
 		public List<WebElement> getFlyoutHeadingsWebelement() {
-			List<WebElement> headingElements =FlyoutHeadings.findElements(By.xpath("//a//span[contains(@class,'primary-navigation__link-text')]"));
+			List<WebElement> headingElements =FlyoutHeadings.findElements(By.xpath("//span[contains(@class,'primary-navigation__link-text')]"));
 			return headingElements;
 		}
 		
