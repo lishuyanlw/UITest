@@ -285,7 +285,7 @@ public class GlobalFooterPage extends BasePage {
 	public List<WebElement> lstTermsOfUseItemContent;
 	
 	//More About TSC
-	@FindBy(xpath = "(//h4//span[contains(@id,'contentPlaceHolder_ctl39_ctlListTitle')]//ancestor::div[@class='quickLinkPanelWrap']//ul[@class='quickLinkUL col3Divs ']//li//a)[1]")
+	@FindBy(xpath = "(//h4//span[contains(@id,'contentPlaceHolder_ctl')]//ancestor::div[@class='quickLinkPanelWrap']//ul[contains(@class,'quickLinkUL c')]//li//a)[1]")
 	public WebElement lstMoreAboutTSCPBecomeAVendor;
 	
 	@FindBy(xpath = "(//div[@class='quickLinkPanelWrap']//ul[@class='quickLinkUL col3Divs ']//li//a)[4]")
