@@ -13,6 +13,7 @@ public class PD_TC01_Verify_ProductDetail_LeftSection_ContentsForImageAndVideo e
 	/*
 	 * CER-576
 	 * CER-570
+	 * CER-577
 	 */
 	@Test(groups={"ProductDetail","Regression"})
 	public void validateLeftSection_ContentsForImageAndVideo() throws IOException {	

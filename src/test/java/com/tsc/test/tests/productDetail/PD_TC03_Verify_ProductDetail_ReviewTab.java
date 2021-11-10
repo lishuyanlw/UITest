@@ -12,6 +12,7 @@ import com.tsc.test.base.BaseTest;
 public class PD_TC03_Verify_ProductDetail_ReviewTab extends BaseTest{
 	/*
 	 * CER-573
+	 * CER-574
 	 */
 	@Test(groups={"ProductDetail","Regression"})
 	public void validateReviewTab() throws IOException {	

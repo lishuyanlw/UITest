@@ -39,6 +39,9 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'pdImageSection') and not(contains(@class,'pdImageSection__zoom')) and not(@style='display: none;')]//div[@id='divThumbnail']//div[contains(@class,'slick-list')]//div[contains(@class,'slick-current') and not(contains(@class,'videolink'))]//img")
 	public WebElement imgCurrentThumbnail;
 	
+	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'pdImageSection') and not(contains(@class,'pdImageSection__zoom')) and not(@style='display: none;')]//div[@id='divThumbnail']//div[contains(@class,'slick-list')]//div[contains(@class,'slick-current')]")
+	public WebElement currentThumbnailItem;
+	
 	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'pdImageSection') and not(contains(@class,'pdImageSection__zoom')) and not(@style='display: none;')]//div[@id='divThumbnail']//div[contains(@class,'slick-list')]//div[contains(@class,'slick-active') and contains(@class,'videolink')]")
 	public WebElement lnkThumbnailVideo;
 	
@@ -131,20 +134,34 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//form//div[@class='style-container']")
 	public WebElement cntProductStyleSection;
 	
+	//For radio style	
 	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//form//div[@class='style-container']//div[@id='divStyleSwatch']//span[@class='style-lbl']")
-	public WebElement lblProductStyleStatic;
+	public WebElement lblRadioProductStyleStatic;
 	
 	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//form//div[@class='style-container']//div[@id='divStyleSwatch']//span[@id='lblStyle']")
-	public WebElement lblProductStyleTitle;
+	public WebElement lblRadioProductStyleTitle;
 	
 	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//form//div[@class='style-container']//div[@id='divStyleSwatch']//input")
 	public List<WebElement> lstStyleRadioList;
 	
 	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//form//div[@class='style-container']//div[@id='divStyleSwatch']//label")
-	public List<WebElement> lstStyleLabelList;
+	public List<WebElement> lstRadioStyleLabelList;
 	
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//form//div[@class='style-container']//div[@id='divStyleSwatch']//label[contains(@class,'style-selected')]//span[@data-style]")
-	public WebElement btnProductStyleSelected;
+	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//form//div[@class='style-container']//div[@id='divStyleSwatch']//label//span")
+	public List<WebElement> lstRadioStyleLabelSpanList;
+		
+	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//form//div[@class='style-container']//div[@id='divStyleSwatch']//label[contains(@class,'style-selected')]/preceding-sibling::input[1]")
+	public WebElement btnRadioProductStyleSelected;
+	
+	//For dropdown menu style		
+	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//form//div[@class='style-container']//div[@id='divStyleSwatchDdl']//span[@class='style-lbl']")
+	public WebElement lblDropDownProductStyleStatic;
+		
+	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//form//div[@class='style-container']//div[@id='divStyleSwatchDdl']//select")
+	public WebElement selectProductStyle;
+	
+	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//form//div[@class='style-container']//div[@id='divStyleSwatchDdl']//select//option")
+	public List<WebElement> lstDropdownProductStyle;
 	
 	//TrueFit part
 	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//form//div[@id='tf-wrapper']")
@@ -436,7 +453,7 @@ public class ProductDetailPage extends BasePage {
 	
 	/**
 	 * Method to get AutoPlayVideo ToolTip popup Message
-	 * @return String: tootip message	  
+	 * @return String: tooltip message	  
 	 * @author Wei.Li
 	 */
 	public String getAutoPlayVideoToolTipPopupMsg() {
@@ -450,12 +467,22 @@ public class ProductDetailPage extends BasePage {
 	}
 	
 	/**
+	 * Method to check the product style is displaying with Dropdown mode
+	 * @return true	for Dropdown menu and false for Radio list  
+	 * @author Wei.Li
+	 */
+	public boolean judgeStyleDisplayModeIsDropdownMenu() {		
+		return !this.cntProductStyleSection.findElement(By.xpath(".//div[@id='divStyleSwatchDdl']")).getCssValue("height").equalsIgnoreCase("auto");		
+	}
+	
+	/**
 	 * Method to check if Style size is existing
 	 * @return true/false	  
 	 * @author Wei.Li
 	 */
 	public boolean judgeStyleSizeAvailable() {
-		return this.getChildElementCount(this.cntProductSizeJudgeIndicator)>9;
+		return this.checkChildElementExistingByAttribute(this.cntProductSizeJudgeIndicator, "id", "divAvailableSizes");
+		//return this.getChildElementCount(this.cntProductSizeJudgeIndicator)>9;
 	}
 	
 	/**
@@ -472,8 +499,15 @@ public class ProductDetailPage extends BasePage {
 	 * @return String	  
 	 * @author Wei.Li
 	 */
-	public String getCurrentSwatchDataStyle() {		
-		return this.btnProductStyleSelected.getAttribute("data-style").trim();
+	public String getCurrentSwatchStyle() {
+		boolean bDropdownMenuMode=this.judgeStyleDisplayModeIsDropdownMenu();
+		if(bDropdownMenuMode) {
+			Select dropdownMenuOption=new Select(this.selectProductStyle);
+			return dropdownMenuOption.getFirstSelectedOption().getAttribute("value").trim();
+		}
+		else {
+			return this.btnRadioProductStyleSelected.getAttribute("value").trim();
+		}		
 	}
 	
 	/**
@@ -487,12 +521,10 @@ public class ProductDetailPage extends BasePage {
 			item.click();
 			this.getReusableActionsInstance().staticWait(500);
 			
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnProductStyleSelected);
-			String lsDataStyle=this.btnProductStyleSelected.getAttribute("data-style").trim();			
 			String lsThumbnail=this.getImageNameFromThumbnailOrZoomImagePath(lnkCurrentZoomImage.getAttribute("href"));
 			String lsZoomImage=this.getImageNameFromThumbnailOrZoomImagePath(imgCurrentThumbnail.getAttribute("src"));
 						
-			reporter.softAssert(lsThumbnail.equalsIgnoreCase(lsZoomImage), "The Thumbnail image is the same as the Zoom image with changing Swatch radio of '"+lsDataStyle+"'", "The Thumbnail image is not the same as the Zoom image with changing Swatch radio of '"+lsDataStyle+"'");
+			reporter.softAssert(lsThumbnail.equalsIgnoreCase(lsZoomImage), "The Thumbnail image is the same as the Zoom image with changing Swatch style", "The Thumbnail image is not the same as the Zoom image with changing Swatch style");
 			//reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblVideoDisclaim),"The Video disclaim message section is displaying correctly","The Video disclaim message section is not displaying correctly");
 		}				
 	}
@@ -543,30 +575,123 @@ public class ProductDetailPage extends BasePage {
 	}
 	
 	/**
-	 * Method to verify the linkage among Swatch radio, Thumbnail image and Zoom image
+	 * Method to verify the linkage among Swatch style, Thumbnail image and Zoom image
 	 * @return void	  
 	 * @author Wei.Li
 	 */
 	public void verifyLinkageAmongSwathAndThumbnailAndZoomImage() {
-		String lsSwatch,lsThumbnailBefore="",lsZoomImageBefore="",lsThumbnailAfter,lsZoomImageAfter;
-		for(WebElement radioItem:this.lstStyleRadioList) {			
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(radioItem);
-			if(!radioItem.getAttribute("checked").equalsIgnoreCase("checked")) {				
-				lsThumbnailBefore=this.getImageNameFromThumbnailOrZoomImagePath(lnkCurrentZoomImage.getAttribute("href"));
-				lsZoomImageBefore=this.getImageNameFromThumbnailOrZoomImagePath(imgCurrentThumbnail.getAttribute("src"));
-				radioItem.click();
-				this.getReusableActionsInstance().staticWait(600);
-			}		
-			
-			lsSwatch=this.btnProductStyleSelected.getAttribute("data-style").trim();			
-			lsThumbnailAfter=this.getImageNameFromThumbnailOrZoomImagePath(lnkCurrentZoomImage.getAttribute("href"));
-			lsZoomImageAfter=this.getImageNameFromThumbnailOrZoomImagePath(imgCurrentThumbnail.getAttribute("src"));
-			
-			reporter.softAssert(!lsThumbnailBefore.equalsIgnoreCase(lsThumbnailAfter), "Clicking the swatch radio button of '"+lsSwatch+"' triggers Thumbnail image changing", "Clicking the swatch radio button of '"+lsSwatch+"' does not trigger Thumbnail image changing");
-			reporter.softAssert(!lsZoomImageBefore.equalsIgnoreCase(lsZoomImageAfter), "Clicking the swatch radio button of '"+lsSwatch+"' triggers Zoom image changing", "Clicking the swatch radio button of '"+lsSwatch+"' does not trigger Zoom image changing");
-			
-			reporter.softAssert(lsThumbnailAfter.equalsIgnoreCase(lsZoomImageAfter), "The Thumbnail image is the same as the Zoom image with changing Swatch radio of '"+lsSwatch+"'", "The Thumbnail image is not the same as the Zoom image with changing Swatch radio of '"+lsSwatch+"'");
+		String lsSwatch,lsThumbnail="",lsZoomImage="";
+		int loopSize;		
+		if(this.judgeStyleDisplayModeIsDropdownMenu()) {
+			Select selectStyle= new Select(this.selectProductStyle);
+			loopSize=this.lstDropdownProductStyle.size();			
+			for(int i=0;i<loopSize;i++) {
+				if(this.hasElementAttribute(this.lstDropdownProductStyle.get(i),"selected")) {
+					continue;
+				}
+				String[] lstImageSrc= new String[1];
+				if(!this.hasElementAttribute(this.currentThumbnailItem,"data-video")) {
+					lstImageSrc[0]=this.getElementImageSrc(this.imgCurrentThumbnail);
+				}
+				
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectProductStyle);
+				selectStyle.selectByIndex(i);
+				this.waitForCondition(Driver->{return !this.getElementImageSrc(this.imgCurrentThumbnail).equalsIgnoreCase(lstImageSrc[0]);}, 30000);
+				
+				lsSwatch=this.getCurrentSwatchStyle();	
+				
+				lsThumbnail=this.getImageNameFromThumbnailOrZoomImagePath(lnkCurrentZoomImage.getAttribute("href"));
+				lsZoomImage=this.getImageNameFromThumbnailOrZoomImagePath(imgCurrentThumbnail.getAttribute("src"));
+				
+				reporter.softAssert(lsThumbnail.toLowerCase().contains(lsSwatch.toLowerCase()), "The Thumbnail image src contains swatch style of " +lsSwatch, "The Thumbnail image src does not contain swatch style of "+lsSwatch);
+				reporter.softAssert(lsZoomImage.toLowerCase().contains(lsSwatch.toLowerCase()), "The Zoom image src contains swatch style of " +lsSwatch, "The Zoom image src does not contain swatch style of "+lsSwatch);
+				reporter.softAssert(lsThumbnail.equalsIgnoreCase(lsZoomImage), "The Thumbnail image is the same as the Zoom image with changing Swatch radio of '"+lsSwatch+"'", "The Thumbnail image is not the same as the Zoom image with changing Swatch radio of '"+lsSwatch+"'");
+			}
 		}
+		else {
+			loopSize=this.lstRadioStyleLabelSpanList.size();
+			WebElement radioItem;					
+			for(int i=0;i<loopSize;i++) {								
+				if(this.hasElementAttribute(this.lstStyleRadioList.get(i),"checked")) {
+					continue;
+				}
+				radioItem=this.lstRadioStyleLabelSpanList.get(i);
+				String[] lstImageSrc= new String[1];
+				if(!this.hasElementAttribute(this.currentThumbnailItem,"data-video")) {
+					lstImageSrc[0]=this.getElementImageSrc(this.imgCurrentThumbnail);
+				}
+				
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(radioItem);
+				radioItem.click();
+				this.waitForCondition(Driver->{return !this.getElementImageSrc(this.imgCurrentThumbnail).equalsIgnoreCase(lstImageSrc[0]);}, 30000);
+							
+				lsSwatch=this.getCurrentSwatchStyle();			
+				lsThumbnail=this.getImageNameFromThumbnailOrZoomImagePath(lnkCurrentZoomImage.getAttribute("href"));
+				lsZoomImage=this.getImageNameFromThumbnailOrZoomImagePath(imgCurrentThumbnail.getAttribute("src"));
+				
+				reporter.softAssert(lsThumbnail.toLowerCase().contains(lsSwatch.toLowerCase()), "The Thumbnail image src contains swatch style of " +lsSwatch, "The Thumbnail image src does not contain swatch style of "+lsSwatch);
+				reporter.softAssert(lsZoomImage.toLowerCase().contains(lsSwatch.toLowerCase()), "The Zoom image src contains swatch style of " +lsSwatch, "The Zoom image src does not contain swatch style of "+lsSwatch);
+				reporter.softAssert(lsThumbnail.equalsIgnoreCase(lsZoomImage), "The Thumbnail image is the same as the Zoom image with changing Swatch radio of '"+lsSwatch+"'", "The Thumbnail image is not the same as the Zoom image with changing Swatch radio of '"+lsSwatch+"'");
+			}
+		}		
+	}
+	
+	/**
+	 * Method to verify the linkage among Swatch style, Thumbnail image and Zoom image
+	 * @return void	  
+	 * @author Wei.Li
+	 */
+	public void verifyStyleNameWithDifferentStyleSelection() {
+		String lsSwatch,lsBeforeStyleName,lsAfterStyleName;
+		int loopSize;
+		if(this.judgeStyleDisplayModeIsDropdownMenu()) {			
+			Select selectStyle= new Select(this.selectProductStyle);			
+			loopSize=this.lstDropdownProductStyle.size();		
+			for(int i=0;i<loopSize;i++) {
+				if(this.hasElementAttribute(this.lstDropdownProductStyle.get(i),"selected")) {
+					continue;
+				}
+				String[] lstImageSrc= new String[1];
+				if(!this.hasElementAttribute(this.currentThumbnailItem,"data-video")) {
+					lstImageSrc[0]=this.getElementImageSrc(this.imgCurrentThumbnail);
+				}
+								
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectProductStyle);
+				lsBeforeStyleName=selectStyle.getFirstSelectedOption().getText();
+				selectStyle.selectByIndex(i);
+				this.waitForCondition(Driver->{return !this.getElementImageSrc(this.imgCurrentThumbnail).equalsIgnoreCase(lstImageSrc[0]);}, 30000);
+				lsAfterStyleName=selectStyle.getFirstSelectedOption().getText();			
+				lsSwatch=this.getCurrentSwatchStyle();				
+				reporter.softAssert(!lsBeforeStyleName.equalsIgnoreCase(lsAfterStyleName), "Clicking the swatch dropdown option of '"+lsSwatch+"' is changing product style name", "Clicking the swatch dropdown option of '"+lsSwatch+"' is not changing product style name");
+			}
+		}
+		else {			
+			loopSize=this.lstRadioStyleLabelSpanList.size();
+			WebElement radioItem,labelItem;
+			String lsLabelTitle;			
+			for(int i=0;i<loopSize;i++) {
+				if(this.hasElementAttribute(this.lstStyleRadioList.get(i),"checked")) {
+					continue;
+				}
+				radioItem=this.lstRadioStyleLabelSpanList.get(i);
+				labelItem=this.lstRadioStyleLabelList.get(i);
+				String[] lstImageSrc= new String[1];
+				if(!this.hasElementAttribute(this.currentThumbnailItem,"data-video")) {
+					lstImageSrc[0]=this.getElementImageSrc(this.imgCurrentThumbnail);
+				}				
+				
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(labelItem);
+				lsBeforeStyleName=this.lblRadioProductStyleTitle.getText().trim();				
+				radioItem.click();
+				this.waitForCondition(Driver->{return !this.getElementImageSrc(this.imgCurrentThumbnail).equalsIgnoreCase(lstImageSrc[0]);}, 30000);
+				lsAfterStyleName=this.lblRadioProductStyleTitle.getText().trim();				
+				lsLabelTitle=labelItem.getAttribute("title").trim();
+				lsSwatch=this.getCurrentSwatchStyle();	
+								
+				reporter.softAssert(!lsBeforeStyleName.equalsIgnoreCase(lsAfterStyleName), "Clicking the swatch radio option of '"+lsSwatch+"' is changing product style name", "Clicking the swatch radio option of '"+lsSwatch+"' is not changing product style name");
+				reporter.softAssert(lsLabelTitle.equalsIgnoreCase(lsAfterStyleName), "The label title is equal to product style name of '"+lsAfterStyleName+"'", "The label title is not equal to product style name of '"+lsAfterStyleName+"'");	
+			}
+		}		
 	}
 	
 	/**
@@ -576,10 +701,11 @@ public class ProductDetailPage extends BasePage {
 	 * @author Wei.Li
 	 */
 	public String getImageNameFromThumbnailOrZoomImagePath(String lsPath) {
-		String[] lstSubItem=lsPath.split("/");
-		System.out.println(lstSubItem[lstSubItem.length-1]);
+		String[] lstSubItem=lsPath.split("/");		
 		return lstSubItem[lstSubItem.length-1].split("\\?")[0];
 	}
+	
+	
 	
 	/**
 	 * Method to judge if Soldout section is displaying	 
