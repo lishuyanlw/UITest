@@ -320,7 +320,8 @@ public class ProductResultsPage extends BasePage{
 		}
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSearchResultTitle);
 		String lsTitle=this.lblSearchResultTitle.getText().trim();
-		if(this.searchkeyword.equalsIgnoreCase(lsTitle)) {
+		
+		if(this.searchkeyword.toLowerCase().contains(lsTitle.toLowerCase())) {
 			return true;
 		}
 

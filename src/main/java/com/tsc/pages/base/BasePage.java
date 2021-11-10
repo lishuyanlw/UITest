@@ -717,5 +717,11 @@ import utils.ReusableActions;
 		 }
 			return "NoTitle";		
 		}
-	
+
+	/**
+	  * This method will apply static wait between steps
+	 */
+	public void applyStaticWait(long timeOut){
+		getReusableActionsInstance().staticWait(timeOut);
+	}
 }
