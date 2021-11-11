@@ -184,6 +184,11 @@ public class GlobalheaderPage extends BasePage{
 
 	@FindBy(xpath = "//ul[contains(@class,'primary-navigation__wrapper')]//li//a")
 	WebElement FlyoutHeadings;
+
+	@FindBy(xpath="//*[@id='mega-navigation-desktop']/nav")
+	List<WebElement> flyoutHeaderSections;
+
+	By flyoutHeaderLeftSection = By.xpath("[contains(@class,'mega-categories mega-column')]//a");
 	
 	@FindBy(xpath = "//*[contains(@class,'mega-categories mega-column')]//a")
 	WebElement Categories;
@@ -858,6 +863,62 @@ public class GlobalheaderPage extends BasePage{
 	 * @return true/false
 	 * @author Shruti Desai
 	 */
+	public String verifyFlyoutMenuItems(String heading, String section){
+		AtomicReference<String> first_flyout_menu_text =new  AtomicReference<String>();
+		List<WebElement> headingsElements=this.headingLinks;
+		if(heading==null) {
+			for(WebElement headerItem: headingsElements) {
+				this.scrolltoWebElement(headerItem);
+				this.staticwait();
+				first_flyout_menu_text.set(headerItem.getText().split(" ")[0]);
+				waitForCondition(Driver->{return (CategoriesLinks.get(0).getAttribute("href").contains(first_flyout_menu_text.get()));} ,30000);
+				reporter.reportLog("Flyout heading "+headerItem.getText());
+				if(section==null) {
+					first_flyout_menu_text.set(verifyFlyoutMenuSection(headerItem.getText(),"Left Section"));
+					first_flyout_menu_text.set(verifyFlyoutMenuSection(headerItem.getText(),"Curated Collections"));
+					first_flyout_menu_text.set(verifyFlyoutMenuSection(headerItem.getText(),"Popular Brands"));
+				}else{
+					first_flyout_menu_text.set(verifyFlyoutMenuSection(headerItem.getText(),section);
+				}
+			}
+		}else{
+
+		}
+		return first_flyout_menu_text.toString();
+	}
+
+	public String verifyFlyoutMenuSection(String headingName,String sectionName){
+		StringBuilder href_src_data = new StringBuilder();
+		switch(sectionName){
+			case "Curated Collections":
+				for(WebElement webElement:listCuratedCollectionLinks){
+					if(!verifyElementProperty(webElement,"Link")) {//href is not present
+						href_src_data.append("Href missing for Curated Collection item: ").append(webElement.getText()).append('\n');
+					}
+				}
+				return href_src_data.toString();
+			case "Popular Brands":
+				for(WebElement webElement:listPopularBrandsLinks){
+					WebElement hrefAttribute =webElement.findElement(By.xpath("./ancestor::a"));
+					if(!verifyElementProperty(hrefAttribute,"Link")) {//href not present
+						href_src_data.append("Href missing for Popular Brand item: ").append(webElement.getAttribute("alt")).append('\n');
+					}
+					if(!verifyElementProperty(webElement,"Image")) {//href not present
+						href_src_data.append("Image missing for Popular Brand item: ").append(webElement.getAttribute("alt")).append('\n');
+					}
+				}
+				return href_src_data.toString();
+			case "Left Section":
+				String smHref=null;
+				for (WebElement category:CategoriesLinks) {
+					this.scrolltoWebElement(category);
+					smHref=this.verifysubMenuhref(subMenuSection);
+					reporter.softAssert(smHref=="","href is present for all elements  "+headingName+" > "+category.getText(),"href missing for "+headingName+" > "+category.getText()+" > "+smHref);
+				}
+				return smHref;
+		}
+	}
+
 	public String verifyBrand_Curated_Section(String headingName, String section,List<WebElement> webElements,String attribute) {
 		AtomicReference<String> first_flyout_menu_text =new  AtomicReference<String>();
 		first_flyout_menu_text.set(headingName.split(" ")[0]);
