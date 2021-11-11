@@ -31,21 +31,10 @@ public class GH_TC06_Global_Header_Verify_FlyoutsSubMenuItems extends BaseTest {
 				smHref=getglobalheaderPageThreadLocal().verifysubMenuhref(subMenuElement);
 				reporter.softAssert(smHref=="","href is present for all elements  "+headingName+" > "+categoryName,"href missing for "+headingName+" > "+categoryName+" > "+smHref);
 			}
-			ccHref=getglobalheaderPageThreadLocal().verifyBrand_Curated_Section(headingName,"CuratedCollection",curatedCollectionElement,null);
+			ccHref=getglobalheaderPageThreadLocal().verifyBrand_Curated_Section(headingName,"CuratedCollection",curatedCollectionElement);
 			reporter.softAssert(ccHref=="","href is present for all elements > "+headingName+" > Curated Collection","href missing for "+headingName+" > "+ccHref);
-			pbHref=getglobalheaderPageThreadLocal().verifyBrand_Curated_Section(headingName,"PopularBrands",popularBrandElement,"href");
-			reporter.softAssert(pbHref=="","href is present for all elements > "+headingName +" > Popular Brand","href missing for "+headingName+" > "+pbHref);
-			pbSrc=getglobalheaderPageThreadLocal().verifyBrand_Curated_Section(headingName,"PopularBrands",popularBrandElement,null);
-			reporter.softAssert(pbSrc=="","src is present for all elements > "+headingName +" > Popular Brand","src missing for "+headingName+" > "+pbSrc);
+			pbHref=getglobalheaderPageThreadLocal().verifyBrand_Curated_Section(headingName,"PopularBrands",popularBrandElement);
+			reporter.softAssert(pbHref=="","href & src both present for all elements > "+headingName +" > Popular Brand","href missing for "+headingName+" > "+pbHref);
 		}
-			
 	}
 }	
-
-
-
-
-
-//chHref=getglobalheaderPageThreadLocal().verifyCategoryhref(headingName,categoryElement);
-//reporter.softAssert(chHref=="","href is present for all elements of category > "+headingName,"href missing for "+headingName+" > "+chHref);
-

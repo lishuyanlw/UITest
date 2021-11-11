@@ -228,10 +228,7 @@ public class GlobalheaderPage extends BasePage{
 	@FindBy(xpath="//a[@role=\"button\" and contains(text(),'Fashion')]")
 	WebElement fasionOption;
 
-	public void clickOnClearanceHeaderOption() {
-		getReusableActionsInstance().clickIfAvailable(clearanceHeader);
-	}
-
+	
 	public void waitForPageLoad() {
 		getReusableActionsInstance().waitForPageLoad();
 		(new ProductResultsPage(this.getDriver())).waitForPageLoading();	
@@ -246,182 +243,18 @@ public class GlobalheaderPage extends BasePage{
 	}
 	
 	//Sliver links are visible & Text is present
-	/**
-	 * This method will validate DynamicEvent  is visible.
-	 *
-	 * @return true/false
-	 * 
-	 * @author Wei.Li
-	 */	
-	public boolean DynamicEventLinkVisible() {
-		if(!this.getReusableActionsInstance().isElementVisible(this.byDynamicEvent,30)) {
-			return true;
-		}
-		return this.lnkdynamicEvent.isDisplayed();
-	}
-	
-	/**
-	 * This method will validate the href of DynamicEventLink is existing.
-	 *
-	 * @return true/false
-	 * 
-	 * @author Wei.Li
-	 */	
-	public boolean validateDynamicEventLink() {
-		if(!this.getReusableActionsInstance().isElementVisible(this.byDynamicEvent,30)) {
-			return true;
-		}
-		if (lnkdynamicEvent.getAttribute("href").isEmpty()) {							
-			return false;			
-		}
-		
-		return true;
-	}
-	
-	/**
-	 * This method will return TS text.
-	 * @author Wei.Li
-	 */
-	public String getTSText() {
-		getReusableActionsInstance().isElementVisible(lnkTS, 5);
-		return lnkTS.getText();		
-	}
-	
-	/**
-	 * This method will return TS link.
-	 * @author Wei.Li
-	 */
-	public String getTSLink() {
-		String emptySTAIbtn="TS link href is empty";
-		if (lnkTS.getAttribute("href").isEmpty()) {							
-			return emptySTAIbtn;			
-		}else{			
-			return lnkTS.getAttribute("href");
-		}
-	}
-	
-	/**
-	 * This method will return Deals text.
-	 * @author Wei.Li
-	 */
-	public String getDealsText() {
-		getReusableActionsInstance().isElementVisible(lnkDeals, 5);
-		return lnkDeals.getText();
-	}
-	
-	/**
-	 * This method will return Deals link.
-	 * @author Wei.Li
-	 */
-	public String getDealsLink() {
-		String emptySTAIbtn="Deals link href is empty";
-		if (lnkDeals.getAttribute("href").isEmpty()) {							
-			return emptySTAIbtn;			
-		}else{			
-			return lnkDeals.getAttribute("href");
-		}
-	}
-	
-	/**
-	 * This method will return OnAir text.
-	 * @author Wei.Li
-	 */
-	public String getOnAirText() {
-		getReusableActionsInstance().isElementVisible(lnkOnAir, 5);
-		return lnkOnAir.getText();
-	}
-	
-	/**
-	 * This method will return OnAir link.
-	 * @author Wei.Li
-	 */
-	public String getOnAirLink() {
-		String emptySTAIbtn="On Air link href is empty";
-		if (lnkOnAir.getAttribute("href").isEmpty()) {							
-			return emptySTAIbtn;			
-		}else{
-			return lnkOnAir.getAttribute("href");
-		}
-	}
-	
-	/**
-	 * This method will validate ProgramGuide icon is visible.
-	 *
-	 * @return true/false
-	 * @author Wei.Li
-	 */	
-	public boolean validateProgramGuideIconVisible() {
-		return getReusableActionsInstance().isElementVisible(imgProgramGuideIcon, 5);
-	}
-	
-	/**
-	 * This method will return ProgramGuide text.
-	 * @author Wei.Li
-	 */
-	public String getProgramGuideText() {
-		getReusableActionsInstance().isElementVisible(lnkProgramGuide, 5);
-		return lnkProgramGuide.getText();
-	}
-	
-	/**
-	 * This method will return ProgramGuide link.
-	 * @author Wei.Li
-	 */
-	public String getProgramGuideLink() {
-		String emptySTAIbtn="Program Guide link href is empty";
-		if (lnkProgramGuide.getAttribute("href").isEmpty()) {							
-			return emptySTAIbtn;			
-		}else{
-			return lnkProgramGuide.getAttribute("href");
-		}
-	}
-	
-	/**
-	 * This method will return WatchUsLive text.
-	 * @author Wei.Li
-	 */
-	public String getWatchUsLiveText() {
-		getReusableActionsInstance().isElementVisible(lnkWatchUsLive, 5);
-		return lnkWatchUsLive.getText();
-	}
-	
-	/**
-	 * This method will return WatchUsLive link.
-	 * @author Wei.Li
-	 */
-	public String getWatchUsLiveLink() {
-		String emptySTAIbtn="Watch Us Live link href is empty";
-		if (lnkWatchUsLive.getAttribute("href").isEmpty()) {							
-			return emptySTAIbtn;			
-		}else{
-			return lnkWatchUsLive.getAttribute("href");
-		}
-	}
-		
-	/**
-	 * This method will validate WatchUsLive icon is visible.
-	 *
-	 * @return true/false
-	 * @author Wei.Li
-	 */
-	public boolean validateWatchUsLiveIconVisible() {
-		return getReusableActionsInstance().isElementVisible(imgWatchUsLiveIcon, 5);
-		}
 	
 	/**
 	 * This method will validate clicking TSCLogo can navigate page to HomePage.
-	 *
 	 * @return true/false
 	 * @author Wei.Li
 	 */
 	public boolean validateTSCLogoNavigateToHomePage() {
 		String lsHomePage=new BasePage(this.getDriver()).getBaseURL()+"/";				
 		String currentUrl=getDriver().getCurrentUrl();		        
-                
 		getReusableActionsInstance().isElementVisible(this.lnkTSClogo, 10);
 		this.lnkTSClogo.click();	    
         waitForCondition(Driver->{return !currentUrl.equalsIgnoreCase(getDriver().getCurrentUrl());},10000);
-              
         return this.getDriver().getCurrentUrl().equalsIgnoreCase(lsHomePage);		
 		}
 				
@@ -430,9 +263,7 @@ public class GlobalheaderPage extends BasePage{
 		String emptySTAIbtn="TSC logo link href is empty";
 		String lsUrl=lnkTSClogolink.getAttribute("href");
 		if (lsUrl.isEmpty()) {
-							
 			return emptySTAIbtn;
-			
 		}else{
 			return lsUrl;
 		}
@@ -484,7 +315,6 @@ public class GlobalheaderPage extends BasePage{
 		if (ShoppingCartlnk.getAttribute("href").isEmpty()) {
 							
 			return emptySTAIbtn;
-			
 		}else{
 			getReusableActionsInstance().isElementVisible(ShoppingCartlnk, 5);
 			return ShoppingCartIconcont.getText();
@@ -502,9 +332,7 @@ public class GlobalheaderPage extends BasePage{
 		
 	/**
 	 * This method will verify Shopping Cart link
-	 *
 	 * @return true/false
-	 * 
 	 * @author Wei.Li
 	 */
 	public boolean verifyShoppingCartLink(String lsExpectedShoppingCartLink) {
@@ -535,56 +363,6 @@ public class GlobalheaderPage extends BasePage{
 	}
 	
 	/**
-	 * This method will get full url after clicking TodayShowstopper link.
-	 * @return String: changed Url 
-	 * @author Wei.Li
-	 */
-	public String getUrlAfterClickingTSLink() {
-		getReusableActionsInstance().javascriptScrollToTopOfPage();
-		return waitForPageLoadingByUrlChange(this.lnkTS);
-	}
-	
-	/**
-	 * This method will get full url after clicking Deals link.
-	 * @return String: changed Url
-	 * @author Wei.Li
-	 */
-	public String getUrlAfterClickingDealsLink() {
-		getReusableActionsInstance().javascriptScrollToTopOfPage();
-		return waitForPageLoadingByUrlChange(this.lnkDeals);
-	}
-	
-	/**
-	 * This method will get full url after clicking OnAir link.
-	 * @return String: changed Url
-	 * @author Wei.Li
-	 */
-	public String getUrlAfterClickingOnAirLink() {
-		getReusableActionsInstance().javascriptScrollToTopOfPage();
-		return waitForPageLoadingByUrlChange(this.lnkOnAir);
-	}
-	
-	/**
-	 * This method will get full url after clicking ProgramGuide link.
-	 * @return String: changed Url
-	 * @author Wei.Li
-	 */
-	public String getUrlAfterClickingProgramGuideLink() {
-		getReusableActionsInstance().javascriptScrollToTopOfPage();
-		return waitForPageLoadingByUrlChange(this.lnkProgramGuide);
-	}
-
-	/**
-	 * This method will get full url after clicking WatchUsLive link.
-	 * @return String: changed Url
-	 * @author Wei.Li
-	 */
-	public String getUrlAfterClickingWatchUsLiveLink() {
-		getReusableActionsInstance().javascriptScrollToTopOfPage();
-		return waitForPageLoadingByUrlChange(this.lnkWatchUsLive);
-	}
-
-	/**
 	 *Method to go to home page  
 	 * @return true/false
 	 * @author Wei.Li
@@ -605,21 +383,6 @@ public class GlobalheaderPage extends BasePage{
 		 getReusableActionsInstance().staticWait(100);		 
 	 }	
 	 
-	/**
-	 *Method to go to Black headers  
-	 * @param WebElement element: dropdown menu option	
-	 * @return true/false
-	 * @author Wei.Li
-	 */	
-	 public boolean switchWatchTSCDropdownOption(WebElement element) {
-		 getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnWatchTSCBlackHeader);
-		 getReusableActionsInstance().scrollToElement(this.btnWatchTSCBlackHeader);
-		 getReusableActionsInstance().staticWait(100);
-		 getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-		 element.click();
-		 return (new GlobalFooterPage(this.getDriver())).waitForPageLoading();
-	 }	 
-		
 	/**
 	 *Method to verify TS header and link in Black headers  	 
 	 * @param WebElement blackItem: the header in Black headers
@@ -678,11 +441,16 @@ public class GlobalheaderPage extends BasePage{
 			 reporter.softAssert(getReusableActionsInstance().isElementVisible(this.cntPossibleItemMatchesList),"The Top selling products list is displaying correctly by selecting item of '"+lsItem+"'","The Top selling products list is not displaying correctly by selcting item of '"+lsItem+"'");			 
 		 }	
 	 }
-
+	 
+	 
+	 /* Flyout section validation
+	  * @author Shruti Desai
+	  */
+	 
 	 public StringBuilder href_src_category  =new StringBuilder();
 	 public StringBuilder href_src_submenu  =new StringBuilder();
 	 public StringBuilder  href_src_section  =new StringBuilder();
-
+	 public StringBuilder href_src_data = new StringBuilder();
 	 /*Method to click on WebElement for Submenu Item by providing Flyout heading name , category and item as parameters.
 	  * @author Shruti Desai
 	  */
@@ -872,33 +640,52 @@ public class GlobalheaderPage extends BasePage{
 				this.staticwait();
 				first_flyout_menu_text.set(headerItem.getText().split(" ")[0]);
 				waitForCondition(Driver->{return (CategoriesLinks.get(0).getAttribute("href").contains(first_flyout_menu_text.get()));} ,30000);
-				reporter.reportLog("Flyout heading "+headerItem.getText());
+				String headingName =headerItem.getText();
+				reporter.reportLog("Flyout heading "+headingName);
 				if(section==null) {
 					first_flyout_menu_text.set(verifyFlyoutMenuSection(headerItem.getText(),"Left Section"));
+					first_flyout_menu_text.get();
+					reporter.softAssert(first_flyout_menu_text.get()=="","All elements present.",heading+ " > "+first_flyout_menu_text.get());
+					href_src_data.delete(0, href_src_data.length());
 					first_flyout_menu_text.set(verifyFlyoutMenuSection(headerItem.getText(),"Curated Collections"));
+					first_flyout_menu_text.get();
+					reporter.softAssert(first_flyout_menu_text.get()=="","All elements present.",heading+ " > "+first_flyout_menu_text.get());
+					href_src_data.delete(0, href_src_data.length());
 					first_flyout_menu_text.set(verifyFlyoutMenuSection(headerItem.getText(),"Popular Brands"));
+					first_flyout_menu_text.get();
+					reporter.softAssert(first_flyout_menu_text.get()=="","All elements present.",heading+ " > "+first_flyout_menu_text.get());
+					href_src_data.delete(0, href_src_data.length());
 				}else{
-					first_flyout_menu_text.set(verifyFlyoutMenuSection(headerItem.getText(),section);
-				}
+					first_flyout_menu_text.set(verifyFlyoutMenuSection(headingName,section));
+					first_flyout_menu_text.get();
+					reporter.softAssert(first_flyout_menu_text.get()=="","All elements present.",headingName+ " > "+first_flyout_menu_text.get());
+					href_src_data.delete(0, href_src_data.length());
+					//soft assert
+				
+					}
 			}
 		}else{
-
+//use webelement using heading name and copy from this.scrolltowebelemetn from upper part.
 		}
 		return first_flyout_menu_text.toString();
 	}
 
 	public String verifyFlyoutMenuSection(String headingName,String sectionName){
-		StringBuilder href_src_data = new StringBuilder();
+		
 		switch(sectionName){
 			case "Curated Collections":
+				reporter.reportLog("Verifying Curated Collections items for : "+headingName);
 				for(WebElement webElement:listCuratedCollectionLinks){
+					getReusableActionsInstance().scrollToElement(webElement);
 					if(!verifyElementProperty(webElement,"Link")) {//href is not present
 						href_src_data.append("Href missing for Curated Collection item: ").append(webElement.getText()).append('\n');
 					}
 				}
 				return href_src_data.toString();
 			case "Popular Brands":
+				reporter.reportLog("Verifying Popular Brands items for : "+headingName);
 				for(WebElement webElement:listPopularBrandsLinks){
+					getReusableActionsInstance().scrollToElement(webElement);
 					WebElement hrefAttribute =webElement.findElement(By.xpath("./ancestor::a"));
 					if(!verifyElementProperty(hrefAttribute,"Link")) {//href not present
 						href_src_data.append("Href missing for Popular Brand item: ").append(webElement.getAttribute("alt")).append('\n');
@@ -917,9 +704,10 @@ public class GlobalheaderPage extends BasePage{
 				}
 				return smHref;
 		}
+		return href_src_data.toString();
 	}
 
-	public String verifyBrand_Curated_Section(String headingName, String section,List<WebElement> webElements,String attribute) {
+	public String verifyBrand_Curated_Section(String headingName, String section,List<WebElement> webElements) {
 		AtomicReference<String> first_flyout_menu_text =new  AtomicReference<String>();
 		first_flyout_menu_text.set(headingName.split(" ")[0]);
 		waitForCondition(Driver->{return (CategoriesLinks.get(0).getAttribute("href").contains(first_flyout_menu_text.get()));} ,30000);
@@ -927,16 +715,16 @@ public class GlobalheaderPage extends BasePage{
 			getReusableActionsInstance().scrollToElement(element);
 			switch(section) {
 				case "PopularBrands":
-					if(attribute=="href") {//href is not present
 						WebElement hreffattri =element.findElement(By.xpath("./ancestor::a"));
+						//href is not present
 						if(!verifyElementProperty(hreffattri,"Link")) {//href not present
-							href_src_section.append(element.getAttribute("alt")).append('\n');
+							href_src_section.append("Href missing for Popular Brand item: ").append(element.getAttribute("alt")).append('\n');
 						}
-					}else{//src is not present
+						//src is not present
 						if(!verifyElementProperty(element,"Image")) {//href not present
-							href_src_section.append(element.getAttribute("alt")).append('\n');
+							href_src_section.append("Image missing for Popular Brand item: ").append(element.getAttribute("alt")).append('\n');
 						}
-					}	
+						
 				break;
 				case "CuratedCollection":	
 					if(!verifyElementProperty(element,"Link")) {//href is not present
