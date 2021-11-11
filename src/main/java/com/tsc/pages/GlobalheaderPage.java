@@ -756,6 +756,9 @@ public class GlobalheaderPage extends BasePage{
 		 */
 		public void scrollToHeadingElement(String headingName) {
 			  WebElement headingWebElement =getWebElementFlyoutHeading(headingName);
+			  if(System.getProperty("Browser").toLowerCase().contains("firefox")) {
+					getReusableActionsInstance().javascriptScrollByVisibleElement(headingWebElement);
+				}
 			  getReusableActionsInstance().scrollToElement(headingWebElement);
 		}
 		
