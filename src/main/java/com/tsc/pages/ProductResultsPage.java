@@ -26,6 +26,9 @@ public class ProductResultsPage extends BasePage{
 
 	@FindBy(xpath = "//span[contains(@class,'tagDimTitle')]")
 	WebElement lblSearchResultTitle;
+	
+	@FindBy(xpath = "//div[@class='Middle']")
+	WebElement cntSearchResultTitleContainer;
 
 	@FindBy(xpath = "//div[contains(@class,'showstopper-wrapper')]//div[contains(@class,'item')]//div[contains(@class,'visible')]//img")
 	List<WebElement> lstBannerImage;
@@ -198,7 +201,8 @@ public class ProductResultsPage extends BasePage{
 	 * @return boolean
 	 * @author Wei.Li
 	 */
-	public boolean waitForPageLoading() {
+	public boolean waitForPageLoading() {	
+		getReusableActionsInstance().staticWait(300);
 		return waitForCondition(Driver->{
 			String lsStyle=this.productResultLoadingIndicator.getAttribute("style");
 			if(lsStyle==null||lsStyle.isEmpty()) {
@@ -213,7 +217,6 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	public boolean isQASearch() {
-
 		GlobalheaderPage globalHeader=new GlobalheaderPage(this.getDriver());
 		getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeader.searchBox);
 
@@ -233,7 +236,8 @@ public class ProductResultsPage extends BasePage{
 		globalHeader.searchBox.sendKeys(searchKeyword);
 		//globalHeader.btnSearchSubmit.click();
 		(new BasePage(this.getDriver())).pressEnterKey(globalHeader.searchBox);
-
+			
+		getReusableActionsInstance().staticWait(300);
 		return waitForCondition(Driver->{
 			String lsStyle=this.productResultLoadingIndicator.getAttribute("style");
 			if(lsStyle==null||lsStyle.isEmpty()) {
@@ -301,6 +305,7 @@ public class ProductResultsPage extends BasePage{
 			elementList.get(optionIndex).click();
 		}
 
+		getReusableActionsInstance().staticWait(300);
 		return waitForCondition(Driver->{
 			String lsStyle=this.productResultLoadingIndicator.getAttribute("style");
 			if(lsStyle==null||lsStyle.isEmpty()) {
@@ -437,15 +442,26 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	public boolean verifyBannerImageContainSpecificWord(String lsSpecificWord) {
-		String[] lsList=this.splitSearchKeyword(lsSpecificWord);
-		for(WebElement element : this.lstBannerImage) {
-			String lsSrc=element.getAttribute("src").toLowerCase();
-			for(String item:lsList) {
-				if(lsSrc.contains(item.toLowerCase())) {
-					return true;
+		if(lsSpecificWord.trim().contains(" ")) {
+			String[] lsList=this.splitSearchKeyword(lsSpecificWord);
+			for(WebElement element : this.lstBannerImage) {
+				String lsSrc=element.getAttribute("src").toLowerCase();
+				for(String item:lsList) {
+					if(lsSrc.contains(item.toLowerCase())) {
+						return true;
+					}
 				}
 			}
 		}
+		else {
+			for(WebElement element : this.lstBannerImage) {
+				String lsSrc=element.getAttribute("src").toLowerCase();
+				if(lsSrc.contains(lsSpecificWord.toLowerCase())) {
+					return true;
+				}				
+			}
+		}
+		
 		return false;
 	}
 
@@ -453,13 +469,8 @@ public class ProductResultsPage extends BasePage{
 	 * This method will return search result page title.
 	 * @author Wei.Li
 	 */
-
-	/*public String getProductResultPageTitle() {
-		return getPageTitle(lblSearchResultTitle).trim();
-	}*/
-
-	public String getProductResultPageTitle() {
-		if(getReusableActionsInstance().isElementVisible(this.lblSearchResultTitle)) {
+	public String getProductResultPageTitle() {		
+		if(this.checkChildElementExistingByAttribute(this.cntSearchResultTitleContainer, "class", "DimensionTitle2")) {			
 			getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSearchResultTitle);
 			return this.lblSearchResultTitle.getText().trim();
 		}
@@ -521,14 +532,15 @@ public class ProductResultsPage extends BasePage{
 		if(!lsKeyword.trim().contains(" ")) {
 			return lsKeyword.trim();
 		}
-
-		String lsUrl=this.URL();
-		if(lsUrl.contains("dimensions=0&")) {
-			return lsKeyword.trim().replace(" ","%20");
-		}
-		else {
-			return lsKeyword.trim().replace(" ","%2B");
-		}
+		return lsKeyword.trim().replace(" ","%20");
+		
+//		String lsUrl=this.URL();
+//		if(lsUrl.contains("dimensions=0&")) {
+//			return lsKeyword.trim().replace(" ","%20");
+//		}
+//		else {
+//			return lsKeyword.trim().replace(" ","%2B");
+//		}
 	}
 
 	/**
@@ -538,19 +550,13 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	public boolean verifyUrlContainDimensionAndKeyword(String lsKeyword) {
-		String lsUrl=this.URL();
-		String lsExpectedUrlPattern;
-		String lsBrowser=System.getProperty("Browser");
-		if(lsBrowser.trim().equalsIgnoreCase("Chrome")) {
-			lsExpectedUrlPattern="dimensions=.*&searchterm="+this.getEncodingKeyword(lsKeyword);
-			Pattern pattern=Pattern.compile(lsExpectedUrlPattern);
-			Matcher matcher=pattern.matcher(lsUrl);
-
-			return matcher.find();
-		}
-		else {
+		String lsUrl=this.URL();		
+		if(lsUrl.toLowerCase().contains("dimensions=")) {			
 			return lsUrl.contains("dimensions=")&&lsUrl.contains("searchterm=")&&lsUrl.contains(this.getEncodingKeyword(lsKeyword));
 		}
+		else {
+			return lsUrl.contains("searchterm=")&&lsUrl.contains(this.getEncodingKeyword(lsKeyword));
+		}		
 	}
 
 	/**
