@@ -41,6 +41,9 @@ public class PD_TC04_Verify_ProductDetail_ProductStyle extends BaseTest{
 		
 		reporter.reportLog("Verify linkage among Swatch, Thumbnail and Zoom image");
 		getProductDetailPageThreadLocal().verifyLinkageAmongSwathAndThumbnailAndZoomImage();
+		
+		reporter.reportLog("The linkage between Thumbnail and Zoom image");
+		getProductDetailPageThreadLocal().verifyLinkageBetweenThumbnailAndZoomImage();
 	}
 	else {
 		reporter.reportLogFail("Unable to find the product item with Review, EasyPay, Swatch item>=4 and Video");

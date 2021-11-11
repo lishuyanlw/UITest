@@ -36,6 +36,9 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'pdImageSection') and not(contains(@class,'pdImageSection__zoom')) and not(@style='display: none;')]//div[@id='divThumbnail']//div[contains(@class,'slick-list')]//div[contains(@class,'slick-active') and not(contains(@class,'videolink'))]")
 	public List<WebElement> lstThumbnailImageList;
 	
+	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'pdImageSection') and not(contains(@class,'pdImageSection__zoom')) and not(@style='display: none;')]//div[@id='divThumbnail']//div[contains(@class,'slick-list')]//div[contains(@class,'slick-active') and not(contains(@class,'videolink'))][@data-styleid]")
+	public List<WebElement> lstThumbnailImageListForDropdownMenu;
+	
 	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'pdImageSection') and not(contains(@class,'pdImageSection__zoom')) and not(@style='display: none;')]//div[@id='divThumbnail']//div[contains(@class,'slick-list')]//div[contains(@class,'slick-current') and not(contains(@class,'videolink'))]//img")
 	public WebElement imgCurrentThumbnail;
 	
@@ -524,17 +527,49 @@ public class ProductDetailPage extends BasePage {
 	 * @author Wei.Li
 	 */
 	public void verifyLinkageBetweenThumbnailAndZoomImage() {	
-		for(WebElement item:this.lstThumbnailImageList) {			
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-			item.click();
-			this.getReusableActionsInstance().staticWait(500);
-			
-			String lsThumbnail=this.getImageNameFromThumbnailOrZoomImagePath(lnkCurrentZoomImage.getAttribute("href"));
-			String lsZoomImage=this.getImageNameFromThumbnailOrZoomImagePath(imgCurrentThumbnail.getAttribute("src"));
-						
-			reporter.softAssert(lsThumbnail.equalsIgnoreCase(lsZoomImage), "The Thumbnail image is the same as the Zoom image with changing Swatch style", "The Thumbnail image is not the same as the Zoom image with changing Swatch style");
-			//reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblVideoDisclaim),"The Video disclaim message section is displaying correctly","The Video disclaim message section is not displaying correctly");
-		}				
+		if(this.judgeStyleDisplayModeIsDropdownMenu()) {
+			String lsSwatchType;
+			boolean bDisabled;
+			WebElement element;
+			for(WebElement item:this.lstThumbnailImageListForDropdownMenu) {
+				bDisabled=false;
+				lsSwatchType=item.getAttribute("data-styleid");				
+				for(WebElement itemOption:this.lstDropdownProductStyle) {										
+					if(itemOption.getAttribute("value").equalsIgnoreCase(lsSwatchType)) {						
+						if(this.hasElementAttribute(itemOption, "selected")||itemOption.getAttribute("class").contains("disable")) {
+							bDisabled=true;
+							break;
+						}						
+					}
+				}
+				
+				if(!bDisabled) {
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+					element=item.findElement(By.xpath(".//img"));
+					element.click();
+					this.getReusableActionsInstance().staticWait(500);
+					
+					String lsThumbnail=this.getImageNameFromThumbnailOrZoomImagePath(lnkCurrentZoomImage.getAttribute("href"));
+					String lsZoomImage=this.getImageNameFromThumbnailOrZoomImagePath(imgCurrentThumbnail.getAttribute("src"));
+								
+					reporter.softAssert(lsThumbnail.equalsIgnoreCase(lsZoomImage), "The Thumbnail image is the same as the Zoom image with changing Swatch style", "The Thumbnail image is not the same as the Zoom image with changing Swatch style");
+					reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblVideoDisclaim),"The Video disclaim message section is displaying correctly","The Video disclaim message section is not displaying correctly");
+				}
+			}
+		}
+		else {
+			for(WebElement item:this.lstThumbnailImageList) {			
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+				item.click();
+				this.getReusableActionsInstance().staticWait(500);
+				
+				String lsThumbnail=this.getImageNameFromThumbnailOrZoomImagePath(lnkCurrentZoomImage.getAttribute("href"));
+				String lsZoomImage=this.getImageNameFromThumbnailOrZoomImagePath(imgCurrentThumbnail.getAttribute("src"));
+							
+				reporter.softAssert(lsThumbnail.equalsIgnoreCase(lsZoomImage), "The Thumbnail image is the same as the Zoom image with changing Swatch style", "The Thumbnail image is not the same as the Zoom image with changing Swatch style");
+				reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblVideoDisclaim),"The Video disclaim message section is displaying correctly","The Video disclaim message section is not displaying correctly");
+			}
+		}						
 	}
 	
 	/**
@@ -589,6 +624,7 @@ public class ProductDetailPage extends BasePage {
 	 */
 	public void verifyLinkageAmongSwathAndThumbnailAndZoomImage() {
 		String lsSwatch,lsThumbnail="",lsZoomImage="";
+		boolean bDisable=false;		
 		int loopSize;		
 		if(this.judgeStyleDisplayModeIsDropdownMenu()) {
 			Select selectStyle= new Select(this.selectProductStyle);
@@ -598,22 +634,31 @@ public class ProductDetailPage extends BasePage {
 					continue;
 				}
 				String[] lstImageSrc= new String[1];
+				lstImageSrc[0]="";
 				if(!this.hasElementAttribute(this.currentThumbnailItem,"data-video")) {
 					lstImageSrc[0]=this.getElementImageSrc(this.imgCurrentThumbnail);
-				}
+				}	
 				
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectProductStyle);
 				selectStyle.selectByIndex(i);
+								
 				this.waitForCondition(Driver->{return !this.getElementImageSrc(this.imgCurrentThumbnail).equalsIgnoreCase(lstImageSrc[0]);}, 30000);
-				
 				lsSwatch=this.getCurrentSwatchStyle();	
 				
-				lsThumbnail=this.getImageNameFromThumbnailOrZoomImagePath(lnkCurrentZoomImage.getAttribute("href"));
-				lsZoomImage=this.getImageNameFromThumbnailOrZoomImagePath(imgCurrentThumbnail.getAttribute("src"));
+				if(this.lstDropdownProductStyle.get(i).getAttribute("class").contains("disable")) {
+					bDisable=true;
+				}
+				else {
+					bDisable=false;
+				}
 				
+				lsZoomImage=this.getImageNameFromThumbnailOrZoomImagePath(lnkCurrentZoomImage.getAttribute("href"));
+				lsThumbnail=this.getImageNameFromThumbnailOrZoomImagePath(imgCurrentThumbnail.getAttribute("src"));
 				reporter.softAssert(lsThumbnail.toLowerCase().contains(lsSwatch.toLowerCase()), "The Thumbnail image src contains swatch style of " +lsSwatch, "The Thumbnail image src does not contain swatch style of "+lsSwatch);
-				reporter.softAssert(lsZoomImage.toLowerCase().contains(lsSwatch.toLowerCase()), "The Zoom image src contains swatch style of " +lsSwatch, "The Zoom image src does not contain swatch style of "+lsSwatch);
-				reporter.softAssert(lsThumbnail.equalsIgnoreCase(lsZoomImage), "The Thumbnail image is the same as the Zoom image with changing Swatch radio of '"+lsSwatch+"'", "The Thumbnail image is not the same as the Zoom image with changing Swatch radio of '"+lsSwatch+"'");
+				if(!bDisable) {
+					reporter.softAssert(lsZoomImage.toLowerCase().contains(lsSwatch.toLowerCase()), "The Zoom image src contains swatch style of " +lsSwatch, "The Zoom image src does not contain swatch style of "+lsSwatch);
+					reporter.softAssert(lsThumbnail.equalsIgnoreCase(lsZoomImage), "The Thumbnail image is the same as the Zoom image with changing Swatch radio of '"+lsSwatch+"'", "The Thumbnail image is not the same as the Zoom image with changing Swatch radio of '"+lsSwatch+"'");
+				}				
 			}
 		}
 		else {

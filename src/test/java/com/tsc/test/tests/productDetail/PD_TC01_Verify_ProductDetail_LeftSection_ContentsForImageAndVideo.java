@@ -56,10 +56,6 @@ public class PD_TC01_Verify_ProductDetail_LeftSection_ContentsForImageAndVideo e
 		getProductDetailPageThreadLocal().verifyThumbnailImageListSrc();
 		getProductDetailPageThreadLocal().verifyThumbnailPrevButton();
 		getProductDetailPageThreadLocal().verifyThumbnailNextButton();
-
-		reporter.reportLog("The linkage between Thumbnail and Zoom image");
-		getProductDetailPageThreadLocal().verifyLinkageBetweenThumbnailAndZoomImage();
-
 	}
 	else {
 		reporter.reportLogFail("Unable to find the product item with Review, EasyPay, Swatch item>=4 and Video");
