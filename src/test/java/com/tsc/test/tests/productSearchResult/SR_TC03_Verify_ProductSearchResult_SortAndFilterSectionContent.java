@@ -22,7 +22,7 @@ public class SR_TC03_Verify_ProductSearchResult_SortAndFilterSectionContent exte
 	List<List<String>> lsKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_SearchKeyword_DropDown();
 	List<String> lsSortOption=TestDataHandler.constantData.getSearchResultPage().getLst_SortOption();
 	List<String> lsFilterOptionHeader=TestDataHandler.constantData.getSearchResultPage().getLst_FilterOptionHeader();
-	List<String> lsSortOptionMobile=TestDataHandler.constantDataVariables.getLst_SortOptionMobile();
+	List<String> lsSortOptionMobile=TestDataHandler.constantData.getSearchResultPage().getLst_SortOptionMobile();
 	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0));
 
 	if (System.getProperty("Device")=="Mobile"){

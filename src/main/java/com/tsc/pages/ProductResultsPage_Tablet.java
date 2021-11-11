@@ -46,15 +46,14 @@ public class ProductResultsPage_Tablet extends ProductResultsPage{
 		this.firstLevelFilter=lsFirstLevelItem;
 		this.secondLevelFilter=lsSecondLevelItem;
 
-		int loopSize=this.productFilterList.size();
-		for(int i=0;i<loopSize;i++) {
+		for(int i=0;i<this.productFilterList.size();i++) {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i));
 			String lsHeader=this.productFilterList.get(i).getText();
 			if(lsHeader.contains("(")) {
 				lsHeader=lsHeader.split("\\(")[0].trim();
 			}
 
-//If found lsFirstLevelItem
+			//If found lsFirstLevelItem
 			if(lsHeader.equalsIgnoreCase(lsFirstLevelItem)) {
 				this.productFilterList.get(i).click();
 				getReusableActionsInstance().staticWait(300);
@@ -63,17 +62,21 @@ public class ProductResultsPage_Tablet extends ProductResultsPage{
 					WebElement moreButton=this.cntProductSecondlevelFilterListContainer.get(i).findElement(this.byMoreButtonInSecondlevelFilter);
 					getReusableActionsInstance().javascriptScrollByVisibleElement(moreButton);
 					moreButton.click();
+					getReusableActionsInstance().staticWait(500);
 				}
 
 				List<WebElement> subItemList=this.cntProductSecondlevelFilterListContainer.get(i).findElements(this.bySecondlevelFilterList);
+				System.out.println("subItemList size: "+subItemList.size());
 				for(WebElement subItem : subItemList) {
 					getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
 					String lsSubItem=subItem.getText().trim();
+					getReusableActionsInstance().staticWait(500);
 
-//If found lsSecondLevelItem
+					//If found lsSecondLevelItem
 					if(lsSubItem.equalsIgnoreCase(lsSecondLevelItem)) {
+						getReusableActionsInstance().staticWait(500);
 						subItem.click();
-						return waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},60000);
+						return this.waitForPageLoading();
 					}
 				}
 			}
@@ -96,7 +99,7 @@ public class ProductResultsPage_Tablet extends ProductResultsPage{
 		this.secondLevelFilter=btnSecondlevelSelected.getText().trim();
 		btnSecondlevelSelected.click();
 
-		return waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},60000);
+		return this.waitForPageLoading();
 	}
 
 

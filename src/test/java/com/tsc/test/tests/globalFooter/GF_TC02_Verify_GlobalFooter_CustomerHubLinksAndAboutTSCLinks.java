@@ -78,7 +78,7 @@ public class GF_TC02_Verify_GlobalFooter_CustomerHubLinksAndAboutTSCLinks extend
 		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current Language switch href of "+lsHref+" contains "+lsYmlHref,"The current Language switch href of "+lsHref+" does not contain "+lsYmlHref);
 				
 		//TSC customer hub links
-		if (System.getProperty("chromeMobileDevice")=="iPhone X"){
+		if (System.getProperty("Device")=="Mobile"){
 			for(WebElement item:getGlobalFooterPageThreadLocal().lnkTSCCustomerHubAllLinksMobile) {
 				lsText=basePage.getElementText(item);
 				lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsText,true);
@@ -104,7 +104,7 @@ public class GF_TC02_Verify_GlobalFooter_CustomerHubLinksAndAboutTSCLinks extend
 
 		
 		//About TSC links
-		if (System.getProperty("chromeMobileDevice")=="iPhone X"){
+		if (System.getProperty("Device")=="Mobile"){
 			for(WebElement item:getGlobalFooterPageThreadLocal().lnkAboutTSCAllLinksMobile) {
 				lsText=basePage.getElementText(item);
 				lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsText,true);

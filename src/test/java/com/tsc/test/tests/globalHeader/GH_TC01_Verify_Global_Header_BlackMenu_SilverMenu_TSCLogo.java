@@ -208,7 +208,7 @@ public class GH_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo extends B
 		reporter.reportLog("Verify Black headers");
 		//Verify Black headers
 		getglobalheaderPageThreadLocal().hoverOnWatchTSC();
-		if (System.getProperty("chromeMobileDevice")=="iPhone X"){
+		if (System.getProperty("Device")=="Mobile"){
 			getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkWatchUsLiveDpdMenuMobile);
 			getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkProgramGuideDpdMenuMobile);
 			getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().meetTheHostsMobile);

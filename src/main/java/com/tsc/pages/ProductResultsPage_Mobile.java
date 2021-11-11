@@ -63,7 +63,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
         Select sortOption= new Select(this.btnSortSelect);
         sortOption.selectByVisibleText(lsOption.get(0));
 
-        return waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},60000);
+        return this.waitForPageLoading();
     }
 
     @Override
@@ -74,10 +74,9 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
         this.sortAndFilter.click();
         getReusableActionsInstance().staticWait(2000);
 
-        int loopSize = this.productFilterList.size();
-        for (int i = 0; i < loopSize; i++) {
+        for(int i=0;i<this.productFilterList.size();i++) {
             getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i));
-            String lsHeader = this.productFilterList.get(i).getText();
+            String lsHeader = this.productFilterList.get(i).getText().trim();
             if (lsHeader.contains("(")) {
                 lsHeader = lsHeader.split("\\(")[0].trim();
             }
@@ -88,16 +87,17 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
                     getReusableActionsInstance().staticWait(300);
 
                 List<WebElement> subItemList = this.productFilterContainerList.get(i).findElements(this.bySubItemListOnLeftPanel);
+                System.out.println("subItemList size: "+subItemList.size());
                 for (WebElement subItem : subItemList) {
                     getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
                     String lsSubItem = subItem.getText().trim();
+                    getReusableActionsInstance().staticWait(500);
 
                     //If found lsSecondLevelItem
                     if (lsSubItem.equalsIgnoreCase(lsSecondLevelItem)) {
+                        getReusableActionsInstance().staticWait(500);
                         subItem.click();
-                        return waitForCondition(Driver -> {
-                            return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");
-                        }, 60000);
+                        return this.waitForPageLoading();
                     }
                 }
             }
@@ -120,9 +120,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
         this.secondLevelFilter=btnSecondlevelSelected.getText().trim();
         btnSecondlevelSelected.click();
 
-        return waitForCondition(Driver -> {
-            return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");
-        }, 60000);
+        return this.waitForPageLoading();
 
     }
 
@@ -150,7 +148,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
                 this.cancelButton.click();
             }
         }
-        return waitForCondition(Driver->{return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},60000);
+        return this.waitForPageLoading();
     }
 
     @Override
@@ -159,6 +157,12 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
         try{
             //cancelButton.isDisplayed();
             this.cancelButton.click();
+            GlobalheaderPage globalHeader = new GlobalheaderPage(this.getDriver());
+            getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeader.searchBox);
+            this.clearContent(globalHeader.searchBox);
+            globalHeader.searchBox.sendKeys(searchKeyword);
+            //globalHeader.btnSearchSubmit.click();
+            (new BasePage(this.getDriver())).pressEnterKey(globalHeader.searchBox);
         }
         catch(Exception e) {
             GlobalheaderPage globalHeader = new GlobalheaderPage(this.getDriver());
@@ -168,9 +172,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
             //globalHeader.btnSearchSubmit.click();
             (new BasePage(this.getDriver())).pressEnterKey(globalHeader.searchBox);
         }
-        return waitForCondition(Driver -> {
-            return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");
-        }, 90000);
+        return this.waitForPageLoading();
     }
 
 

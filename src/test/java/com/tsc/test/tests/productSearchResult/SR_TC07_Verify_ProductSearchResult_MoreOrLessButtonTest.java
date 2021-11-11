@@ -40,14 +40,14 @@ public class SR_TC07_Verify_ProductSearchResult_MoreOrLessButtonTest extends Bas
 	}
 			
 	reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(), "Showing text pattern in filters is correct", "Showing text pattern in filters is incorrect");
-	if(System.getProperty("Device")=="Desktop") {
-			reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting), "The default setting of items per page is "+lsSearchResultPageDefaultSetting, "The default setting of items per page isn't "+lsSearchResultPageDefaultSetting);
+	if(!(System.getProperty("Device")=="Mobile")) {
+		reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting), "The default setting of items per page is "+lsSearchResultPageDefaultSetting, "The default setting of items per page isn't "+lsSearchResultPageDefaultSetting);
 	}
 	
-	/*productList=getProductResultsPageThreadLocal().getProductList();
+	productList=getProductResultsPageThreadLocal().getProductList();
 	if(productList.size()>0) {
 		getProductResultsPageThreadLocal().verifySearchResultContent(productList);
-	}*/
+	}
 	
 	for(String lsHeader:lstMoreButton) {
 		//Get the element container corresponding to the first level filter

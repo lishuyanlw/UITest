@@ -392,6 +392,8 @@ public class ConstantData {
         private List<String> lst_DisappearAfterSelectFilter;
         private String lnk_product_result;
         private List<String> lbl_ProductRecommendationTitlePage;
+        private List<String> lst_Filter_Data;
+        private List<String> lst_SortOptionMobile;
 
         public List<String> getLst_SearchKeyword() {
             return lst_SearchKeyword;
@@ -440,6 +442,14 @@ public class ConstantData {
         public void setLst_FilterOptionHeader(List<String> lst_FilterOptionHeader) {
             this.lst_FilterOptionHeader = lst_FilterOptionHeader;
         }
+
+        public List<String> getLst_Filter_Data() { return lst_Filter_Data; }
+
+        public void setLst_Filter_Data(List<String> lst_Filter_Data) { this.lst_Filter_Data = lst_Filter_Data; }
+
+        public List<String> getLst_SortOptionMobile() { return lst_SortOptionMobile; }
+
+        public void setLst_SortOptionMobile(List<String> lst_SortOptionMobile) { this.lst_SortOptionMobile = lst_SortOptionMobile; }
 
         public List<SearchOption> getLst_SearchOption() {
             return lst_SearchOption;
