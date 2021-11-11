@@ -177,7 +177,7 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//iframe[contains(@src,'truefit')]")
 	public WebElement iframeProductTrueFit;
 	
-	@FindBy(xpath = "//div[contains(@class,'tfc-iframe-loaded')]")
+	@FindBy(xpath = "//div[@aria-label='True Fit']")
 	public WebElement iframeProductTrueFitLoadingIndicator;
 	
 	@FindBy(xpath = "//button[contains(@class,'tfc-popup-click-close')][img]")
@@ -481,8 +481,16 @@ public class ProductDetailPage extends BasePage {
 	 * @author Wei.Li
 	 */
 	public boolean judgeStyleSizeAvailable() {
-		return this.checkChildElementExistingByAttribute(this.cntProductSizeJudgeIndicator, "id", "divAvailableSizes");
-		//return this.getChildElementCount(this.cntProductSizeJudgeIndicator)>9;
+		return this.checkChildElementExistingByAttribute(this.cntProductSizeJudgeIndicator, "id", "divAvailableSizes");		
+	}
+	
+	/**
+	 * Method to check if TrueFit part is existing
+	 * @return true/false	  
+	 * @author Wei.Li
+	 */
+	public boolean judgeStyleTrueFitExisting() {
+		return !this.cntProductTrueFitSection.getCssValue("height").equalsIgnoreCase("0px");
 	}
 	
 	/**
@@ -858,6 +866,18 @@ public class ProductDetailPage extends BasePage {
 		}
 		
 		return lsMsg;
+	}
+
+	/**
+	 * Method to switch to TrueFit iFrame
+	 * @return void	  
+	 * @author Wei.Li
+	 */
+	public void switchToTrueFitIFrame() {
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkProductTrueFitLink);
+		this.lnkProductTrueFitLink.click();
+		this.waitForCondition(Driver->{return this.iframeProductTrueFitLoadingIndicator.getAttribute("style").contains("display: block");}, 30000);
+		this.getDriver().switchTo().frame(this.iframeProductTrueFit);
 	}
 	
 

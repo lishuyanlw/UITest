@@ -11,7 +11,8 @@ import com.tsc.test.base.BaseTest;
 
 public class PD_TC02_Verify_ProductDetail_RightSection_ItemDetails extends BaseTest{
 	/*
-	 * CER-572	 
+	 * CER-572	
+	 * CER-583 
 	 */
 	@Test(groups={"ProductDetail","Regression"})
 	public void validateRightSection_ItemDetails() throws IOException {	
@@ -63,7 +64,7 @@ public class PD_TC02_Verify_ProductDetail_RightSection_ItemDetails extends BaseT
 		reporter.softAssert(getProductDetailPageThreadLocal().lstStyleRadioList.size()>0,"The product style radio button count is greater than 0","The product style radio button count is not greater than 0");
 		
 		//Verify product TrueFit
-		if(!getProductDetailPageThreadLocal().cntProductTrueFitSection.getCssValue("height").equalsIgnoreCase("0px")) {
+		if(getProductDetailPageThreadLocal().judgeStyleTrueFitExisting()) {
 			reporter.reportLog("Verify product TrueFit");	
 			reporter.softAssert(basePage.getReusableActionsInstance().isElementVisible(getProductDetailPageThreadLocal().imgProductTrueFitLogo),"The product TrueFit icon is displaying correctly","The product TrueFit icon is not displaying correctly");
 			reporter.softAssert(!basePage.getElementHref(getProductDetailPageThreadLocal().lnkProductTrueFitLink).isEmpty(),"The product TrueFit link is not empty","The product TrueFit link is empty");
