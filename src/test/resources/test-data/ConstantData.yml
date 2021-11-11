@@ -19,7 +19,7 @@ headerSection:
   lnk_WatchUsLive: /pages/watchuslive?ic=HP_WatchUsLive
   lbl_Favourites: Favourites
   lst_SignInPopover: ["Sign in","Create an account","Transfer a phone account","Track your order"]
-  lbl_SignIn: Sign In
+  lbl_SignIn: Sign in
   lbl_SearchBoxPlaceholder: Search
   lbl_ShoppingCartLinkName: Bag
   lnk_ShoppingCartLink: /pages/shoppingcart

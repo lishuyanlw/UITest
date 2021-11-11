@@ -122,46 +122,56 @@ public class GlobalheaderPage extends BasePage{
 	public List<WebElement> searchQADropdwonmenuList;
 
 	//Top suggestions
-	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Top suggestions') or contains(.,'Trending')][contains(@class,'ac__section__title search-title')]")
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Top suggestions') or contains(.,'Your searches')][contains(@class,'ac__section__title search-title')]")
 	public WebElement lblTopSuggestions;
 	
-	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Top suggestions') or contains(.,'Trending')][contains(@class,'ac__section__title search-title')]/following-sibling::ul")
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Top suggestions') or contains(.,'Your searches')][contains(@class,'ac__section__title search-title')]/following-sibling::ul")
 	public WebElement cntTopSuggestionsList;
 	
-	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Top suggestions') or contains(.,'Trending')][contains(@class,'ac__section__title search-title')]/following-sibling::ul//li//a")
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Top suggestions') or contains(.,'Your searches')][contains(@class,'ac__section__title search-title')]/following-sibling::ul//li//a")
 	public List<WebElement> lstTopSuggestionsLink;
 	
 	public By byUnmarkedTextForTopSuggestions = By.xpath(".//span[contains(@class,'unmark-text')]");
 	
 	//Categories
-	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Categories') or contains(.,'Featured brands')][contains(@class,'ac__section__title search-title')]")
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Categories') or contains(.,'Trending')][contains(@class,'ac__section__title search-title')]")
 	public WebElement lblCategories;
 	
-	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Categories') or contains(.,'Featured brands')][contains(@class,'ac__section__title search-title')]/following-sibling::ul")
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Categories') or contains(.,'Trending')][contains(@class,'ac__section__title search-title')]/following-sibling::ul")
 	public WebElement cntCategoriesList;
 	
-	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Categories') or contains(.,'Featured brands')][contains(@class,'ac__section__title search-title')]/following-sibling::ul//li//a")
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Categories') or contains(.,'Trending')][contains(@class,'ac__section__title search-title')]/following-sibling::ul//li//a")
 	public List<WebElement> lstCategoriesLink;
 	
 	//Brands
-	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Brands') and contains(@class,'ac__section__title search-title')]")
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Brands') or contains(.,'Featured brands')][contains(@class,'ac__section__title search-title')]")
 	public WebElement lblBrands;
 	
-	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Brands') and contains(@class,'ac__section__title search-title')]/following-sibling::ul")
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Brands') or contains(.,'Featured brands')][contains(@class,'ac__section__title search-title')]/following-sibling::ul")
 	public WebElement cntBrandsList;
 	
-	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Brands') and contains(@class,'ac__section__title search-title')]/following-sibling::ul//li//a")
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Brands') or contains(.,'Featured brands')][contains(@class,'ac__section__title search-title')]/following-sibling::ul//li//a")
 	public List<WebElement> lstBrandsLink;
 	
 	//Possible item matches
-	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--right')]//*[contains(.,'Possible item matches') or contains(.,'Top Selling Products')][contains(@class,'search-title')]")
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--right')]//div[@class='ac__layout-inner--left']//*[contains(@class,'search-title')]")
 	public WebElement lblPossibleItemMatches;
 	
-	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--right')]//*[contains(.,'Possible item matches') or contains(.,'Top Selling Products')][contains(@class,'search-title')]/following-sibling::ul")
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--right')]//div[@class='ac__layout-inner--left']")
 	public WebElement cntPossibleItemMatchesList;
 	
-	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--right')]//*[contains(.,'Possible item matches') or contains(.,'Top Selling Products')][contains(@class,'search-title')]/following-sibling::ul//li//a")
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--right')]//div[@class='ac__layout-inner--left']//ul//li//a")
 	public List<WebElement> lstPossibleItemMatchesLink;
+
+	//More to Explore
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--right')]//div[@class='ac__layout-inner--right']//*[contains(@class,'search-title')]")
+	public WebElement lblMoreToExplore;
+
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--right')]//div[@class='ac__layout-inner--right']")
+	public WebElement cntMoreToExploreList;
+
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--right')]//div[@class='ac__layout-inner--right']//ul//li")
+	public List<WebElement> lstMoreToExplore;
 
 	
 	//For Staging website
@@ -203,7 +213,7 @@ public class GlobalheaderPage extends BasePage{
 
 	@FindBy(xpath = "//ul[contains(@class,'primary-navigation__wrapper')]//li//a")
 	WebElement FlyoutHeadings;
-
+	
 	@FindBy(xpath = "//nav[contains(@class,'mega-categories mega-column')]//ul/li")
 	WebElement Categories;
 	
@@ -212,7 +222,7 @@ public class GlobalheaderPage extends BasePage{
 	
 	@FindBy(xpath = "//h2[contains(@class,'gatewayTitle xs-vw8')]")
 	WebElement flyoutHeadingLandigPageHeading;
-
+	
 	@FindBy(xpath = "//h2[contains(@class,'titleLink')]//b")
 	WebElement shopAllBrandsLandigPageHeading;
 
@@ -698,7 +708,7 @@ public class GlobalheaderPage extends BasePage{
 		 * @author Shruti Desai
 	 */
 		public void clickSubMenuItem(String headingName,String submenuHeading, String itemName) {
-			String xpathHeading =createXPath("//span[contains(text(),'{0}')]" ,headingName);
+			String xpathHeading =createXPath("//span[contains(text(),'{0}')]" ,headingName); 
 			WebElement headingWebElement = FlyoutHeadings.findElement(By.xpath(xpathHeading));
 			getReusableActionsInstance().scrollToElement(headingWebElement);
 
@@ -706,7 +716,7 @@ public class GlobalheaderPage extends BasePage{
 				headingWebElement.click();
 			}
 			if(submenuHeading!=null) {
-				String xpathSubMenu =createXPath("//a[contains(text(),\"{0}\")]" ,submenuHeading);
+				String xpathSubMenu =createXPath("//a[contains(text(),\"{0}\")]" ,submenuHeading); 
 				WebElement SubMenu = Categories.findElement(By.xpath(xpathSubMenu));
 				getReusableActionsInstance().scrollToElement(SubMenu);
 				if(itemName!=null) {
@@ -719,7 +729,7 @@ public class GlobalheaderPage extends BasePage{
 				}
 			}
 		}
-
+		
 		/*Method to get list of Flyout heading WebElements
 		 * @return List:Flyout heading WebElements
 		 * @author Shruti Desai
@@ -728,15 +738,15 @@ public class GlobalheaderPage extends BasePage{
 			List<WebElement> headingElements =FlyoutHeadings.findElements(By.xpath("//span[contains(@class,'primary-navigation__link-text')]"));
 			return headingElements;
 		}
-
-		/*Method to scroll to desired WebElement
+		
+		/*Method to scroll to desired WebElement 
 		 * @author Shruti Desai
 		 */
 		public void scrolltoWebElement(WebElement webElement) {
 			getReusableActionsInstance().scrollToElement(webElement);
 			}
-
-		/*Method to verify Flyout heading
+		
+		/*Method to verify Flyout heading 
 		 * @return true/false
 		 * @author Shruti Desai
 		 */
@@ -747,32 +757,32 @@ public class GlobalheaderPage extends BasePage{
 			}
 			return true;
 		}
-
+		
 		/*Method to get url after clicking flyout heading link
 		 * @return String:href
 		 * @author Shruti Desai
 		 */
 		public String getUrlAfterclickingFlyoutHeading(String headingName) {
 			 String currentUrl;
-			 String xpathHeading =createXPath("//span[contains(text(),'{0}')]" ,headingName);
+			 String xpathHeading =createXPath("//span[contains(text(),'{0}')]" ,headingName); 
 			 WebElement headingWebElement = FlyoutHeadings.findElement(By.xpath(xpathHeading));
 			 getReusableActionsInstance().scrollToElement(headingWebElement);
 			 headingWebElement .click();
 			 currentUrl = getDriver().getCurrentUrl();
 			 return currentUrl;
 		}
-
-
-		/*Method to get WebElement for flyout heading
+		
+		
+		/*Method to get WebElement for flyout heading  
 		 * @return WebElement
 		 * @author Shruti Desai
-		 */
+		 */	
 		public WebElement getWebElementFlyoutHeading(String headingName) {
-			String xpathHeading =createXPath("//span[contains(text(),'{0}')]" ,headingName);
+			String xpathHeading =createXPath("//span[contains(text(),'{0}')]" ,headingName); 
 			WebElement headingWebElement = FlyoutHeadings.findElement(By.xpath(xpathHeading));
 			return headingWebElement;
 		 }
-
+		
 		/* Method for scroll to Flyout heading WebElement
 		 * @author Shruti Desai
 		 */
@@ -780,17 +790,17 @@ public class GlobalheaderPage extends BasePage{
 			  WebElement headingWebElement =getWebElementFlyoutHeading(headingName);
 			  getReusableActionsInstance().scrollToElement(headingWebElement);
 		}
-
-		/*Method to get WebElement for shop all brand in Popular Brand section
+		
+		/*Method to get WebElement for shop all brand in Popular Brand section  
 		 * @return WebElement
 		 * @author Shruti Desai
-		 */
+		 */	
 		public WebElement getWebElementShopAllPupularBrand() {
 			WebElement ShopAllWebElement = getDriver().findElement(By.xpath("//a[contains(@class,'mega-popular__cta')]"));
 			return ShopAllWebElement;
 		}
 
-		/*Method to verify href is present or not before clicking shop all link in Popular Brand Section and get url of landing page
+		/*Method to verify href is present or not before clicking shop all link in Popular Brand Section and get url of landing page 
 		 * @return String:href(only get unique part for each heading)
 		 * @author Shruti Desai
 		 */
@@ -818,9 +828,9 @@ public class GlobalheaderPage extends BasePage{
 			currentPageHeading=createCamelCase(pageHeading);
 			return currentPageHeading;
 		}
-
+		
 		public String getHeadingOfLandingPageforShopAllBrands() {
-			String currentPageHeading,pageHeading;
+			String currentPageHeading,pageHeading; 
 			pageHeading =getPageTitle(shopAllBrandsLandigPageHeading);
 			currentPageHeading=createCamelCase(pageHeading);
 			return currentPageHeading;
@@ -831,4 +841,10 @@ public class GlobalheaderPage extends BasePage{
 			return createCamelCase(getPageTitle(webElement));
 		}
 }
+	
 
+		 
+		 
+		 
+
+	 
