@@ -103,46 +103,56 @@ public class GlobalheaderPage extends BasePage{
 	public List<WebElement> searchQADropdwonmenuList;
 
 	//Top suggestions
-	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Top suggestions') or contains(.,'Trending')][contains(@class,'ac__section__title search-title')]")
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Top suggestions') or contains(.,'Your searches')][contains(@class,'ac__section__title search-title')]")
 	public WebElement lblTopSuggestions;
 	
-	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Top suggestions') or contains(.,'Trending')][contains(@class,'ac__section__title search-title')]/following-sibling::ul")
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Top suggestions') or contains(.,'Your searches')][contains(@class,'ac__section__title search-title')]/following-sibling::ul")
 	public WebElement cntTopSuggestionsList;
 	
-	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Top suggestions') or contains(.,'Trending')][contains(@class,'ac__section__title search-title')]/following-sibling::ul//li//a")
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Top suggestions') or contains(.,'Your searches')][contains(@class,'ac__section__title search-title')]/following-sibling::ul//li//a")
 	public List<WebElement> lstTopSuggestionsLink;
 	
 	public By byUnmarkedTextForTopSuggestions = By.xpath(".//span[contains(@class,'unmark-text')]");
 	
 	//Categories
-	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Categories') or contains(.,'Featured brands')][contains(@class,'ac__section__title search-title')]")
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Categories') or contains(.,'Trending')][contains(@class,'ac__section__title search-title')]")
 	public WebElement lblCategories;
 	
-	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Categories') or contains(.,'Featured brands')][contains(@class,'ac__section__title search-title')]/following-sibling::ul")
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Categories') or contains(.,'Trending')][contains(@class,'ac__section__title search-title')]/following-sibling::ul")
 	public WebElement cntCategoriesList;
 	
-	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Categories') or contains(.,'Featured brands')][contains(@class,'ac__section__title search-title')]/following-sibling::ul//li//a")
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Categories') or contains(.,'Trending')][contains(@class,'ac__section__title search-title')]/following-sibling::ul//li//a")
 	public List<WebElement> lstCategoriesLink;
 	
 	//Brands
-	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Brands') and contains(@class,'ac__section__title search-title')]")
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Brands') or contains(.,'Featured brands')][contains(@class,'ac__section__title search-title')]")
 	public WebElement lblBrands;
 	
-	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Brands') and contains(@class,'ac__section__title search-title')]/following-sibling::ul")
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Brands') or contains(.,'Featured brands')][contains(@class,'ac__section__title search-title')]/following-sibling::ul")
 	public WebElement cntBrandsList;
 	
-	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Brands') and contains(@class,'ac__section__title search-title')]/following-sibling::ul//li//a")
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Brands') or contains(.,'Featured brands')][contains(@class,'ac__section__title search-title')]/following-sibling::ul//li//a")
 	public List<WebElement> lstBrandsLink;
 	
 	//Possible item matches
-	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--right')]//*[contains(.,'Possible item matches') or contains(.,'Top Selling Products')][contains(@class,'search-title')]")
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--right')]//div[@class='ac__layout-inner--left']//*[contains(@class,'search-title')]")
 	public WebElement lblPossibleItemMatches;
 	
-	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--right')]//*[contains(.,'Possible item matches') or contains(.,'Top Selling Products')][contains(@class,'search-title')]/following-sibling::ul")
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--right')]//div[@class='ac__layout-inner--left']")
 	public WebElement cntPossibleItemMatchesList;
 	
-	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--right')]//*[contains(.,'Possible item matches') or contains(.,'Top Selling Products')][contains(@class,'search-title')]/following-sibling::ul//li//a")
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--right')]//div[@class='ac__layout-inner--left']//ul//li//a")
 	public List<WebElement> lstPossibleItemMatchesLink;
+	
+	//More to Explore
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--right')]//div[@class='ac__layout-inner--right']//*[contains(@class,'search-title')]")
+	public WebElement lblMoreToExplore;
+	
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--right')]//div[@class='ac__layout-inner--right']")
+	public WebElement cntMoreToExploreList;
+	
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--right')]//div[@class='ac__layout-inner--right']//ul//li")
+	public List<WebElement> lstMoreToExplore;
 	
 	
 	//For Staging website
@@ -540,6 +550,9 @@ public class GlobalheaderPage extends BasePage{
 		 */
 		public void scrollToHeadingElement(String headingName) {
 			  WebElement headingWebElement =getWebElementFlyoutHeading(headingName);
+			  if(System.getProperty("Browser").toLowerCase().contains("firefox")) {
+					getReusableActionsInstance().javascriptScrollByVisibleElement(headingWebElement);
+				}
 			  getReusableActionsInstance().scrollToElement(headingWebElement);
 		}
 		
