@@ -10,8 +10,8 @@ import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 import com.tsc.test.tests.globalFooter.GF_TC01_Verify_GlobalFooter_SocialMedia;
 import com.tsc.test.tests.globalFooter.GF_TC02_Verify_GlobalFooter_CustomerHubLinksAndAboutTSCLinks;
-import com.tsc.test.tests.homePage.HP_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo;
-import com.tsc.test.tests.homePage.HP_TC01_Verify_Global_Header_SignIn_Favorite_ShoppingCartBag;
+import com.tsc.test.tests.globalHeader.GH_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo;
+import com.tsc.test.tests.globalHeader.GH_TC02_Verify_Global_Header_SignIn_Favorite_ShoppingCartBag;
 
 public class SR_TC10_Verify_ProductSearchResult_GlobalHeaderAndFooterAfterSortAndFilter extends BaseTest{
 	/*
@@ -24,9 +24,9 @@ public class SR_TC10_Verify_ProductSearchResult_GlobalHeaderAndFooterAfterSortAn
 	reporter.softAssert(getglobalheaderPageThreadLocal().validateURL((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");		
 	reporter.reportLog("ProductSearch Page");
 	
-	List<List<String>> lsKeywordList=TestDataHandler.constantDataVariables.getlst_SearchKeyword_DropDown();
-	List<List<String>> lstSearchResultMessage=TestDataHandler.constantDataVariables.getlst_SearchResultMessage();
-	String lsSearchResultPageDefaultSetting=TestDataHandler.constantDataVariables.getlbl_SearchResultPageDefaultSetting();	
+	List<List<String>> lsKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_SearchKeyword_DropDown();
+	List<String> lstSearchResultMessage=TestDataHandler.constantData.getSearchResultPage().getLst_SearchResultMessage();
+	String lsSearchResultPageDefaultSetting=TestDataHandler.constantData.getSearchResultPage().getLbl_SearchResultPageDefaultSetting();
 	List<WebElement> productList;
 	String lsMsg;
 	List<String> lstSortByOptions=TestDataHandler.constantDataVariables.getLst_Filter_Data();
@@ -48,12 +48,12 @@ public class SR_TC10_Verify_ProductSearchResult_GlobalHeaderAndFooterAfterSortAn
 			reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting), "The default setting of items per page is "+lsSearchResultPageDefaultSetting, "The default setting of items per page isn't "+lsSearchResultPageDefaultSetting);
 		}
 		
-		/*productList=getProductResultsPageThreadLocal().getProductList();
+		productList=getProductResultsPageThreadLocal().getProductList();		
 		if(productList.size()>0) {
 			List<WebElement> lstFirstproduct=new ArrayList<WebElement>();
 			lstFirstproduct.add(productList.get(0));
 			getProductResultsPageThreadLocal().verifySearchResultContent(lstFirstproduct);
-		}	*/
+		}	
 		
 		reporter.softAssert(getProductResultsPageThreadLocal().verifyProductPagination(), "Product pagination is existing", "Product pagination is not existing");
 		reporter.softAssert(getProductResultsPageThreadLocal().verifyElementExisting(getProductResultsPageThreadLocal().getHeaderContainer()), "Header section is existing after choosing sorting options", "Header section is not existing after choosing sorting options");
@@ -64,10 +64,10 @@ public class SR_TC10_Verify_ProductSearchResult_GlobalHeaderAndFooterAfterSortAn
 	}
 	
 	//Verify header section
-	HP_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo headerSectionMenuAndLogoTest= new HP_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo();
+	GH_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo headerSectionMenuAndLogoTest= new GH_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo();
 	headerSectionMenuAndLogoTest.validateMajorNameAndLinks();
 	
-	HP_TC01_Verify_Global_Header_SignIn_Favorite_ShoppingCartBag headerSectionOthersTest= new HP_TC01_Verify_Global_Header_SignIn_Favorite_ShoppingCartBag();
+	GH_TC02_Verify_Global_Header_SignIn_Favorite_ShoppingCartBag headerSectionOthersTest= new GH_TC02_Verify_Global_Header_SignIn_Favorite_ShoppingCartBag();
 	headerSectionOthersTest.validateMajorNameAndLinks();
 	
 	//Verify footer section
@@ -79,7 +79,7 @@ public class SR_TC10_Verify_ProductSearchResult_GlobalHeaderAndFooterAfterSortAn
 		
 	//Test filter by price	
 	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0));
-	List<List<String>> lstFilterByPrice=TestDataHandler.constantDataVariables.getlst_FilterByPrice();
+	List<List<String>> lstFilterByPrice=TestDataHandler.constantData.getSearchResultPage().getLst_SearchOption().get(1).getFilterOption();
 	if(getProductResultsPageThreadLocal().selectFilterItemInLeftPanel(lstFilterByPrice.get(0).get(0), lstFilterByPrice.get(0).get(1))) {
 		reporter.softAssert(getProductResultsPageThreadLocal().verifyUrlContainDimensionAndKeyword(lsKeywordList.get(0).get(0)), "The Url contains correct keyword", "The Url does not contain correct keyword");
 		
@@ -120,4 +120,3 @@ public class SR_TC10_Verify_ProductSearchResult_GlobalHeaderAndFooterAfterSortAn
 
 	}
 }
-

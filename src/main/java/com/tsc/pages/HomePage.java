@@ -445,6 +445,8 @@ public class HomePage extends BasePage{
 		 */			
 		public boolean validateShopByBrandAutomaticScrollingAction() {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(lblShopByBrand);
+			//Clicking on title below to enable automatic scrolling in application while running automated test
+			this.lblShopByBrand.click();
 			
 			//Return if all slides are no more than 5
 			if(this.lnkShopByBrandAllLinks.size()<=5) {
@@ -754,12 +756,14 @@ public class HomePage extends BasePage{
 	 */
 		public boolean validateShopByDepartmentAutomaticScrollingAction() {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(lblShopByDepartment);
+			//Clicking on title below to enable automatic scrolling in application while running automated test
+			this.lblShopByDepartment.click();
 			List<String> lnkListBefore= new ArrayList<String>();
 			for(WebElement item:this.lnkShopByDepartmentAllActiveLinks) {
 				lnkListBefore.add(item.getAttribute("href"));
 			}
 			String lsCurrentHref=lnkListBefore.get(0);
-			waitForCondition(Driver->{return !lsCurrentHref.equalsIgnoreCase(this.lnkShopByDepartmentAllActiveLinks.get(0).getAttribute("href"));},30000);
+			waitForCondition(Driver->{return !lsCurrentHref.equalsIgnoreCase(this.lnkShopByDepartmentAllActiveLinks.get(0).getAttribute("href"));},50000);
 			List<String> lnkListAfter= new ArrayList<String>();
 			for(WebElement item:this.lnkShopByDepartmentAllActiveLinks) {
 				lnkListAfter.add(item.getAttribute("href"));

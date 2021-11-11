@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.List;
 
 import com.tsc.data.Handler.TestDataHandler;
-import com.tsc.pages.HomePage;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 
@@ -21,7 +20,7 @@ public class GF_TC01_Verify_GlobalFooter_SocialMedia extends BaseTest {
 		
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl), "TSC url is correct", "TSC url is incorrect");
 		reporter.reportLog("Global Footer Section");	
-		
+
 		validateMajorNameAndLinks();
 		validateActionContents();
 		
@@ -33,7 +32,7 @@ public class GF_TC01_Verify_GlobalFooter_SocialMedia extends BaseTest {
 		BasePage basePage=new BasePage(this.getDriver());		
 		String lsBaseUrl=basePage.getBaseURL()+"/";
 		
-		List<String> lstSocialMediaLinks=TestDataHandler.constantDataVariables.getlst_SocialMediaLinks();
+		List<String> lstSocialMediaLinks=TestDataHandler.constantData.getFooterSection().getLst_SocialMediaLinks();
 		
 		//Facebook
 		String lsUrl=getGlobalFooterPageThreadLocal().getUrlWithSocialMediaName(lstSocialMediaLinks, "Facebook");		
@@ -74,8 +73,6 @@ public class GF_TC01_Verify_GlobalFooter_SocialMedia extends BaseTest {
 	public void validateMajorNameAndLinks() {
 		reporter.reportLog("Global Footer Section contents for SocialMedia");
 
-		List<String> lstSocialMediaLinks=TestDataHandler.constantDataVariables.getlst_SocialMediaLinks();
-		
 		//Facebook
 		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementProperty(getGlobalFooterPageThreadLocal().lnkFacebook,"Link"),"Facebook link in Global footer is not empty","Facebook link in Global footer is empty");
 		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementProperty(getGlobalFooterPageThreadLocal().imgFacebook,"Image"),"Facebook icon in Global footer is not empty","Facebook icon in Global footer is empty");		

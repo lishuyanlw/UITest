@@ -14,9 +14,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import com.tsc.pages.*;
 import org.apache.http.client.ClientProtocolException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.ITestContext;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -28,9 +28,13 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.Cookie;
-import org.openqa.selenium.Dimension;
-
 import com.tsc.data.Handler.TestDataHandler;
+import com.tsc.pages.GlobalheaderPage;
+import com.tsc.pages.HomePage;
+import com.tsc.pages.LoginPage;
+import com.tsc.pages.ProductDetailPage;
+import com.tsc.pages.ProductResultsPage;
+import com.tsc.pages.GlobalFooterPage;
 import com.tsc.pages.ProductResultsPage_Tablet;
 
 import extentreport.ExtentTestManager;
@@ -51,11 +55,12 @@ public class BaseTest {
 	protected static final ThreadLocal<HomePage> homePageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<GlobalFooterPage> globalFooterPageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<ProductResultsPage> productResultsPageThreadLocal = new ThreadLocal<>();
+	protected static final ThreadLocal<ProductDetailPage> productDetailPageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<ProductResultsPage_Tablet> productResultsPage_TabletThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<ProductResultsPage_Mobile> productResultsPage_MobileThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<LoginPage> loginPageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<String> TestDeviceThreadLocal = new ThreadLocal<>();
-	
+
 
 	public BaseTest() {
 		browserDrivers = new BrowserDrivers();
@@ -95,21 +100,26 @@ public class BaseTest {
 	protected static ProductResultsPage_Mobile getProductResultsPage_MobileThreadLocal() {
 		return productResultsPage_MobileThreadLocal.get();
 	}
+	
+	protected static ProductDetailPage getProductDetailPageThreadLocal() {
+		return productDetailPageThreadLocal.get();
+	}
 
-	//@return the LoginPageThreadLocal
-	protected static LoginPage getGlobalLoginPageThreadLocal() {return loginPageThreadLocal.get();}
+	protected static LoginPage getGlobalLoginPageThreadLocal() {
+		return loginPageThreadLocal.get();
+
 
 	//@return the TestDeviceThreadLocal
 	protected static String getTestDeviceThreadLocal() {
 	 	return TestDeviceThreadLocal.get();
 	}
 
-
 	private void init() {
 		
 		homePageThreadLocal.set(new HomePage(getDriver()));
 		globalheaderPageThreadLocal.set(new GlobalheaderPage(getDriver()));
 		globalFooterPageThreadLocal.set(new GlobalFooterPage(getDriver()));
+		productDetailPageThreadLocal.set(new ProductDetailPage(getDriver()));
 		loginPageThreadLocal.set(new LoginPage(getDriver()));
 		reporter = new ExtentTestManager(getDriver());
 	}
@@ -122,7 +132,7 @@ public class BaseTest {
 		webDriverThreadLocal.set(driver);
 	}
 
-	public void closeSession() {		
+	public void closeSession() {
 		getDriver().quit();
 	}
 
@@ -131,15 +141,15 @@ public class BaseTest {
 	}
 
 	public void startSession(String strUrl, String strBrowser, String strLanguage, Method currentTestMethodName,
-			boolean bypassCaptcha) throws IOException {
+			boolean bypassCaptcha) throws ClientProtocolException, IOException {
 		RunParameters = getExecutionParameters(strBrowser, strLanguage);
 		strBrowser = RunParameters.get("Browser").toLowerCase();
-		//strLanguage = RunParameters.get("Language").toLowerCase();
+		strLanguage = RunParameters.get("Language").toLowerCase();
 
 		if (strBrowser.toLowerCase().contains("sauce")) { 
 			sauceParameters =	initializeSauceParamsMap(strBrowser); 
-			}
-		
+		}
+
 		webDriverThreadLocal.set(browserDrivers.driverInit(strBrowser, sauceParameters, currentTestMethodName, ""));
 		getDriver().get(strUrl);
 		strBrowser=System.getProperty("Browser").trim();
@@ -170,17 +180,9 @@ public class BaseTest {
 		/*if (!strBrowser.toLowerCase().contains("android") && !strBrowser.toLowerCase().contains("ios")
 				&& !strBrowser.toLowerCase().contains("mobile")) {
 			getDriver().manage().window().maximize();
-			getDriver().manage().window().setSize(new Dimension(500, 600));
-			productResultsPageThreadLocal.set(new ProductResultsPage(getDriver()));
-
-		}else{
-
-			productResultsPageThreadLocal.set(new ProductResultsPage_Tablet(getDriver()));
 		}*/
-
 		setImplictWait(getDriver(), 60);
 		//setSessionStorage(strUrl);
-		
 		init();
 	}
 
@@ -243,7 +245,7 @@ public class BaseTest {
 	@BeforeMethod(alwaysRun = true)
 	@Parameters({ "strBrowser", "strLanguage" })
 	public void beforeTest(@Optional("chrome") String strBrowser, @Optional("en") String strLanguage,
-			ITestContext testContext, Method method) throws IOException {
+			ITestContext testContext, Method method) throws ClientProtocolException, IOException {
 		startSession(System.getProperty("QaUrl"), strBrowser, strLanguage, method, false);
 		getglobalheaderPageThreadLocal().waitForPageLoad();
 		// getHomePageThreadLocal().waitforOverlayLoadingSpinnerToDisapper();
@@ -254,7 +256,7 @@ public class BaseTest {
 
 	@AfterMethod(alwaysRun = true)
 	public void afterTest() {
-		if (getDriver() != null) {			
+		if (getDriver() != null) {
 			//deleteSessionStorage();
 			closeSession();
 		}

@@ -2,7 +2,6 @@ package com.tsc.test.tests.globalFooter;
 
 import org.testng.annotations.Test;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.tsc.data.Handler.TestDataHandler;
@@ -34,7 +33,7 @@ public class GF_TC02_Verify_GlobalFooter_CustomerHubLinksAndAboutTSCLinks extend
 		
 		BasePage basePage=new BasePage(this.getDriver());		
 		
-		List<List<String>> lstNameAndLinks=TestDataHandler.constantDataVariables.getlst_NameAndLinks();
+		List<List<String>> lstNameAndLinks=TestDataHandler.constantData.getFooterSection().getLst_NameAndLinks();
 		
 		//Credit card
 		String lsText=basePage.getElementText(getGlobalFooterPageThreadLocal().lnkCreditCard);		

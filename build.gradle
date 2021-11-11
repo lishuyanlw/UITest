@@ -28,6 +28,9 @@ dependencies {
     implementation 'org.testng:testng:6.14.3'
     implementation 'automation-utils:common-utils:latest.release'
     implementation 'org.yaml:snakeyaml:1.24'
+    // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.4'
+
 }
 
 def sauce = [
@@ -44,7 +47,7 @@ def getTunnelName() {
 //    tunnelName = tunnelName.replaceAll(":","")
 //    tunnelName = tunnelName.replaceAll(" ","")
 //    return tunnelName
-    return "Digital_Mobile_QA"
+    return "DigitalQETunnel"
 }
 
 def tunnel_name() {
@@ -89,7 +92,7 @@ task "sauceTest"(type: Test) {
 
 //To shutdown the sauceconnect
 //sauceTest.finalizedBy stopSauceConnect
-
+ 
 task "localTest"(type: Test) {
     if (test_browser && test_browser.contains('sauce')){
         def browser = test_browser.replace('sauce','')

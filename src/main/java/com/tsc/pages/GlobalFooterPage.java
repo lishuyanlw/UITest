@@ -19,10 +19,6 @@ public class GlobalFooterPage extends BasePage {
 		
 	}
 	
-	//Page loading indicator
-	@FindBy(xpath = "//div[@class='Footer']//div[contains(@class,'blockPageWrap')]")
-	WebElement pageLoadingIndicator;
-	
 	//Credit Card
 	@FindBy(xpath = "//div[@class='Footer']//div[@class='custom-footer']//a[contains(@href,'creditcard')]/parent::div")
 	public WebElement blkCreditCard;
@@ -311,9 +307,9 @@ public class GlobalFooterPage extends BasePage {
 	 * @return true/false
 	 * @author Wei.Li
 	 */
-	public boolean waitForPageLoading() {
+	public boolean waitForPageLoading() {		
 		this.waitForPageToLoad();
-		return waitForCondition(Driver->{return !this.pageLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},60000);		
+		return (new ProductResultsPage(this.getDriver())).waitForPageLoading();		
 	}
 	
 	/**
@@ -529,6 +525,7 @@ public class GlobalFooterPage extends BasePage {
 		Set<String> lstWindowHandle=this.getDriver().getWindowHandles();
 		for(String windowHandle:lstWindowHandle) {
 			if(!windowHandle.equalsIgnoreCase(lsMainWindowHandle)) {
+				getReusableActionsInstance().staticWait(5000);
 				this.getDriver().switchTo().window(windowHandle);
 				break;
 			}

@@ -6,15 +6,14 @@ import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 
-	public class HP_TC02_Verify_TSmainImage extends BaseTest{
+	public class HP_TC01_Verify_TSmainImage extends BaseTest{
 		@Test(groups={"Home","Regression"})
 
 		public void validateTSmainImageSection() throws IOException, InterruptedException {
 			getGlobalFooterPageThreadLocal().closePopupDialog();	
 			reporter.softAssert(getglobalheaderPageThreadLocal().validateURL((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");
 			reporter.reportLogWithScreenshot("Home Page");
-			String lsYmlNotFound=TestDataHandler.constantDataVariables.getlnk_NotFound();
-			
+			String lsYmlNotFound=TestDataHandler.constantData.getHeaderSection().getLnk_NotFound();
 				
 			//Method to validate TS image in the upper section	
 			int totalTSimageUpperSection = homePageThreadLocal().totalTSimage("Upper");

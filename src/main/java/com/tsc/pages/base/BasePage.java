@@ -404,15 +404,103 @@ import utils.ReusableActions;
 	}
 	
 	/**
-	 * This method will identify if the element has a specific property.
+	 * This method will get element attribute.
+	 * @param WebElement parent: parent element 
+	 * @author Wei.Li
+	 */		
+	public String getChildElementAttribute(WebElement parent,String lsAttribute) {
+		JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
+		return (String)jse.executeScript("return arguments[0].getAttribute(arguments[1]);", parent,lsAttribute);				
+	}
+	
+	/**
+	 * This method will set element attribute.
+	 * @param WebElement parent: parent element 
+	 * @author Wei.Li
+	 */		
+	public void setChildElementAttribute(WebElement parent,String lsAttribute,String lsValue) {
+		JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
+		jse.executeScript("return arguments[0].setAttribute(arguments[1],arguments[2]);", parent,lsAttribute,lsValue);				
+	}
+	
+	/**
+	 * This method will return childElement.
+	 * @param WebElement parent: parent element 
+	 * @return List<WebElement>: children element
+	 * @author Wei.Li
+	 */		
+	@SuppressWarnings("unchecked")
+	public List<WebElement> getChildrenList(WebElement parent) {
+		JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
+		return (List<WebElement>) jse.executeScript("return arguments[0].children;", parent);			
+	}
+	
+	/**
+	 * This method will check if a childElement is existing by some specific Attribute.
+	 * @param WebElement parent: parent element 
+	 * @param String lsAttribute: Attribute
+	 * @param String lsAttributeValue: Attribute value 
+	 * @return boolean
+	 * @author Wei.Li
+	 */		
+	public boolean checkChildElementExistingByAttribute(WebElement parent,String lsAttribute,String lsAttributeValue) {
+		List<WebElement> lstChild=this.getChildrenList(parent);
+		for(WebElement child:lstChild) {
+			if(this.hasElementAttribute(child,lsAttribute)) {
+				String lsValue=this.getChildElementAttribute(child,lsAttribute).trim();
+				if(lsValue.isEmpty()||lsValue==null) {
+					return false;
+				}
+				else {
+					if(lsValue.contains(" ")) {
+						if(lsValue.toLowerCase().contains(lsAttributeValue.toLowerCase())) {
+							return true;
+						}
+						else {
+							return false;
+						}
+					}
+					else {
+						if(lsValue.equalsIgnoreCase(lsAttributeValue)) {
+							return true;
+						}
+						else {
+							return false;
+						}
+					}					
+				}
+			}
+		}	
+		return false;
+	}
+	
+	/**
+	 * This method will check if a childElement is existing by some specific TagName.
+	 * @param WebElement parent: parent element 
+	 * @param String lsTagName: TagName
+	 * @return boolean
+	 * @author Wei.Li
+	 */	
+	public boolean checkChildElementExistingByTagName(WebElement parent,String lsTagName) {
+		List<WebElement> lstChild=this.getChildrenList(parent);
+		for(WebElement child:lstChild) {
+			if(child.getTagName().equalsIgnoreCase(lsTagName)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * This method will identify if the element has a specific Attribute.
 	 * @param WebElement element: the element
-	 * @param String lsProperty: the property
+	 * @param String lsAttribute: the Attribute
 	 * @return true/false
 	 * @author Wei.Li
 	 */		
-	public  boolean getElementProperty(WebElement element,String lsProperty) {
+	public  boolean hasElementAttribute(WebElement element,String lsAttribute) {
 		JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
-		return (boolean) jse.executeScript("return arguments[0].hasAttribute(arguments[1]);", element,lsProperty);			
+		return (boolean) jse.executeScript("return arguments[0].hasAttribute(arguments[1]);", element,lsAttribute);			
 	}
 	
 	/**
@@ -428,10 +516,19 @@ import utils.ReusableActions;
     /**
 	 * This method will get float from string.
 	 * @param String lsTarget: target string
+	 * @param boolean bHighestFirst
 	 * @return float value
 	 * @author Wei.Li
 	 */	
-    public float getFloatFromString(String lsTarget) {  
+    public float getFloatFromString(String lsTarget,boolean bHighestFirst) {
+    	if(lsTarget.contains("-")) {
+    		if(bHighestFirst) {
+    			lsTarget=lsTarget.split("-")[1].trim();
+    		}
+    		else {
+    			lsTarget=lsTarget.split("-")[0].trim();
+    		}    		
+    	}
     	lsTarget=lsTarget.replace(",", "").trim();
     	
     	String regex="\\d+\\.\\d+";
@@ -609,5 +706,23 @@ import utils.ReusableActions;
 		 String lsLink=this.getElementHref(element);
 		 reporter.softAssert(!lsLink.isEmpty(),"The href of element of '"+lsTitle+"' is not empty","The href of element of '"+lsTitle+"' is empty");		 
 	 }
-	
+	 
+	 /**
+	  * This method will return search result page title.	  
+	  * @author Wei.Li
+	  */
+	 public String getPageTitle(WebElement webelement) {
+		 if(getReusableActionsInstance().isElementVisible(webelement)) {
+			 getReusableActionsInstance().javascriptScrollByVisibleElement(webelement);
+			 return webelement.getText().trim();
+		 }
+			return "NoTitle";		
+		}
+
+	/**
+	  * This method will apply static wait between steps
+	 */
+	public void applyStaticWait(long timeOut){
+		getReusableActionsInstance().staticWait(timeOut);
+	}
 }
