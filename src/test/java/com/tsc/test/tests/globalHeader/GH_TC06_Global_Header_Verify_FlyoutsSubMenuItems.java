@@ -17,7 +17,7 @@ public class GH_TC06_Global_Header_Verify_FlyoutsSubMenuItems extends BaseTest {
 		String headingName,categoryName,smHref,pbHref,pbSrc,ccHref;
 		List<WebElement> headingsElements=getglobalheaderPageThreadLocal().headingLinks;
 		List<WebElement> categoryElement=getglobalheaderPageThreadLocal().CategoriesLinks;
-		List<WebElement> subMenuElement=getglobalheaderPageThreadLocal().subMenuLinks;
+		List<WebElement> subMenuElement=getglobalheaderPageThreadLocal().subMenuSection;
 		List<WebElement> popularBrandElement=getglobalheaderPageThreadLocal().listPopularBrandsLinks;
 		List<WebElement> curatedCollectionElement=getglobalheaderPageThreadLocal().listCuratedCollectionLinks;
 		for (WebElement heading:headingsElements) {

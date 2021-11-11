@@ -1,8 +1,11 @@
 package com.tsc.pages;
 
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import org.openqa.selenium.By;
@@ -195,7 +198,7 @@ public class GlobalheaderPage extends BasePage{
 	public List<WebElement> subMenuLinks;
 	
 	@FindBy(xpath = "//*[contains(@class,'mega-sub-items mega-column')]//ul")
-	WebElement subMenuSection;
+	public List<WebElement> subMenuSection;
 	
 	@FindBy(xpath = "//a[contains(@class,'mega-curated__item-link')]")
 	public List<WebElement> listCuratedCollectionLinks;
@@ -209,11 +212,6 @@ public class GlobalheaderPage extends BasePage{
 	
 	@FindBy(xpath = "//h2[contains(@class,'titleLink')]//b")
 	WebElement shopAllBrandsLandigPageHeading;
-
-	/*
-	 * @author godwin.gopi
-	 * Header Options
-	 */
 
 	@FindBy(xpath="//span[contains(text(),'Clearance')]")
 	WebElement clearanceHeader;
@@ -447,16 +445,13 @@ public class GlobalheaderPage extends BasePage{
 		
 	public boolean validateSearchSubmitbtn() {
 		return getReusableActionsInstance().isElementVisible(btnSearchSubmit, 5);
-				
-			}
+	}
 		
 	//Favorite link visible
 	public String validateFavouritesLink() {
 		String emptySTAIbtn="Favourites link href is empty";
 		if (Favouriteslnk.getAttribute("href").isEmpty()) {
-							
 			return emptySTAIbtn;
-			
 		}else{
 			getReusableActionsInstance().isElementVisible(Favouriteslnk, 5);
 			return Favouriteslnk.getText();
@@ -467,9 +462,7 @@ public class GlobalheaderPage extends BasePage{
 	public String validateSignInLink() {
 		String emptySTAIbtn="Sign In link href is empty";
 		if (Signinlnk.getAttribute("href").isEmpty()) {
-							
 			return emptySTAIbtn;
-			
 		}else{
 			getReusableActionsInstance().isElementVisible(Signinlnk, 5);
 			return Signinlnk.getText();
@@ -680,10 +673,7 @@ public class GlobalheaderPage extends BasePage{
 			 reporter.softAssert(getReusableActionsInstance().isElementVisible(this.cntPossibleItemMatchesList),"The Top selling products list is displaying correctly by selecting item of '"+lsItem+"'","The Top selling products list is not displaying correctly by selcting item of '"+lsItem+"'");			 
 		 }	
 	 }
-/*
-		 * @author Shruti.Desai
-		 *Flyouts Sub Menu
-		 */
+
 	 public StringBuilder href_src_category  =new StringBuilder();
 	 public StringBuilder href_src_submenu  =new StringBuilder();
 	 public StringBuilder  href_src_section  =new StringBuilder();
@@ -827,16 +817,23 @@ public class GlobalheaderPage extends BasePage{
 	 * @author Shruti Desai
 	 */
 	public String verifysubMenuhref(List<WebElement> webElements) {
-		for (WebElement element:webElements) {
-			getReusableActionsInstance().scrollToElement(element);
-			if(isChildElementVisible(subMenuSection, "childElementCount")) {
+		if(isParentElementHasAttribute(webElements,"li")) {
+			for (WebElement element:this.subMenuLinks) {
+				getReusableActionsInstance().scrollToElement(element);
 				if(!verifyElementProperty(element,"Link")) {//href is not present
-				href_src_submenu.append(element.getText()).append('\n');
-				} 
-			}	
+					href_src_submenu.append(element.getText()).append('\n');
+				}
+			}
 		}
-		return  href_src_submenu.toString(); 
-	}	
+		return  href_src_submenu.toString();
+	}
+
+	public Boolean isParentElementHasAttribute(List<WebElement> parent, String attribute) {
+		JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
+		ArrayList<Integer> childSize= (ArrayList<Integer>) jse.executeScript("return arguments[0].getElementsByTagName(arguments[1]);", parent.get(0),attribute);
+		if(childSize.size()>0) return true;
+		return false;
+	}
 		
 	/*Method to verify href/src is empty or not before clicking category link
 	 * @return true/false
@@ -889,16 +886,4 @@ public class GlobalheaderPage extends BasePage{
 		}
 		return  href_src_section.toString();
 	}
-		
-		
-
-		
-		
 }
-	
-
-		 
-		 
-		 
-
-	 
