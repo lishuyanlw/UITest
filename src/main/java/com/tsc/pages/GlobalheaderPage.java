@@ -208,13 +208,6 @@ public class GlobalheaderPage extends BasePage{
 	@FindBy(xpath="//span[contains(text(),'Clearance')]")
 	WebElement clearanceHeader;
 
-	//Godwin
-	@FindBy(xpath="//a[@class='mega-sub-items__item-link mega-sub-items__item-link-first' and contains(text(),'Shop all')]")
-	WebElement shopAllFasionOption;
-
-	@FindBy(xpath="//a[@role=\"button\" and contains(text(),'Fashion')]")
-	WebElement fasionOption;
-
 	public void clickOnClearanceHeaderOption() {
 		getReusableActionsInstance().clickIfAvailable(clearanceHeader);
 	}
@@ -675,27 +668,41 @@ public class GlobalheaderPage extends BasePage{
 		/*Method to click on WebElement for Submenu Item by providing Flyout heading name , category and item as parameters.
 		 * @author Shruti Desai
 	 */
-		public void clickSubMenuItem(String headingName,String submenuHeading, String itemName) {
+		public String getNameAndclickSubMenuItem(String headingName,String submenuHeading, String itemName) {
 			String xpathHeading =createXPath("//span[contains(text(),'{0}')]" ,headingName); 
 			WebElement headingWebElement = FlyoutHeadings.findElement(By.xpath(xpathHeading));
 			getReusableActionsInstance().scrollToElement(headingWebElement);
 
 			if(headingWebElement!=null && submenuHeading==null) {
 				headingWebElement.click();
+				return headingWebElement.getText().trim();
 			}
 			if(submenuHeading!=null) {
 				String xpathSubMenu =createXPath("//a[contains(text(),\"{0}\")]" ,submenuHeading); 
-				WebElement SubMenu = Categories.findElement(By.xpath(xpathSubMenu));
-				getReusableActionsInstance().scrollToElement(SubMenu);
-				if(itemName!=null) {
-					String xpathSubmenuItem=createXPath("//a[contains(text(),'{0}')]",itemName);
-					WebElement SubMenuItem=getDriver().findElement(By.xpath(xpathSubmenuItem));
-					getReusableActionsInstance().scrollToElement(SubMenuItem);
-					SubMenuItem.click();
-				}else {
-					SubMenu.click();
+				List<WebElement> SubMenu = Categories.findElements(By.xpath(xpathSubMenu));
+				if(SubMenu.size()>0){
+					getReusableActionsInstance().scrollToElement(SubMenu.get(0));
+					if(itemName!=null) {
+						String xpathSubmenuItem=createXPath("//a[contains(text(),'{0}')]",itemName);
+						WebElement SubMenuItem=getDriver().findElement(By.xpath(xpathSubmenuItem));
+						getReusableActionsInstance().scrollToElement(SubMenuItem);
+						String title = SubMenuItem.getText().trim();
+						SubMenuItem.click();
+						return title;
+					}else {
+						String title = SubMenu.get(0).getText().trim();
+						SubMenu.get(0).click();
+						return title;
+					}
+				//Adding else condition to click on first element by default if passed submenu item is not present in list
+				}else{
+					WebElement element = Categories.findElement(By.xpath("./a"));
+					String title = element.getText().trim();
+					element.click();
+					return title;
 				}
 			}
+			return null;
 		}
 		
 		/*Method to get list of Flyout heading WebElements
