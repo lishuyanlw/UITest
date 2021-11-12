@@ -73,8 +73,6 @@ public class GlobalheaderPage extends BasePage{
 	public WebElement imgWatchUsLiveIcon;
 	
 	//Dynamic Event
-	@FindBy(xpath = "//*[@class='Sliver']//a[@class='slideLink']")
-	public WebElement lnkdynamicEvent;
 	
 	By byDynamicEvent=By.xpath("//*[@class='Sliver']//a[@class='slideLink']");
 		
@@ -114,8 +112,6 @@ public class GlobalheaderPage extends BasePage{
 	
 
 	//Categories
-	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Categories') or contains(.,'Trending')][contains(@class,'ac__section__title search-title')]")
-	public WebElement lblCategories;
 	
 	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Categories') or contains(.,'Trending')][contains(@class,'ac__section__title search-title')]/following-sibling::ul")
 	public WebElement cntCategoriesList;
@@ -231,6 +227,7 @@ public class GlobalheaderPage extends BasePage{
         return this.getDriver().getCurrentUrl().equalsIgnoreCase(lsHomePage);		
 		}
 				
+	
 	//TSC Logo & Logo link is visible	
 	public String validateTSCLogoLink() {
 		String emptySTAIbtn="TSC logo link href is empty";
@@ -255,7 +252,19 @@ public class GlobalheaderPage extends BasePage{
 	public boolean validateSearchSubmitbtn() {
 		return getReusableActionsInstance().isElementVisible(btnSearchSubmit, 5);
 	}
-		
+	
+	
+	/*
+	public String validateFavouritesLink_1(WebElement webElement) {
+		String emptySTAIbtn=webElement.getText();
+		if(!verifyElementProperty(webElement,"Link")) {
+			return emptySTAIbtn+" link href is empty";
+		}else{
+			getReusableActionsInstance().isElementVisible(webElement, 5);
+			return emptySTAIbtn;
+			}
+		}
+	*/		
 	//Favorite link visible
 	public String validateFavouritesLink() {
 		String emptySTAIbtn="Favourites link href is empty";
@@ -278,10 +287,6 @@ public class GlobalheaderPage extends BasePage{
 			}
 		}
 	
-	public boolean validateSiginIcon() {
-		return getReusableActionsInstance().isElementVisible(SigninIcon, 5);
-	}
-		
 	//Shopping cart Link visible
 	public String validateShoppingCartLinkName() {
 		String emptySTAIbtn="Shopping cart link href is empty";
@@ -293,6 +298,11 @@ public class GlobalheaderPage extends BasePage{
 			return ShoppingCartIconcont.getText();
 			}
 		}
+	
+	
+	public boolean validateSiginIcon() {
+		return getReusableActionsInstance().isElementVisible(SigninIcon, 5);
+	}
 	
 	public boolean validateShoppingCartIcon() {
 			return getReusableActionsInstance().isElementVisible(CartBagIcon, 5);
