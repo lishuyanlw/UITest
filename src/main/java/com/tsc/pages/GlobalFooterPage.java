@@ -1,6 +1,7 @@
 package com.tsc.pages;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
@@ -300,6 +301,15 @@ public class GlobalFooterPage extends BasePage {
 	@FindBy(xpath = "//div[@class='Middle']//div[contains(@class,'singleOpenable')]//div[contains(@class,'panHTMLContainer collapse')]")
 	public List<WebElement> lstOfExpandedContent;
 
+	@FindBy(xpath="//h2[contains(@class,'titleLink')]")
+	public WebElement aboutUsPageTitle;
+
+	@FindBy(xpath="//h4[contains(@class,'subTitleLink')]")
+	public List<WebElement> subHeaders;
+
+	@FindBy(xpath="//ul[contains(@class,'quickLinkUL')]//a[contains(@id,'contentPlaceHolder')]")
+	public List<WebElement> subHeaderLinks;
+
 	/**
 	 * Close popup dialog through clicking close button.
 	 * 
@@ -407,6 +417,27 @@ public class GlobalFooterPage extends BasePage {
 		}
 
 		return "";
+	}
+
+	public HashMap<String,String> getTestDataWithSpecificName(List<List<String>> lstNameAndLink, String lsSpecificName, boolean bEnglish) {
+		HashMap<String,String> hashMap = new HashMap<>();
+		String lsCompare=null;
+		for (List<String> lstItem : lstNameAndLink) {
+			if (bEnglish) {
+				lsCompare = this.getUTFEnabledData(lstItem.get(0));
+			} else {
+				lsCompare = this.getUTFEnabledData(lstItem.get(1));
+			}
+			if (lsSpecificName.equalsIgnoreCase(lsCompare)) {
+				if (lstItem.get(2).startsWith("/")) {
+					hashMap.put("Link",this.removeLastSlashFromUrl(this.getBaseURL() + lstItem.get(2).trim()));
+				} else {
+					hashMap.put("Link",this.removeLastSlashFromUrl(lstItem.get(2).trim()));
+				}
+				hashMap.put("Title",lstItem.get(3));
+			}
+		}
+		return hashMap;
 	}
 
 	/**
@@ -681,14 +712,23 @@ public class GlobalFooterPage extends BasePage {
 				WebElement itemContent=lstPanelItemContent.get(i);
 				waitForCondition(Driver->{return itemContent.getAttribute("aria-expanded").equalsIgnoreCase("true");},10000);
 				getReusableActionsInstance().staticWait(1000);												
-			}else {
-				String url= getDriver().getCurrentUrl();	
-				String hashTag=item.getAttribute("hashtag");
-				if(url.contains(hashTag)) {
-					reporter.softAssert(true, " Current URL is "+url+" and "+hashTag+" Content status is not collapsed", ""+hashTag+" Content status is  collapsed");
-				}
 			}
 		}						
+	}
+
+	public Boolean verifyRespectiveSectionForLinkOnPage(List<WebElement> lstPanelItem){
+		getReusableActionsInstance().staticWait(3000);
+		int counter = 0;
+		for(int i=0;i<lstPanelItem.size();i++) {
+			WebElement item=lstPanelItem.get(i);
+			String lsClass=item.getAttribute("class");
+			if(lsClass=="") {
+				getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+				counter++;
+			}
+		}
+		if (counter == 1) return true;
+		else return false;
 	}
 	
 	/**
@@ -763,6 +803,5 @@ public class GlobalFooterPage extends BasePage {
 		boolean  panelTitleExpandedStatus=false;
 		
 	}
-		
 		
 }
