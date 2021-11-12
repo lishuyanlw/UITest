@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
@@ -290,10 +291,10 @@ public class GlobalFooterPage extends BasePage {
 	@FindBy(xpath = "(//h4//span[contains(@id,'contentPlaceHolder_ctl')]//ancestor::div[@class='quickLinkPanelWrap']//ul[contains(@class,'quickLinkUL c')]//li//a)[1]")
 	public WebElement lstMoreAboutTSCPBecomeAVendor;
 
-	@FindBy(xpath = "(//div[@class='quickLinkPanelWrap']//ul[@class='quickLinkUL col3Divs ']//li//a)[4]")
-	public WebElement lstMoreAboutTSCAboutOurService;
+	@FindBy(xpath = "//div[@class='quickLinkPanelWrap']//ul[@class='quickLinkUL col3Divs ']//li//a")
+	public List<WebElement> lstMoreAboutTSCLinks;
 
-	//
+	// Default page section titles and Contents
 	@FindBy(xpath = "//div[@class='Middle']//div[contains(@class,'singleOpenable')]//div[contains(@class,'panTitleContaine')]//a[@class='']")
 	public List<WebElement> lstOfExpandedTitle;
 
@@ -755,14 +756,20 @@ public class GlobalFooterPage extends BasePage {
 	}
 	
 	/**
-	 * This method is to verify the panel items is not collapsed.
+	 * This method is to verify links inside More About TSC page
 	 * @author godwin.gopi
 	 */
-	public void verifyPanelTitleExpanded(List<WebElement> lstPanelItem) {
-		getReusableActionsInstance().staticWait(3000);
-		boolean  panelTitleExpandedStatus=false;
+	public void clickOnTSCOptionLink(int i) {
+		String linkOftheTSC=null;
+			String path="(//div[@class='quickLinkPanelWrap']//ul[@class='quickLinkUL col3Divs ']//li//a)["+i+"]";
+			getReusableActionsInstance().staticWait(3000);
+			WebElement element=getDriver().findElement(By.xpath(path));
+			linkOftheTSC=element.getText();
+			reporter.reportLog("TSC Links Name is "+linkOftheTSC+"");
+			element.click();
 		
 	}
+	
 		
 		
 }
