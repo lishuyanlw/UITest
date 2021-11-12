@@ -37,31 +37,30 @@ public class GF_TC05_Verify_GlobalFooter_AboutTSC_LinksAndPageObjects extends Ba
 		global_footer_items.add("Become a Vendor");
 		global_footer_items.add("More About TSC");
 		for(String lsService:global_footer_items) {
-			
-			GF_TC05_Verify_GlobalFooter_AboutTSC_LinksAndPageObjects.verifyTitle(basePage,lstNameAndLinks,lsService);
-			
-			if(!getGlobalFooterPageThreadLocal().goToService(lsService,getGlobalFooterPageThreadLocal().lblTermsOfUseAboutOurService)) {
+
+		GF_TC05_Verify_GlobalFooter_AboutTSC_LinksAndPageObjects.verifyTitle(basePage,lstNameAndLinks,lsService);
+        if(!getGlobalFooterPageThreadLocal().goToService(lsService,getGlobalFooterPageThreadLocal().lblTermsOfUseAboutOurService)) {
 				reporter.reportLogFail("Unable to navigate to '"+lsService+"' page objects.");
 			}
 			else {	
 				GF_TC05_Verify_GlobalFooter_AboutTSC_LinksAndPageObjects.verifyExpandItemAndElementList(elementList, lsService);
-				if(lsService.trim().equalsIgnoreCase("More About TSC")) {
-					//Become a Vendor option
-					getGlobalFooterPageThreadLocal().lstMoreAboutTSCPBecomeAVendor.click();
-					GF_TC05_Verify_GlobalFooter_AboutTSC_LinksAndPageObjects.verifyExpandItemAndElementList(elementList, lsService);
-					elementList.clear();
-					
-					// Company Overview
-					getGlobalFooterPageThreadLocal().goToService(lsService,getGlobalFooterPageThreadLocal().lblTermsOfUseAboutOurService);
-					getGlobalFooterPageThreadLocal().lstMoreAboutTSCAboutOurService.click();
-					GF_TC05_Verify_GlobalFooter_AboutTSC_LinksAndPageObjects.verifyExpandItemAndElementList(elementList, lsService);
+				
+				//verifying More About TSC Module
+				if(lsService.trim().equalsIgnoreCase(("More About TSC").trim())) {
+					List<WebElement> elements=getGlobalFooterPageThreadLocal().lstMoreAboutTSCLinks;
+					for(int i=1;i<=elements.size();i++) {
+						getGlobalFooterPageThreadLocal().clickOnTSCOptionLink(i);
+						GF_TC05_Verify_GlobalFooter_AboutTSC_LinksAndPageObjects.verifyExpandItemAndElementList(elementList, lsService);
+						elementList.clear();
+						getGlobalFooterPageThreadLocal().goToService(lsService,getGlobalFooterPageThreadLocal().lblTermsOfUseAboutOurService);
+					}
 				}
 			}
 			elementList.clear();
-			}
-    }
+		}
+	}
 
-	//Verifying the href with page link
+	//Verifying the Href with page link
 	public static void verifyTitle(BasePage basePage,List<List<String>> lstNameAndLinks,String lsService) {
 		reporter.reportLog(lsService);
 		WebElement selectedItem=getGlobalFooterPageThreadLocal().getServiceWebElement(lsService);		
@@ -73,22 +72,18 @@ public class GF_TC05_Verify_GlobalFooter_AboutTSC_LinksAndPageObjects extends Ba
 		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current '"+lsService+"' href of "+lsHref+" is equal to "+lsYmlHref,"The current '"+lsService+"' href of "+lsHref+" is not equal to "+lsYmlHref);
 
 	}
-	//Verifying 
+	//Verifying Default page section titles and contents
 	public static void verifyExpandItemAndElementList(ArrayList<WebElement> elementList,String lsService) {
-			getGlobalFooterPageThreadLocal().verifyPanelTitleExpanded(getGlobalFooterPageThreadLocal().lstOfExpandedTitle);
-            elementList.add(getGlobalFooterPageThreadLocal().lblTermsOfUseAboutOurService);
-
-			//Add item section titles in About TSC 
-			for(WebElement item:getGlobalFooterPageThreadLocal().lstOfExpandedTitle) {
-				elementList.add(item);
-			}
-
-			//Add item section contents in About TSC 
-			for(WebElement item:getGlobalFooterPageThreadLocal().lstOfExpandedContent) {
-				elementList.add(item);
-			}
-
-			getGlobalFooterPageThreadLocal().verifyElementListExistence(elementList);
+        elementList.add(getGlobalFooterPageThreadLocal().lblTermsOfUseAboutOurService);
+        //Add item section titles in Default Page Section
+		for(WebElement item:getGlobalFooterPageThreadLocal().lstOfExpandedTitle) {
+			elementList.add(item);
+		}
+        //Add item section contents in Default Page Section 
+		for(WebElement item:getGlobalFooterPageThreadLocal().lstOfExpandedContent) {
+			elementList.add(item);
+		}
+        getGlobalFooterPageThreadLocal().verifyElementListExistence(elementList);
 
 	}
 }
