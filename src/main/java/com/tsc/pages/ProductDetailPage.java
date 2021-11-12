@@ -186,6 +186,33 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//button[contains(@class,'tfc-popup-click-close')][img]")
 	public WebElement btnProductTrueFitIframeClose;
 	
+	@FindBy(xpath = "//div[@class='tfc-popup-contents']//div[@ui-view='header']//div[@class='tfc-logo-wrapper']//img")
+	public WebElement imgProductTrueFitIframeHeaderLogo;
+	
+	@FindBy(xpath = "//div[@class='tfc-popup-contents']//div[@ui-view='page']//div[contains(@class,'tfc-cfg-splash-page-image')]")
+	public WebElement imgProductTrueFitIframePage;
+	
+	@FindBy(xpath = "//div[@class='tfc-popup-contents']//div[@ui-view='page']//div[contains(@class,'tfc-page')]//div[@class='tfc-cfg-title-container']//*[contains(@class,'tfc-page-title')]")
+	public WebElement lblProductTrueFitIframePageTitle;
+	
+	@FindBy(xpath = "//div[@class='tfc-popup-contents']//div[@ui-view='page']//div[contains(@class,'tfc-page')]//div[@class='tfc-cfg-title-container']//*[contains(@class,'tfc-cfg-subtitle-container')]")
+	public WebElement lblProductTrueFitIframePageSubTitle;
+	
+	@FindBy(xpath = "//div[@class='tfc-popup-contents']//tfc-footer-content//tfc-button-bar//button")
+	public WebElement btnProductTrueFitIframeFooterGetStarted;
+	
+	@FindBy(xpath = "//div[@class='tfc-popup-contents']//div[contains(@class,'tfc-cfg-gdpr-message')]")
+	public WebElement lblProductTrueFitIframeConfirmMessage;
+	
+	@FindBy(xpath = "//div[@class='tfc-popup-contents']//div[contains(@class,'tfc-cfg-gdpr-message')]//a[contains(@class,'tfc-cfg-page-link')]")
+	public WebElement lnkProductTrueFitIframePrivacyPolicy;
+	
+	@FindBy(xpath = "//div[@class='tfc-popup-contents']//a[contains(@class,'sign-in')]")
+	public WebElement lnkProductTrueFitIframeSignIn;
+	
+	@FindBy(xpath = "//div[@class='tfc-popup-contents']//button[contains(@class,'tfc-cfg-info-button')]")
+	public WebElement btnProductTrueFitIframeInfo;
+	
 	//Size part
 	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//div[@id='divAvailableSizes']//span[contains(@class,'size-lbl')]")
 	public WebElement lblSizeStatic;
@@ -242,8 +269,8 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//div[@class='sticky-swiper-container']//a[@data-text='PRODUCT OVERVIEW']")
 	public WebElement btnStickyTabProductOverview;
 	
-	@FindBy(xpath = "//div[@class='sticky-swiper-container']//a[@data-text='ABOUT THE BRAND']")
-	public WebElement btnStickyTabAboutTheBrand;
+	@FindBy(xpath = "//div[@class='sticky-swiper-container']//a[@data-text='SIZE CHART']")
+	public WebElement btnStickyTabSizeChart;
 	
 	@FindBy(xpath = "//div[@class='sticky-swiper-container']//a[@data-href='#pr-reviewdisplay']")
 	public WebElement btnStickyTabProductReview;
@@ -252,12 +279,12 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//div[contains(@class,'tabs')]//div[@id='infoTabContent']//div[@id='tab0']")
 	public WebElement lblProductOverviewTabContent;
 	
-	//Product About the Brand Tab part
+	//Product Size Chart Tab part
 	@FindBy(xpath = "//div[contains(@class,'tabs')]//div[@id='infoTabContent']//div[@id='tab1']//*[@class='tabHeader']")
-	public WebElement lblProductAboutTheBrandTabHeader;
+	public WebElement lblProductSizeChartTabHeader;
 	
-	@FindBy(xpath = "//div[contains(@class,'tabs')]//div[@id='infoTabContent']//div[@id='tab1']//p")
-	public List<WebElement> lstProductAboutTheBrandTabContentList;
+	@FindBy(xpath = "//div[contains(@class,'tabs')]//div[@id='infoTabContent']//div[@id='tab1']//img")
+	public List<WebElement> lstProductSizeChartTabContentList;
 	
 	//Product Review Tab part
 	@FindBy(xpath = "//div[@id='productReviewSection']//*[@class='pr-reviewHeader']")
