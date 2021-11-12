@@ -69,8 +69,10 @@ public class ConstantData {
         private String lbl_WatchUsLive_French;
         private String lnk_WatchUsLive;
         private String lbl_Favourites;
+        private String lbl_FavouritesLandingPage;
         private List<String> lst_SignInPopover;
         private String lbl_SignIn;
+        private String lbl_SignInLandingPage;
         private String lbl_SearchBoxPlaceholder;
         private String lbl_ShoppingCartLinkName;
         private String lnk_ShoppingCartLink;
@@ -251,6 +253,14 @@ public class ConstantData {
         public void setLbl_Favourites(String lbl_Favourites) {
             this.lbl_Favourites = lbl_Favourites;
         }
+        
+        public String getlbl_FavouritesLandingPage() {
+            return lbl_FavouritesLandingPage;
+        }
+
+        public void setlbl_FavouritesLandingPage(String lbl_FavouritesLandingPage) {
+            this.lbl_FavouritesLandingPage = lbl_FavouritesLandingPage;
+        }
 
         public List<String> getLst_SignInPopover() {
             return lst_SignInPopover;
@@ -266,6 +276,14 @@ public class ConstantData {
 
         public void setLbl_SignIn(String lbl_SignIn) {
             this.lbl_SignIn = lbl_SignIn;
+        }
+        
+        public String getlbl_SignInLandingPage() {
+            return lbl_SignInLandingPage;
+        }
+
+        public void setlbl_SignInLandingPage(String lbl_SignInLandingPage) {
+            this.lbl_SignInLandingPage = lbl_SignInLandingPage;
         }
 
         public String getLbl_SearchBoxPlaceholder() {

@@ -177,6 +177,9 @@ public class GlobalheaderPage extends BasePage{
 	@FindBy(xpath = "//div[contains(@class,'secondary-navigation__rhs-account')]//a//*[@class='secondary-navigation__rhs-account-icon']")
 	public WebElement SigninIcon;
 	
+	@FindBy(xpath = "//div[contains(@class,'signin-wrapper clearfix')]//h1//span[contains(text(),'Sign In')]")
+	public WebElement SigninPageHeading;
+	
 	//Shopping Cart 
 	@FindBy(xpath = "//*[@class='Header']//a[contains(@class, 'secondary-navigation__rhs-bag')]")
 	public WebElement ShoppingCartlnk;
@@ -814,6 +817,31 @@ public class GlobalheaderPage extends BasePage{
 		public String getHeadingForLandingPage(String pageName) {
 			WebElement webElement = getWebElementFlyoutHeading(pageName);
 			return createCamelCase(getPageTitle(webElement));
+		}
+		
+		
+		
+		//Favorites link validation
+		
+		/*Method to get get Url of landing page after clicking the Favourites's link  
+		 * @return String:url
+		 * @author Shruti Desai
+		 */	
+		public String getUrlFavouriteslandingpage() {
+			String urlFavouriteslandingpage;
+			getReusableActionsInstance().scrollToElement(Favouriteslnk);
+			Favouriteslnk.click();
+			urlFavouriteslandingpage = getDriver().getCurrentUrl();
+			return urlFavouriteslandingpage;
+		}
+		
+		/*Method to get get heading of Sign In page after clicking the Favourites's link for anonymous user
+		 * @return String:page heading
+		 * @author Shruti Desai
+		 */	
+		public String getPageHeadingSignin() {
+			
+			return getPageTitle(SigninPageHeading);
 		}
 }
 	

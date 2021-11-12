@@ -18,8 +18,10 @@ headerSection:
   lbl_WatchUsLive_French: En direct
   lnk_WatchUsLive: /pages/watchuslive?ic=HP_WatchUsLive
   lbl_Favourites: Favourites
+  lbl_FavouritesLandingPage: /pages/myaccount/favourites
   lst_SignInPopover: ["Sign in","Create an account","Transfer a phone account","Track your order"]
   lbl_SignIn: Sign in
+  lbl_SignInLandingPage: /pages/signin
   lbl_SearchBoxPlaceholder: Search
   lbl_ShoppingCartLinkName: Bag
   lnk_ShoppingCartLink: /pages/shoppingcart
