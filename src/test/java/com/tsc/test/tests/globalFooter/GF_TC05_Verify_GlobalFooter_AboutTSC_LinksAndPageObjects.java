@@ -25,16 +25,44 @@ public class GF_TC05_Verify_GlobalFooter_AboutTSC_LinksAndPageObjects extends Ba
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 		BasePage basePage=new BasePage(this.getDriver());		
 		String lsBaseUrl=basePage.getBaseURL()+"/";
-
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl), "TSC url is correct", "TSC url is incorrect");		
 		reporter.reportLog("Global Footer Section");		
 
 		List<List<String>> lstNameAndLinks=TestDataHandler.constantData.getFooterSection().getLst_NameAndLinks();
-		String lsService;
-		ArrayList<WebElement> elementList=new ArrayList<WebElement>();
+		//String lsService;
+		ArrayList<WebElement> elementList=new ArrayList<>();
+		List<String> global_footer_items = new ArrayList<>();
+		global_footer_items.add("Terms Of Use");
+		global_footer_items.add("Privacy Policy");
+		global_footer_items.add("Become a Vendor");
+		global_footer_items.add("More About TSC");
+		for(String lsService:global_footer_items) {
+			
+			GF_TC05_Verify_GlobalFooter_AboutTSC_LinksAndPageObjects.verifyTitle(basePage,lstNameAndLinks,lsService);
+			
+			if(!getGlobalFooterPageThreadLocal().goToService(lsService,getGlobalFooterPageThreadLocal().lblTermsOfUseAboutOurService)) {
+				reporter.reportLogFail("Unable to navigate to '"+lsService+"' page objects.");
+			}
+			else {	
+				GF_TC05_Verify_GlobalFooter_AboutTSC_LinksAndPageObjects.verifyExpandItemAndElementList(elementList, lsService);
+				if(lsService.trim().equalsIgnoreCase("More About TSC")) {
+					//Become a Vendor option
+					getGlobalFooterPageThreadLocal().lstMoreAboutTSCPBecomeAVendor.click();
+					GF_TC05_Verify_GlobalFooter_AboutTSC_LinksAndPageObjects.verifyExpandItemAndElementList(elementList, lsService);
+					elementList.clear();
+					
+					// Company Overview
+					getGlobalFooterPageThreadLocal().goToService(lsService,getGlobalFooterPageThreadLocal().lblTermsOfUseAboutOurService);
+					getGlobalFooterPageThreadLocal().lstMoreAboutTSCAboutOurService.click();
+					GF_TC05_Verify_GlobalFooter_AboutTSC_LinksAndPageObjects.verifyExpandItemAndElementList(elementList, lsService);
+				}
+			}
+			elementList.clear();
+			}
+    }
 
-		//Terms of Use
-		lsService="Terms of Use";
+	//Verifying the href with page link
+	public static void verifyTitle(BasePage basePage,List<List<String>> lstNameAndLinks,String lsService) {
 		reporter.reportLog(lsService);
 		WebElement selectedItem=getGlobalFooterPageThreadLocal().getServiceWebElement(lsService);		
 		String lsHref=basePage.getElementHref(selectedItem);		
@@ -44,154 +72,23 @@ public class GF_TC05_Verify_GlobalFooter_AboutTSC_LinksAndPageObjects extends Ba
 		}		
 		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current '"+lsService+"' href of "+lsHref+" is equal to "+lsYmlHref,"The current '"+lsService+"' href of "+lsHref+" is not equal to "+lsYmlHref);
 
-		if(!getGlobalFooterPageThreadLocal().goToService(lsService,getGlobalFooterPageThreadLocal().lblTermsOfUseAboutOurService)) {
-			reporter.reportLogFail("Unable to navigate to '"+lsService+"' page objects.");
-		}
-		else {			
-			getGlobalFooterPageThreadLocal().expandPanelItems(getGlobalFooterPageThreadLocal().lstTermsOfUseItemTitle,getGlobalFooterPageThreadLocal().lstTermsOfUseItemContent);
-
-			elementList.add(getGlobalFooterPageThreadLocal().lblTermsOfUseAboutOurService);
-
-			//Add item section titles in Terms of Use 
-			for(WebElement item:getGlobalFooterPageThreadLocal().lstTermsOfUseItemTitle) {
-				elementList.add(item);
-			}
-
-			//Add item section contents in Terms of Use 
-			for(WebElement item:getGlobalFooterPageThreadLocal().lstTermsOfUseItemContent) {
-				elementList.add(item);
-			}
-
-			getGlobalFooterPageThreadLocal().verifyElementListExistence(elementList);
-		}
-		elementList.clear();
-
-        //Privacy Policy
-		lsService="Privacy Policy";
-		reporter.reportLog(lsService);
-		WebElement selectedPPItem=getGlobalFooterPageThreadLocal().getServiceWebElement(lsService);		
-		String lsPPHref=basePage.getElementHref(selectedPPItem);		
-		String lsPPYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsService,true);
-		if(lsPPYmlHref.isEmpty()) {
-			reporter.reportLogFail("Unable to find '"+lsService+"' link.");
-		}		
-		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsPPHref,lsPPYmlHref),"The current '"+lsService+"' href of "+lsPPHref+" is equal to "+lsPPYmlHref,"The current '"+lsService+"' href of "+lsPPHref+" is not equal to "+lsPPYmlHref);
-
-		if(!getGlobalFooterPageThreadLocal().goToService(lsService,getGlobalFooterPageThreadLocal().lblTermsOfUseAboutOurService)) {
-			reporter.reportLogFail("Unable to navigate to '"+lsService+"' page objects.");
-		}
-		else {			
-			getGlobalFooterPageThreadLocal().expandPanelItems(getGlobalFooterPageThreadLocal().lstTermsOfUseItemTitle,getGlobalFooterPageThreadLocal().lstTermsOfUseItemContent);
-
-			elementList.add(getGlobalFooterPageThreadLocal().lblTermsOfUseAboutOurService);
-
-			//Add item section titles in Privacy Policy 
-			for(WebElement item:getGlobalFooterPageThreadLocal().lstTermsOfUseItemTitle) {
-				elementList.add(item);
-			}
-
-			//Add item section contents in Privacy Policy 
-			for(WebElement item:getGlobalFooterPageThreadLocal().lstTermsOfUseItemContent) {
-				elementList.add(item);
-			}
-
-			getGlobalFooterPageThreadLocal().verifyElementListExistence(elementList);
-		}
-		elementList.clear();
-
-        //Become a Vendor
-		lsService="Become a Vendor";
-		reporter.reportLog(lsService);
-		WebElement selectedBVItem=getGlobalFooterPageThreadLocal().getServiceWebElement(lsService);		
-		String lsBVHref=basePage.getElementHref(selectedBVItem);		
-		String lsBVYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsService,true);
-		if(lsBVYmlHref.isEmpty()) {
-			reporter.reportLogFail("Unable to find '"+lsService+"' link.");
-		}		
-		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsBVHref,lsBVYmlHref),"The current '"+lsService+"' href of "+lsBVHref+" is equal to "+lsBVYmlHref,"The current '"+lsService+"' href of "+lsBVHref+" is not equal to "+lsBVYmlHref);
-
-		if(!getGlobalFooterPageThreadLocal().goToService(lsService,getGlobalFooterPageThreadLocal().lblTermsOfUseAboutOurService)) {
-			reporter.reportLogFail("Unable to navigate to '"+lsService+"' page objects.");
-		}
-		else {			
-			getGlobalFooterPageThreadLocal().expandPanelItems(getGlobalFooterPageThreadLocal().lstTermsOfUseItemTitle,getGlobalFooterPageThreadLocal().lstTermsOfUseItemContent);
-
-			elementList.add(getGlobalFooterPageThreadLocal().lblTermsOfUseAboutOurService);
-
-			//Add item section titles in Become a Vendor 
-			for(WebElement item:getGlobalFooterPageThreadLocal().lstTermsOfUseItemTitle) {
-				elementList.add(item);
-			}
-
-			//Add item section contents in Become a Vendor
-			for(WebElement item:getGlobalFooterPageThreadLocal().lstTermsOfUseItemContent) {
-				elementList.add(item);
-			}
-
-			getGlobalFooterPageThreadLocal().verifyElementListExistence(elementList);
-		}
-		elementList.clear();
-
-        //More about TSC
-		lsService="More About TSC";
-		reporter.reportLog(lsService);
-		WebElement selectedMATSCItem=getGlobalFooterPageThreadLocal().getServiceWebElement(lsService);		
-		String lsMATSCHref=basePage.getElementHref(selectedMATSCItem);		
-		String lsMATSCYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsService,true);
-		if(lsMATSCYmlHref.isEmpty()) {
-			reporter.reportLogFail("Unable to find '"+lsService+"' link.");
-		}		
-		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsMATSCHref,lsMATSCYmlHref),"The current '"+lsService+"' href of "+lsMATSCHref+" is equal to "+lsMATSCYmlHref,"The current '"+lsService+"' href of "+lsMATSCHref+" is not equal to "+lsMATSCYmlHref);
-
-		if(!getGlobalFooterPageThreadLocal().goToService(lsService,getGlobalFooterPageThreadLocal().lblTermsOfUseAboutOurService)) {
-			reporter.reportLogFail("Unable to navigate to '"+lsService+"' page objects.");
-		}
-		else {	
-			
-			//Become a Vendor
-			getGlobalFooterPageThreadLocal().lstMoreAboutTSCPBecomeAVendor.click();
-
-			getGlobalFooterPageThreadLocal().expandPanelItems(getGlobalFooterPageThreadLocal().lstTermsOfUseItemTitle,getGlobalFooterPageThreadLocal().lstTermsOfUseItemContent);
-
-			elementList.add(getGlobalFooterPageThreadLocal().lblTermsOfUseAboutOurService);
-
-			//Add item section titles in Become a Vendor in More about TSC 
-			for(WebElement item:getGlobalFooterPageThreadLocal().lstTermsOfUseItemTitle) {
-				elementList.add(item);
-			}
-
-			//Add item section contents in Become a Vendor in More about TSC
-			for(WebElement item:getGlobalFooterPageThreadLocal().lstTermsOfUseItemContent) {
-				elementList.add(item);
-			}
-
-			getGlobalFooterPageThreadLocal().verifyElementListExistence(elementList);
-		}
-		elementList.clear();
-		if(!getGlobalFooterPageThreadLocal().goToService(lsService,getGlobalFooterPageThreadLocal().lblTermsOfUseAboutOurService)) {
-			reporter.reportLogFail("Unable to navigate to '"+lsService+"' page objects.");
-		}else {
-
-            // About Our Service
-			getGlobalFooterPageThreadLocal().lstMoreAboutTSCAboutOurService.click();
-
-			getGlobalFooterPageThreadLocal().expandPanelItems(getGlobalFooterPageThreadLocal().lstTermsOfUseItemTitle,getGlobalFooterPageThreadLocal().lstTermsOfUseItemContent);
-
-			elementList.add(getGlobalFooterPageThreadLocal().lblTermsOfUseAboutOurService);
-
-			//Add item section titles in About Our Service in More about TSC 
-			for(WebElement item:getGlobalFooterPageThreadLocal().lstTermsOfUseItemTitle) {
-				elementList.add(item);
-			}
-
-			//Add item section contents in About Our Service in More about TSC 
-			for(WebElement item:getGlobalFooterPageThreadLocal().lstTermsOfUseItemContent) {
-				elementList.add(item);
-			}
-
-			getGlobalFooterPageThreadLocal().verifyElementListExistence(elementList);
-			elementList.clear();
-		}
 	}
+	//Verifying 
+	public static void verifyExpandItemAndElementList(ArrayList<WebElement> elementList,String lsService) {
+			getGlobalFooterPageThreadLocal().verifyPanelTitleExpanded(getGlobalFooterPageThreadLocal().lstOfExpandedTitle);
+            elementList.add(getGlobalFooterPageThreadLocal().lblTermsOfUseAboutOurService);
 
+			//Add item section titles in About TSC 
+			for(WebElement item:getGlobalFooterPageThreadLocal().lstOfExpandedTitle) {
+				elementList.add(item);
+			}
+
+			//Add item section contents in About TSC 
+			for(WebElement item:getGlobalFooterPageThreadLocal().lstOfExpandedContent) {
+				elementList.add(item);
+			}
+
+			getGlobalFooterPageThreadLocal().verifyElementListExistence(elementList);
+
+	}
 }
