@@ -47,11 +47,11 @@ def getTunnelName() {
 //    tunnelName = tunnelName.replaceAll(":","")
 //    tunnelName = tunnelName.replaceAll(" ","")
 //    return tunnelName
-    return "DigitalQETunnel"
+    return "Digital_Mobile_QA"    
 }
 
 def tunnel_name() {
-    return "Digital_Mobile_QA"
+   return "DigitalQETunnel"
 }
 
 sauceconnect {
