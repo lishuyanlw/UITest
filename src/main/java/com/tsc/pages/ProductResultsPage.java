@@ -189,6 +189,9 @@ public class ProductResultsPage extends BasePage{
 	@FindBy(xpath="//*[contains(@class,'prec clearfix')]/div")
 	List<WebElement> lstPeopleAlsoBoughtItems;
 
+	@FindBy(xpath="//span[contains(@id,'_ctlSpanTitle')]")
+	public WebElement pageTitle;
+
 	String searchkeyword;
 	public boolean bVerifyTitle=true;
 	public String firstLevelFilter,secondLevelFilter;

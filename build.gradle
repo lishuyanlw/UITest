@@ -46,8 +46,13 @@ def getTunnelName() {
 //    def tunnelName = "TSCWF-WebAutomation" + System.getenv('BUILD_TIMESTAMP')
 //    tunnelName = tunnelName.replaceAll(":","")
 //    tunnelName = tunnelName.replaceAll(" ","")
-//    return tunnelName
-    return "DigitalQETunnel"
+//    return tunnelName  TSCWF_Automation_Test_Tunnel_Sachin
+//    return "DigitalQETunnel"
+    return "TSCWF_Automation_Test_Tunnel_Sachin"
+}
+
+def parentTunnelOwner() {
+    return "sso-sauce-rogers-Sachin.Sharma6"
 }
 
 def tunnel_name() {
@@ -76,6 +81,7 @@ task "sauceTest"(type: Test) {
     systemProperty 'Language', test_language
     systemProperty 'TunnelRequired', TunnelRequired
     systemProperty 'TunnelName', tunnelName
+    systemProperty 'parentTunnelOwner', parentTunnelOwner()
 
     useTestNG(){
         parallel = test_parallel

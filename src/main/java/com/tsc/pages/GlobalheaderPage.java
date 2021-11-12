@@ -110,8 +110,11 @@ public class GlobalheaderPage extends BasePage{
 	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Top suggestions') or contains(.,'Your searches')][contains(@class,'ac__section__title search-title')]/following-sibling::ul//li//a")
 	public List<WebElement> lstTopSuggestionsLink;
 	
-
+	public By byUnmarkedTextForTopSuggestions = By.xpath(".//span[contains(@class,'unmark-text')]");
+	
 	//Categories
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Categories') or contains(.,'Trending')][contains(@class,'ac__section__title search-title')]")
+	public WebElement lblCategories;
 	
 	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Categories') or contains(.,'Trending')][contains(@class,'ac__section__title search-title')]/following-sibling::ul")
 	public WebElement cntCategoriesList;
@@ -135,6 +138,20 @@ public class GlobalheaderPage extends BasePage{
 	
 	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--right')]//div[@class='ac__layout-inner--left']")
 	public WebElement cntPossibleItemMatchesList;
+	
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--right')]//div[@class='ac__layout-inner--left']//ul//li//a")
+	public List<WebElement> lstPossibleItemMatchesLink;
+	
+	//More to Explore
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--right')]//div[@class='ac__layout-inner--right']//*[contains(@class,'search-title')]")
+	public WebElement lblMoreToExplore;
+	
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--right')]//div[@class='ac__layout-inner--right']")
+	public WebElement cntMoreToExploreList;
+	
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--right')]//div[@class='ac__layout-inner--right']//ul//li")
+	public List<WebElement> lstMoreToExplore;
+	
 	
 	//For Staging website
 	@FindBy(xpath = "//div[@class='searchContainer']//div[contains(@class,'suggestions-container--open')]//div[@class='tsc-category-title']")
@@ -198,6 +215,17 @@ public class GlobalheaderPage extends BasePage{
 	@FindBy(xpath = "//a[contains(@class,'mega-popular__brand-link')]//img")
 	public List<WebElement> listPopularBrandsLinks;
 	
+
+	@FindBy(xpath = "//h2[contains(@class,'titleLink')]//b")
+	WebElement shopAllBrandsLandigPageHeading;
+
+	@FindBy(xpath="//span[contains(text(),'Clearance')]")
+	WebElement clearanceHeader;
+
+	public void clickOnClearanceHeaderOption() {
+		getReusableActionsInstance().clickIfAvailable(clearanceHeader);
+	}
+
 	public void waitForPageLoad() {
 		getReusableActionsInstance().waitForPageLoad();
 		(new ProductResultsPage(this.getDriver())).waitForPageLoading();	

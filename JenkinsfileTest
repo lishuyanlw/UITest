@@ -37,7 +37,7 @@ pipeline {
         string(name: 'ThreadCount', defaultValue: "1", description: 'Number of parallel test sessions')
         choice(name: 'TunnelRequired', choices: ['No', 'Yes'], description: 'Is Sauce Tunnel required? Select No if AUT is public facing')
         string(name: 'Groups', defaultValue: "Sanity", description: 'Groups names separated by comma')
-        string(name: 'TestProfile', defaultValue: "TSCWF Automation", description: 'Only used for reporting - has no impact on test runs')
+        string(name: 'TestProfile', defaultValue: "TSCWF-Automation", description: 'Only used for reporting - has no impact on test runs')
         string(name: 'IndividualTests', defaultValue: "", description: "Individual tests to be passed as Test1 Test2 Test3 Test4 and so on ")
 
     }
@@ -107,7 +107,7 @@ pipeline {
                                 netstorage-upload.sh /mnt/ns/nskey.pem ./report Digital-QE/
                                 """
                                 REPORT_URL="${REPORT_URL}"+"/report/"+destinationFolder+"/results.html"
-				echo "${REPORT_URL}"
+				                echo "${REPORT_URL}"
                             }
 
                         }
