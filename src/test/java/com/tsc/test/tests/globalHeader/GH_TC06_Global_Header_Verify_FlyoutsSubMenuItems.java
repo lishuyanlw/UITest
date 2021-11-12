@@ -11,6 +11,6 @@ public class GH_TC06_Global_Header_Verify_FlyoutsSubMenuItems extends BaseTest {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 		String lsBaseUrl=(new BasePage(this.getDriver())).getBaseURL();
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl+"/"), "TSC url is correct", "TSC url is incorrect");
-		getglobalheaderPageThreadLocal().verifyFlyoutMenuItems("Shoes & Handbags",null);
+		getglobalheaderPageThreadLocal().verifyFlyoutMenuItems(null,null);
 	}
 }	
