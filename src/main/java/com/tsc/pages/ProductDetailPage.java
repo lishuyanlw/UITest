@@ -182,6 +182,9 @@ public class ProductDetailPage extends BasePage {
 	
 	@FindBy(xpath = "//div[@aria-label='True Fit']")
 	public WebElement iframeProductTrueFitLoadingIndicator;
+
+	@FindBy(xpath = "//div[@tfc-popup]")
+	public WebElement cntProductTrueFitIframe;
 	
 	@FindBy(xpath = "//button[contains(@class,'tfc-popup-click-close')][img]")
 	public WebElement btnProductTrueFitIframeClose;
@@ -219,6 +222,9 @@ public class ProductDetailPage extends BasePage {
 	
 	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//div[@id='divAvailableSizes']//select")
 	public WebElement selectSizeOption;
+	
+	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//div[@id='divAvailableSizes']//select//option")
+	public List<WebElement> lstSizeOption;
 	
 	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//div[@id='divAvailableSizes']//div[@id='divSizeChart']")
 	public WebElement lnkSizingChart;
@@ -265,6 +271,9 @@ public class ProductDetailPage extends BasePage {
 	//Sticky swiper container part
 	@FindBy(xpath = "//div[@class='sticky-swiper-container']//div[@class='stickyIcon']")
 	public WebElement imgStickyIcon;
+	
+	@FindBy(xpath = "//div[@class='stickyHeader']//div[@id='divProductDetailTab']//div[contains(@class,'swiper-slide')]")
+	public List<WebElement> lstStickyTabProductTabList;
 	
 	@FindBy(xpath = "//div[@class='sticky-swiper-container']//a[@data-text='PRODUCT OVERVIEW']")
 	public WebElement btnStickyTabProductOverview;
@@ -941,15 +950,140 @@ public class ProductDetailPage extends BasePage {
 	}
 
 	/**
-	 * Method to switch to TrueFit iFrame
+	 * Method to open TrueFit iFrame
 	 * @return void	  
 	 * @author Wei.Li
 	 */
-	public void switchToTrueFitIFrame() {
+	public void openTrueFitIFrame() {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkProductTrueFitLink);
 		this.lnkProductTrueFitLink.click();
 		this.waitForCondition(Driver->{return this.iframeProductTrueFitLoadingIndicator.getAttribute("style").contains("display: block");}, 30000);
 		this.getDriver().switchTo().frame(this.iframeProductTrueFit);
+	}
+	
+	/**
+	 * Method to close TrueFit iFrame
+	 * @return void	  
+	 * @author Wei.Li
+	 */
+	public void closeTrueFitIFrame() {
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnProductTrueFitIframeClose);
+		this.btnProductTrueFitIframeClose.click();
+		this.getDriver().switchTo().defaultContent();
+		this.waitForCondition(Driver->{return this.iframeProductTrueFitLoadingIndicator.getAttribute("style").contains("display: none");}, 30000);
+	}
+
+	/**
+	 * Method to check if Sizing chart is existing
+	 * @return boolean	  
+	 * @author Wei.Li
+	 */
+	public boolean checkProductSizingChartExisting() {		
+		for(WebElement item:this.lstStickyTabProductTabList) {
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);			
+			if(item.getText().trim().equalsIgnoreCase("SIZE CHART")) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Method to check if dropdown action is working
+	 * @return boolean	  
+	 * @author Wei.Li
+	 */
+	public boolean checkProductSizingDrodownOptionChangeAction() {	
+		String lsSelected,lsOption;
+		WebElement item;
+		Select sizeOption=new Select(this.selectSizeOption);		
+		int loopSize=this.lstSizeOption.size();
+		for(int i=0;i<loopSize;i++) {
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectSizeOption);
+			this.selectSizeOption.click();
+			this.getReusableActionsInstance().staticWait(100);
+			item=this.lstSizeOption.get(i);
+			lsOption=item.getText().trim();
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			item.click();
+			this.getReusableActionsInstance().staticWait(100);
+			lsSelected=sizeOption.getFirstSelectedOption().getText().trim();
+			if(!lsSelected.equalsIgnoreCase(lsOption)) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	/**
+	 * Method to verify product size dropdown
+	 * @return void	  
+	 * @author Wei.Li
+	 */
+	public void verifyProductSizeDropdown() {
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblSizeStatic),"Product size title is existing","Product size title is not existing");
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.selectSizeOption),"Product size dropdown is existing","Product size dropdown is not existing");
+		reporter.softAssert(checkProductSizingDrodownOptionChangeAction(),"Product size dropdown action is working","Product size dropdown action is not working");
+		if(IsSoldOutExisting()) {
+			reporter.softAssert(!this.getElementText(this.lblSoldOut).isEmpty(),"The product Soldout message is not empty","The product Soldout message is empty");
+		}
+	}
+	
+	/**
+	 * Method to verify product size TrueFit
+	 * @return void	  
+	 * @author Wei.Li
+	 */
+	public void verifyProductSizeTrueFit() {
+		if(judgeStyleTrueFitExisting()) {				
+			reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.imgProductTrueFitLogo),"The product TrueFit icon is displaying correctly","The product TrueFit icon is not displaying correctly");
+			reporter.softAssert(!this.getElementHref(this.lnkProductTrueFitLink).isEmpty(),"The product TrueFit link is not empty","The product TrueFit link is empty");
+			
+			openTrueFitIFrame();
+			
+			reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.cntProductTrueFitIframe),"The product TrueFit popup window is displaying","The product TrueFit popup window is not displaying");
+			reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.imgProductTrueFitIframeHeaderLogo),"The header icon in product TrueFit popup woindow is displaying","The header icon in product TrueFit popup woindow is not displaying");
+			reporter.softAssert(!this.getElementImageSrc(this.imgProductTrueFitIframeHeaderLogo).isEmpty(),"The header icon src in product TrueFit popup window is not empty","The header icon src in product TrueFit popup window is empty");
+			reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.btnProductTrueFitIframeFooterGetStarted),"The GetStarted button in product TrueFit popup window is displaying","The GetStarted button in product TrueFit popup window is not displaying");
+			reporter.softAssert(this.btnProductTrueFitIframeFooterGetStarted.isEnabled(),"The GetStarted button in product TrueFit popup window is enabled","The GetStarted button in product TrueFit popup window is not enabled");
+			
+			closeTrueFitIFrame();
+		}		
+	}
+	
+	/**
+	 * Method to verify product Sizing chart
+	 * @return void	  
+	 * @author Wei.Li
+	 */
+	public void verifyProductQuantitySizingChart() {
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lnkSizingChart),"The product Sizing Chart is existing","The product Sizing Chart is not existing");
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkSizingChart);
+		this.lnkSizingChart.click();
+		this.waitForCondition(Driver->{return this.btnStickyTabSizeChart.getAttribute("class").contains("selected");},5000);
+		reporter.softAssert(this.getStickyTabSelectedStatus(this.btnStickyTabSizeChart),"The SIZE CHART tab has been selected correctly","The SIZE CHART tab has not been selected correctly");				
+	}
+	
+	/**
+	 * Method to verify product quantity dropdown
+	 * @return void	  
+	 * @author Wei.Li
+	 */
+	public void verifyProductQuantityDropdown() {
+		reporter.softAssert(!this.getElementText(this.lblQuantityStatic).isEmpty(),"The product quantity label message is not empty","The product quantity label message is empty");
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.selectQuantityOption),"The product Quantity option is displaying correctly","The product Quantity option is not displaying correctly");
+		if(this.IsQuantityLeftExisting()) {
+			reporter.softAssert(!this.getElementText(this.lblQuantityLeft).isEmpty(),"The product Quantity left message is not empty","The product Quantity left message is empty");
+		}
+	}
+	
+	/**
+	 * Method to verify product Add to Bag
+	 * @return void	  
+	 * @author Wei.Li
+	 */
+	public void verifyProductAddToBag() {
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.btnAddToBag),"The AddToBag button is displaying correctly","The AddToBag button is not displaying correctly");
 	}
 	
 
