@@ -43,18 +43,7 @@ public class PD_TC05_Verify_ProductDetail_ProductSize_Quantity_AddToBag extends 
 			
 			//Verify product TrueFit	
 			reporter.reportLog("Verify product TrueFit");
-			getProductDetailPageThreadLocal().verifyProductSizeTrueFit();
-			
-			//Verify product size
-			reporter.reportLog("Verify product size");	
-			reporter.softAssert(!basePage.getElementText(getProductDetailPageThreadLocal().lblSizeStatic).isEmpty(),"The product size label message is not empty","The product size label message is empty");
-			reporter.softAssert(basePage.getReusableActionsInstance().isElementVisible(getProductDetailPageThreadLocal().selectSizeOption),"The product Size option is displaying correctly","The product Size option is not displaying correctly");
-			if(getProductDetailPageThreadLocal().IsSoldOutExisting()) {
-				reporter.softAssert(!basePage.getElementText(getProductDetailPageThreadLocal().lblSoldOut).isEmpty(),"The product Soldout message is not empty","The product Soldout message is empty");
-			}
-			if(getProductDetailPageThreadLocal().checkProductSizingChartExisting()) {
-				getProductDetailPageThreadLocal().verifyProductQuantitySizingChart();
-			}						
+			getProductDetailPageThreadLocal().verifyProductSizeTrueFit();			
 		}
 		else {
 			reporter.reportLogFail("Product size part is not existing!");

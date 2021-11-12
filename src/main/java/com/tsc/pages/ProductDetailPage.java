@@ -1027,6 +1027,10 @@ public class ProductDetailPage extends BasePage {
 		if(IsSoldOutExisting()) {
 			reporter.softAssert(!this.getElementText(this.lblSoldOut).isEmpty(),"The product Soldout message is not empty","The product Soldout message is empty");
 		}
+		
+		if(checkProductSizingChartExisting()) {
+			verifyProductQuantitySizingChart();
+		}
 	}
 	
 	/**
@@ -1042,7 +1046,7 @@ public class ProductDetailPage extends BasePage {
 			openTrueFitIFrame();
 			
 			reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.cntProductTrueFitIframe),"The product TrueFit popup window is displaying","The product TrueFit popup window is not displaying");
-			reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.imgProductTrueFitIframeHeaderLogo),"The header icon in product TrueFit popup woindow is displaying","The header icon in product TrueFit popup woindow is not displaying");
+			reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.imgProductTrueFitIframeHeaderLogo),"The header icon in product TrueFit popup window is displaying","The header icon in product TrueFit popup window is not displaying");
 			reporter.softAssert(!this.getElementImageSrc(this.imgProductTrueFitIframeHeaderLogo).isEmpty(),"The header icon src in product TrueFit popup window is not empty","The header icon src in product TrueFit popup window is empty");
 			reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.btnProductTrueFitIframeFooterGetStarted),"The GetStarted button in product TrueFit popup window is displaying","The GetStarted button in product TrueFit popup window is not displaying");
 			reporter.softAssert(this.btnProductTrueFitIframeFooterGetStarted.isEnabled(),"The GetStarted button in product TrueFit popup window is enabled","The GetStarted button in product TrueFit popup window is not enabled");
