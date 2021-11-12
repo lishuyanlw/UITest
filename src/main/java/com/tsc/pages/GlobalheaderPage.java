@@ -605,6 +605,9 @@ public class GlobalheaderPage extends BasePage{
 	public String verifysubMenuhref(List<WebElement> webElements) {
 		if(isParentElementHasAttribute(webElements,"li")) {
 			for (WebElement element:this.subMenuLinks) {
+				if(System.getProperty("Browser").toLowerCase().contains("firefox")) {
+					getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+				}
 				getReusableActionsInstance().scrollToElement(element);
 				if(!verifyElementProperty(element,"Link")) {//href is not present
 					href_src_submenu.append(element.getText()).append('\n');
@@ -649,22 +652,25 @@ public class GlobalheaderPage extends BasePage{
 		List<WebElement> headingsElements=this.headingLinks;
 		if(heading==null) {
 			for(WebElement headerItem: headingsElements) {
-				this.scrolltoWebElement(headerItem);
+				if(System.getProperty("Browser").toLowerCase().contains("firefox")) {
+					getReusableActionsInstance().javascriptScrollByVisibleElement(headerItem);
+				}
+			this.scrolltoWebElement(headerItem);
 				this.staticwait();
 				first_flyout_menu_text.set(headerItem.getText().split(" ")[0]);
 				waitForCondition(Driver->{return (CategoriesLinks.get(0).getAttribute("href").contains(first_flyout_menu_text.get()));} ,30000);
 				String headingName =headerItem.getText();
 				reporter.reportLog("Flyout heading "+headingName);
 				if(section==null) {
-					first_flyout_menu_text.set(verifyFlyoutMenuSection(headerItem.getText(),"Left Section"));
+					first_flyout_menu_text.set(verifyFlyoutMenuSection(headingName,"Left Section"));
 					first_flyout_menu_text.get();
 					reporter.softAssert(first_flyout_menu_text.get()=="","All elements present.",heading+ " > "+first_flyout_menu_text.get());
 					href_src_data.delete(0, href_src_data.length());
-					first_flyout_menu_text.set(verifyFlyoutMenuSection(headerItem.getText(),"Curated Collections"));
+					first_flyout_menu_text.set(verifyFlyoutMenuSection(headingName,"Curated Collections"));
 					first_flyout_menu_text.get();
 					reporter.softAssert(first_flyout_menu_text.get()=="","All elements present.",heading+ " > "+first_flyout_menu_text.get());
 					href_src_data.delete(0, href_src_data.length());
-					first_flyout_menu_text.set(verifyFlyoutMenuSection(headerItem.getText(),"Popular Brands"));
+					first_flyout_menu_text.set(verifyFlyoutMenuSection(headingName,"Popular Brands"));
 					first_flyout_menu_text.get();
 					reporter.softAssert(first_flyout_menu_text.get()=="","All elements present.",heading+ " > "+first_flyout_menu_text.get());
 					href_src_data.delete(0, href_src_data.length());
@@ -673,13 +679,39 @@ public class GlobalheaderPage extends BasePage{
 					first_flyout_menu_text.get();
 					reporter.softAssert(first_flyout_menu_text.get()=="","All elements present.",headingName+ " > "+first_flyout_menu_text.get());
 					href_src_data.delete(0, href_src_data.length());
-					//soft assert
-				
 					}
 			}
 		}else{
-//use webelement using heading name and copy from this.scrolltowebelemetn from upper part.
-		}
+			WebElement headingsElement=getWebElementFlyoutHeading(heading);
+			 if(System.getProperty("Browser").toLowerCase().contains("firefox")) {
+					getReusableActionsInstance().javascriptScrollByVisibleElement(headingsElement);
+				}
+			this.scrolltoWebElement(headingsElement);
+			this.staticwait();
+			first_flyout_menu_text.set(headingsElement.getText().split(" ")[0]);
+			waitForCondition(Driver->{return (CategoriesLinks.get(0).getAttribute("href").contains(first_flyout_menu_text.get()));} ,30000);
+			String headingName =headingsElement.getText();
+			reporter.reportLog("Flyout heading "+headingName);
+			if(section==null) {
+				first_flyout_menu_text.set(verifyFlyoutMenuSection(headingName,"Left Section"));
+				first_flyout_menu_text.get();
+				reporter.softAssert(first_flyout_menu_text.get()=="","All elements present.",heading+ " > "+first_flyout_menu_text.get());
+				href_src_data.delete(0, href_src_data.length());
+				first_flyout_menu_text.set(verifyFlyoutMenuSection(headingName,"Curated Collections"));
+				first_flyout_menu_text.get();
+				reporter.softAssert(first_flyout_menu_text.get()=="","All elements present.",heading+ " > "+first_flyout_menu_text.get());
+				href_src_data.delete(0, href_src_data.length());
+				first_flyout_menu_text.set(verifyFlyoutMenuSection(headingName,"Popular Brands"));
+				first_flyout_menu_text.get();
+				reporter.softAssert(first_flyout_menu_text.get()=="","All elements present.",heading+ " > "+first_flyout_menu_text.get());
+				href_src_data.delete(0, href_src_data.length());
+			}else{
+				first_flyout_menu_text.set(verifyFlyoutMenuSection(headingName,section));
+				first_flyout_menu_text.get();
+				reporter.softAssert(first_flyout_menu_text.get()=="","All elements present.",headingName+ " > "+first_flyout_menu_text.get());
+				href_src_data.delete(0, href_src_data.length());
+				}
+			}
 		return first_flyout_menu_text.toString();
 	}
 
@@ -689,6 +721,9 @@ public class GlobalheaderPage extends BasePage{
 			case "Curated Collections":
 				reporter.reportLog("Verifying Curated Collections items for : "+headingName);
 				for(WebElement webElement:listCuratedCollectionLinks){
+					if(System.getProperty("Browser").toLowerCase().contains("firefox")) {
+						getReusableActionsInstance().javascriptScrollByVisibleElement(webElement);
+					}
 					getReusableActionsInstance().scrollToElement(webElement);
 					if(!verifyElementProperty(webElement,"Link")) {//href is not present
 						href_src_data.append("Href missing for Curated Collection item: ").append(webElement.getText()).append('\n');
@@ -698,6 +733,9 @@ public class GlobalheaderPage extends BasePage{
 			case "Popular Brands":
 				reporter.reportLog("Verifying Popular Brands items for : "+headingName);
 				for(WebElement webElement:listPopularBrandsLinks){
+					if(System.getProperty("Browser").toLowerCase().contains("firefox")) {
+						getReusableActionsInstance().javascriptScrollByVisibleElement(webElement);
+					}
 					getReusableActionsInstance().scrollToElement(webElement);
 					WebElement hrefAttribute =webElement.findElement(By.xpath("./ancestor::a"));
 					if(!verifyElementProperty(hrefAttribute,"Link")) {//href not present
@@ -709,8 +747,12 @@ public class GlobalheaderPage extends BasePage{
 				}
 				return href_src_data.toString();
 			case "Left Section":
+				reporter.reportLog("Verifying Left Section");
 				String smHref=null;
 				for (WebElement category:CategoriesLinks) {
+					if(System.getProperty("Browser").toLowerCase().contains("firefox")) {
+						getReusableActionsInstance().javascriptScrollByVisibleElement(category);
+					}
 					this.scrolltoWebElement(category);
 					smHref=this.verifysubMenuhref(subMenuSection);
 					reporter.softAssert(smHref=="","href is present for all elements  "+headingName+" > "+category.getText(),"href missing for "+headingName+" > "+category.getText()+" > "+smHref);
@@ -720,32 +762,5 @@ public class GlobalheaderPage extends BasePage{
 		return href_src_data.toString();
 	}
 
-	public String verifyBrand_Curated_Section(String headingName, String section,List<WebElement> webElements) {
-		AtomicReference<String> first_flyout_menu_text =new  AtomicReference<String>();
-		first_flyout_menu_text.set(headingName.split(" ")[0]);
-		waitForCondition(Driver->{return (CategoriesLinks.get(0).getAttribute("href").contains(first_flyout_menu_text.get()));} ,30000);
-		for (WebElement element:webElements) {
-			getReusableActionsInstance().scrollToElement(element);
-			switch(section) {
-				case "PopularBrands":
-						WebElement hreffattri =element.findElement(By.xpath("./ancestor::a"));
-						//href is not present
-						if(!verifyElementProperty(hreffattri,"Link")) {//href not present
-							href_src_section.append("Href missing for Popular Brand item: ").append(element.getAttribute("alt")).append('\n');
-						}
-						//src is not present
-						if(!verifyElementProperty(element,"Image")) {//href not present
-							href_src_section.append("Image missing for Popular Brand item: ").append(element.getAttribute("alt")).append('\n');
-						}
-						
-				break;
-				case "CuratedCollection":	
-					if(!verifyElementProperty(element,"Link")) {//href is not present
-						href_src_section.append(element.getText()).append('\n');
-					} 
-				break;
-			}
-		}
-		return  href_src_section.toString();
-	}
+	
 }
