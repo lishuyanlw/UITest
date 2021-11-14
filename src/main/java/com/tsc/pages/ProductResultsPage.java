@@ -189,6 +189,9 @@ public class ProductResultsPage extends BasePage{
 	@FindBy(xpath="//*[contains(@class,'prec clearfix')]/div")
 	List<WebElement> lstPeopleAlsoBoughtItems;
 
+	@FindBy(xpath="//span[contains(@id,'_ctlSpanTitle')]")
+	public WebElement pageTitle;
+
 
 	public By bySecondlevelFilterList = By.xpath(".//ul//li");
 	public By byJudgeMoreButtonExistanceContainer = By.xpath(".//div[contains(@class,'ngxp__inner')]/div[@role='tabpanel']/div");
@@ -333,7 +336,7 @@ public class ProductResultsPage extends BasePage{
 		}
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSearchResultTitle);
 		String lsTitle=this.lblSearchResultTitle.getText().trim();
-
+		
 		if(this.searchkeyword.toLowerCase().contains(lsTitle.toLowerCase())) {
 			return true;
 		}
@@ -497,7 +500,7 @@ public class ProductResultsPage extends BasePage{
 		}
 		return "NoTitle";
 	}
-	
+
 	/**
 	 * This method will judge test model for different scenarios.
 	 * @return String: test model

@@ -25,14 +25,14 @@ public class SR_TC09_Verify_ProductSearchResult_SpecialOffersAndRecomendationSec
 		List<WebElement> productList;
 
 		// Corresponding actions (Clearance>>Fashion)
-		getglobalheaderPageThreadLocal().clickSubMenuItem("Clearance","Fashion",null);
+		String subMenuItem = getglobalheaderPageThreadLocal().getNameAndclickSubMenuItem("Clearance","Fashion",null);
 
 		// Verifying that landing page is product results page after navigation
 		reporter.softAssert(getProductResultsPageThreadLocal().getClearanceOptionURLTitle().contains(lnkProductResult),"Verified that landing page is Product Result Page", "Verified that landing page is not Product Result Page");
 
 		// Verifying title of the page after navigation
-		String value = getProductResultsPageThreadLocal().getProductResultPageTitle();
-		reporter.softAssert(value.equalsIgnoreCase("FASHION"), "Product Result Title Verified and title is " + value,"Product Result Title is not as expected and title is " + value);
+		String value = getProductResultsPageThreadLocal().getProductResultPageTitle(getProductResultsPageThreadLocal().pageTitle);
+		reporter.softAssert(value.equalsIgnoreCase(subMenuItem), "Product Result Title Verified and title is " + value,"Product Result Title is not as expected and title is " + value);
 
         // Verifying Search Result message and default Page Number Count on Page
 		reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(),"Showing text pattern in filters is correct","Showing text pattern in filters is incorrect");

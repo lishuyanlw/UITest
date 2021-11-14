@@ -47,25 +47,7 @@ public class GlobalheaderPage extends BasePage{
 	
 	@FindBy(xpath = "//div[contains(@class,'black-header')]//nav//li//a[contains(@href,'OnAir')]")
 	public WebElement lnkOnAirProductsDpdMenu;
-
-	@FindBy(xpath = "//section//span[contains(@class,'mega-nav-mobile__w') and contains(text(),'Program')]")
-	public WebElement lnkProgramGuideDpdMenuMobile;
-
-	@FindBy(xpath = "//section//span[contains(@class,'mega-nav-mobile__w') and contains(text(),'Watch')]")
-	public WebElement lnkWatchUsLiveDpdMenuMobile;
-
-	@FindBy(xpath = "//section//span[contains(@class,'mega-nav-mobile__w') and contains(text(),'Meet')]")
-	public WebElement meetTheHostsMobile;
-
-	@FindBy(xpath = "//section//span[contains(@class,'mega-nav-mobile__w') and contains(text(),'Channel')]")
-	public WebElement channelFinderMobile;
-
-	@FindBy(xpath = "//section//span[contains(@class,'mega-nav-mobile__w') and contains(text(),'On Air')]")
-	public WebElement onAirProductsMobile;
-
-	@FindBy(xpath = "//button[@class='mega-nav-mobile__heading__close']")
-	public WebElement headingCloseMobile;
-
+	
 	//Sliver Links [Dynamic event, TS, Deals, OnAir, Program Guide, Watch Us Live]
 	@FindBy(xpath = "//*[@class='Sliver']//a[contains(@href, 'todaysshowstopper')]")
 	public WebElement lnkTS;
@@ -619,10 +601,10 @@ public class GlobalheaderPage extends BasePage{
 	 * @author Wei.Li
 	 */	
 	 public void hoverOnWatchTSC() {
-			 getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnWatchTSCBlackHeader);
-			 getReusableActionsInstance().scrollToElement(this.btnWatchTSCBlackHeader);
-			 getReusableActionsInstance().staticWait(100);
-	 }
+		 getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnWatchTSCBlackHeader);
+		 getReusableActionsInstance().scrollToElement(this.btnWatchTSCBlackHeader);
+		 getReusableActionsInstance().staticWait(100);		 
+	 }	
 	 
 	/**
 	 *Method to go to Black headers  
@@ -702,27 +684,41 @@ public class GlobalheaderPage extends BasePage{
 		/*Method to click on WebElement for Submenu Item by providing Flyout heading name , category and item as parameters.
 		 * @author Shruti Desai
 	 */
-		public void clickSubMenuItem(String headingName,String submenuHeading, String itemName) {
+		public String getNameAndclickSubMenuItem(String headingName,String submenuHeading, String itemName) {
 			String xpathHeading =createXPath("//span[contains(text(),'{0}')]" ,headingName); 
 			WebElement headingWebElement = FlyoutHeadings.findElement(By.xpath(xpathHeading));
 			getReusableActionsInstance().scrollToElement(headingWebElement);
 
 			if(headingWebElement!=null && submenuHeading==null) {
 				headingWebElement.click();
+				return headingWebElement.getText().trim();
 			}
 			if(submenuHeading!=null) {
 				String xpathSubMenu =createXPath("//a[contains(text(),\"{0}\")]" ,submenuHeading); 
-				WebElement SubMenu = Categories.findElement(By.xpath(xpathSubMenu));
-				getReusableActionsInstance().scrollToElement(SubMenu);
-				if(itemName!=null) {
-					String xpathSubmenuItem=createXPath("//a[contains(text(),'{0}')]",itemName);
-					WebElement SubMenuItem=getDriver().findElement(By.xpath(xpathSubmenuItem));
-					getReusableActionsInstance().scrollToElement(SubMenuItem);
-					SubMenuItem.click();
-				}else {
-					SubMenu.click();
+				List<WebElement> SubMenu = Categories.findElements(By.xpath(xpathSubMenu));
+				if(SubMenu.size()>0){
+					getReusableActionsInstance().scrollToElement(SubMenu.get(0));
+					if(itemName!=null) {
+						String xpathSubmenuItem=createXPath("//a[contains(text(),'{0}')]",itemName);
+						WebElement SubMenuItem=getDriver().findElement(By.xpath(xpathSubmenuItem));
+						getReusableActionsInstance().scrollToElement(SubMenuItem);
+						String title = SubMenuItem.getText().trim();
+						SubMenuItem.click();
+						return title;
+					}else {
+						String title = SubMenu.get(0).getText().trim();
+						SubMenu.get(0).click();
+						return title;
+					}
+				//Adding else condition to click on first element by default if passed submenu item is not present in list
+				}else{
+					WebElement element = Categories.findElement(By.xpath("./a"));
+					String title = element.getText().trim();
+					element.click();
+					return title;
 				}
 			}
+			return null;
 		}
 		
 		/*Method to get list of Flyout heading WebElements
