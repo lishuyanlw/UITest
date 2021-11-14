@@ -44,7 +44,7 @@ public class SR_TC10_Verify_ProductSearchResult_GlobalHeaderAndFooterAfterSortAn
 		}
 				
 		reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(), "Showing text pattern in filters is correct", "Showing text pattern in filters is incorrect");
-		if(!(System.getProperty("Device")=="Mobile")) {
+		if(!(System.getProperty("Device").equalsIgnoreCase("Mobile"))) {
 			reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting), "The default setting of items per page is "+lsSearchResultPageDefaultSetting, "The default setting of items per page isn't "+lsSearchResultPageDefaultSetting);
 		}
 		
@@ -73,7 +73,7 @@ public class SR_TC10_Verify_ProductSearchResult_GlobalHeaderAndFooterAfterSortAn
 	//Verify footer section
 	GF_TC01_Verify_GlobalFooter_SocialMedia footerSectionTest_SocialMedia=new GF_TC01_Verify_GlobalFooter_SocialMedia();
 	footerSectionTest_SocialMedia.validateMajorNameAndLinks();
-	
+
 	GF_TC02_Verify_GlobalFooter_CustomerHubLinksAndAboutTSCLinks footerSectionTest_CustomerHubLinksAndAboutTSCLinks=new GF_TC02_Verify_GlobalFooter_CustomerHubLinksAndAboutTSCLinks();
 	footerSectionTest_CustomerHubLinksAndAboutTSCLinks.validateContents();
 		
@@ -92,7 +92,7 @@ public class SR_TC10_Verify_ProductSearchResult_GlobalHeaderAndFooterAfterSortAn
 					
 		reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(), "Showing text pattern in filters is correct", "Showing text pattern in filters is incorrect");
 
-		if(!(System.getProperty("Device")=="Mobile")) {
+		if(!(System.getProperty("Device").equalsIgnoreCase("Mobile"))) {
 			reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting), "The default setting of items per page is "+lsSearchResultPageDefaultSetting, "The default setting of items per page isn't "+lsSearchResultPageDefaultSetting);
 		}
 		

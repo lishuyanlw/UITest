@@ -207,18 +207,9 @@ public class GH_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo extends B
 		
 		reporter.reportLog("Verify Black headers");
 		//Verify Black headers
-		getglobalheaderPageThreadLocal().hoverOnWatchTSC();
-		if (System.getProperty("Device")=="Mobile"){
-			getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkWatchUsLiveDpdMenuMobile);
-			getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkProgramGuideDpdMenuMobile);
-			getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().meetTheHostsMobile);
-			getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().channelFinderMobile);
-			getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().onAirProductsMobile);
-			getglobalheaderPageThreadLocal().headingCloseMobile.click();
-			getglobalheaderPageThreadLocal().menuButton.click();
-			getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkTSBlackHeaderMobile);
-			getglobalheaderPageThreadLocal().headingCloseMobile.click();
-		}else {
+		if(!(System.getProperty("Device").equalsIgnoreCase("Mobile"))) {
+			getglobalheaderPageThreadLocal().hoverOnWatchTSC();
+
 			getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkWatchUsLiveDpdMenu);
 			getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkDealsDpdMenu);
 			getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkProgramGuideDpdMenu);
@@ -229,7 +220,7 @@ public class GH_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo extends B
 			getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkTSBlackHeader);
 		}
 
-			
+
 		reporter.reportLog("Verify Logo section");
 		//Verify Logo section
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateTSCLogo(), "TSC icon is visible", "TSC icon is not visible");

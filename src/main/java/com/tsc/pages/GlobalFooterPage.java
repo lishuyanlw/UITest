@@ -123,6 +123,9 @@ public class GlobalFooterPage extends BasePage {
 	@FindBy(xpath = "//div[@class='panel border-bottom-gray']//div[@class='panel-body']//ul//li")
 	public List<WebElement> lnkTSCCustomerHubAllLinksMobile;
 
+	@FindBy(xpath = "//div[@class='panel border-bottom-gray']//a[@role='button']")
+	public WebElement buttonTSCCustomerHubMobile;
+
 	//About TSC
 	@FindBy(xpath = "//div[@class='Footer']//div[contains(@class,'menu-area')]/div[3]/strong")
 	public WebElement lblAboutTSCText;
@@ -133,6 +136,9 @@ public class GlobalFooterPage extends BasePage {
 
 	@FindBy(xpath = "//div[@class='panel border-bottom-gray margin-top-none']//div[@class='panel-body']//ul//li")
 	public List<WebElement> lnkAboutTSCAllLinksMobile;
+
+	@FindBy(xpath = "//div[@class='panel border-bottom-gray margin-top-none']//a[@role='button']")
+	public WebElement buttonAboutTSCMobile;
 
 	//Rogers Logo
 	@FindBy(xpath = "//div[@class='Footer']//img[contains(@src,'Rogers.png')]")

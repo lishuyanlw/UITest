@@ -41,14 +41,14 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
     @FindBy(xpath = "//product-results//div[contains(@class,'modalBody')]//form//select")
     WebElement btnSortSelect;
 
-    @FindBy(xpath = "//product-results//div[@class='modal-header prpModalHeader hidden-lg']")
-    WebElement cancelButton;
+    @FindBy(xpath = "//product-results//div[@class='modal-header prpModalHeader hidden-lg']/div/h4[@id='cancel-model']")
+    public WebElement cancelButton;
 
     @FindBy(xpath = "//product-results//span[@id='clearAll' and not(contains(@class,'refineName'))]")
     WebElement clearAllFilters;
 
-    @FindBy(xpath = "//product-results//div[@class='modalBody']//div[@class='filterTag']")
-    List<WebElement> selectedFiltersList;
+    @FindBy(xpath = "//product-results//div[@class='modalBody']//div[@class='filterTag']/span")
+    List<WebElement> selectedFiltersListMobile;
 
     @FindBy(xpath = "//product-results//div[contains(@class,'modalBody')]//form//select//option")
     List<WebElement> sortByOptionList;
@@ -70,21 +70,25 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
     public boolean selectFilterItemInLeftPanel(String lsFirstLevelItem, String lsSecondLevelItem) {
         this.firstLevelFilter = lsFirstLevelItem;
         this.secondLevelFilter = lsSecondLevelItem;
-
         this.sortAndFilter.click();
         getReusableActionsInstance().staticWait(2000);
 
         for(int i=0;i<this.productFilterList.size();i++) {
+            int iFlag=0;
             getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i));
             String lsHeader = this.productFilterList.get(i).getText().trim();
             if (lsHeader.contains("(")) {
+                iFlag=iFlag+1;
                 lsHeader = lsHeader.split("\\(")[0].trim();
             }
 
             //If found lsFirstLevelItem
             if (lsHeader.equalsIgnoreCase(lsFirstLevelItem)) {
+                if (iFlag==0) {
                     this.productFilterList.get(i).click();
-                    getReusableActionsInstance().staticWait(300);
+                }
+
+                getReusableActionsInstance().staticWait(300);
 
                 List<WebElement> subItemList = this.productFilterContainerList.get(i).findElements(this.bySubItemListOnLeftPanel);
                 System.out.println("subItemList size: "+subItemList.size());
@@ -132,15 +136,13 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 
     @Override
     public boolean closeAllSelectedFilters() {
-        //getReusableActionsInstance().staticWait(5000);
+
         try {
-            //if (sortAndFilter.isDisplayed()) {
-                if (sortAndFilter.getText().contains("(")) {
-                    this.sortAndFilter.click();
-                }
-            //}
+            if (sortAndFilter.getText().contains("(")) {
+                this.sortAndFilter.click();
+                this.clearAllFilters.click();
+            }
         }
-        //this.waitForCondition(Driver->{return this.cancelButton.isDisplayed();});
         catch (Exception e) {
             if (clearAllFilters.isDisplayed()) {
                 this.clearAllFilters.click();
@@ -151,29 +153,6 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
         return this.waitForPageLoading();
     }
 
-    @Override
-    public boolean getSearchResultLoad(String searchKeyword) {
-        //waitForPageToLoad();
-        try{
-            //cancelButton.isDisplayed();
-            this.cancelButton.click();
-            GlobalheaderPage globalHeader = new GlobalheaderPage(this.getDriver());
-            getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeader.searchBox);
-            this.clearContent(globalHeader.searchBox);
-            globalHeader.searchBox.sendKeys(searchKeyword);
-            //globalHeader.btnSearchSubmit.click();
-            (new BasePage(this.getDriver())).pressEnterKey(globalHeader.searchBox);
-        }
-        catch(Exception e) {
-            GlobalheaderPage globalHeader = new GlobalheaderPage(this.getDriver());
-            getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeader.searchBox);
-            this.clearContent(globalHeader.searchBox);
-            globalHeader.searchBox.sendKeys(searchKeyword);
-            //globalHeader.btnSearchSubmit.click();
-            (new BasePage(this.getDriver())).pressEnterKey(globalHeader.searchBox);
-        }
-        return this.waitForPageLoading();
-    }
 
 
     @Override
@@ -183,8 +162,6 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
             return false;
         }
 
-        //getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSortBy);
-        this.btnSortSelect.click();
         getReusableActionsInstance().javascriptScrollByVisibleElement(this.sortByOptionList.get(0));
 
         int listSize = this.sortByOptionList.size();
@@ -204,32 +181,4 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
         return setOption.containsAll(setOptionYml) && setOptionYml.containsAll(setOption);
     }
 
-    @Override
-    public String verifySlectedFiltersContainSecondlevelFilter(List<String> lstFilterIncluded, List<String> lstFilterExcluded) {
-        List<String> lstSelectedFilterOption=new ArrayList<String>();
-        this.sortAndFilter.click();
-        int selectedFilterSize=this.selectedFiltersList.size()-1;
-        for(int i=0;i<selectedFilterSize;i++) {
-            getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectedFiltersList.get(i));
-            lstSelectedFilterOption.add(this.selectedFiltersList.get(i).getText().trim());
-        }
-
-        for(String lsItem:lstSelectedFilterOption) {
-            if(!lstFilterIncluded.contains(lsItem)) {
-                return "The search second level filters do not contain the selected filter of '"+lsItem+"'";
-            }
-        }
-
-        for(String lsItem:lstFilterExcluded) {
-            if(lstSelectedFilterOption.contains(lsItem)) {
-                return "The selected filters should not contain the excluded filter of '"+lsItem+"'";
-            }
-        }
-
-        return "";
-    }
-    /*@Override
-    public void clickOnClearanceHeaderOption() {
-        getReusableActionsInstance().clickIfAvailable(clearanceHeaderMobile);
-    }*/
 }

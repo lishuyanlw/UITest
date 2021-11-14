@@ -25,10 +25,10 @@ public class SR_TC03_Verify_ProductSearchResult_SortAndFilterSectionContent exte
 	List<String> lsSortOptionMobile=TestDataHandler.constantData.getSearchResultPage().getLst_SortOptionMobile();
 	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0));
 
-	if (System.getProperty("Device")=="Mobile"){
+	if (System.getProperty("Device").equalsIgnoreCase("Mobile")){
 		reporter.softAssert(getProductResultsPageThreadLocal().verifySortOptions(lsSortOptionMobile), "Sort options in search result filters are correct", "Sort options in search result filters are incorrect");
 	}else {
-		reporter.softAssert(getProductResultsPageThreadLocal().verifySortOptions(lsSortOption), "Sort options in search result filters are correct", "Sort options in search result filters are incorrect");
+		reporter.softAssert(getProductResultsPageThreadLocal().verifySortOptions(lsSortOption), "Sort options in search result filters are correct for desktop", "Sort options in search result filters are incorrect for desktop");
 	}
 
 	String lsMsg=getProductResultsPageThreadLocal().verifyFilterOptions(lsFilterOptionHeader);	

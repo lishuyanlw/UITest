@@ -619,14 +619,9 @@ public class GlobalheaderPage extends BasePage{
 	 * @author Wei.Li
 	 */	
 	 public void hoverOnWatchTSC() {
-		 if (System.getProperty("chromeMobileDevice")=="iPhone X"){
-			 this.menuButton.click();
-			 this.watchTscMobile.click();
-		 }else {
 			 getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnWatchTSCBlackHeader);
 			 getReusableActionsInstance().scrollToElement(this.btnWatchTSCBlackHeader);
 			 getReusableActionsInstance().staticWait(100);
-		 }
 	 }
 	 
 	/**

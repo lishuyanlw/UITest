@@ -46,7 +46,7 @@ public class ProductResultsPage extends BasePage{
 	@FindBy(xpath = "//product-results//div[contains(@class,'col-md-sort')]//form//select")
 	WebElement btnSortSelect;
 
-	@FindBy(xpath = "//product-results//div[contains(@class,'col-md-sort')]//form//select//option | //product-results//div[contains(@class,'modalBody')]//form//select//option")
+	@FindBy(xpath = "//product-results//div[contains(@class,'col-md-sort')]//form//select//option")
 	List<WebElement> sortByOptionList;
 
 	@FindBy(xpath = "//product-results//div[contains(@class,'col-md-items')]//form//div[contains(@class,'filterPrpLabel')]")
@@ -1032,10 +1032,16 @@ public class ProductResultsPage extends BasePage{
 	 */
 	public String verifySlectedFiltersContainSecondlevelFilter(List<String> lstFilterIncluded, List<String> lstFilterExcluded) {
 		List<String> lstSelectedFilterOption=new ArrayList<String>();
+		if (System.getProperty("Device").equalsIgnoreCase("Mobile")){
+			this.sortAndFilter.click();
+		}
 		int selectedFilterSize=this.selectedFiltersList.size()-1;
 		for(int i=0;i<selectedFilterSize;i++) {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectedFiltersList.get(i));
 			lstSelectedFilterOption.add(this.selectedFiltersList.get(i).getText().trim());
+		}
+		if (System.getProperty("Device").equalsIgnoreCase("Mobile")){
+			this.sortAndFilter.click();
 		}
 
 		for(String lsItem:lstSelectedFilterOption) {

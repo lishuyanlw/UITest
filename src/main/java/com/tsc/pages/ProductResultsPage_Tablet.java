@@ -102,7 +102,24 @@ public class ProductResultsPage_Tablet extends ProductResultsPage{
 		return this.waitForPageLoading();
 	}
 
+	@Override
+	public String verifyFilterOptions(List<String> lstOptionYml) {
+		String lsErrorMsg="";
+		int listSize=this.productFilterList.size();
+		if(listSize==0) {
+			return lsErrorMsg="No product list";
+		}
 
+		for(int i=0;i<listSize;i++) {
+			getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i));
+			if(lstOptionYml.contains(this.productFilterList.get(i).getText().trim())) {
+				continue;
+			}else {
+				return lsErrorMsg = "Filter option headers in left panel contain "+this.productFilterList.get(i).getText().trim()+" that is not present in input list";
+			}
+		}
+		return lsErrorMsg;
+	}
 
 }
 

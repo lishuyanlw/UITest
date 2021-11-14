@@ -67,7 +67,7 @@ public class GF_TC02_Verify_GlobalFooter_CustomerHubLinksAndAboutTSCLinks extend
 		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current Send us feedback href of "+lsHref+" contains "+lsYmlHref,"The current Send us feedback href of "+lsHref+" does not contain "+lsYmlHref);
 		lsImageSrc=basePage.getElementImageSrc(getGlobalFooterPageThreadLocal().imgSendUsFeedback);
 		reporter.softAssert(!lsImageSrc.isEmpty(),"The Send us feedback image is not empty.","The Send us feedback image is empty.");
-		
+
 		//Language switch
 		lsText=basePage.getUTFEnabledData(basePage.getElementText(getGlobalFooterPageThreadLocal().lnkLanguage));		
 		lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsText,true);
@@ -78,8 +78,9 @@ public class GF_TC02_Verify_GlobalFooter_CustomerHubLinksAndAboutTSCLinks extend
 		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current Language switch href of "+lsHref+" contains "+lsYmlHref,"The current Language switch href of "+lsHref+" does not contain "+lsYmlHref);
 				
 		//TSC customer hub links
-		if (System.getProperty("Device")=="Mobile"){
+		if (System.getProperty("Device").equalsIgnoreCase("Mobile")){
 			for(WebElement item:getGlobalFooterPageThreadLocal().lnkTSCCustomerHubAllLinksMobile) {
+				getGlobalFooterPageThreadLocal().buttonTSCCustomerHubMobile.click();
 				lsText=basePage.getElementText(item);
 				lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsText,true);
 				if(lsYmlHref.isEmpty()) {
@@ -104,8 +105,9 @@ public class GF_TC02_Verify_GlobalFooter_CustomerHubLinksAndAboutTSCLinks extend
 
 		
 		//About TSC links
-		if (System.getProperty("Device")=="Mobile"){
+		if (System.getProperty("Device").equalsIgnoreCase("Mobile")){
 			for(WebElement item:getGlobalFooterPageThreadLocal().lnkAboutTSCAllLinksMobile) {
+				getGlobalFooterPageThreadLocal().buttonAboutTSCMobile.click();
 				lsText=basePage.getElementText(item);
 				lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsText,true);
 				if(lsYmlHref.isEmpty()) {

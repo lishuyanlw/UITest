@@ -54,14 +54,14 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction ext
 		}
 				
 		reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(), "Showing text pattern in filters is correct", "Showing text pattern in filters is incorrect");
-		if(!(System.getProperty("Device")=="Mobile")) {
+		if(!(System.getProperty("Device").equalsIgnoreCase("Mobile"))) {
 			reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting), "The default setting of items per page is "+lsSearchResultPageDefaultSetting, "The default setting of items per page isn't "+lsSearchResultPageDefaultSetting);
 		}
 
 		productList=getProductResultsPageThreadLocal().getProductList();
 		if(productList.size()>0) {
 			getProductResultsPageThreadLocal().verifySearchResultContent(productList);
-		}	
+		}
 		
 		reporter.softAssert(getProductResultsPageThreadLocal().verifyProductPagination(), "Product pagination is existing", "Product pagination is not existing");
 		reporter.softAssert(getProductResultsPageThreadLocal().verifyElementExisting(getProductResultsPageThreadLocal().getHeaderContainer()), "Header section is existing after choosing sorting options", "Header section is not existing after choosing sorting options");
@@ -87,14 +87,14 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction ext
 			}
 						
 			reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(), "Showing text pattern in filters is correct", "Showing text pattern in filters is incorrect");
-			if(!(System.getProperty("Device")=="Mobile")) {
+			if(!(System.getProperty("Device").equalsIgnoreCase("Mobile"))) {
 				reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting), "The default setting of items per page is "+lsSearchResultPageDefaultSetting, "The default setting of items per page isn't "+lsSearchResultPageDefaultSetting);
 			}
 			
 			productList=getProductResultsPageThreadLocal().getProductList();
 			if(productList.size()>0) {
 				getProductResultsPageThreadLocal().verifySearchResultContent(productList);
-			}	
+			}
 			
 			reporter.softAssert(getProductResultsPageThreadLocal().verifyProductPagination(), "Product pagination is existing", "Product pagination is not existing");
 			reporter.softAssert(getProductResultsPageThreadLocal().verifyElementExisting(getProductResultsPageThreadLocal().getHeaderContainer()), "Header section is existing after choosing filters", "Header section is not existing after choosing filters");
@@ -109,6 +109,10 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction ext
 			getProductResultsPageThreadLocal().closeAllSelectedFilters();
 		}
 		else {
+			if (System.getProperty("Device") .equalsIgnoreCase("Mobile") ){
+				getProductResultsPage_MobileThreadLocal().cancelButton.click();
+				getProductResultsPageThreadLocal().waitForPageLoading();
+			}
 			getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0));
 		}		
 	}	
@@ -143,13 +147,13 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction ext
 			}
 						
 			reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(), "Showing text pattern in filters is correct", "Showing text pattern in filters is incorrect");
-			if(!(System.getProperty("Device")=="Mobile")) {
+			if(!(System.getProperty("Device").equalsIgnoreCase("Mobile"))) {
 				reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting), "The default setting of items per page is "+lsSearchResultPageDefaultSetting, "The default setting of items per page isn't "+lsSearchResultPageDefaultSetting);
 			}
 			productList=getProductResultsPageThreadLocal().getProductList();
 			if(productList.size()>0) {
 				getProductResultsPageThreadLocal().verifySearchResultContent(productList);
-			}	
+			}
 			
 			reporter.softAssert(getProductResultsPageThreadLocal().verifyProductPagination(), "Product pagination is existing", "Product pagination is not existing");			
 		}

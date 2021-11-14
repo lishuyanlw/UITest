@@ -94,7 +94,7 @@ public class LoginPage extends BasePage {
 	@FindBy(xpath = "//div[contains(@class,'secondary-navigation__rhs-account')]//a//*[@class='secondary-navigation__rhs-account-icon']")
 	public WebElement SigninIcon;
 	
-	
+
 	/**
 	 * Method to login
 	 * @param String lsUserName: user name
@@ -142,7 +142,7 @@ public class LoginPage extends BasePage {
 	 */
 	public void hoverOnSignInHeadingMenu() {
 		getReusableActionsInstance().scrollToElement(this.btnSignInMainMenu);
-		getReusableActionsInstance().staticWait(300);		
+		getReusableActionsInstance().staticWait(300);
 	}
 	
 	/**
@@ -153,10 +153,6 @@ public class LoginPage extends BasePage {
 	 */
 	public WebElement getMenuItemInPopover(String lsItemTitle) {
 		String lsXpath=this.createXPath(".//a[normalize-space(.)='{0}']",lsItemTitle);
-		if (System.getProperty("chromeMobileDevice")=="iPhone X"||(System.getProperty("chromeMobileDevice")=="iPad")){
-			this.SigninIcon.click();
-		}
-
 		return this.cntSignInPopover.findElement(By.xpath(lsXpath));
 	}
 	
@@ -167,13 +163,19 @@ public class LoginPage extends BasePage {
 	 * @author Wei.Li
 	 */
 	public void verifyMenuItemInPopover(List<String> lstMenuItemPopover) {
+		if (!System.getProperty("Device").equalsIgnoreCase("Desktop")) {
+			//this.searchBackButton.click();
+			getReusableActionsInstance().javascriptScrollByVisibleElement(this.SigninIcon);
+			this.SigninIcon.click();
+			//getReusableActionsInstance().staticWait(3000);
+		}
 		this.hoverOnSignInHeadingMenu();
 		WebElement element;
 		for(String lsItem:lstMenuItemPopover) {			
 			element=this.getMenuItemInPopover(lsItem);			
 			reporter.softAssert(element.getText().trim().equalsIgnoreCase(lsItem),"'"+lsItem+"' in SignIn popver is existing","'"+lsItem+"' in SignIn popver is not existing");
 			reporter.softAssert(!element.getAttribute("href").isEmpty(),"The href of '"+lsItem+"' in SignIn popver is not empty","The href of '"+lsItem+"' in SignIn popver is empty");
-		}			
+		}
 	}
 	
 	/**
