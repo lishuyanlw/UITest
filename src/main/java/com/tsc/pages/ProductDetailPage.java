@@ -36,8 +36,14 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'pdImageSection') and not(contains(@class,'pdImageSection__zoom')) and not(@style='display: none;')]//div[@id='divThumbnail']//div[contains(@class,'slick-list')]//div[contains(@class,'slick-active') and not(contains(@class,'videolink'))]")
 	public List<WebElement> lstThumbnailImageList;
 	
+	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'pdImageSection') and not(contains(@class,'pdImageSection__zoom')) and not(@style='display: none;')]//div[@id='divThumbnail']//div[contains(@class,'slick-list')]//div[contains(@class,'slick-active') and not(contains(@class,'videolink'))][@data-styleid]")
+	public List<WebElement> lstThumbnailImageListForDropdownMenu;
+	
 	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'pdImageSection') and not(contains(@class,'pdImageSection__zoom')) and not(@style='display: none;')]//div[@id='divThumbnail']//div[contains(@class,'slick-list')]//div[contains(@class,'slick-current') and not(contains(@class,'videolink'))]//img")
 	public WebElement imgCurrentThumbnail;
+	
+	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'pdImageSection') and not(contains(@class,'pdImageSection__zoom')) and not(@style='display: none;')]//div[@id='divThumbnail']//div[contains(@class,'slick-list')]//div[contains(@class,'slick-current')]")
+	public WebElement currentThumbnailItem;
 	
 	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'pdImageSection') and not(contains(@class,'pdImageSection__zoom')) and not(@style='display: none;')]//div[@id='divThumbnail']//div[contains(@class,'slick-list')]//div[contains(@class,'slick-active') and contains(@class,'videolink')]")
 	public WebElement lnkThumbnailVideo;
@@ -60,6 +66,9 @@ public class ProductDetailPage extends BasePage {
 	
 	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'pdImageSection') and not(contains(@class,'pdImageSection__zoom')) and not(@style='display: none;')]//p[contains(@class,'disclaim')]")
 	public WebElement lblVideoDisclaim;
+	
+	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//p[contains(@class,'pdImageSection__zoom--message')]")
+	public WebElement lblImageDisclaim;
 	
 	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'pdImageSection') and not(contains(@class,'pdImageSection__zoom')) and not(@style='display: none;')]//div[contains(@class,'videoCustomControls')]//div[contains(@class,'autoplayDiv')]//label[contains(@class,'control-label')]")
 	public WebElement lblAutoPlayVideo;
@@ -91,16 +100,16 @@ public class ProductDetailPage extends BasePage {
 	public WebElement lblProductNumber;
 	
 	//Review part
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//div[contains(@class,'product-name-sub')]//div[@id='panReviewSnippet']")
+	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//div[contains(@class,'product-name-sub')]//div[@id='panReviewSnippet']//div[@class='p-w-r'][last()]//section")
 	public WebElement productReviewSection;
 	
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//div[contains(@class,'product-name-sub')]//div[@id='panReviewSnippet']//div[contains(@class,'pr-star-v4')]")
+	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//div[contains(@class,'product-name-sub')]//div[@id='panReviewSnippet']//div[@class='p-w-r'][last()]//section//div[contains(@class,'pr-star-v4')]")
 	public List<WebElement> lstProductReviewStar;
 	
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//div[contains(@class,'product-name-sub')]//div[@id='panReviewSnippet']//span[contains(@class,'pr-accessible-text')]")
+	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//div[contains(@class,'product-name-sub')]//div[@id='panReviewSnippet']//div[@class='p-w-r'][last()]//section//span[contains(@class,'pr-accessible-text')]")
 	public List<WebElement> lstProductReviewAccessibleText;
 	
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//div[contains(@class,'product-name-sub')]//div[@id='panReviewSnippet']")
+	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//div[contains(@class,'product-name-sub')]//div[@id='panReviewSnippet']//div[@class='p-w-r'][last()]//section")
 	public WebElement lblProductReview;
 	
 	//Price part
@@ -131,20 +140,34 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//form//div[@class='style-container']")
 	public WebElement cntProductStyleSection;
 	
+	//For radio style	
 	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//form//div[@class='style-container']//div[@id='divStyleSwatch']//span[@class='style-lbl']")
-	public WebElement lblProductStyleStatic;
+	public WebElement lblRadioProductStyleStatic;
 	
 	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//form//div[@class='style-container']//div[@id='divStyleSwatch']//span[@id='lblStyle']")
-	public WebElement lblProductStyleTitle;
+	public WebElement lblRadioProductStyleTitle;
 	
 	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//form//div[@class='style-container']//div[@id='divStyleSwatch']//input")
 	public List<WebElement> lstStyleRadioList;
 	
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//form//div[@class='style-container']//div[@id='divStyleSwatch']//label")
-	public List<WebElement> lstStyleLabelList;
+	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//form//div[@class='style-container']//div[@id='divStyleSwatch']//label[not(div[contains(@class,'disable')])]")
+	public List<WebElement> lstRadioStyleLabelList;
 	
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//form//div[@class='style-container']//div[@id='divStyleSwatch']//label[contains(@class,'style-selected')]//span[@data-style]")
-	public WebElement btnProductStyleSelected;
+	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//form//div[@class='style-container']//div[@id='divStyleSwatch']//label[not(div[contains(@class,'disable')])]//span")
+	public List<WebElement> lstRadioStyleLabelSpanList;
+		
+	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//form//div[@class='style-container']//div[@id='divStyleSwatch']//label[contains(@class,'style-selected')]/preceding-sibling::input[1]")
+	public WebElement btnRadioProductStyleSelected;
+	
+	//For dropdown menu style		
+	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//form//div[@class='style-container']//div[@id='divStyleSwatchDdl']//span[@class='style-lbl']")
+	public WebElement lblDropDownProductStyleStatic;
+		
+	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//form//div[@class='style-container']//div[@id='divStyleSwatchDdl']//select")
+	public WebElement selectProductStyle;
+	
+	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//form//div[@class='style-container']//div[@id='divStyleSwatchDdl']//select//option")
+	public List<WebElement> lstDropdownProductStyle;
 	
 	//TrueFit part
 	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//form//div[@id='tf-wrapper']")
@@ -160,7 +183,7 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//iframe[contains(@src,'truefit')]")
 	public WebElement iframeProductTrueFit;
 	
-	@FindBy(xpath = "//div[contains(@class,'tfc-iframe-loaded')]")
+	@FindBy(xpath = "//div[@aria-label='True Fit']")
 	public WebElement iframeProductTrueFitLoadingIndicator;
 	
 	@FindBy(xpath = "//button[contains(@class,'tfc-popup-click-close')][img]")
@@ -258,7 +281,7 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//div[@id='productReviewSection']//section[@id='pr-review-snapshot']//span[@class='pr-snippet-review-count']")
 	public WebElement lblReviewTabReviewCount;
 	
-	@FindBy(xpath = "//div[@id='productReviewSection']//section[@id='pr-review-snapshot']//a[contains(@href,'writereview')]")
+	@FindBy(xpath = "//div[@id='productReviewSection']//a[contains(@href,'writereview')]")
 	public WebElement lnkReviewTabWriteReview;
 	
 	@FindBy(xpath = "//div[@id='productReviewSection']//section[@id='pr-review-display']//select[@id='pr-rd-sort-by']")
@@ -430,13 +453,13 @@ public class ProductDetailPage extends BasePage {
 	 * @author Wei.Li
 	 */
 	public boolean checkIfAutoPlayVideoStatusIsON() {
-		String lsStyle=this.btnAutoPlayVideo.getAttribute("style");
-		return lsStyle.equalsIgnoreCase("background:#000;")||lsStyle.equalsIgnoreCase("background: rgb(0, 0, 0);");		
+		String lsStyle=this.btnAutoPlayVideo.getAttribute("style");		
+		return lsStyle.contains("background:#000")||lsStyle.contains("background: rgb(0, 0, 0)");		
 	}
 	
 	/**
 	 * Method to get AutoPlayVideo ToolTip popup Message
-	 * @return String: tootip message	  
+	 * @return String: tooltip message	  
 	 * @author Wei.Li
 	 */
 	public String getAutoPlayVideoToolTipPopupMsg() {
@@ -450,12 +473,30 @@ public class ProductDetailPage extends BasePage {
 	}
 	
 	/**
+	 * Method to check the product style is displaying with Dropdown mode
+	 * @return true	for Dropdown menu and false for Radio list  
+	 * @author Wei.Li
+	 */
+	public boolean judgeStyleDisplayModeIsDropdownMenu() {		
+		return !this.cntProductStyleSection.findElement(By.xpath(".//div[@id='divStyleSwatchDdl']")).getCssValue("height").equalsIgnoreCase("auto");		
+	}
+	
+	/**
 	 * Method to check if Style size is existing
 	 * @return true/false	  
 	 * @author Wei.Li
 	 */
 	public boolean judgeStyleSizeAvailable() {
-		return this.getChildElementCount(this.cntProductSizeJudgeIndicator)>9;
+		return this.checkChildElementExistingByAttribute(this.cntProductSizeJudgeIndicator, "id", "divAvailableSizes");		
+	}
+	
+	/**
+	 * Method to check if TrueFit part is existing
+	 * @return true/false	  
+	 * @author Wei.Li
+	 */
+	public boolean judgeStyleTrueFitExisting() {
+		return !this.cntProductTrueFitSection.getCssValue("height").equalsIgnoreCase("0px");
 	}
 	
 	/**
@@ -472,8 +513,15 @@ public class ProductDetailPage extends BasePage {
 	 * @return String	  
 	 * @author Wei.Li
 	 */
-	public String getCurrentSwatchDataStyle() {		
-		return this.btnProductStyleSelected.getAttribute("data-style").trim();
+	public String getCurrentSwatchStyle() {
+		boolean bDropdownMenuMode=this.judgeStyleDisplayModeIsDropdownMenu();
+		if(bDropdownMenuMode) {
+			Select dropdownMenuOption=new Select(this.selectProductStyle);
+			return dropdownMenuOption.getFirstSelectedOption().getAttribute("value").trim();
+		}
+		else {
+			return this.btnRadioProductStyleSelected.getAttribute("value").trim();
+		}		
 	}
 	
 	/**
@@ -482,19 +530,49 @@ public class ProductDetailPage extends BasePage {
 	 * @author Wei.Li
 	 */
 	public void verifyLinkageBetweenThumbnailAndZoomImage() {	
-		for(WebElement item:this.lstThumbnailImageList) {			
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-			item.click();
-			this.getReusableActionsInstance().staticWait(500);
-			
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnProductStyleSelected);
-			String lsDataStyle=this.btnProductStyleSelected.getAttribute("data-style").trim();			
-			String lsThumbnail=this.getImageNameFromThumbnailOrZoomImagePath(lnkCurrentZoomImage.getAttribute("href"));
-			String lsZoomImage=this.getImageNameFromThumbnailOrZoomImagePath(imgCurrentThumbnail.getAttribute("src"));
-						
-			reporter.softAssert(lsThumbnail.equalsIgnoreCase(lsZoomImage), "The Thumbnail image is the same as the Zoom image with changing Swatch radio of '"+lsDataStyle+"'", "The Thumbnail image is not the same as the Zoom image with changing Swatch radio of '"+lsDataStyle+"'");
-			//reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblVideoDisclaim),"The Video disclaim message section is displaying correctly","The Video disclaim message section is not displaying correctly");
-		}				
+		if(this.judgeStyleDisplayModeIsDropdownMenu()) {
+			String lsSwatchType;
+			boolean bDisabled;
+			WebElement element;
+			for(WebElement item:this.lstThumbnailImageListForDropdownMenu) {
+				bDisabled=false;
+				lsSwatchType=item.getAttribute("data-styleid");				
+				for(WebElement itemOption:this.lstDropdownProductStyle) {										
+					if(itemOption.getAttribute("value").equalsIgnoreCase(lsSwatchType)) {						
+						if(this.hasElementAttribute(itemOption, "selected")||itemOption.getAttribute("class").contains("disable")) {
+							bDisabled=true;
+							break;
+						}						
+					}
+				}
+				
+				if(!bDisabled) {
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+					element=item.findElement(By.xpath(".//img"));
+					element.click();
+					this.getReusableActionsInstance().staticWait(500);
+					
+					String lsThumbnail=this.getImageNameFromThumbnailOrZoomImagePath(lnkCurrentZoomImage.getAttribute("href"));
+					String lsZoomImage=this.getImageNameFromThumbnailOrZoomImagePath(imgCurrentThumbnail.getAttribute("src"));
+								
+					reporter.softAssert(lsThumbnail.equalsIgnoreCase(lsZoomImage), "The Thumbnail image is the same as the Zoom image with changing Swatch style", "The Thumbnail image is not the same as the Zoom image with changing Swatch style");
+					reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblImageDisclaim),"The Image disclaim message section is displaying correctly","The Image disclaim message section is not displaying correctly");
+				}
+			}
+		}
+		else {
+			for(WebElement item:this.lstThumbnailImageList) {			
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+				item.click();
+				this.getReusableActionsInstance().staticWait(500);
+				
+				String lsThumbnail=this.getImageNameFromThumbnailOrZoomImagePath(lnkCurrentZoomImage.getAttribute("href"));
+				String lsZoomImage=this.getImageNameFromThumbnailOrZoomImagePath(imgCurrentThumbnail.getAttribute("src"));
+							
+				reporter.softAssert(lsThumbnail.equalsIgnoreCase(lsZoomImage), "The Thumbnail image is the same as the Zoom image with changing Swatch style", "The Thumbnail image is not the same as the Zoom image with changing Swatch style");
+				reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblImageDisclaim),"The Image disclaim message section is displaying correctly","The Image disclaim message section is not displaying correctly");
+			}
+		}						
 	}
 	
 	/**
@@ -543,30 +621,133 @@ public class ProductDetailPage extends BasePage {
 	}
 	
 	/**
-	 * Method to verify the linkage among Swatch radio, Thumbnail image and Zoom image
+	 * Method to verify the linkage among Swatch style, Thumbnail image and Zoom image
 	 * @return void	  
 	 * @author Wei.Li
 	 */
 	public void verifyLinkageAmongSwathAndThumbnailAndZoomImage() {
-		String lsSwatch,lsThumbnailBefore="",lsZoomImageBefore="",lsThumbnailAfter,lsZoomImageAfter;
-		for(WebElement radioItem:this.lstStyleRadioList) {			
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(radioItem);
-			if(!radioItem.getAttribute("checked").equalsIgnoreCase("checked")) {				
-				lsThumbnailBefore=this.getImageNameFromThumbnailOrZoomImagePath(lnkCurrentZoomImage.getAttribute("href"));
-				lsZoomImageBefore=this.getImageNameFromThumbnailOrZoomImagePath(imgCurrentThumbnail.getAttribute("src"));
-				radioItem.click();
-				this.getReusableActionsInstance().staticWait(600);
-			}		
-			
-			lsSwatch=this.btnProductStyleSelected.getAttribute("data-style").trim();			
-			lsThumbnailAfter=this.getImageNameFromThumbnailOrZoomImagePath(lnkCurrentZoomImage.getAttribute("href"));
-			lsZoomImageAfter=this.getImageNameFromThumbnailOrZoomImagePath(imgCurrentThumbnail.getAttribute("src"));
-			
-			reporter.softAssert(!lsThumbnailBefore.equalsIgnoreCase(lsThumbnailAfter), "Clicking the swatch radio button of '"+lsSwatch+"' triggers Thumbnail image changing", "Clicking the swatch radio button of '"+lsSwatch+"' does not trigger Thumbnail image changing");
-			reporter.softAssert(!lsZoomImageBefore.equalsIgnoreCase(lsZoomImageAfter), "Clicking the swatch radio button of '"+lsSwatch+"' triggers Zoom image changing", "Clicking the swatch radio button of '"+lsSwatch+"' does not trigger Zoom image changing");
-			
-			reporter.softAssert(lsThumbnailAfter.equalsIgnoreCase(lsZoomImageAfter), "The Thumbnail image is the same as the Zoom image with changing Swatch radio of '"+lsSwatch+"'", "The Thumbnail image is not the same as the Zoom image with changing Swatch radio of '"+lsSwatch+"'");
+		String lsSwatch,lsThumbnail="",lsZoomImage="";
+		boolean bDisable=false;		
+		int loopSize;		
+		if(this.judgeStyleDisplayModeIsDropdownMenu()) {
+			Select selectStyle= new Select(this.selectProductStyle);
+			loopSize=this.lstDropdownProductStyle.size();	
+			String[] lstImageSrc= new String[1];
+			for(int i=0;i<loopSize;i++) {
+				if(this.hasElementAttribute(this.lstDropdownProductStyle.get(i),"selected")) {
+					continue;
+				}				
+				lstImageSrc[0]="";
+				if(!this.hasElementAttribute(this.currentThumbnailItem,"data-video")) {
+					lstImageSrc[0]=this.getElementImageSrc(this.imgCurrentThumbnail);
+				}	
+				
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectProductStyle);
+				selectStyle.selectByIndex(i);
+								
+				this.waitForCondition(Driver->{return !this.getElementImageSrc(this.imgCurrentThumbnail).equalsIgnoreCase(lstImageSrc[0]);}, 30000);
+				lsSwatch=this.getCurrentSwatchStyle();	
+				
+				if(this.lstDropdownProductStyle.get(i).getAttribute("class").contains("disable")) {
+					bDisable=true;
+				}
+				else {
+					bDisable=false;
+				}
+				
+				lsZoomImage=this.getImageNameFromThumbnailOrZoomImagePath(lnkCurrentZoomImage.getAttribute("href"));
+				lsThumbnail=this.getImageNameFromThumbnailOrZoomImagePath(imgCurrentThumbnail.getAttribute("src"));
+				reporter.softAssert(lsThumbnail.toLowerCase().contains(lsSwatch.toLowerCase()), "The Thumbnail image src contains swatch style of " +lsSwatch, "The Thumbnail image src does not contain swatch style of "+lsSwatch);
+				if(!bDisable) {
+					reporter.softAssert(lsZoomImage.toLowerCase().contains(lsSwatch.toLowerCase()), "The Zoom image src contains swatch style of " +lsSwatch, "The Zoom image src does not contain swatch style of "+lsSwatch);
+					reporter.softAssert(lsThumbnail.equalsIgnoreCase(lsZoomImage), "The Thumbnail image is the same as the Zoom image with changing Swatch radio of '"+lsSwatch+"'", "The Thumbnail image is not the same as the Zoom image with changing Swatch radio of '"+lsSwatch+"'");
+				}				
+			}
 		}
+		else {
+			loopSize=this.lstRadioStyleLabelSpanList.size();
+			WebElement radioItem;	
+			String[] lstImageSrc= new String[1];
+			for(int i=0;i<loopSize;i++) {								
+				if(this.hasElementAttribute(this.lstStyleRadioList.get(i),"checked")) {
+					continue;
+				}
+				radioItem=this.lstRadioStyleLabelSpanList.get(i);				
+				if(!this.hasElementAttribute(this.currentThumbnailItem,"data-video")) {
+					lstImageSrc[0]=this.getElementImageSrc(this.imgCurrentThumbnail);
+				}
+				
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(radioItem);
+				radioItem.click();
+				this.waitForCondition(Driver->{return !this.getElementImageSrc(this.imgCurrentThumbnail).equalsIgnoreCase(lstImageSrc[0]);}, 30000);
+							
+				lsSwatch=this.getCurrentSwatchStyle();			
+				lsThumbnail=this.getImageNameFromThumbnailOrZoomImagePath(lnkCurrentZoomImage.getAttribute("href"));
+				lsZoomImage=this.getImageNameFromThumbnailOrZoomImagePath(imgCurrentThumbnail.getAttribute("src"));
+				
+				reporter.softAssert(lsThumbnail.toLowerCase().contains(lsSwatch.toLowerCase()), "The Thumbnail image src contains swatch style of " +lsSwatch, "The Thumbnail image src does not contain swatch style of "+lsSwatch);
+				reporter.softAssert(lsZoomImage.toLowerCase().contains(lsSwatch.toLowerCase()), "The Zoom image src contains swatch style of " +lsSwatch, "The Zoom image src does not contain swatch style of "+lsSwatch);
+				reporter.softAssert(lsThumbnail.equalsIgnoreCase(lsZoomImage), "The Thumbnail image is the same as the Zoom image with changing Swatch radio of '"+lsSwatch+"'", "The Thumbnail image is not the same as the Zoom image with changing Swatch radio of '"+lsSwatch+"'");
+			}
+		}		
+	}
+	
+	/**
+	 * Method to verify the linkage among Swatch style, Thumbnail image and Zoom image
+	 * @return void	  
+	 * @author Wei.Li
+	 */
+	public void verifyStyleNameWithDifferentStyleSelection() {
+		String lsSwatch,lsBeforeStyleName,lsAfterStyleName;
+		int loopSize;
+		if(this.judgeStyleDisplayModeIsDropdownMenu()) {			
+			Select selectStyle= new Select(this.selectProductStyle);			
+			loopSize=this.lstDropdownProductStyle.size();	
+			String[] lstImageSrc= new String[1];
+			for(int i=0;i<loopSize;i++) {
+				if(this.hasElementAttribute(this.lstDropdownProductStyle.get(i),"selected")) {
+					continue;
+				}				
+				if(!this.hasElementAttribute(this.currentThumbnailItem,"data-video")) {
+					lstImageSrc[0]=this.getElementImageSrc(this.imgCurrentThumbnail);
+				}
+								
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectProductStyle);
+				lsBeforeStyleName=selectStyle.getFirstSelectedOption().getText();
+				selectStyle.selectByIndex(i);
+				this.waitForCondition(Driver->{return !this.getElementImageSrc(this.imgCurrentThumbnail).equalsIgnoreCase(lstImageSrc[0]);}, 30000);
+				lsAfterStyleName=selectStyle.getFirstSelectedOption().getText();			
+				lsSwatch=this.getCurrentSwatchStyle();				
+				reporter.softAssert(!lsBeforeStyleName.equalsIgnoreCase(lsAfterStyleName), "Clicking the swatch dropdown option of '"+lsSwatch+"' is changing product style name", "Clicking the swatch dropdown option of '"+lsSwatch+"' is not changing product style name");
+			}
+		}
+		else {			
+			loopSize=this.lstRadioStyleLabelSpanList.size();
+			WebElement radioItem,labelItem;
+			String lsLabelTitle;	
+			String[] lstImageSrc= new String[1];
+			for(int i=0;i<loopSize;i++) {
+				if(this.hasElementAttribute(this.lstStyleRadioList.get(i),"checked")) {
+					continue;
+				}
+				radioItem=this.lstRadioStyleLabelSpanList.get(i);
+				labelItem=this.lstRadioStyleLabelList.get(i);				
+				if(!this.hasElementAttribute(this.currentThumbnailItem,"data-video")) {
+					lstImageSrc[0]=this.getElementImageSrc(this.imgCurrentThumbnail);
+				}				
+				
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(labelItem);
+				lsBeforeStyleName=this.lblRadioProductStyleTitle.getText().trim();				
+				radioItem.click();
+				this.waitForCondition(Driver->{return !this.getElementImageSrc(this.imgCurrentThumbnail).equalsIgnoreCase(lstImageSrc[0]);}, 30000);
+				lsAfterStyleName=this.lblRadioProductStyleTitle.getText().trim();				
+				lsLabelTitle=labelItem.getAttribute("title").trim();
+				lsSwatch=this.getCurrentSwatchStyle();	
+								
+				reporter.softAssert(!lsBeforeStyleName.equalsIgnoreCase(lsAfterStyleName), "Clicking the swatch radio option of '"+lsSwatch+"' is changing product style name", "Clicking the swatch radio option of '"+lsSwatch+"' is not changing product style name");
+				reporter.softAssert(lsLabelTitle.equalsIgnoreCase(lsAfterStyleName), "The label title is equal to product style name of '"+lsAfterStyleName+"'", "The label title is not equal to product style name of '"+lsAfterStyleName+"'");	
+			}
+		}		
 	}
 	
 	/**
@@ -576,10 +757,11 @@ public class ProductDetailPage extends BasePage {
 	 * @author Wei.Li
 	 */
 	public String getImageNameFromThumbnailOrZoomImagePath(String lsPath) {
-		String[] lstSubItem=lsPath.split("/");
-		System.out.println(lstSubItem[lstSubItem.length-1]);
+		String[] lstSubItem=lsPath.split("/");		
 		return lstSubItem[lstSubItem.length-1].split("\\?")[0];
 	}
+	
+	
 	
 	/**
 	 * Method to judge if Soldout section is displaying	 
@@ -608,7 +790,7 @@ public class ProductDetailPage extends BasePage {
 	public boolean goToProductReviewTab() {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productReviewSection);
 		this.productReviewSection.click();
-		return this.waitForCondition(Driver->{return this.btnStickyTabProductReview.getAttribute("class").contains("selected");},5000);		
+		return this.waitForCondition(Driver->{return this.btnStickyTabProductReview.getAttribute("class").contains("selected");},30000);		
 	}
 	
 	/**
@@ -635,8 +817,8 @@ public class ProductDetailPage extends BasePage {
 	 * @return void
 	 * @author Wei.Li
 	 */
-	public void chooseReviewSortingOption(String lsReviewSortingOption) {
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectReviewTabSortBy);
+	public void chooseReviewSortingOption(String lsReviewSortingOption) {		
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblReviewTabReviewCount);
 		Select reviewSortings=new Select(this.selectReviewTabSortBy); 
 		reviewSortings.selectByVisibleText(lsReviewSortingOption);
 		this.getReusableActionsInstance().staticWait(1000);
@@ -732,6 +914,18 @@ public class ProductDetailPage extends BasePage {
 		}
 		
 		return lsMsg;
+	}
+
+	/**
+	 * Method to switch to TrueFit iFrame
+	 * @return void	  
+	 * @author Wei.Li
+	 */
+	public void switchToTrueFitIFrame() {
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkProductTrueFitLink);
+		this.lnkProductTrueFitLink.click();
+		this.waitForCondition(Driver->{return this.iframeProductTrueFitLoadingIndicator.getAttribute("style").contains("display: block");}, 30000);
+		this.getDriver().switchTo().frame(this.iframeProductTrueFit);
 	}
 	
 

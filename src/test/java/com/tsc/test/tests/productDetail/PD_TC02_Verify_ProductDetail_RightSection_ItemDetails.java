@@ -11,7 +11,8 @@ import com.tsc.test.base.BaseTest;
 
 public class PD_TC02_Verify_ProductDetail_RightSection_ItemDetails extends BaseTest{
 	/*
-	 * CER-572	 
+	 * CER-572	
+	 * CER-583 
 	 */
 	@Test(groups={"ProductDetail","Regression"})
 	public void validateRightSection_ItemDetails() throws IOException {	
@@ -58,12 +59,12 @@ public class PD_TC02_Verify_ProductDetail_RightSection_ItemDetails extends BaseT
 		//Verify product style
 		reporter.reportLog("Verify product style");	
 		reporter.softAssert(basePage.getReusableActionsInstance().isElementVisible(getProductDetailPageThreadLocal().cntProductStyleSection),"The product style section is displaying correctly","The product style section is not displaying correctly");
-		reporter.softAssert(!basePage.getElementText(getProductDetailPageThreadLocal().lblProductStyleStatic).isEmpty(),"The product style label message is not empty","The product style label message is empty");
-		reporter.softAssert(!basePage.getElementText(getProductDetailPageThreadLocal().lblProductStyleTitle).isEmpty(),"The product style title message is not empty","The product style title message is empty");
+		reporter.softAssert(!basePage.getElementText(getProductDetailPageThreadLocal().lblRadioProductStyleStatic).isEmpty(),"The product style label message is not empty","The product style label message is empty");
+		reporter.softAssert(!basePage.getElementText(getProductDetailPageThreadLocal().lblRadioProductStyleTitle).isEmpty(),"The product style title message is not empty","The product style title message is empty");
 		reporter.softAssert(getProductDetailPageThreadLocal().lstStyleRadioList.size()>0,"The product style radio button count is greater than 0","The product style radio button count is not greater than 0");
 		
 		//Verify product TrueFit
-		if(!getProductDetailPageThreadLocal().cntProductTrueFitSection.getCssValue("height").equalsIgnoreCase("0px")) {
+		if(getProductDetailPageThreadLocal().judgeStyleTrueFitExisting()) {
 			reporter.reportLog("Verify product TrueFit");	
 			reporter.softAssert(basePage.getReusableActionsInstance().isElementVisible(getProductDetailPageThreadLocal().imgProductTrueFitLogo),"The product TrueFit icon is displaying correctly","The product TrueFit icon is not displaying correctly");
 			reporter.softAssert(!basePage.getElementHref(getProductDetailPageThreadLocal().lnkProductTrueFitLink).isEmpty(),"The product TrueFit link is not empty","The product TrueFit link is empty");
