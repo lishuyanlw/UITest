@@ -692,6 +692,7 @@ public class GlobalheaderPage extends BasePage{
 		public String getNameAndclickSubMenuItem(String headingName,String submenuHeading, String itemName) {
 			String xpathHeading =createXPath("//span[contains(text(),'{0}')]" ,headingName); 
 			WebElement headingWebElement = FlyoutHeadings.findElement(By.xpath(xpathHeading));
+			getReusableActionsInstance().javascriptScrollByVisibleElement(headingWebElement);
 			getReusableActionsInstance().scrollToElement(headingWebElement);
 
 			if(headingWebElement!=null && submenuHeading==null) {
@@ -702,10 +703,12 @@ public class GlobalheaderPage extends BasePage{
 				String xpathSubMenu =createXPath("//a[contains(text(),\"{0}\")]" ,submenuHeading); 
 				List<WebElement> SubMenu = Categories.findElements(By.xpath(xpathSubMenu));
 				if(SubMenu.size()>0){
+					getReusableActionsInstance().javascriptScrollByVisibleElement(SubMenu.get(0));
 					getReusableActionsInstance().scrollToElement(SubMenu.get(0));
 					if(itemName!=null) {
 						String xpathSubmenuItem=createXPath("//a[contains(text(),'{0}')]",itemName);
 						WebElement SubMenuItem=getDriver().findElement(By.xpath(xpathSubmenuItem));
+						getReusableActionsInstance().javascriptScrollByVisibleElement(SubMenuItem);
 						getReusableActionsInstance().scrollToElement(SubMenuItem);
 						String title = SubMenuItem.getText().trim();
 						SubMenuItem.click();
@@ -739,6 +742,7 @@ public class GlobalheaderPage extends BasePage{
 		 * @author Shruti Desai
 		 */
 		public void scrolltoWebElement(WebElement webElement) {
+			getReusableActionsInstance().javascriptScrollByVisibleElement(webElement);
 			getReusableActionsInstance().scrollToElement(webElement);
 			}
 		
@@ -762,6 +766,7 @@ public class GlobalheaderPage extends BasePage{
 			 String currentUrl;
 			 String xpathHeading =createXPath("//span[contains(text(),'{0}')]" ,headingName); 
 			 WebElement headingWebElement = FlyoutHeadings.findElement(By.xpath(xpathHeading));
+			 getReusableActionsInstance().javascriptScrollByVisibleElement(headingWebElement);
 			 getReusableActionsInstance().scrollToElement(headingWebElement);
 			 headingWebElement .click();
 			 currentUrl = getDriver().getCurrentUrl();
@@ -784,6 +789,7 @@ public class GlobalheaderPage extends BasePage{
 		 */
 		public void scrollToHeadingElement(String headingName) {
 			  WebElement headingWebElement =getWebElementFlyoutHeading(headingName);
+			  getReusableActionsInstance().javascriptScrollByVisibleElement(headingWebElement);
 			  getReusableActionsInstance().scrollToElement(headingWebElement);
 		}
 		
@@ -808,9 +814,7 @@ public class GlobalheaderPage extends BasePage{
 			waitForCondition(Driver->{return (linkPopularBrand.getAttribute("href").contains(first_flyout_menu_text.get()) && linkPopularBrand.getAttribute("class").contains(section.split(" ")[0].trim().toLowerCase()));} ,30000);
 			WebElement ShopAllWebElement = getWebElementShopAllPupularBrand();
 			if(verifyElementProperty(ShopAllWebElement,"Link")) {
-				if(System.getProperty("Browser").toLowerCase().contains("firefox")) {
-					getReusableActionsInstance().javascriptScrollByVisibleElement(ShopAllWebElement);
-				}
+				getReusableActionsInstance().javascriptScrollByVisibleElement(ShopAllWebElement);				
 				getReusableActionsInstance().scrollToElement(ShopAllWebElement);
 				ShopAllWebElement.click();
 				currentUrl = getDriver().getCurrentUrl();
