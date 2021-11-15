@@ -10,11 +10,11 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import org.openqa.selenium.By;
 import com.tsc.pages.base.BasePage;
-public class GlobalheaderPage extends BasePage{
+public class GlobalHeaderPage extends BasePage{
 	
 	
 	
-	public GlobalheaderPage(WebDriver driver) {
+	public GlobalHeaderPage(WebDriver driver) {
 		super(driver);
 	}
 
@@ -785,21 +785,7 @@ public class GlobalheaderPage extends BasePage{
 		}
 	}
 
-//Favorites link validation
-
-		/*Method to get get Url of landing page after clicking the Favourites's link  
-		 * @return String:url
-		 * @author Shruti Desai
-		 */	
-		public String getUrlFavouriteslandingpage(WebElement element) {
-			String urlFavouriteslandingpage;
-			getReusableActionsInstance().scrollToElement(element);
-			element.click();
-			urlFavouriteslandingpage = getDriver().getCurrentUrl();
-			return urlFavouriteslandingpage;
-		}
-		
-		/*Method to get get heading of Sign In page after clicking the Favourites's link for anonymous user
+		/**Method to get get heading of Sign In page after clicking the Favourites's link for anonymous user
 		 * @return String:page heading
 		 * @author Shruti Desai
 		 */	

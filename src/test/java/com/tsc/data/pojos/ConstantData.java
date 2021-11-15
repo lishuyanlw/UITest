@@ -70,7 +70,6 @@ public class ConstantData {
         private String lbl_WatchUsLive_French;
         private String lnk_WatchUsLive;
         private String lbl_Favourites;
-        private String lbl_FavouritesLandingPage;
         private List<String> lst_SignInPopover;
         private String lbl_SignIn;
         private String lbl_SignInLandingPage;
@@ -78,6 +77,15 @@ public class ConstantData {
         private String lbl_ShoppingCartLinkName;
         private String lnk_ShoppingCartLink;
         private Flyout flyout;
+        private List<HeaderNameAndLinks> lst_HeaderNameAndLinks;
+
+        public String getLbl_SignInLandingPage() {   return lbl_SignInLandingPage;   }
+
+        public void setLbl_SignInLandingPage(String lbl_SignInLandingPage) {  this.lbl_SignInLandingPage = lbl_SignInLandingPage;       }
+
+        public List<HeaderNameAndLinks> getLst_HeaderNameAndLinks() { return lst_HeaderNameAndLinks; }
+
+        public void setLst_HeaderNameAndLinks(List<HeaderNameAndLinks> lst_HeaderNameAndLinks) { this.lst_HeaderNameAndLinks = lst_HeaderNameAndLinks;        }
 
         public String getLbl_ShoppingCartLinkName() {
             return lbl_ShoppingCartLinkName;
@@ -255,14 +263,6 @@ public class ConstantData {
             this.lbl_Favourites = lbl_Favourites;
         }
         
-        public String getlbl_FavouritesLandingPage() {
-            return lbl_FavouritesLandingPage;
-        }
-
-        public void setlbl_FavouritesLandingPage(String lbl_FavouritesLandingPage) {
-            this.lbl_FavouritesLandingPage = lbl_FavouritesLandingPage;
-        }
-
         public List<String> getLst_SignInPopover() {
             return lst_SignInPopover;
         }
@@ -294,7 +294,27 @@ public class ConstantData {
         public void setLbl_SearchBoxPlaceholder(String lbl_SearchBoxPlaceholder) {
             this.lbl_SearchBoxPlaceholder = lbl_SearchBoxPlaceholder;
         }
+    }
 
+    public static class HeaderNameAndLinks{
+        String headerName;
+        List<String> links;
+
+        public String getHeaderName() {
+            return headerName;
+        }
+
+        public void setHeaderName(String headerName) {
+            this.headerName = headerName;
+        }
+
+        public List<String> getLinks() {
+            return links;
+        }
+
+        public void setLinks(List<String> links) {
+            this.links = links;
+        }
     }
 
     public static class HomePage {

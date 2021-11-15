@@ -18,13 +18,15 @@ headerSection:
   lbl_WatchUsLive_French: En direct
   lnk_WatchUsLive: /pages/watchuslive?ic=HP_WatchUsLive
   lbl_Favourites: Favourites
-  lbl_FavouritesLandingPage: /pages/myaccount/favourites
   lst_SignInPopover: ["Sign in","Create an account","Transfer a phone account","Track your order"]
   lbl_SignIn: Sign in
   lbl_SignInLandingPage: /pages/signin
   lbl_SearchBoxPlaceholder: Search
   lbl_ShoppingCartLinkName: Bag
   lnk_ShoppingCartLink: /pages/shoppingcart
+  lst_HeaderNameAndLinks:
+    - headerName: Favourites
+      links: ["","/pages/myaccount/favourites"]
   flyout:
     lst_FlyoutHeading: ['Fashion', 'Shoes & Handbags', 'Jewellery', 'Beauty', 'Home & Garden', 'Kitchen', 'Health & Fitness', 'Electronics', 'Coins & Hobbies', 'Clearance']
     lbl_FlyoutHeadingLandingPageLink: /pages/category?nav=n
