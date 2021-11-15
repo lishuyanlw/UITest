@@ -67,6 +67,9 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'pdImageSection') and not(contains(@class,'pdImageSection__zoom')) and not(@style='display: none;')]//p[contains(@class,'disclaim')]")
 	public WebElement lblVideoDisclaim;
 	
+	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//p[contains(@class,'pdImageSection__zoom--message')]")
+	public WebElement lblImageDisclaim;
+	
 	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'pdImageSection') and not(contains(@class,'pdImageSection__zoom')) and not(@style='display: none;')]//div[contains(@class,'videoCustomControls')]//div[contains(@class,'autoplayDiv')]//label[contains(@class,'control-label')]")
 	public WebElement lblAutoPlayVideo;
 	
@@ -553,7 +556,7 @@ public class ProductDetailPage extends BasePage {
 					String lsZoomImage=this.getImageNameFromThumbnailOrZoomImagePath(imgCurrentThumbnail.getAttribute("src"));
 								
 					reporter.softAssert(lsThumbnail.equalsIgnoreCase(lsZoomImage), "The Thumbnail image is the same as the Zoom image with changing Swatch style", "The Thumbnail image is not the same as the Zoom image with changing Swatch style");
-					reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblVideoDisclaim),"The Video disclaim message section is displaying correctly","The Video disclaim message section is not displaying correctly");
+					reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblImageDisclaim),"The Image disclaim message section is displaying correctly","The Image disclaim message section is not displaying correctly");
 				}
 			}
 		}
@@ -567,7 +570,7 @@ public class ProductDetailPage extends BasePage {
 				String lsZoomImage=this.getImageNameFromThumbnailOrZoomImagePath(imgCurrentThumbnail.getAttribute("src"));
 							
 				reporter.softAssert(lsThumbnail.equalsIgnoreCase(lsZoomImage), "The Thumbnail image is the same as the Zoom image with changing Swatch style", "The Thumbnail image is not the same as the Zoom image with changing Swatch style");
-				reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblVideoDisclaim),"The Video disclaim message section is displaying correctly","The Video disclaim message section is not displaying correctly");
+				reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblImageDisclaim),"The Image disclaim message section is displaying correctly","The Image disclaim message section is not displaying correctly");
 			}
 		}						
 	}
@@ -628,12 +631,12 @@ public class ProductDetailPage extends BasePage {
 		int loopSize;		
 		if(this.judgeStyleDisplayModeIsDropdownMenu()) {
 			Select selectStyle= new Select(this.selectProductStyle);
-			loopSize=this.lstDropdownProductStyle.size();			
+			loopSize=this.lstDropdownProductStyle.size();	
+			String[] lstImageSrc= new String[1];
 			for(int i=0;i<loopSize;i++) {
 				if(this.hasElementAttribute(this.lstDropdownProductStyle.get(i),"selected")) {
 					continue;
-				}
-				String[] lstImageSrc= new String[1];
+				}				
 				lstImageSrc[0]="";
 				if(!this.hasElementAttribute(this.currentThumbnailItem,"data-video")) {
 					lstImageSrc[0]=this.getElementImageSrc(this.imgCurrentThumbnail);
@@ -663,13 +666,13 @@ public class ProductDetailPage extends BasePage {
 		}
 		else {
 			loopSize=this.lstRadioStyleLabelSpanList.size();
-			WebElement radioItem;					
+			WebElement radioItem;	
+			String[] lstImageSrc= new String[1];
 			for(int i=0;i<loopSize;i++) {								
 				if(this.hasElementAttribute(this.lstStyleRadioList.get(i),"checked")) {
 					continue;
 				}
-				radioItem=this.lstRadioStyleLabelSpanList.get(i);
-				String[] lstImageSrc= new String[1];
+				radioItem=this.lstRadioStyleLabelSpanList.get(i);				
 				if(!this.hasElementAttribute(this.currentThumbnailItem,"data-video")) {
 					lstImageSrc[0]=this.getElementImageSrc(this.imgCurrentThumbnail);
 				}
@@ -699,12 +702,12 @@ public class ProductDetailPage extends BasePage {
 		int loopSize;
 		if(this.judgeStyleDisplayModeIsDropdownMenu()) {			
 			Select selectStyle= new Select(this.selectProductStyle);			
-			loopSize=this.lstDropdownProductStyle.size();		
+			loopSize=this.lstDropdownProductStyle.size();	
+			String[] lstImageSrc= new String[1];
 			for(int i=0;i<loopSize;i++) {
 				if(this.hasElementAttribute(this.lstDropdownProductStyle.get(i),"selected")) {
 					continue;
-				}
-				String[] lstImageSrc= new String[1];
+				}				
 				if(!this.hasElementAttribute(this.currentThumbnailItem,"data-video")) {
 					lstImageSrc[0]=this.getElementImageSrc(this.imgCurrentThumbnail);
 				}
@@ -721,14 +724,14 @@ public class ProductDetailPage extends BasePage {
 		else {			
 			loopSize=this.lstRadioStyleLabelSpanList.size();
 			WebElement radioItem,labelItem;
-			String lsLabelTitle;			
+			String lsLabelTitle;	
+			String[] lstImageSrc= new String[1];
 			for(int i=0;i<loopSize;i++) {
 				if(this.hasElementAttribute(this.lstStyleRadioList.get(i),"checked")) {
 					continue;
 				}
 				radioItem=this.lstRadioStyleLabelSpanList.get(i);
-				labelItem=this.lstRadioStyleLabelList.get(i);
-				String[] lstImageSrc= new String[1];
+				labelItem=this.lstRadioStyleLabelList.get(i);				
 				if(!this.hasElementAttribute(this.currentThumbnailItem,"data-video")) {
 					lstImageSrc[0]=this.getElementImageSrc(this.imgCurrentThumbnail);
 				}				
