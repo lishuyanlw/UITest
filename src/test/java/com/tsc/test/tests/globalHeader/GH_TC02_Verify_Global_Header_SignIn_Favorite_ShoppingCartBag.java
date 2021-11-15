@@ -34,7 +34,7 @@ public class GH_TC02_Verify_Global_Header_SignIn_Favorite_ShoppingCartBag extend
 	public void validateActionContents() {
 		reporter.reportLog("Global Header Section contents for SignIn_Favorite_ShoppingCartBag");
 			
-		String lsUrl,lsYmlNotFound,lsSuccessResult, lsFailResult;
+		String lsUrl,lsYmlNotFound,lsSuccessResult, lsFailResult;		
 		lsYmlNotFound=TestDataHandler.constantData.getHeaderSection().getLnk_NotFound();
 		reporter.reportLog("Verify Sign in section");
 		String lsUserName=TestDataHandler.constantData.getLoginUser().getLbl_Username();
@@ -85,16 +85,19 @@ public class GH_TC02_Verify_Global_Header_SignIn_Favorite_ShoppingCartBag extend
 		List<String> lstSignInPopover=TestDataHandler.constantData.getHeaderSection().getLst_SignInPopover();
 				
 		//Verify Sign in Text and Icon
+		//validateText(getglobalheaderPageThreadLocal().validateFavouritesLink_1(signin), TestDataHandler.constantData.getHeaderSection().getLbl_SignIn(), "SignIn Link is present & Text is visible");
 		validateText(getglobalheaderPageThreadLocal().validateSignInLink(), TestDataHandler.constantData.getHeaderSection().getLbl_SignIn(), "SignIn Link is present & Text is visible");
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateSiginIcon(), "SignIn icon is visible", "SignIn icon is not visible");
 		getGlobalLoginPageThreadLocal().verifyMenuItemInPopover(lstSignInPopover);
 			
 		reporter.reportLog("Verify Favourites section");
 		//Verify Favourites section
+		//validateText(getglobalheaderPageThreadLocal().validateFavouritesLink_1(favorites), TestDataHandler.constantData.getHeaderSection().getLbl_Favourites(), "Favourites Link is present & Text is visible");
 		validateText(getglobalheaderPageThreadLocal().validateFavouritesLink(), TestDataHandler.constantData.getHeaderSection().getLbl_Favourites(), "Favourites Link is present & Text is visible");
 		
 		reporter.reportLog("Verify Shopping Cart section");
 		//Verify Shopping Cart section
+		//validateText(getglobalheaderPageThreadLocal().validateFavouritesLink_1(shoppingCart), TestDataHandler.constantData.getHeaderSection().getLbl_ShoppingCartLinkName(), "Sopping cart Link is present & Text is visible");
 		validateText(getglobalheaderPageThreadLocal().validateShoppingCartLinkName(), TestDataHandler.constantData.getHeaderSection().getLbl_ShoppingCartLinkName(), "Sopping cart Link is present & Text is visible");
 		
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateShoppingCartIcon(), "Shopping cart icon is visible", "Shopping cart icon is not visible");
