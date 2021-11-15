@@ -740,7 +740,7 @@ public class GlobalheaderPage extends BasePage{
 					if(!verifyElementProperty(webElement,"Image")) {//href not present
 						getReporter().softAssert(false,"","Image missing for Popular Brand item: "+webElement.getText());
 					}else{
-						getReporter().reportLog("Image present for Popular Brand item: "+hrefAttribute.getText());
+						getReporter().reportLog("Image present for Popular Brand item: "+webElement.getAttribute("alt"));
 					}
 				}
 			break;
