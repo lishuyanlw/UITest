@@ -404,12 +404,12 @@ import utils.ReusableActions;
 	
 	/**
 	 * This method will get element attribute.
-	 * @param WebElement parent: parent element 
+	 * @param WebElement element: element 
 	 * @author Wei.Li
 	 */		
-	public String getChildElementAttribute(WebElement parent,String lsAttribute) {
+	public String getChildElementAttribute(WebElement element,String lsAttribute) {
 		JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
-		return (String)jse.executeScript("return arguments[0].getAttribute(arguments[1]);", parent,lsAttribute);				
+		return (String)jse.executeScript("return arguments[0].getAttribute(arguments[1]);", element,lsAttribute);				
 	}
 	
 	/**
@@ -443,12 +443,12 @@ import utils.ReusableActions;
 	 * @author Wei.Li
 	 */		
 	public boolean checkChildElementExistingByAttribute(WebElement parent,String lsAttribute,String lsAttributeValue) {
-		List<WebElement> lstChild=this.getChildrenList(parent);
-		for(WebElement child:lstChild) {
-			if(this.hasElementAttribute(child,lsAttribute)) {
-				String lsValue=this.getChildElementAttribute(child,lsAttribute).trim();
+		List<WebElement> lstChild=this.getChildrenList(parent);		
+		for(WebElement child:lstChild) {			
+			if(this.hasElementAttribute(child,lsAttribute)) {				
+				String lsValue=this.getChildElementAttribute(child,lsAttribute).trim();				
 				if(lsValue.isEmpty()||lsValue==null) {
-					return false;
+					continue;
 				}
 				else {
 					if(lsValue.contains(" ")) {
@@ -456,7 +456,7 @@ import utils.ReusableActions;
 							return true;
 						}
 						else {
-							return false;
+							continue;
 						}
 					}
 					else {
@@ -464,7 +464,7 @@ import utils.ReusableActions;
 							return true;
 						}
 						else {
-							return false;
+							continue;
 						}
 					}					
 				}
