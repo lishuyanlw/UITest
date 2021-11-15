@@ -10,11 +10,11 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import org.openqa.selenium.By;
 import com.tsc.pages.base.BasePage;
-public class GlobalheaderPage extends BasePage{
+public class GlobalHeaderPage extends BasePage{
 	
 	
 	
-	public GlobalheaderPage(WebDriver driver) {
+	public GlobalHeaderPage(WebDriver driver) {
 		super(driver);
 	}
 
@@ -196,6 +196,9 @@ public class GlobalheaderPage extends BasePage{
 	
 	@FindBy(xpath = "//div[contains(@class,'secondary-navigation__rhs-account')]//a//*[@class='secondary-navigation__rhs-account-icon']")
 	public WebElement SigninIcon;
+	
+	@FindBy(xpath = "//div[contains(@class,'signin-wrapper clearfix')]//h1//span[contains(text(),'Sign In')]")
+	public WebElement SigninPageHeading;
 	
 	//Shopping Cart 
 	@FindBy(xpath = "//*[@class='Header']//a[contains(@class, 'secondary-navigation__rhs-bag')]")
@@ -644,7 +647,7 @@ public class GlobalheaderPage extends BasePage{
 			}
 			return currentUrl;
 		}
-		
+
 	/*Method to get heading of landing page
 	 * @parameter : pageName
 	 * @return String:Heading of the page
@@ -654,6 +657,7 @@ public class GlobalheaderPage extends BasePage{
 		WebElement webElement = getWebElementFlyoutHeading(pageName);
 		return createCamelCase(getPageTitle(webElement));
 	}
+
 	
 	/*Method to verify href/src is empty or not before clicking sub menu link
 	 * @return true/false
@@ -732,6 +736,7 @@ public class GlobalheaderPage extends BasePage{
 		}
 	}
 
+
 	public void verifyFlyoutMenuSection(String headingName,String sectionName){
 		switch(sectionName){
 			case "Curated Collections":
@@ -779,4 +784,15 @@ public class GlobalheaderPage extends BasePage{
 			break;
 		}
 	}
+
+		/**Method to get get heading of Sign In page after clicking the Favourites's link for anonymous user
+		 * @return String:page heading
+		 * @author Shruti Desai
+		 */	
+		public String getPageHeadingSignin() {
+			
+			return getPageTitle(SigninPageHeading);
+		}
+
 }
+
