@@ -1,6 +1,8 @@
 package com.tsc.test.tests.globalHeader;
 
 import java.io.IOException;
+
+import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
@@ -13,17 +15,19 @@ public class GH_TC07_Global_Header_Verify_Favourites_link extends BaseTest {
 	getGlobalFooterPageThreadLocal().closePopupDialog();
 	BasePage basePage=new BasePage(this.getDriver());		
 	String lsBaseUrl=basePage.getBaseURL()+"/";
-	
+	String lsUserName=TestDataHandler.constantData.getLoginUser().getLbl_Username();
+	String lsPassword=TestDataHandler.constantData.getLoginUser().getLbl_Password();
+	String urlFavoritesLandingpageLoggedInUser=TestDataHandler.constantData.getHeaderSection().getlbl_FavouritesLandingPage();
+	String urlFavoritesLandingpageAnonymousUser=TestDataHandler.constantData.getHeaderSection().getlbl_SignInLandingPage();
+	String lblSignInpageHeading=TestDataHandler.constantData.getHeaderSection().getLbl_SignIn();
+	WebElement lnkFavoriteElement =getglobalheaderPageThreadLocal().Favouriteslnk;
 	reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl), "TSC url is correct", "TSC url is incorrect");
 	reporter.reportLog("Home Page");
 	
 	//verify Favorite Link for Logged in user
-	String lsUserName=TestDataHandler.constantData.getLoginUser().getLbl_Username();
-	String lsPassword=TestDataHandler.constantData.getLoginUser().getLbl_Password();
-	String urlFavoritesLandingpageloggedinuser=TestDataHandler.constantData.getHeaderSection().getlbl_FavouritesLandingPage();
 	if(getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword)) {
-		String urlFavoritesLandingpageForLoggedinUser=getglobalheaderPageThreadLocal().getUrlFavouriteslandingpage();
-		reporter.softAssert(urlFavoritesLandingpageForLoggedinUser.contains(urlFavoritesLandingpageloggedinuser), "Favourites link's Landing page url is correct for logged in user.", "Favourites link's Landing page url is incorrect for logged in user.");
+		String urlFavoritesLandingpageForLoggedinUser=getglobalheaderPageThreadLocal().getUrlFavouriteslandingpage(lnkFavoriteElement);
+		reporter.softAssert(urlFavoritesLandingpageForLoggedinUser.contains(urlFavoritesLandingpageLoggedInUser), "Favourites link's Landing page url is correct for logged in user.", "Favourites link's Landing page url is incorrect for logged in user.");
 	}else {
 		reporter.reportLogFail("Login failed");
 	}
@@ -32,12 +36,10 @@ public class GH_TC07_Global_Header_Verify_Favourites_link extends BaseTest {
 	
 	//verify Favorite Link for anonymous user
 	if(getGlobalLoginPageThreadLocal().SignOut()) {
-		String urlFavoritesLandingpageForLoggedinUser=getglobalheaderPageThreadLocal().getUrlFavouriteslandingpage();
-		String urlFavoritesLandingpageanonymoususer=TestDataHandler.constantData.getHeaderSection().getlbl_SignInLandingPage();
-		String lblsigninpageheading=TestDataHandler.constantData.getHeaderSection().getLbl_SignIn();
+		String urlFavoritesLandingPageLoggedInUser=getglobalheaderPageThreadLocal().getUrlFavouriteslandingpage(lnkFavoriteElement);
 		String PageHeadingSignin=getglobalheaderPageThreadLocal().getPageHeadingSignin();
-		reporter.softAssert(urlFavoritesLandingpageForLoggedinUser.contains(urlFavoritesLandingpageanonymoususer), "Favourites link's Landing page url is correct for anonymous user.", "Favourites link's Landing page url is incorrect for anonymous user.");
-		reporter.softAssert(PageHeadingSignin,lblsigninpageheading, "Sign In page heading is correct for anonymous user.", "Sign In page heading  is incorrect for anonymous user.");
+		reporter.softAssert(urlFavoritesLandingPageLoggedInUser.contains(urlFavoritesLandingpageAnonymousUser), "Favourites link's Landing page url is correct for anonymous user.", "Favourites link's Landing page url is incorrect for anonymous user.");
+		reporter.softAssert(PageHeadingSignin,lblSignInpageHeading, "Sign In page heading is correct for anonymous user.", "Sign In page heading  is incorrect for anonymous user.");
 	}else {
 			reporter.reportLogFail("SignOut failed");
 		}

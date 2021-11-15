@@ -827,10 +827,10 @@ public class GlobalheaderPage extends BasePage{
 		 * @return String:url
 		 * @author Shruti Desai
 		 */	
-		public String getUrlFavouriteslandingpage() {
+		public String getUrlFavouriteslandingpage(WebElement element) {
 			String urlFavouriteslandingpage;
-			getReusableActionsInstance().scrollToElement(Favouriteslnk);
-			Favouriteslnk.click();
+			getReusableActionsInstance().scrollToElement(element);
+			element.click();
 			urlFavouriteslandingpage = getDriver().getCurrentUrl();
 			return urlFavouriteslandingpage;
 		}
