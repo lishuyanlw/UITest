@@ -1,11 +1,13 @@
 package com.tsc.pages;
 
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
-
 import org.openqa.selenium.By;
 import com.tsc.pages.base.BasePage;
 public class GlobalheaderPage extends BasePage{
@@ -71,8 +73,6 @@ public class GlobalheaderPage extends BasePage{
 	public WebElement imgWatchUsLiveIcon;
 	
 	//Dynamic Event
-	@FindBy(xpath = "//*[@class='Sliver']//a[@class='slideLink']")
-	public WebElement lnkdynamicEvent;
 	
 	By byDynamicEvent=By.xpath("//*[@class='Sliver']//a[@class='slideLink']");
 		
@@ -99,41 +99,61 @@ public class GlobalheaderPage extends BasePage{
 	//For QA website
 	@FindBy(xpath = "//div[@class='searchContainer']//div[contains(@class,'suggestions-container')]|//div[contains(@class,'aa-Panel--desktop')]//ul")
 	public List<WebElement> searchQADropdwonmenuList;
+	
+	//Trending without keyword
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(normalize-space(.),'Trending')][contains(@class,'ac__section__title search-title')]")
+	public WebElement lblTrendingWithoutKeyword;
+		
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(normalize-space(.),'Trending')][contains(@class,'ac__section__title search-title')]/following-sibling::ul")
+	public WebElement cntTrendingListWithoutKeyword;
+		
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(normalize-space(.),'Trending')][contains(@class,'ac__section__title search-title')]/following-sibling::ul//li//a")
+	public List<WebElement> lstTrendingLinkWithoutKeyword;
+		
+	//Featured brands without keyword
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(normalize-space(.),'Featured brands')][contains(@class,'ac__section__title search-title')]")
+	public WebElement lblFeaturedBrandsWithoutKeyword;
+		
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(normalize-space(.),'Featured brands')][contains(@class,'ac__section__title search-title')]/following-sibling::ul")
+	public WebElement cntFeaturedBrandsListWithoutKeyword;
+	
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(normalize-space(.),'Featured brands')][contains(@class,'ac__section__title search-title')]/following-sibling::ul//li//a")
+	public List<WebElement> lstFeaturedBrandsLinkWithoutKeyword;
 
-	//Top suggestions
-	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Top suggestions') or contains(.,'Your searches')][contains(@class,'ac__section__title search-title')]")
-	public WebElement lblTopSuggestions;
+	//Top suggestions with keyword
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(normalize-space(.),'Top suggestions')][contains(@class,'ac__section__title search-title')]")
+	public WebElement lblTopSuggestionsWithKeyword;
 	
-	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Top suggestions') or contains(.,'Your searches')][contains(@class,'ac__section__title search-title')]/following-sibling::ul")
-	public WebElement cntTopSuggestionsList;
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(normalize-space(.),'Top suggestions')][contains(@class,'ac__section__title search-title')]/following-sibling::ul")
+	public WebElement cntTopSuggestionsListWithKeyword;
 	
-	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Top suggestions') or contains(.,'Your searches')][contains(@class,'ac__section__title search-title')]/following-sibling::ul//li//a")
-	public List<WebElement> lstTopSuggestionsLink;
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(normalize-space(.),'Top suggestions')][contains(@class,'ac__section__title search-title')]/following-sibling::ul//li//a")
+	public List<WebElement> lstTopSuggestionsLinkWithKeyword;
 	
 	public By byUnmarkedTextForTopSuggestions = By.xpath(".//span[contains(@class,'unmark-text')]");
 	
-	//Categories
-	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Categories') or contains(.,'Trending')][contains(@class,'ac__section__title search-title')]")
-	public WebElement lblCategories;
+	//Categories with keyword
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(normalize-space(.),'Categories')][contains(@class,'ac__section__title search-title')]")
+	public WebElement lblCategoriesWithKeyword;
 	
-	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Categories') or contains(.,'Trending')][contains(@class,'ac__section__title search-title')]/following-sibling::ul")
-	public WebElement cntCategoriesList;
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(normalize-space(.),'Categories')][contains(@class,'ac__section__title search-title')]/following-sibling::ul")
+	public WebElement cntCategoriesListWithKeyword;
 	
-	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Categories') or contains(.,'Trending')][contains(@class,'ac__section__title search-title')]/following-sibling::ul//li//a")
-	public List<WebElement> lstCategoriesLink;
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(normalize-space(.),'Categories')][contains(@class,'ac__section__title search-title')]/following-sibling::ul//li//a")
+	public List<WebElement> lstCategoriesLinkWithKeyword;
 	
-	//Brands
-	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Brands') or contains(.,'Featured brands')][contains(@class,'ac__section__title search-title')]")
-	public WebElement lblBrands;
+	//Brands with keyword
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(normalize-space(.),'Brands')][contains(@class,'ac__section__title search-title')]")
+	public WebElement lblBrandsWithKeyword;
 	
-	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Brands') or contains(.,'Featured brands')][contains(@class,'ac__section__title search-title')]/following-sibling::ul")
-	public WebElement cntBrandsList;
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(normalize-space(.),'Brands')][contains(@class,'ac__section__title search-title')]/following-sibling::ul")
+	public WebElement cntBrandsListWithKeyword;
 	
-	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(.,'Brands') or contains(.,'Featured brands')][contains(@class,'ac__section__title search-title')]/following-sibling::ul//li//a")
-	public List<WebElement> lstBrandsLink;
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(normalize-space(.),'Brands')][contains(@class,'ac__section__title search-title')]/following-sibling::ul//li//a")
+	public List<WebElement> lstBrandsLinkWithKeyword;
 	
-	//Possible item matches
-	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--right')]//div[@class='ac__layout-inner--left']//*[contains(@class,'search-title')]")
+	//Possible item matches or Top Selling Products
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--right')]//div[@class='ac__layout-inner--left']//*[contains(normalize-space(.),'Possible item matches') or contains(normalize-space(.),'Top Selling Products')]")
 	public WebElement lblPossibleItemMatches;
 	
 	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--right')]//div[@class='ac__layout-inner--left']")
@@ -195,16 +215,30 @@ public class GlobalheaderPage extends BasePage{
 
 	@FindBy(xpath = "//ul[contains(@class,'primary-navigation__wrapper')]//li//a")
 	WebElement FlyoutHeadings;
-	
-	@FindBy(xpath = "//nav[contains(@class,'mega-categories mega-column')]//ul/li")
+
+	@FindBy(xpath = "//*[contains(@class,'mega-categories mega-column')]//a")
 	WebElement Categories;
 	
-	@FindBy(xpath = "//a[contains(@class,'mega-popular__brand-link')]")
-	List<WebElement> listSubItemsPopularBrands;
+	@FindBy(xpath = "//*[contains(@class,'primary-navigation__wrapper')]//a//span[contains(@class,'primary-navigation__link-text')]")
+	public List<WebElement> headingLinks;
 	
-	@FindBy(xpath = "//h2[contains(@class,'gatewayTitle xs-vw8')]")
-	WebElement flyoutHeadingLandigPageHeading;
+	@FindBy(xpath = "//*[contains(@class,'mega-categories mega-column')]//a")
+	public List<WebElement> CategoriesLinks;
 	
+	@FindBy(xpath = "//*[contains(@class,'mega-sub-items mega-column')]//a")
+	public List<WebElement> subMenuLinks;
+	
+	@FindBy(xpath = "//*[contains(@class,'mega-sub-items mega-column')]//ul")
+	public List<WebElement> subMenuSection;
+	
+	@FindBy(xpath = "//a[contains(@class,'mega-curated__item-link')]")
+	public List<WebElement> listCuratedCollectionLinks;
+	
+	
+	@FindBy(xpath = "//a[contains(@class,'mega-popular__brand-link')]//img")
+	public List<WebElement> listPopularBrandsLinks;
+	
+
 	@FindBy(xpath = "//h2[contains(@class,'titleLink')]//b")
 	WebElement shopAllBrandsLandigPageHeading;
 
@@ -229,193 +263,28 @@ public class GlobalheaderPage extends BasePage{
 	}
 	
 	//Sliver links are visible & Text is present
-	/**
-	 * This method will validate DynamicEvent  is visible.
-	 *
-	 * @return true/false
-	 * 
-	 * @author Wei.Li
-	 */	
-	public boolean DynamicEventLinkVisible() {
-		if(!this.getReusableActionsInstance().isElementVisible(this.byDynamicEvent,30)) {
-			return true;
-		}
-		return this.lnkdynamicEvent.isDisplayed();
-	}
-	
-	/**
-	 * This method will validate the href of DynamicEventLink is existing.
-	 *
-	 * @return true/false
-	 * 
-	 * @author Wei.Li
-	 */	
-	public boolean validateDynamicEventLink() {
-		if(!this.getReusableActionsInstance().isElementVisible(this.byDynamicEvent,30)) {
-			return true;
-		}
-		if (lnkdynamicEvent.getAttribute("href").isEmpty()) {							
-			return false;			
-		}
-		
-		return true;
-	}
-	
-	/**
-	 * This method will return TS text.
-	 * @author Wei.Li
-	 */
-	public String getTSText() {
-		getReusableActionsInstance().isElementVisible(lnkTS, 5);
-		return lnkTS.getText();		
-	}
-	
-	/**
-	 * This method will return TS link.
-	 * @author Wei.Li
-	 */
-	public String getTSLink() {
-		String emptySTAIbtn="TS link href is empty";
-		if (lnkTS.getAttribute("href").isEmpty()) {							
-			return emptySTAIbtn;			
-		}else{			
-			return lnkTS.getAttribute("href");
-		}
-	}
-	
-	/**
-	 * This method will return Deals text.
-	 * @author Wei.Li
-	 */
-	public String getDealsText() {
-		getReusableActionsInstance().isElementVisible(lnkDeals, 5);
-		return lnkDeals.getText();
-	}
-	
-	/**
-	 * This method will return Deals link.
-	 * @author Wei.Li
-	 */
-	public String getDealsLink() {
-		String emptySTAIbtn="Deals link href is empty";
-		if (lnkDeals.getAttribute("href").isEmpty()) {							
-			return emptySTAIbtn;			
-		}else{			
-			return lnkDeals.getAttribute("href");
-		}
-	}
-	
-	/**
-	 * This method will return OnAir text.
-	 * @author Wei.Li
-	 */
-	public String getOnAirText() {
-		getReusableActionsInstance().isElementVisible(lnkOnAir, 5);
-		return lnkOnAir.getText();
-	}
-	
-	/**
-	 * This method will return OnAir link.
-	 * @author Wei.Li
-	 */
-	public String getOnAirLink() {
-		String emptySTAIbtn="On Air link href is empty";
-		if (lnkOnAir.getAttribute("href").isEmpty()) {							
-			return emptySTAIbtn;			
-		}else{
-			return lnkOnAir.getAttribute("href");
-		}
-	}
-	
-	/**
-	 * This method will validate ProgramGuide icon is visible.
-	 *
-	 * @return true/false
-	 * @author Wei.Li
-	 */	
-	public boolean validateProgramGuideIconVisible() {
-		return getReusableActionsInstance().isElementVisible(imgProgramGuideIcon, 5);
-	}
-	
-	/**
-	 * This method will return ProgramGuide text.
-	 * @author Wei.Li
-	 */
-	public String getProgramGuideText() {
-		getReusableActionsInstance().isElementVisible(lnkProgramGuide, 5);
-		return lnkProgramGuide.getText();
-	}
-	
-	/**
-	 * This method will return ProgramGuide link.
-	 * @author Wei.Li
-	 */
-	public String getProgramGuideLink() {
-		String emptySTAIbtn="Program Guide link href is empty";
-		if (lnkProgramGuide.getAttribute("href").isEmpty()) {							
-			return emptySTAIbtn;			
-		}else{
-			return lnkProgramGuide.getAttribute("href");
-		}
-	}
-	
-	/**
-	 * This method will return WatchUsLive text.
-	 * @author Wei.Li
-	 */
-	public String getWatchUsLiveText() {
-		getReusableActionsInstance().isElementVisible(lnkWatchUsLive, 5);
-		return lnkWatchUsLive.getText();
-	}
-	
-	/**
-	 * This method will return WatchUsLive link.
-	 * @author Wei.Li
-	 */
-	public String getWatchUsLiveLink() {
-		String emptySTAIbtn="Watch Us Live link href is empty";
-		if (lnkWatchUsLive.getAttribute("href").isEmpty()) {							
-			return emptySTAIbtn;			
-		}else{
-			return lnkWatchUsLive.getAttribute("href");
-		}
-	}
-		
-	/**
-	 * This method will validate WatchUsLive icon is visible.
-	 *
-	 * @return true/false
-	 * @author Wei.Li
-	 */
-	public boolean validateWatchUsLiveIconVisible() {
-		return getReusableActionsInstance().isElementVisible(imgWatchUsLiveIcon, 5);
-		}
 	
 	/**
 	 * This method will validate clicking TSCLogo can navigate page to HomePage.
-	 *
 	 * @return true/false
 	 * @author Wei.Li
 	 */
 	public boolean validateTSCLogoNavigateToHomePage() {
 		String lsHomePage=new BasePage(this.getDriver()).getBaseURL()+"/";				
 		String currentUrl=getDriver().getCurrentUrl();		        
-                
 		getReusableActionsInstance().isElementVisible(this.lnkTSClogo, 10);
 		this.lnkTSClogo.click();	    
         waitForCondition(Driver->{return !currentUrl.equalsIgnoreCase(getDriver().getCurrentUrl());},10000);
-              
         return this.getDriver().getCurrentUrl().equalsIgnoreCase(lsHomePage);		
 		}
 				
+	
 	//TSC Logo & Logo link is visible	
 	public String validateTSCLogoLink() {
 		String emptySTAIbtn="TSC logo link href is empty";
 		String lsUrl=lnkTSClogolink.getAttribute("href");
 		if (lsUrl.isEmpty()) {
-							
 			return emptySTAIbtn;
-			
 		}else{
 			return lsUrl;
 		}
@@ -433,16 +302,25 @@ public class GlobalheaderPage extends BasePage{
 		
 	public boolean validateSearchSubmitbtn() {
 		return getReusableActionsInstance().isElementVisible(btnSearchSubmit, 5);
-				
+	}
+	
+	
+	/*
+	public String validateFavouritesLink_1(WebElement webElement) {
+		String emptySTAIbtn=webElement.getText();
+		if(!verifyElementProperty(webElement,"Link")) {
+			return emptySTAIbtn+" link href is empty";
+		}else{
+			getReusableActionsInstance().isElementVisible(webElement, 5);
+			return emptySTAIbtn;
 			}
-		
+		}
+	*/		
 	//Favorite link visible
 	public String validateFavouritesLink() {
 		String emptySTAIbtn="Favourites link href is empty";
 		if (Favouriteslnk.getAttribute("href").isEmpty()) {
-							
 			return emptySTAIbtn;
-			
 		}else{
 			getReusableActionsInstance().isElementVisible(Favouriteslnk, 5);
 			return Favouriteslnk.getText();
@@ -453,31 +331,29 @@ public class GlobalheaderPage extends BasePage{
 	public String validateSignInLink() {
 		String emptySTAIbtn="Sign In link href is empty";
 		if (Signinlnk.getAttribute("href").isEmpty()) {
-							
 			return emptySTAIbtn;
-			
 		}else{
 			getReusableActionsInstance().isElementVisible(Signinlnk, 5);
 			return Signinlnk.getText();
 			}
 		}
 	
-	public boolean validateSiginIcon() {
-		return getReusableActionsInstance().isElementVisible(SigninIcon, 5);
-	}
-		
 	//Shopping cart Link visible
 	public String validateShoppingCartLinkName() {
 		String emptySTAIbtn="Shopping cart link href is empty";
 		if (ShoppingCartlnk.getAttribute("href").isEmpty()) {
 							
 			return emptySTAIbtn;
-			
 		}else{
 			getReusableActionsInstance().isElementVisible(ShoppingCartlnk, 5);
 			return ShoppingCartIconcont.getText();
 			}
 		}
+	
+	
+	public boolean validateSiginIcon() {
+		return getReusableActionsInstance().isElementVisible(SigninIcon, 5);
+	}
 	
 	public boolean validateShoppingCartIcon() {
 			return getReusableActionsInstance().isElementVisible(CartBagIcon, 5);
@@ -490,9 +366,7 @@ public class GlobalheaderPage extends BasePage{
 		
 	/**
 	 * This method will verify Shopping Cart link
-	 *
 	 * @return true/false
-	 * 
 	 * @author Wei.Li
 	 */
 	public boolean verifyShoppingCartLink(String lsExpectedShoppingCartLink) {
@@ -523,56 +397,6 @@ public class GlobalheaderPage extends BasePage{
 	}
 	
 	/**
-	 * This method will get full url after clicking TodayShowstopper link.
-	 * @return String: changed Url 
-	 * @author Wei.Li
-	 */
-	public String getUrlAfterClickingTSLink() {
-		getReusableActionsInstance().javascriptScrollToTopOfPage();
-		return waitForPageLoadingByUrlChange(this.lnkTS);
-	}
-	
-	/**
-	 * This method will get full url after clicking Deals link.
-	 * @return String: changed Url
-	 * @author Wei.Li
-	 */
-	public String getUrlAfterClickingDealsLink() {
-		getReusableActionsInstance().javascriptScrollToTopOfPage();
-		return waitForPageLoadingByUrlChange(this.lnkDeals);
-	}
-	
-	/**
-	 * This method will get full url after clicking OnAir link.
-	 * @return String: changed Url
-	 * @author Wei.Li
-	 */
-	public String getUrlAfterClickingOnAirLink() {
-		getReusableActionsInstance().javascriptScrollToTopOfPage();
-		return waitForPageLoadingByUrlChange(this.lnkOnAir);
-	}
-	
-	/**
-	 * This method will get full url after clicking ProgramGuide link.
-	 * @return String: changed Url
-	 * @author Wei.Li
-	 */
-	public String getUrlAfterClickingProgramGuideLink() {
-		getReusableActionsInstance().javascriptScrollToTopOfPage();
-		return waitForPageLoadingByUrlChange(this.lnkProgramGuide);
-	}
-
-	/**
-	 * This method will get full url after clicking WatchUsLive link.
-	 * @return String: changed Url
-	 * @author Wei.Li
-	 */
-	public String getUrlAfterClickingWatchUsLiveLink() {
-		getReusableActionsInstance().javascriptScrollToTopOfPage();
-		return waitForPageLoadingByUrlChange(this.lnkWatchUsLive);
-	}
-
-	/**
 	 *Method to go to home page  
 	 * @return true/false
 	 * @author Wei.Li
@@ -593,21 +417,6 @@ public class GlobalheaderPage extends BasePage{
 		 getReusableActionsInstance().staticWait(100);		 
 	 }	
 	 
-	/**
-	 *Method to go to Black headers  
-	 * @param WebElement element: dropdown menu option	
-	 * @return true/false
-	 * @author Wei.Li
-	 */	
-	 public boolean switchWatchTSCDropdownOption(WebElement element) {
-		 getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnWatchTSCBlackHeader);
-		 getReusableActionsInstance().scrollToElement(this.btnWatchTSCBlackHeader);
-		 getReusableActionsInstance().staticWait(100);
-		 getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-		 element.click();
-		 return (new GlobalFooterPage(this.getDriver())).waitForPageLoading();
-	 }	 
-		
 	/**
 	 *Method to verify TS header and link in Black headers  	 
 	 * @param WebElement blackItem: the header in Black headers
@@ -647,7 +456,7 @@ public class GlobalheaderPage extends BasePage{
 	 */	
 	 public boolean getPopupWindowByClickingSearchBox() {
 		 this.searchBox.click();
-		 return waitForCondition(Driver->{return this.lblTopSuggestions.isDisplayed();},5000);
+		 return waitForCondition(Driver->{return this.lblTrendingWithoutKeyword.isDisplayed();},5000);
 	 }
 	 
 	/**
@@ -659,6 +468,7 @@ public class GlobalheaderPage extends BasePage{
 	 public void verifyTopSellingProductsExistingByChangingItemInTrendingOrFeaturedBrandsList(List<WebElement> elementList) {
 		 String lsItem;
 		 for(WebElement element:elementList) {
+			 getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 			 getReusableActionsInstance().scrollToElement(element);
 			 getReusableActionsInstance().staticWait(300);
 			 lsItem=element.getText();
@@ -666,7 +476,7 @@ public class GlobalheaderPage extends BasePage{
 			 reporter.softAssert(getReusableActionsInstance().isElementVisible(this.cntPossibleItemMatchesList),"The Top selling products list is displaying correctly by selecting item of '"+lsItem+"'","The Top selling products list is not displaying correctly by selcting item of '"+lsItem+"'");			 
 		 }	
 	 }
-
+	 
 	 /**
 		/*Method to click on WebElement for Submenu Item by providing Flyout heading name , category and item as parameters.
 		 * @author Shruti Desai
@@ -674,6 +484,7 @@ public class GlobalheaderPage extends BasePage{
 		public String getNameAndclickSubMenuItem(String headingName,String submenuHeading, String itemName) {
 			String xpathHeading =createXPath("//span[contains(text(),'{0}')]" ,headingName); 
 			WebElement headingWebElement = FlyoutHeadings.findElement(By.xpath(xpathHeading));
+			getReusableActionsInstance().javascriptScrollByVisibleElement(headingWebElement);
 			getReusableActionsInstance().scrollToElement(headingWebElement);
 
 			if(headingWebElement!=null && submenuHeading==null) {
@@ -684,10 +495,12 @@ public class GlobalheaderPage extends BasePage{
 				String xpathSubMenu =createXPath("//a[contains(text(),\"{0}\")]" ,submenuHeading); 
 				List<WebElement> SubMenu = Categories.findElements(By.xpath(xpathSubMenu));
 				if(SubMenu.size()>0){
+					getReusableActionsInstance().javascriptScrollByVisibleElement(SubMenu.get(0));
 					getReusableActionsInstance().scrollToElement(SubMenu.get(0));
 					if(itemName!=null) {
 						String xpathSubmenuItem=createXPath("//a[contains(text(),'{0}')]",itemName);
 						WebElement SubMenuItem=getDriver().findElement(By.xpath(xpathSubmenuItem));
+						getReusableActionsInstance().javascriptScrollByVisibleElement(SubMenuItem);
 						getReusableActionsInstance().scrollToElement(SubMenuItem);
 						String title = SubMenuItem.getText().trim();
 						SubMenuItem.click();
@@ -707,6 +520,34 @@ public class GlobalheaderPage extends BasePage{
 			}
 			return null;
 		}
+	 
+	 public StringBuilder href_src_submenu  =new StringBuilder();
+	 public StringBuilder href_src_data = new StringBuilder();
+	 /*Method to click on WebElement for Submenu Item by providing Flyout heading name , category and item as parameters.
+	  * @author Shruti Desai
+	  */
+		public void clickSubMenuItem(String headingName,String submenuHeading, String itemName) {
+			String xpathHeading =createXPath("//span[contains(text(),'{0}')]" ,headingName); 
+			WebElement headingWebElement = FlyoutHeadings.findElement(By.xpath(xpathHeading));
+			getReusableActionsInstance().scrollToElement(headingWebElement);
+
+			if(headingWebElement!=null && submenuHeading==null) {
+				headingWebElement.click();
+			}
+			if(submenuHeading!=null) {
+				String xpathSubMenu =createXPath("//a[contains(text(),\"{0}\")]" ,submenuHeading); 
+				WebElement SubMenu = Categories.findElement(By.xpath(xpathSubMenu));
+				getReusableActionsInstance().scrollToElement(SubMenu);
+				if(itemName!=null) {
+					String xpathSubmenuItem=createXPath("//a[contains(text(),'{0}')]",itemName);
+					WebElement SubMenuItem=getDriver().findElement(By.xpath(xpathSubmenuItem));
+					getReusableActionsInstance().scrollToElement(SubMenuItem);
+					SubMenuItem.click();
+				}else {
+					SubMenu.click();
+				}
+			}
+		}
 		
 		/*Method to get list of Flyout heading WebElements
 		 * @return List:Flyout heading WebElements
@@ -721,6 +562,7 @@ public class GlobalheaderPage extends BasePage{
 		 * @author Shruti Desai
 		 */
 		public void scrolltoWebElement(WebElement webElement) {
+			getReusableActionsInstance().javascriptScrollByVisibleElement(webElement);
 			getReusableActionsInstance().scrollToElement(webElement);
 			}
 		
@@ -744,12 +586,18 @@ public class GlobalheaderPage extends BasePage{
 			 String currentUrl;
 			 String xpathHeading =createXPath("//span[contains(text(),'{0}')]" ,headingName); 
 			 WebElement headingWebElement = FlyoutHeadings.findElement(By.xpath(xpathHeading));
+			 getReusableActionsInstance().javascriptScrollByVisibleElement(headingWebElement);
 			 getReusableActionsInstance().scrollToElement(headingWebElement);
 			 headingWebElement .click();
 			 currentUrl = getDriver().getCurrentUrl();
 			 return currentUrl;
 		}
-		
+		/*Method to apply static wait  
+		 * @author Shruti Desai
+		 */
+		public void staticwait() {
+			applyStaticWait(2000);
+		}
 		
 		/*Method to get WebElement for flyout heading  
 		 * @return WebElement
@@ -766,8 +614,10 @@ public class GlobalheaderPage extends BasePage{
 		 */
 		public void scrollToHeadingElement(String headingName) {
 			  WebElement headingWebElement =getWebElementFlyoutHeading(headingName);
+			  getReusableActionsInstance().javascriptScrollByVisibleElement(headingWebElement);
 			  getReusableActionsInstance().scrollToElement(headingWebElement);
 		}
+		
 		
 		/*Method to get WebElement for shop all brand in Popular Brand section  
 		 * @return WebElement
@@ -786,13 +636,11 @@ public class GlobalheaderPage extends BasePage{
 			String currentUrl=null;
 			AtomicReference<String> first_flyout_menu_text =new  AtomicReference<String>();
 			first_flyout_menu_text.set(headingName.split(" ")[0]);
-			WebElement linkPopularBrand = listSubItemsPopularBrands.get(0);
+			WebElement linkPopularBrand = listPopularBrandsLinks.get(0);
 			waitForCondition(Driver->{return (linkPopularBrand.getAttribute("href").contains(first_flyout_menu_text.get()) && linkPopularBrand.getAttribute("class").contains(section.split(" ")[0].trim().toLowerCase()));} ,30000);
 			WebElement ShopAllWebElement = getWebElementShopAllPupularBrand();
 			if(verifyElementProperty(ShopAllWebElement,"Link")) {
-				if(System.getProperty("Browser").toLowerCase().contains("firefox")) {
-					getReusableActionsInstance().javascriptScrollByVisibleElement(ShopAllWebElement);
-				}
+				getReusableActionsInstance().javascriptScrollByVisibleElement(ShopAllWebElement);				
 				getReusableActionsInstance().scrollToElement(ShopAllWebElement);
 				ShopAllWebElement.click();
 				currentUrl = getDriver().getCurrentUrl();
@@ -800,29 +648,145 @@ public class GlobalheaderPage extends BasePage{
 			return currentUrl;
 		}
 
-		public String getHeadingOfLandingPageforFlyoutHeading() {
-			String currentPageHeading,pageHeading;
-			pageHeading =getPageTitle(flyoutHeadingLandigPageHeading);
-			currentPageHeading=createCamelCase(pageHeading);
-			return currentPageHeading;
-		}
-		
-		public String getHeadingOfLandingPageforShopAllBrands() {
-			String currentPageHeading,pageHeading; 
-			pageHeading =getPageTitle(shopAllBrandsLandigPageHeading);
-			currentPageHeading=createCamelCase(pageHeading);
-			return currentPageHeading;
-		}
+	/*Method to get heading of landing page
+	 * @parameter : pageName
+	 * @return String:Heading of the page
+	 * @author Sachin Sharma
+	 */
+	public String getHeadingForLandingPage(String pageName) {
+		WebElement webElement = getWebElementFlyoutHeading(pageName);
+		return createCamelCase(getPageTitle(webElement));
+	}
 
-		public String getHeadingForLandingPage(String pageName) {
-			WebElement webElement = getWebElementFlyoutHeading(pageName);
-			return createCamelCase(getPageTitle(webElement));
+	
+	/*Method to verify href/src is empty or not before clicking sub menu link
+	 * @return true/false
+	 * @author Shruti Desai
+	 */
+	public void verifysubMenuhref(List<WebElement> webElements) {
+		if(isParentElementHasAttribute(webElements,"li")) {
+			for (WebElement element : this.subMenuLinks) {
+				/** Below section needs to be commented as it navigates back to previous element of left
+				 * side section element and hence results in StaleElement Exception for firefox
+				if (System.getProperty("Browser").toLowerCase().contains("firefox")) {
+					getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+				}*/
+				if (System.getProperty("Browser").toLowerCase().contains("chrome")) {
+					getReusableActionsInstance().scrollToElement(element);
+				}
+				if (!verifyElementProperty(element, "Link")) {//href is not present
+					getReporter().softAssert(false,"","Link is not present for: "+element.getText());
+				}else{
+					getReporter().reportLog("Href present for left side menu item: "+element.getText());
+				}
+			}
+		}else{
+			getReporter().reportLog("No sub-menu item present");
 		}
+	}
+
+	public Boolean isParentElementHasAttribute(List<WebElement> parent, String attribute) {
+		JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
+		ArrayList<Integer> childSize= (ArrayList<Integer>) jse.executeScript("return arguments[0].getElementsByTagName(arguments[1]);", parent.get(0),attribute);
+		if(childSize.size()>0) return true;
+		return false;
+	}
 		
-		
-		
-		//Favorites link validation
-		
+	/*Method to verify href/src is empty or not before clicking Popular Brand/Curated Collection link
+	 * @return true/false
+	 * @author Shruti Desai
+	 */
+	public void verifyFlyoutMenuItems(String heading, String section){
+		List<WebElement> headingsElements=this.headingLinks;
+		if(heading==null) {
+			for(WebElement headerItem: headingsElements) {
+				if(System.getProperty("Browser").toLowerCase().contains("firefox")) {
+					getReusableActionsInstance().javascriptScrollByVisibleElement(headerItem);
+				}
+				this.scrolltoWebElement(headerItem);
+				this.staticwait();
+				waitForCondition(Driver->{return (CategoriesLinks.get(0).getAttribute("href").contains(headerItem.getText().split(" ")[0]));} ,30000);
+				String headingName =headerItem.getText();
+				reporter.reportLog("Flyout heading "+headingName);
+				if(section==null) {
+					verifyFlyoutMenuSection(headingName,"Left Section");
+					verifyFlyoutMenuSection(headingName,"Curated Collections");
+					verifyFlyoutMenuSection(headingName,"Popular Brands");
+				}else{
+					verifyFlyoutMenuSection(headingName,section);
+				}
+			}
+		}else{
+			WebElement headingsElement=getWebElementFlyoutHeading(heading);
+			 if(System.getProperty("Browser").toLowerCase().contains("firefox")) {
+					getReusableActionsInstance().javascriptScrollByVisibleElement(headingsElement);
+			 }
+			this.scrolltoWebElement(headingsElement);
+			this.staticwait();
+			waitForCondition(Driver->{return (CategoriesLinks.get(0).getAttribute("href").contains(headingsElement.getText().split(" ")[0]));} ,30000);
+			String headingName =headingsElement.getText();
+			reporter.reportLog("Flyout heading "+headingName);
+			if(section==null) {
+				verifyFlyoutMenuSection(headingName,"Left Section");
+				verifyFlyoutMenuSection(headingName,"Curated Collections");
+				verifyFlyoutMenuSection(headingName,"Popular Brands");
+			}else{
+				verifyFlyoutMenuSection(headingName,section);
+			}
+		}
+	}
+
+
+	public void verifyFlyoutMenuSection(String headingName,String sectionName){
+		switch(sectionName){
+			case "Curated Collections":
+				reporter.reportLog("Verifying Curated Collections items for : "+headingName);
+				for(WebElement webElement:listCuratedCollectionLinks){
+					if(System.getProperty("Browser").toLowerCase().contains("firefox")) {
+						getReusableActionsInstance().javascriptScrollByVisibleElement(webElement);
+					}
+					getReusableActionsInstance().scrollToElement(webElement);
+					if(!verifyElementProperty(webElement,"Link")) {//href is not present
+						getReporter().softAssert(false,"","Href missing for Curated Collection item: "+webElement.getText());
+					}else{
+						getReporter().reportLog("Href present for Curated Collection item: "+webElement.getText());
+					}
+				}
+			break;
+			case "Popular Brands":
+				reporter.reportLog("Verifying Popular Brands items for : "+headingName);
+				for(WebElement webElement:listPopularBrandsLinks){
+					if(System.getProperty("Browser").toLowerCase().contains("firefox")) {
+						getReusableActionsInstance().javascriptScrollByVisibleElement(webElement);
+					}
+					getReusableActionsInstance().scrollToElement(webElement);
+					WebElement hrefAttribute =webElement.findElement(By.xpath("./ancestor::a"));
+					if(!verifyElementProperty(hrefAttribute,"Link")) {//href not present
+						getReporter().softAssert(false,"","Href missing for Popular Brand item: "+webElement.getText());
+					}
+					if(!verifyElementProperty(webElement,"Image")) {//href not present
+						getReporter().softAssert(false,"","Image missing for Popular Brand item: "+webElement.getText());
+					}else{
+						getReporter().reportLog("Image present for Popular Brand item: "+webElement.getAttribute("alt"));
+					}
+				}
+			break;
+			case "Left Section":
+				for (WebElement category:CategoriesLinks) {
+					if(System.getProperty("Browser").toLowerCase().contains("firefox")) {
+						getReusableActionsInstance().javascriptScrollByVisibleElement(category);
+					}
+					this.scrolltoWebElement(category);
+					this.staticwait();
+					reporter.reportLog("Verifying Left Section for: "+category.getText());
+					this.verifysubMenuhref(subMenuSection);
+				}
+			break;
+		}
+	}
+
+//Favorites link validation
+
 		/*Method to get get Url of landing page after clicking the Favourites's link  
 		 * @return String:url
 		 * @author Shruti Desai
@@ -843,11 +807,6 @@ public class GlobalheaderPage extends BasePage{
 			
 			return getPageTitle(SigninPageHeading);
 		}
+
 }
-	
 
-		 
-		 
-		 
-
-	 
