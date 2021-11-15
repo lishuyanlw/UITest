@@ -724,4 +724,16 @@ import utils.ReusableActions;
 	public void applyStaticWait(long timeOut){
 		getReusableActionsInstance().staticWait(timeOut);
 	}
+
+	/**Method to get get Url of landing page after clicking the Favourites's link
+	 * @return String:url
+	 * @author Shruti Desai
+	 */
+	public String getUrlForLandingpage(WebElement element) {
+		String urlFavouriteslandingpage;
+		getReusableActionsInstance().scrollToElement(element);
+		element.click();
+		urlFavouriteslandingpage = getDriver().getCurrentUrl();
+		return urlFavouriteslandingpage;
+	}
 }
