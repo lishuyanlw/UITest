@@ -109,5 +109,4 @@ public class GH_TC02_Verify_Global_Header_SignIn_Favorite_ShoppingCartBag extend
 
 	}
 
-
 }
