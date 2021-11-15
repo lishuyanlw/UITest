@@ -189,6 +189,9 @@ public class ProductResultsPage extends BasePage{
 	@FindBy(xpath="//*[contains(@class,'prec clearfix')]/div")
 	List<WebElement> lstPeopleAlsoBoughtItems;
 
+	@FindBy(xpath="//span[contains(@id,'_ctlSpanTitle')]")
+	public WebElement pageTitle;
+
 	String searchkeyword;
 	public boolean bVerifyTitle=true;
 	public String firstLevelFilter,secondLevelFilter;
@@ -1194,8 +1197,9 @@ public class ProductResultsPage extends BasePage{
 		String clearanceURLTitleText = getDriver().getCurrentUrl();
 		return clearanceURLTitleText;
 	}
-
-	/** This method will get the review number amount of product item
+	 
+    /**
+	 * This method will get the review number amount of product item
 	 * @param List<WebElement> lstReviewStar: review star list
 	 * @return  int: review number amount
 	 * @author Wei.Li
@@ -1311,4 +1315,5 @@ public class ProductResultsPage extends BasePage{
 		public boolean bProductWasPrice;
 		public String productEasyPay;
 	}
-}
+}		      	
+

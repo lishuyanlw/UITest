@@ -2,10 +2,8 @@ package com.tsc.test.tests.globalHeader;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
-
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
@@ -35,6 +33,7 @@ public class GH_TC04_Global_Header_Verify_FlyoutSubMenuDisplay extends BaseTest 
 			lsSuccessResult=String.format("The url [ %s ] does not contain [ %s ] after clicking " + lsHeading + "'s link", FlyoutUrl,lsYmlNotFound);
 			lsFailResult=String.format("The url [ %s ] contains [ %s ] after clicking " + lsHeading + "'s link", FlyoutUrl,lsYmlNotFound);
 			pageHeading=getglobalheaderPageThreadLocal().getHeadingForLandingPage(lsHeading);
+			//pageHeading=getglobalheaderPageThreadLocal().getHeadingForLandingPage(lsHeading);
 			reporter.reportLog("URL of the landing page for Flyout heading "+lsHeading+" is "+FlyoutUrl);
 			reporter.softAssert(!FlyoutUrl.contains(lsYmlNotFound), lsSuccessResult,lsFailResult);
 			reporter.softAssert(lsHeading.contains(pageHeading), "Landing page is loaded correctly for "+lsHeading+" flyout heading link.","Landing page is not loaded correctly for "+lsHeading+" flyout heading link.");
