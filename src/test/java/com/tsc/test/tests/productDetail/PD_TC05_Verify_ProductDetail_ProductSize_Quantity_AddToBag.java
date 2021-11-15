@@ -11,12 +11,13 @@ import com.tsc.test.base.BaseTest;
 
 public class PD_TC05_Verify_ProductDetail_ProductSize_Quantity_AddToBag extends BaseTest{
 	/*
-	 * CER-576
-	 * CER-570
+	 * CER-578
+	 * CER-580
+	 * CER-582
 	 * CER-583
 	 */
 	@Test(groups={"ProductDetail","Regression"})
-	public void validateLeftSection_ProductSize_Quantity_AddToSize() throws IOException {	
+	public void validateLeftSection_ProductSize_Quantity_AddToBag() throws IOException {	
 	getGlobalFooterPageThreadLocal().closePopupDialog();
 	
 	BasePage basePage=new BasePage(this.getDriver());
