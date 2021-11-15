@@ -11,8 +11,9 @@ import com.tsc.test.base.BaseTest;
 
 public class PD_TC04_Verify_ProductDetail_ProductStyle extends BaseTest{
 	/*
+	 * CER-575
 	 * CER-576
-	 * CER-570
+	 * CER-577
 	 */
 	@Test(groups={"ProductDetail","Regression"})
 	public void validateLeftSection_ContentsForImageAndVideo() throws IOException {	
