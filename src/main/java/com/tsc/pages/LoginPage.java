@@ -141,6 +141,7 @@ public class LoginPage extends BasePage {
 	 * @author Wei.Li
 	 */
 	public void hoverOnSignInHeadingMenu() {
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInMainMenu);
 		getReusableActionsInstance().scrollToElement(this.btnSignInMainMenu);
 		getReusableActionsInstance().staticWait(300);
 	}
