@@ -301,7 +301,7 @@ public class GlobalFooterPage extends BasePage {
 
 	@FindBy(xpath = "//div[@class='Middle']//div[contains(@class,'singleOpenable')]//div[contains(@class,'panHTMLContainer collapse')]")
 	public List<WebElement> lstOfExpandedContent;
-	
+
 	@FindBy(xpath="//h2[contains(@class,'titleLink')]")
 	public WebElement aboutUsPageTitle;
 
@@ -440,6 +440,7 @@ public class GlobalFooterPage extends BasePage {
 		}
 		return hashMap;
 	}
+
 	/**
 	 * This method is to verify if equal to a UTF-8 encoding text.
 	 * 
@@ -809,6 +810,5 @@ public class GlobalFooterPage extends BasePage {
 		
 	}
 	
-		
 		
 }
