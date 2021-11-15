@@ -20,7 +20,7 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'pdImageSection') and not(contains(@class,'pdImageSection__zoom')) and not(@style='display: none;')]")
 	public WebElement cntLeftContainer;
 	
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div")
+	@FindBy(xpath = "//form[@id='pdpForm']")
 	public WebElement cntRightContainer;
 	
 	//Thumbnail part
@@ -93,90 +93,90 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']")
 	public WebElement lblProductName;
 	
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//div[@id='divBrandName']//a")
+	@FindBy(xpath = "//form[@id='pdpForm']//div[@id='divBrandName']//a")
 	public WebElement lnkBrandName;
 	
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//div[contains(@class,'product-name-sub')]//span[@id='lblItemNo']")
+	@FindBy(xpath = "//form[@id='pdpForm']//div[contains(@class,'product-name-sub')]//span[@id='lblItemNo']")
 	public WebElement lblProductNumber;
 	
 	//Review part
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//div[contains(@class,'product-name-sub')]//div[@id='panReviewSnippet']//div[@class='p-w-r'][last()]//section")
+	@FindBy(xpath = "//form[@id='pdpForm']//div[contains(@class,'product-name-sub')]//div[@id='panReviewSnippet']//div[@class='p-w-r'][last()]//section")
 	public WebElement productReviewSection;
 	
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//div[contains(@class,'product-name-sub')]//div[@id='panReviewSnippet']//div[@class='p-w-r'][last()]//section//div[contains(@class,'pr-star-v4')]")
+	@FindBy(xpath = "//form[@id='pdpForm']//div[contains(@class,'product-name-sub')]//div[@id='panReviewSnippet']//div[@class='p-w-r'][last()]//section//div[contains(@class,'pr-star-v4')]")
 	public List<WebElement> lstProductReviewStar;
 	
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//div[contains(@class,'product-name-sub')]//div[@id='panReviewSnippet']//div[@class='p-w-r'][last()]//section//span[contains(@class,'pr-accessible-text')]")
+	@FindBy(xpath = "//form[@id='pdpForm']//div[contains(@class,'product-name-sub')]//div[@id='panReviewSnippet']//div[@class='p-w-r'][last()]//section//span[contains(@class,'pr-accessible-text')]")
 	public List<WebElement> lstProductReviewAccessibleText;
 	
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//div[contains(@class,'product-name-sub')]//div[@id='panReviewSnippet']//div[@class='p-w-r'][last()]//section")
+	@FindBy(xpath = "//form[@id='pdpForm']//div[contains(@class,'product-name-sub')]//div[@id='panReviewSnippet']//div[@class='p-w-r'][last()]//section")
 	public WebElement lblProductReview;
 	
 	//Price part
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//*[@class='price-div']//span[@id='lblPriceLabel']")
+	@FindBy(xpath = "//form[@id='pdpForm']//*[@class='price-div']//span[@id='lblPriceLabel']")
 	public WebElement lblProductPriceLabel;
 	
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//*[@class='price-div']//span[@id='lblCurrentPrice']")
+	@FindBy(xpath = "//form[@id='pdpForm']//*[@class='price-div']//span[@id='lblCurrentPrice']")
 	public WebElement lblProductNowPrice;
 	
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//*[@class='price-div']//span[@id='lblShowWasPrice']")
+	@FindBy(xpath = "//form[@id='pdpForm']//*[@class='price-div']//span[@id='lblShowWasPrice']")
 	public WebElement lblProductWasPrice;
 
 	//EasyPay part
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//div[@id='divEasyPayment']")
+	@FindBy(xpath = "//form[@id='pdpForm']//div[@id='divEasyPayment']")
 	public WebElement lblProductEasyPay;
 	
 	//Shipping part
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//div[@class='savings-shipping']//*[@id='divSavings']")
+	@FindBy(xpath = "//form[@id='pdpForm']//div[@class='savings-shipping']//*[@id='divSavings']")
 	public WebElement lblProductSavings;
 	
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//div[@class='savings-shipping']//*[@class='shipping']")
+	@FindBy(xpath = "//form[@id='pdpForm']//div[@class='savings-shipping']//*[@class='shipping']")
 	public WebElement lblProductShipping;
 	
 	//Style part
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//form")
+	@FindBy(xpath = "//form[@id='pdpForm']")
 	public WebElement cntProductSizeJudgeIndicator;
 	
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//form//div[@class='style-container']")
+	@FindBy(xpath = "//form[@id='pdpForm']//div[@class='style-container']")
 	public WebElement cntProductStyleSection;
 	
 	//For radio style	
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//form//div[@class='style-container']//div[@id='divStyleSwatch']//span[@class='style-lbl']")
+	@FindBy(xpath = "//form[@id='pdpForm']//div[@class='style-container']//div[@id='divStyleSwatch']//span[@class='style-lbl']")
 	public WebElement lblRadioProductStyleStatic;
 	
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//form//div[@class='style-container']//div[@id='divStyleSwatch']//span[@id='lblStyle']")
+	@FindBy(xpath = "//form[@id='pdpForm']//div[@class='style-container']//div[@id='divStyleSwatch']//span[@id='lblStyle']")
 	public WebElement lblRadioProductStyleTitle;
 	
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//form//div[@class='style-container']//div[@id='divStyleSwatch']//input")
+	@FindBy(xpath = "//form[@id='pdpForm']//div[@class='style-container']//div[@id='divStyleSwatch']//input")
 	public List<WebElement> lstStyleRadioList;
 	
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//form//div[@class='style-container']//div[@id='divStyleSwatch']//label[not(div[contains(@class,'disable')])]")
+	@FindBy(xpath = "//form[@id='pdpForm']//div[@class='style-container']//div[@id='divStyleSwatch']//label[not(div[contains(@class,'disable')])]")
 	public List<WebElement> lstRadioStyleLabelList;
 	
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//form//div[@class='style-container']//div[@id='divStyleSwatch']//label[not(div[contains(@class,'disable')])]//span")
+	@FindBy(xpath = "//form[@id='pdpForm']//div[@class='style-container']//div[@id='divStyleSwatch']//label[not(div[contains(@class,'disable')])]//span")
 	public List<WebElement> lstRadioStyleLabelSpanList;
 		
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//form//div[@class='style-container']//div[@id='divStyleSwatch']//label[contains(@class,'style-selected')]/preceding-sibling::input[1]")
+	@FindBy(xpath = "//form[@id='pdpForm']//div[@class='style-container']//div[@id='divStyleSwatch']//label[contains(@class,'style-selected')]/preceding-sibling::input[1]")
 	public WebElement btnRadioProductStyleSelected;
 	
 	//For dropdown menu style		
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//form//div[@class='style-container']//div[@id='divStyleSwatchDdl']//span[@class='style-lbl']")
+	@FindBy(xpath = "//form[@id='pdpForm']//div[@class='style-container']//div[@id='divStyleSwatchDdl']//span[@class='style-lbl']")
 	public WebElement lblDropDownProductStyleStatic;
 		
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//form//div[@class='style-container']//div[@id='divStyleSwatchDdl']//select")
+	@FindBy(xpath = "//form[@id='pdpForm']//div[@class='style-container']//div[@id='divStyleSwatchDdl']//select")
 	public WebElement selectProductStyle;
 	
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//form//div[@class='style-container']//div[@id='divStyleSwatchDdl']//select//option")
+	@FindBy(xpath = "//form[@id='pdpForm']//div[@class='style-container']//div[@id='divStyleSwatchDdl']//select//option")
 	public List<WebElement> lstDropdownProductStyle;
 	
 	//TrueFit part
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//form//div[@id='tf-wrapper']")
+	@FindBy(xpath = "//form[@id='pdpForm']//div[@id='tf-wrapper']")
 	public WebElement cntProductTrueFitSection;
 	
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//form//div[@id='tf-wrapper']//div[@class='tfc-cfg-logo']")
+	@FindBy(xpath = "//form[@id='pdpForm']//div[@id='tf-wrapper']//div[@class='tfc-cfg-logo']")
 	public WebElement imgProductTrueFitLogo;
 	
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//form//div[@id='tf-wrapper']//a[@class='tfc-popup-click-open']")
+	@FindBy(xpath = "//form[@id='pdpForm']//div[@id='tf-wrapper']//a[@class='tfc-popup-click-open']")
 	public WebElement lnkProductTrueFitLink;
 	
 	//TrueFit iframe part
@@ -220,48 +220,48 @@ public class ProductDetailPage extends BasePage {
 	public WebElement btnProductTrueFitIframeInfo;
 	
 	//Size part
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//div[@id='divAvailableSizes']//span[contains(@class,'size-lbl')]")
+	@FindBy(xpath = "//form[@id='pdpForm']//div[@id='divAvailableSizes']//span[contains(@class,'size-lbl')]")
 	public WebElement lblSizeStatic;
 	
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//div[@id='divAvailableSizes']//select")
+	@FindBy(xpath = "//form[@id='pdpForm']//div[@id='divAvailableSizes']//select")
 	public WebElement selectSizeOption;
 	
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//div[@id='divAvailableSizes']//select//option")
+	@FindBy(xpath = "//form[@id='pdpForm']//div[@id='divAvailableSizes']//select//option")
 	public List<WebElement> lstSizeOption;
 	
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//div[@id='divAvailableSizes']//div[@id='divSizeChart']")
+	@FindBy(xpath = "//form[@id='pdpForm']//div[@id='divAvailableSizes']//div[@id='divSizeChart']")
 	public WebElement lnkSizingChart;
 	
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//div[@id='soldoutContainer']")
+	@FindBy(xpath = "//form[@id='pdpForm']//div[@id='soldoutContainer']")
 	public WebElement lblSoldOut;
 	
 	//Quantity part
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//div[@class='qty-container']//span[contains(@class,'qty-lbl')]")
+	@FindBy(xpath = "//form[@id='pdpForm']//div[@class='qty-container']//span[contains(@class,'qty-lbl')]")
 	public WebElement lblQuantityStatic;
 	
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//div[@class='qty-container']//select")
+	@FindBy(xpath = "//form[@id='pdpForm']//div[@class='qty-container']//select")
 	public WebElement selectQuantityOption;
 	
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//div[@class='qty-container']//div[@class='qty-left']")
+	@FindBy(xpath = "//form[@id='pdpForm']//div[@class='qty-container']//div[@class='qty-left']")
 	public WebElement lblQuantityLeft;
 		
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//div[@id='divAddToCart']//button[@id='btnAddToCart']")
+	@FindBy(xpath = "//form[@id='pdpForm']//div[@id='divAddToCart']//button[@id='btnAddToCart']")
 	public WebElement btnAddToBag;
 	
 	//Social links part
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//div[@id='favShare']/div[contains(@class,'mob-middle-social')]/div")
+	@FindBy(xpath = "//div[@id='pdpMainDiv']//div[@id='favShare']/div[contains(@class,'mob-middle-social')]/div")
 	public WebElement lnkFavShareMobile;
 	
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//div[@id='favShare']/div[not(contains(@class,'mob-middle-social'))]/div")
+	@FindBy(xpath = "//div[@id='pdpMainDiv']//div[@id='favShare']/div[not(contains(@class,'mob-middle-social'))]/div")
 	public WebElement lnkFavShareEmail;
 	
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//a[contains(@href,'facebook')]")
+	@FindBy(xpath = "//div[@id='pdpMainDiv']//a[contains(@href,'facebook')]")
 	public WebElement lnkFaceBook;
 	
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//a[contains(@href,'twitter')]")
+	@FindBy(xpath = "//div[@id='pdpMainDiv']//a[contains(@href,'twitter')]")
 	public WebElement lnkTwitter;
 	
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']/parent::div//a[contains(@href,'pinterest')]")
+	@FindBy(xpath = "//div[@id='pdpMainDiv']//a[contains(@href,'pinterest')]")
 	public WebElement lnkPInterest;
 	
 	//product teaser part
