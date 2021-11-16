@@ -123,7 +123,7 @@ public class GlobalFooterPage extends BasePage {
 			@FindBy(xpath = "//div[@class='Footer']//div[contains(@class,'menu-area')]/div[2]//ul[@class='lstMenu-with-icon']/li//a") })
 	public List<WebElement> lnkTSCCustomerHubAllLinks;
 
-	@FindBy(xpath = "//div[@class='panel border-bottom-gray']//div[@class='panel-body']//ul//li")
+	@FindBy(xpath = "//div[@class='panel border-bottom-gray']//div[@class='panel-body']//ul//li//a")
 	public List<WebElement> lnkTSCCustomerHubAllLinksMobile;
 
 	@FindBy(xpath = "//div[@class='panel border-bottom-gray']//a[@role='button']")
@@ -138,7 +138,7 @@ public class GlobalFooterPage extends BasePage {
 			@FindBy(xpath = "//div[@class='Footer']//div[contains(@class,'menu-area')]/div[4]//ul[@class='lstMenu']/li//a") })
 	public List<WebElement> lnkAboutTSCAllLinks;
 
-	@FindBy(xpath = "//div[@class='panel border-bottom-gray margin-top-none']//div[@class='panel-body']//ul//li")
+	@FindBy(xpath = "//div[@class='panel border-bottom-gray margin-top-none']//div[@class='panel-body']//ul//li//a")
 	public List<WebElement> lnkAboutTSCAllLinksMobile;
 
 	@FindBy(xpath = "//div[@class='panel border-bottom-gray margin-top-none']//a[@role='button']")

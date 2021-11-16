@@ -69,6 +69,12 @@ public class ProductResultsPage extends BasePage{
 	@FindBy(xpath = "//div[contains(@class,'search-filters-div')]//div[contains(@class,'sortFilterWrap')]//div[contains(@class,'filterTag')]")
 	List<WebElement> selectedFiltersList;
 
+	@FindBy(xpath = "//product-results//div[@class='modalBody']//div[@class='filterTag']/span")
+	List<WebElement> selectedFiltersListMobile;
+
+	@FindBy(xpath = "//product-results//div[@class='modal-header prpModalHeader hidden-lg']/div/h4[@id='cancel-model']")
+	public WebElement cancelButton;
+
 	public By byProductHref=By.xpath(".//a");
 
 	public By byProductImage=By.xpath(".//div[contains(@class,'imgEmbedContainer')]//img[@class='productImg']");
@@ -544,14 +550,14 @@ public class ProductResultsPage extends BasePage{
 			return lsKeyword.trim();
 		}
 		return lsKeyword.trim().replace(" ","%20");
-		
-//		String lsUrl=this.URL();
-//		if(lsUrl.contains("dimensions=0&")) {
-//			return lsKeyword.trim().replace(" ","%20");
-//		}
-//		else {
-//			return lsKeyword.trim().replace(" ","%2B");
-//		}
+
+	/*	String lsUrl=this.URL();
+		if(lsUrl.contains("dimensions=0&")) {
+			return lsKeyword.trim().replace(" ","%20");
+		}
+		else {
+			return lsKeyword.trim().replace(" ","%2B");
+		}*/
 	}
 
 	/**
@@ -1037,16 +1043,19 @@ public class ProductResultsPage extends BasePage{
 		List<String> lstSelectedFilterOption=new ArrayList<String>();
 		if (System.getProperty("Device").equalsIgnoreCase("Mobile")){
 			this.sortAndFilter.click();
+			int selectedFilterSize=this.selectedFiltersListMobile.size();
+			for(int i=0;i<selectedFilterSize;i++) {
+				getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectedFiltersListMobile.get(i));
+				lstSelectedFilterOption.add(this.selectedFiltersListMobile.get(i).getText().trim());
+			}
+			this.cancelButton.click();
+		}else {
+			int selectedFilterSize = this.selectedFiltersList.size() - 1;
+			for (int i = 0; i < selectedFilterSize; i++) {
+				getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectedFiltersList.get(i));
+				lstSelectedFilterOption.add(this.selectedFiltersList.get(i).getText().trim());
+			}
 		}
-		int selectedFilterSize=this.selectedFiltersList.size()-1;
-		for(int i=0;i<selectedFilterSize;i++) {
-			getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectedFiltersList.get(i));
-			lstSelectedFilterOption.add(this.selectedFiltersList.get(i).getText().trim());
-		}
-		if (System.getProperty("Device").equalsIgnoreCase("Mobile")){
-			this.sortAndFilter.click();
-		}
-
 		for(String lsItem:lstSelectedFilterOption) {
 			if(!lstFilterIncluded.contains(lsItem)) {
 				return "The search second level filters do not contain the selected filter of '"+lsItem+"'";

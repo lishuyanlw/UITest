@@ -48,7 +48,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
     WebElement clearAllFilters;
 
     @FindBy(xpath = "//product-results//div[@class='modalBody']//div[@class='filterTag']/span")
-    List<WebElement> selectedFiltersListMobile;
+    public List<WebElement> selectedFiltersListMobile;
 
     @FindBy(xpath = "//product-results//div[contains(@class,'modalBody')]//form//select//option")
     List<WebElement> sortByOptionList;

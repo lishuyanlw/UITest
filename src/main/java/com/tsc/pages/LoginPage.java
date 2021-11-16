@@ -165,14 +165,13 @@ public class LoginPage extends BasePage {
 	 */
 	public void verifyMenuItemInPopover(List<String> lstMenuItemPopover) {
 		if (!System.getProperty("Device").equalsIgnoreCase("Desktop")) {
-			//this.searchBackButton.click();
-			getReusableActionsInstance().javascriptScrollByVisibleElement(this.SigninIcon);
 			this.SigninIcon.click();
-			//getReusableActionsInstance().staticWait(3000);
+			getReusableActionsInstance().staticWait(2000);
+			//getReusableActionsInstance().javascriptScrollByVisibleElement(this.cntSignInPopover);
 		}
 		this.hoverOnSignInHeadingMenu();
 		WebElement element;
-		for(String lsItem:lstMenuItemPopover) {			
+		for(String lsItem:lstMenuItemPopover) {
 			element=this.getMenuItemInPopover(lsItem);			
 			reporter.softAssert(element.getText().trim().equalsIgnoreCase(lsItem),"'"+lsItem+"' in SignIn popver is existing","'"+lsItem+"' in SignIn popver is not existing");
 			reporter.softAssert(!element.getAttribute("href").isEmpty(),"The href of '"+lsItem+"' in SignIn popver is not empty","The href of '"+lsItem+"' in SignIn popver is empty");
