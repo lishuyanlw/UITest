@@ -34,7 +34,7 @@ public class GH_TC02_Verify_Global_Header_SignIn_Favorite_ShoppingCartBag extend
 	public void validateActionContents() {
 		reporter.reportLog("Global Header Section contents for SignIn_Favorite_ShoppingCartBag");
 			
-		String lsUrl,lsYmlNotFound,lsSuccessResult, lsFailResult;		
+		String lsUrl,lsYmlNotFound,lsSuccessResult, lsFailResult;
 		lsYmlNotFound=TestDataHandler.constantData.getHeaderSection().getLnk_NotFound();
 		reporter.reportLog("Verify Sign in section");
 		String lsUserName=TestDataHandler.constantData.getLoginUser().getLbl_Username();

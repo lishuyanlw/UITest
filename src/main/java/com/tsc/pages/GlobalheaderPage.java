@@ -21,7 +21,10 @@ public class GlobalheaderPage extends BasePage{
 	//Black header
 	@FindBy(xpath = "//div[contains(@class,'black-header')]//a[contains(@class,'black-header__showstopper')]")
 	public WebElement lnkTSBlackHeader;
-	
+
+	@FindBy(xpath = "//section//li[@class='mega-nav-mobile__watch-tsc__showstopper']//a")
+	public WebElement lnkTSBlackHeaderMobile;
+
 	@FindBy(xpath = "//div[contains(@class,'black-header')]//*[contains(@class,'black-header__promotion-text')]")
 	public WebElement lblPromotionTextBlackHeader;
 	
@@ -161,17 +164,17 @@ public class GlobalheaderPage extends BasePage{
 	
 	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--right')]//div[@class='ac__layout-inner--left']//ul//li//a")
 	public List<WebElement> lstPossibleItemMatchesLink;
-	
+
 	//More to Explore
 	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--right')]//div[@class='ac__layout-inner--right']//*[contains(@class,'search-title')]")
 	public WebElement lblMoreToExplore;
-	
+
 	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--right')]//div[@class='ac__layout-inner--right']")
 	public WebElement cntMoreToExploreList;
-	
+
 	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--right')]//div[@class='ac__layout-inner--right']//ul//li")
 	public List<WebElement> lstMoreToExplore;
-	
+
 	
 	//For Staging website
 	@FindBy(xpath = "//div[@class='searchContainer']//div[contains(@class,'suggestions-container--open')]//div[@class='tsc-category-title']")
@@ -242,13 +245,26 @@ public class GlobalheaderPage extends BasePage{
 	@FindBy(xpath="//span[contains(text(),'Clearance')]")
 	WebElement clearanceHeader;
 
+	//Godwin
+	@FindBy(xpath="//a[@class='mega-sub-items__item-link mega-sub-items__item-link-first' and contains(text(),'Shop all')]")
+	WebElement shopAllFasionOption;
+
+	@FindBy(xpath="//a[@role=\"button\" and contains(text(),'Fashion')]")
+	WebElement fasionOption;
+
+	@FindBy(xpath="//button[@id='secondary-navigation-mobile-hamburger']")
+	public WebElement menuButton;
+
+	@FindBy(xpath="//li[@class='mega-nav-mobile__watch-tsc__watch']")
+	WebElement watchTscMobile;
+
 	public void clickOnClearanceHeaderOption() {
 		getReusableActionsInstance().clickIfAvailable(clearanceHeader);
 	}
 
 	public void waitForPageLoad() {
 		getReusableActionsInstance().waitForPageLoad();
-		(new ProductResultsPage(this.getDriver())).waitForPageLoading();	
+		(new ProductResultsPage(this.getDriver())).waitForPageLoading();
 	}	
 	
 	public boolean validateURL(String strExpectedUrl) {

@@ -33,7 +33,7 @@ public class ConstantData {
     public void setSearchResultPage(SearchResultPage searchResultPage) {
         this.searchResultPage = searchResultPage;
     }
-    
+
     public FooterSection getFooterSection() {
         return footerSection;
     }
@@ -41,7 +41,7 @@ public class ConstantData {
     public void setFooterSection(FooterSection footerSection) {
         this.footerSection = footerSection;
     }
-    
+
     public LoginUser getLoginUser() {
         return loginUser;
     }
@@ -260,7 +260,7 @@ public class ConstantData {
         public void setLst_SignInPopover(List<String> lst_SignInPopover) {
             this.lst_SignInPopover = lst_SignInPopover;
         }
-        
+
         public String getLbl_SignIn() {
             return lbl_SignIn;
         }
@@ -388,11 +388,13 @@ public class ConstantData {
         private List<String> lst_SearchResultMessage;
         private List<String> lst_SortOption;
         private List<String> lst_FilterOptionHeader;
-        private List<SearchOption> lst_SearchOption;               
-        private List<String> lst_MoreButton;  
+        private List<SearchOption> lst_SearchOption;
+        private List<String> lst_MoreButton;
         private List<String> lst_DisappearAfterSelectFilter;
         private String lnk_product_result;
         private List<String> lbl_ProductRecommendationTitlePage;
+        private List<String> lst_Filter_Data;
+        private List<String> lst_SortOptionMobile;
 
         public List<String> getLst_SearchKeyword() {
             return lst_SearchKeyword;
@@ -442,6 +444,14 @@ public class ConstantData {
             this.lst_FilterOptionHeader = lst_FilterOptionHeader;
         }
 
+        public List<String> getLst_Filter_Data() { return lst_Filter_Data; }
+
+        public void setLst_Filter_Data(List<String> lst_Filter_Data) { this.lst_Filter_Data = lst_Filter_Data; }
+
+        public List<String> getLst_SortOptionMobile() { return lst_SortOptionMobile; }
+
+        public void setLst_SortOptionMobile(List<String> lst_SortOptionMobile) { this.lst_SortOptionMobile = lst_SortOptionMobile; }
+
         public List<SearchOption> getLst_SearchOption() {
             return lst_SearchOption;
         }
@@ -449,7 +459,7 @@ public class ConstantData {
         public void setLst_SearchOption(List<SearchOption> lst_SearchOption) {
             this.lst_SearchOption = lst_SearchOption;
         }
-        
+
         public List<String> getLst_MoreButton() {
             return lst_MoreButton;
         }
@@ -457,7 +467,7 @@ public class ConstantData {
         public void setLst_MoreButton(List<String> lst_MoreButton) {
             this.lst_MoreButton = lst_MoreButton;
         }
-        
+
         public List<String> getLst_DisappearAfterSelectFilter() {
             return lst_DisappearAfterSelectFilter;
         }
@@ -465,7 +475,7 @@ public class ConstantData {
         public void setLst_DisappearAfterSelectFilter(List<String> lst_DisappearAfterSelectFilter) {
             this.lst_DisappearAfterSelectFilter = lst_DisappearAfterSelectFilter;
         }
-        
+
         public String getLnk_product_result() {
             return lnk_product_result;
         }
@@ -473,7 +483,7 @@ public class ConstantData {
         public void setLnk_product_result(String lnk_product_result) {
             this.lnk_product_result = lnk_product_result;
         }
-        
+
         public List<String> getLbl_ProductRecommendationTitlePage() {
             return lbl_ProductRecommendationTitlePage;
         }
@@ -512,7 +522,7 @@ public class ConstantData {
         public void setLnk_FlyoutHeaderLinkConstant(List<String> lnk_FlyoutHeaderLinkConstant) {
             this.lnk_FlyoutHeaderLinkConstant = lnk_FlyoutHeaderLinkConstant;
         }
-        
+
         public List<String> getLst_FlyoutSubMenu() {
             return lst_FlyoutSubMenu;
         }
@@ -542,7 +552,7 @@ public class ConstantData {
             this.filterOption = filterOption;
         }
     }
-    
+
     public static class FooterSection {
         private List<String> lst_SocialMediaLinks;
         private List<List<String>> lst_NameAndLinks;
@@ -556,7 +566,7 @@ public class ConstantData {
         public void setLst_SocialMediaLinks(List<String> lst_SocialMediaLinks) {
             this.lst_SocialMediaLinks = lst_SocialMediaLinks;
         }
-        
+
         public List<String> getLst_MyAccountObjectSectionTitle() {
             return lst_MyAccountObjectSectionTitle;
         }
@@ -564,7 +574,7 @@ public class ConstantData {
         public void setLst_MyAccountObjectSectionTitle(List<String> lst_MyAccountObjectSectionTitle) {
             this.lst_MyAccountObjectSectionTitle = lst_MyAccountObjectSectionTitle;
         }
-        
+
         public List<String> getLst_TrackYourOrderObjectSectionTitle() {
             return lst_TrackYourOrderObjectSectionTitle;
         }
@@ -581,12 +591,12 @@ public class ConstantData {
             this.lst_NameAndLinks = lst_NameAndLinks;
         }
     }
-    
+
     public static class LoginUser {
         private String lbl_Username;
         private String lbl_Password;
         private String lbl_FirstName;
-        
+
         public String getLbl_Username() {
             return lbl_Username;
         }
@@ -594,7 +604,7 @@ public class ConstantData {
         public void setLbl_Username(String lbl_Username) {
             this.lbl_Username = lbl_Username;
         }
-        
+
         public String getLbl_Password() {
             return lbl_Password;
         }
@@ -602,7 +612,7 @@ public class ConstantData {
         public void setLbl_Password(String lbl_Password) {
             this.lbl_Password = lbl_Password;
         }
-        
+
         public String getLbl_FirstName() {
             return lbl_FirstName;
         }

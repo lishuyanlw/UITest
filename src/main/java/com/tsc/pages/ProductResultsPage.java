@@ -192,6 +192,14 @@ public class ProductResultsPage extends BasePage{
 	@FindBy(xpath="//span[contains(@id,'_ctlSpanTitle')]")
 	public WebElement pageTitle;
 
+
+	public By bySecondlevelFilterList = By.xpath(".//ul//li");
+	public By byJudgeMoreButtonExistanceContainer = By.xpath(".//div[contains(@class,'ngxp__inner')]/div[@role='tabpanel']/div");
+
+    //for mobile Sort&Filter
+	@FindBy(xpath = "//a[contains(text(),'Sort & Filter')]")
+	WebElement sortAndFilter;
+
 	String searchkeyword;
 	public boolean bVerifyTitle=true;
 	public String firstLevelFilter,secondLevelFilter;
@@ -382,7 +390,7 @@ public class ProductResultsPage extends BasePage{
 	 * @return String: error message
 	 * @author Wei.Li
 	 */
-	public String verifySearchResultMessage(String expectedMessage,String lsKeyword) {		
+	public String verifySearchResultMessage(String expectedMessage,String lsKeyword) {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSearchResultMessage);
 
 		String lsMessage=this.lblSearchResultMessage.getText().trim();
@@ -393,8 +401,8 @@ public class ProductResultsPage extends BasePage{
 		else {
 			if(!lsMessage.contains(expectedMessage)) {
 				return "Search result message result of '"+lsMessage+"' does not contain expected message of "+expectedMessage;
-			}			
-		}		
+			}
+		}
 		return "";
 	}
 
@@ -796,10 +804,10 @@ public class ProductResultsPage extends BasePage{
 	 * @return true/false
 	 * @author Wei.Li
 	 */
-	public boolean chooseSortOptionByVisibleText(String lsOption) {
+	public boolean chooseSortOptionByVisibleText(List<String> lsOption) {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSortSelect);
 		Select sortOption= new Select(this.btnSortSelect);
-		sortOption.selectByVisibleText(lsOption);
+		sortOption.selectByVisibleText(lsOption.get(1));
 
 		return this.waitForPageLoading();
 	}
@@ -820,8 +828,8 @@ public class ProductResultsPage extends BasePage{
 		for(WebElement element:this.productResultList) {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 
-			String nowPriceText=element.findElement(this.byProductNowPrice).getText().trim();			
-			float nowPriceValue=this.getFloatFromString(nowPriceText,true);			
+			String nowPriceText=element.findElement(this.byProductNowPrice).getText().trim();
+			float nowPriceValue=this.getFloatFromString(nowPriceText,true);
 
 			priceList.add(nowPriceValue);
 			String productNO=element.findElement(this.byProductItemNO).getText().trim();
@@ -845,7 +853,7 @@ public class ProductResultsPage extends BasePage{
 	 * @return String: error message
 	 * @author Wei.Li
 	 */
-	public String verifyFilterOptions(List<String> lstOptionYml) {		
+	public String verifyFilterOptions(List<String> lstOptionYml) {
 		String lsErrorMsg="";
 		int listSize=this.productFilterList.size();
 		if(listSize==0) {
@@ -960,8 +968,8 @@ public class ProductResultsPage extends BasePage{
 			getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 			String productNO=element.findElement(this.byProductItemNO).getText().trim();
 
-			String nowPriceText=element.findElement(this.byProductNowPrice).getText().trim();			
-			float nowPriceValue=this.getFloatFromString(nowPriceText,false);	
+			String nowPriceText=element.findElement(this.byProductNowPrice).getText().trim();
+			float nowPriceValue=this.getFloatFromString(nowPriceText,false);
 
 			List<String> lstPrice=this.getNumberFromString(secondLevelFilter);
 
@@ -1027,10 +1035,16 @@ public class ProductResultsPage extends BasePage{
 	 */
 	public String verifySlectedFiltersContainSecondlevelFilter(List<String> lstFilterIncluded, List<String> lstFilterExcluded) {
 		List<String> lstSelectedFilterOption=new ArrayList<String>();
+		if (System.getProperty("Device").equalsIgnoreCase("Mobile")){
+			this.sortAndFilter.click();
+		}
 		int selectedFilterSize=this.selectedFiltersList.size()-1;
 		for(int i=0;i<selectedFilterSize;i++) {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectedFiltersList.get(i));
 			lstSelectedFilterOption.add(this.selectedFiltersList.get(i).getText().trim());
+		}
+		if (System.getProperty("Device").equalsIgnoreCase("Mobile")){
+			this.sortAndFilter.click();
 		}
 
 		for(String lsItem:lstSelectedFilterOption) {
