@@ -82,7 +82,7 @@ public class ProductResultsPage_Tablet extends ProductResultsPage{
 			}
 		}
 
-//If unable to find both lsFirstLevelItem and lsSecondLevelItem, then select the first choice
+		//If unable to find both lsFirstLevelItem and lsSecondLevelItem, then select the first choice
 		this.bDefault=true;
 		WebElement btnSecondlevelSelected=this.secondlevelFilterList.get(0);
 		WebElement btnFirstlevelSelected=btnSecondlevelSelected.findElement(By.xpath("./ancestor::div[@class='panel']//*[contains(@class,'section-header')]"));

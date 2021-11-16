@@ -411,18 +411,19 @@ public class GlobalFooterPage extends BasePage {
 	 * @return String: note that the empty string means not found
 	 * @author Wei.Li
 	 */
-	public String getLinkWithSpecificName(List<List<String>> lstNameAndLink, String lsSpecificName, boolean bEnglish) {
+	public String getLinkWithSpecificName(List<List<String>> lstNameAndLink, String lsSpecificName,boolean bEnglish) {
 		String lsCompare;
-		for (List<String> lstItem : lstNameAndLink) {
-			if (bEnglish) {
-				lsCompare = this.getUTFEnabledData(lstItem.get(0));
-			} else {
-				lsCompare = this.getUTFEnabledData(lstItem.get(1));
+		for(List<String> lstItem:lstNameAndLink) {
+			if(bEnglish) {
+				lsCompare=this.getUTFEnabledData(lstItem.get(0));
+			}else {
+				lsCompare=this.getUTFEnabledData(lstItem.get(1));
 			}
-			if (lsSpecificName.equalsIgnoreCase(lsCompare)) {
-				if (lstItem.get(2).startsWith("/")) {
-					return this.removeLastSlashFromUrl(this.getBaseURL() + lstItem.get(2).trim());
-				} else {
+			if(lsSpecificName.equalsIgnoreCase(lsCompare)) {
+				if(lstItem.get(2).startsWith("/")) {
+					return this.removeLastSlashFromUrl(this.getBaseURL()+lstItem.get(2).trim());
+				}
+				else {
 					return this.removeLastSlashFromUrl(lstItem.get(2).trim());
 				}
 
@@ -455,15 +456,14 @@ public class GlobalFooterPage extends BasePage {
 
 	/**
 	 * This method is to verify if equal to a UTF-8 encoding text.
-	 *
 	 * @param List<String> lstNameAndLink: the list from yml file
-	 * @param String       lsSpecificName: input text
+	 * @param String lsSpecificName: input text
 	 * @return true/false
 	 * @author Wei.Li
 	 */
 	public boolean verifyEqualWithEncodingText(List<List<String>> lstNameAndLink, String lsSpecificName) {
-		for (List<String> lstItem : lstNameAndLink) {
-			if (lsSpecificName.trim().equalsIgnoreCase(this.getUTFEnabledData(lstItem.get(0)))) {
+		for(List<String> lstItem:lstNameAndLink) {
+			if(lsSpecificName.trim().equalsIgnoreCase(this.getUTFEnabledData(lstItem.get(0)))) {
 				return true;
 			}
 		}
@@ -475,13 +475,13 @@ public class GlobalFooterPage extends BasePage {
 	 * This method is to get the French name from yml file.
 	 *
 	 * @param List<String> lstNameAndLink: the list from yml file
-	 * @param String       lsSpecificName: input name
+	 * @param String lsSpecificName: input name
 	 * @return French name: note that the empty string means not found
 	 * @author Wei.Li
 	 */
 	public String getFrenchWithSpecificEnglishName(List<List<String>> lstNameAndLink, String lsSpecificName) {
-		for (List<String> lstItem : lstNameAndLink) {
-			if (lsSpecificName.equalsIgnoreCase(this.getUTFEnabledData(lstItem.get(0)))) {
+		for(List<String> lstItem:lstNameAndLink) {
+			if(lsSpecificName.equalsIgnoreCase(this.getUTFEnabledData(lstItem.get(0)))) {
 				return this.getUTFEnabledData(lstItem.get(1).trim());
 			}
 		}
@@ -491,16 +491,15 @@ public class GlobalFooterPage extends BasePage {
 
 	/**
 	 * This method is to get the English name from yml file.
-	 *
 	 * @param List<String> lstNameAndLink: the list from yml file
-	 * @param String       lsSpecificName: input name
+	 * @param String lsSpecificName: input name
 	 * @return French name: note that the empty string means not found
 	 * @author Wei.Li
 	 */
 	public String getEnglishWithSpecificFrenchName(List<List<String>> lstNameAndLink, String lsSpecificName) {
-		for (List<String> lstItem : lstNameAndLink) {
-			String lsCompare = this.getUTFEnabledData(lstItem.get(1));
-			if (lsSpecificName.equalsIgnoreCase(lsCompare)) {
+		for(List<String> lstItem:lstNameAndLink) {
+			String lsCompare=this.getUTFEnabledData(lstItem.get(1));
+			if(lsSpecificName.equalsIgnoreCase(lsCompare)) {
 				return this.getUTFEnabledData(lstItem.get(0).trim());
 			}
 		}
@@ -510,27 +509,25 @@ public class GlobalFooterPage extends BasePage {
 
 	/**
 	 * This method is to compare the link in front page and the one in yml file.
-	 *
 	 * @param String lsCurrentLink: the link in front page
 	 * @param String lsYmlLink: the link in yml file
 	 * @return true/false
 	 * @author Wei.Li
 	 */
 	public boolean verifyLinks(String lsCurrentLink, String lsYmlLink) {
-		lsCurrentLink = removeLastSlashFromUrl(lsCurrentLink);
-		lsYmlLink = removeLastSlashFromUrl(lsYmlLink);
+		lsCurrentLink=removeLastSlashFromUrl(lsCurrentLink);
+		lsYmlLink=removeLastSlashFromUrl(lsYmlLink);
 
-		if (lsYmlLink.startsWith("/")) {
-			lsYmlLink = this.getBaseURL() + lsYmlLink;
+		if(lsYmlLink.startsWith("/")) {
+			lsYmlLink=this.getBaseURL()+lsYmlLink;
 			return lsCurrentLink.equalsIgnoreCase(lsYmlLink);
-		} else {
+		}else {
 			return lsCurrentLink.toLowerCase().contains(lsYmlLink.toLowerCase());
 		}
 	}
 
 	/**
 	 * This method is to switch language.
-	 *
 	 * @return true/false
 	 * @author Wei.Li
 	 */
@@ -548,143 +545,128 @@ public class GlobalFooterPage extends BasePage {
 	 * @author Wei.Li
 	 */
 	public WebElement getServiceWebElement(String lsService) {
-		WebElement selectedItem = this.getElementFromList(this.lnkTSCCustomerHubAllLinks, lsService);
-		if (selectedItem == null) {
-			selectedItem = this.getElementFromList(this.lnkAboutTSCAllLinks, lsService);
+		WebElement selectedItem=this.getElementFromList(this.lnkTSCCustomerHubAllLinks, lsService);
+		if(selectedItem==null) {
+			selectedItem=this.getElementFromList(this.lnkAboutTSCAllLinks, lsService);
 		}
 		return selectedItem;
 	}
 
 	/**
 	 * This method is to go to a specific service.
-	 *
-	 * @param String     lsService: the service name
+	 * @param String lsService: the service name
 	 * @param WebElement lblIndicator: page loading indicator
 	 * @return true/false
 	 * @author Wei.Li
 	 */
-	public boolean goToService(String lsService, WebElement lblIndicator) {
-		WebElement selectedItem = this.getServiceWebElement(lsService);
-		if (selectedItem == null) {
+	public boolean goToService(String lsService,WebElement lblIndicator) {
+		WebElement selectedItem=this.getServiceWebElement(lsService);
+		if(selectedItem==null) {
 			return false;
 		}
 
 		getReusableActionsInstance().javascriptScrollByVisibleElement(selectedItem);
 		selectedItem.click();
-		return waitForCondition(Driver -> {
-			return lblIndicator.isDisplayed();
-		}, 60000);
+		return waitForCondition(Driver->{return lblIndicator.isDisplayed();},60000);
 	}
 
 	/**
 	 * This method is to compare the url in the new window to the expected Url.
-	 *
 	 * @param String lsService: the service name
 	 * @param String lsExpectedUrl: expected Url
 	 * @return true/false
 	 * @author Wei.Li
 	 */
-	public boolean compareUrlInNewWindow(String lsService, String lsExpectedUrl) {
-		WebElement selectedItem = this.getServiceWebElement(lsService);
-		if (selectedItem == null) {
+	public boolean compareUrlInNewWindow(String lsService,String lsExpectedUrl) {
+		WebElement selectedItem=this.getServiceWebElement(lsService);
+		if(selectedItem==null) {
 			return false;
 		}
 
-		String lsMainWindowHandle = this.getDriver().getWindowHandle();
+		String lsMainWindowHandle=this.getDriver().getWindowHandle();
 		getReusableActionsInstance().javascriptScrollByVisibleElement(selectedItem);
 		selectedItem.click();
-		getReusableActionsInstance().waitForNumberOfWindowsToBe(2, 30);
-		Set<String> lstWindowHandle = this.getDriver().getWindowHandles();
-		for (String windowHandle : lstWindowHandle) {
-			if (!windowHandle.equalsIgnoreCase(lsMainWindowHandle)) {
+		getReusableActionsInstance().waitForNumberOfWindowsToBe(2,30);
+		Set<String> lstWindowHandle=this.getDriver().getWindowHandles();
+		for(String windowHandle:lstWindowHandle) {
+			if(!windowHandle.equalsIgnoreCase(lsMainWindowHandle)) {
 				getReusableActionsInstance().staticWait(5000);
 				this.getDriver().switchTo().window(windowHandle);
 				break;
 			}
 		}
-		String lsCurrentUrl = this.removeLastSlashFromUrl(this.getDriver().getCurrentUrl());
-		lsExpectedUrl = this.removeLastSlashFromUrl(lsExpectedUrl);
+		String lsCurrentUrl=this.removeLastSlashFromUrl(this.getDriver().getCurrentUrl());
+		lsExpectedUrl=this.removeLastSlashFromUrl(lsExpectedUrl);
 		this.getDriver().switchTo().window(lsMainWindowHandle);
 
 		return lsCurrentUrl.equalsIgnoreCase(lsExpectedUrl);
 	}
 
 	/**
-	 * This method is to verify Links for FrequentlyAskedQuestions in
-	 * CustomerService Page Objects.
-	 *
+	 * This method is to verify Links for FrequentlyAskedQuestions in CustomerService Page Objects.
 	 * @param WebElement element: the FrequentlyAskedQuestions link
 	 * @author Wei.Li
 	 */
 	public void verifyLinksForFrequentlyAskedQuestionsInCustomerServicePageObject(WebElement element) {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-		String lsOriginalUrl = this.URL();
-		String lsExpectedUrl = this.getElementHref(element);
-		lsExpectedUrl = this.removeLastSlashFromUrl(lsExpectedUrl);
+		String lsOriginalUrl=this.URL();
+		String lsExpectedUrl=this.getElementHref(element);
+		lsExpectedUrl=this.removeLastSlashFromUrl(lsExpectedUrl);
 		element.click();
-		this.waitForCondition(Driver -> {
-			return this.lnkBackToCutomerService.isDisplayed();
-		}, 60000);
-		String lsCurrentUrl = this.URL();
-		reporter.softAssert(lsExpectedUrl.equalsIgnoreCase(lsCurrentUrl),
-				"The navigated Url is equal to the expected Url", "The navigated Url is not equal to the expected Url");
-		reporter.softAssert(this.verifyElementExisting(this.lnkBackToCutomerService), "Navigation link is existing",
-				"Navigation link is not existing");
-		reporter.softAssert(this.verifyElementExisting(this.blkArticle), "The details of related question is existing",
-				"The details of related question is not existing");
+		this.waitForCondition(Driver->{return this.lnkBackToCutomerService.isDisplayed();},60000);
+		String lsCurrentUrl=this.URL();
+		reporter.softAssert(lsExpectedUrl.equalsIgnoreCase(lsCurrentUrl),"The navigated Url is equal to the expected Url","The navigated Url is not equal to the expected Url");
+		reporter.softAssert(this.verifyElementExisting(this.lnkBackToCutomerService),"Navigation link is existing","Navigation link is not existing");
+		reporter.softAssert(this.verifyElementExisting(this.blkArticle),"The details of related question is existing","The details of related question is not existing");
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkBackToCutomerService);
 		this.lnkBackToCutomerService.click();
-		this.waitForCondition(Driver -> {
-			return this.lblFrequentlyAskedQuestions.isDisplayed();
-		}, 60000);
-		reporter.softAssert(lsOriginalUrl.equalsIgnoreCase(this.URL()), "The navigation link works",
-				"The navigation link does not work");
+		this.waitForCondition(Driver->{return this.lblFrequentlyAskedQuestions.isDisplayed();},60000);
+		reporter.softAssert(lsOriginalUrl.equalsIgnoreCase(this.URL()),"The navigation link works","The navigation link does not work");
 	}
 
 	/**
 	 * This method is to verify existence of element list.
-	 *
 	 * @param List<WebElement> elementList: input element list
 	 * @return void
 	 * @author Wei.Li
 	 */
 	public void verifyElementListExistence(List<WebElement> elementList) {
-		for (WebElement element : elementList) {
+		for(WebElement element:elementList) {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-			String lsTitle, lsSuccessMsg, lsFailureMsg;
+			String lsTitle,lsSuccessMsg,lsFailureMsg;
 
-			String lsTagName = element.getTagName().toLowerCase();
-			switch (lsTagName) {
+			String lsTagName=element.getTagName().toLowerCase();
+			switch(lsTagName) {
 			case "select":
-				lsSuccessMsg = "The dropdown element is existing";
-				lsFailureMsg = "The dropdown element is not existing";
-				reporter.softAssert(getReusableActionsInstance().isElementVisible(element), lsSuccessMsg, lsFailureMsg);
+				lsSuccessMsg="The dropdown element is existing";
+				lsFailureMsg="The dropdown element is not existing";
+				reporter.softAssert(getReusableActionsInstance().isElementVisible(element),lsSuccessMsg,lsFailureMsg);
 				break;
 			case "input":
-				lsTitle = element.getAttribute("name");
-				lsSuccessMsg = "The input element of '" + lsTitle + "' is existing";
-				lsFailureMsg = "The input element of '" + lsTitle + "' is not existing";
-				reporter.softAssert(getReusableActionsInstance().isElementVisible(element), lsSuccessMsg, lsFailureMsg);
+				lsTitle=element.getAttribute("name");
+				lsSuccessMsg="The input element of '"+lsTitle+"' is existing";
+				lsFailureMsg="The input element of '"+lsTitle+"' is not existing";
+				reporter.softAssert(getReusableActionsInstance().isElementVisible(element),lsSuccessMsg,lsFailureMsg);
 				break;
 			case "a":
-				lsTitle = element.getText().trim();
-				lsSuccessMsg = "The href of element of '" + lsTitle + "' is not empty";
-				lsFailureMsg = "The href of element of '" + lsTitle + "' is empty";
-				reporter.softAssert(!this.getElementHref(element).isEmpty(), lsSuccessMsg, lsFailureMsg);
+				lsTitle=element.getText().trim();
+				lsSuccessMsg="The href of element of '"+lsTitle+"' is not empty";
+				lsFailureMsg="The href of element of '"+lsTitle+"' is empty";
+				reporter.softAssert(!this.getElementHref(element).isEmpty(),lsSuccessMsg,lsFailureMsg);
 				break;
 			case "img":
-				lsSuccessMsg = "The src of image element is not empty";
-				lsFailureMsg = "The src of image element is empty";
-				reporter.softAssert(!this.getElementImageSrc(element).isEmpty(), lsSuccessMsg, lsFailureMsg);
+				lsSuccessMsg="The src of image element is not empty";
+				lsFailureMsg="The src of image element is empty";
+				reporter.softAssert(!this.getElementImageSrc(element).isEmpty(),lsSuccessMsg,lsFailureMsg);
 				break;
 			default:
-				lsTitle = element.getText().trim();
-				if (lsTitle.length() > 100) {
-					lsTitle = lsTitle.substring(0, 100) + "...";
+				lsTitle=element.getText().trim();
+				if(lsTitle.length()>100) {
+					lsTitle=lsTitle.substring(0,100)+"...";
 				}
-				lsSuccessMsg = "The element of '" + lsTitle + "' is existing";
-				lsFailureMsg = "The element of '" + lsTitle + "' is not existing";
-				reporter.softAssert(getReusableActionsInstance().isElementVisible(element), lsSuccessMsg, lsFailureMsg);
+				lsSuccessMsg="The element of '"+lsTitle+"' is existing";
+				lsFailureMsg="The element of '"+lsTitle+"' is not existing";
+				reporter.softAssert(getReusableActionsInstance().isElementVisible(element),lsSuccessMsg,lsFailureMsg);
 				break;
 			}
 		}
@@ -743,7 +725,7 @@ public class GlobalFooterPage extends BasePage {
 		if (counter == 1) return true;
 		else return false;
 	}
-
+	
 	/**
 	 * This method is to verify dropdown content in Contact US service.
 	 * @author Wei.Li
@@ -806,7 +788,7 @@ public class GlobalFooterPage extends BasePage {
 		
 		reporter.softAssert(bMatch,"All sections are displayed correctly",lsNotMatch+" is not displayed correctly");
 	}
-
+	
 	/**
 	 * This method is to verify links inside More About TSC page
 	 * @author godwin.gopi
@@ -819,8 +801,8 @@ public class GlobalFooterPage extends BasePage {
 			linkOftheTSC=element.getText();
 			reporter.reportLog("TSC Links Name is "+linkOftheTSC+"");
 			element.click();
-
+		
 	}
-
-
+	
+		
 }
