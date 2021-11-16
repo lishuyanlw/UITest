@@ -198,10 +198,6 @@ public class ProductResultsPage extends BasePage{
 	@FindBy(xpath="//span[contains(@id,'_ctlSpanTitle')]")
 	public WebElement pageTitle;
 
-
-	public By bySecondlevelFilterList = By.xpath(".//ul//li");
-	public By byJudgeMoreButtonExistanceContainer = By.xpath(".//div[contains(@class,'ngxp__inner')]/div[@role='tabpanel']/div");
-
     //for mobile Sort&Filter
 	@FindBy(xpath = "//a[contains(text(),'Sort & Filter')]")
 	WebElement sortAndFilter;
