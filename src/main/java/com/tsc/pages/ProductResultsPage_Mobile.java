@@ -169,4 +169,15 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
         return setOption.containsAll(setOptionYml) && setOptionYml.containsAll(setOption);
     }
 
+    @FindBy(xpath="//div[contains(@class,'searchDiv')]")
+    WebElement lblSearchResultTitle;
+    @Override
+    public String getProductResultPageTitle() {
+        if(this.checkChildElementExistingByAttribute(this.cntSearchResultTitleContainer, "class", "ProductResults2")) {
+            getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSearchResultTitle);
+            return this.lblSearchResultTitle.getText().trim();
+        }
+        return "NoTitle";
+    }
+
 }

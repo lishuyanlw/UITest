@@ -92,7 +92,7 @@ public class SR_TC01_Verify_ProductSearchResult extends BaseTest{
 			}
 						
 			String lsTitle=getProductResultsPageThreadLocal().getProductResultPageTitle();
-			reporter.softAssert(lsTitle.equalsIgnoreCase(lsKeywordList.get(i))||lsTitle.equalsIgnoreCase("NoTitle"), "Search result page title is dispalyed as search keyword", "Search result page title is not dispalyed as search keyword");
+			reporter.softAssert(lsTitle.contains(lsKeywordList.get(i))||lsTitle.equalsIgnoreCase("NoTitle"), "Search result page title is dispalyed as search keyword", "Search result page title is not dispalyed as search keyword");
 
 			if(!(System.getProperty("Device").equalsIgnoreCase("Mobile"))) {
 				reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting), "The default setting of items per page is "+lsSearchResultPageDefaultSetting, "The default setting of items per page isn't "+lsSearchResultPageDefaultSetting);
