@@ -3,12 +3,6 @@ package com.tsc.test.base;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Method;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +11,6 @@ import java.util.concurrent.TimeUnit;
 import com.tsc.pages.*;
 import org.apache.http.client.ClientProtocolException;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.ITestContext;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -25,10 +18,6 @@ import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 
-import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.openqa.selenium.Cookie;
 import com.tsc.data.Handler.TestDataHandler;
 
 import extentreport.ExtentTestManager;
@@ -67,13 +56,13 @@ public class BaseTest {
 		return reporter;
 	}
 
-
+	
 	// @return the globalheaderPageThreadLocal
 
 	protected static GlobalheaderPage getglobalheaderPageThreadLocal() {
 		return globalheaderPageThreadLocal.get();
 	}
-
+	
 	// @return the homePageThreadLocal
 	protected static HomePage homePageThreadLocal() {
 		return homePageThreadLocal.get();
@@ -102,7 +91,7 @@ public class BaseTest {
 	protected static ProductDetailPage getProductDetailPageThreadLocal() {
 		return productDetailPageThreadLocal.get();
 	}
-
+	
 	protected static LoginPage getGlobalLoginPageThreadLocal() {
 		return loginPageThreadLocal.get();
 	}
@@ -323,4 +312,3 @@ public class BaseTest {
 
 
 }
-

@@ -8,8 +8,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 
@@ -228,7 +227,7 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	public boolean isQASearch() {
-		GlobalheaderPage globalHeader=new GlobalheaderPage(this.getDriver());
+		GlobalHeaderPage globalHeader=new GlobalHeaderPage(this.getDriver());
 		getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeader.searchBox);
 
 		return !this.hasElementAttribute(globalHeader.searchBox, "aria-controls");
@@ -241,7 +240,7 @@ public class ProductResultsPage extends BasePage{
 	 */
 	public boolean getSearchResultLoad(String searchKeyword) {
 		String lsUrl=this.URL();
-		GlobalheaderPage globalHeader=new GlobalheaderPage(this.getDriver());
+		GlobalHeaderPage globalHeader=new GlobalHeaderPage(this.getDriver());
 		getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeader.searchBox);
 		this.clearContent(globalHeader.searchBox);
 		globalHeader.searchBox.sendKeys(searchKeyword);
@@ -272,7 +271,7 @@ public class ProductResultsPage extends BasePage{
 		}
 
 		if(this.isQASearch()) {
-			GlobalheaderPage globalHeader=new GlobalheaderPage(this.getDriver());
+			GlobalHeaderPage globalHeader=new GlobalHeaderPage(this.getDriver());
 			this.clearContent(globalHeader.searchBox);
 			for(int i=0;i<lsKeyword.length();i++) {
 				globalHeader.searchBox.sendKeys(lsKeyword.substring(i,i+1));
@@ -360,7 +359,7 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	public List<WebElement> getSearchDropdownResultList(String lsKeyword) {
-		GlobalheaderPage globalHeader=new GlobalheaderPage(this.getDriver());
+		GlobalHeaderPage globalHeader=new GlobalHeaderPage(this.getDriver());
 		getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeader.searchBox);
 		pressEscapeKey();
 		this.clearContent(globalHeader.searchBox);
