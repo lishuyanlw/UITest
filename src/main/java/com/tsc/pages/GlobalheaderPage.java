@@ -8,10 +8,9 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import org.openqa.selenium.By;
 import com.tsc.pages.base.BasePage;
+
 public class GlobalheaderPage extends BasePage{
-	
-	
-	
+
 	public GlobalheaderPage(WebDriver driver) {
 		super(driver);
 	}
@@ -155,7 +154,6 @@ public class GlobalheaderPage extends BasePage{
 	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--right')]//div[@class='ac__layout-inner--right']//ul//li")
 	public List<WebElement> lstMoreToExplore;
 
-	
 	//For Staging website
 	@FindBy(xpath = "//div[@class='searchContainer']//div[contains(@class,'suggestions-container--open')]//div[@class='tsc-category-title']")
 	public WebElement txtSearchResultCategoryHeader;
@@ -210,19 +208,6 @@ public class GlobalheaderPage extends BasePage{
 
 	@FindBy(xpath="//span[contains(text(),'Clearance')]")
 	WebElement clearanceHeader;
-
-	//Godwin
-	@FindBy(xpath="//a[@class='mega-sub-items__item-link mega-sub-items__item-link-first' and contains(text(),'Shop all')]")
-	WebElement shopAllFasionOption;
-
-	@FindBy(xpath="//a[@role=\"button\" and contains(text(),'Fashion')]")
-	WebElement fasionOption;
-
-	@FindBy(xpath="//button[@id='secondary-navigation-mobile-hamburger']")
-	public WebElement menuButton;
-
-	@FindBy(xpath="//li[@class='mega-nav-mobile__watch-tsc__watch']")
-	WebElement watchTscMobile;
 
 	public void clickOnClearanceHeaderOption() {
 		getReusableActionsInstance().clickIfAvailable(clearanceHeader);

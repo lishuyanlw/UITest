@@ -1,27 +1,22 @@
 package com.tsc.pages;
 
-
-import com.tsc.pages.base.BasePage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-import java.sql.Driver;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 public class ProductResultsPage_Mobile extends ProductResultsPage {
+
     public ProductResultsPage_Mobile(WebDriver driver) {
         super(driver);
     }
-
 
     /*
      * This methods will select filter from Sort&Filter section.
@@ -32,8 +27,6 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
      * @author Viswas.reddy
      * CER_619
      */
-
-
 
     @FindBy(xpath = "//product-results//div[contains(@class,'hidden-md hidden-sm')]")
     WebElement sortAndFilter;
@@ -52,9 +45,6 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 
     @FindBy(xpath = "//product-results//div[contains(@class,'modalBody')]//form//select//option")
     List<WebElement> sortByOptionList;
-
-    /*@FindBy(xpath = "//span[contains(text(),'Clearance')]/parent::button")
-    WebElement clearanceHeaderMobile;*/
 
     @Override
     public boolean chooseSortOptionByVisibleText(List<String> lsOption) {
@@ -152,8 +142,6 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
         }
         return this.waitForPageLoading();
     }
-
-
 
     @Override
     public boolean verifySortOptions(List<String> lstOptionYml) {
