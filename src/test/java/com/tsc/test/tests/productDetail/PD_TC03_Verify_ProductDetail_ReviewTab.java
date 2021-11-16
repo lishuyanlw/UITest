@@ -12,6 +12,7 @@ import com.tsc.test.base.BaseTest;
 public class PD_TC03_Verify_ProductDetail_ReviewTab extends BaseTest{
 	/*
 	 * CER-573
+	 * CER-574
 	 */
 	@Test(groups={"ProductDetail","Regression"})
 	public void validateReviewTab() throws IOException {	
@@ -35,7 +36,7 @@ public class PD_TC03_Verify_ProductDetail_ReviewTab extends BaseTest{
 		reporter.softAssert(lsUrl.contains(lsProductNumber),"The Url is containing selected product number of "+lsProductNumber,"The Url is not containing selected product number of "+lsProductNumber);
 		
 		if(getProductDetailPageThreadLocal().goToProductReviewTab()) {
-			reporter.softAssert(getProductDetailPageThreadLocal().getStickyTabSelectedStatus(getProductDetailPageThreadLocal().btnStickyTabProductReview),"The Review tab has been selected correctly","The Review tab has not been selected correctly");
+			reporter.softAssert(getProductDetailPageThreadLocal().getStickyTabSelectedStatus(getProductDetailPageThreadLocal().btnStickyTabProductReview),"The Review tab has been selected and undrlined correctly","The Review tab has not been selected and underlined correctly");
 			
 			reporter.softAssert(!basePage.getElementText(getProductDetailPageThreadLocal().lblReviewTabHeader).isEmpty(),"The Review tab header is not empty","The Review tab header is empty");
 			reporter.softAssert(basePage.getReusableActionsInstance().isElementVisible(getProductDetailPageThreadLocal().imgReviewTabHistogram),"The Review tab histogram is displaying correctly","The Review tab histogram is not displaying correctly");

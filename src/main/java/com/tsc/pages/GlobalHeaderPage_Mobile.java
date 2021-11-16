@@ -6,7 +6,7 @@ import org.openqa.selenium.WebElement;
 
 import java.util.List;
 
-public class GlobalHeaderPage_Mobile extends GlobalheaderPage {
+public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
 
     public GlobalHeaderPage_Mobile(WebDriver driver) {
         super(driver);
