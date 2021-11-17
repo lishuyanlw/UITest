@@ -21,7 +21,7 @@ public class GH_TC07_Global_Header_Verify_Favourites_link extends BaseTest {
 	String urlFavoritesLandingpageLoggedInUser=null;
 	String lsUserName=TestDataHandler.constantData.getLoginUser().getLbl_Username();
 	String lsPassword=TestDataHandler.constantData.getLoginUser().getLbl_Password();
-	List<ConstantData.HeaderNameAndLinks> headerLinks = TestDataHandler.constantData.getHeaderSection().getLst_HeaderNameAndLinks();
+	List<ConstantData.HeaderNameAndLinks> headerLinks = TestDataHandler.constantData.getHeaderSection().getlst_FavouritesNameAndLinks();
 	String urlFavoritesLandingpageAnonymousUser=TestDataHandler.constantData.getHeaderSection().getlbl_SignInLandingPage();
 	String lblSignInpageHeading=TestDataHandler.constantData.getHeaderSection().getLbl_SignIn();
 	WebElement lnkFavoriteElement =getglobalheaderPageThreadLocal().Favouriteslnk;

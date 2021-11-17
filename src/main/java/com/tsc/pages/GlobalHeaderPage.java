@@ -29,6 +29,9 @@ public class GlobalHeaderPage extends BasePage{
 	public WebElement btnWatchTSCBlackHeader;
 	
 	//Watch TSC dropdown menu
+	@FindBy(xpath = "//div[contains(@class,'black-header')]//nav//li//a")
+	public List<WebElement> lstWatchTSCDpdMenu;
+		
 	@FindBy(xpath = "//div[contains(@class,'black-header')]//nav//li//a[contains(@href,'WatchUsLive')]")
 	public WebElement lnkWatchUsLiveDpdMenu;
 	
@@ -48,7 +51,7 @@ public class GlobalHeaderPage extends BasePage{
 	public WebElement lnkOnAirProductsDpdMenu;
 	
 	//Sliver Links [Dynamic event, TS, Deals, OnAir, Program Guide, Watch Us Live]
-	@FindBy(xpath = "//*[@class='Sliver']//a[contains(@href, 'todaysshowstopper')]")
+	@FindBy(xpath = "//*[@class='BlackHeader']//a[contains(@href, 'todaysshowstopper')]")
 	public WebElement lnkTS;
 	
 	@FindBy(xpath="//*[@class='Sliver']//a[contains(@href, 'todaysshowstopper')]//span")
@@ -793,5 +796,70 @@ public class GlobalHeaderPage extends BasePage{
 			
 			return getPageTitle(SigninPageHeading);
 		}
+//Language verification for heading
+
+		
+		/* Method to get French name from yml file for Watch TSC
+		 * @param List<List<String>> lstWatchUsLiveNameAndLinks 
+		 * @return list : French name for Watch TSC-FR
+		 * @author Shruti Desai
+		 */
+		public List<String> getFrenchNameymlData(List<List<String>> lstNameAndLinks) {
+			List<String> frenchNameDataFile= new ArrayList<String>();
+			for (List<String> lstItem : lstNameAndLinks) {
+				String NewfrenchName =this.getUTFEnabledData(lstItem.get(1).trim());
+				frenchNameDataFile.add(NewfrenchName);
+			}
+			return frenchNameDataFile;
+		}
+		
+		/* Method to get WebElement by passing French name from yml file for Watch TSC
+		 * @param String : French name from yml file List<List<String>> lstWatchUsLiveNameAndLinks 
+		 * @return WebElement : French name for Watch TSC-FR
+		 * @author Shruti Desai
+		 */
+		public WebElement getWatchTSCdPMElements(String frenchName){
+			String xpathTSCdPMfrenchName =createXPath("//span[contains(text(),'{0}')]" ,frenchName); 
+			WebElement TSCdPMWebElement = lstWatchTSCDpdMenu.get(0).findElement(By.xpath(xpathTSCdPMfrenchName));
+			return TSCdPMWebElement;
+		}
+		
+		/* Method to verify drop down menu element of Watch TSC-FR
+		 * @param WebElement, true condition for url check, French of element of Watch TSC-FR dropdown menu
+		 * @return assertion report for href presence and validation of url after clicking element
+		 * @author Shruti Desai
+		 */
+		public void verifyWatchTSCdpDMenu(WebElement element,boolean bCheckUrl, String dpDownMenuName) {
+			 getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+			 String lsTitle=element.getText().trim();
+			 WebElement elementHrefWatchTSC =element.findElement(By.xpath("./ancestor::a"));
+			 reporter.softAssert(getReusableActionsInstance().isElementVisible(element), "The element of "+lsTitle+" in "+dpDownMenuName+" is visible","The element of "+lsTitle+" in "+dpDownMenuName+" is not visible");
+			 reporter.softAssert(!lsTitle.isEmpty(), lsTitle+" text in "+dpDownMenuName+" is not empty", lsTitle+" text in "+dpDownMenuName+" is empty");
+			 String lsHrefWatchTSCdpMenu=elementHrefWatchTSC.getAttribute("href").trim();
+			 reporter.softAssert(verifyElementProperty(elementHrefWatchTSC,"Link"), "The href of "+lsTitle+" in "+dpDownMenuName+" is not empty", "The href of "+lsTitle+" in "+dpDownMenuName+" is empty");
+			 lsHrefWatchTSCdpMenu=this.removeLastSlashFromUrl(lsHrefWatchTSCdpMenu);
+			 element.click();
+			 this.waitForPageToLoad();
+			 (new GlobalFooterPage(this.getDriver())).waitForPageLoading();
+			 String lsUrlWatchTSCdpItem=this.removeLastSlashFromUrl(this.URL());
+			 if(bCheckUrl) {
+				 reporter.softAssert(lsUrlWatchTSCdpItem.equalsIgnoreCase(lsHrefWatchTSCdpMenu), "The Url of "+lsUrlWatchTSCdpItem+"  after clicking "+lsTitle+" in "+dpDownMenuName+" is equal to the href of "+lsHrefWatchTSCdpMenu, "The Url of "+lsUrlWatchTSCdpItem+"  after clicking "+lsTitle+" in "+dpDownMenuName+" is not equal to the href of "+lsHrefWatchTSCdpMenu);
+			 }
+		 }
+		 
+		 
+		/* Method to get Flyout Heading in Frech for Watch TSC-FR
+		 * @return List of String :Flyout heading name in French name for Watch TSC-FR
+		 * @author Shruti Desai
+		 */ 
+		public List<String> flyoutHeadingName(){
+			List<String> flyoutHeading = new ArrayList<String>();
+			for(WebElement lsHeading:headingLinks) {
+				String flHeading=this.getUTFEnabledData(lsHeading.getText().trim());
+				flyoutHeading.add(flHeading);
+			}
+		return flyoutHeading;
+		}
 
 }
+

@@ -77,15 +77,34 @@ public class ConstantData {
         private String lbl_ShoppingCartLinkName;
         private String lnk_ShoppingCartLink;
         private Flyout flyout;
-        private List<HeaderNameAndLinks> lst_HeaderNameAndLinks;
+        private List<HeaderNameAndLinks> lst_FavouritesNameAndLinks;
+        private List<List<String>> lst_WatchUsLiveNameAndLinks;
+        private List<List<String>> lst_HeaderNameAndLinks;
+        
+        
+        public List<List<String>> getlst_WatchUsLiveNameAndLinks() {
+            return lst_WatchUsLiveNameAndLinks;
+        }
 
+        public void setlst_WatchUsLiveNameAndLinks(List<List<String>> lst_WatchUsLiveNameAndLinks) {
+            this.lst_WatchUsLiveNameAndLinks = lst_WatchUsLiveNameAndLinks;
+        }
+        
+        public List<List<String>> getlst_HeaderNameAndLinks() {
+            return lst_HeaderNameAndLinks;
+        }
+
+        public void setlst_HeaderNameAndLinks(List<List<String>> lst_HeaderNameAndLinks) {
+            this.lst_HeaderNameAndLinks = lst_HeaderNameAndLinks;
+        }
+        
         public String getLbl_SignInLandingPage() {   return lbl_SignInLandingPage;   }
 
         public void setLbl_SignInLandingPage(String lbl_SignInLandingPage) {  this.lbl_SignInLandingPage = lbl_SignInLandingPage;       }
 
-        public List<HeaderNameAndLinks> getLst_HeaderNameAndLinks() { return lst_HeaderNameAndLinks; }
+        public List<HeaderNameAndLinks> getlst_FavouritesNameAndLinks() { return lst_FavouritesNameAndLinks; }
 
-        public void setLst_HeaderNameAndLinks(List<HeaderNameAndLinks> lst_HeaderNameAndLinks) { this.lst_HeaderNameAndLinks = lst_HeaderNameAndLinks;        }
+        public void setlst_FavouritesNameAndLinks(List<HeaderNameAndLinks> lst_FavouritesNameAndLinks) { this.lst_FavouritesNameAndLinks = lst_FavouritesNameAndLinks;        }
 
         public String getLbl_ShoppingCartLinkName() {
             return lbl_ShoppingCartLinkName;
@@ -525,7 +544,7 @@ public class ConstantData {
         private List<String> lst_FlyoutHeading;
         private String lbl_FlyoutHeadingLandingPageLink;
         private List<String> lnk_FlyoutHeaderLinkConstant;
-        private List<String> lst_FlyoutSubMenu;
+        private List<String> lst_FlyoutHeading_FR;
 
         public String getLbl_FlyoutHeadingLandingPageLink() {
             return lbl_FlyoutHeadingLandingPageLink;
@@ -551,12 +570,12 @@ public class ConstantData {
             this.lnk_FlyoutHeaderLinkConstant = lnk_FlyoutHeaderLinkConstant;
         }
         
-        public List<String> getLst_FlyoutSubMenu() {
-            return lst_FlyoutSubMenu;
+        public List<String> getlst_FlyoutHeading_FR() {
+            return lst_FlyoutHeading_FR;
         }
 
-        public void setLst_FlyoutSubMenu(List<String> lst_FlyoutSubMenu) {
-            this.lst_FlyoutSubMenu = lst_FlyoutSubMenu;
+        public void setlst_FlyoutHeading_FR(List<String> lst_FlyoutHeading_FR) {
+            this.lst_FlyoutHeading_FR = lst_FlyoutHeading_FR;
         }
     }
 
@@ -586,7 +605,6 @@ public class ConstantData {
         private List<List<String>> lst_NameAndLinks;
         private List<String> lst_MyAccountObjectSectionTitle;
         private List<String> lst_TrackYourOrderObjectSectionTitle;
-
         public List<String> getLst_SocialMediaLinks() {
             return lst_SocialMediaLinks;
         }
@@ -618,6 +636,8 @@ public class ConstantData {
         public void setLst_NameAndLinks(List<List<String>> lst_NameAndLinks) {
             this.lst_NameAndLinks = lst_NameAndLinks;
         }
+        
+        
     }
     
     public static class LoginUser {
