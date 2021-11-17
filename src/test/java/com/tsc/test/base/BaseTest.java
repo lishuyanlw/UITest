@@ -164,8 +164,6 @@ public class BaseTest {
 		strBrowser = System.getProperty("Browser").trim();
 		if (strBrowser.toLowerCase().contains("android") || strBrowser.toLowerCase().contains("ios")
 				|| strBrowser.toLowerCase().contains("mobile")) {
-			lsTestDevice = System.getProperty("Device").trim();
-			TestDeviceThreadLocal.set(lsTestDevice);
 			switch (lsTestDevice) {
 				case "Tablet":
 					init_Tablet();
