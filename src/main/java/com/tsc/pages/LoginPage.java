@@ -99,10 +99,17 @@ public class LoginPage extends BasePage {
 	 * @return true/false
 	 * @author Wei.Li
 	 */
-	public boolean Login(String lsUserName, String lsPassword) {
+	public boolean Login(String lsUserName, String lsPassword,String lsFirstName) {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInMainMenu);
-		getReusableActionsInstance().scrollToElement(this.btnSignInMainMenu);
+		String lsTestDevice = System.getProperty("Device").trim();
+		if(lsTestDevice.equalsIgnoreCase("Tablet")||lsTestDevice.equalsIgnoreCase("iPad")||lsTestDevice.equalsIgnoreCase("Mobile")) {
+			this.btnSignInMainMenu.click();
+		}
+		else {
+			getReusableActionsInstance().scrollToElement(this.btnSignInMainMenu);
+		}		
 		getReusableActionsInstance().staticWait(300);
+		
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInNav);
 		this.btnSignInNav.click();
 		(new GlobalFooterPage(this.getDriver())).waitForPageLoading();
@@ -110,12 +117,14 @@ public class LoginPage extends BasePage {
 		this.inputUserName.sendKeys(lsUserName);
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputPassword);
 		this.inputPassword.sendKeys(lsPassword);
-		
-		String lsSignInMsg=this.btnSignInMainMenu.getText();
+				
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSubmit);
 		this.btnSubmit.click();
+		getReusableActionsInstance().javascriptScrollToTopOfPage();
+		getReusableActionsInstance().staticWait(1000);
 		
-		return waitForCondition(Driver->{return !lsSignInMsg.equalsIgnoreCase(this.btnSignInMainMenu.getText());},30000);
+		return waitForCondition(Driver->{return (new GlobalFooterPage(this.getDriver())).lblMyAccountLoginName.getText().toUpperCase().contains(lsFirstName.toUpperCase());},30000);
+				
 	}
 	
 	/**

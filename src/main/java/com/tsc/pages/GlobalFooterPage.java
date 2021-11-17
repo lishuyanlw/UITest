@@ -171,7 +171,7 @@ public class GlobalFooterPage extends BasePage {
 	@FindBy(xpath = "//div[@class='CustomerService']//div[contains(@class,'customer-service__article')]")
 	public WebElement blkArticle;
 
-	// My Account
+	// My Account not login
 	@FindBy(xpath = "//*[contains(@class,'titleLink')]")
 	public WebElement lblMyAccount;
 
@@ -181,6 +181,35 @@ public class GlobalFooterPage extends BasePage {
 	@FindBy(xpath = "//div[contains(@class,'singleOpenable')]//div[contains(@class,'panHTMLContainer')]")
 	public List<WebElement> lstMyAccountItemContent;
 
+	//My Account login
+	@FindBy(xpath = "//div[@class='SuperCartridge'][@style]")
+	public WebElement imgMyAccountLoginSuperCartridgeSection;
+	
+	@FindBy(xpath = "//ng-component//div[contains(@class,'tsc-forms')]//div[contains(@class,'form-head')]//h2")
+	public WebElement lblMyAccountLoginName;
+	
+	@FindBy(xpath = "//ng-component//div[contains(@class,'tsc-forms')]//div[contains(@class,'form-head')]//span[contains(@class,'custNo')]/preceding-sibling::span")
+	public WebElement lblCustomerNumber;
+	
+	@FindBy(xpath = "//ng-component//div[contains(@class,'tsc-forms')]//div[contains(@class,'form-head')]//span[contains(@class,'custNo')]")
+	public WebElement lblCustomerNO;
+	
+	@FindBy(xpath = "//ng-component//button[contains(@class,'btn-accnt-signout')]")
+	public WebElement btnMyAccountSignOut;
+	
+	@FindBy(xpath = "//ng-component//div[@class='my-account-summary-container']//div[contains(@class,'panel-group')]")
+	public WebElement lstMyAccountSerivePanelContainer;
+	
+	public By byPanelHeading=By.xpath(".//div[contains(@class,'panel-heading')]");
+	
+	public By byPanelItemList=By.xpath(".//li[not(@class='hidden')]//a");
+	
+	@FindBy(xpath = "//ng-component//div[@class='my-account-summary-container']//div[contains(@class,'panel-group')]//div[contains(@class,'panel-heading')]")
+	public List<WebElement> lstMyAccountSerivePanelHeading;
+	
+	@FindBy(xpath = "//ng-component//div[@class='my-account-summary-container']//div[contains(@class,'panel-group')]//li[not(@class='hidden')]//a")
+	public List<WebElement> lstMyAccountSerivePanelItem;
+	
 	// Track Your Order
 	@FindBy(xpath = "//div[contains(@class,'trackorder__wrap')]//h1")
 	public WebElement lblTrackYourOrder;
@@ -407,6 +436,7 @@ public class GlobalFooterPage extends BasePage {
 			} else {
 				lsCompare = this.getUTFEnabledData(lstItem.get(1));
 			}
+			
 			if (lsSpecificName.equalsIgnoreCase(lsCompare)) {
 				if (lstItem.get(2).startsWith("/")) {
 					return this.removeLastSlashFromUrl(this.getBaseURL() + lstItem.get(2).trim());
@@ -654,6 +684,12 @@ public class GlobalFooterPage extends BasePage {
 				lsFailureMsg = "The input element of '" + lsTitle + "' is not existing";
 				reporter.softAssert(getReusableActionsInstance().isElementVisible(element), lsSuccessMsg, lsFailureMsg);
 				break;
+			case "button":
+				lsTitle = element.getText().trim();;
+				lsSuccessMsg = "The button element of '" + lsTitle + "' is existing";
+				lsFailureMsg = "The button element of '" + lsTitle + "' is not existing";
+				reporter.softAssert(getReusableActionsInstance().isElementVisible(element), lsSuccessMsg, lsFailureMsg);
+				break;
 			case "a":
 				lsTitle = element.getText().trim();
 				lsSuccessMsg = "The href of element of '" + lsTitle + "' is not empty";
@@ -723,7 +759,7 @@ public class GlobalFooterPage extends BasePage {
 		for(int i=0;i<lstPanelItem.size();i++) {
 			WebElement item=lstPanelItem.get(i);
 			String lsClass=item.getAttribute("class");
-			if(lsClass=="") {
+			if(lsClass.isEmpty()) {
 				getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 				counter++;
 			}
@@ -810,5 +846,105 @@ public class GlobalFooterPage extends BasePage {
 		
 	}
 	
+	public void verifyTSCCustomerHubLlinks(List<List<String>> lstNameAndLinks) {
+		System.out.println("Base function");
+		BasePage basePage=new BasePage(this.getDriver());
+		String lsText,lsYmlHref,lsHref;
+		for(WebElement item:this.lnkTSCCustomerHubAllLinks) {
+			lsText=basePage.getElementText(item);	
+			lsYmlHref=this.getLinkWithSpecificName(lstNameAndLinks,lsText,true);			
+			if(lsYmlHref.isEmpty()) {
+				reporter.reportLogFail("Unable to find "+lsText+" link.");
+			}
+			lsHref=basePage.getElementHref(item);	
+			reporter.softAssert(this.verifyLinks(lsHref,lsYmlHref),"The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref,"The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref);
+			
+		}
+	}
+	
+	public void verifyAboutTSCLinks(List<List<String>> lstNameAndLinks) {
+		BasePage basePage=new BasePage(this.getDriver());
+		String lsText,lsYmlHref,lsHref;
+		for(WebElement item:this.lnkAboutTSCAllLinks) {
+			lsText=basePage.getElementText(item);
+			lsYmlHref=this.getLinkWithSpecificName(lstNameAndLinks,lsText,true);
+			if(lsYmlHref.isEmpty()) {
+				reporter.reportLogFail("Unable to find "+lsText+" link.");
+			}
+			lsHref=basePage.getElementHref(item);
+			reporter.softAssert(this.verifyLinks(lsHref,lsYmlHref),"The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref,"The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref);			
+		}
+	}
+	
+	public void verifyMyAccountSerivePanelItem() {		
+		ArrayList<WebElement> elementList=new ArrayList<WebElement>();
+		for(WebElement item:this.lstMyAccountSerivePanelItem) {
+			elementList.add(item);
+		}
+		this.verifyElementListExistence(elementList);
+	}
+	
+	public void verifyRogersLogo() {
+		reporter.softAssert(this.verifyElementExisting(this.imgRogersLogo), "Rogers Logo is existing", "Rogers Logo is not existing");
+	}
+	
+	public List<String> getCustomerHubSubItemFr(List<List<String>> lstNameAndLinks){
+		String lsText=this.getUTFEnabledData(this.getElementText(this.lblTSCCustomerHubText));
+		
+		List<String> lstFr=new ArrayList<String>();
+		String lsFr;
+		for(WebElement item:this.lnkTSCCustomerHubAllLinks) {
+			lsText=this.getElementText(item);	
+			lsFr=this.getFrenchWithSpecificEnglishName(lstNameAndLinks,lsText);
+			lstFr.add(lsFr);
+		}
+		
+		return lstFr;
+	}
+	
+	public List<String> getAboutTSCSubItemFr(List<List<String>> lstNameAndLinks){
+		String lsText=this.getUTFEnabledData(this.getElementText(this.lblAboutTSCText));
+		
+		List<String> lstFr=new ArrayList<String>();
+		String lsFr;
+		for(WebElement item:this.lnkAboutTSCAllLinks) {
+			lsText=this.getElementText(item);	
+			lsFr=this.getFrenchWithSpecificEnglishName(lstNameAndLinks,lsText);
+			lstFr.add(lsFr);
+		}
+		
+		return lstFr;
+	}
+	
+	public void verifyCustomerHubSubItemFr(List<List<String>> lstNameAndLinks, List<String> lstCustomerHubFr) {
+		String lsText,lsYmlHref,lsHref;
+		
+		for(int i=0;i<this.lnkTSCCustomerHubAllLinks.size();i++) {
+			lsText=this.getUTFEnabledData(this.getElementText(this.lnkTSCCustomerHubAllLinks.get(i)));	
+			reporter.softAssert(lsText.equalsIgnoreCase(lstCustomerHubFr.get(i)),"The "+i+" CustomerHubLink French transaltion of "+lsText+" is the same as "+lstCustomerHubFr.get(i),"The "+i+" CustomerHubLink French transaltion of "+lsText+" is the same as "+lstCustomerHubFr.get(i));
+			lsYmlHref=this.getLinkWithSpecificName(lstNameAndLinks,lsText,false);			
+			if(lsYmlHref.isEmpty()) {
+				reporter.reportLogFail("Unable to find "+lsText+" link.");
+			}
+			lsHref=this.getElementHref(this.lnkTSCCustomerHubAllLinks.get(i));	
+			reporter.softAssert(this.verifyLinks(lsHref,lsYmlHref),"The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref,"The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref);
+		}
+	}
+	
+	public void verifyAboutTSCSubItemFr(List<List<String>> lstNameAndLinks, List<String> lstAboutTSCFr) {
+		String lsText,lsYmlHref,lsHref;
+		
+		for(int i=0;i<this.lnkAboutTSCAllLinks.size();i++) {
+			lsText=this.getUTFEnabledData(this.getElementText(this.lnkAboutTSCAllLinks.get(i)));	
+			reporter.softAssert(lsText.equalsIgnoreCase(lstAboutTSCFr.get(i)),"The "+i+" AboutTSLink French transaltion of "+lsText+" is the same as "+lstAboutTSCFr.get(i),"The "+i+" AboutTSLink French transaltion of "+lsText+" is the same as "+lstAboutTSCFr.get(i));
+			lsYmlHref=this.getLinkWithSpecificName(lstNameAndLinks,lsText,false);
+			if(lsYmlHref.isEmpty()) {
+				reporter.reportLogFail("Unable to find "+lsText+" link.");
+			}
+			lsHref=this.getElementHref(this.lnkAboutTSCAllLinks.get(i));
+			reporter.softAssert(this.verifyLinks(lsHref,lsYmlHref),"The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref,"The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref);
+		}
+	}
+		
 		
 }

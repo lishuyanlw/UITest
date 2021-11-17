@@ -601,7 +601,6 @@ import utils.ReusableActions;
 	 * @author Wei.Li
 	 */	
     public String getElementHref(WebElement element) {    	
-    	getReusableActionsInstance().javascriptScrollByVisibleElement(element);
     	return this.removeLastSlashFromUrl(element.getAttribute("href").trim());
     }
     
@@ -612,7 +611,6 @@ import utils.ReusableActions;
 	 * @author Wei.Li
 	 */	
     public String getElementImageSrc(WebElement element) {    	
-    	getReusableActionsInstance().javascriptScrollByVisibleElement(element);
     	return element.getAttribute("src").trim();
     }
     
@@ -656,7 +654,7 @@ import utils.ReusableActions;
     	String lsItem;
     	for(WebElement element:elementList) {
     		getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-    		lsItem=element.getText().trim();
+    		lsItem=element.getText().trim();    		
     		if(lsItem.equalsIgnoreCase(lsExpectedText)) {
     			return element;
     		}

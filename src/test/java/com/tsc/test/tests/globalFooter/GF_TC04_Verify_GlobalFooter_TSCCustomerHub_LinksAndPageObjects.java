@@ -162,13 +162,14 @@ public class GF_TC04_Verify_GlobalFooter_TSCCustomerHub_LinksAndPageObjects exte
 		//My Account 
 		lsService="My Account";
 		reporter.reportLog("Not login for "+lsService);
-		verifyMyAccountContents(lsService, lstNameAndLinks); 
-
+		verifyMyAccountNotLoginContents(lsService, lstNameAndLinks); 
+		
 		reporter.reportLog("Login for "+lsService);
 		String lsUserName=TestDataHandler.constantData.getLoginUser().getLbl_Username();
 		String lsPassword=TestDataHandler.constantData.getLoginUser().getLbl_Password();
-		if(getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword)) {
-			verifyMyAccountContents(lsService, lstNameAndLinks);
+		String lsFirstName=TestDataHandler.constantData.getLoginUser().getLbl_FirstName();
+		if(getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword,lsFirstName)) {			
+			verifyMyAccountLoginContents(lsService, lstNameAndLinks);
 		}
 		else {
 			reporter.reportLogFail("Login failed");
@@ -176,7 +177,7 @@ public class GF_TC04_Verify_GlobalFooter_TSCCustomerHub_LinksAndPageObjects exte
 
 	}
 	
-	void verifyMyAccountContents(String lsService, List<List<String>> lstNameAndLinks) {
+	void verifyMyAccountNotLoginContents(String lsService, List<List<String>> lstNameAndLinks) {
 		BasePage basePage=new BasePage(this.getDriver());	
 		ArrayList<WebElement> elementList=new ArrayList<WebElement>();
 
@@ -211,6 +212,34 @@ public class GF_TC04_Verify_GlobalFooter_TSCCustomerHub_LinksAndPageObjects exte
 			
 			getGlobalFooterPageThreadLocal().verifyElementListExistence(elementList);
 		}
+	}
+	
+	void verifyMyAccountLoginContents(String lsService, List<List<String>> lstNameAndLinks) {
+		BasePage basePage=new BasePage(this.getDriver());
+		basePage.getReusableActionsInstance().staticWait(1000);
+		
+		ArrayList<WebElement> elementList=new ArrayList<WebElement>();
+
+		elementList.add(getGlobalFooterPageThreadLocal().lblMyAccountLoginName);
+		elementList.add(getGlobalFooterPageThreadLocal().lblCustomerNumber);
+		elementList.add(getGlobalFooterPageThreadLocal().lblCustomerNO);
+				
+		//Add myaccount service panel headings 
+		for(WebElement item:getGlobalFooterPageThreadLocal().lstMyAccountSerivePanelHeading) {
+			elementList.add(item);
+		}
+		
+		//Add myaccount service panel items
+		for(WebElement item:getGlobalFooterPageThreadLocal().lstMyAccountSerivePanelItem) {
+			elementList.add(item);
+		}
+		
+		getGlobalFooterPageThreadLocal().verifyElementListExistence(elementList);
+		
+		//Add myaccount service panel items
+		getGlobalFooterPageThreadLocal().verifyMyAccountSerivePanelItem();
+		
+
 	}
 
 }
