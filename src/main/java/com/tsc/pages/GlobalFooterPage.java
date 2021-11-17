@@ -1,5 +1,6 @@
 package com.tsc.pages;
 
+import java.sql.Driver;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -524,6 +525,7 @@ public class GlobalFooterPage extends BasePage {
 	 */
 	public boolean switchlanguage() {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkLanguage);
+		waitForCondition(Driver->{return this.lnkLanguage.isDisplayed();},10000);
 		this.lnkLanguage.click();
 		return this.waitForPageLoading();
 	}
