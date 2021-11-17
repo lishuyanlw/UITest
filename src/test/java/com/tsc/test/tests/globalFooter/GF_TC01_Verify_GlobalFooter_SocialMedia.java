@@ -71,7 +71,7 @@ public class GF_TC01_Verify_GlobalFooter_SocialMedia extends BaseTest {
 	}
 	
 	public void validateMajorNameAndLinks() {
-		reporter.reportLog("Global Footer Section contents for SocialMedia");
+		reporter.reportLog("Global Footer Section name and links for SocialMedia");
 
 		//Facebook
 		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementProperty(getGlobalFooterPageThreadLocal().lnkFacebook,"Link"),"Facebook link in Global footer is not empty","Facebook link in Global footer is empty");
