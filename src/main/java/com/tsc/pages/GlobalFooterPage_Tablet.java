@@ -34,6 +34,7 @@ public class GlobalFooterPage_Tablet extends GlobalFooterPage{
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblTSCCustomerHubText);
 		this.lblTSCCustomerHubText.click();
 		this.waitForCondition(Driver->{return this.lblTSCCustomerHubText.getAttribute("class").isEmpty();}, 30000);
+		getReusableActionsInstance().staticWait(5000);
 				
 		String lsText,lsYmlHref,lsHref;
 		for(WebElement item:this.lnkTSCCustomerHubAllLinks) {
@@ -53,6 +54,7 @@ public class GlobalFooterPage_Tablet extends GlobalFooterPage{
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAboutTSCText);
 		this.lblAboutTSCText.click();
 		this.waitForCondition(Driver->{return this.lblAboutTSCText.getAttribute("class").isEmpty();}, 30000);
+		getReusableActionsInstance().staticWait(5000);
 		
 		String lsText,lsYmlHref,lsHref;
 		for(WebElement item:this.lnkAboutTSCAllLinks) {
@@ -71,7 +73,8 @@ public class GlobalFooterPage_Tablet extends GlobalFooterPage{
 		if(!this.lblTSCCustomerHubText.getAttribute("class").isEmpty()) {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblTSCCustomerHubText);
 			this.lblTSCCustomerHubText.click();
-			this.waitForCondition(Driver->{return this.lblTSCCustomerHubText.getAttribute("class").isEmpty();}, 30000);				
+			this.waitForCondition(Driver->{return this.lblTSCCustomerHubText.getAttribute("class").isEmpty();}, 30000);
+			getReusableActionsInstance().staticWait(5000);
 		}
 			
 		WebElement selectedItem = this.getElementFromList(this.lnkTSCCustomerHubAllLinks, lsService);
@@ -94,9 +97,10 @@ public class GlobalFooterPage_Tablet extends GlobalFooterPage{
 				getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 				item.click();
 				this.waitForCondition(Driver->{return !item.getAttribute("class").contains("collapsed");}, 30000);
+				getReusableActionsInstance().staticWait(5000);
 			}
 		}
-		getReusableActionsInstance().staticWait(1000);		
+			
 		ArrayList<WebElement> elementList=new ArrayList<WebElement>();
 		for(WebElement item:this.lstMyAccountSerivePanelItem) {
 			elementList.add(item);
@@ -118,7 +122,8 @@ public class GlobalFooterPage_Tablet extends GlobalFooterPage{
 		if(!this.lblTSCCustomerHubText.getAttribute("class").isEmpty()) {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblTSCCustomerHubText);
 			this.lblTSCCustomerHubText.click();
-			this.waitForCondition(Driver->{return this.lblTSCCustomerHubText.getAttribute("class").isEmpty();}, 30000);				
+			this.waitForCondition(Driver->{return this.lblTSCCustomerHubText.getAttribute("class").isEmpty();}, 30000);
+			getReusableActionsInstance().staticWait(5000);
 		}
 		
 		List<String> lstFr=new ArrayList<String>();
@@ -139,7 +144,8 @@ public class GlobalFooterPage_Tablet extends GlobalFooterPage{
 		if(!this.lblAboutTSCText.getAttribute("class").isEmpty()) {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAboutTSCText);
 			this.lblAboutTSCText.click();
-			this.waitForCondition(Driver->{return this.lblAboutTSCText.getAttribute("class").isEmpty();}, 30000);				
+			this.waitForCondition(Driver->{return this.lblAboutTSCText.getAttribute("class").isEmpty();}, 30000);
+			getReusableActionsInstance().staticWait(5000);
 		}
 		
 		List<String> lstFr=new ArrayList<String>();
@@ -160,7 +166,8 @@ public class GlobalFooterPage_Tablet extends GlobalFooterPage{
 		if(!this.lblTSCCustomerHubText.getAttribute("class").isEmpty()) {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblTSCCustomerHubText);
 			this.lblTSCCustomerHubText.click();
-			this.waitForCondition(Driver->{return this.lblTSCCustomerHubText.getAttribute("class").isEmpty();}, 30000);				
+			this.waitForCondition(Driver->{return this.lblTSCCustomerHubText.getAttribute("class").isEmpty();}, 30000);
+			getReusableActionsInstance().staticWait(5000);
 		}
 		
 		for(int i=0;i<this.lnkTSCCustomerHubAllLinks.size();i++) {
@@ -182,7 +189,8 @@ public class GlobalFooterPage_Tablet extends GlobalFooterPage{
 		if(!this.lblAboutTSCText.getAttribute("class").isEmpty()) {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAboutTSCText);
 			this.lblAboutTSCText.click();
-			this.waitForCondition(Driver->{return this.lblAboutTSCText.getAttribute("class").isEmpty();}, 30000);				
+			this.waitForCondition(Driver->{return this.lblAboutTSCText.getAttribute("class").isEmpty();}, 30000);
+			getReusableActionsInstance().staticWait(5000);
 		}
 		
 		for(int i=0;i<this.lnkAboutTSCAllLinks.size();i++) {

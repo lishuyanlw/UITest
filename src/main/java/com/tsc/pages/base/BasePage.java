@@ -298,10 +298,11 @@ import utils.ReusableActions;
 	public String waitForPageLoadingByUrlChange(WebElement element) {
 		String currentUrl=getDriver().getCurrentUrl();
 		getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-		waitForCondition(Driver->{return element.isDisplayed();},10000);
+		waitForCondition(Driver->{return element.isDisplayed();},30000);
         element.click();
-        waitForCondition(Driver->{return !currentUrl.equalsIgnoreCase(getDriver().getCurrentUrl());},10000);
+        waitForCondition(Driver->{return !currentUrl.equalsIgnoreCase(getDriver().getCurrentUrl());},30000);
         getReusableActionsInstance().waitForPageLoad();
+        getReusableActionsInstance().staticWait(3000);
         
         return getDriver().getCurrentUrl();
 	}
