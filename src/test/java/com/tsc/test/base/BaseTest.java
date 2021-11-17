@@ -134,12 +134,12 @@ public class BaseTest {
 		TestDeviceThreadLocal.set(lsTestDevice);
 		strBrowser = System.getProperty("Browser").trim();
 		if (strBrowser.toLowerCase().contains("android") || strBrowser.toLowerCase().contains("ios")
-				|| strBrowser.toLowerCase().contains("mobile")) {
+				|| strBrowser.toLowerCase().contains("mobile")) {		
 			lsTestDevice = System.getProperty("Device").trim();
 			TestDeviceThreadLocal.set(lsTestDevice);
 			switch (lsTestDevice) {
 				case "Tablet":
-					//getDriver().manage().window().setSize(new Dimension(700, 600));
+					getDriver().manage().window().setSize(new Dimension(700, 600));
 					globalFooterPageThreadLocal.set(new GlobalFooterPage_Tablet(getDriver()));
 					break;
 				case "Mobile":

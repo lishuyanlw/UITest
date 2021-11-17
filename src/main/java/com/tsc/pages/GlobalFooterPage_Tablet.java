@@ -204,5 +204,15 @@ public class GlobalFooterPage_Tablet extends GlobalFooterPage{
 			reporter.softAssert(this.verifyLinks(lsHref,lsYmlHref),"The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref,"The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref);
 		}
 	}
+	
+	@Override
+	public void verifyFaceBookLink(List<String> lstSocialMediaLinks) {
+		String lsCurrentUrl = waitForPageLoadingByUrlChange(this.lnkFacebook);		
+		reporter.softAssert(lsCurrentUrl.toLowerCase().contains("facebook"),"The Url after clicking Facebook link contains facebook","The Url after clicking Facebook link does not contain facebook");
+		
+		String lsBaseUrl=this.getBaseURL()+"/";		
+		this.navigateToURL(lsBaseUrl);
+		this.waitForPageLoading();
+	}
 
 }

@@ -956,6 +956,15 @@ public class GlobalFooterPage extends BasePage {
 			reporter.softAssert(this.verifyLinks(lsHref,lsYmlHref),"The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref,"The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref);
 		}
 	}
+	
+	public void verifyFaceBookLink(List<String> lstSocialMediaLinks) {
+		String lsUrl=this.getUrlWithSocialMediaName(lstSocialMediaLinks, "Facebook");		
+		reporter.softAssert(this.verifyUrlAfterClickingElement(this.lnkFacebook,lsUrl),"The Url after clicking Facebook link is "+lsUrl,"The Url after clicking Facebook link is not "+lsUrl);
+			
+		String lsBaseUrl=this.getBaseURL()+"/";		
+		this.navigateToURL(lsBaseUrl);
+		this.waitForPageLoading();
+	}
 		
 		
 }

@@ -31,15 +31,12 @@ public class GF_TC01_Verify_GlobalFooter_SocialMedia extends BaseTest {
 		
 		BasePage basePage=new BasePage(this.getDriver());		
 		String lsBaseUrl=basePage.getBaseURL()+"/";
+		String lsUrl;
 		
 		List<String> lstSocialMediaLinks=TestDataHandler.constantData.getFooterSection().getLst_SocialMediaLinks();
 		
 		//Facebook
-		String lsUrl=getGlobalFooterPageThreadLocal().getUrlWithSocialMediaName(lstSocialMediaLinks, "Facebook");		
-		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyUrlAfterClickingElement(getGlobalFooterPageThreadLocal().lnkFacebook,lsUrl),"The Url after clicking Facebook link is "+lsUrl,"The Url after clicking Facebook link is not "+lsUrl);
-
-		basePage.navigateToURL(lsBaseUrl);
-		getGlobalFooterPageThreadLocal().waitForPageLoading();
+		getGlobalFooterPageThreadLocal().verifyFaceBookLink(lstSocialMediaLinks);
 		
 		//Twitter
 		lsUrl=getGlobalFooterPageThreadLocal().getUrlWithSocialMediaName(lstSocialMediaLinks, "Twitter");		
