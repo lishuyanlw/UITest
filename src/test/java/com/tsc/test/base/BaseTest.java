@@ -65,7 +65,7 @@ public class BaseTest {
 	}
 
 	// @return the globalheaderPage_MobileThreadLocal
-	protected static GlobalHeaderPage getglobalHeaderPage_mobileThreadLocal() {
+	protected static GlobalHeaderPage_Mobile getglobalHeaderPage_mobileThreadLocal() {
 		return globalHeaderPage_mobileThreadLocal.get();
 	}
 
@@ -261,10 +261,15 @@ public class BaseTest {
 		}
 	}
 
-	//Method to validate content of Link and button
-	public void validateText (String strActualText, String strExpectedText, String validationMsg){
-		reporter.softAssert(strExpectedText.equals(strActualText), validationMsg + ":" + " Expected=" + strExpectedText + " ; Actual=" + strActualText, validationMsg + " expected=" + strExpectedText + "; actual=" + strActualText);
-	}
+
+		public void validateText (String strActualText, List < String > listExpectedText, String validationMsg){
+			reporter.softAssert(listExpectedText.equals(strActualText), validationMsg + ":" + " Expected=" + listExpectedText + " ; Actual=" + strActualText, validationMsg + " expected=" + listExpectedText + "; actual=" + strActualText);
+
+		}
+		//Method to validate content of Link and button
+		public void validateText (String strActualText, String strExpectedText, String validationMsg){
+			reporter.softAssert(strExpectedText.equals(strActualText), validationMsg + ":" + " Expected=" + strExpectedText + " ; Actual=" + strActualText, validationMsg + " expected=" + strExpectedText + "; actual=" + strActualText);
+		}
 
 	/**
 	 * This method will initialize a hash map with the sauce parameters
@@ -319,4 +324,3 @@ public class BaseTest {
 	}
 
 }
-
