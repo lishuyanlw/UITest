@@ -556,8 +556,12 @@ public class GlobalFooterPage extends BasePage {
 	public boolean switchlanguage() {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkLanguage);
 		waitForCondition(Driver->{return this.lnkLanguage.isDisplayed();},10000);
+		String lsLanguage=this.lnkLanguage.getText().trim();
 		this.lnkLanguage.click();
-		return this.waitForPageLoading();
+		this.waitForPageLoading();
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkLanguage);
+		
+		return this.waitForCondition(Driver->{return !this.lnkLanguage.getText().trim().equalsIgnoreCase(lsLanguage);}, 30000);
 	}
 
 	/**
