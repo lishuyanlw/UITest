@@ -474,6 +474,10 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//div[@role='form']//div[@class='pr-submit']//div[contains(@class,'pr-logo-container')]//div[contains(@class,'pr-logo')]")
 	public WebElement imgWriteReviewPowerBy;
 	
+	//Add to Bag part
+	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//div[@role='form']//div[@class='pr-submit']//div[contains(@class,'pr-logo-container')]//div[contains(@class,'pr-logo')]")
+	public WebElement cntAddToBagOoverlay;
+	
 	/**
 	 * Method to check if Video is playing
 	 * @return true/false	  
@@ -1091,6 +1095,27 @@ public class ProductDetailPage extends BasePage {
 	 */
 	public void verifyProductAddToBag() {
 		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.btnAddToBag),"The AddToBag button is displaying correctly","The AddToBag button is not displaying correctly");
+	}
+	
+	/**
+	 * Method to check if Add to Bag popup window is displaying
+	 * @return boolean	  
+	 * @author Wei.Li
+	 */
+	public boolean checkAddToBagPopupDisplaying() {
+		return this.checkChildElementExistingByAttribute(this.cntAddToBagOoverlay, "class", "add-to-bag__overlay");
+	}
+	
+	/**
+	 * Method to get Shopping cart number
+	 * @return int	  
+	 * @author Wei.Li
+	 */
+	public int getShoppingCartNumber() {	
+		GlobalHeaderPage globalHeaderPage= new GlobalHeaderPage(this.getDriver());
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeaderPage.CartBagCounter);
+		
+		return Integer.parseInt(globalHeaderPage.CartBagCounter.getText().trim());
 	}
 	
 
