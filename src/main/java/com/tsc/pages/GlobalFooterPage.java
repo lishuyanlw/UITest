@@ -721,11 +721,16 @@ public class GlobalFooterPage extends BasePage {
 		getReusableActionsInstance().staticWait(3000);
 		int counter = 0;
 		for(int i=0;i<lstPanelItem.size();i++) {
-			WebElement item=lstPanelItem.get(i);
-			String lsClass=item.getAttribute("class");
-			if(lsClass=="") {
-				getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-				counter++;
+			try{
+				WebElement item=lstPanelItem.get(i);
+				String lsClass=item.getAttribute("class");
+				if(lsClass=="" || lsClass==null) {
+					getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+					counter++;
+					break;
+				}
+			}catch (Exception exception){
+				exception.printStackTrace();
 			}
 		}
 		if (counter == 1) return true;
