@@ -51,7 +51,7 @@ public class GF_Updated_TC05_Verify_GlobalFooter_AboutTSC_LinksAndPageObjects ex
                 //Verifying Page Layout and sections
                 getGlobalFooterPageThreadLocal().expandPanelItems(getGlobalFooterPageThreadLocal().lstMyAccountItemTitle,getGlobalFooterPageThreadLocal().lstMyAccountItemContent);
             }
-        }
+        } 
 
         //More About TSC
         String lsService = "More About TSC";
@@ -81,5 +81,62 @@ public class GF_Updated_TC05_Verify_GlobalFooter_AboutTSC_LinksAndPageObjects ex
 
             getGlobalFooterPageThreadLocal().verifyElementListExistence(elementList);
         }
+        
+        //Shop By Brand
+        String lsServiceSBB = "Shop By Brand";
+        reporter.reportLog(lsServiceSBB);
+        WebElement selectedItemSBB=getGlobalFooterPageThreadLocal().getServiceWebElement(lsServiceSBB);
+        String lsHrefSBB=basePage.getElementHref(selectedItemSBB);
+        HashMap<String,String> testDataSBB=getGlobalFooterPageThreadLocal().getTestDataWithSpecificName(lstNameAndLinks,lsServiceSBB,true);
+            if(testDataSBB.isEmpty()) {
+                reporter.reportLogFail("Unable to find '"+lsServiceSBB+"' link.");
+            }
+            reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHrefSBB,testData.get("Link")),"The current '"+lsServiceSBB+"' href of "+lsHrefSBB+" is equal to "+testDataSBB.get("Link"),"The current '"+lsServiceSBB+"' href of "+lsHrefSBB+" is not equal to "+testDataSBB.get("Link"));
+
+            if(!getGlobalFooterPageThreadLocal().goToService(lsServiceSBB,getGlobalFooterPageThreadLocal().aboutUsPageTitle)) {
+                reporter.reportLogFail("Unable to navigate to '"+lsServiceSBB+"' page objects.");
+            }
+            else {
+                //Verifying page title
+                String pageTitle = getGlobalFooterPageThreadLocal().getPageTitle(getGlobalFooterPageThreadLocal().aboutUsPageTitle);
+                reporter.softAssert(pageTitle.equalsIgnoreCase(lsServiceSBB),"Page Title matches for global footer link: "+lsServiceSBB+" and  title is: "+pageTitle,"Page Title doesn't match for global footer link: "+lsServiceSBB+" and  title is: "+pageTitle);
+
+                //Verifying Page Elements
+                reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lblSearchForaBrand),"The text Search for a Brand is displayed","The text Search for a Brand is not displayed");
+                reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().textBoxShopByBrandInputSearchBox),"Input Search Box is visible","Input Search Box is not visible");
+                reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lblShopByBrandFilterByCategory),"The text Filter By Category is displayed","The text Filter By Category is not displayed");
+                reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().buttonShopByBrandInputSearchBoxSearchButton),"The Search Button is visible","The Search Button is not visible");
+                reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().dropDownShopByBrandFilterByCategory),"Drop Down for Filter By Category is displayed","Drop Down for Filter By Category is not displayed");
+                reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lblFilterByAlphabet),"The text Filter By Alphabet is visible","The text Filter By Alphabet is not visible");
+               
+                //Verifying Drop Down Title matches with Page Title
+                getGlobalFooterPageThreadLocal().verifyDropDownWithTitle(getGlobalFooterPageThreadLocal().dropDownShopByBrandFilterByCategory);
+                
+                //Verifying Find By Alphabets Links and its contents
+                getGlobalFooterPageThreadLocal().verifyFindByAlphabet(getGlobalFooterPageThreadLocal().dropDownShopByBrandFilterByCategory, getGlobalFooterPageThreadLocal().linkFindByAlphabet);
+                
+            }
+        
+            //Channel Finder
+            String lsServiceCF = "Channel Finder";
+            reporter.reportLog(lsServiceCF);
+            WebElement selectedItemCF=getGlobalFooterPageThreadLocal().getServiceWebElement(lsServiceCF);
+            String lsHrefCF=basePage.getElementHref(selectedItemCF);
+            HashMap<String,String> testDataCF=getGlobalFooterPageThreadLocal().getTestDataWithSpecificName(lstNameAndLinks,lsServiceCF,true);
+                if(testDataCF.isEmpty()) {
+                    reporter.reportLogFail("Unable to find '"+lsServiceCF+"' link.");
+                }
+                reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHrefCF,testData.get("Link")),"The current '"+lsServiceCF+"' href of "+lsHrefCF+" is equal to "+testDataCF.get("Link"),"The current '"+lsServiceCF+"' href of "+lsHrefCF+" is not equal to "+testDataCF.get("Link"));
+
+                if(!getGlobalFooterPageThreadLocal().goToService(lsServiceCF,getGlobalFooterPageThreadLocal().aboutUsPageTitle)) {
+                    reporter.reportLogFail("Unable to navigate to '"+lsServiceCF+"' page objects.");
+                }
+                else {
+                    //Verifying page title
+                    String pageTitle = getGlobalFooterPageThreadLocal().getPageTitle(getGlobalFooterPageThreadLocal().aboutUsPageTitle);
+                    reporter.softAssert(pageTitle.equalsIgnoreCase(lsServiceCF),"Page Title matches for global footer link: "+lsServiceCF+" and  title is: "+pageTitle,"Page Title doesn't match for global footer link: "+lsServiceCF+" and  title is: "+pageTitle);
+                }
+        
     }
 }
+         

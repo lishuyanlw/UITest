@@ -304,13 +304,44 @@ public class GlobalFooterPage extends BasePage {
 
 	@FindBy(xpath="//h2[contains(@class,'titleLink')]")
 	public WebElement aboutUsPageTitle;
-
+	
 	@FindBy(xpath="//h4[contains(@class,'subTitleLink')]")
 	public List<WebElement> subHeaders;
 
 	@FindBy(xpath="//ul[contains(@class,'quickLinkUL')]//a[contains(@id,'contentPlaceHolder')]")
 	public List<WebElement> subHeaderLinks;
-
+	
+	//Shop By Brand
+	@FindBy(xpath="//h2[contains(@class,'titleLink')]")
+	public WebElement lblShopbyBrandTitle;
+	
+	@FindBy(xpath="//h2[contains(@class,'titleLink')]/b")
+	public WebElement lblShopByBrandTitleAfterDropDown;
+	
+	@FindBy(xpath="//div[contains(@class,'sortPrpLabel searchTi')]")
+	public WebElement lblSearchForaBrand;
+	
+	@FindBy(xpath="//div[contains(@class,'findByAlphabet')]")
+	public WebElement lblFilterByAlphabet;
+	
+	@FindBy(xpath="//input[contains(@id,'brandSearchBox')]")
+	public WebElement textBoxShopByBrandInputSearchBox;
+	
+	@FindBy(xpath="//form//div[contains(@class,'sortPrpLabel')]")
+	public WebElement lblShopByBrandFilterByCategory;
+	
+	@FindBy(xpath="//button[contains(@id,'btnSearchProduct')]")
+	public WebElement buttonShopByBrandInputSearchBoxSearchButton;
+	
+	@FindBy(xpath="//select[contains(@id,'brandSelect')]")
+	public WebElement dropDownShopByBrandFilterByCategory;
+	
+	@FindBy(xpath="//div[contains(@class,'lettersDiv')]//div[contains(@class,'active')]//span")
+	public WebElement activeAlphabetChar;
+	
+	@FindBy(xpath="//div[contains(@class,'lettersDiv')]//div")
+	public List<WebElement> linkFindByAlphabet;
+	
 	/**
 	 * Close popup dialog through clicking close button.
 	 * 
@@ -443,7 +474,6 @@ public class GlobalFooterPage extends BasePage {
 
 	/**
 	 * This method is to verify if equal to a UTF-8 encoding text.
-	 * 
 	 * @param List<String> lstNameAndLink: the list from yml file
 	 * @param String       lsSpecificName: input text
 	 * @return true/false
@@ -789,7 +819,7 @@ public class GlobalFooterPage extends BasePage {
 			else {
 				lsNotMatch=lsTitle;
 				break;
-			}
+			} 
 		}
 		
 		reporter.softAssert(bMatch,"All sections are displayed correctly",lsNotMatch+" is not displayed correctly");
@@ -810,5 +840,49 @@ public class GlobalFooterPage extends BasePage {
 		
 	}
 	
+	/**
+	 * This method is to verify DropDown Titles is same as Page Title
+	 * @author godwin.gopi
+	 */
+	
+	public  void verifyDropDownWithTitle(WebElement element) {
+		Select select=new Select(element);
+		int dropDownElementSize=select.getOptions().size();
+		for(int i=1;i<dropDownElementSize;i++) {
+			select.selectByIndex(i);
+			getReusableActionsInstance().waitForPageLoad();
+			String title=lblShopByBrandTitleAfterDropDown.getText();
+			reporter.reportLog(" Page Title After Dropdown is "+title+", and it is correctly appeared ");
+			String option =select.getFirstSelectedOption().getText();
+			reporter.reportLog(" Dropdown Selected Options is "+option+", and it is correctly appeared");
+			reporter.softAssert(title.equalsIgnoreCase(option),"Page Title matches for both Actual "+title+" and expected "+option+"","Page Title doesn't match for both Actual "+title+" and expected "+option+"");
+		}
 		
+	}
+	
+	/**
+	 * This method is to verify Find By Alphabets Links and its content links
+	 * @author godwin.gopi
+	 */
+	
+	public  void verifyFindByAlphabet(WebElement element, List<WebElement> elements) {
+		int counter=1;
+		Select select=new Select(element);
+		select.selectByIndex(0);
+		for(int i=0;i<elements.size();i++) {
+			String alphabetPath="(//div[contains(@class,'lettersDiv')]//div//span)["+counter+"]";
+			elements.get(i).click();
+			String alaphabitLetterValue=getDriver().findElement(By.xpath(alphabetPath)).getText();
+			reporter.reportLog("Selected Alphabet is "+alaphabitLetterValue+"");
+			String activeAlaphabitLetterValue=activeAlphabetChar.getText();
+			reporter.softAssert(alaphabitLetterValue.equalsIgnoreCase(activeAlaphabitLetterValue),"The Corresponding Page Title inside the Alphabet Link is same as expected","The Corresponding Page Title inside the Alphabet Link is not same as expected");
+			String alphabetPathElementsPath="//div[contains(@class,'brandHeader activeLetter')]//ancestor::div[contains(@class,'col')]["+counter+"]//div[contains(@class,'brandName')]//a";
+			List<WebElement> alphabetPathElements=getDriver().findElements(By.xpath(alphabetPathElementsPath));
+			for(int j=0 ;j<alphabetPathElements.size();j++) {
+				reporter.reportLog(alphabetPathElements.get(j).getText());
+				reporter.softAssert(alphabetPathElements.get(j).getText()!=null,"Find By Option Link is "+alphabetPathElements.get(j).getText()+" and not NULL","Find By Option Link is "+alphabetPathElements.get(j).getText()+" and is NULL");
+			}
+			counter++;
+		}
+	}
 }
