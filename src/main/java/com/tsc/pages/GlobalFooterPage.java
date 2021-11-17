@@ -533,6 +533,7 @@ public class GlobalFooterPage extends BasePage {
 	 */
 	public boolean switchlanguage() {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkLanguage);
+		waitForCondition(Driver->{return this.lnkLanguage.isDisplayed();},10000);
 		this.lnkLanguage.click();
 		return this.waitForPageLoading();
 	}
@@ -715,11 +716,16 @@ public class GlobalFooterPage extends BasePage {
 		getReusableActionsInstance().staticWait(3000);
 		int counter = 0;
 		for(int i=0;i<lstPanelItem.size();i++) {
-			WebElement item=lstPanelItem.get(i);
-			String lsClass=item.getAttribute("class");
-			if(lsClass=="") {
-				getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-				counter++;
+			try{
+				WebElement item=lstPanelItem.get(i);
+				String lsClass=item.getAttribute("class");
+				if(lsClass=="" || lsClass==null || lsClass!="collapsed") {
+					getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+					counter++;
+					break;
+				}
+			}catch (Exception exception){
+				exception.printStackTrace();
 			}
 		}
 		if (counter == 1) return true;
