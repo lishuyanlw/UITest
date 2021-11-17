@@ -3,6 +3,8 @@ package com.tsc.test.tests.productSearchResult;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.tsc.pages.HomePage;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 import com.tsc.data.Handler.TestDataHandler;
@@ -17,9 +19,9 @@ public class SR_TC10_Verify_ProductSearchResult_GlobalHeaderAndFooterAfterSortAn
 	/*
 	 * CER-222
 	 */
-	@Test(groups={"ProductSearch","Regression"})
-	public void validateProductSearchResult_GlobalHeaderAndFooterAfterSortAndFilter() throws IOException {	
-	getGlobalFooterPageThreadLocal().closePopupDialog();
+	@Test(groups={"ProductSearch","Regression","Regression_Tablet","Regression_Mobile"})
+	public void validateProductSearchResult_GlobalHeaderAndFooterAfterSortAndFilter() throws IOException {
+	(new HomePage(this.getDriver())).closeadd();
 	
 	reporter.softAssert(getglobalheaderPageThreadLocal().validateURL((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");		
 	reporter.reportLog("ProductSearch Page");

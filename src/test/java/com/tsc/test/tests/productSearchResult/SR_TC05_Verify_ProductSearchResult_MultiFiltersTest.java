@@ -3,6 +3,8 @@ package com.tsc.test.tests.productSearchResult;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.tsc.pages.HomePage;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 import com.tsc.data.Handler.TestDataHandler;
@@ -14,11 +16,11 @@ public class SR_TC05_Verify_ProductSearchResult_MultiFiltersTest extends BaseTes
 	 * CER-225
 	 * CER-226
 	 */
-	@Test(groups={"ProductSearch","Regression"})
-	public void validateProductSearchResult_MultiFiltersFunction() throws IOException {	
-	getGlobalFooterPageThreadLocal().closePopupDialog();
-	
-	reporter.softAssert(getglobalheaderPageThreadLocal().validateURL((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");		
+	@Test(groups={"ProductSearch","Regression","Regression_Tablet","Regression_Mobile"})
+	public void validateProductSearchResult_MultiFiltersFunction() throws IOException {
+	(new HomePage(this.getDriver())).closeadd();
+
+	reporter.softAssert(getglobalheaderPageThreadLocal().validateURL((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");
 	reporter.reportLog("ProductSearch Page");
 	
 	List<List<String>> lsKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_SearchKeyword_DropDown();

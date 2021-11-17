@@ -16,7 +16,7 @@ public class SR_TC09_Verify_ProductSearchResult_SpecialOffersAndRecomendationSec
 	 * @author Wei.Li
 	 * CER-231
 	 */
-	@Test(groups = { "ProductSearch", "Regression" })
+	@Test(groups = { "ProductSearch", "Regression","Regression_Tablet","Regression_Mobile"})
 	public void validateProductSearchResult_SpecialOffersAndRecomendationSections() throws IOException {
 		(new HomePage(this.getDriver())).closeadd();
 		String lsSearchResultPageDefaultSetting = TestDataHandler.constantData.getSearchResultPage().getLbl_SearchResultPageDefaultSetting();
@@ -43,7 +43,8 @@ public class SR_TC09_Verify_ProductSearchResult_SpecialOffersAndRecomendationSec
 		// Verifying Product List displayed for mandatory information like Product, Name, Image, Price, Code
 		productList=getProductResultsPageThreadLocal().getProductList();
 		if(productList.size()>0) {
-		getProductResultsPageThreadLocal().verifySearchResultContent(productList); }
+		getProductResultsPageThreadLocal().verifySearchResultContent(productList);
+		}
 		reporter.softAssert(getProductResultsPageThreadLocal().verifyProductPagination(),"Product pagination is existing","Product pagination is not existing");
 		reporter.softAssert(getProductResultsPageThreadLocal().verifyElementExisting(getProductResultsPageThreadLocal().getRecommendationContainer()),"Recommendation section is existing after choosing special offers","Recommendation section is not existing after choosing special offers");
 

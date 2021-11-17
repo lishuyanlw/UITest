@@ -3,6 +3,7 @@ package com.tsc.pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 
 import java.util.List;
 
@@ -12,22 +13,39 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
         super(driver);
     }
 
+    @FindBy(xpath = "//section//div[@class='secondary-navigation__rhs']//button[@id='secondary-navigation-mobile-hamburger']")
+    WebElement menuButton;
+
+    @FindBy(xpath = "//section//nav[@class='mega-nav-mobile__nav-items']//ul//li//button")
+    WebElement FlyoutHeadings;
+
+    @FindBy(xpath = "//section//nav[@class='mega-nav-mobile__wrapper']//ul//li//button//span")
+    WebElement Categories;
+
+    @FindBy(xpath = "//section//div[@class='mega-nav-mobile__scroll']//ul//li//a")
+    List<WebElement> subHeadinds;
+
     @Override
     public String getNameAndclickSubMenuItem(String headingName,String submenuHeading, String itemName) {
+        this.menuButton.click();
+        getReusableActionsInstance().staticWait(700);
         String xpathHeading =createXPath("//li[contains(@class,'mobile__nav-items')]//span[contains(text(),'{0}')]" ,headingName);
         WebElement headingWebElement = FlyoutHeadings.findElement(By.xpath(xpathHeading));
         getReusableActionsInstance().scrollToElement(headingWebElement);
 
-        if(headingWebElement!=null && submenuHeading==null) {
+        if(headingWebElement!=null || submenuHeading==null) {
             headingWebElement.click();
-            return headingWebElement.getText().trim();
+            getReusableActionsInstance().staticWait(700);
+            //return headingWebElement.getText().trim();
         }
         if(submenuHeading!=null) {
             String xpathSubMenu =createXPath("//span[contains(@class,'mobile__categories-item__text') and contains(text(),'{0}')]" ,submenuHeading);
             List<WebElement> SubMenu = Categories.findElements(By.xpath(xpathSubMenu));
             if(SubMenu.size()>0){
                 getReusableActionsInstance().scrollToElement(SubMenu.get(0));
+                String Title = SubMenu.get(0).getText();
                 SubMenu.get(0).click();
+                getReusableActionsInstance().staticWait(700);
                 if(itemName!=null) {
                     String title = null;
                     String xpathSubmenuItem;
@@ -48,9 +66,8 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
                     }
                     return title;
                 }else {
-                    String title = SubMenu.get(0).getText().trim();
-                    SubMenu.get(0).click();
-                    return title;
+                    subHeadinds.get(0).click();
+                    return Title;
                 }
                 //Adding else condition to click on first element by default if passed submenu item is not present in list
             }else{

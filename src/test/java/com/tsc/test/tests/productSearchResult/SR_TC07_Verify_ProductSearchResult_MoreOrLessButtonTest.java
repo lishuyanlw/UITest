@@ -3,6 +3,7 @@ package com.tsc.test.tests.productSearchResult;
 import java.io.IOException;
 import java.util.List;
 
+import com.tsc.pages.HomePage;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 import com.tsc.data.Handler.TestDataHandler;
@@ -15,9 +16,9 @@ public class SR_TC07_Verify_ProductSearchResult_MoreOrLessButtonTest extends Bas
 	 * CER-235
 	 * CER-236
 	 */
-	@Test(groups={"ProductSearch","Regression"})
-	public void validateProductSearchResult_MoreOrLessButtonTest() throws IOException {	
-	getGlobalFooterPageThreadLocal().closePopupDialog();
+	@Test(groups={"ProductSearch","Regression","Regression_Tablet"})
+	public void validateProductSearchResult_MoreOrLessButtonTest() throws IOException {
+	(new HomePage(this.getDriver())).closeadd();
 	
 	reporter.softAssert(getglobalheaderPageThreadLocal().validateURL((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");		
 	reporter.reportLog("ProductSearch Page");
@@ -40,8 +41,9 @@ public class SR_TC07_Verify_ProductSearchResult_MoreOrLessButtonTest extends Bas
 	}
 			
 	reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(), "Showing text pattern in filters is correct", "Showing text pattern in filters is incorrect");
-	reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting), "The default setting of items per page is "+lsSearchResultPageDefaultSetting, "The default setting of items per page isn't "+lsSearchResultPageDefaultSetting);
-
+	if(!(System.getProperty("Device").equalsIgnoreCase("Mobile"))) {
+		reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting), "The default setting of items per page is "+lsSearchResultPageDefaultSetting, "The default setting of items per page isn't "+lsSearchResultPageDefaultSetting);
+	}
 	
 	productList=getProductResultsPageThreadLocal().getProductList();
 	if(productList.size()>0) {

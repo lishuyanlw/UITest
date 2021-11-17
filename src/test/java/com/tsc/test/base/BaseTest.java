@@ -36,6 +36,7 @@ public class BaseTest {
 
 	protected static final ThreadLocal<WebDriver> webDriverThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<GlobalHeaderPage> globalheaderPageThreadLocal = new ThreadLocal<>();
+	protected static final ThreadLocal<GlobalHeaderPage_Mobile> globalHeaderPage_mobileThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<HomePage> homePageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<GlobalFooterPage> globalFooterPageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<ProductResultsPage> productResultsPageThreadLocal = new ThreadLocal<>();
@@ -61,6 +62,11 @@ public class BaseTest {
 	// @return the globalheaderPageThreadLocal
 	protected static GlobalHeaderPage getglobalheaderPageThreadLocal() {
 		return globalheaderPageThreadLocal.get();
+	}
+
+	// @return the globalheaderPage_MobileThreadLocal
+	protected static GlobalHeaderPage getglobalHeaderPage_mobileThreadLocal() {
+		return globalHeaderPage_mobileThreadLocal.get();
 	}
 
 	// @return the homePageThreadLocal
@@ -101,12 +107,24 @@ public class BaseTest {
 	}
 
 	private void init() {
-
 		homePageThreadLocal.set(new HomePage(getDriver()));
 		globalheaderPageThreadLocal.set(new GlobalHeaderPage(getDriver()));
+		productResultsPageThreadLocal.set(new ProductResultsPage(getDriver()));
 		globalFooterPageThreadLocal.set(new GlobalFooterPage(getDriver()));
 		productDetailPageThreadLocal.set(new ProductDetailPage(getDriver()));
 		loginPageThreadLocal.set(new LoginPage(getDriver()));
+		reporter = new ExtentTestManager(getDriver());
+	}
+
+	private void init_Mobile() {
+		productResultsPageThreadLocal.set(new ProductResultsPage_Mobile(getDriver()));
+		globalheaderPageThreadLocal.set(new GlobalHeaderPage_Mobile(getDriver()));
+		reporter = new ExtentTestManager(getDriver());
+	}
+
+	private void init_Tablet() {
+		productResultsPageThreadLocal.set(new ProductResultsPage_Tablet(getDriver()));
+		globalheaderPageThreadLocal.set(new GlobalHeaderPage_Mobile(getDriver()));
 		reporter = new ExtentTestManager(getDriver());
 	}
 
@@ -150,16 +168,14 @@ public class BaseTest {
 			TestDeviceThreadLocal.set(lsTestDevice);
 			switch (lsTestDevice) {
 				case "Tablet":
-					//getDriver().manage().window().setSize(new Dimension(800, 600));
-					productResultsPageThreadLocal.set(new ProductResultsPage_Tablet(getDriver()));
+					init_Tablet();
 					break;
 				case "Mobile":
-					//getDriver().manage().window().setSize(new Dimension(500, 600));
-					productResultsPageThreadLocal.set(new ProductResultsPage_Mobile(getDriver()));
+					init_Mobile();
 					break;
 			}
 		} else {
-			productResultsPageThreadLocal.set(new ProductResultsPage(getDriver()));
+			init();
 		}
 
 	/*if (!strBrowser.toLowerCase().contains("android") && !strBrowser.toLowerCase().contains("ios")
@@ -167,8 +183,6 @@ public class BaseTest {
 		getDriver().manage().window().maximize();
 	}*/
 		setImplictWait(getDriver(), 60);
-		//setSessionStorage(strUrl);
-		init();
 	}
 
 

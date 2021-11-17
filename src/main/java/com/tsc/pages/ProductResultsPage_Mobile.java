@@ -40,11 +40,11 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
     @FindBy(xpath = "//product-results//span[@id='clearAll' and not(contains(@class,'refineName'))]")
     WebElement clearAllFilters;
 
-    @FindBy(xpath = "//product-results//div[@class='modalBody']//div[@class='filterTag']/span")
-    public List<WebElement> selectedFiltersListMobile;
-
     @FindBy(xpath = "//product-results//div[contains(@class,'modalBody')]//form//select//option")
     List<WebElement> sortByOptionList;
+
+    @FindBy(xpath="//div[contains(@class,'searchDiv')]")
+    WebElement lblSearchResultTitle;
 
     @Override
     public boolean chooseSortOptionByVisibleText(List<String> lsOption) {
@@ -169,8 +169,6 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
         return setOption.containsAll(setOptionYml) && setOptionYml.containsAll(setOption);
     }
 
-    @FindBy(xpath="//div[contains(@class,'searchDiv')]")
-    WebElement lblSearchResultTitle;
     @Override
     public String getProductResultPageTitle() {
         if(this.checkChildElementExistingByAttribute(this.cntSearchResultTitleContainer, "class", "ProductResults2")) {

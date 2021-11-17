@@ -51,7 +51,7 @@ public class ProductResultsPage extends BasePage{
 	@FindBy(xpath = "//product-results//div[contains(@class,'col-md-items')]//form//div[contains(@class,'filterPrpLabel')]")
 	WebElement lblItemsPerPage;
 
-	@FindBy(xpath = "//product-results//div[contains(@class,'search-filters-div')]//div[contains(@class,'col-md-items')]//select//option[1]|//product-results//div[contains(@class,'col-md-items')]//form//div[contains(@class,'recordsDiv')]")
+	@FindBy(xpath = "//product-results//div[contains(@class,'search-filters-div')]//div[contains(@class,'col-md-items')]//select//option[1]")
 	WebElement lblItemPerPageDefaultSettingNumber;
 
 	//Product results
@@ -176,7 +176,7 @@ public class ProductResultsPage extends BasePage{
 
 	public By byMoreButtonOnLeftPanel=By.xpath(".//*[contains(@class,'panel-heading')]/following-sibling::div[contains(@class,'panel-collapse')]//div[contains(@class,'seeMoreDiv') and not(contains(@class,'seeMoreTitle')) and not(@style='display: none;')][@id]");
 	public By byLessButtonOnLeftPanel=By.xpath(".//*[contains(@class,'panel-heading')]/following-sibling::div[contains(@class,'panel-collapse')]//div[contains(@class,'seeMoreDiv') and not(contains(@class,'seeMoreTitle')) and @aria-expanded='true' and not(@style='display: none;')]");
-	public By byMoreOrLessButtonOnLeftPanel=By.xpath(".//*[contains(@class,'panel-heading')]/following-sibling::div[contains(@class,'panel-collapse')]//div[contains(@class,'seeMoreDiv') and not(contains(@class,'seeMoreTitle')) and not(@style='display: none;')][@id]|.//*[contains(@class,'panel-heading')]/following-sibling::div[contains(@class,'panel-collapse')]//div[contains(@class,'seeMoreDiv') and not(contains(@class,'seeMoreTitle')) and @aria-expanded='true' and not(@style='display: none;')]");
+	public By byMoreOrLessButtonOnLeftPanel=By.xpath(".//*[contains(@class,'panel-heading')]/following-sibling::div[contains(@class,'panel-collapse')]//div[contains(@class,'seeMoreDiv') and not(contains(@class,'seeMoreTitle')) and not(@style='display: none;')][@id]");
 
 	public By bySubItemListOnLeftPanel=By.xpath(".//li");
 	public By bySubItemPanelBodyOnLeftPanel=By.xpath(".//div[@class='panel-body']");
@@ -1038,6 +1038,7 @@ public class ProductResultsPage extends BasePage{
 		List<String> lstSelectedFilterOption=new ArrayList<String>();
 		if (System.getProperty("Device").equalsIgnoreCase("Mobile")){
 			this.sortAndFilter.click();
+			getReusableActionsInstance().staticWait(1000);
 			int selectedFilterSize=this.selectedFiltersListMobile.size();
 			for(int i=0;i<selectedFilterSize;i++) {
 				getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectedFiltersListMobile.get(i));

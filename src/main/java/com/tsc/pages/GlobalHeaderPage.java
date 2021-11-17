@@ -19,9 +19,6 @@ public class GlobalHeaderPage extends BasePage{
 	@FindBy(xpath = "//div[contains(@class,'black-header')]//a[contains(@class,'black-header__showstopper')]")
 	public WebElement lnkTSBlackHeader;
 
-	@FindBy(xpath = "//section//li[@class='mega-nav-mobile__watch-tsc__showstopper']//a")
-	public WebElement lnkTSBlackHeaderMobile;
-
 	@FindBy(xpath = "//div[contains(@class,'black-header')]//*[contains(@class,'black-header__promotion-text')]")
 	public WebElement lblPromotionTextBlackHeader;
 
@@ -483,6 +480,7 @@ public class GlobalHeaderPage extends BasePage{
 	 * @author Shruti Desai
 	 */
 	public String getNameAndclickSubMenuItem(String headingName,String submenuHeading, String itemName) {
+
 		String xpathHeading =createXPath("//span[contains(text(),'{0}')]" ,headingName);
 		WebElement headingWebElement = FlyoutHeadings.findElement(By.xpath(xpathHeading));
 		getReusableActionsInstance().javascriptScrollByVisibleElement(headingWebElement);
