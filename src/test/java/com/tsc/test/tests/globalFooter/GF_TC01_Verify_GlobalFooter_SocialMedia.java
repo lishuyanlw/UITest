@@ -44,6 +44,7 @@ public class GF_TC01_Verify_GlobalFooter_SocialMedia extends BaseTest {
 
 		basePage.navigateToURL(lsBaseUrl);
 		getGlobalFooterPageThreadLocal().waitForPageLoading();
+		basePage.getReusableActionsInstance().staticWait(1000);
 
 		//Instagram
 		lsUrl=getGlobalFooterPageThreadLocal().getUrlWithSocialMediaName(lstSocialMediaLinks, "Instagram");		
@@ -51,6 +52,7 @@ public class GF_TC01_Verify_GlobalFooter_SocialMedia extends BaseTest {
 
 		basePage.navigateToURL(lsBaseUrl);
 		getGlobalFooterPageThreadLocal().waitForPageLoading();
+		basePage.getReusableActionsInstance().staticWait(1000);
 		
 		//Youtube
 		lsUrl=getGlobalFooterPageThreadLocal().getUrlWithSocialMediaName(lstSocialMediaLinks, "Youtube");		
@@ -58,6 +60,7 @@ public class GF_TC01_Verify_GlobalFooter_SocialMedia extends BaseTest {
 
 		basePage.navigateToURL(lsBaseUrl);
 		getGlobalFooterPageThreadLocal().waitForPageLoading();
+		basePage.getReusableActionsInstance().staticWait(1000);
 		
 		//Pinterest
 		lsUrl=getGlobalFooterPageThreadLocal().getUrlWithSocialMediaName(lstSocialMediaLinks, "Pinterest");		
@@ -65,6 +68,7 @@ public class GF_TC01_Verify_GlobalFooter_SocialMedia extends BaseTest {
 
 		basePage.navigateToURL(lsBaseUrl);
 		getGlobalFooterPageThreadLocal().waitForPageLoading();
+		basePage.getReusableActionsInstance().staticWait(1000);
 	}
 	
 	public void validateMajorNameAndLinks() {

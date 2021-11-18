@@ -363,6 +363,7 @@ public class GlobalFooterPage extends BasePage {
 	 */
 	public boolean waitForPageLoading() {
 		this.waitForPageToLoad();
+		
 		return (new ProductResultsPage(this.getDriver())).waitForPageLoading();
 	}
 
