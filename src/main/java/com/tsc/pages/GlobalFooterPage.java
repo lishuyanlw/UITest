@@ -342,6 +342,34 @@ public class GlobalFooterPage extends BasePage {
 	@FindBy(xpath="//div[contains(@class,'lettersDiv')]//div")
 	public List<WebElement> linkFindByAlphabet;
 	
+	//Channel Finder
+	@FindBy(xpath="//h1[contains(@class,'pageHeader')]//strong")
+	public WebElement lblChannelFinderTitle;
+	
+	@FindBy(xpath="//h1[contains(@class,'section-title')]")
+	public WebElement lblFindCableChannelTitle;
+	
+	@FindBy(xpath="//select[contains(@class,'form-control') and contains(@id,'1')]")
+	public WebElement dropDownProvince;
+	
+	@FindBy(xpath="//select[contains(@class,'form-control') and contains(@id,'2')]")
+	public WebElement dropDownCableProvider;
+	
+	@FindBy(xpath="//select[contains(@class,'form-control') and contains(@id,'3')]")
+	public WebElement dropDownCity;
+	
+	
+	
+	
+	//Meet Our Hosts
+	@FindBy(xpath="//div[contains(@class,'FullWidthContent')]//h2")
+	public List<WebElement> listOfMeetOurHosts;
+	
+	@FindBy(xpath="//div[contains(@class,'FullWidthContent')]//a")
+	public List<WebElement> linkOfMeetOurHosts;
+	
+	
+	
 	/**
 	 * Close popup dialog through clicking close button.
 	 * 
@@ -885,4 +913,48 @@ public class GlobalFooterPage extends BasePage {
 			counter++;
 		}
 	}
+	
+	
+	public boolean verifyLinks(String hrefLink) {
+		String currentURL=getDriver().getCurrentUrl();
+
+		if (currentURL.contains(hrefLink)) {
+			return currentURL.contains(hrefLink);
+		} else {
+			return currentURL.contains(hrefLink);
+		}
+	}
+	
+	public  void verifyMultipleDropDownWithTitle(WebElement firstDropDown, WebElement secondDropDown, WebElement thirdDropDown) {
+		Select select=new Select(firstDropDown);
+		int firstDropDownElementSize=select.getOptions().size();
+		for(int i=0;i<firstDropDownElementSize;i++) {
+			select.selectByIndex(i);
+			getReusableActionsInstance().waitForPageLoad();
+			String option =select.getFirstSelectedOption().getText();
+			reporter.reportLog(" Dropdown Selected Province is "+option+"");
+			reporter.softAssert(option!=null," Dropdown Selected Province is "+option+" and not NULL"," Dropdown Selected Province is "+option+" and is NULL");
+			
+			Select secondSelect=new Select(secondDropDown);
+			int secondDropDownElementSize=secondSelect.getOptions().size();
+			for(int j=0;j<secondDropDownElementSize;j++) {
+				secondSelect.selectByIndex(j);
+				getReusableActionsInstance().waitForPageLoad();
+				String secondOption =secondSelect.getFirstSelectedOption().getText();
+				reporter.reportLog(" Dropdown Selected Province is "+option+" and Dropdown Selected Cable Provider is "+secondOption+"");
+				reporter.softAssert(secondOption!=null," Dropdown Selected Cable provider is "+secondOption+" and not NULL"," Dropdown Selected Province is "+secondOption+" and is NULL");
+				Select thirdSelect=new Select(thirdDropDown);
+				int thirdDropDownElementSize=thirdSelect.getOptions().size();
+				for(int k=0;k<thirdDropDownElementSize;k++) {
+					thirdSelect.selectByIndex(k);
+					getReusableActionsInstance().waitForPageLoad();
+					String thirdOption =thirdSelect.getFirstSelectedOption().getText();
+					reporter.reportLog("Dropdown Selected Province is "+option+" and Dropdown Selected Cable Provider is "+secondOption+" Dropdown Selected City is "+thirdOption+"");
+					reporter.softAssert(thirdOption!=null," Dropdown Selected Cable provider is "+thirdOption+" and not NULL"," Dropdown Selected Province is "+thirdOption+" and is NULL");
+					
+				}
+			}
+		}
+	}
+	
 }

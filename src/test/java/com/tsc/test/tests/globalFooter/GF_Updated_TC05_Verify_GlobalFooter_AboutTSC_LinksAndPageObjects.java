@@ -22,7 +22,7 @@ public class GF_Updated_TC05_Verify_GlobalFooter_AboutTSC_LinksAndPageObjects ex
         reporter.reportLog("Global Footer Section");
 
         List<List<String>> lstNameAndLinks = TestDataHandler.constantData.getFooterSection().getLst_NameAndLinks();
-
+/*
         List<String> global_footer_items = new ArrayList<>();
         //Adding links present in About TSC to be verified
         global_footer_items.add("Terms of Use");
@@ -116,6 +116,7 @@ public class GF_Updated_TC05_Verify_GlobalFooter_AboutTSC_LinksAndPageObjects ex
                 getGlobalFooterPageThreadLocal().verifyFindByAlphabet(getGlobalFooterPageThreadLocal().dropDownShopByBrandFilterByCategory, getGlobalFooterPageThreadLocal().linkFindByAlphabet);
                 
             }
+            */
         
             //Channel Finder
             String lsServiceCF = "Channel Finder";
@@ -126,16 +127,62 @@ public class GF_Updated_TC05_Verify_GlobalFooter_AboutTSC_LinksAndPageObjects ex
                 if(testDataCF.isEmpty()) {
                     reporter.reportLogFail("Unable to find '"+lsServiceCF+"' link.");
                 }
-                reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHrefCF,testData.get("Link")),"The current '"+lsServiceCF+"' href of "+lsHrefCF+" is equal to "+testDataCF.get("Link"),"The current '"+lsServiceCF+"' href of "+lsHrefCF+" is not equal to "+testDataCF.get("Link"));
+                reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHrefCF,testDataCF.get("Link")),"The current '"+lsServiceCF+"' href of "+lsHrefCF+" is equal to "+testDataCF.get("Link"),"The current '"+lsServiceCF+"' href of "+lsHrefCF+" is not equal to "+testDataCF.get("Link"));
 
-                if(!getGlobalFooterPageThreadLocal().goToService(lsServiceCF,getGlobalFooterPageThreadLocal().aboutUsPageTitle)) {
+                if(!getGlobalFooterPageThreadLocal().goToService(lsServiceCF,getGlobalFooterPageThreadLocal().lblChannelFinderTitle)) {
                     reporter.reportLogFail("Unable to navigate to '"+lsServiceCF+"' page objects.");
                 }
                 else {
+                	/*
                     //Verifying page title
-                    String pageTitle = getGlobalFooterPageThreadLocal().getPageTitle(getGlobalFooterPageThreadLocal().aboutUsPageTitle);
+                    String pageTitle = getGlobalFooterPageThreadLocal().getPageTitle(getGlobalFooterPageThreadLocal().lblChannelFinderTitle);
                     reporter.softAssert(pageTitle.equalsIgnoreCase(lsServiceCF),"Page Title matches for global footer link: "+lsServiceCF+" and  title is: "+pageTitle,"Page Title doesn't match for global footer link: "+lsServiceCF+" and  title is: "+pageTitle);
+                    
+                    //Verifying Page Elements
+                    reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lblFindCableChannelTitle),"The text Find Cable Channel is displayed","The text Find Cable Channel is not displayed");
+                    */
+                //
+                    getGlobalFooterPageThreadLocal().verifyMultipleDropDownWithTitle(getGlobalFooterPageThreadLocal().dropDownProvince, getGlobalFooterPageThreadLocal().dropDownCableProvider, getGlobalFooterPageThreadLocal().dropDownCity);
+                
+                
                 }
+                
+            //Meet The Hosts
+      /*      String lsServiceMH = "Meet the Hosts";
+            String actualPageTitle="Meet Our Hosts";
+            reporter.reportLog(lsServiceMH);
+            WebElement selectedItemMH=getGlobalFooterPageThreadLocal().getServiceWebElement(lsServiceMH);
+            String lsHrefMH=basePage.getElementHref(selectedItemMH);
+            HashMap<String,String> testDataMH=getGlobalFooterPageThreadLocal().getTestDataWithSpecificName(lstNameAndLinks,lsServiceMH,true);
+                   if(testDataMH.isEmpty()) {
+                        reporter.reportLogFail("Unable to find '"+lsServiceMH+"' link.");
+                    }
+                    reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHrefMH,testDataMH.get("Link")),"The current '"+lsServiceMH+"' href of "+lsHrefMH+" is equal to "+testDataMH.get("Link"),"The current '"+lsServiceMH+"' href of "+lsHrefMH+" is not equal to "+testDataMH.get("Link"));
+
+                    if(!getGlobalFooterPageThreadLocal().goToService(lsServiceMH,getGlobalFooterPageThreadLocal().aboutUsPageTitle)) {
+                        reporter.reportLogFail("Unable to navigate to '"+lsServiceMH+"' page objects.");
+                    }
+                    else {
+                        //Verifying page title
+                        String pageTitle = getGlobalFooterPageThreadLocal().getPageTitle(getGlobalFooterPageThreadLocal().aboutUsPageTitle);
+                        reporter.softAssert(pageTitle.equalsIgnoreCase(actualPageTitle),"Page Title matches for global footer link: "+lsServiceMH+" and  title is: "+pageTitle,"Page Title doesn't match for global footer link: "+lsServiceMH+" and  title is: "+pageTitle);
+                    for(int i=0;i<getGlobalFooterPageThreadLocal().listOfMeetOurHosts.size();i++) {
+                    	String hostName=getGlobalFooterPageThreadLocal().listOfMeetOurHosts.get(i).getText();
+                    	reporter.reportLog("Host Name is "+hostName+"");
+                    	String hostHref=getGlobalFooterPageThreadLocal().linkOfMeetOurHosts.get(i).getAttribute("href");
+                    	reporter.reportLog("Host Name URL is "+hostHref+"");
+                    	getGlobalFooterPageThreadLocal().linkOfMeetOurHosts.get(i).click();
+                    	
+                    	//
+                    	reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(hostHref),"The current href of "+hostHref+" is contains in Current URL","The current '"+lsServiceMH+"' href of "+lsHrefMH+" is not equal to "+testDataMH.get("Link"));
+
+                    	//Navigate to Meet The hosts
+                    	getGlobalFooterPageThreadLocal().goToService(lsServiceMH,getGlobalFooterPageThreadLocal().aboutUsPageTitle);
+                    	
+                    }
+                    
+                    } */
+                    
         
     }
 }
