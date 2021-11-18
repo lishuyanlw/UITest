@@ -11,7 +11,8 @@ import com.tsc.test.base.BaseTest;
 
 public class PD_TC02_Verify_ProductDetail_RightSection_ItemDetails extends BaseTest{
 	/*
-	 * CER-572	 
+	 * CER-572	
+	 *
 	 */
 	@Test(groups={"ProductDetail","Regression"})
 	public void validateRightSection_ItemDetails() throws IOException {	
@@ -58,36 +59,10 @@ public class PD_TC02_Verify_ProductDetail_RightSection_ItemDetails extends BaseT
 		//Verify product style
 		reporter.reportLog("Verify product style");	
 		reporter.softAssert(basePage.getReusableActionsInstance().isElementVisible(getProductDetailPageThreadLocal().cntProductStyleSection),"The product style section is displaying correctly","The product style section is not displaying correctly");
-		reporter.softAssert(!basePage.getElementText(getProductDetailPageThreadLocal().lblProductStyleStatic).isEmpty(),"The product style label message is not empty","The product style label message is empty");
-		reporter.softAssert(!basePage.getElementText(getProductDetailPageThreadLocal().lblProductStyleTitle).isEmpty(),"The product style title message is not empty","The product style title message is empty");
+		reporter.softAssert(!basePage.getElementText(getProductDetailPageThreadLocal().lblRadioProductStyleStatic).isEmpty(),"The product style label message is not empty","The product style label message is empty");
+		reporter.softAssert(!basePage.getElementText(getProductDetailPageThreadLocal().lblRadioProductStyleTitle).isEmpty(),"The product style title message is not empty","The product style title message is empty");
 		reporter.softAssert(getProductDetailPageThreadLocal().lstStyleRadioList.size()>0,"The product style radio button count is greater than 0","The product style radio button count is not greater than 0");
-		
-		//Verify product TrueFit
-		if(!getProductDetailPageThreadLocal().cntProductTrueFitSection.getCssValue("height").equalsIgnoreCase("0px")) {
-			reporter.reportLog("Verify product TrueFit");	
-			reporter.softAssert(basePage.getReusableActionsInstance().isElementVisible(getProductDetailPageThreadLocal().imgProductTrueFitLogo),"The product TrueFit icon is displaying correctly","The product TrueFit icon is not displaying correctly");
-			reporter.softAssert(!basePage.getElementHref(getProductDetailPageThreadLocal().lnkProductTrueFitLink).isEmpty(),"The product TrueFit link is not empty","The product TrueFit link is empty");
-		}
-		
-		//Verify product size
-		if(getProductDetailPageThreadLocal().judgeStyleSizeAvailable()) {
-			reporter.reportLog("Verify product size");	
-			reporter.softAssert(!basePage.getElementText(getProductDetailPageThreadLocal().lblSizeStatic).isEmpty(),"The product size label message is not empty","The product size label message is empty");
-			reporter.softAssert(basePage.getReusableActionsInstance().isElementVisible(getProductDetailPageThreadLocal().selectSizeOption),"The product Size option is displaying correctly","The product Size option is not displaying correctly");
-			if(getProductDetailPageThreadLocal().IsSoldOutExisting()) {
-				reporter.softAssert(!basePage.getElementText(getProductDetailPageThreadLocal().lblSoldOut).isEmpty(),"The product Soldout message is not empty","The product Soldout message is empty");
-			}			
-		}
-		
-		//Verify product quantity
-		reporter.reportLog("Verify product quantity");	
-		reporter.softAssert(!basePage.getElementText(getProductDetailPageThreadLocal().lblQuantityStatic).isEmpty(),"The product quantity label message is not empty","The product quantity label message is empty");
-		reporter.softAssert(basePage.getReusableActionsInstance().isElementVisible(getProductDetailPageThreadLocal().selectQuantityOption),"The product Quantity option is displaying correctly","The product Quantity option is not displaying correctly");
-		if(getProductDetailPageThreadLocal().IsQuantityLeftExisting()) {
-			reporter.softAssert(!basePage.getElementText(getProductDetailPageThreadLocal().lblQuantityLeft).isEmpty(),"The product Quantity left message is not empty","The product Quantity left message is empty");
-		}
-		reporter.softAssert(basePage.getReusableActionsInstance().isElementVisible(getProductDetailPageThreadLocal().btnAddToBag),"The AddToBag button is displaying correctly","The AddToBag button is not displaying correctly");
-		
+
 		//Verify Social media
 		reporter.reportLog("Verify Social media");	
 		reporter.softAssert(basePage.getReusableActionsInstance().isElementVisible(getProductDetailPageThreadLocal().lnkFavShareMobile),"The FavShareMobile section is displaying correctly","The FavShareMobile section is not displaying correctly");

@@ -3,20 +3,14 @@ package com.tsc.test.base;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Method;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import com.tsc.pages.*;
 import org.apache.http.client.ClientProtocolException;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.ITestContext;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -24,17 +18,8 @@ import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 
-import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.openqa.selenium.Cookie;
 import com.tsc.data.Handler.TestDataHandler;
-import com.tsc.pages.GlobalheaderPage;
-import com.tsc.pages.HomePage;
-import com.tsc.pages.LoginPage;
-import com.tsc.pages.ProductDetailPage;
-import com.tsc.pages.ProductResultsPage;
-import com.tsc.pages.GlobalFooterPage;
+import com.tsc.pages.GlobalHeaderPage;
 
 import extentreport.ExtentTestManager;
 import utils.BrowserDrivers;
@@ -50,7 +35,7 @@ public class BaseTest {
 	private Map<String, String> RunParameters;
 
 	protected static final ThreadLocal<WebDriver> webDriverThreadLocal = new ThreadLocal<>();
-	protected static final ThreadLocal<GlobalheaderPage> globalheaderPageThreadLocal = new ThreadLocal<>();
+	protected static final ThreadLocal<GlobalHeaderPage> globalheaderPageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<HomePage> homePageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<GlobalFooterPage> globalFooterPageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<ProductResultsPage> productResultsPageThreadLocal = new ThreadLocal<>();
@@ -71,7 +56,7 @@ public class BaseTest {
 	
 	// @return the globalheaderPageThreadLocal
 	
-	protected static GlobalheaderPage getglobalheaderPageThreadLocal() {
+	protected static GlobalHeaderPage getglobalheaderPageThreadLocal() {
 		return globalheaderPageThreadLocal.get();
 	}
 	
@@ -100,7 +85,7 @@ public class BaseTest {
 	private void init() {
 		
 		homePageThreadLocal.set(new HomePage(getDriver()));
-		globalheaderPageThreadLocal.set(new GlobalheaderPage(getDriver()));
+		globalheaderPageThreadLocal.set(new GlobalHeaderPage(getDriver()));
 		globalFooterPageThreadLocal.set(new GlobalFooterPage(getDriver()));
 		productResultsPageThreadLocal.set(new ProductResultsPage(getDriver()));
 		productDetailPageThreadLocal.set(new ProductDetailPage(getDriver()));
