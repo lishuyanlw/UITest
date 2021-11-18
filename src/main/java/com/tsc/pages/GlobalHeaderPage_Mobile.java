@@ -40,7 +40,7 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
         }
         if(submenuHeading!=null) {
             String xpathSubMenu =createXPath("//span[contains(@class,'mobile__categories-item__text') and contains(text(),'{0}')]" ,submenuHeading);
-            List<WebElement> SubMenu = Categories.findElements(By.xpath(xpathSubMenu));
+            List<WebElement> SubMenu = getDriver().findElements(By.xpath(xpathSubMenu));
             if(SubMenu.size()>0){
                 getReusableActionsInstance().scrollToElement(SubMenu.get(0));
                 String Title = SubMenu.get(0).getText();
@@ -50,7 +50,7 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
                     String title = null;
                     String xpathSubmenuItem;
                     List<WebElement> SubMenuItem;
-                    xpathSubmenuItem=createXPath("//li[contains(@class,'mobile__sub-categories-item__wrapper')]/a[contains(text(),'{0}')]",itemName);
+                    xpathSubmenuItem=createXPath("//li[contains(@class,'mobile__sub-categories-item__wrapper')]/a/span[contains(text(),'{0}')]",itemName);
                     SubMenuItem=getDriver().findElements(By.xpath(xpathSubmenuItem));
                     if(SubMenuItem.size()>0){
                         getReusableActionsInstance().scrollToElement(SubMenuItem.get(0));
