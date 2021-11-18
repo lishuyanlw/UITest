@@ -121,7 +121,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
     @Override
     public boolean getClearAllFiltersButtonStatus() {
         this.sortAndFilter.click();
-        return this.selectedFiltersList.size()>=1;
+        return super.getClearAllFiltersButtonStatus();
     }
 
     @Override
