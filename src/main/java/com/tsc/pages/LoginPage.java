@@ -119,11 +119,12 @@ public class LoginPage extends BasePage {
 		this.inputUserName.sendKeys(lsUserName);
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputPassword);
 		this.inputPassword.sendKeys(lsPassword);
-				
+		getReusableActionsInstance().staticWait(1000);
+		
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSubmit);
 		this.btnSubmit.click();
 		getReusableActionsInstance().javascriptScrollToTopOfPage();
-		getReusableActionsInstance().staticWait(1000);
+		getReusableActionsInstance().staticWait(5000);
 		
 		return waitForCondition(Driver->{return (new GlobalFooterPage(this.getDriver())).lblMyAccountLoginName.getText().toUpperCase().contains(lsFirstName.toUpperCase());},30000);
 				

@@ -30,15 +30,15 @@ public class GF_TC04_Verify_GlobalFooter_TSCCustomerHub_LinksAndPageObjects exte
 		reporter.reportLog("Global Footer Section");		
 		
 		List<List<String>> lstNameAndLinks=TestDataHandler.constantData.getFooterSection().getLst_NameAndLinks();
-		String lsService;
+		String lsService,lsHref,lsYmlHref;
 		ArrayList<WebElement> elementList=new ArrayList<WebElement>();
 		
 		//Customer service
 		lsService="Customer Service";
 		reporter.reportLog(lsService);
 		WebElement selectedItem=getGlobalFooterPageThreadLocal().getServiceWebElement(lsService);		
-		String lsHref=basePage.getElementHref(selectedItem);		
-		String lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsService,true);
+		lsHref=basePage.getElementHref(selectedItem);		
+		lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsService,true);
 		if(lsYmlHref.isEmpty()) {
 			reporter.reportLogFail("Unable to find '"+lsService+"' link.");
 		}		

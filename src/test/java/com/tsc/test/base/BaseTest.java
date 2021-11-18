@@ -139,7 +139,7 @@ public class BaseTest {
 			TestDeviceThreadLocal.set(lsTestDevice);
 			switch (lsTestDevice) {
 				case "Tablet":
-					getDriver().manage().window().setSize(new Dimension(700, 600));
+					//getDriver().manage().window().setSize(new Dimension(700, 600));
 					globalFooterPageThreadLocal.set(new GlobalFooterPage_Tablet(getDriver()));
 					break;
 				case "Mobile":

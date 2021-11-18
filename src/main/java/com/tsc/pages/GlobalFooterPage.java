@@ -589,6 +589,7 @@ public class GlobalFooterPage extends BasePage {
 	 * @author Wei.Li
 	 */
 	public boolean goToService(String lsService, WebElement lblIndicator) {
+		String lsUrl=this.URL();
 		WebElement selectedItem = this.getServiceWebElement(lsService);
 		if (selectedItem == null) {
 			return false;
@@ -597,11 +598,10 @@ public class GlobalFooterPage extends BasePage {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(selectedItem);
 		selectedItem.click();
 		
+		waitForCondition(Driver -> { return !lsUrl.equalsIgnoreCase(this.URL());}, 60000);		
 		(new ProductResultsPage(this.getDriver())).waitForPageLoading();
 		getReusableActionsInstance().staticWait(2000);
-		return waitForCondition(Driver -> {
-			return lblIndicator.isDisplayed();
-		}, 60000);
+		return waitForCondition(Driver -> {return lblIndicator.isDisplayed();}, 60000);
 	}
 
 	/**
@@ -861,8 +861,7 @@ public class GlobalFooterPage extends BasePage {
 		
 	}
 	
-	public void verifyTSCCustomerHubLlinks(List<List<String>> lstNameAndLinks) {
-		System.out.println("Base function");
+	public void verifyTSCCustomerHubLlinks(List<List<String>> lstNameAndLinks) {		
 		BasePage basePage=new BasePage(this.getDriver());
 		String lsText,lsYmlHref,lsHref;
 		for(WebElement item:this.lnkTSCCustomerHubAllLinks) {
