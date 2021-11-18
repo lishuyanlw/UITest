@@ -16,9 +16,6 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
     @FindBy(xpath = "//section//div[@class='secondary-navigation__rhs']//button[@id='secondary-navigation-mobile-hamburger']")
     WebElement menuButton;
 
-    @FindBy(xpath = "//section//nav[@class='mega-nav-mobile__nav-items']//ul//li//button")
-    WebElement FlyoutHeadings;
-
     @FindBy(xpath = "//section//nav[@class='mega-nav-mobile__wrapper']//ul//li//button")
     WebElement Categories;
 
@@ -28,9 +25,9 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
     @Override
     public String getNameAndclickSubMenuItem(String headingName,String submenuHeading, String itemName) {
         this.menuButton.click();
-        getReusableActionsInstance().staticWait(700);
         String xpathHeading =createXPath("//li[contains(@class,'mobile__nav-items')]//span[contains(text(),'{0}')]" ,headingName);
-        WebElement headingWebElement = FlyoutHeadings.findElement(By.xpath(xpathHeading));
+        WebElement headingWebElement = getDriver().findElement(By.xpath(xpathHeading));
+        waitForCondition(Driver->{return headingWebElement.isDisplayed();},7000);
         getReusableActionsInstance().scrollToElement(headingWebElement);
 
         if(headingWebElement!=null || submenuHeading==null) {
