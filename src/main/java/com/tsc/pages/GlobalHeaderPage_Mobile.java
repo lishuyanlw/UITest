@@ -19,7 +19,7 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
     @FindBy(xpath = "//section//nav[@class='mega-nav-mobile__nav-items']//ul//li//button")
     WebElement FlyoutHeadings;
 
-    @FindBy(xpath = "//section//nav[@class='mega-nav-mobile__wrapper']//ul//li//button//span")
+    @FindBy(xpath = "//section//nav[@class='mega-nav-mobile__wrapper']//ul//li//button")
     WebElement Categories;
 
     @FindBy(xpath = "//section//div[@class='mega-nav-mobile__scroll']//ul//li//a")
