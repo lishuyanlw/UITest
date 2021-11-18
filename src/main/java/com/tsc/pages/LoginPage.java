@@ -3,6 +3,7 @@ package com.tsc.pages;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -101,14 +102,14 @@ public class LoginPage extends BasePage {
 	 */
 	public boolean Login(String lsUserName, String lsPassword,String lsFirstName) {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInMainMenu);
-		String lsTestDevice = System.getProperty("Device").trim();
-		if(lsTestDevice.equalsIgnoreCase("Tablet")||lsTestDevice.equalsIgnoreCase("iPad")||lsTestDevice.equalsIgnoreCase("Mobile")) {
+		String strBrowser = System.getProperty("Browser").trim();
+		if (strBrowser.toLowerCase().contains("android") || strBrowser.toLowerCase().contains("ios")
+				|| strBrowser.toLowerCase().contains("mobile")) {		
 			this.btnSignInMainMenu.click();
-		}
-		else {
+		} else {
 			getReusableActionsInstance().scrollToElement(this.btnSignInMainMenu);
-		}		
-		getReusableActionsInstance().staticWait(300);
+		}			
+		getReusableActionsInstance().staticWait(1000);
 		
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInNav);
 		this.btnSignInNav.click();
