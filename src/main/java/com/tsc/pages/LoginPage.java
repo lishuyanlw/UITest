@@ -101,6 +101,7 @@ public class LoginPage extends BasePage {
 	 * @author Wei.Li
 	 */
 	public boolean Login(String lsUserName, String lsPassword,String lsFirstName) {
+		getReusableActionsInstance().javascriptScrollToTopOfPage();
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInMainMenu);
 		String strBrowser = System.getProperty("Browser").trim();
 		if (strBrowser.toLowerCase().contains("android") || strBrowser.toLowerCase().contains("ios")
