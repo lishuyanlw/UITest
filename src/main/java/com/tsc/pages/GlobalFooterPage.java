@@ -595,6 +595,9 @@ public class GlobalFooterPage extends BasePage {
 
 		getReusableActionsInstance().javascriptScrollByVisibleElement(selectedItem);
 		selectedItem.click();
+		
+		(new ProductResultsPage(this.getDriver())).waitForPageLoading();
+		getReusableActionsInstance().staticWait(2000);
 		return waitForCondition(Driver -> {
 			return lblIndicator.isDisplayed();
 		}, 60000);
