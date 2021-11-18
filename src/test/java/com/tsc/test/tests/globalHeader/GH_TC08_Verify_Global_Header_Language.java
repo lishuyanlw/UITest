@@ -32,15 +32,15 @@ public class GH_TC08_Verify_Global_Header_Language extends BaseTest {
 		getglobalheaderPageThreadLocal().hoverOnWatchTSC();	
 		int sizeDpdMenu=getglobalheaderPageThreadLocal().lstWatchTSCDpdMenu.size();
 		List<String> lstFrenchNameWatchTSCdpM=getglobalheaderPageThreadLocal().getFrenchNameymlData(lstWatchUsLiveNameAndLinks);
-		reporter.softAssert(lstWatchUsLiveNameAndLinks.size()==sizeDpdMenu,"Number of Watch TSC drop down menu element maches with test Data","Number of Watch TSC drop down menu elements are not maching with test Data");
+		/*reporter.softAssert(lstWatchUsLiveNameAndLinks.size()==sizeDpdMenu,"Number of Watch TSC drop down menu element maches with test Data","Number of Watch TSC drop down menu elements are not maching with test Data");
 		reporter.softAssert((lstHeaderFrenchName.contains(nameTodayShowstopper)), "Today's Showstopper-FR text is matches with yml data file.", "Today's Showstopper-FR text is not matches with data file.");
 		reporter.softAssert((lstHeaderFrenchName.contains(nameWatchTSC)), "Watch TSC-FR text is matches with yml data file.", "Watch TSC-FR text is not matches with yml data file.");
-		for(String frenchName:lstFrenchNameWatchTSCdpM) {
+		*/for(String frenchName:lstFrenchNameWatchTSCdpM) {
 			WebElement WatchTSCelement=getglobalheaderPageThreadLocal().getWatchTSCdPMElements(frenchName);
 			getglobalheaderPageThreadLocal().verifyWatchTSCdpDMenu(WatchTSCelement,true,"Watch TSC-FR");
 			getglobalheaderPageThreadLocal().goBackHomePage();
 			getglobalheaderPageThreadLocal().hoverOnWatchTSC();	
-		}
+		}/*
 		//reporter.reportLog("FLyout heading yml data :"+basePage.getUTFEnabledDataList(lstFlyoutHeading_FR));
 		List<WebElement> headingsElement=getglobalheaderPageThreadLocal().getFlyoutHeadingsWebelement();
 		for(WebElement lsHeading:headingsElement) {
@@ -50,7 +50,7 @@ public class GH_TC08_Verify_Global_Header_Language extends BaseTest {
 			//reporter.reportLog("Runtime flyout heading after UTF_8 :"+flyoutHeading);
 			reporter.softAssert(basePage.getUTFEnabledDataList(lstFlyoutHeading_FR).contains(flyoutHeading),"Flyout displays drpartment  "+flyoutHeading+" and it's validated.","Flyout is not displaying heading properly for "+flyoutHeading);
 			reporter.softAssert(getglobalheaderPageThreadLocal().verifyhrefFlyoutHeading(lsHeading), "Href is present for Flyout Heading "+flyoutHeading, "Href is not preset for "+flyoutHeading);
-		}
+		}*/
 		//Switch to English
 		getGlobalFooterPageThreadLocal().switchlanguage();
 	}	

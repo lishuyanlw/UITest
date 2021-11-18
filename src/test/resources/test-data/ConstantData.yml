@@ -33,7 +33,7 @@ headerSection:
   lst_WatchUsLiveNameAndLinks: 
     - ["Watch Us Live","En direct","/pages/watchuslive?ic=HP_WatchUsLive"]
     - ["Deals","Aubaines","/pages/todaysshowstopper?ic=HP_TodaysShowstopper"]
-    - ["Program Guide","Grille horaire","/pages/programguide?ic=HP_ProgramGuide"]
+    - ["Program Guide","Grille horaire","/pages/programguide/daily?ic=HP_ProgramGuide"]
     - ["Car Gadgets","Car Gadgets","/pages/todaysshowstopper?ic=HP_TodaysShowstopper"]
     - ["Designer Footwear","Nouveaux arrivages","/pages/productresults?nav=n:128153-2069664&ic=HDR_FlyoutNav_Shoes_And_Handbags_Designer_Footwear"]
     - ["On Air Products","Sur les ondes","/pages/productresults?ic=HP_OnAir_T&dimensions=2037548&page=1&pageSize=36&rd=false"]

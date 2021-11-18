@@ -843,8 +843,15 @@ public class GlobalHeaderPage extends BasePage{
 			 (new GlobalFooterPage(this.getDriver())).waitForPageLoading();
 			 String lsUrlWatchTSCdpItem=this.removeLastSlashFromUrl(this.URL());
 			 if(bCheckUrl) {
-				 reporter.softAssert(lsUrlWatchTSCdpItem.equalsIgnoreCase(lsHrefWatchTSCdpMenu), "The Url of "+lsUrlWatchTSCdpItem+"  after clicking "+lsTitle+" in "+dpDownMenuName+" is equal to the href of "+lsHrefWatchTSCdpMenu, "The Url of "+lsUrlWatchTSCdpItem+"  after clicking "+lsTitle+" in "+dpDownMenuName+" is not equal to the href of "+lsHrefWatchTSCdpMenu);
-			 }
+				 System.out.println(lsTitle);
+				 //need to use if condition as redirected link for Program Guide/Grille horaire is different.
+				 if(lsHrefWatchTSCdpMenu.contains("programguide")) {
+					 String lnk_ProgramGuideRedirect="https://qa-tsc.tsc.ca/pages/programguide/daily?ic=HP_ProgramGuide";
+					 reporter.softAssert(lsUrlWatchTSCdpItem.equalsIgnoreCase(lnk_ProgramGuideRedirect), "The Url of "+lsUrlWatchTSCdpItem+"  after clicking "+lsTitle+" in "+dpDownMenuName+" is equal to the href of "+lsHrefWatchTSCdpMenu, "The Url of "+lsUrlWatchTSCdpItem+"  after clicking "+lsTitle+" in "+dpDownMenuName+" is not equal to the href of "+lsHrefWatchTSCdpMenu);
+				 }else {
+					 reporter.softAssert(lsUrlWatchTSCdpItem.equalsIgnoreCase(lsHrefWatchTSCdpMenu), "The Url of "+lsUrlWatchTSCdpItem+"  after clicking "+lsTitle+" in "+dpDownMenuName+" is equal to the href of "+lsHrefWatchTSCdpMenu, "The Url of "+lsUrlWatchTSCdpItem+"  after clicking "+lsTitle+" in "+dpDownMenuName+" is not equal to the href of "+lsHrefWatchTSCdpMenu);
+				}
+			}
 		 }
 		 
 		 
