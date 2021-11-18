@@ -25,9 +25,10 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
     @Override
     public String getNameAndclickSubMenuItem(String headingName,String submenuHeading, String itemName) {
         this.menuButton.click();
-        String xpathHeading =createXPath("//li[contains(@class,'mobile__nav-items')]//span[contains(text(),'{0}')]" ,headingName);
+        String xpathHeading =createXPath("//div[contains(@class,'mobile__scroll-main')]//button[contains(@class,'mobile__nav-items__item-button')]/span[contains(text(),'{0}')]" ,headingName);
         WebElement headingWebElement = getDriver().findElement(By.xpath(xpathHeading));
         waitForCondition(Driver->{return headingWebElement.isDisplayed();},7000);
+        getReusableActionsInstance().javascriptScrollByVisibleElement(headingWebElement);
         getReusableActionsInstance().scrollToElement(headingWebElement);
 
         if(headingWebElement!=null || submenuHeading==null) {
