@@ -82,6 +82,7 @@ public class GF_TC02_Verify_GlobalFooter_CustomerHubLinksAndAboutTSCLinks extend
 			for(WebElement item:getGlobalFooterPageThreadLocal().lnkTSCCustomerHubAllLinksMobile) {
 				getGlobalFooterPageThreadLocal().buttonTSCCustomerHubMobile.click();
 				lsText=basePage.getElementText(item);
+				getGlobalFooterPageThreadLocal().applyStaticWait(1000);
 				lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsText,true);
 				if(lsYmlHref.isEmpty()) {
 					reporter.reportLogFail("Unable to find "+lsText+" link.");
@@ -109,6 +110,7 @@ public class GF_TC02_Verify_GlobalFooter_CustomerHubLinksAndAboutTSCLinks extend
 			for(WebElement item:getGlobalFooterPageThreadLocal().lnkAboutTSCAllLinksMobile) {
 				getGlobalFooterPageThreadLocal().buttonAboutTSCMobile.click();
 				lsText=basePage.getElementText(item);
+				getGlobalFooterPageThreadLocal().applyStaticWait(1000);
 				lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsText,true);
 				if(lsYmlHref.isEmpty()) {
 					reporter.reportLogFail("Unable to find "+lsText+" link.");
