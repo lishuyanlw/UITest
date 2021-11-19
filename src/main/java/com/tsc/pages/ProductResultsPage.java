@@ -1270,7 +1270,8 @@ public class ProductResultsPage extends BasePage{
 				this.selectedProductItem.productConvertedNumber=lsFinal;
 				this.selectedProductItem.productNowPrice=item.findElement(this.byProductNowPrice).getText().trim();
 				this.selectedProductItem.productEasyPay=item.findElement(this.byProductEasyPay).getText().trim();
-
+				this.selectedProductItem.productNavigationUrl=this.URL();
+				
 				item.click();
 				return this.waitForPageLoading();
 			}
@@ -1313,6 +1314,7 @@ public class ProductResultsPage extends BasePage{
 		public String productNowPrice;
 		public boolean bProductWasPrice;
 		public String productEasyPay;
+		public String productNavigationUrl;
 	}
 }		      	
 

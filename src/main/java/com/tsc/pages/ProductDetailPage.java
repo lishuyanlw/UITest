@@ -244,9 +244,13 @@ public class ProductDetailPage extends BasePage {
 	
 	@FindBy(xpath = "//form[@id='pdpForm']//div[@class='qty-container']//div[@class='qty-left']")
 	public WebElement lblQuantityLeft;
-		
+	
+	//Add to Bag button section
 	@FindBy(xpath = "//form[@id='pdpForm']//div[@id='divAddToCart']//button[@id='btnAddToCart']")
 	public WebElement btnAddToBag;
+	
+	@FindBy(xpath = "//form[@id='pdpForm']//div[@id='divAddToCart']//div[@id='divAdvanceOrder']")
+	public WebElement lblAdvanceOrderMsg;
 	
 	//Social links part
 	@FindBy(xpath = "//div[@id='pdpMainDiv']//div[@id='favShare']/div[contains(@class,'mob-middle-social')]/div")
@@ -474,9 +478,81 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//div[@role='form']//div[@class='pr-submit']//div[contains(@class,'pr-logo-container')]//div[contains(@class,'pr-logo')]")
 	public WebElement imgWriteReviewPowerBy;
 	
-	//Add to Bag part
-	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//div[@role='form']//div[@class='pr-submit']//div[contains(@class,'pr-logo-container')]//div[contains(@class,'pr-logo')]")
+	//Add to Bag popup window part
+	@FindBy(xpath = "//div[@id='tagCartContainer']")
 	public WebElement cntAddToBagOoverlay;
+	
+	@FindBy(xpath = "//div[contains(@class,'cart-section')]")
+	public WebElement cntAddToBagPopupWindow;
+	
+	@FindBy(xpath = "//div[contains(@class,'cart-section')]//button[@class='add-to-bag__button-close']")
+	public WebElement btnAddToBagPopupWindowClose;
+	
+	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag-title']")
+	public WebElement lblAddToBagPopupWindowTitle;
+	
+	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__details']")
+	public WebElement cntAddToBagPopupWindowDetailsSection;
+	
+	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__details']//div[@class='add-to-bag__inside-left']")
+	public WebElement cntAddToBagPopupWindowDetailsLeftSection;
+	
+	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__details']//div[@class='add-to-bag__inside-left']//div[@class='badgeWrap']//img")
+	public WebElement imgAddToBagPopupWindowDetailsProductBadge;
+	
+	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__details']//div[@class='add-to-bag__inside-left']//a")
+	public WebElement lnkAddToBagPopupWindowDetailsProductImage;
+	
+	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__details']//div[@class='add-to-bag__inside-left']//a//img")
+	public WebElement imgAddToBagPopupWindowDetailsProductImage;
+	
+	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__details']//div[@class='add-to-bag__inside-right']")
+	public WebElement cntAddToBagPopupWindowDetailsRightSection;
+	
+	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__details']//div[@class='add-to-bag__inside-right']//a[@class='add-to-bag__item-link']")
+	public WebElement lnkAddToBagPopupWindowDetailsProductInfo;
+	
+	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__details']//div[@class='add-to-bag__inside-right']//a[@class='add-to-bag__item-link']//span[@class='add-to-bag__product-name']")
+	public WebElement lblAddToBagPopupWindowDetailsProductProductName;
+	
+	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__details']//div[@class='add-to-bag__inside-right']//a[@class='add-to-bag__item-link']//span[@class='add-to-bag__product-style']")
+	public WebElement lblAddToBagPopupWindowDetailsProductProductStyle;
+	
+	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__details']//div[@class='add-to-bag__inside-right']//a[@class='add-to-bag__item-link']//span[@class='add-to-bag__product-size']")
+	public WebElement lblAddToBagPopupWindowDetailsProductProductSize;
+	
+	public By byAddToBagPopupWindowDetailProductName = By.xpath(".//span[@class='add-to-bag__product-name']");
+	
+	public By byAddToBagPopupWindowDetailProductStyle = By.xpath(".//span[@class='add-to-bag__product-style']");
+	
+	public By byAddToBagPopupWindowDetailProductSize = By.xpath(".//span[@class='add-to-bag__product-size']");
+	
+	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__details']//div[@class='add-to-bag__inside-right']//div[@class='add-to-bag-style-size-div']//a[@class='add-to-bag__item-link']")
+	public WebElement lblAddToBagPopupWindowDetailsProductNumber;
+		
+	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__button-wrap']")
+	public WebElement cntAddToBagPopupWindowButtonSection;
+	
+	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__button-wrap']//div[contains(@class,'add-to-bag__subtotal')]")
+	public WebElement lblAddToBagPopupWindowButtonSectionSubtotal;
+	
+	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__button-wrap']//button[not(contains(@class,'btn-go-to-bag'))]")
+	public WebElement btnAddToBagPopupWindowButtonSectionCheckOut;
+	
+	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__button-wrap']//button[contains(@class,'btn-go-to-bag')]")
+	public WebElement btnAddToBagPopupWindowButtonSectionViewShoppingBag;
+	
+	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__footer']")
+	public WebElement lblAddToBagPopupWindowFooterInfo;
+	
+	//Sold out message
+	@FindBy(xpath = "//form[@id='pdpForm']//div[@id='soldoutContainer']")
+	public WebElement lblSoldOutMessage;
+	
+	//Bread Crumb Navigation
+	@FindBy(xpath = "//nav[@class='breadcrumb__nav']//li")
+	public List<WebElement> lstBreadCrumbNav;
+	
 	
 	/**
 	 * Method to check if Video is playing
@@ -503,6 +579,7 @@ public class ProductDetailPage extends BasePage {
 	 * @author Wei.Li
 	 */
 	public String getAutoPlayVideoToolTipPopupMsg() {
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkAutoPlayVideoToolTip);
 		this.getReusableActionsInstance().scrollToElement(this.lnkAutoPlayVideoToolTip);
 		this.getReusableActionsInstance().staticWait(300);
 		
@@ -1104,6 +1181,46 @@ public class ProductDetailPage extends BasePage {
 	 */
 	public boolean checkAddToBagPopupDisplaying() {
 		return this.checkChildElementExistingByAttribute(this.cntAddToBagOoverlay, "class", "add-to-bag__overlay");
+	}
+	
+	/**
+	 * Method to check if product style information in Add to Bag popup window is displaying
+	 * @return boolean	  
+	 * @author Wei.Li
+	 */
+	public boolean checkProductSyleInAddToBagPopupDisplaying() {
+		return this.checkChildElementExistingByAttribute(this.lnkAddToBagPopupWindowDetailsProductInfo, "class", "add-to-bag__product-style");
+	}
+	
+	/**
+	 * Method to check if product size information in Add to Bag popup window is displaying
+	 * @return boolean	  
+	 * @author Wei.Li
+	 */
+	public boolean checkProductSizeInAddToBagPopupDisplaying() {
+		return this.checkChildElementExistingByAttribute(this.lnkAddToBagPopupWindowDetailsProductInfo, "class", "add-to-bag__product-size");
+	}
+	
+	/**
+	 * Method to open AddToBag PopupWindow
+	 * @return boolean	  
+	 * @author Wei.Li
+	 */
+	public boolean openAddToBagPopupWindow() {
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnAddToBag);
+		this.btnAddToBag.click();
+		return this.waitForCondition(Drive->{return checkAddToBagPopupDisplaying();}, 30000);
+	}
+	
+	/**
+	 * Method to close AddToBag PopupWindow
+	 * @return boolean	  
+	 * @author Wei.Li
+	 */
+	public boolean closeAddToBagPopupWindow() {
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnAddToBagPopupWindowClose);
+		this.btnAddToBagPopupWindowClose.click();
+		return this.waitForCondition(Drive->{return !checkAddToBagPopupDisplaying();}, 30000);
 	}
 	
 	/**
