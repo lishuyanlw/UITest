@@ -431,6 +431,7 @@ public class ConstantData {
         private List<String> lst_DisappearAfterSelectFilter;
         private String lnk_product_result;
         private List<String> lbl_ProductRecommendationTitlePage;
+        private String lbl_AddToBagPopupWindowTitle;
 
         public List<String> getLst_SearchKeyword() {
             return lst_SearchKeyword;
@@ -518,6 +519,14 @@ public class ConstantData {
 
         public void setLbl_ProductRecommendationTitlePage(List<String> lbl_ProductRecommendationTitlePage) {
             this.lbl_ProductRecommendationTitlePage = lbl_ProductRecommendationTitlePage;
+        }
+        
+        public String getLbl_AddToBagPopupWindowTitle() {
+            return lbl_AddToBagPopupWindowTitle;
+        }
+
+        public void setLbl_AddToBagPopupWindowTitle(String lbl_AddToBagPopupWindowTitle) {
+            this.lbl_AddToBagPopupWindowTitle = lbl_AddToBagPopupWindowTitle;
         }
     }
 

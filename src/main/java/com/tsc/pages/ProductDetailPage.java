@@ -497,13 +497,16 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__details']//div[@class='add-to-bag__inside-left']")
 	public WebElement cntAddToBagPopupWindowDetailsLeftSection;
 	
-	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__details']//div[@class='add-to-bag__inside-left']//div[@class='badgeWrap']//img")
+	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__details']//div[@class='add-to-bag__inside-left']//div[@class='add-to-bag__img']")
+	public WebElement cntAddToBagPopupWindowDetailsLeftSectionImage;
+	
+	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__details']//div[@class='add-to-bag__inside-left']//div[@class='add-to-bag__img']//div[@class='badgeWrap']//img")
 	public WebElement imgAddToBagPopupWindowDetailsProductBadge;
 	
-	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__details']//div[@class='add-to-bag__inside-left']//a")
+	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__details']//div[@class='add-to-bag__inside-left']//div[@class='add-to-bag__img']//a")
 	public WebElement lnkAddToBagPopupWindowDetailsProductImage;
 	
-	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__details']//div[@class='add-to-bag__inside-left']//a//img")
+	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__details']//div[@class='add-to-bag__inside-left']//div[@class='add-to-bag__img']//a//img")
 	public WebElement imgAddToBagPopupWindowDetailsProductImage;
 	
 	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__details']//div[@class='add-to-bag__inside-right']")
@@ -513,13 +516,13 @@ public class ProductDetailPage extends BasePage {
 	public WebElement lnkAddToBagPopupWindowDetailsProductInfo;
 	
 	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__details']//div[@class='add-to-bag__inside-right']//a[@class='add-to-bag__item-link']//span[@class='add-to-bag__product-name']")
-	public WebElement lblAddToBagPopupWindowDetailsProductProductName;
+	public WebElement lblAddToBagPopupWindowDetailsProductName;
 	
 	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__details']//div[@class='add-to-bag__inside-right']//a[@class='add-to-bag__item-link']//span[@class='add-to-bag__product-style']")
-	public WebElement lblAddToBagPopupWindowDetailsProductProductStyle;
+	public WebElement lblAddToBagPopupWindowDetailsProductStyle;
 	
 	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__details']//div[@class='add-to-bag__inside-right']//a[@class='add-to-bag__item-link']//span[@class='add-to-bag__product-size']")
-	public WebElement lblAddToBagPopupWindowDetailsProductProductSize;
+	public WebElement lblAddToBagPopupWindowDetailsProductSize;
 	
 	public By byAddToBagPopupWindowDetailProductName = By.xpath(".//span[@class='add-to-bag__product-name']");
 	
@@ -1182,6 +1185,15 @@ public class ProductDetailPage extends BasePage {
 	public boolean checkAddToBagPopupDisplaying() {
 		return this.checkChildElementExistingByAttribute(this.cntAddToBagOoverlay, "class", "add-to-bag__overlay");
 	}
+
+	/**
+	 * Method to check if product badge information in Add to Bag popup window is displaying
+	 * @return boolean	  
+	 * @author Wei.Li
+	 */
+	public boolean checkProductBadgeInAddToBagPopupDisplaying() {
+		return this.checkChildElementExistingByAttribute(this.cntAddToBagPopupWindowDetailsLeftSectionImage, "class", "badgeWrap");
+	}
 	
 	/**
 	 * Method to check if product style information in Add to Bag popup window is displaying
@@ -1224,6 +1236,69 @@ public class ProductDetailPage extends BasePage {
 	}
 	
 	/**
+	 * Method to verify the product details in Add to Bag popup window	
+	 * @param String lbl_AddToBagPopupWindowTitle: the expected title
+	 * @return void	  
+	 * @author Wei.Li
+	 */
+	public void verifyProductDetailsInAddToBagPopupWindow(String lbl_AddToBagPopupWindowTitle){	
+		openAddToBagPopupWindow();
+		
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAddToBagPopupWindowTitle);
+		reporter.softAssert(this.lblAddToBagPopupWindowTitle.getText().equalsIgnoreCase(lbl_AddToBagPopupWindowTitle),"The title of Add to Bag popup window is equal to '"+lbl_AddToBagPopupWindowTitle+"'","The title of Add to Bag popup window is not equal to '"+lbl_AddToBagPopupWindowTitle+"'");
+		
+		if(checkProductBadgeInAddToBagPopupDisplaying()) {
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.imgAddToBagPopupWindowDetailsProductBadge);
+			reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.imgAddToBagPopupWindowDetailsProductBadge),"The Badge in Add to Bag popup window is visible","The Badge in Add to Bag popup window is not visible");
+			reporter.softAssert(!this.imgAddToBagPopupWindowDetailsProductBadge.getAttribute("src").isEmpty(),"The Badge image src in Add to Bag popup window is not empty","The Badge image src in Add to Bag popup window is empty");			
+		}
+		
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkAddToBagPopupWindowDetailsProductImage);
+		reporter.softAssert(!this.lnkAddToBagPopupWindowDetailsProductImage.getAttribute("href").isEmpty(),"The product image link in Add to Bag popup window is not empty","The product image link in Add to Bag popup window is empty");
+		reporter.softAssert(!this.imgAddToBagPopupWindowDetailsProductImage.getAttribute("src").isEmpty(),"The product image src in Add to Bag popup window is not empty","The product image src in Add to Bag popup window is empty");
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.imgAddToBagPopupWindowDetailsProductImage),"The product image in Add to Bag popup window is visible","The product image in Add to Bag popup window is not visible");
+		
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAddToBagPopupWindowDetailsProductName);
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblAddToBagPopupWindowDetailsProductName),"The product name in Add to Bag popup window is visible","The product name in Add to Bag popup window is not visible");
+		reporter.softAssert(!this.lblAddToBagPopupWindowDetailsProductName.getText().isEmpty(),"The product name in Add to Bag popup window is not empty","The product name in Add to Bag popup window is empty");
+		
+		if(checkProductSyleInAddToBagPopupDisplaying()) {
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAddToBagPopupWindowDetailsProductStyle);
+			reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblAddToBagPopupWindowDetailsProductStyle),"The product Style in Add to Bag popup window is visible","The product Style in Add to Bag popup window is not visible");
+			reporter.softAssert(!this.lblAddToBagPopupWindowDetailsProductStyle.getText().isEmpty(),"The product Style in Add to Bag popup window is not empty","The product Style in Add to Bag popup window is empty");			
+		}
+		
+		if(checkProductSizeInAddToBagPopupDisplaying()) {
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAddToBagPopupWindowDetailsProductSize);
+			reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblAddToBagPopupWindowDetailsProductSize),"The product Size in Add to Bag popup window is visible","The product Size in Add to Bag popup window is not visible");
+			reporter.softAssert(!this.lblAddToBagPopupWindowDetailsProductSize.getText().isEmpty(),"The product Size in Add to Bag popup window is not empty","The product Size in Add to Bag popup window is empty");			
+		}
+		
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAddToBagPopupWindowDetailsProductNumber);
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblAddToBagPopupWindowDetailsProductNumber),"The product Number in Add to Bag popup window is visible","The product Number in Add to Bag popup window is not visible");
+		reporter.softAssert(!this.lblAddToBagPopupWindowDetailsProductNumber.getText().isEmpty(),"The product Number in Add to Bag popup window is not empty","The product Number in Add to Bag popup window is empty");
+	
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAddToBagPopupWindowButtonSectionSubtotal);
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblAddToBagPopupWindowButtonSectionSubtotal),"The product Subtotal in Add to Bag popup window is visible","The product Subtotal in Add to Bag popup window is not visible");
+		reporter.softAssert(!this.lblAddToBagPopupWindowButtonSectionSubtotal.getText().isEmpty(),"The product Subtotal in Add to Bag popup window is not empty","The product Subtotal in Add to Bag popup window is empty");
+	
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnAddToBagPopupWindowButtonSectionCheckOut);
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.btnAddToBagPopupWindowButtonSectionCheckOut),"The CheckOut button in Add to Bag popup window is visible","The CheckOut button in Add to Bag popup window is not visible");
+		reporter.softAssert(!this.btnAddToBagPopupWindowButtonSectionCheckOut.getText().isEmpty(),"The CheckOut button in Add to Bag popup window is not empty","The CheckOut button in Add to Bag popup window is empty");
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnAddToBagPopupWindowButtonSectionViewShoppingBag);
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.btnAddToBagPopupWindowButtonSectionViewShoppingBag),"The ViewShoppingBag button in Add to Bag popup window is visible","The ViewShoppingBag button in Add to Bag popup window is not visible");
+		reporter.softAssert(!this.btnAddToBagPopupWindowButtonSectionViewShoppingBag.getText().isEmpty(),"The ViewShoppingBag button in Add to Bag popup window is not empty","The ViewShoppingBag button in Add to Bag popup window is empty");
+		
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAddToBagPopupWindowFooterInfo);
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblAddToBagPopupWindowFooterInfo),"The Footer info in Add to Bag popup window is visible","The Footer info in Add to Bag popup window is not visible");
+		reporter.softAssert(!this.lblAddToBagPopupWindowFooterInfo.getText().isEmpty(),"The Footer info in Add to Bag popup window is not empty","The Footer info in Add to Bag popup window is empty");
+	
+		closeAddToBagPopupWindow();
+	}
+	
+	
+	/**
 	 * Method to get Shopping cart number
 	 * @return int	  
 	 * @author Wei.Li
@@ -1235,5 +1310,28 @@ public class ProductDetailPage extends BasePage {
 		return Integer.parseInt(globalHeaderPage.CartBagCounter.getText().trim());
 	}
 	
+	/**
+	 * Method to verify Shopping cart number 
+	 * @return void	  
+	 * @author Wei.Li
+	 */
+	public void verifyShoppingCartNumber() {		
+		reporter.softAssert(getShoppingCartNumber()==1,"The Shopping cart number is equal to 1","The Shopping cart number is not equal to 1");
+	}	
+	
+	/**
+	 * Method to verify the url while clicking BreadCrumb Navigation.
+	 * @param String lsBackUrl: the expected Url
+	 * @return void	  
+	 * @author Wei.Li
+	 */
+	public void verifyBreadCrumbNavigationBack(String lsBackUrl) {		
+		WebElement item=this.lstBreadCrumbNav.get(this.lstBreadCrumbNav.size()-2);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+		item.click();
+		(new ProductResultsPage(this.getDriver())).waitForPageLoading();
+		
+		reporter.softAssert(this.URL().equalsIgnoreCase(lsBackUrl),"The current Url of "+this.URL()+" is equal to the Url of "+lsBackUrl,"The current Url of "+this.URL()+" is not equal to the Url of "+lsBackUrl);
+	}
 
 }
