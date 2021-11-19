@@ -134,7 +134,7 @@ public class ProductDetailPage extends BasePage {
 	public WebElement lblProductShipping;
 	
 	//Style part
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']")
+	@FindBy(xpath = "//form[@id='pdpForm']")
 	public WebElement cntProductSizeJudgeIndicator;
 	
 	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@class='style-container']")
