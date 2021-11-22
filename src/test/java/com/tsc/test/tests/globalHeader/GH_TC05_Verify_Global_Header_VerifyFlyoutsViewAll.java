@@ -14,17 +14,13 @@ public class GH_TC05_Verify_Global_Header_VerifyFlyoutsViewAll extends BaseTest 
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 		String lsBaseUrl=(new BasePage(this.getDriver())).getBaseURL();
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl+"/"), "TSC url is correct", "TSC url is incorrect");
-		//reporter.reportLogWithScreenshot("Home Page");
+		reporter.reportLogWithScreenshot("Home Page");
 		reporter.reportLog("Validating shop all brand links.");
 		String shopAllUrl,lsYmlNotFound,lsSuccessResult, lsFailResult,pageHeading;
 		lsYmlNotFound=TestDataHandler.constantData.headerSection.getLnk_NotFound();
 		List<WebElement> headingsElement=getglobalheaderPageThreadLocal().getFlyoutHeadingsWebelement();
 		List<List<String>> lsFlyout= TestDataHandler.constantData.getHeaderSection().getFlyout().getlst_FlyoutHeadingNameAndLink();
 		//Fetching heading name and iterating over it,because whenever trying to iterate over the WebElement it throws Stale Element exception.
-		List<String> numberForLink=getglobalheaderPageThreadLocal().getymlData(lsFlyout,2);
-		//List<String> flyoutHeading=getglobalheaderPageThreadLocal().getymlData(lsFlyout,0);
-		reporter.reportLog("number for Links: "+numberForLink);
-		
 		List<String> flyoutHeading = new ArrayList<String>();
 		for(WebElement lsHeading:headingsElement) {
 			String flHeading=lsHeading.getText();
@@ -36,14 +32,15 @@ public class GH_TC05_Verify_Global_Header_VerifyFlyoutsViewAll extends BaseTest 
 			reporter.reportLog("Flyout header displays department: "+lsHeading);
 			shopAllUrl=getglobalheaderPageThreadLocal().getURLshopAllPupularBrand(lsHeading,"Popular Brand");
 			pageHeading=getglobalheaderPageThreadLocal().getHeadingForLandingPage(lsHeading);
-			//List<String> lst_FlyoutHeadingNameAndLink= TestDataHandler.constantData.getHeaderSection().getFlyout().getlst_FlyoutHeadingNameAndLink().get(0);
-			
-			String pageHeadingSection=getglobalheaderPageThreadLocal().getLandingPageHeadingSection();
+			String urlShopAllBrandYmlData=TestDataHandler.constantData.getHeaderSection().getFlyout().getlnk_ShopByBrandShopAll();
+			String pageHeadingSection=TestDataHandler.constantData.getHeaderSection().getFlyout().getlbl_LandingPageBrandShopAll();
+			String linkNumberYmlData= getglobalheaderPageThreadLocal().getLinkNumberWithSpecificHeadingName(lsFlyout,lsHeading);
 			lsSuccessResult=String.format("The url [ %s ] does not contain [ %s ] after clicking shop all brands under >" + lsHeading + " > Popular Brands", shopAllUrl,lsYmlNotFound);
 			lsFailResult=String.format("The url of [ %s ] contains [ %s ] after clicking shop all brands under > " + lsHeading + " > Popular Brands", shopAllUrl,lsYmlNotFound);
 			reporter.softAssert(!shopAllUrl.contains(lsYmlNotFound), lsSuccessResult,lsFailResult);
+			reporter.softAssert(shopAllUrl.contains(urlShopAllBrandYmlData+linkNumberYmlData),"Landing page url is verified","Landing page url is not matching with Flyout heading > "+lsHeading +" > under Popular Brands >Shop all brands");
 			reporter.reportLog("Heading of the landing page "+pageHeadingSection+" : "+pageHeading);
-			reporter.softAssert(pageHeading.contains(lsHeading),"Landing page heading is verified","Landing page heading is not matching with Flyout heading > "+lsHeading +" > under Popular Brands >Shop all brands");
+			reporter.softAssert(pageHeading.equalsIgnoreCase(lsHeading),"Landing page heading is verified with Flyout heading.","Landing page heading is not matching with Flyout heading > "+lsHeading +" > under Popular Brands >Shop all brands");
 			
 		}
 	}

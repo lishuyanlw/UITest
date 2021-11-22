@@ -38,6 +38,8 @@ headerSection:
     - ["Designer Footwear","Nouveaux arrivages","/pages/productresults?nav=n:128153-2069664&ic=HDR_FlyoutNav_Shoes_And_Handbags_Designer_Footwear"]
     - ["On Air Products","Sur les ondes","/pages/productresults?ic=HP_OnAir_T&dimensions=2037548&page=1&pageSize=36&rd=false"]
   flyout:
+    lnk_ShopByBrandShopAll: pages/brand?dimensions=
+    lbl_LandingPageBrandShopAll: Shop By Brand
     lst_FlyoutHeading: ['Fashion', 'Shoes & Handbags', 'Jewellery', 'Beauty', 'Home & Garden', 'Kitchen', 'Health & Fitness', 'Electronics', 'Coins & Hobbies', 'Clearance']
     lbl_FlyoutHeadingLandingPageLink: /pages/category?nav=n
     lnk_FlyoutHeaderLinkConstant: [ ':100047',':128153',':100101',':100038',':100071',':100072',':2058731',':100073',':3001781',':2037576' ]

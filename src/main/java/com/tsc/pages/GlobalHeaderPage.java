@@ -667,7 +667,7 @@ public class GlobalHeaderPage extends BasePage{
 		WebElement webElement = getWebElementFlyoutHeading(pageName);
 		String title =getPageTitle(webElement).toUpperCase();
 		System.out.println(title);
-		return createCamelCase(title);
+		return (title);
 	}
 
 	public String getLandingPageHeadingSection() {
@@ -803,121 +803,111 @@ public class GlobalHeaderPage extends BasePage{
 		}
 	}
 
-		/**Method to get get heading of Sign In page after clicking the Favourites's link for anonymous user
-		 * @return String:page heading
-		 * @author Shruti Desai
-		 */	
-		public String getPageHeadingSignin() {
-			
-			return getPageTitle(SigninPageHeading);
-		}
+	/**Method to get get heading of Sign In page after clicking the Favourites's link for anonymous user
+	 * @return String:page heading
+	 * @author Shruti Desai
+	 */	
+	public String getPageHeadingSignin() {
+		
+		return getPageTitle(SigninPageHeading);
+	}
 //Language verification for heading
 
 		
-		/* Method to get French name from yml file for Watch TSC
-		 * @param List<List<String>> lstWatchUsLiveNameAndLinks 
-		 * @return list : French name for Watch TSC-FR
-		 * @author Shruti Desai
-		 */
-		public List<String> getymlData(List<List<String>> lstNameAndLinks, int i) {
-			List<String> frenchNameDataFile= new ArrayList<String>();
-			for (List<String> lstItem : lstNameAndLinks) {
-				String NewfrenchName =this.getUTFEnabledData(lstItem.get(i).trim());
-				frenchNameDataFile.add(NewfrenchName);
-			}
-			return frenchNameDataFile;
+	/* Method to get French name from yml file for Watch TSC
+	 * @param List<List<String>> lstWatchUsLiveNameAndLinks 
+	 * @return list : French name for Watch TSC-FR
+	 * @author Shruti Desai
+	 */
+	public List<String> getymlData(List<List<String>> lstNameAndLinks, int i) {
+		List<String> frenchNameDataFile= new ArrayList<String>();
+		for (List<String> lstItem : lstNameAndLinks) {
+			String NewfrenchName =this.getUTFEnabledData(lstItem.get(i).trim());
+			frenchNameDataFile.add(NewfrenchName);
 		}
+		return frenchNameDataFile;
+	}
 		
-		/* Method to get WebElement by passing French name from yml file for Watch TSC
-		 * @param String : French name from yml file List<List<String>> lstWatchUsLiveNameAndLinks 
-		 * @return WebElement : French name for Watch TSC-FR
-		 * @author Shruti Desai
-		 */
-		public WebElement getWatchTSCdPMElements(String frenchName){
-			String xpathTSCdPMfrenchName =createXPath("//span[contains(text(),'{0}')]" ,frenchName); 
-			WebElement TSCdPMWebElement = lstWatchTSCDpdMenu.get(0).findElement(By.xpath(xpathTSCdPMfrenchName));
-			return TSCdPMWebElement;
-		}
+	/* Method to get WebElement by passing French name from yml file for Watch TSC
+	 * @param String : French name from yml file List<List<String>> lstWatchUsLiveNameAndLinks 
+	 * @return WebElement : French name for Watch TSC-FR
+	 * @author Shruti Desai
+	 */
+	public WebElement getWatchTSCdPMElements(String frenchName){
+		String xpathTSCdPMfrenchName =createXPath("//div[contains(@Class,'black-header')]//nav//li//a//span[contains(text(),'{0}')]" ,frenchName); 
+		WebElement TSCdPMWebElement = getDriver().findElement(By.xpath(xpathTSCdPMfrenchName));
+		return TSCdPMWebElement;
+	}
 		
-		/* Method to verify drop down menu element of Watch TSC-FR
-		 * @param WebElement, true condition for url check, French of element of Watch TSC-FR dropdown menu
-		 * @return assertion report for href presence and validation of url after clicking element
-		 * @author Shruti Desai
-		 */
-		public void verifyWatchTSCdpDMenu(WebElement element,boolean bCheckUrl, String dpDownMenuName) {
-			 getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-			 String lsTitle=element.getText().trim();
-			 WebElement elementHrefWatchTSC =element.findElement(By.xpath("./ancestor::a"));
-			 reporter.softAssert(getReusableActionsInstance().isElementVisible(element), "The element of "+lsTitle+" in "+dpDownMenuName+" is visible","The element of "+lsTitle+" in "+dpDownMenuName+" is not visible");
-			 reporter.softAssert(!lsTitle.isEmpty(), lsTitle+" text in "+dpDownMenuName+" is not empty", lsTitle+" text in "+dpDownMenuName+" is empty");
-			 String lsHrefWatchTSCdpMenu=elementHrefWatchTSC.getAttribute("href").trim();
-			 reporter.softAssert(verifyElementProperty(elementHrefWatchTSC,"Link"), "The href of "+lsTitle+" in "+dpDownMenuName+" is not empty", "The href of "+lsTitle+" in "+dpDownMenuName+" is empty");
-			 lsHrefWatchTSCdpMenu=this.removeLastSlashFromUrl(lsHrefWatchTSCdpMenu);
-			 element.click();
-			 this.waitForPageToLoad();
-			 (new GlobalFooterPage(this.getDriver())).waitForPageLoading();
-			 String lsUrlWatchTSCdpItem=this.removeLastSlashFromUrl(this.URL());
-			 if(bCheckUrl) {
-				 System.out.println(lsTitle);
-				 //need to use if condition as redirected link for Program Guide/Grille horaire is different.
-				 if(lsHrefWatchTSCdpMenu.contains("programguide")) {
-					 String lnk_ProgramGuideRedirect="https://qa-tsc.tsc.ca/pages/programguide/daily?ic=HP_ProgramGuide";
-					 reporter.softAssert(lsUrlWatchTSCdpItem.equalsIgnoreCase(lnk_ProgramGuideRedirect), "The Url of "+lsUrlWatchTSCdpItem+"  after clicking "+lsTitle+" in "+dpDownMenuName+" is equal to the href of "+lsHrefWatchTSCdpMenu, "The Url of "+lsUrlWatchTSCdpItem+"  after clicking "+lsTitle+" in "+dpDownMenuName+" is not equal to the href of "+lsHrefWatchTSCdpMenu);
-				 }else {
-					 reporter.softAssert(lsUrlWatchTSCdpItem.equalsIgnoreCase(lsHrefWatchTSCdpMenu), "The Url of "+lsUrlWatchTSCdpItem+"  after clicking "+lsTitle+" in "+dpDownMenuName+" is equal to the href of "+lsHrefWatchTSCdpMenu, "The Url of "+lsUrlWatchTSCdpItem+"  after clicking "+lsTitle+" in "+dpDownMenuName+" is not equal to the href of "+lsHrefWatchTSCdpMenu);
-				}
+	/* Method to verify drop down menu element of Watch TSC-FR
+	 * @param WebElement, true condition for url check, French of element of Watch TSC-FR dropdown menu
+	 * @return assertion report for href presence and validation of url after clicking element
+	 * @author Shruti Desai
+	 */
+	public void verifyWatchTSCdpDMenu(WebElement element,boolean bCheckUrl) {
+		 getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+		 String lsTitle=element.getText().trim();
+		 WebElement elementHrefWatchTSC =element.findElement(By.xpath("./ancestor::a"));
+		 reporter.softAssert(getReusableActionsInstance().isElementVisible(element), "The element of "+lsTitle+" is visible","The element of "+lsTitle+" is not visible");
+		 reporter.softAssert(!lsTitle.isEmpty(), lsTitle+" text "+" is not empty", lsTitle+" text "+" is empty");
+		 String lsHrefWatchTSCdpMenu=elementHrefWatchTSC.getAttribute("href").trim();
+		 reporter.softAssert(verifyElementProperty(elementHrefWatchTSC,"Link"), "The href of "+lsTitle+" is not empty", "The href of "+lsTitle+" is empty");
+		 lsHrefWatchTSCdpMenu=this.removeLastSlashFromUrl(lsHrefWatchTSCdpMenu);
+		 element.click();
+		 this.waitForPageToLoad();
+		 (new GlobalFooterPage(this.getDriver())).waitForPageLoading();
+		 String lsUrlWatchTSCdpItem=this.removeLastSlashFromUrl(this.URL());
+		 if(bCheckUrl) {
+			 System.out.println(lsTitle);
+			 //need to use if condition as redirected link for Program Guide/Grille horaire is different.
+			 if(lsHrefWatchTSCdpMenu.contains("programguide")) {
+				 String lnk_ProgramGuideRedirect="https://qa-tsc.tsc.ca/pages/programguide/daily?ic=HP_ProgramGuide";
+				 reporter.softAssert(lsUrlWatchTSCdpItem.equalsIgnoreCase(lnk_ProgramGuideRedirect), "The Url of "+lsUrlWatchTSCdpItem+"  after clicking "+lsTitle+" is equal to the href of "+lsHrefWatchTSCdpMenu, "The Url of "+lsUrlWatchTSCdpItem+"  after clicking "+lsTitle+" is not equal to the href of "+lsHrefWatchTSCdpMenu);
+			 }else {
+				 reporter.softAssert(lsUrlWatchTSCdpItem.equalsIgnoreCase(lsHrefWatchTSCdpMenu), "The Url of "+lsUrlWatchTSCdpItem+"  after clicking "+lsTitle+" is equal to the href of "+lsHrefWatchTSCdpMenu, "The Url of "+lsUrlWatchTSCdpItem+"  after clicking "+lsTitle+" is not equal to the href of "+lsHrefWatchTSCdpMenu);
 			}
-		 }
-		
-		/* Method to get French name from yml file for Watch TSC
-		 * @param List<List<String>> lstWatchUsLiveNameAndLinks 
-		 * @return list : French name for Watch TSC-FR
-		 * @author Shruti Desai
-		 */
-		public List<String> getEnglishNameymlData(List<List<String>> lstNameAndLinks,int i) {
-			List<String> frenchNameDataFile= new ArrayList<String>();
-			for (List<String> lstItem : lstNameAndLinks) {
-				String NewfrenchName =this.getUTFEnabledData(lstItem.get(i).trim());
-				frenchNameDataFile.add(NewfrenchName);
-			}
-			return frenchNameDataFile;
 		}
+	 }
+		
+	/* Method to get French name from yml file for Watch TSC
+	 * @param List<List<String>> lstWatchUsLiveNameAndLinks 
+	 * @return list : French name for Watch TSC-FR
+	 * @author Shruti Desai
+	 */
+	public List<String> getEnglishNameymlData(List<List<String>> lstNameAndLinks,int i) {
+		List<String> frenchNameDataFile= new ArrayList<String>();
+		for (List<String> lstItem : lstNameAndLinks) {
+			String NewfrenchName =this.getUTFEnabledData(lstItem.get(i).trim());
+			frenchNameDataFile.add(NewfrenchName);
+		}
+		return frenchNameDataFile;
+	}
 		 
-		 
-		/* Method to get Flyout Heading in Frech for Watch TSC-FR
-		 * @return List of String :Flyout heading name in French name for Watch TSC-FR
-		 * @author Shruti Desai
-		 */ 
-		/*public List<String> flyoutHeadingName(){
-			List<String> flyoutHeading = new ArrayList<String>();
-			for(WebElement lsHeading:headingLinks) {
-				String flHeading=this.getUTFEnabledData(lsHeading.getText().trim());
-				flyoutHeading.add(flHeading);
+	/* Method to get Link Number in url of landingpage of Shop All Brand for specific Flyout headign Name from yml file 
+	 * @param List<List<String>> lstNameAndLink and flyout heading name
+	 * @return String : Link number in url of landingpage of Shop All Brand
+	 * @author Shruti Desai
+	 */
+	public String getLinkNumberWithSpecificHeadingName(List<List<String>> lstNameAndLink, String lsSpecificHeadingName) {
+		for (List<String> lstItem : lstNameAndLink) {
+			String lsCompare = this.getUTFEnabledData(lstItem.get(0));
+			if (lsSpecificHeadingName.equalsIgnoreCase(lsCompare)) {
+				return this.getUTFEnabledData(lstItem.get(2).trim());
 			}
-		return flyoutHeading;
-		}*/
-
-		
-		
-		public boolean verifyShowingTextPatternInFilters(String pattern, WebElement element) {
-			getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-			String showingText=element.getText().toUpperCase()+" "+element.getText();
-
-			return showingText.matches(pattern);//"SHOWING: (\\d+) - (\\d+) of (\\d+) Items"
 		}
+		return "";
+	}
 		
-		
-		
-		public String getListFlyoutHeadingLinkNumberymlData(String headingName) {
-			String LinkNumberUrlDataFile= null;
-			
-			LinkNumberUrlDataFile =getUTFEnabledData(headingName.trim());
-				
-			return LinkNumberUrlDataFile;
-		}
-		
-		
-		
+	/* Method to get WebElment for header
+	 * @param Blackheader name 
+	 * @return WebElement 
+	 * @author Shruti Desai
+	 */
+	public WebElement getHeaderWebElements(String blackHeadeNname) {
+		String xpathHeading =createXPath("//div[contains(@class,'black-header')]//*[contains(@class,'{0}')]" ,blackHeadeNname); 
+		WebElement headingWebElement = FlyoutHeadings.findElement(By.xpath(xpathHeading));
+		return headingWebElement;
+	}
 
 }
 

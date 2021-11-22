@@ -546,7 +546,8 @@ public class ConstantData {
         private List<String> lnk_FlyoutHeaderLinkConstant;
         private List<String> lst_FlyoutHeading_FR;
         private List<List<String>> lst_FlyoutHeadingNameAndLink;
-        
+        private String lbl_LandingPageBrandShopAll;
+        private String lnk_ShopByBrandShopAll;
         public List<List<String>> getlst_FlyoutHeadingNameAndLink() {
             return lst_FlyoutHeadingNameAndLink;
         }
@@ -585,6 +586,22 @@ public class ConstantData {
 
         public void setlst_FlyoutHeading_FR(List<String> lst_FlyoutHeading_FR) {
             this.lst_FlyoutHeading_FR = lst_FlyoutHeading_FR;
+        }
+        
+        public String getlbl_LandingPageBrandShopAll() {
+            return lbl_LandingPageBrandShopAll;
+        }
+
+        public void setlbl_LandingPageBrandShopAll(String lbl_LandingPageBrandShopAll) {
+            this.lbl_LandingPageBrandShopAll = lbl_LandingPageBrandShopAll;
+        }
+        
+        public String getlnk_ShopByBrandShopAll() {
+            return lnk_ShopByBrandShopAll;
+        }
+
+        public void setlnk_ShopByBrandShopAll(String lnk_ShopByBrandShopAll) {
+            this.lnk_ShopByBrandShopAll = lnk_ShopByBrandShopAll;
         }
     }
 
