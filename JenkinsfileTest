@@ -90,9 +90,9 @@ pipeline {
                     steps {
                         script {
                             if(params.IndividualTests.isEmpty())
-                                toolSh "gradle sauceTest -Ptest_browser=${params.Browser} -Ptest_language=${params.Language} -Ptest_groupName='${params.Groups}' -Ptest_threadCount=${params.ThreadCount} -PTunnelRequired='${params.TunnelRequired}' -i --stacktrace"
+                                toolSh "gradle sauceTest -Ptest_browser=${params.Browser} -Ptest_language=${params.Language} -Ptest_groupName='${params.Groups}' -Ptest_threadCount=${params.ThreadCount} -PTunnelRequired='${params.TunnelRequired}' -Ptest_device='${params.Device}' -i --stacktrace"
                             else
-                                toolSh "gradle sauceTest -Ptest_browser=${params.Browser} -Ptest_language=${params.Language} ${generateTestString(params.IndividualTests)} -Ptest_threadCount=${params.ThreadCount} -PTunnelRequired='${params.TunnelRequired}' -i --stacktrace"
+                                toolSh "gradle sauceTest -Ptest_browser=${params.Browser} -Ptest_language=${params.Language} ${generateTestString(params.IndividualTests)} -Ptest_threadCount=${params.ThreadCount} -PTunnelRequired='${params.TunnelRequired}' -Ptest_device='${params.Device}' -i --stacktrace"
 
                         }
                     }
