@@ -622,26 +622,20 @@ public class GlobalFooterPage extends BasePage {
 		String lsMainWindowHandle = this.getDriver().getWindowHandle();
 		getReusableActionsInstance().javascriptScrollByVisibleElement(selectedItem);
 		selectedItem.click();
-		try {
-			getReusableActionsInstance().waitForNumberOfWindowsToBe(2, 30);
-			Set<String> lstWindowHandle = this.getDriver().getWindowHandles();
-			for (String windowHandle : lstWindowHandle) {
-				if (!windowHandle.equalsIgnoreCase(lsMainWindowHandle)) {
-					getReusableActionsInstance().staticWait(5000);
-					this.getDriver().switchTo().window(windowHandle);
-					break;
-				}
+		getReusableActionsInstance().waitForNumberOfWindowsToBe(2, 90);
+		Set<String> lstWindowHandle = this.getDriver().getWindowHandles();
+		for (String windowHandle : lstWindowHandle) {
+			if (!windowHandle.equalsIgnoreCase(lsMainWindowHandle)) {
+				getReusableActionsInstance().staticWait(5000);
+				this.getDriver().switchTo().window(windowHandle);
+				break;
 			}
-			String lsCurrentUrl = this.removeLastSlashFromUrl(this.getDriver().getCurrentUrl());
-			lsExpectedUrl = this.removeLastSlashFromUrl(lsExpectedUrl);
-			this.getDriver().switchTo().window(lsMainWindowHandle);
+		}
+		String lsCurrentUrl = this.removeLastSlashFromUrl(this.getDriver().getCurrentUrl());
+		lsExpectedUrl = this.removeLastSlashFromUrl(lsExpectedUrl);
+		this.getDriver().switchTo().window(lsMainWindowHandle);
 
-			return lsCurrentUrl.equalsIgnoreCase(lsExpectedUrl);
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-		}
-		return false;
+		return lsCurrentUrl.equalsIgnoreCase(lsExpectedUrl);
 	}
 
 	/**
