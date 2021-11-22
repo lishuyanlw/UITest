@@ -245,9 +245,14 @@ public class ProductResultsPage extends BasePage{
 		GlobalHeaderPage globalHeader=new GlobalHeaderPage(this.getDriver());
 		getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeader.searchBox);
 		this.clearContent(globalHeader.searchBox);
-		globalHeader.searchBox.sendKeys(searchKeyword);
+		char[] inputString = searchKeyword.toCharArray();
+		for(char inputText:inputString){
+			globalHeader.searchBox.sendKeys(Character.toString(inputText));
+			getReusableActionsInstance().staticWait(1000);
+		}
+		//globalHeader.searchBox.sendKeys(searchKeyword);
 		//globalHeader.btnSearchSubmit.click();
-		getReusableActionsInstance().staticWait(5000);
+		getReusableActionsInstance().staticWait(3000);
 		(new BasePage(this.getDriver())).pressEnterKey(globalHeader.searchBox);
 			
 		getReusableActionsInstance().staticWait(300);
