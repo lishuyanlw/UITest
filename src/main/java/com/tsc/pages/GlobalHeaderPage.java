@@ -868,6 +868,11 @@ public class GlobalHeaderPage extends BasePage{
 		return flyoutHeading;
 		}
 		
+		/* Method to get WebElment for header
+		 * @param Blackheader name 
+		 * @return WebElement 
+		 * @author Shruti Desai
+		 */
 		public WebElement getHeaderWebElements(String blackHeadeNname) {
 			String xpathHeading =createXPath("//div[contains(@class,'black-header')]//*[contains(@class,'{0}')]" ,blackHeadeNname); 
 			WebElement headingWebElement = FlyoutHeadings.findElement(By.xpath(xpathHeading));
