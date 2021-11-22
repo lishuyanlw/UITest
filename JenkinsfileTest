@@ -36,7 +36,7 @@ pipeline {
         choice(name: 'Language', choices: ['en', 'fr'], description: 'Test Language')
         string(name: 'ThreadCount', defaultValue: "1", description: 'Number of parallel test sessions')
         choice(name: 'TunnelRequired', choices: ['No', 'Yes'], description: 'Is Sauce Tunnel required? Select No if AUT is public facing')
-        choice(name: 'DeviceType', choices: ['Desktop', 'Mobile','Tablet'], description: 'Device Type to execute test on')
+        choice(name: 'Device', choices: ['Desktop', 'Mobile','Tablet'], description: 'Device Type to execute test on')
         string(name: 'Groups', defaultValue: "Sanity", description: 'Groups names separated by comma')
         string(name: 'TestProfile', defaultValue: "TSCWF-Automation", description: 'Only used for reporting - has no impact on test runs')
         string(name: 'IndividualTests', defaultValue: "", description: "Individual tests to be passed as Test1 Test2 Test3 Test4 and so on ")
