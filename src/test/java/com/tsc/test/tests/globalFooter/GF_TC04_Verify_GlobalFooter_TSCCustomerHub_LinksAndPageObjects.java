@@ -33,125 +33,124 @@ public class GF_TC04_Verify_GlobalFooter_TSCCustomerHub_LinksAndPageObjects exte
 		String lsService,lsHref,lsYmlHref;
 		ArrayList<WebElement> elementList=new ArrayList<WebElement>();
 		
-//		//Customer service
-//		lsService="Customer Service";
-//		reporter.reportLog(lsService);
-//		WebElement selectedItem=getGlobalFooterPageThreadLocal().getServiceWebElement(lsService);		
-//		lsHref=basePage.getElementHref(selectedItem);		
-//		lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsService,true);
-//		if(lsYmlHref.isEmpty()) {
-//			reporter.reportLogFail("Unable to find '"+lsService+"' link.");
-//		}		
-//		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current '"+lsService+"' href of "+lsHref+" is equal to "+lsYmlHref,"The current '"+lsService+"' href of "+lsHref+" is not equal to "+lsYmlHref);
-//		
-//		if(!getGlobalFooterPageThreadLocal().goToService(lsService,getGlobalFooterPageThreadLocal().lblCustomerService)) {
-//			reporter.reportLogFail("Unable to navigate to '"+lsService+"' page objects.");
-//		}
-//		else {			
-//			elementList.add(getGlobalFooterPageThreadLocal().lblCustomerService);
-//			elementList.add(getGlobalFooterPageThreadLocal().lblHowCanWeHelpYou);
-//			elementList.add(getGlobalFooterPageThreadLocal().inputSearchBox);
-//			elementList.add(getGlobalFooterPageThreadLocal().lblFrequentlyAskedQuestions);
-//			
-//			getGlobalFooterPageThreadLocal().verifyElementListExistence(elementList);
-//	
-//			int listSize=getGlobalFooterPageThreadLocal().lstFrequentlyAskedQuestions.size();
-//			for(int i=0;i<listSize;i++) {
-//				WebElement item=getGlobalFooterPageThreadLocal().lstFrequentlyAskedQuestions.get(i);
-//				String lsItem=item.getText().trim();
-//				reporter.reportLog(lsItem);
-//				reporter.softAssert(!lsItem.isEmpty(),"The item text is not empty","The item text is empty");
-//				reporter.softAssert(!basePage.getElementHref(item).isEmpty(),"The link of "+lsItem+" is not empty","The link of "+lsItem+" is empty");
-//				getGlobalFooterPageThreadLocal().verifyLinksForFrequentlyAskedQuestionsInCustomerServicePageObject(item);
-//			}
-//		}		
-//		elementList.clear();
-//		
-//		//Track Your Order
-//		lsService="Track Your Order";
-//		reporter.reportLog(lsService);
-//		List<String> lstTrackYourOrderObjectSectionTitle=TestDataHandler.constantData.getFooterSection().getLst_TrackYourOrderObjectSectionTitle();
-//		selectedItem=getGlobalFooterPageThreadLocal().getServiceWebElement(lsService);		
-//		lsHref=basePage.getElementHref(selectedItem);		
-//		lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsService,true);
-//		if(lsYmlHref.isEmpty()) {
-//			reporter.reportLogFail("Unable to find '"+lsService+"' link.");
-//		}		
-//		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current '"+lsService+"' href of "+lsHref+" is equal to "+lsYmlHref,"The current '"+lsService+"' href of "+lsHref+" is not equal to "+lsYmlHref);
-//		
-//		if(!getGlobalFooterPageThreadLocal().goToService(lsService,getGlobalFooterPageThreadLocal().lblTrackYourOrder)) {
-//			reporter.reportLogFail("Unable to navigate to '"+lsService+"' page objects.");
-//		}
-//		else {
-//			List<WebElement> mandotoryFieldList=new ArrayList<WebElement>();
-//			mandotoryFieldList.add(getGlobalFooterPageThreadLocal().cntOrderNumber);
-//			mandotoryFieldList.add(getGlobalFooterPageThreadLocal().cntBillingPostalCode);
-//			mandotoryFieldList.add(getGlobalFooterPageThreadLocal().btnTrackYourOrderSubmit);
-//			getGlobalFooterPageThreadLocal().verifyServiceObjectSectionTitle(mandotoryFieldList, lstTrackYourOrderObjectSectionTitle, false);
-//						
-//			getGlobalFooterPageThreadLocal().displayAlertMessageForOrderNumberAndSignInInput();
-//						
-//			//Add The alert message into the list
-//			elementList.add(getGlobalFooterPageThreadLocal().lblOrderNumberAlertMsg);
-//			elementList.add(getGlobalFooterPageThreadLocal().lblBillingPostalCodeAlertMsg);
-//			elementList.add(getGlobalFooterPageThreadLocal().lblEmailAddressAlertMsg);
-//			elementList.add(getGlobalFooterPageThreadLocal().lblPasswordAlertMsg);
-//			
-//			//Add elements in order section
-//			elementList.add(getGlobalFooterPageThreadLocal().lblTrackYourOrder);
-//			elementList.add(getGlobalFooterPageThreadLocal().lblRequiredFieldsInfo);			
-//			elementList.add(getGlobalFooterPageThreadLocal().lblOrderNumberTitle);
-//			elementList.add(getGlobalFooterPageThreadLocal().lblOrderNumberLable);
-//			elementList.add(getGlobalFooterPageThreadLocal().inputOrderNumber);			
-//			elementList.add(getGlobalFooterPageThreadLocal().lblBillingPostalCodeLabel);
-//			elementList.add(getGlobalFooterPageThreadLocal().inputBillingPostalCode);		
-//			elementList.add(getGlobalFooterPageThreadLocal().btnTrackYourOrderSubmit);
-//			
-//			//Add elements in sign in section
-//			elementList.add(getGlobalFooterPageThreadLocal().lblTrackYourOrderSignUpTitle);
-//			elementList.add(getGlobalFooterPageThreadLocal().lblGetAllDetailsInfo);
-//			elementList.add(getGlobalFooterPageThreadLocal().lblEmailAddressLable);
-//			elementList.add(getGlobalFooterPageThreadLocal().inputEmailAddress);			
-//			elementList.add(getGlobalFooterPageThreadLocal().lblPasswordLabel);
-//			elementList.add(getGlobalFooterPageThreadLocal().inputPassword);			
-//			elementList.add(getGlobalFooterPageThreadLocal().btnShowOrHidePassword);
-//			elementList.add(getGlobalFooterPageThreadLocal().btnTrackYourOderSignIn);
-//			
-//			getGlobalFooterPageThreadLocal().verifyElementListExistence(elementList);
-//		}
-//		elementList.clear();
-//		
-//		//Contact Us
-//		lsService="Contact Us";
-//		reporter.reportLog(lsService);
-//		selectedItem=getGlobalFooterPageThreadLocal().getServiceWebElement(lsService);		
-//		lsHref=basePage.getElementHref(selectedItem);		
-//		lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsService,true);
-//		if(lsYmlHref.isEmpty()) {
-//			reporter.reportLogFail("Unable to find '"+lsService+"' link.");
-//		}		
-//		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current '"+lsService+"' href of "+lsHref+" is equal to "+lsYmlHref,"The current '"+lsService+"' href of "+lsHref+" is not equal to "+lsYmlHref);
-//		
-//		if(!getGlobalFooterPageThreadLocal().goToService(lsService,getGlobalFooterPageThreadLocal().lblContactUS)) {
-//			reporter.reportLogFail("Unable to navigate to '"+lsService+"' page objects.");
-//		}
-//		else {		
-//			elementList.add(getGlobalFooterPageThreadLocal().lblContactUS);
-//			elementList.add(getGlobalFooterPageThreadLocal().lblWhatCanWeHelpYouWith);
-//			elementList.add(getGlobalFooterPageThreadLocal().selectContactUS);
-//			elementList.add(getGlobalFooterPageThreadLocal().lblPleaseVisitUSInfo);
-//			elementList.add(getGlobalFooterPageThreadLocal().lnkPleaseVisitUS);
-//			
-//			getGlobalFooterPageThreadLocal().verifyElementListExistence(elementList);
-//			
-//			getGlobalFooterPageThreadLocal().verifyDropdownOptionContent();
-//		}
-//		elementList.clear();
+		//Customer service
+		lsService="Customer Service";
+		reporter.reportLog(lsService);
+		WebElement selectedItem=getGlobalFooterPageThreadLocal().getServiceWebElement(lsService);		
+		lsHref=basePage.getElementHref(selectedItem);		
+		lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsService,true);
+		if(lsYmlHref.isEmpty()) {
+			reporter.reportLogFail("Unable to find '"+lsService+"' link.");
+		}		
+		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current '"+lsService+"' href of "+lsHref+" is equal to "+lsYmlHref,"The current '"+lsService+"' href of "+lsHref+" is not equal to "+lsYmlHref);
+		
+		if(!getGlobalFooterPageThreadLocal().goToService(lsService,getGlobalFooterPageThreadLocal().lblCustomerService)) {
+			reporter.reportLogFail("Unable to navigate to '"+lsService+"' page objects.");
+		}
+		else {			
+			elementList.add(getGlobalFooterPageThreadLocal().lblCustomerService);
+			elementList.add(getGlobalFooterPageThreadLocal().lblHowCanWeHelpYou);
+			elementList.add(getGlobalFooterPageThreadLocal().inputSearchBox);
+			elementList.add(getGlobalFooterPageThreadLocal().lblFrequentlyAskedQuestions);
+			
+			getGlobalFooterPageThreadLocal().verifyElementListExistence(elementList);
+	
+			int listSize=getGlobalFooterPageThreadLocal().lstFrequentlyAskedQuestions.size();
+			for(int i=0;i<listSize;i++) {
+				WebElement item=getGlobalFooterPageThreadLocal().lstFrequentlyAskedQuestions.get(i);
+				String lsItem=item.getText().trim();
+				reporter.reportLog(lsItem);
+				reporter.softAssert(!lsItem.isEmpty(),"The item text is not empty","The item text is empty");
+				reporter.softAssert(!basePage.getElementHref(item).isEmpty(),"The link of "+lsItem+" is not empty","The link of "+lsItem+" is empty");
+				getGlobalFooterPageThreadLocal().verifyLinksForFrequentlyAskedQuestionsInCustomerServicePageObject(item);
+			}
+		}		
+		elementList.clear();
+		
+		//Track Your Order
+		lsService="Track Your Order";
+		reporter.reportLog(lsService);
+		List<String> lstTrackYourOrderObjectSectionTitle=TestDataHandler.constantData.getFooterSection().getLst_TrackYourOrderObjectSectionTitle();
+		selectedItem=getGlobalFooterPageThreadLocal().getServiceWebElement(lsService);		
+		lsHref=basePage.getElementHref(selectedItem);		
+		lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsService,true);
+		if(lsYmlHref.isEmpty()) {
+			reporter.reportLogFail("Unable to find '"+lsService+"' link.");
+		}		
+		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current '"+lsService+"' href of "+lsHref+" is equal to "+lsYmlHref,"The current '"+lsService+"' href of "+lsHref+" is not equal to "+lsYmlHref);
+		
+		if(!getGlobalFooterPageThreadLocal().goToService(lsService,getGlobalFooterPageThreadLocal().lblTrackYourOrder)) {
+			reporter.reportLogFail("Unable to navigate to '"+lsService+"' page objects.");
+		}
+		else {
+			List<WebElement> mandotoryFieldList=new ArrayList<WebElement>();
+			mandotoryFieldList.add(getGlobalFooterPageThreadLocal().cntOrderNumber);
+			mandotoryFieldList.add(getGlobalFooterPageThreadLocal().cntBillingPostalCode);
+			mandotoryFieldList.add(getGlobalFooterPageThreadLocal().btnTrackYourOrderSubmit);
+			getGlobalFooterPageThreadLocal().verifyServiceObjectSectionTitle(mandotoryFieldList, lstTrackYourOrderObjectSectionTitle, false);
+						
+			getGlobalFooterPageThreadLocal().displayAlertMessageForOrderNumberAndSignInInput();
+						
+			//Add The alert message into the list
+			elementList.add(getGlobalFooterPageThreadLocal().lblOrderNumberAlertMsg);
+			elementList.add(getGlobalFooterPageThreadLocal().lblBillingPostalCodeAlertMsg);
+			elementList.add(getGlobalFooterPageThreadLocal().lblEmailAddressAlertMsg);
+			elementList.add(getGlobalFooterPageThreadLocal().lblPasswordAlertMsg);
+			
+			//Add elements in order section
+			elementList.add(getGlobalFooterPageThreadLocal().lblTrackYourOrder);
+			elementList.add(getGlobalFooterPageThreadLocal().lblRequiredFieldsInfo);			
+			elementList.add(getGlobalFooterPageThreadLocal().lblOrderNumberTitle);
+			elementList.add(getGlobalFooterPageThreadLocal().lblOrderNumberLable);
+			elementList.add(getGlobalFooterPageThreadLocal().inputOrderNumber);			
+			elementList.add(getGlobalFooterPageThreadLocal().lblBillingPostalCodeLabel);
+			elementList.add(getGlobalFooterPageThreadLocal().inputBillingPostalCode);		
+			elementList.add(getGlobalFooterPageThreadLocal().btnTrackYourOrderSubmit);
+			
+			//Add elements in sign in section
+			elementList.add(getGlobalFooterPageThreadLocal().lblTrackYourOrderSignUpTitle);
+			elementList.add(getGlobalFooterPageThreadLocal().lblGetAllDetailsInfo);
+			elementList.add(getGlobalFooterPageThreadLocal().lblEmailAddressLable);
+			elementList.add(getGlobalFooterPageThreadLocal().inputEmailAddress);			
+			elementList.add(getGlobalFooterPageThreadLocal().lblPasswordLabel);
+			elementList.add(getGlobalFooterPageThreadLocal().inputPassword);			
+			elementList.add(getGlobalFooterPageThreadLocal().btnShowOrHidePassword);
+			elementList.add(getGlobalFooterPageThreadLocal().btnTrackYourOderSignIn);
+			
+			getGlobalFooterPageThreadLocal().verifyElementListExistence(elementList);
+		}
+		elementList.clear();
+		
+		//Contact Us
+		lsService="Contact Us";
+		reporter.reportLog(lsService);
+		selectedItem=getGlobalFooterPageThreadLocal().getServiceWebElement(lsService);		
+		lsHref=basePage.getElementHref(selectedItem);		
+		lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsService,true);
+		if(lsYmlHref.isEmpty()) {
+			reporter.reportLogFail("Unable to find '"+lsService+"' link.");
+		}		
+		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current '"+lsService+"' href of "+lsHref+" is equal to "+lsYmlHref,"The current '"+lsService+"' href of "+lsHref+" is not equal to "+lsYmlHref);
+		
+		if(!getGlobalFooterPageThreadLocal().goToService(lsService,getGlobalFooterPageThreadLocal().lblContactUS)) {
+			reporter.reportLogFail("Unable to navigate to '"+lsService+"' page objects.");
+		}
+		else {		
+			elementList.add(getGlobalFooterPageThreadLocal().lblContactUS);
+			elementList.add(getGlobalFooterPageThreadLocal().lblWhatCanWeHelpYouWith);
+			elementList.add(getGlobalFooterPageThreadLocal().selectContactUS);
+			elementList.add(getGlobalFooterPageThreadLocal().lblPleaseVisitUSInfo);
+			elementList.add(getGlobalFooterPageThreadLocal().lnkPleaseVisitUS);
+			
+			getGlobalFooterPageThreadLocal().verifyElementListExistence(elementList);
+			
+			getGlobalFooterPageThreadLocal().verifyDropdownOptionContent();
+		}
+		elementList.clear();
 		
 		//Blog
 		lsService="Blog";
 		reporter.reportLog(lsService);
-		WebElement selectedItem;
 		selectedItem=getGlobalFooterPageThreadLocal().getServiceWebElement(lsService);		
 		lsHref=basePage.getElementHref(selectedItem);		
 		lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsService,true);
@@ -160,21 +159,21 @@ public class GF_TC04_Verify_GlobalFooter_TSCCustomerHub_LinksAndPageObjects exte
 		}
 		reporter.softAssert(getGlobalFooterPageThreadLocal().compareUrlInNewWindow(lsService, lsYmlHref),"The current '"+lsService+"' href of "+lsHref+" is equal to "+lsYmlHref,"The current '"+lsService+"' href of "+lsHref+" is not equal to "+lsYmlHref);
 		
-//		//My Account 
-//		lsService="My Account";
-//		reporter.reportLog("Not login for "+lsService);
-//		verifyMyAccountNotLoginContents(lsService, lstNameAndLinks); 
-//		
-//		reporter.reportLog("Login for "+lsService);
-//		String lsUserName=TestDataHandler.constantData.getLoginUser().getLbl_Username();
-//		String lsPassword=TestDataHandler.constantData.getLoginUser().getLbl_Password();
-//		String lsFirstName=TestDataHandler.constantData.getLoginUser().getLbl_FirstName();
-//		if(getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword,lsFirstName)) {			
-//			verifyMyAccountLoginContents(lsService, lstNameAndLinks);
-//		}
-//		else {
-//			reporter.reportLogFail("Login failed");
-//		}
+		//My Account 
+		lsService="My Account";
+		reporter.reportLog("Not login for "+lsService);
+		verifyMyAccountNotLoginContents(lsService, lstNameAndLinks); 
+		
+		reporter.reportLog("Login for "+lsService);
+		String lsUserName=TestDataHandler.constantData.getLoginUser().getLbl_Username();
+		String lsPassword=TestDataHandler.constantData.getLoginUser().getLbl_Password();
+		String lsFirstName=TestDataHandler.constantData.getLoginUser().getLbl_FirstName();
+		if(getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword,lsFirstName)) {			
+			verifyMyAccountLoginContents(lsService, lstNameAndLinks);
+		}
+		else {
+			reporter.reportLogFail("Login failed");
+		}
 
 	}
 	

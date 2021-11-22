@@ -481,12 +481,9 @@ public class GlobalFooterPage extends BasePage {
 	 * @return true/false
 	 * @author Wei.Li
 	 */
-	public boolean verifyEqualWithEncodingText(List<List<String>> lstNameAndLink, String lsSpecificName) {
-		System.out.println("lsSpecificName: "+lsSpecificName);
-		for (List<String> lstItem : lstNameAndLink) {
-			System.out.println("lstItem: "+lstItem);
-			if (lsSpecificName.trim().contains(this.getUTFEnabledData(lstItem.get(0)))) {
-				System.out.println(lsSpecificName+" : "+lstItem);
+	public boolean verifyEqualWithEncodingText(List<List<String>> lstNameAndLink, String lsSpecificName) {		
+		for (List<String> lstItem : lstNameAndLink) {			
+			if (lsSpecificName.trim().contains(this.getUTFEnabledData(lstItem.get(0)))) {				
 				return true;
 			}
 		}
@@ -624,20 +621,26 @@ public class GlobalFooterPage extends BasePage {
 		String lsMainWindowHandle = this.getDriver().getWindowHandle();
 		getReusableActionsInstance().javascriptScrollByVisibleElement(selectedItem);
 		selectedItem.click();
-		getReusableActionsInstance().waitForNumberOfWindowsToBe(2, 30);
-		Set<String> lstWindowHandle = this.getDriver().getWindowHandles();
-		for (String windowHandle : lstWindowHandle) {
-			if (!windowHandle.equalsIgnoreCase(lsMainWindowHandle)) {
-				getReusableActionsInstance().staticWait(5000);
-				this.getDriver().switchTo().window(windowHandle);
-				break;
+		try {
+			getReusableActionsInstance().waitForNumberOfWindowsToBe(2, 30);
+			Set<String> lstWindowHandle = this.getDriver().getWindowHandles();
+			for (String windowHandle : lstWindowHandle) {
+				if (!windowHandle.equalsIgnoreCase(lsMainWindowHandle)) {
+					getReusableActionsInstance().staticWait(5000);
+					this.getDriver().switchTo().window(windowHandle);
+					break;
+				}
 			}
-		}
-		String lsCurrentUrl = this.removeLastSlashFromUrl(this.getDriver().getCurrentUrl());
-		lsExpectedUrl = this.removeLastSlashFromUrl(lsExpectedUrl);
-		this.getDriver().switchTo().window(lsMainWindowHandle);
+			String lsCurrentUrl = this.removeLastSlashFromUrl(this.getDriver().getCurrentUrl());
+			lsExpectedUrl = this.removeLastSlashFromUrl(lsExpectedUrl);
+			this.getDriver().switchTo().window(lsMainWindowHandle);
 
-		return lsCurrentUrl.equalsIgnoreCase(lsExpectedUrl);
+			return lsCurrentUrl.equalsIgnoreCase(lsExpectedUrl);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	/**
