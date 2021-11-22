@@ -42,8 +42,7 @@ public class GF_TC05_Verify_GlobalFooter_AboutTSC_LinksAndPageObjects extends Ba
             if(!getGlobalFooterPageThreadLocal().goToService(lsService,getGlobalFooterPageThreadLocal().aboutUsPageTitle)) {
                 reporter.reportLogFail("Unable to navigate to '"+lsService+"' page objects.");
             }
-            else {
-                //Verifying page title
+            else {                
             	//Verifying page title
                 String pageTitle = getGlobalFooterPageThreadLocal().getPageTitle(getGlobalFooterPageThreadLocal().aboutUsPageTitle);
                 reporter.softAssert(pageTitle.equalsIgnoreCase(testData.get("Title")),"Page Title matches for global footer link: "+lsService+" and title is: "+pageTitle,"Page Title doesn't match for global footer link: "+lsService+" and title is: "+pageTitle);

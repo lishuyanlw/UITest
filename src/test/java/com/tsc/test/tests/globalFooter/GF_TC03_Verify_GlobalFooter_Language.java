@@ -122,7 +122,7 @@ public class GF_TC03_Verify_GlobalFooter_Language extends BaseTest {
 		
 		//Copyright text
 		lsText=basePage.getUTFEnabledData(basePage.getElementText(getGlobalFooterPageThreadLocal().txtCopyrightLine1));
-		reporter.softAssert(lsText.equalsIgnoreCase(lsText_Copyright_Line1_Fr),"Copyright line1 French transaltion is correct","Copyright line1 French transaltion is not correct");
+		reporter.softAssert(lsText.contains(lsText_Copyright_Line1_Fr),"Copyright line1 French transaltion is correct","Copyright line1 French transaltion is not correct");
 		lsText=basePage.getUTFEnabledData(basePage.getElementText(getGlobalFooterPageThreadLocal().txtCopyrightLine2));
 		reporter.softAssert(lsText.equalsIgnoreCase(lsText_Copyright_Line2_Fr),"Copyright line2 French transaltion is correct","Copyright line2 French transaltion is not correct");
 		
