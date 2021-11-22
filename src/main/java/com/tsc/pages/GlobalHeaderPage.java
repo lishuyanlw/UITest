@@ -804,10 +804,10 @@ public class GlobalHeaderPage extends BasePage{
 		 * @return list : French name for Watch TSC-FR
 		 * @author Shruti Desai
 		 */
-		public List<String> getFrenchNameymlData(List<List<String>> lstNameAndLinks) {
+		public List<String> getymlData(List<List<String>> lstNameAndLinks, int i) {
 			List<String> frenchNameDataFile= new ArrayList<String>();
 			for (List<String> lstItem : lstNameAndLinks) {
-				String NewfrenchName =this.getUTFEnabledData(lstItem.get(1).trim());
+				String NewfrenchName =this.getUTFEnabledData(lstItem.get(i).trim());
 				frenchNameDataFile.add(NewfrenchName);
 			}
 			return frenchNameDataFile;
@@ -819,8 +819,8 @@ public class GlobalHeaderPage extends BasePage{
 		 * @author Shruti Desai
 		 */
 		public WebElement getWatchTSCdPMElements(String frenchName){
-			String xpathTSCdPMfrenchName =createXPath("//span[contains(text(),'{0}')]" ,frenchName); 
-			WebElement TSCdPMWebElement = lstWatchTSCDpdMenu.get(0).findElement(By.xpath(xpathTSCdPMfrenchName));
+			String xpathTSCdPMfrenchName =createXPath("//div[contains(@Class,'black-header')]//nav//li//a//span[contains(text(),'{0}')]" ,frenchName); 
+			WebElement TSCdPMWebElement = getDriver().findElement(By.xpath(xpathTSCdPMfrenchName));
 			return TSCdPMWebElement;
 		}
 		
@@ -829,14 +829,14 @@ public class GlobalHeaderPage extends BasePage{
 		 * @return assertion report for href presence and validation of url after clicking element
 		 * @author Shruti Desai
 		 */
-		public void verifyWatchTSCdpDMenu(WebElement element,boolean bCheckUrl, String dpDownMenuName) {
+		public void verifyWatchTSCdpDMenu(WebElement element,boolean bCheckUrl) {
 			 getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 			 String lsTitle=element.getText().trim();
 			 WebElement elementHrefWatchTSC =element.findElement(By.xpath("./ancestor::a"));
-			 reporter.softAssert(getReusableActionsInstance().isElementVisible(element), "The element of "+lsTitle+" in "+dpDownMenuName+" is visible","The element of "+lsTitle+" in "+dpDownMenuName+" is not visible");
-			 reporter.softAssert(!lsTitle.isEmpty(), lsTitle+" text in "+dpDownMenuName+" is not empty", lsTitle+" text in "+dpDownMenuName+" is empty");
+			 reporter.softAssert(getReusableActionsInstance().isElementVisible(element), "The element of "+lsTitle+" is visible","The element of "+lsTitle+" is not visible");
+			 reporter.softAssert(!lsTitle.isEmpty(), lsTitle+" text "+" is not empty", lsTitle+" text "+" is empty");
 			 String lsHrefWatchTSCdpMenu=elementHrefWatchTSC.getAttribute("href").trim();
-			 reporter.softAssert(verifyElementProperty(elementHrefWatchTSC,"Link"), "The href of "+lsTitle+" in "+dpDownMenuName+" is not empty", "The href of "+lsTitle+" in "+dpDownMenuName+" is empty");
+			 reporter.softAssert(verifyElementProperty(elementHrefWatchTSC,"Link"), "The href of "+lsTitle+" is not empty", "The href of "+lsTitle+" is empty");
 			 lsHrefWatchTSCdpMenu=this.removeLastSlashFromUrl(lsHrefWatchTSCdpMenu);
 			 element.click();
 			 this.waitForPageToLoad();
@@ -847,9 +847,9 @@ public class GlobalHeaderPage extends BasePage{
 				 //need to use if condition as redirected link for Program Guide/Grille horaire is different.
 				 if(lsHrefWatchTSCdpMenu.contains("programguide")) {
 					 String lnk_ProgramGuideRedirect="https://qa-tsc.tsc.ca/pages/programguide/daily?ic=HP_ProgramGuide";
-					 reporter.softAssert(lsUrlWatchTSCdpItem.equalsIgnoreCase(lnk_ProgramGuideRedirect), "The Url of "+lsUrlWatchTSCdpItem+"  after clicking "+lsTitle+" in "+dpDownMenuName+" is equal to the href of "+lsHrefWatchTSCdpMenu, "The Url of "+lsUrlWatchTSCdpItem+"  after clicking "+lsTitle+" in "+dpDownMenuName+" is not equal to the href of "+lsHrefWatchTSCdpMenu);
+					 reporter.softAssert(lsUrlWatchTSCdpItem.equalsIgnoreCase(lnk_ProgramGuideRedirect), "The Url of "+lsUrlWatchTSCdpItem+"  after clicking "+lsTitle+" is equal to the href of "+lsHrefWatchTSCdpMenu, "The Url of "+lsUrlWatchTSCdpItem+"  after clicking "+lsTitle+" is not equal to the href of "+lsHrefWatchTSCdpMenu);
 				 }else {
-					 reporter.softAssert(lsUrlWatchTSCdpItem.equalsIgnoreCase(lsHrefWatchTSCdpMenu), "The Url of "+lsUrlWatchTSCdpItem+"  after clicking "+lsTitle+" in "+dpDownMenuName+" is equal to the href of "+lsHrefWatchTSCdpMenu, "The Url of "+lsUrlWatchTSCdpItem+"  after clicking "+lsTitle+" in "+dpDownMenuName+" is not equal to the href of "+lsHrefWatchTSCdpMenu);
+					 reporter.softAssert(lsUrlWatchTSCdpItem.equalsIgnoreCase(lsHrefWatchTSCdpMenu), "The Url of "+lsUrlWatchTSCdpItem+"  after clicking "+lsTitle+" is equal to the href of "+lsHrefWatchTSCdpMenu, "The Url of "+lsUrlWatchTSCdpItem+"  after clicking "+lsTitle+" is not equal to the href of "+lsHrefWatchTSCdpMenu);
 				}
 			}
 		 }
@@ -867,6 +867,13 @@ public class GlobalHeaderPage extends BasePage{
 			}
 		return flyoutHeading;
 		}
+		
+		public WebElement getHeaderWebElements(String blackHeadeNname) {
+			String xpathHeading =createXPath("//div[contains(@class,'black-header')]//*[contains(@class,'{0}')]" ,blackHeadeNname); 
+			WebElement headingWebElement = FlyoutHeadings.findElement(By.xpath(xpathHeading));
+			return headingWebElement;
+		}
+		
 
 }
 
