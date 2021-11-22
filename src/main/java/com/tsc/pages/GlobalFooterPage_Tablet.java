@@ -2,6 +2,7 @@ package com.tsc.pages;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -213,6 +214,47 @@ public class GlobalFooterPage_Tablet extends GlobalFooterPage{
 		String lsBaseUrl=this.getBaseURL()+"/";		
 		this.navigateToURL(lsBaseUrl);
 		this.waitForPageLoading();
+	}
+	
+	@Override
+	public boolean compareUrlInNewWindow(String lsService, String lsExpectedUrl) {
+		WebElement selectedItem = this.getServiceWebElement(lsService);
+		if (selectedItem == null) {
+			return false;
+		}
+		
+		String lsCurrentUrl;
+		String strBrowser = System.getProperty("Browser").trim();
+		if (strBrowser.toLowerCase().contains("ios")) {			
+			String currentUrl=this.removeLastSlashFromUrl(this.getDriver().getCurrentUrl());
+			getReusableActionsInstance().javascriptScrollByVisibleElement(selectedItem);
+			waitForCondition(Driver->{return selectedItem.isDisplayed();},30000);
+			selectedItem.click();
+	        waitForCondition(Driver->{return !currentUrl.equalsIgnoreCase(getDriver().getCurrentUrl());},30000);
+	        getReusableActionsInstance().waitForPageLoad();
+	        getReusableActionsInstance().staticWait(5000);	
+	        lsCurrentUrl = this.removeLastSlashFromUrl(this.getDriver().getCurrentUrl());
+			lsExpectedUrl = this.removeLastSlashFromUrl(lsExpectedUrl);
+		} else {
+			String lsMainWindowHandle = this.getDriver().getWindowHandle();
+			getReusableActionsInstance().javascriptScrollByVisibleElement(selectedItem);
+			selectedItem.click();
+			getReusableActionsInstance().waitForNumberOfWindowsToBe(2, 30);
+			Set<String> lstWindowHandle = this.getDriver().getWindowHandles();
+			for (String windowHandle : lstWindowHandle) {
+				if (!windowHandle.equalsIgnoreCase(lsMainWindowHandle)) {
+					getReusableActionsInstance().staticWait(5000);
+					this.getDriver().switchTo().window(windowHandle);
+					break;
+				}
+			}
+			lsCurrentUrl = this.removeLastSlashFromUrl(this.getDriver().getCurrentUrl());
+			lsExpectedUrl = this.removeLastSlashFromUrl(lsExpectedUrl);
+			this.getDriver().switchTo().window(lsMainWindowHandle);
+		}
+		
+
+		return lsCurrentUrl.equalsIgnoreCase(lsExpectedUrl);
 	}
 
 }
