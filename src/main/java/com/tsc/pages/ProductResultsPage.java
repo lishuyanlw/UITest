@@ -247,9 +247,7 @@ public class ProductResultsPage extends BasePage{
 		this.clearContent(globalHeader.searchBox);
 		globalHeader.searchBox.sendKeys(searchKeyword);
 		//globalHeader.btnSearchSubmit.click();
-		if (!(System.getProperty("Device").equalsIgnoreCase("Desktop"))){
-			getReusableActionsInstance().staticWait(2000);
-		}
+		getReusableActionsInstance().staticWait(5000);
 		(new BasePage(this.getDriver())).pressEnterKey(globalHeader.searchBox);
 			
 		getReusableActionsInstance().staticWait(300);
