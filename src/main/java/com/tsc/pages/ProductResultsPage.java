@@ -869,6 +869,7 @@ public class ProductResultsPage extends BasePage{
 
 		for(int i=0;i<listSize;i++) {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i));
+			getReusableActionsInstance().scrollToElement(this.productFilterList.get(i));
 			if(lstOptionYml.contains(this.productFilterList.get(i).getText().trim())) {
 				continue;
 			}else {
