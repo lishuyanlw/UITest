@@ -42,6 +42,17 @@ headerSection:
     lbl_FlyoutHeadingLandingPageLink: /pages/category?nav=n
     lnk_FlyoutHeaderLinkConstant: [ ':100047',':128153',':100101',':100038',':100071',':100072',':2058731',':100073',':3001781',':2037576' ]
     lst_FlyoutHeading_FR: ['Mode', 'Chaussures et sacs', 'Bijoux', 'Beauté', 'Maison et jardin', 'Cuisine', 'Santé', 'Électronique', 'Monnaie et Hobbies','Liquidation']
+    lst_FlyoutHeadingNameAndLink:
+      - ['Fashion','Mode','100047']
+      - ['Shoes & Handbags','Chaussures et sacs','128153']
+      - ['Jewellery','Bijoux','100101']
+      - ['Beauty','Beauté','100038']
+      - ['Home & Garden','Maison et jardin','100071']
+      - ['Kitchen','Cuisine','100072']
+      - ['Health & Fitness','Santé','2058731']
+      - ['Electronics','Électronique','100073']
+      - ['Coins & Hobbies','Monnaie et Hobbies','3001781']
+      - ['Clearance','Liquidation','2037576']
 homePage:
   lbl_OnAirNow: ON AIR NOW
   lbl_RecentlyAir: RECENTLY AIRED

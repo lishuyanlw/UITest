@@ -545,7 +545,16 @@ public class ConstantData {
         private String lbl_FlyoutHeadingLandingPageLink;
         private List<String> lnk_FlyoutHeaderLinkConstant;
         private List<String> lst_FlyoutHeading_FR;
+        private List<List<String>> lst_FlyoutHeadingNameAndLink;
+        
+        public List<List<String>> getlst_FlyoutHeadingNameAndLink() {
+            return lst_FlyoutHeadingNameAndLink;
+        }
 
+        public void setlst_FlyoutHeadingNameAndLink(List<List<String>> lst_FlyoutHeadingNameAndLink) {
+            this.lst_FlyoutHeadingNameAndLink = lst_FlyoutHeadingNameAndLink;
+        }
+        
         public String getLbl_FlyoutHeadingLandingPageLink() {
             return lbl_FlyoutHeadingLandingPageLink;
         }

@@ -237,13 +237,17 @@ public class GlobalHeaderPage extends BasePage{
 	@FindBy(xpath = "//a[contains(@class,'mega-curated__item-link')]")
 	public List<WebElement> listCuratedCollectionLinks;
 	
-	
 	@FindBy(xpath = "//a[contains(@class,'mega-popular__brand-link')]//img")
-	public List<WebElement> listPopularBrandsLinks;
+	public List<WebElement> listPopularBrandsImg;
 	
-
-	@FindBy(xpath = "//h2[contains(@class,'titleLink')]//b")
-	WebElement shopAllBrandsLandigPageHeading;
+	@FindBy(xpath = "//a[contains(@class,'mega-popular__brand-link')]")
+	public List<WebElement> listPopularBrandsLink;
+	
+	@FindBy(xpath = "//a[contains(@class,'mega-popular__cta')]")
+	public WebElement shopAllPopularBrands;
+	
+	@FindBy(xpath = "//h2[contains(@class,'titleLink')]")
+	public WebElement shopAllBrandsLandigPageHeading;
 
 	@FindBy(xpath="//span[contains(text(),'Clearance')]")
 	WebElement clearanceHeader;
@@ -626,7 +630,7 @@ public class GlobalHeaderPage extends BasePage{
 		 * @return WebElement
 		 * @author Shruti Desai
 		 */	
-		public WebElement getWebElementShopAllPupularBrand() {
+		/*public WebElement getWebElementShopAllPupularBrand() {
 			WebElement ShopAllWebElement = getDriver().findElement(By.xpath("//a[contains(@class,'mega-popular__cta')]"));
 			return ShopAllWebElement;
 		}
@@ -639,13 +643,16 @@ public class GlobalHeaderPage extends BasePage{
 			String currentUrl=null;
 			AtomicReference<String> first_flyout_menu_text =new  AtomicReference<String>();
 			first_flyout_menu_text.set(headingName.split(" ")[0]);
-			WebElement linkPopularBrand = listPopularBrandsLinks.get(0);
+			WebElement linkPopularBrand = listPopularBrandsLink.get(0);
 			waitForCondition(Driver->{return (linkPopularBrand.getAttribute("href").contains(first_flyout_menu_text.get()) && linkPopularBrand.getAttribute("class").contains(section.split(" ")[0].trim().toLowerCase()));} ,30000);
-			WebElement ShopAllWebElement = getWebElementShopAllPupularBrand();
-			if(verifyElementProperty(ShopAllWebElement,"Link")) {
-				getReusableActionsInstance().javascriptScrollByVisibleElement(ShopAllWebElement);				
-				getReusableActionsInstance().scrollToElement(ShopAllWebElement);
-				ShopAllWebElement.click();
+			//WebElement ShopAllWebElement = getWebElementShopAllPupularBrand();
+			if(verifyElementProperty(shopAllPopularBrands,"Link")) {
+				//getReusableActionsInstance().javascriptScrollByVisibleElement(shopAllPopularBrands);				
+				//getReusableActionsInstance().scrollToElement(shopAllPopularBrands);
+				if (System.getProperty("Browser").toLowerCase().contains("chrome")) {
+					getReusableActionsInstance().scrollToElement(shopAllPopularBrands);
+				}
+				shopAllPopularBrands.click();
 				currentUrl = getDriver().getCurrentUrl();
 			}
 			return currentUrl;
@@ -658,9 +665,15 @@ public class GlobalHeaderPage extends BasePage{
 	 */
 	public String getHeadingForLandingPage(String pageName) {
 		WebElement webElement = getWebElementFlyoutHeading(pageName);
-		return createCamelCase(getPageTitle(webElement));
+		String title =getPageTitle(webElement).toUpperCase();
+		System.out.println(title);
+		return createCamelCase(title);
 	}
 
+	public String getLandingPageHeadingSection() {
+		System.out.println(createCamelCase(getPageTitle(shopAllBrandsLandigPageHeading)).split(":")[0]);
+		return (createCamelCase(getPageTitle(shopAllBrandsLandigPageHeading)).split(":")[0]);
+	}
 	
 	/*Method to verify href/src is empty or not before clicking sub menu link
 	 * @return true/false
@@ -758,19 +771,21 @@ public class GlobalHeaderPage extends BasePage{
 			break;
 			case "Popular Brands":
 				reporter.reportLog("Verifying Popular Brands items for : "+headingName);
-				for(WebElement webElement:listPopularBrandsLinks){
+				for(WebElement webElement:listPopularBrandsLink){
 					if(System.getProperty("Browser").toLowerCase().contains("firefox")) {
 						getReusableActionsInstance().javascriptScrollByVisibleElement(webElement);
 					}
 					getReusableActionsInstance().scrollToElement(webElement);
-					WebElement hrefAttribute =webElement.findElement(By.xpath("./ancestor::a"));
-					if(!verifyElementProperty(hrefAttribute,"Link")) {//href not present
+					//WebElement hrefAttribute =webElement.findElement(By.xpath("./ancestor::a"));
+					WebElement altAttribute =webElement.findElement(By.xpath(".//img"));
+					
+					if(!verifyElementProperty(webElement,"Link")) {//href not present
 						getReporter().softAssert(false,"","Href missing for Popular Brand item: "+webElement.getText());
 					}
-					if(!verifyElementProperty(webElement,"Image")) {//href not present
-						getReporter().softAssert(false,"","Image missing for Popular Brand item: "+webElement.getText());
+					if(!verifyElementProperty(altAttribute,"Image")) {//img not present
+						getReporter().softAssert(false,"","Image missing for Popular Brand item: "+altAttribute.getText());
 					}else{
-						getReporter().reportLog("Image present for Popular Brand item: "+webElement.getAttribute("alt"));
+						getReporter().reportLog("Image present for Popular Brand item: "+altAttribute.getAttribute("alt"));
 					}
 				}
 			break;
@@ -804,10 +819,10 @@ public class GlobalHeaderPage extends BasePage{
 		 * @return list : French name for Watch TSC-FR
 		 * @author Shruti Desai
 		 */
-		public List<String> getFrenchNameymlData(List<List<String>> lstNameAndLinks) {
+		public List<String> getymlData(List<List<String>> lstNameAndLinks, int i) {
 			List<String> frenchNameDataFile= new ArrayList<String>();
 			for (List<String> lstItem : lstNameAndLinks) {
-				String NewfrenchName =this.getUTFEnabledData(lstItem.get(1).trim());
+				String NewfrenchName =this.getUTFEnabledData(lstItem.get(i).trim());
 				frenchNameDataFile.add(NewfrenchName);
 			}
 			return frenchNameDataFile;
@@ -853,20 +868,56 @@ public class GlobalHeaderPage extends BasePage{
 				}
 			}
 		 }
+		
+		/* Method to get French name from yml file for Watch TSC
+		 * @param List<List<String>> lstWatchUsLiveNameAndLinks 
+		 * @return list : French name for Watch TSC-FR
+		 * @author Shruti Desai
+		 */
+		public List<String> getEnglishNameymlData(List<List<String>> lstNameAndLinks,int i) {
+			List<String> frenchNameDataFile= new ArrayList<String>();
+			for (List<String> lstItem : lstNameAndLinks) {
+				String NewfrenchName =this.getUTFEnabledData(lstItem.get(i).trim());
+				frenchNameDataFile.add(NewfrenchName);
+			}
+			return frenchNameDataFile;
+		}
 		 
 		 
 		/* Method to get Flyout Heading in Frech for Watch TSC-FR
 		 * @return List of String :Flyout heading name in French name for Watch TSC-FR
 		 * @author Shruti Desai
 		 */ 
-		public List<String> flyoutHeadingName(){
+		/*public List<String> flyoutHeadingName(){
 			List<String> flyoutHeading = new ArrayList<String>();
 			for(WebElement lsHeading:headingLinks) {
 				String flHeading=this.getUTFEnabledData(lsHeading.getText().trim());
 				flyoutHeading.add(flHeading);
 			}
 		return flyoutHeading;
+		}*/
+
+		
+		
+		public boolean verifyShowingTextPatternInFilters(String pattern, WebElement element) {
+			getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+			String showingText=element.getText().toUpperCase()+" "+element.getText();
+
+			return showingText.matches(pattern);//"SHOWING: (\\d+) - (\\d+) of (\\d+) Items"
 		}
+		
+		
+		
+		public String getListFlyoutHeadingLinkNumberymlData(String headingName) {
+			String LinkNumberUrlDataFile= null;
+			
+			LinkNumberUrlDataFile =getUTFEnabledData(headingName.trim());
+				
+			return LinkNumberUrlDataFile;
+		}
+		
+		
+		
 
 }
 
