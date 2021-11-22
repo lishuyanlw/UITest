@@ -481,9 +481,12 @@ public class GlobalFooterPage extends BasePage {
 	 * @return true/false
 	 * @author Wei.Li
 	 */
-	public boolean verifyEqualWithEncodingText(List<List<String>> lstNameAndLink, String lsSpecificName) {		
-		for (List<String> lstItem : lstNameAndLink) {			
-			if (lsSpecificName.trim().contains(this.getUTFEnabledData(lstItem.get(0)))) {				
+	public boolean verifyEqualWithEncodingText(List<List<String>> lstNameAndLink, String lsSpecificName) {
+		System.out.println("lsSpecificName: "+lsSpecificName);
+		for (List<String> lstItem : lstNameAndLink) {
+			System.out.println("lstItem: "+lstItem);
+			if (lsSpecificName.trim().contains(this.getUTFEnabledData(lstItem.get(0)))) {
+				System.out.println(lsSpecificName+" : "+lstItem);
 				return true;
 			}
 		}
