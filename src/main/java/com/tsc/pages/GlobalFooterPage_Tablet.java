@@ -225,16 +225,20 @@ public class GlobalFooterPage_Tablet extends GlobalFooterPage{
 		
 		String lsCurrentUrl;
 		String strBrowser = System.getProperty("Browser").trim();
-		if (strBrowser.toLowerCase().contains("ios")) {			
+		System.out.println("strBrowser: "+strBrowser);
+		if (strBrowser.toLowerCase().contains("ios")) {		
+			System.out.println("Is ios");
 			String currentUrl=this.removeLastSlashFromUrl(this.getDriver().getCurrentUrl());
 			getReusableActionsInstance().javascriptScrollByVisibleElement(selectedItem);
 			waitForCondition(Driver->{return selectedItem.isDisplayed();},30000);
 			selectedItem.click();
-	        waitForCondition(Driver->{return !currentUrl.equalsIgnoreCase(getDriver().getCurrentUrl());},30000);
+	        //waitForCondition(Driver->{return !currentUrl.equalsIgnoreCase(getDriver().getCurrentUrl());},30000);
 	        getReusableActionsInstance().waitForPageLoad();
-	        getReusableActionsInstance().staticWait(5000);	
+	        getReusableActionsInstance().staticWait(8000);	
 	        lsCurrentUrl = this.removeLastSlashFromUrl(this.getDriver().getCurrentUrl());
 			lsExpectedUrl = this.removeLastSlashFromUrl(lsExpectedUrl);
+			System.out.println("lsCurrentUrl: "+lsCurrentUrl);
+			System.out.println("lsExpectedUrl: "+lsExpectedUrl);
 		} else {
 			String lsMainWindowHandle = this.getDriver().getWindowHandle();
 			getReusableActionsInstance().javascriptScrollByVisibleElement(selectedItem);
