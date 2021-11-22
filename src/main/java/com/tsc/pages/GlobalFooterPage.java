@@ -770,7 +770,8 @@ public class GlobalFooterPage extends BasePage {
 			try{
 				WebElement item=lstPanelItem.get(i);
 				String lsClass=item.getAttribute("class");
-				if(lsClass=="" || lsClass==null || lsClass!="collapsed") {
+				
+				if(lsClass.isEmpty() || !lsClass.toLowerCase().contains("collapsed")) {
 					getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 					counter++;
 					break;
