@@ -126,7 +126,7 @@ public class LoginPage extends BasePage {
 		getReusableActionsInstance().javascriptScrollToTopOfPage();
 		getReusableActionsInstance().staticWait(5000);
 		
-		return waitForCondition(Driver->{return (new GlobalFooterPage(this.getDriver())).lblMyAccountLoginName.getText().toUpperCase().contains(lsFirstName.toUpperCase());},30000);
+		return waitForCondition(Driver->{return (new GlobalFooterPage(this.getDriver())).lblMyAccountLoginName.getText().toUpperCase().contains(lsFirstName.toUpperCase());},90000);
 				
 	}
 	
