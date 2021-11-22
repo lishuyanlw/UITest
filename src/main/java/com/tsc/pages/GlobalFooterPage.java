@@ -558,9 +558,10 @@ public class GlobalFooterPage extends BasePage {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkLanguage);
 		waitForCondition(Driver->{return this.lnkLanguage.isDisplayed();},10000);
 		String lsLanguage=this.lnkLanguage.getText().trim();
-		this.lnkLanguage.click();
+		this.lnkLanguage.click();		
 		this.waitForPageLoading();
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkLanguage);
+		getReusableActionsInstance().staticWait(5000);
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkLanguage);		
 		
 		return this.waitForCondition(Driver->{return !this.lnkLanguage.getText().trim().equalsIgnoreCase(lsLanguage);}, 30000);
 	}
@@ -737,16 +738,15 @@ public class GlobalFooterPage extends BasePage {
 	public void displayAlertMessageForOrderNumberAndSignInInput() {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputOrderNumber);
 		this.inputOrderNumber.sendKeys("1");
-		
+		getReusableActionsInstance().staticWait(300);
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputBillingPostalCode);
 		this.inputBillingPostalCode.sendKeys("1");
-		
+		getReusableActionsInstance().staticWait(300);
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputEmailAddress);
 		this.inputEmailAddress.sendKeys("1");
-		
+		getReusableActionsInstance().staticWait(300);
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputPassword);
-		this.inputPassword.sendKeys("1");
-		
+		this.inputPassword.sendKeys("1");		
 		getReusableActionsInstance().staticWait(300);				
 	}
 
