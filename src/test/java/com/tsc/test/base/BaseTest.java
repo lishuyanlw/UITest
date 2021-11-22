@@ -128,6 +128,7 @@ public class BaseTest {
 		productResultsPageThreadLocal.set(new ProductResultsPage_Tablet(getDriver()));
 		globalheaderPageThreadLocal.set(new GlobalHeaderPage_Mobile(getDriver()));
 		loginPageThreadLocal.set(new LoginPage(getDriver()));
+		globalFooterPageThreadLocal.set(new GlobalFooterPage(getDriver()));
 		reporter = new ExtentTestManager(getDriver());
 	}
 
