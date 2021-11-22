@@ -210,7 +210,7 @@ public class ProductResultsPage extends BasePage{
 			if(lsStyle==null||lsStyle.isEmpty()) {
 				lsStyle="display: none;";
 			}
-			return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},60000);
+			return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},90000);
 	}
 
 	/**
@@ -245,7 +245,7 @@ public class ProductResultsPage extends BasePage{
 			if(lsStyle==null||lsStyle.isEmpty()) {
 				lsStyle="display: none;";
 			}
-			return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;")&&!lsUrl.equalsIgnoreCase(this.URL());},60000);
+			return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;")&&!lsUrl.equalsIgnoreCase(this.URL());},90000);
 	}
 
 	/**
@@ -313,7 +313,7 @@ public class ProductResultsPage extends BasePage{
 			if(lsStyle==null||lsStyle.isEmpty()) {
 				lsStyle="display: none;";
 			}
-			return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;")&&!lsUrl.equalsIgnoreCase(this.URL());},60000);
+			return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;")&&!lsUrl.equalsIgnoreCase(this.URL());},90000);
 	}
 
 	/**
