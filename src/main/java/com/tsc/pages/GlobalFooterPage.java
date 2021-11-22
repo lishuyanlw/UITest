@@ -350,6 +350,36 @@ public class GlobalFooterPage extends BasePage {
 	@FindBy(xpath="//h1[contains(@class,'section-title')]")
 	public WebElement lblFindCableChannelTitle;
 	
+	@FindBy(xpath="(//div[contains(@class,' tsc-forms')]//h1//following-sibling::p)[1]")
+	public WebElement useourchannelfinder;
+	
+	@FindBy(xpath="//h1//following-sibling::h4")
+	public WebElement lblselectyour;
+	
+	@FindBy(xpath="//label[contains(text(),'PROVIN')]")
+	public WebElement lblProvince;
+	
+	@FindBy(xpath="//label[contains(text(),'CABLE')]")
+	public WebElement lblCableProvider;
+	
+	@FindBy(xpath="//label[contains(text(),'CIT')]")
+	public WebElement lblCity;
+	
+	@FindBy(xpath="//div[contains(@class,'satellite')]//h1")
+	public WebElement lblSatelliteChannels;
+	
+	@FindBy(xpath="//div[contains(@class,'satellite')]//h3[contains(text(),'Be')]")
+	public WebElement lblBellTV;
+	
+	@FindBy(xpath="//div[contains(@class,'satellite')]//h3[contains(text(),'Sh')]")
+	public WebElement lblShawDirect;
+	
+	@FindBy(xpath="(//div[contains(@class,'satellite')]//p)[1]")
+	public WebElement lblChannels113;
+	
+	@FindBy(xpath="(//div[contains(@class,'satellite')]//p)[2]")
+	public WebElement lblChannels418;
+	
 	@FindBy(xpath="//select[contains(@class,'form-control') and contains(@id,'1')]")
 	public WebElement dropDownProvince;
 	
@@ -359,9 +389,6 @@ public class GlobalFooterPage extends BasePage {
 	@FindBy(xpath="//select[contains(@class,'form-control') and contains(@id,'3')]")
 	public WebElement dropDownCity;
 	
-	
-	
-	
 	//Meet Our Hosts
 	@FindBy(xpath="//div[contains(@class,'FullWidthContent')]//h2")
 	public List<WebElement> listOfMeetOurHosts;
@@ -369,6 +396,15 @@ public class GlobalFooterPage extends BasePage {
 	@FindBy(xpath="//div[contains(@class,'FullWidthContent')]//a")
 	public List<WebElement> linkOfMeetOurHosts;
 	
+	//Rogers Copy Rights Image
+	@FindBy(xpath="//strong[contains(@id,'ftrCopyright')]")
+	public WebElement RogersMedia;
+	
+	@FindBy(xpath="//div[contains(@class,'copyright-msg xs-vw2 sm-px12')]//strong[contains(text(),'All')]")
+	public WebElement AllPrice;
+	
+	@FindBy(xpath="//img[contains(@src,'Rogers.png')]")
+	public WebElement RogersMediaImg;
 	
 	
 	/**
@@ -921,7 +957,10 @@ public class GlobalFooterPage extends BasePage {
 		}
 	}
 	
-	
+	/**
+	 * This method is to verify each Links in Meet the Hosts
+	 * @author godwin.gopi
+	 */
 	public boolean verifyLinks(String hrefLink) {
 		String currentURL=getDriver().getCurrentUrl();
 
@@ -931,6 +970,11 @@ public class GlobalFooterPage extends BasePage {
 			return currentURL.contains(hrefLink);
 		}
 	}
+	
+	/**
+	 * This method is to verify Drop Down in Channel Finder, navigating to its corresponding Service Provider and City
+	 * @author godwin.gopi
+	 */
 	
 	public  void verifyMultipleDropDownWithTitle(WebElement firstDropDown, WebElement secondDropDown, WebElement thirdDropDown) {
 		Select select=new Select(firstDropDown);
@@ -949,7 +993,7 @@ public class GlobalFooterPage extends BasePage {
 				getReusableActionsInstance().waitForPageLoad();
 				String secondOption =secondSelect.getFirstSelectedOption().getText();
 				reporter.reportLog(" Dropdown Selected Province is "+option+" and Dropdown Selected Cable Provider is "+secondOption+"");
-				reporter.softAssert(secondOption!=null," Dropdown Selected Cable provider is "+secondOption+" and not NULL"," Dropdown Selected Province is "+secondOption+" and is NULL");
+				reporter.softAssert(secondOption!=null," Dropdown Selected Cable provider is "+secondOption+" and not NULL"," Dropdown Selected Cable provider is "+secondOption+" and is NULL");
 				Select thirdSelect=new Select(thirdDropDown);
 				int thirdDropDownElementSize=thirdSelect.getOptions().size();
 				for(int k=0;k<thirdDropDownElementSize;k++) {
@@ -957,7 +1001,7 @@ public class GlobalFooterPage extends BasePage {
 					getReusableActionsInstance().waitForPageLoad();
 					String thirdOption =thirdSelect.getFirstSelectedOption().getText();
 					reporter.reportLog("Dropdown Selected Province is "+option+" and Dropdown Selected Cable Provider is "+secondOption+" Dropdown Selected City is "+thirdOption+"");
-					reporter.softAssert(thirdOption!=null," Dropdown Selected Cable provider is "+thirdOption+" and not NULL"," Dropdown Selected Province is "+thirdOption+" and is NULL");
+					reporter.softAssert(thirdOption!=null," Dropdown Selected City is "+thirdOption+" and not NULL"," Dropdown Selected City is "+thirdOption+" and is NULL");
 					
 				}
 			}
