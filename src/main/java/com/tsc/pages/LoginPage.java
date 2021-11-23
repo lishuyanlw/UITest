@@ -29,44 +29,44 @@ public class LoginPage extends BasePage {
 	public WebElement cntSignInPopover;
 		
 	//Sign in window
-	@FindBy(xpath = "//ng-component/div[@class='tsc-forms']/div[1]//h1")
+	@FindBy(xpath = "//ng-component/div[@class='tsc-forms']/div[not(contains(@class,'signin-message'))][1]//h1")
 	public WebElement lblSignIn;
 	
-	@FindBy(xpath = "//ng-component/div[@class='tsc-forms']/div[1]//input[@id='username']")
+	@FindBy(xpath = "//ng-component/div[@class='tsc-forms']/div[not(contains(@class,'signin-message'))][1]//input[@id='username']")
 	public WebElement inputUserName;
 	
-	@FindBy(xpath = "//ng-component/div[@class='tsc-forms']/div[1]//input[@id='username']/parent::div[contains(@class,'form-group')]/following-sibling::div[contains(@class,'text-danger')]")
+	@FindBy(xpath = "//ng-component/div[@class='tsc-forms']/div[not(contains(@class,'signin-message'))][1]//input[@id='username']/parent::div[contains(@class,'form-group')]/following-sibling::div[contains(@class,'text-danger')]")
 	public WebElement lblInvalidEmailMsg;
 	
-	@FindBy(xpath = "//ng-component/div[@class='tsc-forms']/div[1]//input[@id='password']")
+	@FindBy(xpath = "//ng-component/div[@class='tsc-forms']/div[not(contains(@class,'signin-message'))][1]//input[@id='password']")
 	public WebElement inputPassword;
 	
-	@FindBy(xpath = "//ng-component/div[@class='tsc-forms']/div[1]//button[@id='pwdShowButton']")
+	@FindBy(xpath = "//ng-component/div[@class='tsc-forms']/div[not(contains(@class,'signin-message'))][1]//button[@id='pwdShowButton']")
 	public WebElement btnShowOrHidePassword;
 	
-	@FindBy(xpath = "//ng-component/div[@class='tsc-forms']/div[1]//input[@id='keep-signed-in']")
+	@FindBy(xpath = "//ng-component/div[@class='tsc-forms']/div[not(contains(@class,'signin-message'))][1]//input[@id='keep-signed-in']")
 	public WebElement ckbKeepMeSignedIn;
 	
-	@FindBy(xpath = "//ng-component/div[@class='tsc-forms']/div[1]//input[@id='keep-signed-in']/parent::div/following-sibling::span")
+	@FindBy(xpath = "//ng-component/div[@class='tsc-forms']/div[not(contains(@class,'signin-message'))][1]//input[@id='keep-signed-in']/parent::div/following-sibling::span")
 	public WebElement lblKeepMeSignedInLabel;
 	
-	@FindBy(xpath = "//ng-component/div[@class='tsc-forms']/div[1]//a[@id='btn-learn-more']")
+	@FindBy(xpath = "//ng-component/div[@class='tsc-forms']/div[not(contains(@class,'signin-message'))][1]//a[@id='btn-learn-more']")
 	public WebElement lnkLearnMore;
 	
-	@FindBy(xpath = "//ng-component/div[@class='tsc-forms']/div[1]//button[@type='submit']")
+	@FindBy(xpath = "//ng-component/div[@class='tsc-forms']/div[not(contains(@class,'signin-message'))][1]//button[@type='submit']")
 	public WebElement btnSubmit;
 	
-	@FindBy(xpath = "//ng-component/div[@class='tsc-forms']/div[1]//a[contains(@href,'passwordrequest')]")
+	@FindBy(xpath = "//ng-component/div[@class='tsc-forms']/div[not(contains(@class,'signin-message'))][1]//a[contains(@href,'passwordrequest')]")
 	public WebElement lnkForgotPassword;
 	
 	//New customers
-	@FindBy(xpath = "//ng-component/div[@class='tsc-forms']/div[2]//h1")
+	@FindBy(xpath = "//ng-component/div[@class='tsc-forms']/div[not(contains(@class,'signin-message'))][2]//h1")
 	public WebElement lblNewCustomers;
 	
-	@FindBy(xpath = "//ng-component/div[@class='tsc-forms']/div[2]//a[contains(@href,'createaccount')]")
+	@FindBy(xpath = "//ng-component/div[@class='tsc-forms']/div[not(contains(@class,'signin-message'))][2]//a[contains(@href,'createaccount')]")
 	public WebElement btnCreateNewAccount;
 	
-	@FindBy(xpath = "//ng-component/div[@class='tsc-forms']/div[2]//a[contains(@href,'createphoneaccount')]")
+	@FindBy(xpath = "//ng-component/div[@class='tsc-forms']/div[not(contains(@class,'signin-message'))][2]//a[contains(@href,'createphoneaccount')]")
 	public WebElement btnTransferMyPhoneAccount;
 	
 	@FindBy(xpath = "//div[@class='SignIn']//div[contains(@class,'signin-bottomnote') and contains(@class,'hidden-xs')]")
