@@ -2,6 +2,7 @@ package com.tsc.data.pojos;
 
 
 import java.util.List;
+import java.util.Map;
 
 public class ConstantData {
     public HeaderSection headerSection;
@@ -548,6 +549,14 @@ public class ConstantData {
         private List<List<String>> lst_FlyoutHeadingNameAndLink;
         private String lbl_LandingPageBrandShopAll;
         private String lnk_ShopByBrandShopAll;
+        private Map<String, List<String>> lst_FlyoutHeadingAndNameMap;
+
+        public Map<String, List<String>> getLst_FlyoutHeadingAndNameMap() { return lst_FlyoutHeadingAndNameMap;    }
+
+        public void setLst_FlyoutHeadingAndNameMap(Map<String, List<String>> lst_FlyoutHeadingAndNameMap) {
+            this.lst_FlyoutHeadingAndNameMap = lst_FlyoutHeadingAndNameMap;
+        }
+
         public List<List<String>> getlst_FlyoutHeadingNameAndLink() {
             return lst_FlyoutHeadingNameAndLink;
         }

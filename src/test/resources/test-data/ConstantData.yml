@@ -38,6 +38,18 @@ headerSection:
     - ["Designer Footwear","Nouveaux arrivages","/pages/productresults?nav=n:128153-2069664&ic=HDR_FlyoutNav_Shoes_And_Handbags_Designer_Footwear"]
     - ["On Air Products","Sur les ondes","/pages/productresults?ic=HP_OnAir_T&dimensions=2037548&page=1&pageSize=36&rd=false"]
   flyout:
+    lst_FlyoutHeadingAndNameMap: {
+      Fashion: ['Fashion','Mode','100047'],
+      Shoes & Handbags: ['Chaussures et sacs','128153'],
+      Jewellery: ['Bijoux','100101'],
+      Beauty: ['Beauté','100038'],
+      Home & Garden: ['Maison et jardin','100071'],
+      Kitchen: ['Cuisine','100072'],
+      Health & Fitness: ['Santé','2058731'],
+      Electronics: ['Électronique','100073'],
+      Coins & Hobbies: ['Monnaie et Hobbies','3001781'],
+      Clearance:  ['Liquidation','2037576']
+    }
     lnk_ShopByBrandShopAll: pages/brand?dimensions=
     lbl_LandingPageBrandShopAll: Shop By Brand
     lst_FlyoutHeading: ['Fashion', 'Shoes & Handbags', 'Jewellery', 'Beauty', 'Home & Garden', 'Kitchen', 'Health & Fitness', 'Electronics', 'Coins & Hobbies', 'Clearance']
