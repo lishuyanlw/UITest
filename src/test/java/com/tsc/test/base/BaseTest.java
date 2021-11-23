@@ -107,6 +107,7 @@ public class BaseTest {
 	}
 
 	private void init() {
+		getDriver().manage().window().maximize();
 		homePageThreadLocal.set(new HomePage(getDriver()));
 		globalheaderPageThreadLocal.set(new GlobalHeaderPage(getDriver()));
 		productResultsPageThreadLocal.set(new ProductResultsPage(getDriver()));
