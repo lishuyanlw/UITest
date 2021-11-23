@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 import com.tsc.pages.*;
 import org.apache.http.client.ClientProtocolException;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.testng.ITestContext;
 import org.testng.annotations.AfterMethod;
@@ -107,7 +108,7 @@ public class BaseTest {
 	}
 
 	private void init() {
-		getDriver().manage().window().maximize();
+		getDriver().manage().window().setSize(new Dimension(1280,960));
 		homePageThreadLocal.set(new HomePage(getDriver()));
 		globalheaderPageThreadLocal.set(new GlobalHeaderPage(getDriver()));
 		productResultsPageThreadLocal.set(new ProductResultsPage(getDriver()));
