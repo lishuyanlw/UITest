@@ -205,7 +205,7 @@ public class BaseTest {
 	 *
 	 */
 	public enum SauceCapabilities {
-		seleniumVersion, maxDuration, commandTimeout, idleTimeout, build, browserVersion, appiumVersion, deviceName,
+		seleniumVersion, maxDuration, commandTimeout, idleTimeout, build, screenResolution, browserVersion, appiumVersion, deviceName,
 		deviceOrientation, platformVersion, platformName
 	}
 
@@ -289,6 +289,7 @@ public class BaseTest {
 		sauceOptions.put(SauceCapabilities.commandTimeout.toString(), TestDataHandler.sauceSettings.getSauceOptions().getCommandTimeout());
 		sauceOptions.put(SauceCapabilities.idleTimeout.toString(), TestDataHandler.sauceSettings.getSauceOptions().getIdleTimeout());
 		sauceOptions.put(SauceCapabilities.build.toString(), TestDataHandler.sauceSettings.getSauceOptions().getBuild());
+		sauceOptions.put(SauceCapabilities.screenResolution.toString(),TestDataHandler.sauceSettings.getSauceOptions().getScreenResolution());
 
 		switch (strBrowser.toLowerCase()) {
 			case "saucechrome":
