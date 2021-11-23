@@ -7,6 +7,18 @@ public class SauceOptions {
 	private String commandTimeout;
 	private String idleTimeout;
 	private String build;
+	private String screenResolution;
+
+	/**
+	 * @return the screen resolution set up for browser
+	 */
+	public String getScreenResolution() { return screenResolution;	}
+
+	/**
+	 * @param screenResolution the screen Resolution value to set
+	 */
+	public void setScreenResolution(String screenResolution) {	this.screenResolution = screenResolution; }
+
 	/**
 	 * @return the seleniumVersion
 	 */

@@ -108,7 +108,6 @@ public class BaseTest {
 	}
 
 	private void init() {
-		getDriver().manage().window().setSize(new Dimension(1280,960));
 		homePageThreadLocal.set(new HomePage(getDriver()));
 		globalheaderPageThreadLocal.set(new GlobalHeaderPage(getDriver()));
 		productResultsPageThreadLocal.set(new ProductResultsPage(getDriver()));
