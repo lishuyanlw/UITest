@@ -96,7 +96,7 @@ footerSection:
     - ["Shop by Brand","Magasiner par marque","/pages/brand",""]
     - ["Channel Finder","Guide des chaînes","/pages/channelfinder",""]
     - ["Meet the Hosts","Nos animateurs","/pages/hosts",""]
-    - ["© 1999 -2021 Rogers Media - Proudly Canadian","© 1999 -2021 Rogers Media - entreprise fièrement canadienne",""]
+    - ["Rogers Media - Proudly Canadian","Rogers Media - entreprise fièrement canadienne",""]
     - ["All prices in Canadian dollars - TSC.ca","Tous les prix sont en dollars canadiens - TSC.ca",""]
   lst_MyAccountObjectSectionTitle: ["SETTING UP AN ACCOUNT","PHONE BASED ACCOUNTS","PASSWORD RECOVERY"]
   lst_TrackYourOrderObjectSectionTitle: ["ORDER NUMBER","BILLING POSTAL CODE","SUBMIT"]

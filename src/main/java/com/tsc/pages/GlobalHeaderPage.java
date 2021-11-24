@@ -389,75 +389,75 @@ public class GlobalHeaderPage extends BasePage{
 	 */
 	public String getUrlAfterClickingShoppingCartLink() {
 		getReusableActionsInstance().javascriptScrollToTopOfPage();
-		return waitForPageLoadingByUrlChange(this.ShoppingCartlnk);
+		return waitForPageLoadingByUrlChange(this.ShoppingCartlnk);		
 	}
-
+	
 	/**
-	 *Method to go to home page
+	 *Method to go to home page  
 	 * @return true/false
 	 * @author Wei.Li
-	 */
-	public boolean goBackHomePage() {
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkTSClogo);
-		this.lnkTSClogo.click();
-		return (new GlobalFooterPage(this.getDriver())).waitForPageLoading();
-	}
+	 */	
+	 public boolean goBackHomePage() {
+		 getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkTSClogo);
+		 this.lnkTSClogo.click();
+		 return (new GlobalFooterPage(this.getDriver())).waitForPageLoading();
+	 }
 
 	/**
-	 *Method to hover on WatchTSC in Black headers
+	 *Method to hover on WatchTSC in Black headers  
 	 * @author Wei.Li
-	 */
-	public void hoverOnWatchTSC() {
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnWatchTSCBlackHeader);
-		getReusableActionsInstance().scrollToElement(this.btnWatchTSCBlackHeader);
-		getReusableActionsInstance().staticWait(100);
-	}
-
+	 */	
+	 public void hoverOnWatchTSC() {
+		 getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnWatchTSCBlackHeader);
+		 getReusableActionsInstance().scrollToElement(this.btnWatchTSCBlackHeader);
+		 getReusableActionsInstance().staticWait(100);		 
+	 }	
+	 
 	/**
-	 *Method to verify TS header and link in Black headers
+	 *Method to verify TS header and link in Black headers  	 
 	 * @param WebElement blackItem: the header in Black headers
-	 * @param WebElement silverItem: the header in Silver headers
-	 * @param boolean bCheckUrl: to decide if check Url after clicking the header in Black headers
+	 * @param WebElement silverItem: the header in Silver headers 
+	 * @param boolean bCheckUrl: to decide if check Url after clicking the header in Black headers 
 	 * @author Wei.Li
-	 */
-	public void verifyTSHeaderAndLinkInBlackHeader(WebElement blackItem,WebElement silverItem,boolean bCheckUrl) {
-		getReusableActionsInstance().javascriptScrollByVisibleElement(blackItem);
-		String lsTitle=blackItem.getText().trim();
-		reporter.softAssert(getReusableActionsInstance().isElementVisible(blackItem), "The element of "+lsTitle+" in Black headers is visible","The element of "+lsTitle+" in Black headers is not visible");
-		reporter.softAssert(!lsTitle.isEmpty(), lsTitle+" text in Black headers is not empty", lsTitle+" text in Black headers is empty");
-		String lsHrefInBlackHeader=this.getElementHref(blackItem);
-		reporter.softAssert(!lsHrefInBlackHeader.isEmpty(), "The href of "+lsTitle+" in Black headers is not empty", "The href of "+lsTitle+" in Black headers is empty");
-		lsHrefInBlackHeader=this.removeLastSlashFromUrl(lsHrefInBlackHeader);
+	 */	
+	 public void verifyTSHeaderAndLinkInBlackHeader(WebElement blackItem,WebElement silverItem,boolean bCheckUrl) {
+		 getReusableActionsInstance().javascriptScrollByVisibleElement(blackItem);
+		 String lsTitle=blackItem.getText().trim();
+		 reporter.softAssert(getReusableActionsInstance().isElementVisible(blackItem), "The element of "+lsTitle+" in Black headers is visible","The element of "+lsTitle+" in Black headers is not visible");
+		 reporter.softAssert(!lsTitle.isEmpty(), lsTitle+" text in Black headers is not empty", lsTitle+" text in Black headers is empty");
+		 String lsHrefInBlackHeader=this.getElementHref(blackItem);	
+		 reporter.softAssert(!lsHrefInBlackHeader.isEmpty(), "The href of "+lsTitle+" in Black headers is not empty", "The href of "+lsTitle+" in Black headers is empty");
+		 lsHrefInBlackHeader=this.removeLastSlashFromUrl(lsHrefInBlackHeader);
+		 
+		 blackItem.click();
+		 this.waitForPageToLoad();
+		 (new GlobalFooterPage(this.getDriver())).waitForPageLoading();
+		 
+		 String lsUrlInSilverHeader=this.removeLastSlashFromUrl(this.URL());
+		 if(bCheckUrl) {
+			 reporter.softAssert(lsUrlInSilverHeader.equalsIgnoreCase(lsHrefInBlackHeader), "The Url of "+lsUrlInSilverHeader+"  after clicking "+lsTitle+" in Black headers is equal to the href of "+lsHrefInBlackHeader, "The Url of "+lsUrlInSilverHeader+"  after clicking "+lsTitle+" in Black headers is not equal to the href of "+lsHrefInBlackHeader);
+		 }
 
-		blackItem.click();
-		this.waitForPageToLoad();
-		(new GlobalFooterPage(this.getDriver())).waitForPageLoading();
+		 if(silverItem!=null) {
+			 String lsStyle=silverItem.findElement(By.xpath(".//span")).getAttribute("style");
+			 reporter.softAssert(lsStyle.toLowerCase().contains("color:#fff;")||lsStyle.toLowerCase().contains("color: rgb(255, 255, 255);"), lsTitle+" in Silver headers is being selected", lsTitle+" in Silver headers is not being selected");
+		 }
+	 }
 
-		String lsUrlInSilverHeader=this.removeLastSlashFromUrl(this.URL());
-		if(bCheckUrl) {
-			reporter.softAssert(lsUrlInSilverHeader.equalsIgnoreCase(lsHrefInBlackHeader), "The Url of "+lsUrlInSilverHeader+"  after clicking "+lsTitle+" in Black headers is equal to the href of "+lsHrefInBlackHeader, "The Url of "+lsUrlInSilverHeader+"  after clicking "+lsTitle+" in Black headers is not equal to the href of "+lsHrefInBlackHeader);
-		}
-
-//		 if(silverItem!=null) {
-//			 String lsStyle=silverItem.findElement(By.xpath(".//span")).getAttribute("style");
-//			 reporter.softAssert(lsStyle.equalsIgnoreCase("color:#fff;")||lsStyle.equalsIgnoreCase("color: rgb(255, 255, 255);"), lsTitle+" in Silver headers is being selected", lsTitle+" in Silver headers is not being selected");
-//		 }
-	}
-
-
+	 
 	/**
-	 *Method to show popup window by clicking search box
+	 *Method to show popup window by clicking search box 	
 	 * @return true/false
 	 * @author Wei.Li
-	 */
-	public boolean getPopupWindowByClickingSearchBox() {
-		this.searchBox.click();
-		return waitForCondition(Driver->{return this.lblTrendingWithoutKeyword.isDisplayed();},5000);
-	}
-
+	 */	
+	 public boolean getPopupWindowByClickingSearchBox() {
+		 this.searchBox.click();
+		 return waitForCondition(Driver->{return this.lblTrendingWithoutKeyword.isDisplayed();},5000);
+	 }
+	 
 	/**
-	 *Method to verify TopSellingProducts existing by changing item in Trending or Featured brands list
-	 * @param List<WebElement> elementList: element list
+	 *Method to verify TopSellingProducts existing by changing item in Trending or Featured brands list   
+	 * @param List<WebElement> elementList: element list	
 	 * @return void
 	 * @author Wei.Li
 	 */

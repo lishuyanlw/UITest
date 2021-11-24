@@ -47,7 +47,6 @@ public class BaseTest {
 	protected static final ThreadLocal<LoginPage> loginPageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<String> TestDeviceThreadLocal = new ThreadLocal<>();
 
-
 	public BaseTest() {
 		browserDrivers = new BrowserDrivers();
 	}
@@ -59,8 +58,9 @@ public class BaseTest {
 		return reporter;
 	}
 
-
+	
 	// @return the globalheaderPageThreadLocal
+	
 	protected static GlobalHeaderPage getglobalheaderPageThreadLocal() {
 		return globalheaderPageThreadLocal.get();
 	}
@@ -98,7 +98,7 @@ public class BaseTest {
 	protected static ProductDetailPage getProductDetailPageThreadLocal() {
 		return productDetailPageThreadLocal.get();
 	}
-
+	
 	protected static LoginPage getGlobalLoginPageThreadLocal() {
 		return loginPageThreadLocal.get();
 	}
@@ -109,6 +109,7 @@ public class BaseTest {
 
 	private void init() {
 		homePageThreadLocal.set(new HomePage(getDriver()));
+		globalheaderPageThreadLocal.set(new GlobalHeaderPage(getDriver()));
 		globalheaderPageThreadLocal.set(new GlobalHeaderPage(getDriver()));
 		productResultsPageThreadLocal.set(new ProductResultsPage(getDriver()));
 		globalFooterPageThreadLocal.set(new GlobalFooterPage(getDriver()));
@@ -133,24 +134,24 @@ public class BaseTest {
 		reporter = new ExtentTestManager(getDriver());
 	}
 
-	public WebDriver getDriver () {
+	public WebDriver getDriver() {
 		return webDriverThreadLocal.get();
 	}
 
-	public void setDriver (WebDriver driver){
+	public void setDriver(WebDriver driver) {
 		webDriverThreadLocal.set(driver);
 	}
 
-	public void closeSession () {
+	public void closeSession() {
 		getDriver().quit();
 	}
 
-	public void setImplictWait (WebDriver driver,long seconds){
+	public void setImplictWait(WebDriver driver, long seconds) {
 		driver.manage().timeouts().implicitlyWait(seconds, TimeUnit.SECONDS);
 	}
 
-	public void startSession (String strUrl, String strBrowser, String strLanguage, Method currentTestMethodName,
-							  boolean bypassCaptcha) throws ClientProtocolException, IOException {
+	public void startSession(String strUrl, String strBrowser, String strLanguage, Method currentTestMethodName,
+			boolean bypassCaptcha) throws ClientProtocolException, IOException {
 		RunParameters = getExecutionParameters(strBrowser, strLanguage);
 		strBrowser = RunParameters.get("Browser").toLowerCase();
 		strLanguage = RunParameters.get("Language").toLowerCase();
@@ -158,7 +159,7 @@ public class BaseTest {
 		if (strBrowser.toLowerCase().contains("sauce")) {
 			sauceParameters = initializeSauceParamsMap(strBrowser);
 		}
-
+	
 		webDriverThreadLocal.set(browserDrivers.driverInit(strBrowser, sauceParameters, currentTestMethodName, ""));
 		getDriver().get(strUrl);
 		strBrowser = System.getProperty("Browser").trim();
@@ -188,17 +189,17 @@ public class BaseTest {
 		setImplictWait(getDriver(), 60);
 	}
 
-
+	
 	/**
 	 * To get parameters from XML file, it is called in TestListener.
 	 *
 	 * @return HashMap of test parameters
 	 **/
-
-	public HashMap<String, String> getXMLParameters () {
+	
+	public HashMap<String, String> getXMLParameters() {
 		return xmlTestParameters;
 	}
-
+	
 
 	/**
 	 * Declare the sauce capabilities as ENUM type
@@ -217,7 +218,7 @@ public class BaseTest {
 	 * @param strBrowser  string of browser name
 	 * @return HashMap of test TestParameters
 	 */
-	public static HashMap<String, String> getExecutionParameters (String strBrowser, String strLanguage){
+	public static HashMap<String, String> getExecutionParameters(String strBrowser, String strLanguage) {
 		if (System.getProperty("Browser") == null || System.getProperty("Browser").isEmpty()) {
 			System.setProperty("Browser", strBrowser);
 		}
@@ -239,15 +240,15 @@ public class BaseTest {
 	}
 
 	@BeforeSuite(alwaysRun = true)
-	public void beforeSuite () throws FileNotFoundException {
+	public void beforeSuite() throws FileNotFoundException {
 		TestDataHandler.dataInit();
 		System.out.println("Data File initialized at before Suite");
 	}
 
 	@BeforeMethod(alwaysRun = true)
-	@Parameters({"strBrowser", "strLanguage"})
-	public void beforeTest (@Optional("chrome") String strBrowser, @Optional("en") String strLanguage,
-							ITestContext testContext, Method method) throws ClientProtocolException, IOException {
+	@Parameters({ "strBrowser", "strLanguage" })
+	public void beforeTest(@Optional("chrome") String strBrowser, @Optional("en") String strLanguage,
+			ITestContext testContext, Method method) throws ClientProtocolException, IOException {
 		startSession(System.getProperty("QaUrl"), strBrowser, strLanguage, method, false);
 		getglobalheaderPageThreadLocal().waitForPageLoad();
 		// getHomePageThreadLocal().waitforOverlayLoadingSpinnerToDisapper();
@@ -257,22 +258,22 @@ public class BaseTest {
 	}
 
 	@AfterMethod(alwaysRun = true)
-	public void afterTest () {
+	public void afterTest() {
 		if (getDriver() != null) {
 			//deleteSessionStorage();
 			closeSession();
 		}
 	}
 
-
-		public void validateText (String strActualText, List < String > listExpectedText, String validationMsg){
-			reporter.softAssert(listExpectedText.equals(strActualText), validationMsg + ":" + " Expected=" + listExpectedText + " ; Actual=" + strActualText, validationMsg + " expected=" + listExpectedText + "; actual=" + strActualText);
-
-		}
-		//Method to validate content of Link and button
-		public void validateText (String strActualText, String strExpectedText, String validationMsg){
-			reporter.softAssert(strExpectedText.equals(strActualText), validationMsg + ":" + " Expected=" + strExpectedText + " ; Actual=" + strActualText, validationMsg + " expected=" + strExpectedText + "; actual=" + strActualText);
-		}
+	
+	public void validateText(String strActualText, List<String> listExpectedText, String validationMsg) {
+		reporter.softAssert(listExpectedText.equals(strActualText), validationMsg + ":" + " Expected=" + listExpectedText +  " ; Actual="+ strActualText ,validationMsg + " expected=" + listExpectedText +  "; actual="+ strActualText);
+		
+	}
+	//Method to validate content of Link and button
+	public void validateText(String strActualText, String strExpectedText, String validationMsg) {
+	reporter.softAssert(strExpectedText.equals(strActualText), validationMsg + ":" + " Expected=" + strExpectedText +  " ; Actual="+ strActualText ,validationMsg + " expected=" + strExpectedText +  "; actual="+ strActualText);
+	}
 
 	/**
 	 * This method will initialize a hash map with the sauce parameters
@@ -282,7 +283,7 @@ public class BaseTest {
 	 * @author Mirza.Kamran
 	 */
 
-	private Map<String, String> initializeSauceParamsMap (String strBrowser){
+	private Map<String, String> initializeSauceParamsMap(String strBrowser) {
 		Map<String, String> sauceOptions = new HashMap<>();
 		sauceOptions.put(SauceCapabilities.seleniumVersion.toString(), TestDataHandler.sauceSettings.getSauceOptions().getSeleniumVersion());
 		sauceOptions.put(SauceCapabilities.maxDuration.toString(), TestDataHandler.sauceSettings.getSauceOptions().getMaxDuration());
@@ -326,5 +327,6 @@ public class BaseTest {
 
 		return sauceOptions;
 	}
-
+	
+	
 }

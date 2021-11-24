@@ -80,6 +80,7 @@ task "sauceTest"(type: Test) {
 
     systemProperty 'QaUrl', test_qaURL
     systemProperty 'Browser', test_browser
+    systemProperty 'Device', test_device
     systemProperty 'Language', test_language
     systemProperty 'TunnelRequired', TunnelRequired
     systemProperty 'Device',test_device
@@ -110,6 +111,7 @@ task "localTest"(type: Test) {
     }
     systemProperty 'QaUrl', test_qaURL
     systemProperty 'Browser', test_browser
+    systemProperty 'Device', test_device
     systemProperty 'Language', test_language
     systemProperty 'chromeMobileDevice', chromeMobileDevice
     systemProperty 'Device',test_device

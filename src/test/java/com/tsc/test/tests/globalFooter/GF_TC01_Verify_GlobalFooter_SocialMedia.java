@@ -31,15 +31,12 @@ public class GF_TC01_Verify_GlobalFooter_SocialMedia extends BaseTest {
 		
 		BasePage basePage=new BasePage(this.getDriver());		
 		String lsBaseUrl=basePage.getBaseURL()+"/";
+		String lsUrl;
 		
 		List<String> lstSocialMediaLinks=TestDataHandler.constantData.getFooterSection().getLst_SocialMediaLinks();
 		
 		//Facebook
-		String lsUrl=getGlobalFooterPageThreadLocal().getUrlWithSocialMediaName(lstSocialMediaLinks, "Facebook");		
-		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyUrlAfterClickingElement(getGlobalFooterPageThreadLocal().lnkFacebook,lsUrl),"The Url after clicking Facebook link is "+lsUrl,"The Url after clicking Facebook link is not "+lsUrl);
-
-		basePage.navigateToURL(lsBaseUrl);
-		getGlobalFooterPageThreadLocal().waitForPageLoading();
+		getGlobalFooterPageThreadLocal().verifyFaceBookLink(lstSocialMediaLinks);
 		
 		//Twitter
 		lsUrl=getGlobalFooterPageThreadLocal().getUrlWithSocialMediaName(lstSocialMediaLinks, "Twitter");		
@@ -47,6 +44,7 @@ public class GF_TC01_Verify_GlobalFooter_SocialMedia extends BaseTest {
 
 		basePage.navigateToURL(lsBaseUrl);
 		getGlobalFooterPageThreadLocal().waitForPageLoading();
+		basePage.getReusableActionsInstance().staticWait(1000);
 
 		//Instagram
 		lsUrl=getGlobalFooterPageThreadLocal().getUrlWithSocialMediaName(lstSocialMediaLinks, "Instagram");		
@@ -54,6 +52,7 @@ public class GF_TC01_Verify_GlobalFooter_SocialMedia extends BaseTest {
 
 		basePage.navigateToURL(lsBaseUrl);
 		getGlobalFooterPageThreadLocal().waitForPageLoading();
+		basePage.getReusableActionsInstance().staticWait(1000);
 		
 		//Youtube
 		lsUrl=getGlobalFooterPageThreadLocal().getUrlWithSocialMediaName(lstSocialMediaLinks, "Youtube");		
@@ -61,6 +60,7 @@ public class GF_TC01_Verify_GlobalFooter_SocialMedia extends BaseTest {
 
 		basePage.navigateToURL(lsBaseUrl);
 		getGlobalFooterPageThreadLocal().waitForPageLoading();
+		basePage.getReusableActionsInstance().staticWait(1000);
 		
 		//Pinterest
 		lsUrl=getGlobalFooterPageThreadLocal().getUrlWithSocialMediaName(lstSocialMediaLinks, "Pinterest");		
@@ -68,6 +68,7 @@ public class GF_TC01_Verify_GlobalFooter_SocialMedia extends BaseTest {
 
 		basePage.navigateToURL(lsBaseUrl);
 		getGlobalFooterPageThreadLocal().waitForPageLoading();
+		basePage.getReusableActionsInstance().staticWait(1000);
 	}
 	
 	public void validateMajorNameAndLinks() {
