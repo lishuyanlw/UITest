@@ -76,38 +76,21 @@ public class GF_TC02_Verify_GlobalFooter_CustomerHubLinksAndAboutTSCLinks extend
 		}
 		lsHref=basePage.getElementHref(getGlobalFooterPageThreadLocal().lnkLanguage);
 		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current Language switch href of "+lsHref+" contains "+lsYmlHref,"The current Language switch href of "+lsHref+" does not contain "+lsYmlHref);
-				
+		
 		//TSC customer hub links
-		for(WebElement item:getGlobalFooterPageThreadLocal().lnkTSCCustomerHubAllLinks) {
-			lsText=basePage.getElementText(item);	
-			lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsText,true);			
-			if(lsYmlHref.isEmpty()) {
-				reporter.reportLogFail("Unable to find "+lsText+" link.");
-			}
-			lsHref=basePage.getElementHref(item);	
-			reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref,"The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref);
-			
-		}
+		getGlobalFooterPageThreadLocal().verifyTSCCustomerHubLlinks(lstNameAndLinks);
 		
 		//About TSC links
-		for(WebElement item:getGlobalFooterPageThreadLocal().lnkAboutTSCAllLinks) {
-			lsText=basePage.getElementText(item);
-			lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsText,true);
-			if(lsYmlHref.isEmpty()) {
-				reporter.reportLogFail("Unable to find "+lsText+" link.");
-			}
-			lsHref=basePage.getElementHref(item);
-			reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref,"The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref);			
-		}
+		getGlobalFooterPageThreadLocal().verifyAboutTSCLinks(lstNameAndLinks);
 		
 		//Rogers LOGO
-		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().imgRogersLogo), "Rogers Logo is existing", "Rogers Logo is not existing");		
+		getGlobalFooterPageThreadLocal().verifyRogersLogo();		
 		
 		//Copyright text
 		lsText=basePage.getUTFEnabledData(basePage.getElementText(getGlobalFooterPageThreadLocal().txtCopyrightLine1));
-		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyEqualWithEncodingText(lstNameAndLinks, lsText),"The copyright text is correct","The copyright text is not correct");
+		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyEqualWithEncodingText(lstNameAndLinks, lsText),"The copyright text1 is correct","The copyright text1 is not correct");
 		lsText=basePage.getUTFEnabledData(basePage.getElementText(getGlobalFooterPageThreadLocal().txtCopyrightLine2));
-		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyEqualWithEncodingText(lstNameAndLinks, lsText),"The copyright text is correct","The copyright text is not correct");
+		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyEqualWithEncodingText(lstNameAndLinks, lsText),"The copyright text2 is correct","The copyright text2 is not correct");
 	}
 
 }
