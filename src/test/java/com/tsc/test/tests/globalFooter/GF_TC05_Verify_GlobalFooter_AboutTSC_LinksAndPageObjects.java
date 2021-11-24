@@ -11,6 +11,16 @@ import java.util.HashMap;
 import java.util.List;
 
 public class GF_TC05_Verify_GlobalFooter_AboutTSC_LinksAndPageObjects extends BaseTest {
+	
+	/*
+	 * CER 184
+	 * CER 185
+	 * CER 186
+	 * CER 187
+	 * CER 188
+	 * CER 189
+	 * CER 190
+	 */
 
     @Test(groups={"Home","Regression","GlobalFooter"})
     public void verify_GlobalFooter_AboutTSC() {
@@ -80,7 +90,17 @@ public class GF_TC05_Verify_GlobalFooter_AboutTSC_LinksAndPageObjects extends Ba
             }
 
             getGlobalFooterPageThreadLocal().verifyElementListExistence(elementList);
-        }
+        } 
+        
+       /*
+        * CER 191
+        * CER 192
+        * CER 193
+        * CER 194
+        * CER 195
+        * CER 196
+        * CER 197
+        */
         
         //Shop By Brand
         String lsServiceSBB = "Shop By Brand";
@@ -91,7 +111,7 @@ public class GF_TC05_Verify_GlobalFooter_AboutTSC_LinksAndPageObjects extends Ba
             if(testDataSBB.isEmpty()) {
                 reporter.reportLogFail("Unable to find '"+lsServiceSBB+"' link.");
             }
-            reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHrefSBB,testData.get("Link")),"The current '"+lsServiceSBB+"' href of "+lsHrefSBB+" is equal to "+testDataSBB.get("Link"),"The current '"+lsServiceSBB+"' href of "+lsHrefSBB+" is not equal to "+testDataSBB.get("Link"));
+            reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHrefSBB,testDataSBB.get("Link")),"The current '"+lsServiceSBB+"' href of "+lsHrefSBB+" is equal to "+testDataSBB.get("Link"),"The current '"+lsServiceSBB+"' href of "+lsHrefSBB+" is not equal to "+testDataSBB.get("Link"));
 
             if(!getGlobalFooterPageThreadLocal().goToService(lsServiceSBB,getGlobalFooterPageThreadLocal().aboutUsPageTitle)) {
                 reporter.reportLogFail("Unable to navigate to '"+lsServiceSBB+"' page objects.");
@@ -114,7 +134,6 @@ public class GF_TC05_Verify_GlobalFooter_AboutTSC_LinksAndPageObjects extends Ba
                 
                 //Verifying Find By Alphabets Links and its contents
                 getGlobalFooterPageThreadLocal().verifyFindByAlphabet(getGlobalFooterPageThreadLocal().dropDownShopByBrandFilterByCategory, getGlobalFooterPageThreadLocal().linkFindByAlphabet);
-                
             }
             
             //Channel Finder
@@ -149,8 +168,8 @@ public class GF_TC05_Verify_GlobalFooter_AboutTSC_LinksAndPageObjects extends Ba
                     reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lblSatelliteChannels),"The Title Satellite Channels exist","The Title Satellite Channels doesn't exist");
                     reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lblBellTV),"The Title Satellite Channels exist","Page paragraph line doesn't exists");
                     reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lblShawDirect),"Page paragraph line exists ","Page paragraph line doesn't exists");
-                    reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lblChannels113),"Page paragraph line exists ","Page paragraph line doesn't exists");
-                    reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lblChannels418),"Page paragraph line exists ","Page paragraph line doesn't exists");
+                    reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lblChannelsBellTV),"The line under Bell TV Column exists","The line under Bell TV Column doesn't exists");
+                    reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lblChannelsShawDirect),"The line under Shaw Direct Column exists","The line under Shaw Direct Column exists");
                     
                     //Verifying Province Drop Down and its respective Cable Provider and City
                     getGlobalFooterPageThreadLocal().verifyMultipleDropDownWithTitle(getGlobalFooterPageThreadLocal().dropDownProvince, getGlobalFooterPageThreadLocal().dropDownCableProvider, getGlobalFooterPageThreadLocal().dropDownCity);
@@ -176,21 +195,10 @@ public class GF_TC05_Verify_GlobalFooter_AboutTSC_LinksAndPageObjects extends Ba
                         //Verifying page title
                         String pageTitle = getGlobalFooterPageThreadLocal().getPageTitle(getGlobalFooterPageThreadLocal().aboutUsPageTitle);
                         reporter.softAssert(pageTitle.equalsIgnoreCase(actualPageTitle),"Page Title matches for global footer link: "+lsServiceMH+" and  title is: "+pageTitle,"Page Title doesn't match for global footer link: "+lsServiceMH+" and  title is: "+pageTitle);
-                    for(int i=0;i<getGlobalFooterPageThreadLocal().listOfMeetOurHosts.size();i++) {
-                    	String hostName=getGlobalFooterPageThreadLocal().listOfMeetOurHosts.get(i).getText();
-                    	reporter.reportLog("Host Name is "+hostName+"");
-                    	String hostHref=getGlobalFooterPageThreadLocal().linkOfMeetOurHosts.get(i).getAttribute("href");
-                    	reporter.reportLog("Host Name URL is "+hostHref+"");
-                    	getGlobalFooterPageThreadLocal().linkOfMeetOurHosts.get(i).click();
+                      
+                        //Verifying Host Name, Link and Images in Meet The Host Page
+                        getGlobalFooterPageThreadLocal().verifyMeetTheHostInfo();
                     	
-                    	//Verifying Href of the clicked link matches with expected URL
-                    	reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(hostHref),"The current href of "+hostHref+" is contains in Current URL","The current '"+lsServiceMH+"' href of "+lsHrefMH+" is not equal to "+testDataMH.get("Link"));
-
-                    	//Navigate to Meet The hosts
-                    	getGlobalFooterPageThreadLocal().goToService(lsServiceMH,getGlobalFooterPageThreadLocal().aboutUsPageTitle);
-                    	
-                    }
-                    
               } 
                     
             //Verifying Presence of Credit Card, Gift Card and Rogers Copyrights at the GlobalFooter Page
@@ -215,6 +223,6 @@ public class GF_TC05_Verify_GlobalFooter_AboutTSC_LinksAndPageObjects extends Ba
     		reporter.softAssert(!lsImageSrc.isEmpty(),"The Rogers Media image is not empty.","The Rogers Media image is empty.");
     		
             
-      }
+      } 
  }
       

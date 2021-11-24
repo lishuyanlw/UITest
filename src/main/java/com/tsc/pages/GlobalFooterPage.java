@@ -313,10 +313,10 @@ public class GlobalFooterPage extends BasePage {
 	public List<WebElement> subHeaderLinks;
 	
 	//Shop By Brand
-	@FindBy(xpath="//h2[contains(@class,'titleLink')]")
+	@FindBy(xpath="//div[contains(@class,'col-xs-12')]//h2")
 	public WebElement lblShopbyBrandTitle;
 	
-	@FindBy(xpath="//h2[contains(@class,'titleLink')]/b")
+	@FindBy(xpath="//div[contains(@class,'col-xs-12')]//h2/b")
 	public WebElement lblShopByBrandTitleAfterDropDown;
 	
 	@FindBy(xpath="//div[contains(@class,'sortPrpLabel searchTi')]")
@@ -343,17 +343,23 @@ public class GlobalFooterPage extends BasePage {
 	@FindBy(xpath="//div[contains(@class,'lettersDiv')]//div")
 	public List<WebElement> linkFindByAlphabet;
 	
+	@FindBy(xpath="//div[contains(@class,'brandHeader activeLetter')]//span")
+	public List<WebElement> Brandheader;
+	
+	@FindBy(xpath="//div[contains(@class,' brandName')]//a")
+	public List<WebElement> BrandheaderLinks;
+	
 	//Channel Finder
-	@FindBy(xpath="//h1[contains(@class,'pageHeader')]//strong")
+	@FindBy(xpath="//div[contains(@class,'col-xs-12')]//h1//strong")
 	public WebElement lblChannelFinderTitle;
 	
-	@FindBy(xpath="//h1[contains(@class,'section-title')]")
+	@FindBy(xpath="//div[contains(@class,'col-xs-12 col-sm-11')]//h1")
 	public WebElement lblFindCableChannelTitle;
 	
-	@FindBy(xpath="(//div[contains(@class,' tsc-forms')]//h1//following-sibling::p)[1]")
+	@FindBy(xpath="//div[contains(@Class,' tsc-forms')]//div[@Class='clearfix']//div/p[contains(text(),'Channel')]")
 	public WebElement useourchannelfinder;
 	
-	@FindBy(xpath="//h1//following-sibling::h4")
+	@FindBy(xpath="//div[contains(@class,'col-xs-12 col-sm-11')]//h4")
 	public WebElement lblselectyour;
 	
 	@FindBy(xpath="//label[contains(text(),'PROVIN')]")
@@ -374,11 +380,11 @@ public class GlobalFooterPage extends BasePage {
 	@FindBy(xpath="//div[contains(@class,'satellite')]//h3[contains(text(),'Sh')]")
 	public WebElement lblShawDirect;
 	
-	@FindBy(xpath="(//div[contains(@class,'satellite')]//p)[1]")
-	public WebElement lblChannels113;
+	@FindBy(xpath="//div[contains(@class,'satellite')]//h3[contains(text(),'Bell')]//following-sibling::p[contains(text(),'11')]")
+	public WebElement lblChannelsBellTV;
 	
-	@FindBy(xpath="(//div[contains(@class,'satellite')]//p)[2]")
-	public WebElement lblChannels418;
+	@FindBy(xpath="//div[contains(@class,'satellite')]//h3[contains(text(),'Shaw')]//following-sibling::p")
+	public WebElement lblChannelsShawDirect;
 	
 	@FindBy(xpath="//select[contains(@class,'form-control') and contains(@id,'1')]")
 	public WebElement dropDownProvince;
@@ -395,6 +401,9 @@ public class GlobalFooterPage extends BasePage {
 	
 	@FindBy(xpath="//div[contains(@class,'FullWidthContent')]//a")
 	public List<WebElement> linkOfMeetOurHosts;
+	
+	@FindBy(xpath="//div[contains(@class,'FullWidthContent')]//img")
+	public List<WebElement> listOfMeetOurHostsImage;
 	
 	//Rogers Copy Rights Image
 	@FindBy(xpath="//strong[contains(@id,'ftrCopyright')]")
@@ -947,11 +956,15 @@ public class GlobalFooterPage extends BasePage {
 			reporter.reportLog("Selected Alphabet is "+alaphabitLetterValue+"");
 			String activeAlaphabitLetterValue=activeAlphabetChar.getText();
 			reporter.softAssert(alaphabitLetterValue.equalsIgnoreCase(activeAlaphabitLetterValue),"The Corresponding Page Title inside the Alphabet Link is same as expected","The Corresponding Page Title inside the Alphabet Link is not same as expected");
-			String alphabetPathElementsPath="//div[contains(@class,'brandHeader activeLetter')]//ancestor::div[contains(@class,'col')]["+counter+"]//div[contains(@class,'brandName')]//a";
+			String alphabetPathElementsPath="//div[contains(@class,'brandHeader activeLetter')]//ancestor::div[contains(@class,'col')][1]//a";
 			List<WebElement> alphabetPathElements=getDriver().findElements(By.xpath(alphabetPathElementsPath));
 			for(int j=0 ;j<alphabetPathElements.size();j++) {
-				reporter.reportLog(alphabetPathElements.get(j).getText());
-				reporter.softAssert(alphabetPathElements.get(j).getText()!=null,"Find By Option Link is "+alphabetPathElements.get(j).getText()+" and not NULL","Find By Option Link is "+alphabetPathElements.get(j).getText()+" and is NULL");
+				String brandName=alphabetPathElements.get(j).getText();
+				String firstLetter=brandName.substring(0,1);
+				reporter.softAssert(alaphabitLetterValue.equalsIgnoreCase(firstLetter),"The Brand  first alphabet is "+firstLetter+" and Brand Name is "+brandName+"  ","The Brand  first alphabet is "+firstLetter+" and Brand Name is "+brandName+" is not matching.");
+				String brandLink=alphabetPathElements.get(j).getAttribute("href");
+				reporter.softAssert(alphabetPathElements.get(j).getAttribute("href")!=null,"The Brand URL of "+brandLink+" exists","The Brand URL of "+brandLink+" doesn't exists");
+			
 			}
 			counter++;
 		}
@@ -1006,6 +1019,21 @@ public class GlobalFooterPage extends BasePage {
 				}
 			}
 		}
+	}
+	/**
+	 * This method is to verify Images, href and Name of the Hosts in Meet the Host
+	 * @author godwin.gopi
+	 */
+	public void verifyMeetTheHostInfo() {
+		for(int i=0;i<listOfMeetOurHosts.size();i++) {
+        	String hostName=listOfMeetOurHosts.get(i).getText();
+        	reporter.reportLog("Host Name is "+hostName+"");
+        	String hostHref=linkOfMeetOurHosts.get(i).getAttribute("href");
+        	reporter.reportLog("Host Name URL is "+hostHref+"");
+        	String hostImgSrc=listOfMeetOurHostsImage.get(i).getAttribute("src");
+        	reporter.reportLog("Host Image URL is "+hostImgSrc+"");
+        	reporter.softAssert(hostName!=null && hostHref!=null && hostImgSrc!=null,"Host Name "+hostName+" Host Link "+hostHref+" and Host Image "+hostImgSrc+" are not Null","Host Name "+hostName+" Host Link "+hostHref+" and Host Image "+hostImgSrc+" are  Null");
+        }
 	}
 	
 }
