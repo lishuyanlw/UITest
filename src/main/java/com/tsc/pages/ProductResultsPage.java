@@ -472,9 +472,12 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	public String getProductResultPageTitle() {		
-		if(this.checkChildElementExistingByAttribute(this.cntSearchResultTitleContainer, "class", "DimensionTitle2")) {			
-			getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSearchResultTitle);
-			return this.lblSearchResultTitle.getText().trim();
+		if(this.checkChildElementExistingByAttribute(this.cntSearchResultTitleContainer, "class", "DimensionTitle2")) {	
+			WebElement dimensionTitle=this.cntSearchResultTitleContainer.findElement(By.xpath("./div[@class='DimensionTitle2']"));
+			if(!dimensionTitle.getCssValue("height").equalsIgnoreCase("0px")) {
+				getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSearchResultTitle);
+				return this.lblSearchResultTitle.getText().trim();			}
+			
 		}
 		return "NoTitle";
 	}
@@ -499,29 +502,55 @@ public class ProductResultsPage extends BasePage{
 	 */
 	public String judgeTestModel() {
 		String lsUrl=this.URL();
-		if(lsUrl.contains("dimensions=0&")) {
-			if(getReusableActionsInstance().isElementVisible(this.lblSearchResultMessage)) {
-				getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSearchResultMessage);
-				if(this.lblSearchResultMessage.getText().trim().contains("Please search again")) {
-					return "NoSearchResult";
-				}
-				else {
-					if(getReusableActionsInstance().isElementVisible(this.lblShowing)) {
-						if(this.productResultList.size()!=1) {
-							return "NormalSearch";
-						}
-						else {
-							return "ProductNumberSearch";
-						}
-					}
-				}
-			}
-		}
-		else {
+		if(!lsUrl.contains("dimensions=")) {
 			return "BannerImageSearch";
 		}
-
-		return "NormalSearch";
+		
+		if(!lsUrl.contains("dimensions=0&")) {
+			return "BannerImageSearch";
+		}
+		
+		int totalNumber=getProductSearchResultsTotalNumber();
+		if(totalNumber==0) {
+			return "NoSearchResult";
+		}
+		else if(totalNumber==1){
+			return "ProductNumberSearch";
+		}
+		else{
+			return "NormalSearch";
+		}
+		
+//		if(lsUrl.contains("dimensions=0&")) {
+//			if(getReusableActionsInstance().isElementVisible(this.lblSearchResultMessage)) {
+//				getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSearchResultMessage);
+//				if(this.lblSearchResultMessage.getText().trim().contains("Please search again")) {
+//					return "NoSearchResult";
+//				}
+//				else {
+//					if(getReusableActionsInstance().isElementVisible(this.lblShowing)) {
+//						if(this.productResultList.size()!=1) {
+//							return "NormalSearch";
+//						}
+//						else {
+//							return "ProductNumberSearch";
+//						}
+//					}
+//				}
+//			}
+//		}
+//		else {
+//			return "BannerImageSearch";
+//		}
+//
+//		return "NormalSearch";
+	}
+	
+	public int getProductSearchResultsTotalNumber() {
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.txtShowingDynamicContent);
+		String lsShowingText=this.txtShowingDynamicContent.getText().trim();
+		String[] lstSplit=lsShowingText.split(" ");
+		return Integer.parseInt(lstSplit[lstSplit.length-2]);
 	}
 
 	/**

@@ -58,14 +58,14 @@ public class SR_TC01_Verify_ProductSearchResult extends BaseTest{
 			reporter.softAssert(getProductResultsPageThreadLocal().verifyProductPagination(), "Product pagination is existing", "Product pagination is not existing");
 			break;
 		case "NoSearchResult":
-			lsMsg=getProductResultsPageThreadLocal().verifySearchResultMessage(lstSearchResultMessage.get(1),lsKeywordList.get(i));
+			lsMsg=getProductResultsPageThreadLocal().verifySearchResultMessage(lstSearchResultMessage.get(0),lsKeywordList.get(i));
 			if(lsMsg.isEmpty()) {
 				reporter.reportLogPass("Search result message result of '"+getProductResultsPageThreadLocal().lsSearchResultMessage+"' matches the expected message");
 			}else {
 				reporter.reportLogFail(lsMsg);
 			}
 						
-			reporter.softAssert(getProductResultsPageThreadLocal().getProductList().size()==0, "No search results return", "Still there are search results return");
+			reporter.softAssert(getProductResultsPageThreadLocal().getProductSearchResultsTotalNumber()==0, "No search results return", "Still there are search results return");
 			break;
 		case "ProductNumberSearch":
 			reporter.softAssert(getProductResultsPageThreadLocal().verifyUrlContainDimensionAndKeyword(lsKeywordList.get(i)), "Url of search result matches expected url", "Url of search result doesn't match expected url");
