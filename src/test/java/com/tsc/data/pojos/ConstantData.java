@@ -78,34 +78,33 @@ public class ConstantData {
         private String lbl_ShoppingCartLinkName;
         private String lnk_ShoppingCartLink;
         private Flyout flyout;
-        private List<HeaderNameAndLinks> lst_FavouritesNameAndLinks;
-        private List<List<String>> lst_WatchUsLiveNameAndLinks;
-        private List<List<String>> lst_HeaderNameAndLinks;
+        private Map<String, List<String>> lst_WatchUsLiveNameAndLinksMap;
+        private Map<String, List<String>> lst_HeaderNameAndLinksMap;
         
         
-        public List<List<String>> getlst_WatchUsLiveNameAndLinks() {
-            return lst_WatchUsLiveNameAndLinks;
+        public Map<String, List<String>> getLst_HeaderNameAndLinksMap() {
+			return lst_HeaderNameAndLinksMap;
+		}
+
+		public void setLst_HeaderNameAndLinksMap(Map<String, List<String>> lst_HeaderNameAndLinksMap) {
+			this.lst_HeaderNameAndLinksMap = lst_HeaderNameAndLinksMap;
+		}
+
+		public Map<String, List<String>> getLst_WatchUsLiveNameAndLinksMap() {
+			return lst_WatchUsLiveNameAndLinksMap;
+		}
+
+		public void setLst_WatchUsLiveNameAndLinksMap(Map<String, List<String>> lst_WatchUsLiveNameAndLinksMap) {
+			this.lst_WatchUsLiveNameAndLinksMap = lst_WatchUsLiveNameAndLinksMap;
+		}
+
+        public String getLbl_SignInLandingPage() {   
+        	return lbl_SignInLandingPage;   
         }
 
-        public void setlst_WatchUsLiveNameAndLinks(List<List<String>> lst_WatchUsLiveNameAndLinks) {
-            this.lst_WatchUsLiveNameAndLinks = lst_WatchUsLiveNameAndLinks;
+        public void setLbl_SignInLandingPage(String lbl_SignInLandingPage) {
+        	this.lbl_SignInLandingPage = lbl_SignInLandingPage; 
         }
-        
-        public List<List<String>> getlst_HeaderNameAndLinks() {
-            return lst_HeaderNameAndLinks;
-        }
-
-        public void setlst_HeaderNameAndLinks(List<List<String>> lst_HeaderNameAndLinks) {
-            this.lst_HeaderNameAndLinks = lst_HeaderNameAndLinks;
-        }
-        
-        public String getLbl_SignInLandingPage() {   return lbl_SignInLandingPage;   }
-
-        public void setLbl_SignInLandingPage(String lbl_SignInLandingPage) {  this.lbl_SignInLandingPage = lbl_SignInLandingPage;       }
-
-        public List<HeaderNameAndLinks> getlst_FavouritesNameAndLinks() { return lst_FavouritesNameAndLinks; }
-
-        public void setlst_FavouritesNameAndLinks(List<HeaderNameAndLinks> lst_FavouritesNameAndLinks) { this.lst_FavouritesNameAndLinks = lst_FavouritesNameAndLinks;        }
 
         public String getLbl_ShoppingCartLinkName() {
             return lbl_ShoppingCartLinkName;
@@ -542,29 +541,19 @@ public class ConstantData {
     }
 
     public static class Flyout {
-        private List<String> lst_FlyoutHeading;
         private String lbl_FlyoutHeadingLandingPageLink;
-        private List<String> lnk_FlyoutHeaderLinkConstant;
-        private List<String> lst_FlyoutHeading_FR;
-        private List<List<String>> lst_FlyoutHeadingNameAndLink;
         private String lbl_LandingPageBrandShopAll;
         private String lnk_ShopByBrandShopAll;
         private Map<String, List<String>> lst_FlyoutHeadingAndNameMap;
-
-        public Map<String, List<String>> getLst_FlyoutHeadingAndNameMap() { return lst_FlyoutHeadingAndNameMap;    }
+        
+		public Map<String, List<String>> getLst_FlyoutHeadingAndNameMap() { 
+        	return lst_FlyoutHeadingAndNameMap;    
+        }
 
         public void setLst_FlyoutHeadingAndNameMap(Map<String, List<String>> lst_FlyoutHeadingAndNameMap) {
             this.lst_FlyoutHeadingAndNameMap = lst_FlyoutHeadingAndNameMap;
         }
 
-        public List<List<String>> getlst_FlyoutHeadingNameAndLink() {
-            return lst_FlyoutHeadingNameAndLink;
-        }
-
-        public void setlst_FlyoutHeadingNameAndLink(List<List<String>> lst_FlyoutHeadingNameAndLink) {
-            this.lst_FlyoutHeadingNameAndLink = lst_FlyoutHeadingNameAndLink;
-        }
-        
         public String getLbl_FlyoutHeadingLandingPageLink() {
             return lbl_FlyoutHeadingLandingPageLink;
         }
@@ -573,30 +562,6 @@ public class ConstantData {
             this.lbl_FlyoutHeadingLandingPageLink = lbl_FlyoutHeadingLandingPageLink;
         }
 
-        public List<String> getLst_FlyoutHeading() {
-            return lst_FlyoutHeading;
-        }
-
-        public void setLst_FlyoutHeading(List<String> lst_FlyoutHeading) {
-            this.lst_FlyoutHeading = lst_FlyoutHeading;
-        }
-
-        public List<String> getLnk_FlyoutHeaderLinkConstant() {
-            return lnk_FlyoutHeaderLinkConstant;
-        }
-
-        public void setLnk_FlyoutHeaderLinkConstant(List<String> lnk_FlyoutHeaderLinkConstant) {
-            this.lnk_FlyoutHeaderLinkConstant = lnk_FlyoutHeaderLinkConstant;
-        }
-        
-        public List<String> getlst_FlyoutHeading_FR() {
-            return lst_FlyoutHeading_FR;
-        }
-
-        public void setlst_FlyoutHeading_FR(List<String> lst_FlyoutHeading_FR) {
-            this.lst_FlyoutHeading_FR = lst_FlyoutHeading_FR;
-        }
-        
         public String getlbl_LandingPageBrandShopAll() {
             return lbl_LandingPageBrandShopAll;
         }

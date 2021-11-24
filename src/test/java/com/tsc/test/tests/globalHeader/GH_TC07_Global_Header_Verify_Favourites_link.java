@@ -2,6 +2,7 @@ package com.tsc.test.tests.globalHeader;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import com.tsc.data.pojos.ConstantData;
 import org.openqa.selenium.WebElement;
@@ -21,7 +22,7 @@ public class GH_TC07_Global_Header_Verify_Favourites_link extends BaseTest {
 	String urlFavoritesLandingpageLoggedInUser=null;
 	String lsUserName=TestDataHandler.constantData.getLoginUser().getLbl_Username();
 	String lsPassword=TestDataHandler.constantData.getLoginUser().getLbl_Password();
-	List<ConstantData.HeaderNameAndLinks> headerLinks = TestDataHandler.constantData.getHeaderSection().getlst_FavouritesNameAndLinks();
+	Map<String, List<String>> headerLinks = TestDataHandler.constantData.headerSection.getLst_HeaderNameAndLinksMap();
 	String urlFavoritesLandingpageAnonymousUser=TestDataHandler.constantData.getHeaderSection().getlbl_SignInLandingPage();
 	String lblSignInpageHeading=TestDataHandler.constantData.getHeaderSection().getLbl_SignIn();
 	WebElement lnkFavoriteElement =getglobalheaderPageThreadLocal().Favouriteslnk;
@@ -31,11 +32,12 @@ public class GH_TC07_Global_Header_Verify_Favourites_link extends BaseTest {
 	
 	//verify Favorite Link for Logged in user
 	String headerLinkName = "Favourites";
-	for(ConstantData.HeaderNameAndLinks headerLink : headerLinks){
-		if(headerLink.getHeaderName().equalsIgnoreCase(headerLinkName)){
-			urlFavoritesLandingpageLoggedInUser = headerLink.getLinks().get(1);
+	
+	
+		if(headerLinks.get(headerLinkName).get(0).equalsIgnoreCase(headerLinkName)){
+			urlFavoritesLandingpageLoggedInUser = headerLinks.get(headerLinkName).get(2);
 		}
-	}
+	
 	if(getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword)) {
 		String urlFavoritesLandingpageForLoggedinUser=getglobalheaderPageThreadLocal().getUrlForLandingpage(lnkFavoriteElement);
 		reporter.softAssert(urlFavoritesLandingpageForLoggedinUser.contains(urlFavoritesLandingpageLoggedInUser), "Favourites link's Landing page url is correct for logged in user.", "Favourites link's Landing page url is incorrect for logged in user.");

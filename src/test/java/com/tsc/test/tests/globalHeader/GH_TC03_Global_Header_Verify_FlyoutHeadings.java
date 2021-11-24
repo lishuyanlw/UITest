@@ -23,7 +23,7 @@ public class GH_TC03_Global_Header_Verify_FlyoutHeadings extends BaseTest {
 			getglobalheaderPageThreadLocal().scrolltoWebElement(lsHeading);
 			getGlobalFooterPageThreadLocal().applyStaticWait(3000);
 			String flyoutHeading =lsHeading.getText();
-			reporter.softAssert((TestDataHandler.constantData.headerSection.getFlyout().getLst_FlyoutHeading().contains(flyoutHeading)),"Flyout displays drpartment  "+flyoutHeading+" and it's validated.","Flyout is not displaying heading properly for "+flyoutHeading);
+			reporter.softAssert((TestDataHandler.constantData.headerSection.getFlyout().getLst_FlyoutHeadingAndNameMap().get(flyoutHeading).contains(flyoutHeading)),"Flyout displays drpartment  "+flyoutHeading+" and it's validated.","Flyout is not displaying heading properly for "+flyoutHeading);
 			reporter.softAssert(getglobalheaderPageThreadLocal().verifyhrefFlyoutHeading(lsHeading), "Href is present for Flyout Heading "+flyoutHeading, "Href is not preset for "+flyoutHeading);
 		}
 	}	

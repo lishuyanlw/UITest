@@ -666,10 +666,9 @@ public class GlobalHeaderPage extends BasePage{
 	public String getHeadingForLandingPage(String pageName) {
 		WebElement webElement = getWebElementFlyoutHeading(pageName);
 		String title =getPageTitle(webElement).toUpperCase();
-		System.out.println(title);
 		return (title);
 	}
-
+/*
 	public String getLandingPageHeadingSection() {
 		System.out.println(createCamelCase(getPageTitle(shopAllBrandsLandigPageHeading)).split(":")[0]);
 		return (createCamelCase(getPageTitle(shopAllBrandsLandigPageHeading)).split(":")[0]);
@@ -828,6 +827,14 @@ public class GlobalHeaderPage extends BasePage{
 		return frenchNameDataFile;
 	}
 		
+	public List<String> getymlData_(List<List<String>> lstNameAndLinks, int i) {
+		List<String> frenchNameDataFile= new ArrayList<String>();
+		for (List<String> lstItem : lstNameAndLinks) {
+			String NewfrenchName =this.getUTFEnabledData(lstItem.get(i).trim());
+			frenchNameDataFile.add(NewfrenchName);
+		}
+		return frenchNameDataFile;
+	}
 	/* Method to get WebElement by passing French name from yml file for Watch TSC
 	 * @param String : French name from yml file List<List<String>> lstWatchUsLiveNameAndLinks 
 	 * @return WebElement : French name for Watch TSC-FR
@@ -898,16 +905,31 @@ public class GlobalHeaderPage extends BasePage{
 		return "";
 	}
 		
-	/* Method to get WebElment for header
+	/* Method to get WebElment for header(Today's showstopper, Watch TSC)
 	 * @param Blackheader name 
 	 * @return WebElement 
 	 * @author Shruti Desai
 	 */
-	public WebElement getHeaderWebElements(String blackHeadeNname) {
-		String xpathHeading =createXPath("//div[contains(@class,'black-header')]//*[contains(@class,'{0}')]" ,blackHeadeNname); 
-		WebElement headingWebElement = FlyoutHeadings.findElement(By.xpath(xpathHeading));
-		return headingWebElement;
+	public WebElement getBlackHeadingWebElements(String blackHeadeNname) {
+		String xpathHeading =createXPath("//div[contains(@class,'black-header')]//span[contains(@class,'{0}')]" ,blackHeadeNname); 
+		WebElement blackHeadingWebElement = getDriver().findElement(By.xpath(xpathHeading));
+		return blackHeadingWebElement;
 	}
 
+	/* Method to get WebElment for Secondary navigation bar (TSC logo, search bar, Sign In, Favorite, Bag)
+	 * @param Blackheader name 
+	 * @return WebElement 
+	 * @author Shruti Desai
+	 */
+	public WebElement getSecondaryNavigationWebElements(String blackHeadeNname) {
+		String xpathHeading =createXPath("//div[contains(@class,'secondary-navigation')]//span[contains(@class,'{0}')]" ,blackHeadeNname); 
+		WebElement secondaryNavigationWebElement = getDriver().findElement(By.xpath(xpathHeading));
+		return secondaryNavigationWebElement;
+	}
+
+	public List<WebElement> getWatchTSCdDMWebelements() {
+		List<WebElement> headingElements =getDriver().findElements(By.xpath("//div[contains(@Class,'black-header')]//nav//li//a"));
+		return headingElements;
+	}
 }
 
