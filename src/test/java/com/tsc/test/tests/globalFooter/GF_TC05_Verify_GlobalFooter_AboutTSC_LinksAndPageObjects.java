@@ -23,6 +23,7 @@ public class GF_TC05_Verify_GlobalFooter_AboutTSC_LinksAndPageObjects extends Ba
 
         List<List<String>> lstNameAndLinks = TestDataHandler.constantData.getFooterSection().getLst_NameAndLinks();
 
+        ArrayList<WebElement> elementList=new ArrayList<WebElement>();
         List<String> global_footer_items = new ArrayList<>();
         //Adding links present in About TSC to be verified
         global_footer_items.add("Terms of Use");
@@ -41,21 +42,33 @@ public class GF_TC05_Verify_GlobalFooter_AboutTSC_LinksAndPageObjects extends Ba
             if(!getGlobalFooterPageThreadLocal().goToService(lsService,getGlobalFooterPageThreadLocal().aboutUsPageTitle)) {
                 reporter.reportLogFail("Unable to navigate to '"+lsService+"' page objects.");
             }
-            else {
-                //Verifying page title
+            else {                
+            	//Verifying page title
                 String pageTitle = getGlobalFooterPageThreadLocal().getPageTitle(getGlobalFooterPageThreadLocal().aboutUsPageTitle);
                 reporter.softAssert(pageTitle.equalsIgnoreCase(testData.get("Title")),"Page Title matches for global footer link: "+lsService+" and title is: "+pageTitle,"Page Title doesn't match for global footer link: "+lsService+" and title is: "+pageTitle);
                 //Verifying that user is navigated to respective section after navigating to page
                 Boolean respectiveSectionValue=getGlobalFooterPageThreadLocal().verifyRespectiveSectionForLinkOnPage(getGlobalFooterPageThreadLocal().lstMyAccountItemTitle);
                 reporter.softAssert(respectiveSectionValue,"Section for "+lsService+" on page: "+pageTitle+" is open after navigating","Section for "+lsService+" on page: "+pageTitle+" is not open after navigating");
-                //Verifying Page Layout and sections
+                              
                 getGlobalFooterPageThreadLocal().expandPanelItems(getGlobalFooterPageThreadLocal().lstMyAccountItemTitle,getGlobalFooterPageThreadLocal().lstMyAccountItemContent);
+                
+    			//Add item section titles 
+    			for(WebElement item:getGlobalFooterPageThreadLocal().lstMyAccountItemTitle) {
+    				elementList.add(item);
+    			}
+    			
+    			//Add item section contents
+    			for(WebElement item:getGlobalFooterPageThreadLocal().lstMyAccountItemContent) {
+    				elementList.add(item);
+    			}
+    			
+    			getGlobalFooterPageThreadLocal().verifyElementListExistence(elementList);
             }
+            elementList.clear();
         }
 
         //More About TSC
         String lsService = "More About TSC";
-        ArrayList<WebElement> elementList=new ArrayList<WebElement>();
         reporter.reportLog(lsService);
         WebElement selectedItem=getGlobalFooterPageThreadLocal().getServiceWebElement(lsService);
         String lsHref=basePage.getElementHref(selectedItem);
@@ -81,5 +94,6 @@ public class GF_TC05_Verify_GlobalFooter_AboutTSC_LinksAndPageObjects extends Ba
 
             getGlobalFooterPageThreadLocal().verifyElementListExistence(elementList);
         }
+        elementList.clear();
     }
 }
