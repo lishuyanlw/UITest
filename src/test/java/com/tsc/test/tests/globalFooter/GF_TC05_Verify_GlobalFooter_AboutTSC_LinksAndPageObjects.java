@@ -74,8 +74,8 @@ public class GF_TC05_Verify_GlobalFooter_AboutTSC_LinksAndPageObjects extends Ba
 
     			getGlobalFooterPageThreadLocal().verifyElementListExistence(elementList);
             }
+            elementList.clear();
         }
-        elementList.clear();
         //More About TSC
         String lsService = "More About TSC";
         reporter.reportLog(lsService);
@@ -112,7 +112,6 @@ public class GF_TC05_Verify_GlobalFooter_AboutTSC_LinksAndPageObjects extends Ba
         * CER 196
         * CER 197
         */
-
         //Shop By Brand
         String lsServiceSBB = "Shop By Brand";
         reporter.reportLog(lsServiceSBB);

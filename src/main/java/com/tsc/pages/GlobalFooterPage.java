@@ -345,7 +345,7 @@ public class GlobalFooterPage extends BasePage {
 	@FindBy(xpath="//div[contains(@class,'col-xs-12')]//h2")
 	public WebElement lblShopbyBrandTitle;
 
-	@FindBy(xpath="//div[contains(@class,'col-xs-12')]//h2/b")
+	@FindBy(xpath="//div[@class='Middle']//*[@class='titleLink']/b")
 	public WebElement lblShopByBrandTitleAfterDropDown;
 
 	@FindBy(xpath="//div[contains(@class,'sortPrpLabel searchTi')]")
@@ -369,26 +369,20 @@ public class GlobalFooterPage extends BasePage {
 	@FindBy(xpath="//div[contains(@class,'lettersDiv')]//div[contains(@class,'active')]//span")
 	public WebElement activeAlphabetChar;
 
-	@FindBy(xpath="//div[contains(@class,'lettersDiv')]//div")
+	@FindBy(xpath="//div[contains(@class,'lettersDiv')]//div/span[not(contains(@class,'number'))]")
 	public List<WebElement> linkFindByAlphabet;
 
-	@FindBy(xpath="//div[contains(@class,'brandHeader activeLetter')]//span")
-	public List<WebElement> Brandheader;
-
-	@FindBy(xpath="//div[contains(@class,' brandName')]//a")
-	public List<WebElement> BrandheaderLinks;
-
 	//Channel Finder
-	@FindBy(xpath="//div[contains(@class,'col-xs-12')]//h1//strong")
+	@FindBy(xpath="//*[contains(@class,'pageHeader')]")
 	public WebElement lblChannelFinderTitle;
 
-	@FindBy(xpath="//div[contains(@class,'col-xs-12 col-sm-11')]//h1")
+	@FindBy(xpath="//div[@class='Middle']//div[contains(@class,'find-channel')]//*[@class='section-title']")
 	public WebElement lblFindCableChannelTitle;
 
 	@FindBy(xpath="//div[contains(@Class,' tsc-forms')]//div[@Class='clearfix']//div/p[contains(text(),'Channel')]")
 	public WebElement useourchannelfinder;
 
-	@FindBy(xpath="//div[contains(@class,'col-xs-12 col-sm-11')]//h4")
+	@FindBy(xpath="//div[@class='Middle']//div[contains(@class,'find-channel')]//h4")
 	public WebElement lblselectyour;
 
 	@FindBy(xpath="//label[contains(text(),'PROVIN')]")
@@ -971,17 +965,19 @@ public class GlobalFooterPage extends BasePage {
 	 */
 
 	public  void verifyDropDownWithTitle(WebElement element) {
-		Select select=new Select(element);
-		int dropDownElementSize=select.getOptions().size();
-		for(int i=1;i<dropDownElementSize;i++) {
+		Select select = new Select(element);
+		int dropDownElementSize = select.getOptions().size();
+		for (int i = 1; i < dropDownElementSize; i++) {
 			select.selectByIndex(i);
 			getReusableActionsInstance().waitForPageLoad();
-			String title=lblShopByBrandTitleAfterDropDown.getText();
-			reporter.reportLog(" Page Title After Dropdown is "+title+", and it is correctly appeared ");
-			String option =select.getFirstSelectedOption().getText();
-			reporter.reportLog(" Dropdown Selected Options is "+option+", and it is correctly appeared");
-			reporter.softAssert(title.equalsIgnoreCase(option),"Page Title matches for both Actual "+title+" and expected "+option+"","Page Title doesn't match for both Actual "+title+" and expected "+option+"");
+			String title = lblShopByBrandTitleAfterDropDown.getText();
+			reporter.reportLog(" Page Title After Dropdown is " + title + ", and it is correctly appeared ");
+			String option = select.getFirstSelectedOption().getText();
+			reporter.reportLog(" Dropdown Selected Options is " + option + ", and it is correctly appeared");
+			reporter.softAssert(title.equalsIgnoreCase(option), "Page Title matches for both Actual " + title + " and expected " + option + "", "Page Title doesn't match for both Actual " + title + " and expected " + option + "");
 		}
+	}
+
 	public void verifyTSCCustomerHubLlinks(List<List<String>> lstNameAndLinks) {
 		BasePage basePage=new BasePage(this.getDriver());
 		String lsText,lsYmlHref,lsHref;
@@ -1090,9 +1086,6 @@ public class GlobalFooterPage extends BasePage {
 		this.waitForPageLoading();
 	}
 
-
-	}
-
 	/**
 	 * This method is to verify Find By Alphabets Links and its content links
 	 * @author godwin.gopi
@@ -1105,16 +1098,16 @@ public class GlobalFooterPage extends BasePage {
 		for(int i=0;i<elements.size();i++) {
 			String alphabetPath="(//div[contains(@class,'lettersDiv')]//div//span)["+counter+"]";
 			elements.get(i).click();
-			String alaphabitLetterValue=getDriver().findElement(By.xpath(alphabetPath)).getText();
-			reporter.reportLog("Selected Alphabet is "+alaphabitLetterValue+"");
-			String activeAlaphabitLetterValue=activeAlphabetChar.getText();
-			reporter.softAssert(alaphabitLetterValue.equalsIgnoreCase(activeAlaphabitLetterValue),"The Corresponding Page Title inside the Alphabet Link is same as expected","The Corresponding Page Title inside the Alphabet Link is not same as expected");
+			String alphabetLetterValue=getDriver().findElement(By.xpath(alphabetPath)).getText();
+			reporter.reportLog("Selected Alphabet is "+alphabetLetterValue+"");
+			String activeAlphabetLetterValue=activeAlphabetChar.getText();
+			reporter.softAssert(alphabetLetterValue.equalsIgnoreCase(activeAlphabetLetterValue),"The Corresponding Page Title inside the Alphabet Link is same as expected","The Corresponding Page Title inside the Alphabet Link is not same as expected");
 			String alphabetPathElementsPath="//div[contains(@class,'brandHeader activeLetter')]//ancestor::div[contains(@class,'col')][1]//a";
 			List<WebElement> alphabetPathElements=getDriver().findElements(By.xpath(alphabetPathElementsPath));
 			for(int j=0 ;j<alphabetPathElements.size();j++) {
 				String brandName=alphabetPathElements.get(j).getText();
 				String firstLetter=brandName.substring(0,1);
-				reporter.softAssert(alaphabitLetterValue.equalsIgnoreCase(firstLetter),"The Brand  first alphabet is "+firstLetter+" and Brand Name is "+brandName+"  ","The Brand  first alphabet is "+firstLetter+" and Brand Name is "+brandName+" is not matching.");
+				reporter.softAssert(alphabetLetterValue.equalsIgnoreCase(firstLetter),"The Brand  first alphabet is "+firstLetter+" and Brand Name is "+brandName+"  ","The Brand  first alphabet is "+firstLetter+" and Brand Name is "+brandName+" is not matching.");
 				String brandLink=alphabetPathElements.get(j).getAttribute("href");
 				reporter.softAssert(alphabetPathElements.get(j).getAttribute("href")!=null,"The Brand URL of "+brandLink+" exists","The Brand URL of "+brandLink+" doesn't exists");
 
@@ -1141,12 +1134,11 @@ public class GlobalFooterPage extends BasePage {
 	 * This method is to verify Drop Down in Channel Finder, navigating to its corresponding Service Provider and City
 	 * @author godwin.gopi
 	 */
-
 	public  void verifyMultipleDropDownWithTitle(WebElement firstDropDown, WebElement secondDropDown, WebElement thirdDropDown) {
 		Select select=new Select(firstDropDown);
 		int firstDropDownElementSize=select.getOptions().size();
-		for(int i=0;i<firstDropDownElementSize;i++) {
-			select.selectByIndex(i);
+		if(firstDropDownElementSize > 1) {
+			select.selectByIndex(1); //Checking for one item
 			getReusableActionsInstance().waitForPageLoad();
 			String option =select.getFirstSelectedOption().getText();
 			reporter.reportLog(" Dropdown Selected Province is "+option+"");
@@ -1154,23 +1146,24 @@ public class GlobalFooterPage extends BasePage {
 
 			Select secondSelect=new Select(secondDropDown);
 			int secondDropDownElementSize=secondSelect.getOptions().size();
-			for(int j=0;j<secondDropDownElementSize;j++) {
-				secondSelect.selectByIndex(j);
+			if(secondDropDownElementSize>1) {
+				secondSelect.selectByIndex(1); //Checking for one item
 				getReusableActionsInstance().waitForPageLoad();
-				String secondOption =secondSelect.getFirstSelectedOption().getText();
-				reporter.reportLog(" Dropdown Selected Province is "+option+" and Dropdown Selected Cable Provider is "+secondOption+"");
-				reporter.softAssert(secondOption!=null," Dropdown Selected Cable provider is "+secondOption+" and not NULL"," Dropdown Selected Cable provider is "+secondOption+" and is NULL");
-				Select thirdSelect=new Select(thirdDropDown);
-				int thirdDropDownElementSize=thirdSelect.getOptions().size();
-				for(int k=0;k<thirdDropDownElementSize;k++) {
-					thirdSelect.selectByIndex(k);
+				String secondOption = secondSelect.getFirstSelectedOption().getText();
+				reporter.reportLog(" Dropdown Selected Province is " + option + " and Dropdown Selected Cable Provider is " + secondOption + "");
+				reporter.softAssert(secondOption != null, " Dropdown Selected Cable provider is " + secondOption + " and not NULL", " Dropdown Selected Cable provider is " + secondOption + " and is NULL");
+				Select thirdSelect = new Select(thirdDropDown);
+				int thirdDropDownElementSize = thirdSelect.getOptions().size();
+				if (thirdDropDownElementSize > 1) {
+					thirdSelect.selectByIndex(1); //Checking for one item
 					getReusableActionsInstance().waitForPageLoad();
-					String thirdOption =thirdSelect.getFirstSelectedOption().getText();
-					reporter.reportLog("Dropdown Selected Province is "+option+" and Dropdown Selected Cable Provider is "+secondOption+" Dropdown Selected City is "+thirdOption+"");
-					reporter.softAssert(thirdOption!=null," Dropdown Selected City is "+thirdOption+" and not NULL"," Dropdown Selected City is "+thirdOption+" and is NULL");
-
+					String thirdOption = thirdSelect.getFirstSelectedOption().getText();
+					reporter.reportLog("Dropdown Selected Province is " + option + " and Dropdown Selected Cable Provider is " + secondOption + " Dropdown Selected City is " + thirdOption + "");
+					reporter.softAssert(thirdOption != null, " Dropdown Selected City is " + thirdOption + " and not NULL", " Dropdown Selected City is " + thirdOption + " and is NULL");
 				}
 			}
+		}else{
+			reporter.softAssert(false,"","No data is present in dropdown");
 		}
 	}
 	/**
