@@ -36,11 +36,14 @@ public class BaseTest {
 
 	protected static final ThreadLocal<WebDriver> webDriverThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<GlobalHeaderPage> globalheaderPageThreadLocal = new ThreadLocal<>();
+	protected static final ThreadLocal<GlobalHeaderPage_Mobile> globalHeaderPage_mobileThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<HomePage> homePageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<GlobalFooterPage> globalFooterPageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<ProductResultsPage> productResultsPageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<ProductDetailPage> productDetailPageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<LoginPage> loginPageThreadLocal = new ThreadLocal<>();
+	protected static final ThreadLocal<LoginPage_Mobile> loginPage_mobileThreadLocal = new ThreadLocal<>();
+	protected static final ThreadLocal<String> TestDeviceThreadLocal = new ThreadLocal<>();
 
 	public BaseTest() {
 		browserDrivers = new BrowserDrivers();
@@ -58,6 +61,11 @@ public class BaseTest {
 	
 	protected static GlobalHeaderPage getglobalheaderPageThreadLocal() {
 		return globalheaderPageThreadLocal.get();
+	}
+
+	// @return the globalheaderPage_MobileThreadLocal
+	protected static GlobalHeaderPage_Mobile getglobalHeaderPage_mobileThreadLocal() {
+		return globalHeaderPage_mobileThreadLocal.get();
 	}
 	
 	// @return the homePageThreadLocal
@@ -82,6 +90,10 @@ public class BaseTest {
 		return loginPageThreadLocal.get();
 	}
 
+	protected static LoginPage_Mobile getLoginPage_MobileThreadLocal() {
+		return loginPage_mobileThreadLocal.get();
+	}
+
 	private void init() {
 		
 		homePageThreadLocal.set(new HomePage(getDriver()));
@@ -90,6 +102,22 @@ public class BaseTest {
 		productResultsPageThreadLocal.set(new ProductResultsPage(getDriver()));
 		productDetailPageThreadLocal.set(new ProductDetailPage(getDriver()));
 		loginPageThreadLocal.set(new LoginPage(getDriver()));
+		reporter = new ExtentTestManager(getDriver());
+	}
+
+	private void init_Mobile() {
+		globalheaderPageThreadLocal.set(new GlobalHeaderPage_Mobile(getDriver()));
+		loginPageThreadLocal.set(new LoginPage_Mobile(getDriver()));
+		//loginPage_mobileThreadLocal.set(new LoginPage_Mobile(getDriver()));
+		globalFooterPageThreadLocal.set(new GlobalFooterPage(getDriver()));
+		reporter = new ExtentTestManager(getDriver());
+	}
+
+	private void init_Tablet() {
+		globalheaderPageThreadLocal.set(new GlobalHeaderPage_Mobile(getDriver()));
+		loginPageThreadLocal.set(new LoginPage_Mobile(getDriver()));
+		//loginPage_mobileThreadLocal.set(new LoginPage_Mobile(getDriver()));
+		globalFooterPageThreadLocal.set(new GlobalFooterPage(getDriver()));
 		reporter = new ExtentTestManager(getDriver());
 	}
 
@@ -109,25 +137,45 @@ public class BaseTest {
 		driver.manage().timeouts().implicitlyWait(seconds, TimeUnit.SECONDS);
 	}
 
-	public void startSession(String strUrl, String strBrowser, String strLanguage, Method currentTestMethodName,
-			boolean bypassCaptcha) throws ClientProtocolException, IOException {
+	public void startSession (String strUrl, String strBrowser, String strLanguage, Method currentTestMethodName,
+							  boolean bypassCaptcha) throws ClientProtocolException, IOException {
 		RunParameters = getExecutionParameters(strBrowser, strLanguage);
 		strBrowser = RunParameters.get("Browser").toLowerCase();
 		strLanguage = RunParameters.get("Language").toLowerCase();
 
-		if (strBrowser.toLowerCase().contains("sauce")) { 
-			sauceParameters =	initializeSauceParamsMap(strBrowser); 
+		if (strBrowser.toLowerCase().contains("sauce")) {
+			sauceParameters = initializeSauceParamsMap(strBrowser);
 		}
-	
+
 		webDriverThreadLocal.set(browserDrivers.driverInit(strBrowser, sauceParameters, currentTestMethodName, ""));
 		getDriver().get(strUrl);
-		if (!strBrowser.toLowerCase().contains("android") && !strBrowser.toLowerCase().contains("ios")
-				&& !strBrowser.toLowerCase().contains("mobile")) {
-			getDriver().manage().window().maximize();
+		strBrowser = System.getProperty("Browser").trim();
+		System.out.println(strBrowser);
+
+		String lsTestDevice = System.getProperty("Device").trim();
+		TestDeviceThreadLocal.set(lsTestDevice);
+		strBrowser = System.getProperty("Browser").trim();
+		if (strBrowser.toLowerCase().contains("android") || strBrowser.toLowerCase().contains("ios")
+				|| strBrowser.toLowerCase().contains("mobile")) {
+			lsTestDevice = System.getProperty("Device").trim();
+			TestDeviceThreadLocal.set(lsTestDevice);
+			switch (lsTestDevice) {
+				case "Tablet":
+					init_Tablet();
+					break;
+				case "Mobile":
+					init_Mobile();
+					break;
+			}
+		} else {
+			init();
 		}
+
+	/*if (!strBrowser.toLowerCase().contains("android") && !strBrowser.toLowerCase().contains("ios")
+			&& !strBrowser.toLowerCase().contains("mobile")) {
+		getDriver().manage().window().maximize();
+	}*/
 		setImplictWait(getDriver(), 60);
-		//setSessionStorage(strUrl);
-		init();
 	}
 
 	

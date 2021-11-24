@@ -82,6 +82,7 @@ task "sauceTest"(type: Test) {
     systemProperty 'Language', test_language
     systemProperty 'TunnelRequired', TunnelRequired
     systemProperty 'TunnelName', tunnelName
+    systemProperty 'Device', test_device
     //Below system property is needed when we will create tunnel manually and use that to run test in sauce-lab
     //Test will be under DigitalQAWebAutomation owner in sauce-lab
     //systemProperty 'parentTunnelOwner', parentTunnelOwner()
@@ -109,6 +110,7 @@ task "localTest"(type: Test) {
     systemProperty 'QaUrl', test_qaURL
     systemProperty 'Browser', test_browser
     systemProperty 'Language', test_language
+    systemProperty 'Device', test_device
     systemProperty 'chromeMobileDevice', chromeMobileDevice
     systemProperties(System.getProperties())
     outputs.upToDateWhen { false }  // Always run tests
