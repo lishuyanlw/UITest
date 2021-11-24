@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 import com.tsc.pages.*;
 import org.apache.http.client.ClientProtocolException;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.testng.ITestContext;
 import org.testng.annotations.AfterMethod;
@@ -41,6 +42,7 @@ public class BaseTest {
 	protected static final ThreadLocal<ProductResultsPage> productResultsPageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<ProductDetailPage> productDetailPageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<LoginPage> loginPageThreadLocal = new ThreadLocal<>();
+	protected static final ThreadLocal<String> TestDeviceThreadLocal = new ThreadLocal<>();
 
 	public BaseTest() {
 		browserDrivers = new BrowserDrivers();
@@ -81,12 +83,15 @@ public class BaseTest {
 	protected static LoginPage getGlobalLoginPageThreadLocal() {
 		return loginPageThreadLocal.get();
 	}
+	
+	protected static String getTestDeviceThreadLocal () {
+		return TestDeviceThreadLocal.get();
+	}
 
 	private void init() {
 		
 		homePageThreadLocal.set(new HomePage(getDriver()));
-		globalheaderPageThreadLocal.set(new GlobalHeaderPage(getDriver()));
-		globalFooterPageThreadLocal.set(new GlobalFooterPage(getDriver()));
+		globalheaderPageThreadLocal.set(new GlobalHeaderPage(getDriver()));		
 		productResultsPageThreadLocal.set(new ProductResultsPage(getDriver()));
 		productDetailPageThreadLocal.set(new ProductDetailPage(getDriver()));
 		loginPageThreadLocal.set(new LoginPage(getDriver()));
@@ -121,10 +126,35 @@ public class BaseTest {
 	
 		webDriverThreadLocal.set(browserDrivers.driverInit(strBrowser, sauceParameters, currentTestMethodName, ""));
 		getDriver().get(strUrl);
-		if (!strBrowser.toLowerCase().contains("android") && !strBrowser.toLowerCase().contains("ios")
-				&& !strBrowser.toLowerCase().contains("mobile")) {
-			getDriver().manage().window().maximize();
+		
+		strBrowser = System.getProperty("Browser").trim();
+		System.out.println(strBrowser);
+
+		String lsTestDevice = System.getProperty("Device").trim();
+		TestDeviceThreadLocal.set(lsTestDevice);
+		strBrowser = System.getProperty("Browser").trim();
+		if (strBrowser.toLowerCase().contains("android") || strBrowser.toLowerCase().contains("ios")
+				|| strBrowser.toLowerCase().contains("mobile")) {		
+			lsTestDevice = System.getProperty("Device").trim();
+			TestDeviceThreadLocal.set(lsTestDevice);
+			switch (lsTestDevice) {
+				case "Tablet":
+					//getDriver().manage().window().setSize(new Dimension(700, 600));
+					globalFooterPageThreadLocal.set(new GlobalFooterPage_Tablet(getDriver()));
+					break;
+				case "Mobile":
+					//getDriver().manage().window().setSize(new Dimension(500, 600));
+					globalFooterPageThreadLocal.set(new GlobalFooterPage_Mobile(getDriver()));
+					break;
+			}
+		} else {
+			globalFooterPageThreadLocal.set(new GlobalFooterPage(getDriver()));
 		}
+						
+//		if (!strBrowser.toLowerCase().contains("android") && !strBrowser.toLowerCase().contains("ios")
+//				&& !strBrowser.toLowerCase().contains("mobile")) {
+//			getDriver().manage().window().maximize();
+//		}
 		setImplictWait(getDriver(), 60);
 		//setSessionStorage(strUrl);
 		init();

@@ -45,28 +45,15 @@ public class GF_TC03_Verify_GlobalFooter_Language extends BaseTest {
 		//TSC customer hub links
 		lsText=basePage.getUTFEnabledData(basePage.getElementText(getGlobalFooterPageThreadLocal().lblTSCCustomerHubText));
 		String lsText_TSCCustomerHub_Fr=getGlobalFooterPageThreadLocal().getFrenchWithSpecificEnglishName(lstNameAndLinks,lsText);
-		
-		List<String> lstCustomerHubFr=new ArrayList<String>();
-		String lsFr;
-		for(WebElement item:getGlobalFooterPageThreadLocal().lnkTSCCustomerHubAllLinks) {
-			lsText=basePage.getElementText(item);	
-			lsFr=getGlobalFooterPageThreadLocal().getFrenchWithSpecificEnglishName(lstNameAndLinks,lsText);
-			lstCustomerHubFr.add(lsFr);
-		}
-		
+		List<String> lstCustomerHubFr=getGlobalFooterPageThreadLocal().getCustomerHubSubItemFr(lstNameAndLinks);
+			
 		//About TSC links
 		lsText=basePage.getUTFEnabledData(basePage.getElementText(getGlobalFooterPageThreadLocal().lblAboutTSCText));
 		String lsText_AboutTSC_Fr=getGlobalFooterPageThreadLocal().getFrenchWithSpecificEnglishName(lstNameAndLinks,lsText);
-		
-		List<String> lstAboutTSCFr=new ArrayList<String>();
-		for(WebElement item:getGlobalFooterPageThreadLocal().lnkAboutTSCAllLinks) {
-			lsText=basePage.getElementText(item);
-			lsFr=getGlobalFooterPageThreadLocal().getFrenchWithSpecificEnglishName(lstNameAndLinks,lsText);
-			lstAboutTSCFr.add(lsFr);			
-		}
-		
+		List<String> lstAboutTSCFr=getGlobalFooterPageThreadLocal().getAboutTSCSubItemFr(lstNameAndLinks);
+			
 		//Rogers LOGO
-		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().imgRogersLogo), "Rogers Logo is existing", "Rogers Logo is not existing");		
+		getGlobalFooterPageThreadLocal().verifyRogersLogo();		
 		
 		//Copyright text
 		lsText=basePage.getUTFEnabledData(basePage.getElementText(getGlobalFooterPageThreadLocal().txtCopyrightLine1));
@@ -126,36 +113,16 @@ public class GF_TC03_Verify_GlobalFooter_Language extends BaseTest {
 		//TSC customer hub links
 		lsText=basePage.getUTFEnabledData(basePage.getElementText(getGlobalFooterPageThreadLocal().lblTSCCustomerHubText));
 		reporter.softAssert(lsText.equalsIgnoreCase(lsText_TSCCustomerHub_Fr),"Customer Hub text French transaltion is correct","Customer Hub text French transaltion is not correct");
-		
-		for(int i=0;i<getGlobalFooterPageThreadLocal().lnkTSCCustomerHubAllLinks.size();i++) {
-			lsText=basePage.getUTFEnabledData(basePage.getElementText(getGlobalFooterPageThreadLocal().lnkTSCCustomerHubAllLinks.get(i)));	
-			reporter.softAssert(lsText.equalsIgnoreCase(lstCustomerHubFr.get(i)),"The "+i+" CustomerHubLink French transaltion of "+lsText+" is the same as "+lstCustomerHubFr.get(i),"The "+i+" CustomerHubLink French transaltion of "+lsText+" is the same as "+lstCustomerHubFr.get(i));
-			lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsText,false);			
-			if(lsYmlHref.isEmpty()) {
-				reporter.reportLogFail("Unable to find "+lsText+" link.");
-			}
-			lsHref=basePage.getElementHref(getGlobalFooterPageThreadLocal().lnkTSCCustomerHubAllLinks.get(i));	
-			reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref,"The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref);
-		}
+		getGlobalFooterPageThreadLocal().verifyCustomerHubSubItemFr(lstNameAndLinks, lstCustomerHubFr);
 		
 		//About TSC links
 		lsText=basePage.getUTFEnabledData(basePage.getElementText(getGlobalFooterPageThreadLocal().lblAboutTSCText));
 		reporter.softAssert(lsText.equalsIgnoreCase(lsText_AboutTSC_Fr),"About TSC text French transaltion is correct","About TSC French transaltion is not correct");
-			
-		for(int i=0;i<getGlobalFooterPageThreadLocal().lnkAboutTSCAllLinks.size();i++) {
-			lsText=basePage.getUTFEnabledData(basePage.getElementText(getGlobalFooterPageThreadLocal().lnkAboutTSCAllLinks.get(i)));	
-			reporter.softAssert(lsText.equalsIgnoreCase(lstAboutTSCFr.get(i)),"The "+i+" AboutTSLink French transaltion of "+lsText+" is the same as "+lstAboutTSCFr.get(i),"The "+i+" AboutTSLink French transaltion of "+lsText+" is the same as "+lstAboutTSCFr.get(i));
-			lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsText,false);
-			if(lsYmlHref.isEmpty()) {
-				reporter.reportLogFail("Unable to find "+lsText+" link.");
-			}
-			lsHref=basePage.getElementHref(getGlobalFooterPageThreadLocal().lnkAboutTSCAllLinks.get(i));
-			reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref,"The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref);
-		}
+		getGlobalFooterPageThreadLocal().verifyAboutTSCSubItemFr(lstNameAndLinks, lstAboutTSCFr);
 		
 		//Copyright text
 		lsText=basePage.getUTFEnabledData(basePage.getElementText(getGlobalFooterPageThreadLocal().txtCopyrightLine1));
-		reporter.softAssert(lsText.equalsIgnoreCase(lsText_Copyright_Line1_Fr),"Copyright line1 French transaltion is correct","Copyright line1 French transaltion is not correct");
+		reporter.softAssert(lsText.contains(lsText_Copyright_Line1_Fr),"Copyright line1 French transaltion is correct","Copyright line1 French transaltion is not correct");
 		lsText=basePage.getUTFEnabledData(basePage.getElementText(getGlobalFooterPageThreadLocal().txtCopyrightLine2));
 		reporter.softAssert(lsText.equalsIgnoreCase(lsText_Copyright_Line2_Fr),"Copyright line2 French transaltion is correct","Copyright line2 French transaltion is not correct");
 		
