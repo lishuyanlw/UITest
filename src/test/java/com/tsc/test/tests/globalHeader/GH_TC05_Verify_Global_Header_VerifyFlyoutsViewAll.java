@@ -23,8 +23,7 @@ public class GH_TC05_Verify_Global_Header_VerifyFlyoutsViewAll extends BaseTest 
 		List<WebElement> headingsElement=getglobalheaderPageThreadLocal().getFlyoutHeadingsWebelement();
 		
 		Map<String, List<String>> lstFlyoutHeading_FR= TestDataHandler.constantData.headerSection.getFlyout().getLst_FlyoutHeadingAndNameMap();
-		
-		//List<List<String>> lsFlyout= TestDataHandler.constantData.getHeaderSection().getFlyout().getLst_FlyoutHeadingNameAndLinkMap();
+
 		//Fetching heading name and iterating over it,because whenever trying to iterate over the WebElement it throws Stale Element exception.
 		List<String> flyoutHeading = new ArrayList<String>();
 		for(WebElement lsHeading:headingsElement) {
@@ -39,7 +38,6 @@ public class GH_TC05_Verify_Global_Header_VerifyFlyoutsViewAll extends BaseTest 
 			pageHeading=getglobalheaderPageThreadLocal().getHeadingForLandingPage(lsHeading);
 			String urlShopAllBrandYmlData=TestDataHandler.constantData.getHeaderSection().getFlyout().getlnk_ShopByBrandShopAll();
 			String pageHeadingSection=TestDataHandler.constantData.getHeaderSection().getFlyout().getlbl_LandingPageBrandShopAll();
-			//String linkNumberYmlData= getglobalheaderPageThreadLocal().getLinkNumberWithSpecificHeadingName(lsFlyout,lsHeading);
 			String linkNumberYmlData= lstFlyoutHeading_FR.get(lsHeading).get(2);
 			lsSuccessResult=String.format("The url [ %s ] does not contain [ %s ] after clicking shop all brands under >" + lsHeading + " > Popular Brands", shopAllUrl,lsYmlNotFound);
 			lsFailResult=String.format("The url of [ %s ] contains [ %s ] after clicking shop all brands under > " + lsHeading + " > Popular Brands", shopAllUrl,lsYmlNotFound);

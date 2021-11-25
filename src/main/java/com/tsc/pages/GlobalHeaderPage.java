@@ -7,6 +7,7 @@ import org.openqa.selenium.support.FindBy;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 import org.openqa.selenium.By;
 import com.tsc.pages.base.BasePage;
@@ -426,9 +427,9 @@ public class GlobalHeaderPage extends BasePage{
 	 
 	/**
 	 *Method to verify TS header and link in Black headers  	 
-	 * @param WebElement blackItem: the header in Black headers
-	 * @param WebElement silverItem: the header in Silver headers 
-	 * @param boolean bCheckUrl: to decide if check Url after clicking the header in Black headers 
+	 * @param- WebElement blackItem: the header in Black headers
+	 * @param- WebElement silverItem: the header in Silver headers
+	 * @param- boolean bCheckUrl: to decide if check Url after clicking the header in Black headers
 	 * @author Wei.Li
 	 */	
 	 public void verifyTSHeaderAndLinkInBlackHeader(WebElement blackItem,WebElement silverItem,boolean bCheckUrl) {
@@ -468,7 +469,7 @@ public class GlobalHeaderPage extends BasePage{
 	 
 	/**
 	 *Method to verify TopSellingProducts existing by changing item in Trending or Featured brands list   
-	 * @param List<WebElement> elementList: element list	
+	 * @param- List<WebElement> elementList: element list
 	 * @return void
 	 * @author Wei.Li
 	 */	
@@ -528,8 +529,6 @@ public class GlobalHeaderPage extends BasePage{
 			return null;
 		}
 	 
-	 public StringBuilder href_src_submenu  =new StringBuilder();
-	 public StringBuilder href_src_data = new StringBuilder();
 	 /*Method to click on WebElement for Submenu Item by providing Flyout heading name , category and item as parameters.
 	  * @author Shruti Desai
 	  */
@@ -599,13 +598,7 @@ public class GlobalHeaderPage extends BasePage{
 			 currentUrl = getDriver().getCurrentUrl();
 			 return currentUrl;
 		}
-		/*Method to apply static wait  
-		 * @author Shruti Desai
-		 */
-		public void staticwait() {
-			applyStaticWait(2000);
-		}
-		
+
 		/*Method to get WebElement for flyout heading  
 		 * @return WebElement
 		 * @author Shruti Desai
@@ -625,17 +618,7 @@ public class GlobalHeaderPage extends BasePage{
 			  getReusableActionsInstance().scrollToElement(headingWebElement);
 		}
 		
-		
-		/*Method to get WebElement for shop all brand in Popular Brand section  
-		 * @return WebElement
-		 * @author Shruti Desai
-		 */	
-		/*public WebElement getWebElementShopAllPupularBrand() {
-			WebElement ShopAllWebElement = getDriver().findElement(By.xpath("//a[contains(@class,'mega-popular__cta')]"));
-			return ShopAllWebElement;
-		}
-
-		/*Method to verify href is present or not before clicking shop all link in Popular Brand Section and get url of landing page 
+		/*Method to verify href is present or not before clicking shop all link in Popular Brand Section and get url of landing page
 		 * @return String:href(only get unique part for each heading)
 		 * @author Shruti Desai
 		 */
@@ -645,7 +628,6 @@ public class GlobalHeaderPage extends BasePage{
 			first_flyout_menu_text.set(headingName.split(" ")[0]);
 			WebElement linkPopularBrand = listPopularBrandsLink.get(0);
 			waitForCondition(Driver->{return (linkPopularBrand.getAttribute("href").contains(first_flyout_menu_text.get()) && linkPopularBrand.getAttribute("class").contains(section.split(" ")[0].trim().toLowerCase()));} ,30000);
-			//WebElement ShopAllWebElement = getWebElementShopAllPupularBrand();
 			if(verifyElementProperty(shopAllPopularBrands,"Link")) {
 				//getReusableActionsInstance().javascriptScrollByVisibleElement(shopAllPopularBrands);				
 				//getReusableActionsInstance().scrollToElement(shopAllPopularBrands);
@@ -668,12 +650,7 @@ public class GlobalHeaderPage extends BasePage{
 		String title =getPageTitle(webElement).toUpperCase();
 		return (title);
 	}
-/*
-	public String getLandingPageHeadingSection() {
-		System.out.println(createCamelCase(getPageTitle(shopAllBrandsLandigPageHeading)).split(":")[0]);
-		return (createCamelCase(getPageTitle(shopAllBrandsLandigPageHeading)).split(":")[0]);
-	}
-	
+
 	/*Method to verify href/src is empty or not before clicking sub menu link
 	 * @return true/false
 	 * @author Shruti Desai
@@ -719,7 +696,7 @@ public class GlobalHeaderPage extends BasePage{
 					getReusableActionsInstance().javascriptScrollByVisibleElement(headerItem);
 				}
 				this.scrolltoWebElement(headerItem);
-				this.staticwait();
+				getReusableActionsInstance().staticWait(3000);
 				waitForCondition(Driver->{return (CategoriesLinks.get(0).getAttribute("href").contains(headerItem.getText().split(" ")[0]));} ,30000);
 				String headingName =headerItem.getText();
 				reporter.reportLog("Flyout heading "+headingName);
@@ -737,7 +714,7 @@ public class GlobalHeaderPage extends BasePage{
 					getReusableActionsInstance().javascriptScrollByVisibleElement(headingsElement);
 			 }
 			this.scrolltoWebElement(headingsElement);
-			this.staticwait();
+			getReusableActionsInstance().staticWait(3000);
 			waitForCondition(Driver->{return (CategoriesLinks.get(0).getAttribute("href").contains(headingsElement.getText().split(" ")[0]));} ,30000);
 			String headingName =headingsElement.getText();
 			reporter.reportLog("Flyout heading "+headingName);
@@ -794,7 +771,7 @@ public class GlobalHeaderPage extends BasePage{
 						getReusableActionsInstance().javascriptScrollByVisibleElement(category);
 					}
 					this.scrolltoWebElement(category);
-					this.staticwait();
+					getReusableActionsInstance().staticWait(3000);
 					reporter.reportLog("Verifying Left Section for: "+category.getText());
 					this.verifysubMenuhref(subMenuSection);
 				}
@@ -810,9 +787,7 @@ public class GlobalHeaderPage extends BasePage{
 		
 		return getPageTitle(SigninPageHeading);
 	}
-//Language verification for heading
 
-		
 	/* Method to get French name from yml file for Watch TSC
 	 * @param List<List<String>> lstWatchUsLiveNameAndLinks 
 	 * @return list : French name for Watch TSC-FR
@@ -851,7 +826,7 @@ public class GlobalHeaderPage extends BasePage{
 	 * @return assertion report for href presence and validation of url after clicking element
 	 * @author Shruti Desai
 	 */
-	public void verifyWatchTSCdpDMenu(WebElement element,boolean bCheckUrl) {
+	public void verifyWatchTSCdpDMenu(WebElement element, Map<String,String> link) {
 		 getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 		 String lsTitle=element.getText().trim();
 		 WebElement elementHrefWatchTSC =element.findElement(By.xpath("./ancestor::a"));
@@ -864,64 +839,19 @@ public class GlobalHeaderPage extends BasePage{
 		 this.waitForPageToLoad();
 		 (new GlobalFooterPage(this.getDriver())).waitForPageLoading();
 		 String lsUrlWatchTSCdpItem=this.removeLastSlashFromUrl(this.URL());
-		 if(bCheckUrl) {
-			 System.out.println(lsTitle);
-			 //need to use if condition as redirected link for Program Guide/Grille horaire is different.
-			 if(lsHrefWatchTSCdpMenu.contains("programguide")) {
-				 String lnk_ProgramGuideRedirect="https://qa-tsc.tsc.ca/pages/programguide/daily?ic=HP_ProgramGuide";
-				 reporter.softAssert(lsUrlWatchTSCdpItem.equalsIgnoreCase(lnk_ProgramGuideRedirect), "The Url of "+lsUrlWatchTSCdpItem+"  after clicking "+lsTitle+" is equal to the href of "+lsHrefWatchTSCdpMenu, "The Url of "+lsUrlWatchTSCdpItem+"  after clicking "+lsTitle+" is not equal to the href of "+lsHrefWatchTSCdpMenu);
-			 }else {
-				 reporter.softAssert(lsUrlWatchTSCdpItem.equalsIgnoreCase(lsHrefWatchTSCdpMenu), "The Url of "+lsUrlWatchTSCdpItem+"  after clicking "+lsTitle+" is equal to the href of "+lsHrefWatchTSCdpMenu, "The Url of "+lsUrlWatchTSCdpItem+"  after clicking "+lsTitle+" is not equal to the href of "+lsHrefWatchTSCdpMenu);
-			}
-		}
-	 }
-		
-	/* Method to get French name from yml file for Watch TSC
-	 * @param List<List<String>> lstWatchUsLiveNameAndLinks 
-	 * @return list : French name for Watch TSC-FR
-	 * @author Shruti Desai
-	 */
-	public List<String> getEnglishNameymlData(List<List<String>> lstNameAndLinks,int i) {
-		List<String> frenchNameDataFile= new ArrayList<String>();
-		for (List<String> lstItem : lstNameAndLinks) {
-			String NewfrenchName =this.getUTFEnabledData(lstItem.get(i).trim());
-			frenchNameDataFile.add(NewfrenchName);
-		}
-		return frenchNameDataFile;
-	}
-		 
-	/* Method to get Link Number in url of landingpage of Shop All Brand for specific Flyout headign Name from yml file 
-	 * @param List<List<String>> lstNameAndLink and flyout heading name
-	 * @return String : Link number in url of landingpage of Shop All Brand
-	 * @author Shruti Desai
-	 */
-	public String getLinkNumberWithSpecificHeadingName(List<List<String>> lstNameAndLink, String lsSpecificHeadingName) {
-		for (List<String> lstItem : lstNameAndLink) {
-			String lsCompare = this.getUTFEnabledData(lstItem.get(0));
-			if (lsSpecificHeadingName.equalsIgnoreCase(lsCompare)) {
-				return this.getUTFEnabledData(lstItem.get(2).trim());
-			}
-		}
-		return "";
-	}
-		
-	 public void verifyTSHeaderAndLink(WebElement blackItem,boolean bCheckUrl) {
-		 getReusableActionsInstance().javascriptScrollByVisibleElement(blackItem);
-		 String lsTitle=blackItem.getText().trim();
-		 reporter.softAssert(getReusableActionsInstance().isElementVisible(blackItem), "The element of "+lsTitle+" in Black headers is visible","The element of "+lsTitle+" in Black headers is not visible");
-		 reporter.softAssert(!lsTitle.isEmpty(), lsTitle+" text in Black headers is not empty", lsTitle+" text in Black headers is empty");
-		 String lsHrefInBlackHeader=this.getElementHref(blackItem);	
-		 reporter.softAssert(!lsHrefInBlackHeader.isEmpty(), "The href of "+lsTitle+" in Black headers is not empty", "The href of "+lsTitle+" in Black headers is empty");
-		 lsHrefInBlackHeader=this.removeLastSlashFromUrl(lsHrefInBlackHeader);
-		 
-		 blackItem.click();
-		 this.waitForPageToLoad();
-		 (new GlobalFooterPage(this.getDriver())).waitForPageLoading();
-		 
-		 String lsUrlInSilverHeader=this.removeLastSlashFromUrl(this.URL());
-		 if(bCheckUrl) {
-			 reporter.softAssert(lsUrlInSilverHeader.equalsIgnoreCase(lsHrefInBlackHeader), "The Url of "+lsUrlInSilverHeader+"  after clicking "+lsTitle+" in Black headers is equal to the href of "+lsHrefInBlackHeader, "The Url of "+lsUrlInSilverHeader+"  after clicking "+lsTitle+" in Black headers is not equal to the href of "+lsHrefInBlackHeader);
+		 if(!link.isEmpty()){
+			 for (Map.Entry mapElement : link.entrySet()) {
+				 if(lsHrefWatchTSCdpMenu.contains(mapElement.getKey().toString())) {
+					 String baseURL = System.getProperty("QAUrl")+'/'+mapElement.getValue();
+					 reporter.softAssert(lsUrlWatchTSCdpItem.equalsIgnoreCase(baseURL), "The Url of "+lsUrlWatchTSCdpItem+"  after clicking "+lsTitle+" is equal to the href of "+lsHrefWatchTSCdpMenu, "The Url of "+lsUrlWatchTSCdpItem+"  after clicking "+lsTitle+" is not equal to the href of "+lsHrefWatchTSCdpMenu);
+				 }else{
+				 	//fail assert here
+				 }
+			 }
 		 }
+		 else {
+			 reporter.softAssert(lsUrlWatchTSCdpItem.equalsIgnoreCase(lsHrefWatchTSCdpMenu), "The Url of "+lsUrlWatchTSCdpItem+"  after clicking "+lsTitle+" is equal to the href of "+lsHrefWatchTSCdpMenu, "The Url of "+lsUrlWatchTSCdpItem+"  after clicking "+lsTitle+" is not equal to the href of "+lsHrefWatchTSCdpMenu);
+		}
 	 }
 
 }
