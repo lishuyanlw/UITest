@@ -31,7 +31,7 @@ public class GH_TC07_Global_Header_Verify_Favourites_link extends BaseTest {
 	reporter.reportLog("Home Page");
 	
 	//verify Favorite Link for Logged in user
-	String headerLinkName = "Favourites";
+	String headerLinkName = lnkFavoriteElement.getText();
 	
 	
 		if(headerLinks.get(headerLinkName).get(0).equalsIgnoreCase(headerLinkName)){

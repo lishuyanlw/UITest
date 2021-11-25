@@ -78,7 +78,7 @@ public class ConstantData {
         private String lbl_ShoppingCartLinkName;
         private String lnk_ShoppingCartLink;
         private Flyout flyout;
-        private Map<String, List<String>> lst_WatchUsLiveNameAndLinksMap;
+        private Map<String, List<String>> lst_WatchTSCNameAndLinksMap;
         private Map<String, List<String>> lst_HeaderNameAndLinksMap;
         
         
@@ -90,12 +90,12 @@ public class ConstantData {
 			this.lst_HeaderNameAndLinksMap = lst_HeaderNameAndLinksMap;
 		}
 
-		public Map<String, List<String>> getLst_WatchUsLiveNameAndLinksMap() {
-			return lst_WatchUsLiveNameAndLinksMap;
+		public Map<String, List<String>> getLst_WatchTSCNameAndLinksMap() {
+			return lst_WatchTSCNameAndLinksMap;
 		}
 
-		public void setLst_WatchUsLiveNameAndLinksMap(Map<String, List<String>> lst_WatchUsLiveNameAndLinksMap) {
-			this.lst_WatchUsLiveNameAndLinksMap = lst_WatchUsLiveNameAndLinksMap;
+		public void setLst_WatchTSCNameAndLinksMap(Map<String, List<String>> lst_WatchTSCNameAndLinksMap) {
+			this.lst_WatchTSCNameAndLinksMap = lst_WatchTSCNameAndLinksMap;
 		}
 
         public String getLbl_SignInLandingPage() {   

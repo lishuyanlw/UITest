@@ -905,31 +905,24 @@ public class GlobalHeaderPage extends BasePage{
 		return "";
 	}
 		
-	/* Method to get WebElment for header(Today's showstopper, Watch TSC)
-	 * @param Blackheader name 
-	 * @return WebElement 
-	 * @author Shruti Desai
-	 */
-	public WebElement getBlackHeadingWebElements(String blackHeadeNname) {
-		String xpathHeading =createXPath("//div[contains(@class,'black-header')]//span[contains(@class,'{0}')]" ,blackHeadeNname); 
-		WebElement blackHeadingWebElement = getDriver().findElement(By.xpath(xpathHeading));
-		return blackHeadingWebElement;
-	}
+	 public void verifyTSHeaderAndLink(WebElement blackItem,boolean bCheckUrl) {
+		 getReusableActionsInstance().javascriptScrollByVisibleElement(blackItem);
+		 String lsTitle=blackItem.getText().trim();
+		 reporter.softAssert(getReusableActionsInstance().isElementVisible(blackItem), "The element of "+lsTitle+" in Black headers is visible","The element of "+lsTitle+" in Black headers is not visible");
+		 reporter.softAssert(!lsTitle.isEmpty(), lsTitle+" text in Black headers is not empty", lsTitle+" text in Black headers is empty");
+		 String lsHrefInBlackHeader=this.getElementHref(blackItem);	
+		 reporter.softAssert(!lsHrefInBlackHeader.isEmpty(), "The href of "+lsTitle+" in Black headers is not empty", "The href of "+lsTitle+" in Black headers is empty");
+		 lsHrefInBlackHeader=this.removeLastSlashFromUrl(lsHrefInBlackHeader);
+		 
+		 blackItem.click();
+		 this.waitForPageToLoad();
+		 (new GlobalFooterPage(this.getDriver())).waitForPageLoading();
+		 
+		 String lsUrlInSilverHeader=this.removeLastSlashFromUrl(this.URL());
+		 if(bCheckUrl) {
+			 reporter.softAssert(lsUrlInSilverHeader.equalsIgnoreCase(lsHrefInBlackHeader), "The Url of "+lsUrlInSilverHeader+"  after clicking "+lsTitle+" in Black headers is equal to the href of "+lsHrefInBlackHeader, "The Url of "+lsUrlInSilverHeader+"  after clicking "+lsTitle+" in Black headers is not equal to the href of "+lsHrefInBlackHeader);
+		 }
+	 }
 
-	/* Method to get WebElment for Secondary navigation bar (TSC logo, search bar, Sign In, Favorite, Bag)
-	 * @param Blackheader name 
-	 * @return WebElement 
-	 * @author Shruti Desai
-	 */
-	public WebElement getSecondaryNavigationWebElements(String blackHeadeNname) {
-		String xpathHeading =createXPath("//div[contains(@class,'secondary-navigation')]//span[contains(@class,'{0}')]" ,blackHeadeNname); 
-		WebElement secondaryNavigationWebElement = getDriver().findElement(By.xpath(xpathHeading));
-		return secondaryNavigationWebElement;
-	}
-
-	public List<WebElement> getWatchTSCdDMWebelements() {
-		List<WebElement> headingElements =getDriver().findElements(By.xpath("//div[contains(@Class,'black-header')]//nav//li//a"));
-		return headingElements;
-	}
 }
 

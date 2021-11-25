@@ -1,6 +1,8 @@
 package com.tsc.test.tests.globalHeader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 import com.tsc.data.Handler.TestDataHandler;
@@ -19,7 +21,10 @@ public class GH_TC05_Verify_Global_Header_VerifyFlyoutsViewAll extends BaseTest 
 		String shopAllUrl,lsYmlNotFound,lsSuccessResult, lsFailResult,pageHeading;
 		lsYmlNotFound=TestDataHandler.constantData.headerSection.getLnk_NotFound();
 		List<WebElement> headingsElement=getglobalheaderPageThreadLocal().getFlyoutHeadingsWebelement();
-		List<List<String>> lsFlyout= TestDataHandler.constantData.getHeaderSection().getFlyout().getlst_FlyoutHeadingNameAndLink();
+		
+		Map<String, List<String>> lstFlyoutHeading_FR= TestDataHandler.constantData.headerSection.getFlyout().getLst_FlyoutHeadingAndNameMap();
+		
+		//List<List<String>> lsFlyout= TestDataHandler.constantData.getHeaderSection().getFlyout().getLst_FlyoutHeadingNameAndLinkMap();
 		//Fetching heading name and iterating over it,because whenever trying to iterate over the WebElement it throws Stale Element exception.
 		List<String> flyoutHeading = new ArrayList<String>();
 		for(WebElement lsHeading:headingsElement) {
@@ -34,7 +39,8 @@ public class GH_TC05_Verify_Global_Header_VerifyFlyoutsViewAll extends BaseTest 
 			pageHeading=getglobalheaderPageThreadLocal().getHeadingForLandingPage(lsHeading);
 			String urlShopAllBrandYmlData=TestDataHandler.constantData.getHeaderSection().getFlyout().getlnk_ShopByBrandShopAll();
 			String pageHeadingSection=TestDataHandler.constantData.getHeaderSection().getFlyout().getlbl_LandingPageBrandShopAll();
-			String linkNumberYmlData= getglobalheaderPageThreadLocal().getLinkNumberWithSpecificHeadingName(lsFlyout,lsHeading);
+			//String linkNumberYmlData= getglobalheaderPageThreadLocal().getLinkNumberWithSpecificHeadingName(lsFlyout,lsHeading);
+			String linkNumberYmlData= lstFlyoutHeading_FR.get(lsHeading).get(2);
 			lsSuccessResult=String.format("The url [ %s ] does not contain [ %s ] after clicking shop all brands under >" + lsHeading + " > Popular Brands", shopAllUrl,lsYmlNotFound);
 			lsFailResult=String.format("The url of [ %s ] contains [ %s ] after clicking shop all brands under > " + lsHeading + " > Popular Brands", shopAllUrl,lsYmlNotFound);
 			reporter.softAssert(!shopAllUrl.contains(lsYmlNotFound), lsSuccessResult,lsFailResult);

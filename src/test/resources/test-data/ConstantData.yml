@@ -29,7 +29,7 @@ headerSection:
     Watch TSC:  ["Watch TSC","Watch TSC-FR",""],
     Favourites: ["Favourites","","/pages/myaccount/favourites"]
    } 
-  lst_WatchUsLiveNameAndLinksMap: { 
+  lst_WatchTSCNameAndLinksMap: { 
     Watch Us Live: ["Watch Us Live","En direct","/pages/watchuslive?ic=HP_WatchUsLive"],
     Deals: ["Deals","Aubaines","/pages/todaysshowstopper?ic=HP_TodaysShowstopper"],
     Program Guide: ["Program Guide","Grille horaire","/pages/programguide/daily?ic=HP_ProgramGuide"],
