@@ -146,8 +146,8 @@ public class ProductResultsPage extends BasePage{
 
 	public By byProductTitleAndText=By.xpath("//div[@class='TitleAndTextSeo']");
 
-	@FindBy(xpath = "//h2[@class='prec-header']")
-	public static WebElement productRecommendationTitle;
+	@FindBy(xpath = "//div[@class='ProductRecommendations']//product-recommendations-endeca//*[contains(@class,'prec-header')]")
+	public WebElement productRecommendationTitle;
 
 	@FindBy(xpath = "//div[@class='TitleAndTextSeo']//*[contains(@class,'seoTextTitle')]")
 	WebElement lblProductTitle;
