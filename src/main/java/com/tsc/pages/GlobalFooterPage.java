@@ -1,6 +1,5 @@
 package com.tsc.pages;
 
-import java.sql.Driver;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,7 +18,6 @@ public class GlobalFooterPage extends BasePage {
 
 	public GlobalFooterPage(WebDriver driver) {
 		super(driver);
-
 	}
 
 	// Credit Card
@@ -341,6 +339,104 @@ public class GlobalFooterPage extends BasePage {
 	@FindBy(xpath="//ul[contains(@class,'quickLinkUL')]//a[contains(@id,'contentPlaceHolder')]")
 	public List<WebElement> subHeaderLinks;
 
+	//Shop By Brand
+	@FindBy(xpath="//div[contains(@class,'col-xs-12')]//h2")
+	public WebElement lblShopbyBrandTitle;
+
+	@FindBy(xpath="//div[@class='Middle']//*[@class='titleLink']/b")
+	public WebElement lblShopByBrandTitleAfterDropDown;
+
+	@FindBy(xpath="//div[contains(@class,'sortPrpLabel searchTi')]")
+	public WebElement lblSearchForaBrand;
+
+	@FindBy(xpath="//div[contains(@class,'findByAlphabet')]")
+	public WebElement lblFilterByAlphabet;
+
+	@FindBy(xpath="//input[contains(@id,'brandSearchBox')]")
+	public WebElement textBoxShopByBrandInputSearchBox;
+
+	@FindBy(xpath="//form//div[contains(@class,'sortPrpLabel')]")
+	public WebElement lblShopByBrandFilterByCategory;
+
+	@FindBy(xpath="//button[contains(@id,'btnSearchProduct')]")
+	public WebElement buttonShopByBrandInputSearchBoxSearchButton;
+
+	@FindBy(xpath="//select[contains(@id,'brandSelect')]")
+	public WebElement dropDownShopByBrandFilterByCategory;
+
+	@FindBy(xpath="//div[contains(@class,'lettersDiv')]//div[contains(@class,'active')]//span")
+	public WebElement activeAlphabetChar;
+
+	@FindBy(xpath="//div[contains(@class,'lettersDiv')]//div/span[not(contains(@class,'number'))]")
+	public List<WebElement> linkFindByAlphabet;
+
+	//Channel Finder
+	@FindBy(xpath="//*[contains(@class,'pageHeader')]")
+	public WebElement lblChannelFinderTitle;
+
+	@FindBy(xpath="//div[@class='Middle']//div[contains(@class,'find-channel')]//*[@class='section-title']")
+	public WebElement lblFindCableChannelTitle;
+
+	@FindBy(xpath="//div[contains(@Class,' tsc-forms')]//div[@Class='clearfix']//div/p[contains(text(),'Channel')]")
+	public WebElement useourchannelfinder;
+
+	@FindBy(xpath="//div[@class='Middle']//div[contains(@class,'find-channel')]//h4")
+	public WebElement lblselectyour;
+
+	@FindBy(xpath="//label[contains(text(),'PROVIN')]")
+	public WebElement lblProvince;
+
+	@FindBy(xpath="//label[contains(text(),'CABLE')]")
+	public WebElement lblCableProvider;
+
+	@FindBy(xpath="//label[contains(text(),'CIT')]")
+	public WebElement lblCity;
+
+	@FindBy(xpath="//div[contains(@class,'satellite')]//h1")
+	public WebElement lblSatelliteChannels;
+
+	@FindBy(xpath="//div[contains(@class,'satellite')]//h3[contains(text(),'Be')]")
+	public WebElement lblBellTV;
+
+	@FindBy(xpath="//div[contains(@class,'satellite')]//h3[contains(text(),'Sh')]")
+	public WebElement lblShawDirect;
+
+	@FindBy(xpath="//div[contains(@class,'satellite')]//h3[contains(text(),'Bell')]//following-sibling::p[contains(text(),'11')]")
+	public WebElement lblChannelsBellTV;
+
+	@FindBy(xpath="//div[contains(@class,'satellite')]//h3[contains(text(),'Shaw')]//following-sibling::p")
+	public WebElement lblChannelsShawDirect;
+
+	@FindBy(xpath="//select[contains(@class,'form-control') and contains(@id,'1')]")
+	public WebElement dropDownProvince;
+
+	@FindBy(xpath="//select[contains(@class,'form-control') and contains(@id,'2')]")
+	public WebElement dropDownCableProvider;
+
+	@FindBy(xpath="//select[contains(@class,'form-control') and contains(@id,'3')]")
+	public WebElement dropDownCity;
+
+	//Meet Our Hosts
+	@FindBy(xpath="//div[contains(@class,'FullWidthContent')]//h2")
+	public List<WebElement> listOfMeetOurHosts;
+
+	@FindBy(xpath="//div[contains(@class,'FullWidthContent')]//a")
+	public List<WebElement> linkOfMeetOurHosts;
+
+	@FindBy(xpath="//div[contains(@class,'FullWidthContent')]//img")
+	public List<WebElement> listOfMeetOurHostsImage;
+
+	//Rogers Copy Rights Image
+	@FindBy(xpath="//strong[contains(@id,'ftrCopyright')]")
+	public WebElement RogersMedia;
+
+	@FindBy(xpath="//div[contains(@class,'copyright-msg xs-vw2 sm-px12')]//strong[contains(text(),'All')]")
+	public WebElement AllPrice;
+
+	@FindBy(xpath="//img[contains(@src,'Rogers.png')]")
+	public WebElement RogersMediaImg;
+
+
 	/**
 	 * Close popup dialog through clicking close button.
 	 *
@@ -475,7 +571,6 @@ public class GlobalFooterPage extends BasePage {
 
 	/**
 	 * This method is to verify if equal to a UTF-8 encoding text.
-	 *
 	 * @param List<String> lstNameAndLink: the list from yml file
 	 * @param String       lsSpecificName: input text
 	 * @return true/false
@@ -859,34 +954,52 @@ public class GlobalFooterPage extends BasePage {
 		linkOftheTSC=element.getText();
 		reporter.reportLog("TSC Links Name is "+linkOftheTSC+"");
 		element.click();
+	}
 
+	/**
+	 * This method is to verify DropDown Titles is same as Page Title
+	 * @author godwin.gopi
+	 */
+
+	public  void verifyDropDownWithTitle(WebElement element) {
+		Select select = new Select(element);
+		int dropDownElementSize = select.getOptions().size();
+		for (int i = 1; i < dropDownElementSize; i++) {
+			select.selectByIndex(i);
+			getReusableActionsInstance().waitForPageLoad();
+			String title = lblShopByBrandTitleAfterDropDown.getText();
+			reporter.reportLog(" Page Title After Dropdown is " + title + ", and it is correctly appeared ");
+			String option = select.getFirstSelectedOption().getText();
+			reporter.reportLog(" Dropdown Selected Options is " + option + ", and it is correctly appeared");
+			reporter.softAssert(title.equalsIgnoreCase(option), "Page Title matches for both Actual " + title + " and expected " + option + "", "Page Title doesn't match for both Actual " + title + " and expected " + option + "");
+		}
 	}
 
 	public void verifyTSCCustomerHubLlinks(List<List<String>> lstNameAndLinks) {
-		BasePage basePage=new BasePage(this.getDriver());
+		//BasePage basePage=new BasePage(this.getDriver());
 		String lsText,lsYmlHref,lsHref;
 		for(WebElement item:this.lnkTSCCustomerHubAllLinks) {
-			lsText=basePage.getElementText(item);
+			lsText=super.getElementText(item);
 			lsYmlHref=this.getLinkWithSpecificName(lstNameAndLinks,lsText,true);
 			if(lsYmlHref.isEmpty()) {
 				reporter.reportLogFail("Unable to find "+lsText+" link.");
 			}
-			lsHref=basePage.getElementHref(item);
+			lsHref=super.getElementHref(item);
 			reporter.softAssert(this.verifyLinks(lsHref,lsYmlHref),"The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref,"The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref);
 
 		}
 	}
 
 	public void verifyAboutTSCLinks(List<List<String>> lstNameAndLinks) {
-		BasePage basePage=new BasePage(this.getDriver());
+		//BasePage basePage=new BasePage(this.getDriver());
 		String lsText,lsYmlHref,lsHref;
 		for(WebElement item:this.lnkAboutTSCAllLinks) {
-			lsText=basePage.getElementText(item);
+			lsText=super.getElementText(item);
 			lsYmlHref=this.getLinkWithSpecificName(lstNameAndLinks,lsText,true);
 			if(lsYmlHref.isEmpty()) {
 				reporter.reportLogFail("Unable to find "+lsText+" link.");
 			}
-			lsHref=basePage.getElementHref(item);
+			lsHref=super.getElementHref(item);
 			reporter.softAssert(this.verifyLinks(lsHref,lsYmlHref),"The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref,"The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref);
 		}
 	}
@@ -904,7 +1017,7 @@ public class GlobalFooterPage extends BasePage {
 	}
 
 	public List<String> getCustomerHubSubItemFr(List<List<String>> lstNameAndLinks){
-		String lsText=this.getUTFEnabledData(this.getElementText(this.lblTSCCustomerHubText));
+		String lsText;
 
 		List<String> lstFr=new ArrayList<String>();
 		String lsFr;
@@ -918,7 +1031,7 @@ public class GlobalFooterPage extends BasePage {
 	}
 
 	public List<String> getAboutTSCSubItemFr(List<List<String>> lstNameAndLinks){
-		String lsText=this.getUTFEnabledData(this.getElementText(this.lblAboutTSCText));
+		String lsText;
 
 		List<String> lstFr=new ArrayList<String>();
 		String lsFr;
@@ -970,5 +1083,99 @@ public class GlobalFooterPage extends BasePage {
 		this.waitForPageLoading();
 	}
 
+	/**
+	 * This method is to verify Find By Alphabets Links and its content links
+	 * @author godwin.gopi
+	 */
 
+	public  void verifyFindByAlphabet(WebElement element, List<WebElement> elements) {
+		int counter=1;
+		Select select=new Select(element);
+		select.selectByIndex(0);
+		for(int i=0;i<elements.size();i++) {
+			String alphabetPath="(//div[contains(@class,'lettersDiv')]//div//span)["+counter+"]";
+			elements.get(i).click();
+			String alphabetLetterValue=getDriver().findElement(By.xpath(alphabetPath)).getText();
+			reporter.reportLog("Selected Alphabet is "+alphabetLetterValue+"");
+			String activeAlphabetLetterValue=activeAlphabetChar.getText();
+			reporter.softAssert(alphabetLetterValue.equalsIgnoreCase(activeAlphabetLetterValue),"The Corresponding Page Title inside the Alphabet Link is same as expected","The Corresponding Page Title inside the Alphabet Link is not same as expected");
+			String alphabetPathElementsPath="//div[contains(@class,'brandHeader activeLetter')]//ancestor::div[contains(@class,'col')][1]//a";
+			List<WebElement> alphabetPathElements=getDriver().findElements(By.xpath(alphabetPathElementsPath));
+			for(int j=0 ;j<alphabetPathElements.size();j++) {
+				String brandName=alphabetPathElements.get(j).getText();
+				String firstLetter=brandName.substring(0,1);
+				reporter.softAssert(alphabetLetterValue.equalsIgnoreCase(firstLetter),"The Brand  first alphabet is "+firstLetter+" and Brand Name is "+brandName+"  ","The Brand  first alphabet is "+firstLetter+" and Brand Name is "+brandName+" is not matching.");
+				String brandLink=alphabetPathElements.get(j).getAttribute("href");
+				reporter.softAssert(alphabetPathElements.get(j).getAttribute("href")!=null,"The Brand URL of "+brandLink+" exists","The Brand URL of "+brandLink+" doesn't exists");
+
+			}
+			counter++;
+		}
+	}
+
+	/**
+	 * This method is to verify each Links in Meet the Hosts
+	 * @author godwin.gopi
+	 */
+	public boolean verifyLinks(String hrefLink) {
+		String currentURL=getDriver().getCurrentUrl();
+
+		if (currentURL.contains(hrefLink)) {
+			return currentURL.contains(hrefLink);
+		} else {
+			return currentURL.contains(hrefLink);
+		}
+	}
+
+	/**
+	 * This method is to verify Drop Down in Channel Finder, navigating to its corresponding Service Provider and City
+	 * @author godwin.gopi
+	 */
+	public  void verifyMultipleDropDownWithTitle(WebElement firstDropDown, WebElement secondDropDown, WebElement thirdDropDown) {
+		Select select=new Select(firstDropDown);
+		int firstDropDownElementSize=select.getOptions().size();
+		if(firstDropDownElementSize > 1) {
+			select.selectByIndex(1); //Checking for one item
+			getReusableActionsInstance().waitForPageLoad();
+			String option =select.getFirstSelectedOption().getText();
+			reporter.reportLog(" Dropdown Selected Province is "+option+"");
+			reporter.softAssert(option!=null," Dropdown Selected Province is "+option+" and not NULL"," Dropdown Selected Province is "+option+" and is NULL");
+
+			Select secondSelect=new Select(secondDropDown);
+			int secondDropDownElementSize=secondSelect.getOptions().size();
+			if(secondDropDownElementSize>1) {
+				secondSelect.selectByIndex(1); //Checking for one item
+				getReusableActionsInstance().waitForPageLoad();
+				String secondOption = secondSelect.getFirstSelectedOption().getText();
+				reporter.reportLog(" Dropdown Selected Province is " + option + " and Dropdown Selected Cable Provider is " + secondOption + "");
+				reporter.softAssert(secondOption != null, " Dropdown Selected Cable provider is " + secondOption + " and not NULL", " Dropdown Selected Cable provider is " + secondOption + " and is NULL");
+				Select thirdSelect = new Select(thirdDropDown);
+				int thirdDropDownElementSize = thirdSelect.getOptions().size();
+				if (thirdDropDownElementSize > 1) {
+					thirdSelect.selectByIndex(1); //Checking for one item
+					getReusableActionsInstance().waitForPageLoad();
+					String thirdOption = thirdSelect.getFirstSelectedOption().getText();
+					reporter.reportLog("Dropdown Selected Province is " + option + " and Dropdown Selected Cable Provider is " + secondOption + " Dropdown Selected City is " + thirdOption + "");
+					reporter.softAssert(thirdOption != null, " Dropdown Selected City is " + thirdOption + " and not NULL", " Dropdown Selected City is " + thirdOption + " and is NULL");
+				}
+			}
+		}else{
+			reporter.softAssert(false,"","No data is present in dropdown");
+		}
+	}
+	/**
+	 * This method is to verify Images, href and Name of the Hosts in Meet the Host
+	 * @author godwin.gopi
+	 */
+	public void verifyMeetTheHostInfo() {
+		for(int i=0;i<listOfMeetOurHosts.size();i++) {
+			String hostName=listOfMeetOurHosts.get(i).getText();
+			reporter.reportLog("Host Name is "+hostName+"");
+			String hostHref=linkOfMeetOurHosts.get(i).getAttribute("href");
+			reporter.reportLog("Host Name URL is "+hostHref+"");
+			String hostImgSrc=listOfMeetOurHostsImage.get(i).getAttribute("src");
+			reporter.reportLog("Host Image URL is "+hostImgSrc+"");
+			reporter.softAssert(hostName!=null && hostHref!=null && hostImgSrc!=null,"Host Name "+hostName+" Host Link "+hostHref+" and Host Image "+hostImgSrc+" are not Null","Host Name "+hostName+" Host Link "+hostHref+" and Host Image "+hostImgSrc+" are  Null");
+		}
+	}
 }
