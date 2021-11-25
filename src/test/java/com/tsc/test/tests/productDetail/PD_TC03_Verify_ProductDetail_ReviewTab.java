@@ -23,7 +23,7 @@ public class PD_TC03_Verify_ProductDetail_ReviewTab extends BaseTest{
 	reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(basePage.getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");		
 	reporter.reportLog("ProductDetail Page");
 	
-	List<List<String>> lsKeywordList=TestDataHandler.constantDataOldVariables.getlst_SearchKeyword_DropDown();
+	List<List<String>> lsKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_SearchKeyword_DropDown();
 	
 	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0));
 	reporter.reportLog("Switch to ProductDetail page");
@@ -38,15 +38,10 @@ public class PD_TC03_Verify_ProductDetail_ReviewTab extends BaseTest{
 		if(getProductDetailPageThreadLocal().goToProductReviewTab()) {
 			reporter.softAssert(getProductDetailPageThreadLocal().getStickyTabSelectedStatus(getProductDetailPageThreadLocal().btnStickyTabProductReview),"The Review tab has been selected and undrlined correctly","The Review tab has not been selected and underlined correctly");
 			
-			reporter.softAssert(!basePage.getElementText(getProductDetailPageThreadLocal().lblReviewTabHeader).isEmpty(),"The Review tab header is not empty","The Review tab header is empty");
-			reporter.softAssert(basePage.getReusableActionsInstance().isElementVisible(getProductDetailPageThreadLocal().imgReviewTabHistogram),"The Review tab histogram is displaying correctly","The Review tab histogram is not displaying correctly");
-			reporter.softAssert(!basePage.getElementText(getProductDetailPageThreadLocal().lblReviewTabRateDecimalText).isEmpty(),"The Review tab rate number is not empty","The Review tab rate number is empty");
-			reporter.softAssert(getProductDetailPageThreadLocal().lstReviewTabStar.size()>0,"The product review tab star count is greater than 0","The product review tab star count is not greater than 0");
-			reporter.softAssert(!basePage.getElementText(getProductDetailPageThreadLocal().lblReviewTabReviewCount).isEmpty(),"The Review count message is not empty","The Review count message is empty");
-			reporter.softAssert(!basePage.getElementHref(getProductDetailPageThreadLocal().lnkReviewTabWriteReview).isEmpty(),"The Write Review link is not empty","The Write Review link is empty");			
-			reporter.softAssert(!basePage.getElementText(getProductDetailPageThreadLocal().lblReviewTabRateDecimalText).isEmpty(),"The Review tab rate number is not empty","The Review tab rate number is empty");
+			reporter.reportLog("Review tab content");
+			getProductDetailPageThreadLocal().verifyReviewTabContent();
 			
-			reporter.softAssert(basePage.getReusableActionsInstance().isElementVisible(getProductDetailPageThreadLocal().selectReviewTabSortBy),"The Review sorting is displaying correctly","The Review sorting is not displaying correctly");
+			reporter.reportLog("Review tab review list contents");
 			getProductDetailPageThreadLocal().verifyReviewTabPerReviewListContents();
 			String lsMsg=getProductDetailPageThreadLocal().checkReviewRateSortingBy(true);
 			if(lsMsg.isEmpty()) {
@@ -65,10 +60,8 @@ public class PD_TC03_Verify_ProductDetail_ReviewTab extends BaseTest{
 				reporter.reportLogFail("Sorting by Lowest rated Failed due to "+lsMsg);
 			}
 			
-			reporter.softAssert(!basePage.getElementText(getProductDetailPageThreadLocal().lblReviewTabDisplayingReviewMsg).isEmpty(),"The Review message in Review tab footer is not empty","The Review message in Review tab footer is empty");
-			reporter.softAssert(!basePage.getElementHref(getProductDetailPageThreadLocal().lnkReviewTabBackToTop).isEmpty(),"The BackToTop link is not empty","The BackToTop link is empty");
-			reporter.softAssert(basePage.getReusableActionsInstance().isElementVisible(getProductDetailPageThreadLocal().cntReviewTabPagination),"The Review pagination section is displaying correctly","The Review pagination section is not displaying correctly");
-						
+			reporter.reportLog("Review tab Footer, Back to Top, Pagination");
+			getProductDetailPageThreadLocal().verifyReviewTabFooterAndBackToTopAndPagination();		
 		}
 		else {
 			reporter.reportLogFail("Unable to go to Review Tab");

@@ -86,6 +86,9 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'pdImageSection') and not(contains(@class,'pdImageSection__zoom')) and not(@style='display: none;')]//div[@id='divImageGallery']//figure[@aria-hidden='false']//a")
 	public WebElement lnkCurrentZoomImage;
 	
+	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@id='divVideoIcon']")
+	public WebElement lnkVideoInZoomImage;
+	
 	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'pdImageSection__zoom')]//p[contains(@class,'pdImageSection__zoom--message')]")
 	public WebElement lblZoomImageMessage;
 	
@@ -241,6 +244,9 @@ public class ProductDetailPage extends BasePage {
 	
 	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@class='qty-container']//select")
 	public WebElement selectQuantityOption;
+	
+	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@class='qty-container']//select//option[last()]")
+	public WebElement lblQuantityLastOption;
 	
 	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@class='qty-container']//div[@class='qty-left']")
 	public WebElement lblQuantityLeft;
@@ -610,6 +616,14 @@ public class ProductDetailPage extends BasePage {
 		return this.checkChildElementExistingByAttribute(this.cntProductSizeJudgeIndicator, "id", "divAvailableSizes");		
 	}
 	
+	public boolean judgeQuantityDropdownAvailable() {
+		return !this.getElementText(this.cntProductSizeJudgeIndicator.findElement(By.xpath(".//div[@class='qty-container']"))).isEmpty();		
+	}
+	
+	public boolean judgeAddToBagButtonAvailable() {
+		return this.checkChildElementExistingByAttribute(this.cntProductSizeJudgeIndicator, "id", "divAddToCart");		
+	}
+	
 	/**
 	 * Method to check if TrueFit part is existing
 	 * @return true/false	  
@@ -746,26 +760,23 @@ public class ProductDetailPage extends BasePage {
 	 * @author Wei.Li
 	 */
 	public void verifyLinkageAmongSwathAndThumbnailAndZoomImage() {
-		String lsSwatch,lsThumbnail="",lsZoomImage="";
+		String lsSwatch,lsThumbnail="",lsZoomImage="",lsBeforeStyleName;
 		boolean bDisable=false;		
 		int loopSize;		
 		if(this.judgeStyleDisplayModeIsDropdownMenu()) {
 			Select selectStyle= new Select(this.selectProductStyle);
 			loopSize=this.lstDropdownProductStyle.size();	
-			String[] lstImageSrc= new String[1];
+			
 			for(int i=0;i<loopSize;i++) {
 				if(this.hasElementAttribute(this.lstDropdownProductStyle.get(i),"selected")) {
 					continue;
-				}				
-				lstImageSrc[0]="";
-				if(!this.hasElementAttribute(this.currentThumbnailItem,"data-video")) {
-					lstImageSrc[0]=this.getElementImageSrc(this.imgCurrentThumbnail);
 				}	
 				
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectProductStyle);
+				lsBeforeStyleName=selectStyle.getFirstSelectedOption().getText().trim();
+				
 				selectStyle.selectByIndex(i);
-								
-				this.waitForCondition(Driver->{return !this.getElementImageSrc(this.imgCurrentThumbnail).equalsIgnoreCase(lstImageSrc[0]);}, 30000);
+				this.getReusableActionsInstance().staticWait(3000);				
 				lsSwatch=this.getCurrentSwatchStyle();	
 				
 				if(this.lstDropdownProductStyle.get(i).getAttribute("class").contains("disable")) {
@@ -788,19 +799,19 @@ public class ProductDetailPage extends BasePage {
 			loopSize=this.lstRadioStyleLabelSpanList.size();
 			WebElement radioItem;	
 			String[] lstImageSrc= new String[1];
+			
 			for(int i=0;i<loopSize;i++) {								
 				if(this.hasElementAttribute(this.lstStyleRadioList.get(i),"checked")) {
 					continue;
 				}
-				radioItem=this.lstRadioStyleLabelSpanList.get(i);				
-				if(!this.hasElementAttribute(this.currentThumbnailItem,"data-video")) {
-					lstImageSrc[0]=this.getElementImageSrc(this.imgCurrentThumbnail);
-				}
+				radioItem=this.lstRadioStyleLabelSpanList.get(i);	
 				
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(radioItem);
-				radioItem.click();
-				this.waitForCondition(Driver->{return !this.getElementImageSrc(this.imgCurrentThumbnail).equalsIgnoreCase(lstImageSrc[0]);}, 30000);
-							
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblRadioProductStyleStatic);
+				lsBeforeStyleName=this.lblRadioProductStyleTitle.getText().trim();	
+				
+				radioItem.click();	
+				this.getReusableActionsInstance().staticWait(3000);
+								
 				lsSwatch=this.getCurrentSwatchStyle();			
 				lsThumbnail=this.getImageNameFromThumbnailOrZoomImagePath(lnkCurrentZoomImage.getAttribute("href"));
 				lsZoomImage=this.getImageNameFromThumbnailOrZoomImagePath(imgCurrentThumbnail.getAttribute("src"));
@@ -823,19 +834,18 @@ public class ProductDetailPage extends BasePage {
 		if(this.judgeStyleDisplayModeIsDropdownMenu()) {			
 			Select selectStyle= new Select(this.selectProductStyle);			
 			loopSize=this.lstDropdownProductStyle.size();	
-			String[] lstImageSrc= new String[1];
+			
 			for(int i=0;i<loopSize;i++) {
 				if(this.hasElementAttribute(this.lstDropdownProductStyle.get(i),"selected")) {
 					continue;
 				}				
-				if(!this.hasElementAttribute(this.currentThumbnailItem,"data-video")) {
-					lstImageSrc[0]=this.getElementImageSrc(this.imgCurrentThumbnail);
-				}
-								
+				
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectProductStyle);
-				lsBeforeStyleName=selectStyle.getFirstSelectedOption().getText();
+				lsBeforeStyleName=selectStyle.getFirstSelectedOption().getText().trim();
+				
 				selectStyle.selectByIndex(i);
-				this.waitForCondition(Driver->{return !this.getElementImageSrc(this.imgCurrentThumbnail).equalsIgnoreCase(lstImageSrc[0]);}, 30000);
+				this.getReusableActionsInstance().staticWait(3000);
+								
 				lsAfterStyleName=selectStyle.getFirstSelectedOption().getText();			
 				lsSwatch=this.getCurrentSwatchStyle();				
 				reporter.softAssert(!lsBeforeStyleName.equalsIgnoreCase(lsAfterStyleName), "Clicking the swatch dropdown option of '"+lsSwatch+"' is changing product style name", "Clicking the swatch dropdown option of '"+lsSwatch+"' is not changing product style name");
@@ -845,25 +855,24 @@ public class ProductDetailPage extends BasePage {
 			loopSize=this.lstRadioStyleLabelSpanList.size();
 			WebElement radioItem,labelItem;
 			String lsLabelTitle;	
-			String[] lstImageSrc= new String[1];
+						
 			for(int i=0;i<loopSize;i++) {
 				if(this.hasElementAttribute(this.lstStyleRadioList.get(i),"checked")) {
 					continue;
 				}
 				radioItem=this.lstRadioStyleLabelSpanList.get(i);
 				labelItem=this.lstRadioStyleLabelList.get(i);				
-				if(!this.hasElementAttribute(this.currentThumbnailItem,"data-video")) {
-					lstImageSrc[0]=this.getElementImageSrc(this.imgCurrentThumbnail);
-				}				
+								
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblRadioProductStyleStatic);
+				lsBeforeStyleName=this.lblRadioProductStyleTitle.getText().trim();	
 				
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(labelItem);
-				lsBeforeStyleName=this.lblRadioProductStyleTitle.getText().trim();				
-				radioItem.click();
-				this.waitForCondition(Driver->{return !this.getElementImageSrc(this.imgCurrentThumbnail).equalsIgnoreCase(lstImageSrc[0]);}, 30000);
+				radioItem.click();	
+				this.getReusableActionsInstance().staticWait(3000);
+								
 				lsAfterStyleName=this.lblRadioProductStyleTitle.getText().trim();				
 				lsLabelTitle=labelItem.getAttribute("title").trim();
 				lsSwatch=this.getCurrentSwatchStyle();	
-								
+				System.out.println(lsBeforeStyleName+" : "+lsAfterStyleName);				
 				reporter.softAssert(!lsBeforeStyleName.equalsIgnoreCase(lsAfterStyleName), "Clicking the swatch radio option of '"+lsSwatch+"' is changing product style name", "Clicking the swatch radio option of '"+lsSwatch+"' is not changing product style name");
 				reporter.softAssert(lsLabelTitle.equalsIgnoreCase(lsAfterStyleName), "The label title is equal to product style name of '"+lsAfterStyleName+"'", "The label title is not equal to product style name of '"+lsAfterStyleName+"'");	
 			}
@@ -1163,17 +1172,72 @@ public class ProductDetailPage extends BasePage {
 	public void verifyProductQuantityDropdown() {
 		reporter.softAssert(!this.getElementText(this.lblQuantityStatic).isEmpty(),"The product quantity label message is not empty","The product quantity label message is empty");
 		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.selectQuantityOption),"The product Quantity option is displaying correctly","The product Quantity option is not displaying correctly");
-		if(this.IsQuantityLeftExisting()) {
-			reporter.softAssert(!this.getElementText(this.lblQuantityLeft).isEmpty(),"The product Quantity left message is not empty","The product Quantity left message is empty");
+		int loopSize;		
+		if(this.judgeStyleDisplayModeIsDropdownMenu()) {
+			Select selectStyle= new Select(this.selectProductStyle);
+			loopSize=this.lstDropdownProductStyle.size();			
+			for(int i=0;i<loopSize;i++) {
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectProductStyle);
+				selectStyle.selectByIndex(i);
+				this.getReusableActionsInstance().staticWait(1000);
+				
+				if(this.judgeStyleSizeAvailable()) {					
+					Select sizeOption=new Select(this.selectSizeOption);		
+					int subLoopSize=this.lstSizeOption.size();
+					for(int j=0;j<subLoopSize;j++) {
+						this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectSizeOption);
+						sizeOption.selectByIndex(j);
+						this.getReusableActionsInstance().staticWait(1000);
+						
+						this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectQuantityOption);
+						if(!this.selectQuantityOption.getText().isEmpty()) {
+							int lastOption=Integer.parseInt(this.lblQuantityLastOption.getAttribute("value"));
+							if(lastOption<7) {
+								reporter.softAssert(!this.getElementText(this.lblQuantityLeft).isEmpty(),"The product Quantity left message is not empty","The product Quantity left message is empty");
+							}
+						}
+					}			
+				}
+			}
 		}
+		else {
+			loopSize=this.lstRadioStyleLabelSpanList.size();
+			WebElement radioItem;		
+			for(int i=0;i<loopSize;i++) {								
+				radioItem=this.lstRadioStyleLabelSpanList.get(i);				
+				
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(radioItem);
+				radioItem.click();
+				this.getReusableActionsInstance().staticWait(1000);
+				
+				if(this.judgeStyleSizeAvailable()) {					
+					Select sizeOption=new Select(this.selectSizeOption);		
+					int subLoopSize=this.lstSizeOption.size();
+					for(int j=0;j<subLoopSize;j++) {
+						this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectSizeOption);
+						sizeOption.selectByIndex(j);
+						this.getReusableActionsInstance().staticWait(1000);
+						
+						this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectQuantityOption);
+						if(!this.selectQuantityOption.getText().isEmpty()) {
+							int lastOption=Integer.parseInt(this.lblQuantityLastOption.getAttribute("value"));
+							if(lastOption<7) {
+								reporter.softAssert(!this.getElementText(this.lblQuantityLeft).isEmpty(),"The product Quantity left message is not empty","The product Quantity left message is empty");
+							}
+						}
+					}			
+				}
+			}
+		}
+						
 	}
 	
 	/**
-	 * Method to verify product Add to Bag
+	 * Method to verify product Add to Bag button
 	 * @return void	  
 	 * @author Wei.Li
 	 */
-	public void verifyProductAddToBag() {
+	public void verifyProductAddToBagButton() {
 		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.btnAddToBag),"The AddToBag button is displaying correctly","The AddToBag button is not displaying correctly");
 	}
 	
@@ -1325,13 +1389,140 @@ public class ProductDetailPage extends BasePage {
 	 * @return void	  
 	 * @author Wei.Li
 	 */
-	public void verifyBreadCrumbNavigationBack(String lsBackUrl) {		
+	public void verifyBreadCrumbNavigationBack() {		
 		WebElement item=this.lstBreadCrumbNav.get(this.lstBreadCrumbNav.size()-2);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 		item.click();
 		(new ProductResultsPage(this.getDriver())).waitForPageLoading();
 		
-		reporter.softAssert(this.URL().equalsIgnoreCase(lsBackUrl),"The current Url of "+this.URL()+" is equal to the Url of "+lsBackUrl,"The current Url of "+this.URL()+" is not equal to the Url of "+lsBackUrl);
+		reporter.softAssert(this.URL().toLowerCase().contains("productresults"),"The current Url of "+this.URL()+" is back to product search page","The current Url of "+this.URL()+" is not back to product search page");
+	}
+	
+	public void verifyVideo(String lsVideoDisclaimInfo) {
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.imgProductBadge),"The product badge is displaying correctly","The product badge is not displaying correctly");
+		reporter.softAssert(!this.imgProductBadge.getAttribute("src").isEmpty(),"The product badge image source is not empty","The product badge image source is empty");
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.videoBoxControl),"The video control section is displaying correctly","The video control section is not displaying correctly");
+		reporter.softAssert(!this.lnkVideo.getAttribute("src").isEmpty(),"The product video source is not empty","The product video source is empty");
+		
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblVideoDisclaim),"The product video disclaim text is displaying correctly","The product video disclaim text is not displaying correctly");
+		reporter.softAssert(this.getElementText(this.lblVideoDisclaim).equalsIgnoreCase(lsVideoDisclaimInfo),"The product video disclaim text is equal to the text of '"+lsVideoDisclaimInfo+"'","The product video disclaim text is not equal to the text of '"+lsVideoDisclaimInfo+"'");
+		
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.videoBoxControl),"The video control section is displaying correctly","The video control section is not displaying correctly");
+		reporter.softAssert(this.checkIfAutoPlayVideoStatusIsON(),"The product video AutoPlaying is on","The product video AutoPlaying is off");
+		reporter.softAssert(this.checkIfVideoisPlaying(),"The product video is playing","The product video is not playing");
+		
+		reporter.softAssert(!getAutoPlayVideoToolTipPopupMsg().isEmpty(),"The AutoPlayVideoToolTip is not empty","The AutoPlayVideoToolTip is empty");
+		
+	}
+	
+	public void verifyVideoOff() {
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkVideoInZoomImage);
+		this.lnkVideoInZoomImage.click();
+		this.waitForCondition(Driver->{return this.btnAutoPlayVideo.isDisplayed();}, 60000);
+		
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnAutoPlayVideo);
+		this.btnAutoPlayVideo.click();
+		this.getReusableActionsInstance().staticWait(1000);
+		this.getDriver().navigate().refresh();
+		this.waitForPageToLoad();
+		this.waitForCondition(Driver->{return this.lblZoomImageMessage.isDisplayed();}, 60000);
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lnkCurrentZoomImage),"The image is displaying after video off and page refreshing instead of video displaying","The image is not displaying after video off and page refreshing instead of video displaying");
+
+	}
+	
+	public void verifyThumbnail() {
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.cntThumbnailContainer),"The Thumbnail section is displaying correctly","The Thumbnail section is not displaying correctly");
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.btnThumbnailPrev),"The Thumbnail prev button is displaying correctly","The Thumbnail prev button is not displaying correctly");
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.btnThumbnailNext),"The Thumbnail next button is displaying correctly","The Thumbnail next button is not displaying correctly");
+		reporter.softAssert(!this.lnkThumbnailVideo.getAttribute("data-video").isEmpty(),"The video src is not empty","The video src is empty");
+		reporter.softAssert(!this.imgThumbnailVideo.getAttribute("src").isEmpty(),"The video image is not empty","The video image is empty");
+		this.verifyThumbnailImageListSrc();
+		this.verifyThumbnailPrevButton();
+		this.verifyThumbnailNextButton();
+	}
+	
+	public void verifyProductBasicInfo() {
+		reporter.softAssert(!this.getElementText(this.lblProductName).isEmpty(),"The product name is not empty","The product name is empty");
+		reporter.softAssert(!this.getElementText(this.lnkBrandName).isEmpty(),"The product brand name is not empty","The product brand name is empty");
+		reporter.softAssert(!this.getElementText(this.lblProductNumber).isEmpty(),"The product number is not empty","The product number is empty");		
+	}
+	
+	public void verifyProductReview() {
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.productReviewSection),"The product review section is displaying correctly","The product review section is not displaying correctly");
+		reporter.softAssert(this.lstProductReviewStar.size()>0,"The product review star count is greater than 0","The product review star count is not greater than 0");
+		reporter.softAssert(!this.getElementText(this.lblProductReview).isEmpty(),"The product review text is not empty","The product review text is empty");
+		
+	}
+	
+	public void verifyProductPriceAndShipping() {
+		reporter.softAssert(!this.getElementText(this.lblProductPriceLabel).isEmpty(),"The product price label is not empty","The product price label is empty");
+		reporter.softAssert(!this.getElementText(this.lblProductNowPrice).isEmpty(),"The product Now price is not empty","The product Now price is empty");
+		reporter.softAssert(!this.getElementText(this.lblProductWasPrice).isEmpty(),"The product Was price is not empty","The product Was price is empty");
+		reporter.softAssert(!this.getElementText(this.lblProductEasyPay).isEmpty(),"The product EasyPay message is not empty","The product EasyPay message is empty");
+		reporter.softAssert(!this.getElementText(this.lblProductSavings).isEmpty(),"The product Saving message is not empty","The product Saving message is empty");
+		reporter.softAssert(!this.getElementText(this.lblProductShipping).isEmpty(),"The product Shipping message is not empty","The product Shipping message is empty");		
+	}
+	
+	public void verifyProductStyle() {
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.cntProductStyleSection),"The product style section is displaying correctly","The product style section is not displaying correctly");
+		reporter.softAssert(!this.getElementText(this.lblRadioProductStyleStatic).isEmpty(),"The product style label message is not empty","The product style label message is empty");
+		reporter.softAssert(!this.getElementText(this.lblRadioProductStyleTitle).isEmpty(),"The product style title message is not empty","The product style title message is empty");
+		reporter.softAssert(this.lstStyleRadioList.size()>0,"The product style radio button count is greater than 0","The product style radio button count is not greater than 0");
+	}
+	
+	public void verifySocialMedia() {
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lnkFavShareMobile),"The FavShareMobile section is displaying correctly","The FavShareMobile section is not displaying correctly");
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lnkFavShareEmail),"The FavShareEmail section is displaying correctly","The FavShareEmail section is not displaying correctly");
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lnkFaceBook),"The FaceBook section is displaying correctly","The FaceBook section is not displaying correctly");
+		reporter.softAssert(!this.getElementHref(this.lnkFaceBook).isEmpty(),"The FaceBook link is not empty","The FaceBook link is empty");
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lnkTwitter),"The Twitter section is displaying correctly","The Twitter section is not displaying correctly");
+		reporter.softAssert(!this.getElementHref(this.lnkTwitter).isEmpty(),"The Twitter link is not empty","The Twitter link is empty");
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lnkPInterest),"The PInterest section is displaying correctly","The PInterest section is not displaying correctly");
+		reporter.softAssert(!this.getElementHref(this.lnkPInterest).isEmpty(),"The PInterest link is not empty","The PInterest link is empty");
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lnkFavShareMobile),"The FavShareMobile section is displaying correctly","The FavShareMobile section is not displaying correctly");
+	}
+	
+	public void verifyReviewTabContent() {
+		reporter.softAssert(!this.getElementText(this.lblReviewTabHeader).isEmpty(),"The Review tab header is not empty","The Review tab header is empty");
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.imgReviewTabHistogram),"The Review tab histogram is displaying correctly","The Review tab histogram is not displaying correctly");
+		reporter.softAssert(!this.getElementText(this.lblReviewTabRateDecimalText).isEmpty(),"The Review tab rate number is not empty","The Review tab rate number is empty");
+		reporter.softAssert(this.lstReviewTabStar.size()>0,"The product review tab star count is greater than 0","The product review tab star count is not greater than 0");
+		reporter.softAssert(!this.getElementText(this.lblReviewTabReviewCount).isEmpty(),"The Review count message is not empty","The Review count message is empty");
+		reporter.softAssert(!this.getElementHref(this.lnkReviewTabWriteReview).isEmpty(),"The Write Review link is not empty","The Write Review link is empty");			
+		reporter.softAssert(!this.getElementText(this.lblReviewTabRateDecimalText).isEmpty(),"The Review tab rate number is not empty","The Review tab rate number is empty");
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.selectReviewTabSortBy),"The Review sorting is displaying correctly","The Review sorting is not displaying correctly");
+	}
+	
+	public void verifyReviewTabFooterAndBackToTopAndPagination() {
+		reporter.softAssert(!this.getElementText(this.lblReviewTabDisplayingReviewMsg).isEmpty(),"The Review message in Review tab footer is not empty","The Review message in Review tab footer is empty");
+		reporter.softAssert(!this.getElementHref(this.lnkReviewTabBackToTop).isEmpty(),"The BackToTop link is not empty","The BackToTop link is empty");
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.cntReviewTabPagination),"The Review pagination section is displaying correctly","The Review pagination section is not displaying correctly");			
+	}
+	
+	public void verifyProductAdvancedOrderMessage() {
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblAdvanceOrderMsg),"The Advanced order message is displaying correctly","The Advanced order message is not displaying correctly");
+		reporter.softAssert(!this.getElementText(this.lblAdvanceOrderMsg).isEmpty(),"The Advanced order message is not empty","The Advanced order message is empty");
+	}
+	
+	public void verifyProductSoldOutBasicInfo() {
+		reporter.softAssert(!this.getElementText(this.lblProductName).isEmpty(),"The product name is not empty","The product name is empty");
+		reporter.softAssert(!this.getElementText(this.lblProductNumber).isEmpty(),"The product number is not empty","The product number is empty");		
+		
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.productReviewSection),"The product review section is displaying correctly","The product review section is not displaying correctly");
+		reporter.softAssert(this.lstProductReviewStar.size()>0,"The product review star count is greater than 0","The product review star count is not greater than 0");
+		reporter.softAssert(!this.getElementText(this.lblProductReview).isEmpty(),"The product review text is not empty","The product review text is empty");
+		
+		reporter.softAssert(!this.getElementText(this.lblProductPriceLabel).isEmpty(),"The product price label is not empty","The product price label is empty");
+		reporter.softAssert(!this.getElementText(this.lblProductNowPrice).isEmpty(),"The product Now price is not empty","The product Now price is empty");
+		reporter.softAssert(!this.getElementText(this.lblProductEasyPay).isEmpty(),"The product EasyPay message is not empty","The product EasyPay message is empty");
+		reporter.softAssert(!this.getElementText(this.lblProductShipping).isEmpty(),"The product Shipping message is not empty","The product Shipping message is empty");		
+	}
+	
+	public void verifyProductSoldOut() {
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblSoldOutMessage),"The Soldout message is displaying correctly","The Soldout message is not displaying correctly");
+		reporter.softAssert(!this.getElementText(this.lblSoldOutMessage).isEmpty(),"The Soldout message is not empty","The Soldout message is empty");
+		reporter.softAssert(!this.judgeQuantityDropdownAvailable(),"The Quantity Dropdown is not displaying","The Quantity Dropdown is still displaying");
+		reporter.softAssert(!this.judgeAddToBagButtonAvailable(),"The Add to Bag button is not displaying","The Add to Bag button is still displaying");
 	}
 
 }

@@ -73,6 +73,9 @@ searchResultPage:
   lnk_product_result: /pages/productresults?
   lbl_ProductRecommendationTitlePage: ["People who viewed this item also viewed","TOP SELLERS"]
   lbl_AddToBagPopupWindowTitle: "1 ITEM ADDED TO YOUR SHOPPING BAG"
+  lbl_VideoDisclaimInfo: "Pre-recorded videos contain pricing or promotional offers that may have expired."
+  lbl_AdvancedOrderkeyword: 522809
+  lbl_SoldOutkeyword: 485939
 footerSection: 
   lst_SocialMediaLinks: ["https://www.facebook.com/Shoptsc","https://twitter.com/shoptsc","https://instagram.com/shoptsc","www.youtube.com","https://www.pinterest.ca/shoptsc"]
   lst_NameAndLinks: 

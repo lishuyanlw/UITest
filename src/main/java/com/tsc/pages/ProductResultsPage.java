@@ -1309,6 +1309,27 @@ public class ProductResultsPage extends BasePage{
 
 		return false;
 	}
+	
+	public boolean goToFirstProductItem() {
+		WebElement item=this.productResultList.get(0);
+		
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+		this.selectedProductItem.productName=item.findElement(this.byProductName).getText().trim();
+		this.selectedProductItem.productNumber=item.findElement(this.byProductItemNO).getText().trim();
+		List<String> list=this.getNumberFromString(this.selectedProductItem.productNumber);
+		String lsFinal="";
+		for(String lsSubItem:list) {
+			lsFinal+=lsSubItem;
+		}
+		this.selectedProductItem.productConvertedNumber=lsFinal;
+		this.selectedProductItem.productNowPrice=item.findElement(this.byProductNowPrice).getText().trim();
+		this.selectedProductItem.productEasyPay=item.findElement(this.byProductEasyPay).getText().trim();
+		this.selectedProductItem.productNavigationUrl=this.URL();
+		
+		item.click();
+		
+		return this.waitForPageLoading();		
+	}
 
 	/**
 	 * This method will verify Product Recommendation section and validate section Images, and Prices .
@@ -1316,7 +1337,7 @@ public class ProductResultsPage extends BasePage{
 	 * @author godwin.gopi
 	 */
 	public void verify_ProductRecommendationSection() {
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.productRecommendationTitle);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(productRecommendationTitle);
 		for(WebElement item: this.lstPeopleAlsoBoughtItems) {
 			//Verifying Image of the Product
 			reporter.softAssert(!item.findElement(byRecommendationImage).getAttribute("src").isEmpty(), "ProductImage in Recommendation result is correct", "ProductImage in Recommendation result is incorrect");

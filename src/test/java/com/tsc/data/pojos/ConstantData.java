@@ -432,6 +432,9 @@ public class ConstantData {
         private String lnk_product_result;
         private List<String> lbl_ProductRecommendationTitlePage;
         private String lbl_AddToBagPopupWindowTitle;
+        private String lbl_VideoDisclaimInfo;
+        private String lbl_AdvancedOrderkeyword;
+        private String lbl_SoldOutkeyword;
 
         public List<String> getLst_SearchKeyword() {
             return lst_SearchKeyword;
@@ -527,6 +530,30 @@ public class ConstantData {
 
         public void setLbl_AddToBagPopupWindowTitle(String lbl_AddToBagPopupWindowTitle) {
             this.lbl_AddToBagPopupWindowTitle = lbl_AddToBagPopupWindowTitle;
+        }
+        
+        public String getLbl_VideoDisclaimInfo() {
+            return lbl_VideoDisclaimInfo;
+        }
+
+        public void setLbl_VideoDisclaimInfo(String lbl_VideoDisclaimInfo) {
+            this.lbl_VideoDisclaimInfo = lbl_VideoDisclaimInfo;
+        }
+        
+        public String getLbl_AdvancedOrderkeyword() {
+            return lbl_AdvancedOrderkeyword;
+        }
+
+        public void setLbl_AdvancedOrderkeyword(String lbl_AdvancedOrderkeyword) {
+            this.lbl_AdvancedOrderkeyword = lbl_AdvancedOrderkeyword;
+        }
+        
+        public String getLbl_SoldOutkeyword() {
+            return lbl_SoldOutkeyword;
+        }
+
+        public void setLbl_SoldOutkeyword(String lbl_SoldOutkeyword) {
+            this.lbl_SoldOutkeyword = lbl_SoldOutkeyword;
         }
     }
 
