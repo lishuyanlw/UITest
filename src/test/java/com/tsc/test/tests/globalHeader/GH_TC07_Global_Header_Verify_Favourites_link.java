@@ -22,6 +22,7 @@ public class GH_TC07_Global_Header_Verify_Favourites_link extends BaseTest {
 		String urlFavoritesLandingpageLoggedInUser=null;
 		String lsUserName=TestDataHandler.constantData.getLoginUser().getLbl_Username();
 		String lsPassword=TestDataHandler.constantData.getLoginUser().getLbl_Password();
+		String lsFirstname=TestDataHandler.constantData.getLoginUser().getLbl_FirstName();
 		Map<String, List<String>> headerLinks = TestDataHandler.constantData.headerSection.getLst_HeaderNameAndLinksMap();
 		String urlFavoritesLandingpageAnonymousUser=TestDataHandler.constantData.getHeaderSection().getlbl_SignInLandingPage();
 		String lblSignInpageHeading=TestDataHandler.constantData.getHeaderSection().getLbl_SignIn();
@@ -37,7 +38,7 @@ public class GH_TC07_Global_Header_Verify_Favourites_link extends BaseTest {
 			urlFavoritesLandingpageLoggedInUser = headerLinks.get(headerLinkName).get(2);
 		}
 
-		if(getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword)) {
+		if(getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword,lsFirstname)) {
 			String urlFavoritesLandingpageForLoggedinUser=getglobalheaderPageThreadLocal().getUrlForLandingpage(lnkFavoriteElement);
 			reporter.softAssert(urlFavoritesLandingpageForLoggedinUser.contains(urlFavoritesLandingpageLoggedInUser), "Favourites link's Landing page url is correct for logged in user.", "Favourites link's Landing page url is incorrect for logged in user.");
 		}else {
@@ -53,6 +54,7 @@ public class GH_TC07_Global_Header_Verify_Favourites_link extends BaseTest {
 			reporter.softAssert(urlFavoritesLandingPageLoggedInUser.contains(urlFavoritesLandingpageAnonymousUser), "Favourites link's Landing page url is correct for anonymous user.", "Favourites link's Landing page url is incorrect for anonymous user.");
 			reporter.softAssert(PageHeadingSignin,lblSignInpageHeading, "Sign In page heading is correct for anonymous user.", "Sign In page heading  is incorrect for anonymous user.");
 		}else {
+
 			reporter.reportLogFail("SignOut failed");
 		}
 	}

@@ -298,10 +298,11 @@ import utils.ReusableActions;
 	public String waitForPageLoadingByUrlChange(WebElement element) {
 		String currentUrl=getDriver().getCurrentUrl();
 		getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-		waitForCondition(Driver->{return element.isDisplayed();},10000);
+		waitForCondition(Driver->{return element.isDisplayed();},30000);
         element.click();
-        waitForCondition(Driver->{return !currentUrl.equalsIgnoreCase(getDriver().getCurrentUrl());},10000);
+        waitForCondition(Driver->{return !currentUrl.equalsIgnoreCase(getDriver().getCurrentUrl());},30000);
         getReusableActionsInstance().waitForPageLoad();
+        getReusableActionsInstance().staticWait(3000);
         
         return getDriver().getCurrentUrl();
 	}
@@ -602,7 +603,6 @@ import utils.ReusableActions;
 	 * @author Wei.Li
 	 */	
     public String getElementHref(WebElement element) {    	
-    	getReusableActionsInstance().javascriptScrollByVisibleElement(element);
     	return this.removeLastSlashFromUrl(element.getAttribute("href").trim());
     }
     
@@ -613,7 +613,6 @@ import utils.ReusableActions;
 	 * @author Wei.Li
 	 */	
     public String getElementImageSrc(WebElement element) {    	
-    	getReusableActionsInstance().javascriptScrollByVisibleElement(element);
     	return element.getAttribute("src").trim();
     }
     
@@ -671,7 +670,7 @@ import utils.ReusableActions;
     	String lsItem;
     	for(WebElement element:elementList) {
     		getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-    		lsItem=element.getText().trim();
+    		lsItem=element.getText().trim();    		
     		if(lsItem.equalsIgnoreCase(lsExpectedText)) {
     			return element;
     		}
