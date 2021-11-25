@@ -962,9 +962,11 @@ public class GlobalFooterPage extends BasePage {
 	 */
 
 	public  void verifyDropDownWithTitle(WebElement element) {
+		getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 		Select select = new Select(element);
 		int dropDownElementSize = select.getOptions().size();
 		for (int i = 1; i < dropDownElementSize; i++) {
+			getReusableActionsInstance().staticWait(2000);
 			select.selectByIndex(i);
 			getReusableActionsInstance().waitForPageLoad();
 			String title = lblShopByBrandTitleAfterDropDown.getText();
@@ -1089,6 +1091,8 @@ public class GlobalFooterPage extends BasePage {
 	 */
 
 	public  void verifyFindByAlphabet(WebElement element, List<WebElement> elements) {
+		getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+		getReusableActionsInstance().staticWait(4000);
 		int counter=1;
 		Select select=new Select(element);
 		select.selectByIndex(0);

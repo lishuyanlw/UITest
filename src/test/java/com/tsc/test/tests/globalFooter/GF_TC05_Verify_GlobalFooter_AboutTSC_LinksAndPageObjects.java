@@ -32,7 +32,7 @@ public class GF_TC05_Verify_GlobalFooter_AboutTSC_LinksAndPageObjects extends Ba
         reporter.reportLog("Global Footer Section");
 
         List<List<String>> lstNameAndLinks = TestDataHandler.constantData.getFooterSection().getLst_NameAndLinks();
-
+/*
         ArrayList<WebElement> elementList=new ArrayList<WebElement>();
         List<String> global_footer_items = new ArrayList<>();
         //Adding links present in About TSC to be verified
@@ -102,7 +102,7 @@ public class GF_TC05_Verify_GlobalFooter_AboutTSC_LinksAndPageObjects extends Ba
             }
             getGlobalFooterPageThreadLocal().verifyElementListExistence(elementList);
         }
-        elementList.clear();
+        elementList.clear(); */
        /*
         * CER 191
         * CER 192
