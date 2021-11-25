@@ -266,8 +266,8 @@ public class ProductResultsPage extends BasePage{
 
 	/**
 	 * This method will get search results through dropdown menu.
-	 * @param String lsKeyword:input keyword
-	 * @param int optionIndex: selected index in dropdwon menu
+	 * @param- String lsKeyword:input keyword
+	 * @param- int optionIndex: selected index in dropdwon menu
 	 * @return true/false
 	 * @author Wei.Li
 	 */
@@ -288,6 +288,7 @@ public class ProductResultsPage extends BasePage{
 
 			switch(lsOption) {
 				case "Top suggestions":
+					waitForCondition(Driver->{return globalHeader.searchQADropdwonmenuList.get(0).isDisplayed();},30000);
 					WebElement element=globalHeader.searchQADropdwonmenuList.get(0).findElements(By.xpath(".//li")).get(optionIndex);
 					getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 					this.searchkeyword=element.getText().trim();
@@ -295,6 +296,7 @@ public class ProductResultsPage extends BasePage{
 					element.click();
 					break;
 				case "Categories":
+					waitForCondition(Driver->{return globalHeader.searchQADropdwonmenuList.get(1).isDisplayed();},30000);
 					element=globalHeader.searchQADropdwonmenuList.get(1).findElements(By.xpath(".//li")).get(optionIndex);
 					getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 					this.searchkeyword=element.getText().trim();
@@ -302,6 +304,7 @@ public class ProductResultsPage extends BasePage{
 					element.click();
 					break;
 				case "Brands":
+					waitForCondition(Driver->{return globalHeader.searchQADropdwonmenuList.get(2).isDisplayed();},30000);
 					List<WebElement> list=globalHeader.searchQADropdwonmenuList.get(2).findElements(By.xpath(".//li"));
 					this.searchkeyword=lsKeyword;
 					for(WebElement ele:list) {
@@ -362,7 +365,7 @@ public class ProductResultsPage extends BasePage{
 
 	/**
 	 * This method will get search result list.
-	 * @param String lsKeyword: search keyword
+	 * @param- String lsKeyword: search keyword
 	 * @return List<WebElement>: search dropdown menu list
 	 * @author Wei.Li
 	 */
@@ -434,7 +437,7 @@ public class ProductResultsPage extends BasePage{
 
 	/**
 	 * This method will verify the itemNO in search results will just contain those with search product number.
-	 * @param String lsexpectedItemNO: expected ItemNO
+	 * @param- String lsexpectedItemNO: expected ItemNO
 	 * @return true/false
 	 * @author Wei.Li
 	 */
@@ -571,7 +574,7 @@ public class ProductResultsPage extends BasePage{
 
 	/**
 	 * This method will get encoding keyword.
-	 * @param String lsKeyword: input keyword
+	 * @param- String lsKeyword: input keyword
 	 * @return encoded keyword
 	 * @author Wei.Li
 	 */
@@ -592,7 +595,7 @@ public class ProductResultsPage extends BasePage{
 
 	/**
 	 * This method will verify Url after selecting filter in left panel.
-	 * @param String lsKeyword: search keyword
+	 * @param- String lsKeyword: search keyword
 	 * @return true/false
 	 * @author Wei.Li
 	 */
@@ -617,8 +620,8 @@ public class ProductResultsPage extends BasePage{
 
 	/**
 	 * This method will verify Url after selecting sort strategy.
-	 * @param String lsKeyword: search keyword
-	 * @param String lsSortKey: sort key in dropdown menu
+	 * @param- String lsKeyword: search keyword
+	 * @param- String lsSortKey: sort key in dropdown menu
 	 * @return true/false
 	 * @author Wei.Li
 	 */
@@ -646,7 +649,7 @@ public class ProductResultsPage extends BasePage{
 
 	/**
 	 * This method will verify Brand tile/text contains keyword.
-	 * @param String lsKeyword: input keyword
+	 * @param- String lsKeyword: input keyword
 	 * @return true/false
 	 * @author Wei.Li
 	 */
@@ -695,7 +698,7 @@ public class ProductResultsPage extends BasePage{
 
 	/**
 	 * This method will verify Badge or Video existence.
-	 * @param WebElement parent: parent element
+	 * @param- WebElement parent: parent element
 	 * @return String: indicate type
 	 * @author Wei.Li
 	 */
@@ -723,7 +726,7 @@ public class ProductResultsPage extends BasePage{
 
 	/**
 	 * This method will judge WasPrice existence.
-	 * @param WebElement parent: parent element
+	 * @param- WebElement parent: parent element
 	 * @return String: indicate type
 	 * @author Wei.Li
 	 */
@@ -740,7 +743,7 @@ public class ProductResultsPage extends BasePage{
 
 	/**
 	 * This method will verify the item content in product list.
-	 * @param List<WebElement> productList: the input product list
+	 * @param- List<WebElement> productList: the input product list
 	 * @author Wei.Li
 	 */
 	public void verifySearchResultContent(List<WebElement> productList) {
@@ -804,7 +807,7 @@ public class ProductResultsPage extends BasePage{
 
 	/**
 	 * This method will verify sort options.
-	 * @param List<String> lstOption: input option list
+	 * @param- List<String> lstOption: input option list
 	 * @return true/false
 	 * @author Wei.Li
 	 */
@@ -836,7 +839,7 @@ public class ProductResultsPage extends BasePage{
 
 	/**
 	 * This method will choose sort option by visible text.
-	 * @param String lsOption: visible option text
+	 * @param- String lsOption: visible option text
 	 * @return true/false
 	 * @author Wei.Li
 	 */
@@ -885,7 +888,7 @@ public class ProductResultsPage extends BasePage{
 
 	/**
 	 * This method will verify filter option headers.
-	 * @param List<String> lstOption: input option list in yml file
+	 * @param- List<String> lstOption: input option list in yml file
 	 * @return String: error message
 	 * @author Wei.Li
 	 */
@@ -909,7 +912,7 @@ public class ProductResultsPage extends BasePage{
 
 	/**
 	 * This method will judge MoreButton in left panel existence.
-	 * @param WebElement parent: parent element
+	 * @param- WebElement parent: parent element
 	 * @return true/false: if the childSize of this.panelItemContainerList item is 2, means no More button exists.
 	 * @author Wei.Li
 	 */
@@ -925,8 +928,8 @@ public class ProductResultsPage extends BasePage{
 
 	/**
 	 * This method will select filter from left panel.
-	 * @param String lsFirstLevelItem: header filter keyword
-	 * @param String lsSecondLevelItem: subFilter keyword
+	 * @param- String lsFirstLevelItem: header filter keyword
+	 * @param- String lsSecondLevelItem: subFilter keyword
 	 * @return true/false
 	 * @author Wei.Li
 	 */
@@ -989,8 +992,8 @@ public class ProductResultsPage extends BasePage{
 
 	/**
 	 * This method will verify filter by price.
-	 * @param String lsPriceMode: Under/Between/Over
-	 * @param boolean bFirst: true for first item and false for not first item
+	 * @param- String lsPriceMode: Under/Between/Over
+	 * @param- boolean bFirst: true for first item and false for not first item
 	 * @return String: error message
 	 * @author Wei.Li
 	 */
@@ -1064,8 +1067,8 @@ public class ProductResultsPage extends BasePage{
 
 	/**
 	 * This method will verify if selected filters contain suitable search second level filters.
-	 * @param List<String> lstFilterIncluded: second level filter list
-	 * @param List<String> lstFilterExcluded: the filters should not appear in selected filters option
+	 * @param- List<String> lstFilterIncluded: second level filter list
+	 * @param- List<String> lstFilterExcluded: the filters should not appear in selected filters option
 	 * @return String: error message
 	 * @author Wei.Li
 	 */
@@ -1104,7 +1107,7 @@ public class ProductResultsPage extends BasePage{
 
 	/**
 	 * This method will switch page through clicking Pre/Next button.
-	 * @param boolean bNext: true for next page and false for previous page
+	 * @param- boolean bNext: true for next page and false for previous page
 	 * @return true/false
 	 * @author Wei.Li
 	 */
@@ -1141,7 +1144,7 @@ public class ProductResultsPage extends BasePage{
 
 	/**
 	 * This method will get the filter container corresponding to the specific first level filter.
-	 * @param String lsFirstLevelItem: header filter keyword
+	 * @param- String lsFirstLevelItem: header filter keyword
 	 * @return WebElement: the element container corresponding to the specific first level filter.
 	 * @author Wei.Li
 	 */
@@ -1164,8 +1167,8 @@ public class ProductResultsPage extends BasePage{
 
 	/**
 	 * This method will get hidden element corresponding to an element container.
-	 * @param WebElement elementContainer: element container
-	 * @param boolean bVisible: true for visible filters while false for hidden filters.
+	 * @param- WebElement elementContainer: element container
+	 * @param- boolean bVisible: true for visible filters while false for hidden filters.
 	 * @return Hidden element count.
 	 * @author Wei.Li
 	 */
@@ -1194,7 +1197,7 @@ public class ProductResultsPage extends BasePage{
 
 	/**
 	 * This method will click More or Less button corresponding to the filter container.
-	 * @param WebElement elementContainer: input filter container
+	 * @param- WebElement elementContainer: input filter container
 	 * @return true/false
 	 * @author Wei.Li
 	 */
@@ -1254,7 +1257,7 @@ public class ProductResultsPage extends BasePage{
 	 
     /**
 	 * This method will get the review number amount of product item
-	 * @param List<WebElement> lstReviewStar: review star list
+	 * @param- List<WebElement> lstReviewStar: review star list
 	 * @return  int: review number amount
 	 * @author Wei.Li
 	 */
