@@ -21,6 +21,7 @@ public class GH_TC07_Global_Header_Verify_Favourites_link extends BaseTest {
 	String urlFavoritesLandingpageLoggedInUser=null;
 	String lsUserName=TestDataHandler.constantData.getLoginUser().getLbl_Username();
 	String lsPassword=TestDataHandler.constantData.getLoginUser().getLbl_Password();
+	String lsFirstName=TestDataHandler.constantData.getLoginUser().getLbl_FirstName();
 	List<ConstantData.HeaderNameAndLinks> headerLinks = TestDataHandler.constantData.getHeaderSection().getLst_HeaderNameAndLinks();
 	String urlFavoritesLandingpageAnonymousUser=TestDataHandler.constantData.getHeaderSection().getlbl_SignInLandingPage();
 	String lblSignInpageHeading=TestDataHandler.constantData.getHeaderSection().getLbl_SignIn();
@@ -36,7 +37,7 @@ public class GH_TC07_Global_Header_Verify_Favourites_link extends BaseTest {
 			urlFavoritesLandingpageLoggedInUser = headerLink.getLinks().get(1);
 		}
 	}
-	if(getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword)) {
+	if(getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword,lsFirstName)) {
 		String urlFavoritesLandingpageForLoggedinUser=getglobalheaderPageThreadLocal().getUrlForLandingpage(lnkFavoriteElement);
 		reporter.softAssert(urlFavoritesLandingpageForLoggedinUser.contains(urlFavoritesLandingpageLoggedInUser), "Favourites link's Landing page url is correct for logged in user.", "Favourites link's Landing page url is incorrect for logged in user.");
 	}else {
