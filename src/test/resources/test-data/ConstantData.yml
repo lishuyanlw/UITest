@@ -31,12 +31,12 @@ headerSection:
    }
   #Fourth parameter in list is true for those keys that have re-direct url present in application
   lst_WatchTSCNameAndLinksMap: {
-    Watch Us Live: ["Watch Us Live","En direct","/pages/watchuslive?ic=HP_WatchUsLive",],
-    Deals: ["Deals","Aubaines","/pages/todaysshowstopper?ic=HP_TodaysShowstopper",],
-    Program Guide: ["Program Guide","Grille horaire","/pages/programguide/daily?ic=HP_ProgramGuide",true],
-    Car Gadgets: ["Car Gadgets","Car Gadgets","/pages/todaysshowstopper?ic=HP_TodaysShowstopper",],
-    Designer Footwear: ["Designer Footwear","Nouveaux arrivages","/pages/productresults?nav=n:128153-2069664&ic=HDR_FlyoutNav_Shoes_And_Handbags_Designer_Footwear",],
-    On Air Products: ["On Air Products","Sur les ondes","/pages/productresults?ic=HP_OnAir_T&dimensions=2037548&page=1&pageSize=36&rd=false",]
+    Watch Us Live: ["Watch Us Live","En direct","/pages/watchuslive?ic=HP_WatchUsLive","false"],
+    Deals: ["Deals","Aubaines","/pages/todaysshowstopper?ic=HP_TodaysShowstopper","false"],
+    Program Guide: ["Program Guide","Grille horaire","/pages/programguide/daily?ic=HP_ProgramGuide","true"],
+    Car Gadgets: ["Car Gadgets","Car Gadgets","/pages/todaysshowstopper?ic=HP_TodaysShowstopper","false"],
+    Designer Footwear: ["Designer Footwear","Nouveaux arrivages","/pages/productresults?nav=n:128153-2069664&ic=HDR_FlyoutNav_Shoes_And_Handbags_Designer_Footwear","false"],
+    On Air Products: ["On Air Products","Sur les ondes","/pages/productresults?ic=HP_OnAir_T&dimensions=2037548&page=1&pageSize=36&rd=false","false"]
     }
   flyout:
     lst_FlyoutHeadingAndNameMap: {

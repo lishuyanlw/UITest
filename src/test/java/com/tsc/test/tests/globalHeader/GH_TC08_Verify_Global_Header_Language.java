@@ -27,26 +27,35 @@ public class GH_TC08_Verify_Global_Header_Language extends BaseTest {
 		reporter.reportLog("Global Header Section");		
 		Map<String, List<String>> lstWatchTSCNameAndLinks= TestDataHandler.constantData.getHeaderSection().getLst_WatchTSCNameAndLinksMap();
 		Map<String, List<String>> headerLinks = TestDataHandler.constantData.headerSection.getLst_HeaderNameAndLinksMap();
-		Map<String, List<String>> lstFlyoutHeading_FR= TestDataHandler.constantData.headerSection.getFlyout().getLst_FlyoutHeadingAndNameMap();
-		List<List<String>> lstFrenchNameWatchTSC=lstWatchTSCNameAndLinks.values().stream().collect(Collectors.toList());
+		Map<String, List<String>> lstFlyoutHeading= TestDataHandler.constantData.headerSection.getFlyout().getLst_FlyoutHeadingAndNameMap();
+		List<List<String>> lstNameWatchTSC=lstWatchTSCNameAndLinks.values().stream().collect(Collectors.toList());
 		List<List<String>> lstNameheaderLinks=headerLinks.values().stream().collect(Collectors.toList());
-		//Watch TSC dropdown menu French Name
+		//Watch TSC dropdown menu French & English Name
 		List<String> frenchNameWatchTSC = new ArrayList<>();
 		Map<String,Map<String, String>> linkMap = new HashMap<>();
-		for (List<String> frenchName : lstFrenchNameWatchTSC) {
-			String name=basePage.getUTFEnabledData(frenchName.get(1));
+		
+		for (List<String> linkName : lstNameWatchTSC) {
+			String name=basePage.getUTFEnabledData(linkName.get(1));
 			frenchNameWatchTSC.add(name);
-			if(Boolean.getBoolean(frenchName.get(3))==true) {
-				linkMap.put(frenchName.get(1),(HashMap)new HashMap<>().put(frenchName.get(0),frenchName.get(2)));
-			}
+			
+			if(Boolean.valueOf(linkName.get(3))) {
+				   linkMap.put(linkName.get(1),(HashMap)new HashMap<String,String>(){{put(linkName.get(0),linkName.get(2));}});
+				}
+			
+			//reporter.reportLog("redirect link condition : >>>>>>>>>"+Boolean.valueOf(linkName.get(3))==true);
+			//reporter.reportLog("redirect link condition : >>>>>>>>>"+Boolean.getBoolean(linkName.get(3)));
+			/*
+			if(Boolean.valueOf(linkName.get(3))==true) {
+				linkMap.put(linkName.get(1),(HashMap)new HashMap<>().put(linkName.get(0),linkName.get(2)));
+			}*/
 		}
-		//French Name for Today's Showstopper & Watch TSC
+		//French & English Name for Today's Showstopper & Watch TSC
 		List<String> frenchNameHeaderLinks = new ArrayList<>();
 		List<String> englishNameHeaderLinks = new ArrayList<>();
-		for (List<String> frenchName : lstNameheaderLinks) {
-			String name=basePage.getUTFEnabledData(frenchName.get(1));
-			frenchNameHeaderLinks.add(name);
-			englishNameHeaderLinks.add(frenchName.get(0));
+		for (List<String> headerName : lstNameheaderLinks) {
+			String frenchName=basePage.getUTFEnabledData(headerName.get(1));
+			frenchNameHeaderLinks.add(frenchName);
+			englishNameHeaderLinks.add(headerName.get(0));
 		}
 
 		//Switch to French
@@ -60,6 +69,7 @@ public class GH_TC08_Verify_Global_Header_Language extends BaseTest {
 		reporter.reportLog("Validating Watch TSC drop down menu.");
 		int sizeDpdMenu=getglobalheaderPageThreadLocal().lstWatchTSCDpdMenu.size();
 		reporter.softAssert(lstWatchTSCNameAndLinks.size()==sizeDpdMenu,"Number of Watch TSC drop down menu element maches with test Data","Number of Watch TSC drop down menu elements are not maching with test Data");
+		
 		for(String frenchName:frenchNameWatchTSC) {
 			WebElement watchTSCElement=getglobalheaderPageThreadLocal().getWatchTSCdPMElements(frenchName);
 			getglobalheaderPageThreadLocal().verifyWatchTSCdpDMenu(watchTSCElement,linkMap.get(frenchName));
@@ -72,7 +82,7 @@ public class GH_TC08_Verify_Global_Header_Language extends BaseTest {
 			getglobalheaderPageThreadLocal().scrolltoWebElement(lsHeading);
 			getGlobalFooterPageThreadLocal().applyStaticWait(1000);
 			flyoutHeading =basePage.getUTFEnabledData(lsHeading.getText().trim());
-			reporter.reportLog("Heading Flyout."+lstFlyoutHeading_FR.get(flyoutHeading));
+			reporter.reportLog("Heading Flyout."+lstFlyoutHeading.get(flyoutHeading));
 			reporter.softAssert(getglobalheaderPageThreadLocal().verifyhrefFlyoutHeading(lsHeading), "Href is present for Flyout Heading "+flyoutHeading, "Href is not preset for "+flyoutHeading);
 		}
 		

@@ -4,7 +4,6 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -312,18 +311,7 @@ public class GlobalHeaderPage extends BasePage{
 		return getReusableActionsInstance().isElementVisible(btnSearchSubmit, 5);
 	}
 	
-	
-	/*
-	public String validateFavouritesLink_1(WebElement webElement) {
-		String emptySTAIbtn=webElement.getText();
-		if(!verifyElementProperty(webElement,"Link")) {
-			return emptySTAIbtn+" link href is empty";
-		}else{
-			getReusableActionsInstance().isElementVisible(webElement, 5);
-			return emptySTAIbtn;
-			}
-		}
-	*/		
+		
 	//Favorite link visible
 	public String validateFavouritesLink() {
 		String emptySTAIbtn="Favourites link href is empty";
@@ -788,28 +776,6 @@ public class GlobalHeaderPage extends BasePage{
 		return getPageTitle(SigninPageHeading);
 	}
 
-	/* Method to get French name from yml file for Watch TSC
-	 * @param List<List<String>> lstWatchUsLiveNameAndLinks 
-	 * @return list : French name for Watch TSC-FR
-	 * @author Shruti Desai
-	 */
-	public List<String> getymlData(List<List<String>> lstNameAndLinks, int i) {
-		List<String> frenchNameDataFile= new ArrayList<String>();
-		for (List<String> lstItem : lstNameAndLinks) {
-			String NewfrenchName =this.getUTFEnabledData(lstItem.get(i).trim());
-			frenchNameDataFile.add(NewfrenchName);
-		}
-		return frenchNameDataFile;
-	}
-		
-	public List<String> getymlData_(List<List<String>> lstNameAndLinks, int i) {
-		List<String> frenchNameDataFile= new ArrayList<String>();
-		for (List<String> lstItem : lstNameAndLinks) {
-			String NewfrenchName =this.getUTFEnabledData(lstItem.get(i).trim());
-			frenchNameDataFile.add(NewfrenchName);
-		}
-		return frenchNameDataFile;
-	}
 	/* Method to get WebElement by passing French name from yml file for Watch TSC
 	 * @param String : French name from yml file List<List<String>> lstWatchUsLiveNameAndLinks 
 	 * @return WebElement : French name for Watch TSC-FR
@@ -839,7 +805,7 @@ public class GlobalHeaderPage extends BasePage{
 		 this.waitForPageToLoad();
 		 (new GlobalFooterPage(this.getDriver())).waitForPageLoading();
 		 String lsUrlWatchTSCdpItem=this.removeLastSlashFromUrl(this.URL());
-		 if(!link.isEmpty()){
+		 if(link!=null){
 			 for (Map.Entry mapElement : link.entrySet()) {
 				 if(lsHrefWatchTSCdpMenu.contains(mapElement.getKey().toString())) {
 					 String baseURL = System.getProperty("QAUrl")+'/'+mapElement.getValue();
