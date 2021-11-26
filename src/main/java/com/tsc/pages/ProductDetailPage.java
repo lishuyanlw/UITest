@@ -484,6 +484,25 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//div[@role='form']//div[@class='pr-submit']//div[contains(@class,'pr-logo-container')]//div[contains(@class,'pr-logo')]")
 	public WebElement imgWriteReviewPowerBy;
 	
+	@FindBy(xpath = "//div[@role='alert'][div]")
+	public WebElement cntWriteReviewAlert;
+	
+	@FindBy(xpath = "//div[@role='alert']//*[@class='pr-alert_heading']")
+	public WebElement lblWriteReviewAlertHeading;
+	
+	@FindBy(xpath = "//div[@role='alert']//ul//li")
+	public List<WebElement> lstWriteReviewAlertInfo;
+	
+	//After submit review message
+	@FindBy(xpath = "//div[@class='thank-you-page']//*[@class='title']")
+	public WebElement lblWriteReviewAfterSubmitPageTitle;
+	
+	@FindBy(xpath = "//div[@class='thank-you-page']//*[@class='subtitle']")
+	public WebElement lblWriteReviewAfterSubmitPageSubTitle;
+	
+	@FindBy(xpath = "//div[@class='thank-you-page']//a[@href]")
+	public WebElement lnkWriteReviewAfterSubmitPageContinueShopping;
+	
 	//Add to Bag popup window part
 	@FindBy(xpath = "//div[@id='tagCartContainer']")
 	public WebElement cntAddToBagOoverlay;
@@ -1548,6 +1567,60 @@ public class ProductDetailPage extends BasePage {
 	public void verifyCurrentZoomImage() {
 		reporter.softAssert(!this.getElementHref(this.lnkCurrentZoomImage).isEmpty(),"The Current zoom image link is not empty","The Current zoom image link is empty");
 		reporter.softAssert(!this.getElementText(this.lblZoomImageMessage).isEmpty(),"The Zoom image message is not empty","The Zoom image message is empty");
+	}
+	
+	public boolean checkIfIsRequiredFieldForWrireReview(WebElement element) {
+		return this.checkChildElementExistingByTagName(element, "abbr");
+	}
+	
+	public boolean checkIfDisplayAlertInfo(WebElement element) {
+		return this.getChildElementCount(element)>1;
+	}
+	
+	public boolean openWriteReview() {
+		this.lnkReviewTabWriteReview.click();
+		return this.waitForCondition(Driver->{return this.lblWriteReviewHeaderTitle.isDisplayed();}, 30000);
+	}
+	
+	public void verifyWriteReviewContent() {
+		reporter.softAssert(!this.getElementHref(this.lnkWriteReviewBackToProduct).isEmpty(),"The BackToProduct link is not empty","The BackToProduct link is empty");
+		reporter.softAssert(!this.getElementText(this.lblWriteReviewHeaderTitle).isEmpty(),"The Header title is not empty","The Header title is empty");		
+		reporter.softAssert(!this.getElementHref(this.lnkWriteReviewProductName).isEmpty(),"The Product Name link is not empty","The Product Name link is empty");
+		reporter.softAssert(!this.getElementImageSrc(this.imgWriteReviewProductImage).isEmpty(),"The Product Image Source is not empty","The Product Image Source is empty");
+		reporter.softAssert(!this.getElementText(this.lblWriteReviewRequiredQuestion).isEmpty(),"The Required Question text is not empty","The Required Question text is empty");
+		reporter.softAssert(!this.getElementText(this.lblWriteReviewYourRating).isEmpty(),"The Your Rating text is not empty","The Your Rating text is empty");	
+		reporter.softAssert(this.lstWriteReviewYourRatingList.size()>0,"The Your Rating List is not empty","The Your Rating List is empty");
+		reporter.softAssert(!this.getElementText(this.lblWriteReviewHeadline).isEmpty(),"The Headline text is not empty","The Headline text is empty");	
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.inputWriteReviewHeadline),"The Headline input is displaying correctly","The Headline input is not displaying correctly");
+		reporter.softAssert(!this.getElementText(this.lblWriteReviewComments).isEmpty(),"The Comments text is not empty","The Comments text is empty");	
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.textareaWriteReviewComments),"The Comments input is displaying correctly","The Comments input is not displaying correctly");
+		reporter.softAssert(!this.getElementText(this.lblWriteReviewBottomLine).isEmpty(),"The Bottom Line text is not empty","The Bottom Line text is empty");				
+		reporter.softAssert(!this.getElementText(this.lblWriteReviewSelectOne).isEmpty(),"The Select One text is not empty","The Select One text is empty");
+		reporter.softAssert(this.lstWriteReviewRecommendToFriendList.size()>0,"The Recommend To Friend List is not empty","The Recommend To Friend List is empty");
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.btnWriteReviewClearSelection),"The Clear Selection button is displaying correctly","The Clear Selection button is not displaying correctly");
+		reporter.softAssert(!this.getElementText(this.lblWriteReviewNickName).isEmpty(),"The NickName text is not empty","The NickName text is empty");	
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.inputWriteReviewNickName),"The NickName input is displaying correctly","The NickName input is not displaying correctly");
+		reporter.softAssert(!this.getElementText(this.lblWriteReviewLocation).isEmpty(),"The Location text is not empty","The Location text is empty");	
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.inputWriteReviewLocation),"The Location input is displaying correctly","The Location input is not displaying correctly");
+		reporter.softAssert(!this.getElementText(this.lblWriteReviewAddImage).isEmpty(),"The Add Image text is not empty","The Add Image text is empty");	
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.inputWriteReviewUploadImage),"The Upload Image input is displaying correctly","The Upload Image input is not displaying correctly");
+		reporter.softAssert(!this.getElementText(this.lblWriteReviewAddImage).isEmpty(),"The Add Image text is not empty","The Add Image text is empty");	
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.inputWriteReviewUploadImage),"The Upload Image input is displaying correctly","The Upload Image input is not displaying correctly");
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.btnWriteReviewUploadImage),"The Upload Image button is displaying correctly","The Upload Image button is not displaying correctly");
+		reporter.softAssert(!this.getElementText(this.lblWriteReviewAddVideo).isEmpty(),"The Add Video text is not empty","The Add Video text is empty");	
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.inputWriteReviewUploadVideo),"The Upload Video input is displaying correctly","The Upload Video input is not displaying correctly");
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.btnWriteReviewUploadVideo),"The Upload Video button is displaying correctly","The Upload Video button is not displaying correctly");
+		reporter.softAssert(!this.getElementText(this.lblWriteReviewTermsAndPrivacy).isEmpty(),"The Terms And Privacy text is not empty","The Terms And Privacy text is empty");	
+		reporter.softAssert(!this.getElementHref(this.lnkWriteReviewTerms).isEmpty(),"The Terms link is not empty","The Terms link is empty");
+		reporter.softAssert(!this.getElementHref(this.lnkWriteReviewPrivacy).isEmpty(),"The Privacy link is not empty","The Privacy link is empty");
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.btnWriteReviewSubmitReview),"The Submit Review button is displaying correctly","The Submit Review button is not displaying correctly");
+		reporter.softAssert(!this.getElementHref(this.lnkWriteReviewPowerBy).isEmpty(),"The PowerBy link is not empty","The PowerBy link is empty");
+		reporter.softAssert(!this.getElementText(this.lblWriteReviewPowerBy).isEmpty(),"The PowerBy text is not empty","The PowerBy text is empty");
+		reporter.softAssert(!this.getElementImageSrc(this.imgWriteReviewPowerBy).isEmpty(),"The PowerBy Image Source is not empty","The PowerBy Image Source is empty");		
+	}
+	
+	public void verifyWriteReviewAfterSubmitMessage(List<String> lst_WriteReviewSubmitMessage ) {
+		
 	}
 
 }
