@@ -1619,8 +1619,14 @@ public class ProductDetailPage extends BasePage {
 		reporter.softAssert(!this.getElementImageSrc(this.imgWriteReviewPowerBy).isEmpty(),"The PowerBy Image Source is not empty","The PowerBy Image Source is empty");		
 	}
 	
-	public void verifyWriteReviewAfterSubmitMessage(List<String> lst_WriteReviewSubmitMessage ) {
-		
+	public void verifyWriteReviewAfterSubmitMessage(String lsTitle, String lsSubTitle ) {
+		reporter.softAssert(!this.getElementText(this.lblWriteReviewAfterSubmitPageTitle).equalsIgnoreCase(lsTitle),"The Title after submited WriteReview is equal to "+lsTitle,"The Title after submited WriteReview is not equal to "+lsTitle);
+		reporter.softAssert(!this.getElementText(this.lblWriteReviewAfterSubmitPageSubTitle).equalsIgnoreCase(lsSubTitle),"The SubTitle after submited WriteReview is equal to "+lsSubTitle,"The SubTitle after submited WriteReview is not equal to "+lsSubTitle);
+	}
+	
+	public void verifyWriteReviewAfterSubmitContinueShoppingBackToProductDetails() {
+		String lsUrl=this.waitForPageLoadingByUrlChange(lnkWriteReviewAfterSubmitPageContinueShopping);
+		reporter.softAssert(lsUrl.toLowerCase().contains("pages/productdetails"),"Going back to product details page after clicking Continue Shopping button","Did not go back to product details page after clicking Continue Shopping button");
 	}
 
 }
