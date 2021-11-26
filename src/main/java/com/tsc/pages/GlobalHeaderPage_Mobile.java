@@ -163,8 +163,8 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
                     getReusableActionsInstance().scrollToElement(SubmenuheadingWebElement);
                     SubmenuheadingWebElement.click();
                     //System.out.println(CateLinksMobile.getAttribute("href"));
-                    applyStaticWait(1000);
-                    reporter.softAssert(CateLinksMobile.getAttribute("href").contains(headingName), headingName+" in href is visible", headingName+" in href is not visible");
+                    applyStaticWait(2000);
+                    reporter.softAssert(CateLinksMobile.getAttribute("href").contains(headingName.split(" ")[0]), headingName+" href is visible", headingName+" in href is not visible");
                     //waitForCondition(Driver->{return (CateLinksMobile.getAttribute("href").contains(headingName));} ,30000);
                     if(section==null) {
                         verifyFlyoutMenuSection(headingName, "Left Section");
