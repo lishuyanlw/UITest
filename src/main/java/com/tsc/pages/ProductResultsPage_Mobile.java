@@ -168,7 +168,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 
         return setOption.containsAll(setOptionYml) && setOptionYml.containsAll(setOption);
     }
-
+    /*
     @Override
     public String getProductResultPageTitle() {
         if(this.checkChildElementExistingByAttribute(this.cntSearchResultTitleContainer, "class", "ProductResults2")) {
@@ -177,5 +177,5 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
         }
         return "NoTitle";
     }
-
+    */
 }
