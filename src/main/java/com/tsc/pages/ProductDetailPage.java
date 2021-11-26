@@ -559,7 +559,7 @@ public class ProductDetailPage extends BasePage {
 	public WebElement lblSoldOutMessage;
 	
 	//Bread Crumb Navigation
-	@FindBy(xpath = "//nav[@class='breadcrumb__nav']//li")
+	@FindBy(xpath = "//nav[@class='breadcrumb__nav']//li//a")
 	public List<WebElement> lstBreadCrumbNav;
 	
 	
@@ -593,6 +593,7 @@ public class ProductDetailPage extends BasePage {
 		this.getReusableActionsInstance().staticWait(300);
 		
 		String lsText=this.lblAutoPlayVideoToolTipPopupMsg.getText().trim();
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnAutoPlayVideo);
 		this.getReusableActionsInstance().scrollToElement(this.btnAutoPlayVideo);
 		
 		return lsText;
@@ -1170,6 +1171,7 @@ public class ProductDetailPage extends BasePage {
 	 * @author Wei.Li
 	 */
 	public void verifyProductQuantityDropdown() {
+		String lsStyle,lsSize="",lsMsg;
 		reporter.softAssert(!this.getElementText(this.lblQuantityStatic).isEmpty(),"The product quantity label message is not empty","The product quantity label message is empty");
 		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.selectQuantityOption),"The product Quantity option is displaying correctly","The product Quantity option is not displaying correctly");
 		int loopSize;		
@@ -1180,6 +1182,7 @@ public class ProductDetailPage extends BasePage {
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectProductStyle);
 				selectStyle.selectByIndex(i);
 				this.getReusableActionsInstance().staticWait(1000);
+				lsStyle=this.selectProductStyle.getText();
 				
 				if(this.judgeStyleSizeAvailable()) {					
 					Select sizeOption=new Select(this.selectSizeOption);		
@@ -1188,15 +1191,23 @@ public class ProductDetailPage extends BasePage {
 						this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectSizeOption);
 						sizeOption.selectByIndex(j);
 						this.getReusableActionsInstance().staticWait(1000);
-						
-						this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectQuantityOption);
-						if(!this.selectQuantityOption.getText().isEmpty()) {
-							int lastOption=Integer.parseInt(this.lblQuantityLastOption.getAttribute("value"));
-							if(lastOption<7) {
-								reporter.softAssert(!this.getElementText(this.lblQuantityLeft).isEmpty(),"The product Quantity left message is not empty","The product Quantity left message is empty");
-							}
-						}
+						lsSize=this.selectSizeOption.getText();
 					}			
+				}
+				
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectQuantityOption);
+				if(!this.selectQuantityOption.getText().isEmpty()) {
+					int lastOption=Integer.parseInt(this.lblQuantityLastOption.getAttribute("value"));
+					if(lastOption<7) {
+						if(lsSize.isEmpty()) {
+							lsMsg=lsStyle+" Style";
+						}
+						else {
+							lsMsg=lsStyle+" Style and "+lsSize+" Size";
+						}
+						
+						reporter.softAssert(!this.getElementText(this.lblQuantityLeft).isEmpty(),"The product Quantity left message is not empty for "+lsMsg,"The product Quantity left message is empty for "+lsMsg);
+					}
 				}
 			}
 		}
@@ -1209,6 +1220,7 @@ public class ProductDetailPage extends BasePage {
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(radioItem);
 				radioItem.click();
 				this.getReusableActionsInstance().staticWait(1000);
+				lsStyle=this.lstRadioStyleLabelList.get(i).getAttribute("title");
 				
 				if(this.judgeStyleSizeAvailable()) {					
 					Select sizeOption=new Select(this.selectSizeOption);		
@@ -1217,15 +1229,23 @@ public class ProductDetailPage extends BasePage {
 						this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectSizeOption);
 						sizeOption.selectByIndex(j);
 						this.getReusableActionsInstance().staticWait(1000);
-						
-						this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectQuantityOption);
-						if(!this.selectQuantityOption.getText().isEmpty()) {
-							int lastOption=Integer.parseInt(this.lblQuantityLastOption.getAttribute("value"));
-							if(lastOption<7) {
-								reporter.softAssert(!this.getElementText(this.lblQuantityLeft).isEmpty(),"The product Quantity left message is not empty","The product Quantity left message is empty");
-							}
-						}
+						lsSize=this.selectSizeOption.getText();
 					}			
+				}
+				
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectQuantityOption);
+				if(!this.selectQuantityOption.getText().isEmpty()) {
+					int lastOption=Integer.parseInt(this.lblQuantityLastOption.getAttribute("value"));
+					if(lastOption<7) {
+						if(lsSize.isEmpty()) {
+							lsMsg=lsStyle+" Style";
+						}
+						else {
+							lsMsg=lsStyle+" Style and "+lsSize+" Size";
+						}
+						
+						reporter.softAssert(!this.getElementText(this.lblQuantityLeft).isEmpty(),"The product Quantity left message is not empty for "+lsMsg,"The product Quantity left message is empty for "+lsMsg);
+					}
 				}
 			}
 		}
@@ -1390,7 +1410,7 @@ public class ProductDetailPage extends BasePage {
 	 * @author Wei.Li
 	 */
 	public void verifyBreadCrumbNavigationBack() {		
-		WebElement item=this.lstBreadCrumbNav.get(this.lstBreadCrumbNav.size()-2);
+		WebElement item=this.lstBreadCrumbNav.get(this.lstBreadCrumbNav.size()-1);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 		item.click();
 		(new ProductResultsPage(this.getDriver())).waitForPageLoading();
@@ -1523,6 +1543,11 @@ public class ProductDetailPage extends BasePage {
 		reporter.softAssert(!this.getElementText(this.lblSoldOutMessage).isEmpty(),"The Soldout message is not empty","The Soldout message is empty");
 		reporter.softAssert(!this.judgeQuantityDropdownAvailable(),"The Quantity Dropdown is not displaying","The Quantity Dropdown is still displaying");
 		reporter.softAssert(!this.judgeAddToBagButtonAvailable(),"The Add to Bag button is not displaying","The Add to Bag button is still displaying");
+	}
+	
+	public void verifyCurrentZoomImage() {
+		reporter.softAssert(!this.getElementHref(this.lnkCurrentZoomImage).isEmpty(),"The Current zoom image link is not empty","The Current zoom image link is empty");
+		reporter.softAssert(!this.getElementText(this.lblZoomImageMessage).isEmpty(),"The Zoom image message is not empty","The Zoom image message is empty");
 	}
 
 }

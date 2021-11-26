@@ -39,7 +39,6 @@ public class PD_TC06_Verify_ProductDetail_AddToBag extends BaseTest{
 		reporter.softAssert(lsUrl.contains("productdetails"),"The Url is containing productdetails","The Url is not containing productdetails");
 		reporter.softAssert(lsUrl.contains(lsProductNumber),"The Url is containing selected product number of "+lsProductNumber,"The Url is not containing selected product number of "+lsProductNumber);
 				
-		//Verify product Add to Bag
 		reporter.reportLog("Verify product Add to Bag button");	
 		getProductDetailPageThreadLocal().verifyProductAddToBagButton();
 		

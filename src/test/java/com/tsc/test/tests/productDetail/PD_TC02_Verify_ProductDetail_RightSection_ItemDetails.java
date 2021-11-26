@@ -35,24 +35,19 @@ public class PD_TC02_Verify_ProductDetail_RightSection_ItemDetails extends BaseT
 		lsUrl=basePage.URL();
 		reporter.softAssert(lsUrl.contains("productdetails"),"The Url is containing productdetails","The Url is not containing productdetails");
 		reporter.softAssert(lsUrl.contains(lsProductNumber),"The Url is containing selected product number of "+lsProductNumber,"The Url is not containing selected product number of "+lsProductNumber);
-		
-		//Verify product name,brand name and product number
+				
 		reporter.reportLog("Verify product name,brand name and product number");	
 		getProductDetailPageThreadLocal().verifyProductBasicInfo();
-		
-		//Verify product review
+				
 		reporter.reportLog("Verify product review");	
 		getProductDetailPageThreadLocal().verifyProductReview();
-		
-		//Verify product price and shipping
+				
 		reporter.reportLog("Verify product price and shipping");	
 		getProductDetailPageThreadLocal().verifyProductPriceAndShipping();
-		
-		//Verify product style
+				
 		reporter.reportLog("Verify product style");	
 		getProductDetailPageThreadLocal().verifyProductStyle();
-		
-		//Verify Social media
+				
 		reporter.reportLog("Verify Social media");	
 		getProductDetailPageThreadLocal().verifySocialMedia();
 			

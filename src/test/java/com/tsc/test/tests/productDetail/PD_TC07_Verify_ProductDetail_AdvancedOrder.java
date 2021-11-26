@@ -24,6 +24,7 @@ public class PD_TC07_Verify_ProductDetail_AdvancedOrder extends BaseTest{
 	reporter.reportLog("ProductDetail Page");
 	
 	String lsKeyword=TestDataHandler.constantData.getSearchResultPage().getLbl_AdvancedOrderkeyword();
+	String lsVideoDisclaimInfo=TestDataHandler.constantData.getSearchResultPage().getLbl_VideoDisclaimInfo();
 	
 	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeyword);
 	reporter.reportLog("Switch to ProductDetail page");
@@ -35,41 +36,37 @@ public class PD_TC07_Verify_ProductDetail_AdvancedOrder extends BaseTest{
 		lsUrl=basePage.URL();
 		reporter.softAssert(lsUrl.contains("productdetails"),"The Url is containing productdetails","The Url is not containing productdetails");
 		reporter.softAssert(lsUrl.contains(lsProductNumber),"The Url is containing selected product number of "+lsProductNumber,"The Url is not containing selected product number of "+lsProductNumber);
-				
+			
+		reporter.reportLog("Verify Video info");
+		getProductDetailPageThreadLocal().verifyVideo(lsVideoDisclaimInfo);
+		
 		reporter.reportLog("Verify Advanced order message");	
 		getProductDetailPageThreadLocal().verifyProductAdvancedOrderMessage();
 		
 		reporter.reportLog("Verify Thumbnail");
 		getProductDetailPageThreadLocal().verifyThumbnail();
-	
-		//Verify product name,brand name and product number
+					
 		reporter.reportLog("Verify product name,brand name and product number");	
 		getProductDetailPageThreadLocal().verifyProductBasicInfo();
-		
-		//Verify product review
+				
 		reporter.reportLog("Verify product review");	
 		getProductDetailPageThreadLocal().verifyProductReview();
-		
-		//Verify product price and shipping
+				
 		reporter.reportLog("Verify product price and shipping");	
 		getProductDetailPageThreadLocal().verifyProductPriceAndShipping();
-		
-		//Verify product style
+				
 		reporter.reportLog("Verify product style");	
 		getProductDetailPageThreadLocal().verifyProductStyle();
-		
-		//Verify product TrueFit	
+				
 		reporter.reportLog("Verify product TrueFit");
 		getProductDetailPageThreadLocal().verifyProductSizeTrueFit();
 		
 		reporter.reportLog("Verify product size dropdown");
 		getProductDetailPageThreadLocal().verifyProductSizeDropdown();			
-		
-		//Verify product Add to Bag
+				
 		reporter.reportLog("Verify product Add to Bag button");	
 		getProductDetailPageThreadLocal().verifyProductAddToBagButton();
 				
-		//Verify Social media
 		reporter.reportLog("Verify Social media");	
 		getProductDetailPageThreadLocal().verifySocialMedia();		
 		
@@ -81,14 +78,9 @@ public class PD_TC07_Verify_ProductDetail_AdvancedOrder extends BaseTest{
 		
 		reporter.reportLog("The linkage between Thumbnail and Zoom image");
 		getProductDetailPageThreadLocal().verifyLinkageBetweenThumbnailAndZoomImage();
-		
-		//Verify product quantity
+				
 		reporter.reportLog("Verify product quantity");	
 		getProductDetailPageThreadLocal().verifyProductQuantityDropdown();
-		
-		//Verify Navigation Back button
-		reporter.reportLog("Verify Navigation Back button");	
-		getProductDetailPageThreadLocal().verifyBreadCrumbNavigationBack();
 		
 	}
 	else {

@@ -40,30 +40,28 @@ public class PD_TC08_Verify_ProductDetail_SoldOut extends BaseTest{
 		lsUrl=basePage.URL();
 		reporter.softAssert(lsUrl.contains("productdetails"),"The Url is containing productdetails","The Url is not containing productdetails");
 		reporter.softAssert(lsUrl.contains(lsProductNumber),"The Url is containing selected product number of "+lsProductNumber,"The Url is not containing selected product number of "+lsProductNumber);
-		
-		//Verify product name,brand name and product number
+				
+		reporter.reportLog("Verify Verify Current zoom image and message");
+		getProductDetailPageThreadLocal().verifyCurrentZoomImage();
+				
 		reporter.reportLog("Verify product name,brand name and product number");	
 		getProductDetailPageThreadLocal().verifyProductSoldOutBasicInfo();
-
-		//Verify product TrueFit	
+		
 		reporter.reportLog("Verify product TrueFit");
 		getProductDetailPageThreadLocal().verifyProductSizeTrueFit();
 		
 		reporter.reportLog("Verify Sold out product messaage");
 		getProductDetailPageThreadLocal().verifyProductSoldOut();
-				
-		//Verify Social media
+		
 		reporter.reportLog("Verify Social media");	
 		getProductDetailPageThreadLocal().verifySocialMedia();		
-
-		//Verify header section
+		
 		GH_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo headerSectionMenuAndLogoTest= new GH_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo();
 		headerSectionMenuAndLogoTest.validateMajorNameAndLinks();
 		
 		GH_TC02_Verify_Global_Header_SignIn_Favorite_ShoppingCartBag headerSectionOthersTest= new GH_TC02_Verify_Global_Header_SignIn_Favorite_ShoppingCartBag();
 		headerSectionOthersTest.validateMajorNameAndLinks();
 		
-		//Verify footer section
 		GF_TC01_Verify_GlobalFooter_SocialMedia footerSectionTest_SocialMedia=new GF_TC01_Verify_GlobalFooter_SocialMedia();
 		footerSectionTest_SocialMedia.validateMajorNameAndLinks();
 		

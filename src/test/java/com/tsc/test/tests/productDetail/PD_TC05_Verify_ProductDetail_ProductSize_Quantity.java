@@ -42,8 +42,7 @@ public class PD_TC05_Verify_ProductDetail_ProductSize_Quantity extends BaseTest{
 		if(getProductDetailPageThreadLocal().judgeStyleSizeAvailable()) {
 			reporter.reportLog("Verify product size dropdown");
 			getProductDetailPageThreadLocal().verifyProductSizeDropdown();			
-			
-			//Verify product TrueFit	
+						
 			reporter.reportLog("Verify product TrueFit");
 			getProductDetailPageThreadLocal().verifyProductSizeTrueFit();			
 		}
@@ -51,11 +50,9 @@ public class PD_TC05_Verify_ProductDetail_ProductSize_Quantity extends BaseTest{
 			reporter.reportLogFail("Product size part is not existing!");
 		}
 				
-		//Verify product quantity
 		reporter.reportLog("Verify product quantity");	
 		getProductDetailPageThreadLocal().verifyProductQuantityDropdown();
-		
-		//Verify Navigation Back button
+				
 		reporter.reportLog("Verify Navigation Back button");	
 		getProductDetailPageThreadLocal().verifyBreadCrumbNavigationBack();
 		
