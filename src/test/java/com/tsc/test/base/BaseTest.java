@@ -89,6 +89,10 @@ public class BaseTest {
 	protected static LoginPage getGlobalLoginPageThreadLocal() {
 		return loginPageThreadLocal.get();
 	}
+	
+	protected static String getTestDeviceThreadLocal () {
+		return TestDeviceThreadLocal.get();
+	}
 
 	protected static LoginPage_Mobile getLoginPage_MobileThreadLocal() {
 		return loginPage_mobileThreadLocal.get();
@@ -97,8 +101,7 @@ public class BaseTest {
 	private void init() {
 		
 		homePageThreadLocal.set(new HomePage(getDriver()));
-		globalheaderPageThreadLocal.set(new GlobalHeaderPage(getDriver()));
-		globalFooterPageThreadLocal.set(new GlobalFooterPage(getDriver()));
+		globalheaderPageThreadLocal.set(new GlobalHeaderPage(getDriver()));		
 		productResultsPageThreadLocal.set(new ProductResultsPage(getDriver()));
 		productDetailPageThreadLocal.set(new ProductDetailPage(getDriver()));
 		loginPageThreadLocal.set(new LoginPage(getDriver()));
@@ -170,12 +173,12 @@ public class BaseTest {
 		} else {
 			init();
 		}
-
+		
 	/*if (!strBrowser.toLowerCase().contains("android") && !strBrowser.toLowerCase().contains("ios")
 			&& !strBrowser.toLowerCase().contains("mobile")) {
 		getDriver().manage().window().maximize();
 	}*/
-		setImplictWait(getDriver(), 60);
+			setImplictWait(getDriver(), 60);
 	}
 
 	

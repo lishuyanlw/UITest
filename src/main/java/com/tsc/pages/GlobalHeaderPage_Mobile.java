@@ -77,7 +77,10 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
 
     @FindBy(xpath = "//a[contains(@class,'mega-nav-mobile__popular-brands__items')]")
     public List<WebElement> listPopularBrandsonlyLinks;
-
+    
+    @FindBy(xpath = "//a[contains(@class,'mega-nav-mobile__popular-brands__all')]")//a[contains(@class,'mega-nav-mobile__popular-brands__all')]
+	public WebElement shopAllPopularBrands;
+	
     @Override
     public String getNameAndclickSubMenuItem(String headingName,String submenuHeading, String itemName) {
         this.menuButton.click();
@@ -347,12 +350,12 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
         //super.getURLshopAllPupularBrand(String headingName,String section);
         WebElement linkPopularBrand = listPopularBrandsonlyLinks.get(0);
         waitForCondition(Driver->{return (linkPopularBrand.getAttribute("href").contains(first_flyout_menu_text.get()) && linkPopularBrand.getAttribute("class").contains(section.split(" ")[0].trim().toLowerCase()));} ,30000);
-
-        WebElement ShopAllWebElement = getWebElementShopAllPupularBrand();
-        if(verifyElementProperty(ShopAllWebElement,"Link")) {
-            getReusableActionsInstance().javascriptScrollByVisibleElement(ShopAllWebElement);
-            getReusableActionsInstance().scrollToElement(ShopAllWebElement);
-            ShopAllWebElement.click();
+       
+       // WebElement ShopAllWebElement = getWebElementShopAllPupularBrand();
+        if(verifyElementProperty(shopAllPopularBrands,"Link")) {
+            getReusableActionsInstance().javascriptScrollByVisibleElement(shopAllPopularBrands);
+            getReusableActionsInstance().scrollToElement(shopAllPopularBrands);
+            shopAllPopularBrands.click();
             currentUrl = getDriver().getCurrentUrl();
         }
         return currentUrl;
@@ -365,11 +368,11 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
         return headingElements;
     }
 
-    @Override
+  /*  @Override
     public WebElement getWebElementShopAllPupularBrand() {
         WebElement ShopAllWebElement = getDriver().findElement(By.xpath("//a[contains(@class,'mega-nav-mobile__popular-brands__all')]"));
         return ShopAllWebElement;
-    }
+    }*/
 
     @Override
     public WebElement getWebElementFlyoutHeading(String headingName) {
