@@ -477,156 +477,130 @@ public class GlobalHeaderPage extends BasePage{
 		/*Method to click on WebElement for Submenu Item by providing Flyout heading name , category and item as parameters.
 		 * @author Shruti Desai
 	 */
-		public String getNameAndclickSubMenuItem(String headingName,String submenuHeading, String itemName) {
-			String xpathHeading =createXPath("//span[contains(text(),'{0}')]" ,headingName); 
-			WebElement headingWebElement = FlyoutHeadings.findElement(By.xpath(xpathHeading));
-			getReusableActionsInstance().javascriptScrollByVisibleElement(headingWebElement);
-			getReusableActionsInstance().scrollToElement(headingWebElement);
+	public String getNameAndclickSubMenuItem(String headingName,String submenuHeading, String itemName) {
+		String xpathHeading =createXPath("//span[contains(text(),'{0}')]" ,headingName);
+		WebElement headingWebElement = FlyoutHeadings.findElement(By.xpath(xpathHeading));
+		getReusableActionsInstance().javascriptScrollByVisibleElement(headingWebElement);
+		getReusableActionsInstance().scrollToElement(headingWebElement);
 
-			if(headingWebElement!=null && submenuHeading==null) {
-				headingWebElement.click();
-				return headingWebElement.getText().trim();
-			}
-			if(submenuHeading!=null) {
-				String xpathSubMenu =createXPath("//a[contains(text(),\"{0}\")]" ,submenuHeading); 
-				List<WebElement> SubMenu = Categories.findElements(By.xpath(xpathSubMenu));
-				if(SubMenu.size()>0){
-					getReusableActionsInstance().javascriptScrollByVisibleElement(SubMenu.get(0));
-					getReusableActionsInstance().scrollToElement(SubMenu.get(0));
-					if(itemName!=null) {
-						String xpathSubmenuItem=createXPath("//a[contains(text(),'{0}')]",itemName);
-						WebElement SubMenuItem=getDriver().findElement(By.xpath(xpathSubmenuItem));
-						getReusableActionsInstance().javascriptScrollByVisibleElement(SubMenuItem);
-						getReusableActionsInstance().scrollToElement(SubMenuItem);
-						String title = SubMenuItem.getText().trim();
-						SubMenuItem.click();
-						return title;
-					}else {
-						String title = SubMenu.get(0).getText().trim();
-						SubMenu.get(0).click();
-						return title;
-					}
-				//Adding else condition to click on first element by default if passed submenu item is not present in list
-				}else{
-					WebElement element = Categories.findElement(By.xpath("./a"));
-					String title = element.getText().trim();
-					element.click();
-					return title;
-				}
-			}
-			return null;
+		if(headingWebElement!=null && submenuHeading==null) {
+			headingWebElement.click();
+			return headingWebElement.getText().trim();
 		}
-	 
-	 /*Method to click on WebElement for Submenu Item by providing Flyout heading name , category and item as parameters.
-	  * @author Shruti Desai
-	  */
-		public void clickSubMenuItem(String headingName,String submenuHeading, String itemName) {
-			String xpathHeading =createXPath("//span[contains(text(),'{0}')]" ,headingName); 
-			WebElement headingWebElement = FlyoutHeadings.findElement(By.xpath(xpathHeading));
-			getReusableActionsInstance().scrollToElement(headingWebElement);
-
-			if(headingWebElement!=null && submenuHeading==null) {
-				headingWebElement.click();
-			}
-			if(submenuHeading!=null) {
-				String xpathSubMenu =createXPath("//a[contains(text(),\"{0}\")]" ,submenuHeading); 
-				WebElement SubMenu = Categories.findElement(By.xpath(xpathSubMenu));
-				getReusableActionsInstance().scrollToElement(SubMenu);
+		if(submenuHeading!=null) {
+			String xpathSubMenu =createXPath("//a[contains(text(),\"{0}\")]" ,submenuHeading);
+			List<WebElement> SubMenu = Categories.findElements(By.xpath(xpathSubMenu));
+			if(SubMenu.size()>0){
+				getReusableActionsInstance().javascriptScrollByVisibleElement(SubMenu.get(0));
+				getReusableActionsInstance().scrollToElement(SubMenu.get(0));
 				if(itemName!=null) {
 					String xpathSubmenuItem=createXPath("//a[contains(text(),'{0}')]",itemName);
 					WebElement SubMenuItem=getDriver().findElement(By.xpath(xpathSubmenuItem));
+					getReusableActionsInstance().javascriptScrollByVisibleElement(SubMenuItem);
 					getReusableActionsInstance().scrollToElement(SubMenuItem);
+					String title = SubMenuItem.getText().trim();
 					SubMenuItem.click();
+					return title;
 				}else {
-					SubMenu.click();
+					String title = SubMenu.get(0).getText().trim();
+					SubMenu.get(0).click();
+					return title;
 				}
+			//Adding else condition to click on first element by default if passed submenu item is not present in list
+			}else{
+				WebElement element = Categories.findElement(By.xpath("./a"));
+				String title = element.getText().trim();
+				element.click();
+				return title;
 			}
 		}
-		
-		/*Method to get list of Flyout heading WebElements
-		 * @return List:Flyout heading WebElements
-		 * @author Shruti Desai
-		 */
-		public List<WebElement> getFlyoutHeadingsWebelement() {
-			List<WebElement> headingElements =FlyoutHeadings.findElements(By.xpath("//span[contains(@class,'primary-navigation__link-text')]"));
-			return headingElements;
-		}
-		
-		/*Method to scroll to desired WebElement 
-		 * @author Shruti Desai
-		 */
-		public void scrolltoWebElement(WebElement webElement) {
-			getReusableActionsInstance().javascriptScrollByVisibleElement(webElement);
-			getReusableActionsInstance().scrollToElement(webElement);
-			}
-		
-		/*Method to verify Flyout heading 
-		 * @return true/false
-		 * @author Shruti Desai
-		 */
-		public boolean verifyhrefFlyoutHeading(WebElement webElement) {
-			WebElement headinghref= webElement.findElement(By.xpath("./ancestor::a"));
-			if(!verifyElementProperty(headinghref,"Link")) {
-				return false;
-			}
-			return true;
-		}
-		
-		/*Method to get url after clicking flyout heading link
-		 * @return String:href
-		 * @author Shruti Desai
-		 */
-		public String getUrlAfterclickingFlyoutHeading(String headingName) {
-			 String currentUrl;
-			 String xpathHeading =createXPath("//span[contains(text(),'{0}')]" ,headingName); 
-			 WebElement headingWebElement = FlyoutHeadings.findElement(By.xpath(xpathHeading));
-			 getReusableActionsInstance().javascriptScrollByVisibleElement(headingWebElement);
-			 getReusableActionsInstance().scrollToElement(headingWebElement);
-			 headingWebElement .click();
-			 currentUrl = getDriver().getCurrentUrl();
-			 return currentUrl;
+		return null;
+	}
+	 
+	/*Method to get list of Flyout heading WebElements
+	 * @return List:Flyout heading WebElements
+	 * @author Shruti Desai
+	 */
+	public List<WebElement> getFlyoutHeadingsWebelement() {
+		List<WebElement> headingElements =FlyoutHeadings.findElements(By.xpath("//span[contains(@class,'primary-navigation__link-text')]"));
+		return headingElements;
+	}
+
+	/*Method to scroll to desired WebElement
+	 * @author Shruti Desai
+	 */
+	public void scrolltoWebElement(WebElement webElement) {
+		getReusableActionsInstance().javascriptScrollByVisibleElement(webElement);
+		getReusableActionsInstance().scrollToElement(webElement);
 		}
 
-		/*Method to get WebElement for flyout heading  
-		 * @return WebElement
-		 * @author Shruti Desai
-		 */	
-		public WebElement getWebElementFlyoutHeading(String headingName) {
-			String xpathHeading =createXPath("//span[contains(text(),'{0}')]" ,headingName); 
-			WebElement headingWebElement = FlyoutHeadings.findElement(By.xpath(xpathHeading));
-			return headingWebElement;
-		 }
-		
-		/* Method for scroll to Flyout heading WebElement
-		 * @author Shruti Desai
-		 */
-		public void scrollToHeadingElement(String headingName) {
-			  WebElement headingWebElement =getWebElementFlyoutHeading(headingName);
-			  getReusableActionsInstance().javascriptScrollByVisibleElement(headingWebElement);
-			  getReusableActionsInstance().scrollToElement(headingWebElement);
+	/*Method to verify Flyout heading
+	 * @return true/false
+	 * @author Shruti Desai
+	 */
+	public boolean verifyhrefFlyoutHeading(WebElement webElement) {
+		WebElement headinghref= webElement.findElement(By.xpath("./ancestor::a"));
+		if(!verifyElementProperty(headinghref,"Link")) {
+			return false;
 		}
-		
-		/*Method to verify href is present or not before clicking shop all link in Popular Brand Section and get url of landing page
-		 * @return String:href(only get unique part for each heading)
-		 * @author Shruti Desai
-		 */
-		public String getURLshopAllPupularBrand(String headingName,String section) {
-			String currentUrl=null;
-			AtomicReference<String> first_flyout_menu_text =new  AtomicReference<String>();
-			first_flyout_menu_text.set(headingName.split(" ")[0]);
-			WebElement linkPopularBrand = listPopularBrandsLink.get(0);
-			waitForCondition(Driver->{return (linkPopularBrand.getAttribute("href").contains(first_flyout_menu_text.get()) && linkPopularBrand.getAttribute("class").contains(section.split(" ")[0].trim().toLowerCase()));} ,30000);
-			if(verifyElementProperty(shopAllPopularBrands,"Link")) {
-				//getReusableActionsInstance().javascriptScrollByVisibleElement(shopAllPopularBrands);				
-				//getReusableActionsInstance().scrollToElement(shopAllPopularBrands);
-				if (System.getProperty("Browser").toLowerCase().contains("chrome")) {
-					getReusableActionsInstance().scrollToElement(shopAllPopularBrands);
-				}
-				shopAllPopularBrands.click();
-				currentUrl = getDriver().getCurrentUrl();
+		return true;
+	}
+
+	/*Method to get url after clicking flyout heading link
+	 * @return String:href
+	 * @author Shruti Desai
+	 */
+	public String getUrlAfterclickingFlyoutHeading(String headingName) {
+		 String currentUrl;
+		 String xpathHeading =createXPath("//span[contains(text(),'{0}')]" ,headingName);
+		 WebElement headingWebElement = FlyoutHeadings.findElement(By.xpath(xpathHeading));
+		 getReusableActionsInstance().javascriptScrollByVisibleElement(headingWebElement);
+		 getReusableActionsInstance().scrollToElement(headingWebElement);
+		 headingWebElement .click();
+		 currentUrl = getDriver().getCurrentUrl();
+		 return currentUrl;
+	}
+
+	/*Method to get WebElement for flyout heading
+	 * @return WebElement
+	 * @author Shruti Desai
+	 */
+	public WebElement getWebElementFlyoutHeading(String headingName) {
+		String xpathHeading =createXPath("//span[contains(text(),'{0}')]" ,headingName);
+		WebElement headingWebElement = FlyoutHeadings.findElement(By.xpath(xpathHeading));
+		return headingWebElement;
+	 }
+
+	/* Method for scroll to Flyout heading WebElement
+	 * @author Shruti Desai
+	 */
+	public void scrollToHeadingElement(String headingName) {
+		  WebElement headingWebElement =getWebElementFlyoutHeading(headingName);
+		  getReusableActionsInstance().javascriptScrollByVisibleElement(headingWebElement);
+		  getReusableActionsInstance().scrollToElement(headingWebElement);
+	}
+
+	/*Method to verify href is present or not before clicking shop all link in Popular Brand Section and get url of landing page
+	 * @return String:href(only get unique part for each heading)
+	 * @author Shruti Desai
+	 */
+	public String getURLshopAllPupularBrand(String headingName,String section) {
+		String currentUrl=null;
+		AtomicReference<String> first_flyout_menu_text =new  AtomicReference<String>();
+		first_flyout_menu_text.set(headingName.split(" ")[0]);
+		WebElement linkPopularBrand = listPopularBrandsLink.get(0);
+		waitForCondition(Driver->{return (linkPopularBrand.getAttribute("href").contains(first_flyout_menu_text.get()) && linkPopularBrand.getAttribute("class").contains(section.split(" ")[0].trim().toLowerCase()));} ,30000);
+		if(verifyElementProperty(shopAllPopularBrands,"Link")) {
+			//getReusableActionsInstance().javascriptScrollByVisibleElement(shopAllPopularBrands);
+			//getReusableActionsInstance().scrollToElement(shopAllPopularBrands);
+			if (System.getProperty("Browser").toLowerCase().contains("chrome")) {
+				getReusableActionsInstance().scrollToElement(shopAllPopularBrands);
 			}
-			return currentUrl;
+			shopAllPopularBrands.click();
+			currentUrl = getDriver().getCurrentUrl();
 		}
+		return currentUrl;
+	}
 
 	/*Method to get heading of landing page
 	 * @parameter : pageName
@@ -811,7 +785,7 @@ public class GlobalHeaderPage extends BasePage{
 					 String baseURL = System.getProperty("QAUrl")+'/'+mapElement.getValue();
 					 reporter.softAssert(lsUrlWatchTSCdpItem.equalsIgnoreCase(baseURL), "The Url of "+lsUrlWatchTSCdpItem+"  after clicking "+lsTitle+" is equal to the href of "+lsHrefWatchTSCdpMenu, "The Url of "+lsUrlWatchTSCdpItem+"  after clicking "+lsTitle+" is not equal to the href of "+lsHrefWatchTSCdpMenu);
 				 }else{
-				 	//fail assert here
+				 	reporter.softAssert(false,"","URL for "+mapElement.getKey().toString()+" is not verified that should be as passed as input parameter");
 				 }
 			 }
 		 }
