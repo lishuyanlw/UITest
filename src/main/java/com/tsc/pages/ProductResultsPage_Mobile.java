@@ -145,7 +145,8 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 
     @Override
     public boolean verifySortOptions(List<String> lstOptionYml) {
-        this.sortAndFilter.click();
+        getReusableActionsInstance().javascriptScrollByVisibleElement(this.sortAndFilter);
+        getReusableActionsInstance().clickIfAvailable(this.sortAndFilter,3000);
         if (!getReusableActionsInstance().isElementVisible(this.btnSortSelect)) {
             return false;
         }
