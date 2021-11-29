@@ -48,7 +48,8 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 
     @Override
     public boolean chooseSortOptionByVisibleText(List<String> lsOption) {
-        this.sortAndFilter.click();
+        getReusableActionsInstance().javascriptScrollByVisibleElement(this.sortAndFilter);
+        getReusableActionsInstance().clickIfAvailable(this.sortAndFilter,3000);
         getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSortSelect);
         Select sortOption= new Select(this.btnSortSelect);
         sortOption.selectByVisibleText(lsOption.get(0));
@@ -60,7 +61,8 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
     public boolean selectFilterItemInLeftPanel(String lsFirstLevelItem, String lsSecondLevelItem) {
         this.firstLevelFilter = lsFirstLevelItem;
         this.secondLevelFilter = lsSecondLevelItem;
-        this.sortAndFilter.click();
+        getReusableActionsInstance().javascriptScrollByVisibleElement(this.sortAndFilter);
+        getReusableActionsInstance().clickIfAvailable(this.sortAndFilter,3000);
         getReusableActionsInstance().staticWait(2000);
 
         for(int i=0;i<this.productFilterList.size();i++) {
@@ -120,7 +122,8 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 
     @Override
     public boolean getClearAllFiltersButtonStatus() {
-        this.sortAndFilter.click();
+        getReusableActionsInstance().javascriptScrollByVisibleElement(this.sortAndFilter);
+        getReusableActionsInstance().clickIfAvailable(this.sortAndFilter,3000);
         return super.getClearAllFiltersButtonStatus();
     }
 
@@ -129,16 +132,17 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 
         try {
             if (sortAndFilter.getText().contains("(")) {
-                this.sortAndFilter.click();
-                this.clearAllFilters.click();
+                getReusableActionsInstance().javascriptScrollByVisibleElement(this.sortAndFilter);
+                getReusableActionsInstance().clickIfAvailable(this.sortAndFilter,3000);
+                getReusableActionsInstance().clickIfAvailable(this.clearAllFilters,3000);
             }
         }
         catch (Exception e) {
             if (clearAllFilters.isDisplayed()) {
-                this.clearAllFilters.click();
+                getReusableActionsInstance().clickIfAvailable(this.clearAllFilters,3000);
             } else {
-                this.cancelButton.click();
-            }
+                getReusableActionsInstance().clickIfAvailable(this.cancelButton,3000);
+             }
         }
         return this.waitForPageLoading();
     }
