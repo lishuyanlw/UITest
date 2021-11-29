@@ -47,15 +47,15 @@ def getTunnelName() {
 //    tunnelName = tunnelName.replaceAll(":","")
 //    tunnelName = tunnelName.replaceAll(" ","")
 //    return tunnelName  TSCWF_Automation_Test_Tunnel_Sachin
-//    return "DigitalQETunnel"
+    return "DigitalQETunnel"
     //return "Digital_Mobile_QA"
-    return "TSCWF_Automation_Test_Tunnel_Sachin"
+    //return "TSCWF_Automation_Test_Tunnel_Sachin"
 }
 
 //This method is used when we use parentTunnelOwner system property in sauce test below
-def parentTunnelOwner() {
-    return "sso-sauce-rogers-Sachin.Sharma6"
-}
+//def parentTunnelOwner() {
+//    return "sso-sauce-rogers-Sachin.Sharma6"
+//}
 
 def tunnel_name() {
     return "Digital_Mobile_QA"
@@ -87,7 +87,7 @@ task "sauceTest"(type: Test) {
     systemProperty 'TunnelName', tunnelName
     //Below system property is needed when we will create tunnel manually and use that to run test in sauce-lab
     //Test will be under DigitalQAWebAutomation owner in sauce-lab
-    systemProperty 'parentTunnelOwner', parentTunnelOwner()
+    //systemProperty 'parentTunnelOwner', parentTunnelOwner()
 
     useTestNG(){
         parallel = test_parallel
