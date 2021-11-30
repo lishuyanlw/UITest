@@ -344,8 +344,13 @@ import utils.ReusableActions;
 	 */
 	 public void clearContent(WebElement element) {
 		 element.click();
-		 element.sendKeys(Keys.chord(Keys.CONTROL, "a"));
-		 element.sendKeys(Keys.chord(Keys.DELETE));
+		 /*element.sendKeys(Keys.chord(Keys.CONTROL, "a"));
+		 element.sendKeys(Keys.chord(Keys.DELETE));*/
+
+		 //We are using Action class below instead of above method as for firefox and Safari,
+		 //unwanted character i.e. E000 unicode is added at start of string
+		 Actions actions = new Actions(getDriver());
+		 actions.keyDown(Keys.CONTROL).sendKeys("a").keyUp(Keys.CONTROL).sendKeys(Keys.DELETE).build().perform();
 	 }
  
 	//Get the URL 			

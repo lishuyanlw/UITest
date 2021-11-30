@@ -4,6 +4,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
+
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -245,9 +247,10 @@ public class ProductResultsPage extends BasePage{
 		GlobalHeaderPage globalHeader=new GlobalHeaderPage(this.getDriver());
 		getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeader.searchBox);
 		this.clearContent(globalHeader.searchBox);
-		char[] inputString = searchKeyword.toCharArray();
-		for(char inputText:inputString){
-			globalHeader.searchBox.sendKeys(Character.toString(inputText));
+		//char[] inputString = searchKeyword.toCharArray();
+		String[] data = searchKeyword.codePoints().mapToObj(cp->new String(Character.toChars(cp))).toArray(size->new String[size]);
+		for(String inputText:data){
+			globalHeader.searchBox.sendKeys(inputText);
 			getReusableActionsInstance().staticWait(1000);
 		}
 		//globalHeader.searchBox.sendKeys(searchKeyword);
