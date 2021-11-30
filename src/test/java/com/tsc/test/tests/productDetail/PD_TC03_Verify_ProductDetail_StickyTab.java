@@ -9,13 +9,16 @@ import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 
-public class PD_TC03_Verify_ProductDetail_ReviewTab extends BaseTest{
+public class PD_TC03_Verify_ProductDetail_StickyTab extends BaseTest{
 	/*
 	 * CER-573
 	 * CER-574
+	 * CER-589
+	 * CER-590
+	 * CER-591
 	 */
 	@Test(groups={"ProductDetail","Regression"})
-	public void validateReviewTab() throws IOException {	
+	public void validateStickyTab() throws IOException {	
 	getGlobalFooterPageThreadLocal().closePopupDialog();
 	
 	BasePage basePage=new BasePage(this.getDriver());
@@ -28,16 +31,16 @@ public class PD_TC03_Verify_ProductDetail_ReviewTab extends BaseTest{
 	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0));
 	reporter.reportLog("Switch to ProductDetail page");
 	String lsProductNumber,lsUrl;
-	if(getProductResultsPageThreadLocal().goToProductItemWithReviewAndSwatchAndVideo()) {
+	if(getProductResultsPageThreadLocal().goToProductItemWithBrandNameAndReviewAndSeeMoreInfo()) {
 		reporter.reportLog("Verify URL");
 		lsProductNumber=getProductResultsPageThreadLocal().selectedProductItem.productConvertedNumber;
 		lsUrl=basePage.URL();
 		reporter.softAssert(lsUrl.contains("productdetails"),"The Url is containing productdetails","The Url is not containing productdetails");
 		reporter.softAssert(lsUrl.contains(lsProductNumber),"The Url is containing selected product number of "+lsProductNumber,"The Url is not containing selected product number of "+lsProductNumber);
-		
+	
 		if(getProductDetailPageThreadLocal().goToProductReviewTab()) {
 			reporter.softAssert(getProductDetailPageThreadLocal().getStickyTabSelectedStatus(getProductDetailPageThreadLocal().btnStickyTabProductReview),"The Review tab has been selected and undrlined correctly","The Review tab has not been selected and underlined correctly");
-			
+						
 			reporter.reportLog("Review tab content");
 			getProductDetailPageThreadLocal().verifyReviewTabContent();
 			
@@ -66,9 +69,19 @@ public class PD_TC03_Verify_ProductDetail_ReviewTab extends BaseTest{
 		else {
 			reporter.reportLogFail("Unable to go to Review Tab");
 		}
+		
+		reporter.reportLog("See More button action and Product overview content");
+		getProductDetailPageThreadLocal().verifyClickingSeeMoreButtonAction();
+		getProductDetailPageThreadLocal().verifyProductOverviewContent();
+		
+		reporter.reportLog("Verify sticky tab clicking actions");
+		getProductDetailPageThreadLocal().verifyStickyTabClickingAction();
+		
+		reporter.reportLog("Verify product brand name link");
+		getProductDetailPageThreadLocal().verifyProductBrandNameRedirectAction();
 	}
 	else {
-		reporter.reportLogFail("Unable to find the product item with Review, EasyPay, Swatch item>=4 and Video");
+		reporter.reportLogFail("Unable to find the product item with Brand name, Review, and See More info");
 	}
 	
 }

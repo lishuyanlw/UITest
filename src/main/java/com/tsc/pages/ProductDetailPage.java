@@ -1728,7 +1728,7 @@ public class ProductDetailPage extends BasePage {
 		reporter.softAssert(alertMessageNumberInHeading==alertMessageListCount,"The number in Alert heading meassge is equal to Alert message list count","The number in Alert heading meassge is not equal to Alert message list count");
 	}
 	
-	public void verifyWriteReviewAfterSuccessfulSubmitMessage(String lsTitle, String lsSubTitle ) {
+	public void verifyWriteReviewAfterSuccessfulSubmitMessage(String lsTitle, String lsSubTitle) {
 		reporter.softAssert(!this.getElementText(this.lblWriteReviewAfterSubmitPageTitle).equalsIgnoreCase(lsTitle),"The Title after submited WriteReview is equal to "+lsTitle,"The Title after submited WriteReview is not equal to "+lsTitle);
 		reporter.softAssert(!this.getElementText(this.lblWriteReviewAfterSubmitPageSubTitle).equalsIgnoreCase(lsSubTitle),"The SubTitle after submited WriteReview is equal to "+lsSubTitle,"The SubTitle after submited WriteReview is not equal to "+lsSubTitle);
 	}
@@ -1854,6 +1854,11 @@ public class ProductDetailPage extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(prp.lblSelectedFilters);
 		String lsSelectedFilter=prp.selectedFiltersList.get(0).getText().trim();
 		reporter.softAssert(lsBrandName.equalsIgnoreCase(lsSelectedFilter),"The selected filter item text is equal to Product brand name","The selected filter item text is not equal to Product brand name");
+		
+		this.getDriver().navigate().back();
+		this.waitForPageToLoad();
+		prp.waitForPageLoading();
+		this.getReusableActionsInstance().staticWait(3000);	
 	}
 
 }

@@ -1446,7 +1446,7 @@ public class ProductResultsPage extends BasePage{
 		return false;
 	}
 	
-	public boolean goToProductItemWithBrandNameAndReview() {
+	public boolean goToProductItemWithBrandNameAndReviewAndSeeMoreInfo() {
 		ProductDetailPage pdp=new ProductDetailPage(this.getDriver());
 		WebElement element;
 		
@@ -1487,7 +1487,7 @@ public class ProductResultsPage extends BasePage{
 				item.click();
 				this.waitForPageLoading();
 				this.getReusableActionsInstance().staticWait(1000);
-				if(pdp.checkProductBrandNameDisplaying()) {
+				if(pdp.checkProductBrandNameDisplaying()&&pdp.judgeTeaserInfoDisplaying()) {
 					return true;
 				}
 				else {
