@@ -6,6 +6,18 @@ public class MobileCapabilities {
 	private String appiumVersion;
 	private String deviceName;
 	private String deviceOrientation;
+	private String deviceType;
+
+	/**
+	 * @return the deviceType
+	*/
+	public String getDeviceType() {	return deviceType;	}
+
+	/**
+	 * @param deviceType the deviceType to set
+	 */
+	public void setDeviceType(String deviceType) {	this.deviceType = deviceType;	}
+
 	/**
 	 * @return the platformVersion
 	 */

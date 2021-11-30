@@ -26,10 +26,12 @@ androidChromeCapabilities:
    appiumVersion: 1.9.1
    deviceName: Android GoogleAPI Emulator
    deviceOrientation: portrait
+   deviceType: Tablet
 iosSafariCapabilities:
    platformName: iOS
    platformVersion: 14.3
    appiumVersion: 1.20.1
    deviceName: iPhone XS Simulator
    deviceOrientation: portrait
+   deviceType: Tablet
 ...
