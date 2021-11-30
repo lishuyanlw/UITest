@@ -66,9 +66,6 @@ public class PD_TC07_Verify_ProductDetail_AdvancedOrder extends BaseTest{
 				
 		reporter.reportLog("Verify product Add to Bag button");	
 		getProductDetailPageThreadLocal().verifyProductAddToBagButton();
-				
-		reporter.reportLog("Verify Social media");	
-		getProductDetailPageThreadLocal().verifySocialMedia();		
 		
 		reporter.reportLog("Verify product style name");
 		getProductDetailPageThreadLocal().verifyStyleNameWithDifferentStyleSelection();

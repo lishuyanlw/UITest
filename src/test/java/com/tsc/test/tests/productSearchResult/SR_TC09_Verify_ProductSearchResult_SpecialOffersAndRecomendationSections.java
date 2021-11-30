@@ -46,7 +46,7 @@ public class SR_TC09_Verify_ProductSearchResult_SpecialOffersAndRecomendationSec
 		reporter.softAssert(getProductResultsPageThreadLocal().verifyElementExisting(getProductResultsPageThreadLocal().getRecommendationContainer()),"Recommendation section is existing after choosing special offers","Recommendation section is not existing after choosing special offers");
 		 
 		// Verifying title of the Product Recommendation page
-		String pageTitleValue = getProductResultsPageThreadLocal().getProductResultPageTitle(ProductResultsPage.productRecommendationTitle);
+		String pageTitleValue = getProductResultsPageThreadLocal().getProductResultPageTitle(getProductResultsPageThreadLocal().productRecommendationTitle);
 		boolean title_Value = pageTitleValue.equalsIgnoreCase(productRecommendationTitleText.get(0)) || pageTitleValue.equalsIgnoreCase(productRecommendationTitleText.get(1));
 		reporter.softAssert(title_Value,"Product Recommendation Title is Verified and title is " + pageTitleValue,"Product Recommendation Title is Verified and title is " + pageTitleValue);
 		

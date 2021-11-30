@@ -12,6 +12,7 @@ import com.tsc.test.base.BaseTest;
 public class PD_TC02_Verify_ProductDetail_RightSection_ItemDetails extends BaseTest{
 	/*
 	 * CER-572	
+	 * CER-588
 	 * CER-600
 	 *
 	 */

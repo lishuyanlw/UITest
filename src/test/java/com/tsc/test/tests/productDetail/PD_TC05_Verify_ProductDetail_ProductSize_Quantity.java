@@ -32,24 +32,19 @@ public class PD_TC05_Verify_ProductDetail_ProductSize_Quantity extends BaseTest{
 	reporter.reportLog("Switch to ProductDetail page");
 	String lsProductNumber,lsUrl;
 	
-	if(getProductResultsPageThreadLocal().goToProductItemWithReviewAndSwatchAndVideo()) {
+	if(getProductResultsPageThreadLocal().goToProductItemWithTrueFitAndSizeAndQuantity()) {
 		reporter.reportLog("Verify URL");		
 		lsProductNumber=getProductResultsPageThreadLocal().selectedProductItem.productConvertedNumber;
 		lsUrl=basePage.URL();
 		reporter.softAssert(lsUrl.contains("productdetails"),"The Url is containing productdetails","The Url is not containing productdetails");
 		reporter.softAssert(lsUrl.contains(lsProductNumber),"The Url is containing selected product number of "+lsProductNumber,"The Url is not containing selected product number of "+lsProductNumber);
 		
-		if(getProductDetailPageThreadLocal().judgeStyleSizeAvailable()) {
-			reporter.reportLog("Verify product size dropdown");
-			getProductDetailPageThreadLocal().verifyProductSizeDropdown();			
+		reporter.reportLog("Verify product size dropdown");
+		getProductDetailPageThreadLocal().verifyProductSizeDropdown();			
+					
+		reporter.reportLog("Verify product TrueFit");
+		getProductDetailPageThreadLocal().verifyProductSizeTrueFit();
 						
-			reporter.reportLog("Verify product TrueFit");
-			getProductDetailPageThreadLocal().verifyProductSizeTrueFit();			
-		}
-		else {
-			reporter.reportLogFail("Product size part is not existing!");
-		}
-				
 		reporter.reportLog("Verify product quantity");	
 		getProductDetailPageThreadLocal().verifyProductQuantityDropdown();
 				
@@ -58,7 +53,7 @@ public class PD_TC05_Verify_ProductDetail_ProductSize_Quantity extends BaseTest{
 		
 	}
 	else {
-		reporter.reportLogFail("Unable to find the product item with Review, EasyPay, Swatch item>=4 and Video");
+		reporter.reportLogFail("Unable to find the product item with Size, TrueFit, Quantity and Left items info");
 	}
 	
 }
