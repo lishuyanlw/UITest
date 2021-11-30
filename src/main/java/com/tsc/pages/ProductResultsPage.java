@@ -1075,14 +1075,17 @@ public class ProductResultsPage extends BasePage{
 	public String verifySlectedFiltersContainSecondlevelFilter(List<String> lstFilterIncluded, List<String> lstFilterExcluded) {
 		List<String> lstSelectedFilterOption=new ArrayList<String>();
 		if (System.getProperty("Device").equalsIgnoreCase("Mobile")){
-			this.sortAndFilter.click();
+			getReusableActionsInstance().javascriptScrollByVisibleElement(this.sortAndFilter);
+			getReusableActionsInstance().clickIfAvailable(this.sortAndFilter,3000);
 			getReusableActionsInstance().staticWait(1000);
 			int selectedFilterSize=this.selectedFiltersListMobile.size();
 			for(int i=0;i<selectedFilterSize;i++) {
 				getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectedFiltersListMobile.get(i));
 				lstSelectedFilterOption.add(this.selectedFiltersListMobile.get(i).getText().trim());
 			}
-			this.cancelButton.click();
+			getReusableActionsInstance().javascriptScrollByVisibleElement(this.cancelButton);
+			getReusableActionsInstance().clickIfAvailable(this.cancelButton,3000);
+			//this.cancelButton.click();
 		}else {
 			int selectedFilterSize = this.selectedFiltersList.size() - 1;
 			for (int i = 0; i < selectedFilterSize; i++) {
