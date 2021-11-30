@@ -16,7 +16,7 @@ public class GH_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo extends B
 	 * CER-162
 	 * CER-565
 	 */
-	@Test(groups={"Home","Regression"})	    
+	@Test(groups={"Home","Regression","Regression_Mobile"})	    
 		public void validateGlobalHeaderBlackMenu_SilverMenu_TSCLogoLinks() throws IOException {		
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 		BasePage basePage=new BasePage(this.getDriver());		
@@ -38,19 +38,19 @@ public class GH_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo extends B
 		
 		reporter.reportLog("Verify Black headers");
 		//Verify Black headers
-		getglobalheaderPageThreadLocal().verifyTSHeaderAndLinkInBlackHeader(getglobalheaderPageThreadLocal().lnkTSBlackHeader,getglobalheaderPageThreadLocal().lnkTS,true);
+		getglobalheaderPageThreadLocal().verifyTSHeaderAndLinkInBlackHeader(getglobalheaderPageThreadLocal().lnkTSBlackHeader,null,true);//getglobalheaderPageThreadLocal().lnkTS
 		getglobalheaderPageThreadLocal().goBackHomePage();
 		
 		getglobalheaderPageThreadLocal().hoverOnWatchTSC();
-		getglobalheaderPageThreadLocal().verifyTSHeaderAndLinkInBlackHeader(getglobalheaderPageThreadLocal().lnkWatchUsLiveDpdMenu,getglobalheaderPageThreadLocal().lnkWatchUsLive,true);
+		getglobalheaderPageThreadLocal().verifyTSHeaderAndLinkInBlackHeader(getglobalheaderPageThreadLocal().lnkWatchUsLiveDpdMenu,null,true);//getglobalheaderPageThreadLocal().lnkWatchUsLive
 		getglobalheaderPageThreadLocal().goBackHomePage();
 		
 		getglobalheaderPageThreadLocal().hoverOnWatchTSC();
-		getglobalheaderPageThreadLocal().verifyTSHeaderAndLinkInBlackHeader(getglobalheaderPageThreadLocal().lnkDealsDpdMenu,getglobalheaderPageThreadLocal().lnkDeals,true);
+		getglobalheaderPageThreadLocal().verifyTSHeaderAndLinkInBlackHeader(getglobalheaderPageThreadLocal().lnkDealsDpdMenu,null,true);//getglobalheaderPageThreadLocal().lnkDeals
 		getglobalheaderPageThreadLocal().goBackHomePage();
 		
 		getglobalheaderPageThreadLocal().hoverOnWatchTSC();
-		getglobalheaderPageThreadLocal().verifyTSHeaderAndLinkInBlackHeader(getglobalheaderPageThreadLocal().lnkProgramGuideDpdMenu,getglobalheaderPageThreadLocal().lnkProgramGuide,false);
+		getglobalheaderPageThreadLocal().verifyTSHeaderAndLinkInBlackHeader(getglobalheaderPageThreadLocal().lnkProgramGuideDpdMenu,null,false);//getglobalheaderPageThreadLocal().lnkProgramGuide
 		getglobalheaderPageThreadLocal().goBackHomePage();
 		
 		getglobalheaderPageThreadLocal().hoverOnWatchTSC();
@@ -62,8 +62,8 @@ public class GH_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo extends B
 		getglobalheaderPageThreadLocal().goBackHomePage();
 		
 		getglobalheaderPageThreadLocal().hoverOnWatchTSC();
-		getglobalheaderPageThreadLocal().verifyTSHeaderAndLinkInBlackHeader(getglobalheaderPageThreadLocal().lnkOnAirProductsDpdMenu,getglobalheaderPageThreadLocal().lnkOnAir,true);
-				
+		getglobalheaderPageThreadLocal().verifyTSHeaderAndLinkInBlackHeader(getglobalheaderPageThreadLocal().lnkOnAirProductsDpdMenu,null,true);//getglobalheaderPageThreadLocal().lnkOnAir
+							
 //		reporter.reportLog("Verify Silver headers");
 //		//Verify Silver headers
 //		String lsUrl,lsYmlNotFound,lsYmlFullUrl,lsSuccessResult, lsFailResult;

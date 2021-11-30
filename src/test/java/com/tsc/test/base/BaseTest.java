@@ -19,7 +19,6 @@ import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 
 import com.tsc.data.Handler.TestDataHandler;
-import com.tsc.pages.GlobalHeaderPage;
 
 import extentreport.ExtentTestManager;
 import utils.BrowserDrivers;
@@ -39,6 +38,7 @@ public class BaseTest {
 	protected static final ThreadLocal<GlobalHeaderPage_Mobile> globalHeaderPage_mobileThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<HomePage> homePageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<GlobalFooterPage> globalFooterPageThreadLocal = new ThreadLocal<>();
+	protected static final ThreadLocal<GlobalFooterPage_Mobile> globalFooterPage_mobileThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<ProductResultsPage> productResultsPageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<ProductDetailPage> productDetailPageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<LoginPage> loginPageThreadLocal = new ThreadLocal<>();
@@ -68,14 +68,21 @@ public class BaseTest {
 		return globalHeaderPage_mobileThreadLocal.get();
 	}
 	
+	
 	// @return the homePageThreadLocal
 	protected static HomePage homePageThreadLocal() {
+	
 		return homePageThreadLocal.get();
 	}
 
 
 	protected static GlobalFooterPage getGlobalFooterPageThreadLocal() {
 		return globalFooterPageThreadLocal.get();
+	}
+	
+	// @return the GlobalFooterPage_MobileThreadLocal
+	protected static GlobalFooterPage_Mobile getGlobalFooterPage_mobileThreadLocal() {
+		return globalFooterPage_mobileThreadLocal.get();
 	}
 	
 	protected static ProductResultsPage getProductResultsPageThreadLocal() {
@@ -102,6 +109,7 @@ public class BaseTest {
 		
 		homePageThreadLocal.set(new HomePage(getDriver()));
 		globalheaderPageThreadLocal.set(new GlobalHeaderPage(getDriver()));		
+		globalFooterPageThreadLocal.set(new GlobalFooterPage(getDriver()));
 		productResultsPageThreadLocal.set(new ProductResultsPage(getDriver()));
 		productDetailPageThreadLocal.set(new ProductDetailPage(getDriver()));
 		loginPageThreadLocal.set(new LoginPage(getDriver()));
@@ -112,7 +120,7 @@ public class BaseTest {
 		globalheaderPageThreadLocal.set(new GlobalHeaderPage_Mobile(getDriver()));
 		loginPageThreadLocal.set(new LoginPage_Mobile(getDriver()));
 		//loginPage_mobileThreadLocal.set(new LoginPage_Mobile(getDriver()));
-		globalFooterPageThreadLocal.set(new GlobalFooterPage(getDriver()));
+		globalFooterPageThreadLocal.set(new GlobalFooterPage_Mobile(getDriver()));
 		reporter = new ExtentTestManager(getDriver());
 	}
 
@@ -120,7 +128,7 @@ public class BaseTest {
 		globalheaderPageThreadLocal.set(new GlobalHeaderPage_Mobile(getDriver()));
 		loginPageThreadLocal.set(new LoginPage_Mobile(getDriver()));
 		//loginPage_mobileThreadLocal.set(new LoginPage_Mobile(getDriver()));
-		globalFooterPageThreadLocal.set(new GlobalFooterPage(getDriver()));
+		globalFooterPageThreadLocal.set(new GlobalFooterPage_Mobile(getDriver()));
 		reporter = new ExtentTestManager(getDriver());
 	}
 

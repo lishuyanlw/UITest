@@ -13,7 +13,7 @@ import com.tsc.test.base.BaseTest;
 
 public class GH_TC07_Global_Header_Verify_Favourites_link extends BaseTest {
 	
-	@Test(groups={"Home","Regression"})	    
+	@Test(groups={"Home","Regression","Regression_Mobile","GlobalHeader"})	    
 	public void validateGlobalHeader_Favourites_Link() throws IOException {		
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 		BasePage basePage=new BasePage(this.getDriver());

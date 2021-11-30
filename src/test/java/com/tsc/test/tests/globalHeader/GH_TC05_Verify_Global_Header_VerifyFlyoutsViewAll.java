@@ -11,7 +11,7 @@ import com.tsc.test.base.BaseTest;
 
 public class GH_TC05_Verify_Global_Header_VerifyFlyoutsViewAll extends BaseTest {
 
-	@Test(groups={"Home","Regression"})	    
+	@Test(groups={"Home","Regression","Regression_Mobile","GlobalHeader"})	    
 	public void verifyFlyoutHeadings() {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 		String lsBaseUrl=(new BasePage(this.getDriver())).getBaseURL();

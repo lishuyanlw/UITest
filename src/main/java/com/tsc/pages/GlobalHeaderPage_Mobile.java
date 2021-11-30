@@ -173,19 +173,7 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
                         verifyFlyoutMenuSection(headingName, "Left Section");
                     }
                 }
-                /*for (WebElement Submenu: this.CategoriesMobileList){
-                    //this.CategoriesMobileList.size();
-                    String SubmenuName=Submenu.getText();
-                    String Submenuheading =createXPath("//li[@class='mega-nav-mobile__categories-item__wrapper']//button//span[contains(text(),'{0}')]" ,SubmenuName);
-                    WebElement SubmenuheadingWebElement = CategoriesMobile.findElement(By.xpath(Submenuheading));
-                    getReusableActionsInstance().javascriptScrollByVisibleElement(SubmenuheadingWebElement);
-                    getReusableActionsInstance().scrollToElement(SubmenuheadingWebElement);
-                    SubmenuheadingWebElement.click();
-                    waitForCondition(Driver->{return (CategoriesLinksMobile.get(0).getAttribute("href").contains(headingName));} ,30000);
-                    if(section==null) {
-                        verifyFlyoutMenuSection(headingName, "Left Section");
-                    }
-                }*/
+                
                 reporter.reportLog("Flyout heading "+headingName);
                 if(section==null) {
                     verifyFlyoutMenuSection(headingName,"Curated Collections");
@@ -209,15 +197,12 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
                     SubmenuName = arrOfStr[0];
                 }
                 String Submenuheading =createXPath("//li[@class='mega-nav-mobile__categories-item__wrapper']//button//span[contains(text(),'{0}')]" ,SubmenuName);
-                //WebElement SubmenuheadingWebElement = CategoriesMobile.findElement(By.xpath(Submenuheading));
                 WebElement SubmenuheadingWebElement = getDriver().findElement(By.xpath(Submenuheading));
                 getReusableActionsInstance().javascriptScrollByVisibleElement(SubmenuheadingWebElement);
                 getReusableActionsInstance().scrollToElement(SubmenuheadingWebElement);
                 SubmenuheadingWebElement.click();
-                //System.out.println(CateLinksMobile.getAttribute("href"));
                 applyStaticWait(1000);
                 reporter.softAssert(CateLinksMobile.getAttribute("href").contains(heading), heading+" in href is visible", heading+" in href is not visible");
-                //waitForCondition(Driver->{return (CateLinksMobile.getAttribute("href").contains(headingName));} ,30000);
                 if(section==null) {
                     verifyFlyoutMenuSection(heading, "Left Section");
                 }
@@ -272,13 +257,11 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
                 this.menuBackButton.click();
                 break;
             case "Left Section":
-               // this.menuBackButton.click();
-                for (WebElement category:CategoriesLinksMobile) {
+               for (WebElement category:CategoriesLinksMobile) {
                     if(System.getProperty("Browser").toLowerCase().contains("firefox")) {
                         getReusableActionsInstance().javascriptScrollByVisibleElement(category);
                     }
                     this.scrolltoWebElement(category);
-                    //this.CategoriesMobileList.get(0).click();
                     reporter.reportLog("Verifying Left Section for: "+category.getText());
                     this.verifysubMenuhref(subMenuSectionMobile);
                 }
@@ -328,8 +311,7 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
 
     @Override
     public void hoverOnWatchTSC() {
-        //if (System.getProperty("Device").equalsIgnoreCase("Tablet")){
-            super.hoverOnWatchTSC();
+    		super.hoverOnWatchTSC();
             this.btnWatchTSCBlackHeader.click();
             this.btnWatchTSCBlackHeader.click();
         //}
@@ -347,11 +329,9 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
         getReusableActionsInstance().scrollToElement(headingWebElement);
         headingWebElement .click();
         this.popularBrandsMobile.click();
-        //super.getURLshopAllPupularBrand(String headingName,String section);
         WebElement linkPopularBrand = listPopularBrandsonlyLinks.get(0);
         waitForCondition(Driver->{return (linkPopularBrand.getAttribute("href").contains(first_flyout_menu_text.get()) && linkPopularBrand.getAttribute("class").contains(section.split(" ")[0].trim().toLowerCase()));} ,30000);
        
-       // WebElement ShopAllWebElement = getWebElementShopAllPupularBrand();
         if(verifyElementProperty(shopAllPopularBrands,"Link")) {
             getReusableActionsInstance().javascriptScrollByVisibleElement(shopAllPopularBrands);
             getReusableActionsInstance().scrollToElement(shopAllPopularBrands);
@@ -367,12 +347,6 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
         List<WebElement> headingElements =FlyoutHeadingsMobile.findElements(By.xpath("//span[contains(@class,'mega-nav-mobile__nav-items__item-text')]"));
         return headingElements;
     }
-
-  /*  @Override
-    public WebElement getWebElementShopAllPupularBrand() {
-        WebElement ShopAllWebElement = getDriver().findElement(By.xpath("//a[contains(@class,'mega-nav-mobile__popular-brands__all')]"));
-        return ShopAllWebElement;
-    }*/
 
     @Override
     public WebElement getWebElementFlyoutHeading(String headingName) {
