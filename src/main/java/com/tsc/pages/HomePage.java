@@ -164,7 +164,7 @@ public class HomePage extends BasePage{
 			
 	public void closeadd() {
 		btnClose.click();
-
+		waitForPageLoad();
 	}
 
 	
