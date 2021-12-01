@@ -175,6 +175,9 @@ public class ProductResultsPage extends BasePage{
 	@FindBy(xpath = "//product-results//div[@class='modalBody']//div[@class='panel']//li//div[not(contains(@class,'checked'))]")
 	List<WebElement> secondlevelFilterList;
 
+	@FindBy(xpath = "//div[contains(@class,'layout--left')]")
+	WebElement searchResultSection;
+
 
 	public By byMoreButtonOnLeftPanel=By.xpath(".//*[contains(@class,'panel-heading')]/following-sibling::div[contains(@class,'panel-collapse')]//div[contains(@class,'seeMoreDiv') and not(contains(@class,'seeMoreTitle')) and not(@style='display: none;')][@id]");
 	public By byLessButtonOnLeftPanel=By.xpath(".//*[contains(@class,'panel-heading')]/following-sibling::div[contains(@class,'panel-collapse')]//div[contains(@class,'seeMoreDiv') and not(contains(@class,'seeMoreTitle')) and @aria-expanded='true' and not(@style='display: none;')]");
@@ -249,6 +252,7 @@ public class ProductResultsPage extends BasePage{
 		this.clearContent(globalHeader.searchBox);
 		//char[] inputString = searchKeyword.toCharArray();
 		String[] data = searchKeyword.codePoints().mapToObj(cp->new String(Character.toChars(cp))).toArray(size->new String[size]);
+		globalHeader.searchBox.click();
 		for(String inputText:data){
 			globalHeader.searchBox.sendKeys(inputText);
 			getReusableActionsInstance().staticWait(1000);
@@ -256,9 +260,12 @@ public class ProductResultsPage extends BasePage{
 		//globalHeader.searchBox.sendKeys(searchKeyword);
 		//globalHeader.btnSearchSubmit.click();
 		getReusableActionsInstance().staticWait(3000);
+		waitForCondition(Driver->{
+			return this.searchResultSection.isDisplayed();
+		},90000);
+
 		(new BasePage(this.getDriver())).pressEnterKey(globalHeader.searchBox);
 			
-		getReusableActionsInstance().staticWait(300);
 		return waitForCondition(Driver->{
 			String lsStyle=this.productResultLoadingIndicator.getAttribute("style");
 			if(lsStyle==null||lsStyle.isEmpty()) {
