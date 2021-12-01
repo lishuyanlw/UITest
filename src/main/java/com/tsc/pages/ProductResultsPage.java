@@ -206,6 +206,9 @@ public class ProductResultsPage extends BasePage{
 	@FindBy(xpath = "//a[contains(text(),'Sort & Filter')]")
 	WebElement sortAndFilter;
 
+	@FindBy(xpath="//product-results//div[@class='modalBody']")
+	WebElement sortPanel;
+
 	String searchkeyword;
 	public boolean bVerifyTitle=true;
 	public String firstLevelFilter,secondLevelFilter;
@@ -264,14 +267,20 @@ public class ProductResultsPage extends BasePage{
 			return this.searchResultSection.isDisplayed();
 		},90000);
 
-		(new BasePage(this.getDriver())).pressEnterKey(globalHeader.searchBox);
+		super.pressEnterKey(globalHeader.searchBox);
+
+		waitForCondition(Driver->{
+			return this.lblShowing.isDisplayed();
+		},90000);
 			
 		return waitForCondition(Driver->{
 			String lsStyle=this.productResultLoadingIndicator.getAttribute("style");
 			if(lsStyle==null||lsStyle.isEmpty()) {
 				lsStyle="display: none;";
 			}
-			return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;")&&!lsUrl.equalsIgnoreCase(this.URL());},90000);
+			return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;")&&!lsUrl.equalsIgnoreCase(this.URL());
+			},90000);
+
 	}
 
 	/**
@@ -742,7 +751,7 @@ public class ProductResultsPage extends BasePage{
 	 */
 	public String judgeProductWasPrice(WebElement parent) {
 		WebElement element=parent.findElement(this.byJudgeProductWasPrice);
-		long childSize= (new BasePage(this.getDriver())).getChildElementCount(element);
+		long childSize= super.getChildElementCount(element);
 
 		if(childSize==1) {
 			return "WithoutWasPrice";
@@ -758,10 +767,10 @@ public class ProductResultsPage extends BasePage{
 	 */
 	public void verifySearchResultContent(List<WebElement> productList) {
 		List<WebElement> elementList;
-		(new BasePage(this.getDriver())).getReusableActionsInstance().javascriptScrollByVisibleElement(productList.get(0));
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(productList.get(0));
 		for(WebElement item : productList) {
 			reporter.reportLog("Product ItemNO:"+item.findElement(byProductItemNO).getText());
-			(new BasePage(this.getDriver())).getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 
 			reporter.softAssert(!item.findElement(byProductHref).getAttribute("href").isEmpty(),"ProductHref in searching result is correct", "ProductHref in searching result is incorrect");
 
@@ -777,19 +786,19 @@ public class ProductResultsPage extends BasePage{
 
 			//Use findElements to avoid test crash when the element is not existing
 			elementList=item.findElements(byProductReview);
-			if((new BasePage(this.getDriver())).isChildElementVisible(elementList.get(0),"innerText")) {
+			if(super.isChildElementVisible(elementList.get(0),"innerText")) {
 				reporter.softAssert(true, "ProductReview in searching result is correct", "ProductReview in searching result is incorrect");
 			}
 
 			//Use findElements to avoid test crash when the element is not existing
 			elementList=item.findElements(byProductSwatch);
-			if((new BasePage(this.getDriver())).isChildElementVisible(elementList.get(0),"childElementCount")) {
+			if(super.isChildElementVisible(elementList.get(0),"childElementCount")) {
 				reporter.softAssert(true, "ProductSwatch in searching result is correct", "ProductSwatch in searching result is incorrect");
 			}
 
 			//Use findElements to avoid test crash when the element is not existing
 			elementList=item.findElements(byProductFreeShipping);
-			if((new BasePage(this.getDriver())).isChildElementVisible(elementList.get(0),"innerText")) {
+			if(super.isChildElementVisible(elementList.get(0),"innerText")) {
 				reporter.softAssert(true, "ProductFreeShipping in searching result is correct", "ProductFreeShipping in searching result is incorrect");
 			}
 
@@ -927,7 +936,7 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	public boolean judgeMoreButtonExistenceInLeftPanel(WebElement parent) {
-		long childSize= (new BasePage(this.getDriver())).getChildElementCount(parent);
+		long childSize= super.getChildElementCount(parent);
 
 		if(childSize==2) {
 			return false;
@@ -1370,7 +1379,7 @@ public class ProductResultsPage extends BasePage{
 
 			//Verifying Was Price is Displayed
 			WebElement element=item.findElement(this.byWasPrice);
-			long childSize=(new BasePage(this.getDriver())).getChildElementCount(element);
+			long childSize=super.getChildElementCount(element);
 			if(childSize > 1) {
 				reporter.softAssert(!item.findElement(byRecommendationWasPrice).getText().isEmpty(), "ProductWasPrice in Recommendation result is correct", "ProductWasPrice in Recommendation result is incorrect");
 			}

@@ -241,6 +241,9 @@ public class GlobalHeaderPage extends BasePage{
 	@FindBy(xpath="//span[contains(text(),'Clearance')]")
 	WebElement clearanceHeader;
 
+	@FindBy(xpath="//span[contains(@id,'_ctlSpanTitle')]")
+	public WebElement landingPageTitle;
+
 	public void clickOnClearanceHeaderOption() {
 		getReusableActionsInstance().clickIfAvailable(clearanceHeader);
 	}
@@ -415,9 +418,9 @@ public class GlobalHeaderPage extends BasePage{
 	 
 	/**
 	 *Method to verify TS header and link in Black headers  	 
-	 * @param WebElement blackItem: the header in Black headers
-	 * @param WebElement silverItem: the header in Silver headers 
-	 * @param boolean bCheckUrl: to decide if check Url after clicking the header in Black headers 
+	 * @param-WebElement blackItem: the header in Black headers
+	 * @param-WebElement silverItem: the header in Silver headers
+	 * @param-boolean bCheckUrl: to decide if check Url after clicking the header in Black headers
 	 * @author Wei.Li
 	 */	
 	 public void verifyTSHeaderAndLinkInBlackHeader(WebElement blackItem,WebElement silverItem,boolean bCheckUrl) {
@@ -457,7 +460,7 @@ public class GlobalHeaderPage extends BasePage{
 	 
 	/**
 	 *Method to verify TopSellingProducts existing by changing item in Trending or Featured brands list   
-	 * @param List<WebElement> elementList: element list	
+	 * @param-List<WebElement> elementList: element list
 	 * @return void
 	 * @author Wei.Li
 	 */
@@ -488,6 +491,7 @@ public class GlobalHeaderPage extends BasePage{
 
 		if(headingWebElement!=null && submenuHeading==null) {
 			headingWebElement.click();
+			waitForCondition(Driver->{return this.landingPageTitle.isDisplayed();},90000);
 			return headingWebElement.getText().trim();
 		}
 		if(submenuHeading!=null) {
@@ -503,10 +507,12 @@ public class GlobalHeaderPage extends BasePage{
 					getReusableActionsInstance().scrollToElement(SubMenuItem);
 					String title = SubMenuItem.getText().trim();
 					SubMenuItem.click();
+					waitForCondition(Driver->{return this.landingPageTitle.isDisplayed();},90000);
 					return title;
 				}else {
 					String title = SubMenu.get(0).getText().trim();
 					SubMenu.get(0).click();
+					waitForCondition(Driver->{return this.landingPageTitle.isDisplayed();},90000);
 					return title;
 				}
 				//Adding else condition to click on first element by default if passed submenu item is not present in list
@@ -514,6 +520,7 @@ public class GlobalHeaderPage extends BasePage{
 				WebElement element = Categories.findElement(By.xpath("./a"));
 				String title = element.getText().trim();
 				element.click();
+				waitForCondition(Driver->{return this.landingPageTitle.isDisplayed();},90000);
 				return title;
 			}
 		}
