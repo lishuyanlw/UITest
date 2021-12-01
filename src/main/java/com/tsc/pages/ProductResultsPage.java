@@ -732,10 +732,10 @@ public class ProductResultsPage extends BasePage{
 	 */
 	public void verifySearchResultContent(List<WebElement> productList) {
 		List<WebElement> elementList;
-		(new BasePage(this.getDriver())).getReusableActionsInstance().javascriptScrollByVisibleElement(productList.get(0));
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(productList.get(0));
 		for(WebElement item : productList) {
 			reporter.reportLog("Product ItemNO:"+item.findElement(byProductItemNO).getText());
-			(new BasePage(this.getDriver())).getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 
 			reporter.softAssert(!item.findElement(byProductHref).getAttribute("href").isEmpty(),"ProductHref in searching result is correct", "ProductHref in searching result is incorrect");
 
@@ -751,19 +751,19 @@ public class ProductResultsPage extends BasePage{
 
 			//Use findElements to avoid test crash when the element is not existing
 			elementList=item.findElements(byProductReview);
-			if((new BasePage(this.getDriver())).isChildElementVisible(elementList.get(0),"innerText")) {
+			if(this.isChildElementVisible(elementList.get(0),"innerText")) {
 				reporter.softAssert(true, "ProductReview in searching result is correct", "ProductReview in searching result is incorrect");
 			}
 
 			//Use findElements to avoid test crash when the element is not existing
 			elementList=item.findElements(byProductSwatch);
-			if((new BasePage(this.getDriver())).isChildElementVisible(elementList.get(0),"childElementCount")) {
+			if(this.isChildElementVisible(elementList.get(0),"childElementCount")) {
 				reporter.softAssert(true, "ProductSwatch in searching result is correct", "ProductSwatch in searching result is incorrect");
 			}
 
 			//Use findElements to avoid test crash when the element is not existing
 			elementList=item.findElements(byProductFreeShipping);
-			if((new BasePage(this.getDriver())).isChildElementVisible(elementList.get(0),"innerText")) {
+			if(this.isChildElementVisible(elementList.get(0),"innerText")) {
 				reporter.softAssert(true, "ProductFreeShipping in searching result is correct", "ProductFreeShipping in searching result is incorrect");
 			}
 
