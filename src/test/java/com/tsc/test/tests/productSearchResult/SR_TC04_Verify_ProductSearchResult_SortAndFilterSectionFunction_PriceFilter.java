@@ -21,7 +21,7 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction_Pri
      * CER-631
      */
     @Test(groups={"ProductSearch","Regression","Regression_Tablet","Regression_Mobile"})
-    public void validateProductSearchResult_FilterSectionFunction() throws IOException {
+    public void validateProductSearchResult_FilterSectionFunction_PriceFilter() throws IOException {
         (new HomePage(this.getDriver())).closeadd();
 
         reporter.softAssert(getglobalheaderPageThreadLocal().validateURL((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");
