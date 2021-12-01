@@ -658,8 +658,8 @@ public class GlobalHeaderPage extends BasePage{
 					getReusableActionsInstance().javascriptScrollByVisibleElement(headerItem);
 				}
 				this.scrolltoWebElement(headerItem);
-				getReusableActionsInstance().staticWait(3000);
-				waitForCondition(Driver->{return (CategoriesLinks.get(0).getAttribute("href").contains(headerItem.getText().split(" ")[0]));} ,30000);
+			//	getReusableActionsInstance().staticWait(3000);
+				waitForCondition(Driver->{return (CategoriesLinks.get(0).getAttribute("href").contains(headerItem.getText().split(" ")[0]));} ,60000);
 				String headingName =headerItem.getText();
 				reporter.reportLog("Flyout heading "+headingName);
 				if(section==null) {
@@ -676,8 +676,8 @@ public class GlobalHeaderPage extends BasePage{
 					getReusableActionsInstance().javascriptScrollByVisibleElement(headingsElement);
 			 }
 			this.scrolltoWebElement(headingsElement);
-			getReusableActionsInstance().staticWait(3000);
-			waitForCondition(Driver->{return (CategoriesLinks.get(0).getAttribute("href").contains(headingsElement.getText().split(" ")[0]));} ,30000);
+			//getReusableActionsInstance().staticWait(3000);
+			waitForCondition(Driver->{return (CategoriesLinks.get(0).getAttribute("href").contains(headingsElement.getText().split(" ")[0]));} ,60000);
 			String headingName =headingsElement.getText();
 			reporter.reportLog("Flyout heading "+headingName);
 			if(section==null) {
