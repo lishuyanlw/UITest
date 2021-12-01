@@ -99,6 +99,7 @@ searchResultPage:
   lbl_VideoDisclaimInfo: "Pre-recorded videos contain pricing or promotional offers that may have expired."
   lbl_AdvancedOrderkeyword: 522809
   lbl_SoldOutkeyword: 485939
+  lbl_QuantityNumberToShowLeftItemInfo: 7
   lst_WriteReviewSubmitMessage: ["THANK YOU!","We will process your review and publish it within 3-7 business days."]
 footerSection: 
   lst_SocialMediaLinks: ["https://www.facebook.com/Shoptsc","https://twitter.com/shoptsc","https://instagram.com/shoptsc","www.youtube.com","https://www.pinterest.ca/shoptsc"]

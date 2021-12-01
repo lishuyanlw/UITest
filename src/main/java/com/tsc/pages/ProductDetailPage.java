@@ -443,9 +443,6 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//div[@role='form']//div[@id='pr-war-form']//fieldset[contains(@class,'pr-bottomline-form-group')]//div[@role='radiogroup']//label")
 	public List<WebElement> lstWriteReviewRecommendToFriendList;
 	
-	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//div[@role='form']//div[@id='pr-war-form']//fieldset[contains(@class,'pr-bottomline-form-group')]//button[@class='pr-clear-all-radios']")
-	public WebElement btnWriteReviewClearSelection;
-	
 	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//div[@role='form']//div[@id='pr-war-form']//div[contains(@class,'pr-name-form-group')]//label")
 	public WebElement lblWriteReviewNickName;
 	
@@ -461,7 +458,7 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//div[@role='form']//div[@id='pr-war-form']//div[contains(@class,'pr-media_image-form-group')]//label")
 	public WebElement lblWriteReviewAddImage;
 	
-	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//div[@role='form']//div[@id='pr-war-form']//div[contains(@class,'pr-file-input-btn-group')]//input")
+	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//div[@role='form']//div[@id='pr-war-form']//div[contains(@class,'pr-file-input-btn-group')]//input[@id='pr-media_image']")
 	public WebElement inputWriteReviewUploadImage;
 	
 	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//div[@role='form']//div[@id='pr-war-form']//div[contains(@class,'pr-file-input-btn-group')]//button")
@@ -470,7 +467,7 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//div[@role='form']//div[@id='pr-war-form']//div[contains(@class,'pr-media_videourl-form-group')]//label")
 	public WebElement lblWriteReviewAddVideo;
 	
-	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//div[@role='form']//div[@id='pr-war-form']//div[contains(@class,'pr-media_videourl-form-group')]//input")
+	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//div[@role='form']//div[@id='pr-war-form']//div[contains(@class,'pr-file-input-btn-group')]//input[@id='pr-media_videourl']")
 	public WebElement inputWriteReviewUploadVideo;
 	
 	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//div[@role='form']//div[@id='pr-war-form']//div[contains(@class,'pr-media_videourl-form-group')]//button")
@@ -617,11 +614,11 @@ public class ProductDetailPage extends BasePage {
 	
 	public By byGetTheLookProductNumber=By.xpath(".//div[@class='findmine__itemid']");
 	
-	public By byGetTheLookProductPriceContainer=By.xpath(".//div[@class='div[@class='prec-price']']");
+	public By byGetTheLookProductPriceContainer=By.xpath(".//div[@class='prec-price']");
 	
 	public By byGetTheLookProductNowPrice=By.xpath(".//div[@class='findmine__now-price']");
 	
-	public By byGetTheLookProductWasPrice=By.xpath(".//div[@class='findmine__was-price']");
+	public By byGetTheLookProductWasPrice=By.xpath(".//del[@class='findmine__was-price']");
 	
 	public By byGetTheLookProductEasyPay=By.xpath(".//div[@class='findmine__easypay']");
 
@@ -1235,7 +1232,7 @@ public class ProductDetailPage extends BasePage {
 	 * @return void	  
 	 * @author Wei.Li
 	 */
-	public void verifyProductQuantityDropdown() {
+	public void verifyProductQuantityDropdown(int quantityNumberToShowLeftItemInfo) {
 		String lsStyle,lsSize="",lsMsg;
 		reporter.softAssert(!this.getElementText(this.lblQuantityStatic).isEmpty(),"The product quantity label message is not empty","The product quantity label message is empty");
 		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.selectQuantityOption),"The product Quantity option is displaying correctly","The product Quantity option is not displaying correctly");
@@ -1263,7 +1260,7 @@ public class ProductDetailPage extends BasePage {
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectQuantityOption);
 				if(!this.selectQuantityOption.getText().isEmpty()) {
 					int lastOption=Integer.parseInt(this.lblQuantityLastOption.getAttribute("value"));
-					if(lastOption<7) {
+					if(lastOption<quantityNumberToShowLeftItemInfo) {
 						if(lsSize.isEmpty()) {
 							lsMsg=lsStyle+" Style";
 						}
@@ -1301,7 +1298,7 @@ public class ProductDetailPage extends BasePage {
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectQuantityOption);
 				if(!this.selectQuantityOption.getText().isEmpty()) {
 					int lastOption=Integer.parseInt(this.lblQuantityLastOption.getAttribute("value"));
-					if(lastOption<7) {
+					if(lastOption<quantityNumberToShowLeftItemInfo) {
 						if(lsSize.isEmpty()) {
 							lsMsg=lsStyle+" Style";
 						}
@@ -1554,6 +1551,7 @@ public class ProductDetailPage extends BasePage {
 		reporter.softAssert(!this.getElementText(this.lblProductPriceLabel).isEmpty(),"The product price label is not empty","The product price label is empty");
 		reporter.softAssert(!this.getElementText(this.lblProductNowPrice).isEmpty(),"The product Now price is not empty","The product Now price is empty");
 		reporter.softAssert(!this.getElementText(this.lblProductWasPrice).isEmpty(),"The product Was price is not empty","The product Was price is empty");
+		reporter.softAssert(!this.getElementText(this.lblProductNowPrice).isEmpty()&&!this.getElementText(this.lblProductWasPrice).isEmpty(),"The product price range is not empty","The product price range is empty");
 		reporter.softAssert(!this.getElementText(this.lblProductEasyPay).isEmpty(),"The product EasyPay message is not empty","The product EasyPay message is empty");
 		reporter.softAssert(!this.getElementText(this.lblProductSavings).isEmpty(),"The product Saving message is not empty","The product Saving message is empty");
 		reporter.softAssert(!this.getElementText(this.lblProductShipping).isEmpty(),"The product Shipping message is not empty","The product Shipping message is empty");		
@@ -1633,7 +1631,9 @@ public class ProductDetailPage extends BasePage {
 	public void verifyReviewTabFooterAndBackToTopAndPagination() {
 		reporter.softAssert(!this.getElementText(this.lblReviewTabDisplayingReviewMsg).isEmpty(),"The Review message in Review tab footer is not empty","The Review message in Review tab footer is empty");
 		reporter.softAssert(!this.getElementHref(this.lnkReviewTabBackToTop).isEmpty(),"The BackToTop link is not empty","The BackToTop link is empty");
-		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.cntReviewTabPagination),"The Review pagination section is displaying correctly","The Review pagination section is not displaying correctly");			
+		if(this.getChildElementCount(this.cntReviewTabPagination)>0) {
+			reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.cntReviewTabPagination),"The Review pagination section is displaying correctly","The Review pagination section is not displaying correctly");
+		}					
 	}
 	
 	public void verifyProductAdvancedOrderMessage() {
@@ -1691,18 +1691,13 @@ public class ProductDetailPage extends BasePage {
 		reporter.softAssert(!this.getElementText(this.lblWriteReviewBottomLine).isEmpty(),"The Bottom Line text is not empty","The Bottom Line text is empty");				
 		reporter.softAssert(!this.getElementText(this.lblWriteReviewSelectOne).isEmpty(),"The Select One text is not empty","The Select One text is empty");
 		reporter.softAssert(this.lstWriteReviewRecommendToFriendList.size()>0,"The Recommend To Friend List is not empty","The Recommend To Friend List is empty");
-		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.btnWriteReviewClearSelection),"The Clear Selection button is displaying correctly","The Clear Selection button is not displaying correctly");
 		reporter.softAssert(!this.getElementText(this.lblWriteReviewNickName).isEmpty(),"The NickName text is not empty","The NickName text is empty");	
 		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.inputWriteReviewNickName),"The NickName input is displaying correctly","The NickName input is not displaying correctly");
 		reporter.softAssert(!this.getElementText(this.lblWriteReviewLocation).isEmpty(),"The Location text is not empty","The Location text is empty");	
 		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.inputWriteReviewLocation),"The Location input is displaying correctly","The Location input is not displaying correctly");
 		reporter.softAssert(!this.getElementText(this.lblWriteReviewAddImage).isEmpty(),"The Add Image text is not empty","The Add Image text is empty");	
-		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.inputWriteReviewUploadImage),"The Upload Image input is displaying correctly","The Upload Image input is not displaying correctly");
-		reporter.softAssert(!this.getElementText(this.lblWriteReviewAddImage).isEmpty(),"The Add Image text is not empty","The Add Image text is empty");	
-		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.inputWriteReviewUploadImage),"The Upload Image input is displaying correctly","The Upload Image input is not displaying correctly");
 		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.btnWriteReviewUploadImage),"The Upload Image button is displaying correctly","The Upload Image button is not displaying correctly");
 		reporter.softAssert(!this.getElementText(this.lblWriteReviewAddVideo).isEmpty(),"The Add Video text is not empty","The Add Video text is empty");	
-		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.inputWriteReviewUploadVideo),"The Upload Video input is displaying correctly","The Upload Video input is not displaying correctly");
 		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.btnWriteReviewUploadVideo),"The Upload Video button is displaying correctly","The Upload Video button is not displaying correctly");
 		reporter.softAssert(!this.getElementText(this.lblWriteReviewTermsAndPrivacy).isEmpty(),"The Terms And Privacy text is not empty","The Terms And Privacy text is empty");	
 		reporter.softAssert(!this.getElementHref(this.lnkWriteReviewTerms).isEmpty(),"The Terms link is not empty","The Terms link is empty");
@@ -1710,7 +1705,7 @@ public class ProductDetailPage extends BasePage {
 		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.btnWriteReviewSubmitReview),"The Submit Review button is displaying correctly","The Submit Review button is not displaying correctly");
 		reporter.softAssert(!this.getElementHref(this.lnkWriteReviewPowerBy).isEmpty(),"The PowerBy link is not empty","The PowerBy link is empty");
 		reporter.softAssert(!this.getElementText(this.lblWriteReviewPowerBy).isEmpty(),"The PowerBy text is not empty","The PowerBy text is empty");
-		reporter.softAssert(!this.getElementImageSrc(this.imgWriteReviewPowerBy).isEmpty(),"The PowerBy Image Source is not empty","The PowerBy Image Source is empty");		
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.imgWriteReviewPowerBy),"The PowerBy Image is displaying correctly","The PowerBy Image is not displaying correctly");
 	}
 	
 	public void verifyWriteReviewAfterFailSubmitValidationMessage() {
@@ -1729,8 +1724,26 @@ public class ProductDetailPage extends BasePage {
 	}
 	
 	public void verifyWriteReviewAfterSuccessfulSubmitMessage(String lsTitle, String lsSubTitle) {
-		reporter.softAssert(!this.getElementText(this.lblWriteReviewAfterSubmitPageTitle).equalsIgnoreCase(lsTitle),"The Title after submited WriteReview is equal to "+lsTitle,"The Title after submited WriteReview is not equal to "+lsTitle);
-		reporter.softAssert(!this.getElementText(this.lblWriteReviewAfterSubmitPageSubTitle).equalsIgnoreCase(lsSubTitle),"The SubTitle after submited WriteReview is equal to "+lsSubTitle,"The SubTitle after submited WriteReview is not equal to "+lsSubTitle);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstWriteReviewYourRatingList.get(0));
+		this.lstWriteReviewYourRatingList.get(0).click();
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputWriteReviewHeadline);
+		this.inputWriteReviewHeadline.sendKeys("Test heading line");
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.textareaWriteReviewComments);
+		this.textareaWriteReviewComments.sendKeys("Test write a review");
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstWriteReviewRecommendToFriendList.get(0));
+		this.lstWriteReviewRecommendToFriendList.get(0).click();
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputWriteReviewNickName);
+		this.inputWriteReviewNickName.sendKeys("Cat");
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputWriteReviewLocation);
+		this.inputWriteReviewLocation.sendKeys("Toronto");
+		
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnWriteReviewSubmitReview);
+		this.btnWriteReviewSubmitReview.click();
+		this.waitForCondition(Driver->{return this.lblWriteReviewAfterSubmitPageTitle.isDisplayed();}, 50000);
+		this.getReusableActionsInstance().staticWait(1000);		
+				
+		reporter.softAssert(this.getElementText(this.lblWriteReviewAfterSubmitPageTitle).equalsIgnoreCase(lsTitle),"The Title after submited WriteReview is equal to "+lsTitle,"The Title after submited WriteReview is not equal to "+lsTitle);
+		reporter.softAssert(this.getElementText(this.lblWriteReviewAfterSubmitPageSubTitle).equalsIgnoreCase(lsSubTitle),"The SubTitle after submited WriteReview is equal to "+lsSubTitle,"The SubTitle after submited WriteReview is not equal to "+lsSubTitle);
 	}
 	
 	public void verifyWriteReviewAfterSubmitContinueShoppingBackToProductDetails() {
@@ -1744,16 +1757,13 @@ public class ProductDetailPage extends BasePage {
 	 * @author Wei.Li
 	 */
 	public void verifyGetTheLookSection() {		
-		reporter.softAssert(!this.getElementText(this.lblWriteReviewAddVideo).isEmpty(),"The Add Video text is not empty","The Add Video text is empty");
+		reporter.softAssert(!this.getElementText(this.lblGetTheLookHeader).isEmpty(),"The Get The Look title is not empty","The Get The Look title is empty");
 		if(this.getChildElementCount(this.cntGetTheLook)>2) {
 			reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.btnGetTheLookPrev),"The Prev button is displaying correctly","The Prev button is not displaying correctly");
 			reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.btnGetTheLookNext),"The Next button is displaying correctly","The Next button is not displaying correctly");
 		}
 		WebElement element;
 		for(WebElement item: this.lstGetTheLookItem) {
-			element=item.findElement(byGetTheLookProductLink);
-			reporter.softAssert(!this.getElementHref(element).isEmpty(),"The Get the Look link is not empty","The Get the Look link is empty");
-			
 			element=item.findElement(byGetTheLookProductImage);
 			reporter.softAssert(!this.getElementImageSrc(element).isEmpty(),"The Get the Look image source is not empty","The Get the Look image source is empty");
 

@@ -25,6 +25,7 @@ public class PD_TC07_Verify_ProductDetail_AdvancedOrder extends BaseTest{
 	
 	String lsKeyword=TestDataHandler.constantData.getSearchResultPage().getLbl_AdvancedOrderkeyword();
 	String lsVideoDisclaimInfo=TestDataHandler.constantData.getSearchResultPage().getLbl_VideoDisclaimInfo();
+	String lsQuantityNumberToShowLeftItemInfo=TestDataHandler.constantData.getSearchResultPage().getLbl_QuantityNumberToShowLeftItemInfo();
 	
 	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeyword);
 	reporter.reportLog("Switch to ProductDetail page");
@@ -77,7 +78,7 @@ public class PD_TC07_Verify_ProductDetail_AdvancedOrder extends BaseTest{
 		getProductDetailPageThreadLocal().verifyLinkageBetweenThumbnailAndZoomImage();
 				
 		reporter.reportLog("Verify product quantity");	
-		getProductDetailPageThreadLocal().verifyProductQuantityDropdown();
+		getProductDetailPageThreadLocal().verifyProductQuantityDropdown(Integer.parseInt(lsQuantityNumberToShowLeftItemInfo));
 		
 	}
 	else {

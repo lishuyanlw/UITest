@@ -27,6 +27,7 @@ public class PD_TC05_Verify_ProductDetail_ProductSize_Quantity extends BaseTest{
 	reporter.reportLog("ProductDetail Page");
 	
 	List<List<String>> lsKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_SearchKeyword_DropDown();
+	String lsQuantityNumberToShowLeftItemInfo=TestDataHandler.constantData.getSearchResultPage().getLbl_QuantityNumberToShowLeftItemInfo();
 	
 	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0));
 	reporter.reportLog("Switch to ProductDetail page");
@@ -46,7 +47,7 @@ public class PD_TC05_Verify_ProductDetail_ProductSize_Quantity extends BaseTest{
 		getProductDetailPageThreadLocal().verifyProductSizeTrueFit();
 						
 		reporter.reportLog("Verify product quantity");	
-		getProductDetailPageThreadLocal().verifyProductQuantityDropdown();
+		getProductDetailPageThreadLocal().verifyProductQuantityDropdown(Integer.parseInt(lsQuantityNumberToShowLeftItemInfo));
 				
 		reporter.reportLog("Verify Navigation Back button");	
 		getProductDetailPageThreadLocal().verifyBreadCrumbNavigationBack();

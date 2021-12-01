@@ -454,6 +454,7 @@ public class ConstantData {
         private String lbl_VideoDisclaimInfo;
         private String lbl_AdvancedOrderkeyword;
         private String lbl_SoldOutkeyword;
+        private String lbl_QuantityNumberToShowLeftItemInfo;
         private List<String> lst_WriteReviewSubmitMessage;
 
         public List<String> getLst_SearchKeyword() {
@@ -576,6 +577,14 @@ public class ConstantData {
             this.lbl_SoldOutkeyword = lbl_SoldOutkeyword;
         }
         
+        public String getLbl_QuantityNumberToShowLeftItemInfo() {
+            return lbl_QuantityNumberToShowLeftItemInfo;
+        }
+
+        public void setLbl_QuantityNumberToShowLeftItemInfo(String lbl_QuantityNumberToShowLeftItemInfo) {
+            this.lbl_QuantityNumberToShowLeftItemInfo = lbl_QuantityNumberToShowLeftItemInfo;
+        }
+                
         public List<String> getLst_WriteReviewSubmitMessage() {
             return lst_WriteReviewSubmitMessage;
         }
