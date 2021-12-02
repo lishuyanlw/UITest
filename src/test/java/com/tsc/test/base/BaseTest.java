@@ -162,12 +162,9 @@ public class BaseTest {
 	
 		webDriverThreadLocal.set(browserDrivers.driverInit(strBrowser, sauceParameters, currentTestMethodName, ""));
 		getDriver().get(strUrl);
-		strBrowser = System.getProperty("Browser").trim();
-		System.out.println(strBrowser);
 
 		String lsTestDevice = System.getProperty("Device").trim();
 		TestDeviceThreadLocal.set(lsTestDevice);
-		strBrowser = System.getProperty("Browser").trim();
 		if (strBrowser.toLowerCase().contains("android") || strBrowser.toLowerCase().contains("ios")
 				|| strBrowser.toLowerCase().contains("mobile")) {
 			switch (lsTestDevice) {
@@ -326,7 +323,7 @@ public class BaseTest {
 				sauceOptions.put(SauceCapabilities.platformVersion.toString(), TestDataHandler.sauceSettings.getIosSafariCapabilities().getPlatformVersion());
 				sauceOptions.put(SauceCapabilities.platformName.toString(), TestDataHandler.sauceSettings.getIosSafariCapabilities().getPlatformName());
 				if(System.getProperty("Device").equalsIgnoreCase("Tablet")){
-					sauceOptions.put(SauceCapabilities.deviceType.toString(),TestDataHandler.sauceSettings.getAndroidChromeCapabilities().getDeviceType());
+					sauceOptions.put(SauceCapabilities.deviceType.toString(),TestDataHandler.sauceSettings.getIosSafariCapabilities().getDeviceType());
 				}
 				break;
 		}
