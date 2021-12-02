@@ -610,8 +610,7 @@ public class GlobalHeaderPage extends BasePage{
 	public String getHeadingForLandingPage(String pageName) {
 		WebElement webElement = getWebElementFlyoutHeading(pageName);
 		String title =getPageTitle(webElement).toUpperCase();
-		 waitForCondition(Driver->{return (title.contains(pageName.split(" ")[0]));} ,60000);
-			
+		waitForCondition(Driver->{return (title.equalsIgnoreCase(pageName));} ,60000);
 		return (title);
 	}
 
