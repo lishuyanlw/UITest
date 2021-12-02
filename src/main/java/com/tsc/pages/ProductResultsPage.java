@@ -36,7 +36,7 @@ public class ProductResultsPage extends BasePage{
 	@FindBy(xpath = "//product-results//div[contains(@class,'col-md-showing')]//div[contains(@class,'filterPrpLabel')]//b")
 	WebElement lblShowing;
 
-	@FindBy(xpath = "//product-results//div[contains(@class,'col-md-showing')]//div[contains(@style,'display:inline-block')]")
+	@FindBy(xpath = "//product-results//div[contains(@class,'col-md-showing')]")
 	WebElement txtShowingDynamicContent;
 
 	@FindBy(xpath = "//product-results//div[contains(@class,'col-md-sort')]//form//div[contains(@class,'filterPrpLabel')]")
