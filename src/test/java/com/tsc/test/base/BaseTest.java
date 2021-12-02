@@ -91,10 +91,10 @@ public class BaseTest {
 	private void init() {
 		
 		homePageThreadLocal.set(new HomePage(getDriver()));
-		globalheaderPageThreadLocal.set(new GlobalHeaderPage(getDriver()));		
+		//globalheaderPageThreadLocal.set(new GlobalHeaderPage(getDriver()));
 		productResultsPageThreadLocal.set(new ProductResultsPage(getDriver()));
-		productDetailPageThreadLocal.set(new ProductDetailPage(getDriver()));
-		loginPageThreadLocal.set(new LoginPage(getDriver()));
+		//productDetailPageThreadLocal.set(new ProductDetailPage(getDriver()));
+		//loginPageThreadLocal.set(new LoginPage(getDriver()));
 		reporter = new ExtentTestManager(getDriver());
 	}
 
@@ -141,14 +141,23 @@ public class BaseTest {
 				case "Tablet":
 					//getDriver().manage().window().setSize(new Dimension(700, 600));
 					globalFooterPageThreadLocal.set(new GlobalFooterPage_Tablet(getDriver()));
+					productDetailPageThreadLocal.set(new ProductDetailPage_Tablet(getDriver()));
+					globalheaderPageThreadLocal.set(new GlobalHeaderPage_Tablet(getDriver()));
+					loginPageThreadLocal.set(new LoginPage_Mobile(getDriver()));
 					break;
 				case "Mobile":
 					//getDriver().manage().window().setSize(new Dimension(500, 600));
 					globalFooterPageThreadLocal.set(new GlobalFooterPage_Mobile(getDriver()));
+					productDetailPageThreadLocal.set(new ProductDetailPage_Mobile(getDriver()));
+					globalheaderPageThreadLocal.set(new GlobalHeaderPage_Mobile(getDriver()));
+					loginPageThreadLocal.set(new LoginPage_Mobile(getDriver()));
 					break;
 			}
 		} else {
 			globalFooterPageThreadLocal.set(new GlobalFooterPage(getDriver()));
+			productDetailPageThreadLocal.set(new ProductDetailPage(getDriver()));
+			globalheaderPageThreadLocal.set(new GlobalHeaderPage(getDriver()));
+			loginPageThreadLocal.set(new LoginPage(getDriver()));
 		}
 						
 //		if (!strBrowser.toLowerCase().contains("android") && !strBrowser.toLowerCase().contains("ios")
@@ -221,7 +230,7 @@ public class BaseTest {
 	public void beforeTest(@Optional("chrome") String strBrowser, @Optional("en") String strLanguage,
 			ITestContext testContext, Method method) throws ClientProtocolException, IOException {
 		startSession(System.getProperty("QaUrl"), strBrowser, strLanguage, method, false);
-		getglobalheaderPageThreadLocal().waitForPageLoad();
+		//getglobalheaderPageThreadLocal().waitForPageLoad();
 		// getHomePageThreadLocal().waitforOverlayLoadingSpinnerToDisapper();
 		// reporter.hardAssert(getHomePageThreadLocal().validateLogoRogers(), "Home Page
 		// Loaded", "Home Page Not Loaded");

@@ -20,7 +20,7 @@ public class PD_TC01_Verify_ProductDetail_LeftSection_ContentsForImageAndVideo e
 	@Test(groups={"ProductDetail","Regression"})
 	public void validateLeftSection_ContentsForImageAndVideo() throws IOException {	
 	getGlobalFooterPageThreadLocal().closePopupDialog();
-	
+
 	BasePage basePage=new BasePage(this.getDriver());
 		
 	reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(basePage.getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");		
@@ -46,8 +46,9 @@ public class PD_TC01_Verify_ProductDetail_LeftSection_ContentsForImageAndVideo e
 		reporter.reportLog("Verify Thumbnail");
 		getProductDetailPageThreadLocal().verifyThumbnail();
 		
-		reporter.reportLog("Verify Video off function");		
-		getProductDetailPageThreadLocal().verifyVideoOff();
+		//commented because there is no autoplay option for tablet and mobile
+		/*reporter.reportLog("Verify Video off function");
+		getProductDetailPageThreadLocal().verifyVideoOff();*/
 		
 	}
 	else {
