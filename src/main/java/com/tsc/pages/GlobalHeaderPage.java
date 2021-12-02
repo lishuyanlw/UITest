@@ -558,7 +558,7 @@ public class GlobalHeaderPage extends BasePage{
 		 getReusableActionsInstance().scrollToElement(headingWebElement);
 		 headingWebElement .click();
 		 currentUrl = getDriver().getCurrentUrl();
-		 return currentUrl;
+			return currentUrl;
 	}
 
 	/*Method to get WebElement for flyout heading
@@ -610,6 +610,8 @@ public class GlobalHeaderPage extends BasePage{
 	public String getHeadingForLandingPage(String pageName) {
 		WebElement webElement = getWebElementFlyoutHeading(pageName);
 		String title =getPageTitle(webElement).toUpperCase();
+		 waitForCondition(Driver->{return (title.contains(pageName.split(" ")[0]));} ,60000);
+			
 		return (title);
 	}
 
