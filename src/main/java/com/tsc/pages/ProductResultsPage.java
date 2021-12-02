@@ -254,6 +254,9 @@ public class ProductResultsPage extends BasePage{
 		//this.getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeader.searchBox);
 		//this.clearContent(globalHeader.searchBox);
 		//char[] inputString = searchKeyword.toCharArray();
+		waitForCondition(Driver->{
+			return globalHeader.searchBox.isDisplayed();
+		},90000);
 		String[] data = searchKeyword.codePoints().mapToObj(cp->new String(Character.toChars(cp))).toArray(size->new String[size]);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeader.searchBox);
 		this.getReusableActionsInstance().clickIfAvailable(globalHeader.searchBox,3000);

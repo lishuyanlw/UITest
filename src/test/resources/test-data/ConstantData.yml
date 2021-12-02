@@ -58,7 +58,7 @@ searchResultPage:
     - filterType: Product
       filterOption: 
       - ["SHOP BY BRAND","Joan Rivers"]
-      - ["SHOP BY CLEARANCE","Clearance"]
+      #- ["SHOP BY CLEARANCE","Clearance"]
     - filterType: Price
       filterOption:
         - ["PRICE","Under $100","Under"]
