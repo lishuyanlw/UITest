@@ -313,7 +313,7 @@ public class BaseTest {
 				sauceOptions.put(SauceCapabilities.platformVersion.toString(), TestDataHandler.sauceSettings.getAndroidChromeCapabilities().getPlatformVersion());
 				sauceOptions.put(SauceCapabilities.platformName.toString(), TestDataHandler.sauceSettings.getAndroidChromeCapabilities().getPlatformName());
 				if(System.getProperty("Device").equalsIgnoreCase("Tablet")){
-					sauceOptions.put(SauceCapabilities.deviceType.toString(),TestDataHandler.sauceSettings.getAndroidChromeCapabilities().getDeviceType());
+					sauceOptions.put(SauceCapabilities.deviceType.toString(),TestDataHandler.sauceSettings.getAndroidChromeCapabilities().getDeviceType().toLowerCase());
 				}
 				break;
 			case "sauceioschrome":
@@ -323,7 +323,7 @@ public class BaseTest {
 				sauceOptions.put(SauceCapabilities.platformVersion.toString(), TestDataHandler.sauceSettings.getIosSafariCapabilities().getPlatformVersion());
 				sauceOptions.put(SauceCapabilities.platformName.toString(), TestDataHandler.sauceSettings.getIosSafariCapabilities().getPlatformName());
 				if(System.getProperty("Device").equalsIgnoreCase("Tablet")){
-					sauceOptions.put(SauceCapabilities.deviceType.toString(),TestDataHandler.sauceSettings.getIosSafariCapabilities().getDeviceType());
+					sauceOptions.put(SauceCapabilities.deviceType.toString(),TestDataHandler.sauceSettings.getIosSafariCapabilities().getDeviceType().toLowerCase());
 				}
 				break;
 		}
