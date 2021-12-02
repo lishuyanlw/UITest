@@ -456,6 +456,7 @@ public class ConstantData {
         private String lbl_SoldOutkeyword;
         private String lbl_QuantityNumberToShowLeftItemInfo;
         private List<String> lst_WriteReviewSubmitMessage;
+        private String lbl_TellYourFriendsSentMessage;
 
         public List<String> getLst_SearchKeyword() {
             return lst_SearchKeyword;
@@ -591,6 +592,14 @@ public class ConstantData {
 
         public void setLst_WriteReviewSubmitMessage(List<String> lst_WriteReviewSubmitMessage) {
             this.lst_WriteReviewSubmitMessage = lst_WriteReviewSubmitMessage;
+        }
+        
+        public String getLbl_TellYourFriendsSentMessage() {
+            return lbl_TellYourFriendsSentMessage;
+        }
+
+        public void setLbl_TellYourFriendsSentMessage(String lbl_TellYourFriendsSentMessage) {
+            this.lbl_TellYourFriendsSentMessage = lbl_TellYourFriendsSentMessage;
         }
     }
 

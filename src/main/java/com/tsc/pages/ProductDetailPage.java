@@ -277,6 +277,111 @@ public class ProductDetailPage extends BasePage {
 	
 	@FindBy(xpath = "//iframe[contains(@style,'display: block')]")
 	public WebElement iframePin;
+	
+	//Tell your friends window
+	@FindBy(xpath = "//div[contains(@class,'ReactModalPortal')]//div[@class='modal__header']//button[@class='modal__button-back']")
+	public WebElement btnTellYourFriendsWindowBack;
+	
+	@FindBy(xpath = "//div[contains(@class,'ReactModalPortal')]//div[@class='modal__header']//h3")
+	public WebElement lblTellYourFriendsWindowTitle;
+	
+	@FindBy(xpath = "//div[contains(@class,'ReactModalPortal')]//div[@class='modal__header']//button[@class='modal__button-close']")
+	public WebElement btnTellYourFriendsWindowClose;
+	
+	@FindBy(xpath = "//div[contains(@class,'ReactModalPortal')]//div[@class='modal__body']//form//span[@class='form__required']")
+	public WebElement lblTellYourFriendsWindowRequiredInfo;
+	
+	@FindBy(xpath = "//div[contains(@class,'ReactModalPortal')]//div[@class='modal__body']//form//div[@class='form__left']//h3")
+	public WebElement lblTellYourFriendsWindowFrom;
+	
+	@FindBy(xpath = "//div[contains(@class,'ReactModalPortal')]//div[@class='modal__body']//form//div[@class='form__left']//label[@id='Name1lbl']")
+	public WebElement lblTellYourFriendsWindowFromName;
+	
+	@FindBy(xpath = "//div[contains(@class,'ReactModalPortal')]//div[@class='modal__body']//form//div[@class='form__left']//input[@id='Name1']")
+	public WebElement inputTellYourFriendsWindowFromName;
+	
+	@FindBy(xpath = "//div[contains(@class,'ReactModalPortal')]//div[@class='modal__body']//form//div[@class='form__left']//label[@id='Email1lbl']")
+	public WebElement lblTellYourFriendsWindowFromEmail;
+	
+	@FindBy(xpath = "//div[contains(@class,'ReactModalPortal')]//div[@class='modal__body']//form//div[@class='form__left']//input[@id='Email1']")
+	public WebElement inputTellYourFriendsWindowFromEmail;
+	
+	@FindBy(xpath = "//div[contains(@class,'ReactModalPortal')]//div[@class='modal__body']//form//div[@class='form__right']//h3")
+	public WebElement lblTellYourFriendsWindowSendTo;
+	
+	@FindBy(xpath = "//div[contains(@class,'ReactModalPortal')]//div[@class='modal__body']//form//div[@class='form__right']//label[@id='NameTo1lbl']")
+	public WebElement lblTellYourFriendsWindowSendToName;
+	
+	@FindBy(xpath = "//div[contains(@class,'ReactModalPortal')]//div[@class='modal__body']//form//div[@class='form__right']//input[@id='NameTo1']")
+	public WebElement inputTellYourFriendsWindowSendToName;
+	
+	@FindBy(xpath = "//div[contains(@class,'ReactModalPortal')]//div[@class='modal__body']//form//div[@class='form__right']//label[@id='EmailTo1lbl']")
+	public WebElement lblTellYourFriendsWindowSendToEmail;
+	
+	@FindBy(xpath = "//div[contains(@class,'ReactModalPortal')]//div[@class='modal__body']//form//div[@class='form__right']//input[@id='EmailTo1']")
+	public WebElement inputTellYourFriendsWindowSendToEmail;
+	
+	@FindBy(xpath = "//div[contains(@class,'ReactModalPortal')]//div[@class='modal__body']//form//div[@class='form__right']//button[@class='modal__show-more--button']")
+	public WebElement btnTellYourFriendsWindowAddRecipient;
+	
+	@FindBy(xpath = "//div[contains(@class,'ReactModalPortal')]//div[@class='modal__body']//form//div[@class='form__center']//b/parent::div")
+	public WebElement lblTellYourFriendsWindowAddMessage;
+	
+	@FindBy(xpath = "//div[contains(@class,'ReactModalPortal')]//div[@class='modal__body']//form//div[@class='form__center']//textarea")
+	public WebElement inputTellYourFriendsWindowAddMessage;
+	
+	@FindBy(xpath = "//div[contains(@class,'ReactModalPortal')]//div[@class='modal__footer']//button[contains(@class,'modal__button--save')]")
+	public WebElement btnTellYourFriendsWindowSend;
+	
+	@FindBy(xpath = "//div[contains(@class,'ReactModalPortal')]//div[@class='modal__footer']//button[contains(@class,'modal__button--preview')]")
+	public WebElement btnTellYourFriendsWindowPreview;
+	
+	// Tell your friends Preview window 
+	@FindBy(xpath = "//div[contains(@class,'ReactModalPortal')]//div[@class='modal__header']//button[@class='modal__button-back']")
+	public WebElement btnTellYourFriendsPreviewWindowBack;
+	
+	@FindBy(xpath = "//div[contains(@class,'ReactModalPortal')]//div[@class='modal__header']//h3")
+	public WebElement lblTellYourFriendsPreviewWindowTitle;
+	
+	@FindBy(xpath = "//div[contains(@class,'ReactModalPortal')]//div[@class='modal__header']//button[@class='modal__button-close']")
+	public WebElement btnTellYourFriendsPreviewWindowClose;
+	
+	@FindBy(xpath = "//div[contains(@class,'ReactModalPortal')]//div[@class='modal__body']//div[@class='preview__row--wrap'][1]//div[@class='preview__row--left']//h3")
+	public WebElement lblTellYourFriendsPreviewWindowFrom;
+	
+	@FindBy(xpath = "//div[contains(@class,'ReactModalPortal')]//div[@class='modal__body']//div[@class='preview__row--wrap'][1]//div[@class='preview__row--right']")
+	public WebElement lblTellYourFriendsPreviewWindowFromNameAndEmail;
+	
+	@FindBy(xpath = "//div[contains(@class,'ReactModalPortal')]//div[@class='modal__body']//div[@class='preview__row--wrap'][2]//div[@class='preview__row--left']//h3")
+	public WebElement lblTellYourFriendsPreviewWindowSendTo;
+	
+	@FindBy(xpath = "//div[contains(@class,'ReactModalPortal')]//div[@class='modal__body']//div[@class='preview__row--wrap'][2]//div[@class='preview__row--right']")
+	public WebElement lblTellYourFriendsPreviewWindowSendToNameAndEmail;
+	
+	@FindBy(xpath = "//div[contains(@class,'ReactModalPortal')]//div[@class='modal__body']//div[@class='preview__row--wrap'][3]//div[@class='preview__row--left']//h3")
+	public WebElement lblTellYourFriendsPreviewWindowYourMessage;
+	
+	@FindBy(xpath = "//div[contains(@class,'ReactModalPortal')]//div[@class='modal__body']//div[@class='preview__row--wrap'][3]//div[@class='preview__row--right']")
+	public WebElement lblTellYourFriendsPreviewWindowYourMessageContent;
+	
+	@FindBy(xpath = "//div[contains(@class,'ReactModalPortal')]//div[@class='modal__footer']//button[contains(@class,'modal__button--save')]")
+	public WebElement btnTellYourFriendsPreviewWindowSend;
+	
+	@FindBy(xpath = "//div[contains(@class,'ReactModalPortal')]//div[@class='modal__footer']//button[contains(@class,'modal__button--preview')]")
+	public WebElement btnTellYourFriendsPreviewWindowBackToEditEmail;
+	
+	//Sent window for Tell your friends
+	@FindBy(xpath = "//div[contains(@class,'ReactModalPortal')]//div[@class='modal__header']//button[@class='modal__button-back']")
+	public WebElement btnTellYourFriendsSentWindowBack;
+	
+	@FindBy(xpath = "//div[contains(@class,'ReactModalPortal')]//div[@class='modal__header']//h3")
+	public WebElement lblTellYourFriendsSentWindowTitle;
+	
+	@FindBy(xpath = "//div[contains(@class,'ReactModalPortal')]//div[@class='modal__header']//button[@class='modal__button-close']")
+	public WebElement btnTellYourFriendsSentWindowClose;
+	
+	@FindBy(xpath = "//div[contains(@class,'ReactModalPortal')]//div[@class='modal__body']//*[@class='modal__thanks--h3']")
+	public WebElement lblTellYourFriendsSentWindowSentMessage;
 		
 	//product teaser part
 	@FindBy(xpath = "//div[@id='pdpMainDiv']//div[@id='divProductTeaser']")
@@ -1870,5 +1975,117 @@ public class ProductDetailPage extends BasePage {
 		prp.waitForPageLoading();
 		this.getReusableActionsInstance().staticWait(3000);	
 	}
+	
+	public boolean openTellYourFriendsWindow() {
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavShareEmail);
+		this.lnkFavShareEmail.click();
+		return this.waitForCondition(Driver->{return this.lblTellYourFriendsWindowTitle.isDisplayed();}, 30000);
+	}
+	
+	public void verifyTellYourFriendsWindowContent() {
+		openTellYourFriendsWindow();
+		
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.btnTellYourFriendsWindowClose),"The close button of TellYourFriends Window is displaying correctly","The close button of TellYourFriends Window is not displaying correctly");
+		reporter.softAssert(!this.getElementText(this.lblTellYourFriendsWindowTitle).isEmpty(),"The TellYourFriends Window title is not empty","The TellYourFriends Window title is empty");	
+		reporter.softAssert(!this.getElementText(this.lblTellYourFriendsWindowRequiredInfo).isEmpty(),"The required info of TellYourFriends Window is not empty","The required info of TellYourFriends Window is empty");
+		
+		reporter.softAssert(!this.getElementText(this.lblTellYourFriendsWindowFrom).isEmpty(),"The From text of TellYourFriends Window is not empty","The From text of TellYourFriends Window is empty");
+		reporter.softAssert(!this.getElementText(this.lblTellYourFriendsWindowFromName).isEmpty(),"The From name text of TellYourFriends Window is not empty","The From name text of TellYourFriends Window is empty");
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.inputTellYourFriendsWindowFromName),"The From name input of TellYourFriends Window is displaying correctly","The From name input of TellYourFriends Window is not displaying correctly");
+		reporter.softAssert(!this.getElementText(this.lblTellYourFriendsWindowFromEmail).isEmpty(),"The From email text of TellYourFriends Window is not empty","The From email text of TellYourFriends Window is empty");
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.inputTellYourFriendsWindowFromEmail),"The From email input of TellYourFriends Window is displaying correctly","The From email input of TellYourFriends Window is not displaying correctly");
+		
+		reporter.softAssert(!this.getElementText(this.lblTellYourFriendsWindowSendTo).isEmpty(),"The SendTo text of TellYourFriends Window is not empty","The SendTo text of TellYourFriends Window is empty");
+		reporter.softAssert(!this.getElementText(this.lblTellYourFriendsWindowSendToName).isEmpty(),"The SendTo name text of TellYourFriends Window is not empty","The SendTo name text of TellYourFriends Window is empty");
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.inputTellYourFriendsWindowSendToName),"The SendTo name input of TellYourFriends Window is displaying correctly","The SendTo name input of TellYourFriends Window is not displaying correctly");
+		reporter.softAssert(!this.getElementText(this.lblTellYourFriendsWindowSendToEmail).isEmpty(),"The SendTo email text of TellYourFriends Window is not empty","The SendTo email text of TellYourFriends Window is empty");
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.inputTellYourFriendsWindowSendToEmail),"The SendTo email input of TellYourFriends Window is displaying correctly","The SendTo email input of TellYourFriends Window is not displaying correctly");
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.btnTellYourFriendsWindowAddRecipient),"The AddRecipient button of TellYourFriends Window is displaying correctly","The AddRecipient button of TellYourFriends Window is not displaying correctly");
+		
+		reporter.softAssert(!this.getElementText(this.lblTellYourFriendsWindowAddMessage).isEmpty(),"The AddMessage text of TellYourFriends Window is not empty","The AddMessage text of TellYourFriends Window is empty");
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.inputTellYourFriendsWindowAddMessage),"The AddMessage input of TellYourFriends Window is displaying correctly","The AddMessage input of TellYourFriends Window is not displaying correctly");
+
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.btnTellYourFriendsWindowSend),"The send button of TellYourFriends Window is displaying correctly","The send button of TellYourFriends Window is not displaying correctly");
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.btnTellYourFriendsWindowPreview),"The preview button of TellYourFriends Window is displaying correctly","The preview button of TellYourFriends Window is not displaying correctly");
+	}
+	
+	public void verifyTellYourFriendsPreviewWindowContent() {
+		String lsFromName="fromPerson",lsFromEmail="testFrom@test.com";
+		String lsSendToName="sendToPerson",lsSendToEmail="testTo@test.com";
+		String lsAddMessage="Addional test message";
+		
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputTellYourFriendsWindowFromName);
+		this.inputTellYourFriendsWindowFromName.sendKeys(lsFromName);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputTellYourFriendsWindowFromEmail);
+		this.inputTellYourFriendsWindowFromEmail.sendKeys(lsFromEmail);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputTellYourFriendsWindowSendToName);
+		this.inputTellYourFriendsWindowSendToName.sendKeys(lsSendToName);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputTellYourFriendsWindowSendToEmail);
+		this.inputTellYourFriendsWindowSendToEmail.sendKeys(lsSendToEmail);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputTellYourFriendsWindowAddMessage);
+		this.inputTellYourFriendsWindowAddMessage.sendKeys(lsAddMessage);
+		
+		this.getReusableActionsInstance().staticWait(1000);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnTellYourFriendsWindowPreview);
+		this.btnTellYourFriendsWindowPreview.click();
+		this.waitForCondition(Driver->{return this.lblTellYourFriendsPreviewWindowTitle.isDisplayed();}, 30000);
+		this.getReusableActionsInstance().staticWait(1000);
+		
+		String lsPreviewFromNameAndEmail=this.getElementText(this.lblTellYourFriendsPreviewWindowFromNameAndEmail);
+		reporter.softAssert(lsPreviewFromNameAndEmail.contains(lsFromName),"The preview From message is containing input From name","The preview From message is not containing input From name");
+		reporter.softAssert(lsPreviewFromNameAndEmail.contains(lsFromEmail),"The preview From message is containing input From email","The preview From message is not containing input From email");
+		
+		String lsPreviewSendToNameAndEmail=this.getElementText(this.lblTellYourFriendsPreviewWindowSendToNameAndEmail);
+		reporter.softAssert(lsPreviewSendToNameAndEmail.contains(lsSendToName),"The preview SendTo message is containing input SendTo name","The preview SendTo message is not containing input SendTo name");
+		reporter.softAssert(lsPreviewSendToNameAndEmail.contains(lsSendToEmail),"The preview SendTo message is containing input SendTo email","The preview SendTo message is not containing input SendTo email");
+		
+		String lsPreviewYourMessage=this.getElementText(this.lblTellYourFriendsPreviewWindowYourMessageContent);
+		reporter.softAssert(lsPreviewYourMessage.equalsIgnoreCase(lsAddMessage),"The preview Your message is equal to input Adding Messge","The preview Your message is not equal to input Adding Messge");
+
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.btnTellYourFriendsPreviewWindowSend),"The Preview send button is displaying correctly","The Preview send button is not displaying correctly");
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.btnTellYourFriendsPreviewWindowBackToEditEmail),"The Preview BackToEditEmail button is displaying correctly","The Preview BackToEditEmail button is not displaying correctly");
+		
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnTellYourFriendsPreviewWindowBackToEditEmail);
+		this.btnTellYourFriendsPreviewWindowBackToEditEmail.click();
+		this.waitForCondition(Driver->{return this.lblTellYourFriendsWindowTitle.isDisplayed();}, 30000);
+		this.getReusableActionsInstance().staticWait(1000);
+	}
+	
+	public void verifyTellYourFriendsSentWindowContent(String lsTellYourFriendsSentMessage) {
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnTellYourFriendsWindowSend);
+		this.btnTellYourFriendsWindowSend.click();
+		this.waitForCondition(Driver->{return this.lblTellYourFriendsSentWindowTitle.isDisplayed();}, 30000);
+		this.getReusableActionsInstance().staticWait(1000);
+		
+		String lsMessage=this.getElementText(this.lblTellYourFriendsSentWindowSentMessage).trim();
+		reporter.softAssert(lsMessage.equalsIgnoreCase(lsTellYourFriendsSentMessage),"The confirmation message in sent window is equal to '"+lsTellYourFriendsSentMessage+"'","The confirmation message in sent window is not equal to '"+lsTellYourFriendsSentMessage+"'");
+		
+		this.btnTellYourFriendsWindowClose.click();
+		this.getReusableActionsInstance().staticWait(1000);
+	}
+	
+	public boolean checkIfFavShareMobileHighlighted() {
+		return !this.hasElementAttribute(this.lnkFavShareMobile, "class");
+	}
+	
+	public void verifyFavShareMobileAction(String lsUserName, String lsPassword) {
+		LoginPage loginPage=new LoginPage(this.getDriver());
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavShareMobile);
+		this.lnkFavShareMobile.click();
+		this.waitForCondition(Driver->{return loginPage.lblSignIn.isDisplayed();}, 30000);
+		this.getReusableActionsInstance().staticWait(1000);
+		
+		reporter.softAssert(this.URL().toLowerCase().contains("signin"),"The page has been navigated to signin page while no user login","The page has not been navigated to signin page while no user login");
+		
+		loginPage.LoginWithoutWaitingTime(lsUserName,lsPassword);
+		this.waitForCondition(Driver->{return this.lblProductName.isDisplayed();}, 60000);
+		this.getReusableActionsInstance().staticWait(1000);
+		
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavShareMobile);		
+		this.lnkFavShareMobile.click();		
+		this.getReusableActionsInstance().staticWait(5000);		
+		reporter.softAssert(checkIfFavShareMobileHighlighted(),"The FavShareMobile icon is highlighted after clicking with user login", "The FavShareMobile icon is not highlighted after clicking with user login");
+	}
+	
 
 }

@@ -97,6 +97,7 @@ public class LoginPage extends BasePage {
 	 * Method to login
 	 * @param String lsUserName: user name
 	 * @param String lsPassword: password  
+	 * @param String lsFirstName: user's first name
 	 * @return true/false
 	 * @author Wei.Li
 	 */
@@ -128,6 +129,61 @@ public class LoginPage extends BasePage {
 		
 		return waitForCondition(Driver->{return (new GlobalFooterPage(this.getDriver())).lblMyAccountLoginName.getText().toUpperCase().contains(lsFirstName.toUpperCase());},90000);
 				
+	}
+	
+	/**
+	 * Method to login only for DeskTop
+	 * @param String lsUserName: user name
+	 * @param String lsPassword: password  
+	 * @param String lsFirstName: user's first name
+	 * @return true/false
+	 * @author Wei.Li
+	 */
+	public boolean LoginForDesktop(String lsUserName, String lsPassword,String lsFirstName) {
+		getReusableActionsInstance().javascriptScrollToTopOfPage();
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInMainMenu);
+		String strBrowser = System.getProperty("Browser").trim();
+		if (strBrowser.toLowerCase().contains("android") || strBrowser.toLowerCase().contains("ios")
+				|| strBrowser.toLowerCase().contains("mobile")) {		
+			this.btnSignInMainMenu.click();
+		} else {
+			getReusableActionsInstance().scrollToElement(this.btnSignInMainMenu);
+		}			
+		getReusableActionsInstance().staticWait(1000);
+		
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInNav);
+		this.btnSignInNav.click();
+		(new GlobalFooterPage(this.getDriver())).waitForPageLoading();
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputUserName);
+		this.inputUserName.sendKeys(lsUserName);
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputPassword);
+		this.inputPassword.sendKeys(lsPassword);
+		getReusableActionsInstance().staticWait(1000);
+		
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSubmit);
+		this.btnSubmit.click();
+		getReusableActionsInstance().javascriptScrollToTopOfPage();
+		getReusableActionsInstance().staticWait(5000);
+		
+		return waitForCondition(Driver->{return (new GlobalHeaderPage(this.getDriver())).Signinlnk.getText().toUpperCase().contains(lsFirstName.toUpperCase());},90000);
+	}
+	
+	/**
+	 * Method to login without waiting time, need add explicit wait after call this function 
+	 * @param String lsUserName: user name
+	 * @param String lsPassword: password  
+	 * @return void
+	 * @author Wei.Li
+	 */
+	public void LoginWithoutWaitingTime(String lsUserName, String lsPassword) {
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputUserName);
+		this.inputUserName.sendKeys(lsUserName);
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputPassword);
+		this.inputPassword.sendKeys(lsPassword);
+		getReusableActionsInstance().staticWait(1000);
+		
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSubmit);
+		this.btnSubmit.click();
 	}
 	
 	/**
