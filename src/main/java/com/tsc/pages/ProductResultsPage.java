@@ -251,8 +251,8 @@ public class ProductResultsPage extends BasePage{
 	public boolean getSearchResultLoad(String searchKeyword) {
 		String lsUrl=this.URL();
 		GlobalHeaderPage globalHeader=new GlobalHeaderPage(this.getDriver());
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeader.searchBox);
-		this.clearContent(globalHeader.searchBox);
+		//this.getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeader.searchBox);
+		//this.clearContent(globalHeader.searchBox);
 		//char[] inputString = searchKeyword.toCharArray();
 		String[] data = searchKeyword.codePoints().mapToObj(cp->new String(Character.toChars(cp))).toArray(size->new String[size]);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeader.searchBox);
