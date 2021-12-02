@@ -251,19 +251,19 @@ public class ProductResultsPage extends BasePage{
 	public boolean getSearchResultLoad(String searchKeyword) {
 		String lsUrl=this.URL();
 		GlobalHeaderPage globalHeader=new GlobalHeaderPage(this.getDriver());
-		getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeader.searchBox);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeader.searchBox);
 		this.clearContent(globalHeader.searchBox);
 		//char[] inputString = searchKeyword.toCharArray();
 		String[] data = searchKeyword.codePoints().mapToObj(cp->new String(Character.toChars(cp))).toArray(size->new String[size]);
-		getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeader.searchBox);
-		getReusableActionsInstance().clickIfAvailable(globalHeader.searchBox,3000);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeader.searchBox);
+		this.getReusableActionsInstance().clickIfAvailable(globalHeader.searchBox,3000);
 		for(String inputText:data){
 			globalHeader.searchBox.sendKeys(inputText);
-			getReusableActionsInstance().staticWait(1000);
+			this.getReusableActionsInstance().staticWait(1000);
 		}
 		//globalHeader.searchBox.sendKeys(searchKeyword);
 		//globalHeader.btnSearchSubmit.click();
-		getReusableActionsInstance().staticWait(3000);
+		this.getReusableActionsInstance().staticWait(3000);
 		waitForCondition(Driver->{
 			return this.searchResultSection.isDisplayed();
 		},90000);

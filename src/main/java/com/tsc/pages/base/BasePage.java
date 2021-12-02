@@ -343,7 +343,9 @@ import utils.ReusableActions;
 	 * @author Wei.Li
 	 */
 	 public void clearContent(WebElement element) {
-		 element.click();
+		 this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+		 this.getReusableActionsInstance().clickIfAvailable(element,3000);
+		 //element.click();
 		 /*element.sendKeys(Keys.chord(Keys.CONTROL, "a"));
 		 element.sendKeys(Keys.chord(Keys.DELETE));*/
 
