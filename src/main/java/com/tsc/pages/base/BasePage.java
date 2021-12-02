@@ -744,4 +744,11 @@ import utils.ReusableActions;
 		urlFavouriteslandingpage = getDriver().getCurrentUrl();
 		return urlFavouriteslandingpage;
 	}
+
+	/**
+	 * Method to get the browser name where test is executing
+	 */
+	public String getExecutionBrowserName(){
+		return System.getProperty("Browser");
+	}
 }

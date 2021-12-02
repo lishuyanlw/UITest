@@ -620,8 +620,9 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	public boolean verifyUrlContainDimensionAndKeyword(String lsKeyword) {
-		String lsUrl=this.URL();		
-		if(lsUrl.toLowerCase().contains("dimensions=")) {			
+		String lsUrl=this.URL();
+		getReporter().reportLog("Url for browser: "+this.getExecutionBrowserName()+ " is: "+lsUrl);
+		if(lsUrl.toLowerCase().contains("dimensions=")) {
 			return lsUrl.contains("dimensions=")&&lsUrl.contains("searchterm=")&&lsUrl.contains(this.getEncodingKeyword(lsKeyword));
 		}
 		else {

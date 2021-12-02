@@ -30,13 +30,13 @@ public class SR_TC01_Verify_ProductSearchResult extends BaseTest{
 	String lsSearchResultPageDefaultSetting=TestDataHandler.constantData.getSearchResultPage().getLbl_SearchResultPageDefaultSetting();
 	List<WebElement> productList;
 	String lsMsg="";
-	
+
 	int keyWordSize=lsKeywordList.size();
 	for(int i=0;i<keyWordSize;i++) {		
 		getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(i).trim());
 		
 		String lsTestModel=getProductResultsPageThreadLocal().judgeTestModel();	
-		reporter.reportLog("Search Model and keyword : "+lsTestModel+" : "+lsKeywordList.get(i));
+		reporter.reportLog("Search Model and keyword : "+lsTestModel+" : "+lsKeywordList.get(i)+ " for browser: "+getProductResultsPageThreadLocal().getExecutionBrowserName());
 		
 		switch(lsTestModel) {
 		case "NormalSearch":
