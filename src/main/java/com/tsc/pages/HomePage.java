@@ -163,7 +163,11 @@ public class HomePage extends BasePage{
 	WebElement btnShopByDepartmentNext;	
 			
 	public void closeadd() {
-		btnClose.click();
+		if(waitForCondition(Driver->{return this.btnClose.isDisplayed();},60000)){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnClose);
+			this.getReusableActionsInstance().clickIfAvailable(this.btnClose,3000);
+		}
+		//btnClose.click();
 		waitForPageLoad();
 	}
 
