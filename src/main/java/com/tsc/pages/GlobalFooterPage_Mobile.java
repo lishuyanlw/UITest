@@ -33,7 +33,8 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 	@Override
 	public void verifyTSCCustomerHubLlinks(List<List<String>> lstNameAndLinks) {		
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblTSCCustomerHubText);
-		this.lblTSCCustomerHubText.click();
+		this.getReusableActionsInstance().clickIfAvailable(this.lblTSCCustomerHubText);
+		//this.lblTSCCustomerHubText.click();
 		this.waitForCondition(Driver->{return this.lblTSCCustomerHubText.getAttribute("class").isEmpty();}, 30000);
 		getReusableActionsInstance().staticWait(5000);
 				
@@ -52,8 +53,9 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 	
 	@Override
 	public void verifyAboutTSCLinks(List<List<String>> lstNameAndLinks) {
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAboutTSCText);
-		this.lblAboutTSCText.click();
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAboutTSCText);
+		this.getReusableActionsInstance().clickIfAvailable(this.lblAboutTSCText);
+		//this.lblAboutTSCText.click();
 		this.waitForCondition(Driver->{return this.lblAboutTSCText.getAttribute("class").isEmpty();}, 30000);
 		getReusableActionsInstance().staticWait(5000);
 		
@@ -72,8 +74,9 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 	@Override
 	public WebElement getServiceWebElement(String lsService) {	
 		if(!this.lblTSCCustomerHubText.getAttribute("class").isEmpty()) {
-			getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblTSCCustomerHubText);
-			this.lblTSCCustomerHubText.click();
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblTSCCustomerHubText);
+			this.getReusableActionsInstance().clickIfAvailable(this.lblTSCCustomerHubText);
+			//this.lblTSCCustomerHubText.click();
 			this.waitForCondition(Driver->{return this.lblTSCCustomerHubText.getAttribute("class").isEmpty();}, 30000);
 			getReusableActionsInstance().staticWait(5000);
 		}
@@ -81,8 +84,9 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 		WebElement selectedItem = this.getElementFromList(this.lnkTSCCustomerHubAllLinks, lsService);
 		if (selectedItem == null) {
 			if(!this.lblAboutTSCText.getAttribute("class").isEmpty()) {
-				getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAboutTSCText);
-				this.lblAboutTSCText.click();
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAboutTSCText);
+				this.getReusableActionsInstance().clickIfAvailable(this.lblAboutTSCText);
+				//this.lblAboutTSCText.click();
 				this.waitForCondition(Driver->{return this.lblAboutTSCText.getAttribute("class").isEmpty();}, 30000);				
 			}
 			
@@ -96,7 +100,8 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 		for(WebElement item: this.lstMyAccountSerivePanelHeading) {
 			if(item.getAttribute("class").contains("collapsed")) {
 				getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-				item.click();
+				getReusableActionsInstance().clickIfAvailable(item);
+				//item.click();
 				this.waitForCondition(Driver->{return !item.getAttribute("class").contains("collapsed");}, 30000);
 				getReusableActionsInstance().staticWait(5000);
 			}
@@ -122,7 +127,8 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 		
 		if(!this.lblTSCCustomerHubText.getAttribute("class").isEmpty()) {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblTSCCustomerHubText);
-			this.lblTSCCustomerHubText.click();
+			getReusableActionsInstance().clickIfAvailable(this.lblTSCCustomerHubText);
+			//this.lblTSCCustomerHubText.click();
 			this.waitForCondition(Driver->{return this.lblTSCCustomerHubText.getAttribute("class").isEmpty();}, 30000);
 			getReusableActionsInstance().staticWait(5000);
 		}
@@ -144,7 +150,8 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 		
 		if(!this.lblAboutTSCText.getAttribute("class").isEmpty()) {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAboutTSCText);
-			this.lblAboutTSCText.click();
+			getReusableActionsInstance().clickIfAvailable(this.lblAboutTSCText);
+			//this.lblAboutTSCText.click();
 			this.waitForCondition(Driver->{return this.lblAboutTSCText.getAttribute("class").isEmpty();}, 30000);
 			getReusableActionsInstance().staticWait(5000);
 		}
@@ -166,7 +173,8 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 		
 		if(!this.lblTSCCustomerHubText.getAttribute("class").isEmpty()) {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblTSCCustomerHubText);
-			this.lblTSCCustomerHubText.click();
+			getReusableActionsInstance().clickIfAvailable(this.lblTSCCustomerHubText);
+			//this.lblTSCCustomerHubText.click();
 			this.waitForCondition(Driver->{return this.lblTSCCustomerHubText.getAttribute("class").isEmpty();}, 30000);
 			getReusableActionsInstance().staticWait(5000);
 		}
@@ -189,7 +197,8 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 		
 		if(!this.lblAboutTSCText.getAttribute("class").isEmpty()) {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAboutTSCText);
-			this.lblAboutTSCText.click();
+			getReusableActionsInstance().clickIfAvailable(this.lblAboutTSCText);
+			//this.lblAboutTSCText.click();
 			this.waitForCondition(Driver->{return this.lblAboutTSCText.getAttribute("class").isEmpty();}, 30000);
 			getReusableActionsInstance().staticWait(5000);
 		}

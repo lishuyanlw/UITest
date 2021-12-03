@@ -98,9 +98,9 @@ public class LoginPage extends BasePage {
 
 	/**
 	 * Method to login
-	 * @param String lsUserName: user name
-	 * @param String lsPassword: password  
-	 * @param String lsFirstName: user's first name
+	 * @param-String lsUserName: user name
+	 * @param-String lsPassword: password
+	 * @param-String lsFirstName: user's first name
 	 * @return true/false
 	 * @author Wei.Li
 	 */
@@ -109,15 +109,18 @@ public class LoginPage extends BasePage {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInMainMenu);
 		String strBrowser = System.getProperty("Browser").trim();
 		if (strBrowser.toLowerCase().contains("android") || strBrowser.toLowerCase().contains("ios")
-				|| strBrowser.toLowerCase().contains("mobile")) {		
-			this.btnSignInMainMenu.click();
+				|| strBrowser.toLowerCase().contains("mobile")) {
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInMainMenu);
+			this.getReusableActionsInstance().clickIfAvailable(this.btnSignInMainMenu);
+			//this.btnSignInMainMenu.click();
 		} else {
 			getReusableActionsInstance().scrollToElement(this.btnSignInMainMenu);
 		}			
 		getReusableActionsInstance().staticWait(1000);
 		
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInNav);
-		this.btnSignInNav.click();
+		this.getReusableActionsInstance().clickIfAvailable(this.btnSignInNav);
+		//this.btnSignInNav.click();
 		(new GlobalFooterPage(this.getDriver())).waitForPageLoading();
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputUserName);
 		this.inputUserName.sendKeys(lsUserName);
@@ -126,7 +129,8 @@ public class LoginPage extends BasePage {
 		getReusableActionsInstance().staticWait(1000);
 		
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSubmit);
-		this.btnSubmit.click();
+		this.getReusableActionsInstance().clickIfAvailable(this.btnSubmit);
+		//this.btnSubmit.click();
 		getReusableActionsInstance().javascriptScrollToTopOfPage();
 		getReusableActionsInstance().staticWait(5000);
 		
@@ -136,9 +140,9 @@ public class LoginPage extends BasePage {
 	
 	/**
 	 * Method to login only for DeskTop
-	 * @param String lsUserName: user name
-	 * @param String lsPassword: password  
-	 * @param String lsFirstName: user's first name
+	 * @param-String lsUserName: user name
+	 * @param-String lsPassword: password
+	 * @param-String lsFirstName: user's first name
 	 * @return true/false
 	 * @author Wei.Li
 	 */
@@ -155,7 +159,8 @@ public class LoginPage extends BasePage {
 		getReusableActionsInstance().staticWait(1000);
 		
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInNav);
-		this.btnSignInNav.click();
+		this.getReusableActionsInstance().clickIfAvailable(this.btnSignInNav);
+		//this.btnSignInNav.click();
 		(new GlobalFooterPage(this.getDriver())).waitForPageLoading();
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputUserName);
 		this.inputUserName.sendKeys(lsUserName);
@@ -164,7 +169,8 @@ public class LoginPage extends BasePage {
 		getReusableActionsInstance().staticWait(1000);
 		
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSubmit);
-		this.btnSubmit.click();
+		this.getReusableActionsInstance().clickIfAvailable(this.btnSubmit);
+		//this.btnSubmit.click();
 		getReusableActionsInstance().javascriptScrollToTopOfPage();
 		getReusableActionsInstance().staticWait(5000);
 		
@@ -173,8 +179,8 @@ public class LoginPage extends BasePage {
 	
 	/**
 	 * Method to login without waiting time, need add explicit wait after call this function 
-	 * @param String lsUserName: user name
-	 * @param String lsPassword: password  
+	 * @param-String lsUserName: user name
+	 * @param-String lsPassword: password
 	 * @return void
 	 * @author Wei.Li
 	 */
@@ -188,7 +194,8 @@ public class LoginPage extends BasePage {
 		getReusableActionsInstance().staticWait(1000);
 		
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSubmit);
-		this.btnSubmit.click();
+		this.getReusableActionsInstance().clickIfAvailable(this.btnSubmit);
+		//this.btnSubmit.click();
 	}
 	
 	/**
@@ -201,7 +208,8 @@ public class LoginPage extends BasePage {
 		getReusableActionsInstance().staticWait(300);
 		String lsUserMsg=this.btnSignInMainMenu.getText();
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignOutNav);
-		this.btnSignOutNav.click();
+		this.getReusableActionsInstance().clickIfAvailable(this.btnSignOutNav);
+		//this.btnSignOutNav.click();
 				
 		return waitForCondition(Driver->{return !lsUserMsg.equalsIgnoreCase(this.btnSignInMainMenu.getText());},30000);
 	}
@@ -218,7 +226,7 @@ public class LoginPage extends BasePage {
 	
 	/**
 	 * Method to get a menu item in popover
-	 * @param String lsItemTitle: menu item text	 
+	 * @param-String lsItemTitle: menu item text
 	 * @return WebElement
 	 * @author Wei.Li
 	 */
@@ -229,13 +237,15 @@ public class LoginPage extends BasePage {
 	
 	/**
 	 * Method to verify menu item list in popover
-	 * @param List<String> lstMenuItemPopover: menu item list	 
+	 * @param-List<String> lstMenuItemPopover: menu item list
 	 * @return void
 	 * @author Wei.Li
 	 */
 	public void verifyMenuItemInPopover(List<String> lstMenuItemPopover) {
 		if (!System.getProperty("Device").equalsIgnoreCase("Desktop")) {
-			this.SigninIcon.click();
+			getReusableActionsInstance().javascriptScrollByVisibleElement(this.SigninIcon);
+			this.getReusableActionsInstance().clickIfAvailable(this.SigninIcon);
+			//this.SigninIcon.click();
 			getReusableActionsInstance().staticWait(2000);
 			//getReusableActionsInstance().javascriptScrollByVisibleElement(this.cntSignInPopover);
 		}
@@ -255,7 +265,8 @@ public class LoginPage extends BasePage {
 	 */
 	public void verifySignInSection() {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInNav);
-		this.btnSignInNav.click();
+		this.getReusableActionsInstance().clickIfAvailable(this.btnSignInNav);
+		//this.btnSignInNav.click();
 		(new GlobalFooterPage(this.getDriver())).waitForPageLoading();
 		reporter.softAssert(getReusableActionsInstance().isElementVisible(this.inputUserName),"Input field is existing","Input field is not existing");
 		reporter.softAssert(getReusableActionsInstance().isElementVisible(this.inputPassword),"Password field is existing","Password field is not existing");
@@ -263,9 +274,9 @@ public class LoginPage extends BasePage {
 	
 	/**
 	 * Method to verify user first name is showing in SignIn heading menu
-	 * @param String lsUserName: user name 
-	 * @param String lsPassword: password 
-	 * @param String lsFirstName: user's first name	 
+	 * @param-String lsUserName: user name
+	 * @param-String lsPassword: password
+	 * @param-String lsFirstName: user's first name
 	 * @return void
 	 * @author Wei.Li
 	 */
@@ -278,7 +289,8 @@ public class LoginPage extends BasePage {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInMainMenu);
 		String lsSignInMsg=this.btnSignInMainMenu.getText();
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSubmit);
-		this.btnSubmit.click();
+		this.getReusableActionsInstance().clickIfAvailable(this.btnSubmit);
+		//this.btnSubmit.click();
 		
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInMainMenu);
 		waitForCondition(Driver->{return !lsSignInMsg.equalsIgnoreCase(this.btnSignInMainMenu.getText())&&!this.btnSignInMainMenu.getText().isEmpty();},30000);
