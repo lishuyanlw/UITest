@@ -2,6 +2,8 @@ package com.tsc.test.tests.productSearchResult;
 
 import java.io.IOException;
 import java.util.List;
+
+import com.tsc.pages.HomePage;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 import com.tsc.data.Handler.TestDataHandler;
@@ -16,8 +18,8 @@ public class SR_TC01_Verify_ProductSearchResult extends BaseTest{
 	 * CER-216
 	 * CER-218
 	 */
-	@Test(groups={"ProductSearch","Regression"})
-	public void validateProductSearchResult() throws IOException {	
+	@Test(groups={"ProductSearch","Regression","Regression_Tablet","Regression_Mobile"})
+	public void validateProductSearchResult() throws IOException {
 	getGlobalFooterPageThreadLocal().closePopupDialog();
 	
 	reporter.softAssert(getglobalheaderPageThreadLocal().validateURL((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");		
@@ -28,13 +30,13 @@ public class SR_TC01_Verify_ProductSearchResult extends BaseTest{
 	String lsSearchResultPageDefaultSetting=TestDataHandler.constantData.getSearchResultPage().getLbl_SearchResultPageDefaultSetting();
 	List<WebElement> productList;
 	String lsMsg="";
-	
+
 	int keyWordSize=lsKeywordList.size();
 	for(int i=0;i<keyWordSize;i++) {		
-		getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(i));
+		getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(i).trim());
 		
 		String lsTestModel=getProductResultsPageThreadLocal().judgeTestModel();	
-		reporter.reportLog("Search Model and keyword : "+lsTestModel+" : "+lsKeywordList.get(i));
+		reporter.reportLog("Search Model and keyword : "+lsTestModel+" : "+lsKeywordList.get(i)+ " for browser: "+getProductResultsPageThreadLocal().getExecutionBrowserName());
 		
 		switch(lsTestModel) {
 		case "NormalSearch":
@@ -46,14 +48,16 @@ public class SR_TC01_Verify_ProductSearchResult extends BaseTest{
 			}else {
 				reporter.reportLogFail(lsMsg);
 			}
-						
-			reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting), "The default setting of items per page is "+lsSearchResultPageDefaultSetting, "The default setting of items per page isn't "+lsSearchResultPageDefaultSetting);
+
+			if(!(System.getProperty("Device").equalsIgnoreCase("Mobile"))) {
+				reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting), "The default setting of items per page is "+lsSearchResultPageDefaultSetting, "The default setting of items per page isn't "+lsSearchResultPageDefaultSetting);
+			}
 			reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(), "Showing text pattern in filters is correct", "Showing text pattern in filters is incorrect");
 			
 			productList=getProductResultsPageThreadLocal().getProductList();
 			if(productList.size()>0) {
 				getProductResultsPageThreadLocal().verifySearchResultContent(productList);
-			}	
+			}
 			
 			reporter.softAssert(getProductResultsPageThreadLocal().verifyProductPagination(), "Product pagination is existing", "Product pagination is not existing");
 			break;
@@ -76,8 +80,10 @@ public class SR_TC01_Verify_ProductSearchResult extends BaseTest{
 			}else {
 				reporter.reportLogFail(lsMsg);
 			}
-						
-			reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting), "The default setting of items per page is "+lsSearchResultPageDefaultSetting, "The default setting of items per page isn't "+lsSearchResultPageDefaultSetting);
+
+			if(!(System.getProperty("Device").equalsIgnoreCase("Mobile"))) {
+				reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting), "The default setting of items per page is "+lsSearchResultPageDefaultSetting, "The default setting of items per page isn't "+lsSearchResultPageDefaultSetting);
+			}
 			reporter.softAssert(getProductResultsPageThreadLocal().VerifySearchResultWithProductItemNO(lsKeywordList.get(i)), "The itemNO in search results just contains those with search product number", "the itemNO in search results don't just contain those with search product number");
 			reporter.softAssert(getProductResultsPageThreadLocal().verifyProductPagination(), "Product pagination is existing", "Product pagination is not existing");
 			break;
@@ -89,14 +95,16 @@ public class SR_TC01_Verify_ProductSearchResult extends BaseTest{
 						
 			String lsTitle=getProductResultsPageThreadLocal().getProductResultPageTitle();
 			reporter.softAssert(lsTitle.equalsIgnoreCase(lsKeywordList.get(i))||lsTitle.equalsIgnoreCase("NoTitle"), "Search result page title is dispalyed as search keyword", "Search result page title is not dispalyed as search keyword");
-			
-			reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting), "The default setting of items per page is "+lsSearchResultPageDefaultSetting, "The default setting of items per page isn't "+lsSearchResultPageDefaultSetting);
+
+			if(!(System.getProperty("Device").equalsIgnoreCase("Mobile"))) {
+				reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting), "The default setting of items per page is "+lsSearchResultPageDefaultSetting, "The default setting of items per page isn't "+lsSearchResultPageDefaultSetting);
+			}
 			reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(), "Showing text pattern in filters is correct", "Showing text pattern in filters is incorrect");
 			
 			productList=getProductResultsPageThreadLocal().getProductList();
 			if(productList.size()>0) {
 				getProductResultsPageThreadLocal().verifySearchResultContent(productList);
-			}	
+			}
 			
 			reporter.softAssert(getProductResultsPageThreadLocal().verifyProductPagination(), "Product pagination is existing", "Product pagination is not existing");
 			

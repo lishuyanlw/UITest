@@ -2,6 +2,8 @@ package com.tsc.test.tests.productSearchResult;
 
 import java.io.IOException;
 import java.util.List;
+
+import com.tsc.pages.HomePage;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 import com.tsc.data.Handler.TestDataHandler;
@@ -12,8 +14,8 @@ public class SR_TC08_Verify_ProductSearchResult_PaginationTest extends BaseTest{
 	/*
 	 * CER-232
 	 */
-	@Test(groups={"ProductSearch","Regression"})
-	public void validateProductSearchResult_PaginationFunction() throws IOException {	
+	@Test(groups={"ProductSearch","Regression","Regression_Tablet","Regression_Mobile"})
+	public void validateProductSearchResult_PaginationFunction() throws IOException {
 	getGlobalFooterPageThreadLocal().closePopupDialog();
 	
 	reporter.softAssert(getglobalheaderPageThreadLocal().validateURL((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");		
@@ -45,7 +47,9 @@ public class SR_TC08_Verify_ProductSearchResult_PaginationTest extends BaseTest{
 		}
 						
 		reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(), "Showing text pattern in filters is correct", "Showing text pattern in filters is incorrect");
-		reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting), "The default setting of items per page is "+lsSearchResultPageDefaultSetting, "The default setting of items per page isn't "+lsSearchResultPageDefaultSetting);
+		if(!(System.getProperty("Device").equalsIgnoreCase("Mobile"))) {
+			reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting), "The default setting of items per page is "+lsSearchResultPageDefaultSetting, "The default setting of items per page isn't "+lsSearchResultPageDefaultSetting);
+		}
 		
 		productList=getProductResultsPageThreadLocal().getProductList();
 		if(productList.size()>0) {

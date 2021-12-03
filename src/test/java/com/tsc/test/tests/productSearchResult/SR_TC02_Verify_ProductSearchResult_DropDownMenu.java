@@ -2,6 +2,8 @@ package com.tsc.test.tests.productSearchResult;
 
 import java.io.IOException;
 import java.util.List;
+
+import com.tsc.pages.HomePage;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 import com.tsc.data.Handler.TestDataHandler;
@@ -14,8 +16,8 @@ public class SR_TC02_Verify_ProductSearchResult_DropDownMenu extends BaseTest{
 	 * CER-219
 	 * CER-513
 	 */
-	@Test(groups={"ProductSearch","Regression"})
-	public void validateProductSearchResult_DropdownMenu() throws IOException {	
+	@Test(groups={"ProductSearch","Regression","Regression_Tablet","Regression_Mobile"})
+	public void validateProductSearchResult_DropdownMenu() throws IOException {
 	getGlobalFooterPageThreadLocal().closePopupDialog();
 	
 	reporter.softAssert(getglobalheaderPageThreadLocal().validateURL((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");		
@@ -36,8 +38,9 @@ public class SR_TC02_Verify_ProductSearchResult_DropDownMenu extends BaseTest{
 		}
 				
 		reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(), "Showing text pattern in filters is correct", "Showing text pattern in filters is incorrect");
-		reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting), "The default setting of items per page is "+lsSearchResultPageDefaultSetting, "The default setting of items per page isn't "+lsSearchResultPageDefaultSetting);
-		
+		if(!(System.getProperty("Device").equalsIgnoreCase("Mobile"))) {
+			reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting), "The default setting of items per page is "+lsSearchResultPageDefaultSetting, "The default setting of items per page isn't "+lsSearchResultPageDefaultSetting);
+		}
 		if(getProductResultsPageThreadLocal().bVerifyTitle) {
 			reporter.softAssert(getProductResultsPageThreadLocal().verifyPageTitleForDropdown(), "Search result page title of "+getProductResultsPageThreadLocal().getProductResultPageTitle()+" is displayed as search keyword in dropdown menu", "Search result page title of "+getProductResultsPageThreadLocal().getProductResultPageTitle()+" is not displayed as search keyword in dropdown menu");
 		}
@@ -45,7 +48,7 @@ public class SR_TC02_Verify_ProductSearchResult_DropDownMenu extends BaseTest{
 		productList=getProductResultsPageThreadLocal().getProductList();
 		if(productList.size()>0) {
 			getProductResultsPageThreadLocal().verifySearchResultContent(productList);
-		}		
+		}
 		
 		}	
 	}

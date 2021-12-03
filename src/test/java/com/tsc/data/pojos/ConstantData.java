@@ -80,8 +80,8 @@ public class ConstantData {
         private Flyout flyout;
         private Map<String, List<String>> lst_WatchTSCNameAndLinksMap;
         private Map<String, List<String>> lst_HeaderNameAndLinksMap;
-        
-        
+
+
         public Map<String, List<String>> getLst_HeaderNameAndLinksMap() {
 			return lst_HeaderNameAndLinksMap;
 		}
@@ -98,12 +98,12 @@ public class ConstantData {
 			this.lst_WatchTSCNameAndLinksMap = lst_WatchTSCNameAndLinksMap;
 		}
 
-        public String getLbl_SignInLandingPage() {   
-        	return lbl_SignInLandingPage;   
+        public String getLbl_SignInLandingPage() {
+        	return lbl_SignInLandingPage;
         }
 
         public void setLbl_SignInLandingPage(String lbl_SignInLandingPage) {
-        	this.lbl_SignInLandingPage = lbl_SignInLandingPage; 
+        	this.lbl_SignInLandingPage = lbl_SignInLandingPage;
         }
 
         public String getLbl_ShoppingCartLinkName() {
@@ -445,11 +445,13 @@ public class ConstantData {
         private List<String> lst_SearchResultMessage;
         private List<String> lst_SortOption;
         private List<String> lst_FilterOptionHeader;
-        private List<SearchOption> lst_SearchOption;               
-        private List<String> lst_MoreButton;  
+        private List<SearchOption> lst_SearchOption;
+        private List<String> lst_MoreButton;
         private List<String> lst_DisappearAfterSelectFilter;
         private String lnk_product_result;
         private List<String> lbl_ProductRecommendationTitlePage;
+        private List<String> lst_Filter_Data;
+        private List<String> lst_SortOptionMobile;
 
         public List<String> getLst_SearchKeyword() {
             return lst_SearchKeyword;
@@ -499,6 +501,14 @@ public class ConstantData {
             this.lst_FilterOptionHeader = lst_FilterOptionHeader;
         }
 
+        public List<String> getLst_Filter_Data() { return lst_Filter_Data; }
+
+        public void setLst_Filter_Data(List<String> lst_Filter_Data) { this.lst_Filter_Data = lst_Filter_Data; }
+
+        public List<String> getLst_SortOptionMobile() { return lst_SortOptionMobile; }
+
+        public void setLst_SortOptionMobile(List<String> lst_SortOptionMobile) { this.lst_SortOptionMobile = lst_SortOptionMobile; }
+
         public List<SearchOption> getLst_SearchOption() {
             return lst_SearchOption;
         }
@@ -545,9 +555,9 @@ public class ConstantData {
         private String lbl_LandingPageBrandShopAll;
         private String lnk_ShopByBrandShopAll;
         private Map<String, List<String>> lst_FlyoutHeadingAndNameMap;
-        
-		public Map<String, List<String>> getLst_FlyoutHeadingAndNameMap() { 
-        	return lst_FlyoutHeadingAndNameMap;    
+
+		public Map<String, List<String>> getLst_FlyoutHeadingAndNameMap() {
+        	return lst_FlyoutHeadingAndNameMap;
         }
 
         public void setLst_FlyoutHeadingAndNameMap(Map<String, List<String>> lst_FlyoutHeadingAndNameMap) {
@@ -636,8 +646,8 @@ public class ConstantData {
         public void setLst_NameAndLinks(List<List<String>> lst_NameAndLinks) {
             this.lst_NameAndLinks = lst_NameAndLinks;
         }
-        
-        
+
+
     }
     
     public static class LoginUser {
