@@ -1616,14 +1616,14 @@ public class ProductDetailPage extends BasePage {
 	public void verifyVideoOff() {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkVideoInZoomImage);
 		this.lnkVideoInZoomImage.click();
-		this.waitForCondition(Driver->{return this.btnAutoPlayVideo.isDisplayed();}, 60000);
-		
+		this.getReusableActionsInstance().waitForElementVisibility(this.btnAutoPlayVideo,  60);
+				
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnAutoPlayVideo);
 		this.btnAutoPlayVideo.click();
 		this.getReusableActionsInstance().staticWait(1000);
 		this.getDriver().navigate().refresh();
 		this.waitForPageToLoad();
-		this.waitForCondition(Driver->{return this.lblZoomImageMessage.isDisplayed();}, 60000);
+		this.getReusableActionsInstance().waitForElementVisibility(this.lblZoomImageMessage,  60);		
 		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lnkCurrentZoomImage),"The image is displaying after video off and page refreshing instead of video displaying","The image is not displaying after video off and page refreshing instead of video displaying");
 
 	}
@@ -1776,9 +1776,9 @@ public class ProductDetailPage extends BasePage {
 		return this.checkChildElementExistingByTagName(element, "abbr");
 	}
 	
-	public boolean openWriteReview() {
+	public void openWriteReview() {
 		this.lnkReviewTabWriteReview.click();
-		return this.waitForCondition(Driver->{return this.lblWriteReviewHeaderTitle.isDisplayed();}, 30000);
+		this.getReusableActionsInstance().waitForElementVisibility(this.lblWriteReviewHeaderTitle,  60);		
 	}
 	
 	public void verifyWriteReviewContent() {
@@ -1816,7 +1816,7 @@ public class ProductDetailPage extends BasePage {
 	public void verifyWriteReviewAfterFailSubmitValidationMessage() {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnWriteReviewSubmitReview);
 		this.btnWriteReviewSubmitReview.click();
-		this.waitForCondition(Driver->{return this.lblWriteReviewAlertHeading.isDisplayed();}, 50000);
+		this.getReusableActionsInstance().waitForElementVisibility(this.lblWriteReviewAlertHeading,  60);		
 		this.getReusableActionsInstance().staticWait(1000);
 		
 		reporter.softAssert(!this.getElementText(this.lblWriteReviewAlertHeading).isEmpty(),"The Alert heading message is not empty","The Alert heading message is empty");
@@ -1844,7 +1844,7 @@ public class ProductDetailPage extends BasePage {
 		
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnWriteReviewSubmitReview);
 		this.btnWriteReviewSubmitReview.click();
-		this.waitForCondition(Driver->{return this.lblWriteReviewAfterSubmitPageTitle.isDisplayed();}, 50000);
+		this.getReusableActionsInstance().waitForElementVisibility(this.lblWriteReviewAfterSubmitPageTitle,  60);		
 		this.getReusableActionsInstance().staticWait(1000);		
 				
 		reporter.softAssert(this.getElementText(this.lblWriteReviewAfterSubmitPageTitle).equalsIgnoreCase(lsTitle),"The Title after submited WriteReview is equal to "+lsTitle,"The Title after submited WriteReview is not equal to "+lsTitle);
@@ -1920,8 +1920,8 @@ public class ProductDetailPage extends BasePage {
 	public void verifyClickingSeeMoreButtonAction() {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkProductTeaserSeeMore);
 		this.lnkProductTeaserSeeMore.click();
-		this.waitForCondition(Driver->{return this.imgStickyIcon.isDisplayed();}, 10000);
-		
+		this.getReusableActionsInstance().waitForElementVisibility(this.imgStickyIcon,  60);
+				
 		reporter.softAssert(getStickyTabSelectedStatus(this.btnStickyTabProductOverview),"The Product Overview tab is being selected","The Product Overview tab is not being selected");
 	}
 	
@@ -1976,10 +1976,10 @@ public class ProductDetailPage extends BasePage {
 		this.getReusableActionsInstance().staticWait(3000);	
 	}
 	
-	public boolean openTellYourFriendsWindow() {
+	public void openTellYourFriendsWindow() {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavShareEmail);
 		this.lnkFavShareEmail.click();
-		return this.waitForCondition(Driver->{return this.lblTellYourFriendsWindowTitle.isDisplayed();}, 30000);
+		this.getReusableActionsInstance().waitForElementVisibility(this.lblTellYourFriendsWindowTitle,  60);		
 	}
 	
 	public void verifyTellYourFriendsWindowContent() {
@@ -2028,7 +2028,7 @@ public class ProductDetailPage extends BasePage {
 		this.getReusableActionsInstance().staticWait(1000);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnTellYourFriendsWindowPreview);
 		this.btnTellYourFriendsWindowPreview.click();
-		this.waitForCondition(Driver->{return this.lblTellYourFriendsPreviewWindowTitle.isDisplayed();}, 30000);
+		this.getReusableActionsInstance().waitForElementVisibility(this.lblTellYourFriendsPreviewWindowTitle,  60);
 		this.getReusableActionsInstance().staticWait(1000);
 		
 		String lsPreviewFromNameAndEmail=this.getElementText(this.lblTellYourFriendsPreviewWindowFromNameAndEmail);
@@ -2047,14 +2047,14 @@ public class ProductDetailPage extends BasePage {
 		
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnTellYourFriendsPreviewWindowBackToEditEmail);
 		this.btnTellYourFriendsPreviewWindowBackToEditEmail.click();
-		this.waitForCondition(Driver->{return this.lblTellYourFriendsWindowTitle.isDisplayed();}, 30000);
+		this.getReusableActionsInstance().waitForElementVisibility(this.lblTellYourFriendsWindowTitle,  60);		
 		this.getReusableActionsInstance().staticWait(1000);
 	}
 	
 	public void verifyTellYourFriendsSentWindowContent(String lsTellYourFriendsSentMessage) {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnTellYourFriendsWindowSend);
 		this.btnTellYourFriendsWindowSend.click();
-		this.waitForCondition(Driver->{return this.lblTellYourFriendsSentWindowTitle.isDisplayed();}, 30000);
+		this.getReusableActionsInstance().waitForElementVisibility(this.lblTellYourFriendsSentWindowTitle,  60);		
 		this.getReusableActionsInstance().staticWait(1000);
 		
 		String lsMessage=this.getElementText(this.lblTellYourFriendsSentWindowSentMessage).trim();
@@ -2072,13 +2072,13 @@ public class ProductDetailPage extends BasePage {
 		LoginPage loginPage=new LoginPage(this.getDriver());
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavShareMobile);
 		this.lnkFavShareMobile.click();
-		this.waitForCondition(Driver->{return loginPage.lblSignIn.isDisplayed();}, 30000);
+		this.getReusableActionsInstance().waitForElementVisibility(loginPage.lblSignIn,  60);		
 		this.getReusableActionsInstance().staticWait(1000);
 		
 		reporter.softAssert(this.URL().toLowerCase().contains("signin"),"The page has been navigated to signin page while no user login","The page has not been navigated to signin page while no user login");
 		
 		loginPage.LoginWithoutWaitingTime(lsUserName,lsPassword);
-		this.waitForCondition(Driver->{return this.lblProductName.isDisplayed();}, 60000);
+		this.getReusableActionsInstance().waitForElementVisibility(this.lblProductName,  60);		
 		this.getReusableActionsInstance().staticWait(1000);
 		
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavShareMobile);		
