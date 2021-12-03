@@ -44,7 +44,7 @@ public class PD_TC03_Verify_ProductDetail_ReviewTab extends BaseTest{
 			reporter.reportLog("Review tab review list contents");
 			getProductDetailPageThreadLocal().verifyReviewTabPerReviewListContents();
 			String lsMsg=getProductDetailPageThreadLocal().checkReviewRateSortingBy(true);
-			if(lsMsg.isEmpty()) {
+			if(lsMsg.isEmpty()||lsMsg.contains("less than 2")) {
 				reporter.reportLogPass("Sorting by Highest rated passed!");
 			}
 			else {
@@ -53,7 +53,7 @@ public class PD_TC03_Verify_ProductDetail_ReviewTab extends BaseTest{
 			
 			getProductDetailPageThreadLocal().chooseReviewSortingOption("Lowest Rated");
 			lsMsg=getProductDetailPageThreadLocal().checkReviewRateSortingBy(false);
-			if(lsMsg.isEmpty()) {
+			if(lsMsg.isEmpty()||lsMsg.contains("less than 2")) {
 				reporter.reportLogPass("Sorting by Lowest rated passed!");
 			}
 			else {
