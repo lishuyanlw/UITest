@@ -90,9 +90,12 @@ public class LoginPage extends BasePage {
 	public WebElement btnEasyPayScheduleNav;
 		
 	@FindBy(xpath = "//div[contains(@class,'secondary-navigation__rhs-account')]//nav//a[contains(@class,'secondary-navigation__rhs-account-panel-link--sign-out')]")
-	public WebElement btnSignOutNav;	
+	public WebElement btnSignOutNav;
+
+	@FindBy(xpath = "//div[contains(@class,'secondary-navigation__rhs-account')]//a//*[@class='secondary-navigation__rhs-account-icon']")
+	public WebElement SigninIcon;
 	
-	
+
 	/**
 	 * Method to login
 	 * @param String lsUserName: user name
@@ -152,7 +155,7 @@ public class LoginPage extends BasePage {
 	public void hoverOnSignInHeadingMenu() {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInMainMenu);
 		getReusableActionsInstance().scrollToElement(this.btnSignInMainMenu);
-		getReusableActionsInstance().staticWait(300);		
+		getReusableActionsInstance().staticWait(300);
 	}
 	
 	/**
@@ -163,7 +166,7 @@ public class LoginPage extends BasePage {
 	 */
 	public WebElement getMenuItemInPopover(String lsItemTitle) {
 		String lsXpath=this.createXPath(".//a[normalize-space(.)='{0}']",lsItemTitle);
-		return this.cntSignInPopover.findElement(By.xpath(lsXpath));		
+		return this.cntSignInPopover.findElement(By.xpath(lsXpath));
 	}
 	
 	/**
@@ -173,13 +176,18 @@ public class LoginPage extends BasePage {
 	 * @author Wei.Li
 	 */
 	public void verifyMenuItemInPopover(List<String> lstMenuItemPopover) {
+		if (!System.getProperty("Device").equalsIgnoreCase("Desktop")) {
+			this.SigninIcon.click();
+			getReusableActionsInstance().staticWait(2000);
+			//getReusableActionsInstance().javascriptScrollByVisibleElement(this.cntSignInPopover);
+		}
 		this.hoverOnSignInHeadingMenu();
 		WebElement element;
-		for(String lsItem:lstMenuItemPopover) {			
+		for(String lsItem:lstMenuItemPopover) {
 			element=this.getMenuItemInPopover(lsItem);			
 			reporter.softAssert(element.getText().trim().equalsIgnoreCase(lsItem),"'"+lsItem+"' in SignIn popver is existing","'"+lsItem+"' in SignIn popver is not existing");
 			reporter.softAssert(!element.getAttribute("href").isEmpty(),"The href of '"+lsItem+"' in SignIn popver is not empty","The href of '"+lsItem+"' in SignIn popver is empty");
-		}			
+		}
 	}
 	
 	/**

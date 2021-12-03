@@ -3,6 +3,8 @@ package com.tsc.test.tests.productSearchResult;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.tsc.pages.HomePage;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 import com.tsc.data.Handler.TestDataHandler;
@@ -14,11 +16,11 @@ public class SR_TC05_Verify_ProductSearchResult_MultiFiltersTest extends BaseTes
 	 * CER-225
 	 * CER-226
 	 */
-	@Test(groups={"ProductSearch","Regression"})
-	public void validateProductSearchResult_MultiFiltersFunction() throws IOException {	
+	@Test(groups={"ProductSearch","Regression","Regression_Tablet","Regression_Mobile"})
+	public void validateProductSearchResult_MultiFiltersFunction() throws IOException {
 	getGlobalFooterPageThreadLocal().closePopupDialog();
-	
-	reporter.softAssert(getglobalheaderPageThreadLocal().validateURL((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");		
+
+	reporter.softAssert(getglobalheaderPageThreadLocal().validateURL((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");
 	reporter.reportLog("ProductSearch Page");
 	
 	List<List<String>> lsKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_SearchKeyword_DropDown();
@@ -27,13 +29,13 @@ public class SR_TC05_Verify_ProductSearchResult_MultiFiltersTest extends BaseTes
 	List<WebElement> productList;
 	
 	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0));	
-	String lsTestModel=getProductResultsPageThreadLocal().judgeTestModel();	
-	
+	String lsTestModel=getProductResultsPageThreadLocal().judgeTestModel();
+
 	//Test filter option combination
 	List<String> lstDisappearAfterSelectFilter=TestDataHandler.constantData.getSearchResultPage().getLst_DisappearAfterSelectFilter();
 	List<List<String>> lstFilterCombination=TestDataHandler.constantData.getSearchResultPage().getLst_SearchOption().get(2).getFilterOption();
 	String lsMsg="";
-	
+
 	//Save selected firstLevelFilter and secondLevelFilter
 	ArrayList<ArrayList<String>> selectedFilters=new ArrayList<ArrayList<String>>();
 	getProductResultsPageThreadLocal().bDefault=false;		
@@ -70,11 +72,13 @@ public class SR_TC05_Verify_ProductSearchResult_MultiFiltersTest extends BaseTes
 		}else {
 			reporter.reportLogFail(lsMsg);
 		}
-	}	
+	}
 			
 	reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(), "Showing text pattern in filters is correct", "Showing text pattern in filters is incorrect");
-	reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting), "The default setting of items per page is "+lsSearchResultPageDefaultSetting, "The default setting of items per page isn't "+lsSearchResultPageDefaultSetting);
-	
+	if(!(System.getProperty("Device").equalsIgnoreCase("Mobile"))) {
+			reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting), "The default setting of items per page is "+lsSearchResultPageDefaultSetting, "The default setting of items per page isn't "+lsSearchResultPageDefaultSetting);
+	}
+
 	productList=getProductResultsPageThreadLocal().getProductList();
 	if(productList.size()>0) {
 		getProductResultsPageThreadLocal().verifySearchResultContent(productList);
@@ -100,11 +104,13 @@ public class SR_TC05_Verify_ProductSearchResult_MultiFiltersTest extends BaseTes
 		}else {
 			reporter.reportLogFail(lsMsg);
 		}
-	}	
+	}
 			
 	reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(), "Showing text pattern in filters is correct", "Showing text pattern in filters is incorrect");
-	reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting), "The default setting of items per page is "+lsSearchResultPageDefaultSetting, "The default setting of items per page isn't "+lsSearchResultPageDefaultSetting);
-	
+	if(!(System.getProperty("Device").equalsIgnoreCase("Mobile"))) {
+		reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting), "The default setting of items per page is "+lsSearchResultPageDefaultSetting, "The default setting of items per page isn't "+lsSearchResultPageDefaultSetting);
+	}
+
 	productList=getProductResultsPageThreadLocal().getProductList();
 	if(productList.size()>0) {
 		getProductResultsPageThreadLocal().verifySearchResultContent(productList);

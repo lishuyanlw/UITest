@@ -1,6 +1,5 @@
 package com.tsc.pages;
 
-import java.sql.Driver;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,7 +18,6 @@ public class GlobalFooterPage extends BasePage {
 
 	public GlobalFooterPage(WebDriver driver) {
 		super(driver);
-
 	}
 
 	// Credit Card
@@ -441,21 +439,28 @@ public class GlobalFooterPage extends BasePage {
 
 	/**
 	 * Close popup dialog through clicking close button.
-	 * 
+	 *
 	 * @author Wei.Li
 	 */
 	public void closePopupDialog() {
-		if (waitForCondition(Driver -> {
+		HomePage homePage = new HomePage(getDriver());
+		if(waitForCondition(Driver->{return homePage.btnClose.isDisplayed();},60000)){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(homePage.btnClose);
+			this.getReusableActionsInstance().clickIfAvailable(homePage.btnClose,3000);
+		}
+		//btnClose.click();
+		homePage.waitForPageLoad();
+		/**if (waitForCondition(Driver -> {
 			return (new HomePage(this.getDriver())).btnClose.isDisplayed();
 		}, 40000)) {
 			(new HomePage(this.getDriver())).btnClose.click();
 		}
-		getReusableActionsInstance().staticWait(500);
+		getReusableActionsInstance().staticWait(500); */
 	}
 
 	/**
 	 * This method is to wait for page loading
-	 * 
+	 *
 	 * @return true/false
 	 * @author Wei.Li
 	 */
@@ -467,7 +472,7 @@ public class GlobalFooterPage extends BasePage {
 
 	/**
 	 * This method is to remove protocal headings(http/https)
-	 * 
+	 *
 	 * @param String lsUrl: input Url
 	 * @return Url
 	 * @author Wei.Li
@@ -486,7 +491,7 @@ public class GlobalFooterPage extends BasePage {
 
 	/**
 	 * This method is to verify the url after clicking element.
-	 * 
+	 *
 	 * @param WebElement element: input element
 	 * @param String     lsExpectedUrl: expected Url
 	 * @return true/false
@@ -503,7 +508,7 @@ public class GlobalFooterPage extends BasePage {
 
 	/**
 	 * This method is to get expected Url from yml file.
-	 * 
+	 *
 	 * @param List<String> lstSocialMedia: the Url from yml file
 	 * @param String       lsSpecificMediaName: input media name, i.e.,
 	 *                     "Facebook","Twitter","Instagram","Youtube","Pinterest"
@@ -521,7 +526,7 @@ public class GlobalFooterPage extends BasePage {
 
 	/**
 	 * This method is to get the link from yml file.
-	 * 
+	 *
 	 * @param List<String> lstNameAndLink: the list from yml file
 	 * @param String       lsSpecificName: input name
 	 * @param boolean      bEnglish: true for English while false for French
@@ -590,7 +595,7 @@ public class GlobalFooterPage extends BasePage {
 
 	/**
 	 * This method is to get the French name from yml file.
-	 * 
+	 *
 	 * @param List<String> lstNameAndLink: the list from yml file
 	 * @param String       lsSpecificName: input name
 	 * @return French name: note that the empty string means not found
@@ -608,7 +613,7 @@ public class GlobalFooterPage extends BasePage {
 
 	/**
 	 * This method is to get the English name from yml file.
-	 * 
+	 *
 	 * @param List<String> lstNameAndLink: the list from yml file
 	 * @param String       lsSpecificName: input name
 	 * @return French name: note that the empty string means not found
@@ -627,7 +632,7 @@ public class GlobalFooterPage extends BasePage {
 
 	/**
 	 * This method is to compare the link in front page and the one in yml file.
-	 * 
+	 *
 	 * @param String lsCurrentLink: the link in front page
 	 * @param String lsYmlLink: the link in yml file
 	 * @return true/false
@@ -647,7 +652,7 @@ public class GlobalFooterPage extends BasePage {
 
 	/**
 	 * This method is to switch language.
-	 * 
+	 *
 	 * @return true/false
 	 * @author Wei.Li
 	 */
@@ -665,7 +670,7 @@ public class GlobalFooterPage extends BasePage {
 
 	/**
 	 * This method is to get the element for specific service name.
-	 * 
+	 *
 	 * @param String lsService: the service name
 	 * @return WebElement
 	 * @author Wei.Li
@@ -680,7 +685,7 @@ public class GlobalFooterPage extends BasePage {
 
 	/**
 	 * This method is to go to a specific service.
-	 * 
+	 *
 	 * @param String     lsService: the service name
 	 * @param WebElement lblIndicator: page loading indicator
 	 * @return true/false
@@ -704,7 +709,7 @@ public class GlobalFooterPage extends BasePage {
 
 	/**
 	 * This method is to compare the url in the new window to the expected Url.
-	 * 
+	 *
 	 * @param String lsService: the service name
 	 * @param String lsExpectedUrl: expected Url
 	 * @return true/false
@@ -738,7 +743,7 @@ public class GlobalFooterPage extends BasePage {
 	/**
 	 * This method is to verify Links for FrequentlyAskedQuestions in
 	 * CustomerService Page Objects.
-	 * 
+	 *
 	 * @param WebElement element: the FrequentlyAskedQuestions link
 	 * @author Wei.Li
 	 */
@@ -769,7 +774,7 @@ public class GlobalFooterPage extends BasePage {
 
 	/**
 	 * This method is to verify existence of element list.
-	 * 
+	 *
 	 * @param List<WebElement> elementList: input element list
 	 * @return void
 	 * @author Wei.Li
@@ -781,43 +786,43 @@ public class GlobalFooterPage extends BasePage {
 
 			String lsTagName = element.getTagName().toLowerCase();
 			switch (lsTagName) {
-			case "select":
-				lsSuccessMsg = "The dropdown element is existing";
-				lsFailureMsg = "The dropdown element is not existing";
-				reporter.softAssert(getReusableActionsInstance().isElementVisible(element), lsSuccessMsg, lsFailureMsg);
-				break;
-			case "input":
-				lsTitle = element.getAttribute("name");
-				lsSuccessMsg = "The input element of '" + lsTitle + "' is existing";
-				lsFailureMsg = "The input element of '" + lsTitle + "' is not existing";
-				reporter.softAssert(getReusableActionsInstance().isElementVisible(element), lsSuccessMsg, lsFailureMsg);
-				break;
-			case "button":
-				lsTitle = element.getText().trim();;
-				lsSuccessMsg = "The button element of '" + lsTitle + "' is existing";
-				lsFailureMsg = "The button element of '" + lsTitle + "' is not existing";
-				reporter.softAssert(getReusableActionsInstance().isElementVisible(element), lsSuccessMsg, lsFailureMsg);
-				break;
-			case "a":
-				lsTitle = element.getText().trim();
-				lsSuccessMsg = "The href of element of '" + lsTitle + "' is not empty";
-				lsFailureMsg = "The href of element of '" + lsTitle + "' is empty";
-				reporter.softAssert(!this.getElementHref(element).isEmpty(), lsSuccessMsg, lsFailureMsg);
-				break;
-			case "img":
-				lsSuccessMsg = "The src of image element is not empty";
-				lsFailureMsg = "The src of image element is empty";
-				reporter.softAssert(!this.getElementImageSrc(element).isEmpty(), lsSuccessMsg, lsFailureMsg);
-				break;
-			default:
-				lsTitle = element.getText().trim();
-				if (lsTitle.length() > 100) {
-					lsTitle = lsTitle.substring(0, 100) + "...";
-				}
-				lsSuccessMsg = "The element of '" + lsTitle + "' is existing";
-				lsFailureMsg = "The element of '" + lsTitle + "' is not existing";
-				reporter.softAssert(getReusableActionsInstance().isElementVisible(element), lsSuccessMsg, lsFailureMsg);
-				break;
+				case "select":
+					lsSuccessMsg = "The dropdown element is existing";
+					lsFailureMsg = "The dropdown element is not existing";
+					reporter.softAssert(getReusableActionsInstance().isElementVisible(element), lsSuccessMsg, lsFailureMsg);
+					break;
+				case "input":
+					lsTitle = element.getAttribute("name");
+					lsSuccessMsg = "The input element of '" + lsTitle + "' is existing";
+					lsFailureMsg = "The input element of '" + lsTitle + "' is not existing";
+					reporter.softAssert(getReusableActionsInstance().isElementVisible(element), lsSuccessMsg, lsFailureMsg);
+					break;
+				case "button":
+					lsTitle = element.getText().trim();;
+					lsSuccessMsg = "The button element of '" + lsTitle + "' is existing";
+					lsFailureMsg = "The button element of '" + lsTitle + "' is not existing";
+					reporter.softAssert(getReusableActionsInstance().isElementVisible(element), lsSuccessMsg, lsFailureMsg);
+					break;
+				case "a":
+					lsTitle = element.getText().trim();
+					lsSuccessMsg = "The href of element of '" + lsTitle + "' is not empty";
+					lsFailureMsg = "The href of element of '" + lsTitle + "' is empty";
+					reporter.softAssert(!this.getElementHref(element).isEmpty(), lsSuccessMsg, lsFailureMsg);
+					break;
+				case "img":
+					lsSuccessMsg = "The src of image element is not empty";
+					lsFailureMsg = "The src of image element is empty";
+					reporter.softAssert(!this.getElementImageSrc(element).isEmpty(), lsSuccessMsg, lsFailureMsg);
+					break;
+				default:
+					lsTitle = element.getText().trim();
+					if (lsTitle.length() > 100) {
+						lsTitle = lsTitle.substring(0, 100) + "...";
+					}
+					lsSuccessMsg = "The element of '" + lsTitle + "' is existing";
+					lsFailureMsg = "The element of '" + lsTitle + "' is not existing";
+					reporter.softAssert(getReusableActionsInstance().isElementVisible(element), lsSuccessMsg, lsFailureMsg);
+					break;
 			}
 		}
 	}
@@ -838,7 +843,7 @@ public class GlobalFooterPage extends BasePage {
 		getReusableActionsInstance().staticWait(300);
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputPassword);
 		this.inputPassword.sendKeys("1");
-		getReusableActionsInstance().staticWait(300);				
+		getReusableActionsInstance().staticWait(300);
 	}
 
 	/**
@@ -847,17 +852,17 @@ public class GlobalFooterPage extends BasePage {
 	 */
 	public void expandPanelItems(List<WebElement> lstPanelItem,List<WebElement> lstPanelItemContent) {
 		getReusableActionsInstance().staticWait(3000);
-		for(int i=0;i<lstPanelItem.size();i++) {			
-			WebElement item=lstPanelItem.get(i);			
+		for(int i=0;i<lstPanelItem.size();i++) {
+			WebElement item=lstPanelItem.get(i);
 			String lsClass=item.getAttribute("class");
 			if(lsClass.equalsIgnoreCase("collapsed")) {
-				getReusableActionsInstance().javascriptScrollByVisibleElement(item);				
+				getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 				item.click();
 				WebElement itemContent=lstPanelItemContent.get(i);
 				waitForCondition(Driver->{return itemContent.getAttribute("aria-expanded").equalsIgnoreCase("true");},10000);
-				getReusableActionsInstance().staticWait(1000);												
+				getReusableActionsInstance().staticWait(1000);
 			}
-		}						
+		}
 	}
 
 	public Boolean verifyRespectiveSectionForLinkOnPage(List<WebElement> lstPanelItem){
@@ -880,28 +885,28 @@ public class GlobalFooterPage extends BasePage {
 		if (counter == 1) return true;
 		else return false;
 	}
-	
+
 	/**
 	 * This method is to verify dropdown content in Contact US service.
 	 * @author Wei.Li
 	 */
-	public void verifyDropdownOptionContent() {		
+	public void verifyDropdownOptionContent() {
 		String lsOption;
-		Select drpOption= new Select(this.selectContactUS);		
+		Select drpOption= new Select(this.selectContactUS);
 		for(int i=1;i<this.lstContactUSOption.size();i++) {
-			String lsFirstSection=this.lstContactUSOptionText.get(0).getText();			
-			getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectContactUS);			
+			String lsFirstSection=this.lstContactUSOptionText.get(0).getText();
+			getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectContactUS);
 			drpOption.selectByIndex(i);
-			lsOption=drpOption.getFirstSelectedOption().getText();	
+			lsOption=drpOption.getFirstSelectedOption().getText();
 			reporter.reportLog("Dropdown option: "+lsOption);
-			waitForCondition(Driver->{return !lsFirstSection.equalsIgnoreCase(this.lstContactUSOptionText.get(0).getText());},5000);			
+			waitForCondition(Driver->{return !lsFirstSection.equalsIgnoreCase(this.lstContactUSOptionText.get(0).getText());},5000);
 			for(WebElement contentSection:this.lstContactUSOptionText) {
 				getReusableActionsInstance().javascriptScrollByVisibleElement(contentSection);
 				reporter.softAssert(getReusableActionsInstance().isElementVisible(contentSection),"The dropdown option of '"+lsOption+"' displays correctly","The dropdown option of '"+lsOption+"' does not display correctly");
-			}			
-		}						
+			}
+		}
 	}
-	
+
 	/**
 	 * This method is to verify Service object section titles.
 	 * @param List<WebElement> lstSection: Section element list
@@ -909,13 +914,13 @@ public class GlobalFooterPage extends BasePage {
 	 * @param boolean bFullMatch: Decide fully matched or partially matched
 	 * @author Wei.Li
 	 */
-	public void verifyServiceObjectSectionTitle(List<WebElement> lstSection,List<String> lstExpectedTitle,boolean bFullMatch) {		
+	public void verifyServiceObjectSectionTitle(List<WebElement> lstSection,List<String> lstExpectedTitle,boolean bFullMatch) {
 		List<String> lstSectionTitle=new ArrayList<String>();
 		for(WebElement element:lstSection) {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 			lstSectionTitle.add(element.getText().toUpperCase().trim());
 		}
-		
+
 		boolean bMatch=false;
 		String lsNotMatch="";
 		for(String lsTitle:lstExpectedTitle) {
@@ -930,7 +935,7 @@ public class GlobalFooterPage extends BasePage {
 					if(lsItem.contains(lsTitle)) {
 						bMatch=true;
 					}
-				}				
+				}
 			}
 			if(bMatch) {
 				continue;
@@ -940,34 +945,35 @@ public class GlobalFooterPage extends BasePage {
 				break;
 			}
 		}
-		
+
 		reporter.softAssert(bMatch,"All sections are displayed correctly",lsNotMatch+" is not displayed correctly");
 	}
-	
+
 	/**
 	 * This method is to verify links inside More About TSC page
 	 * @author godwin.gopi
 	 */
 	public void clickOnTSCOptionLink(int i) {
 		String linkOftheTSC=null;
-			String path="(//div[@class='quickLinkPanelWrap']//ul[@class='quickLinkUL col3Divs ']//li//a)["+i+"]";
-			getReusableActionsInstance().staticWait(3000);
-			WebElement element=getDriver().findElement(By.xpath(path));
-			linkOftheTSC=element.getText();
-			reporter.reportLog("TSC Links Name is "+linkOftheTSC+"");
-			element.click();
-		
+		String path="(//div[@class='quickLinkPanelWrap']//ul[@class='quickLinkUL col3Divs ']//li//a)["+i+"]";
+		getReusableActionsInstance().staticWait(3000);
+		WebElement element=getDriver().findElement(By.xpath(path));
+		linkOftheTSC=element.getText();
+		reporter.reportLog("TSC Links Name is "+linkOftheTSC+"");
+		element.click();
 	}
-	
+
 	/**
 	 * This method is to verify DropDown Titles is same as Page Title
 	 * @author godwin.gopi
 	 */
 
 	public  void verifyDropDownWithTitle(WebElement element) {
+		getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 		Select select = new Select(element);
 		int dropDownElementSize = select.getOptions().size();
 		for (int i = 1; i < dropDownElementSize; i++) {
+			getReusableActionsInstance().staticWait(2000);
 			select.selectByIndex(i);
 			getReusableActionsInstance().waitForPageLoad();
 			String title = lblShopByBrandTitleAfterDropDown.getText();
@@ -979,30 +985,30 @@ public class GlobalFooterPage extends BasePage {
 	}
 
 	public void verifyTSCCustomerHubLlinks(List<List<String>> lstNameAndLinks) {
-		BasePage basePage=new BasePage(this.getDriver());
+		//BasePage basePage=new BasePage(this.getDriver());
 		String lsText,lsYmlHref,lsHref;
 		for(WebElement item:this.lnkTSCCustomerHubAllLinks) {
-			lsText=basePage.getElementText(item);
+			lsText=super.getElementText(item);
 			lsYmlHref=this.getLinkWithSpecificName(lstNameAndLinks,lsText,true);
 			if(lsYmlHref.isEmpty()) {
 				reporter.reportLogFail("Unable to find "+lsText+" link.");
 			}
-			lsHref=basePage.getElementHref(item);
+			lsHref=super.getElementHref(item);
 			reporter.softAssert(this.verifyLinks(lsHref,lsYmlHref),"The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref,"The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref);
 
 		}
 	}
 
 	public void verifyAboutTSCLinks(List<List<String>> lstNameAndLinks) {
-		BasePage basePage=new BasePage(this.getDriver());
+		//BasePage basePage=new BasePage(this.getDriver());
 		String lsText,lsYmlHref,lsHref;
 		for(WebElement item:this.lnkAboutTSCAllLinks) {
-			lsText=basePage.getElementText(item);
+			lsText=super.getElementText(item);
 			lsYmlHref=this.getLinkWithSpecificName(lstNameAndLinks,lsText,true);
 			if(lsYmlHref.isEmpty()) {
 				reporter.reportLogFail("Unable to find "+lsText+" link.");
 			}
-			lsHref=basePage.getElementHref(item);
+			lsHref=super.getElementHref(item);
 			reporter.softAssert(this.verifyLinks(lsHref,lsYmlHref),"The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref,"The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref);
 		}
 	}
@@ -1020,7 +1026,7 @@ public class GlobalFooterPage extends BasePage {
 	}
 
 	public List<String> getCustomerHubSubItemFr(List<List<String>> lstNameAndLinks){
-		String lsText=this.getUTFEnabledData(this.getElementText(this.lblTSCCustomerHubText));
+		String lsText;
 
 		List<String> lstFr=new ArrayList<String>();
 		String lsFr;
@@ -1034,7 +1040,7 @@ public class GlobalFooterPage extends BasePage {
 	}
 
 	public List<String> getAboutTSCSubItemFr(List<List<String>> lstNameAndLinks){
-		String lsText=this.getUTFEnabledData(this.getElementText(this.lblAboutTSCText));
+		String lsText;
 
 		List<String> lstFr=new ArrayList<String>();
 		String lsFr;
@@ -1092,6 +1098,8 @@ public class GlobalFooterPage extends BasePage {
 	 */
 
 	public  void verifyFindByAlphabet(WebElement element, List<WebElement> elements) {
+		getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+		getReusableActionsInstance().staticWait(4000);
 		int counter=1;
 		Select select=new Select(element);
 		select.selectByIndex(0);
@@ -1172,14 +1180,13 @@ public class GlobalFooterPage extends BasePage {
 	 */
 	public void verifyMeetTheHostInfo() {
 		for(int i=0;i<listOfMeetOurHosts.size();i++) {
-        	String hostName=listOfMeetOurHosts.get(i).getText();
-        	reporter.reportLog("Host Name is "+hostName+"");
-        	String hostHref=linkOfMeetOurHosts.get(i).getAttribute("href");
-        	reporter.reportLog("Host Name URL is "+hostHref+"");
-        	String hostImgSrc=listOfMeetOurHostsImage.get(i).getAttribute("src");
-        	reporter.reportLog("Host Image URL is "+hostImgSrc+"");
-        	reporter.softAssert(hostName!=null && hostHref!=null && hostImgSrc!=null,"Host Name "+hostName+" Host Link "+hostHref+" and Host Image "+hostImgSrc+" are not Null","Host Name "+hostName+" Host Link "+hostHref+" and Host Image "+hostImgSrc+" are  Null");
-        }
+			String hostName=listOfMeetOurHosts.get(i).getText();
+			reporter.reportLog("Host Name is "+hostName+"");
+			String hostHref=linkOfMeetOurHosts.get(i).getAttribute("href");
+			reporter.reportLog("Host Name URL is "+hostHref+"");
+			String hostImgSrc=listOfMeetOurHostsImage.get(i).getAttribute("src");
+			reporter.reportLog("Host Image URL is "+hostImgSrc+"");
+			reporter.softAssert(hostName!=null && hostHref!=null && hostImgSrc!=null,"Host Name "+hostName+" Host Link "+hostHref+" and Host Image "+hostImgSrc+" are not Null","Host Name "+hostName+" Host Link "+hostHref+" and Host Image "+hostImgSrc+" are  Null");
+		}
 	}
-
 }

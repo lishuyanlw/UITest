@@ -201,20 +201,22 @@ public class GH_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo extends B
 		reporter.reportLog("Global Header Section contents for BlackMenu_SilverMenu_TSCLogoLinks");
 		
 		BasePage basePage=new BasePage(this.getDriver());
-		if (!(System.getProperty("Device").equalsIgnoreCase("Mobile"))) {
-			reporter.reportLog("Verify Black headers");
-			//Verify Black headers
+		
+		reporter.reportLog("Verify Black headers");
+		//Verify Black headers
+		if(!(System.getProperty("Device").equalsIgnoreCase("Mobile"))) {
 			getglobalheaderPageThreadLocal().hoverOnWatchTSC();
+
 			getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkWatchUsLiveDpdMenu);
 			getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkDealsDpdMenu);
 			getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkProgramGuideDpdMenu);
 			getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkCarGadgetsDpdMenu);
 			getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkDesignerFootwearDpdMenu);
 			getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkOnAirProductsDpdMenu);
-
 			basePage.getReusableActionsInstance().javascriptScrollByVisibleElement(getglobalheaderPageThreadLocal().lnkTSBlackHeader);
 			getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkTSBlackHeader);
 		}
+
 
 		reporter.reportLog("Verify Logo section");
 		//Verify Logo section
