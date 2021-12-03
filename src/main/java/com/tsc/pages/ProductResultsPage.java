@@ -4,6 +4,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
+
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -68,6 +70,12 @@ public class ProductResultsPage extends BasePage{
 	@FindBy(xpath = "//div[contains(@class,'search-filters-div')]//div[contains(@class,'sortFilterWrap')]//div[contains(@class,'filterTag')]")
 	List<WebElement> selectedFiltersList;
 
+	@FindBy(xpath = "//product-results//div[@class='modalBody']//div[@class='filterTag']/span")
+	List<WebElement> selectedFiltersListMobile;
+
+	@FindBy(xpath = "//product-results//div[@class='modal-header prpModalHeader hidden-lg']/div/h4[@id='cancel-model']")
+	public WebElement cancelButton;
+
 	public By byProductHref=By.xpath(".//a");
 
 	public By byProductImage=By.xpath(".//div[contains(@class,'imgEmbedContainer')]//img[@class='productImg']");
@@ -131,7 +139,7 @@ public class ProductResultsPage extends BasePage{
 	WebElement cntProductTitleAndText;
 
 	public By byProductTitleAndText=By.xpath("//div[@class='TitleAndTextSeo']");
-	
+
 	@FindBy(xpath = "//div[@class='TitleAndTextSeo']//*[contains(@class,'seoTextTitle')]")
 	WebElement lblProductTitle;
 
@@ -141,7 +149,7 @@ public class ProductResultsPage extends BasePage{
 	@FindBy(xpath = "//div[@class='TitleAndTextSeo']//button")
 	WebElement btnProductTitleAndTextMoreOrLess;
 
-	@FindBy(xpath = "//product-results//div[@class='modalBody']//div[@class='panel']//*[contains(@class,'panel-heading')]")
+	@FindBy(xpath = "//product-results//div[@class='modalBody']//div[@class='panel']//*[contains(@class,'panel-heading')]/span")
 	List<WebElement> productFilterList;
 
 	@FindBy(xpath = "//product-results//div[@class='modalBody']//div[@class='panel']//*[contains(@class,'panel-heading')]/following-sibling::div[contains(@class,'panel-collapse')]//div[contains(@class,'seeMoreDiv') and not(contains(@class,'seeMoreTitle')) and not(@style='display: none;')][@id]")
@@ -155,6 +163,9 @@ public class ProductResultsPage extends BasePage{
 
 	@FindBy(xpath = "//product-results//div[@class='modalBody']//div[@class='panel']//li//div[not(contains(@class,'checked'))]")
 	List<WebElement> secondlevelFilterList;
+
+	@FindBy(xpath = "//div[contains(@class,'layout--left')]")
+	WebElement searchResultSection;
 
 
 	public By byMoreButtonOnLeftPanel=By.xpath(".//*[contains(@class,'panel-heading')]/following-sibling::div[contains(@class,'panel-collapse')]//div[contains(@class,'seeMoreDiv') and not(contains(@class,'seeMoreTitle')) and not(@style='display: none;')][@id]");
@@ -193,6 +204,13 @@ public class ProductResultsPage extends BasePage{
 
 	@FindBy(xpath="//div[contains(@class,'PageTitle')]//*[contains(@class,'gatewayTitle')]")
 	public WebElement pageTitle;
+
+    //for mobile Sort&Filter
+	@FindBy(xpath = "//a[contains(text(),'Sort & Filter')]")
+	WebElement sortAndFilter;
+
+	@FindBy(xpath="//product-results//div[@class='modalBody']")
+	WebElement sortPanel;
 
 	String searchkeyword;
 	public boolean bVerifyTitle=true;
@@ -236,25 +254,46 @@ public class ProductResultsPage extends BasePage{
 	public boolean getSearchResultLoad(String searchKeyword) {
 		String lsUrl=this.URL();
 		GlobalHeaderPage globalHeader=new GlobalHeaderPage(this.getDriver());
-		getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeader.searchBox);
-		this.clearContent(globalHeader.searchBox);
-		globalHeader.searchBox.sendKeys(searchKeyword);
+		//this.getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeader.searchBox);
+		//this.clearContent(globalHeader.searchBox);
+		//char[] inputString = searchKeyword.toCharArray();
+		waitForCondition(Driver->{
+			return globalHeader.searchBox.isDisplayed();
+		},90000);
+		String[] data = searchKeyword.codePoints().mapToObj(cp->new String(Character.toChars(cp))).toArray(size->new String[size]);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeader.searchBox);
+		this.getReusableActionsInstance().clickIfAvailable(globalHeader.searchBox,3000);
+		for(String inputText:data){
+			globalHeader.searchBox.sendKeys(inputText);
+			this.getReusableActionsInstance().staticWait(1000);
+		}
+		//globalHeader.searchBox.sendKeys(searchKeyword);
 		//globalHeader.btnSearchSubmit.click();
-		(new BasePage(this.getDriver())).pressEnterKey(globalHeader.searchBox);
+		this.getReusableActionsInstance().staticWait(3000);
+		waitForCondition(Driver->{
+			return this.searchResultSection.isDisplayed();
+		},90000);
+
+		super.pressEnterKey(globalHeader.searchBox);
+
+		waitForCondition(Driver->{
+			return this.lblShowing.isDisplayed();
+		},90000);
 			
-		getReusableActionsInstance().staticWait(300);
 		return waitForCondition(Driver->{
 			String lsStyle=this.productResultLoadingIndicator.getAttribute("style");
 			if(lsStyle==null||lsStyle.isEmpty()) {
 				lsStyle="display: none;";
 			}
-			return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;")&&!lsUrl.equalsIgnoreCase(this.URL());},90000);
+			return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;")&&!lsUrl.equalsIgnoreCase(this.URL());
+			},90000);
+
 	}
 
 	/**
 	 * This method will get search results through dropdown menu.
-	 * @param String lsKeyword:input keyword
-	 * @param int optionIndex: selected index in dropdwon menu
+	 * @param- String lsKeyword:input keyword
+	 * @param- int optionIndex: selected index in dropdwon menu
 	 * @return true/false
 	 * @author Wei.Li
 	 */
@@ -275,6 +314,7 @@ public class ProductResultsPage extends BasePage{
 
 			switch(lsOption) {
 				case "Top suggestions":
+					waitForCondition(Driver->{return globalHeader.searchQADropdwonmenuList.get(0).isDisplayed();},30000);
 					WebElement element=globalHeader.searchQADropdwonmenuList.get(0).findElements(By.xpath(".//li")).get(optionIndex);
 					getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 					this.searchkeyword=element.getText().trim();
@@ -282,6 +322,7 @@ public class ProductResultsPage extends BasePage{
 					element.click();
 					break;
 				case "Categories":
+					waitForCondition(Driver->{return globalHeader.searchQADropdwonmenuList.get(1).isDisplayed();},30000);
 					element=globalHeader.searchQADropdwonmenuList.get(1).findElements(By.xpath(".//li")).get(optionIndex);
 					getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 					this.searchkeyword=element.getText().trim();
@@ -289,6 +330,7 @@ public class ProductResultsPage extends BasePage{
 					element.click();
 					break;
 				case "Brands":
+					waitForCondition(Driver->{return globalHeader.searchQADropdwonmenuList.get(2).isDisplayed();},30000);
 					List<WebElement> list=globalHeader.searchQADropdwonmenuList.get(2).findElements(By.xpath(".//li"));
 					this.searchkeyword=lsKeyword;
 					for(WebElement ele:list) {
@@ -349,7 +391,7 @@ public class ProductResultsPage extends BasePage{
 
 	/**
 	 * This method will get search result list.
-	 * @param String lsKeyword: search keyword
+	 * @param- String lsKeyword: search keyword
 	 * @return List<WebElement>: search dropdown menu list
 	 * @author Wei.Li
 	 */
@@ -375,7 +417,6 @@ public class ProductResultsPage extends BasePage{
 	public boolean verifyShowingTextPatternInFilters() {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblShowing);
 		String showingText=this.lblShowing.getText().toUpperCase()+" "+this.txtShowingDynamicContent.getText();
-
 		return showingText.matches("SHOWING: (\\d+) - (\\d+) of (\\d+) Items");
 	}
 
@@ -384,7 +425,7 @@ public class ProductResultsPage extends BasePage{
 	 * @return String: error message
 	 * @author Wei.Li
 	 */
-	public String verifySearchResultMessage(String expectedMessage,String lsKeyword) {		
+	public String verifySearchResultMessage(String expectedMessage,String lsKeyword) {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSearchResultMessage);
 
 		String lsMessage=this.lblSearchResultMessage.getText().trim();
@@ -395,8 +436,8 @@ public class ProductResultsPage extends BasePage{
 		else {
 			if(!lsMessage.contains(expectedMessage)) {
 				return "Search result message result of '"+lsMessage+"' does not contain expected message of "+expectedMessage;
-			}			
-		}		
+			}
+		}
 		return "";
 	}
 
@@ -421,12 +462,14 @@ public class ProductResultsPage extends BasePage{
 
 	/**
 	 * This method will verify the itemNO in search results will just contain those with search product number.
-	 * @param String lsexpectedItemNO: expected ItemNO
+	 * @param- String lsexpectedItemNO: expected ItemNO
 	 * @return true/false
 	 * @author Wei.Li
 	 */
 	public boolean VerifySearchResultWithProductItemNO(String lsexpectedItemNO) {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.productItemNOList.get(0));
+		//Wait till we have just one product present on page for running test in sauce-labs
+		waitForCondition(Driver->{return this.productItemNOList.size()==1;},180000);
 		for(WebElement item: this.productItemNOList) {
 			String lsItem=item.getText().trim();
 			List<String> list=this.getNumberFromString(lsItem);
@@ -558,7 +601,7 @@ public class ProductResultsPage extends BasePage{
 
 	/**
 	 * This method will get encoding keyword.
-	 * @param String lsKeyword: input keyword
+	 * @param- String lsKeyword: input keyword
 	 * @return encoded keyword
 	 * @author Wei.Li
 	 */
@@ -567,25 +610,26 @@ public class ProductResultsPage extends BasePage{
 			return lsKeyword.trim();
 		}
 		return lsKeyword.trim().replace(" ","%20");
-		
-//		String lsUrl=this.URL();
-//		if(lsUrl.contains("dimensions=0&")) {
-//			return lsKeyword.trim().replace(" ","%20");
-//		}
-//		else {
-//			return lsKeyword.trim().replace(" ","%2B");
-//		}
+
+	/*	String lsUrl=this.URL();
+		if(lsUrl.contains("dimensions=0&")) {
+			return lsKeyword.trim().replace(" ","%20");
+		}
+		else {
+			return lsKeyword.trim().replace(" ","%2B");
+		}*/
 	}
 
 	/**
 	 * This method will verify Url after selecting filter in left panel.
-	 * @param String lsKeyword: search keyword
+	 * @param- String lsKeyword: search keyword
 	 * @return true/false
 	 * @author Wei.Li
 	 */
 	public boolean verifyUrlContainDimensionAndKeyword(String lsKeyword) {
-		String lsUrl=this.URL();		
-		if(lsUrl.toLowerCase().contains("dimensions=")) {			
+		String lsUrl=this.URL();
+		getReporter().reportLog("Url for browser: "+this.getExecutionBrowserName()+ " is: "+lsUrl);
+		if(lsUrl.toLowerCase().contains("dimensions=")) {
 			return lsUrl.contains("dimensions=")&&lsUrl.contains("searchterm=")&&lsUrl.contains(this.getEncodingKeyword(lsKeyword));
 		}
 		else {
@@ -604,8 +648,8 @@ public class ProductResultsPage extends BasePage{
 
 	/**
 	 * This method will verify Url after selecting sort strategy.
-	 * @param String lsKeyword: search keyword
-	 * @param String lsSortKey: sort key in dropdown menu
+	 * @param- String lsKeyword: search keyword
+	 * @param- String lsSortKey: sort key in dropdown menu
 	 * @return true/false
 	 * @author Wei.Li
 	 */
@@ -633,7 +677,7 @@ public class ProductResultsPage extends BasePage{
 
 	/**
 	 * This method will verify Brand tile/text contains keyword.
-	 * @param String lsKeyword: input keyword
+	 * @param- String lsKeyword: input keyword
 	 * @return true/false
 	 * @author Wei.Li
 	 */
@@ -682,7 +726,7 @@ public class ProductResultsPage extends BasePage{
 
 	/**
 	 * This method will verify Badge or Video existence.
-	 * @param WebElement parent: parent element
+	 * @param- WebElement parent: parent element
 	 * @return String: indicate type
 	 * @author Wei.Li
 	 */
@@ -710,13 +754,13 @@ public class ProductResultsPage extends BasePage{
 
 	/**
 	 * This method will judge WasPrice existence.
-	 * @param WebElement parent: parent element
+	 * @param- WebElement parent: parent element
 	 * @return String: indicate type
 	 * @author Wei.Li
 	 */
 	public String judgeProductWasPrice(WebElement parent) {
 		WebElement element=parent.findElement(this.byJudgeProductWasPrice);
-		long childSize= (new BasePage(this.getDriver())).getChildElementCount(element);
+		long childSize= super.getChildElementCount(element);
 
 		if(childSize==1) {
 			return "WithoutWasPrice";
@@ -727,7 +771,7 @@ public class ProductResultsPage extends BasePage{
 
 	/**
 	 * This method will verify the item content in product list.
-	 * @param List<WebElement> productList: the input product list
+	 * @param- List<WebElement> productList: the input product list
 	 * @author Wei.Li
 	 */
 	public void verifySearchResultContent(List<WebElement> productList) {
@@ -751,19 +795,19 @@ public class ProductResultsPage extends BasePage{
 
 			//Use findElements to avoid test crash when the element is not existing
 			elementList=item.findElements(byProductReview);
-			if(this.isChildElementVisible(elementList.get(0),"innerText")) {
+			if(super.isChildElementVisible(elementList.get(0),"innerText")) {
 				reporter.softAssert(true, "ProductReview in searching result is correct", "ProductReview in searching result is incorrect");
 			}
 
 			//Use findElements to avoid test crash when the element is not existing
 			elementList=item.findElements(byProductSwatch);
-			if(this.isChildElementVisible(elementList.get(0),"childElementCount")) {
+			if(super.isChildElementVisible(elementList.get(0),"childElementCount")) {
 				reporter.softAssert(true, "ProductSwatch in searching result is correct", "ProductSwatch in searching result is incorrect");
 			}
 
 			//Use findElements to avoid test crash when the element is not existing
 			elementList=item.findElements(byProductFreeShipping);
-			if(this.isChildElementVisible(elementList.get(0),"innerText")) {
+			if(super.isChildElementVisible(elementList.get(0),"innerText")) {
 				reporter.softAssert(true, "ProductFreeShipping in searching result is correct", "ProductFreeShipping in searching result is incorrect");
 			}
 
@@ -791,7 +835,7 @@ public class ProductResultsPage extends BasePage{
 
 	/**
 	 * This method will verify sort options.
-	 * @param List<String> lstOption: input option list
+	 * @param- List<String> lstOption: input option list
 	 * @return true/false
 	 * @author Wei.Li
 	 */
@@ -823,14 +867,14 @@ public class ProductResultsPage extends BasePage{
 
 	/**
 	 * This method will choose sort option by visible text.
-	 * @param String lsOption: visible option text
+	 * @param- String lsOption: visible option text
 	 * @return true/false
 	 * @author Wei.Li
 	 */
-	public boolean chooseSortOptionByVisibleText(String lsOption) {
+	public boolean chooseSortOptionByVisibleText(List<String> lsOption) {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSortSelect);
 		Select sortOption= new Select(this.btnSortSelect);
-		sortOption.selectByVisibleText(lsOption);
+		sortOption.selectByVisibleText(lsOption.get(1));
 
 		return this.waitForPageLoading();
 	}
@@ -851,8 +895,8 @@ public class ProductResultsPage extends BasePage{
 		for(WebElement element:this.productResultList) {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 
-			String nowPriceText=element.findElement(this.byProductNowPrice).getText().trim();			
-			float nowPriceValue=this.getFloatFromString(nowPriceText,true);			
+			String nowPriceText=element.findElement(this.byProductNowPrice).getText().trim();
+			float nowPriceValue=this.getFloatFromString(nowPriceText,true);
 
 			priceList.add(nowPriceValue);
 			String productNO=element.findElement(this.byProductItemNO).getText().trim();
@@ -872,11 +916,11 @@ public class ProductResultsPage extends BasePage{
 
 	/**
 	 * This method will verify filter option headers.
-	 * @param List<String> lstOption: input option list in yml file
+	 * @param- List<String> lstOption: input option list in yml file
 	 * @return String: error message
 	 * @author Wei.Li
 	 */
-	public String verifyFilterOptions(List<String> lstOptionYml) {		
+	public String verifyFilterOptions(List<String> lstOptionYml) {
 		String lsErrorMsg="";
 		int listSize=this.productFilterList.size();
 		if(listSize==0) {
@@ -896,12 +940,12 @@ public class ProductResultsPage extends BasePage{
 
 	/**
 	 * This method will judge MoreButton in left panel existence.
-	 * @param WebElement parent: parent element
+	 * @param- WebElement parent: parent element
 	 * @return true/false: if the childSize of this.panelItemContainerList item is 2, means no More button exists.
 	 * @author Wei.Li
 	 */
 	public boolean judgeMoreButtonExistenceInLeftPanel(WebElement parent) {
-		long childSize= (new BasePage(this.getDriver())).getChildElementCount(parent);
+		long childSize= super.getChildElementCount(parent);
 
 		if(childSize==2) {
 			return false;
@@ -912,8 +956,8 @@ public class ProductResultsPage extends BasePage{
 
 	/**
 	 * This method will select filter from left panel.
-	 * @param String lsFirstLevelItem: header filter keyword
-	 * @param String lsSecondLevelItem: subFilter keyword
+	 * @param- String lsFirstLevelItem: header filter keyword
+	 * @param- String lsSecondLevelItem: subFilter keyword
 	 * @return true/false
 	 * @author Wei.Li
 	 */
@@ -976,8 +1020,8 @@ public class ProductResultsPage extends BasePage{
 
 	/**
 	 * This method will verify filter by price.
-	 * @param String lsPriceMode: Under/Between/Over
-	 * @param boolean bFirst: true for first item and false for not first item
+	 * @param- String lsPriceMode: Under/Between/Over
+	 * @param- boolean bFirst: true for first item and false for not first item
 	 * @return String: error message
 	 * @author Wei.Li
 	 */
@@ -991,8 +1035,8 @@ public class ProductResultsPage extends BasePage{
 			getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 			String productNO=element.findElement(this.byProductItemNO).getText().trim();
 
-			String nowPriceText=element.findElement(this.byProductNowPrice).getText().trim();			
-			float nowPriceValue=this.getFloatFromString(nowPriceText,false);	
+			String nowPriceText=element.findElement(this.byProductNowPrice).getText().trim();
+			float nowPriceValue=this.getFloatFromString(nowPriceText,false);
 
 			List<String> lstPrice=this.getNumberFromString(secondLevelFilter);
 
@@ -1051,19 +1095,32 @@ public class ProductResultsPage extends BasePage{
 
 	/**
 	 * This method will verify if selected filters contain suitable search second level filters.
-	 * @param List<String> lstFilterIncluded: second level filter list
-	 * @param List<String> lstFilterExcluded: the filters should not appear in selected filters option
+	 * @param- List<String> lstFilterIncluded: second level filter list
+	 * @param- List<String> lstFilterExcluded: the filters should not appear in selected filters option
 	 * @return String: error message
 	 * @author Wei.Li
 	 */
 	public String verifySlectedFiltersContainSecondlevelFilter(List<String> lstFilterIncluded, List<String> lstFilterExcluded) {
 		List<String> lstSelectedFilterOption=new ArrayList<String>();
-		int selectedFilterSize=this.selectedFiltersList.size()-1;
-		for(int i=0;i<selectedFilterSize;i++) {
-			getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectedFiltersList.get(i));
-			lstSelectedFilterOption.add(this.selectedFiltersList.get(i).getText().trim());
+		if (System.getProperty("Device").equalsIgnoreCase("Mobile")){
+			getReusableActionsInstance().javascriptScrollByVisibleElement(this.sortAndFilter);
+			getReusableActionsInstance().clickIfAvailable(this.sortAndFilter,3000);
+			getReusableActionsInstance().staticWait(1000);
+			int selectedFilterSize=this.selectedFiltersListMobile.size();
+			for(int i=0;i<selectedFilterSize;i++) {
+				getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectedFiltersListMobile.get(i));
+				lstSelectedFilterOption.add(this.selectedFiltersListMobile.get(i).getText().trim());
+			}
+			getReusableActionsInstance().javascriptScrollByVisibleElement(this.cancelButton);
+			getReusableActionsInstance().clickIfAvailable(this.cancelButton,3000);
+			//this.cancelButton.click();
+		}else {
+			int selectedFilterSize = this.selectedFiltersList.size() - 1;
+			for (int i = 0; i < selectedFilterSize; i++) {
+				getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectedFiltersList.get(i));
+				lstSelectedFilterOption.add(this.selectedFiltersList.get(i).getText().trim());
+			}
 		}
-
 		for(String lsItem:lstSelectedFilterOption) {
 			if(!lstFilterIncluded.contains(lsItem)) {
 				return "The search second level filters do not contain the selected filter of '"+lsItem+"'";
@@ -1081,7 +1138,7 @@ public class ProductResultsPage extends BasePage{
 
 	/**
 	 * This method will switch page through clicking Pre/Next button.
-	 * @param boolean bNext: true for next page and false for previous page
+	 * @param- boolean bNext: true for next page and false for previous page
 	 * @return true/false
 	 * @author Wei.Li
 	 */
@@ -1122,7 +1179,7 @@ public class ProductResultsPage extends BasePage{
 
 	/**
 	 * This method will get the filter container corresponding to the specific first level filter.
-	 * @param String lsFirstLevelItem: header filter keyword
+	 * @param- String lsFirstLevelItem: header filter keyword
 	 * @return WebElement: the element container corresponding to the specific first level filter.
 	 * @author Wei.Li
 	 */
@@ -1145,8 +1202,8 @@ public class ProductResultsPage extends BasePage{
 
 	/**
 	 * This method will get hidden element corresponding to an element container.
-	 * @param WebElement elementContainer: element container
-	 * @param boolean bVisible: true for visible filters while false for hidden filters.
+	 * @param- WebElement elementContainer: element container
+	 * @param- boolean bVisible: true for visible filters while false for hidden filters.
 	 * @return Hidden element count.
 	 * @author Wei.Li
 	 */
@@ -1175,7 +1232,7 @@ public class ProductResultsPage extends BasePage{
 
 	/**
 	 * This method will click More or Less button corresponding to the filter container.
-	 * @param WebElement elementContainer: input filter container
+	 * @param- WebElement elementContainer: input filter container
 	 * @return true/false
 	 * @author Wei.Li
 	 */
@@ -1235,7 +1292,7 @@ public class ProductResultsPage extends BasePage{
 	 
     /**
 	 * This method will get the review number amount of product item
-	 * @param List<WebElement> lstReviewStar: review star list
+	 * @param- List<WebElement> lstReviewStar: review star list
 	 * @return  int: review number amount
 	 * @author Wei.Li
 	 */

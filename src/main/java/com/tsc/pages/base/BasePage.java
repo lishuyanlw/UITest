@@ -66,6 +66,7 @@ import utils.ReusableActions;
 	 */
 	private static final ThreadLocal<ReusableActions> reusableActionsThreadLocal = new ThreadLocal<>();
 
+	
 	/**
 	 * Instantiates a new Base page class.
 	 *
@@ -342,9 +343,16 @@ import utils.ReusableActions;
 	 * @author Wei.Li
 	 */
 	 public void clearContent(WebElement element) {
-		 element.click();
-		 element.sendKeys(Keys.chord(Keys.CONTROL, "a"));
-		 element.sendKeys(Keys.chord(Keys.DELETE));
+		 this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+		 this.getReusableActionsInstance().clickIfAvailable(element,3000);
+		 //element.click();
+		 /*element.sendKeys(Keys.chord(Keys.CONTROL, "a"));
+		 element.sendKeys(Keys.chord(Keys.DELETE));*/
+
+		 //We are using Action class below instead of above method as for firefox and Safari,
+		 //unwanted character i.e. E000 unicode is added at start of string
+		 Actions actions = new Actions(getDriver());
+		 actions.keyDown(Keys.CONTROL).sendKeys("a").keyUp(Keys.CONTROL).sendKeys(Keys.DELETE).build().perform();
 	 }
  
 	//Get the URL 			
@@ -768,5 +776,12 @@ import utils.ReusableActions;
 		element.click();
 		urlFavouriteslandingpage = getDriver().getCurrentUrl();
 		return urlFavouriteslandingpage;
+	}
+
+	/**
+	 * Method to get the browser name where test is executing
+	 */
+	public String getExecutionBrowserName(){
+		return System.getProperty("Browser");
 	}
 }

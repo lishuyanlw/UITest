@@ -31,7 +31,7 @@ public class GlobalHeaderPage extends BasePage{
 	//Watch TSC dropdown menu
 	@FindBy(xpath = "//div[contains(@class,'black-header')]//nav//li//a")
 	public List<WebElement> lstWatchTSCDpdMenu;
-		
+
 	@FindBy(xpath = "//div[contains(@class,'black-header')]//nav//li//a[contains(@href,'WatchUsLive')]")
 	public WebElement lnkWatchUsLiveDpdMenu;
 	
@@ -208,7 +208,7 @@ public class GlobalHeaderPage extends BasePage{
 	public WebElement ShoppingCartlnk;
  
 	@FindBy(xpath ="//*[@class='Header']//a[contains(@class, 'secondary-navigation__rhs-bag')]/span")
-	public WebElement ShoppingCartIconcont;			
+	public WebElement ShoppingCartIconcont;
 
 	@FindBy(xpath = "//*[@class='Header']//a[contains(@class, 'secondary-navigation__rhs-bag')]//*[@class='secondary-navigation__rhs-bag__item-icon']")
 	public WebElement CartBagIcon;
@@ -236,21 +236,29 @@ public class GlobalHeaderPage extends BasePage{
 	
 	@FindBy(xpath = "//a[contains(@class,'mega-curated__item-link')]")
 	public List<WebElement> listCuratedCollectionLinks;
-	
+
+
+
 	@FindBy(xpath = "//a[contains(@class,'mega-popular__brand-link')]//img")
+	public List<WebElement> listPopularBrandsLinks;
+
+
 	public List<WebElement> listPopularBrandsImg;
-	
+
 	@FindBy(xpath = "//a[contains(@class,'mega-popular__brand-link')]")
 	public List<WebElement> listPopularBrandsLink;
-	
+
 	@FindBy(xpath = "//a[contains(@class,'mega-popular__cta')]")
 	public WebElement shopAllPopularBrands;
-	
+
 	@FindBy(xpath = "//h2[contains(@class,'titleLink')]")
 	public WebElement shopAllBrandsLandigPageHeading;
 
 	@FindBy(xpath="//span[contains(text(),'Clearance')]")
 	WebElement clearanceHeader;
+
+	@FindBy(xpath="//span[contains(@id,'_ctlSpanTitle')]")
+	public WebElement landingPageTitle;
 
 	public void clickOnClearanceHeaderOption() {
 		getReusableActionsInstance().clickIfAvailable(clearanceHeader);
@@ -258,9 +266,9 @@ public class GlobalHeaderPage extends BasePage{
 
 	public void waitForPageLoad() {
 		getReusableActionsInstance().waitForPageLoad();
-		(new ProductResultsPage(this.getDriver())).waitForPageLoading();	
-	}	
-	
+		(new ProductResultsPage(this.getDriver())).waitForPageLoading();
+	}
+
 	public boolean validateURL(String strExpectedUrl) {
 		getReusableActionsInstance().waitForPageLoad();
 		if (getDriver().getCurrentUrl().equalsIgnoreCase(strExpectedUrl)) {
@@ -277,16 +285,16 @@ public class GlobalHeaderPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	public boolean validateTSCLogoNavigateToHomePage() {
-		String lsHomePage=new BasePage(this.getDriver()).getBaseURL()+"/";				
-		String currentUrl=getDriver().getCurrentUrl();		        
+		String lsHomePage=new BasePage(this.getDriver()).getBaseURL()+"/";
+		String currentUrl=getDriver().getCurrentUrl();
 		getReusableActionsInstance().isElementVisible(this.lnkTSClogo, 10);
-		this.lnkTSClogo.click();	    
-        waitForCondition(Driver->{return !currentUrl.equalsIgnoreCase(getDriver().getCurrentUrl());},10000);
-        return this.getDriver().getCurrentUrl().equalsIgnoreCase(lsHomePage);		
-		}
-				
-	
-	//TSC Logo & Logo link is visible	
+		this.lnkTSClogo.click();
+		waitForCondition(Driver->{return !currentUrl.equalsIgnoreCase(getDriver().getCurrentUrl());},10000);
+		return this.getDriver().getCurrentUrl().equalsIgnoreCase(lsHomePage);
+	}
+
+
+	//TSC Logo & Logo link is visible
 	public String validateTSCLogoLink() {
 		String emptySTAIbtn="TSC logo link href is empty";
 		String lsUrl=lnkTSClogolink.getAttribute("href");
@@ -298,20 +306,33 @@ public class GlobalHeaderPage extends BasePage{
 	}
 	
 	public boolean validateTSCLogo() {
-		return getReusableActionsInstance().isElementVisible(lnkTSClogo, 5);				
+		return getReusableActionsInstance().isElementVisible(lnkTSClogo, 5);
 	}
 	
 	//Search box visible
 	public String validateSearchbox() {
-			getReusableActionsInstance().isElementVisible(searchBox, 5);
-				return searchBox.getAttribute("placeholder");
-			}
-		
+		getReusableActionsInstance().isElementVisible(searchBox, 5);
+		return searchBox.getAttribute("placeholder");
+	}
+
 	public boolean validateSearchSubmitbtn() {
 		return getReusableActionsInstance().isElementVisible(btnSearchSubmit, 5);
 	}
-	
-		
+
+
+	/*
+	public String validateFavouritesLink_1(WebElement webElement) {
+		String emptySTAIbtn=webElement.getText();
+		if(!verifyElementProperty(webElement,"Link")) {
+			return emptySTAIbtn+" link href is empty";
+		}else{
+			getReusableActionsInstance().isElementVisible(webElement, 5);
+			return emptySTAIbtn;
+			}
+		}
+	*/
+
+
 	//Favorite link visible
 	public String validateFavouritesLink() {
 		String emptySTAIbtn="Favourites link href is empty";
@@ -415,9 +436,9 @@ public class GlobalHeaderPage extends BasePage{
 	 
 	/**
 	 *Method to verify TS header and link in Black headers  	 
-	 * @param- WebElement blackItem: the header in Black headers
-	 * @param- WebElement silverItem: the header in Silver headers
-	 * @param- boolean bCheckUrl: to decide if check Url after clicking the header in Black headers
+	 * @param-WebElement blackItem: the header in Black headers
+	 * @param-WebElement silverItem: the header in Silver headers
+	 * @param-boolean bCheckUrl: to decide if check Url after clicking the header in Black headers
 	 * @author Wei.Li
 	 */	
 	 public void verifyTSHeaderAndLinkInBlackHeader(WebElement blackItem,WebElement silverItem,boolean bCheckUrl) {
@@ -439,8 +460,8 @@ public class GlobalHeaderPage extends BasePage{
 		 }
 
 		 if(silverItem!=null) {
-			 String lsStyle=silverItem.findElement(By.xpath(".//span")).getAttribute("style");			
-			 reporter.softAssert(lsStyle.toLowerCase().contains("color:#fff;")||lsStyle.toLowerCase().contains("color: rgb(255, 255, 255);"), lsTitle+" in Silver headers is being selected", lsTitle+" in Silver headers is not being selected");		 		 
+			 String lsStyle=silverItem.findElement(By.xpath(".//span")).getAttribute("style");
+			 reporter.softAssert(lsStyle.toLowerCase().contains("color:#fff;")||lsStyle.toLowerCase().contains("color: rgb(255, 255, 255);"), lsTitle+" in Silver headers is being selected", lsTitle+" in Silver headers is not being selected");
 		 }
 	 }
 
@@ -457,27 +478,30 @@ public class GlobalHeaderPage extends BasePage{
 	 
 	/**
 	 *Method to verify TopSellingProducts existing by changing item in Trending or Featured brands list   
-	 * @param- List<WebElement> elementList: element list
+	 * @param-List<WebElement> elementList: element list
 	 * @return void
 	 * @author Wei.Li
-	 */	
-	 public void verifyTopSellingProductsExistingByChangingItemInTrendingOrFeaturedBrandsList(List<WebElement> elementList) {
-		 String lsItem;
-		 for(WebElement element:elementList) {
-			 getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-			 getReusableActionsInstance().scrollToElement(element);
-			 getReusableActionsInstance().staticWait(300);
-			 lsItem=element.getText();
-			 reporter.softAssert(getReusableActionsInstance().isElementVisible(this.lblPossibleItemMatches),"The title of Top selling products is displaying correctly by selecting item of '"+lsItem+"'", "The title of Top selling products is not displaying correctly by selcting item of '"+lsItem+"'");
-			 reporter.softAssert(getReusableActionsInstance().isElementVisible(this.cntPossibleItemMatchesList),"The Top selling products list is displaying correctly by selecting item of '"+lsItem+"'","The Top selling products list is not displaying correctly by selcting item of '"+lsItem+"'");			 
-		 }	
-	 }
-	 
-	 /**
-		/*Method to click on WebElement for Submenu Item by providing Flyout heading name , category and item as parameters.
-		 * @author Shruti Desai
+	 */
+	public void verifyTopSellingProductsExistingByChangingItemInTrendingOrFeaturedBrandsList(List<WebElement> elementList) {
+		String lsItem;
+		for(WebElement element:elementList) {
+			getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+			getReusableActionsInstance().scrollToElement(element);
+			getReusableActionsInstance().staticWait(300);
+			lsItem=element.getText();
+			if (System.getProperty("Device").equalsIgnoreCase("Desktop")){
+				reporter.softAssert(getReusableActionsInstance().isElementVisible(this.lblPossibleItemMatches),"The title of Top selling products is displaying correctly by selecting item of '"+lsItem+"'", "The title of Top selling products is not displaying correctly by selcting item of '"+lsItem+"'");
+			}
+			reporter.softAssert(getReusableActionsInstance().isElementVisible(this.cntPossibleItemMatchesList),"The Top selling products list is displaying correctly by selecting item of '"+lsItem+"'","The Top selling products list is not displaying correctly by selcting item of '"+lsItem+"'");
+		}
+	}
+
+	/**
+	 /*Method to click on WebElement for Submenu Item by providing Flyout heading name , category and item as parameters.
+	 * @author Shruti Desai
 	 */
 	public String getNameAndclickSubMenuItem(String headingName,String submenuHeading, String itemName) {
+
 		String xpathHeading =createXPath("//span[contains(text(),'{0}')]" ,headingName);
 		WebElement headingWebElement = FlyoutHeadings.findElement(By.xpath(xpathHeading));
 		getReusableActionsInstance().javascriptScrollByVisibleElement(headingWebElement);
@@ -485,6 +509,7 @@ public class GlobalHeaderPage extends BasePage{
 
 		if(headingWebElement!=null && submenuHeading==null) {
 			headingWebElement.click();
+			waitForCondition(Driver->{return this.landingPageTitle.isDisplayed();},90000);
 			return headingWebElement.getText().trim();
 		}
 		if(submenuHeading!=null) {
@@ -500,23 +525,54 @@ public class GlobalHeaderPage extends BasePage{
 					getReusableActionsInstance().scrollToElement(SubMenuItem);
 					String title = SubMenuItem.getText().trim();
 					SubMenuItem.click();
+					waitForCondition(Driver->{return this.landingPageTitle.isDisplayed();},90000);
 					return title;
 				}else {
 					String title = SubMenu.get(0).getText().trim();
 					SubMenu.get(0).click();
+					waitForCondition(Driver->{return this.landingPageTitle.isDisplayed();},90000);
 					return title;
 				}
-			//Adding else condition to click on first element by default if passed submenu item is not present in list
+				//Adding else condition to click on first element by default if passed submenu item is not present in list
 			}else{
 				WebElement element = Categories.findElement(By.xpath("./a"));
 				String title = element.getText().trim();
 				element.click();
+				waitForCondition(Driver->{return this.landingPageTitle.isDisplayed();},90000);
 				return title;
 			}
 		}
 		return null;
 	}
-	 
+
+	public StringBuilder href_src_submenu  =new StringBuilder();
+	public StringBuilder href_src_data = new StringBuilder();
+	/*Method to click on WebElement for Submenu Item by providing Flyout heading name , category and item as parameters.
+	 * @author Shruti Desai
+	 */
+	public void clickSubMenuItem(String headingName,String submenuHeading, String itemName) {
+		String xpathHeading =createXPath("//span[contains(text(),'{0}')]" ,headingName);
+		WebElement headingWebElement = FlyoutHeadings.findElement(By.xpath(xpathHeading));
+		getReusableActionsInstance().scrollToElement(headingWebElement);
+
+		if(headingWebElement!=null && submenuHeading==null) {
+			headingWebElement.click();
+		}
+		if(submenuHeading!=null) {
+			String xpathSubMenu =createXPath("//a[contains(text(),\"{0}\")]" ,submenuHeading);
+			WebElement SubMenu = Categories.findElement(By.xpath(xpathSubMenu));
+			getReusableActionsInstance().scrollToElement(SubMenu);
+			if(itemName!=null) {
+				String xpathSubmenuItem=createXPath("//a[contains(text(),'{0}')]",itemName);
+				WebElement SubMenuItem=getDriver().findElement(By.xpath(xpathSubmenuItem));
+				getReusableActionsInstance().scrollToElement(SubMenuItem);
+				SubMenuItem.click();
+			}else {
+				SubMenu.click();
+			}
+		}
+	}
+
 	/*Method to get list of Flyout heading WebElements
 	 * @return List:Flyout heading WebElements
 	 * @author Shruti Desai
@@ -532,7 +588,7 @@ public class GlobalHeaderPage extends BasePage{
 	public void scrolltoWebElement(WebElement webElement) {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(webElement);
 		getReusableActionsInstance().scrollToElement(webElement);
-		}
+	}
 
 	/*Method to verify Flyout heading
 	 * @return true/false
@@ -551,14 +607,20 @@ public class GlobalHeaderPage extends BasePage{
 	 * @author Shruti Desai
 	 */
 	public String getUrlAfterclickingFlyoutHeading(String headingName) {
-		 String currentUrl;
-		 String xpathHeading =createXPath("//span[contains(text(),'{0}')]" ,headingName);
-		 WebElement headingWebElement = FlyoutHeadings.findElement(By.xpath(xpathHeading));
-		 getReusableActionsInstance().javascriptScrollByVisibleElement(headingWebElement);
-		 getReusableActionsInstance().scrollToElement(headingWebElement);
-		 headingWebElement .click();
-		 currentUrl = getDriver().getCurrentUrl();
-		 return currentUrl;
+		String currentUrl;
+		String xpathHeading =createXPath("//span[contains(text(),'{0}')]" ,headingName);
+		WebElement headingWebElement = FlyoutHeadings.findElement(By.xpath(xpathHeading));
+		getReusableActionsInstance().javascriptScrollByVisibleElement(headingWebElement);
+		getReusableActionsInstance().scrollToElement(headingWebElement);
+		headingWebElement .click();
+		currentUrl = getDriver().getCurrentUrl();
+		return currentUrl;
+	}
+	/*Method to apply static wait
+	 * @author Shruti Desai
+	 */
+	public void staticwait() {
+		applyStaticWait(2000);
 	}
 
 	/*Method to get WebElement for flyout heading
@@ -569,15 +631,25 @@ public class GlobalHeaderPage extends BasePage{
 		String xpathHeading =createXPath("//span[contains(text(),'{0}')]" ,headingName);
 		WebElement headingWebElement = FlyoutHeadings.findElement(By.xpath(xpathHeading));
 		return headingWebElement;
-	 }
+	}
 
 	/* Method for scroll to Flyout heading WebElement
 	 * @author Shruti Desai
 	 */
 	public void scrollToHeadingElement(String headingName) {
-		  WebElement headingWebElement =getWebElementFlyoutHeading(headingName);
-		  getReusableActionsInstance().javascriptScrollByVisibleElement(headingWebElement);
-		  getReusableActionsInstance().scrollToElement(headingWebElement);
+		WebElement headingWebElement =getWebElementFlyoutHeading(headingName);
+		getReusableActionsInstance().javascriptScrollByVisibleElement(headingWebElement);
+		getReusableActionsInstance().scrollToElement(headingWebElement);
+	}
+
+
+	/*Method to get WebElement for shop all brand in Popular Brand section
+	 * @return WebElement
+	 * @author Shruti Desai
+	 */
+	public WebElement getWebElementShopAllPupularBrand() {
+		WebElement ShopAllWebElement = getDriver().findElement(By.xpath("//a[contains(@class,'mega-popular__cta')]"));
+		return ShopAllWebElement;
 	}
 
 	/*Method to verify href is present or not before clicking shop all link in Popular Brand Section and get url of landing page
@@ -588,15 +660,13 @@ public class GlobalHeaderPage extends BasePage{
 		String currentUrl=null;
 		AtomicReference<String> first_flyout_menu_text =new  AtomicReference<String>();
 		first_flyout_menu_text.set(headingName.split(" ")[0]);
-		WebElement linkPopularBrand = listPopularBrandsLink.get(0);
+		WebElement linkPopularBrand = listPopularBrandsLinks.get(0);
 		waitForCondition(Driver->{return (linkPopularBrand.getAttribute("href").contains(first_flyout_menu_text.get()) && linkPopularBrand.getAttribute("class").contains(section.split(" ")[0].trim().toLowerCase()));} ,30000);
-		if(verifyElementProperty(shopAllPopularBrands,"Link")) {
-			//getReusableActionsInstance().javascriptScrollByVisibleElement(shopAllPopularBrands);
-			//getReusableActionsInstance().scrollToElement(shopAllPopularBrands);
-			if (System.getProperty("Browser").toLowerCase().contains("chrome")) {
-				getReusableActionsInstance().scrollToElement(shopAllPopularBrands);
-			}
-			shopAllPopularBrands.click();
+		WebElement ShopAllWebElement = getWebElementShopAllPupularBrand();
+		if(verifyElementProperty(ShopAllWebElement,"Link")) {
+			getReusableActionsInstance().javascriptScrollByVisibleElement(ShopAllWebElement);
+			getReusableActionsInstance().scrollToElement(ShopAllWebElement);
+			ShopAllWebElement.click();
 			currentUrl = getDriver().getCurrentUrl();
 		}
 		return currentUrl;
@@ -613,6 +683,7 @@ public class GlobalHeaderPage extends BasePage{
 		return (title);
 	}
 
+	
 	/*Method to verify href/src is empty or not before clicking sub menu link
 	 * @return true/false
 	 * @author Shruti Desai
@@ -672,9 +743,9 @@ public class GlobalHeaderPage extends BasePage{
 			}
 		}else{
 			WebElement headingsElement=getWebElementFlyoutHeading(heading);
-			 if(System.getProperty("Browser").toLowerCase().contains("firefox")) {
-					getReusableActionsInstance().javascriptScrollByVisibleElement(headingsElement);
-			 }
+			if(System.getProperty("Browser").toLowerCase().contains("firefox")) {
+				getReusableActionsInstance().javascriptScrollByVisibleElement(headingsElement);
+			}
 			this.scrolltoWebElement(headingsElement);
 			getReusableActionsInstance().staticWait(3000);
 			waitForCondition(Driver->{return (CategoriesLinks.get(0).getAttribute("href").contains(headingsElement.getText().split(" ")[0]));} ,30000);
@@ -716,7 +787,7 @@ public class GlobalHeaderPage extends BasePage{
 					getReusableActionsInstance().scrollToElement(webElement);
 					//WebElement hrefAttribute =webElement.findElement(By.xpath("./ancestor::a"));
 					WebElement altAttribute =webElement.findElement(By.xpath(".//img"));
-					
+
 					if(!verifyElementProperty(webElement,"Link")) {//href not present
 						getReporter().softAssert(false,"","Href missing for Popular Brand item: "+webElement.getText());
 					}
@@ -744,23 +815,23 @@ public class GlobalHeaderPage extends BasePage{
 	/**Method to get get heading of Sign In page after clicking the Favourites's link for anonymous user
 	 * @return String:page heading
 	 * @author Shruti Desai
-	 */	
+	 */
 	public String getPageHeadingSignin() {
-		
+
 		return getPageTitle(SigninPageHeading);
 	}
 
 	/* Method to get WebElement by passing French name from yml file for Watch TSC
-	 * @param String : French name from yml file List<List<String>> lstWatchUsLiveNameAndLinks 
+	 * @param String : French name from yml file List<List<String>> lstWatchUsLiveNameAndLinks
 	 * @return WebElement : French name for Watch TSC-FR
 	 * @author Shruti Desai
 	 */
 	public WebElement getWatchTSCdPMElements(String frenchName){
-		String xpathTSCdPMfrenchName =createXPath("//div[contains(@Class,'black-header')]//nav//li//a//span[contains(text(),'{0}')]" ,frenchName); 
+		String xpathTSCdPMfrenchName =createXPath("//div[contains(@Class,'black-header')]//nav//li//a//span[contains(text(),'{0}')]" ,frenchName);
 		WebElement TSCdPMWebElement = getDriver().findElement(By.xpath(xpathTSCdPMfrenchName));
 		return TSCdPMWebElement;
 	}
-		
+
 	/* Method to verify drop down menu element of Watch TSC-FR
 	 * @param WebElement, true condition for url check, French of element of Watch TSC-FR dropdown menu
 	 * @return assertion report for href presence and validation of url after clicking element

@@ -3,6 +3,8 @@ package com.tsc.test.tests.productSearchResult;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.tsc.pages.HomePage;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 import com.tsc.data.Handler.TestDataHandler;
@@ -15,8 +17,8 @@ public class SR_TC06_Verify_ProductSearchResult_MultiFiltersSequentialActionTest
 	 * CER-228
 	 * CER-230
 	 */
-	@Test(groups={"ProductSearch","Regression"})
-	public void validateProductSearchResult_MultiFiltersSequentialActionTest() throws IOException {	
+	@Test(groups={"ProductSearch","Regression","Regression_Tablet","Regression_Mobile"})
+	public void validateProductSearchResult_MultiFiltersSequentialActionTest() throws IOException {
 	getGlobalFooterPageThreadLocal().closePopupDialog();
 	
 	reporter.softAssert(getglobalheaderPageThreadLocal().validateURL((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");		
@@ -28,7 +30,7 @@ public class SR_TC06_Verify_ProductSearchResult_MultiFiltersSequentialActionTest
 	List<WebElement> productList;
 	
 	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0));
-	String lsTestModel=getProductResultsPageThreadLocal().judgeTestModel();	
+	String lsTestModel=getProductResultsPageThreadLocal().judgeTestModel();
 	
 	//Test filter option for sequential actions
 	List<String> lstDisappearAfterSelectFilter=TestDataHandler.constantData.getSearchResultPage().getLst_DisappearAfterSelectFilter();
@@ -57,15 +59,17 @@ public class SR_TC06_Verify_ProductSearchResult_MultiFiltersSequentialActionTest
 			}else {
 				reporter.reportLogFail(lsMsg);
 			}
-		}		
+		}
 				
 		reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(), "Showing text pattern in filters is correct", "Showing text pattern in filters is incorrect");
-		reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting), "The default setting of items per page is "+lsSearchResultPageDefaultSetting, "The default setting of items per page isn't "+lsSearchResultPageDefaultSetting);
-		
+		if(!(System.getProperty("Device").equalsIgnoreCase("Mobile"))) {
+			reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting), "The default setting of items per page is "+lsSearchResultPageDefaultSetting, "The default setting of items per page isn't "+lsSearchResultPageDefaultSetting);
+		}
+
 		productList=getProductResultsPageThreadLocal().getProductList();
 		if(productList.size()>0) {
 			getProductResultsPageThreadLocal().verifySearchResultContent(productList);
-		}	
+		}
 	}
 
 	}
