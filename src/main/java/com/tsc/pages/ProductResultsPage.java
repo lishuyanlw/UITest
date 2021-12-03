@@ -414,7 +414,6 @@ public class ProductResultsPage extends BasePage{
 	public boolean verifyShowingTextPatternInFilters() {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblShowing);
 		String showingText=this.lblShowing.getText().toUpperCase()+" "+this.txtShowingDynamicContent.getText();
-
 		return showingText.matches("SHOWING: (\\d+) - (\\d+) of (\\d+) Items");
 	}
 
@@ -466,6 +465,8 @@ public class ProductResultsPage extends BasePage{
 	 */
 	public boolean VerifySearchResultWithProductItemNO(String lsexpectedItemNO) {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.productItemNOList.get(0));
+		//Wait till we have just one product present on page for running test in sauce-labs
+		waitForCondition(Driver->{return this.productItemNOList.size()==1;},180000);
 		for(WebElement item: this.productItemNOList) {
 			String lsItem=item.getText().trim();
 			List<String> list=this.getNumberFromString(lsItem);

@@ -443,12 +443,19 @@ public class GlobalFooterPage extends BasePage {
 	 * @author Wei.Li
 	 */
 	public void closePopupDialog() {
-		if (waitForCondition(Driver -> {
+		HomePage homePage = new HomePage(getDriver());
+		if(waitForCondition(Driver->{return homePage.btnClose.isDisplayed();},60000)){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(homePage.btnClose);
+			this.getReusableActionsInstance().clickIfAvailable(homePage.btnClose,3000);
+		}
+		//btnClose.click();
+		homePage.waitForPageLoad();
+		/**if (waitForCondition(Driver -> {
 			return (new HomePage(this.getDriver())).btnClose.isDisplayed();
 		}, 40000)) {
 			(new HomePage(this.getDriver())).btnClose.click();
 		}
-		getReusableActionsInstance().staticWait(500);
+		getReusableActionsInstance().staticWait(500); */
 	}
 
 	/**

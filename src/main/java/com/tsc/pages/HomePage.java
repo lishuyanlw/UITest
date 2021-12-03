@@ -60,11 +60,7 @@ public class HomePage extends BasePage{
 	@FindBy(xpath = "//div[@class='oanItemPrice']")
 	WebElement lblitemPriceNow;
 		
-	@FindBy(xpath = "//*[@class='email-popup__button']")
-	WebElement btnClose;
-	
-	
-	//TS Main Image section 
+	//TS Main Image section
 	
 	@FindBy(xpath = "//*[@class='TsZone']//div[contains(@class,'tsZoneHero')]")
 	WebElement TSimageUpperSection;
@@ -162,16 +158,6 @@ public class HomePage extends BasePage{
 	@FindBy(xpath = "//div[contains(@class,'ImageAnchorCarousel') and not(contains(@class,'ImageAnchorCarouselData'))]//div[a[contains(@href,'ic=HP_SBD')]]/ancestor::div[contains(@class,'ImageAnchorCarousel') and not(contains(@class,'ImageAnchorCarouselData'))]//button[contains(@class,'slick-next')]")
 	WebElement btnShopByDepartmentNext;	
 			
-	public void closeadd() {
-		if(waitForCondition(Driver->{return this.btnClose.isDisplayed();},60000)){
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnClose);
-			this.getReusableActionsInstance().clickIfAvailable(this.btnClose,3000);
-		}
-		//btnClose.click();
-		waitForPageLoad();
-	}
-
-	
 	public void waitForPageLoad() {
 		new WebDriverWait(getDriver(), 1000).until(
 				driver -> ((JavascriptExecutor) getDriver()).executeScript("return document.readyState").equals("complete"));

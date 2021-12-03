@@ -18,7 +18,7 @@ public class SR_TC09_Verify_ProductSearchResult_SpecialOffersAndRecomendationSec
 	 */
 	@Test(groups = { "ProductSearch", "Regression","Regression_Tablet","Regression_Mobile"})
 	public void validateProductSearchResult_SpecialOffersAndRecomendationSections() throws IOException {
-		(new HomePage(this.getDriver())).closeadd();
+		getGlobalFooterPageThreadLocal().closePopupDialog();
 		String lsSearchResultPageDefaultSetting = TestDataHandler.constantData.getSearchResultPage().getLbl_SearchResultPageDefaultSetting();
 		String lnkProductResult = TestDataHandler.constantData.getSearchResultPage().getLnk_product_result();
 		List<String> productRecommendationTitleText = TestDataHandler.constantData.getSearchResultPage().getLbl_ProductRecommendationTitlePage();
