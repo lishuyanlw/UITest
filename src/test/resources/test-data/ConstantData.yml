@@ -24,14 +24,37 @@ headerSection:
   lbl_SearchBoxPlaceholder: Search
   lbl_ShoppingCartLinkName: Bag
   lnk_ShoppingCartLink: /pages/shoppingcart
-  lst_HeaderNameAndLinks:
-    - headerName: Favourites
-      links: ["","/pages/myaccount/favourites"]
+  lst_HeaderNameAndLinksMap: {
+    Today's Showstopper: ["Today's Showstopper","Today's Showstopper-FR","/pages/todaysshowstopper?ic=HP_TodaysShowstopper"],
+    Watch TSC:  ["Watch TSC","Watch TSC-FR",""],
+    Favourites: ["Favourites","","/pages/myaccount/favourites"]
+   }
+  #Fourth parameter in list is true for those keys that have re-direct url present in application
+  lst_WatchTSCNameAndLinksMap: {
+    Watch Us Live: ["Watch Us Live","En direct","/pages/watchuslive?ic=HP_WatchUsLive","false"],
+    Deals: ["Deals","Aubaines","/pages/todaysshowstopper?ic=HP_TodaysShowstopper","false"],
+    Program Guide: ["Program Guide","Grille horaire","/pages/programguide/daily?ic=HP_ProgramGuide","true"],
+    Car Gadgets: ["Car Gadgets","Car Gadgets","/pages/todaysshowstopper?ic=HP_TodaysShowstopper","false"],
+    Designer Footwear: ["Designer Footwear","Nouveaux arrivages","/pages/productresults?nav=n:128153-2069664&ic=HDR_FlyoutNav_Shoes_And_Handbags_Designer_Footwear","false"],
+    On Air Products: ["On Air Products","Sur les ondes","/pages/productresults?ic=HP_OnAir_T&dimensions=2037548&page=1&pageSize=36&rd=false","false"]
+    }
   flyout:
-    lst_FlyoutHeading: ['Fashion', 'Shoes & Handbags', 'Jewellery', 'Beauty', 'Home & Garden', 'Kitchen', 'Health & Fitness', 'Electronics', 'Coins & Hobbies', 'Clearance']
+    lst_FlyoutHeadingAndNameMap: {
+      Fashion: ['Fashion','Mode','100047'],
+      Shoes & Handbags: ['Shoes & Handbags','Chaussures et sacs','128153'],
+      Jewellery: ['Jewellery','Bijoux','100101'],
+      Beauty: ['Beauty','Beauté','100038'],
+      Home & Garden: ['Home & Garden','Maison et jardin','100071'],
+      Kitchen: ['Kitchen','Cuisine','100072'],
+      Health & Fitness: ['Health & Fitness','Santé','2058731'],
+      Electronics: ['Electronics','Électronique','100073'],
+      Coins & Hobbies: ['Coins & Hobbies','Monnaie et Hobbies','3001781'],
+      Clearance:  ['Clearance','Liquidation','2037576']
+    }
+    lnk_ShopByBrandShopAll: pages/brand?dimensions=
+    lbl_LandingPageBrandShopAll: Shop By Brand
     lbl_FlyoutHeadingLandingPageLink: /pages/category?nav=n
-    lnk_FlyoutHeaderLinkConstant: [ ':100047',':128153',':100101',':100038',':100071',':100072',':2058731',':100073',':3001781',':2037576' ]
-    lst_FlyoutSubMenu: ['Shop By Product','Specialty Shops','Luggage','Special Pricing','Shop By Metal','Shop By Stone','Wellness','Shop Pet Boutique','Shop By Room','Sports Shop','Shop By Brand','Shop Sports','Travel','Featured Brands','Sportsnet Shop','Vitamin Selector','Shop Coins','Shop By Price','View All >']
+   
 homePage:
   lbl_OnAirNow: ON AIR NOW
   lbl_RecentlyAir: RECENTLY AIRED
@@ -103,3 +126,4 @@ footerSection:
 loginUser:
   lbl_Username: testMail@test.com
   lbl_Password: testMail123
+  lbl_FirstName: David

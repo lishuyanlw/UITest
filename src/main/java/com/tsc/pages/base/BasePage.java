@@ -648,6 +648,20 @@ import utils.ReusableActions;
 		   return utf8EncodedString;
 	}
 	
+	/*Method to get UTF-8 format for the list of string
+	 *param list of string: input data list
+	 *@author Shruti.Desai
+	 */
+	public List<String> getUTFEnabledDataList(List<String> data) {
+		   List<String> utf8EncodedString = new ArrayList<String>();
+		   for(String lsdata:data) {
+			  byte[]  bytes = lsdata.getBytes(StandardCharsets.UTF_8);
+			  String newutf8EncodedString = new String(bytes);
+			  utf8EncodedString.add(newutf8EncodedString);
+		   }
+		   return utf8EncodedString;
+	}
+
     /**
 	 * This method is to get element from element list with a expected text. 
 	 * @param List<WebElement> elementList: input element list
