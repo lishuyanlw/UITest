@@ -177,8 +177,10 @@ public class LoginPage extends BasePage {
 	 */
 	public void LoginWithoutWaitingTime(String lsUserName, String lsPassword) {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputUserName);
+		this.inputUserName.clear();
 		this.inputUserName.sendKeys(lsUserName);
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputPassword);
+		this.inputPassword.clear();
 		this.inputPassword.sendKeys(lsPassword);
 		getReusableActionsInstance().staticWait(1000);
 		
