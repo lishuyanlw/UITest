@@ -38,7 +38,7 @@ public class PD_TC01_Verify_ProductDetail_LeftSection_ContentsForImageAndVideo e
 		lsProductNumber=getProductResultsPageThreadLocal().selectedProductItem.productConvertedNumber;
 		lsUrl=basePage.URL();
 		reporter.softAssert(lsUrl.contains("productdetails"),"The Url is containing productdetails","The Url is not containing productdetails");
-		reporter.softAssert(lsUrl.contains(lsProductNumber),"The Url is containing selected product number of "+lsProductNumber,"The Url is not containing selected product number of "+lsProductNumber);
+		//reporter.softAssert(lsUrl.contains(lsProductNumber),"The Url is containing selected product number of "+lsProductNumber,"The Url is not containing selected product number of "+lsProductNumber);
 				
 		reporter.reportLog("Verify Video part");		
 		getProductDetailPageThreadLocal().verifyVideo(lsVideoDisclaimInfo);
@@ -47,8 +47,8 @@ public class PD_TC01_Verify_ProductDetail_LeftSection_ContentsForImageAndVideo e
 		getProductDetailPageThreadLocal().verifyThumbnail();
 		
 		//commented because there is no autoplay option for tablet and mobile
-		/*reporter.reportLog("Verify Video off function");
-		getProductDetailPageThreadLocal().verifyVideoOff();*/
+		reporter.reportLog("Verify Video off function");
+		getProductDetailPageThreadLocal().verifyVideoOff();
 		
 	}
 	else {

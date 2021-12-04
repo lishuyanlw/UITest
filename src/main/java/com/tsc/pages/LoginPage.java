@@ -176,11 +176,11 @@ public class LoginPage extends BasePage {
 	 * @author Wei.Li
 	 */
 	public void verifyMenuItemInPopover(List<String> lstMenuItemPopover) {
-		if (!System.getProperty("Device").equalsIgnoreCase("Desktop")) {
+		/*if (!System.getProperty("Device").equalsIgnoreCase("Desktop")) {
 			this.SigninIcon.click();
 			getReusableActionsInstance().staticWait(2000);
 			//getReusableActionsInstance().javascriptScrollByVisibleElement(this.cntSignInPopover);
-		}
+		}*/
 		this.hoverOnSignInHeadingMenu();
 		WebElement element;
 		for(String lsItem:lstMenuItemPopover) {

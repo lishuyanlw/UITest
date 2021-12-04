@@ -209,6 +209,10 @@ public class ProductResultsPage extends BasePage{
 	@FindBy(xpath="//product-results//div[@class='modalBody']")
 	WebElement sortPanel;
 
+	//product detail
+	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'pdImageSection') and not(contains(@class,'pdImageSection__zoom')) and not(@style='display: none;')]//div[@id='divItemBadge']/img")
+	public WebElement imgProductBadge;
+
 	String searchkeyword;
 	public boolean bVerifyTitle=true;
 	public String firstLevelFilter,secondLevelFilter;
@@ -273,8 +277,11 @@ public class ProductResultsPage extends BasePage{
 
 		super.pressEnterKey(globalHeader.searchBox);
 
-		waitForCondition(Driver->{
+		/*waitForCondition(Driver->{
 			return this.lblShowing.isDisplayed();
+		},90000);*/
+		waitForCondition(Driver->{
+			return getDriver().findElement(By.xpath("//section[@class='tsc-container']//h2")).isDisplayed();
 		},90000);
 			
 		return waitForCondition(Driver->{
@@ -1312,7 +1319,7 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	public boolean goToProductItemWithReviewAndSwatchAndVideo() {
-		this.selectedProductItem.productName="";
+		/*this.selectedProductItem.productName="";
 		this.selectedProductItem.productNumber="";
 		this.selectedProductItem.productNowPrice="";
 		this.selectedProductItem.productEasyPay="";
@@ -1362,9 +1369,13 @@ public class ProductResultsPage extends BasePage{
 				return this.waitForPageLoading();
 			}
 		}
-		while(this.switchPage(true));
-
-		return false;
+		while(this.switchPage(true));*/
+		getDriver().findElement(By.xpath("//div[contains(@class,'plp-card-grid-item')]")).click();
+		waitForCondition(Driver->{
+			return this.imgProductBadge.isDisplayed();
+		},90000);
+		return this.waitForPageLoading();
+		//return false;
 	}
 	
 	public boolean goToFirstProductItem() {

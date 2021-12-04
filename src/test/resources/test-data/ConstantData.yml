@@ -70,7 +70,7 @@ homePage:
 searchResultPage:
   #lst_SearchKeyword: [ "dyson vacuum","dfafasdfa","100501","joan rivers","Nike","boots" ]
   lst_SearchKeyword: [ "dyson vacuum","100501","Nike" ]
-  lst_SearchKeyword_DropDown: [[ "dress","Categories","0" ]]
+  lst_SearchKeyword_DropDown: [[ "526457","dress","Categories","0" ]]
   lbl_SearchResultPageDefaultSetting: 36
   lst_SearchResultMessage:  [ "Search Results For" , "We couldn","t find a match for","Please search again using a different term or browse by brand or category." ] 
   lst_SortOption: ["Featured Products","Newest First","Reviews: Highest First","Price: Lowest First","Price: Highest First","Brand Name: A to Z"]

@@ -37,7 +37,7 @@ public class BaseTest {
 
 	protected static final ThreadLocal<WebDriver> webDriverThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<GlobalHeaderPage> globalheaderPageThreadLocal = new ThreadLocal<>();
-	protected static final ThreadLocal<GlobalHeaderPage_Mobile> globalHeaderPage_mobileThreadLocal = new ThreadLocal<>();
+	//protected static final ThreadLocal<GlobalHeaderPage_Mobile> globalHeaderPage_mobileThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<HomePage> homePageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<GlobalFooterPage> globalFooterPageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<ProductResultsPage> productResultsPageThreadLocal = new ThreadLocal<>();
@@ -65,10 +65,10 @@ public class BaseTest {
 		return globalheaderPageThreadLocal.get();
 	}
 
-	// @return the globalheaderPage_MobileThreadLocal
+	/*// @return the globalheaderPage_MobileThreadLocal
 	protected static GlobalHeaderPage_Mobile getglobalHeaderPage_mobileThreadLocal() {
 		return globalHeaderPage_mobileThreadLocal.get();
-	}
+	}*/
 
 	// @return the homePageThreadLocal
 	protected static HomePage homePageThreadLocal() {
@@ -120,8 +120,8 @@ public class BaseTest {
 	private void init_Mobile() {
 		productResultsPageThreadLocal.set(new ProductResultsPage_Mobile(getDriver()));
 		globalheaderPageThreadLocal.set(new GlobalHeaderPage_Mobile(getDriver()));
-		loginPageThreadLocal.set(new LoginPage(getDriver()));
-		globalFooterPageThreadLocal.set(new GlobalFooterPage(getDriver()));
+		//loginPageThreadLocal.set(new LoginPage(getDriver()));
+		//globalFooterPageThreadLocal.set(new GlobalFooterPage(getDriver()));
 		globalFooterPageThreadLocal.set(new GlobalFooterPage_Mobile(getDriver()));
 		productDetailPageThreadLocal.set(new ProductDetailPage_Mobile(getDriver()));
 		//globalheaderPageThreadLocal.set(new GlobalHeaderPage_Mobile(getDriver()));
