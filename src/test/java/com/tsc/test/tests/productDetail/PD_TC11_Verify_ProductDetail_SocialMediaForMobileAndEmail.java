@@ -11,7 +11,7 @@ import com.tsc.test.base.BaseTest;
 
 public class PD_TC11_Verify_ProductDetail_SocialMediaForMobileAndEmail extends BaseTest{
 	/*
-	 * CER-602
+	 * CER-585
 	 * 
 	 */
 	@Test(groups={"ProductDetail","Regression"})
