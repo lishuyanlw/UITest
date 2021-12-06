@@ -97,7 +97,7 @@ searchResultPage:
   lst_DisappearAfterSelectFilter: ["SHOP BY CATEGORY"]
   lnk_product_result: /pages/productresults?
   lbl_ProductRecommendationTitlePage: ["People who viewed this item also viewed","TOP SELLERS"]
-  lbl_AddToBagPopupWindowTitle: "\d+ ITEM(S)? ADDED TO YOUR SHOPPING BAG"
+  lbl_AddToBagPopupWindowTitle: "\\d+ ITEM(S)? ADDED TO YOUR SHOPPING BAG"
   lbl_VideoDisclaimInfo: "Pre-recorded videos contain pricing or promotional offers that may have expired."
   lbl_AdvancedOrderkeyword: 522809
   lbl_SoldOutkeyword: 485939
