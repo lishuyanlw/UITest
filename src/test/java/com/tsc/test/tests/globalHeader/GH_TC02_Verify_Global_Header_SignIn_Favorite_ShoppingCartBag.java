@@ -45,7 +45,6 @@ public class GH_TC02_Verify_Global_Header_SignIn_Favorite_ShoppingCartBag extend
 		getGlobalLoginPageThreadLocal().verifySignInSection();		
 		getGlobalLoginPageThreadLocal().verifyShowingUserFirstNameAfterSignin(lsUserName, lsPassword,lsFirstName);		
 		getGlobalLoginPageThreadLocal().SignOut();		
-	
 		reporter.reportLog("Verify Shopping Cart section");
 		//Verify url does not contain notfound after clicking Shopping Cart link
 		lsUrl=getglobalheaderPageThreadLocal().getUrlAfterClickingShoppingCartLink();

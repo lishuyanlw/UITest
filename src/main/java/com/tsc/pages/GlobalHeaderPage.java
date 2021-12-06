@@ -437,7 +437,7 @@ public class GlobalHeaderPage extends BasePage{
 		 blackItem.click();
 		// this.waitForPageToLoad();
 		 
-		// waitForCondition(Driver->{return headingWatchTSCDpdMenuLinkLandingPage.isDisplayed();} ,30000);
+		waitForCondition(Driver->{return headingWatchTSCDpdMenuLinkLandingPage.isDisplayed();} ,30000);
 			
 	(new GlobalFooterPage(this.getDriver())).waitForPageLoading();
 		 
@@ -476,9 +476,12 @@ public class GlobalHeaderPage extends BasePage{
 			 getReusableActionsInstance().scrollToElement(element);
 			 getReusableActionsInstance().staticWait(300);
 			 lsItem=element.getText();
-			 reporter.softAssert(getReusableActionsInstance().isElementVisible(this.lblPossibleItemMatches),"The title of Top selling products is displaying correctly by selecting item of '"+lsItem+"'", "The title of Top selling products is not displaying correctly by selcting item of '"+lsItem+"'");
+			 if(System.getProperty("Device").equalsIgnoreCase("Desktop")) {
+					
+				 reporter.softAssert(getReusableActionsInstance().isElementVisible(this.lblPossibleItemMatches),"The title of Top selling products is displaying correctly by selecting item of '"+lsItem+"'", "The title of Top selling products is not displaying correctly by selcting item of '"+lsItem+"'");
+			 }
 			 reporter.softAssert(getReusableActionsInstance().isElementVisible(this.cntPossibleItemMatchesList),"The Top selling products list is displaying correctly by selecting item of '"+lsItem+"'","The Top selling products list is not displaying correctly by selcting item of '"+lsItem+"'");			 
-		 }	
+		}	
 	 }
 	 
 	 /**
