@@ -254,7 +254,7 @@ public class BaseTest {
 	public void beforeTest(@Optional("chrome") String strBrowser, @Optional("en") String strLanguage,
 			ITestContext testContext, Method method) throws ClientProtocolException, IOException {
 		startSession(System.getProperty("QaUrl"), strBrowser, strLanguage, method, false);
-		getglobalheaderPageThreadLocal().waitForPageLoad();
+		//getglobalheaderPageThreadLocal().waitForPageLoad();
 		// getHomePageThreadLocal().waitforOverlayLoadingSpinnerToDisapper();
 		// reporter.hardAssert(getHomePageThreadLocal().validateLogoRogers(), "Home Page
 		// Loaded", "Home Page Not Loaded");
