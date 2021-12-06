@@ -68,8 +68,7 @@ homePage:
   lst_ShopByDepartmentCategories: [ FASHION, SHOES & HANDBAGS, JEWELLERY, BEAUTY, HOME & GARDEN, KITCHEN, HEALTH & FITNESS, ELECTRONICS, COINS & HOBBIES, CLEARANCE, SPORTS, MENS ]
   lbl_TopSellers: TOP SELLERS
 searchResultPage:
-  #lst_SearchKeyword: [ "dyson vacuum","dfafasdfa","100501","joan rivers","Nike","boots" ]
-  lst_SearchKeyword: [ "dyson vacuum","100501","Nike" ]
+  lst_SearchKeyword: [ "dyson vacuum","dfafasdfa","100501","joan rivers","Nike","boots" ]
   lst_SearchKeyword_DropDown: [[ "dress","Categories","0" ]]
   lbl_SearchResultPageDefaultSetting: 36
   lst_SearchResultMessage:  [ "Search Results For" , "We couldn","t find a match for","Please search again using a different term or browse by brand or category." ] 
