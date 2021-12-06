@@ -9,6 +9,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
 
+import com.tsc.pages.ProductResultsPage.ProductItem;
 import com.tsc.pages.base.BasePage;
 
 public class ProductDetailPage extends BasePage {
@@ -1350,7 +1351,7 @@ public class ProductDetailPage extends BasePage {
 		String lsStyle,lsSize="",lsMsg;
 		reporter.softAssert(!this.getElementText(this.lblQuantityStatic).isEmpty(),"The product quantity label message is not empty","The product quantity label message is empty");
 		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.selectQuantityOption),"The product Quantity option is displaying correctly","The product Quantity option is not displaying correctly");
-		int loopSize;		
+		int loopSize,lastOption;		
 		if(this.judgeStyleDisplayModeIsDropdownMenu()) {
 			Select selectStyle= new Select(this.selectProductStyle);
 			loopSize=this.lstDropdownProductStyle.size();			
@@ -1368,21 +1369,41 @@ public class ProductDetailPage extends BasePage {
 						sizeOption.selectByIndex(j);
 						this.getReusableActionsInstance().staticWait(1000);
 						lsSize=this.selectSizeOption.getText();
-					}			
+						
+						lsMsg=lsStyle+" Style and "+lsSize+" Size";						
+						this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectQuantityOption);
+						if(!this.getElementText(this.lblQuantityLeft).isEmpty()) {
+							if(this.selectQuantityOption.getText().isEmpty()) {
+								reporter.reportLogFail("The product Quantity left message should not occur while selected quantity is empty for "+lsMsg);
+							}
+							else {
+								lastOption=Integer.parseInt(this.lblQuantityLastOption.getAttribute("value"));
+								if(lastOption<quantityNumberToShowLeftItemInfo) {
+									reporter.reportLogPass("The product Quantity left message is displaying correctly while quantity dropdown items amount is less than "+ quantityNumberToShowLeftItemInfo+ " for "+lsMsg);
+								}
+								else {
+									reporter.reportLogFail("The product Quantity left message should not occur while quantity dropdown items amount is no less than "+ quantityNumberToShowLeftItemInfo+ " for "+lsMsg);
+								}
+							}							
+						}						
+					}
 				}
-				
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectQuantityOption);
-				if(!this.selectQuantityOption.getText().isEmpty()) {
-					int lastOption=Integer.parseInt(this.lblQuantityLastOption.getAttribute("value"));
-					if(lastOption<quantityNumberToShowLeftItemInfo) {
-						if(lsSize.isEmpty()) {
-							lsMsg=lsStyle+" Style";
+				else {
+					lsMsg=lsStyle+" Style";						
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectQuantityOption);
+					if(!this.getElementText(this.lblQuantityLeft).isEmpty()) {
+						if(this.selectQuantityOption.getText().isEmpty()) {
+							reporter.reportLogFail("The product Quantity left message should not occur while selected quantity is empty for "+lsMsg);
 						}
 						else {
-							lsMsg=lsStyle+" Style and "+lsSize+" Size";
-						}
-						
-						reporter.softAssert(!this.getElementText(this.lblQuantityLeft).isEmpty(),"The product Quantity left message is not empty for "+lsMsg,"The product Quantity left message is empty for "+lsMsg);
+							lastOption=Integer.parseInt(this.lblQuantityLastOption.getAttribute("value"));
+							if(lastOption<quantityNumberToShowLeftItemInfo) {
+								reporter.reportLogPass("The product Quantity left message is displaying correctly while quantity dropdown items amount is less than "+ quantityNumberToShowLeftItemInfo+ " for "+lsMsg);
+							}
+							else {
+								reporter.reportLogFail("The product Quantity left message should not occur while quantity dropdown items amount is no less than "+ quantityNumberToShowLeftItemInfo+ " for "+lsMsg);
+							}
+						}							
 					}
 				}
 			}
@@ -1406,21 +1427,41 @@ public class ProductDetailPage extends BasePage {
 						sizeOption.selectByIndex(j);
 						this.getReusableActionsInstance().staticWait(1000);
 						lsSize=this.selectSizeOption.getText();
-					}			
+						
+						lsMsg=lsStyle+" Style and "+lsSize+" Size";						
+						this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectQuantityOption);
+						if(!this.getElementText(this.lblQuantityLeft).isEmpty()) {
+							if(this.selectQuantityOption.getText().isEmpty()) {
+								reporter.reportLogFail("The product Quantity left message should not occur while selected quantity is empty for "+lsMsg);
+							}
+							else {
+								lastOption=Integer.parseInt(this.lblQuantityLastOption.getAttribute("value"));
+								if(lastOption<quantityNumberToShowLeftItemInfo) {
+									reporter.reportLogPass("The product Quantity left message is displaying correctly while quantity dropdown items amount is less than "+ quantityNumberToShowLeftItemInfo+ " for "+lsMsg);
+								}
+								else {
+									reporter.reportLogFail("The product Quantity left message should not occur while quantity dropdown items amount is no less than "+ quantityNumberToShowLeftItemInfo+ " for "+lsMsg);
+								}
+							}							
+						}						
+					}
 				}
-				
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectQuantityOption);
-				if(!this.selectQuantityOption.getText().isEmpty()) {
-					int lastOption=Integer.parseInt(this.lblQuantityLastOption.getAttribute("value"));
-					if(lastOption<quantityNumberToShowLeftItemInfo) {
-						if(lsSize.isEmpty()) {
-							lsMsg=lsStyle+" Style";
+				else {
+					lsMsg=lsStyle+" Style";						
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectQuantityOption);
+					if(!this.getElementText(this.lblQuantityLeft).isEmpty()) {
+						if(this.selectQuantityOption.getText().isEmpty()) {
+							reporter.reportLogFail("The product Quantity left message should not occur while selected quantity is empty for "+lsMsg);
 						}
 						else {
-							lsMsg=lsStyle+" Style and "+lsSize+" Size";
-						}
-						
-						reporter.softAssert(!this.getElementText(this.lblQuantityLeft).isEmpty(),"The product Quantity left message is not empty for "+lsMsg,"The product Quantity left message is empty for "+lsMsg);
+							lastOption=Integer.parseInt(this.lblQuantityLastOption.getAttribute("value"));
+							if(lastOption<quantityNumberToShowLeftItemInfo) {
+								reporter.reportLogPass("The product Quantity left message is displaying correctly while quantity dropdown items amount is less than "+ quantityNumberToShowLeftItemInfo+ " for "+lsMsg);
+							}
+							else {
+								reporter.reportLogFail("The product Quantity left message should not occur while quantity dropdown items amount is no less than "+ quantityNumberToShowLeftItemInfo+ " for "+lsMsg);
+							}
+						}							
 					}
 				}
 			}
@@ -1512,11 +1553,11 @@ public class ProductDetailPage extends BasePage {
 	 * @return void	  
 	 * @author Wei.Li
 	 */
-	public void verifyProductDetailsInAddToBagPopupWindow(String lbl_AddToBagPopupWindowTitle){	
+	public void verifyProductDetailsInAddToBagPopupWindow(String lbl_AddToBagPopupWindowTitle, ProductItem productItem){	
 		openAddToBagPopupWindow();
 		
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAddToBagPopupWindowTitle);
-		reporter.softAssert(this.lblAddToBagPopupWindowTitle.getText().equalsIgnoreCase(lbl_AddToBagPopupWindowTitle),"The title of Add to Bag popup window is equal to '"+lbl_AddToBagPopupWindowTitle+"'","The title of Add to Bag popup window is not equal to '"+lbl_AddToBagPopupWindowTitle+"'");
+		reporter.softAssert(this.lblAddToBagPopupWindowTitle.getText().matches(lbl_AddToBagPopupWindowTitle),"The title of Add to Bag popup window is matching to '"+lbl_AddToBagPopupWindowTitle+"' pattern","The title of Add to Bag popup window is not matching to '"+lbl_AddToBagPopupWindowTitle+"' pattern");
 		
 		if(checkProductBadgeInAddToBagPopupDisplaying()) {
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.imgAddToBagPopupWindowDetailsProductBadge);
@@ -1532,6 +1573,7 @@ public class ProductDetailPage extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAddToBagPopupWindowDetailsProductName);
 		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblAddToBagPopupWindowDetailsProductName),"The product name in Add to Bag popup window is visible","The product name in Add to Bag popup window is not visible");
 		reporter.softAssert(!this.lblAddToBagPopupWindowDetailsProductName.getText().isEmpty(),"The product name in Add to Bag popup window is not empty","The product name in Add to Bag popup window is empty");
+		reporter.softAssert(this.lblAddToBagPopupWindowDetailsProductName.getText().trim().equalsIgnoreCase(productItem.productName),"The product name in Add to Bag popup window is equal to the original product name from product search result page","The product name in Add to Bag popup window is not equal to the original product name from product search result page");
 		
 		if(checkProductSyleInAddToBagPopupDisplaying()) {
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAddToBagPopupWindowDetailsProductStyle);
@@ -1548,7 +1590,8 @@ public class ProductDetailPage extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAddToBagPopupWindowDetailsProductNumber);
 		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblAddToBagPopupWindowDetailsProductNumber),"The product Number in Add to Bag popup window is visible","The product Number in Add to Bag popup window is not visible");
 		reporter.softAssert(!this.lblAddToBagPopupWindowDetailsProductNumber.getText().isEmpty(),"The product Number in Add to Bag popup window is not empty","The product Number in Add to Bag popup window is empty");
-	
+		reporter.softAssert(this.lblAddToBagPopupWindowDetailsProductNumber.getText().trim().equalsIgnoreCase(productItem.productNumber),"The product number in Add to Bag popup window is equal to the original product number from product search result page","The product name in Add to Bag popup window is not equal to the original product name from product search result page");
+		
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAddToBagPopupWindowButtonSectionSubtotal);
 		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblAddToBagPopupWindowButtonSectionSubtotal),"The product Subtotal in Add to Bag popup window is visible","The product Subtotal in Add to Bag popup window is not visible");
 		reporter.softAssert(!this.lblAddToBagPopupWindowButtonSectionSubtotal.getText().isEmpty(),"The product Subtotal in Add to Bag popup window is not empty","The product Subtotal in Add to Bag popup window is empty");
@@ -1629,16 +1672,33 @@ public class ProductDetailPage extends BasePage {
 		this.getReusableActionsInstance().clickIfAvailable(this.lnkVideoInZoomImage);
 		//this.lnkVideoInZoomImage.click();
 		this.getReusableActionsInstance().waitForElementVisibility(this.btnAutoPlayVideo,  60);
-				
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnAutoPlayVideo);
-		this.getReusableActionsInstance().clickIfAvailable(this.btnAutoPlayVideo);
-		//this.btnAutoPlayVideo.click();
-		this.getReusableActionsInstance().staticWait(1000);
-		this.getDriver().navigate().refresh();
-		this.waitForPageToLoad();
-		this.getReusableActionsInstance().waitForElementVisibility(this.lblZoomImageMessage,  60);		
-		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lnkCurrentZoomImage),"The image is displaying after video off and page refreshing instead of video displaying","The image is not displaying after video off and page refreshing instead of video displaying");
-
+		if(this.checkIfAutoPlayVideoStatusIsON()) {
+			//Set AutoPlayVideo off 
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnAutoPlayVideo);
+			this.getReusableActionsInstance().clickIfAvailable(this.btnAutoPlayVideo);
+			//this.btnAutoPlayVideo.click();
+			this.getReusableActionsInstance().staticWait(1000);
+			this.getDriver().navigate().refresh();
+			this.waitForPageToLoad();
+			this.getReusableActionsInstance().waitForElementVisibility(this.lblZoomImageMessage,  60);		
+			reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lnkCurrentZoomImage),"The image is displaying after video off and page refreshing instead of video displaying","The image is not displaying after video off and page refreshing instead of video displaying");
+		}
+		else {
+			//Set AutoPlayVideo on 
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnAutoPlayVideo);
+			this.getReusableActionsInstance().clickIfAvailable(this.btnAutoPlayVideo);
+			this.getReusableActionsInstance().staticWait(1000);
+			
+			//Set AutoPlayVideo off 
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnAutoPlayVideo);
+			this.getReusableActionsInstance().clickIfAvailable(this.btnAutoPlayVideo);
+			//this.btnAutoPlayVideo.click();
+			this.getReusableActionsInstance().staticWait(1000);
+			this.getDriver().navigate().refresh();
+			this.waitForPageToLoad();
+			this.getReusableActionsInstance().waitForElementVisibility(this.lblZoomImageMessage,  60);		
+			reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lnkCurrentZoomImage),"The image is displaying after video off and page refreshing instead of video displaying","The image is not displaying after video off and page refreshing instead of video displaying");
+		}
 	}
 	
 	public void verifyThumbnail() {
