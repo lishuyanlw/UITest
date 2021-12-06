@@ -852,32 +852,28 @@ public class ProductDetailPage extends BasePage {
 				}
 				
 				if(!bDisabled) {
-					this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 					element=item.findElement(By.xpath(".//img"));
-					element.click();
-					this.getReusableActionsInstance().staticWait(500);
-					
-					String lsThumbnail=this.getImageNameFromThumbnailOrZoomImagePath(lnkCurrentZoomImage.getAttribute("href"));
-					String lsZoomImage=this.getImageNameFromThumbnailOrZoomImagePath(imgCurrentThumbnail.getAttribute("src"));
-								
-					reporter.softAssert(lsThumbnail.equalsIgnoreCase(lsZoomImage), "The Thumbnail image is the same as the Zoom image with changing Swatch style", "The Thumbnail image is not the same as the Zoom image with changing Swatch style");
-					reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblImageDisclaim),"The Image disclaim message section is displaying correctly","The Image disclaim message section is not displaying correctly");
+					verifySingleItemLinkageBetweenThumbnailAndZoomImage(element);
 				}
 			}
 		}
 		else {
 			for(WebElement item:this.lstThumbnailImageList) {			
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-				item.click();
-				this.getReusableActionsInstance().staticWait(500);
-				
-				String lsThumbnail=this.getImageNameFromThumbnailOrZoomImagePath(lnkCurrentZoomImage.getAttribute("href"));
-				String lsZoomImage=this.getImageNameFromThumbnailOrZoomImagePath(imgCurrentThumbnail.getAttribute("src"));
-							
-				reporter.softAssert(lsThumbnail.equalsIgnoreCase(lsZoomImage), "The Thumbnail image is the same as the Zoom image with changing Swatch style", "The Thumbnail image is not the same as the Zoom image with changing Swatch style");
-				reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblImageDisclaim),"The Image disclaim message section is displaying correctly","The Image disclaim message section is not displaying correctly");
+				verifySingleItemLinkageBetweenThumbnailAndZoomImage(item);
 			}
 		}						
+	}
+	
+	private void verifySingleItemLinkageBetweenThumbnailAndZoomImage(WebElement item) {
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+		item.click();
+		this.getReusableActionsInstance().staticWait(500);
+		
+		String lsThumbnail=this.getImageNameFromThumbnailOrZoomImagePath(lnkCurrentZoomImage.getAttribute("href"));
+		String lsZoomImage=this.getImageNameFromThumbnailOrZoomImagePath(imgCurrentThumbnail.getAttribute("src"));
+					
+		reporter.softAssert(lsThumbnail.equalsIgnoreCase(lsZoomImage), "The Thumbnail image is the same as the Zoom image with changing Swatch style", "The Thumbnail image is not the same as the Zoom image with changing Swatch style");
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblImageDisclaim),"The Image disclaim message section is displaying correctly","The Image disclaim message section is not displaying correctly");
 	}
 	
 	/**
@@ -1046,8 +1042,7 @@ public class ProductDetailPage extends BasePage {
 								
 				lsAfterStyleName=this.lblRadioProductStyleTitle.getText().trim();				
 				lsLabelTitle=labelItem.getAttribute("title").trim();
-				lsSwatch=this.getCurrentSwatchStyle();	
-				System.out.println(lsBeforeStyleName+" : "+lsAfterStyleName);				
+				lsSwatch=this.getCurrentSwatchStyle();								
 				reporter.softAssert(!lsBeforeStyleName.equalsIgnoreCase(lsAfterStyleName), "Clicking the swatch radio option of '"+lsSwatch+"' is changing product style name", "Clicking the swatch radio option of '"+lsSwatch+"' is not changing product style name");
 				reporter.softAssert(lsLabelTitle.equalsIgnoreCase(lsAfterStyleName), "The label title is equal to product style name of '"+lsAfterStyleName+"'", "The label title is not equal to product style name of '"+lsAfterStyleName+"'");	
 			}
@@ -1348,10 +1343,10 @@ public class ProductDetailPage extends BasePage {
 	 * @author Wei.Li
 	 */
 	public void verifyProductQuantityDropdown(int quantityNumberToShowLeftItemInfo) {
-		String lsStyle,lsSize="",lsMsg;
+		String lsStyle,lsMsg;
 		reporter.softAssert(!this.getElementText(this.lblQuantityStatic).isEmpty(),"The product quantity label message is not empty","The product quantity label message is empty");
 		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.selectQuantityOption),"The product Quantity option is displaying correctly","The product Quantity option is not displaying correctly");
-		int loopSize,lastOption;		
+		int loopSize;		
 		if(this.judgeStyleDisplayModeIsDropdownMenu()) {
 			Select selectStyle= new Select(this.selectProductStyle);
 			loopSize=this.lstDropdownProductStyle.size();			
@@ -1362,49 +1357,11 @@ public class ProductDetailPage extends BasePage {
 				lsStyle=this.selectProductStyle.getText();
 				
 				if(this.judgeStyleSizeAvailable()) {					
-					Select sizeOption=new Select(this.selectSizeOption);		
-					int subLoopSize=this.lstSizeOption.size();
-					for(int j=0;j<subLoopSize;j++) {
-						this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectSizeOption);
-						sizeOption.selectByIndex(j);
-						this.getReusableActionsInstance().staticWait(1000);
-						lsSize=this.selectSizeOption.getText();
-						
-						lsMsg=lsStyle+" Style and "+lsSize+" Size";						
-						this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectQuantityOption);
-						if(!this.getElementText(this.lblQuantityLeft).isEmpty()) {
-							if(this.selectQuantityOption.getText().isEmpty()) {
-								reporter.reportLogFail("The product Quantity left message should not occur while selected quantity is empty for "+lsMsg);
-							}
-							else {
-								lastOption=Integer.parseInt(this.lblQuantityLastOption.getAttribute("value"));
-								if(lastOption<quantityNumberToShowLeftItemInfo) {
-									reporter.reportLogPass("The product Quantity left message is displaying correctly while quantity dropdown items amount is less than "+ quantityNumberToShowLeftItemInfo+ " for "+lsMsg);
-								}
-								else {
-									reporter.reportLogFail("The product Quantity left message should not occur while quantity dropdown items amount is no less than "+ quantityNumberToShowLeftItemInfo+ " for "+lsMsg);
-								}
-							}							
-						}						
-					}
+					verifyQuantityLeftMessageForProductSize(lsStyle, quantityNumberToShowLeftItemInfo);
 				}
 				else {
 					lsMsg=lsStyle+" Style";						
-					this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectQuantityOption);
-					if(!this.getElementText(this.lblQuantityLeft).isEmpty()) {
-						if(this.selectQuantityOption.getText().isEmpty()) {
-							reporter.reportLogFail("The product Quantity left message should not occur while selected quantity is empty for "+lsMsg);
-						}
-						else {
-							lastOption=Integer.parseInt(this.lblQuantityLastOption.getAttribute("value"));
-							if(lastOption<quantityNumberToShowLeftItemInfo) {
-								reporter.reportLogPass("The product Quantity left message is displaying correctly while quantity dropdown items amount is less than "+ quantityNumberToShowLeftItemInfo+ " for "+lsMsg);
-							}
-							else {
-								reporter.reportLogFail("The product Quantity left message should not occur while quantity dropdown items amount is no less than "+ quantityNumberToShowLeftItemInfo+ " for "+lsMsg);
-							}
-						}							
-					}
+					verifySingleItemQuantityLeftMessage(lsMsg,quantityNumberToShowLeftItemInfo);
 				}
 			}
 		}
@@ -1420,53 +1377,48 @@ public class ProductDetailPage extends BasePage {
 				lsStyle=this.lstRadioStyleLabelList.get(i).getAttribute("title");
 				
 				if(this.judgeStyleSizeAvailable()) {					
-					Select sizeOption=new Select(this.selectSizeOption);		
-					int subLoopSize=this.lstSizeOption.size();
-					for(int j=0;j<subLoopSize;j++) {
-						this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectSizeOption);
-						sizeOption.selectByIndex(j);
-						this.getReusableActionsInstance().staticWait(1000);
-						lsSize=this.selectSizeOption.getText();
-						
-						lsMsg=lsStyle+" Style and "+lsSize+" Size";						
-						this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectQuantityOption);
-						if(!this.getElementText(this.lblQuantityLeft).isEmpty()) {
-							if(this.selectQuantityOption.getText().isEmpty()) {
-								reporter.reportLogFail("The product Quantity left message should not occur while selected quantity is empty for "+lsMsg);
-							}
-							else {
-								lastOption=Integer.parseInt(this.lblQuantityLastOption.getAttribute("value"));
-								if(lastOption<quantityNumberToShowLeftItemInfo) {
-									reporter.reportLogPass("The product Quantity left message is displaying correctly while quantity dropdown items amount is less than "+ quantityNumberToShowLeftItemInfo+ " for "+lsMsg);
-								}
-								else {
-									reporter.reportLogFail("The product Quantity left message should not occur while quantity dropdown items amount is no less than "+ quantityNumberToShowLeftItemInfo+ " for "+lsMsg);
-								}
-							}							
-						}						
-					}
+					verifyQuantityLeftMessageForProductSize(lsStyle, quantityNumberToShowLeftItemInfo);
 				}
 				else {
 					lsMsg=lsStyle+" Style";						
-					this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectQuantityOption);
-					if(!this.getElementText(this.lblQuantityLeft).isEmpty()) {
-						if(this.selectQuantityOption.getText().isEmpty()) {
-							reporter.reportLogFail("The product Quantity left message should not occur while selected quantity is empty for "+lsMsg);
-						}
-						else {
-							lastOption=Integer.parseInt(this.lblQuantityLastOption.getAttribute("value"));
-							if(lastOption<quantityNumberToShowLeftItemInfo) {
-								reporter.reportLogPass("The product Quantity left message is displaying correctly while quantity dropdown items amount is less than "+ quantityNumberToShowLeftItemInfo+ " for "+lsMsg);
-							}
-							else {
-								reporter.reportLogFail("The product Quantity left message should not occur while quantity dropdown items amount is no less than "+ quantityNumberToShowLeftItemInfo+ " for "+lsMsg);
-							}
-						}							
-					}
+					verifySingleItemQuantityLeftMessage(lsMsg,quantityNumberToShowLeftItemInfo);
 				}
 			}
 		}
 						
+	}
+	
+	private void verifySingleItemQuantityLeftMessage(String lsMsg,int quantityNumberToShowLeftItemInfo) {
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectQuantityOption);
+		if(!this.getElementText(this.lblQuantityLeft).isEmpty()) {
+			if(this.selectQuantityOption.getText().isEmpty()) {
+				reporter.reportLogFail("The product Quantity left message should not occur while selected quantity is empty for "+lsMsg);
+			}
+			else {
+				int lastOption=Integer.parseInt(this.lblQuantityLastOption.getAttribute("value"));
+				if(lastOption<quantityNumberToShowLeftItemInfo) {
+					reporter.reportLogPass("The product Quantity left message is displaying correctly while quantity dropdown items amount is less than "+ quantityNumberToShowLeftItemInfo+ " for "+lsMsg);
+				}
+				else {
+					reporter.reportLogFail("The product Quantity left message should not occur while quantity dropdown items amount is no less than "+ quantityNumberToShowLeftItemInfo+ " for "+lsMsg);
+				}
+			}							
+		}
+	}
+	
+	private void verifyQuantityLeftMessageForProductSize(String lsStyle, int quantityNumberToShowLeftItemInfo) {
+		String lsSize="",lsMsg;
+		Select sizeOption=new Select(this.selectSizeOption);		
+		int subLoopSize=this.lstSizeOption.size();
+		for(int j=0;j<subLoopSize;j++) {
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectSizeOption);
+			sizeOption.selectByIndex(j);
+			this.getReusableActionsInstance().staticWait(1000);
+			lsSize=this.selectSizeOption.getText();
+			
+			lsMsg=lsStyle+" Style and "+lsSize+" Size";						
+			verifySingleItemQuantityLeftMessage(lsMsg,quantityNumberToShowLeftItemInfo);			
+		}
 	}
 	
 	/**
