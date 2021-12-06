@@ -1371,10 +1371,10 @@ public class ProductResultsPage extends BasePage{
 		}
 		while(this.switchPage(true));*/
 		getDriver().findElement(By.xpath("//div[contains(@class,'plp-card-grid-item')]")).click();
-		waitForCondition(Driver->{
+		return waitForCondition(Driver->{
 			return this.imgProductBadge.isDisplayed();
 		},90000);
-		return this.waitForPageLoading();
+		//return this.waitForPageLoading();
 		//return false;
 	}
 	
