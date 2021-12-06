@@ -9,15 +9,16 @@ import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 
-public class PD_TC02_Verify_ProductDetail_RightSection_ItemDetails extends BaseTest{
+public class PD_TC05_Verify_ProductDetail_ProductSize_Quantity extends BaseTest{
 	/*
-	 * CER-572	
-	 * CER-588
-	 * CER-600
-	 *
+	 * CER-578
+	 * CER-580
+	 * CER-582
+	 * CER-601
+	 * CER-607
 	 */
 	@Test(groups={"ProductDetail","Regression"})
-	public void validateRightSection_ItemDetails() throws IOException {	
+	public void validateLeftSection_ProductSize_Quantity() throws IOException {	
 	getGlobalFooterPageThreadLocal().closePopupDialog();
 	
 	BasePage basePage=new BasePage(this.getDriver());
@@ -26,35 +27,34 @@ public class PD_TC02_Verify_ProductDetail_RightSection_ItemDetails extends BaseT
 	reporter.reportLog("ProductDetail Page");
 	
 	List<List<String>> lsKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_SearchKeyword_DropDown();
+	String lsQuantityNumberToShowLeftItemInfo=TestDataHandler.constantData.getSearchResultPage().getLbl_QuantityNumberToShowLeftItemInfo();
 	
 	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0));
 	reporter.reportLog("Switch to ProductDetail page");
 	String lsProductNumber,lsUrl;
-	if(getProductResultsPageThreadLocal().goToProductItemWithReviewAndSwatchAndVideo()) {
-		reporter.reportLog("Verify URL");
+	
+	if(getProductResultsPageThreadLocal().goToProductItemWithTrueFitAndSizeAndQuantity()) {
+		reporter.reportLog("Verify URL");		
 		lsProductNumber=getProductResultsPageThreadLocal().selectedProductItem.productConvertedNumber;
 		lsUrl=basePage.URL();
 		reporter.softAssert(lsUrl.contains("productdetails"),"The Url is containing productdetails","The Url is not containing productdetails");
 		reporter.softAssert(lsUrl.contains(lsProductNumber),"The Url is containing selected product number of "+lsProductNumber,"The Url is not containing selected product number of "+lsProductNumber);
+		
+		reporter.reportLog("Verify product size dropdown");
+		getProductDetailPageThreadLocal().verifyProductSizeDropdown();			
+					
+		reporter.reportLog("Verify product TrueFit");
+		getProductDetailPageThreadLocal().verifyProductSizeTrueFit();
+						
+		reporter.reportLog("Verify product quantity");	
+		getProductDetailPageThreadLocal().verifyProductQuantityDropdown(Integer.parseInt(lsQuantityNumberToShowLeftItemInfo));
 				
-		reporter.reportLog("Verify product name,brand name and product number");	
-		getProductDetailPageThreadLocal().verifyProductBasicInfo();
-				
-		reporter.reportLog("Verify product review");	
-		getProductDetailPageThreadLocal().verifyProductReview();
-				
-		reporter.reportLog("Verify product price and shipping");	
-		getProductDetailPageThreadLocal().verifyProductPriceAndShipping();
-				
-		reporter.reportLog("Verify product style");	
-		getProductDetailPageThreadLocal().verifyProductStyle();
-				
-		reporter.reportLog("Verify Social media");	
-		getProductDetailPageThreadLocal().verifySocialMedia();
-			
+		reporter.reportLog("Verify Navigation Back button");	
+		getProductDetailPageThreadLocal().verifyBreadCrumbNavigationBack();
+		
 	}
 	else {
-		reporter.reportLogFail("Unable to find the product item with Review, EasyPay, Swatch item>=4 and Video");
+		reporter.reportLogFail("Unable to find the product item with Size, TrueFit, Quantity and Left items info");
 	}
 	
 }
