@@ -459,9 +459,9 @@ public class GlobalHeaderPage extends BasePage{
 		 lsHrefInBlackHeader=this.removeLastSlashFromUrl(lsHrefInBlackHeader);
 		 
 		 blackItem.click();
-		// this.waitForPageToLoad();
+		 this.waitForPageToLoad();
 		 
-		waitForCondition(Driver->{return headingWatchTSCDpdMenuLinkLandingPage.isDisplayed();} ,30000);
+		//waitForCondition(Driver->{return headingWatchTSCDpdMenuLinkLandingPage.isDisplayed();} ,30000);
 			
 	(new GlobalFooterPage(this.getDriver())).waitForPageLoading();
 		 
