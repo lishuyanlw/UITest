@@ -7,18 +7,24 @@ import java.io.IOException;
 import java.util.Map;
 
 public class ApiClient {
+    Map<String,String> propertyData;
     public ApiClient() throws IOException {
+        propertyData = getApiInfo();
     }
 
-    public Map<String,String> getApiInfo() throws IOException {
+    private Map<String,String> getApiInfo() throws IOException {
         return PropertyReader.getPropertyDataMap();
+    }
+
+    public Map<String,String> getApiPropertyData(){
+        return propertyData;
     }
 
     public void setApiClient(String baseURI) throws IOException {
         if(baseURI!=null)
             RestAssured.baseURI = baseURI+"/"+getApiInfo().get("test_apiVersion")+"/"+getApiInfo().get("test_language");
         else
-            RestAssured.baseURI = getApiInfo().get("test_qaURL")+"/"+getApiInfo().get("test_apiVersion")+"/"+getApiInfo().get("test_language");
+            RestAssured.baseURI = propertyData.get("test_qaURL")+"/"+propertyData.get("test_apiVersion")+"/"+propertyData.get("test_language");
     }
 
 }

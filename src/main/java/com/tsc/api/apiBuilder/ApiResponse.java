@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tsc.api.pojo.Product;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.json.JSONPointerException;
@@ -16,18 +17,27 @@ public class ApiResponse extends ApiConfigs {
     public ApiResponse() throws IOException {
     }
 
-    public Response getProductsByKeywordResponse(String searchKeyword) throws IOException {
+    public Product getProductsByKeywordResponse(String searchKeyword) throws IOException {
         Response response = null;
-        Map<String,Object> configs = super.getProductSearchByKeywordInputConfig(searchKeyword,null,null,super.getApiInfo().get("test_apiVersion"));
-        super.setApiClient(null);
+        Map<String,Object> configs = super.getProductSearchByKeywordInputConfig(searchKeyword,null,null,super.getApiPropertyData().get("test_apiVersion"));
         try{
             response = RestAssured.given().
-                    when().params(configs).header("Content Type","application/json").
-                    get();
+                    when().params(configs).header("Content-Type","application/json").log().all().
+                    get("/products");
         }catch (Exception exception){
             exception.printStackTrace();
         }
-        return response;
+
+        if(response.statusCode()==200) {
+            return getResponseObject(response.asString(), new TypeReference<Product>() {});
+        }else
+            return null;
+    }
+
+    public <T> T getResponse(String response, Class<T> returnClassType) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        T objectModel = objectMapper.readValue(response,returnClassType);
+        return objectModel;
     }
 
     public <T> T getResponseObject(String response, TypeReference<T> typeReference){

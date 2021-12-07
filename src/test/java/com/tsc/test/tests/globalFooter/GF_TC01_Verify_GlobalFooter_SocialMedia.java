@@ -1,5 +1,6 @@
 package com.tsc.test.tests.globalFooter;
 
+import com.tsc.api.pojo.Product;
 import org.testng.annotations.Test;
 import java.io.IOException;
 import java.util.List;
@@ -14,6 +15,8 @@ public class GF_TC01_Verify_GlobalFooter_SocialMedia extends BaseTest {
 	 */
 	@Test(groups={"Sanity","Home","Regression","GlobalFooter"})
 	public void Verify_GlobalFooter_SocialMedia() throws IOException {
+		Product product = getApiResponseThreadLocal().getProductsByKeywordResponse("dress");
+
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 		BasePage basePage=new BasePage(this.getDriver());		
 		String lsBaseUrl=basePage.getBaseURL()+"/";
