@@ -43,7 +43,7 @@ public class PD_TC06_Verify_ProductDetail_AddToBag extends BaseTest{
 		getProductDetailPageThreadLocal().verifyProductAddToBagButton();
 		
 		reporter.reportLog("Verify product Add to Bag title and contents");
-		getProductDetailPageThreadLocal().verifyProductDetailsInAddToBagPopupWindow(lbl_AddToBagPopupWindowTitle);
+		getProductDetailPageThreadLocal().verifyProductDetailsInAddToBagPopupWindow(lbl_AddToBagPopupWindowTitle,getProductResultsPageThreadLocal().selectedProductItem);
 		
 		reporter.reportLog("Verify Shopping cart number");	
 		getProductDetailPageThreadLocal().verifyShoppingCartNumber();

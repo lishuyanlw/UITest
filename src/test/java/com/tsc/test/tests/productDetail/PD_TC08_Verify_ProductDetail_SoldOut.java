@@ -41,7 +41,7 @@ public class PD_TC08_Verify_ProductDetail_SoldOut extends BaseTest{
 		reporter.softAssert(lsUrl.contains("productdetails"),"The Url is containing productdetails","The Url is not containing productdetails");
 		reporter.softAssert(lsUrl.contains(lsProductNumber),"The Url is containing selected product number of "+lsProductNumber,"The Url is not containing selected product number of "+lsProductNumber);
 				
-		reporter.reportLog("Verify Verify Current zoom image and message");
+		reporter.reportLog("Verify Current zoom image and message");
 		getProductDetailPageThreadLocal().verifyCurrentZoomImage();
 				
 		reporter.reportLog("Verify product name,brand name and product number");	

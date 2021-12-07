@@ -450,12 +450,15 @@ public class ConstantData {
         private List<String> lst_DisappearAfterSelectFilter;
         private String lnk_product_result;
         private List<String> lbl_ProductRecommendationTitlePage;
-        private List<String> lst_Filter_Data;
-        private List<String> lst_SortOptionMobile;
         private String lbl_AddToBagPopupWindowTitle;
         private String lbl_VideoDisclaimInfo;
         private String lbl_AdvancedOrderkeyword;
         private String lbl_SoldOutkeyword;
+        private String lbl_QuantityNumberToShowLeftItemInfo;
+        private List<String> lst_WriteReviewSubmitMessage;
+        private String lbl_TellYourFriendsSentMessage;
+        private List<String> lst_Filter_Data;
+        private List<String> lst_SortOptionMobile;
 
         public List<String> getLst_SearchKeyword() {
             return lst_SearchKeyword;
@@ -552,7 +555,7 @@ public class ConstantData {
         public void setLbl_ProductRecommendationTitlePage(List<String> lbl_ProductRecommendationTitlePage) {
             this.lbl_ProductRecommendationTitlePage = lbl_ProductRecommendationTitlePage;
         }
-
+        
         public String getLbl_AddToBagPopupWindowTitle() {
             return lbl_AddToBagPopupWindowTitle;
         }
@@ -560,7 +563,7 @@ public class ConstantData {
         public void setLbl_AddToBagPopupWindowTitle(String lbl_AddToBagPopupWindowTitle) {
             this.lbl_AddToBagPopupWindowTitle = lbl_AddToBagPopupWindowTitle;
         }
-
+        
         public String getLbl_VideoDisclaimInfo() {
             return lbl_VideoDisclaimInfo;
         }
@@ -568,7 +571,7 @@ public class ConstantData {
         public void setLbl_VideoDisclaimInfo(String lbl_VideoDisclaimInfo) {
             this.lbl_VideoDisclaimInfo = lbl_VideoDisclaimInfo;
         }
-
+        
         public String getLbl_AdvancedOrderkeyword() {
             return lbl_AdvancedOrderkeyword;
         }
@@ -576,13 +579,37 @@ public class ConstantData {
         public void setLbl_AdvancedOrderkeyword(String lbl_AdvancedOrderkeyword) {
             this.lbl_AdvancedOrderkeyword = lbl_AdvancedOrderkeyword;
         }
-
+        
         public String getLbl_SoldOutkeyword() {
             return lbl_SoldOutkeyword;
         }
 
         public void setLbl_SoldOutkeyword(String lbl_SoldOutkeyword) {
             this.lbl_SoldOutkeyword = lbl_SoldOutkeyword;
+        }
+
+        public String getLbl_QuantityNumberToShowLeftItemInfo() {
+            return lbl_QuantityNumberToShowLeftItemInfo;
+        }
+
+        public void setLbl_QuantityNumberToShowLeftItemInfo(String lbl_QuantityNumberToShowLeftItemInfo) {
+            this.lbl_QuantityNumberToShowLeftItemInfo = lbl_QuantityNumberToShowLeftItemInfo;
+        }
+
+        public List<String> getLst_WriteReviewSubmitMessage() {
+            return lst_WriteReviewSubmitMessage;
+        }
+
+        public void setLst_WriteReviewSubmitMessage(List<String> lst_WriteReviewSubmitMessage) {
+            this.lst_WriteReviewSubmitMessage = lst_WriteReviewSubmitMessage;
+        }
+
+        public String getLbl_TellYourFriendsSentMessage() {
+            return lbl_TellYourFriendsSentMessage;
+        }
+
+        public void setLbl_TellYourFriendsSentMessage(String lbl_TellYourFriendsSentMessage) {
+            this.lbl_TellYourFriendsSentMessage = lbl_TellYourFriendsSentMessage;
         }
     }
 

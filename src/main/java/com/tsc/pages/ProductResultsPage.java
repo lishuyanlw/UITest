@@ -38,7 +38,7 @@ public class ProductResultsPage extends BasePage{
 	@FindBy(xpath = "//product-results//div[contains(@class,'col-md-showing')]//div[contains(@class,'filterPrpLabel')]//b")
 	WebElement lblShowing;
 
-	@FindBy(xpath = "//product-results//div[contains(@class,'col-md-showing')]//div[contains(@style,'display:inline-block')]")
+	@FindBy(xpath = "//product-results//div[contains(@class,'col-md-showing')]")
 	WebElement txtShowingDynamicContent;
 
 	@FindBy(xpath = "//product-results//div[contains(@class,'col-md-sort')]//form//div[contains(@class,'filterPrpLabel')]")
@@ -80,17 +80,11 @@ public class ProductResultsPage extends BasePage{
 
 	public By byProductImage=By.xpath(".//div[contains(@class,'imgEmbedContainer')]//img[@class='productImg']");
 
-	public By byRecommendationImage = By.xpath(".//div[contains(@class,'imgEmbedContainer')]//img[@class='img-responsive pprec-img']");
-
 	public By byProductName=By.xpath(".//div[contains(@class,'nameDiv')]");
-
-	public By byRecommendationName=By.xpath(".//div[contains(@class,'prec-name')]");
 
 	public By byProductItemNO=By.xpath(".//div[contains(@class,'itemNo')]");
 
 	public By byProductNowPrice=By.xpath(".//div[contains(@class,'priceDiv')]//span");
-
-	public By byRecommendationNowPrice=By.xpath(".//div[contains(@class,'now-price')]//span");
 
 	public By byProductEasyPay=By.xpath(".//div[contains(@class,'easyPay')]");
 
@@ -112,8 +106,6 @@ public class ProductResultsPage extends BasePage{
 
 	public By byWasPrice=By.xpath(".//div[@class='prec-price']");
 
-	public By byRecommendationWasPrice =By.xpath("//div[@class='prec-price']/div[@class='was-price']");
-
 	public By byJudgeProductBadgeAndVideo=By.xpath(".//div[contains(@class,'prImageWrap')]");
 
 	public By byJudgeProductWasPrice=By.xpath(".//div[contains(@class,'priceDiv')]");
@@ -130,8 +122,8 @@ public class ProductResultsPage extends BasePage{
 	@FindBy(xpath = "//product-results//nav[contains(@aria-label,'Page')]//li[contains(@id,'pages[') and not(contains(.,'...'))]//span")
 	List<WebElement> PageNumberList;
 
-	@FindBy(xpath = "//product-results//nav[contains(@aria-label,'Page')]//li[not(contains(.,'...'))]//span")
-	List<WebElement> containsPreAndNextButtonPageList;
+	@FindBy(xpath = "//product-results//nav[contains(@aria-label,'Page')]//ul")
+	WebElement cntPreAndNextButtonPage;
 
 	@FindBy(xpath = "//product-results//nav[contains(@aria-label,'Page')]//li[contains(@class,'previous')]//span")
 	WebElement btnPreviousPage;
@@ -147,9 +139,6 @@ public class ProductResultsPage extends BasePage{
 	WebElement cntProductTitleAndText;
 
 	public By byProductTitleAndText=By.xpath("//div[@class='TitleAndTextSeo']");
-
-	@FindBy(xpath = "//div[@class='ProductRecommendations']//product-recommendations-endeca//*[contains(@class,'prec-header')]")
-	public WebElement productRecommendationTitle;
 
 	@FindBy(xpath = "//div[@class='TitleAndTextSeo']//*[contains(@class,'seoTextTitle')]")
 	WebElement lblProductTitle;
@@ -196,10 +185,24 @@ public class ProductResultsPage extends BasePage{
 	WebElement footerContainer;
 
 	//People Also Viewed items
-	@FindBy(xpath="//*[contains(@class,'prec clearfix')]/div")
+	
+	@FindBy(xpath = "//product-recommendations-endeca//h2[@class='prec-header']")
+	public WebElement productRecommendationTitle;
+	
+	@FindBy(xpath="//product-recommendations-endeca//*[contains(@class,'prec-col')]")
 	List<WebElement> lstPeopleAlsoBoughtItems;
+	
+	public By byRecommendationImage = By.xpath(".//div[contains(@class,'imgEmbedContainer')]//img[@class='img-responsive pprec-img']");
+	
+	public By byRecommendationName=By.xpath(".//div[contains(@class,'prec-name')]");
+	
+	public By byRecommendationPriceContainer=By.xpath(".//div[@class='prec-price']");
+	
+	public By byRecommendationNowPrice=By.xpath(".//div[@class='prec-price']/div[contains(@class,'now-price')]//span");
+	
+	public By byRecommendationWasPrice =By.xpath(".//div[@class='prec-price']/div[@class='was-price']");
 
-	@FindBy(xpath="//span[contains(@id,'_ctlSpanTitle')]")
+	@FindBy(xpath="//div[contains(@class,'PageTitle')]//*[contains(@class,'gatewayTitle')]")
 	public WebElement pageTitle;
 
     //for mobile Sort&Filter
@@ -218,7 +221,7 @@ public class ProductResultsPage extends BasePage{
 	public String firstLevelFilter,secondLevelFilter;
 	public boolean bDefault=false;
 	public String lsSearchResultMessage="";
-	public ProductItem selectedProductItem= new ProductItem();
+	public ProductItem selectedProductItem= new ProductItem();	
 
 	/**
 	 * This method is to wait for not initial page loading.
@@ -1154,6 +1157,10 @@ public class ProductResultsPage extends BasePage{
 		if(this.PageNumberList.size()==1) {
 			return false;
 		}
+		
+		if(!this.checkIfNextPageButtonAvailable()) {
+			return false;
+		}
 
 		if(bNext) {
 			WebElement lastPageButton=this.PageNumberList.get(this.PageNumberList.size()-1);
@@ -1313,6 +1320,10 @@ public class ProductResultsPage extends BasePage{
 		return sum;
 	}
 
+	public boolean checkIfNextPageButtonAvailable() {
+		return this.checkChildElementExistingByAttribute(this.cntPreAndNextButtonPage, "id", "nextPage");
+	}
+	
 	/**
 	 * This method will go to the product with Review, EasyPay, Swatch item>=4 and Video
 	 * @return true/false
@@ -1398,10 +1409,171 @@ public class ProductResultsPage extends BasePage{
 		
 		return this.waitForPageLoading();		
 	}
+	
+	public boolean goToProductItemWithTrueFitAndSizeAndQuantity() {
+		ProductDetailPage pdp=new ProductDetailPage(this.getDriver());
+		
+		this.selectedProductItem.productName="";
+		this.selectedProductItem.productNumber="";
+		this.selectedProductItem.productNowPrice="";
+		this.selectedProductItem.productEasyPay="";
+		
+		WebElement item;
+		do {
+			this.selectedProductItem.currentProductSequenceNumber=-1;
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productResultList.get(0));
+			for(int i=0;i<this.productResultList.size();i++) {
+				if(i<=this.selectedProductItem.currentProductSequenceNumber) {
+					continue;
+				}
+				
+				item=this.productResultList.get(i);
+								
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+				this.selectedProductItem.productName=item.findElement(this.byProductName).getText().trim();
+				this.selectedProductItem.productNumber=item.findElement(this.byProductItemNO).getText().trim();
+				List<String> list=this.getNumberFromString(this.selectedProductItem.productNumber);
+				String lsFinal="";
+				for(String lsSubItem:list) {
+					lsFinal+=lsSubItem;
+				}
+				this.selectedProductItem.productConvertedNumber=lsFinal;
+				this.selectedProductItem.productNowPrice=item.findElement(this.byProductNowPrice).getText().trim();
+				this.selectedProductItem.productEasyPay=item.findElement(this.byProductEasyPay).getText().trim();
+				this.selectedProductItem.productNavigationUrl=this.URL();
+				this.selectedProductItem.currentProductSequenceNumber=i;
+				
+				item.click();
+				this.waitForPageLoading();
+				this.getReusableActionsInstance().staticWait(1000);
+				if(pdp.judgeStyleSizeAvailable()&&pdp.judgeStyleTrueFitExisting()&&pdp.judgeQuantityDropdownAvailable()&&pdp.IsQuantityLeftExisting()) {
+					return true;
+				}
+				else {
+					this.getDriver().navigate().back();
+					this.waitForPageToLoad();
+					this.waitForPageLoading();
+					this.getReusableActionsInstance().staticWait(1000);					
+				}
+			}
+		}
+		while(this.switchPage(true));
+
+		return false;
+	}
+	
+	public boolean goToProductItemWithTeaserInfo() {
+		ProductDetailPage pdp=new ProductDetailPage(this.getDriver());
+		
+		this.selectedProductItem.productName="";
+		this.selectedProductItem.productNumber="";
+		this.selectedProductItem.productNowPrice="";
+		this.selectedProductItem.productEasyPay="";
+		
+		WebElement item;
+		do {
+			this.selectedProductItem.currentProductSequenceNumber=-1;
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productResultList.get(0));
+			for(int i=0;i<this.productResultList.size();i++) {
+				if(i<=this.selectedProductItem.currentProductSequenceNumber) {
+					continue;
+				}
+				
+				item=this.productResultList.get(i);
+								
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+				this.selectedProductItem.productName=item.findElement(this.byProductName).getText().trim();
+				this.selectedProductItem.productNumber=item.findElement(this.byProductItemNO).getText().trim();
+				List<String> list=this.getNumberFromString(this.selectedProductItem.productNumber);
+				String lsFinal="";
+				for(String lsSubItem:list) {
+					lsFinal+=lsSubItem;
+				}
+				this.selectedProductItem.productConvertedNumber=lsFinal;
+				this.selectedProductItem.productNowPrice=item.findElement(this.byProductNowPrice).getText().trim();
+				this.selectedProductItem.productEasyPay=item.findElement(this.byProductEasyPay).getText().trim();
+				this.selectedProductItem.productNavigationUrl=this.URL();
+				this.selectedProductItem.currentProductSequenceNumber=i;
+				
+				item.click();
+				this.waitForPageLoading();
+				this.getReusableActionsInstance().staticWait(1000);
+				if(pdp.judgeTeaserInfoDisplaying()) {
+					return true;
+				}
+				else {
+					this.getDriver().navigate().back();
+					this.waitForPageToLoad();
+					this.waitForPageLoading();
+					this.getReusableActionsInstance().staticWait(1000);					
+				}
+			}
+		}
+		while(this.switchPage(true));
+
+		return false;
+	}
+	
+	public boolean goToProductItemWithBrandNameAndReviewAndSeeMoreInfo() {
+		ProductDetailPage pdp=new ProductDetailPage(this.getDriver());
+		WebElement element;
+		
+		this.selectedProductItem.productName="";
+		this.selectedProductItem.productNumber="";
+		this.selectedProductItem.productNowPrice="";
+		this.selectedProductItem.productEasyPay="";
+
+		WebElement item;
+		do {
+			this.selectedProductItem.currentProductSequenceNumber=-1;
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productResultList.get(0));
+			for(int i=0;i<this.productResultList.size();i++) {
+				if(i<=this.selectedProductItem.currentProductSequenceNumber) {
+					continue;
+				}
+				
+				item=this.productResultList.get(i);
+				element=item.findElement(this.byProductReview);
+				if(this.getChildElementCount(element)==0) {
+					continue;
+				}
+												
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+				this.selectedProductItem.productName=item.findElement(this.byProductName).getText().trim();
+				this.selectedProductItem.productNumber=item.findElement(this.byProductItemNO).getText().trim();
+				List<String> list=this.getNumberFromString(this.selectedProductItem.productNumber);
+				String lsFinal="";
+				for(String lsSubItem:list) {
+					lsFinal+=lsSubItem;
+				}
+				this.selectedProductItem.productConvertedNumber=lsFinal;
+				this.selectedProductItem.productNowPrice=item.findElement(this.byProductNowPrice).getText().trim();
+				this.selectedProductItem.productEasyPay=item.findElement(this.byProductEasyPay).getText().trim();
+				this.selectedProductItem.productNavigationUrl=this.URL();
+				this.selectedProductItem.currentProductSequenceNumber=i;
+				
+				item.click();
+				this.waitForPageLoading();
+				this.getReusableActionsInstance().staticWait(1000);
+				if(pdp.checkProductBrandNameDisplaying()&&pdp.judgeTeaserInfoDisplaying()) {
+					return true;
+				}
+				else {
+					this.getDriver().navigate().back();
+					this.waitForPageToLoad();
+					this.waitForPageLoading();
+					this.getReusableActionsInstance().staticWait(1000);					
+				}
+			}
+		}
+		while(this.switchPage(true));
+
+		return false;
+	}
 
 	/**
 	 * This method will verify Product Recommendation section and validate section Images, and Prices .
-	 * @return  WebElement
+	 * @return  void
 	 * @author godwin.gopi
 	 */
 	public void verify_ProductRecommendationSection() {
@@ -1415,11 +1587,9 @@ public class ProductResultsPage extends BasePage{
 
 			//Verifying Price of the Product
 			reporter.softAssert(!item.findElement(byRecommendationNowPrice).getText().isEmpty(), "ProductNowPrice in Recommendation result is correct", "ProductNowPrice in Recommendation result is incorrect");
-
+			
 			//Verifying Was Price is Displayed
-			WebElement element=item.findElement(this.byWasPrice);
-			long childSize=super.getChildElementCount(element);
-			if(childSize > 1) {
+			if(this.getChildElementCount(item.findElement(this.byRecommendationPriceContainer))>1) {
 				reporter.softAssert(!item.findElement(byRecommendationWasPrice).getText().isEmpty(), "ProductWasPrice in Recommendation result is correct", "ProductWasPrice in Recommendation result is incorrect");
 			}
 		}
@@ -1433,6 +1603,7 @@ public class ProductResultsPage extends BasePage{
 		public boolean bProductWasPrice;
 		public String productEasyPay;
 		public String productNavigationUrl;
+		public int currentProductSequenceNumber;
 	}
 }		      	
 

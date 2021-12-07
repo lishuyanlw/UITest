@@ -552,6 +552,25 @@ import utils.ReusableActions;
     }
     
     /**
+	 * This method will get integer from string.
+	 * @param String lsTarget: target string
+	 * @return int value
+	 * @author Wei.Li
+	 */	
+    public int getIntegerFromString(String lsTarget) {
+    	String regex="\\d+";
+    	String lsReturn="";
+    	Pattern pattern=Pattern.compile(regex);
+    	Matcher matcher=pattern.matcher(lsTarget);
+    	while(matcher.find())
+    	{
+    	    lsReturn=matcher.group();    	        	   
+    	}
+    	   			
+    	return Integer.parseInt(lsReturn);
+    }
+    
+    /**
 	 * This method will verify element existing. 
 	 * @param WebElement element: input element 
 	 * @return true/false

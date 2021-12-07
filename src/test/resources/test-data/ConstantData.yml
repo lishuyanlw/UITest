@@ -68,8 +68,7 @@ homePage:
   lst_ShopByDepartmentCategories: [ FASHION, SHOES & HANDBAGS, JEWELLERY, BEAUTY, HOME & GARDEN, KITCHEN, HEALTH & FITNESS, ELECTRONICS, COINS & HOBBIES, CLEARANCE, SPORTS, MENS ]
   lbl_TopSellers: TOP SELLERS
 searchResultPage:
-  #lst_SearchKeyword: [ "dyson vacuum","dfafasdfa","100501","joan rivers","Nike","boots" ]
-  lst_SearchKeyword: [ "dyson vacuum","100501","Nike" ]
+  lst_SearchKeyword: [ "dyson vacuum","dfafasdfa","100501","joan rivers","Nike","boots" ]
   lst_SearchKeyword_DropDown: [[ "526457","dress","Categories","0" ]]
   lbl_SearchResultPageDefaultSetting: 36
   lst_SearchResultMessage:  [ "Search Results For" , "We couldn","t find a match for","Please search again using a different term or browse by brand or category." ] 
@@ -98,11 +97,14 @@ searchResultPage:
   lst_DisappearAfterSelectFilter: ["SHOP BY CATEGORY"]
   lnk_product_result: /pages/productresults?
   lbl_ProductRecommendationTitlePage: ["People who viewed this item also viewed","TOP SELLERS"]
-  lbl_AddToBagPopupWindowTitle: "1 ITEM ADDED TO YOUR SHOPPING BAG"
+  lbl_AddToBagPopupWindowTitle: "\\d+ ITEM(S)? ADDED TO YOUR SHOPPING BAG"
   lbl_VideoDisclaimInfo: "Pre-recorded videos contain pricing or promotional offers that may have expired."
   lbl_AdvancedOrderkeyword: 522809
   lbl_SoldOutkeyword: 485939
-footerSection: 
+  lbl_QuantityNumberToShowLeftItemInfo: 7
+  lst_WriteReviewSubmitMessage: ["THANK YOU!","We will process your review and publish it within 3-7 business days."]
+  lbl_TellYourFriendsSentMessage: "Your message has been sent!"
+footerSection:
   lst_SocialMediaLinks: ["https://www.facebook.com/Shoptsc","https://twitter.com/shoptsc","https://instagram.com/shoptsc","www.youtube.com","https://www.pinterest.ca/shoptsc"]
   lst_NameAndLinks: 
     - ["Credit Card","Cartes-cadeaux","/pages/creditcard?ic=ftr_tsccreditcard",""]

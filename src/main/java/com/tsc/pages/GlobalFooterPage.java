@@ -658,7 +658,7 @@ public class GlobalFooterPage extends BasePage {
 	 */
 	public boolean switchlanguage() {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkLanguage);
-		waitForCondition(Driver->{return this.lnkLanguage.isDisplayed();},10000);
+		this.getReusableActionsInstance().waitForElementVisibility(this.lnkLanguage,  60);		
 		String lsLanguage=this.lnkLanguage.getText().trim();
 		this.lnkLanguage.click();
 		this.waitForPageLoading();
