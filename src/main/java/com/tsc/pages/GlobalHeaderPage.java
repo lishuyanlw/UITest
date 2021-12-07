@@ -427,6 +427,9 @@ public class GlobalHeaderPage extends BasePage{
 	 */	
 	 public void verifyTSHeaderAndLinkInBlackHeader(WebElement blackItem,WebElement silverItem,boolean bCheckUrl) {
 		 getReusableActionsInstance().javascriptScrollByVisibleElement(blackItem);
+		 if(!System.getProperty("Device").equalsIgnoreCase("Desktop")) {
+			 blackItem.click();
+		 }
 		 String lsTitle=blackItem.getText().trim();
 		 reporter.softAssert(getReusableActionsInstance().isElementVisible(blackItem), "The element of "+lsTitle+" in Black headers is visible","The element of "+lsTitle+" in Black headers is not visible");
 		 reporter.softAssert(!lsTitle.isEmpty(), lsTitle+" text in Black headers is not empty", lsTitle+" text in Black headers is empty");
