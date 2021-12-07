@@ -26,24 +26,24 @@ public class SR_TC02_Verify_ProductSearchResult_DropDownMenu extends BaseTest{
 	String lsSearchResultPageDefaultSetting=TestDataHandler.constantData.getSearchResultPage().getLbl_SearchResultPageDefaultSetting();
 	List<List<String>> lsKeywordDropdownList=TestDataHandler.constantData.getSearchResultPage().getLst_SearchKeyword_DropDown();
 	List<WebElement> productList;
-	
+	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordDropdownList.get(0).get(0));
 	int keyWordDropdownSize=lsKeywordDropdownList.size();	
 	for(int i=0;i<keyWordDropdownSize;i++) {
 		reporter.reportLog("Search keyword : "+lsKeywordDropdownList.get(i));	
-		if(lsKeywordDropdownList.get(i).size()==3) {			
-			getProductResultsPageThreadLocal().selectSearchResultListInDropdownMenu(lsKeywordDropdownList.get(i).get(0),lsKeywordDropdownList.get(i).get(1),lsKeywordDropdownList.get(i).get(2));
-		}
-		else {			
-			getProductResultsPageThreadLocal().selectSearchResultListInDropdownMenu(lsKeywordDropdownList.get(i).get(0),lsKeywordDropdownList.get(i).get(1),"");
-		}
-				
-		reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(), "Showing text pattern in filters is correct", "Showing text pattern in filters is incorrect");
-		if(!(System.getProperty("Device").equalsIgnoreCase("Mobile"))) {
-			reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting), "The default setting of items per page is "+lsSearchResultPageDefaultSetting, "The default setting of items per page isn't "+lsSearchResultPageDefaultSetting);
-		}
-		if(getProductResultsPageThreadLocal().bVerifyTitle) {
-			reporter.softAssert(getProductResultsPageThreadLocal().verifyPageTitleForDropdown(), "Search result page title of "+getProductResultsPageThreadLocal().getProductResultPageTitle()+" is displayed as search keyword in dropdown menu", "Search result page title of "+getProductResultsPageThreadLocal().getProductResultPageTitle()+" is not displayed as search keyword in dropdown menu");
-		}
+//		if(lsKeywordDropdownList.get(i).size()==3) {			
+//			getProductResultsPageThreadLocal().selectSearchResultListInDropdownMenu(lsKeywordDropdownList.get(i).get(0),lsKeywordDropdownList.get(i).get(1),lsKeywordDropdownList.get(i).get(2));
+//		}
+//		else {			
+//			getProductResultsPageThreadLocal().selectSearchResultListInDropdownMenu(lsKeywordDropdownList.get(i).get(0),lsKeywordDropdownList.get(i).get(1),"");
+//		}
+//				
+//		reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(), "Showing text pattern in filters is correct", "Showing text pattern in filters is incorrect");
+//		if(!(System.getProperty("Device").equalsIgnoreCase("Mobile"))) {
+//			reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting), "The default setting of items per page is "+lsSearchResultPageDefaultSetting, "The default setting of items per page isn't "+lsSearchResultPageDefaultSetting);
+//		}
+//		if(getProductResultsPageThreadLocal().bVerifyTitle) {
+//			reporter.softAssert(getProductResultsPageThreadLocal().verifyPageTitleForDropdown(), "Search result page title of "+getProductResultsPageThreadLocal().getProductResultPageTitle()+" is displayed as search keyword in dropdown menu", "Search result page title of "+getProductResultsPageThreadLocal().getProductResultPageTitle()+" is not displayed as search keyword in dropdown menu");
+//		}
 						
 		productList=getProductResultsPageThreadLocal().getProductList();
 		if(productList.size()>0) {

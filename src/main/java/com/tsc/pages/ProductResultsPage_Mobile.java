@@ -48,6 +48,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 
     @FindBy(xpath="//div[contains(@class,'searchDiv')]")
     WebElement lblSearchResultTitle;
+    
 
     @Override
     public boolean chooseSortOptionByVisibleText(List<String> lsOption) {
