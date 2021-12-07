@@ -33,6 +33,9 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 
     @FindBy(xpath = "//product-results//div[contains(@class,'modalBody')]//form//select")
     WebElement btnSortSelect;
+    
+	@FindBy(xpath = "//product-results//div[@class='modalBody']//div[@class='filterTag']/span")
+	List<WebElement> selectedFiltersListMobile;
 
     @FindBy(xpath = "//product-results//div[@class='modal-header prpModalHeader hidden-lg']/div/h4[@id='cancel-model']")
     public WebElement cancelButton;
@@ -173,14 +176,34 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 
         return setOption.containsAll(setOptionYml) && setOptionYml.containsAll(setOption);
     }
-    /*
+
     @Override
-    public String getProductResultPageTitle() {
-        if(this.checkChildElementExistingByAttribute(this.cntSearchResultTitleContainer, "class", "ProductResults2")) {
-            getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSearchResultTitle);
-            return this.lblSearchResultTitle.getText().trim();
-        }
-        return "NoTitle";
-    }
-    */
+	public String verifySlectedFiltersContainSecondlevelFilter(List<String> lstFilterIncluded, List<String> lstFilterExcluded) {
+		List<String> lstSelectedFilterOption=new ArrayList<String>();
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.sortAndFilter);
+		getReusableActionsInstance().clickIfAvailable(this.sortAndFilter,3000);
+		getReusableActionsInstance().staticWait(1000);
+		int selectedFilterSize=this.selectedFiltersListMobile.size();
+		for(int i=0;i<selectedFilterSize;i++) {
+			getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectedFiltersListMobile.get(i));
+			lstSelectedFilterOption.add(this.selectedFiltersListMobile.get(i).getText().trim());
+		}
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.cancelButton);
+		getReusableActionsInstance().clickIfAvailable(this.cancelButton,3000);
+		//this.cancelButton.click();
+
+		for(String lsItem:lstSelectedFilterOption) {
+			if(!lstFilterIncluded.contains(lsItem)) {
+				return "The search second level filters do not contain the selected filter of '"+lsItem+"'";
+			}
+		}
+
+		for(String lsItem:lstFilterExcluded) {
+			if(lstSelectedFilterOption.contains(lsItem)) {
+				return "The selected filters should not contain the excluded filter of '"+lsItem+"'";
+			}
+		}
+
+		return "";
+	}
 }

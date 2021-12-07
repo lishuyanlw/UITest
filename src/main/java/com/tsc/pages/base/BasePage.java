@@ -378,6 +378,17 @@ import utils.ReusableActions;
         
         return list;
     }
+
+	/**
+	 * This method will get element innerText.
+	 * @param WebElement element: element 
+	 * @return String
+	 * @author Wei.Li
+	 */		
+	public String getElementInnerText(WebElement element) {
+		JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
+		return (String)jse.executeScript("return arguments[0].innerText;", element);				
+	}
     
     /**
 	 * This method will judge if ChildElement is visible.
