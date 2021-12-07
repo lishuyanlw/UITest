@@ -30,7 +30,10 @@ dependencies {
     implementation 'org.yaml:snakeyaml:1.24'
     // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.4'
-
+    implementation (group: 'io.rest-assured', name: 'rest-assured', version: '4.4.0'){
+        exclude group: 'io.appium', module: 'java-client'
+    }
+    implementation (group: 'io.rest-assured', name: 'json-schema-validator', version: '4.4.0')
 }
 
 def sauce = [
