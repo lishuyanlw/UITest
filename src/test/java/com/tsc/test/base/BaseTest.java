@@ -41,6 +41,8 @@ public class BaseTest {
 	protected static final ThreadLocal<GlobalFooterPage_Mobile> globalFooterPage_mobileThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<ProductResultsPage> productResultsPageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<ProductDetailPage> productDetailPageThreadLocal = new ThreadLocal<>();
+	protected static final ThreadLocal<ProductResultsPage_Tablet> productResultsPage_TabletThreadLocal = new ThreadLocal<>();
+	protected static final ThreadLocal<ProductResultsPage_Mobile> productResultsPage_MobileThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<LoginPage> loginPageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<LoginPage_Mobile> loginPage_mobileThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<String> TestDeviceThreadLocal = new ThreadLocal<>();
@@ -67,28 +69,38 @@ public class BaseTest {
 	protected static GlobalHeaderPage_Mobile getglobalHeaderPage_mobileThreadLocal() {
 		return globalHeaderPage_mobileThreadLocal.get();
 	}
-	
-	
+
 	// @return the homePageThreadLocal
 	protected static HomePage homePageThreadLocal() {
 	
 		return homePageThreadLocal.get();
 	}
 
-
+	//@return the GlobalFooterThreadLocal
 	protected static GlobalFooterPage getGlobalFooterPageThreadLocal() {
 		return globalFooterPageThreadLocal.get();
 	}
-	
+
 	// @return the GlobalFooterPage_MobileThreadLocal
 	protected static GlobalFooterPage_Mobile getGlobalFooterPage_mobileThreadLocal() {
 		return globalFooterPage_mobileThreadLocal.get();
 	}
 	
+	//@return the ProductResultsPageThreadLocal
 	protected static ProductResultsPage getProductResultsPageThreadLocal() {
 		return productResultsPageThreadLocal.get();
 	}
-	
+
+	//@return the ProductResultsPage_TabletThreadLocal
+	protected static ProductResultsPage_Tablet getProductResultsPage_TabletThreadLocal() {
+		return productResultsPage_TabletThreadLocal.get();
+	}
+
+	//@return the ProductResultsPage_MobileThreadLocal
+	protected static ProductResultsPage_Mobile getProductResultsPage_MobileThreadLocal() {
+		return productResultsPage_MobileThreadLocal.get();
+	}
+
 	protected static ProductDetailPage getProductDetailPageThreadLocal() {
 		return productDetailPageThreadLocal.get();
 	}
@@ -96,7 +108,7 @@ public class BaseTest {
 	protected static LoginPage getGlobalLoginPageThreadLocal() {
 		return loginPageThreadLocal.get();
 	}
-	
+
 	protected static String getTestDeviceThreadLocal () {
 		return TestDeviceThreadLocal.get();
 	}
@@ -106,11 +118,11 @@ public class BaseTest {
 	}
 
 	private void init() {
-		
 		homePageThreadLocal.set(new HomePage(getDriver()));
 		globalheaderPageThreadLocal.set(new GlobalHeaderPage(getDriver()));		
 		globalFooterPageThreadLocal.set(new GlobalFooterPage(getDriver()));
 		productResultsPageThreadLocal.set(new ProductResultsPage(getDriver()));
+		globalFooterPageThreadLocal.set(new GlobalFooterPage(getDriver()));
 		productDetailPageThreadLocal.set(new ProductDetailPage(getDriver()));
 		loginPageThreadLocal.set(new LoginPage(getDriver()));
 		reporter = new ExtentTestManager(getDriver());
@@ -129,8 +141,13 @@ public class BaseTest {
 		loginPageThreadLocal.set(new LoginPage_Mobile(getDriver()));
 		//loginPage_mobileThreadLocal.set(new LoginPage_Mobile(getDriver()));
 		globalFooterPageThreadLocal.set(new GlobalFooterPage_Mobile(getDriver()));
+		productResultsPageThreadLocal.set(new ProductResultsPage_Mobile(getDriver()));
+		globalheaderPageThreadLocal.set(new GlobalHeaderPage_Mobile(getDriver()));
+		loginPageThreadLocal.set(new LoginPage(getDriver()));
+		globalFooterPageThreadLocal.set(new GlobalFooterPage_Mobile(getDriver()));
 		reporter = new ExtentTestManager(getDriver());
 	}
+
 
 	public WebDriver getDriver() {
 		return webDriverThreadLocal.get();
@@ -160,16 +177,11 @@ public class BaseTest {
 
 		webDriverThreadLocal.set(browserDrivers.driverInit(strBrowser, sauceParameters, currentTestMethodName, ""));
 		getDriver().get(strUrl);
-		strBrowser = System.getProperty("Browser").trim();
-		System.out.println(strBrowser);
 
 		String lsTestDevice = System.getProperty("Device").trim();
 		TestDeviceThreadLocal.set(lsTestDevice);
-		strBrowser = System.getProperty("Browser").trim();
 		if (strBrowser.toLowerCase().contains("android") || strBrowser.toLowerCase().contains("ios")
 				|| strBrowser.toLowerCase().contains("mobile")) {
-			lsTestDevice = System.getProperty("Device").trim();
-			TestDeviceThreadLocal.set(lsTestDevice);
 			switch (lsTestDevice) {
 				case "Tablet":
 					init_Tablet();
@@ -181,12 +193,12 @@ public class BaseTest {
 		} else {
 			init();
 		}
-		
-	/*if (!strBrowser.toLowerCase().contains("android") && !strBrowser.toLowerCase().contains("ios")
+		/*if (!strBrowser.toLowerCase().contains("android") && !strBrowser.toLowerCase().contains("ios")
 			&& !strBrowser.toLowerCase().contains("mobile")) {
 		getDriver().manage().window().maximize();
 	}*/
 			setImplictWait(getDriver(), 60);
+
 	}
 
 	
@@ -206,8 +218,8 @@ public class BaseTest {
 	 *
 	 */
 	public enum SauceCapabilities {
-		seleniumVersion, maxDuration, commandTimeout, idleTimeout, build, browserVersion, appiumVersion, deviceName,
-		deviceOrientation, platformVersion, platformName
+		seleniumVersion, maxDuration, commandTimeout, idleTimeout, build, screenResolution, browserVersion, appiumVersion, deviceName,
+		deviceOrientation, platformVersion, platformName, deviceType
 	}
 
 	/**
@@ -290,38 +302,45 @@ public class BaseTest {
 		sauceOptions.put(SauceCapabilities.commandTimeout.toString(), TestDataHandler.sauceSettings.getSauceOptions().getCommandTimeout());
 		sauceOptions.put(SauceCapabilities.idleTimeout.toString(), TestDataHandler.sauceSettings.getSauceOptions().getIdleTimeout());
 		sauceOptions.put(SauceCapabilities.build.toString(), TestDataHandler.sauceSettings.getSauceOptions().getBuild());
+		sauceOptions.put(SauceCapabilities.screenResolution.toString(),TestDataHandler.sauceSettings.getSauceOptions().getScreenResolution());
 
 		switch (strBrowser.toLowerCase()) {
-		case "saucechrome":
-			sauceOptions.put(SauceCapabilities.platformName.toString(), TestDataHandler.sauceSettings.getMutableChromeCapabilities().getPlatformName());
-			sauceOptions.put(SauceCapabilities.browserVersion.toString(), TestDataHandler.sauceSettings.getMutableChromeCapabilities().getBrowserVersion());
-			break;
-		case "saucefirefox":
-			sauceOptions.put(SauceCapabilities.platformName.toString(), TestDataHandler.sauceSettings.getMutableFireFoxCapabilities().getPlatformName());
-			sauceOptions.put(SauceCapabilities.browserVersion.toString(), TestDataHandler.sauceSettings.getMutableFireFoxCapabilities().getBrowserVersion());
-			break;
-		case "sauceedge":
-			sauceOptions.put(SauceCapabilities.platformName.toString(), TestDataHandler.sauceSettings.getMutableEdgeCapabilities().getPlatformName());
-			sauceOptions.put(SauceCapabilities.browserVersion.toString(), TestDataHandler.sauceSettings.getMutableEdgeCapabilities().getBrowserVersion());
-			break;
-		case "saucesafari":
-			sauceOptions.put(SauceCapabilities.platformName.toString(), TestDataHandler.sauceSettings.getMutableSafariCapabilities().getPlatformName());
-			sauceOptions.put(SauceCapabilities.browserVersion.toString(), TestDataHandler.sauceSettings.getMutableSafariCapabilities().getBrowserVersion());
-			break;
-		case "sauceandroidchrome":
-			sauceOptions.put(SauceCapabilities.appiumVersion.toString(), TestDataHandler.sauceSettings.getAndroidChromeCapabilities().getAppiumVersion());
-			sauceOptions.put(SauceCapabilities.deviceName.toString(), TestDataHandler.sauceSettings.getAndroidChromeCapabilities().getDeviceName());
-			sauceOptions.put(SauceCapabilities.deviceOrientation.toString(), TestDataHandler.sauceSettings.getAndroidChromeCapabilities().getDeviceOrientation());
-			sauceOptions.put(SauceCapabilities.platformVersion.toString(), TestDataHandler.sauceSettings.getAndroidChromeCapabilities().getPlatformVersion());
-			sauceOptions.put(SauceCapabilities.platformName.toString(), TestDataHandler.sauceSettings.getAndroidChromeCapabilities().getPlatformName());
-			break;
-		case "sauceioschrome":
-			sauceOptions.put(SauceCapabilities.appiumVersion.toString(), TestDataHandler.sauceSettings.getIosSafariCapabilities().getAppiumVersion());
-			sauceOptions.put(SauceCapabilities.deviceName.toString(), TestDataHandler.sauceSettings.getIosSafariCapabilities().getDeviceName());
-			sauceOptions.put(SauceCapabilities.deviceOrientation.toString(), TestDataHandler.sauceSettings.getIosSafariCapabilities().getDeviceOrientation());
-			sauceOptions.put(SauceCapabilities.platformVersion.toString(), TestDataHandler.sauceSettings.getIosSafariCapabilities().getPlatformVersion());
-			sauceOptions.put(SauceCapabilities.platformName.toString(), TestDataHandler.sauceSettings.getIosSafariCapabilities().getPlatformName());
-			break;
+			case "saucechrome":
+				sauceOptions.put(SauceCapabilities.platformName.toString(), TestDataHandler.sauceSettings.getMutableChromeCapabilities().getPlatformName());
+				sauceOptions.put(SauceCapabilities.browserVersion.toString(), TestDataHandler.sauceSettings.getMutableChromeCapabilities().getBrowserVersion());
+				break;
+			case "saucefirefox":
+				sauceOptions.put(SauceCapabilities.platformName.toString(), TestDataHandler.sauceSettings.getMutableFireFoxCapabilities().getPlatformName());
+				sauceOptions.put(SauceCapabilities.browserVersion.toString(), TestDataHandler.sauceSettings.getMutableFireFoxCapabilities().getBrowserVersion());
+				break;
+			case "sauceedge":
+				sauceOptions.put(SauceCapabilities.platformName.toString(), TestDataHandler.sauceSettings.getMutableEdgeCapabilities().getPlatformName());
+				sauceOptions.put(SauceCapabilities.browserVersion.toString(), TestDataHandler.sauceSettings.getMutableEdgeCapabilities().getBrowserVersion());
+				break;
+			case "saucesafari":
+				sauceOptions.put(SauceCapabilities.platformName.toString(), TestDataHandler.sauceSettings.getMutableSafariCapabilities().getPlatformName());
+				sauceOptions.put(SauceCapabilities.browserVersion.toString(), TestDataHandler.sauceSettings.getMutableSafariCapabilities().getBrowserVersion());
+				break;
+			case "sauceandroidchrome":
+				sauceOptions.put(SauceCapabilities.appiumVersion.toString(), TestDataHandler.sauceSettings.getAndroidChromeCapabilities().getAppiumVersion());
+				sauceOptions.put(SauceCapabilities.deviceName.toString(), TestDataHandler.sauceSettings.getAndroidChromeCapabilities().getDeviceName());
+				sauceOptions.put(SauceCapabilities.deviceOrientation.toString(), TestDataHandler.sauceSettings.getAndroidChromeCapabilities().getDeviceOrientation());
+				sauceOptions.put(SauceCapabilities.platformVersion.toString(), TestDataHandler.sauceSettings.getAndroidChromeCapabilities().getPlatformVersion());
+				sauceOptions.put(SauceCapabilities.platformName.toString(), TestDataHandler.sauceSettings.getAndroidChromeCapabilities().getPlatformName());
+				if(System.getProperty("Device").equalsIgnoreCase("Tablet")){
+					sauceOptions.put(SauceCapabilities.deviceType.toString(),TestDataHandler.sauceSettings.getAndroidChromeCapabilities().getDeviceType().toLowerCase());
+				}
+				break;
+			case "sauceioschrome":
+				sauceOptions.put(SauceCapabilities.appiumVersion.toString(), TestDataHandler.sauceSettings.getIosSafariCapabilities().getAppiumVersion());
+				sauceOptions.put(SauceCapabilities.deviceName.toString(), TestDataHandler.sauceSettings.getIosSafariCapabilities().getDeviceName());
+				sauceOptions.put(SauceCapabilities.deviceOrientation.toString(), TestDataHandler.sauceSettings.getIosSafariCapabilities().getDeviceOrientation());
+				sauceOptions.put(SauceCapabilities.platformVersion.toString(), TestDataHandler.sauceSettings.getIosSafariCapabilities().getPlatformVersion());
+				sauceOptions.put(SauceCapabilities.platformName.toString(), TestDataHandler.sauceSettings.getIosSafariCapabilities().getPlatformName());
+				if(System.getProperty("Device").equalsIgnoreCase("Tablet")){
+					sauceOptions.put(SauceCapabilities.deviceType.toString(),TestDataHandler.sauceSettings.getIosSafariCapabilities().getDeviceType().toLowerCase());
+				}
+				break;
 		}
 
 		return sauceOptions;

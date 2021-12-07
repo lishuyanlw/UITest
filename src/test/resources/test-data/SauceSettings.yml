@@ -7,6 +7,7 @@ sauceOptions:
    commandTimeout: 400
    idleTimeout: 180
    build: TSC Web Factory
+   screenResolution: 1280x960
 mutableFireFoxCapabilities:  
    platformName: Windows 10
    browserVersion: latest
@@ -25,10 +26,12 @@ androidChromeCapabilities:
    appiumVersion: 1.9.1
    deviceName: Android GoogleAPI Emulator
    deviceOrientation: portrait
+   deviceType: Tablet
 iosSafariCapabilities:
    platformName: iOS
    platformVersion: 14.3
    appiumVersion: 1.20.1
    deviceName: iPhone XS Simulator
    deviceOrientation: portrait
+   deviceType: Tablet
 ...

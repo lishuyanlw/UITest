@@ -80,8 +80,8 @@ public class ConstantData {
         private Flyout flyout;
         private Map<String, List<String>> lst_WatchTSCNameAndLinksMap;
         private Map<String, List<String>> lst_HeaderNameAndLinksMap;
-        
-        
+
+
         public Map<String, List<String>> getLst_HeaderNameAndLinksMap() {
 			return lst_HeaderNameAndLinksMap;
 		}
@@ -98,12 +98,12 @@ public class ConstantData {
 			this.lst_WatchTSCNameAndLinksMap = lst_WatchTSCNameAndLinksMap;
 		}
 
-        public String getLbl_SignInLandingPage() {   
-        	return lbl_SignInLandingPage;   
+        public String getLbl_SignInLandingPage() {
+        	return lbl_SignInLandingPage;
         }
 
         public void setLbl_SignInLandingPage(String lbl_SignInLandingPage) {
-        	this.lbl_SignInLandingPage = lbl_SignInLandingPage; 
+        	this.lbl_SignInLandingPage = lbl_SignInLandingPage;
         }
 
         public String getLbl_ShoppingCartLinkName() {
@@ -445,11 +445,20 @@ public class ConstantData {
         private List<String> lst_SearchResultMessage;
         private List<String> lst_SortOption;
         private List<String> lst_FilterOptionHeader;
-        private List<SearchOption> lst_SearchOption;               
-        private List<String> lst_MoreButton;  
+        private List<SearchOption> lst_SearchOption;
+        private List<String> lst_MoreButton;
         private List<String> lst_DisappearAfterSelectFilter;
         private String lnk_product_result;
         private List<String> lbl_ProductRecommendationTitlePage;
+        private String lbl_AddToBagPopupWindowTitle;
+        private String lbl_VideoDisclaimInfo;
+        private String lbl_AdvancedOrderkeyword;
+        private String lbl_SoldOutkeyword;
+        private String lbl_QuantityNumberToShowLeftItemInfo;
+        private List<String> lst_WriteReviewSubmitMessage;
+        private String lbl_TellYourFriendsSentMessage;
+        private List<String> lst_Filter_Data;
+        private List<String> lst_SortOptionMobile;
 
         public List<String> getLst_SearchKeyword() {
             return lst_SearchKeyword;
@@ -499,6 +508,14 @@ public class ConstantData {
             this.lst_FilterOptionHeader = lst_FilterOptionHeader;
         }
 
+        public List<String> getLst_Filter_Data() { return lst_Filter_Data; }
+
+        public void setLst_Filter_Data(List<String> lst_Filter_Data) { this.lst_Filter_Data = lst_Filter_Data; }
+
+        public List<String> getLst_SortOptionMobile() { return lst_SortOptionMobile; }
+
+        public void setLst_SortOptionMobile(List<String> lst_SortOptionMobile) { this.lst_SortOptionMobile = lst_SortOptionMobile; }
+
         public List<SearchOption> getLst_SearchOption() {
             return lst_SearchOption;
         }
@@ -538,6 +555,62 @@ public class ConstantData {
         public void setLbl_ProductRecommendationTitlePage(List<String> lbl_ProductRecommendationTitlePage) {
             this.lbl_ProductRecommendationTitlePage = lbl_ProductRecommendationTitlePage;
         }
+        
+        public String getLbl_AddToBagPopupWindowTitle() {
+            return lbl_AddToBagPopupWindowTitle;
+        }
+
+        public void setLbl_AddToBagPopupWindowTitle(String lbl_AddToBagPopupWindowTitle) {
+            this.lbl_AddToBagPopupWindowTitle = lbl_AddToBagPopupWindowTitle;
+        }
+        
+        public String getLbl_VideoDisclaimInfo() {
+            return lbl_VideoDisclaimInfo;
+        }
+
+        public void setLbl_VideoDisclaimInfo(String lbl_VideoDisclaimInfo) {
+            this.lbl_VideoDisclaimInfo = lbl_VideoDisclaimInfo;
+        }
+        
+        public String getLbl_AdvancedOrderkeyword() {
+            return lbl_AdvancedOrderkeyword;
+        }
+
+        public void setLbl_AdvancedOrderkeyword(String lbl_AdvancedOrderkeyword) {
+            this.lbl_AdvancedOrderkeyword = lbl_AdvancedOrderkeyword;
+        }
+        
+        public String getLbl_SoldOutkeyword() {
+            return lbl_SoldOutkeyword;
+        }
+
+        public void setLbl_SoldOutkeyword(String lbl_SoldOutkeyword) {
+            this.lbl_SoldOutkeyword = lbl_SoldOutkeyword;
+        }
+        
+        public String getLbl_QuantityNumberToShowLeftItemInfo() {
+            return lbl_QuantityNumberToShowLeftItemInfo;
+        }
+
+        public void setLbl_QuantityNumberToShowLeftItemInfo(String lbl_QuantityNumberToShowLeftItemInfo) {
+            this.lbl_QuantityNumberToShowLeftItemInfo = lbl_QuantityNumberToShowLeftItemInfo;
+        }
+                
+        public List<String> getLst_WriteReviewSubmitMessage() {
+            return lst_WriteReviewSubmitMessage;
+        }
+
+        public void setLst_WriteReviewSubmitMessage(List<String> lst_WriteReviewSubmitMessage) {
+            this.lst_WriteReviewSubmitMessage = lst_WriteReviewSubmitMessage;
+        }
+        
+        public String getLbl_TellYourFriendsSentMessage() {
+            return lbl_TellYourFriendsSentMessage;
+        }
+
+        public void setLbl_TellYourFriendsSentMessage(String lbl_TellYourFriendsSentMessage) {
+            this.lbl_TellYourFriendsSentMessage = lbl_TellYourFriendsSentMessage;
+        }
     }
 
     public static class Flyout {
@@ -545,9 +618,9 @@ public class ConstantData {
         private String lbl_LandingPageBrandShopAll;
         private String lnk_ShopByBrandShopAll;
         private Map<String, List<String>> lst_FlyoutHeadingAndNameMap;
-        
-		public Map<String, List<String>> getLst_FlyoutHeadingAndNameMap() { 
-        	return lst_FlyoutHeadingAndNameMap;    
+
+		public Map<String, List<String>> getLst_FlyoutHeadingAndNameMap() {
+        	return lst_FlyoutHeadingAndNameMap;
         }
 
         public void setLst_FlyoutHeadingAndNameMap(Map<String, List<String>> lst_FlyoutHeadingAndNameMap) {
@@ -636,8 +709,8 @@ public class ConstantData {
         public void setLst_NameAndLinks(List<List<String>> lst_NameAndLinks) {
             this.lst_NameAndLinks = lst_NameAndLinks;
         }
-        
-        
+
+
     }
     
     public static class LoginUser {
