@@ -17,7 +17,7 @@ public class ApiConfigs extends ApiClient{
         if (dimension != null)
             inputMap.put("dimensions", Integer.parseInt(dimension));
         inputMap.put("page", outputPage);
-        inputMap.put("pageSize", Integer.parseInt("36"));
+        inputMap.put("pageSize", Integer.parseInt("100"));
         if (apiVersion.contains("v2"))
             inputMap.put("rd", true);
         else
