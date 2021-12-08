@@ -708,14 +708,6 @@ public class GlobalHeaderPage extends BasePage{
 	public void verifysubMenuhref(List<WebElement> webElements) {
 		if(isParentElementHasAttribute(webElements,"li")) {
 			for (WebElement element : this.subMenuLinks) {
-				/** Below section needs to be commented as it navigates back to previous element of left
-				 * side section element and hence results in StaleElement Exception for firefox
-				if (System.getProperty("Browser").toLowerCase().contains("firefox")) {
-					getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-				}*/
-				if (System.getProperty("Browser").toLowerCase().contains("chrome")) {
-					getReusableActionsInstance().scrollToElement(element);
-				}
 				if (!verifyElementProperty(element, "Link")) {//href is not present
 					getReporter().softAssert(false,"","Link is not present for: "+element.getText());
 				}else{
@@ -738,54 +730,11 @@ public class GlobalHeaderPage extends BasePage{
 	 * @return true/false
 	 * @author Shruti Desai
 	 */
-	/*public void verifyFlyoutMenuItems(String heading, String section){
-		List<WebElement> headingsElements=this.headingLinks;
-		if(heading==null) {
-			for(WebElement headerItem: headingsElements) {
-				if(System.getProperty("Browser").toLowerCase().contains("firefox")) {
-					getReusableActionsInstance().javascriptScrollByVisibleElement(headerItem);
-				}
-				this.scrolltoWebElement(headerItem);
-				getReusableActionsInstance().staticWait(3000);
-				waitForCondition(Driver->{return (CategoriesLinks.get(0).getAttribute("href").contains(headerItem.getText().split(" ")[0]));} ,60000);
-				String headingName =headerItem.getText();
-				reporter.reportLog("Flyout heading "+headingName);
-				if(section==null) {
-					verifyFlyoutMenuSection(headingName,"Left Section");
-					verifyFlyoutMenuSection(headingName,"Curated Collections");
-					verifyFlyoutMenuSection(headingName,"Popular Brands");
-				}else{
-					verifyFlyoutMenuSection(headingName,section);
-				}
-			}
-		}else{
-			WebElement headingsElement=getWebElementFlyoutHeading(heading);
-			if(System.getProperty("Browser").toLowerCase().contains("firefox")) {
-				getReusableActionsInstance().javascriptScrollByVisibleElement(headingsElement);
-			}
-			this.scrolltoWebElement(headingsElement);
-			getReusableActionsInstance().staticWait(3000);
-			waitForCondition(Driver->{return (CategoriesLinks.get(0).getAttribute("href").contains(headingsElement.getText().split(" ")[0]));} ,60000);
-			String headingName =headingsElement.getText();
-			reporter.reportLog("Flyout heading "+headingName);
-			if(section==null) {
-				verifyFlyoutMenuSection(headingName,"Left Section");
-				verifyFlyoutMenuSection(headingName,"Curated Collections");
-				verifyFlyoutMenuSection(headingName,"Popular Brands");
-			}else{
-				verifyFlyoutMenuSection(headingName,section);
-			}
-		}
-	}
-*/
-	
 	public void verifyFlyoutMenuItems(String heading, String section){
 		List<WebElement> headingsElements=this.headingLinks;
 		if(heading==null) {
 			for(WebElement headerItem: headingsElements) {
-				if(System.getProperty("Browser").toLowerCase().contains("firefox")) {
-					getReusableActionsInstance().javascriptScrollByVisibleElement(headerItem);
-				}
+				getReusableActionsInstance().javascriptScrollByVisibleElement(headerItem);
 				this.scrolltoWebElement(headerItem);
 				getReusableActionsInstance().staticWait(3000);
 				waitForCondition(Driver->{return (CategoriesLinks.get(0).getAttribute("href").contains(headerItem.getText().split(" ")[0]));} ,30000);
@@ -801,9 +750,7 @@ public class GlobalHeaderPage extends BasePage{
 			}
 		}else{
 			WebElement headingsElement=getWebElementFlyoutHeading(heading);
-			if(System.getProperty("Browser").toLowerCase().contains("firefox")) {
-				getReusableActionsInstance().javascriptScrollByVisibleElement(headingsElement);
-			}
+			getReusableActionsInstance().javascriptScrollByVisibleElement(headingsElement);
 			this.scrolltoWebElement(headingsElement);
 			getReusableActionsInstance().staticWait(3000);
 			waitForCondition(Driver->{return (CategoriesLinks.get(0).getAttribute("href").contains(headingsElement.getText().split(" ")[0]));} ,30000);
@@ -824,9 +771,7 @@ public class GlobalHeaderPage extends BasePage{
 			case "Curated Collections":
 				reporter.reportLog("Verifying Curated Collections items for : "+headingName);
 				for(WebElement webElement:listCuratedCollectionLinks){
-					if(System.getProperty("Browser").toLowerCase().contains("firefox")) {
-						getReusableActionsInstance().javascriptScrollByVisibleElement(webElement);
-					}
+					getReusableActionsInstance().javascriptScrollByVisibleElement(webElement);
 					getReusableActionsInstance().scrollToElement(webElement);
 					if(!verifyElementProperty(webElement,"Link")) {//href is not present
 						getReporter().softAssert(false,"","Href missing for Curated Collection item: "+webElement.getText());
@@ -838,13 +783,10 @@ public class GlobalHeaderPage extends BasePage{
 			case "Popular Brands":
 				reporter.reportLog("Verifying Popular Brands items for : "+headingName);
 				for(WebElement webElement:listPopularBrandsLink){
-					if(System.getProperty("Browser").toLowerCase().contains("firefox")) {
-						getReusableActionsInstance().javascriptScrollByVisibleElement(webElement);
-					}
+					getReusableActionsInstance().javascriptScrollByVisibleElement(webElement);
 					getReusableActionsInstance().scrollToElement(webElement);
 					//WebElement hrefAttribute =webElement.findElement(By.xpath("./ancestor::a"));
 					WebElement altAttribute =webElement.findElement(By.xpath(".//img"));
-
 					if(!verifyElementProperty(webElement,"Link")) {//href not present
 						getReporter().softAssert(false,"","Href missing for Popular Brand item: "+webElement.getText());
 					}
@@ -857,9 +799,7 @@ public class GlobalHeaderPage extends BasePage{
 			break;
 			case "Left Section":
 				for (WebElement category:CategoriesLinks) {
-					if(System.getProperty("Browser").toLowerCase().contains("firefox")) {
-						getReusableActionsInstance().javascriptScrollByVisibleElement(category);
-					}
+					getReusableActionsInstance().javascriptScrollByVisibleElement(category);
 					this.scrolltoWebElement(category);
 					getReusableActionsInstance().staticWait(3000);
 					waitForCondition(Driver->{return (category.isDisplayed());} ,30000);
