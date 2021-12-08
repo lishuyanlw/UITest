@@ -175,15 +175,6 @@ public class GlobalHeaderPage extends BasePage{
 	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--right')]//div[@class='ac__layout-inner--right']//ul//li")
 	public List<WebElement> lstMoreToExplore;
 	
-	
-	//For Staging website
-	@FindBy(xpath = "//div[@class='searchContainer']//div[contains(@class,'suggestions-container--open')]//div[@class='tsc-category-title']")
-	public WebElement txtSearchResultCategoryHeader;
-	
-	//For Staging website
-	@FindBy(xpath = "//div[@class='searchContainer']//div[contains(@class,'suggestions-container--open')]//ul//li")
-	public List<WebElement> searchResultList;
-	
 	By byCategoryAboveSearchResultList=By.xpath("//div[@class='searchContainer']//div[contains(@class,'suggestions-container--open')]//ul/preceding-sibling::div[@class='tsc-category-title']");
 		
 	//Favorite link

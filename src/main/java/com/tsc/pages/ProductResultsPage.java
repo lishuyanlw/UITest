@@ -23,81 +23,81 @@ public class ProductResultsPage extends BasePage{
 
 	//Search results return message
 	@FindBy(xpath = "//section[@class='tsc-container']//*[@class='plp__showing-results']|//section[@class='tsc-container']//div[@class='plp-no-search-results__copy__heading']")
-	WebElement lblSearchResultMessage;
+	public WebElement lblSearchResultMessage;
 
 	@FindBy(xpath = "//section[@class='tsc-container']//*[@class='plp__showing-results']")
-	WebElement lblReturnMessageWithSearchResult;
+	public WebElement lblReturnMessageWithSearchResult;
 	
 	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp-no-search-results__copy__heading']")
-	WebElement lblReturnMessageHeadingWithoutSearchResult;
+	public WebElement lblReturnMessageHeadingWithoutSearchResult;
 	
 	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp-no-search-results__icon']")
-	WebElement lblReturnMessageIconWithoutSearchResult;
+	public WebElement lblReturnMessageIconWithoutSearchResult;
 	
 	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp-no-search-results__copy__text']")
-	WebElement lblReturnMessageTextWithoutSearchResult;
+	public WebElement lblReturnMessageTextWithoutSearchResult;
 	
 	@FindBy(xpath = "//section[@class='tsc-container']//button[@class='plp-no-search-results__copy__link']")
-	WebElement btnReturnMessageRetryLinkWithoutSearchResult;
+	public WebElement btnReturnMessageRetryLinkWithoutSearchResult;
 
 	//Search title
 	@FindBy(xpath = "//span[contains(@class,'tagDimTitle')]")
-	WebElement lblSearchResultTitle;
+	public WebElement lblSearchResultTitle;
 	
 	//Navigation list
 	@FindBy(xpath = "//section[@class='tsc-container']//nav[@class='breadcrumb__nav']//li")
-	List<WebElement> lstSearchResultNavigation;
+	public List<WebElement> lstSearchResultNavigation;
 	
 	@FindBy(xpath = "//div[@class='Middle']")
-	WebElement cntSearchResultTitleContainer;
+	public WebElement cntSearchResultTitleContainer;
 
 	@FindBy(xpath = "//div[contains(@class,'showstopper-wrapper')]//div[contains(@class,'item')]//div[contains(@class,'visible')]//img")
-	List<WebElement> lstBannerImage;
+	public List<WebElement> lstBannerImage;
 
 	//Selected filters
 	//Missing
 	@FindBy(xpath = "//product-results//div[contains(@class,'col-md-showing')]//div[contains(@class,'filterPrpLabel')]//b")
-	WebElement lblShowing;
+	public WebElement lblShowing;
 
 	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp__count-and-shorting']//div[@class='plp__count-and-shorting__product-count']")
-	WebElement txtShowingDynamicContent;
+	public WebElement txtShowingDynamicContent;
 
 	//Missing
 	@FindBy(xpath = "//product-results//div[contains(@class,'col-md-sort')]//form//div[contains(@class,'filterPrpLabel')]")
-	WebElement lblSortBy;
+	public WebElement lblSortBy;
 	
 	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp__count-and-shorting']//select")
-	WebElement btnSortSelect;
+	public WebElement btnSortSelect;
 
 	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp__count-and-shorting']//select//option")
-	List<WebElement> sortByOptionList;
+	public List<WebElement> sortByOptionList;
 	
 	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp']")
-	WebElement cntSortingAndFilteringProductResultLoadingIndicator;
+	public WebElement cntSortingAndFilteringProductResultLoadingIndicator;
 
 	//Missing
 	@FindBy(xpath = "//product-results//div[contains(@class,'col-md-items')]//form//div[contains(@class,'filterPrpLabel')]")
-	WebElement lblItemsPerPage;
+	public WebElement lblItemsPerPage;
 
 	//Missing
 	@FindBy(xpath = "//product-results//div[contains(@class,'search-filters-div')]//div[contains(@class,'col-md-items')]//select//option[1]|//product-results//div[contains(@class,'col-md-items')]//form//div[contains(@class,'recordsDiv')]")
-	WebElement lblItemPerPageDefaultSettingNumber;
+	public WebElement lblItemPerPageDefaultSettingNumber;
 
 	//Product results
 	//Does not work currently
 	@FindBy(xpath = "//div[@class='Footer']//div[contains(@class,'blockPageWrap')]")
-	WebElement productResultLoadingIndicator;
+	public WebElement productResultLoadingIndicator;
 
 	@FindBy(xpath = "//div[@class='plp']//div[@class='plp__product-grid']//div[contains(@class,'plp-card-grid-item')]//div[@class='product-card']")
-	List<WebElement> productResultList;
+	public List<WebElement> productResultList;
 
 	//Selected filters
 	//Missing
 	@FindBy(xpath = "//div[contains(@class,'search-filters-div')]//div[contains(@class,'sortFilterWrap')]//div[contains(@class,'filterPrpLabel')]")
-	WebElement lblSelectedFilters;
+	public WebElement lblSelectedFilters;
 
 	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp__applied-filters']//button")
-	List<WebElement> selectedFiltersList;
+	public List<WebElement> selectedFiltersList;
 	
 	public By byProductHeaderTitle=By.xpath(".//*[@class='product-card__header-title']");
 	
@@ -169,50 +169,50 @@ public class ProductResultsPage extends BasePage{
 	
 	//Missing
 	@FindBy(xpath = "//product-results//div[contains(@class,'productItems')]//div[contains(@class,'productItemWrap')]//div[contains(@class,'itemNo')]")
-	List<WebElement> productItemNOList;
+	public List<WebElement> productItemNOList;
 
 	//Pagination
 	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp__pagination']")
-	WebElement cntPagination;
+	public WebElement cntPagination;
 
 	public By byPagination=By.xpath("//section[@class='tsc-container']//div[@class='plp__pagination']");
 
 	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp__pagination']//div[@class='plp__pagination__pages']//a")
-	List<WebElement> PageNumberList;
+	public List<WebElement> PageNumberList;
 
 	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp__pagination']")
-	WebElement cntPreAndNextButtonPage;
+	public WebElement cntPreAndNextButtonPage;
 
 	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp__pagination']//a[@class='plp__pagination__prev-link']")
-	WebElement btnPreviousPage;
+	public WebElement btnPreviousPage;
 
 	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp__pagination']//a[@class='plp__pagination__next-link']")
-	WebElement btnNextPage;
+	public WebElement btnNextPage;
 
 	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp__pagination']//div[@class='plp__pagination__pages']//a[contains(@class,'plp__pagination__pages__page--current')]")
-	WebElement btnCurrentPage;
+	public WebElement btnCurrentPage;
 
 	//Product title and text
 	@FindBy(xpath = "//div[@class='TitleAndTextSeo']")
-	WebElement cntProductTitleAndText;
+	public WebElement cntProductTitleAndText;
 
 	public By byProductTitleAndText=By.xpath(".//div[@class='TitleAndTextSeo']");
 
 	@FindBy(xpath = "//div[@class='TitleAndTextSeo']//*[contains(@class,'seoTextTitle')]")
-	WebElement lblProductTitle;
+	public WebElement lblProductTitle;
 
 	@FindBy(xpath = "//div[@class='TitleAndTextSeo']//*[contains(@class,'seoTextContent')]")
-	WebElement lblProductText;
+	public WebElement lblProductText;
 
 	@FindBy(xpath = "//div[@class='TitleAndTextSeo']//button")
-	WebElement btnProductTitleAndTextMoreOrLess;
+	public WebElement btnProductTitleAndTextMoreOrLess;
 
 	//Product results filter
 	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp-filter-panel']//div[@class='plp-filter-panel__blocks']")
-	List<WebElement> productFilterContainerList;
+	public List<WebElement> productFilterContainerList;
 	
 	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp-filter-panel']//div[@class='plp-filter-panel__blocks']//button[@class='plp-filter-panel__block-title']")
-	List<WebElement> productFilterList;
+	public List<WebElement> productFilterList;
 	
 	public By byProductFilterTitle=By.xpath(".//button[@class='plp-filter-panel__block-title']");
 	
@@ -232,17 +232,17 @@ public class ProductResultsPage extends BasePage{
 
 	//Not used
 	@FindBy(xpath = "//product-results//div[@class='modalBody']//div[@class='panel']//*[contains(@class,'panel-heading')]/following-sibling::div[contains(@class,'panel-collapse')]//div[contains(@class,'seeMoreDiv') and not(contains(@class,'seeMoreTitle')) and not(@style='display: none;')][@id]")
-	List<WebElement> productFilterMoreButtonList;
+	public List<WebElement> productFilterMoreButtonList;
 
 	//Not used
 	@FindBy(xpath = "//product-results//div[@class='modalBody']//div[@class='panel']//*[contains(@class,'panel-heading')]/following-sibling::div[contains(@class,'panel-collapse')]//div[contains(@class,'seeMoreDiv') and not(contains(@class,'seeMoreTitle')) and @aria-expanded='true' and not(@style='display: none;')]")
-	List<WebElement> productFilterLessButtonList;
+	public List<WebElement> productFilterLessButtonList;
 
 	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp-filter-panel']//div[@class='plp-filter-panel__blocks']//ul[@class='plp-filter-panel__filter-list']//li[button[input[not(@checked)]]]")
-	List<WebElement> secondlevelFilterList;
+	public List<WebElement> secondlevelFilterList;
 	
 	@FindBy(xpath = "//div[@class='plp']//div[@class='plp__product-grid']")
-	WebElement searchResultSection;
+	public WebElement searchResultSection;
 
 	//Not used
 	public By byMoreButtonOnLeftPanel=By.xpath(".//*[contains(@class,'panel-heading')]/following-sibling::div[contains(@class,'panel-collapse')]//div[contains(@class,'seeMoreDiv') and not(contains(@class,'seeMoreTitle')) and not(@style='display: none;')][@id]");
@@ -257,13 +257,13 @@ public class ProductResultsPage extends BasePage{
 	public By bySubItemPanelBodyOnLeftPanel=By.xpath(".//div[@class='panel-body']");
 
 	@FindBy(xpath = "//product-recommendations-endeca")
-	WebElement recommendationContainer;
+	public WebElement recommendationContainer;
 
 	@FindBy(xpath = "//div[@class='Header']")
-	WebElement headerContainer;
+	public WebElement headerContainer;
 
 	@FindBy(xpath = "//div[@class='Footer']")
-	WebElement footerContainer;
+	public WebElement footerContainer;
 
 	//People Also Viewed items
 	
@@ -271,7 +271,7 @@ public class ProductResultsPage extends BasePage{
 	public WebElement productRecommendationTitle;
 	
 	@FindBy(xpath="//product-recommendations-endeca//*[contains(@class,'prec-col')]")
-	List<WebElement> lstPeopleAlsoBoughtItems;
+	public List<WebElement> lstPeopleAlsoBoughtItems;
 	
 	public By byRecommendationImage = By.xpath(".//div[contains(@class,'imgEmbedContainer')]//img[@class='img-responsive pprec-img']");
 	
@@ -307,18 +307,6 @@ public class ProductResultsPage extends BasePage{
 				lsStyle="display: none;";
 			}
 			return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},90000);
-	}
-
-	/**
-	 * This method will judge search type.
-	 * @return QA return true
-	 * @author Wei.Li
-	 */
-	public boolean isQASearch() {
-		GlobalHeaderPage globalHeader=new GlobalHeaderPage(this.getDriver());
-		getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeader.searchBox);
-
-		return !this.hasElementAttribute(globalHeader.searchBox, "aria-controls");
 	}
 
 	/**
@@ -381,55 +369,45 @@ public class ProductResultsPage extends BasePage{
 		if(!lsOptionIndex.isEmpty()) {
 			optionIndex=Integer.parseInt(lsOptionIndex);
 		}
+		GlobalHeaderPage globalHeader=new GlobalHeaderPage(this.getDriver());
+		this.clearContent(globalHeader.searchBox);
+		for(int i=0;i<lsKeyword.length();i++) {
+			globalHeader.searchBox.sendKeys(lsKeyword.substring(i,i+1));
+			getReusableActionsInstance().staticWait(300);
+		}
 
-		if(this.isQASearch()) {
-			GlobalHeaderPage globalHeader=new GlobalHeaderPage(this.getDriver());
-			this.clearContent(globalHeader.searchBox);
-			for(int i=0;i<lsKeyword.length();i++) {
-				globalHeader.searchBox.sendKeys(lsKeyword.substring(i,i+1));
-				getReusableActionsInstance().staticWait(300);
-			}
-
-			switch(lsOption) {
-				case "Top suggestions":
-					waitForCondition(Driver->{return globalHeader.searchQADropdwonmenuList.get(0).isDisplayed();},30000);
-					WebElement element=globalHeader.searchQADropdwonmenuList.get(0).findElements(By.xpath(".//li")).get(optionIndex);
-					getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-					this.searchkeyword=element.getText().trim();
-					this.bVerifyTitle=false;
-					element.click();
-					break;
-				case "Categories":
-					waitForCondition(Driver->{return globalHeader.searchQADropdwonmenuList.get(1).isDisplayed();},30000);
-					element=globalHeader.searchQADropdwonmenuList.get(1).findElements(By.xpath(".//li")).get(optionIndex);
-					getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-					this.searchkeyword=element.getText().trim();
-					this.bVerifyTitle=true;
-					element.click();
-					break;
-				case "Brands":
-					waitForCondition(Driver->{return globalHeader.searchQADropdwonmenuList.get(2).isDisplayed();},30000);
-					List<WebElement> list=globalHeader.searchQADropdwonmenuList.get(2).findElements(By.xpath(".//li"));
-					this.searchkeyword=lsKeyword;
-					for(WebElement ele:list) {
-						getReusableActionsInstance().javascriptScrollByVisibleElement(ele);
-						if(ele.getText().trim().equalsIgnoreCase(lsKeyword)) {
-							this.bVerifyTitle=true;
-							ele.click();
-							break;
-						}
+		switch(lsOption) {
+			case "Top suggestions":
+				waitForCondition(Driver->{return globalHeader.searchQADropdwonmenuList.get(0).isDisplayed();},30000);
+				WebElement element=globalHeader.searchQADropdwonmenuList.get(0).findElements(By.xpath(".//li")).get(optionIndex);
+				getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+				this.searchkeyword=element.getText().trim();
+				this.bVerifyTitle=false;
+				element.click();
+				break;
+			case "Categories":
+				waitForCondition(Driver->{return globalHeader.searchQADropdwonmenuList.get(1).isDisplayed();},30000);
+				element=globalHeader.searchQADropdwonmenuList.get(1).findElements(By.xpath(".//li")).get(optionIndex);
+				getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+				this.searchkeyword=element.getText().trim();
+				this.bVerifyTitle=true;
+				element.click();
+				break;
+			case "Brands":
+				waitForCondition(Driver->{return globalHeader.searchQADropdwonmenuList.get(2).isDisplayed();},30000);
+				List<WebElement> list=globalHeader.searchQADropdwonmenuList.get(2).findElements(By.xpath(".//li"));
+				this.searchkeyword=lsKeyword;
+				for(WebElement ele:list) {
+					getReusableActionsInstance().javascriptScrollByVisibleElement(ele);
+					if(ele.getText().trim().equalsIgnoreCase(lsKeyword)) {
+						this.bVerifyTitle=true;
+						ele.click();
+						break;
 					}
-					break;
-			}
+				}
+				break;
 		}
-		else {
-			List<WebElement> elementList=getSearchDropdownResultList(lsKeyword);
-			getReusableActionsInstance().javascriptScrollByVisibleElement(elementList.get(optionIndex));
-			this.searchkeyword=elementList.get(optionIndex).getText().trim();
-			this.bVerifyTitle=true;
-			elementList.get(optionIndex).click();
-		}
-
+		
 		getReusableActionsInstance().staticWait(300);
 		return waitForCondition(Driver->{
 			String lsStyle=this.productResultLoadingIndicator.getAttribute("style");
@@ -465,26 +443,6 @@ public class ProductResultsPage extends BasePage{
 		String lastWord=lstItem[lstItem.length-1].trim();
 
 		return lastWord.equalsIgnoreCase(this.lblSearchResultTitle.getText().trim());
-	}
-
-	/**
-	 * This method will get search result list.
-	 * @param- String lsKeyword: search keyword
-	 * @return List<WebElement>: search dropdown menu list
-	 * @author Wei.Li
-	 */
-	public List<WebElement> getSearchDropdownResultList(String lsKeyword) {
-		GlobalHeaderPage globalHeader=new GlobalHeaderPage(this.getDriver());
-		getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeader.searchBox);
-		pressEscapeKey();
-		this.clearContent(globalHeader.searchBox);
-		for(int i=0;i<lsKeyword.length();i++) {
-			globalHeader.searchBox.sendKeys(lsKeyword.substring(i,i+1));
-			getReusableActionsInstance().staticWait(300);
-		}
-		waitForCondition(Driver->{return globalHeader.ctnSearchResult.getAttribute("class").contains("suggestions-container--open");},60000);
-
-		return globalHeader.searchResultList;
 	}
 
 	/**
@@ -745,11 +703,11 @@ public class ProductResultsPage extends BasePage{
 	}
 
 	/**
-	 * This method will verify pagination.
+	 * This method will get pagination.
 	 * @return true/false
 	 * @author Wei.Li
 	 */
-	public boolean verifyProductPagination() {
+	public boolean checkProductPagination() {
 		return this.getDriver().findElements(this.byPagination).size()==1;
 	}
 
@@ -1182,21 +1140,21 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	public boolean switchPage(boolean bNext) {
-		if(!this.verifyProductPagination()) {
+		if(!this.checkProductPagination()) {
 			return false;
 		}
 
 		if(this.PageNumberList.size()==1) {
 			return false;
 		}
-		
-		if(!this.checkIfNextPageButtonAvailable()) {
-			return false;
-		}
-
+				
 		if(bNext) {
+			if(!this.checkIfNextPageButtonAvailable()) {
+				return false;
+			}
+			
 			WebElement lastPageButton=this.PageNumberList.get(this.PageNumberList.size()-1);
-			if(lastPageButton.findElement(By.xpath("..")).getAttribute("class").contains("active")) {
+			if(lastPageButton.getAttribute("class").contains("plp__pagination__pages__page--current")) {
 				return false;
 			}else {
 				getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnNextPage);
@@ -1204,8 +1162,12 @@ public class ProductResultsPage extends BasePage{
 			}
 
 		}else {
+			if(!this.checkIfPrevPageButtonAvailable()) {
+				return false;
+			}
+			
 			WebElement firstPageButton=this.PageNumberList.get(0);
-			if(firstPageButton.findElement(By.xpath("..")).getAttribute("class").contains("active")) {
+			if(firstPageButton.getAttribute("class").contains("plp__pagination__pages__page--current")) {
 				return false;
 			}else {
 				getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnPreviousPage);
@@ -1270,33 +1232,6 @@ public class ProductResultsPage extends BasePage{
 	}
 
 	/**
-	 * This method will get Recommendation container.
-	 * @return  WebElement
-	 * @author Wei.Li
-	 */
-	public WebElement getRecommendationContainer() {
-		return this.recommendationContainer;
-	}
-
-	/**
-	 * This method will get Header container.
-	 * @return  WebElement
-	 * @author Wei.Li
-	 */
-	public WebElement getHeaderContainer() {
-		return this.headerContainer;
-	}
-
-	/**
-	 * This method will get Footer container.
-	 * @return  WebElement
-	 * @author Wei.Li
-	 */
-	public WebElement getFooterContainer() {
-		return this.footerContainer;
-	}
-
-	/**
 	 * This method will contain clearance title .
 	 * @return  WebElement
 	 * @author godwin.gopi
@@ -1331,6 +1266,10 @@ public class ProductResultsPage extends BasePage{
 
 	public boolean checkIfNextPageButtonAvailable() {
 		return this.btnNextPage.getAttribute("style").contains("opacity: 1");
+	}
+	
+	public boolean checkIfPrevPageButtonAvailable() {
+		return this.btnPreviousPage.getAttribute("style").contains("opacity: 1");
 	}
 	
 	/**
