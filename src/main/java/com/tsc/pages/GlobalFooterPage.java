@@ -473,7 +473,7 @@ public class GlobalFooterPage extends BasePage {
 	/**
 	 * This method is to remove protocal headings(http/https)
 	 *
-	 * @param String lsUrl: input Url
+	 * @param - String lsUrl: input Url
 	 * @return Url
 	 * @author Wei.Li
 	 */
@@ -492,8 +492,8 @@ public class GlobalFooterPage extends BasePage {
 	/**
 	 * This method is to verify the url after clicking element.
 	 *
-	 * @param WebElement element: input element
-	 * @param String     lsExpectedUrl: expected Url
+	 * @param- WebElement element: input element
+	 * @param- String     lsExpectedUrl: expected Url
 	 * @return true/false
 	 * @author Wei.Li
 	 */
@@ -509,8 +509,8 @@ public class GlobalFooterPage extends BasePage {
 	/**
 	 * This method is to get expected Url from yml file.
 	 *
-	 * @param List<String> lstSocialMedia: the Url from yml file
-	 * @param String       lsSpecificMediaName: input media name, i.e.,
+	 * @param- List<String> lstSocialMedia: the Url from yml file
+	 * @param- String       lsSpecificMediaName: input media name, i.e.,
 	 *                     "Facebook","Twitter","Instagram","Youtube","Pinterest"
 	 * @return String
 	 * @author Wei.Li
@@ -527,9 +527,9 @@ public class GlobalFooterPage extends BasePage {
 	/**
 	 * This method is to get the link from yml file.
 	 *
-	 * @param List<String> lstNameAndLink: the list from yml file
-	 * @param String       lsSpecificName: input name
-	 * @param boolean      bEnglish: true for English while false for French
+	 * @param- List<String> lstNameAndLink: the list from yml file
+	 * @param- String       lsSpecificName: input name
+	 * @param- boolean      bEnglish: true for English while false for French
 	 * @return String: note that the empty string means not found
 	 * @author Wei.Li
 	 */
@@ -578,8 +578,8 @@ public class GlobalFooterPage extends BasePage {
 
 	/**
 	 * This method is to verify if equal to a UTF-8 encoding text.
-	 * @param List<String> lstNameAndLink: the list from yml file
-	 * @param String       lsSpecificName: input text
+	 * @param- List<String> lstNameAndLink: the list from yml file
+	 * @param- String       lsSpecificName: input text
 	 * @return true/false
 	 * @author Wei.Li
 	 */
@@ -596,8 +596,8 @@ public class GlobalFooterPage extends BasePage {
 	/**
 	 * This method is to get the French name from yml file.
 	 *
-	 * @param List<String> lstNameAndLink: the list from yml file
-	 * @param String       lsSpecificName: input name
+	 * @param- List<String> lstNameAndLink: the list from yml file
+	 * @param- String       lsSpecificName: input name
 	 * @return French name: note that the empty string means not found
 	 * @author Wei.Li
 	 */
@@ -614,8 +614,8 @@ public class GlobalFooterPage extends BasePage {
 	/**
 	 * This method is to get the English name from yml file.
 	 *
-	 * @param List<String> lstNameAndLink: the list from yml file
-	 * @param String       lsSpecificName: input name
+	 * @param- List<String> lstNameAndLink: the list from yml file
+	 * @param- String       lsSpecificName: input name
 	 * @return French name: note that the empty string means not found
 	 * @author Wei.Li
 	 */
@@ -633,8 +633,8 @@ public class GlobalFooterPage extends BasePage {
 	/**
 	 * This method is to compare the link in front page and the one in yml file.
 	 *
-	 * @param String lsCurrentLink: the link in front page
-	 * @param String lsYmlLink: the link in yml file
+	 * @param- String lsCurrentLink: the link in front page
+	 * @param- String lsYmlLink: the link in yml file
 	 * @return true/false
 	 * @author Wei.Li
 	 */
@@ -671,7 +671,7 @@ public class GlobalFooterPage extends BasePage {
 	/**
 	 * This method is to get the element for specific service name.
 	 *
-	 * @param String lsService: the service name
+	 * @param- String lsService: the service name
 	 * @return WebElement
 	 * @author Wei.Li
 	 */
@@ -686,8 +686,8 @@ public class GlobalFooterPage extends BasePage {
 	/**
 	 * This method is to go to a specific service.
 	 *
-	 * @param String     lsService: the service name
-	 * @param WebElement lblIndicator: page loading indicator
+	 * @param- String     lsService: the service name
+	 * @param- WebElement lblIndicator: page loading indicator
 	 * @return true/false
 	 * @author Wei.Li
 	 */
@@ -710,8 +710,8 @@ public class GlobalFooterPage extends BasePage {
 	/**
 	 * This method is to compare the url in the new window to the expected Url.
 	 *
-	 * @param String lsService: the service name
-	 * @param String lsExpectedUrl: expected Url
+	 * @param- String lsService: the service name
+	 * @param- String lsExpectedUrl: expected Url
 	 * @return true/false
 	 * @author Wei.Li
 	 */
@@ -744,7 +744,7 @@ public class GlobalFooterPage extends BasePage {
 	 * This method is to verify Links for FrequentlyAskedQuestions in
 	 * CustomerService Page Objects.
 	 *
-	 * @param WebElement element: the FrequentlyAskedQuestions link
+	 * @param- WebElement element: the FrequentlyAskedQuestions link
 	 * @author Wei.Li
 	 */
 	public void verifyLinksForFrequentlyAskedQuestionsInCustomerServicePageObject(WebElement element) {
@@ -775,7 +775,7 @@ public class GlobalFooterPage extends BasePage {
 	/**
 	 * This method is to verify existence of element list.
 	 *
-	 * @param List<WebElement> elementList: input element list
+	 * @param- List<WebElement> elementList: input element list
 	 * @return void
 	 * @author Wei.Li
 	 */
@@ -909,9 +909,9 @@ public class GlobalFooterPage extends BasePage {
 
 	/**
 	 * This method is to verify Service object section titles.
-	 * @param List<WebElement> lstSection: Section element list
-	 * @param List<String> lstExpectedTitle: expected section title list
-	 * @param boolean bFullMatch: Decide fully matched or partially matched
+	 * @param- List<WebElement> lstSection: Section element list
+	 * @param- List<String> lstExpectedTitle: expected section title list
+	 * @param- boolean bFullMatch: Decide fully matched or partially matched
 	 * @author Wei.Li
 	 */
 	public void verifyServiceObjectSectionTitle(List<WebElement> lstSection,List<String> lstExpectedTitle,boolean bFullMatch) {
@@ -1101,9 +1101,14 @@ public class GlobalFooterPage extends BasePage {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 		getReusableActionsInstance().staticWait(4000);
 		int counter=1;
+		int loopCount = 0;
 		Select select=new Select(element);
 		select.selectByIndex(0);
-		for(int i=0;i<elements.size();i++) {
+		//Since we have 26 alphabets and sauce labs timeouts after 1200 seconds, running test for first
+		//5 alphabets
+		if(elements.size()>5)
+			loopCount = 5;
+		for(int i=0;i<=loopCount;i++) {
 			String alphabetPath="(//div[contains(@class,'lettersDiv')]//div//span)["+counter+"]";
 			elements.get(i).click();
 			String alphabetLetterValue=getDriver().findElement(By.xpath(alphabetPath)).getText();
@@ -1114,7 +1119,7 @@ public class GlobalFooterPage extends BasePage {
 			List<WebElement> alphabetPathElements=getDriver().findElements(By.xpath(alphabetPathElementsPath));
 			for(int j=0 ;j<alphabetPathElements.size();j++) {
 				String brandName=alphabetPathElements.get(j).getText();
-				String firstLetter=brandName.substring(0,1);
+				String firstLetter=convertToASCII(brandName.substring(0,1)).toUpperCase();
 				reporter.softAssert(alphabetLetterValue.equalsIgnoreCase(firstLetter),"The Brand  first alphabet is "+firstLetter+" and Brand Name is "+brandName+"  ","The Brand  first alphabet is "+firstLetter+" and Brand Name is "+brandName+" is not matching.");
 				String brandLink=alphabetPathElements.get(j).getAttribute("href");
 				reporter.softAssert(alphabetPathElements.get(j).getAttribute("href")!=null,"The Brand URL of "+brandLink+" exists","The Brand URL of "+brandLink+" doesn't exists");
