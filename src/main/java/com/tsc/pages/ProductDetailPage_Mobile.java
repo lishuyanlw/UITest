@@ -186,6 +186,11 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
     }
 
     @Override
+    public void verifyVideoOff() {
+
+    }
+
+    @Override
     public boolean goToProductReviewTab() {
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productReviewSection);
         this.getReusableActionsInstance().clickIfAvailable(this.productReviewSection);

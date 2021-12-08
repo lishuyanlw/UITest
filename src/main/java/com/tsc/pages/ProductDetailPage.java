@@ -709,7 +709,9 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//div[@id='findMine']//div[contains(@class,'findmine__slider')]//button[contains(@class,'slick-next')]")
 	public WebElement btnGetTheLookNext;
 
-	@FindBy(xpath = "//div[@id='findMine']//div[contains(@class,'findmine__slider')]//div[contains(@class,'findmine__item') and not(contains(@class,'findmine__itemid'))]")
+	/*@FindBy(xpath = "//div[@id='findMine']//div[contains(@class,'findmine__slider')]//div[contains(@class,'findmine__item') and not(contains(@class,'findmine__itemid'))]")
+	public List<WebElement> lstGetTheLookItem;*/
+	@FindBy(xpath = "//div[@id='findMine']//div[@class='slick-list']//div[contains(@class,'slick-current')]//div[contains(@class,'findmine__item') and not(contains(@class,'findmine__itemid'))]")
 	public List<WebElement> lstGetTheLookItem;
 
 	public By byGetTheLookProductLink=By.xpath(".//a");
@@ -873,7 +875,9 @@ public class ProductDetailPage extends BasePage {
 		String lsZoomImage=this.getImageNameFromThumbnailOrZoomImagePath(imgCurrentThumbnail.getAttribute("src"));
 
 		reporter.softAssert(lsThumbnail.equalsIgnoreCase(lsZoomImage), "The Thumbnail image is the same as the Zoom image with changing Swatch style", "The Thumbnail image is not the same as the Zoom image with changing Swatch style");
-		//reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblImageDisclaim),"The Image disclaim message section is displaying correctly","The Image disclaim message section is not displaying correctly");
+		if (System.getProperty("Device").equalsIgnoreCase("Desktop")) {
+			reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblImageDisclaim), "The Image disclaim message section is displaying correctly", "The Image disclaim message section is not displaying correctly");
+		}
 	}
 	
 	/**
@@ -1887,7 +1891,7 @@ public class ProductDetailPage extends BasePage {
 
 	public void verifyWriteReviewAfterSubmitContinueShoppingBackToProductDetails() {
 		String lsUrl=this.waitForPageLoadingByUrlChange(lnkWriteReviewAfterSubmitPageContinueShopping);
-		reporter.softAssert(lsUrl.toLowerCase().contains("pages/productdetails"),"Going back to product details page after clicking Continue Shopping button","Did not go back to product details page after clicking Continue Shopping button");
+		reporter.softAssert(lsUrl.toLowerCase().contains("pages/productresults"),"Going back to product details page after clicking Continue Shopping button","Did not go back to product details page after clicking Continue Shopping button");
 	}
 
 	/**
@@ -1933,20 +1937,20 @@ public class ProductDetailPage extends BasePage {
 	 */
 	public void verifyPrevAndNextButtonActionInGetTheLookSection() {
 		if(this.getChildElementCount(this.cntGetTheLook)>2) {
-			String lsLinkPrevBefore=this.getElementHref(this.lstGetTheLookItem.get(0));
+			String lsLinkPrevBefore=this.lstGetTheLookItem.get(0).findElement(this.byGetTheLookProductLink).getAttribute("data-link-title");
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnGetTheLookPrev);
 			this.btnGetTheLookPrev.click();
-			this.waitForCondition(Driver->{return !this.getElementHref(this.lstGetTheLookItem.get(0)).equalsIgnoreCase(lsLinkPrevBefore);}, 10000);
+			this.waitForCondition(Driver->{return !this.lstGetTheLookItem.get(0).findElement(this.byGetTheLookProductLink).getAttribute("data-link-title").equalsIgnoreCase(lsLinkPrevBefore);}, 10000);
 
-			String lsLinkAfter=this.getElementHref(this.lstGetTheLookItem.get(0));
+			String lsLinkAfter=this.lstGetTheLookItem.get(0).findElement(this.byGetTheLookProductLink).getAttribute("data-link-title");
 			reporter.softAssert(!lsLinkPrevBefore.equalsIgnoreCase(lsLinkAfter),"The Prev button works","The Prev button does not work");
 
-			String lsLinkNextBefore=this.getElementHref(this.lstGetTheLookItem.get(this.lstGetTheLookItem.size()-1));
+			String lsLinkNextBefore=this.lstGetTheLookItem.get(this.lstGetTheLookItem.size()-1).findElement(this.byGetTheLookProductLink).getAttribute("data-link-title");
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnGetTheLookNext);
 			this.btnGetTheLookNext.click();
-			this.waitForCondition(Driver->{return !this.getElementHref(this.lstGetTheLookItem.get(this.lstGetTheLookItem.size()-1)).equalsIgnoreCase(lsLinkNextBefore);}, 10000);
+			this.waitForCondition(Driver->{return !this.lstGetTheLookItem.get(this.lstGetTheLookItem.size()-1).findElement(this.byGetTheLookProductLink).getAttribute("data-link-title").equalsIgnoreCase(lsLinkNextBefore);}, 10000);
 
-			lsLinkAfter=this.getElementHref(this.lstGetTheLookItem.get(this.lstGetTheLookItem.size()-1));
+			lsLinkAfter=this.lstGetTheLookItem.get(this.lstGetTheLookItem.size()-1).findElement(this.byGetTheLookProductLink).getAttribute("data-link-title");
 			reporter.softAssert(!lsLinkNextBefore.equalsIgnoreCase(lsLinkAfter),"The Next button works","The Next button does not work");
 		}
 	}

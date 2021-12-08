@@ -3,6 +3,7 @@ package com.tsc.pages;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.Select;
 
 public class ProductDetailPage_Tablet extends ProductDetailPage {
 
@@ -82,10 +83,81 @@ public class ProductDetailPage_Tablet extends ProductDetailPage {
     }
 
     @Override
+    public void verifyVideoOff() {
+
+    }
+
+    @Override
     public void verifyCurrentZoomImage() {
         reporter.softAssert(!this.getElementHref(this.lnkCurrentZoomImage).isEmpty(),"The Current zoom image link is not empty","The Current zoom image link is empty");
         //commented because lblZoomImageMessage is not present for both tab and mobile
         //reporter.softAssert(!this.getElementText(this.lblZoomImageMessage).isEmpty(),"The Zoom image message is not empty","The Zoom image message is empty");
+    }
+
+    @Override
+    public void verifyLinkageAmongSwathAndThumbnailAndZoomImage() {
+        String lsSwatch,lsThumbnail="",lsZoomImage="",lsBeforeStyleName;
+        boolean bDisable=false;
+        int loopSize;
+        if(this.judgeStyleDisplayModeIsDropdownMenu()) {
+            Select selectStyle= new Select(this.selectProductStyle);
+            loopSize=this.lstDropdownProductStyle.size();
+
+            for(int i=0;i<loopSize;i++) {
+                if(this.hasElementAttribute(this.lstDropdownProductStyle.get(i),"selected")) {
+                    continue;
+                }
+
+                this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectProductStyle);
+                lsBeforeStyleName=selectStyle.getFirstSelectedOption().getText().trim();
+
+                selectStyle.selectByIndex(i);
+                this.getReusableActionsInstance().staticWait(3000);
+                lsSwatch=this.getCurrentSwatchStyle();
+
+                if(this.lstDropdownProductStyle.get(i).getAttribute("class").contains("disable")) {
+                    bDisable=true;
+                }
+                else {
+                    bDisable=false;
+                }
+
+                lsZoomImage=this.getImageNameFromThumbnailOrZoomImagePath(lnkCurrentZoomImage.getAttribute("href"));
+                //next line for Tablet image loading problem, there is no src
+                //lsThumbnail=this.getImageNameFromThumbnailOrZoomImagePath(imgCurrentThumbnail.getAttribute("src"));
+                //reporter.softAssert(lsThumbnail.toLowerCase().contains(lsSwatch.toLowerCase()), "The Thumbnail image src contains swatch style of " +lsSwatch, "The Thumbnail image src does not contain swatch style of "+lsSwatch);
+                if(!bDisable) {
+                    reporter.softAssert(lsZoomImage.toLowerCase().contains(lsSwatch.toLowerCase()), "The Zoom image src contains swatch style of " +lsSwatch, "The Zoom image src does not contain swatch style of "+lsSwatch);
+                   // reporter.softAssert(lsThumbnail.equalsIgnoreCase(lsZoomImage), "The Thumbnail image is the same as the Zoom image with changing Swatch radio of '"+lsSwatch+"'", "The Thumbnail image is not the same as the Zoom image with changing Swatch radio of '"+lsSwatch+"'");
+                }
+            }
+        }
+        else {
+            loopSize=this.lstRadioStyleLabelSpanList.size();
+            WebElement radioItem;
+            String[] lstImageSrc= new String[1];
+
+            for(int i=0;i<loopSize;i++) {
+                if(this.hasElementAttribute(this.lstStyleRadioList.get(i),"checked")) {
+                    continue;
+                }
+                radioItem=this.lstRadioStyleLabelSpanList.get(i);
+
+                this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblRadioProductStyleStatic);
+                lsBeforeStyleName=this.lblRadioProductStyleTitle.getText().trim();
+
+                radioItem.click();
+                this.getReusableActionsInstance().staticWait(3000);
+
+                lsSwatch=this.getCurrentSwatchStyle();
+                lsThumbnail=this.getImageNameFromThumbnailOrZoomImagePath(lnkCurrentZoomImage.getAttribute("href"));
+                lsZoomImage=this.getImageNameFromThumbnailOrZoomImagePath(imgCurrentThumbnail.getAttribute("src"));
+
+                reporter.softAssert(lsThumbnail.toLowerCase().contains(lsSwatch.toLowerCase()), "The Thumbnail image src contains swatch style of " +lsSwatch, "The Thumbnail image src does not contain swatch style of "+lsSwatch);
+                reporter.softAssert(lsZoomImage.toLowerCase().contains(lsSwatch.toLowerCase()), "The Zoom image src contains swatch style of " +lsSwatch, "The Zoom image src does not contain swatch style of "+lsSwatch);
+                reporter.softAssert(lsThumbnail.equalsIgnoreCase(lsZoomImage), "The Thumbnail image is the same as the Zoom image with changing Swatch radio of '"+lsSwatch+"'", "The Thumbnail image is not the same as the Zoom image with changing Swatch radio of '"+lsSwatch+"'");
+            }
+        }
     }
 
 }
