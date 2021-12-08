@@ -73,7 +73,7 @@ public class ProductResultsPage extends BasePage{
 	List<WebElement> sortByOptionList;
 	
 	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp']")
-	WebElement cntSortingProductResultLoadingIndicator;
+	WebElement cntSortingAndFilteringProductResultLoadingIndicator;
 
 	//Missing
 	@FindBy(xpath = "//product-results//div[contains(@class,'col-md-items')]//form//div[contains(@class,'filterPrpLabel')]")
@@ -1018,22 +1018,6 @@ public class ProductResultsPage extends BasePage{
 	}
 
 	/**
-	 * This method will judge MoreButton in left panel existence.
-	 * @param- WebElement parent: parent element
-	 * @return true/false: if the childSize of this.panelItemContainerList item is 2, means no More button exists.
-	 * @author Wei.Li
-	 */
-	public boolean judgeMoreButtonExistenceInLeftPanel(WebElement parent) {
-		long childSize= super.getChildElementCount(parent);
-
-		if(childSize==2) {
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
 	 * This method will select filter from left panel.
 	 * @param- String lsFirstLevelItem: header filter keyword
 	 * @param- String lsSecondLevelItem: subFilter keyword
@@ -1678,7 +1662,7 @@ public class ProductResultsPage extends BasePage{
 	}
 	
 	public boolean checkProductResultLoadingStatusAfterSorting() {
-		return this.checkChildElementExistingByAttribute(this.cntSortingProductResultLoadingIndicator,"class","plp__loading");
+		return this.checkChildElementExistingByAttribute(this.cntSortingAndFilteringProductResultLoadingIndicator,"class","plp__loading");
 	}
 	
 	/**
