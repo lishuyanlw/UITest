@@ -448,7 +448,8 @@ public class GlobalHeaderPage extends BasePage{
 		 if(!System.getProperty("Device").equalsIgnoreCase("Desktop")) {
 			 blackItem.click();
 		 }
-		 String lsTitle=blackItem.getText().trim();
+		 String title=blackItem.getText().trim();
+		 String lsTitle=getUTFEnabledData(title);
 		 reporter.softAssert(getReusableActionsInstance().isElementVisible(blackItem), "The element of "+lsTitle+" in Black headers is visible","The element of "+lsTitle+" in Black headers is not visible");
 		 reporter.softAssert(!lsTitle.isEmpty(), lsTitle+" text in Black headers is not empty", lsTitle+" text in Black headers is empty");
 		 String lsHrefInBlackHeader=this.getElementHref(blackItem);	
@@ -706,20 +707,15 @@ public class GlobalHeaderPage extends BasePage{
 	 */
 	public void verifysubMenuhref(List<WebElement> webElements) {
 		if(isParentElementHasAttribute(webElements,"li")) {
-			
 			for (WebElement element : this.subMenuLinks) {
 				/** Below section needs to be commented as it navigates back to previous element of left
 				 * side section element and hence results in StaleElement Exception for firefox
 				if (System.getProperty("Browser").toLowerCase().contains("firefox")) {
 					getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 				}*/
-				//if (System.getProperty("Browser").toLowerCase().contains("chrome")) {
-					getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+				if (System.getProperty("Browser").toLowerCase().contains("chrome")) {
 					getReusableActionsInstance().scrollToElement(element);
-					
-				//}
-				getReusableActionsInstance().staticWait(1000);
-				
+				}
 				if (!verifyElementProperty(element, "Link")) {//href is not present
 					getReporter().softAssert(false,"","Link is not present for: "+element.getText());
 				}else{
@@ -742,7 +738,7 @@ public class GlobalHeaderPage extends BasePage{
 	 * @return true/false
 	 * @author Shruti Desai
 	 */
-	public void verifyFlyoutMenuItems(String heading, String section){
+	/*public void verifyFlyoutMenuItems(String heading, String section){
 		List<WebElement> headingsElements=this.headingLinks;
 		if(heading==null) {
 			for(WebElement headerItem: headingsElements) {
@@ -750,7 +746,7 @@ public class GlobalHeaderPage extends BasePage{
 					getReusableActionsInstance().javascriptScrollByVisibleElement(headerItem);
 				}
 				this.scrolltoWebElement(headerItem);
-			//	getReusableActionsInstance().staticWait(3000);
+				getReusableActionsInstance().staticWait(3000);
 				waitForCondition(Driver->{return (CategoriesLinks.get(0).getAttribute("href").contains(headerItem.getText().split(" ")[0]));} ,60000);
 				String headingName =headerItem.getText();
 				reporter.reportLog("Flyout heading "+headingName);
@@ -768,7 +764,7 @@ public class GlobalHeaderPage extends BasePage{
 				getReusableActionsInstance().javascriptScrollByVisibleElement(headingsElement);
 			}
 			this.scrolltoWebElement(headingsElement);
-			//getReusableActionsInstance().staticWait(3000);
+			getReusableActionsInstance().staticWait(3000);
 			waitForCondition(Driver->{return (CategoriesLinks.get(0).getAttribute("href").contains(headingsElement.getText().split(" ")[0]));} ,60000);
 			String headingName =headingsElement.getText();
 			reporter.reportLog("Flyout heading "+headingName);
@@ -781,7 +777,47 @@ public class GlobalHeaderPage extends BasePage{
 			}
 		}
 	}
-
+*/
+	
+	public void verifyFlyoutMenuItems(String heading, String section){
+		List<WebElement> headingsElements=this.headingLinks;
+		if(heading==null) {
+			for(WebElement headerItem: headingsElements) {
+				if(System.getProperty("Browser").toLowerCase().contains("firefox")) {
+					getReusableActionsInstance().javascriptScrollByVisibleElement(headerItem);
+				}
+				this.scrolltoWebElement(headerItem);
+				getReusableActionsInstance().staticWait(3000);
+				waitForCondition(Driver->{return (CategoriesLinks.get(0).getAttribute("href").contains(headerItem.getText().split(" ")[0]));} ,30000);
+				String headingName =headerItem.getText();
+				reporter.reportLog("Flyout heading "+headingName);
+				if(section==null) {
+					verifyFlyoutMenuSection(headingName,"Left Section");
+					verifyFlyoutMenuSection(headingName,"Curated Collections");
+					verifyFlyoutMenuSection(headingName,"Popular Brands");
+				}else{
+					verifyFlyoutMenuSection(headingName,section);
+				}
+			}
+		}else{
+			WebElement headingsElement=getWebElementFlyoutHeading(heading);
+			if(System.getProperty("Browser").toLowerCase().contains("firefox")) {
+				getReusableActionsInstance().javascriptScrollByVisibleElement(headingsElement);
+			}
+			this.scrolltoWebElement(headingsElement);
+			getReusableActionsInstance().staticWait(3000);
+			waitForCondition(Driver->{return (CategoriesLinks.get(0).getAttribute("href").contains(headingsElement.getText().split(" ")[0]));} ,30000);
+			String headingName =headingsElement.getText();
+			reporter.reportLog("Flyout heading "+headingName);
+			if(section==null) {
+				verifyFlyoutMenuSection(headingName,"Left Section");
+				verifyFlyoutMenuSection(headingName,"Curated Collections");
+				verifyFlyoutMenuSection(headingName,"Popular Brands");
+			}else{
+				verifyFlyoutMenuSection(headingName,section);
+			}
+		}
+	}
 
 	public void verifyFlyoutMenuSection(String headingName,String sectionName){
 		switch(sectionName){
@@ -825,9 +861,8 @@ public class GlobalHeaderPage extends BasePage{
 						getReusableActionsInstance().javascriptScrollByVisibleElement(category);
 					}
 					this.scrolltoWebElement(category);
-					//getReusableActionsInstance().staticWait(3000);
-					waitForCondition(Driver->{return (category.isDisplayed());} ,60000);
-					
+					getReusableActionsInstance().staticWait(3000);
+					waitForCondition(Driver->{return (category.isDisplayed());} ,30000);
 					reporter.reportLog("Verifying Left Section for: "+category.getText());
 					this.verifysubMenuhref(subMenuSection);
 				}
