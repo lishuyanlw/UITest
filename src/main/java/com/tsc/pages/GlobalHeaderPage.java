@@ -245,9 +245,6 @@ public class GlobalHeaderPage extends BasePage{
 
 
 	@FindBy(xpath = "//a[contains(@class,'mega-popular__brand-link')]//img")
-	public List<WebElement> listPopularBrandsLinks;
-
-
 	public List<WebElement> listPopularBrandsImg;
 
 	@FindBy(xpath = "//a[contains(@class,'mega-popular__brand-link')]")
@@ -675,7 +672,10 @@ public class GlobalHeaderPage extends BasePage{
 		String currentUrl=null;
 		AtomicReference<String> first_flyout_menu_text =new  AtomicReference<String>();
 		first_flyout_menu_text.set(headingName.split(" ")[0]);
-		WebElement linkPopularBrand = listPopularBrandsLinks.get(0);
+		WebElement linkPopularBrand = listPopularBrandsLink.get(0);
+		
+		//waitForCondition(Driver->{return (linkPopularBrand.isDisplayed());} ,30000);
+		
 		waitForCondition(Driver->{return (linkPopularBrand.getAttribute("href").contains(first_flyout_menu_text.get()) && linkPopularBrand.getAttribute("class").contains(section.split(" ")[0].trim().toLowerCase()));} ,30000);
 		WebElement ShopAllWebElement = getWebElementShopAllPupularBrand();
 		if(verifyElementProperty(ShopAllWebElement,"Link")) {
@@ -706,15 +706,20 @@ public class GlobalHeaderPage extends BasePage{
 	 */
 	public void verifysubMenuhref(List<WebElement> webElements) {
 		if(isParentElementHasAttribute(webElements,"li")) {
+			
 			for (WebElement element : this.subMenuLinks) {
 				/** Below section needs to be commented as it navigates back to previous element of left
 				 * side section element and hence results in StaleElement Exception for firefox
 				if (System.getProperty("Browser").toLowerCase().contains("firefox")) {
 					getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 				}*/
-				if (System.getProperty("Browser").toLowerCase().contains("chrome")) {
+				//if (System.getProperty("Browser").toLowerCase().contains("chrome")) {
+					getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 					getReusableActionsInstance().scrollToElement(element);
-				}
+					
+				//}
+				getReusableActionsInstance().staticWait(1000);
+				
 				if (!verifyElementProperty(element, "Link")) {//href is not present
 					getReporter().softAssert(false,"","Link is not present for: "+element.getText());
 				}else{
