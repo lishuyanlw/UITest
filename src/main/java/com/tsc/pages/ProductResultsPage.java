@@ -172,24 +172,24 @@ public class ProductResultsPage extends BasePage{
 	List<WebElement> productItemNOList;
 
 	//Pagination
-	@FindBy(xpath = "//product-results//nav[contains(@aria-label,'Page')]//ul[@class='pagination']")
+	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp__pagination']")
 	WebElement cntPagination;
 
-	public By byPagination=By.xpath("//product-results//nav[contains(@aria-label,'Page')]//ul[@class='pagination']");
+	public By byPagination=By.xpath("//section[@class='tsc-container']//div[@class='plp__pagination']");
 
-	@FindBy(xpath = "//product-results//nav[contains(@aria-label,'Page')]//li[contains(@id,'pages[') and not(contains(.,'...'))]//span")
+	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp__pagination']//div[@class='plp__pagination__pages']//a")
 	List<WebElement> PageNumberList;
 
-	@FindBy(xpath = "//product-results//nav[contains(@aria-label,'Page')]//ul")
+	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp__pagination']")
 	WebElement cntPreAndNextButtonPage;
 
-	@FindBy(xpath = "//product-results//nav[contains(@aria-label,'Page')]//li[contains(@class,'previous')]//span")
+	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp__pagination']//a[@class='plp__pagination__prev-link']")
 	WebElement btnPreviousPage;
 
-	@FindBy(xpath = "//product-results//nav[contains(@aria-label,'Page')]//li[contains(@class,'next')]//span")
+	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp__pagination']//a[@class='plp__pagination__next-link']")
 	WebElement btnNextPage;
 
-	@FindBy(xpath = "//product-results//nav[contains(@aria-label,'Page')]//li[not(contains(.,'...'))and contains(@class,'active')]//span")
+	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp__pagination']//div[@class='plp__pagination__pages']//a[contains(@class,'plp__pagination__pages__page--current')]")
 	WebElement btnCurrentPage;
 
 	//Product title and text
@@ -238,7 +238,7 @@ public class ProductResultsPage extends BasePage{
 	@FindBy(xpath = "//product-results//div[@class='modalBody']//div[@class='panel']//*[contains(@class,'panel-heading')]/following-sibling::div[contains(@class,'panel-collapse')]//div[contains(@class,'seeMoreDiv') and not(contains(@class,'seeMoreTitle')) and @aria-expanded='true' and not(@style='display: none;')]")
 	List<WebElement> productFilterLessButtonList;
 
-	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp-filter-panel']//div[@class='plp-filter-panel__blocks']//ul[@class='plp-filter-panel__filter-list']//li")
+	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp-filter-panel']//div[@class='plp-filter-panel__blocks']//ul[@class='plp-filter-panel__filter-list']//li[button[input[not(@checked)]]]")
 	List<WebElement> secondlevelFilterList;
 	
 	@FindBy(xpath = "//div[@class='plp']//div[@class='plp__product-grid']")
@@ -1380,7 +1380,7 @@ public class ProductResultsPage extends BasePage{
 	}
 
 	public boolean checkIfNextPageButtonAvailable() {
-		return this.checkChildElementExistingByAttribute(this.cntPreAndNextButtonPage, "id", "nextPage");
+		return this.btnNextPage.getAttribute("style").contains("opacity: 1");
 	}
 	
 	/**
