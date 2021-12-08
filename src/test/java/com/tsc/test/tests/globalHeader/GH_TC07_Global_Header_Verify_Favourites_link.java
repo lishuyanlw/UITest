@@ -3,8 +3,6 @@ package com.tsc.test.tests.globalHeader;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-
-import com.tsc.data.pojos.ConstantData;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 import com.tsc.data.Handler.TestDataHandler;

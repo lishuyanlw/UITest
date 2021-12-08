@@ -5,9 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 import org.openqa.selenium.By;
 import com.tsc.pages.base.BasePage;
@@ -785,7 +783,6 @@ public class GlobalHeaderPage extends BasePage{
 				for(WebElement webElement:listPopularBrandsLink){
 					getReusableActionsInstance().javascriptScrollByVisibleElement(webElement);
 					getReusableActionsInstance().scrollToElement(webElement);
-					//WebElement hrefAttribute =webElement.findElement(By.xpath("./ancestor::a"));
 					WebElement altAttribute =webElement.findElement(By.xpath(".//img"));
 					if(!verifyElementProperty(webElement,"Link")) {//href not present
 						getReporter().softAssert(false,"","Href missing for Popular Brand item: "+webElement.getText());
@@ -819,128 +816,7 @@ public class GlobalHeaderPage extends BasePage{
 		return getPageTitle(SigninPageHeading);
 	}
 
-	/* Method to get WebElement by passing French name from yml file for Watch TSC
-	 * @param String : French name from yml file List<List<String>> lstWatchUsLiveNameAndLinks
-	 * @return WebElement : French name for Watch TSC-FR
-	 * @author Shruti Desai
-	 */
-	public WebElement getWatchTSCdPMElements(String frenchName){
-		String xpathTSCdPMfrenchName =createXPath("//div[contains(@Class,'black-header')]//nav//li//a//span[contains(text(),'{0}')]" ,frenchName);
-		WebElement TSCdPMWebElement = getDriver().findElement(By.xpath(xpathTSCdPMfrenchName));
-		return TSCdPMWebElement;
-	}
-
-	/* Method to verify drop down menu element of Watch TSC-FR
-	 * @param WebElement, true condition for url check, French of element of Watch TSC-FR dropdown menu
-	 * @return assertion report for href presence and validation of url after clicking element
-	 * @author Shruti Desai
-	 */
-	public void verifyWatchTSCdpDMenu(WebElement element, Map<String,String> link) {
-		 getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-		 
-		 String lsTitle=element.getText().trim();
-		 WebElement elementHrefWatchTSC =element.findElement(By.xpath("./ancestor::a"));
-		 reporter.softAssert(getReusableActionsInstance().isElementVisible(element), "The element of "+lsTitle+" is visible","The element of "+lsTitle+" is not visible");
-		 reporter.softAssert(!lsTitle.isEmpty(), lsTitle+" text "+" is not empty", lsTitle+" text "+" is empty");
-		 String lsHrefWatchTSCdpMenu=elementHrefWatchTSC.getAttribute("href").trim();
-		 reporter.softAssert(verifyElementProperty(elementHrefWatchTSC,"Link"), "The href of "+lsTitle+" is not empty", "The href of "+lsTitle+" is empty");
-		 lsHrefWatchTSCdpMenu=this.removeLastSlashFromUrl(lsHrefWatchTSCdpMenu);
-		 element.click();
-		 this.waitForPageToLoad();
-		 waitForCondition(Driver->{return headingWatchTSCDpdMenuLinkLandingPage.isDisplayed();} ,30000);
-		 (new GlobalFooterPage(this.getDriver())).waitForPageLoading();
-		 String lsUrlWatchTSCdpItem=this.removeLastSlashFromUrl(this.URL());
-		 if(link!=null){
-			 for (Map.Entry mapElement : link.entrySet()) {
-				 if(lsHrefWatchTSCdpMenu.contains(mapElement.getKey().toString())) {
-					 String baseURL = System.getProperty("QAUrl")+'/'+mapElement.getValue();
-					 reporter.softAssert(lsUrlWatchTSCdpItem.equalsIgnoreCase(baseURL), "The Url of "+lsUrlWatchTSCdpItem+"  after clicking "+lsTitle+" is equal to the href of "+lsHrefWatchTSCdpMenu, "The Url of "+lsUrlWatchTSCdpItem+"  after clicking "+lsTitle+" is not equal to the href of "+lsHrefWatchTSCdpMenu);
-				 }else{
-				 	reporter.softAssert(false,"","URL for "+mapElement.getKey().toString()+" is not verified that should be as passed as input parameter");
-				 }
-			 }
-		 }
-		 else {
-			 reporter.softAssert(lsUrlWatchTSCdpItem.equalsIgnoreCase(lsHrefWatchTSCdpMenu), "The Url of "+lsUrlWatchTSCdpItem+"  after clicking "+lsTitle+" is equal to the href of "+lsHrefWatchTSCdpMenu, "The Url of "+lsUrlWatchTSCdpItem+"  after clicking "+lsTitle+" is not equal to the href of "+lsHrefWatchTSCdpMenu);
-		}
-	 }
-
 	
-	public void validateTodayShowstopperLink(List<String> testData) {
-		String nameTodayShowstopper=lnkTSBlackHeader.getText();
-		reporter.softAssert((testData.get(0).contains(nameTodayShowstopper)), "Today's Showstopper-FR text is matches with yml data file.", "Today's Showstopper-FR text is not matches with data file.");
-	}
-		
-	public void validateWatchTSCLink(List<String> testData) {
-		String nameWatchTSC=btnWatchTSCBlackHeader.getText();
-		
-		reporter.softAssert((testData.get(0).contains(nameWatchTSC)), "Today's Showstopper-FR text is matches with yml data file.", "Today's Showstopper-FR text is not matches with data file.");
-	}
-	
-	
-	//Watch TSC dropdown menu French & Link Name
-		public List<String> getFrenchName(List<List<String>> lstNameWatchTSC ){	
-			List<String> frenchNameWatchTSC = new ArrayList<>();
-				for (List<String> linkName : lstNameWatchTSC) {
-				String name=getUTFEnabledData(linkName.get(1));
-				frenchNameWatchTSC.add(name);
-				}
-			return frenchNameWatchTSC;
-		}
-		
-		public Map<String,Map<String, String>> getWatchTSCDdMenuLinkMap(List<List<String>> lstNameWatchTSC ){	
-			Map<String,Map<String, String>> linkMap = new HashMap<>();
-			for (List<String> linkName : lstNameWatchTSC) {
-				if(Boolean.valueOf(linkName.get(3))) {
-					linkMap.put(linkName.get(1),(HashMap)new HashMap<String,String>(){{put(linkName.get(0),linkName.get(2));}});
-				}
-			}
-			return linkMap;
-		}
-	public void validateWatchTSCDdMenuLinks(List<String> dDMenuLinks, List<String>frenchNameWatchTSC,WebElement element, Map<String,Map<String, String>> linkMap ) {
-		hoverOnWatchTSC();	
-		reporter.reportLog("Validating Watch TSC drop down menu.");
-		int sizeDpdMenu=lstWatchTSCDpdMenu.size();
-		reporter.softAssert(dDMenuLinks.size()==sizeDpdMenu,"Number of Watch TSC drop down menu element maches with test Data","Number of Watch TSC drop down menu elements are not maching with test Data");
-		
-		for(String frenchName:frenchNameWatchTSC) {
-			WebElement watchTSCElement=getWatchTSCdPMElements(frenchName);
-			verifyWatchTSCdpDMenu(watchTSCElement,linkMap.get(frenchName));
-			goBackHomePage();
-			hoverOnWatchTSC();	
-		}
-	}
-	public void verifyWatchTSCdpDMenu_1(String frenchName, Map<String,String> link) {	
-	
-		
-			WebElement watchTSCElement=getWatchTSCdPMElements(frenchName);
-			getReusableActionsInstance().javascriptScrollByVisibleElement(watchTSCElement);
-	 String lsTitle=watchTSCElement.getText().trim();
-	 WebElement elementHrefWatchTSC =watchTSCElement.findElement(By.xpath("./ancestor::a"));
-	 reporter.softAssert(getReusableActionsInstance().isElementVisible(watchTSCElement), "The element of "+lsTitle+" is visible","The element of "+lsTitle+" is not visible");
-	 reporter.softAssert(!lsTitle.isEmpty(), lsTitle+" text "+" is not empty", lsTitle+" text "+" is empty");
-	 String lsHrefWatchTSCdpMenu=elementHrefWatchTSC.getAttribute("href").trim();
-	 reporter.softAssert(verifyElementProperty(elementHrefWatchTSC,"Link"), "The href of "+lsTitle+" is not empty", "The href of "+lsTitle+" is empty");
-	 lsHrefWatchTSCdpMenu=this.removeLastSlashFromUrl(lsHrefWatchTSCdpMenu);
-	 watchTSCElement.click();
-	 this.waitForPageToLoad();
-	 waitForCondition(Driver->{return headingWatchTSCDpdMenuLinkLandingPage.isDisplayed();} ,30000);
-	 (new GlobalFooterPage(this.getDriver())).waitForPageLoading();
-	 String lsUrlWatchTSCdpItem=this.removeLastSlashFromUrl(this.URL());
-	 if(link!=null){
-		 for (Map.Entry mapElement : link.entrySet()) {
-			 if(lsHrefWatchTSCdpMenu.contains(mapElement.getKey().toString())) {
-				 String baseURL = System.getProperty("QAUrl")+'/'+mapElement.getValue();
-				 reporter.softAssert(lsUrlWatchTSCdpItem.equalsIgnoreCase(baseURL), "The Url of "+lsUrlWatchTSCdpItem+"  after clicking "+lsTitle+" is equal to the href of "+lsHrefWatchTSCdpMenu, "The Url of "+lsUrlWatchTSCdpItem+"  after clicking "+lsTitle+" is not equal to the href of "+lsHrefWatchTSCdpMenu);
-			 }else{
-			 	reporter.softAssert(false,"","URL for "+mapElement.getKey().toString()+" is not verified that should be as passed as input parameter");
-			 }
-		 }
-	 }
-	 else {
-		 reporter.softAssert(lsUrlWatchTSCdpItem.equalsIgnoreCase(lsHrefWatchTSCdpMenu), "The Url of "+lsUrlWatchTSCdpItem+"  after clicking "+lsTitle+" is equal to the href of "+lsHrefWatchTSCdpMenu, "The Url of "+lsUrlWatchTSCdpItem+"  after clicking "+lsTitle+" is not equal to the href of "+lsHrefWatchTSCdpMenu);
-	}
- }
 
 }
 
