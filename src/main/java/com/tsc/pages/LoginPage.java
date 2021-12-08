@@ -89,7 +89,7 @@ public class LoginPage extends BasePage {
 	@FindBy(xpath = "//div[contains(@class,'secondary-navigation__rhs-account')]//nav//a[contains(@href,'easypay')]")
 	public WebElement btnEasyPayScheduleNav;
 		
-	@FindBy(xpath = "//div[contains(@class,'secondary-navigation__rhs-account')]//nav//a[contains(@class,'secondary-navigation__rhs-account-panel-link--sign-out')]")
+	@FindBy(xpath = "//div[contains(@class,'recently-viewed-wrapper')]//div/button[contains(@class,'signout')]")
 	public WebElement btnSignOutNav;
 
 	@FindBy(xpath = "//div[contains(@class,'secondary-navigation__rhs-account')]//a//*[@class='secondary-navigation__rhs-account-icon']")
