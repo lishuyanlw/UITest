@@ -214,7 +214,13 @@ public class ProductResultsPage extends BasePage{
 	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp-filter-panel']//div[@class='plp-filter-panel__blocks']//button[@class='plp-filter-panel__block-title']")
 	List<WebElement> productFilterList;
 	
-	public By bySecondaryFilter=By.xpath(".//ul[@class='plp-filter-panel__filter-list']//li[button[input[not(@checked)]]]");
+	public By bySecondaryFilterOpenOrCloseFlag=By.xpath(".//button[@class='plp-filter-panel__block-title']//div[contains(@class,'plp-filter-panel__block-title__icon')]");
+	
+	public By bySecondaryFilterAll=By.xpath(".//ul[@class='plp-filter-panel__filter-list']//li");
+	
+	public By bySecondaryFilterUnChecked=By.xpath(".//ul[@class='plp-filter-panel__filter-list']//li[button[input[not(@checked)]]]");
+	
+	public By bySecondaryFilterChecked=By.xpath(".//ul[@class='plp-filter-panel__filter-list']//li[button[input[@checked]]]");
 	
 	public By bySecondaryFilterSeeButtonText=By.xpath(".//button[contains(@class,'plp-filter-panel__view-more')]//span");
 	
@@ -1691,7 +1697,8 @@ public class ProductResultsPage extends BasePage{
 	 */
 	public String checkProductColourOrSizeOptionExisting(WebElement itemContainer) {
 		WebElement item=itemContainer.findElement(this.byProductOptionListContainer);
-		String lsText=this.getElementInnerText(item);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+		String lsText=this.getElementInnerText(item).trim();
 		
 		if(lsText.isEmpty()){
 			return "None";
@@ -1732,6 +1739,77 @@ public class ProductResultsPage extends BasePage{
 				
 		return this.getChildElementCount(item)>0;
 	}
+
+	/**
+	 * This method will check See More button and See Less button
+	 * @param WebElement filterContainerItem: filter Container Item
+	 * @return String option
+	 * @author Wei.Li
+	 */
+	public String checkFilterItemSeeButtonExisting(WebElement filterContainerItem) {
+		WebElement item=filterContainerItem.findElement(this.bySecondaryFilterSeeButtonText);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+		String lsText=this.getElementInnerText(item).trim();
+		
+		if(lsText.isEmpty()){
+			return "None";
+		}
+		
+		if(lsText.toLowerCase().contains("see more")){
+			return "SeeMore";
+		}
+		
+		if(lsText.toLowerCase().contains("see less")){
+			return "SeeLess";
+		}
+		
+		return "None";
+	}
+	
+	/**
+	 * This method will get Selected Item Amount From the Filter Title
+	 * @param WebElement itemContainer: Filter title item
+	 * @return int
+	 * @author Wei.Li
+	 */
+	public int getSelectedItemAmountFromFilterTitle(WebElement filterTitle) {
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(filterTitle);
+		String lsTitle=this.getElementInnerText(filterTitle);
+		
+		return this.getIntegerFromString(lsTitle);
+	}
+	
+	/**
+	 * This method will check If Filter Item Is Collapsed
+	 * @param WebElement filterContainerItem: filter Container Item
+	 * @return boolean
+	 * @author Wei.Li
+	 */
+	public boolean checkIfFilterItemIsCollapsed(WebElement filterContainerItem) {
+		WebElement item=filterContainerItem.findElement(this.bySecondaryFilterOpenOrCloseFlag);
+		
+		return !item.getAttribute("class").contains("plp-filter-panel__block-title__icon--plus");
+	}
+	
+	/**
+	 * This method will check If Filter Item Is Collapsed
+	 * @param WebElement filterContainerItem: filter Container Item
+	 * @return boolean
+	 * @author Wei.Li
+	 */
+	public void expandFilterItem(WebElement filterContainerItem) {		
+		if(checkIfFilterItemIsCollapsed(filterContainerItem)) {
+			return;
+		}
+		
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(filterContainerItem);
+		this.getReusableActionsInstance().clickIfAvailable(filterContainerItem);
+		this.getReusableActionsInstance().staticWait(1000);
+		
+		
+	}
+	
+	
 
 	public class ProductItem{
 		public String productName;
