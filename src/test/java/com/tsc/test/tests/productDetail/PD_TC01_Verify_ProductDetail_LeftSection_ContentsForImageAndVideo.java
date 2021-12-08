@@ -29,11 +29,11 @@ public class PD_TC01_Verify_ProductDetail_LeftSection_ContentsForImageAndVideo e
 	List<List<String>> lsKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_SearchKeyword_DropDown();
 	String lsVideoDisclaimInfo=TestDataHandler.constantData.getSearchResultPage().getLbl_VideoDisclaimInfo();
 	
-	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0));
+	//getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0));
 	reporter.reportLog("Switch to ProductDetail page");
 	String lsProductNumber,lsUrl;
 	
-	if(getProductResultsPageThreadLocal().goToProductItemWithReviewAndSwatchAndVideo()) {
+	if(getProductResultsPageThreadLocal().goToFirstProductItem("526457")) {
 		reporter.reportLog("Verify URL");
 		lsProductNumber=getProductResultsPageThreadLocal().selectedProductItem.productConvertedNumber;
 		lsUrl=basePage.URL();

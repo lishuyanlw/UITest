@@ -60,7 +60,9 @@ public class ProductResultsPage extends BasePage{
 	@FindBy(xpath = "//div[@class='Footer']//div[contains(@class,'blockPageWrap')]")
 	WebElement productResultLoadingIndicator;
 
-	@FindBy(xpath = "//product-results//div[contains(@class,'productItems')]//div[contains(@class,'productItemWrap')]")
+	/*@FindBy(xpath = "//product-results//div[contains(@class,'productItems')]//div[contains(@class,'productItemWrap')]")
+	List<WebElement> productResultList;*/
+	@FindBy(xpath = "//div[@class='plp']//div[@class='plp__product-grid']//div[contains(@class,'plp-card-grid-item')]//div[@class='product-card']")
 	List<WebElement> productResultList;
 
 	//Selected filters
@@ -280,9 +282,10 @@ public class ProductResultsPage extends BasePage{
 
 		super.pressEnterKey(globalHeader.searchBox);
 
+		this.getReusableActionsInstance().staticWait(5000);
 		/*waitForCondition(Driver->{
 			return this.lblShowing.isDisplayed();
-		},90000);*/
+		},90000);
 		waitForCondition(Driver->{
 			return getDriver().findElement(By.xpath("//section[@class='tsc-container']//h2")).isDisplayed();
 		},90000);
@@ -293,8 +296,8 @@ public class ProductResultsPage extends BasePage{
 				lsStyle="display: none;";
 			}
 			return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;")&&!lsUrl.equalsIgnoreCase(this.URL());
-			},90000);
-
+			},90000);*/
+		return true;
 	}
 
 	/**
@@ -1330,7 +1333,7 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	public boolean goToProductItemWithReviewAndSwatchAndVideo() {
-		/*this.selectedProductItem.productName="";
+		this.selectedProductItem.productName="";
 		this.selectedProductItem.productNumber="";
 		this.selectedProductItem.productNowPrice="";
 		this.selectedProductItem.productEasyPay="";
@@ -1380,15 +1383,45 @@ public class ProductResultsPage extends BasePage{
 				return this.waitForPageLoading();
 			}
 		}
-		while(this.switchPage(true));*/
-		getDriver().findElement(By.xpath("//div[contains(@class,'plp-card-grid-item')]")).click();
+		while(this.switchPage(true));
+		/*getDriver().findElement(By.xpath("//div[contains(@class,'plp-card-grid-item')]")).click();
 		return waitForCondition(Driver->{
 			return this.imgProductBadge.isDisplayed();
 		},90000);
-		//return this.waitForPageLoading();
-		//return false;
+		//return this.waitForPageLoading();*/
+		return false;
 	}
-	
+
+	public boolean goToFirstProductItem(String lsProductNumber) {
+		this.getSearchResultLoad(lsProductNumber);
+		this.waitForPageLoading();
+
+		WebElement item=this.productResultList.get(0).findElement(By.xpath(".//a"));
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+// this.getReusableActionsInstance().scrollToElement(item);
+// this.selectedProductItem.productName=item.findElement(this.byProductName).getText().trim();
+// this.selectedProductItem.productNumber=item.findElement(this.byProductItemNO).getText().trim();
+// List<String> list=this.getNumberFromString(this.selectedProductItem.productNumber);
+// String lsFinal="";
+// for(String lsSubItem:list) {
+// lsFinal+=lsSubItem;
+// }
+// this.selectedProductItem.productConvertedNumber=lsFinal;
+// this.selectedProductItem.productNowPrice=item.findElement(this.byProductNowPrice).getText().trim();
+// this.selectedProductItem.productEasyPay=item.findElement(this.byProductEasyPay).getText().trim();
+// this.selectedProductItem.productNavigationUrl=this.URL();
+
+		item.click();
+		return waitForCondition(Driver->{
+			return this.imgProductBadge.isDisplayed();
+		},90000);
+
+		//return true;
+
+// return this.waitForPageLoading();
+	}
+
 	public boolean goToFirstProductItem() {
 		WebElement item=this.productResultList.get(0);
 		

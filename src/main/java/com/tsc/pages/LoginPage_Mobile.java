@@ -17,7 +17,8 @@ public class LoginPage_Mobile extends LoginPage{
 
     @Override
     public void verifyMenuItemInPopover(List<String> lstMenuItemPopover) {
-        this.SigninIcon.click();
+        getReusableActionsInstance().javascriptScrollByVisibleElement(this.SigninIcon);
+        this.getReusableActionsInstance().clickIfAvailable(this.SigninIcon);
         getReusableActionsInstance().staticWait(1000);
         super.verifyMenuItemInPopover(lstMenuItemPopover);
     }

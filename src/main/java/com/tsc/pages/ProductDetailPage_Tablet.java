@@ -20,9 +20,13 @@ public class ProductDetailPage_Tablet extends ProductDetailPage {
     public void verifyVideo(String lsVideoDisclaimInfo) {
         reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.imgProductBadge),"The product badge is displaying correctly","The product badge is not displaying correctly");
         reporter.softAssert(!this.imgProductBadge.getAttribute("src").isEmpty(),"The product badge image source is not empty","The product badge image source is empty");
-        this.videoIcon.click();
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.videoIcon);
+        this.getReusableActionsInstance().clickIfAvailable(this.videoIcon);
+        //this.videoIcon.click();
         applyStaticWait(500);
-        this.playButton.click();
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.playButton);
+        this.getReusableActionsInstance().clickIfAvailable(this.playButton);
+        //this.playButton.click();
         reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.videoBoxControl),"The video control section is displaying correctly","The video control section is not displaying correctly");
         reporter.softAssert(!this.lnkVideo.getAttribute("src").isEmpty(),"The product video source is not empty","The product video source is empty");
 
@@ -55,7 +59,9 @@ public class ProductDetailPage_Tablet extends ProductDetailPage {
     @Override
     public void verifyThumbnailPrevButton() {
         //String lsFirstImageSrcBefore=this.lstThumbnailImageList.get(0).findElement(By.xpath(".//img")).getAttribute("src");
-        this.btnThumbnailPrev.click();
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnThumbnailPrev);
+        this.getReusableActionsInstance().clickIfAvailable(this.btnThumbnailPrev);
+        //this.btnThumbnailPrev.click();
         this.getReusableActionsInstance().staticWait(300);
         //String lsFirstIamgeSrcAfter=this.lstThumbnailImageList.get(0).findElement(By.xpath(".//img")).getAttribute("src");
 
@@ -66,7 +72,9 @@ public class ProductDetailPage_Tablet extends ProductDetailPage {
     public void verifyThumbnailNextButton() {
         int imageCount=this.lstThumbnailImageList.size();
         //String lsLastImageSrcBefore=this.lstThumbnailImageList.get(imageCount-1).findElement(By.xpath(".//img")).getAttribute("src");
-        this.btnThumbnailPrev.click();
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnThumbnailPrev);
+        this.getReusableActionsInstance().clickIfAvailable(this.btnThumbnailPrev);
+        //this.btnThumbnailPrev.click();
         this.getReusableActionsInstance().staticWait(300);
         //String lsLastIamgeSrcAfter=this.lstThumbnailImageList.get(imageCount-1).findElement(By.xpath(".//img")).getAttribute("src");
 
