@@ -1037,16 +1037,9 @@ public class ProductResultsPage extends BasePage{
 
 			//If found lsFirstLevelItem
 			if(lsHeader.equalsIgnoreCase(lsFirstLevelItem)) {
-				WebElement panelBody=this.productFilterContainerList.get(i).findElement(this.bySubItemPanelBodyOnLeftPanel);
-				if(judgeMoreButtonExistenceInLeftPanel(panelBody)) {
-					WebElement moreButton=this.productFilterContainerList.get(i).findElement(this.byMoreButtonOnLeftPanel);
-					getReusableActionsInstance().javascriptScrollByVisibleElement(moreButton);
-					moreButton.click();
-					getReusableActionsInstance().staticWait(500);
-				}
-
-				List<WebElement> subItemList=this.productFilterContainerList.get(i).findElements(this.bySubItemListOnLeftPanel);
-				System.out.println("subItemList size: "+subItemList.size());
+				expandFilterItem(this.productFilterContainerList.get(i));
+				
+				List<WebElement> subItemList=this.productFilterContainerList.get(i).findElements(this.bySecondaryFilterAll);				
 				for(WebElement subItem : subItemList) {
 					getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
 					String lsSubItem=subItem.getText().trim();
@@ -1054,8 +1047,8 @@ public class ProductResultsPage extends BasePage{
 					//If found lsSecondLevelItem
 					if(lsSubItem.equalsIgnoreCase(lsSecondLevelItem)) {
 						getReusableActionsInstance().staticWait(500);
-						subItem.click();
-						return this.waitForPageLoading();
+						getReusableActionsInstance().clickIfAvailable(subItem);
+						return waitForSortingOrFilteringCompleted();
 					}
 				}
 			}
@@ -1063,22 +1056,18 @@ public class ProductResultsPage extends BasePage{
 
 		//If unable to find both lsFirstLevelItem and lsSecondLevelItem, then select the first choice
 		this.bDefault=true;
-		for(WebElement moreButton:this.productFilterMoreButtonList) {
-			getReusableActionsInstance().javascriptScrollByVisibleElement(moreButton);
-			moreButton.click();
-			getReusableActionsInstance().staticWait(500);
-		}
-
+		this.expandAllFilters();
+		
 		WebElement btnSelected=this.secondlevelFilterList.get(0);
 		getReusableActionsInstance().javascriptScrollByVisibleElement(btnSelected);
-		this.firstLevelFilter=btnSelected.findElement(By.xpath("./ancestor::div[@role='tabpanel']/preceding-sibling::*[contains(@class,'panel-heading')]")).getText().trim();
+		this.firstLevelFilter=btnSelected.findElement(By.xpath("/ancestor::div[@class='plp-filter-panel__blocks']//button[@class='plp-filter-panel__block-title']")).getText().trim();
 		if(this.firstLevelFilter.contains("(")) {
 			this.firstLevelFilter=this.firstLevelFilter.split("\\(")[0].trim();
 		}
 		this.secondLevelFilter=btnSelected.getText().trim();
 		btnSelected.click();
 
-		return this.waitForPageLoading();
+		return waitForSortingOrFilteringCompleted();
 	}
 
 	/**
@@ -1278,29 +1267,6 @@ public class ProductResultsPage extends BasePage{
 			}
 		}
 		return itemCount;
-	}
-
-	/**
-	 * This method will click More or Less button corresponding to the filter container.
-	 * @param- WebElement elementContainer: input filter container
-	 * @return true/false
-	 * @author Wei.Li
-	 */
-	public boolean clickMoreOrLessButtonWithSpecificFirstlevelFilterInLeftPanel(WebElement elementContainer) {
-		if(elementContainer==null) {
-			return false;
-		}
-
-		WebElement panelBody=elementContainer.findElement(this.bySubItemPanelBodyOnLeftPanel);
-		if(judgeMoreButtonExistenceInLeftPanel(panelBody)) {
-			WebElement clickButton=elementContainer.findElement(this.byMoreOrLessButtonOnLeftPanel);
-			getReusableActionsInstance().javascriptScrollByVisibleElement(clickButton);
-			String buttonText=clickButton.getText();
-			clickButton.click();
-			getReusableActionsInstance().javascriptScrollByVisibleElement(clickButton);
-			return this.waitForCondition(Driver->{return !buttonText.equalsIgnoreCase(clickButton.getText());},30000);
-		}
-		return false;
 	}
 
 	/**
@@ -1665,6 +1631,10 @@ public class ProductResultsPage extends BasePage{
 		return this.checkChildElementExistingByAttribute(this.cntSortingAndFilteringProductResultLoadingIndicator,"class","plp__loading");
 	}
 	
+	public boolean waitForSortingOrFilteringCompleted() {
+		return this.waitForCondition(Driver->{return !checkProductResultLoadingStatusAfterSorting();}, 30000);
+	}
+		
 	/**
 	 * This method will check Product Item Header Title Existing
 	 * @param WebElement itemContainer: product search result item
