@@ -1926,20 +1926,20 @@ public class ProductDetailPage extends BasePage {
 	 */
 	public void verifyPrevAndNextButtonActionInGetTheLookSection() {		
 		if(this.getChildElementCount(this.cntGetTheLook)>2) {
-			String lsLinkPrevBefore=this.getElementHref(this.lstGetTheLookItem.get(0));					
+			String lsLinkPrevBefore=this.lstGetTheLookItem.get(0).findElement(this.byGetTheLookProductLink).getAttribute("data-link-title");					
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnGetTheLookPrev);
 			this.btnGetTheLookPrev.click();
-			this.waitForCondition(Driver->{return !this.getElementHref(this.lstGetTheLookItem.get(0)).equalsIgnoreCase(lsLinkPrevBefore);}, 10000);
+			this.waitForCondition(Driver->{return !this.lstGetTheLookItem.get(0).findElement(this.byGetTheLookProductLink).getAttribute("data-link-title").equalsIgnoreCase(lsLinkPrevBefore);}, 10000);
 			
-			String lsLinkAfter=this.getElementHref(this.lstGetTheLookItem.get(0));
+			String lsLinkAfter=this.lstGetTheLookItem.get(0).findElement(this.byGetTheLookProductLink).getAttribute("data-link-title");
 			reporter.softAssert(!lsLinkPrevBefore.equalsIgnoreCase(lsLinkAfter),"The Prev button works","The Prev button does not work");
 			
-			String lsLinkNextBefore=this.getElementHref(this.lstGetTheLookItem.get(this.lstGetTheLookItem.size()-1));					
+			String lsLinkNextBefore=this.lstGetTheLookItem.get(this.lstGetTheLookItem.size()-1).findElement(this.byGetTheLookProductLink).getAttribute("data-link-title");				
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnGetTheLookNext);
 			this.btnGetTheLookNext.click();
-			this.waitForCondition(Driver->{return !this.getElementHref(this.lstGetTheLookItem.get(this.lstGetTheLookItem.size()-1)).equalsIgnoreCase(lsLinkNextBefore);}, 10000);
+			this.waitForCondition(Driver->{return !this.lstGetTheLookItem.get(this.lstGetTheLookItem.size()-1).findElement(this.byGetTheLookProductLink).getAttribute("data-link-title").equalsIgnoreCase(lsLinkNextBefore);}, 10000);
 			
-			lsLinkAfter=this.getElementHref(this.lstGetTheLookItem.get(this.lstGetTheLookItem.size()-1));
+			lsLinkAfter=this.lstGetTheLookItem.get(this.lstGetTheLookItem.size()-1).findElement(this.byGetTheLookProductLink).getAttribute("data-link-title");
 			reporter.softAssert(!lsLinkNextBefore.equalsIgnoreCase(lsLinkAfter),"The Next button works","The Next button does not work");
 		}		
 	}
