@@ -1,9 +1,8 @@
 package com.tsc.api.apiBuilder;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tsc.api.pojo.Product;
+import com.tsc.api.util.JsonParser;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 
@@ -65,7 +64,7 @@ public class ApiResponse extends ApiConfigs {
         }
         do{
             if(response!=null && response.statusCode()==200) {
-                product = getResponseObject(response.asString(), new TypeReference<Product>() {
+                product = JsonParser.getResponseObject(response.asString(), new TypeReference<Product>() {
                 });
                 if (product.getProducts().size() >= 1 && product.getRedirectUrl() == null) {
                     flag = false;
@@ -89,21 +88,6 @@ public class ApiResponse extends ApiConfigs {
 
     private String getDimensionNumberFromURL(String url){
         return url.split(":")[1];
-    }
-
-    private <T> T getResponse(String response, Class<T> returnClassType) throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.readValue(response,returnClassType);
-    }
-
-    private <T> T getResponseObject(String response, TypeReference<T> typeReference){
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            return objectMapper.readValue(response,typeReference);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
     private String getProductForInputParams(Product product,Map<String,Object> configs){
