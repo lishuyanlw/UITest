@@ -214,6 +214,8 @@ public class ProductResultsPage extends BasePage{
 	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp-filter-panel']//div[@class='plp-filter-panel__blocks']//button[@class='plp-filter-panel__block-title']")
 	List<WebElement> productFilterList;
 	
+	public By byProductFilterTitle=By.xpath(".//button[@class='plp-filter-panel__block-title']");
+	
 	public By bySecondaryFilterOpenOrCloseFlag=By.xpath(".//button[@class='plp-filter-panel__block-title']//div[contains(@class,'plp-filter-panel__block-title__icon')]");
 	
 	public By bySecondaryFilterAll=By.xpath(".//ul[@class='plp-filter-panel__filter-list']//li");
@@ -1802,12 +1804,24 @@ public class ProductResultsPage extends BasePage{
 			clickSeeMoreButton(filterContainerItem);
 			return;
 		}
-		
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(filterContainerItem);
-		this.getReusableActionsInstance().clickIfAvailable(filterContainerItem);
+				
+		WebElement productFilterTitle=filterContainerItem.findElement(this.byProductFilterTitle);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(productFilterTitle);
+		this.getReusableActionsInstance().clickIfAvailable(productFilterTitle);
 		this.getReusableActionsInstance().staticWait(1000);
 		
 		clickSeeMoreButton(filterContainerItem);
+	}
+	
+	/**
+	 * This method will expand all Filters
+	 * @return void
+	 * @author Wei.Li
+	 */
+	public void expandAllFilters() {	
+		for(WebElement item:this.productFilterContainerList) {
+			expandFilterItem(item);			
+		}		
 	}
 	
 	/**
@@ -1820,6 +1834,22 @@ public class ProductResultsPage extends BasePage{
 		String lsButtonType=this.checkFilterItemSeeButtonExisting(filterContainerItem);
 		if(lsButtonType.equalsIgnoreCase("SeeMore")) {
 			WebElement seeMoreButton=filterContainerItem.findElement(this.bySecondaryFilterSeeMoreButton);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(seeMoreButton);
+			this.getReusableActionsInstance().clickIfAvailable(seeMoreButton);
+			this.getReusableActionsInstance().staticWait(1000);
+		}
+	}
+		
+	/**
+	 * This method will click the See Less button for a specific Filter Item
+	 * @param WebElement filterContainerItem: filter Container Item
+	 * @return void
+	 * @author Wei.Li
+	 */
+	public void clickSeeLessButton(WebElement filterContainerItem) {
+		String lsButtonType=this.checkFilterItemSeeButtonExisting(filterContainerItem);
+		if(lsButtonType.equalsIgnoreCase("SeeLess")) {
+			WebElement seeMoreButton=filterContainerItem.findElement(this.bySecondaryFilterSeeLessButton);
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(seeMoreButton);
 			this.getReusableActionsInstance().clickIfAvailable(seeMoreButton);
 			this.getReusableActionsInstance().staticWait(1000);
