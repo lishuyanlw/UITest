@@ -799,7 +799,6 @@ public class GlobalHeaderPage extends BasePage{
 					getReusableActionsInstance().javascriptScrollByVisibleElement(category);
 					this.scrolltoWebElement(category);
 					getReusableActionsInstance().staticWait(3000);
-					waitForCondition(Driver->{return (category.isDisplayed());} ,30000);
 					reporter.reportLog("Verifying Left Section for: "+category.getText());
 					this.verifysubMenuhref(subMenuSection);
 				}

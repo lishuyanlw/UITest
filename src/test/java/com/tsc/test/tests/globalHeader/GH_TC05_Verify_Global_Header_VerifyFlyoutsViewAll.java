@@ -26,6 +26,7 @@ public class GH_TC05_Verify_Global_Header_VerifyFlyoutsViewAll extends BaseTest 
 			String flHeading=lsHeading.getText();
 			flyoutHeading.add(flHeading);
 		}
+		getglobalheaderPageThreadLocal().staticwait();
 		reporter.reportLog("Flyout header displays department: "+flyoutHeading);
 		for(String lsHeading:flyoutHeading) {
 			getglobalheaderPageThreadLocal().scrollToHeadingElement(lsHeading);
