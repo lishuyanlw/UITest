@@ -1792,13 +1792,14 @@ public class ProductResultsPage extends BasePage{
 	}
 	
 	/**
-	 * This method will check If Filter Item Is Collapsed
+	 * This method will expand a specific Filter Item
 	 * @param WebElement filterContainerItem: filter Container Item
-	 * @return boolean
+	 * @return void
 	 * @author Wei.Li
 	 */
 	public void expandFilterItem(WebElement filterContainerItem) {		
 		if(checkIfFilterItemIsCollapsed(filterContainerItem)) {
+			clickSeeMoreButton(filterContainerItem);
 			return;
 		}
 		
@@ -1806,7 +1807,23 @@ public class ProductResultsPage extends BasePage{
 		this.getReusableActionsInstance().clickIfAvailable(filterContainerItem);
 		this.getReusableActionsInstance().staticWait(1000);
 		
-		
+		clickSeeMoreButton(filterContainerItem);
+	}
+	
+	/**
+	 * This method will click the See More button for a specific Filter Item
+	 * @param WebElement filterContainerItem: filter Container Item
+	 * @return void
+	 * @author Wei.Li
+	 */
+	public void clickSeeMoreButton(WebElement filterContainerItem) {
+		String lsButtonType=this.checkFilterItemSeeButtonExisting(filterContainerItem);
+		if(lsButtonType.equalsIgnoreCase("SeeMore")) {
+			WebElement seeMoreButton=filterContainerItem.findElement(this.bySecondaryFilterSeeMoreButton);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(seeMoreButton);
+			this.getReusableActionsInstance().clickIfAvailable(seeMoreButton);
+			this.getReusableActionsInstance().staticWait(1000);
+		}
 	}
 	
 	
