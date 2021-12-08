@@ -11,15 +11,12 @@ public class ApiConfigs extends ApiClient{
         super.setApiClient(null);
     }
 
-    public Map<String, Object> getProductSearchByKeywordInputConfig(String keyword, String dimension, String outputPage, String apiVersion) {
+    public Map<String, Object> getProductSearchByKeywordInputConfig(String keyword, String dimension, int outputPage, String apiVersion) {
         inputMap = new HashMap<>();
         inputMap.put("searchTerm", keyword);
         if (dimension != null)
             inputMap.put("dimensions", Integer.parseInt(dimension));
-        if (outputPage == null)
-            inputMap.put("page", 1);
-        else
-            inputMap.put("page", Integer.parseInt(outputPage));
+        inputMap.put("page", outputPage);
         inputMap.put("pageSize", Integer.parseInt("36"));
         if (apiVersion.contains("v2"))
             inputMap.put("rd", true);

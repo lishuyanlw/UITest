@@ -14,42 +14,65 @@ import java.util.Map;
 
 public class ApiResponse extends ApiConfigs {
 
-    public ApiResponse() throws IOException {
+    public Map<String,Object> configs = null;
+    public ApiResponse() throws IOException {}
+
+    public Product getProductsByKeywordResponse(String searchKeyword) {
+        return getProductDetailsForKeyword(searchKeyword);
     }
 
-    public Product getProductsByKeywordResponse(String searchKeyword) throws IOException {
+    public Product getProductDetailsForKeyword(String searchKeyword){
         Response response = null;
-        Map<String,Object> configs = super.getProductSearchByKeywordInputConfig(searchKeyword,null,null,super.getApiPropertyData().get("test_apiVersion"));
+        Product product = null;
+        boolean flag = true;
+        //Clearing config data before start of function is it is saved as previous call
+        if(configs!=null)
+            configs.clear();
+        int outputPage = 1;
+        configs = super.getProductSearchByKeywordInputConfig(searchKeyword,null,outputPage,super.getApiPropertyData().get("test_apiVersion"));
         try{
-            response = RestAssured.given().
-                    when().params(configs).header("Content-Type","application/json").log().all().
-                    get("/products");
+            response = getApiCallResponse(configs,"/products");
         }catch (Exception exception){
             exception.printStackTrace();
         }
+        do{
+            if(response!=null && response.statusCode()==200) {
+                product = getResponseObject(response.asString(), new TypeReference<Product>() {
+                });
+                if (product.getProducts().size() >= 1 && product.getRedirectUrl() == null) {
+                    flag = false;
+                } else if (product.getRedirectUrl() != null) {
+                    if(configs!=null)
+                        configs.clear();
+                    String dimension = getDimensionNumberFromURL(product.getRedirectUrl());
+                    configs = super.getProductSearchByKeywordInputConfig(searchKeyword, dimension, outputPage, super.getApiPropertyData().get("test_apiVersion"));
+                    response = getApiCallResponse(configs, "/products");
+                }
+            }
+        }while(flag);
+        return product;
+    }
 
-        if(response.statusCode()==200) {
-            return getResponseObject(response.asString(), new TypeReference<Product>() {});
-        }else
-            return null;
+    public Response getApiCallResponse(Map<String,Object> config,String apiEndPoint){
+        return RestAssured.given().
+                when().params(config).header("Content-Type","application/json").log().all().
+                get(apiEndPoint);
+    }
+
+    public String getDimensionNumberFromURL(String url){
+        return url.split(":")[1];
     }
 
     public <T> T getResponse(String response, Class<T> returnClassType) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
-        T objectModel = objectMapper.readValue(response,returnClassType);
-        return objectModel;
+        return objectMapper.readValue(response,returnClassType);
     }
 
     public <T> T getResponseObject(String response, TypeReference<T> typeReference){
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            T objectModel = objectMapper.readValue(response,typeReference);
-            return objectModel;
-        } catch (JSONPointerException e) {
-            e.printStackTrace();
-        }catch (JsonMappingException e){
-            e.printStackTrace();
-        }catch (JsonProcessingException e){
+            return objectMapper.readValue(response,typeReference);
+        } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
         return null;
