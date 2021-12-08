@@ -28,9 +28,7 @@ public class GH_TC05_Verify_Global_Header_VerifyFlyoutsViewAll extends BaseTest 
 		}
 		reporter.reportLog("Flyout header displays department: "+flyoutHeading);
 		for(String lsHeading:flyoutHeading) {
-			if (System.getProperty("Device").equalsIgnoreCase("Desktop")){
-				getglobalheaderPageThreadLocal().scrollToHeadingElement(lsHeading);
-			}
+			getglobalheaderPageThreadLocal().scrollToHeadingElement(lsHeading);
 			reporter.reportLog("Flyout header displays department: "+lsHeading);
 			shopAllUrl=getglobalheaderPageThreadLocal().getURLshopAllPupularBrand(lsHeading,"Popular Brand");
 			pageHeading=getglobalheaderPageThreadLocal().getHeadingForLandingPage(lsHeading);
