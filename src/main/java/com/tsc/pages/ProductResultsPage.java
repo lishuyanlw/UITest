@@ -1856,6 +1856,25 @@ public class ProductResultsPage extends BasePage{
 		}
 	}
 	
+	/**
+	 * This method will get Selected SubFilter Amount for a specific Filter Item
+	 * @param WebElement filterContainerItem: filter Container Item
+	 * @return int
+	 * @author Wei.Li
+	 */
+	public int getSelectedSubFilterAmount(WebElement filterContainerItem) {		
+		WebElement productFilterTitle=filterContainerItem.findElement(this.byProductFilterTitle);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(productFilterTitle);
+		String lsText=this.getElementInnerText(productFilterTitle);
+		
+		if(!lsText.contains("(")&&!lsText.contains(")")) {
+			return 0;
+		}
+		else {
+			return this.getIntegerFromString(lsText);	
+		}			
+	}
+	
 	
 
 	public class ProductItem{
