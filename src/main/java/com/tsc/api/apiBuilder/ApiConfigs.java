@@ -11,6 +11,14 @@ public class ApiConfigs extends ApiClient{
         super.setApiClient(null);
     }
 
+    /**
+     * This method is to set initial default configs for Product Search api
+     * @param - String - keyword - search keyword for product
+     * @param - String - dimension - dimension number for product
+     * @param - int - outputPage - page number to be returned by api
+     * @param - String - apiVersion - api version implemented to be used
+     * @return - Map<String, Object> - map object containing all default configs
+     */
     public Map<String, Object> getProductSearchByKeywordInputConfig(String keyword, String dimension, int outputPage, String apiVersion) {
         inputMap = new HashMap<>();
         inputMap.put("searchTerm", keyword);

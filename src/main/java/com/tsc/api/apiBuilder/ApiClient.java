@@ -20,6 +20,11 @@ public class ApiClient {
         return propertyData;
     }
 
+    /**
+     * This method sets base URI for api
+     * @param - String - baseURI - baseURI for the api
+     * @return - void
+     */
     public void setApiClient(String baseURI) throws IOException {
         if(baseURI!=null)
             RestAssured.baseURI = baseURI+"/"+getApiInfo().get("test_apiVersion")+"/"+getApiInfo().get("test_language");

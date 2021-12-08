@@ -16,6 +16,12 @@ public class ApiResponse extends ApiConfigs {
 
     public ApiResponse() throws IOException {}
 
+    /**
+     * This method finds product number on the basis of input search keyword
+     * @param - String - searchKeyword : search keyword for Product
+     * @param - Map<String,Object> - outputDataCriteria : criteria for searching a particular product
+     * @return - String - product no for search keyword
+     */
     public String getProductNumberFromKeyword(String searchKeyword,Map<String,Object> outputDataCriteria){
         String productNumber = null;
         boolean flag = true;
@@ -34,7 +40,7 @@ public class ApiResponse extends ApiConfigs {
                     product = getProductDetailsForKeyword(searchKeyword,false);
                 }
             }else{
-                productNumber = getProductForInputParams(product,outputDataCriteria);
+                productNumber = getProductNumberForInputParams(product,outputDataCriteria);
                 if(productNumber.equalsIgnoreCase("No Item Found")){
                     outputPage++;
                     product = getProductDetailsForKeyword(searchKeyword,false);
@@ -47,11 +53,18 @@ public class ApiResponse extends ApiConfigs {
         return productNumber;
     }
 
+    /**
+     * This method find Product Details for search Keyword as api call
+     * @param - String - searchKeyword : search keyword for Product
+     * @param - boolean - firstTimeFunctionCall : since this method is call multiple times, this parameter
+     * determines as if the call is made first time or not
+     * @return - Product - Product Object from api Response
+     */
     private Product getProductDetailsForKeyword(String searchKeyword,boolean firstTimeFunctionCall){
         Response response = null;
         Product product = null;
         boolean flag = true;
-        //Clearing config data before start of function is it is saved as previous call
+        //Clearing config data before start of function if this function call was made previously in test
         if(configs!=null)
             configs.clear();
         if(firstTimeFunctionCall)
@@ -80,17 +93,34 @@ public class ApiResponse extends ApiConfigs {
         return product;
     }
 
+    /**
+     * This method makes GET call to api
+     * @param - Map<String,Object> - config : input params that are needed for GET call
+     * @param - String - apiEndPoint : api endpoint after base URI where call will be made
+     * @return - Response - Response from api
+     */
     private Response getApiCallResponse(Map<String,Object> config,String apiEndPoint){
         return RestAssured.given().
                 when().params(config).header("Content-Type","application/json").log().all().
                 get(apiEndPoint);
     }
 
+    /**
+     * This method fetches Dimension Number from returned url
+     * @param - String - url : url that contains dimension number
+     * @return - String - Dimension Number
+     */
     private String getDimensionNumberFromURL(String url){
         return url.split(":")[1];
     }
 
-    private String getProductForInputParams(Product product,Map<String,Object> configs){
+    /**
+     * This method finds product number on the basis of input conditions
+     * @param - Product - product : Product class object
+     * @param - Map<String,Object> - configs : configs on basis of which product number will be fetched
+     * @return - String - Product Number of product
+     */
+    private String getProductNumberForInputParams(Product product,Map<String,Object> configs){
         for(Product.Products data:product.getProducts()) {
             int videoCount=0,styleCount=0,sizeCount=0;
             for(Map.Entry<String,Object> entry:configs.entrySet()){
