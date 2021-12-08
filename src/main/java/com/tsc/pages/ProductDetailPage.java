@@ -709,7 +709,7 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//div[@id='findMine']//div[contains(@class,'findmine__slider')]//button[contains(@class,'slick-next')]")
 	public WebElement btnGetTheLookNext;
 	
-	@FindBy(xpath = "//div[@id='findMine']//div[contains(@class,'findmine__slider')]//div[contains(@class,'findmine__item') and not(contains(@class,'findmine__itemid'))]")
+	@FindBy(xpath = "//div[@id='findMine']//div[@class='slick-list']//div[contains(@class,'slick-current')]//div[contains(@class,'findmine__item') and not(contains(@class,'findmine__itemid'))]")
 	public List<WebElement> lstGetTheLookItem;
 	
 	public By byGetTheLookProductLink=By.xpath(".//a");
