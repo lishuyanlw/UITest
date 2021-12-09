@@ -1105,6 +1105,7 @@ public class GlobalFooterPage extends BasePage {
 		select.selectByIndex(0);
 		for(int i=0;i<elements.size();i++) {
 			String alphabetPath="(//div[contains(@class,'lettersDiv')]//div//span)["+counter+"]";
+			waitForCondition(Driver->{return elements.get(0).isEnabled();},10000);
 			elements.get(i).click();
 			String alphabetLetterValue=getDriver().findElement(By.xpath(alphabetPath)).getText();
 			reporter.reportLog("Selected Alphabet is "+alphabetLetterValue+"");
