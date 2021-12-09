@@ -1103,7 +1103,7 @@ public class GlobalFooterPage extends BasePage {
 		int counter=1;
 		Select select=new Select(element);
 		select.selectByIndex(0);
-		for(int i=0;i<=elements.size();i++) {
+		for(int i=0;i<elements.size();i++) {
 			String alphabetPath="(//div[contains(@class,'lettersDiv')]//div//span)["+counter+"]";
 			elements.get(i).click();
 			String alphabetLetterValue=getDriver().findElement(By.xpath(alphabetPath)).getText();

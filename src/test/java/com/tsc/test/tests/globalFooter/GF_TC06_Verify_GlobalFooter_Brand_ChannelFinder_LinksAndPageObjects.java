@@ -8,7 +8,7 @@ import org.testng.annotations.Test;
 import java.util.HashMap;
 import java.util.List;
 
-public class GF_TC05_Verify_GlobalFooter_Brand_ChannelFinder_LinksAndPageObjects extends BaseTest {
+public class GF_TC06_Verify_GlobalFooter_Brand_ChannelFinder_LinksAndPageObjects extends BaseTest {
     /*
      * CER 191
      * CER 192
