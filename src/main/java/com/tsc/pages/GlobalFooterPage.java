@@ -724,6 +724,10 @@ public class GlobalFooterPage extends BasePage {
 		String lsMainWindowHandle = this.getDriver().getWindowHandle();
 		getReusableActionsInstance().javascriptScrollByVisibleElement(selectedItem);
 		selectedItem.click();
+		if(System.getProperty("Device").contains("Mobile") || System.getProperty("Device").contains("Tablet")){
+			getReusableActionsInstance().staticWait(5000);
+			getDriver().navigate().refresh();
+		}
 		getReusableActionsInstance().waitForNumberOfWindowsToBe(2, 90);
 		Set<String> lstWindowHandle = this.getDriver().getWindowHandles();
 		for (String windowHandle : lstWindowHandle) {
