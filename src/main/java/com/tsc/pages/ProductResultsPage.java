@@ -815,67 +815,133 @@ public class ProductResultsPage extends BasePage{
 	}
 
 	/**
-	 * This method will verify the item content in product list.
-	 * @param- List<WebElement> productList: the input product list
+	 * This method will verify the item content in product list without mouse hover.
+	 * @param List<WebElement> productList: the input product list
 	 * @author Wei.Li
 	 */
 	public void verifySearchResultContentWithoutMouseHover(List<WebElement> productList) {
-		List<WebElement> elementList;
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(productList.get(0));
+		WebElement element;	
+		String lsProductName,lsText;
 		for(WebElement item : productList) {
-//			reporter.reportLog("Product ItemNO:"+item.findElement(byProductItemNO).getText());
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);			
-			this.getReusableActionsInstance().staticWait(3000);
-//
-//			reporter.softAssert(!item.findElement(byProductHref).getAttribute("href").isEmpty(),"ProductHref in searching result is correct", "ProductHref in searching result is incorrect");
-//
-//			reporter.softAssert(!item.findElement(byProductImage).getAttribute("src").isEmpty(), "ProductImage in searching result is correct", "ProductImage in searching result is incorrect");
-//
-//			reporter.softAssert(!item.findElement(byProductName).getText().isEmpty(), "ProductName in searching result is correct", "ProductName in searching result is incorrect");
-//
-//			reporter.softAssert(!item.findElement(byProductItemNO).getText().isEmpty(), "ProductItemNO in searching result is correct", "ProductItemNO in searching result is incorrect");
-//
-//			reporter.softAssert(!item.findElement(byProductNowPrice).getText().isEmpty(), "ProductNowPrice in searching result is correct", "ProductNowPrice in searching result is incorrect");
-//
-//			reporter.softAssert(!item.findElement(byProductEasyPay).getText().isEmpty(), "ProductEasyPay in searching result is correct", "ProductEasyPay in searching result is incorrect");
-//
-//			//Use findElements to avoid test crash when the element is not existing
-//			elementList=item.findElements(byProductReview);
-//			if(super.isChildElementVisible(elementList.get(0),"innerText")) {
-//				reporter.softAssert(true, "ProductReview in searching result is correct", "ProductReview in searching result is incorrect");
-//			}
-//
-//			//Use findElements to avoid test crash when the element is not existing
-//			elementList=item.findElements(byProductSwatch);
-//			if(super.isChildElementVisible(elementList.get(0),"childElementCount")) {
-//				reporter.softAssert(true, "ProductSwatch in searching result is correct", "ProductSwatch in searching result is incorrect");
-//			}
-//
-//			//Use findElements to avoid test crash when the element is not existing
-//			elementList=item.findElements(byProductFreeShipping);
-//			if(super.isChildElementVisible(elementList.get(0),"innerText")) {
-//				reporter.softAssert(true, "ProductFreeShipping in searching result is correct", "ProductFreeShipping in searching result is incorrect");
-//			}
-//
-//			String judgeMode=judgeProductBadgeAndVideo(item);
-//			switch(judgeMode) {
-//				case "WithBadge":
-//					reporter.softAssert(!item.findElement(byProductPriceBadge).getAttribute("src").isEmpty(), "PriceBadge in searching result is correct", "PriceBadge in searching result is incorrect");
-//					break;
-//				case "WithVideo":
-//					reporter.softAssert(!item.findElement(byProductVideoIcon).getAttribute("xlink:href").isEmpty(), "ProductVideoIcon in searching result is correct", "ProductVideoIcon in searching result is incorrect");
-//					break;
-//				case "WithBadgeAndVideo":
-//					reporter.softAssert(!item.findElement(byProductPriceBadge).getAttribute("src").isEmpty(), "PriceBadge in searching result is correct", "PriceBadge in searching result is incorrect");
-//					reporter.softAssert(!item.findElement(byProductVideoIcon).getAttribute("xlink:href").isEmpty(), "ProductVideoIcon in searching result is correct", "ProductVideoIcon in searching result is incorrect");
-//					break;
-//			}
-//
-//			judgeMode=judgeProductWasPrice(item);
-//			if(judgeMode.equalsIgnoreCase("WithWasPrice")) {
-//				reporter.softAssert(!item.findElement(byProductWasPrice).getText().isEmpty(), "ProductWasPrice in searching result is correct", "ProductWasPrice in searching result is incorrect");
-//			}
-
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			element=item.findElement(byProductName);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+			lsProductName=element.getText().trim();
+			reporter.reportLog("Product Name: "+lsProductName);
+			if(!lsProductName.isEmpty()) {
+				reporter.reportLogPass("Product Name is not empty");
+			}
+			else {
+				reporter.reportLogFail("Product Name is empty");
+			}
+						
+			if(this.checkProductItemHeaderTitleExisting(item)) {
+				element=item.findElement(byProductHeaderTitle);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+				lsText=element.getText().trim();				
+				if(!lsText.isEmpty()) {
+					reporter.reportLogPass("Product title is not empty");
+				}
+				else {
+					reporter.reportLogFail("Product title is empty");
+				}
+			}
+			
+			element=item.findElement(byProductHeaderLike);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+			 
+			if(this.getReusableActionsInstance().isElementVisible(element)) {
+				reporter.reportLogPass("Product like icon is visible");
+			}
+			else {
+				reporter.reportLogFail("Product like icon is not visible");
+			}
+			
+			element=item.findElement(byProductHref);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+			 
+			if(!this.getElementHref(element).isEmpty()) {
+				reporter.reportLogPass("Product link is not empty");
+			}
+			else {
+				reporter.reportLogFail("Product link is empty");
+			}
+			
+			element=item.findElement(byProductImage);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+			 
+			if(!this.getElementImageSrc(element).isEmpty()) {
+				reporter.reportLogPass("Product image source is not empty");
+			}
+			else {
+				reporter.reportLogFail("Product image source is not empty");
+			}
+						
+			if(!this.getProductOptionTypeWithoutMouseHover(item).equalsIgnoreCase("None")) {
+				element=item.findElement(byProductOptionListContainer);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+				lsText=element.getText().trim();				
+				if(!lsText.isEmpty()) {
+					reporter.reportLogPass("Product option is not empty");
+				}
+				else {
+					reporter.reportLogFail("Product option is empty");
+				}
+			}
+			
+			if(this.checkProductItemBrandNameExisting(item)) {
+				element=item.findElement(byProductBrand);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+				lsText=element.getText().trim();				
+				if(!lsText.isEmpty()) {
+					reporter.reportLogPass("Product brand name is not empty");
+				}
+				else {
+					reporter.reportLogFail("Product brand name is empty");
+				}
+			}
+			
+			element=item.findElement(byProductNowPrice);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+			lsText=element.getText().trim(); 
+			if(!lsText.isEmpty()) {
+				reporter.reportLogPass("Product Now Price is not empty");
+			}
+			else {
+				reporter.reportLogFail("Product Now Price is not empty");
+			}
+			
+			if(this.checkProductItemWasPriceExisting(item)) {
+				element=item.findElement(byProductWasPrice);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+				lsText=element.getText().trim();				
+				if(!lsText.isEmpty()) {
+					reporter.reportLogPass("Product Was Price is not empty");
+				}
+				else {
+					reporter.reportLogFail("Product Was Price is empty");
+				}
+			}
+			
+			if(this.checkProductItemReviewExisting(item)) {
+				element=item.findElement(byProductReviewContainer);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);								
+				if(this.getReusableActionsInstance().isElementVisible(element)) {
+					reporter.reportLogPass("Product review is visible");
+				}
+				else {
+					reporter.reportLogFail("Product review is not visible");
+				}
+			}
+			
+			element=item.findElement(byProductAddToBag);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);			
+			if(this.getReusableActionsInstance().isElementVisible(element)) {
+				reporter.reportLogPass("Product AddToBag is visible");
+			}
+			else {
+				reporter.reportLogFail("Product AddToBag is not visible");
+			}
 		}
 	}
 
@@ -1612,16 +1678,6 @@ public class ProductResultsPage extends BasePage{
 		return this.checkChildElementExistingByAttribute(itemContainer,"class","product-card__header");
 	}
 	
-	/**
-	 * This method will check Product Item Header Title Existing
-	 * @param WebElement itemContainer: product search result item
-	 * @return boolean
-	 * @author Wei.Li
-	 */
-	public boolean judgeProductOptionItemHeaderTitleExisting(WebElement itemContainer) {
-		return this.checkChildElementExistingByAttribute(itemContainer,"class","product-card__header");
-	}
-
 	/**
 	 * This method will judge Product Item option type
 	 * @param WebElement itemContainer: product search result item
