@@ -168,7 +168,9 @@ public class BaseTest {
 		}
 	
 		webDriverThreadLocal.set(browserDrivers.driverInit(strBrowser, sauceParameters, currentTestMethodName, ""));
-		getDriver().get(strUrl);
+		getDriver().get(strUrl);//Refreshing browser so that Access Denied issue is resolved from Sauce Lab
+		getglobalheaderPageThreadLocal().getReusableActionsInstance().staticWait(3000);
+		getDriver().navigate().refresh();
 
 		String lsTestDevice = System.getProperty("Device").trim();
 		TestDeviceThreadLocal.set(lsTestDevice);
@@ -191,9 +193,6 @@ public class BaseTest {
 		getDriver().manage().window().maximize();
 	}*/
 		setImplictWait(getDriver(), 60);
-		//Refreshing browser so that Access Denied issue is resolved from Sauce Lab
-		//getglobalheaderPageThreadLocal().getReusableActionsInstance().staticWait(3000);
-		//getDriver().navigate().refresh();
 	}
 
 	
