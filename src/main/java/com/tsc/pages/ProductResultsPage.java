@@ -88,6 +88,9 @@ public class ProductResultsPage extends BasePage{
 	@FindBy(xpath = "//div[@class='Footer']//div[contains(@class,'blockPageWrap')]")
 	public WebElement productResultLoadingIndicator;
 
+	@FindBy(xpath = "//div[@class='plp']//div[@class='plp__wrapper']")
+	public WebElement cntProductResultListContainer;
+	
 	@FindBy(xpath = "//div[@class='plp']//div[@class='plp__product-grid']//div[contains(@class,'plp-card-grid-item')]//div[@class='product-card']")
 	public List<WebElement> productResultList;
 
@@ -111,6 +114,11 @@ public class ProductResultsPage extends BasePage{
 	
 	public By byProductOptionList=By.xpath(".//form[@class='product-card__main']//div[@class='product-card__option-button']//ul//li");
 	
+	//After mouse hover
+	public By byProductOptionFieldsetContainer=By.xpath(".//form");
+	
+	public By byProductOptionFieldsetList=By.xpath(".//fieldset");
+	
 	public By byProductOptionSizeTitle=By.xpath(".//fieldset//span[@class='product-card__size-title']");
 	
 	public By byProductOptionSizeSelectedSize=By.xpath(".//fieldset//span[@class='product-card__size-title']//strong");
@@ -122,6 +130,7 @@ public class ProductResultsPage extends BasePage{
 	public By byProductOptionColorSelectedColor=By.xpath(".//fieldset//p[@class='product-card__color-and-taste-title']//strong");
 	
 	public By byProductOptionColorItemList=By.xpath(".//fieldset//div[@class='product-card__color-and-taste-items']//button");
+	
 	
 	public By byProductName=By.xpath(".//form[@class='product-card__main']//div[@class='product-card__info']//a[@class='product-card__info-pname']");
 	
@@ -810,7 +819,7 @@ public class ProductResultsPage extends BasePage{
 	 * @param- List<WebElement> productList: the input product list
 	 * @author Wei.Li
 	 */
-	public void verifySearchResultContent(List<WebElement> productList) {
+	public void verifySearchResultContentWithoutMouseHover(List<WebElement> productList) {
 		List<WebElement> elementList;
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(productList.get(0));
 		for(WebElement item : productList) {
@@ -1566,14 +1575,33 @@ public class ProductResultsPage extends BasePage{
 		}
 	}
 	
+	/**
+	 * This method will check if page loading completed after choose sorting/filtering
+	 * @return boolean
+	 * @author Wei.Li
+	 */
 	public boolean checkProductResultLoadingStatusAfterSorting() {
 		return this.checkChildElementExistingByAttribute(this.cntSortingAndFilteringProductResultLoadingIndicator,"class","plp__loading");
 	}
 	
+	/**
+	 * This method will wait until page loading completed after choose sorting/filtering
+	 * @return boolean
+	 * @author Wei.Li
+	 */
 	public boolean waitForSortingOrFilteringCompleted() {
 		return this.waitForCondition(Driver->{return !checkProductResultLoadingStatusAfterSorting();}, 30000);
 	}
-		
+	
+	/**
+	 * This method will check Product result existance
+	 * @return boolean
+	 * @author Wei.Li
+	 */
+	public boolean checkProductResultExisting() {
+		return this.checkChildElementExistingByAttribute(this.cntProductResultListContainer,"class","plp__product-grid");
+	}
+	
 	/**
 	 * This method will check Product Item Header Title Existing
 	 * @param WebElement itemContainer: product search result item
@@ -1585,29 +1613,98 @@ public class ProductResultsPage extends BasePage{
 	}
 	
 	/**
-	 * This method will check Product Item colour option Existing
+	 * This method will check Product Item Header Title Existing
 	 * @param WebElement itemContainer: product search result item
-	 * @return String option
+	 * @return boolean
 	 * @author Wei.Li
 	 */
-	public String checkProductColourOrSizeOptionExisting(WebElement itemContainer) {
-		WebElement item=itemContainer.findElement(this.byProductOptionListContainer);
+	public boolean judgeProductOptionItemHeaderTitleExisting(WebElement itemContainer) {
+		return this.checkChildElementExistingByAttribute(itemContainer,"class","product-card__header");
+	}
+
+	/**
+	 * This method will judge Product Item option type
+	 * @param WebElement itemContainer: product search result item
+	 * @return String
+	 * @author Wei.Li
+	 */
+	public String getProductOptionTypeWithoutMouseHover(WebElement itemContainer) {
+		List<WebElement> optionList=itemContainer.findElement(this.byProductOptionList);
+		WebElement item=optionList.get(0);		
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-		String lsText=this.getElementInnerText(item).trim();
+		String lsText=item.getText();
 		
-		if(lsText.isEmpty()){
+		if(lsText.isEmpty()) {
 			return "None";
 		}
 		
-		if(lsText.toLowerCase().contains("colour")){
-			return "Colour";
+		if(item.getAttribute("class").contains("product-card__options-count__item--critical-stock")) {
+			return "LeftOver";
 		}
 		
-		if(lsText.toLowerCase().contains("size")){
-			return "Size";
+		if(item.getAttribute("class").contains("product-card__options-count__item--out-of-stock")) {
+			return "SoldOut";
 		}
 		
-		return "None";
+		if(item.getAttribute("class").equalsIgnoreCase("product-card__options-count__item")) {
+			return "OptionList";
+		}
+		
+		return "Other";
+	}
+	
+	/**
+	 * This method will get Product Item option type number without mouse hover
+	 * @param WebElement itemContainer: product search result item
+	 * @param String lsOption: "size"/"colour"
+	 * @return boolean
+	 * @author Wei.Li
+	 */
+	public int getProductOptionTypeNumberWithoutMouseHover(WebElement itemContainer,String lsOption) {
+		if(!getProductOptionTypeWithoutMouseHover(itemContainer).equalsIgnoreCase("OptionList")) {
+			return -1;
+		}
+		
+		String lsText;
+		List<WebElement> optionList=itemContainer.findElement(this.byProductOptionList);
+		for(WebElement item:optionList) {
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsText=item.getText().trim().toLowerCase();
+			if(lsText.contains(lsOption.toLowerCase())) {
+				return this.getIntegerFromString(lsText);
+			}
+		}
+		
+		return 0;
+	}
+	
+	/**
+	 * This method will check Product Item colour option Existing with mouse hover
+	 * @param WebElement itemContainer: product search result item
+	 * @param String lsOption: "size"/"colour"
+	 * @return boolean
+	 * @author Wei.Li
+	 */
+	public boolean checkProductOptionTypeExistingWithMouseHover(WebElement itemContainer,String lsOption) {
+		WebElement fieldsetContainer=itemContainer.findElement(this.byProductOptionFieldsetContainer);
+		if(!this.checkChildElementExistingByTagName(fieldsetContainer, "filedset")) {
+			return false;
+		}
+		
+		List<WebElement> itemList=itemContainer.findElements(this.byProductOptionFieldsetList);
+		
+		for(WebElement item:itemList) {
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			String lsText=this.getElementInnerText(item).trim();
+						
+			if(lsText.toLowerCase().contains(lsOption.toLowerCase())){
+				return true;
+			}
+			else {
+				continue;
+			}			
+		}		
+		return false;
 	}
 	
 	/**
@@ -1633,6 +1730,18 @@ public class ProductResultsPage extends BasePage{
 		WebElement item=itemContainer.findElement(this.byProductReviewContainer);
 				
 		return this.getChildElementCount(item)>0;
+	}
+	
+	/**
+	 * This method will check Product Item review Existing
+	 * @param WebElement itemContainer: product search result item
+	 * @return boolean
+	 * @author Wei.Li
+	 */
+	public boolean checkProductItemWasPriceExisting(WebElement itemContainer) {
+		WebElement priceContainer=itemContainer.findElement(this.byJudgeProductWasPrice);
+		
+		return this.getChildElementCount(priceContainer)>1;
 	}
 
 	/**
