@@ -33,7 +33,7 @@ public class GF_TC04_Verify_GlobalFooter_TSCCustomerHub_LinksAndPageObjects exte
 		List<List<String>> lstNameAndLinks=TestDataHandler.constantData.getFooterSection().getLst_NameAndLinks();
 		String lsService,lsHref,lsYmlHref;
 		ArrayList<WebElement> elementList=new ArrayList<WebElement>();
-		
+		/*
 		//Customer service
 		lsService="Customer Service";
 		reporter.reportLog(lsService);
@@ -147,7 +147,7 @@ public class GF_TC04_Verify_GlobalFooter_TSCCustomerHub_LinksAndPageObjects exte
 			
 			getGlobalFooterPageThreadLocal().verifyDropdownOptionContent();
 		}
-		elementList.clear();
+		elementList.clear(); */
 
 		//Channel Finder
 		String lsServiceCF = "Channel Finder";
@@ -170,7 +170,7 @@ public class GF_TC04_Verify_GlobalFooter_TSCCustomerHub_LinksAndPageObjects exte
 
 			//Verifying Page Elements
 			//Find Cable Channels
-			reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().useourchannelfinder),"Page paragraph line exists","Page paragraph line doesn't exists");
+			//reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().useourchannelfinder),"Page paragraph line exists","Page paragraph line doesn't exists");
 			reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lblFindCableChannelTitle),"The Title Find Cable Channel is displayed","The Title Find Cable Channel is not displayed");
 			reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lblselectyour),"The text Select your: exists","The text Select your: doesn't exists");
 			reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lblProvince),"The Title Province exists","The Title Province doesn't exists");
@@ -191,7 +191,9 @@ public class GF_TC04_Verify_GlobalFooter_TSCCustomerHub_LinksAndPageObjects exte
 		//Blog
 		lsService="Blog";
 		reporter.reportLog(lsService);
-		selectedItem=getGlobalFooterPageThreadLocal().getServiceWebElement(lsService);		
+
+		WebElement selectedItem=getGlobalFooterPageThreadLocal().getServiceWebElement(lsService);
+
 		lsHref=basePage.getElementHref(selectedItem);		
 		lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsService,true);
 		if(lsYmlHref.isEmpty()) {
