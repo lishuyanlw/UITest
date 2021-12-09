@@ -198,7 +198,9 @@ public class BaseTest {
 		getDriver().manage().window().maximize();
 	}*/
 			setImplictWait(getDriver(), 60);
-
+			//Refreshing browser so that Access Denied issue is resolved from Sauce Lab
+			getglobalheaderPageThreadLocal().getReusableActionsInstance().staticWait(3000);
+			getDriver().navigate().refresh();
 	}
 
 	
