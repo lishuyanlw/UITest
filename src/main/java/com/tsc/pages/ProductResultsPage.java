@@ -944,6 +944,165 @@ public class ProductResultsPage extends BasePage{
 			}
 		}
 	}
+	
+	/**
+	 * This method will verify the item content in product list with mouse hover.
+	 * @param List<WebElement> productList: the input product list
+	 * @author Wei.Li
+	 */
+	public void verifySearchResultContentWithMouseHover(List<WebElement> productList) {
+		WebElement element;	
+		String lsProductName,lsText;
+		for(WebElement item : productList) {
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			this.getReusableActionsInstance().scrollToElement(item);
+			
+			element=item.findElement(byProductName);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+			lsProductName=element.getText().trim();
+			reporter.reportLog("Product Name: "+lsProductName);
+			if(!lsProductName.isEmpty()) {
+				reporter.reportLogPass("Product Name is not empty");
+			}
+			else {
+				reporter.reportLogFail("Product Name is empty");
+			}
+						
+			if(this.checkProductItemHeaderTitleExisting(item)) {
+				element=item.findElement(byProductHeaderTitle);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+				lsText=element.getText().trim();				
+				if(!lsText.isEmpty()) {
+					reporter.reportLogPass("Product title is not empty");
+				}
+				else {
+					reporter.reportLogFail("Product title is empty");
+				}
+			}
+			
+			element=item.findElement(byProductHeaderLike);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+			 
+			if(this.getReusableActionsInstance().isElementVisible(element)) {
+				reporter.reportLogPass("Product like icon is visible");
+			}
+			else {
+				reporter.reportLogFail("Product like icon is not visible");
+			}
+			
+			element=item.findElement(byProductHref);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+			 
+			if(!this.getElementHref(element).isEmpty()) {
+				reporter.reportLogPass("Product link is not empty");
+			}
+			else {
+				reporter.reportLogFail("Product link is empty");
+			}
+			
+			element=item.findElement(byProductImage);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+			 
+			if(!this.getElementImageSrc(element).isEmpty()) {
+				reporter.reportLogPass("Product image source is not empty");
+			}
+			else {
+				reporter.reportLogFail("Product image source is not empty");
+			}
+						
+			if(this.checkProductOptionTypeExistingWithMouseHover(item, "size")) {
+				element=item.findElement(byProductOptionSizeTitle);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+				lsText=element.getText().trim();				
+				if(!lsText.isEmpty()) {
+					reporter.reportLogPass("Product option size title is not empty");
+				}
+				else {
+					reporter.reportLogFail("Product option size title is empty");
+				}
+				
+				if(item.findElements(byProductOptionSizeItemList).size()>0) {
+					reporter.reportLogPass("Product option size button list is containing no less than 1 item");
+				}
+				else {
+					reporter.reportLogFail("Product option size button list is containing 0 item");
+				}
+			}
+			
+			if(this.checkProductOptionTypeExistingWithMouseHover(item, "colour")) {
+				element=item.findElement(byProductOptionColorTitle);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+				lsText=element.getText().trim();				
+				if(!lsText.isEmpty()) {
+					reporter.reportLogPass("Product option color title is not empty");
+				}
+				else {
+					reporter.reportLogFail("Product option color title is empty");
+				}
+				
+				if(item.findElements(byProductOptionColorItemList).size()>0) {
+					reporter.reportLogPass("Product option color button list is containing no less than 1 item");
+				}
+				else {
+					reporter.reportLogFail("Product option color button list is containing 0 item");
+				}
+			}
+			
+			if(this.checkProductItemBrandNameExisting(item)) {
+				element=item.findElement(byProductBrand);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+				lsText=element.getText().trim();				
+				if(!lsText.isEmpty()) {
+					reporter.reportLogPass("Product brand name is not empty");
+				}
+				else {
+					reporter.reportLogFail("Product brand name is empty");
+				}
+			}
+			
+			element=item.findElement(byProductNowPrice);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+			lsText=element.getText().trim(); 
+			if(!lsText.isEmpty()) {
+				reporter.reportLogPass("Product Now Price is not empty");
+			}
+			else {
+				reporter.reportLogFail("Product Now Price is not empty");
+			}
+			
+			if(this.checkProductItemWasPriceExisting(item)) {
+				element=item.findElement(byProductWasPrice);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+				lsText=element.getText().trim();				
+				if(!lsText.isEmpty()) {
+					reporter.reportLogPass("Product Was Price is not empty");
+				}
+				else {
+					reporter.reportLogFail("Product Was Price is empty");
+				}
+			}
+			
+			if(this.checkProductItemReviewExisting(item)) {
+				element=item.findElement(byProductReviewContainer);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);								
+				if(this.getReusableActionsInstance().isElementVisible(element)) {
+					reporter.reportLogPass("Product review is visible");
+				}
+				else {
+					reporter.reportLogFail("Product review is not visible");
+				}
+			}
+			
+			element=item.findElement(byProductAddToBag);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);			
+			if(this.getReusableActionsInstance().isElementVisible(element)) {
+				reporter.reportLogPass("Product AddToBag is visible");
+			}
+			else {
+				reporter.reportLogFail("Product AddToBag is not visible");
+			}
+		}
+	}
 
 	/**
 	 * This method will verify sort options.
