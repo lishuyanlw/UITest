@@ -8,6 +8,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -299,9 +300,10 @@ import utils.ReusableActions;
 	public String waitForPageLoadingByUrlChange(WebElement element) {
 		String currentUrl=getDriver().getCurrentUrl();
 		getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-		waitForCondition(Driver->{return element.isDisplayed();},30000);
-        element.click();
-        waitForCondition(Driver->{return !currentUrl.equalsIgnoreCase(getDriver().getCurrentUrl());},30000);
+		waitForCondition(Driver->{return element.isDisplayed();},90000);
+		getReusableActionsInstance().clickIfAvailable(element);
+        //element.click();
+        waitForCondition(Driver->{return !currentUrl.equalsIgnoreCase(getDriver().getCurrentUrl());},90000);
         getReusableActionsInstance().waitForPageLoad();
         getReusableActionsInstance().staticWait(3000);
         
@@ -665,6 +667,17 @@ import utils.ReusableActions;
 		   byte[] bytes = data.getBytes(StandardCharsets.UTF_8);
 		   String utf8EncodedString = new String(bytes);
 		   return utf8EncodedString;
+	}
+
+	/**
+	 * This method is to convert non-ascii String to ascii
+	 * @param - String data: input data
+	 * @author Sachin.Sharma
+	 */
+	public static String convertToASCII(String data) {
+		String nfdNormalizedString = Normalizer.normalize(data, Normalizer.Form.NFD);
+		Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+		return pattern.matcher(nfdNormalizedString).replaceAll("");
 	}
 	
 	/*Method to get UTF-8 format for the list of string

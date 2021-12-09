@@ -46,11 +46,13 @@ def getTunnelName() {
 //    def tunnelName = "TSCWF-WebAutomation" + System.getenv('BUILD_TIMESTAMP')
 //    tunnelName = tunnelName.replaceAll(":","")
 //    tunnelName = tunnelName.replaceAll(" ","")
+
 //    return tunnelName  TSCWF_Automation_Test_Tunnel_Sachin
-	// return "DigitalQETunnel"
-    //return "Digital_Mobile_QA"
+
+    return "DigitalQETunnel"
+	//return "Digital_Mobile_QA"
     //return "TSCWF_Automation_Tunnel"
-    return "DigitalMobileQE"
+   // return "DigitalMobileQE"
 }
 
 //This method is used when we use parentTunnelOwner system property in sauce test below

@@ -3,6 +3,7 @@ package com.tsc.test.tests.globalFooter;
 import org.testng.annotations.Test;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import com.tsc.data.Handler.TestDataHandler;
@@ -147,6 +148,45 @@ public class GF_TC04_Verify_GlobalFooter_TSCCustomerHub_LinksAndPageObjects exte
 			getGlobalFooterPageThreadLocal().verifyDropdownOptionContent();
 		}
 		elementList.clear();
+
+		//Channel Finder
+		String lsServiceCF = "Channel Finder";
+		reporter.reportLog(lsServiceCF);
+		WebElement selectedItemCF=getGlobalFooterPageThreadLocal().getServiceWebElement(lsServiceCF);
+		String lsHrefCF=basePage.getElementHref(selectedItemCF);
+		HashMap<String,String> testDataCF=getGlobalFooterPageThreadLocal().getTestDataWithSpecificName(lstNameAndLinks,lsServiceCF,true);
+		if(testDataCF.isEmpty()) {
+			reporter.reportLogFail("Unable to find '"+lsServiceCF+"' link.");
+		}
+		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHrefCF,testDataCF.get("Link")),"The current '"+lsServiceCF+"' href of "+lsHrefCF+" is equal to "+testDataCF.get("Link"),"The current '"+lsServiceCF+"' href of "+lsHrefCF+" is not equal to "+testDataCF.get("Link"));
+
+		if(!getGlobalFooterPageThreadLocal().goToService(lsServiceCF,getGlobalFooterPageThreadLocal().lblChannelFinderTitle)) {
+			reporter.reportLogFail("Unable to navigate to '"+lsServiceCF+"' page objects.");
+		}
+		else {
+			//Verifying page title
+			String pageTitle = getGlobalFooterPageThreadLocal().getPageTitle(getGlobalFooterPageThreadLocal().lblChannelFinderTitle);
+			reporter.softAssert(pageTitle.equalsIgnoreCase(lsServiceCF),"Page Title matches for global footer link: "+lsServiceCF+" and  title is: "+pageTitle,"Page Title doesn't match for global footer link: "+lsServiceCF+" and  title is: "+pageTitle);
+
+			//Verifying Page Elements
+			//Find Cable Channels
+			reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lblFindCableChannelTitle),"The Title Find Cable Channel is displayed","The Title Find Cable Channel is not displayed");
+			reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().useourchannelfinder),"Page paragraph line exists","Page paragraph line doesn't exists");
+			reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lblselectyour),"The text Select your: exists","The text Select your: doesn't exists");
+			reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lblProvince),"The Title Province exists","The Title Province doesn't exists");
+			reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lblCableProvider),"The Title Cable Provider exists","The Title Cable Provider doesn't exists");
+			reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lblCity),"The Title City exists","The Title City doesn't exists");
+
+			//Satellite Channels
+			reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lblSatelliteChannels),"The Title Satellite Channels exist","The Title Satellite Channels doesn't exist");
+			reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lblBellTV),"The Title Satellite Channels exist","Page paragraph line doesn't exists");
+			reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lblShawDirect),"Page paragraph line exists ","Page paragraph line doesn't exists");
+			reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lblChannelsBellTV),"The line under Bell TV Column exists","The line under Bell TV Column doesn't exists");
+			reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lblChannelsShawDirect),"The line under Shaw Direct Column exists","The line under Shaw Direct Column exists");
+
+			//Verifying Province Drop Down and its respective Cable Provider and City
+			getGlobalFooterPageThreadLocal().verifyMultipleDropDownWithTitle(getGlobalFooterPageThreadLocal().dropDownProvince, getGlobalFooterPageThreadLocal().dropDownCableProvider, getGlobalFooterPageThreadLocal().dropDownCity);
+		}
 		
 		//Blog
 		lsService="Blog";
