@@ -1429,6 +1429,7 @@ public class ProductResultsPage extends BasePage{
 			waitForCondition(Driver->{
 				return this.lblProductName.isDisplayed();
 			},90000);
+			this.waitForPageToLoad();
 			return true;
 		}
 
