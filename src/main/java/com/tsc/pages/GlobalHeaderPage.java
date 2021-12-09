@@ -473,7 +473,7 @@ public class GlobalHeaderPage extends BasePage{
 	 */	
 	 public boolean getPopupWindowByClickingSearchBox() {
 		 this.searchBox.click();
-		 return waitForCondition(Driver->{return this.lblTrendingWithoutKeyword.isDisplayed();},5000);
+		 return waitForCondition(Driver->{return this.lblTrendingWithoutKeyword.isDisplayed();},120000);
 	 }
 	 
 	/**
