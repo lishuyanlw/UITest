@@ -377,7 +377,7 @@ public class GlobalFooterPage extends BasePage {
 	@FindBy(xpath="//div[@class='Middle']//div[contains(@class,'find-channel')]//*[@class='section-title']")
 	public WebElement lblFindCableChannelTitle;
 
-	@FindBy(xpath="//div[contains(@Class,' tsc-forms')]//div[@Class='clearfix']//div/p[contains(text(),'Channel')]")
+	@FindBy(xpath="//div[@Class='clearfix']//div/p[contains(text(),'Channel')]")
 	public WebElement useourchannelfinder;
 
 	@FindBy(xpath="//div[@class='Middle']//div[contains(@class,'find-channel')]//h4")
