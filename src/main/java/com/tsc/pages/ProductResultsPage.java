@@ -123,13 +123,21 @@ public class ProductResultsPage extends BasePage{
 	
 	public By byProductOptionSizeSelectedSize=By.xpath(".//fieldset//span[@class='product-card__size-title']//strong");
 	
-	public By byProductOptionSizeItemList=By.xpath(".//fieldset//div[@class='product-card__size-items']//button");
+	public By byProductOptionSizeItemList=By.xpath(".//fieldset//div[contains(@class,'product-card__size-items')]//button");
+	
+	public By byProductOptionSizeItemEnabledList=By.xpath(".//fieldset//div[contains(@class,'product-card__size-items')]//button[not(@disabled)]");
+	
+	public By byProductOptionSizeItemDisabledList=By.xpath(".//fieldset//div[contains(@class,'product-card__size-items')]//button[@disabled]");
 
 	public By byProductOptionColorTitle=By.xpath(".//fieldset//p[@class='product-card__color-and-taste-title']");
 	
 	public By byProductOptionColorSelectedColor=By.xpath(".//fieldset//p[@class='product-card__color-and-taste-title']//strong");
 	
-	public By byProductOptionColorItemList=By.xpath(".//fieldset//div[@class='product-card__color-and-taste-items']//button");
+	public By byProductOptionColorItemList=By.xpath(".//fieldset//div[contains(@class,'product-card__color-and-taste-items')]//button");
+	
+	public By byProductOptionColorItemEnabledList=By.xpath(".//fieldset//div[contains(@class,'product-card__color-and-taste-items')]//button[not(@disabled)]");
+	
+	public By byProductOptionColorItemDisabledList=By.xpath(".//fieldset//div[contains(@class,'product-card__color-and-taste-items')]//button[@disabled]");
 	
 	
 	public By byProductName=By.xpath(".//form[@class='product-card__main']//div[@class='product-card__info']//a[@class='product-card__info-pname']");
@@ -934,14 +942,14 @@ public class ProductResultsPage extends BasePage{
 				}
 			}
 			
-			element=item.findElement(byProductAddToBag);
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);			
-			if(this.getReusableActionsInstance().isElementVisible(element)) {
-				reporter.reportLogPass("Product AddToBag is visible");
-			}
-			else {
-				reporter.reportLogFail("Product AddToBag is not visible");
-			}
+//			element=item.findElement(byProductAddToBag);
+//			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);			
+//			if(this.getReusableActionsInstance().isElementVisible(element)) {
+//				reporter.reportLogPass("Product AddToBag is visible");
+//			}
+//			else {
+//				reporter.reportLogFail("Product AddToBag is not visible");
+//			}
 		}
 	}
 	
