@@ -1101,14 +1101,9 @@ public class GlobalFooterPage extends BasePage {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 		getReusableActionsInstance().staticWait(4000);
 		int counter=1;
-		int loopCount = 0;
 		Select select=new Select(element);
 		select.selectByIndex(0);
-		//Since we have 26 alphabets and sauce labs timeouts after 1200 seconds, running test for first
-		//5 alphabets
-		if(elements.size()>5)
-			loopCount = 5;
-		for(int i=0;i<=loopCount;i++) {
+		for(int i=0;i<=elements.size();i++) {
 			String alphabetPath="(//div[contains(@class,'lettersDiv')]//div//span)["+counter+"]";
 			elements.get(i).click();
 			String alphabetLetterValue=getDriver().findElement(By.xpath(alphabetPath)).getText();

@@ -101,5 +101,50 @@ public class GF_TC05_Verify_GlobalFooter_AboutTSC_LinksAndPageObjects extends Ba
             getGlobalFooterPageThreadLocal().verifyElementListExistence(elementList);
         }
         elementList.clear();
+
+        //Meet The Hosts
+        String lsServiceMH = "Meet the Hosts";
+        String actualPageTitle="Meet Our Hosts";
+        reporter.reportLog(lsServiceMH);
+        WebElement selectedItemMH=getGlobalFooterPageThreadLocal().getServiceWebElement(lsServiceMH);
+        String lsHrefMH=basePage.getElementHref(selectedItemMH);
+        HashMap<String,String> testDataMH=getGlobalFooterPageThreadLocal().getTestDataWithSpecificName(lstNameAndLinks,lsServiceMH,true);
+        if(testDataMH.isEmpty()) {
+            reporter.reportLogFail("Unable to find '"+lsServiceMH+"' link.");
+        }
+        reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHrefMH,testDataMH.get("Link")),"The current '"+lsServiceMH+"' href of "+lsHrefMH+" is equal to "+testDataMH.get("Link"),"The current '"+lsServiceMH+"' href of "+lsHrefMH+" is not equal to "+testDataMH.get("Link"));
+
+        if(!getGlobalFooterPageThreadLocal().goToService(lsServiceMH,getGlobalFooterPageThreadLocal().aboutUsPageTitle)) {
+            reporter.reportLogFail("Unable to navigate to '"+lsServiceMH+"' page objects.");
+        }
+        else {
+            //Verifying page title
+            String pageTitle = getGlobalFooterPageThreadLocal().getPageTitle(getGlobalFooterPageThreadLocal().aboutUsPageTitle);
+            reporter.softAssert(pageTitle.equalsIgnoreCase(actualPageTitle),"Page Title matches for global footer link: "+lsServiceMH+" and  title is: "+pageTitle,"Page Title doesn't match for global footer link: "+lsServiceMH+" and  title is: "+pageTitle);
+
+            //Verifying Host Name, Link and Images in Meet The Host Page
+            getGlobalFooterPageThreadLocal().verifyMeetTheHostInfo();
+        }
+
+        //Verifying Presence of Credit Card, Gift Card and Rogers Copyrights at the GlobalFooter Page
+        //Gift Card
+        String lsServiceGC = "Gift Card";
+        reporter.reportLog(lsServiceGC);
+        String pageTitle = getGlobalFooterPageThreadLocal().getPageTitle(getGlobalFooterPageThreadLocal().lblGiftCardText);
+        reporter.softAssert(pageTitle.equalsIgnoreCase(lsServiceGC),"Page Title matches for global footer link: "+lsServiceGC+" and  title is: "+pageTitle,"Page Title doesn't match for global footer link: "+lsServiceGC+" and  title is: "+pageTitle);
+        reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lnkGiftCard),"The Gift Card section exists","The Gift Card section doesn't exists");
+
+        //Credit Card
+        String lsServiceCC = "Credit Card";
+        reporter.reportLog(lsServiceCC);
+        String pageTitleCC = getGlobalFooterPageThreadLocal().getPageTitle(getGlobalFooterPageThreadLocal().blkCreditCard);
+        reporter.softAssert(pageTitleCC.equalsIgnoreCase(lsServiceCC),"Page Title matches for global footer link: "+lsServiceCC+" and  title is: "+pageTitleCC,"Page Title doesn't match for global footer link: "+lsServiceCC+" and  title is: "+pageTitleCC);
+        reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lnkCreditCard),"The Credit section exists","The Credit Card section doesn't exists");
+
+        //Rogers Copy Rights
+        reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().RogersMedia),"The Copyright Section of 2021 Rogers Media is displayed","The Copyright Section of 2021 Rogers Media is not displayed");
+        reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().AllPrice),"The Copyright Section of All Price in Canadian Dollars is displayed","The Copyright Section of All Price in Canadian Dollars is not displayed");
+        String lsImageSrc=basePage.getElementImageSrc(getGlobalFooterPageThreadLocal().RogersMediaImg);
+        reporter.softAssert(!lsImageSrc.isEmpty(),"The Rogers Media image is not empty.","The Rogers Media image is empty.");
     }
  }
