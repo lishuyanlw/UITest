@@ -169,6 +169,8 @@ public class BaseTest {
 	
 		webDriverThreadLocal.set(browserDrivers.driverInit(strBrowser, sauceParameters, currentTestMethodName, ""));
 		getDriver().get(strUrl);
+		//page refresh
+		this.getDriver().navigate().refresh();
 
 		String lsTestDevice = System.getProperty("Device").trim();
 		TestDeviceThreadLocal.set(lsTestDevice);
