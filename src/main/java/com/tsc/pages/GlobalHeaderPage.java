@@ -459,7 +459,7 @@ public class GlobalHeaderPage extends BasePage{
 		 
 		//waitForCondition(Driver->{return headingWatchTSCDpdMenuLinkLandingPage.isDisplayed();} ,30000);
 			
-	(new GlobalFooterPage(this.getDriver())).waitForPageLoading();
+		 (new GlobalFooterPage(this.getDriver())).waitForPageLoading();
 		 
 		 String lsUrlInSilverHeader=this.removeLastSlashFromUrl(this.URL());
 		 if(bCheckUrl) {
