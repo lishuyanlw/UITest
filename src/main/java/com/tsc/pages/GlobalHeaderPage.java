@@ -51,6 +51,9 @@ public class GlobalHeaderPage extends BasePage{
 	
 	@FindBy(xpath = "//h1")
 	public WebElement headingWatchTSCDpdMenuLinkLandingPage;
+	
+	@FindBy(xpath = "//h2")
+	public WebElement headingTSLinkLandingPage;
 
 	
 	//Sliver Links [Dynamic event, TS, Deals, OnAir, Program Guide, Watch Us Live]
@@ -319,20 +322,6 @@ public class GlobalHeaderPage extends BasePage{
 		return getReusableActionsInstance().isElementVisible(btnSearchSubmit, 5);
 	}
 
-
-	/*
-	public String validateFavouritesLink_1(WebElement webElement) {
-		String emptySTAIbtn=webElement.getText();
-		if(!verifyElementProperty(webElement,"Link")) {
-			return emptySTAIbtn+" link href is empty";
-		}else{
-			getReusableActionsInstance().isElementVisible(webElement, 5);
-			return emptySTAIbtn;
-			}
-		}
-	*/
-
-
 	//Favorite link visible
 	public String validateFavouritesLink() {
 		String emptySTAIbtn="Favourites link href is empty";
@@ -459,7 +448,11 @@ public class GlobalHeaderPage extends BasePage{
 		(new GlobalFooterPage(this.getDriver())).waitForPageLoading();
 		 
 		 String lsUrlInSilverHeader=this.removeLastSlashFromUrl(this.URL());
-		 if(bCheckUrl) {
+		 if(headingWatchTSCDpdMenuLinkLandingPage.isDisplayed()) {
+			 waitForCondition(Driver->{return headingWatchTSCDpdMenuLinkLandingPage.getText().equalsIgnoreCase(title);},10000);
+		 }
+		 waitForCondition(Driver->{return headingTSLinkLandingPage.isDisplayed();},10000);
+		if(bCheckUrl) {
 			 reporter.softAssert(lsUrlInSilverHeader.equalsIgnoreCase(lsHrefInBlackHeader), "The Url of "+lsUrlInSilverHeader+"  after clicking "+lsTitle+" in Black headers is equal to the href of "+lsHrefInBlackHeader, "The Url of "+lsUrlInSilverHeader+"  after clicking "+lsTitle+" in Black headers is not equal to the href of "+lsHrefInBlackHeader);
 		 }
 
@@ -619,6 +612,7 @@ public class GlobalHeaderPage extends BasePage{
 		 getReusableActionsInstance().javascriptScrollByVisibleElement(headingWebElement);
 		 getReusableActionsInstance().scrollToElement(headingWebElement);
 		 headingWebElement .click();
+		 (new GlobalFooterPage(this.getDriver())).waitForPageLoading();
 		 currentUrl = getDriver().getCurrentUrl();
 			return currentUrl;
 	}
@@ -678,6 +672,7 @@ public class GlobalHeaderPage extends BasePage{
 			getReusableActionsInstance().javascriptScrollByVisibleElement(ShopAllWebElement);
 			getReusableActionsInstance().scrollToElement(ShopAllWebElement);
 			ShopAllWebElement.click();
+			(new GlobalFooterPage(this.getDriver())).waitForPageLoading();
 			currentUrl = getDriver().getCurrentUrl();
 		}
 		return currentUrl;
