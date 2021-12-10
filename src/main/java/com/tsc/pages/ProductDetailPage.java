@@ -1228,7 +1228,8 @@ public class ProductDetailPage extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkProductTrueFitLink);
 		this.getReusableActionsInstance().clickIfAvailable(this.lnkProductTrueFitLink);
 		//this.lnkProductTrueFitLink.click();
-		this.waitForCondition(Driver->{return this.iframeProductTrueFitLoadingIndicator.getAttribute("style").contains("display: block");}, 30000);
+		//this.waitForCondition(Driver->{return this.iframeProductTrueFitLoadingIndicator.getAttribute("style").contains("display: block");}, 30000);
+		this.waitForCondition(Driver->{return this.imgProductTrueFitIframeHeaderLogo.isDisplayed();}, 30000);
 		this.getDriver().switchTo().frame(this.iframeProductTrueFit);
 	}
 	
