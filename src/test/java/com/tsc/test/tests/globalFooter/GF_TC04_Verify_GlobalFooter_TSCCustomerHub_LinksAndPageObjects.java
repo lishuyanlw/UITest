@@ -33,7 +33,7 @@ public class GF_TC04_Verify_GlobalFooter_TSCCustomerHub_LinksAndPageObjects exte
 		List<List<String>> lstNameAndLinks=TestDataHandler.constantData.getFooterSection().getLst_NameAndLinks();
 		String lsService,lsHref,lsYmlHref;
 		ArrayList<WebElement> elementList=new ArrayList<WebElement>();
-		/*
+
 		//Customer service
 		lsService="Customer Service";
 		reporter.reportLog(lsService);
@@ -147,7 +147,7 @@ public class GF_TC04_Verify_GlobalFooter_TSCCustomerHub_LinksAndPageObjects exte
 			
 			getGlobalFooterPageThreadLocal().verifyDropdownOptionContent();
 		}
-		elementList.clear(); */
+		elementList.clear();
 
 		//Channel Finder
 		String lsServiceCF = "Channel Finder";
@@ -191,9 +191,7 @@ public class GF_TC04_Verify_GlobalFooter_TSCCustomerHub_LinksAndPageObjects exte
 		//Blog
 		lsService="Blog";
 		reporter.reportLog(lsService);
-
-		WebElement selectedItem=getGlobalFooterPageThreadLocal().getServiceWebElement(lsService);
-
+		selectedItem=getGlobalFooterPageThreadLocal().getServiceWebElement(lsService);
 		lsHref=basePage.getElementHref(selectedItem);		
 		lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsService,true);
 		if(lsYmlHref.isEmpty()) {
