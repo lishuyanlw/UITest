@@ -45,11 +45,13 @@ pipeline {
 
     triggers {
 
-        parameterizedCron(env.BRANCH_NAME == 'master' ?'''
+        parameterizedCron(env.BRANCH_NAME == 'CER_676_ProductDetailsScriptsRefactoringToRunOnAllDevices' ?'''
                     # leave spaces where you want them around the parameters. They'll be trimmed.
                     # we let the build run with the default name
                     
-		    		#20 19 * * 1-5 %Browser=saucechrome;Language=en;IndividualTests=Validate_Header_Wireless_Level1_Home_Page;ThreadCount=1;TunnelRequired=No;Environment=prod;TestProfile=RogersForBusiness(R4B)
+		    		30 04 * * 6 %Browser=saucefirefox;Language=en;Groups=ProductDetail;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
+		    		45 05 * * 6 %Browser=saucesafari;Language=en;Groups=ProductDetail;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
+		    		15 22 * * 5 %Browser=saucechrome;Language=en;Groups=ProductDetail;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
 
                 ''':'')
     }
