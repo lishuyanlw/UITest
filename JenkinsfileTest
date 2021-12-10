@@ -49,9 +49,11 @@ pipeline {
                     # leave spaces where you want them around the parameters. They'll be trimmed.
                     # we let the build run with the default name
                     
-		    		21 18 * * 1-5 %Browser=saucechrome;Language=en;IndividualTests=GF_TC01_Verify_GlobalFooter_SocialMedia;ThreadCount=1;TunnelRequired=Yes;Device=Mobile;TestProfile=TSCWF-Automation
-		    		# 02 20 * * 1-5 %Browser=sauceandroidchrome;Language=en;Groups=GlobalFooter;ThreadCount=1;TunnelRequired=Yes;Device=Tablet;TestProfile=TSCWF-Automation
-		    		# 04 20 * * 1-5 %Browser=saucechrome;Language=en;Groups=GlobalFooter;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
+		    		15 11 * * 1-5 %Browser=saucechrome;Language=en;Groups=GlobalFooter;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
+		    		15 00 * * 1-5 %Browser=saucefirefox;Language=en;Groups=GlobalFooter;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
+		    		30 01 * * 1-5 %Browser=saucesafari;Language=en;Groups=GlobalFooter;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
+		    		45 02 * * 1-5 %Browser=sauceandroidchrome;Language=en;Groups=GlobalFooter;ThreadCount=1;TunnelRequired=Yes;Device=Tablet;TestProfile=TSCWF-Automation
+		    		00 04 * * 1-5 %Browser=sauceioschrome;Language=en;Groups=GlobalFooter;ThreadCount=1;TunnelRequired=Yes;Device=Tablet;TestProfile=TSCWF-Automation
 
                 ''':'')
     }
