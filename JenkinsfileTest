@@ -49,7 +49,9 @@ pipeline {
                     # leave spaces where you want them around the parameters. They'll be trimmed.
                     # we let the build run with the default name
                     
-		    		#20 19 * * 1-5 %Browser=saucechrome;Language=en;IndividualTests=Validate_Header_Wireless_Level1_Home_Page;ThreadCount=1;TunnelRequired=No;Environment=prod;TestProfile=RogersForBusiness(R4B)
+		    		# 08 18 * * 1-5 %Browser=sauceandroidchrome;Language=en;Groups=GlobalFooter;ThreadCount=1;TunnelRequired=Yes;Device=Mobile;TestProfile=TSCWF-Automation
+		    		# 02 20 * * 1-5 %Browser=sauceandroidchrome;Language=en;Groups=GlobalFooter;ThreadCount=1;TunnelRequired=Yes;Device=Tablet;TestProfile=TSCWF-Automation
+		    		# 04 20 * * 1-5 %Browser=saucechrome;Language=en;Groups=GlobalFooter;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
 
                 ''':'')
     }
