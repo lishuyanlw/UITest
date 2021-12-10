@@ -1038,7 +1038,7 @@ public class ProductResultsPage extends BasePage{
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(0));
 		this.getReusableActionsInstance().scrollToElement(this.productFilterList.get(0));
 		
-		int checkAmount=20,loopSize;
+		int checkAmount=16,loopSize;
 		WebElement item,element;	
 		String lsProductName,lsText;
 		if(checkAmount<=this.productResultList.size()) {
@@ -1309,7 +1309,7 @@ public class ProductResultsPage extends BasePage{
 			if(lsHeader.contains("(")) {
 				lsHeader=lsHeader.split("\\(")[0].trim();
 			}
-
+			System.out.println("lsHeader: "+lsHeader);
 			//If found lsFirstLevelItem
 			if(lsHeader.equalsIgnoreCase(lsFirstLevelItem)) {
 				expandFilterItem(this.productFilterContainerList.get(i));
@@ -1317,10 +1317,11 @@ public class ProductResultsPage extends BasePage{
 				List<WebElement> subItemList=this.productFilterContainerList.get(i).findElements(this.bySecondaryFilterAll);				
 				for(WebElement subItem : subItemList) {
 					getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
-					String lsSubItem=subItem.getText().trim();
+					String lsSubItem=subItem.findElement(By.xpath(".//span[@class='plp-filter-panel__filter-list__item-label-text']")).getText().trim();
+					
 					getReusableActionsInstance().staticWait(500);
 					//If found lsSecondLevelItem
-					if(lsSubItem.equalsIgnoreCase(lsSecondLevelItem)) {
+					if(lsSubItem.equalsIgnoreCase(lsSecondLevelItem)) {						
 						getReusableActionsInstance().staticWait(500);
 						getReusableActionsInstance().clickIfAvailable(subItem);
 						return waitForSortingOrFilteringCompleted();
@@ -1335,11 +1336,13 @@ public class ProductResultsPage extends BasePage{
 		
 		WebElement btnSelected=this.secondlevelFilterList.get(0);
 		getReusableActionsInstance().javascriptScrollByVisibleElement(btnSelected);
-		this.firstLevelFilter=btnSelected.findElement(By.xpath("/ancestor::div[@class='plp-filter-panel__blocks']//button[@class='plp-filter-panel__block-title']")).getText().trim();
+		this.firstLevelFilter=this.getElementInnerText(btnSelected.findElement(By.xpath("./ancestor::div[@class='plp-filter-panel__blocks']//button[@class='plp-filter-panel__block-title']")));
+		
 		if(this.firstLevelFilter.contains("(")) {
 			this.firstLevelFilter=this.firstLevelFilter.split("\\(")[0].trim();
 		}
-		this.secondLevelFilter=btnSelected.getText().trim();
+		this.secondLevelFilter=this.getElementInnerText(btnSelected);
+		
 		btnSelected.click();
 
 		return waitForSortingOrFilteringCompleted();

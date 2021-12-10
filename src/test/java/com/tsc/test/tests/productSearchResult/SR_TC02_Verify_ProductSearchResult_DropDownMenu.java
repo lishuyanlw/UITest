@@ -44,11 +44,12 @@ public class SR_TC02_Verify_ProductSearchResult_DropDownMenu extends BaseTest{
 //		if(getProductResultsPageThreadLocal().bVerifyTitle) {
 //			reporter.softAssert(getProductResultsPageThreadLocal().verifyPageTitleForDropdown(), "Search result page title of "+getProductResultsPageThreadLocal().getProductResultPageTitle()+" is displayed as search keyword in dropdown menu", "Search result page title of "+getProductResultsPageThreadLocal().getProductResultPageTitle()+" is not displayed as search keyword in dropdown menu");
 //		}
-						
+			
+		getProductResultsPageThreadLocal().selectFilterItemInLeftPanel("Size1","XL");
 		productList=getProductResultsPageThreadLocal().getProductList();
-		if(productList.size()>0) {
-			getProductResultsPageThreadLocal().verifySearchResultContentWithMouseHover(productList);
-		}
+//		if(productList.size()>0) {
+//			getProductResultsPageThreadLocal().verifySearchResultContentWithMouseHover(productList);
+//		}
 		
 		}	
 	}
