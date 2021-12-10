@@ -322,6 +322,10 @@ import utils.ReusableActions;
 		 }		 
 		 robot.keyPress(KeyEvent.VK_ESCAPE);		
 		 robot.keyRelease(KeyEvent.VK_ESCAPE);
+		/* Actions action = new Actions(getDriver());
+
+		 action.sendKeys(Keys.ESCAPE);
+		 action.sendKeys(Keys.ESCAPE);*/
 	 }
 	 
 	/**
