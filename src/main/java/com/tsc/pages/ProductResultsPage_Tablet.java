@@ -37,61 +37,61 @@ public class ProductResultsPage_Tablet extends ProductResultsPage{
 	 */
 	@Override
 	public boolean selectFilterItemInLeftPanel(String lsFirstLevelItem,String lsSecondLevelItem) {
-		this.firstLevelFilter=lsFirstLevelItem;
-		this.secondLevelFilter=lsSecondLevelItem;
-
-		for(int i=0;i<this.productFilterList.size();i++) {
-			getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i));
-			String lsHeader=this.productFilterList.get(i).getText();
-			if(lsHeader.contains("(")) {
-				lsHeader=lsHeader.split("\\(")[0].trim();
-			}
-
-			//If found lsFirstLevelItem
-			if(lsHeader.equalsIgnoreCase(lsFirstLevelItem)) {
-				this.productFilterList.get(i).click();
-				getReusableActionsInstance().staticWait(300);
-				WebElement judgeMoreButtonExistanceContainber=this.cntProductSecondlevelFilterListContainer.get(i).findElement(this.byJudgeMoreButtonExistanceContainber);
-				if(this.judgeMoreButtonExistenceInLeftPanel(judgeMoreButtonExistanceContainber)) {
-					WebElement moreButton=this.cntProductSecondlevelFilterListContainer.get(i).findElement(this.byMoreButtonInSecondlevelFilter);
-					getReusableActionsInstance().javascriptScrollByVisibleElement(moreButton);
-					moreButton.click();
-					getReusableActionsInstance().staticWait(500);
-				}
-
-				List<WebElement> subItemList=this.cntProductSecondlevelFilterListContainer.get(i).findElements(this.bySecondlevelFilterList);
-				System.out.println("subItemList size: "+subItemList.size());
-				for(WebElement subItem : subItemList) {
-					getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
-					String lsSubItem=subItem.getText().trim();
-					getReusableActionsInstance().staticWait(500);
-
-					//If found lsSecondLevelItem
-					if(lsSubItem.equalsIgnoreCase(lsSecondLevelItem)) {
-						getReusableActionsInstance().staticWait(500);
-						subItem.click();
-						return this.waitForPageLoading();
-					}
-				}
-			}
-		}
-
-		//If unable to find both lsFirstLevelItem and lsSecondLevelItem, then select the first choice
-		this.bDefault=true;
-		WebElement btnSecondlevelSelected=this.secondlevelFilterList.get(0);
-		WebElement btnFirstlevelSelected=btnSecondlevelSelected.findElement(By.xpath("./ancestor::div[@class='panel']//*[contains(@class,'section-header')]"));
-		getReusableActionsInstance().javascriptScrollByVisibleElement(btnFirstlevelSelected);
-		this.firstLevelFilter=btnFirstlevelSelected.getText().trim();
-		if(this.firstLevelFilter.contains("(")) {
-			this.firstLevelFilter=this.firstLevelFilter.split("\\(")[0].trim();
-		}
-
-		btnFirstlevelSelected.click();
-		getReusableActionsInstance().staticWait(300);
-
-		getReusableActionsInstance().javascriptScrollByVisibleElement(btnSecondlevelSelected);
-		this.secondLevelFilter=btnSecondlevelSelected.getText().trim();
-		btnSecondlevelSelected.click();
+//		this.firstLevelFilter=lsFirstLevelItem;
+//		this.secondLevelFilter=lsSecondLevelItem;
+//
+//		for(int i=0;i<this.productFilterList.size();i++) {
+//			getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i));
+//			String lsHeader=this.productFilterList.get(i).getText();
+//			if(lsHeader.contains("(")) {
+//				lsHeader=lsHeader.split("\\(")[0].trim();
+//			}
+//
+//			//If found lsFirstLevelItem
+//			if(lsHeader.equalsIgnoreCase(lsFirstLevelItem)) {
+//				this.productFilterList.get(i).click();
+//				getReusableActionsInstance().staticWait(300);
+//				WebElement judgeMoreButtonExistanceContainber=this.cntProductSecondlevelFilterListContainer.get(i).findElement(this.byJudgeMoreButtonExistanceContainber);
+//				if(this.judgeMoreButtonExistenceInLeftPanel(judgeMoreButtonExistanceContainber)) {
+//					WebElement moreButton=this.cntProductSecondlevelFilterListContainer.get(i).findElement(this.byMoreButtonInSecondlevelFilter);
+//					getReusableActionsInstance().javascriptScrollByVisibleElement(moreButton);
+//					moreButton.click();
+//					getReusableActionsInstance().staticWait(500);
+//				}
+//
+//				List<WebElement> subItemList=this.cntProductSecondlevelFilterListContainer.get(i).findElements(this.bySecondlevelFilterList);
+//				System.out.println("subItemList size: "+subItemList.size());
+//				for(WebElement subItem : subItemList) {
+//					getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
+//					String lsSubItem=subItem.getText().trim();
+//					getReusableActionsInstance().staticWait(500);
+//
+//					//If found lsSecondLevelItem
+//					if(lsSubItem.equalsIgnoreCase(lsSecondLevelItem)) {
+//						getReusableActionsInstance().staticWait(500);
+//						subItem.click();
+//						return this.waitForPageLoading();
+//					}
+//				}
+//			}
+//		}
+//
+//		//If unable to find both lsFirstLevelItem and lsSecondLevelItem, then select the first choice
+//		this.bDefault=true;
+//		WebElement btnSecondlevelSelected=this.secondlevelFilterList.get(0);
+//		WebElement btnFirstlevelSelected=btnSecondlevelSelected.findElement(By.xpath("./ancestor::div[@class='panel']//*[contains(@class,'section-header')]"));
+//		getReusableActionsInstance().javascriptScrollByVisibleElement(btnFirstlevelSelected);
+//		this.firstLevelFilter=btnFirstlevelSelected.getText().trim();
+//		if(this.firstLevelFilter.contains("(")) {
+//			this.firstLevelFilter=this.firstLevelFilter.split("\\(")[0].trim();
+//		}
+//
+//		btnFirstlevelSelected.click();
+//		getReusableActionsInstance().staticWait(300);
+//
+//		getReusableActionsInstance().javascriptScrollByVisibleElement(btnSecondlevelSelected);
+//		this.secondLevelFilter=btnSecondlevelSelected.getText().trim();
+//		btnSecondlevelSelected.click();
 
 		return this.waitForPageLoading();
 	}

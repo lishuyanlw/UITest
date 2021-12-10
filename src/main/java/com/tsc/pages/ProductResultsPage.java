@@ -102,6 +102,8 @@ public class ProductResultsPage extends BasePage{
 	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp__applied-filters']//button")
 	public List<WebElement> selectedFiltersList;
 	
+	public By byProductHeaderTitleContainer=By.xpath(".//*[@class='product-card__header']");
+	
 	public By byProductHeaderTitle=By.xpath(".//*[@class='product-card__header-title']");
 	
 	public By byProductHeaderLike=By.xpath(".//*[@class='product-card__header-like']");
@@ -354,9 +356,9 @@ public class ProductResultsPage extends BasePage{
 		//globalHeader.searchBox.sendKeys(searchKeyword);
 		//globalHeader.btnSearchSubmit.click();
 		this.getReusableActionsInstance().staticWait(3000);
-		waitForCondition(Driver->{
-			return this.searchResultSection.isDisplayed();
-		},90000);
+//		waitForCondition(Driver->{
+//			return this.searchResultSection.isDisplayed();
+//		},90000);
 
 		this.pressEnterKey(globalHeader.searchBox);
 
@@ -428,14 +430,16 @@ public class ProductResultsPage extends BasePage{
 				}
 				break;
 		}
+		this.getReusableActionsInstance().staticWait(8000);
+//		getReusableActionsInstance().staticWait(300);
+//		return waitForCondition(Driver->{
+//			String lsStyle=this.productResultLoadingIndicator.getAttribute("style");
+//			if(lsStyle==null||lsStyle.isEmpty()) {
+//				lsStyle="display: none;";
+//			}
+//			return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;")&&!lsUrl.equalsIgnoreCase(this.URL());},90000);
 		
-		getReusableActionsInstance().staticWait(300);
-		return waitForCondition(Driver->{
-			String lsStyle=this.productResultLoadingIndicator.getAttribute("style");
-			if(lsStyle==null||lsStyle.isEmpty()) {
-				lsStyle="display: none;";
-			}
-			return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;")&&!lsUrl.equalsIgnoreCase(this.URL());},90000);
+		return true;
 	}
 
 	/**
@@ -825,13 +829,76 @@ public class ProductResultsPage extends BasePage{
 
 		return "WithWasPrice";
 	}
+	
+	/**
+	 * This method will verify pagination.
+	 * @return true/false
+	 * @author Wei.Li
+	 */
+	public boolean verifyProductPagination() {
+		return this.getDriver().findElements(this.byPagination).size()==1;
+	}
+	
+	/**
+	 * This method will get Recommendation container.
+	 * @return  WebElement
+	 * @author Wei.Li
+	 */
+	public WebElement getRecommendationContainer() {
+		return this.recommendationContainer;
+	}
+
+	/**
+	 * This method will get Header container.
+	 * @return  WebElement
+	 * @author Wei.Li
+	 */
+	public WebElement getHeaderContainer() {
+		return this.headerContainer;
+	}
+
+	/**
+	 * This method will get Footer container.
+	 * @return  WebElement
+	 * @author Wei.Li
+	 */
+	public WebElement getFooterContainer() {
+		return this.footerContainer;
+	}
+
+	/**
+	 * This method will click More or Less button corresponding to the filter container.
+	 * @param- WebElement elementContainer: input filter container
+	 * @return true/false
+	 * @author Wei.Li
+	 */
+	public boolean clickMoreOrLessButtonWithSpecificFirstlevelFilterInLeftPanel(WebElement elementContainer) {
+		if(elementContainer==null) {
+			return false;
+		}
+
+//		WebElement panelBody=elementContainer.findElement(this.bySubItemPanelBodyOnLeftPanel);
+//		if(judgeMoreButtonExistenceInLeftPanel(panelBody)) {
+//			WebElement clickButton=elementContainer.findElement(this.byMoreOrLessButtonOnLeftPanel);
+//			getReusableActionsInstance().javascriptScrollByVisibleElement(clickButton);
+//			String buttonText=clickButton.getText();
+//			clickButton.click();
+//			getReusableActionsInstance().javascriptScrollByVisibleElement(clickButton);
+//			return this.waitForCondition(Driver->{return !buttonText.equalsIgnoreCase(clickButton.getText());},30000);
+//		}
+		return false;
+	}
+
 
 	/**
 	 * This method will verify the item content in product list without mouse hover.
 	 * @param List<WebElement> productList: the input product list
 	 * @author Wei.Li
 	 */
-	public void verifySearchResultContentWithoutMouseHover(List<WebElement> productList) {
+	public void verifySearchResultContent(List<WebElement> productList) {
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(0));
+		this.getReusableActionsInstance().scrollToElement(this.productFilterList.get(0));
+		
 		WebElement element;	
 		String lsProductName,lsText;
 		for(WebElement item : productList) {
@@ -904,7 +971,9 @@ public class ProductResultsPage extends BasePage{
 			if(this.checkProductItemBrandNameExisting(item)) {
 				element=item.findElement(byProductBrand);
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-				lsText=element.getText().trim();				
+				lsText=element.getText().trim();
+				System.out.println("Brand name: "+lsText);
+				System.out.println("Brand name size: "+lsText.length());
 				if(!lsText.isEmpty()) {
 					reporter.reportLogPass("Product brand name is not empty");
 				}
@@ -1518,10 +1587,68 @@ public class ProductResultsPage extends BasePage{
 		return this.btnPreviousPage.getAttribute("style").contains("opacity: 1");
 	}
 
-	public boolean goToFirstProductItem(String lsProductNumber) {
-		this.getSearchResultLoad(lsProductNumber);
-		this.waitForPageLoading();
-		
+	/**
+	 * This method will go to the product with Review, EasyPay, Swatch item>=4 and Video
+	 * @return true/false
+	 * @author Wei.Li
+	 */
+	public boolean goToProductItemWithReviewAndSwatchAndVideo() {
+		this.selectedProductItem.productName="";
+		this.selectedProductItem.productNumber="";
+		this.selectedProductItem.productNowPrice="";
+		this.selectedProductItem.productEasyPay="";
+
+		WebElement element;
+		do {
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productResultList.get(0));
+			for(WebElement item : this.productResultList) {
+				String lsMsg=judgeProductBadgeAndVideo(item);
+				if(!(lsMsg.equalsIgnoreCase("WithBadgeAndVideo"))) {
+					continue;
+				}
+
+//				element=item.findElement(this.byProductReview);
+//				if(this.getChildElementCount(element)==0) {
+//					continue;
+//				}
+
+				if(!this.judgeProductWasPrice(item).equalsIgnoreCase("WithWasPrice")) {
+					continue;
+				}
+
+				element=item.findElement(this.byProductEasyPay);
+				if(this.getChildElementCount(element)==0) {
+					continue;
+				}
+
+				element=item.findElement(this.byProductSwatch);
+				if(this.getChildElementCount(element)<4) {
+					continue;
+				}
+
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+				this.selectedProductItem.productName=item.findElement(this.byProductName).getText().trim();
+				this.selectedProductItem.productNumber=item.findElement(this.byProductItemNO).getText().trim();
+				List<String> list=this.getNumberFromString(this.selectedProductItem.productNumber);
+				String lsFinal="";
+				for(String lsSubItem:list) {
+					lsFinal+=lsSubItem;
+				}
+				this.selectedProductItem.productConvertedNumber=lsFinal;
+				this.selectedProductItem.productNowPrice=item.findElement(this.byProductNowPrice).getText().trim();
+				this.selectedProductItem.productEasyPay=item.findElement(this.byProductEasyPay).getText().trim();
+				this.selectedProductItem.productNavigationUrl=this.URL();
+				
+				item.click();
+				return this.waitForPageLoading();
+			}
+		}
+		while(this.switchPage(true));
+
+		return false;
+	}
+	
+	public boolean goToFirstProductItem() {
 		WebElement item=this.productResultList.get(0);
 		
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
@@ -1665,13 +1792,20 @@ public class ProductResultsPage extends BasePage{
 				}
 				
 				item=this.productResultList.get(i);
-				if(!this.checkProductItemReviewExisting(item)) {
-					continue;
-				}
-																
+//				element=item.findElement(this.byProductReview);
+//				if(this.getChildElementCount(element)==0) {
+//					continue;
+//				}
+												
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 				this.selectedProductItem.productName=item.findElement(this.byProductName).getText().trim();
-
+				this.selectedProductItem.productNumber=item.findElement(this.byProductItemNO).getText().trim();
+				List<String> list=this.getNumberFromString(this.selectedProductItem.productNumber);
+				String lsFinal="";
+				for(String lsSubItem:list) {
+					lsFinal+=lsSubItem;
+				}
+				this.selectedProductItem.productConvertedNumber=lsFinal;
 				this.selectedProductItem.productNowPrice=item.findElement(this.byProductNowPrice).getText().trim();
 				this.selectedProductItem.productEasyPay=item.findElement(this.byProductEasyPay).getText().trim();
 				this.selectedProductItem.productNavigationUrl=this.URL();
@@ -1753,8 +1887,8 @@ public class ProductResultsPage extends BasePage{
 	 * @return boolean
 	 * @author Wei.Li
 	 */
-	public boolean checkProductItemHeaderTitleExisting(WebElement itemContainer) {
-		return this.checkChildElementExistingByAttribute(itemContainer,"class","product-card__header");
+	public boolean checkProductItemHeaderTitleExisting(WebElement itemContainer) {		
+		return this.getChildElementCount(itemContainer.findElement(this.byProductHeaderTitleContainer))>1;
 	}
 	
 	/**
@@ -1763,8 +1897,8 @@ public class ProductResultsPage extends BasePage{
 	 * @return String
 	 * @author Wei.Li
 	 */
-	public String getProductOptionTypeWithoutMouseHover(WebElement itemContainer) {
-		List<WebElement> optionList=itemContainer.findElement(this.byProductOptionList);
+	public String getProductOptionTypeWithoutMouseHover(WebElement itemContainer) {		
+		List<WebElement> optionList=itemContainer.findElements(this.byProductOptionList);		
 		WebElement item=optionList.get(0);		
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 		String lsText=item.getText();
@@ -1830,7 +1964,7 @@ public class ProductResultsPage extends BasePage{
 		
 		for(WebElement item:itemList) {
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-			String lsText=this.getElementInnerText(item).trim();
+			String lsText=item.getText().trim();
 						
 			if(lsText.toLowerCase().contains(lsOption.toLowerCase())){
 				return true;
@@ -1882,7 +2016,7 @@ public class ProductResultsPage extends BasePage{
 	 */
 	public boolean checkProductItemBrandNameExisting(WebElement itemContainer) {
 		WebElement item=itemContainer.findElement(this.byProductBrand);
-		String lsText=this.getElementInnerText(item);
+		String lsText=item.getText().trim();
 		
 		return !lsText.isEmpty();
 	}
@@ -1920,7 +2054,7 @@ public class ProductResultsPage extends BasePage{
 	public String checkFilterItemSeeButtonExisting(WebElement filterContainerItem) {
 		WebElement item=filterContainerItem.findElement(this.bySecondaryFilterSeeButtonText);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-		String lsText=this.getElementInnerText(item).trim();
+		String lsText=item.getText().trim();
 		
 		if(lsText.isEmpty()){
 			return "None";
@@ -1945,7 +2079,7 @@ public class ProductResultsPage extends BasePage{
 	 */
 	public int getSelectedItemAmountFromFilterTitle(WebElement filterTitle) {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(filterTitle);
-		String lsTitle=this.getElementInnerText(filterTitle);
+		String lsTitle=filterTitle.getText().trim();
 		
 		return this.getIntegerFromString(lsTitle);
 	}
@@ -2034,7 +2168,7 @@ public class ProductResultsPage extends BasePage{
 	public int getSelectedSubFilterAmount(WebElement filterContainerItem) {		
 		WebElement productFilterTitle=filterContainerItem.findElement(this.byProductFilterTitle);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(productFilterTitle);
-		String lsText=this.getElementInnerText(productFilterTitle);
+		String lsText=productFilterTitle.getText().trim();
 		
 		if(!lsText.contains("(")&&!lsText.contains(")")) {
 			return 0;
