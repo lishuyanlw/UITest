@@ -289,9 +289,9 @@ public class ProductResultsPage extends BasePage{
 			return this.searchResultSection.isDisplayed();
 		},120000);
 
-		//super.pressEnterKey(globalHeader.searchBox);
+		super.pressEnterKey(globalHeader.searchBox);
 
-		//this.getReusableActionsInstance().staticWait(5000);
+		this.getReusableActionsInstance().staticWait(5000);
 		/*waitForCondition(Driver->{
 			return this.lblShowing.isDisplayed();
 		},90000);
@@ -1403,11 +1403,11 @@ public class ProductResultsPage extends BasePage{
 
 	public boolean goToFirstProductItem(String lsProductNumber) {
 		this.getSearchResultLoad(lsProductNumber);
-		//this.waitForPageLoading();
+		this.waitForPageLoading();
 
-		//WebElement item=this.productResultList.get(0).findElement(By.xpath(".//a"));
+		WebElement item=this.productResultList.get(0).findElement(By.xpath(".//a"));
 
-		//this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 // this.getReusableActionsInstance().scrollToElement(item);
 // this.selectedProductItem.productName=item.findElement(this.byProductName).getText().trim();
 // this.selectedProductItem.productNumber=item.findElement(this.byProductItemNO).getText().trim();
@@ -1421,8 +1421,13 @@ public class ProductResultsPage extends BasePage{
 // this.selectedProductItem.productEasyPay=item.findElement(this.byProductEasyPay).getText().trim();
 // this.selectedProductItem.productNavigationUrl=this.URL();
 
+		item.click();
+		waitForCondition(Driver->{
+			return this.lblProductName.isDisplayed();
+		},90000);
+		this.waitForPageToLoad();
 
-		if(waitForCondition(Driver->{
+		/*if(waitForCondition(Driver->{
 			return this.lstPossibleItemMatchesLink.isDisplayed() && this.lstPossibleItemMatchesLink.isEnabled();
 		},90000)){
 			this.lstPossibleItemMatchesLink.click();
@@ -1431,7 +1436,7 @@ public class ProductResultsPage extends BasePage{
 			},90000);
 			this.waitForPageToLoad();
 			return true;
-		}
+		}*/
 
 		return true;
 
