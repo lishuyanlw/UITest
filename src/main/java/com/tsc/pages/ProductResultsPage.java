@@ -1308,8 +1308,7 @@ public class ProductResultsPage extends BasePage{
 			String lsHeader=this.productFilterList.get(i).getText().trim();
 			if(lsHeader.contains("(")) {
 				lsHeader=lsHeader.split("\\(")[0].trim();
-			}
-			System.out.println("lsHeader: "+lsHeader);
+			}			
 			//If found lsFirstLevelItem
 			if(lsHeader.equalsIgnoreCase(lsFirstLevelItem)) {
 				expandFilterItem(this.productFilterContainerList.get(i));
@@ -1332,20 +1331,23 @@ public class ProductResultsPage extends BasePage{
 
 		//If unable to find both lsFirstLevelItem and lsSecondLevelItem, then select the first choice
 		this.bDefault=true;
-		this.expandAllFilters();
 		
-		WebElement btnSelected=this.secondlevelFilterList.get(0);
-		getReusableActionsInstance().javascriptScrollByVisibleElement(btnSelected);
-		this.firstLevelFilter=this.getElementInnerText(btnSelected.findElement(By.xpath("./ancestor::div[@class='plp-filter-panel__blocks']//button[@class='plp-filter-panel__block-title']")));
-		
-		if(this.firstLevelFilter.contains("(")) {
-			this.firstLevelFilter=this.firstLevelFilter.split("\\(")[0].trim();
+		for(int i=0;i<this.productFilterList.size();i++) {
+			expandFilterItem(this.productFilterContainerList.get(i));
+			
+			List<WebElement> subItemList=this.productFilterContainerList.get(i).findElements(this.bySecondaryFilterAll);	
+			for(WebElement subItem : subItemList) {
+				if(!this.hasElementAttribute(subItem.findElement(By.xpath(".//button//input")), "checked")) {
+					this.secondLevelFilter=this.getElementInnerText(subItem);
+					this.firstLevelFilter=this.getElementInnerText(subItem.findElement(By.xpath("./ancestor::div[@class='plp-filter-panel__blocks']//button[@class='plp-filter-panel__block-title']")));
+					System.out.println(this.firstLevelFilter+" : "+this.secondLevelFilter);
+					getReusableActionsInstance().staticWait(500);
+					getReusableActionsInstance().clickIfAvailable(subItem);
+					return waitForSortingOrFilteringCompleted();
+				}
+			}			
 		}
-		this.secondLevelFilter=this.getElementInnerText(btnSelected);
-		
-		btnSelected.click();
-
-		return waitForSortingOrFilteringCompleted();
+		return false;
 	}
 
 	/**
