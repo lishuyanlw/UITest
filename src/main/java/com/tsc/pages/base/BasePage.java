@@ -387,7 +387,8 @@ import utils.ReusableActions;
 	 */		
 	public String getElementInnerText(WebElement element) {
 		JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
-		return (String)jse.executeScript("return arguments[0].innerText;", element);				
+		String lsText= (String)jse.executeScript("return arguments[0].innerText;", element);	
+		return lsText.replace("&nbsp;", "").trim();
 	}
     
     /**
