@@ -46,8 +46,8 @@ def getTunnelName() {
 //    def tunnelName = "TSCWF-WebAutomation" + System.getenv('BUILD_TIMESTAMP')
 //    tunnelName = tunnelName.replaceAll(":","")
 //    tunnelName = tunnelName.replaceAll(" ","")
-    //return "DigitalQETunnel"
-    return "Digital_Mobile_QA"
+    return "DigitalQETunnel"
+    //return "Digital_Mobile_QA"
     //return "TSCWF_Automation_Tunnel"
 }
 
