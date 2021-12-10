@@ -119,33 +119,40 @@ public class ProductResultsPage extends BasePage{
 	//After mouse hover
 	public By byProductOptionFieldsetContainer=By.xpath(".//form");
 	
+	//For size and color
 	public By byProductOptionFieldsetList=By.xpath(".//fieldset");
-	
 	public By byProductOptionTitle=By.xpath(".//fieldset//*[contains(@class,'product-card__') and contains(@class,'-title')]");
 	
-	public By byProductOptionSizeTitle=By.xpath(".//fieldset//span[@class='product-card__size-title']");
+	//For size option	
 	
+	public By byProductOptionSizeTitle=By.xpath(".//fieldset//span[@class='product-card__size-title']");
+			
 	public By byProductOptionSizeSelectedSize=By.xpath(".//fieldset//span[@class='product-card__size-title']//strong");
 	
-	public By byProductOptionSizeItemList=By.xpath(".//fieldset//div[contains(@class,'product-card__size-items')]//button");
+	public By byProductOptionSizeWrapper=By.xpath(".//fieldset//div[@class='product-card__size-wrapper']");
 	
-	public By byProductOptionSizeItemEnabledList=By.xpath(".//fieldset//div[contains(@class,'product-card__size-items')]//button[not(@disabled)]");
+	public By byProductOptionSizeItemList=By.xpath(".//fieldset//div[contains(@class,'product-card__size-items')]//button|.//fieldset//select[@class='product-card__size__dropdown']//option");
 	
-	public By byProductOptionSizeItemDisabledList=By.xpath(".//fieldset//div[contains(@class,'product-card__size-items')]//button[@disabled]");
+	public By byProductOptionSizeItemEnabledList=By.xpath(".//fieldset//div[contains(@class,'product-card__size-items')]//button[not(@disabled)]|.//fieldset//select[@class='product-card__size__dropdown']//option[not(@disabled)]");
 	
-	public By byProductOptionSizeSelectedItem=By.xpath(".//fieldset//div[contains(@class,'product-card__size-items')]//button[@aria-pressed='true']");
-
+	public By byProductOptionSizeItemDisabledList=By.xpath(".//fieldset//div[contains(@class,'product-card__size-items')]//button[@disabled]|.//fieldset//select[@class='product-card__size__dropdown']//option[@disabled]");
+	
+	public By byProductOptionSizeSelectedItem=By.xpath(".//fieldset//div[contains(@class,'product-card__size-items')]//button[@aria-pressed='true']|.//fieldset//select[@class='product-card__size__dropdown']//option[@selected]");
+	
+	//For color option
 	public By byProductOptionColorTitle=By.xpath(".//fieldset//p[@class='product-card__color-and-taste-title']");
 	
 	public By byProductOptionColorSelectedColor=By.xpath(".//fieldset//p[@class='product-card__color-and-taste-title']//strong");
 	
+	public By byProductOptionColorWrapper=By.xpath(".//fieldset//div[@class='product-card__color-and-taste-wrapper']");
+	
 	public By byProductOptionColorItemList=By.xpath(".//fieldset//div[contains(@class,'product-card__color-and-taste-items')]//button|.//fieldset//select[@class='product-card__color-and-taste__dropdown']//option");
 	
-	public By byProductOptionColorItemEnabledList=By.xpath(".//fieldset//div[contains(@class,'product-card__color-and-taste-items')]//button[not(@disabled)]");
+	public By byProductOptionColorItemEnabledList=By.xpath(".//fieldset//div[contains(@class,'product-card__color-and-taste-items')]//button[not(@disabled)]|.//fieldset//select[@class='product-card__color-and-taste__dropdown']//option[not(@disabled)]");
 	
-	public By byProductOptionColorItemDisabledList=By.xpath(".//fieldset//div[contains(@class,'product-card__color-and-taste-items')]//button[@disabled]");
+	public By byProductOptionColorItemDisabledList=By.xpath(".//fieldset//div[contains(@class,'product-card__color-and-taste-items')]//button[@disabled]|.//fieldset//select[@class='product-card__color-and-taste__dropdown']//option[@disabled]");
 	
-	public By byProductOptionColorSelectedItem=By.xpath(".//fieldset//div[contains(@class,'product-card__color-and-taste-items')]//button[@aria-pressed='true']");
+	public By byProductOptionColorSelectedItem=By.xpath(".//fieldset//div[contains(@class,'product-card__color-and-taste-items')]//button[@aria-pressed='true']|.//fieldset//select[@class='product-card__color-and-taste__dropdown']//option[not(@selected)]");
 	
 	
 	public By byProductName=By.xpath(".//form[@class='product-card__main']//div[@class='product-card__info']//a[@class='product-card__info-pname']");
@@ -1957,6 +1964,30 @@ public class ProductResultsPage extends BasePage{
 			}						
 		}		
 		return false;
+	}
+	
+	/**
+	 * This method will check Size Product Option Is Dropdown with mouse hover
+	 * @param WebElement itemContainer: product search result item
+	 * @return boolean
+	 * @author Wei.Li
+	 */
+	public boolean checkSizeProductOptionIsDropdownWithMouseHover(WebElement itemContainer) {
+		WebElement item=itemContainer.findElement(this.byProductOptionSizeWrapper);	
+		
+		return this.checkChildElementExistingByTagName(item, "select");		
+	}
+	
+	/**
+	 * This method will check Color Product Option Is Dropdown with mouse hover
+	 * @param WebElement itemContainer: product search result item
+	 * @return boolean
+	 * @author Wei.Li
+	 */
+	public boolean checkColorProductOptionIsDropdownWithMouseHover(WebElement itemContainer) {
+		WebElement item=itemContainer.findElement(this.byProductOptionColorWrapper);	
+		
+		return this.checkChildElementExistingByTagName(item, "select");		
 	}
 	
 	/**
