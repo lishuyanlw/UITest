@@ -54,14 +54,17 @@ public class ProductResultsPage extends BasePage{
 	@FindBy(xpath = "//div[contains(@class,'showstopper-wrapper')]//div[contains(@class,'item')]//div[contains(@class,'visible')]//img")
 	public List<WebElement> lstBannerImage;
 
-	//Selected filters
-	//Missing
-	@FindBy(xpath = "//product-results//div[contains(@class,'col-md-showing')]//div[contains(@class,'filterPrpLabel')]//b")
+	//Product message showing 	
+	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp__pagination-desc']//span[@class='plp__pagination-desc__display-text']")
 	public WebElement lblShowing;
 
-	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp__count-and-shorting']//div[@class='plp__count-and-shorting__product-count']")
+	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp__pagination-desc']//span[@class='plp__pagination-desc__product-count-text']")
 	public WebElement txtShowingDynamicContent;
 
+	//Sort part
+	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp__count-and-shorting__product-count']")
+	public WebElement lblProductCountMessage;
+	
 	//Missing
 	@FindBy(xpath = "//product-results//div[contains(@class,'col-md-sort')]//form//div[contains(@class,'filterPrpLabel')]")
 	public WebElement lblSortBy;
@@ -72,6 +75,7 @@ public class ProductResultsPage extends BasePage{
 	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp__count-and-shorting']//select//option")
 	public List<WebElement> sortByOptionList;
 	
+	//For Sorting and Filtering page loading indicator
 	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp']")
 	public WebElement cntSortingAndFilteringProductResultLoadingIndicator;
 
