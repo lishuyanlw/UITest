@@ -455,11 +455,8 @@ public class GlobalHeaderPage extends BasePage{
 		 lsHrefInBlackHeader=this.removeLastSlashFromUrl(lsHrefInBlackHeader);
 		 
 		 blackItem.click();
-		 this.waitForPageToLoad();
-		 
-		//waitForCondition(Driver->{return headingWatchTSCDpdMenuLinkLandingPage.isDisplayed();} ,30000);
-			
-		 (new GlobalFooterPage(this.getDriver())).waitForPageLoading();
+		 //this.waitForPageToLoad();
+		(new GlobalFooterPage(this.getDriver())).waitForPageLoading();
 		 
 		 String lsUrlInSilverHeader=this.removeLastSlashFromUrl(this.URL());
 		 if(bCheckUrl) {
@@ -480,7 +477,7 @@ public class GlobalHeaderPage extends BasePage{
 	 */	
 	 public boolean getPopupWindowByClickingSearchBox() {
 		 this.searchBox.click();
-		 return waitForCondition(Driver->{return this.lblTrendingWithoutKeyword.isDisplayed();},5000);
+		 return waitForCondition(Driver->{return this.lblTrendingWithoutKeyword.isDisplayed();},50000);
 	 }
 	 
 	/**

@@ -207,12 +207,13 @@ public class LoginPage extends BasePage {
 		getReusableActionsInstance().scrollToElement(this.btnSignInMainMenu);
 		getReusableActionsInstance().staticWait(300);
 		String lsUserMsg=this.btnSignInMainMenu.getText();
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignOutNav);
-		this.getReusableActionsInstance().clickIfAvailable(this.btnSignOutNav);
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignOut);
+		this.getReusableActionsInstance().clickIfAvailable(this.btnSignOut);
 		//this.btnSignOutNav.click();
 				
 		return waitForCondition(Driver->{return !lsUserMsg.equalsIgnoreCase(this.btnSignInMainMenu.getText());},30000);
 	}
+	
 	
 	/**
 	 * Method to hover on Sign in heading menu	  
