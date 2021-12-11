@@ -444,9 +444,11 @@ public class GlobalHeaderPage extends BasePage{
 		 lsHrefInBlackHeader=this.removeLastSlashFromUrl(lsHrefInBlackHeader);
 		 
 		 blackItem.click();
-		 String lsUrlInSilverHeader=this.removeLastSlashFromUrl(this.URL());
-		 //this.waitForPageToLoad();
+		 this.waitForPageToLoad();
 		 (new GlobalFooterPage(this.getDriver())).waitForPageLoading();
+			
+		 String lsUrlInSilverHeader=this.removeLastSlashFromUrl(this.URL());
+		 //
 		 
 			if(bCheckUrl) {
 			 reporter.softAssert(lsUrlInSilverHeader.equalsIgnoreCase(lsHrefInBlackHeader), "The Url of "+lsUrlInSilverHeader+"  after clicking "+lsTitle+" in Black headers is equal to the href of "+lsHrefInBlackHeader, "The Url of "+lsUrlInSilverHeader+"  after clicking "+lsTitle+" in Black headers is not equal to the href of "+lsHrefInBlackHeader);
