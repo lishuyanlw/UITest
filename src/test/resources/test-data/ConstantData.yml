@@ -79,21 +79,21 @@ searchResultPage:
   lst_SearchOption:
     - filterType: Product
       filterOption: 
-      - ["SHOP BY BRAND","Joan Rivers"]
+      - ["Brand","Joan Rivers"]
       #- ["SHOP BY CLEARANCE","Clearance"]
     - filterType: Price
       filterOption:
-        - ["PRICE","Under $100","Under"]
+        - ["Price","Under $100","Under"]
     - filterType: CombinatedAction
       filterOption: 
-        - ["SIZE","XL"]
-        - ["PRICE","Under $100"]
+        - ["Size","XL"]
+        - ["Price","Under $100"]
     - filterType: SequentialAction
       filterOption: 
-        - ["SHOP BY BRAND","Joan Rivers"]
-        - ["PRICE","Under $100"]
-        - ["SHOP BY COLOUR","Black"]
-  lst_MoreButton: ["SHOP BY BRAND","SHOP BY COLLECTION","SHOP BY COLOUR"]
+        - ["Brand","Joan Rivers"]
+        - ["Price","Under $100"]
+        - ["Shop by colour","Black"]
+  lst_MoreButton: ["Brand","Shop by collection","Shop by colour"]
   lst_DisappearAfterSelectFilter: ["SHOP BY CATEGORY"]
   lnk_product_result: /pages/productresults?
   lbl_ProductRecommendationTitlePage: ["People who viewed this item also viewed","TOP SELLERS"]

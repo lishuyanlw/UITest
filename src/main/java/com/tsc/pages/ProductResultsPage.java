@@ -653,10 +653,10 @@ public class ProductResultsPage extends BasePage{
 		String lsUrl=this.URL();
 		getReporter().reportLog("Url for browser: "+this.getExecutionBrowserName()+ " is: "+lsUrl);
 		if(lsUrl.toLowerCase().contains("dimensions=")) {
-			return lsUrl.contains("dimensions=")&&lsUrl.contains("searchterm=")&&lsUrl.contains(this.getEncodingKeyword(lsKeyword));
+			return lsUrl.toLowerCase().contains("dimensions=")&&lsUrl.toLowerCase().contains("searchterm=")&&lsUrl.contains(this.getEncodingKeyword(lsKeyword));
 		}
 		else {
-			return lsUrl.contains("searchterm=")&&lsUrl.contains(this.getEncodingKeyword(lsKeyword));
+			return lsUrl.toLowerCase().contains("searchterm=")&&lsUrl.contains(this.getEncodingKeyword(lsKeyword));
 		}		
 	}
 
@@ -678,15 +678,7 @@ public class ProductResultsPage extends BasePage{
 	 */
 	public boolean verifyUrlAfterSelectSortStrategy(String lsKeyword,String lsSortKey) {
 		String lsUrl=this.URL();
-		String lsBrowser=System.getProperty("Browser");
-		if(lsBrowser.trim().equalsIgnoreCase("Chrome")) {
-			String lsExpectedUrl="searchterm="+this.getEncodingKeyword(lsKeyword)+"&sortKey="+lsSortKey;
-			return lsUrl.toLowerCase().contains(lsExpectedUrl.toLowerCase());
-		}
-		else {
-			return lsUrl.contains("searchterm=")&&lsUrl.contains(this.getEncodingKeyword(lsKeyword))&&lsUrl.contains("&sortKey="+lsSortKey);
-		}
-
+		return lsUrl.toLowerCase().contains("searchterm=")&&lsUrl.contains(this.getEncodingKeyword(lsKeyword))&&lsUrl.toLowerCase().contains("&sortkey="+lsSortKey);
 	}
 
 	/**
@@ -1181,7 +1173,7 @@ public class ProductResultsPage extends BasePage{
 		Select sortOption= new Select(this.btnSortSelect);
 		sortOption.selectByVisibleText(lsOption.get(1));
 
-		return this.waitForPageLoading();
+		return this.waitForSortingOrFilteringCompleted();
 	}
 
 	/**
@@ -1196,7 +1188,7 @@ public class ProductResultsPage extends BasePage{
 		}
 
 		List<Float> priceList=new ArrayList<Float>();
-		List<String> productNOList=new ArrayList<String>();
+		List<String> productNameList=new ArrayList<String>();
 		for(WebElement element:this.productResultList) {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 
@@ -1204,14 +1196,14 @@ public class ProductResultsPage extends BasePage{
 			float nowPriceValue=this.getFloatFromString(nowPriceText,true);
 
 			priceList.add(nowPriceValue);
-			String productNO=element.findElement(this.byProductItemNO).getText().trim();
-			productNOList.add(productNO);
+			String productName=element.findElement(this.byProductName).getText().trim();
+			productNameList.add(productName);
 		}
 
 		int priceListSize=priceList.size();
 		for(int i=0;i<priceListSize-1;i++) {
 			if(priceList.get(i)<priceList.get(i+1)) {
-				lsErrorMsg="Sort option of Price: Highest first does not work: the price of "+productNOList.get(i)+" is less than "+productNOList.get(i+1);
+				lsErrorMsg="Sort option of Price: Highest first does not work: the price of "+productNameList.get(i)+" is less than "+productNameList.get(i+1);
 				return lsErrorMsg;
 			}
 		}
@@ -1310,13 +1302,14 @@ public class ProductResultsPage extends BasePage{
 	 */
 	public String verifyFilterByPrice(String lsPriceMode,boolean bFirst) {
 		String lsErrorMsg="";
-		if(this.productResultList.size()==0) {
+		
+		if(!this.checkProductResultExisting()) {
 			return lsErrorMsg="No product list";
 		}
 
 		for(WebElement element:this.productResultList) {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-			String productNO=element.findElement(this.byProductItemNO).getText().trim();
+			String productName=element.findElement(this.byProductName).getText().trim();
 
 			String nowPriceText=element.findElement(this.byProductNowPrice).getText().trim();
 			float nowPriceValue=this.getFloatFromString(nowPriceText,false);
@@ -1327,20 +1320,20 @@ public class ProductResultsPage extends BasePage{
 				case "Under":
 					int priceOptionValue=Integer.parseInt(lstPrice.get(0));
 					if(nowPriceValue>=priceOptionValue) {
-						lsErrorMsg="Filter by price does not work for productNO of "+productNO;
+						lsErrorMsg="Filter by price does not work for productName of "+productName;
 					}
 					break;
 				case "Between":
 					int lowPriceOptionValue=Integer.parseInt(lstPrice.get(0));
 					int highPriceOptionValue=Integer.parseInt(lstPrice.get(1));
 					if(nowPriceValue<lowPriceOptionValue||nowPriceValue>highPriceOptionValue) {
-						lsErrorMsg="Filter by price does not work for productNO of "+productNO;
+						lsErrorMsg="Filter by price does not work for productName of "+productName;
 					}
 					break;
 				case "Over":
 					priceOptionValue=Integer.parseInt(lstPrice.get(0));
 					if(nowPriceValue<priceOptionValue) {
-						lsErrorMsg="Filter by price does not work for productNO of "+productNO;
+						lsErrorMsg="Filter by price does not work for productName of "+productName;
 					}
 					break;
 			}
