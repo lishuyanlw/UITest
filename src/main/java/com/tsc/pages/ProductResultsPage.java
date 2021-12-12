@@ -91,11 +91,14 @@ public class ProductResultsPage extends BasePage{
 	//Does not work currently
 	@FindBy(xpath = "//div[@class='Footer']//div[contains(@class,'blockPageWrap')]")
 	public WebElement productResultLoadingIndicator;
+	
+	@FindBy(xpath = "//section[@class='tsc-container'][not(nav)][not(*[@class='breadcrumb'])]")
+	public WebElement cntTSCContainer;
 
-	@FindBy(xpath = "//div[@class='plp']//div[@class='plp__wrapper']")
+	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp']//div[@class='plp__wrapper']")
 	public WebElement cntProductResultListContainer;
 	
-	@FindBy(xpath = "//div[@class='plp']//div[@class='plp__product-grid']//div[contains(@class,'plp-card-grid-item')]//div[@class='product-card']")
+	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp']//div[@class='plp__product-grid']//div[contains(@class,'plp-card-grid-item')]//div[@class='product-card']")
 	public List<WebElement> productResultList;
 
 	//Selected filters
@@ -479,14 +482,22 @@ public class ProductResultsPage extends BasePage{
 
 		String lsMessage=this.lblSearchResultMessage.getText().trim();
 		this.lsSearchResultMessage=lsMessage;
-		if(!lsMessage.contains(lsKeyword)) {
-			return "Search result message result of '"+lsMessage+"' does not contain keyword of "+lsKeyword;
+		
+		if(lsKeyword.isEmpty()) {
+			if(!lsMessage.contains(expectedMessage)) {
+				return "Search result message result of '"+lsMessage+"' does not contain expected message for no search results";
+			}
 		}
 		else {
 			if(!lsMessage.contains(expectedMessage)) {
-				return "Search result message result of '"+lsMessage+"' does not contain expected message of "+expectedMessage;
+				return "Search result message result of '"+lsMessage+"' does not contain expected message for returned search results";
 			}
+			
+			if(!lsMessage.contains(lsKeyword)) {
+				return "Search result message result of '"+lsMessage+"' does not contain keyword of "+lsKeyword;
+			}			
 		}
+		
 		return "";
 	}
 
@@ -500,6 +511,20 @@ public class ProductResultsPage extends BasePage{
 
 		return lblItemPerPageDefaultSettingNumber.getText().trim().equalsIgnoreCase(defaultSettingPageNumber);
 	}
+	
+	/**
+	 * This method will verify the search results are not existing.
+	 * @return void
+	 * @author Wei.Li
+	 */
+	public void verifySearchResultNotExisting() {
+		if(this.checkProductResultExisting()) {
+			reporter.reportLogFail("The product results are existing");
+		}
+		else {
+			reporter.reportLogFail("The product results are not existing");
+		}
+	}
 
 	/**
 	 * This method will return Product list on the current page.
@@ -507,31 +532,6 @@ public class ProductResultsPage extends BasePage{
 	 */
 	public List<WebElement> getProductList(){
 		return productResultList;
-	}
-
-	/**
-	 * This method will verify the itemNO in search results will just contain those with search product number.
-	 * @param- String lsexpectedItemNO: expected ItemNO
-	 * @return true/false
-	 * @author Wei.Li
-	 */
-	public boolean VerifySearchResultWithProductItemNO(String lsexpectedItemNO) {
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.productItemNOList.get(0));
-		//Wait till we have just one product present on page for running test in sauce-labs
-		waitForCondition(Driver->{return this.productItemNOList.size()==1;},180000);
-		for(WebElement item: this.productItemNOList) {
-			String lsItem=item.getText().trim();
-			List<String> list=this.getNumberFromString(lsItem);
-			String lsFinal="";
-			for(String lsSubItem:list) {
-				lsFinal+=lsSubItem;
-			}
-
-			if(!lsFinal.equalsIgnoreCase(lsexpectedItemNO)) {
-				return false;
-			}
-		}
-		return true;
 	}
 
 	/**
@@ -642,10 +642,7 @@ public class ProductResultsPage extends BasePage{
 	}
 	
 	public int getProductSearchResultsTotalNumber() {
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.txtShowingDynamicContent);
-		String lsShowingText=this.txtShowingDynamicContent.getText().trim();
-		String[] lstSplit=lsShowingText.split(" ");
-		return Integer.parseInt(lstSplit[lstSplit.length-2]);
+		return this.getIntegerFromString(this.getElementInnerText(this.lblProductCountMessage));		
 	}
 
 	/**
@@ -824,7 +821,7 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	public boolean verifyProductPagination() {
-		return this.getDriver().findElements(this.byPagination).size()==1;
+		return checkProductResultPaginationExisting();
 	}
 	
 	/**
@@ -1859,12 +1856,21 @@ public class ProductResultsPage extends BasePage{
 	}
 	
 	/**
-	 * This method will check Product result existance
+	 * This method will check Product result existence
 	 * @return boolean
 	 * @author Wei.Li
 	 */
 	public boolean checkProductResultExisting() {
-		return this.checkChildElementExistingByAttribute(this.cntProductResultListContainer,"class","plp__product-grid");
+		return this.checkChildElementExistingByAttribute(this.cntTSCContainer,"class","plp");
+	}
+	
+	/**
+	 * This method will check Product result existence
+	 * @return boolean
+	 * @author Wei.Li
+	 */
+	public boolean checkProductResultPaginationExisting() {
+		return this.checkChildElementExistingByAttribute(this.cntTSCContainer,"class","plp__pagination");
 	}
 	
 	/**
