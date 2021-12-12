@@ -1149,7 +1149,7 @@ public class ProductResultsPage extends BasePage{
 			return false;
 		}
 
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSortBy);
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSortSelect);
 		this.btnSortSelect.click();
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.sortByOptionList.get(0));
 
