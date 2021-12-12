@@ -23,9 +23,6 @@ public class ProductResultsPage extends BasePage{
 
 	//Search results return message
 	@FindBy(xpath = "//section[@class='tsc-container']//*[@class='plp__showing-results']|//section[@class='tsc-container']//div[@class='plp-no-search-results__copy__heading']|//section[@class='tsc-container']//div[@class='plp-no-search-results__copy__heading']")
-	public WebElement searchResultLoadingIndicator;
-	
-	@FindBy(xpath = "//section[@class='tsc-container']//*[@class='plp__showing-results']|//section[@class='tsc-container']//div[@class='plp-no-search-results__copy__heading']")
 	public WebElement lblSearchResultMessage;
 
 	@FindBy(xpath = "//section[@class='tsc-container']//*[@class='plp__showing-results']")
@@ -369,7 +366,7 @@ public class ProductResultsPage extends BasePage{
 		this.waitForPageToLoad();
 			
 		return waitForCondition(Driver->{
-			return this.searchResultLoadingIndicator.isDisplayed();
+			return this.lblSearchResultMessage.isDisplayed();
 			},90000);
 	}
 
@@ -428,7 +425,7 @@ public class ProductResultsPage extends BasePage{
 		this.waitForPageToLoad();
 		
 		return waitForCondition(Driver->{
-			return this.searchResultLoadingIndicator.isDisplayed();
+			return this.lblSearchResultMessage.isDisplayed();
 			},90000);
 	}
 
@@ -467,8 +464,9 @@ public class ProductResultsPage extends BasePage{
 	 */
 	public boolean verifyShowingTextPatternInFilters() {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblShowing);
-		String showingText=this.lblShowing.getText().toUpperCase()+" "+this.txtShowingDynamicContent.getText();
-		return showingText.matches("SHOWING: (\\d+) - (\\d+) of (\\d+) Items");
+		String showingText=this.lblShowing.getText()+" "+this.txtShowingDynamicContent.getText();
+	
+		return showingText.matches("Displaying items: (\\d+) - (\\d+) out of (\\d+)");
 	}
 
 	/**
