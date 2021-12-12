@@ -522,7 +522,7 @@ public class ProductResultsPage extends BasePage{
 			reporter.reportLogFail("The product results are existing");
 		}
 		else {
-			reporter.reportLogFail("The product results are not existing");
+			reporter.reportLogPass("The product results are not existing");
 		}
 	}
 
@@ -596,6 +596,10 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	public String judgeTestModel() {
+		if(!this.checkProductResultExisting()) {
+			return "NoSearchResult";
+		}
+		
 		String lsUrl=this.URL();
 		if(!lsUrl.contains("dimensions=")) {
 			return "BannerImageSearch";
@@ -606,39 +610,12 @@ public class ProductResultsPage extends BasePage{
 		}
 		
 		int totalNumber=getProductSearchResultsTotalNumber();
-		if(totalNumber==0) {
-			return "NoSearchResult";
-		}
-		else if(totalNumber==1){
+		if(totalNumber==1){
 			return "ProductNumberSearch";
 		}
 		else{
 			return "NormalSearch";
 		}
-		
-//		if(lsUrl.contains("dimensions=0&")) {
-//			if(getReusableActionsInstance().isElementVisible(this.lblSearchResultMessage)) {
-//				getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSearchResultMessage);
-//				if(this.lblSearchResultMessage.getText().trim().contains("Please search again")) {
-//					return "NoSearchResult";
-//				}
-//				else {
-//					if(getReusableActionsInstance().isElementVisible(this.lblShowing)) {
-//						if(this.productResultList.size()!=1) {
-//							return "NormalSearch";
-//						}
-//						else {
-//							return "ProductNumberSearch";
-//						}
-//					}
-//				}
-//			}
-//		}
-//		else {
-//			return "BannerImageSearch";
-//		}
-//
-//		return "NormalSearch";
 	}
 	
 	public int getProductSearchResultsTotalNumber() {
@@ -722,21 +699,19 @@ public class ProductResultsPage extends BasePage{
 	}
 
 	/**
-	 * This method will verify Brand tile/text contains keyword.
-	 * @param- String lsKeyword: input keyword
+	 * This method will verify Brand title/text contains keyword.
+	 * @param- String lsSection: title/text
 	 * @return true/false
 	 * @author Wei.Li
 	 */
-	public boolean verifyProductBrandContainKeyword(String lsKeyword,String lsSection) {
+	public boolean verifyProductBrandTitleOrText(String lsSection) {
 		boolean bReturn=true;
 		switch(lsSection) {
 			case "Title":
-				getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblProductTitle);
-				bReturn= this.lblProductTitle.getText().toLowerCase().contains(lsKeyword.toLowerCase());
+				bReturn=!this.getElementInnerText(this.lblProductTitle).isEmpty();				
 				break;
 			case "Text":
-				getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblProductText);
-				bReturn= this.lblProductTitle.getText().toLowerCase().contains(lsKeyword.toLowerCase());
+				bReturn=!this.getElementInnerText(this.lblProductText).isEmpty();				
 				break;
 		}
 		return bReturn;
