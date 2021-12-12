@@ -47,9 +47,6 @@ public class SR_TC08_Verify_ProductSearchResult_PaginationTest extends BaseTest{
 		}
 						
 		reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(), "Showing text pattern in filters is correct", "Showing text pattern in filters is incorrect");
-		if(!(System.getProperty("Device").equalsIgnoreCase("Mobile"))) {
-			reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting), "The default setting of items per page is "+lsSearchResultPageDefaultSetting, "The default setting of items per page isn't "+lsSearchResultPageDefaultSetting);
-		}
 		
 		productList=getProductResultsPageThreadLocal().getProductList();
 		if(productList.size()>0) {

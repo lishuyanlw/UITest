@@ -36,9 +36,6 @@ public class SR_TC09_Verify_ProductSearchResult_SpecialOffersAndRecomendationSec
 
         // Verifying Search Result message and default Page Number Count on Page
 		reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(),"Showing text pattern in filters is correct","Showing text pattern in filters is incorrect");
-		if(!(System.getProperty("Device").equalsIgnoreCase("Mobile"))) {
-			reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting), "The default setting of items per page is "+lsSearchResultPageDefaultSetting, "The default setting of items per page isn't "+lsSearchResultPageDefaultSetting);
-		}
 
 		// Verifying Product List displayed for mandatory information like Product, Name, Image, Price, Code
 		productList=getProductResultsPageThreadLocal().getProductList();
