@@ -22,6 +22,9 @@ public class ProductResultsPage extends BasePage{
 	}
 
 	//Search results return message
+	@FindBy(xpath = "//section[@class='tsc-container']//*[@class='plp__showing-results']|//section[@class='tsc-container']//div[@class='plp-no-search-results__copy__heading']|//section[@class='tsc-container']//div[@class='plp-no-search-results__copy__heading']")
+	public WebElement searchResultLoadingIndicator;
+	
 	@FindBy(xpath = "//section[@class='tsc-container']//*[@class='plp__showing-results']|//section[@class='tsc-container']//div[@class='plp-no-search-results__copy__heading']")
 	public WebElement lblSearchResultMessage;
 
@@ -351,11 +354,7 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	public boolean getSearchResultLoad(String searchKeyword) {
-		String lsUrl=this.URL();
 		GlobalHeaderPage globalHeader=new GlobalHeaderPage(this.getDriver());
-		//this.getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeader.searchBox);
-		//this.clearContent(globalHeader.searchBox);
-		//char[] inputString = searchKeyword.toCharArray();
 		waitForCondition(Driver->{
 			return globalHeader.searchBox.isDisplayed();
 		},90000);
@@ -364,32 +363,14 @@ public class ProductResultsPage extends BasePage{
 		this.getReusableActionsInstance().clickIfAvailable(globalHeader.searchBox,3000);
 		for(String inputText:data){
 			globalHeader.searchBox.sendKeys(inputText);
-			this.getReusableActionsInstance().staticWait(1000);
+			this.getReusableActionsInstance().staticWait(300);
 		}
-		//globalHeader.searchBox.sendKeys(searchKeyword);
-		//globalHeader.btnSearchSubmit.click();
-		this.getReusableActionsInstance().staticWait(3000);
-//		waitForCondition(Driver->{
-//			return this.searchResultSection.isDisplayed();
-//		},90000);
-
 		this.pressEnterKey(globalHeader.searchBox);
-
-		this.getReusableActionsInstance().staticWait(8000);
-//		waitForCondition(Driver->{
-//			return this.lblShowing.isDisplayed();
-//		},90000);
+		this.waitForPageToLoad();
 			
-//		return waitForCondition(Driver->{
-//			String lsStyle=this.productResultLoadingIndicator.getAttribute("style");
-//			if(lsStyle==null||lsStyle.isEmpty()) {
-//				lsStyle="display: none;";
-//			}
-//			return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;")&&!lsUrl.equalsIgnoreCase(this.URL());
-//			},90000);
-		
-		return true;
-
+		return waitForCondition(Driver->{
+			return this.searchResultLoadingIndicator.isDisplayed();
+			},90000);
 	}
 
 	/**
@@ -444,15 +425,11 @@ public class ProductResultsPage extends BasePage{
 				break;
 		}
 		this.getReusableActionsInstance().staticWait(8000);
-//		getReusableActionsInstance().staticWait(300);
-//		return waitForCondition(Driver->{
-//			String lsStyle=this.productResultLoadingIndicator.getAttribute("style");
-//			if(lsStyle==null||lsStyle.isEmpty()) {
-//				lsStyle="display: none;";
-//			}
-//			return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;")&&!lsUrl.equalsIgnoreCase(this.URL());},90000);
+		this.waitForPageToLoad();
 		
-		return true;
+		return waitForCondition(Driver->{
+			return this.searchResultLoadingIndicator.isDisplayed();
+			},90000);
 	}
 
 	/**
