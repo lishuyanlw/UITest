@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import java.sql.Driver;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -319,8 +320,12 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
         WebElement headingWebElement = FlyoutHeadingsMobile.findElement(By.xpath(xpathHeading));
         getReusableActionsInstance().javascriptScrollByVisibleElement(headingWebElement);
         getReusableActionsInstance().scrollToElement(headingWebElement);
-        headingWebElement.click();
-        this.popularBrandsMobile.click();
+        getReusableActionsInstance().clickIfAvailable(headingWebElement);
+        waitForCondition(Driver->{return this.popularBrandsMobile.isEnabled();},60000);
+        getReusableActionsInstance().clickIfAvailable(this.popularBrandsMobile);
+        //headingWebElement.click();
+        //this.popularBrandsMobile.click();
+        getReusableActionsInstance().waitForPageLoad();
         WebElement linkPopularBrand = listPopularBrandsonlyLinks.get(0);
         waitForCondition(Driver -> {
             return (linkPopularBrand.getAttribute("href").contains(first_flyout_menu_text.get()) && linkPopularBrand.getAttribute("class").contains(section.split(" ")[0].trim().toLowerCase()));
@@ -329,7 +334,8 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
         if (verifyElementProperty(shopAllPopularBrands, "Link")) {
             getReusableActionsInstance().javascriptScrollByVisibleElement(shopAllPopularBrands);
             getReusableActionsInstance().scrollToElement(shopAllPopularBrands);
-            shopAllPopularBrands.click();
+            getReusableActionsInstance().clickIfAvailable(shopAllPopularBrands);
+            getReusableActionsInstance().waitForPageLoad();
             currentUrl = getDriver().getCurrentUrl();
         }
         return currentUrl;
@@ -337,14 +343,16 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
 
     @Override
     public List<WebElement> getFlyoutHeadingsWebelement() {
-        this.menuButton.click();
+        getReusableActionsInstance().clickIfAvailable(this.menuButton);
+        getReusableActionsInstance().waitForPageLoad();
         List<WebElement> headingElements = FlyoutHeadingsMobile.findElements(By.xpath("//span[contains(@class,'mega-nav-mobile__nav-items__item-text')]"));
         return headingElements;
     }
 
     @Override
     public WebElement getWebElementFlyoutHeading(String headingName) {
-        this.menuButton.click();
+        getReusableActionsInstance().clickIfAvailable(this.menuButton);
+        getReusableActionsInstance().waitForPageLoad();
         String xpathHeading = createXPath("//li[contains(@class,'mobile__nav-items')]//span[contains(text(),'{0}')]", headingName);
         WebElement headingWebElement = FlyoutHeadingsMobile.findElement(By.xpath(xpathHeading));
         return headingWebElement;
