@@ -15,23 +15,18 @@ public class LoginPage_Mobile extends LoginPage{
     @FindBy(xpath = "//div[contains(@class,'secondary-navigation__rhs-account')]//a//*[@class='secondary-navigation__rhs-account-icon']")
     public WebElement SigninIcon;
 
+    @FindBy(xpath="//div[contains(@class,'secondary-navigation__rhs-account')]//a[contains(@role,'button') and contains(@class,'sign')]")
+    public WebElement btnSignOutButton;
+
     @Override
     public boolean SignOut() {
-        if(System.getProperty("Browser").toLowerCase().contains("firefox")) {
-            getReusableActionsInstance().javascriptScrollByVisibleElement(btnSignInMainMenu);
-        }
+        getReusableActionsInstance().javascriptScrollByVisibleElement(btnSignInMainMenu);
         getReusableActionsInstance().scrollToElement(btnSignInMainMenu);
         this.SigninIcon.click();
         getReusableActionsInstance().staticWait(2000);
-            //getReusableActionsInstance().javascriptScrollByVisibleElement(this.cntSignInPopover);
-        return super.SignOut();
-       /* getReusableActionsInstance().scrollToElement(this.btnSignInMainMenu);
-        getReusableActionsInstance().staticWait(300);
-        String lsUserMsg=this.btnSignInMainMenu.getText();
-        getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignOutNav);
-        this.btnSignOutNav.click();
-
-        return waitForCondition(Driver->{return !lsUserMsg.equalsIgnoreCase(this.btnSignInMainMenu.getText());},30000);*/
+        getReusableActionsInstance().clickIfAvailable(this.btnSignOutButton);
+        waitForPageToLoad();
+        return waitForCondition(Driver->{return super.inputUserName.isDisplayed();},90000);
     }
 
     @Override

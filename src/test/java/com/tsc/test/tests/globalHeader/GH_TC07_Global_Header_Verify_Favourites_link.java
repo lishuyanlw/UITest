@@ -29,7 +29,8 @@ public class GH_TC07_Global_Header_Verify_Favourites_link extends BaseTest {
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl), "TSC url is correct", "TSC url is incorrect");
 		reporter.reportLog("Home Page");
 
-		//verify Favorite Link for Logged in user
+		//verify Favorite Link
+		getglobalheaderPageThreadLocal().waitForPageLoad();
 		String headerLinkName = lnkFavoriteElement.getText();
 
 		if(headerLinks.get(headerLinkName).get(0).equalsIgnoreCase(headerLinkName)){
@@ -37,6 +38,7 @@ public class GH_TC07_Global_Header_Verify_Favourites_link extends BaseTest {
 		}
 
 		if(getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword,lsFirstname)) {
+			getglobalheaderPageThreadLocal().waitForPageLoad();
 			String urlFavoritesLandingpageForLoggedinUser=getglobalheaderPageThreadLocal().getUrlForLandingpage(lnkFavoriteElement);
 			reporter.softAssert(urlFavoritesLandingpageForLoggedinUser.contains(urlFavoritesLandingpageLoggedInUser), "Favourites link's Landing page url is correct for logged in user.", "Favourites link's Landing page url is incorrect for logged in user.");
 		}else {
@@ -52,7 +54,6 @@ public class GH_TC07_Global_Header_Verify_Favourites_link extends BaseTest {
 			reporter.softAssert(urlFavoritesLandingPageLoggedInUser.contains(urlFavoritesLandingpageAnonymousUser), "Favourites link's Landing page url is correct for anonymous user.", "Favourites link's Landing page url is incorrect for anonymous user.");
 			reporter.softAssert(PageHeadingSignin,lblSignInpageHeading, "Sign In page heading is correct for anonymous user.", "Sign In page heading  is incorrect for anonymous user.");
 		}else {
-
 			reporter.reportLogFail("SignOut failed");
 		}
 	}
