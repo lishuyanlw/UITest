@@ -9,10 +9,9 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import org.openqa.selenium.By;
 import com.tsc.pages.base.BasePage;
+
 public class GlobalHeaderPage extends BasePage{
-	
-	
-	
+
 	public GlobalHeaderPage(WebDriver driver) {
 		super(driver);
 	}
@@ -626,15 +625,15 @@ public class GlobalHeaderPage extends BasePage{
 	 * @author Shruti Desai
 	 */
 	public String getUrlAfterclickingFlyoutHeading(String headingName) {
-		 String currentUrl;
-		 String xpathHeading =createXPath("//span[contains(text(),'{0}')]" ,headingName);
-		 WebElement headingWebElement = FlyoutHeadings.findElement(By.xpath(xpathHeading));
-		 getReusableActionsInstance().javascriptScrollByVisibleElement(headingWebElement);
-		 getReusableActionsInstance().scrollToElement(headingWebElement);
-		 headingWebElement .click();
-		 (new GlobalFooterPage(this.getDriver())).waitForPageLoading();
-		 currentUrl = getDriver().getCurrentUrl();
-			return currentUrl;
+		String currentUrl;
+		String xpathHeading =createXPath("//span[contains(text(),'{0}')]" ,headingName);
+		WebElement headingWebElement = FlyoutHeadings.findElement(By.xpath(xpathHeading));
+		getReusableActionsInstance().javascriptScrollByVisibleElement(headingWebElement);
+		getReusableActionsInstance().scrollToElement(headingWebElement);
+		getReusableActionsInstance().clickIfAvailable(headingWebElement);
+		(new GlobalFooterPage(this.getDriver())).waitForPageLoading();
+		currentUrl = getDriver().getCurrentUrl();
+		return currentUrl;
 	}
 	
 	/*Method to apply static wait
@@ -642,7 +641,6 @@ public class GlobalHeaderPage extends BasePage{
 	 */
 	public void staticwait() {
 		applyStaticWait(2000);
-
 	}
 
 	/*Method to get WebElement for flyout heading
