@@ -80,8 +80,9 @@ public class GH_TC02_Verify_Global_Header_SignIn_Favorite_ShoppingCartBag extend
 		}
 		//escape is not working in jenkins so alternatively used go back home page
 		//basePage.pressEscapeKey();
-		getglobalheaderPageThreadLocal().goBackHomePage();
-		
+		//getglobalheaderPageThreadLocal().goBackHomePage();
+		this.getDriver().navigate().refresh();
+
 		reporter.reportLog("Verify Sign in section");
 
 		List<String> lstSignInPopover=TestDataHandler.constantData.getHeaderSection().getLst_SignInPopover();

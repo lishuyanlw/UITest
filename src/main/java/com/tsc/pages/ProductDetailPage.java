@@ -747,7 +747,7 @@ public class ProductDetailPage extends BasePage {
 	 */
 	public boolean checkIfAutoPlayVideoStatusIsON() {
 		String lsStyle=this.btnAutoPlayVideo.getAttribute("style");		
-		return lsStyle.contains("background:#000")||lsStyle.contains("background: rgb(0, 0, 0)");		
+		return lsStyle.contains("background:#000")||lsStyle.contains("background: rgb(0, 0, 0)")||lsStyle.contains("background-color: rgb(0, 0, 0)");
 	}
 	
 	/**
