@@ -45,12 +45,16 @@ pipeline {
 
     triggers {
 
-        parameterizedCron(env.BRANCH_NAME == 'master' ?'''
+        parameterizedCron(env.BRANCH_NAME == 'CER_674_GlobalHeader_JenkinsTestExecution' ?'''
                     # leave spaces where you want them around the parameters. They'll be trimmed.
                     # we let the build run with the default name
                     
-		    		#20 19 * * 1-5 %Browser=saucechrome;Language=en;IndividualTests=Validate_Header_Wireless_Level1_Home_Page;ThreadCount=1;TunnelRequired=No;Environment=prod;TestProfile=RogersForBusiness(R4B)
-
+		    		30 20 * * 1 %Browser=saucefirefox;Language=en;Groups=GlobalHeader;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
+		    		30 21 * * 1 %Browser=saucesafari;Language=en;Groups=GlobalHeader;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
+		    		30 22 * * 1 %Browser=saucechrome;Language=en;Groups=GlobalHeader;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
+		    		30 23 * * 1 %Browser=sauceandroidchrome;Language=en;Groups=GlobalHeader_Mobile;ThreadCount=1;TunnelRequired=Yes;Device=Mobile;TestProfile=TSCWF-Automation
+		    		30 00 * * 2 %Browser=sauceioschrome;Language=en;Groups=GlobalHeader_Mobile;ThreadCount=1;TunnelRequired=Yes;Device=Mobile;TestProfile=TSCWF-Automation
+		    		
                 ''':'')
     }
 
