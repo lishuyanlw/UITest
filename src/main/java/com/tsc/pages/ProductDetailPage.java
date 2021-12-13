@@ -872,9 +872,11 @@ public class ProductDetailPage extends BasePage {
 		this.getReusableActionsInstance().staticWait(500);
 
 		String lsThumbnail=this.getImageNameFromThumbnailOrZoomImagePath(lnkCurrentZoomImage.getAttribute("href"));
-		String lsZoomImage=this.getImageNameFromThumbnailOrZoomImagePath(imgCurrentThumbnail.getAttribute("src"));
+		if (!(System.getProperty("Device").equalsIgnoreCase("Tablet"))) {
+			String lsZoomImage = this.getImageNameFromThumbnailOrZoomImagePath(imgCurrentThumbnail.getAttribute("src"));
+			reporter.softAssert(lsThumbnail.equalsIgnoreCase(lsZoomImage), "The Thumbnail image is the same as the Zoom image with changing Swatch style", "The Thumbnail image is not the same as the Zoom image with changing Swatch style");
+		}
 
-		reporter.softAssert(lsThumbnail.equalsIgnoreCase(lsZoomImage), "The Thumbnail image is the same as the Zoom image with changing Swatch style", "The Thumbnail image is not the same as the Zoom image with changing Swatch style");
 		if (System.getProperty("Device").equalsIgnoreCase("Desktop")) {
 			reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblImageDisclaim), "The Image disclaim message section is displaying correctly", "The Image disclaim message section is not displaying correctly");
 		}

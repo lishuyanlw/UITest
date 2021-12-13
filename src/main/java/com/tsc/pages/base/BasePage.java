@@ -8,6 +8,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -34,16 +35,16 @@ import utils.Reporter;
 
 import utils.ReusableActions;
 
-	/**
-	 * The type Base page class.
-	 */
-	public class BasePage {
-		
+/**
+ * The type Base page class.
+ */
+public class BasePage {
+
 	protected static Reporter reporter;
-	
+
 	/**
 	 * The Wait.
-	 */	
+	 */
 	protected WebDriverWait wait;
 	/**
 	 * The Driver.
@@ -65,6 +66,7 @@ import utils.ReusableActions;
 	 * The Reusable actions.
 	 */
 	private static final ThreadLocal<ReusableActions> reusableActionsThreadLocal = new ThreadLocal<>();
+
 
 	/**
 	 * Instantiates a new Base page class.
@@ -97,7 +99,7 @@ import utils.ReusableActions;
 	public static Reporter getReporter() {
 		return reporter;
 	}
-	
+
 	/**
 	 * Gets driver url.
 	 * @return the driver url
@@ -167,7 +169,7 @@ import utils.ReusableActions;
 						+ "<br /> <b>Actual URL</b>: " + getDriver().getCurrentUrl().toString());
 		reporter.softAssert(verifyLinks(), "Page loaded properly ", "Page is Broken");
 	}
-	
+
 	/**
 	 * Verify that loaded page should return response code less 400
 	 * @return false if response code greater than or equal to 400 else true
@@ -222,12 +224,12 @@ import utils.ReusableActions;
 	public void deleteSessionStorage() {
 		getDriver().manage().deleteCookieNamed("Analytics_Test_Filter");
 	}
-	
+
 	public String getCookieValue(String cookieName) {
 		Cookie returnCoookie = getDriver().manage().getCookieNamed(cookieName);
 		return returnCoookie.getValue();
 	}
-	
+
 	public void waitForPageToLoad() {
 		ExpectedCondition<Boolean> javascriptDone = new ExpectedCondition<Boolean>() {
 			@Override
@@ -242,102 +244,104 @@ import utils.ReusableActions;
 		WebDriverWait wait = new WebDriverWait(getDriver(), 40);
 		wait.until(javascriptDone);
 	}
-	
+
 	public void navigateBack() {
 		waitForPageToLoad();
 		getDriver().navigate().back();
 		waitForPageToLoad();
 	}
-	
+
 	/**
 	 * This method will navigate to a specific URL using ReusableActions method.
 	 * @return void
 	 * @author Wei.Li
-	 */	
+	 */
 	public void navigateToURL(String strURL) {
 		getReusableActionsInstance().openSpecificUrl(strURL,30);
 
 	}
-	
+
 	/**
 	 * This method will implement explicit wait using Lambda function
-	 * @param 
+	 * @param
 	 * 1. Function<WebDriver,Boolean> func: Lambda expression
 	 * 2. int timeOutInMillis: wait time in millisecond
 	 * @return true/false
 	 * @author Wei.Li
-	 */	
-	public Boolean waitForCondition(Function<WebDriver,Boolean> func, int timeOutInMillis) {    		    
-        return (new WebDriverWait(this.getDriver(), timeOutInMillis/1000)).until( new ExpectedCondition<Boolean>() {
-        	@Override
-            public Boolean apply(WebDriver d) {
-                return func.apply(d);            	
-            }
-        });
-    }
-	
+	 */
+	public Boolean waitForCondition(Function<WebDriver,Boolean> func, int timeOutInMillis) {
+		return (new WebDriverWait(this.getDriver(), timeOutInMillis/1000)).until( new ExpectedCondition<Boolean>() {
+			@Override
+			public Boolean apply(WebDriver d) {
+				return func.apply(d);
+			}
+		});
+	}
+
 	/**
 	 * This method will get base URL settings in gradle.properties
 	 * @return String: base URL
 	 * @author Wei.Li
-	 */	
-	public String getBaseURL() {    		    
-        String lsBaseURL=System.getProperty("QaUrl");
-        if(lsBaseURL.endsWith("/")) {
-        	return lsBaseURL.substring(0,lsBaseURL.length()-1);
-        }
-        return lsBaseURL;
-    }
-	
+	 */
+	public String getBaseURL() {
+		String lsBaseURL=System.getProperty("QaUrl");
+		if(lsBaseURL.endsWith("/")) {
+			return lsBaseURL.substring(0,lsBaseURL.length()-1);
+		}
+		return lsBaseURL;
+	}
+
 	/**
 	 * This method will verify the page loading by url changes
-	 * @param WebElement element: the element will be clicked	 
+	 * @param WebElement element: the element will be clicked
 	 * @return String: changed url
 	 * @author Wei.Li
-	 */			
+	 */
 	public String waitForPageLoadingByUrlChange(WebElement element) {
 		String currentUrl=getDriver().getCurrentUrl();
 		getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-		waitForCondition(Driver->{return element.isDisplayed();},30000);
-        element.click();
-        waitForCondition(Driver->{return !currentUrl.equalsIgnoreCase(getDriver().getCurrentUrl());},30000);
-        getReusableActionsInstance().waitForPageLoad();
-        getReusableActionsInstance().staticWait(3000);
-        
-        return getDriver().getCurrentUrl();
+		waitForCondition(Driver->{return element.isDisplayed();},90000);
+		getReusableActionsInstance().clickIfAvailable(element);
+		//element.click();
+		waitForCondition(Driver->{return !currentUrl.equalsIgnoreCase(getDriver().getCurrentUrl());},90000);
+		getReusableActionsInstance().waitForPageLoad();
+		getReusableActionsInstance().staticWait(3000);
+
+		return getDriver().getCurrentUrl();
 	}
-	
+
 	/**
 	 * This method will implement Escape key pressing action.
 	 * @return void
 	 * @author Wei.Li
-	 */	
-	 public void pressEscapeKey() {
-		 Robot robot=null;
-		 try {
-			 robot=new Robot();
-		 }
-		 catch(AWTException e){
-			 e.printStackTrace();
-		 }		 
-		 robot.keyPress(KeyEvent.VK_ESCAPE);		
-		 robot.keyRelease(KeyEvent.VK_ESCAPE);
-		/* Actions action = new Actions(getDriver());
+	 */
+	public void pressEscapeKey() {
+		Robot robot=null;
+		try {
+			robot=new Robot();
+		}
+		catch(AWTException e){
+			e.printStackTrace();
+		}
+		robot.keyPress(KeyEvent.VK_ESCAPE);
+		robot.keyRelease(KeyEvent.VK_ESCAPE);
+	}
 
-		 action.sendKeys(Keys.ESCAPE);
-		 action.sendKeys(Keys.ESCAPE);*/
-	 }
-	 
+	public void pressEscapeKeyUsingSendKeys(){
+		Actions action = new Actions(getDriver());
+		action.sendKeys(Keys.ESCAPE).build().perform();
+	}
+
 	/**
 	 * This method will implement ENTER key pressing action.
 	 * @param WebElement element: the action related element
 	 * @return void
 	 * @author Wei.Li
-    */ 
-	 
-	 public void pressEnterKey(WebElement element) {
-		 element.sendKeys(Keys.chord(Keys.ENTER));
-	 }	 
+	 */
+
+	public void pressEnterKey(WebElement element) {
+		element.sendKeys(Keys.chord(Keys.ENTER));
+	}
 
 	/**
 	 * This method will implement CTRL+A+DELETE to clear element contents.
@@ -345,20 +349,20 @@ import utils.ReusableActions;
 	 * @return void
 	 * @author Wei.Li
 	 */
-	 public void clearContent(WebElement element) {
-		 this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-		 this.getReusableActionsInstance().clickIfAvailable(element,3000);
-		 //element.click();
+	public void clearContent(WebElement element) {
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+		this.getReusableActionsInstance().clickIfAvailable(element,3000);
+		//element.click();
 		 /*element.sendKeys(Keys.chord(Keys.CONTROL, "a"));
 		 element.sendKeys(Keys.chord(Keys.DELETE));*/
 
-		 //We are using Action class below instead of above method as for firefox and Safari,
-		 //unwanted character i.e. E000 unicode is added at start of string
-		 Actions actions = new Actions(getDriver());
-		 actions.keyDown(Keys.CONTROL).sendKeys("a").keyUp(Keys.CONTROL).sendKeys(Keys.DELETE).build().perform();
-	 }
- 
-	//Get the URL 			
+		//We are using Action class below instead of above method as for firefox and Safari,
+		//unwanted character i.e. E000 unicode is added at start of string
+		Actions actions = new Actions(getDriver());
+		actions.keyDown(Keys.CONTROL).sendKeys("a").keyUp(Keys.CONTROL).sendKeys(Keys.DELETE).build().perform();
+	}
+
+	//Get the URL
 	public String URL() {
 		return this.removeLastSlashFromUrl(getDriver().getCurrentUrl());
 	}
@@ -369,97 +373,97 @@ import utils.ReusableActions;
 	 * @return the list of extracted numbers
 	 * @author Wei.Li
 	 */
-    public List<String> getNumberFromString(String lsTarget) {
-        Pattern p = Pattern.compile("\\d+");
-        Matcher m = p.matcher(lsTarget);
-        
-        List<String> list=new ArrayList<String>();
-        while(m.find()) {
-        	String lsGroup=m.group();
-        	list.add(lsGroup);         	
-        }
-        
-        return list;
-    }
-    
-    /**
+	public List<String> getNumberFromString(String lsTarget) {
+		Pattern p = Pattern.compile("\\d+");
+		Matcher m = p.matcher(lsTarget);
+
+		List<String> list=new ArrayList<String>();
+		while(m.find()) {
+			String lsGroup=m.group();
+			list.add(lsGroup);
+		}
+
+		return list;
+	}
+
+	/**
 	 * This method will judge if ChildElement is visible.
 	 * @return true/false
 	 * @author Sachin.Sharma
-	 */	
-    public Boolean isChildElementVisible(WebElement element, String domProperty) {
-        Object data = element.getAttribute(domProperty);
-        if(data.equals("") || data == null) {
-           return false;
-        }
-        switch(domProperty){
-            case "innerText":
-                return true;
-            case "childElementCount":
-                if(Integer.valueOf((String) data) > 1) {
-                    return true;
-             }
-        }
-        return false;
-     }
-    
+	 */
+	public Boolean isChildElementVisible(WebElement element, String domProperty) {
+		Object data = element.getAttribute(domProperty);
+		if(data.equals("") || data == null) {
+			return false;
+		}
+		switch(domProperty){
+			case "innerText":
+				return true;
+			case "childElementCount":
+				if(Integer.valueOf((String) data) > 1) {
+					return true;
+				}
+		}
+		return false;
+	}
+
 	/**
 	 * This method will return childElementCount.
-	 * @param WebElement parent: parent element 
+	 * @param WebElement parent: parent element
 	 * @author Wei.Li
-	 */		
+	 */
 	public long getChildElementCount(WebElement parent) {
 		JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
 		long childSize= (long) jse.executeScript("return arguments[0].childElementCount;", parent);
-				
-		return childSize;		
+
+		return childSize;
 	}
-	
+
 	/**
 	 * This method will get element attribute.
-	 * @param WebElement element: element 
+	 * @param WebElement element: element
 	 * @author Wei.Li
-	 */		
+	 */
 	public String getChildElementAttribute(WebElement element,String lsAttribute) {
 		JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
-		return (String)jse.executeScript("return arguments[0].getAttribute(arguments[1]);", element,lsAttribute);				
+		return (String)jse.executeScript("return arguments[0].getAttribute(arguments[1]);", element,lsAttribute);
 	}
-	
+
 	/**
 	 * This method will set element attribute.
-	 * @param WebElement parent: parent element 
+	 * @param WebElement parent: parent element
 	 * @author Wei.Li
-	 */		
+	 */
 	public void setChildElementAttribute(WebElement parent,String lsAttribute,String lsValue) {
 		JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
-		jse.executeScript("return arguments[0].setAttribute(arguments[1],arguments[2]);", parent,lsAttribute,lsValue);				
+		jse.executeScript("return arguments[0].setAttribute(arguments[1],arguments[2]);", parent,lsAttribute,lsValue);
 	}
-	
+
 	/**
 	 * This method will return childElement.
-	 * @param WebElement parent: parent element 
+	 * @param WebElement parent: parent element
 	 * @return List<WebElement>: children element
 	 * @author Wei.Li
-	 */		
+	 */
 	@SuppressWarnings("unchecked")
 	public List<WebElement> getChildrenList(WebElement parent) {
 		JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
-		return (List<WebElement>) jse.executeScript("return arguments[0].children;", parent);			
+		return (List<WebElement>) jse.executeScript("return arguments[0].children;", parent);
 	}
-	
+
 	/**
 	 * This method will check if a childElement is existing by some specific Attribute.
-	 * @param WebElement parent: parent element 
+	 * @param WebElement parent: parent element
 	 * @param String lsAttribute: Attribute
-	 * @param String lsAttributeValue: Attribute value 
+	 * @param String lsAttributeValue: Attribute value
 	 * @return boolean
 	 * @author Wei.Li
-	 */		
+	 */
 	public boolean checkChildElementExistingByAttribute(WebElement parent,String lsAttribute,String lsAttributeValue) {
-		List<WebElement> lstChild=this.getChildrenList(parent);		
-		for(WebElement child:lstChild) {			
-			if(this.hasElementAttribute(child,lsAttribute)) {				
-				String lsValue=this.getChildElementAttribute(child,lsAttribute).trim();				
+		List<WebElement> lstChild=this.getChildrenList(parent);
+		for(WebElement child:lstChild) {
+			if(this.hasElementAttribute(child,lsAttribute)) {
+				String lsValue=this.getChildElementAttribute(child,lsAttribute).trim();
 				if(lsValue.isEmpty()||lsValue==null) {
 					continue;
 				}
@@ -479,20 +483,20 @@ import utils.ReusableActions;
 						else {
 							continue;
 						}
-					}					
+					}
 				}
 			}
-		}	
+		}
 		return false;
 	}
-	
+
 	/**
 	 * This method will check if a childElement is existing by some specific TagName.
-	 * @param WebElement parent: parent element 
+	 * @param WebElement parent: parent element
 	 * @param String lsTagName: TagName
 	 * @return boolean
 	 * @author Wei.Li
-	 */	
+	 */
 	public boolean checkChildElementExistingByTagName(WebElement parent,String lsTagName) {
 		List<WebElement> lstChild=this.getChildrenList(parent);
 		for(WebElement child:lstChild) {
@@ -502,89 +506,89 @@ import utils.ReusableActions;
 		}
 		return false;
 	}
-	
+
 	/**
 	 * This method will identify if the element has a specific Attribute.
 	 * @param WebElement element: the element
 	 * @param String lsAttribute: the Attribute
 	 * @return true/false
 	 * @author Wei.Li
-	 */		
+	 */
 	public  boolean hasElementAttribute(WebElement element,String lsAttribute) {
 		JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
-		return (boolean) jse.executeScript("return arguments[0].hasAttribute(arguments[1]);", element,lsAttribute);			
+		return (boolean) jse.executeScript("return arguments[0].hasAttribute(arguments[1]);", element,lsAttribute);
 	}
-	
+
 	/**
 	 * This method will split keyword using space.
 	 * @param String lsKeyword: input keyword
 	 * @return split array
 	 * @author Wei.Li
-	 */	
+	 */
 	public String[] splitSearchKeyword(String lsKeyword) {
 		return lsKeyword.trim().split(" ");
 	}
-	
-    /**
+
+	/**
 	 * This method will get float from string.
 	 * @param String lsTarget: target string
 	 * @param boolean bHighestFirst
 	 * @return float value
 	 * @author Wei.Li
-	 */	
-    public float getFloatFromString(String lsTarget,boolean bHighestFirst) {
-    	if(lsTarget.contains("-")) {
-    		if(bHighestFirst) {
-    			lsTarget=lsTarget.split("-")[1].trim();
-    		}
-    		else {
-    			lsTarget=lsTarget.split("-")[0].trim();
-    		}    		
-    	}
-    	lsTarget=lsTarget.replace(",", "").trim();
-    	
-    	String regex="\\d+\\.\\d+";
-    	String lsReturn="";
-    	Pattern pattern=Pattern.compile(regex);
-    	Matcher matcher=pattern.matcher(lsTarget);
-    	while(matcher.find())
-    	{
-    	    lsReturn=matcher.group();    	        	   
-    	}
-    	   			
-    	return Float.parseFloat(lsReturn);
-    }
-    
-    /**
+	 */
+	public float getFloatFromString(String lsTarget,boolean bHighestFirst) {
+		if(lsTarget.contains("-")) {
+			if(bHighestFirst) {
+				lsTarget=lsTarget.split("-")[1].trim();
+			}
+			else {
+				lsTarget=lsTarget.split("-")[0].trim();
+			}
+		}
+		lsTarget=lsTarget.replace(",", "").trim();
+
+		String regex="\\d+\\.\\d+";
+		String lsReturn="";
+		Pattern pattern=Pattern.compile(regex);
+		Matcher matcher=pattern.matcher(lsTarget);
+		while(matcher.find())
+		{
+			lsReturn=matcher.group();
+		}
+
+		return Float.parseFloat(lsReturn);
+	}
+
+	/**
 	 * This method will get integer from string.
 	 * @param String lsTarget: target string
 	 * @return int value
 	 * @author Wei.Li
-	 */	
-    public int getIntegerFromString(String lsTarget) {
-    	String regex="\\d+";
-    	String lsReturn="";
-    	Pattern pattern=Pattern.compile(regex);
-    	Matcher matcher=pattern.matcher(lsTarget);
-    	while(matcher.find())
-    	{
-    	    lsReturn=matcher.group();    	        	   
-    	}
-    	   			
-    	return Integer.parseInt(lsReturn);
-    }
-    
-    /**
-	 * This method will verify element existing. 
-	 * @param WebElement element: input element 
+	 */
+	public int getIntegerFromString(String lsTarget) {
+		String regex="\\d+";
+		String lsReturn="";
+		Pattern pattern=Pattern.compile(regex);
+		Matcher matcher=pattern.matcher(lsTarget);
+		while(matcher.find())
+		{
+			lsReturn=matcher.group();
+		}
+
+		return Integer.parseInt(lsReturn);
+	}
+
+	/**
+	 * This method will verify element existing.
+	 * @param WebElement element: input element
 	 * @return true/false
 	 * @author Wei.Li
-	 */	
-    public boolean verifyElementExisting(WebElement element) {    	
-    	getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-    	return getReusableActionsInstance().isElementVisible(element);
-    }
-	
+	 */
+	public boolean verifyElementExisting(WebElement element) {
+		getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+		return getReusableActionsInstance().isElementVisible(element);
+	}
+
 	/**
 	 * This method is to verify element properties.
 	 * @param WebElement element: input element
@@ -595,57 +599,57 @@ import utils.ReusableActions;
 	public boolean verifyElementProperty(WebElement element,String lsChoice) {
 		boolean bReturn=false;
 		switch(lsChoice) {
-		case "Text":
-			getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-			if(!element.getText().trim().isEmpty()) {
-				bReturn=true;
-			}
-			break;
-		case "Image":
-			if(!element.getAttribute("src").isEmpty()) {
-				bReturn=true;
-			}
-			break;
-		case "Link":
-			if(!element.getAttribute("href").isEmpty()) {
-				bReturn=true;
-			}
-			break;		
+			case "Text":
+				getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+				if(!element.getText().trim().isEmpty()) {
+					bReturn=true;
+				}
+				break;
+			case "Image":
+				if(!element.getAttribute("src").isEmpty()) {
+					bReturn=true;
+				}
+				break;
+			case "Link":
+				if(!element.getAttribute("href").isEmpty()) {
+					bReturn=true;
+				}
+				break;
 		}
 		return bReturn;
 	}
-	
-    /**
-	 * This method is to get element text. 
-	 * @param WebElement element: input element 
+
+	/**
+	 * This method is to get element text.
+	 * @param WebElement element: input element
 	 * @return String
 	 * @author Wei.Li
-	 */	
-    public String getElementText(WebElement element) {    	
-    	getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-    	return element.getText().trim();
-    }
-    
-    /**
-	 * This method is to get element href. 
-	 * @param WebElement element: input element 
+	 */
+	public String getElementText(WebElement element) {
+		getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+		return element.getText().trim();
+	}
+
+	/**
+	 * This method is to get element href.
+	 * @param WebElement element: input element
 	 * @return String
 	 * @author Wei.Li
-	 */	
-    public String getElementHref(WebElement element) {    	
-    	return this.removeLastSlashFromUrl(element.getAttribute("href").trim());
-    }
-    
-    /**
-	 * This method is to get element image src. 
-	 * @param WebElement element: input element 
+	 */
+	public String getElementHref(WebElement element) {
+		return this.removeLastSlashFromUrl(element.getAttribute("href").trim());
+	}
+
+	/**
+	 * This method is to get element image src.
+	 * @param WebElement element: input element
 	 * @return String
 	 * @author Wei.Li
-	 */	
-    public String getElementImageSrc(WebElement element) {    	
-    	return element.getAttribute("src").trim();
-    }
-    
+	 */
+	public String getElementImageSrc(WebElement element) {
+		return element.getAttribute("src").trim();
+	}
+
 	/**
 	 * This method is to remove last slash from Url
 	 * @param String lsUrl: input Url
@@ -655,58 +659,69 @@ import utils.ReusableActions;
 	public String removeLastSlashFromUrl(String lsUrl) {
 		if(lsUrl.endsWith("/")) {
 			lsUrl=lsUrl.substring(0,lsUrl.length()-1);
-        }
+		}
 		return lsUrl;
 	}
-	
+
 	/**
 	 * This method is to get UTF-8 format
-	 * @param String data: input data	  
+	 * @param String data: input data
 	 * @author Sachin.Sharma
 	 */
 	public String getUTFEnabledData(String data) {
-		   byte[] bytes = data.getBytes(StandardCharsets.UTF_8);
-		   String utf8EncodedString = new String(bytes);
-		   return utf8EncodedString;
+		byte[] bytes = data.getBytes(StandardCharsets.UTF_8);
+		String utf8EncodedString = new String(bytes);
+		return utf8EncodedString;
 	}
-	
+
+	/**
+	 * This method is to convert non-ascii String to ascii
+	 * @param - String data: input data
+	 * @author Sachin.Sharma
+	 */
+	public static String convertToASCII(String data) {
+		String nfdNormalizedString = Normalizer.normalize(data, Normalizer.Form.NFD);
+		Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+		return pattern.matcher(nfdNormalizedString).replaceAll("");
+	}
+
 	/*Method to get UTF-8 format for the list of string
 	 *param list of string: input data list
 	 *@author Shruti.Desai
 	 */
 	public List<String> getUTFEnabledDataList(List<String> data) {
-		   List<String> utf8EncodedString = new ArrayList<String>();
-		   for(String lsdata:data) {
-			  byte[]  bytes = lsdata.getBytes(StandardCharsets.UTF_8);
-			  String newutf8EncodedString = new String(bytes);
-			  utf8EncodedString.add(newutf8EncodedString);
-		   }
-		   return utf8EncodedString;
+		List<String> utf8EncodedString = new ArrayList<String>();
+		for(String lsdata:data) {
+			byte[]  bytes = lsdata.getBytes(StandardCharsets.UTF_8);
+			String newutf8EncodedString = new String(bytes);
+			utf8EncodedString.add(newutf8EncodedString);
+		}
+		return utf8EncodedString;
 	}
 
-    /**
+	/**
 	 * This method is to get element from element list with a expected text. 
 	 * @param List<WebElement> elementList: input element list
 	 * @param String lsExpectedText: input expected text
 	 * @return WebElement
 	 * @author Wei.Li
-	 */	
-    public WebElement getElementFromList(List<WebElement> elementList,String lsExpectedText) { 
-    	int listSize=elementList.size();
-    	if(listSize==0) {
-    		return null;
-    	}
-    	
-    	String lsItem;
-    	for(WebElement element:elementList) {
-    		getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-    		lsItem=element.getText().trim();    		
-    		if(lsItem.equalsIgnoreCase(lsExpectedText)) {
-    			return element;
-    		}
-    	}
-    	return null;
-    }
+	 */
+	public WebElement getElementFromList(List<WebElement> elementList,String lsExpectedText) {
+		int listSize=elementList.size();
+		if(listSize==0) {
+			return null;
+		}
+
+		String lsItem;
+		for(WebElement element:elementList) {
+			getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+			lsItem=element.getText().trim();
+			if(lsItem.equalsIgnoreCase(lsExpectedText)) {
+				return element;
+			}
+		}
+		return null;
+	}
 
 	/**
 	 * Method to convert words/string into camel case  
@@ -718,52 +733,52 @@ import utils.ReusableActions;
 			String[] words = headingName.split(" ");
 			String camelCaseHeading= "";
 			for (String parString : words){
-				camelCaseHeading = camelCaseHeading+" "+(parString.charAt(0)+parString.substring(1).toLowerCase()) ; 
+				camelCaseHeading = camelCaseHeading+" "+(parString.charAt(0)+parString.substring(1).toLowerCase()) ;
 			}
 			headingName = camelCaseHeading.trim();
-			}else{
-				headingName = headingName.charAt(0)+headingName.substring(1).toLowerCase();
-			}	
+		}else{
+			headingName = headingName.charAt(0)+headingName.substring(1).toLowerCase();
+		}
 		return headingName;
 	}
-	
+
 	/**
 	 * Method to get String of XPath  
 	 * @return String:Xpath
 	 * @author Shruti Desai
-	 */						
+	 */
 	public String createXPath(String xpathExp, Object ...args){
 		for(int i=0; i<args.length; i++) {
 			xpathExp = xpathExp.replace("{"+i+"}", (CharSequence) args[i]);
 		}
 		return xpathExp;
 	}
-	
+
 	/**
 	 *Method to verify element link  	 
 	 * @param WebElement element: input element
 	 * @author Wei.Li
-	 */	
-	 public void verifyElementLink(WebElement element) {
-		 String lsTitle=element.getText().trim();
-		 String lsLink=this.getElementHref(element);
-		 reporter.softAssert(!lsLink.isEmpty(),"The href of element of '"+lsTitle+"' is not empty","The href of element of '"+lsTitle+"' is empty");		 
-	 }
-	 
-	 /**
-	  * This method will return search result page title.	  
-	  * @author Wei.Li
-	  */
-	 public String getPageTitle(WebElement webelement) {
-		 if(getReusableActionsInstance().isElementVisible(webelement)) {
-			 getReusableActionsInstance().javascriptScrollByVisibleElement(webelement);
-			 return webelement.getText().trim();
-		 }
-			return "NoTitle";		
-		}
+	 */
+	public void verifyElementLink(WebElement element) {
+		String lsTitle=element.getText().trim();
+		String lsLink=this.getElementHref(element);
+		reporter.softAssert(!lsLink.isEmpty(),"The href of element of '"+lsTitle+"' is not empty","The href of element of '"+lsTitle+"' is empty");
+	}
 
 	/**
-	  * This method will apply static wait between steps
+	 * This method will return search result page title.
+	 * @author Wei.Li
+	 */
+	public String getPageTitle(WebElement webelement) {
+		if(getReusableActionsInstance().isElementVisible(webelement)) {
+			getReusableActionsInstance().javascriptScrollByVisibleElement(webelement);
+			return webelement.getText().trim();
+		}
+		return "NoTitle";
+	}
+
+	/**
+	 * This method will apply static wait between steps
 	 */
 	public void applyStaticWait(long timeOut){
 		getReusableActionsInstance().staticWait(timeOut);

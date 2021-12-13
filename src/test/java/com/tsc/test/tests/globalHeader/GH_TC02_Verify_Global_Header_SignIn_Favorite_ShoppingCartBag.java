@@ -78,10 +78,7 @@ public class GH_TC02_Verify_Global_Header_SignIn_Favorite_ShoppingCartBag extend
 		}else {
 			reporter.reportLogFail("Unable to get popup window by clicking search box");
 		}
-		//escape is not working in jenkins so alternatively used go back home page
-		//basePage.pressEscapeKey();
-		//getglobalheaderPageThreadLocal().goBackHomePage();
-		this.getDriver().navigate().refresh();
+		basePage.pressEscapeKeyUsingSendKeys();
 
 		reporter.reportLog("Verify Sign in section");
 
