@@ -29,8 +29,10 @@ public class GH_TC08_Verify_Global_Header_Language extends BaseTest {
 		GH_TC03_Global_Header_Verify_FlyoutHeadings GH_TC03_Global_Header_Verify_FlyoutHeadings = new GH_TC03_Global_Header_Verify_FlyoutHeadings();
 		GH_TC03_Global_Header_Verify_FlyoutHeadings.validateFlyout();
 		//Closing mobile sub-menu if running for mobile
-		if(!System.getProperty("Device").equalsIgnoreCase("desktop"))
+		if(!System.getProperty("Device").equalsIgnoreCase("desktop")){
 			getglobalheaderPageThreadLocal().closeMobileMenu();
+			getglobalheaderPageThreadLocal().waitForPageLoad();
+		}
 		switchToEnglish();
 	}
 	

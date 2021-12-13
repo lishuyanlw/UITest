@@ -269,6 +269,9 @@ public class GlobalHeaderPage extends BasePage{
 	@FindBy(xpath="//div[contains(@class,'mobile__heading')]/button")
 	public WebElement btnMobileMenuCloseButton;
 
+	@FindBy(xpath="//div[contains(@class,'searchContainer')]//button[contains(@class,'aa-ClearButton')]")
+	public WebElement btnMobileSearchMenuClose;
+
 	public void clickOnClearanceHeaderOption() {
 		getReusableActionsInstance().clickIfAvailable(clearanceHeader);
 	}
@@ -612,6 +615,10 @@ public class GlobalHeaderPage extends BasePage{
 	 */
 	public void closeMobileMenu() {
 		getReusableActionsInstance().clickIfAvailable(this.btnMobileMenuCloseButton);
+	}
+
+	public void closeMobileSearchMenu() {
+		getReusableActionsInstance().clickIfAvailable(this.btnMobileSearchMenuClose);
 	}
 
 	/*Method to get url after clicking flyout heading link

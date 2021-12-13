@@ -78,8 +78,8 @@ public class GH_TC02_Verify_Global_Header_SignIn_Favorite_ShoppingCartBag extend
 		}else {
 			reporter.reportLogFail("Unable to get popup window by clicking search box");
 		}
-		basePage.pressEscapeKey();
-		
+		basePage.pressEscapeKeyUsingSendKeys();
+
 		reporter.reportLog("Verify Sign in section");
 
 		List<String> lstSignInPopover=TestDataHandler.constantData.getHeaderSection().getLst_SignInPopover();
