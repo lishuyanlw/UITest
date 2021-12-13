@@ -84,18 +84,16 @@ public class GH_TC08_Verify_Global_Header_Language extends BaseTest {
 			basePage.getReusableActionsInstance().javascriptScrollByVisibleElement(getglobalheaderPageThreadLocal().lnkTSBlackHeader);
 			getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkTSBlackHeader);
 		}
-	}	
-		public void switchToEnglish() {
-			Map<String,List<String>> headerMap= TestDataHandler.constantData.headerSection.getFlyout().getLst_FlyoutHeadingAndNameMap();
-			//switch back to english
-			getGlobalFooterPageThreadLocal().switchlanguage();
-			List<WebElement> flyoutHeadingsElement=getglobalheaderPageThreadLocal().getFlyoutHeadingsWebelement();
-			getglobalheaderPageThreadLocal().scrolltoWebElement(flyoutHeadingsElement.get(1));
-			getGlobalFooterPageThreadLocal().applyStaticWait(3000);
-			String nenglisNameFlyoutHeading=flyoutHeadingsElement.get(1).getText();
-			reporter.softAssert((headerMap.get(nenglisNameFlyoutHeading).contains(nenglisNameFlyoutHeading)), "Language is switch back to English.", "Language is not switch back to English.");
+	}
 
-		}
-	
-		
+	public void switchToEnglish() {
+		Map<String,List<String>> headerMap= TestDataHandler.constantData.headerSection.getFlyout().getLst_FlyoutHeadingAndNameMap();
+		//switch back to english
+		getGlobalFooterPageThreadLocal().switchlanguage();
+		List<WebElement> flyoutHeadingsElement=getglobalheaderPageThreadLocal().getFlyoutHeadingsWebelement();
+		getglobalheaderPageThreadLocal().scrolltoWebElement(flyoutHeadingsElement.get(1));
+		getGlobalFooterPageThreadLocal().applyStaticWait(3000);
+		String nenglisNameFlyoutHeading=flyoutHeadingsElement.get(1).getText();
+		reporter.softAssert((headerMap.get(nenglisNameFlyoutHeading).contains(nenglisNameFlyoutHeading)), "Language is switch back to English.", "Language is not switch back to English.");
+	}
 }

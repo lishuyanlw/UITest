@@ -467,7 +467,7 @@ public class GlobalHeaderPage extends BasePage{
 	 * @author Wei.Li
 	 */	
 	 public boolean getPopupWindowByClickingSearchBox() {
-		 this.searchBox.click();
+		 //this.searchBox.click();
 		 return waitForCondition(Driver->{return this.lblTrendingWithoutKeyword.isDisplayed();},50000);
 	 }
 	 
