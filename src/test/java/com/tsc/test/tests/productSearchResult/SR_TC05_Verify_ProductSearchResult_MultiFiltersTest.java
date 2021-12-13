@@ -46,6 +46,7 @@ public class SR_TC05_Verify_ProductSearchResult_MultiFiltersTest extends BaseTes
 		getProductResultsPageThreadLocal().selectFilterItemInLeftPanel(lstItem.get(0), lstItem.get(1));
 		lstSelectedSecondLevelFilter.add(getProductResultsPageThreadLocal().secondLevelFilter);			
 		lstFilter.add(lstItem.get(1));
+		
 		lstTwoLevelFilter.add(getProductResultsPageThreadLocal().firstLevelFilter);
 		lstTwoLevelFilter.add(getProductResultsPageThreadLocal().secondLevelFilter);
 		selectedFilters.add(lstTwoLevelFilter);

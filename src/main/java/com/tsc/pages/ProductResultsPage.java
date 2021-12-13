@@ -1086,7 +1086,8 @@ public class ProductResultsPage extends BasePage{
 			if(lstOptionYml.contains(this.productFilterList.get(i).getText().trim())) {
 				continue;
 			}else {
-				return lsErrorMsg = "Filter option headers in left panel contain "+this.productFilterList.get(i).getText().trim()+" that is not present in input list";
+				lsErrorMsg = "Filter option headers in left panel contain "+this.productFilterList.get(i).getText().trim()+" that is not present in input list";
+				break;
 			}
 		}
 		return lsErrorMsg;
@@ -1170,7 +1171,6 @@ public class ProductResultsPage extends BasePage{
 
 			String nowPriceText=element.findElement(this.byProductNowPrice).getText().trim();
 			float nowPriceValue=this.getFloatFromString(nowPriceText,false);
-
 			List<String> lstPrice=this.getNumberFromString(secondLevelFilter);
 
 			switch(lsPriceMode) {

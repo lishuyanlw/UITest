@@ -88,7 +88,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 	public void closeFilterPopupWindow() {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnViewProductsAferSelectingFilters);
 		getReusableActionsInstance().clickIfAvailable(this.btnViewProductsAferSelectingFilters);		
-		getReusableActionsInstance().waitForElementStaleness(this.btnViewProductsAferSelectingFilters, 20000);
+		getReusableActionsInstance().staticWait(2000);
 	}
 	
 	@Override

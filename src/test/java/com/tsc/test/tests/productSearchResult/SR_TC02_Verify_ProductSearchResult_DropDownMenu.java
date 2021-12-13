@@ -26,7 +26,7 @@ public class SR_TC02_Verify_ProductSearchResult_DropDownMenu extends BaseTest{
 	String lsSearchResultPageDefaultSetting=TestDataHandler.constantData.getSearchResultPage().getLbl_SearchResultPageDefaultSetting();
 	List<List<String>> lsKeywordDropdownList=TestDataHandler.constantData.getSearchResultPage().getLst_SearchKeyword_DropDown();
 	List<WebElement> productList;
-//	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordDropdownList.get(0).get(0));
+
 	int keyWordDropdownSize=lsKeywordDropdownList.size();	
 	for(int i=0;i<keyWordDropdownSize;i++) {
 		reporter.reportLog("Search keyword : "+lsKeywordDropdownList.get(i));	
@@ -42,11 +42,10 @@ public class SR_TC02_Verify_ProductSearchResult_DropDownMenu extends BaseTest{
 		if(getProductResultsPageThreadLocal().bVerifyTitle) {
 			reporter.softAssert(getProductResultsPageThreadLocal().verifyPageTitleForDropdown(), "Search result page title of "+getProductResultsPageThreadLocal().getProductResultPageTitle()+" is displayed as search keyword in dropdown menu", "Search result page title of "+getProductResultsPageThreadLocal().getProductResultPageTitle()+" is not displayed as search keyword in dropdown menu");
 		}
-			
-		getProductResultsPageThreadLocal().selectFilterItemInLeftPanel("Size","XL");
+		
 		productList=getProductResultsPageThreadLocal().getProductList();
 		if(productList.size()>0) {
-			getProductResultsPageThreadLocal().verifySearchResultContentWithMouseHover(productList);
+			getProductResultsPageThreadLocal().verifySearchResultContent(productList);
 		}
 		
 		}	
