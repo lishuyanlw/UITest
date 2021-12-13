@@ -64,15 +64,11 @@ public class ProductResultsPage extends BasePage{
 	//Sort part
 	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp__count-and-shorting__product-count']")
 	public WebElement lblProductCountMessage;
-	
-	//Missing
-	@FindBy(xpath = "//product-results//div[contains(@class,'col-md-sort')]//form//div[contains(@class,'filterPrpLabel')]")
-	public WebElement lblSortBy;
-	
-	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp__count-and-shorting']//select")
+
+	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp__count-and-shorting']//select[@class='plp__count-and-shorting__shorting']")
 	public WebElement btnSortSelect;
 
-	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp__count-and-shorting']//select//option")
+	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp__count-and-shorting']//select[@class='plp__count-and-shorting__shorting']//option")
 	public List<WebElement> sortByOptionList;
 	
 	//For Sorting and Filtering page loading indicator
