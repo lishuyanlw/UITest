@@ -266,6 +266,9 @@ public class GlobalHeaderPage extends BasePage{
 	@FindBy(xpath="//span[contains(@id,'_ctlSpanTitle')]")
 	public WebElement landingPageTitle;
 
+	@FindBy(xpath="//div[contains(@class,'mobile__heading')]/button")
+	public WebElement btnMobileMenuCloseButton;
+
 	public void clickOnClearanceHeaderOption() {
 		getReusableActionsInstance().clickIfAvailable(clearanceHeader);
 	}
@@ -600,6 +603,15 @@ public class GlobalHeaderPage extends BasePage{
 			return false;
 		}
 		return true;
+	}
+
+	/**
+	 * This method is to close mobile menu
+	 *
+	 * @return true/false
+	 */
+	public void closeMobileMenu() {
+		getReusableActionsInstance().clickIfAvailable(this.btnMobileMenuCloseButton);
 	}
 
 	/*Method to get url after clicking flyout heading link

@@ -41,15 +41,25 @@ headerSection:
   flyout:
     lst_FlyoutHeadingAndNameMap: {
       Fashion: ['Fashion','Mode','100047'],
+      Mode: ['Fashion','Mode','100047'],
       Shoes & Handbags: ['Shoes & Handbags','Chaussures et sacs','128153'],
+      Chaussures et sacs: ['Shoes & Handbags','Chaussures et sacs','128153'],
       Jewellery: ['Jewellery','Bijoux','100101'],
+      Bijoux: ['Jewellery','Bijoux','100101'],
       Beauty: ['Beauty','Beauté','100038'],
+      Beauté: ['Beauty','Beauté','100038'],
       Home & Garden: ['Home & Garden','Maison et jardin','100071'],
+      Maison et jardin: ['Home & Garden','Maison et jardin','100071'],
       Kitchen: ['Kitchen','Cuisine','100072'],
+      Cuisine: ['Kitchen','Cuisine','100072'],
       Health & Fitness: ['Health & Fitness','Santé','2058731'],
+      Santé: ['Health & Fitness','Santé','2058731'],
       Electronics: ['Electronics','Électronique','100073'],
+      Électronique: ['Electronics','Électronique','100073'],
       Coins & Hobbies: ['Coins & Hobbies','Monnaie et Hobbies','3001781'],
-      Clearance:  ['Clearance','Liquidation','2037576']
+      Monnaie et Hobbies: ['Coins & Hobbies','Monnaie et Hobbies','3001781'],
+      Clearance:  ['Clearance','Liquidation','2037576'],
+      Liquidation:  ['Clearance','Liquidation','2037576']
     }
     lnk_ShopByBrandShopAll: pages/brand?dimensions=
     lbl_LandingPageBrandShopAll: Shop By Brand
