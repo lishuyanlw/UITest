@@ -112,8 +112,11 @@ public class GlobalHeaderPage extends BasePage{
 	//Trending without keyword
 	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(normalize-space(.),'Trending')][contains(@class,'ac__section__title search-title')]")
 	public WebElement lblTrendingWithoutKeyword;
+
+	@FindBy(xpath="//div[contains(@class,'searchContainer')]//div[contains(@class,'inner--left')]")
+	public WebElement lblSearchBoxPopUpWindow;
 		
-	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(normalize-space(.),'Trending')][contains(@class,'ac__section__title search-title')]/following-sibling::ul")
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(normalize-space(.),'Top')][contains(@class,'ac__section__title search-title')]/following-sibling::ul")
 	public WebElement cntTrendingListWithoutKeyword;
 		
 	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(normalize-space(.),'Trending')][contains(@class,'ac__section__title search-title')]/following-sibling::ul//li//a")
@@ -123,7 +126,7 @@ public class GlobalHeaderPage extends BasePage{
 	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(normalize-space(.),'Featured brands')][contains(@class,'ac__section__title search-title')]")
 	public WebElement lblFeaturedBrandsWithoutKeyword;
 		
-	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(normalize-space(.),'Featured brands')][contains(@class,'ac__section__title search-title')]/following-sibling::ul")
+	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(normalize-space(.),'Categories')][contains(@class,'ac__section__title search-title')]/following-sibling::ul")
 	public WebElement cntFeaturedBrandsListWithoutKeyword;
 	
 	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(normalize-space(.),'Featured brands')][contains(@class,'ac__section__title search-title')]/following-sibling::ul//li//a")
@@ -468,7 +471,7 @@ public class GlobalHeaderPage extends BasePage{
 	 */	
 	 public boolean getPopupWindowByClickingSearchBox() {
 		 //this.searchBox.click();
-		 return waitForCondition(Driver->{return this.lblTrendingWithoutKeyword.isDisplayed();},50000);
+		 return waitForCondition(Driver->{return this.lblSearchBoxPopUpWindow.isDisplayed();},90000);
 	 }
 	 
 	/**
