@@ -2128,7 +2128,8 @@ public class ProductDetailPage extends BasePage {
 
 		loginPage.LoginWithoutWaitingTime(lsUserName,lsPassword);
 		this.getReusableActionsInstance().waitForElementVisibility(this.lblProductName,  60);
-		this.getReusableActionsInstance().staticWait(1000);
+		//this.getReusableActionsInstance().staticWait(1000);
+		waitForPageToLoad();
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavShareMobile);
 		this.getReusableActionsInstance().clickIfAvailable(this.lnkFavShareMobile);
