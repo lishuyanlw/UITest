@@ -45,9 +45,6 @@ public class SR_TC07_Verify_ProductSearchResult_MoreOrLessButtonTest extends Bas
 	}	
 			
 	reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(), "Showing text pattern in filters is correct", "Showing text pattern in filters is incorrect");
-	if(!(System.getProperty("Device").equalsIgnoreCase("Mobile"))) {
-		reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting), "The default setting of items per page is "+lsSearchResultPageDefaultSetting, "The default setting of items per page isn't "+lsSearchResultPageDefaultSetting);
-	}
 	
 	productList=getProductResultsPageThreadLocal().getProductList();
 	if(productList.size()>0) {
@@ -60,30 +57,31 @@ public class SR_TC07_Verify_ProductSearchResult_MoreOrLessButtonTest extends Bas
 		if(element==null) {
 			break;
 		}
-		int visibleElementCountBeforeClick=getProductResultsPageThreadLocal().getFiltersCountInSecondLevel(element,true);
-		int hiddenElementCountBeforeClick=getProductResultsPageThreadLocal().getFiltersCountInSecondLevel(element,false);
-		int sum= visibleElementCountBeforeClick+hiddenElementCountBeforeClick;
+		getProductResultsPageThreadLocal().collapseFilterItemWithClickingProductTitle(element);
+		int elementCountBeforeClickingSeeMoreButton=getProductResultsPageThreadLocal().getFiltersCountInSecondLevel();
 		
-		//Click More button to expand hidden subfilters
-		boolean bClick=getProductResultsPageThreadLocal().clickMoreOrLessButtonWithSpecificFirstlevelFilterInLeftPanel(element);
-		if(!bClick) {
-			break;
+		
+		getProductResultsPageThreadLocal().clickSeeMoreButton(element);		
+		int elementCountAfterClickingSeeMoreButton=getProductResultsPageThreadLocal().getFiltersCountInSecondLevel();
+		
+		if(elementCountAfterClickingSeeMoreButton>elementCountBeforeClickingSeeMoreButton) {
+			reporter.reportLogPass("The subitem count after clicking SeeMore button is more than the count before clicking SeeMore button");
 		}
-		int visibleElementCountAfterClick=getProductResultsPageThreadLocal().getFiltersCountInSecondLevel(element,true);
-		reporter.softAssert(visibleElementCountAfterClick==sum,"The visible subfilter count is equal to "+sum,"The visible subfilter count is not equal to "+sum);
-		int hiddenElementCountAfterClick=getProductResultsPageThreadLocal().getFiltersCountInSecondLevel(element,false);
-		reporter.softAssert(hiddenElementCountAfterClick==0,"The invisible subfilter count is equal to 0","The invisible subfilter count is not equal to 0");
-		
-		//Click Less button to recover to the original status
-		bClick=getProductResultsPageThreadLocal().clickMoreOrLessButtonWithSpecificFirstlevelFilterInLeftPanel(element);
-		if(!bClick) {
-			break;
+		else {
+			reporter.reportLogFail("The subitem count after clicking SeeMore button is no more than the count before clicking SeeMore button");
 		}
-		int visibleElementCountAfterReClick=getProductResultsPageThreadLocal().getFiltersCountInSecondLevel(element,true);
-		reporter.softAssert(visibleElementCountAfterReClick== visibleElementCountBeforeClick,"The visible subfilter count is equal to "+ visibleElementCountBeforeClick,"The visible subfilter count is not equal to "+ visibleElementCountBeforeClick);
-		int hiddenElementCountAfterReClick=getProductResultsPageThreadLocal().getFiltersCountInSecondLevel(element,false);
-		reporter.softAssert(hiddenElementCountAfterReClick==hiddenElementCountBeforeClick,"The invisible subfilter count is equal to "+hiddenElementCountBeforeClick,"The invisible subfilter count is not equal to "+hiddenElementCountBeforeClick);
 		
+		getProductResultsPageThreadLocal().clickSeeLessButton(element);		
+		int elementCountAfterClickingSeeLessButton=getProductResultsPageThreadLocal().getFiltersCountInSecondLevel();
+		
+		if(elementCountBeforeClickingSeeMoreButton==elementCountAfterClickingSeeLessButton) {
+			reporter.reportLogPass("The subitem count after clicking SeeLess button is equal to the count before clicking SeeMore button");
+		}
+		else {
+			reporter.reportLogPass("The subitem count after clicking SeeLess button is not equal to the count before clicking SeeMore button");
+		}
+		
+		getProductResultsPageThreadLocal().uncollapseFilterItemWithClickingProductTitle(element);
 	}
 		
 	}

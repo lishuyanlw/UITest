@@ -1457,10 +1457,9 @@ public class ProductResultsPage extends BasePage{
 			String lsHeader=this.productFilterList.get(i).getText().trim();
 			if(lsHeader.contains("(")) {
 				lsHeader=lsHeader.split("\\(")[0].trim();
-			}
-
+			}			
 			//If found lsFirstLevelItem
-			if(lsHeader.equalsIgnoreCase(lsFirstLevelItem)) {
+			if(lsHeader.equalsIgnoreCase(lsFirstLevelItem)) {				
 				return this.productFilterContainerList.get(i);
 			}
 		}
@@ -1469,32 +1468,11 @@ public class ProductResultsPage extends BasePage{
 
 	/**
 	 * This method will get hidden element corresponding to an element container.
-	 * @param- WebElement elementContainer: element container
-	 * @param- boolean bVisible: true for visible filters while false for hidden filters.
-	 * @return Hidden element count.
+	 * @return sub element count.
 	 * @author Wei.Li
 	 */
-	public int getFiltersCountInSecondLevel(WebElement elementContainer, boolean bVisible) {
-		if(elementContainer==null) {
-			return 0;
-		}
-
-		getReusableActionsInstance().javascriptScrollByVisibleElement(elementContainer);
-		List<WebElement> elementList=elementContainer.findElements(By.xpath(".//li"));
-
-		int itemCount=0;
-		for(WebElement element:elementList) {
-			if(bVisible) {
-				if(element.isDisplayed()){
-					itemCount+=1;
-				}
-			}else {
-				if(!element.isDisplayed()){
-					itemCount+=1;
-				}
-			}
-		}
-		return itemCount;
+	public int getFiltersCountInSecondLevel() {
+		return secondlevelFilterList.size();
 	}
 
 	/**
@@ -2086,6 +2064,40 @@ public class ProductResultsPage extends BasePage{
 		this.getReusableActionsInstance().staticWait(1000);
 		
 		clickSeeMoreButton(filterContainerItem);
+	}
+	
+	/**
+	 * This method will uncollapse a specific Filter Item through clicking product title
+	 * @param WebElement filterContainerItem: filter Container Item
+	 * @return void
+	 * @author Wei.Li
+	 */
+	public void uncollapseFilterItemWithClickingProductTitle(WebElement filterContainerItem) {		
+		if(!checkIfFilterItemIsCollapsed(filterContainerItem)) {			
+			return;
+		}
+				
+		WebElement productFilterTitle=filterContainerItem.findElement(this.byProductFilterTitle);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(productFilterTitle);
+		this.getReusableActionsInstance().clickIfAvailable(productFilterTitle);
+		this.getReusableActionsInstance().staticWait(1000);		
+	}
+	
+	/**
+	 * This method will collapse a specific Filter Item through clicking product title
+	 * @param WebElement filterContainerItem: filter Container Item
+	 * @return void
+	 * @author Wei.Li
+	 */
+	public void collapseFilterItemWithClickingProductTitle(WebElement filterContainerItem) {		
+		if(checkIfFilterItemIsCollapsed(filterContainerItem)) {			
+			return;
+		}
+				
+		WebElement productFilterTitle=filterContainerItem.findElement(this.byProductFilterTitle);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(productFilterTitle);
+		this.getReusableActionsInstance().clickIfAvailable(productFilterTitle);
+		this.getReusableActionsInstance().staticWait(1000);		
 	}
 	
 	/**
