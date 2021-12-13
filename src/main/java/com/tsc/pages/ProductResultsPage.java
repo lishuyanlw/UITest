@@ -645,17 +645,24 @@ public class ProductResultsPage extends BasePage{
 	 */
 	public boolean verifyProductBrandMoreOrLessButton() {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblProductText);
-
+		
+		String[] lstText= new String[1];
 		if(getReusableActionsInstance().isElementVisible(this.btnProductTitleAndTextMoreOrLess)) {
-			this.btnProductTitleAndTextMoreOrLess.click();
+			lstText[0]=this.getElementInnerText(this.btnProductTitleAndTextMoreOrLess);
 			getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnProductTitleAndTextMoreOrLess);
-			if(!this.btnProductTitleAndTextMoreOrLess.getText().contains("Read Less")) {
+			getReusableActionsInstance().clickIfAvailable(this.btnProductTitleAndTextMoreOrLess);			
+			this.waitForCondition(Driver->{return !this.getElementInnerText(this.btnProductTitleAndTextMoreOrLess).equalsIgnoreCase(lstText[0]);}, 20000);
+			
+			if(!this.getElementInnerText(this.btnProductTitleAndTextMoreOrLess).contains("Read Less")) {
 				return false;
 			}
 			else {
-				this.btnProductTitleAndTextMoreOrLess.click();
+				lstText[0]=this.getElementInnerText(this.btnProductTitleAndTextMoreOrLess);
 				getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnProductTitleAndTextMoreOrLess);
-				if(!this.btnProductTitleAndTextMoreOrLess.getText().contains("Read More")) {
+				getReusableActionsInstance().clickIfAvailable(this.btnProductTitleAndTextMoreOrLess);
+				this.waitForCondition(Driver->{return !this.getElementInnerText(this.btnProductTitleAndTextMoreOrLess).equalsIgnoreCase(lstText[0]);}, 20000);
+				
+				if(!this.getElementInnerText(this.btnProductTitleAndTextMoreOrLess).contains("Read More")) {
 					return false;
 				}
 				else {
@@ -722,8 +729,7 @@ public class ProductResultsPage extends BasePage{
 		}
 		
 		for(int i=0;i<loopSize;i++) {		
-			item=this.productResultList.get(i);		
-			//this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			item=this.productResultList.get(i);			
 			element=item.findElement(byProductName);			
 			lsProductName=this.getElementInnerText(element);
 			reporter.reportLog("Product Name: "+lsProductName);
@@ -820,15 +826,6 @@ public class ProductResultsPage extends BasePage{
 					reporter.reportLogFail("Product review is not visible");
 				}
 			}
-			
-//			element=item.findElement(byProductAddToBag);//						
-//			if(this.getReusableActionsInstance().isElementVisible(element)) {
-//				reporter.reportLogPass("Product AddToBag is visible");
-//			}
-//			else {
-//				reporter.reportLogFail("Product AddToBag is not visible");
-//			}
-
 		}
 	}
 	
@@ -1143,7 +1140,7 @@ public class ProductResultsPage extends BasePage{
 				if(!this.hasElementAttribute(subItem.findElement(By.xpath(".//button//input")), "checked")) {
 					this.secondLevelFilter=this.getElementInnerText(subItem);
 					this.firstLevelFilter=this.getElementInnerText(subItem.findElement(By.xpath("./ancestor::div[@class='plp-filter-panel__blocks']//button[@class='plp-filter-panel__block-title']")));
-					System.out.println(this.firstLevelFilter+" : "+this.secondLevelFilter);
+					
 					getReusableActionsInstance().staticWait(500);
 					getReusableActionsInstance().clickIfAvailable(subItem);
 					return waitForSortingOrFilteringCompleted();
