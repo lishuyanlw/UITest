@@ -322,10 +322,6 @@ public class ProductResultsPage extends BasePage{
 	
 	public By byRecommendationWasPrice =By.xpath(".//div[@class='prec-price']/div[@class='was-price']");
 
-	@FindBy(xpath="//div[contains(@class,'PageTitle')]//*[contains(@class,'gatewayTitle')]")
-	public WebElement pageTitle;
-
-
 	String searchkeyword;
 	public boolean bVerifyTitle=true;
 	public String firstLevelFilter,secondLevelFilter;
@@ -678,7 +674,7 @@ public class ProductResultsPage extends BasePage{
 	 */
 	public boolean verifyUrlAfterSelectSortStrategy(String lsKeyword,String lsSortKey) {
 		String lsUrl=this.URL();
-		return lsUrl.toLowerCase().contains("searchterm=")&&lsUrl.contains(this.getEncodingKeyword(lsKeyword))&&lsUrl.toLowerCase().contains("&sortkey="+lsSortKey);
+		return lsUrl.toLowerCase().contains("searchterm=")&&lsUrl.contains(this.getEncodingKeyword(lsKeyword))&&lsUrl.toLowerCase().contains("&sortkey="+lsSortKey.toLowerCase());
 	}
 
 	/**
