@@ -63,72 +63,9 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 
     @Override
     public boolean selectFilterItemInLeftPanel(String lsFirstLevelItem, String lsSecondLevelItem) {
-        this.firstLevelFilter = lsFirstLevelItem;
-        this.secondLevelFilter = lsSecondLevelItem;
-        getReusableActionsInstance().javascriptScrollByVisibleElement(this.sortAndFilter);
-        getReusableActionsInstance().clickIfAvailable(this.sortAndFilter,3000);
-        getReusableActionsInstance().staticWait(2000);
+        
+        return true;
 
-        for(int i=0;i<this.productFilterList.size();i++) {
-            int iFlag=0;
-            getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i));
-            String lsHeader = this.productFilterList.get(i).getText().trim();
-            if (lsHeader.contains("(")) {
-                iFlag=iFlag+1;
-                lsHeader = lsHeader.split("\\(")[0].trim();
-            }
-
-            //If found lsFirstLevelItem
-            if (lsHeader.equalsIgnoreCase(lsFirstLevelItem)) {
-                if (iFlag==0) {
-                    this.productFilterList.get(i).click();
-                }
-
-                getReusableActionsInstance().staticWait(300);
-
-                List<WebElement> subItemList = this.productFilterContainerList.get(i).findElements(this.bySubItemListOnLeftPanel);
-                System.out.println("subItemList size: "+subItemList.size());
-                for (WebElement subItem : subItemList) {
-                    getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
-                    String lsSubItem = subItem.getText().trim();
-                    getReusableActionsInstance().staticWait(500);
-
-                    //If found lsSecondLevelItem
-                    if (lsSubItem.equalsIgnoreCase(lsSecondLevelItem)) {
-                        getReusableActionsInstance().staticWait(500);
-                        subItem.click();
-                        return this.waitForPageLoading();
-                    }
-                }
-            }
-        }
-
-        //If unable to find both lsFirstLevelItem and lsSecondLevelItem, then select the first choice
-        this.bDefault=true;
-        WebElement btnSecondlevelSelected=this.secondlevelFilterList.get(0);
-        WebElement btnFirstlevelSelected=btnSecondlevelSelected.findElement(By.xpath("./ancestor::div[@role='tabpanel']/preceding-sibling::*[contains(@class,'panel-heading')]"));
-        getReusableActionsInstance().javascriptScrollByVisibleElement(btnFirstlevelSelected);
-        this.firstLevelFilter=btnFirstlevelSelected.getText().trim();
-        if(this.firstLevelFilter.contains("(")) {
-            this.firstLevelFilter=this.firstLevelFilter.split("\\(")[0].trim();
-        }
-
-        btnFirstlevelSelected.click();
-        getReusableActionsInstance().staticWait(300);
-
-        getReusableActionsInstance().javascriptScrollByVisibleElement(btnSecondlevelSelected);
-        this.secondLevelFilter=btnSecondlevelSelected.getText().trim();
-        btnSecondlevelSelected.click();
-
-        return this.waitForPageLoading();
-
-    }
-
-    @Override
-    public boolean getClearAllFiltersButtonStatus() {
-        getReusableActionsInstance().javascriptScrollByVisibleElement(this.sortAndFilter);
-        getReusableActionsInstance().clickIfAvailable(this.sortAndFilter,3000);
-        return super.getClearAllFiltersButtonStatus();
     }
 
     @Override

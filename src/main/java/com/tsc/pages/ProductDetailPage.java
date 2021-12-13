@@ -1993,7 +1993,7 @@ public class ProductDetailPage extends BasePage {
 		
 		reporter.softAssert(this.URL().toLowerCase().contains("productresults"),"The page has been switched to product results page","The page has not been switched to product results page");
 		
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(prp.lblSelectedFilters);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(prp.selectedFiltersList.get(0));
 		String lsSelectedFilter=prp.selectedFiltersList.get(0).getText().trim();
 		reporter.softAssert(lsBrandName.equalsIgnoreCase(lsSelectedFilter),"The selected filter item text is equal to Product brand name","The selected filter item text is not equal to Product brand name");
 		

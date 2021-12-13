@@ -68,15 +68,7 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction_Gen
 			}
 
 			//To recover the initial test environment
-			if (getProductResultsPageThreadLocal().getClearAllFiltersButtonStatus()) {
-				getProductResultsPageThreadLocal().closeAllSelectedFilters();
-			} else {
-				if (System.getProperty("Device").equalsIgnoreCase("Mobile")) {
-					getProductResultsPage_MobileThreadLocal().cancelButton.click();
-					getProductResultsPageThreadLocal().waitForPageLoading();
-				}
-				getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0));
-			}
+			getProductResultsPageThreadLocal().closeAllSelectedFilters();
 		}
 
 	}

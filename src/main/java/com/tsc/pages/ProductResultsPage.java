@@ -79,18 +79,18 @@ public class ProductResultsPage extends BasePage{
 	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp']")
 	public WebElement cntSortingAndFilteringProductResultLoadingIndicator;
 
-	//Missing
-	@FindBy(xpath = "//product-results//div[contains(@class,'col-md-items')]//form//div[contains(@class,'filterPrpLabel')]")
-	public WebElement lblItemsPerPage;
-
-	//Missing
-	@FindBy(xpath = "//product-results//div[contains(@class,'search-filters-div')]//div[contains(@class,'col-md-items')]//select//option[1]|//product-results//div[contains(@class,'col-md-items')]//form//div[contains(@class,'recordsDiv')]")
-	public WebElement lblItemPerPageDefaultSettingNumber;
+//	//Missing
+//	@FindBy(xpath = "//product-results//div[contains(@class,'col-md-items')]//form//div[contains(@class,'filterPrpLabel')]")
+//	public WebElement lblItemsPerPage;
+//
+//	//Missing
+//	@FindBy(xpath = "//product-results//div[contains(@class,'search-filters-div')]//div[contains(@class,'col-md-items')]//select//option[1]|//product-results//div[contains(@class,'col-md-items')]//form//div[contains(@class,'recordsDiv')]")
+//	public WebElement lblItemPerPageDefaultSettingNumber;
 
 	//Product results
-	//Does not work currently
-	@FindBy(xpath = "//div[@class='Footer']//div[contains(@class,'blockPageWrap')]")
-	public WebElement productResultLoadingIndicator;
+//	//Does not work currently
+//	@FindBy(xpath = "//div[@class='Footer']//div[contains(@class,'blockPageWrap')]")
+//	public WebElement productResultLoadingIndicator;
 	
 	@FindBy(xpath = "//section[@class='tsc-container'][not(nav)][not(*[@class='breadcrumb'])]")
 	public WebElement cntTSCContainer;
@@ -102,10 +102,6 @@ public class ProductResultsPage extends BasePage{
 	public List<WebElement> productResultList;
 
 	//Selected filters
-	//Missing
-	@FindBy(xpath = "//div[contains(@class,'search-filters-div')]//div[contains(@class,'sortFilterWrap')]//div[contains(@class,'filterPrpLabel')]")
-	public WebElement lblSelectedFilters;
-
 	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp__applied-filters']//button")
 	public List<WebElement> selectedFiltersList;
 	
@@ -131,7 +127,6 @@ public class ProductResultsPage extends BasePage{
 	public By byProductOptionTitle=By.xpath(".//fieldset//*[contains(@class,'product-card__') and contains(@class,'-title')]");
 	
 	//For size option	
-	
 	public By byProductOptionSizeTitle=By.xpath(".//fieldset//span[@class='product-card__size-title']");
 			
 	public By byProductOptionSizeSelectedSize=By.xpath(".//fieldset//span[@class='product-card__size-title']//strong");
@@ -166,8 +161,8 @@ public class ProductResultsPage extends BasePage{
 	
 	public By byProductBrand=By.xpath(".//form[@class='product-card__main']//div[@class='product-card__info']//p[@class='product-card__info-brand']");
 
-	//Missing
-	public By byProductItemNO=By.xpath(".//div[contains(@class,'itemNo')]");
+//	//Missing
+//	public By byProductItemNO=By.xpath(".//div[contains(@class,'itemNo')]");
 
 	public By byProductNowPrice=By.xpath(".//form[@class='product-card__main']//div[@class='product-card__info']//div[@class='product-card__info-price']//a[@class='product-card__info-price__is-price']/span[1]");
 
@@ -175,8 +170,8 @@ public class ProductResultsPage extends BasePage{
 	
 	public By byJudgeProductWasPrice=By.xpath(".//form[@class='product-card__main']//div[@class='product-card__info']//div[@class='product-card__info-price']//a[@class='product-card__info-price__is-price']");
 	
-	//Missing
-	public By byProductEasyPay=By.xpath(".//div[contains(@class,'easyPay')]");
+//	//Missing
+//	public By byProductEasyPay=By.xpath(".//div[contains(@class,'easyPay')]");
 	
 	public By byProductReviewContainer=By.xpath(".//div[@class='product-card__reviews']");
 
@@ -185,30 +180,6 @@ public class ProductResultsPage extends BasePage{
 	public By byProductReviewRatingCount=By.xpath(".//div[@class='product-card__reviews']//a[@class='product-card__reviews-count']");
 
 	public By byProductAddToBag=By.xpath(".//button[@class='product-card__add-button']");
-	
-		
-	//Missing
-	public By byProductReviewStarList=By.xpath(".//div[contains(@class,'reviewDiv')]//div[contains(@class,'pr-star-v4')]");
-
-	//Missing
-	public By byProductSwatch=By.xpath(".//div[@class='swatchWrapDiv']");
-
-	//Missing
-	public By byProductFreeShipping=By.xpath(".//div[contains(@class,'FreeShippingDiv')]");
-
-	//Missing
-	public By byProductPriceBadge=By.xpath(".//div[contains(@class,'badgeWrap')]//img");
-
-	//Missing
-	public By byProductVideoIcon=By.xpath(".//div[contains(@class,'videoIcon')]//*[name()='use']");
-
-	//Missing	
-	public By byJudgeProductBadgeAndVideo=By.xpath(".//div[contains(@class,'prImageWrap')]");
-
-	
-	//Missing
-	@FindBy(xpath = "//product-results//div[contains(@class,'productItems')]//div[contains(@class,'productItemWrap')]//div[contains(@class,'itemNo')]")
-	public List<WebElement> productItemNOList;
 
 	//Pagination
 	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp__pagination']")
@@ -269,31 +240,11 @@ public class ProductResultsPage extends BasePage{
 	
 	public By bySecondaryFilterSeeLessButton=By.xpath(".//button[contains(@class,'plp-filter-panel__view-more')][span[normalize-space(.)='See Less']]");
 
-	//Not used
-	@FindBy(xpath = "//product-results//div[@class='modalBody']//div[@class='panel']//*[contains(@class,'panel-heading')]/following-sibling::div[contains(@class,'panel-collapse')]//div[contains(@class,'seeMoreDiv') and not(contains(@class,'seeMoreTitle')) and not(@style='display: none;')][@id]")
-	public List<WebElement> productFilterMoreButtonList;
-
-	//Not used
-	@FindBy(xpath = "//product-results//div[@class='modalBody']//div[@class='panel']//*[contains(@class,'panel-heading')]/following-sibling::div[contains(@class,'panel-collapse')]//div[contains(@class,'seeMoreDiv') and not(contains(@class,'seeMoreTitle')) and @aria-expanded='true' and not(@style='display: none;')]")
-	public List<WebElement> productFilterLessButtonList;
-
 	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp-filter-panel']//div[@class='plp-filter-panel__blocks']//ul[@class='plp-filter-panel__filter-list']//li[button[input[not(@checked)]]]")
 	public List<WebElement> secondlevelFilterList;
 	
 	@FindBy(xpath = "//div[@class='plp']//div[@class='plp__product-grid']")
 	public WebElement searchResultSection;
-
-	//Not used
-	public By byMoreButtonOnLeftPanel=By.xpath(".//*[contains(@class,'panel-heading')]/following-sibling::div[contains(@class,'panel-collapse')]//div[contains(@class,'seeMoreDiv') and not(contains(@class,'seeMoreTitle')) and not(@style='display: none;')][@id]");
-	//Not used
-	public By byLessButtonOnLeftPanel=By.xpath(".//*[contains(@class,'panel-heading')]/following-sibling::div[contains(@class,'panel-collapse')]//div[contains(@class,'seeMoreDiv') and not(contains(@class,'seeMoreTitle')) and @aria-expanded='true' and not(@style='display: none;')]");
-	//Not used
-	public By byMoreOrLessButtonOnLeftPanel=By.xpath(".//*[contains(@class,'panel-heading')]/following-sibling::div[contains(@class,'panel-collapse')]//div[contains(@class,'seeMoreDiv') and not(contains(@class,'seeMoreTitle')) and not(@style='display: none;')][@id]|.//*[contains(@class,'panel-heading')]/following-sibling::div[contains(@class,'panel-collapse')]//div[contains(@class,'seeMoreDiv') and not(contains(@class,'seeMoreTitle')) and @aria-expanded='true' and not(@style='display: none;')]");
-
-	//Not used
-	public By bySubItemListOnLeftPanel=By.xpath(".//li");
-	//Not used
-	public By bySubItemPanelBodyOnLeftPanel=By.xpath(".//div[@class='panel-body']");
 
 	@FindBy(xpath = "//product-recommendations-endeca")
 	public WebElement recommendationContainer;
@@ -329,20 +280,6 @@ public class ProductResultsPage extends BasePage{
 	public String lsSearchResultMessage="";
 	public ProductItem selectedProductItem= new ProductItem();	
 
-	/**
-	 * This method is to wait for not initial page loading.
-	 * @return boolean
-	 * @author Wei.Li
-	 */
-	public boolean waitForPageLoading() {	
-		getReusableActionsInstance().staticWait(300);
-		return waitForCondition(Driver->{
-			String lsStyle=this.productResultLoadingIndicator.getAttribute("style");
-			if(lsStyle==null||lsStyle.isEmpty()) {
-				lsStyle="display: none;";
-			}
-			return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;");},90000);
-	}
 
 	/**
 	 * This method will load product searching result.
@@ -497,16 +434,16 @@ public class ProductResultsPage extends BasePage{
 		return "";
 	}
 
-	/**
-	 * This method will verify the default setting of items per page.
-	 * @return true/false
-	 * @author Wei.Li
-	 */
-	public boolean verifySearchResultPageNumberDefaultSetting(String defaultSettingPageNumber) {
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblItemsPerPage);
-
-		return lblItemPerPageDefaultSettingNumber.getText().trim().equalsIgnoreCase(defaultSettingPageNumber);
-	}
+//	/**
+//	 * This method will verify the default setting of items per page.
+//	 * @return true/false
+//	 * @author Wei.Li
+//	 */
+//	public boolean verifySearchResultPageNumberDefaultSetting(String defaultSettingPageNumber) {
+//		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblItemsPerPage);
+//
+//		return lblItemPerPageDefaultSettingNumber.getText().trim().equalsIgnoreCase(defaultSettingPageNumber);
+//	}
 	
 	/**
 	 * This method will verify the search results are not existing.
@@ -732,51 +669,6 @@ public class ProductResultsPage extends BasePage{
 		}
 		return true;
 	}
-
-	/**
-	 * This method will verify Badge or Video existence.
-	 * @param- WebElement parent: parent element
-	 * @return String: indicate type
-	 * @author Wei.Li
-	 */
-	@SuppressWarnings("unchecked")
-	public String judgeProductBadgeAndVideo(WebElement parent) {
-		WebElement element=parent.findElement(this.byJudgeProductBadgeAndVideo);
-		JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
-		List<WebElement> childList=(List<WebElement>) jse.executeScript("return arguments[0].children;", element);
-
-		if(childList.size()==1) {
-			return "WithoutBadgeAndVideo";
-		}
-
-		if(childList.size()==2) {
-			if(childList.get(1).getAttribute("class").contains("badgeWrap")) {
-				return "WithBadge";
-			}
-			else {
-				return "WithVideo";
-			}
-		}
-
-		return "WithBadgeAndVideo";
-	}
-
-	/**
-	 * This method will judge WasPrice existence.
-	 * @param- WebElement parent: parent element
-	 * @return String: indicate type
-	 * @author Wei.Li
-	 */
-	public String judgeProductWasPrice(WebElement parent) {
-		WebElement element=parent.findElement(this.byJudgeProductWasPrice);
-		long childSize= super.getChildElementCount(element);
-
-		if(childSize==1) {
-			return "WithoutWasPrice";
-		}
-
-		return "WithWasPrice";
-	}
 	
 	/**
 	 * This method will verify pagination.
@@ -813,30 +705,6 @@ public class ProductResultsPage extends BasePage{
 	public WebElement getFooterContainer() {
 		return this.footerContainer;
 	}
-
-	/**
-	 * This method will click More or Less button corresponding to the filter container.
-	 * @param- WebElement elementContainer: input filter container
-	 * @return true/false
-	 * @author Wei.Li
-	 */
-	public boolean clickMoreOrLessButtonWithSpecificFirstlevelFilterInLeftPanel(WebElement elementContainer) {
-		if(elementContainer==null) {
-			return false;
-		}
-
-//		WebElement panelBody=elementContainer.findElement(this.bySubItemPanelBodyOnLeftPanel);
-//		if(judgeMoreButtonExistenceInLeftPanel(panelBody)) {
-//			WebElement clickButton=elementContainer.findElement(this.byMoreOrLessButtonOnLeftPanel);
-//			getReusableActionsInstance().javascriptScrollByVisibleElement(clickButton);
-//			String buttonText=clickButton.getText();
-//			clickButton.click();
-//			getReusableActionsInstance().javascriptScrollByVisibleElement(clickButton);
-//			return this.waitForCondition(Driver->{return !buttonText.equalsIgnoreCase(clickButton.getText());},30000);
-//		}
-		return false;
-	}
-
 
 	/**
 	 * This method will verify the item content in product list without mouse hover.
@@ -1353,16 +1221,7 @@ public class ProductResultsPage extends BasePage{
 	 */
 	public boolean closeAllSelectedFilters() {
 		this.selectedFiltersList.get(this.selectedFiltersList.size()-1).click();
-		return this.waitForPageLoading();
-	}
-
-	/**
-	 * This method will get 'clear all filters' button existence status.
-	 * @return true/false: if only return 1, means there is a hidden ClearAllFiltersButton; if return more than 1, means there is a displayed ClearAllFiltersButton.
-	 * @author Wei.Li
-	 */
-	public boolean getClearAllFiltersButtonStatus() {
-		return this.selectedFiltersList.size()>1;
+		return this.waitForSortingOrFilteringCompleted();
 	}
 
 	/**
@@ -1527,6 +1386,15 @@ public class ProductResultsPage extends BasePage{
 		return this.btnPreviousPage.getAttribute("style").contains("opacity: 1");
 	}
 
+	public boolean waitForPDPPageLoading() {		
+		return this.waitForCondition(Driver->{return (new ProductDetailPage(this.getDriver())).lblProductName.isDisplayed();}, 90000);
+	}
+	
+	//Fake methods for compiling temporally
+	public boolean waitForPageLoading() {		
+		return true;
+	}
+	
 	/**
 	 * This method will go to the product with Review, EasyPay, Swatch item>=4 and Video
 	 * @return true/false
@@ -1538,75 +1406,83 @@ public class ProductResultsPage extends BasePage{
 		this.selectedProductItem.productNowPrice="";
 		this.selectedProductItem.productEasyPay="";
 
-		WebElement element;
-		do {
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productResultList.get(0));
-			for(WebElement item : this.productResultList) {
-				String lsMsg=judgeProductBadgeAndVideo(item);
-				if(!(lsMsg.equalsIgnoreCase("WithBadgeAndVideo"))) {
-					continue;
-				}
-
+//		WebElement element;
+//		do {
+//			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productResultList.get(0));
+//			for(WebElement item : this.productResultList) {
+//				String lsMsg=judgeProductBadgeAndVideo(item);
+//				if(!(lsMsg.equalsIgnoreCase("WithBadgeAndVideo"))) {
+//					continue;
+//				}
+//
 //				element=item.findElement(this.byProductReview);
 //				if(this.getChildElementCount(element)==0) {
 //					continue;
 //				}
-
-				if(!this.judgeProductWasPrice(item).equalsIgnoreCase("WithWasPrice")) {
-					continue;
-				}
-
-				element=item.findElement(this.byProductEasyPay);
-				if(this.getChildElementCount(element)==0) {
-					continue;
-				}
-
-				element=item.findElement(this.byProductSwatch);
-				if(this.getChildElementCount(element)<4) {
-					continue;
-				}
-
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-				this.selectedProductItem.productName=item.findElement(this.byProductName).getText().trim();
-				this.selectedProductItem.productNumber=item.findElement(this.byProductItemNO).getText().trim();
-				List<String> list=this.getNumberFromString(this.selectedProductItem.productNumber);
-				String lsFinal="";
-				for(String lsSubItem:list) {
-					lsFinal+=lsSubItem;
-				}
-				this.selectedProductItem.productConvertedNumber=lsFinal;
-				this.selectedProductItem.productNowPrice=item.findElement(this.byProductNowPrice).getText().trim();
-				this.selectedProductItem.productEasyPay=item.findElement(this.byProductEasyPay).getText().trim();
-				this.selectedProductItem.productNavigationUrl=this.URL();
-				
-				item.click();
-				return this.waitForPageLoading();
-			}
-		}
-		while(this.switchPage(true));
+//
+//				if(!this.judgeProductWasPrice(item).equalsIgnoreCase("WithWasPrice")) {
+//					continue;
+//				}
+//
+//				element=item.findElement(this.byProductEasyPay);
+//				if(this.getChildElementCount(element)==0) {
+//					continue;
+//				}
+//
+//				element=item.findElement(this.byProductSwatch);
+//				if(this.getChildElementCount(element)<4) {
+//					continue;
+//				}
+//
+//				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+//				this.selectedProductItem.productName=item.findElement(this.byProductName).getText().trim();
+//				this.selectedProductItem.productNumber=item.findElement(this.byProductItemNO).getText().trim();
+//				List<String> list=this.getNumberFromString(this.selectedProductItem.productNumber);
+//				String lsFinal="";
+//				for(String lsSubItem:list) {
+//					lsFinal+=lsSubItem;
+//				}
+//				this.selectedProductItem.productConvertedNumber=lsFinal;
+//				this.selectedProductItem.productNowPrice=item.findElement(this.byProductNowPrice).getText().trim();
+//				this.selectedProductItem.productEasyPay=item.findElement(this.byProductEasyPay).getText().trim();
+//				this.selectedProductItem.productNavigationUrl=this.URL();
+//				
+//				item.click();
+//				return this.waitForPDPPageLoading();
+//			}
+//		}
+//		while(this.switchPage(true));
 
 		return false;
 	}
-	
+
 	public boolean goToFirstProductItem() {
 		WebElement item=this.productResultList.get(0);
 		
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 		this.selectedProductItem.productName=item.findElement(this.byProductName).getText().trim();
-		this.selectedProductItem.productNumber=item.findElement(this.byProductItemNO).getText().trim();
-		List<String> list=this.getNumberFromString(this.selectedProductItem.productNumber);
-		String lsFinal="";
-		for(String lsSubItem:list) {
-			lsFinal+=lsSubItem;
-		}
-		this.selectedProductItem.productConvertedNumber=lsFinal;
 		this.selectedProductItem.productNowPrice=item.findElement(this.byProductNowPrice).getText().trim();
-		this.selectedProductItem.productEasyPay=item.findElement(this.byProductEasyPay).getText().trim();
 		this.selectedProductItem.productNavigationUrl=this.URL();
 		
 		item.click();
 		
-		return this.waitForPageLoading();		
+		return this.waitForPDPPageLoading();		
+	}
+	
+	public boolean goToFirstProductItem(String lsProductNumber) {
+		getSearchResultLoad(lsProductNumber);
+		
+		WebElement item=this.productResultList.get(0);
+		
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+		this.selectedProductItem.productName=item.findElement(this.byProductName).getText().trim();
+		this.selectedProductItem.productNumber=lsProductNumber;		
+		this.selectedProductItem.productNowPrice=item.findElement(this.byProductNowPrice).getText().trim();
+		this.selectedProductItem.productNavigationUrl=this.URL();
+		
+		item.click();
+		
+		return this.waitForPDPPageLoading();		
 	}
 	
 	public boolean goToProductItemWithTrueFitAndSizeAndQuantity() {
@@ -1630,20 +1506,12 @@ public class ProductResultsPage extends BasePage{
 								
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 				this.selectedProductItem.productName=item.findElement(this.byProductName).getText().trim();
-				this.selectedProductItem.productNumber=item.findElement(this.byProductItemNO).getText().trim();
-				List<String> list=this.getNumberFromString(this.selectedProductItem.productNumber);
-				String lsFinal="";
-				for(String lsSubItem:list) {
-					lsFinal+=lsSubItem;
-				}
-				this.selectedProductItem.productConvertedNumber=lsFinal;
 				this.selectedProductItem.productNowPrice=item.findElement(this.byProductNowPrice).getText().trim();
-				this.selectedProductItem.productEasyPay=item.findElement(this.byProductEasyPay).getText().trim();
 				this.selectedProductItem.productNavigationUrl=this.URL();
 				this.selectedProductItem.currentProductSequenceNumber=i;
 				
 				item.click();
-				this.waitForPageLoading();
+				this.waitForPDPPageLoading();
 				this.getReusableActionsInstance().staticWait(1000);
 				if(pdp.judgeStyleSizeAvailable()&&pdp.judgeStyleTrueFitExisting()&&pdp.judgeQuantityDropdownAvailable()&&pdp.IsQuantityLeftExisting()) {
 					return true;
@@ -1651,7 +1519,7 @@ public class ProductResultsPage extends BasePage{
 				else {
 					this.getDriver().navigate().back();
 					this.waitForPageToLoad();
-					this.waitForPageLoading();
+					this.waitForPDPPageLoading();
 					this.getReusableActionsInstance().staticWait(1000);					
 				}
 			}
@@ -1682,20 +1550,12 @@ public class ProductResultsPage extends BasePage{
 								
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 				this.selectedProductItem.productName=item.findElement(this.byProductName).getText().trim();
-				this.selectedProductItem.productNumber=item.findElement(this.byProductItemNO).getText().trim();
-				List<String> list=this.getNumberFromString(this.selectedProductItem.productNumber);
-				String lsFinal="";
-				for(String lsSubItem:list) {
-					lsFinal+=lsSubItem;
-				}
-				this.selectedProductItem.productConvertedNumber=lsFinal;
 				this.selectedProductItem.productNowPrice=item.findElement(this.byProductNowPrice).getText().trim();
-				this.selectedProductItem.productEasyPay=item.findElement(this.byProductEasyPay).getText().trim();
 				this.selectedProductItem.productNavigationUrl=this.URL();
 				this.selectedProductItem.currentProductSequenceNumber=i;
 				
 				item.click();
-				this.waitForPageLoading();
+				this.waitForPDPPageLoading();
 				this.getReusableActionsInstance().staticWait(1000);
 				if(pdp.judgeTeaserInfoDisplaying()) {
 					return true;
@@ -1703,7 +1563,7 @@ public class ProductResultsPage extends BasePage{
 				else {
 					this.getDriver().navigate().back();
 					this.waitForPageToLoad();
-					this.waitForPageLoading();
+					this.waitForPDPPageLoading();
 					this.getReusableActionsInstance().staticWait(1000);					
 				}
 			}
@@ -1732,27 +1592,22 @@ public class ProductResultsPage extends BasePage{
 				}
 				
 				item=this.productResultList.get(i);
-//				element=item.findElement(this.byProductReview);
-//				if(this.getChildElementCount(element)==0) {
-//					continue;
-//				}
-												
+				if(!checkProductItemBrandNameExisting(item)) {
+					continue;
+				}
+				
+				if(!checkProductItemReviewExisting(item)) {
+					continue;
+				}
+																
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 				this.selectedProductItem.productName=item.findElement(this.byProductName).getText().trim();
-				this.selectedProductItem.productNumber=item.findElement(this.byProductItemNO).getText().trim();
-				List<String> list=this.getNumberFromString(this.selectedProductItem.productNumber);
-				String lsFinal="";
-				for(String lsSubItem:list) {
-					lsFinal+=lsSubItem;
-				}
-				this.selectedProductItem.productConvertedNumber=lsFinal;
 				this.selectedProductItem.productNowPrice=item.findElement(this.byProductNowPrice).getText().trim();
-				this.selectedProductItem.productEasyPay=item.findElement(this.byProductEasyPay).getText().trim();
 				this.selectedProductItem.productNavigationUrl=this.URL();
 				this.selectedProductItem.currentProductSequenceNumber=i;
 				
 				item.click();
-				this.waitForPageLoading();
+				this.waitForPDPPageLoading();
 				this.getReusableActionsInstance().staticWait(1000);
 				if(pdp.checkProductBrandNameDisplaying()&&pdp.judgeTeaserInfoDisplaying()) {
 					return true;
@@ -1760,7 +1615,7 @@ public class ProductResultsPage extends BasePage{
 				else {
 					this.getDriver().navigate().back();
 					this.waitForPageToLoad();
-					this.waitForPageLoading();
+					this.waitForPDPPageLoading();
 					this.getReusableActionsInstance().staticWait(1000);					
 				}
 			}
