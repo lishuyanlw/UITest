@@ -49,11 +49,11 @@ pipeline {
                     # leave spaces where you want them around the parameters. They'll be trimmed.
                     # we let the build run with the default name
                     
-		    		45 09 * * 6 %Browser=saucechrome;Language=en;Groups=GlobalFooter;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
-		    		50 10 * * 6 %Browser=saucefirefox;Language=en;Groups=GlobalFooter;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
-		    		30 12 * * 6 %Browser=saucesafari;Language=en;Groups=GlobalFooter;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
-		    		45 14 * * 6 %Browser=sauceandroidchrome;Language=en;Groups=GlobalFooter;ThreadCount=1;TunnelRequired=Yes;Device=Tablet;TestProfile=TSCWF-Automation
-		    		30 16 * * 6 %Browser=sauceioschrome;Language=en;Groups=GlobalFooter;ThreadCount=1;TunnelRequired=Yes;Device=Tablet;TestProfile=TSCWF-Automation
+		    		00 21 * * 1 %Browser=saucechrome;Language=en;Groups=GlobalFooter;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
+		    		00 23 * * 1 %Browser=saucefirefox;Language=en;Groups=GlobalFooter;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
+		    		00 22 * * 1 %Browser=saucesafari;Language=en;Groups=GlobalFooter;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
+		    		01 00 * * 2 %Browser=sauceandroidchrome;Language=en;Groups=GlobalFooter;ThreadCount=1;TunnelRequired=Yes;Device=Tablet;TestProfile=TSCWF-Automation
+		    		01 01 * * 2 %Browser=sauceioschrome;Language=en;Groups=GlobalFooter;ThreadCount=1;TunnelRequired=Yes;Device=Tablet;TestProfile=TSCWF-Automation
 
                 ''':'')
     }
