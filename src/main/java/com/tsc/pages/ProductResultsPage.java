@@ -1081,7 +1081,7 @@ public class ProductResultsPage extends BasePage{
 		String lsErrorMsg="";
 		int listSize=this.productFilterList.size();
 		if(listSize==0) {
-			return lsErrorMsg="No product list";
+			return lsErrorMsg="No product filter list";
 		}
 
 		for(int i=0;i<listSize;i++) {
@@ -1216,7 +1216,7 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	public boolean closeAllSelectedFilters() {
-		this.selectedFiltersList.get(this.selectedFiltersList.size()-1).click();
+		getReusableActionsInstance().clickIfAvailable(this.selectedFiltersList.get(this.selectedFiltersList.size()-1));		
 		return this.waitForSortingOrFilteringCompleted();
 	}
 
@@ -1228,6 +1228,7 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	public String verifySlectedFiltersContainSecondlevelFilter(List<String> lstFilterIncluded, List<String> lstFilterExcluded) {
+		String lsMsg="";
 		List<String> lstSelectedFilterOption=new ArrayList<String>();		
 		int selectedFilterSize = this.selectedFiltersList.size() - 1;
 		for (int i = 0; i < selectedFilterSize; i++) {
@@ -1237,17 +1238,18 @@ public class ProductResultsPage extends BasePage{
 		
 		for(String lsItem:lstSelectedFilterOption) {
 			if(!lstFilterIncluded.contains(lsItem)) {
-				return "The search second level filters do not contain the selected filter of '"+lsItem+"'";
+				lsMsg= "The search second level filters do not contain the selected filter of '"+lsItem+"'";
+				break;
 			}
 		}
 
 		for(String lsItem:lstFilterExcluded) {
 			if(lstSelectedFilterOption.contains(lsItem)) {
-				return "The selected filters should not contain the excluded filter of '"+lsItem+"'";
+				lsMsg=lsMsg+ "The selected filters should not contain the excluded filter of '"+lsItem+"'";
 			}
 		}
 
-		return "";
+		return lsMsg;
 	}
 
 	/**

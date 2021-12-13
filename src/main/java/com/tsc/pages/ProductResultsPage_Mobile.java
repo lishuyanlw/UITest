@@ -78,56 +78,114 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 	public By byProductOptionColorItemDisabledList=By.xpath("./parent::div/div[@class='product-card__mobile-modal']//fieldset//div[contains(@class,'product-card__color-and-taste-items')]//button[@disabled]|.//fieldset//select[@class='product-card__color-and-taste__dropdown']//option[@disabled]");
 	
 	public By byProductOptionColorSelectedItem=By.xpath("./parent::div/div[@class='product-card__mobile-modal']//fieldset//div[contains(@class,'product-card__color-and-taste-items')]//button[@aria-pressed='true']|.//fieldset//select[@class='product-card__color-and-taste__dropdown']//option[not(@selected)]");
+
+	public void openFilterPopupWindow() {
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnFilterPopup);
+		getReusableActionsInstance().clickIfAvailable(this.btnFilterPopup);		
+		getReusableActionsInstance().waitForElementVisibility(this.lblFilterPopupHeaderTitle, 20000);
+	}
+	
+	public void closeFilterPopupWindow() {
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnViewProductsAferSelectingFilters);
+		getReusableActionsInstance().clickIfAvailable(this.btnViewProductsAferSelectingFilters);		
+		getReusableActionsInstance().waitForElementStaleness(this.btnViewProductsAferSelectingFilters, 20000);
+	}
 	
 	@Override
 	public boolean selectFilterItemInLeftPanel(String lsFirstLevelItem,String lsSecondLevelItem) {
-		this.firstLevelFilter=lsFirstLevelItem;
-		this.secondLevelFilter=lsSecondLevelItem;
+		openFilterPopupWindow();	
+		
+		super.selectFilterItemInLeftPanel(lsFirstLevelItem,lsSecondLevelItem);	
+		
+		closeFilterPopupWindow();		
+		return true;
+	}
+	
+	@Override
+	public String verifyFilterOptions(List<String> lstOptionYml) {
+		openFilterPopupWindow();
+		
+		String lsErrorMsg="";
+		int listSize=this.productFilterList.size();
+		if(listSize==0) {
+			return lsErrorMsg="No product filter list";
+		}
 
-		for(int i=0;i<this.productFilterList.size();i++) {
+		for(int i=0;i<listSize;i++) {
+			getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i));
+			if(lstOptionYml.contains(this.productFilterList.get(i).getText().trim())) {
+				continue;
+			}else {
+				lsErrorMsg = "Filter option headers in left panel contain "+this.productFilterList.get(i).getText().trim()+" that is not present in input list";
+				break;
+			}
+		}
+		
+		closeFilterPopupWindow();		
+		return lsErrorMsg;
+	}
+	
+	@Override
+	public boolean closeAllSelectedFilters() {
+		openFilterPopupWindow();	
+		
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnFilterPopupClearAll);
+		getReusableActionsInstance().clickIfAvailable(this.btnFilterPopupClearAll);	
+		this.waitForSortingOrFilteringCompleted();
+		
+		closeFilterPopupWindow();		
+		return true;
+	}
+	
+	@Override
+	public String verifySlectedFiltersContainSecondlevelFilter(List<String> lstFilterIncluded, List<String> lstFilterExcluded) {
+		openFilterPopupWindow();
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnFiltersAdded);
+		getReusableActionsInstance().clickIfAvailable(this.btnFiltersAdded);
+		getReusableActionsInstance().waitForElementVisibility(this.selectedFiltersList.get(this.selectedFiltersList.size()-1), 20000);
+		
+		String lsMsg="";
+		List<String> lstSelectedFilterOption=new ArrayList<String>();		
+		int selectedFilterSize = this.selectedFiltersList.size() - 1;
+		for (int i = 0; i < selectedFilterSize; i++) {
+			getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectedFiltersList.get(i));
+			lstSelectedFilterOption.add(this.selectedFiltersList.get(i).getText().trim());
+		}
+		
+		for(String lsItem:lstSelectedFilterOption) {
+			if(!lstFilterIncluded.contains(lsItem)) {
+				lsMsg= "The search second level filters do not contain the selected filter of '"+lsItem+"'";
+				break;
+			}
+		}
+
+		for(String lsItem:lstFilterExcluded) {
+			if(lstSelectedFilterOption.contains(lsItem)) {
+				lsMsg=lsMsg+ "The selected filters should not contain the excluded filter of '"+lsItem+"'";
+				break;
+			}
+		}
+
+		return lsMsg;
+	}
+	
+	@Override
+	public WebElement getFilterContainerWithSpecificFirstlevelFilterInLeftPanel(String lsFirstLevelItem) {
+		openFilterPopupWindow();
+		
+		int loopSize=this.productFilterList.size();
+		for(int i=0;i<loopSize;i++) {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i));
 			String lsHeader=this.productFilterList.get(i).getText().trim();
 			if(lsHeader.contains("(")) {
 				lsHeader=lsHeader.split("\\(")[0].trim();
 			}			
 			//If found lsFirstLevelItem
-			if(lsHeader.equalsIgnoreCase(lsFirstLevelItem)) {
-				expandFilterItem(this.productFilterContainerList.get(i));
-				
-				List<WebElement> subItemList=this.productFilterContainerList.get(i).findElements(this.bySecondaryFilterAll);				
-				for(WebElement subItem : subItemList) {
-					getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
-					String lsSubItem=subItem.findElement(By.xpath(".//span[@class='plp-filter-panel__filter-list__item-label-text']")).getText().trim();
-					
-					getReusableActionsInstance().staticWait(500);
-					//If found lsSecondLevelItem
-					if(lsSubItem.equalsIgnoreCase(lsSecondLevelItem)) {						
-						getReusableActionsInstance().staticWait(500);
-						getReusableActionsInstance().clickIfAvailable(subItem);
-						return waitForSortingOrFilteringCompleted();
-					}
-				}
+			if(lsHeader.equalsIgnoreCase(lsFirstLevelItem)) {				
+				return this.productFilterContainerList.get(i);
 			}
 		}
-
-		//If unable to find both lsFirstLevelItem and lsSecondLevelItem, then select the first choice
-		this.bDefault=true;
-		
-		for(int i=0;i<this.productFilterList.size();i++) {
-			expandFilterItem(this.productFilterContainerList.get(i));
-			
-			List<WebElement> subItemList=this.productFilterContainerList.get(i).findElements(this.bySecondaryFilterAll);	
-			for(WebElement subItem : subItemList) {
-				if(!this.hasElementAttribute(subItem.findElement(By.xpath(".//button//input")), "checked")) {
-					this.secondLevelFilter=this.getElementInnerText(subItem);
-					this.firstLevelFilter=this.getElementInnerText(subItem.findElement(By.xpath("./ancestor::div[@class='plp-filter-panel__blocks']//button[@class='plp-filter-panel__block-title']")));
-					System.out.println(this.firstLevelFilter+" : "+this.secondLevelFilter);
-					getReusableActionsInstance().staticWait(500);
-					getReusableActionsInstance().clickIfAvailable(subItem);
-					return waitForSortingOrFilteringCompleted();
-				}
-			}			
-		}
-		return false;
+		return null;
 	}
+	
 }
