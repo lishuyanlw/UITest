@@ -1441,7 +1441,22 @@ public class ProductResultsPage extends BasePage{
 			}
 		}
 
-		return this.waitForPageLoading();
+		this.waitForPageToLoad();
+		
+		return waitForCondition(Driver->{
+			return this.lblSearchResultMessage.isDisplayed();
+			},90000);
+	}
+	
+	/**
+	 * This method will get the first product name.
+	 * @return String
+	 * @author Wei.Li
+	 */
+	public String getFirstProductName() {
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.productResultList.get(0));
+		WebElement item=this.productResultList.get(0).findElement(this.byProductName);
+		return this.getElementInnerText(item);
 	}
 
 	/**
