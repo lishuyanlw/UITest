@@ -428,9 +428,10 @@ public class GlobalHeaderPage extends BasePage{
 	 * @author Wei.Li
 	 */	
 	 public void hoverOnWatchTSC() {
-		 getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnWatchTSCBlackHeader);
-		 getReusableActionsInstance().scrollToElement(this.btnWatchTSCBlackHeader);
-		 getReusableActionsInstance().staticWait(100);		 
+	 	getReusableActionsInstance().waitForPageLoad();
+	 	getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnWatchTSCBlackHeader);
+		getReusableActionsInstance().scrollToElement(this.btnWatchTSCBlackHeader);
+		getReusableActionsInstance().staticWait(100);
 	 }	
 	 
 	/**
