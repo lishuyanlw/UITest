@@ -1912,9 +1912,6 @@ public class ProductResultsPage extends BasePage{
 				this.getReusableActionsInstance().staticWait(3000);	
 				element=itemContainer.findElement(byProductOptionSizeSelectedSize);
 				selectedProductItem.productSelectedSize=this.getElementInnerText(element);
-				
-				element=itemContainer.findElement(BySelectSizeAndColorButton);
-				System.out.println("Button text: "+this.getElementInnerText(element));
 			}
 			else {
 				selectedProductItem.productSelectedSize="";
@@ -1928,21 +1925,13 @@ public class ProductResultsPage extends BasePage{
 				this.getReusableActionsInstance().staticWait(3000);	
 				element=itemContainer.findElement(byProductOptionColorSelectedColor);
 				selectedProductItem.productSelectedColor=this.getElementInnerText(element);
-				
-				element=itemContainer.findElement(BySelectSizeAndColorButton);
-				System.out.println("Button text: "+this.getElementInnerText(element));
 			}
 			else {
 				selectedProductItem.productSelectedColor="";
 			}			
 		}
-		
-		this.getReusableActionsInstance().staticWait(5000);
-		System.out.println(selectedProductItem.productSelectedSize+"  Size:Color  "+selectedProductItem.productSelectedColor);
+
 		element=itemContainer.findElement(BySelectSizeAndColorButton);
-		System.out.println("Button text: "+this.getElementInnerText(element));
-		this.clickElement(element);
-		this.getReusableActionsInstance().staticWait(10000);
 		return this.getElementInnerText(element).trim().equalsIgnoreCase("Go to detail page");
 	}
 	

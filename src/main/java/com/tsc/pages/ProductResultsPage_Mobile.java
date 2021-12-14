@@ -478,7 +478,6 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 		}
 		
 		this.getReusableActionsInstance().staticWait(2000);
-		System.out.println(selectedProductItem.productSelectedSize+"  Size:Color  "+selectedProductItem.productSelectedColor);
 		element=this.getDriver().findElement(byProductGoToDetails);
 
 		return this.getElementInnerText(element).trim().equalsIgnoreCase("Go to detail page");
