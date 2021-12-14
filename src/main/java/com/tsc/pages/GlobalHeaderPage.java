@@ -441,33 +441,34 @@ public class GlobalHeaderPage extends BasePage{
 	 * @author Wei.Li
 	 */	
 	 public void verifyTSHeaderAndLinkInBlackHeader(WebElement blackItem,WebElement silverItem,boolean bCheckUrl) {
-		 getReusableActionsInstance().javascriptScrollByVisibleElement(blackItem);
-		 if(!System.getProperty("Device").equalsIgnoreCase("Desktop")) {
-			 getReusableActionsInstance().clickIfAvailable(blackItem);
-		 }
-		 String title=blackItem.getText().trim();
-		 String lsTitle=getUTFEnabledData(title);
-		 reporter.softAssert(getReusableActionsInstance().isElementVisible(blackItem), "The element of "+lsTitle+" in Black headers is visible","The element of "+lsTitle+" in Black headers is not visible");
-		 reporter.softAssert(!lsTitle.isEmpty(), lsTitle+" text in Black headers is not empty", lsTitle+" text in Black headers is empty");
-		 String lsHrefInBlackHeader=this.getElementHref(blackItem);	
-		 reporter.softAssert(!lsHrefInBlackHeader.isEmpty(), "The href of "+lsTitle+" in Black headers is not empty", "The href of "+lsTitle+" in Black headers is empty");
-		 lsHrefInBlackHeader=this.removeLastSlashFromUrl(lsHrefInBlackHeader);
-		 
-		 blackItem.click();
-		 (new GlobalFooterPage(this.getDriver())).waitForPageLoading();
-			
-		 String lsUrlInSilverHeader=this.removeLastSlashFromUrl(this.URL());
-		 //
-		 getReusableActionsInstance().staticWait(3000);
-			
-			if(bCheckUrl) {
-			 reporter.softAssert(lsUrlInSilverHeader.equalsIgnoreCase(lsHrefInBlackHeader), "The Url of "+lsUrlInSilverHeader+"  after clicking "+lsTitle+" in Black headers is equal to the href of "+lsHrefInBlackHeader, "The Url of "+lsUrlInSilverHeader+"  after clicking "+lsTitle+" in Black headers is not equal to the href of "+lsHrefInBlackHeader);
-		 }
+	 	getReusableActionsInstance().waitForPageLoad();
+	 	getReusableActionsInstance().javascriptScrollByVisibleElement(blackItem);
+		if(!System.getProperty("Device").equalsIgnoreCase("Desktop")) {
+			getReusableActionsInstance().clickIfAvailable(blackItem);
+		}
+		String title=blackItem.getText().trim();
+		String lsTitle=getUTFEnabledData(title);
+		reporter.softAssert(getReusableActionsInstance().isElementVisible(blackItem), "The element of "+lsTitle+" in Black headers is visible","The element of "+lsTitle+" in Black headers is not visible");
+		reporter.softAssert(!lsTitle.isEmpty(), lsTitle+" text in Black headers is not empty", lsTitle+" text in Black headers is empty");
+		String lsHrefInBlackHeader=this.getElementHref(blackItem);
+		reporter.softAssert(!lsHrefInBlackHeader.isEmpty(), "The href of "+lsTitle+" in Black headers is not empty", "The href of "+lsTitle+" in Black headers is empty");
+		lsHrefInBlackHeader=this.removeLastSlashFromUrl(lsHrefInBlackHeader);
 
-		 if(silverItem!=null) {
-			 String lsStyle=silverItem.findElement(By.xpath(".//span")).getAttribute("style");
-			 reporter.softAssert(lsStyle.toLowerCase().contains("color:#fff;")||lsStyle.toLowerCase().contains("color: rgb(255, 255, 255);"), lsTitle+" in Silver headers is being selected", lsTitle+" in Silver headers is not being selected");
-		 }
+		blackItem.click();
+		(new GlobalFooterPage(this.getDriver())).waitForPageLoading();
+
+		String lsUrlInSilverHeader=this.removeLastSlashFromUrl(this.URL());
+		//
+		getReusableActionsInstance().staticWait(3000);
+
+		if(bCheckUrl) {
+			reporter.softAssert(lsUrlInSilverHeader.equalsIgnoreCase(lsHrefInBlackHeader), "The Url of " + lsUrlInSilverHeader + "  after clicking " + lsTitle + " in Black headers is equal to the href of " + lsHrefInBlackHeader, "The Url of " + lsUrlInSilverHeader + "  after clicking " + lsTitle + " in Black headers is not equal to the href of " + lsHrefInBlackHeader);
+		}
+
+		if(silverItem!=null) {
+			String lsStyle=silverItem.findElement(By.xpath(".//span")).getAttribute("style");
+			reporter.softAssert(lsStyle.toLowerCase().contains("color:#fff;")||lsStyle.toLowerCase().contains("color: rgb(255, 255, 255);"), lsTitle+" in Silver headers is being selected", lsTitle+" in Silver headers is not being selected");
+		}
 	 }
 
 	 
