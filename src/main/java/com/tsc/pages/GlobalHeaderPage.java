@@ -418,6 +418,8 @@ public class GlobalHeaderPage extends BasePage{
 	 public boolean goBackHomePage() {
 		 getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkTSClogo);
 		 this.lnkTSClogo.click();
+		 waitForCondition(Driver->{return this.FlyoutHeadings.isEnabled();},50000);
+		 getReusableActionsInstance().staticWait(4000);
 		 return (new GlobalFooterPage(this.getDriver())).waitForPageLoading();
 	 }
 
@@ -441,7 +443,7 @@ public class GlobalHeaderPage extends BasePage{
 	 public void verifyTSHeaderAndLinkInBlackHeader(WebElement blackItem,WebElement silverItem,boolean bCheckUrl) {
 		 getReusableActionsInstance().javascriptScrollByVisibleElement(blackItem);
 		 if(!System.getProperty("Device").equalsIgnoreCase("Desktop")) {
-			 blackItem.click();
+			 getReusableActionsInstance().clickIfAvailable(blackItem);
 		 }
 		 String title=blackItem.getText().trim();
 		 String lsTitle=getUTFEnabledData(title);

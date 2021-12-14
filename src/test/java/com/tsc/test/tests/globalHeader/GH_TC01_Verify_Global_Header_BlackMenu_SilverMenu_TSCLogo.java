@@ -34,8 +34,6 @@ public class GH_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo extends B
 	public void validateActionContents() {
 		reporter.reportLog("Global Header Section contents for BlackMenu_SilverMenu_TSCLogoLinks");
 		
-		BasePage basePage=new BasePage(this.getDriver());
-		
 		reporter.reportLog("Verify Black headers");
 		//Verify Black headers
 		getglobalheaderPageThreadLocal().verifyTSHeaderAndLinkInBlackHeader(getglobalheaderPageThreadLocal().lnkTSBlackHeader,null,true);//getglobalheaderPageThreadLocal().lnkTS
