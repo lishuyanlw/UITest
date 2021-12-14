@@ -718,7 +718,7 @@ public class ProductResultsPage extends BasePage{
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(0));
 		this.getReusableActionsInstance().scrollToElement(this.productFilterList.get(0));
 		
-		int checkAmount=20,loopSize;
+		int checkAmount=5,loopSize;
 		WebElement item,element;	
 		String lsProductName,lsText;
 		if(checkAmount<=this.productResultList.size()) {
@@ -838,7 +838,7 @@ public class ProductResultsPage extends BasePage{
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(0));
 		this.getReusableActionsInstance().scrollToElement(this.productFilterList.get(0));
 		
-		int checkAmount=16,loopSize;
+		int checkAmount=5,loopSize;
 		WebElement item,element;	
 		String lsProductName,lsText;
 		if(checkAmount<=this.productResultList.size()) {
@@ -982,7 +982,6 @@ public class ProductResultsPage extends BasePage{
 			else {
 				reporter.reportLogFail("Product GoTo Details is not visible");
 			}
-			
 			
 		}
 	}
@@ -1861,6 +1860,45 @@ public class ProductResultsPage extends BasePage{
 		}		
 	}
 	
+	/**
+	 * This method will select size/color option
+	 * @param WebElement itemContainer: product search result item
+	 * @return void
+	 * @author Wei.Li
+	 */
+	public void selectSizeOrColorOption(WebElement itemContainer) {
+		List<WebElement> optionList;
+		WebElement element;
+		String lsText;
+		
+		if(this.checkProductOptionTypeExistingWithMouseHover(itemContainer, "size")) {	
+			if(checkProductSizeOptionEnabledItemAvailableWithMouseHover(itemContainer)) {				
+				optionList=itemContainer.findElements(byProductOptionSizeItemEnabledList);
+				this.clickElement(optionList.get(0));
+				this.getReusableActionsInstance().staticWait(2000);	
+				element=itemContainer.findElement(byProductOptionSizeSelectedSize);
+				selectedProductItem.productSelectedSize=this.getElementInnerText(element);
+			}
+			else {
+				selectedProductItem.productSelectedSize="";
+			}			
+		}
+		
+		if(this.checkProductOptionTypeExistingWithMouseHover(itemContainer, "colour")) {	
+			if(checkProductColorOptionEnabledItemAvailableWithMouseHover(itemContainer)) {				
+				optionList=itemContainer.findElements(byProductOptionColorItemEnabledList);
+				this.clickElement(optionList.get(0));
+				this.getReusableActionsInstance().staticWait(2000);	
+				element=itemContainer.findElement(byProductOptionColorSelectedColor);
+				selectedProductItem.productSelectedColor=this.getElementInnerText(element);
+			}
+			else {
+				selectedProductItem.productSelectedColor="";
+			}			
+		}
+		
+	}
+		
 	/**
 	 * This method will check Product Item brand name Existing
 	 * @param WebElement itemContainer: product search result item

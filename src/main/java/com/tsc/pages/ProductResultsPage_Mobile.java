@@ -366,7 +366,9 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 			else {
 				reporter.reportLogFail("Product GoTo details button is not visible");
 			}
-				
+			
+			selectSizeOrColorOption(item);
+			
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnProductSizeOrColorClose);
 			this.getReusableActionsInstance().clickIfAvailable(this.btnProductSizeOrColorClose);
 			this.getReusableActionsInstance().staticWait(2000);
