@@ -245,7 +245,8 @@ public class GlobalHeaderPage extends BasePage{
 	@FindBy(xpath = "//a[contains(@class,'mega-curated__item-link')]")
 	public List<WebElement> listCuratedCollectionLinks;
 
-
+	@FindBy(xpath="//div[contains(@class,'PageTitle')]//div[contains(@id,'ctlPanTitle')]")
+	public WebElement lblPageTitleForMenuItems;
 
 	@FindBy(xpath = "//a[contains(@class,'mega-popular__brand-link')]//img")
 	public List<WebElement> listPopularBrandsImg;
@@ -646,6 +647,7 @@ public class GlobalHeaderPage extends BasePage{
 		getReusableActionsInstance().scrollToElement(headingWebElement);
 		getReusableActionsInstance().clickIfAvailable(headingWebElement);
 		(new GlobalFooterPage(this.getDriver())).waitForPageLoading();
+		waitForCondition(Driver->{return (this.lblPageTitleForMenuItems.isDisplayed() && this.lblPageTitleForMenuItems.getText()!=null);},60000);
 		currentUrl = getDriver().getCurrentUrl();
 		return currentUrl;
 	}
