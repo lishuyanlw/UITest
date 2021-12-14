@@ -49,10 +49,9 @@ pipeline {
                     # leave spaces where you want them around the parameters. They'll be trimmed.
                     # we let the build run with the default name
                     
-		    		30 20 * * 1 %Browser=saucesafari;Language=en;Groups=GlobalHeader;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
-		    		30 21 * * 1 %Browser=saucechrome;Language=en;Groups=GlobalHeader;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
-		    		30 22 * * 1 %Browser=sauceandroidchrome;Language=en;Groups=GlobalHeader_Mobile;ThreadCount=1;TunnelRequired=Yes;Device=Mobile;TestProfile=TSCWF-Automation
-		    		30 23 * * 1 %Browser=sauceioschrome;Language=en;Groups=GlobalHeader_Mobile;ThreadCount=1;TunnelRequired=Yes;Device=Mobile;TestProfile=TSCWF-Automation
+		    		30 21 * * 2 %Browser=saucechrome;Language=en;Groups=GlobalHeader;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
+		    		30 22 * * 2 %Browser=sauceandroidchrome;Language=en;Groups=GlobalHeader_Mobile;ThreadCount=1;TunnelRequired=Yes;Device=Mobile;TestProfile=TSCWF-Automation
+		    		30 23 * * 2 %Browser=sauceioschrome;Language=en;Groups=GlobalHeader_Mobile;ThreadCount=1;TunnelRequired=Yes;Device=Mobile;TestProfile=TSCWF-Automation
 		    		
                 ''':'')
     }
