@@ -437,7 +437,7 @@ public class GlobalHeaderPage extends BasePage{
 	 public void hoverOnWatchTSC() {
 	 	getReusableActionsInstance().waitForPageLoad();
 	 	getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnWatchTSCBlackHeader);
-		getReusableActionsInstance().scrollToElement(this.btnWatchTSCBlackHeader);
+		getReusableActionsInstance().clickIfAvailable(this.btnWatchTSCBlackHeader);
 		getReusableActionsInstance().staticWait(100);
 	 }	
 	 
