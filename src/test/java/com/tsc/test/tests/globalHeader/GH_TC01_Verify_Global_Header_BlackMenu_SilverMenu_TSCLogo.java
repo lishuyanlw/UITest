@@ -38,32 +38,32 @@ public class GH_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo extends B
 		//Verify Black headers
 		getglobalheaderPageThreadLocal().verifyTSHeaderAndLinkInBlackHeader(getglobalheaderPageThreadLocal().lnkTSBlackHeader,null,true);//getglobalheaderPageThreadLocal().lnkTS
 		//getglobalheaderPageThreadLocal().goBackHomePage();
-		getDriver().navigate().refresh();
-		
+		getglobalheaderPageThreadLocal().clickOnTSCLogo();
+
 		getglobalheaderPageThreadLocal().hoverOnWatchTSC();
 		getglobalheaderPageThreadLocal().verifyTSHeaderAndLinkInBlackHeader(getglobalheaderPageThreadLocal().lnkWatchUsLiveDpdMenu,null,true);//getglobalheaderPageThreadLocal().lnkWatchUsLive
 		//getglobalheaderPageThreadLocal().goBackHomePage();
-		getDriver().navigate().refresh();
-		
+		getglobalheaderPageThreadLocal().clickOnTSCLogo();
+
 		getglobalheaderPageThreadLocal().hoverOnWatchTSC();
 		getglobalheaderPageThreadLocal().verifyTSHeaderAndLinkInBlackHeader(getglobalheaderPageThreadLocal().lnkDealsDpdMenu,null,true);//getglobalheaderPageThreadLocal().lnkDeals
 		//getglobalheaderPageThreadLocal().goBackHomePage();
-		getDriver().navigate().refresh();
-		
+		getglobalheaderPageThreadLocal().clickOnTSCLogo();
+
 		getglobalheaderPageThreadLocal().hoverOnWatchTSC();
 		getglobalheaderPageThreadLocal().verifyTSHeaderAndLinkInBlackHeader(getglobalheaderPageThreadLocal().lnkProgramGuideDpdMenu,null,false);//getglobalheaderPageThreadLocal().lnkProgramGuide
 		//getglobalheaderPageThreadLocal().goBackHomePage();
+		getglobalheaderPageThreadLocal().clickOnTSCLogo();
 		//comment line #56 to 62 for staging
-		getDriver().navigate().refresh();
 		getglobalheaderPageThreadLocal().hoverOnWatchTSC();
 		getglobalheaderPageThreadLocal().verifyTSHeaderAndLinkInBlackHeader(getglobalheaderPageThreadLocal().lnkCarGadgetsDpdMenu,null,true);
 		//getglobalheaderPageThreadLocal().goBackHomePage();
-		getDriver().navigate().refresh();
+		getglobalheaderPageThreadLocal().clickOnTSCLogo();
 
 		getglobalheaderPageThreadLocal().hoverOnWatchTSC();
 		getglobalheaderPageThreadLocal().verifyTSHeaderAndLinkInBlackHeader(getglobalheaderPageThreadLocal().lnkDesignerFootwearDpdMenu,null,true);
 		//getglobalheaderPageThreadLocal().goBackHomePage();
-		getDriver().navigate().refresh();
+		getglobalheaderPageThreadLocal().clickOnTSCLogo();
 
 		getglobalheaderPageThreadLocal().hoverOnWatchTSC();
 		getglobalheaderPageThreadLocal().verifyTSHeaderAndLinkInBlackHeader(getglobalheaderPageThreadLocal().lnkOnAirProductsDpdMenu,null,true);//getglobalheaderPageThreadLocal().lnkOnAir

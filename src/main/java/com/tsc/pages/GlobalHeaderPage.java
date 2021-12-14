@@ -319,6 +319,13 @@ public class GlobalHeaderPage extends BasePage{
 	public boolean validateTSCLogo() {
 		return getReusableActionsInstance().isElementVisible(lnkTSClogo, 5);
 	}
+
+	public void clickOnTSCLogo() {
+		getReusableActionsInstance().javascriptScrollByVisibleElement(lnkTSClogo);
+		getReusableActionsInstance().clickIfAvailable(lnkTSClogo);
+		getReusableActionsInstance().waitForPageLoad();
+		waitForCondition(Driver->{return this.searchBox.isEnabled() && this.searchBox.isDisplayed();},60000);
+	}
 	
 	//Search box visible
 	public String validateSearchbox() {
