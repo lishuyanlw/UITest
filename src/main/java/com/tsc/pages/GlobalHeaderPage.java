@@ -437,9 +437,10 @@ public class GlobalHeaderPage extends BasePage{
 	 public void hoverOnWatchTSC() {
 	 	getReusableActionsInstance().waitForPageLoad();
 	 	getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnWatchTSCBlackHeader);
-	 	//waitForCondition(Driver->{return this.btnWatchTSCBlackHeader.isEnabled();},40000);
 		getReusableActionsInstance().staticWait(2000);
-		getReusableActionsInstance().scrollToElement(this.btnWatchTSCBlackHeader);
+		//Clicking on button twice as test is not working for Safari using scrollToElement
+		getReusableActionsInstance().clickIfAvailable(this.btnWatchTSCBlackHeader);
+		getReusableActionsInstance().clickIfAvailable(this.btnWatchTSCBlackHeader);
 		getReusableActionsInstance().staticWait(1000);
 	 }	
 	 
