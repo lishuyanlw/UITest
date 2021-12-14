@@ -218,7 +218,8 @@ public class GH_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo extends B
 			//comment line #215 &216 for staging
 			getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkDesignerFootwearDpdMenu);
 			getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkOnAirProductsDpdMenu);
-
+			getglobalheaderPageThreadLocal().hoverOnWatchTSC();
+			getglobalheaderPageThreadLocal().staticwait();
 			basePage.getReusableActionsInstance().javascriptScrollByVisibleElement(getglobalheaderPageThreadLocal().lnkTSBlackHeader);
 			getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkTSBlackHeader);
 		}
