@@ -134,8 +134,15 @@ public class BaseTest {
 		//globalheaderPageThreadLocal.set(new GlobalHeaderPage_Mobile(getDriver()));
 		//loginPageThreadLocal.set(new LoginPage(getDriver()));
 		//globalFooterPageThreadLocal.set(new GlobalFooterPage(getDriver()));
-		globalFooterPageThreadLocal.set(new GlobalFooterPage_Tablet(getDriver()));
-		productDetailPageThreadLocal.set(new ProductDetailPage_Tablet(getDriver()));
+
+		if(System.getProperty("Browser").contains("android") ||
+				!System.getProperty("chromeMobileDevice").contains("iPad")) {
+			productDetailPageThreadLocal.set(new ProductDetailPage_Mobile(getDriver()));
+			globalFooterPageThreadLocal.set(new GlobalFooterPage_Mobile(getDriver()));
+		}else {
+			productDetailPageThreadLocal.set(new ProductDetailPage_Tablet(getDriver()));
+			globalFooterPageThreadLocal.set(new GlobalFooterPage_Tablet(getDriver()));
+		}
 		globalheaderPageThreadLocal.set(new GlobalHeaderPage_Tablet(getDriver()));
 		loginPageThreadLocal.set(new LoginPage_Mobile(getDriver()));
 		reporter = new ExtentTestManager(getDriver());

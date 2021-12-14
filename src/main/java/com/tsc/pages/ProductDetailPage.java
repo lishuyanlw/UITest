@@ -758,6 +758,7 @@ public class ProductDetailPage extends BasePage {
 	public String getAutoPlayVideoToolTipPopupMsg() {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkAutoPlayVideoToolTip);
 		this.getReusableActionsInstance().scrollToElement(this.lnkAutoPlayVideoToolTip);
+		this.getReusableActionsInstance().clickIfAvailable(this.lnkAutoPlayVideoToolTip);
 		this.getReusableActionsInstance().staticWait(1000);
 		
 		String lsText=this.lblAutoPlayVideoToolTipPopupMsg.getText().trim();
@@ -1228,6 +1229,8 @@ public class ProductDetailPage extends BasePage {
 	 */
 	public void openTrueFitIFrame() {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkProductTrueFitLink);
+		this.getReusableActionsInstance().scrollToElement(this.lnkProductTrueFitLink);
+		this.getReusableActionsInstance().staticWait(1000);
 		this.getReusableActionsInstance().clickIfAvailable(this.lnkProductTrueFitLink);
 		//this.lnkProductTrueFitLink.click();
 		this.waitForCondition(Driver->{return this.iframeProductTrueFitLoadingIndicator.getAttribute("style").contains("display: block");}, 30000);
