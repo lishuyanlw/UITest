@@ -47,6 +47,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 	
 	//For size and color
 	public By byProductOptionFieldsetList=By.xpath("./parent::div/div[@class='product-card__mobile-modal']//fieldset");
+	
 	public By byProductOptionTitle=By.xpath("./parent::div/div[@class='product-card__mobile-modal']//fieldset//*[contains(@class,'product-card__') and contains(@class,'-title')]");
 	
 	//For size option	
@@ -78,7 +79,13 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 	public By byProductOptionColorItemDisabledList=By.xpath("./parent::div/div[@class='product-card__mobile-modal']//fieldset//div[contains(@class,'product-card__color-and-taste-items')]//button[@disabled]|.//fieldset//select[@class='product-card__color-and-taste__dropdown']//option[@disabled]");
 	
 	public By byProductOptionColorSelectedItem=By.xpath("./parent::div/div[@class='product-card__mobile-modal']//fieldset//div[contains(@class,'product-card__color-and-taste-items')]//button[@aria-pressed='true']|.//fieldset//select[@class='product-card__color-and-taste__dropdown']//option[not(@selected)]");
-
+	
+	@FindBy(xpath = "//button[@class='product-card__add-button product-card__add-button--modal']")
+	public WebElement btnProductGoToDetails;
+	
+	@FindBy(xpath = "//button[@class='product-card__mobile-modal__close-button']")
+	public WebElement btnProductSizeOrColorClose;
+	
 	public void openFilterPopupWindow() {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnFilterPopup);
 		getReusableActionsInstance().clickIfAvailable(this.btnFilterPopup);		
@@ -201,7 +208,9 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 		}
 		
 		for(int i=0;i<loopSize;i++) {		
-			item=this.productResultList.get(i);			
+			item=this.productResultList.get(i);	
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			
 			element=item.findElement(byProductName);			
 			lsProductName=this.getElementInnerText(element);
 			reporter.reportLog("Product Name: "+lsProductName);
@@ -299,13 +308,69 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				}
 			}
 			
-			element=item.findElement(byProductAddToBag);
+			element=item.findElement(byProductItemSelectSizeOrColor);
 			if(this.getReusableActionsInstance().isElementVisible(element)) {
-				reporter.reportLogPass("Product AddToBag is visible");
+				reporter.reportLogPass("Product select Size and Color is visible");
 			}
 			else {
-				reporter.reportLogFail("Product AddToBag is not visible");
+				reporter.reportLogFail("Product select Size and Color is not visible");
 			}
+			
+			if(this.getElementInnerText(element).equalsIgnoreCase("Go to detail page")) {
+				continue;
+			}
+			
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+			this.getReusableActionsInstance().clickIfAvailable(element);
+			this.getReusableActionsInstance().waitForElementVisibility(this.btnProductGoToDetails);
+			
+			if(this.checkProductOptionTypeExistingWithMouseHover(item, "size")) {				
+				element=item.findElement(byProductOptionSizeTitle);
+				lsText=this.getElementInnerText(element);
+				if(!lsText.isEmpty()) {
+					reporter.reportLogPass("Product option size title is not empty");
+				}
+				else {
+					reporter.reportLogFail("Product option size title is empty");
+				}
+				
+				if(item.findElements(byProductOptionSizeItemList).size()>0) {
+					reporter.reportLogPass("Product option size button list is containing no less than 1 item");
+				}
+				else {
+					reporter.reportLogFail("Product option size button list is containing 0 item");
+				}
+			}
+			
+			if(this.checkProductOptionTypeExistingWithMouseHover(item, "colour")) {				
+				element=item.findElement(byProductOptionColorTitle);				
+				lsText=this.getElementInnerText(element);				
+				if(!lsText.isEmpty()) {
+					reporter.reportLogPass("Product option color title is not empty");
+				}
+				else {
+					reporter.reportLogFail("Product option color title is empty");
+				}
+				
+				if(item.findElements(byProductOptionColorItemList).size()>0) {
+					reporter.reportLogPass("Product option color button list is containing no less than 1 item");
+				}
+				else {
+					reporter.reportLogFail("Product option color button list is containing 0 item");
+				}
+			}
+						
+			if(this.getReusableActionsInstance().isElementVisible(this.btnProductGoToDetails)) {
+				reporter.reportLogPass("Product GoTo details button is visible");
+			}
+			else {
+				reporter.reportLogFail("Product GoTo details button is not visible");
+			}
+				
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnProductSizeOrColorClose);
+			this.getReusableActionsInstance().clickIfAvailable(this.btnProductSizeOrColorClose);
+			this.getReusableActionsInstance().staticWait(2000);
+			
 		}
 	}
 	

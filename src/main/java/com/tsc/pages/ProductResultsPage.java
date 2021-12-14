@@ -175,7 +175,7 @@ public class ProductResultsPage extends BasePage{
 
 	public By byProductReviewRatingCount=By.xpath(".//div[@class='product-card__reviews']//a[@class='product-card__reviews-count']");
 
-	public By byProductAddToBag=By.xpath(".//button[@class='product-card__add-button']");
+	public By byProductGoToDetails=By.xpath(".//button[@class='product-card__add-button']");
 
 	//Pagination
 	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp__pagination']")
@@ -975,12 +975,12 @@ public class ProductResultsPage extends BasePage{
 				}
 			}
 				
-			element=item.findElement(byProductAddToBag);
+			element=item.findElement(byProductGoToDetails);
 			if(this.getReusableActionsInstance().isElementVisible(element)) {
-				reporter.reportLogPass("Product AddToBag is visible");
+				reporter.reportLogPass("Product GoTo Details is visible");
 			}
 			else {
-				reporter.reportLogFail("Product AddToBag is not visible");
+				reporter.reportLogFail("Product GoTo Details is not visible");
 			}
 			
 			
@@ -1396,11 +1396,11 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	public boolean goToProductItemWithReviewAndSwatchAndVideo() {
-		this.selectedProductItem.productName="";
-		this.selectedProductItem.productNumber="";
-		this.selectedProductItem.productNowPrice="";
-		this.selectedProductItem.productEasyPay="";
-
+//		this.selectedProductItem.productName="";
+//		this.selectedProductItem.productNumber="";
+//		this.selectedProductItem.productNowPrice="";
+//		this.selectedProductItem.productEasyPay="";
+//
 //		WebElement element;
 //		do {
 //			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productResultList.get(0));
@@ -1452,8 +1452,7 @@ public class ProductResultsPage extends BasePage{
 	}
 
 	public boolean goToFirstProductItem() {
-		WebElement item=this.productResultList.get(0);
-		
+		WebElement item=this.productResultList.get(0);		
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 		this.selectedProductItem.productName=item.findElement(this.byProductName).getText().trim();
 		this.selectedProductItem.productNowPrice=item.findElement(this.byProductNowPrice).getText().trim();
@@ -1486,7 +1485,7 @@ public class ProductResultsPage extends BasePage{
 		this.selectedProductItem.productName="";
 		this.selectedProductItem.productNumber="";
 		this.selectedProductItem.productNowPrice="";
-		this.selectedProductItem.productEasyPay="";
+
 		
 		WebElement item;
 		do {
@@ -1530,7 +1529,7 @@ public class ProductResultsPage extends BasePage{
 		this.selectedProductItem.productName="";
 		this.selectedProductItem.productNumber="";
 		this.selectedProductItem.productNowPrice="";
-		this.selectedProductItem.productEasyPay="";
+	
 		
 		WebElement item;
 		do {
@@ -1575,7 +1574,6 @@ public class ProductResultsPage extends BasePage{
 		this.selectedProductItem.productName="";
 		this.selectedProductItem.productNumber="";
 		this.selectedProductItem.productNowPrice="";
-		this.selectedProductItem.productEasyPay="";
 
 		WebElement item;
 		do {
@@ -1804,6 +1802,28 @@ public class ProductResultsPage extends BasePage{
 	}
 	
 	/**
+	 * This method will check Product size enabled option Item available while mouse hover
+	 * @param WebElement itemContainer: product search result item
+	 * @return boolean
+	 * @author Wei.Li
+	 */
+	public boolean checkProductSizeOptionEnabledItemAvailableWithMouseHover(WebElement itemContainer) {
+		if(!checkProductSizeOptionDisabledItemAvailableWithMouseHover(itemContainer)) {
+			return true;
+		}
+				
+		List<WebElement> itemAllList=itemContainer.findElements(this.byProductOptionSizeItemList);
+		List<WebElement> itemDisabledList=itemContainer.findElements(this.byProductOptionSizeItemDisabledList);
+		
+		if(itemAllList.size()!=itemDisabledList.size()) {
+			return true;
+		}
+		else {
+			return false;
+		}		
+	}
+	
+	/**
 	 * This method will check Product color disabled option Item available while mouse hover
 	 * @param WebElement itemContainer: product search result item
 	 * @return boolean
@@ -1818,6 +1838,28 @@ public class ProductResultsPage extends BasePage{
 		}
 		return false;
 	}	
+	
+	/**
+	 * This method will check Product color enabled option Item available while mouse hover
+	 * @param WebElement itemContainer: product search result item
+	 * @return boolean
+	 * @author Wei.Li
+	 */
+	public boolean checkProductColorOptionEnabledItemAvailableWithMouseHover(WebElement itemContainer) {
+		if(!checkProductColorOptionDisabledItemAvailableWithMouseHover(itemContainer)) {
+			return true;
+		}
+				
+		List<WebElement> itemAllList=itemContainer.findElements(this.byProductOptionColorItemList);
+		List<WebElement> itemDisabledList=itemContainer.findElements(this.byProductOptionColorItemDisabledList);
+		
+		if(itemAllList.size()!=itemDisabledList.size()) {
+			return true;
+		}
+		else {
+			return false;
+		}		
+	}
 	
 	/**
 	 * This method will check Product Item brand name Existing
@@ -2026,12 +2068,14 @@ public class ProductResultsPage extends BasePage{
 	
 
 	public class ProductItem{
-		public String productName;
 		public String productNumber;
 		public String productConvertedNumber;
+		public String productName;
+		public String productBrand;
+		public String productSelectedSize;
+		public String productSelectedColor;
 		public String productNowPrice;
-		public boolean bProductWasPrice;
-		public String productEasyPay;
+		public String productWasPrice;
 		public String productNavigationUrl;
 		public int currentProductSequenceNumber;
 	}
