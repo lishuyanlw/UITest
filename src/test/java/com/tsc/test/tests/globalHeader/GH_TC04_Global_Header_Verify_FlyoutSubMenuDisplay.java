@@ -29,6 +29,7 @@ public class GH_TC04_Global_Header_Verify_FlyoutSubMenuDisplay extends BaseTest 
 		//iterating over heading name to avoid stale element exception
 		for (String lsHeading:flyoutHeading) {
 			reporter.reportLog("Flyout displays heading "+lsHeading);
+			getglobalheaderPageThreadLocal().getReusableActionsInstance().staticWait(3000);
 			FlyoutUrl = getglobalheaderPageThreadLocal().getUrlAfterclickingFlyoutHeading(lsHeading);
 			lsSuccessResult=String.format("The url [ %s ] does not contain [ %s ] after clicking " + lsHeading + "'s link", FlyoutUrl,lsYmlNotFound);
 			lsFailResult=String.format("The url [ %s ] contains [ %s ] after clicking " + lsHeading + "'s link", FlyoutUrl,lsYmlNotFound);

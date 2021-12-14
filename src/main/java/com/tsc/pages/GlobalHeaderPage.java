@@ -647,7 +647,7 @@ public class GlobalHeaderPage extends BasePage{
 		getReusableActionsInstance().scrollToElement(headingWebElement);
 		getReusableActionsInstance().clickIfAvailable(headingWebElement);
 		(new GlobalFooterPage(this.getDriver())).waitForPageLoading();
-		waitForCondition(Driver->{return (this.lblPageTitleForMenuItems.isDisplayed() && this.lblPageTitleForMenuItems.getText()!=null);},60000);
+		waitForCondition(Driver->{return (this.lblPageTitleForMenuItems.isDisplayed());},60000);
 		currentUrl = getDriver().getCurrentUrl();
 		return currentUrl;
 	}
