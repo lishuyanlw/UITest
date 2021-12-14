@@ -758,7 +758,7 @@ public class ProductDetailPage extends BasePage {
 	public String getAutoPlayVideoToolTipPopupMsg() {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkAutoPlayVideoToolTip);
 		this.getReusableActionsInstance().scrollToElement(this.lnkAutoPlayVideoToolTip);
-		this.getReusableActionsInstance().staticWait(300);
+		this.getReusableActionsInstance().staticWait(1000);
 		
 		String lsText=this.lblAutoPlayVideoToolTipPopupMsg.getText().trim();
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnAutoPlayVideo);
