@@ -468,10 +468,9 @@ public class GlobalHeaderPage extends BasePage{
 
 		blackItem.click();
 		(new GlobalFooterPage(this.getDriver())).waitForPageLoading();
-
+		//Using static wait here as there is no other unique element where we can use waitForCondition() function here
+		getReusableActionsInstance().staticWait(5000);
 		String lsUrlInSilverHeader=this.removeLastSlashFromUrl(this.URL());
-		//
-		getReusableActionsInstance().staticWait(3000);
 
 		if(bCheckUrl) {
 			reporter.softAssert(lsUrlInSilverHeader.equalsIgnoreCase(lsHrefInBlackHeader), "The Url of " + lsUrlInSilverHeader + "  after clicking " + lsTitle + " in Black headers is equal to the href of " + lsHrefInBlackHeader, "The Url of " + lsUrlInSilverHeader + "  after clicking " + lsTitle + " in Black headers is not equal to the href of " + lsHrefInBlackHeader);
