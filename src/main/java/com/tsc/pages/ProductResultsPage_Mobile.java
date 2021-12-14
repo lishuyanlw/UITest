@@ -201,7 +201,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 	
 	@Override
 	public void verifySearchResultContent(List<WebElement> productList) {
-		int checkAmount=1,loopSize;
+		int checkAmount=10,loopSize;
 		WebElement item,element;	
 		String lsProductName,lsText;
 		if(checkAmount<=this.productResultList.size()) {
