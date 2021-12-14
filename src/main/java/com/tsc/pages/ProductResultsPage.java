@@ -898,7 +898,8 @@ public class ProductResultsPage extends BasePage{
 				reporter.reportLogFail("Product image source is not empty");
 			}
 			
-			if(this.checkProductOptionTypeExistingWithMouseHover(item, "size")) {				
+			lsText=judgeProductOptionType(item);
+			if(lsText.contains("Size")) {				
 				element=item.findElement(byProductOptionSizeTitle);
 				lsText=this.getElementInnerText(element);
 				if(!lsText.isEmpty()) {
@@ -916,7 +917,7 @@ public class ProductResultsPage extends BasePage{
 				}
 			}
 			
-			if(this.checkProductOptionTypeExistingWithMouseHover(item, "colour")) {				
+			if(lsText.contains("Colour")) {				
 				element=item.findElement(byProductOptionColorTitle);				
 				lsText=this.getElementInnerText(element);				
 				if(!lsText.isEmpty()) {
@@ -983,6 +984,11 @@ public class ProductResultsPage extends BasePage{
 				reporter.reportLogFail("Product GoTo Details is not visible");
 			}
 			
+			if(this.getElementInnerText(element).equalsIgnoreCase("Go to detail page")) {
+				continue;
+			}
+			
+			verifySelectSizeOrColorOption(item, byProductGoToDetails);			
 		}
 	}
 
@@ -1761,6 +1767,34 @@ public class ProductResultsPage extends BasePage{
 	}
 	
 	/**
+	 * This method will judge Product Item option type through button text
+	 * @param WebElement itemContainer: product search result item
+	 * @return String
+	 * @author Wei.Li
+	 */
+	public String judgeProductOptionType(WebElement itemContainer) {
+		WebElement item=itemContainer.findElement(this.byProductGoToDetails);
+		String lsText=this.getElementInnerText(item);
+		if(lsText.equalsIgnoreCase("Go to detail page")) {
+			return "GoToDetailPage";
+		}
+		
+		if(lsText.toLowerCase().contains("size")&&lsText.toLowerCase().contains("colour")) {
+			return "SizeAndColour";
+		}
+		
+		if(lsText.toLowerCase().contains("size")&&!lsText.toLowerCase().contains("colour")) {
+			return "Size";
+		}
+		
+		if(!lsText.toLowerCase().contains("size")&&lsText.toLowerCase().contains("colour")) {
+			return "Colour";
+		}
+		
+		return "Other";
+	}
+	
+	/**
 	 * This method will check Size Product Option Is Dropdown with mouse hover
 	 * @param WebElement itemContainer: product search result item
 	 * @return boolean
@@ -1863,21 +1897,24 @@ public class ProductResultsPage extends BasePage{
 	/**
 	 * This method will select size/color option
 	 * @param WebElement itemContainer: product search result item
-	 * @return void
+	 * @param WebElement selectSizeAndColorButton: the button for selecting size and color
+	 * @return boolean
 	 * @author Wei.Li
 	 */
-	public void selectSizeOrColorOption(WebElement itemContainer) {
+	public boolean selectSizeOrColorOption(WebElement itemContainer, By BySelectSizeAndColorButton) {
 		List<WebElement> optionList;
 		WebElement element;
-		String lsText;
-		
+				
 		if(this.checkProductOptionTypeExistingWithMouseHover(itemContainer, "size")) {	
 			if(checkProductSizeOptionEnabledItemAvailableWithMouseHover(itemContainer)) {				
 				optionList=itemContainer.findElements(byProductOptionSizeItemEnabledList);
 				this.clickElement(optionList.get(0));
-				this.getReusableActionsInstance().staticWait(2000);	
+				this.getReusableActionsInstance().staticWait(3000);	
 				element=itemContainer.findElement(byProductOptionSizeSelectedSize);
 				selectedProductItem.productSelectedSize=this.getElementInnerText(element);
+				
+				element=itemContainer.findElement(BySelectSizeAndColorButton);
+				System.out.println("Button text: "+this.getElementInnerText(element));
 			}
 			else {
 				selectedProductItem.productSelectedSize="";
@@ -1885,20 +1922,139 @@ public class ProductResultsPage extends BasePage{
 		}
 		
 		if(this.checkProductOptionTypeExistingWithMouseHover(itemContainer, "colour")) {	
-			if(checkProductColorOptionEnabledItemAvailableWithMouseHover(itemContainer)) {				
+			if(checkProductColorOptionEnabledItemAvailableWithMouseHover(itemContainer)) {	
 				optionList=itemContainer.findElements(byProductOptionColorItemEnabledList);
 				this.clickElement(optionList.get(0));
-				this.getReusableActionsInstance().staticWait(2000);	
+				this.getReusableActionsInstance().staticWait(3000);	
 				element=itemContainer.findElement(byProductOptionColorSelectedColor);
 				selectedProductItem.productSelectedColor=this.getElementInnerText(element);
+				
+				element=itemContainer.findElement(BySelectSizeAndColorButton);
+				System.out.println("Button text: "+this.getElementInnerText(element));
 			}
 			else {
 				selectedProductItem.productSelectedColor="";
 			}			
 		}
 		
+		this.getReusableActionsInstance().staticWait(5000);
+		System.out.println(selectedProductItem.productSelectedSize+"  Size:Color  "+selectedProductItem.productSelectedColor);
+		element=itemContainer.findElement(BySelectSizeAndColorButton);
+		System.out.println("Button text: "+this.getElementInnerText(element));
+		this.clickElement(element);
+		this.getReusableActionsInstance().staticWait(10000);
+		return this.getElementInnerText(element).trim().equalsIgnoreCase("Go to detail page");
 	}
+	
+	/**
+	 * This method will verify selecting size/color option
+	 * @param WebElement itemContainer: product search result item
+	 * @param WebElement selectSizeAndColorButton: the button for selecting size and color
+	 * @return void
+	 * @author Wei.Li
+	 */
+	public void verifySelectSizeOrColorOption(WebElement itemContainer, By BySelectSizeAndColorButton) {
+		List<WebElement> optionList;
+		WebElement element;
+		String lsText,lsSelectedTitle,lsType;
+			
+		//To check button text
+		element=itemContainer.findElement(BySelectSizeAndColorButton);
+		lsText=this.getElementInnerText(element);
+		lsType=this.judgeProductOptionType(itemContainer);
+		if(lsType.equalsIgnoreCase("SizeAndColour")) {
+			if(lsText.equalsIgnoreCase("Select size & colour")) {
+				reporter.reportLogPass("The button text is equal to 'Select size & colour'");
+			}
+			else {
+				reporter.reportLogFail("The button text is not equal to 'Select size & colour'");
+			}
+		}
 		
+		if(lsType.equalsIgnoreCase("Size")) {
+			if(lsText.equalsIgnoreCase("Select size")) {
+				reporter.reportLogPass("The button text is equal to 'Select size'");
+			}
+			else {
+				reporter.reportLogFail("The button text is not equal to 'Select size'");
+			}
+		}
+		
+		if(lsType.equalsIgnoreCase("Colour")) {
+			if(lsText.equalsIgnoreCase("Select colour")) {
+				reporter.reportLogPass("The button text is equal to 'Select colour'");
+			}
+			else {
+				reporter.reportLogFail("The button text is not equal to 'Select colour'");
+			}
+		}
+		
+		//To check select size
+		if(lsType.contains("Size")) {	
+			if(checkProductSizeOptionEnabledItemAvailableWithMouseHover(itemContainer)) {
+				optionList=itemContainer.findElements(byProductOptionSizeItemEnabledList);
+				element=optionList.get(0);
+				lsText=this.getElementInnerText(element).replace("Size", "").trim();
+				this.clickElement(element);
+				this.getReusableActionsInstance().staticWait(3000);	
+				element=itemContainer.findElement(byProductOptionSizeSelectedSize);
+				lsSelectedTitle=this.getElementInnerText(element);
+				if(lsText.equalsIgnoreCase(lsSelectedTitle)) {
+					reporter.reportLogPass("The selected size title is displaying correctly");
+				}
+				else {
+					reporter.reportLogFail("The selected size title is not displaying correctly");
+				}
+				
+				element=itemContainer.findElement(BySelectSizeAndColorButton);
+				lsText=this.getElementInnerText(element);				
+				if(lsType.contains("Colour")) {
+					if(lsText.equalsIgnoreCase("Select colour")) {
+						reporter.reportLogPass("The button text is equal to 'Select colour'");
+					}
+					else {
+						reporter.reportLogFail("The button text is not equal to 'Select colour'");
+					}
+				}else {
+					if(lsText.equalsIgnoreCase("Go to detail page")) {
+						reporter.reportLogPass("The button text is equal to 'Go to detail page'");
+					}
+					else {
+						reporter.reportLogFail("The button text is not equal to 'Go to detail page'");
+					}
+				}
+			}						
+		}
+		
+		//To check select color
+		if(lsType.contains("Colour")) {	
+			if(checkProductColorOptionEnabledItemAvailableWithMouseHover(itemContainer)) {				
+				optionList=itemContainer.findElements(byProductOptionColorItemEnabledList);
+				element=optionList.get(0);
+				lsText=this.getElementInnerText(element).replace("colours", "").trim();
+				this.clickElement(element);
+				this.getReusableActionsInstance().staticWait(3000);	
+				element=itemContainer.findElement(byProductOptionColorSelectedColor);
+				lsSelectedTitle=this.getElementInnerText(element);
+				if(lsText.equalsIgnoreCase(lsSelectedTitle)) {
+					reporter.reportLogPass("The selected color title is displaying correctly");
+				}
+				else {
+					reporter.reportLogFail("The selected color title is not displaying correctly");
+				}
+				
+				element=itemContainer.findElement(BySelectSizeAndColorButton);
+				lsText=this.getElementInnerText(element);				
+				if(lsText.equalsIgnoreCase("Go to detail page")) {
+					reporter.reportLogPass("The button text is equal to 'Go to detail page'");
+				}
+				else {
+					reporter.reportLogFail("The button text is not equal to 'Go to detail page'");
+				}				
+			}						
+		}		
+	}
+			
 	/**
 	 * This method will check Product Item brand name Existing
 	 * @param WebElement itemContainer: product search result item
