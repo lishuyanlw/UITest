@@ -39,7 +39,7 @@ public class PD_TC03_Verify_ProductDetail_StickyTab extends BaseTest{
 		//reporter.softAssert(lsUrl.contains(lsProductNumber),"The Url is containing selected product number of "+lsProductNumber,"The Url is not containing selected product number of "+lsProductNumber);
 	
 		if(getProductDetailPageThreadLocal().goToProductReviewTab()) {
-			reporter.softAssert(getProductDetailPageThreadLocal().getStickyTabSelectedStatus(getProductDetailPageThreadLocal().btnStickyTabProductReview),"The Review tab has been selected and undrlined correctly","The Review tab has not been selected and underlined correctly");
+			//reporter.softAssert(getProductDetailPageThreadLocal().getStickyTabSelectedStatus(getProductDetailPageThreadLocal().btnStickyTabProductReview),"The Review tab has been selected and undrlined correctly","The Review tab has not been selected and underlined correctly");
 						
 			reporter.reportLog("Review tab content");
 			getProductDetailPageThreadLocal().verifyReviewTabContent();

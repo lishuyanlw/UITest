@@ -1887,7 +1887,8 @@ public class ProductDetailPage extends BasePage {
 		this.inputWriteReviewLocation.sendKeys("Toronto");
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnWriteReviewSubmitReview);
-		this.btnWriteReviewSubmitReview.click();
+		this.getReusableActionsInstance().scrollToElement(this.btnWriteReviewSubmitReview);
+		this.getReusableActionsInstance().clickIfAvailable(this.btnWriteReviewSubmitReview);
 		this.getReusableActionsInstance().waitForElementVisibility(this.lblWriteReviewAfterSubmitPageTitle,  60);
 		this.getReusableActionsInstance().staticWait(1000);
 
