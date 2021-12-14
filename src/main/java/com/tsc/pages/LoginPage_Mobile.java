@@ -22,7 +22,7 @@ public class LoginPage_Mobile extends LoginPage{
     public boolean SignOut() {
         getReusableActionsInstance().javascriptScrollByVisibleElement(btnSignInMainMenu);
         getReusableActionsInstance().scrollToElement(btnSignInMainMenu);
-        this.SigninIcon.click();
+        getReusableActionsInstance().clickIfAvailable(this.SigninIcon);
         getReusableActionsInstance().staticWait(2000);
         getReusableActionsInstance().clickIfAvailable(this.btnSignOutButton);
         waitForPageToLoad();
@@ -31,11 +31,12 @@ public class LoginPage_Mobile extends LoginPage{
 
     @Override
     public void verifyMenuItemInPopover(List<String> lstMenuItemPopover) {
-        this.SigninIcon.click();
+        getReusableActionsInstance().javascriptScrollByVisibleElement(btnSignInMainMenu);
+        getReusableActionsInstance().scrollToElement(btnSignInMainMenu);
+        getReusableActionsInstance().clickIfAvailable(this.SigninIcon);
         getReusableActionsInstance().staticWait(2000);
-            //getReusableActionsInstance().javascriptScrollByVisibleElement(this.cntSignInPopover);
-        //super.verifyMenuItemInPopover(List<String> lstMenuItemPopover);
-        this.hoverOnSignInHeadingMenu();
+        //getReusableActionsInstance().javascriptScrollByVisibleElement(this.cntSignInPopover);
+        //this.hoverOnSignInHeadingMenu();
         WebElement element;
         for(String lsItem:lstMenuItemPopover) {
             element=this.getMenuItemInPopover(lsItem);
