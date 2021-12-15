@@ -1891,9 +1891,11 @@ public class ProductDetailPage extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputWriteReviewLocation);
 		this.inputWriteReviewLocation.sendKeys("Toronto");
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnWriteReviewSubmitReview);
+		/*this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnWriteReviewSubmitReview);
 		this.getReusableActionsInstance().scrollToElement(this.btnWriteReviewSubmitReview);
-		this.getReusableActionsInstance().clickIfAvailable(this.btnWriteReviewSubmitReview);
+		this.getReusableActionsInstance().clickIfAvailable(this.btnWriteReviewSubmitReview);*/
+		JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
+		jse.executeScript("arguments[0].click();", this.btnWriteReviewSubmitReview);
 		this.getReusableActionsInstance().waitForElementVisibility(this.lblWriteReviewAfterSubmitPageTitle,  60);
 		this.getReusableActionsInstance().staticWait(1000);
 
