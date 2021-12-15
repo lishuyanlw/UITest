@@ -63,6 +63,12 @@ public class GH_TC02_Verify_Global_Header_SignIn_Favorite_ShoppingCartBag extend
 		String lsBaseUrl=basePage.getBaseURL()+"/";
 		
 		String lsUrl,lsSuccessResult, lsFailResult;
+
+		reporter.reportLog("Verify Logo section");
+		//Verify Logo section
+		reporter.softAssert(getglobalheaderPageThreadLocal().validateTSCLogo(), "TSC icon is visible", "TSC icon is not visible");
+
+		reporter.softAssert(getglobalheaderPageThreadLocal().validateTSCLogoLink().trim().equalsIgnoreCase((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC link matches expected url", "TSC link does not matche expected url");
 		
 		reporter.reportLog("Verify searchBox section");
 		//Verify searchBox section

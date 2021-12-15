@@ -54,10 +54,12 @@ public class PD_TC08_Verify_ProductDetail_SoldOut extends BaseTest{
 		getProductDetailPageThreadLocal().verifyProductSoldOut();
 		
 		reporter.reportLog("Verify Social media");	
-		getProductDetailPageThreadLocal().verifySocialMedia();		
-		
-		GH_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo headerSectionMenuAndLogoTest= new GH_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo();
-		headerSectionMenuAndLogoTest.validateMajorNameAndLinks();
+		getProductDetailPageThreadLocal().verifySocialMedia();
+
+		if(!(System.getProperty("Browser").contains("android"))) {
+			GH_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo headerSectionMenuAndLogoTest = new GH_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo();
+			headerSectionMenuAndLogoTest.validateMajorNameAndLinks();
+		}
 		
 		GH_TC02_Verify_Global_Header_SignIn_Favorite_ShoppingCartBag headerSectionOthersTest= new GH_TC02_Verify_Global_Header_SignIn_Favorite_ShoppingCartBag();
 		headerSectionOthersTest.validateMajorNameAndLinks();

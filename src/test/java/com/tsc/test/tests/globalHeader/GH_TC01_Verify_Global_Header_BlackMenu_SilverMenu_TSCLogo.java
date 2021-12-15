@@ -205,9 +205,9 @@ public class GH_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo extends B
 		reporter.reportLog("Verify Black headers");
 		//Verify Black headers
 		if(!(System.getProperty("Device").equalsIgnoreCase("Mobile"))) {
-			if (System.getProperty("Browser").contains("ios")
+			/*if (System.getProperty("Browser").contains("ios")
 					|| System.getProperty("Device").equalsIgnoreCase("Desktop")
-					|| System.getProperty("chromeMobileDevice").equalsIgnoreCase("iPad")) {
+					|| System.getProperty("chromeMobileDevice").equalsIgnoreCase("iPad")) {*/
 				getglobalheaderPageThreadLocal().hoverOnWatchTSC();
 
 				getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkWatchUsLiveDpdMenu);
@@ -218,7 +218,7 @@ public class GH_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo extends B
 				getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkOnAirProductsDpdMenu);
 				basePage.getReusableActionsInstance().javascriptScrollByVisibleElement(getglobalheaderPageThreadLocal().lnkTSBlackHeader);
 				getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkTSBlackHeader);
-			}
+
 		}
 
 
