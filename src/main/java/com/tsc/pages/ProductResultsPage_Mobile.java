@@ -261,8 +261,8 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 			}
 						
 			if(!this.getProductOptionTypeWithoutMouseHover(item).equalsIgnoreCase("None")) {
-				element=item.findElement(byProductOptionListContainer);				
-				lsText=this.getElementInnerText(element);				
+				List<WebElement> optionList=item.findElements(this.byProductOptionList);						
+				lsText=this.getElementInnerText(optionList.get(0));							
 				if(!lsText.isEmpty()) {
 					reporter.reportLogPass("Product option is not empty");
 				}

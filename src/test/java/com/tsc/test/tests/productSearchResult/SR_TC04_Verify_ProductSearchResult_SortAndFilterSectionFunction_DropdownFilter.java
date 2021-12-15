@@ -40,8 +40,9 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction_Dro
 
         //Test sort
         reporter.reportLog("Price: Highest First");
-        if (getProductResultsPageThreadLocal().chooseSortOptionByVisibleText(lstSortByOptions)) {
+        if (getProductResultsPageThreadLocal().chooseSortOptionByVisibleText(lstSortByOptions)) {        	
             lsMsg = getProductResultsPageThreadLocal().verifyHighestPriceFirstSort();
+          
             if (lsMsg.isEmpty()) {
                 reporter.reportLogPass("Sort option of Price: Highest First works");
             } else {

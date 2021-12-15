@@ -1221,7 +1221,9 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	public boolean closeAllSelectedFilters() {
-		getReusableActionsInstance().clickIfAvailable(this.selectedFiltersList.get(this.selectedFiltersList.size()-1));		
+		WebElement element=this.selectedFiltersList.get(this.selectedFiltersList.size()-1);
+		getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+		getReusableActionsInstance().clickIfAvailable(element);		
 		return this.waitForSortingOrFilteringCompleted();
 	}
 
@@ -1666,7 +1668,10 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	public boolean waitForSortingOrFilteringCompleted() {
-		return this.waitForCondition(Driver->{return !checkProductResultLoadingStatusAfterSorting();}, 30000);
+		this.waitForCondition(Driver->{return !checkProductResultLoadingStatusAfterSorting();}, 30000);
+		this.getReusableActionsInstance().staticWait(1000);
+		
+		return true;
 	}
 	
 	/**
@@ -1707,11 +1712,11 @@ public class ProductResultsPage extends BasePage{
 		List<WebElement> optionList=itemContainer.findElements(this.byProductOptionList);		
 		WebElement item=optionList.get(0);		
 		String lsText=this.getElementInnerText(item);
-		
+				
 		if(lsText.isEmpty()) {
 			return "None";
 		}
-		
+				
 		if(item.getAttribute("class").contains("product-card__options-count__item--critical-stock")) {
 			return "LeftOver";
 		}
