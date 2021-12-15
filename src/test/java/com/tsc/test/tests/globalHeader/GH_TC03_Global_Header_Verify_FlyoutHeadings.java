@@ -12,7 +12,7 @@ import com.tsc.test.base.BaseTest;
 
 public class GH_TC03_Global_Header_Verify_FlyoutHeadings extends BaseTest {
 
-	@Test(groups={"Home","Regression","GlobalHeader"})	    
+	@Test(groups={"Home","Regression","GlobalHeader","GlobalHeader_Mobile"})
 	public void verifyFlyoutHeadings() {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 		String lsBaseUrl=(new BasePage(this.getDriver())).getBaseURL();

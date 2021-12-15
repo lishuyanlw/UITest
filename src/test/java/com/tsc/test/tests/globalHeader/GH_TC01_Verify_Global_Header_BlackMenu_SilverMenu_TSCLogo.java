@@ -16,7 +16,7 @@ public class GH_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo extends B
 	 * CER-162
 	 * CER-565
 	 */
-	@Test(groups={"Home","Regression","Regression_Mobile","GlobalHeader","GlobalHeader_Mobile"})	    
+	@Test(groups={"Home","Regression","GlobalHeader_Mobile","GlobalHeader"})
 		public void validateGlobalHeaderBlackMenu_SilverMenu_TSCLogoLinks() throws IOException {		
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 		BasePage basePage=new BasePage(this.getDriver());		

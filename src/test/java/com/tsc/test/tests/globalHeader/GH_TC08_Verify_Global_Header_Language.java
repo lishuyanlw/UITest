@@ -13,7 +13,7 @@ public class GH_TC08_Verify_Global_Header_Language extends BaseTest {
 	/*
 	 * CER-557
 	 */
-	@Test(groups={"Home","Regression","GlobalHeader"})
+	@Test(groups={"Home","Regression","GlobalHeader","GlobalHeader_Mobile"})
 	public void Verify_GlobalHeader_Language() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 		BasePage basePage=new BasePage(this.getDriver());		
