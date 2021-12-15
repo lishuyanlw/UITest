@@ -284,7 +284,7 @@ public class ProductResultsPage extends BasePage{
 	 */
 	public boolean getSearchResultLoad(String searchKeyword) {
 		GlobalHeaderPage globalHeader=new GlobalHeaderPage(this.getDriver());
-		this.getReusableActionsInstance().waitForElementVisibility(globalHeader.searchBox);
+		this.getReusableActionsInstance().waitForElementVisibility(globalHeader.searchBox,90000);
 		String[] data = searchKeyword.codePoints().mapToObj(cp->new String(Character.toChars(cp))).toArray(size->new String[size]);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeader.searchBox);
 		this.getReusableActionsInstance().clickIfAvailable(globalHeader.searchBox,3000);
@@ -296,7 +296,7 @@ public class ProductResultsPage extends BasePage{
 		this.waitForPageToLoad();
 		this.getReusableActionsInstance().staticWait(2000);	
 		
-		this.getReusableActionsInstance().waitForElementVisibility(this.lblSearchResultMessage);
+		this.getReusableActionsInstance().waitForElementVisibility(this.lblSearchResultMessage,90000);
 		
 		return true;
 //		
@@ -359,7 +359,7 @@ public class ProductResultsPage extends BasePage{
 		
 		this.waitForPageToLoad();
 		this.getReusableActionsInstance().staticWait(2000);
-		this.getReusableActionsInstance().waitForElementVisibility(this.lblSearchResultMessage);
+		this.getReusableActionsInstance().waitForElementVisibility(this.lblSearchResultMessage,90000);
 		
 		return true;
 	}
@@ -515,7 +515,7 @@ public class ProductResultsPage extends BasePage{
 	 */
 	public String getProductResultPageTitle(WebElement element) {
 		if(getReusableActionsInstance().isElementVisible(element)) {
-			getReusableActionsInstance().waitForElementVisibility(element);
+			getReusableActionsInstance().waitForElementVisibility(element,90000);
 			getReusableActionsInstance().getElementText(element);
 			return element.getText().trim();
 		}
@@ -1301,7 +1301,7 @@ public class ProductResultsPage extends BasePage{
 
 		this.waitForPageToLoad();
 		
-		this.getReusableActionsInstance().waitForElementVisibility(this.lblSearchResultMessage);
+		this.getReusableActionsInstance().waitForElementVisibility(this.lblSearchResultMessage,90000);
 		
 		return true;
 	}
@@ -1390,7 +1390,7 @@ public class ProductResultsPage extends BasePage{
 	}
 
 	public boolean waitForPDPPageLoading() {		
-		this.getReusableActionsInstance().waitForElementVisibility((new ProductDetailPage(this.getDriver())).lblProductName);
+		this.getReusableActionsInstance().waitForElementVisibility((new ProductDetailPage(this.getDriver())).lblProductName,90000);
 		return true;
 	}
 	
