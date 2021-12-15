@@ -11,8 +11,8 @@ import com.tsc.test.base.BaseTest;
 
 public class GH_TC07_Global_Header_Verify_Favourites_link extends BaseTest {
 	
-	@Test(groups={"Home","Regression","GlobalHeader","GlobalHeader_Mobile"})
-	public void validateGlobalHeader_Favourites_Link() throws IOException {		
+	@Test(groups={"Home","Regression","GlobalHeader","GlobalHeader_Mobile","GlobalHeader_Tablet"})
+	public void validateGlobalHeader_Favourites_Link() {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 		BasePage basePage=new BasePage(this.getDriver());
 		String lsBaseUrl=basePage.getBaseURL()+"/";

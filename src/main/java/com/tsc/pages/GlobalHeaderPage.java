@@ -723,6 +723,8 @@ public class GlobalHeaderPage extends BasePage{
 	public String getHeadingForLandingPage(String pageName) {
 		//WebElement webElement = getWebElementFlyoutHeading(pageName);
 		//String title =getPageTitle(webElement).toUpperCase();
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblPageTitleForMenuItems);
+		getReusableActionsInstance().scrollToElement(this.lblPageTitleForMenuItems);
 		String title = getPageTitle(this.lblPageTitleForMenuItems).toUpperCase();
 		waitForCondition(Driver->{return (title.equalsIgnoreCase(pageName));} ,60000);
 		return (title);
