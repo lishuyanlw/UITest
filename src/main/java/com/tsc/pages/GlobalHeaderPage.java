@@ -245,7 +245,7 @@ public class GlobalHeaderPage extends BasePage{
 	@FindBy(xpath = "//a[contains(@class,'mega-curated__item-link')]")
 	public List<WebElement> listCuratedCollectionLinks;
 
-	@FindBy(xpath="//div[contains(@class,'PageTitle')]//div[contains(@id,'ctlPanTitle')]")
+	@FindBy(xpath="//div[contains(@class,'PageTitle')]//div[contains(@id,'ctlPanTitle')]/*[contains(@class,'Title')]")
 	public WebElement lblPageTitleForMenuItems;
 
 	@FindBy(xpath = "//a[contains(@class,'mega-popular__brand-link')]//img")
@@ -645,8 +645,8 @@ public class GlobalHeaderPage extends BasePage{
 		getReusableActionsInstance().javascriptScrollByVisibleElement(headingWebElement);
 		getReusableActionsInstance().scrollToElement(headingWebElement);
 		getReusableActionsInstance().clickIfAvailable(headingWebElement);
-		(new GlobalFooterPage(this.getDriver())).waitForPageLoading();
-		waitForCondition(Driver->{return (this.lblPageTitleForMenuItems.isDisplayed());},60000);
+		//(new GlobalFooterPage(this.getDriver())).waitForPageLoading();
+		waitForCondition(Driver->{return (this.lblPageTitleForMenuItems.isDisplayed());},90000);
 		currentUrl = getDriver().getCurrentUrl();
 		return currentUrl;
 	}
@@ -717,8 +717,9 @@ public class GlobalHeaderPage extends BasePage{
 	 * @author Sachin Sharma
 	 */
 	public String getHeadingForLandingPage(String pageName) {
-		WebElement webElement = getWebElementFlyoutHeading(pageName);
-		String title =getPageTitle(webElement).toUpperCase();
+		//WebElement webElement = getWebElementFlyoutHeading(pageName);
+		//String title =getPageTitle(webElement).toUpperCase();
+		String title = getPageTitle(this.lblPageTitleForMenuItems).toUpperCase();
 		waitForCondition(Driver->{return (title.equalsIgnoreCase(pageName));} ,60000);
 		return (title);
 	}
