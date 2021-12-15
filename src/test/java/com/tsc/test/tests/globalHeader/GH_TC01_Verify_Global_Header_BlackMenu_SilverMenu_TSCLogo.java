@@ -223,12 +223,6 @@ public class GH_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo extends B
 			basePage.getReusableActionsInstance().javascriptScrollByVisibleElement(getglobalheaderPageThreadLocal().lnkTSBlackHeader);
 			getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkTSBlackHeader);
 		}
-			
-		reporter.reportLog("Verify Logo section");
-		//Verify Logo section
-		reporter.softAssert(getglobalheaderPageThreadLocal().validateTSCLogo(), "TSC icon is visible", "TSC icon is not visible");
-		
-		reporter.softAssert(getglobalheaderPageThreadLocal().validateTSCLogoLink().trim().equalsIgnoreCase((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC link matches expected url", "TSC link does not matche expected url");
 
 	}
 		

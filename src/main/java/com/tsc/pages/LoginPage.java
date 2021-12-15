@@ -2,10 +2,7 @@ package com.tsc.pages;
 
 import java.util.List;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 
 import com.tsc.pages.base.BasePage;
@@ -245,8 +242,9 @@ public class LoginPage extends BasePage {
 	public void verifyMenuItemInPopover(List<String> lstMenuItemPopover) {
 		if (!System.getProperty("Device").equalsIgnoreCase("Desktop")) {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(this.SigninIcon);
-			this.getReusableActionsInstance().clickIfAvailable(this.SigninIcon);
-			//this.SigninIcon.click();
+			JavascriptExecutor javascriptExecutor = (JavascriptExecutor) getDriver();
+			javascriptExecutor.executeScript("arguments[0].click;",this.SigninIcon);
+			//this.getReusableActionsInstance().clickIfAvailable(this.SigninIcon);
 			getReusableActionsInstance().staticWait(2000);
 			//getReusableActionsInstance().javascriptScrollByVisibleElement(this.cntSignInPopover);
 		}
