@@ -205,7 +205,7 @@ public class GH_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo extends B
 		reporter.reportLog("Verify Black headers");
 		//Verify Black headers
 		if(!(System.getProperty("Device").equalsIgnoreCase("Mobile"))) {
-			if (System.getProperty("Browser").equalsIgnoreCase("sauceioschrome")
+			if (System.getProperty("Browser").contains("ios")
 					|| System.getProperty("Device").equalsIgnoreCase("Desktop")
 					|| System.getProperty("chromeMobileDevice").equalsIgnoreCase("iPad")) {
 				getglobalheaderPageThreadLocal().hoverOnWatchTSC();
