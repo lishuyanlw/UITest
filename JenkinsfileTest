@@ -49,13 +49,13 @@ pipeline {
                     # leave spaces where you want them around the parameters. They'll be trimmed.
                     # we let the build run with the default name
                     
-		    		01 00 * * 3 %Browser=saucechrome;Language=en;Groups=GlobalFooter;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
-		    		01 01 * * 3 %Browser=saucefirefox;Language=en;Groups=GlobalFooter;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
-		    		01 02 * * 3 %Browser=saucesafari;Language=en;Groups=GlobalFooter;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
-		    		01 03 * * 3 %Browser=sauceandroidchrome;Language=en;Groups=GlobalFooter;ThreadCount=1;TunnelRequired=Yes;Device=Mobile;TestProfile=TSCWF-Automation
-                    01 04 * * 3 %Browser=sauceioschrome;Language=en;Groups=GlobalFooter;ThreadCount=1;TunnelRequired=Yes;Device=Mobile;TestProfile=TSCWF-Automation
-		    		01 05 * * 3 %Browser=sauceandroidchrome;Language=en;Groups=GlobalFooter;ThreadCount=1;TunnelRequired=Yes;Device=Tablet;TestProfile=TSCWF-Automation
-		    		01 06 * * 3 %Browser=sauceioschrome;Language=en;Groups=GlobalFooter;ThreadCount=1;TunnelRequired=Yes;Device=Tablet;TestProfile=TSCWF-Automation
+		    		01 18 * * 4 %Browser=saucechrome;Language=en;Groups=GlobalFooter;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
+		    		01 19 * * 4 %Browser=saucefirefox;Language=en;Groups=GlobalFooter;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
+		    		01 20 * * 4 %Browser=saucesafari;Language=en;Groups=GlobalFooter;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
+		    		01 21 * * 4 %Browser=sauceandroidchrome;Language=en;Groups=GlobalFooter;ThreadCount=1;TunnelRequired=Yes;Device=Mobile;TestProfile=TSCWF-Automation
+                    01 22 * * 4 %Browser=sauceioschrome;Language=en;Groups=GlobalFooter;ThreadCount=1;TunnelRequired=Yes;Device=Mobile;TestProfile=TSCWF-Automation
+		    		01 23 * * 4 %Browser=sauceandroidchrome;Language=en;Groups=GlobalFooter;ThreadCount=1;TunnelRequired=Yes;Device=Tablet;TestProfile=TSCWF-Automation
+		    		01 17 * * 4 %Browser=sauceioschrome;Language=en;Groups=GlobalFooter;ThreadCount=1;TunnelRequired=Yes;Device=Tablet;TestProfile=TSCWF-Automation
 
                 ''':'')
     }
