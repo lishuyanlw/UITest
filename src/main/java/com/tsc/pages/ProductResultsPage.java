@@ -284,9 +284,7 @@ public class ProductResultsPage extends BasePage{
 	 */
 	public boolean getSearchResultLoad(String searchKeyword) {
 		GlobalHeaderPage globalHeader=new GlobalHeaderPage(this.getDriver());
-		waitForCondition(Driver->{
-			return globalHeader.searchBox.isDisplayed();
-		},90000);
+		this.getReusableActionsInstance().waitForElementVisibility(globalHeader.searchBox);
 		String[] data = searchKeyword.codePoints().mapToObj(cp->new String(Character.toChars(cp))).toArray(size->new String[size]);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeader.searchBox);
 		this.getReusableActionsInstance().clickIfAvailable(globalHeader.searchBox,3000);
@@ -361,9 +359,9 @@ public class ProductResultsPage extends BasePage{
 		
 		this.waitForPageToLoad();
 		this.getReusableActionsInstance().staticWait(2000);
-		return waitForCondition(Driver->{
-			return this.lblSearchResultMessage.isDisplayed();
-			},90000);
+		this.getReusableActionsInstance().waitForElementVisibility(this.lblSearchResultMessage);
+		
+		return true;
 	}
 
 	/**
@@ -1303,9 +1301,9 @@ public class ProductResultsPage extends BasePage{
 
 		this.waitForPageToLoad();
 		
-		return waitForCondition(Driver->{
-			return this.lblSearchResultMessage.isDisplayed();
-			},90000);
+		this.getReusableActionsInstance().waitForElementVisibility(this.lblSearchResultMessage);
+		
+		return true;
 	}
 	
 	/**
@@ -1392,7 +1390,8 @@ public class ProductResultsPage extends BasePage{
 	}
 
 	public boolean waitForPDPPageLoading() {		
-		return this.waitForCondition(Driver->{return (new ProductDetailPage(this.getDriver())).lblProductName.isDisplayed();}, 90000);
+		this.getReusableActionsInstance().waitForElementVisibility((new ProductDetailPage(this.getDriver())).lblProductName);
+		return true;
 	}
 	
 	//Fake methods for compiling temporally
