@@ -639,6 +639,10 @@ public class GlobalHeaderPage extends BasePage{
 	 * @author Shruti Desai
 	 */
 	public String getUrlAfterclickingFlyoutHeading(String headingName) {
+		AtomicReference<String> pageTitle=new AtomicReference<>();
+		String currentPageUrl = getDriver().getCurrentUrl();
+		if(!(currentPageUrl.substring(0,currentPageUrl.length()-1)).equalsIgnoreCase(getBaseURL()))
+			pageTitle.getAndSet(lblPageTitleForMenuItems.getText());
 		String currentUrl;
 		String xpathHeading =createXPath("//span[contains(text(),'{0}')]" ,headingName);
 		WebElement headingWebElement = FlyoutHeadings.findElement(By.xpath(xpathHeading));
@@ -646,7 +650,7 @@ public class GlobalHeaderPage extends BasePage{
 		getReusableActionsInstance().scrollToElement(headingWebElement);
 		getReusableActionsInstance().clickIfAvailable(headingWebElement);
 		//(new GlobalFooterPage(this.getDriver())).waitForPageLoading();
-		waitForCondition(Driver->{return (this.lblPageTitleForMenuItems.isDisplayed());},90000);
+		waitForCondition(Driver->{return (this.lblPageTitleForMenuItems.getText()!=pageTitle.get());},90000);
 		currentUrl = getDriver().getCurrentUrl();
 		return currentUrl;
 	}

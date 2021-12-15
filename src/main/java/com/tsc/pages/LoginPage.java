@@ -292,7 +292,7 @@ public class LoginPage extends BasePage {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSubmit);
 		this.getReusableActionsInstance().clickIfAvailable(this.btnSubmit);
 		//this.btnSubmit.click();
-		
+		this.waitForPageToLoad();
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInMainMenu);
 		waitForCondition(Driver->{return !lsSignInMsg.equalsIgnoreCase(this.btnSignInMainMenu.getText())&&!this.btnSignInMainMenu.getText().isEmpty();},30000);
 		
