@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -1244,9 +1245,13 @@ public class ProductDetailPage extends BasePage {
 	 * @author Wei.Li
 	 */
 	public void closeTrueFitIFrame() {
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnProductTrueFitIframeClose);
+		/*this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnProductTrueFitIframeClose);
 		this.getReusableActionsInstance().clickIfAvailable(this.btnProductTrueFitIframeClose);
 		//this.btnProductTrueFitIframeClose.click();
+		this.getDriver().switchTo().defaultContent();
+		this.waitForCondition(Driver->{return this.iframeProductTrueFitLoadingIndicator.getAttribute("style").contains("display: none");}, 30000);*/
+		JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
+		jse.executeScript("arguments[0].click();", this.btnProductTrueFitIframeClose);
 		this.getDriver().switchTo().defaultContent();
 		this.waitForCondition(Driver->{return this.iframeProductTrueFitLoadingIndicator.getAttribute("style").contains("display: none");}, 30000);
 	}
