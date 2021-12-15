@@ -49,8 +49,8 @@ def getTunnelName() {
 
 //    return tunnelName  TSCWF_Automation_Test_Tunnel_Sachin
 
-    return "DigitalQETunnel"
-	//return "Digital_Mobile_QA"
+    //return "DigitalQETunnel"
+    return "Digital_Mobile_QA"
     //return "TSCWF_Automation_Tunnel"
    // return "DigitalMobileQE"
 }
