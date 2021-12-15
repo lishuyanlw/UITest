@@ -22,7 +22,7 @@ public class ProductResultsPage extends BasePage{
 	}
 
 	//Search results return message
-	@FindBy(xpath = "//section[@class='tsc-container']//*[@class='plp__showing-results']|//section[@class='tsc-container']//div[@class='plp-no-search-results__copy__heading']|//section[@class='tsc-container']//div[@class='plp-no-search-results__copy__heading']")
+	@FindBy(xpath = "//section[@class='tsc-container']//*[@class='plp__showing-results']|//section[@class='tsc-container']//div[@class='plp-no-search-results__copy__heading']")
 	public WebElement lblSearchResultMessage;
 
 	@FindBy(xpath = "//section[@class='tsc-container']//*[@class='plp__showing-results']")
@@ -297,9 +297,14 @@ public class ProductResultsPage extends BasePage{
 		this.pressEnterKey(globalHeader.searchBox);
 		this.waitForPageToLoad();
 		this.getReusableActionsInstance().staticWait(2000);	
-		return waitForCondition(Driver->{
-			return this.lblSearchResultMessage.isDisplayed();
-			},90000);
+		
+		this.getReusableActionsInstance().waitForElementVisibility(this.lblSearchResultMessage);
+		
+		return true;
+//		
+//		return waitForCondition(Driver->{
+//			return this.lblSearchResultMessage.isDisplayed();
+//			},90000);
 	}
 
 	/**
