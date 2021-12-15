@@ -296,7 +296,7 @@ public class ProductResultsPage extends BasePage{
 		}
 		this.pressEnterKey(globalHeader.searchBox);
 		this.waitForPageToLoad();
-			
+		this.getReusableActionsInstance().staticWait(2000);	
 		return waitForCondition(Driver->{
 			return this.lblSearchResultMessage.isDisplayed();
 			},90000);
@@ -353,9 +353,9 @@ public class ProductResultsPage extends BasePage{
 				}
 				break;
 		}
-		this.getReusableActionsInstance().staticWait(8000);
-		this.waitForPageToLoad();
 		
+		this.waitForPageToLoad();
+		this.getReusableActionsInstance().staticWait(2000);
 		return waitForCondition(Driver->{
 			return this.lblSearchResultMessage.isDisplayed();
 			},90000);

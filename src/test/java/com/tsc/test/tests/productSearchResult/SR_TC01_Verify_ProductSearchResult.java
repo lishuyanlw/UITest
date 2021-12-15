@@ -87,7 +87,7 @@ public class SR_TC01_Verify_ProductSearchResult extends BaseTest{
 			}
 						
 			String lsTitle=getProductResultsPageThreadLocal().getProductResultPageTitle();
-			reporter.softAssert(lsTitle.equalsIgnoreCase(lsKeywordList.get(i))||lsTitle.equalsIgnoreCase("NoTitle"), "Search result page title is dispalyed as search keyword", "Search result page title is not dispalyed as search keyword");
+			reporter.softAssert(lsTitle.equalsIgnoreCase(lsKeywordList.get(i))||lsTitle.equalsIgnoreCase("NoTitle")||lsTitle.toLowerCase().contains(lsKeywordList.get(i).toLowerCase())||lsKeywordList.get(i).toLowerCase().contains(lsTitle.toLowerCase()), "Search result page title is dispalyed as search keyword", "Search result page title is not dispalyed as search keyword");
 
 			reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(), "Showing text pattern in filters is correct", "Showing text pattern in filters is incorrect");
 			
