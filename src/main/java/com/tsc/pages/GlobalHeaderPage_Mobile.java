@@ -1,6 +1,7 @@
 package com.tsc.pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -323,8 +324,6 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
         getReusableActionsInstance().clickIfAvailable(headingWebElement);
         waitForCondition(Driver->{return this.popularBrandsMobile.isEnabled();},60000);
         getReusableActionsInstance().clickIfAvailable(this.popularBrandsMobile);
-        //headingWebElement.click();
-        //this.popularBrandsMobile.click();
         getReusableActionsInstance().waitForPageLoad();
         WebElement linkPopularBrand = listPopularBrandsonlyLinks.get(0);
         waitForCondition(Driver -> {
@@ -356,6 +355,12 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
         String xpathHeading = createXPath("//li[contains(@class,'mobile__nav-items')]//span[contains(text(),'{0}')]", headingName);
         WebElement headingWebElement = FlyoutHeadingsMobile.findElement(By.xpath(xpathHeading));
         return headingWebElement;
+    }
+
+    @Override
+    public void scrollToHeadingElement(String headingName) {
+        getReusableActionsInstance().javascriptScrollByVisibleElement(this.menuButton);
+        getReusableActionsInstance().clickIfAvailable(this.menuButton);
     }
 
 }

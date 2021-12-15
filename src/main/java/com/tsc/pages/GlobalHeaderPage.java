@@ -245,7 +245,7 @@ public class GlobalHeaderPage extends BasePage{
 	@FindBy(xpath = "//a[contains(@class,'mega-curated__item-link')]")
 	public List<WebElement> listCuratedCollectionLinks;
 
-	@FindBy(xpath="//div[contains(@class,'PageTitle')]//div[contains(@id,'ctlPanTitle')]/*[contains(@class,'Title')]")
+	@FindBy(xpath="//div[contains(@class,'Middle')]//brand/div[contains(@class,'brand')]//*[contains(@class,'titleLink')]")
 	public WebElement lblPageTitleForMenuItems;
 
 	@FindBy(xpath = "//a[contains(@class,'mega-popular__brand-link')]//img")
@@ -721,12 +721,11 @@ public class GlobalHeaderPage extends BasePage{
 	 * @author Sachin Sharma
 	 */
 	public String getHeadingForLandingPage(String pageName) {
-		//WebElement webElement = getWebElementFlyoutHeading(pageName);
-		//String title =getPageTitle(webElement).toUpperCase();
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblPageTitleForMenuItems);
 		getReusableActionsInstance().scrollToElement(this.lblPageTitleForMenuItems);
 		String title = getPageTitle(this.lblPageTitleForMenuItems).toUpperCase();
-		waitForCondition(Driver->{return (title.equalsIgnoreCase(pageName));} ,60000);
+		reporter.reportLog("Title of page is: "+title);
+		waitForCondition(Driver->{return (title.toLowerCase().contains(pageName.toLowerCase()));} ,60000);
 		return (title);
 	}
 
