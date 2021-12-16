@@ -17,7 +17,7 @@ public class GH_TC02_Verify_Global_Header_SignIn_Favorite_ShoppingCartBag extend
 	 * CER-153
 	 * CER-154
 	 */
-	@Test(groups={"Home","Regression"})	    
+	@Test(groups={"Home","Regression","GlobalHeader_Mobile","GlobalHeader","GlobalHeader_Tablet"})
 		public void validateGlobalHeader_SignIn_Favorite_ShoppingCartBag() throws IOException {		
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 		BasePage basePage=new BasePage(this.getDriver());		
@@ -44,8 +44,7 @@ public class GH_TC02_Verify_Global_Header_SignIn_Favorite_ShoppingCartBag extend
 		//Verify Sign in Text and Icon
 		getGlobalLoginPageThreadLocal().verifySignInSection();		
 		getGlobalLoginPageThreadLocal().verifyShowingUserFirstNameAfterSignin(lsUserName, lsPassword,lsFirstName);		
-		getGlobalLoginPageThreadLocal().SignOut();		
-	
+		getGlobalLoginPageThreadLocal().SignOut();
 		reporter.reportLog("Verify Shopping Cart section");
 		//Verify url does not contain notfound after clicking Shopping Cart link
 		lsUrl=getglobalheaderPageThreadLocal().getUrlAfterClickingShoppingCartLink();
@@ -69,11 +68,12 @@ public class GH_TC02_Verify_Global_Header_SignIn_Favorite_ShoppingCartBag extend
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateTSCLogo(), "TSC icon is visible", "TSC icon is not visible");
 
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateTSCLogoLink().trim().equalsIgnoreCase((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC link matches expected url", "TSC link does not matche expected url");
-		
+		/*
 		reporter.reportLog("Verify searchBox section");
 		//Verify searchBox section
 		validateText(getglobalheaderPageThreadLocal().validateSearchbox(), TestDataHandler.constantData.getHeaderSection().getLbl_SearchBoxPlaceholder(), "Search box is visible");
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateSearchSubmitbtn(), "Search submit button is visible", "Search submit button is not visible");
+		getProductResultsPageThreadLocal().getSearchResultPopUpWindowLoad("dress");
 		if(getglobalheaderPageThreadLocal().getPopupWindowByClickingSearchBox()) {
 			reporter.softAssert(basePage.getReusableActionsInstance().isElementVisible(getglobalheaderPageThreadLocal().cntTrendingListWithoutKeyword),"Trending section is displaying correctly in search popup window","Trending section is not displaying correctly in search popup window");
 			reporter.softAssert(basePage.getReusableActionsInstance().isElementVisible(getglobalheaderPageThreadLocal().cntFeaturedBrandsListWithoutKeyword),"Featured brands section is displaying correctly in search popup window","Featured brands section is not displaying correctly in search popup window");
@@ -87,9 +87,9 @@ public class GH_TC02_Verify_Global_Header_SignIn_Favorite_ShoppingCartBag extend
 		basePage.pressEscapeKeyUsingSendKeys();
 
 		reporter.reportLog("Verify Sign in section");
-
+		*/
 		List<String> lstSignInPopover=TestDataHandler.constantData.getHeaderSection().getLst_SignInPopover();
-				
+
 		//Verify Sign in Text and Icon
 		validateText(getglobalheaderPageThreadLocal().validateSignInLink(), TestDataHandler.constantData.getHeaderSection().getLbl_SignIn(), "SignIn Link is present & Text is visible");
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateSiginIcon(), "SignIn icon is visible", "SignIn icon is not visible");

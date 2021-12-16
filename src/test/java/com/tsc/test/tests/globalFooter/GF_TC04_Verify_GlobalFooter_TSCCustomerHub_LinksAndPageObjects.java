@@ -3,7 +3,9 @@ package com.tsc.test.tests.globalFooter;
 import org.testng.annotations.Test;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
@@ -32,19 +34,21 @@ public class GF_TC04_Verify_GlobalFooter_TSCCustomerHub_LinksAndPageObjects exte
 		List<List<String>> lstNameAndLinks=TestDataHandler.constantData.getFooterSection().getLst_NameAndLinks();
 		String lsService,lsHref,lsYmlHref;
 		ArrayList<WebElement> elementList=new ArrayList<WebElement>();
-		
+
 		//Customer service
 		lsService="Customer Service";
+		Map<String,String> hashMap = getGlobalFooterPageThreadLocal().getTestDataWithSpecificName(lstNameAndLinks, lsService, true);
 		reporter.reportLog(lsService);
-		WebElement selectedItem=getGlobalFooterPageThreadLocal().getServiceWebElement(lsService);		
+		WebElement selectedItem=getGlobalFooterPageThreadLocal().getServiceWebElement(lsService,hashMap.get("parent"));
 		lsHref=basePage.getElementHref(selectedItem);		
-		lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsService,true);
+		//lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsService,true);
+		lsYmlHref=hashMap.get("Link");
 		if(lsYmlHref.isEmpty()) {
 			reporter.reportLogFail("Unable to find '"+lsService+"' link.");
 		}		
 		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current '"+lsService+"' href of "+lsHref+" is equal to "+lsYmlHref,"The current '"+lsService+"' href of "+lsHref+" is not equal to "+lsYmlHref);
 		
-		if(!getGlobalFooterPageThreadLocal().goToService(lsService,getGlobalFooterPageThreadLocal().lblCustomerService)) {
+		if(!getGlobalFooterPageThreadLocal().goToService(lsService,getGlobalFooterPageThreadLocal().lblCustomerService,hashMap.get("parent"))) {
 			reporter.reportLogFail("Unable to navigate to '"+lsService+"' page objects.");
 		}
 		else {			
@@ -66,20 +70,23 @@ public class GF_TC04_Verify_GlobalFooter_TSCCustomerHub_LinksAndPageObjects exte
 			}
 		}		
 		elementList.clear();
-		
+
 		//Track Your Order
 		lsService="Track Your Order";
+		hashMap.clear();
+		hashMap = getGlobalFooterPageThreadLocal().getTestDataWithSpecificName(lstNameAndLinks, lsService, true);
 		reporter.reportLog(lsService);
 		List<String> lstTrackYourOrderObjectSectionTitle=TestDataHandler.constantData.getFooterSection().getLst_TrackYourOrderObjectSectionTitle();
-		selectedItem=getGlobalFooterPageThreadLocal().getServiceWebElement(lsService);		
-		lsHref=basePage.getElementHref(selectedItem);		
-		lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsService,true);
+		selectedItem=getGlobalFooterPageThreadLocal().getServiceWebElement(lsService,hashMap.get("parent"));
+		lsHref=basePage.getElementHref(selectedItem);
+		//lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsService,true);
+		lsYmlHref=hashMap.get("Link");
 		if(lsYmlHref.isEmpty()) {
 			reporter.reportLogFail("Unable to find '"+lsService+"' link.");
 		}		
 		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current '"+lsService+"' href of "+lsHref+" is equal to "+lsYmlHref,"The current '"+lsService+"' href of "+lsHref+" is not equal to "+lsYmlHref);
 		
-		if(!getGlobalFooterPageThreadLocal().goToService(lsService,getGlobalFooterPageThreadLocal().lblTrackYourOrder)) {
+		if(!getGlobalFooterPageThreadLocal().goToService(lsService,getGlobalFooterPageThreadLocal().lblTrackYourOrder,hashMap.get("parent"))) {
 			reporter.reportLogFail("Unable to navigate to '"+lsService+"' page objects.");
 		}
 		else {
@@ -123,16 +130,19 @@ public class GF_TC04_Verify_GlobalFooter_TSCCustomerHub_LinksAndPageObjects exte
 		
 		//Contact Us
 		lsService="Contact Us";
+		hashMap.clear();
+		hashMap = getGlobalFooterPageThreadLocal().getTestDataWithSpecificName(lstNameAndLinks, lsService, true);
 		reporter.reportLog(lsService);
-		selectedItem=getGlobalFooterPageThreadLocal().getServiceWebElement(lsService);		
+		selectedItem=getGlobalFooterPageThreadLocal().getServiceWebElement(lsService,hashMap.get("parent"));
 		lsHref=basePage.getElementHref(selectedItem);		
-		lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsService,true);
+		//lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsService,true);
+		lsYmlHref=hashMap.get("Link");
 		if(lsYmlHref.isEmpty()) {
 			reporter.reportLogFail("Unable to find '"+lsService+"' link.");
 		}		
 		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current '"+lsService+"' href of "+lsHref+" is equal to "+lsYmlHref,"The current '"+lsService+"' href of "+lsHref+" is not equal to "+lsYmlHref);
 		
-		if(!getGlobalFooterPageThreadLocal().goToService(lsService,getGlobalFooterPageThreadLocal().lblContactUS)) {
+		if(!getGlobalFooterPageThreadLocal().goToService(lsService,getGlobalFooterPageThreadLocal().lblContactUS,hashMap.get("parent"))) {
 			reporter.reportLogFail("Unable to navigate to '"+lsService+"' page objects.");
 		}
 		else {		
@@ -150,19 +160,24 @@ public class GF_TC04_Verify_GlobalFooter_TSCCustomerHub_LinksAndPageObjects exte
 		
 		//Blog
 		lsService="Blog";
+		hashMap.clear();
+		hashMap = getGlobalFooterPageThreadLocal().getTestDataWithSpecificName(lstNameAndLinks, lsService, true);
 		reporter.reportLog(lsService);
-		selectedItem=getGlobalFooterPageThreadLocal().getServiceWebElement(lsService);		
+		selectedItem=getGlobalFooterPageThreadLocal().getServiceWebElement(lsService,hashMap.get("parent"));
 		lsHref=basePage.getElementHref(selectedItem);		
-		lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsService,true);
+		//lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsService,true);
+		lsYmlHref=hashMap.get("Link");
 		if(lsYmlHref.isEmpty()) {
 			reporter.reportLogFail("Unable to find '"+lsService+"' link.");
 		}
-		reporter.softAssert(getGlobalFooterPageThreadLocal().compareUrlInNewWindow(lsService, lsYmlHref),"The current '"+lsService+"' href of "+lsHref+" is equal to "+lsYmlHref,"The current '"+lsService+"' href of "+lsHref+" is not equal to "+lsYmlHref);
-		
+		reporter.softAssert(getGlobalFooterPageThreadLocal().compareUrlInNewWindow(lsService, lsYmlHref,hashMap.get("parent")),"The current '"+lsService+"' href of "+lsHref+" is equal to "+lsYmlHref,"The current '"+lsService+"' href of "+lsHref+" is not equal to "+lsYmlHref);
+
 		//My Account 
 		lsService="My Account";
+		hashMap.clear();
+		hashMap = getGlobalFooterPageThreadLocal().getTestDataWithSpecificName(lstNameAndLinks, lsService, true);
 		reporter.reportLog("Not login for "+lsService);
-		verifyMyAccountNotLoginContents(lsService, lstNameAndLinks); 
+		verifyMyAccountNotLoginContents(lsService, lstNameAndLinks,hashMap.get("parent"));
 		
 		reporter.reportLog("Login for "+lsService);
 		String lsUserName=TestDataHandler.constantData.getLoginUser().getLbl_Username();
@@ -177,12 +192,12 @@ public class GF_TC04_Verify_GlobalFooter_TSCCustomerHub_LinksAndPageObjects exte
 
 	}
 	
-	void verifyMyAccountNotLoginContents(String lsService, List<List<String>> lstNameAndLinks) {
+	void verifyMyAccountNotLoginContents(String lsService, List<List<String>> lstNameAndLinks,String section) {
 		BasePage basePage=new BasePage(this.getDriver());	
 		ArrayList<WebElement> elementList=new ArrayList<WebElement>();
 
 		List<String> lstMyAccountObjectSectionTitle=TestDataHandler.constantData.getFooterSection().getLst_MyAccountObjectSectionTitle();
-		WebElement selectedItem=getGlobalFooterPageThreadLocal().getServiceWebElement(lsService);		
+		WebElement selectedItem=getGlobalFooterPageThreadLocal().getServiceWebElement(lsService,section);
 		String lsHref=basePage.getElementHref(selectedItem);		
 		String lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsService,true);
 		if(lsYmlHref.isEmpty()) {
@@ -190,7 +205,7 @@ public class GF_TC04_Verify_GlobalFooter_TSCCustomerHub_LinksAndPageObjects exte
 		}		
 		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current '"+lsService+"' href of "+lsHref+" is equal to "+lsYmlHref,"The current '"+lsService+"' href of "+lsHref+" is not equal to "+lsYmlHref);
 				
-		if(!getGlobalFooterPageThreadLocal().goToService(lsService,getGlobalFooterPageThreadLocal().lblMyAccount)) {
+		if(!getGlobalFooterPageThreadLocal().goToService(lsService,getGlobalFooterPageThreadLocal().lblMyAccount,section)) {
 			reporter.reportLogFail("Unable to navigate to '"+lsService+"' page objects.");
 		}
 		else {

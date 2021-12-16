@@ -10,8 +10,8 @@ import com.tsc.test.base.BaseTest;
 
 public class GH_TC04_Global_Header_Verify_FlyoutSubMenuDisplay extends BaseTest {
 	
-	@Test(groups={"Home","Regression"})	    
-	public void verifyFlyoutHeadings() {
+	@Test(groups={"Home","Regression","GlobalHeader_Mobile","GlobalHeader","GlobalHeader_Tablet"})
+	public void verifyFlyoutHeadingsSubMenu() {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 		String lsBaseUrl=(new BasePage(this.getDriver())).getBaseURL();
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl+"/"), "TSC url is correct", "TSC url is incorrect");
@@ -29,6 +29,7 @@ public class GH_TC04_Global_Header_Verify_FlyoutSubMenuDisplay extends BaseTest 
 		//iterating over heading name to avoid stale element exception
 		for (String lsHeading:flyoutHeading) {
 			reporter.reportLog("Flyout displays heading "+lsHeading);
+			getglobalheaderPageThreadLocal().getReusableActionsInstance().staticWait(3000);
 			FlyoutUrl = getglobalheaderPageThreadLocal().getUrlAfterclickingFlyoutHeading(lsHeading);
 			lsSuccessResult=String.format("The url [ %s ] does not contain [ %s ] after clicking " + lsHeading + "'s link", FlyoutUrl,lsYmlNotFound);
 			lsFailResult=String.format("The url [ %s ] contains [ %s ] after clicking " + lsHeading + "'s link", FlyoutUrl,lsYmlNotFound);

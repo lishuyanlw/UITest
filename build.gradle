@@ -43,13 +43,13 @@ def getDate() {
 }
 
 def getTunnelName() {
-//    def tunnelName = "TSCWF-WebAutomation" + System.getenv('BUILD_TIMESTAMP')
-//    tunnelName = tunnelName.replaceAll(":","")
-//    tunnelName = tunnelName.replaceAll(" ","")
-//    return tunnelName  TSCWF_Automation_Test_Tunnel_Sachin
-    return "DigitalQETunnel"
-    //return "Digital_Mobile_QA"
+    /*def tunnelName = "TSCWF-WebAutomation" + System.getenv('BUILD_TIMESTAMP')
+    tunnelName = tunnelName.replaceAll(":","")*/
+
+    //return "DigitalQETunnel"
+    return "Digital_Mobile_QA"
     //return "TSCWF_Automation_Tunnel"
+    //return "DigitalMobileQE"
 }
 
 //This method is used when we use parentTunnelOwner system property in sauce test below
@@ -85,6 +85,7 @@ task "sauceTest"(type: Test) {
     systemProperty 'TunnelRequired', TunnelRequired
     systemProperty 'Device',test_device
     systemProperty 'TunnelName', tunnelName
+    systemProperty 'Device', test_device
     //Below system property is needed when we will create tunnel manually and use that to run test in sauce-lab
     //Test will be under DigitalQAWebAutomation owner in sauce-lab
     //systemProperty 'parentTunnelOwner', parentTunnelOwner()
@@ -113,6 +114,7 @@ task "localTest"(type: Test) {
     systemProperty 'Browser', test_browser
     systemProperty 'Device', test_device
     systemProperty 'Language', test_language
+    systemProperty 'Device', test_device
     systemProperty 'chromeMobileDevice', chromeMobileDevice
     systemProperty 'Device',test_device
     systemProperties(System.getProperties())
