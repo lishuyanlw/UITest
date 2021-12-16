@@ -112,9 +112,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 		
 		String lsHeader,lsSubItem;
 		WebElement subItem;
-		List<WebElement> mainItemCopyList=new ArrayList<>();
-		boolean bSelected=false;
-		
+			
 		for(int i=0;i<this.productFilterList.size();i++) {			
 			if(i>0) {
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i));
@@ -123,26 +121,32 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 			if(lsHeader.contains("(")) {
 				lsHeader=lsHeader.split("\\(")[0].trim();
 			}	
-			
+//			System.out.println("lsHeader: "+lsHeader);
 			//If found lsFirstLevelItem
-			if(lsHeader.equalsIgnoreCase(lsFirstLevelItem)) {				
+			if(lsHeader.equalsIgnoreCase(lsFirstLevelItem)) {	
+//				System.out.println("Selected lsHeader: "+lsHeader);
 				expandFilterItem(this.productFilterContainerList.get(i));
+//				collapseFilterItemWithClickingProductTitle(this.productFilterContainerList.get(i));
 				if(i>0) {
 					this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i-1));
-				}		
-				
+				}	
+				else {
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(0));
+				}
+				this.getReusableActionsInstance().staticWait(1000);
 				List<WebElement> subItemList=this.productFilterContainerList.get(i).findElements(this.bySecondaryFilterAll);				
-				for(int j=0;j<subItemList.size();j++) {
-					mainItemCopyList.add(this.productFilterContainerList.get(i));
+				for(int j=0;j<subItemList.size();j++) {	
 					subItem=subItemList.get(j);
 					lsSubItem=this.getElementInnerText(subItem.findElement(By.xpath(".//span[@class='plp-filter-panel__filter-list__item-label-text']")));
-					
+//					System.out.println("lsSubItem:"+lsSubItem);
 					getReusableActionsInstance().staticWait(500);
 					//If found lsSecondLevelItem
 					if(lsSubItem.equalsIgnoreCase(lsSecondLevelItem)) {
+//						System.out.println("Selected lsSubItem:"+lsSubItem);
 						getReusableActionsInstance().staticWait(500);
-						if(j>3) {
-							this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItemList.get(j-1));
+						if(j>4) {
+							this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItemList.get(j-2));
+							getReusableActionsInstance().clickIfAvailable(subItem);
 						}
 						else {
 							getReusableActionsInstance().clickIfAvailable(subItem);
@@ -167,23 +171,27 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 			expandFilterItem(this.productFilterContainerList.get(i));
 			if(i>0) {
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i-1));
+			}	
+			else {
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(0));
 			}			
 			
 			List<WebElement> subItemList=this.productFilterContainerList.get(i).findElements(this.bySecondaryFilterAll);	
-			for(int j=0;j<subItemList.size();j++) {
-				mainItemCopyList.add(this.productFilterContainerList.get(i));
+			for(int j=0;j<subItemList.size();j++) {	
 				subItem=subItemList.get(j);
 				if(!this.hasElementAttribute(subItem.findElement(By.xpath(".//button//input")), "checked")) {
 					this.secondLevelFilter=this.getElementInnerText(subItem);
 					this.firstLevelFilter=this.getElementInnerText(subItem.findElement(By.xpath("./ancestor::div[@class='plp-filter-panel__blocks']//button[@class='plp-filter-panel__block-title']")));
 					
 					getReusableActionsInstance().staticWait(500);
-					if(j>3) {
-						this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItemList.get(j-1));
+					getReusableActionsInstance().staticWait(500);
+					if(j>4) {
+						this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItemList.get(j-2));
+						getReusableActionsInstance().clickIfAvailable(subItem);
 					}
 					else {
 						getReusableActionsInstance().clickIfAvailable(subItem);
-					}									
+					}										
 					this.waitForSortingOrFilteringCompleted();
 					getReusableActionsInstance().staticWait(1000);
 					
@@ -606,8 +614,8 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 			
 	public void verifySelectSizeOrColorOption() {
 		List<WebElement> optionList;
-		WebElement element;
-		String lsText,lsSelectedTitle,lsType;
+		WebElement element;	
+		String lsText,lsSelectedTitle,lsType,lsButtonTextBeforeClickingSize,lsButtonTextBeforeClickingColor;
 			
 		//To check button text
 		element=this.getDriver().findElement(byProductGoToDetails);
@@ -646,8 +654,10 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				optionList=this.getDriver().findElements(byProductOptionSizeItemEnabledList);
 				element=optionList.get(0);
 				lsText=this.getElementInnerText(element).replace("Size", "").trim();
+				lsButtonTextBeforeClickingSize=this.getElementInnerText(this.getDriver().findElement(byProductGoToDetails));
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 				this.getReusableActionsInstance().clickIfAvailable(element);
+				this.waitForCondition(Driver->{return !lsButtonTextBeforeClickingSize.equalsIgnoreCase(this.getElementInnerText(this.getDriver().findElement(byProductGoToDetails)));}, 20000);
 				this.getReusableActionsInstance().staticWait(3000);	
 				element=this.getDriver().findElement(byProductOptionSizeSelectedSize);
 				lsSelectedTitle=this.getElementInnerText(element);
@@ -661,6 +671,8 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				element=this.getDriver().findElement(byProductGoToDetails);
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 				lsText=element.getText().trim();
+//				System.out.println("Size button text: "+lsText);
+//				System.out.println("Size verify result: "+lsText.equalsIgnoreCase("Go to detail page"));
 				if(lsType.contains("Colour")) {
 					if(lsText.equalsIgnoreCase("Select colour")) {
 						reporter.reportLogPass("The button text is equal to 'Select colour'");
@@ -685,9 +697,10 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				optionList=this.getDriver().findElements(byProductOptionColorItemEnabledList);
 				element=optionList.get(0);
 				lsText=this.getElementInnerText(element).replace("colours", "").trim();
+				lsButtonTextBeforeClickingColor=this.getElementInnerText(this.getDriver().findElement(byProductGoToDetails));
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 				this.getReusableActionsInstance().clickIfAvailable(element);
-
+				this.waitForCondition(Driver->{return !lsButtonTextBeforeClickingColor.equalsIgnoreCase(this.getElementInnerText(this.getDriver().findElement(byProductGoToDetails)));}, 20000);
 				this.getReusableActionsInstance().staticWait(3000);	
 				element=this.getDriver().findElement(byProductOptionColorSelectedColor);
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
@@ -702,7 +715,8 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				element=this.getDriver().findElement(byProductGoToDetails);
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 				lsText=element.getText().trim();
-
+//				System.out.println("Color button text: "+lsText);
+//				System.out.println("verify color result: "+lsText.equalsIgnoreCase("Go to detail page"));
 				if(lsText.equalsIgnoreCase("Go to detail page")) {
 					reporter.reportLogPass("The button text is equal to 'Go to detail page'");
 				}

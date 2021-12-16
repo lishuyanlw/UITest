@@ -1954,7 +1954,7 @@ public class ProductResultsPage extends BasePage{
 	public void verifySelectSizeOrColorOption(WebElement itemContainer, By BySelectSizeAndColorButton) {
 		List<WebElement> optionList;
 		WebElement element;
-		String lsText,lsSelectedTitle,lsType;
+		String lsText,lsSelectedTitle,lsType,lsButtonTextBeforeClickingSize,lsButtonTextBeforeClickingColor;
 			
 		//To check button text
 		element=itemContainer.findElement(BySelectSizeAndColorButton);
@@ -1993,7 +1993,9 @@ public class ProductResultsPage extends BasePage{
 				optionList=itemContainer.findElements(byProductOptionSizeItemEnabledList);
 				element=optionList.get(0);
 				lsText=this.getElementInnerText(element).replace("Size", "").trim();
+				lsButtonTextBeforeClickingSize=this.getElementInnerText(this.getDriver().findElement(byProductGoToDetails));
 				this.clickElement(element);
+				this.waitForCondition(Driver->{return !lsButtonTextBeforeClickingSize.equalsIgnoreCase(this.getElementInnerText(this.getDriver().findElement(byProductGoToDetails)));}, 20000);
 				this.getReusableActionsInstance().staticWait(3000);	
 				element=itemContainer.findElement(byProductOptionSizeSelectedSize);
 				lsSelectedTitle=this.getElementInnerText(element);
@@ -2030,7 +2032,9 @@ public class ProductResultsPage extends BasePage{
 				optionList=itemContainer.findElements(byProductOptionColorItemEnabledList);
 				element=optionList.get(0);
 				lsText=this.getElementInnerText(element).replace("colours", "").trim();
+				lsButtonTextBeforeClickingColor=this.getElementInnerText(this.getDriver().findElement(byProductGoToDetails));
 				this.clickElement(element);
+				this.waitForCondition(Driver->{return !lsButtonTextBeforeClickingColor.equalsIgnoreCase(this.getElementInnerText(this.getDriver().findElement(byProductGoToDetails)));}, 20000);
 				this.getReusableActionsInstance().staticWait(3000);	
 				element=itemContainer.findElement(byProductOptionColorSelectedColor);
 				lsSelectedTitle=this.getElementInnerText(element);
@@ -2137,8 +2141,7 @@ public class ProductResultsPage extends BasePage{
 	 */
 	public boolean checkIfFilterItemIsCollapsed(WebElement filterContainerItem) {
 		WebElement item=filterContainerItem.findElement(this.bySecondaryFilterOpenOrCloseFlag);
-		System.out.println("Class: "+item.getAttribute("class"));
-		
+				
 		return !item.getAttribute("class").contains("plp-filter-panel__block-title__icon--plus");
 	}
 	

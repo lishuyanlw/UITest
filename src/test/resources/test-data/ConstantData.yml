@@ -91,8 +91,8 @@ searchResultPage:
     - filterType: SequentialAction
       filterOption: 
         - ["Brand","Joan Rivers"]
-        - ["Price","Under $100"]
-        - ["Shop by colour","Black"]
+        #- ["Price","Under $100"]
+        #- ["Shop by colour","Black"]
   lst_MoreButton: ["Brand","Shop by collection","Shop by colour"]
   lst_DisappearAfterSelectFilter: ["SHOP BY CATEGORY"]
   lnk_product_result: /pages/productresults?
