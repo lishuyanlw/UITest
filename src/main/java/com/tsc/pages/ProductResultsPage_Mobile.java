@@ -53,7 +53,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 	//For size option	
 	public By byProductOptionSizeTitle=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//span[@class='product-card__size-title']");
 			
-	public By byProductOptionSizeSelectedSize=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//span[@class='product-card__size-title']");
+	public By byProductOptionSizeSelectedSize=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//span[@class='product-card__size-title']//strong");
 	
 	public By byProductOptionSizeWrapper=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//div[@class='product-card__size-wrapper']");
 	
@@ -68,7 +68,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 	//For color option
 	public By byProductOptionColorTitle=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//p[@class='product-card__color-and-taste-title']");
 	
-	public By byProductOptionColorSelectedColor=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//p[@class='product-card__color-and-taste-title']");
+	public By byProductOptionColorSelectedColor=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//p[@class='product-card__color-and-taste-title']//strong");
 	
 	public By byProductOptionColorWrapper=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//div[@class='product-card__color-and-taste-wrapper']");
 	
@@ -112,23 +112,28 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 		
 		String lsHeader,lsSubItem;
 		WebElement subItem;
+		List<WebElement> mainItemCopyList=new ArrayList<>();
 		boolean bSelected=false;
 		
-		for(int i=0;i<this.productFilterList.size();i++) {
-			if(i>2) {
+		for(int i=0;i<this.productFilterList.size();i++) {			
+			if(i>0) {
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i));
 			}			
 			lsHeader=this.getElementInnerText(this.productFilterList.get(i));
 			if(lsHeader.contains("(")) {
 				lsHeader=lsHeader.split("\\(")[0].trim();
-			}			
+			}	
+			
 			//If found lsFirstLevelItem
-			if(lsHeader.equalsIgnoreCase(lsFirstLevelItem)) {
+			if(lsHeader.equalsIgnoreCase(lsFirstLevelItem)) {				
 				expandFilterItem(this.productFilterContainerList.get(i));
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i-1));
+				if(i>0) {
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i-1));
+				}		
 				
 				List<WebElement> subItemList=this.productFilterContainerList.get(i).findElements(this.bySecondaryFilterAll);				
 				for(int j=0;j<subItemList.size();j++) {
+					mainItemCopyList.add(this.productFilterContainerList.get(i));
 					subItem=subItemList.get(j);
 					lsSubItem=this.getElementInnerText(subItem.findElement(By.xpath(".//span[@class='plp-filter-panel__filter-list__item-label-text']")));
 					
@@ -136,8 +141,14 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 					//If found lsSecondLevelItem
 					if(lsSubItem.equalsIgnoreCase(lsSecondLevelItem)) {
 						getReusableActionsInstance().staticWait(500);
-						getReusableActionsInstance().clickIfAvailable(subItem);
-						getReusableActionsInstance().staticWait(5000);
+						if(j>3) {
+							this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItemList.get(j-1));
+						}
+						else {
+							getReusableActionsInstance().clickIfAvailable(subItem);
+						}	
+						this.waitForSortingOrFilteringCompleted();
+						getReusableActionsInstance().staticWait(1000);
 
 						closeFilterPopupWindow();			
 						return true;
@@ -149,23 +160,32 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 		//If unable to find both lsFirstLevelItem and lsSecondLevelItem, then select the first choice
 		this.bDefault=true;
 		
-		for(int i=0;i<this.productFilterList.size();i++) {
-			if(i>2) {
+		for(int i=0;i<this.productFilterList.size();i++) {			
+			if(i>0) {
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i));
 			}			
 			expandFilterItem(this.productFilterContainerList.get(i));
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i-1));
+			if(i>0) {
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i-1));
+			}			
 			
 			List<WebElement> subItemList=this.productFilterContainerList.get(i).findElements(this.bySecondaryFilterAll);	
 			for(int j=0;j<subItemList.size();j++) {
+				mainItemCopyList.add(this.productFilterContainerList.get(i));
 				subItem=subItemList.get(j);
 				if(!this.hasElementAttribute(subItem.findElement(By.xpath(".//button//input")), "checked")) {
 					this.secondLevelFilter=this.getElementInnerText(subItem);
 					this.firstLevelFilter=this.getElementInnerText(subItem.findElement(By.xpath("./ancestor::div[@class='plp-filter-panel__blocks']//button[@class='plp-filter-panel__block-title']")));
 					
 					getReusableActionsInstance().staticWait(500);
-					getReusableActionsInstance().clickIfAvailable(subItem);
-					getReusableActionsInstance().staticWait(5000);
+					if(j>3) {
+						this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItemList.get(j-1));
+					}
+					else {
+						getReusableActionsInstance().clickIfAvailable(subItem);
+					}									
+					this.waitForSortingOrFilteringCompleted();
+					getReusableActionsInstance().staticWait(1000);
 					
 					closeFilterPopupWindow();					
 					return true;
@@ -626,11 +646,11 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				optionList=this.getDriver().findElements(byProductOptionSizeItemEnabledList);
 				element=optionList.get(0);
 				lsText=this.getElementInnerText(element).replace("Size", "").trim();
-				this.clickElement(element);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+				this.getReusableActionsInstance().clickIfAvailable(element);
 				this.getReusableActionsInstance().staticWait(3000);	
 				element=this.getDriver().findElement(byProductOptionSizeSelectedSize);
 				lsSelectedTitle=this.getElementInnerText(element);
-				System.out.println(lsSelectedTitle+" : "+lsText);
 				if(lsText.equalsIgnoreCase(lsSelectedTitle)) {
 					reporter.reportLogPass("The selected size title is displaying correctly");
 				}
@@ -639,8 +659,8 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				}
 				
 				element=this.getDriver().findElement(byProductGoToDetails);
-				lsText=this.getElementInnerText(element);	
-				System.out.println(lsType+" : "+lsText);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+				lsText=element.getText().trim();
 				if(lsType.contains("Colour")) {
 					if(lsText.equalsIgnoreCase("Select colour")) {
 						reporter.reportLogPass("The button text is equal to 'Select colour'");
@@ -665,11 +685,13 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				optionList=this.getDriver().findElements(byProductOptionColorItemEnabledList);
 				element=optionList.get(0);
 				lsText=this.getElementInnerText(element).replace("colours", "").trim();
-				this.clickElement(element);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+				this.getReusableActionsInstance().clickIfAvailable(element);
+
 				this.getReusableActionsInstance().staticWait(3000);	
 				element=this.getDriver().findElement(byProductOptionColorSelectedColor);
-				lsSelectedTitle=this.getElementInnerText(element);
-				System.out.println(lsSelectedTitle+" : "+lsText);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+				lsSelectedTitle=element.getText().trim();
 				if(lsText.equalsIgnoreCase(lsSelectedTitle)) {
 					reporter.reportLogPass("The selected color title is displaying correctly");
 				}
@@ -678,8 +700,9 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				}
 				
 				element=this.getDriver().findElement(byProductGoToDetails);
-				lsText=this.getElementInnerText(element);
-				System.out.println(lsType+" : "+lsText);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+				lsText=element.getText().trim();
+
 				if(lsText.equalsIgnoreCase("Go to detail page")) {
 					reporter.reportLogPass("The button text is equal to 'Go to detail page'");
 				}
