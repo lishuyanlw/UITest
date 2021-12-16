@@ -377,7 +377,7 @@ public class GlobalFooterPage extends BasePage {
 	@FindBy(xpath="//div[@class='Middle']//div[contains(@class,'find-channel')]//*[@class='section-title']")
 	public WebElement lblFindCableChannelTitle;
 
-	@FindBy(xpath="//div[contains(@Class,' tsc-forms')]//div[@Class='clearfix']//div/p[contains(text(),'Channel')]")
+	@FindBy(xpath="//div[@Class='clearfix']//div/p[contains(text(),'Channel')]")
 	public WebElement useourchannelfinder;
 
 	@FindBy(xpath="//div[@class='Middle']//div[contains(@class,'find-channel')]//h4")
@@ -724,6 +724,10 @@ public class GlobalFooterPage extends BasePage {
 		String lsMainWindowHandle = this.getDriver().getWindowHandle();
 		getReusableActionsInstance().javascriptScrollByVisibleElement(selectedItem);
 		selectedItem.click();
+		if(System.getProperty("Device").contains("Mobile") || System.getProperty("Device").contains("Tablet")){
+			getReusableActionsInstance().staticWait(5000);
+			getDriver().navigate().refresh();
+		}
 		getReusableActionsInstance().waitForNumberOfWindowsToBe(2, 90);
 		Set<String> lstWindowHandle = this.getDriver().getWindowHandles();
 		for (String windowHandle : lstWindowHandle) {
@@ -1105,6 +1109,7 @@ public class GlobalFooterPage extends BasePage {
 		select.selectByIndex(0);
 		for(int i=0;i<elements.size();i++) {
 			String alphabetPath="(//div[contains(@class,'lettersDiv')]//div//span)["+counter+"]";
+			waitForCondition(Driver->{return elements.get(0).isEnabled();},10000);
 			elements.get(i).click();
 			String alphabetLetterValue=getDriver().findElement(By.xpath(alphabetPath)).getText();
 			reporter.reportLog("Selected Alphabet is "+alphabetLetterValue+"");
