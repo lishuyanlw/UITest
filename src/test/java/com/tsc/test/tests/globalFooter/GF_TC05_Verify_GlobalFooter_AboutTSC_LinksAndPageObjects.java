@@ -9,6 +9,7 @@ import org.testng.annotations.Test;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class GF_TC05_Verify_GlobalFooter_AboutTSC_LinksAndPageObjects extends BaseTest {
 
@@ -35,21 +36,24 @@ public class GF_TC05_Verify_GlobalFooter_AboutTSC_LinksAndPageObjects extends Ba
 
         ArrayList<WebElement> elementList = new ArrayList<WebElement>();
         List<String> global_footer_items = new ArrayList<>();
+        Map<String,String> testData = null;
         //Adding links present in About TSC to be verified
         global_footer_items.add("Terms of Use");
         global_footer_items.add("Privacy Policy");
         global_footer_items.add("Become a Vendor");
         for (String lsService : global_footer_items) {
+            if(testData!=null)
+                testData.clear();
+            testData = getGlobalFooterPageThreadLocal().getTestDataWithSpecificName(lstNameAndLinks, lsService, true);
             reporter.reportLog(lsService);
-            WebElement selectedItem = getGlobalFooterPageThreadLocal().getServiceWebElement(lsService);
+            WebElement selectedItem = getGlobalFooterPageThreadLocal().getServiceWebElement(lsService,testData.get("parent"));
             String lsHref = basePage.getElementHref(selectedItem);
-            HashMap<String, String> testData = getGlobalFooterPageThreadLocal().getTestDataWithSpecificName(lstNameAndLinks, lsService, true);
             if (testData.isEmpty()) {
                 reporter.reportLogFail("Unable to find '" + lsService + "' link.");
             }
             reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref, testData.get("Link")), "The current '" + lsService + "' href of " + lsHref + " is equal to " + testData.get("Link"), "The current '" + lsService + "' href of " + lsHref + " is not equal to " + testData.get("Link"));
 
-            if (!getGlobalFooterPageThreadLocal().goToService(lsService, getGlobalFooterPageThreadLocal().aboutUsPageTitle)) {
+            if (!getGlobalFooterPageThreadLocal().goToService(lsService, getGlobalFooterPageThreadLocal().aboutUsPageTitle,testData.get("parent"))) {
                 reporter.reportLogFail("Unable to navigate to '" + lsService + "' page objects.");
             } else {
                 //Verifying page title
@@ -77,16 +81,17 @@ public class GF_TC05_Verify_GlobalFooter_AboutTSC_LinksAndPageObjects extends Ba
         }
         //More About TSC
         String lsService = "More About TSC";
+        testData.clear();
+        testData = getGlobalFooterPageThreadLocal().getTestDataWithSpecificName(lstNameAndLinks, lsService, true);
         reporter.reportLog(lsService);
-        WebElement selectedItem = getGlobalFooterPageThreadLocal().getServiceWebElement(lsService);
+        WebElement selectedItem = getGlobalFooterPageThreadLocal().getServiceWebElement(lsService,testData.get("parent"));
         String lsHref = basePage.getElementHref(selectedItem);
-        HashMap<String, String> testData = getGlobalFooterPageThreadLocal().getTestDataWithSpecificName(lstNameAndLinks, lsService, true);
         if (testData.isEmpty()) {
             reporter.reportLogFail("Unable to find '" + lsService + "' link.");
         }
         reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref, testData.get("Link")), "The current '" + lsService + "' href of " + lsHref + " is equal to " + testData.get("Link"), "The current '" + lsService + "' href of " + lsHref + " is not equal to " + testData.get("Link"));
 
-        if (!getGlobalFooterPageThreadLocal().goToService(lsService, getGlobalFooterPageThreadLocal().aboutUsPageTitle)) {
+        if (!getGlobalFooterPageThreadLocal().goToService(lsService, getGlobalFooterPageThreadLocal().aboutUsPageTitle,testData.get("parent"))) {
             reporter.reportLogFail("Unable to navigate to '" + lsService + "' page objects.");
         } else {
             //Add In Page sub Header values
@@ -102,19 +107,58 @@ public class GF_TC05_Verify_GlobalFooter_AboutTSC_LinksAndPageObjects extends Ba
         }
         elementList.clear();
 
+        //Channel Finder
+        String lsServiceCF = "Channel Finder";
+        reporter.reportLog(lsServiceCF);
+        Map<String,String> testDataCF=getGlobalFooterPageThreadLocal().getTestDataWithSpecificName(lstNameAndLinks,lsServiceCF,true);
+        WebElement selectedItemCF=getGlobalFooterPageThreadLocal().getServiceWebElement(lsServiceCF,testDataCF.get("parent"));
+        String lsHrefCF=basePage.getElementHref(selectedItemCF);
+        if(testDataCF.isEmpty()) {
+            reporter.reportLogFail("Unable to find '"+lsServiceCF+"' link.");
+        }
+        reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHrefCF,testDataCF.get("Link")),"The current '"+lsServiceCF+"' href of "+lsHrefCF+" is equal to "+testDataCF.get("Link"),"The current '"+lsServiceCF+"' href of "+lsHrefCF+" is not equal to "+testDataCF.get("Link"));
+
+        if(!getGlobalFooterPageThreadLocal().goToService(lsServiceCF,getGlobalFooterPageThreadLocal().lblChannelFinderTitle,testDataCF.get("parent"))) {
+            reporter.reportLogFail("Unable to navigate to '"+lsServiceCF+"' page objects.");
+        }
+        else {
+            //Verifying page title
+            String pageTitle = getGlobalFooterPageThreadLocal().getPageTitle(getGlobalFooterPageThreadLocal().lblChannelFinderTitle);
+            reporter.softAssert(pageTitle.equalsIgnoreCase(lsServiceCF),"Page Title matches for global footer link: "+lsServiceCF+" and  title is: "+pageTitle,"Page Title doesn't match for global footer link: "+lsServiceCF+" and  title is: "+pageTitle);
+
+            //Verifying Page Elements
+            //Find Cable Channels
+            //reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().useourchannelfinder),"Page paragraph line exists","Page paragraph line doesn't exists");
+            reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lblFindCableChannelTitle),"The Title Find Cable Channel is displayed","The Title Find Cable Channel is not displayed");
+            reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lblselectyour),"The text Select your: exists","The text Select your: doesn't exists");
+            reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lblProvince),"The Title Province exists","The Title Province doesn't exists");
+            reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lblCableProvider),"The Title Cable Provider exists","The Title Cable Provider doesn't exists");
+            reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lblCity),"The Title City exists","The Title City doesn't exists");
+
+            //Satellite Channels
+            reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lblSatelliteChannels),"The Title Satellite Channels exist","The Title Satellite Channels doesn't exist");
+            reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lblBellTV),"The Title Satellite Channels exist","Page paragraph line doesn't exists");
+            reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lblShawDirect),"Page paragraph line exists ","Page paragraph line doesn't exists");
+            reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lblChannelsBellTV),"The line under Bell TV Column exists","The line under Bell TV Column doesn't exists");
+            reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lblChannelsShawDirect),"The line under Shaw Direct Column exists","The line under Shaw Direct Column exists");
+
+            //Verifying Province Drop Down and its respective Cable Provider and City
+            getGlobalFooterPageThreadLocal().verifyMultipleDropDownWithTitle(getGlobalFooterPageThreadLocal().dropDownProvince, getGlobalFooterPageThreadLocal().dropDownCableProvider, getGlobalFooterPageThreadLocal().dropDownCity);
+        }
+
         //Meet The Hosts
         String lsServiceMH = "Meet the Hosts";
         String actualPageTitle="Meet Our Hosts";
+        Map<String,String> testDataMH=getGlobalFooterPageThreadLocal().getTestDataWithSpecificName(lstNameAndLinks,lsServiceMH,true);
         reporter.reportLog(lsServiceMH);
-        WebElement selectedItemMH=getGlobalFooterPageThreadLocal().getServiceWebElement(lsServiceMH);
+        WebElement selectedItemMH=getGlobalFooterPageThreadLocal().getServiceWebElement(lsServiceMH,testDataMH.get("parent"));
         String lsHrefMH=basePage.getElementHref(selectedItemMH);
-        HashMap<String,String> testDataMH=getGlobalFooterPageThreadLocal().getTestDataWithSpecificName(lstNameAndLinks,lsServiceMH,true);
         if(testDataMH.isEmpty()) {
             reporter.reportLogFail("Unable to find '"+lsServiceMH+"' link.");
         }
         reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHrefMH,testDataMH.get("Link")),"The current '"+lsServiceMH+"' href of "+lsHrefMH+" is equal to "+testDataMH.get("Link"),"The current '"+lsServiceMH+"' href of "+lsHrefMH+" is not equal to "+testDataMH.get("Link"));
 
-        if(!getGlobalFooterPageThreadLocal().goToService(lsServiceMH,getGlobalFooterPageThreadLocal().aboutUsPageTitle)) {
+        if(!getGlobalFooterPageThreadLocal().goToService(lsServiceMH,getGlobalFooterPageThreadLocal().aboutUsPageTitle,testDataMH.get("parent"))) {
             reporter.reportLogFail("Unable to navigate to '"+lsServiceMH+"' page objects.");
         }
         else {
