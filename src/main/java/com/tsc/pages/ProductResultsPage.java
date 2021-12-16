@@ -220,6 +220,10 @@ public class ProductResultsPage extends BasePage{
 	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp-filter-panel']//div[@class='plp-filter-panel__blocks']//button[@class='plp-filter-panel__block-title']")
 	public List<WebElement> productFilterList;
 	
+	public By byProductFilterSearchContainer=By.xpath("./div");
+	
+	public By byProductFilterSearchInput=By.xpath("./div/input[@class='plp-filter-panel__search']");
+	
 	public By byProductFilterTitle=By.xpath(".//button[@class='plp-filter-panel__block-title']");
 	
 	public By bySecondaryFilterOpenOrCloseFlag=By.xpath(".//button[@class='plp-filter-panel__block-title']//div[contains(@class,'plp-filter-panel__block-title__icon')]");
