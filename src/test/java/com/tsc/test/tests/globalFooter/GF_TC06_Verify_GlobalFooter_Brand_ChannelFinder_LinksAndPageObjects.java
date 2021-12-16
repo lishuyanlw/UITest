@@ -7,6 +7,7 @@ import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class GF_TC06_Verify_GlobalFooter_Brand_ChannelFinder_LinksAndPageObjects extends BaseTest {
     /*
@@ -31,15 +32,15 @@ public class GF_TC06_Verify_GlobalFooter_Brand_ChannelFinder_LinksAndPageObjects
         //Shop By Brand
         String lsServiceSBB = "Shop By Brand";
         reporter.reportLog(lsServiceSBB);
-        WebElement selectedItemSBB=getGlobalFooterPageThreadLocal().getServiceWebElement(lsServiceSBB);
+        Map<String,String> testDataSBB=getGlobalFooterPageThreadLocal().getTestDataWithSpecificName(lstNameAndLinks,lsServiceSBB,true);
+        WebElement selectedItemSBB=getGlobalFooterPageThreadLocal().getServiceWebElement(lsServiceSBB,testDataSBB.get("parent"));
         String lsHrefSBB=basePage.getElementHref(selectedItemSBB);
-        HashMap<String,String> testDataSBB=getGlobalFooterPageThreadLocal().getTestDataWithSpecificName(lstNameAndLinks,lsServiceSBB,true);
         if(testDataSBB.isEmpty()) {
             reporter.reportLogFail("Unable to find '"+lsServiceSBB+"' link.");
         }
         reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHrefSBB,testDataSBB.get("Link")),"The current '"+lsServiceSBB+"' href of "+lsHrefSBB+" is equal to "+testDataSBB.get("Link"),"The current '"+lsServiceSBB+"' href of "+lsHrefSBB+" is not equal to "+testDataSBB.get("Link"));
 
-        if(!getGlobalFooterPageThreadLocal().goToService(lsServiceSBB,getGlobalFooterPageThreadLocal().aboutUsPageTitle)) {
+        if(!getGlobalFooterPageThreadLocal().goToService(lsServiceSBB,getGlobalFooterPageThreadLocal().aboutUsPageTitle,testDataSBB.get("parent"))) {
             reporter.reportLogFail("Unable to navigate to '"+lsServiceSBB+"' page objects.");
         }
         else {

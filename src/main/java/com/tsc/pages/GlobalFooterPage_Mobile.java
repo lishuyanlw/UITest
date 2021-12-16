@@ -72,7 +72,7 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 	}
 	
 	@Override
-	public WebElement getServiceWebElement(String lsService) {	
+	public WebElement getServiceWebElement(String lsService,String footerSection) {
 		if(!this.lblTSCCustomerHubText.getAttribute("class").isEmpty()) {
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblTSCCustomerHubText);
 			this.getReusableActionsInstance().clickIfAvailable(this.lblTSCCustomerHubText);

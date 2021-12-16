@@ -1,9 +1,6 @@
 package com.tsc.pages;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -19,6 +16,7 @@ public class GlobalFooterPage extends BasePage {
 	public GlobalFooterPage(WebDriver driver) {
 		super(driver);
 	}
+	Map<String,String> hashMap = new HashMap<>();
 
 	// Credit Card
 	@FindBy(xpath = "//div[@class='Footer']//div[@class='custom-footer']//a[contains(@href,'creditcard')]/parent::div")
@@ -555,8 +553,8 @@ public class GlobalFooterPage extends BasePage {
 		return "";
 	}
 
-	public HashMap<String,String> getTestDataWithSpecificName(List<List<String>> lstNameAndLink, String lsSpecificName, boolean bEnglish) {
-		HashMap<String,String> hashMap = new HashMap<>();
+	public Map<String,String> getTestDataWithSpecificName(List<List<String>> lstNameAndLink, String lsSpecificName, boolean bEnglish) {
+		//HashMap<String,String> hashMap = new HashMap<>();
 		String lsCompare=null;
 		for (List<String> lstItem : lstNameAndLink) {
 			if (bEnglish) {
@@ -571,6 +569,7 @@ public class GlobalFooterPage extends BasePage {
 					hashMap.put("Link",this.removeLastSlashFromUrl(lstItem.get(2).trim()));
 				}
 				hashMap.put("Title",lstItem.get(3));
+				hashMap.put("parent",lstItem.get(4));
 			}
 		}
 		return hashMap;
@@ -675,7 +674,7 @@ public class GlobalFooterPage extends BasePage {
 	 * @return WebElement
 	 * @author Wei.Li
 	 */
-	public WebElement getServiceWebElement(String lsService) {
+	public WebElement getServiceWebElement(String lsService, String footerSection) {
 		WebElement selectedItem = this.getElementFromList(this.lnkTSCCustomerHubAllLinks, lsService);
 		if (selectedItem == null) {
 			selectedItem = this.getElementFromList(this.lnkAboutTSCAllLinks, lsService);
@@ -691,9 +690,9 @@ public class GlobalFooterPage extends BasePage {
 	 * @return true/false
 	 * @author Wei.Li
 	 */
-	public boolean goToService(String lsService, WebElement lblIndicator) {
+	public boolean goToService(String lsService, WebElement lblIndicator,String section) {
 		String lsUrl=this.URL();
-		WebElement selectedItem = this.getServiceWebElement(lsService);
+		WebElement selectedItem = this.getServiceWebElement(lsService,section);
 		if (selectedItem == null) {
 			return false;
 		}
@@ -715,8 +714,8 @@ public class GlobalFooterPage extends BasePage {
 	 * @return true/false
 	 * @author Wei.Li
 	 */
-	public boolean compareUrlInNewWindow(String lsService, String lsExpectedUrl) {
-		WebElement selectedItem = this.getServiceWebElement(lsService);
+	public boolean compareUrlInNewWindow(String lsService, String lsExpectedUrl,String section) {
+		WebElement selectedItem = this.getServiceWebElement(lsService,section);
 		if (selectedItem == null) {
 			return false;
 		}
