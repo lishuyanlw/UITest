@@ -56,7 +56,8 @@ public class PD_TC08_Verify_ProductDetail_SoldOut extends BaseTest{
 		reporter.reportLog("Verify Social media");	
 		getProductDetailPageThreadLocal().verifySocialMedia();
 
-		if(!(System.getProperty("Browser").contains("android"))) {
+		if(System.getProperty("Browser").contains("android") ||
+				!System.getProperty("chromeMobileDevice").contains("Surface Duo")) {
 			GH_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo headerSectionMenuAndLogoTest = new GH_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo();
 			headerSectionMenuAndLogoTest.validateMajorNameAndLinks();
 		}
