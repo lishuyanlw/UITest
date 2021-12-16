@@ -10,14 +10,11 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.text.Normalizer;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
@@ -25,12 +22,11 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.interactions.touch.TouchActions;
-import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import extentreport.ExtentTestManager;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import utils.Reporter;
 
 import utils.ReusableActions;
@@ -263,20 +259,20 @@ import utils.ReusableActions;
 	
 	/**
 	 * This method will implement explicit wait using Lambda function
-	 * @param 
+	 * @param
 	 * 1. Function<WebDriver,Boolean> func: Lambda expression
 	 * 2. int timeOutInMillis: wait time in millisecond
 	 * @return true/false
 	 * @author Wei.Li
-	 */	
-	public Boolean waitForCondition(Function<WebDriver,Boolean> func, int timeOutInMillis) {    		    
-        return (new WebDriverWait(this.getDriver(), timeOutInMillis/1000)).until( new ExpectedCondition<Boolean>() {
-        	@Override
-            public Boolean apply(WebDriver d) {
-                return func.apply(d);            	
-            }
-        });
-    }
+	 */
+	public Boolean waitForCondition(Function<WebDriver,Boolean> func, int timeOutInMillis) {
+		return (new WebDriverWait(this.getDriver(), timeOutInMillis/1000)).until( new ExpectedCondition<Boolean>() {
+			@Override
+			public Boolean apply(WebDriver d) {
+				return func.apply(d);
+			}
+		});
+	}
 	
 	/**
 	 * This method will get base URL settings in gradle.properties
