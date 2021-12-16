@@ -124,10 +124,11 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.videoIcon);
         this.getReusableActionsInstance().clickIfAvailable(this.videoIcon);
         //this.videoIcon.click();
-        applyStaticWait(2000);
+        applyStaticWait(1000);
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.playButton);
         this.getReusableActionsInstance().scrollToElement(this.playButton);
         this.getReusableActionsInstance().clickIfAvailable(this.playButton);
+        applyStaticWait(2000);
         if (!this.checkIfVideoisPlaying()){
             this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.playButton);
             this.getReusableActionsInstance().scrollToElement(this.playButton);
@@ -201,6 +202,11 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productReviewSection);
         this.getReusableActionsInstance().scrollToElement(this.productReviewSection);
         this.getReusableActionsInstance().clickIfAvailable(this.productReviewSection);
+        if (!this.backButton.isDisplayed()){
+            this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productReviewSection);
+            this.getReusableActionsInstance().scrollToElement(this.productReviewSection);
+            this.getReusableActionsInstance().clickIfAvailable(this.productReviewSection);
+        }
         //this.productReviewSection.click();
         return this.waitForCondition(Driver->{return this.btnStickyTabProductReview.getAttribute("class").contains("scrolling");},30000);
     }

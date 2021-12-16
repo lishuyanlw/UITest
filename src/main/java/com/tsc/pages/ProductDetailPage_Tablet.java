@@ -24,10 +24,11 @@ public class ProductDetailPage_Tablet extends ProductDetailPage {
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.videoIcon);
         this.getReusableActionsInstance().clickIfAvailable(this.videoIcon);
         //this.videoIcon.click();
-        applyStaticWait(2000);
+        applyStaticWait(1000);
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.playButton);
         this.getReusableActionsInstance().scrollToElement(this.playButton);
         this.getReusableActionsInstance().clickIfAvailable(this.playButton);
+        applyStaticWait(2000);
         if (!this.checkIfVideoisPlaying()){
             this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.playButton);
             this.getReusableActionsInstance().scrollToElement(this.playButton);
