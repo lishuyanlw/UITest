@@ -35,13 +35,10 @@ public class BaseTest {
 
 	protected static final ThreadLocal<WebDriver> webDriverThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<GlobalHeaderPage> globalheaderPageThreadLocal = new ThreadLocal<>();
-	protected static final ThreadLocal<GlobalHeaderPage_Mobile> globalHeaderPage_mobileThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<HomePage> homePageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<GlobalFooterPage> globalFooterPageThreadLocal = new ThreadLocal<>();
-	protected static final ThreadLocal<GlobalFooterPage_Mobile> globalFooterPage_mobileThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<ProductResultsPage> productResultsPageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<ProductDetailPage> productDetailPageThreadLocal = new ThreadLocal<>();
-	protected static final ThreadLocal<ProductResultsPage_Tablet> productResultsPage_TabletThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<ProductResultsPage_Mobile> productResultsPage_MobileThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<LoginPage> loginPageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<LoginPage_Mobile> loginPage_mobileThreadLocal = new ThreadLocal<>();
@@ -60,40 +57,19 @@ public class BaseTest {
 
 	
 	// @return the globalheaderPageThreadLocal
-	
-	protected static GlobalHeaderPage getglobalheaderPageThreadLocal() {
-		return globalheaderPageThreadLocal.get();
-	}
-
-	// @return the globalheaderPage_MobileThreadLocal
-	protected static GlobalHeaderPage_Mobile getglobalHeaderPage_mobileThreadLocal() {
-		return globalHeaderPage_mobileThreadLocal.get();
-	}
+	protected static GlobalHeaderPage getglobalheaderPageThreadLocal() {return globalheaderPageThreadLocal.get();	}
 
 	// @return the homePageThreadLocal
-	protected static HomePage homePageThreadLocal() {
-	
-		return homePageThreadLocal.get();
-	}
+	protected static HomePage homePageThreadLocal() {	return homePageThreadLocal.get();	}
 
 	//@return the GlobalFooterThreadLocal
 	protected static GlobalFooterPage getGlobalFooterPageThreadLocal() {
 		return globalFooterPageThreadLocal.get();
 	}
 
-	// @return the GlobalFooterPage_MobileThreadLocal
-	protected static GlobalFooterPage_Mobile getGlobalFooterPage_mobileThreadLocal() {
-		return globalFooterPage_mobileThreadLocal.get();
-	}
-	
 	//@return the ProductResultsPageThreadLocal
 	protected static ProductResultsPage getProductResultsPageThreadLocal() {
 		return productResultsPageThreadLocal.get();
-	}
-
-	//@return the ProductResultsPage_TabletThreadLocal
-	protected static ProductResultsPage_Tablet getProductResultsPage_TabletThreadLocal() {
-		return productResultsPage_TabletThreadLocal.get();
 	}
 
 	//@return the ProductResultsPage_MobileThreadLocal
@@ -111,10 +87,6 @@ public class BaseTest {
 
 	protected static String getTestDeviceThreadLocal () {
 		return TestDeviceThreadLocal.get();
-	}
-
-	protected static LoginPage_Mobile getLoginPage_MobileThreadLocal() {
-		return loginPage_mobileThreadLocal.get();
 	}
 
 	private void init() {
