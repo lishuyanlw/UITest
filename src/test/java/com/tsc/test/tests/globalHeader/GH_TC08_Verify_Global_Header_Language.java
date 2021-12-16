@@ -23,7 +23,9 @@ public class GH_TC08_Verify_Global_Header_Language extends BaseTest {
 		reporter.reportLog("Home Page");
 		getGlobalFooterPageThreadLocal().switchlanguage();
 		validateMajorNameAndLinks();
-		if (!(System.getProperty("Device").equalsIgnoreCase("Mobile"))) {
+		if (System.getProperty("Device").equalsIgnoreCase("Desktop") ||
+				(System.getProperty("Device").equalsIgnoreCase("Tablet")
+					&& (System.getProperty("chromeMobileDevice")!=null && System.getProperty("chromeMobileDevice").contains("iPad")))) {
 			validateActionContents();
 		}
 		GH_TC03_Global_Header_Verify_FlyoutHeadings GH_TC03_Global_Header_Verify_FlyoutHeadings = new GH_TC03_Global_Header_Verify_FlyoutHeadings();
@@ -35,18 +37,18 @@ public class GH_TC08_Verify_Global_Header_Language extends BaseTest {
 		}
 		switchToEnglish();
 	}
-	
+	//Commenting getglobalheaderPageThreadLocal().goBackHomePage() to make test executoin faster
 	public void validateActionContents() {
 		reporter.reportLog("Global Header Section contents for BlackMenu_SilverMenu_TSCLogoLinks");
 		BasePage basePage=new BasePage(this.getDriver());
 		reporter.reportLog("Verify Black headers");
 		//Verify Black headers
 		getglobalheaderPageThreadLocal().verifyTSHeaderAndLinkInBlackHeader(getglobalheaderPageThreadLocal().lnkTSBlackHeader,null,true);//getglobalheaderPageThreadLocal().lnkTS
-		getglobalheaderPageThreadLocal().goBackHomePage();
+		//getglobalheaderPageThreadLocal().goBackHomePage();
 		
 		getglobalheaderPageThreadLocal().hoverOnWatchTSC();
 		getglobalheaderPageThreadLocal().verifyTSHeaderAndLinkInBlackHeader(getglobalheaderPageThreadLocal().lnkWatchUsLiveDpdMenu,null,true);//getglobalheaderPageThreadLocal().lnkWatchUsLive
-		getglobalheaderPageThreadLocal().goBackHomePage();
+		//getglobalheaderPageThreadLocal().goBackHomePage();
 		//line #47-49 commented as its already been tested in TC01. Deals link is getting failed as its under maintains.
 		/*
 		getglobalheaderPageThreadLocal().hoverOnWatchTSC();
@@ -55,15 +57,15 @@ public class GH_TC08_Verify_Global_Header_Language extends BaseTest {
 		*/
 		getglobalheaderPageThreadLocal().hoverOnWatchTSC();
 		getglobalheaderPageThreadLocal().verifyTSHeaderAndLinkInBlackHeader(getglobalheaderPageThreadLocal().lnkProgramGuideDpdMenu,null,false);//getglobalheaderPageThreadLocal().lnkProgramGuide
-		getglobalheaderPageThreadLocal().goBackHomePage();
+		//getglobalheaderPageThreadLocal().goBackHomePage();
 		//comment line # 54 to 60 for staging.
 		getglobalheaderPageThreadLocal().hoverOnWatchTSC();
 		getglobalheaderPageThreadLocal().verifyTSHeaderAndLinkInBlackHeader(getglobalheaderPageThreadLocal().lnkCarGadgetsDpdMenu,null,true);
-		getglobalheaderPageThreadLocal().goBackHomePage();
+		//getglobalheaderPageThreadLocal().goBackHomePage();
 		
 		getglobalheaderPageThreadLocal().hoverOnWatchTSC();
 		getglobalheaderPageThreadLocal().verifyTSHeaderAndLinkInBlackHeader(getglobalheaderPageThreadLocal().lnkDesignerFootwearDpdMenu,null,true);
-		getglobalheaderPageThreadLocal().goBackHomePage();
+		//getglobalheaderPageThreadLocal().goBackHomePage();
 		
 		getglobalheaderPageThreadLocal().hoverOnWatchTSC();
 		getglobalheaderPageThreadLocal().verifyTSHeaderAndLinkInBlackHeader(getglobalheaderPageThreadLocal().lnkOnAirProductsDpdMenu,null,true);//getglobalheaderPageThreadLocal().lnkOnAir

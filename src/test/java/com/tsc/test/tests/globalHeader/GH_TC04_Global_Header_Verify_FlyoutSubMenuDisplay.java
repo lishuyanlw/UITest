@@ -25,6 +25,9 @@ public class GH_TC04_Global_Header_Verify_FlyoutSubMenuDisplay extends BaseTest 
 			String flHeading=lsHeading.getText();
 			flyoutHeading.add(flHeading);
 		}
+		if(!System.getProperty("Device").equalsIgnoreCase("Desktop"))
+			//Press Esc key to close menu
+			getglobalheaderPageThreadLocal().pressEscapeKey();
 		reporter.reportLog("Flyout displays headings: "+flyoutHeading);
 		//iterating over heading name to avoid stale element exception
 		for (String lsHeading:flyoutHeading) {

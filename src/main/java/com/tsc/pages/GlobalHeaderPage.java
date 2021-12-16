@@ -245,7 +245,8 @@ public class GlobalHeaderPage extends BasePage{
 	@FindBy(xpath = "//a[contains(@class,'mega-curated__item-link')]")
 	public List<WebElement> listCuratedCollectionLinks;
 
-	@FindBy(xpath="//div[contains(@class,'Middle')]//brand/div[contains(@class,'brand')]//*[contains(@class,'titleLink')]")
+	//@FindBy(xpath="//div[contains(@class,'Middle')]//brand/div[contains(@class,'brand')]//*[contains(@class,'titleLink')]")
+	@FindBy(xpath="//div[contains(@class,'Middle')]//div[contains(@class,'PageTitle')]//*[contains(@class,'gatewayTitle')]")
 	public WebElement lblPageTitleForMenuItems;
 
 	@FindBy(xpath = "//a[contains(@class,'mega-popular__brand-link')]//img")
@@ -455,9 +456,9 @@ public class GlobalHeaderPage extends BasePage{
 	 public void verifyTSHeaderAndLinkInBlackHeader(WebElement blackItem,WebElement silverItem,boolean bCheckUrl) {
 	 	getReusableActionsInstance().waitForPageLoad();
 	 	getReusableActionsInstance().javascriptScrollByVisibleElement(blackItem);
-		if(!System.getProperty("Device").equalsIgnoreCase("Desktop")) {
+		/*if(!System.getProperty("Device").equalsIgnoreCase("Desktop")) {
 			getReusableActionsInstance().clickIfAvailable(blackItem);
-		}
+		}*/
 		String title=blackItem.getText().trim();
 		String lsTitle=getUTFEnabledData(title);
 		reporter.softAssert(getReusableActionsInstance().isElementVisible(blackItem), "The element of "+lsTitle+" in Black headers is visible","The element of "+lsTitle+" in Black headers is not visible");
