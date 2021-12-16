@@ -17,7 +17,7 @@ public class PD_TC03_Verify_ProductDetail_StickyTab extends BaseTest{
 	 * CER-590
 	 * CER-591
 	 */
-	@Test(groups={"ProductDetail","Regression"})
+	@Test(groups={"ProductDetail","Regression","Regression_Mobile","Regression_Tablet"})
 	public void validateStickyTab() throws IOException {	
 	getGlobalFooterPageThreadLocal().closePopupDialog();
 	

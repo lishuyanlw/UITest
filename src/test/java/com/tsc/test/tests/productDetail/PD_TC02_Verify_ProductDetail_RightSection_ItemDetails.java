@@ -16,7 +16,7 @@ public class PD_TC02_Verify_ProductDetail_RightSection_ItemDetails extends BaseT
 	 * CER-600
 	 *
 	 */
-	@Test(groups={"ProductDetail","Regression"})
+	@Test(groups={"ProductDetail","Regression","Regression_Mobile","Regression_Tablet"})
 	public void validateRightSection_ItemDetails() throws IOException {	
 	getGlobalFooterPageThreadLocal().closePopupDialog();
 	

@@ -16,7 +16,7 @@ public class PD_TC06_Verify_ProductDetail_AddToBag extends BaseTest{
 	 * CER-608
 	 * 
 	 */
-	@Test(groups={"ProductDetail","Regression"})
+	@Test(groups={"ProductDetail","Regression","Regression_Mobile","Regression_Tablet"})
 	public void validateLeftSection_AddToBag() throws IOException {	
 	getGlobalFooterPageThreadLocal().closePopupDialog();
 	

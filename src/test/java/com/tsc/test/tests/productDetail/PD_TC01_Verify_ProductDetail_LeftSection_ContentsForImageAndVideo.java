@@ -17,7 +17,7 @@ public class PD_TC01_Verify_ProductDetail_LeftSection_ContentsForImageAndVideo e
 	 * CER-599
 	 * CER-604
 	 */
-	@Test(groups={"ProductDetail","Regression"})
+	@Test(groups={"ProductDetail","Regression","Regression_Mobile","Regression_Tablet"})
 	public void validateLeftSection_ContentsForImageAndVideo() throws IOException {	
 	getGlobalFooterPageThreadLocal().closePopupDialog();
 

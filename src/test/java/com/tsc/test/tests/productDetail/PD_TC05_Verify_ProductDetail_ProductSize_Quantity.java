@@ -17,7 +17,7 @@ public class PD_TC05_Verify_ProductDetail_ProductSize_Quantity extends BaseTest{
 	 * CER-601
 	 * CER-607
 	 */
-	@Test(groups={"ProductDetail","Regression"})
+	@Test(groups={"ProductDetail","Regression","Regression_Mobile","Regression_Tablet"})
 	public void validateLeftSection_ProductSize_Quantity() throws IOException {	
 	getGlobalFooterPageThreadLocal().closePopupDialog();
 	

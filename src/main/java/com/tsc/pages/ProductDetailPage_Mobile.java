@@ -126,6 +126,8 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
         //this.videoIcon.click();
         applyStaticWait(2000);
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.playButton);
+        applyStaticWait(2000);
+        this.getReusableActionsInstance().scrollToElement(this.playButton);
         this.getReusableActionsInstance().clickIfAvailable(this.playButton);
         //this.playButton.click();
         reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.videoBoxControl),"The video control section is displaying correctly","The video control section is not displaying correctly");
@@ -193,6 +195,7 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
     @Override
     public boolean goToProductReviewTab() {
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productReviewSection);
+        this.getReusableActionsInstance().scrollToElement(this.productReviewSection);
         this.getReusableActionsInstance().clickIfAvailable(this.productReviewSection);
         //this.productReviewSection.click();
         return this.waitForCondition(Driver->{return this.btnStickyTabProductReview.getAttribute("class").contains("scrolling");},30000);
@@ -384,6 +387,7 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
     public void closeTrueFitIFrame() {
         //super.closeTrueFitIFrame();
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnProductTrueFitIframeClose);
+        this.getReusableActionsInstance().scrollToElement(this.btnProductTrueFitIframeClose);
         this.getReusableActionsInstance().clickIfAvailable(this.btnProductTrueFitIframeClose);
         //this.btnProductTrueFitIframeClose.click();
         this.getDriver().switchTo().defaultContent();
@@ -418,8 +422,15 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
         reporter.softAssert(!this.getElementText(this.btnStickyTabProductReview).isEmpty(),"The Product Overview contents is not empty","The Product Overview contents is empty");
         goBack();
     }
+
+    /**
+     * Method to click on back button for mobile
+     * @return void
+     * @author viswas.reddy
+     */
     public void goBack(){
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.backButton);
+        this.getReusableActionsInstance().scrollToElement(this.backButton);
         this.getReusableActionsInstance().clickIfAvailable(this.backButton);
         //this.backButton.click();
         applyStaticWait(500);

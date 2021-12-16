@@ -19,7 +19,7 @@ public class PD_TC08_Verify_ProductDetail_SoldOut extends BaseTest{
 	 * CER-605
 	 * 
 	 */
-	@Test(groups={"ProductDetail","Regression"})
+	@Test(groups={"ProductDetail","Regression","Regression_Mobile","Regression_Tablet"})
 	public void validateLeftSection_SoldOut() throws IOException {	
 	getGlobalFooterPageThreadLocal().closePopupDialog();
 	

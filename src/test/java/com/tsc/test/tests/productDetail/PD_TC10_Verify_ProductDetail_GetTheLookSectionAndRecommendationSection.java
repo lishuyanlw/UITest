@@ -18,7 +18,7 @@ public class PD_TC10_Verify_ProductDetail_GetTheLookSectionAndRecommendationSect
 	 * CER-596
 	 * CER-597 
 	 */
-	@Test(groups={"ProductDetail","Regression"})
+	@Test(groups={"ProductDetail","Regression","Regression_Mobile","Regression_Tablet"})
 	public void validateLeftSection_GetTheLookSectionAndRecommendationSection() throws IOException {	
 	getGlobalFooterPageThreadLocal().closePopupDialog();
 	

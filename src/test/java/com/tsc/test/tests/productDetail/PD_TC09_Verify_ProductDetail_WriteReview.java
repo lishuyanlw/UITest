@@ -16,7 +16,7 @@ public class PD_TC09_Verify_ProductDetail_WriteReview extends BaseTest{
 	 * CER-594
 	 * CER-595
 	 */
-	@Test(groups={"ProductDetail","Regression"})
+	@Test(groups={"ProductDetail","Regression","Regression_Mobile","Regression_Tablet"})
 	public void validateWriteReview() throws IOException {	
 	getGlobalFooterPageThreadLocal().closePopupDialog();
 	

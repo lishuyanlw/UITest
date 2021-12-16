@@ -14,7 +14,7 @@ public class PD_TC11_Verify_ProductDetail_SocialMediaForMobileAndEmail extends B
 	 * CER-585
 	 * 
 	 */
-	@Test(groups={"ProductDetail","Regression"})
+	@Test(groups={"ProductDetail","Regression","Regression_Mobile","Regression_Tablet"})
 	public void validateLeftSection_SocialMediaForMobileAndEmail() throws IOException {	
 	getGlobalFooterPageThreadLocal().closePopupDialog();
 	

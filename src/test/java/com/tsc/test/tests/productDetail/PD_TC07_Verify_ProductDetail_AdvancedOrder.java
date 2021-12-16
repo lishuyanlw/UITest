@@ -14,7 +14,7 @@ public class PD_TC07_Verify_ProductDetail_AdvancedOrder extends BaseTest{
 	 * CER-602
 	 * 
 	 */
-	@Test(groups={"ProductDetail","Regression"})
+	@Test(groups={"ProductDetail","Regression","Regression_Mobile","Regression_Tablet"})
 	public void validateLeftSection_AdvancedOrder() throws IOException {	
 	getGlobalFooterPageThreadLocal().closePopupDialog();
 	
