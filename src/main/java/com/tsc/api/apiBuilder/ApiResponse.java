@@ -121,18 +121,18 @@ public class ApiResponse extends ApiConfigs {
      * @return - String - Product Number of product
      */
     private String getProductNumberForInputParams(Product product,Map<String,Object> configs){
-        for(Product.Products data:product.getProducts()) {
-            int videoCount=0,styleCount=0,sizeCount=0;
-            for(Map.Entry<String,Object> entry:configs.entrySet()){
-                if(entry.getKey().toLowerCase().contains("video"))
-                    videoCount = Integer.valueOf(entry.getValue().toString());
-                if(entry.getKey().toLowerCase().contains("style")){
-                    styleCount = Integer.valueOf(entry.getValue().toString());
-                }
-                if(entry.getKey().toLowerCase().contains("size")){
-                    sizeCount = Integer.valueOf(entry.getValue().toString());
-                }
+        int videoCount=0,styleCount=0,sizeCount=0;
+        for(Map.Entry<String,Object> entry:configs.entrySet()){
+            if(entry.getKey().toLowerCase().contains("video"))
+                videoCount = Integer.valueOf(entry.getValue().toString());
+            if(entry.getKey().toLowerCase().contains("style")){
+                styleCount = Integer.valueOf(entry.getValue().toString());
             }
+            if(entry.getKey().toLowerCase().contains("size")){
+                sizeCount = Integer.valueOf(entry.getValue().toString());
+            }
+        }
+        for(Product.Products data:product.getProducts()) {
             if(data.getVideosCount()>=videoCount && data.getStyles().size()>=styleCount && data.getSizes().size()>=sizeCount){
                 return data.getItemNo();
             }

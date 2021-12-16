@@ -15,7 +15,6 @@ public class GF_TC01_Verify_GlobalFooter_SocialMedia extends BaseTest {
 	 */
 	@Test(groups={"Sanity","Home","Regression","GlobalFooter"})
 	public void Verify_GlobalFooter_SocialMedia() {
-		String productNo = getApiResponseThreadLocal().getProductNumberFromKeyword("dress",null);
 
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 		BasePage basePage=new BasePage(this.getDriver());		
