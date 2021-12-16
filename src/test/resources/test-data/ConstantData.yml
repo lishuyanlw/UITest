@@ -41,15 +41,25 @@ headerSection:
   flyout:
     lst_FlyoutHeadingAndNameMap: {
       Fashion: ['Fashion','Mode','100047'],
+      Mode: ['Fashion','Mode','100047'],
       Shoes & Handbags: ['Shoes & Handbags','Chaussures et sacs','128153'],
+      Chaussures et sacs: ['Shoes & Handbags','Chaussures et sacs','128153'],
       Jewellery: ['Jewellery','Bijoux','100101'],
+      Bijoux: ['Jewellery','Bijoux','100101'],
       Beauty: ['Beauty','Beauté','100038'],
+      Beauté: ['Beauty','Beauté','100038'],
       Home & Garden: ['Home & Garden','Maison et jardin','100071'],
+      Maison et jardin: ['Home & Garden','Maison et jardin','100071'],
       Kitchen: ['Kitchen','Cuisine','100072'],
+      Cuisine: ['Kitchen','Cuisine','100072'],
       Health & Fitness: ['Health & Fitness','Santé','2058731'],
+      Santé: ['Health & Fitness','Santé','2058731'],
       Electronics: ['Electronics','Électronique','100073'],
+      Électronique: ['Electronics','Électronique','100073'],
       Coins & Hobbies: ['Coins & Hobbies','Monnaie et Hobbies','3001781'],
-      Clearance:  ['Clearance','Liquidation','2037576']
+      Monnaie et Hobbies: ['Coins & Hobbies','Monnaie et Hobbies','3001781'],
+      Clearance:  ['Clearance','Liquidation','2037576'],
+      Liquidation:  ['Clearance','Liquidation','2037576']
     }
     lnk_ShopByBrandShopAll: pages/brand?dimensions=
     lbl_LandingPageBrandShopAll: Shop By Brand
@@ -107,26 +117,26 @@ searchResultPage:
 footerSection: 
   lst_SocialMediaLinks: ["https://www.facebook.com/Shoptsc","https://twitter.com/shoptsc","https://instagram.com/shoptsc","www.youtube.com","https://www.pinterest.ca/shoptsc"]
   lst_NameAndLinks: 
-    - ["Credit Card","Cartes-cadeaux","/pages/creditcard?ic=ftr_tsccreditcard",""]
-    - ["Gift Card","Inscrivez-vous maintenant","/pages/giftcard?ic=ftr_tscgiftcard-img",""]
-    - ["Send us feedback","Dites-nous ce que vous pensez","https://rogers.qualtrics.com/",""]
-    - ["Language - Français","Langue - English","javascript:switchLanguage();",""]
-    - ["TSC CUSTOMER HUB","ESPACE CLIENT TSC",""]
-    - ["Customer Service","Service à la clientèle","/pages/customer-service",""]
-    - ["My Account","Mon compte","/go/customerservice/myaccountpage",""]
-    - ["Track Your Order","Suivre une commande","/pages/trackorder",""]
-    - ["Contact Us","Contactez-Nous","/pages/contact-us",""]
-    - ["Blog","Blog","https://blog.tsc.ca",""]
-    - ["ABOUT TSC","À PROPOS DE TSC",""]
-    - ["Terms of Use","Modalités d’utilisation","/go/aboutus/aboutustandc","ABOUT OUR SERVICES"]
-    - ["Privacy Policy","Politique de confidentialité","/go/aboutus/aboutusprivacy","ABOUT OUR SERVICES"]
-    - ["Become a Vendor","Devenir un fournisseur","/go/aboutus/aboutusvendor","BECOME A PARTNER"]
-    - ["More About TSC","En savoir plus sur TSC","/go/aboutus/aboutus","ABOUT TSC"]
-    - ["Shop by Brand","Magasiner par marque","/pages/brand",""]
-    - ["Channel Finder","Guide des chaînes","/pages/channelfinder",""]
-    - ["Meet the Hosts","Nos animateurs","/pages/hosts",""]
-    - ["Rogers Media - Proudly Canadian","Rogers Media - entreprise fièrement canadienne",""]
-    - ["All prices in Canadian dollars - TSC.ca","Tous les prix sont en dollars canadiens - TSC.ca",""]
+    - ["Credit Card","Cartes-cadeaux","/pages/creditcard?ic=ftr_tsccreditcard","",""]
+    - ["Gift Card","Inscrivez-vous maintenant","/pages/giftcard?ic=ftr_tscgiftcard-img","",""]
+    - ["Send us feedback","Dites-nous ce que vous pensez","https://rogers.qualtrics.com/","",""]
+    - ["Language - Français","Langue - English","javascript:switchLanguage();","",""]
+    - ["TSC CUSTOMER HUB","ESPACE CLIENT TSC","",""]
+    - ["Customer Service","Service à la clientèle","/pages/customer-service","","TSC CUSTOMER HUB - ESPACE CLIENT TSC"]
+    - ["My Account","Mon compte","/go/customerservice/myaccountpage","","TSC CUSTOMER HUB - ESPACE CLIENT TSC"]
+    - ["Track Your Order","Suivre une commande","/pages/trackorder","","TSC CUSTOMER HUB - ESPACE CLIENT TSC"]
+    - ["Contact Us","Contactez-Nous","/pages/contact-us","","TSC CUSTOMER HUB - ESPACE CLIENT TSC"]
+    - ["Blog","Blog","https://blog.tsc.ca","","TSC CUSTOMER HUB - ESPACE CLIENT TSC"]
+    - ["ABOUT TSC","À PROPOS DE TSC","",""]
+    - ["Terms of Use","Modalités d’utilisation","/go/aboutus/aboutustandc","ABOUT OUR SERVICES","ABOUT TSC - À PROPOS DE TSC"]
+    - ["Privacy Policy","Politique de confidentialité","/go/aboutus/aboutusprivacy","ABOUT OUR SERVICES","ABOUT TSC - À PROPOS DE TSC"]
+    - ["Become a Vendor","Devenir un fournisseur","/go/aboutus/aboutusvendor","BECOME A PARTNER","ABOUT TSC - À PROPOS DE TSC"]
+    - ["More About TSC","En savoir plus sur TSC","/go/aboutus/aboutus","ABOUT TSC","ABOUT TSC - À PROPOS DE TSC"]
+    - ["Shop by Brand","Magasiner par marque","/pages/brand","","ABOUT TSC - À PROPOS DE TSC"]
+    - ["Channel Finder","Guide des chaînes","/pages/channelfinder","","ABOUT TSC - À PROPOS DE TSC"]
+    - ["Meet the Hosts","Nos animateurs","/pages/hosts","","ABOUT TSC - À PROPOS DE TSC"]
+    - ["Rogers Media - Proudly Canadian","Rogers Media - entreprise fièrement canadienne","",""]
+    - ["All prices in Canadian dollars - TSC.ca","Tous les prix sont en dollars canadiens - TSC.ca","",""]
   lst_MyAccountObjectSectionTitle: ["SETTING UP AN ACCOUNT","PHONE BASED ACCOUNTS","PASSWORD RECOVERY"]
   lst_TrackYourOrderObjectSectionTitle: ["ORDER NUMBER","BILLING POSTAL CODE","SUBMIT"]
 loginUser:
