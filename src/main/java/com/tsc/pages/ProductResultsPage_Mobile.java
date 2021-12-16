@@ -53,7 +53,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 	//For size option	
 	public By byProductOptionSizeTitle=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//span[@class='product-card__size-title']");
 			
-	public By byProductOptionSizeSelectedSize=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//span[@class='product-card__size-title']//strong");
+	public By byProductOptionSizeSelectedSize=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//span[@class='product-card__size-title']");
 	
 	public By byProductOptionSizeWrapper=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//div[@class='product-card__size-wrapper']");
 	
@@ -68,7 +68,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 	//For color option
 	public By byProductOptionColorTitle=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//p[@class='product-card__color-and-taste-title']");
 	
-	public By byProductOptionColorSelectedColor=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//p[@class='product-card__color-and-taste-title']//strong");
+	public By byProductOptionColorSelectedColor=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//p[@class='product-card__color-and-taste-title']");
 	
 	public By byProductOptionColorWrapper=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//div[@class='product-card__color-and-taste-wrapper']");
 	
@@ -91,25 +91,125 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 	public WebElement btnProductSizeOrColorClose;
 	
 	public void openFilterPopupWindow() {
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnFilterPopup);
-		getReusableActionsInstance().clickIfAvailable(this.btnFilterPopup);		
-		getReusableActionsInstance().waitForElementVisibility(this.lblFilterPopupHeaderTitle, 20000);
+		getReusableActionsInstance().javascriptScrollByVisibleElement(btnFilterPopup);
+		getReusableActionsInstance().clickIfAvailable(btnFilterPopup);
+		this.getReusableActionsInstance().waitForElementVisibility(lblFilterPopupHeaderTitle, 20);
+		getReusableActionsInstance().staticWait(1000);
 	}
 	
 	public void closeFilterPopupWindow() {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnViewProductsAferSelectingFilters);
 		getReusableActionsInstance().clickIfAvailable(this.btnViewProductsAferSelectingFilters);		
-		getReusableActionsInstance().staticWait(2000);
+		getReusableActionsInstance().staticWait(5000);
 	}
 	
 	@Override
 	public boolean selectFilterItemInLeftPanel(String lsFirstLevelItem,String lsSecondLevelItem) {
 		openFilterPopupWindow();	
 		
-		super.selectFilterItemInLeftPanel(lsFirstLevelItem,lsSecondLevelItem);	
+		this.firstLevelFilter=lsFirstLevelItem;
+		this.secondLevelFilter=lsSecondLevelItem;
 		
-		closeFilterPopupWindow();		
-		return true;
+		String lsHeader,lsSubItem;
+		WebElement subItem;
+		boolean bSelected=false;
+		
+		for(int i=0;i<this.productFilterList.size();i++) {
+			if(i>2) {
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i));
+			}			
+			lsHeader=this.getElementInnerText(this.productFilterList.get(i));
+			if(lsHeader.contains("(")) {
+				lsHeader=lsHeader.split("\\(")[0].trim();
+			}			
+			//If found lsFirstLevelItem
+			if(lsHeader.equalsIgnoreCase(lsFirstLevelItem)) {
+				expandFilterItem(this.productFilterContainerList.get(i));
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i-1));
+				
+				List<WebElement> subItemList=this.productFilterContainerList.get(i).findElements(this.bySecondaryFilterAll);				
+				for(int j=0;j<subItemList.size();j++) {
+					subItem=subItemList.get(j);
+					lsSubItem=this.getElementInnerText(subItem.findElement(By.xpath(".//span[@class='plp-filter-panel__filter-list__item-label-text']")));
+					
+					getReusableActionsInstance().staticWait(500);
+					//If found lsSecondLevelItem
+					if(lsSubItem.equalsIgnoreCase(lsSecondLevelItem)) {
+						getReusableActionsInstance().staticWait(500);
+						getReusableActionsInstance().clickIfAvailable(subItem);
+						getReusableActionsInstance().staticWait(5000);
+
+						closeFilterPopupWindow();			
+						return true;
+					}
+				}
+			}
+		}
+
+		//If unable to find both lsFirstLevelItem and lsSecondLevelItem, then select the first choice
+		this.bDefault=true;
+		
+		for(int i=0;i<this.productFilterList.size();i++) {
+			if(i>2) {
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i));
+			}			
+			expandFilterItem(this.productFilterContainerList.get(i));
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i-1));
+			
+			List<WebElement> subItemList=this.productFilterContainerList.get(i).findElements(this.bySecondaryFilterAll);	
+			for(int j=0;j<subItemList.size();j++) {
+				subItem=subItemList.get(j);
+				if(!this.hasElementAttribute(subItem.findElement(By.xpath(".//button//input")), "checked")) {
+					this.secondLevelFilter=this.getElementInnerText(subItem);
+					this.firstLevelFilter=this.getElementInnerText(subItem.findElement(By.xpath("./ancestor::div[@class='plp-filter-panel__blocks']//button[@class='plp-filter-panel__block-title']")));
+					
+					getReusableActionsInstance().staticWait(500);
+					getReusableActionsInstance().clickIfAvailable(subItem);
+					getReusableActionsInstance().staticWait(5000);
+					
+					closeFilterPopupWindow();					
+					return true;
+				}
+			}			
+		}
+	
+		closeFilterPopupWindow();
+		return false;
+	}
+	
+	@Override
+	public void expandFilterItem(WebElement filterContainerItem) {		
+		if(checkIfFilterItemIsCollapsed(filterContainerItem)) {
+			clickSeeMoreButton(filterContainerItem);
+			return;
+		}
+				
+		WebElement productFilterTitle=filterContainerItem.findElement(this.byProductFilterTitle);
+//		this.getReusableActionsInstance().javascriptScrollByVisibleElement(productFilterTitle);
+//		this.getReusableActionsInstance().clickIfAvailable(productFilterTitle);
+		this.clickElement(productFilterTitle);
+		this.getReusableActionsInstance().staticWait(1000);
+		
+		clickSeeMoreButton(filterContainerItem);
+	}
+	
+	@Override
+	public void clickSeeMoreButton(WebElement filterContainerItem) {
+		String lsButtonType=this.checkFilterItemSeeButtonExisting(filterContainerItem);
+		if(lsButtonType.equalsIgnoreCase("SeeMore")) {
+			WebElement seeMoreButton=filterContainerItem.findElement(this.bySecondaryFilterSeeMoreButton);
+//			this.getReusableActionsInstance().javascriptScrollByVisibleElement(seeMoreButton);
+//			this.getReusableActionsInstance().clickIfAvailable(seeMoreButton);
+			this.clickElement(seeMoreButton);
+			this.getReusableActionsInstance().staticWait(1000);
+		}
+	}
+	
+	@Override
+	public void collapseFilterItemWithClickingProductTitle(WebElement filterContainerItem) {		
+		WebElement productFilterTitle=filterContainerItem.findElement(this.byProductFilterTitle);
+		this.clickElement(productFilterTitle);
+		this.getReusableActionsInstance().staticWait(1000);		
 	}
 	
 	@Override
@@ -153,7 +253,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 		openFilterPopupWindow();
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnFiltersAdded);
 		getReusableActionsInstance().clickIfAvailable(this.btnFiltersAdded);
-		getReusableActionsInstance().waitForElementVisibility(this.selectedFiltersList.get(this.selectedFiltersList.size()-1), 20000);
+		getReusableActionsInstance().waitForElementVisibility(this.selectedFiltersList.get(this.selectedFiltersList.size()-1), 20);
 		
 		String lsMsg="";
 		List<String> lstSelectedFilterOption=new ArrayList<String>();		
@@ -176,7 +276,8 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				break;
 			}
 		}
-
+		
+		closeFilterPopupWindow();
 		return lsMsg;
 	}
 	
@@ -201,7 +302,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 	
 	@Override
 	public void verifySearchResultContent(List<WebElement> productList) {
-		int checkAmount=10,loopSize;
+		int checkAmount=3,loopSize;
 		WebElement item,element;	
 		String lsProductName,lsText;
 		if(checkAmount<=this.productResultList.size()) {
@@ -326,7 +427,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 			
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 			this.getReusableActionsInstance().clickIfAvailable(element);
-			this.getReusableActionsInstance().waitForElementVisibility(this.btnProductGoToDetails);
+			this.getReusableActionsInstance().waitForElementVisibility(this.btnProductGoToDetails,20);
 			
 			lsText=judgeProductOptionType();
 			if(lsText.contains("Size")) {				
@@ -529,6 +630,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				this.getReusableActionsInstance().staticWait(3000);	
 				element=this.getDriver().findElement(byProductOptionSizeSelectedSize);
 				lsSelectedTitle=this.getElementInnerText(element);
+				System.out.println(lsSelectedTitle+" : "+lsText);
 				if(lsText.equalsIgnoreCase(lsSelectedTitle)) {
 					reporter.reportLogPass("The selected size title is displaying correctly");
 				}
@@ -537,7 +639,8 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				}
 				
 				element=this.getDriver().findElement(byProductGoToDetails);
-				lsText=this.getElementInnerText(element);				
+				lsText=this.getElementInnerText(element);	
+				System.out.println(lsType+" : "+lsText);
 				if(lsType.contains("Colour")) {
 					if(lsText.equalsIgnoreCase("Select colour")) {
 						reporter.reportLogPass("The button text is equal to 'Select colour'");
@@ -566,6 +669,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				this.getReusableActionsInstance().staticWait(3000);	
 				element=this.getDriver().findElement(byProductOptionColorSelectedColor);
 				lsSelectedTitle=this.getElementInnerText(element);
+				System.out.println(lsSelectedTitle+" : "+lsText);
 				if(lsText.equalsIgnoreCase(lsSelectedTitle)) {
 					reporter.reportLogPass("The selected color title is displaying correctly");
 				}
@@ -574,7 +678,8 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				}
 				
 				element=this.getDriver().findElement(byProductGoToDetails);
-				lsText=this.getElementInnerText(element);				
+				lsText=this.getElementInnerText(element);
+				System.out.println(lsType+" : "+lsText);
 				if(lsText.equalsIgnoreCase("Go to detail page")) {
 					reporter.reportLogPass("The button text is equal to 'Go to detail page'");
 				}
