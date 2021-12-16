@@ -121,7 +121,8 @@ public class BaseTest {
 		//globalFooterPageThreadLocal.set(new GlobalFooterPage(getDriver()));
 
 		if(System.getProperty("Browser").contains("android") ||
-				!System.getProperty("chromeMobileDevice").contains("iPad")) {
+				(System.getProperty("chromeMobileDevice")!=null
+						&& !System.getProperty("chromeMobileDevice").contains("iPad"))) {
 			productDetailPageThreadLocal.set(new ProductDetailPage_Mobile(getDriver()));
 			globalFooterPageThreadLocal.set(new GlobalFooterPage_Mobile(getDriver()));
 		}else {

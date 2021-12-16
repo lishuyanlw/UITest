@@ -124,7 +124,7 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.videoIcon);
         this.getReusableActionsInstance().clickIfAvailable(this.videoIcon);
         //this.videoIcon.click();
-        applyStaticWait(500);
+        applyStaticWait(2000);
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.playButton);
         this.getReusableActionsInstance().clickIfAvailable(this.playButton);
         //this.playButton.click();
