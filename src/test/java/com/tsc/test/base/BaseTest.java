@@ -104,10 +104,8 @@ public class BaseTest {
 	private void init_Mobile() {
 		productResultsPageThreadLocal.set(new ProductResultsPage_Mobile(getDriver()));
 		globalheaderPageThreadLocal.set(new GlobalHeaderPage_Mobile(getDriver()));
-		//loginPageThreadLocal.set(new LoginPage(getDriver()));
 		globalFooterPageThreadLocal.set(new GlobalFooterPage_Mobile(getDriver()));
 		productDetailPageThreadLocal.set(new ProductDetailPage_Mobile(getDriver()));
-		//globalheaderPageThreadLocal.set(new GlobalHeaderPage_Mobile(getDriver()));
 		loginPageThreadLocal.set(new LoginPage_Mobile(getDriver()));
 		reporter = new ExtentTestManager(getDriver());
 	}
