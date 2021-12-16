@@ -326,6 +326,11 @@ import utils.ReusableActions;
 		 robot.keyPress(KeyEvent.VK_ESCAPE);		
 		 robot.keyRelease(KeyEvent.VK_ESCAPE);
 	 }
+
+	 public void pressEscapeKeyUsingSendKeys(){
+		 Actions action = new Actions(getDriver());
+		 action.sendKeys(Keys.ESCAPE).build().perform();
+	 }
 	 
 	/**
 	 * This method will implement ENTER key pressing action.
