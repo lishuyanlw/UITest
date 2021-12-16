@@ -48,7 +48,6 @@ public class GlobalFooterPage_Tablet extends GlobalFooterPage{
 
 	@Override
 	public void verifyTSCCustomerHubLlinks(List<List<String>> lstNameAndLinks) {
-		//BasePage basePage=new BasePage(this.getDriver());
 		String lsText,lsYmlHref,lsHref;
 		waitForCondition(Driver->{return this.lnkTSCCustomerHubHeader.isDisplayed();},20000);
 		getReusableActionsInstance().clickIfAvailable(this.lnkTSCCustomerHubHeader);
@@ -67,7 +66,6 @@ public class GlobalFooterPage_Tablet extends GlobalFooterPage{
 
 	@Override
 	public void verifyAboutTSCLinks(List<List<String>> lstNameAndLinks) {
-		//BasePage basePage=new BasePage(this.getDriver());
 		String lsText,lsYmlHref,lsHref;
 		waitForCondition(Driver->{return this.lnkAboutTSCHeader.isDisplayed();},20000);
 		getReusableActionsInstance().clickIfAvailable(this.lnkAboutTSCHeader);
