@@ -1,6 +1,7 @@
 package com.tsc.pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -83,7 +84,7 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
     public WebElement btnStickyTabSizeChart;
 
     //Back button
-    @FindBy(xpath = "//div[@class='modal-dialog']//div[@class='modal-header']")
+    @FindBy(xpath = "//div[contains(@class,'modalFull')]//div[@class='modal-dialog']//div[@class='modal-header']")
     public WebElement backButton;
 
     //tell your friends Window close
@@ -94,7 +95,7 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
     @FindBy(xpath = "//div[@class='tfc-popup-contents']//tfc-window-footer//tfc-button-bar//button")
     public WebElement btnProductTrueFitIframeFooterGetStarted;
 
-    @FindBy(xpath = "//button[contains(@class,'tfc-cfg-close-button')][img]")
+    @FindBy(xpath = "//button[contains(@class,'tfc-cfg-close-button') and not(contains(@class,'tfc-desktop-only'))][img]")
     public WebElement btnProductTrueFitIframeClose;
 
     //Sub total
@@ -222,7 +223,6 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
 
     @Override
     public void verifyReviewTabContent() {
-        //super.verifyReviewTabContent();
         reporter.softAssert(!this.getElementText(this.lblReviewTabHeader).isEmpty(),"The Review tab header is not empty","The Review tab header is empty");
         reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.imgReviewTabHistogram),"The Review tab histogram is displaying correctly","The Review tab histogram is not displaying correctly");
         reporter.softAssert(!this.getElementText(this.lblReviewTabRateDecimalText).isEmpty(),"The Review tab rate number is not empty","The Review tab rate number is empty");
@@ -235,7 +235,6 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
 
     @Override
     public void verifyReviewTabPerReviewListContents() {
-        //super.verifyReviewTabPerReviewListContents();
         WebElement element;
         String lsHeadingLine;
         for(WebElement item:this.lstReviewTabPerReviewList) {
@@ -278,7 +277,6 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
 
     @Override
     public String checkReviewRateSortingBy(boolean bHighesttRatedFirst) {
-        //return super.checkReviewRateSortingBy(bHighesttRatedFirst);
         List<WebElement> elementList;
         String lsHeadingLinePrev,lsHeadingLineNext;
         int ratingPrev,ratingNext;
@@ -320,7 +318,6 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
 
     @Override
     public void chooseReviewSortingOption(String lsReviewSortingOption) {
-        //super.chooseReviewSortingOption(lsReviewSortingOption);
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblReviewTabReviewCount);
         Select reviewSortings=new Select(this.selectReviewTabSortBy);
         reviewSortings.selectByVisibleText(lsReviewSortingOption);
@@ -329,7 +326,6 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
 
     @Override
     public void verifyReviewTabFooterAndBackToTopAndPagination() {
-        //super.verifyReviewTabFooterAndBackToTopAndPagination();
         reporter.softAssert(!this.getElementText(this.lblReviewTabDisplayingReviewMsg).isEmpty(),"The Review message in Review tab footer is not empty","The Review message in Review tab footer is empty");
         reporter.softAssert(!this.getElementHref(this.lnkReviewTabBackToTop).isEmpty(),"The BackToTop link is not empty","The BackToTop link is empty");
         reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.cntReviewTabPagination),"The Review pagination section is displaying correctly","The Review pagination section is not displaying correctly");
@@ -351,7 +347,6 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
 
     @Override
     public void verifyProductSizeDropdown() {
-        //super.verifyProductSizeDropdown();
         reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblSizeStatic),"Product size title is existing","Product size title is not existing");
         reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.selectSizeOption),"Product size dropdown is existing","Product size dropdown is not existing");
         reporter.softAssert(checkProductSizingDrodownOptionChangeAction(),"Product size dropdown action is working","Product size dropdown action is not working");
@@ -366,7 +361,6 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
 
     @Override
     public boolean checkProductSizingChartExisting() {
-        //return super.checkProductSizingChartExisting();
         for(WebElement item:this.lstStickyTabProductTabList) {
             this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
             if(item.getText().trim().equalsIgnoreCase("SIZE CHART")) {
@@ -378,7 +372,6 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
 
     @Override
     public void verifyProductQuantitySizingChart() {
-        //super.verifyProductQuantitySizingChart();
         reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lnkSizingChart),"The product Sizing Chart is existing","The product Sizing Chart is not existing");
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkSizingChart);
         this.getReusableActionsInstance().clickIfAvailable(this.lnkSizingChart);
@@ -399,7 +392,6 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
 
     @Override
     public void closeTrueFitIFrame() {
-        //super.closeTrueFitIFrame();
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnProductTrueFitIframeClose);
         this.getReusableActionsInstance().scrollToElement(this.btnProductTrueFitIframeClose);
         this.getReusableActionsInstance().clickIfAvailable(this.btnProductTrueFitIframeClose);
@@ -443,6 +435,8 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
      * @author viswas.reddy
      */
     public void goBack(){
+        /*JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
+        jse.executeScript("arguments[0].click();", this.backButton);*/
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.backButton);
         this.getReusableActionsInstance().scrollToElement(this.backButton);
         this.getReusableActionsInstance().clickIfAvailable(this.backButton);
