@@ -206,10 +206,10 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
         this.getReusableActionsInstance().clickIfAvailable(this.productReviewSection);
         //added if condition because in jenkins ios it is not clicking on first time so,
         //I added second click with condition but still it is not clicking
-        if (!this.backButton.isDisplayed()){
+        /*if (!this.backButton.isDisplayed()){
             JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
             jse.executeScript("arguments[0].click();", this.backButton);
-        }
+        }*/
         //this.productReviewSection.click();
         return this.waitForCondition(Driver->{return this.btnStickyTabProductReview.getAttribute("class").contains("scrolling");},30000);
     }
