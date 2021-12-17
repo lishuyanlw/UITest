@@ -2173,7 +2173,7 @@ public class ProductResultsPage extends BasePage{
 	 */
 	public boolean checkIfFilterItemIsCollapsed(WebElement filterContainerItem) {
 		WebElement item=filterContainerItem.findElement(this.bySecondaryFilterOpenOrCloseFlag);
-		System.out.println(item.getAttribute("class"));		
+//		System.out.println(item.getAttribute("class"));		
 		return !item.getAttribute("class").contains("plp-filter-panel__block-title__icon--plus");
 	}
 	
