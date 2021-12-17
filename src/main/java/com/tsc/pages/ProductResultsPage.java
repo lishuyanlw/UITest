@@ -1116,6 +1116,8 @@ public class ProductResultsPage extends BasePage{
 		this.firstLevelFilter=lsFirstLevelItem;
 		this.secondLevelFilter=lsSecondLevelItem;
 
+		WebElement searchInputButton;
+		List<WebElement> subItemList;
 		for(int i=0;i<this.productFilterList.size();i++) {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i));
 			String lsHeader=this.productFilterList.get(i).getText().trim();
@@ -1124,9 +1126,22 @@ public class ProductResultsPage extends BasePage{
 			}			
 			//If found lsFirstLevelItem
 			if(lsHeader.equalsIgnoreCase(lsFirstLevelItem)) {
+				//If find a search input
+				collapseFilterItemWithClickingProductTitle(this.productFilterContainerList.get(i));
+				if(checkSearchInputButtonExistingInSubFilter(this.productFilterContainerList.get(i))) {					
+					searchInputButton=this.productFilterContainerList.get(i).findElement(this.byProductFilterSearchInput);
+					getReusableActionsInstance().javascriptScrollByVisibleElement(searchInputButton);
+					searchInputButton.sendKeys(lsSecondLevelItem);
+					getReusableActionsInstance().staticWait(1000);					
+					subItemList=this.productFilterContainerList.get(i).findElements(this.bySecondaryFilterAll);
+					getReusableActionsInstance().javascriptScrollByVisibleElement(subItemList.get(0));
+					getReusableActionsInstance().clickIfAvailable(subItemList.get(0));
+					return waitForSortingOrFilteringCompleted();
+				}
+				
 				expandFilterItem(this.productFilterContainerList.get(i));
 				
-				List<WebElement> subItemList=this.productFilterContainerList.get(i).findElements(this.bySecondaryFilterAll);				
+				subItemList=this.productFilterContainerList.get(i).findElements(this.bySecondaryFilterAll);				
 				for(WebElement subItem : subItemList) {
 					getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
 					String lsSubItem=subItem.findElement(By.xpath(".//span[@class='plp-filter-panel__filter-list__item-label-text']")).getText().trim();
@@ -1148,7 +1163,7 @@ public class ProductResultsPage extends BasePage{
 		for(int i=0;i<this.productFilterList.size();i++) {
 			expandFilterItem(this.productFilterContainerList.get(i));
 			
-			List<WebElement> subItemList=this.productFilterContainerList.get(i).findElements(this.bySecondaryFilterAll);	
+			subItemList=this.productFilterContainerList.get(i).findElements(this.bySecondaryFilterAll);	
 			for(WebElement subItem : subItemList) {
 				if(!this.hasElementAttribute(subItem.findElement(By.xpath(".//button//input")), "checked")) {
 					this.secondLevelFilter=this.getElementInnerText(subItem);
@@ -2145,7 +2160,7 @@ public class ProductResultsPage extends BasePage{
 	 */
 	public boolean checkIfFilterItemIsCollapsed(WebElement filterContainerItem) {
 		WebElement item=filterContainerItem.findElement(this.bySecondaryFilterOpenOrCloseFlag);
-				
+		System.out.println(item.getAttribute("class"));		
 		return !item.getAttribute("class").contains("plp-filter-panel__block-title__icon--plus");
 	}
 	
@@ -2239,9 +2254,9 @@ public class ProductResultsPage extends BasePage{
 	public void clickSeeLessButton(WebElement filterContainerItem) {
 		String lsButtonType=this.checkFilterItemSeeButtonExisting(filterContainerItem);
 		if(lsButtonType.equalsIgnoreCase("SeeLess")) {
-			WebElement seeMoreButton=filterContainerItem.findElement(this.bySecondaryFilterSeeLessButton);
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(seeMoreButton);
-			this.getReusableActionsInstance().clickIfAvailable(seeMoreButton);
+			WebElement seeLessButton=filterContainerItem.findElement(this.bySecondaryFilterSeeLessButton);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(seeLessButton);
+			this.getReusableActionsInstance().clickIfAvailable(seeLessButton);
 			this.getReusableActionsInstance().staticWait(1000);
 		}
 	}
@@ -2263,6 +2278,17 @@ public class ProductResultsPage extends BasePage{
 		else {
 			return this.getIntegerFromString(lsText);	
 		}			
+	}
+	
+	/**
+	 * This method will check Search Input Button Existing In SubFilter for a specific Filter Item
+	 * @param WebElement filterContainerItem: filter Container Item
+	 * @return boolean
+	 * @author Wei.Li
+	 */
+	public boolean checkSearchInputButtonExistingInSubFilter(WebElement filterContainerItem) {
+		WebElement searchInputContainer=filterContainerItem.findElement(this.byProductFilterSearchContainer);
+		return this.checkChildElementExistingByTagNameAndAttribute(searchInputContainer, "input", "class", "plp-filter-panel__search");
 	}
 	
 	
