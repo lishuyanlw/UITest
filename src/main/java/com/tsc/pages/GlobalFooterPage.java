@@ -3,6 +3,7 @@ package com.tsc.pages;
 import java.util.*;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
@@ -659,6 +660,7 @@ public class GlobalFooterPage extends BasePage {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkLanguage);
 		this.getReusableActionsInstance().waitForElementVisibility(this.lnkLanguage,  60);		
 		String lsLanguage=this.lnkLanguage.getText().trim();
+		getReusableActionsInstance().staticWait(5000);
 		this.lnkLanguage.click();
 		this.waitForPageLoading();
 		getReusableActionsInstance().staticWait(5000);

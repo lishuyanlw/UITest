@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 
 import java.sql.Driver;
@@ -16,15 +17,13 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
         super(driver);
     }
 
-    /*
-     * @author Viswas.reddy
-     * CER_621 and CER_619
-     */
-
     @FindBy(xpath = "//section//div[@class='secondary-navigation__rhs']//button[@id='secondary-navigation-mobile-hamburger']")
     public WebElement menuButton;
 
-    @FindBy(xpath = "//section//nav[@class='mega-nav-mobile__nav-items']//ul//li//button")
+    @FindAll({
+       @FindBy(xpath="//nav[contains(@class,'nav-items')]/ul/li/button"),
+       @FindBy(xpath = "//section//nav[@class='mega-nav-mobile__nav-items']//ul//li//button")
+    })
     public WebElement FlyoutHeadingsMobile;
 
     @FindBy(xpath = "//section//div[@class='mega-nav-mobile__scroll']//ul//li//a")
@@ -75,6 +74,9 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
 
     @FindBy(xpath = "//a[contains(@class,'mega-nav-mobile__popular-brands__all')]")
     public WebElement shopAllPopularBrands;
+
+    @FindBy(xpath="//div[contains(@class,'mega-nav')]//button[contains(@class,'close')]")
+    public WebElement btnMenuCloseButton;
 
     @Override
     public String getNameAndclickSubMenuItem(String headingName, String submenuHeading, String itemName) {
@@ -292,7 +294,7 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
     @Override
     public String getUrlAfterclickingFlyoutHeading(String headingName) {
         String currentUrl;
-
+        this.clickOnMenuButton();
         String xpathHeading = createXPath("//li[contains(@class,'mobile__nav-items')]//span[contains(text(),'{0}')]", headingName);
         WebElement headingWebElement = FlyoutHeadingsMobile.findElement(By.xpath(xpathHeading));
         getReusableActionsInstance().javascriptScrollByVisibleElement(headingWebElement);
@@ -342,10 +344,15 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
 
     @Override
     public List<WebElement> getFlyoutHeadingsWebelement() {
+        this.clickOnMenuButton();
+        List<WebElement> headingElements = FlyoutHeadingsMobile.findElements(By.xpath("//span[contains(@class,'nav-items__item-text')]"));
+        return headingElements;
+    }
+
+    public void clickOnMenuButton(){
+        getReusableActionsInstance().javascriptScrollByVisibleElement(this.menuButton);
         getReusableActionsInstance().clickIfAvailable(this.menuButton);
         getReusableActionsInstance().waitForPageLoad();
-        List<WebElement> headingElements = FlyoutHeadingsMobile.findElements(By.xpath("//span[contains(@class,'mega-nav-mobile__nav-items__item-text')]"));
-        return headingElements;
     }
 
     @Override

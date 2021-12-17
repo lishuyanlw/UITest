@@ -3,6 +3,7 @@ package com.tsc.pages;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import java.util.ArrayList;
 import java.util.List;
@@ -245,7 +246,10 @@ public class GlobalHeaderPage extends BasePage{
 	@FindBy(xpath = "//a[contains(@class,'mega-curated__item-link')]")
 	public List<WebElement> listCuratedCollectionLinks;
 
-	@FindBy(xpath="//div[contains(@class,'Middle')]//brand/div[contains(@class,'brand')]//*[contains(@class,'titleLink')]")
+	@FindAll({
+		@FindBy(xpath="//div[contains(@class,'Middle')]//brand/div[contains(@class,'brand')]//*[contains(@class,'titleLink')]"),
+		@FindBy(xpath="//div[contains(@class,'Middle')]//div[contains(@class,'PageTitle')]//*[contains(@class,'gatewayTitle')]")
+	})
 	public WebElement lblPageTitleForMenuItems;
 
 	@FindBy(xpath = "//a[contains(@class,'mega-popular__brand-link')]//img")
@@ -266,7 +270,7 @@ public class GlobalHeaderPage extends BasePage{
 	@FindBy(xpath="//span[contains(@id,'_ctlSpanTitle')]")
 	public WebElement landingPageTitle;
 
-	@FindBy(xpath="//div[contains(@class,'mobile__heading')]/button")
+	@FindBy(xpath="//div[contains(@class,'__heading')]/button")
 	public WebElement btnMobileMenuCloseButton;
 
 	@FindBy(xpath="//div[contains(@class,'searchContainer')]//button[contains(@class,'aa-ClearButton')]")
@@ -441,6 +445,7 @@ public class GlobalHeaderPage extends BasePage{
 		getReusableActionsInstance().staticWait(2000);
 		//Clicking on button twice as test is not working for Safari using scrollToElement
 		getReusableActionsInstance().clickIfAvailable(this.btnWatchTSCBlackHeader);
+		getReusableActionsInstance().staticWait(3000);
 		getReusableActionsInstance().clickIfAvailable(this.btnWatchTSCBlackHeader);
 		getReusableActionsInstance().staticWait(1000);
 	 }	
@@ -455,9 +460,9 @@ public class GlobalHeaderPage extends BasePage{
 	 public void verifyTSHeaderAndLinkInBlackHeader(WebElement blackItem,WebElement silverItem,boolean bCheckUrl) {
 	 	getReusableActionsInstance().waitForPageLoad();
 	 	getReusableActionsInstance().javascriptScrollByVisibleElement(blackItem);
-		if(!System.getProperty("Device").equalsIgnoreCase("Desktop")) {
+		/*if(!System.getProperty("Device").equalsIgnoreCase("Desktop")) {
 			getReusableActionsInstance().clickIfAvailable(blackItem);
-		}
+		}*/
 		String title=blackItem.getText().trim();
 		String lsTitle=getUTFEnabledData(title);
 		reporter.softAssert(getReusableActionsInstance().isElementVisible(blackItem), "The element of "+lsTitle+" in Black headers is visible","The element of "+lsTitle+" in Black headers is not visible");

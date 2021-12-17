@@ -13,6 +13,8 @@ public class SauceSettings {
 	private MutableCapabilities mutableSafariCapabilities;
 	private MobileCapabilities androidChromeCapabilities;
 	private MobileCapabilities iosSafariCapabilities;
+	private MobileCapabilities iosSafariCapabilitiesTablet;
+
 	/**
 	 * @return the sauceUser
 	 */
@@ -147,8 +149,18 @@ public class SauceSettings {
 	public void setIosSafariCapabilities(MobileCapabilities iosSafariCapabilities) {
 		this.iosSafariCapabilities = iosSafariCapabilities;
 	}
-	
-	
+
+	/**
+	 * @return the iosSafariCapabilities for Tablet
+	 */
+	public MobileCapabilities getIosSafariCapabilitiesTablet() { return iosSafariCapabilitiesTablet; }
+	/**
+	 * @param-iosSafariCapabilities the iosSafariCapabilities to set for Tablet
+	 */
+	public void setIosSafariCapabilitiesTablet(MobileCapabilities iosSafariCapabilitiesTablet) { this.iosSafariCapabilitiesTablet = iosSafariCapabilitiesTablet; }
+
+
+
 
 
 }
