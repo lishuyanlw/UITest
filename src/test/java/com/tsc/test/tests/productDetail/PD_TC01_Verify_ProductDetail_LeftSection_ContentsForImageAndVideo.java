@@ -46,7 +46,7 @@ public class PD_TC01_Verify_ProductDetail_LeftSection_ContentsForImageAndVideo e
 		reporter.reportLog("Verify Thumbnail");
 		getProductDetailPageThreadLocal().verifyThumbnail();
 		
-		//commented because there is no autoplay option for tablet and mobile
+		//there is no autoplay option for tablet and mobile
 		reporter.reportLog("Verify Video off function");
 		getProductDetailPageThreadLocal().verifyVideoOff();
 		

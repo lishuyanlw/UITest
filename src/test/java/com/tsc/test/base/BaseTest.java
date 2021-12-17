@@ -117,8 +117,6 @@ public class BaseTest {
 	private void init_Tablet() throws IOException {
 		productResultsPageThreadLocal.set(new ProductResultsPage_Tablet(getDriver()));
 		globalheaderPageThreadLocal.set(new GlobalHeaderPage_Mobile(getDriver()));
-		//loginPageThreadLocal.set(new LoginPage(getDriver()));
-		//globalFooterPageThreadLocal.set(new GlobalFooterPage(getDriver()));
 
 		if(System.getProperty("Browser").contains("android") ||
 				(System.getProperty("chromeMobileDevice")!=null
@@ -129,7 +127,7 @@ public class BaseTest {
 			productDetailPageThreadLocal.set(new ProductDetailPage_Tablet(getDriver()));
 			globalFooterPageThreadLocal.set(new GlobalFooterPage_Tablet(getDriver()));
 		}
-		//globalheaderPageThreadLocal.set(new GlobalHeaderPage_Tablet(getDriver()));
+
 		loginPageThreadLocal.set(new LoginPage_Mobile(getDriver()));
 		reporter = new ExtentTestManager(getDriver());
 		apiResponseThreadLocal.set(new ApiResponse());

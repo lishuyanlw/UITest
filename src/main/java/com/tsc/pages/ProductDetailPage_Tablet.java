@@ -29,12 +29,14 @@ public class ProductDetailPage_Tablet extends ProductDetailPage {
         this.getReusableActionsInstance().scrollToElement(this.playButton);
         this.getReusableActionsInstance().clickIfAvailable(this.playButton);
         applyStaticWait(2000);
-        if (!this.checkIfVideoisPlaying()){
+        //added if condition because in jenkins ios it is not clicking on first time so,
+        //I added second click with condition but still it is not clicking
+        /*if (!this.checkIfVideoisPlaying()){
             this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.playButton);
             this.getReusableActionsInstance().scrollToElement(this.playButton);
             this.getReusableActionsInstance().clickIfAvailable(this.playButton);
-        }
-        //this.playButton.click();
+        }*/
+
         reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.videoBoxControl),"The video control section is displaying correctly","The video control section is not displaying correctly");
         reporter.softAssert(!this.lnkVideo.getAttribute("src").isEmpty(),"The product video source is not empty","The product video source is empty");
 
