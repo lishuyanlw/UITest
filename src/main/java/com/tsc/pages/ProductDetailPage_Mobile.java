@@ -132,10 +132,10 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
         applyStaticWait(2000);
         //added if condition because in jenkins ios it is not clicking on first time so,
         //I added second click with condition but still it is not clicking
-        if (!this.checkIfVideoisPlaying()){
+        /*if (!this.checkIfVideoisPlaying()){
             JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
             jse.executeScript("arguments[0].click();", this.playButton);
-        }
+        }*/
 
         reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.videoBoxControl),"The video control section is displaying correctly","The video control section is not displaying correctly");
         reporter.softAssert(!this.lnkVideo.getAttribute("src").isEmpty(),"The product video source is not empty","The product video source is empty");
@@ -206,11 +206,10 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
         this.getReusableActionsInstance().clickIfAvailable(this.productReviewSection);
         //added if condition because in jenkins ios it is not clicking on first time so,
         //I added second click with condition but still it is not clicking
-        /*if (!this.backButton.isDisplayed()){
-            this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productReviewSection);
-            this.getReusableActionsInstance().scrollToElement(this.productReviewSection);
-            this.getReusableActionsInstance().clickIfAvailable(this.productReviewSection);
-        }*/
+        if (!this.backButton.isDisplayed()){
+            JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
+            jse.executeScript("arguments[0].click();", this.backButton);
+        }
         //this.productReviewSection.click();
         return this.waitForCondition(Driver->{return this.btnStickyTabProductReview.getAttribute("class").contains("scrolling");},30000);
     }
@@ -434,7 +433,8 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
      * @author viswas.reddy
      */
     public void goBack(){
-        /*JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
+        /*applyStaticWait(1000);
+        JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
         jse.executeScript("arguments[0].click();", this.backButton);*/
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.backButton);
         this.getReusableActionsInstance().scrollToElement(this.backButton);
