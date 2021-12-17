@@ -137,6 +137,8 @@ public class ProductResultsPage extends BasePage{
 	
 	public By byProductOptionSizeSelectedItem=By.xpath(".//fieldset//div[contains(@class,'product-card__size-items')]//button[@aria-pressed='true']|.//fieldset//select[@class='product-card__size__dropdown']//option[@selected]");
 	
+	public By byProductOptionSizeViewAllSizes=By.xpath(".//fieldset//a[@class='product-card__size-view-all']");
+	
 	//For color option
 	public By byProductOptionColorTitle=By.xpath(".//fieldset//p[@class='product-card__color-and-taste-title']");
 	
@@ -921,6 +923,17 @@ public class ProductResultsPage extends BasePage{
 				}
 				else {
 					reporter.reportLogFail("Product option size button list is containing 0 item");
+				}
+				
+				if(checkViewAllSizesButtonExisting(item)) {
+					element=item.findElement(byProductOptionSizeViewAllSizes);
+					lsText=this.getElementInnerText(element);
+					if(!lsText.isEmpty()) {
+						reporter.reportLogPass("Product ViewAlllSize button title is not empty");
+					}
+					else {
+						reporter.reportLogFail("Product ViewAlllSize button title is empty");
+					}
 				}
 			}
 			
@@ -2291,6 +2304,16 @@ public class ProductResultsPage extends BasePage{
 		return this.checkChildElementExistingByTagNameAndAttribute(searchInputContainer, "input", "class", "plp-filter-panel__search");
 	}
 	
+	/**
+	 * This method will check ViewAllSizes Button Existing
+	 * @param WebElement filterContainerItem: filter Container Item
+	 * @return boolean
+	 * @author Wei.Li
+	 */
+	public boolean checkViewAllSizesButtonExisting(WebElement filterContainerItem) {
+		WebElement sizeContainer=filterContainerItem.findElement(this.byProductOptionSizeWrapper);
+		return this.checkChildElementExistingByTagNameAndAttribute(sizeContainer, "a", "class", "product-card__size-view-all");
+	}
 	
 
 	public class ProductItem{

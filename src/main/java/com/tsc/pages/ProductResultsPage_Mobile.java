@@ -65,6 +65,8 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 	
 	public By byProductOptionSizeSelectedItem=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//div[contains(@class,'product-card__size-items')]//button[@aria-pressed='true']|.//fieldset//select[@class='product-card__size__dropdown']//option[@selected]");
 	
+	public By byProductOptionSizeViewAllSizes=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//a[@class='product-card__size-view-all']");
+	
 	//For color option
 	public By byProductOptionColorTitle=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//p[@class='product-card__color-and-taste-title']");
 	
@@ -111,7 +113,8 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 		this.secondLevelFilter=lsSecondLevelItem;
 		
 		String lsHeader,lsSubItem;
-		WebElement subItem;
+		WebElement subItem,searchInputButton;
+		List<WebElement> subItemList;
 			
 		for(int i=0;i<this.productFilterList.size();i++) {			
 			if(i>0) {
@@ -125,6 +128,19 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 			//If found lsFirstLevelItem
 			if(lsHeader.equalsIgnoreCase(lsFirstLevelItem)) {	
 //				System.out.println("Selected lsHeader: "+lsHeader);
+				//If find a search input
+				collapseFilterItemWithClickingProductTitle(this.productFilterContainerList.get(i));
+				if(checkSearchInputButtonExistingInSubFilter(this.productFilterContainerList.get(i))) {					
+					searchInputButton=this.productFilterContainerList.get(i).findElement(this.byProductFilterSearchInput);
+					//getReusableActionsInstance().javascriptScrollByVisibleElement(searchInputButton);
+					searchInputButton.sendKeys(lsSecondLevelItem);
+					getReusableActionsInstance().staticWait(1000);					
+					subItemList=this.productFilterContainerList.get(i).findElements(this.bySecondaryFilterAll);
+					//getReusableActionsInstance().javascriptScrollByVisibleElement(subItemList.get(0));
+					getReusableActionsInstance().clickIfAvailable(subItemList.get(0));
+					return waitForSortingOrFilteringCompleted();
+				}
+				
 				expandFilterItem(this.productFilterContainerList.get(i));
 //				collapseFilterItemWithClickingProductTitle(this.productFilterContainerList.get(i));
 				if(i>0) {
@@ -134,7 +150,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 					this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(0));
 				}
 				this.getReusableActionsInstance().staticWait(1000);
-				List<WebElement> subItemList=this.productFilterContainerList.get(i).findElements(this.bySecondaryFilterAll);				
+				subItemList=this.productFilterContainerList.get(i).findElements(this.bySecondaryFilterAll);				
 				for(int j=0;j<subItemList.size();j++) {	
 					subItem=subItemList.get(j);
 					lsSubItem=this.getElementInnerText(subItem.findElement(By.xpath(".//span[@class='plp-filter-panel__filter-list__item-label-text']")));
@@ -176,7 +192,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(0));
 			}			
 			
-			List<WebElement> subItemList=this.productFilterContainerList.get(i).findElements(this.bySecondaryFilterAll);	
+			subItemList=this.productFilterContainerList.get(i).findElements(this.bySecondaryFilterAll);	
 			for(int j=0;j<subItemList.size();j++) {	
 				subItem=subItemList.get(j);
 				if(!this.hasElementAttribute(subItem.findElement(By.xpath(".//button//input")), "checked")) {
@@ -474,6 +490,17 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				else {
 					reporter.reportLogFail("Product option size button list is containing 0 item");
 				}
+				
+				if(checkViewAllSizesButtonExisting()) {
+					element=item.findElement(byProductOptionSizeViewAllSizes);
+					lsText=this.getElementInnerText(element);
+					if(!lsText.isEmpty()) {
+						reporter.reportLogPass("Product ViewAlllSize button title is not empty");
+					}
+					else {
+						reporter.reportLogFail("Product ViewAlllSize button title is empty");
+					}
+				}
 			}
 			
 			if(lsText.contains("Colour")) {				
@@ -756,5 +783,9 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 	}
 	
 	
+	public boolean checkViewAllSizesButtonExisting() {
+		WebElement sizeContainer=this.getDriver().findElement(this.byProductOptionSizeWrapper);
+		return this.checkChildElementExistingByTagNameAndAttribute(sizeContainer, "a", "class", "product-card__size-view-all");
+	}
 	
 }
