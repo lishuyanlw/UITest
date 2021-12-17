@@ -3,6 +3,7 @@ package com.tsc.pages;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import java.util.ArrayList;
 import java.util.List;
@@ -245,8 +246,10 @@ public class GlobalHeaderPage extends BasePage{
 	@FindBy(xpath = "//a[contains(@class,'mega-curated__item-link')]")
 	public List<WebElement> listCuratedCollectionLinks;
 
-	//@FindBy(xpath="//div[contains(@class,'Middle')]//brand/div[contains(@class,'brand')]//*[contains(@class,'titleLink')]")
-	@FindBy(xpath="//div[contains(@class,'Middle')]//div[contains(@class,'PageTitle')]//*[contains(@class,'gatewayTitle')]")
+	@FindAll({
+		@FindBy(xpath="//div[contains(@class,'Middle')]//brand/div[contains(@class,'brand')]//*[contains(@class,'titleLink')]"),
+		@FindBy(xpath="//div[contains(@class,'Middle')]//div[contains(@class,'PageTitle')]//*[contains(@class,'gatewayTitle')]")
+	})
 	public WebElement lblPageTitleForMenuItems;
 
 	@FindBy(xpath = "//a[contains(@class,'mega-popular__brand-link')]//img")
