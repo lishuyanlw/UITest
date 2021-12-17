@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 
 import java.sql.Driver;
@@ -19,7 +20,10 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
     @FindBy(xpath = "//section//div[@class='secondary-navigation__rhs']//button[@id='secondary-navigation-mobile-hamburger']")
     public WebElement menuButton;
 
-    @FindBy(xpath = "//section//nav[@class='mega-nav-mobile__nav-items']//ul//li//button")
+    @FindAll({
+       @FindBy(xpath="//nav[contains(@class,'nav-items')]/ul/li/button"),
+       @FindBy(xpath = "//section//nav[@class='mega-nav-mobile__nav-items']//ul//li//button")
+    })
     public WebElement FlyoutHeadingsMobile;
 
     @FindBy(xpath = "//section//div[@class='mega-nav-mobile__scroll']//ul//li//a")
@@ -341,7 +345,7 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
     @Override
     public List<WebElement> getFlyoutHeadingsWebelement() {
         this.clickOnMenuButton();
-        List<WebElement> headingElements = FlyoutHeadingsMobile.findElements(By.xpath("//span[contains(@class,'mega-nav-mobile__nav-items__item-text')]"));
+        List<WebElement> headingElements = FlyoutHeadingsMobile.findElements(By.xpath("//span[contains(@class,'nav-items__item-text')]"));
         return headingElements;
     }
 

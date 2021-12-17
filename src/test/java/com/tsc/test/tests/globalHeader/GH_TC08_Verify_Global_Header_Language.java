@@ -37,7 +37,7 @@ public class GH_TC08_Verify_Global_Header_Language extends BaseTest {
 		}
 		switchToEnglish();
 	}
-	//Commenting getglobalheaderPageThreadLocal().goBackHomePage() to make test executoin faster
+	//Commenting getglobalheaderPageThreadLocal().goBackHomePage() to make test execution faster
 	public void validateActionContents() {
 		reporter.reportLog("Global Header Section contents for BlackMenu_SilverMenu_TSCLogoLinks");
 		BasePage basePage=new BasePage(this.getDriver());
@@ -100,7 +100,7 @@ public class GH_TC08_Verify_Global_Header_Language extends BaseTest {
 		List<WebElement> flyoutHeadingsElement=getglobalheaderPageThreadLocal().getFlyoutHeadingsWebelement();
 		getglobalheaderPageThreadLocal().scrolltoWebElement(flyoutHeadingsElement.get(1));
 		getGlobalFooterPageThreadLocal().applyStaticWait(3000);
-		String nenglisNameFlyoutHeading=flyoutHeadingsElement.get(1).getText();
-		reporter.softAssert((headerMap.get(nenglisNameFlyoutHeading).contains(nenglisNameFlyoutHeading)), "Language is switch back to English.", "Language is not switch back to English.");
+		String englishNameFlyoutHeading=flyoutHeadingsElement.get(1).getText();
+		reporter.softAssert((headerMap.get(englishNameFlyoutHeading).contains(englishNameFlyoutHeading)), "Language is switch back to English.", "Language is not switch back to English.");
 	}
 }

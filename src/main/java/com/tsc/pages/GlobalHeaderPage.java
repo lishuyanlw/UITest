@@ -270,7 +270,7 @@ public class GlobalHeaderPage extends BasePage{
 	@FindBy(xpath="//span[contains(@id,'_ctlSpanTitle')]")
 	public WebElement landingPageTitle;
 
-	@FindBy(xpath="//div[contains(@class,'mobile__heading')]/button")
+	@FindBy(xpath="//div[contains(@class,'__heading')]/button")
 	public WebElement btnMobileMenuCloseButton;
 
 	@FindBy(xpath="//div[contains(@class,'searchContainer')]//button[contains(@class,'aa-ClearButton')]")
@@ -445,6 +445,7 @@ public class GlobalHeaderPage extends BasePage{
 		getReusableActionsInstance().staticWait(2000);
 		//Clicking on button twice as test is not working for Safari using scrollToElement
 		getReusableActionsInstance().clickIfAvailable(this.btnWatchTSCBlackHeader);
+		getReusableActionsInstance().staticWait(3000);
 		getReusableActionsInstance().clickIfAvailable(this.btnWatchTSCBlackHeader);
 		getReusableActionsInstance().staticWait(1000);
 	 }	
