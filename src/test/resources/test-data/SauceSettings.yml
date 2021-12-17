@@ -33,5 +33,12 @@ iosSafariCapabilities:
    appiumVersion: 1.20.1
    deviceName: iPhone XS Simulator
    deviceOrientation: portrait
-   deviceType: Tablet
+   deviceType: Phone
+#iosSafariCapabilitiesTablet:
+#   platformName: iOS
+#   platformVersion: 15.0
+#   appiumVersion: 1.22.0
+#   deviceName: iPad (6th generation) Simulator
+#   deviceOrientation: portrait
+#   deviceType: Tablet
 ...
