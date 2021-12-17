@@ -660,6 +660,7 @@ public class GlobalFooterPage extends BasePage {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkLanguage);
 		this.getReusableActionsInstance().waitForElementVisibility(this.lnkLanguage,  60);		
 		String lsLanguage=this.lnkLanguage.getText().trim();
+		getReusableActionsInstance().staticWait(5000);
 		this.lnkLanguage.click();
 		this.waitForPageLoading();
 		getReusableActionsInstance().staticWait(5000);
