@@ -101,7 +101,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 	
 	public void closeFilterPopupWindow() {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnViewProductsAferSelectingFilters);
-		getReusableActionsInstance().clickIfAvailable(this.btnViewProductsAferSelectingFilters);		
+		getReusableActionsInstance().clickIfAvailable(this.btnViewProductsAferSelectingFilters);	
 		getReusableActionsInstance().staticWait(5000);
 	}
 	
@@ -124,10 +124,10 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 			if(lsHeader.contains("(")) {
 				lsHeader=lsHeader.split("\\(")[0].trim();
 			}	
-//			System.out.println("lsHeader: "+lsHeader);
+//			
 			//If found lsFirstLevelItem
 			if(lsHeader.equalsIgnoreCase(lsFirstLevelItem)) {	
-//				System.out.println("Selected lsHeader: "+lsHeader);
+//				
 				//If find a search input
 				collapseFilterItemWithClickingProductTitle(this.productFilterContainerList.get(i));
 				if(checkSearchInputButtonExistingInSubFilter(this.productFilterContainerList.get(i))) {					
@@ -138,7 +138,10 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 					subItemList=this.productFilterContainerList.get(i).findElements(this.bySecondaryFilterAll);
 					//getReusableActionsInstance().javascriptScrollByVisibleElement(subItemList.get(0));
 					getReusableActionsInstance().clickIfAvailable(subItemList.get(0));
-					return waitForSortingOrFilteringCompleted();
+					waitForSortingOrFilteringCompleted();
+					getReusableActionsInstance().staticWait(1000);
+					closeFilterPopupWindow();
+					return true;
 				}
 				
 				expandFilterItem(this.productFilterContainerList.get(i));
@@ -154,11 +157,10 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				for(int j=0;j<subItemList.size();j++) {	
 					subItem=subItemList.get(j);
 					lsSubItem=this.getElementInnerText(subItem.findElement(By.xpath(".//span[@class='plp-filter-panel__filter-list__item-label-text']")));
-//					System.out.println("lsSubItem:"+lsSubItem);
+				
 					getReusableActionsInstance().staticWait(500);
 					//If found lsSecondLevelItem
 					if(lsSubItem.equalsIgnoreCase(lsSecondLevelItem)) {
-//						System.out.println("Selected lsSubItem:"+lsSubItem);
 						getReusableActionsInstance().staticWait(500);
 						if(j>4) {
 							this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItemList.get(j-2));
@@ -593,7 +595,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				
 		List<WebElement> itemAllList=this.getDriver().findElements(this.byProductOptionColorItemList);
 		List<WebElement> itemDisabledList=this.getDriver().findElements(this.byProductOptionColorItemDisabledList);
-		
+		this.getReusableActionsInstance().staticWait(1000);
 		if(itemAllList.size()!=itemDisabledList.size()) {
 			return true;
 		}
@@ -643,6 +645,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 		List<WebElement> optionList;
 		WebElement element;	
 		String lsText,lsSelectedTitle,lsType,lsButtonTextBeforeClickingSize,lsButtonTextBeforeClickingColor;
+		boolean bSize=false,bColor=false;
 			
 		//To check button text
 		element=this.getDriver().findElement(byProductGoToDetails);
@@ -675,9 +678,15 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 			}
 		}
 		
+		//If all displayed size or color are disabled
+		if(!checkProductSizeOptionEnabledItemAvailableWithMouseHover()||!checkProductColorOptionEnabledItemAvailableWithMouseHover()) {
+			return;
+		}
+		
 		//To check select size
 		if(lsType.contains("Size")) {	
 			if(checkProductSizeOptionEnabledItemAvailableWithMouseHover()) {
+				bSize=true;
 				optionList=this.getDriver().findElements(byProductOptionSizeItemEnabledList);
 				element=optionList.get(0);
 				lsText=this.getElementInnerText(element).replace("Size", "").trim();
@@ -698,8 +707,6 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				element=this.getDriver().findElement(byProductGoToDetails);
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 				lsText=element.getText().trim();
-//				System.out.println("Size button text: "+lsText);
-//				System.out.println("Size verify result: "+lsText.equalsIgnoreCase("Go to detail page"));
 				if(lsType.contains("Colour")) {
 					if(lsText.equalsIgnoreCase("Select colour")) {
 						reporter.reportLogPass("The button text is equal to 'Select colour'");
@@ -720,7 +727,8 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 		
 		//To check select color
 		if(lsType.contains("Colour")) {	
-			if(checkProductColorOptionEnabledItemAvailableWithMouseHover()) {				
+			if(checkProductColorOptionEnabledItemAvailableWithMouseHover()) {	
+				bColor=true;
 				optionList=this.getDriver().findElements(byProductOptionColorItemEnabledList);
 				element=optionList.get(0);
 				lsText=this.getElementInnerText(element).replace("colours", "").trim();
@@ -737,22 +745,24 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				}
 				else {
 					reporter.reportLogFail("The selected color title is not displaying correctly");
-				}
-				
-				element=this.getDriver().findElement(byProductGoToDetails);
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-				lsText=element.getText().trim();
-//				System.out.println("Color button text: "+lsText);
-//				System.out.println("verify color result: "+lsText.equalsIgnoreCase("Go to detail page"));
-				if(lsText.equalsIgnoreCase("Go to detail page")) {
-					reporter.reportLogPass("The button text is equal to 'Go to detail page'");
-				}
-				else {
-					reporter.reportLogFail("The button text is not equal to 'Go to detail page'");
-				}
-								
+				}								
 			}						
-		}		
+		}
+		
+		if(!bSize||!bColor) {
+			return;
+		}
+		else {
+			element=this.getDriver().findElement(byProductGoToDetails);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+			lsText=element.getText().trim();
+			if(lsText.equalsIgnoreCase("Go to detail page")) {
+				reporter.reportLogPass("The button text is equal to 'Go to detail page'");
+			}
+			else {
+				reporter.reportLogFail("The button text is not equal to 'Go to detail page'");
+			}
+		}
 	}
 	
 	@Override

@@ -75,19 +75,6 @@ public class ProductResultsPage extends BasePage{
 	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp']")
 	public WebElement cntSortingAndFilteringProductResultLoadingIndicator;
 
-//	//Missing
-//	@FindBy(xpath = "//product-results//div[contains(@class,'col-md-items')]//form//div[contains(@class,'filterPrpLabel')]")
-//	public WebElement lblItemsPerPage;
-//
-//	//Missing
-//	@FindBy(xpath = "//product-results//div[contains(@class,'search-filters-div')]//div[contains(@class,'col-md-items')]//select//option[1]|//product-results//div[contains(@class,'col-md-items')]//form//div[contains(@class,'recordsDiv')]")
-//	public WebElement lblItemPerPageDefaultSettingNumber;
-
-	//Product results
-//	//Does not work currently
-//	@FindBy(xpath = "//div[@class='Footer']//div[contains(@class,'blockPageWrap')]")
-//	public WebElement productResultLoadingIndicator;
-	
 	@FindBy(xpath = "//section[@class='tsc-container'][not(nav)][not(*[@class='breadcrumb'])]")
 	public WebElement cntTSCContainer;
 
@@ -154,22 +141,17 @@ public class ProductResultsPage extends BasePage{
 	
 	public By byProductOptionColorSelectedItem=By.xpath(".//fieldset//div[contains(@class,'product-card__color-and-taste-items')]//button[@aria-pressed='true']|.//fieldset//select[@class='product-card__color-and-taste__dropdown']//option[not(@selected)]");
 	
+	public By byProductOptionColorViewAllColors=By.xpath(".//fieldset//a[@class='product-card__color-view-all']");
 	
 	public By byProductName=By.xpath(".//form[@class='product-card__main']//div[@class='product-card__info']//a[@class='product-card__info-pname']");
 	
 	public By byProductBrand=By.xpath(".//form[@class='product-card__main']//div[@class='product-card__info']//p[@class='product-card__info-brand']");
-
-//	//Missing
-//	public By byProductItemNO=By.xpath(".//div[contains(@class,'itemNo')]");
 
 	public By byProductNowPrice=By.xpath(".//form[@class='product-card__main']//div[@class='product-card__info']//div[@class='product-card__info-price']//a[@class='product-card__info-price__is-price']/span[1]");
 
 	public By byProductWasPrice=By.xpath(".//form[@class='product-card__main']//div[@class='product-card__info']//div[@class='product-card__info-price']//a[@class='product-card__info-price__is-price']/span[@class='product-card__info-price__was-price']");
 	
 	public By byJudgeProductWasPrice=By.xpath(".//form[@class='product-card__main']//div[@class='product-card__info']//div[@class='product-card__info-price']//a[@class='product-card__info-price__is-price']");
-	
-//	//Missing
-//	public By byProductEasyPay=By.xpath(".//div[contains(@class,'easyPay')]");
 	
 	public By byProductReviewContainer=By.xpath(".//div[@class='product-card__reviews']");
 
@@ -257,8 +239,7 @@ public class ProductResultsPage extends BasePage{
 	@FindBy(xpath = "//div[@class='Footer']")
 	public WebElement footerContainer;
 
-	//People Also Viewed items
-	
+	//People Also Viewed items	
 	@FindBy(xpath = "//product-recommendations-endeca//h2[@class='prec-header']")
 	public WebElement productRecommendationTitle;
 	
@@ -786,7 +767,8 @@ public class ProductResultsPage extends BasePage{
 						
 			if(!this.getProductOptionTypeWithoutMouseHover(item).equalsIgnoreCase("None")) {
 				element=item.findElement(byProductOptionListContainer);				
-				lsText=this.getElementInnerText(element);				
+				lsText=this.getElementInnerText(element);	
+				
 				if(!lsText.isEmpty()) {
 					reporter.reportLogPass("Product option is not empty");
 				}
@@ -1987,7 +1969,8 @@ public class ProductResultsPage extends BasePage{
 		List<WebElement> optionList;
 		WebElement element;
 		String lsText,lsSelectedTitle,lsType,lsButtonTextBeforeClickingSize,lsButtonTextBeforeClickingColor;
-			
+		boolean bSize=false,bColor=false;
+		
 		//To check button text
 		element=itemContainer.findElement(BySelectSizeAndColorButton);
 		lsText=this.getElementInnerText(element);
@@ -2019,15 +2002,21 @@ public class ProductResultsPage extends BasePage{
 			}
 		}
 		
+		//If all displayed size or color are disabled
+		if(!checkProductSizeOptionEnabledItemAvailableWithMouseHover(itemContainer)||!checkProductColorOptionEnabledItemAvailableWithMouseHover(itemContainer)) {
+			return;
+		}
+		
 		//To check select size
 		if(lsType.contains("Size")) {	
 			if(checkProductSizeOptionEnabledItemAvailableWithMouseHover(itemContainer)) {
+				bSize=true;
 				optionList=itemContainer.findElements(byProductOptionSizeItemEnabledList);
 				element=optionList.get(0);
 				lsText=this.getElementInnerText(element).replace("Size", "").trim();
-				lsButtonTextBeforeClickingSize=this.getElementInnerText(this.getDriver().findElement(byProductGoToDetails));
+				lsButtonTextBeforeClickingSize=this.getElementInnerText(itemContainer.findElement(byProductGoToDetails));
 				this.clickElement(element);
-				this.waitForCondition(Driver->{return !lsButtonTextBeforeClickingSize.equalsIgnoreCase(this.getElementInnerText(this.getDriver().findElement(byProductGoToDetails)));}, 20000);
+				this.waitForCondition(Driver->{return !lsButtonTextBeforeClickingSize.equalsIgnoreCase(this.getElementInnerText(itemContainer.findElement(byProductGoToDetails)));}, 20000);
 				this.getReusableActionsInstance().staticWait(3000);	
 				element=itemContainer.findElement(byProductOptionSizeSelectedSize);
 				lsSelectedTitle=this.getElementInnerText(element);
@@ -2060,13 +2049,14 @@ public class ProductResultsPage extends BasePage{
 		
 		//To check select color
 		if(lsType.contains("Colour")) {	
-			if(checkProductColorOptionEnabledItemAvailableWithMouseHover(itemContainer)) {				
+			if(checkProductColorOptionEnabledItemAvailableWithMouseHover(itemContainer)) {	
+				bColor=true;
 				optionList=itemContainer.findElements(byProductOptionColorItemEnabledList);
 				element=optionList.get(0);
 				lsText=this.getElementInnerText(element).replace("colours", "").trim();
-				lsButtonTextBeforeClickingColor=this.getElementInnerText(this.getDriver().findElement(byProductGoToDetails));
+				lsButtonTextBeforeClickingColor=this.getElementInnerText(itemContainer.findElement(byProductGoToDetails));
 				this.clickElement(element);
-				this.waitForCondition(Driver->{return !lsButtonTextBeforeClickingColor.equalsIgnoreCase(this.getElementInnerText(this.getDriver().findElement(byProductGoToDetails)));}, 20000);
+				this.waitForCondition(Driver->{return !lsButtonTextBeforeClickingColor.equalsIgnoreCase(this.getElementInnerText(itemContainer.findElement(byProductGoToDetails)));}, 20000);
 				this.getReusableActionsInstance().staticWait(3000);	
 				element=itemContainer.findElement(byProductOptionColorSelectedColor);
 				lsSelectedTitle=this.getElementInnerText(element);
@@ -2076,17 +2066,23 @@ public class ProductResultsPage extends BasePage{
 				else {
 					reporter.reportLogFail("The selected color title is not displaying correctly");
 				}
-				
-				element=itemContainer.findElement(BySelectSizeAndColorButton);
-				lsText=this.getElementInnerText(element);				
-				if(lsText.equalsIgnoreCase("Go to detail page")) {
-					reporter.reportLogPass("The button text is equal to 'Go to detail page'");
-				}
-				else {
-					reporter.reportLogFail("The button text is not equal to 'Go to detail page'");
-				}				
 			}						
-		}		
+		}	
+		
+		if(!bSize||!bColor) {
+			return;
+		}
+		else {			
+			element=itemContainer.findElement(BySelectSizeAndColorButton);
+			lsText=this.getElementInnerText(element);				
+			if(lsText.equalsIgnoreCase("Go to detail page")) {
+				reporter.reportLogPass("The button text is equal to 'Go to detail page'");
+			}
+			else {
+				reporter.reportLogFail("The button text is not equal to 'Go to detail page'");
+			}
+		}
+						
 	}
 			
 	/**
@@ -2173,7 +2169,6 @@ public class ProductResultsPage extends BasePage{
 	 */
 	public boolean checkIfFilterItemIsCollapsed(WebElement filterContainerItem) {
 		WebElement item=filterContainerItem.findElement(this.bySecondaryFilterOpenOrCloseFlag);
-//		System.out.println(item.getAttribute("class"));		
 		return !item.getAttribute("class").contains("plp-filter-panel__block-title__icon--plus");
 	}
 	
