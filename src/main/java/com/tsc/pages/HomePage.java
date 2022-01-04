@@ -60,11 +60,11 @@ public class HomePage extends BasePage{
 	@FindBy(xpath = "//div[@class='oanItemPrice']")
 	WebElement lblitemPriceNow;
 
-	//@FindBy(xpath = "//*[@class='email-popup__button']")
-	//WebElement btnClose;
-
-	@FindBy(css = ".email-popup__button")
+	@FindBy(xpath = "//*[@class='email-popup__button']")
 	WebElement btnClose;
+
+	//@FindBy(css = ".email-popup__button")
+	//WebElement btnClose;
 		
 	//TS Main Image section
 	

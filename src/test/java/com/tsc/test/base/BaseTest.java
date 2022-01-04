@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -185,7 +186,8 @@ public class BaseTest {
 		setImplictWait(getDriver(), 60);
 		//Refreshing browser so that Access Denied issue is resolved from Sauce Lab
 		getglobalheaderPageThreadLocal().getReusableActionsInstance().staticWait(3000);
-		getDriver().navigate().refresh();
+		if(!System.getProperty("Browser").toLowerCase().contains("safari"))
+			getDriver().navigate().refresh();
 	}
 
 	
