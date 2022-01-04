@@ -124,10 +124,9 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 			if(lsHeader.contains("(")) {
 				lsHeader=lsHeader.split("\\(")[0].trim();
 			}	
-//			
+			
 			//If found lsFirstLevelItem
-			if(lsHeader.equalsIgnoreCase(lsFirstLevelItem)) {	
-//				
+			if(lsHeader.equalsIgnoreCase(lsFirstLevelItem)) {				
 				//If find a search input
 				collapseFilterItemWithClickingProductTitle(this.productFilterContainerList.get(i));
 				if(checkSearchInputButtonExistingInSubFilter(this.productFilterContainerList.get(i))) {					
@@ -145,7 +144,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				}
 				
 				expandFilterItem(this.productFilterContainerList.get(i));
-//				collapseFilterItemWithClickingProductTitle(this.productFilterContainerList.get(i));
+				collapseFilterItemWithClickingProductTitle(this.productFilterContainerList.get(i));
 				if(i>0) {
 					this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i-1));
 				}	

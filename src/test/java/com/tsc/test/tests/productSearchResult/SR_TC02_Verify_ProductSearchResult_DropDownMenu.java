@@ -15,6 +15,7 @@ public class SR_TC02_Verify_ProductSearchResult_DropDownMenu extends BaseTest{
 	 * CER-213
 	 * CER-219
 	 * CER-513
+	 * CER-700
 	 */
 	@Test(groups={"ProductSearch","Regression","Regression_Tablet","Regression_Mobile"})
 	public void validateProductSearchResult_DropdownMenu() throws IOException {

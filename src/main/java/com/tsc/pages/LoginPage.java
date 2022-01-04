@@ -79,6 +79,9 @@ public class LoginPage extends BasePage {
 	@FindBy(xpath = "//ng-component//button[contains(@class,'btn-accnt-signout')]")
 	public WebElement btnSignOut;
 	
+	@FindBy(xpath = "//div[@class='SuperCartridge']//div[@class='global-responsive-banner']")
+	public WebElement lblSignInGlobalResponseBanner;
+	
 	//Dropdown menu after sign in
 	@FindBy(xpath = "//div[contains(@class,'secondary-navigation__rhs-account')]//nav//a[@href='/pages/myaccount']")
 	public WebElement btnYourAccountNav;

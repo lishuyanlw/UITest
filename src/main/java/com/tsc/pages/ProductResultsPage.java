@@ -286,10 +286,6 @@ public class ProductResultsPage extends BasePage{
 		this.getReusableActionsInstance().waitForElementVisibility(this.lblSearchResultMessage,120);
 		
 		return true;
-//		
-//		return waitForCondition(Driver->{
-//			return this.lblSearchResultMessage.isDisplayed();
-//			},90000);
 	}
 
 	/**
@@ -2084,6 +2080,46 @@ public class ProductResultsPage extends BasePage{
 		}
 						
 	}
+	
+	/**
+	 * This method will verify Favorite Icon clicking Action
+	 * @param-String lsUserName: user name
+	 * @param-String lsPassword: password
+	 * @param-String lsFirstName: user's first name
+	 * @return void
+	 * @author Wei.Li
+	 */
+	public void verifyFavoriteIconAction(String lsUserName, String lsPassword,String lsFirstName,String lsKeyword) {
+		if(this.productResultList.size()==0) {
+			reporter.reportLog("No product search result available.");
+			return;
+		}
+		
+		LoginPage loginPage=new LoginPage(this.getDriver());
+		WebElement item=this.productResultList.get(0).findElement(this.byProductHeaderLike);
+		System.out.println("press before: "+item.getAttribute("aria-pressed"));
+		if(item.getAttribute("aria-pressed").equalsIgnoreCase("false")) {
+			reporter.reportLogPass("The favorite icon is displaying not clicking status correctly");
+		}
+		else {
+			reporter.reportLogFail("The favorite icon is not displaying not clicking status correctly");
+		}
+		
+		this.getReusableActionsInstance().clickIfAvailable(item);	
+		this.getReusableActionsInstance().waitForElementVisibility(loginPage.lblSignIn, 20);
+		
+		loginPage.LoginWithoutWaitingTime(lsUserName, lsPassword);
+		this.getReusableActionsInstance().waitForElementVisibility(loginPage.lblSignInGlobalResponseBanner);
+				
+		this.getSearchResultLoad(lsKeyword);
+		item=this.productResultList.get(0).findElement(this.byProductHeaderLike);
+		if(item.getAttribute("aria-pressed").equalsIgnoreCase("true")) {
+			reporter.reportLogPass("The favorite icon is displaying clicking status correctly");
+		}
+		else {
+			reporter.reportLogFail("The favorite icon is not displaying clicking status correctly");
+		}		
+	}
 			
 	/**
 	 * This method will check Product Item brand name Existing
@@ -2121,6 +2157,8 @@ public class ProductResultsPage extends BasePage{
 		
 		return this.getChildElementCount(priceContainer)>1;
 	}
+	
+	
 
 	/**
 	 * This method will check See More button and See Less button
@@ -2309,6 +2347,8 @@ public class ProductResultsPage extends BasePage{
 		WebElement sizeContainer=filterContainerItem.findElement(this.byProductOptionSizeWrapper);
 		return this.checkChildElementExistingByTagNameAndAttribute(sizeContainer, "a", "class", "product-card__size-view-all");
 	}
+	
+	
 	
 
 	public class ProductItem{
