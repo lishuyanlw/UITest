@@ -118,7 +118,6 @@ task "localTest"(type: Test) {
     systemProperty 'Browser', test_browser
     systemProperty 'Device', test_device
     systemProperty 'Language', test_language
-    systemProperty 'Device', test_device
     systemProperty 'chromeMobileDevice', chromeMobileDevice
     systemProperties(System.getProperties())
     outputs.upToDateWhen { false }  // Always run tests
