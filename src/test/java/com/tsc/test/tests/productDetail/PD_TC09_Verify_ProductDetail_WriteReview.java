@@ -31,7 +31,7 @@ public class PD_TC09_Verify_ProductDetail_WriteReview extends BaseTest{
 	//getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0));
 	reporter.reportLog("Switch to ProductDetail page");
 	String lsProductNumber,lsUrl;
-	if(getProductResultsPageThreadLocal().goToFirstProductItem("526457")) {
+	if(getProductResultsPageThreadLocal().goToFirstProductItem("402783")) {
 		reporter.reportLog("Verify URL");
 		lsProductNumber=getProductResultsPageThreadLocal().selectedProductItem.productConvertedNumber;
 		lsUrl=basePage.URL();

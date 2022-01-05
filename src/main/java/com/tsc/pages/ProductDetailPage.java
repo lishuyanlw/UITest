@@ -1930,7 +1930,7 @@ public class ProductDetailPage extends BasePage {
 
 	public void verifyWriteReviewAfterSubmitContinueShoppingBackToProductDetails() {
 		String lsUrl=this.waitForPageLoadingByUrlChange(lnkWriteReviewAfterSubmitPageContinueShopping);
-		reporter.softAssert(lsUrl.toLowerCase().contains("pages/productresults"),"Going back to product details page after clicking Continue Shopping button","Did not go back to product details page after clicking Continue Shopping button");
+		reporter.softAssert(lsUrl.toLowerCase().contains("pages/productdetails"),"Going back to product details page after clicking Continue Shopping button","Did not go back to product details page after clicking Continue Shopping button");
 	}
 
 	/**

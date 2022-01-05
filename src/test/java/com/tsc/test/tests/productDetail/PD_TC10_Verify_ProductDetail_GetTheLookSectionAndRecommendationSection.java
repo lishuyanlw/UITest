@@ -33,7 +33,7 @@ public class PD_TC10_Verify_ProductDetail_GetTheLookSectionAndRecommendationSect
 	reporter.reportLog("Switch to ProductDetail page");
 	String lsProductNumber,lsUrl;
 	
-	if(getProductResultsPageThreadLocal().goToFirstProductItem("539007")) {
+	if(getProductResultsPageThreadLocal().goToFirstProductItem("402783")) {
 		reporter.reportLog("Verify URL");		
 		lsProductNumber=getProductResultsPageThreadLocal().selectedProductItem.productConvertedNumber;
 		lsUrl=basePage.URL();
