@@ -25,11 +25,15 @@ public class ApiResponse extends ApiConfigs {
     public String getProductNumberFromKeyword(String searchKeyword,Map<String,Object> outputDataCriteria){
         String productNumber = null;
         boolean flag = true;
+        String lsNowPrice,lsWasPrice;
+        
         Product product = getProductDetailsForKeyword(searchKeyword,true);
         do{
             if(outputDataCriteria==null){
                 for(Product.Products data:product.getProducts()) {
-                    if (data.getVideosCount() >= 1 && data.getStyles().size() >= 3 && data.getSizes().size() >= 3) {
+                	lsNowPrice=data.getIsPriceRange();
+                	lsWasPrice=data.getWasPriceRange();
+                    if (data.getVideosCount() >= 1 && data.getStyles().size() >= 4 && data.getSizes().size() >= 3&&data.isShowBadgeImage()&&data.getProductReviewRating()>0&&!data.getEasyPaymentPrice().isEmpty()&&!lsNowPrice.equalsIgnoreCase(lsWasPrice)) {
                         flag = false;
                         productNumber = data.getItemNo();
                         break;
@@ -115,25 +119,44 @@ public class ApiResponse extends ApiConfigs {
     }
 
     /**
-     * This method finds product number on the basis of input conditions
+     * This method finds product number on the basis of input conditions(video,style,size)
      * @param - Product - product : Product class object
      * @param - Map<String,Object> - configs : configs on basis of which product number will be fetched
      * @return - String - Product Number of product
      */
     private String getProductNumberForInputParams(Product product,Map<String,Object> configs){
-        int videoCount=0,styleCount=0,sizeCount=0;
-        for(Map.Entry<String,Object> entry:configs.entrySet()){
-            if(entry.getKey().toLowerCase().contains("video"))
-                videoCount = Integer.valueOf(entry.getValue().toString());
-            if(entry.getKey().toLowerCase().contains("style")){
-                styleCount = Integer.valueOf(entry.getValue().toString());
-            }
-            if(entry.getKey().toLowerCase().contains("size")){
-                sizeCount = Integer.valueOf(entry.getValue().toString());
+        int videoCount=1,styleCount=4,sizeCount=3;
+        String lsNowPrice,lsWasPrice;
+        
+        if(configs!=null) {
+        	for(Map.Entry<String,Object> entry:configs.entrySet()){
+                if(entry.getKey().toLowerCase().contains("video"))
+                    videoCount = Integer.valueOf(entry.getValue().toString());
+                if(entry.getKey().toLowerCase().contains("style")){
+                    styleCount = Integer.valueOf(entry.getValue().toString());
+                }
+                if(entry.getKey().toLowerCase().contains("size")){
+                    sizeCount = Integer.valueOf(entry.getValue().toString());
+                }                       
             }
         }
+        
         for(Product.Products data:product.getProducts()) {
-            if(data.getVideosCount()>=videoCount && data.getStyles().size()>=styleCount && data.getSizes().size()>=sizeCount){
+        	lsNowPrice=data.getIsPriceRange();
+        	lsWasPrice=data.getWasPriceRange();
+            if(data.getVideosCount()>=videoCount && data.getStyles().size()>=styleCount && data.getSizes().size()>=sizeCount&&data.isShowBadgeImage()&&data.getProductReviewRating()>0&&!data.getEasyPaymentPrice().isEmpty()&&!lsNowPrice.equalsIgnoreCase(lsWasPrice)) {
+//            	if(data.getBrand()!=null) {
+//            		if(data.getBrand().isEmpty()) {
+//            			continue;
+//            		}
+//            		else {
+//            			System.out.println("data.getBrand(): "+data.getBrand());
+//            		}
+//            	}
+//            	else {
+//            		continue;
+//            	}
+            	            	
                 return data.getItemNo();
             }
         }

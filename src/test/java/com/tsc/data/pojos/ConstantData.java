@@ -459,8 +459,9 @@ public class ConstantData {
         private String lbl_TellYourFriendsSentMessage;
         private List<String> lst_Filter_Data;
         private List<String> lst_SortOptionMobile;
+        private String lbl_ProductNumberWithBandAndReviewAndSeeMore;
 
-        public List<String> getLst_SearchKeyword() {
+		public List<String> getLst_SearchKeyword() {
             return lst_SearchKeyword;
         }
 
@@ -611,6 +612,14 @@ public class ConstantData {
         public void setLbl_TellYourFriendsSentMessage(String lbl_TellYourFriendsSentMessage) {
             this.lbl_TellYourFriendsSentMessage = lbl_TellYourFriendsSentMessage;
         }
+        
+        public String getLbl_ProductNumberWithBandAndReviewAndSeeMore() {
+			return lbl_ProductNumberWithBandAndReviewAndSeeMore;
+		}
+
+		public void setLbl_ProductNumberWithBandAndReviewAndSeeMore(String lbl_ProductNumberWithBandAndReviewAndSeeMore) {
+			this.lbl_ProductNumberWithBandAndReviewAndSeeMore = lbl_ProductNumberWithBandAndReviewAndSeeMore;
+		}
     }
 
     public static class Flyout {

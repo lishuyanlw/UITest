@@ -5,15 +5,19 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 
+import com.tsc.api.apiBuilder.ApiResponse;
 import com.tsc.pages.base.BasePage;
 
 public class ProductResultsPage extends BasePage{
@@ -1443,229 +1447,184 @@ public class ProductResultsPage extends BasePage{
 	 * This method will go to the product with Review, EasyPay, Swatch item>=4 and Video
 	 * @return true/false
 	 * @author Wei.Li
+	 * @throws IOException 
 	 */
-	public boolean goToProductItemWithReviewAndSwatchAndVideo() {
-//		this.selectedProductItem.productName="";
-//		this.selectedProductItem.productNumber="";
-//		this.selectedProductItem.productNowPrice="";
-//		this.selectedProductItem.productEasyPay="";
-//
-//		WebElement element;
-//		do {
-//			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productResultList.get(0));
-//			for(WebElement item : this.productResultList) {
-//				String lsMsg=judgeProductBadgeAndVideo(item);
-//				if(!(lsMsg.equalsIgnoreCase("WithBadgeAndVideo"))) {
-//					continue;
-//				}
-//
-//				element=item.findElement(this.byProductReview);
-//				if(this.getChildElementCount(element)==0) {
-//					continue;
-//				}
-//
-//				if(!this.judgeProductWasPrice(item).equalsIgnoreCase("WithWasPrice")) {
-//					continue;
-//				}
-//
-//				element=item.findElement(this.byProductEasyPay);
-//				if(this.getChildElementCount(element)==0) {
-//					continue;
-//				}
-//
-//				element=item.findElement(this.byProductSwatch);
-//				if(this.getChildElementCount(element)<4) {
-//					continue;
-//				}
-//
-//				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-//				this.selectedProductItem.productName=item.findElement(this.byProductName).getText().trim();
-//				this.selectedProductItem.productNumber=item.findElement(this.byProductItemNO).getText().trim();
-//				List<String> list=this.getNumberFromString(this.selectedProductItem.productNumber);
-//				String lsFinal="";
-//				for(String lsSubItem:list) {
-//					lsFinal+=lsSubItem;
-//				}
-//				this.selectedProductItem.productConvertedNumber=lsFinal;
-//				this.selectedProductItem.productNowPrice=item.findElement(this.byProductNowPrice).getText().trim();
-//				this.selectedProductItem.productEasyPay=item.findElement(this.byProductEasyPay).getText().trim();
-//				this.selectedProductItem.productNavigationUrl=this.URL();
-//				
-//				item.click();
-//				return this.waitForPDPPageLoading();
-//			}
-//		}
-//		while(this.switchPage(true));
-
-		return false;
-	}
-
-	public boolean goToFirstProductItem() {
-		WebElement item=this.productResultList.get(0);		
+	public boolean goToProductItemWithPreConditions(String lsKeyWord) throws IOException {
+		ApiResponse apiResponse=new ApiResponse();
+		Map<String,Object> outputDataCriteria= new HashMap<String,Object>();
+		outputDataCriteria.put("video", 1);
+		
+		String productNumber=apiResponse.getProductNumberFromKeyword(lsKeyWord, outputDataCriteria);
+		System.out.println("product number: "+productNumber);
+		this.getSearchResultLoad(productNumber);
+		
+		WebElement item=this.productResultList.get(0);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-		this.selectedProductItem.productName=item.findElement(this.byProductName).getText().trim();
-		this.selectedProductItem.productNowPrice=item.findElement(this.byProductNowPrice).getText().trim();
+		this.getReusableActionsInstance().scrollToElement(item);
+				
+		this.selectedProductItem.productNumber=productNumber;
+		this.selectedProductItem.productName=this.getElementInnerText(item.findElement(this.byProductName));
 		this.selectedProductItem.productNavigationUrl=this.URL();
 		
-		item.click();
+		this.clickElement(item.findElement(this.byProductHref));
+//		item.findElement(this.byProductHref).click();
 		
-		return this.waitForPDPPageLoading();		
+		return this.waitForPDPPageLoading();
 	}
 	
 	public boolean goToFirstProductItem(String lsProductNumber) {
 		getSearchResultLoad(lsProductNumber);
 		
-		WebElement item=this.productResultList.get(0);
-		
+		WebElement item=this.productResultList.get(0);		
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-		this.selectedProductItem.productName=item.findElement(this.byProductName).getText().trim();
-		this.selectedProductItem.productNumber=lsProductNumber;		
-		this.selectedProductItem.productNowPrice=item.findElement(this.byProductNowPrice).getText().trim();
+		
+		this.selectedProductItem.productName=this.getElementInnerText(item.findElement(this.byProductName));
+		this.selectedProductItem.productNumber=lsProductNumber;			
 		this.selectedProductItem.productNavigationUrl=this.URL();
 		
-		item.click();
+		item.findElement(this.byProductHref).click();
 		
 		return this.waitForPDPPageLoading();		
 	}
 	
-	public boolean goToProductItemWithTrueFitAndSizeAndQuantity() {
-		ProductDetailPage pdp=new ProductDetailPage(this.getDriver());
-		
-		this.selectedProductItem.productName="";
-		this.selectedProductItem.productNumber="";
-		this.selectedProductItem.productNowPrice="";
-
-		
-		WebElement item;
-		do {
-			this.selectedProductItem.currentProductSequenceNumber=-1;
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productResultList.get(0));
-			for(int i=0;i<this.productResultList.size();i++) {
-				if(i<=this.selectedProductItem.currentProductSequenceNumber) {
-					continue;
-				}
-				
-				item=this.productResultList.get(i);
-								
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-				this.selectedProductItem.productName=item.findElement(this.byProductName).getText().trim();
-				this.selectedProductItem.productNowPrice=item.findElement(this.byProductNowPrice).getText().trim();
-				this.selectedProductItem.productNavigationUrl=this.URL();
-				this.selectedProductItem.currentProductSequenceNumber=i;
-				
-				item.click();
-				this.waitForPDPPageLoading();
-				this.getReusableActionsInstance().staticWait(1000);
-				if(pdp.judgeStyleSizeAvailable()&&pdp.judgeStyleTrueFitExisting()&&pdp.judgeQuantityDropdownAvailable()&&pdp.IsQuantityLeftExisting()) {
-					return true;
-				}
-				else {
-					this.getDriver().navigate().back();
-					this.waitForPageToLoad();
-					this.waitForPDPPageLoading();
-					this.getReusableActionsInstance().staticWait(1000);					
-				}
-			}
-		}
-		while(this.switchPage(true));
-
-		return false;
-	}
-	
-	public boolean goToProductItemWithTeaserInfo() {
-		ProductDetailPage pdp=new ProductDetailPage(this.getDriver());
-		
-		this.selectedProductItem.productName="";
-		this.selectedProductItem.productNumber="";
-		this.selectedProductItem.productNowPrice="";
-	
-		
-		WebElement item;
-		do {
-			this.selectedProductItem.currentProductSequenceNumber=-1;
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productResultList.get(0));
-			for(int i=0;i<this.productResultList.size();i++) {
-				if(i<=this.selectedProductItem.currentProductSequenceNumber) {
-					continue;
-				}
-				
-				item=this.productResultList.get(i);
-								
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-				this.selectedProductItem.productName=item.findElement(this.byProductName).getText().trim();
-				this.selectedProductItem.productNowPrice=item.findElement(this.byProductNowPrice).getText().trim();
-				this.selectedProductItem.productNavigationUrl=this.URL();
-				this.selectedProductItem.currentProductSequenceNumber=i;
-				
-				item.click();
-				this.waitForPDPPageLoading();
-				this.getReusableActionsInstance().staticWait(1000);
-				if(pdp.judgeTeaserInfoDisplaying()) {
-					return true;
-				}
-				else {
-					this.getDriver().navigate().back();
-					this.waitForPageToLoad();
-					this.waitForPDPPageLoading();
-					this.getReusableActionsInstance().staticWait(1000);					
-				}
-			}
-		}
-		while(this.switchPage(true));
-
-		return false;
-	}
-	
-	public boolean goToProductItemWithBrandNameAndReviewAndSeeMoreInfo() {
-		ProductDetailPage pdp=new ProductDetailPage(this.getDriver());
-		WebElement element;
-		
-		this.selectedProductItem.productName="";
-		this.selectedProductItem.productNumber="";
-		this.selectedProductItem.productNowPrice="";
-
-		WebElement item;
-		do {
-			this.selectedProductItem.currentProductSequenceNumber=-1;
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productResultList.get(0));
-			for(int i=0;i<this.productResultList.size();i++) {
-				if(i<=this.selectedProductItem.currentProductSequenceNumber) {
-					continue;
-				}
-				
-				item=this.productResultList.get(i);
-				if(!checkProductItemBrandNameExisting(item)) {
-					continue;
-				}
-				
-				if(!checkProductItemReviewExisting(item)) {
-					continue;
-				}
-																
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-				this.selectedProductItem.productName=item.findElement(this.byProductName).getText().trim();
-				this.selectedProductItem.productNowPrice=item.findElement(this.byProductNowPrice).getText().trim();
-				this.selectedProductItem.productNavigationUrl=this.URL();
-				this.selectedProductItem.currentProductSequenceNumber=i;
-				
-				item.click();
-				this.waitForPDPPageLoading();
-				this.getReusableActionsInstance().staticWait(1000);
-				if(pdp.checkProductBrandNameDisplaying()&&pdp.judgeTeaserInfoDisplaying()) {
-					return true;
-				}
-				else {
-					this.getDriver().navigate().back();
-					this.waitForPageToLoad();
-					this.waitForPDPPageLoading();
-					this.getReusableActionsInstance().staticWait(1000);					
-				}
-			}
-		}
-		while(this.switchPage(true));
-
-		return false;
-	}
+//	public boolean goToProductItemWithTrueFitAndSizeAndQuantity() {
+//		ProductDetailPage pdp=new ProductDetailPage(this.getDriver());
+//		
+//		this.selectedProductItem.productName="";
+//		this.selectedProductItem.productNumber="";
+//		this.selectedProductItem.productNowPrice="";
+//
+//		
+//		WebElement item;
+//		do {
+//			this.selectedProductItem.currentProductSequenceNumber=-1;
+//			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productResultList.get(0));
+//			for(int i=0;i<this.productResultList.size();i++) {
+//				if(i<=this.selectedProductItem.currentProductSequenceNumber) {
+//					continue;
+//				}
+//				
+//				item=this.productResultList.get(i);
+//								
+//				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+//				this.selectedProductItem.productName=item.findElement(this.byProductName).getText().trim();
+//				this.selectedProductItem.productNowPrice=item.findElement(this.byProductNowPrice).getText().trim();
+//				this.selectedProductItem.productNavigationUrl=this.URL();
+//				this.selectedProductItem.currentProductSequenceNumber=i;
+//				
+//				item.click();
+//				this.waitForPDPPageLoading();
+//				this.getReusableActionsInstance().staticWait(1000);
+//				if(pdp.judgeStyleSizeAvailable()&&pdp.judgeStyleTrueFitExisting()&&pdp.judgeQuantityDropdownAvailable()&&pdp.IsQuantityLeftExisting()) {
+//					return true;
+//				}
+//				else {
+//					this.getDriver().navigate().back();
+//					this.waitForPageToLoad();
+//					this.waitForPDPPageLoading();
+//					this.getReusableActionsInstance().staticWait(1000);					
+//				}
+//			}
+//		}
+//		while(this.switchPage(true));
+//
+//		return false;
+//	}
+//	
+//	public boolean goToProductItemWithTeaserInfo() {
+//		ProductDetailPage pdp=new ProductDetailPage(this.getDriver());
+//		
+//		this.selectedProductItem.productName="";
+//		this.selectedProductItem.productNumber="";
+//		this.selectedProductItem.productNowPrice="";
+//	
+//		
+//		WebElement item;
+//		do {
+//			this.selectedProductItem.currentProductSequenceNumber=-1;
+//			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productResultList.get(0));
+//			for(int i=0;i<this.productResultList.size();i++) {
+//				if(i<=this.selectedProductItem.currentProductSequenceNumber) {
+//					continue;
+//				}
+//				
+//				item=this.productResultList.get(i);
+//								
+//				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+//				this.selectedProductItem.productName=item.findElement(this.byProductName).getText().trim();
+//				this.selectedProductItem.productNowPrice=item.findElement(this.byProductNowPrice).getText().trim();
+//				this.selectedProductItem.productNavigationUrl=this.URL();
+//				this.selectedProductItem.currentProductSequenceNumber=i;
+//				
+//				item.click();
+//				this.waitForPDPPageLoading();
+//				this.getReusableActionsInstance().staticWait(1000);
+//				if(pdp.judgeTeaserInfoDisplaying()) {
+//					return true;
+//				}
+//				else {
+//					this.getDriver().navigate().back();
+//					this.waitForPageToLoad();
+//					this.waitForPDPPageLoading();
+//					this.getReusableActionsInstance().staticWait(1000);					
+//				}
+//			}
+//		}
+//		while(this.switchPage(true));
+//
+//		return false;
+//	}
+//	
+//	public boolean goToProductItemWithBrandNameAndReviewAndSeeMoreInfo() {
+//		ProductDetailPage pdp=new ProductDetailPage(this.getDriver());
+//		WebElement element;
+//		
+//		this.selectedProductItem.productName="";
+//		this.selectedProductItem.productNumber="";
+//		this.selectedProductItem.productNowPrice="";
+//
+//		WebElement item;
+//		do {
+//			this.selectedProductItem.currentProductSequenceNumber=-1;
+//			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productResultList.get(0));
+//			for(int i=0;i<this.productResultList.size();i++) {
+//				if(i<=this.selectedProductItem.currentProductSequenceNumber) {
+//					continue;
+//				}
+//				
+//				item=this.productResultList.get(i);
+//				if(!checkProductItemBrandNameExisting(item)) {
+//					continue;
+//				}
+//				
+//				if(!checkProductItemReviewExisting(item)) {
+//					continue;
+//				}
+//																
+//				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+//				this.selectedProductItem.productName=item.findElement(this.byProductName).getText().trim();
+//				this.selectedProductItem.productNowPrice=item.findElement(this.byProductNowPrice).getText().trim();
+//				this.selectedProductItem.productNavigationUrl=this.URL();
+//				this.selectedProductItem.currentProductSequenceNumber=i;
+//				
+//				item.click();
+//				this.waitForPDPPageLoading();
+//				this.getReusableActionsInstance().staticWait(1000);
+//				if(pdp.checkProductBrandNameDisplaying()&&pdp.judgeTeaserInfoDisplaying()) {
+//					return true;
+//				}
+//				else {
+//					this.getDriver().navigate().back();
+//					this.waitForPageToLoad();
+//					this.waitForPDPPageLoading();
+//					this.getReusableActionsInstance().staticWait(1000);					
+//				}
+//			}
+//		}
+//		while(this.switchPage(true));
+//
+//		return false;
+//	}
 
 	/**
 	 * This method will verify Product Recommendation section and validate section Images, and Prices .
@@ -2381,7 +2340,6 @@ public class ProductResultsPage extends BasePage{
 
 	public class ProductItem{
 		public String productNumber;
-		public String productConvertedNumber;
 		public String productName;
 		public String productBrand;
 		public String productSelectedSize;

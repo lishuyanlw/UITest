@@ -95,6 +95,9 @@ public class ProductDetailPage extends BasePage {
 	public WebElement lblZoomImageMessage;
 	
 	//Product details
+	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']/div[2]")			
+	public WebElement cntProductDetailsContainer;
+	
 	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']")
 	public WebElement lblProductName;
 	
@@ -415,7 +418,7 @@ public class ProductDetailPage extends BasePage {
 	public WebElement lblProductOverviewTabContent;
 	
 	//Product Size Chart Tab part
-	@FindBy(xpath = "//div[contains(@class,'tabs')]//div[@id='infoTabContent']//img[contains(@src,'SIZE') and contains(@src,'CHART')]/ancestor::div[contains(@id,'tab')]")
+	@FindBy(xpath = "//div[contains(@class,'tabs')]//div[@id='infoTabContent']//div[@id='tab1']")
 	public WebElement cntProductSizeChartTabContent;
 	
 	@FindBy(xpath = "//div[contains(@class,'tabs')]//div[@id='infoTabContent']//img[contains(@src,'SIZE') and contains(@src,'CHART')]/ancestor::div[contains(@id,'tab')]//*[@class='tabHeader']")
@@ -674,7 +677,7 @@ public class ProductDetailPage extends BasePage {
 	
 	public By byAddToBagPopupWindowDetailProductSize = By.xpath(".//span[@class='add-to-bag__product-size']");
 	
-	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__details']//div[@class='add-to-bag__inside-right']//div[@class='add-to-bag-style-size-div']//a[@class='add-to-bag__item-link']")
+	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__details']//div[@class='add-to-bag__inside-right']//div[@class='add-to-bag__product-number']")
 	public WebElement lblAddToBagPopupWindowDetailsProductNumber;
 		
 	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__button-wrap']")
@@ -1542,7 +1545,7 @@ public class ProductDetailPage extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAddToBagPopupWindowDetailsProductNumber);
 		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblAddToBagPopupWindowDetailsProductNumber),"The product Number in Add to Bag popup window is visible","The product Number in Add to Bag popup window is not visible");
 		reporter.softAssert(!this.lblAddToBagPopupWindowDetailsProductNumber.getText().isEmpty(),"The product Number in Add to Bag popup window is not empty","The product Number in Add to Bag popup window is empty");
-		reporter.softAssert(this.lblAddToBagPopupWindowDetailsProductNumber.getText().trim().equalsIgnoreCase(productItem.productNumber),"The product number in Add to Bag popup window is equal to the original product number from product search result page","The product name in Add to Bag popup window is not equal to the original product name from product search result page");
+		reporter.softAssert(this.lblAddToBagPopupWindowDetailsProductNumber.getText().trim().replace("-", "").equalsIgnoreCase(productItem.productNumber),"The product number of "+this.lblAddToBagPopupWindowDetailsProductNumber.getText().trim().replace("-", "")+" in Add to Bag popup window is equal to the original product number of "+productItem.productNumber+" from product search result page","The product number of "+this.lblAddToBagPopupWindowDetailsProductNumber.getText().trim().replace("-", "")+" in Add to Bag popup window is not equal to the original product number of "+productItem.productNumber+" from product search result page");
 		
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAddToBagPopupWindowButtonSectionSubtotal);
 		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblAddToBagPopupWindowButtonSectionSubtotal),"The product Subtotal in Add to Bag popup window is visible","The product Subtotal in Add to Bag popup window is not visible");
@@ -1664,9 +1667,17 @@ public class ProductDetailPage extends BasePage {
 		this.verifyThumbnailNextButton();
 	}
 	
+	public boolean checkProductBrandExisting() {
+		return this.checkChildElementExistingByAttribute(cntProductDetailsContainer, "id", "divBrandName");
+	}
+	
 	public void verifyProductBasicInfo() {
 		reporter.softAssert(!this.getElementText(this.lblProductName).isEmpty(),"The product name is not empty","The product name is empty");
-		reporter.softAssert(!this.getElementText(this.lnkBrandName).isEmpty(),"The product brand name is not empty","The product brand name is empty");
+		
+		if(checkProductBrandExisting()) {
+			reporter.softAssert(!this.getElementText(this.lnkBrandName).isEmpty(),"The product brand name is not empty","The product brand name is empty");
+		}
+		
 		reporter.softAssert(!this.getElementText(this.lblProductNumber).isEmpty(),"The product number is not empty","The product number is empty");		
 	}
 	
@@ -1969,13 +1980,13 @@ public class ProductDetailPage extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnStickyTabProductReview);
 		this.btnStickyTabProductReview.click();
 		this.getReusableActionsInstance().staticWait(1000);		
-		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.cntReviewTabContent),"The Product Overview contents is displaying correctly","The Product Overview contents is not displaying correctly");
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.cntReviewTabContent),"The Product review contents is displaying correctly","The Product review contents is not displaying correctly");
 		
 		if(this.checkProductSizingChartExisting()) {
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnStickyTabSizeChart);
 			this.btnStickyTabSizeChart.click();
-			this.getReusableActionsInstance().staticWait(1000);		
-			reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.cntProductSizeChartTabContent),"The Product Overview contents is displaying correctly","The Product Overview contents is not displaying correctly");
+			this.getReusableActionsInstance().staticWait(3000);		
+			reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.cntProductSizeChartTabContent),"The Product SizeChart contents is displaying correctly","The Product SizeChart contents is not displaying correctly");
 		}
 	}
 	

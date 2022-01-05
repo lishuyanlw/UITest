@@ -27,13 +27,13 @@ public class PD_TC07_Verify_ProductDetail_AdvancedOrder extends BaseTest{
 	String lsVideoDisclaimInfo=TestDataHandler.constantData.getSearchResultPage().getLbl_VideoDisclaimInfo();
 	String lsQuantityNumberToShowLeftItemInfo=TestDataHandler.constantData.getSearchResultPage().getLbl_QuantityNumberToShowLeftItemInfo();
 	
-	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeyword);
+//	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeyword);
 	reporter.reportLog("Switch to ProductDetail page");
 	String lsProductNumber,lsUrl;
 	
-	if(getProductResultsPageThreadLocal().goToFirstProductItem()) {
+	if(getProductResultsPageThreadLocal().goToFirstProductItem(lsKeyword)) {
 		reporter.reportLog("Verify URL");		
-		lsProductNumber=getProductResultsPageThreadLocal().selectedProductItem.productConvertedNumber;
+		lsProductNumber=getProductResultsPageThreadLocal().selectedProductItem.productNumber;
 		lsUrl=basePage.URL();
 		reporter.softAssert(lsUrl.contains("productdetails"),"The Url is containing productdetails","The Url is not containing productdetails");
 //		reporter.softAssert(lsUrl.contains(lsProductNumber),"The Url is containing selected product number of "+lsProductNumber,"The Url is not containing selected product number of "+lsProductNumber);
