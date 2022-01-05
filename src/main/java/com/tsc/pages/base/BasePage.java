@@ -8,15 +8,13 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.text.Normalizer;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
@@ -24,12 +22,11 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.interactions.touch.TouchActions;
-import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import extentreport.ExtentTestManager;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import utils.Reporter;
 
 import utils.ReusableActions;
@@ -262,20 +259,20 @@ import utils.ReusableActions;
 	
 	/**
 	 * This method will implement explicit wait using Lambda function
-	 * @param 
+	 * @param
 	 * 1. Function<WebDriver,Boolean> func: Lambda expression
 	 * 2. int timeOutInMillis: wait time in millisecond
 	 * @return true/false
 	 * @author Wei.Li
-	 */	
-	public Boolean waitForCondition(Function<WebDriver,Boolean> func, int timeOutInMillis) {    		    
-        return (new WebDriverWait(this.getDriver(), timeOutInMillis/1000)).until( new ExpectedCondition<Boolean>() {
-        	@Override
-            public Boolean apply(WebDriver d) {
-                return func.apply(d);            	
-            }
-        });
-    }
+	 */
+	public Boolean waitForCondition(Function<WebDriver,Boolean> func, int timeOutInMillis) {
+		return (new WebDriverWait(this.getDriver(), timeOutInMillis/1000)).until( new ExpectedCondition<Boolean>() {
+			@Override
+			public Boolean apply(WebDriver d) {
+				return func.apply(d);
+			}
+		});
+	}
 	
 	/**
 	 * This method will get base URL settings in gradle.properties
@@ -299,9 +296,10 @@ import utils.ReusableActions;
 	public String waitForPageLoadingByUrlChange(WebElement element) {
 		String currentUrl=getDriver().getCurrentUrl();
 		getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-		waitForCondition(Driver->{return element.isDisplayed();},30000);
-        element.click();
-        waitForCondition(Driver->{return !currentUrl.equalsIgnoreCase(getDriver().getCurrentUrl());},30000);
+		waitForCondition(Driver->{return element.isDisplayed();},90000);
+		getReusableActionsInstance().clickIfAvailable(element);
+        //element.click();
+        waitForCondition(Driver->{return !currentUrl.equalsIgnoreCase(getDriver().getCurrentUrl());},90000);
         getReusableActionsInstance().waitForPageLoad();
         getReusableActionsInstance().staticWait(3000);
         
@@ -323,6 +321,11 @@ import utils.ReusableActions;
 		 }		 
 		 robot.keyPress(KeyEvent.VK_ESCAPE);		
 		 robot.keyRelease(KeyEvent.VK_ESCAPE);
+	 }
+
+	 public void pressEscapeKeyUsingSendKeys(){
+		 Actions action = new Actions(getDriver());
+		 action.sendKeys(Keys.ESCAPE).build().perform();
 	 }
 	 
 	/**
@@ -732,6 +735,17 @@ import utils.ReusableActions;
 		   byte[] bytes = data.getBytes(StandardCharsets.UTF_8);
 		   String utf8EncodedString = new String(bytes);
 		   return utf8EncodedString;
+	}
+
+	/**
+	 * This method is to convert non-ascii String to ascii
+	 * @param - String data: input data
+	 * @author Sachin.Sharma
+	 */
+	public static String convertToASCII(String data) {
+		String nfdNormalizedString = Normalizer.normalize(data, Normalizer.Form.NFD);
+		Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+		return pattern.matcher(nfdNormalizedString).replaceAll("");
 	}
 	
 	/*Method to get UTF-8 format for the list of string

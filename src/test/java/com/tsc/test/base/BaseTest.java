@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import com.tsc.api.apiBuilder.ApiResponse;
 import com.tsc.pages.*;
 import org.apache.http.client.ClientProtocolException;
-import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.testng.ITestContext;
 import org.testng.annotations.AfterMethod;
@@ -20,7 +20,6 @@ import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 
 import com.tsc.data.Handler.TestDataHandler;
-import com.tsc.pages.GlobalHeaderPage;
 
 import extentreport.ExtentTestManager;
 import utils.BrowserDrivers;
@@ -37,15 +36,14 @@ public class BaseTest {
 
 	protected static final ThreadLocal<WebDriver> webDriverThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<GlobalHeaderPage> globalheaderPageThreadLocal = new ThreadLocal<>();
-	protected static final ThreadLocal<GlobalHeaderPage_Mobile> globalHeaderPage_mobileThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<HomePage> homePageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<GlobalFooterPage> globalFooterPageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<ProductResultsPage> productResultsPageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<ProductDetailPage> productDetailPageThreadLocal = new ThreadLocal<>();
-	protected static final ThreadLocal<ProductResultsPage_Tablet> productResultsPage_TabletThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<ProductResultsPage_Mobile> productResultsPage_MobileThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<LoginPage> loginPageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<String> TestDeviceThreadLocal = new ThreadLocal<>();
+	protected static final ThreadLocal<ApiResponse> apiResponseThreadLocal = new ThreadLocal<>();
 
 	public BaseTest() {
 		browserDrivers = new BrowserDrivers();
@@ -58,22 +56,14 @@ public class BaseTest {
 		return reporter;
 	}
 
-	
-	// @return the globalheaderPageThreadLocal
-	
-	protected static GlobalHeaderPage getglobalheaderPageThreadLocal() {
-		return globalheaderPageThreadLocal.get();
-	}
+	//@return apiResponseThreadLocal
+	public static ApiResponse getApiResponseThreadLocal() {return apiResponseThreadLocal.get();}
 
-	// @return the globalheaderPage_MobileThreadLocal
-	protected static GlobalHeaderPage_Mobile getglobalHeaderPage_mobileThreadLocal() {
-		return globalHeaderPage_mobileThreadLocal.get();
-	}
+	// @return the globalheaderPageThreadLocal
+	protected static GlobalHeaderPage getglobalheaderPageThreadLocal() {return globalheaderPageThreadLocal.get();	}
 
 	// @return the homePageThreadLocal
-	protected static HomePage homePageThreadLocal() {
-		return homePageThreadLocal.get();
-	}
+	protected static HomePage homePageThreadLocal() {	return homePageThreadLocal.get();	}
 
 	//@return the GlobalFooterThreadLocal
 	protected static GlobalFooterPage getGlobalFooterPageThreadLocal() {
@@ -83,11 +73,6 @@ public class BaseTest {
 	//@return the ProductResultsPageThreadLocal
 	protected static ProductResultsPage getProductResultsPageThreadLocal() {
 		return productResultsPageThreadLocal.get();
-	}
-
-	//@return the ProductResultsPage_TabletThreadLocal
-	protected static ProductResultsPage_Tablet getProductResultsPage_TabletThreadLocal() {
-		return productResultsPage_TabletThreadLocal.get();
 	}
 
 	//@return the ProductResultsPage_MobileThreadLocal
@@ -107,32 +92,36 @@ public class BaseTest {
 		return TestDeviceThreadLocal.get();
 	}
 
-	private void init() {
+	private void init() throws IOException {
 		homePageThreadLocal.set(new HomePage(getDriver()));
 		globalheaderPageThreadLocal.set(new GlobalHeaderPage(getDriver()));
-		globalheaderPageThreadLocal.set(new GlobalHeaderPage(getDriver()));
+		globalFooterPageThreadLocal.set(new GlobalFooterPage(getDriver()));
 		productResultsPageThreadLocal.set(new ProductResultsPage(getDriver()));
 		globalFooterPageThreadLocal.set(new GlobalFooterPage(getDriver()));
 		productDetailPageThreadLocal.set(new ProductDetailPage(getDriver()));
 		loginPageThreadLocal.set(new LoginPage(getDriver()));
 		reporter = new ExtentTestManager(getDriver());
+		apiResponseThreadLocal.set(new ApiResponse());
 	}
 
-	private void init_Mobile() {
-		productResultsPageThreadLocal.set(new ProductResultsPage_Mobile(getDriver()));
+	private void init_Mobile() throws IOException {
 		globalheaderPageThreadLocal.set(new GlobalHeaderPage_Mobile(getDriver()));
-		loginPageThreadLocal.set(new LoginPage(getDriver()));
+		loginPageThreadLocal.set(new LoginPage_Mobile(getDriver()));
 		globalFooterPageThreadLocal.set(new GlobalFooterPage_Mobile(getDriver()));
+		productResultsPageThreadLocal.set(new ProductResultsPage_Mobile(getDriver()));
 		reporter = new ExtentTestManager(getDriver());
+		apiResponseThreadLocal.set(new ApiResponse());
 	}
 
-	private void init_Tablet() {
-		productResultsPageThreadLocal.set(new ProductResultsPage_Tablet(getDriver()));
+	private void init_Tablet() throws IOException {
 		globalheaderPageThreadLocal.set(new GlobalHeaderPage_Mobile(getDriver()));
-		loginPageThreadLocal.set(new LoginPage(getDriver()));
-		globalFooterPageThreadLocal.set(new GlobalFooterPage(getDriver()));
+		loginPageThreadLocal.set(new LoginPage_Mobile(getDriver()));
+		globalFooterPageThreadLocal.set(new GlobalFooterPage_Tablet(getDriver()));
+		productResultsPageThreadLocal.set(new ProductResultsPage_Tablet(getDriver()));
 		reporter = new ExtentTestManager(getDriver());
+		apiResponseThreadLocal.set(new ApiResponse());
 	}
+
 
 	public WebDriver getDriver() {
 		return webDriverThreadLocal.get();
@@ -150,8 +139,8 @@ public class BaseTest {
 		driver.manage().timeouts().implicitlyWait(seconds, TimeUnit.SECONDS);
 	}
 
-	public void startSession(String strUrl, String strBrowser, String strLanguage, Method currentTestMethodName,
-			boolean bypassCaptcha) throws ClientProtocolException, IOException {
+	public void startSession (String strUrl, String strBrowser, String strLanguage, Method currentTestMethodName,
+							  boolean bypassCaptcha) throws ClientProtocolException, IOException {
 		RunParameters = getExecutionParameters(strBrowser, strLanguage);
 		strBrowser = RunParameters.get("Browser").toLowerCase();
 		strLanguage = RunParameters.get("Language").toLowerCase();
@@ -159,7 +148,7 @@ public class BaseTest {
 		if (strBrowser.toLowerCase().contains("sauce")) {
 			sauceParameters = initializeSauceParamsMap(strBrowser);
 		}
-	
+
 		webDriverThreadLocal.set(browserDrivers.driverInit(strBrowser, sauceParameters, currentTestMethodName, ""));
 		getDriver().get(strUrl);
 
@@ -178,12 +167,14 @@ public class BaseTest {
 		} else {
 			init();
 		}
-
-	/*if (!strBrowser.toLowerCase().contains("android") && !strBrowser.toLowerCase().contains("ios")
+		/*if (!strBrowser.toLowerCase().contains("android") && !strBrowser.toLowerCase().contains("ios")
 			&& !strBrowser.toLowerCase().contains("mobile")) {
 		getDriver().manage().window().maximize();
 	}*/
-		setImplictWait(getDriver(), 60);
+			setImplictWait(getDriver(), 60);
+			//Refreshing browser so that Access Denied issue is resolved from Sauce Lab
+			getglobalheaderPageThreadLocal().getReusableActionsInstance().staticWait(3000);
+			getDriver().navigate().refresh();
 	}
 
 	
@@ -269,7 +260,7 @@ public class BaseTest {
 	}
 	//Method to validate content of Link and button
 	public void validateText(String strActualText, String strExpectedText, String validationMsg) {
-	reporter.softAssert(strExpectedText.equals(strActualText), validationMsg + ":" + " Expected=" + strExpectedText +  " ; Actual="+ strActualText ,validationMsg + " expected=" + strExpectedText +  "; actual="+ strActualText);
+	reporter.softAssert(strExpectedText.trim().equals(strActualText.trim()), validationMsg + ":" + " Expected=" + strExpectedText +  " ; Actual="+ strActualText ,validationMsg + " expected=" + strExpectedText +  "; actual="+ strActualText);
 	}
 
 	/**
@@ -317,13 +308,18 @@ public class BaseTest {
 				}
 				break;
 			case "sauceioschrome":
-				sauceOptions.put(SauceCapabilities.appiumVersion.toString(), TestDataHandler.sauceSettings.getIosSafariCapabilities().getAppiumVersion());
-				sauceOptions.put(SauceCapabilities.deviceName.toString(), TestDataHandler.sauceSettings.getIosSafariCapabilities().getDeviceName());
-				sauceOptions.put(SauceCapabilities.deviceOrientation.toString(), TestDataHandler.sauceSettings.getIosSafariCapabilities().getDeviceOrientation());
-				sauceOptions.put(SauceCapabilities.platformVersion.toString(), TestDataHandler.sauceSettings.getIosSafariCapabilities().getPlatformVersion());
-				sauceOptions.put(SauceCapabilities.platformName.toString(), TestDataHandler.sauceSettings.getIosSafariCapabilities().getPlatformName());
 				if(System.getProperty("Device").equalsIgnoreCase("Tablet")){
-					sauceOptions.put(SauceCapabilities.deviceType.toString(),TestDataHandler.sauceSettings.getIosSafariCapabilities().getDeviceType().toLowerCase());
+					sauceOptions.put(SauceCapabilities.appiumVersion.toString(), TestDataHandler.sauceSettings.getIosSafariCapabilitiesTablet().getAppiumVersion());
+					sauceOptions.put(SauceCapabilities.deviceName.toString(), TestDataHandler.sauceSettings.getIosSafariCapabilitiesTablet().getDeviceName());
+					sauceOptions.put(SauceCapabilities.deviceOrientation.toString(), TestDataHandler.sauceSettings.getIosSafariCapabilitiesTablet().getDeviceOrientation());
+					sauceOptions.put(SauceCapabilities.platformVersion.toString(), TestDataHandler.sauceSettings.getIosSafariCapabilitiesTablet().getPlatformVersion());
+					sauceOptions.put(SauceCapabilities.platformName.toString(), TestDataHandler.sauceSettings.getIosSafariCapabilitiesTablet().getPlatformName());
+				}else{
+					sauceOptions.put(SauceCapabilities.appiumVersion.toString(), TestDataHandler.sauceSettings.getIosSafariCapabilities().getAppiumVersion());
+					sauceOptions.put(SauceCapabilities.deviceName.toString(), TestDataHandler.sauceSettings.getIosSafariCapabilities().getDeviceName());
+					sauceOptions.put(SauceCapabilities.deviceOrientation.toString(), TestDataHandler.sauceSettings.getIosSafariCapabilities().getDeviceOrientation());
+					sauceOptions.put(SauceCapabilities.platformVersion.toString(), TestDataHandler.sauceSettings.getIosSafariCapabilities().getPlatformVersion());
+					sauceOptions.put(SauceCapabilities.platformName.toString(), TestDataHandler.sauceSettings.getIosSafariCapabilities().getPlatformName());
 				}
 				break;
 		}

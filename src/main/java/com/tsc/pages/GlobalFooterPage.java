@@ -1,11 +1,9 @@
 package com.tsc.pages;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
@@ -19,6 +17,7 @@ public class GlobalFooterPage extends BasePage {
 	public GlobalFooterPage(WebDriver driver) {
 		super(driver);
 	}
+	Map<String,String> hashMap = new HashMap<>();
 
 	// Credit Card
 	@FindBy(xpath = "//div[@class='Footer']//div[@class='custom-footer']//a[contains(@href,'creditcard')]/parent::div")
@@ -377,7 +376,7 @@ public class GlobalFooterPage extends BasePage {
 	@FindBy(xpath="//div[@class='Middle']//div[contains(@class,'find-channel')]//*[@class='section-title']")
 	public WebElement lblFindCableChannelTitle;
 
-	@FindBy(xpath="//div[contains(@Class,' tsc-forms')]//div[@Class='clearfix']//div/p[contains(text(),'Channel')]")
+	@FindBy(xpath="//div[@Class='clearfix']//div/p[contains(text(),'Channel')]")
 	public WebElement useourchannelfinder;
 
 	@FindBy(xpath="//div[@class='Middle']//div[contains(@class,'find-channel')]//h4")
@@ -473,7 +472,7 @@ public class GlobalFooterPage extends BasePage {
 	/**
 	 * This method is to remove protocal headings(http/https)
 	 *
-	 * @param String lsUrl: input Url
+	 * @param - String lsUrl: input Url
 	 * @return Url
 	 * @author Wei.Li
 	 */
@@ -492,8 +491,8 @@ public class GlobalFooterPage extends BasePage {
 	/**
 	 * This method is to verify the url after clicking element.
 	 *
-	 * @param WebElement element: input element
-	 * @param String     lsExpectedUrl: expected Url
+	 * @param- WebElement element: input element
+	 * @param- String     lsExpectedUrl: expected Url
 	 * @return true/false
 	 * @author Wei.Li
 	 */
@@ -509,8 +508,8 @@ public class GlobalFooterPage extends BasePage {
 	/**
 	 * This method is to get expected Url from yml file.
 	 *
-	 * @param List<String> lstSocialMedia: the Url from yml file
-	 * @param String       lsSpecificMediaName: input media name, i.e.,
+	 * @param- List<String> lstSocialMedia: the Url from yml file
+	 * @param- String       lsSpecificMediaName: input media name, i.e.,
 	 *                     "Facebook","Twitter","Instagram","Youtube","Pinterest"
 	 * @return String
 	 * @author Wei.Li
@@ -527,9 +526,9 @@ public class GlobalFooterPage extends BasePage {
 	/**
 	 * This method is to get the link from yml file.
 	 *
-	 * @param List<String> lstNameAndLink: the list from yml file
-	 * @param String       lsSpecificName: input name
-	 * @param boolean      bEnglish: true for English while false for French
+	 * @param- List<String> lstNameAndLink: the list from yml file
+	 * @param- String       lsSpecificName: input name
+	 * @param- boolean      bEnglish: true for English while false for French
 	 * @return String: note that the empty string means not found
 	 * @author Wei.Li
 	 */
@@ -555,8 +554,8 @@ public class GlobalFooterPage extends BasePage {
 		return "";
 	}
 
-	public HashMap<String,String> getTestDataWithSpecificName(List<List<String>> lstNameAndLink, String lsSpecificName, boolean bEnglish) {
-		HashMap<String,String> hashMap = new HashMap<>();
+	public Map<String,String> getTestDataWithSpecificName(List<List<String>> lstNameAndLink, String lsSpecificName, boolean bEnglish) {
+		//HashMap<String,String> hashMap = new HashMap<>();
 		String lsCompare=null;
 		for (List<String> lstItem : lstNameAndLink) {
 			if (bEnglish) {
@@ -571,6 +570,7 @@ public class GlobalFooterPage extends BasePage {
 					hashMap.put("Link",this.removeLastSlashFromUrl(lstItem.get(2).trim()));
 				}
 				hashMap.put("Title",lstItem.get(3));
+				hashMap.put("parent",lstItem.get(4));
 			}
 		}
 		return hashMap;
@@ -578,8 +578,8 @@ public class GlobalFooterPage extends BasePage {
 
 	/**
 	 * This method is to verify if equal to a UTF-8 encoding text.
-	 * @param List<String> lstNameAndLink: the list from yml file
-	 * @param String       lsSpecificName: input text
+	 * @param- List<String> lstNameAndLink: the list from yml file
+	 * @param- String       lsSpecificName: input text
 	 * @return true/false
 	 * @author Wei.Li
 	 */
@@ -596,8 +596,8 @@ public class GlobalFooterPage extends BasePage {
 	/**
 	 * This method is to get the French name from yml file.
 	 *
-	 * @param List<String> lstNameAndLink: the list from yml file
-	 * @param String       lsSpecificName: input name
+	 * @param- List<String> lstNameAndLink: the list from yml file
+	 * @param- String       lsSpecificName: input name
 	 * @return French name: note that the empty string means not found
 	 * @author Wei.Li
 	 */
@@ -614,8 +614,8 @@ public class GlobalFooterPage extends BasePage {
 	/**
 	 * This method is to get the English name from yml file.
 	 *
-	 * @param List<String> lstNameAndLink: the list from yml file
-	 * @param String       lsSpecificName: input name
+	 * @param- List<String> lstNameAndLink: the list from yml file
+	 * @param- String       lsSpecificName: input name
 	 * @return French name: note that the empty string means not found
 	 * @author Wei.Li
 	 */
@@ -633,8 +633,8 @@ public class GlobalFooterPage extends BasePage {
 	/**
 	 * This method is to compare the link in front page and the one in yml file.
 	 *
-	 * @param String lsCurrentLink: the link in front page
-	 * @param String lsYmlLink: the link in yml file
+	 * @param- String lsCurrentLink: the link in front page
+	 * @param- String lsYmlLink: the link in yml file
 	 * @return true/false
 	 * @author Wei.Li
 	 */
@@ -660,6 +660,7 @@ public class GlobalFooterPage extends BasePage {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkLanguage);
 		this.getReusableActionsInstance().waitForElementVisibility(this.lnkLanguage,  60);		
 		String lsLanguage=this.lnkLanguage.getText().trim();
+		getReusableActionsInstance().staticWait(5000);
 		this.lnkLanguage.click();
 		this.waitForPageLoading();
 		getReusableActionsInstance().staticWait(5000);
@@ -671,11 +672,11 @@ public class GlobalFooterPage extends BasePage {
 	/**
 	 * This method is to get the element for specific service name.
 	 *
-	 * @param String lsService: the service name
+	 * @param- String lsService: the service name
 	 * @return WebElement
 	 * @author Wei.Li
 	 */
-	public WebElement getServiceWebElement(String lsService) {
+	public WebElement getServiceWebElement(String lsService, String footerSection) {
 		WebElement selectedItem = this.getElementFromList(this.lnkTSCCustomerHubAllLinks, lsService);
 		if (selectedItem == null) {
 			selectedItem = this.getElementFromList(this.lnkAboutTSCAllLinks, lsService);
@@ -686,14 +687,14 @@ public class GlobalFooterPage extends BasePage {
 	/**
 	 * This method is to go to a specific service.
 	 *
-	 * @param String     lsService: the service name
-	 * @param WebElement lblIndicator: page loading indicator
+	 * @param- String     lsService: the service name
+	 * @param- WebElement lblIndicator: page loading indicator
 	 * @return true/false
 	 * @author Wei.Li
 	 */
-	public boolean goToService(String lsService, WebElement lblIndicator) {
+	public boolean goToService(String lsService, WebElement lblIndicator,String section) {
 		String lsUrl=this.URL();
-		WebElement selectedItem = this.getServiceWebElement(lsService);
+		WebElement selectedItem = this.getServiceWebElement(lsService,section);
 		if (selectedItem == null) {
 			return false;
 		}
@@ -710,13 +711,13 @@ public class GlobalFooterPage extends BasePage {
 	/**
 	 * This method is to compare the url in the new window to the expected Url.
 	 *
-	 * @param String lsService: the service name
-	 * @param String lsExpectedUrl: expected Url
+	 * @param- String lsService: the service name
+	 * @param- String lsExpectedUrl: expected Url
 	 * @return true/false
 	 * @author Wei.Li
 	 */
-	public boolean compareUrlInNewWindow(String lsService, String lsExpectedUrl) {
-		WebElement selectedItem = this.getServiceWebElement(lsService);
+	public boolean compareUrlInNewWindow(String lsService, String lsExpectedUrl,String section) {
+		WebElement selectedItem = this.getServiceWebElement(lsService,section);
 		if (selectedItem == null) {
 			return false;
 		}
@@ -724,6 +725,10 @@ public class GlobalFooterPage extends BasePage {
 		String lsMainWindowHandle = this.getDriver().getWindowHandle();
 		getReusableActionsInstance().javascriptScrollByVisibleElement(selectedItem);
 		selectedItem.click();
+		if(System.getProperty("Device").contains("Mobile") || System.getProperty("Device").contains("Tablet")){
+			getReusableActionsInstance().staticWait(5000);
+			getDriver().navigate().refresh();
+		}
 		getReusableActionsInstance().waitForNumberOfWindowsToBe(2, 90);
 		Set<String> lstWindowHandle = this.getDriver().getWindowHandles();
 		for (String windowHandle : lstWindowHandle) {
@@ -744,7 +749,7 @@ public class GlobalFooterPage extends BasePage {
 	 * This method is to verify Links for FrequentlyAskedQuestions in
 	 * CustomerService Page Objects.
 	 *
-	 * @param WebElement element: the FrequentlyAskedQuestions link
+	 * @param- WebElement element: the FrequentlyAskedQuestions link
 	 * @author Wei.Li
 	 */
 	public void verifyLinksForFrequentlyAskedQuestionsInCustomerServicePageObject(WebElement element) {
@@ -775,7 +780,7 @@ public class GlobalFooterPage extends BasePage {
 	/**
 	 * This method is to verify existence of element list.
 	 *
-	 * @param List<WebElement> elementList: input element list
+	 * @param- List<WebElement> elementList: input element list
 	 * @return void
 	 * @author Wei.Li
 	 */
@@ -909,9 +914,9 @@ public class GlobalFooterPage extends BasePage {
 
 	/**
 	 * This method is to verify Service object section titles.
-	 * @param List<WebElement> lstSection: Section element list
-	 * @param List<String> lstExpectedTitle: expected section title list
-	 * @param boolean bFullMatch: Decide fully matched or partially matched
+	 * @param- List<WebElement> lstSection: Section element list
+	 * @param- List<String> lstExpectedTitle: expected section title list
+	 * @param- boolean bFullMatch: Decide fully matched or partially matched
 	 * @author Wei.Li
 	 */
 	public void verifyServiceObjectSectionTitle(List<WebElement> lstSection,List<String> lstExpectedTitle,boolean bFullMatch) {
@@ -1105,6 +1110,7 @@ public class GlobalFooterPage extends BasePage {
 		select.selectByIndex(0);
 		for(int i=0;i<elements.size();i++) {
 			String alphabetPath="(//div[contains(@class,'lettersDiv')]//div//span)["+counter+"]";
+			waitForCondition(Driver->{return elements.get(0).isEnabled();},10000);
 			elements.get(i).click();
 			String alphabetLetterValue=getDriver().findElement(By.xpath(alphabetPath)).getText();
 			reporter.reportLog("Selected Alphabet is "+alphabetLetterValue+"");
@@ -1114,7 +1120,7 @@ public class GlobalFooterPage extends BasePage {
 			List<WebElement> alphabetPathElements=getDriver().findElements(By.xpath(alphabetPathElementsPath));
 			for(int j=0 ;j<alphabetPathElements.size();j++) {
 				String brandName=alphabetPathElements.get(j).getText();
-				String firstLetter=brandName.substring(0,1);
+				String firstLetter=convertToASCII(brandName.substring(0,1)).toUpperCase();
 				reporter.softAssert(alphabetLetterValue.equalsIgnoreCase(firstLetter),"The Brand  first alphabet is "+firstLetter+" and Brand Name is "+brandName+"  ","The Brand  first alphabet is "+firstLetter+" and Brand Name is "+brandName+" is not matching.");
 				String brandLink=alphabetPathElements.get(j).getAttribute("href");
 				reporter.softAssert(alphabetPathElements.get(j).getAttribute("href")!=null,"The Brand URL of "+brandLink+" exists","The Brand URL of "+brandLink+" doesn't exists");

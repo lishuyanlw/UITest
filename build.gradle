@@ -28,9 +28,13 @@ dependencies {
     implementation 'org.testng:testng:6.14.3'
     implementation 'automation-utils:common-utils:latest.release'
     implementation 'org.yaml:snakeyaml:1.24'
-    // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.4'
-
+    implementation (group: 'io.rest-assured', name: 'rest-assured', version: '4.4.0'){
+        exclude group: 'io.appium', module: 'java-client'
+    }
+    implementation (group: 'io.rest-assured', name: 'json-schema-validator', version: '4.4.0')
+    //Below guava dependency is needed to resolve wait.until() function issue for Expected Condition used in BasePage class
+    implementation group: 'com.google.guava', name: 'guava', version: '31.0.1-jre'
 }
 
 def sauce = [
@@ -43,12 +47,13 @@ def getDate() {
 }
 
 def getTunnelName() {
-//    def tunnelName = "TSCWF-WebAutomation" + System.getenv('BUILD_TIMESTAMP')
-//    tunnelName = tunnelName.replaceAll(":","")
-//    tunnelName = tunnelName.replaceAll(" ","")
-//    return "DigitalQETunnel"
+    /*def tunnelName = "TSCWF-WebAutomation" + System.getenv('BUILD_TIMESTAMP')
+    tunnelName = tunnelName.replaceAll(":","")*/
+
+    //return "DigitalQETunnel"
     return "Digital_Mobile_QA"
     //return "TSCWF_Automation_Tunnel"
+    //return "DigitalMobileQE"
 }
 
 //This method is used when we use parentTunnelOwner system property in sauce test below
@@ -82,8 +87,8 @@ task "sauceTest"(type: Test) {
     systemProperty 'Device', test_device
     systemProperty 'Language', test_language
     systemProperty 'TunnelRequired', TunnelRequired
-    systemProperty 'Device',test_device
     systemProperty 'TunnelName', tunnelName
+    systemProperty 'parentTunnelOwner', "DigitalQAWebAutomation"
     //Below system property is needed when we will create tunnel manually and use that to run test in sauce-lab
     //Test will be under DigitalQAWebAutomation owner in sauce-lab
     //systemProperty 'parentTunnelOwner', parentTunnelOwner()
@@ -112,8 +117,8 @@ task "localTest"(type: Test) {
     systemProperty 'Browser', test_browser
     systemProperty 'Device', test_device
     systemProperty 'Language', test_language
+    systemProperty 'Device', test_device
     systemProperty 'chromeMobileDevice', chromeMobileDevice
-    systemProperty 'Device',test_device
     systemProperties(System.getProperties())
     outputs.upToDateWhen { false }  // Always run tests
 

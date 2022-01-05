@@ -265,6 +265,34 @@ public class ProductResultsPage extends BasePage{
 
 
 	/**
+	 * This method will load search result popup after entering search keyword
+	 * @return true/false
+	 * @author Wei.Li
+	 */
+	public void getSearchResultPopUpWindowLoad(String searchKeyword) {
+		GlobalHeaderPage globalHeader=new GlobalHeaderPage(this.getDriver());
+		//this.getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeader.searchBox);
+		//this.clearContent(globalHeader.searchBox);
+		//char[] inputString = searchKeyword.toCharArray();
+		waitForCondition(Driver->{
+			return globalHeader.searchBox.isDisplayed();
+		},90000);
+		String[] data = searchKeyword.codePoints().mapToObj(cp->new String(Character.toChars(cp))).toArray(size->new String[size]);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeader.searchBox);
+		this.getReusableActionsInstance().clickIfAvailable(globalHeader.searchBox,3000);
+		for(String inputText:data){
+			globalHeader.searchBox.sendKeys(inputText);
+			this.getReusableActionsInstance().staticWait(1000);
+		}
+		//globalHeader.searchBox.sendKeys(searchKeyword);
+		//globalHeader.btnSearchSubmit.click();
+		this.getReusableActionsInstance().staticWait(3000);
+		waitForCondition(Driver->{
+			return this.searchResultSection.isDisplayed();
+		},90000);
+	}
+
+	/**
 	 * This method will load product searching result.
 	 * @return true/false
 	 * @author Wei.Li
