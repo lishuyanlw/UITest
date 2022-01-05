@@ -186,8 +186,8 @@ public class BaseTest {
 		setImplictWait(getDriver(), 60);
 		//Refreshing browser so that Access Denied issue is resolved from Sauce Lab
 		getglobalheaderPageThreadLocal().getReusableActionsInstance().staticWait(3000);
-		if(!System.getProperty("Browser").toLowerCase().contains("safari"))
-			getDriver().navigate().refresh();
+		//if(!System.getProperty("Browser").toLowerCase().contains("safari"))
+		getDriver().navigate().refresh();
 	}
 
 	

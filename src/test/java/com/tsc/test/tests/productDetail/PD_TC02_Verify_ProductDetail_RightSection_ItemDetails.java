@@ -30,7 +30,7 @@ public class PD_TC02_Verify_ProductDetail_RightSection_ItemDetails extends BaseT
 	//getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0));
 	reporter.reportLog("Switch to ProductDetail page");
 	String lsProductNumber,lsUrl;
-	if(getProductResultsPageThreadLocal().goToFirstProductItem("526457")) {
+	if(getProductResultsPageThreadLocal().goToFirstProductItem("522809")) {
 		reporter.reportLog("Verify URL");
 		lsProductNumber=getProductResultsPageThreadLocal().selectedProductItem.productConvertedNumber;
 		lsUrl=basePage.URL();

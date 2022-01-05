@@ -31,7 +31,12 @@ public class PD_TC03_Verify_ProductDetail_StickyTab extends BaseTest{
 	//getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0));
 	reporter.reportLog("Switch to ProductDetail page");
 	String lsProductNumber,lsUrl;
-	if(getProductResultsPageThreadLocal().goToFirstProductItem("526457")) {
+	/*
+	"Have to look as how to get product no that has See More Button available as nothing I can find in response from api that can be used
+	e.g. 402783 - this has See More button present on screen. ProductReviewCount is also to be considered for this test
+	404791 - See More Text in response but not screen
+	 */
+	if(getProductResultsPageThreadLocal().goToFirstProductItem("402783")) {
 		reporter.reportLog("Verify URL");
 		lsProductNumber=getProductResultsPageThreadLocal().selectedProductItem.productConvertedNumber;
 		lsUrl=basePage.URL();

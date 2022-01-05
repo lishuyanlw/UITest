@@ -30,7 +30,7 @@ public class PD_TC04_Verify_ProductDetail_ProductStyle extends BaseTest{
 	reporter.reportLog("Switch to ProductDetail page");
 	String lsProductNumber,lsUrl;
 	
-	if(getProductResultsPageThreadLocal().goToFirstProductItem("526457")) {
+	if(getProductResultsPageThreadLocal().goToFirstProductItem("402783")) {
 		reporter.reportLog("Verify URL");
 		lsProductNumber=getProductResultsPageThreadLocal().selectedProductItem.productConvertedNumber;
 		lsUrl=basePage.URL();

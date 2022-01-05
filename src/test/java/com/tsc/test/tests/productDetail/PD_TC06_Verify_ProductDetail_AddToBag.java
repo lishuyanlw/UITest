@@ -31,7 +31,7 @@ public class PD_TC06_Verify_ProductDetail_AddToBag extends BaseTest{
 	reporter.reportLog("Switch to ProductDetail page");
 	String lsProductNumber,lsUrl;
 	
-	if(getProductResultsPageThreadLocal().goToFirstProductItem("526457")) {
+	if(getProductResultsPageThreadLocal().goToFirstProductItem("402783")) {
 		String lbl_AddToBagPopupWindowTitle=TestDataHandler.constantData.getSearchResultPage().getLbl_AddToBagPopupWindowTitle();
 		reporter.reportLog("Verify URL");
 		lsProductNumber=getProductResultsPageThreadLocal().selectedProductItem.productConvertedNumber;

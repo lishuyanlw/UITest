@@ -34,7 +34,8 @@ public class PD_TC08_Verify_ProductDetail_SoldOut extends BaseTest{
 	reporter.reportLog("Switch to ProductDetail page");
 	String lsProductNumber,lsUrl;
 	
-	if(getProductResultsPageThreadLocal().goToFirstProductItem("485939")) {
+	//if(getProductResultsPageThreadLocal().goToFirstProductItem("485939")) {
+	if(getProductResultsPageThreadLocal().goToFirstProductItem("402783")) {
 		reporter.reportLog("Verify URL");		
 		lsProductNumber=getProductResultsPageThreadLocal().selectedProductItem.productConvertedNumber;
 		lsUrl=basePage.URL();

@@ -142,7 +142,7 @@ public class ProductDetailPage extends BasePage {
 	//Style part
 	@FindBy(xpath = "//form[@id='pdpForm']")
 	public WebElement cntProductSizeJudgeIndicator;
-	
+
 	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@class='style-container']")
 	public WebElement cntProductStyleSection;
 	
@@ -758,9 +758,10 @@ public class ProductDetailPage extends BasePage {
 	 */
 	public String getAutoPlayVideoToolTipPopupMsg() {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkAutoPlayVideoToolTip);
-		this.getReusableActionsInstance().scrollToElement(this.lnkAutoPlayVideoToolTip);
-		this.getReusableActionsInstance().clickIfAvailable(this.lnkAutoPlayVideoToolTip);
-		this.getReusableActionsInstance().staticWait(1000);
+		//this.getReusableActionsInstance().scrollToElement(this.lnkAutoPlayVideoToolTip);
+		//this.getReusableActionsInstance().clickIfAvailable(this.lnkAutoPlayVideoToolTip);
+		this.mouseHoverJScript(this.lnkAutoPlayVideoToolTip);
+		this.getReusableActionsInstance().staticWait(2000);
 		
 		String lsText=this.lblAutoPlayVideoToolTipPopupMsg.getText().trim();
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnAutoPlayVideo);
@@ -788,11 +789,16 @@ public class ProductDetailPage extends BasePage {
 	}
 	
 	public boolean judgeQuantityDropdownAvailable() {
-		return !this.getElementText(this.cntProductSizeJudgeIndicator.findElement(By.xpath(".//div[@class='qty-container']"))).isEmpty();		
+		return this.checkChildElementExistingByTagName(this.selectQuantityOption,"option");
+		//return !this.getElementText(this.cntProductSizeJudgeIndicator.findElement(By.xpath(".//div[@class='qty-container']"))).isEmpty();
 	}
 	
 	public boolean judgeAddToBagButtonAvailable() {
-		return this.checkChildElementExistingByAttribute(this.cntProductSizeJudgeIndicator, "id", "divAddToCart");		
+		String buttonState = this.getChildElementAttribute(this.btnAddToBag,"enabled");
+		if(buttonState.equalsIgnoreCase("false"))
+			return true;
+		return false;
+		//return this.checkChildElementExistingByAttribute(this.cntProductSizeJudgeIndicator, "id", "divAddToCart");
 	}
 	
 	public boolean judgeTeaserInfoDisplaying() {
@@ -1060,7 +1066,7 @@ public class ProductDetailPage extends BasePage {
 	
 	/**
 	 * Method to find image name in Thumbnail or Zoom image path
-	 * @param String lsPath: path String
+	 * @param-String lsPath: path String
 	 * @return String	  
 	 * @author Wei.Li
 	 */
@@ -1120,7 +1126,7 @@ public class ProductDetailPage extends BasePage {
 	
 	/**
 	 * Method to choose review sorting option
-	 * @param String lsReviewSortingOption: review option
+	 * @param-String lsReviewSortingOption: review option
 	 * @return void
 	 * @author Wei.Li
 	 */
@@ -1179,7 +1185,7 @@ public class ProductDetailPage extends BasePage {
 	
 	/**
 	 * Method to check Review rate sorting function
-	 * @param boolean bHighestRateFirst: true for Highest rated sorting while false for Lowest rated sorting
+	 * @param-boolean bHighestRateFirst: true for Highest rated sorting while false for Lowest rated sorting
 	 * @return String	  
 	 * @author Wei.Li
 	 */
@@ -1230,9 +1236,11 @@ public class ProductDetailPage extends BasePage {
 	 */
 	public void openTrueFitIFrame() {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkProductTrueFitLink);
-		this.getReusableActionsInstance().scrollToElement(this.lnkProductTrueFitLink);
-		this.getReusableActionsInstance().staticWait(1000);
-		this.getReusableActionsInstance().clickIfAvailable(this.lnkProductTrueFitLink);
+		//this.getReusableActionsInstance().scrollToElement(this.lnkProductTrueFitLink);
+		this.getReusableActionsInstance().staticWait(2000);
+		JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
+		jse.executeScript("arguments[0].click();", this.lnkProductTrueFitLink);
+		//this.getReusableActionsInstance().clickIfAvailable(this.lnkProductTrueFitLink);
 		//this.lnkProductTrueFitLink.click();
 		this.waitForCondition(Driver->{return this.iframeProductTrueFitLoadingIndicator.getAttribute("style").contains("display: block");}, 30000);
 		//this.waitForCondition(Driver->{return this.imgProductTrueFitIframeHeaderLogo.isDisplayed();}, 30000);
@@ -1519,7 +1527,7 @@ public class ProductDetailPage extends BasePage {
 	
 	/**
 	 * Method to verify the product details in Add to Bag popup window	
-	 * @param String lbl_AddToBagPopupWindowTitle: the expected title
+	 * @param-String lbl_AddToBagPopupWindowTitle: the expected title
 	 * @return void	  
 	 * @author Wei.Li
 	 */
@@ -1527,7 +1535,7 @@ public class ProductDetailPage extends BasePage {
 		openAddToBagPopupWindow();
 		
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAddToBagPopupWindowTitle);
-		reporter.softAssert(this.lblAddToBagPopupWindowTitle.getText().matches(lbl_AddToBagPopupWindowTitle),"The title of Add to Bag popup window is matching to '"+lbl_AddToBagPopupWindowTitle+"' pattern","The title of Add to Bag popup window is not matching to '"+lbl_AddToBagPopupWindowTitle+"' pattern");
+		reporter.softAssert(this.lblAddToBagPopupWindowTitle.getText().toUpperCase().matches(lbl_AddToBagPopupWindowTitle.toUpperCase()),"The title of Add to Bag popup window is matching to '"+lbl_AddToBagPopupWindowTitle+"' pattern","The title of Add to Bag popup window is not matching to '"+lbl_AddToBagPopupWindowTitle+"' pattern");
 		
 		if(checkProductBadgeInAddToBagPopupDisplaying()) {
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.imgAddToBagPopupWindowDetailsProductBadge);
@@ -1611,7 +1619,7 @@ public class ProductDetailPage extends BasePage {
 	
 	/**
 	 * Method to verify the url while clicking BreadCrumb Navigation.
-	 * @param String lsBackUrl: the expected Url
+	 * @param-String lsBackUrl: the expected Url
 	 * @return void	  
 	 * @author Wei.Li
 	 */
@@ -1812,10 +1820,25 @@ public class ProductDetailPage extends BasePage {
 	}
 	
 	public void verifyProductSoldOut() {
+		WebElement item;
+		if(this.checkChildElementExistingByTagName(this.selectQuantityOption,"option")){
+			int listSize = this.lstSizeOption.size();
+			for(int counter=0;counter<listSize;counter++){
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectSizeOption);
+				this.getReusableActionsInstance().clickIfAvailable(this.selectSizeOption);
+				this.getReusableActionsInstance().staticWait(100);
+				item=this.lstSizeOption.get(counter);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+				item.click();
+				this.getReusableActionsInstance().staticWait(100);
+				if(!this.checkChildElementExistingByTagName(this.selectQuantityOption,"option"))
+					break;
+			}
+		}
 		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblSoldOut),"The Soldout message is displaying correctly","The Soldout message is not displaying correctly");
 		reporter.softAssert(!this.getElementText(this.lblSoldOut).isEmpty(),"The Soldout message is not empty","The Soldout message is empty");
 		reporter.softAssert(!this.judgeQuantityDropdownAvailable(),"The Quantity Dropdown is not displaying","The Quantity Dropdown is still displaying");
-		reporter.softAssert(!this.judgeAddToBagButtonAvailable(),"The Add to Bag button is not displaying","The Add to Bag button is still displaying");
+		reporter.softAssert(this.judgeAddToBagButtonAvailable(),"The Add to Bag button is not displaying","The Add to Bag button is still displaying");
 	}
 	
 	public void verifyCurrentZoomImage() {
