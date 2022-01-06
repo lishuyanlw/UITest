@@ -765,6 +765,133 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 	}
 	
 	@Override
+	public void verifyInfoLinkageWithPDP(ProductDetailPage pdp) {
+		List<WebElement> optionList;
+		WebElement element;
+		String lsText,lsSelectedTitle,lsType,lsButtonTextBeforeClickingSize,lsButtonTextBeforeClickingColor;
+		
+		this.selectedProductItem.productSelectedSize="";
+		this.selectedProductItem.productSelectedColor="";
+		
+		element=this.productResultList.get(0).findElement(byProductItemSelectSizeOrColor);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+		this.getReusableActionsInstance().clickIfAvailable(element);
+		this.getReusableActionsInstance().waitForElementVisibility(this.btnProductGoToDetails,20);
+		
+		lsType=this.judgeProductOptionType();	
+		//If all displayed size or color are disabled
+		if(!checkProductSizeOptionEnabledItemAvailableWithMouseHover()||!checkProductColorOptionEnabledItemAvailableWithMouseHover()) {
+			reporter.reportLog("No enabled size/color opion available");
+			return;
+		}
+		
+		//To check selected size
+		if(lsType.contains("Size")) {	
+			if(checkProductSizeOptionEnabledItemAvailableWithMouseHover()) {
+				optionList=this.getDriver().findElements(byProductOptionSizeItemEnabledList);
+				element=optionList.get(optionList.size()-1);
+				lsText=this.getElementInnerText(element).replace("Size", "").trim();
+				lsButtonTextBeforeClickingSize=this.getElementInnerText(this.getDriver().findElement(byProductGoToDetails));
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+				this.getReusableActionsInstance().clickIfAvailable(element);
+				this.waitForCondition(Driver->{return !lsButtonTextBeforeClickingSize.equalsIgnoreCase(this.getElementInnerText(this.getDriver().findElement(byProductGoToDetails)));}, 20000);
+				this.getReusableActionsInstance().staticWait(3000);	
+				element=this.getDriver().findElement(byProductOptionSizeSelectedSize);
+				lsSelectedTitle=this.getElementInnerText(element);
+				this.selectedProductItem.productSelectedSize=lsSelectedTitle;
+			}						
+		}
+		
+		//To check select color
+		if(lsType.contains("Colour")) {	
+			if(checkProductColorOptionEnabledItemAvailableWithMouseHover()) {			
+				optionList=this.getDriver().findElements(byProductOptionColorItemEnabledList);
+				element=optionList.get(optionList.size()-1);
+				lsText=this.getElementInnerText(element).replace("colours", "").trim();
+				lsButtonTextBeforeClickingColor=this.getElementInnerText(this.getDriver().findElement(byProductGoToDetails));
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+				this.getReusableActionsInstance().clickIfAvailable(element);
+				this.waitForCondition(Driver->{return !lsButtonTextBeforeClickingColor.equalsIgnoreCase(this.getElementInnerText(this.getDriver().findElement(byProductGoToDetails)));}, 20000);
+				this.getReusableActionsInstance().staticWait(3000);	
+				element=this.getDriver().findElement(byProductOptionColorSelectedColor);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+				lsSelectedTitle=element.getText().trim();
+				this.selectedProductItem.productSelectedColor=lsSelectedTitle;							
+			}						
+		}
+				
+		element =this.getDriver().findElement(this.byProductGoToDetails);		
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+		this.getReusableActionsInstance().clickIfAvailable(element);
+		this.waitForPDPPageLoading();
+		
+		String lsProductName=pdp.getElementInnerText(pdp.lblProductName);
+		if(lsProductName.equalsIgnoreCase(this.selectedProductItem.productName)) {
+			reporter.reportLogPass("The product name in PRP is the same as the one displayed in PDP");
+		}
+		else {
+			reporter.reportLogFail("The product name in PRP is not the same as the one displayed in PDP");
+		}
+		
+		if(!this.selectedProductItem.productBrand.isEmpty()) {
+			String lsProductBrand=pdp.getElementInnerText(pdp.lnkBrandName);
+			if(lsProductBrand.equalsIgnoreCase(this.selectedProductItem.productBrand)) {
+				reporter.reportLogPass("The product brand in PRP is the same as the one displayed in PDP");
+			}
+			else {
+				reporter.reportLogFail("The product brand in PRP is not the same as the one displayed in PDP");
+			}
+		}
+		
+		String lsProductNowPrice=pdp.getElementInnerText(pdp.lblProductNowPrice);
+		if(lsProductNowPrice.equalsIgnoreCase(this.selectedProductItem.productNowPrice)) {
+			reporter.reportLogPass("The product NowPrice in PRP is the same as the one displayed in PDP");
+		}
+		else {
+			reporter.reportLogFail("The product NowPrice in PRP is not the same as the one displayed in PDP");
+		}
+		
+		String lsProductWasPrice=pdp.getElementInnerText(pdp.lblProductWasPrice);
+		if(lsProductWasPrice.equalsIgnoreCase(this.selectedProductItem.productWasPrice)) {
+			reporter.reportLogPass("The product WasPrice in PRP is the same as the one displayed in PDP");
+		}
+		else {
+			reporter.reportLogFail("The product WasPrice in PRP is not the same as the one displayed in PDP");
+		}
+		
+		if(!this.selectedProductItem.productSelectedSize.isEmpty()) {	
+			Select sizeOption=new Select(pdp.selectSizeOption);
+			lsSelectedTitle=sizeOption.getFirstSelectedOption().getText().trim();
+			if(lsSelectedTitle.equalsIgnoreCase(this.selectedProductItem.productSelectedSize)) {
+				reporter.reportLogPass("The selected size in PRP is the same as the one displayed in PDP");
+			}
+			else {
+				reporter.reportLogFail("The selected size in PRP is not the same as the one displayed in PDP");
+			}
+		}
+		
+		if(!this.selectedProductItem.productSelectedColor.isEmpty()) {
+			if(pdp.judgeStyleDisplayModeIsDropdownMenu()) {
+				if(this.getElementText(pdp.selectProductStyle).equalsIgnoreCase(this.selectedProductItem.productSelectedColor)) {
+					reporter.reportLogPass("The selected color in PRP is the same as the one displayed in PDP");
+				}
+				else {
+					reporter.reportLogFail("The selected color in PRP is not the same as the one displayed in PDP");
+				}
+			}
+			else {
+				if(this.getElementText(pdp.lblRadioProductStyleTitle).equalsIgnoreCase(this.selectedProductItem.productSelectedColor)) {
+					reporter.reportLogPass("The selected color in PRP is the same as the one displayed in PDP");
+				}
+				else {
+					reporter.reportLogFail("The selected color in PRP is not the same as the one displayed in PDP");
+				}
+			}
+		}
+			
+	}
+	
+	@Override
 	public void verifySearchResultContentWithMouseHover(List<WebElement> productList) {
 		
 	}

@@ -2192,7 +2192,7 @@ public class ProductResultsPage extends BasePage{
 				this.selectedProductItem.productSelectedColor=lsSelectedTitle;
 			}						
 		}	
-		
+				
 		itemContainer.findElement(this.byProductGoToDetails).click();		
 		this.waitForPDPPageLoading();
 		

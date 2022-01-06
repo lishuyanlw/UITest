@@ -14,7 +14,7 @@ import com.tsc.test.base.BaseTest;
 
 public class SR_TC12_Verify_ProductSearchResult_SizeAndColorLinkageWithPDP extends BaseTest{
 	/*
-	 * CER-701
+	 * 
 	 * 
 	 */
 	@Test(groups={"ProductSearch","Regression","Regression_Tablet"})
@@ -25,9 +25,6 @@ public class SR_TC12_Verify_ProductSearchResult_SizeAndColorLinkageWithPDP exten
 	reporter.reportLog("ProductSearch Page");
 	
 	List<List<String>> lsKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_SearchKeyword_DropDown();
-	List<String> lstSearchResultMessage=TestDataHandler.constantData.getSearchResultPage().getLst_SearchResultMessage();
-	String lsSearchResultPageDefaultSetting=TestDataHandler.constantData.getSearchResultPage().getLbl_SearchResultPageDefaultSetting();
-	String lsMsg,lsTestModel;
 	
 	if(getProductResultsPageThreadLocal().findProductItemWithPreConditions(lsKeywordList.get(0).get(0))) {
 		getProductResultsPageThreadLocal().verifyInfoLinkageWithPDP(getProductDetailPageThreadLocal());	
