@@ -471,10 +471,25 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
 
     @Override
     public void verifyProductSoldOut() {
-        reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblSoldOutMessage),"The Soldout message is displaying correctly","The Soldout message is not displaying correctly");
-        reporter.softAssert(!this.getElementText(this.lblSoldOutMessage).isEmpty(),"The Soldout message is not empty","The Soldout message is empty");
-        reporter.softAssert(this.judgeQuantityDropdownAvailable(),"The Quantity Dropdown is not displaying","The Quantity Dropdown is still displaying");
-        reporter.softAssert(!this.judgeAddToBagButtonAvailable(),"The Add to Bag button is not displaying","The Add to Bag button is still displaying");
+        WebElement item;
+        if(this.checkChildElementExistingByTagName(this.selectQuantityOption,"option")){
+            int listSize = this.lstSizeOption.size();
+            for(int counter=0;counter<listSize;counter++){
+                this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectSizeOption);
+                this.getReusableActionsInstance().clickIfAvailable(this.selectSizeOption);
+                this.getReusableActionsInstance().staticWait(100);
+                item=this.lstSizeOption.get(counter);
+                this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+                item.click();
+                this.getReusableActionsInstance().staticWait(100);
+                if(!this.checkChildElementExistingByTagName(this.selectQuantityOption,"option"))
+                    break;
+            }
+        }
+        reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblSoldOut),"The Soldout message is displaying correctly","The Soldout message is not displaying correctly");
+        reporter.softAssert(!this.getElementText(this.lblSoldOut).isEmpty(),"The Soldout message is not empty","The Soldout message is empty");
+        reporter.softAssert(!this.judgeQuantityDropdownAvailable(),"The Quantity Dropdown is not displaying","The Quantity Dropdown is still displaying");
+        reporter.softAssert(this.judgeAddToBagButtonAvailable(),"The Add to Bag button is not displaying","The Add to Bag button is still displaying");
     }
 
     @Override
@@ -487,6 +502,12 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
     @Override
     public void tellYourFriendsWindowClose(){
         reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.btnTellYourFriendsWindowClose),"The back button of TellYourFriends Window is displaying correctly","The back button of TellYourFriends Window is not displaying correctly");
+    }
+
+    @Override
+    public void closeEmailPopUpWindow(){
+        this.getReusableActionsInstance().clickIfAvailable(this.btnTellYourFriendsWindowClose);
+        this.getReusableActionsInstance().staticWait(1000);
     }
 
 }

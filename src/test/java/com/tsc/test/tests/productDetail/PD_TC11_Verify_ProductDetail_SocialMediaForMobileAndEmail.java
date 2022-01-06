@@ -50,7 +50,12 @@ public class PD_TC11_Verify_ProductDetail_SocialMediaForMobileAndEmail extends B
 					
 		reporter.reportLog("Verify TellYourFriends Sent Window Content");	
 		getProductDetailPageThreadLocal().verifyTellYourFriendsSentWindowContent(lsTellYourFriendsSentMessage);
-	
+		getProductDetailPageThreadLocal().closeEmailPopUpWindow();
+
+		if(getProductDetailPageThreadLocal().getShoppingCartNumber()>0){
+			reporter.reportLog("Removing Items from shopping Cart after test");
+			getShoppingCartThreadLocal().removeItemsAddedToShoppingCart();
+		}
 	}
 	else {
 		reporter.reportLogFail("Unable to find the product item");

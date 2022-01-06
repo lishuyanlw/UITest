@@ -45,6 +45,7 @@ public class BaseTest {
 	protected static final ThreadLocal<LoginPage> loginPageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<String> TestDeviceThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<ApiResponse> apiResponseThreadLocal = new ThreadLocal<>();
+	protected static final ThreadLocal<ShoppingCart> shoppingCartThreadLocal = new ThreadLocal<>();
 
 	public BaseTest() {
 		browserDrivers = new BrowserDrivers();
@@ -56,6 +57,9 @@ public class BaseTest {
 	public static Reporter getReporter() {
 		return reporter;
 	}
+
+	//@return shoppingCartThreadLocal
+	public static ShoppingCart getShoppingCartThreadLocal() {return shoppingCartThreadLocal.get();}
 
 	//@return apiResponseThreadLocal
 	public static ApiResponse getApiResponseThreadLocal() {return apiResponseThreadLocal.get();}
@@ -103,6 +107,7 @@ public class BaseTest {
 		loginPageThreadLocal.set(new LoginPage(getDriver()));
 		reporter = new ExtentTestManager(getDriver());
 		apiResponseThreadLocal.set(new ApiResponse());
+		shoppingCartThreadLocal.set(new ShoppingCart(getDriver()));
 	}
 
 	private void init_Mobile() throws IOException {
@@ -113,6 +118,7 @@ public class BaseTest {
 		productDetailPageThreadLocal.set(new ProductDetailPage_Mobile(getDriver()));
 		reporter = new ExtentTestManager(getDriver());
 		apiResponseThreadLocal.set(new ApiResponse());
+		shoppingCartThreadLocal.set(new ShoppingCart(getDriver()));
 	}
 
 	private void init_Tablet() throws IOException {
@@ -132,6 +138,7 @@ public class BaseTest {
 		loginPageThreadLocal.set(new LoginPage_Mobile(getDriver()));
 		reporter = new ExtentTestManager(getDriver());
 		apiResponseThreadLocal.set(new ApiResponse());
+		shoppingCartThreadLocal.set(new ShoppingCart(getDriver()));
 	}
 
 

@@ -3,6 +3,7 @@ package com.tsc.pages;
 import java.util.List;
 import java.util.Set;
 
+import org.mozilla.javascript.tools.shell.Global;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -1535,7 +1536,7 @@ public class ProductDetailPage extends BasePage {
 		openAddToBagPopupWindow();
 		
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAddToBagPopupWindowTitle);
-		reporter.softAssert(this.lblAddToBagPopupWindowTitle.getText().toUpperCase().matches(lbl_AddToBagPopupWindowTitle.toUpperCase()),"The title of Add to Bag popup window is matching to '"+lbl_AddToBagPopupWindowTitle+"' pattern","The title of Add to Bag popup window is not matching to '"+lbl_AddToBagPopupWindowTitle+"' pattern");
+		reporter.softAssert(this.lblAddToBagPopupWindowTitle.getText().toUpperCase().matches(lbl_AddToBagPopupWindowTitle),"The title of Add to Bag popup window is matching to '"+lbl_AddToBagPopupWindowTitle+"' pattern","The title of Add to Bag popup window is not matching to '"+lbl_AddToBagPopupWindowTitle+"' pattern");
 		
 		if(checkProductBadgeInAddToBagPopupDisplaying()) {
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.imgAddToBagPopupWindowDetailsProductBadge);
@@ -2144,6 +2145,9 @@ public class ProductDetailPage extends BasePage {
 		String lsMessage=this.getElementText(this.lblTellYourFriendsSentWindowSentMessage).trim();
 		reporter.softAssert(lsMessage.equalsIgnoreCase(lsTellYourFriendsSentMessage),"The confirmation message in sent window is equal to '"+lsTellYourFriendsSentMessage+"'","The confirmation message in sent window is not equal to '"+lsTellYourFriendsSentMessage+"'");
 
+	}
+
+	public void closeEmailPopUpWindow(){
 		//this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavShareMobile);
 		this.getReusableActionsInstance().clickIfAvailable(this.btnTellYourFriendsWindowClose);
 		//this.btnTellYourFriendsWindowClose.click();
@@ -2170,6 +2174,8 @@ public class ProductDetailPage extends BasePage {
 		waitForPageToLoad();
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavShareMobile);
+		if(checkIfFavShareMobileHighlighted())
+			this.getReusableActionsInstance().clickIfAvailable(this.lnkFavShareMobile);
 		this.getReusableActionsInstance().clickIfAvailable(this.lnkFavShareMobile);
 		//this.lnkFavShareMobile.click();
 		this.getReusableActionsInstance().staticWait(5000);
