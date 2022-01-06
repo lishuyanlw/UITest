@@ -1940,6 +1940,7 @@ public class ProductDetailPage extends BasePage {
 			String lsLinkPrevBefore=this.lstGetTheLookItem.get(0).findElement(this.byGetTheLookProductLink).getAttribute("data-link-title");					
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnGetTheLookPrev);
 			this.btnGetTheLookPrev.click();
+			this.getReusableActionsInstance().staticWait(3000);
 			this.waitForCondition(Driver->{return !this.lstGetTheLookItem.get(0).findElement(this.byGetTheLookProductLink).getAttribute("data-link-title").equalsIgnoreCase(lsLinkPrevBefore);}, 10000);
 			
 			String lsLinkAfter=this.lstGetTheLookItem.get(0).findElement(this.byGetTheLookProductLink).getAttribute("data-link-title");
@@ -1948,6 +1949,7 @@ public class ProductDetailPage extends BasePage {
 			String lsLinkNextBefore=this.lstGetTheLookItem.get(this.lstGetTheLookItem.size()-1).findElement(this.byGetTheLookProductLink).getAttribute("data-link-title");				
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnGetTheLookNext);
 			this.btnGetTheLookNext.click();
+			this.getReusableActionsInstance().staticWait(3000);
 			this.waitForCondition(Driver->{return !this.lstGetTheLookItem.get(this.lstGetTheLookItem.size()-1).findElement(this.byGetTheLookProductLink).getAttribute("data-link-title").equalsIgnoreCase(lsLinkNextBefore);}, 10000);
 			
 			lsLinkAfter=this.lstGetTheLookItem.get(this.lstGetTheLookItem.size()-1).findElement(this.byGetTheLookProductLink).getAttribute("data-link-title");

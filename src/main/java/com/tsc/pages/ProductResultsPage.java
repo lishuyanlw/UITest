@@ -1444,7 +1444,7 @@ public class ProductResultsPage extends BasePage{
 	}
 	
 	/**
-	 * This method will go to the product with Review, EasyPay, Swatch item>=4 and Video
+	 * This method will go to the product with with Vedio,Size,Style,Badge image, Review,EasyPay,Nowprice and WasPrice
 	 * @return true/false
 	 * @author Wei.Li
 	 * @throws IOException 
@@ -1455,31 +1455,100 @@ public class ProductResultsPage extends BasePage{
 		outputDataCriteria.put("video", 1);
 		
 		String productNumber=apiResponse.getProductNumberFromKeyword(lsKeyWord, outputDataCriteria);
-		System.out.println("product number: "+productNumber);
-		this.getSearchResultLoad(productNumber);
+		if(productNumber.equalsIgnoreCase("No Item Found")){
+			reporter.reportLogFail("Unable to find the product with Vedio,Size,Style,Badge image, Review,EasyPay,Nowprice and WasPrice");
+			return false;
+		}
+				
+		this.selectedProductItem.productName="";
+		this.selectedProductItem.productBrand="";
+		this.selectedProductItem.productSelectedSize="";
+		this.selectedProductItem.productSelectedColor="";
+		this.selectedProductItem.productNowPrice="";
+		this.selectedProductItem.productWasPrice="";		
 		
+		this.getSearchResultLoad(productNumber);		
 		WebElement item=this.productResultList.get(0);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 		this.getReusableActionsInstance().scrollToElement(item);
 				
 		this.selectedProductItem.productNumber=productNumber;
 		this.selectedProductItem.productName=this.getElementInnerText(item.findElement(this.byProductName));
+		if(this.checkProductItemBrandNameExisting(item)) {
+			this.selectedProductItem.productBrand=this.getElementInnerText(item.findElement(this.byProductBrand));
+		}
+		this.selectedProductItem.productNowPrice=this.getElementInnerText(item.findElement(this.byProductNowPrice)).replace("Current price:", "").trim();
+		this.selectedProductItem.productWasPrice=this.getElementInnerText(item.findElement(this.byProductWasPrice)).replace("Previous price:", "").trim();
 		this.selectedProductItem.productNavigationUrl=this.URL();
 		
 		this.clickElement(item.findElement(this.byProductHref));
-//		item.findElement(this.byProductHref).click();
 		
 		return this.waitForPDPPageLoading();
 	}
 	
-	public boolean goToFirstProductItem(String lsProductNumber) {
-		getSearchResultLoad(lsProductNumber);
+	/**
+	 * This method will go to the product with with Vedio,Size,Style,Badge image, Review,EasyPay,Nowprice and WasPrice
+	 * @return true/false
+	 * @author Wei.Li
+	 * @throws IOException 
+	 */
+	public boolean findProductItemWithPreConditions(String lsKeyWord) throws IOException {
+		ApiResponse apiResponse=new ApiResponse();
+		Map<String,Object> outputDataCriteria= new HashMap<String,Object>();
+		outputDataCriteria.put("video", 1);
 		
+		String productNumber=apiResponse.getProductNumberFromKeyword(lsKeyWord, outputDataCriteria);
+		if(productNumber.equalsIgnoreCase("No Item Found")){
+			reporter.reportLogFail("Unable to find the product with Vedio,Size,Style,Badge image, Review,EasyPay,Nowprice and WasPrice");
+			return false;
+		}
+				
+		this.selectedProductItem.productName="";
+		this.selectedProductItem.productBrand="";
+		this.selectedProductItem.productSelectedSize="";
+		this.selectedProductItem.productSelectedColor="";
+		this.selectedProductItem.productNowPrice="";
+		this.selectedProductItem.productWasPrice="";		
+		
+		this.getSearchResultLoad(productNumber);		
+		WebElement item=this.productResultList.get(0);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+		this.getReusableActionsInstance().scrollToElement(item);
+				
+		this.selectedProductItem.productNumber=productNumber;
+		this.selectedProductItem.productName=this.getElementInnerText(item.findElement(this.byProductName));
+		if(this.checkProductItemBrandNameExisting(item)) {
+			this.selectedProductItem.productBrand=this.getElementInnerText(item.findElement(this.byProductBrand));
+		}
+		this.selectedProductItem.productNowPrice=this.getElementInnerText(item.findElement(this.byProductNowPrice)).replace("Current price:", "").trim();
+		this.selectedProductItem.productWasPrice=this.getElementInnerText(item.findElement(this.byProductWasPrice)).replace("Previous price:", "").trim();
+		this.selectedProductItem.productNavigationUrl=this.URL();
+
+		return true;
+	}
+	
+	public boolean goToFirstProductItem(String lsProductNumber) {
+		this.selectedProductItem.productName="";
+		this.selectedProductItem.productBrand="";
+		this.selectedProductItem.productSelectedSize="";
+		this.selectedProductItem.productSelectedColor="";
+		this.selectedProductItem.productNowPrice="";
+		this.selectedProductItem.productWasPrice="";
+		
+		getSearchResultLoad(lsProductNumber);		
 		WebElement item=this.productResultList.get(0);		
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 		
+		this.selectedProductItem.productNumber=lsProductNumber;	
 		this.selectedProductItem.productName=this.getElementInnerText(item.findElement(this.byProductName));
-		this.selectedProductItem.productNumber=lsProductNumber;			
+		if(this.checkProductItemBrandNameExisting(item)) {
+			this.selectedProductItem.productBrand=this.getElementInnerText(item.findElement(this.byProductBrand));
+		}
+		this.selectedProductItem.productNowPrice=this.getElementInnerText(item.findElement(this.byProductNowPrice)).replace("Current price:", "").trim();
+
+		if(this.checkProductItemWasPriceExisting(item)) {
+			this.selectedProductItem.productWasPrice=this.getElementInnerText(item.findElement(this.byProductWasPrice)).replace("Previous price:", "").trim();
+		}
 		this.selectedProductItem.productNavigationUrl=this.URL();
 		
 		item.findElement(this.byProductHref).click();
@@ -2069,6 +2138,131 @@ public class ProductResultsPage extends BasePage{
 	}
 	
 	/**
+	 * This method will verify information linkage between selected PRP and PDP
+	 * @param ProductDetailPage pdp: the related PDP to adapt to different devices
+	 * @return void
+	 * @author Wei.Li
+	 */
+	public void verifyInfoLinkageWithPDP(ProductDetailPage pdp) {
+		WebElement itemContainer=this.productResultList.get(0);		
+		
+		List<WebElement> optionList;
+		WebElement element;
+		String lsText,lsSelectedTitle,lsType,lsButtonTextBeforeClickingSize,lsButtonTextBeforeClickingColor;
+		
+		this.selectedProductItem.productSelectedSize="";
+		this.selectedProductItem.productSelectedColor="";
+		
+		lsType=this.judgeProductOptionType(itemContainer);
+				
+		//If all displayed size or color are disabled
+		if(!checkProductSizeOptionEnabledItemAvailableWithMouseHover(itemContainer)||!checkProductColorOptionEnabledItemAvailableWithMouseHover(itemContainer)) {
+			reporter.reportLog("No enabled size/color opion available");
+			return;
+		}
+
+		//To check selected size
+		if(lsType.contains("Size")) {	
+			if(checkProductSizeOptionEnabledItemAvailableWithMouseHover(itemContainer)) {				
+				optionList=itemContainer.findElements(byProductOptionSizeItemEnabledList);
+				element=optionList.get(optionList.size()-1);
+				lsText=this.getElementInnerText(element).replace("Size", "").trim();
+				lsButtonTextBeforeClickingSize=this.getElementInnerText(itemContainer.findElement(byProductGoToDetails));
+				this.clickElement(element);
+				this.waitForCondition(Driver->{return !lsButtonTextBeforeClickingSize.equalsIgnoreCase(this.getElementInnerText(itemContainer.findElement(byProductGoToDetails)));}, 20000);
+				this.getReusableActionsInstance().staticWait(3000);	
+				element=itemContainer.findElement(byProductOptionSizeSelectedSize);
+				lsSelectedTitle=this.getElementInnerText(element);
+				this.selectedProductItem.productSelectedSize=lsSelectedTitle;
+			}						
+		}
+		
+		//To check selected color
+		if(lsType.contains("Colour")) {				
+			if(checkProductColorOptionEnabledItemAvailableWithMouseHover(itemContainer)) {				
+				optionList=itemContainer.findElements(byProductOptionColorItemEnabledList);
+				element=optionList.get(optionList.size()-1);
+				lsText=this.getElementInnerText(element).replace("colours", "").trim();
+				lsButtonTextBeforeClickingColor=this.getElementInnerText(itemContainer.findElement(byProductGoToDetails));
+				this.clickElement(element);
+				this.waitForCondition(Driver->{return !lsButtonTextBeforeClickingColor.equalsIgnoreCase(this.getElementInnerText(itemContainer.findElement(byProductGoToDetails)));}, 20000);
+				this.getReusableActionsInstance().staticWait(3000);	
+				element=itemContainer.findElement(byProductOptionColorSelectedColor);
+				lsSelectedTitle=this.getElementInnerText(element);
+				this.selectedProductItem.productSelectedColor=lsSelectedTitle;
+			}						
+		}	
+		
+		itemContainer.findElement(this.byProductGoToDetails).click();		
+		this.waitForPDPPageLoading();
+		
+		String lsProductName=pdp.getElementInnerText(pdp.lblProductName);
+		if(lsProductName.equalsIgnoreCase(this.selectedProductItem.productName)) {
+			reporter.reportLogPass("The product name in PRP is the same as the one displayed in PDP");
+		}
+		else {
+			reporter.reportLogFail("The product name in PRP is not the same as the one displayed in PDP");
+		}
+		
+		if(!this.selectedProductItem.productBrand.isEmpty()) {
+			String lsProductBrand=pdp.getElementInnerText(pdp.lnkBrandName);
+			if(lsProductBrand.equalsIgnoreCase(this.selectedProductItem.productBrand)) {
+				reporter.reportLogPass("The product brand in PRP is the same as the one displayed in PDP");
+			}
+			else {
+				reporter.reportLogFail("The product brand in PRP is not the same as the one displayed in PDP");
+			}
+		}
+		
+		String lsProductNowPrice=pdp.getElementInnerText(pdp.lblProductNowPrice);
+		if(lsProductNowPrice.equalsIgnoreCase(this.selectedProductItem.productNowPrice)) {
+			reporter.reportLogPass("The product NowPrice in PRP is the same as the one displayed in PDP");
+		}
+		else {
+			reporter.reportLogFail("The product NowPrice in PRP is not the same as the one displayed in PDP");
+		}
+		
+		String lsProductWasPrice=pdp.getElementInnerText(pdp.lblProductWasPrice);
+		if(lsProductWasPrice.equalsIgnoreCase(this.selectedProductItem.productWasPrice)) {
+			reporter.reportLogPass("The product WasPrice in PRP is the same as the one displayed in PDP");
+		}
+		else {
+			reporter.reportLogFail("The product WasPrice in PRP is not the same as the one displayed in PDP");
+		}
+		
+		if(!this.selectedProductItem.productSelectedSize.isEmpty()) {	
+			Select sizeOption=new Select(pdp.selectSizeOption);
+			lsSelectedTitle=sizeOption.getFirstSelectedOption().getText().trim();
+			if(lsSelectedTitle.equalsIgnoreCase(this.selectedProductItem.productSelectedSize)) {
+				reporter.reportLogPass("The selected size in PRP is the same as the one displayed in PDP");
+			}
+			else {
+				reporter.reportLogFail("The selected size in PRP is not the same as the one displayed in PDP");
+			}
+		}
+		
+		if(!this.selectedProductItem.productSelectedColor.isEmpty()) {
+			if(pdp.judgeStyleDisplayModeIsDropdownMenu()) {
+				if(this.getElementText(pdp.selectProductStyle).equalsIgnoreCase(this.selectedProductItem.productSelectedColor)) {
+					reporter.reportLogPass("The selected color in PRP is the same as the one displayed in PDP");
+				}
+				else {
+					reporter.reportLogFail("The selected color in PRP is not the same as the one displayed in PDP");
+				}
+			}
+			else {
+				if(this.getElementText(pdp.lblRadioProductStyleTitle).equalsIgnoreCase(this.selectedProductItem.productSelectedColor)) {
+					reporter.reportLogPass("The selected color in PRP is the same as the one displayed in PDP");
+				}
+				else {
+					reporter.reportLogFail("The selected color in PRP is not the same as the one displayed in PDP");
+				}
+			}
+		}
+			
+	}
+	
+	/**
 	 * This method will verify Favorite Icon clicking Action
 	 * @param-String lsUserName: user name
 	 * @param-String lsPassword: password
@@ -2116,8 +2310,8 @@ public class ProductResultsPage extends BasePage{
 	 */
 	public boolean checkProductItemBrandNameExisting(WebElement itemContainer) {
 		WebElement item=itemContainer.findElement(this.byProductBrand);
-		String lsText=this.getElementInnerText(item);
-		
+		String lsText=item.getText().trim();
+
 		return !lsText.isEmpty();
 	}
 	
