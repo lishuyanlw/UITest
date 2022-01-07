@@ -180,7 +180,7 @@ public class ApiResponse extends ApiConfigs {
     }
 
     /**
-     * This method finds product number on the basis of input conditions(video,style,size)
+     * This method finds product number on the basis of input conditions(video,style,size,brand,badgeImage,review,easyPay,WasPrice)
      * @param - Product - product : Product class object
      * @param - Map<String,Object> - configs : configs on basis of which product number will be fetched
      * @return - String - Product Number of product
@@ -223,5 +223,54 @@ public class ApiResponse extends ApiConfigs {
             }
         }
         return "No Item Found";
+    }
+    
+    /**
+     * This method finds PDP url for Add To Bag enabled product
+     * @param - Product - product : Product class object
+     * @return - String - PDP url
+     */
+    private String getUrlOfPDPForAddToBag(Product product){
+    	if(product==null) {
+        	return "No Item Found";
+        }
+         
+        for(Product.Products data:product.getProducts()) {
+        	if(data.isEnabledAddToCart()) {
+        		return propertyData.get("test_qaURL")+"/"+data.getName()+"/pages/productdetails?nav=R:"+data.getItemNo();
+        	}
+        }
+        return "No Item Found";
+    }
+    
+    /**
+     * This method finds PDP url for Add To Bag enabled product on the basis of input search keyword
+     * @param - String - searchKeyword : search keyword for Product
+     * @return - String - PDP url for search keyword
+     */
+    public String getUrlOfPDPForAddToBagFromKeyword(String searchKeyword){
+        String lsUrl = null;
+        boolean flag = true;
+        
+        Product product = getProductDetailsForKeyword(searchKeyword,true);
+        if(product==null) {
+        	return "No Item Found";
+        }
+        
+        do{
+            lsUrl = getUrlOfPDPForAddToBag(product);
+            if(lsUrl.equalsIgnoreCase("No Item Found")){
+                outputPage++;
+                if(outputPage>totalPage||outputPage>=10) {
+                	flag = false;
+                }                    
+                product = getProductDetailsForKeyword(searchKeyword,false);
+             }else{
+                flag = false;
+            }
+            
+        }while(flag);
+
+        return lsUrl;
     }
 }

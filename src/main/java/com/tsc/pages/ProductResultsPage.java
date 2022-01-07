@@ -1488,13 +1488,14 @@ public class ProductResultsPage extends BasePage{
 	 * @throws IOException 
 	 */
 	public boolean goToProductItemWithPreConditions(List<String> lstKeyword) throws IOException {
-		
-		//this.getDriver().get("https://qa-tsc.tsc.ca/Brian Bailey 3/4 Sleeve Trumpet Hem Dress/pages/productdetails?nav=R:406045");
 		ApiResponse apiResponse=new ApiResponse();
 		Map<String,Object> outputDataCriteria= new HashMap<String,Object>();
 		outputDataCriteria.put("video", "1");
 		outputDataCriteria.put("style", "3");
 		outputDataCriteria.put("size", "3");
+		
+//		String lsUrl=apiResponse.getUrlOfPDPForAddToBagFromKeyword("dress");
+//		this.getDriver().get(lsUrl);
 		
 		String productNumber="";
 		for(String lsKeyword:lstKeyword) {
@@ -2349,7 +2350,9 @@ public class ProductResultsPage extends BasePage{
 		
 		loginPage.LoginWithoutWaitingTime(lsUserName, lsPassword);
 		this.getReusableActionsInstance().waitForElementVisibility(loginPage.lblSignInGlobalResponseBanner);
-				
+		
+		clearFavoriteHistory();
+		
 		this.getSearchResultLoad(lsKeyword);
 		item=this.productResultList.get(0).findElement(this.byProductHeaderLike);
 		if(item.getAttribute("aria-pressed").equalsIgnoreCase("true")) {
@@ -2594,6 +2597,25 @@ public class ProductResultsPage extends BasePage{
 	 */
 	public boolean checkNoFavoriteHistoryContainerExisting() {		
 		return this.checkChildElementExistingByAttribute(cntMyFavouritesContainer, "class", "no-history-container");
+	}
+	
+	public void clearFavoriteHistory() {
+		WebElement favoriteLink= (new GlobalHeaderPage(this.getDriver())).Favouriteslnk;
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(favoriteLink);
+		this.getReusableActionsInstance().clickIfAvailable(favoriteLink);
+		this.getReusableActionsInstance().waitForElementVisibility(this.lblMyFavouritesTitle, 20);
+		
+		if(checkNoFavoriteHistoryContainerExisting()) {
+			return;
+		}
+		
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnClearAllFavouriteHistory);
+		this.getReusableActionsInstance().clickIfAvailable(this.btnClearAllFavouriteHistory);
+		this.getReusableActionsInstance().waitForElementVisibility(this.lblTitleInClearMyFavouritesPopupWindow, 20);
+		
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnClearInClearMyFavouritesPopupWindow);
+		this.getReusableActionsInstance().clickIfAvailable(this.btnClearInClearMyFavouritesPopupWindow);
+		this.getReusableActionsInstance().waitForElementVisibility(this.btnShoppingNow, 20);		
 	}
 	
 
