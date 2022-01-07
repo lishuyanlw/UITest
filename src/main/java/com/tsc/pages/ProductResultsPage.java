@@ -260,6 +260,44 @@ public class ProductResultsPage extends BasePage{
 	
 	public By byRecommendationWasPrice =By.xpath(".//div[@class='prec-price']/div[@class='was-price']");
 
+	//The page while clicking Favorite button on header menu
+	@FindBy(xpath = "//ng-component//div[contains(@class,'tsc-forms')]")
+	public WebElement cntMyFavouritesContainer;
+		
+	@FindBy(xpath = "//ng-component//div[@class='recently-viewed-title']")
+	public WebElement lblMyFavouritesTitle;
+	
+	//Favorite history available
+	@FindBy(xpath = "//ng-component//button[contains(@class,'btn-clear-viewing-history')]")
+	public WebElement btnClearAllFavouriteHistory;
+	
+	@FindBy(xpath = "//ng-component//div[@class='recently-viewed-container']//div[contains(@class,'recently-viewed-item-container')]//a")
+	public List<WebElement> lstFavouriteProduct;
+	
+	//Favorite history not available
+	@FindBy(xpath = "//ng-component//div[contains(@class,'no-history-container')]//div[contains(@class,'no-history-msg')]")
+	public List<WebElement> lstNoHistoryMessage;
+	
+	@FindBy(xpath = "//ng-component//div[contains(@class,'no-history-container')]//div[contains(@class,'btn-shop-now')]")
+	public WebElement btnShoppingNow;
+	
+	//The popup window after clicking ClearAllFavouriteHistory button
+	@FindBy(xpath = "//ng-component//div[@class='modal-dialog']//div[@class='modal-header']//button[@class='close']")
+	public WebElement btnCloseButtonInClearMyFavouritesPopupWindow;
+	
+	@FindBy(xpath = "//ng-component//div[@class='modal-dialog']//div[@class='modal-header']//div[@class='crv-title']")
+	public WebElement lblTitleInClearMyFavouritesPopupWindow;
+	
+	@FindBy(xpath = "//ng-component//div[@class='modal-dialog']//div[@class='modal-body']//div[@class='crv-warning']")
+	public WebElement lblWarningMessageInClearMyFavouritesPopupWindow;
+	
+	@FindBy(xpath = "//ng-component//div[@class='modal-dialog']//div[@class='crv-btn-block']//button[contains(@class,'btnResizing') and not(contains(@class,'btn-negative'))]")
+	public WebElement btnClearInClearMyFavouritesPopupWindow;
+	
+	@FindBy(xpath = "//ng-component//div[@class='modal-dialog']//div[@class='crv-btn-block']//button[contains(@class,'btnResizing') and contains(@class,'btn-negative')]")
+	public WebElement btnCancelInClearMyFavouritesPopupWindow;
+	
+	
 	String searchkeyword;
 	public boolean bVerifyTitle=true;
 	public String firstLevelFilter,secondLevelFilter;
@@ -1450,6 +1488,8 @@ public class ProductResultsPage extends BasePage{
 	 * @throws IOException 
 	 */
 	public boolean goToProductItemWithPreConditions(List<String> lstKeyword) throws IOException {
+		
+		//this.getDriver().get("https://qa-tsc.tsc.ca/Brian Bailey 3/4 Sleeve Trumpet Hem Dress/pages/productdetails?nav=R:406045");
 		ApiResponse apiResponse=new ApiResponse();
 		Map<String,Object> outputDataCriteria= new HashMap<String,Object>();
 		outputDataCriteria.put("video", "1");
@@ -2547,7 +2587,14 @@ public class ProductResultsPage extends BasePage{
 		return this.checkChildElementExistingByTagNameAndAttribute(sizeContainer, "a", "class", "product-card__size-view-all");
 	}
 	
-	
+	/**
+	 * This method will check no-history-container Existing
+	 * @return boolean
+	 * @author Wei.Li
+	 */
+	public boolean checkNoFavoriteHistoryContainerExisting() {		
+		return this.checkChildElementExistingByAttribute(cntMyFavouritesContainer, "class", "no-history-container");
+	}
 	
 
 	public class ProductItem{

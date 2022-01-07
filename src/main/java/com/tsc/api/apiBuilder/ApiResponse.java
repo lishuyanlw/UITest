@@ -106,7 +106,7 @@ public class ApiResponse extends ApiConfigs {
         	
             do {
     	        try{
-    	            response = getApiCallResponse(initialConfig,"/products");
+    	            response = getApiCallResponse(initialConfig,"/products");    	            
     	        }catch (Exception exception){
     	            exception.printStackTrace();
     	        }
@@ -133,7 +133,6 @@ public class ApiResponse extends ApiConfigs {
 
                 if (product.getProducts().size() >= 1) {
                 	totalPage=product.getPaging().getTotalPages();
-                	 System.out.println("totalPage: "+totalPage);
                     flag = false;
                 } 
 
