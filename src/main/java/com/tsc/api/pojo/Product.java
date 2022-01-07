@@ -28,11 +28,15 @@ public class Product {
     public String AimResponseFileName;
     public int AimRequestResponseLogThreshold;
 
-    public Product.Paging getPaging() {        return Paging;    }
+    public Paging getPaging() {
+		return Paging;
+	}
 
-    public void setPaging(Product.Paging paging) {        Paging = paging;    }
+	public void setPaging(Paging paging) {
+		Paging = paging;
+	}
 
-    public List<Products> getProducts() {
+	public List<Products> getProducts() {
         return Products;
     }
 
@@ -181,6 +185,7 @@ public class Product {
         return null;
     }
 
+    
     public static class Paging {
         public int TotalRecords;
         public int TotalPages;

@@ -12,7 +12,7 @@ public class ApiClient {
         propertyData = getApiInfo();
     }
 
-    private Map<String,String> getApiInfo() throws IOException {
+    protected Map<String,String> getApiInfo() throws IOException {
         return PropertyReader.getPropertyDataMap();
     }
 

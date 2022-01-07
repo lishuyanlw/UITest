@@ -7,12 +7,15 @@ import io.restassured.RestAssured;
 import io.restassured.response.Response;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 public class ApiResponse extends ApiConfigs {
 
     private Map<String,Object> configs = null;
     private int outputPage = 1;
+    private int totalPage;
+    private String dimensionNumber;
 
     public ApiResponse() throws IOException {}
 
@@ -33,7 +36,16 @@ public class ApiResponse extends ApiConfigs {
                 for(Product.Products data:product.getProducts()) {
                 	lsNowPrice=data.getIsPriceRange();
                 	lsWasPrice=data.getWasPriceRange();
-                    if (data.getVideosCount() >= 1 && data.getStyles().size() >= 4 && data.getSizes().size() >= 3&&data.isShowBadgeImage()&&data.getProductReviewRating()>0&&!data.getEasyPaymentPrice().isEmpty()&&!lsNowPrice.equalsIgnoreCase(lsWasPrice)) {
+                    if (data.getVideosCount() >= 1 && data.getStyles().size() >= 3 && data.getSizes().size() >= 3&&data.isShowBadgeImage()&&data.getProductReviewRating()>0&&!data.getEasyPaymentPrice().isEmpty()&&!lsNowPrice.equalsIgnoreCase(lsWasPrice)) {
+                    	if(data.getBrand()!=null) {
+                    		if(data.getBrand().isEmpty()) {
+                    			continue;
+                    		}                    		
+                    	}
+                    	else {
+                    		continue;
+                    	}
+                    	
                         flag = false;
                         productNumber = data.getItemNo();
                         break;
@@ -41,17 +53,24 @@ public class ApiResponse extends ApiConfigs {
                 }
                 if(flag) {
                     outputPage++;
+                    if(outputPage>totalPage||outputPage>=10) {
+                    	flag = false;
+                    }
                     product = getProductDetailsForKeyword(searchKeyword,false);
                 }
             }else{
                 productNumber = getProductNumberForInputParams(product,outputDataCriteria);
                 if(productNumber.equalsIgnoreCase("No Item Found")){
                     outputPage++;
+                    if(outputPage>totalPage||outputPage>=10) {
+                    	flag = false;
+                    }                    
                     product = getProductDetailsForKeyword(searchKeyword,false);
                  }else{
                     flag = false;
                 }
             }
+            
         }while(flag);
 
         return productNumber;
@@ -68,32 +87,59 @@ public class ApiResponse extends ApiConfigs {
         Response response = null;
         Product product = null;
         boolean flag = true;
+        Map<String, Object> initialConfig=new HashMap<>();
+        int repeatNumber=0;
+        
         //Clearing config data before start of function if this function call was made previously in test
         if(configs!=null)
             configs.clear();
-        if(firstTimeFunctionCall)
-            outputPage = 1;
-        configs = super.getProductSearchByKeywordInputConfig(searchKeyword,null,outputPage,super.getApiPropertyData().get("test_apiVersion"));
-        try{
-            response = getApiCallResponse(configs,"/products");
-        }catch (Exception exception){
-            exception.printStackTrace();
+        if(firstTimeFunctionCall) {
+        	outputPage = 1;
         }
+    
+        if(firstTimeFunctionCall) {
+        	initialConfig.put("searchTerm", searchKeyword);        	
+        	
+            do {
+    	        try{
+    	            response = getApiCallResponse(initialConfig,"/products");
+    	        }catch (Exception exception){
+    	            exception.printStackTrace();
+    	        }
+    	        product = JsonParser.getResponseObject(response.asString(), new TypeReference<Product>() {});	       
+    	        if(product.getRedirectUrl()!=null) {
+    	        	 dimensionNumber = getDimensionNumberFromURL(product.getRedirectUrl());
+     	             break;
+    	        }
+    	        repeatNumber++;
+    	        if(repeatNumber==5) {
+    	        	return null;
+    	        }
+            }while(true);
+        }
+
+        configs = super.getProductSearchByKeywordInputConfig(searchKeyword, dimensionNumber, outputPage, super.getApiPropertyData().get("test_apiVersion"));
+        
+        repeatNumber=0;
         do{
+        	response = getApiCallResponse(configs, "/products");
             if(response!=null && response.statusCode()==200) {
-                product = JsonParser.getResponseObject(response.asString(), new TypeReference<Product>() {
+            	product = JsonParser.getResponseObject(response.asString(), new TypeReference<Product>() {
                 });
-                if (product.getProducts().size() >= 1 && product.getRedirectUrl() == null) {
+
+                if (product.getProducts().size() >= 1) {
+                	totalPage=product.getPaging().getTotalPages();
+                	 System.out.println("totalPage: "+totalPage);
                     flag = false;
-                } else if (product.getRedirectUrl() != null) {
-                    if(configs!=null)
-                        configs.clear();
-                    String dimension = getDimensionNumberFromURL(product.getRedirectUrl());
-                    configs = super.getProductSearchByKeywordInputConfig(searchKeyword, dimension, outputPage, super.getApiPropertyData().get("test_apiVersion"));
-                    response = getApiCallResponse(configs, "/products");
+                } 
+
+                repeatNumber++;
+                if(repeatNumber==5) {
+                	return null;
                 }
             }
         }while(flag);
+        
         return product;
     }
 
@@ -115,7 +161,19 @@ public class ApiResponse extends ApiConfigs {
      * @return - String - Dimension Number
      */
     private String getDimensionNumberFromURL(String url){
-        return url.split(":")[1];
+    	String lsDimension;
+    	String lsVersion= super.getApiPropertyData().get("test_apiVersion");
+
+    	if(lsVersion.equalsIgnoreCase("v2")) {
+    		lsDimension=url.split(":")[1];    		
+    	}
+    	else {
+    		lsDimension=url.split("=")[1];
+    		if(lsDimension.contains(":")) {
+    			lsDimension=url.split(":")[1];
+    		}
+    	}
+        return lsDimension;
     }
 
     /**
@@ -125,9 +183,9 @@ public class ApiResponse extends ApiConfigs {
      * @return - String - Product Number of product
      */
     private String getProductNumberForInputParams(Product product,Map<String,Object> configs){
-        int videoCount=1,styleCount=4,sizeCount=3;
+        int videoCount=1,styleCount=3,sizeCount=3;
         String lsNowPrice,lsWasPrice;
-        
+
         if(configs!=null) {
         	for(Map.Entry<String,Object> entry:configs.entrySet()){
                 if(entry.getKey().toLowerCase().contains("video"))
@@ -139,23 +197,20 @@ public class ApiResponse extends ApiConfigs {
                     sizeCount = Integer.valueOf(entry.getValue().toString());
                 }                       
             }
-        }
+         }
         
         for(Product.Products data:product.getProducts()) {
         	lsNowPrice=data.getIsPriceRange();
         	lsWasPrice=data.getWasPriceRange();
-            if(data.getVideosCount()>=videoCount && data.getStyles().size()>=styleCount && data.getSizes().size()>=sizeCount&&data.isShowBadgeImage()&&data.getProductReviewRating()>0&&!data.getEasyPaymentPrice().isEmpty()&&!lsNowPrice.equalsIgnoreCase(lsWasPrice)) {
-//            	if(data.getBrand()!=null) {
-//            		if(data.getBrand().isEmpty()) {
-//            			continue;
-//            		}
-//            		else {
-//            			System.out.println("data.getBrand(): "+data.getBrand());
-//            		}
-//            	}
-//            	else {
-//            		continue;
-//            	}
+            if(data.getVideosCount()>=videoCount && data.getStyles().size()>=styleCount && data.getSizes().size()>=sizeCount &&data.isShowBadgeImage()&&data.getProductReviewRating()>0&&!data.getEasyPaymentPrice().isEmpty()&&!lsNowPrice.equalsIgnoreCase(lsWasPrice)) {
+            	if(data.getBrand()!=null) {
+            		if(data.getBrand().isEmpty()) {
+            			continue;
+            		}            		
+            	}
+            	else {
+            		continue;
+            	}
             	            	
                 return data.getItemNo();
             }

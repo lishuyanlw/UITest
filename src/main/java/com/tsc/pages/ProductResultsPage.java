@@ -1452,7 +1452,9 @@ public class ProductResultsPage extends BasePage{
 	public boolean goToProductItemWithPreConditions(String lsKeyWord) throws IOException {
 		ApiResponse apiResponse=new ApiResponse();
 		Map<String,Object> outputDataCriteria= new HashMap<String,Object>();
-		outputDataCriteria.put("video", 1);
+		outputDataCriteria.put("video", "1");
+		outputDataCriteria.put("style", "3");
+		outputDataCriteria.put("size", "3");
 		
 		String productNumber=apiResponse.getProductNumberFromKeyword(lsKeyWord, outputDataCriteria);
 		if(productNumber.equalsIgnoreCase("No Item Found")){

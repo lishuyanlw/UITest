@@ -79,7 +79,7 @@ homePage:
   lbl_TopSellers: TOP SELLERS
 searchResultPage:
   lst_SearchKeyword: [ "dyson vacuum","dfafasdfa","100501","joan rivers","Nike","boots" ]
-  lst_SearchKeyword_DropDown: [[ "dress","Categories","0" ]]
+  lst_SearchKeyword_DropDown: [[ "boots","Categories","0" ]]
   lbl_SearchResultPageDefaultSetting: 36
   lst_SearchResultMessage:  [ "Showing results for" , "able to find any results" ] 
   lst_SortOption: ["Featured Products","Newest First","Reviews: Highest First","Price: Lowest First","Price: Highest First","Brand Name: A to Z"]
@@ -114,6 +114,7 @@ searchResultPage:
   lbl_QuantityNumberToShowLeftItemInfo: 7
   lst_WriteReviewSubmitMessage: ["THANK YOU!","We will process your review and publish it within 3-7 business days."]
   lbl_TellYourFriendsSentMessage: "Your message has been sent!"
+  lbl_ProductNumberWithBandAndReviewAndSeeMore: 407389
 footerSection: 
   lst_SocialMediaLinks: ["https://www.facebook.com/Shoptsc","https://twitter.com/shoptsc","https://instagram.com/shoptsc","www.youtube.com","https://www.pinterest.ca/shoptsc"]
   lst_NameAndLinks: 
