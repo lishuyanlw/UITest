@@ -25,8 +25,9 @@ public class SR_TC12_Verify_ProductSearchResult_SizeAndColorLinkageWithPDP exten
 	reporter.reportLog("ProductSearch Page");
 	
 	List<List<String>> lsKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_SearchKeyword_DropDown();
+	List<String> lstKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_APISearchingKeyword();
 	
-	if(getProductResultsPageThreadLocal().findProductItemWithPreConditions(lsKeywordList.get(0).get(0))) {
+	if(getProductResultsPageThreadLocal().findProductItemWithPreConditions(lstKeywordList)) {
 		getProductResultsPageThreadLocal().verifyInfoLinkageWithPDP(getProductDetailPageThreadLocal());	
 	}
  }

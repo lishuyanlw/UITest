@@ -25,12 +25,13 @@ public class PD_TC04_Verify_ProductDetail_ProductStyle extends BaseTest{
 	reporter.reportLog("ProductDetail Page");
 	
 	List<List<String>> lsKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_SearchKeyword_DropDown();
+	List<String> lstKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_APISearchingKeyword();
 	
 //	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0));
 	reporter.reportLog("Switch to ProductDetail page");
 	String lsProductNumber,lsUrl;
 	
-	if(getProductResultsPageThreadLocal().goToProductItemWithPreConditions(lsKeywordList.get(0).get(0))) {
+	if(getProductResultsPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList)) {
 		reporter.reportLog("Verify URL");
 		lsProductNumber=getProductResultsPageThreadLocal().selectedProductItem.productNumber;
 		lsUrl=basePage.URL();

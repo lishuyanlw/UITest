@@ -1449,14 +1449,21 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 * @throws IOException 
 	 */
-	public boolean goToProductItemWithPreConditions(String lsKeyWord) throws IOException {
+	public boolean goToProductItemWithPreConditions(List<String> lstKeyword) throws IOException {
 		ApiResponse apiResponse=new ApiResponse();
 		Map<String,Object> outputDataCriteria= new HashMap<String,Object>();
 		outputDataCriteria.put("video", "1");
 		outputDataCriteria.put("style", "3");
 		outputDataCriteria.put("size", "3");
 		
-		String productNumber=apiResponse.getProductNumberFromKeyword(lsKeyWord, outputDataCriteria);
+		String productNumber="";
+		for(String lsKeyword:lstKeyword) {
+			productNumber=apiResponse.getProductNumberFromKeyword(lsKeyword, outputDataCriteria);
+			if(!productNumber.isEmpty()&&!productNumber.equalsIgnoreCase("No Item Found")) {
+				break;
+			}
+		}
+		
 		if(productNumber.equalsIgnoreCase("No Item Found")){
 			reporter.reportLogFail("Unable to find the product with Vedio,Size,Style,Badge image, Review,EasyPay,Nowprice and WasPrice");
 			return false;
@@ -1494,12 +1501,21 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 * @throws IOException 
 	 */
-	public boolean findProductItemWithPreConditions(String lsKeyWord) throws IOException {
+	public boolean findProductItemWithPreConditions(List<String> lstKeyword) throws IOException {
 		ApiResponse apiResponse=new ApiResponse();
 		Map<String,Object> outputDataCriteria= new HashMap<String,Object>();
-		outputDataCriteria.put("video", 1);
+		outputDataCriteria.put("video", "1");
+		outputDataCriteria.put("style", "3");
+		outputDataCriteria.put("size", "3");
 		
-		String productNumber=apiResponse.getProductNumberFromKeyword(lsKeyWord, outputDataCriteria);
+		String productNumber="";
+		for(String lsKeyword:lstKeyword) {
+			productNumber=apiResponse.getProductNumberFromKeyword(lsKeyword, outputDataCriteria);
+			if(!productNumber.isEmpty()&&!productNumber.equalsIgnoreCase("No Item Found")) {
+				break;
+			}
+		}
+		
 		if(productNumber.equalsIgnoreCase("No Item Found")){
 			reporter.reportLogFail("Unable to find the product with Vedio,Size,Style,Badge image, Review,EasyPay,Nowprice and WasPrice");
 			return false;

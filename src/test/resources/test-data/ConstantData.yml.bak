@@ -79,7 +79,7 @@ homePage:
   lbl_TopSellers: TOP SELLERS
 searchResultPage:
   lst_SearchKeyword: [ "dyson vacuum","dfafasdfa","100501","joan rivers","Nike","boots" ]
-  lst_SearchKeyword_DropDown: [[ "boots","Categories","0" ]]
+  lst_SearchKeyword_DropDown: [[ "dress","Categories","0" ]]
   lbl_SearchResultPageDefaultSetting: 36
   lst_SearchResultMessage:  [ "Showing results for" , "able to find any results" ] 
   lst_SortOption: ["Featured Products","Newest First","Reviews: Highest First","Price: Lowest First","Price: Highest First","Brand Name: A to Z"]

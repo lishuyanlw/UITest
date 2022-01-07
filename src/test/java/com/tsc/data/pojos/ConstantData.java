@@ -441,6 +441,7 @@ public class ConstantData {
     public static class SearchResultPage {
         private List<String> lst_SearchKeyword;
         private List<List<String>> lst_SearchKeyword_DropDown;
+        private List<String> lst_APISearchingKeyword;
         private String lbl_SearchResultPageDefaultSetting;
         private List<String> lst_SearchResultMessage;
         private List<String> lst_SortOption;
@@ -476,6 +477,14 @@ public class ConstantData {
         public void setLst_SearchKeyword_DropDown(List<List<String>> lst_SearchKeyword_DropDown) {
             this.lst_SearchKeyword_DropDown = lst_SearchKeyword_DropDown;
         }
+        
+        public List<String> getLst_APISearchingKeyword() {
+			return lst_APISearchingKeyword;
+		}
+
+		public void setLst_APISearchingKeyword(List<String> lst_APISearchingKeyword) {
+			this.lst_APISearchingKeyword = lst_APISearchingKeyword;
+		}
 
         public String getLbl_SearchResultPageDefaultSetting() {
             return lbl_SearchResultPageDefaultSetting;

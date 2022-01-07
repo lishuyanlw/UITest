@@ -31,6 +31,10 @@ public class ApiResponse extends ApiConfigs {
         String lsNowPrice,lsWasPrice;
         
         Product product = getProductDetailsForKeyword(searchKeyword,true);
+        if(product==null) {
+        	return "No Item Found";
+        }
+        
         do{
             if(outputDataCriteria==null){
                 for(Product.Products data:product.getProducts()) {
@@ -183,6 +187,10 @@ public class ApiResponse extends ApiConfigs {
      * @return - String - Product Number of product
      */
     private String getProductNumberForInputParams(Product product,Map<String,Object> configs){
+    	if(product==null) {
+        	return "No Item Found";
+        }
+    	
         int videoCount=1,styleCount=3,sizeCount=3;
         String lsNowPrice,lsWasPrice;
 
