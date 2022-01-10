@@ -1102,9 +1102,9 @@ public class ProductDetailPage extends BasePage {
 	 */
 	public boolean goToProductReviewTab() {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productReviewSection);
-		this.getReusableActionsInstance().clickIfAvailable(this.productReviewSection);
-		//this.productReviewSection.click();
-		return this.waitForCondition(Driver->{return this.btnStickyTabProductReview.getAttribute("class").contains("selected");},30000);		
+		//this.getReusableActionsInstance().clickIfAvailable(this.productReviewSection);
+		this.clickWebElementUsingJS(this.productReviewSection);
+		return this.waitForCondition(Driver->{return this.btnStickyTabProductReview.getAttribute("class").contains("selected");},30000);
 	}
 	
 	/**
@@ -1756,9 +1756,16 @@ public class ProductDetailPage extends BasePage {
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFaceBook);
 		String lsMainHandle=this.getDriver().getWindowHandle();
-		this.getReusableActionsInstance().clickIfAvailable(this.lnkFaceBook);
-		//this.lnkFaceBook.click();
-		this.waitForCondition(Driver->{return this.getReusableActionsInstance().getNumberOfOpenWindows()>1;}, 20000);
+		if((System.getProperty("Device").toLowerCase().contains("tablet") &&
+				System.getProperty("Browser").toLowerCase().contains("ios")) ||
+				System.getProperty("chromeMobileDevice").toLowerCase().contains("ipad")) {
+			//this.getReusableActionsInstance().doubleClick(this.lnkFaceBook,3000);
+			this.getReusableActionsInstance().clickIfAvailable(this.lnkFaceBook);
+			this.clickWebElementUsingJS(this.lnkFaceBook);
+		}
+		else
+			this.getReusableActionsInstance().clickIfAvailable(this.lnkFaceBook);
+		this.waitForCondition(Driver->{return this.getReusableActionsInstance().getNumberOfOpenWindows()>1;}, 50000);
 		this.getReusableActionsInstance().staticWait(3000);
 		Set<String> lstHandles=this.getDriver().getWindowHandles();
 		for(String handle:lstHandles) {
@@ -1772,7 +1779,6 @@ public class ProductDetailPage extends BasePage {
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkPInterest);
 		this.getReusableActionsInstance().clickIfAvailable(this.lnkPInterest);
-		//this.lnkPInterest.click();
 		this.waitForCondition(Driver->{return this.getReusableActionsInstance().isElementVisible(this.iframePin);}, 10000);
 		this.getReusableActionsInstance().staticWait(3000);
 		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.iframePin),"The page has been switched to PInterest related page","The page has not been switched to PInterest related page");

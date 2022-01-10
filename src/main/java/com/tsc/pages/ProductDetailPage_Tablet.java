@@ -21,21 +21,23 @@ public class ProductDetailPage_Tablet extends ProductDetailPage {
     public void verifyVideo(String lsVideoDisclaimInfo) {
         reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.imgProductBadge),"The product badge is displaying correctly","The product badge is not displaying correctly");
         reporter.softAssert(!this.imgProductBadge.getAttribute("src").isEmpty(),"The product badge image source is not empty","The product badge image source is empty");
-        this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.videoIcon);
-        this.getReusableActionsInstance().clickIfAvailable(this.videoIcon);
-        //this.videoIcon.click();
-        applyStaticWait(1000);
-        this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.playButton);
-        this.getReusableActionsInstance().scrollToElement(this.playButton);
-        this.getReusableActionsInstance().clickIfAvailable(this.playButton);
-        applyStaticWait(2000);
-        //added if condition because in jenkins ios it is not clicking on first time so,
-        //I added second click with condition but still it is not clicking
-        /*if (!this.checkIfVideoisPlaying()){
+        if(System.getProperty("Browser").toLowerCase().contains("mobile") ||
+                System.getProperty("Browser").toLowerCase().contains("android")){
+            this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.videoIcon);
+            this.getReusableActionsInstance().clickIfAvailable(this.videoIcon);
+            applyStaticWait(1000);
             this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.playButton);
             this.getReusableActionsInstance().scrollToElement(this.playButton);
             this.getReusableActionsInstance().clickIfAvailable(this.playButton);
-        }*/
+            applyStaticWait(2000);
+            //added if condition because in jenkins ios it is not clicking on first time so,
+            //I added second click with condition but still it is not clicking
+            /*if (!this.checkIfVideoisPlaying()){
+                this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.playButton);
+                this.getReusableActionsInstance().scrollToElement(this.playButton);
+                this.getReusableActionsInstance().clickIfAvailable(this.playButton);
+            }*/
+        }
 
         reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.videoBoxControl),"The video control section is displaying correctly","The video control section is not displaying correctly");
         reporter.softAssert(!this.lnkVideo.getAttribute("src").isEmpty(),"The product video source is not empty","The product video source is empty");
@@ -47,8 +49,6 @@ public class ProductDetailPage_Tablet extends ProductDetailPage {
         //commented because autoplay is not present for both tab and mobile
         //reporter.softAssert(this.checkIfAutoPlayVideoStatusIsON(),"The product video AutoPlaying is on","The product video AutoPlaying is off");
         reporter.softAssert(this.checkIfVideoisPlaying(),"The product video is playing","The product video is not playing");
-
-        //reporter.softAssert(!getAutoPlayVideoToolTipPopupMsg().isEmpty(),"The AutoPlayVideoToolTip is not empty","The AutoPlayVideoToolTip is empty");
 
     }
 

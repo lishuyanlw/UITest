@@ -42,6 +42,6 @@ public class ShoppingCart extends BasePage {
         }
         //Verify that all items are removed
         this.getReusableActionsInstance().staticWait(3000);
-        reporter.softAssert(productDetailPage.getShoppingCartNumber()==0,"All Items are removed from shopping Cart","Items are still present in shopping Cart with no of items: "+this.btnItemRemoveButtonFromCart.size());
+        reporter.softAssert(productDetailPage.getShoppingCartNumber()==0,"All Items are removed from shopping Cart","Items are still present in shopping Cart with no of items: "+productDetailPage.getShoppingCartNumber());
     }
 }

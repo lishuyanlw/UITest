@@ -789,6 +789,10 @@ import utils.ReusableActions;
 		return urlFavouriteslandingpage;
 	}
 
+	/**Method to find if an element is displayed and is enabled
+	 * @param-WebElement element: input element
+	 * @return-Boolean flag
+	 */
 	public boolean isElementPresent(WebElement element) {
 		boolean flag = false;
 		try {
@@ -803,6 +807,9 @@ import utils.ReusableActions;
 		return flag;
 	}
 
+	/**Method to mouse over an element using JS
+	 * @param-WebElement element: input element
+	 */
 	public void mouseHoverJScript(WebElement HoverElement) {
 		try {
 			if (isElementPresent(HoverElement)) {
@@ -827,6 +834,25 @@ import utils.ReusableActions;
 					+ e.getStackTrace());
 		}
 	}
+
+	/**Method to click an element using JS
+	 * @param-WebElement element: input element
+	 */
+	public void clickWebElementUsingJS(WebElement webElement){
+		this.mouseHoverJScript(webElement);
+		JavascriptExecutor js = (JavascriptExecutor) this.getDriver();
+		js.executeScript("arguments[0].click();",webElement);
+	}
+
+	/**Method to click an element using JS
+	 * @param-WebElement element: input element
+	 */
+		public void clickWebElementUsingJSEvent(WebElement webElement){
+			String clickElementScript = "if(document.createEvent){var evObj = document.createEvent('MouseEvents');evObj.initEvent('click'," +
+					"true, true); arguments[0].dispatchEvent(evObj);} else if(document.createEventObject) { arguments[0].fireEvent('click');}";
+			((JavascriptExecutor) getDriver()).executeScript(clickElementScript,
+					webElement);
+		}
 
 	/**
 	 * Method to get the browser name where test is executing
