@@ -18,6 +18,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 
 import com.tsc.api.apiBuilder.ApiResponse;
+import com.tsc.api.pojo.SelectedProduct;
 import com.tsc.pages.base.BasePage;
 
 public class ProductResultsPage extends BasePage{
@@ -1494,22 +1495,24 @@ public class ProductResultsPage extends BasePage{
 		outputDataCriteria.put("style", "3");
 		outputDataCriteria.put("size", "3");
 		
-//		String lsUrl=apiResponse.getUrlOfPDPForAddToBagFromKeyword("dress");
-//		this.getDriver().get(lsUrl);
+		SelectedProduct selectedProduct= new SelectedProduct();
+//		selectedProduct=apiResponse.getProductOfPDPForAddToBagFromKeyword("dress");
+//		this.getDriver().get(selectedProduct.pdpNavigationUrl);
 		
 		String productNumber="";
 		for(String lsKeyword:lstKeyword) {
-			productNumber=apiResponse.getProductNumberFromKeyword(lsKeyword, outputDataCriteria);
-			if(!productNumber.isEmpty()&&!productNumber.equalsIgnoreCase("No Item Found")) {
+			selectedProduct=apiResponse.getProductNumberFromKeyword(lsKeyword, outputDataCriteria);
+			if(selectedProduct!=null) {
 				break;
 			}
 		}
 		
-		if(productNumber.equalsIgnoreCase("No Item Found")){
+		if(selectedProduct==null){
 			reporter.reportLogFail("Unable to find the product with Vedio,Size,Style,Badge image, Review,EasyPay,Nowprice and WasPrice");
 			return false;
 		}
-				
+		
+		productNumber=selectedProduct.productNumber;
 		this.selectedProductItem.productName="";
 		this.selectedProductItem.productBrand="";
 		this.selectedProductItem.productSelectedSize="";
@@ -1549,19 +1552,23 @@ public class ProductResultsPage extends BasePage{
 		outputDataCriteria.put("style", "3");
 		outputDataCriteria.put("size", "3");
 		
+		SelectedProduct selectedProduct= new SelectedProduct();
+	
 		String productNumber="";
 		for(String lsKeyword:lstKeyword) {
-			productNumber=apiResponse.getProductNumberFromKeyword(lsKeyword, outputDataCriteria);
-			if(!productNumber.isEmpty()&&!productNumber.equalsIgnoreCase("No Item Found")) {
+			selectedProduct=apiResponse.getProductNumberFromKeyword(lsKeyword, outputDataCriteria);
+			if(selectedProduct!=null) {
 				break;
 			}
 		}
 		
-		if(productNumber.equalsIgnoreCase("No Item Found")){
+		if(selectedProduct==null){
 			reporter.reportLogFail("Unable to find the product with Vedio,Size,Style,Badge image, Review,EasyPay,Nowprice and WasPrice");
 			return false;
 		}
-				
+		
+		productNumber=selectedProduct.productNumber;
+		
 		this.selectedProductItem.productName="";
 		this.selectedProductItem.productBrand="";
 		this.selectedProductItem.productSelectedSize="";
