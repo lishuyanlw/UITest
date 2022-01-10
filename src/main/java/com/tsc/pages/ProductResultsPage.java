@@ -1496,11 +1496,11 @@ public class ProductResultsPage extends BasePage{
 		outputDataCriteria.put("size", "3");
 		
 		SelectedProduct selectedProduct= new SelectedProduct();
-		selectedProduct=apiResponse.getProductInfoFromKeywordWithSoldOutInfo("boots",outputDataCriteria);
-		this.getDriver().get(selectedProduct.pdpNavigationUrl);
-		System.out.println("selectedProduct.productSelectedColor: "+selectedProduct.productSelectedColor);
-		System.out.println("selectedProduct.productSelectedSize: "+selectedProduct.productSelectedSize);
-		this.getReusableActionsInstance().staticWait(10000);
+//		selectedProduct=apiResponse.getProductInfoFromKeywordWithSoldOutInfo("dress",outputDataCriteria);
+//		this.getDriver().get(selectedProduct.pdpNavigationUrl);
+//		System.out.println("selectedProduct.productSelectedColor: "+selectedProduct.productSelectedColor);
+//		System.out.println("selectedProduct.productSelectedSize: "+selectedProduct.productSelectedSize);
+//		this.getReusableActionsInstance().staticWait(10000);
 		
 		String productNumber="";
 		for(String lsKeyword:lstKeyword) {
@@ -2347,7 +2347,7 @@ public class ProductResultsPage extends BasePage{
 		
 		LoginPage loginPage=new LoginPage(this.getDriver());
 		WebElement item=this.productResultList.get(0).findElement(this.byProductHeaderLike);
-		System.out.println("press before: "+item.getAttribute("aria-pressed"));
+		
 		if(item.getAttribute("aria-pressed").equalsIgnoreCase("false")) {
 			reporter.reportLogPass("The favorite icon is displaying not clicking status correctly");
 		}
@@ -2360,17 +2360,24 @@ public class ProductResultsPage extends BasePage{
 		
 		loginPage.LoginWithoutWaitingTime(lsUserName, lsPassword);
 		this.getReusableActionsInstance().waitForElementVisibility(loginPage.lblSignInGlobalResponseBanner);
-		
-		clearFavoriteHistory();
-		
+						
 		this.getSearchResultLoad(lsKeyword);
 		item=this.productResultList.get(0).findElement(this.byProductHeaderLike);
+		
+		if(item.getAttribute("aria-pressed").equalsIgnoreCase("true")) {
+			clearFavoriteHistory();
+			this.getSearchResultLoad(lsKeyword);
+			item=this.productResultList.get(0).findElement(this.byProductHeaderLike);				
+		}
+		
+		this.getReusableActionsInstance().clickIfAvailable(item);
+		this.getReusableActionsInstance().staticWait(1000);		
 		if(item.getAttribute("aria-pressed").equalsIgnoreCase("true")) {
 			reporter.reportLogPass("The favorite icon is displaying clicking status correctly");
 		}
 		else {
 			reporter.reportLogFail("The favorite icon is not displaying clicking status correctly");
-		}		
+		}				
 	}
 			
 	/**
