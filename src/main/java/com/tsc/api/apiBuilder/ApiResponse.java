@@ -23,12 +23,12 @@ public class ApiResponse extends ApiConfigs {
     public ApiResponse() throws IOException {}
 
     /**
-     * This method finds product number on the basis of input search keyword
+     * This method finds product info on the basis of input search keyword
      * @param - String - searchKeyword : search keyword for Product
      * @param - Map<String,Object> - outputDataCriteria : criteria for searching a particular product
      * @return - SelectedProduct - product for search keyword
      */
-    public SelectedProduct getProductNumberFromKeyword(String searchKeyword,Map<String,Object> outputDataCriteria){
+    public SelectedProduct getProductInfoFromKeyword(String searchKeyword,Map<String,Object> outputDataCriteria){
         boolean flag = true;
         String lsNowPrice,lsWasPrice;
         
@@ -77,7 +77,7 @@ public class ApiResponse extends ApiConfigs {
                     product = getProductDetailsForKeyword(searchKeyword,false);
                 }
             }else{
-            	selectedProduct = getProductNumberForInputParams(product,outputDataCriteria);
+            	selectedProduct = getProductInfoForInputParams(product,outputDataCriteria);
                 if(selectedProduct==null){
                     outputPage++;
                     if(outputPage>totalPage||outputPage>=10) {
@@ -196,10 +196,10 @@ public class ApiResponse extends ApiConfigs {
     /**
      * This method finds product number on the basis of input conditions(video,style,size,brand,badgeImage,review,easyPay,WasPrice)
      * @param - Product - product : Product class object
-     * @param - Map<String,Object> - configs : configs on basis of which product number will be fetched
+     * @param - Map<String,Object> - configs : configs on basis of which product info will be fetched
      * @return - SelectedProduct - product for search keyword
      */
-    private SelectedProduct getProductNumberForInputParams(Product product,Map<String,Object> configs){
+    private SelectedProduct getProductInfoForInputParams(Product product,Map<String,Object> configs){
     	if(product==null) {
         	return null;
         }
@@ -308,12 +308,12 @@ public class ApiResponse extends ApiConfigs {
     }
     
     /**
-     * This method finds product number on the basis of input conditions(video,style,size,brand,badgeImage,review,easyPay,WasPrice, and soldout)
+     * This method finds product info on the basis of input conditions(video,style,size,brand,badgeImage,review,easyPay,WasPrice, and soldout)
      * @param - Product - product : Product class object
-     * @param - Map<String,Object> - configs : configs on basis of which product number will be fetched
+     * @param - Map<String,Object> - configs : configs on basis of which product info will be fetched
      * @return - SelectedProduct - product for search keyword
      */
-    private SelectedProduct getProductNumberForInputParamsWithSoldOutInfo(Product product,Map<String,Object> configs){
+    private SelectedProduct getProductInfoForInputParamsWithSoldOutInfo(Product product,Map<String,Object> configs){
     	if(product==null) {
         	return null;
         }
@@ -355,6 +355,16 @@ public class ApiResponse extends ApiConfigs {
             			selectedProduct.productSelectedSize=Edps.getSize();
             		}
             	}
+            	
+//            	boolean bAllZero=true;
+//            	for(edps Edps:edpsList) {
+//            		if(Edps.Inventory!=0) {
+//            			bAllZero=false;
+//            		}
+//            	}
+//             	if(!bAllZero) {
+//             		continue;
+//             	}
              	
             	selectedProduct.productNumber=data.getItemNo();
         		selectedProduct.productName=data.getName();
@@ -369,12 +379,12 @@ public class ApiResponse extends ApiConfigs {
     }
     
     /**
-     * This method finds product number on the basis of input search keyword
+     * This method finds product info on the basis of input search keyword
      * @param - String - searchKeyword : search keyword for Product
      * @param - Map<String,Object> - outputDataCriteria : criteria for searching a particular product
      * @return - SelectedProduct - product for search keyword
      */
-    public SelectedProduct getProductNumberFromKeywordWithSoldOutInfo(String searchKeyword,Map<String,Object> outputDataCriteria){
+    public SelectedProduct getProductInfoFromKeywordWithSoldOutInfo(String searchKeyword,Map<String,Object> outputDataCriteria){
         boolean flag = true;
         String lsNowPrice,lsWasPrice;
         
@@ -431,7 +441,7 @@ public class ApiResponse extends ApiConfigs {
                     product = getProductDetailsForKeyword(searchKeyword,false);
                 }
             }else{
-            	selectedProduct = getProductNumberForInputParamsWithSoldOutInfo(product,outputDataCriteria);
+            	selectedProduct = getProductInfoForInputParamsWithSoldOutInfo(product,outputDataCriteria);
                 if(selectedProduct==null){
                     outputPage++;
                     if(outputPage>totalPage||outputPage>=10) {
@@ -444,6 +454,63 @@ public class ApiResponse extends ApiConfigs {
             }
             
         }while(flag);
+
+        return selectedProduct;
+    }
+    
+    /**
+     * This method find Product info while search keyword is product number
+     * @param - String - searchKeyword : search keyword for Product
+     * @return - SelectedProduct - product for search keyword
+     */
+    public SelectedProduct getProductInfoWithProductNumberAsSearchKeyword(String searchKeyword){
+        Response response = null;
+        Product product = null;
+        boolean flag = true;
+        int repeatNumber=0;
+        
+        //Clearing config data before start of function if this function call was made previously in test
+        if(configs!=null)
+            configs.clear();
+ 
+        configs = super.getProductSearchByKeywordInputConfig(searchKeyword, null, 1, super.getApiPropertyData().get("test_apiVersion"));
+        
+        repeatNumber=0;
+        do{
+        	response = getApiCallResponse(configs, "/products");
+            if(response!=null && response.statusCode()==200) {
+            	product = JsonParser.getResponseObject(response.asString(), new TypeReference<Product>() {
+                });
+
+                if (product.getProducts().size() >= 1) {
+                	totalPage=product.getPaging().getTotalPages();
+                    flag = false;
+                } 
+
+                repeatNumber++;
+                if(repeatNumber==5) {
+                	return null;
+                }
+            }
+        }while(flag);
+        
+        SelectedProduct selectedProduct= new SelectedProduct();
+        selectedProduct.productNumber="";
+		selectedProduct.productName="";
+		selectedProduct.productBrand="";
+		selectedProduct.productNowPrice="";
+		selectedProduct.productWasPrice="";
+		selectedProduct.pdpNavigationUrl= "";
+		
+        if(product!=null) {
+        	Product.Products data=product.getProducts().get(0);
+        	selectedProduct.productNumber=data.getItemNo();
+    		selectedProduct.productName=data.getName();
+    		selectedProduct.productBrand=data.getBrand();
+    		selectedProduct.productNowPrice=data.getIsPriceRange();
+    		selectedProduct.productWasPrice=data.getWasPriceRange();
+    		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName()+"/pages/productdetails?nav=R:"+data.getItemNo();
+        }
 
         return selectedProduct;
     }

@@ -1496,12 +1496,15 @@ public class ProductResultsPage extends BasePage{
 		outputDataCriteria.put("size", "3");
 		
 		SelectedProduct selectedProduct= new SelectedProduct();
-//		selectedProduct=apiResponse.getProductOfPDPForAddToBagFromKeyword("dress");
-//		this.getDriver().get(selectedProduct.pdpNavigationUrl);
+		selectedProduct=apiResponse.getProductInfoFromKeywordWithSoldOutInfo("boots",outputDataCriteria);
+		this.getDriver().get(selectedProduct.pdpNavigationUrl);
+		System.out.println("selectedProduct.productSelectedColor: "+selectedProduct.productSelectedColor);
+		System.out.println("selectedProduct.productSelectedSize: "+selectedProduct.productSelectedSize);
+		this.getReusableActionsInstance().staticWait(10000);
 		
 		String productNumber="";
 		for(String lsKeyword:lstKeyword) {
-			selectedProduct=apiResponse.getProductNumberFromKeyword(lsKeyword, outputDataCriteria);
+			selectedProduct=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria);
 			if(selectedProduct!=null) {
 				break;
 			}
@@ -1556,7 +1559,7 @@ public class ProductResultsPage extends BasePage{
 	
 		String productNumber="";
 		for(String lsKeyword:lstKeyword) {
-			selectedProduct=apiResponse.getProductNumberFromKeyword(lsKeyword, outputDataCriteria);
+			selectedProduct=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria);
 			if(selectedProduct!=null) {
 				break;
 			}
