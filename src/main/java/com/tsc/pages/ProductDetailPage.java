@@ -1,6 +1,9 @@
 package com.tsc.pages;
 
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.openqa.selenium.By;
@@ -9,6 +12,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
 
+import com.tsc.api.apiBuilder.ApiResponse;
+import com.tsc.api.pojo.ProductDetailsItem;
+import com.tsc.api.pojo.SelectedProduct;
 import com.tsc.pages.ProductResultsPage.ProductItem;
 import com.tsc.pages.base.BasePage;
 
@@ -2134,5 +2140,47 @@ public class ProductDetailPage extends BasePage {
 		reporter.softAssert(checkIfFavShareMobileHighlighted(),"The FavShareMobile icon is highlighted after clicking with user login", "The FavShareMobile icon is not highlighted after clicking with user login");
 	}
 	
+	/**
+	 * This method will go to the product with with Vedio,Size,Style,Badge image, Review,EasyPay,Nowprice and WasPrice
+	 * @return true/false
+	 * @author Wei.Li
+	 * @throws IOException 
+	 */
+	public boolean goToProductItemWithPreConditions(List<String> lstKeyword) throws IOException {
+		ProductResultsPage prp=new ProductResultsPage(this.getDriver());
+		ApiResponse apiResponse=new ApiResponse();
+		Map<String,Object> outputDataCriteria= new HashMap<String,Object>();
+		outputDataCriteria.put("video", "1");
+		outputDataCriteria.put("style", "3");
+		outputDataCriteria.put("size", "3");
+		
+		SelectedProduct selectedProduct= new SelectedProduct();
+//		selectedProduct=apiResponse.getProductInfoFromKeywordWithSoldOutInfo("dress",outputDataCriteria);
+//		this.getDriver().get(selectedProduct.pdpNavigationUrl);
+//		System.out.println("selectedProduct.productSelectedColor: "+selectedProduct.productSelectedColor);
+//		System.out.println("selectedProduct.productSelectedSize: "+selectedProduct.productSelectedSize);
+//		this.getReusableActionsInstance().staticWait(10000);
+		
+		String productNumber="";
+		for(String lsKeyword:lstKeyword) {
+			selectedProduct=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria);
+			if(selectedProduct!=null) {
+				break;
+			}
+		}
+		
+		if(selectedProduct==null){
+			reporter.reportLogFail("Unable to find the product with Vedio,Size,Style,Badge image, Review,EasyPay,Nowprice and WasPrice");
+			return false;
+		}
+		
+		ProductDetailsItem sp=apiResponse.getProductDetailsForSpecificProductNumber(selectedProduct.productNumber);
+		selectedProduct=apiResponse.selectedProduct;
+		System.out.println("NowPrice: "+sp.getIsPriceRange());
+		
+		this.getDriver().get(apiResponse.selectedProduct.pdpNavigationUrl);
+		
+		return prp.waitForPDPPageLoading();
+	}
 
 }

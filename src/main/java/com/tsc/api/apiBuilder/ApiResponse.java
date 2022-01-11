@@ -3,8 +3,8 @@ package com.tsc.api.apiBuilder;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.tsc.api.pojo.Product;
 import com.tsc.api.pojo.Product.edps;
+import com.tsc.api.pojo.ProductDetailsItem;
 import com.tsc.api.pojo.SelectedProduct;
-import com.tsc.api.pojo.SingleProduct;
 import com.tsc.api.util.JsonParser;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
@@ -20,6 +20,7 @@ public class ApiResponse extends ApiConfigs {
     private int outputPage = 1;
     private int totalPage;
     private String dimensionNumber;
+    public SelectedProduct selectedProduct= new SelectedProduct();
 
     public ApiResponse() throws IOException {}
 
@@ -37,7 +38,7 @@ public class ApiResponse extends ApiConfigs {
         if(product==null) {
         	return null;
         }
-        SelectedProduct selectedProduct= new SelectedProduct();
+
         do{
             if(outputDataCriteria==null){
                 for(Product.Products data:product.getProducts()) {
@@ -164,20 +165,26 @@ public class ApiResponse extends ApiConfigs {
     /**
      * This method get Product Details for a specific product number as api call
      * @param - String - productNumber : product number for Product
-     * @return - SingleProduct - SingleProduct Object from api Response
+     * @return - ProductDetailsItem - ProductDetailsItem Object from api Response
      */
-    public SingleProduct getProductDetailsForSpecificProductNumber(String productNumber){
+    public ProductDetailsItem getProductDetailsForSpecificProductNumber(String productNumber){
         Response response = null;
         boolean flag = true;
         int repeatNumber=0;
-        SingleProduct product=new SingleProduct();
-        
+        ProductDetailsItem product=new ProductDetailsItem();
+  
         do{
         	response = getApiCallResponse(null, "/products/"+productNumber);
             if(response!=null && response.statusCode()==200) {
-            	product = JsonParser.getResponseObject(response.asString(), new TypeReference<SingleProduct>() {
+            	product = JsonParser.getResponseObject(response.asString(), new TypeReference<ProductDetailsItem>() {
                 });
-
+            	
+            	selectedProduct.productNumber=product.getItemNo();
+        		selectedProduct.productName=product.getName();
+        		selectedProduct.productBrand=product.getBrand();
+        		selectedProduct.productNowPrice=product.getIsPriceRange();
+        		selectedProduct.productWasPrice=product.getWasPriceRange();        	
+        		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+product.getName()+"/pages/productdetails?nav=R:"+product.getItemNo();
                 flag=false;
             }
             else {
@@ -257,8 +264,7 @@ public class ApiResponse extends ApiConfigs {
                 }                       
             }
          }
-        
-        SelectedProduct selectedProduct= new SelectedProduct(); 
+ 
         for(Product.Products data:product.getProducts()) {
         	lsNowPrice=data.getIsPriceRange();
         	lsWasPrice=data.getWasPriceRange();
@@ -292,7 +298,7 @@ public class ApiResponse extends ApiConfigs {
     	if(product==null) {
         	return null;
         }
-        SelectedProduct selectedProduct= new SelectedProduct();        
+       
         for(Product.Products data:product.getProducts()) {
         	if(data.isEnabledAddToCart()) {
         		selectedProduct.productNumber=data.getItemNo();
@@ -319,8 +325,7 @@ public class ApiResponse extends ApiConfigs {
         if(product==null) {
         	return null;
         }
-        
-        SelectedProduct selectedProduct= new SelectedProduct();
+  
         do{
         	selectedProduct.productNumber="";
     		selectedProduct.productName="";
@@ -371,8 +376,7 @@ public class ApiResponse extends ApiConfigs {
                 }                       
             }
          }
-        
-        SelectedProduct selectedProduct= new SelectedProduct(); 
+  
         for(Product.Products data:product.getProducts()) {
         	lsNowPrice=data.getIsPriceRange();
         	lsWasPrice=data.getWasPriceRange();
@@ -408,7 +412,7 @@ public class ApiResponse extends ApiConfigs {
         		selectedProduct.productName=data.getName();
         		selectedProduct.productBrand=data.getBrand();
         		selectedProduct.productNowPrice=data.getIsPriceRange();
-        		selectedProduct.productWasPrice=data.getWasPriceRange();
+        		selectedProduct.productWasPrice=data.getWasPriceRange();        		
         		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName()+"/pages/productdetails?nav=R:"+data.getItemNo();            	
                 return selectedProduct;
             }
@@ -430,7 +434,7 @@ public class ApiResponse extends ApiConfigs {
         if(product==null) {
         	return null;
         }
-        SelectedProduct selectedProduct= new SelectedProduct();
+ 
         do{
             if(outputDataCriteria==null){
                 for(Product.Products data:product.getProducts()) {
@@ -501,7 +505,7 @@ public class ApiResponse extends ApiConfigs {
      * @param - String - searchKeyword : search keyword for Product
      * @return - SelectedProduct - product for search keyword
      */
-    public SelectedProduct getProductInfoWithProductNumberAsSearchKeyword(String searchKeyword){
+    public Product getProductInfoWithProductNumberAsSearchKeyword(String searchKeyword){
         Response response = null;
         Product product = null;
         boolean flag = true;
@@ -531,8 +535,7 @@ public class ApiResponse extends ApiConfigs {
                 }
             }
         }while(flag);
-        
-        SelectedProduct selectedProduct= new SelectedProduct();
+
         selectedProduct.productNumber="";
 		selectedProduct.productName="";
 		selectedProduct.productBrand="";
@@ -550,6 +553,6 @@ public class ApiResponse extends ApiConfigs {
     		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName()+"/pages/productdetails?nav=R:"+data.getItemNo();
         }
 
-        return selectedProduct;
+        return product;
     }
 }

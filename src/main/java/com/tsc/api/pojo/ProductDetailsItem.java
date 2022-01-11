@@ -5,7 +5,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class SingleProduct {
+public class ProductDetailsItem {
 	public String ItemNo;
 	public String Name;
 	public String Overview;
