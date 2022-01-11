@@ -43,8 +43,8 @@ public class PD_TC05_Verify_ProductDetail_ProductSize_Quantity extends BaseTest{
 		reporter.reportLog("Verify product size dropdown");
 		getProductDetailPageThreadLocal().verifyProductSizeDropdown();			
 					
-		reporter.reportLog("Verify product TrueFit");
-		getProductDetailPageThreadLocal().verifyProductSizeTrueFit();
+		/*reporter.reportLog("Verify product TrueFit");
+		getProductDetailPageThreadLocal().verifyProductSizeTrueFit();*/
 						
 		reporter.reportLog("Verify product quantity");
 		getProductDetailPageThreadLocal().verifyProductQuantityDropdown(Integer.parseInt(lsQuantityNumberToShowLeftItemInfo));

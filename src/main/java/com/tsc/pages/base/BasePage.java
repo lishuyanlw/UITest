@@ -234,7 +234,7 @@ import utils.ReusableActions;
 				}
 			}
 		};
-		WebDriverWait wait = new WebDriverWait(getDriver(), 40);
+		WebDriverWait wait = new WebDriverWait(getDriver(), 60);
 		wait.until(javascriptDone);
 	}
 	
@@ -491,6 +491,7 @@ import utils.ReusableActions;
 	 * @author Wei.Li
 	 */	
 	public boolean checkChildElementExistingByTagName(WebElement parent,String lsTagName) {
+		this.waitForPageToLoad();
 		List<WebElement> lstChild=this.getChildrenList(parent);
 		for(WebElement child:lstChild) {
 			if(child.getTagName().equalsIgnoreCase(lsTagName)) {
