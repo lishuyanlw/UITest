@@ -194,7 +194,7 @@ public class BaseTest {
 		//Refreshing browser so that Access Denied issue is resolved from Sauce Lab
 		getglobalheaderPageThreadLocal().getReusableActionsInstance().staticWait(3000);
 		//if(!System.getProperty("Browser").toLowerCase().contains("safari"))
-		getDriver().navigate().refresh();
+		//getDriver().navigate().refresh();
 	}
 
 	
