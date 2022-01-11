@@ -48,8 +48,8 @@ public class PD_TC08_Verify_ProductDetail_SoldOut extends BaseTest{
 		reporter.reportLog("Verify product name,brand name and product number");	
 		getProductDetailPageThreadLocal().verifyProductSoldOutBasicInfo();
 		
-		reporter.reportLog("Verify product TrueFit");
-		getProductDetailPageThreadLocal().verifyProductSizeTrueFit();
+		/*reporter.reportLog("Verify product TrueFit");
+		getProductDetailPageThreadLocal().verifyProductSizeTrueFit();*/
 		
 		reporter.reportLog("Verify Sold out product messaage");
 		getProductDetailPageThreadLocal().verifyProductSoldOut();

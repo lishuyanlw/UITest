@@ -839,7 +839,7 @@ import utils.ReusableActions;
 	 * @param-WebElement element: input element
 	 */
 	public void clickWebElementUsingJS(WebElement webElement){
-		this.mouseHoverJScript(webElement);
+		//this.mouseHoverJScript(webElement);
 		JavascriptExecutor js = (JavascriptExecutor) this.getDriver();
 		js.executeScript("arguments[0].click();",webElement);
 	}

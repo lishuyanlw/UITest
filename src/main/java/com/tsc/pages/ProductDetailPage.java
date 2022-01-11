@@ -107,7 +107,8 @@ public class ProductDetailPage extends BasePage {
 	public WebElement lblProductNumber;
 	
 	//Review part
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'product-name-sub')]//div[@id='panReviewSnippet']//div[@class='p-w-r'][last()]//section")
+	//@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'product-name-sub')]//div[@id='panReviewSnippet']//div[@class='p-w-r'][last()]//section")
+	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'product-name-sub')]//div[@id='panReviewSnippet']//div[@class='p-w-r'][last()]//section//div[contains(@class,'read-and-write')]")
 	public WebElement productReviewSection;
 	
 	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'product-name-sub')]//div[@id='panReviewSnippet']//div[@class='p-w-r'][last()]//section//div[contains(@class,'pr-star-v4')]")
@@ -1103,6 +1104,7 @@ public class ProductDetailPage extends BasePage {
 	public boolean goToProductReviewTab() {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productReviewSection);
 		//this.getReusableActionsInstance().clickIfAvailable(this.productReviewSection);
+		//this.getReusableActionsInstance().scrollToElementAndClick(this.productReviewSection);
 		this.clickWebElementUsingJS(this.productReviewSection);
 		return this.waitForCondition(Driver->{return this.btnStickyTabProductReview.getAttribute("class").contains("selected");},30000);
 	}
@@ -1914,8 +1916,9 @@ public class ProductDetailPage extends BasePage {
 		this.lstWriteReviewYourRatingList.get(0).click();
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputWriteReviewHeadline);
 		this.inputWriteReviewHeadline.sendKeys("Test heading line");
+		this.getReusableActionsInstance().staticWait(3000);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.textareaWriteReviewComments);
-		this.textareaWriteReviewComments.sendKeys("Test write a review");
+		this.textareaWriteReviewComments.sendKeys("Test write a review in comments");
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstWriteReviewRecommendToFriendList.get(0));
 		this.lstWriteReviewRecommendToFriendList.get(0).click();
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputWriteReviewNickName);
