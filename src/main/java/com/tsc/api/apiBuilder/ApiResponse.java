@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.tsc.api.pojo.Product;
 import com.tsc.api.pojo.Product.edps;
 import com.tsc.api.pojo.SelectedProduct;
+import com.tsc.api.pojo.SingleProduct;
 import com.tsc.api.util.JsonParser;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
@@ -159,6 +160,36 @@ public class ApiResponse extends ApiConfigs {
         
         return product;
     }
+    
+    /**
+     * This method get Product Details for a specific product number as api call
+     * @param - String - productNumber : product number for Product
+     * @return - SingleProduct - SingleProduct Object from api Response
+     */
+    public SingleProduct getProductDetailsForSpecificProductNumber(String productNumber){
+        Response response = null;
+        boolean flag = true;
+        int repeatNumber=0;
+        SingleProduct product=new SingleProduct();
+        
+        do{
+        	response = getApiCallResponse(null, "/products/"+productNumber);
+            if(response!=null && response.statusCode()==200) {
+            	product = JsonParser.getResponseObject(response.asString(), new TypeReference<SingleProduct>() {
+                });
+
+                flag=false;
+            }
+            else {
+            	repeatNumber++;
+                if(repeatNumber==5) {
+                	return null;
+                }
+            }
+        }while(flag);
+        
+        return product;
+    }
 
     /**
      * This method makes GET call to api
@@ -167,9 +198,16 @@ public class ApiResponse extends ApiConfigs {
      * @return - Response - Response from api
      */
     private Response getApiCallResponse(Map<String,Object> config,String apiEndPoint){
-        return RestAssured.given().
-                when().params(config).header("Content-Type","application/json").log().all().
-                get(apiEndPoint);
+    	if(config!=null) {
+    		return RestAssured.given().
+                    when().params(config).header("Content-Type","application/json").log().all().
+                    get(apiEndPoint);
+    	}
+    	else {
+    		return RestAssured.given().
+                    when().header("Content-Type","application/json").log().all().
+                    get(apiEndPoint);
+    	}
     }
 
     /**

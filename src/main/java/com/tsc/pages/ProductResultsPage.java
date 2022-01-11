@@ -19,6 +19,7 @@ import org.openqa.selenium.JavascriptExecutor;
 
 import com.tsc.api.apiBuilder.ApiResponse;
 import com.tsc.api.pojo.SelectedProduct;
+import com.tsc.api.pojo.SingleProduct;
 import com.tsc.pages.base.BasePage;
 
 public class ProductResultsPage extends BasePage{
@@ -1502,42 +1503,45 @@ public class ProductResultsPage extends BasePage{
 //		System.out.println("selectedProduct.productSelectedSize: "+selectedProduct.productSelectedSize);
 //		this.getReusableActionsInstance().staticWait(10000);
 		
-		String productNumber="";
-		for(String lsKeyword:lstKeyword) {
-			selectedProduct=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria);
-			if(selectedProduct!=null) {
-				break;
-			}
-		}
+		SingleProduct sp=apiResponse.getProductDetailsForSpecificProductNumber("407983");
+		System.out.println("NowPrice: "+sp.getIsPriceRange());
 		
-		if(selectedProduct==null){
-			reporter.reportLogFail("Unable to find the product with Vedio,Size,Style,Badge image, Review,EasyPay,Nowprice and WasPrice");
-			return false;
-		}
-		
-		productNumber=selectedProduct.productNumber;
-		this.selectedProductItem.productName="";
-		this.selectedProductItem.productBrand="";
-		this.selectedProductItem.productSelectedSize="";
-		this.selectedProductItem.productSelectedColor="";
-		this.selectedProductItem.productNowPrice="";
-		this.selectedProductItem.productWasPrice="";		
-		
-		this.getSearchResultLoad(productNumber);		
-		WebElement item=this.productResultList.get(0);
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-		this.getReusableActionsInstance().scrollToElement(item);
-				
-		this.selectedProductItem.productNumber=productNumber;
-		this.selectedProductItem.productName=this.getElementInnerText(item.findElement(this.byProductName));
-		if(this.checkProductItemBrandNameExisting(item)) {
-			this.selectedProductItem.productBrand=this.getElementInnerText(item.findElement(this.byProductBrand));
-		}
-		this.selectedProductItem.productNowPrice=this.getElementInnerText(item.findElement(this.byProductNowPrice)).replace("Current price:", "").trim();
-		this.selectedProductItem.productWasPrice=this.getElementInnerText(item.findElement(this.byProductWasPrice)).replace("Previous price:", "").trim();
-		this.selectedProductItem.productNavigationUrl=this.URL();
-		
-		this.clickElement(item.findElement(this.byProductHref));
+//		String productNumber="";
+//		for(String lsKeyword:lstKeyword) {
+//			selectedProduct=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria);
+//			if(selectedProduct!=null) {
+//				break;
+//			}
+//		}
+//		
+//		if(selectedProduct==null){
+//			reporter.reportLogFail("Unable to find the product with Vedio,Size,Style,Badge image, Review,EasyPay,Nowprice and WasPrice");
+//			return false;
+//		}
+//		
+//		productNumber=selectedProduct.productNumber;
+//		this.selectedProductItem.productName="";
+//		this.selectedProductItem.productBrand="";
+//		this.selectedProductItem.productSelectedSize="";
+//		this.selectedProductItem.productSelectedColor="";
+//		this.selectedProductItem.productNowPrice="";
+//		this.selectedProductItem.productWasPrice="";		
+//		
+//		this.getSearchResultLoad(productNumber);		
+//		WebElement item=this.productResultList.get(0);
+//		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+//		this.getReusableActionsInstance().scrollToElement(item);
+//				
+//		this.selectedProductItem.productNumber=productNumber;
+//		this.selectedProductItem.productName=this.getElementInnerText(item.findElement(this.byProductName));
+//		if(this.checkProductItemBrandNameExisting(item)) {
+//			this.selectedProductItem.productBrand=this.getElementInnerText(item.findElement(this.byProductBrand));
+//		}
+//		this.selectedProductItem.productNowPrice=this.getElementInnerText(item.findElement(this.byProductNowPrice)).replace("Current price:", "").trim();
+//		this.selectedProductItem.productWasPrice=this.getElementInnerText(item.findElement(this.byProductWasPrice)).replace("Previous price:", "").trim();
+//		this.selectedProductItem.productNavigationUrl=this.URL();
+//		
+//		this.clickElement(item.findElement(this.byProductHref));
 		
 		return this.waitForPDPPageLoading();
 	}
