@@ -28,7 +28,7 @@ public class ApiResponse extends ApiConfigs {
      * This method finds product info on the basis of input search keyword
      * @param - String - searchKeyword : search keyword for Product
      * @param - Map<String,Object> - outputDataCriteria : criteria for searching a particular product
-     * @return - SelectedProduct - product for search keyword
+     * @return - Product.Products - product for search keyword
      */
     public Product.Products getProductInfoFromKeyword(String searchKeyword,Map<String,Object> outputDataCriteria){
         boolean flag = true;
@@ -243,7 +243,7 @@ public class ApiResponse extends ApiConfigs {
      * This method finds product number on the basis of input conditions(video,style,size,brand,badgeImage,review,easyPay,WasPrice)
      * @param - Product - product : Product class object
      * @param - Map<String,Object> - configs : configs on basis of which product info will be fetched
-     * @return - SelectedProduct - product for search keyword
+     * @return - Product.Products - product for search keyword
      */
     private Product.Products getProductInfoForInputParams(Product product,Map<String,Object> configs){
     	if(product==null) {
@@ -294,7 +294,7 @@ public class ApiResponse extends ApiConfigs {
     /**
      * This method finds PDP url for Add To Bag enabled product
      * @param - Product - product : Product class object
-     * @return - SelectedProduct - product for search keyword
+     * @return - Product.Products - product for search keyword
      */
     private Product.Products getProductOfPDPForAddToBag(Product product){
     	if(product==null) {
@@ -319,7 +319,7 @@ public class ApiResponse extends ApiConfigs {
     /**
      * This method finds PDP url for Add To Bag enabled product on the basis of input search keyword
      * @param - String - searchKeyword : search keyword for Product
-      * @return - SelectedProduct - product for search keyword
+      * @return - Product.Products - product for search keyword
      */
     public Product.Products getProductOfPDPForAddToBagFromKeyword(String searchKeyword){
         boolean flag = true;
@@ -358,7 +358,7 @@ public class ApiResponse extends ApiConfigs {
      * This method finds product info on the basis of input conditions(video,style,size,brand,badgeImage,review,easyPay,WasPrice, and soldout)
      * @param - Product - product : Product class object
      * @param - Map<String,Object> - configs : configs on basis of which product info will be fetched
-     * @return - SelectedProduct - product for search keyword
+     * @return - Product.Products - product for search keyword
      */
     private Product.Products getProductInfoForInputParamsWithSoldOutInfo(Product product,Map<String,Object> configs){
     	if(product==null) {
@@ -428,7 +428,7 @@ public class ApiResponse extends ApiConfigs {
      * This method finds product info on the basis of input search keyword
      * @param - String - searchKeyword : search keyword for Product
      * @param - Map<String,Object> - outputDataCriteria : criteria for searching a particular product
-     * @return - SelectedProduct - product for search keyword
+     * @return - Product.Products - product for search keyword
      */
     public Product.Products getProductInfoFromKeywordWithSoldOutInfo(String searchKeyword,Map<String,Object> outputDataCriteria){
         boolean flag = true;
@@ -510,7 +510,7 @@ public class ApiResponse extends ApiConfigs {
     /**
      * This method find Product info while search keyword is product number
      * @param - String - searchKeyword : search keyword for Product
-     * @return - SelectedProduct - product for search keyword
+     * @return - Product.Products - product for search keyword
      */
     public Product.Products getProductInfoWithProductNumberAsSearchKeyword(String searchKeyword){
         Response response = null;
