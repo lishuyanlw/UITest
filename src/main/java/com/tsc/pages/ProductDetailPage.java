@@ -13,6 +13,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
 
 import com.tsc.api.apiBuilder.ApiResponse;
+import com.tsc.api.pojo.Product;
 import com.tsc.api.pojo.ProductDetailsItem;
 import com.tsc.api.pojo.SelectedProduct;
 import com.tsc.pages.ProductResultsPage.ProductItem;
@@ -2161,23 +2162,23 @@ public class ProductDetailPage extends BasePage {
 //		System.out.println("selectedProduct.productSelectedSize: "+selectedProduct.productSelectedSize);
 //		this.getReusableActionsInstance().staticWait(10000);
 		
+		Product.Products product=new Product.Products();
 		String productNumber="";
 		for(String lsKeyword:lstKeyword) {
-			selectedProduct=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria);
-			if(selectedProduct!=null) {
+			product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria);
+			if(product!=null) {
 				break;
 			}
 		}
 		
-		if(selectedProduct==null){
+		if(product==null){
 			reporter.reportLogFail("Unable to find the product with Vedio,Size,Style,Badge image, Review,EasyPay,Nowprice and WasPrice");
 			return false;
 		}
 		
 		ProductDetailsItem sp=apiResponse.getProductDetailsForSpecificProductNumber(selectedProduct.productNumber);
 		selectedProduct=apiResponse.selectedProduct;
-		System.out.println("NowPrice: "+sp.getIsPriceRange());
-		
+			
 		this.getDriver().get(apiResponse.selectedProduct.pdpNavigationUrl);
 		
 		return prp.waitForPDPPageLoading();

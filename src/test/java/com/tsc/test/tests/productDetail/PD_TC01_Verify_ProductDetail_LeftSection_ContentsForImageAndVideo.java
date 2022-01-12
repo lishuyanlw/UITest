@@ -34,6 +34,7 @@ public class PD_TC01_Verify_ProductDetail_LeftSection_ContentsForImageAndVideo e
 	reporter.reportLog("Switch to ProductDetail page");
 	String lsProductNumber,lsUrl;
 	
+//	if(getProductDetailPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList)) {
 	if(getProductResultsPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList)) {
 		reporter.reportLog("Verify URL");
 		lsProductNumber=getProductResultsPageThreadLocal().selectedProductItem.productNumber;

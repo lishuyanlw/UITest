@@ -18,6 +18,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 
 import com.tsc.api.apiBuilder.ApiResponse;
+import com.tsc.api.pojo.Product;
 import com.tsc.api.pojo.ProductDetailsItem;
 import com.tsc.api.pojo.SelectedProduct;
 import com.tsc.pages.base.BasePage;
@@ -1497,6 +1498,7 @@ public class ProductResultsPage extends BasePage{
 		outputDataCriteria.put("size", "3");
 		
 		SelectedProduct selectedProduct= new SelectedProduct();
+		Product.Products product=new Product.Products();
 //		selectedProduct=apiResponse.getProductInfoFromKeywordWithSoldOutInfo("dress",outputDataCriteria);
 //		this.getDriver().get(selectedProduct.pdpNavigationUrl);
 //		System.out.println("selectedProduct.productSelectedColor: "+selectedProduct.productSelectedColor);
@@ -1508,16 +1510,18 @@ public class ProductResultsPage extends BasePage{
 		
 		String productNumber="";
 		for(String lsKeyword:lstKeyword) {
-			selectedProduct=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria);
-			if(selectedProduct!=null) {
+			product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria);
+			if(product!=null) {
 				break;
 			}
 		}
 		
-		if(selectedProduct==null){
+		if(product==null){
 			reporter.reportLogFail("Unable to find the product with Vedio,Size,Style,Badge image, Review,EasyPay,Nowprice and WasPrice");
 			return false;
 		}
+				
+		selectedProduct=apiResponse.selectedProduct;
 		
 		productNumber=selectedProduct.productNumber;
 		this.selectedProductItem.productName="";
@@ -1560,19 +1564,21 @@ public class ProductResultsPage extends BasePage{
 		outputDataCriteria.put("size", "3");
 		
 		SelectedProduct selectedProduct= new SelectedProduct();
-	
+		Product.Products product=new Product.Products();
 		String productNumber="";
 		for(String lsKeyword:lstKeyword) {
-			selectedProduct=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria);
+			product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria);
 			if(selectedProduct!=null) {
 				break;
 			}
 		}
 		
-		if(selectedProduct==null){
+		if(product==null){
 			reporter.reportLogFail("Unable to find the product with Vedio,Size,Style,Badge image, Review,EasyPay,Nowprice and WasPrice");
 			return false;
 		}
+		
+		selectedProduct=apiResponse.selectedProduct;
 		
 		productNumber=selectedProduct.productNumber;
 		

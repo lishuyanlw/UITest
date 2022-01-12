@@ -30,9 +30,10 @@ public class ApiResponse extends ApiConfigs {
      * @param - Map<String,Object> - outputDataCriteria : criteria for searching a particular product
      * @return - SelectedProduct - product for search keyword
      */
-    public SelectedProduct getProductInfoFromKeyword(String searchKeyword,Map<String,Object> outputDataCriteria){
+    public Product.Products getProductInfoFromKeyword(String searchKeyword,Map<String,Object> outputDataCriteria){
         boolean flag = true;
         String lsNowPrice,lsWasPrice;
+        Product.Products productItem=new Product.Products();
         
         Product product = getProductDetailsForKeyword(searchKeyword,true);
         if(product==null) {
@@ -60,7 +61,7 @@ public class ApiResponse extends ApiConfigs {
                     	else {
                     		continue;
                     	}
-                    	
+                    	productItem=data;
                         flag = false;
                         selectedProduct.productNumber=data.getItemNo();
                 		selectedProduct.productName=data.getName();
@@ -79,8 +80,8 @@ public class ApiResponse extends ApiConfigs {
                     product = getProductDetailsForKeyword(searchKeyword,false);
                 }
             }else{
-            	selectedProduct = getProductInfoForInputParams(product,outputDataCriteria);
-                if(selectedProduct==null){
+            	productItem = getProductInfoForInputParams(product,outputDataCriteria);
+                if(productItem==null){
                     outputPage++;
                     if(outputPage>totalPage||outputPage>=10) {
                     	flag = false;
@@ -93,7 +94,7 @@ public class ApiResponse extends ApiConfigs {
             
         }while(flag);
 
-        return selectedProduct;
+        return productItem;
     }
 
     /**
@@ -244,7 +245,7 @@ public class ApiResponse extends ApiConfigs {
      * @param - Map<String,Object> - configs : configs on basis of which product info will be fetched
      * @return - SelectedProduct - product for search keyword
      */
-    private SelectedProduct getProductInfoForInputParams(Product product,Map<String,Object> configs){
+    private Product.Products getProductInfoForInputParams(Product product,Map<String,Object> configs){
     	if(product==null) {
         	return null;
         }
@@ -264,7 +265,7 @@ public class ApiResponse extends ApiConfigs {
                 }                       
             }
          }
- 
+        Product.Products productItem=new Product.Products();
         for(Product.Products data:product.getProducts()) {
         	lsNowPrice=data.getIsPriceRange();
         	lsWasPrice=data.getWasPriceRange();
@@ -277,13 +278,14 @@ public class ApiResponse extends ApiConfigs {
             	else {
             		continue;
             	}
+            	productItem=data;
             	selectedProduct.productNumber=data.getItemNo();
         		selectedProduct.productName=data.getName();
         		selectedProduct.productBrand=data.getBrand();
         		selectedProduct.productNowPrice=data.getIsPriceRange();
         		selectedProduct.productWasPrice=data.getWasPriceRange();
         		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName()+"/pages/productdetails?nav=R:"+data.getItemNo();            	
-                return selectedProduct;
+                return productItem;
             }
         }
         return null;
@@ -294,11 +296,11 @@ public class ApiResponse extends ApiConfigs {
      * @param - Product - product : Product class object
      * @return - SelectedProduct - product for search keyword
      */
-    private SelectedProduct getProductOfPDPForAddToBag(Product product){
+    private Product.Products getProductOfPDPForAddToBag(Product product){
     	if(product==null) {
         	return null;
         }
-       
+           	
         for(Product.Products data:product.getProducts()) {
         	if(data.isEnabledAddToCart()) {
         		selectedProduct.productNumber=data.getItemNo();
@@ -306,8 +308,9 @@ public class ApiResponse extends ApiConfigs {
         		selectedProduct.productBrand=data.getBrand();
         		selectedProduct.productNowPrice=data.getIsPriceRange();
         		selectedProduct.productWasPrice=data.getWasPriceRange();
-        		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName()+"/pages/productdetails?nav=R:"+data.getItemNo();
-        		return selectedProduct;
+        		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName()+propertyData.get("PartialUrl_PDP")+data.getItemNo();
+        		
+        		return data;        		
         	}
         }
         return null;
@@ -318,7 +321,7 @@ public class ApiResponse extends ApiConfigs {
      * @param - String - searchKeyword : search keyword for Product
       * @return - SelectedProduct - product for search keyword
      */
-    public SelectedProduct getProductOfPDPForAddToBagFromKeyword(String searchKeyword){
+    public Product.Products getProductOfPDPForAddToBagFromKeyword(String searchKeyword){
         boolean flag = true;
         
         Product product = getProductDetailsForKeyword(searchKeyword,true);
@@ -326,6 +329,7 @@ public class ApiResponse extends ApiConfigs {
         	return null;
         }
   
+        Product.Products productItem=new Product.Products();
         do{
         	selectedProduct.productNumber="";
     		selectedProduct.productName="";
@@ -334,8 +338,8 @@ public class ApiResponse extends ApiConfigs {
     		selectedProduct.productWasPrice="";
     		selectedProduct.pdpNavigationUrl="";
     				
-    		selectedProduct = getProductOfPDPForAddToBag(product);
-            if(selectedProduct==null){
+    		productItem = getProductOfPDPForAddToBag(product);
+            if(productItem==null){
                 outputPage++;
                 if(outputPage>totalPage||outputPage>=10) {
                 	flag = false;
@@ -347,7 +351,7 @@ public class ApiResponse extends ApiConfigs {
             
         }while(flag);
 
-        return selectedProduct;
+        return productItem;
     }
     
     /**
@@ -356,7 +360,7 @@ public class ApiResponse extends ApiConfigs {
      * @param - Map<String,Object> - configs : configs on basis of which product info will be fetched
      * @return - SelectedProduct - product for search keyword
      */
-    private SelectedProduct getProductInfoForInputParamsWithSoldOutInfo(Product product,Map<String,Object> configs){
+    private Product.Products getProductInfoForInputParamsWithSoldOutInfo(Product product,Map<String,Object> configs){
     	if(product==null) {
         	return null;
         }
@@ -414,7 +418,7 @@ public class ApiResponse extends ApiConfigs {
         		selectedProduct.productNowPrice=data.getIsPriceRange();
         		selectedProduct.productWasPrice=data.getWasPriceRange();        		
         		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName()+"/pages/productdetails?nav=R:"+data.getItemNo();            	
-                return selectedProduct;
+                return data;
             }
         }
         return null;
@@ -426,7 +430,7 @@ public class ApiResponse extends ApiConfigs {
      * @param - Map<String,Object> - outputDataCriteria : criteria for searching a particular product
      * @return - SelectedProduct - product for search keyword
      */
-    public SelectedProduct getProductInfoFromKeywordWithSoldOutInfo(String searchKeyword,Map<String,Object> outputDataCriteria){
+    public Product.Products getProductInfoFromKeywordWithSoldOutInfo(String searchKeyword,Map<String,Object> outputDataCriteria){
         boolean flag = true;
         String lsNowPrice,lsWasPrice;
         
@@ -435,6 +439,7 @@ public class ApiResponse extends ApiConfigs {
         	return null;
         }
  
+        Product.Products productItem=new Product.Products();
         do{
             if(outputDataCriteria==null){
                 for(Product.Products data:product.getProducts()) {
@@ -471,7 +476,9 @@ public class ApiResponse extends ApiConfigs {
                 		selectedProduct.productBrand=data.getBrand();
                 		selectedProduct.productNowPrice=data.getIsPriceRange();
                 		selectedProduct.productWasPrice=data.getWasPriceRange();
-                		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName()+"/pages/productdetails?nav=R:"+data.getItemNo();            	
+                		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName()+"/pages/productdetails?nav=R:"+data.getItemNo();
+                		
+                		productItem=data;
                         break;
                     }
                 }
@@ -483,7 +490,7 @@ public class ApiResponse extends ApiConfigs {
                     product = getProductDetailsForKeyword(searchKeyword,false);
                 }
             }else{
-            	selectedProduct = getProductInfoForInputParamsWithSoldOutInfo(product,outputDataCriteria);
+            	productItem = getProductInfoForInputParamsWithSoldOutInfo(product,outputDataCriteria);
                 if(selectedProduct==null){
                     outputPage++;
                     if(outputPage>totalPage||outputPage>=10) {
@@ -497,7 +504,7 @@ public class ApiResponse extends ApiConfigs {
             
         }while(flag);
 
-        return selectedProduct;
+        return productItem;
     }
     
     /**
@@ -505,7 +512,7 @@ public class ApiResponse extends ApiConfigs {
      * @param - String - searchKeyword : search keyword for Product
      * @return - SelectedProduct - product for search keyword
      */
-    public Product getProductInfoWithProductNumberAsSearchKeyword(String searchKeyword){
+    public Product.Products getProductInfoWithProductNumberAsSearchKeyword(String searchKeyword){
         Response response = null;
         Product product = null;
         boolean flag = true;
@@ -553,6 +560,6 @@ public class ApiResponse extends ApiConfigs {
     		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName()+"/pages/productdetails?nav=R:"+data.getItemNo();
         }
 
-        return product;
+        return product.getProducts().get(0);
     }
 }
