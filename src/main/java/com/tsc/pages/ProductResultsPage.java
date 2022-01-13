@@ -1568,15 +1568,18 @@ public class ProductResultsPage extends BasePage{
 		String productNumber="";
 		for(String lsKeyword:lstKeyword) {
 			product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria);
-			if(selectedProduct!=null) {
+			if(product!=null) {
 				break;
 			}
 		}
 		
 		if(product==null){
+//			System.out.println("product is null");
 			reporter.reportLogFail("Unable to find the product with Vedio,Size,Style,Badge image, Review,EasyPay,Nowprice and WasPrice");
 			return false;
 		}
+		
+//		System.out.println("product number: "+product.getItemNo());
 		
 		selectedProduct=apiResponse.selectedProduct;
 		
@@ -2381,7 +2384,8 @@ public class ProductResultsPage extends BasePage{
 		}
 		
 		this.getReusableActionsInstance().clickIfAvailable(item);
-		this.getReusableActionsInstance().staticWait(1000);		
+		this.getReusableActionsInstance().staticWait(3000);	
+		
 		if(item.getAttribute("aria-pressed").equalsIgnoreCase("true")) {
 			reporter.reportLogPass("The favorite icon is displaying clicking status correctly");
 		}
