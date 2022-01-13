@@ -97,7 +97,7 @@ searchResultPage:
         - ["Price","Under $100","Under"]
     - filterType: CombinatedAction
       filterOption: 
-        - ["Size","XL"]
+        - ["Brand","Joan Rivers"]
         - ["Price","Under $100"]
     - filterType: SequentialAction
       filterOption: 

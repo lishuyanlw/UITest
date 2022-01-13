@@ -103,7 +103,7 @@ searchResultPage:
       filterOption: 
         - ["Brand","Joan Rivers"]
         - ["Price","Under $100"]
-        - ["Shop by colour","Black"]
+        - ["Shop by colour","Green"]
   lst_MoreButton: ["Brand","Shop by collection","Shop by colour"]
   lst_DisappearAfterSelectFilter: ["SHOP BY CATEGORY"]
   lnk_product_result: /pages/productresults?

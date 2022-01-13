@@ -219,7 +219,7 @@ public class ProductResultsPage extends BasePage{
 	
 	public By bySecondaryFilterOpenOrCloseFlag=By.xpath(".//button[@class='plp-filter-panel__block-title']//div[contains(@class,'plp-filter-panel__block-title__icon')]");
 	
-	public By bySecondaryFilterAll=By.xpath(".//ul[@class='plp-filter-panel__filter-list']//li");
+	public By bySecondaryFilterAll=By.xpath(".//ul[@class='plp-filter-panel__filter-list' or @class='plp-filter-panel__back-list' or @class='plp-filter-panel__sub-categories']//li");
 	
 	public By bySecondaryFilterUnChecked=By.xpath(".//ul[@class='plp-filter-panel__filter-list']//li[button[input[not(@checked)]]]");
 	
