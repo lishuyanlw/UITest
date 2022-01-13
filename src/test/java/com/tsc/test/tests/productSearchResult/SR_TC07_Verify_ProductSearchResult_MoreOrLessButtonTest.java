@@ -58,9 +58,12 @@ public class SR_TC07_Verify_ProductSearchResult_MoreOrLessButtonTest extends Bas
 			break;
 		}
 		getProductResultsPageThreadLocal().collapseFilterItemWithClickingProductTitle(element);
+		if(getProductResultsPageThreadLocal().checkFilterItemSeeButtonExisting(element).equalsIgnoreCase("None")) {
+			getProductResultsPageThreadLocal().uncollapseFilterItemWithClickingProductTitle(element);
+			continue;			
+		}
 		int elementCountBeforeClickingSeeMoreButton=getProductResultsPageThreadLocal().getFiltersCountInSecondLevel();
-		
-		
+				
 		getProductResultsPageThreadLocal().clickSeeMoreButton(element);		
 		int elementCountAfterClickingSeeMoreButton=getProductResultsPageThreadLocal().getFiltersCountInSecondLevel();
 		
