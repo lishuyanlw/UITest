@@ -1187,12 +1187,12 @@ public class ProductResultsPage extends BasePage{
 			String lsHeader=this.productFilterList.get(i).getText().trim();
 			if(lsHeader.contains("(")) {
 				lsHeader=lsHeader.split("\\(")[0].trim();
-			}			
+			}		
 			//If found lsFirstLevelItem
 			if(lsHeader.equalsIgnoreCase(lsFirstLevelItem)) {
 				//If find a search input
 				collapseFilterItemWithClickingProductTitle(this.productFilterContainerList.get(i));
-				if(checkSearchInputButtonExistingInSubFilter(this.productFilterContainerList.get(i))) {					
+				if(checkSearchInputButtonExistingInSubFilter(this.productFilterContainerList.get(i))) {	
 					searchInputButton=this.productFilterContainerList.get(i).findElement(this.byProductFilterSearchInput);
 					getReusableActionsInstance().javascriptScrollByVisibleElement(searchInputButton);
 					searchInputButton.sendKeys(lsSecondLevelItem);
