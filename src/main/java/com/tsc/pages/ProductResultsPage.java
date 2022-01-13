@@ -1814,7 +1814,7 @@ public class ProductResultsPage extends BasePage{
 	 */
 	public boolean waitForSortingOrFilteringCompleted() {
 		this.waitForCondition(Driver->{return !checkProductResultLoadingStatusAfterSorting();}, 30000);
-		this.getReusableActionsInstance().staticWait(1000);
+		this.getReusableActionsInstance().staticWait(3000);
 		
 		return true;
 	}
