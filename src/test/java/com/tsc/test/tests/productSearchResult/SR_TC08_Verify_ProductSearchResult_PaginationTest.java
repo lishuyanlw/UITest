@@ -21,21 +21,21 @@ public class SR_TC08_Verify_ProductSearchResult_PaginationTest extends BaseTest{
 	reporter.softAssert(getglobalheaderPageThreadLocal().validateURL((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");		
 	reporter.reportLog("ProductSearch Page");
 	
-	List<List<String>> lsKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_SearchKeyword_DropDown();
+	String lsKeyword=TestDataHandler.constantData.getSearchResultPage().getLst_APISearchingKeyword().get(1);
 	List<String> lstSearchResultMessage=TestDataHandler.constantData.getSearchResultPage().getLst_SearchResultMessage();
 	String lsSearchResultPageDefaultSetting=TestDataHandler.constantData.getSearchResultPage().getLbl_SearchResultPageDefaultSetting();
 	List<WebElement> productList;
 	String lsMsg;
 	String lsCurrentPageFirstProductName,lsPreviousPageFirstProductName,lsNextPageFirstProductName;
 	
-	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0));
+	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeyword);
 	lsCurrentPageFirstProductName=getProductResultsPageThreadLocal().getFirstProductName();
 	String lsTestModel=getProductResultsPageThreadLocal().judgeTestModel();	
 	
-	reporter.softAssert(getProductResultsPageThreadLocal().verifyUrlContainDimensionAndKeyword(lsKeywordList.get(0).get(0)), "The Url contains correct dimensions and keyword", "The Url does not contain correct dimensions and keyword");
+	reporter.softAssert(getProductResultsPageThreadLocal().verifyUrlContainDimensionAndKeyword(lsKeyword), "The Url contains correct dimensions and keyword", "The Url does not contain correct dimensions and keyword");
 	
 	if(!lsTestModel.equalsIgnoreCase("BannerImageSearch")) {
-		lsMsg=getProductResultsPageThreadLocal().verifySearchResultMessage(lstSearchResultMessage.get(0),lsKeywordList.get(0).get(0));
+		lsMsg=getProductResultsPageThreadLocal().verifySearchResultMessage(lstSearchResultMessage.get(0),lsKeyword);
 		if(lsMsg.isEmpty()) {
 			reporter.reportLogPass("Search result message result of '"+getProductResultsPageThreadLocal().lsSearchResultMessage+"' matches the expected message");
 		}else {
