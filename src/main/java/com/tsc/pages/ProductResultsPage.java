@@ -1578,7 +1578,7 @@ public class ProductResultsPage extends BasePage{
 			reporter.reportLogFail("Unable to find the product with Vedio,Size,Style,Badge image, Review,EasyPay,Nowprice and WasPrice");
 			return false;
 		}
-		
+		System.out.println("product number: "+product.getItemNo());
 		selectedProduct=apiResponse.selectedProduct;
 		
 		productNumber=selectedProduct.productNumber;
