@@ -127,6 +127,7 @@ public class ApiResponse extends ApiConfigs {
     	        }catch (Exception exception){
     	            exception.printStackTrace();
     	        }
+    	        System.out.println("response.asString(): "+response.asString());
     	        product = JsonParser.getResponseObject(response.asString(), new TypeReference<Product>() {});	       
     	        if(product.getRedirectUrl()!=null) {
     	        	 dimensionNumber = getDimensionNumberFromURL(product.getRedirectUrl());
@@ -138,7 +139,7 @@ public class ApiResponse extends ApiConfigs {
     	        }
             }while(true);
         }
-
+        System.out.println("dimensionNumber: "+dimensionNumber);
         configs = super.getProductSearchByKeywordInputConfig(searchKeyword, dimensionNumber, outputPage, super.getApiPropertyData().get("test_apiVersion"));
         
         repeatNumber=0;
