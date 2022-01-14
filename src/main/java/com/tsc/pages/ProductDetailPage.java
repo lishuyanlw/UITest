@@ -738,6 +738,9 @@ public class ProductDetailPage extends BasePage {
 	
 	public By byGetTheLookProductEasyPay=By.xpath(".//div[@class='findmine__easypay']");
 
+	public ProductDetailsItem productDetailsItem = new ProductDetailsItem();
+	public Product.Products product=null;
+	public SelectedProduct selectedProduct= new SelectedProduct();
 	
 	/**
 	 * Method to check if Video is playing
@@ -2142,41 +2145,57 @@ public class ProductDetailPage extends BasePage {
 	}
 	
 	/**
-	 * This method will go to the product with with Vedio,Size,Style,Badge image, Review,EasyPay,Nowprice and WasPrice
+	 * This method will go to PDP page with the matched product
+	 * @param List<String> lstKeyword: keyword list
+	 * @param String lsType: method type with "AllCondition"/"Soldout"/"AddToBag"
 	 * @return true/false
 	 * @author Wei.Li
 	 * @throws IOException 
 	 */
-	public boolean goToProductItemWithPreConditions(List<String> lstKeyword) throws IOException {
+	public boolean goToProductItemWithPreConditions(List<String> lstKeyword,String lsType) throws IOException {
 		ProductResultsPage prp=new ProductResultsPage(this.getDriver());
 		ApiResponse apiResponse=new ApiResponse();
+		
 		Map<String,Object> outputDataCriteria= new HashMap<String,Object>();
 		outputDataCriteria.put("video", "1");
 		outputDataCriteria.put("style", "3");
 		outputDataCriteria.put("size", "3");
 		
-		SelectedProduct selectedProduct= new SelectedProduct();
-//		selectedProduct=apiResponse.getProductInfoFromKeywordWithSoldOutInfo("dress",outputDataCriteria);
-//		this.getDriver().get(selectedProduct.pdpNavigationUrl);
-//		System.out.println("selectedProduct.productSelectedColor: "+selectedProduct.productSelectedColor);
-//		System.out.println("selectedProduct.productSelectedSize: "+selectedProduct.productSelectedSize);
-//		this.getReusableActionsInstance().staticWait(10000);
-		
-		Product.Products product=new Product.Products();
-		String productNumber="";
-		for(String lsKeyword:lstKeyword) {
-			product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria);
-			if(product!=null) {
-				break;
+		switch(lsType) {
+		case "AllConditions":
+			for(String lsKeyword:lstKeyword) {
+				product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria);
+				if(product!=null) {
+					break;
+				}
 			}
+			break;
+		case "Soldout":
+			for(String lsKeyword:lstKeyword) {
+				product=apiResponse.getProductInfoFromKeywordWithSoldOutInfo(lsKeyword, outputDataCriteria);				
+				if(product!=null) {
+					break;
+				}
+			}
+			break;
+		case "AddToBag":
+			for(String lsKeyword:lstKeyword) {
+				product=apiResponse.getProductOfPDPForAddToBagFromKeyword(lsKeyword);
+				if(product!=null) {
+					break;
+				}
+			}
+			break;
+		default:
+			break;		
 		}
-		
+				
 		if(product==null){
-			reporter.reportLogFail("Unable to find the product with Vedio,Size,Style,Badge image, Review,EasyPay,Nowprice and WasPrice");
+			reporter.reportLogFail("Unable to find the matched product");
 			return false;
 		}
 		
-		ProductDetailsItem sp=apiResponse.getProductDetailsForSpecificProductNumber(selectedProduct.productNumber);
+		productDetailsItem=apiResponse.getProductDetailsForSpecificProductNumber(selectedProduct.productNumber);
 		selectedProduct=apiResponse.selectedProduct;
 			
 		this.getDriver().get(apiResponse.selectedProduct.pdpNavigationUrl);
