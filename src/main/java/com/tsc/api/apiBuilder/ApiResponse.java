@@ -68,7 +68,7 @@ public class ApiResponse extends ApiConfigs {
                 		selectedProduct.productBrand=data.getBrand();
                 		selectedProduct.productNowPrice=data.getIsPriceRange();
                 		selectedProduct.productWasPrice=data.getWasPriceRange();
-                		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName()+"/pages/productdetails?nav=R:"+data.getItemNo();            	
+                		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName()+propertyData.get("PartialUrl_PDP")+data.getItemNo();            	
                         break;
                     }
                 }
@@ -123,7 +123,7 @@ public class ApiResponse extends ApiConfigs {
         	
             do {
     	        try{
-    	            response = getApiCallResponse(initialConfig,"/products");    	            
+    	            response = getApiCallResponse(initialConfig,"api/v3"+"/"+propertyData.get("test_language")+"/products");    	            
     	        }catch (Exception exception){
     	            exception.printStackTrace();
     	        }
@@ -143,7 +143,7 @@ public class ApiResponse extends ApiConfigs {
         
         repeatNumber=0;
         do{
-        	response = getApiCallResponse(configs, "/products");
+        	response = getApiCallResponse(configs, "api/v3"+"/"+propertyData.get("test_language")+"/products");
             if(response!=null && response.statusCode()==200) {
             	product = JsonParser.getResponseObject(response.asString(), new TypeReference<Product>() {
                 });
@@ -175,7 +175,7 @@ public class ApiResponse extends ApiConfigs {
         ProductDetailsItem product=new ProductDetailsItem();
   
         do{
-        	response = getApiCallResponse(null, "/products/"+productNumber);
+        	response = getApiCallResponse(null, "api/v2"+"/"+propertyData.get("test_language")+"/products/"+productNumber);
             if(response!=null && response.statusCode()==200) {
             	product = JsonParser.getResponseObject(response.asString(), new TypeReference<ProductDetailsItem>() {
                 });
@@ -185,7 +185,7 @@ public class ApiResponse extends ApiConfigs {
         		selectedProduct.productBrand=product.getBrand();
         		selectedProduct.productNowPrice=product.getIsPriceRange();
         		selectedProduct.productWasPrice=product.getWasPriceRange();        	
-        		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+product.getName()+"/pages/productdetails?nav=R:"+product.getItemNo();
+        		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+product.getName()+propertyData.get("PartialUrl_PDP")+product.getItemNo();
                 flag=false;
             }
             else {
@@ -284,7 +284,7 @@ public class ApiResponse extends ApiConfigs {
         		selectedProduct.productBrand=data.getBrand();
         		selectedProduct.productNowPrice=data.getIsPriceRange();
         		selectedProduct.productWasPrice=data.getWasPriceRange();
-        		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName()+"/pages/productdetails?nav=R:"+data.getItemNo();            	
+        		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName()+propertyData.get("PartialUrl_PDP")+data.getItemNo();            	
                 return productItem;
             }
         }
@@ -417,7 +417,7 @@ public class ApiResponse extends ApiConfigs {
         		selectedProduct.productBrand=data.getBrand();
         		selectedProduct.productNowPrice=data.getIsPriceRange();
         		selectedProduct.productWasPrice=data.getWasPriceRange();        		
-        		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName()+"/pages/productdetails?nav=R:"+data.getItemNo();            	
+        		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName()+propertyData.get("PartialUrl_PDP")+data.getItemNo();            	
                 return data;
             }
         }
@@ -476,7 +476,7 @@ public class ApiResponse extends ApiConfigs {
                 		selectedProduct.productBrand=data.getBrand();
                 		selectedProduct.productNowPrice=data.getIsPriceRange();
                 		selectedProduct.productWasPrice=data.getWasPriceRange();
-                		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName()+"/pages/productdetails?nav=R:"+data.getItemNo();
+                		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName()+propertyData.get("PartialUrl_PDP")+data.getItemNo();
                 		
                 		productItem=data;
                         break;
@@ -557,7 +557,7 @@ public class ApiResponse extends ApiConfigs {
     		selectedProduct.productBrand=data.getBrand();
     		selectedProduct.productNowPrice=data.getIsPriceRange();
     		selectedProduct.productWasPrice=data.getWasPriceRange();
-    		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName()+"/pages/productdetails?nav=R:"+data.getItemNo();
+    		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName()+propertyData.get("PartialUrl_PDP")+data.getItemNo();
         }
 
         return product.getProducts().get(0);

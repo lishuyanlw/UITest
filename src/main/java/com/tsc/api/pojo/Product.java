@@ -14,8 +14,8 @@ public class Product {
     public Sorting Sorting;
     public String QueryId;
     public String SearchTerm;
-    public List<QueryInfo> QueryInfo;
-    public List<QueryDims> QueryDims;
+//    public List<QueryInfo> QueryInfo;
+//    public List<QueryDims> QueryDims;
     public String RedirectUrl;
     public boolean Redirected;
     public boolean DoNotRedirectPrpToNsrp;
@@ -76,21 +76,21 @@ public class Product {
         this.SearchTerm = searchTerm;
     }
 
-    public List<QueryInfo> getQueryInfo() {
-        return QueryInfo;
-    }
-
-    public void setQueryInfo(List<QueryInfo> queryInfo) {
-        this.QueryInfo = queryInfo;
-    }
-
-    public List<QueryDims> getQueryDims() {
-        return QueryDims;
-    }
-
-    public void setQueryDims(List<QueryDims> queryDims) {
-        this.QueryDims = queryDims;
-    }
+//    public List<QueryInfo> getQueryInfo() {
+//        return QueryInfo;
+//    }
+//
+//    public void setQueryInfo(List<QueryInfo> queryInfo) {
+//        this.QueryInfo = queryInfo;
+//    }
+//
+//    public List<QueryDims> getQueryDims() {
+//        return QueryDims;
+//    }
+//
+//    public void setQueryDims(List<QueryDims> queryDims) {
+//        this.QueryDims = queryDims;
+//    }
 
     public String getRedirectUrl() {
         return RedirectUrl;

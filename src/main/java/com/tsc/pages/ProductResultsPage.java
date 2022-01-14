@@ -1574,12 +1574,10 @@ public class ProductResultsPage extends BasePage{
 		}
 		
 		if(product==null){
-//			System.out.println("product is null");
+			System.out.println("product is null");
 			reporter.reportLogFail("Unable to find the product with Vedio,Size,Style,Badge image, Review,EasyPay,Nowprice and WasPrice");
 			return false;
 		}
-		
-//		System.out.println("product number: "+product.getItemNo());
 		
 		selectedProduct=apiResponse.selectedProduct;
 		
@@ -1598,14 +1596,19 @@ public class ProductResultsPage extends BasePage{
 		this.getReusableActionsInstance().scrollToElement(item);
 				
 		this.selectedProductItem.productNumber=productNumber;
-		this.selectedProductItem.productName=this.getElementInnerText(item.findElement(this.byProductName));
-		if(this.checkProductItemBrandNameExisting(item)) {
-			this.selectedProductItem.productBrand=this.getElementInnerText(item.findElement(this.byProductBrand));
-		}
-		this.selectedProductItem.productNowPrice=this.getElementInnerText(item.findElement(this.byProductNowPrice)).replace("Current price:", "").trim();
-		this.selectedProductItem.productWasPrice=this.getElementInnerText(item.findElement(this.byProductWasPrice)).replace("Previous price:", "").trim();
-		this.selectedProductItem.productNavigationUrl=this.URL();
-
+		this.selectedProductItem.productName=product.getName();
+		this.selectedProductItem.productBrand=product.getBrand();
+		this.selectedProductItem.productNowPrice=product.getIsPriceRange();
+		this.selectedProductItem.productWasPrice=product.getWasPriceRange();
+		
+//		this.selectedProductItem.productName=this.getElementInnerText(item.findElement(this.byProductName));
+//		if(this.checkProductItemBrandNameExisting(item)) {
+//			this.selectedProductItem.productBrand=this.getElementInnerText(item.findElement(this.byProductBrand));
+//		}
+//		this.selectedProductItem.productNowPrice=this.getElementInnerText(item.findElement(this.byProductNowPrice)).replace("Current price:", "").trim();
+//		this.selectedProductItem.productWasPrice=this.getElementInnerText(item.findElement(this.byProductWasPrice)).replace("Previous price:", "").trim();
+//		this.selectedProductItem.productNavigationUrl=this.URL();
+		
 		return true;
 	}
 	
@@ -2288,7 +2291,7 @@ public class ProductResultsPage extends BasePage{
 		
 		if(!this.selectedProductItem.productBrand.isEmpty()) {
 			String lsProductBrand=pdp.getElementInnerText(pdp.lnkBrandName);
-			if(lsProductBrand.equalsIgnoreCase(this.selectedProductItem.productBrand)) {
+			if(lsProductBrand.contains(this.selectedProductItem.productBrand)) {
 				reporter.reportLogPass("The product brand in PRP is the same as the one displayed in PDP");
 			}
 			else {
