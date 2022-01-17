@@ -2199,8 +2199,7 @@ public class ProductDetailPage extends BasePage {
 		default:
 			break;		
 		}
-			
-		System.out.println("product.getItemNo(): "+product.getItemNo());
+
 		if(product==null){
 			reporter.reportLogFail("Unable to find the matched product");
 			return false;
