@@ -34,10 +34,9 @@ public class PD_TC01_Verify_ProductDetail_LeftSection_ContentsForImageAndVideo e
 	reporter.reportLog("Switch to ProductDetail page");
 	String lsProductNumber,lsUrl;
 	
-//	if(getProductDetailPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList)) {
-	if(getProductResultsPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList)) {
+	if(getProductDetailPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList,"AllConditionsWithoutCheckingSoldOutCriteria")) {	
 		reporter.reportLog("Verify URL");
-		lsProductNumber=getProductResultsPageThreadLocal().selectedProductItem.productNumber;
+		lsProductNumber=getProductDetailPageThreadLocal().selectedProduct.productNumber;
 		lsUrl=basePage.URL();
 		reporter.softAssert(lsUrl.contains("productdetails"),"The Url is containing productdetails","The Url is not containing productdetails");
 		reporter.softAssert(lsUrl.contains(lsProductNumber),"The Url is containing selected product number of "+lsProductNumber,"The Url is not containing selected product number of "+lsProductNumber);

@@ -1497,16 +1497,8 @@ public class ProductResultsPage extends BasePage{
 		outputDataCriteria.put("style", "3");
 		outputDataCriteria.put("size", "3");
 		
-		SelectedProduct selectedProduct= new SelectedProduct();
+		SelectedProduct selectedProduct=null;
 		Product.Products product=new Product.Products();
-//		selectedProduct=apiResponse.getProductInfoFromKeywordWithSoldOutInfo("dress",outputDataCriteria);
-//		this.getDriver().get(selectedProduct.pdpNavigationUrl);
-//		System.out.println("selectedProduct.productSelectedColor: "+selectedProduct.productSelectedColor);
-//		System.out.println("selectedProduct.productSelectedSize: "+selectedProduct.productSelectedSize);
-//		this.getReusableActionsInstance().staticWait(10000);
-		
-//		ProductDetailsItem sp=apiResponse.getProductDetailsForSpecificProductNumber("407983");
-//		System.out.println("NowPrice: "+sp.getIsPriceRange());
 		
 		String productNumber="";
 		for(String lsKeyword:lstKeyword) {
@@ -1563,7 +1555,7 @@ public class ProductResultsPage extends BasePage{
 		outputDataCriteria.put("style", "3");
 		outputDataCriteria.put("size", "3");
 		
-		SelectedProduct selectedProduct= new SelectedProduct();
+		SelectedProduct selectedProduct= null;
 		Product.Products product=new Product.Products();
 		String productNumber="";
 		for(String lsKeyword:lstKeyword) {
@@ -1573,14 +1565,12 @@ public class ProductResultsPage extends BasePage{
 			}
 		}
 		
-		if(product==null){
-			System.out.println("product is null");
+		if(product==null){			
 			reporter.reportLogFail("Unable to find the product with Vedio,Size,Style,Badge image, Review,EasyPay,Nowprice and WasPrice");
 			return false;
 		}
-		System.out.println("product number: "+product.getItemNo());
-		selectedProduct=apiResponse.selectedProduct;
 		
+		selectedProduct=apiResponse.selectedProduct;		
 		productNumber=selectedProduct.productNumber;
 		
 		this.selectedProductItem.productName="";
@@ -1600,14 +1590,6 @@ public class ProductResultsPage extends BasePage{
 		this.selectedProductItem.productBrand=product.getBrand();
 		this.selectedProductItem.productNowPrice=product.getIsPriceRange();
 		this.selectedProductItem.productWasPrice=product.getWasPriceRange();
-		
-//		this.selectedProductItem.productName=this.getElementInnerText(item.findElement(this.byProductName));
-//		if(this.checkProductItemBrandNameExisting(item)) {
-//			this.selectedProductItem.productBrand=this.getElementInnerText(item.findElement(this.byProductBrand));
-//		}
-//		this.selectedProductItem.productNowPrice=this.getElementInnerText(item.findElement(this.byProductNowPrice)).replace("Current price:", "").trim();
-//		this.selectedProductItem.productWasPrice=this.getElementInnerText(item.findElement(this.byProductWasPrice)).replace("Previous price:", "").trim();
-//		this.selectedProductItem.productNavigationUrl=this.URL();
 		
 		return true;
 	}
@@ -1641,144 +1623,7 @@ public class ProductResultsPage extends BasePage{
 		return this.waitForPDPPageLoading();		
 	}
 	
-//	public boolean goToProductItemWithTrueFitAndSizeAndQuantity() {
-//		ProductDetailPage pdp=new ProductDetailPage(this.getDriver());
-//		
-//		this.selectedProductItem.productName="";
-//		this.selectedProductItem.productNumber="";
-//		this.selectedProductItem.productNowPrice="";
-//
-//		
-//		WebElement item;
-//		do {
-//			this.selectedProductItem.currentProductSequenceNumber=-1;
-//			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productResultList.get(0));
-//			for(int i=0;i<this.productResultList.size();i++) {
-//				if(i<=this.selectedProductItem.currentProductSequenceNumber) {
-//					continue;
-//				}
-//				
-//				item=this.productResultList.get(i);
-//								
-//				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-//				this.selectedProductItem.productName=item.findElement(this.byProductName).getText().trim();
-//				this.selectedProductItem.productNowPrice=item.findElement(this.byProductNowPrice).getText().trim();
-//				this.selectedProductItem.productNavigationUrl=this.URL();
-//				this.selectedProductItem.currentProductSequenceNumber=i;
-//				
-//				item.click();
-//				this.waitForPDPPageLoading();
-//				this.getReusableActionsInstance().staticWait(1000);
-//				if(pdp.judgeStyleSizeAvailable()&&pdp.judgeStyleTrueFitExisting()&&pdp.judgeQuantityDropdownAvailable()&&pdp.IsQuantityLeftExisting()) {
-//					return true;
-//				}
-//				else {
-//					this.getDriver().navigate().back();
-//					this.waitForPageToLoad();
-//					this.waitForPDPPageLoading();
-//					this.getReusableActionsInstance().staticWait(1000);					
-//				}
-//			}
-//		}
-//		while(this.switchPage(true));
-//
-//		return false;
-//	}
-//	
-//	public boolean goToProductItemWithTeaserInfo() {
-//		ProductDetailPage pdp=new ProductDetailPage(this.getDriver());
-//		
-//		this.selectedProductItem.productName="";
-//		this.selectedProductItem.productNumber="";
-//		this.selectedProductItem.productNowPrice="";
-//	
-//		
-//		WebElement item;
-//		do {
-//			this.selectedProductItem.currentProductSequenceNumber=-1;
-//			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productResultList.get(0));
-//			for(int i=0;i<this.productResultList.size();i++) {
-//				if(i<=this.selectedProductItem.currentProductSequenceNumber) {
-//					continue;
-//				}
-//				
-//				item=this.productResultList.get(i);
-//								
-//				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-//				this.selectedProductItem.productName=item.findElement(this.byProductName).getText().trim();
-//				this.selectedProductItem.productNowPrice=item.findElement(this.byProductNowPrice).getText().trim();
-//				this.selectedProductItem.productNavigationUrl=this.URL();
-//				this.selectedProductItem.currentProductSequenceNumber=i;
-//				
-//				item.click();
-//				this.waitForPDPPageLoading();
-//				this.getReusableActionsInstance().staticWait(1000);
-//				if(pdp.judgeTeaserInfoDisplaying()) {
-//					return true;
-//				}
-//				else {
-//					this.getDriver().navigate().back();
-//					this.waitForPageToLoad();
-//					this.waitForPDPPageLoading();
-//					this.getReusableActionsInstance().staticWait(1000);					
-//				}
-//			}
-//		}
-//		while(this.switchPage(true));
-//
-//		return false;
-//	}
-//	
-//	public boolean goToProductItemWithBrandNameAndReviewAndSeeMoreInfo() {
-//		ProductDetailPage pdp=new ProductDetailPage(this.getDriver());
-//		WebElement element;
-//		
-//		this.selectedProductItem.productName="";
-//		this.selectedProductItem.productNumber="";
-//		this.selectedProductItem.productNowPrice="";
-//
-//		WebElement item;
-//		do {
-//			this.selectedProductItem.currentProductSequenceNumber=-1;
-//			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productResultList.get(0));
-//			for(int i=0;i<this.productResultList.size();i++) {
-//				if(i<=this.selectedProductItem.currentProductSequenceNumber) {
-//					continue;
-//				}
-//				
-//				item=this.productResultList.get(i);
-//				if(!checkProductItemBrandNameExisting(item)) {
-//					continue;
-//				}
-//				
-//				if(!checkProductItemReviewExisting(item)) {
-//					continue;
-//				}
-//																
-//				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-//				this.selectedProductItem.productName=item.findElement(this.byProductName).getText().trim();
-//				this.selectedProductItem.productNowPrice=item.findElement(this.byProductNowPrice).getText().trim();
-//				this.selectedProductItem.productNavigationUrl=this.URL();
-//				this.selectedProductItem.currentProductSequenceNumber=i;
-//				
-//				item.click();
-//				this.waitForPDPPageLoading();
-//				this.getReusableActionsInstance().staticWait(1000);
-//				if(pdp.checkProductBrandNameDisplaying()&&pdp.judgeTeaserInfoDisplaying()) {
-//					return true;
-//				}
-//				else {
-//					this.getDriver().navigate().back();
-//					this.waitForPageToLoad();
-//					this.waitForPDPPageLoading();
-//					this.getReusableActionsInstance().staticWait(1000);					
-//				}
-//			}
-//		}
-//		while(this.switchPage(true));
-//
-//		return false;
-//	}
+
 
 	/**
 	 * This method will verify Product Recommendation section and validate section Images, and Prices .

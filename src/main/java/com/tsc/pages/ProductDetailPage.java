@@ -1645,6 +1645,7 @@ public class ProductDetailPage extends BasePage {
 			this.getReusableActionsInstance().staticWait(1000);
 			this.getDriver().navigate().refresh();
 			this.waitForPageToLoad();
+			this.getReusableActionsInstance().staticWait(1000);
 			this.getReusableActionsInstance().waitForElementVisibility(this.lblZoomImageMessage,  60);		
 			reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lnkCurrentZoomImage),"The image is displaying after video off and page refreshing instead of video displaying","The image is not displaying after video off and page refreshing instead of video displaying");
 		}
@@ -1661,6 +1662,7 @@ public class ProductDetailPage extends BasePage {
 			this.getReusableActionsInstance().staticWait(1000);
 			this.getDriver().navigate().refresh();
 			this.waitForPageToLoad();
+			this.getReusableActionsInstance().staticWait(1000);
 			this.getReusableActionsInstance().waitForElementVisibility(this.lblZoomImageMessage,  60);		
 			reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lnkCurrentZoomImage),"The image is displaying after video off and page refreshing instead of video displaying","The image is not displaying after video off and page refreshing instead of video displaying");
 		}
@@ -2197,15 +2199,16 @@ public class ProductDetailPage extends BasePage {
 		default:
 			break;		
 		}
-				
+			
+		System.out.println("product.getItemNo(): "+product.getItemNo());
 		if(product==null){
 			reporter.reportLogFail("Unable to find the matched product");
 			return false;
 		}
 		
-		productDetailsItem=apiResponse.getProductDetailsForSpecificProductNumber(selectedProduct.productNumber);
 		selectedProduct=apiResponse.selectedProduct;
-			
+		productDetailsItem=apiResponse.getProductDetailsForSpecificProductNumber(selectedProduct.productNumber);
+					
 		this.getDriver().get(apiResponse.selectedProduct.pdpNavigationUrl);
 		
 		return prp.waitForPDPPageLoading();
