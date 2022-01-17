@@ -19,7 +19,8 @@ public class PD_TC01_Verify_ProductDetail_LeftSection_ContentsForImageAndVideo e
 	 */
 	@Test(groups={"ProductDetail","Regression"})
 	public void validateLeftSection_ContentsForImageAndVideo() throws IOException {	
-	getGlobalFooterPageThreadLocal().closePopupDialog();
+    //We don't need to close popup dialog if use api to navigate to PDP page directly.
+//	getGlobalFooterPageThreadLocal().closePopupDialog();
 	
 	BasePage basePage=new BasePage(this.getDriver());
 		
