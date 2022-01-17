@@ -25,12 +25,13 @@ public class ApiResponse extends ApiConfigs {
     public ApiResponse() throws IOException {}
 
     /**
-     * This method finds product info on the basis of input search keyword with preconditions(video,style,size,brand,badgeImage,review,easyPay,WasPrice,Soldout, and AddToBag)
+     * This method finds product info on the basis of input search keyword with preconditions(video,style,size,brand,badgeImage,review,easyPay,WasPrice,and AddToBag)
      * @param - String - searchKeyword : search keyword for Product
      * @param - Map<String,Object> - outputDataCriteria : criteria for searching a particular product
+     * @param - boolean - isSoldOut :true for including soldout criteria and false for not checking soldout criteria 
      * @return - Product.Products - product for search keyword
      */
-    public Product.Products getProductInfoFromKeyword(String searchKeyword,Map<String,Object> outputDataCriteria){
+    public Product.Products getProductInfoFromKeyword(String searchKeyword,Map<String,Object> outputDataCriteria,boolean isSoldOut){
         boolean flag = true;
         String lsNowPrice,lsWasPrice;
         Product.Products productItem=null;
@@ -58,21 +59,33 @@ public class ApiResponse extends ApiConfigs {
                     		continue;
                     	}
                     	
-                       	
-                    	//To check if any Inventory is equal to 0, then get the related Style and Size, 
-                    	//which we will use in PDP to select the style and size in order to get soldout information
-                    	List<edps> edpsList=data.getEdps();  
-                    	bSoldout=false;
-                    	for(edps Edps:edpsList) {
-                    		if(Edps.Inventory==0) {
-                    			bSoldout=true;
-                    			selectedProduct.productColorForSoldout=Edps.getStyle();
-                    			selectedProduct.productSizeForSoldout=Edps.getSize();
-                    			break;
-                    		}
-                    	}
-                    	if(!bSoldout) {
-                    		continue;
+                    	List<edps> edpsList=data.getEdps(); 
+                    	if(isSoldOut) {
+                        	//To check if any Inventory is equal to 0, then get the related Style and Size, 
+                        	//which we will use in PDP to select the style and size in order to get soldout information
+                        	bSoldout=false;
+                        	for(edps Edps:edpsList) {
+                        		if(Edps.Inventory==0) {
+                        			bSoldout=true;
+                        			selectedProduct.productColorForSoldout=Edps.getStyle();
+                        			selectedProduct.productSizeForSoldout=Edps.getSize();
+                        			break;
+                        		}
+                        	}
+                        	if(!bSoldout) {
+                        		continue;
+                        	}
+                        	else {
+                        		//To check if any Inventory is greater than 0, then get the related Style and Size, 
+                            	//which we will use in PDP to select the style and size in order to get Enabled AddToBag information
+                        		for(edps Edps:edpsList) {
+                            		if(Edps.Inventory>0) {                			
+                            			selectedProduct.productSizeForEnabledAddToBag=Edps.getStyle();
+                            			selectedProduct.productColorForEnabledAddToBag=Edps.getSize();
+                            			break;
+                            		}
+                            	}
+                        	}
                     	}
                     	else {
                     		//To check if any Inventory is greater than 0, then get the related Style and Size, 
@@ -85,7 +98,7 @@ public class ApiResponse extends ApiConfigs {
                         		}
                         	}
                     	}
-                    	
+                     	
                     	productItem=data;
                         flag = false;
                         selectedProduct.productNumber=data.getItemNo();
@@ -105,7 +118,7 @@ public class ApiResponse extends ApiConfigs {
                     product = getProductDetailsForKeyword(searchKeyword,false);
                 }
             }else{
-            	productItem = getProductInfoForInputParams(product,outputDataCriteria);
+            	productItem = getProductInfoForInputParams(product,outputDataCriteria,isSoldOut);
                 if(productItem==null){
                     outputPage++;
                     if(outputPage>totalPage||outputPage>=10) {
@@ -267,12 +280,13 @@ public class ApiResponse extends ApiConfigs {
     }
 
     /**
-     * This method finds product number on the basis of input conditions(video,style,size,brand,badgeImage,review,easyPay,WasPrice,Soldout, and AddToBag)
+     * This method finds product number on the basis of input conditions(video,style,size,brand,badgeImage,review,easyPay,WasPrice,and AddToBag)
      * @param - Product - product : Product class object
      * @param - Map<String,Object> - configs : configs on basis of which product info will be fetched
+     * @param - boolean - isSoldOut :true for including soldout criteria and false for not checking soldout criteria 
      * @return - Product.Products - product for search keyword
      */
-    private Product.Products getProductInfoForInputParams(Product product,Map<String,Object> configs){
+    private Product.Products getProductInfoForInputParams(Product product,Map<String,Object> configs,boolean isSoldOut){
     	if(product==null) {
         	return null;
         }
@@ -309,20 +323,33 @@ public class ApiResponse extends ApiConfigs {
             		continue;
             	}
             	
-            	//To check if any Inventory is equal to 0, then get the related Style and Size, 
-            	//which we will use in PDP to select the style and size in order to get soldout information
-            	List<edps> edpsList=data.getEdps();  
-            	bSoldout=false;
-            	for(edps Edps:edpsList) {
-            		if(Edps.Inventory==0) {
-            			bSoldout=true;
-            			selectedProduct.productColorForSoldout=Edps.getStyle();
-            			selectedProduct.productSizeForSoldout=Edps.getSize();
-            			break;
-            		}
-            	}
-            	if(!bSoldout) {
-            		continue;
+            	List<edps> edpsList=data.getEdps(); 
+            	if(isSoldOut) {
+                	//To check if any Inventory is equal to 0, then get the related Style and Size, 
+                	//which we will use in PDP to select the style and size in order to get soldout information
+                	bSoldout=false;
+                	for(edps Edps:edpsList) {
+                		if(Edps.Inventory==0) {
+                			bSoldout=true;
+                			selectedProduct.productColorForSoldout=Edps.getStyle();
+                			selectedProduct.productSizeForSoldout=Edps.getSize();
+                			break;
+                		}
+                	}
+                	if(!bSoldout) {
+                		continue;
+                	}
+                	else {
+                		//To check if any Inventory is greater than 0, then get the related Style and Size, 
+                    	//which we will use in PDP to select the style and size in order to get Enabled AddToBag information
+                		for(edps Edps:edpsList) {
+                    		if(Edps.Inventory>0) {                			
+                    			selectedProduct.productSizeForEnabledAddToBag=Edps.getStyle();
+                    			selectedProduct.productColorForEnabledAddToBag=Edps.getSize();
+                    			break;
+                    		}
+                    	}
+                	}
             	}
             	else {
             		//To check if any Inventory is greater than 0, then get the related Style and Size, 

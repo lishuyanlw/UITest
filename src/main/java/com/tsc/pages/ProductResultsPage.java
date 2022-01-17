@@ -1510,7 +1510,7 @@ public class ProductResultsPage extends BasePage{
 		
 		String productNumber="";
 		for(String lsKeyword:lstKeyword) {
-			product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria);
+			product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,true);
 			if(product!=null) {
 				break;
 			}
@@ -1567,7 +1567,7 @@ public class ProductResultsPage extends BasePage{
 		Product.Products product=new Product.Products();
 		String productNumber="";
 		for(String lsKeyword:lstKeyword) {
-			product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria);
+			product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,true);
 			if(product!=null) {
 				break;
 			}

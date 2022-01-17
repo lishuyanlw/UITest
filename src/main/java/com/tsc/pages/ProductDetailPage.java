@@ -2147,7 +2147,7 @@ public class ProductDetailPage extends BasePage {
 	/**
 	 * This method will go to PDP page with the matched product
 	 * @param List<String> lstKeyword: keyword list
-	 * @param String lsType: method type with "AllCondition"/"Soldout"/"AddToBag"
+	 * @param String lsType: method type with "AllConditionsWithoutCheckingSoldOutCriteria"/"AllConditionsWithCheckingSoldOutCriteria"/"SoldOut"/"AddToBag"
 	 * @return true/false
 	 * @author Wei.Li
 	 * @throws IOException 
@@ -2162,15 +2162,23 @@ public class ProductDetailPage extends BasePage {
 		outputDataCriteria.put("size", "3");
 		
 		switch(lsType) {
-		case "AllConditions":
+		case "AllConditionsWithoutCheckingSoldOutCriteria":
 			for(String lsKeyword:lstKeyword) {
-				product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria);
+				product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,false);
 				if(product!=null) {
 					break;
 				}
 			}
 			break;
-		case "Soldout":
+		case "AllConditionsWithCheckingSoldOutCriteria":
+			for(String lsKeyword:lstKeyword) {
+				product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,true);
+				if(product!=null) {
+					break;
+				}
+			}
+			break;
+		case "SoldOut":
 			for(String lsKeyword:lstKeyword) {
 				product=apiResponse.getProductInfoFromKeywordWithSoldOutInfo(lsKeyword, outputDataCriteria);				
 				if(product!=null) {
