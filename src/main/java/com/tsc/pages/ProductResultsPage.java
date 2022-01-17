@@ -1516,13 +1516,9 @@ public class ProductResultsPage extends BasePage{
 		selectedProduct=apiResponse.selectedProduct;
 		
 		productNumber=selectedProduct.productNumber;
-		this.selectedProductItem.productName="";
-		this.selectedProductItem.productBrand="";
-		this.selectedProductItem.productSelectedSize="";
-		this.selectedProductItem.productSelectedColor="";
-		this.selectedProductItem.productNowPrice="";
-		this.selectedProductItem.productWasPrice="";		
 		
+		this.selectedProductItem.init();
+				
 		this.getSearchResultLoad(productNumber);		
 		WebElement item=this.productResultList.get(0);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
@@ -1573,13 +1569,8 @@ public class ProductResultsPage extends BasePage{
 		selectedProduct=apiResponse.selectedProduct;		
 		productNumber=selectedProduct.productNumber;
 		
-		this.selectedProductItem.productName="";
-		this.selectedProductItem.productBrand="";
-		this.selectedProductItem.productSelectedSize="";
-		this.selectedProductItem.productSelectedColor="";
-		this.selectedProductItem.productNowPrice="";
-		this.selectedProductItem.productWasPrice="";		
-		
+		this.selectedProductItem.init();
+				
 		this.getSearchResultLoad(productNumber);		
 		WebElement item=this.productResultList.get(0);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
@@ -1595,13 +1586,8 @@ public class ProductResultsPage extends BasePage{
 	}
 	
 	public boolean goToFirstProductItem(String lsProductNumber) {
-		this.selectedProductItem.productName="";
-		this.selectedProductItem.productBrand="";
-		this.selectedProductItem.productSelectedSize="";
-		this.selectedProductItem.productSelectedColor="";
-		this.selectedProductItem.productNowPrice="";
-		this.selectedProductItem.productWasPrice="";
-		
+		this.selectedProductItem.init();
+				
 		getSearchResultLoad(lsProductNumber);		
 		WebElement item=this.productResultList.get(0);		
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
@@ -2508,6 +2494,30 @@ public class ProductResultsPage extends BasePage{
 		public String productWasPrice;
 		public String productNavigationUrl;
 		public int currentProductSequenceNumber;
+		
+		public ProductItem() {
+			this.productNumber="";
+			this.productName="";
+			this.productBrand="";
+			this.productSelectedSize="";
+			this.productSelectedColor="";
+			this.productNowPrice="";
+			this.productWasPrice="";
+			this.productNavigationUrl="";
+			this.currentProductSequenceNumber=0;
+		}
+		
+		public void init() {
+			this.productNumber="";
+			this.productName="";
+			this.productBrand="";
+			this.productSelectedSize="";
+			this.productSelectedColor="";
+			this.productNowPrice="";
+			this.productWasPrice="";
+			this.productNavigationUrl="";
+			this.currentProductSequenceNumber=0;
+		}
 	}
 }		      	
 
