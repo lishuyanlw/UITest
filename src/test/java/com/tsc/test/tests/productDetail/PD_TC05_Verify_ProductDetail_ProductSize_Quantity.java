@@ -41,10 +41,14 @@ public class PD_TC05_Verify_ProductDetail_ProductSize_Quantity extends BaseTest{
 		//reporter.softAssert(lsUrl.contains(lsProductNumber),"The Url is containing selected product number of "+lsProductNumber,"The Url is not containing selected product number of "+lsProductNumber);
 		
 		reporter.reportLog("Verify product size dropdown");
-		getProductDetailPageThreadLocal().verifyProductSizeDropdown();			
-					
-		/*reporter.reportLog("Verify product TrueFit");
-		getProductDetailPageThreadLocal().verifyProductSizeTrueFit();*/
+		getProductDetailPageThreadLocal().verifyProductSizeDropdown();
+
+		if(System.getProperty("Device").toLowerCase().contains("tablet") &&
+				(System.getProperty("Browser").toLowerCase().contains("android") ||
+						(!"".equals(System.getProperty("chromeMobileDevice")) && !System.getProperty("chromeMobileDevice").toLowerCase().contains("ipad")))){
+			reporter.reportLog("Verify product TrueFit");
+			getProductDetailPageThreadLocal().verifyProductSizeTrueFit();
+		}
 						
 		reporter.reportLog("Verify product quantity");
 		getProductDetailPageThreadLocal().verifyProductQuantityDropdown(Integer.parseInt(lsQuantityNumberToShowLeftItemInfo));

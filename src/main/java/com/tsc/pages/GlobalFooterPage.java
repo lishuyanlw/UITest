@@ -449,6 +449,7 @@ public class GlobalFooterPage extends BasePage {
 		}
 		//btnClose.click();
 		homePage.waitForPageLoad();
+		getReusableActionsInstance().staticWait(5000);
 		/**if (waitForCondition(Driver -> {
 			return (new HomePage(this.getDriver())).btnClose.isDisplayed();
 		}, 40000)) {

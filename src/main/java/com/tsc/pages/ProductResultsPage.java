@@ -315,7 +315,7 @@ public class ProductResultsPage extends BasePage{
 		this.getReusableActionsInstance().staticWait(3000);
 		waitForCondition(Driver->{
 			return this.searchResultSection.isDisplayed();
-		},120000);
+		},150000);
 
 		super.pressEnterKey(globalHeader.searchBox);
 

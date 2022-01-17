@@ -146,8 +146,8 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
         reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.videoBoxControl),"The video control section is displaying correctly","The video control section is not displaying correctly");
         //commented because autoplay is not present for both tab and mobile
         //reporter.softAssert(this.checkIfAutoPlayVideoStatusIsON(),"The product video AutoPlaying is on","The product video AutoPlaying is off");
-        reporter.softAssert(this.checkIfVideoisPlaying(),"The product video is playing","The product video is not playing");
-
+        if(!System.getProperty("Browser").toLowerCase().contains("ios"))
+            reporter.softAssert(this.checkIfVideoisPlaying(),"The product video is playing","The product video is not playing");
         //reporter.softAssert(!getAutoPlayVideoToolTipPopupMsg().isEmpty(),"The AutoPlayVideoToolTip is not empty","The AutoPlayVideoToolTip is empty");
 
     }
@@ -327,7 +327,7 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
         reporter.softAssert(!this.getElementText(this.lblReviewTabDisplayingReviewMsg).isEmpty(),"The Review message in Review tab footer is not empty","The Review message in Review tab footer is empty");
         reporter.softAssert(!this.getElementHref(this.lnkReviewTabBackToTop).isEmpty(),"The BackToTop link is not empty","The BackToTop link is empty");
         reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.cntReviewTabPagination),"The Review pagination section is displaying correctly","The Review pagination section is not displaying correctly");
-        goBack();
+        this.goBack();
     }
 
     @Override
@@ -353,7 +353,12 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
         }
 
         if(checkProductSizingChartExisting()) {
-            verifyProductQuantitySizingChart();
+            if((System.getProperty("Device").toLowerCase().contains("mobile") &&
+                    System.getProperty("Browser").toLowerCase().contains("android")) ||
+                    System.getProperty("Device").toLowerCase().contains("desktop") ||
+                    System.getProperty("Device").toLowerCase().contains("tablet")){
+                verifyProductQuantitySizingChart();
+            }
         }
     }
 
@@ -376,7 +381,7 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
         //this.lnkSizingChart.click();
         this.waitForCondition(Driver->{return this.btnStickyTabSizeChart.getAttribute("class").contains("scrolling");},5000);
         reporter.softAssert(this.getStickyTabSelectedStatus(this.btnStickyTabSizeChart),"The SIZE CHART tab has been selected correctly","The SIZE CHART tab has not been selected correctly");
-        goBack();
+        this.goBack();
     }
 
     @Override
@@ -424,7 +429,7 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
         this.getReusableActionsInstance().staticWait(1000);
 
         reporter.softAssert(!this.getElementText(this.btnStickyTabProductReview).isEmpty(),"The Product Overview contents is not empty","The Product Overview contents is empty");
-        goBack();
+        this.goBack();
     }
 
     /**
@@ -433,14 +438,31 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
      * @author viswas.reddy
      */
     public void goBack(){
-        /*applyStaticWait(1000);
-        JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
-        jse.executeScript("arguments[0].click();", this.backButton);*/
-        this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.backButton);
-        this.getReusableActionsInstance().scrollToElement(this.backButton);
-        this.getReusableActionsInstance().clickIfAvailable(this.backButton);
-        //this.backButton.click();
-        applyStaticWait(500);
+        //Due to xpath,Back button is not being clicked for ios mobile and hence using ESC key
+        if(System.getProperty("Device").toLowerCase().contains("mobile") &&
+                (System.getProperty("Browser").toLowerCase().contains("android") ||
+                        (!"".equals(System.getProperty("chromeMobileDevice")) && !System.getProperty("chromeMobileDevice").toLowerCase().contains("iphone")))){
+            /*applyStaticWait(1000);
+            JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
+            jse.executeScript("arguments[0].click();", this.backButton);*/
+            this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.backButton);
+            this.getReusableActionsInstance().scrollToElement(this.backButton);
+            this.getReusableActionsInstance().clickIfAvailable(this.backButton);
+            //this.backButton.click();
+            applyStaticWait(500);
+        }else{
+            applyStaticWait(2000);
+            //this.getReusableActionsInstance().javascriptScrollToTopOfPage();
+            this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.backButton);
+            this.getReusableActionsInstance().scrollToElement(this.backButton);
+            this.getReusableActionsInstance().clickIfAvailable(this.backButton);
+            //JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
+            //jse.executeScript("arguments[0].click();", this.backButton);
+            waitForCondition(Driver->{
+                return this.lblProductName.isDisplayed();
+            },150000);
+            this.waitForPageToLoad();
+        }
     }
 
     @Override
@@ -450,7 +472,7 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
         //this.productOverview.click();
         this.getReusableActionsInstance().staticWait(1000);
         reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.btnStickyTabProductReview),"The Product Overview contents is displaying correctly","The Product Overview contents is not displaying correctly");
-        goBack();
+        this.goBack();
 
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productReview);
         this.getReusableActionsInstance().clickIfAvailable(this.productReview);
@@ -472,24 +494,28 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
     @Override
     public void verifyProductSoldOut() {
         WebElement item;
-        if(this.checkChildElementExistingByTagName(this.selectQuantityOption,"option")){
-            int listSize = this.lstSizeOption.size();
-            for(int counter=0;counter<listSize;counter++){
-                this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectSizeOption);
-                this.getReusableActionsInstance().clickIfAvailable(this.selectSizeOption);
-                this.getReusableActionsInstance().staticWait(100);
-                item=this.lstSizeOption.get(counter);
-                this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-                item.click();
-                this.getReusableActionsInstance().staticWait(100);
-                if(!this.checkChildElementExistingByTagName(this.selectQuantityOption,"option"))
-                    break;
+        if((System.getProperty("Device").toLowerCase().contains("tablet") &&
+                !System.getProperty("Browser").toLowerCase().contains("ios")) ||
+                !System.getProperty("Device").toLowerCase().contains("tablet")){
+            if(this.checkChildElementExistingByTagName(this.selectQuantityOption,"option")){
+                int listSize = this.lstSizeOption.size();
+                for(int counter=0;counter<listSize;counter++){
+                    this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectSizeOption);
+                    this.getReusableActionsInstance().clickIfAvailable(this.selectSizeOption);
+                    this.getReusableActionsInstance().staticWait(100);
+                    item=this.lstSizeOption.get(counter);
+                    this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+                    item.click();
+                    this.getReusableActionsInstance().staticWait(100);
+                    if(!this.checkChildElementExistingByTagName(this.selectQuantityOption,"option"))
+                        break;
+                }
             }
+            reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblSoldOut),"The Soldout message is displaying correctly","The Soldout message is not displaying correctly");
+            reporter.softAssert(!this.getElementText(this.lblSoldOut).isEmpty(),"The Soldout message is not empty","The Soldout message is empty");
+            reporter.softAssert(!this.judgeQuantityDropdownAvailable(),"The Quantity Dropdown is not displaying","The Quantity Dropdown is still displaying");
+            reporter.softAssert(this.judgeAddToBagButtonAvailable(),"The Add to Bag button is not displaying","The Add to Bag button is still displaying");
         }
-        reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblSoldOut),"The Soldout message is displaying correctly","The Soldout message is not displaying correctly");
-        reporter.softAssert(!this.getElementText(this.lblSoldOut).isEmpty(),"The Soldout message is not empty","The Soldout message is empty");
-        reporter.softAssert(!this.judgeQuantityDropdownAvailable(),"The Quantity Dropdown is not displaying","The Quantity Dropdown is still displaying");
-        reporter.softAssert(this.judgeAddToBagButtonAvailable(),"The Add to Bag button is not displaying","The Add to Bag button is still displaying");
     }
 
     @Override

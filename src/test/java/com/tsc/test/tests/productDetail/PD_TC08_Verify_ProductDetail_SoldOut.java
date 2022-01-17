@@ -54,14 +54,14 @@ public class PD_TC08_Verify_ProductDetail_SoldOut extends BaseTest{
 		reporter.reportLog("Verify Sold out product messaage");
 		getProductDetailPageThreadLocal().verifyProductSoldOut();
 		
-		reporter.reportLog("Verify Social media");	
+		reporter.reportLog("Verify Social media");
 		getProductDetailPageThreadLocal().verifySocialMedia();
 
 		if(System.getProperty("Device").equalsIgnoreCase("Desktop") ||
 				(System.getProperty("Device").equalsIgnoreCase("Tablet")
 					&& System.getProperty("Browser").contains("ios")) ||
-				(System.getProperty("chromeMobileDevice")!=null
-					&& System.getProperty("chromeMobileDevice").contains("iPad"))) {
+				(!"".equals(System.getProperty("chromeMobileDevice")) &&
+						System.getProperty("chromeMobileDevice").toLowerCase().contains("ipad"))) {
 			GH_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo headerSectionMenuAndLogoTest = new GH_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo();
 			headerSectionMenuAndLogoTest.validateMajorNameAndLinks();
 		}

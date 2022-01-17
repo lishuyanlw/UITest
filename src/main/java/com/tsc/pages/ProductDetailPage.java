@@ -1754,31 +1754,29 @@ public class ProductDetailPage extends BasePage {
 		this.getDriver().navigate().back();
 		this.waitForPageToLoad();
 		prp.waitForPageLoading();
-		this.getReusableActionsInstance().staticWait(3000);
+		this.getReusableActionsInstance().staticWait(6000);
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFaceBook);
-		String lsMainHandle=this.getDriver().getWindowHandle();
-		if((System.getProperty("Device").toLowerCase().contains("tablet") &&
+		/*if((System.getProperty("Device").toLowerCase().contains("tablet") &&
 				System.getProperty("Browser").toLowerCase().contains("ios")) ||
-				System.getProperty("chromeMobileDevice").toLowerCase().contains("ipad")) {
+				System.getProperty("chromeMobileDevice").toLowerCase().contains("ipad")) {*/
 			//this.getReusableActionsInstance().doubleClick(this.lnkFaceBook,3000);
+		if(!System.getProperty("Browser").toLowerCase().contains("ios")) {
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFaceBook);
+			String lsMainHandle=this.getDriver().getWindowHandle();
 			this.getReusableActionsInstance().clickIfAvailable(this.lnkFaceBook);
-			this.clickWebElementUsingJS(this.lnkFaceBook);
-		}
-		else
-			this.getReusableActionsInstance().clickIfAvailable(this.lnkFaceBook);
-		this.waitForCondition(Driver->{return this.getReusableActionsInstance().getNumberOfOpenWindows()>1;}, 50000);
-		this.getReusableActionsInstance().staticWait(3000);
-		Set<String> lstHandles=this.getDriver().getWindowHandles();
-		for(String handle:lstHandles) {
-			this.getDriver().switchTo().window(handle);
-			if(this.getDriver().getCurrentUrl().toLowerCase().contains("facebook")) {
-				break;
+			//this.clickWebElementUsingJS(this.lnkFaceBook);
+			this.waitForCondition(Driver->{return this.getReusableActionsInstance().getNumberOfOpenWindows()>1;}, 50000);
+			this.getReusableActionsInstance().staticWait(3000);
+			Set<String> lstHandles=this.getDriver().getWindowHandles();
+			for(String handle:lstHandles) {
+				this.getDriver().switchTo().window(handle);
+				if(this.getDriver().getCurrentUrl().toLowerCase().contains("facebook")) {
+					break;
+				}
 			}
+			reporter.softAssert(lstHandles.size()>1&&this.getDriver().getCurrentUrl().toLowerCase().contains("facebook"),"The page has been switched to facebook page","The page has not been switched to facebook related page");
+			this.getDriver().switchTo().window(lsMainHandle);
 		}
-		reporter.softAssert(lstHandles.size()>1&&this.getDriver().getCurrentUrl().toLowerCase().contains("facebook"),"The page has been switched to facebook page","The page has not been switched to facebook related page");
-		this.getDriver().switchTo().window(lsMainHandle);
-
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkPInterest);
 		this.getReusableActionsInstance().clickIfAvailable(this.lnkPInterest);
 		this.waitForCondition(Driver->{return this.getReusableActionsInstance().isElementVisible(this.iframePin);}, 10000);
@@ -1848,6 +1846,7 @@ public class ProductDetailPage extends BasePage {
 		reporter.softAssert(!this.getElementText(this.lblSoldOut).isEmpty(),"The Soldout message is not empty","The Soldout message is empty");
 		reporter.softAssert(!this.judgeQuantityDropdownAvailable(),"The Quantity Dropdown is not displaying","The Quantity Dropdown is still displaying");
 		reporter.softAssert(this.judgeAddToBagButtonAvailable(),"The Add to Bag button is not displaying","The Add to Bag button is still displaying");
+
 	}
 	
 	public void verifyCurrentZoomImage() {
