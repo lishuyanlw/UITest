@@ -770,7 +770,7 @@ public class ProductResultsPage extends BasePage{
 
 	/**
 	 * This method will verify the item content in product list without mouse hover.
-	 * @param List<WebElement> productList: the input product list
+	 * @param-List<WebElement> productList: the input product list
 	 * @author Wei.Li
 	 */
 	public void verifySearchResultContent(List<WebElement> productList) {
@@ -891,7 +891,7 @@ public class ProductResultsPage extends BasePage{
 	
 	/**
 	 * This method will verify the item content in product list with mouse hover.
-	 * @param List<WebElement> productList: the input product list
+	 * @param-List<WebElement> productList: the input product list
 	 * @author Wei.Li
 	 */
 	public void verifySearchResultContentWithMouseHover(List<WebElement> productList) {
@@ -1498,7 +1498,7 @@ public class ProductResultsPage extends BasePage{
 		outputDataCriteria.put("size", "3");
 		
 		SelectedProduct selectedProduct=null;
-		Product.Products product=new Product.Products();
+		Product.Products product=null;
 		
 		String productNumber="";
 		for(String lsKeyword:lstKeyword) {
@@ -1556,7 +1556,7 @@ public class ProductResultsPage extends BasePage{
 		outputDataCriteria.put("size", "3");
 		
 		SelectedProduct selectedProduct= null;
-		Product.Products product=new Product.Products();
+		Product.Products product=null;
 		String productNumber="";
 		for(String lsKeyword:lstKeyword) {
 			product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,true);
@@ -1690,7 +1690,7 @@ public class ProductResultsPage extends BasePage{
 	
 	/**
 	 * This method will check Product Item Header Title Existing
-	 * @param WebElement itemContainer: product search result item
+	 * @param-WebElement itemContainer: product search result item
 	 * @return boolean
 	 * @author Wei.Li
 	 */
@@ -1700,7 +1700,7 @@ public class ProductResultsPage extends BasePage{
 	
 	/**
 	 * This method will judge Product Item option type
-	 * @param WebElement itemContainer: product search result item
+	 * @param-WebElement itemContainer: product search result item
 	 * @return String
 	 * @author Wei.Li
 	 */
@@ -1730,8 +1730,8 @@ public class ProductResultsPage extends BasePage{
 	
 	/**
 	 * This method will get Product Item option type number without mouse hover
-	 * @param WebElement itemContainer: product search result item
-	 * @param String lsOption: "size"/"colour"
+	 * @param-WebElement itemContainer: product search result item
+	 * @param-String lsOption: "size"/"colour"
 	 * @return boolean
 	 * @author Wei.Li
 	 */
@@ -1755,8 +1755,8 @@ public class ProductResultsPage extends BasePage{
 	
 	/**
 	 * This method will check Product Item colour option Existing with mouse hover
-	 * @param WebElement itemContainer: product search result item
-	 * @param String lsOption: "size"/"colour"
+	 * @param-WebElement itemContainer: product search result item
+	 * @param-String lsOption: "size"/"colour"
 	 * @return boolean
 	 * @author Wei.Li
 	 */
@@ -1773,7 +1773,7 @@ public class ProductResultsPage extends BasePage{
 	
 	/**
 	 * This method will judge Product Item option type through button text
-	 * @param WebElement itemContainer: product search result item
+	 * @param-WebElement itemContainer: product search result item
 	 * @return String
 	 * @author Wei.Li
 	 */
@@ -1801,7 +1801,7 @@ public class ProductResultsPage extends BasePage{
 	
 	/**
 	 * This method will check Size Product Option Is Dropdown with mouse hover
-	 * @param WebElement itemContainer: product search result item
+	 * @param-WebElement itemContainer: product search result item
 	 * @return boolean
 	 * @author Wei.Li
 	 */
@@ -1813,7 +1813,7 @@ public class ProductResultsPage extends BasePage{
 	
 	/**
 	 * This method will check Color Product Option Is Dropdown with mouse hover
-	 * @param WebElement itemContainer: product search result item
+	 * @param-WebElement itemContainer: product search result item
 	 * @return boolean
 	 * @author Wei.Li
 	 */
@@ -1825,7 +1825,7 @@ public class ProductResultsPage extends BasePage{
 	
 	/**
 	 * This method will check Product size disabled option Item available while mouse hover
-	 * @param WebElement itemContainer: product search result item
+	 * @param-WebElement itemContainer: product search result item
 	 * @return boolean
 	 * @author Wei.Li
 	 */
@@ -1841,7 +1841,7 @@ public class ProductResultsPage extends BasePage{
 	
 	/**
 	 * This method will check Product size enabled option Item available while mouse hover
-	 * @param WebElement itemContainer: product search result item
+	 * @param-WebElement itemContainer: product search result item
 	 * @return boolean
 	 * @author Wei.Li
 	 */
@@ -1863,7 +1863,7 @@ public class ProductResultsPage extends BasePage{
 	
 	/**
 	 * This method will check Product color disabled option Item available while mouse hover
-	 * @param WebElement itemContainer: product search result item
+	 * @param-WebElement itemContainer: product search result item
 	 * @return boolean
 	 * @author Wei.Li
 	 */
@@ -1879,7 +1879,7 @@ public class ProductResultsPage extends BasePage{
 	
 	/**
 	 * This method will check Product color enabled option Item available while mouse hover
-	 * @param WebElement itemContainer: product search result item
+	 * @param-WebElement itemContainer: product search result item
 	 * @return boolean
 	 * @author Wei.Li
 	 */
@@ -1901,8 +1901,8 @@ public class ProductResultsPage extends BasePage{
 	
 	/**
 	 * This method will select size/color option
-	 * @param WebElement itemContainer: product search result item
-	 * @param WebElement selectSizeAndColorButton: the button for selecting size and color
+	 * @param-WebElement itemContainer: product search result item
+	 * @param-WebElement selectSizeAndColorButton: the button for selecting size and color
 	 * @return boolean
 	 * @author Wei.Li
 	 */
@@ -1942,8 +1942,8 @@ public class ProductResultsPage extends BasePage{
 	
 	/**
 	 * This method will verify selecting size/color option
-	 * @param WebElement itemContainer: product search result item
-	 * @param WebElement selectSizeAndColorButton: the button for selecting size and color
+	 * @param-WebElement itemContainer: product search result item
+	 * @param-WebElement selectSizeAndColorButton: the button for selecting size and color
 	 * @return void
 	 * @author Wei.Li
 	 */
@@ -2069,7 +2069,7 @@ public class ProductResultsPage extends BasePage{
 	
 	/**
 	 * This method will verify information linkage between selected PRP and PDP
-	 * @param ProductDetailPage pdp: the related PDP to adapt to different devices
+	 * @param-ProductDetailPage pdp: the related PDP to adapt to different devices
 	 * @return void
 	 * @author Wei.Li
 	 */
@@ -2244,7 +2244,7 @@ public class ProductResultsPage extends BasePage{
 			
 	/**
 	 * This method will check Product Item brand name Existing
-	 * @param WebElement itemContainer: product search result item
+	 * @param-WebElement itemContainer: product search result item
 	 * @return boolean
 	 * @author Wei.Li
 	 */
@@ -2257,7 +2257,7 @@ public class ProductResultsPage extends BasePage{
 	
 	/**
 	 * This method will check Product Item review Existing
-	 * @param WebElement itemContainer: product search result item
+	 * @param-WebElement itemContainer: product search result item
 	 * @return boolean
 	 * @author Wei.Li
 	 */
@@ -2269,7 +2269,7 @@ public class ProductResultsPage extends BasePage{
 	
 	/**
 	 * This method will check Product Item review Existing
-	 * @param WebElement itemContainer: product search result item
+	 * @param-WebElement itemContainer: product search result item
 	 * @return boolean
 	 * @author Wei.Li
 	 */
@@ -2283,7 +2283,7 @@ public class ProductResultsPage extends BasePage{
 
 	/**
 	 * This method will check See More button and See Less button
-	 * @param WebElement filterContainerItem: filter Container Item
+	 * @param-WebElement filterContainerItem: filter Container Item
 	 * @return String option
 	 * @author Wei.Li
 	 */
@@ -2309,7 +2309,7 @@ public class ProductResultsPage extends BasePage{
 	
 	/**
 	 * This method will get Selected Item Amount From the Filter Title
-	 * @param WebElement itemContainer: Filter title item
+	 * @param-WebElement itemContainer: Filter title item
 	 * @return int
 	 * @author Wei.Li
 	 */
@@ -2322,7 +2322,7 @@ public class ProductResultsPage extends BasePage{
 	
 	/**
 	 * This method will check If Filter Item Is Collapsed
-	 * @param WebElement filterContainerItem: filter Container Item
+	 * @param-WebElement filterContainerItem: filter Container Item
 	 * @return boolean
 	 * @author Wei.Li
 	 */
@@ -2333,7 +2333,7 @@ public class ProductResultsPage extends BasePage{
 	
 	/**
 	 * This method will expand a specific Filter Item
-	 * @param WebElement filterContainerItem: filter Container Item
+	 * @param-WebElement filterContainerItem: filter Container Item
 	 * @return void
 	 * @author Wei.Li
 	 */
@@ -2353,7 +2353,7 @@ public class ProductResultsPage extends BasePage{
 	
 	/**
 	 * This method will uncollapse a specific Filter Item through clicking product title
-	 * @param WebElement filterContainerItem: filter Container Item
+	 * @param-WebElement filterContainerItem: filter Container Item
 	 * @return void
 	 * @author Wei.Li
 	 */
@@ -2370,7 +2370,7 @@ public class ProductResultsPage extends BasePage{
 	
 	/**
 	 * This method will collapse a specific Filter Item through clicking product title
-	 * @param WebElement filterContainerItem: filter Container Item
+	 * @param-WebElement filterContainerItem: filter Container Item
 	 * @return void
 	 * @author Wei.Li
 	 */
@@ -2398,7 +2398,7 @@ public class ProductResultsPage extends BasePage{
 	
 	/**
 	 * This method will click the See More button for a specific Filter Item
-	 * @param WebElement filterContainerItem: filter Container Item
+	 * @param-WebElement filterContainerItem: filter Container Item
 	 * @return void
 	 * @author Wei.Li
 	 */
@@ -2414,7 +2414,7 @@ public class ProductResultsPage extends BasePage{
 		
 	/**
 	 * This method will click the See Less button for a specific Filter Item
-	 * @param WebElement filterContainerItem: filter Container Item
+	 * @param-WebElement filterContainerItem: filter Container Item
 	 * @return void
 	 * @author Wei.Li
 	 */
@@ -2430,7 +2430,7 @@ public class ProductResultsPage extends BasePage{
 	
 	/**
 	 * This method will get Selected SubFilter Amount for a specific Filter Item
-	 * @param WebElement filterContainerItem: filter Container Item
+	 * @param-WebElement filterContainerItem: filter Container Item
 	 * @return int
 	 * @author Wei.Li
 	 */
@@ -2449,7 +2449,7 @@ public class ProductResultsPage extends BasePage{
 	
 	/**
 	 * This method will check Search Input Button Existing In SubFilter for a specific Filter Item
-	 * @param WebElement filterContainerItem: filter Container Item
+	 * @param-WebElement filterContainerItem: filter Container Item
 	 * @return boolean
 	 * @author Wei.Li
 	 */
@@ -2460,7 +2460,7 @@ public class ProductResultsPage extends BasePage{
 	
 	/**
 	 * This method will check ViewAllSizes Button Existing
-	 * @param WebElement filterContainerItem: filter Container Item
+	 * @param-WebElement filterContainerItem: filter Container Item
 	 * @return boolean
 	 * @author Wei.Li
 	 */
