@@ -40,8 +40,9 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction_Dro
 
         //Test sort
         reporter.reportLog("Price: Highest First");
-        if (getProductResultsPageThreadLocal().chooseSortOptionByVisibleText(lstSortByOptions)) {
+        if (getProductResultsPageThreadLocal().chooseSortOptionByVisibleText(lstSortByOptions)) {        	
             lsMsg = getProductResultsPageThreadLocal().verifyHighestPriceFirstSort();
+          
             if (lsMsg.isEmpty()) {
                 reporter.reportLogPass("Sort option of Price: Highest First works");
             } else {
@@ -60,13 +61,11 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction_Dro
             }
 
             reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(), "Showing text pattern in filters is correct", "Showing text pattern in filters is incorrect");
-            if (!(System.getProperty("Device").equalsIgnoreCase("Mobile"))) {
-                reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting), "The default setting of items per page is " + lsSearchResultPageDefaultSetting, "The default setting of items per page isn't " + lsSearchResultPageDefaultSetting);
-            }
 
             productList = getProductResultsPageThreadLocal().getProductList();
             if (productList.size() > 0) {
-                getProductResultsPageThreadLocal().verifySearchResultContent(productList);
+               getProductResultsPageThreadLocal().verifySearchResultContent(productList);
+               getProductResultsPageThreadLocal().verifySearchResultContentWithMouseHover(productList);
             }
 
             reporter.softAssert(getProductResultsPageThreadLocal().verifyProductPagination(), "Product pagination is existing", "Product pagination is not existing");

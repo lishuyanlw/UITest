@@ -14,8 +14,8 @@ public class Product {
     public Sorting Sorting;
     public String QueryId;
     public String SearchTerm;
-    public List<QueryInfo> QueryInfo;
-    public List<QueryDims> QueryDims;
+//    public List<QueryInfo> QueryInfo;
+//    public List<QueryDims> QueryDims;
     public String RedirectUrl;
     public boolean Redirected;
     public boolean DoNotRedirectPrpToNsrp;
@@ -28,11 +28,15 @@ public class Product {
     public String AimResponseFileName;
     public int AimRequestResponseLogThreshold;
 
-    public Product.Paging getPaging() {        return Paging;    }
+    public Paging getPaging() {
+		return Paging;
+	}
 
-    public void setPaging(Product.Paging paging) {        Paging = paging;    }
+	public void setPaging(Paging paging) {
+		Paging = paging;
+	}
 
-    public List<Products> getProducts() {
+	public List<Products> getProducts() {
         return Products;
     }
 
@@ -72,21 +76,21 @@ public class Product {
         this.SearchTerm = searchTerm;
     }
 
-    public List<QueryInfo> getQueryInfo() {
-        return QueryInfo;
-    }
-
-    public void setQueryInfo(List<QueryInfo> queryInfo) {
-        this.QueryInfo = queryInfo;
-    }
-
-    public List<QueryDims> getQueryDims() {
-        return QueryDims;
-    }
-
-    public void setQueryDims(List<QueryDims> queryDims) {
-        this.QueryDims = queryDims;
-    }
+//    public List<QueryInfo> getQueryInfo() {
+//        return QueryInfo;
+//    }
+//
+//    public void setQueryInfo(List<QueryInfo> queryInfo) {
+//        this.QueryInfo = queryInfo;
+//    }
+//
+//    public List<QueryDims> getQueryDims() {
+//        return QueryDims;
+//    }
+//
+//    public void setQueryDims(List<QueryDims> queryDims) {
+//        this.QueryDims = queryDims;
+//    }
 
     public String getRedirectUrl() {
         return RedirectUrl;
@@ -181,6 +185,7 @@ public class Product {
         return null;
     }
 
+    
     public static class Paging {
         public int TotalRecords;
         public int TotalPages;

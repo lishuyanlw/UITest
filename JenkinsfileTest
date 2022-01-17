@@ -55,6 +55,7 @@ pipeline {
                     00 05 * * 5 %Browser=sauceandroidchrome;Language=en;Groups=ProductDetail;ThreadCount=1;TunnelRequired=Yes;Device=Tablet;TestProfile=TSCWF-Automation
                     00 02 * * 5 %Browser=sauceioschrome;Language=en;Groups=ProductDetail;ThreadCount=1;TunnelRequired=Yes;Device=Tablet;TestProfile=TSCWF-Automation
 
+
                 ''':'')
     }
 

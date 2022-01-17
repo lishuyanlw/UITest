@@ -19,23 +19,25 @@ public class PD_TC01_Verify_ProductDetail_LeftSection_ContentsForImageAndVideo e
 	 */
 	@Test(groups={"ProductDetail","Regression","Regression_Mobile","Regression_Tablet"})
 	public void validateLeftSection_ContentsForImageAndVideo() throws IOException {	
-	getGlobalFooterPageThreadLocal().closePopupDialog();
-
+    //We don't need to close popup dialog if use api to navigate to PDP page directly.
+	//getGlobalFooterPageThreadLocal().closePopupDialog();
+	
 	BasePage basePage=new BasePage(this.getDriver());
 		
 	reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(basePage.getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");		
 	reporter.reportLog("ProductDetail Page");
 	
-	List<List<String>> lsKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_SearchKeyword_DropDown();
 	String lsVideoDisclaimInfo=TestDataHandler.constantData.getSearchResultPage().getLbl_VideoDisclaimInfo();
-	
+	List<String> lstKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_APISearchingKeyword();
+
 	//getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0));
 	reporter.reportLog("Switch to ProductDetail page");
 	String lsProductNumber,lsUrl;
 	
 	if(getProductResultsPageThreadLocal().goToFirstProductItem("522809")) {
+	//if(getProductDetailPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList,"AllConditionsWithoutCheckingSoldOutCriteria")) {
 		reporter.reportLog("Verify URL");
-		lsProductNumber=getProductResultsPageThreadLocal().selectedProductItem.productConvertedNumber;
+		//lsProductNumber=getProductDetailPageThreadLocal().selectedProduct.productNumber;
 		lsUrl=basePage.URL();
 		reporter.softAssert(lsUrl.contains("productdetails"),"The Url is containing productdetails","The Url is not containing productdetails");
 		//reporter.softAssert(lsUrl.contains(lsProductNumber),"The Url is containing selected product number of "+lsProductNumber,"The Url is not containing selected product number of "+lsProductNumber);
@@ -54,8 +56,6 @@ public class PD_TC01_Verify_ProductDetail_LeftSection_ContentsForImageAndVideo e
 	else {
 		reporter.reportLogFail("Unable to find the product item with Review, EasyPay, Swatch item>=4 and Video");
 	}
-	
-}
-
+	}
 }
 

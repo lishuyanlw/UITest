@@ -11,6 +11,8 @@ import java.util.concurrent.TimeUnit;
 
 import com.tsc.api.apiBuilder.ApiResponse;
 import com.tsc.pages.*;
+import com.tsc.pages.base.BasePage;
+
 import org.apache.http.client.ClientProtocolException;
 import org.openqa.selenium.WebDriver;
 import org.testng.ITestContext;
@@ -256,19 +258,20 @@ public class BaseTest {
 	@BeforeMethod(alwaysRun = true)
 	@Parameters({ "strBrowser", "strLanguage" })
 	public void beforeTest(@Optional("chrome") String strBrowser, @Optional("en") String strLanguage,
-			ITestContext testContext, Method method) throws ClientProtocolException, IOException {
+			ITestContext testContext, Method method) throws ClientProtocolException, IOException {		
 		startSession(System.getProperty("QaUrl"), strBrowser, strLanguage, method, false);
 		getglobalheaderPageThreadLocal().waitForPageLoad();
 		// getHomePageThreadLocal().waitforOverlayLoadingSpinnerToDisapper();
 		// reporter.hardAssert(getHomePageThreadLocal().validateLogoRogers(), "Home Page
 		// Loaded", "Home Page Not Loaded");
 		//getglobalheaderPageThreadLocal().setLanguage(System.getProperty("Language"));
+		//(new BasePage(this.getDriver())).setSessionStorage(System.getProperty("QaUrl"));
 	}
 
 	@AfterMethod(alwaysRun = true)
 	public void afterTest() {
 		if (getDriver() != null) {
-			//deleteSessionStorage();
+			//(new BasePage(this.getDriver())).deleteSessionStorage();
 			closeSession();
 		}
 	}

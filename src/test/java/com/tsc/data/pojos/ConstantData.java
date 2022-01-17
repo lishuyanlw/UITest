@@ -441,6 +441,7 @@ public class ConstantData {
     public static class SearchResultPage {
         private List<String> lst_SearchKeyword;
         private List<List<String>> lst_SearchKeyword_DropDown;
+        private List<String> lst_APISearchingKeyword;
         private String lbl_SearchResultPageDefaultSetting;
         private List<String> lst_SearchResultMessage;
         private List<String> lst_SortOption;
@@ -459,8 +460,9 @@ public class ConstantData {
         private String lbl_TellYourFriendsSentMessage;
         private List<String> lst_Filter_Data;
         private List<String> lst_SortOptionMobile;
+        private String lbl_ProductNumberWithBandAndReviewAndSeeMore;
 
-        public List<String> getLst_SearchKeyword() {
+		public List<String> getLst_SearchKeyword() {
             return lst_SearchKeyword;
         }
 
@@ -475,6 +477,14 @@ public class ConstantData {
         public void setLst_SearchKeyword_DropDown(List<List<String>> lst_SearchKeyword_DropDown) {
             this.lst_SearchKeyword_DropDown = lst_SearchKeyword_DropDown;
         }
+        
+        public List<String> getLst_APISearchingKeyword() {
+			return lst_APISearchingKeyword;
+		}
+
+		public void setLst_APISearchingKeyword(List<String> lst_APISearchingKeyword) {
+			this.lst_APISearchingKeyword = lst_APISearchingKeyword;
+		}
 
         public String getLbl_SearchResultPageDefaultSetting() {
             return lbl_SearchResultPageDefaultSetting;
@@ -611,6 +621,14 @@ public class ConstantData {
         public void setLbl_TellYourFriendsSentMessage(String lbl_TellYourFriendsSentMessage) {
             this.lbl_TellYourFriendsSentMessage = lbl_TellYourFriendsSentMessage;
         }
+        
+        public String getLbl_ProductNumberWithBandAndReviewAndSeeMore() {
+			return lbl_ProductNumberWithBandAndReviewAndSeeMore;
+		}
+
+		public void setLbl_ProductNumberWithBandAndReviewAndSeeMore(String lbl_ProductNumberWithBandAndReviewAndSeeMore) {
+			this.lbl_ProductNumberWithBandAndReviewAndSeeMore = lbl_ProductNumberWithBandAndReviewAndSeeMore;
+		}
     }
 
     public static class Flyout {

@@ -31,29 +31,27 @@ public class SR_TC09_Verify_ProductSearchResult_SpecialOffersAndRecomendationSec
 		reporter.softAssert(getProductResultsPageThreadLocal().getClearanceOptionURLTitle().contains(lnkProductResult),"Verified that landing page is Product Result Page", "Verified that landing page is not Product Result Page");
 
 		// Verifying title of the page after navigation
-		String value = getProductResultsPageThreadLocal().getProductResultPageTitle(getProductResultsPageThreadLocal().pageTitle);
+		String value = getProductResultsPageThreadLocal().getProductResultPageTitle(getProductResultsPageThreadLocal().lblSearchResultTitle);
 		reporter.softAssert(value.equalsIgnoreCase(subMenuItem), "Product Result Title Verified and title is " + value,"Product Result Title is not as expected and title is " + value);
 
         // Verifying Search Result message and default Page Number Count on Page
 		reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(),"Showing text pattern in filters is correct","Showing text pattern in filters is incorrect");
-		if(!(System.getProperty("Device").equalsIgnoreCase("Mobile"))) {
-			reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting), "The default setting of items per page is "+lsSearchResultPageDefaultSetting, "The default setting of items per page isn't "+lsSearchResultPageDefaultSetting);
-		}
 
 		// Verifying Product List displayed for mandatory information like Product, Name, Image, Price, Code
 		productList=getProductResultsPageThreadLocal().getProductList();
 		if(productList.size()>0) {
-		getProductResultsPageThreadLocal().verifySearchResultContent(productList);
+			getProductResultsPageThreadLocal().verifySearchResultContent(productList);
+			getProductResultsPageThreadLocal().verifySearchResultContentWithMouseHover(productList);
 		}
 		reporter.softAssert(getProductResultsPageThreadLocal().verifyProductPagination(),"Product pagination is existing","Product pagination is not existing");
-		reporter.softAssert(getProductResultsPageThreadLocal().verifyElementExisting(getProductResultsPageThreadLocal().getRecommendationContainer()),"Recommendation section is existing after choosing special offers","Recommendation section is not existing after choosing special offers");
-
-		// Verifying title of the Product Recommendation page
-		String pageTitleValue = getProductResultsPageThreadLocal().getProductResultPageTitle(getProductResultsPageThreadLocal().productRecommendationTitle);
-		boolean title_Value = pageTitleValue.equalsIgnoreCase(productRecommendationTitleText.get(0)) || pageTitleValue.equalsIgnoreCase(productRecommendationTitleText.get(1));
-		reporter.softAssert(title_Value,"Product Recommendation Title is Verified and title is " + pageTitleValue,"Product Recommendation Title is Verified and title is " + pageTitleValue);
-
-		// Verifying Product Recommendation section details
-		getProductResultsPageThreadLocal().verify_ProductRecommendationSection();
+//		reporter.softAssert(getProductResultsPageThreadLocal().verifyElementExisting(getProductResultsPageThreadLocal().getRecommendationContainer()),"Recommendation section is existing after choosing special offers","Recommendation section is not existing after choosing special offers");
+//
+//		// Verifying title of the Product Recommendation page
+//		String pageTitleValue = getProductResultsPageThreadLocal().getProductResultPageTitle(getProductResultsPageThreadLocal().productRecommendationTitle);
+//		boolean title_Value = pageTitleValue.equalsIgnoreCase(productRecommendationTitleText.get(0)) || pageTitleValue.equalsIgnoreCase(productRecommendationTitleText.get(1));
+//		reporter.softAssert(title_Value,"Product Recommendation Title is Verified and title is " + pageTitleValue,"Product Recommendation Title is Verified and title is " + pageTitleValue);
+//
+//		// Verifying Product Recommendation section details
+//		getProductResultsPageThreadLocal().verify_ProductRecommendationSection();
 	}
 }
