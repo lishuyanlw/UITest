@@ -106,7 +106,7 @@ public class ApiResponse extends ApiConfigs {
                 		selectedProduct.productBrand=data.getBrand();
                 		selectedProduct.productNowPrice=data.getIsPriceRange();
                 		selectedProduct.productWasPrice=data.getWasPriceRange();
-                		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName()+propertyData.get("PartialUrl_PDP")+data.getItemNo();            	
+                		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName()+propertyData.get("test_partial_url_pdp")+data.getItemNo();            	
                         break;
                     }
                 }
@@ -161,7 +161,7 @@ public class ApiResponse extends ApiConfigs {
         	
             do {
     	        try{
-    	            response = getApiCallResponse(initialConfig,propertyData.get("test_apiVersion3")+"/"+propertyData.get("test_language")+"/products");    	            
+    	            response = getApiCallResponse(initialConfig,propertyData.get("test_apiVersion")+"/"+propertyData.get("test_language")+"/products");    	            
     	        }catch (Exception exception){
     	            exception.printStackTrace();
     	        }
@@ -182,7 +182,7 @@ public class ApiResponse extends ApiConfigs {
         
         repeatNumber=0;
         do{
-        	response = getApiCallResponse(configs, propertyData.get("test_apiVersion3")+"/"+propertyData.get("test_language")+"/products");
+        	response = getApiCallResponse(configs, propertyData.get("test_apiVersion")+"/"+propertyData.get("test_language")+"/products");
             if(response!=null && response.statusCode()==200) {
             	product = JsonParser.getResponseObject(response.asString(), new TypeReference<Product>() {
                 });
@@ -225,7 +225,7 @@ public class ApiResponse extends ApiConfigs {
         		selectedProduct.productBrand=product.getBrand();
         		selectedProduct.productNowPrice=product.getIsPriceRange();
         		selectedProduct.productWasPrice=product.getWasPriceRange();        	
-        		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+product.getName()+propertyData.get("PartialUrl_PDP")+product.getItemNo();
+        		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+product.getName()+propertyData.get("test_partial_url_pdp")+product.getItemNo();
                 flag=false;
             }
             else {
@@ -369,7 +369,7 @@ public class ApiResponse extends ApiConfigs {
         		selectedProduct.productBrand=data.getBrand();
         		selectedProduct.productNowPrice=data.getIsPriceRange();
         		selectedProduct.productWasPrice=data.getWasPriceRange();
-        		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName()+propertyData.get("PartialUrl_PDP")+data.getItemNo();            	
+        		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName()+propertyData.get("test_partial_url_pdp")+data.getItemNo();            	
                 return productItem;
             }
         }
@@ -412,7 +412,7 @@ public class ApiResponse extends ApiConfigs {
         		selectedProduct.productBrand=data.getBrand();
         		selectedProduct.productNowPrice=data.getIsPriceRange();
         		selectedProduct.productWasPrice=data.getWasPriceRange();
-        		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName()+propertyData.get("PartialUrl_PDP")+data.getItemNo();
+        		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName()+propertyData.get("test_partial_url_pdp")+data.getItemNo();
         		
         		return data;        		
         	}
@@ -501,7 +501,7 @@ public class ApiResponse extends ApiConfigs {
         		selectedProduct.productBrand=data.getBrand();
         		selectedProduct.productNowPrice=data.getIsPriceRange();
         		selectedProduct.productWasPrice=data.getWasPriceRange();        		
-        		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName()+propertyData.get("PartialUrl_PDP")+data.getItemNo();            	
+        		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName()+propertyData.get("test_partial_url_pdp")+data.getItemNo();            	
                 return data;
             }
         }
@@ -551,7 +551,7 @@ public class ApiResponse extends ApiConfigs {
                 		selectedProduct.productBrand=data.getBrand();
                 		selectedProduct.productNowPrice=data.getIsPriceRange();
                 		selectedProduct.productWasPrice=data.getWasPriceRange();
-                		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName()+propertyData.get("PartialUrl_PDP")+data.getItemNo();
+                		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName()+propertyData.get("test_partial_url_pdp")+data.getItemNo();
                 		
                 		productItem=data;
                         break;
@@ -601,7 +601,7 @@ public class ApiResponse extends ApiConfigs {
         
         repeatNumber=0;
         do{
-        	response = getApiCallResponse(configs, propertyData.get("test_apiVersion3")+"/"+propertyData.get("test_language")+"/products");
+        	response = getApiCallResponse(configs, propertyData.get("test_apiVersion")+"/"+propertyData.get("test_language")+"/products");
             if(response!=null && response.statusCode()==200) {
             	product = JsonParser.getResponseObject(response.asString(), new TypeReference<Product>() {
                 });
@@ -627,7 +627,7 @@ public class ApiResponse extends ApiConfigs {
     		selectedProduct.productBrand=data.getBrand();
     		selectedProduct.productNowPrice=data.getIsPriceRange();
     		selectedProduct.productWasPrice=data.getWasPriceRange();
-    		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName()+propertyData.get("PartialUrl_PDP")+data.getItemNo();
+    		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName()+propertyData.get("test_partial_url_pdp")+data.getItemNo();
         }
 
         return product.getProducts().get(0);
