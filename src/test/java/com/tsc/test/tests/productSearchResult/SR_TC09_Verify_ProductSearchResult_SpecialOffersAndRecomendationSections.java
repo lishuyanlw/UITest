@@ -40,7 +40,8 @@ public class SR_TC09_Verify_ProductSearchResult_SpecialOffersAndRecomendationSec
 		// Verifying Product List displayed for mandatory information like Product, Name, Image, Price, Code
 		productList=getProductResultsPageThreadLocal().getProductList();
 		if(productList.size()>0) {
-		getProductResultsPageThreadLocal().verifySearchResultContent(productList);
+			getProductResultsPageThreadLocal().verifySearchResultContent(productList);
+			getProductResultsPageThreadLocal().verifySearchResultContentWithMouseHover(productList);
 		}
 		reporter.softAssert(getProductResultsPageThreadLocal().verifyProductPagination(),"Product pagination is existing","Product pagination is not existing");
 //		reporter.softAssert(getProductResultsPageThreadLocal().verifyElementExisting(getProductResultsPageThreadLocal().getRecommendationContainer()),"Recommendation section is existing after choosing special offers","Recommendation section is not existing after choosing special offers");

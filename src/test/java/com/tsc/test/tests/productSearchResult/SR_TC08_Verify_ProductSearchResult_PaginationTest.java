@@ -48,6 +48,7 @@ public class SR_TC08_Verify_ProductSearchResult_PaginationTest extends BaseTest{
 	productList=getProductResultsPageThreadLocal().getProductList();
 	if(productList.size()>0) {
 		getProductResultsPageThreadLocal().verifySearchResultContent(productList);
+		getProductResultsPageThreadLocal().verifySearchResultContentWithMouseHover(productList);
 	}
 	
 	boolean bNextPage=getProductResultsPageThreadLocal().switchPage(true);
