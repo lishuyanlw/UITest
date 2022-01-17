@@ -1,6 +1,9 @@
 package com.tsc.pages;
 
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.openqa.selenium.By;
@@ -9,6 +12,10 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
 
+import com.tsc.api.apiBuilder.ApiResponse;
+import com.tsc.api.pojo.Product;
+import com.tsc.api.pojo.ProductDetailsItem;
+import com.tsc.api.pojo.SelectedProduct;
 import com.tsc.pages.ProductResultsPage.ProductItem;
 import com.tsc.pages.base.BasePage;
 
@@ -95,6 +102,9 @@ public class ProductDetailPage extends BasePage {
 	public WebElement lblZoomImageMessage;
 	
 	//Product details
+	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']/div[2]")			
+	public WebElement cntProductDetailsContainer;
+	
 	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']")
 	public WebElement lblProductName;
 	
@@ -415,7 +425,7 @@ public class ProductDetailPage extends BasePage {
 	public WebElement lblProductOverviewTabContent;
 	
 	//Product Size Chart Tab part
-	@FindBy(xpath = "//div[contains(@class,'tabs')]//div[@id='infoTabContent']//img[contains(@src,'SIZE') and contains(@src,'CHART')]/ancestor::div[contains(@id,'tab')]")
+	@FindBy(xpath = "//div[contains(@class,'tabs')]//div[@id='infoTabContent']//div[@id='tab1']")
 	public WebElement cntProductSizeChartTabContent;
 	
 	@FindBy(xpath = "//div[contains(@class,'tabs')]//div[@id='infoTabContent']//img[contains(@src,'SIZE') and contains(@src,'CHART')]/ancestor::div[contains(@id,'tab')]//*[@class='tabHeader']")
@@ -674,7 +684,7 @@ public class ProductDetailPage extends BasePage {
 	
 	public By byAddToBagPopupWindowDetailProductSize = By.xpath(".//span[@class='add-to-bag__product-size']");
 	
-	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__details']//div[@class='add-to-bag__inside-right']//div[@class='add-to-bag-style-size-div']//a[@class='add-to-bag__item-link']")
+	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__details']//div[@class='add-to-bag__inside-right']//div[@class='add-to-bag__product-number']")
 	public WebElement lblAddToBagPopupWindowDetailsProductNumber;
 		
 	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__button-wrap']")
@@ -709,7 +719,7 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//div[@id='findMine']//div[contains(@class,'findmine__slider')]//button[contains(@class,'slick-next')]")
 	public WebElement btnGetTheLookNext;
 	
-	@FindBy(xpath = "//div[@id='findMine']//div[contains(@class,'findmine__slider')]//div[contains(@class,'findmine__item') and not(contains(@class,'findmine__itemid'))]")
+	@FindBy(xpath = "//div[@id='findMine']//div[@class='slick-list']//div[contains(@class,'slick-current')]//div[contains(@class,'findmine__item') and not(contains(@class,'findmine__itemid'))]")
 	public List<WebElement> lstGetTheLookItem;
 	
 	public By byGetTheLookProductLink=By.xpath(".//a");
@@ -728,6 +738,9 @@ public class ProductDetailPage extends BasePage {
 	
 	public By byGetTheLookProductEasyPay=By.xpath(".//div[@class='findmine__easypay']");
 
+	public ProductDetailsItem productDetailsItem = new ProductDetailsItem();
+	public Product.Products product=null;
+	public SelectedProduct selectedProduct= new SelectedProduct();
 	
 	/**
 	 * Method to check if Video is playing
@@ -1542,7 +1555,7 @@ public class ProductDetailPage extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAddToBagPopupWindowDetailsProductNumber);
 		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblAddToBagPopupWindowDetailsProductNumber),"The product Number in Add to Bag popup window is visible","The product Number in Add to Bag popup window is not visible");
 		reporter.softAssert(!this.lblAddToBagPopupWindowDetailsProductNumber.getText().isEmpty(),"The product Number in Add to Bag popup window is not empty","The product Number in Add to Bag popup window is empty");
-		reporter.softAssert(this.lblAddToBagPopupWindowDetailsProductNumber.getText().trim().equalsIgnoreCase(productItem.productNumber),"The product number in Add to Bag popup window is equal to the original product number from product search result page","The product name in Add to Bag popup window is not equal to the original product name from product search result page");
+		reporter.softAssert(this.lblAddToBagPopupWindowDetailsProductNumber.getText().trim().replace("-", "").equalsIgnoreCase(productItem.productNumber),"The product number of "+this.lblAddToBagPopupWindowDetailsProductNumber.getText().trim().replace("-", "")+" in Add to Bag popup window is equal to the original product number of "+productItem.productNumber+" from product search result page","The product number of "+this.lblAddToBagPopupWindowDetailsProductNumber.getText().trim().replace("-", "")+" in Add to Bag popup window is not equal to the original product number of "+productItem.productNumber+" from product search result page");
 		
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAddToBagPopupWindowButtonSectionSubtotal);
 		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblAddToBagPopupWindowButtonSectionSubtotal),"The product Subtotal in Add to Bag popup window is visible","The product Subtotal in Add to Bag popup window is not visible");
@@ -1632,6 +1645,7 @@ public class ProductDetailPage extends BasePage {
 			this.getReusableActionsInstance().staticWait(1000);
 			this.getDriver().navigate().refresh();
 			this.waitForPageToLoad();
+			this.getReusableActionsInstance().staticWait(1000);
 			this.getReusableActionsInstance().waitForElementVisibility(this.lblZoomImageMessage,  60);		
 			reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lnkCurrentZoomImage),"The image is displaying after video off and page refreshing instead of video displaying","The image is not displaying after video off and page refreshing instead of video displaying");
 		}
@@ -1648,6 +1662,7 @@ public class ProductDetailPage extends BasePage {
 			this.getReusableActionsInstance().staticWait(1000);
 			this.getDriver().navigate().refresh();
 			this.waitForPageToLoad();
+			this.getReusableActionsInstance().staticWait(1000);
 			this.getReusableActionsInstance().waitForElementVisibility(this.lblZoomImageMessage,  60);		
 			reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lnkCurrentZoomImage),"The image is displaying after video off and page refreshing instead of video displaying","The image is not displaying after video off and page refreshing instead of video displaying");
 		}
@@ -1664,9 +1679,17 @@ public class ProductDetailPage extends BasePage {
 		this.verifyThumbnailNextButton();
 	}
 	
+	public boolean checkProductBrandExisting() {
+		return this.checkChildElementExistingByAttribute(cntProductDetailsContainer, "id", "divBrandName");
+	}
+	
 	public void verifyProductBasicInfo() {
 		reporter.softAssert(!this.getElementText(this.lblProductName).isEmpty(),"The product name is not empty","The product name is empty");
-		reporter.softAssert(!this.getElementText(this.lnkBrandName).isEmpty(),"The product brand name is not empty","The product brand name is empty");
+		
+		if(checkProductBrandExisting()) {
+			reporter.softAssert(!this.getElementText(this.lnkBrandName).isEmpty(),"The product brand name is not empty","The product brand name is empty");
+		}
+		
 		reporter.softAssert(!this.getElementText(this.lblProductNumber).isEmpty(),"The product number is not empty","The product number is empty");		
 	}
 	
@@ -1926,20 +1949,22 @@ public class ProductDetailPage extends BasePage {
 	 */
 	public void verifyPrevAndNextButtonActionInGetTheLookSection() {		
 		if(this.getChildElementCount(this.cntGetTheLook)>2) {
-			String lsLinkPrevBefore=this.getElementHref(this.lstGetTheLookItem.get(0));					
+			String lsLinkPrevBefore=this.lstGetTheLookItem.get(0).findElement(this.byGetTheLookProductLink).getAttribute("data-link-title");					
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnGetTheLookPrev);
 			this.btnGetTheLookPrev.click();
-			this.waitForCondition(Driver->{return !this.getElementHref(this.lstGetTheLookItem.get(0)).equalsIgnoreCase(lsLinkPrevBefore);}, 10000);
+			this.getReusableActionsInstance().staticWait(3000);
+			this.waitForCondition(Driver->{return !this.lstGetTheLookItem.get(0).findElement(this.byGetTheLookProductLink).getAttribute("data-link-title").equalsIgnoreCase(lsLinkPrevBefore);}, 10000);
 			
-			String lsLinkAfter=this.getElementHref(this.lstGetTheLookItem.get(0));
+			String lsLinkAfter=this.lstGetTheLookItem.get(0).findElement(this.byGetTheLookProductLink).getAttribute("data-link-title");
 			reporter.softAssert(!lsLinkPrevBefore.equalsIgnoreCase(lsLinkAfter),"The Prev button works","The Prev button does not work");
 			
-			String lsLinkNextBefore=this.getElementHref(this.lstGetTheLookItem.get(this.lstGetTheLookItem.size()-1));					
+			String lsLinkNextBefore=this.lstGetTheLookItem.get(this.lstGetTheLookItem.size()-1).findElement(this.byGetTheLookProductLink).getAttribute("data-link-title");				
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnGetTheLookNext);
 			this.btnGetTheLookNext.click();
-			this.waitForCondition(Driver->{return !this.getElementHref(this.lstGetTheLookItem.get(this.lstGetTheLookItem.size()-1)).equalsIgnoreCase(lsLinkNextBefore);}, 10000);
+			this.getReusableActionsInstance().staticWait(3000);
+			this.waitForCondition(Driver->{return !this.lstGetTheLookItem.get(this.lstGetTheLookItem.size()-1).findElement(this.byGetTheLookProductLink).getAttribute("data-link-title").equalsIgnoreCase(lsLinkNextBefore);}, 10000);
 			
-			lsLinkAfter=this.getElementHref(this.lstGetTheLookItem.get(this.lstGetTheLookItem.size()-1));
+			lsLinkAfter=this.lstGetTheLookItem.get(this.lstGetTheLookItem.size()-1).findElement(this.byGetTheLookProductLink).getAttribute("data-link-title");
 			reporter.softAssert(!lsLinkNextBefore.equalsIgnoreCase(lsLinkAfter),"The Next button works","The Next button does not work");
 		}		
 	}
@@ -1969,13 +1994,13 @@ public class ProductDetailPage extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnStickyTabProductReview);
 		this.btnStickyTabProductReview.click();
 		this.getReusableActionsInstance().staticWait(1000);		
-		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.cntReviewTabContent),"The Product Overview contents is displaying correctly","The Product Overview contents is not displaying correctly");
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.cntReviewTabContent),"The Product review contents is displaying correctly","The Product review contents is not displaying correctly");
 		
 		if(this.checkProductSizingChartExisting()) {
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnStickyTabSizeChart);
 			this.btnStickyTabSizeChart.click();
-			this.getReusableActionsInstance().staticWait(1000);		
-			reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.cntProductSizeChartTabContent),"The Product Overview contents is displaying correctly","The Product Overview contents is not displaying correctly");
+			this.getReusableActionsInstance().staticWait(3000);		
+			reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.cntProductSizeChartTabContent),"The Product SizeChart contents is displaying correctly","The Product SizeChart contents is not displaying correctly");
 		}
 	}
 	
@@ -1993,7 +2018,7 @@ public class ProductDetailPage extends BasePage {
 		
 		reporter.softAssert(this.URL().toLowerCase().contains("productresults"),"The page has been switched to product results page","The page has not been switched to product results page");
 		
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(prp.lblSelectedFilters);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(prp.selectedFiltersList.get(0));
 		String lsSelectedFilter=prp.selectedFiltersList.get(0).getText().trim();
 		reporter.softAssert(lsBrandName.equalsIgnoreCase(lsSelectedFilter),"The selected filter item text is equal to Product brand name","The selected filter item text is not equal to Product brand name");
 		
@@ -2121,5 +2146,71 @@ public class ProductDetailPage extends BasePage {
 		reporter.softAssert(checkIfFavShareMobileHighlighted(),"The FavShareMobile icon is highlighted after clicking with user login", "The FavShareMobile icon is not highlighted after clicking with user login");
 	}
 	
+	/**
+	 * This method will go to PDP page with the matched product
+	 * @param List<String> lstKeyword: keyword list
+	 * @param String lsType: method type with "AllConditionsWithoutCheckingSoldOutCriteria"/"AllConditionsWithCheckingSoldOutCriteria"/"SoldOut"/"AddToBag"
+	 * @return true/false
+	 * @author Wei.Li
+	 * @throws IOException 
+	 */
+	public boolean goToProductItemWithPreConditions(List<String> lstKeyword,String lsType) throws IOException {
+		ProductResultsPage prp=new ProductResultsPage(this.getDriver());
+		ApiResponse apiResponse=new ApiResponse();
+		
+		Map<String,Object> outputDataCriteria= new HashMap<String,Object>();
+		outputDataCriteria.put("video", "1");
+		outputDataCriteria.put("style", "3");
+		outputDataCriteria.put("size", "3");
+		
+		switch(lsType) {
+		case "AllConditionsWithoutCheckingSoldOutCriteria":
+			for(String lsKeyword:lstKeyword) {
+				product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,false);
+				if(product!=null) {
+					break;
+				}
+			}
+			break;
+		case "AllConditionsWithCheckingSoldOutCriteria":
+			for(String lsKeyword:lstKeyword) {
+				product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,true);
+				if(product!=null) {
+					break;
+				}
+			}
+			break;
+		case "SoldOut":
+			for(String lsKeyword:lstKeyword) {
+				product=apiResponse.getProductInfoFromKeywordWithSoldOutInfo(lsKeyword, outputDataCriteria);				
+				if(product!=null) {
+					break;
+				}
+			}
+			break;
+		case "AddToBag":
+			for(String lsKeyword:lstKeyword) {
+				product=apiResponse.getProductOfPDPForAddToBagFromKeyword(lsKeyword);
+				if(product!=null) {
+					break;
+				}
+			}
+			break;
+		default:
+			break;		
+		}
+
+		if(product==null){
+			reporter.reportLogFail("Unable to find the matched product");
+			return false;
+		}
+		
+		selectedProduct=apiResponse.selectedProduct;
+		productDetailsItem=apiResponse.getProductDetailsForSpecificProductNumber(selectedProduct.productNumber);
+					
+		this.getDriver().get(apiResponse.selectedProduct.pdpNavigationUrl);
+		
+		return prp.waitForPDPPageLoading();
+	}
 
 }

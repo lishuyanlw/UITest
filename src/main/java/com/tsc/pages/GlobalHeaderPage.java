@@ -184,15 +184,6 @@ public class GlobalHeaderPage extends BasePage{
 	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--right')]//div[@class='ac__layout-inner--right']//ul//li")
 	public List<WebElement> lstMoreToExplore;
 	
-	
-	//For Staging website
-	@FindBy(xpath = "//div[@class='searchContainer']//div[contains(@class,'suggestions-container--open')]//div[@class='tsc-category-title']")
-	public WebElement txtSearchResultCategoryHeader;
-	
-	//For Staging website
-	@FindBy(xpath = "//div[@class='searchContainer']//div[contains(@class,'suggestions-container--open')]//ul//li")
-	public List<WebElement> searchResultList;
-	
 	By byCategoryAboveSearchResultList=By.xpath("//div[@class='searchContainer']//div[contains(@class,'suggestions-container--open')]//ul/preceding-sibling::div[@class='tsc-category-title']");
 		
 	//Favorite link
@@ -525,7 +516,7 @@ public class GlobalHeaderPage extends BasePage{
 	 * @author Shruti Desai
 	 */
 	public String getNameAndclickSubMenuItem(String headingName,String submenuHeading, String itemName) {
-
+		WebElement searchResultTitle=(new ProductResultsPage(this.getDriver())).lblSearchResultTitle;
 		String xpathHeading =createXPath("//span[contains(text(),'{0}')]" ,headingName);
 		WebElement headingWebElement = FlyoutHeadings.findElement(By.xpath(xpathHeading));
 		getReusableActionsInstance().javascriptScrollByVisibleElement(headingWebElement);
@@ -533,11 +524,11 @@ public class GlobalHeaderPage extends BasePage{
 
 		if(headingWebElement!=null && submenuHeading==null) {
 			headingWebElement.click();
-			waitForCondition(Driver->{return this.landingPageTitle.isDisplayed();},90000);
+			waitForCondition(Driver->{return searchResultTitle.isDisplayed();},90000);
 			return headingWebElement.getText().trim();
 		}
 		if(submenuHeading!=null) {
-			String xpathSubMenu =createXPath("//a[contains(text(),\"{0}\")]" ,submenuHeading);
+			String xpathSubMenu =createXPath("//a[contains(text(),'{0}')]" ,submenuHeading);
 			List<WebElement> SubMenu = Categories.findElements(By.xpath(xpathSubMenu));
 			if(SubMenu.size()>0){
 				getReusableActionsInstance().javascriptScrollByVisibleElement(SubMenu.get(0));
@@ -549,12 +540,12 @@ public class GlobalHeaderPage extends BasePage{
 					getReusableActionsInstance().scrollToElement(SubMenuItem);
 					String title = SubMenuItem.getText().trim();
 					SubMenuItem.click();
-					waitForCondition(Driver->{return this.landingPageTitle.isDisplayed();},90000);
+					waitForCondition(Driver->{return searchResultTitle.isDisplayed();},90000);
 					return title;
 				}else {
 					String title = SubMenu.get(0).getText().trim();
 					SubMenu.get(0).click();
-					waitForCondition(Driver->{return this.landingPageTitle.isDisplayed();},90000);
+					waitForCondition(Driver->{return searchResultTitle.isDisplayed();},90000);
 					return title;
 				}
 				//Adding else condition to click on first element by default if passed submenu item is not present in list
@@ -562,7 +553,7 @@ public class GlobalHeaderPage extends BasePage{
 				WebElement element = Categories.findElement(By.xpath("./a"));
 				String title = element.getText().trim();
 				element.click();
-				waitForCondition(Driver->{return this.landingPageTitle.isDisplayed();},90000);
+				waitForCondition(Driver->{return searchResultTitle.isDisplayed();},90000);
 				return title;
 			}
 		}

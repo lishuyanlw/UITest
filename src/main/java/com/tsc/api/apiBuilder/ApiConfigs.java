@@ -22,6 +22,8 @@ public class ApiConfigs extends ApiClient{
     public Map<String, Object> getProductSearchByKeywordInputConfig(String keyword, String dimension, int outputPage, String apiVersion) {
         inputMap = new HashMap<>();
         inputMap.put("searchTerm", keyword);
+//        inputMap.put("sortKey", "HighestPrice");
+        
         if (dimension != null)
             inputMap.put("dimensions", Integer.parseInt(dimension));
         inputMap.put("page", outputPage);

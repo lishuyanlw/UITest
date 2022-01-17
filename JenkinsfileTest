@@ -57,6 +57,7 @@ pipeline {
 		    		#01 22 * * 3 %Browser=sauceandroidchrome;Language=en;Groups=GlobalHeader_Tablet;ThreadCount=1;TunnelRequired=Yes;Device=Tablet;TestProfile=TSCWF-Automation
 		    		#01 23 * * 3 %Browser=sauceedge;Language=en;Groups=GlobalHeader;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
 
+
                 ''':'')
     }
 

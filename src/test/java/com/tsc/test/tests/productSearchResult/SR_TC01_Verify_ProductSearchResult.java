@@ -48,28 +48,26 @@ public class SR_TC01_Verify_ProductSearchResult extends BaseTest{
 			}else {
 				reporter.reportLogFail(lsMsg);
 			}
-
-			if(!(System.getProperty("Device").equalsIgnoreCase("Mobile"))) {
-				reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting), "The default setting of items per page is "+lsSearchResultPageDefaultSetting, "The default setting of items per page isn't "+lsSearchResultPageDefaultSetting);
-			}
+			
 			reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(), "Showing text pattern in filters is correct", "Showing text pattern in filters is incorrect");
 			
 			productList=getProductResultsPageThreadLocal().getProductList();
 			if(productList.size()>0) {
 				getProductResultsPageThreadLocal().verifySearchResultContent(productList);
+				getProductResultsPageThreadLocal().verifySearchResultContentWithMouseHover(productList);
 			}
 			
 			reporter.softAssert(getProductResultsPageThreadLocal().verifyProductPagination(), "Product pagination is existing", "Product pagination is not existing");
 			break;
 		case "NoSearchResult":
-			lsMsg=getProductResultsPageThreadLocal().verifySearchResultMessage(lstSearchResultMessage.get(0),lsKeywordList.get(i));
+			lsMsg=getProductResultsPageThreadLocal().verifySearchResultMessage(lstSearchResultMessage.get(1),"");
 			if(lsMsg.isEmpty()) {
 				reporter.reportLogPass("Search result message result of '"+getProductResultsPageThreadLocal().lsSearchResultMessage+"' matches the expected message");
 			}else {
 				reporter.reportLogFail(lsMsg);
 			}
-						
-			reporter.softAssert(getProductResultsPageThreadLocal().getProductSearchResultsTotalNumber()==0, "No search results return", "Still there are search results return");
+			
+			getProductResultsPageThreadLocal().verifySearchResultNotExisting();
 			break;
 		case "ProductNumberSearch":
 			reporter.softAssert(getProductResultsPageThreadLocal().verifyUrlContainDimensionAndKeyword(lsKeywordList.get(i)), "Url of search result matches expected url", "Url of search result doesn't match expected url");
@@ -81,10 +79,6 @@ public class SR_TC01_Verify_ProductSearchResult extends BaseTest{
 				reporter.reportLogFail(lsMsg);
 			}
 
-			if(!(System.getProperty("Device").equalsIgnoreCase("Mobile"))) {
-				reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting), "The default setting of items per page is "+lsSearchResultPageDefaultSetting, "The default setting of items per page isn't "+lsSearchResultPageDefaultSetting);
-			}
-			reporter.softAssert(getProductResultsPageThreadLocal().VerifySearchResultWithProductItemNO(lsKeywordList.get(i)), "The itemNO in search results just contains those with search product number", "the itemNO in search results don't just contain those with search product number");
 			reporter.softAssert(getProductResultsPageThreadLocal().verifyProductPagination(), "Product pagination is existing", "Product pagination is not existing");
 			break;
 		case "BannerImageSearch":
@@ -94,23 +88,21 @@ public class SR_TC01_Verify_ProductSearchResult extends BaseTest{
 			}
 						
 			String lsTitle=getProductResultsPageThreadLocal().getProductResultPageTitle();
-			reporter.softAssert(lsTitle.equalsIgnoreCase(lsKeywordList.get(i))||lsTitle.equalsIgnoreCase("NoTitle"), "Search result page title is dispalyed as search keyword", "Search result page title is not dispalyed as search keyword");
+			reporter.softAssert(lsTitle.equalsIgnoreCase(lsKeywordList.get(i))||lsTitle.equalsIgnoreCase("NoTitle")||lsTitle.toLowerCase().contains(lsKeywordList.get(i).toLowerCase())||lsKeywordList.get(i).toLowerCase().contains(lsTitle.toLowerCase()), "Search result page title is dispalyed as search keyword", "Search result page title is not dispalyed as search keyword");
 
-			if(!(System.getProperty("Device").equalsIgnoreCase("Mobile"))) {
-				reporter.softAssert(getProductResultsPageThreadLocal().verifySearchResultPageNumberDefaultSetting(lsSearchResultPageDefaultSetting), "The default setting of items per page is "+lsSearchResultPageDefaultSetting, "The default setting of items per page isn't "+lsSearchResultPageDefaultSetting);
-			}
 			reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(), "Showing text pattern in filters is correct", "Showing text pattern in filters is incorrect");
 			
 			productList=getProductResultsPageThreadLocal().getProductList();
 			if(productList.size()>0) {
 				getProductResultsPageThreadLocal().verifySearchResultContent(productList);
+				getProductResultsPageThreadLocal().verifySearchResultContentWithMouseHover(productList);
 			}
 			
 			reporter.softAssert(getProductResultsPageThreadLocal().verifyProductPagination(), "Product pagination is existing", "Product pagination is not existing");
 			
 			if(this.getDriver().findElements(getProductResultsPageThreadLocal().byProductTitleAndText).size()==1) {
-				reporter.softAssert(getProductResultsPageThreadLocal().verifyProductBrandContainKeyword(lsKeywordList.get(i),"Title"), "The tilte in product title and text region contains search keyword", "The tilte in product title and text region does not contain search keyword");
-				reporter.softAssert(getProductResultsPageThreadLocal().verifyProductBrandContainKeyword(lsKeywordList.get(i),"Text"), "The content in product title and text region contains search keyword", "The content in product title and text region does not contain search keyword");
+				reporter.softAssert(getProductResultsPageThreadLocal().verifyProductBrandTitleOrText("Title"), "The tilte in product title and text region is not empty", "The tilte in product title and text region is empty");
+				reporter.softAssert(getProductResultsPageThreadLocal().verifyProductBrandTitleOrText("Text"), "The content in product title and text region is not empty", "The content in product title and text region is empty");
 				reporter.softAssert(getProductResultsPageThreadLocal().verifyProductBrandMoreOrLessButton(), "The More/Less button works", "The More/Less button does not work");
 			}
 			break;		

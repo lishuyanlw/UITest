@@ -381,6 +381,18 @@ import utils.ReusableActions;
         
         return list;
     }
+
+	/**
+	 * This method will get element innerText.
+	 * @param WebElement element: element 
+	 * @return String
+	 * @author Wei.Li
+	 */		
+	public String getElementInnerText(WebElement element) {
+		JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
+		String lsText= (String)jse.executeScript("return arguments[0].innerText;", element);	
+		return lsText.replace("&nbsp;", "").trim();
+	}
     
     /**
 	 * This method will judge if ChildElement is visible.
@@ -487,6 +499,50 @@ import utils.ReusableActions;
 	}
 	
 	/**
+	 * This method will check if a childElement is existing by specific TagName and Attribute.
+	 * @param WebElement parent: parent element 
+	 * @param String lsTagName: TagName
+	 * @param String lsAttribute: Attribute
+	 * @param String lsAttributeValue: Attribute value 
+	 * @return boolean
+	 * @author Wei.Li
+	 */		
+	public boolean checkChildElementExistingByTagNameAndAttribute(WebElement parent,String lsTagName,String lsAttribute,String lsAttributeValue) {
+		List<WebElement> lstChild=this.getChildrenList(parent);		
+		for(WebElement child:lstChild) {	
+			if(!child.getTagName().equalsIgnoreCase(lsTagName)) {
+				continue;
+			}
+			
+			if(this.hasElementAttribute(child,lsAttribute)) {				
+				String lsValue=this.getChildElementAttribute(child,lsAttribute).trim();				
+				if(lsValue.isEmpty()||lsValue==null) {
+					continue;
+				}
+				else {
+					if(lsValue.contains(" ")) {
+						if(lsValue.toLowerCase().contains(lsAttributeValue.toLowerCase())) {
+							return true;
+						}
+						else {
+							continue;
+						}
+					}
+					else {
+						if(lsValue.equalsIgnoreCase(lsAttributeValue)) {
+							return true;
+						}
+						else {
+							continue;
+						}
+					}					
+				}
+			}
+		}	
+		return false;
+	}
+	
+	/**
 	 * This method will check if a childElement is existing by some specific TagName.
 	 * @param WebElement parent: parent element 
 	 * @param String lsTagName: TagName
@@ -510,9 +566,20 @@ import utils.ReusableActions;
 	 * @return true/false
 	 * @author Wei.Li
 	 */		
-	public  boolean hasElementAttribute(WebElement element,String lsAttribute) {
+	public boolean hasElementAttribute(WebElement element,String lsAttribute) {
 		JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
 		return (boolean) jse.executeScript("return arguments[0].hasAttribute(arguments[1]);", element,lsAttribute);			
+	}
+	
+	/**
+	 * This method will click an element.
+	 * @param WebElement element: the element
+	 * @return void
+	 * @author Wei.Li
+	 */		
+	public void clickElement(WebElement element) {
+		JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
+		jse.executeScript("arguments[0].click();", element);			
 	}
 	
 	/**

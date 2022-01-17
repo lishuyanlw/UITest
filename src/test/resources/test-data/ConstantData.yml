@@ -80,30 +80,31 @@ homePage:
 searchResultPage:
   lst_SearchKeyword: [ "dyson vacuum","dfafasdfa","100501","joan rivers","Nike","boots" ]
   lst_SearchKeyword_DropDown: [[ "dress","Categories","0" ]]
+  lst_APISearchingKeyword: ["dress","boots","handbags"]
   lbl_SearchResultPageDefaultSetting: 36
-  lst_SearchResultMessage:  [ "Search Results For" , "We couldn","t find a match for","Please search again using a different term or browse by brand or category." ] 
+  lst_SearchResultMessage:  [ "Showing results for" , "able to find any results" ] 
   lst_SortOption: ["Featured Products","Newest First","Reviews: Highest First","Price: Lowest First","Price: Highest First","Brand Name: A to Z"]
-  lst_FilterOptionHeader: ["SHOP BY CATEGORY","SHOP BY BRAND","SHOP BY CLEARANCE","SHOP BY COLLECTION","SHOP BY COLOUR","METAL","SHOP BY MORE WAYS","PRICE","SHOP BY PRICE LABEL","NEW ARRIVALS","PRODUCT LIST","SHOP BY PROMO","REVIEWS","ROLLUP SIZE","ROLLUP SIZE FASHION","SIZE","SHOP BY SPECIALTY","STONE"]
+  lst_FilterOptionHeader: ["Brand","Shop by price label","Shop by colour","Size","Rollup size fashion","Shop by collection","Price","Reviews","Shop by more ways","Shop by clearance"]
   lst_Filter_Data: ["Sort by : Price: Highest First","Price: Highest First"]
   lst_SortOptionMobile: ["Sort by : Featured Products","Sort by : Newest First","Sort by : Reviews: Highest First","Sort by : Price: Lowest First","Sort by : Price: Highest First","Sort by : Brand Name: A to Z"]
   lst_SearchOption:
     - filterType: Product
       filterOption: 
-      - ["SHOP BY BRAND","Joan Rivers"]
-      #- ["SHOP BY CLEARANCE","Clearance"]
+      - ["Brand","Joan Rivers"]
+      - ["SHOP BY CLEARANCE","Clearance"]
     - filterType: Price
       filterOption:
-        - ["PRICE","Under $100","Under"]
+        - ["Price","Under $100","Under"]
     - filterType: CombinatedAction
       filterOption: 
-        - ["SIZE","XL"]
-        - ["PRICE","Under $100"]
+        - ["Brand","Joan Rivers"]
+        - ["Price","Under $100"]
     - filterType: SequentialAction
       filterOption: 
-        - ["SHOP BY BRAND","Joan Rivers"]
-        - ["PRICE","Under $100"]
-        - ["SHOP BY COLOUR","Black"]
-  lst_MoreButton: ["SHOP BY BRAND","SHOP BY COLLECTION","SHOP BY COLOUR"]
+        - ["Brand","Joan Rivers"]
+        - ["Price","Under $100"]
+        - ["Shop by colour","Green"]
+  lst_MoreButton: ["Brand","Shop by collection","Shop by colour"]
   lst_DisappearAfterSelectFilter: ["SHOP BY CATEGORY"]
   lnk_product_result: /pages/productresults?
   lbl_ProductRecommendationTitlePage: ["People who viewed this item also viewed","TOP SELLERS"]
@@ -114,6 +115,7 @@ searchResultPage:
   lbl_QuantityNumberToShowLeftItemInfo: 7
   lst_WriteReviewSubmitMessage: ["THANK YOU!","We will process your review and publish it within 3-7 business days."]
   lbl_TellYourFriendsSentMessage: "Your message has been sent!"
+  lbl_ProductNumberWithBandAndReviewAndSeeMore: 407389
 footerSection: 
   lst_SocialMediaLinks: ["https://www.facebook.com/Shoptsc","https://twitter.com/shoptsc","https://instagram.com/shoptsc","www.youtube.com","https://www.pinterest.ca/shoptsc"]
   lst_NameAndLinks: 

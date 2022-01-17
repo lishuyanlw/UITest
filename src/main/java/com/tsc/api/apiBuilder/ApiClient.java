@@ -12,7 +12,7 @@ public class ApiClient {
         propertyData = getApiInfo();
     }
 
-    private Map<String,String> getApiInfo() throws IOException {
+    protected Map<String,String> getApiInfo() throws IOException {
         return PropertyReader.getPropertyDataMap();
     }
 
@@ -26,10 +26,15 @@ public class ApiClient {
      * @return - void
      */
     public void setApiClient(String baseURI) throws IOException {
-        if(baseURI!=null)
-            RestAssured.baseURI = baseURI+"/"+getApiInfo().get("test_apiVersion")+"/"+getApiInfo().get("test_language");
+//        if(baseURI!=null)
+//            RestAssured.baseURI = baseURI+"/"+getApiInfo().get("test_apiVersion")+"/"+getApiInfo().get("test_language");
+//        else
+//            RestAssured.baseURI = propertyData.get("test_qaURL")+"/"+propertyData.get("test_apiVersion")+"/"+propertyData.get("test_language");
+    	
+    	if(baseURI!=null)
+            RestAssured.baseURI = baseURI+"/";
         else
-            RestAssured.baseURI = propertyData.get("test_qaURL")+"/"+propertyData.get("test_apiVersion")+"/"+propertyData.get("test_language");
+            RestAssured.baseURI = propertyData.get("test_qaURL")+"/";
     }
 
 }

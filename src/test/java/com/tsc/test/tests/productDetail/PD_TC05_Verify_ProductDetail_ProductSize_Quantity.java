@@ -12,10 +12,8 @@ import com.tsc.test.base.BaseTest;
 public class PD_TC05_Verify_ProductDetail_ProductSize_Quantity extends BaseTest{
 	/*
 	 * CER-578
-	 * CER-580
 	 * CER-582
 	 * CER-601
-	 * CER-607
 	 */
 	@Test(groups={"ProductDetail","Regression"})
 	public void validateLeftSection_ProductSize_Quantity() throws IOException {	
@@ -28,30 +26,24 @@ public class PD_TC05_Verify_ProductDetail_ProductSize_Quantity extends BaseTest{
 	
 	List<List<String>> lsKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_SearchKeyword_DropDown();
 	String lsQuantityNumberToShowLeftItemInfo=TestDataHandler.constantData.getSearchResultPage().getLbl_QuantityNumberToShowLeftItemInfo();
+	List<String> lstKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_APISearchingKeyword();
 	
-	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0));
+//	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0));
 	reporter.reportLog("Switch to ProductDetail page");
 	String lsProductNumber,lsUrl;
 	
-	if(getProductResultsPageThreadLocal().goToProductItemWithTrueFitAndSizeAndQuantity()) {
+	if(getProductResultsPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList)) {
 		reporter.reportLog("Verify URL");		
-		lsProductNumber=getProductResultsPageThreadLocal().selectedProductItem.productConvertedNumber;
+		lsProductNumber=getProductResultsPageThreadLocal().selectedProductItem.productNumber;
 		lsUrl=basePage.URL();
 		reporter.softAssert(lsUrl.contains("productdetails"),"The Url is containing productdetails","The Url is not containing productdetails");
 		reporter.softAssert(lsUrl.contains(lsProductNumber),"The Url is containing selected product number of "+lsProductNumber,"The Url is not containing selected product number of "+lsProductNumber);
 		
 		reporter.reportLog("Verify product size dropdown");
 		getProductDetailPageThreadLocal().verifyProductSizeDropdown();			
-					
-		reporter.reportLog("Verify product TrueFit");
-		getProductDetailPageThreadLocal().verifyProductSizeTrueFit();
 						
 		reporter.reportLog("Verify product quantity");	
 		getProductDetailPageThreadLocal().verifyProductQuantityDropdown(Integer.parseInt(lsQuantityNumberToShowLeftItemInfo));
-				
-		reporter.reportLog("Verify Navigation Back button");	
-		getProductDetailPageThreadLocal().verifyBreadCrumbNavigationBack();
-		
 	}
 	else {
 		reporter.reportLogFail("Unable to find the product item with Size, TrueFit, Quantity and Left items info");

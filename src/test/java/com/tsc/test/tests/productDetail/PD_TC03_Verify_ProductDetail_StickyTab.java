@@ -13,9 +13,11 @@ public class PD_TC03_Verify_ProductDetail_StickyTab extends BaseTest{
 	/*
 	 * CER-573
 	 * CER-574
+	 * CER-580
 	 * CER-589
 	 * CER-590
 	 * CER-591
+	 * CER-607
 	 */
 	@Test(groups={"ProductDetail","Regression"})
 	public void validateStickyTab() throws IOException {	
@@ -26,18 +28,22 @@ public class PD_TC03_Verify_ProductDetail_StickyTab extends BaseTest{
 	reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(basePage.getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");		
 	reporter.reportLog("ProductDetail Page");
 	
-	List<List<String>> lsKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_SearchKeyword_DropDown();
+//	List<List<String>> lsKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_SearchKeyword_DropDown();
+	String lsKeyword=TestDataHandler.constantData.getSearchResultPage().getLbl_ProductNumberWithBandAndReviewAndSeeMore();
 	
-	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0));
+//	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeyword);
 	reporter.reportLog("Switch to ProductDetail page");
 	String lsProductNumber,lsUrl;
-	if(getProductResultsPageThreadLocal().goToProductItemWithBrandNameAndReviewAndSeeMoreInfo()) {
+	if(getProductResultsPageThreadLocal().goToFirstProductItem(lsKeyword)) {
 		reporter.reportLog("Verify URL");
-		lsProductNumber=getProductResultsPageThreadLocal().selectedProductItem.productConvertedNumber;
+		lsProductNumber=getProductResultsPageThreadLocal().selectedProductItem.productNumber;
 		lsUrl=basePage.URL();
 		reporter.softAssert(lsUrl.contains("productdetails"),"The Url is containing productdetails","The Url is not containing productdetails");
 		reporter.softAssert(lsUrl.contains(lsProductNumber),"The Url is containing selected product number of "+lsProductNumber,"The Url is not containing selected product number of "+lsProductNumber);
-	
+				
+		reporter.reportLog("Verify product TrueFit");
+		getProductDetailPageThreadLocal().verifyProductSizeTrueFit();
+
 		if(getProductDetailPageThreadLocal().goToProductReviewTab()) {
 			reporter.softAssert(getProductDetailPageThreadLocal().getStickyTabSelectedStatus(getProductDetailPageThreadLocal().btnStickyTabProductReview),"The Review tab has been selected and undrlined correctly","The Review tab has not been selected and underlined correctly");
 						
@@ -79,6 +85,9 @@ public class PD_TC03_Verify_ProductDetail_StickyTab extends BaseTest{
 		
 		reporter.reportLog("Verify product brand name link");
 		getProductDetailPageThreadLocal().verifyProductBrandNameRedirectAction();
+		
+		reporter.reportLog("Verify Navigation Back button");	
+		getProductDetailPageThreadLocal().verifyBreadCrumbNavigationBack();
 	}
 	else {
 		reporter.reportLogFail("Unable to find the product item with Brand name, Review, and See More info");
