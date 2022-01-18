@@ -209,32 +209,31 @@ public class ApiResponse extends ApiConfigs {
      */
     public ProductDetailsItem getProductDetailsForSpecificProductNumber(String productNumber){
         Response response = null;
-        boolean flag = true;
-        int repeatNumber=0;
+        //boolean flag = true;
+        //int repeatNumber=0;
         ProductDetailsItem product=new ProductDetailsItem();
   
         selectedProduct.init();
-        do{
-        	response = getApiCallResponse(null, propertyData.get("test_apiVersion2")+"/"+propertyData.get("test_language")+"/products/"+productNumber);
-            if(response!=null && response.statusCode()==200) {
-            	product = JsonParser.getResponseObject(response.asString(), new TypeReference<ProductDetailsItem>() {
-                });
-            	
-            	selectedProduct.productNumber=product.getItemNo();
-        		selectedProduct.productName=product.getName();
-        		selectedProduct.productBrand=product.getBrand();
-        		selectedProduct.productNowPrice=product.getIsPriceRange();
-        		selectedProduct.productWasPrice=product.getWasPriceRange();        	
-        		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+product.getName()+propertyData.get("test_partial_url_pdp")+product.getItemNo();
-                flag=false;
-            }
-            else {
+        //do{
+		response = getApiCallResponse(null, propertyData.get("test_apiVersion2")+"/"+propertyData.get("test_language")+"/products/"+productNumber);
+		if(response!=null && response.statusCode()==200) {
+			product = JsonParser.getResponseObject(response.asString(), new TypeReference<ProductDetailsItem>() {
+			});
+		selectedProduct.productNumber=product.getItemNo();
+		selectedProduct.productName=product.getName();
+		selectedProduct.productBrand=product.getBrand();
+		selectedProduct.productNowPrice=product.getIsPriceRange();
+		selectedProduct.productWasPrice=product.getWasPriceRange();
+		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+product.getName()+propertyData.get("test_partial_url_pdp")+product.getItemNo();
+		//flag=false;
+        }
+          /*  else {
             	repeatNumber++;
                 if(repeatNumber==5) {
                 	return null;
                 }
             }
-        }while(flag);
+        }while(flag);*/
         
         return product;
     }
@@ -589,7 +588,7 @@ public class ApiResponse extends ApiConfigs {
      * @param - String - searchKeyword : search keyword for Product
      * @return - Product.Products - product for search keyword
      */
-    public Product.Products getProductInfoWithProductNumberAsSearchKeyword(String searchKeyword){
+    /*public Product.Products getProductInfoWithProductNumberAsSearchKeyword(String searchKeyword){
         Response response = null;
         Product product = null;
         boolean flag = true;
@@ -633,5 +632,5 @@ public class ApiResponse extends ApiConfigs {
         }
 
         return product.getProducts().get(0);
-    }
+    }*/
 }
