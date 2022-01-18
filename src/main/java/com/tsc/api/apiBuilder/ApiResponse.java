@@ -21,6 +21,7 @@ public class ApiResponse extends ApiConfigs {
     private int totalPage;
     private String dimensionNumber;
     public SelectedProduct selectedProduct= new SelectedProduct();
+    boolean bBrand=false;
 
     public ApiResponse() throws IOException {}
 
@@ -157,6 +158,7 @@ public class ApiResponse extends ApiConfigs {
         }
     
         if(firstTimeFunctionCall) {
+        	bBrand=false;
         	initialConfig.put("searchTerm", searchKeyword);        	
         	
             do {
@@ -166,19 +168,33 @@ public class ApiResponse extends ApiConfigs {
     	            exception.printStackTrace();
     	        }
 
-    	        product = JsonParser.getResponseObject(response.asString(), new TypeReference<Product>() {});	       
-    	        if(product.getRedirectUrl()!=null) {
-    	        	 dimensionNumber = getDimensionNumberFromURL(product.getRedirectUrl());
-     	             break;
+    	        product = JsonParser.getResponseObject(response.asString(), new TypeReference<Product>() {});
+    	        if(product.getProducts()==null) {
+    	        	if(product.getRedirectUrl()!=null) {
+       	        	 	 dimensionNumber = getDimensionNumberFromURL(product.getRedirectUrl());
+       	        	 	 bBrand=false;
+        	             break;
+	       	        }	       	        
+    	        }
+    	        else {
+    	        	bBrand=true;
+    	        	return product;
     	        }
     	        repeatNumber++;
-    	        if(repeatNumber==5) {
-    	        	return null;
-    	        }
+       	        if(repeatNumber==5) {
+       	        	return null;
+       	        }
+    	        
             }while(true);
         }
-
-        configs = super.getProductSearchByKeywordInputConfig(searchKeyword, dimensionNumber, outputPage, super.getApiPropertyData().get("test_apiVersion"));
+        
+        if(bBrand) {
+        	configs = super.getProductSearchByKeywordInputConfig(searchKeyword, null, outputPage, super.getApiPropertyData().get("test_apiVersion"));
+        }
+        else {
+        	configs = super.getProductSearchByKeywordInputConfig(searchKeyword, dimensionNumber, outputPage, super.getApiPropertyData().get("test_apiVersion"));
+        }
+        
         
         repeatNumber=0;
         do{
@@ -579,7 +595,13 @@ public class ApiResponse extends ApiConfigs {
             
         }while(flag);
 
-        return productItem;
+        if(bSoldout) {
+        	return productItem;
+        }
+        else {
+        	return null;
+        }
+        
     }
     
     /**
@@ -632,4 +654,65 @@ public class ApiResponse extends ApiConfigs {
 
         return product.getProducts().get(0);
     }
+    
+    /**
+     * This method finds product info with AdvanceOrder info
+     * @param - String - searchKeyword : search keyword for Product
+     * @return - ProductDetailsItem - product details item for search keyword
+     */
+    public ProductDetailsItem getProductInfoFromKeywordWithAdvanceOrderInfo(String searchKeyword){
+        boolean flag = true, bSelected=false; 
+        ProductDetailsItem productDetailsItem=new ProductDetailsItem();
+        String productNumber;
+        
+        Product product = getProductDetailsForKeyword(searchKeyword,true);
+        if(product==null) {
+        	return null;
+        }
+
+        do{
+        	for(Product.Products data:product.getProducts()) {
+            	selectedProduct.init();
+            	productNumber=data.getItemNo();
+            	productDetailsItem=getProductDetailsForSpecificProductNumber(productNumber);
+            	bSelected=false;
+            	for( ProductDetailsItem.Edp edp: productDetailsItem.Edps) {
+            		if(edp.IsAdvanceOrBackOrder) {
+            			bSelected=true;            			
+            			selectedProduct.productNumber=productDetailsItem.getItemNo();
+                		selectedProduct.productName=productDetailsItem.getName();
+                		selectedProduct.productBrand=productDetailsItem.getBrand();
+                		selectedProduct.productNowPrice=productDetailsItem.getIsPriceRange();
+                		selectedProduct.productWasPrice=productDetailsItem.getWasPriceRange();
+                		selectedProduct.productSizeForSoldout=edp.Size;
+                		selectedProduct.productColorForSoldout=edp.Style;
+                		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+productDetailsItem.getName()+propertyData.get("test_partial_url_pdp")+productDetailsItem.getItemNo();
+                		
+                		break;
+            		}
+            	}
+            	if(bSelected) {
+            		flag = false;
+                    break;
+            	}                	                
+            }
+            if(flag) {
+                outputPage++;
+                if(outputPage>totalPage||outputPage>=10) {
+                	flag = false;
+                }
+                product = getProductDetailsForKeyword(searchKeyword,false);
+            }
+        }while(flag);
+
+        if(bSelected) {
+        	return productDetailsItem;
+        }
+        else {
+        	return null;
+        }
+        
+    }
+    
+    
 }

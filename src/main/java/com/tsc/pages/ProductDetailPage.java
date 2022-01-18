@@ -2149,7 +2149,7 @@ public class ProductDetailPage extends BasePage {
 	/**
 	 * This method will go to PDP page with the matched product
 	 * @param List<String> lstKeyword: keyword list
-	 * @param String lsType: method type with "AllConditionsWithoutCheckingSoldOutCriteria"/"AllConditionsWithCheckingSoldOutCriteria"/"SoldOut"/"AddToBag"
+	 * @param String lsType: method type with "AllConditionsWithoutCheckingSoldOutCriteria"/"AllConditionsWithCheckingSoldOutCriteria"/"SoldOut"/"AddToBag"/"AdvanceOrder"
 	 * @return true/false
 	 * @author Wei.Li
 	 * @throws IOException 
@@ -2196,18 +2196,33 @@ public class ProductDetailPage extends BasePage {
 				}
 			}
 			break;
+		case "AdvanceOrder":
+			for(String lsKeyword:lstKeyword) {
+				productDetailsItem=apiResponse.getProductInfoFromKeywordWithAdvanceOrderInfo(lsKeyword);
+				if(productDetailsItem!=null) {
+					break;
+				}
+			}
+			break;
 		default:
 			break;		
-		}
-
-		if(product==null){
-			reporter.reportLogFail("Unable to find the matched product");
-			return false;
-		}
+		}		
 		
 		selectedProduct=apiResponse.selectedProduct;
-		productDetailsItem=apiResponse.getProductDetailsForSpecificProductNumber(selectedProduct.productNumber);
-					
+		if(!lsType.equalsIgnoreCase("AdvanceOrder")) {
+			if(product==null){
+				reporter.reportLogFail("Unable to find the matched product");
+				return false;
+			}
+			productDetailsItem=apiResponse.getProductDetailsForSpecificProductNumber(selectedProduct.productNumber);
+		}
+		else {
+			if(productDetailsItem==null){
+				reporter.reportLogFail("Unable to find the matched product");
+				return false;
+			}
+		}
+							
 		this.getDriver().get(apiResponse.selectedProduct.pdpNavigationUrl);
 		
 		return prp.waitForPDPPageLoading();

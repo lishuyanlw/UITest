@@ -837,7 +837,7 @@ public class ProductResultsPage extends BasePage{
 			if(!this.getProductOptionTypeWithoutMouseHover(item).equalsIgnoreCase("None")) {
 				element=item.findElement(byProductOptionListContainer);				
 				lsText=this.getElementInnerText(element);	
-				
+				this.getReusableActionsInstance().staticWait(1000);
 				if(!lsText.isEmpty()) {
 					reporter.reportLogPass("Product option is not empty");
 				}
@@ -1048,6 +1048,7 @@ public class ProductResultsPage extends BasePage{
 			}
 				
 			element=item.findElement(byProductGoToDetails);
+			this.getReusableActionsInstance().staticWait(1000);
 			if(this.getReusableActionsInstance().isElementVisible(element)) {
 				reporter.reportLogPass("Product GoTo Details is visible");
 			}
