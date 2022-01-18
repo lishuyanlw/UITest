@@ -59,7 +59,7 @@ def getTunnelName() {
 
 //This method is used when we use parentTunnelOwner system property in sauce test below
 //def parentTunnelOwner() {
-//    return "sso-sauce-rogers-Wei.Li"
+//    return "sso-sauce-rogers-"
 //}
 
 def tunnel_name() {
@@ -88,9 +88,9 @@ task "sauceTest"(type: Test) {
     systemProperty 'Device', test_device
     systemProperty 'Language', test_language
     systemProperty 'TunnelRequired', TunnelRequired
-    systemProperty 'TunnelName', tunnelName
     systemProperty 'chromeMobileDevice', chromeMobileDevice
-    systemProperty 'parentTunnelOwner', "DigitalQAWebAutomation"
+    systemProperty 'TunnelName', tunnelName
+    //systemProperty 'parentTunnelOwner', "DigitalQAWebAutomation"
     //Below system property is needed when we will create tunnel manually and use that to run test in sauce-lab
     //Test will be under DigitalQAWebAutomation owner in sauce-lab
     //systemProperty 'parentTunnelOwner', parentTunnelOwner()
@@ -119,7 +119,6 @@ task "localTest"(type: Test) {
     systemProperty 'Browser', test_browser
     systemProperty 'Device', test_device
     systemProperty 'Language', test_language
-    systemProperty 'Device', test_device
     systemProperty 'chromeMobileDevice', chromeMobileDevice
     systemProperties(System.getProperties())
     outputs.upToDateWhen { false }  // Always run tests

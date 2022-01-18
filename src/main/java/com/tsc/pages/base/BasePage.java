@@ -11,15 +11,12 @@ import java.nio.charset.StandardCharsets;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.openqa.selenium.Cookie;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.interactions.touch.TouchActions;
 import org.openqa.selenium.support.PageFactory;
@@ -237,7 +234,7 @@ import utils.ReusableActions;
 				}
 			}
 		};
-		WebDriverWait wait = new WebDriverWait(getDriver(), 40);
+		WebDriverWait wait = new WebDriverWait(getDriver(), 120);
 		wait.until(javascriptDone);
 	}
 	
@@ -327,7 +324,7 @@ import utils.ReusableActions;
 		 Actions action = new Actions(getDriver());
 		 action.sendKeys(Keys.ESCAPE).build().perform();
 	 }
-	 
+
 	/**
 	 * This method will implement ENTER key pressing action.
 	 * @param WebElement element: the action related element
@@ -550,6 +547,7 @@ import utils.ReusableActions;
 	 * @author Wei.Li
 	 */	
 	public boolean checkChildElementExistingByTagName(WebElement parent,String lsTagName) {
+		this.waitForPageToLoad();
 		List<WebElement> lstChild=this.getChildrenList(parent);
 		for(WebElement child:lstChild) {
 			if(child.getTagName().equalsIgnoreCase(lsTagName)) {
@@ -747,7 +745,7 @@ import utils.ReusableActions;
 		Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
 		return pattern.matcher(nfdNormalizedString).replaceAll("");
 	}
-	
+
 	/*Method to get UTF-8 format for the list of string
 	 *param list of string: input data list
 	 *@author Shruti.Desai
@@ -858,6 +856,71 @@ import utils.ReusableActions;
 		urlFavouriteslandingpage = getDriver().getCurrentUrl();
 		return urlFavouriteslandingpage;
 	}
+
+	/**Method to find if an element is displayed and is enabled
+	 * @param-WebElement element: input element
+	 * @return-Boolean flag
+	 */
+	public boolean isElementPresent(WebElement element) {
+		boolean flag = false;
+		try {
+			if (element.isDisplayed()
+					|| element.isEnabled())
+				flag = true;
+		} catch (NoSuchElementException e) {
+			flag = false;
+		} catch (StaleElementReferenceException e) {
+			flag = false;
+		}
+		return flag;
+	}
+
+	/**Method to mouse over an element using JS
+	 * @param-WebElement element: input element
+	 */
+	public void mouseHoverJScript(WebElement HoverElement) {
+		try {
+			if (isElementPresent(HoverElement)) {
+				String mouseOverScript = "if(document.createEvent){var evObj = document.createEvent('MouseEvents');evObj.initEvent('mouseover'," +
+						"true, false); arguments[0].dispatchEvent(evObj);} else if(document.createEventObject) { arguments[0].fireEvent('onmouseover');}";
+			((JavascriptExecutor) getDriver()).executeScript(mouseOverScript,
+					HoverElement);
+
+			} else {
+				System.out.println("Element was not visible to hover " + "\n");
+			}
+		} catch (StaleElementReferenceException e) {
+			System.out.println("Element with " + HoverElement
+					+ "is not attached to the page document"
+					+ e.getStackTrace());
+		} catch (NoSuchElementException e) {
+			System.out.println("Element " + HoverElement + " was not found in DOM"
+					+ e.getStackTrace());
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Error occurred while hovering"
+					+ e.getStackTrace());
+		}
+	}
+
+	/**Method to click an element using JS
+	 * @param-WebElement element: input element
+	 */
+	public void clickWebElementUsingJS(WebElement webElement){
+		//this.mouseHoverJScript(webElement);
+		JavascriptExecutor js = (JavascriptExecutor) this.getDriver();
+		js.executeScript("arguments[0].click();",webElement);
+	}
+
+	/**Method to click an element using JS
+	 * @param-WebElement element: input element
+	 */
+		public void clickWebElementUsingJSEvent(WebElement webElement){
+			String clickElementScript = "if(document.createEvent){var evObj = document.createEvent('MouseEvents');evObj.initEvent('click'," +
+					"true, true); arguments[0].dispatchEvent(evObj);} else if(document.createEventObject) { arguments[0].fireEvent('click');}";
+			((JavascriptExecutor) getDriver()).executeScript(clickElementScript,
+					webElement);
+		}
 
 	/**
 	 * Method to get the browser name where test is executing

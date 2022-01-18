@@ -151,13 +151,13 @@ public class LoginPage extends BasePage {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInMainMenu);
 		String strBrowser = System.getProperty("Browser").trim();
 		if (strBrowser.toLowerCase().contains("android") || strBrowser.toLowerCase().contains("ios")
-				|| strBrowser.toLowerCase().contains("mobile")) {		
+				|| strBrowser.toLowerCase().contains("mobile")) {
 			this.btnSignInMainMenu.click();
 		} else {
 			getReusableActionsInstance().scrollToElement(this.btnSignInMainMenu);
-		}			
+		}
 		getReusableActionsInstance().staticWait(1000);
-		
+
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInNav);
 		this.getReusableActionsInstance().clickIfAvailable(this.btnSignInNav);
 		//this.btnSignInNav.click();
@@ -167,18 +167,18 @@ public class LoginPage extends BasePage {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputPassword);
 		this.inputPassword.sendKeys(lsPassword);
 		getReusableActionsInstance().staticWait(1000);
-		
+
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSubmit);
 		this.getReusableActionsInstance().clickIfAvailable(this.btnSubmit);
 		//this.btnSubmit.click();
 		getReusableActionsInstance().javascriptScrollToTopOfPage();
 		getReusableActionsInstance().staticWait(5000);
-		
+
 		return waitForCondition(Driver->{return (new GlobalHeaderPage(this.getDriver())).Signinlnk.getText().toUpperCase().contains(lsFirstName.toUpperCase());},90000);
 	}
-	
+
 	/**
-	 * Method to login without waiting time, need add explicit wait after call this function 
+	 * Method to login without waiting time, need add explicit wait after call this function
 	 * @param-String lsUserName: user name
 	 * @param-String lsPassword: password
 	 * @return void
@@ -192,12 +192,12 @@ public class LoginPage extends BasePage {
 		this.inputPassword.clear();
 		this.inputPassword.sendKeys(lsPassword);
 		getReusableActionsInstance().staticWait(1000);
-		
+
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSubmit);
 		this.getReusableActionsInstance().clickIfAvailable(this.btnSubmit);
 		//this.btnSubmit.click();
 	}
-	
+
 	/**
 	 * Method to logout	 
 	 * @return true/false
@@ -243,14 +243,14 @@ public class LoginPage extends BasePage {
 	 * @author Wei.Li
 	 */
 	public void verifyMenuItemInPopover(List<String> lstMenuItemPopover) {
-		if (!System.getProperty("Device").equalsIgnoreCase("Desktop")) {
+		/*if (!System.getProperty("Device").equalsIgnoreCase("Desktop")) {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(this.SigninIcon);
 			JavascriptExecutor javascriptExecutor = (JavascriptExecutor) getDriver();
 			javascriptExecutor.executeScript("arguments[0].click;",this.SigninIcon);
 			//this.getReusableActionsInstance().clickIfAvailable(this.SigninIcon);
 			getReusableActionsInstance().staticWait(2000);
 			//getReusableActionsInstance().javascriptScrollByVisibleElement(this.cntSignInPopover);
-		}
+		}*/
 		this.hoverOnSignInHeadingMenu();
 		WebElement element;
 		for(String lsItem:lstMenuItemPopover) {
