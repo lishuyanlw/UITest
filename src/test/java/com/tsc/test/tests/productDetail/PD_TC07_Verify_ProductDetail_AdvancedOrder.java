@@ -31,7 +31,8 @@ public class PD_TC07_Verify_ProductDetail_AdvancedOrder extends BaseTest{
 		reporter.reportLog("Switch to ProductDetail page");
 		String lsProductNumber,lsUrl;
 
-		if(getProductResultsPageThreadLocal().goToFirstProductItem("522809")) {
+		if(getProductDetailPageThreadLocal().goToProductItemWithProductNumber("522809")){
+		//if(getProductResultsPageThreadLocal().goToFirstProductItem("522809")) {
 			reporter.reportLog("Switch to ProductDetail page");
 
 			//if(getProductResultsPageThreadLocal().goToFirstProductItem(lsKeyword)) {

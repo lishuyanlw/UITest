@@ -18,8 +18,9 @@ public class PD_TC09_Verify_ProductDetail_WriteReview extends BaseTest{
 	 */
 	@Test(groups={"ProductDetail","Regression","Regression_Mobile","Regression_Tablet"})
 	public void validateWriteReview() throws IOException {
-		//We don't need to close popup dialog if use api to navigate to PDP page directly.
-		//getGlobalFooterPageThreadLocal().closePopupDialog();
+		//We need to close popup dialog while using api as otherwise sin-up popup will come as soon we navigate
+		//to homepage while test execution
+		getGlobalFooterPageThreadLocal().closePopupDialog();
 
 		BasePage basePage=new BasePage(this.getDriver());
 

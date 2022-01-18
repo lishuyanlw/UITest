@@ -1790,7 +1790,7 @@ public class ProductDetailPage extends BasePage {
 		this.getDriver().navigate().back();
 		this.waitForPageToLoad();
 		prp.waitForPageLoading();
-		this.getReusableActionsInstance().staticWait(6000);
+		this.getReusableActionsInstance().staticWait(10000);
 
 		/*if((System.getProperty("Device").toLowerCase().contains("tablet") &&
 				System.getProperty("Browser").toLowerCase().contains("ios")) ||
@@ -2323,6 +2323,29 @@ public class ProductDetailPage extends BasePage {
 
 		selectedProduct=apiResponse.selectedProduct;
 		productDetailsItem=apiResponse.getProductDetailsForSpecificProductNumber(selectedProduct.productNumber);
+
+		this.getDriver().get(apiResponse.selectedProduct.pdpNavigationUrl);
+
+		return prp.waitForPDPPageLoading();
+	}
+
+	/**
+	 * This method will go to PDP page with the matched product
+	 * @param-int productNumber : Product Number
+	 * @return true/false
+	 * @author Wei.Li
+	 * @throws IOException
+	 */
+	public boolean goToProductItemWithProductNumber(String productNumber) throws IOException {
+		ProductResultsPage prp=new ProductResultsPage(this.getDriver());
+		ApiResponse apiResponse=new ApiResponse();
+
+		productDetailsItem=apiResponse.getProductDetailsForSpecificProductNumber(productNumber);
+
+		if(selectedProduct.productName==null){
+			reporter.reportLogFail("Unable to find the matched product");
+			return false;
+		}
 
 		this.getDriver().get(apiResponse.selectedProduct.pdpNavigationUrl);
 

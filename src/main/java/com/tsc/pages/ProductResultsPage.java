@@ -379,7 +379,7 @@ public class ProductResultsPage extends BasePage{
 		this.getReusableActionsInstance().clickIfAvailable(globalHeader.searchBox,3000);
 		for(String inputText:data){
 			globalHeader.searchBox.sendKeys(inputText);
-			this.getReusableActionsInstance().staticWait(300);
+			this.getReusableActionsInstance().staticWait(2000);
 		}
 		//globalHeader.searchBox.sendKeys(searchKeyword);
 		//globalHeader.btnSearchSubmit.click();

@@ -41,7 +41,8 @@ public class PD_TC03_Verify_ProductDetail_StickyTab extends BaseTest {
 			/*if(getProductResultsPageThreadLocal().goToFirstProductItem(lsKeyword)) {
 				reporter.reportLog("Verify URL");
 				lsProductNumber=getProductResultsPageThreadLocal().selectedProductItem.productNumber;*/
-			if (getProductResultsPageThreadLocal().goToFirstProductItem("402783")) {
+			if(getProductDetailPageThreadLocal().goToProductItemWithProductNumber("402783")){
+			//if (getProductResultsPageThreadLocal().goToFirstProductItem("402783")) {
 				reporter.reportLog("Verify URL");
 				//lsProductNumber=getProductResultsPageThreadLocal().selectedProductItem.productConvertedNumber;
 				lsUrl = basePage.URL();
