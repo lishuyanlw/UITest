@@ -290,9 +290,8 @@ public class ApiResponse extends ApiConfigs {
         	return null;
         }
     	
-        //int videoCount=1,styleCount=3,sizeCount=3;
-		int videoCount=0,styleCount=0,sizeCount=0;
-        String lsNowPrice,lsWasPrice;
+        int videoCount=1,styleCount=3,sizeCount=3;
+		String lsNowPrice,lsWasPrice;
         boolean bSoldout=false;
 
         if(configs!=null) {
