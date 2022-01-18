@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -46,6 +47,7 @@ public class BaseTest {
 	protected static final ThreadLocal<LoginPage> loginPageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<String> TestDeviceThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<ApiResponse> apiResponseThreadLocal = new ThreadLocal<>();
+	protected static final ThreadLocal<ShoppingCart> shoppingCartThreadLocal = new ThreadLocal<>();
 
 	public BaseTest() {
 		browserDrivers = new BrowserDrivers();
@@ -57,6 +59,9 @@ public class BaseTest {
 	public static Reporter getReporter() {
 		return reporter;
 	}
+
+	//@return shoppingCartThreadLocal
+	public static ShoppingCart getShoppingCartThreadLocal() {return shoppingCartThreadLocal.get();}
 
 	//@return apiResponseThreadLocal
 	public static ApiResponse getApiResponseThreadLocal() {return apiResponseThreadLocal.get();}
@@ -104,6 +109,7 @@ public class BaseTest {
 		loginPageThreadLocal.set(new LoginPage(getDriver()));
 		reporter = new ExtentTestManager(getDriver());
 		apiResponseThreadLocal.set(new ApiResponse());
+		shoppingCartThreadLocal.set(new ShoppingCart(getDriver()));
 	}
 
 	private void init_Mobile() throws IOException {
@@ -111,17 +117,30 @@ public class BaseTest {
 		loginPageThreadLocal.set(new LoginPage_Mobile(getDriver()));
 		globalFooterPageThreadLocal.set(new GlobalFooterPage_Mobile(getDriver()));
 		productResultsPageThreadLocal.set(new ProductResultsPage_Mobile(getDriver()));
+		productDetailPageThreadLocal.set(new ProductDetailPage_Mobile(getDriver()));
 		reporter = new ExtentTestManager(getDriver());
 		apiResponseThreadLocal.set(new ApiResponse());
+		shoppingCartThreadLocal.set(new ShoppingCart(getDriver()));
 	}
 
 	private void init_Tablet() throws IOException {
-		globalheaderPageThreadLocal.set(new GlobalHeaderPage_Mobile(getDriver()));
-		loginPageThreadLocal.set(new LoginPage_Mobile(getDriver()));
-		globalFooterPageThreadLocal.set(new GlobalFooterPage_Tablet(getDriver()));
 		productResultsPageThreadLocal.set(new ProductResultsPage_Tablet(getDriver()));
+		globalheaderPageThreadLocal.set(new GlobalHeaderPage_Mobile(getDriver()));
+
+		if(System.getProperty("Browser").contains("android") ||
+				(System.getProperty("chromeMobileDevice")!=null
+						&& !System.getProperty("chromeMobileDevice").contains("iPad"))) {
+			productDetailPageThreadLocal.set(new ProductDetailPage_Mobile(getDriver()));
+			globalFooterPageThreadLocal.set(new GlobalFooterPage_Mobile(getDriver()));
+		}else {
+			productDetailPageThreadLocal.set(new ProductDetailPage_Tablet(getDriver()));
+			globalFooterPageThreadLocal.set(new GlobalFooterPage_Tablet(getDriver()));
+		}
+
+		loginPageThreadLocal.set(new LoginPage_Mobile(getDriver()));
 		reporter = new ExtentTestManager(getDriver());
 		apiResponseThreadLocal.set(new ApiResponse());
+		shoppingCartThreadLocal.set(new ShoppingCart(getDriver()));
 	}
 
 
@@ -173,10 +192,11 @@ public class BaseTest {
 			&& !strBrowser.toLowerCase().contains("mobile")) {
 		getDriver().manage().window().maximize();
 	}*/
-			setImplictWait(getDriver(), 60);
-			//Refreshing browser so that Access Denied issue is resolved from Sauce Lab
-			getglobalheaderPageThreadLocal().getReusableActionsInstance().staticWait(3000);
-			getDriver().navigate().refresh();
+		setImplictWait(getDriver(), 60);
+		//Refreshing browser so that Access Denied issue is resolved from Sauce Lab
+		getglobalheaderPageThreadLocal().getReusableActionsInstance().staticWait(3000);
+		//if(!System.getProperty("Browser").toLowerCase().contains("safari"))
+		//getDriver().navigate().refresh();
 	}
 
 	

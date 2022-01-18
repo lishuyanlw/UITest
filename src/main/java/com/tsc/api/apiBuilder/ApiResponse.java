@@ -225,32 +225,31 @@ public class ApiResponse extends ApiConfigs {
      */
     public ProductDetailsItem getProductDetailsForSpecificProductNumber(String productNumber){
         Response response = null;
-        boolean flag = true;
-        int repeatNumber=0;
+        //boolean flag = true;
+        //int repeatNumber=0;
         ProductDetailsItem product=new ProductDetailsItem();
   
         selectedProduct.init();
-        do{
-        	response = getApiCallResponse(null, propertyData.get("test_apiVersion2")+"/"+propertyData.get("test_language")+"/products/"+productNumber);
-            if(response!=null && response.statusCode()==200) {
-            	product = JsonParser.getResponseObject(response.asString(), new TypeReference<ProductDetailsItem>() {
-                });
-            	
-            	selectedProduct.productNumber=product.getItemNo();
-        		selectedProduct.productName=product.getName();
-        		selectedProduct.productBrand=product.getBrand();
-        		selectedProduct.productNowPrice=product.getIsPriceRange();
-        		selectedProduct.productWasPrice=product.getWasPriceRange();        	
-        		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+product.getName()+propertyData.get("test_partial_url_pdp")+product.getItemNo();
-                flag=false;
-            }
-            else {
+        //do{
+		response = getApiCallResponse(null, propertyData.get("test_apiVersion2")+"/"+propertyData.get("test_language")+"/products/"+productNumber);
+		if(response!=null && response.statusCode()==200) {
+			product = JsonParser.getResponseObject(response.asString(), new TypeReference<ProductDetailsItem>() {
+			});
+		selectedProduct.productNumber=product.getItemNo();
+		selectedProduct.productName=product.getName();
+		selectedProduct.productBrand=product.getBrand();
+		selectedProduct.productNowPrice=product.getIsPriceRange();
+		selectedProduct.productWasPrice=product.getWasPriceRange();
+		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+product.getName()+propertyData.get("test_partial_url_pdp")+product.getItemNo();
+		//flag=false;
+        }
+          /*  else {
             	repeatNumber++;
                 if(repeatNumber==5) {
                 	return null;
                 }
             }
-        }while(flag);
+        }while(flag);*/
         
         return product;
     }
@@ -308,7 +307,7 @@ public class ApiResponse extends ApiConfigs {
         }
     	
         int videoCount=1,styleCount=3,sizeCount=3;
-        String lsNowPrice,lsWasPrice;
+		String lsNowPrice,lsWasPrice;
         boolean bSoldout=false;
 
         if(configs!=null) {
@@ -329,7 +328,8 @@ public class ApiResponse extends ApiConfigs {
         for(Product.Products data:product.getProducts()) {
         	lsNowPrice=data.getIsPriceRange();
         	lsWasPrice=data.getWasPriceRange();
-            if(data.getVideosCount()>=videoCount && data.getStyles().size()>=styleCount && data.getSizes().size()>=sizeCount &&data.isShowBadgeImage()&&data.getProductReviewRating()>0&&!data.getEasyPaymentPrice().isEmpty()&&!lsNowPrice.equalsIgnoreCase(lsWasPrice)&&data.isEnabledAddToCart()) {
+            //if(data.getVideosCount()>=videoCount && data.getStyles().size()>=styleCount && data.getSizes().size()>=sizeCount &&data.isShowBadgeImage()&&data.getProductReviewRating()>0&&!data.getEasyPaymentPrice().isEmpty()&&!lsNowPrice.equalsIgnoreCase(lsWasPrice)&&data.isEnabledAddToCart()) {
+			if((videoCount==0 ? data.getVideosCount()==videoCount : data.getVideosCount()>=videoCount) && data.getStyles().size()>=styleCount && data.getSizes().size()>=sizeCount &&data.isShowBadgeImage()&&data.getProductReviewRating()>0&&!data.getEasyPaymentPrice().isEmpty()&&!lsNowPrice.equalsIgnoreCase(lsWasPrice)&&data.isEnabledAddToCart()) {
             	if(data.getBrand()!=null) {
             		if(data.getBrand().isEmpty()) {
             			continue;
@@ -713,6 +713,7 @@ public class ApiResponse extends ApiConfigs {
         }
         
     }
+
     
-    
+
 }

@@ -51,11 +51,11 @@ public class GlobalHeaderPage extends BasePage{
 	
 	@FindBy(xpath = "//h1")
 	public WebElement headingWatchTSCDpdMenuLinkLandingPage;
-	
+
 	@FindBy(xpath = "//h2")
 	public WebElement headingTSLinkLandingPage;
 
-	
+
 	//Sliver Links [Dynamic event, TS, Deals, OnAir, Program Guide, Watch Us Live]
 	@FindBy(xpath = "//*[@class='BlackHeader']//a[contains(@href, 'todaysshowstopper')]")
 	public WebElement lnkTS;
@@ -115,7 +115,7 @@ public class GlobalHeaderPage extends BasePage{
 
 	@FindBy(xpath="//div[contains(@class,'searchContainer')]//div[contains(@class,'inner--left')]")
 	public WebElement lblSearchBoxPopUpWindow;
-		
+
 	@FindBy(xpath = "//section[contains(@class,'ac__layout-wrap')]//div[contains(@class,'ac__layout--left')]//*[contains(normalize-space(.),'Top')][contains(@class,'ac__section__title search-title')]/following-sibling::ul")
 	public WebElement cntTrendingListWithoutKeyword;
 		
@@ -322,7 +322,7 @@ public class GlobalHeaderPage extends BasePage{
 		getReusableActionsInstance().waitForPageLoad();
 		waitForCondition(Driver->{return this.searchBox.isEnabled() && this.searchBox.isDisplayed();},60000);
 	}
-	
+
 	//Search box visible
 	public String validateSearchbox() {
 		getReusableActionsInstance().isElementVisible(searchBox, 5);
@@ -494,7 +494,7 @@ public class GlobalHeaderPage extends BasePage{
 	 * @param-List<WebElement> elementList: element list
 	 * @return void
 	 * @author Wei.Li
-	 */	
+	 */
 	 public void verifyTopSellingProductsExistingByChangingItemInTrendingOrFeaturedBrandsList(List<WebElement> elementList) {
 		 String lsItem;
 		 for(WebElement element:elementList) {
@@ -503,14 +503,14 @@ public class GlobalHeaderPage extends BasePage{
 			 getReusableActionsInstance().staticWait(300);
 			 lsItem=element.getText();
 			 if(System.getProperty("Device").equalsIgnoreCase("Desktop")) {
-					
+
 				 reporter.softAssert(getReusableActionsInstance().isElementVisible(this.lblPossibleItemMatches),"The title of Top selling products is displaying correctly by selecting item of '"+lsItem+"'", "The title of Top selling products is not displaying correctly by selcting item of '"+lsItem+"'");
 			 }
-			 reporter.softAssert(getReusableActionsInstance().isElementVisible(this.cntPossibleItemMatchesList),"The Top selling products list is displaying correctly by selecting item of '"+lsItem+"'","The Top selling products list is not displaying correctly by selcting item of '"+lsItem+"'");			 
-		}	
+			 reporter.softAssert(getReusableActionsInstance().isElementVisible(this.cntPossibleItemMatchesList),"The Top selling products list is displaying correctly by selecting item of '"+lsItem+"'","The Top selling products list is not displaying correctly by selcting item of '"+lsItem+"'");
+		}
 	 }
-	 
-	
+
+
 	/**
 	 /*Method to click on WebElement for Submenu Item by providing Flyout heading name , category and item as parameters.
 	 * @author Shruti Desai
@@ -650,7 +650,7 @@ public class GlobalHeaderPage extends BasePage{
 		currentUrl = getDriver().getCurrentUrl();
 		return currentUrl;
 	}
-	
+
 	/*Method to apply static wait
 	 * @author Shruti Desai
 	 */
@@ -696,9 +696,9 @@ public class GlobalHeaderPage extends BasePage{
 		AtomicReference<String> first_flyout_menu_text =new  AtomicReference<String>();
 		first_flyout_menu_text.set(headingName.split(" ")[0]);
 		WebElement linkPopularBrand = listPopularBrandsLink.get(0);
-		
+
 		//waitForCondition(Driver->{return (linkPopularBrand.isDisplayed());} ,30000);
-		
+
 		waitForCondition(Driver->{return (linkPopularBrand.getAttribute("href").contains(first_flyout_menu_text.get()) && linkPopularBrand.getAttribute("class").contains(section.split(" ")[0].trim().toLowerCase()));} ,30000);
 		WebElement ShopAllWebElement = getWebElementShopAllPupularBrand();
 		if(verifyElementProperty(ShopAllWebElement,"Link")) {
@@ -842,7 +842,7 @@ public class GlobalHeaderPage extends BasePage{
 		return getPageTitle(SigninPageHeading);
 	}
 
-	
+
 
 }
 

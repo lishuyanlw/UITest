@@ -45,7 +45,7 @@ public class GlobalFooterPage_Tablet extends GlobalFooterPage{
 		this.navigateToURL(lsBaseUrl);
 		this.waitForPageLoading();
 	}
-
+	/*
 	@Override
 	public void verifyTSCCustomerHubLlinks(List<List<String>> lstNameAndLinks) {
 		String lsText,lsYmlHref,lsHref;
@@ -60,7 +60,6 @@ public class GlobalFooterPage_Tablet extends GlobalFooterPage{
 			}
 			lsHref=super.getElementHref(item);
 			reporter.softAssert(this.verifyLinks(lsHref,lsYmlHref),"The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref,"The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref);
-
 		}
 	}
 
@@ -154,7 +153,7 @@ public class GlobalFooterPage_Tablet extends GlobalFooterPage{
 
 		return lstFr;
 	}
-
+	*/
 	@Override
 	public WebElement getServiceWebElement(String lsService,String footerSection) {
 		if(footerSection.toLowerCase().contains("customer") || footerSection.toUpperCase().contains("ESPACE")){
