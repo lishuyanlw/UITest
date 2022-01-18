@@ -57,13 +57,13 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 	
 	public By byProductOptionSizeWrapper=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//div[@class='product-card__size-wrapper']");
 	
-	public By byProductOptionSizeItemList=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//div[contains(@class,'product-card__size-items')]//button|.//fieldset//select[@class='product-card__size__dropdown']//option");
+	public By byProductOptionSizeItemList=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//div[contains(@class,'product-card__size-items')]//button|//div[@class='product-card__mobile-modal']//fieldset//select[@class='product-card__size__dropdown']//option");
 	
-	public By byProductOptionSizeItemEnabledList=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//div[contains(@class,'product-card__size-items')]//button[not(@disabled)]|.//fieldset//select[@class='product-card__size__dropdown']//option[not(@disabled)]");
+	public By byProductOptionSizeItemEnabledList=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//div[contains(@class,'product-card__size-items')]//button[not(@disabled)]|//div[@class='product-card__mobile-modal']//fieldset//select[@class='product-card__size__dropdown']//option[not(@disabled)]");
 	
-	public By byProductOptionSizeItemDisabledList=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//div[contains(@class,'product-card__size-items')]//button[@disabled]|.//fieldset//select[@class='product-card__size__dropdown']//option[@disabled]");
+	public By byProductOptionSizeItemDisabledList=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//div[contains(@class,'product-card__size-items')]//button[@disabled]|//div[@class='product-card__mobile-modal']//fieldset//select[@class='product-card__size__dropdown']//option[@disabled]");
 	
-	public By byProductOptionSizeSelectedItem=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//div[contains(@class,'product-card__size-items')]//button[@aria-pressed='true']|.//fieldset//select[@class='product-card__size__dropdown']//option[@selected]");
+	public By byProductOptionSizeSelectedItem=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//div[contains(@class,'product-card__size-items')]//button[@aria-pressed='true']|//div[@class='product-card__mobile-modal']//fieldset//select[@class='product-card__size__dropdown']//option[@selected]");
 	
 	public By byProductOptionSizeViewAllSizes=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//a[@class='product-card__size-view-all']");
 	
@@ -74,13 +74,13 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 	
 	public By byProductOptionColorWrapper=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//div[@class='product-card__color-and-taste-wrapper']");
 	
-	public By byProductOptionColorItemList=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//div[contains(@class,'product-card__color-and-taste-items')]//button|.//fieldset//select[@class='product-card__color-and-taste__dropdown']//option");
+	public By byProductOptionColorItemList=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//div[contains(@class,'product-card__color-and-taste-items')]//button|//div[@class='product-card__mobile-modal']//fieldset//select[@class='product-card__color-and-taste__dropdown']//option");
 	
-	public By byProductOptionColorItemEnabledList=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//div[contains(@class,'product-card__color-and-taste-items')]//button[not(@disabled)]|.//fieldset//select[@class='product-card__color-and-taste__dropdown']//option[not(@disabled)]");
+	public By byProductOptionColorItemEnabledList=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//div[contains(@class,'product-card__color-and-taste-items')]//button[not(@disabled)]|//div[@class='product-card__mobile-modal']//fieldset//select[@class='product-card__color-and-taste__dropdown']//option[not(@disabled)]");
 	
-	public By byProductOptionColorItemDisabledList=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//div[contains(@class,'product-card__color-and-taste-items')]//button[@disabled]|.//fieldset//select[@class='product-card__color-and-taste__dropdown']//option[@disabled]");
+	public By byProductOptionColorItemDisabledList=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//div[contains(@class,'product-card__color-and-taste-items')]//button[@disabled]|//div[@class='product-card__mobile-modal']//fieldset//select[@class='product-card__color-and-taste__dropdown']//option[@disabled]");
 	
-	public By byProductOptionColorSelectedItem=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//div[contains(@class,'product-card__color-and-taste-items')]//button[@aria-pressed='true']|.//fieldset//select[@class='product-card__color-and-taste__dropdown']//option[not(@selected)]");
+	public By byProductOptionColorSelectedItem=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//div[contains(@class,'product-card__color-and-taste-items')]//button[@aria-pressed='true']|//div[@class='product-card__mobile-modal']//fieldset//select[@class='product-card__color-and-taste__dropdown']//option[not(@selected)]");
 	
 	public By byProductGoToDetails=By.xpath("//div[@class='product-card__mobile-modal']//button[@class='product-card__add-button product-card__add-button--modal']");
 	
@@ -126,7 +126,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 			}	
 			
 			//If found lsFirstLevelItem
-			if(lsHeader.equalsIgnoreCase(lsFirstLevelItem)) {				
+			if(lsHeader.equalsIgnoreCase(lsFirstLevelItem)) {					
 				//If find a search input
 				collapseFilterItemWithClickingProductTitle(this.productFilterContainerList.get(i));
 				if(checkSearchInputButtonExistingInSubFilter(this.productFilterContainerList.get(i))) {					
@@ -137,14 +137,14 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 					subItemList=this.productFilterContainerList.get(i).findElements(this.bySecondaryFilterAll);
 					//getReusableActionsInstance().javascriptScrollByVisibleElement(subItemList.get(0));
 					getReusableActionsInstance().clickIfAvailable(subItemList.get(0));
+					getReusableActionsInstance().staticWait(3000);
 					waitForSortingOrFilteringCompleted();
-					getReusableActionsInstance().staticWait(1000);
+					getReusableActionsInstance().staticWait(3000);
 					closeFilterPopupWindow();
 					return true;
 				}
 				
-				expandFilterItem(this.productFilterContainerList.get(i));
-				collapseFilterItemWithClickingProductTitle(this.productFilterContainerList.get(i));
+				expandFilterItem(this.productFilterContainerList.get(i));				
 				if(i>0) {
 					this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i-1));
 				}	
@@ -156,10 +156,10 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				for(int j=0;j<subItemList.size();j++) {	
 					subItem=subItemList.get(j);
 					lsSubItem=this.getElementInnerText(subItem.findElement(By.xpath(".//span[@class='plp-filter-panel__filter-list__item-label-text']")));
-				
 					getReusableActionsInstance().staticWait(500);
 					//If found lsSecondLevelItem
 					if(lsSubItem.equalsIgnoreCase(lsSecondLevelItem)) {
+						System.out.println("Selected lsSubItem: "+lsSubItem);
 						getReusableActionsInstance().staticWait(500);
 						if(j>4) {
 							this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItemList.get(j-2));
@@ -168,8 +168,9 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 						else {
 							getReusableActionsInstance().clickIfAvailable(subItem);
 						}	
+						getReusableActionsInstance().staticWait(3000);
 						this.waitForSortingOrFilteringCompleted();
-						getReusableActionsInstance().staticWait(1000);
+						getReusableActionsInstance().staticWait(3000);
 
 						closeFilterPopupWindow();			
 						return true;
@@ -692,6 +693,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				lsButtonTextBeforeClickingSize=this.getElementInnerText(this.getDriver().findElement(byProductGoToDetails));
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 				this.getReusableActionsInstance().clickIfAvailable(element);
+				this.getReusableActionsInstance().staticWait(2000);
 				this.waitForCondition(Driver->{return !lsButtonTextBeforeClickingSize.equalsIgnoreCase(this.getElementInnerText(this.getDriver().findElement(byProductGoToDetails)));}, 20000);
 				this.getReusableActionsInstance().staticWait(3000);	
 				element=this.getDriver().findElement(byProductOptionSizeSelectedSize);
@@ -734,6 +736,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				lsButtonTextBeforeClickingColor=this.getElementInnerText(this.getDriver().findElement(byProductGoToDetails));
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 				this.getReusableActionsInstance().clickIfAvailable(element);
+				this.getReusableActionsInstance().staticWait(2000);
 				this.waitForCondition(Driver->{return !lsButtonTextBeforeClickingColor.equalsIgnoreCase(this.getElementInnerText(this.getDriver().findElement(byProductGoToDetails)));}, 20000);
 				this.getReusableActionsInstance().staticWait(3000);	
 				element=this.getDriver().findElement(byProductOptionColorSelectedColor);

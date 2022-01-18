@@ -209,7 +209,7 @@ public class ProductResultsPage extends BasePage{
 	@FindBy(xpath = "//div[@class='TitleAndTextSeo']//*[contains(@class,'seoTextContent')]")
 	public WebElement lblProductText;
 
-	@FindBy(xpath = "//div[@class='TitleAndTextSeo']//button")
+	@FindBy(xpath = "//div[@id='readMoreButton']//button")
 	public WebElement btnProductTitleAndTextMoreOrLess;
 
 	//Product results filter
@@ -762,6 +762,7 @@ public class ProductResultsPage extends BasePage{
 			lstText[0]=this.getElementInnerText(this.btnProductTitleAndTextMoreOrLess);
 			getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnProductTitleAndTextMoreOrLess);
 			getReusableActionsInstance().clickIfAvailable(this.btnProductTitleAndTextMoreOrLess);
+			getReusableActionsInstance().staticWait(2000);
 			this.waitForCondition(Driver->{return !this.getElementInnerText(this.btnProductTitleAndTextMoreOrLess).equalsIgnoreCase(lstText[0]);}, 20000);
 
 			if(!this.getElementInnerText(this.btnProductTitleAndTextMoreOrLess).contains("Read Less")) {
@@ -771,6 +772,7 @@ public class ProductResultsPage extends BasePage{
 				lstText[0]=this.getElementInnerText(this.btnProductTitleAndTextMoreOrLess);
 				getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnProductTitleAndTextMoreOrLess);
 				getReusableActionsInstance().clickIfAvailable(this.btnProductTitleAndTextMoreOrLess);
+				getReusableActionsInstance().staticWait(2000);
 				this.waitForCondition(Driver->{return !this.getElementInnerText(this.btnProductTitleAndTextMoreOrLess).equalsIgnoreCase(lstText[0]);}, 20000);
 
 				if(!this.getElementInnerText(this.btnProductTitleAndTextMoreOrLess).contains("Read More")) {
