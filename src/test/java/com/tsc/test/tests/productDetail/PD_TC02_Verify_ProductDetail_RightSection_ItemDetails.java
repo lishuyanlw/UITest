@@ -18,7 +18,8 @@ public class PD_TC02_Verify_ProductDetail_RightSection_ItemDetails extends BaseT
 	 */
 	@Test(groups={"ProductDetail","Regression","Regression_Mobile","Regression_Tablet"})
 	public void validateRightSection_ItemDetails() throws IOException {
-		getGlobalFooterPageThreadLocal().closePopupDialog();
+		//We don't need to close popup dialog if use api to navigate to PDP page directly.
+		//getGlobalFooterPageThreadLocal().closePopupDialog();
 
 		BasePage basePage=new BasePage(this.getDriver());
 
@@ -29,15 +30,14 @@ public class PD_TC02_Verify_ProductDetail_RightSection_ItemDetails extends BaseT
 		//getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0));
 		reporter.reportLog("Switch to ProductDetail page");
 		String lsProductNumber,lsUrl;
-		if(getProductResultsPageThreadLocal().goToFirstProductItem("522809")) {
-			//getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0));
-			reporter.reportLog("Switch to ProductDetail page");
-			//if(getProductResultsPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList)) {
+		//if(getProductResultsPageThreadLocal().goToFirstProductItem("522809")) {
+		//if(getProductResultsPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList)) {
+		if(getProductDetailPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList,"AllConditionsWithoutCheckingSoldOutCriteria",null)) {
 			reporter.reportLog("Verify URL");
-			//lsProductNumber=getProductResultsPageThreadLocal().selectedProductItem.productNumber;
+			lsProductNumber=getProductResultsPageThreadLocal().selectedProductItem.productNumber;
 			lsUrl=basePage.URL();
 			reporter.softAssert(lsUrl.contains("productdetails"),"The Url is containing productdetails","The Url is not containing productdetails");
-			//reporter.softAssert(lsUrl.contains(lsProductNumber),"The Url is containing selected product number of "+lsProductNumber,"The Url is not containing selected product number of "+lsProductNumber);
+			reporter.softAssert(lsUrl.contains(lsProductNumber),"The Url is containing selected product number of "+lsProductNumber,"The Url is not containing selected product number of "+lsProductNumber);
 
 			reporter.reportLog("Verify product name,brand name and product number");
 			getProductDetailPageThreadLocal().verifyProductBasicInfo();
@@ -58,7 +58,6 @@ public class PD_TC02_Verify_ProductDetail_RightSection_ItemDetails extends BaseT
 		else {
 			reporter.reportLogFail("Unable to find the product item with Review, EasyPay, Swatch item>=4 and Video");
 		}
-
 	}
 
 }

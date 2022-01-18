@@ -18,7 +18,8 @@ public class PD_TC09_Verify_ProductDetail_WriteReview extends BaseTest{
 	 */
 	@Test(groups={"ProductDetail","Regression","Regression_Mobile","Regression_Tablet"})
 	public void validateWriteReview() throws IOException {
-		getGlobalFooterPageThreadLocal().closePopupDialog();
+		//We don't need to close popup dialog if use api to navigate to PDP page directly.
+		//getGlobalFooterPageThreadLocal().closePopupDialog();
 
 		BasePage basePage=new BasePage(this.getDriver());
 
@@ -30,14 +31,13 @@ public class PD_TC09_Verify_ProductDetail_WriteReview extends BaseTest{
 
 		reporter.reportLog("Switch to ProductDetail page");
 		String lsProductNumber,lsUrl;
-		if(getProductResultsPageThreadLocal().goToFirstProductItem("402783")) {
-			reporter.reportLog("Switch to ProductDetail page");
-			//if(getProductResultsPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList)) {
+		//if(getProductResultsPageThreadLocal().goToFirstProductItem("402783")) {
+		if(getProductDetailPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList,"AllConditionsWithoutCheckingSoldOutCriteria",null)) {
 			reporter.reportLog("Verify URL");
-			//lsProductNumber=getProductResultsPageThreadLocal().selectedProductItem.productNumber;
+			lsProductNumber=getProductResultsPageThreadLocal().selectedProductItem.productNumber;
 			lsUrl=basePage.URL();
 			reporter.softAssert(lsUrl.contains("productdetails"),"The Url is containing productdetails","The Url is not containing productdetails");
-			//reporter.softAssert(lsUrl.contains(lsProductNumber),"The Url is containing selected product number of "+lsProductNumber,"The Url is not containing selected product number of "+lsProductNumber);
+			reporter.softAssert(lsUrl.contains(lsProductNumber),"The Url is containing selected product number of "+lsProductNumber,"The Url is not containing selected product number of "+lsProductNumber);
 
 			if(getProductDetailPageThreadLocal().goToProductReviewTab()) {
 				reporter.reportLog("Open Write a review window");

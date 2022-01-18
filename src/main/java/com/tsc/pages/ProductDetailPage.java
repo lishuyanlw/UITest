@@ -1116,6 +1116,7 @@ public class ProductDetailPage extends BasePage {
 	 * @author Wei.Li
 	 */
 	public boolean goToProductReviewTab() {
+		this.waitForPageToLoad();
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productReviewSection);
 		//this.getReusableActionsInstance().clickIfAvailable(this.productReviewSection);
 		//this.getReusableActionsInstance().scrollToElementAndClick(this.productReviewSection);
@@ -1548,7 +1549,7 @@ public class ProductDetailPage extends BasePage {
 	 * @return void
 	 * @author Wei.Li
 	 */
-	public void verifyProductDetailsInAddToBagPopupWindow(String lbl_AddToBagPopupWindowTitle, ProductItem productItem){
+	public void verifyProductDetailsInAddToBagPopupWindow(String lbl_AddToBagPopupWindowTitle, SelectedProduct productItem){
 		openAddToBagPopupWindow();
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAddToBagPopupWindowTitle);
@@ -1637,8 +1638,8 @@ public class ProductDetailPage extends BasePage {
 	 * @return void
 	 * @author Wei.Li
 	 */
-	public void verifyShoppingCartNumber() {
-		reporter.softAssert(getShoppingCartNumber()==1,"The Shopping cart number is equal to 1","The Shopping cart number is not equal to 1");
+	public void verifyShoppingCartNumber(int cartCount) {
+		reporter.softAssert(getShoppingCartNumber()>=cartCount,"The Shopping cart number is equal to 1","The Shopping cart number is not equal to 1");
 	}
 
 	/**
@@ -1655,7 +1656,8 @@ public class ProductDetailPage extends BasePage {
 
 		(new ProductResultsPage(this.getDriver())).waitForPageLoading();
 
-		reporter.softAssert(this.URL().toLowerCase().contains("productresults"),"The current Url of "+this.URL()+" is back to product search page","The current Url of "+this.URL()+" is not back to product search page");
+		//reporter.softAssert(this.URL().toLowerCase().contains("productresults"),"The current Url of "+this.URL()+" is back to product search page","The current Url of "+this.URL()+" is not back to product search page");
+		reporter.softAssert(this.URL().toLowerCase().contains("breadcrumb"),"The current Url of "+this.URL()+" is back to product search page","The current Url of "+this.URL()+" is not back to product search page");
 	}
 
 	public void verifyVideo(String lsVideoDisclaimInfo) {
@@ -1783,6 +1785,7 @@ public class ProductDetailPage extends BasePage {
 
 		ProductResultsPage prp=new ProductResultsPage(this.getDriver());
 		String lsUrl=this.waitForPageLoadingByUrlChange(this.lnkTwitter);
+		this.getReusableActionsInstance().staticWait(10000);
 		reporter.softAssert(lsUrl.contains("twitter"),"The page has been switched to twitter related page","The page has not been switched to twitter related page");
 		this.getDriver().navigate().back();
 		this.waitForPageToLoad();
@@ -2262,14 +2265,19 @@ public class ProductDetailPage extends BasePage {
 	 * @author Wei.Li
 	 * @throws IOException
 	 */
-	public boolean goToProductItemWithPreConditions(List<String> lstKeyword,String lsType) throws IOException {
+	public boolean goToProductItemWithPreConditions(List<String> lstKeyword,String lsType,Map<String,Object> dataCriteria) throws IOException {
 		ProductResultsPage prp=new ProductResultsPage(this.getDriver());
 		ApiResponse apiResponse=new ApiResponse();
 
 		Map<String,Object> outputDataCriteria= new HashMap<String,Object>();
-		outputDataCriteria.put("video", "1");
-		outputDataCriteria.put("style", "3");
-		outputDataCriteria.put("size", "3");
+		if(dataCriteria==null){
+			outputDataCriteria.put("video", "1");
+			outputDataCriteria.put("style", "3");
+			outputDataCriteria.put("size", "3");
+		}else{
+			outputDataCriteria = dataCriteria;
+		}
+
 
 		switch(lsType) {
 			case "AllConditionsWithoutCheckingSoldOutCriteria":

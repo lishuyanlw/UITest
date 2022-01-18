@@ -32,14 +32,14 @@ public class PD_TC10_Verify_ProductDetail_GetTheLookSectionAndRecommendationSect
 		reporter.reportLog("Switch to ProductDetail page");
 		String lsProductNumber,lsUrl;
 
-		if(getProductResultsPageThreadLocal().goToFirstProductItem("402783")) {
-			reporter.reportLog("Switch to ProductDetail page");
-			//if(getProductResultsPageThreadLocal().goToFirstProductItem(lsKeyword)) {
+		//if(getProductResultsPageThreadLocal().goToFirstProductItem("402783")) {
+
+		if(getProductResultsPageThreadLocal().goToFirstProductItem(lsKeyword)) {
 			reporter.reportLog("Verify URL");
-			//lsProductNumber=getProductResultsPageThreadLocal().selectedProductItem.productNumber;
+			lsProductNumber=getProductResultsPageThreadLocal().selectedProductItem.productNumber;
 			lsUrl=basePage.URL();
 			reporter.softAssert(lsUrl.contains("productdetails"),"The Url is containing productdetails","The Url is not containing productdetails");
-			//reporter.softAssert(lsUrl.contains(lsProductNumber),"The Url is containing selected product number of "+lsProductNumber,"The Url is not containing selected product number of "+lsProductNumber);
+			reporter.softAssert(lsUrl.contains(lsProductNumber),"The Url is containing selected product number of "+lsProductNumber,"The Url is not containing selected product number of "+lsProductNumber);
 
 			reporter.reportLog("Verify Get the look contents");
 			getProductDetailPageThreadLocal().verifyGetTheLookSection();

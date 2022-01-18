@@ -291,7 +291,8 @@ public class ApiResponse extends ApiConfigs {
         	return null;
         }
     	
-        int videoCount=1,styleCount=3,sizeCount=3;
+        //int videoCount=1,styleCount=3,sizeCount=3;
+		int videoCount=0,styleCount=0,sizeCount=0;
         String lsNowPrice,lsWasPrice;
         boolean bSoldout=false;
 
@@ -313,7 +314,8 @@ public class ApiResponse extends ApiConfigs {
         for(Product.Products data:product.getProducts()) {
         	lsNowPrice=data.getIsPriceRange();
         	lsWasPrice=data.getWasPriceRange();
-            if(data.getVideosCount()>=videoCount && data.getStyles().size()>=styleCount && data.getSizes().size()>=sizeCount &&data.isShowBadgeImage()&&data.getProductReviewRating()>0&&!data.getEasyPaymentPrice().isEmpty()&&!lsNowPrice.equalsIgnoreCase(lsWasPrice)&&data.isEnabledAddToCart()) {
+            //if(data.getVideosCount()>=videoCount && data.getStyles().size()>=styleCount && data.getSizes().size()>=sizeCount &&data.isShowBadgeImage()&&data.getProductReviewRating()>0&&!data.getEasyPaymentPrice().isEmpty()&&!lsNowPrice.equalsIgnoreCase(lsWasPrice)&&data.isEnabledAddToCart()) {
+			if(data.getVideosCount()==videoCount && data.getStyles().size()>=styleCount && data.getSizes().size()>=sizeCount &&data.isShowBadgeImage()&&data.getProductReviewRating()>0&&!data.getEasyPaymentPrice().isEmpty()&&!lsNowPrice.equalsIgnoreCase(lsWasPrice)&&data.isEnabledAddToCart()) {
             	if(data.getBrand()!=null) {
             		if(data.getBrand().isEmpty()) {
             			continue;

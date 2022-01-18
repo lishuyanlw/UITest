@@ -1,7 +1,9 @@
 package com.tsc.test.tests.productDetail;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.testng.annotations.Test;
 
@@ -21,28 +23,32 @@ public class PD_TC08_Verify_ProductDetail_SoldOut extends BaseTest{
 	 */
 	@Test(groups={"ProductDetail","Regression","Regression_Mobile","Regression_Tablet"})
 	public void validateLeftSection_SoldOut() throws IOException {
-		getGlobalFooterPageThreadLocal().closePopupDialog();
+		//We don't need to close popup dialog if use api to navigate to PDP page directly.
+		//getGlobalFooterPageThreadLocal().closePopupDialog();
 
 		BasePage basePage=new BasePage(this.getDriver());
 
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(basePage.getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");
 		reporter.reportLog("ProductDetail Page");
-
-		String lsKeyword=TestDataHandler.constantData.getSearchResultPage().getLbl_SoldOutkeyword();
+		List<String> lstKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_APISearchingKeyword();
+		Map<String,Object> outputDataCriteria = new HashMap<>();
+		outputDataCriteria.put("video", "0");
+		outputDataCriteria.put("style", "2");
+		outputDataCriteria.put("size", "1");
 
 		reporter.reportLog("Switch to ProductDetail page");
 		String lsProductNumber,lsUrl;
 
 		//if(getProductResultsPageThreadLocal().goToFirstProductItem("485939")) {
-		if(getProductResultsPageThreadLocal().goToFirstProductItem("402783")) {
-			reporter.reportLog("Switch to ProductDetail page");
-			//if(getProductResultsPageThreadLocal().goToFirstProductItem(lsKeyword)) {
-
+		//if(getProductDetailPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList,"AllConditionsWithCheckingSoldOutCriteria")) {
+		//if(getProductResultsPageThreadLocal().goToFirstProductItem("402783")) {
+		//Changes made in function getProductInfoForInputParams used under below function for SoldOut with parameters
+		if(getProductDetailPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList,"AllConditionsWithCheckingSoldOutCriteria",outputDataCriteria)) {
 			reporter.reportLog("Verify URL");
-			//lsProductNumber=getProductResultsPageThreadLocal().selectedProductItem.productNumber;
+			lsProductNumber=getProductDetailPageThreadLocal().selectedProduct.productNumber;
 			lsUrl=basePage.URL();
 			reporter.softAssert(lsUrl.contains("productdetails"),"The Url is containing productdetails","The Url is not containing productdetails");
-			//reporter.softAssert(lsUrl.contains(lsProductNumber),"The Url is containing selected product number of "+lsProductNumber,"The Url is not containing selected product number of "+lsProductNumber);
+			reporter.softAssert(lsUrl.contains(lsProductNumber),"The Url is containing selected product number of "+lsProductNumber,"The Url is not containing selected product number of "+lsProductNumber);
 
 			reporter.reportLog("Verify Current zoom image and message");
 			getProductDetailPageThreadLocal().verifyCurrentZoomImage();

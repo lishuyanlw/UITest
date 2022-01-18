@@ -242,7 +242,7 @@ public class ProductResultsPage extends BasePage{
 	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp-filter-panel']//div[@class='plp-filter-panel__blocks']//ul[@class='plp-filter-panel__filter-list']//li[button[input[not(@checked)]]]")
 	public List<WebElement> secondlevelFilterList;
 
-	@FindBy(xpath = "//div[@class='plp']//div[@class='plp__product-grid']")
+	@FindBy(xpath = "//div[contains(@class,'layout--left')]")
 	public WebElement searchResultSection;
 
 	@FindBy(xpath = "//product-recommendations-endeca")

@@ -1,7 +1,6 @@
 package com.tsc.test.tests.productDetail;
 
 import java.io.IOException;
-import java.util.List;
 
 import org.testng.annotations.Test;
 
