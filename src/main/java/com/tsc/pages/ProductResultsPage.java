@@ -828,21 +828,21 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	public void verifySearchResultContent(List<WebElement> productList) {
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(0));
-		this.getReusableActionsInstance().scrollToElement(this.productFilterList.get(0));
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(productList.get(0));
+		this.getReusableActionsInstance().scrollToElement(productList.get(0));
 
 		int checkAmount=5,loopSize;
 		WebElement item,element;
 		String lsProductName,lsText;
-		if(checkAmount<=this.productResultList.size()) {
+		if(checkAmount<=productList.size()) {
 			loopSize=checkAmount;
 		}
 		else {
-			loopSize=this.productResultList.size();
+			loopSize=productList.size();
 		}
 
 		for(int i=0;i<loopSize;i++) {
-			item=this.productResultList.get(i);
+			item=productList.get(i);
 			element=item.findElement(byProductName);
 			lsProductName=this.getElementInnerText(element);
 			reporter.reportLog("Product Name: "+lsProductName);
@@ -950,21 +950,21 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	public void verifySearchResultContentWithMouseHover(List<WebElement> productList) {
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(0));
-		this.getReusableActionsInstance().scrollToElement(this.productFilterList.get(0));
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(productList.get(0));
+		this.getReusableActionsInstance().scrollToElement(productList.get(0));
 
 		int checkAmount=5,loopSize;
 		WebElement item,element;
 		String lsProductName,lsText;
-		if(checkAmount<=this.productResultList.size()) {
+		if(checkAmount<=productList.size()) {
 			loopSize=checkAmount;
 		}
 		else {
-			loopSize=this.productResultList.size();
+			loopSize=productList.size();
 		}
 
 		for(int i=0;i<loopSize;i++) {
-			item=this.productResultList.get(i);
+			item=productList.get(i);
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 			this.getReusableActionsInstance().scrollToElement(item);
 
