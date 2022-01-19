@@ -1413,6 +1413,8 @@ public class ProductResultsPage extends BasePage{
 			return false;
 		}
 
+		String lsFirstProductName=this.getElementInnerText(this.getProductList().get(0).findElement(byProductName));
+		
 		if(bNext) {
 			if(!this.checkIfNextPageButtonAvailable()) {
 				return false;
@@ -1443,6 +1445,10 @@ public class ProductResultsPage extends BasePage{
 		this.waitForPageToLoad();
 
 		this.getReusableActionsInstance().waitForElementVisibility(this.lblSearchResultMessage,120);
+		
+		this.getReusableActionsInstance().staticWait(2000);
+		
+		this.waitForCondition(Driver->{return !lsFirstProductName.equalsIgnoreCase(this.getElementInnerText(this.getProductList().get(0).findElement(byProductName)));}, 20000);
 
 		return true;
 	}
@@ -2277,6 +2283,7 @@ public class ProductResultsPage extends BasePage{
 
 		LoginPage loginPage=new LoginPage(this.getDriver());
 		WebElement item=this.productResultList.get(0).findElement(this.byProductHeaderLike);
+		String lsFirstProductName=this.getElementInnerText(this.productResultList.get(0).findElement(this.byProductName));
 
 		if(item.getAttribute("aria-pressed").equalsIgnoreCase("false")) {
 			reporter.reportLogPass("The favorite icon is displaying not clicking status correctly");
@@ -2291,7 +2298,7 @@ public class ProductResultsPage extends BasePage{
 		loginPage.LoginWithoutWaitingTime(lsUserName, lsPassword);
 		this.getReusableActionsInstance().waitForElementVisibility(loginPage.lblSignInGlobalResponseBanner);
 
-		this.getSearchResultLoad(lsKeyword);
+		this.getSearchResultLoad(lsFirstProductName);
 		item=this.productResultList.get(0).findElement(this.byProductHeaderLike);
 
 		if(item.getAttribute("aria-pressed").equalsIgnoreCase("true")) {
