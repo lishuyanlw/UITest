@@ -837,12 +837,12 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 		}
 		
 		if(!this.selectedProductItem.productBrand.isEmpty()) {
-			String lsProductBrand=pdp.getElementInnerText(pdp.lnkBrandName);
-			if(lsProductBrand.equalsIgnoreCase(this.selectedProductItem.productBrand)) {
+			String lsProductBrand=pdp.getElementInnerText(pdp.lnkBrandName);			
+			if(lsProductBrand.toUpperCase().contains(this.selectedProductItem.productBrand.toUpperCase())) {
 				reporter.reportLogPass("The product brand in PRP is the same as the one displayed in PDP");
 			}
 			else {
-				reporter.reportLogFail("The product brand in PRP is not the same as the one displayed in PDP");
+				reporter.reportLogFail("The product brand of "+this.selectedProductItem.productBrand+" in PRP is not the same as "+lsProductBrand+" displayed in PDP");
 			}
 		}
 		
