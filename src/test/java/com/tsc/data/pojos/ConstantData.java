@@ -461,8 +461,13 @@ public class ConstantData {
         private List<String> lst_Filter_Data;
         private List<String> lst_SortOptionMobile;
         private String lbl_ProductNumberWithBandAndReviewAndSeeMore;
+        private List<String> lst_SearckKeyword_Bugs;
 
-		public List<String> getLst_SearchKeyword() {
+        public List<String> getLst_SearckKeyword_Bugs() { return lst_SearckKeyword_Bugs; }
+
+        public void setLst_SearckKeyword_Bugs(List<String> lst_SearckKeyword_Bugs) { this.lst_SearckKeyword_Bugs = lst_SearckKeyword_Bugs; }
+
+        public List<String> getLst_SearchKeyword() {
             return lst_SearchKeyword;
         }
 
