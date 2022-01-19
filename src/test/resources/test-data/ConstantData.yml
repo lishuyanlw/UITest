@@ -78,8 +78,8 @@ homePage:
   lst_ShopByDepartmentCategories: [ FASHION, SHOES & HANDBAGS, JEWELLERY, BEAUTY, HOME & GARDEN, KITCHEN, HEALTH & FITNESS, ELECTRONICS, COINS & HOBBIES, CLEARANCE, SPORTS, MENS ]
   lbl_TopSellers: TOP SELLERS
 searchResultPage:
-  lst_SearchKeyword: [ "dyson vacuum","dfafasdfa","100501","Joan Rivers","Nike" ]
-  lst_SearchKeyword_Bugs: ["iPads & Tablets","apple  ","https://qa-tsc.tsc.ca/pages/productresults?&searchterm=desk","709712"]
+  lst_SearchKeyword: [ "dyson vacuum","dfafasdfa","100501","joan rivers","Nike" ]
+  lst_SearckKeyword_Bugs: ["iPads & Tablets"]
   lst_SearchKeyword_DropDown: [[ "dress","Categories","0" ]]
   lst_APISearchingKeyword: ["dress","jegging","boots"]
   lbl_SearchResultPageDefaultSetting: 36
@@ -91,25 +91,20 @@ searchResultPage:
   lst_SearchOption:
     - filterType: Product
       filterOption: 
-      - ["Category","Fashion"]
+      - ["Brand","Joan Rivers"]
       - ["Shop by colour","Black"]
     - filterType: Price
       filterOption:
         - ["Price","Under $100","Under"]
     - filterType: CombinatedAction
-      filterOption:
-        - ["Brand","N Natori"]
-        - ["Reviews","5 Stars"]
+      filterOption: 
+        - ["Brand","Joan Rivers"]
         - ["Price","Under $100"]
     - filterType: SequentialAction
       filterOption: 
         - ["Brand","Joan Rivers"]
         - ["Price","Under $100"]
         - ["Shop by colour","Green"]
-    - filterType: FilterBugs
-      filterOption:
-        - ["Brand","Pajar"]
-        - ["Price","$100 - $200"]
   lst_MoreButton: ["Brand","Shop by collection","Shop by colour"]
   lst_DisappearAfterSelectFilter: ["SHOP BY CATEGORY"]
   lnk_product_result: /pages/productresults?
