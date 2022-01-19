@@ -351,15 +351,15 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 		int checkAmount=3,loopSize;
 		WebElement item,element;	
 		String lsProductName,lsText;
-		if(checkAmount<=this.productResultList.size()) {
+		if(checkAmount<=productList.size()) {
 			loopSize=checkAmount;
 		}
 		else {
-			loopSize=this.productResultList.size();
+			loopSize=productList.size();
 		}
 		
 		for(int i=0;i<loopSize;i++) {		
-			item=this.productResultList.get(i);	
+			item=productList.get(i);	
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 			
 			element=item.findElement(byProductName);			
