@@ -36,7 +36,7 @@ public class SR_TC10_Verify_ProductSearchResult_GlobalHeaderAndFooterAfterSortAn
 	String lsTestModel=getProductResultsPageThreadLocal().judgeTestModel();
 	
 	//Test sort
-	if(getProductResultsPageThreadLocal().chooseSortOptionByVisibleText(lstSortByOptions)) {
+	if(getProductResultsPageThreadLocal().chooseSortOptionByVisibleText(lstSortByOptions.get(0))) {
 		reporter.softAssert(getProductResultsPageThreadLocal().verifyUrlAfterSelectSortStrategy(lsKeywordList.get(0).get(0),"HighestPrice"), "The Url contains keyword and sortKey=HighestPrice", "The Url does not contain keyword and sortKey=HighestPrice");		
 		
 		if(!lsTestModel.equalsIgnoreCase("BannerImageSearch")) {
