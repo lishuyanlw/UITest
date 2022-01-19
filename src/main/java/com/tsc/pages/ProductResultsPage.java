@@ -2382,7 +2382,7 @@ public class ProductResultsPage extends BasePage{
 
 		List<WebElement> optionList;
 		WebElement element;
-		String lsText,lsSelectedTitle,lsType,lsButtonTextBeforeClickingSize,lsButtonTextBeforeClickingColor;
+		String lsButtonTextBeforeClickingSize;
 
 		//Selecting size for webElement
 		optionList=itemContainer.findElements(byProductOptionSizeItemEnabledList);
