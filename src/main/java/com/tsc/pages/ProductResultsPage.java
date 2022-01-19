@@ -170,7 +170,7 @@ public class ProductResultsPage extends BasePage{
 
 	public By byProductReviewContainer=By.xpath(".//div[@class='product-card__reviews']");
 
-	public By byProductReviewRatingImage=By.xpath(".//div[@class='product-card__reviews']//img[@class='product-card__raiting-stars']");
+	public By byProductReviewRatingImage=By.xpath(".//div[@class='product-card__reviews']//span[@class='product-card__rating']//span[contains(@class,'product-card__rating__star')]");
 
 	public By byProductReviewRatingCount=By.xpath(".//div[@class='product-card__reviews']//a[@class='product-card__reviews-count']");
 
@@ -1157,20 +1157,21 @@ public class ProductResultsPage extends BasePage{
 	 * @return true/false
 	 * @author Wei.Li
 	 */
-	public boolean chooseSortOptionByVisibleText(List<String> lsOption) {
+	public boolean chooseSortOptionByVisibleText(String lsOption) {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSortSelect);
 		Select sortOption= new Select(this.btnSortSelect);
-		sortOption.selectByVisibleText(lsOption.get(1));
+		sortOption.selectByVisibleText(lsOption);
 
 		return this.waitForSortingOrFilteringCompleted();
 	}
 
 	/**
 	 * This method will verify Price: Highest first strategy.
+	 * @param boolean bHighest: true for Highest while false for Lowest
 	 * @return String: error message
 	 * @author Wei.Li
 	 */
-	public String verifyHighestPriceFirstSort() {
+	public String verifyPriceFirstSort(boolean bHighest) {
 		String lsErrorMsg="";
 		if(this.productResultList.size()==0) {
 			return lsErrorMsg="No product list";
@@ -1191,10 +1192,101 @@ public class ProductResultsPage extends BasePage{
 
 		int priceListSize=priceList.size();
 		for(int i=0;i<priceListSize-1;i++) {
-			if(priceList.get(i)<priceList.get(i+1)) {
-				lsErrorMsg="Sort option of Price: Highest first does not work: the price of "+productNameList.get(i)+" is less than "+productNameList.get(i+1);
-				return lsErrorMsg;
+			if(bHighest) {
+				if(priceList.get(i)<priceList.get(i+1)) {
+					lsErrorMsg="Sort option of Price: Highest first does not work: the price of "+productNameList.get(i)+" is less than "+productNameList.get(i+1);
+					return lsErrorMsg;
+				}
 			}
+			else {
+				if(priceList.get(i)>priceList.get(i+1)) {
+					lsErrorMsg="Sort option of Price: Lowest first does not work: the price of "+productNameList.get(i)+" is greater than "+productNameList.get(i+1);
+					return lsErrorMsg;
+				}
+			}			
+		}
+
+		return lsErrorMsg;
+	}
+	
+	/**
+	 * This method will verify Reviews: Highest first strategy.
+	 * @return String: error message
+	 * @author Wei.Li
+	 */
+	public String verifyHighestReviewFirstSort() {
+		String lsErrorMsg="";
+		if(this.productResultList.size()==0) {
+			return lsErrorMsg="No product list";
+		}
+
+		List<Integer> reviewList=new ArrayList<Integer>();
+		List<String> productNameList=new ArrayList<String>();
+		for(WebElement element:this.productResultList) {
+			getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+
+			if(this.checkProductItemReviewExisting(element)) {
+				List<WebElement> reviewStarList=element.findElements(this.byProductReviewRatingImage);
+				int reviewCount=getProductItemReviewNumberAmountFromStarImage(reviewStarList);
+				
+				reviewList.add(reviewCount);
+			}
+			else {
+				reviewList.add(0);
+			}
+			
+			String productName=element.findElement(this.byProductName).getText().trim();
+			productNameList.add(productName);
+		}
+
+		int reviewListSize=reviewList.size();
+		for(int i=0;i<reviewListSize-1;i++) {
+			if(reviewList.get(i)<reviewList.get(i+1)) {
+				lsErrorMsg="Sort option of Reviews: Highest first does not work: the review of "+productNameList.get(i)+" is less than "+productNameList.get(i+1);
+				return lsErrorMsg;
+			}						
+		}
+
+		return lsErrorMsg;
+	}
+	
+	/**
+	 * This method will verify Brand Name: A to Z strategy.
+	 * @return String: error message
+	 * @author Wei.Li
+	 */
+	public String verifyBrandNameOrderByAlphabet() {
+		String lsErrorMsg="";
+		if(this.productResultList.size()==0) {
+			return lsErrorMsg="No product list";
+		}
+
+		WebElement item;
+		String lsText;
+		List<String> brandList=new ArrayList<String>();
+		List<String> productNameList=new ArrayList<String>();
+		for(WebElement element:this.productResultList) {
+			getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+
+			if(this.checkProductItemBrandNameExisting(element)) {
+				item=element.findElement(byProductBrand);
+				lsText=this.getElementInnerText(item);
+				brandList.add(lsText);
+			}
+			else {
+				brandList.add("Z");
+			}
+
+			String productName=element.findElement(this.byProductName).getText().trim();
+			productNameList.add(productName);
+		}
+
+		int brandListSize=brandList.size();
+		for(int i=0;i<brandListSize-1;i++) {
+			if(brandList.get(i).compareTo(brandList.get(i+1))>0) {
+				lsErrorMsg="Sort option of Brand Name: A to Z does not work: the BrandName of "+productNameList.get(i)+" is greater than "+productNameList.get(i+1)+" with alphabet order";
+				return lsErrorMsg;
+			}						
 		}
 
 		return lsErrorMsg;
@@ -1512,7 +1604,7 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	public int getProductItemReviewNumberAmountFromStarImage(List<WebElement> lstReviewStar) {
-		int sum=0;
+		int sum=0,starNumber;
 		for(WebElement item:lstReviewStar) {
 			String[] lstClass=item.getAttribute("class").split(" ");
 			String lsFilledClass="";
@@ -1522,8 +1614,8 @@ public class ProductResultsPage extends BasePage{
 					break;
 				}
 			}
-			String[] lstSubItem=lsFilledClass.split("-");
-			sum=sum+Integer.parseInt(lstSubItem[3]);
+			starNumber=this.getIntegerFromString(lsFilledClass);			
+			sum=sum+starNumber;
 		}
 		return sum;
 	}
