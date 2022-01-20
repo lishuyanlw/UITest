@@ -1335,7 +1335,7 @@ public class ProductResultsPage extends BasePage{
 					searchInputButton=this.productFilterContainerList.get(i).findElement(this.byProductFilterSearchInput);
 					getReusableActionsInstance().javascriptScrollByVisibleElement(searchInputButton);
 					searchInputButton.sendKeys(lsSecondLevelItem);
-					getReusableActionsInstance().staticWait(1000);
+					getReusableActionsInstance().staticWait(3000);
 					subItemList=this.productFilterContainerList.get(i).findElements(this.bySecondaryFilterAll);
 					getReusableActionsInstance().javascriptScrollByVisibleElement(subItemList.get(0));
 					getReusableActionsInstance().clickIfAvailable(subItemList.get(0));
@@ -1347,16 +1347,17 @@ public class ProductResultsPage extends BasePage{
 				subItemList=this.productFilterContainerList.get(i).findElements(this.bySecondaryFilterAll);
 				for(WebElement subItem : subItemList) {
 					getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
+					getReusableActionsInstance().staticWait(2000);
 					if(lsSecondLevelItem.toLowerCase().contains("star")){
 						lsSubItem = subItem.findElement(By.xpath(".//span[@class='plp-filter-panel__filter-list__item-label-text visually-hidden']")).getText().trim();
 						subItem = subItem.findElement(By.xpath("//span[@class='plp-filter-panel__filter-list__item-label-text visually-hidden']/preceding-sibling::span"));
 					}
 					else
 						lsSubItem = subItem.findElement(By.xpath(".//span[@class='plp-filter-panel__filter-list__item-label-text']")).getText().trim();
-					getReusableActionsInstance().staticWait(500);
+					getReusableActionsInstance().staticWait(2000);
 					//If found lsSecondLevelItem
 					if(lsSubItem.equalsIgnoreCase(lsSecondLevelItem)) {
-						getReusableActionsInstance().staticWait(500);
+						getReusableActionsInstance().staticWait(2000);
 						getReusableActionsInstance().clickIfAvailable(subItem);
 						return waitForSortingOrFilteringCompleted();
 					}
@@ -1376,7 +1377,7 @@ public class ProductResultsPage extends BasePage{
 					this.secondLevelFilter=this.getElementInnerText(subItem);
 					this.firstLevelFilter=this.getElementInnerText(subItem.findElement(By.xpath("./ancestor::div[@class='plp-filter-panel__blocks']//button[@class='plp-filter-panel__block-title']")));
 
-					getReusableActionsInstance().staticWait(500);
+					getReusableActionsInstance().staticWait(3000);
 					getReusableActionsInstance().clickIfAvailable(subItem);
 					return waitForSortingOrFilteringCompleted();
 				}
