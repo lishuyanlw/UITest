@@ -828,19 +828,11 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	public void verifySearchResultContent(List<WebElement> productList) {
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(productList.get(0));
-		this.getReusableActionsInstance().scrollToElement(productList.get(0));
-
-		int checkAmount=5,loopSize;
+		int loopSize;
 		WebElement item,element;
 		String lsProductName,lsText;
-		if(checkAmount<=productList.size()) {
-			loopSize=checkAmount;
-		}
-		else {
-			loopSize=productList.size();
-		}
 
+		loopSize=productList.size();
 		for(int i=0;i<loopSize;i++) {
 			item=productList.get(i);
 			element=item.findElement(byProductName);
@@ -2080,7 +2072,7 @@ public class ProductResultsPage extends BasePage{
 		if(this.checkProductOptionTypeExistingWithMouseHover(itemContainer, "size")) {
 			if(checkProductSizeOptionEnabledItemAvailableWithMouseHover(itemContainer)) {
 				optionList=itemContainer.findElements(byProductOptionSizeItemEnabledList);
-				this.clickElement(optionList.get(0));
+				this.clickElement(optionList.get(optionList.size()-1));
 				this.getReusableActionsInstance().staticWait(3000);
 				element=itemContainer.findElement(byProductOptionSizeSelectedSize);
 				selectedProductItem.productSelectedSize=this.getElementInnerText(element);
@@ -2093,7 +2085,7 @@ public class ProductResultsPage extends BasePage{
 		if(this.checkProductOptionTypeExistingWithMouseHover(itemContainer, "colour")) {
 			if(checkProductColorOptionEnabledItemAvailableWithMouseHover(itemContainer)) {
 				optionList=itemContainer.findElements(byProductOptionColorItemEnabledList);
-				this.clickElement(optionList.get(0));
+				this.clickElement(optionList.get(optionList.size()-1));
 				this.getReusableActionsInstance().staticWait(3000);
 				element=itemContainer.findElement(byProductOptionColorSelectedColor);
 				selectedProductItem.productSelectedColor=this.getElementInnerText(element);
@@ -2115,9 +2107,8 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	public void verifySelectSizeOrColorOption(WebElement itemContainer, By BySelectSizeAndColorButton) {
-		List<WebElement> optionList;
 		WebElement element;
-		String lsText,lsSelectedTitle,lsType,lsButtonTextBeforeClickingSize,lsButtonTextBeforeClickingColor;
+		String lsText,lsType;
 		boolean bSize=false,bColor=false;
 
 		//To check button text
@@ -2156,26 +2147,13 @@ public class ProductResultsPage extends BasePage{
 			return;
 		}
 
+		this.selectedProductItem.productSelectedSize="";
+		this.selectedProductItem.productSelectedColor="";
+		
 		//To check select size
 		if(lsType.contains("Size")) {
-			if(checkProductSizeOptionEnabledItemAvailableWithMouseHover(itemContainer)) {
-				bSize=true;
-				optionList=itemContainer.findElements(byProductOptionSizeItemEnabledList);
-				element=optionList.get(0);
-				lsText=this.getElementInnerText(element).replace("Size", "").trim();
-				lsButtonTextBeforeClickingSize=this.getElementInnerText(itemContainer.findElement(byProductGoToDetails));
-				this.clickElement(element);
-				this.waitForCondition(Driver->{return !lsButtonTextBeforeClickingSize.equalsIgnoreCase(this.getElementInnerText(itemContainer.findElement(byProductGoToDetails)));}, 20000);
-				this.getReusableActionsInstance().staticWait(3000);
-				element=itemContainer.findElement(byProductOptionSizeSelectedSize);
-				lsSelectedTitle=this.getElementInnerText(element);
-				if(lsText.equalsIgnoreCase(lsSelectedTitle)) {
-					reporter.reportLogPass("The selected size title is displaying correctly");
-				}
-				else {
-					reporter.reportLogFail("The selected size title is not displaying correctly");
-				}
-
+			bSize=verifySizeOption(itemContainer,lsType);
+			if(bSize) {
 				element=itemContainer.findElement(BySelectSizeAndColorButton);
 				lsText=this.getElementInnerText(element);
 				if(lsType.contains("Colour")) {
@@ -2193,29 +2171,12 @@ public class ProductResultsPage extends BasePage{
 						reporter.reportLogFail("The button text is not equal to 'Go to detail page'");
 					}
 				}
-			}
+			}			
 		}
 
 		//To check select color
 		if(lsType.contains("Colour")) {
-			if(checkProductColorOptionEnabledItemAvailableWithMouseHover(itemContainer)) {
-				bColor=true;
-				optionList=itemContainer.findElements(byProductOptionColorItemEnabledList);
-				element=optionList.get(0);
-				lsText=this.getElementInnerText(element).replace("colours", "").trim();
-				lsButtonTextBeforeClickingColor=this.getElementInnerText(itemContainer.findElement(byProductGoToDetails));
-				this.clickElement(element);
-				this.waitForCondition(Driver->{return !lsButtonTextBeforeClickingColor.equalsIgnoreCase(this.getElementInnerText(itemContainer.findElement(byProductGoToDetails)));}, 20000);
-				this.getReusableActionsInstance().staticWait(3000);
-				element=itemContainer.findElement(byProductOptionColorSelectedColor);
-				lsSelectedTitle=this.getElementInnerText(element);
-				if(lsText.equalsIgnoreCase(lsSelectedTitle)) {
-					reporter.reportLogPass("The selected color title is displaying correctly");
-				}
-				else {
-					reporter.reportLogFail("The selected color title is not displaying correctly");
-				}
-			}
+			bColor=verifyColorOption(itemContainer,lsType);
 		}
 
 		if(!bSize||!bColor) {
@@ -2234,6 +2195,78 @@ public class ProductResultsPage extends BasePage{
 
 	}
 
+	private boolean verifySizeOption(WebElement itemContainer,String lsType) {
+		if(checkProductSizeOptionEnabledItemAvailableWithMouseHover(itemContainer)) {			
+			List<WebElement> optionList=itemContainer.findElements(byProductOptionSizeItemEnabledList);
+			WebElement element=optionList.get(optionList.size()-1);
+			String lsButtonTextBeforeClickingSize=this.getElementInnerText(itemContainer.findElement(byProductGoToDetails));
+			String lsText=this.getElementInnerText(element).replace("Size", "").trim();
+			if(element.getTagName().equalsIgnoreCase("button")) {								
+				this.clickElement(element);
+			}
+			else {
+				Select sizeSelect= new Select(element.findElement(By.xpath("./parent::select")));
+				sizeSelect.selectByIndex(optionList.size()-1);
+			}
+			
+			this.getReusableActionsInstance().staticWait(2000);
+			this.waitForCondition(Driver->{return !lsButtonTextBeforeClickingSize.equalsIgnoreCase(this.getElementInnerText(itemContainer.findElement(byProductGoToDetails)));}, 20000);
+			this.getReusableActionsInstance().staticWait(3000);
+			element=itemContainer.findElement(byProductOptionSizeSelectedSize);
+			String lsSelectedTitle=this.getElementInnerText(element);
+			this.selectedProductItem.productSelectedSize=lsSelectedTitle;
+			if(lsText.equalsIgnoreCase(lsSelectedTitle)) {
+				reporter.reportLogPass("The selected size title is displaying correctly");
+			}
+			else {
+				reporter.reportLogFail("The selected size title is not displaying correctly");
+			}
+
+			return true;
+		}
+		return false;
+	}
+	
+	private boolean verifyColorOption(WebElement itemContainer,String lsType) {
+		if(checkProductColorOptionEnabledItemAvailableWithMouseHover(itemContainer)) {	
+			String lsImageSrcBeforeClickingColor=itemContainer.findElement(byProductImage).getAttribute("src");
+			List<WebElement> optionList=itemContainer.findElements(byProductOptionColorItemEnabledList);
+			WebElement element=optionList.get(optionList.size()-1);
+			String lsText=this.getElementInnerText(element).replace("colours", "").trim();
+			String lsButtonTextBeforeClickingColor=this.getElementInnerText(itemContainer.findElement(byProductGoToDetails));
+			if(element.getTagName().equalsIgnoreCase("button")) {								
+				this.clickElement(element);
+			}
+			else {
+				Select sizeSelect= new Select(element.findElement(By.xpath("./parent::select")));
+				sizeSelect.selectByIndex(optionList.size()-1);
+			}	
+			this.getReusableActionsInstance().staticWait(2000);
+			this.waitForCondition(Driver->{return !lsButtonTextBeforeClickingColor.equalsIgnoreCase(this.getElementInnerText(itemContainer.findElement(byProductGoToDetails)));}, 20000);
+			this.getReusableActionsInstance().staticWait(3000);
+			
+			String lsImageSrcAfterClickingColor=itemContainer.findElement(byProductImage).getAttribute("src");
+			if(!lsImageSrcBeforeClickingColor.equalsIgnoreCase(lsImageSrcAfterClickingColor)) {
+				reporter.reportLogPass("The image is changing after choosing a different style");
+			}
+			else {
+				reporter.reportLogFail("The image is not changing after choosing a different style");
+			}
+			
+			element=itemContainer.findElement(byProductOptionColorSelectedColor);
+			String lsSelectedTitle=this.getElementInnerText(element);
+			this.selectedProductItem.productSelectedColor=lsSelectedTitle;
+			if(lsText.equalsIgnoreCase(lsSelectedTitle)) {
+				reporter.reportLogPass("The selected color title is displaying correctly");
+			}
+			else {
+				reporter.reportLogFail("The selected color title is not displaying correctly");
+			}
+			return true;
+		}
+		return false;
+	}
+	
 	/**
 	 * This method will verify information linkage between selected PRP and PDP
 	 * @param-ProductDetailPage pdp: the related PDP to adapt to different devices
@@ -2242,10 +2275,7 @@ public class ProductResultsPage extends BasePage{
 	 */
 	public void verifyInfoLinkageWithPDP(ProductDetailPage pdp) {
 		WebElement itemContainer=this.productResultList.get(0);
-
-		List<WebElement> optionList;
-		WebElement element;
-		String lsText,lsSelectedTitle,lsType,lsButtonTextBeforeClickingSize,lsButtonTextBeforeClickingColor;
+		String lsSelectedTitle,lsType;
 
 		this.selectedProductItem.productSelectedSize="";
 		this.selectedProductItem.productSelectedColor="";
@@ -2260,34 +2290,12 @@ public class ProductResultsPage extends BasePage{
 
 		//To check selected size
 		if(lsType.contains("Size")) {
-			if(checkProductSizeOptionEnabledItemAvailableWithMouseHover(itemContainer)) {
-				optionList=itemContainer.findElements(byProductOptionSizeItemEnabledList);
-				element=optionList.get(optionList.size()-1);
-				lsText=this.getElementInnerText(element).replace("Size", "").trim();
-				lsButtonTextBeforeClickingSize=this.getElementInnerText(itemContainer.findElement(byProductGoToDetails));
-				this.clickElement(element);
-				this.waitForCondition(Driver->{return !lsButtonTextBeforeClickingSize.equalsIgnoreCase(this.getElementInnerText(itemContainer.findElement(byProductGoToDetails)));}, 20000);
-				this.getReusableActionsInstance().staticWait(3000);
-				element=itemContainer.findElement(byProductOptionSizeSelectedSize);
-				lsSelectedTitle=this.getElementInnerText(element);
-				this.selectedProductItem.productSelectedSize=lsSelectedTitle;
-			}
+			verifySizeOption(itemContainer,lsType);			
 		}
 
 		//To check selected color
 		if(lsType.contains("Colour")) {
-			if(checkProductColorOptionEnabledItemAvailableWithMouseHover(itemContainer)) {
-				optionList=itemContainer.findElements(byProductOptionColorItemEnabledList);
-				element=optionList.get(optionList.size()-1);
-				lsText=this.getElementInnerText(element).replace("colours", "").trim();
-				lsButtonTextBeforeClickingColor=this.getElementInnerText(itemContainer.findElement(byProductGoToDetails));
-				this.clickElement(element);
-				this.waitForCondition(Driver->{return !lsButtonTextBeforeClickingColor.equalsIgnoreCase(this.getElementInnerText(itemContainer.findElement(byProductGoToDetails)));}, 20000);
-				this.getReusableActionsInstance().staticWait(3000);
-				element=itemContainer.findElement(byProductOptionColorSelectedColor);
-				lsSelectedTitle=this.getElementInnerText(element);
-				this.selectedProductItem.productSelectedColor=lsSelectedTitle;
-			}
+			verifyColorOption(itemContainer,lsType);			
 		}
 
 		itemContainer.findElement(this.byProductGoToDetails).click();
