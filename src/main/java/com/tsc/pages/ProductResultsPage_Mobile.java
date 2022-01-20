@@ -141,6 +141,22 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 						getReusableActionsInstance().staticWait(3000);
 						waitForSortingOrFilteringCompleted();
 						getReusableActionsInstance().staticWait(3000);
+						
+						this.getReusableActionsInstance().staticWait(2000);
+						if(!this.URL().contains("page=")) {
+							reporter.reportLogPass("The Url does not contain page term.");
+						}
+						else {
+							reporter.reportLogFail("The Url contains page term.");
+						}
+						
+						if(this.getElementInnerText(btnCurrentPage).equalsIgnoreCase("1")) {
+							reporter.reportLogPass("The current page is 1st page.");
+						}
+						else {
+							reporter.reportLogFail("The current page is not 1st page.");
+						}
+						
 						closeFilterPopupWindow();
 						return true;
 					}
@@ -175,6 +191,21 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 						this.waitForSortingOrFilteringCompleted();
 						getReusableActionsInstance().staticWait(3000);
 
+						this.getReusableActionsInstance().staticWait(2000);
+						if(!this.URL().contains("page=")) {
+							reporter.reportLogPass("The Url does not contain page term.");
+						}
+						else {
+							reporter.reportLogFail("The Url contains page term.");
+						}
+						
+						if(this.getElementInnerText(btnCurrentPage).equalsIgnoreCase("1")) {
+							reporter.reportLogPass("The current page is 1st page.");
+						}
+						else {
+							reporter.reportLogFail("The current page is not 1st page.");
+						}
+						
 						closeFilterPopupWindow();			
 						return true;
 					}
@@ -215,6 +246,21 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 					}										
 					this.waitForSortingOrFilteringCompleted();
 					getReusableActionsInstance().staticWait(1000);
+					
+					this.getReusableActionsInstance().staticWait(2000);
+					if(!this.URL().contains("page=")) {
+						reporter.reportLogPass("The Url does not contain page term.");
+					}
+					else {
+						reporter.reportLogFail("The Url contains page term.");
+					}
+					
+					if(this.getElementInnerText(btnCurrentPage).equalsIgnoreCase("1")) {
+						reporter.reportLogPass("The current page is 1st page.");
+					}
+					else {
+						reporter.reportLogFail("The current page is not 1st page.");
+					}
 					
 					closeFilterPopupWindow();					
 					return true;
@@ -369,6 +415,12 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 			else {
 				reporter.reportLogFail("Product Name is empty");
 			}
+			if(element.getCssValue("font-weight").equalsIgnoreCase("600")) {
+				reporter.reportLogPass("Product name is semi bold font");
+			}
+			else {
+				reporter.reportLogFail("Product name is not semi bold font");
+			}
 						
 			if(this.checkProductItemHeaderTitleExisting(item)) {
 				element=item.findElement(byProductHeaderTitle);				
@@ -378,6 +430,12 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				}
 				else {
 					reporter.reportLogFail("Product title is empty");
+				}
+				if(element.getCssValue("font-weight").equalsIgnoreCase("800")) {
+					reporter.reportLogPass("Product title is bold font");
+				}
+				else {
+					reporter.reportLogFail("Product title is not bold font");
 				}
 			}
 			
@@ -434,6 +492,12 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 			}
 			else {
 				reporter.reportLogFail("Product Now Price is not empty");
+			}
+			if(element.getCssValue("font-weight").equalsIgnoreCase("600")) {
+				reporter.reportLogPass("Product NowPrice is semi bold font");
+			}
+			else {
+				reporter.reportLogFail("Product NowPrice is not semi bold font");
 			}
 			
 			if(this.checkProductItemWasPriceExisting(item)) {
