@@ -6,8 +6,6 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.sql.Driver;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -16,11 +14,9 @@ import java.util.Map;
 import java.util.Set;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 
 import com.tsc.api.apiBuilder.ApiResponse;
 import com.tsc.api.pojo.Product;
-import com.tsc.api.pojo.ProductDetailsItem;
 import com.tsc.api.pojo.SelectedProduct;
 import com.tsc.pages.base.BasePage;
 
@@ -2736,6 +2732,49 @@ public class ProductResultsPage extends BasePage{
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * This method will check all elements present on page is of particular brand
+	 * @param-String - brand name to search on PRP page
+	 * @return boolean
+	 */
+	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp__applied-filters']/button/span")
+	public List<WebElement> lstFilterApplied;
+
+	public void verifyProductsOnPRPByBrandName(String brandName){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lstFilterApplied.get(0));
+
+		//Defining and initializing variables
+		boolean filterBrandNameFlag = false;
+		String filterName = null,lsBrandName;
+		List<WebElement> productList;
+		WebElement item,element;
+
+		for(int counter=0;counter<lstFilterApplied.size();counter++){
+			filterName = lstFilterApplied.get(counter).getText();
+			if(brandName.toLowerCase().trim().equals(filterName.toLowerCase().trim())){
+				filterBrandNameFlag = true;
+				break;
+			}
+		}
+		//Verifying brand name in filter
+		if(filterBrandNameFlag)
+			reporter.reportLogPass("Brand Name on PDP page i.e. "+brandName+" is same as in filter on PRP page: "+filterName);
+		else
+			reporter.reportLogFail("Brand Name on PDP page i.e. "+brandName+" is not same as in filter on PRP page: "+filterName);
+
+		//Verifying product on page are of same selected brand
+		productList=this.getProductList();
+		for(int brandNameCounter=0;brandNameCounter<productList.size();brandNameCounter++) {
+			item=productList.get(brandNameCounter);
+			element=item.findElement(byProductBrand);
+			lsBrandName=this.getElementInnerText(element).split("By ")[1];
+			if(lsBrandName.toLowerCase().trim().equals(brandName.toLowerCase().trim()))
+				reporter.reportLogPass("Brand name of product on PRP page: "+lsBrandName+" is same as on PDP page: "+brandName);
+			else
+				reporter.reportLogFail("Brand name of product on PRP page: "+lsBrandName+" is not same as on PDP page: "+brandName);
+		}
 	}
 
 

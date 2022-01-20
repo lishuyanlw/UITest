@@ -1656,8 +1656,8 @@ public class ProductDetailPage extends BasePage {
 
 		(new ProductResultsPage(this.getDriver())).waitForPageLoading();
 
-		//reporter.softAssert(this.URL().toLowerCase().contains("productresults"),"The current Url of "+this.URL()+" is back to product search page","The current Url of "+this.URL()+" is not back to product search page");
-		reporter.softAssert(this.URL().toLowerCase().contains("breadcrumb"),"The current Url of "+this.URL()+" is back to product search page","The current Url of "+this.URL()+" is not back to product search page");
+		reporter.softAssert(this.URL().toLowerCase().contains("productresults"),"The current Url of "+this.URL()+" is back to product search page","The current Url of "+this.URL()+" is not back to product search page");
+		//reporter.softAssert(this.URL().toLowerCase().contains("breadcrumb"),"The current Url of "+this.URL()+" is back to product search page","The current Url of "+this.URL()+" is not back to product search page");
 	}
 
 	public void verifyVideo(String lsVideoDisclaimInfo) {
@@ -2116,6 +2116,12 @@ public class ProductDetailPage extends BasePage {
 		this.getReusableActionsInstance().staticWait(1000);
 
 		reporter.softAssert(this.URL().toLowerCase().contains("productresults"),"The page has been switched to product results page","The page has not been switched to product results page");
+
+		//Verifying Bug-19107 - Issue navigating to brand page from PDP
+		//Verifying that PRP page is displaying results for expected brand
+		this.waitForPageToLoad();
+		prp.waitForPageLoading();
+		prp.verifyProductsOnPRPByBrandName(lsBrandName);
 
 		/*this.getReusableActionsInstance().javascriptScrollByVisibleElement(prp.lblSelectedFilters);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(prp.selectedFiltersList.get(0));
