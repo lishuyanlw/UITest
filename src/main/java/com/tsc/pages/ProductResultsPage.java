@@ -1346,12 +1346,16 @@ public class ProductResultsPage extends BasePage{
 				}
 
 				expandFilterItem(this.productFilterContainerList.get(i));
-
+				String lsSubItem=null;
 				subItemList=this.productFilterContainerList.get(i).findElements(this.bySecondaryFilterAll);
 				for(WebElement subItem : subItemList) {
 					getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
-					String lsSubItem=subItem.findElement(By.xpath(".//span[@class='plp-filter-panel__filter-list__item-label-text']")).getText().trim();
-
+					if(lsSecondLevelItem.toLowerCase().contains("star")){
+						lsSubItem = subItem.findElement(By.xpath(".//span[@class='plp-filter-panel__filter-list__item-label-text visually-hidden']")).getText().trim();
+						subItem = subItem.findElement(By.xpath("//span[@class='plp-filter-panel__filter-list__item-label-text visually-hidden']/preceding-sibling::span"));
+					}
+					else
+						lsSubItem = subItem.findElement(By.xpath(".//span[@class='plp-filter-panel__filter-list__item-label-text']")).getText().trim();
 					getReusableActionsInstance().staticWait(500);
 					//If found lsSecondLevelItem
 					if(lsSubItem.equalsIgnoreCase(lsSecondLevelItem)) {
@@ -1826,7 +1830,7 @@ public class ProductResultsPage extends BasePage{
 	 */
 	public boolean waitForSortingOrFilteringCompleted() {
 		this.waitForCondition(Driver->{return !checkProductResultLoadingStatusAfterSorting();}, 30000);
-		this.getReusableActionsInstance().staticWait(3000);
+		this.getReusableActionsInstance().staticWait(10000);
 
 		return true;
 	}
