@@ -97,8 +97,9 @@ searchResultPage:
       filterOption:
         - ["Price","Under $100","Under"]
     - filterType: CombinatedAction
-      filterOption: 
-        - ["Brand","Joan Rivers"]
+      filterOption:
+        - ["Brand","N Natori"]
+        - ["Reviews","5 Stars"]
         - ["Price","Under $100"]
     - filterType: SequentialAction
       filterOption: 
