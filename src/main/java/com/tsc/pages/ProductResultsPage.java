@@ -6,8 +6,6 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.sql.Driver;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -16,11 +14,9 @@ import java.util.Map;
 import java.util.Set;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 
 import com.tsc.api.apiBuilder.ApiResponse;
 import com.tsc.api.pojo.Product;
-import com.tsc.api.pojo.ProductDetailsItem;
 import com.tsc.api.pojo.SelectedProduct;
 import com.tsc.pages.base.BasePage;
 
@@ -98,7 +94,7 @@ public class ProductResultsPage extends BasePage{
 	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp']//div[@class='plp__product-grid']//div[contains(@class,'plp-card-grid-item')]//div[@class='product-card']")
 	public List<WebElement> productResultList;
 
-
+	public By byProductSizeAndColour=By.xpath(".//div[contains(@class,'product-card__option-button')]/ul");
 	//Selected filters
 	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp__applied-filters']//button")
 	public List<WebElement> selectedFiltersList;
@@ -149,6 +145,8 @@ public class ProductResultsPage extends BasePage{
 	public By byProductOptionColorWrapper=By.xpath(".//fieldset//div[@class='product-card__color-and-taste-wrapper']");
 
 	public By byProductOptionColorItemList=By.xpath(".//fieldset//div[contains(@class,'product-card__color-and-taste-items')]//button|.//fieldset//select[@class='product-card__color-and-taste__dropdown']//option");
+
+	public By byProductOptionColorDropDown=By.xpath(".//fieldset//select[@class='product-card__color-and-taste__dropdown']");
 
 	public By byProductOptionColorItemEnabledList=By.xpath(".//fieldset//div[contains(@class,'product-card__color-and-taste-items')]//button[not(@disabled)]|.//fieldset//select[@class='product-card__color-and-taste__dropdown']//option[not(@disabled)]");
 
@@ -209,7 +207,8 @@ public class ProductResultsPage extends BasePage{
 	@FindBy(xpath = "//div[@class='TitleAndTextSeo']//*[contains(@class,'seoTextContent')]")
 	public WebElement lblProductText;
 
-	@FindBy(xpath = "//div[@id='readMoreButton']//button")
+	//@FindBy(xpath = "//div[@id='readMoreButton']//button")
+	@FindBy(xpath = "//div[contains(@class,'TitleAndText')]//button[@id='readMoreButton']")
 	public WebElement btnProductTitleAndTextMoreOrLess;
 
 	//Product results filter
@@ -1159,7 +1158,7 @@ public class ProductResultsPage extends BasePage{
 
 	/**
 	 * This method will verify Price: Highest first strategy.
-	 * @param boolean bHighest: true for Highest while false for Lowest
+	 * @param-boolean bHighest: true for Highest while false for Lowest
 	 * @return String: error message
 	 * @author Wei.Li
 	 */
@@ -2310,7 +2309,7 @@ public class ProductResultsPage extends BasePage{
 		}
 
 		if(!this.selectedProductItem.productBrand.isEmpty()) {
-			String lsProductBrand=pdp.getElementInnerText(pdp.lnkBrandName);			
+			String lsProductBrand=pdp.getElementInnerText(pdp.lnkBrandName);
 			if(lsProductBrand.toUpperCase().contains(this.selectedProductItem.productBrand.toUpperCase())) {
 				reporter.reportLogPass("The product brand in PRP is the same as the one displayed in PDP");
 			}
@@ -2364,7 +2363,48 @@ public class ProductResultsPage extends BasePage{
 				}
 			}
 		}
+	}
 
+	/**
+	 * This method will verify information linkage between selected PRP without swatch and PDP
+	 * @param-ProductDetailPage pdp: the related PDP to adapt to different devices
+	 * @return void
+	 */
+	public void verifyInfoLinkageWithPDPWithoutSwatch(WebElement webElement,int index){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(webElement);
+		this.getReusableActionsInstance().scrollToElement(webElement);
+
+		WebElement itemContainer=webElement;
+
+		List<WebElement> optionList;
+		WebElement element;
+		String lsButtonTextBeforeClickingSize;
+
+		//Selecting size for webElement
+		optionList=itemContainer.findElements(byProductOptionSizeItemEnabledList);
+		element=optionList.get(optionList.size()-1);
+		lsButtonTextBeforeClickingSize=this.getElementInnerText(itemContainer.findElement(byProductGoToDetails));
+		this.clickElement(element);
+		String finalLsButtonTextBeforeClickingSize = lsButtonTextBeforeClickingSize;
+		this.waitForCondition(Driver->{return !finalLsButtonTextBeforeClickingSize.equalsIgnoreCase(this.getElementInnerText(itemContainer.findElement(byProductGoToDetails)));}, 20000);
+		this.getReusableActionsInstance().staticWait(3000);
+
+		//Selecting color for webElement from Dropdown
+		optionList=itemContainer.findElements(byProductOptionColorItemEnabledList);
+		element=optionList.get(optionList.size()-1);
+		List<WebElement> colorList = getDriver().findElements(this.byProductOptionColorDropDown);
+		Select select = new Select(colorList.get(index));
+		select.selectByVisibleText(element.getText());
+		this.getReusableActionsInstance().staticWait(3000);
+
+		itemContainer.findElement(this.byProductGoToDetails).click();
+		this.waitForPDPPageLoading();
+		if(this.URL().toLowerCase().contains("productdetails")) {
+			reporter.reportLogPass("The user is navigated to PDP page");
+		}
+		else {
+			reporter.reportLogFail("The user is not navigated to PDP page");
+		}
 	}
 
 	/**
@@ -2671,6 +2711,67 @@ public class ProductResultsPage extends BasePage{
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnClearInClearMyFavouritesPopupWindow);
 		this.getReusableActionsInstance().clickIfAvailable(this.btnClearInClearMyFavouritesPopupWindow);
 		this.getReusableActionsInstance().waitForElementVisibility(this.btnShoppingNow, 20);
+	}
+
+	/**
+	 * This method will check with element has both size and colour available
+	 * @param-WebElement webElement - parent webElement
+	 * @return boolean
+	*/
+	public boolean findItemWithAvailableSizeAndColorDropDown(WebElement webElement){
+		WebElement expectedWebElement = webElement.findElement(this.byProductSizeAndColour);
+		if(this.checkChildElementExistingByTagName(expectedWebElement,"li")){
+			long childElementCount = this.getChildElementCount(expectedWebElement);
+			if(childElementCount==Long.valueOf(2)){
+				WebElement dropDownItemList = webElement.findElement(this.byProductOptionColorDropDown);
+				if(this.checkChildElementExistingByTagName(dropDownItemList,"option"))
+					return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * This method will check all elements present on page is of particular brand
+	 * @param-String - brand name to search on PRP page
+	 * @return boolean
+	 */
+	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp__applied-filters']/button/span")
+	public List<WebElement> lstFilterApplied;
+
+	public void verifyProductsOnPRPByBrandName(String brandName){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lstFilterApplied.get(0));
+
+		//Defining and initializing variables
+		boolean filterBrandNameFlag = false;
+		String filterName = null,lsBrandName;
+		List<WebElement> productList;
+		WebElement item,element;
+
+		for(int counter=0;counter<lstFilterApplied.size();counter++){
+			filterName = lstFilterApplied.get(counter).getText();
+			if(brandName.toLowerCase().trim().equals(filterName.toLowerCase().trim())){
+				filterBrandNameFlag = true;
+				break;
+			}
+		}
+		//Verifying brand name in filter
+		if(filterBrandNameFlag)
+			reporter.reportLogPass("Brand Name on PDP page i.e. "+brandName+" is same as in filter on PRP page: "+filterName);
+		else
+			reporter.reportLogFail("Brand Name on PDP page i.e. "+brandName+" is not same as in filter on PRP page: "+filterName);
+
+		//Verifying product on page are of same selected brand
+		productList=this.getProductList();
+		for(int brandNameCounter=0;brandNameCounter<productList.size();brandNameCounter++) {
+			item=productList.get(brandNameCounter);
+			element=item.findElement(byProductBrand);
+			lsBrandName=this.getElementInnerText(element).split("By ")[1];
+			if(lsBrandName.toLowerCase().trim().equals(brandName.toLowerCase().trim()))
+				reporter.reportLogPass("Brand name of product on PRP page: "+lsBrandName+" is same as on PDP page: "+brandName);
+			else
+				reporter.reportLogFail("Brand name of product on PRP page: "+lsBrandName+" is not same as on PDP page: "+brandName);
+		}
 	}
 
 

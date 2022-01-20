@@ -79,6 +79,7 @@ homePage:
   lbl_TopSellers: TOP SELLERS
 searchResultPage:
   lst_SearchKeyword: [ "dyson vacuum","dfafasdfa","100501","joan rivers","Nike" ]
+  lst_SearckKeyword_Bugs: ["iPads & Tablets"]
   lst_SearchKeyword_DropDown: [[ "dress","Categories","0" ]]
   lst_APISearchingKeyword: ["dress","jegging","boots"]
   lbl_SearchResultPageDefaultSetting: 36

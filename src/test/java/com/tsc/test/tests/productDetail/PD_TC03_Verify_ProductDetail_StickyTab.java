@@ -17,6 +17,7 @@ public class PD_TC03_Verify_ProductDetail_StickyTab extends BaseTest {
 	 * CER-590
 	 * CER-591
 	 * CER-607
+	 * Bug-19107 - Issue navigating to brand page from PDP
 	 */
 	@Test(groups = {"ProductDetail", "Regression", "Regression_Mobile", "Regression_Tablet"})
 	public void validateStickyTab() throws IOException {
@@ -86,6 +87,7 @@ public class PD_TC03_Verify_ProductDetail_StickyTab extends BaseTest {
 				reporter.reportLog("Verify sticky tab clicking actions");
 				getProductDetailPageThreadLocal().verifyStickyTabClickingAction();
 
+				//Verifying Bug-19107 - Issue navigating to brand page from PDP
 				reporter.reportLog("Verify product brand name link");
 				getProductDetailPageThreadLocal().verifyProductBrandNameRedirectAction();
 
