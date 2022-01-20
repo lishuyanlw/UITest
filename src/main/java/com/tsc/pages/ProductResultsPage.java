@@ -1353,6 +1353,7 @@ public class ProductResultsPage extends BasePage{
 				for(WebElement subItem : subItemList) {
 					getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
 					getReusableActionsInstance().staticWait(2000);
+					//if statement to test Bug-19685 - Review filter
 					if(lsSecondLevelItem.toLowerCase().contains("star")){
 						lsSubItem = subItem.findElement(By.xpath(".//span[@class='plp-filter-panel__filter-list__item-label-text visually-hidden']")).getText().trim();
 						subItem = subItem.findElement(By.xpath("//span[@class='plp-filter-panel__filter-list__item-label-text visually-hidden']/preceding-sibling::span"));
@@ -2240,14 +2241,15 @@ public class ProductResultsPage extends BasePage{
 		if(checkProductColorOptionEnabledItemAvailableWithMouseHover(itemContainer)) {	
 			String lsColor,lsText;
 			WebElement element=null;
-			int selectNumber=0;
+			//int selectNumber=0;
 			
 			String lsImageSrcBeforeClickingColor=itemContainer.findElement(byProductImage).getAttribute("src");
 			List<WebElement> optionList=itemContainer.findElements(byProductOptionColorItemEnabledList);
 			if(optionList.size()>1) {
 				for(WebElement item:optionList) {
 					if(item.getTagName().equalsIgnoreCase("button")) {
-						lsColor=item.findElement(By.xpath("./input")).getAttribute("id").split("-")[4];
+						String[] itemColorId=item.findElement(By.xpath("./input")).getAttribute("id").split("-");
+						lsColor=item.findElement(By.xpath("./input")).getAttribute("id").split("-")[itemColorId.length-1];
 					}
 					else {
 						lsColor=item.getAttribute("value");
@@ -2256,7 +2258,7 @@ public class ProductResultsPage extends BasePage{
 						element=item;
 						break;
 					}
-					selectNumber++;
+					//selectNumber++;
 				}
 			}
 			else {
