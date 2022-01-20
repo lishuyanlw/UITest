@@ -831,8 +831,8 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	public void verifySearchResultContent(List<WebElement> productList) {
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(productList.get(0));
-		this.getReusableActionsInstance().scrollToElement(productList.get(0));
+		//this.getReusableActionsInstance().javascriptScrollByVisibleElement(productList.get(0));
+		//this.getReusableActionsInstance().scrollToElement(productList.get(0));
 
 		int checkAmount=5,loopSize;
 		WebElement item,element;
