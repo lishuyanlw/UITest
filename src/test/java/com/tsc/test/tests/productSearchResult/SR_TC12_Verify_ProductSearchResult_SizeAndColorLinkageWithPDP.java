@@ -41,7 +41,8 @@ public class SR_TC12_Verify_ProductSearchResult_SizeAndColorLinkageWithPDP exten
 		for(int loop=0;loop<productList.size();loop++) {
 			if(getProductResultsPageThreadLocal().findItemWithAvailableSizeAndColorDropDown(productList.get(loop))){
 				//Selecting the available size and color for item from dropdown
-				getProductResultsPageThreadLocal().verifyInfoLinkageWithPDPWithoutSwatch(productList.get(loop));
+				getProductResultsPageThreadLocal().verifyInfoLinkageWithPDPWithoutSwatch(productList.get(loop),loop);
+				break;
 			}
 		}
 

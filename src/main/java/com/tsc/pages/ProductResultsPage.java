@@ -2366,7 +2366,7 @@ public class ProductResultsPage extends BasePage{
 	 * @param-ProductDetailPage pdp: the related PDP to adapt to different devices
 	 * @return void
 	 */
-	public void verifyInfoLinkageWithPDPWithoutSwatch(WebElement webElement){
+	public void verifyInfoLinkageWithPDPWithoutSwatch(WebElement webElement,int index){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(webElement);
 		this.getReusableActionsInstance().scrollToElement(webElement);
 
@@ -2387,15 +2387,15 @@ public class ProductResultsPage extends BasePage{
 
 		//Selecting color for webElement from Dropdown
 		optionList=itemContainer.findElements(byProductOptionColorItemEnabledList);
+		element=optionList.get(optionList.size()-1);
 		List<WebElement> colorList = getDriver().findElements(this.byProductOptionColorDropDown);
-		Select select = new Select(colorList.get(0));
-		select.selectByIndex(optionList.size()-1);
+		Select select = new Select(colorList.get(index));
+		select.selectByVisibleText(element.getText());
 		this.getReusableActionsInstance().staticWait(3000);
 
-		//itemContainer.findElement(this.byProductGoToDetails).click();
-		//this.waitForPDPPageLoading();
-		String navigationPageURL = this.getUrlForLandingpage(itemContainer.findElement(this.byProductGoToDetails));
-		if(navigationPageURL.toLowerCase().contains("productdetails")) {
+		itemContainer.findElement(this.byProductGoToDetails).click();
+		this.waitForPDPPageLoading();
+		if(this.URL().toLowerCase().contains("productdetails")) {
 			reporter.reportLogPass("The user is navigated to PDP page");
 		}
 		else {
