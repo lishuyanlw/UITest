@@ -37,7 +37,7 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction_Dro
         String lsMsg;
         List<String> lstSortByOptions = TestDataHandler.constantData.getSearchResultPage().getLst_Filter_Data();
 
-        getProductResultsPageThreadLocal().getSearchResultLoad(lsKeyword,true);
+        getProductResultsPageThreadLocal().getSearchResultLoad(lsKeyword,false);
 
         String lsTestModel = getProductResultsPageThreadLocal().judgeTestModel();
 
