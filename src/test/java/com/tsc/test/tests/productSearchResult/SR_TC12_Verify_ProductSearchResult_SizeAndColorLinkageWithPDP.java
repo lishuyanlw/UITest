@@ -15,6 +15,8 @@ import com.tsc.test.base.BaseTest;
 public class SR_TC12_Verify_ProductSearchResult_SizeAndColorLinkageWithPDP extends BaseTest{
    /*
    * Bug-19703-PRP to PDP after selecting colour from dropdown(no swatches)
+   * Bug-19672-PRP showing result label getting encoded value from search
+   * Bug-19544-Select a brand in SYAT should not display Search Term
    */
 	@Test(groups={"ProductSearch","Regression","Regression_Tablet"})
 	public void validateProductSearchResult_SizeAndColorLinkageWithPDP() throws IOException {
@@ -33,7 +35,11 @@ public class SR_TC12_Verify_ProductSearchResult_SizeAndColorLinkageWithPDP exten
 			getProductResultsPageThreadLocal().verifyInfoLinkageWithPDP(getProductDetailPageThreadLocal());
 		}
 
-		//Verifying Bug-19703 below
+		//Verification of Bug-19544 and Bug-19672
+		getProductResultsPageThreadLocal().getSearchResultLoad(lst_SearchKeyword.get(1),true);
+		getProductResultsPageThreadLocal().verifySearchResultMessageOnPage(lst_SearchKeyword.get(1));
+
+		//Verification of Bug-19703
 		//Searching keyword - iPads & Tablets on Home Page to load data on PRP page
 		getProductResultsPageThreadLocal().getSearchResultLoad(lst_SearchKeyword.get(0),true);
 		//Fetching count of products loaded on screen

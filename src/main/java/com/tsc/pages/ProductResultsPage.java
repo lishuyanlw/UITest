@@ -48,6 +48,15 @@ public class ProductResultsPage extends BasePage{
 	@FindBy(xpath = "//span[contains(@class,'tagDimTitle')]")
 	public WebElement lblSearchResultTitle;
 
+	@FindBy(xpath = "//div[contains(@class,'ProductResults')]//section[@class='tsc-container']//*[@class='plp__showing-results']")
+	public WebElement lblSearchResultTitleMessage;
+
+	@FindBy(xpath = "//div[contains(@class,'ProductResults')]//section[@class='tsc-container']")
+	public WebElement cntSearchResultContainer;
+
+	@FindBy(xpath = "//div[contains(@class,'ProductResults')]//section[@class='tsc-container']//div[contains(@class,'product-count')]")
+	public WebElement lblProductCountOnPage;
+
 	//Navigation list
 	@FindBy(xpath = "//section[@class='tsc-container']//nav[@class='breadcrumb__nav']//li")
 	public List<WebElement> lstSearchResultNavigation;
@@ -328,6 +337,9 @@ public class ProductResultsPage extends BasePage{
 
 	@FindBy(xpath = "//ng-component//div[@class='modal-dialog']//div[@class='crv-btn-block']//button[contains(@class,'btnResizing') and contains(@class,'btn-negative')]")
 	public WebElement btnCancelInClearMyFavouritesPopupWindow;
+
+	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp__applied-filters']/button/span")
+	public List<WebElement> lstFilterApplied;
 
 	String searchkeyword;
 	public boolean bVerifyTitle=true;
@@ -2959,9 +2971,6 @@ public class ProductResultsPage extends BasePage{
 	 * @param-String - brand name to search on PRP page
 	 * @return boolean
 	 */
-	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp__applied-filters']/button/span")
-	public List<WebElement> lstFilterApplied;
-
 	public void verifyProductsOnPRPByBrandName(String brandName){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lstFilterApplied.get(0));
 
@@ -2995,6 +3004,37 @@ public class ProductResultsPage extends BasePage{
 			else
 				reporter.reportLogFail("Brand name of product on PRP page: "+lsBrandName+" is not same as on PDP page: "+brandName);
 		}
+	}
+
+	/**
+	 * This method will verify search result message on PRP page for input keyword
+	 * @param-String - searchkeyword to search on PRP page
+	 * @return boolean
+	 */
+	//Bug-19544-Select a brand in SYAT should not display Search Term
+	//Bug-19672-PRP showing result label getting encoded from search
+	public void verifySearchResultMessageOnPage(String searchKeyword){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblProductCountOnPage);
+		this.getReusableActionsInstance().scrollToElement(this.lblProductCountOnPage);
+
+		//if block is for Bug-19544 and else block is for Bug-19772
+//		String searchModel = this.judgeTestModel();
+		//verifying below if keyword is a brand or normal search. If it is brand, no message should be displayed
+//		if(searchModel.toLowerCase().contains("banner")){
+//			boolean itemExistenceFlag = this.checkChildElementExistingByTagName(cntSearchResultContainer,"h2");
+//			if(!itemExistenceFlag)
+//				reporter.reportLogPass("Search Result Text is not present for search keyword which is a brand");
+//			else
+//				reporter.reportLogFail("Search Result Text is present for search keyword which is a brand");
+//		}else{
+			this.waitForCondition(Driver->{return this.lblSearchResultTitleMessage.isDisplayed();},5000);
+			String searchTitleMessage = this.lblSearchResultTitleMessage.getText().split("\"")[1];
+			this.searchkeyword = searchKeyword.trim()+" ";
+			if(this.searchkeyword.equals(searchTitleMessage))
+				reporter.reportLogPass("Search Result message on page: "+searchTitleMessage+ " is same as input search keyword: "+searchKeyword);
+			else
+				reporter.reportLogFail("Search Result message on page: "+searchTitleMessage+ " is not same as input search keyword: "+searchKeyword);
+//		}
 	}
 
 
