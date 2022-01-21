@@ -855,6 +855,7 @@ public class ProductResultsPage extends BasePage{
 	public void verifySearchResultContent(List<WebElement> productList) {
 		int loopSize;
 		WebElement item,element;
+		List<WebElement> reviewStarList;
 		String lsProductName,lsText;
 
 		loopSize=productList.size();
@@ -978,6 +979,23 @@ public class ProductResultsPage extends BasePage{
 				else {
 					reporter.reportLogFail("Product review is not visible");
 				}
+				
+				//Bug 19536: [QA Defect - P3] PRP: Rating and Review not showing properly
+				reviewStarList=item.findElements(this.byProductReviewRatingImage);
+				if(reviewStarList.size()>0) {
+					reporter.reportLogPass("Product review stars are displaying correctly");
+				}
+				else {
+					reporter.reportLogFail("Product review stars are not displaying correctly");
+				}
+				
+				lsText=this.getElementInnerText(item.findElement(this.byProductReviewRatingCount));
+				if(!lsText.isEmpty()) {
+					reporter.reportLogPass("Product review count info is displaying correctly");
+				}
+				else {
+					reporter.reportLogFail("Product review count info is not displaying correctly");
+				}
 			}
 		}
 	}
@@ -994,6 +1012,8 @@ public class ProductResultsPage extends BasePage{
 		int checkAmount=5,loopSize;
 		WebElement item,element;
 		String lsProductName,lsText;
+		List<WebElement> reviewStarList;
+		
 		if(checkAmount<=productList.size()) {
 			loopSize=checkAmount;
 		}
@@ -1158,6 +1178,23 @@ public class ProductResultsPage extends BasePage{
 				}
 				else {
 					reporter.reportLogFail("Product review is not visible");
+				}
+				
+				//Bug 19536: [QA Defect - P3] PRP: Rating and Review not showing properly
+				reviewStarList=item.findElements(this.byProductReviewRatingImage);
+				if(reviewStarList.size()>0) {
+					reporter.reportLogPass("Product review stars are displaying correctly");
+				}
+				else {
+					reporter.reportLogFail("Product review stars are not displaying correctly");
+				}
+				
+				lsText=this.getElementInnerText(item.findElement(this.byProductReviewRatingCount));
+				if(!lsText.isEmpty()) {
+					reporter.reportLogPass("Product review count info is displaying correctly");
+				}
+				else {
+					reporter.reportLogFail("Product review count info is not displaying correctly");
 				}
 			}
 

@@ -448,6 +448,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 		int loopSize;
 		WebElement item,element;	
 		String lsProductName,lsText;
+		List<WebElement> reviewStarList;
 		
 		loopSize=productList.size();
 		for(int i=0;i<loopSize;i++) {		
@@ -569,6 +570,23 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				}
 				else {
 					reporter.reportLogFail("Product review is not visible");
+				}
+				
+				//Bug 19536: [QA Defect - P3] PRP: Rating and Review not showing properly
+				reviewStarList=item.findElements(this.byProductReviewRatingImage);
+				if(reviewStarList.size()>0) {
+					reporter.reportLogPass("Product review stars are displaying correctly");
+				}
+				else {
+					reporter.reportLogFail("Product review stars are not displaying correctly");
+				}
+				
+				lsText=this.getElementInnerText(item.findElement(this.byProductReviewRatingCount));
+				if(!lsText.isEmpty()) {
+					reporter.reportLogPass("Product review count info is displaying correctly");
+				}
+				else {
+					reporter.reportLogFail("Product review count info is not displaying correctly");
 				}
 			}
 			
