@@ -61,6 +61,9 @@ public class ProductResultsPage extends BasePage{
 	@FindBy(xpath = "//section[@class='tsc-container']//nav[@class='breadcrumb__nav']//li")
 	public List<WebElement> lstSearchResultNavigation;
 
+	@FindBy(xpath = "//div[@class='Header']//div[contains(@class,'Breadcrumb')]/div")
+	public WebElement lblBreadcrumbNavigation;
+
 	@FindBy(xpath = "//div[@class='Middle']")
 	public WebElement cntSearchResultTitleContainer;
 
@@ -384,7 +387,7 @@ public class ProductResultsPage extends BasePage{
 	 */
 	public boolean getSearchResultLoad(String searchKeyword,boolean clickEnterButtonFromKeyboard) {
 		GlobalHeaderPage globalHeader=new GlobalHeaderPage(this.getDriver());
-		this.waitForCondition(Driver->{return globalHeader.lblTSCChatBox.getText().toLowerCase().contains("chat");},10000);
+		this.waitForCondition(Driver->{return globalHeader.lblTSCChatBox.getText().toLowerCase().contains("chat");},8000);
 		this.getReusableActionsInstance().waitForElementVisibility(globalHeader.searchBox,120);
 		String[] data = searchKeyword.codePoints().mapToObj(cp->new String(Character.toChars(cp))).toArray(size->new String[size]);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeader.searchBox);
@@ -658,14 +661,18 @@ public class ProductResultsPage extends BasePage{
 			return "NoSearchResult";
 		}
 
-		String lsUrl=this.URL();
+		if(this.checkChildElementExistingByTagName(this.lblBreadcrumbNavigation,"div"))
+			//if(this.checkChildElementExistingByTagNameAndAttribute(this.cntSearchResultTitleContainer,"div","class","ScrollerContent"))
+			return "BannerImageSearch";
+
+		/*String lsUrl=this.URL();
 		if(!lsUrl.contains("dimensions=")) {
 			return "BannerImageSearch";
 		}
 
 		if(!lsUrl.contains("dimensions=0&")) {
 			return "BannerImageSearch";
-		}
+		}*/
 
 		int totalNumber=getProductSearchResultsTotalNumber();
 		if(totalNumber==1){
@@ -3018,8 +3025,8 @@ public class ProductResultsPage extends BasePage{
 		this.getReusableActionsInstance().scrollToElement(this.lblProductCountOnPage);
 
 		//if block is for Bug-19544 and else block is for Bug-19772
+		//Verifying below if keyword is a brand or normal search. If it is brand, no message should be displayed
 //		String searchModel = this.judgeTestModel();
-		//verifying below if keyword is a brand or normal search. If it is brand, no message should be displayed
 //		if(searchModel.toLowerCase().contains("banner")){
 //			boolean itemExistenceFlag = this.checkChildElementExistingByTagName(cntSearchResultContainer,"h2");
 //			if(!itemExistenceFlag)
