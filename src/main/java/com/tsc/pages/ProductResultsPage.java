@@ -1387,8 +1387,10 @@ public class ProductResultsPage extends BasePage{
 		this.firstLevelFilter=lsFirstLevelItem;
 		this.secondLevelFilter=lsSecondLevelItem;
 
-		WebElement searchInputButton;
+		WebElement searchInputButton,item;
 		List<WebElement> subItemList;
+		boolean bCategory=lsFirstLevelItem.toLowerCase().contains("category");
+		
 		for(int i=0;i<this.productFilterList.size();i++) {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i));
 			String lsHeader=this.productFilterList.get(i).getText().trim();
@@ -1396,7 +1398,7 @@ public class ProductResultsPage extends BasePage{
 				lsHeader=lsHeader.split("\\(")[0].trim();
 			}
 			//If found lsFirstLevelItem
-			if(lsHeader.equalsIgnoreCase(lsFirstLevelItem)) {
+			if(lsHeader.equalsIgnoreCase(lsFirstLevelItem)) {				
 				//If find a search input
 				collapseFilterItemWithClickingProductTitle(this.productFilterContainerList.get(i));
 				if(checkSearchInputButtonExistingInSubFilter(this.productFilterContainerList.get(i))) {
@@ -1425,6 +1427,8 @@ public class ProductResultsPage extends BasePage{
 							reporter.reportLogFail("The current page is not 1st page.");
 						}
 						
+						verifyUrlPatternAfterSelectFilter(false);
+						
 						return waitForSortingOrFilteringCompleted();
 					}
 					else {
@@ -1432,9 +1436,13 @@ public class ProductResultsPage extends BasePage{
 					}
 				}
 
-				expandFilterItem(this.productFilterContainerList.get(i));
+				if(!lsFirstLevelItem.toLowerCase().contains("category")) {
+					expandFilterItem(this.productFilterContainerList.get(i));
+				}
+				
 				String lsSubItem=null;
 				subItemList=this.productFilterContainerList.get(i).findElements(this.bySecondaryFilterAll);
+				
 				for(WebElement subItem : subItemList) {
 					getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
 					getReusableActionsInstance().staticWait(2000);
@@ -1443,8 +1451,21 @@ public class ProductResultsPage extends BasePage{
 						lsSubItem = subItem.findElement(By.xpath(".//span[@class='plp-filter-panel__filter-list__item-label-text visually-hidden']")).getText().trim();
 						subItem = subItem.findElement(By.xpath("//span[@class='plp-filter-panel__filter-list__item-label-text visually-hidden']/preceding-sibling::span"));
 					}
-					else
-						lsSubItem = subItem.findElement(By.xpath(".//span[@class='plp-filter-panel__filter-list__item-label-text']")).getText().trim();
+					else {	
+						if(lsFirstLevelItem.toLowerCase().contains("category")) {
+							item=subItem.findElement(By.xpath(".//a"));							
+							if(!this.hasElementAttribute(item, "class")) {
+								lsSubItem = item.getText().trim();
+							}
+							else {
+								continue;
+							}
+						}
+						else {
+							lsSubItem=subItem.findElement(By.xpath(".//span[@class='plp-filter-panel__filter-list__item-label-text']")).getText().trim();
+						}
+												 
+					}
 					getReusableActionsInstance().staticWait(2000);
 					//If found lsSecondLevelItem
 					if(lsSubItem.equalsIgnoreCase(lsSecondLevelItem)) {
@@ -1467,6 +1488,10 @@ public class ProductResultsPage extends BasePage{
 						else {
 							reporter.reportLogFail("The current page is not 1st page.");
 						}
+						
+						//Bug 19389: PRP Filter Panel - Shop by Category selection does not work as intended
+						//Bug 19556: [QA Defect - P3] PRP: when selecting a subcategory from Shop by category, the dimension in the URL should start over not appending
+						verifyUrlPatternAfterSelectFilter(bCategory);
 						
 						return waitForSortingOrFilteringCompleted();
 					}
@@ -1506,11 +1531,44 @@ public class ProductResultsPage extends BasePage{
 						reporter.reportLogFail("The current page is not 1st page.");
 					}
 					
+					verifyUrlPatternAfterSelectFilter(false);
+					
 					return waitForSortingOrFilteringCompleted();
 				}
 			}
 		}
 		return false;
+	}
+	
+	/**
+	 * This method will verify Url after selecting filters.
+	 * @param boolean bCategory: true for Category filter while false for others filter
+	 * @return void
+	 * @author Wei.Li
+	 */
+	//Bug 19389: PRP Filter Panel - Shop by Category selection does not work as intended
+	//Bug 19556: [QA Defect - P3] PRP: when selecting a subcategory from Shop by category, the dimension in the URL should start over not appending
+	public void verifyUrlPatternAfterSelectFilter(boolean bCategory) {		
+		String lsUrl=this.URL();
+		boolean bVerify;
+		if(bCategory) {
+			bVerify=lsUrl.matches(".*dimensions=\\d+&.*");
+			if(bVerify) {
+				reporter.reportLogPass("The Url for Category filter is displaying correctly.");
+			}
+			else {
+				reporter.reportLogFail("The Url for Category filter is not displaying correctly.");
+			}					
+		}
+		else {
+			bVerify= lsUrl.matches(".*dimensions=\\d+%7C\\d+.*");
+			if(bVerify) {
+				reporter.reportLogPass("The Url for the filters except Category filter is displaying correctly.");
+			}
+			else {
+				reporter.reportLogFail("The Url for the filters except Category filter is not displaying correctly.");
+			}
+		}		
 	}
 
 	/**

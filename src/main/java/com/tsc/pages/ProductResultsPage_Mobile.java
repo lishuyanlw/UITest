@@ -113,8 +113,9 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 		this.secondLevelFilter=lsSecondLevelItem;
 		
 		String lsHeader,lsSubItem;
-		WebElement subItem,searchInputButton;
+		WebElement subItem,searchInputButton,item;
 		List<WebElement> subItemList;
+		boolean bCategory=lsFirstLevelItem.toLowerCase().contains("category");
 			
 		for(int i=0;i<this.productFilterList.size();i++) {			
 			if(i>0) {
@@ -127,9 +128,12 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 			
 			//If found lsFirstLevelItem
 			if(lsHeader.equalsIgnoreCase(lsFirstLevelItem)) {					
+				if(!lsFirstLevelItem.toLowerCase().contains("category")) {
+					collapseFilterItemWithClickingProductTitle(this.productFilterContainerList.get(i));
+				}
+				
 				//If find a search input
-				collapseFilterItemWithClickingProductTitle(this.productFilterContainerList.get(i));
-				if(checkSearchInputButtonExistingInSubFilter(this.productFilterContainerList.get(i))) {					
+				if(checkSearchInputButtonExistingInSubFilter(this.productFilterContainerList.get(i))) {						
 					searchInputButton=this.productFilterContainerList.get(i).findElement(this.byProductFilterSearchInput);
 					//getReusableActionsInstance().javascriptScrollByVisibleElement(searchInputButton);
 					searchInputButton.sendKeys(lsSecondLevelItem);
@@ -158,14 +162,20 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 						else {
 							reporter.reportLogFail("The current page is not 1st page.");
 						}
-						
+												
 						closeFilterPopupWindow();
+						
+						verifyUrlPatternAfterSelectFilter(false);
+
 						return true;
 					}
 					break;
 				}
 				
-				expandFilterItem(this.productFilterContainerList.get(i));				
+				if(!lsFirstLevelItem.toLowerCase().contains("category")) {
+					expandFilterItem(this.productFilterContainerList.get(i));	
+				}
+							
 				if(i>0) {
 					this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i-1));
 				}	
@@ -176,11 +186,31 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				subItemList=this.productFilterContainerList.get(i).findElements(this.bySecondaryFilterAll);				
 				for(int j=0;j<subItemList.size();j++) {	
 					subItem=subItemList.get(j);
-					lsSubItem=this.getElementInnerText(subItem.findElement(By.xpath(".//span[@class='plp-filter-panel__filter-list__item-label-text']")));
+					
+					//if statement to test Bug-19685 - Review filter
+					if(lsSecondLevelItem.toLowerCase().contains("star")){
+						lsSubItem = subItem.findElement(By.xpath(".//span[@class='plp-filter-panel__filter-list__item-label-text visually-hidden']")).getText().trim();
+						subItem = subItem.findElement(By.xpath("//span[@class='plp-filter-panel__filter-list__item-label-text visually-hidden']/preceding-sibling::span"));
+					}
+					else {	
+						if(lsFirstLevelItem.toLowerCase().contains("category")) {
+							item=subItem.findElement(By.xpath(".//a"));							
+							if(!this.hasElementAttribute(item, "class")) {
+								lsSubItem = item.getText().trim();
+							}
+							else {
+								continue;
+							}
+						}
+						else {
+							lsSubItem=subItem.findElement(By.xpath(".//span[@class='plp-filter-panel__filter-list__item-label-text']")).getText().trim();
+						}
+					}
+					
+//					lsSubItem=this.getElementInnerText(subItem.findElement(By.xpath(".//span[@class='plp-filter-panel__filter-list__item-label-text']")));
 					getReusableActionsInstance().staticWait(500);
 					//If found lsSecondLevelItem
-					if(lsSubItem.equalsIgnoreCase(lsSecondLevelItem)) {
-						System.out.println("Selected lsSubItem: "+lsSubItem);
+					if(lsSubItem.equalsIgnoreCase(lsSecondLevelItem)) {						
 						getReusableActionsInstance().staticWait(500);
 						if(j>4) {
 							this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItemList.get(j-2));
@@ -210,7 +240,16 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 							reporter.reportLogFail("The current page is not 1st page.");
 						}
 						
-						closeFilterPopupWindow();			
+						//Bug 19389: PRP Filter Panel - Shop by Category selection does not work as intended
+						//Bug 19556: [QA Defect - P3] PRP: when selecting a subcategory from Shop by category, the dimension in the URL should start over not appending
+						if(!lsFirstLevelItem.toLowerCase().contains("category")) {
+							closeFilterPopupWindow();
+							verifyUrlPatternAfterSelectFilter(false);
+						}	
+						else {
+							verifyUrlPatternAfterSelectFilter(true);
+						}
+						
 						return true;
 					}
 				}
@@ -268,7 +307,10 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 						reporter.reportLogFail("The current page is not 1st page.");
 					}
 					
-					closeFilterPopupWindow();					
+					closeFilterPopupWindow();	
+					
+					verifyUrlPatternAfterSelectFilter(false);
+					
 					return true;
 				}
 			}			
