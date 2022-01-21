@@ -1201,7 +1201,8 @@ public class ProductResultsPage extends BasePage{
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSortSelect);
 		Select sortOption= new Select(this.btnSortSelect);
 		sortOption.selectByVisibleText(lsOption);
-		
+
+		this.waitForSortingOrFilteringCompleted();
 		this.getReusableActionsInstance().staticWait(2000);		
 		if(!this.URL().contains("page=")) {
 			reporter.reportLogPass("The Url does not contain page term.");
