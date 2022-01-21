@@ -30,7 +30,7 @@ public class SR_TC07_Verify_ProductSearchResult_MoreOrLessButtonTest extends Bas
 	List<String> lstMoreButton=TestDataHandler.constantData.getSearchResultPage().getLst_MoreButton();
 	String lsMsg;
 	
-	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0));
+	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0),true);
 	String lsTestModel=getProductResultsPageThreadLocal().judgeTestModel();	
 	
 	reporter.softAssert(getProductResultsPageThreadLocal().verifyUrlContainDimensionAndKeyword(lsKeywordList.get(0).get(0)), "The Url contains correct dimensions and keyword", "The Url does not contain correct dimensions and keyword");

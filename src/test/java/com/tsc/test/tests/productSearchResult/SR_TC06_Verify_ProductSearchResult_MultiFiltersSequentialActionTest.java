@@ -29,7 +29,7 @@ public class SR_TC06_Verify_ProductSearchResult_MultiFiltersSequentialActionTest
 	String lsSearchResultPageDefaultSetting=TestDataHandler.constantData.getSearchResultPage().getLbl_SearchResultPageDefaultSetting();
 	List<WebElement> productList;
 	
-	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0));
+	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0),true);
 	String lsTestModel=getProductResultsPageThreadLocal().judgeTestModel();
 	
 	//Test filter option for sequential actions

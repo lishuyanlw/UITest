@@ -28,7 +28,7 @@ public class SR_TC08_Verify_ProductSearchResult_PaginationTest extends BaseTest{
 	String lsMsg;
 	String lsCurrentPageFirstProductName,lsPreviousPageFirstProductName,lsNextPageFirstProductName;
 	
-	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeyword);
+	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeyword,true);
 	lsCurrentPageFirstProductName=getProductResultsPageThreadLocal().getFirstProductName();
 	String lsTestModel=getProductResultsPageThreadLocal().judgeTestModel();	
 	
