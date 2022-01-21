@@ -19,6 +19,7 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction_Gen
 	 * CER-224
 	 * CER-233
 	 * CER-631
+	 * Bug-19680 - Change the placeholder text in the brand section - Search Product using magnifying glass icon
 	 */
 	@Test(groups={"ProductSearch","Regression","Regression_Tablet","Regression_Mobile"})
 	public void validateProductSearchResult_FilterSectionFunction_GeneralFilter() throws IOException {
@@ -33,7 +34,7 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction_Gen
 		List<WebElement> productList;
 		String lsMsg;
 
-		getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0));
+		getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0),false);
 
 		String lsTestModel = getProductResultsPageThreadLocal().judgeTestModel();
 

@@ -25,7 +25,7 @@ public class SR_TC03_Verify_ProductSearchResult_SortAndFilterSectionContent exte
 	List<String> lsSortOption=TestDataHandler.constantData.getSearchResultPage().getLst_SortOption();
 	List<String> lsFilterOptionHeader=TestDataHandler.constantData.getSearchResultPage().getLst_FilterOptionHeader();
 	List<String> lsSortOptionMobile=TestDataHandler.constantData.getSearchResultPage().getLst_SortOptionMobile();
-	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0));
+	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0),true);
 
 	reporter.softAssert(getProductResultsPageThreadLocal().verifySortOptions(lsSortOption), "Sort options in search result filters are correct", "Sort options in search result filters are incorrect");
 

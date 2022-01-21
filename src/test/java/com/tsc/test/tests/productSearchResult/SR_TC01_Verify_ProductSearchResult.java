@@ -33,7 +33,7 @@ public class SR_TC01_Verify_ProductSearchResult extends BaseTest{
 
 	int keyWordSize=lsKeywordList.size();
 	for(int i=0;i<keyWordSize;i++) {		
-		getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(i).trim());
+		getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(i).trim(),true);
 		
 		String lsTestModel=getProductResultsPageThreadLocal().judgeTestModel();	
 		reporter.reportLog("Search Model and keyword : "+lsTestModel+" : "+lsKeywordList.get(i)+ " for browser: "+getProductResultsPageThreadLocal().getExecutionBrowserName());

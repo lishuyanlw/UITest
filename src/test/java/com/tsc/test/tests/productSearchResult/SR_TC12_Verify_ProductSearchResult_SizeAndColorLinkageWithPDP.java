@@ -35,7 +35,7 @@ public class SR_TC12_Verify_ProductSearchResult_SizeAndColorLinkageWithPDP exten
 
 		//Verifying Bug-19703 below
 		//Searching keyword - iPads & Tablets on Home Page to load data on PRP page
-		getProductResultsPageThreadLocal().getSearchResultLoad(lst_SearchKeyword.get(0));
+		getProductResultsPageThreadLocal().getSearchResultLoad(lst_SearchKeyword.get(0),true);
 		//Fetching count of products loaded on screen
 		productList=getProductResultsPageThreadLocal().getProductList();
 		for(int loop=0;loop<productList.size();loop++) {

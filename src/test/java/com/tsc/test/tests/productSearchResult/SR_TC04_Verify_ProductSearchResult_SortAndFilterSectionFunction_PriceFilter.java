@@ -33,7 +33,7 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction_Pri
         List<WebElement> productList;
         String lsMsg;
 
-        getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0));
+        getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0),true);
 
         String lsTestModel=getProductResultsPageThreadLocal().judgeTestModel();
 
