@@ -22,6 +22,8 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction_Gen
 	 * Bug-19680 - Change the placeholder text in the brand section - Search Product using magnifying glass icon
 	 * Bug 19389: PRP Filter Panel - Shop by Category selection does not work as intended - covered in verifyUrlPatternAfterSelectFilter function
 	 * Bug 19556: [QA Defect - P3] PRP: when selecting a subcategory from Shop by category, the dimension in the URL should start over not appending - covered in verifyUrlPatternAfterSelectFilter function
+	 * Bug 19628: [QA Defect - P3] PRP: no products display if user is on the last page and select a faucet from the left nav - covered in selectFilterItemInLeftPanel() function
+	 * Bug 19557: [QA Defect - P3] when selecting the checkbox options in the left nav, the dimension IDs in the URL should use pipe character not... - covered in verifyUrlPatternAfterSelectFilter function
 	 */
 	@Test(groups={"ProductSearch","Regression","Regression_Tablet","Regression_Mobile"})
 	public void validateProductSearchResult_FilterSectionFunction_GeneralFilter() throws IOException {
