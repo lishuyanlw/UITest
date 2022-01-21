@@ -267,6 +267,9 @@ public class GlobalHeaderPage extends BasePage{
 	@FindBy(xpath="//div[contains(@class,'searchContainer')]//button[contains(@class,'aa-ClearButton')]")
 	public WebElement btnMobileSearchMenuClose;
 
+	@FindBy(xpath="//div[@class='helpButton']//span[@id='helpButtonSpan']/span[@class='message']")
+	public WebElement lblTSCChatBox;
+
 	public void clickOnClearanceHeaderOption() {
 		getReusableActionsInstance().clickIfAvailable(clearanceHeader);
 	}

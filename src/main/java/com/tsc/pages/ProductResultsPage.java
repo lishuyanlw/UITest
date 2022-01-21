@@ -372,6 +372,7 @@ public class ProductResultsPage extends BasePage{
 	 */
 	public boolean getSearchResultLoad(String searchKeyword,boolean clickEnterButtonFromKeyboard) {
 		GlobalHeaderPage globalHeader=new GlobalHeaderPage(this.getDriver());
+		this.waitForCondition(Driver->{return globalHeader.lblTSCChatBox.getText().toLowerCase().contains("chat");},10000);
 		this.getReusableActionsInstance().waitForElementVisibility(globalHeader.searchBox,120);
 		String[] data = searchKeyword.codePoints().mapToObj(cp->new String(Character.toChars(cp))).toArray(size->new String[size]);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeader.searchBox);
@@ -1196,8 +1197,7 @@ public class ProductResultsPage extends BasePage{
 		Select sortOption= new Select(this.btnSortSelect);
 		sortOption.selectByVisibleText(lsOption);
 
-		this.waitForSortingOrFilteringCompleted();
-		this.getReusableActionsInstance().staticWait(2000);		
+		this.getReusableActionsInstance().staticWait(8000);
 		if(!this.URL().contains("page=")) {
 			reporter.reportLogPass("The Url does not contain page term.");
 		}
