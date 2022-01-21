@@ -21,6 +21,7 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction_Dro
      * CER-631
      * Bug 19117
      * Bug 19734
+     * 
      */
     @Test(groups={"ProductSearch","Regression","Regression_Tablet","Regression_Mobile"})
     public void validateProductSearchResult_FilterSectionFunction_DropdownFilter() throws IOException {

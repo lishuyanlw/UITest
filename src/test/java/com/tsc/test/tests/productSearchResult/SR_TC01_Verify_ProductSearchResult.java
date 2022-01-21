@@ -17,6 +17,8 @@ public class SR_TC01_Verify_ProductSearchResult extends BaseTest{
 	 * CER-217
 	 * CER-216
 	 * CER-218
+	 * Bug 19285
+	 * Bug 19537
 	 */
 	@Test(groups={"ProductSearch","Regression","Regression_Tablet","Regression_Mobile"})
 	public void validateProductSearchResult() throws IOException {
