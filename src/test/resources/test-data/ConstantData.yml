@@ -91,7 +91,7 @@ searchResultPage:
   lst_SearchOption:
     - filterType: Product
       filterOption: 
-      - ["Brand","Joan Rivers"]
+      - ["Category","Fashion"]
       - ["Shop by colour","Black"]
     - filterType: Price
       filterOption:
