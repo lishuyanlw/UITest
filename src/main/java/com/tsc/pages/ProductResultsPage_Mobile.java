@@ -226,6 +226,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 						this.getReusableActionsInstance().staticWait(2000);
 						
 						//Bug 19628: [QA Defect - P3] PRP: no products display if user is on the last page and select a faucet from the left nav
+						//Bug 19556: [QA Defect - P3] PRP: when selecting a subcategory from Shop by category, the dimension in the URL should start over not appending
 						if(!this.URL().contains("page=")) {
 							reporter.reportLogPass("The Url does not contain page term.");
 						}
@@ -240,8 +241,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 							reporter.reportLogFail("The current page is not 1st page.");
 						}
 						
-						//Bug 19389: PRP Filter Panel - Shop by Category selection does not work as intended
-						//Bug 19556: [QA Defect - P3] PRP: when selecting a subcategory from Shop by category, the dimension in the URL should start over not appending
+						//Bug 19389: PRP Filter Panel - Shop by Category selection does not work as intended						
 						if(!lsFirstLevelItem.toLowerCase().contains("category")) {
 							closeFilterPopupWindow();
 							verifyUrlPatternAfterSelectFilter(false);

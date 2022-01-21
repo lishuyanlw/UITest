@@ -1487,6 +1487,7 @@ public class ProductResultsPage extends BasePage{
 						this.getReusableActionsInstance().staticWait(2000);
 						
 						//Bug 19628: [QA Defect - P3] PRP: no products display if user is on the last page and select a faucet from the left nav
+						//Bug 19556: [QA Defect - P3] PRP: when selecting a subcategory from Shop by category, the dimension in the URL should start over not appending
 						if(!this.URL().contains("page=")) {
 							reporter.reportLogPass("The Url does not contain page term.");
 						}
@@ -1501,8 +1502,7 @@ public class ProductResultsPage extends BasePage{
 							reporter.reportLogFail("The current page is not 1st page.");
 						}
 						
-						//Bug 19389: PRP Filter Panel - Shop by Category selection does not work as intended
-						//Bug 19556: [QA Defect - P3] PRP: when selecting a subcategory from Shop by category, the dimension in the URL should start over not appending
+						//Bug 19389: PRP Filter Panel - Shop by Category selection does not work as intended						
 						verifyUrlPatternAfterSelectFilter(bCategory);
 						
 						return waitForSortingOrFilteringCompleted();
@@ -1559,7 +1559,7 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	//Bug 19389: PRP Filter Panel - Shop by Category selection does not work as intended
-	//Bug 19556: [QA Defect - P3] PRP: when selecting a subcategory from Shop by category, the dimension in the URL should start over not appending
+	//Bug 19557: [QA Defect - P3] when selecting the checkbox options in the left nav, the dimension IDs in the URL should use pipe character not... - Boards (azure.com)
 	public void verifyUrlPatternAfterSelectFilter(boolean bCategory) {		
 		String lsUrl=this.URL();
 		boolean bVerify;
