@@ -144,7 +144,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 						
 						this.getReusableActionsInstance().staticWait(2000);
 						
-						//Bug 19658: [QA Defect - P3] PRP: Page not refreshed to previous state with browser back button with filter applied
+						//Bug 19628: [QA Defect - P3] PRP: no products display if user is on the last page and select a faucet from the left nav
 						if(!this.URL().contains("page=")) {
 							reporter.reportLogPass("The Url does not contain page term.");
 						}
@@ -194,6 +194,8 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 						getReusableActionsInstance().staticWait(3000);
 
 						this.getReusableActionsInstance().staticWait(2000);
+						
+						//Bug 19628: [QA Defect - P3] PRP: no products display if user is on the last page and select a faucet from the left nav
 						if(!this.URL().contains("page=")) {
 							reporter.reportLogPass("The Url does not contain page term.");
 						}
@@ -250,6 +252,8 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 					getReusableActionsInstance().staticWait(1000);
 					
 					this.getReusableActionsInstance().staticWait(2000);
+					
+					//Bug 19628: [QA Defect - P3] PRP: no products display if user is on the last page and select a faucet from the left nav
 					if(!this.URL().contains("page=")) {
 						reporter.reportLogPass("The Url does not contain page term.");
 					}
