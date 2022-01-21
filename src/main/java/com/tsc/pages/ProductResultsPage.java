@@ -843,6 +843,7 @@ public class ProductResultsPage extends BasePage{
 			else {
 				reporter.reportLogFail("Product Name is empty");
 			}
+			//Bug 19537: [QA Defect - P3] PRP: Is Price should be bold
 			if(element.getCssValue("font-weight").equalsIgnoreCase("600")) {
 				reporter.reportLogPass("Product name is semi bold font");
 			}
@@ -859,7 +860,7 @@ public class ProductResultsPage extends BasePage{
 				else {
 					reporter.reportLogFail("Product title is empty");
 				}
-				
+				//Bug 19537: [QA Defect - P3] PRP: Is Price should be bold
 				if(element.getCssValue("font-weight").equalsIgnoreCase("800")) {
 					reporter.reportLogPass("Product title is bold font");
 				}
@@ -924,6 +925,7 @@ public class ProductResultsPage extends BasePage{
 			else {
 				reporter.reportLogFail("Product Now Price is not empty");
 			}
+			//Bug 19537: [QA Defect - P3] PRP: Is Price should be bold
 			if(element.getCssValue("font-weight").equalsIgnoreCase("600")) {
 				reporter.reportLogPass("Product NowPrice is semi bold font");
 			}
@@ -987,6 +989,7 @@ public class ProductResultsPage extends BasePage{
 			else {
 				reporter.reportLogFail("Product Name is empty");
 			}
+			//Bug 19537: [QA Defect - P3] PRP: Is Price should be bold
 			if(element.getCssValue("font-weight").equalsIgnoreCase("600")) {
 				reporter.reportLogPass("Product Name is semi bold font");
 			}
@@ -1003,6 +1006,7 @@ public class ProductResultsPage extends BasePage{
 				else {
 					reporter.reportLogFail("Product title is empty");
 				}
+				//Bug 19537: [QA Defect - P3] PRP: Is Price should be bold
 				if(element.getCssValue("font-weight").equalsIgnoreCase("800")) {
 					reporter.reportLogPass("Product title is bold font");
 				}
@@ -1102,6 +1106,7 @@ public class ProductResultsPage extends BasePage{
 			else {
 				reporter.reportLogFail("Product Now Price is not empty");
 			}
+			//Bug 19537: [QA Defect - P3] PRP: Is Price should be bold
 			if(element.getCssValue("font-weight").equalsIgnoreCase("600")) {
 				reporter.reportLogPass("Product NowPrice is semi bold font");
 			}
@@ -1185,6 +1190,7 @@ public class ProductResultsPage extends BasePage{
 	 * @return true/false
 	 * @author Wei.Li
 	 */
+	//Bug 19734: [UAT Defect]: PRP: Sorting filter is not retained when going past page 1
 	public boolean chooseSortOptionByVisibleText(String lsOption) {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSortSelect);
 		Select sortOption= new Select(this.btnSortSelect);
@@ -1214,6 +1220,7 @@ public class ProductResultsPage extends BasePage{
 	 * @return String: error message
 	 * @author Wei.Li
 	 */
+	//Bug 19117: PRP - Sorting Brand A-Z, not working.
 	public String verifyPriceFirstSort(boolean bHighest) {
 		String lsErrorMsg="";
 		if(this.productResultList.size()==0) {
@@ -1257,6 +1264,7 @@ public class ProductResultsPage extends BasePage{
 	 * @return String: error message
 	 * @author Wei.Li
 	 */
+	//Bug 19117: PRP - Sorting Brand A-Z, not working.
 	public String verifyHighestReviewFirstSort() {
 		String lsErrorMsg="";
 		if(this.productResultList.size()==0) {
@@ -1298,6 +1306,7 @@ public class ProductResultsPage extends BasePage{
 	 * @return String: error message
 	 * @author Wei.Li
 	 */
+	//Bug 19117: PRP - Sorting Brand A-Z, not working.
 	public String verifyBrandNameOrderByAlphabet() {
 		String lsErrorMsg="";
 		if(this.productResultList.size()==0) {
@@ -1394,6 +1403,8 @@ public class ProductResultsPage extends BasePage{
 						getReusableActionsInstance().clickIfAvailable(subItemList.get(0));
 						
 						this.getReusableActionsInstance().staticWait(2000);
+						
+						//Bug 19658: [QA Defect - P3] PRP: Page not refreshed to previous state with browser back button with filter applied
 						if(!this.URL().contains("page=")) {
 							reporter.reportLogPass("The Url does not contain page term.");
 						}
@@ -2341,8 +2352,9 @@ public class ProductResultsPage extends BasePage{
 		if(checkProductColorOptionEnabledItemAvailableWithMouseHover(itemContainer)) {	
 			String lsColor,lsText;
 			WebElement element=null;
-			//int selectNumber=0;
+			int selectNumber=0;
 			
+			//Bug 19285: Product image not updating when colour is chosen on smartphone or tablet
 			String lsImageSrcBeforeClickingColor=itemContainer.findElement(byProductImage).getAttribute("src");
 			List<WebElement> optionList=itemContainer.findElements(byProductOptionColorItemEnabledList);
 			if(optionList.size()>1) {
@@ -2358,7 +2370,7 @@ public class ProductResultsPage extends BasePage{
 						element=item;
 						break;
 					}
-					//selectNumber++;
+					selectNumber++;
 				}
 			}
 			else {
@@ -2379,7 +2391,7 @@ public class ProductResultsPage extends BasePage{
 			}
 			else {
 				Select sizeSelect= new Select(element.findElement(By.xpath("./parent::select")));
-				sizeSelect.selectByIndex(optionList.size()-1);
+				sizeSelect.selectByIndex(selectNumber);
 			}	
 			this.getReusableActionsInstance().staticWait(2000);
 			this.waitForCondition(Driver->{return !lsButtonTextBeforeClickingColor.equalsIgnoreCase(this.getElementInnerText(itemContainer.findElement(byProductGoToDetails)));}, 20000);

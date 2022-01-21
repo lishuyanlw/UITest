@@ -143,6 +143,8 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 						getReusableActionsInstance().staticWait(3000);
 						
 						this.getReusableActionsInstance().staticWait(2000);
+						
+						//Bug 19658: [QA Defect - P3] PRP: Page not refreshed to previous state with browser back button with filter applied
 						if(!this.URL().contains("page=")) {
 							reporter.reportLogPass("The Url does not contain page term.");
 						}
@@ -415,6 +417,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 			else {
 				reporter.reportLogFail("Product Name is empty");
 			}
+			//Bug 19537: [QA Defect - P3] PRP: Is Price should be bold
 			if(element.getCssValue("font-weight").equalsIgnoreCase("600")) {
 				reporter.reportLogPass("Product name is semi bold font");
 			}
@@ -431,6 +434,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				else {
 					reporter.reportLogFail("Product title is empty");
 				}
+				//Bug 19537: [QA Defect - P3] PRP: Is Price should be bold
 				if(element.getCssValue("font-weight").equalsIgnoreCase("800")) {
 					reporter.reportLogPass("Product title is bold font");
 				}
@@ -493,6 +497,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 			else {
 				reporter.reportLogFail("Product Now Price is not empty");
 			}
+			//Bug 19537: [QA Defect - P3] PRP: Is Price should be bold
 			if(element.getCssValue("font-weight").equalsIgnoreCase("600")) {
 				reporter.reportLogPass("Product NowPrice is semi bold font");
 			}
@@ -832,6 +837,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 			WebElement element=null;
 			int selectNumber=0;
 			
+			//Bug 19285: Product image not updating when colour is chosen on smartphone or tablet
 			String lsImageSrcBeforeClickingColor=itemContainer.findElement(byProductImage).getAttribute("src");			
 			List<WebElement> optionList=this.getDriver().findElements(byProductOptionColorItemEnabledList);
 			if(optionList.size()>1) {
