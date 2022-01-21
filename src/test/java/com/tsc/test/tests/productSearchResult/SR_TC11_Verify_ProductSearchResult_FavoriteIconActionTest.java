@@ -30,7 +30,7 @@ public class SR_TC11_Verify_ProductSearchResult_FavoriteIconActionTest extends B
 	String lsFirstName=TestDataHandler.constantData.getLoginUser().getLbl_FirstName();
 	String lsMsg;
 	
-	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0));
+	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0),true);
 	String lsTestModel=getProductResultsPageThreadLocal().judgeTestModel();	
 	
 	reporter.softAssert(getProductResultsPageThreadLocal().verifyUrlContainDimensionAndKeyword(lsKeywordList.get(0).get(0)), "The Url contains correct dimensions and keyword", "The Url does not contain correct dimensions and keyword");
