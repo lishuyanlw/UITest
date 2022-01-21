@@ -14,7 +14,7 @@ import com.tsc.test.base.BaseTest;
 
 public class SR_TC12_Verify_ProductSearchResult_SizeAndColorLinkageWithPDP extends BaseTest{
    /*
-   Bug-19703-PRP to PDP after selecting colour from dropdown(no swatches)
+   * Bug-19703-PRP to PDP after selecting colour from dropdown(no swatches)
    */
 	@Test(groups={"ProductSearch","Regression","Regression_Tablet"})
 	public void validateProductSearchResult_SizeAndColorLinkageWithPDP() throws IOException {
