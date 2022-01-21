@@ -16,7 +16,6 @@ public class SR_TC05_Verify_ProductSearchResult_MultiFiltersTest extends BaseTes
 	 * CER-225
 	 * CER-226
 	 * Bug-19685 - Reviews filter doesn't display stars in filter - covered in selectFilterItemInLeftPanel() function
-	 * Bug 19628: [QA Defect - P3] PRP: no products display if user is on the last page and select a faucet from the left nav - covered in selectFilterItemInLeftPanel() function
 	 */
 	@Test(groups={"ProductSearch","Regression","Regression_Tablet","Regression_Mobile"})
 	public void validateProductSearchResult_MultiFiltersFunction() throws IOException {
