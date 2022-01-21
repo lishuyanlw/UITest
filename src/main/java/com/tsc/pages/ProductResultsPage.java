@@ -370,7 +370,7 @@ public class ProductResultsPage extends BasePage{
 	 * @return true/false
 	 * @author Wei.Li
 	 */
-	public boolean getSearchResultLoad(String searchKeyword) {
+	public boolean getSearchResultLoad(String searchKeyword,boolean clickEnterButtonFromKeyboard) {
 		GlobalHeaderPage globalHeader=new GlobalHeaderPage(this.getDriver());
 		this.getReusableActionsInstance().waitForElementVisibility(globalHeader.searchBox,120);
 		String[] data = searchKeyword.codePoints().mapToObj(cp->new String(Character.toChars(cp))).toArray(size->new String[size]);
@@ -387,7 +387,13 @@ public class ProductResultsPage extends BasePage{
 			return this.searchResultSection.isDisplayed();
 		},150000);
 
-		super.pressEnterKey(globalHeader.searchBox);
+		//Bug-19680 - Change the placeholder text in the brand section - Search Product using magnifying glass icon
+		if(clickEnterButtonFromKeyboard)
+			super.pressEnterKey(globalHeader.searchBox);
+		else {
+			globalHeader.validateSearchSubmitbtn();
+			this.getReusableActionsInstance().clickIfAvailable(globalHeader.btnSearchSubmit);
+		}
 
 		this.getReusableActionsInstance().staticWait(5000);
 		/*waitForCondition(Driver->{
@@ -1864,7 +1870,7 @@ public class ProductResultsPage extends BasePage{
 
 		this.selectedProductItem.init();
 
-		this.getSearchResultLoad(productNumber);
+		this.getSearchResultLoad(productNumber,true);
 
 		WebElement item=this.productResultList.get(0);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
@@ -1882,7 +1888,7 @@ public class ProductResultsPage extends BasePage{
 	public boolean goToFirstProductItem(String lsProductNumber) {
 		this.selectedProductItem.init();
 
-		getSearchResultLoad(lsProductNumber);
+		getSearchResultLoad(lsProductNumber,true);
 		WebElement item=this.productResultList.get(0);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 
@@ -2593,12 +2599,12 @@ public class ProductResultsPage extends BasePage{
 		loginPage.LoginWithoutWaitingTime(lsUserName, lsPassword);
 		this.getReusableActionsInstance().waitForElementVisibility(loginPage.lblSignInGlobalResponseBanner);
 
-		this.getSearchResultLoad(lsFirstProductName);
+		this.getSearchResultLoad(lsFirstProductName,true);
 		item=this.productResultList.get(0).findElement(this.byProductHeaderLike);
 
 		if(item.getAttribute("aria-pressed").equalsIgnoreCase("true")) {
 			clearFavoriteHistory();
-			this.getSearchResultLoad(lsKeyword);
+			this.getSearchResultLoad(lsKeyword,true);
 			item=this.productResultList.get(0).findElement(this.byProductHeaderLike);
 		}
 
