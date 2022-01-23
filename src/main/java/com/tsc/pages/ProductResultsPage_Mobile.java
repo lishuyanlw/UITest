@@ -115,7 +115,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 		String lsHeader,lsSubItem;
 		WebElement subItem,searchInputButton,item;
 		List<WebElement> subItemList;
-		boolean bCategory=lsFirstLevelItem.toLowerCase().contains("category");
+		boolean bCategory=lsFirstLevelItem.equalsIgnoreCase("category");
 			
 		for(int i=0;i<this.productFilterList.size();i++) {			
 			if(i>0) {
@@ -128,7 +128,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 			
 			//If found lsFirstLevelItem
 			if(lsHeader.equalsIgnoreCase(lsFirstLevelItem)) {					
-				if(!lsFirstLevelItem.toLowerCase().contains("category")) {
+				if(!lsFirstLevelItem.equalsIgnoreCase("category")) {
 					collapseFilterItemWithClickingProductTitle(this.productFilterContainerList.get(i));
 				}
 				
@@ -172,7 +172,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 					break;
 				}
 				
-				if(!lsFirstLevelItem.toLowerCase().contains("category")) {
+				if(!lsFirstLevelItem.equalsIgnoreCase("category")) {
 					expandFilterItem(this.productFilterContainerList.get(i));	
 				}
 							
@@ -193,7 +193,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 						subItem = subItem.findElement(By.xpath("//span[@class='plp-filter-panel__filter-list__item-label-text visually-hidden']/preceding-sibling::span"));
 					}
 					else {	
-						if(lsFirstLevelItem.toLowerCase().contains("category")) {
+						if(lsFirstLevelItem.equalsIgnoreCase("category")) {
 							item=subItem.findElement(By.xpath(".//a"));							
 							if(!this.hasElementAttribute(item, "class")) {
 								lsSubItem = item.getText().trim();
@@ -242,7 +242,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 						}
 						
 						//Bug 19389: PRP Filter Panel - Shop by Category selection does not work as intended						
-						if(!lsFirstLevelItem.toLowerCase().contains("category")) {
+						if(!lsFirstLevelItem.equalsIgnoreCase("category")) {
 							closeFilterPopupWindow();
 							verifyUrlPatternAfterSelectFilter(false);
 						}	
