@@ -1429,6 +1429,41 @@ public class ProductResultsPage extends BasePage{
 				break;
 			}
 		}
+		
+		return lsErrorMsg;
+	}
+	
+	/**
+	 * This method will verify filter option headers are not containing Category and Shop By Category simultaneously
+	 * @return String: error message
+	 * @author Wei.Li
+	 */
+	//Bug 19575: [QA Defect - P3] the implementation for Category in the left nav is wrong
+	public String verifyFilterOptionsNotContainCategoryAndShopByCategorySimultaneously() {
+		String lsErrorMsg="";
+		int listSize=this.productFilterList.size();
+		if(listSize==0) {
+			return lsErrorMsg="No product filter list";
+		}
+		
+		boolean bCategory=false,bShopByCategory=false;
+		String lsFilterHeader;
+		for(int i=0;i<listSize;i++) {
+			getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i));
+			lsFilterHeader=this.productFilterList.get(i).getText().trim();
+			if(lsFilterHeader.equalsIgnoreCase("category")) {
+				bCategory=true;
+			}
+			
+			if(lsFilterHeader.equalsIgnoreCase("shop by category")) {
+				bShopByCategory=true;
+			}
+		}
+		
+		if(bCategory&&bShopByCategory) {
+			lsErrorMsg="The filter option headers are containing Category and Shop By Category simultaneously";
+		}
+		
 		return lsErrorMsg;
 	}
 
@@ -1445,7 +1480,7 @@ public class ProductResultsPage extends BasePage{
 
 		WebElement searchInputButton,item;
 		List<WebElement> subItemList;
-		boolean bCategory=lsFirstLevelItem.toLowerCase().contains("category");
+		boolean bCategory=lsFirstLevelItem.equalsIgnoreCase("category");
 		
 		for(int i=0;i<this.productFilterList.size();i++) {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i));
@@ -1468,6 +1503,7 @@ public class ProductResultsPage extends BasePage{
 						getReusableActionsInstance().clickIfAvailable(subItemList.get(0));
 						
 						this.getReusableActionsInstance().staticWait(2000);
+						
 						//Bug 19628: [QA Defect - P3] PRP: no products display if user is on the last page and select a faucet from the left nav
 						if(!this.URL().contains("page=")) {
 							reporter.reportLogPass("The Url does not contain page term.");
@@ -1492,7 +1528,7 @@ public class ProductResultsPage extends BasePage{
 					}
 				}
 
-				if(!lsFirstLevelItem.toLowerCase().contains("category")) {
+				if(!lsFirstLevelItem.equalsIgnoreCase("category")) {
 					expandFilterItem(this.productFilterContainerList.get(i));
 				}
 				
@@ -1508,7 +1544,7 @@ public class ProductResultsPage extends BasePage{
 						subItem = subItem.findElement(By.xpath("//span[@class='plp-filter-panel__filter-list__item-label-text visually-hidden']/preceding-sibling::span"));
 					}
 					else {	
-						if(lsFirstLevelItem.toLowerCase().contains("category")) {
+						if(lsFirstLevelItem.equalsIgnoreCase("category")) {
 							item=subItem.findElement(By.xpath(".//a"));							
 							if(!this.hasElementAttribute(item, "class")) {
 								lsSubItem = item.getText().trim();
@@ -2691,18 +2727,32 @@ public class ProductResultsPage extends BasePage{
 	 * @param-String lsUserName: user name
 	 * @param-String lsPassword: password
 	 * @param-String lsFirstName: user's first name
+	 * @param-ProductDetailPage pdp: ProductDetailPag pageobject
 	 * @return void
 	 * @author Wei.Li
 	 */
-	public void verifyFavoriteIconAction(String lsUserName, String lsPassword,String lsFirstName,String lsKeyword) {
+	public void verifyFavoriteIconAction(String lsUserName, String lsPassword,String lsFirstName,String lsKeyword,ProductDetailPage pdp) {
 		if(this.productResultList.size()==0) {
 			reporter.reportLog("No product search result available.");
 			return;
 		}
-
+		
+		int selectedIndex=0;
+		
+		for(int i=0;i<this.productResultList.size();i++) {
+			if(this.checkProductItemReviewExisting(this.productResultList.get(i))) {
+				selectedIndex=i;
+				break;
+			}
+		}
+		
+		int prpReviewRateStarCount=this.getProductItemReviewNumberAmountFromStarImage(this.productResultList.get(selectedIndex).findElement(this.byProductReviewRatingImage));
+		String prpReviewCountInfo=this.productResultList.get(selectedIndex).findElement(this.byProductReviewRatingCount).getText().trim();
+		
 		LoginPage loginPage=new LoginPage(this.getDriver());
-		WebElement item=this.productResultList.get(0).findElement(this.byProductHeaderLike);
-		String lsFirstProductName=this.getElementInnerText(this.productResultList.get(0).findElement(this.byProductName));
+	
+		WebElement item=this.productResultList.get(selectedIndex).findElement(this.byProductHeaderLike);
+		String lsFirstProductName=this.getElementInnerText(this.productResultList.get(selectedIndex).findElement(this.byProductName));
 
 		if(item.getAttribute("aria-pressed").equalsIgnoreCase("false")) {
 			reporter.reportLogPass("The favorite icon is displaying not clicking status correctly");
@@ -2718,12 +2768,12 @@ public class ProductResultsPage extends BasePage{
 		this.getReusableActionsInstance().waitForElementVisibility(loginPage.lblSignInGlobalResponseBanner);
 
 		this.getSearchResultLoad(lsFirstProductName,true);
-		item=this.productResultList.get(0).findElement(this.byProductHeaderLike);
+		item=this.productResultList.get(selectedIndex).findElement(this.byProductHeaderLike);
 
 		if(item.getAttribute("aria-pressed").equalsIgnoreCase("true")) {
 			clearFavoriteHistory();
 			this.getSearchResultLoad(lsKeyword,true);
-			item=this.productResultList.get(0).findElement(this.byProductHeaderLike);
+			item=this.productResultList.get(selectedIndex).findElement(this.byProductHeaderLike);
 		}
 
 		this.getReusableActionsInstance().clickIfAvailable(item);
@@ -2734,6 +2784,81 @@ public class ProductResultsPage extends BasePage{
 		}
 		else {
 			reporter.reportLogFail("The favorite icon is not displaying clicking status correctly");
+			return;
+		}
+				
+		item=this.productResultList.get(selectedIndex).findElement(byProductHref);
+		this.getReusableActionsInstance().clickIfAvailable(item);
+		this.waitForPDPPageLoading();
+		
+		//Bug 19559: [QA Defect - P3] Products show different ratings in PRP vs. PDP
+		int pdpReviewRateStarCount=this.getProductItemReviewNumberAmountFromStarImage(pdp.lstProductReviewStar);
+		String pdpReviewCountInfo=pdp.lblProductReviewCount.getText().trim();
+		
+		if(prpReviewRateStarCount==pdpReviewRateStarCount) {
+			reporter.reportLogPass("The review rate star count in PRP is equal to the count in PDP");
+		}
+		else {
+			reporter.reportLogFail("The review rate star count in PRP is not equal to the count in PDP");
+		}
+		
+		if(prpReviewCountInfo.equals(pdpReviewCountInfo)) {
+			reporter.reportLogPass("The review count info is same as count info in PDP");
+		}
+		else {
+			reporter.reportLogFail("The review count info is not same as count info in PDP");
+		}
+		
+		//Bug 19539: [QA Defect - P3] Favorite an item in PRP doesn't sync up to PDP
+		if(pdp.checkIfFavShareMobileHighlighted()) {
+			reporter.reportLogPass("The FavShareMobile icon is highlighted correctly");
+		}
+		else {
+			reporter.reportLogFail("The FavShareMobile icon is not highlighted correctly");
+		}		
+	}
+	
+	/**
+	 * This method will verify product content existing after switching to French language
+	 * @param-GlobalFooterPage globalFooterPage: GlobalFooterPage pageobject
+	 * @return void
+	 * @author Wei.Li
+	 */
+	//Bug 19542: [QA Defect - P3] PRP: no products display in French
+	public void verifyProductContentExistingAfterSwitchToFrench(GlobalFooterPage globalFooterPage) {
+		globalFooterPage.switchlanguage();
+		this.waitForPageToLoad();
+		this.getReusableActionsInstance().staticWait(2000);
+		this.getReusableActionsInstance().waitForElementVisibility(this.lblSearchResultMessage,120);
+		this.getReusableActionsInstance().staticWait(1000);
+		
+		if(productResultList.size()>0) {
+			reporter.reportLogPass("The product list is displaying correctly after switching to French language");
+		}
+		else {
+			reporter.reportLogFail("The product list is not displaying correctly after switching to French language");
+		}
+	}
+	
+	/**
+	 * This method will verify product loading through Url directly
+	 * @param-String lsUrl: the Url that will be inputted in Browser directly
+	 * @return void
+	 * @author Wei.Li
+	 */
+	//Bug 19553: [QA Defect - P3] Direct search from URL doesn't make a PRP API call
+	public void verifyProductLoadingThroughUrlDirectly(String lsUrl) {
+		this.getDriver().get(lsUrl);
+		this.waitForPageToLoad();
+		this.getReusableActionsInstance().staticWait(2000);
+		this.getReusableActionsInstance().waitForElementVisibility(this.lblSearchResultMessage,120);
+		this.getReusableActionsInstance().staticWait(1000);
+		
+		if(productResultList.size()>0) {
+			reporter.reportLogPass("The product list is loading correctly through inputting Url directly");
+		}
+		else {
+			reporter.reportLogFail("The product list is not loading correctly through inputting Url directly");
 		}
 	}
 
