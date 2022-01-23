@@ -129,6 +129,9 @@ public class ProductDetailPage extends BasePage {
 
 	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'product-name-sub')]//div[@id='panReviewSnippet']//div[@class='p-w-r'][last()]//section")
 	public WebElement lblProductReview;
+	
+	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'product-name-sub')]//div[@id='panReviewSnippet']//div[@class='p-w-r']//a[@class='pr-snippet-review-count']")
+	public WebElement lblProductReviewCount;
 
 	//Price part
 	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@class='price-div']//span[@id='lblPriceLabel']")

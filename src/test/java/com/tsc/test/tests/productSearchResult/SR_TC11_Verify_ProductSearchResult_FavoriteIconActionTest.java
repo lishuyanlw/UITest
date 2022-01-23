@@ -13,6 +13,8 @@ import com.tsc.test.base.BaseTest;
 public class SR_TC11_Verify_ProductSearchResult_FavoriteIconActionTest extends BaseTest{
 	/*
 	 * CER-701
+	 * Bug 19539: [QA Defect - P3] Favorite an item in PRP doesn't sync up to PDP - covered in verifyFavoriteIconAction function
+	 * Bug 19559: [QA Defect - P3] Products show different ratings in PRP vs. PDP - covered in verifyFavoriteIconAction function
 	 * 
 	 */
 	@Test(groups={"ProductSearch","Regression","Regression_Tablet"})
@@ -46,7 +48,7 @@ public class SR_TC11_Verify_ProductSearchResult_FavoriteIconActionTest extends B
 			
 	reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(), "Showing text pattern in filters is correct", "Showing text pattern in filters is incorrect");
 	
-	getProductResultsPageThreadLocal().verifyFavoriteIconAction(lsUserName, lsPassword,lsFirstName,lsKeywordList.get(0).get(0));
+	getProductResultsPageThreadLocal().verifyFavoriteIconAction(lsUserName, lsPassword,lsFirstName,lsKeywordList.get(0).get(0),getProductDetailPageThreadLocal());
 		
 	}
 }
