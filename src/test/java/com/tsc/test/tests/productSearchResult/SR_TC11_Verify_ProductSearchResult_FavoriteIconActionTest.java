@@ -15,6 +15,7 @@ public class SR_TC11_Verify_ProductSearchResult_FavoriteIconActionTest extends B
 	 * CER-701
 	 * Bug 19539: [QA Defect - P3] Favorite an item in PRP doesn't sync up to PDP - covered in verifyFavoriteIconAction function
 	 * Bug 19559: [QA Defect - P3] Products show different ratings in PRP vs. PDP - covered in verifyFavoriteIconAction function
+	 * Bug 19538: [QA Defect - P3] PRP: missing Free Shipping label - covered in verifySearchResultContent and verifySearchResultContentWithMouseHover functions
 	 * 
 	 */
 	@Test(groups={"ProductSearch","Regression","Regression_Tablet"})
@@ -23,22 +24,23 @@ public class SR_TC11_Verify_ProductSearchResult_FavoriteIconActionTest extends B
 	
 	reporter.softAssert(getglobalheaderPageThreadLocal().validateURL((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");		
 	reporter.reportLog("ProductSearch Page");
-	
-	List<List<String>> lsKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_SearchKeyword_DropDown();
+		
 	List<String> lstSearchResultMessage=TestDataHandler.constantData.getSearchResultPage().getLst_SearchResultMessage();
 	String lsSearchResultPageDefaultSetting=TestDataHandler.constantData.getSearchResultPage().getLbl_SearchResultPageDefaultSetting();
 	String lsUserName=TestDataHandler.constantData.getLoginUser().getLbl_Username();
 	String lsPassword=TestDataHandler.constantData.getLoginUser().getLbl_Password();
 	String lsFirstName=TestDataHandler.constantData.getLoginUser().getLbl_FirstName();
+	List<String> lst_SearchKeyword = TestDataHandler.constantData.getSearchResultPage().getLst_SearchKeyword_Bugs();
 	String lsMsg;
+	List<WebElement> productList;
 	
-	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0),true);
+	getProductResultsPageThreadLocal().getSearchResultLoad(lst_SearchKeyword.get(3),true);
 	String lsTestModel=getProductResultsPageThreadLocal().judgeTestModel();	
 	
-	reporter.softAssert(getProductResultsPageThreadLocal().verifyUrlContainDimensionAndKeyword(lsKeywordList.get(0).get(0)), "The Url contains correct dimensions and keyword", "The Url does not contain correct dimensions and keyword");
+	reporter.softAssert(getProductResultsPageThreadLocal().verifyUrlContainDimensionAndKeyword(lst_SearchKeyword.get(3)), "The Url contains correct dimensions and keyword", "The Url does not contain correct dimensions and keyword");
 	
 	if(!lsTestModel.equalsIgnoreCase("BannerImageSearch")) {
-		lsMsg=getProductResultsPageThreadLocal().verifySearchResultMessage(lstSearchResultMessage.get(0),lsKeywordList.get(0).get(0));
+		lsMsg=getProductResultsPageThreadLocal().verifySearchResultMessage(lstSearchResultMessage.get(0),lst_SearchKeyword.get(3));
 		if(lsMsg.isEmpty()) {
 			reporter.reportLogPass("Search result message result of '"+getProductResultsPageThreadLocal().lsSearchResultMessage+"' matches the expected message");
 		}else {
@@ -48,8 +50,15 @@ public class SR_TC11_Verify_ProductSearchResult_FavoriteIconActionTest extends B
 			
 	reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(), "Showing text pattern in filters is correct", "Showing text pattern in filters is incorrect");
 	
-	getProductResultsPageThreadLocal().verifyFavoriteIconAction(lsUserName, lsPassword,lsFirstName,lsKeywordList.get(0).get(0),getProductDetailPageThreadLocal());
-		
+	productList=getProductResultsPageThreadLocal().getProductList();
+	if(productList.size()>0) {
+		getProductResultsPageThreadLocal().verifySearchResultContent(productList);
+		getProductResultsPageThreadLocal().verifyFavoriteIconAction(lsUserName, lsPassword,lsFirstName,lst_SearchKeyword.get(3),getProductDetailPageThreadLocal());
+	}
+	else {
+		reporter.reportLogFail("No product results available");
+	}
+			
 	}
 }
 

@@ -590,6 +590,18 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				}
 			}
 			
+			//Bug 19538: [QA Defect - P3] PRP: missing Free Shipping label
+			if(this.checkProductItemFreeShippingExisting(item)) {
+				element=item.findElement(byProductFreeShipping);
+				lsText=this.getElementInnerText(element);
+				if(!lsText.isEmpty()) {
+					reporter.reportLogPass("Product free shipping is not empty");
+				}
+				else {
+					reporter.reportLogFail("Product free shipping is empty");
+				}
+			}
+			
 			element=item.findElement(byProductItemSelectSizeOrColor);
 			if(this.getReusableActionsInstance().isElementVisible(element)) {
 				reporter.reportLogPass("Product select Size and Color is visible");

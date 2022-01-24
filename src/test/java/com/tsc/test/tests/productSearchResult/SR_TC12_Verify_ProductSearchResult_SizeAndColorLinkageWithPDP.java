@@ -29,7 +29,7 @@ public class SR_TC12_Verify_ProductSearchResult_SizeAndColorLinkageWithPDP exten
 		//Defining and Initializing variables to be used
 		List<WebElement> productList;
 		List<String> lstKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_APISearchingKeyword();
-		List<String> lst_SearchKeyword = TestDataHandler.constantData.getSearchResultPage().getLst_SearckKeyword_Bugs();
+		List<String> lst_SearchKeyword = TestDataHandler.constantData.getSearchResultPage().getLst_SearchKeyword_Bugs();
 
 		if(getProductResultsPageThreadLocal().findProductItemWithPreConditions(lstKeywordList)) {
 			getProductResultsPageThreadLocal().verifyInfoLinkageWithPDP(getProductDetailPageThreadLocal());
