@@ -943,6 +943,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				lsText=this.getElementInnerText(element);
 			}
 			
+			//Bug 19629: [QA Defect - P3] Product card: if a product doesn't have color swatch, all color options show as plain circles
 			String lsButtonTextBeforeClickingColor=this.getElementInnerText(this.getDriver().findElement(byProductGoToDetails));
 			if(element.getTagName().equalsIgnoreCase("button")) {								
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
@@ -1115,5 +1116,48 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 		WebElement sizeContainer=this.getDriver().findElement(this.byProductOptionSizeWrapper);
 		return this.checkChildElementExistingByTagNameAndAttribute(sizeContainer, "a", "class", "product-card__size-view-all");
 	}
+	
+	/**
+	 * This method will verify Product Contents have No Changes After Navigating Back With MultiFilters
+	 * @param-List<List<String>> lstFilter: filter list
+	 * @return void
+	 */
+	//Bug 19658: [QA Defect - P3] PRP: Page not refreshed to previous state with browser back button with filter applied
+	@Override
+	public void verifyProductContentNoChangesAfterNavigatingBackWithMultiFilters(List<List<String>> lstFilter){	
+		switchPage(true);
+		
+		List<String> lstItem=lstFilter.get(0);
+		selectFilterItemInLeftPanel(lstItem.get(0), lstItem.get(1));
+		String lsFirstProductNameForFirstFilter=this.getElementInnerText(this.productResultList.get(0).findElement(byProductName));
+		int productCount=this.productResultList.size();
+		
+		lstItem=lstFilter.get(1);
+		selectFilterItemInLeftPanel(lstItem.get(0), lstItem.get(1));
+		String lsFirstProductNameForSecondFilter=this.getElementInnerText(this.productResultList.get(0).findElement(byProductName));
+		
+		if(lsFirstProductNameForSecondFilter.equalsIgnoreCase(lsFirstProductNameForFirstFilter)) {
+			reporter.reportLogPass("The product search results are changing after adding one more filter correctly"); 
+		}
+		else {
+			reporter.reportLogFail("The product search results are not changing after adding one more filter correctly"); 
+		}
+		
+		this.getDriver().navigate().back();
+		this.waitForPageToLoad();
+		this.getReusableActionsInstance().staticWait(3000);
+		this.getReusableActionsInstance().waitForElementVisibility(this.lblSearchResultMessage,120);
+		
+		String lsFirstProductNameForNavigateBackFilter=this.getElementInnerText(this.productResultList.get(0).findElement(byProductName));
+		int productCountForNavigateBack=this.productResultList.size();
+		
+		if(lsFirstProductNameForNavigateBackFilter.equalsIgnoreCase(lsFirstProductNameForFirstFilter)&&(productCountForNavigateBack==productCount)) {
+			reporter.reportLogPass("The product search results are keeping the same status as just first filter applied"); 
+		}
+		else {
+			reporter.reportLogFail("The product search results are not keeping the same status as just first filter applied"); 
+		}	
+	}
+
 	
 }
