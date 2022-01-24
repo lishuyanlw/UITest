@@ -19,7 +19,8 @@ public class SR_TC01_Verify_ProductSearchResult extends BaseTest{
 	 * CER-218
 	 * Bug 19285: Product image not updating when colour is chosen on smartphone or tablet - covered in verifyColorOption function
 	 * Bug 19537: [QA Defect - P3] PRP: Is Price should be bold - covered in verifySearchResultContent and verifySearchResultContentWithMouseHover functions
-	 * Bug 19536: [QA Defect - P3] PRP: Rating and Review not showing properly - covered in verifySearchResultContent and verifySearchResultContentWithMouseHover
+	 * Bug 19536: [QA Defect - P3] PRP: Rating and Review not showing properly - covered in verifySearchResultContent and verifySearchResultContentWithMouseHover functions
+	 * Bug 19629: [QA Defect - P3] Product card: if a product doesn't have color swatch, all color options show as plain circles - covered in verifyColorOption function
 	 */
 	@Test(groups={"ProductSearch","Regression","Regression_Tablet","Regression_Mobile"})
 	public void validateProductSearchResult() throws IOException {
