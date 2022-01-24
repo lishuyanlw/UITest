@@ -216,9 +216,11 @@ public class GlobalHeaderPage extends BasePage{
 	@FindBy(xpath = "//*[@class='Header']//a[contains(@class, 'secondary-navigation__rhs-bag')]//div[contains(@class,'secondary-navigation__rhs-bag__item')]//span[contains(@class,'secondary-navigation__rhs-bag__item-badge')]//span[not(contains(@class,'visually-hidden'))]")
 	public WebElement CartBagCounter;
 
+	//Flyout headings menu
 	@FindBy(xpath = "//ul[contains(@class,'primary-navigation__wrapper')]//li//a")
 	WebElement FlyoutHeadings;
 
+	//Categories menu
 	@FindBy(xpath = "//*[contains(@class,'mega-categories mega-column')]//a")
 	WebElement Categories;
 	
@@ -228,12 +230,14 @@ public class GlobalHeaderPage extends BasePage{
 	@FindBy(xpath = "//*[contains(@class,'mega-categories mega-column')]//a")
 	public List<WebElement> CategoriesLinks;
 	
+	//SubMenu
 	@FindBy(xpath = "//*[contains(@class,'mega-sub-items mega-column')]//a")
 	public List<WebElement> subMenuLinks;
 	
 	@FindBy(xpath = "//*[contains(@class,'mega-sub-items mega-column')]//ul")
 	public List<WebElement> subMenuSection;
 	
+	//Curated collection
 	@FindBy(xpath = "//a[contains(@class,'mega-curated__item-link')]")
 	public List<WebElement> listCuratedCollectionLinks;
 
@@ -243,6 +247,7 @@ public class GlobalHeaderPage extends BasePage{
 	})
 	public WebElement lblPageTitleForMenuItems;
 
+	//Popular brand
 	@FindBy(xpath = "//a[contains(@class,'mega-popular__brand-link')]//img")
 	public List<WebElement> listPopularBrandsImg;
 
@@ -590,6 +595,40 @@ public class GlobalHeaderPage extends BasePage{
 			}
 		}
 	}
+	
+	/**Method to click on WebElement for CuratedCollections SubMenu Item by providing Flyout heading name ,CuratedCollections SubMenu Item name as parameters.
+	 * @param String headingName: flyout menu item name
+	 * @param String submenuHeading: Curated Collections Menu Item name
+	 * @author Wei.Li
+	 */
+	public void clickCuratedCollectionsMenuItem(String headingName,String submenuHeading) {
+		String xpathHeading =createXPath("//span[contains(text(),'{0}')]" ,headingName);
+		WebElement headingWebElement = FlyoutHeadings.findElement(By.xpath(xpathHeading));
+		getReusableActionsInstance().scrollToElement(headingWebElement);
+
+		for(WebElement item:listCuratedCollectionLinks) {
+			if(this.getElementInnerText(item).equalsIgnoreCase(submenuHeading)) {
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+				this.getReusableActionsInstance().clickIfAvailable(item);
+				return;
+			}
+		}			
+	}
+	
+	/**Method to click on WebElement for CuratedCollections SubMenu Item by providing Flyout heading name ,CuratedCollections SubMenu Item name as parameters.
+	 * @param String headingName: flyout menu item name
+	 * @param int subMenuIndex: popular brand list index
+	 * @author Wei.Li
+	 */
+	public void clickPopularBrandsMenuItem(String headingName,int subMenuIndex) {
+		String xpathHeading =createXPath("//span[contains(text(),'{0}')]" ,headingName);
+		WebElement headingWebElement = FlyoutHeadings.findElement(By.xpath(xpathHeading));
+		getReusableActionsInstance().scrollToElement(headingWebElement);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(listPopularBrandsLink.get(subMenuIndex));
+		this.getReusableActionsInstance().clickIfAvailable(listPopularBrandsLink.get(subMenuIndex));				
+	}
+	
 
 	/*Method to get list of Flyout heading WebElements
 	 * @return List:Flyout heading WebElements
