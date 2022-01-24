@@ -183,6 +183,8 @@ public class ProductResultsPage extends BasePage{
 	public By byProductReviewRatingImage=By.xpath(".//div[@class='product-card__reviews']//span[@class='product-card__rating']//span[contains(@class,'product-card__rating__star')]");
 
 	public By byProductReviewRatingCount=By.xpath(".//div[@class='product-card__reviews']//a[@class='product-card__reviews-count']");
+	
+	public By byProductFreeShipping=By.xpath(".//div[@class='product-card__free-shipping']");
 
 	public By byProductGoToDetails=By.xpath(".//button[@class='product-card__add-button']");
 
@@ -997,6 +999,18 @@ public class ProductResultsPage extends BasePage{
 					reporter.reportLogFail("Product review count info is not displaying correctly");
 				}
 			}
+			
+			//Bug 19538: [QA Defect - P3] PRP: missing Free Shipping label
+			if(this.checkProductItemFreeShippingExisting(item)) {
+				element=item.findElement(byProductFreeShipping);
+				lsText=this.getElementInnerText(element);
+				if(!lsText.isEmpty()) {
+					reporter.reportLogPass("Product free shipping is not empty");
+				}
+				else {
+					reporter.reportLogFail("Product free shipping is empty");
+				}
+			}
 		}
 	}
 
@@ -1198,6 +1212,18 @@ public class ProductResultsPage extends BasePage{
 				}
 			}
 
+			//Bug 19538: [QA Defect - P3] PRP: missing Free Shipping label
+			if(this.checkProductItemFreeShippingExisting(item)) {
+				element=item.findElement(byProductFreeShipping);
+				lsText=this.getElementInnerText(element);
+				if(!lsText.isEmpty()) {
+					reporter.reportLogPass("Product free shipping is not empty");
+				}
+				else {
+					reporter.reportLogFail("Product free shipping is empty");
+				}
+			}
+			
 			element=item.findElement(byProductGoToDetails);
 			this.getReusableActionsInstance().staticWait(1000);
 			if(this.getReusableActionsInstance().isElementVisible(element)) {
@@ -2746,8 +2772,10 @@ public class ProductResultsPage extends BasePage{
 			}
 		}
 		
+		String prpProductName=this.getElementInnerText(this.productResultList.get(selectedIndex).findElement(this.byProductName));
+		String prpProductNowPrice=this.getElementInnerText(this.productResultList.get(selectedIndex).findElement(this.byProductNowPrice));
 		int prpReviewRateStarCount=this.getProductItemReviewNumberAmountFromStarImage(this.productResultList.get(selectedIndex).findElement(this.byProductReviewRatingImage));
-		String prpReviewCountInfo=this.productResultList.get(selectedIndex).findElement(this.byProductReviewRatingCount).getText().trim();
+		String prpReviewCountInfo=this.getElementInnerText(this.productResultList.get(selectedIndex).findElement(this.byProductReviewRatingCount));
 		
 		LoginPage loginPage=new LoginPage(this.getDriver());
 	
@@ -2792,8 +2820,24 @@ public class ProductResultsPage extends BasePage{
 		this.waitForPDPPageLoading();
 		
 		//Bug 19559: [QA Defect - P3] Products show different ratings in PRP vs. PDP
+		String pdpProductName=this.getElementInnerText(pdp.lblProductName);
+		String pdpProductNowPrice=this.getElementInnerText(pdp.lblProductNowPrice);
 		int pdpReviewRateStarCount=this.getProductItemReviewNumberAmountFromStarImage(pdp.lstProductReviewStar);
 		String pdpReviewCountInfo=pdp.lblProductReviewCount.getText().trim();
+		
+		if( prpProductName.equals( pdpProductName)) {
+			reporter.reportLogPass("The Product name in PRP is the same as the one in PDP");
+		}
+		else {
+			reporter.reportLogFail("The Product name in PRP is not the same as the one in PDP");
+		}
+		
+		if( prpProductNowPrice.equals( pdpProductNowPrice)) {
+			reporter.reportLogPass("The Product NowPrice in PRP is the same as the one in PDP");
+		}
+		else {
+			reporter.reportLogFail("The Product NowPrice in PRP is not the same as the one in PDP");
+		}
 		
 		if(prpReviewRateStarCount==pdpReviewRateStarCount) {
 			reporter.reportLogPass("The review rate star count in PRP is equal to the count in PDP");
@@ -2803,10 +2847,10 @@ public class ProductResultsPage extends BasePage{
 		}
 		
 		if(prpReviewCountInfo.equals(pdpReviewCountInfo)) {
-			reporter.reportLogPass("The review count info is same as count info in PDP");
+			reporter.reportLogPass("The review count info in PRP is the same as count info in PDP");
 		}
 		else {
-			reporter.reportLogFail("The review count info is not same as count info in PDP");
+			reporter.reportLogFail("The review count info in PRP is not the same as count info in PDP");
 		}
 		
 		//Bug 19539: [QA Defect - P3] Favorite an item in PRP doesn't sync up to PDP
@@ -2883,6 +2927,18 @@ public class ProductResultsPage extends BasePage{
 	 */
 	public boolean checkProductItemReviewExisting(WebElement itemContainer) {
 		WebElement item=itemContainer.findElement(this.byProductReviewContainer);
+
+		return this.getChildElementCount(item)>0;
+	}
+	
+	/**
+	 * This method will check Product Item Free Shipping Existing
+	 * @param-WebElement itemContainer: product search result item
+	 * @return boolean
+	 * @author Wei.Li
+	 */
+	public boolean checkProductItemFreeShippingExisting(WebElement itemContainer) {
+		WebElement item=itemContainer.findElement(this.byProductFreeShipping);
 
 		return this.getChildElementCount(item)>0;
 	}
