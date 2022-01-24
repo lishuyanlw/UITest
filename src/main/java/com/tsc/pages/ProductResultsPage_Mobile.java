@@ -135,13 +135,16 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 					searchInputButton.sendKeys(lsSecondLevelItem);
 					getReusableActionsInstance().staticWait(1000);					
 					subItemList=this.productFilterContainerList.get(i).findElements(this.bySecondaryFilterAll);
-					//getReusableActionsInstance().javascriptScrollByVisibleElement(subItemList.get(0));
-					getReusableActionsInstance().clickIfAvailable(subItemList.get(0));
-					getReusableActionsInstance().staticWait(3000);
-					waitForSortingOrFilteringCompleted();
-					getReusableActionsInstance().staticWait(3000);
-					closeFilterPopupWindow();
-					return true;
+					if(subItemList.size()>0) {
+						//getReusableActionsInstance().javascriptScrollByVisibleElement(subItemList.get(0));
+						getReusableActionsInstance().clickIfAvailable(subItemList.get(0));
+						getReusableActionsInstance().staticWait(3000);
+						waitForSortingOrFilteringCompleted();
+						getReusableActionsInstance().staticWait(3000);
+						closeFilterPopupWindow();
+						return true;
+					}
+					break;
 				}
 				
 				expandFilterItem(this.productFilterContainerList.get(i));				
@@ -761,10 +764,39 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 	
 	private boolean verifyColorOption(WebElement itemContainer,String lsType) {
 		if(checkProductColorOptionEnabledItemAvailableWithMouseHover()) {
-			String lsImageSrcBeforeClickingColor=itemContainer.findElement(byProductImage).getAttribute("src");
+			String lsColor,lsText;
+			WebElement element=null;
+			int selectNumber=0;
+			
+			String lsImageSrcBeforeClickingColor=itemContainer.findElement(byProductImage).getAttribute("src");			
 			List<WebElement> optionList=this.getDriver().findElements(byProductOptionColorItemEnabledList);
-			WebElement element=optionList.get(optionList.size()-1);
-			String lsText=this.getElementInnerText(element).replace("colours", "").trim();
+			if(optionList.size()>1) {
+				for(WebElement item:optionList) {
+					if(item.getTagName().equalsIgnoreCase("button")) {
+						lsColor=item.findElement(By.xpath("./input")).getAttribute("id").split("-")[4];
+					}
+					else {
+						lsColor=item.getAttribute("value");
+					}
+					if(!lsImageSrcBeforeClickingColor.contains(lsColor)) {
+						element=item;
+						break;
+					}
+					selectNumber++;
+				}
+			}
+			else {
+				element=optionList.get(0);
+			}
+			
+			if(element.getTagName().equalsIgnoreCase("button")) {
+				lsText=this.getElementInnerText(element).replace("colours", "").trim();
+			}
+			else {
+				element=this.getDriver().findElement(byProductOptionColorSelectedColor);
+				lsText=this.getElementInnerText(element);
+			}
+			
 			String lsButtonTextBeforeClickingColor=this.getElementInnerText(this.getDriver().findElement(byProductGoToDetails));
 			if(element.getTagName().equalsIgnoreCase("button")) {								
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
@@ -772,21 +804,23 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 			}
 			else {
 				Select sizeSelect= new Select(element.findElement(By.xpath("./parent::select")));
-				sizeSelect.selectByIndex(optionList.size()-1);
+				sizeSelect.selectByIndex(selectNumber);
 			}
 			
 			this.getReusableActionsInstance().staticWait(2000);
 			this.waitForCondition(Driver->{return !lsButtonTextBeforeClickingColor.equalsIgnoreCase(this.getElementInnerText(this.getDriver().findElement(byProductGoToDetails)));}, 20000);
 			this.getReusableActionsInstance().staticWait(3000);
 			
-			String lsImageSrcAfterClickingColor=itemContainer.findElement(byProductImage).getAttribute("src");
-			if(!lsImageSrcBeforeClickingColor.equalsIgnoreCase(lsImageSrcAfterClickingColor)) {
-				reporter.reportLogPass("The image is changing after choosing a different style");
+			if(optionList.size()>1) {
+				String lsImageSrcAfterClickingColor=itemContainer.findElement(byProductImage).getAttribute("src");
+				if(!lsImageSrcBeforeClickingColor.equalsIgnoreCase(lsImageSrcAfterClickingColor)) {
+					reporter.reportLogPass("The image is changing after choosing a different style correctly");
+				}
+				else {
+					reporter.reportLogFail("The image is not changing after choosing a different style correctly");
+				}
 			}
-			else {
-				reporter.reportLogFail("The image is not changing after choosing a different style");
-			}
-						
+									
 			element=this.getDriver().findElement(byProductOptionColorSelectedColor);
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 			String lsSelectedTitle=element.getText().trim();

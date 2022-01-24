@@ -2231,12 +2231,41 @@ public class ProductResultsPage extends BasePage{
 
 	private boolean verifyColorOption(WebElement itemContainer,String lsType) {
 		if(checkProductColorOptionEnabledItemAvailableWithMouseHover(itemContainer)) {
+			String lsColor,lsText;
+			WebElement element=null;
+			int selectNumber=0;
+
 			String lsImageSrcBeforeClickingColor=itemContainer.findElement(byProductImage).getAttribute("src");
 			List<WebElement> optionList=itemContainer.findElements(byProductOptionColorItemEnabledList);
-			WebElement element=optionList.get(optionList.size()-1);
-			String lsText=this.getElementInnerText(element).replace("colours", "").trim();
-			String lsButtonTextBeforeClickingColor=this.getElementInnerText(itemContainer.findElement(byProductGoToDetails));
+			if(optionList.size()>1) {
+				for(WebElement item:optionList) {
+					if(item.getTagName().equalsIgnoreCase("button")) {
+						lsColor=item.findElement(By.xpath("./input")).getAttribute("id").split("-")[4];
+					}
+					else {
+						lsColor=item.getAttribute("value");
+					}
+					if(!lsImageSrcBeforeClickingColor.contains(lsColor)) {
+						element=item;
+						break;
+					}
+					selectNumber++;
+				}
+			}
+			else {
+				element=optionList.get(0);
+			}
+
 			if(element.getTagName().equalsIgnoreCase("button")) {
+				lsText=this.getElementInnerText(element).replace("colours", "").trim();
+			}
+			else {
+				element=this.getDriver().findElement(byProductOptionColorSelectedColor);
+				lsText=this.getElementInnerText(element);
+			}
+
+			String lsButtonTextBeforeClickingColor=this.getElementInnerText(itemContainer.findElement(byProductGoToDetails));
+			if(element.getTagName().equalsIgnoreCase("button")) {								
 				this.clickElement(element);
 			}
 			else {
@@ -2246,13 +2275,15 @@ public class ProductResultsPage extends BasePage{
 			this.getReusableActionsInstance().staticWait(2000);
 			this.waitForCondition(Driver->{return !lsButtonTextBeforeClickingColor.equalsIgnoreCase(this.getElementInnerText(itemContainer.findElement(byProductGoToDetails)));}, 20000);
 			this.getReusableActionsInstance().staticWait(3000);
-
-			String lsImageSrcAfterClickingColor=itemContainer.findElement(byProductImage).getAttribute("src");
-			if(!lsImageSrcBeforeClickingColor.equalsIgnoreCase(lsImageSrcAfterClickingColor)) {
-				reporter.reportLogPass("The image is changing after choosing a different style");
-			}
-			else {
-				reporter.reportLogFail("The image is not changing after choosing a different style");
+			
+			if(optionList.size()>1) {
+				String lsImageSrcAfterClickingColor=itemContainer.findElement(byProductImage).getAttribute("src");
+				if(!lsImageSrcBeforeClickingColor.equalsIgnoreCase(lsImageSrcAfterClickingColor)) {
+					reporter.reportLogPass("The image is changing after choosing a different style");
+				}
+				else {
+					reporter.reportLogFail("The image is not changing after choosing a different style");
+				}
 			}
 
 			element=itemContainer.findElement(byProductOptionColorSelectedColor);

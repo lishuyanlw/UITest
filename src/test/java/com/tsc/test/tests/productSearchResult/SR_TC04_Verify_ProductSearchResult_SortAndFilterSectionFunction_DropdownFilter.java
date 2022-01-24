@@ -103,7 +103,7 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction_Dro
                 reporter.reportLogFail(lsMsg);
             }
 
-            reporter.softAssert(getProductResultsPageThreadLocal().verifyUrlAfterSelectSortStrategy(lsKeyword, "HighestPrice"), "The Url contains keyword and sortKey=HighestPrice", "The Url does not contain keyword and sortKey=HighestPrice");
+            reporter.softAssert(getProductResultsPageThreadLocal().verifyUrlAfterSelectSortStrategy(lsKeyword, "LowestPrice"), "The Url contains keyword and sortKey=HighestPrice", "The Url does not contain keyword and sortKey=HighestPrice");
 
             if (!lsTestModel.equalsIgnoreCase("BannerImageSearch")) {
                 lsMsg = getProductResultsPageThreadLocal().verifySearchResultMessage(lstSearchResultMessage.get(0), lsKeyword);
@@ -147,7 +147,7 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction_Dro
                 reporter.reportLogFail(lsMsg);
             }
 
-            reporter.softAssert(getProductResultsPageThreadLocal().verifyUrlAfterSelectSortStrategy(lsKeyword, "HighestPrice"), "The Url contains keyword and sortKey=HighestPrice", "The Url does not contain keyword and sortKey=HighestPrice");
+            reporter.softAssert(getProductResultsPageThreadLocal().verifyUrlAfterSelectSortStrategy(lsKeyword, "HighestReviews"), "The Url contains keyword and sortKey=HighestPrice", "The Url does not contain keyword and sortKey=HighestPrice");
 
             if (!lsTestModel.equalsIgnoreCase("BannerImageSearch")) {
                 lsMsg = getProductResultsPageThreadLocal().verifySearchResultMessage(lstSearchResultMessage.get(0), lsKeyword);
@@ -191,7 +191,7 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction_Dro
                 reporter.reportLogFail(lsMsg);
             }
 
-            reporter.softAssert(getProductResultsPageThreadLocal().verifyUrlAfterSelectSortStrategy(lsKeyword, "HighestPrice"), "The Url contains keyword and sortKey=HighestPrice", "The Url does not contain keyword and sortKey=HighestPrice");
+            reporter.softAssert(getProductResultsPageThreadLocal().verifyUrlAfterSelectSortStrategy(lsKeyword, "BrandNameAtoZ"), "The Url contains keyword and sortKey=HighestPrice", "The Url does not contain keyword and sortKey=HighestPrice");
 
             if (!lsTestModel.equalsIgnoreCase("BannerImageSearch")) {
                 lsMsg = getProductResultsPageThreadLocal().verifySearchResultMessage(lstSearchResultMessage.get(0), lsKeyword);
@@ -204,15 +204,15 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction_Dro
 
             reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(), "Showing text pattern in filters is correct", "Showing text pattern in filters is incorrect");
 
-//            productList = getProductResultsPageThreadLocal().getProductList();
-//            if (productList.size() > 0) {
-//               getProductResultsPageThreadLocal().verifySearchResultContent(productList);
-//               getProductResultsPageThreadLocal().verifySearchResultContentWithMouseHover(productList);
-//            }
-//
-//            reporter.softAssert(getProductResultsPageThreadLocal().verifyProductPagination(), "Product pagination is existing", "Product pagination is not existing");
-//            reporter.softAssert(getProductResultsPageThreadLocal().verifyElementExisting(getProductResultsPageThreadLocal().getHeaderContainer()), "Header section is existing after choosing sorting options", "Header section is not existing after choosing sorting options");
-//            reporter.softAssert(getProductResultsPageThreadLocal().verifyElementExisting(getProductResultsPageThreadLocal().getFooterContainer()), "Footer section is existing after choosing sorting options", "Footer section is not existing after choosing sorting options");
+            productList = getProductResultsPageThreadLocal().getProductList();
+            if (productList.size() > 0) {
+               getProductResultsPageThreadLocal().verifySearchResultContent(productList);
+               getProductResultsPageThreadLocal().verifySearchResultContentWithMouseHover(productList);
+            }
+
+            reporter.softAssert(getProductResultsPageThreadLocal().verifyProductPagination(), "Product pagination is existing", "Product pagination is not existing");
+            reporter.softAssert(getProductResultsPageThreadLocal().verifyElementExisting(getProductResultsPageThreadLocal().getHeaderContainer()), "Header section is existing after choosing sorting options", "Header section is not existing after choosing sorting options");
+            reporter.softAssert(getProductResultsPageThreadLocal().verifyElementExisting(getProductResultsPageThreadLocal().getFooterContainer()), "Footer section is existing after choosing sorting options", "Footer section is not existing after choosing sorting options");
         } else {
             reporter.reportLogFail("Choosing Brand Name: A to Z option failed");
         }
