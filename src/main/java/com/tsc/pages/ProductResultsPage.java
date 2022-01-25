@@ -456,7 +456,7 @@ public class ProductResultsPage extends BasePage{
 		this.clearContent(globalHeader.searchBox);
 		for(int i=0;i<lsKeyword.length();i++) {
 			globalHeader.searchBox.sendKeys(lsKeyword.substring(i,i+1));
-			getReusableActionsInstance().staticWait(300);
+			getReusableActionsInstance().staticWait(7000);
 		}
 
 		switch(lsOption) {
@@ -1008,6 +1008,20 @@ public class ProductResultsPage extends BasePage{
 					reporter.reportLogFail("Product review count info is not displaying correctly");
 				}
 			}
+
+			/*
+			//Bug 19538: [QA Defect - P3] PRP: missing Free Shipping label
+			if(this.checkProductItemFreeShippingExisting(item)) {
+				element=item.findElement(byProductFreeShipping);
+				lsText=this.getElementInnerText(element);
+				if(!lsText.isEmpty()) {
+					reporter.reportLogPass("Product free shipping is not empty");
+				}
+				else {
+					reporter.reportLogFail("Product free shipping is empty");
+				}
+			}*/
+
 		}
 	}
 
@@ -1209,16 +1223,18 @@ public class ProductResultsPage extends BasePage{
 				}
 			}
 
-//			if(this.checkProductItemFreeShippingExisting(item)) {
-//				element=item.findElement(byProductFreeShipping);
-//				lsText=this.getElementInnerText(element);
-//				if(!lsText.isEmpty()) {
-//					reporter.reportLogPass("Product free shipping is not empty");
-//				}
-//				else {
-//					reporter.reportLogFail("Product free shipping is empty");
-//				}
-//			}
+			/*
+			//Bug 19538: [QA Defect - P3] PRP: missing Free Shipping label
+			if(this.checkProductItemFreeShippingExisting(item)) {
+				element=item.findElement(byProductFreeShipping);
+				lsText=this.getElementInnerText(element);
+				if(!lsText.isEmpty()) {
+					reporter.reportLogPass("Product free shipping is not empty");
+				}
+				else {
+					reporter.reportLogFail("Product free shipping is empty");
+				}
+			}*/
 			
 			element=item.findElement(byProductGoToDetails);
 			this.getReusableActionsInstance().staticWait(1000);
@@ -1318,7 +1334,7 @@ public class ProductResultsPage extends BasePage{
 			getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 
 			String nowPriceText=element.findElement(this.byProductNowPrice).getText().trim();
-			float nowPriceValue=this.getFloatFromString(nowPriceText,true);
+			float nowPriceValue=this.getFloatFromString(nowPriceText,bHighest);
 
 			priceList.add(nowPriceValue);
 			String productName=element.findElement(this.byProductName).getText().trim();
