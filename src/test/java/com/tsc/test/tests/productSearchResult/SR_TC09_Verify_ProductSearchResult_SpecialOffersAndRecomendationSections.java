@@ -19,13 +19,13 @@ public class SR_TC09_Verify_ProductSearchResult_SpecialOffersAndRecomendationSec
 	@Test(groups = { "ProductSearch", "Regression","Regression_Tablet","Regression_Mobile"})
 	public void validateProductSearchResult_SpecialOffersAndRecomendationSections() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
-		String lsSearchResultPageDefaultSetting = TestDataHandler.constantData.getSearchResultPage().getLbl_SearchResultPageDefaultSetting();
+		//String lsSearchResultPageDefaultSetting = TestDataHandler.constantData.getSearchResultPage().getLbl_SearchResultPageDefaultSetting();
 		String lnkProductResult = TestDataHandler.constantData.getSearchResultPage().getLnk_product_result();
-		List<String> productRecommendationTitleText = TestDataHandler.constantData.getSearchResultPage().getLbl_ProductRecommendationTitlePage();
+		//List<String> productRecommendationTitleText = TestDataHandler.constantData.getSearchResultPage().getLbl_ProductRecommendationTitlePage();
 		List<WebElement> productList;
 
-		// Corresponding actions (Clearance>>Fashion)
-		String subMenuItem = getglobalheaderPageThreadLocal().getNameAndclickSubMenuItem("Clearance","Fashion",null);
+		// Corresponding actions (Clearance>>Beauty)
+		String subMenuItem = getglobalheaderPageThreadLocal().getNameAndclickSubMenuItem("Clearance","Beauty",null);
 
 		// Verifying that landing page is product results page after navigation
 		reporter.softAssert(getProductResultsPageThreadLocal().getClearanceOptionURLTitle().contains(lnkProductResult),"Verified that landing page is Product Result Page", "Verified that landing page is not Product Result Page");
