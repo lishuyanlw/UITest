@@ -116,10 +116,11 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 		WebElement subItem,searchInputButton,item;
 		List<WebElement> subItemList;
 		boolean bCategory=lsFirstLevelItem.equalsIgnoreCase("category");
-			
-		if(bCategory&&this.bCategoryExpand) {
+	
+		if(bCategory&&this.bCategoryExpand) {			
 			ExpandSubExpandableItemInCategoryFilterSection();
 			this.bCategoryExpand=false;
+			openFilterPopupWindow();
 		}
 		
 		for(int i=0;i<this.productFilterList.size();i++) {			
@@ -264,18 +265,11 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 		//If unable to find both lsFirstLevelItem and lsSecondLevelItem, then select the first choice
 		this.bDefault=true;
 		
-		for(int i=0;i<this.productFilterList.size();i++) {			
-			if(i>0) {
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i));
-			}			
+		for(int i=1;i<this.productFilterList.size();i++) {			
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i));
 			expandFilterItem(this.productFilterContainerList.get(i));
-			if(i>0) {
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i-1));
-			}	
-			else {
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(0));
-			}			
-			
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i-1));
+						
 			subItemList=this.productFilterContainerList.get(i).findElements(this.bySecondaryFilterAll);	
 			for(int j=0;j<subItemList.size();j++) {	
 				subItem=subItemList.get(j);
@@ -323,6 +317,47 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 	
 		closeFilterPopupWindow();
 		return false;
+	}
+	
+	@Override
+	public void ExpandSubExpandableItemInCategoryFilterSection() {
+		int listSize=this.productFilterList.size();
+				
+		boolean bCategory=false;
+		String lsFilterHeader;
+		int selectedIndex=0;
+		
+		for(int i=0;i<listSize;i++) {
+			getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i));
+			lsFilterHeader=this.productFilterList.get(i).getText().trim();
+			
+			if(lsFilterHeader.equalsIgnoreCase("category")) {
+				bCategory=true;
+				selectedIndex=i;
+				break;
+			}
+		}
+	
+		if(!bCategory) {
+			return;
+		}
+
+		List<WebElement> subItemList=this.productFilterContainerList.get(selectedIndex).findElements(this.bySecondaryFilterAll);
+		
+		WebElement subItem,element;
+		for(int i=0;i<subItemList.size()-1;i++) {
+			subItem=subItemList.get(i);
+			element=subItem.findElement(By.xpath(".//a"));			
+			if(this.hasElementAttribute(element, "class")) {				
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
+				//this.getReusableActionsInstance().clickIfAvailable(element);
+				this.clickElement(element);
+				this.waitForPageToLoad();
+				this.getReusableActionsInstance().staticWait(3000);
+				break;
+			}
+		}
+		
 	}
 	
 	@Override

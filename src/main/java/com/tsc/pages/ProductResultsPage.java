@@ -1681,6 +1681,7 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	public void ExpandSubExpandableItemInCategoryFilterSection() {
+		System.out.println("Get into function");
 		int listSize=this.productFilterList.size();
 				
 		boolean bCategory=false;
@@ -1697,16 +1698,18 @@ public class ProductResultsPage extends BasePage{
 				break;
 			}
 		}
-	
+
 		if(!bCategory) {
 			return;
 		}
 
 		List<WebElement> subItemList=this.productFilterContainerList.get(selectedIndex).findElements(this.bySecondaryFilterAll);
 		WebElement element;
-		for(WebElement subItem:subItemList) {
+		WebElement subItem;
+		for(int i=0;i<subItemList.size()-1;i++) {
+			subItem=subItemList.get(i);
 			element=subItem.findElement(By.xpath(".//a"));			
-			if(this.hasElementAttribute(element, "class")) {				
+			if(this.hasElementAttribute(element, "class")) {
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
 				this.getReusableActionsInstance().clickIfAvailable(element);
 				this.waitForPageToLoad();
