@@ -79,7 +79,7 @@ homePage:
   lbl_TopSellers: TOP SELLERS
 searchResultPage:
   lst_SearchKeyword: [ "dyson vacuum","dfafasdfa","100501","Joan Rivers","Nike" ]
-  lst_SearchKeyword_Bugs: ["iPads & Tablets","apple  ","https://qa-tsc.tsc.ca/pages/productresults?&searchterm=desk","709712"]
+  lst_SearchKeyword_Bugs: ["iPads & Tablets","apple  ","https://qa-tsc.tsc.ca/pages/productresults?&searchterm=desk","406698"]
   lst_SearchKeyword_DropDown: [[ "dress","Categories","0" ]]
   lst_APISearchingKeyword: ["dress","jegging","boots"]
   lbl_SearchResultPageDefaultSetting: 36
@@ -91,7 +91,7 @@ searchResultPage:
   lst_SearchOption:
     - filterType: Product
       filterOption: 
-      - ["Category","Fashion"]
+      - ["Category","Jeans"]
       - ["Shop by colour","Black"]
     - filterType: Price
       filterOption:
@@ -112,13 +112,12 @@ searchResultPage:
         - ["Price","$100 - $200"] 
     - filterType: CuratedCollectionsBugs
       filterOption:  
-        - ["Brand","Pajar"]
-        - ["Price","$100 - $200"]        
+        - ["Jewellery","Gold"]              
     - filterType: BreadCrumbBugs
       filterOption:  
-        - ["Category",""]
-        - ["Price","$100 - $200"] 
-        - ["Category",""]
+        - ["Category","Pants & Shorts"]
+        - ["Price","Under $100"] 
+        - ["Category","Leggings & Jeggings"]
   lst_MoreButton: ["Brand","Shop by collection","Shop by colour"]
   lst_DisappearAfterSelectFilter: ["SHOP BY CATEGORY"]
   lnk_product_result: /pages/productresults?

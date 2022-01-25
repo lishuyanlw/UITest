@@ -117,6 +117,11 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 		List<WebElement> subItemList;
 		boolean bCategory=lsFirstLevelItem.equalsIgnoreCase("category");
 			
+		if(bCategory&&this.bCategoryExpand) {
+			ExpandSubExpandableItemInCategoryFilterSection();
+			this.bCategoryExpand=false;
+		}
+		
 		for(int i=0;i<this.productFilterList.size();i++) {			
 			if(i>0) {
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i));
@@ -382,6 +387,10 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 	@Override
 	public boolean closeAllSelectedFilters() {
 		openFilterPopupWindow();	
+		
+		if(!this.checkChildElementExistingByAttribute(this.cntSelectedFilters, "class", "prp__applied-filters")) {
+			return true;
+		}
 		
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnFilterPopupClearAll);
 		getReusableActionsInstance().clickIfAvailable(this.btnFilterPopupClearAll);	

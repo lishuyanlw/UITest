@@ -16,6 +16,7 @@ public class SR_TC11_Verify_ProductSearchResult_FavoriteIconActionTest extends B
 	 * Bug 19539: [QA Defect - P3] Favorite an item in PRP doesn't sync up to PDP - covered in verifyFavoriteIconAction function
 	 * Bug 19559: [QA Defect - P3] Products show different ratings in PRP vs. PDP - covered in verifyFavoriteIconAction function
 	 * Bug 19538: [QA Defect - P3] PRP: missing Free Shipping label - covered in verifySearchResultContent and verifySearchResultContentWithMouseHover functions
+	 * Bug 19538: [QA Defect - P3] PRP: missing Free Shipping label - covered in verifyFavoriteIconAction function
 	 * 
 	 */
 	@Test(groups={"ProductSearch","Regression","Regression_Tablet"})

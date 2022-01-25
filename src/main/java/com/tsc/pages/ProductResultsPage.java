@@ -26,7 +26,7 @@ public class ProductResultsPage extends BasePage{
 	}
 
 	//Search results return message
-	@FindBy(xpath = "//section[@class='tsc-container']//*[@class='prp__showing-results']|//section[@class='tsc-container']//div[@class='prp-no-search-results__copy__heading']")
+	@FindBy(xpath = "//section[@class='tsc-container']//*[@class='prp__showing-results']|//section[@class='tsc-container']//div[@class='prp-no-search-results__copy__heading']|//span[contains(@class,'tagDimTitle')]")
 	public WebElement lblSearchResultMessage;
 
 	@FindBy(xpath = "//section[@class='tsc-container']//*[@class='prp__showing-results']")
@@ -108,6 +108,9 @@ public class ProductResultsPage extends BasePage{
 
 	public By byProductSizeAndColour=By.xpath(".//div[contains(@class,'product-card__option-button')]/ul");
 	//Selected filters
+	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='prp__wrapper']")
+	public WebElement cntSelectedFilters;
+	
 	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='prp__applied-filters']//button")
 	public List<WebElement> selectedFiltersList;
 
@@ -349,7 +352,7 @@ public class ProductResultsPage extends BasePage{
 	String searchkeyword;
 	public boolean bVerifyTitle=true;
 	public String firstLevelFilter,secondLevelFilter;
-	public boolean bDefault=false;
+	public boolean bDefault=false,bCategoryExpand=false;
 	public String lsSearchResultMessage="";
 	public ProductItem selectedProductItem= new ProductItem();
 
@@ -396,7 +399,7 @@ public class ProductResultsPage extends BasePage{
 		this.getReusableActionsInstance().clickIfAvailable(globalHeader.searchBox,3000);
 		for(String inputText:data){
 			globalHeader.searchBox.sendKeys(inputText);
-			this.getReusableActionsInstance().staticWait(2000);
+			this.getReusableActionsInstance().staticWait(6000);
 		}
 		//globalHeader.searchBox.sendKeys(searchKeyword);
 		//globalHeader.btnSearchSubmit.click();
@@ -719,8 +722,14 @@ public class ProductResultsPage extends BasePage{
 	public boolean verifyUrlContainDimensionAndKeyword(String lsKeyword) {
 		String lsUrl=this.URL();
 		getReporter().reportLog("Url for browser: "+this.getExecutionBrowserName()+ " is: "+lsUrl);
+
 		if(lsUrl.toLowerCase().contains("dimensions=")) {
-			return lsUrl.toLowerCase().contains("dimensions=")&&lsUrl.toLowerCase().contains("searchterm=")&&lsUrl.contains(this.getEncodingKeyword(lsKeyword));
+			if(lsUrl.toLowerCase().contains("searchterm=")) {
+				return lsUrl.toLowerCase().contains("dimensions=")&&lsUrl.toLowerCase().contains("searchterm=")&&lsUrl.contains(this.getEncodingKeyword(lsKeyword));
+			}
+			else {
+				return lsUrl.toLowerCase().contains("dimensions=");
+			}			
 		}
 		else {
 			return lsUrl.toLowerCase().contains("searchterm=")&&lsUrl.contains(this.getEncodingKeyword(lsKeyword));
@@ -999,18 +1008,6 @@ public class ProductResultsPage extends BasePage{
 					reporter.reportLogFail("Product review count info is not displaying correctly");
 				}
 			}
-			
-			//Bug 19538: [QA Defect - P3] PRP: missing Free Shipping label
-			if(this.checkProductItemFreeShippingExisting(item)) {
-				element=item.findElement(byProductFreeShipping);
-				lsText=this.getElementInnerText(element);
-				if(!lsText.isEmpty()) {
-					reporter.reportLogPass("Product free shipping is not empty");
-				}
-				else {
-					reporter.reportLogFail("Product free shipping is empty");
-				}
-			}
 		}
 	}
 
@@ -1212,17 +1209,16 @@ public class ProductResultsPage extends BasePage{
 				}
 			}
 
-			//Bug 19538: [QA Defect - P3] PRP: missing Free Shipping label
-			if(this.checkProductItemFreeShippingExisting(item)) {
-				element=item.findElement(byProductFreeShipping);
-				lsText=this.getElementInnerText(element);
-				if(!lsText.isEmpty()) {
-					reporter.reportLogPass("Product free shipping is not empty");
-				}
-				else {
-					reporter.reportLogFail("Product free shipping is empty");
-				}
-			}
+//			if(this.checkProductItemFreeShippingExisting(item)) {
+//				element=item.findElement(byProductFreeShipping);
+//				lsText=this.getElementInnerText(element);
+//				if(!lsText.isEmpty()) {
+//					reporter.reportLogPass("Product free shipping is not empty");
+//				}
+//				else {
+//					reporter.reportLogFail("Product free shipping is empty");
+//				}
+//			}
 			
 			element=item.findElement(byProductGoToDetails);
 			this.getReusableActionsInstance().staticWait(1000);
@@ -1508,6 +1504,11 @@ public class ProductResultsPage extends BasePage{
 		List<WebElement> subItemList;
 		boolean bCategory=lsFirstLevelItem.equalsIgnoreCase("category");
 		
+		if(bCategory&&this.bCategoryExpand) {
+			ExpandSubExpandableItemInCategoryFilterSection();
+			this.bCategoryExpand=false;
+		}
+				
 		for(int i=0;i<this.productFilterList.size();i++) {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i));
 			String lsHeader=this.productFilterList.get(i).getText().trim();
@@ -1571,7 +1572,7 @@ public class ProductResultsPage extends BasePage{
 					}
 					else {	
 						if(lsFirstLevelItem.equalsIgnoreCase("category")) {
-							item=subItem.findElement(By.xpath(".//a"));							
+							item=subItem.findElement(By.xpath(".//a"));								
 							if(!this.hasElementAttribute(item, "class")) {
 								lsSubItem = item.getText().trim();
 							}
@@ -1659,6 +1660,48 @@ public class ProductResultsPage extends BasePage{
 	}
 	
 	/**
+	 * This method will Expand Sub Expandable Item In Category Filter Section
+	 * @return void
+	 * @author Wei.Li
+	 */
+	public void ExpandSubExpandableItemInCategoryFilterSection() {
+		int listSize=this.productFilterList.size();
+				
+		boolean bCategory=false;
+		String lsFilterHeader;
+		int selectedIndex=0;
+		
+		for(int i=0;i<listSize;i++) {
+			getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i));
+			lsFilterHeader=this.productFilterList.get(i).getText().trim();
+			
+			if(lsFilterHeader.equalsIgnoreCase("category")) {
+				bCategory=true;
+				selectedIndex=i;
+				break;
+			}
+		}
+	
+		if(!bCategory) {
+			return;
+		}
+
+		List<WebElement> subItemList=this.productFilterContainerList.get(selectedIndex).findElements(this.bySecondaryFilterAll);
+		WebElement element;
+		for(WebElement subItem:subItemList) {
+			element=subItem.findElement(By.xpath(".//a"));			
+			if(this.hasElementAttribute(element, "class")) {				
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
+				this.getReusableActionsInstance().clickIfAvailable(element);
+				this.waitForPageToLoad();
+				this.getReusableActionsInstance().staticWait(3000);
+				break;
+			}
+		}
+		
+	}
+	
+	/**
 	 * This method will verify Url after selecting filters.
 	 * @param boolean bCategory: true for Category filter while false for others filter
 	 * @return void
@@ -1670,7 +1713,7 @@ public class ProductResultsPage extends BasePage{
 		String lsUrl=this.URL();
 		boolean bVerify;
 		if(bCategory) {
-			bVerify=lsUrl.matches(".*dimensions=\\d+&.*");
+			bVerify=lsUrl.matches(".*dimensions=\\d+.*");
 			if(bVerify) {
 				reporter.reportLogPass("The Url for Category filter is displaying correctly.");
 			}
@@ -1746,11 +1789,30 @@ public class ProductResultsPage extends BasePage{
 	}
 
 	/**
+	 * This method will check if selected filter list is existing.
+	 * @return boolean.
+	 * @author Wei.Li
+	 */
+	public boolean checkSelectedFilterListExisting() {
+		if(this.checkChildElementExistingByAttribute(this.cntSelectedFilters, "class", "prp__applied-filters")) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	/**
 	 * This method will close all selected filters.
 	 * @return true/false: The last one is ClearAllFiltersButton.
 	 * @author Wei.Li
 	 */
 	public boolean closeAllSelectedFilters() {
+		if(!checkSelectedFilterListExisting()) {
+			return true;
+		}
+		
+		this.getReusableActionsInstance().staticWait(2000);
 		WebElement element=this.selectedFiltersList.get(this.selectedFiltersList.size()-1);
 		getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 		getReusableActionsInstance().clickIfAvailable(element);
@@ -1931,9 +1993,9 @@ public class ProductResultsPage extends BasePage{
 		this.getReusableActionsInstance().waitForElementVisibility((new ProductDetailPage(this.getDriver())).lblProductName,120);
 		return true;
 	}
-
-	//Fake methods for compiling temporally
+	
 	public boolean waitForPageLoading() {
+		this.waitForPageToLoad();
 		return true;
 	}
 
@@ -2777,6 +2839,7 @@ public class ProductResultsPage extends BasePage{
 		String prpProductNowPrice=this.getElementInnerText(this.productResultList.get(selectedIndex).findElement(this.byProductNowPrice));
 		int prpReviewRateStarCount=this.getProductItemReviewNumberAmountFromStarImage(this.productResultList.get(selectedIndex).findElement(this.byProductReviewRatingImage));
 		String prpReviewCountInfo=this.getElementInnerText(this.productResultList.get(selectedIndex).findElement(this.byProductReviewRatingCount));
+		String prpProductFreeShipping=this.getElementInnerText(this.productResultList.get(selectedIndex).findElement(this.byProductFreeShipping));
 		
 		LoginPage loginPage=new LoginPage(this.getDriver());
 	
@@ -2814,6 +2877,14 @@ public class ProductResultsPage extends BasePage{
 		else {
 			reporter.reportLogFail("The favorite icon is not displaying clicking status correctly");
 			return;
+		}
+			
+		//Bug 19538: [QA Defect - P3] PRP: missing Free Shipping label
+		if(!prpProductFreeShipping.isEmpty()) {
+			reporter.reportLogPass("Product free shipping is not empty");
+		}
+		else {
+			reporter.reportLogFail("Product free shipping is empty");
 		}
 				
 		item=this.productResultList.get(selectedIndex).findElement(byProductHref);
@@ -2853,7 +2924,7 @@ public class ProductResultsPage extends BasePage{
 		else {
 			reporter.reportLogFail("The review count info in PRP is not the same as count info in PDP");
 		}
-		
+	
 		//Bug 19539: [QA Defect - P3] Favorite an item in PRP doesn't sync up to PDP
 		if(pdp.checkIfFavShareMobileHighlighted()) {
 			reporter.reportLogPass("The FavShareMobile icon is highlighted correctly");
@@ -2939,9 +3010,7 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	public boolean checkProductItemFreeShippingExisting(WebElement itemContainer) {
-		WebElement item=itemContainer.findElement(this.byProductFreeShipping);
-
-		return this.getChildElementCount(item)>0;
+		return this.checkChildElementExistingByAttribute(itemContainer, "class", "product-card__free-shipping");
 	}
 
 	/**
@@ -3302,6 +3371,92 @@ public class ProductResultsPage extends BasePage{
 		else {
 			reporter.reportLogFail("The product search results are not keeping the same status as just first filter applied"); 
 		}	
+	}
+	
+	/**
+	 * This method will verify Applied Product SubFilter Remains After Multi Categories Selection Through BreadCrumb Navigation
+	 * @param-List<List<String>> lstFilter: filter list
+	 * @return void
+	 */
+	//Bug 19659: [QA Defect] PRP Breadcrumb: Not keeping the past filters applied
+	public void verifyAppliedProductSubFilterRemainsAfterMultiCategoriesSelectionThroughBreadCrumbNavigation(List<List<String>> lstFilter){	
+		//Select first category item
+		this.bCategoryExpand=true;
+		List<String> lstItem=lstFilter.get(0);
+		selectFilterItemInLeftPanel(lstItem.get(0), lstItem.get(1));
+		
+		if(!checkSelectedFilterListExisting()) {
+			reporter.reportLogPass("The selected filter list for first Category filter is not displaying"); 
+		}
+		else {
+			reporter.reportLogFail("The selected filter list for first Category filter is displaying wrongly"); 
+		}		
+		
+		//Apply a subfilter
+		lstItem=lstFilter.get(1);
+		selectFilterItemInLeftPanel(lstItem.get(0), lstItem.get(1));
+				
+		//Check if selected list existing
+		if(checkSelectedFilterListExisting()) {
+			reporter.reportLogPass("The selected filter list after selecting filters is displaying correctly"); 
+		}
+		else {
+			reporter.reportLogFail("The selected filter list after selecting filters is not displaying correctly"); 
+		}
+
+		//Select first category item
+		this.bCategoryExpand=false;
+		lstItem=lstFilter.get(2);
+		selectFilterItemInLeftPanel(lstItem.get(0), lstItem.get(1));
+		
+		WebElement item=this.lstSearchResultNavigation.get(this.lstSearchResultNavigation.size()-2);
+		item=item.findElement(By.xpath(".//a"));
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+		this.getReusableActionsInstance().clickIfAvailable(item);
+		this.waitForPageToLoad();
+		this.getReusableActionsInstance().staticWait(3000);
+		this.getReusableActionsInstance().waitForElementVisibility(this.lblSearchResultMessage,120);
+		
+		//Check if selected list existing
+		if(checkSelectedFilterListExisting()) {
+			reporter.reportLogPass("The selected filter list after navigating from BreadCrumb is displaying correctly"); 
+		}
+		else {
+			reporter.reportLogFail("The selected filter list after navigating from BreadCrumb is not displaying correctly"); 
+		}
+	}
+	
+	/**
+	 * This method will verify BreadCrumb After Selecting CuratedCollections Item
+	 * @param-List<List<String>> lstFilter: filter list
+	 * @return void
+	 */
+	//Bug 19690: [UAT Defect] The breadcumb breaks non category/brand PRPs and a server error is triggered
+	public void verifyBreadCrumbAfterSelectCuratedCollectionsItem(List<List<String>> lstFilter){	
+		//Select first category item
+		List<String> lstItem=lstFilter.get(0);
+		(new GlobalHeaderPage(this.getDriver())).clickCuratedCollectionsMenuItem(lstItem.get(0), lstItem.get(1));
+		this.waitForPageToLoad();
+		this.getReusableActionsInstance().staticWait(3000);
+		this.getReusableActionsInstance().waitForElementVisibility(this.lblSearchResultMessage,120);
+		
+		int navigateItemCount=this.lstSearchResultNavigation.size();
+		if(navigateItemCount==2) {
+			reporter.reportLogPass("The Navigation Breadcrumb list is containing 2 items correctly"); 
+		}
+		else {
+			reporter.reportLogFail("The Navigation Breadcrumb list is not containing 2 items correctly"); 
+		}
+		
+		WebElement item=this.lstSearchResultNavigation.get(this.lstSearchResultNavigation.size()-1);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+		String lsText=item.getText().trim();
+		if(lstItem.get(1).equalsIgnoreCase(lsText)) {
+			reporter.reportLogPass("The displaying pattern is Home>"+lstItem.get(1)); 
+		}
+		else {
+			reporter.reportLogFail("The displaying pattern is not Home>"+lstItem.get(1)); 
+		}
 	}
 
 

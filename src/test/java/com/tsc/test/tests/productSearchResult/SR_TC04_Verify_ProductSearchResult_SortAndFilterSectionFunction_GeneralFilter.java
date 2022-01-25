@@ -67,8 +67,6 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction_Gen
 				}
 
 				reporter.softAssert(getProductResultsPageThreadLocal().verifyProductPagination(), "Product pagination is existing", "Product pagination is not existing");
-				reporter.softAssert(getProductResultsPageThreadLocal().verifyElementExisting(getProductResultsPageThreadLocal().getHeaderContainer()), "Header section is existing after choosing filters", "Header section is not existing after choosing filters");
-				reporter.softAssert(getProductResultsPageThreadLocal().verifyElementExisting(getProductResultsPageThreadLocal().getFooterContainer()), "Footer section is existing after choosing filters", "Footer section is not existing after choosing filters");
 			} else {
 				reporter.reportLogFail("Choosing filter of " + "'" + lstItem.get(0) + "/" + lstItem.get(1) + "' failed");
 			}

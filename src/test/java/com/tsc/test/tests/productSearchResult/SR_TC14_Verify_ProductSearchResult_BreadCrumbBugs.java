@@ -13,8 +13,8 @@ import com.tsc.test.base.BaseTest;
 
 public class SR_TC14_Verify_ProductSearchResult_BreadCrumbBugs extends BaseTest{
 	/*
-	 * Bug 19659: [QA Defect] PRP Breadcrumb: Not keeping the past filters applied - covered in 
-	 * Bug 19690: [UAT Defect] The breadcumb breaks non category/brand PRPs and a server error is triggered - covered in 
+	 * Bug 19659: [QA Defect] PRP Breadcrumb: Not keeping the past filters applied - covered in verifyAppliedProductSubFilterRemainsAfterMultiCategoriesSelectionThroughBreadCrumbNavigation function 
+	 * Bug 19690: [UAT Defect] The breadcumb breaks non category/brand PRPs and a server error is triggered - covered in verifyBreadCrumbAfterSelectCuratedCollectionsItem function
 	 */
 	@Test(groups={"ProductSearch","Regression","Regression_Tablet","Regression_Mobile"})
 	public void Verify_ProductSearchResult_BreadCrumbBugs() throws IOException {
@@ -23,13 +23,16 @@ public class SR_TC14_Verify_ProductSearchResult_BreadCrumbBugs extends BaseTest{
 	reporter.softAssert(getglobalheaderPageThreadLocal().validateURL((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");
 	reporter.reportLog("ProductSearch Page");
 	
-	String lsKeyword=TestDataHandler.constantData.getSearchResultPage().getLst_APISearchingKeyword().get(2);
-	
-	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeyword,true);
+	List<List<String>> lsKeywordDropdownList=TestDataHandler.constantData.getSearchResultPage().getLst_SearchKeyword_DropDown();
+	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordDropdownList.get(0).get(0),false);
+		
 
-	List<List<String>> lstFilterBugs=TestDataHandler.constantData.getSearchResultPage().getLst_SearchOption().get(4).getFilterOption();
+	List<List<String>> lstCuratedCollectionsBugs=TestDataHandler.constantData.getSearchResultPage().getLst_SearchOption().get(5).getFilterOption();
+	List<List<String>> lstBreadCrumbBugs=TestDataHandler.constantData.getSearchResultPage().getLst_SearchOption().get(6).getFilterOption();
 	
-	getProductResultsPageThreadLocal().verifyProductContentNoChangesAfterNavigatingBackWithMultiFilters(lstFilterBugs);
+	getProductResultsPageThreadLocal().verifyAppliedProductSubFilterRemainsAfterMultiCategoriesSelectionThroughBreadCrumbNavigation(lstBreadCrumbBugs);
+	
+	getProductResultsPageThreadLocal().verifyBreadCrumbAfterSelectCuratedCollectionsItem(lstCuratedCollectionsBugs);
 
 
 	}
