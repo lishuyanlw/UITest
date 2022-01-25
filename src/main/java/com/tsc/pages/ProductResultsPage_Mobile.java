@@ -18,26 +18,26 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
         super(driver);
     }
 
-	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp__count-and-shorting']//button[@class='plp__count-and-shorting__filter-button']")
+	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='prp__count-and-shorting']//button[@class='prp__count-and-shorting__filter-button']")
 	public WebElement btnFilterPopup;
 	
 	//For filter popup window
-	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp-filter-panel']//div[@class='plp-filter-panel__header']//button[@class='plp-filter-panel__header__close']")
+	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='prp-filter-panel']//div[@class='prp-filter-panel__header']//button[@class='prp-filter-panel__header__close']")
 	public WebElement btnFilterPopupClose;
 	
-	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp-filter-panel']//div[@class='plp-filter-panel__header']//span[@class='plp-filter-panel__header__title']")
+	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='prp-filter-panel']//div[@class='prp-filter-panel__header']//span[@class='prp-filter-panel__header__title']")
 	public WebElement lblFilterPopupHeaderTitle;
     
-	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp-filter-panel']//div[@class='plp-filter-panel__header']//button[@class='plp-filter-panel__header__clear']")
+	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='prp-filter-panel']//div[@class='prp-filter-panel__header']//button[@class='prp-filter-panel__header__clear']")
 	public WebElement btnFilterPopupClearAll;
 	
-	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp-filter-panel__mobile-subpanel']//button[@class='plp-filter-panel__mobile-subpanel__title-button']")
+	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='prp-filter-panel__mobile-subpanel']//button[@class='prp-filter-panel__mobile-subpanel__title-button']")
 	public WebElement btnFiltersAdded;
 	
-	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp-filter-panel__mobile-subpanel']//div[@class='plp-filter-panel__mobile-subpanel__buttons']//button")
+	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='prp-filter-panel__mobile-subpanel']//div[@class='prp-filter-panel__mobile-subpanel__buttons']//button")
 	public List<WebElement> selectedFiltersList;
 	
-	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp-filter-panel__mobile-subpanel']//button[@class='plp-filter-panel__submit-button plp-filter-panel__submit-button--panel']")
+	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='prp-filter-panel__mobile-subpanel']//button[@class='prp-filter-panel__submit-button prp-filter-panel__submit-button--panel']")
 	public WebElement btnViewProductsAferSelectingFilters;
 	
 	//For product options(Size/Color)
@@ -189,8 +189,8 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 					
 					//if statement to test Bug-19685 - Review filter
 					if(lsSecondLevelItem.toLowerCase().contains("star")){
-						lsSubItem = subItem.findElement(By.xpath(".//span[@class='plp-filter-panel__filter-list__item-label-text visually-hidden']")).getText().trim();
-						subItem = subItem.findElement(By.xpath("//span[@class='plp-filter-panel__filter-list__item-label-text visually-hidden']/preceding-sibling::span"));
+						lsSubItem = subItem.findElement(By.xpath(".//span[@class='prp-filter-panel__filter-list__item-label-text visually-hidden']")).getText().trim();
+						subItem = subItem.findElement(By.xpath("//span[@class='prp-filter-panel__filter-list__item-label-text visually-hidden']/preceding-sibling::span"));
 					}
 					else {	
 						if(lsFirstLevelItem.equalsIgnoreCase("category")) {
@@ -203,11 +203,11 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 							}
 						}
 						else {
-							lsSubItem=subItem.findElement(By.xpath(".//span[@class='plp-filter-panel__filter-list__item-label-text']")).getText().trim();
+							lsSubItem=subItem.findElement(By.xpath(".//span[@class='prp-filter-panel__filter-list__item-label-text']")).getText().trim();
 						}
 					}
 					
-//					lsSubItem=this.getElementInnerText(subItem.findElement(By.xpath(".//span[@class='plp-filter-panel__filter-list__item-label-text']")));
+//					lsSubItem=this.getElementInnerText(subItem.findElement(By.xpath(".//span[@class='prp-filter-panel__filter-list__item-label-text']")));
 					getReusableActionsInstance().staticWait(500);
 					//If found lsSecondLevelItem
 					if(lsSubItem.equalsIgnoreCase(lsSecondLevelItem)) {						
@@ -276,7 +276,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				subItem=subItemList.get(j);
 				if(!this.hasElementAttribute(subItem.findElement(By.xpath(".//button//input")), "checked")) {
 					this.secondLevelFilter=this.getElementInnerText(subItem);
-					this.firstLevelFilter=this.getElementInnerText(subItem.findElement(By.xpath("./ancestor::div[@class='plp-filter-panel__blocks']//button[@class='plp-filter-panel__block-title']")));
+					this.firstLevelFilter=this.getElementInnerText(subItem.findElement(By.xpath("./ancestor::div[@class='prp-filter-panel__blocks']//button[@class='prp-filter-panel__block-title']")));
 					
 					getReusableActionsInstance().staticWait(500);
 					getReusableActionsInstance().staticWait(500);

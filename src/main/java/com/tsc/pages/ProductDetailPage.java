@@ -1659,8 +1659,8 @@ public class ProductDetailPage extends BasePage {
 
 		(new ProductResultsPage(this.getDriver())).waitForPageLoading();
 
-		reporter.softAssert(this.URL().toLowerCase().contains("productresults"),"The current Url of "+this.URL()+" is back to product search page","The current Url of "+this.URL()+" is not back to product search page");
-		//reporter.softAssert(this.URL().toLowerCase().contains("breadcrumb"),"The current Url of "+this.URL()+" is back to product search page","The current Url of "+this.URL()+" is not back to product search page");
+		//reporter.softAssert(this.URL().toLowerCase().contains("productresults"),"The current Url of "+this.URL()+" is back to product search page","The current Url of "+this.URL()+" is not back to product search page");
+		reporter.softAssert(this.URL().toLowerCase().contains("breadcrumb"),"The current Url of "+this.URL()+" is back to product search page","The current Url of "+this.URL()+" is not back to product search page");
 	}
 
 	public void verifyVideo(String lsVideoDisclaimInfo) {

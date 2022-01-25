@@ -11,13 +11,13 @@ import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 
-public class SR_TC13_Verify_ProductSearchResult_FilterBugs extends BaseTest{
+public class SR_TC14_Verify_ProductSearchResult_BreadCrumbBugs extends BaseTest{
 	/*
-	 * Bug 19629: [QA Defect - P3] Product card: if a product doesn't have color swatch, all color options show as plain circles - covered in selectFilterItemInLeftPanel function
-	 * Bug 19658: [QA Defect - P3] PRP: Page not refreshed to previous state with browser back button with filter applied - covered in verifyProductContentNoChangesAfterNavigatingBackWithMultiFilters function 
+	 * Bug 19659: [QA Defect] PRP Breadcrumb: Not keeping the past filters applied - covered in 
+	 * Bug 19690: [UAT Defect] The breadcumb breaks non category/brand PRPs and a server error is triggered - covered in 
 	 */
 	@Test(groups={"ProductSearch","Regression","Regression_Tablet","Regression_Mobile"})
-	public void Verify_ProductSearchResult_FilterBugs() throws IOException {
+	public void Verify_ProductSearchResult_BreadCrumbBugs() throws IOException {
 	getGlobalFooterPageThreadLocal().closePopupDialog();
 
 	reporter.softAssert(getglobalheaderPageThreadLocal().validateURL((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");
@@ -26,7 +26,7 @@ public class SR_TC13_Verify_ProductSearchResult_FilterBugs extends BaseTest{
 	String lsKeyword=TestDataHandler.constantData.getSearchResultPage().getLst_APISearchingKeyword().get(2);
 	
 	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeyword,true);
-	
+
 	List<List<String>> lstFilterBugs=TestDataHandler.constantData.getSearchResultPage().getLst_SearchOption().get(4).getFilterOption();
 	
 	getProductResultsPageThreadLocal().verifyProductContentNoChangesAfterNavigatingBackWithMultiFilters(lstFilterBugs);
