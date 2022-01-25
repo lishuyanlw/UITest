@@ -51,8 +51,6 @@ public class SR_TC12_Verify_ProductSearchResult_SizeAndColorLinkageWithPDP exten
 				break;
 			}
 		}
-
 	}
-
 }
 

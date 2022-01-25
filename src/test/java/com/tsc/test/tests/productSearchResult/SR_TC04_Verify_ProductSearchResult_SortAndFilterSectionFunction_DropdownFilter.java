@@ -95,7 +95,7 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction_Dro
           
             if (lsMsg.isEmpty()) {
                 reporter.reportLogPass("Sort option of Price: Lowest First works for the first page");
-                
+
                 // Bug 19734: [UAT Defect]: PRP: Sorting filter is not retained when going past page 1
                 getProductResultsPageThreadLocal().switchPage(true);
                 lsMsg = getProductResultsPageThreadLocal().verifyPriceFirstSort(false);
@@ -142,7 +142,7 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction_Dro
           
             if (lsMsg.isEmpty()) {
                 reporter.reportLogPass("Sort option of Reviews: Highest First works for the first page");
-                
+
                 // Bug 19734: [UAT Defect]: PRP: Sorting filter is not retained when going past page 1
                 getProductResultsPageThreadLocal().switchPage(true);
                 lsMsg = getProductResultsPageThreadLocal().verifyHighestReviewFirstSort();
@@ -189,7 +189,7 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction_Dro
           
             if (lsMsg.isEmpty()) {
                 reporter.reportLogPass("Sort option of Brand Name: A to Z works for the first page");
-                
+
                 // Bug 19734: [UAT Defect]: PRP: Sorting filter is not retained when going past page 1
                 getProductResultsPageThreadLocal().switchPage(true);
                 lsMsg = getProductResultsPageThreadLocal().verifyBrandNameOrderByAlphabet();
@@ -215,15 +215,15 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction_Dro
 
             reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(), "Showing text pattern in filters is correct", "Showing text pattern in filters is incorrect");
 
-//            productList = getProductResultsPageThreadLocal().getProductList();
-//            if (productList.size() > 0) {
-//               getProductResultsPageThreadLocal().verifySearchResultContent(productList);
-//               getProductResultsPageThreadLocal().verifySearchResultContentWithMouseHover(productList);
-//            }
-//
-//            reporter.softAssert(getProductResultsPageThreadLocal().verifyProductPagination(), "Product pagination is existing", "Product pagination is not existing");
-//            reporter.softAssert(getProductResultsPageThreadLocal().verifyElementExisting(getProductResultsPageThreadLocal().getHeaderContainer()), "Header section is existing after choosing sorting options", "Header section is not existing after choosing sorting options");
-//            reporter.softAssert(getProductResultsPageThreadLocal().verifyElementExisting(getProductResultsPageThreadLocal().getFooterContainer()), "Footer section is existing after choosing sorting options", "Footer section is not existing after choosing sorting options");
+            productList = getProductResultsPageThreadLocal().getProductList();
+            if (productList.size() > 0) {
+               getProductResultsPageThreadLocal().verifySearchResultContent(productList);
+               getProductResultsPageThreadLocal().verifySearchResultContentWithMouseHover(productList);
+            }
+
+            reporter.softAssert(getProductResultsPageThreadLocal().verifyProductPagination(), "Product pagination is existing", "Product pagination is not existing");
+            reporter.softAssert(getProductResultsPageThreadLocal().verifyElementExisting(getProductResultsPageThreadLocal().getHeaderContainer()), "Header section is existing after choosing sorting options", "Header section is not existing after choosing sorting options");
+            reporter.softAssert(getProductResultsPageThreadLocal().verifyElementExisting(getProductResultsPageThreadLocal().getFooterContainer()), "Footer section is existing after choosing sorting options", "Footer section is not existing after choosing sorting options");
         } else {
             reporter.reportLogFail("Choosing Brand Name: A to Z option failed");
         }
