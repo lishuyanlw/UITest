@@ -26,29 +26,29 @@ public class ProductResultsPage extends BasePage{
 	}
 
 	//Search results return message
-	@FindBy(xpath = "//section[@class='tsc-container']//*[@class='plp__showing-results']|//section[@class='tsc-container']//div[@class='plp-no-search-results__copy__heading']")
+	@FindBy(xpath = "//section[@class='tsc-container']//*[@class='prp__showing-results']|//section[@class='tsc-container']//div[@class='prp-no-search-results__copy__heading']")
 	public WebElement lblSearchResultMessage;
 
-	@FindBy(xpath = "//section[@class='tsc-container']//*[@class='plp__showing-results']")
+	@FindBy(xpath = "//section[@class='tsc-container']//*[@class='prp__showing-results']")
 	public WebElement lblReturnMessageWithSearchResult;
 
-	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp-no-search-results__copy__heading']")
+	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='prp-no-search-results__copy__heading']")
 	public WebElement lblReturnMessageHeadingWithoutSearchResult;
 
-	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp-no-search-results__icon']")
+	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='prp-no-search-results__icon']")
 	public WebElement lblReturnMessageIconWithoutSearchResult;
 
-	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp-no-search-results__copy__text']")
+	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='prp-no-search-results__copy__text']")
 	public WebElement lblReturnMessageTextWithoutSearchResult;
 
-	@FindBy(xpath = "//section[@class='tsc-container']//button[@class='plp-no-search-results__copy__link']")
+	@FindBy(xpath = "//section[@class='tsc-container']//button[@class='prp-no-search-results__copy__link']")
 	public WebElement btnReturnMessageRetryLinkWithoutSearchResult;
 
 	//Search title
 	@FindBy(xpath = "//span[contains(@class,'tagDimTitle')]")
 	public WebElement lblSearchResultTitle;
 
-	@FindBy(xpath = "//div[contains(@class,'ProductResults')]//section[@class='tsc-container']//*[@class='plp__showing-results']")
+	@FindBy(xpath = "//div[contains(@class,'ProductResults')]//section[@class='tsc-container']//*[@class='prp__showing-results']")
 	public WebElement lblSearchResultTitleMessage;
 
 	@FindBy(xpath = "//div[contains(@class,'ProductResults')]//section[@class='tsc-container']")
@@ -71,24 +71,24 @@ public class ProductResultsPage extends BasePage{
 	public List<WebElement> lstBannerImage;
 
 	//Product message showing
-	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp__pagination-desc']//span[@class='plp__pagination-desc__display-text']")
+	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='prp__pagination-desc']//span[@class='prp__pagination-desc__display-text']")
 	public WebElement lblShowing;
 
-	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp__pagination-desc']//span[@class='plp__pagination-desc__product-count-text']")
+	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='prp__pagination-desc']//span[@class='prp__pagination-desc__product-count-text']")
 	public WebElement txtShowingDynamicContent;
 
 	//Sort part
-	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp__count-and-shorting__product-count']")
+	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='prp__count-and-shorting__product-count']")
 	public WebElement lblProductCountMessage;
 
-	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp__count-and-shorting']//select[@class='plp__count-and-shorting__shorting']")
+	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='prp__count-and-shorting']//select[@class='prp__count-and-shorting__shorting']")
 	public WebElement btnSortSelect;
 
-	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp__count-and-shorting']//select[@class='plp__count-and-shorting__shorting']//option")
+	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='prp__count-and-shorting']//select[@class='prp__count-and-shorting__shorting']//option")
 	public List<WebElement> sortByOptionList;
 
 	//For Sorting and Filtering page loading indicator
-	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp']")
+	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='prp']")
 	public WebElement cntSortingAndFilteringProductResultLoadingIndicator;
 
 	@FindBy(xpath = "//section[@class='tsc-container'][not(nav)][not(*[@class='breadcrumb'])]")
@@ -100,15 +100,15 @@ public class ProductResultsPage extends BasePage{
 	//@FindBy(xpath = "//div[@class='plp']//div[@class='plp__product-grid']//div[contains(@class,'plp-card-grid-item')]//div[@class='product-card']")
 	//List<WebElement> productResultList;
 
-	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp']//div[@class='plp__wrapper']")
+	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='prp']//div[@class='prp__wrapper']")
 	public WebElement cntProductResultListContainer;
 
-	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp']//div[@class='plp__product-grid']//div[contains(@class,'plp-card-grid-item')]//div[@class='product-card']")
+	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='prp']//div[@class='prp__product-grid']//div[contains(@class,'prp-card-grid-item')]//div[@class='product-card']")
 	public List<WebElement> productResultList;
 
 	public By byProductSizeAndColour=By.xpath(".//div[contains(@class,'product-card__option-button')]/ul");
 	//Selected filters
-	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp__applied-filters']//button")
+	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='prp__applied-filters']//button")
 	public List<WebElement> selectedFiltersList;
 
 	public By byProductHeaderTitleContainer=By.xpath(".//*[@class='product-card__header']");
@@ -189,24 +189,24 @@ public class ProductResultsPage extends BasePage{
 	public By byProductGoToDetails=By.xpath(".//button[@class='product-card__add-button']");
 
 	//Pagination
-	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp__pagination']")
+	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='prp__pagination']")
 	public WebElement cntPagination;
 
-	public By byPagination=By.xpath("//section[@class='tsc-container']//div[@class='plp__pagination']");
+	public By byPagination=By.xpath("//section[@class='tsc-container']//div[@class='prp__pagination']");
 
-	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp__pagination']//div[@class='plp__pagination__pages']//a")
+	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='prp__pagination']//div[@class='prp__pagination__pages']//a")
 	public List<WebElement> PageNumberList;
 
-	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp__pagination']")
+	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='prp__pagination']")
 	public WebElement cntPreAndNextButtonPage;
 
-	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp__pagination']//a[@class='plp__pagination__prev-link']")
+	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='prp__pagination']//a[@class='prp__pagination__prev-link']")
 	public WebElement btnPreviousPage;
 
-	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp__pagination']//a[@class='plp__pagination__next-link']")
+	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='prp__pagination']//a[@class='prp__pagination__next-link']")
 	public WebElement btnNextPage;
 
-	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp__pagination']//div[@class='plp__pagination__pages']//a[contains(@class,'plp__pagination__pages__page--current')]")
+	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='prp__pagination']//div[@class='prp__pagination__pages']//a[contains(@class,'prp__pagination__pages__page--current')]")
 	public WebElement btnCurrentPage;
 
 	//Product title and text
@@ -226,33 +226,33 @@ public class ProductResultsPage extends BasePage{
 	public WebElement btnProductTitleAndTextMoreOrLess;
 
 	//Product results filter
-	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp-filter-panel']//div[@class='plp-filter-panel__blocks']")
+	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='prp-filter-panel']//div[@class='prp-filter-panel__blocks']")
 	public List<WebElement> productFilterContainerList;
 
-	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp-filter-panel']//div[@class='plp-filter-panel__blocks']//button[@class='plp-filter-panel__block-title']")
+	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='prp-filter-panel']//div[@class='prp-filter-panel__blocks']//button[@class='prp-filter-panel__block-title']")
 	public List<WebElement> productFilterList;
 
 	public By byProductFilterSearchContainer=By.xpath("./div");
 
-	public By byProductFilterSearchInput=By.xpath("./div/input[@class='plp-filter-panel__search']");
+	public By byProductFilterSearchInput=By.xpath("./div/input[@class='prp-filter-panel__search']");
 
-	public By byProductFilterTitle=By.xpath(".//button[@class='plp-filter-panel__block-title']");
+	public By byProductFilterTitle=By.xpath(".//button[@class='prp-filter-panel__block-title']");
 
-	public By bySecondaryFilterOpenOrCloseFlag=By.xpath(".//button[@class='plp-filter-panel__block-title']//div[contains(@class,'plp-filter-panel__block-title__icon')]");
+	public By bySecondaryFilterOpenOrCloseFlag=By.xpath(".//button[@class='prp-filter-panel__block-title']//div[contains(@class,'prp-filter-panel__block-title__icon')]");
 
-	public By bySecondaryFilterAll=By.xpath(".//ul[@class='plp-filter-panel__filter-list' or @class='plp-filter-panel__back-list' or @class='plp-filter-panel__sub-categories']//li");
+	public By bySecondaryFilterAll=By.xpath(".//ul[@class='prp-filter-panel__filter-list' or @class='prp-filter-panel__back-list' or @class='prp-filter-panel__sub-categories']//li");
 
-	public By bySecondaryFilterUnChecked=By.xpath(".//ul[@class='plp-filter-panel__filter-list']//li[button[input[not(@checked)]]]");
+	public By bySecondaryFilterUnChecked=By.xpath(".//ul[@class='prp-filter-panel__filter-list']//li[button[input[not(@checked)]]]");
 
-	public By bySecondaryFilterChecked=By.xpath(".//ul[@class='plp-filter-panel__filter-list']//li[button[input[@checked]]]");
+	public By bySecondaryFilterChecked=By.xpath(".//ul[@class='prp-filter-panel__filter-list']//li[button[input[@checked]]]");
 
-	public By bySecondaryFilterSeeButtonText=By.xpath(".//button[contains(@class,'plp-filter-panel__view-more')]//span");
+	public By bySecondaryFilterSeeButtonText=By.xpath(".//button[contains(@class,'prp-filter-panel__view-more')]//span");
 
-	public By bySecondaryFilterSeeMoreButton=By.xpath(".//button[contains(@class,'plp-filter-panel__view-more')][span[normalize-space(.)='See More']]");
+	public By bySecondaryFilterSeeMoreButton=By.xpath(".//button[contains(@class,'prp-filter-panel__view-more')][span[normalize-space(.)='See More']]");
 
-	public By bySecondaryFilterSeeLessButton=By.xpath(".//button[contains(@class,'plp-filter-panel__view-more')][span[normalize-space(.)='See Less']]");
+	public By bySecondaryFilterSeeLessButton=By.xpath(".//button[contains(@class,'prp-filter-panel__view-more')][span[normalize-space(.)='See Less']]");
 
-	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp-filter-panel']//div[@class='plp-filter-panel__blocks']//ul[@class='plp-filter-panel__filter-list']//li[button[input[not(@checked)]]]")
+	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='prp-filter-panel']//div[@class='prp-filter-panel__blocks']//ul[@class='prp-filter-panel__filter-list']//li[button[input[not(@checked)]]]")
 	public List<WebElement> secondlevelFilterList;
 
 	@FindBy(xpath = "//div[contains(@class,'layout--left')]")
@@ -343,7 +343,7 @@ public class ProductResultsPage extends BasePage{
 	@FindBy(xpath = "//ng-component//div[@class='modal-dialog']//div[@class='crv-btn-block']//button[contains(@class,'btnResizing') and contains(@class,'btn-negative')]")
 	public WebElement btnCancelInClearMyFavouritesPopupWindow;
 
-	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='plp__applied-filters']/button/span")
+	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='prp__applied-filters']/button/span")
 	public List<WebElement> lstFilterApplied;
 
 	String searchkeyword;
@@ -1566,8 +1566,8 @@ public class ProductResultsPage extends BasePage{
 					getReusableActionsInstance().staticWait(2000);
 					//if statement to test Bug-19685 - Review filter
 					if(lsSecondLevelItem.toLowerCase().contains("star")){
-						lsSubItem = subItem.findElement(By.xpath(".//span[@class='plp-filter-panel__filter-list__item-label-text visually-hidden']")).getText().trim();
-						subItem = subItem.findElement(By.xpath("//span[@class='plp-filter-panel__filter-list__item-label-text visually-hidden']/preceding-sibling::span"));
+						lsSubItem = subItem.findElement(By.xpath(".//span[@class='prp-filter-panel__filter-list__item-label-text visually-hidden']")).getText().trim();
+						subItem = subItem.findElement(By.xpath("//span[@class='prp-filter-panel__filter-list__item-label-text visually-hidden']/preceding-sibling::span"));
 					}
 					else {	
 						if(lsFirstLevelItem.equalsIgnoreCase("category")) {
@@ -1580,7 +1580,7 @@ public class ProductResultsPage extends BasePage{
 							}
 						}
 						else {
-							lsSubItem=subItem.findElement(By.xpath(".//span[@class='plp-filter-panel__filter-list__item-label-text']")).getText().trim();
+							lsSubItem=subItem.findElement(By.xpath(".//span[@class='prp-filter-panel__filter-list__item-label-text']")).getText().trim();
 						}
 												 
 					}
@@ -1627,7 +1627,7 @@ public class ProductResultsPage extends BasePage{
 			for(WebElement subItem : subItemList) {
 				if(!this.hasElementAttribute(subItem.findElement(By.xpath(".//button//input")), "checked")) {
 					this.secondLevelFilter=this.getElementInnerText(subItem);
-					this.firstLevelFilter=this.getElementInnerText(subItem.findElement(By.xpath("./ancestor::div[@class='plp-filter-panel__blocks']//button[@class='plp-filter-panel__block-title']")));
+					this.firstLevelFilter=this.getElementInnerText(subItem.findElement(By.xpath("./ancestor::div[@class='prp-filter-panel__blocks']//button[@class='prp-filter-panel__block-title']")));
 
 					getReusableActionsInstance().staticWait(3000);
 					getReusableActionsInstance().clickIfAvailable(subItem);
@@ -1812,7 +1812,7 @@ public class ProductResultsPage extends BasePage{
 			}
 
 			WebElement lastPageButton=this.PageNumberList.get(this.PageNumberList.size()-1);
-			if(lastPageButton.getAttribute("class").contains("plp__pagination__pages__page--current")) {
+			if(lastPageButton.getAttribute("class").contains("prp__pagination__pages__page--current")) {
 				return false;
 			}else {
 				getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnNextPage);
@@ -1825,7 +1825,7 @@ public class ProductResultsPage extends BasePage{
 			}
 
 			WebElement firstPageButton=this.PageNumberList.get(0);
-			if(firstPageButton.getAttribute("class").contains("plp__pagination__pages__page--current")) {
+			if(firstPageButton.getAttribute("class").contains("prp__pagination__pages__page--current")) {
 				return false;
 			}else {
 				getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnPreviousPage);
@@ -1962,7 +1962,7 @@ public class ProductResultsPage extends BasePage{
 		}
 
 		while(this.switchPage(true));
-		/*getDriver().findElement(By.xpath("//div[contains(@class,'plp-card-grid-item')]")).click();
+		/*getDriver().findElement(By.xpath("//div[contains(@class,'prp-card-grid-item')]")).click();
 		return waitForCondition(Driver->{
 			return this.imgProductBadge.isDisplayed();
 		},90000);
@@ -2121,7 +2121,7 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	public boolean checkProductResultLoadingStatusAfterSorting() {
-		return this.checkChildElementExistingByAttribute(this.cntSortingAndFilteringProductResultLoadingIndicator,"class","plp__loading");
+		return this.checkChildElementExistingByAttribute(this.cntSortingAndFilteringProductResultLoadingIndicator,"class","prp__loading");
 	}
 
 	/**
@@ -2142,7 +2142,7 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	public boolean checkProductResultExisting() {
-		return this.checkChildElementExistingByAttribute(this.cntTSCContainer,"class","plp");
+		return this.checkChildElementExistingByAttribute(this.cntTSCContainer,"class","prp");
 	}
 
 	/**
@@ -2151,7 +2151,7 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	public boolean checkProductResultPaginationExisting() {
-		return this.checkChildElementExistingByAttribute(this.cntTSCContainer,"class","plp__pagination");
+		return this.checkChildElementExistingByAttribute(this.cntTSCContainer,"class","prp__pagination");
 	}
 
 	/**
@@ -3005,7 +3005,7 @@ public class ProductResultsPage extends BasePage{
 	 */
 	public boolean checkIfFilterItemIsCollapsed(WebElement filterContainerItem) {
 		WebElement item=filterContainerItem.findElement(this.bySecondaryFilterOpenOrCloseFlag);
-		return !item.getAttribute("class").contains("plp-filter-panel__block-title__icon--plus");
+		return !item.getAttribute("class").contains("prp-filter-panel__block-title__icon--plus");
 	}
 
 	/**
@@ -3132,7 +3132,7 @@ public class ProductResultsPage extends BasePage{
 	 */
 	public boolean checkSearchInputButtonExistingInSubFilter(WebElement filterContainerItem) {
 		WebElement searchInputContainer=filterContainerItem.findElement(this.byProductFilterSearchContainer);
-		return this.checkChildElementExistingByTagNameAndAttribute(searchInputContainer, "input", "class", "plp-filter-panel__search");
+		return this.checkChildElementExistingByTagNameAndAttribute(searchInputContainer, "input", "class", "prp-filter-panel__search");
 	}
 
 	/**

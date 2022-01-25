@@ -109,7 +109,16 @@ searchResultPage:
     - filterType: FilterBugs
       filterOption:  
         - ["Brand","Pajar"]
+        - ["Price","$100 - $200"] 
+    - filterType: CuratedCollectionsBugs
+      filterOption:  
+        - ["Brand","Pajar"]
         - ["Price","$100 - $200"]        
+    - filterType: BreadCrumbBugs
+      filterOption:  
+        - ["Category",""]
+        - ["Price","$100 - $200"] 
+        - ["Category",""]
   lst_MoreButton: ["Brand","Shop by collection","Shop by colour"]
   lst_DisappearAfterSelectFilter: ["SHOP BY CATEGORY"]
   lnk_product_result: /pages/productresults?
