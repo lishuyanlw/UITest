@@ -43,7 +43,7 @@ public class GlobalHeaderPage extends BasePage{
 	@FindBy(xpath = "//div[contains(@class,'black-header')]//nav//li//a[contains(@href,'Gadgets')]")
 	public WebElement lnkCarGadgetsDpdMenu;
 	
-	@FindBy(xpath = "//div[contains(@class,'black-header')]//nav//li//a[contains(@href,'Footwear')]")
+	@FindBy(xpath = "//div[contains(@class,'black-header')]//nav//li//a[contains(@href,'Today')]")
 	public WebElement lnkDesignerFootwearDpdMenu;
 	
 	@FindBy(xpath = "//div[contains(@class,'black-header')]//nav//li//a[contains(@href,'OnAir')]")

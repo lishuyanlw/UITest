@@ -2856,7 +2856,7 @@ public class ProductResultsPage extends BasePage{
 		
 		String prpProductName=this.getElementInnerText(this.productResultList.get(selectedIndex).findElement(this.byProductName));
 		String prpProductNowPrice=this.getElementInnerText(this.productResultList.get(selectedIndex).findElement(this.byProductNowPrice));
-		int prpReviewRateStarCount=this.getProductItemReviewNumberAmountFromStarImage(this.productResultList.get(selectedIndex).findElement(this.byProductReviewRatingImage));
+		int prpReviewRateStarCount=this.getProductItemReviewNumberAmountFromStarImage(this.productResultList.get(selectedIndex).findElements(this.byProductReviewRatingImage));
 		String prpReviewCountInfo=this.getElementInnerText(this.productResultList.get(selectedIndex).findElement(this.byProductReviewRatingCount));
 		String prpProductFreeShipping=this.getElementInnerText(this.productResultList.get(selectedIndex).findElement(this.byProductFreeShipping));
 		
@@ -3017,9 +3017,10 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	public boolean checkProductItemReviewExisting(WebElement itemContainer) {
-		WebElement item=itemContainer.findElement(this.byProductReviewContainer);
+		return this.checkChildElementExistingByTagName(itemContainer.findElement(this.byProductReviewContainer),"span");
+		//WebElement item=itemContainer.findElement(this.byProductReviewContainer);
 
-		return this.getChildElementCount(item)>0;
+		//return this.getChildElementCount(item)>0;
 	}
 	
 	/**
