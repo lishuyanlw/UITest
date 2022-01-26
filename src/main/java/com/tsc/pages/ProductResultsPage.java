@@ -2585,7 +2585,6 @@ public class ProductResultsPage extends BasePage{
 		if(checkProductSizeOptionEnabledItemAvailableWithMouseHover(itemContainer)) {			
 			List<WebElement> optionList=itemContainer.findElements(byProductOptionSizeItemEnabledList);
 			WebElement element=optionList.get(optionList.size()-1);
-			String lsButtonTextBeforeClickingSize=this.getElementInnerText(itemContainer.findElement(byProductGoToDetails));
 			String lsText=this.getElementInnerText(element).replace("Size", "").trim();
 			if(element.getTagName().equalsIgnoreCase("button")) {								
 				this.clickElement(element);
@@ -2593,12 +2592,10 @@ public class ProductResultsPage extends BasePage{
 			else {
 				Select sizeSelect= new Select(element.findElement(By.xpath("./parent::select")));
 				sizeSelect.selectByIndex(optionList.size()-1);
-			}
-			
-			this.getReusableActionsInstance().staticWait(2000);
-			this.waitForCondition(Driver->{return !lsButtonTextBeforeClickingSize.equalsIgnoreCase(this.getElementInnerText(itemContainer.findElement(byProductGoToDetails)));}, 20000);
+			}			
 			this.getReusableActionsInstance().staticWait(3000);
-			element=itemContainer.findElement(byProductOptionSizeSelectedSize);
+			this.getReusableActionsInstance().staticWait(3000);
+
 			String lsSelectedTitle=this.getElementInnerText(element);
 			this.selectedProductItem.productSelectedSize=lsSelectedTitle;
 			if(lsText.equalsIgnoreCase(lsSelectedTitle)) {
@@ -2651,7 +2648,6 @@ public class ProductResultsPage extends BasePage{
 			}
 				
 			//Bug 19629: [QA Defect - P3] Product card: if a product doesn't have color swatch, all color options show as plain circles
-			String lsButtonTextBeforeClickingColor=this.getElementInnerText(itemContainer.findElement(byProductGoToDetails));
 			if(element.getTagName().equalsIgnoreCase("button")) {								
 				this.clickElement(element);
 			}
@@ -2659,8 +2655,6 @@ public class ProductResultsPage extends BasePage{
 				Select sizeSelect= new Select(element.findElement(By.xpath("./parent::select")));
 				sizeSelect.selectByIndex(selectNumber);
 			}	
-			this.getReusableActionsInstance().staticWait(2000);
-			this.waitForCondition(Driver->{return !lsButtonTextBeforeClickingColor.equalsIgnoreCase(this.getElementInnerText(itemContainer.findElement(byProductGoToDetails)));}, 20000);
 			this.getReusableActionsInstance().staticWait(3000);
 			
 			if(optionList.size()>1) {
@@ -2801,21 +2795,31 @@ public class ProductResultsPage extends BasePage{
 		WebElement element;
 		String lsButtonTextBeforeClickingSize;
 
-		//Selecting size for webElement
+		//Choose size
 		optionList=itemContainer.findElements(byProductOptionSizeItemEnabledList);
 		element=optionList.get(optionList.size()-1);
-		lsButtonTextBeforeClickingSize=this.getElementInnerText(itemContainer.findElement(byProductGoToDetails));
-		this.clickElement(element);
-		String finalLsButtonTextBeforeClickingSize = lsButtonTextBeforeClickingSize;
-		this.waitForCondition(Driver->{return !finalLsButtonTextBeforeClickingSize.equalsIgnoreCase(this.getElementInnerText(itemContainer.findElement(byProductGoToDetails)));}, 20000);
+		if(element.getTagName().equalsIgnoreCase("button")) {								
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+			this.getReusableActionsInstance().clickIfAvailable(element);
+		}
+		else {
+			Select sizeSelect= new Select(element.findElement(By.xpath("./parent::select")));
+			sizeSelect.selectByIndex(optionList.size()-1);
+		}		
 		this.getReusableActionsInstance().staticWait(3000);
 
-		//Selecting color for webElement from Dropdown
+		//Choose color
 		optionList=itemContainer.findElements(byProductOptionColorItemEnabledList);
-		element=optionList.get(optionList.size()-1);
-		List<WebElement> colorList = getDriver().findElements(this.byProductOptionColorDropDown);
-		Select select = new Select(colorList.get(index));
-		select.selectByVisibleText(element.getText());
+		element= optionList.get(optionList.size()-1);
+
+		if(element.getTagName().equalsIgnoreCase("button")) {								
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+			this.getReusableActionsInstance().clickIfAvailable(element);
+		}
+		else {
+			Select sizeSelect= new Select(element.findElement(By.xpath("./parent::select")));
+			sizeSelect.selectByIndex(optionList.size()-1);
+		}		
 		this.getReusableActionsInstance().staticWait(3000);
 
 		itemContainer.findElement(this.byProductGoToDetails).click();

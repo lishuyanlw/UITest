@@ -200,7 +200,7 @@ public class GlobalHeaderPage extends BasePage{
 	@FindBy(xpath = "//div[contains(@class,'secondary-navigation__rhs-account')]//a//*[@class='secondary-navigation__rhs-account-icon']")
 	public WebElement SigninIcon;
 	
-	@FindBy(xpath = "//div[contains(@class,'signin-wrapper clearfix')]//h1//span[contains(text(),'Sign In')]")
+	@FindBy(xpath = "//div[contains(@class,'signin-wrapper clearfix')]//h1//span[contains(.,'Sign In')]")
 	public WebElement SigninPageHeading;
 	
 	//Shopping Cart 
@@ -260,7 +260,7 @@ public class GlobalHeaderPage extends BasePage{
 	@FindBy(xpath = "//h2[contains(@class,'titleLink')]")
 	public WebElement shopAllBrandsLandigPageHeading;
 
-	@FindBy(xpath="//span[contains(text(),'Clearance')]")
+	@FindBy(xpath="//span[contains(.,'Clearance')]")
 	WebElement clearanceHeader;
 
 	@FindBy(xpath="//span[contains(@id,'_ctlSpanTitle')]")
@@ -525,7 +525,7 @@ public class GlobalHeaderPage extends BasePage{
 	 */
 	public String getNameAndclickSubMenuItem(String headingName,String submenuHeading, String itemName) {
 		WebElement searchResultTitle=(new ProductResultsPage(this.getDriver())).lblSearchResultTitle;
-		String xpathHeading =createXPath("//span[contains(text(),'{0}')]" ,headingName);
+		String xpathHeading =createXPath("//span[contains(.,'{0}')]" ,headingName);
 		WebElement headingWebElement = FlyoutHeadings.findElement(By.xpath(xpathHeading));
 		getReusableActionsInstance().javascriptScrollByVisibleElement(headingWebElement);
 		getReusableActionsInstance().scrollToElement(headingWebElement);
@@ -536,13 +536,13 @@ public class GlobalHeaderPage extends BasePage{
 			return headingWebElement.getText().trim();
 		}
 		if(submenuHeading!=null) {
-			String xpathSubMenu =createXPath("//a[contains(text(),'{0}')]" ,submenuHeading);
+			String xpathSubMenu =createXPath("//a[contains(.,'{0}')]" ,submenuHeading);
 			List<WebElement> SubMenu = Categories.findElements(By.xpath(xpathSubMenu));
 			if(SubMenu.size()>0){
 				getReusableActionsInstance().javascriptScrollByVisibleElement(SubMenu.get(0));
 				getReusableActionsInstance().scrollToElement(SubMenu.get(0));
 				if(itemName!=null) {
-					String xpathSubmenuItem=createXPath("//a[contains(text(),'{0}')]",itemName);
+					String xpathSubmenuItem=createXPath("//a[contains(.,'{0}')]",itemName);
 					WebElement SubMenuItem=getDriver().findElement(By.xpath(xpathSubmenuItem));
 					getReusableActionsInstance().javascriptScrollByVisibleElement(SubMenuItem);
 					getReusableActionsInstance().scrollToElement(SubMenuItem);
@@ -574,7 +574,7 @@ public class GlobalHeaderPage extends BasePage{
 	 * @author Shruti Desai
 	 */
 	public void clickSubMenuItem(String headingName,String submenuHeading, String itemName) {
-		String xpathHeading =createXPath("//span[contains(text(),'{0}')]" ,headingName);
+		String xpathHeading =createXPath("//span[contains(.,'{0}')]" ,headingName);
 		WebElement headingWebElement = FlyoutHeadings.findElement(By.xpath(xpathHeading));
 		getReusableActionsInstance().scrollToElement(headingWebElement);
 
@@ -582,11 +582,11 @@ public class GlobalHeaderPage extends BasePage{
 			headingWebElement.click();
 		}
 		if(submenuHeading!=null) {
-			String xpathSubMenu =createXPath("//a[contains(text(),\"{0}\")]" ,submenuHeading);
+			String xpathSubMenu =createXPath("//a[contains(.,\"{0}\")]" ,submenuHeading);
 			WebElement SubMenu = Categories.findElement(By.xpath(xpathSubMenu));
 			getReusableActionsInstance().scrollToElement(SubMenu);
 			if(itemName!=null) {
-				String xpathSubmenuItem=createXPath("//a[contains(text(),'{0}')]",itemName);
+				String xpathSubmenuItem=createXPath("//a[contains(.,'{0}')]",itemName);
 				WebElement SubMenuItem=getDriver().findElement(By.xpath(xpathSubmenuItem));
 				getReusableActionsInstance().scrollToElement(SubMenuItem);
 				SubMenuItem.click();
@@ -602,7 +602,7 @@ public class GlobalHeaderPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	public void clickCuratedCollectionsMenuItem(String headingName,String submenuHeading) {
-		String xpathHeading =createXPath("//span[contains(text(),'{0}')]" ,headingName);
+		String xpathHeading =createXPath("//span[contains(.,'{0}')]" ,headingName);
 		WebElement headingWebElement = FlyoutHeadings.findElement(By.xpath(xpathHeading));
 		getReusableActionsInstance().scrollToElement(headingWebElement);
 
@@ -621,7 +621,7 @@ public class GlobalHeaderPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	public void clickPopularBrandsMenuItem(String headingName,int subMenuIndex) {
-		String xpathHeading =createXPath("//span[contains(text(),'{0}')]" ,headingName);
+		String xpathHeading =createXPath("//span[contains(.,'{0}')]" ,headingName);
 		WebElement headingWebElement = FlyoutHeadings.findElement(By.xpath(xpathHeading));
 		getReusableActionsInstance().scrollToElement(headingWebElement);
 
@@ -682,7 +682,7 @@ public class GlobalHeaderPage extends BasePage{
 		if(!(currentPageUrl.substring(0,currentPageUrl.length()-1)).equalsIgnoreCase(getBaseURL()))
 			pageTitle.getAndSet(lblPageTitleForMenuItems.getText());
 		String currentUrl;
-		String xpathHeading =createXPath("//span[contains(text(),'{0}')]" ,headingName);
+		String xpathHeading =createXPath("//span[contains(.,'{0}')]" ,headingName);
 		WebElement headingWebElement = FlyoutHeadings.findElement(By.xpath(xpathHeading));
 		getReusableActionsInstance().javascriptScrollByVisibleElement(headingWebElement);
 		getReusableActionsInstance().scrollToElement(headingWebElement);
@@ -705,7 +705,7 @@ public class GlobalHeaderPage extends BasePage{
 	 * @author Shruti Desai
 	 */
 	public WebElement getWebElementFlyoutHeading(String headingName) {
-		String xpathHeading =createXPath("//span[contains(text(),'{0}')]" ,headingName);
+		String xpathHeading =createXPath("//span[contains(.,'{0}')]" ,headingName);
 		WebElement headingWebElement = FlyoutHeadings.findElement(By.xpath(xpathHeading));
 		return headingWebElement;
 	}

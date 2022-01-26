@@ -60,6 +60,8 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 	
 	public By byProductOptionSizeWrapper=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//div[@class='product-card__size-wrapper']");
 	
+	public By byProductOptionSizeDropDown=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//select[@class='product-card__size__dropdown']");
+	
 	public By byProductOptionSizeItemList=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//div[contains(@class,'product-card__size-items')]//button|//div[@class='product-card__mobile-modal']//fieldset//select[@class='product-card__size__dropdown']//option");
 	
 	public By byProductOptionSizeItemEnabledList=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//div[contains(@class,'product-card__size-items')]//button[not(@disabled)]|//div[@class='product-card__mobile-modal']//fieldset//select[@class='product-card__size__dropdown']//option[not(@disabled)]");
@@ -76,6 +78,8 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 	public By byProductOptionColorSelectedColor=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//p[@class='product-card__color-and-taste-title']//strong");
 	
 	public By byProductOptionColorWrapper=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//div[@class='product-card__color-and-taste-wrapper']");
+	
+	public By byProductOptionColorDropDown=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//select[@class='product-card__color-and-taste__dropdown']");
 	
 	public By byProductOptionColorItemList=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//div[contains(@class,'product-card__color-and-taste-items')]//button|//div[@class='product-card__mobile-modal']//fieldset//select[@class='product-card__color-and-taste__dropdown']//option");
 	
@@ -931,7 +935,6 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 			List<WebElement> optionList=this.getDriver().findElements(byProductOptionSizeItemEnabledList);
 			WebElement element=optionList.get(optionList.size()-1);
 			String lsText=this.getElementInnerText(element).replace("Size", "").trim();
-			String lsButtonTextBeforeClickingSize=this.getElementInnerText(this.getDriver().findElement(byProductGoToDetails));
 			if(element.getTagName().equalsIgnoreCase("button")) {								
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 				this.getReusableActionsInstance().clickIfAvailable(element);
@@ -939,11 +942,9 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 			else {
 				Select sizeSelect= new Select(element.findElement(By.xpath("./parent::select")));
 				sizeSelect.selectByIndex(optionList.size()-1);
-			}
-			
-			this.getReusableActionsInstance().staticWait(2000);
-			this.waitForCondition(Driver->{return !lsButtonTextBeforeClickingSize.equalsIgnoreCase(this.getElementInnerText(this.getDriver().findElement(byProductGoToDetails)));}, 20000);
-			this.getReusableActionsInstance().staticWait(3000);	
+			}			
+			this.getReusableActionsInstance().staticWait(3000);
+
 			element=this.getDriver().findElement(byProductOptionSizeSelectedSize);
 			String lsSelectedTitle=this.getElementInnerText(element);
 			this.selectedProductItem.productSelectedSize=lsSelectedTitle;
@@ -996,7 +997,6 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 			}
 			
 			//Bug 19629: [QA Defect - P3] Product card: if a product doesn't have color swatch, all color options show as plain circles
-			String lsButtonTextBeforeClickingColor=this.getElementInnerText(this.getDriver().findElement(byProductGoToDetails));
 			if(element.getTagName().equalsIgnoreCase("button")) {								
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 				this.getReusableActionsInstance().clickIfAvailable(element);
@@ -1005,9 +1005,6 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				Select sizeSelect= new Select(element.findElement(By.xpath("./parent::select")));
 				sizeSelect.selectByIndex(selectNumber);
 			}
-			
-			this.getReusableActionsInstance().staticWait(2000);
-			this.waitForCondition(Driver->{return !lsButtonTextBeforeClickingColor.equalsIgnoreCase(this.getElementInnerText(this.getDriver().findElement(byProductGoToDetails)));}, 20000);
 			this.getReusableActionsInstance().staticWait(3000);
 			
 			if(optionList.size()>1) {
@@ -1330,6 +1327,57 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 		return lsErrorMsg;
 	}
 	
-	
+	@Override
+	public void verifyInfoLinkageWithPDPWithoutSwatch(WebElement webElement,int index){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(webElement);
+		this.getReusableActionsInstance().scrollToElement(webElement);
+
+		WebElement itemContainer=webElement;
+
+		//Open SizeOrColor popup dialog
+		WebElement element=itemContainer.findElement(byProductItemSelectSizeOrColor);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+		this.getReusableActionsInstance().clickIfAvailable(element);
+		this.getReusableActionsInstance().waitForElementVisibility(this.btnProductGoToDetails,20);
+		
+		//Choose size
+		List<WebElement> optionList=this.getDriver().findElements(byProductOptionSizeItemEnabledList);
+		element=optionList.get(optionList.size()-1);
+		if(element.getTagName().equalsIgnoreCase("button")) {								
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+			this.getReusableActionsInstance().clickIfAvailable(element);
+		}
+		else {
+			Select sizeSelect= new Select(element.findElement(By.xpath("./parent::select")));
+			sizeSelect.selectByIndex(optionList.size()-1);
+		}		
+		this.getReusableActionsInstance().staticWait(3000);
+
+		//Choose color
+		optionList=this.getDriver().findElements(byProductOptionColorItemEnabledList);
+		element= optionList.get(optionList.size()-1);
+
+		if(element.getTagName().equalsIgnoreCase("button")) {								
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+			this.getReusableActionsInstance().clickIfAvailable(element);
+		}
+		else {
+			Select sizeSelect= new Select(element.findElement(By.xpath("./parent::select")));
+			sizeSelect.selectByIndex(optionList.size()-1);
+		}		
+		this.getReusableActionsInstance().staticWait(3000);
+		
+		//Close SizeOrColor popup dialog
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnProductGoToDetails);
+		this.getReusableActionsInstance().clickIfAvailable(this.btnProductGoToDetails);		
+		this.waitForPDPPageLoading();
+		this.getReusableActionsInstance().staticWait(2000);
+		if(this.URL().toLowerCase().contains("productdetails")) {
+			reporter.reportLogPass("The user is navigated to PDP page");
+		}
+		else {
+			reporter.reportLogFail("The user is not navigated to PDP page");
+		}
+	}
 	
 }

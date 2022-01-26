@@ -25,15 +25,13 @@ public class SR_TC14_Verify_ProductSearchResult_BreadCrumbBugs extends BaseTest{
 	
 	List<List<String>> lsKeywordDropdownList=TestDataHandler.constantData.getSearchResultPage().getLst_SearchKeyword_DropDown();
 	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordDropdownList.get(0).get(0),false);
-		
 
-	List<List<String>> lstCuratedCollectionsBugs=TestDataHandler.constantData.getSearchResultPage().getLst_SearchOption().get(5).getFilterOption();
-	List<List<String>> lstBreadCrumbBugs=TestDataHandler.constantData.getSearchResultPage().getLst_SearchOption().get(6).getFilterOption();
-	
+//	List<List<String>> lstBreadCrumbBugs=TestDataHandler.constantData.getSearchResultPage().getLst_SearchOption().get(6).getFilterOption();
 //	reporter.reportLog("verifyAppliedProductSubFilterRemainsAfterMultiCategoriesSelectionThroughBreadCrumbNavigation");
 //	getProductResultsPageThreadLocal().verifyAppliedProductSubFilterRemainsAfterMultiCategoriesSelectionThroughBreadCrumbNavigation(lstBreadCrumbBugs);
 	
 	reporter.reportLog("verifyBreadCrumbAfterSelectCuratedCollectionsItem");
+	List<List<String>> lstCuratedCollectionsBugs=TestDataHandler.constantData.getSearchResultPage().getLst_SearchOption().get(5).getFilterOption();
 	getProductResultsPageThreadLocal().verifyBreadCrumbAfterSelectCuratedCollectionsItem(lstCuratedCollectionsBugs,getglobalheaderPageThreadLocal());
 
 

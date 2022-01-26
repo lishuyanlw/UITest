@@ -31,7 +31,7 @@ public class SR_TC01_Verify_ProductSearchResult extends BaseTest{
 	
 	List<String> lsKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_SearchKeyword();
 	List<String> lstSearchResultMessage=TestDataHandler.constantData.getSearchResultPage().getLst_SearchResultMessage();
-	String lsSearchResultPageDefaultSetting=TestDataHandler.constantData.getSearchResultPage().getLbl_SearchResultPageDefaultSetting();
+//	String lsSearchResultPageDefaultSetting=TestDataHandler.constantData.getSearchResultPage().getLbl_SearchResultPageDefaultSetting();
 	List<WebElement> productList;
 	String lsMsg="";
 

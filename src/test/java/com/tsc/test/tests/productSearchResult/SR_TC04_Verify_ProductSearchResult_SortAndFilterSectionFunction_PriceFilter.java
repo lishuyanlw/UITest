@@ -29,7 +29,7 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction_Pri
 
         List<List<String>> lsKeywordList= TestDataHandler.constantData.getSearchResultPage().getLst_SearchKeyword_DropDown();
         List<String> lstSearchResultMessage=TestDataHandler.constantData.getSearchResultPage().getLst_SearchResultMessage();
-        String lsSearchResultPageDefaultSetting=TestDataHandler.constantData.getSearchResultPage().getLbl_SearchResultPageDefaultSetting();
+//        String lsSearchResultPageDefaultSetting=TestDataHandler.constantData.getSearchResultPage().getLbl_SearchResultPageDefaultSetting();
         List<WebElement> productList;
         String lsMsg;
 

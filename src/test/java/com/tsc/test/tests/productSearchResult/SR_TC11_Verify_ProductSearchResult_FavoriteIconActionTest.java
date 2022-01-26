@@ -27,7 +27,7 @@ public class SR_TC11_Verify_ProductSearchResult_FavoriteIconActionTest extends B
 	reporter.reportLog("ProductSearch Page");
 		
 	List<String> lstSearchResultMessage=TestDataHandler.constantData.getSearchResultPage().getLst_SearchResultMessage();
-	String lsSearchResultPageDefaultSetting=TestDataHandler.constantData.getSearchResultPage().getLbl_SearchResultPageDefaultSetting();
+//	String lsSearchResultPageDefaultSetting=TestDataHandler.constantData.getSearchResultPage().getLbl_SearchResultPageDefaultSetting();
 	String lsUserName=TestDataHandler.constantData.getLoginUser().getLbl_Username();
 	String lsPassword=TestDataHandler.constantData.getLoginUser().getLbl_Password();
 	String lsFirstName=TestDataHandler.constantData.getLoginUser().getLbl_FirstName();
