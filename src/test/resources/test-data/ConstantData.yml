@@ -108,8 +108,8 @@ searchResultPage:
         - ["Shop by colour","Green"]
     - filterType: FilterBugs
       filterOption:  
-        - ["Brand","Pajar"]
-        - ["Price","$100 - $200"] 
+        - ["Shop by brand","Pajar"]
+        - ["Price","Under $100"]
     - filterType: CuratedCollectionsBugs
       filterOption:  
         - ["Jewellery","The Vault"]              
