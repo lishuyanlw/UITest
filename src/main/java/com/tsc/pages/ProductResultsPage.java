@@ -1720,7 +1720,7 @@ public class ProductResultsPage extends BasePage{
 	
 	/**
 	 * This method will verify Url after selecting filters.
-	 * @param boolean bCategory: true for Category filter while false for others filter
+	 * @param-boolean bCategory: true for Category filter while false for others filter
 	 * @return void
 	 * @author Wei.Li
 	 */
@@ -2649,7 +2649,7 @@ public class ProductResultsPage extends BasePage{
 				
 			//Bug 19629: [QA Defect - P3] Product card: if a product doesn't have color swatch, all color options show as plain circles
 			if(element.getTagName().equalsIgnoreCase("button")) {								
-				this.clickElement(element);
+				this.getReusableActionsInstance().clickIfAvailable(element,5000);
 			}
 			else {
 				Select sizeSelect= new Select(element.findElement(By.xpath("./parent::select")));
