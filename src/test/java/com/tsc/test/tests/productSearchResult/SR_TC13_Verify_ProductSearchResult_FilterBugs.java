@@ -13,7 +13,6 @@ import com.tsc.test.base.BaseTest;
 
 public class SR_TC13_Verify_ProductSearchResult_FilterBugs extends BaseTest{
 	/*
-	 * Bug 19629: [QA Defect - P3] Product card: if a product doesn't have color swatch, all color options show as plain circles - covered in selectFilterItemInLeftPanel function
 	 * Bug 19658: [QA Defect - P3] PRP: Page not refreshed to previous state with browser back button with filter applied - covered in verifyProductContentNoChangesAfterNavigatingBackWithMultiFilters function 
 	 */
 	@Test(groups={"ProductSearch","Regression","Regression_Tablet","Regression_Mobile"})

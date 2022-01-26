@@ -392,7 +392,7 @@ public class ProductResultsPage extends BasePage{
 	 */
 	public boolean getSearchResultLoad(String searchKeyword,boolean clickEnterButtonFromKeyboard) {
 		GlobalHeaderPage globalHeader=new GlobalHeaderPage(this.getDriver());
-		this.waitForCondition(Driver->{return globalHeader.lblTSCChatBox.getText().toLowerCase().contains("chat");},8000);
+//		this.waitForCondition(Driver->{return globalHeader.lblTSCChatBox.getText().toLowerCase().contains("chat");},8000);
 		this.getReusableActionsInstance().waitForElementVisibility(globalHeader.searchBox,120);
 		String[] data = searchKeyword.codePoints().mapToObj(cp->new String(Character.toChars(cp))).toArray(size->new String[size]);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeader.searchBox);
@@ -1681,7 +1681,6 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	public void ExpandSubExpandableItemInCategoryFilterSection() {
-		System.out.println("Get into function");
 		int listSize=this.productFilterList.size();
 				
 		boolean bCategory=false;
@@ -2844,26 +2843,16 @@ public class ProductResultsPage extends BasePage{
 			reporter.reportLog("No product search result available.");
 			return;
 		}
-		
-		int selectedIndex=0;
-		
-		for(int i=0;i<this.productResultList.size();i++) {
-			if(this.checkProductItemReviewExisting(this.productResultList.get(i))) {
-				selectedIndex=i;
-				break;
-			}
-		}
-		
-		String prpProductName=this.getElementInnerText(this.productResultList.get(selectedIndex).findElement(this.byProductName));
-		String prpProductNowPrice=this.getElementInnerText(this.productResultList.get(selectedIndex).findElement(this.byProductNowPrice));
-		int prpReviewRateStarCount=this.getProductItemReviewNumberAmountFromStarImage(this.productResultList.get(selectedIndex).findElements(this.byProductReviewRatingImage));
-		String prpReviewCountInfo=this.getElementInnerText(this.productResultList.get(selectedIndex).findElement(this.byProductReviewRatingCount));
-		String prpProductFreeShipping=this.getElementInnerText(this.productResultList.get(selectedIndex).findElement(this.byProductFreeShipping));
+				
+		String prpProductName=this.getElementInnerText(this.productResultList.get(0).findElement(this.byProductName));
+		String prpProductNowPrice=this.getElementInnerText(this.productResultList.get(0).findElement(this.byProductNowPrice)).split(":")[1].trim();
+		int prpReviewRateStarCount=this.getProductItemReviewNumberAmountFromStarImage(this.productResultList.get(0).findElements(this.byProductReviewRatingImage));
+		String prpReviewCountInfo=this.getElementInnerText(this.productResultList.get(0).findElement(this.byProductReviewRatingCount));
+		String prpProductFreeShipping=this.getElementInnerText(this.productResultList.get(0).findElement(this.byProductFreeShipping));
 		
 		LoginPage loginPage=new LoginPage(this.getDriver());
 	
-		WebElement item=this.productResultList.get(selectedIndex).findElement(this.byProductHeaderLike);
-		String lsFirstProductName=this.getElementInnerText(this.productResultList.get(selectedIndex).findElement(this.byProductName));
+		WebElement item=this.productResultList.get(0).findElement(this.byProductHeaderLike);
 
 		if(item.getAttribute("aria-pressed").equalsIgnoreCase("false")) {
 			reporter.reportLogPass("The favorite icon is displaying not clicking status correctly");
@@ -2873,18 +2862,18 @@ public class ProductResultsPage extends BasePage{
 		}
 
 		this.getReusableActionsInstance().clickIfAvailable(item);
-		this.getReusableActionsInstance().waitForElementVisibility(loginPage.lblSignIn, 20);
+		this.getReusableActionsInstance().waitForElementVisibility(loginPage.lblSignIn, 60);
 
 		loginPage.LoginWithoutWaitingTime(lsUserName, lsPassword);
 		this.getReusableActionsInstance().waitForElementVisibility(loginPage.lblSignInGlobalResponseBanner);
-
-		this.getSearchResultLoad(lsFirstProductName,true);
-		item=this.productResultList.get(selectedIndex).findElement(this.byProductHeaderLike);
+		
+		this.getSearchResultLoad(lsKeyword,true);
+		item=this.productResultList.get(0).findElement(this.byProductHeaderLike);
 
 		if(item.getAttribute("aria-pressed").equalsIgnoreCase("true")) {
 			clearFavoriteHistory();
 			this.getSearchResultLoad(lsKeyword,true);
-			item=this.productResultList.get(selectedIndex).findElement(this.byProductHeaderLike);
+			item=this.productResultList.get(0).findElement(this.byProductHeaderLike);
 		}
 
 		this.getReusableActionsInstance().clickIfAvailable(item);
@@ -2894,10 +2883,9 @@ public class ProductResultsPage extends BasePage{
 			reporter.reportLogPass("The favorite icon is displaying clicking status correctly");
 		}
 		else {
-			reporter.reportLogFail("The favorite icon is not displaying clicking status correctly");
-			return;
+			reporter.reportLogFail("The favorite icon is not displaying clicking status correctly");			
 		}
-			
+				
 		//Bug 19538: [QA Defect - P3] PRP: missing Free Shipping label
 		if(!prpProductFreeShipping.isEmpty()) {
 			reporter.reportLogPass("Product free shipping is not empty");
@@ -2906,7 +2894,7 @@ public class ProductResultsPage extends BasePage{
 			reporter.reportLogFail("Product free shipping is empty");
 		}
 				
-		item=this.productResultList.get(selectedIndex).findElement(byProductHref);
+		item=this.productResultList.get(0).findElement(byProductHref);
 		this.getReusableActionsInstance().clickIfAvailable(item);
 		this.waitForPDPPageLoading();
 		
@@ -2914,16 +2902,16 @@ public class ProductResultsPage extends BasePage{
 		String pdpProductName=this.getElementInnerText(pdp.lblProductName);
 		String pdpProductNowPrice=this.getElementInnerText(pdp.lblProductNowPrice);
 		int pdpReviewRateStarCount=this.getProductItemReviewNumberAmountFromStarImage(pdp.lstProductReviewStar);
-		String pdpReviewCountInfo=pdp.lblProductReviewCount.getText().trim();
+		String pdpReviewCountInfo=this.getElementInnerText(pdp.lblProductReviewCount);
 		
-		if( prpProductName.equals( pdpProductName)) {
+		if( prpProductName.equalsIgnoreCase( pdpProductName)) {
 			reporter.reportLogPass("The Product name in PRP is the same as the one in PDP");
 		}
 		else {
 			reporter.reportLogFail("The Product name in PRP is not the same as the one in PDP");
 		}
-		
-		if( prpProductNowPrice.equals( pdpProductNowPrice)) {
+
+		if( this.getFloatFromString(prpProductNowPrice,true)==this.getFloatFromString( pdpProductNowPrice,true)) {
 			reporter.reportLogPass("The Product NowPrice in PRP is the same as the one in PDP");
 		}
 		else {
@@ -2936,8 +2924,8 @@ public class ProductResultsPage extends BasePage{
 		else {
 			reporter.reportLogFail("The review rate star count in PRP is not equal to the count in PDP");
 		}
-		
-		if(prpReviewCountInfo.equals(pdpReviewCountInfo)) {
+				
+		if(pdpReviewCountInfo.equalsIgnoreCase(prpReviewCountInfo)) {
 			reporter.reportLogPass("The review count info in PRP is the same as count info in PDP");
 		}
 		else {
