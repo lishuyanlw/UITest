@@ -53,10 +53,10 @@ public class SR_TC05_Verify_ProductSearchResult_MultiFiltersTest extends BaseTes
 	}
 	
 	if(getProductResultsPageThreadLocal().bDefault) {
-		lsMsg=getProductResultsPageThreadLocal().verifySlectedFiltersContainSecondlevelFilter(lstSelectedSecondLevelFilter,lstDisappearAfterSelectFilter);		
+		lsMsg=getProductResultsPageThreadLocal().verifySelectedFiltersContainSecondlevelFilter(lstSelectedSecondLevelFilter,lstDisappearAfterSelectFilter);		
 	}
 	else {
-		lsMsg=getProductResultsPageThreadLocal().verifySlectedFiltersContainSecondlevelFilter(lstFilter,lstDisappearAfterSelectFilter);			
+		lsMsg=getProductResultsPageThreadLocal().verifySelectedFiltersContainSecondlevelFilter(lstFilter,lstDisappearAfterSelectFilter);			
 	}
 	if(lsMsg.isEmpty()) {
 		reporter.reportLogPass("The selected filters contain all search second level filters");

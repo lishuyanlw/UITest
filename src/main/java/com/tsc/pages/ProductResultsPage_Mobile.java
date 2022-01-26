@@ -40,6 +40,9 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='prp-filter-panel__mobile-subpanel']//button[@class='prp-filter-panel__submit-button prp-filter-panel__submit-button--panel']")
 	public WebElement btnViewProductsAferSelectingFilters;
 	
+	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='prp-filter-panel__mobile-subpanel']")
+	public WebElement cntSubPanelforSelectedFilters;
+	
 	//For product options(Size/Color)
 	public By byProductItemSelectSizeOrColor=By.xpath(".//button[@class='product-card__add-button']");
 	
@@ -102,6 +105,12 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 	public void closeFilterPopupWindow() {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnViewProductsAferSelectingFilters);
 		getReusableActionsInstance().clickIfAvailable(this.btnViewProductsAferSelectingFilters);	
+		getReusableActionsInstance().staticWait(5000);
+	}
+	
+	public void closeFilterPopupWindowWithCloseButton() {
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnViewProductsAferSelectingFilters);
+		getReusableActionsInstance().clickIfAvailable(this.btnFilterPopupClose);	
 		getReusableActionsInstance().staticWait(5000);
 	}
 	
@@ -436,7 +445,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 	}
 	
 	@Override
-	public String verifySlectedFiltersContainSecondlevelFilter(List<String> lstFilterIncluded, List<String> lstFilterExcluded) {
+	public String verifySelectedFiltersContainSecondlevelFilter(List<String> lstFilterIncluded, List<String> lstFilterExcluded) {
 		openFilterPopupWindow();
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnFiltersAdded);
 		getReusableActionsInstance().clickIfAvailable(this.btnFiltersAdded);
@@ -1203,5 +1212,89 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 		}	
 	}
 
+	//Bug 19659: [QA Defect] PRP Breadcrumb: Not keeping the past filters applied
+	@Override
+	public void verifyAppliedProductSubFilterRemainsAfterMultiCategoriesSelectionThroughBreadCrumbNavigation(List<List<String>> lstFilter){	
+		//Select first category item
+		this.bCategoryExpand=true;
+		List<String> lstItem=lstFilter.get(0);
+		selectFilterItemInLeftPanel(lstItem.get(0), lstItem.get(1));
+		
+		//Check if selected list existing
+		if(!checkSubPanelForSelectedFiltersExisting()) {
+			reporter.reportLogPass("The selected filter list for first Category filter is not displaying"); 
+		}
+		else {
+			reporter.reportLogFail("The selected filter list for first Category filter is displaying wrongly"); 
+		}
+		
+		//Apply a subfilter
+		lstItem=lstFilter.get(1);
+		selectFilterItemInLeftPanel(lstItem.get(0), lstItem.get(1));
+				
+		//Check if selected list existing
+		if(checkSubPanelForSelectedFiltersExisting()) {
+			reporter.reportLogPass("The selected filter list after selecting filters is displaying correctly"); 
+		}
+		else {
+			reporter.reportLogFail("The selected filter list after selecting filters is not displaying correctly"); 
+		}
+
+		//Select first category item
+		this.bCategoryExpand=false;
+		lstItem=lstFilter.get(2);
+		selectFilterItemInLeftPanel(lstItem.get(0), lstItem.get(1));
+		
+		WebElement item=this.lstSearchResultNavigation.get(this.lstSearchResultNavigation.size()-2);
+		item=item.findElement(By.xpath(".//a"));
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+		this.getReusableActionsInstance().clickIfAvailable(item);
+		this.waitForPageToLoad();
+		this.getReusableActionsInstance().staticWait(3000);
+		this.getReusableActionsInstance().waitForElementVisibility(this.lblSearchResultMessage,120);
+		
+		//Check if selected list existing
+		if(checkSubPanelForSelectedFiltersExisting()) {
+			reporter.reportLogPass("The selected filter list after navigating from BreadCrumb is displaying correctly"); 
+		}
+		else {
+			reporter.reportLogFail("The selected filter list after navigating from BreadCrumb is not displaying correctly"); 
+		}
+	}
+		
+	public boolean checkSubPanelForSelectedFiltersExisting() {
+		this.openFilterPopupWindow();
+		boolean bReturn=this.checkChildElementExistingByTagNameAndAttribute(this.cntSubPanelforSelectedFilters, "button","class", "prp-filter-panel__mobile-subpanel__title-button");
+		this.closeFilterPopupWindowWithCloseButton();
+		
+		return bReturn;
+	}
+
+	public void verifyBreadCrumbAfterSelectCuratedCollectionsItem(List<List<String>> lstFilter,GlobalHeaderPage ghp){	
+		//Select first category item
+		List<String> lstItem=lstFilter.get(0);
+		ghp.clickCuratedCollectionsMenuItem(lstItem.get(0), lstItem.get(1));
+		this.waitForPageToLoad();
+		this.getReusableActionsInstance().staticWait(3000);
+		this.getReusableActionsInstance().waitForElementVisibility(this.lblSearchResultMessage,120);
+		
+		int navigateItemCount=this.lstSearchResultNavigation.size();
+		if(navigateItemCount==2) {
+			reporter.reportLogPass("The Navigation Breadcrumb list is containing 2 items correctly"); 
+		}
+		else {
+			reporter.reportLogFail("The Navigation Breadcrumb list is not containing 2 items correctly"); 
+		}
+		
+		WebElement item=this.lstSearchResultNavigation.get(this.lstSearchResultNavigation.size()-1);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+		String lsText=item.getText().trim();
+		if(lstItem.get(1).equalsIgnoreCase(lsText)) {
+			reporter.reportLogPass("The displaying pattern is Home>"+lstItem.get(1)); 
+		}
+		else {
+			reporter.reportLogFail("The displaying pattern is not Home>"+lstItem.get(1)); 
+		}
+	}
 	
 }

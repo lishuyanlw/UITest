@@ -30,9 +30,11 @@ public class SR_TC14_Verify_ProductSearchResult_BreadCrumbBugs extends BaseTest{
 	List<List<String>> lstCuratedCollectionsBugs=TestDataHandler.constantData.getSearchResultPage().getLst_SearchOption().get(5).getFilterOption();
 	List<List<String>> lstBreadCrumbBugs=TestDataHandler.constantData.getSearchResultPage().getLst_SearchOption().get(6).getFilterOption();
 	
-	//getProductResultsPageThreadLocal().verifyAppliedProductSubFilterRemainsAfterMultiCategoriesSelectionThroughBreadCrumbNavigation(lstBreadCrumbBugs);
+//	reporter.reportLog("verifyAppliedProductSubFilterRemainsAfterMultiCategoriesSelectionThroughBreadCrumbNavigation");
+//	getProductResultsPageThreadLocal().verifyAppliedProductSubFilterRemainsAfterMultiCategoriesSelectionThroughBreadCrumbNavigation(lstBreadCrumbBugs);
 	
-	getProductResultsPageThreadLocal().verifyBreadCrumbAfterSelectCuratedCollectionsItem(lstCuratedCollectionsBugs);
+	reporter.reportLog("verifyBreadCrumbAfterSelectCuratedCollectionsItem");
+	getProductResultsPageThreadLocal().verifyBreadCrumbAfterSelectCuratedCollectionsItem(lstCuratedCollectionsBugs,getglobalheaderPageThreadLocal());
 
 
 	}

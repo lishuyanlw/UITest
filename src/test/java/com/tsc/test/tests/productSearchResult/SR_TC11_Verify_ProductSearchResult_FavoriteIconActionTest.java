@@ -53,7 +53,7 @@ public class SR_TC11_Verify_ProductSearchResult_FavoriteIconActionTest extends B
 	
 	productList=getProductResultsPageThreadLocal().getProductList();
 	if(productList.size()>0) {
-		getProductResultsPageThreadLocal().verifySearchResultContent(productList);
+//		getProductResultsPageThreadLocal().verifySearchResultContent(productList);
 		getProductResultsPageThreadLocal().verifyFavoriteIconAction(lsUserName, lsPassword,lsFirstName,lst_SearchKeyword.get(3),getProductDetailPageThreadLocal());
 	}
 	else {

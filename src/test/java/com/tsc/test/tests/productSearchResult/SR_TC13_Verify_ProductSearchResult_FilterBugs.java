@@ -29,6 +29,7 @@ public class SR_TC13_Verify_ProductSearchResult_FilterBugs extends BaseTest{
 	
 	List<List<String>> lstFilterBugs=TestDataHandler.constantData.getSearchResultPage().getLst_SearchOption().get(4).getFilterOption();
 	
+	reporter.reportLog("verifyProductContentNoChangesAfterNavigatingBackWithMultiFilters");
 	getProductResultsPageThreadLocal().verifyProductContentNoChangesAfterNavigatingBackWithMultiFilters(lstFilterBugs);
 
 

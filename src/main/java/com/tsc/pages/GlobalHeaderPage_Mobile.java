@@ -132,6 +132,45 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
         }
         return null;
     }
+    
+    @Override
+	public void clickCuratedCollectionsMenuItem(String headingName,String submenuHeading) {
+    	this.menuButton.click();
+    	
+		String xpathHeading =createXPath("//li[contains(@class,'mobile__nav-items')]//span[contains(text(),'{0}')]" ,headingName);
+		WebElement headingWebElement = FlyoutHeadingsMobile.findElement(By.xpath(xpathHeading));
+		getReusableActionsInstance().javascriptScrollByVisibleElement(headingWebElement);
+		getReusableActionsInstance().clickIfAvailable(headingWebElement);
+		getReusableActionsInstance().staticWait(3000);
+		
+		this.getReusableActionsInstance().clickIfAvailable(this.curatedCollectionMobile);
+		getReusableActionsInstance().staticWait(3000);
+		
+		for(WebElement item:listCuratedCollectionLinksMobile) {
+			if(this.getElementInnerText(item).equalsIgnoreCase(submenuHeading)) {
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+				this.getReusableActionsInstance().clickIfAvailable(item);
+				return;
+			}
+		}			
+	}
+	
+	@Override
+	public void clickPopularBrandsMenuItem(String headingName,int subMenuIndex) {
+		this.menuButton.click();
+		
+		String xpathHeading =createXPath("//li[contains(@class,'mobile__nav-items')]//span[contains(text(),'{0}')]" ,headingName);
+		WebElement headingWebElement = FlyoutHeadingsMobile.findElement(By.xpath(xpathHeading));
+		getReusableActionsInstance().javascriptScrollByVisibleElement(headingWebElement);
+		getReusableActionsInstance().clickIfAvailable(headingWebElement);
+		getReusableActionsInstance().staticWait(3000);
+		
+		this.getReusableActionsInstance().clickIfAvailable(this.popularBrandsMobile);
+		getReusableActionsInstance().staticWait(3000);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(listPopularBrandsLinksMobile.get(subMenuIndex));
+		this.getReusableActionsInstance().clickIfAvailable(listPopularBrandsLinksMobile.get(subMenuIndex));				
+	}
 
     @Override
     public void verifyFlyoutMenuItems(String heading, String section) {

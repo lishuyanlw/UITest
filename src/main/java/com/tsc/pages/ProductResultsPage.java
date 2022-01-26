@@ -1845,7 +1845,7 @@ public class ProductResultsPage extends BasePage{
 	 * @return String: error message
 	 * @author Wei.Li
 	 */
-	public String verifySlectedFiltersContainSecondlevelFilter(List<String> lstFilterIncluded, List<String> lstFilterExcluded) {
+	public String verifySelectedFiltersContainSecondlevelFilter(List<String> lstFilterIncluded, List<String> lstFilterExcluded) {
 		String lsMsg="";
 		List<String> lstSelectedFilterOption=new ArrayList<String>();
 		int selectedFilterSize = this.selectedFiltersList.size() - 1;
@@ -3451,10 +3451,10 @@ public class ProductResultsPage extends BasePage{
 	 * @return void
 	 */
 	//Bug 19690: [UAT Defect] The breadcumb breaks non category/brand PRPs and a server error is triggered
-	public void verifyBreadCrumbAfterSelectCuratedCollectionsItem(List<List<String>> lstFilter){	
+	public void verifyBreadCrumbAfterSelectCuratedCollectionsItem(List<List<String>> lstFilter,GlobalHeaderPage ghp){	
 		//Select first category item
 		List<String> lstItem=lstFilter.get(0);
-		(new GlobalHeaderPage(this.getDriver())).clickCuratedCollectionsMenuItem(lstItem.get(0), lstItem.get(1));
+		ghp.clickCuratedCollectionsMenuItem(lstItem.get(0), lstItem.get(1));
 		this.waitForPageToLoad();
 		this.getReusableActionsInstance().staticWait(3000);
 		this.getReusableActionsInstance().waitForElementVisibility(this.lblSearchResultMessage,120);

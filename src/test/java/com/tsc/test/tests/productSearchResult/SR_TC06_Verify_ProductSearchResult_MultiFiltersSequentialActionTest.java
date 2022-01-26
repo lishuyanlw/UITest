@@ -43,7 +43,7 @@ public class SR_TC06_Verify_ProductSearchResult_MultiFiltersSequentialActionTest
 		getProductResultsPageThreadLocal().selectFilterItemInLeftPanel(lstItem.get(0), lstItem.get(1));
 		lstSelectedSecondLevelFilter.add(getProductResultsPageThreadLocal().secondLevelFilter);			
 	
-		lsMsg=getProductResultsPageThreadLocal().verifySlectedFiltersContainSecondlevelFilter(lstSelectedSecondLevelFilter,lstDisappearAfterSelectFilter);
+		lsMsg=getProductResultsPageThreadLocal().verifySelectedFiltersContainSecondlevelFilter(lstSelectedSecondLevelFilter,lstDisappearAfterSelectFilter);
 		if(lsMsg.isEmpty()) {
 			reporter.reportLogPass("The selected filters contain all search second level filters");
 		}else {
