@@ -205,7 +205,6 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 					//if statement to test Bug-19685 - Review filter
 					if(lsSecondLevelItem.toLowerCase().contains("star")){
 						lsSubItem = subItem.findElement(By.xpath(".//span[@class='prp-filter-panel__filter-list__item-label-text visually-hidden']")).getText().trim();
-						subItem = subItem.findElement(By.xpath("//span[@class='prp-filter-panel__filter-list__item-label-text visually-hidden']/preceding-sibling::span"));
 					}
 					else {	
 						if(lsFirstLevelItem.equalsIgnoreCase("category")) {
@@ -424,7 +423,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 			}
 		}
 		
-		closeFilterPopupWindow();		
+		closeFilterPopupWindowWithCloseButton();		
 		return lsErrorMsg;
 	}
 	
@@ -1296,5 +1295,41 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 			reporter.reportLogFail("The displaying pattern is not Home>"+lstItem.get(1)); 
 		}
 	}
+	
+	//Bug 19575: [QA Defect - P3] the implementation for Category in the left nav is wrong
+	@Override
+	public String verifyFilterOptionsNotContainCategoryAndShopByCategorySimultaneously() {
+		this.openFilterPopupWindow();
+		
+		String lsErrorMsg="";
+		int listSize=this.productFilterList.size();
+		if(listSize==0) {
+			return lsErrorMsg="No product filter list";
+		}
+		
+		boolean bCategory=false,bShopByCategory=false;
+		String lsFilterHeader;
+		for(int i=0;i<listSize;i++) {
+			getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i));
+			lsFilterHeader=this.productFilterList.get(i).getText().trim();
+			if(lsFilterHeader.equalsIgnoreCase("category")) {
+				bCategory=true;
+			}
+			
+			if(lsFilterHeader.equalsIgnoreCase("shop by category")) {
+				bShopByCategory=true;
+			}
+		}
+		
+		if(bCategory&&bShopByCategory) {
+			lsErrorMsg="The filter option headers are containing Category and Shop By Category simultaneously";
+		}
+		
+		this.closeFilterPopupWindowWithCloseButton();
+		
+		return lsErrorMsg;
+	}
+	
+	
 	
 }

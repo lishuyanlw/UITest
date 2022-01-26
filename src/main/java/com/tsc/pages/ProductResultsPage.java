@@ -1583,8 +1583,7 @@ public class ProductResultsPage extends BasePage{
 					getReusableActionsInstance().staticWait(2000);
 					//if statement to test Bug-19685 - Review filter
 					if(lsSecondLevelItem.toLowerCase().contains("star")){
-						lsSubItem = subItem.findElement(By.xpath(".//span[@class='prp-filter-panel__filter-list__item-label-text visually-hidden']")).getText().trim();
-						subItem = subItem.findElement(By.xpath("//span[@class='prp-filter-panel__filter-list__item-label-text visually-hidden']/preceding-sibling::span"));
+						lsSubItem =this.getElementInnerText(subItem.findElement(By.xpath(".//span[@class='prp-filter-panel__filter-list__item-label-text visually-hidden']")));
 					}
 					else {	
 						if(lsFirstLevelItem.equalsIgnoreCase("category")) {

@@ -28,7 +28,6 @@ public class SR_TC03_Verify_ProductSearchResult_SortAndFilterSectionContent exte
 	List<List<String>> lsKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_SearchKeyword_DropDown();
 	List<String> lsSortOption=TestDataHandler.constantData.getSearchResultPage().getLst_SortOption();
 	List<String> lsFilterOptionHeader=TestDataHandler.constantData.getSearchResultPage().getLst_FilterOptionHeader();
-	List<String> lsSortOptionMobile=TestDataHandler.constantData.getSearchResultPage().getLst_SortOptionMobile();
 	List<String> lstBugKeyword=TestDataHandler.constantData.getSearchResultPage().getLst_SearchKeyword_Bugs();
 	
 	getProductResultsPageThreadLocal().verifyProductLoadingThroughUrlDirectly(lstBugKeyword.get(2));
