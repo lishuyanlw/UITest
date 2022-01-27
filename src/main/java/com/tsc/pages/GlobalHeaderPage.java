@@ -574,7 +574,7 @@ public class GlobalHeaderPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	public void clickCuratedCollectionsMenuItem(String headingName,String submenuHeading) {
-		String xpathHeading =createXPath("//span[contains(.,'{0}')]" ,headingName);
+		String xpathHeading =createXPath("//span[contains(@class,'navigation__link-text') and contains(.,'{0}')]" ,headingName);
 		WebElement headingWebElement = FlyoutHeadings.findElement(By.xpath(xpathHeading));
 		getReusableActionsInstance().scrollToElement(headingWebElement);
 
