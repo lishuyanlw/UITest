@@ -849,31 +849,87 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 		element=this.getDriver().findElement(byProductGoToDetails);
 		lsText=this.getElementInnerText(element);
 		lsType=this.judgeProductOptionType();
+		
+		boolean bSizeDropdown,bColorDoprdown;
+		
 		if(lsType.equalsIgnoreCase("SizeAndColour")) {
-			if(lsText.equalsIgnoreCase("Select size & colour")) {
-				reporter.reportLogPass("The button text is equal to 'Select size & colour'");
+			bSizeDropdown=checkSizeOrColorOptionIsDropDown(true);
+			bColorDoprdown=checkSizeOrColorOptionIsDropDown(false);
+			if(bSizeDropdown&&bColorDoprdown) {
+				if(lsText.equalsIgnoreCase("Go to detail page")) {
+					reporter.reportLogPass("The button text is equal to 'Go to detail page'");
+				}
+				else {
+					reporter.reportLogFail("The button text is not equal to 'Go to detail page'");
+				}
 			}
-			else {
-				reporter.reportLogFail("The button text is not equal to 'Select size & colour'");
+			
+			if(bSizeDropdown&&!bColorDoprdown) {
+				if(lsText.equalsIgnoreCase("Select colour")) {
+					reporter.reportLogPass("The button text is equal to 'Select colour'");
+				}
+				else {
+					reporter.reportLogFail("The button text is not equal to 'Select colour'");
+				}
 			}
+			
+			if(!bSizeDropdown&&bColorDoprdown) {
+				if(lsText.equalsIgnoreCase("Select size")) {
+					reporter.reportLogPass("The button text is equal to 'Select size'");
+				}
+				else {
+					reporter.reportLogFail("The button text is not equal to 'Select size'");
+				}
+			}
+			
+			if(!bSizeDropdown&&!bColorDoprdown) {
+				if(lsText.equalsIgnoreCase("Select size & colour")) {
+					reporter.reportLogPass("The button text is equal to 'Select size & colour'");
+				}
+				else {
+					reporter.reportLogFail("The button text is not equal to 'Select size & colour'");
+				}
+			}			
 		}
-		
+
 		if(lsType.equalsIgnoreCase("Size")) {
-			if(lsText.equalsIgnoreCase("Select size")) {
-				reporter.reportLogPass("The button text is equal to 'Select size'");
+			bSizeDropdown=checkSizeOrColorOptionIsDropDown(true);
+			if(bSizeDropdown) {
+				if(lsText.equalsIgnoreCase("Select size & colour")) {
+					reporter.reportLogPass("The button text is equal to 'Select size & colour'");
+				}
+				else {
+					reporter.reportLogFail("The button text is not equal to 'Select size & colour'");
+				}
 			}
 			else {
-				reporter.reportLogFail("The button text is not equal to 'Select size'");
-			}
+				if(lsText.equalsIgnoreCase("Select size")) {
+					reporter.reportLogPass("The button text is equal to 'Select size'");
+				}
+				else {
+					reporter.reportLogFail("The button text is not equal to 'Select size'");
+				}
+			}			
 		}
-		
+
 		if(lsType.equalsIgnoreCase("Colour")) {
-			if(lsText.equalsIgnoreCase("Select colour")) {
-				reporter.reportLogPass("The button text is equal to 'Select colour'");
+			bColorDoprdown=checkSizeOrColorOptionIsDropDown(false);
+			if(bColorDoprdown) {
+				if(lsText.equalsIgnoreCase("Select size & colour")) {
+					reporter.reportLogPass("The button text is equal to 'Select size & colour'");
+				}
+				else {
+					reporter.reportLogFail("The button text is not equal to 'Select size & colour'");
+				}
 			}
 			else {
-				reporter.reportLogFail("The button text is not equal to 'Select colour'");
-			}
+				if(lsText.equalsIgnoreCase("Select colour")) {
+					reporter.reportLogPass("The button text is equal to 'Select colour'");
+				}
+				else {
+					reporter.reportLogFail("The button text is not equal to 'Select colour'");
+				}
+			}			
 		}
 		
 		//If all displayed size or color are disabled
@@ -892,12 +948,24 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 				lsText=element.getText().trim();
 				if(lsType.contains("Colour")) {
-					if(lsText.equalsIgnoreCase("Select colour")) {
-						reporter.reportLogPass("The button text is equal to 'Select colour'");
+					bColorDoprdown=checkSizeOrColorOptionIsDropDown(false);
+					if(bColorDoprdown) {
+						if(lsText.equalsIgnoreCase("Go to detail page")) {
+							reporter.reportLogPass("The button text is equal to 'Go to detail page'");
+						}
+						else {
+							reporter.reportLogFail("The button text is not equal to 'Go to detail page'");
+						}
 					}
 					else {
-						reporter.reportLogFail("The button text is not equal to 'Select colour'");
+						if(lsText.equalsIgnoreCase("Select colour")) {
+							reporter.reportLogPass("The button text is equal to 'Select colour'");
+						}
+						else {
+							reporter.reportLogFail("The button text is not equal to 'Select colour'");
+						}
 					}
+					
 				}else {
 					if(lsText.equalsIgnoreCase("Go to detail page")) {
 						reporter.reportLogPass("The button text is equal to 'Go to detail page'");
@@ -930,6 +998,22 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 		}
 	}
 	
+	private boolean checkSizeOrColorOptionIsDropDown(boolean bSize) {
+		List<WebElement> optionList;
+		if(bSize) {
+			optionList=this.getDriver().findElements(byProductOptionSizeItemEnabledList);
+		}
+		else {
+			optionList=this.getDriver().findElements(byProductOptionColorItemEnabledList);
+		}
+				
+		WebElement element=optionList.get(optionList.size()-1);
+		if(!element.getTagName().equalsIgnoreCase("button")) {								
+			return true;
+		}
+		return false;		
+	}
+	
 	private boolean verifySizeOption(String lsType) {
 		if(checkProductSizeOptionEnabledItemAvailableWithMouseHover()) {
 			List<WebElement> optionList=this.getDriver().findElements(byProductOptionSizeItemEnabledList);
@@ -943,10 +1027,10 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				Select sizeSelect= new Select(element.findElement(By.xpath("./parent::select")));
 				sizeSelect.selectByIndex(optionList.size()-1);
 			}			
-			this.getReusableActionsInstance().staticWait(3000);
+			this.getReusableActionsInstance().staticWait(7000);
 
 			element=this.getDriver().findElement(byProductOptionSizeSelectedSize);
-			String lsSelectedTitle=this.getElementInnerText(element).replace("Size", "").trim();;
+			String lsSelectedTitle=this.getElementInnerText(element).replace("Size", "").trim();
 			this.selectedProductItem.productSelectedSize=lsSelectedTitle;
 			if(lsText.equalsIgnoreCase(lsSelectedTitle)) {
 				reporter.reportLogPass("The selected size title is displaying correctly");

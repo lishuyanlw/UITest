@@ -349,6 +349,8 @@ public class ProductResultsPage extends BasePage{
 	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='prp__applied-filters']/button/span")
 	public List<WebElement> lstFilterApplied;
 
+	public By sizeSelected = By.xpath(".//form[contains(@class,'product-card__main')]//span[contains(@class,'size-title')]");
+
 	String searchkeyword;
 	public boolean bVerifyTitle=true;
 	public String firstLevelFilter,secondLevelFilter;
@@ -2501,31 +2503,87 @@ public class ProductResultsPage extends BasePage{
 		element=itemContainer.findElement(BySelectSizeAndColorButton);
 		lsText=this.getElementInnerText(element);
 		lsType=this.judgeProductOptionType(itemContainer);
+		
+		boolean bSizeDropdown,bColorDoprdown;
+				
 		if(lsType.equalsIgnoreCase("SizeAndColour")) {
-			if(lsText.equalsIgnoreCase("Select size & colour")) {
-				reporter.reportLogPass("The button text is equal to 'Select size & colour'");
+			bSizeDropdown=checkSizeOrColorOptionIsDropDown(itemContainer,true);
+			bColorDoprdown=checkSizeOrColorOptionIsDropDown(itemContainer,false);
+			if(bSizeDropdown&&bColorDoprdown) {
+				if(lsText.equalsIgnoreCase("Go to detail page")) {
+					reporter.reportLogPass("The button text is equal to 'Go to detail page'");
+				}
+				else {
+					reporter.reportLogFail("The button text is not equal to 'Go to detail page'");
+				}
 			}
-			else {
-				reporter.reportLogFail("The button text is not equal to 'Select size & colour'");
+			
+			if(bSizeDropdown&&!bColorDoprdown) {
+				if(lsText.equalsIgnoreCase("Select colour")) {
+					reporter.reportLogPass("The button text is equal to 'Select colour'");
+				}
+				else {
+					reporter.reportLogFail("The button text is not equal to 'Select colour'");
+				}
 			}
+			
+			if(!bSizeDropdown&&bColorDoprdown) {
+				if(lsText.equalsIgnoreCase("Select size")) {
+					reporter.reportLogPass("The button text is equal to 'Select size'");
+				}
+				else {
+					reporter.reportLogFail("The button text is not equal to 'Select size'");
+				}
+			}
+			
+			if(!bSizeDropdown&&!bColorDoprdown) {
+				if(lsText.equalsIgnoreCase("Select size & colour")) {
+					reporter.reportLogPass("The button text is equal to 'Select size & colour'");
+				}
+				else {
+					reporter.reportLogFail("The button text is not equal to 'Select size & colour'");
+				}
+			}			
 		}
 
 		if(lsType.equalsIgnoreCase("Size")) {
-			if(lsText.equalsIgnoreCase("Select size")) {
-				reporter.reportLogPass("The button text is equal to 'Select size'");
+			bSizeDropdown=checkSizeOrColorOptionIsDropDown(itemContainer,true);
+			if(bSizeDropdown) {
+				if(lsText.equalsIgnoreCase("Select size & colour")) {
+					reporter.reportLogPass("The button text is equal to 'Select size & colour'");
+				}
+				else {
+					reporter.reportLogFail("The button text is not equal to 'Select size & colour'");
+				}
 			}
 			else {
-				reporter.reportLogFail("The button text is not equal to 'Select size'");
-			}
+				if(lsText.equalsIgnoreCase("Select size")) {
+					reporter.reportLogPass("The button text is equal to 'Select size'");
+				}
+				else {
+					reporter.reportLogFail("The button text is not equal to 'Select size'");
+				}
+			}			
 		}
 
 		if(lsType.equalsIgnoreCase("Colour")) {
-			if(lsText.equalsIgnoreCase("Select colour")) {
-				reporter.reportLogPass("The button text is equal to 'Select colour'");
+			bColorDoprdown=checkSizeOrColorOptionIsDropDown(itemContainer,false);
+			if(bColorDoprdown) {
+				if(lsText.equalsIgnoreCase("Select size & colour")) {
+					reporter.reportLogPass("The button text is equal to 'Select size & colour'");
+				}
+				else {
+					reporter.reportLogFail("The button text is not equal to 'Select size & colour'");
+				}
 			}
 			else {
-				reporter.reportLogFail("The button text is not equal to 'Select colour'");
-			}
+				if(lsText.equalsIgnoreCase("Select colour")) {
+					reporter.reportLogPass("The button text is equal to 'Select colour'");
+				}
+				else {
+					reporter.reportLogFail("The button text is not equal to 'Select colour'");
+				}
+			}			
 		}
 
 		//If all displayed size or color are disabled
@@ -2543,12 +2601,24 @@ public class ProductResultsPage extends BasePage{
 				element=itemContainer.findElement(BySelectSizeAndColorButton);
 				lsText=this.getElementInnerText(element);
 				if(lsType.contains("Colour")) {
-					if(lsText.equalsIgnoreCase("Select colour")) {
-						reporter.reportLogPass("The button text is equal to 'Select colour'");
+					bColorDoprdown=checkSizeOrColorOptionIsDropDown(itemContainer,false);
+					if(bColorDoprdown) {
+						if(lsText.equalsIgnoreCase("Go to detail page")) {
+							reporter.reportLogPass("The button text is equal to 'Go to detail page'");
+						}
+						else {
+							reporter.reportLogFail("The button text is not equal to 'Go to detail page'");
+						}
 					}
 					else {
-						reporter.reportLogFail("The button text is not equal to 'Select colour'");
+						if(lsText.equalsIgnoreCase("Select colour")) {
+							reporter.reportLogPass("The button text is equal to 'Select colour'");
+						}
+						else {
+							reporter.reportLogFail("The button text is not equal to 'Select colour'");
+						}
 					}
+					
 				}else {
 					if(lsText.equalsIgnoreCase("Go to detail page")) {
 						reporter.reportLogPass("The button text is equal to 'Go to detail page'");
@@ -2580,7 +2650,30 @@ public class ProductResultsPage extends BasePage{
 		}
 
 	}
-
+	
+	private boolean checkSizeOrColorOptionIsDropDown(WebElement itemContainer,boolean bSize) {
+		List<WebElement> optionList;
+		if(bSize) {
+			optionList=itemContainer.findElements(byProductOptionSizeItemEnabledList);
+		}
+		else {
+			optionList=itemContainer.findElements(byProductOptionColorItemEnabledList);
+		}
+				
+		WebElement element=optionList.get(optionList.size()-1);
+		if(!element.getTagName().equalsIgnoreCase("button")) {								
+			return true;
+		}
+		return false;		
+	}
+	
+	/**
+	 * This method will verify selecting size/color option
+	 * @param-WebElement-itemContainer: product search result item
+	 * @param-String-lsType:size that is selected
+	 * @return-boolean
+	 * @author Wei.Li
+	 */
 	private boolean verifySizeOption(WebElement itemContainer,String lsType) {
 		if(checkProductSizeOptionEnabledItemAvailableWithMouseHover(itemContainer)) {			
 			List<WebElement> optionList=itemContainer.findElements(byProductOptionSizeItemEnabledList);
@@ -2593,7 +2686,8 @@ public class ProductResultsPage extends BasePage{
 				Select sizeSelect= new Select(element.findElement(By.xpath("./parent::select")));
 				sizeSelect.selectByIndex(optionList.size()-1);
 			}			
-			this.getReusableActionsInstance().staticWait(3000);
+
+			this.getReusableActionsInstance().staticWait(7000);
 
 			String lsSelectedTitle=this.getElementInnerText(element).replace("Size", "").trim();
 			this.selectedProductItem.productSelectedSize=lsSelectedTitle;
@@ -2793,7 +2887,6 @@ public class ProductResultsPage extends BasePage{
 
 		List<WebElement> optionList;
 		WebElement element;
-		String lsButtonTextBeforeClickingSize;
 
 		//Choose size
 		optionList=itemContainer.findElements(byProductOptionSizeItemEnabledList);
@@ -3322,6 +3415,7 @@ public class ProductResultsPage extends BasePage{
 	public void verifySearchResultMessageOnPage(String searchKeyword){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblProductCountOnPage);
 		this.getReusableActionsInstance().scrollToElement(this.lblProductCountOnPage);
+		String searchTitleMessage = null;
 
 		//if block is for Bug-19544 and else block is for Bug-19772
 		//Verifying below if keyword is a brand or normal search. If it is brand, no message should be displayed
@@ -3334,7 +3428,12 @@ public class ProductResultsPage extends BasePage{
 //				reporter.reportLogFail("Search Result Text is present for search keyword which is a brand");
 //		}else{
 			this.waitForCondition(Driver->{return this.lblSearchResultTitleMessage.isDisplayed();},5000);
-			String searchTitleMessage = this.lblSearchResultTitleMessage.getText().split("\"")[1];
+			if(System.getProperty("Browser").toLowerCase().contains("safari"))
+				//For safari, one more space is inserted in between due to way inner text is coming in html
+				//and hence removing that extra space
+				searchTitleMessage = this.lblSearchResultTitleMessage.getText().split("\"")[1].trim()+" ";
+			else
+				searchTitleMessage = this.lblSearchResultTitleMessage.getText().split("\"")[1];
 			this.searchkeyword = searchKeyword.trim()+" ";
 			if(this.searchkeyword.equals(searchTitleMessage))
 				reporter.reportLogPass("Search Result message on page: "+searchTitleMessage+ " is same as input search keyword: "+searchKeyword);
