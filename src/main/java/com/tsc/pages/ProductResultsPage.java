@@ -349,6 +349,8 @@ public class ProductResultsPage extends BasePage{
 	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='prp__applied-filters']/button/span")
 	public List<WebElement> lstFilterApplied;
 
+	public By sizeSelected = By.xpath(".//form[contains(@class,'product-card__main')]//span[contains(@class,'size-title')]");
+
 	String searchkeyword;
 	public boolean bVerifyTitle=true;
 	public String firstLevelFilter,secondLevelFilter;
@@ -2580,7 +2582,13 @@ public class ProductResultsPage extends BasePage{
 		}
 
 	}
-
+	/**
+	 * This method will verify selecting size/color option
+	 * @param-WebElement-itemContainer: product search result item
+	 * @param-String-lsType:size that is selected
+	 * @return-boolean
+	 * @author Wei.Li
+	 */
 	private boolean verifySizeOption(WebElement itemContainer,String lsType) {
 		if(checkProductSizeOptionEnabledItemAvailableWithMouseHover(itemContainer)) {			
 			List<WebElement> optionList=itemContainer.findElements(byProductOptionSizeItemEnabledList);
@@ -2593,10 +2601,12 @@ public class ProductResultsPage extends BasePage{
 				Select sizeSelect= new Select(element.findElement(By.xpath("./parent::select")));
 				sizeSelect.selectByIndex(optionList.size()-1);
 			}			
-			this.getReusableActionsInstance().staticWait(3000);
-			this.getReusableActionsInstance().staticWait(3000);
+			this.getReusableActionsInstance().staticWait(7000);
 
-			String lsSelectedTitle=this.getElementInnerText(element);
+			WebElement selectedSize = itemContainer.findElement(this.sizeSelected);
+			String lsSelectedTitle=this.getElementInnerText(selectedSize).split(":")[1].trim();
+			//String lsSelectedTitle=this.getElementInnerText(element);
+			//String lsSelectedTitle=this.getElementInnerText(element).replace("Size", "").trim();
 			this.selectedProductItem.productSelectedSize=lsSelectedTitle;
 			if(lsText.equalsIgnoreCase(lsSelectedTitle)) {
 				reporter.reportLogPass("The selected size title is displaying correctly");
@@ -2793,7 +2803,6 @@ public class ProductResultsPage extends BasePage{
 
 		List<WebElement> optionList;
 		WebElement element;
-		String lsButtonTextBeforeClickingSize;
 
 		//Choose size
 		optionList=itemContainer.findElements(byProductOptionSizeItemEnabledList);
@@ -3322,6 +3331,7 @@ public class ProductResultsPage extends BasePage{
 	public void verifySearchResultMessageOnPage(String searchKeyword){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblProductCountOnPage);
 		this.getReusableActionsInstance().scrollToElement(this.lblProductCountOnPage);
+		String searchTitleMessage = null;
 
 		//if block is for Bug-19544 and else block is for Bug-19772
 		//Verifying below if keyword is a brand or normal search. If it is brand, no message should be displayed
@@ -3334,7 +3344,12 @@ public class ProductResultsPage extends BasePage{
 //				reporter.reportLogFail("Search Result Text is present for search keyword which is a brand");
 //		}else{
 			this.waitForCondition(Driver->{return this.lblSearchResultTitleMessage.isDisplayed();},5000);
-			String searchTitleMessage = this.lblSearchResultTitleMessage.getText().split("\"")[1];
+			if(System.getProperty("Browser").toLowerCase().contains("safari"))
+				//For safari, one more space is inserted in between due to way inner text is coming in html
+				//and hence removing that extra space
+				searchTitleMessage = this.lblSearchResultTitleMessage.getText().split("\"")[1].trim()+" ";
+			else
+				searchTitleMessage = this.lblSearchResultTitleMessage.getText().split("\"")[1];
 			this.searchkeyword = searchKeyword.trim()+" ";
 			if(this.searchkeyword.equals(searchTitleMessage))
 				reporter.reportLogPass("Search Result message on page: "+searchTitleMessage+ " is same as input search keyword: "+searchKeyword);

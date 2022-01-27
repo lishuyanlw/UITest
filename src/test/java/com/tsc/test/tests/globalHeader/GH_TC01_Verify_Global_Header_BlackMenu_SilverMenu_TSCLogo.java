@@ -222,6 +222,7 @@ public class GH_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo extends B
 			getglobalheaderPageThreadLocal().staticwait();
 			basePage.getReusableActionsInstance().javascriptScrollByVisibleElement(getglobalheaderPageThreadLocal().lnkTSBlackHeader);
 			getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkTSBlackHeader);
+			getglobalheaderPageThreadLocal().hoverOnWatchTSC();
 		}
 
 	}
