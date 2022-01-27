@@ -525,7 +525,7 @@ public class GlobalHeaderPage extends BasePage{
 	 */
 	public String getNameAndclickSubMenuItem(String headingName,String submenuHeading, String itemName) {
 		WebElement searchResultTitle=(new ProductResultsPage(this.getDriver())).lblSearchResultTitle;
-		String xpathHeading =createXPath("//span[contains(.,'{0}')]" ,headingName);
+		String xpathHeading =createXPath("//span[contains(@class,'navigation__link-text') and contains(.,'{0}')]" ,headingName);
 		WebElement headingWebElement = FlyoutHeadings.findElement(By.xpath(xpathHeading));
 		getReusableActionsInstance().javascriptScrollByVisibleElement(headingWebElement);
 		getReusableActionsInstance().scrollToElement(headingWebElement);
@@ -536,13 +536,13 @@ public class GlobalHeaderPage extends BasePage{
 			return headingWebElement.getText().trim();
 		}
 		if(submenuHeading!=null) {
-			String xpathSubMenu =createXPath("//a[contains(.,'{0}')]" ,submenuHeading);
+			String xpathSubMenu =createXPath("//li[contains(@class,'categories__item')]//a[contains(.,'{0}')]" ,submenuHeading);
 			List<WebElement> SubMenu = Categories.findElements(By.xpath(xpathSubMenu));
 			if(SubMenu.size()>0){
 				getReusableActionsInstance().javascriptScrollByVisibleElement(SubMenu.get(0));
 				getReusableActionsInstance().scrollToElement(SubMenu.get(0));
 				if(itemName!=null) {
-					String xpathSubmenuItem=createXPath("//a[contains(.,'{0}')]",itemName);
+					String xpathSubmenuItem=createXPath("//li[contains(@class,'sub-items')]//a[contains(.,'{0}')]",itemName);
 					WebElement SubMenuItem=getDriver().findElement(By.xpath(xpathSubmenuItem));
 					getReusableActionsInstance().javascriptScrollByVisibleElement(SubMenuItem);
 					getReusableActionsInstance().scrollToElement(SubMenuItem);
@@ -567,34 +567,6 @@ public class GlobalHeaderPage extends BasePage{
 		}
 		return null;
 	}
-
-	public StringBuilder href_src_submenu  =new StringBuilder();
-	public StringBuilder href_src_data = new StringBuilder();
-	/*Method to click on WebElement for Submenu Item by providing Flyout heading name , category and item as parameters.
-	 * @author Shruti Desai
-	 */
-	public void clickSubMenuItem(String headingName,String submenuHeading, String itemName) {
-		String xpathHeading =createXPath("//span[contains(.,'{0}')]" ,headingName);
-		WebElement headingWebElement = FlyoutHeadings.findElement(By.xpath(xpathHeading));
-		getReusableActionsInstance().scrollToElement(headingWebElement);
-
-		if(headingWebElement!=null && submenuHeading==null) {
-			headingWebElement.click();
-		}
-		if(submenuHeading!=null) {
-			String xpathSubMenu =createXPath("//a[contains(.,\"{0}\")]" ,submenuHeading);
-			WebElement SubMenu = Categories.findElement(By.xpath(xpathSubMenu));
-			getReusableActionsInstance().scrollToElement(SubMenu);
-			if(itemName!=null) {
-				String xpathSubmenuItem=createXPath("//a[contains(.,'{0}')]",itemName);
-				WebElement SubMenuItem=getDriver().findElement(By.xpath(xpathSubmenuItem));
-				getReusableActionsInstance().scrollToElement(SubMenuItem);
-				SubMenuItem.click();
-			}else {
-				SubMenu.click();
-			}
-		}
-	}
 	
 	/**Method to click on WebElement for CuratedCollections SubMenu Item by providing Flyout heading name ,CuratedCollections SubMenu Item name as parameters.
 	 * @param String headingName: flyout menu item name
@@ -602,7 +574,7 @@ public class GlobalHeaderPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	public void clickCuratedCollectionsMenuItem(String headingName,String submenuHeading) {
-		String xpathHeading =createXPath("//span[contains(.,'{0}')]" ,headingName);
+		String xpathHeading =createXPath("//span[contains(@class,'navigation__link-text') and contains(.,'{0}')]" ,headingName);
 		WebElement headingWebElement = FlyoutHeadings.findElement(By.xpath(xpathHeading));
 		getReusableActionsInstance().scrollToElement(headingWebElement);
 

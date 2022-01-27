@@ -111,10 +111,12 @@ public class SR_TC10_Verify_ProductSearchResult_GlobalHeaderAndFooterAfterSortAn
 	
 	//Verify header section
 	headerSectionMenuAndLogoTest.validateMajorNameAndLinks();
+	getProductResultsPageThreadLocal().getReusableActionsInstance().staticWait(5000);
 	headerSectionOthersTest.validateMajorNameAndLinks();
 
 	//Verify footer section
 	footerSectionTest_SocialMedia.validateMajorNameAndLinks();
+	getProductResultsPageThreadLocal().getReusableActionsInstance().staticWait(5000);
 	footerSectionTest_CustomerHubLinksAndAboutTSCLinks.validateContents();
 	
 

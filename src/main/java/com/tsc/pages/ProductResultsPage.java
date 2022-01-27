@@ -2130,7 +2130,7 @@ public class ProductResultsPage extends BasePage{
 		productNumber=selectedProduct.productNumber;
 
 		this.selectedProductItem.init();
-
+		reporter.reportLog("Product No fetched from API call is: "+productNumber);
 		this.getSearchResultLoad(productNumber,true);
 
 		WebElement item=this.productResultList.get(0);
@@ -2689,8 +2689,10 @@ public class ProductResultsPage extends BasePage{
 
 			this.getReusableActionsInstance().staticWait(7000);
 
-			String lsSelectedTitle=this.getElementInnerText(element).replace("Size", "").trim();
-			this.selectedProductItem.productSelectedSize=lsSelectedTitle;
+			WebElement selectedSize = itemContainer.findElement(this.sizeSelected);
+			String lsSelectedTitle=this.getElementInnerText(selectedSize).split(":")[1].trim();
+			//String lsSelectedTitle=this.getElementInnerText(element);
+			//String lsSelectedTitle=this.getElementInnerText(element).replace("Size", "").trim();
 			
 			if(lsText.equalsIgnoreCase(lsSelectedTitle)) {
 				reporter.reportLogPass("The selected size title is displaying correctly");
@@ -2914,6 +2916,8 @@ public class ProductResultsPage extends BasePage{
 			sizeSelect.selectByIndex(optionList.size()-1);
 		}		
 		this.getReusableActionsInstance().staticWait(3000);
+		//Storing size and color for verification on PDP page
+
 
 		itemContainer.findElement(this.byProductGoToDetails).click();
 		this.waitForPDPPageLoading();
