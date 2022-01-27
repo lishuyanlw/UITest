@@ -1001,10 +1001,10 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 	private boolean checkSizeOrColorOptionIsDropDown(boolean bSize) {
 		List<WebElement> optionList;
 		if(bSize) {
-			optionList=this.getDriver().findElements(byProductOptionSizeItemEnabledList);
+			optionList=this.getDriver().findElements(byProductOptionSizeItemList);
 		}
 		else {
-			optionList=this.getDriver().findElements(byProductOptionColorItemEnabledList);
+			optionList=this.getDriver().findElements(byProductOptionColorItemList);
 		}
 				
 		WebElement element=optionList.get(optionList.size()-1);

@@ -2654,10 +2654,10 @@ public class ProductResultsPage extends BasePage{
 	private boolean checkSizeOrColorOptionIsDropDown(WebElement itemContainer,boolean bSize) {
 		List<WebElement> optionList;
 		if(bSize) {
-			optionList=itemContainer.findElements(byProductOptionSizeItemEnabledList);
+			optionList=itemContainer.findElements(byProductOptionSizeItemList);
 		}
 		else {
-			optionList=itemContainer.findElements(byProductOptionColorItemEnabledList);
+			optionList=itemContainer.findElements(byProductOptionColorItemList);
 		}
 				
 		WebElement element=optionList.get(optionList.size()-1);
