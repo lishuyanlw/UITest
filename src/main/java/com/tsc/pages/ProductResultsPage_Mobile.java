@@ -443,16 +443,20 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 	@Override
 	public String verifySelectedFiltersContainSecondlevelFilter(List<String> lstFilterIncluded, List<String> lstFilterExcluded) {
 		openFilterPopupWindow();
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnFiltersAdded);
-		getReusableActionsInstance().clickIfAvailable(this.btnFiltersAdded);
-		getReusableActionsInstance().waitForElementVisibility(this.selectedFiltersList.get(this.selectedFiltersList.size()-1), 20);
+//		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnFiltersAdded);
+//		getReusableActionsInstance().clickIfAvailable(this.btnFiltersAdded);
+		this.clickElement(this.btnFiltersAdded);
+		getReusableActionsInstance().staticWait(5000);
+//		getReusableActionsInstance().waitForElementVisibility(this.selectedFiltersList.get(this.selectedFiltersList.size()-1), 20);
 		
 		String lsMsg="";
 		List<String> lstSelectedFilterOption=new ArrayList<String>();		
 		int selectedFilterSize = this.selectedFiltersList.size() - 1;
+		System.out.println("selectedFilterSize: "+selectedFilterSize);
 		for (int i = 0; i < selectedFilterSize; i++) {
-			getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectedFiltersList.get(i));
-			lstSelectedFilterOption.add(this.selectedFiltersList.get(i).getText().trim());
+//			getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectedFiltersList.get(i));
+//			lstSelectedFilterOption.add(this.selectedFiltersList.get(i).getText().trim());
+			lstSelectedFilterOption.add(this.getElementInnerText(this.selectedFiltersList.get(i)));
 		}
 		
 		for(String lsItem:lstSelectedFilterOption) {
