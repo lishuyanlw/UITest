@@ -107,13 +107,14 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 	}
 	
 	public void closeFilterPopupWindow() {
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnViewProductsAferSelectingFilters);
-		getReusableActionsInstance().clickIfAvailable(this.btnViewProductsAferSelectingFilters);	
+		this.clickElement(this.btnViewProductsAferSelectingFilters);
+//		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnViewProductsAferSelectingFilters);
+//		getReusableActionsInstance().clickIfAvailable(this.btnViewProductsAferSelectingFilters);	
 		getReusableActionsInstance().staticWait(5000);
 	}
 	
 	public void closeFilterPopupWindowWithCloseButton() {
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnViewProductsAferSelectingFilters);
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnFilterPopupClose);
 		getReusableActionsInstance().clickIfAvailable(this.btnFilterPopupClose);	
 		getReusableActionsInstance().staticWait(5000);
 	}
@@ -161,12 +162,9 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 					if(subItemList.size()>0) {
 						//getReusableActionsInstance().javascriptScrollByVisibleElement(subItemList.get(0));
 						getReusableActionsInstance().clickIfAvailable(subItemList.get(0));
+//						waitForSortingOrFilteringCompleted();
 						getReusableActionsInstance().staticWait(3000);
-						waitForSortingOrFilteringCompleted();
-						getReusableActionsInstance().staticWait(3000);
-						
-						this.getReusableActionsInstance().staticWait(2000);
-						
+												
 						//Bug 19628: [QA Defect - P3] PRP: no products display if user is on the last page and select a faucet from the left nav
 						if(!this.URL().contains("page=")) {
 							reporter.reportLogPass("The Url does not contain page term.");
@@ -236,12 +234,9 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 						}
 						else {
 							getReusableActionsInstance().clickIfAvailable(subItem);
-						}	
+						}						
+//						this.waitForSortingOrFilteringCompleted();
 						getReusableActionsInstance().staticWait(3000);
-						this.waitForSortingOrFilteringCompleted();
-						getReusableActionsInstance().staticWait(3000);
-
-						this.getReusableActionsInstance().staticWait(2000);
 						
 						//Bug 19628: [QA Defect - P3] PRP: no products display if user is on the last page and select a faucet from the left nav
 						//Bug 19556: [QA Defect - P3] PRP: when selecting a subcategory from Shop by category, the dimension in the URL should start over not appending
@@ -298,10 +293,8 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 					else {
 						getReusableActionsInstance().clickIfAvailable(subItem);
 					}										
-					this.waitForSortingOrFilteringCompleted();
-					getReusableActionsInstance().staticWait(1000);
-					
-					this.getReusableActionsInstance().staticWait(2000);
+//					this.waitForSortingOrFilteringCompleted();
+					getReusableActionsInstance().staticWait(3000);
 					
 					//Bug 19628: [QA Defect - P3] PRP: no products display if user is on the last page and select a faucet from the left nav
 					if(!this.URL().contains("page=")) {
@@ -507,6 +500,8 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 		List<WebElement> reviewStarList;
 		
 		loopSize=productList.size();
+		loopSize=loopSize>15?15:loopSize;
+		
 		for(int i=0;i<loopSize;i++) {		
 			item=productList.get(i);	
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
