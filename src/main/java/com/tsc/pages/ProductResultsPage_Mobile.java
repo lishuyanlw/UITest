@@ -645,96 +645,17 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				}
 			}
 			
-			//Bug 19538: [QA Defect - P3] PRP: missing Free Shipping label
-			if(this.checkProductItemFreeShippingExisting(item)) {
-				element=item.findElement(byProductFreeShipping);
-				lsText=this.getElementInnerText(element);
-				if(!lsText.isEmpty()) {
-					reporter.reportLogPass("Product free shipping is not empty");
-				}
-				else {
-					reporter.reportLogFail("Product free shipping is empty");
-				}
-			}
-			
-			element=item.findElement(byProductItemSelectSizeOrColor);
-			if(this.getReusableActionsInstance().isElementVisible(element)) {
-				reporter.reportLogPass("Product select Size and Color is visible");
-			}
-			else {
-				reporter.reportLogFail("Product select Size and Color is not visible");
-			}
-			
-			if(this.getElementInnerText(element).equalsIgnoreCase("Go to detail page")) {
-				continue;
-			}
-			
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-			this.getReusableActionsInstance().clickIfAvailable(element);
-			this.getReusableActionsInstance().waitForElementVisibility(this.btnProductGoToDetails,20);
-			
-			lsText=judgeProductOptionType();
-			if(lsText.contains("Size")) {				
-				element=this.getDriver().findElement(byProductOptionSizeTitle);
-				lsText=this.getElementInnerText(element);
-				if(!lsText.isEmpty()) {
-					reporter.reportLogPass("Product option size title is not empty");
-				}
-				else {
-					reporter.reportLogFail("Product option size title is empty");
-				}
-				
-				if(this.getDriver().findElements(byProductOptionSizeItemList).size()>0) {
-					reporter.reportLogPass("Product option size button list is containing no less than 1 item");
-				}
-				else {
-					reporter.reportLogFail("Product option size button list is containing 0 item");
-				}
-				
-				if(checkViewAllSizesButtonExisting()) {
-					element=item.findElement(byProductOptionSizeViewAllSizes);
-					lsText=this.getElementInnerText(element);
-					if(!lsText.isEmpty()) {
-						reporter.reportLogPass("Product ViewAlllSize button title is not empty");
-					}
-					else {
-						reporter.reportLogFail("Product ViewAlllSize button title is empty");
-					}
-				}
-			}
-			
-			if(lsText.contains("Colour")) {				
-				element=this.getDriver().findElement(byProductOptionColorTitle);				
-				lsText=this.getElementInnerText(element);				
-				if(!lsText.isEmpty()) {
-					reporter.reportLogPass("Product option color title is not empty");
-				}
-				else {
-					reporter.reportLogFail("Product option color title is empty");
-				}
-				
-				if(this.getDriver().findElements(byProductOptionColorItemList).size()>0) {
-					reporter.reportLogPass("Product option color button list is containing no less than 1 item");
-				}
-				else {
-					reporter.reportLogFail("Product option color button list is containing 0 item");
-				}
-			}
-				
-			element=item.findElement(byProductGoToDetails);
-			if(this.getReusableActionsInstance().isElementVisible(element)) {
-				reporter.reportLogPass("Product GoTo details button is visible");
-			}
-			else {
-				reporter.reportLogFail("Product GoTo details button is not visible");
-			}
-	
-			verifySelectSizeOrColorOption(item);	
-			
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnProductSizeOrColorClose);
-			this.getReusableActionsInstance().clickIfAvailable(this.btnProductSizeOrColorClose);
-			this.getReusableActionsInstance().staticWait(2000);
-			
+//			//Bug 19538: [QA Defect - P3] PRP: missing Free Shipping label
+//			if(this.checkProductItemFreeShippingExisting(item)) {
+//				element=item.findElement(byProductFreeShipping);
+//				lsText=this.getElementInnerText(element);
+//				if(!lsText.isEmpty()) {
+//					reporter.reportLogPass("Product free shipping is not empty");
+//				}
+//				else {
+//					reporter.reportLogFail("Product free shipping is empty");
+//				}
+//			}			
 		}
 	}
 
@@ -1218,7 +1139,95 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 	
 	@Override
 	public void verifySearchResultContentWithMouseHover(List<WebElement> productList) {
+		int loopSize;
+		WebElement item,element;	
+		String lsText;
+		loopSize=productList.size();
+		loopSize=loopSize>5?5:loopSize;
 		
+		for(int i=0;i<loopSize;i++) {		
+			item=productList.get(i);	
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			
+			element=item.findElement(byProductItemSelectSizeOrColor);
+			if(this.getReusableActionsInstance().isElementVisible(element)) {
+				reporter.reportLogPass("Product select Size and Color is visible");
+			}
+			else {
+				reporter.reportLogFail("Product select Size and Color is not visible");
+			}
+			
+			if(this.getElementInnerText(element).equalsIgnoreCase("Go to detail page")) {
+				continue;
+			}
+			
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+			this.getReusableActionsInstance().clickIfAvailable(element);
+			this.getReusableActionsInstance().waitForElementVisibility(this.btnProductGoToDetails,20);
+			
+			lsText=judgeProductOptionType();
+			if(lsText.contains("Size")) {				
+				element=this.getDriver().findElement(byProductOptionSizeTitle);
+				lsText=this.getElementInnerText(element);
+				if(!lsText.isEmpty()) {
+					reporter.reportLogPass("Product option size title is not empty");
+				}
+				else {
+					reporter.reportLogFail("Product option size title is empty");
+				}
+				
+				if(this.getDriver().findElements(byProductOptionSizeItemList).size()>0) {
+					reporter.reportLogPass("Product option size button list is containing no less than 1 item");
+				}
+				else {
+					reporter.reportLogFail("Product option size button list is containing 0 item");
+				}
+				
+				if(checkViewAllSizesButtonExisting()) {
+					element=item.findElement(byProductOptionSizeViewAllSizes);
+					lsText=this.getElementInnerText(element);
+					if(!lsText.isEmpty()) {
+						reporter.reportLogPass("Product ViewAlllSize button title is not empty");
+					}
+					else {
+						reporter.reportLogFail("Product ViewAlllSize button title is empty");
+					}
+				}
+			}
+			
+			if(lsText.contains("Colour")) {				
+				element=this.getDriver().findElement(byProductOptionColorTitle);				
+				lsText=this.getElementInnerText(element);				
+				if(!lsText.isEmpty()) {
+					reporter.reportLogPass("Product option color title is not empty");
+				}
+				else {
+					reporter.reportLogFail("Product option color title is empty");
+				}
+				
+				if(this.getDriver().findElements(byProductOptionColorItemList).size()>0) {
+					reporter.reportLogPass("Product option color button list is containing no less than 1 item");
+				}
+				else {
+					reporter.reportLogFail("Product option color button list is containing 0 item");
+				}
+			}
+				
+			element=item.findElement(byProductGoToDetails);
+			if(this.getReusableActionsInstance().isElementVisible(element)) {
+				reporter.reportLogPass("Product GoTo details button is visible");
+			}
+			else {
+				reporter.reportLogFail("Product GoTo details button is not visible");
+			}
+	
+			verifySelectSizeOrColorOption(item);	
+			
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnProductSizeOrColorClose);
+			this.getReusableActionsInstance().clickIfAvailable(this.btnProductSizeOrColorClose);
+			this.getReusableActionsInstance().staticWait(2000);
+			
+		}
 	}
 	
 	public String judgeProductOptionType() {

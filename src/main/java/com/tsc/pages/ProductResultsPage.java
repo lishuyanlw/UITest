@@ -2691,6 +2691,7 @@ public class ProductResultsPage extends BasePage{
 
 			WebElement selectedSize = itemContainer.findElement(this.sizeSelected);
 			String lsSelectedTitle=this.getElementInnerText(selectedSize).split(":")[1].trim();
+			this.selectedProductItem.productSelectedSize=lsSelectedTitle;			
 			//String lsSelectedTitle=this.getElementInnerText(element);
 			//String lsSelectedTitle=this.getElementInnerText(element).replace("Size", "").trim();
 			
