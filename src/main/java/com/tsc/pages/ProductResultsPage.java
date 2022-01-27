@@ -2594,10 +2594,10 @@ public class ProductResultsPage extends BasePage{
 				sizeSelect.selectByIndex(optionList.size()-1);
 			}			
 			this.getReusableActionsInstance().staticWait(3000);
-			this.getReusableActionsInstance().staticWait(3000);
 
-			String lsSelectedTitle=this.getElementInnerText(element);
+			String lsSelectedTitle=this.getElementInnerText(element).replace("Size", "").trim();
 			this.selectedProductItem.productSelectedSize=lsSelectedTitle;
+			
 			if(lsText.equalsIgnoreCase(lsSelectedTitle)) {
 				reporter.reportLogPass("The selected size title is displaying correctly");
 			}

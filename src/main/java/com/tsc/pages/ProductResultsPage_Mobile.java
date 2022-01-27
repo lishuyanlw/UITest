@@ -946,7 +946,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 			this.getReusableActionsInstance().staticWait(3000);
 
 			element=this.getDriver().findElement(byProductOptionSizeSelectedSize);
-			String lsSelectedTitle=this.getElementInnerText(element);
+			String lsSelectedTitle=this.getElementInnerText(element).replace("Size", "").trim();;
 			this.selectedProductItem.productSelectedSize=lsSelectedTitle;
 			if(lsText.equalsIgnoreCase(lsSelectedTitle)) {
 				reporter.reportLogPass("The selected size title is displaying correctly");
