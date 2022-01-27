@@ -1547,7 +1547,7 @@ public class ProductResultsPage extends BasePage{
 						getReusableActionsInstance().javascriptScrollByVisibleElement(subItemList.get(0));
 						getReusableActionsInstance().clickIfAvailable(subItemList.get(0));
 						
-						this.getReusableActionsInstance().staticWait(2000);
+						this.getReusableActionsInstance().staticWait(7000);
 						
 						//Bug 19628: [QA Defect - P3] PRP: no products display if user is on the last page and select a faucet from the left nav
 						if(!this.URL().contains("page=")) {
