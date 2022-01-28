@@ -1743,24 +1743,13 @@ public class ProductResultsPage extends BasePage{
 			}					
 		}
 		else {
-			if(!System.getProperty("Browser").toLowerCase().contains("ios")) {
-				bVerify= lsUrl.matches(".*dimensions=\\d+%7C\\d+.*");
-				if(bVerify) {
-					reporter.reportLogPass("The Url for the filters except Category filter is displaying correctly.");
-				}
-				else {
-					reporter.reportLogFail("The Url for the filters except Category filter is not displaying correctly.");
-				}
+			bVerify= lsUrl.matches(".*dimensions=\\d+%7C\\d+.*");
+			if(bVerify) {
+				reporter.reportLogPass("The Url for the filters except Category filter is displaying correctly.");
 			}
 			else {
-				bVerify=lsUrl.matches(".*dimensions=\\d+.*");
-				if(bVerify) {
-					reporter.reportLogPass("The Url for Category filter is displaying correctly.");
-				}
-				else {
-					reporter.reportLogFail("The Url for Category filter is not displaying correctly.");
-				}
-			}
+				reporter.reportLogFail("The Url for the filters except Category filter is not displaying correctly.");
+			}						
 		}		
 	}
 
