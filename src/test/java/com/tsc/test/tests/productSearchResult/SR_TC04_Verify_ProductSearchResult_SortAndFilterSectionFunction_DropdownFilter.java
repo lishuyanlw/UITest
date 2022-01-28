@@ -19,8 +19,8 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction_Dro
      * CER-224
      * CER-233
      * CER-631
-     * Bug 19117
-     * Bug 19734
+     * Bug 19117: PRP - Sorting Brand A-Z, not working
+     * Bug 19734: PRP: Sorting filter is not retained when going past page 1
      */
     @Test(groups={"ProductSearch","Regression","Regression_Tablet","Regression_Mobile"})
     public void validateProductSearchResult_FilterSectionFunction_DropdownFilter() throws IOException {

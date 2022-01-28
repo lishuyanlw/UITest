@@ -66,9 +66,15 @@ public class SR_TC10_Verify_ProductSearchResult_GlobalHeaderAndFooterAfterSortAn
 	}
 	
 	//Verify header section
-	GH_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo headerSectionMenuAndLogoTest= new GH_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo();
-	headerSectionMenuAndLogoTest.validateMajorNameAndLinks();
-	
+	if((System.getProperty("Browser").toLowerCase().contains("android") && System.getProperty("Device").toLowerCase().contains("tablet")) ||
+			(System.getProperty("Browser").toLowerCase().contains("chromemobile") &&
+					!System.getProperty("chromeMobileDevice").toLowerCase().contains("ipad")))
+		reporter.reportLog("Header Verification is not needed for android Tablet");
+	else{
+		GH_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo headerSectionMenuAndLogoTest= new GH_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo();
+		headerSectionMenuAndLogoTest.validateMajorNameAndLinks();
+	}
+
 	GH_TC02_Verify_Global_Header_SignIn_Favorite_ShoppingCartBag headerSectionOthersTest= new GH_TC02_Verify_Global_Header_SignIn_Favorite_ShoppingCartBag();
 	headerSectionOthersTest.validateMajorNameAndLinks();
 	
@@ -110,9 +116,14 @@ public class SR_TC10_Verify_ProductSearchResult_GlobalHeaderAndFooterAfterSortAn
 	}
 	
 	//Verify header section
-	headerSectionMenuAndLogoTest.validateMajorNameAndLinks();
-	getProductResultsPageThreadLocal().getReusableActionsInstance().staticWait(5000);
-	headerSectionOthersTest.validateMajorNameAndLinks();
+	if((System.getProperty("Browser").toLowerCase().contains("android") && System.getProperty("Device").toLowerCase().contains("tablet")) ||
+			(System.getProperty("Browser").toLowerCase().contains("chromemobile") &&
+					!System.getProperty("chromeMobileDevice").toLowerCase().contains("ipad")))
+		reporter.reportLog("Header Verification is not needed for android Tablet");
+	else{
+		GH_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo headerSectionMenuAndLogoTest= new GH_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo();
+		headerSectionMenuAndLogoTest.validateMajorNameAndLinks();
+	}
 
 	//Verify footer section
 	footerSectionTest_SocialMedia.validateMajorNameAndLinks();
