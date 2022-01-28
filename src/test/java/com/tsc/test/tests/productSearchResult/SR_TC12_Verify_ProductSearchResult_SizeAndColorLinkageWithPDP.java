@@ -17,6 +17,7 @@ public class SR_TC12_Verify_ProductSearchResult_SizeAndColorLinkageWithPDP exten
    * Bug-19703-PRP to PDP after selecting colour from dropdown(no swatches)
    * Bug-19672-PRP showing result label getting encoded value from search
    * Bug-19544-Select a brand in SYAT should not display Search Term
+   * Bug-19651-Search with space not returning any response
    */
 	@Test(groups={"ProductSearch","Regression","Regression_Tablet"})
 	public void validateProductSearchResult_SizeAndColorLinkageWithPDP() throws IOException {
@@ -41,7 +42,7 @@ public class SR_TC12_Verify_ProductSearchResult_SizeAndColorLinkageWithPDP exten
 		getProductResultsPageThreadLocal().verifyInfoLinkageWithPDP(getProductDetailPageThreadLocal(),lsProductNumberToComparePRPAndPDPContent);
 
 		reporter.reportLog("verifySearchResultMessageOnPage");
-		//Verification of Bug-19544 and Bug-19672
+		//Verification of Bug-19544, Bug-19651 Bug-19672
 		getProductResultsPageThreadLocal().getSearchResultLoad(lst_SearchKeyword.get(1),true);
 		getProductResultsPageThreadLocal().verifySearchResultMessageOnPage(lst_SearchKeyword.get(1));
 

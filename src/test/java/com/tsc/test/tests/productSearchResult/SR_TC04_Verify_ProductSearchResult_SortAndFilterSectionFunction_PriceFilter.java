@@ -19,6 +19,9 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction_Pri
      * CER-224
      * CER-233
      * CER-631
+     * Bug 19389: PRP Filter Panel - Shop by Category selection does not work as intended
+     * Bug 19556: PRP: when selecting a subcategory from Shop by category, the dimension in the URL should start over not appending
+     * Bug 19557: [QA Defect - P3] when selecting the checkbox options in the left nav, the dimension IDs in the URL should use pipe character
      */
     @Test(groups={"ProductSearch","Regression","Regression_Tablet","Regression_Mobile"})
     public void validateProductSearchResult_FilterSectionFunction_PriceFilter() throws IOException {
