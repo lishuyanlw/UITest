@@ -36,8 +36,8 @@ iosSafariCapabilities:
    deviceType: Phone
 iosSafariCapabilitiesTablet:
    platformName: iOS
-   platformVersion: 15.0
-   appiumVersion: 1.22.0
+   platformVersion: 14.3 #15.0
+   appiumVersion: 1.21.0 #1.22.0
    deviceName: iPad (6th generation) Simulator
    deviceOrientation: portrait
    deviceType: Tablet

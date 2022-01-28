@@ -599,6 +599,7 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	public List<WebElement> getProductList(){
+		this.waitForPageToLoad();
 		return productResultList;
 	}
 
