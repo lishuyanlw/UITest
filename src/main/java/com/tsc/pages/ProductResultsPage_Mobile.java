@@ -164,7 +164,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 					subItemList=this.productFilterContainerList.get(i).findElements(this.bySecondaryFilterAll);
 					if(subItemList.size()>0) {
 						//getReusableActionsInstance().javascriptScrollByVisibleElement(subItemList.get(0));
-						subItem=subItemList.get(0).findElement(By.xpath("./button"));
+						subItem=subItemList.get(0).findElement(By.xpath(".//label"));
 						getReusableActionsInstance().clickIfAvailable(subItem);
 //						waitForSortingOrFilteringCompleted();
 						getReusableActionsInstance().staticWait(8000);
@@ -231,21 +231,23 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 					getReusableActionsInstance().staticWait(500);
 					
 					//If found lsSecondLevelItem
-					if(lsSubItem.equalsIgnoreCase(lsSecondLevelItem)) {						
+					if(lsSubItem.equalsIgnoreCase(lsSecondLevelItem)) {							
 						getReusableActionsInstance().staticWait(500);
 						if(lsFirstLevelItem.equalsIgnoreCase("category")) {
 							subItem=subItem.findElement(By.xpath(".//a"));
 						}
 						else {
-							subItem=subItem.findElement(By.xpath(".//button"));
+							subItem=subItemList.get(j).findElement(By.xpath(".//label"));
 						}
-						
+												
 						if(j>4) {
 							this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItemList.get(j-3));
-							getReusableActionsInstance().clickIfAvailable(subItem);
+							//getReusableActionsInstance().clickIfAvailable(subItem);
+							subItem.click();
 						}
 						else {
-							getReusableActionsInstance().clickIfAvailable(subItem);
+							//getReusableActionsInstance().clickIfAvailable(subItem);
+							subItem.click();
 						}	
 											
 //						this.waitForSortingOrFilteringCompleted();
@@ -270,9 +272,11 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 						//Bug 19389: PRP Filter Panel - Shop by Category selection does not work as intended						
 						if(!lsFirstLevelItem.equalsIgnoreCase("category")) {
 							closeFilterPopupWindow();
+							getReusableActionsInstance().staticWait(5000);
 							verifyUrlPatternAfterSelectFilter(false);
 						}	
 						else {
+							getReusableActionsInstance().staticWait(5000);
 							verifyUrlPatternAfterSelectFilter(true);
 						}
 						
@@ -297,8 +301,9 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 					this.secondLevelFilter=this.getElementInnerText(subItem);
 					this.firstLevelFilter=this.getElementInnerText(subItem.findElement(By.xpath("./ancestor::div[@class='prp-filter-panel__blocks']//button[@class='prp-filter-panel__block-title']")));
 					
-					getReusableActionsInstance().staticWait(500);
-					getReusableActionsInstance().staticWait(500);
+					getReusableActionsInstance().staticWait(3000);
+					
+					subItem=subItemList.get(j).findElement(By.xpath(".//label"));
 					if(j>4) {
 						this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItemList.get(j-2));
 						getReusableActionsInstance().clickIfAvailable(subItem);
