@@ -47,7 +47,10 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction_Gen
 		List<List<String>> lstGeneralTwoLevelFilterOption = TestDataHandler.constantData.getSearchResultPage().getLst_SearchOption().get(0).getFilterOption();
 		for (List<String> lstItem : lstGeneralTwoLevelFilterOption) {
 			reporter.reportLog(lstItem.get(0) + " : " + lstItem.get(1));
-			getProductResultsPageThreadLocal().bCategoryExpand=true;
+			if(lstItem.get(0).equalsIgnoreCase("category")) {
+				getProductResultsPageThreadLocal().bCategoryExpand=true;
+			}
+			
 			if (getProductResultsPageThreadLocal().selectFilterItemInLeftPanel(lstItem.get(0), lstItem.get(1))) {
 				reporter.softAssert(getProductResultsPageThreadLocal().verifyUrlContainDimensionAndKeyword(lsKeywordList.get(0).get(0)), "The Url contains correct dimensions and keyword", "The Url does not contain correct dimensions and keyword");
 				if (!lsTestModel.equalsIgnoreCase("BannerImageSearch")) {
