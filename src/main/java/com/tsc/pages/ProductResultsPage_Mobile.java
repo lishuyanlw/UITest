@@ -163,7 +163,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 						//getReusableActionsInstance().javascriptScrollByVisibleElement(subItemList.get(0));
 						getReusableActionsInstance().clickIfAvailable(subItemList.get(0));
 //						waitForSortingOrFilteringCompleted();
-						getReusableActionsInstance().staticWait(3000);
+						getReusableActionsInstance().staticWait(8000);
 												
 						//Bug 19628: [QA Defect - P3] PRP: no products display if user is on the last page and select a faucet from the left nav
 						if(!this.URL().contains("page=")) {
