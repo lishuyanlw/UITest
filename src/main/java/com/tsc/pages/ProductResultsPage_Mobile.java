@@ -100,10 +100,11 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 	public WebElement btnProductSizeOrColorClose;
 	
 	public void openFilterPopupWindow() {
-		getReusableActionsInstance().javascriptScrollByVisibleElement(btnFilterPopup);
-		getReusableActionsInstance().clickIfAvailable(btnFilterPopup);
-		this.getReusableActionsInstance().waitForElementVisibility(lblFilterPopupHeaderTitle, 20);
-		getReusableActionsInstance().staticWait(1000);
+//		getReusableActionsInstance().javascriptScrollByVisibleElement(btnFilterPopup);
+//		getReusableActionsInstance().clickIfAvailable(btnFilterPopup);
+		this.clickElement(this.btnFilterPopup);
+//		this.getReusableActionsInstance().waitForElementVisibility(lblFilterPopupHeaderTitle, 20);
+		getReusableActionsInstance().staticWait(5000);
 	}
 	
 	public void closeFilterPopupWindow() {
@@ -114,8 +115,9 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 	}
 	
 	public void closeFilterPopupWindowWithCloseButton() {
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnFilterPopupClose);
-		getReusableActionsInstance().clickIfAvailable(this.btnFilterPopupClose);	
+//		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnFilterPopupClose);
+//		getReusableActionsInstance().clickIfAvailable(this.btnFilterPopupClose);	
+		this.clickElement(this.btnFilterPopupClose);
 		getReusableActionsInstance().staticWait(5000);
 	}
 	
@@ -134,6 +136,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 		if(bCategory&&this.bCategoryExpand) {			
 			ExpandSubExpandableItemInCategoryFilterSection();
 			this.bCategoryExpand=false;
+			getReusableActionsInstance().staticWait(3000);
 			openFilterPopupWindow();
 		}
 		
@@ -161,7 +164,8 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 					subItemList=this.productFilterContainerList.get(i).findElements(this.bySecondaryFilterAll);
 					if(subItemList.size()>0) {
 						//getReusableActionsInstance().javascriptScrollByVisibleElement(subItemList.get(0));
-						getReusableActionsInstance().clickIfAvailable(subItemList.get(0));
+						subItem=subItemList.get(0).findElement(By.xpath("./button"));
+						getReusableActionsInstance().clickIfAvailable(subItem);
 //						waitForSortingOrFilteringCompleted();
 						getReusableActionsInstance().staticWait(3000);
 												
@@ -225,18 +229,27 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 					
 //					lsSubItem=this.getElementInnerText(subItem.findElement(By.xpath(".//span[@class='prp-filter-panel__filter-list__item-label-text']")));
 					getReusableActionsInstance().staticWait(500);
+					
 					//If found lsSecondLevelItem
 					if(lsSubItem.equalsIgnoreCase(lsSecondLevelItem)) {						
 						getReusableActionsInstance().staticWait(500);
+						if(lsFirstLevelItem.equalsIgnoreCase("category")) {
+							subItem=subItem.findElement(By.xpath(".//a"));
+						}
+						else {
+							subItem=subItem.findElement(By.xpath(".//button"));
+						}
+						
 						if(j>4) {
-							this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItemList.get(j-2));
+							this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItemList.get(j-3));
 							getReusableActionsInstance().clickIfAvailable(subItem);
 						}
 						else {
 							getReusableActionsInstance().clickIfAvailable(subItem);
-						}						
+						}	
+											
 //						this.waitForSortingOrFilteringCompleted();
-						getReusableActionsInstance().staticWait(3000);
+						getReusableActionsInstance().staticWait(5000);
 						
 						//Bug 19628: [QA Defect - P3] PRP: no products display if user is on the last page and select a faucet from the left nav
 						//Bug 19556: [QA Defect - P3] PRP: when selecting a subcategory from Shop by category, the dimension in the URL should start over not appending
@@ -428,7 +441,8 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 	public boolean closeAllSelectedFilters() {
 		openFilterPopupWindow();	
 		
-		if(!this.checkChildElementExistingByAttribute(this.cntSelectedFilters, "class", "prp__applied-filters")) {
+		if(!this.checkChildElementExistingByAttribute(this.cntSubPanelforSelectedFilters, "class", "prp__applied-filters")) {
+			closeFilterPopupWindowWithCloseButton();
 			return true;
 		}
 		

@@ -1730,6 +1730,7 @@ public class ProductResultsPage extends BasePage{
 	//Bug 19557: [QA Defect - P3] when selecting the checkbox options in the left nav, the dimension IDs in the URL should use pipe character not... - Boards (azure.com)
 	public void verifyUrlPatternAfterSelectFilter(boolean bCategory) {		
 		String lsUrl=this.URL();
+		
 		boolean bVerify;
 		if(bCategory) {
 			bVerify=lsUrl.matches(".*dimensions=\\d+.*");
@@ -1741,12 +1742,23 @@ public class ProductResultsPage extends BasePage{
 			}					
 		}
 		else {
-			bVerify= lsUrl.matches(".*dimensions=\\d+%7C\\d+.*");
-			if(bVerify) {
-				reporter.reportLogPass("The Url for the filters except Category filter is displaying correctly.");
+			if(!System.getProperty("Browser").toLowerCase().contains("ios")) {
+				bVerify= lsUrl.matches(".*dimensions=\\d+%7C\\d+.*");
+				if(bVerify) {
+					reporter.reportLogPass("The Url for the filters except Category filter is displaying correctly.");
+				}
+				else {
+					reporter.reportLogFail("The Url for the filters except Category filter is not displaying correctly.");
+				}
 			}
 			else {
-				reporter.reportLogFail("The Url for the filters except Category filter is not displaying correctly.");
+				bVerify=lsUrl.matches(".*dimensions=\\d+.*");
+				if(bVerify) {
+					reporter.reportLogPass("The Url for Category filter is displaying correctly.");
+				}
+				else {
+					reporter.reportLogFail("The Url for Category filter is not displaying correctly.");
+				}
 			}
 		}		
 	}
@@ -1918,7 +1930,7 @@ public class ProductResultsPage extends BasePage{
 
 		this.getReusableActionsInstance().waitForElementVisibility(this.lblSearchResultMessage,120);
 		
-		this.getReusableActionsInstance().staticWait(2000);
+		this.getReusableActionsInstance().staticWait(8000);
 		
 		this.waitForCondition(Driver->{return !lsFirstProductName.equalsIgnoreCase(this.getElementInnerText(this.getProductList().get(0).findElement(byProductName)));}, 20000);
 
