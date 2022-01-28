@@ -80,6 +80,7 @@ homePage:
 searchResultPage:
   lst_SearchKeyword: [ "dyson vacuum","dfafasdfa","100501","Joan Rivers" ]
   lst_SearchKeyword_Bugs: ["iPads & Tablets","apple  ","https://qa-tsc.tsc.ca/pages/productresults?&searchterm=desk","404191"]
+  lbl_ProductNumberToComparePRPAndPDPContent: 406045
   lst_SearchKeyword_DropDown: [[ "dress","Categories","0" ]]
   lst_APISearchingKeyword: ["dress","jegging","boots"]
   lbl_SearchResultPageDefaultSetting: 36

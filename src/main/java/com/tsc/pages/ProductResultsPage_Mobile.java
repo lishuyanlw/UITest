@@ -1037,7 +1037,11 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 	}
 	
 	@Override
-	public void verifyInfoLinkageWithPDP(ProductDetailPage pdp) {
+	public void verifyInfoLinkageWithPDP(ProductDetailPage pdp,String lsProductNumber) {
+		if(lsProductNumber!=null) {
+			this.getSearchResultLoad(lsProductNumber, true);
+		}
+		
 		WebElement element;
 		String lsSelectedTitle,lsType;
 		

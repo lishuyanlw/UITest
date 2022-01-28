@@ -2784,7 +2784,11 @@ public class ProductResultsPage extends BasePage{
 	 * @return void
 	 * @author Wei.Li
 	 */
-	public void verifyInfoLinkageWithPDP(ProductDetailPage pdp) {
+	public void verifyInfoLinkageWithPDP(ProductDetailPage pdp,String lsProductNumber) {
+		if(lsProductNumber!=null) {
+			this.getSearchResultLoad(lsProductNumber, true);
+		}
+		
 		WebElement itemContainer=this.productResultList.get(0);
 		String lsSelectedTitle,lsType;
 

@@ -29,16 +29,23 @@ public class SR_TC12_Verify_ProductSearchResult_SizeAndColorLinkageWithPDP exten
 		//Defining and Initializing variables to be used
 		List<WebElement> productList;
 		List<String> lstKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_APISearchingKeyword();
+		String lsProductNumberToComparePRPAndPDPContent = TestDataHandler.constantData.getSearchResultPage().getLbl_ProductNumberToComparePRPAndPDPContent();
 		List<String> lst_SearchKeyword = TestDataHandler.constantData.getSearchResultPage().getLst_SearchKeyword_Bugs();
 
+		reporter.reportLog("verifyInfoLinkageWithPDP using API calling");
 		if(getProductResultsPageThreadLocal().findProductItemWithPreConditions(lstKeywordList)) {
-			getProductResultsPageThreadLocal().verifyInfoLinkageWithPDP(getProductDetailPageThreadLocal());
+			getProductResultsPageThreadLocal().verifyInfoLinkageWithPDP(getProductDetailPageThreadLocal(),null);
 		}
+		
+		reporter.reportLog("verifyInfoLinkageWithPDP using test data directly");
+		getProductResultsPageThreadLocal().verifyInfoLinkageWithPDP(getProductDetailPageThreadLocal(),lsProductNumberToComparePRPAndPDPContent);
 
+		reporter.reportLog("verifySearchResultMessageOnPage");
 		//Verification of Bug-19544 and Bug-19672
 		getProductResultsPageThreadLocal().getSearchResultLoad(lst_SearchKeyword.get(1),true);
 		getProductResultsPageThreadLocal().verifySearchResultMessageOnPage(lst_SearchKeyword.get(1));
 
+		reporter.reportLog("verifyInfoLinkageWithPDPWithoutSwatch");
 		//Verification of Bug-19703
 		//Searching keyword - iPads & Tablets on Home Page to load data on PRP page
 		getProductResultsPageThreadLocal().getSearchResultLoad(lst_SearchKeyword.get(0),true);
