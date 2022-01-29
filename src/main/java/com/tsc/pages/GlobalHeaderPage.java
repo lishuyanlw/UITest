@@ -445,8 +445,10 @@ public class GlobalHeaderPage extends BasePage{
 		//Clicking on button twice as test is not working for Safari using scrollToElement
 		getReusableActionsInstance().clickIfAvailable(this.btnWatchTSCBlackHeader);
 		getReusableActionsInstance().staticWait(3000);
-		getReusableActionsInstance().clickIfAvailable(this.btnWatchTSCBlackHeader);
-		getReusableActionsInstance().staticWait(1000);
+		 if(!(System.getProperty("Browser").toLowerCase().contains("ios") && System.getProperty("Device").toLowerCase().contains("tablet"))){
+			 getReusableActionsInstance().clickIfAvailable(this.btnWatchTSCBlackHeader);
+			 getReusableActionsInstance().staticWait(1000);
+		 }
 	 }	
 	 
 	/**
