@@ -900,7 +900,7 @@ public class ProductResultsPage extends BasePage{
 				else {
 					reporter.reportLogFail("Product title is empty");
 				}
-				//Bug 19537: [QA Defect - P3] PRP: Is Price should be bold
+				//Bug 19683: [UAT Defect] PRP: Merchandising badges i.e. Clearance, BlockBuster etc. should be bolded
 				if(element.getCssValue("font-weight").equalsIgnoreCase("800")) {
 					reporter.reportLogPass("Product title is bold font");
 				}
@@ -1079,7 +1079,7 @@ public class ProductResultsPage extends BasePage{
 				else {
 					reporter.reportLogFail("Product title is empty");
 				}
-				//Bug 19537: [QA Defect - P3] PRP: Is Price should be bold
+				//Bug 19683: [UAT Defect] PRP: Merchandising badges i.e. Clearance, BlockBuster etc. should be bolded
 				if(element.getCssValue("font-weight").equalsIgnoreCase("800")) {
 					reporter.reportLogPass("Product title is bold font");
 				}
@@ -2786,11 +2786,32 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	public void verifyInfoLinkageWithPDP(ProductDetailPage pdp,String lsProductNumber) {
-		if(lsProductNumber!=null) {
-			this.getSearchResultLoad(lsProductNumber, true);
-		}
+		WebElement itemContainer;
+		this.selectedProductItem.init();
 		
-		WebElement itemContainer=this.productResultList.get(0);
+		if(lsProductNumber!=null) {			
+			this.getSearchResultLoad(lsProductNumber, true);
+			itemContainer=this.productResultList.get(0);
+			
+			this.selectedProductItem.productNumber=lsProductNumber;
+			this.selectedProductItem.productName=this.getElementInnerText(itemContainer.findElement(this.byProductName));
+			
+			if(this.checkProductItemBrandNameExisting(itemContainer)) {
+				this.selectedProductItem.productBrand=this.getElementInnerText(itemContainer.findElement(this.byProductBrand)).replace("By", "").trim();
+			}
+			
+			this.selectedProductItem.productNowPrice=this.getElementInnerText(itemContainer.findElement(this.byProductNowPrice)).replace("Current price:", "").trim();
+
+			if(this.checkProductItemWasPriceExisting(itemContainer)) {
+				this.selectedProductItem.productWasPrice=this.getElementInnerText(itemContainer.findElement(this.byProductWasPrice)).replace("Previous price:", "").trim();
+			}
+		}
+		else {
+			itemContainer=this.productResultList.get(0);
+		}
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(itemContainer);
+		this.getReusableActionsInstance().scrollToElement(itemContainer);
+									
 		String lsSelectedTitle,lsType;
 
 		this.selectedProductItem.productSelectedSize="";
@@ -2817,7 +2838,7 @@ public class ProductResultsPage extends BasePage{
 		itemContainer.findElement(this.byProductGoToDetails).click();
 		this.waitForPDPPageLoading();
 
-		String lsProductName=pdp.getElementInnerText(pdp.lblProductName);
+		String lsProductName=pdp.getElementInnerText(pdp.lblProductName);		
 		if(lsProductName.equalsIgnoreCase(this.selectedProductItem.productName)) {
 			reporter.reportLogPass("The product name in PRP is the same as the one displayed in PDP");
 		}
@@ -2826,7 +2847,7 @@ public class ProductResultsPage extends BasePage{
 		}
 
 		if(!this.selectedProductItem.productBrand.isEmpty()) {
-			String lsProductBrand=pdp.getElementInnerText(pdp.lnkBrandName);
+			String lsProductBrand=pdp.getElementInnerText(pdp.lnkBrandName).replace("Brand:", "").trim();
 			if(lsProductBrand.toUpperCase().contains(this.selectedProductItem.productBrand.toUpperCase())) {
 				reporter.reportLogPass("The product brand in PRP is the same as the one displayed in PDP");
 			}
@@ -2836,6 +2857,7 @@ public class ProductResultsPage extends BasePage{
 		}
 
 		String lsProductNowPrice=pdp.getElementInnerText(pdp.lblProductNowPrice);
+		System.out.println(this.selectedProductItem.productNowPrice+":"+lsProductNowPrice);
 		if(lsProductNowPrice.equalsIgnoreCase(this.selectedProductItem.productNowPrice)) {
 			reporter.reportLogPass("The product NowPrice in PRP is the same as the one displayed in PDP");
 		}
@@ -2844,6 +2866,7 @@ public class ProductResultsPage extends BasePage{
 		}
 
 		String lsProductWasPrice=pdp.getElementInnerText(pdp.lblProductWasPrice);
+		System.out.println(this.selectedProductItem.productWasPrice+":"+lsProductWasPrice);
 		if(lsProductWasPrice.equalsIgnoreCase(this.selectedProductItem.productWasPrice)) {
 			reporter.reportLogPass("The product WasPrice in PRP is the same as the one displayed in PDP");
 		}

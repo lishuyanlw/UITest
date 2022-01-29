@@ -21,6 +21,7 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction_Dro
      * CER-631
      * Bug 19117: PRP - Sorting Brand A-Z, not working
      * Bug 19734: PRP: Sorting filter is not retained when going past page 1
+     * Bug 19628: [QA Defect - P3] PRP: no products display if user is on the last page and select a faucet from the left nav - covered in selectFilterItemInLeftPanel() function
      */
     @Test(groups={"ProductSearch","Regression","Regression_Tablet","Regression_Mobile"})
     public void validateProductSearchResult_FilterSectionFunction_DropdownFilter() throws IOException {

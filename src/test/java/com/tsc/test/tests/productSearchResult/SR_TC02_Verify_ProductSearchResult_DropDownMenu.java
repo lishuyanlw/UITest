@@ -16,6 +16,7 @@ public class SR_TC02_Verify_ProductSearchResult_DropDownMenu extends BaseTest{
 	 * CER-219
 	 * CER-513
 	 * CER-700
+	 * Bug 19683: [UAT Defect] PRP: Merchandising badges i.e. Clearance, BlockBuster etc. should be bolded - covered in verifySearchResultContent and verifySearchResultContentWithMouseHover functions
 	 */
 	@Test(groups={"ProductSearch","Regression","Regression_Tablet","Regression_Mobile"})
 	public void validateProductSearchResult_DropdownMenu() throws IOException {

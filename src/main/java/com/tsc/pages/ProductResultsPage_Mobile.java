@@ -555,7 +555,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				else {
 					reporter.reportLogFail("Product title is empty");
 				}
-				//Bug 19537: [QA Defect - P3] PRP: Is Price should be bold
+				//Bug 19683: [UAT Defect] PRP: Merchandising badges i.e. Clearance, BlockBuster etc. should be bolded
 				if(element.getCssValue("font-weight").equalsIgnoreCase("800")) {
 					reporter.reportLogPass("Product title is bold font");
 				}
@@ -1057,15 +1057,32 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 	
 	@Override
 	public void verifyInfoLinkageWithPDP(ProductDetailPage pdp,String lsProductNumber) {
-		if(lsProductNumber!=null) {
-			this.getSearchResultLoad(lsProductNumber, true);
-		}
+		WebElement itemContainer;
+		this.selectedProductItem.init();
 		
+		if(lsProductNumber!=null) {			
+			this.getSearchResultLoad(lsProductNumber, true);
+			itemContainer=this.productResultList.get(0);
+			
+			this.selectedProductItem.productNumber=lsProductNumber;
+			this.selectedProductItem.productName=this.getElementInnerText(itemContainer.findElement(this.byProductName));
+			
+			if(this.checkProductItemBrandNameExisting(itemContainer)) {
+				this.selectedProductItem.productBrand=this.getElementInnerText(itemContainer.findElement(this.byProductBrand)).replace("By", "").trim();
+			}
+			
+			this.selectedProductItem.productNowPrice=this.getElementInnerText(itemContainer.findElement(this.byProductNowPrice)).replace("Current price:", "").trim();
+
+			if(this.checkProductItemWasPriceExisting(itemContainer)) {
+				this.selectedProductItem.productWasPrice=this.getElementInnerText(itemContainer.findElement(this.byProductWasPrice)).replace("Previous price:", "").trim();
+			}
+		}
+		else {
+			itemContainer=this.productResultList.get(0);
+		}
+				
 		WebElement element;
 		String lsSelectedTitle,lsType;
-		
-		this.selectedProductItem.productSelectedSize="";
-		this.selectedProductItem.productSelectedColor="";
 		
 		element=this.productResultList.get(0).findElement(byProductItemSelectSizeOrColor);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
@@ -1103,7 +1120,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 		}
 		
 		if(!this.selectedProductItem.productBrand.isEmpty()) {
-			String lsProductBrand=pdp.getElementInnerText(pdp.lnkBrandName);			
+			String lsProductBrand=pdp.getElementInnerText(pdp.lnkBrandName).replace("Brand:", "").trim();			
 			if(lsProductBrand.toUpperCase().contains(this.selectedProductItem.productBrand.toUpperCase())) {
 				reporter.reportLogPass("The product brand in PRP is the same as the one displayed in PDP");
 			}

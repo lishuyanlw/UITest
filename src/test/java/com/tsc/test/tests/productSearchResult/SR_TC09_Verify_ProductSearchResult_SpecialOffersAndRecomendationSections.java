@@ -8,6 +8,7 @@ import org.testng.annotations.Test;
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.HomePage;
 import com.tsc.pages.ProductResultsPage;
+import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 
 public class SR_TC09_Verify_ProductSearchResult_SpecialOffersAndRecomendationSections extends BaseTest {
@@ -28,12 +29,13 @@ public class SR_TC09_Verify_ProductSearchResult_SpecialOffersAndRecomendationSec
 		String subMenuItem = getglobalheaderPageThreadLocal().getNameAndclickSubMenuItem("Clearance","Electronics","Speakers & Audio");
 		//String subMenuItem = getglobalheaderPageThreadLocal().getNameAndclickSubMenuItem("Clearance","Beauty",null);
 		
+		(new BasePage(this.getDriver())).getReusableActionsInstance().staticWait(5000);
+		
 		// Verifying that landing page is product results page after navigation
 		reporter.softAssert(getProductResultsPageThreadLocal().getClearanceOptionURLTitle().contains(lnkProductResult),"Verified that landing page is Product Result Page", "Verified that landing page is not Product Result Page");
 
 		// Verifying title of the page after navigation
-		String value = getProductResultsPageThreadLocal().getProductResultPageTitle(getProductResultsPageThreadLocal().lblSearchResultTitle);
-
+		String value = getProductResultsPageThreadLocal().getProductResultPageTitle(getProductResultsPageThreadLocal().lblSearchResultTitle);		
 		reporter.softAssert(value.equalsIgnoreCase(subMenuItem), "Product Result Title Verified and title is " + value,"Product Result Title is not as expected and title is " + value);
 
         // Verifying Search Result message and default Page Number Count on Page

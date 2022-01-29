@@ -548,7 +548,7 @@ public class GlobalHeaderPage extends BasePage{
 					getReusableActionsInstance().scrollToElement(SubMenuItem);
 					String title = SubMenuItem.getText().trim();
 					SubMenuItem.click();
-					waitForCondition(Driver->{return searchResultTitle.isDisplayed();},90000);
+					waitForCondition(Driver->{return searchResultTitle.isDisplayed();},90000);					
 					return title;
 				}else {
 					String title = SubMenu.get(0).getText().trim();
