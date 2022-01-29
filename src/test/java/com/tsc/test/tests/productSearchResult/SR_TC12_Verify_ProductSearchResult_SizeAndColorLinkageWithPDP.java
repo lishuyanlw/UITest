@@ -33,14 +33,14 @@ public class SR_TC12_Verify_ProductSearchResult_SizeAndColorLinkageWithPDP exten
 		String lsProductNumberToComparePRPAndPDPContent = TestDataHandler.constantData.getSearchResultPage().getLbl_ProductNumberToComparePRPAndPDPContent();
 		List<String> lst_SearchKeyword = TestDataHandler.constantData.getSearchResultPage().getLst_SearchKeyword_Bugs();
 
-//		reporter.reportLog("verifyInfoLinkageWithPDP using API calling");
-//		if(getProductResultsPageThreadLocal().findProductItemWithPreConditions(lstKeywordList)) {
-//			getProductResultsPageThreadLocal().verifyInfoLinkageWithPDP(getProductDetailPageThreadLocal(),null);
-//		}
-		
+		reporter.reportLog("verifyInfoLinkageWithPDP using API calling");
+		if(getProductResultsPageThreadLocal().findProductItemWithPreConditions(lstKeywordList)) {
+			getProductResultsPageThreadLocal().verifyInfoLinkageWithPDP(getProductDetailPageThreadLocal(),null);
+		}
+		/*
 		reporter.reportLog("verifyInfoLinkageWithPDP using test data directly");
 		getProductResultsPageThreadLocal().verifyInfoLinkageWithPDP(getProductDetailPageThreadLocal(),lsProductNumberToComparePRPAndPDPContent);
-
+		*/
 		reporter.reportLog("verifySearchResultMessageOnPage");
 		//Verification of Bug-19544, Bug-19651 Bug-19672
 		getProductResultsPageThreadLocal().getSearchResultLoad(lst_SearchKeyword.get(1),true);
