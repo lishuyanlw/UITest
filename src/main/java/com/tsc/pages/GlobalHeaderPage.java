@@ -217,11 +217,11 @@ public class GlobalHeaderPage extends BasePage{
 	public WebElement CartBagCounter;
 
 	//Flyout headings menu
-	@FindBy(xpath = "//ul[contains(@class,'primary-navigation__wrapper')]//li//a")
+	@FindBy(xpath = "//ul[contains(@class,'primary-navigation__wrapper')]")
 	WebElement FlyoutHeadings;
 
 	//Categories menu
-	@FindBy(xpath = "//*[contains(@class,'mega-categories mega-column')]//a")
+	@FindBy(xpath = "//*[contains(@class,'mega-categories mega-column')]//ul")
 	WebElement Categories;
 	
 	@FindBy(xpath = "//*[contains(@class,'primary-navigation__wrapper')]//a//span[contains(@class,'primary-navigation__link-text')]")
@@ -445,10 +445,8 @@ public class GlobalHeaderPage extends BasePage{
 		//Clicking on button twice as test is not working for Safari using scrollToElement
 		getReusableActionsInstance().clickIfAvailable(this.btnWatchTSCBlackHeader);
 		getReusableActionsInstance().staticWait(3000);
-		 if(!(System.getProperty("Browser").toLowerCase().contains("ios") && System.getProperty("Device").toLowerCase().contains("tablet"))){
-			 getReusableActionsInstance().clickIfAvailable(this.btnWatchTSCBlackHeader);
-			 getReusableActionsInstance().staticWait(1000);
-		 }
+		getReusableActionsInstance().clickIfAvailable(this.btnWatchTSCBlackHeader);
+		getReusableActionsInstance().staticWait(1000);
 	 }	
 	 
 	/**
@@ -527,7 +525,7 @@ public class GlobalHeaderPage extends BasePage{
 	 */
 	public String getNameAndclickSubMenuItem(String headingName,String submenuHeading, String itemName) {
 		WebElement searchResultTitle=(new ProductResultsPage(this.getDriver())).lblSearchResultTitle;
-		String xpathHeading =createXPath("//span[contains(@class,'navigation__link-text') and contains(.,'{0}')]" ,headingName);
+		String xpathHeading =createXPath(".//li//a//span[contains(@class,'navigation__link-text') and contains(.,'{0}')]" ,headingName);
 		WebElement headingWebElement = FlyoutHeadings.findElement(By.xpath(xpathHeading));
 		getReusableActionsInstance().javascriptScrollByVisibleElement(headingWebElement);
 		getReusableActionsInstance().scrollToElement(headingWebElement);
@@ -538,29 +536,19 @@ public class GlobalHeaderPage extends BasePage{
 			return headingWebElement.getText().trim();
 		}
 		if(submenuHeading!=null) {
-			String xpathSubMenu =createXPath("//li[contains(@class,'categories__item')]//a[contains(.,'{0}')]" ,submenuHeading);
+			String xpathSubMenu =createXPath(".//li[contains(@class,'categories__item')]//a[contains(.,'{0}')]" ,submenuHeading);
 			List<WebElement> SubMenu = Categories.findElements(By.xpath(xpathSubMenu));
 			if(SubMenu.size()>0){
 				getReusableActionsInstance().javascriptScrollByVisibleElement(SubMenu.get(0));
 				getReusableActionsInstance().scrollToElement(SubMenu.get(0));
 				if(itemName!=null) {
-					String title = null;
-					String xpathSubmenuItem=createXPath("//li[contains(@class,'sub-items')]//a[contains(.,'{0}')]",itemName);
-					List<WebElement> SubMenuItem=getDriver().findElements(By.xpath(xpathSubmenuItem));
-					if(SubMenuItem.size()>0){
-						getReusableActionsInstance().javascriptScrollByVisibleElement(SubMenuItem.get(0));
-						getReusableActionsInstance().scrollToElement(SubMenuItem.get(0));
-						title = SubMenuItem.get(0).getText().trim();
-						SubMenuItem.get(0).click();
-						waitForCondition(Driver->{return searchResultTitle.isDisplayed();},90000);
-					}else{
-						SubMenuItem.clear();
-						xpathSubmenuItem = createXPath("//li[contains(@class,'categories-item__sub-item')]/a[contains(.,'{0}')]", "Shop");
-						SubMenuItem = getDriver().findElements(By.xpath(xpathSubmenuItem));
-						getReusableActionsInstance().scrollToElement(SubMenuItem.get(0));
-						title = SubMenuItem.get(0).getText().trim();
-						SubMenuItem.get(0).click();
-					}
+					String xpathSubmenuItem=createXPath(".//li[contains(@class,'sub-items')]//a[contains(.,'{0}')]",itemName);
+					WebElement SubMenuItem=getDriver().findElement(By.xpath(xpathSubmenuItem));
+					getReusableActionsInstance().javascriptScrollByVisibleElement(SubMenuItem);
+					getReusableActionsInstance().scrollToElement(SubMenuItem);
+					String title = SubMenuItem.getText().trim();
+					SubMenuItem.click();
+					waitForCondition(Driver->{return searchResultTitle.isDisplayed();},90000);					
 					return title;
 				}else {
 					String title = SubMenu.get(0).getText().trim();
@@ -570,7 +558,7 @@ public class GlobalHeaderPage extends BasePage{
 				}
 				//Adding else condition to click on first element by default if passed submenu item is not present in list
 			}else{
-				WebElement element = Categories.findElement(By.xpath("./a"));
+				WebElement element = Categories.findElement(By.xpath(".//a"));
 				String title = element.getText().trim();
 				element.click();
 				waitForCondition(Driver->{return searchResultTitle.isDisplayed();},90000);
@@ -581,12 +569,12 @@ public class GlobalHeaderPage extends BasePage{
 	}
 	
 	/**Method to click on WebElement for CuratedCollections SubMenu Item by providing Flyout heading name ,CuratedCollections SubMenu Item name as parameters.
-	 * @param-String headingName: flyout menu item name
-	 * @param-String submenuHeading: Curated Collections Menu Item name
+	 * @param String headingName: flyout menu item name
+	 * @param String submenuHeading: Curated Collections Menu Item name
 	 * @author Wei.Li
 	 */
 	public void clickCuratedCollectionsMenuItem(String headingName,String submenuHeading) {
-		String xpathHeading =createXPath("//span[contains(@class,'navigation__link-text') and contains(.,'{0}')]" ,headingName);
+		String xpathHeading =createXPath(".//li//a//span[contains(@class,'navigation__link-text') and contains(.,'{0}')]" ,headingName);
 		WebElement headingWebElement = FlyoutHeadings.findElement(By.xpath(xpathHeading));
 		getReusableActionsInstance().scrollToElement(headingWebElement);
 
@@ -600,12 +588,12 @@ public class GlobalHeaderPage extends BasePage{
 	}
 	
 	/**Method to click on WebElement for CuratedCollections SubMenu Item by providing Flyout heading name ,CuratedCollections SubMenu Item name as parameters.
-	 * @param-String headingName: flyout menu item name
-	 * @param-int subMenuIndex: popular brand list index
+	 * @param String headingName: flyout menu item name
+	 * @param int subMenuIndex: popular brand list index
 	 * @author Wei.Li
 	 */
 	public void clickPopularBrandsMenuItem(String headingName,int subMenuIndex) {
-		String xpathHeading =createXPath("//span[contains(.,'{0}')]" ,headingName);
+		String xpathHeading =createXPath(".//li//a//span[contains(.,'{0}')]" ,headingName);
 		WebElement headingWebElement = FlyoutHeadings.findElement(By.xpath(xpathHeading));
 		getReusableActionsInstance().scrollToElement(headingWebElement);
 
@@ -619,7 +607,7 @@ public class GlobalHeaderPage extends BasePage{
 	 * @author Shruti Desai
 	 */
 	public List<WebElement> getFlyoutHeadingsWebelement() {
-		List<WebElement> headingElements =FlyoutHeadings.findElements(By.xpath("//span[contains(@class,'primary-navigation__link-text')]"));
+		List<WebElement> headingElements =FlyoutHeadings.findElements(By.xpath(".//li//a//span[contains(@class,'primary-navigation__link-text')]"));
 		return headingElements;
 	}
 
@@ -666,7 +654,7 @@ public class GlobalHeaderPage extends BasePage{
 		if(!(currentPageUrl.substring(0,currentPageUrl.length()-1)).equalsIgnoreCase(getBaseURL()))
 			pageTitle.getAndSet(lblPageTitleForMenuItems.getText());
 		String currentUrl;
-		String xpathHeading =createXPath("//span[contains(.,'{0}')]" ,headingName);
+		String xpathHeading =createXPath(".//li//a//span[contains(.,'{0}')]" ,headingName);
 		WebElement headingWebElement = FlyoutHeadings.findElement(By.xpath(xpathHeading));
 		getReusableActionsInstance().javascriptScrollByVisibleElement(headingWebElement);
 		getReusableActionsInstance().scrollToElement(headingWebElement);
@@ -689,7 +677,7 @@ public class GlobalHeaderPage extends BasePage{
 	 * @author Shruti Desai
 	 */
 	public WebElement getWebElementFlyoutHeading(String headingName) {
-		String xpathHeading =createXPath("//span[contains(.,'{0}')]" ,headingName);
+		String xpathHeading =createXPath(".//li//a//span[contains(.,'{0}')]" ,headingName);
 		WebElement headingWebElement = FlyoutHeadings.findElement(By.xpath(xpathHeading));
 		return headingWebElement;
 	}
