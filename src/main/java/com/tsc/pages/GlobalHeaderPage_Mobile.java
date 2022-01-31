@@ -48,10 +48,10 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
     @FindBy(xpath = "//section//div[@class='mega-nav-mobile__scroll']//ul//li//a[contains(@class,'item__all')]")
     WebElement CateLinksMobile;
 
-    @FindBy(xpath = "//section//div[@class='mega-nav-mobile__scroll']//button//span[contains(@class,'curated-collections')]")
+    @FindBy(xpath = "//section//div[@class='mega-nav-mobile__scroll']//button//span[contains(@class,'curated-collections')]|//section//div[contains(@class,'tablet')]//button//span[contains(@class,'curated-collections')]")
     WebElement curatedCollectionMobile;
 
-    @FindBy(xpath = "//section//div[@class='mega-nav-mobile__scroll']//nav[contains(@class,'curated-collections')]//li//a")
+    @FindBy(xpath = "//section//div[@class='mega-nav-mobile__scroll']//nav[contains(@class,'curated-collections')]//li//a|//section//div[contains(@class,'tablet__footer')]//*[contains(@class,'curated')]//ul/li/a")
     List<WebElement> listCuratedCollectionLinksMobile;
 
     @FindBy(xpath = "//section//div[@class='mega-nav-mobile__scroll']//button[@class='mega-nav-mobile__popular-brands']")
@@ -81,8 +81,12 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
     @Override
     public String getNameAndclickSubMenuItem(String headingName, String submenuHeading, String itemName) {
         this.menuButton.click();
-        getReusableActionsInstance().staticWait(700);
-        String xpathHeading = createXPath("//li[contains(@class,'mobile__nav-items')]//span[contains(.,'{0}')]", headingName);
+        getReusableActionsInstance().staticWait(5000);
+        String xpathHeading = null;
+        if(System.getProperty("Device").toLowerCase().equals("mobile"))
+            xpathHeading = createXPath("//li[contains(@class,'mobile__nav-items')]//span[contains(.,'{0}')]", headingName);
+        else
+            xpathHeading = createXPath("//li[contains(@class,'mega-nav-tablet')]//span[contains(.,'{0}')]", headingName);
         WebElement headingWebElement = FlyoutHeadingsMobile.findElement(By.xpath(xpathHeading));
         getReusableActionsInstance().scrollToElement(headingWebElement);
 
@@ -92,7 +96,7 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
             //return headingWebElement.getText().trim();
         }
         if (submenuHeading != null) {
-            String xpathSubMenu = createXPath("//span[contains(@class,'mobile__categories-item__text') and contains(.,'{0}')]", submenuHeading);
+            String xpathSubMenu = createXPath("//span[contains(@class,'categories-item__text') and contains(.,'{0}')]", submenuHeading);
             List<WebElement> SubMenu = Categories.findElements(By.xpath(xpathSubMenu));
             if (SubMenu.size() > 0) {
                 getReusableActionsInstance().scrollToElement(SubMenu.get(0));
@@ -103,7 +107,10 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
                     String title = null;
                     String xpathSubmenuItem;
                     List<WebElement> SubMenuItem;
-                    xpathSubmenuItem = createXPath("//li[contains(@class,'mobile__sub-categories-item__wrapper')]/a[contains(.,'{0}')]", itemName);
+                    if(System.getProperty("Device").toLowerCase().equals("mobile"))
+                        xpathSubmenuItem = createXPath("//li[contains(@class,'mobile__sub-categories-item__wrapper')]/a[contains(.,'{0}')]", itemName);
+                    else
+                        xpathSubmenuItem = createXPath("//li[contains(@class,'categories-item__sub-item')]/a[contains(.,'{0}')]", itemName);
                     SubMenuItem = getDriver().findElements(By.xpath(xpathSubmenuItem));
                     if (SubMenuItem.size() > 0) {
                         getReusableActionsInstance().scrollToElement(SubMenuItem.get(0));
@@ -111,7 +118,10 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
                         SubMenuItem.get(0).click();
                     } else {
                         SubMenuItem.clear();
-                        xpathSubmenuItem = createXPath("//li[contains(@class,'mobile__sub-categories-item__wrapper')]/a[contains(.,'{0}')]", "Shop");
+                        if(System.getProperty("Device").toLowerCase().equals("mobile"))
+                            xpathSubmenuItem = createXPath("//li[contains(@class,'mobile__sub-categories-item__wrapper')]/a[contains(.,'{0}')]", "Shop");
+                        else
+                            xpathSubmenuItem = createXPath("//li[contains(@class,'categories-item__sub-item')]/a[contains(.,'{0}')]", "Shop");
                         SubMenuItem = getDriver().findElements(By.xpath(xpathSubmenuItem));
                         getReusableActionsInstance().scrollToElement(SubMenuItem.get(0));
                         title = SubMenuItem.get(0).getText().trim();
@@ -136,8 +146,11 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
     @Override
 	public void clickCuratedCollectionsMenuItem(String headingName,String submenuHeading) {
     	this.menuButton.click();
-    	
-		String xpathHeading =createXPath("//li[contains(@class,'mobile__nav-items')]//span[contains(.,'{0}')]" ,headingName);
+        String xpathHeading = null;
+    	if(System.getProperty("Device").toLowerCase().equals("mobile"))
+    	    xpathHeading =createXPath("//li[contains(@class,'mobile__nav-items')]//span[contains(.,'{0}')]" ,headingName);
+    	else
+            xpathHeading =createXPath("//span[contains(@class,'nav-items') and contains(.,'{0}')]" ,headingName);
 		WebElement headingWebElement = FlyoutHeadingsMobile.findElement(By.xpath(xpathHeading));
 		getReusableActionsInstance().javascriptScrollByVisibleElement(headingWebElement);
 		getReusableActionsInstance().clickIfAvailable(headingWebElement);
