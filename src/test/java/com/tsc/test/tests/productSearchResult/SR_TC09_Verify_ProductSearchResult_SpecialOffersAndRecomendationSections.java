@@ -2,6 +2,7 @@ package com.tsc.test.tests.productSearchResult;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
@@ -35,9 +36,11 @@ public class SR_TC09_Verify_ProductSearchResult_SpecialOffersAndRecomendationSec
 		reporter.softAssert(getProductResultsPageThreadLocal().getClearanceOptionURLTitle().contains(lnkProductResult),"Verified that landing page is Product Result Page", "Verified that landing page is not Product Result Page");
 
 		// Verifying title of the page after navigation
-		String value = getProductResultsPageThreadLocal().getProductResultPageTitle(getProductResultsPageThreadLocal().lblSearchResultTitle);		
-		reporter.softAssert(value.equalsIgnoreCase(subMenuItem), "Product Result Title Verified and title is " + value,"Product Result Title is not as expected and title is " + value);
-
+		String value = getProductResultsPageThreadLocal().getProductResultPageTitle(getProductResultsPageThreadLocal().lblSearchResultTitle);
+		if(subMenuItem.toLowerCase().contains("shop"))
+			reporter.softAssert(subMenuItem.toLowerCase().contains(value.toLowerCase()), "Product Result Title Verified and title is " + value+" instead of "+subMenuItem,"Product Result Title is not as expected and title is " + value+" instead of "+subMenuItem);
+		else
+			reporter.softAssert(value.equalsIgnoreCase(subMenuItem), "Product Result Title Verified and title is " + value+" instead of "+subMenuItem,"Product Result Title is not as expected and title is " + value+" instead of "+subMenuItem);
         // Verifying Search Result message and default Page Number Count on Page
 		reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(),"Showing text pattern in filters is correct","Showing text pattern in filters is incorrect");
 

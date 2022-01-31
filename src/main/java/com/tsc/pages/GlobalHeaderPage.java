@@ -544,13 +544,23 @@ public class GlobalHeaderPage extends BasePage{
 				getReusableActionsInstance().javascriptScrollByVisibleElement(SubMenu.get(0));
 				getReusableActionsInstance().scrollToElement(SubMenu.get(0));
 				if(itemName!=null) {
+					String title = null;
 					String xpathSubmenuItem=createXPath("//li[contains(@class,'sub-items')]//a[contains(.,'{0}')]",itemName);
-					WebElement SubMenuItem=getDriver().findElement(By.xpath(xpathSubmenuItem));
-					getReusableActionsInstance().javascriptScrollByVisibleElement(SubMenuItem);
-					getReusableActionsInstance().scrollToElement(SubMenuItem);
-					String title = SubMenuItem.getText().trim();
-					SubMenuItem.click();
-					waitForCondition(Driver->{return searchResultTitle.isDisplayed();},90000);					
+					List<WebElement> SubMenuItem=getDriver().findElements(By.xpath(xpathSubmenuItem));
+					if(SubMenuItem.size()>0){
+						getReusableActionsInstance().javascriptScrollByVisibleElement(SubMenuItem.get(0));
+						getReusableActionsInstance().scrollToElement(SubMenuItem.get(0));
+						title = SubMenuItem.get(0).getText().trim();
+						SubMenuItem.get(0).click();
+						waitForCondition(Driver->{return searchResultTitle.isDisplayed();},90000);
+					}else{
+						SubMenuItem.clear();
+						xpathSubmenuItem = createXPath("//li[contains(@class,'categories-item__sub-item')]/a[contains(.,'{0}')]", "Shop");
+						SubMenuItem = getDriver().findElements(By.xpath(xpathSubmenuItem));
+						getReusableActionsInstance().scrollToElement(SubMenuItem.get(0));
+						title = SubMenuItem.get(0).getText().trim();
+						SubMenuItem.get(0).click();
+					}
 					return title;
 				}else {
 					String title = SubMenu.get(0).getText().trim();
@@ -571,8 +581,8 @@ public class GlobalHeaderPage extends BasePage{
 	}
 	
 	/**Method to click on WebElement for CuratedCollections SubMenu Item by providing Flyout heading name ,CuratedCollections SubMenu Item name as parameters.
-	 * @param String headingName: flyout menu item name
-	 * @param String submenuHeading: Curated Collections Menu Item name
+	 * @param-String headingName: flyout menu item name
+	 * @param-String submenuHeading: Curated Collections Menu Item name
 	 * @author Wei.Li
 	 */
 	public void clickCuratedCollectionsMenuItem(String headingName,String submenuHeading) {
@@ -590,8 +600,8 @@ public class GlobalHeaderPage extends BasePage{
 	}
 	
 	/**Method to click on WebElement for CuratedCollections SubMenu Item by providing Flyout heading name ,CuratedCollections SubMenu Item name as parameters.
-	 * @param String headingName: flyout menu item name
-	 * @param int subMenuIndex: popular brand list index
+	 * @param-String headingName: flyout menu item name
+	 * @param-int subMenuIndex: popular brand list index
 	 * @author Wei.Li
 	 */
 	public void clickPopularBrandsMenuItem(String headingName,int subMenuIndex) {
