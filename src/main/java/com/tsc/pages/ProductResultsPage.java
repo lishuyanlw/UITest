@@ -2138,12 +2138,12 @@ public class ProductResultsPage extends BasePage{
 		WebElement item=this.productResultList.get(0);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 		this.getReusableActionsInstance().scrollToElement(item);
-
-		this.selectedProductItem.productNumber=productNumber;
-		this.selectedProductItem.productName=product.getName();
-		this.selectedProductItem.productBrand=product.getBrand();
-		this.selectedProductItem.productNowPrice=product.getIsPriceRange();
-		this.selectedProductItem.productWasPrice=product.getWasPriceRange();
+		System.out.println("product name: "+apiResponse.selectedProduct.productName);
+		this.selectedProductItem.productNumber=selectedProduct.productNumber;
+		this.selectedProductItem.productName=selectedProduct.productName;
+		this.selectedProductItem.productBrand=selectedProduct.productBrand;
+		this.selectedProductItem.productNowPrice=selectedProduct.productNowPrice;
+		this.selectedProductItem.productWasPrice=selectedProduct.productWasPrice;
 
 		return true;
 	}
@@ -2788,11 +2788,12 @@ public class ProductResultsPage extends BasePage{
 	 */
 	public void verifyInfoLinkageWithPDP(ProductDetailPage pdp,String lsProductNumber) {
 		WebElement itemContainer;
-		this.selectedProductItem.init();
-		
+				
 		if(lsProductNumber!=null) {			
 			this.getSearchResultLoad(lsProductNumber, true);
 			itemContainer=this.productResultList.get(0);
+			
+			this.selectedProductItem.init();
 			
 			this.selectedProductItem.productNumber=lsProductNumber;
 			this.selectedProductItem.productName=this.getElementInnerText(itemContainer.findElement(this.byProductName));
@@ -2841,38 +2842,36 @@ public class ProductResultsPage extends BasePage{
 
 		String lsProductName=pdp.getElementInnerText(pdp.lblProductName);		
 		if(lsProductName.equalsIgnoreCase(this.selectedProductItem.productName)) {
-			reporter.reportLogPass("The product name in PRP is the same as the one displayed in PDP");
+			reporter.reportLogPass("The product name of "+this.selectedProductItem.productName+" in PRP is the same as the one of "+lsProductName+" displayed in PDP");
 		}
 		else {
-			reporter.reportLogFail("The product name in PRP is not the same as the one displayed in PDP");
+			reporter.reportLogFail("The product name of "+this.selectedProductItem.productName+" in PRP is not the same as the one of "+lsProductName+" displayed in PDP");
 		}
 
 		if(!this.selectedProductItem.productBrand.isEmpty()) {
 			String lsProductBrand=pdp.getElementInnerText(pdp.lnkBrandName).replace("Brand:", "").trim();
 			if(lsProductBrand.toUpperCase().contains(this.selectedProductItem.productBrand.toUpperCase())) {
-				reporter.reportLogPass("The product brand in PRP is the same as the one displayed in PDP");
+				reporter.reportLogPass("The product brand of "+this.selectedProductItem.productBrand+" in PRP is the same as the one of "+lsProductBrand+" displayed in PDP");
 			}
 			else {
-				reporter.reportLogFail("The product brand of "+this.selectedProductItem.productBrand+" in PRP is not the same as "+lsProductBrand+" displayed in PDP");
+				reporter.reportLogFail("The product brand of "+this.selectedProductItem.productBrand+" in PRP is not the same as the one of "+lsProductBrand+" displayed in PDP");
 			}
 		}
 
 		String lsProductNowPrice=pdp.getElementInnerText(pdp.lblProductNowPrice);
-		System.out.println(this.selectedProductItem.productNowPrice+":"+lsProductNowPrice);
 		if(lsProductNowPrice.equalsIgnoreCase(this.selectedProductItem.productNowPrice)) {
-			reporter.reportLogPass("The product NowPrice in PRP is the same as the one displayed in PDP");
+			reporter.reportLogPass("The product NowPrice of "+this.selectedProductItem.productNowPrice+" in PRP is the same as the one of "+lsProductNowPrice+" displayed in PDP");
 		}
 		else {
-			reporter.reportLogFail("The product NowPrice in PRP is not the same as the one displayed in PDP");
+			reporter.reportLogFail("The product NowPrice of "+this.selectedProductItem.productNowPrice+" in PRP is not the same as the one of "+lsProductNowPrice+" displayed in PDP");
 		}
 
 		String lsProductWasPrice=pdp.getElementInnerText(pdp.lblProductWasPrice);
-		System.out.println(this.selectedProductItem.productWasPrice+":"+lsProductWasPrice);
 		if(lsProductWasPrice.equalsIgnoreCase(this.selectedProductItem.productWasPrice)) {
-			reporter.reportLogPass("The product WasPrice in PRP is the same as the one displayed in PDP");
+			reporter.reportLogPass("The product WasPrice of "+this.selectedProductItem.productWasPrice+" in PRP is the same as the one of "+lsProductWasPrice+" displayed in PDP");
 		}
 		else {
-			reporter.reportLogFail("The product WasPrice in PRP is not the same as the one displayed in PDP");
+			reporter.reportLogFail("The product WasPrice of "+this.selectedProductItem.productWasPrice+" in PRP is not the same as the one of "+lsProductWasPrice+" displayed in PDP");
 		}
 
 		if(!this.selectedProductItem.productSelectedSize.isEmpty()) {

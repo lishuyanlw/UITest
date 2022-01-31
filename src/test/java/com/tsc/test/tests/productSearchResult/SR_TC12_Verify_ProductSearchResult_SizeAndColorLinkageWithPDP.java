@@ -37,10 +37,12 @@ public class SR_TC12_Verify_ProductSearchResult_SizeAndColorLinkageWithPDP exten
 		if(getProductResultsPageThreadLocal().findProductItemWithPreConditions(lstKeywordList)) {
 			getProductResultsPageThreadLocal().verifyInfoLinkageWithPDP(getProductDetailPageThreadLocal(),null);
 		}
-		/*
+		
 		reporter.reportLog("verifyInfoLinkageWithPDP using test data directly");
 		getProductResultsPageThreadLocal().verifyInfoLinkageWithPDP(getProductDetailPageThreadLocal(),lsProductNumberToComparePRPAndPDPContent);
-		*/
+		
+		
+		
 		reporter.reportLog("verifySearchResultMessageOnPage");
 		//Verification of Bug-19544, Bug-19651 Bug-19672
 		getProductResultsPageThreadLocal().getSearchResultLoad(lst_SearchKeyword.get(1),true);
@@ -59,6 +61,7 @@ public class SR_TC12_Verify_ProductSearchResult_SizeAndColorLinkageWithPDP exten
 				break;
 			}
 		}
+		
 	}
 }
 
