@@ -1203,7 +1203,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 			
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 			this.getReusableActionsInstance().clickIfAvailable(element);
-			this.getReusableActionsInstance().waitForElementVisibility(this.btnProductGoToDetails,20);
+			this.getReusableActionsInstance().staticWait(3000);
 			
 			lsText=judgeProductOptionType();
 			if(lsText.contains("Size")) {				

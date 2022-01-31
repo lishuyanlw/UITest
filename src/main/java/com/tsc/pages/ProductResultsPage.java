@@ -2138,7 +2138,7 @@ public class ProductResultsPage extends BasePage{
 		WebElement item=this.productResultList.get(0);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 		this.getReusableActionsInstance().scrollToElement(item);
-		System.out.println("product name: "+apiResponse.selectedProduct.productName);
+		
 		this.selectedProductItem.productNumber=selectedProduct.productNumber;
 		this.selectedProductItem.productName=selectedProduct.productName;
 		this.selectedProductItem.productBrand=selectedProduct.productBrand;
