@@ -1918,11 +1918,11 @@ public class ProductResultsPage extends BasePage{
 
 		this.waitForPageToLoad();
 
-		this.getReusableActionsInstance().waitForElementVisibility(this.lblSearchResultMessage,120);
+		this.getReusableActionsInstance().waitForElementVisibility(this.lblSearchResultMessage,5000);
 		
 		this.getReusableActionsInstance().staticWait(8000);
 		
-		this.waitForCondition(Driver->{return !lsFirstProductName.equalsIgnoreCase(this.getElementInnerText(this.getProductList().get(0).findElement(byProductName)));}, 20000);
+		this.waitForCondition(Driver->{return !lsFirstProductName.equalsIgnoreCase(this.getElementInnerText(this.getProductList().get(0).findElement(byProductName)));}, 120000);
 
 		return true;
 	}
