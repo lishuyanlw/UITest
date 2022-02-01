@@ -1183,7 +1183,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 		WebElement item,element;	
 		String lsText;
 		loopSize=productList.size();
-		loopSize=loopSize>5?5:loopSize;
+		loopSize=loopSize>4?4:loopSize;
 		
 		for(int i=0;i<loopSize;i++) {		
 			item=productList.get(i);	
