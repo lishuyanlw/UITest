@@ -32,8 +32,6 @@ public class HP_TC05_Verify_TopSeller extends BaseTest{
 	
 	reporter.softAssert(homePageThreadLocal().validateTopSellerWasPrice(),"All products in TopSeller have valid  WasPrice contents","some products in TopSeller haven't valid WasPrice contents");
 
-	reporter.softAssert(homePageThreadLocal().validateTopSellerRedirectHref(),"The product redirect url is correct","The product redirect url is not correct");
-
 	}
 
 }
