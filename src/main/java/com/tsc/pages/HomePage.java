@@ -2,11 +2,7 @@ package com.tsc.pages;
 
 import java.io.IOException;
 import java.sql.Array;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Pattern;
 
 import org.openqa.selenium.By;
@@ -524,14 +520,21 @@ public class HomePage extends BasePage{
 		 * @return true/false
 		 * @author Wei.Li
 		 */			
-		public boolean validateTopSellerHref() {
+		public boolean validateTopSellerHref() throws IOException {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(lblTopSeller);
 
-			String lsUrl,lsHref;
+			String lsUrl,lsHref,lsBaseUrl;
 			for(WebElement item: this.lnkTopSellerAllLinks) {
 				lsHref=item.getAttribute("href");
 				if(lsHref.isEmpty()) {
 					return false;
+				}
+				else{
+					lsUrl=this.getRedirectUrlFromHref(lsHref).toLowerCase();
+					lsBaseUrl=this.getBaseURL().toLowerCase();
+					if(!lsUrl.contains(lsBaseUrl)){
+						return false;
+					}
 				}
 			}
 			return true;
