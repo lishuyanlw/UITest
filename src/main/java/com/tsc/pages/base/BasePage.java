@@ -3,19 +3,24 @@ package com.tsc.pages.base;
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.text.Normalizer;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.io.IOUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.interactions.touch.TouchActions;
@@ -257,8 +262,8 @@ import utils.ReusableActions;
 	/**
 	 * This method will implement explicit wait using Lambda function
 	 * @param
-	 * 1. Function<WebDriver,Boolean> func: Lambda expression
-	 * 2. int timeOutInMillis: wait time in millisecond
+	 * func<WebDriver,Boolean> func: Lambda expression
+	 * 2-int timeOutInMillis: wait time in millisecond
 	 * @return true/false
 	 * @author Wei.Li
 	 */
@@ -927,5 +932,23 @@ import utils.ReusableActions;
 	 */
 	public String getExecutionBrowserName(){
 		return System.getProperty("Browser");
+	}
+
+	/**
+	 * Method to get redirect url from an href
+	 */
+	public String getRedirectUrlFromHref(String href) throws IOException {
+		String redirectUrl = null;
+		Process process = null;
+		try{
+			String url = "curl -Ls -w %{url_effective} -o /dev/null"+" "+href;
+			process = Runtime.getRuntime().exec(url);
+			redirectUrl = IOUtils.toString(process.getInputStream(), StandardCharsets.UTF_8);
+		}catch (Exception e){
+			e.printStackTrace();
+		}finally {
+			process.destroy();
+		}
+		return redirectUrl;
 	}
 }
