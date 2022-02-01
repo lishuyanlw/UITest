@@ -28,15 +28,15 @@ public class SR_TC10_Verify_ProductSearchResult_GlobalHeaderAndFooterAfterSortAn
 	
 	List<List<String>> lsKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_SearchKeyword_DropDown();
 	List<String> lstSearchResultMessage=TestDataHandler.constantData.getSearchResultPage().getLst_SearchResultMessage();
-	String lsSearchResultPageDefaultSetting=TestDataHandler.constantData.getSearchResultPage().getLbl_SearchResultPageDefaultSetting();
+	//String lsSearchResultPageDefaultSetting=TestDataHandler.constantData.getSearchResultPage().getLbl_SearchResultPageDefaultSetting();
 	List<WebElement> productList;
 	String lsMsg;
 	List<String> lstSortByOptions=TestDataHandler.constantData.getSearchResultPage().getLst_Filter_Data();
-	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0));
+	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0),true);
 	String lsTestModel=getProductResultsPageThreadLocal().judgeTestModel();
 	
 	//Test sort
-	if(getProductResultsPageThreadLocal().chooseSortOptionByVisibleText(lstSortByOptions)) {
+	if(getProductResultsPageThreadLocal().chooseSortOptionByVisibleText(lstSortByOptions.get(0))) {
 		reporter.softAssert(getProductResultsPageThreadLocal().verifyUrlAfterSelectSortStrategy(lsKeywordList.get(0).get(0),"HighestPrice"), "The Url contains keyword and sortKey=HighestPrice", "The Url does not contain keyword and sortKey=HighestPrice");		
 		
 		if(!lsTestModel.equalsIgnoreCase("BannerImageSearch")) {
@@ -66,9 +66,15 @@ public class SR_TC10_Verify_ProductSearchResult_GlobalHeaderAndFooterAfterSortAn
 	}
 	
 	//Verify header section
-	GH_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo headerSectionMenuAndLogoTest= new GH_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo();
-	headerSectionMenuAndLogoTest.validateMajorNameAndLinks();
-	
+	if((System.getProperty("Browser").toLowerCase().contains("android") && System.getProperty("Device").toLowerCase().contains("tablet")) ||
+			(System.getProperty("Browser").toLowerCase().contains("chromemobile") &&
+					!System.getProperty("chromeMobileDevice").toLowerCase().contains("ipad")))
+		reporter.reportLog("Header Verification is not needed for android Tablet");
+	else{
+		GH_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo headerSectionMenuAndLogoTest= new GH_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo();
+		headerSectionMenuAndLogoTest.validateMajorNameAndLinks();
+	}
+
 	GH_TC02_Verify_Global_Header_SignIn_Favorite_ShoppingCartBag headerSectionOthersTest= new GH_TC02_Verify_Global_Header_SignIn_Favorite_ShoppingCartBag();
 	headerSectionOthersTest.validateMajorNameAndLinks();
 	
@@ -80,7 +86,7 @@ public class SR_TC10_Verify_ProductSearchResult_GlobalHeaderAndFooterAfterSortAn
 	footerSectionTest_CustomerHubLinksAndAboutTSCLinks.validateContents();
 		
 	//Test filter by price	
-	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0));
+	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0),true);
 	List<List<String>> lstFilterByPrice=TestDataHandler.constantData.getSearchResultPage().getLst_SearchOption().get(1).getFilterOption();
 	if(getProductResultsPageThreadLocal().selectFilterItemInLeftPanel(lstFilterByPrice.get(0).get(0), lstFilterByPrice.get(0).get(1))) {
 		reporter.softAssert(getProductResultsPageThreadLocal().verifyUrlContainDimensionAndKeyword(lsKeywordList.get(0).get(0)), "The Url contains correct keyword", "The Url does not contain correct keyword");
@@ -110,11 +116,18 @@ public class SR_TC10_Verify_ProductSearchResult_GlobalHeaderAndFooterAfterSortAn
 	}
 	
 	//Verify header section
-	headerSectionMenuAndLogoTest.validateMajorNameAndLinks();
-	headerSectionOthersTest.validateMajorNameAndLinks();
+	if((System.getProperty("Browser").toLowerCase().contains("android") && System.getProperty("Device").toLowerCase().contains("tablet")) ||
+			(System.getProperty("Browser").toLowerCase().contains("chromemobile") &&
+					!System.getProperty("chromeMobileDevice").toLowerCase().contains("ipad")))
+		reporter.reportLog("Header Verification is not needed for android Tablet");
+	else{
+		GH_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo headerSectionMenuAndLogoTest= new GH_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo();
+		headerSectionMenuAndLogoTest.validateMajorNameAndLinks();
+	}
 
 	//Verify footer section
 	footerSectionTest_SocialMedia.validateMajorNameAndLinks();
+	getProductResultsPageThreadLocal().getReusableActionsInstance().staticWait(5000);
 	footerSectionTest_CustomerHubLinksAndAboutTSCLinks.validateContents();
 	
 

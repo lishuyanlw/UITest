@@ -15,6 +15,7 @@ public class SR_TC05_Verify_ProductSearchResult_MultiFiltersTest extends BaseTes
 	/*
 	 * CER-225
 	 * CER-226
+	 * Bug-19685 - Reviews filter doesn't display stars in filter - covered in selectFilterItemInLeftPanel() function
 	 */
 	@Test(groups={"ProductSearch","Regression","Regression_Tablet","Regression_Mobile"})
 	public void validateProductSearchResult_MultiFiltersFunction() throws IOException {
@@ -25,10 +26,9 @@ public class SR_TC05_Verify_ProductSearchResult_MultiFiltersTest extends BaseTes
 	
 	List<List<String>> lsKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_SearchKeyword_DropDown();
 	List<String> lstSearchResultMessage=TestDataHandler.constantData.getSearchResultPage().getLst_SearchResultMessage();
-	String lsSearchResultPageDefaultSetting=TestDataHandler.constantData.getSearchResultPage().getLbl_SearchResultPageDefaultSetting();
 	List<WebElement> productList;
 	
-	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0));	
+	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0),true);
 	String lsTestModel=getProductResultsPageThreadLocal().judgeTestModel();
 
 	//Test filter option combination
@@ -43,7 +43,6 @@ public class SR_TC05_Verify_ProductSearchResult_MultiFiltersTest extends BaseTes
 	List<String> lstSelectedSecondLevelFilter=new ArrayList<String>();		
 	for(List<String> lstItem:lstFilterCombination) {	
 		ArrayList<String> lstTwoLevelFilter=new ArrayList<String>();
-		System.out.println(lstItem.get(0)+"  :  "+lstItem.get(1));
 		getProductResultsPageThreadLocal().selectFilterItemInLeftPanel(lstItem.get(0), lstItem.get(1));
 		lstSelectedSecondLevelFilter.add(getProductResultsPageThreadLocal().secondLevelFilter);			
 		lstFilter.add(lstItem.get(1));
@@ -54,10 +53,10 @@ public class SR_TC05_Verify_ProductSearchResult_MultiFiltersTest extends BaseTes
 	}
 	
 	if(getProductResultsPageThreadLocal().bDefault) {
-		lsMsg=getProductResultsPageThreadLocal().verifySlectedFiltersContainSecondlevelFilter(lstSelectedSecondLevelFilter,lstDisappearAfterSelectFilter);		
+		lsMsg=getProductResultsPageThreadLocal().verifySelectedFiltersContainSecondlevelFilter(lstSelectedSecondLevelFilter,lstDisappearAfterSelectFilter);		
 	}
 	else {
-		lsMsg=getProductResultsPageThreadLocal().verifySlectedFiltersContainSecondlevelFilter(lstFilter,lstDisappearAfterSelectFilter);			
+		lsMsg=getProductResultsPageThreadLocal().verifySelectedFiltersContainSecondlevelFilter(lstFilter,lstDisappearAfterSelectFilter);			
 	}
 	if(lsMsg.isEmpty()) {
 		reporter.reportLogPass("The selected filters contain all search second level filters");

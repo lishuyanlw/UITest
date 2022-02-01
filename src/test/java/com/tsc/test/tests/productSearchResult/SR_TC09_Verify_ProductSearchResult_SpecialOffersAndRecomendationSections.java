@@ -2,12 +2,14 @@ package com.tsc.test.tests.productSearchResult;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.HomePage;
 import com.tsc.pages.ProductResultsPage;
+import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 
 public class SR_TC09_Verify_ProductSearchResult_SpecialOffersAndRecomendationSections extends BaseTest {
@@ -19,21 +21,26 @@ public class SR_TC09_Verify_ProductSearchResult_SpecialOffersAndRecomendationSec
 	@Test(groups = { "ProductSearch", "Regression","Regression_Tablet","Regression_Mobile"})
 	public void validateProductSearchResult_SpecialOffersAndRecomendationSections() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
-		String lsSearchResultPageDefaultSetting = TestDataHandler.constantData.getSearchResultPage().getLbl_SearchResultPageDefaultSetting();
+		//String lsSearchResultPageDefaultSetting = TestDataHandler.constantData.getSearchResultPage().getLbl_SearchResultPageDefaultSetting();
 		String lnkProductResult = TestDataHandler.constantData.getSearchResultPage().getLnk_product_result();
-		List<String> productRecommendationTitleText = TestDataHandler.constantData.getSearchResultPage().getLbl_ProductRecommendationTitlePage();
+		//List<String> productRecommendationTitleText = TestDataHandler.constantData.getSearchResultPage().getLbl_ProductRecommendationTitlePage();
 		List<WebElement> productList;
 
-		// Corresponding actions (Clearance>>Fashion)
-		String subMenuItem = getglobalheaderPageThreadLocal().getNameAndclickSubMenuItem("Clearance","Fashion",null);
-
+		// Corresponding actions (Clearance>>Beauty)
+		String subMenuItem = getglobalheaderPageThreadLocal().getNameAndclickSubMenuItem("Clearance","Electronics","Speakers & Audio");
+		//String subMenuItem = getglobalheaderPageThreadLocal().getNameAndclickSubMenuItem("Clearance","Beauty",null);
+		
+		(new BasePage(this.getDriver())).getReusableActionsInstance().staticWait(5000);
+		
 		// Verifying that landing page is product results page after navigation
 		reporter.softAssert(getProductResultsPageThreadLocal().getClearanceOptionURLTitle().contains(lnkProductResult),"Verified that landing page is Product Result Page", "Verified that landing page is not Product Result Page");
 
 		// Verifying title of the page after navigation
 		String value = getProductResultsPageThreadLocal().getProductResultPageTitle(getProductResultsPageThreadLocal().lblSearchResultTitle);
-		reporter.softAssert(value.equalsIgnoreCase(subMenuItem), "Product Result Title Verified and title is " + value,"Product Result Title is not as expected and title is " + value);
-
+		if(subMenuItem.toLowerCase().contains("shop"))
+			reporter.softAssert(subMenuItem.toLowerCase().contains(value.toLowerCase()), "Product Result Title Verified and title is " + value+" instead of "+subMenuItem,"Product Result Title is not as expected and title is " + value+" instead of "+subMenuItem);
+		else
+			reporter.softAssert(value.equalsIgnoreCase(subMenuItem), "Product Result Title Verified and title is " + value+" instead of "+subMenuItem,"Product Result Title is not as expected and title is " + value+" instead of "+subMenuItem);
         // Verifying Search Result message and default Page Number Count on Page
 		reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(),"Showing text pattern in filters is correct","Showing text pattern in filters is incorrect");
 

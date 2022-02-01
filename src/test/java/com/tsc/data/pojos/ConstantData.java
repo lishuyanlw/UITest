@@ -461,8 +461,15 @@ public class ConstantData {
         private List<String> lst_Filter_Data;
         private List<String> lst_SortOptionMobile;
         private String lbl_ProductNumberWithBandAndReviewAndSeeMore;
+        private List<String> lst_SearchKeyword_Bugs;
+        private String lbl_ProductNumberToComparePRPAndPDPContent;
 
-		public List<String> getLst_SearchKeyword() {
+
+		public List<String> getLst_SearchKeyword_Bugs() { return lst_SearchKeyword_Bugs; }
+
+        public void setLst_SearchKeyword_Bugs(List<String> lst_SearchKeyword_Bugs) { this.lst_SearchKeyword_Bugs = lst_SearchKeyword_Bugs; }
+
+        public List<String> getLst_SearchKeyword() {
             return lst_SearchKeyword;
         }
 
@@ -628,6 +635,14 @@ public class ConstantData {
 
 		public void setLbl_ProductNumberWithBandAndReviewAndSeeMore(String lbl_ProductNumberWithBandAndReviewAndSeeMore) {
 			this.lbl_ProductNumberWithBandAndReviewAndSeeMore = lbl_ProductNumberWithBandAndReviewAndSeeMore;
+		}
+		
+        public String getLbl_ProductNumberToComparePRPAndPDPContent() {
+			return lbl_ProductNumberToComparePRPAndPDPContent;
+		}
+
+		public void setLbl_ProductNumberToComparePRPAndPDPContent(String lbl_ProductNumberToComparePRPAndPDPContent) {
+			this.lbl_ProductNumberToComparePRPAndPDPContent = lbl_ProductNumberToComparePRPAndPDPContent;
 		}
     }
 

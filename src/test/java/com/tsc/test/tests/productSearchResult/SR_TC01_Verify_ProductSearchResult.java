@@ -17,6 +17,10 @@ public class SR_TC01_Verify_ProductSearchResult extends BaseTest{
 	 * CER-217
 	 * CER-216
 	 * CER-218
+	 * Bug 19285: Product image not updating when colour is chosen on smartphone or tablet - covered in verifyColorOption function
+	 * Bug 19537: [QA Defect - P3] PRP: Is Price should be bold - covered in verifySearchResultContent and verifySearchResultContentWithMouseHover functions
+	 * Bug 19536: [QA Defect - P3] PRP: Rating and Review not showing properly - covered in verifySearchResultContent and verifySearchResultContentWithMouseHover functions
+	 * Bug 19629: [QA Defect - P3] Product card: if a product doesn't have color swatch, all color options show as plain circles - covered in verifyColorOption function
 	 */
 	@Test(groups={"ProductSearch","Regression","Regression_Tablet","Regression_Mobile"})
 	public void validateProductSearchResult() throws IOException {
@@ -27,19 +31,20 @@ public class SR_TC01_Verify_ProductSearchResult extends BaseTest{
 	
 	List<String> lsKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_SearchKeyword();
 	List<String> lstSearchResultMessage=TestDataHandler.constantData.getSearchResultPage().getLst_SearchResultMessage();
-	String lsSearchResultPageDefaultSetting=TestDataHandler.constantData.getSearchResultPage().getLbl_SearchResultPageDefaultSetting();
+//	String lsSearchResultPageDefaultSetting=TestDataHandler.constantData.getSearchResultPage().getLbl_SearchResultPageDefaultSetting();
 	List<WebElement> productList;
 	String lsMsg="";
 
 	int keyWordSize=lsKeywordList.size();
 	for(int i=0;i<keyWordSize;i++) {		
-		getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(i).trim());
+		getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(i).trim(),true);
 		
 		String lsTestModel=getProductResultsPageThreadLocal().judgeTestModel();	
 		reporter.reportLog("Search Model and keyword : "+lsTestModel+" : "+lsKeywordList.get(i)+ " for browser: "+getProductResultsPageThreadLocal().getExecutionBrowserName());
 		
 		switch(lsTestModel) {
 		case "NormalSearch":
+			reporter.reportLog("NormalSearch");
 			reporter.softAssert(getProductResultsPageThreadLocal().verifyUrlContainDimensionAndKeyword(lsKeywordList.get(i)), "Url of search result matches expected url regex pattern", "Url of search result doesn't match expected url regex pattern");			
 			
 			lsMsg=getProductResultsPageThreadLocal().verifySearchResultMessage(lstSearchResultMessage.get(0),lsKeywordList.get(i));
@@ -60,6 +65,7 @@ public class SR_TC01_Verify_ProductSearchResult extends BaseTest{
 			reporter.softAssert(getProductResultsPageThreadLocal().verifyProductPagination(), "Product pagination is existing", "Product pagination is not existing");
 			break;
 		case "NoSearchResult":
+			reporter.reportLog("NoSearchResult");
 			lsMsg=getProductResultsPageThreadLocal().verifySearchResultMessage(lstSearchResultMessage.get(1),"");
 			if(lsMsg.isEmpty()) {
 				reporter.reportLogPass("Search result message result of '"+getProductResultsPageThreadLocal().lsSearchResultMessage+"' matches the expected message");
@@ -70,6 +76,7 @@ public class SR_TC01_Verify_ProductSearchResult extends BaseTest{
 			getProductResultsPageThreadLocal().verifySearchResultNotExisting();
 			break;
 		case "ProductNumberSearch":
+			reporter.reportLog("ProductNumberSearch");
 			reporter.softAssert(getProductResultsPageThreadLocal().verifyUrlContainDimensionAndKeyword(lsKeywordList.get(i)), "Url of search result matches expected url", "Url of search result doesn't match expected url");
 			
 			lsMsg=getProductResultsPageThreadLocal().verifySearchResultMessage(lstSearchResultMessage.get(0),lsKeywordList.get(i));
@@ -82,6 +89,7 @@ public class SR_TC01_Verify_ProductSearchResult extends BaseTest{
 			reporter.softAssert(getProductResultsPageThreadLocal().verifyProductPagination(), "Product pagination is existing", "Product pagination is not existing");
 			break;
 		case "BannerImageSearch":
+			reporter.reportLog("BannerImageSearch");
 			reporter.softAssert(getProductResultsPageThreadLocal().verifyUrlContainDimensionAndKeyword(lsKeywordList.get(i)), "Url of search result matches expected url", "Url of search result doesn't match expected url");
 			if(getProductResultsPageThreadLocal().getBannerImageListSize()>0) {
 				reporter.softAssert(getProductResultsPageThreadLocal().verifyBannerImageContainSpecificWord(lsKeywordList.get(i)), "Banner imgaes contain keyword", "Banner imgaes do not contain keyword");

@@ -43,11 +43,10 @@ public class ApiResponse extends ApiConfigs {
         	return null;
         }
 
+    	selectedProduct.init();
         do{
             if(outputDataCriteria==null){
                 for(Product.Products data:product.getProducts()) {
-                	selectedProduct.init();
-                	            		
                 	lsNowPrice=data.getIsPriceRange();
                 	lsWasPrice=data.getWasPriceRange();
                     if (data.getVideosCount() >= 1 && data.getStyles().size() >= 3 && data.getSizes().size() >= 3&&data.isShowBadgeImage()&&data.getProductReviewRating()>0&&!data.getEasyPaymentPrice().isEmpty()&&!lsNowPrice.equalsIgnoreCase(lsWasPrice)&&data.isEnabledAddToCart()) {
@@ -127,6 +126,12 @@ public class ApiResponse extends ApiConfigs {
                     }                    
                     product = getProductDetailsForKeyword(searchKeyword,false);
                  }else{
+                	selectedProduct.productNumber=productItem.getItemNo();
+             		selectedProduct.productName=productItem.getName();
+             		selectedProduct.productBrand=productItem.getBrand();
+             		selectedProduct.productNowPrice=productItem.getIsPriceRange();
+             		selectedProduct.productWasPrice=productItem.getWasPriceRange();
+             		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+productItem.getName()+propertyData.get("test_partial_url_pdp")+productItem.getItemNo();
                     flag = false;
                 }
             }
@@ -322,8 +327,7 @@ public class ApiResponse extends ApiConfigs {
                 }                       
             }
          }
-        
-        selectedProduct.init();
+ 
         Product.Products productItem=null;
         for(Product.Products data:product.getProducts()) {
         	lsNowPrice=data.getIsPriceRange();
@@ -380,12 +384,7 @@ public class ApiResponse extends ApiConfigs {
             	}            	
             	
             	productItem=data;
-            	selectedProduct.productNumber=data.getItemNo();
-        		selectedProduct.productName=data.getName();
-        		selectedProduct.productBrand=data.getBrand();
-        		selectedProduct.productNowPrice=data.getIsPriceRange();
-        		selectedProduct.productWasPrice=data.getWasPriceRange();
-        		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName()+propertyData.get("test_partial_url_pdp")+data.getItemNo();            	
+            	            	            	
                 return productItem;
             }
         }

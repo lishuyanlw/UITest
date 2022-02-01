@@ -129,6 +129,9 @@ public class ProductDetailPage extends BasePage {
 
 	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'product-name-sub')]//div[@id='panReviewSnippet']//div[@class='p-w-r'][last()]//section")
 	public WebElement lblProductReview;
+	
+	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'product-name-sub')]//div[@id='panReviewSnippet']//div[@class='p-w-r']//a[@class='pr-snippet-review-count']")
+	public WebElement lblProductReviewCount;
 
 	//Price part
 	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@class='price-div']//span[@id='lblPriceLabel']")
@@ -2116,6 +2119,12 @@ public class ProductDetailPage extends BasePage {
 		this.getReusableActionsInstance().staticWait(1000);
 
 		reporter.softAssert(this.URL().toLowerCase().contains("productresults"),"The page has been switched to product results page","The page has not been switched to product results page");
+
+		//Verifying Bug-19107 - Issue navigating to brand page from PDP
+		//Verifying that PRP page is displaying results for expected brand
+		this.waitForPageToLoad();
+		prp.waitForPageLoading();
+		prp.verifyProductsOnPRPByBrandName(lsBrandName);
 
 		/*this.getReusableActionsInstance().javascriptScrollByVisibleElement(prp.lblSelectedFilters);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(prp.selectedFiltersList.get(0));

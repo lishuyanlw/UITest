@@ -21,14 +21,14 @@ public class SR_TC08_Verify_ProductSearchResult_PaginationTest extends BaseTest{
 	reporter.softAssert(getglobalheaderPageThreadLocal().validateURL((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");		
 	reporter.reportLog("ProductSearch Page");
 	
-	String lsKeyword=TestDataHandler.constantData.getSearchResultPage().getLst_APISearchingKeyword().get(1);
+	String lsKeyword=TestDataHandler.constantData.getSearchResultPage().getLst_APISearchingKeyword().get(2);
 	List<String> lstSearchResultMessage=TestDataHandler.constantData.getSearchResultPage().getLst_SearchResultMessage();
-	String lsSearchResultPageDefaultSetting=TestDataHandler.constantData.getSearchResultPage().getLbl_SearchResultPageDefaultSetting();
+//	String lsSearchResultPageDefaultSetting=TestDataHandler.constantData.getSearchResultPage().getLbl_SearchResultPageDefaultSetting();
 	List<WebElement> productList;
 	String lsMsg;
 	String lsCurrentPageFirstProductName,lsPreviousPageFirstProductName,lsNextPageFirstProductName;
 	
-	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeyword);
+	getProductResultsPageThreadLocal().getSearchResultLoad(lsKeyword,true);
 	lsCurrentPageFirstProductName=getProductResultsPageThreadLocal().getFirstProductName();
 	String lsTestModel=getProductResultsPageThreadLocal().judgeTestModel();	
 	

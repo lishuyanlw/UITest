@@ -638,6 +638,18 @@ public class Product {
     public static class ParentDimensions {}
 
     public static class edps {
+        public String ItemNo;
+        public int SkuAvailabilityType;
+        public String SkuAvailabilityMessage;
+        public String DefaultPrice;
+        public String WasPrice;
+        public String SavePrice;
+        public boolean IsSoldOut;
+        public boolean IsDonation;
+        public boolean IsAdp;
+        public boolean IsAdvanceOrBackOrder;
+        public float Weight;
+        public int StandingOrderIntervalInDays;
         public int EdpNo;
         public String UpcNo;
         public String AppliedPrice;
@@ -651,6 +663,94 @@ public class Product {
         public String Size;
         public String SizeDimensionId;
         public int UnitsSold;
+
+        public String getItemNo() {     return ItemNo;     }
+
+        public void setItemNo(String itemNo) {     ItemNo = itemNo;   }
+
+        public int getSkuAvailabilityType() {     return SkuAvailabilityType;     }
+
+        public void setSkuAvailabilityType(int skuAvailabilityType) {   SkuAvailabilityType = skuAvailabilityType;     }
+
+        public String getSkuAvailabilityMessage() {
+            return SkuAvailabilityMessage;
+        }
+
+        public void setSkuAvailabilityMessage(String skuAvailabilityMessage) {
+            SkuAvailabilityMessage = skuAvailabilityMessage;
+        }
+
+        public String getDefaultPrice() {
+            return DefaultPrice;
+        }
+
+        public void setDefaultPrice(String defaultPrice) {
+            DefaultPrice = defaultPrice;
+        }
+
+        public String getWasPrice() {
+            return WasPrice;
+        }
+
+        public void setWasPrice(String wasPrice) {
+            WasPrice = wasPrice;
+        }
+
+        public String getSavePrice() {
+            return SavePrice;
+        }
+
+        public void setSavePrice(String savePrice) {
+            SavePrice = savePrice;
+        }
+
+        public boolean isSoldOut() {
+            return IsSoldOut;
+        }
+
+        public void setSoldOut(boolean soldOut) {
+            IsSoldOut = soldOut;
+        }
+
+        public boolean isDonation() {
+            return IsDonation;
+        }
+
+        public void setDonation(boolean donation) {
+            IsDonation = donation;
+        }
+
+        public boolean isAdp() {
+            return IsAdp;
+        }
+
+        public void setAdp(boolean adp) {
+            IsAdp = adp;
+        }
+
+        public boolean isAdvanceOrBackOrder() {
+            return IsAdvanceOrBackOrder;
+        }
+
+        public void setAdvanceOrBackOrder(boolean advanceOrBackOrder) {
+            IsAdvanceOrBackOrder = advanceOrBackOrder;
+        }
+
+        public float getWeight() {
+            return Weight;
+        }
+
+        public void setWeight(float weight) {
+            Weight = weight;
+        }
+
+        public int getStandingOrderIntervalInDays() {
+            return StandingOrderIntervalInDays;
+        }
+
+        public void setStandingOrderIntervalInDays(int standingOrderIntervalInDays) {
+            StandingOrderIntervalInDays = standingOrderIntervalInDays;
+        }
 
         public int getEdpNo() {
             return EdpNo;

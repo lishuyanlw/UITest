@@ -331,6 +331,7 @@ public class BaseTest {
 				}
 				break;
 			case "sauceioschrome":
+			case "sauceiossafari":
 				if(System.getProperty("Device").equalsIgnoreCase("Tablet")){
 					sauceOptions.put(SauceCapabilities.appiumVersion.toString(), TestDataHandler.sauceSettings.getIosSafariCapabilitiesTablet().getAppiumVersion());
 					sauceOptions.put(SauceCapabilities.deviceName.toString(), TestDataHandler.sauceSettings.getIosSafariCapabilitiesTablet().getDeviceName());
