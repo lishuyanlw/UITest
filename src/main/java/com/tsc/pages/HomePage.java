@@ -521,19 +521,43 @@ public class HomePage extends BasePage{
 		
 		/**
 		 * This method will validate TopSeller hrefs are not empty
-		 *
 		 * @return true/false
 		 * @author Wei.Li
 		 */			
 		public boolean validateTopSellerHref() {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(lblTopSeller);
-			for(WebElement item: this.lnkTopSellerAllLinks) {				
-				if(item.getAttribute("href").isEmpty()) {
+
+			String lsUrl,lsHref;
+			for(WebElement item: this.lnkTopSellerAllLinks) {
+				lsHref=item.getAttribute("href");
+				if(lsHref.isEmpty()) {
 					return false;
 				}
 			}
 			return true;
 		}
+
+	/**
+	 * This method will validate TopSeller redirect url
+	 * @return true/false
+	 * @author Wei.Li
+	 */
+	public boolean validateTopSellerRedirectHref() {
+		getReusableActionsInstance().javascriptScrollByVisibleElement(lblTopSeller);
+
+		String lsBaseUrl,lsHref;
+		WebElement item=this.lnkTopSellerAllLinks.get(0);
+		String lsCurrentUrl=this.URL();
+
+		getReusableActionsInstance().clickIfAvailable(item);
+		this.waitForPageLoad();
+		this.waitForCondition(Driver->{return !lsCurrentUrl.equalsIgnoreCase(this.URL());},10000);
+
+
+		lsBaseUrl=this.getBaseURL();
+
+		return this.URL().toLowerCase().contains(lsBaseUrl);
+	}
 		
 		/**
 		 * This method will validate TopSeller Images are not empty
