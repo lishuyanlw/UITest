@@ -547,6 +547,7 @@ public class ProductResultsPage extends BasePage{
 	 */
 	public String verifySearchResultMessage(String expectedMessage,String lsKeyword) {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSearchResultMessage);
+		getReusableActionsInstance().scrollToElement(this.lblSearchResultMessage);
 
 		String lsMessage=this.lblSearchResultMessage.getText().trim();
 		this.lsSearchResultMessage=lsMessage;
@@ -1297,6 +1298,7 @@ public class ProductResultsPage extends BasePage{
 	//Bug 19734: [UAT Defect]: PRP: Sorting filter is not retained when going past page 1
 	public boolean chooseSortOptionByVisibleText(String lsOption) {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSortSelect);
+		getReusableActionsInstance().scrollToElement(this.btnSortSelect);
 		Select sortOption= new Select(this.btnSortSelect);
 		sortOption.selectByVisibleText(lsOption);
 
@@ -1920,7 +1922,7 @@ public class ProductResultsPage extends BasePage{
 
 		this.getReusableActionsInstance().waitForElementVisibility(this.lblSearchResultMessage,5000);
 		
-		this.getReusableActionsInstance().staticWait(8000);
+		this.getReusableActionsInstance().staticWait(10000);
 		
 		this.waitForCondition(Driver->{return !lsFirstProductName.equalsIgnoreCase(this.getElementInnerText(this.getProductList().get(0).findElement(byProductName)));}, 120000);
 

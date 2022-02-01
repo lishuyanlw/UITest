@@ -1183,7 +1183,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 		WebElement item,element;	
 		String lsText;
 		loopSize=productList.size();
-		loopSize=loopSize>5?5:loopSize;
+		loopSize=loopSize>4?4:loopSize;
 		
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(productList.get(0));
 		this.getReusableActionsInstance().scrollToElement(productList.get(0));

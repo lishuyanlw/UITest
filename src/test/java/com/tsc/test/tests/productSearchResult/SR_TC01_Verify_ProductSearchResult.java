@@ -44,6 +44,7 @@ public class SR_TC01_Verify_ProductSearchResult extends BaseTest{
 		
 		switch(lsTestModel) {
 		case "NormalSearch":
+			reporter.reportLog("NormalSearch");
 			reporter.softAssert(getProductResultsPageThreadLocal().verifyUrlContainDimensionAndKeyword(lsKeywordList.get(i)), "Url of search result matches expected url regex pattern", "Url of search result doesn't match expected url regex pattern");			
 			
 			lsMsg=getProductResultsPageThreadLocal().verifySearchResultMessage(lstSearchResultMessage.get(0),lsKeywordList.get(i));
@@ -64,6 +65,7 @@ public class SR_TC01_Verify_ProductSearchResult extends BaseTest{
 			reporter.softAssert(getProductResultsPageThreadLocal().verifyProductPagination(), "Product pagination is existing", "Product pagination is not existing");
 			break;
 		case "NoSearchResult":
+			reporter.reportLog("NoSearchResult");
 			lsMsg=getProductResultsPageThreadLocal().verifySearchResultMessage(lstSearchResultMessage.get(1),"");
 			if(lsMsg.isEmpty()) {
 				reporter.reportLogPass("Search result message result of '"+getProductResultsPageThreadLocal().lsSearchResultMessage+"' matches the expected message");
@@ -74,6 +76,7 @@ public class SR_TC01_Verify_ProductSearchResult extends BaseTest{
 			getProductResultsPageThreadLocal().verifySearchResultNotExisting();
 			break;
 		case "ProductNumberSearch":
+			reporter.reportLog("ProductNumberSearch");
 			reporter.softAssert(getProductResultsPageThreadLocal().verifyUrlContainDimensionAndKeyword(lsKeywordList.get(i)), "Url of search result matches expected url", "Url of search result doesn't match expected url");
 			
 			lsMsg=getProductResultsPageThreadLocal().verifySearchResultMessage(lstSearchResultMessage.get(0),lsKeywordList.get(i));
@@ -86,6 +89,7 @@ public class SR_TC01_Verify_ProductSearchResult extends BaseTest{
 			reporter.softAssert(getProductResultsPageThreadLocal().verifyProductPagination(), "Product pagination is existing", "Product pagination is not existing");
 			break;
 		case "BannerImageSearch":
+			reporter.reportLog("BannerImageSearch");
 			reporter.softAssert(getProductResultsPageThreadLocal().verifyUrlContainDimensionAndKeyword(lsKeywordList.get(i)), "Url of search result matches expected url", "Url of search result doesn't match expected url");
 			if(getProductResultsPageThreadLocal().getBannerImageListSize()>0) {
 				reporter.softAssert(getProductResultsPageThreadLocal().verifyBannerImageContainSpecificWord(lsKeywordList.get(i)), "Banner imgaes contain keyword", "Banner imgaes do not contain keyword");
