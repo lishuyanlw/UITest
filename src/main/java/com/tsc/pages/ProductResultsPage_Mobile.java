@@ -1185,9 +1185,14 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 		loopSize=productList.size();
 		loopSize=loopSize>4?4:loopSize;
 		
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(productList.get(0));
+		this.getReusableActionsInstance().scrollToElement(productList.get(0));
+		
+		
 		for(int i=0;i<loopSize;i++) {		
 			item=productList.get(i);	
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			this.getReusableActionsInstance().scrollToElement(item);
 			
 			element=item.findElement(byProductItemSelectSizeOrColor);
 			if(this.getReusableActionsInstance().isElementVisible(element)) {
@@ -1202,8 +1207,10 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 			}
 			
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+			this.getReusableActionsInstance().scrollToElement(element);
+			this.getReusableActionsInstance().staticWait(2000);			
 			this.getReusableActionsInstance().clickIfAvailable(element);
-			this.getReusableActionsInstance().staticWait(3000);
+			this.getReusableActionsInstance().waitForElementVisibility(this.btnProductGoToDetails,20);
 			
 			lsText=judgeProductOptionType();
 			if(lsText.contains("Size")) {				
@@ -1264,6 +1271,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 			verifySelectSizeOrColorOption(item);	
 			
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnProductSizeOrColorClose);
+			this.getReusableActionsInstance().scrollToElement(this.btnProductSizeOrColorClose);
 			this.getReusableActionsInstance().clickIfAvailable(this.btnProductSizeOrColorClose);
 			this.getReusableActionsInstance().staticWait(2000);
 			
