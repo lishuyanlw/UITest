@@ -30,7 +30,10 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
     
 	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='prp-filter-panel']//div[@class='prp-filter-panel__header']//button[@class='prp-filter-panel__header__clear']")
 	public WebElement btnFilterPopupClearAll;
-	
+
+	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='prp-filter-panel']//div[@class='prp-filter-panel__header']//span[@class='prp-filter-panel__header__title']")
+	public WebElement btnFilterPopupTitle;
+
 	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='prp-filter-panel__mobile-subpanel']//button[@class='prp-filter-panel__mobile-subpanel__title-button']")
 	public WebElement btnFiltersAdded;
 	
@@ -120,14 +123,28 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 		this.clickElement(this.btnFilterPopupClose);
 		getReusableActionsInstance().staticWait(5000);
 	}
-	
+
+	//BUG-19745-[Release Defect - P3] the filter menu in PRP iOS is covered by a panel and can't be closed /cancelled
+	public void verifyFilterSection(){
+		//Verification of Close button
+		boolean btnCloseButton = getReusableActionsInstance().isElementVisible(this.btnFilterPopupClose);
+		//Verification of ClearAll button
+		boolean btnClearAll = getReusableActionsInstance().isElementVisible(this.btnFilterPopupClearAll);
+		//Verification of filter text
+		String filterPopupText = this.getElementInnerText(this.btnFilterPopupTitle);
+		if(btnCloseButton && btnClearAll && filterPopupText.toLowerCase().equals("filter"))
+			reporter.reportLogPass("Filter Section for mobile is present after selecting required filter");
+		else
+			reporter.reportLogFail("Filter Section is not for mobile is present after selecting required filter");
+	}
+
 	@Override
 	public boolean selectFilterItemInLeftPanel(String lsFirstLevelItem,String lsSecondLevelItem) {
 		openFilterPopupWindow();	
 		
 		this.firstLevelFilter=lsFirstLevelItem;
 		this.secondLevelFilter=lsSecondLevelItem;
-		
+
 		String lsHeader,lsSubItem;
 		WebElement subItem,searchInputButton,item;
 		List<WebElement> subItemList;
@@ -183,7 +200,10 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 						else {
 							reporter.reportLogFail("The current page is not 1st page.");
 						}
-												
+
+						//Verification of BUG-19745
+						this.verifyFilterSection();
+
 						closeFilterPopupWindow();
 						
 						verifyUrlPatternAfterSelectFilter(false);
@@ -243,10 +263,14 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 						if(j>4) {
 							this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItemList.get(j-3));
 							//getReusableActionsInstance().clickIfAvailable(subItem);
+							//Verification of BUG-19745
+							this.verifyFilterSection();
 							subItem.click();
 						}
 						else {
 							//getReusableActionsInstance().clickIfAvailable(subItem);
+							//Verification of BUG-19745
+							this.verifyFilterSection();
 							subItem.click();
 						}	
 											
@@ -271,6 +295,9 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 						
 						//Bug 19389: PRP Filter Panel - Shop by Category selection does not work as intended						
 						if(!lsFirstLevelItem.equalsIgnoreCase("category")) {
+							//Verification of BUG-19745
+							this.verifyFilterSection();
+
 							closeFilterPopupWindow();
 							getReusableActionsInstance().staticWait(5000);
 							verifyUrlPatternAfterSelectFilter(false);
@@ -279,7 +306,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 							getReusableActionsInstance().staticWait(5000);
 							verifyUrlPatternAfterSelectFilter(true);
 						}
-						
+
 						return true;
 					}
 				}
@@ -328,7 +355,10 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 					else {
 						reporter.reportLogFail("The current page is not 1st page.");
 					}
-					
+
+					//Verification of BUG-19745
+					this.verifyFilterSection();
+
 					closeFilterPopupWindow();	
 					
 					verifyUrlPatternAfterSelectFilter(false);
@@ -337,7 +367,9 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				}
 			}			
 		}
-	
+		//Verification of BUG-19745
+		this.verifyFilterSection();
+
 		closeFilterPopupWindow();
 		return false;
 	}
