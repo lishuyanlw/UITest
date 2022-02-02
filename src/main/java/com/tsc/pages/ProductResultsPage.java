@@ -535,10 +535,11 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	public boolean verifyShowingTextPatternInFilters() {
-//		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblShowing);
-//		String showingText=this.lblShowing.getText()+" "+this.txtShowingDynamicContent.getText();
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblShowing);
+		getReusableActionsInstance().scrollToElement(this.lblShowing);
+		String showingText=this.lblShowing.getText()+" "+this.txtShowingDynamicContent.getText();
 
-		String showingText=this.getElementInnerText(this.lblShowing)+" "+this.getElementInnerText(this.txtShowingDynamicContent);
+		//String showingText=this.getElementInnerText(this.lblShowing)+" "+this.getElementInnerText(this.txtShowingDynamicContent);
 
 		return showingText.matches("Displaying items: (\\d+) - (\\d+) out of (\\d+)");
 	}
