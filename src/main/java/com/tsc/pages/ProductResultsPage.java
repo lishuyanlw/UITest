@@ -534,8 +534,10 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	public boolean verifyShowingTextPatternInFilters() {
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblShowing);
-		String showingText=this.lblShowing.getText()+" "+this.txtShowingDynamicContent.getText();
+//		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblShowing);
+//		String showingText=this.lblShowing.getText()+" "+this.txtShowingDynamicContent.getText();
+
+		String showingText=this.getElementInnerText(this.lblShowing)+" "+this.getElementInnerText(this.txtShowingDynamicContent);
 
 		return showingText.matches("Displaying items: (\\d+) - (\\d+) out of (\\d+)");
 	}
@@ -874,6 +876,7 @@ public class ProductResultsPage extends BasePage{
 		String lsProductName,lsText;
 
 		loopSize=productList.size();
+		loopsize=loopSize>15?15:loopSize;
 		for(int i=0;i<loopSize;i++) {
 			item=productList.get(i);
 			element=item.findElement(byProductName);
@@ -935,7 +938,7 @@ public class ProductResultsPage extends BasePage{
 				reporter.reportLogFail("Product image source is not empty");
 			}
 
-			if(!this.getProductOptionTypeWithoutMouseHover(item).equalsIgnoreCase("None")) {
+			if(!this.getProductOptionTypeWithoutMouseHover(item).equalsIgnoreCase("None")&&!this.getProductOptionTypeWithoutMouseHover(item).equalsIgnoreCase("Other")) {
 				element=item.findElement(byProductOptionListContainer);				
 				lsText=this.getElementInnerText(element);	
 				this.getReusableActionsInstance().staticWait(1000);
@@ -1900,8 +1903,9 @@ public class ProductResultsPage extends BasePage{
 			if(lastPageButton.getAttribute("class").contains("prp__pagination__pages__page--current")) {
 				return false;
 			}else {
-				getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnNextPage);
-				this.btnNextPage.click();
+//				getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnNextPage);
+//				this.btnNextPage.click();
+				this.clickElement(this.btnNextPage);
 			}
 
 		}else {
@@ -1913,8 +1917,9 @@ public class ProductResultsPage extends BasePage{
 			if(firstPageButton.getAttribute("class").contains("prp__pagination__pages__page--current")) {
 				return false;
 			}else {
-				getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnPreviousPage);
-				this.btnPreviousPage.click();
+//				getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnPreviousPage);
+//				this.btnPreviousPage.click();
+				this.clickElement(this.btnPreviousPage);
 			}
 		}
 
@@ -2258,7 +2263,9 @@ public class ProductResultsPage extends BasePage{
 	public String getProductOptionTypeWithoutMouseHover(WebElement itemContainer) {
 		List<WebElement> optionList=itemContainer.findElements(this.byProductOptionList);
 		WebElement item=optionList.get(0);
+		this.getReusableActionsInstance().staticWait(300);
 		String lsText=this.getElementInnerText(item);
+		this.getReusableActionsInstance().staticWait(300);
 
 		if(lsText.isEmpty()) {
 			return "None";
