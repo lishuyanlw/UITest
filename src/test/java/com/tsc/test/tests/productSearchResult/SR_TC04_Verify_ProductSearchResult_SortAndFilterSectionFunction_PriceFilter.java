@@ -84,7 +84,7 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction_Pri
             else {
                 reporter.reportLogFail("Choosing filter of "+lstItem.get(0)+"/"+lstItem.get(1)+" failed");
             }
-            getProductResultsPageThreadLocal().closeAllSelectedFilters();
+//            getProductResultsPageThreadLocal().closeAllSelectedFilters();
         }
 
     }
