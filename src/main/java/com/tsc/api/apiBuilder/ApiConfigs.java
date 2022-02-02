@@ -1,8 +1,9 @@
 package com.tsc.api.apiBuilder;
 
+import com.tsc.api.util.DataConverter;
+
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class ApiConfigs extends ApiClient{
     public Map<String,Object> inputMap = null;
@@ -34,5 +35,25 @@ public class ApiConfigs extends ApiClient{
             inputMap.put("rd", Integer.parseInt("1"));
 
         return inputMap;
+    }
+
+    /**
+     *This methods forms a URL that can be directly invoked in browser
+     * @param-String landinPage - landing page of application for url
+     * @param-inputParameters - input Data Type for parameters that will be given in api call
+     * @return-String - String url that can be invoked in browser
+     */
+    public <T> String getAPIURLForInputModuleAndParameter(String landingPage,List<List<String>> inputParameters){
+        HashMap<String,String> parameterMap = new DataConverter().convertData(inputParameters,new HashMap<>());
+        String apiBaseURL = System.getProperty("QaUrl");
+        if(landingPage.toLowerCase().contains("productresult")){
+            String parameterString = null;
+            for(Map.Entry<String,String> entry:parameterMap.entrySet()){
+                parameterString = parameterString == null ? entry.getKey() + "=" + entry.getValue() : parameterString + "&" + entry.getKey() + "=" + entry.getValue();
+            }
+            apiBaseURL=apiBaseURL+landingPage+parameterString;
+            return apiBaseURL;
+        }
+        return null;
     }
 }

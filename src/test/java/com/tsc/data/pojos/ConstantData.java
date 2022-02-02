@@ -463,9 +463,13 @@ public class ConstantData {
         private String lbl_ProductNumberWithBandAndReviewAndSeeMore;
         private List<String> lst_SearchKeyword_Bugs;
         private String lbl_ProductNumberToComparePRPAndPDPContent;
+        private String lbl_prp_partial_url;
 
+        public String getLbl_prp_partial_url() {  return lbl_prp_partial_url;    }
 
-		public List<String> getLst_SearchKeyword_Bugs() { return lst_SearchKeyword_Bugs; }
+        public void setLbl_prp_partial_url(String lbl_prp_partial_url) {  this.lbl_prp_partial_url = lbl_prp_partial_url;      }
+
+        public List<String> getLst_SearchKeyword_Bugs() { return lst_SearchKeyword_Bugs; }
 
         public void setLst_SearchKeyword_Bugs(List<String> lst_SearchKeyword_Bugs) { this.lst_SearchKeyword_Bugs = lst_SearchKeyword_Bugs; }
 

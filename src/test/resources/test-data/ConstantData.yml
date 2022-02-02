@@ -78,6 +78,7 @@ homePage:
   lst_ShopByDepartmentCategories: [ FASHION, SHOES & HANDBAGS, JEWELLERY, BEAUTY, HOME & GARDEN, KITCHEN, HEALTH & FITNESS, ELECTRONICS, COINS & HOBBIES, CLEARANCE, SPORTS, MENS ]
   lbl_TopSellers: TOP SELLERS
 searchResultPage:
+  lbl_prp_partial_url: "/pages/productresults?"
   lst_SearchKeyword: [ "dyson vacuum","dfafasdfa","100501","Joan Rivers" ]
   lst_SearchKeyword_Bugs: ["iPads & Tablets","apple  ","https://qa-tsc.tsc.ca/pages/productresults?&searchterm=desk","404191"]
   lbl_ProductNumberToComparePRPAndPDPContent: 406045
@@ -119,6 +120,12 @@ searchResultPage:
         - ["Category","Pants & Shorts"]
         - ["Price","Under $100"] 
         - ["Category","Leggings & Jeggings"]
+    - filterType: PRPApiCall
+      filterOption:
+        - ["page","2"]
+        - ["pageSize","45"]
+        - ["sortKey","NewestProducts","Newest First"]
+        - ["searchTerm","Silver"]
   lst_MoreButton: ["Shop by brand","Shop by colour"]
   lst_DisappearAfterSelectFilter: ["SHOP BY CATEGORY"]
   lnk_product_result: /pages/productresults?

@@ -1,5 +1,6 @@
 package com.tsc.pages;
 
+import com.tsc.api.util.DataConverter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -3604,6 +3605,16 @@ public class ProductResultsPage extends BasePage{
 		}
 	}
 
+	/**
+	 * This method verifies PRP page after loading url directly in browser
+	 * @param-String pageURL that will be launched in browser
+	 */
+	public void verifyPRPPageAfterLoadingDataUsingAPIParameter(String pageURL){
+		this.getDriver().get(pageURL);
+		this.waitForPageLoading();
+
+		verifyShowingTextPatternInFilters();
+	}
 
 	public class ProductItem{
 		public String productNumber;
