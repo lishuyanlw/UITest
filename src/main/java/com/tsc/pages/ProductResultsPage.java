@@ -876,7 +876,7 @@ public class ProductResultsPage extends BasePage{
 		String lsProductName,lsText;
 
 		loopSize=productList.size();
-		loopsize=loopSize>15?15:loopSize;
+		loopSize=loopSize>15?15:loopSize;
 		for(int i=0;i<loopSize;i++) {
 			item=productList.get(i);
 			element=item.findElement(byProductName);
