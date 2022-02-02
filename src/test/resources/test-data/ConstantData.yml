@@ -120,7 +120,7 @@ searchResultPage:
         - ["Category","Pants & Shorts"]
         - ["Price","Under $100"] 
         - ["Category","Leggings & Jeggings"]
-    - filterType: PRPApiCall
+    - filterType: PRPApiCallMultipleParameter
       filterOption:
         - ["page","2"]
         - ["pageSize","45"]

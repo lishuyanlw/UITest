@@ -14,7 +14,14 @@ public class DataConverter {
         if(returnType.getClass().getName().toLowerCase().contains("map")){
             HashMap<String,String> hashMap = new HashMap<>();
             for(List<String> data:inputData){
-                hashMap.put(data.get(0),data.get(1));
+                if(data.size()>2){
+                    String value = null;
+                    for(int i=1;i<data.size();i++){
+                        value = value==null ? data.get(i) : value+":"+data.get(i);
+                    }
+                    hashMap.put(data.get(0),value);
+                }else
+                    hashMap.put(data.get(0),data.get(1));
             }
             return (T) hashMap;
         }

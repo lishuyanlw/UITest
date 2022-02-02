@@ -43,16 +43,22 @@ public class ApiConfigs extends ApiClient{
      * @param-inputParameters - input Data Type for parameters that will be given in api call
      * @return-String - String url that can be invoked in browser
      */
-    public <T> String getAPIURLForInputModuleAndParameter(String landingPage,List<List<String>> inputParameters){
+    public <T> List<String> getAPIURLForInputModuleAndParameter(String landingPage,List<List<String>> inputParameters){
+        List<String> outputURL = new ArrayList<>();
         HashMap<String,String> parameterMap = new DataConverter().convertData(inputParameters,new HashMap<>());
         String apiBaseURL = System.getProperty("QaUrl");
         if(landingPage.toLowerCase().contains("productresult")){
             String parameterString = null;
             for(Map.Entry<String,String> entry:parameterMap.entrySet()){
-                parameterString = parameterString == null ? entry.getKey() + "=" + entry.getValue() : parameterString + "&" + entry.getKey() + "=" + entry.getValue();
+                if(entry.getKey().equalsIgnoreCase("sortKey")){
+                    parameterString = parameterString == null ? entry.getKey() + "=" + entry.getValue().split(":")[0] : parameterString + "&" + entry.getKey() + "=" + entry.getValue().split(":")[0];
+                    outputURL.add(entry.getValue().split(":")[1]);
+                }else
+                    parameterString = parameterString == null ? entry.getKey() + "=" + entry.getValue() : parameterString + "&" + entry.getKey() + "=" + entry.getValue();
             }
             apiBaseURL=apiBaseURL+landingPage+parameterString;
-            return apiBaseURL;
+            outputURL.add(apiBaseURL);
+            return outputURL;
         }
         return null;
     }
