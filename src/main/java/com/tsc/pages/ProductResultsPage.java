@@ -3617,15 +3617,14 @@ public class ProductResultsPage extends BasePage{
 	 * This method verifies PRP page after loading url directly in browser
 	 * @param-String pageURL that will be launched in browser
 	 */
-	public void verifyPRPPageAfterLoadingDataUsingAPIParameter(List<String> pageURL){
-		if(pageURL.size()>1)
-			this.getDriver().get(pageURL.get(1));
-		else
-			this.getDriver().get(pageURL.get(0));
+	public void verifyPRPPageAfterLoadingDataUsingAPIParameter(HashMap<String,String> pageURL){
+		this.getDriver().get(pageURL.get("url"));
 
 		this.waitForPageLoading();
 		verifyShowingTextPatternInFilters();
+		//Verification of selected sort filter on page
 
+		//Verification of number of items displayed on page
 	}
 
 	public class ProductItem{

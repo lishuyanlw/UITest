@@ -43,8 +43,8 @@ public class ApiConfigs extends ApiClient{
      * @param-inputParameters - input Data Type for parameters that will be given in api call
      * @return-String - String url that can be invoked in browser
      */
-    public <T> List<String> getAPIURLForInputModuleAndParameter(String landingPage,List<List<String>> inputParameters){
-        List<String> outputURL = new ArrayList<>();
+    public <T> HashMap<String,String> getAPIURLForInputModuleAndParameter(String landingPage,List<List<String>> inputParameters){
+        HashMap<String,String> hashMap = new HashMap<>();
         HashMap<String,String> parameterMap = new DataConverter().convertData(inputParameters,new HashMap<>());
         String apiBaseURL = System.getProperty("QaUrl");
         if(landingPage.toLowerCase().contains("productresult")){
@@ -52,13 +52,16 @@ public class ApiConfigs extends ApiClient{
             for(Map.Entry<String,String> entry:parameterMap.entrySet()){
                 if(entry.getKey().equalsIgnoreCase("sortKey")){
                     parameterString = parameterString == null ? entry.getKey() + "=" + entry.getValue().split(":")[0] : parameterString + "&" + entry.getKey() + "=" + entry.getValue().split(":")[0];
-                    outputURL.add(entry.getValue().split(":")[1]);
+                    hashMap.put("sortKey",entry.getValue().split(":")[1]);
+                }else if(entry.getKey().equalsIgnoreCase("sortKey")){
+                    parameterString = parameterString == null ? entry.getKey() + "=" + entry.getValue() : parameterString + "&" + entry.getKey() + "=" + entry.getValue();
+                    hashMap.put("pageSize",entry.getValue());
                 }else
                     parameterString = parameterString == null ? entry.getKey() + "=" + entry.getValue() : parameterString + "&" + entry.getKey() + "=" + entry.getValue();
             }
             apiBaseURL=apiBaseURL+landingPage+parameterString;
-            outputURL.add(apiBaseURL);
-            return outputURL;
+            hashMap.put("url",apiBaseURL);
+            return hashMap;
         }
         return null;
     }

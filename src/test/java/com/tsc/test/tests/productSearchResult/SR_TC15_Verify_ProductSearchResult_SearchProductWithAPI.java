@@ -4,11 +4,12 @@ import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.test.base.BaseTest;
 import org.testng.annotations.Test;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
  * BUG-19768 - [PR Defect] PRP url parameters should not be hardcoded
- * BUG-19769 - PRP shows no results when dimensions is missing in the PRP page URL or when no parameters are specified
+ * BUG-19769 - PRP shows no results when dimension is missing in the PRP page URL or when no parameters are specified
  */
 public class SR_TC15_Verify_ProductSearchResult_SearchProductWithAPI extends BaseTest {
     @Test(groups={"ProductSearch","Regression","Regression_Tablet","Regression_Mobile"})
@@ -22,7 +23,7 @@ public class SR_TC15_Verify_ProductSearchResult_SearchProductWithAPI extends Bas
 
         //verification of prp page by loading url in browser
         //BUG-19768 - [PR Defect] PRP url parameters should not be hardcoded
-        List<String> prpURL = getApiResponseThreadLocal().getAPIURLForInputModuleAndParameter(prpPagePartialURL,prpApiCallParameterData);
+        HashMap<String,String> prpURL = getApiResponseThreadLocal().getAPIURLForInputModuleAndParameter(prpPagePartialURL,prpApiCallParameterData);
         getProductResultsPageThreadLocal().verifyPRPPageAfterLoadingDataUsingAPIParameter(prpURL);
     }
 }
