@@ -25,8 +25,9 @@ public class SR_TC01_Verify_ProductSearchResult extends BaseTest{
 	@Test(groups={"ProductSearch","Regression","Regression_Tablet","Regression_Mobile"})
 	public void validateProductSearchResult() throws IOException {
 	getGlobalFooterPageThreadLocal().closePopupDialog();
-	
-	reporter.softAssert(getglobalheaderPageThreadLocal().validateURL((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");		
+
+	BasePage basePage=new BasePage(this.getDriver());
+	reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(basePage.getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");
 	reporter.reportLog("ProductSearch Page");
 	
 	List<String> lsKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_SearchKeyword();
@@ -77,16 +78,12 @@ public class SR_TC01_Verify_ProductSearchResult extends BaseTest{
 			break;
 		case "ProductNumberSearch":
 			reporter.reportLog("ProductNumberSearch");
-			reporter.softAssert(getProductResultsPageThreadLocal().verifyUrlContainDimensionAndKeyword(lsKeywordList.get(i)), "Url of search result matches expected url", "Url of search result doesn't match expected url");
-			
-			lsMsg=getProductResultsPageThreadLocal().verifySearchResultMessage(lstSearchResultMessage.get(0),lsKeywordList.get(i));
-			if(lsMsg.isEmpty()) {
-				reporter.reportLogPass("Search result message result of '"+getProductResultsPageThreadLocal().lsSearchResultMessage+"' matches the expected message");
-			}else {
-				reporter.reportLogFail(lsMsg);
+			if(basePage.URL().toLowerCase().contains("productdetails")){
+				reporter.reportLogPass("It goes to PDP page directly if using product number as keyword");
 			}
-
-			reporter.softAssert(getProductResultsPageThreadLocal().verifyProductPagination(), "Product pagination is existing", "Product pagination is not existing");
+			else{
+				reporter.reportLogFail("It does not go to PDP page directly if using product number as keyword");
+			}
 			break;
 		case "BannerImageSearch":
 			reporter.reportLog("BannerImageSearch");
