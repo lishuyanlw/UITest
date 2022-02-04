@@ -42,9 +42,12 @@ public class GH_TC02_Verify_Global_Header_SignIn_Favorite_ShoppingCartBag extend
 		String lsFirstName=TestDataHandler.constantData.getLoginUser().getLbl_FirstName();
 				
 		//Verify Sign in Text and Icon
-		getGlobalLoginPageThreadLocal().verifySignInSection();		
-		getGlobalLoginPageThreadLocal().verifyShowingUserFirstNameAfterSignin(lsUserName, lsPassword,lsFirstName);		
+		getGlobalLoginPageThreadLocal().verifySignInSection();
+		getGlobalLoginPageThreadLocal().getReusableActionsInstance().staticWait(5000);
+		getGlobalLoginPageThreadLocal().verifyShowingUserFirstNameAfterSignin(lsUserName, lsPassword,lsFirstName);
+		getGlobalLoginPageThreadLocal().getReusableActionsInstance().staticWait(5000);
 		getGlobalLoginPageThreadLocal().SignOut();
+		getGlobalLoginPageThreadLocal().getReusableActionsInstance().staticWait(5000);
 		reporter.reportLog("Verify Shopping Cart section");
 		//Verify url does not contain notfound after clicking Shopping Cart link
 		lsUrl=getglobalheaderPageThreadLocal().getUrlAfterClickingShoppingCartLink();
@@ -102,9 +105,9 @@ public class GH_TC02_Verify_Global_Header_SignIn_Favorite_ShoppingCartBag extend
 		reporter.reportLog("Verify Shopping Cart section");
 		//Verify Shopping Cart section
 		validateText(getglobalheaderPageThreadLocal().validateShoppingCartLinkName(), TestDataHandler.constantData.getHeaderSection().getLbl_ShoppingCartLinkName(), "Sopping cart Link is present & Text is visible");
-		
+		getGlobalLoginPageThreadLocal().getReusableActionsInstance().staticWait(5000);
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateShoppingCartIcon(), "Shopping cart icon is visible", "Shopping cart icon is not visible");
-		
+		getGlobalLoginPageThreadLocal().getReusableActionsInstance().staticWait(5000);
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateShoppingCartBagCounter(), "Shopping cart Bag counter is visible", "Shopping cart Bag counter is not visible");
 		
 		//Verify Shopping Cart href matches correct pattern

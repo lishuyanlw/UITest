@@ -291,7 +291,7 @@ import utils.ReusableActions;
 	
 	/**
 	 * This method will verify the page loading by url changes
-	 * @param WebElement element: the element will be clicked	 
+	 * @param-WebElement element: the element will be clicked
 	 * @return String: changed url
 	 * @author Wei.Li
 	 */			
@@ -332,7 +332,7 @@ import utils.ReusableActions;
 
 	/**
 	 * This method will implement ENTER key pressing action.
-	 * @param WebElement element: the action related element
+	 * @param-WebElement element: the action related element
 	 * @return void
 	 * @author Wei.Li
     */ 
@@ -343,7 +343,7 @@ import utils.ReusableActions;
 
 	/**
 	 * This method will implement CTRL+A+DELETE to clear element contents.
-	 * @param WebElement element: the action related element
+	 * @param-WebElement element: the action related element
 	 * @return void
 	 * @author Wei.Li
 	 */
@@ -367,7 +367,7 @@ import utils.ReusableActions;
 
 	/**
 	 * This method will extract number in a target string.
-	 * @param String lsTarget: target string
+	 * @param-String lsTarget: target string
 	 * @return the list of extracted numbers
 	 * @author Wei.Li
 	 */
@@ -386,7 +386,7 @@ import utils.ReusableActions;
 
 	/**
 	 * This method will get element innerText.
-	 * @param WebElement element: element 
+	 * @param-WebElement element: element
 	 * @return String
 	 * @author Wei.Li
 	 */		
@@ -419,7 +419,7 @@ import utils.ReusableActions;
     
 	/**
 	 * This method will return childElementCount.
-	 * @param WebElement parent: parent element 
+	 * @param-WebElement parent: parent element
 	 * @author Wei.Li
 	 */		
 	public long getChildElementCount(WebElement parent) {
@@ -431,7 +431,7 @@ import utils.ReusableActions;
 	
 	/**
 	 * This method will get element attribute.
-	 * @param WebElement element: element 
+	 * @param-WebElement element: element
 	 * @author Wei.Li
 	 */		
 	public String getChildElementAttribute(WebElement element,String lsAttribute) {
@@ -441,7 +441,7 @@ import utils.ReusableActions;
 	
 	/**
 	 * This method will set element attribute.
-	 * @param WebElement parent: parent element 
+	 * @param-WebElement parent: parent element
 	 * @author Wei.Li
 	 */		
 	public void setChildElementAttribute(WebElement parent,String lsAttribute,String lsValue) {
@@ -451,7 +451,7 @@ import utils.ReusableActions;
 	
 	/**
 	 * This method will return childElement.
-	 * @param WebElement parent: parent element 
+	 * @param-WebElement parent: parent element
 	 * @return List<WebElement>: children element
 	 * @author Wei.Li
 	 */		
@@ -463,9 +463,9 @@ import utils.ReusableActions;
 	
 	/**
 	 * This method will check if a childElement is existing by some specific Attribute.
-	 * @param WebElement parent: parent element 
-	 * @param String lsAttribute: Attribute
-	 * @param String lsAttributeValue: Attribute value 
+	 * @param-WebElement parent: parent element
+	 * @param-String lsAttribute: Attribute
+	 * @param-String lsAttributeValue: Attribute value
 	 * @return boolean
 	 * @author Wei.Li
 	 */		
@@ -502,10 +502,10 @@ import utils.ReusableActions;
 	
 	/**
 	 * This method will check if a childElement is existing by specific TagName and Attribute.
-	 * @param WebElement parent: parent element 
-	 * @param String lsTagName: TagName
-	 * @param String lsAttribute: Attribute
-	 * @param String lsAttributeValue: Attribute value 
+	 * @param-WebElement parent: parent element
+	 * @param-String lsTagName: TagName
+	 * @param-String lsAttribute: Attribute
+	 * @param-String lsAttributeValue: Attribute value
 	 * @return boolean
 	 * @author Wei.Li
 	 */		
@@ -546,8 +546,8 @@ import utils.ReusableActions;
 	
 	/**
 	 * This method will check if a childElement is existing by some specific TagName.
-	 * @param WebElement parent: parent element 
-	 * @param String lsTagName: TagName
+	 * @param-WebElement parent: parent element
+	 * @param-String lsTagName: TagName
 	 * @return boolean
 	 * @author Wei.Li
 	 */	
@@ -564,8 +564,8 @@ import utils.ReusableActions;
 	
 	/**
 	 * This method will identify if the element has a specific Attribute.
-	 * @param WebElement element: the element
-	 * @param String lsAttribute: the Attribute
+	 * @param-WebElement element: the element
+	 * @param-String lsAttribute: the Attribute
 	 * @return true/false
 	 * @author Wei.Li
 	 */		
@@ -576,7 +576,7 @@ import utils.ReusableActions;
 	
 	/**
 	 * This method will click an element.
-	 * @param WebElement element: the element
+	 * @param-WebElement element: the element
 	 * @return void
 	 * @author Wei.Li
 	 */		
@@ -587,7 +587,7 @@ import utils.ReusableActions;
 	
 	/**
 	 * This method will split keyword using space.
-	 * @param String lsKeyword: input keyword
+	 * @param-String lsKeyword: input keyword
 	 * @return split array
 	 * @author Wei.Li
 	 */	
@@ -597,8 +597,8 @@ import utils.ReusableActions;
 	
     /**
 	 * This method will get float from string.
-	 * @param String lsTarget: target string
-	 * @param boolean bHighestFirst
+	 * @param-String lsTarget: target string
+	 * @param-boolean bHighestFirst
 	 * @return float value
 	 * @author Wei.Li
 	 */	
@@ -627,7 +627,7 @@ import utils.ReusableActions;
     
     /**
 	 * This method will get integer from string.
-	 * @param String lsTarget: target string
+	 * @param-String lsTarget: target string
 	 * @return int value
 	 * @author Wei.Li
 	 */	
@@ -646,7 +646,7 @@ import utils.ReusableActions;
     
     /**
 	 * This method will verify element existing. 
-	 * @param WebElement element: input element 
+	 * @param-WebElement element: input element
 	 * @return true/false
 	 * @author Wei.Li
 	 */	
@@ -657,8 +657,8 @@ import utils.ReusableActions;
 	
 	/**
 	 * This method is to verify element properties.
-	 * @param WebElement element: input element
-	 * @param String lsChoice: "Text"/"Image"/"Link"
+	 * @param-WebElement element: input element
+	 * @param-String lsChoice: "Text"/"Image"/"Link"
 	 * @return true/false
 	 * @author Wei.Li
 	 */
@@ -687,7 +687,7 @@ import utils.ReusableActions;
 	
     /**
 	 * This method is to get element text. 
-	 * @param WebElement element: input element 
+	 * @param-WebElement element: input element
 	 * @return String
 	 * @author Wei.Li
 	 */	
@@ -698,7 +698,7 @@ import utils.ReusableActions;
     
     /**
 	 * This method is to get element href. 
-	 * @param WebElement element: input element 
+	 * @param-WebElement element: input element
 	 * @return String
 	 * @author Wei.Li
 	 */	
@@ -708,7 +708,7 @@ import utils.ReusableActions;
     
     /**
 	 * This method is to get element image src. 
-	 * @param WebElement element: input element 
+	 * @param-WebElement element: input element
 	 * @return String
 	 * @author Wei.Li
 	 */	
@@ -718,7 +718,7 @@ import utils.ReusableActions;
     
 	/**
 	 * This method is to remove last slash from Url
-	 * @param String lsUrl: input Url
+	 * @param-String lsUrl: input Url
 	 * @return String: Url
 	 * @author Wei.Li
 	 */
@@ -731,7 +731,7 @@ import utils.ReusableActions;
 	
 	/**
 	 * This method is to get UTF-8 format
-	 * @param String data: input data	  
+	 * @param-String data: input data
 	 * @author Sachin.Sharma
 	 */
 	public String getUTFEnabledData(String data) {
@@ -767,8 +767,8 @@ import utils.ReusableActions;
 
     /**
 	 * This method is to get element from element list with a expected text. 
-	 * @param List<WebElement> elementList: input element list
-	 * @param String lsExpectedText: input expected text
+	 * @param-List<WebElement> elementList: input element list
+	 * @param-String lsExpectedText: input expected text
 	 * @return WebElement
 	 * @author Wei.Li
 	 */	
@@ -822,7 +822,7 @@ import utils.ReusableActions;
 	
 	/**
 	 *Method to verify element link  	 
-	 * @param WebElement element: input element
+	 * @param-WebElement element: input element
 	 * @author Wei.Li
 	 */	
 	 public void verifyElementLink(WebElement element) {
@@ -857,7 +857,9 @@ import utils.ReusableActions;
 	public String getUrlForLandingpage(WebElement element) {
 		String urlFavouriteslandingpage;
 		getReusableActionsInstance().scrollToElement(element);
-		element.click();
+		getReusableActionsInstance().clickIfAvailable(element);
+		getReusableActionsInstance().waitForPageLoad();
+		getReusableActionsInstance().staticWait(3000);
 		urlFavouriteslandingpage = getDriver().getCurrentUrl();
 		return urlFavouriteslandingpage;
 	}

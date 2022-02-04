@@ -100,7 +100,7 @@ searchResultPage:
     - filterType: CombinatedAction
       filterOption:
         - ["Shop by brand","N Natori"]
-        - ["Reviews","5 Stars"]
+        - ["Reviews","3 Stars"]
         - ["Price","Under $100"]
     - filterType: SequentialAction
       filterOption: 
