@@ -951,4 +951,17 @@ import utils.ReusableActions;
 		}
 		return redirectUrl;
 	}
+
+	/**
+	 * Method to shorten the text
+	 */
+	public String getShortenText(String lsText, int shortenNumber){
+		if (lsText.length() > shortenNumber) {
+			lsText = lsText.substring(0, shortenNumber) + "...";
+		}
+		return lsText;
+	}
+
+
+
 }
