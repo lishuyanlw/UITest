@@ -352,6 +352,10 @@ public class ProductResultsPage extends BasePage{
 
 	public By sizeSelected = By.xpath(".//form[contains(@class,'product-card__main')]//span[contains(@class,'size-title')]");
 
+	//For PDP page loading purpose
+	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']")
+	public WebElement lblPDPProductName;
+
 	String searchkeyword;
 	public boolean bVerifyTitle=true;
 	public String firstLevelFilter,secondLevelFilter;
@@ -437,7 +441,12 @@ public class ProductResultsPage extends BasePage{
 		this.waitForPageToLoad();
 		this.getReusableActionsInstance().staticWait(2000);
 
-		this.getReusableActionsInstance().waitForElementVisibility(this.lblSearchResultMessage,120);
+		if(searchKeyword.matches("\\d+")){
+			this.getReusableActionsInstance().waitForElementVisibility(this.lblPDPProductName,120);
+		}
+		else{
+			this.getReusableActionsInstance().waitForElementVisibility(this.lblSearchResultMessage,120);
+		}
 
 		return true;
 	}
@@ -670,6 +679,10 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	public String judgeTestModel() {
+		if(this.URL().toLowerCase().contains("productdetails")){
+			return "ProductNumberSearch";
+		}
+
 		if(!this.checkProductResultExisting()) {
 			return "NoSearchResult";
 		}
@@ -686,14 +699,7 @@ public class ProductResultsPage extends BasePage{
 		if(!lsUrl.contains("dimensions=0&")) {
 			return "BannerImageSearch";
 		}*/
-
-		int totalNumber=getProductSearchResultsTotalNumber();
-		if(totalNumber==1){
-			return "ProductNumberSearch";
-		}
-		else{
-			return "NormalSearch";
-		}
+		return "NormalSearch";
 	}
 
 	public int getProductSearchResultsTotalNumber() {
@@ -2124,7 +2130,7 @@ public class ProductResultsPage extends BasePage{
 
 		SelectedProduct selectedProduct= null;
 		Product.Products product=null;
-		String productNumber="";
+		String productName="";
 		for(String lsKeyword:lstKeyword) {
 			product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,true);
 			if(product!=null) {
@@ -2138,11 +2144,11 @@ public class ProductResultsPage extends BasePage{
 		}
 
 		selectedProduct=apiResponse.selectedProduct;
-		productNumber=selectedProduct.productNumber;
+		productName=selectedProduct.productName;
 
 		this.selectedProductItem.init();
-		reporter.reportLog("Product No fetched from API call is: "+productNumber);
-		this.getSearchResultLoad(productNumber,true);
+		reporter.reportLog("Product Name fetched from API call is: "+productName);
+		this.getSearchResultLoad(productName,true);
 
 		WebElement item=this.productResultList.get(0);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
@@ -2797,16 +2803,14 @@ public class ProductResultsPage extends BasePage{
 	 * @return void
 	 * @author Wei.Li
 	 */
-	public void verifyInfoLinkageWithPDP(ProductDetailPage pdp,String lsProductNumber) {
+	public void verifyInfoLinkageWithPDP(ProductDetailPage pdp,String lsProductName) {
 		WebElement itemContainer;
 				
-		if(lsProductNumber!=null) {			
-			this.getSearchResultLoad(lsProductNumber, true);
+		if(lsProductName!=null) {
+			this.getSearchResultLoad(lsProductName, true);
 			itemContainer=this.productResultList.get(0);
 			
 			this.selectedProductItem.init();
-			
-			this.selectedProductItem.productNumber=lsProductNumber;
 			this.selectedProductItem.productName=this.getElementInnerText(itemContainer.findElement(this.byProductName));
 			
 			if(this.checkProductItemBrandNameExisting(itemContainer)) {
@@ -2851,7 +2855,7 @@ public class ProductResultsPage extends BasePage{
 		itemContainer.findElement(this.byProductGoToDetails).click();
 		this.waitForPDPPageLoading();
 
-		String lsProductName=pdp.getElementInnerText(pdp.lblProductName);		
+		lsProductName=pdp.getElementInnerText(pdp.lblProductName);
 		if(lsProductName.equalsIgnoreCase(this.selectedProductItem.productName)) {
 			reporter.reportLogPass("The product name of "+this.selectedProductItem.productName+" in PRP is the same as the one of "+lsProductName+" displayed in PDP");
 		}

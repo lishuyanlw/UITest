@@ -1,6 +1,8 @@
 package com.tsc.test.tests.globalHeader;
 
 import java.io.IOException;
+
+import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
@@ -36,7 +38,9 @@ public class GH_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo extends B
 
 		reporter.reportLog("Verify Black headers");
 		//Verify Black headers
-		getglobalheaderPageThreadLocal().verifyTSHeaderAndLinkInBlackHeader(getglobalheaderPageThreadLocal().lnkTSBlackHeader,null,true);//getglobalheaderPageThreadLocal().lnkTS
+		getglobalheaderPageThreadLocal().hoverOnWatchTSC();
+		getglobalheaderPageThreadLocal().verifyTSHeaderAndLinkInBlackHeader(null,null,true);//getglobalheaderPageThreadLocal().lnkTS
+		/*
 		//getglobalheaderPageThreadLocal().goBackHomePage();
 		getglobalheaderPageThreadLocal().clickOnTSCLogo();
 
@@ -67,7 +71,7 @@ public class GH_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo extends B
 
 		getglobalheaderPageThreadLocal().hoverOnWatchTSC();
 		getglobalheaderPageThreadLocal().verifyTSHeaderAndLinkInBlackHeader(getglobalheaderPageThreadLocal().lnkOnAirProductsDpdMenu,null,true);//getglobalheaderPageThreadLocal().lnkOnAir
-
+		*/
 //		reporter.reportLog("Verify Silver headers");
 //		//Verify Silver headers
 //		String lsUrl,lsYmlNotFound,lsYmlFullUrl,lsSuccessResult, lsFailResult;
@@ -211,6 +215,10 @@ public class GH_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo extends B
 			reporter.reportLog("Verify Black headers");
 			//Verify Black headers
 			getglobalheaderPageThreadLocal().hoverOnWatchTSC();
+			for(WebElement lblWatchTSC: getglobalheaderPageThreadLocal().lstWatchTSCDropDown){
+				getglobalheaderPageThreadLocal().verifyElementLink(lblWatchTSC);
+			}
+			/*
 			getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkWatchUsLiveDpdMenu);
 			getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkDealsDpdMenu);
 			getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkProgramGuideDpdMenu);
@@ -218,8 +226,9 @@ public class GH_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo extends B
 			//comment line #215 &216 for staging
 			getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkDesignerFootwearDpdMenu);
 			getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkOnAirProductsDpdMenu);
-			getglobalheaderPageThreadLocal().hoverOnWatchTSC();
-			getglobalheaderPageThreadLocal().staticwait();
+			*/
+			//getglobalheaderPageThreadLocal().hoverOnWatchTSC();
+			//getglobalheaderPageThreadLocal().staticwait();
 			basePage.getReusableActionsInstance().javascriptScrollByVisibleElement(getglobalheaderPageThreadLocal().lnkTSBlackHeader);
 			basePage.getReusableActionsInstance().scrollToElement(getglobalheaderPageThreadLocal().lnkTSBlackHeader);
 			getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkTSBlackHeader);

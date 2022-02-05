@@ -73,7 +73,7 @@ public class LoginPage extends BasePage {
 	public WebElement lnkPrivacyAndSecurity;
 	
 	//After Sign in
-	@FindBy(xpath = "//ng-component//button[contains(@class,'btn-accnt-signout')]")
+	@FindBy(xpath = "//ng-component//button[contains(@class,'btn-accnt-signout')]|//ul[contains(@class,'account-panel-content')]/li/a/span[contains(text(),'out')]")
 	public WebElement btnSignOut;
 	
 	@FindBy(xpath = "//div[@class='SuperCartridge']//div[@class='global-responsive-banner']")
@@ -204,8 +204,10 @@ public class LoginPage extends BasePage {
 	 * @author Wei.Li
 	 */
 	public boolean SignOut() {
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInMainMenu);
+		getReusableActionsInstance().staticWait(4000);
 		getReusableActionsInstance().scrollToElement(this.btnSignInMainMenu);
-		getReusableActionsInstance().staticWait(300);
+		getReusableActionsInstance().staticWait(4000);
 		String lsUserMsg=this.btnSignInMainMenu.getText();
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignOut);
 		this.getReusableActionsInstance().clickIfAvailable(this.btnSignOut);

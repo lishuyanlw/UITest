@@ -22,11 +22,12 @@ public class GH_TC08_Verify_Global_Header_Language extends BaseTest {
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl), "TSC url is correct", "TSC url is incorrect");
 		reporter.reportLog("Home Page");
 		getGlobalFooterPageThreadLocal().switchlanguage();
-		validateMajorNameAndLinks();
+		GH_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo gh_tc01_verify_global_header_blackMenu_silverMenu_tscLogo = new GH_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo();
+		gh_tc01_verify_global_header_blackMenu_silverMenu_tscLogo.validateMajorNameAndLinks();
 		if (System.getProperty("Device").equalsIgnoreCase("Desktop") ||
 				(System.getProperty("Device").equalsIgnoreCase("Tablet")
 					&& (System.getProperty("chromeMobileDevice")!=null && System.getProperty("chromeMobileDevice").contains("iPad")))) {
-			validateActionContents();
+			gh_tc01_verify_global_header_blackMenu_silverMenu_tscLogo.validateActionContents();
 		}
 		GH_TC03_Global_Header_Verify_FlyoutHeadings GH_TC03_Global_Header_Verify_FlyoutHeadings = new GH_TC03_Global_Header_Verify_FlyoutHeadings();
 		GH_TC03_Global_Header_Verify_FlyoutHeadings.validateFlyout();

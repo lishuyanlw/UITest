@@ -183,7 +183,7 @@ public class GlobalFooterPage extends BasePage {
 	@FindBy(xpath = "//div[@class='SuperCartridge'][@style]")
 	public WebElement imgMyAccountLoginSuperCartridgeSection;
 
-	@FindBy(xpath = "//ng-component//div[contains(@class,'tsc-forms')]//div[contains(@class,'form-head')]//h2")
+	@FindBy(xpath = "//section[contains(@class,'tsc-container container')]//div[contains(@class,'rhs-account')]/a/span|//ng-component//div[contains(@class,'tsc-forms')]//div[contains(@class,'form-head')]//h2")
 	public WebElement lblMyAccountLoginName;
 
 	@FindBy(xpath = "//ng-component//div[contains(@class,'tsc-forms')]//div[contains(@class,'form-head')]//span[contains(@class,'custNo')]/preceding-sibling::span")

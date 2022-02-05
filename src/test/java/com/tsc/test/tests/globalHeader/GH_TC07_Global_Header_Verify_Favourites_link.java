@@ -24,7 +24,7 @@ public class GH_TC07_Global_Header_Verify_Favourites_link extends BaseTest {
 		Map<String, List<String>> headerLinks = TestDataHandler.constantData.headerSection.getLst_HeaderNameAndLinksMap();
 		String urlFavoritesLandingpageAnonymousUser=TestDataHandler.constantData.getHeaderSection().getlbl_SignInLandingPage();
 		String lblSignInpageHeading=TestDataHandler.constantData.getHeaderSection().getLbl_SignIn();
-		WebElement lnkFavoriteElement =getglobalheaderPageThreadLocal().Favouriteslnk;
+		WebElement lnkFavoriteElement =getglobalheaderPageThreadLocal().FavouriteslnkText;
 
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl), "TSC url is correct", "TSC url is incorrect");
 		reporter.reportLog("Home Page");
@@ -39,13 +39,24 @@ public class GH_TC07_Global_Header_Verify_Favourites_link extends BaseTest {
 
 		if(getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword,lsFirstname)) {
 			getglobalheaderPageThreadLocal().waitForPageLoad();
-			String urlFavoritesLandingpageForLoggedinUser=getglobalheaderPageThreadLocal().getUrlForLandingpage(lnkFavoriteElement);
+			getglobalheaderPageThreadLocal().getReusableActionsInstance().staticWait(5000);
+			String urlFavoritesLandingpageForLoggedinUser=getglobalheaderPageThreadLocal().getUrlForLandingpage(getglobalheaderPageThreadLocal().Favouriteslnk);
+			getglobalheaderPageThreadLocal().getReusableActionsInstance().waitForPageLoad();
+			getglobalheaderPageThreadLocal().getReusableActionsInstance().staticWait(5000);
+			/*
+			boolean flag = getglobalheaderPageThreadLocal().verifyFavoritePageTitle(lsFirstname);
+			if(flag)
+				reporter.reportLogPass("Page Title for Favorite Page is as expected");
+			else
+				reporter.reportLogFail("Page Title for Favorite Page is as not as expected");
+			 */
 			reporter.softAssert(urlFavoritesLandingpageForLoggedinUser.contains(urlFavoritesLandingpageLoggedInUser), "Favourites link's Landing page url is correct for logged in user.", "Favourites link's Landing page url is incorrect for logged in user.");
 		}else {
 			reporter.reportLogFail("Login failed");
 		}
 
-		getglobalheaderPageThreadLocal().applyStaticWait(3000);
+		getglobalheaderPageThreadLocal().applyStaticWait(5000);
+		getglobalheaderPageThreadLocal().getReusableActionsInstance().waitForPageLoad();
 
 		//verify Favorite Link for anonymous user
 		if(getGlobalLoginPageThreadLocal().SignOut()) {

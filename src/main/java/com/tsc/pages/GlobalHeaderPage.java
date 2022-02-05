@@ -20,6 +20,9 @@ public class GlobalHeaderPage extends BasePage{
 	//Black header
 	@FindBy(xpath = "//div[contains(@class,'black-header')]//a[contains(@class,'black-header__showstopper')]")
 	public WebElement lnkTSBlackHeader;
+
+	@FindBy(xpath = "//div[contains(@class,'black-header')]//ul[contains(@class,'watch-tsc-panel-content')]//a")
+	public List<WebElement> lstWatchTSCDropDown;
 	
 	@FindBy(xpath = "//div[contains(@class,'black-header')]//*[contains(@class,'black-header__promotion-text')]")
 	public WebElement lblPromotionTextBlackHeader;
@@ -189,6 +192,12 @@ public class GlobalHeaderPage extends BasePage{
 	//Favorite link
 	@FindBy(xpath = "//*[@class='Header']//a[contains(@href, 'favourites')]")
 	public WebElement Favouriteslnk;
+
+	@FindBy(xpath = "//*[@class='Header']//a[contains(@href, 'favourites')]//span")
+	public WebElement FavouriteslnkText;
+
+	@FindBy(xpath = "//div[@class='clearfix']//div[contains(@class,'recently-viewed-wrapper tsc-forms')]//div[contains(@class,'offset')]/div//*/span")
+	public WebElement lblFavoritePageTitle;
 	
 	@FindBy(xpath = "//*[@class='Header']//a[contains(@href, 'favourites')]//*[@class='secondary-navigation__rhs-container__logo']")
 	public WebElement FavouritesIcon;
@@ -227,7 +236,7 @@ public class GlobalHeaderPage extends BasePage{
 	@FindBy(xpath = "//*[contains(@class,'primary-navigation__wrapper')]//a//span[contains(@class,'primary-navigation__link-text')]")
 	public List<WebElement> headingLinks;
 	
-	@FindBy(xpath = "//*[contains(@class,'mega-categories mega-column')]//a")
+	@FindBy(xpath = "//*[contains(@class,'mega-categories mega-column')]//a[not(contains(.,'Shop all'))]")
 	public List<WebElement> CategoriesLinks;
 	
 	//SubMenu
@@ -236,6 +245,9 @@ public class GlobalHeaderPage extends BasePage{
 	
 	@FindBy(xpath = "//*[contains(@class,'mega-sub-items mega-column')]//ul")
 	public List<WebElement> subMenuSection;
+
+	@FindBy(xpath = "//*[contains(@class,'mega-categories mega-column')]//a[(contains(.,'Shop all'))]")
+	public WebElement lblShopAllEachSubMenu;
 	
 	//Curated collection
 	@FindBy(xpath = "//a[contains(@class,'mega-curated__item-link')]")
@@ -437,19 +449,19 @@ public class GlobalHeaderPage extends BasePage{
 	/**
 	 *Method to hover on WatchTSC in Black headers  
 	 * @author Wei.Li
-	 */	
-	 public void hoverOnWatchTSC() {
-	 	getReusableActionsInstance().waitForPageLoad();
-	 	getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnWatchTSCBlackHeader);
+	 */
+	public void hoverOnWatchTSC() {
+		getReusableActionsInstance().waitForPageLoad();
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnWatchTSCBlackHeader);
 		getReusableActionsInstance().staticWait(2000);
 		//Clicking on button twice as test is not working for Safari using scrollToElement
-		//getReusableActionsInstance().clickIfAvailable(this.btnWatchTSCBlackHeader);
-		this.clickWebElementUsingJS(this.btnWatchTSCBlackHeader);
+		getReusableActionsInstance().clickIfAvailable(this.btnWatchTSCBlackHeader);
+		//this.clickWebElementUsingJS(this.btnWatchTSCBlackHeader);
 		getReusableActionsInstance().staticWait(3000);
-		//getReusableActionsInstance().clickIfAvailable(this.btnWatchTSCBlackHeader);
+		getReusableActionsInstance().clickIfAvailable(this.btnWatchTSCBlackHeader);
 		//this.clickWebElementUsingJS(this.btnWatchTSCBlackHeader);
 		//getReusableActionsInstance().staticWait(1000);
-	 }	
+	}
 	 
 	/**
 	 *Method to verify TS header and link in Black headers  	 
@@ -459,32 +471,43 @@ public class GlobalHeaderPage extends BasePage{
 	 * @author Wei.Li
 	 */	
 	 public void verifyTSHeaderAndLinkInBlackHeader(WebElement blackItem,WebElement silverItem,boolean bCheckUrl) {
-	 	getReusableActionsInstance().waitForPageLoad();
-	 	getReusableActionsInstance().javascriptScrollByVisibleElement(blackItem);
-		/*if(!System.getProperty("Device").equalsIgnoreCase("Desktop")) {
-			getReusableActionsInstance().clickIfAvailable(blackItem);
-		}*/
-		String title=blackItem.getText().trim();
-		String lsTitle=getUTFEnabledData(title);
-		reporter.softAssert(getReusableActionsInstance().isElementVisible(blackItem), "The element of "+lsTitle+" in Black headers is visible","The element of "+lsTitle+" in Black headers is not visible");
-		reporter.softAssert(!lsTitle.isEmpty(), lsTitle+" text in Black headers is not empty", lsTitle+" text in Black headers is empty");
-		String lsHrefInBlackHeader=this.getElementHref(blackItem);
-		reporter.softAssert(!lsHrefInBlackHeader.isEmpty(), "The href of "+lsTitle+" in Black headers is not empty", "The href of "+lsTitle+" in Black headers is empty");
-		lsHrefInBlackHeader=this.removeLastSlashFromUrl(lsHrefInBlackHeader);
+	 	int loopSize = this.lstWatchTSCDropDown.size();
+	 	for(int i=0;i<loopSize;i++){
+			getReusableActionsInstance().waitForPageLoad();
+			getReusableActionsInstance().javascriptScrollByVisibleElement(lstWatchTSCDropDown.get(i));
+			/*if(!System.getProperty("Device").equalsIgnoreCase("Desktop")) {
+				getReusableActionsInstance().clickIfAvailable(blackItem);
+			}*/
+			String title=lstWatchTSCDropDown.get(i).getText().trim();
+			String lsTitle=getUTFEnabledData(title);
+			reporter.softAssert(getReusableActionsInstance().isElementVisible(lstWatchTSCDropDown.get(i)), "The element of "+lsTitle+" in Black headers is visible","The element of "+lsTitle+" in Black headers is not visible");
+			reporter.softAssert(!lsTitle.isEmpty(), lsTitle+" text in Black headers is not empty", lsTitle+" text in Black headers is empty");
+			String lsHrefInBlackHeader=this.getElementHref(lstWatchTSCDropDown.get(i));
+			reporter.softAssert(!lsHrefInBlackHeader.isEmpty(), "The href of "+lsTitle+" in Black headers is not empty", "The href of "+lsTitle+" in Black headers is empty");
+			lsHrefInBlackHeader=this.removeLastSlashFromUrl(lsHrefInBlackHeader);
 
-		blackItem.click();
-		(new GlobalFooterPage(this.getDriver())).waitForPageLoading();
-		//Using static wait here as there is no other unique element where we can use waitForCondition() function here
-		getReusableActionsInstance().staticWait(5000);
-		String lsUrlInSilverHeader=this.removeLastSlashFromUrl(this.URL());
+			lstWatchTSCDropDown.get(i).click();
+			(new GlobalFooterPage(this.getDriver())).waitForPageLoading();
+			//Using static wait here as there is no other unique element where we can use waitForCondition() function here
+			getReusableActionsInstance().staticWait(5000);
+			String lsUrlInSilverHeader=this.removeLastSlashFromUrl(this.URL());
 
-		if(bCheckUrl) {
-			reporter.softAssert(lsUrlInSilverHeader.equalsIgnoreCase(lsHrefInBlackHeader), "The Url of " + lsUrlInSilverHeader + "  after clicking " + lsTitle + " in Black headers is equal to the href of " + lsHrefInBlackHeader, "The Url of " + lsUrlInSilverHeader + "  after clicking " + lsTitle + " in Black headers is not equal to the href of " + lsHrefInBlackHeader);
-		}
+			if(bCheckUrl) {
+				//Program Guide url is appending daily in url and is not needed
+				if(lsUrlInSilverHeader.contains("programguide")) {
+					reporter.softAssert(lsUrlInSilverHeader.replace("/daily", "").equalsIgnoreCase(lsHrefInBlackHeader), "The Url of " + lsUrlInSilverHeader + "  after clicking " + lsTitle + " in Black headers is equal to the href of " + lsHrefInBlackHeader, "The Url of " + lsUrlInSilverHeader + "  after clicking " + lsTitle + " in Black headers is not equal to the href of " + lsHrefInBlackHeader);
+					this.getReusableActionsInstance().staticWait(8000);
+				}else
+					reporter.softAssert(lsUrlInSilverHeader.equalsIgnoreCase(lsHrefInBlackHeader), "The Url of " + lsUrlInSilverHeader + "  after clicking " + lsTitle + " in Black headers is equal to the href of " + lsHrefInBlackHeader, "The Url of " + lsUrlInSilverHeader + "  after clicking " + lsTitle + " in Black headers is not equal to the href of " + lsHrefInBlackHeader);
+			}
 
-		if(silverItem!=null) {
-			String lsStyle=silverItem.findElement(By.xpath(".//span")).getAttribute("style");
-			reporter.softAssert(lsStyle.toLowerCase().contains("color:#fff;")||lsStyle.toLowerCase().contains("color: rgb(255, 255, 255);"), lsTitle+" in Silver headers is being selected", lsTitle+" in Silver headers is not being selected");
+			if(silverItem!=null) {
+				String lsStyle=silverItem.findElement(By.xpath(".//span")).getAttribute("style");
+				reporter.softAssert(lsStyle.toLowerCase().contains("color:#fff;")||lsStyle.toLowerCase().contains("color: rgb(255, 255, 255);"), lsTitle+" in Silver headers is being selected", lsTitle+" in Silver headers is not being selected");
+			}
+			//this.clickOnTSCLogo();
+			getReusableActionsInstance().waitForPageLoad();
+			this.hoverOnWatchTSC();
 		}
 	 }
 
@@ -571,8 +594,8 @@ public class GlobalHeaderPage extends BasePage{
 	}
 	
 	/**Method to click on WebElement for CuratedCollections SubMenu Item by providing Flyout heading name ,CuratedCollections SubMenu Item name as parameters.
-	 * @param String headingName: flyout menu item name
-	 * @param String submenuHeading: Curated Collections Menu Item name
+	 * @param-String headingName: flyout menu item name
+	 * @param-String submenuHeading: Curated Collections Menu Item name
 	 * @author Wei.Li
 	 */
 	public void clickCuratedCollectionsMenuItem(String headingName,String submenuHeading) {
@@ -590,8 +613,8 @@ public class GlobalHeaderPage extends BasePage{
 	}
 	
 	/**Method to click on WebElement for CuratedCollections SubMenu Item by providing Flyout heading name ,CuratedCollections SubMenu Item name as parameters.
-	 * @param String headingName: flyout menu item name
-	 * @param int subMenuIndex: popular brand list index
+	 * @param-String headingName: flyout menu item name
+	 * @param-int subMenuIndex: popular brand list index
 	 * @author Wei.Li
 	 */
 	public void clickPopularBrandsMenuItem(String headingName,int subMenuIndex) {
@@ -838,6 +861,13 @@ public class GlobalHeaderPage extends BasePage{
 				}
 			break;
 			case "Left Section":
+				//Verifying ShopAll section in left menu
+				if (!verifyElementProperty(this.lblShopAllEachSubMenu, "Link")) {//href is not present
+					getReporter().softAssert(false,"","Link is not present for: "+this.lblShopAllEachSubMenu.getText());
+				}else{
+					getReporter().reportLog("Href present for left side menu item: "+this.lblShopAllEachSubMenu.getText());
+				}
+
 				for (WebElement category:CategoriesLinks) {
 					getReusableActionsInstance().javascriptScrollByVisibleElement(category);
 					this.scrolltoWebElement(category);
@@ -854,11 +884,15 @@ public class GlobalHeaderPage extends BasePage{
 	 * @author Shruti Desai
 	 */
 	public String getPageHeadingSignin() {
-
 		return getPageTitle(SigninPageHeading);
 	}
 
-
+	public boolean verifyFavoritePageTitle(String actualTitle){
+		String pageTitle = this.getPageTitle(this.lblFavoritePageTitle);
+		if(pageTitle.toLowerCase().contains(actualTitle.toLowerCase()))
+			return true;
+		return false;
+	}
 
 }
 

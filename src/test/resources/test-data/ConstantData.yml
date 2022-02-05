@@ -80,8 +80,8 @@ homePage:
 searchResultPage:
   lbl_prp_partial_url: "/pages/productresults?"
   lst_SearchKeyword: [ "dyson vacuum","dfafasdfa","100501","Joan Rivers" ]
-  lst_SearchKeyword_Bugs: ["iPads & Tablets","apple  ","https://qa-tsc.tsc.ca/pages/productresults?&searchterm=desk","404191"]
-  lbl_ProductNumberToComparePRPAndPDPContent: 406045
+  lst_SearchKeyword_Bugs: ["iPads & Tablets","apple  ","https://qa-tsc.tsc.ca/pages/productresults?&searchterm=desk","Brian Bailey Asymmetrical Waterfall Drape Dress"]
+  lbl_ProductNumberToComparePRPAndPDPContent: "Brian Bailey 3/4 Sleeve Trumpet Hem Dress"
   lst_SearchKeyword_DropDown: [[ "dress","Categories","0" ]]
   lst_APISearchingKeyword: ["dress","jegging","boots"]
   lbl_SearchResultPageDefaultSetting: 36
@@ -101,7 +101,7 @@ searchResultPage:
     - filterType: CombinatedAction
       filterOption:
         - ["Shop by brand","N Natori"]
-        - ["Reviews","5 Stars"]
+        - ["Reviews","3 Stars"]
         - ["Price","Under $100"]
     - filterType: SequentialAction
       filterOption: 
@@ -149,7 +149,7 @@ footerSection:
     - ["Customer Service","Service à la clientèle","/pages/customer-service","","TSC CUSTOMER HUB - ESPACE CLIENT TSC"]
     - ["My Account","Mon compte","/go/customerservice/myaccountpage","","TSC CUSTOMER HUB - ESPACE CLIENT TSC"]
     - ["Track Your Order","Suivre une commande","/pages/trackorder","","TSC CUSTOMER HUB - ESPACE CLIENT TSC"]
-    - ["Contact Us","Contactez-Nous","/pages/contact-us","","TSC CUSTOMER HUB - ESPACE CLIENT TSC"]
+    - ["Contact Us","Contactez-Nous","/pages/customer-service/contact-info","","TSC CUSTOMER HUB - ESPACE CLIENT TSC"]
     - ["Blog","Blog","https://blog.tsc.ca","","TSC CUSTOMER HUB - ESPACE CLIENT TSC"]
     - ["ABOUT TSC","À PROPOS DE TSC","",""]
     - ["Terms of Use","Modalités d’utilisation","/go/aboutus/aboutustandc","ABOUT OUR SERVICES","ABOUT TSC - À PROPOS DE TSC"]
@@ -164,6 +164,6 @@ footerSection:
   lst_MyAccountObjectSectionTitle: ["SETTING UP AN ACCOUNT","PHONE BASED ACCOUNTS","PASSWORD RECOVERY"]
   lst_TrackYourOrderObjectSectionTitle: ["ORDER NUMBER","BILLING POSTAL CODE","SUBMIT"]
 loginUser:
-  lbl_Username: testMail@test.com
+  lbl_Username: test123@test.com
   lbl_Password: testMail123
-  lbl_FirstName: David
+  lbl_FirstName: Test
