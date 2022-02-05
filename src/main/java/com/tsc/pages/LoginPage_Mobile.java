@@ -59,27 +59,28 @@ public class LoginPage_Mobile extends LoginPage{
         reporter.softAssert(getReusableActionsInstance().isElementVisible(this.inputPassword),"Password field is existing","Password field is not existing");*//*
     }*/
 
-    @Override
-    public boolean Login(String lsUserName, String lsPassword,String lsFirstName) {
-        getReusableActionsInstance().javascriptScrollByVisibleElement(this.SigninIcon);
-        this.SigninIcon.click();
-        getReusableActionsInstance().staticWait(2000);
-        getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInMainMenu);
-        getReusableActionsInstance().scrollToElement(this.btnSignInMainMenu);
-        getReusableActionsInstance().staticWait(300);
-        getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInNav);
-        this.btnSignInNav.click();
-        (new GlobalFooterPage(this.getDriver())).waitForPageLoading();
-        getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputUserName);
-        this.inputUserName.sendKeys(lsUserName);
-        getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputPassword);
-        this.inputPassword.sendKeys(lsPassword);
-
-        String lsSignInMsg=this.btnSignInMainMenu.getText();
-        getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSubmit);
-        this.btnSubmit.click();
-
-        return waitForCondition(Driver->{return !lsSignInMsg.equalsIgnoreCase(this.btnSignInMainMenu.getText());},30000);
-        //return super.Login(String lsUserName, String lsPassword);
-    }
+//    @Override
+//    public boolean Login(String lsUserName, String lsPassword,String lsFirstName) {
+//        getReusableActionsInstance().javascriptScrollByVisibleElement(this.SigninIcon);
+//        this.SigninIcon.click();
+//        getReusableActionsInstance().staticWait(2000);
+//        getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInMainMenu);
+//        getReusableActionsInstance().scrollToElement(this.btnSignInMainMenu);
+//        getReusableActionsInstance().clickIfAvailable(this.btnSignInMainMenu);
+//        getReusableActionsInstance().staticWait(300);
+//        getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInNav);
+//        this.btnSignInNav.click();
+//        (new GlobalFooterPage(this.getDriver())).waitForPageLoading();
+//        getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputUserName);
+//        this.inputUserName.sendKeys(lsUserName);
+//        getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputPassword);
+//        this.inputPassword.sendKeys(lsPassword);
+//
+//        String lsSignInMsg=this.btnSignInMainMenu.getText();
+//        getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSubmit);
+//        this.btnSubmit.click();
+//
+//        return waitForCondition(Driver->{return lblSignInGlobalResponseBanner.isDisplayed();},90000);
+//        //return super.Login(String lsUserName, String lsPassword);
+//    }
 }
