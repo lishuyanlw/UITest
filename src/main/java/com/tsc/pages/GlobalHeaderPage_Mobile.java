@@ -20,10 +20,6 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
     @FindBy(xpath = "//section//div[@class='secondary-navigation__rhs']//button[@id='secondary-navigation-mobile-hamburger']")
     public WebElement menuButton;
 
-//    @FindAll({
-//       @FindBy(xpath="//nav[contains(@class,'nav-items')]/ul/li/button"),
-//       @FindBy(xpath = "//section//nav[@class='mega-nav-mobile__nav-items']//ul//li//button")
-//    })
     @FindBy(xpath="//nav[contains(@class,'nav-items')]/ul")
     public WebElement FlyoutHeadingsMobile;
 

@@ -25,8 +25,8 @@ public class GH_TC08_Verify_Global_Header_Language extends BaseTest {
 		GH_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo gh_tc01_verify_global_header_blackMenu_silverMenu_tscLogo = new GH_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo();
 		gh_tc01_verify_global_header_blackMenu_silverMenu_tscLogo.validateMajorNameAndLinks();
 		if (System.getProperty("Device").equalsIgnoreCase("Desktop") ||
-				(System.getProperty("Device").equalsIgnoreCase("Tablet")
-					&& (System.getProperty("chromeMobileDevice")!=null && System.getProperty("chromeMobileDevice").contains("iPad")))) {
+				(System.getProperty("Device").equalsIgnoreCase("Tablet") &&
+						(System.getProperty("Browser").contains("ios") || ((System.getProperty("chromeMobileDevice")!=null && System.getProperty("chromeMobileDevice").contains("iPad")))))) {
 			gh_tc01_verify_global_header_blackMenu_silverMenu_tscLogo.validateActionContents();
 		}
 		GH_TC03_Global_Header_Verify_FlyoutHeadings GH_TC03_Global_Header_Verify_FlyoutHeadings = new GH_TC03_Global_Header_Verify_FlyoutHeadings();
@@ -38,62 +38,6 @@ public class GH_TC08_Verify_Global_Header_Language extends BaseTest {
 		}
 		switchToEnglish();
 	}
-	//Commenting getglobalheaderPageThreadLocal().goBackHomePage() to make test execution faster
-	public void validateActionContents() {
-		reporter.reportLog("Global Header Section contents for BlackMenu_SilverMenu_TSCLogoLinks");
-		BasePage basePage=new BasePage(this.getDriver());
-		reporter.reportLog("Verify Black headers");
-		//Verify Black headers
-		getglobalheaderPageThreadLocal().verifyTSHeaderAndLinkInBlackHeader(getglobalheaderPageThreadLocal().lnkTSBlackHeader,null,true);//getglobalheaderPageThreadLocal().lnkTS
-		//getglobalheaderPageThreadLocal().goBackHomePage();
-		
-		getglobalheaderPageThreadLocal().hoverOnWatchTSC();
-		getglobalheaderPageThreadLocal().verifyTSHeaderAndLinkInBlackHeader(getglobalheaderPageThreadLocal().lnkWatchUsLiveDpdMenu,null,true);//getglobalheaderPageThreadLocal().lnkWatchUsLive
-		//getglobalheaderPageThreadLocal().goBackHomePage();
-		//line #47-49 commented as its already been tested in TC01. Deals link is getting failed as its under maintains.
-		/*
-		getglobalheaderPageThreadLocal().hoverOnWatchTSC();
-		getglobalheaderPageThreadLocal().verifyTSHeaderAndLinkInBlackHeader(getglobalheaderPageThreadLocal().lnkDealsDpdMenu,null,true);//getglobalheaderPageThreadLocal().lnkDeals
-		getglobalheaderPageThreadLocal().goBackHomePage();
-		*/
-		getglobalheaderPageThreadLocal().hoverOnWatchTSC();
-		getglobalheaderPageThreadLocal().verifyTSHeaderAndLinkInBlackHeader(getglobalheaderPageThreadLocal().lnkProgramGuideDpdMenu,null,false);//getglobalheaderPageThreadLocal().lnkProgramGuide
-		//getglobalheaderPageThreadLocal().goBackHomePage();
-		//comment line # 54 to 60 for staging.
-		getglobalheaderPageThreadLocal().hoverOnWatchTSC();
-		getglobalheaderPageThreadLocal().verifyTSHeaderAndLinkInBlackHeader(getglobalheaderPageThreadLocal().lnkCarGadgetsDpdMenu,null,true);
-		//getglobalheaderPageThreadLocal().goBackHomePage();
-		
-		getglobalheaderPageThreadLocal().hoverOnWatchTSC();
-		getglobalheaderPageThreadLocal().verifyTSHeaderAndLinkInBlackHeader(getglobalheaderPageThreadLocal().lnkDesignerFootwearDpdMenu,null,true);
-		//getglobalheaderPageThreadLocal().goBackHomePage();
-		
-		getglobalheaderPageThreadLocal().hoverOnWatchTSC();
-		getglobalheaderPageThreadLocal().verifyTSHeaderAndLinkInBlackHeader(getglobalheaderPageThreadLocal().lnkOnAirProductsDpdMenu,null,true);//getglobalheaderPageThreadLocal().lnkOnAir
-		
-	}
-	
-	public void validateMajorNameAndLinks() {
-		reporter.reportLog("Global Header Section contents for BlackMenu_SilverMenu_TSCLogoLinks");
-		
-		BasePage basePage=new BasePage(this.getDriver());
-		if (!(System.getProperty("Device").equalsIgnoreCase("Mobile"))) {
-			reporter.reportLog("Verify Black headers");
-			//Verify Black headers
-			getglobalheaderPageThreadLocal().hoverOnWatchTSC();
-			getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkWatchUsLiveDpdMenu);
-			getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkDealsDpdMenu);
-			getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkProgramGuideDpdMenu);
-			//comment line # 79 & 80 for staging.
-			getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkCarGadgetsDpdMenu);
-			getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkDesignerFootwearDpdMenu);
-			getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkOnAirProductsDpdMenu);
-
-			basePage.getReusableActionsInstance().javascriptScrollByVisibleElement(getglobalheaderPageThreadLocal().lnkTSBlackHeader);
-			getglobalheaderPageThreadLocal().verifyElementLink(getglobalheaderPageThreadLocal().lnkTSBlackHeader);
-		}
-	}
-
 	public void switchToEnglish() {
 		Map<String,List<String>> headerMap= TestDataHandler.constantData.headerSection.getFlyout().getLst_FlyoutHeadingAndNameMap();
 		//switch back to english
