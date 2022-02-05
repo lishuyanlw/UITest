@@ -15,7 +15,7 @@ public class LoginPage extends BasePage {
 	}
 	
 	//Sign in menu
-	@FindBy(xpath = "//div[contains(@class,'secondary-navigation__rhs-account')]//a")
+	@FindBy(xpath = "//div[contains(@class,'secondary-navigation__rhs-account')]//a[@href='/pages/myaccount']")
 	public WebElement btnSignInMainMenu;
 	
 	//DropDown menu
@@ -106,7 +106,6 @@ public class LoginPage extends BasePage {
 	 */
 	public boolean Login(String lsUserName, String lsPassword,String lsFirstName) {
 		getReusableActionsInstance().javascriptScrollToTopOfPage();
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInMainMenu);
 		String strBrowser = System.getProperty("Browser").trim();
 		if (strBrowser.toLowerCase().contains("android") || strBrowser.toLowerCase().contains("ios")
 				|| strBrowser.toLowerCase().contains("mobile")) {
@@ -116,9 +115,8 @@ public class LoginPage extends BasePage {
 		} else {
 			getReusableActionsInstance().scrollToElement(this.btnSignInMainMenu);
 		}			
-		getReusableActionsInstance().staticWait(1000);
+		getReusableActionsInstance().staticWait(3000);
 		
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInNav);
 		this.getReusableActionsInstance().clickIfAvailable(this.btnSignInNav);
 		//this.btnSignInNav.click();
 		(new GlobalFooterPage(this.getDriver())).waitForPageLoading();
