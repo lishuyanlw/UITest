@@ -349,6 +349,9 @@ public class ProductResultsPage extends BasePage{
 	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='prp__applied-filters']/button/span")
 	public List<WebElement> lstFilterApplied;
 
+	@FindBy(xpath = "//div[@class='Middle']//div[contains(@class,'DimensionTitle')]//*[contains(@class,'DimTitle')]")
+	public WebElement lstFilterApplied_Mobile;
+
 	public By sizeSelected = By.xpath(".//form[contains(@class,'product-card__main')]//span[contains(@class,'size-title')]");
 
 	//For PDP page loading purpose
@@ -3417,21 +3420,29 @@ public class ProductResultsPage extends BasePage{
 	 * @return boolean
 	 */
 	public void verifyProductsOnPRPByBrandName(String brandName){
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lstFilterApplied.get(0));
-
 		//Defining and initializing variables
 		boolean filterBrandNameFlag = false;
 		String filterName = null,lsBrandName;
 		List<WebElement> productList;
 		WebElement item,element;
 
-		for(int counter=0;counter<lstFilterApplied.size();counter++){
-			filterName = lstFilterApplied.get(counter).getText();
-			if(brandName.toLowerCase().trim().equals(filterName.toLowerCase().trim())){
-				filterBrandNameFlag = true;
-				break;
+		if(System.getProperty("Device").equalsIgnoreCase("Desktop")){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lstFilterApplied.get(0));
+			for(int counter=0;counter<lstFilterApplied.size();counter++){
+				filterName = lstFilterApplied.get(counter).getText();
+				if(brandName.toLowerCase().trim().equals(filterName.toLowerCase().trim())){
+					filterBrandNameFlag = true;
+					break;
+				}
 			}
+		}else{
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstFilterApplied_Mobile);
+			this.getReusableActionsInstance().staticWait(3000);
+			filterName=this.lstFilterApplied_Mobile.getText();
+			if(brandName.toLowerCase().trim().equals(filterName.toLowerCase().trim()))
+				filterBrandNameFlag = true;
 		}
+
 		//Verifying brand name in filter
 		if(filterBrandNameFlag)
 			reporter.reportLogPass("Brand Name on PDP page i.e. "+brandName+" is same as in filter on PRP page: "+filterName);
