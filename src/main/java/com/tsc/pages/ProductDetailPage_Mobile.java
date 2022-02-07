@@ -406,6 +406,7 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
     @Override
     public void subTotal(){
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAddToBagPopupWindowButtonSectionSubtotal);
+        this.getReusableActionsInstance().scrollToElement(this.lblAddToBagPopupWindowButtonSectionSubtotal);
         reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblAddToBagPopupWindowButtonSectionSubtotal),"The product Subtotal in Add to Bag popup window is visible","The product Subtotal in Add to Bag popup window is not visible");
         reporter.softAssert(!this.lblAddToBagPopupWindowButtonSectionSubtotal.getText().isEmpty(),"The product Subtotal in Add to Bag popup window is not empty","The product Subtotal in Add to Bag popup window is empty");
     }

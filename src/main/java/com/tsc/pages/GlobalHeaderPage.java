@@ -743,8 +743,9 @@ public class GlobalHeaderPage extends BasePage{
 		if(verifyElementProperty(ShopAllWebElement,"Link")) {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(ShopAllWebElement);
 			getReusableActionsInstance().scrollToElement(ShopAllWebElement);
-			ShopAllWebElement.click();
+			getReusableActionsInstance().clickIfAvailable(ShopAllWebElement);
 			(new GlobalFooterPage(this.getDriver())).waitForPageLoading();
+			getReusableActionsInstance().staticWait(3000);
 			currentUrl = getDriver().getCurrentUrl();
 		}
 		return currentUrl;

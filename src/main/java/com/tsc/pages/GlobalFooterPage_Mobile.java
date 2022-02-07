@@ -29,7 +29,40 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 	
 	@FindBy(xpath = "//ng-component//div[contains(@class,'summary-logout')]//button")
 	public WebElement btnMyAccountSignOut;
-	
+
+	//Browse Help Topics in Customer service
+	@FindBy(xpath="//div[@id='customer-service']//div[@class='customer-service-faq']//ul[@class='customer-service-faq__topics-accordion']//li")
+	List<WebElement> lstCustomerServiceHelpTopics;
+
+	@FindBy(xpath="//div[@id='customer-service']//div[@class='customer-service-faq']//ul[@class='customer-service-faq__topics-accordion']//li//*[@class='customer-service-faq__topics-accordion__item-title__lhs__text']")
+	List<WebElement> lstCustomerServiceHelpTopicsTitle;
+
+	@FindBy(xpath="//div[@id='customer-service']//div[@class='customer-service-faq']//ul[@class='customer-service-faq__topics-accordion']//li//ul//li")
+	List<WebElement> lstCustomerServiceHelpTopicsSubItem;
+
+	@FindBy(xpath="//div[@id='customer-service']//div[@class='customer-service-faq']//ul[@class='customer-service-faq__topics-accordion']//li//div[@class='customer-service-faq__topics-accordion__item-title__lhs__icon']")
+	List<WebElement> lstCustomerServiceHelpTopicsIcon;
+
+	//For contact us in Help Topics
+	@FindBy(xpath="//div[@id='customer-service']//div[@class='customer-service-faq']//ul[@class='customer-service-faq__topics-accordion']//li//a[contains(@href,'contact-info')]/ancestor::li[@class='customer-service-faq__topics-accordion__item']")
+	WebElement lnkCustomerServiceContactTSC;
+
+	@FindBy(xpath="//div[@id='customer-service']//div[@class='customer-service-faq']//ul[@class='customer-service-faq__topics-accordion']//li//a[contains(@href,'contact-info')]")
+	WebElement lnkCustomerServiceContactInfo;
+
+	@FindBy(xpath="//div[@id='customer-service']//div[@class='customer-service-faq']//ul[@class='customer-service-faq__topics-accordion']//li//a[contains(@href,'email')]")
+	WebElement lnkCustomerServiceGeneralEmailInquiries;
+
+	@FindBy(xpath="//div[@id='customer-service']//div[@class='customer-service-faq']//ul[@class='customer-service-faq__topics-accordion']//li//a[contains(@href,'billing')]")
+	WebElement lnkCustomerServiceBillingOrRefundInquiries;
+
+	@FindBy(xpath="//div[@id='customer-service']//div[@class='customer-service-faq']//ul[@class='customer-service-faq__topics-accordion']//li//a[contains(@href,'feedback')]")
+	WebElement lnkCustomerServiceSendFeedback;
+
+	//For the right panel of window after clicking Help Topics subitem
+	@FindBy(xpath="//div[@id='customer-service']//div[@class='customer-service-faq']//button[@class='customer-service-faq__article__body__nav']")
+	WebElement btnCustomerServiceBackToHelpCenter;
+
 	@Override
 	public void verifyTSCCustomerHubLlinks(List<List<String>> lstNameAndLinks) {		
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblTSCCustomerHubText);
@@ -223,6 +256,111 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 		String lsBaseUrl=this.getBaseURL()+"/";		
 		this.navigateToURL(lsBaseUrl);
 		this.waitForPageLoading();
+	}
+
+	@Override
+	public void verifyBrowseByHelpTopicsInCustomerServicePageObject() {
+		String lsText;
+		getReusableActionsInstance().javascriptScrollByVisibleElement(lblBrowseByHelpTopics);
+		lsText=lblBrowseByHelpTopics.getText();
+		lsText=this.getShortenText(lsText,100);
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The element of '"+ lsText+"'"+" is displaying correctly.");
+		}
+		else{
+			reporter.reportLogFail("The element of '"+ lsText+"'"+" is displaying correctly.");
+		}
+
+		WebElement element,item;
+		List<WebElement> itemList;
+		for(int i=0;i<lstCustomerServiceHelpTopics.size();i++) {
+			item = lstCustomerServiceHelpTopics.get(i);
+			getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			element = lstCustomerServiceHelpTopicsTitle.get(i);
+			lsText = element.getText();
+			lsText = this.getShortenText(lsText, 100);
+			if (!lsText.isEmpty()) {
+				reporter.reportLogPass("The element of '" + lsText + "'" + " in Help topics list is displaying correctly.");
+			} else {
+				reporter.reportLogFail("The element of '" + lsText + "'" + " in Help topics list is displaying correctly.");
+			}
+
+			element = lstCustomerServiceHelpTopicsIcon.get(i);
+			if (getReusableActionsInstance().isElementVisible(element)) {
+				reporter.reportLogPass("The icon of Help Topics item is displaying correctly.");
+			} else {
+				reporter.reportLogFail("The icon of Help Topics item is not displaying correctly.");
+			}
+
+			getReusableActionsInstance().clickIfAvailable(item);
+			getReusableActionsInstance().staticWait(2000);
+			for (WebElement subItem : lstCustomerServiceHelpTopicsSubItem) {
+				getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
+				lsText = subItem.getText();
+				lsText = this.getShortenText(lsText, 100);
+				if (!lsText.isEmpty()) {
+					reporter.reportLogPass("The element of '" + lsText + "'" + " in Help topics list is displaying correctly.");
+				} else {
+					reporter.reportLogFail("The element of '" + lsText + "'" + " in Help topics list is displaying correctly.");
+				}
+			}
+		}
+	}
+
+	@Override
+	public void verifyStillNeedHelpInCustomerServicePageObject(){
+
+	}
+
+	@Override
+	public void verifyLiveChatPopupWindowInCustomerServicePageObject(WebElement btnLiveChat){
+
+	}
+
+	@Override
+	public void verifyLeftAsidePenalAfterClickingBrowseByHelpTopicsSubItemInCustomerServicePageObject(){
+
+	}
+
+	@Override
+	public void verifyClickingActionForInquiriesOrFeedback(String lsType) {
+		if(!this.bClickingInquiriesOrFeedback){
+			this.bClickingInquiriesOrFeedback=true;
+		}
+		else{
+			WebElement item=lstCustomerServiceHelpTopics.get(lstCustomerServiceHelpTopics.size()-1);
+			getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			getReusableActionsInstance().clickIfAvailable(item);
+			getReusableActionsInstance().staticWait(2000);
+
+			getReusableActionsInstance().javascriptScrollByVisibleElement(lnkCustomerServiceContactInfo);
+			getReusableActionsInstance().clickIfAvailable(lnkCustomerServiceContactInfo);
+			getReusableActionsInstance().waitForElementVisibility(lblCustomerServiceContactUsTitle);
+		}
+
+		switch(lsType){
+			case "Email":
+				getReusableActionsInstance().javascriptScrollByVisibleElement(lnkCustomerServiceContactUsGeneralEmailInquiries);
+				getReusableActionsInstance().clickIfAvailable(lnkCustomerServiceContactUsGeneralEmailInquiries);
+				break;
+			case "Billing":
+				getReusableActionsInstance().javascriptScrollByVisibleElement(lnkCustomerServiceContactUsBillingOrRefundEmailInquiries);
+				getReusableActionsInstance().clickIfAvailable(lnkCustomerServiceContactUsBillingOrRefundEmailInquiries);
+				break;
+			case "Feedback":
+				getReusableActionsInstance().javascriptScrollByVisibleElement(lnkCustomerServiceContactUsFeedback);
+				getReusableActionsInstance().clickIfAvailable(lnkCustomerServiceContactUsFeedback);
+				break;
+			default:
+				break;
+		}
+		getReusableActionsInstance().waitForElementVisibility(lblCustomerServiceGeneralEmailInquiriesTitle);
+
+		verifyInquiriesOrFeedbackContent(lsType);
+
+		getReusableActionsInstance().javascriptScrollByVisibleElement(btnCustomerServiceBackToHelpCenter);
+		getReusableActionsInstance().clickIfAvailable(btnCustomerServiceBackToHelpCenter);
+		getReusableActionsInstance().waitForElementVisibility(lblCustomerServiceWhatCanWeHelpYouWith);
 	}
 
 }

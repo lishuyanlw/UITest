@@ -145,29 +145,230 @@ public class GlobalFooterPage extends BasePage {
 	public WebElement txtCopyrightLine2;
 
 	// Customer service page objects
-	@FindBy(xpath = "//div[@class='CustomerService']//*[contains(@class,'customer-service__title')]")
-	public WebElement lblCustomerService;
+	//Top customer questions
+	@FindBy(xpath = "//div[@id='customer-service']//div[@class='customer-service-faq']//*[@class='customer-service-faq__title']")
+	public WebElement lblCustomerServiceWhatCanWeHelpYouWith;
 
-	@FindBy(xpath = "//div[@class='CustomerService']//*[contains(@class,'customer-service__title')]/following-sibling::h2")
-	public WebElement lblHowCanWeHelpYou;
+	@FindBy(xpath = "//div[@id='customer-service']//div[@class='customer-service-faq']//input[@class='customer-service-faq__search-input']")
+	public WebElement inputCustomerServiceSearch;
 
-	@FindBy(xpath = "//div[@class='CustomerService']//*[contains(@class,'customer-service__searchbox')]//input")
-	public WebElement inputSearchBox;
+	@FindBy(xpath = "//div[@id='customer-service']//div[@class='customer-service-faq']//*[@class='customer-service-faq__top-questions']")
+	public WebElement lblTopCustomerQuestions;
 
-	@FindBy(xpath = "//div[@class='CustomerService']//*[contains(@class,'customer-service__searchbox')]//button[contains(@class,'customer-service__search-button')]")
-	public WebElement btnSearchButton;
+	@FindBy(xpath = "//div[@id='customer-service']//div[@class='customer-service-faq']//ul[@class='customer-service-faq__faq']//li//button[@class='customer-service-faq__faq-title']")
+	public List<WebElement> lstTopCustomerQuestionsTitle;
 
-	@FindBy(xpath = "//div[@class='CustomerService']//div[contains(@class,'customer-service__faq-wrap')]//h3")
-	public WebElement lblFrequentlyAskedQuestions;
+	@FindBy(xpath = "//div[@id='customer-service']//div[@class='customer-service-faq']//ul[@class='customer-service-faq__faq']//li//div[@class='customer-service-faq__faq-article']")
+	public WebElement lblTopCustomerQuestionsContent;
 
-	@FindBy(xpath = "//div[@class='CustomerService']//ul[contains(@class,'customer-service__faq')]//li//a")
-	public List<WebElement> lstFrequentlyAskedQuestions;
+	//Browse by help topics
+	@FindBy(xpath = "//div[@id='customer-service']//div[@class='customer-service-faq']//*[@class='customer-service-faq__topics-title']")
+	public WebElement lblBrowseByHelpTopics;
 
-	@FindBy(xpath = "//div[@class='CustomerService']//div[contains(@class,'customerService__faq-wrap')]//a")
-	public WebElement lnkBackToCutomerService;
+	@FindBy(xpath = "//div[@id='customer-service']//div[@class='customer-service-faq']//div[@class='customer-service-faq__topics-grid']//div[@class='customer-service-faq__topics-grid__article']//div[@class='customer-service-faq__topics-grid__article__wrapper']//div[@class='customer-service-faq__topics-grid__article__title']")
+	public List<WebElement> lstBrowseByHelpTopicsTitle;
 
-	@FindBy(xpath = "//div[@class='CustomerService']//div[contains(@class,'customer-service__article')]")
-	public WebElement blkArticle;
+	@FindBy(xpath = "//div[@id='customer-service']//div[@class='customer-service-faq']//div[@class='customer-service-faq__topics-grid']//div[@class='customer-service-faq__topics-grid__article']//div[@class='customer-service-faq__topics-grid__article__title-icon']//img")
+	public List<WebElement> lstBrowseByHelpTopicsIcon;
+
+	@FindBy(xpath = "//div[@id='customer-service']//div[@class='customer-service-faq']//div[@class='customer-service-faq__topics-grid']//div[@class='customer-service-faq__topics-grid__article']//div[@class='customer-service-faq__topics-grid__article__wrapper']")
+	public List<WebElement> cntBrowseByHelpTopics;
+
+	public By byBrowseByHelpTopicsTitle= By.xpath(".//div[@class='customer-service-faq__topics-grid__article__title']");
+
+	public By byBrowseByHelpTopicsSubItemList= By.xpath(".//ul//li//a");
+
+	public By byBrowseByHelpTopicsSubItemSeeMoreButton= By.xpath(".//button[@class='customer-service-faq__topics-grid__article__expand-button']");
+
+	@FindBy(xpath = "//div[@id='customer-service']//div[@class='customer-service-faq']//div[@class='customer-service-faq__topics-grid']//div[@class='customer-service-faq__topics-grid__article']//ul//li")
+	public List<WebElement> lstBrowseByHelpTopicsSubItem;
+
+	@FindBy(xpath = "//div[@id='customer-service']//div[@class='customer-service-faq']//div[@class='customer-service-faq__topics-grid']//div[@class='customer-service-faq__topics-grid__article']//button[@class='customer-service-faq__topics-grid__article__expand-button']")
+	public List<WebElement> lstBrowseByHelpTopicsSubItemSeeMoreButton;
+
+	////////////////////////////////////////////////////////////////
+	//The window after clicking subitem
+	@FindBy(xpath = "//div[@class='customer-service-faq']//aside//nav[@class='customer-service-faq__article__side-nav__nav']//ul//button")
+	public List<WebElement> lstCustomerServiceSubItemWindowSideButton;
+
+	@FindBy(xpath = "//div[@class='customer-service-faq']//aside//nav[@class='customer-service-faq__article__side-nav__nav']//ul//li//ul//li")
+	public List<WebElement> lstCustomerServiceSubItemWindowSideSubItemList;
+
+	@FindBy(xpath = "//div[@class='customer-service-faq']//div[@class='customer-service-faq__article__body']")
+	public WebElement lblCustomerServiceSubItemWindowContentBody;
+
+	@FindBy(xpath = "//div[@class='customer-service-faq']//div[@class='customer-service-faq__article__body']//*[@class='customer-service-faq__article__body__title']")
+	public WebElement lblCustomerServiceSubItemWindowContentTitle;
+
+	//For Contact Info
+	@FindBy(xpath = "//nav[@class='customer-service-faq__article__side-nav__nav']//a[contains(@href,'contact-info')]")
+	public WebElement lnkCustomerServiceContactInfo;
+
+	@FindBy(xpath = "//section[@class='tsc-contact-us']//*[@class='tsc-contact-us__title']")
+	public WebElement lblCustomerServiceContactUsTitle;
+
+	@FindBy(xpath = "//section[@class='tsc-contact-us']//button[@class='tsc-contact-us__livechat']/preceding-sibling::div[@class='tsc-contact-us__text']")
+	public WebElement lblCustomerServiceContactUsChatDescription;
+
+	@FindBy(xpath = "//section[@class='tsc-contact-us']//button[@class='tsc-contact-us__livechat']")
+	public WebElement btnCustomerServiceContactUsLiveChat;
+
+	@FindBy(xpath = "//section[@class='tsc-contact-us']//button[@class='tsc-contact-us__livechat']/following-sibling::div[@class='tsc-contact-us__text']")
+	public WebElement lblCustomerServiceContactUsCallCustomerDescription;
+
+	@FindBy(xpath = "//section[@class='tsc-contact-us']//button[@class='tsc-contact-us__livechat']/following-sibling::div[@class='tsc-contact-us__text tsc-contact-us__text--top-space']")
+	public WebElement lblCustomerServiceContactUsCallSalesDescription;
+
+	@FindBy(xpath = "//section[@class='tsc-contact-us']//div[@class='tsc-contact-us__inquiries-block']//span[@class='tsc-contact-us__inquiries-block__text']")
+	public WebElement lblCustomerServiceContactUsCompleteEmailFormsDescription;
+
+	@FindBy(xpath = "//section[@class='tsc-contact-us']//div[@class='tsc-contact-us__inquiries-block']//a[contains(@href,'email')]")
+	public WebElement lnkCustomerServiceContactUsGeneralEmailInquiries;
+
+	@FindBy(xpath = "//section[@class='tsc-contact-us']//div[@class='tsc-contact-us__inquiries-block']//a[contains(@href,'billing')]")
+	public WebElement lnkCustomerServiceContactUsBillingOrRefundEmailInquiries;
+
+	@FindBy(xpath = "//section[@class='tsc-contact-us']//div[@class='tsc-contact-us__inquiries-block']//span[contains(@class,'tsc-contact-us__inquiries-block__text--light')]")
+	public WebElement lblCustomerServiceContactUsFeedback;
+
+	@FindBy(xpath = "//section[@class='tsc-contact-us']//div[@class='tsc-contact-us__inquiries-block']//span[contains(@class,'tsc-contact-us__inquiries-block__text--light')]//a")
+	public WebElement lnkCustomerServiceContactUsFeedback;
+
+	//For General email inquiries
+	@FindBy(xpath = "//section[@class='tsc-contact-form']//*[@class='tsc-contact-form__title']")
+	public WebElement lblCustomerServiceGeneralEmailInquiriesTitle;
+
+	@FindBy(xpath = "//section[@class='tsc-contact-form']//div[@class='tsc-contact-form__text']")
+	public WebElement lblCustomerServiceGeneralEmailInquiriesDescription;
+
+	@FindBy(xpath = "//section[@class='tsc-contact-form']//span[@class='tsc-contact-form__message']")
+	public WebElement lblCustomerServiceGeneralEmailInquiriesRequiredFieldMessage;
+
+	@FindBy(xpath = "//section[@class='tsc-contact-form']//span[@class='tsc-contact-form__form__label__placeholder'][contains(.,'Email address')]")
+	public WebElement lblCustomerServiceGeneralEmailInquiriesRequiredFieldEmailAddress;
+
+	@FindBy(xpath = "//section[@class='tsc-contact-form']//span[@class='tsc-contact-form__form__label__placeholder'][contains(.,'Email address')]/preceding-sibling::input[@class='tsc-contact-form__form__label__input']")
+	public WebElement inputCustomerServiceGeneralEmailInquiriesEmailAddress;
+
+	@FindBy(xpath = "//section[@class='tsc-contact-form']//span[@class='tsc-contact-form__form__label__placeholder'][contains(.,'Email address')]/following-sibling::div[@class='tsc-contact-form__form__label__validation']")
+	public WebElement lblCustomerServiceGeneralEmailInquiriesEmailAddressValidationMessage;
+
+	@FindBy(xpath = "//section[@class='tsc-contact-form']//span[@class='tsc-contact-form__form__label__placeholder'][contains(.,'Email address')]/following-sibling::span[@class='tsc-contact-form__form__label__text']")
+	public WebElement lblCustomerServiceGeneralEmailInquiriesEmailAddressErrorMessage;
+
+	@FindBy(xpath = "//section[@class='tsc-contact-form']//span[@class='tsc-contact-form__form__label__placeholder'][contains(.,'First name')]")
+	public WebElement lblCustomerServiceGeneralEmailInquiriesRequiredFieldFirstName;
+
+	@FindBy(xpath = "//section[@class='tsc-contact-form']//span[@class='tsc-contact-form__form__label__placeholder'][contains(.,'First name')]/preceding-sibling::input[@class='tsc-contact-form__form__label__input']")
+	public WebElement inputCustomerServiceGeneralEmailInquiriesFirstName;
+
+	@FindBy(xpath = "//section[@class='tsc-contact-form']//span[@class='tsc-contact-form__form__label__placeholder'][contains(.,'First name')]/following-sibling::div[@class='tsc-contact-form__form__label__validation']")
+	public WebElement lblCustomerServiceGeneralEmailInquiriesFirstNameValidationMessage;
+
+	@FindBy(xpath = "//section[@class='tsc-contact-form']//span[@class='tsc-contact-form__form__label__placeholder'][contains(.,'Last name')]")
+	public WebElement lblCustomerServiceGeneralEmailInquiriesRequiredFieldLastName;
+
+	@FindBy(xpath = "//section[@class='tsc-contact-form']//span[@class='tsc-contact-form__form__label__placeholder'][contains(.,'Last name')]/preceding-sibling::input[@class='tsc-contact-form__form__label__input']")
+	public WebElement inputCustomerServiceGeneralEmailInquiriesLastName;
+
+	@FindBy(xpath = "//section[@class='tsc-contact-form']//span[@class='tsc-contact-form__form__label__placeholder'][contains(.,'Last name')]/following-sibling::div[@class='tsc-contact-form__form__label__validation']")
+	public WebElement lblCustomerServiceGeneralEmailInquiriesLastNameValidationMessage;
+
+	@FindBy(xpath = "//section[@class='tsc-contact-form']//span[@class='tsc-contact-form__form__label__placeholder'][contains(.,'Phone number')]")
+	public WebElement lblCustomerServiceGeneralEmailInquiriesPhoneNumber;
+
+	@FindBy(xpath = "//section[@class='tsc-contact-form']//span[@class='tsc-contact-form__form__label__placeholder'][contains(.,'Phone number')]/preceding-sibling::input[@class='tsc-contact-form__form__label__input']")
+	public WebElement inputCustomerServiceGeneralEmailInquiriesRequiredFieldPhoneNumber;
+
+	@FindBy(xpath = "//section[@class='tsc-contact-form']//span[@class='tsc-contact-form__form__label__placeholder'][contains(.,'Phone number')]/following-sibling::div[@class='tsc-contact-form__form__label__validation']")
+	public WebElement lblCustomerServiceGeneralEmailInquiriesPhoneNumberValidationMessage;
+
+	@FindBy(xpath = "//section[@class='tsc-contact-form']//textarea[@class='tsc-contact-form__form__label__textarea']")
+	public WebElement textCustomerServiceGeneralEmailInquiriesConcerns;
+
+	@FindBy(xpath = "//section[@class='tsc-contact-form']//textarea[@class='tsc-contact-form__form__label__textarea']/following-sibling::div[@class='tsc-contact-form__form__label__validation']")
+	public WebElement lblCustomerServiceGeneralEmailInquiriesConcernsValidationMessage;
+
+	@FindBy(xpath = "//section[@class='tsc-contact-form']//button[@class='tsc-contact-form__form__submit-button']")
+	public WebElement btnCustomerServiceGeneralEmailInquiriesSubmit;
+
+	@FindBy(xpath = "//section[@class='tsc-contact-form']//p[@class='tsc-contact-form__information']")
+	public WebElement lblCustomerServiceGeneralEmailInquiriesInformation;
+
+	//For billing/refund inquiries
+	@FindBy(xpath = "//section[@class='tsc-contact-form']//span[@class='tsc-contact-form__form__label__placeholder'][contains(.,'Order Number')]")
+	public WebElement lblCustomerServiceGeneralEmailInquiriesRequiredFieldOrderNumber;
+
+	@FindBy(xpath = "//section[@class='tsc-contact-form']//span[@class='tsc-contact-form__form__label__placeholder'][contains(.,'Order Number')]/preceding-sibling::input[@class='tsc-contact-form__form__label__input']")
+	public WebElement inputCustomerServiceGeneralEmailInquiriesOrderNumber;
+
+	@FindBy(xpath = "//section[@class='tsc-contact-form']//span[@class='tsc-contact-form__form__label__placeholder'][contains(.,'Order Number')]/following-sibling::div[@class='tsc-contact-form__form__label__validation']")
+	public WebElement lblCustomerServiceGeneralEmailInquiriesOrderNumberValidationMessage;
+
+
+	///////////////////////////////////////////////////////////////
+
+	//Still need help
+	@FindBy(xpath = "//div[@id='customer-service']//div[@class='customer-service-faq']//div[@class='customer-service-faq__help']//*[@viewBox]")
+	public WebElement iconStillNeedHelp;
+
+	@FindBy(xpath = "//div[@id='customer-service']//div[@class='customer-service-faq']//div[@class='customer-service-faq__help']//*[@class='customer-service-faq__help__title']")
+	public WebElement lblStillNeedHelpTitle;
+
+	@FindBy(xpath = "//div[@id='customer-service']//div[@class='customer-service-faq']//div[@class='customer-service-faq__help']//div[@class='customer-service-faq__help__subtitle']")
+	public WebElement lblStillNeedHelpSubTitle;
+
+	@FindBy(xpath = "//div[@id='customer-service']//div[@class='customer-service-faq']//div[@class='customer-service-faq__help']//button[@class='customer-service-faq__help__live-chat']")
+	public WebElement btnCustomerLiveChat;
+
+	/////////////////////////////////////////////////////////
+	//The popup window after clicking Live chat button
+	@FindBy(xpath = "//embeddedservice-chat-header//header//h2")
+	public WebElement lblCustomerLiveChatHeader;
+
+	@FindBy(xpath = "//embeddedservice-chat-header//header//button[@title='Minimize chat']")
+	public WebElement btnCustomerLiveChatMinimizeButton;
+
+	@FindBy(xpath = "//embeddedservice-chat-header//header//button[@title='Close dialog']")
+	public WebElement btnCustomerLiveChatCloseButton;
+
+	@FindBy(xpath = "//div[@class='fieldList']//label[@for='FirstName']")
+	public WebElement lblCustomerLiveChatFirstName;
+
+	@FindBy(xpath = "//div[@class='fieldList']//input[contains(@class,'FirstName')]")
+	public WebElement inputCustomerLiveChatFirstName;
+
+	@FindBy(xpath = "//div[@class='fieldList']//label[@for='LastName']")
+	public WebElement lblCustomerLiveChatLastName;
+
+	@FindBy(xpath = "//div[@class='fieldList']//input[contains(@class,'LastName')]")
+	public WebElement inputCustomerLiveChatLastName;
+
+	@FindBy(xpath = "//div[@class='fieldList']//label[@for='Email']")
+	public WebElement lblCustomerLiveChatEmail;
+
+	@FindBy(xpath = "//div[@class='fieldList']//input[contains(@class,'Email')]")
+	public WebElement inputCustomerLiveChatEmail;
+
+	@FindBy(xpath = "//div[@class='fieldList']//label[@for='Subject']")
+	public WebElement lblCustomerLiveChatSubject;
+
+	@FindBy(xpath = "//div[@class='fieldList']//input[contains(@class,'Subject')]")
+	public WebElement inputCustomerLiveChatSubject;
+
+	@FindBy(xpath = "//button[contains(@class,'startButton')]")
+	public WebElement btnCustomerLiveChatStartChatting;
+
+	//////////////////////////////////////////////////////////////////
+
+	@FindBy(xpath = "//div[@id='customer-service']//div[@class='customer-service-faq']//div[@class='customer-service-faq__help']//div[@class='customer-service-faq__help__support']")
+	public WebElement lblCustomerSupport;
+
+	@FindBy(xpath = "//div[@id='customer-service']//div[@class='customer-service-faq']//div[@class='customer-service-faq__help']//div[@class='customer-service-faq__help__support']//span[@class='customer-service-faq__help__support-text']//a[contains(@href,'tel')]")
+	public WebElement lnkCustomerServiceCenter;
+
+	@FindBy(xpath = "//div[@id='customer-service']//div[@class='customer-service-faq']//div[@class='customer-service-faq__help']//div[@class='customer-service-faq__help__support']//span[@class='customer-service-faq__help__support-text']//a[contains(@href,'email')]")
+	public WebElement lnkCustomerServiceSendUsAnEmail;
 
 	// My Account not login
 	@FindBy(xpath = "//*[contains(@class,'titleLink')]")
@@ -179,7 +380,7 @@ public class GlobalFooterPage extends BasePage {
 	@FindBy(xpath = "//div[contains(@class,'singleOpenable')]//div[contains(@class,'panHTMLContainer')]")
 	public List<WebElement> lstMyAccountItemContent;
 
-	//My Account login
+	//My Account login, unavailable for now
 	@FindBy(xpath = "//div[@class='SuperCartridge'][@style]")
 	public WebElement imgMyAccountLoginSuperCartridgeSection;
 
@@ -434,6 +635,8 @@ public class GlobalFooterPage extends BasePage {
 
 	@FindBy(xpath="//img[contains(@src,'Rogers.png')]")
 	public WebElement RogersMediaImg;
+
+	public boolean bClickingInquiriesOrFeedback=false;
 
 
 	/**
@@ -703,7 +906,7 @@ public class GlobalFooterPage extends BasePage {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(selectedItem);
 		selectedItem.click();
 
-		waitForCondition(Driver -> { return !lsUrl.equalsIgnoreCase(this.URL());}, 60000);
+		//waitForCondition(Driver -> { return !lsUrl.equalsIgnoreCase(this.URL());}, 60000);
 		(new ProductResultsPage(this.getDriver())).waitForPageLoading();
 		getReusableActionsInstance().staticWait(2000);
 		return waitForCondition(Driver -> {return lblIndicator.isDisplayed();}, 60000);
@@ -747,35 +950,439 @@ public class GlobalFooterPage extends BasePage {
 	}
 
 	/**
-	 * This method is to verify Links for FrequentlyAskedQuestions in
+	 * This method is to verify SearchBox And Top Customer Questions in
 	 * CustomerService Page Objects.
-	 *
-	 * @param- WebElement element: the FrequentlyAskedQuestions link
 	 * @author Wei.Li
 	 */
-	public void verifyLinksForFrequentlyAskedQuestionsInCustomerServicePageObject(WebElement element) {
-		getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-		String lsOriginalUrl = this.URL();
-		String lsExpectedUrl = this.getElementHref(element);
-		lsExpectedUrl = this.removeLastSlashFromUrl(lsExpectedUrl);
-		element.click();
-		this.waitForCondition(Driver -> {
-			return this.lnkBackToCutomerService.isDisplayed();
-		}, 60000);
-		String lsCurrentUrl = this.URL();
-		reporter.softAssert(lsExpectedUrl.equalsIgnoreCase(lsCurrentUrl),
-				"The navigated Url is equal to the expected Url", "The navigated Url is not equal to the expected Url");
-		reporter.softAssert(this.verifyElementExisting(this.lnkBackToCutomerService), "Navigation link is existing",
-				"Navigation link is not existing");
-		reporter.softAssert(this.verifyElementExisting(this.blkArticle), "The details of related question is existing",
-				"The details of related question is not existing");
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkBackToCutomerService);
-		this.lnkBackToCutomerService.click();
-		this.waitForCondition(Driver -> {
-			return this.lblFrequentlyAskedQuestions.isDisplayed();
-		}, 60000);
-		reporter.softAssert(lsOriginalUrl.equalsIgnoreCase(this.URL()), "The navigation link works",
-				"The navigation link does not work");
+	public void verifySearchBoxAndTopCustomerQuestionsInCustomerServicePageObject() {
+		String lsText;
+		getReusableActionsInstance().javascriptScrollByVisibleElement(lblCustomerServiceWhatCanWeHelpYouWith);
+		lsText=lblCustomerServiceWhatCanWeHelpYouWith.getText();
+		lsText=this.getShortenText(lsText,100);
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The element of '"+ lsText+"'"+" is displaying correctly.");
+		}
+		else{
+			reporter.reportLogFail("The element of '"+ lsText+"'"+" is displaying correctly.");
+		}
+
+		getReusableActionsInstance().javascriptScrollByVisibleElement(inputCustomerServiceSearch);
+		if(getReusableActionsInstance().isElementVisible(inputCustomerServiceSearch)){
+			reporter.reportLogPass("The element of search box is displaying correctly.");
+		}
+		else{
+			reporter.reportLogFail("The element of search box is not displaying correctly.");
+		}
+
+		getReusableActionsInstance().javascriptScrollByVisibleElement(lblTopCustomerQuestions);
+		lsText=lblCustomerServiceWhatCanWeHelpYouWith.getText();
+		lsText=this.getShortenText(lsText,100);
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The element of '"+ lsText+"'"+" is displaying correctly.");
+		}
+		else{
+			reporter.reportLogFail("The element of '"+ lsText+"'"+" is displaying correctly.");
+		}
+
+		for(WebElement item:lstTopCustomerQuestionsTitle){
+			getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsText=item.getText();
+			lsText=this.getShortenText(lsText,100);
+			if(!lsText.isEmpty()){
+				reporter.reportLogPass("The element of '"+ lsText+"'"+" in Top customer questions list is displaying correctly.");
+			}
+			else{
+				reporter.reportLogFail("The element of '"+ lsText+"'"+" in Top customer questions list is displaying correctly.");
+			}
+
+			getReusableActionsInstance().clickIfAvailable(item);
+			getReusableActionsInstance().staticWait(5000);
+			getReusableActionsInstance().javascriptScrollByVisibleElement(lblTopCustomerQuestionsContent);
+			lsText=lblTopCustomerQuestionsContent.getText();
+			lsText=this.getShortenText(lsText,100);
+			if(!lsText.isEmpty()){
+				reporter.reportLogPass("The sub element of '"+ lsText+"'"+" in Top customer questions list is displaying correctly.");
+			}
+			else{
+				reporter.reportLogFail("The sub element of '"+ lsText+"'"+" in Top customer questions list is displaying correctly.");
+			}
+		}
+	}
+
+	/**
+	 * This method is to verify Help Topics in
+	 * CustomerService Page Objects.
+	 * @author Wei.Li
+	 */
+	public void verifyBrowseByHelpTopicsInCustomerServicePageObject() {
+		String lsText;
+		getReusableActionsInstance().javascriptScrollByVisibleElement(lblBrowseByHelpTopics);
+		lsText=lblBrowseByHelpTopics.getText();
+		lsText=this.getShortenText(lsText,100);
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The element of '"+ lsText+"'"+" is displaying correctly.");
+		}
+		else{
+			reporter.reportLogFail("The element of '"+ lsText+"'"+" is displaying correctly.");
+		}
+
+		WebElement element;
+		List<WebElement> itemList;
+		int subItemCountBeforeClicking,subItemCountAfterClicking;
+		for(WebElement item:cntBrowseByHelpTopics){
+			getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			element=item.findElement(this.byBrowseByHelpTopicsTitle);
+			lsText=element.getText();
+			lsText=this.getShortenText(lsText,100);
+			if(!lsText.isEmpty()){
+				reporter.reportLogPass("The element of '"+ lsText+"'"+" in Help topics list is displaying correctly.");
+			}
+			else{
+				reporter.reportLogFail("The element of '"+ lsText+"'"+" in Help topics list is displaying correctly.");
+			}
+			itemList=item.findElements(this.byBrowseByHelpTopicsSubItemList);
+			subItemCountBeforeClicking=itemList.size();
+			if(this.checkChildElementExistingByTagNameAndAttribute(item,"button","class","customer-service-faq__topics-grid__article__expand-button")){
+				element=item.findElement(this.byBrowseByHelpTopicsSubItemSeeMoreButton);
+				lsText=element.getText().trim();
+				if(lsText.equalsIgnoreCase("See more")){
+					reporter.reportLogPass("The See more button is displaying correctly");
+				}
+				else{
+					reporter.reportLogFail("The See more button is not displaying correctly");
+				}
+				getReusableActionsInstance().clickIfAvailable(element);
+				getReusableActionsInstance().staticWait(2000);
+
+				itemList=item.findElements(this.byBrowseByHelpTopicsSubItemList);
+				subItemCountAfterClicking=itemList.size();
+
+				element=item.findElement(this.byBrowseByHelpTopicsSubItemSeeMoreButton);
+				lsText=element.getText().trim();
+				if(lsText.equalsIgnoreCase("See less")){
+					reporter.reportLogPass("The See less button is displaying correctly");
+				}
+				else{
+					reporter.reportLogFail("The See less button is not displaying correctly");
+				}
+
+				if(subItemCountAfterClicking>subItemCountBeforeClicking){
+					reporter.reportLogPass("Clicking See more button works correctly");
+				}
+				else{
+					reporter.reportLogFail("Clicking See more button does not work correctly");
+				}
+			}
+
+			for(int i=0;i<itemList.size();i++){
+				element=itemList.get(i);
+				getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+				lsText=element.getText().trim();
+				if(!lsText.isEmpty()){
+					reporter.reportLogPass("The element of '"+ lsText+"'"+" in Help topics Sublist is displaying correctly.");
+				}
+				else{
+					reporter.reportLogFail("The element of '"+ lsText+"'"+" in Help topics Sublist is displaying correctly.");
+				}
+			}
+		}
+
+		for(int i=0;i<this.lstBrowseByHelpTopicsIcon.size();i++){
+			element=this.lstBrowseByHelpTopicsIcon.get(i);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+			if(!this.getElementImageSrc(element).isEmpty()){
+				reporter.reportLogPass("The icon image src of '"+ this.getElementInnerText(this.lstBrowseByHelpTopicsTitle.get(i))+"'"+" in Help topics Sublist is not empty.");
+			}
+			else{
+				reporter.reportLogFail("The icon image src of '"+ this.getElementInnerText(this.lstBrowseByHelpTopicsTitle.get(i))+"'"+" in Help topics Sublist is empty.");
+			}
+		}
+	}
+
+	/**
+	 * This method is to verify Help Topics subitem clicking in
+	 * CustomerService Page Objects.
+	 * @author Wei.Li
+	 */
+	public void verifyWindowAfterClickingBrowseByHelpTopicsSubItemInCustomerServicePageObject() {
+		String lsText,lsTitle;
+		WebElement item,element,subItem;
+
+		for(int i=0;i<this.cntBrowseByHelpTopics.size();i++){
+			item=this.cntBrowseByHelpTopics.get(i);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			element=item.findElements(this.byBrowseByHelpTopicsSubItemList).get(0);
+			lsTitle=element.getText().trim();
+
+			reporter.reportLog("verify window content after clicking subitem in Browse By Help Topics");
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstBrowseByHelpTopicsTitle.get(i));
+			this.getReusableActionsInstance().clickIfAvailable(element);
+			this.getReusableActionsInstance().waitForElementVisibility(lblCustomerServiceSubItemWindowContentTitle);
+
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCustomerServiceSubItemWindowContentTitle);
+			lsText=lblCustomerServiceSubItemWindowContentTitle.getText().trim();
+			if(lsTitle.equalsIgnoreCase(lsText)){
+				reporter.reportLogPass("The Help topic title of '"+lsTitle+"' is the same as TSC help center title of '"+lsText+"'.");
+			}
+			else{
+				reporter.reportLogFail("The Help topic title of '"+lsTitle+"' is not the same as TSC help center title of '"+lsText+"'.");
+			}
+
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCustomerServiceSubItemWindowContentBody);
+			lsText=lblCustomerServiceSubItemWindowContentBody.getText().trim();
+			lsText=this.getShortenText(lsText,100);
+			if(!lsText.isEmpty()){
+				reporter.reportLogPass("The element of '"+ lsText+"'"+" is displaying correctly.");
+			}
+			else{
+				reporter.reportLogFail("The element of '"+ lsText+"'"+" is displaying correctly.");
+			}
+
+			reporter.reportLog("verify Left aside panel of window content after clicking subitem in Browse By Help Topics");
+			verifyLeftAsidePenalAfterClickingBrowseByHelpTopicsSubItemInCustomerServicePageObject();
+
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstCustomerServiceSubItemWindowSideButton.get(0));
+			this.getReusableActionsInstance().clickIfAvailable(this.lstCustomerServiceSubItemWindowSideButton.get(0));
+			this.getReusableActionsInstance().waitForElementVisibility(lblCustomerServiceWhatCanWeHelpYouWith);
+		}
+	}
+
+	/**
+	 * This method is to verify the left panel after clicking Help Topics subitem  in
+	 * CustomerService Page Objects.
+	 * @author Wei.Li
+	 */
+	public void verifyLeftAsidePenalAfterClickingBrowseByHelpTopicsSubItemInCustomerServicePageObject() {
+		String lsText;
+		WebElement subItem;
+
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstCustomerServiceSubItemWindowSideButton.get(0));
+		if(getReusableActionsInstance().isElementVisible(this.lstCustomerServiceSubItemWindowSideButton.get(0))){
+			reporter.reportLogPass("The element of TSC Help Center button is displaying correctly.");
+		}
+		else{
+			reporter.reportLogFail("The element of TSC Help Center button is not displaying correctly.");
+		}
+
+		for(int i=1;i<this.lstCustomerServiceSubItemWindowSideButton.size();i++){
+			subItem=this.lstCustomerServiceSubItemWindowSideButton.get(i);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
+			lsText=subItem.getText().trim();
+			if(!lsText.isEmpty()){
+				reporter.reportLogPass("The element of '"+ lsText+"'"+" is displaying correctly.");
+			}
+			else{
+				reporter.reportLogFail("The element of '"+ lsText+"'"+" is displaying correctly.");
+			}
+
+			this.getReusableActionsInstance().clickIfAvailable(subItem);
+			this.getReusableActionsInstance().staticWait(2000);
+			for(WebElement subElement:this.lstCustomerServiceSubItemWindowSideSubItemList){
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(subElement);
+				lsText=subElement.getText();
+				if(!lsText.isEmpty()){
+					reporter.reportLogPass("The sub element of '"+ lsText+"'"+" is displaying correctly.");
+				}
+				else{
+					reporter.reportLogFail("The sub element of '"+ lsText+"'"+" is displaying correctly.");
+				}
+			}
+		}
+	}
+
+	/**
+	 * This method is to verify still need help part in
+	 * CustomerService Page Objects.
+	 * @author Wei.Li
+	 */
+	public void verifyStillNeedHelpInCustomerServicePageObject() {
+		String lsText;
+
+		getReusableActionsInstance().javascriptScrollByVisibleElement(iconStillNeedHelp);
+		if(this.getReusableActionsInstance().isElementVisible(iconStillNeedHelp)){
+			reporter.reportLogPass("The Still need help icon element is displaying correctly.");
+		}
+		else{
+			reporter.reportLogFail("The Still need help icon element is not displaying correctly.");
+		}
+
+		getReusableActionsInstance().javascriptScrollByVisibleElement(lblStillNeedHelpTitle);
+		lsText=lblStillNeedHelpTitle.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The element of '"+ lsText+"'"+" is displaying correctly.");
+		}
+		else{
+			reporter.reportLogFail("The element of '"+ lsText+"'"+" is displaying correctly.");
+		}
+
+		getReusableActionsInstance().javascriptScrollByVisibleElement(lblStillNeedHelpSubTitle);
+		lsText=lblStillNeedHelpSubTitle.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The element of '"+ lsText+"'"+" is displaying correctly.");
+		}
+		else{
+			reporter.reportLogFail("The element of '"+ lsText+"'"+" is displaying correctly.");
+		}
+
+		getReusableActionsInstance().javascriptScrollByVisibleElement(btnCustomerLiveChat);
+		if(getReusableActionsInstance().isElementVisible(btnCustomerLiveChat)){
+			reporter.reportLogPass("The element of LiveChat is displaying correctly.");
+		}
+		else{
+			reporter.reportLogFail("The element of LiveChat is not displaying correctly.");
+		}
+
+		getReusableActionsInstance().javascriptScrollByVisibleElement(lblCustomerSupport);
+		lsText=lblCustomerSupport.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The element of '"+ lsText+"'"+" is displaying correctly.");
+		}
+		else{
+			reporter.reportLogFail("The element of '"+ lsText+"'"+" is displaying correctly.");
+		}
+
+		getReusableActionsInstance().javascriptScrollByVisibleElement(lnkCustomerServiceCenter);
+		lsText=this.getElementHref(lnkCustomerServiceCenter);
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The element href of '"+ lsText+"'"+" is not empty.");
+		}
+		else{
+			reporter.reportLogFail("The element href of '"+ lsText+"'"+" is empty.");
+		}
+
+		getReusableActionsInstance().javascriptScrollByVisibleElement(lnkCustomerServiceSendUsAnEmail);
+		lsText=this.getElementHref(lnkCustomerServiceSendUsAnEmail);
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The element href of '"+ lsText+"'"+" is not empty.");
+		}
+		else{
+			reporter.reportLogFail("The element href of '"+ lsText+"'"+" is empty.");
+		}
+	}
+
+	/**
+	 * This method is to verify Live Chat content
+	 * @author Wei.Li
+	 */
+	public void verifyLiveChatContent() {
+		String lsText;
+
+		getReusableActionsInstance().javascriptScrollByVisibleElement(lblCustomerLiveChatHeader);
+		lsText=lblCustomerLiveChatHeader.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The element of '"+ lsText+"'"+" is displaying correctly.");
+		}
+		else{
+			reporter.reportLogFail("The element of '"+ lsText+"'"+" is displaying correctly.");
+		}
+
+		getReusableActionsInstance().javascriptScrollByVisibleElement(btnCustomerLiveChatMinimizeButton);
+		if(this.getReusableActionsInstance().isElementVisible(btnCustomerLiveChatMinimizeButton)){
+			reporter.reportLogPass("The Minimize button in Live Chat dialog is displaying correctly.");
+		}
+		else{
+			reporter.reportLogFail("The Minimize button in Live Chat dialog is not displaying correctly.");
+		}
+
+		getReusableActionsInstance().javascriptScrollByVisibleElement(btnCustomerLiveChatCloseButton);
+		if(this.getReusableActionsInstance().isElementVisible(btnCustomerLiveChatCloseButton)){
+			reporter.reportLogPass("The close button in Live Chat dialog is displaying correctly.");
+		}
+		else{
+			reporter.reportLogFail("The close button in Live Chat dialog is not displaying correctly.");
+		}
+
+		getReusableActionsInstance().javascriptScrollByVisibleElement(lblCustomerLiveChatFirstName);
+		lsText=lblCustomerLiveChatFirstName.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The element of '"+ lsText+"'"+" is displaying correctly.");
+		}
+		else{
+			reporter.reportLogFail("The element of '"+ lsText+"'"+" is displaying correctly.");
+		}
+
+		getReusableActionsInstance().javascriptScrollByVisibleElement(inputCustomerLiveChatFirstName);
+		if(this.getReusableActionsInstance().isElementVisible(inputCustomerLiveChatFirstName)){
+			reporter.reportLogPass("The First name input in Live Chat dialog is displaying correctly.");
+		}
+		else{
+			reporter.reportLogFail("The First name input in Live Chat dialog is not displaying correctly.");
+		}
+
+		getReusableActionsInstance().javascriptScrollByVisibleElement(lblCustomerLiveChatLastName);
+		lsText=lblCustomerLiveChatLastName.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The element of '"+ lsText+"'"+" is displaying correctly.");
+		}
+		else{
+			reporter.reportLogFail("The element of '"+ lsText+"'"+" is displaying correctly.");
+		}
+
+		getReusableActionsInstance().javascriptScrollByVisibleElement(inputCustomerLiveChatLastName);
+		if(this.getReusableActionsInstance().isElementVisible(inputCustomerLiveChatLastName)){
+			reporter.reportLogPass("The Last name input in Live Chat dialog is displaying correctly.");
+		}
+		else{
+			reporter.reportLogFail("The Last name input in Live Chat dialog is not displaying correctly.");
+		}
+
+		getReusableActionsInstance().javascriptScrollByVisibleElement(lblCustomerLiveChatEmail);
+		lsText=lblCustomerLiveChatEmail.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The element of '"+ lsText+"'"+" is displaying correctly.");
+		}
+		else{
+			reporter.reportLogFail("The element of '"+ lsText+"'"+" is displaying correctly.");
+		}
+
+		getReusableActionsInstance().javascriptScrollByVisibleElement(inputCustomerLiveChatEmail);
+		if(this.getReusableActionsInstance().isElementVisible(inputCustomerLiveChatEmail)){
+			reporter.reportLogPass("The Email input in Live Chat dialog is displaying correctly.");
+		}
+		else{
+			reporter.reportLogFail("The Email input in Live Chat dialog is not displaying correctly.");
+		}
+
+		getReusableActionsInstance().javascriptScrollByVisibleElement(lblCustomerLiveChatSubject);
+		lsText=lblCustomerLiveChatSubject.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The element of '"+ lsText+"'"+" is displaying correctly.");
+		}
+		else{
+			reporter.reportLogFail("The element of '"+ lsText+"'"+" is displaying correctly.");
+		}
+
+		getReusableActionsInstance().javascriptScrollByVisibleElement(inputCustomerLiveChatSubject);
+		if(this.getReusableActionsInstance().isElementVisible(inputCustomerLiveChatSubject)){
+			reporter.reportLogPass("The Subject input in Live Chat dialog is displaying correctly.");
+		}
+		else{
+			reporter.reportLogFail("The Subject input in Live Chat dialog is not displaying correctly.");
+		}
+
+		getReusableActionsInstance().javascriptScrollByVisibleElement(btnCustomerLiveChatStartChatting);
+		if(this.getReusableActionsInstance().isElementVisible(btnCustomerLiveChatStartChatting)){
+			reporter.reportLogPass("The Start Chatting button in Live Chat dialog is displaying correctly.");
+		}
+		else{
+			reporter.reportLogFail("The Start Chatting button in Live Chat dialog is not displaying correctly.");
+		}
+
+		getReusableActionsInstance().javascriptScrollByVisibleElement(btnCustomerLiveChatCloseButton);
+		getReusableActionsInstance().clickIfAvailable(btnCustomerLiveChatCloseButton);
+		getReusableActionsInstance().staticWait(2000);
+	}
+
+	/**
+	 * This method is to verify Live Chat popup window in CustomerService Page Objects.
+	 * @param WebElement btnLiveChat: to tell it is for Customer service or Contact info
+	 * @author Wei.Li
+	 */
+	public void verifyLiveChatPopupWindowInCustomerServicePageObject(WebElement btnLiveChat) {
+		getReusableActionsInstance().javascriptScrollByVisibleElement(btnLiveChat);
+		getReusableActionsInstance().clickIfAvailable(btnLiveChat);
+		getReusableActionsInstance().waitForElementVisibility(lblCustomerLiveChatFirstName);
+		verifyLiveChatContent();
 	}
 
 	/**
@@ -893,23 +1500,283 @@ public class GlobalFooterPage extends BasePage {
 	}
 
 	/**
-	 * This method is to verify dropdown content in Contact US service.
+	 * This method is to verify right panel in Contact US service.
 	 * @author Wei.Li
 	 */
-	public void verifyDropdownOptionContent() {
-		String lsOption;
-		Select drpOption= new Select(this.selectContactUS);
-		for(int i=1;i<this.lstContactUSOption.size();i++) {
-			String lsFirstSection=this.lstContactUSOptionText.get(0).getText();
-			getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectContactUS);
-			drpOption.selectByIndex(i);
-			lsOption=drpOption.getFirstSelectedOption().getText();
-			reporter.reportLog("Dropdown option: "+lsOption);
-			waitForCondition(Driver->{return !lsFirstSection.equalsIgnoreCase(this.lstContactUSOptionText.get(0).getText());},5000);
-			for(WebElement contentSection:this.lstContactUSOptionText) {
-				getReusableActionsInstance().javascriptScrollByVisibleElement(contentSection);
-				reporter.softAssert(getReusableActionsInstance().isElementVisible(contentSection),"The dropdown option of '"+lsOption+"' displays correctly","The dropdown option of '"+lsOption+"' does not display correctly");
+	public void verifyContactUsRightPanelContent() {
+		String lsText;
+
+		getReusableActionsInstance().javascriptScrollByVisibleElement(lblCustomerServiceContactUsTitle);
+		lsText=lblCustomerServiceContactUsTitle.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The element of '"+ lsText+"'"+" is displaying correctly.");
+		}
+		else{
+			reporter.reportLogFail("The element of '"+ lsText+"'"+" is displaying correctly.");
+		}
+
+		getReusableActionsInstance().javascriptScrollByVisibleElement(lblCustomerServiceContactUsChatDescription);
+		lsText=lblCustomerServiceContactUsChatDescription.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The element of '"+ lsText+"'"+" is displaying correctly.");
+		}
+		else{
+			reporter.reportLogFail("The element of '"+ lsText+"'"+" is displaying correctly.");
+		}
+
+		getReusableActionsInstance().javascriptScrollByVisibleElement(btnCustomerServiceContactUsLiveChat);
+		if(this.getReusableActionsInstance().isElementVisible(btnCustomerServiceContactUsLiveChat)){
+			reporter.reportLogPass("The Live Chat button is displaying correctly.");
+		}
+		else{
+			reporter.reportLogFail("The Live Chat button is not displaying correctly.");
+		}
+
+		getReusableActionsInstance().javascriptScrollByVisibleElement(lblCustomerServiceContactUsCallCustomerDescription);
+		lsText=lblCustomerServiceContactUsCallCustomerDescription.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The element of '"+ lsText+"'"+" is displaying correctly.");
+		}
+		else{
+			reporter.reportLogFail("The element of '"+ lsText+"'"+" is displaying correctly.");
+		}
+
+		getReusableActionsInstance().javascriptScrollByVisibleElement(lblCustomerServiceContactUsCallSalesDescription);
+		lsText=lblCustomerServiceContactUsCallSalesDescription.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The element of '"+ lsText+"'"+" is displaying correctly.");
+		}
+		else{
+			reporter.reportLogFail("The element of '"+ lsText+"'"+" is displaying correctly.");
+		}
+
+		getReusableActionsInstance().javascriptScrollByVisibleElement(lblCustomerServiceContactUsCompleteEmailFormsDescription);
+		lsText=lblCustomerServiceContactUsCompleteEmailFormsDescription.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The element of '"+ lsText+"'"+" is displaying correctly.");
+		}
+		else{
+			reporter.reportLogFail("The element of '"+ lsText+"'"+" is displaying correctly.");
+		}
+
+		getReusableActionsInstance().javascriptScrollByVisibleElement(lnkCustomerServiceContactUsGeneralEmailInquiries);
+		lsText=this.getElementHref(lnkCustomerServiceContactUsGeneralEmailInquiries);
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The href of element of '"+ lsText+"'"+" is not empty.");
+		}
+		else{
+			reporter.reportLogFail("The href of element of '"+ lsText+"'"+" is empty.");
+		}
+
+		getReusableActionsInstance().javascriptScrollByVisibleElement(lnkCustomerServiceContactUsBillingOrRefundEmailInquiries);
+		lsText=this.getElementHref(lnkCustomerServiceContactUsBillingOrRefundEmailInquiries);
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The href of element of '"+ lsText+"'"+" is not empty.");
+		}
+		else{
+			reporter.reportLogFail("The href of element of '"+ lsText+"'"+" is empty.");
+		}
+
+		getReusableActionsInstance().javascriptScrollByVisibleElement(lblCustomerServiceContactUsFeedback);
+		lsText=lblCustomerServiceContactUsFeedback.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The element of '"+ lsText+"'"+" is displaying correctly.");
+		}
+		else{
+			reporter.reportLogFail("The element of '"+ lsText+"'"+" is displaying correctly.");
+		}
+
+		getReusableActionsInstance().javascriptScrollByVisibleElement(lnkCustomerServiceContactUsFeedback);
+		lsText=this.getElementHref(lnkCustomerServiceContactUsFeedback);
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The href of element of '"+ lsText+"'"+" is not empty.");
+		}
+		else{
+			reporter.reportLogFail("The href of element of '"+ lsText+"'"+" is empty.");
+		}
+	}
+
+	/**
+	 * This method is to verify Email inquiries/Billing or Refund/Feedback clicking action and content in Contact TSC.
+	 * @param String lsType : Email/Billing/Feedback
+	 * @author Wei.Li
+	 */
+	public void verifyClickingActionForInquiriesOrFeedback(String lsType) {
+		if(!this.bClickingInquiriesOrFeedback){
+			this.bClickingInquiriesOrFeedback=true;
+		}
+		else{
+			getReusableActionsInstance().javascriptScrollByVisibleElement(lnkCustomerServiceContactInfo);
+			getReusableActionsInstance().clickIfAvailable(lnkCustomerServiceContactInfo);
+			getReusableActionsInstance().waitForElementVisibility(lblCustomerServiceContactUsTitle);
+		}
+
+		switch(lsType){
+			case "Email":
+				getReusableActionsInstance().javascriptScrollByVisibleElement(lnkCustomerServiceContactUsGeneralEmailInquiries);
+				getReusableActionsInstance().clickIfAvailable(lnkCustomerServiceContactUsGeneralEmailInquiries);
+				break;
+			case "Billing":
+				getReusableActionsInstance().javascriptScrollByVisibleElement(lnkCustomerServiceContactUsBillingOrRefundEmailInquiries);
+				getReusableActionsInstance().clickIfAvailable(lnkCustomerServiceContactUsBillingOrRefundEmailInquiries);
+				break;
+			case "Feedback":
+				getReusableActionsInstance().javascriptScrollByVisibleElement(lnkCustomerServiceContactUsFeedback);
+				getReusableActionsInstance().clickIfAvailable(lnkCustomerServiceContactUsFeedback);
+				break;
+			default:
+				break;
+		}
+		getReusableActionsInstance().waitForElementVisibility(lblCustomerServiceGeneralEmailInquiriesTitle);
+
+		verifyInquiriesOrFeedbackContent(lsType);
+	}
+
+	/**
+	 * This method is to verify Email inquiries/Billing or Refund/Feedback content in Contact TSC.
+	 * @param String lsType : Email/Billing/Feedback
+	 * @author Wei.Li
+	 */
+	public void verifyInquiriesOrFeedbackContent(String lsType) {
+		String lsText;
+
+		getReusableActionsInstance().javascriptScrollByVisibleElement(lblCustomerServiceGeneralEmailInquiriesTitle);
+		lsText=lblCustomerServiceGeneralEmailInquiriesTitle.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The element of '"+ lsText+"'"+" is displaying correctly.");
+		}
+		else{
+			reporter.reportLogFail("The element of '"+ lsText+"'"+" is displaying correctly.");
+		}
+
+		getReusableActionsInstance().javascriptScrollByVisibleElement(lblCustomerServiceGeneralEmailInquiriesDescription);
+		lsText=lblCustomerServiceGeneralEmailInquiriesDescription.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The element of '"+ lsText+"'"+" is displaying correctly.");
+		}
+		else{
+			reporter.reportLogFail("The element of '"+ lsText+"'"+" is displaying correctly.");
+		}
+
+		getReusableActionsInstance().javascriptScrollByVisibleElement(lblCustomerServiceGeneralEmailInquiriesRequiredFieldMessage);
+		lsText=lblCustomerServiceGeneralEmailInquiriesRequiredFieldMessage.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The element of '"+ lsText+"'"+" is displaying correctly.");
+		}
+		else{
+			reporter.reportLogFail("The element of '"+ lsText+"'"+" is displaying correctly.");
+		}
+
+		getReusableActionsInstance().javascriptScrollByVisibleElement(lblCustomerServiceGeneralEmailInquiriesRequiredFieldEmailAddress);
+		lsText=lblCustomerServiceGeneralEmailInquiriesRequiredFieldEmailAddress.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The element of '"+ lsText+"'"+" is displaying correctly.");
+		}
+		else{
+			reporter.reportLogFail("The element of '"+ lsText+"'"+" is displaying correctly.");
+		}
+
+		getReusableActionsInstance().javascriptScrollByVisibleElement(inputCustomerServiceGeneralEmailInquiriesEmailAddress);
+		if(this.getReusableActionsInstance().isElementVisible(inputCustomerServiceGeneralEmailInquiriesEmailAddress)){
+			reporter.reportLogPass("The Email address input is displaying correctly.");
+		}
+		else{
+			reporter.reportLogFail("The Email address input is not displaying correctly.");
+		}
+
+		if(lsType.equalsIgnoreCase("Billing")){
+			getReusableActionsInstance().javascriptScrollByVisibleElement(lblCustomerServiceGeneralEmailInquiriesRequiredFieldOrderNumber);
+			lsText=lblCustomerServiceGeneralEmailInquiriesRequiredFieldOrderNumber.getText();
+			if(!lsText.isEmpty()){
+				reporter.reportLogPass("The element of '"+ lsText+"'"+" is displaying correctly.");
 			}
+			else{
+				reporter.reportLogFail("The element of '"+ lsText+"'"+" is displaying correctly.");
+			}
+
+			getReusableActionsInstance().javascriptScrollByVisibleElement(inputCustomerServiceGeneralEmailInquiriesOrderNumber);
+			if(this.getReusableActionsInstance().isElementVisible(inputCustomerServiceGeneralEmailInquiriesOrderNumber)){
+				reporter.reportLogPass("The Order Number input is displaying correctly.");
+			}
+			else{
+				reporter.reportLogFail("The Order Number input is not displaying correctly.");
+			}
+		}
+
+		getReusableActionsInstance().javascriptScrollByVisibleElement(lblCustomerServiceGeneralEmailInquiriesRequiredFieldFirstName);
+		lsText=lblCustomerServiceGeneralEmailInquiriesRequiredFieldFirstName.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The element of '"+ lsText+"'"+" is displaying correctly.");
+		}
+		else{
+			reporter.reportLogFail("The element of '"+ lsText+"'"+" is displaying correctly.");
+		}
+
+		getReusableActionsInstance().javascriptScrollByVisibleElement(inputCustomerServiceGeneralEmailInquiriesFirstName);
+		if(this.getReusableActionsInstance().isElementVisible(inputCustomerServiceGeneralEmailInquiriesFirstName)){
+			reporter.reportLogPass("The First name input is displaying correctly.");
+		}
+		else{
+			reporter.reportLogFail("The First name input is not displaying correctly.");
+		}
+
+		getReusableActionsInstance().javascriptScrollByVisibleElement(lblCustomerServiceGeneralEmailInquiriesRequiredFieldLastName);
+		lsText=lblCustomerServiceGeneralEmailInquiriesRequiredFieldLastName.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The element of '"+ lsText+"'"+" is displaying correctly.");
+		}
+		else{
+			reporter.reportLogFail("The element of '"+ lsText+"'"+" is displaying correctly.");
+		}
+
+		getReusableActionsInstance().javascriptScrollByVisibleElement(inputCustomerServiceGeneralEmailInquiriesLastName);
+		if(this.getReusableActionsInstance().isElementVisible(inputCustomerServiceGeneralEmailInquiriesLastName)){
+			reporter.reportLogPass("The Last name input is displaying correctly.");
+		}
+		else{
+			reporter.reportLogFail("The Last name input is not displaying correctly.");
+		}
+
+		getReusableActionsInstance().javascriptScrollByVisibleElement(lblCustomerServiceGeneralEmailInquiriesPhoneNumber);
+		lsText=lblCustomerServiceGeneralEmailInquiriesPhoneNumber.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The element of '"+ lsText+"'"+" is displaying correctly.");
+		}
+		else{
+			reporter.reportLogFail("The element of '"+ lsText+"'"+" is displaying correctly.");
+		}
+
+		getReusableActionsInstance().javascriptScrollByVisibleElement(inputCustomerServiceGeneralEmailInquiriesRequiredFieldPhoneNumber);
+		if(this.getReusableActionsInstance().isElementVisible(inputCustomerServiceGeneralEmailInquiriesRequiredFieldPhoneNumber)){
+			reporter.reportLogPass("The Phone number input is displaying correctly.");
+		}
+		else{
+			reporter.reportLogFail("The Phone number input is not displaying correctly.");
+		}
+
+		getReusableActionsInstance().javascriptScrollByVisibleElement(textCustomerServiceGeneralEmailInquiriesConcerns);
+		if(this.getReusableActionsInstance().isElementVisible(textCustomerServiceGeneralEmailInquiriesConcerns)){
+			reporter.reportLogPass("The Concerns input is displaying correctly.");
+		}
+		else{
+			reporter.reportLogFail("The Concerns input is not displaying correctly.");
+		}
+
+		getReusableActionsInstance().javascriptScrollByVisibleElement(btnCustomerServiceGeneralEmailInquiriesSubmit);
+		if(this.getReusableActionsInstance().isElementVisible(btnCustomerServiceGeneralEmailInquiriesSubmit)){
+			reporter.reportLogPass("The Submit button is displaying correctly.");
+		}
+		else{
+			reporter.reportLogFail("The Submit button is not displaying correctly.");
+		}
+
+		getReusableActionsInstance().javascriptScrollByVisibleElement(lblCustomerServiceGeneralEmailInquiriesInformation);
+		lsText=lblCustomerServiceGeneralEmailInquiriesInformation.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The element of '"+ lsText+"'"+" is displaying correctly.");
+		}
+		else{
+			reporter.reportLogFail("The element of '"+ lsText+"'"+" is displaying correctly.");
 		}
 	}
 

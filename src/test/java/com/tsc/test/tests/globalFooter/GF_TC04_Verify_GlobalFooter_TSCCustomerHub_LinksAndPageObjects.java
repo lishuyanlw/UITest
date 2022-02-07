@@ -40,35 +40,33 @@ public class GF_TC04_Verify_GlobalFooter_TSCCustomerHub_LinksAndPageObjects exte
 		Map<String,String> hashMap = getGlobalFooterPageThreadLocal().getTestDataWithSpecificName(lstNameAndLinks, lsService, true);
 		reporter.reportLog(lsService);
 		WebElement selectedItem=getGlobalFooterPageThreadLocal().getServiceWebElement(lsService,hashMap.get("parent"));
-		lsHref=basePage.getElementHref(selectedItem);		
+		lsHref=basePage.getElementHref(selectedItem);
 		//lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsService,true);
 		lsYmlHref=hashMap.get("Link");
 		if(lsYmlHref.isEmpty()) {
 			reporter.reportLogFail("Unable to find '"+lsService+"' link.");
-		}		
+		}
 		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current '"+lsService+"' href of "+lsHref+" is equal to "+lsYmlHref,"The current '"+lsService+"' href of "+lsHref+" is not equal to "+lsYmlHref);
-		
-		if(!getGlobalFooterPageThreadLocal().goToService(lsService,getGlobalFooterPageThreadLocal().lblCustomerService,hashMap.get("parent"))) {
+
+		if(!getGlobalFooterPageThreadLocal().goToService(lsService,getGlobalFooterPageThreadLocal().lblCustomerServiceWhatCanWeHelpYouWith,hashMap.get("parent"))) {
 			reporter.reportLogFail("Unable to navigate to '"+lsService+"' page objects.");
 		}
-		else {			
-			elementList.add(getGlobalFooterPageThreadLocal().lblCustomerService);
-			elementList.add(getGlobalFooterPageThreadLocal().lblHowCanWeHelpYou);
-			elementList.add(getGlobalFooterPageThreadLocal().inputSearchBox);
-			elementList.add(getGlobalFooterPageThreadLocal().lblFrequentlyAskedQuestions);
-			
-			getGlobalFooterPageThreadLocal().verifyElementListExistence(elementList);
-	
-			int listSize=getGlobalFooterPageThreadLocal().lstFrequentlyAskedQuestions.size();
-			for(int i=0;i<listSize;i++) {
-				WebElement item=getGlobalFooterPageThreadLocal().lstFrequentlyAskedQuestions.get(i);
-				String lsItem=item.getText().trim();
-				reporter.reportLog(lsItem);
-				reporter.softAssert(!lsItem.isEmpty(),"The item text is not empty","The item text is empty");
-				reporter.softAssert(!basePage.getElementHref(item).isEmpty(),"The link of "+lsItem+" is not empty","The link of "+lsItem+" is empty");
-				getGlobalFooterPageThreadLocal().verifyLinksForFrequentlyAskedQuestionsInCustomerServicePageObject(item);
-			}
-		}		
+		else {
+			reporter.reportLog("verifySearchBoxAndTopCustomerQuestionsInCustomerServicePageObject");
+			getGlobalFooterPageThreadLocal().verifySearchBoxAndTopCustomerQuestionsInCustomerServicePageObject();
+
+			reporter.reportLog("verifyBrowseByHelpTopicsInCustomerServicePageObject");
+			getGlobalFooterPageThreadLocal().verifyBrowseByHelpTopicsInCustomerServicePageObject();
+
+			reporter.reportLog("verifyWindowAfterClickingBrowseByHelpTopicsSubItemInCustomerServicePageObject");
+			getGlobalFooterPageThreadLocal().verifyWindowAfterClickingBrowseByHelpTopicsSubItemInCustomerServicePageObject();
+
+			reporter.reportLog("verifyStillNeedHelpInCustomerServicePageObject");
+			getGlobalFooterPageThreadLocal().verifyStillNeedHelpInCustomerServicePageObject();
+
+			reporter.reportLog("verifyLiveChatPopupWindowInCustomerServicePageObject");
+			getGlobalFooterPageThreadLocal().verifyLiveChatPopupWindowInCustomerServicePageObject(getGlobalFooterPageThreadLocal().btnCustomerLiveChat);
+		}
 		elementList.clear();
 
 		//Track Your Order
@@ -142,22 +140,22 @@ public class GF_TC04_Verify_GlobalFooter_TSCCustomerHub_LinksAndPageObjects exte
 		}		
 		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current '"+lsService+"' href of "+lsHref+" is equal to "+lsYmlHref,"The current '"+lsService+"' href of "+lsHref+" is not equal to "+lsYmlHref);
 		
-		if(!getGlobalFooterPageThreadLocal().goToService(lsService,getGlobalFooterPageThreadLocal().lblContactUS,hashMap.get("parent"))) {
+		if(!getGlobalFooterPageThreadLocal().goToService(lsService,getGlobalFooterPageThreadLocal().lblCustomerServiceContactUsTitle,hashMap.get("parent"))) {
 			reporter.reportLogFail("Unable to navigate to '"+lsService+"' page objects.");
 		}
-		else {		
-			elementList.add(getGlobalFooterPageThreadLocal().lblContactUS);
-			elementList.add(getGlobalFooterPageThreadLocal().lblWhatCanWeHelpYouWith);
-			elementList.add(getGlobalFooterPageThreadLocal().selectContactUS);
-			elementList.add(getGlobalFooterPageThreadLocal().lblPleaseVisitUSInfo);
-			elementList.add(getGlobalFooterPageThreadLocal().lnkPleaseVisitUS);
-			
-			getGlobalFooterPageThreadLocal().verifyElementListExistence(elementList);
-			
-			getGlobalFooterPageThreadLocal().verifyDropdownOptionContent();
+		else {
+			getGlobalFooterPageThreadLocal().verifyLeftAsidePenalAfterClickingBrowseByHelpTopicsSubItemInCustomerServicePageObject();
+			getGlobalFooterPageThreadLocal().verifyContactUsRightPanelContent();
+
+			getGlobalFooterPageThreadLocal().verifyLiveChatPopupWindowInCustomerServicePageObject(getGlobalFooterPageThreadLocal().btnCustomerServiceContactUsLiveChat);
+
+			getGlobalFooterPageThreadLocal().verifyClickingActionForInquiriesOrFeedback("Email");
+
+			getGlobalFooterPageThreadLocal().verifyClickingActionForInquiriesOrFeedback("Billing");
+
+			getGlobalFooterPageThreadLocal().verifyClickingActionForInquiriesOrFeedback("Feedback");
 		}
-		elementList.clear();
-		
+
 		//Blog
 		lsService="Blog";
 		hashMap.clear();
@@ -184,7 +182,9 @@ public class GF_TC04_Verify_GlobalFooter_TSCCustomerHub_LinksAndPageObjects exte
 		String lsPassword=TestDataHandler.constantData.getLoginUser().getLbl_Password();
 		String lsFirstName=TestDataHandler.constantData.getLoginUser().getLbl_FirstName();
 		if(getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword,lsFirstName)) {			
-			verifyMyAccountLoginContents(lsService, lstNameAndLinks);
+//			verifyMyAccountLoginContents(lsService, lstNameAndLinks);
+			hashMap = getGlobalFooterPageThreadLocal().getTestDataWithSpecificName(lstNameAndLinks, lsService, true);
+			verifyMyAccountNotLoginContents(lsService, lstNameAndLinks,hashMap.get("parent"));
 		}
 		else {
 			reporter.reportLogFail("Login failed");
@@ -232,28 +232,28 @@ public class GF_TC04_Verify_GlobalFooter_TSCCustomerHub_LinksAndPageObjects exte
 	void verifyMyAccountLoginContents(String lsService, List<List<String>> lstNameAndLinks) {
 		BasePage basePage=new BasePage(this.getDriver());
 		basePage.getReusableActionsInstance().staticWait(1000);
-		
+
 		ArrayList<WebElement> elementList=new ArrayList<WebElement>();
 
 		elementList.add(getGlobalFooterPageThreadLocal().lblMyAccountLoginName);
 		elementList.add(getGlobalFooterPageThreadLocal().lblCustomerNumber);
 		elementList.add(getGlobalFooterPageThreadLocal().lblCustomerNO);
-				
-		//Add myaccount service panel headings 
+
+		//Add myaccount service panel headings
 		for(WebElement item:getGlobalFooterPageThreadLocal().lstMyAccountSerivePanelHeading) {
 			elementList.add(item);
 		}
-		
+
 		//Add myaccount service panel items
 		for(WebElement item:getGlobalFooterPageThreadLocal().lstMyAccountSerivePanelItem) {
 			elementList.add(item);
 		}
-		
+
 		getGlobalFooterPageThreadLocal().verifyElementListExistence(elementList);
-		
+
 		//Add myaccount service panel items
 		getGlobalFooterPageThreadLocal().verifyMyAccountSerivePanelItem();
-		
+
 
 	}
 
