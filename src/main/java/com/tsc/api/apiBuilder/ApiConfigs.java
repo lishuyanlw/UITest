@@ -43,25 +43,48 @@ public class ApiConfigs extends ApiClient{
      * @param-inputParameters - input Data Type for parameters that will be given in api call
      * @return-String - String url that can be invoked in browser
      */
-    public <T> HashMap<String,String> getAPIURLForInputModuleAndParameter(String landingPage,List<List<String>> inputParameters){
+    public <T> HashMap<String,String> getAPIURLForInputModuleAndParameterOrDefaultValues(String landingPage,List<List<String>> inputParameters,String inputParamType,String searchTerm){
         HashMap<String,String> hashMap = new HashMap<>();
-        HashMap<String,String> parameterMap = new DataConverter().convertData(inputParameters,new HashMap<>());
+        String parameterString = null;
         String apiBaseURL = System.getProperty("QaUrl");
-        if(landingPage.toLowerCase().contains("productresult")){
-            String parameterString = null;
-            for(Map.Entry<String,String> entry:parameterMap.entrySet()){
-                if(entry.getKey().equalsIgnoreCase("sortKey")){
-                    parameterString = parameterString == null ? entry.getKey() + "=" + entry.getValue().split(":")[0] : parameterString + "&" + entry.getKey() + "=" + entry.getValue().split(":")[0];
-                    hashMap.put("sortKey",entry.getValue().split(":")[1]);
-                }else if(entry.getKey().equalsIgnoreCase("sortKey")){
-                    parameterString = parameterString == null ? entry.getKey() + "=" + entry.getValue() : parameterString + "&" + entry.getKey() + "=" + entry.getValue();
-                    hashMap.put("pageSize",entry.getValue());
-                }else
-                    parameterString = parameterString == null ? entry.getKey() + "=" + entry.getValue() : parameterString + "&" + entry.getKey() + "=" + entry.getValue();
+        if(inputParamType.equalsIgnoreCase("default")){
+            hashMap.put("dimension","0");
+            hashMap.put("page","1");
+            hashMap.put("pageSize","36");
+            hashMap.put("sortKey","Featured Products");
+            hashMap.put("searchTerm",searchTerm);
+            for(Map.Entry<String,String> entry:hashMap.entrySet()){
+                parameterString = parameterString == null ? entry.getKey() + "=" + entry.getValue() : parameterString + "&" + entry.getKey() + "=" + entry.getValue();
             }
             apiBaseURL=apiBaseURL+landingPage+parameterString;
             hashMap.put("url",apiBaseURL);
             return hashMap;
+        }else if(inputParamType.equalsIgnoreCase("None")){
+            apiBaseURL=apiBaseURL+landingPage+"searchTerm="+searchTerm;
+            hashMap.put("url",apiBaseURL);
+            hashMap.put("page","1");
+            hashMap.put("sortKey","Featured Products");
+            hashMap.put("pageSize","36");
+            hashMap.put("searchTerm",searchTerm);
+            return hashMap;
+        }
+        else{
+            HashMap<String,String> parameterMap = new DataConverter().convertData(inputParameters,new HashMap<>());
+            if(landingPage.toLowerCase().contains("productresult")){
+                for(Map.Entry<String,String> entry:parameterMap.entrySet()){
+                    if(entry.getKey().equalsIgnoreCase("sortKey")){
+                        parameterString = parameterString == null ? entry.getKey() + "=" + entry.getValue().split(":")[0] : parameterString + "&" + entry.getKey() + "=" + entry.getValue().split(":")[0];
+                        hashMap.put("sortKey",entry.getValue().split(":")[1]);
+                    }else if(entry.getKey().equalsIgnoreCase("pageSize")){
+                        parameterString = parameterString == null ? entry.getKey() + "=" + entry.getValue() : parameterString + "&" + entry.getKey() + "=" + entry.getValue();
+                        hashMap.put("pageSize",entry.getValue());
+                    }else
+                        parameterString = parameterString == null ? entry.getKey() + "=" + entry.getValue() : parameterString + "&" + entry.getKey() + "=" + entry.getValue();
+                }
+                apiBaseURL=apiBaseURL+landingPage+parameterString;
+                hashMap.put("url",apiBaseURL);
+                return hashMap;
+            }
         }
         return null;
     }

@@ -65,6 +65,9 @@ public class ProductResultsPage extends BasePage{
 	@FindBy(xpath = "//div[@class='Header']//div[contains(@class,'Breadcrumb')]/div")
 	public WebElement lblBreadcrumbNavigation;
 
+	@FindBy(xpath="//div[@class='Header']//div[contains(@class,'Breadcrumb')]/div//li[@class='breadcrumb__nav-item']//*/span")
+	public WebElement lblBreadcrumbLastProductName;
+
 	@FindBy(xpath = "//div[@class='Middle']")
 	public WebElement cntSearchResultTitleContainer;
 
@@ -3630,16 +3633,67 @@ public class ProductResultsPage extends BasePage{
 
 	/**
 	 * This method verifies PRP page after loading url directly in browser
-	 * @param-String pageURL that will be launched in browser
+	 * @param-HashMap<String,String> pageData Loaded page data that will be used
 	 */
-	public void verifyPRPPageAfterLoadingDataUsingAPIParameter(HashMap<String,String> pageURL){
-		this.getDriver().get(pageURL.get("url"));
+	public void verifyPRPPageAfterLoadingDataUsingAPIParameter(HashMap<String,String> pageData){
+		this.getDriver().get(pageData.get("url"));
 
 		this.waitForPageLoading();
 		verifyShowingTextPatternInFilters();
+		this.verifySelectedFilterAndItemsOnPage(pageData);
+	}
+
+	/**
+	 * This method verifies PRP page after loading url directly in browser
+	 * @param-HashMap<String,String> pageData Loaded page data that will be used for verification
+	 */
+	public void verifySelectedFilterAndItemsOnPage(HashMap<String,String> pageData){
 		//Verification of selected sort filter on page
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSortSelect);
+		getReusableActionsInstance().scrollToElement(this.btnSortSelect);
+		Select sortOption= new Select(this.btnSortSelect);
+		String selectedFilter = sortOption.getFirstSelectedOption().getText();
+		if(selectedFilter.equalsIgnoreCase(pageData.get("sortKey")))
+			reporter.reportLogPass("Filter selected in dropdown: "+selectedFilter+" is as expected: "+pageData.get("sortKey"));
+		else
+			reporter.reportLogFail("Filter selected in dropdown: "+selectedFilter+" is not as expected: "+pageData.get("sortKey"));
 
 		//Verification of number of items displayed on page
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.txtShowingDynamicContent);
+		this.getReusableActionsInstance().scrollToElement(this.txtShowingDynamicContent);
+		this.getReusableActionsInstance().staticWait(2000);
+		String itemsOnPage = null;
+		if(pageData.get("page").equalsIgnoreCase("1"))
+			itemsOnPage = this.txtShowingDynamicContent.getText().split(" ")[2];
+		else
+			itemsOnPage = String.valueOf(Integer.valueOf(this.txtShowingDynamicContent.getText().split(" ")[0])-1);
+		if(itemsOnPage.equalsIgnoreCase(pageData.get("pageSize")))
+			reporter.reportLogPass("Items displayed on page are: "+itemsOnPage+" and is as expected: "+pageData.get("pageSize"));
+		else
+			reporter.reportLogFail("Items displayed on page are: "+itemsOnPage+" and is not as expected: "+pageData.get("pageSize"));
+
+		//Verification that title is as expected
+		String pageTitleType = this.judgeTestModel();
+		if(pageTitleType.contains("banner")){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblBreadcrumbLastProductName);
+			this.getReusableActionsInstance().scrollToElement(this.lblBreadcrumbLastProductName);
+			this.getReusableActionsInstance().staticWait(2000);
+			String bannerProductName = this.lblBreadcrumbLastProductName.getText();
+			if(pageData.get("searchTerm").toLowerCase().contains(bannerProductName))
+				reporter.reportLogPass("Search Term on page for Banner Search: "+bannerProductName+" is same as in api call: "+pageData.get("searchTerm"));
+			else
+				reporter.reportLogFail("Search Term on page for Banner Search: "+bannerProductName+" is not same as in api call: "+pageData.get("searchTerm"));
+		}else if(pageTitleType.contains("normal")){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSearchResultMessage);
+			this.getReusableActionsInstance().scrollToElement(this.lblSearchResultMessage);
+			this.getReusableActionsInstance().staticWait(2000);
+			String titleMessage = this.lblSearchResultMessage.getText().split("\"")[0];
+			if(titleMessage.equalsIgnoreCase(pageData.get("searchTerm")))
+				reporter.reportLogPass("Search Term on page for Normal Search: "+titleMessage+" is same as in api call: "+pageData.get("searchTerm"));
+			else
+				reporter.reportLogFail("Search Term on page for Normal Search: "+titleMessage+" is not same as in api call: "+pageData.get("searchTerm"));
+		}else
+			reporter.reportLogFail("Not a valid search criteria");
 	}
 
 	public class ProductItem{

@@ -202,6 +202,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 						}
 
 						//Verification of BUG-19745
+						reporter.reportLog("Verifying BUG-19745-[Release Defect - P3] the filter menu in PRP iOS");
 						this.verifyFilterSection();
 
 						closeFilterPopupWindow();
@@ -264,12 +265,14 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 							this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItemList.get(j-3));
 							//getReusableActionsInstance().clickIfAvailable(subItem);
 							//Verification of BUG-19745
+							reporter.reportLog("Verifying BUG-19745-[Release Defect - P3] the filter menu in PRP iOS");
 							this.verifyFilterSection();
 							subItem.click();
 						}
 						else {
 							//getReusableActionsInstance().clickIfAvailable(subItem);
 							//Verification of BUG-19745
+							reporter.reportLog("Verifying BUG-19745-[Release Defect - P3] the filter menu in PRP iOS");
 							this.verifyFilterSection();
 							subItem.click();
 						}	
@@ -296,6 +299,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 						//Bug 19389: PRP Filter Panel - Shop by Category selection does not work as intended						
 						if(!lsFirstLevelItem.equalsIgnoreCase("category")) {
 							//Verification of BUG-19745
+							reporter.reportLog("Verifying BUG-19745-[Release Defect - P3] the filter menu in PRP iOS");
 							this.verifyFilterSection();
 
 							closeFilterPopupWindow();
@@ -357,6 +361,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 					}
 
 					//Verification of BUG-19745
+					reporter.reportLog("Verifying BUG-19745-[Release Defect - P3] the filter menu in PRP iOS");
 					this.verifyFilterSection();
 
 					closeFilterPopupWindow();	
@@ -368,6 +373,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 			}			
 		}
 		//Verification of BUG-19745
+		reporter.reportLog("Verifying BUG-19745-[Release Defect - P3] the filter menu in PRP iOS");
 		this.verifyFilterSection();
 
 		closeFilterPopupWindow();
