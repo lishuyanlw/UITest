@@ -28,7 +28,8 @@ public class SR_TC15_Verify_ProductSearchResult_SearchProductWithAPI extends Bas
         getProductResultsPageThreadLocal().verifyPRPPageAfterLoadingDataUsingAPIParameter(prpURL);
 
         //BUG-19769 - PRP shows no results when dimensions is missing in the PRP page URL or when no parameters are specified
-        prpURL = getApiResponseThreadLocal().getAPIURLForInputModuleAndParameterOrDefaultValues(prpPagePartialURL,prpApiCallParameterData,"None",null);
+        prpURL = getApiResponseThreadLocal().getAPIURLForInputModuleAndParameterOrDefaultValues(prpPagePartialURL,null,"None","Silver");
+        getProductResultsPageThreadLocal().verifyPRPPageAfterLoadingDataUsingAPIParameter(prpURL);
 
     }
 }

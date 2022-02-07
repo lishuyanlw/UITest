@@ -78,8 +78,11 @@ public class ApiConfigs extends ApiClient{
                     }else if(entry.getKey().equalsIgnoreCase("pageSize")){
                         parameterString = parameterString == null ? entry.getKey() + "=" + entry.getValue() : parameterString + "&" + entry.getKey() + "=" + entry.getValue();
                         hashMap.put("pageSize",entry.getValue());
-                    }else
+                    }else{
                         parameterString = parameterString == null ? entry.getKey() + "=" + entry.getValue() : parameterString + "&" + entry.getKey() + "=" + entry.getValue();
+                        hashMap.put(entry.getKey(),entry.getValue());
+                    }
+
                 }
                 apiBaseURL=apiBaseURL+landingPage+parameterString;
                 hashMap.put("url",apiBaseURL);

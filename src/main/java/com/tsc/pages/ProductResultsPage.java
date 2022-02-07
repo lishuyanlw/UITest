@@ -3639,6 +3639,8 @@ public class ProductResultsPage extends BasePage{
 		this.getDriver().get(pageData.get("url"));
 
 		this.waitForPageLoading();
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.cntPagination);
+		this.getReusableActionsInstance().scrollToElement(this.cntPagination);
 		verifyShowingTextPatternInFilters();
 		this.verifySelectedFilterAndItemsOnPage(pageData);
 	}
@@ -3659,22 +3661,22 @@ public class ProductResultsPage extends BasePage{
 			reporter.reportLogFail("Filter selected in dropdown: "+selectedFilter+" is not as expected: "+pageData.get("sortKey"));
 
 		//Verification of number of items displayed on page
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.txtShowingDynamicContent);
-		this.getReusableActionsInstance().scrollToElement(this.txtShowingDynamicContent);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.cntPagination);
+		this.getReusableActionsInstance().scrollToElement(this.cntPagination);
 		this.getReusableActionsInstance().staticWait(2000);
-		String itemsOnPage = null;
+		int itemsOnPage;
 		if(pageData.get("page").equalsIgnoreCase("1"))
-			itemsOnPage = this.txtShowingDynamicContent.getText().split(" ")[2];
+			itemsOnPage = Integer.valueOf(this.txtShowingDynamicContent.getText().split(" ")[2]);
 		else
-			itemsOnPage = String.valueOf(Integer.valueOf(this.txtShowingDynamicContent.getText().split(" ")[0])-1);
-		if(itemsOnPage.equalsIgnoreCase(pageData.get("pageSize")))
+			itemsOnPage = Integer.valueOf(this.txtShowingDynamicContent.getText().split(" ")[0])-1;
+		if(itemsOnPage > 0 && itemsOnPage<=Integer.valueOf(pageData.get("pageSize")))
 			reporter.reportLogPass("Items displayed on page are: "+itemsOnPage+" and is as expected: "+pageData.get("pageSize"));
 		else
 			reporter.reportLogFail("Items displayed on page are: "+itemsOnPage+" and is not as expected: "+pageData.get("pageSize"));
 
 		//Verification that title is as expected
 		String pageTitleType = this.judgeTestModel();
-		if(pageTitleType.contains("banner")){
+		if(pageTitleType.contains("Banner")){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblBreadcrumbLastProductName);
 			this.getReusableActionsInstance().scrollToElement(this.lblBreadcrumbLastProductName);
 			this.getReusableActionsInstance().staticWait(2000);
@@ -3683,11 +3685,11 @@ public class ProductResultsPage extends BasePage{
 				reporter.reportLogPass("Search Term on page for Banner Search: "+bannerProductName+" is same as in api call: "+pageData.get("searchTerm"));
 			else
 				reporter.reportLogFail("Search Term on page for Banner Search: "+bannerProductName+" is not same as in api call: "+pageData.get("searchTerm"));
-		}else if(pageTitleType.contains("normal")){
+		}else if(pageTitleType.contains("Normal")){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSearchResultMessage);
 			this.getReusableActionsInstance().scrollToElement(this.lblSearchResultMessage);
 			this.getReusableActionsInstance().staticWait(2000);
-			String titleMessage = this.lblSearchResultMessage.getText().split("\"")[0];
+			String titleMessage = this.lblSearchResultMessage.getText().split("\"")[1];
 			if(titleMessage.equalsIgnoreCase(pageData.get("searchTerm")))
 				reporter.reportLogPass("Search Term on page for Normal Search: "+titleMessage+" is same as in api call: "+pageData.get("searchTerm"));
 			else
