@@ -458,7 +458,10 @@ public class GlobalHeaderPage extends BasePage{
 		getReusableActionsInstance().clickIfAvailable(this.btnWatchTSCBlackHeader);
 		//this.clickWebElementUsingJS(this.btnWatchTSCBlackHeader);
 		getReusableActionsInstance().staticWait(3000);
-		getReusableActionsInstance().clickIfAvailable(this.btnWatchTSCBlackHeader);
+		if(!System.getProperty("Device").equalsIgnoreCase("Tablet")){
+			getReusableActionsInstance().clickIfAvailable(this.btnWatchTSCBlackHeader);
+			getReusableActionsInstance().staticWait(3000);
+		}
 		//this.clickWebElementUsingJS(this.btnWatchTSCBlackHeader);
 		//getReusableActionsInstance().staticWait(1000);
 	}

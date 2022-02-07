@@ -23,7 +23,7 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
     @FindBy(xpath="//nav[contains(@class,'nav-items')]/ul")
     public WebElement FlyoutHeadingsMobile;
 
-    @FindBy(xpath = "//section//div[@class='mega-nav-mobile__scroll']//ul//li//a")
+    @FindBy(xpath = "//section//div[@class='mega-nav-mobile__scroll']//ul//li//a|//section//div[contains(@class,'mega-nav-tablet')]//ul//li[contains(@class,'categories')]//a")
     public WebElement FlyoutHeadingsMobileLinks;
 
     //@FindBy(xpath = "//section//nav[@class='mega-nav-mobile__wrapper']//ul//li//button//span")
@@ -55,7 +55,7 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
     @FindBy(xpath = "//section//div[@class='mega-nav-mobile__scroll']//nav[contains(@class,'curated-collections')]//li//a|//section//div[contains(@class,'tablet__footer')]//*[contains(@class,'curated')]//ul/li/a")
     List<WebElement> listCuratedCollectionLinksMobile;
 
-    @FindBy(xpath = "//section//div[@class='mega-nav-mobile__scroll']//button[@class='mega-nav-mobile__popular-brands']")
+    @FindBy(xpath = "//section//div[@class='mega-nav-mobile__scroll']//button[@class='mega-nav-mobile__popular-brands']|//*//div[contains(@class,'tablet__footer')]//button/span[contains(.,'Brand')]")
     WebElement popularBrandsMobile;
 
     @FindBy(xpath = "//a[contains(@class,'mega-nav-mobile__popular-brands__items')]")
@@ -73,7 +73,7 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
     @FindBy(xpath = "//a[contains(@class,'mega-nav-mobile__popular-brands__items')]")
     public List<WebElement> listPopularBrandsonlyLinks;
 
-    @FindBy(xpath = "//a[contains(@class,'mega-nav-mobile__popular-brands__all')]")
+    @FindBy(xpath = "//a[contains(@class,'mega-nav-mobile__popular-brands__all')]|//div[contains(@class,'tablet__main__lhs')]//ul/li/a[contains(@class,'shop-all')]")
     public WebElement shopAllPopularBrands;
 
     @FindBy(xpath="//div[contains(@class,'mega-nav')]//button[contains(@class,'close')]")
@@ -373,7 +373,7 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
     public String getUrlAfterclickingFlyoutHeading(String headingName) {
         String currentUrl;
         this.clickOnMenuButton();
-        String xpathHeading = createXPath(".//li[contains(@class,'mobile__nav-items')]//span[contains(.,'{0}')]", headingName);
+        String xpathHeading = createXPath(".//li[contains(@class,'nav-items')]//span[contains(.,'{0}')]", headingName);
         WebElement headingWebElement = FlyoutHeadingsMobile.findElement(By.xpath(xpathHeading));
         getReusableActionsInstance().javascriptScrollByVisibleElement(headingWebElement);
         getReusableActionsInstance().scrollToElement(headingWebElement);
@@ -397,7 +397,7 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
         AtomicReference<String> first_flyout_menu_text = new AtomicReference<String>();
         first_flyout_menu_text.set(headingName.split(" ")[0]);
 
-        String xpathHeading = createXPath(".//li[contains(@class,'mobile__nav-items')]//span[contains(.,'{0}')]", headingName);
+        String xpathHeading = createXPath(".//li[contains(@class,'nav-items')]//span[contains(.,'{0}')]", headingName);
         WebElement headingWebElement = FlyoutHeadingsMobile.findElement(By.xpath(xpathHeading));
         getReusableActionsInstance().javascriptScrollByVisibleElement(headingWebElement);
         getReusableActionsInstance().scrollToElement(headingWebElement);
@@ -405,10 +405,14 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
         waitForCondition(Driver->{return this.popularBrandsMobile.isEnabled();},60000);
         getReusableActionsInstance().clickIfAvailable(this.popularBrandsMobile);
         getReusableActionsInstance().waitForPageLoad();
-        WebElement linkPopularBrand = listPopularBrandsonlyLinks.get(0);
-        waitForCondition(Driver -> {
-            return (linkPopularBrand.getAttribute("href").contains(first_flyout_menu_text.get()) && linkPopularBrand.getAttribute("class").contains(section.split(" ")[0].trim().toLowerCase()));
-        }, 30000);
+        if(!(System.getProperty("Device").equalsIgnoreCase("Tablet") &&
+                (System.getProperty("Browser").contains("ios") ||
+                        System.getProperty("chromeMobileDevice").contains("iPad")))){
+            WebElement linkPopularBrand = listPopularBrandsonlyLinks.get(0);
+            waitForCondition(Driver -> {
+                return (linkPopularBrand.getAttribute("href").contains(first_flyout_menu_text.get()) && linkPopularBrand.getAttribute("class").contains(section.split(" ")[0].trim().toLowerCase()));
+            }, 30000);
+        }
 
         if (verifyElementProperty(shopAllPopularBrands, "Link")) {
             getReusableActionsInstance().javascriptScrollByVisibleElement(shopAllPopularBrands);
