@@ -12,6 +12,7 @@ public class GlobalFooterPage_Tablet extends GlobalFooterPage{
 		super(driver);
 	}
 
+	/*
 	@FindBy(xpath="//div[@class='Footer']//div[contains(@class,'border-bottom-gray') and not(contains(@class,'margin'))]/div[contains(@id,'collapseContactUs')]//ul/li/a")
 	List<WebElement> lnkTSCCustomerHubAllLinks;
 
@@ -23,6 +24,7 @@ public class GlobalFooterPage_Tablet extends GlobalFooterPage{
 
 	@FindBy(xpath="//div[@class='Footer']//div[contains(@id,'headingTwo')]//a")
 	WebElement lnkAboutTSCHeader;
+*/
 
 	@Override
 	public void verifyRogersLogo() {
@@ -153,7 +155,7 @@ public class GlobalFooterPage_Tablet extends GlobalFooterPage{
 
 		return lstFr;
 	}
-	*/
+
 	@Override
 	public WebElement getServiceWebElement(String lsService,String footerSection) {
 		if(footerSection.toLowerCase().contains("customer") || footerSection.toUpperCase().contains("ESPACE")){
@@ -184,4 +186,6 @@ public class GlobalFooterPage_Tablet extends GlobalFooterPage{
 		}
 		return null;
 	}
+	*/
+
 }

@@ -174,7 +174,32 @@ public class GF_TC04_Verify_GlobalFooter_TSCCustomerHub_LinksAndPageObjects exte
 		lsService="My Account";
 		hashMap.clear();
 		hashMap = getGlobalFooterPageThreadLocal().getTestDataWithSpecificName(lstNameAndLinks, lsService, true);
+		reporter.reportLog(lsService);
+		selectedItem=getGlobalFooterPageThreadLocal().getServiceWebElement(lsService,hashMap.get("parent"));
+		lsHref=basePage.getElementHref(selectedItem);
+		//lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsService,true);
+		lsYmlHref=hashMap.get("Link");
+		if(lsYmlHref.isEmpty()) {
+			reporter.reportLogFail("Unable to find '"+lsService+"' link.");
+		}
+		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current '"+lsService+"' href of "+lsHref+" is equal to "+lsYmlHref,"The current '"+lsService+"' href of "+lsHref+" is not equal to "+lsYmlHref);
+
+		if(!getGlobalFooterPageThreadLocal().goToService(lsService,getGlobalFooterPageThreadLocal().lblCustomerServiceSubItemWindowContentTitle,hashMap.get("parent"))) {
+			reporter.reportLogFail("Unable to navigate to '"+lsService+"' page objects.");
+		}
+		else {
+			getGlobalFooterPageThreadLocal().verifyLeftAsidePenalAfterClickingBrowseByHelpTopicsSubItemInCustomerServicePageObject();
+
+			elementList.add(getGlobalFooterPageThreadLocal().lblCustomerServiceSubItemWindowContentTitle);
+			elementList.add(getGlobalFooterPageThreadLocal().lblCustomerServiceSubItemWindowContentBody);
+			getGlobalFooterPageThreadLocal().verifyElementListExistence(elementList);
+		}
+		elementList.clear();
+		/*
+		hashMap = getGlobalFooterPageThreadLocal().getTestDataWithSpecificName(lstNameAndLinks, lsService, true);
 		reporter.reportLog("Not login for "+lsService);
+
+
 		verifyMyAccountNotLoginContents(lsService, lstNameAndLinks,hashMap.get("parent"));
 		
 		reporter.reportLog("Login for "+lsService);
@@ -189,7 +214,7 @@ public class GF_TC04_Verify_GlobalFooter_TSCCustomerHub_LinksAndPageObjects exte
 		else {
 			reporter.reportLogFail("Login failed");
 		}
-
+	*/
 	}
 	
 	void verifyMyAccountNotLoginContents(String lsService, List<List<String>> lstNameAndLinks,String section) {
