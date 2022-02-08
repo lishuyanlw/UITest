@@ -2,6 +2,7 @@ package com.tsc.test.tests.productSearchResult;
 
 import com.tsc.api.pojo.Product;
 import com.tsc.data.Handler.TestDataHandler;
+import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 import org.testng.annotations.Test;
 
@@ -18,6 +19,11 @@ public class SR_TC15_Verify_ProductSearchResult_SearchProductWithAPI extends Bas
     public void verify_productSearchResult_ApiCall(){
         //Closing the popup appearing on screen after application launch
         getGlobalFooterPageThreadLocal().closePopupDialog();
+        BasePage basePage=new BasePage(this.getDriver());
+        String lsBaseUrl=basePage.getBaseURL()+"/";
+
+        reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl), "TSC url is correct", "TSC url is incorrect");
+        reporter.reportLog("Home Page");
 
         //Fetching Test Data
         String prpPagePartialURL = TestDataHandler.constantData.getSearchResultPage().getLbl_prp_partial_url();

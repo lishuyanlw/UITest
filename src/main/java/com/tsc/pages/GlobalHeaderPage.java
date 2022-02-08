@@ -287,6 +287,9 @@ public class GlobalHeaderPage extends BasePage{
 	@FindBy(xpath="//div[@class='helpButton']//span[@id='helpButtonSpan']/span[@class='message']")
 	public WebElement lblTSCChatBox;
 
+	@FindBy(xpath="//form//div[contains(@class,'pgSearchBarWrapper')]/input")
+	public WebElement lblProgramGuideSearchBox;
+
 	public void clickOnClearanceHeaderOption() {
 		getReusableActionsInstance().clickIfAvailable(clearanceHeader);
 	}
@@ -453,12 +456,14 @@ public class GlobalHeaderPage extends BasePage{
 	public void hoverOnWatchTSC() {
 		getReusableActionsInstance().waitForPageLoad();
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnWatchTSCBlackHeader);
+		getReusableActionsInstance().scrollToElement(this.btnWatchTSCBlackHeader);
 		getReusableActionsInstance().staticWait(2000);
 		//Clicking on button twice as test is not working for Safari using scrollToElement
 		getReusableActionsInstance().clickIfAvailable(this.btnWatchTSCBlackHeader);
 		//this.clickWebElementUsingJS(this.btnWatchTSCBlackHeader);
 		getReusableActionsInstance().staticWait(3000);
 		getReusableActionsInstance().clickIfAvailable(this.btnWatchTSCBlackHeader);
+		getReusableActionsInstance().staticWait(3000);
 		//this.clickWebElementUsingJS(this.btnWatchTSCBlackHeader);
 		//getReusableActionsInstance().staticWait(1000);
 	}
@@ -470,7 +475,7 @@ public class GlobalHeaderPage extends BasePage{
 	 * @param-boolean bCheckUrl: to decide if check Url after clicking the header in Black headers
 	 * @author Wei.Li
 	 */	
-	 public void verifyTSHeaderAndLinkInBlackHeader(WebElement blackItem,WebElement silverItem,boolean bCheckUrl) {
+	 public void verifyTSHeaderAndLinkInBlackHeader(WebElement blackItem,WebElement silverItem,boolean bCheckUrl,String endURLString) {
 	 	int loopSize = this.lstWatchTSCDropDown.size();
 	 	for(int i=0;i<loopSize;i++){
 			getReusableActionsInstance().waitForPageLoad();
@@ -492,11 +497,18 @@ public class GlobalHeaderPage extends BasePage{
 			getReusableActionsInstance().staticWait(5000);
 			String lsUrlInSilverHeader=this.removeLastSlashFromUrl(this.URL());
 
+			//BUG-19547 - [PR Defect] Adding the Why are we adding the "&fm=top_header" query string to the URL
+			if(lsUrlInSilverHeader.endsWith(endURLString))
+				reporter.reportLogPass("The URL for: "+lsTitle+" end with "+endURLString+" as expected");
+			else
+				reporter.reportLogFail("The URL for: "+lsTitle+" end with "+endURLString+" as expected");
+
 			if(bCheckUrl) {
 				//Program Guide url is appending daily in url and is not needed
 				if(lsUrlInSilverHeader.contains("programguide")) {
+					waitForCondition(driver->{return this.lblProgramGuideSearchBox.isEnabled();},30000);
 					reporter.softAssert(lsUrlInSilverHeader.replace("/daily", "").equalsIgnoreCase(lsHrefInBlackHeader), "The Url of " + lsUrlInSilverHeader + "  after clicking " + lsTitle + " in Black headers is equal to the href of " + lsHrefInBlackHeader, "The Url of " + lsUrlInSilverHeader + "  after clicking " + lsTitle + " in Black headers is not equal to the href of " + lsHrefInBlackHeader);
-					this.getReusableActionsInstance().staticWait(8000);
+					this.getReusableActionsInstance().staticWait(3000);
 				}else
 					reporter.softAssert(lsUrlInSilverHeader.equalsIgnoreCase(lsHrefInBlackHeader), "The Url of " + lsUrlInSilverHeader + "  after clicking " + lsTitle + " in Black headers is equal to the href of " + lsHrefInBlackHeader, "The Url of " + lsUrlInSilverHeader + "  after clicking " + lsTitle + " in Black headers is not equal to the href of " + lsHrefInBlackHeader);
 			}

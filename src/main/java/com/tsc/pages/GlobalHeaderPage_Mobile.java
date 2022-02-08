@@ -1,5 +1,6 @@
 package com.tsc.pages;
 
+import com.tsc.pages.base.BasePage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -78,6 +79,10 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
 
     @FindBy(xpath="//div[contains(@class,'mega-nav')]//button[contains(@class,'close')]")
     public WebElement btnMenuCloseButton;
+
+    //TSC Logo
+    @FindBy(xpath = "//div[contains(@class,'secondary-navigation__logo')]/a")
+    public WebElement lnkTSClogo;
 
     @Override
     public String getNameAndclickSubMenuItem(String headingName, String submenuHeading, String itemName) {
@@ -386,9 +391,12 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
 
     @Override
     public void hoverOnWatchTSC() {
-        super.hoverOnWatchTSC();
-        this.btnWatchTSCBlackHeader.click();
-        this.btnWatchTSCBlackHeader.click();
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnWatchTSCBlackHeader);
+        this.getReusableActionsInstance().scrollToElement(this.btnWatchTSCBlackHeader);
+        this.getReusableActionsInstance().staticWait(2000);
+        //getReusableActionsInstance().clickIfAvailable(this.btnWatchTSCBlackHeader);
+        this.clickWebElementUsingJS(this.btnWatchTSCBlackHeader);
+        this.getReusableActionsInstance().staticWait(2000);
     }
 
     @Override
@@ -450,6 +458,18 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
     public void scrollToHeadingElement(String headingName) {
         getReusableActionsInstance().javascriptScrollByVisibleElement(this.menuButton);
         getReusableActionsInstance().clickIfAvailable(this.menuButton);
+    }
+
+    @Override
+    public boolean validateTSCLogoNavigateToHomePage() {
+        String lsHomePage=new BasePage(this.getDriver()).getBaseURL()+"/";
+        String currentUrl=getDriver().getCurrentUrl();
+        getReusableActionsInstance().isElementVisible(this.lnkTSClogo, 10);
+        getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkTSClogo);
+        getReusableActionsInstance().scrollToElement(this.lnkTSClogo);
+        this.clickWebElementUsingJS(this.lnkTSClogo);
+        waitForCondition(Driver->{return !currentUrl.equalsIgnoreCase(getDriver().getCurrentUrl());},10000);
+        return this.getDriver().getCurrentUrl().equalsIgnoreCase(lsHomePage);
     }
 
 }

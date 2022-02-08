@@ -37,7 +37,7 @@ headerSection:
     Car Gadgets: ["Car Gadgets","Car Gadgets","/pages/todaysshowstopper?ic=HP_TodaysShowstopper","false"],
     Designer Footwear: ["Designer Footwear","Nouveaux arrivages","/pages/productresults?nav=n:128153-2069664&ic=HDR_FlyoutNav_Shoes_And_Handbags_Designer_Footwear","false"],
     On Air Products: ["On Air Products","Sur les ondes","/pages/productresults?ic=HP_OnAir_T&dimensions=2037548&page=1&pageSize=36&rd=false","false"]
-    }
+  }
   flyout:
     lst_FlyoutHeadingAndNameMap: {
       Fashion: ['Fashion','Mode','100047'],
@@ -64,6 +64,7 @@ headerSection:
     lnk_ShopByBrandShopAll: pages/brand?dimensions=
     lbl_LandingPageBrandShopAll: Shop By Brand
     lbl_FlyoutHeadingLandingPageLink: /pages/category?nav=n
+  lbl_ParialURLEndWatchTSC: "&fm=top_header"
    
 homePage:
   lbl_OnAirNow: ON AIR NOW
