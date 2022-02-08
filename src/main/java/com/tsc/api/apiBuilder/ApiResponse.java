@@ -713,6 +713,27 @@ public class ApiResponse extends ApiConfigs {
         
     }
 
+	/**
+	 * This method finds DimensionStates for a product
+	 * @param - String - searchKeyword : search keyword for Product
+	 * @param - String - dimension : Dimension No of a particular product
+	 * @return - List<Product.DimensionStates> - List of DimensionStates for searched product
+	 */
+    public List<Product.DimensionStates> getProductCategoryCategory(String searchKeyword, String dimension){
+		Map<String,Object> configs = new HashMap<>();
+		configs.put("dimensions",dimension);
+		configs.put("searchterm",searchKeyword);
+		try{
+			String apiEndpoint = propertyData.get("test_apiVersion")+"/"+propertyData.get("test_language")+"/products/";
+			Response response = this.getApiCallResponse(configs,apiEndpoint);
+			Product product = JsonParser.getResponseObject(response.asString(), new TypeReference<Product>() {});
+			return product.getDimensionStates();
+
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+    	return null;
+	}
     
 
 }

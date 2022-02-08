@@ -1,6 +1,5 @@
 package com.tsc.pages;
 
-import com.tsc.api.util.DataConverter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -3696,6 +3695,64 @@ public class ProductResultsPage extends BasePage{
 				reporter.reportLogFail("Search Term on page for Normal Search: "+titleMessage+" is not same as in api call: "+pageData.get("searchTerm"));
 		}else
 			reporter.reportLogFail("Not a valid search criteria");
+	}
+
+	/**
+	 * @param - String - searchkeyword to search Product
+	 */
+	//BUG-19789 - PRP left nav should display all available facets
+	public void verifyCategoryDetailsOnPRPForProduct(List<Product.DimensionStates> categoryDimensions,String searchKeyword) {
+		List<String> categoryItemsOnPage = new ArrayList<>();
+		this.getSearchResultLoad(searchKeyword, true);
+		this.waitForPageLoading();
+		for (WebElement webElement : productFilterContainerList) {
+			boolean breakFlag = false;
+			String filterTitle = this.getElementInnerText(webElement.findElement(By.xpath(".//button/span")));
+			if (filterTitle.equalsIgnoreCase("Category")) {
+				breakFlag = true;
+				//Enter code here to check if Category is open
+
+				List<WebElement> lstCategoryItems = webElement.findElements(this.bySecondaryFilterAll);
+				for (WebElement categoryItem : lstCategoryItems) {
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(categoryItem);
+					categoryItemsOnPage.add(categoryItem.findElement(By.xpath("./a")).getText());
+					this.getReusableActionsInstance().staticWait(1000);
+				}
+			}
+			//Verification of categories displayed on UI
+			List<Product.Refinements> refinements = null;
+			List<String> refinementListfromAPI = new ArrayList<>();
+			for (Product.DimensionStates dimensionStates : categoryDimensions) {
+				if (dimensionStates.getDimensionType().equalsIgnoreCase("Category")) {
+					refinements = dimensionStates.getRefinements();
+					for (Product.Refinements data : refinements) {
+						refinementListfromAPI.add(data.getDimensionName());
+					}
+					break;
+				}
+			}
+
+			if (refinementListfromAPI.size() > 0) {
+				for (String refinementItem : refinementListfromAPI) {
+					boolean flag = false;
+					String categoryItemNameOnPage = null;
+					for (String categoryItemOnPage : categoryItemsOnPage) {
+						categoryItemNameOnPage = categoryItemOnPage;
+						if (refinementItem.equalsIgnoreCase(categoryItemOnPage)) {
+							flag = true;
+							break;
+						}
+					}
+					if (flag)
+						reporter.reportLogPass("Category displayed on PRP page: " + categoryItemNameOnPage + " is same as in api call: " + refinementItem);
+					else
+						reporter.reportLogFail("Category displayed on PRP page: " + categoryItemNameOnPage + " is not same as in api call: " + refinementItem);
+				}
+				if (breakFlag)
+					break;
+			} else
+				reporter.reportLog("Category items are not checked as refinement is null");
+		}
 	}
 
 	public class ProductItem{
