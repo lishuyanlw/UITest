@@ -13,6 +13,7 @@ import com.tsc.api.apiBuilder.ApiResponse;
 import com.tsc.pages.*;
 import com.tsc.pages.base.BasePage;
 
+import extentreport.ExtentListener;
 import org.apache.http.client.ClientProtocolException;
 import org.openqa.selenium.WebDriver;
 import org.testng.ITestContext;
@@ -125,7 +126,7 @@ public class BaseTest {
 
 	private void init_Tablet() throws IOException {
 		productResultsPageThreadLocal.set(new ProductResultsPage_Tablet(getDriver()));
-		globalheaderPageThreadLocal.set(new GlobalHeaderPage_Mobile(getDriver()));
+		globalheaderPageThreadLocal.set(new GlobalHeaderPage_Tablet(getDriver()));
 
 		if(System.getProperty("Browser").contains("android") ||
 				(System.getProperty("chromeMobileDevice")!=null
@@ -170,7 +171,9 @@ public class BaseTest {
 			sauceParameters = initializeSauceParamsMap(strBrowser);
 		}
 
+		//webDriverThreadLocal.set(browserDrivers.driverInit(strBrowser, sauceParameters, currentTestMethodName, ""));
 		webDriverThreadLocal.set(browserDrivers.driverInit(strBrowser, sauceParameters, currentTestMethodName, ""));
+		ExtentListener.setDriver(getDriver());
 		getDriver().get(strUrl);
 
 		String lsTestDevice = System.getProperty("Device").trim();

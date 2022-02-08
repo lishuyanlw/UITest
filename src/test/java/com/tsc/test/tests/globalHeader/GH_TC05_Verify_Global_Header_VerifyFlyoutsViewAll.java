@@ -43,13 +43,9 @@ public class GH_TC05_Verify_Global_Header_VerifyFlyoutsViewAll extends BaseTest 
 			lsSuccessResult=String.format("The url [ %s ] does not contain [ %s ] after clicking shop all brands under >" + lsHeading + " > Popular Brands", shopAllUrl,lsYmlNotFound);
 			lsFailResult=String.format("The url of [ %s ] contains [ %s ] after clicking shop all brands under > " + lsHeading + " > Popular Brands", shopAllUrl,lsYmlNotFound);
 			reporter.softAssert(!shopAllUrl.contains(lsYmlNotFound), lsSuccessResult,lsFailResult);
-			pageHeading=getglobalheaderPageThreadLocal().getHeadingForLandingPage(lsHeading);
+			pageHeading=getglobalheaderPageThreadLocal().getHeadingForLandingPage(false);
 			reporter.reportLog("Heading of the landing page "+pageHeadingSection+" : "+pageHeading);
-			reporter.softAssert(pageHeading.toLowerCase().contains(lsHeading.toLowerCase()),"Landing page heading is verified with Flyout heading.","Landing page heading is not matching with Flyout heading > "+lsHeading +" > under Popular Brands >Shop all brands");
-			/*if(!System.getProperty("Device").equalsIgnoreCase("desktop")){
-				getglobalheaderPageThreadLocal().closeMobileMenu();
-				getglobalheaderPageThreadLocal().waitForPageLoad();
-			}*/
+			reporter.softAssert(pageHeading.toLowerCase().contains(lsHeading.toLowerCase()),"Landing page heading "+pageHeading+" is verified with Flyout heading "+lsHeading,"Landing page heading "+pageHeading+" is not matching with Flyout heading > "+lsHeading +" > under Popular Brands >Shop all brands");
 		}
 	}
 }	

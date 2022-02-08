@@ -255,7 +255,7 @@ public class GlobalHeaderPage extends BasePage{
 
 	@FindAll({
 		@FindBy(xpath="//div[contains(@class,'Middle')]//brand/div[contains(@class,'brand')]//*[contains(@class,'titleLink')]"),
-		@FindBy(xpath="//div[contains(@class,'Middle')]//div[contains(@class,'PageTitle')]//*[contains(@class,'gatewayTitle')]")
+		@FindBy(xpath="//div[contains(@class,'Middle')]//div[@class='PageTitle']//div[contains(@id,'Title')]/*")
 	})
 	public WebElement lblPageTitleForMenuItems;
 
@@ -768,13 +768,15 @@ public class GlobalHeaderPage extends BasePage{
 	 * @return String:Heading of the page
 	 * @author Sachin Sharma
 	 */
-	public String getHeadingForLandingPage(String pageName) {
+	public String getHeadingForLandingPage(boolean chatBoxAvailable) {
+		if(chatBoxAvailable)
+			waitForCondition(Driver->{return (this.lblTSCChatBox.isDisplayed() && this.lblTSCChatBox.getText().contains("Chat"));},120000);
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblPageTitleForMenuItems);
 		getReusableActionsInstance().scrollToElement(this.lblPageTitleForMenuItems);
-		String title = getPageTitle(this.lblPageTitleForMenuItems).toUpperCase();
+		String title = this.getElementInnerText(this.lblPageTitleForMenuItems);
 		reporter.reportLog("Title of page is: "+title);
-		waitForCondition(Driver->{return (title.toLowerCase().contains(pageName.toLowerCase()));} ,60000);
-		return (title);
+		waitForCondition(Driver->{return (!title.isEmpty() && this.lblPageTitleForMenuItems.isEnabled() && this.lblPageTitleForMenuItems.isDisplayed());},60000);
+		return title;
 	}
 
 	

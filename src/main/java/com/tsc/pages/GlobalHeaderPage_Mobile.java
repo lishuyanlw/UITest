@@ -74,7 +74,8 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
     @FindBy(xpath = "//a[contains(@class,'mega-nav-mobile__popular-brands__items')]")
     public List<WebElement> listPopularBrandsonlyLinks;
 
-    @FindBy(xpath = "//a[contains(@class,'mega-nav-mobile__popular-brands__all')]|//div[contains(@class,'tablet__main__lhs')]//ul/li/a[contains(@class,'shop-all')]")
+    //@FindBy(xpath = "//a[contains(@class,'mega-nav-mobile__popular-brands__all')]|//div[contains(@class,'tablet__main__lhs')]//ul/li/a[contains(@class,'shop-all')]")
+    @FindBy(xpath="//a[contains(@class,'mega-nav-mobile__popular-brands__all')]|//section[@class='container']//nav[contains(@class,'popular')]/ul/li/a[contains(.,'See all')]")
     public WebElement shopAllPopularBrands;
 
     @FindBy(xpath="//div[contains(@class,'mega-nav')]//button[contains(@class,'close')]")
@@ -385,6 +386,7 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
         headingWebElement.click();
         reporter.softAssert(verifyElementProperty(FlyoutHeadingsMobileLinks, "Link"), "Href is present for Flyout Heading " + headingName, "Href is not preset for " + headingName);
         this.FlyoutHeadingsMobileLinks.click();
+        this.getReusableActionsInstance().waitForPageLoad();
         currentUrl = getDriver().getCurrentUrl();
         return currentUrl;
     }

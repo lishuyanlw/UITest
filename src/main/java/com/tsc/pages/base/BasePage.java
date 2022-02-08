@@ -239,7 +239,7 @@ import utils.ReusableActions;
 				}
 			}
 		};
-		WebDriverWait wait = new WebDriverWait(getDriver(), 120);
+		WebDriverWait wait = new WebDriverWait(getDriver(), 200);
 		wait.until(javascriptDone);
 	}
 	
