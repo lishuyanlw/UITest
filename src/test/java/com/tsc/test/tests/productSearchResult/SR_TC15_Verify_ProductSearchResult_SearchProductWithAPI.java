@@ -28,11 +28,12 @@ public class SR_TC15_Verify_ProductSearchResult_SearchProductWithAPI extends Bas
         //Fetching Test Data
         String prpPagePartialURL = TestDataHandler.constantData.getSearchResultPage().getLbl_prp_partial_url();
         List<List<String>> prpApiCallParameterData = TestDataHandler.constantData.getSearchResultPage().getLst_SearchOption().get(7).getFilterOption();
+        List<List<String>> prpSearchKeywordData = TestDataHandler.constantData.getSearchResultPage().getLst_SearchOption().get(8).getFilterOption();
         HashMap<String,String> prpURL;
 
         //BUG-19789 - PRP left nav should display all available facets -- "category" facet is missing on search results.
-        List<Product.DimensionStates> categoryDimension = getApiResponseThreadLocal().getProductCategoryCategory("casper","3000786");
-        getProductResultsPageThreadLocal().verifyCategoryDetailsOnPRPForProduct(categoryDimension,"casper");
+        List<Product.DimensionStates> categoryDimension = getApiResponseThreadLocal().getProductCategoryCategory(prpSearchKeywordData.get(0).get(0),prpSearchKeywordData.get(0).get(1));
+        getProductResultsPageThreadLocal().verifyCategoryDetailsOnPRPForProduct(categoryDimension,prpSearchKeywordData.get(0).get(0));
 
         //verification of prp page by loading url in browser
         //BUG-19768 - [PR Defect] PRP url parameters should not be hardcoded

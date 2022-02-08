@@ -1,5 +1,6 @@
 package com.tsc.pages;
 
+import com.tsc.api.pojo.Product;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -1557,5 +1558,14 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 			reporter.reportLogFail("The user is not navigated to PDP page");
 		}
 	}
-	
+
+	@Override
+	public void verifyCategoryDetailsOnPRPForProduct(List<Product.DimensionStates> categoryDimensions, String searchKeyword) {
+		this.getSearchResultLoad(searchKeyword, true);
+		this.waitForPageLoading();
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnFilterPopup);
+		this.getReusableActionsInstance().scrollToElement(this.btnFilterPopup);
+		this.getReusableActionsInstance().clickIfAvailable(this.btnFilterPopup);
+		super.verifyCategoryDetailsOnPRPForProduct(categoryDimensions,searchKeyword);
+	}
 }

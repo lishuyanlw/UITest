@@ -3703,8 +3703,10 @@ public class ProductResultsPage extends BasePage{
 	//BUG-19789 - PRP left nav should display all available facets
 	public void verifyCategoryDetailsOnPRPForProduct(List<Product.DimensionStates> categoryDimensions,String searchKeyword) {
 		List<String> categoryItemsOnPage = new ArrayList<>();
-		this.getSearchResultLoad(searchKeyword, true);
-		this.waitForPageLoading();
+		if(System.getProperty("Device").equalsIgnoreCase("Desktop")){
+			this.getSearchResultLoad(searchKeyword, true);
+			this.waitForPageLoading();
+		}
 		for (WebElement webElement : productFilterContainerList) {
 			boolean breakFlag = false;
 			String filterTitle = this.getElementInnerText(webElement.findElement(By.xpath(".//button/span")));

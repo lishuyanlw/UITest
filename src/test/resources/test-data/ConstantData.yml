@@ -127,6 +127,9 @@ searchResultPage:
         - ["pageSize","45"]
         - ["sortKey","NewestProducts","Newest First"]
         - ["searchTerm","Silver"]
+    - filterType: PRPBugsSearchKeyword
+      filterOption:
+        - ["casper","3000786"]
   lst_MoreButton: ["Shop by brand","Shop by colour"]
   lst_DisappearAfterSelectFilter: ["SHOP BY CATEGORY"]
   lnk_product_result: /pages/productresults?
