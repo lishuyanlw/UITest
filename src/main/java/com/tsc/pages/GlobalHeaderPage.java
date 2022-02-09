@@ -255,9 +255,18 @@ public class GlobalHeaderPage extends BasePage{
 
 	@FindAll({
 		@FindBy(xpath="//div[contains(@class,'Middle')]//brand/div[contains(@class,'brand')]//*[contains(@class,'titleLink')]"),
-		@FindBy(xpath="//div[contains(@class,'Middle')]//div[@class='PageTitle']//div[contains(@id,'Title')]/*")
+		@FindBy(xpath="//div[contains(@class,'Middle')]//div[@class='PageTitle']//div[contains(@id,'Title')]")
 	})
 	public WebElement lblPageTitleForMenuItems;
+
+	@FindBy(xpath="//div[contains(@class,'Middle')]//div[@class='PageTitle']//div[contains(@id,'Title')]")
+	public WebElement lblPageTitleCategorySection;
+
+	@FindBy(xpath="//div[@class='mega-wrapper']//nav[contains(@class,'mega-categories')]")
+	public WebElement lstFirstLevelCategoryMenuList;
+
+	@FindBy(xpath="//div[@class='mega-wrapper']//nav[contains(@class,'mega-categories')]//li/a[contains(@class,'item-all')]")
+	public WebElement lnkShopAllForCatgory;
 
 	//Popular brand
 	@FindBy(xpath = "//a[contains(@class,'mega-popular__brand-link')]//img")
@@ -685,19 +694,17 @@ public class GlobalHeaderPage extends BasePage{
 	 * @return String:href
 	 * @author Shruti Desai
 	 */
-	public String getUrlAfterclickingFlyoutHeading(String headingName) {
-		AtomicReference<String> pageTitle=new AtomicReference<>();
-		String currentPageUrl = getDriver().getCurrentUrl();
-		if(!(currentPageUrl.substring(0,currentPageUrl.length()-1)).equalsIgnoreCase(getBaseURL()))
-			pageTitle.getAndSet(lblPageTitleForMenuItems.getText());
+	public String getUrlAfterClickingShopAllForCategory(String headingName) {
 		String currentUrl;
 		String xpathHeading =createXPath(".//li//a//span[contains(.,'{0}')]" ,headingName);
 		WebElement headingWebElement = FlyoutHeadings.findElement(By.xpath(xpathHeading));
+		getReusableActionsInstance().staticWait(2000);
 		getReusableActionsInstance().javascriptScrollByVisibleElement(headingWebElement);
 		getReusableActionsInstance().scrollToElement(headingWebElement);
-		getReusableActionsInstance().clickIfAvailable(headingWebElement);
-		//(new GlobalFooterPage(this.getDriver())).waitForPageLoading();
-		waitForCondition(Driver->{return (this.lblPageTitleForMenuItems.getText()!=pageTitle.get());},90000);
+		getReusableActionsInstance().staticWait(2000);
+		waitForCondition(Driver->{return this.lstFirstLevelCategoryMenuList.isDisplayed();},5000);
+		getReusableActionsInstance().clickIfAvailable(this.lnkShopAllForCatgory);
+		waitForCondition(Driver->{return (!this.lblPageTitleCategorySection.getText().isEmpty() && this.lblTSCChatBox.isDisplayed() && this.lblTSCChatBox.getText().contains("Chat"));},120000);
 		currentUrl = getDriver().getCurrentUrl();
 		return currentUrl;
 	}
@@ -771,11 +778,11 @@ public class GlobalHeaderPage extends BasePage{
 	public String getHeadingForLandingPage(boolean chatBoxAvailable) {
 		if(chatBoxAvailable)
 			waitForCondition(Driver->{return (this.lblTSCChatBox.isDisplayed() && this.lblTSCChatBox.getText().contains("Chat"));},120000);
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblPageTitleForMenuItems);
-		getReusableActionsInstance().scrollToElement(this.lblPageTitleForMenuItems);
-		String title = this.getElementInnerText(this.lblPageTitleForMenuItems);
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblPageTitleCategorySection);
+		getReusableActionsInstance().scrollToElement(this.lblPageTitleCategorySection);
+		String title = this.getElementInnerText(this.lblPageTitleCategorySection);
 		reporter.reportLog("Title of page is: "+title);
-		waitForCondition(Driver->{return (!title.isEmpty() && this.lblPageTitleForMenuItems.isEnabled() && this.lblPageTitleForMenuItems.isDisplayed());},60000);
+		waitForCondition(Driver->{return !title.isEmpty();},60000);
 		return title;
 	}
 

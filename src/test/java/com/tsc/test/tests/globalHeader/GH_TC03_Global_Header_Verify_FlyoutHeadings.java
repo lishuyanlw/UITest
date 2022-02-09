@@ -13,26 +13,27 @@ import com.tsc.test.base.BaseTest;
 public class GH_TC03_Global_Header_Verify_FlyoutHeadings extends BaseTest {
 
 	@Test(groups={"Home","Regression","GlobalHeader","GlobalHeader_Mobile","GlobalHeader_Tablet"})
-	public void verifyFlyoutHeadings() {
+	public void verifyFlyoutHeadingURL() {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 		String lsBaseUrl=(new BasePage(this.getDriver())).getBaseURL();
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl+"/"), "TSC url is correct", "TSC url is incorrect");
 		reporter.reportLogWithScreenshot("Home Page");
 		reporter.reportLog("Validating Flyouts all departments & it's URL before clicking it");
-		validateFlyout();
+		if(System.getProperty("Device").equalsIgnoreCase("Desktop"))
+			validateFlyout();
+		else
+			reporter.reportLog("This test is not required for other device as heading is a button and not a link");
 	}
 		
-		public void validateFlyout() {
-			//Map<String,List<String>> headerMap= TestDataHandler.constantData.headerSection.getFlyout().getLst_FlyoutHeadingAndNameMap();
-			List<WebElement> headingsElement=getglobalheaderPageThreadLocal().getFlyoutHeadingsWebelement();
-			for(WebElement lsHeading:headingsElement) {
-				getglobalheaderPageThreadLocal().scrolltoWebElement(lsHeading);
-				getGlobalFooterPageThreadLocal().applyStaticWait(3000);
-				String flyoutHeading =lsHeading.getText();
-				//reporter.softAssert((headerMap.get(flyoutHeading).contains(flyoutHeading)),"Flyout displays drpartment  "+flyoutHeading+" and it's validated.","Flyout is not displaying heading properly for "+flyoutHeading);
-				if(System.getProperty("Device").equalsIgnoreCase("desktop")){
-					reporter.softAssert(getglobalheaderPageThreadLocal().verifyhrefFlyoutHeading(lsHeading), "Href is present for Flyout Heading "+flyoutHeading, "Href is not preset for "+flyoutHeading);
-				}
+	public void validateFlyout() {
+		List<WebElement> headingsElement=getglobalheaderPageThreadLocal().getFlyoutHeadingsWebelement();
+		for(WebElement lsHeading:headingsElement) {
+			getglobalheaderPageThreadLocal().scrolltoWebElement(lsHeading);
+			getGlobalFooterPageThreadLocal().applyStaticWait(3000);
+			String flyoutHeading =lsHeading.getText();
+			if(System.getProperty("Device").equalsIgnoreCase("Desktop")){
+				reporter.softAssert(getglobalheaderPageThreadLocal().verifyhrefFlyoutHeading(lsHeading), "Href is present for Flyout Heading "+flyoutHeading, "Href is not preset for "+flyoutHeading);
 			}
 		}
+	}
 }

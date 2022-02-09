@@ -376,7 +376,7 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
 
     //this method also verifies header href from GH_TC03
     @Override
-    public String getUrlAfterclickingFlyoutHeading(String headingName) {
+    public String getUrlAfterClickingShopAllForCategory(String headingName) {
         String currentUrl;
         this.clickOnMenuButton();
         String xpathHeading = createXPath(".//li[contains(@class,'nav-items')]//span[contains(.,'{0}')]", headingName);
