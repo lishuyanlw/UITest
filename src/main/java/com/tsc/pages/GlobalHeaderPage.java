@@ -259,7 +259,7 @@ public class GlobalHeaderPage extends BasePage{
 	})
 	public WebElement lblPageTitleForMenuItems;
 
-	@FindBy(xpath="//div[contains(@class,'Middle')]//div[@class='PageTitle']//div[contains(@id,'Title')]")
+	@FindBy(xpath="//div[contains(@class,'Middle')]//div[@class='PageTitle']//div[contains(@id,'Title')]|//div[contains(@class,'Middle')]//brand/div[contains(@class,'brand')]//*[contains(@class,'titleLink')]")
 	public WebElement lblPageTitleCategorySection;
 
 	@FindBy(xpath="//div[@class='mega-wrapper']//nav[contains(@class,'mega-categories')]")
@@ -500,7 +500,8 @@ public class GlobalHeaderPage extends BasePage{
 			reporter.softAssert(!lsHrefInBlackHeader.isEmpty(), "The href of "+lsTitle+" in Black headers is not empty", "The href of "+lsTitle+" in Black headers is empty");
 			lsHrefInBlackHeader=this.removeLastSlashFromUrl(lsHrefInBlackHeader);
 
-			lstWatchTSCDropDown.get(i).click();
+			this.waitForPageLoadingByUrlChange(lstWatchTSCDropDown.get(i));
+			//lstWatchTSCDropDown.get(i).click();
 			(new GlobalFooterPage(this.getDriver())).waitForPageLoading();
 			//Using static wait here as there is no other unique element where we can use waitForCondition() function here
 			getReusableActionsInstance().staticWait(5000);
@@ -515,6 +516,8 @@ public class GlobalHeaderPage extends BasePage{
 			if(bCheckUrl) {
 				//Program Guide url is appending daily in url and is not needed
 				if(lsUrlInSilverHeader.contains("programguide")) {
+					//This page takes time to load irrespective of using waitForCondition and hence using static wait here
+					getReusableActionsInstance().staticWait(10000);
 					waitForCondition(driver->{return this.lblProgramGuideSearchBox.isEnabled();},30000);
 					reporter.softAssert(lsUrlInSilverHeader.replace("/daily", "").equalsIgnoreCase(lsHrefInBlackHeader), "The Url of " + lsUrlInSilverHeader + "  after clicking " + lsTitle + " in Black headers is equal to the href of " + lsHrefInBlackHeader, "The Url of " + lsUrlInSilverHeader + "  after clicking " + lsTitle + " in Black headers is not equal to the href of " + lsHrefInBlackHeader);
 					this.getReusableActionsInstance().staticWait(3000);
@@ -698,13 +701,15 @@ public class GlobalHeaderPage extends BasePage{
 		String currentUrl;
 		String xpathHeading =createXPath(".//li//a//span[contains(.,'{0}')]" ,headingName);
 		WebElement headingWebElement = FlyoutHeadings.findElement(By.xpath(xpathHeading));
-		getReusableActionsInstance().staticWait(2000);
+		getReusableActionsInstance().staticWait(3000);
 		getReusableActionsInstance().javascriptScrollByVisibleElement(headingWebElement);
+		getReusableActionsInstance().staticWait(3000);
 		getReusableActionsInstance().scrollToElement(headingWebElement);
-		getReusableActionsInstance().staticWait(2000);
+		getReusableActionsInstance().staticWait(3000);
 		waitForCondition(Driver->{return this.lstFirstLevelCategoryMenuList.isDisplayed();},5000);
 		getReusableActionsInstance().clickIfAvailable(this.lnkShopAllForCatgory);
-		waitForCondition(Driver->{return (!this.lblPageTitleCategorySection.getText().isEmpty() && this.lblTSCChatBox.isDisplayed() && this.lblTSCChatBox.getText().contains("Chat"));},120000);
+		//!this.lblPageTitleCategorySection.getText().isEmpty() &&
+		waitForCondition(Driver->{return (this.lblTSCChatBox.isDisplayed() && this.lblTSCChatBox.getText().contains("Chat"));},120000);
 		currentUrl = getDriver().getCurrentUrl();
 		return currentUrl;
 	}
@@ -777,7 +782,9 @@ public class GlobalHeaderPage extends BasePage{
 	 */
 	public String getHeadingForLandingPage(boolean chatBoxAvailable) {
 		if(chatBoxAvailable)
-			waitForCondition(Driver->{return (this.lblTSCChatBox.isDisplayed() && this.lblTSCChatBox.getText().contains("Chat"));},120000);
+			waitForCondition(Driver->{return (this.isElementPresent(this.lblTSCChatBox) && this.lblTSCChatBox.getText().contains("Chat"));},120000);
+		this.waitForPageLoad();
+		waitForCondition(Driver->{return !this.lblPageTitleCategorySection.getText().isEmpty();},60000);
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblPageTitleCategorySection);
 		getReusableActionsInstance().scrollToElement(this.lblPageTitleCategorySection);
 		String title = this.getElementInnerText(this.lblPageTitleCategorySection);

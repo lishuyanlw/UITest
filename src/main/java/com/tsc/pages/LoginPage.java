@@ -44,6 +44,9 @@ public class LoginPage extends BasePage {
 	
 	@FindBy(xpath = "//div[@class='SuperCartridge']//div[@class='global-responsive-banner']")
 	public WebElement lblSignInGlobalResponseBanner;
+
+	@FindBy(xpath = "//ng-component//div[@class='clearfix']//*/span[contains(.,'ACCOUNT')]")
+	public WebElement lblSignInPageTitle;
 	
 	/**
 	 * Method to login
@@ -62,13 +65,14 @@ public class LoginPage extends BasePage {
 			this.getReusableActionsInstance().clickIfAvailable(this.btnSignInMainMenu);
 			//this.btnSignInMainMenu.click();
 		} else {
-			getReusableActionsInstance().scrollToElement(this.btnSignInMainMenu);
+			this.getReusableActionsInstance().scrollToElement(this.btnSignInMainMenu);
 		}			
 		getReusableActionsInstance().staticWait(3000);
 		
 		this.getReusableActionsInstance().clickIfAvailable(this.btnSignInNav);
 		//this.btnSignInNav.click();
 		(new GlobalFooterPage(this.getDriver())).waitForPageLoading();
+		waitForCondition(Driver->{return this.inputUserName.isEnabled();},10000);
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputUserName);
 		this.inputUserName.sendKeys(lsUserName);
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputPassword);
@@ -231,9 +235,7 @@ public class LoginPage extends BasePage {
 	 * @return void
 	 * @author Wei.Li
 	 */
-	@FindBy(xpath = "//ng-component//div[@class='clearfix']//*/span[contains(.,'ACCOUNT')]")
-	public WebElement lblSignInPageTitle;
-	public void verifyShowingUserFirstNameAfterSignin(String lsUserName, String lsPassword,String lsFirstName) {		
+	public void verifyShowingUserFirstNameAfterSignin(String lsUserName, String lsPassword,String lsFirstName) {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputUserName);
 		this.inputUserName.sendKeys(lsUserName);
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputPassword);
@@ -249,6 +251,9 @@ public class LoginPage extends BasePage {
 			waitForCondition(Driver->{return this.lblSignInPageTitle.isDisplayed();},30000);
 			getReusableActionsInstance().staticWait(2000);
 		}
+		//Adding static wait here as otherwise next statement throws Stale Element Reference duw to page load
+		getReusableActionsInstance().staticWait(5000);
+		waitForCondition(Driver->{return this.btnSignOut.isDisplayed() && this.btnSignOut.isEnabled();},30000);
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInMainMenu);
 		waitForCondition(Driver->{return !lsSignInMsg.equalsIgnoreCase(this.btnSignInMainMenu.getText())&&!this.btnSignInMainMenu.getText().isEmpty();},30000);
 		
