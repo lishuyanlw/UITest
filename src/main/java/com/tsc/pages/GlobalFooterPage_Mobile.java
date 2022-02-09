@@ -17,46 +17,46 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 	@FindBy(xpath = "//div[@id='headingOne']//a")
 	public WebElement lblTSCCustomerHubText;
 	
-	@FindBy(xpath = "//div[@id='headingOne']/parent::div//ul//li//a")
+	@FindBy(xpath = "//div[@id='headingOne']/parent::div//ul/li//a")
 	public List<WebElement> lnkTSCCustomerHubAllLinks;
 	
 	// About TSC
 	@FindBy(xpath = "//div[@id='headingTwo']//a")
 	public WebElement lblAboutTSCText;
 	
-	@FindBy(xpath = "//div[@id='headingTwo']/parent::div//ul//li//a")
+	@FindBy(xpath = "//div[@id='headingTwo']/parent::div//ul/li//a")
 	public List<WebElement> lnkAboutTSCAllLinks;
 	
 	@FindBy(xpath = "//ng-component//div[contains(@class,'summary-logout')]//button")
 	public WebElement btnMyAccountSignOut;
 
 	//Browse Help Topics in Customer service
-	@FindBy(xpath="//div[@id='customer-service']//div[@class='customer-service-faq']//ul[@class='customer-service-faq__topics-accordion']//li")
+	@FindBy(xpath="//div[@id='customer-service']//div[@class='customer-service-faq']//ul[@class='customer-service-faq__topics-accordion']/li")
 	List<WebElement> lstCustomerServiceHelpTopics;
 
-	@FindBy(xpath="//div[@id='customer-service']//div[@class='customer-service-faq']//ul[@class='customer-service-faq__topics-accordion']//li//*[@class='customer-service-faq__topics-accordion__item-title__lhs__text']")
+	@FindBy(xpath="//div[@id='customer-service']//div[@class='customer-service-faq']//ul[@class='customer-service-faq__topics-accordion']/li//*[@class='customer-service-faq__topics-accordion__item-title__lhs__text']")
 	List<WebElement> lstCustomerServiceHelpTopicsTitle;
 
-	@FindBy(xpath="//div[@id='customer-service']//div[@class='customer-service-faq']//ul[@class='customer-service-faq__topics-accordion']//li//ul//li")
+	@FindBy(xpath="//div[@id='customer-service']//div[@class='customer-service-faq']//ul[@class='customer-service-faq__topics-accordion']/li//ul/li")
 	List<WebElement> lstCustomerServiceHelpTopicsSubItem;
 
-	@FindBy(xpath="//div[@id='customer-service']//div[@class='customer-service-faq']//ul[@class='customer-service-faq__topics-accordion']//li//div[@class='customer-service-faq__topics-accordion__item-title__lhs__icon']")
+	@FindBy(xpath="//div[@id='customer-service']//div[@class='customer-service-faq']//ul[@class='customer-service-faq__topics-accordion']/li//div[@class='customer-service-faq__topics-accordion__item-title__lhs__icon']")
 	List<WebElement> lstCustomerServiceHelpTopicsIcon;
 
 	//For contact us in Help Topics
-	@FindBy(xpath="//div[@id='customer-service']//div[@class='customer-service-faq']//ul[@class='customer-service-faq__topics-accordion']//li//a[contains(@href,'contact-info')]/ancestor::li[@class='customer-service-faq__topics-accordion__item']")
+	@FindBy(xpath="//div[@id='customer-service']//div[@class='customer-service-faq']//ul[@class='customer-service-faq__topics-accordion']/li//a[contains(@href,'contact-info')]/ancestor::li[@class='customer-service-faq__topics-accordion__item']")
 	WebElement lnkCustomerServiceContactTSC;
 
-	@FindBy(xpath="//div[@id='customer-service']//div[@class='customer-service-faq']//ul[@class='customer-service-faq__topics-accordion']//li//a[contains(@href,'contact-info')]")
+	@FindBy(xpath="//div[@id='customer-service']//div[@class='customer-service-faq']//ul[@class='customer-service-faq__topics-accordion']/li//a[contains(@href,'contact-info')]")
 	WebElement lnkCustomerServiceContactInfo;
 
-	@FindBy(xpath="//div[@id='customer-service']//div[@class='customer-service-faq']//ul[@class='customer-service-faq__topics-accordion']//li//a[contains(@href,'email')]")
+	@FindBy(xpath="//div[@id='customer-service']//div[@class='customer-service-faq']//ul[@class='customer-service-faq__topics-accordion']/li//a[contains(@href,'email')]")
 	WebElement lnkCustomerServiceGeneralEmailInquiries;
 
-	@FindBy(xpath="//div[@id='customer-service']//div[@class='customer-service-faq']//ul[@class='customer-service-faq__topics-accordion']//li//a[contains(@href,'billing')]")
+	@FindBy(xpath="//div[@id='customer-service']//div[@class='customer-service-faq']//ul[@class='customer-service-faq__topics-accordion']/li//a[contains(@href,'billing')]")
 	WebElement lnkCustomerServiceBillingOrRefundInquiries;
 
-	@FindBy(xpath="//div[@id='customer-service']//div[@class='customer-service-faq']//ul[@class='customer-service-faq__topics-accordion']//li//a[contains(@href,'feedback')]")
+	@FindBy(xpath="//div[@id='customer-service']//div[@class='customer-service-faq']//ul[@class='customer-service-faq__topics-accordion']/li//a[contains(@href,'feedback')]")
 	WebElement lnkCustomerServiceSendFeedback;
 
 	//For the right panel of window after clicking Help Topics subitem
@@ -129,7 +129,7 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 	}
 	
 	@Override
-	public void verifyMyAccountSerivePanelItem() {
+	public void verifyMyAccountServicePanelItem() {
 		for(WebElement item: this.lstMyAccountSerivePanelHeading) {
 			if(item.getAttribute("class").contains("collapsed")) {
 				getReusableActionsInstance().javascriptScrollByVisibleElement(item);
@@ -273,7 +273,8 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 
 		WebElement element,item;
 		List<WebElement> itemList;
-		for(int i=0;i<lstCustomerServiceHelpTopics.size();i++) {
+		int loopSize=lstCustomerServiceHelpTopics.size();
+		for(int i=0;i<loopSize;i++) {
 			item = lstCustomerServiceHelpTopics.get(i);
 			getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 			element = lstCustomerServiceHelpTopicsTitle.get(i);
@@ -362,5 +363,6 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 		getReusableActionsInstance().clickIfAvailable(btnCustomerServiceBackToHelpCenter);
 		getReusableActionsInstance().waitForElementVisibility(lblCustomerServiceWhatCanWeHelpYouWith);
 	}
+
 
 }

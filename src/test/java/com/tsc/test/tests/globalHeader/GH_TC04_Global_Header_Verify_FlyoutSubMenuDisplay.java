@@ -25,7 +25,7 @@ public class GH_TC04_Global_Header_Verify_FlyoutSubMenuDisplay extends BaseTest 
 			String flHeading=lsHeading.getText();
 			flyoutHeading.add(flHeading);
 		}
-		if(!System.getProperty("Device").equalsIgnoreCase("Desktop"))
+		if(!System.getProperty("Device").equalsIgnoreCase("Desktop")){
 			//Press Esc key to close menu
 			getglobalheaderPageThreadLocal().pressEscapeKey();
 			reporter.reportLog("Flyout displays headings: "+flyoutHeading);
@@ -42,6 +42,7 @@ public class GH_TC04_Global_Header_Verify_FlyoutSubMenuDisplay extends BaseTest 
 				reporter.softAssert(!FlyoutUrl.contains(lsYmlNotFound), lsSuccessResult,lsFailResult);
 				reporter.softAssert(pageHeading.equalsIgnoreCase(lsHeading), "Landing page is loaded correctly for "+lsHeading+" flyout heading link.","Landing page is not loaded correctly for "+lsHeading+" flyout heading link.");
 			}
+		}
 	}
 }
 

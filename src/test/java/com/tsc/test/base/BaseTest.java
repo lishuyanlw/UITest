@@ -126,16 +126,25 @@ public class BaseTest {
 	private void init_Tablet() throws IOException {
 		productResultsPageThreadLocal.set(new ProductResultsPage_Tablet(getDriver()));
 		globalheaderPageThreadLocal.set(new GlobalHeaderPage_Mobile(getDriver()));
-		globalFooterPageThreadLocal.set(new GlobalFooterPage_Tablet(getDriver()));
+
+		if(System.getProperty("Browser").equalsIgnoreCase("chromemobile")){
+			globalFooterPageThreadLocal.set(new GlobalFooterPage_Tablet_IOS(getDriver()));
+		}
+		else{
+			if(System.getProperty("Browser").contains("android")){
+				globalFooterPageThreadLocal.set(new GlobalFooterPage_Tablet_Android(getDriver()));
+			}
+			else{
+				globalFooterPageThreadLocal.set(new GlobalFooterPage_Tablet_IOS(getDriver()));
+			}
+		}
 
 		if(System.getProperty("Browser").contains("android") ||
 				(System.getProperty("chromeMobileDevice")!=null
 						&& !System.getProperty("chromeMobileDevice").contains("iPad"))) {
 			productDetailPageThreadLocal.set(new ProductDetailPage_Mobile(getDriver()));
-//			globalFooterPageThreadLocal.set(new GlobalFooterPage_Mobile(getDriver()));
 		}else {
 			productDetailPageThreadLocal.set(new ProductDetailPage_Tablet(getDriver()));
-//			globalFooterPageThreadLocal.set(new GlobalFooterPage_Tablet(getDriver()));
 		}
 
 		loginPageThreadLocal.set(new LoginPage_Mobile(getDriver()));

@@ -6,9 +6,10 @@ import org.openqa.selenium.support.FindBy;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
-public class GlobalFooterPage_Tablet extends GlobalFooterPage{
-	public GlobalFooterPage_Tablet(WebDriver driver) {
+public class GlobalFooterPage_Tablet_Android extends GlobalFooterPage_Mobile{
+	public GlobalFooterPage_Tablet_Android(WebDriver driver) {
 		super(driver);
 	}
 
@@ -24,7 +25,7 @@ public class GlobalFooterPage_Tablet extends GlobalFooterPage{
 
 	@FindBy(xpath="//div[@class='Footer']//div[contains(@id,'headingTwo')]//a")
 	WebElement lnkAboutTSCHeader;
-*/
+
 
 	@Override
 	public void verifyRogersLogo() {
@@ -37,7 +38,7 @@ public class GlobalFooterPage_Tablet extends GlobalFooterPage{
 		else
 			reporter.softAssert(this.verifyElementExisting(this.imgRogersLogo), "Rogers Logo is existing", "Rogers Logo is not existing");
 	}
-
+*/
 	@Override
 	public void verifyFaceBookLink(List<String> lstSocialMediaLinks) {
 		String lsCurrentUrl = waitForPageLoadingByUrlChange(this.lnkFacebook);
@@ -47,6 +48,7 @@ public class GlobalFooterPage_Tablet extends GlobalFooterPage{
 		this.navigateToURL(lsBaseUrl);
 		this.waitForPageLoading();
 	}
+
 	/*
 	@Override
 	public void verifyTSCCustomerHubLlinks(List<List<String>> lstNameAndLinks) {

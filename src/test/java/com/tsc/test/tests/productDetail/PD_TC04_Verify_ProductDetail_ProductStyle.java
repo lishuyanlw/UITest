@@ -28,12 +28,12 @@ public class PD_TC04_Verify_ProductDetail_ProductStyle extends BaseTest{
 		List<String> lstKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_APISearchingKeyword();
 
 		String lsProductNumber,lsUrl;
-		if(getProductDetailPageThreadLocal().goToProductItemWithProductNumber("402783")){
+		if(getProductDetailPageThreadLocal().goToProductItemWithProductNumber("404195")){
 		//if(getProductResultsPageThreadLocal().goToFirstProductItem("402783")) {
 		//Below API method is giving product that has just 1 swatch that is available and 2 other are
 		//sold out. Hence we are not able to verify different style as per function
 		//verifyStyleNameWithDifferentStyleSelection. We need a product with multiple swatch and no sold out
-		//if(getProductDetailPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList,"AddToBag")) {
+		//if(getProductDetailPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList,"AddToBag",null)) {
 			reporter.reportLog("Verify URL");
 			//lsProductNumber=getProductResultsPageThreadLocal().selectedProductItem.productNumber;
 			lsUrl=basePage.URL();

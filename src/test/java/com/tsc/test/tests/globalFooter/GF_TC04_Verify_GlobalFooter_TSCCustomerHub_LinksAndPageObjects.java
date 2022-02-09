@@ -81,9 +81,9 @@ public class GF_TC04_Verify_GlobalFooter_TSCCustomerHub_LinksAndPageObjects exte
 		lsYmlHref=hashMap.get("Link");
 		if(lsYmlHref.isEmpty()) {
 			reporter.reportLogFail("Unable to find '"+lsService+"' link.");
-		}		
+		}
 		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current '"+lsService+"' href of "+lsHref+" is equal to "+lsYmlHref,"The current '"+lsService+"' href of "+lsHref+" is not equal to "+lsYmlHref);
-		
+
 		if(!getGlobalFooterPageThreadLocal().goToService(lsService,getGlobalFooterPageThreadLocal().lblTrackYourOrder,hashMap.get("parent"))) {
 			reporter.reportLogFail("Unable to navigate to '"+lsService+"' page objects.");
 		}
@@ -93,53 +93,53 @@ public class GF_TC04_Verify_GlobalFooter_TSCCustomerHub_LinksAndPageObjects exte
 			mandotoryFieldList.add(getGlobalFooterPageThreadLocal().cntBillingPostalCode);
 			mandotoryFieldList.add(getGlobalFooterPageThreadLocal().btnTrackYourOrderSubmit);
 			getGlobalFooterPageThreadLocal().verifyServiceObjectSectionTitle(mandotoryFieldList, lstTrackYourOrderObjectSectionTitle, false);
-						
+
 			getGlobalFooterPageThreadLocal().displayAlertMessageForOrderNumberAndSignInInput();
-						
+
 			//Add The alert message into the list
 			elementList.add(getGlobalFooterPageThreadLocal().lblOrderNumberAlertMsg);
 			elementList.add(getGlobalFooterPageThreadLocal().lblBillingPostalCodeAlertMsg);
 			elementList.add(getGlobalFooterPageThreadLocal().lblEmailAddressAlertMsg);
 			elementList.add(getGlobalFooterPageThreadLocal().lblPasswordAlertMsg);
-			
+
 			//Add elements in order section
 			elementList.add(getGlobalFooterPageThreadLocal().lblTrackYourOrder);
-			elementList.add(getGlobalFooterPageThreadLocal().lblRequiredFieldsInfo);			
+			elementList.add(getGlobalFooterPageThreadLocal().lblRequiredFieldsInfo);
 			elementList.add(getGlobalFooterPageThreadLocal().lblOrderNumberTitle);
 			elementList.add(getGlobalFooterPageThreadLocal().lblOrderNumberLable);
-			elementList.add(getGlobalFooterPageThreadLocal().inputOrderNumber);			
+			elementList.add(getGlobalFooterPageThreadLocal().inputOrderNumber);
 			elementList.add(getGlobalFooterPageThreadLocal().lblBillingPostalCodeLabel);
-			elementList.add(getGlobalFooterPageThreadLocal().inputBillingPostalCode);		
+			elementList.add(getGlobalFooterPageThreadLocal().inputBillingPostalCode);
 			elementList.add(getGlobalFooterPageThreadLocal().btnTrackYourOrderSubmit);
-			
+
 			//Add elements in sign in section
 			elementList.add(getGlobalFooterPageThreadLocal().lblTrackYourOrderSignUpTitle);
 			elementList.add(getGlobalFooterPageThreadLocal().lblGetAllDetailsInfo);
 			elementList.add(getGlobalFooterPageThreadLocal().lblEmailAddressLable);
-			elementList.add(getGlobalFooterPageThreadLocal().inputEmailAddress);			
+			elementList.add(getGlobalFooterPageThreadLocal().inputEmailAddress);
 			elementList.add(getGlobalFooterPageThreadLocal().lblPasswordLabel);
-			elementList.add(getGlobalFooterPageThreadLocal().inputPassword);			
+			elementList.add(getGlobalFooterPageThreadLocal().inputPassword);
 			elementList.add(getGlobalFooterPageThreadLocal().btnShowOrHidePassword);
 			elementList.add(getGlobalFooterPageThreadLocal().btnTrackYourOderSignIn);
-			
+
 			getGlobalFooterPageThreadLocal().verifyElementListExistence(elementList);
 		}
 		elementList.clear();
-		
+
 		//Contact Us
 		lsService="Contact Us";
 		hashMap.clear();
 		hashMap = getGlobalFooterPageThreadLocal().getTestDataWithSpecificName(lstNameAndLinks, lsService, true);
 		reporter.reportLog(lsService);
 		selectedItem=getGlobalFooterPageThreadLocal().getServiceWebElement(lsService,hashMap.get("parent"));
-		lsHref=basePage.getElementHref(selectedItem);		
+		lsHref=basePage.getElementHref(selectedItem);
 		//lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsService,true);
 		lsYmlHref=hashMap.get("Link");
 		if(lsYmlHref.isEmpty()) {
 			reporter.reportLogFail("Unable to find '"+lsService+"' link.");
-		}		
+		}
 		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current '"+lsService+"' href of "+lsHref+" is equal to "+lsYmlHref,"The current '"+lsService+"' href of "+lsHref+" is not equal to "+lsYmlHref);
-		
+
 		if(!getGlobalFooterPageThreadLocal().goToService(lsService,getGlobalFooterPageThreadLocal().lblCustomerServiceContactUsTitle,hashMap.get("parent"))) {
 			reporter.reportLogFail("Unable to navigate to '"+lsService+"' page objects.");
 		}
@@ -170,7 +170,7 @@ public class GF_TC04_Verify_GlobalFooter_TSCCustomerHub_LinksAndPageObjects exte
 		}
 		reporter.softAssert(getGlobalFooterPageThreadLocal().compareUrlInNewWindow(lsService, lsYmlHref,hashMap.get("parent")),"The current '"+lsService+"' href of "+lsHref+" is equal to "+lsYmlHref,"The current '"+lsService+"' href of "+lsHref+" is not equal to "+lsYmlHref);
 
-		//My Account 
+		//My Account
 		lsService="My Account";
 		hashMap.clear();
 		hashMap = getGlobalFooterPageThreadLocal().getTestDataWithSpecificName(lstNameAndLinks, lsService, true);
@@ -277,7 +277,7 @@ public class GF_TC04_Verify_GlobalFooter_TSCCustomerHub_LinksAndPageObjects exte
 		getGlobalFooterPageThreadLocal().verifyElementListExistence(elementList);
 
 		//Add myaccount service panel items
-		getGlobalFooterPageThreadLocal().verifyMyAccountSerivePanelItem();
+		getGlobalFooterPageThreadLocal().verifyMyAccountServicePanelItem();
 
 
 	}

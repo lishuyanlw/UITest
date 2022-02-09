@@ -155,10 +155,10 @@ public class GlobalFooterPage extends BasePage {
 	@FindBy(xpath = "//div[@id='customer-service']//div[@class='customer-service-faq']//*[@class='customer-service-faq__top-questions']")
 	public WebElement lblTopCustomerQuestions;
 
-	@FindBy(xpath = "//div[@id='customer-service']//div[@class='customer-service-faq']//ul[@class='customer-service-faq__faq']//li//button[@class='customer-service-faq__faq-title']")
+	@FindBy(xpath = "//div[@id='customer-service']//div[@class='customer-service-faq']//ul[@class='customer-service-faq__faq']/li//button[@class='customer-service-faq__faq-title']")
 	public List<WebElement> lstTopCustomerQuestionsTitle;
 
-	@FindBy(xpath = "//div[@id='customer-service']//div[@class='customer-service-faq']//ul[@class='customer-service-faq__faq']//li//div[@class='customer-service-faq__faq-article']")
+	@FindBy(xpath = "//div[@id='customer-service']//div[@class='customer-service-faq']//ul[@class='customer-service-faq__faq']/li//div[@class='customer-service-faq__faq-article']")
 	public WebElement lblTopCustomerQuestionsContent;
 
 	//Browse by help topics
@@ -176,11 +176,11 @@ public class GlobalFooterPage extends BasePage {
 
 	public By byBrowseByHelpTopicsTitle= By.xpath(".//div[@class='customer-service-faq__topics-grid__article__title']");
 
-	public By byBrowseByHelpTopicsSubItemList= By.xpath(".//ul//li//a");
+	public By byBrowseByHelpTopicsSubItemList= By.xpath(".//ul/li//a");
 
 	public By byBrowseByHelpTopicsSubItemSeeMoreButton= By.xpath(".//button[@class='customer-service-faq__topics-grid__article__expand-button']");
 
-	@FindBy(xpath = "//div[@id='customer-service']//div[@class='customer-service-faq']//div[@class='customer-service-faq__topics-grid']//div[@class='customer-service-faq__topics-grid__article']//ul//li")
+	@FindBy(xpath = "//div[@id='customer-service']//div[@class='customer-service-faq']//div[@class='customer-service-faq__topics-grid']//div[@class='customer-service-faq__topics-grid__article']//ul/li")
 	public List<WebElement> lstBrowseByHelpTopicsSubItem;
 
 	@FindBy(xpath = "//div[@id='customer-service']//div[@class='customer-service-faq']//div[@class='customer-service-faq__topics-grid']//div[@class='customer-service-faq__topics-grid__article']//button[@class='customer-service-faq__topics-grid__article__expand-button']")
@@ -188,10 +188,13 @@ public class GlobalFooterPage extends BasePage {
 
 	////////////////////////////////////////////////////////////////
 	//The window after clicking subitem
-	@FindBy(xpath = "//div[@class='customer-service-faq']//aside//nav[@class='customer-service-faq__article__side-nav__nav']//ul//button")
+	@FindBy(xpath = "//div[@class='customer-service-faq']//aside//nav[@class='customer-service-faq__article__side-nav__nav']//ul/li")
+	public List<WebElement> lstCustomerServiceSubItemWindowSideButtonContainer;
+
+	@FindBy(xpath = "//div[@class='customer-service-faq']//aside//nav[@class='customer-service-faq__article__side-nav__nav']//ul/li//button")
 	public List<WebElement> lstCustomerServiceSubItemWindowSideButton;
 
-	@FindBy(xpath = "//div[@class='customer-service-faq']//aside//nav[@class='customer-service-faq__article__side-nav__nav']//ul//li//ul//li")
+	@FindBy(xpath = "//div[@class='customer-service-faq']//aside//nav[@class='customer-service-faq__article__side-nav__nav']//ul/li//ul/li")
 	public List<WebElement> lstCustomerServiceSubItemWindowSideSubItemList;
 
 	@FindBy(xpath = "//div[@class='customer-service-faq']//div[@class='customer-service-faq__article__body']")
@@ -532,6 +535,9 @@ public class GlobalFooterPage extends BasePage {
 
 	@FindBy(xpath="//h2[contains(@class,'titleLink')]")
 	public WebElement aboutUsPageTitle;
+
+	@FindBy(xpath="//div[contains(@class,'msg-text')]")
+	public WebElement lblAboutUsPageMsg;
 
 	@FindBy(xpath="//h4[contains(@class,'subTitleLink')]")
 	public List<WebElement> subHeaders;
@@ -926,25 +932,27 @@ public class GlobalFooterPage extends BasePage {
 			return false;
 		}
 
+		String lsCurrentUrl;
 		String lsMainWindowHandle = this.getDriver().getWindowHandle();
 		getReusableActionsInstance().javascriptScrollByVisibleElement(selectedItem);
 		selectedItem.click();
-		if(System.getProperty("Device").contains("Mobile") || System.getProperty("Device").contains("Tablet")){
-			getReusableActionsInstance().staticWait(5000);
-			getDriver().navigate().refresh();
-		}
 		getReusableActionsInstance().waitForNumberOfWindowsToBe(2, 90);
 		Set<String> lstWindowHandle = this.getDriver().getWindowHandles();
+
 		for (String windowHandle : lstWindowHandle) {
-			if (!windowHandle.equalsIgnoreCase(lsMainWindowHandle)) {
-				getReusableActionsInstance().staticWait(5000);
-				this.getDriver().switchTo().window(windowHandle);
+			this.getDriver().switchTo().window(windowHandle);
+			if(this.getDriver().getTitle().toLowerCase().contains("blog")){
 				break;
 			}
 		}
-		String lsCurrentUrl = this.removeLastSlashFromUrl(this.getDriver().getCurrentUrl());
+
+		lsCurrentUrl = this.removeLastSlashFromUrl(this.getDriver().getCurrentUrl());
 		lsExpectedUrl = this.removeLastSlashFromUrl(lsExpectedUrl);
-		this.getDriver().switchTo().window(lsMainWindowHandle);
+
+		String strQaUrl=System.getProperty("QaUrl");
+		this.getDriver().get(strQaUrl);
+		this.waitForPageToLoad();
+		this.applyStaticWait(5000);
 
 		return lsCurrentUrl.equalsIgnoreCase(lsExpectedUrl);
 	}
@@ -1175,8 +1183,11 @@ public class GlobalFooterPage extends BasePage {
 				reporter.reportLogFail("The element of '"+ lsText+"'"+" is displaying correctly.");
 			}
 
-			this.getReusableActionsInstance().clickIfAvailable(subItem);
-			this.getReusableActionsInstance().staticWait(2000);
+			if(this.getChildElementCount(lstCustomerServiceSubItemWindowSideButtonContainer.get(i))==1){
+				this.getReusableActionsInstance().clickIfAvailable(subItem);
+				this.getReusableActionsInstance().staticWait(2000);
+			}
+
 			for(WebElement subElement:this.lstCustomerServiceSubItemWindowSideSubItemList){
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(subElement);
 				lsText=subElement.getText();
@@ -1886,7 +1897,7 @@ public class GlobalFooterPage extends BasePage {
 		}
 	}
 
-	public void verifyMyAccountSerivePanelItem() {
+	public void verifyMyAccountServicePanelItem() {
 		ArrayList<WebElement> elementList=new ArrayList<WebElement>();
 		for(WebElement item:this.lstMyAccountSerivePanelItem) {
 			elementList.add(item);
@@ -1974,6 +1985,7 @@ public class GlobalFooterPage extends BasePage {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 		getReusableActionsInstance().staticWait(4000);
 		int counter=1;
+		int alphabetPathElementSize;
 		Select select=new Select(element);
 		select.selectByIndex(0);
 		for(int i=0;i<elements.size();i++) {
@@ -1986,7 +1998,9 @@ public class GlobalFooterPage extends BasePage {
 			reporter.softAssert(alphabetLetterValue.equalsIgnoreCase(activeAlphabetLetterValue),"The Corresponding Page Title inside the Alphabet Link is same as expected","The Corresponding Page Title inside the Alphabet Link is not same as expected");
 			String alphabetPathElementsPath="//div[contains(@class,'brandHeader activeLetter')]//ancestor::div[contains(@class,'col')][1]//a";
 			List<WebElement> alphabetPathElements=getDriver().findElements(By.xpath(alphabetPathElementsPath));
-			for(int j=0 ;j<alphabetPathElements.size();j++) {
+			alphabetPathElementSize=alphabetPathElements.size();
+			alphabetPathElementSize=alphabetPathElementSize>3?3:alphabetPathElementSize;
+			for(int j=0 ;j<alphabetPathElementSize;j++) {
 				String brandName=alphabetPathElements.get(j).getText();
 				String firstLetter=convertToASCII(brandName.substring(0,1)).toUpperCase();
 				reporter.softAssert(alphabetLetterValue.equalsIgnoreCase(firstLetter),"The Brand  first alphabet is "+firstLetter+" and Brand Name is "+brandName+"  ","The Brand  first alphabet is "+firstLetter+" and Brand Name is "+brandName+" is not matching.");

@@ -211,7 +211,10 @@ public class GH_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo extends B
 		reporter.reportLog("Global Header Section contents for BlackMenu_SilverMenu_TSCLogoLinks");
 		
 		BasePage basePage=new BasePage(this.getDriver());
-		if (!(System.getProperty("Device").equalsIgnoreCase("Mobile"))) {
+		if ((System.getProperty("Device").equalsIgnoreCase("Desktop")) ||
+				(System.getProperty("Device").equalsIgnoreCase("Tablet") &&
+						(System.getProperty("Browser").contains("ios") ||
+								(System.getProperty("chromeMobileDevice")!=null && System.getProperty("chromeMobileDevice").toLowerCase().contains("ipad"))))) {
 			reporter.reportLog("Verify Black headers");
 			//Verify Black headers
 			getglobalheaderPageThreadLocal().hoverOnWatchTSC();

@@ -79,6 +79,7 @@ public class GF_TC05_Verify_GlobalFooter_AboutTSC_LinksAndPageObjects extends Ba
             }
             elementList.clear();
         }
+
         //More About TSC
         String lsService = "More About TSC";
         testData.clear();
@@ -91,7 +92,7 @@ public class GF_TC05_Verify_GlobalFooter_AboutTSC_LinksAndPageObjects extends Ba
         }
         reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref, testData.get("Link")), "The current '" + lsService + "' href of " + lsHref + " is equal to " + testData.get("Link"), "The current '" + lsService + "' href of " + lsHref + " is not equal to " + testData.get("Link"));
 
-        if (!getGlobalFooterPageThreadLocal().goToService(lsService, getGlobalFooterPageThreadLocal().aboutUsPageTitle,testData.get("parent"))) {
+        if (!getGlobalFooterPageThreadLocal().goToService(lsService, getGlobalFooterPageThreadLocal().lblAboutUsPageMsg,testData.get("parent"))) {
             reporter.reportLogFail("Unable to navigate to '" + lsService + "' page objects.");
         } else {
             //Add In Page sub Header values

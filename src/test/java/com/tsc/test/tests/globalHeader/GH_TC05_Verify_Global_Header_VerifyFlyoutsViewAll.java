@@ -36,6 +36,7 @@ public class GH_TC05_Verify_Global_Header_VerifyFlyoutsViewAll extends BaseTest 
 		reporter.reportLog("Flyout header displays department: "+flyoutHeading);
 		for(String lsHeading:flyoutHeading) {
 			getglobalheaderPageThreadLocal().scrollToHeadingElement(lsHeading);
+			getglobalheaderPageThreadLocal().getReusableActionsInstance().staticWait(3000);
 			reporter.reportLog("Flyout header displays department: "+lsHeading);
 			shopAllUrl=getglobalheaderPageThreadLocal().getURLshopAllPupularBrand(lsHeading,"Popular Brand");
 			String pageHeadingSection=TestDataHandler.constantData.getHeaderSection().getFlyout().getlbl_LandingPageBrandShopAll();
