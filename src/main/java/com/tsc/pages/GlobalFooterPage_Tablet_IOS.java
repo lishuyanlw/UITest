@@ -40,7 +40,13 @@ public class GlobalFooterPage_Tablet_IOS extends GlobalFooterPage{
 	@Override
 	public void verifyFaceBookLink(List<String> lstSocialMediaLinks) {
 		String lsCurrentUrl = waitForPageLoadingByUrlChange(this.lnkFacebook);
-		reporter.softAssert(lsCurrentUrl.toLowerCase().contains("facebook"),"The Url after clicking Facebook link contains facebook","The Url after clicking Facebook link does not contain facebook");
+
+		if(lsCurrentUrl.toLowerCase().contains("facebook")){
+			reporter.reportLogPass("The Url after clicking Facebook link contains facebook");
+		}
+		else{
+			reporter.reportLogFail("The Url after clicking Facebook link does not contain facebook");
+		}
 
 		String lsBaseUrl=this.getBaseURL()+"/";
 		this.navigateToURL(lsBaseUrl);
@@ -49,41 +55,40 @@ public class GlobalFooterPage_Tablet_IOS extends GlobalFooterPage{
 
 	@Override
 	public boolean compareUrlInNewWindow(String lsService, String lsExpectedUrl,String section) {
-//		WebElement selectedItem = this.getServiceWebElement(lsService,section);
-//		if (selectedItem == null) {
-//			return false;
-//		}
-//
-//		String lsCurrentUrl;
-//		final String lsUrl=this.URL();
-//		String lsMainWindowHandle = this.getDriver().getWindowHandle();
-//		getReusableActionsInstance().javascriptScrollByVisibleElement(selectedItem);
-//		selectedItem.click();
-////		getReusableActionsInstance().clickIfAvailable(selectedItem);
-//
-//		this.applyStaticWait(10000);
-//
-//		Set<String> lstWindowHandle = this.getDriver().getWindowHandles();
-//		System.out.println("Window size: "+lstWindowHandle.size());
-//		for (String windowHandle : lstWindowHandle) {
-//			if(windowHandle!=lsMainWindowHandle){
-//				System.out.println("Get into'");
-//				this.getDriver().switchTo().window(windowHandle);
-//				break;
-//			}
-//		}
-//		System.out.println("Window title: "+this.getDriver().getTitle());
-//		lsCurrentUrl = this.removeLastSlashFromUrl(this.getDriver().getCurrentUrl());
-//		lsExpectedUrl = this.removeLastSlashFromUrl(lsExpectedUrl);
-//		this.getDriver().switchTo().window(lsMainWindowHandle);
-//		System.out.println(lsExpectedUrl+" : "+lsCurrentUrl);
-////		String strQaUrl=System.getProperty("QaUrl");
-////		this.getDriver().get(strQaUrl);
-////		this.waitForPageToLoad();
-////		this.applyStaticWait(5000);
-//
-//		return lsCurrentUrl.equalsIgnoreCase(lsExpectedUrl);
-		return true;
+		WebElement selectedItem = this.getServiceWebElement(lsService,section);
+		if (selectedItem == null) {
+			return false;
+		}
+
+		String lsCurrentUrl;
+		final String lsUrl=this.URL();
+		String lsMainWindowHandle = this.getDriver().getWindowHandle();
+		getReusableActionsInstance().javascriptScrollByVisibleElement(selectedItem);
+		getReusableActionsInstance().clickIfAvailable(selectedItem);
+
+		this.applyStaticWait(10000);
+
+		Set<String> lstWindowHandle = this.getDriver().getWindowHandles();
+
+		for (String windowHandle : lstWindowHandle) {
+			if(windowHandle!=lsMainWindowHandle){
+				System.out.println("Get into'");
+				this.getDriver().switchTo().window(windowHandle);
+				break;
+			}
+		}
+
+		lsCurrentUrl = this.removeLastSlashFromUrl(this.getDriver().getCurrentUrl());
+		lsExpectedUrl = this.removeLastSlashFromUrl(lsExpectedUrl);
+		this.getDriver().switchTo().window(lsMainWindowHandle);
+
+		String strQaUrl=System.getProperty("QaUrl");
+		this.getDriver().get(strQaUrl);
+		this.waitForPageToLoad();
+		this.applyStaticWait(5000);
+
+		return lsCurrentUrl.equalsIgnoreCase(lsExpectedUrl);
+
 	}
 
 	/*

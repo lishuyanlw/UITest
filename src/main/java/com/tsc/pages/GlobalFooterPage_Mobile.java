@@ -78,9 +78,14 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 			if(lsYmlHref.isEmpty()) {
 				reporter.reportLogFail("Unable to find "+lsText+" link.");
 			}
-			lsHref=this.getElementHref(item);	
-			reporter.softAssert(this.verifyLinks(lsHref,lsYmlHref),"The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref,"The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref);
-			
+			lsHref=this.getElementHref(item);
+			if(this.verifyLinks(lsHref,lsYmlHref)){
+				reporter.reportLogPass("The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref);
+			}
+			else{
+				reporter.reportLogFail("The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref);
+			}
+
 		}
 	}
 	
@@ -100,7 +105,12 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 				reporter.reportLogFail("Unable to find "+lsText+" link.");
 			}
 			lsHref=this.getElementHref(item);
-			reporter.softAssert(this.verifyLinks(lsHref,lsYmlHref),"The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref,"The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref);			
+			if(this.verifyLinks(lsHref,lsYmlHref)){
+				reporter.reportLogPass("The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref);
+			}
+			else{
+				reporter.reportLogFail("The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref);
+			}
 		}
 	}
 	
@@ -214,13 +224,24 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 		
 		for(int i=0;i<this.lnkTSCCustomerHubAllLinks.size();i++) {
 			lsText=this.getUTFEnabledData(this.getElementText(this.lnkTSCCustomerHubAllLinks.get(i)));	
-			reporter.softAssert(lsText.equalsIgnoreCase(lstCustomerHubFr.get(i)),"The "+i+" CustomerHubLink French transaltion of "+lsText+" is the same as "+lstCustomerHubFr.get(i),"The "+i+" CustomerHubLink French transaltion of "+lsText+" is not the same as "+lstCustomerHubFr.get(i));
+			if(lsText.equalsIgnoreCase(lstCustomerHubFr.get(i))){
+				reporter.reportLogPass("The "+i+" CustomerHubLink French transaltion of "+lsText+" is the same as "+lstCustomerHubFr.get(i));
+			}
+			else{
+				reporter.reportLogFail("The "+i+" CustomerHubLink French transaltion of "+lsText+" is not the same as "+lstCustomerHubFr.get(i));
+			}
+
 			lsYmlHref=this.getLinkWithSpecificName(lstNameAndLinks,lsText,false);			
 			if(lsYmlHref.isEmpty()) {
 				reporter.reportLogFail("Unable to find "+lsText+" link.");
 			}
-			lsHref=this.getElementHref(this.lnkTSCCustomerHubAllLinks.get(i));	
-			reporter.softAssert(this.verifyLinks(lsHref,lsYmlHref),"The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref,"The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref);
+			lsHref=this.getElementHref(this.lnkTSCCustomerHubAllLinks.get(i));
+			if(this.verifyLinks(lsHref,lsYmlHref)){
+				reporter.reportLogPass("The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref);
+			}
+			else{
+				reporter.reportLogFail("The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref);
+			}
 		}
 	}
 	
@@ -237,22 +258,38 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 		}
 		
 		for(int i=0;i<this.lnkAboutTSCAllLinks.size();i++) {
-			lsText=this.getUTFEnabledData(this.getElementText(this.lnkAboutTSCAllLinks.get(i)));	
-			reporter.softAssert(lsText.equalsIgnoreCase(lstAboutTSCFr.get(i)),"The "+i+" AboutTSLink French transaltion of "+lsText+" is the same as "+lstAboutTSCFr.get(i),"The "+i+" AboutTSLink French transaltion of "+lsText+" is not the same as "+lstAboutTSCFr.get(i));
+			lsText=this.getUTFEnabledData(this.getElementText(this.lnkAboutTSCAllLinks.get(i)));
+			if(lsText.equalsIgnoreCase(lstAboutTSCFr.get(i))){
+				reporter.reportLogPass("The "+i+" AboutTSLink French transaltion of "+lsText+" is the same as "+lstAboutTSCFr.get(i));
+			}
+			else{
+				reporter.reportLogFail("The "+i+" AboutTSLink French transaltion of "+lsText+" is not the same as "+lstAboutTSCFr.get(i));
+			}
+
 			lsYmlHref=this.getLinkWithSpecificName(lstNameAndLinks,lsText,false);
 			if(lsYmlHref.isEmpty()) {
 				reporter.reportLogFail("Unable to find "+lsText+" link.");
 			}
 			lsHref=this.getElementHref(this.lnkAboutTSCAllLinks.get(i));
-			reporter.softAssert(this.verifyLinks(lsHref,lsYmlHref),"The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref,"The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref);
+			if(this.verifyLinks(lsHref,lsYmlHref)){
+				reporter.reportLogPass("The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref);
+			}
+			else{
+				reporter.reportLogFail("The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref);
+			}
 		}
 	}
 	
 	@Override
 	public void verifyFaceBookLink(List<String> lstSocialMediaLinks) {
-		String lsCurrentUrl = waitForPageLoadingByUrlChange(this.lnkFacebook);		
-		reporter.softAssert(lsCurrentUrl.toLowerCase().contains("facebook"),"The Url after clicking Facebook link contains facebook","The Url after clicking Facebook link does not contain facebook");
-		
+		String lsCurrentUrl = waitForPageLoadingByUrlChange(this.lnkFacebook);
+		if(lsCurrentUrl.toLowerCase().contains("facebook")){
+			reporter.reportLogPass("The Url after clicking Facebook link contains facebook");
+		}
+		else{
+			reporter.reportLogFail("The Url after clicking Facebook link does not contain facebook");
+		}
+
 		String lsBaseUrl=this.getBaseURL()+"/";		
 		this.navigateToURL(lsBaseUrl);
 		this.waitForPageLoading();

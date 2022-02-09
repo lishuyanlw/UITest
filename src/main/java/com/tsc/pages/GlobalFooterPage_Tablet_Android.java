@@ -42,7 +42,12 @@ public class GlobalFooterPage_Tablet_Android extends GlobalFooterPage_Mobile{
 	@Override
 	public void verifyFaceBookLink(List<String> lstSocialMediaLinks) {
 		String lsCurrentUrl = waitForPageLoadingByUrlChange(this.lnkFacebook);
-		reporter.softAssert(lsCurrentUrl.toLowerCase().contains("facebook"),"The Url after clicking Facebook link contains facebook","The Url after clicking Facebook link does not contain facebook");
+		if(lsCurrentUrl.toLowerCase().contains("facebook")){
+			reporter.reportLogPass("The Url after clicking Facebook link contains facebook");
+		}
+		else{
+			reporter.reportLogFail("The Url after clicking Facebook link does not contain facebook");
+		}
 
 		String lsBaseUrl=this.getBaseURL()+"/";
 		this.navigateToURL(lsBaseUrl);

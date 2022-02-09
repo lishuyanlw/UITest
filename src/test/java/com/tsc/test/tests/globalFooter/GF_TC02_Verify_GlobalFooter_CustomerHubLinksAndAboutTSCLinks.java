@@ -20,8 +20,14 @@ public class GF_TC02_Verify_GlobalFooter_CustomerHubLinksAndAboutTSCLinks extend
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 		BasePage basePage=new BasePage(this.getDriver());		
 		String lsBaseUrl=basePage.getBaseURL()+"/";
-		
-		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl), "TSC url is correct", "TSC url is incorrect");
+
+		if(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl)){
+			reporter.reportLogPass("TSC url is correct");
+		}
+		else{
+			reporter.reportLogFail("TSC url is incorrect");
+		}
+
 		reporter.reportLog("Global Footer Section");
 		
 		validateContents();

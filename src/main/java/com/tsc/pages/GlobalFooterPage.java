@@ -1413,30 +1413,55 @@ public class GlobalFooterPage extends BasePage {
 				case "select":
 					lsSuccessMsg = "The dropdown element is existing";
 					lsFailureMsg = "The dropdown element is not existing";
-					reporter.softAssert(getReusableActionsInstance().isElementVisible(element), lsSuccessMsg, lsFailureMsg);
+					if(getReusableActionsInstance().isElementVisible(element)){
+						reporter.reportLogPass(lsSuccessMsg);
+					}
+					else{
+						reporter.reportLogFail(lsFailureMsg);
+					}
 					break;
 				case "input":
 					lsTitle = element.getAttribute("name");
 					lsSuccessMsg = "The input element of '" + lsTitle + "' is existing";
 					lsFailureMsg = "The input element of '" + lsTitle + "' is not existing";
-					reporter.softAssert(getReusableActionsInstance().isElementVisible(element), lsSuccessMsg, lsFailureMsg);
+					if(getReusableActionsInstance().isElementVisible(element)){
+						reporter.reportLogPass(lsSuccessMsg);
+					}
+					else{
+						reporter.reportLogFail(lsFailureMsg);
+					}
 					break;
 				case "button":
 					lsTitle = element.getText().trim();;
 					lsSuccessMsg = "The button element of '" + lsTitle + "' is existing";
 					lsFailureMsg = "The button element of '" + lsTitle + "' is not existing";
-					reporter.softAssert(getReusableActionsInstance().isElementVisible(element), lsSuccessMsg, lsFailureMsg);
+					if(getReusableActionsInstance().isElementVisible(element)){
+						reporter.reportLogPass(lsSuccessMsg);
+					}
+					else{
+						reporter.reportLogFail(lsFailureMsg);
+					}
 					break;
 				case "a":
 					lsTitle = element.getText().trim();
 					lsSuccessMsg = "The href of element of '" + lsTitle + "' is not empty";
 					lsFailureMsg = "The href of element of '" + lsTitle + "' is empty";
-					reporter.softAssert(!this.getElementHref(element).isEmpty(), lsSuccessMsg, lsFailureMsg);
+					if(!this.getElementHref(element).isEmpty()){
+						reporter.reportLogPass(lsSuccessMsg);
+					}
+					else{
+						reporter.reportLogFail(lsFailureMsg);
+					}
 					break;
 				case "img":
 					lsSuccessMsg = "The src of image element is not empty";
 					lsFailureMsg = "The src of image element is empty";
-					reporter.softAssert(!this.getElementImageSrc(element).isEmpty(), lsSuccessMsg, lsFailureMsg);
+					if(!this.getElementImageSrc(element).isEmpty()){
+						reporter.reportLogPass(lsSuccessMsg);
+					}
+					else{
+						reporter.reportLogFail(lsFailureMsg);
+					}
 					break;
 				default:
 					lsTitle = element.getText().trim();
@@ -1445,7 +1470,12 @@ public class GlobalFooterPage extends BasePage {
 					}
 					lsSuccessMsg = "The element of '" + lsTitle + "' is existing";
 					lsFailureMsg = "The element of '" + lsTitle + "' is not existing";
-					reporter.softAssert(getReusableActionsInstance().isElementVisible(element), lsSuccessMsg, lsFailureMsg);
+					if(getReusableActionsInstance().isElementVisible(element)){
+						reporter.reportLogPass(lsSuccessMsg);
+					}
+					else{
+						reporter.reportLogFail(lsFailureMsg);
+					}
 					break;
 			}
 		}
@@ -1829,8 +1859,12 @@ public class GlobalFooterPage extends BasePage {
 				break;
 			}
 		}
-
-		reporter.softAssert(bMatch,"All sections are displayed correctly",lsNotMatch+" is not displayed correctly");
+		if(bMatch){
+			reporter.reportLogPass("All sections are displayed correctly");
+		}
+		else{
+			reporter.reportLogFail(lsNotMatch+" is not displayed correctly");
+		}
 	}
 
 	/**
@@ -1864,7 +1898,12 @@ public class GlobalFooterPage extends BasePage {
 			reporter.reportLog(" Page Title After Dropdown is " + title + ", and it is correctly appeared ");
 			String option = select.getFirstSelectedOption().getText();
 			reporter.reportLog(" Dropdown Selected Options is " + option + ", and it is correctly appeared");
-			reporter.softAssert(title.equalsIgnoreCase(option), "Page Title matches for both Actual " + title + " and expected " + option + "", "Page Title doesn't match for both Actual " + title + " and expected " + option + "");
+			if(title.equalsIgnoreCase(option)){
+				reporter.reportLogPass("Page Title matches for both Actual " + title + " and expected " + option + "");
+			}
+			else{
+				reporter.reportLogFail("Page Title doesn't match for both Actual " + title + " and expected " + option + "");
+			}
 		}
 	}
 
@@ -1878,8 +1917,12 @@ public class GlobalFooterPage extends BasePage {
 				reporter.reportLogFail("Unable to find "+lsText+" link.");
 			}
 			lsHref=super.getElementHref(item);
-			reporter.softAssert(this.verifyLinks(lsHref,lsYmlHref),"The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref,"The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref);
-
+			if(this.verifyLinks(lsHref,lsYmlHref)){
+				reporter.reportLogPass("The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref);
+			}
+			else{
+				reporter.reportLogFail("The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref);
+			}
 		}
 	}
 
@@ -1893,7 +1936,12 @@ public class GlobalFooterPage extends BasePage {
 				reporter.reportLogFail("Unable to find "+lsText+" link.");
 			}
 			lsHref=super.getElementHref(item);
-			reporter.softAssert(this.verifyLinks(lsHref,lsYmlHref),"The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref,"The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref);
+			if(this.verifyLinks(lsHref,lsYmlHref)){
+				reporter.reportLogPass("The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref);
+			}
+			else{
+				reporter.reportLogFail("The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref);
+			}
 		}
 	}
 
@@ -1906,7 +1954,12 @@ public class GlobalFooterPage extends BasePage {
 	}
 
 	public void verifyRogersLogo() {
-		reporter.softAssert(this.verifyElementExisting(this.imgRogersLogo), "Rogers Logo is existing", "Rogers Logo is not existing");
+		if(this.verifyElementExisting(this.imgRogersLogo)){
+			reporter.reportLogPass("Rogers Logo is existing");
+		}
+		else{
+			reporter.reportLogFail("Rogers Logo is not existing");
+		}
 	}
 
 	public List<String> getCustomerHubSubItemFr(List<List<String>> lstNameAndLinks){
@@ -1942,13 +1995,23 @@ public class GlobalFooterPage extends BasePage {
 
 		for(int i=0;i<this.lnkTSCCustomerHubAllLinks.size();i++) {
 			lsText=this.getUTFEnabledData(this.getElementText(this.lnkTSCCustomerHubAllLinks.get(i)));
-			reporter.softAssert(lsText.equalsIgnoreCase(lstCustomerHubFr.get(i)),"The "+i+" CustomerHubLink French transaltion of "+lsText+" is the same as "+lstCustomerHubFr.get(i),"The "+i+" CustomerHubLink French transaltion of "+lsText+" is the same as "+lstCustomerHubFr.get(i));
+			if(lsText.equalsIgnoreCase(lstCustomerHubFr.get(i))){
+				reporter.reportLogPass("The "+i+" CustomerHubLink French transaltion of "+lsText+" is the same as "+lstCustomerHubFr.get(i));
+			}
+			else{
+				reporter.reportLogFail("The "+i+" CustomerHubLink French transaltion of "+lsText+" is not the same as "+lstCustomerHubFr.get(i));
+			}
 			lsYmlHref=this.getLinkWithSpecificName(lstNameAndLinks,lsText,false);
 			if(lsYmlHref.isEmpty()) {
 				reporter.reportLogFail("Unable to find "+lsText+" link.");
 			}
 			lsHref=this.getElementHref(this.lnkTSCCustomerHubAllLinks.get(i));
-			reporter.softAssert(this.verifyLinks(lsHref,lsYmlHref),"The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref,"The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref);
+			if(this.verifyLinks(lsHref,lsYmlHref)){
+				reporter.reportLogPass("The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref);
+			}
+			else{
+				reporter.reportLogFail("The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref);
+			}
 		}
 	}
 
@@ -1957,19 +2020,35 @@ public class GlobalFooterPage extends BasePage {
 
 		for(int i=0;i<this.lnkAboutTSCAllLinks.size();i++) {
 			lsText=this.getUTFEnabledData(this.getElementText(this.lnkAboutTSCAllLinks.get(i)));
-			reporter.softAssert(lsText.equalsIgnoreCase(lstAboutTSCFr.get(i)),"The "+i+" AboutTSLink French transaltion of "+lsText+" is the same as "+lstAboutTSCFr.get(i),"The "+i+" AboutTSLink French transaltion of "+lsText+" is the same as "+lstAboutTSCFr.get(i));
+			if(lsText.equalsIgnoreCase(lstAboutTSCFr.get(i))){
+				reporter.reportLogPass("The "+i+" AboutTSLink French transaltion of "+lsText+" is the same as "+lstAboutTSCFr.get(i));
+			}
+			else{
+				reporter.reportLogFail("The "+i+" AboutTSLink French transaltion of "+lsText+" is the same as "+lstAboutTSCFr.get(i));
+			}
+
 			lsYmlHref=this.getLinkWithSpecificName(lstNameAndLinks,lsText,false);
 			if(lsYmlHref.isEmpty()) {
 				reporter.reportLogFail("Unable to find "+lsText+" link.");
 			}
 			lsHref=this.getElementHref(this.lnkAboutTSCAllLinks.get(i));
-			reporter.softAssert(this.verifyLinks(lsHref,lsYmlHref),"The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref,"The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref);
+			if(this.verifyLinks(lsHref,lsYmlHref)){
+				reporter.reportLogPass("The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref);
+			}
+			else{
+				reporter.reportLogFail("The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref);
+			}
 		}
 	}
 
 	public void verifyFaceBookLink(List<String> lstSocialMediaLinks) {
 		String lsUrl=this.getUrlWithSocialMediaName(lstSocialMediaLinks, "Facebook");
-		reporter.softAssert(this.verifyUrlAfterClickingElement(this.lnkFacebook,lsUrl),"The Url after clicking Facebook link is "+lsUrl,"The Url after clicking Facebook link is not "+lsUrl);
+		if(this.verifyUrlAfterClickingElement(this.lnkFacebook,lsUrl)){
+			reporter.reportLogPass("The Url after clicking Facebook link is "+lsUrl);
+		}
+		else{
+			reporter.reportLogFail("The Url after clicking Facebook link is not "+lsUrl);
+		}
 
 		String lsBaseUrl=this.getBaseURL()+"/";
 		this.navigateToURL(lsBaseUrl);
@@ -1995,7 +2074,13 @@ public class GlobalFooterPage extends BasePage {
 			String alphabetLetterValue=getDriver().findElement(By.xpath(alphabetPath)).getText();
 			reporter.reportLog("Selected Alphabet is "+alphabetLetterValue+"");
 			String activeAlphabetLetterValue=activeAlphabetChar.getText();
-			reporter.softAssert(alphabetLetterValue.equalsIgnoreCase(activeAlphabetLetterValue),"The Corresponding Page Title inside the Alphabet Link is same as expected","The Corresponding Page Title inside the Alphabet Link is not same as expected");
+			if(alphabetLetterValue.equalsIgnoreCase(activeAlphabetLetterValue)){
+				reporter.reportLogPass("The Corresponding Page Title inside the Alphabet Link is same as expected");
+			}
+			else{
+				reporter.reportLogFail("The Corresponding Page Title inside the Alphabet Link is not same as expected");
+			}
+
 			String alphabetPathElementsPath="//div[contains(@class,'brandHeader activeLetter')]//ancestor::div[contains(@class,'col')][1]//a";
 			List<WebElement> alphabetPathElements=getDriver().findElements(By.xpath(alphabetPathElementsPath));
 			alphabetPathElementSize=alphabetPathElements.size();
@@ -2003,10 +2088,20 @@ public class GlobalFooterPage extends BasePage {
 			for(int j=0 ;j<alphabetPathElementSize;j++) {
 				String brandName=alphabetPathElements.get(j).getText();
 				String firstLetter=convertToASCII(brandName.substring(0,1)).toUpperCase();
-				reporter.softAssert(alphabetLetterValue.equalsIgnoreCase(firstLetter),"The Brand  first alphabet is "+firstLetter+" and Brand Name is "+brandName+"  ","The Brand  first alphabet is "+firstLetter+" and Brand Name is "+brandName+" is not matching.");
-				String brandLink=alphabetPathElements.get(j).getAttribute("href");
-				reporter.softAssert(alphabetPathElements.get(j).getAttribute("href")!=null,"The Brand URL of "+brandLink+" exists","The Brand URL of "+brandLink+" doesn't exists");
+				if(alphabetLetterValue.equalsIgnoreCase(firstLetter)){
+					reporter.reportLogPass("The Brand  first alphabet is "+firstLetter+" and Brand Name is "+brandName+"  ");
+				}
+				else{
+					reporter.reportLogFail("The Brand  first alphabet is "+firstLetter+" and Brand Name is "+brandName+" is not matching.");
+				}
 
+				String brandLink=alphabetPathElements.get(j).getAttribute("href");
+				if(alphabetPathElements.get(j).getAttribute("href")!=null){
+					reporter.reportLogPass("The Brand URL of "+brandLink+" exists");
+				}
+				else{
+					reporter.reportLogFail("The Brand URL of "+brandLink+" doesn't exists");
+				}
 			}
 			counter++;
 		}
@@ -2038,7 +2133,12 @@ public class GlobalFooterPage extends BasePage {
 			getReusableActionsInstance().waitForPageLoad();
 			String option =select.getFirstSelectedOption().getText();
 			reporter.reportLog(" Dropdown Selected Province is "+option+"");
-			reporter.softAssert(option!=null," Dropdown Selected Province is "+option+" and not NULL"," Dropdown Selected Province is "+option+" and is NULL");
+			if(option!=null){
+				reporter.reportLogPass(" Dropdown Selected Province is "+option+" and not NULL");
+			}
+			else{
+				reporter.reportLogFail(" Dropdown Selected Province is "+option+" and is NULL");
+			}
 
 			Select secondSelect=new Select(secondDropDown);
 			int secondDropDownElementSize=secondSelect.getOptions().size();
@@ -2047,7 +2147,13 @@ public class GlobalFooterPage extends BasePage {
 				getReusableActionsInstance().waitForPageLoad();
 				String secondOption = secondSelect.getFirstSelectedOption().getText();
 				reporter.reportLog(" Dropdown Selected Province is " + option + " and Dropdown Selected Cable Provider is " + secondOption + "");
-				reporter.softAssert(secondOption != null, " Dropdown Selected Cable provider is " + secondOption + " and not NULL", " Dropdown Selected Cable provider is " + secondOption + " and is NULL");
+				if(secondOption != null){
+					reporter.reportLogPass(" Dropdown Selected Cable provider is " + secondOption + " and not NULL");
+				}
+				else{
+					reporter.reportLogFail(" Dropdown Selected Cable provider is " + secondOption + " and is NULL");
+				}
+
 				Select thirdSelect = new Select(thirdDropDown);
 				int thirdDropDownElementSize = thirdSelect.getOptions().size();
 				if (thirdDropDownElementSize > 1) {
@@ -2055,11 +2161,16 @@ public class GlobalFooterPage extends BasePage {
 					getReusableActionsInstance().waitForPageLoad();
 					String thirdOption = thirdSelect.getFirstSelectedOption().getText();
 					reporter.reportLog("Dropdown Selected Province is " + option + " and Dropdown Selected Cable Provider is " + secondOption + " Dropdown Selected City is " + thirdOption + "");
-					reporter.softAssert(thirdOption != null, " Dropdown Selected City is " + thirdOption + " and not NULL", " Dropdown Selected City is " + thirdOption + " and is NULL");
+					if(thirdOption != null){
+						reporter.reportLogPass(" Dropdown Selected City is " + thirdOption + " and not NULL");
+					}
+					else{
+						reporter.reportLogFail(" Dropdown Selected City is " + thirdOption + " and is NULL");
+					}
 				}
 			}
 		}else{
-			reporter.softAssert(false,"","No data is present in dropdown");
+			reporter.reportLogFail("No data is present in dropdown");
 		}
 	}
 	/**
@@ -2074,7 +2185,12 @@ public class GlobalFooterPage extends BasePage {
 			reporter.reportLog("Host Name URL is "+hostHref+"");
 			String hostImgSrc=listOfMeetOurHostsImage.get(i).getAttribute("src");
 			reporter.reportLog("Host Image URL is "+hostImgSrc+"");
-			reporter.softAssert(hostName!=null && hostHref!=null && hostImgSrc!=null,"Host Name "+hostName+" Host Link "+hostHref+" and Host Image "+hostImgSrc+" are not Null","Host Name "+hostName+" Host Link "+hostHref+" and Host Image "+hostImgSrc+" are  Null");
+			if(hostName!=null && hostHref!=null && hostImgSrc!=null){
+				reporter.reportLogPass("Host Name "+hostName+" Host Link "+hostHref+" and Host Image "+hostImgSrc+" are not Null");
+			}
+			else{
+				reporter.reportLogFail("Host Name "+hostName+" Host Link "+hostHref+" and Host Image "+hostImgSrc+" are  Null");
+			}
 		}
 	}
 }
