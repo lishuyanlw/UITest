@@ -25,7 +25,13 @@ public class GF_TC06_Verify_GlobalFooter_Brand_ChannelFinder_LinksAndPageObjects
         BasePage basePage = new BasePage(this.getDriver());
         String lsBaseUrl = basePage.getBaseURL() + "/";
 
-        reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl), "TSC url is correct", "TSC url is incorrect");
+        if(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl)){
+            reporter.reportLogPass("TSC url is correct");
+        }
+        else{
+            reporter.reportLogFailWithScreenshot("TSC url is incorrect");
+        }
+
         reporter.reportLog("Global Footer Section");
 
         List<List<String>> lstNameAndLinks = TestDataHandler.constantData.getFooterSection().getLst_NameAndLinks();
@@ -38,7 +44,12 @@ public class GF_TC06_Verify_GlobalFooter_Brand_ChannelFinder_LinksAndPageObjects
         if(testDataSBB.isEmpty()) {
             reporter.reportLogFail("Unable to find '"+lsServiceSBB+"' link.");
         }
-        reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHrefSBB,testDataSBB.get("Link")),"The current '"+lsServiceSBB+"' href of "+lsHrefSBB+" is equal to "+testDataSBB.get("Link"),"The current '"+lsServiceSBB+"' href of "+lsHrefSBB+" is not equal to "+testDataSBB.get("Link"));
+        if(getGlobalFooterPageThreadLocal().verifyLinks(lsHrefSBB,testDataSBB.get("Link"))){
+            reporter.reportLogPass("The current '"+lsServiceSBB+"' href of "+lsHrefSBB+" is equal to "+testDataSBB.get("Link"));
+        }
+        else{
+            reporter.reportLogFailWithScreenshot("The current '"+lsServiceSBB+"' href of "+lsHrefSBB+" is not equal to "+testDataSBB.get("Link"));
+        }
 
         if(!getGlobalFooterPageThreadLocal().goToService(lsServiceSBB,getGlobalFooterPageThreadLocal().aboutUsPageTitle,testDataSBB.get("parent"))) {
             reporter.reportLogFail("Unable to navigate to '"+lsServiceSBB+"' page objects.");
@@ -46,15 +57,55 @@ public class GF_TC06_Verify_GlobalFooter_Brand_ChannelFinder_LinksAndPageObjects
         else {
             //Verifying page title
             String pageTitle = getGlobalFooterPageThreadLocal().getPageTitle(getGlobalFooterPageThreadLocal().aboutUsPageTitle);
-            reporter.softAssert(pageTitle.equalsIgnoreCase(lsServiceSBB),"Page Title matches for global footer link: "+lsServiceSBB+" and  title is: "+pageTitle,"Page Title doesn't match for global footer link: "+lsServiceSBB+" and  title is: "+pageTitle);
+            if(pageTitle.equalsIgnoreCase(lsServiceSBB)){
+                reporter.reportLogPass("Page Title matches for global footer link: "+lsServiceSBB+" and  title is: "+pageTitle);
+            }
+            else{
+                reporter.reportLogFailWithScreenshot("Page Title doesn't match for global footer link: "+lsServiceSBB+" and  title is: "+pageTitle);
+            }
 
             //Verifying Page Elements
-            reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lblSearchForaBrand),"The text Search for a Brand is displayed","The text Search for a Brand is not displayed");
-            reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().textBoxShopByBrandInputSearchBox),"Input Search Box is visible","Input Search Box is not visible");
-            reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lblShopByBrandFilterByCategory),"The text Filter By Category is displayed","The text Filter By Category is not displayed");
-            reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().buttonShopByBrandInputSearchBoxSearchButton),"The Search Button is visible","The Search Button is not visible");
-            reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().dropDownShopByBrandFilterByCategory),"Drop Down for Filter By Category is displayed","Drop Down for Filter By Category is not displayed");
-            reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lblFilterByAlphabet),"The text Filter By Alphabet is visible","The text Filter By Alphabet is not visible");
+            if(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lblSearchForaBrand)){
+                reporter.reportLogPass("The text Search for a Brand is displayed");
+            }
+            else{
+                reporter.reportLogFailWithScreenshot("The text Search for a Brand is not displayed");
+            }
+
+            if(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().textBoxShopByBrandInputSearchBox)){
+                reporter.reportLogPass("Input Search Box is visible");
+            }
+            else{
+                reporter.reportLogFailWithScreenshot("Input Search Box is not visible");
+            }
+
+            if(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lblShopByBrandFilterByCategory)){
+                reporter.reportLogPass("The text Filter By Category is displayed");
+            }
+            else{
+                reporter.reportLogFailWithScreenshot("The text Filter By Category is not displayed");
+            }
+
+            if(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().buttonShopByBrandInputSearchBoxSearchButton)){
+                reporter.reportLogPass("The Search Button is visible");
+            }
+            else{
+                reporter.reportLogFailWithScreenshot("The Search Button is not visible");
+            }
+
+            if(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().dropDownShopByBrandFilterByCategory)){
+                reporter.reportLogPass("Drop Down for Filter By Category is displayed");
+            }
+            else{
+                reporter.reportLogFailWithScreenshot("Drop Down for Filter By Category is not displayed");
+            }
+
+            if(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lblFilterByAlphabet)){
+                reporter.reportLogPass("The text Filter By Alphabet is visible");
+            }
+            else{
+                reporter.reportLogFailWithScreenshot("The text Filter By Alphabet is not visible");
+            }
 
             //Verifying Drop Down Title matches with Page Title
             getGlobalFooterPageThreadLocal().verifyDropDownWithTitle(getGlobalFooterPageThreadLocal().dropDownShopByBrandFilterByCategory);

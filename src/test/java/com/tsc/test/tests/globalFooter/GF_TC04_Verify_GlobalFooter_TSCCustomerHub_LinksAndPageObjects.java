@@ -27,8 +27,14 @@ public class GF_TC04_Verify_GlobalFooter_TSCCustomerHub_LinksAndPageObjects exte
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 		BasePage basePage=new BasePage(this.getDriver());		
 		String lsBaseUrl=basePage.getBaseURL()+"/";
-		
-		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl), "TSC url is correct", "TSC url is incorrect");		
+
+		if(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl)){
+			reporter.reportLogPass("TSC url is correct");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("TSC url is incorrect");
+		}
+
 		reporter.reportLog("Global Footer Section");		
 		
 		List<List<String>> lstNameAndLinks=TestDataHandler.constantData.getFooterSection().getLst_NameAndLinks();
@@ -46,7 +52,12 @@ public class GF_TC04_Verify_GlobalFooter_TSCCustomerHub_LinksAndPageObjects exte
 		if(lsYmlHref.isEmpty()) {
 			reporter.reportLogFail("Unable to find '"+lsService+"' link.");
 		}
-		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current '"+lsService+"' href of "+lsHref+" is equal to "+lsYmlHref,"The current '"+lsService+"' href of "+lsHref+" is not equal to "+lsYmlHref);
+		if(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref)){
+			reporter.reportLogPass("The current '"+lsService+"' href of "+lsHref+" is equal to "+lsYmlHref);
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The current '"+lsService+"' href of "+lsHref+" is not equal to "+lsYmlHref);
+		}
 
 		if(!getGlobalFooterPageThreadLocal().goToService(lsService,getGlobalFooterPageThreadLocal().lblCustomerServiceWhatCanWeHelpYouWith,hashMap.get("parent"))) {
 			reporter.reportLogFail("Unable to navigate to '"+lsService+"' page objects.");
@@ -82,7 +93,12 @@ public class GF_TC04_Verify_GlobalFooter_TSCCustomerHub_LinksAndPageObjects exte
 		if(lsYmlHref.isEmpty()) {
 			reporter.reportLogFail("Unable to find '"+lsService+"' link.");
 		}
-		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current '"+lsService+"' href of "+lsHref+" is equal to "+lsYmlHref,"The current '"+lsService+"' href of "+lsHref+" is not equal to "+lsYmlHref);
+		if(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref)){
+			reporter.reportLogPass("The current '"+lsService+"' href of "+lsHref+" is equal to "+lsYmlHref);
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The current '"+lsService+"' href of "+lsHref+" is not equal to "+lsYmlHref);
+		}
 
 		if(!getGlobalFooterPageThreadLocal().goToService(lsService,getGlobalFooterPageThreadLocal().lblTrackYourOrder,hashMap.get("parent"))) {
 			reporter.reportLogFail("Unable to navigate to '"+lsService+"' page objects.");
@@ -138,7 +154,12 @@ public class GF_TC04_Verify_GlobalFooter_TSCCustomerHub_LinksAndPageObjects exte
 		if(lsYmlHref.isEmpty()) {
 			reporter.reportLogFail("Unable to find '"+lsService+"' link.");
 		}
-		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current '"+lsService+"' href of "+lsHref+" is equal to "+lsYmlHref,"The current '"+lsService+"' href of "+lsHref+" is not equal to "+lsYmlHref);
+		if(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref)){
+			reporter.reportLogPass("The current '"+lsService+"' href of "+lsHref+" is equal to "+lsYmlHref);
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The current '"+lsService+"' href of "+lsHref+" is not equal to "+lsYmlHref);
+		}
 
 		if(!getGlobalFooterPageThreadLocal().goToService(lsService,getGlobalFooterPageThreadLocal().lblCustomerServiceContactUsTitle,hashMap.get("parent"))) {
 			reporter.reportLogFail("Unable to navigate to '"+lsService+"' page objects.");
@@ -168,7 +189,12 @@ public class GF_TC04_Verify_GlobalFooter_TSCCustomerHub_LinksAndPageObjects exte
 		if(lsYmlHref.isEmpty()) {
 			reporter.reportLogFail("Unable to find '"+lsService+"' link.");
 		}
-		reporter.softAssert(getGlobalFooterPageThreadLocal().compareUrlInNewWindow(lsService, lsYmlHref,hashMap.get("parent")),"The current '"+lsService+"' href of "+lsHref+" is equal to "+lsYmlHref,"The current '"+lsService+"' href of "+lsHref+" is not equal to "+lsYmlHref);
+		if(getGlobalFooterPageThreadLocal().compareUrlInNewWindow(lsService, lsYmlHref,hashMap.get("parent"))){
+			reporter.reportLogPass("The current '"+lsService+"' href of "+lsHref+" is equal to "+lsYmlHref);
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The current '"+lsService+"' href of "+lsHref+" is not equal to "+lsYmlHref);
+		}
 
 		//My Account
 		lsService="My Account";
@@ -182,7 +208,12 @@ public class GF_TC04_Verify_GlobalFooter_TSCCustomerHub_LinksAndPageObjects exte
 		if(lsYmlHref.isEmpty()) {
 			reporter.reportLogFail("Unable to find '"+lsService+"' link.");
 		}
-		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current '"+lsService+"' href of "+lsHref+" is equal to "+lsYmlHref,"The current '"+lsService+"' href of "+lsHref+" is not equal to "+lsYmlHref);
+		if(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref)){
+			reporter.reportLogPass("The current '"+lsService+"' href of "+lsHref+" is equal to "+lsYmlHref);
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The current '"+lsService+"' href of "+lsHref+" is not equal to "+lsYmlHref);
+		}
 
 		if(!getGlobalFooterPageThreadLocal().goToService(lsService,getGlobalFooterPageThreadLocal().lblCustomerServiceSubItemWindowContentTitle,hashMap.get("parent"))) {
 			reporter.reportLogFail("Unable to navigate to '"+lsService+"' page objects.");
@@ -227,14 +258,25 @@ public class GF_TC04_Verify_GlobalFooter_TSCCustomerHub_LinksAndPageObjects exte
 		String lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsService,true);
 		if(lsYmlHref.isEmpty()) {
 			reporter.reportLogFail("Unable to find '"+lsService+"' link.");
-		}		
-		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current '"+lsService+"' href of "+lsHref+" is equal to "+lsYmlHref,"The current '"+lsService+"' href of "+lsHref+" is not equal to "+lsYmlHref);
-				
+		}
+		if(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref)){
+			reporter.reportLogPass("The current '"+lsService+"' href of "+lsHref+" is equal to "+lsYmlHref);
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The current '"+lsService+"' href of "+lsHref+" is not equal to "+lsYmlHref);
+		}
+
 		if(!getGlobalFooterPageThreadLocal().goToService(lsService,getGlobalFooterPageThreadLocal().lblMyAccount,section)) {
 			reporter.reportLogFail("Unable to navigate to '"+lsService+"' page objects.");
 		}
 		else {
-			reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(basePage.URL(),lsYmlHref),"The current Url of "+basePage.URL()+" for '"+lsService+" is equal to "+lsYmlHref,"The current Url of "+basePage.URL()+" for '"+lsService+" is not equal to "+lsYmlHref);
+			if(getGlobalFooterPageThreadLocal().verifyLinks(basePage.URL(),lsYmlHref)){
+				reporter.reportLogPass("The current Url of "+basePage.URL()+" for '"+lsService+" is equal to "+lsYmlHref);
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The current Url of "+basePage.URL()+" for '"+lsService+" is not equal to "+lsYmlHref);
+			}
+
 			getGlobalFooterPageThreadLocal().expandPanelItems(getGlobalFooterPageThreadLocal().lstMyAccountItemTitle,getGlobalFooterPageThreadLocal().lstMyAccountItemContent);
 			getGlobalFooterPageThreadLocal().verifyServiceObjectSectionTitle(getGlobalFooterPageThreadLocal().lstMyAccountItemTitle, lstMyAccountObjectSectionTitle, true);
 

@@ -46,7 +46,7 @@ public class GlobalFooterPage_Tablet_Android extends GlobalFooterPage_Mobile{
 			reporter.reportLogPass("The Url after clicking Facebook link contains facebook");
 		}
 		else{
-			reporter.reportLogFail("The Url after clicking Facebook link does not contain facebook");
+			reporter.reportLogFailWithScreenshot("The Url after clicking Facebook link does not contain facebook");
 		}
 
 		String lsBaseUrl=this.getBaseURL()+"/";
@@ -65,7 +65,7 @@ public class GlobalFooterPage_Tablet_Android extends GlobalFooterPage_Mobile{
 			lsText=super.getElementText(item);
 			lsYmlHref=this.getLinkWithSpecificName(lstNameAndLinks,lsText,true);
 			if(lsYmlHref.isEmpty()) {
-				reporter.reportLogFail("Unable to find "+lsText+" link.");
+				reporter.reportLogFailWithScreenshot("Unable to find "+lsText+" link.");
 			}
 			lsHref=super.getElementHref(item);
 			reporter.softAssert(this.verifyLinks(lsHref,lsYmlHref),"The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref,"The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref);
@@ -82,7 +82,7 @@ public class GlobalFooterPage_Tablet_Android extends GlobalFooterPage_Mobile{
 			lsText=super.getElementText(item);
 			lsYmlHref=this.getLinkWithSpecificName(lstNameAndLinks,lsText,true);
 			if(lsYmlHref.isEmpty()) {
-				reporter.reportLogFail("Unable to find "+lsText+" link.");
+				reporter.reportLogFailWithScreenshot("Unable to find "+lsText+" link.");
 			}
 			lsHref=super.getElementHref(item);
 			reporter.softAssert(this.verifyLinks(lsHref,lsYmlHref),"The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref,"The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref);
@@ -101,7 +101,7 @@ public class GlobalFooterPage_Tablet_Android extends GlobalFooterPage_Mobile{
 			reporter.softAssert(lsText.equalsIgnoreCase(lstCustomerHubFr.get(i)),"The "+i+" CustomerHubLink French transaltion of "+lsText+" is the same as "+lstCustomerHubFr.get(i),"The "+i+" CustomerHubLink French transaltion of "+lsText+" is the same as "+lstCustomerHubFr.get(i));
 			lsYmlHref=this.getLinkWithSpecificName(lstNameAndLinks,lsText,false);
 			if(lsYmlHref.isEmpty()) {
-				reporter.reportLogFail("Unable to find "+lsText+" link.");
+				reporter.reportLogFailWithScreenshot("Unable to find "+lsText+" link.");
 			}
 			lsHref=this.getElementHref(this.lnkTSCCustomerHubAllLinks.get(i));
 			reporter.softAssert(this.verifyLinks(lsHref,lsYmlHref),"The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref,"The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref);
@@ -120,7 +120,7 @@ public class GlobalFooterPage_Tablet_Android extends GlobalFooterPage_Mobile{
 			reporter.softAssert(lsText.equalsIgnoreCase(lstAboutTSCFr.get(i)),"The "+i+" AboutTSLink French transaltion of "+lsText+" is the same as "+lstAboutTSCFr.get(i),"The "+i+" AboutTSLink French transaltion of "+lsText+" is the same as "+lstAboutTSCFr.get(i));
 			lsYmlHref=this.getLinkWithSpecificName(lstNameAndLinks,lsText,false);
 			if(lsYmlHref.isEmpty()) {
-				reporter.reportLogFail("Unable to find "+lsText+" link.");
+				reporter.reportLogFailWithScreenshot("Unable to find "+lsText+" link.");
 			}
 			lsHref=this.getElementHref(this.lnkAboutTSCAllLinks.get(i));
 			reporter.softAssert(this.verifyLinks(lsHref,lsYmlHref),"The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref,"The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref);

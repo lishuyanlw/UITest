@@ -25,9 +25,8 @@ public class GF_TC02_Verify_GlobalFooter_CustomerHubLinksAndAboutTSCLinks extend
 			reporter.reportLogPass("TSC url is correct");
 		}
 		else{
-			reporter.reportLogFail("TSC url is incorrect");
+			reporter.reportLogFailWithScreenshot("TSC url is incorrect");
 		}
-
 		reporter.reportLog("Global Footer Section");
 		
 		validateContents();
@@ -45,44 +44,82 @@ public class GF_TC02_Verify_GlobalFooter_CustomerHubLinksAndAboutTSCLinks extend
 		String lsText=basePage.getElementText(getGlobalFooterPageThreadLocal().lnkCreditCard);		
 		String lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsText,true);
 		if(lsYmlHref.isEmpty()) {
-			reporter.reportLogFail("Unable to find credit card link.");
+			reporter.reportLogFailWithScreenshot("Unable to find credit card link.");
 		}
 		String lsHref=basePage.getElementHref(getGlobalFooterPageThreadLocal().lnkCreditCard);
-		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current credit card href of "+lsHref+" is equal to "+lsYmlHref,"The current credit card href of "+lsHref+" is not equal to "+lsYmlHref);
+		if(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref)){
+			reporter.reportLogPass("The current credit card href of "+lsHref+" is equal to "+lsYmlHref);
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The current credit card href of "+lsHref+" is not equal to "+lsYmlHref);
+		}
+
 		String lsImageSrc=basePage.getElementImageSrc(getGlobalFooterPageThreadLocal().imgCreditCard);
-		reporter.softAssert(!lsImageSrc.isEmpty(),"The credit card image is not empty.","The credit card image is empty.");
-		
+		if(!lsImageSrc.isEmpty()){
+			reporter.reportLogPass("The credit card image is not empty.");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The credit card image is empty.");
+		}
+
 		//Gift card
 		lsText=basePage.getElementText(getGlobalFooterPageThreadLocal().lnkGiftCard);		
 		lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsText,true);
 		if(lsYmlHref.isEmpty()) {
-			reporter.reportLogFail("Unable to find Gift card link.");
+			reporter.reportLogFailWithScreenshot("Unable to find Gift card link.");
 		}
 		lsHref=basePage.getElementHref(getGlobalFooterPageThreadLocal().lnkGiftCard);
-		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current Gift card href of "+lsHref+" is equal to "+lsYmlHref,"The current Gift card href of "+lsHref+" is not equal to "+lsYmlHref);
+		if(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref)){
+			reporter.reportLogPass("The current Gift card href of "+lsHref+" is equal to "+lsYmlHref);
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The current Gift card href of "+lsHref+" is not equal to "+lsYmlHref);
+		}
+
 		lsImageSrc=basePage.getElementImageSrc(getGlobalFooterPageThreadLocal().imgGiftCard);
-		reporter.softAssert(!lsImageSrc.isEmpty(),"The Gift card image is not empty.","The Gift card image is empty.");
-		
+		if(!lsImageSrc.isEmpty()){
+			reporter.reportLogPass("The Gift card image is not empty.");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Gift card image is empty.");
+		}
+
 		//Send us feedback
 		lsText=basePage.getElementText(getGlobalFooterPageThreadLocal().lnkSendUsFeedback);		
 		lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsText,true);
 		if(lsYmlHref.isEmpty()) {
-			reporter.reportLogFail("Unable to find Send us feedback link.");
+			reporter.reportLogFailWithScreenshot("Unable to find Send us feedback link.");
 		}
 		lsHref=basePage.getElementHref(getGlobalFooterPageThreadLocal().lnkSendUsFeedback);
-		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current Send us feedback href of "+lsHref+" contains "+lsYmlHref,"The current Send us feedback href of "+lsHref+" does not contain "+lsYmlHref);
+		if(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref)){
+			reporter.reportLogPass("The current Send us feedback href of "+lsHref+" contains "+lsYmlHref);
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The current Send us feedback href of "+lsHref+" does not contain "+lsYmlHref);
+		}
+
 		lsImageSrc=basePage.getElementImageSrc(getGlobalFooterPageThreadLocal().imgSendUsFeedback);
-		reporter.softAssert(!lsImageSrc.isEmpty(),"The Send us feedback image is not empty.","The Send us feedback image is empty.");
-		
+		if(!lsImageSrc.isEmpty()){
+			reporter.reportLogPass("The Send us feedback image is not empty.");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Send us feedback image is empty.");
+		}
+
 		//Language switch
 		lsText=basePage.getUTFEnabledData(basePage.getElementText(getGlobalFooterPageThreadLocal().lnkLanguage));		
 		lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsText,true);
 		if(lsYmlHref.isEmpty()) {
-			reporter.reportLogFail("Unable to find Language switch link.");
+			reporter.reportLogFailWithScreenshot("Unable to find Language switch link.");
 		}
 		lsHref=basePage.getElementHref(getGlobalFooterPageThreadLocal().lnkLanguage);
-		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref),"The current Language switch href of "+lsHref+" contains "+lsYmlHref,"The current Language switch href of "+lsHref+" does not contain "+lsYmlHref);
-		
+		if(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref)){
+			reporter.reportLogPass("The current Language switch href of "+lsHref+" contains "+lsYmlHref);
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The current Language switch href of "+lsHref+" does not contain "+lsYmlHref);
+		}
+
 		//TSC customer hub links
 		getGlobalFooterPageThreadLocal().verifyTSCCustomerHubLlinks(lstNameAndLinks);
 		
@@ -94,9 +131,21 @@ public class GF_TC02_Verify_GlobalFooter_CustomerHubLinksAndAboutTSCLinks extend
 		
 		//Copyright text
 		lsText=basePage.getUTFEnabledData(basePage.getElementText(getGlobalFooterPageThreadLocal().txtCopyrightLine1));
-		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyEqualWithEncodingText(lstNameAndLinks, lsText),"The copyright text1 is correct","The copyright text1 is not correct");
+		if(getGlobalFooterPageThreadLocal().verifyEqualWithEncodingText(lstNameAndLinks, lsText)){
+			reporter.reportLogPass("The copyright text1 is correct");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The copyright text1 is not correct");
+		}
+
 		lsText=basePage.getUTFEnabledData(basePage.getElementText(getGlobalFooterPageThreadLocal().txtCopyrightLine2));
-		reporter.softAssert(getGlobalFooterPageThreadLocal().verifyEqualWithEncodingText(lstNameAndLinks, lsText),"The copyright text2 is correct","The copyright text2 is not correct");
+		if(getGlobalFooterPageThreadLocal().verifyEqualWithEncodingText(lstNameAndLinks, lsText)){
+			reporter.reportLogPass("The copyright text2 is correct");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The copyright text2 is not correct");
+		}
+
 	}
 
 }

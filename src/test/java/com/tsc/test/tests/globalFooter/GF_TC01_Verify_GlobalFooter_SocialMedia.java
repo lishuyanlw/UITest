@@ -24,7 +24,7 @@ public class GF_TC01_Verify_GlobalFooter_SocialMedia extends BaseTest {
 			reporter.reportLogPass("TSC url is correct");
 		}
 		else{
-			reporter.reportLogFail("TSC url is incorrect");
+			reporter.reportLogFailWithScreenshot("TSC url is incorrect");
 		}
 
 		reporter.reportLog("Global Footer Section");	
@@ -52,7 +52,7 @@ public class GF_TC01_Verify_GlobalFooter_SocialMedia extends BaseTest {
 			reporter.reportLogPass("The Url after clicking Twitter link is "+lsUrl);
 		}
 		else{
-			reporter.reportLogFail("The Url after clicking Twitter link is not "+lsUrl);
+			reporter.reportLogFailWithScreenshot("The Url after clicking Twitter link is not "+lsUrl);
 		}
 
 		basePage.navigateToURL(lsBaseUrl);
@@ -65,7 +65,7 @@ public class GF_TC01_Verify_GlobalFooter_SocialMedia extends BaseTest {
 			reporter.reportLogPass("The Url after clicking Instagram link is "+lsUrl);
 		}
 		else{
-			reporter.reportLogFail("The Url after clicking Instagram link is not "+lsUrl);
+			reporter.reportLogFailWithScreenshot("The Url after clicking Instagram link is not "+lsUrl);
 		}
 
 		basePage.navigateToURL(lsBaseUrl);
@@ -78,7 +78,7 @@ public class GF_TC01_Verify_GlobalFooter_SocialMedia extends BaseTest {
 			reporter.reportLogPass("The Url after clicking Youtube link is "+lsUrl);
 		}
 		else{
-			reporter.reportLogFail("The Url after clicking Youtube link is not "+lsUrl);
+			reporter.reportLogFailWithScreenshot("The Url after clicking Youtube link is not "+lsUrl);
 		}
 
 		basePage.navigateToURL(lsBaseUrl);
@@ -91,7 +91,7 @@ public class GF_TC01_Verify_GlobalFooter_SocialMedia extends BaseTest {
 			reporter.reportLogPass("The Url after clicking Pinterest link is "+lsUrl);
 		}
 		else{
-			reporter.reportLogFail("The Url after clicking Pinterest link is not "+lsUrl);
+			reporter.reportLogFailWithScreenshot("The Url after clicking Pinterest link is not "+lsUrl);
 		}
 
 		basePage.navigateToURL(lsBaseUrl);
@@ -107,13 +107,13 @@ public class GF_TC01_Verify_GlobalFooter_SocialMedia extends BaseTest {
 			reporter.reportLogPass("Facebook link in Global footer is not empty");
 		}
 		else{
-			reporter.reportLogFail("Facebook link in Global footer is empty");
+			reporter.reportLogFailWithScreenshot("Facebook link in Global footer is empty");
 		}
 		if(getGlobalFooterPageThreadLocal().verifyElementProperty(getGlobalFooterPageThreadLocal().imgFacebook,"Image")){
 			reporter.reportLogPass("Facebook icon in Global footer is not empty");
 		}
 		else{
-			reporter.reportLogFail("Facebook icon in Global footer is empty");
+			reporter.reportLogFailWithScreenshot("Facebook icon in Global footer is empty");
 		}
 
 		//Twitter
@@ -121,13 +121,13 @@ public class GF_TC01_Verify_GlobalFooter_SocialMedia extends BaseTest {
 			reporter.reportLogPass("Twitter link in Global footer is not empty");
 		}
 		else{
-			reporter.reportLogFail("Twitter link in Global footer is empty");
+			reporter.reportLogFailWithScreenshot("Twitter link in Global footer is empty");
 		}
 		if(getGlobalFooterPageThreadLocal().verifyElementProperty(getGlobalFooterPageThreadLocal().imgTwitter,"Image")){
 			reporter.reportLogPass("Twitter icon in Global footer is not empty");
 		}
 		else{
-			reporter.reportLogFail("Twitter icon in Global footer is empty");
+			reporter.reportLogFailWithScreenshot("Twitter icon in Global footer is empty");
 		}
 
 		//Instagram
@@ -135,13 +135,13 @@ public class GF_TC01_Verify_GlobalFooter_SocialMedia extends BaseTest {
 			reporter.reportLogPass("Instagram link in Global footer is not empty");
 		}
 		else{
-			reporter.reportLogFail("Instagram link in Global footer is empty");
+			reporter.reportLogFailWithScreenshot("Instagram link in Global footer is empty");
 		}
 		if(getGlobalFooterPageThreadLocal().verifyElementProperty(getGlobalFooterPageThreadLocal().imgInstagram,"Image")){
 			reporter.reportLogPass("Instagram icon in Global footer is not empty");
 		}
 		else{
-			reporter.reportLogFail("Instagram icon in Global footer is empty");
+			reporter.reportLogFailWithScreenshot("Instagram icon in Global footer is empty");
 		}
 
 		//Youtube
@@ -149,13 +149,13 @@ public class GF_TC01_Verify_GlobalFooter_SocialMedia extends BaseTest {
 			reporter.reportLogPass("Youtube link in Global footer is not empty");
 		}
 		else{
-			reporter.reportLogFail("Youtube link in Global footer is empty");
+			reporter.reportLogFailWithScreenshot("Youtube link in Global footer is empty");
 		}
 		if(getGlobalFooterPageThreadLocal().verifyElementProperty(getGlobalFooterPageThreadLocal().imgYoutube,"Image")){
 			reporter.reportLogPass("Youtube icon in Global footer is not empty");
 		}
 		else{
-			reporter.reportLogFail("Youtube icon in Global footer is empty");
+			reporter.reportLogFailWithScreenshot("Youtube icon in Global footer is empty");
 		}
 
 		//Pinterest
@@ -163,13 +163,13 @@ public class GF_TC01_Verify_GlobalFooter_SocialMedia extends BaseTest {
 			reporter.reportLogPass("Pinterest link in Global footer is not empty");
 		}
 		else{
-			reporter.reportLogFail("Pinterest link in Global footer is empty");
+			reporter.reportLogFailWithScreenshot("Pinterest link in Global footer is empty");
 		}
 		if(getGlobalFooterPageThreadLocal().verifyElementProperty(getGlobalFooterPageThreadLocal().imgPinterest,"Image")){
 			reporter.reportLogPass("Pinterest icon in Global footer is not empty");
 		}
 		else{
-			reporter.reportLogFail("Pinterest icon in Global footer is empty");
+			reporter.reportLogFailWithScreenshot("Pinterest icon in Global footer is empty");
 		}
 
 	}

@@ -76,14 +76,14 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 			lsText=this.getElementText(item);			
 			lsYmlHref=this.getLinkWithSpecificName(lstNameAndLinks,lsText,true);			
 			if(lsYmlHref.isEmpty()) {
-				reporter.reportLogFail("Unable to find "+lsText+" link.");
+				reporter.reportLogFailWithScreenshot("Unable to find "+lsText+" link.");
 			}
 			lsHref=this.getElementHref(item);
 			if(this.verifyLinks(lsHref,lsYmlHref)){
 				reporter.reportLogPass("The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref);
 			}
 			else{
-				reporter.reportLogFail("The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref);
+				reporter.reportLogFailWithScreenshot("The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref);
 			}
 
 		}
@@ -102,14 +102,14 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 			lsText=this.getElementText(item);
 			lsYmlHref=this.getLinkWithSpecificName(lstNameAndLinks,lsText,true);
 			if(lsYmlHref.isEmpty()) {
-				reporter.reportLogFail("Unable to find "+lsText+" link.");
+				reporter.reportLogFailWithScreenshot("Unable to find "+lsText+" link.");
 			}
 			lsHref=this.getElementHref(item);
 			if(this.verifyLinks(lsHref,lsYmlHref)){
 				reporter.reportLogPass("The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref);
 			}
 			else{
-				reporter.reportLogFail("The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref);
+				reporter.reportLogFailWithScreenshot("The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref);
 			}
 		}
 	}
@@ -228,19 +228,19 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 				reporter.reportLogPass("The "+i+" CustomerHubLink French transaltion of "+lsText+" is the same as "+lstCustomerHubFr.get(i));
 			}
 			else{
-				reporter.reportLogFail("The "+i+" CustomerHubLink French transaltion of "+lsText+" is not the same as "+lstCustomerHubFr.get(i));
+				reporter.reportLogFailWithScreenshot("The "+i+" CustomerHubLink French transaltion of "+lsText+" is not the same as "+lstCustomerHubFr.get(i));
 			}
 
 			lsYmlHref=this.getLinkWithSpecificName(lstNameAndLinks,lsText,false);			
 			if(lsYmlHref.isEmpty()) {
-				reporter.reportLogFail("Unable to find "+lsText+" link.");
+				reporter.reportLogFailWithScreenshot("Unable to find "+lsText+" link.");
 			}
 			lsHref=this.getElementHref(this.lnkTSCCustomerHubAllLinks.get(i));
 			if(this.verifyLinks(lsHref,lsYmlHref)){
 				reporter.reportLogPass("The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref);
 			}
 			else{
-				reporter.reportLogFail("The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref);
+				reporter.reportLogFailWithScreenshot("The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref);
 			}
 		}
 	}
@@ -263,19 +263,19 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 				reporter.reportLogPass("The "+i+" AboutTSLink French transaltion of "+lsText+" is the same as "+lstAboutTSCFr.get(i));
 			}
 			else{
-				reporter.reportLogFail("The "+i+" AboutTSLink French transaltion of "+lsText+" is not the same as "+lstAboutTSCFr.get(i));
+				reporter.reportLogFailWithScreenshot("The "+i+" AboutTSLink French transaltion of "+lsText+" is not the same as "+lstAboutTSCFr.get(i));
 			}
 
 			lsYmlHref=this.getLinkWithSpecificName(lstNameAndLinks,lsText,false);
 			if(lsYmlHref.isEmpty()) {
-				reporter.reportLogFail("Unable to find "+lsText+" link.");
+				reporter.reportLogFailWithScreenshot("Unable to find "+lsText+" link.");
 			}
 			lsHref=this.getElementHref(this.lnkAboutTSCAllLinks.get(i));
 			if(this.verifyLinks(lsHref,lsYmlHref)){
 				reporter.reportLogPass("The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref);
 			}
 			else{
-				reporter.reportLogFail("The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref);
+				reporter.reportLogFailWithScreenshot("The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref);
 			}
 		}
 	}
@@ -287,7 +287,7 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 			reporter.reportLogPass("The Url after clicking Facebook link contains facebook");
 		}
 		else{
-			reporter.reportLogFail("The Url after clicking Facebook link does not contain facebook");
+			reporter.reportLogFailWithScreenshot("The Url after clicking Facebook link does not contain facebook");
 		}
 
 		String lsBaseUrl=this.getBaseURL()+"/";		
@@ -305,7 +305,7 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 			reporter.reportLogPass("The element of '"+ lsText+"'"+" is displaying correctly.");
 		}
 		else{
-			reporter.reportLogFail("The element of '"+ lsText+"'"+" is displaying correctly.");
+			reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" is displaying correctly.");
 		}
 
 		WebElement element,item;
@@ -320,14 +320,14 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 			if (!lsText.isEmpty()) {
 				reporter.reportLogPass("The element of '" + lsText + "'" + " in Help topics list is displaying correctly.");
 			} else {
-				reporter.reportLogFail("The element of '" + lsText + "'" + " in Help topics list is displaying correctly.");
+				reporter.reportLogFailWithScreenshot("The element of '" + lsText + "'" + " in Help topics list is displaying correctly.");
 			}
 
 			element = lstCustomerServiceHelpTopicsIcon.get(i);
 			if (getReusableActionsInstance().isElementVisible(element)) {
 				reporter.reportLogPass("The icon of Help Topics item is displaying correctly.");
 			} else {
-				reporter.reportLogFail("The icon of Help Topics item is not displaying correctly.");
+				reporter.reportLogFailWithScreenshot("The icon of Help Topics item is not displaying correctly.");
 			}
 
 			getReusableActionsInstance().clickIfAvailable(item);
@@ -339,7 +339,7 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 				if (!lsText.isEmpty()) {
 					reporter.reportLogPass("The element of '" + lsText + "'" + " in Help topics list is displaying correctly.");
 				} else {
-					reporter.reportLogFail("The element of '" + lsText + "'" + " in Help topics list is displaying correctly.");
+					reporter.reportLogFailWithScreenshot("The element of '" + lsText + "'" + " in Help topics list is displaying correctly.");
 				}
 			}
 		}
