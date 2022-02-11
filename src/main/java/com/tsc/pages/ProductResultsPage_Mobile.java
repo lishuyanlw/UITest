@@ -152,7 +152,9 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 			//If found lsFirstLevelItem
 			if(lsHeader.equalsIgnoreCase(lsFirstLevelItem)) {					
 				if(!lsFirstLevelItem.equalsIgnoreCase("category")) {
-					collapseFilterItemWithClickingProductTitle(this.productFilterContainerList.get(i));
+					if(!checkIfFilterItemIsCollapsed(this.productFilterContainerList.get(i)) ){
+						collapseFilterItemWithClickingProductTitle(this.productFilterContainerList.get(i));
+					}
 				}
 				
 				//If find a search input

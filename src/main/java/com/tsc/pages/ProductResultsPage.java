@@ -1446,7 +1446,10 @@ public class ProductResultsPage extends BasePage{
 			//If found lsFirstLevelItem
 			if(lsHeader.equalsIgnoreCase(lsFirstLevelItem)) {				
 				//If find a search input
-				collapseFilterItemWithClickingProductTitle(this.productFilterContainerList.get(i));
+				if(!checkIfFilterItemIsCollapsed(this.productFilterContainerList.get(i))){
+					collapseFilterItemWithClickingProductTitle(this.productFilterContainerList.get(i));
+				}
+
 				if(checkSearchInputButtonExistingInSubFilter(this.productFilterContainerList.get(i))) {
 					searchInputButton=this.productFilterContainerList.get(i).findElement(this.byProductFilterSearchInput);
 					getReusableActionsInstance().javascriptScrollByVisibleElement(searchInputButton);
