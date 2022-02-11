@@ -85,10 +85,24 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
     @FindBy(xpath = "//div[contains(@class,'secondary-navigation__logo')]/a")
     public WebElement lnkTSClogo;
 
+    @FindBy(xpath="//div[contains(@class,'__heading')]/button")
+    public WebElement btnMobileMenuCloseButton;
+
+    /**
+     * This method is to close mobile menu
+     *
+     * @return true/false
+     */
+    @Override
+    public void closeMobileMenu() {
+        getReusableActionsInstance().clickIfAvailable(this.btnMobileMenuCloseButton);
+        waitForCondition(Driver->{return (this.menuButton.isDisplayed() && this.menuButton.isEnabled());},5000);
+    }
+
     @Override
     public String getNameAndclickSubMenuItem(String headingName, String submenuHeading, String itemName) {
         this.menuButton.click();
-        getReusableActionsInstance().staticWait(5000);
+        waitForCondition(Driver->{return (this.btnMobileMenuCloseButton.isEnabled() && this.btnMobileMenuCloseButton.isDisplayed());},5000);
         String xpathHeading = null;
         if((System.getProperty("Device").toLowerCase().equals("tablet") &&
                 (System.getProperty("Browser").toLowerCase().contains("ios"))) ||
@@ -104,7 +118,6 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
 
         if (headingWebElement != null || submenuHeading == null) {
             headingWebElement.click();
-            getReusableActionsInstance().staticWait(700);
             //return headingWebElement.getText().trim();
         }
         if (submenuHeading != null) {
@@ -121,7 +134,6 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
                 getReusableActionsInstance().scrollToElement(SubMenu.get(0));
                 String Title = SubMenu.get(0).getText();
                 SubMenu.get(0).click();
-                getReusableActionsInstance().staticWait(700);
                 if (itemName != null) {
                     String title = null;
                     String xpathSubmenuItem;
@@ -186,11 +198,9 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
 		WebElement headingWebElement = FlyoutHeadingsMobile.findElement(By.xpath(xpathHeading));
 		getReusableActionsInstance().javascriptScrollByVisibleElement(headingWebElement);
 		getReusableActionsInstance().clickIfAvailable(headingWebElement);
-		getReusableActionsInstance().staticWait(3000);
-		
+
 		this.getReusableActionsInstance().clickIfAvailable(this.curatedCollectionMobile);
-		getReusableActionsInstance().staticWait(3000);
-		
+
 		for(WebElement item:listCuratedCollectionLinksMobile) {
 			if(this.getElementInnerText(item).equalsIgnoreCase(submenuHeading)) {
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
@@ -208,10 +218,8 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
 		WebElement headingWebElement = FlyoutHeadingsMobile.findElement(By.xpath(xpathHeading));
 		getReusableActionsInstance().javascriptScrollByVisibleElement(headingWebElement);
 		getReusableActionsInstance().clickIfAvailable(headingWebElement);
-		getReusableActionsInstance().staticWait(3000);
-		
+
 		this.getReusableActionsInstance().clickIfAvailable(this.popularBrandsMobile);
-		getReusableActionsInstance().staticWait(3000);
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(listPopularBrandsLinksMobile.get(subMenuIndex));
 		this.getReusableActionsInstance().clickIfAvailable(listPopularBrandsLinksMobile.get(subMenuIndex));				
@@ -219,8 +227,8 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
 
     @Override
     public void verifyFlyoutMenuItems(String heading, String section) {
-        //List<WebElement> headingsElements=this.headingLinksMobile;
         this.menuButton.click();
+        waitForCondition(Driver->{return (this.btnMobileMenuCloseButton.isDisplayed() && this.btnMobileMenuCloseButton.isEnabled());},5000);
         String[] arrOfStr;
         if (heading == null) {
             int Size = getDriver().findElements(By.xpath(headingLinksMobileStr)).size();
@@ -231,8 +239,6 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
                 getReusableActionsInstance().javascriptScrollByVisibleElement(headingWebElement);
                 getReusableActionsInstance().scrollToElement(headingWebElement);
                 headingWebElement.click();
-                //CategoriesMobile.get().click();
-                //List<WebElement> CategoriesList=this.CategoriesMobileList;
                 int iSize = getDriver().findElements(By.xpath(categoriesMobileStr)).size();
                 for (int i = 2; i <= iSize; i++) {
                     String SubmenuName = getDriver().findElement(By.xpath(categoriesMobileStr + "[" + i + "]//span")).getText();
@@ -241,15 +247,11 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
                         SubmenuName = arrOfStr[0];
                     }
                     String Submenuheading = createXPath(".//li[@class='mega-nav-mobile__categories-item__wrapper']//button//span[contains(.,'{0}')]", SubmenuName);
-                    //WebElement SubmenuheadingWebElement = CategoriesMobile.findElement(By.xpath(Submenuheading));
                     WebElement SubmenuheadingWebElement = getDriver().findElement(By.xpath(Submenuheading));
                     getReusableActionsInstance().javascriptScrollByVisibleElement(SubmenuheadingWebElement);
                     getReusableActionsInstance().scrollToElement(SubmenuheadingWebElement);
-                    SubmenuheadingWebElement.click();
-                    //System.out.println(CateLinksMobile.getAttribute("href"));
-                    applyStaticWait(2000);
+                    this.getReusableActionsInstance().clickIfAvailable(SubmenuheadingWebElement);
                     reporter.softAssert(CateLinksMobile.getAttribute("href").contains(headingName.split(" ")[0]), headingName + " href is visible", headingName + " in href is not visible");
-                    //waitForCondition(Driver->{return (CateLinksMobile.getAttribute("href").contains(headingName));} ,30000);
                     if (section == null) {
                         verifyFlyoutMenuSection(headingName, "Left Section");
                     }
@@ -281,8 +283,7 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
                 WebElement SubmenuheadingWebElement = getDriver().findElement(By.xpath(Submenuheading));
                 getReusableActionsInstance().javascriptScrollByVisibleElement(SubmenuheadingWebElement);
                 getReusableActionsInstance().scrollToElement(SubmenuheadingWebElement);
-                SubmenuheadingWebElement.click();
-                applyStaticWait(1000);
+                this.getReusableActionsInstance().clickIfAvailable(SubmenuheadingWebElement);
                 reporter.softAssert(CateLinksMobile.getAttribute("href").contains(heading), heading + " in href is visible", heading + " in href is not visible");
                 if (section == null) {
                     verifyFlyoutMenuSection(heading, "Left Section");
@@ -303,11 +304,8 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
         switch (sectionName) {
             case "Curated Collections":
                 reporter.reportLog("Verifying Curated Collections items for : " + headingName);
-                this.curatedCollectionMobile.click();
+                this.getReusableActionsInstance().clickIfAvailable(this.curatedCollectionMobile);
                 for (WebElement webElement : listCuratedCollectionLinksMobile) {
-                    if (System.getProperty("Browser").toLowerCase().contains("firefox")) {
-                        getReusableActionsInstance().javascriptScrollByVisibleElement(webElement);
-                    }
                     getReusableActionsInstance().scrollToElement(webElement);
                     if (!verifyElementProperty(webElement, "Link")) {//href is not present
                         getReporter().softAssert(false, "", "Href missing for Curated Collection item: " + webElement.getText());
@@ -318,15 +316,10 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
                 break;
             case "Popular Brands":
                 reporter.reportLog("Verifying Popular Brands items for : " + headingName);
-                if (System.getProperty("Browser").toLowerCase().contains("firefox")) {
-                    getReusableActionsInstance().javascriptScrollByVisibleElement(popularBrandsMobile);
-                }
+                getReusableActionsInstance().javascriptScrollByVisibleElement(popularBrandsMobile);
                 getReusableActionsInstance().scrollToElement(popularBrandsMobile);
-                this.popularBrandsMobile.click();
+                this.getReusableActionsInstance().clickIfAvailable(this.popularBrandsMobile);
                 for (WebElement webElement : listPopularBrandsLinksMobile) {
-                    if (System.getProperty("Browser").toLowerCase().contains("firefox")) {
-                        getReusableActionsInstance().javascriptScrollByVisibleElement(webElement);
-                    }
                     getReusableActionsInstance().scrollToElement(webElement);
                     //WebElement hrefAttribute =webElement.findElement(By.xpath("./ancestor::a"));
                     if (!verifyElementProperty(webElement, "Link")) {//href not present
@@ -338,15 +331,16 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
                 this.menuBackButton.click();
                 break;
             case "Left Section":
-                for (WebElement category : CategoriesLinksMobile) {
-                    if (System.getProperty("Browser").toLowerCase().contains("firefox")) {
-                        getReusableActionsInstance().javascriptScrollByVisibleElement(category);
-                    }
-                    this.scrolltoWebElement(category);
-                    reporter.reportLog("Verifying Left Section for: " + category.getText());
-                    this.verifysubMenuhref(subMenuSectionMobile);
-                }
-                this.menuBackButton.click();
+                reporter.reportLog("Verifying Main Menu items for : " + headingName);
+                waitForCondition(Driver->{return (this.menuBackButton.isDisplayed() && this.menuBackButton.isEnabled());},5000);
+                //for (WebElement category : CategoriesLinksMobile) {
+                //    getReusableActionsInstance().javascriptScrollByVisibleElement(category);
+                //    this.scrollSubMenuItems(category);
+                //    reporter.reportLog("Verifying Left Section for: " + category.getText());
+                //    this.verifysubMenuhref(subMenuSectionMobile);
+                //}
+                this.verifysubMenuhref(subMenuSectionMobile);
+                this.getReusableActionsInstance().clickIfAvailable(this.menuBackButton);
                 break;
         }
     }
@@ -355,14 +349,7 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
     public void verifysubMenuhref(List<WebElement> webElements) {
         if (isParentElementHasAttribute(webElements, "li")) {
             for (WebElement element : this.subMenuLinksMobile) {
-                /** Below section needs to be commented as it navigates back to previous element of left
-                 * side section element and hence results in StaleElement Exception for firefox
-                 if (System.getProperty("Browser").toLowerCase().contains("firefox")) {
-                 getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-                 }*/
-                if (System.getProperty("Browser").toLowerCase().contains("chrome")) {
-                    getReusableActionsInstance().scrollToElement(element);
-                }
+                getReusableActionsInstance().scrollToElement(element);
                 if (!verifyElementProperty(element, "Link")) {//href is not present
                     getReporter().softAssert(false, "", "Link is not present for: " + element.getText());
                 } else {
@@ -383,9 +370,9 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
         WebElement headingWebElement = FlyoutHeadingsMobile.findElement(By.xpath(xpathHeading));
         getReusableActionsInstance().javascriptScrollByVisibleElement(headingWebElement);
         getReusableActionsInstance().scrollToElement(headingWebElement);
-        headingWebElement.click();
+        getReusableActionsInstance().clickIfAvailable(headingWebElement);
         reporter.softAssert(verifyElementProperty(FlyoutHeadingsMobileLinks, "Link"), "Href is present for Flyout Heading " + headingName, "Href is not preset for " + headingName);
-        this.FlyoutHeadingsMobileLinks.click();
+        getReusableActionsInstance().clickIfAvailable(this.FlyoutHeadingsMobileLinks);
         this.getReusableActionsInstance().waitForPageLoad();
         currentUrl = getDriver().getCurrentUrl();
         return currentUrl;
@@ -395,10 +382,17 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
     public void hoverOnWatchTSC() {
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnWatchTSCBlackHeader);
         this.getReusableActionsInstance().scrollToElement(this.btnWatchTSCBlackHeader);
-        this.getReusableActionsInstance().staticWait(2000);
-        //getReusableActionsInstance().clickIfAvailable(this.btnWatchTSCBlackHeader);
         this.clickWebElementUsingJS(this.btnWatchTSCBlackHeader);
-        this.getReusableActionsInstance().staticWait(2000);
+        this.waitForPageLoad();
+    }
+
+    @Override
+    public void validateFlyout() {
+//        this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.menuButton);
+//        this.getReusableActionsInstance().scrollToElement(this.menuButton);
+//        this.getReusableActionsInstance().clickIfAvailable(this.menuButton);
+//        waitForCondition(Driver->{return (this.btnMobileMenuCloseButton.isDisplayed() && this.btnMobileMenuCloseButton.isEnabled());},5000);
+        this.verifyFlyoutMenuItems(null,null);
     }
 
     @Override
@@ -473,5 +467,4 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
         waitForCondition(Driver->{return !currentUrl.equalsIgnoreCase(getDriver().getCurrentUrl());},10000);
         return this.getDriver().getCurrentUrl().equalsIgnoreCase(lsHomePage);
     }
-
 }

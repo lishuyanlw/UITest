@@ -18,7 +18,7 @@ public class GH_TC02_Verify_Global_Header_SignIn_Favorite_ShoppingCartBag extend
 	 * CER-154
 	 */
 	@Test(groups={"Home","Regression","GlobalHeader_Mobile","GlobalHeader","GlobalHeader_Tablet"})
-		public void validateGlobalHeader_SignIn_Favorite_ShoppingCartBag() throws IOException {		
+		public void validateGlobalHeader_SignIn_Favorite_ShoppingCartBag() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 		BasePage basePage=new BasePage(this.getDriver());		
 		String lsBaseUrl=basePage.getBaseURL()+"/";
@@ -43,13 +43,13 @@ public class GH_TC02_Verify_Global_Header_SignIn_Favorite_ShoppingCartBag extend
 				
 		//Verify Sign in Text and Icon
 		getGlobalLoginPageThreadLocal().verifySignInSection();
-		getGlobalLoginPageThreadLocal().getReusableActionsInstance().staticWait(5000);
+		//getGlobalLoginPageThreadLocal().getReusableActionsInstance().staticWait(staticWait);
 		getGlobalLoginPageThreadLocal().verifyShowingUserFirstNameAfterSignin(lsUserName, lsPassword,lsFirstName);
-		getGlobalLoginPageThreadLocal().getReusableActionsInstance().staticWait(5000);
+		//getGlobalLoginPageThreadLocal().getReusableActionsInstance().staticWait(2000);
 		getGlobalLoginPageThreadLocal().SignOut();
-		getGlobalLoginPageThreadLocal().getReusableActionsInstance().staticWait(5000);
+		//getGlobalLoginPageThreadLocal().getReusableActionsInstance().staticWait(2000);
 		reporter.reportLog("Verify Shopping Cart section");
-		//Verify url does not contain notfound after clicking Shopping Cart link
+		//Verify url does not contain not found after clicking Shopping Cart link
 		lsUrl=getglobalheaderPageThreadLocal().getUrlAfterClickingShoppingCartLink();
 		lsSuccessResult=String.format("The url of < %s > does not contain < %s > after clicking MiniCart link", lsUrl,lsYmlNotFound);
 		lsFailResult=String.format("The url of < %s > contains < %s > after clicking MiniCart link", lsUrl,lsYmlNotFound);
@@ -105,9 +105,9 @@ public class GH_TC02_Verify_Global_Header_SignIn_Favorite_ShoppingCartBag extend
 		reporter.reportLog("Verify Shopping Cart section");
 		//Verify Shopping Cart section
 		validateText(getglobalheaderPageThreadLocal().validateShoppingCartLinkName(), TestDataHandler.constantData.getHeaderSection().getLbl_ShoppingCartLinkName(), "Sopping cart Link is present & Text is visible");
-		getGlobalLoginPageThreadLocal().getReusableActionsInstance().staticWait(5000);
+		//getGlobalLoginPageThreadLocal().getReusableActionsInstance().staticWait(5000);
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateShoppingCartIcon(), "Shopping cart icon is visible", "Shopping cart icon is not visible");
-		getGlobalLoginPageThreadLocal().getReusableActionsInstance().staticWait(5000);
+		//getGlobalLoginPageThreadLocal().getReusableActionsInstance().staticWait(5000);
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateShoppingCartBagCounter(), "Shopping cart Bag counter is visible", "Shopping cart Bag counter is not visible");
 		
 		//Verify Shopping Cart href matches correct pattern

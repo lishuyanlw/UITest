@@ -287,9 +287,6 @@ public class GlobalHeaderPage extends BasePage{
 	@FindBy(xpath="//span[contains(@id,'_ctlSpanTitle')]")
 	public WebElement landingPageTitle;
 
-	@FindBy(xpath="//div[contains(@class,'__heading')]/button")
-	public WebElement btnMobileMenuCloseButton;
-
 	@FindBy(xpath="//div[contains(@class,'searchContainer')]//button[contains(@class,'aa-ClearButton')]")
 	public WebElement btnMobileSearchMenuClose;
 
@@ -454,7 +451,6 @@ public class GlobalHeaderPage extends BasePage{
 		 getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkTSClogo);
 		 this.lnkTSClogo.click();
 		 waitForCondition(Driver->{return this.FlyoutHeadings.isEnabled();},50000);
-		 getReusableActionsInstance().staticWait(4000);
 		 return (new GlobalFooterPage(this.getDriver())).waitForPageLoading();
 	 }
 
@@ -463,18 +459,17 @@ public class GlobalHeaderPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	public void hoverOnWatchTSC() {
+		//Static wait is required in below function as system behaves differently
+		//for safari and clicking one time and without waits doesn't work all time
 		getReusableActionsInstance().waitForPageLoad();
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnWatchTSCBlackHeader);
 		getReusableActionsInstance().scrollToElement(this.btnWatchTSCBlackHeader);
 		getReusableActionsInstance().staticWait(2000);
 		//Clicking on button twice as test is not working for Safari using scrollToElement
 		getReusableActionsInstance().clickIfAvailable(this.btnWatchTSCBlackHeader);
-		//this.clickWebElementUsingJS(this.btnWatchTSCBlackHeader);
-		getReusableActionsInstance().staticWait(3000);
+		getReusableActionsInstance().staticWait(1000);
 		getReusableActionsInstance().clickIfAvailable(this.btnWatchTSCBlackHeader);
-		getReusableActionsInstance().staticWait(3000);
-		//this.clickWebElementUsingJS(this.btnWatchTSCBlackHeader);
-		//getReusableActionsInstance().staticWait(1000);
+		getReusableActionsInstance().staticWait(1000);
 	}
 	 
 	/**
@@ -520,7 +515,6 @@ public class GlobalHeaderPage extends BasePage{
 					getReusableActionsInstance().staticWait(10000);
 					waitForCondition(driver->{return this.lblProgramGuideSearchBox.isEnabled();},30000);
 					reporter.softAssert(lsUrlInSilverHeader.replace("/daily", "").equalsIgnoreCase(lsHrefInBlackHeader), "The Url of " + lsUrlInSilverHeader + "  after clicking " + lsTitle + " in Black headers is equal to the href of " + lsHrefInBlackHeader, "The Url of " + lsUrlInSilverHeader + "  after clicking " + lsTitle + " in Black headers is not equal to the href of " + lsHrefInBlackHeader);
-					this.getReusableActionsInstance().staticWait(3000);
 				}else
 					reporter.softAssert(lsUrlInSilverHeader.equalsIgnoreCase(lsHrefInBlackHeader), "The Url of " + lsUrlInSilverHeader + "  after clicking " + lsTitle + " in Black headers is equal to the href of " + lsHrefInBlackHeader, "The Url of " + lsUrlInSilverHeader + "  after clicking " + lsTitle + " in Black headers is not equal to the href of " + lsHrefInBlackHeader);
 			}
@@ -660,10 +654,30 @@ public class GlobalHeaderPage extends BasePage{
 		return headingElements;
 	}
 
+	/*Method to validate Flyout heading Href
+	 * @author Shruti Desai
+	 */
+	public void validateFlyout() {
+		if(System.getProperty("Device").equalsIgnoreCase("Desktop")){
+			List<WebElement> headingsElement=this.getFlyoutHeadingsWebelement();
+			for(WebElement lsHeading:headingsElement) {
+				this.scrolltoWebElement(lsHeading);
+				String flyoutHeading =lsHeading.getText();
+				reporter.softAssert(this.verifyhrefFlyoutHeading(lsHeading), "Href is present for Flyout Heading "+flyoutHeading, "Href is not preset for "+flyoutHeading);
+			}
+		}
+	}
+
 	/*Method to scroll to desired WebElement
 	 * @author Shruti Desai
 	 */
 	public void scrolltoWebElement(WebElement webElement) {
+		getReusableActionsInstance().javascriptScrollByVisibleElement(webElement);
+		getReusableActionsInstance().scrollToElement(webElement);
+		waitForCondition(Driver->{return this.lstFirstLevelCategoryMenuList.isDisplayed();},5000);
+	}
+
+	public void scrollSubMenuItems(WebElement webElement) {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(webElement);
 		getReusableActionsInstance().scrollToElement(webElement);
 	}
@@ -680,14 +694,7 @@ public class GlobalHeaderPage extends BasePage{
 		return true;
 	}
 
-	/**
-	 * This method is to close mobile menu
-	 *
-	 * @return true/false
-	 */
-	public void closeMobileMenu() {
-		getReusableActionsInstance().clickIfAvailable(this.btnMobileMenuCloseButton);
-	}
+	public void closeMobileMenu() {}
 
 	public void closeMobileSearchMenu() {
 		getReusableActionsInstance().clickIfAvailable(this.btnMobileSearchMenuClose);
@@ -701,15 +708,12 @@ public class GlobalHeaderPage extends BasePage{
 		String currentUrl;
 		String xpathHeading =createXPath(".//li//a//span[contains(.,'{0}')]" ,headingName);
 		WebElement headingWebElement = FlyoutHeadings.findElement(By.xpath(xpathHeading));
-		getReusableActionsInstance().staticWait(3000);
 		getReusableActionsInstance().javascriptScrollByVisibleElement(headingWebElement);
-		getReusableActionsInstance().staticWait(3000);
 		getReusableActionsInstance().scrollToElement(headingWebElement);
-		getReusableActionsInstance().staticWait(3000);
 		waitForCondition(Driver->{return this.lstFirstLevelCategoryMenuList.isDisplayed();},5000);
-		getReusableActionsInstance().clickIfAvailable(this.lnkShopAllForCatgory);
-		//!this.lblPageTitleCategorySection.getText().isEmpty() &&
-		waitForCondition(Driver->{return (this.lblTSCChatBox.isDisplayed() && this.lblTSCChatBox.getText().contains("Chat"));},120000);
+		this.waitForPageLoadingByUrlChange(this.lnkShopAllForCatgory);
+		//getReusableActionsInstance().clickIfAvailable(this.lnkShopAllForCatgory);
+		//waitForCondition(Driver->{return (this.lblTSCChatBox.isDisplayed() && this.lblTSCChatBox.getText().contains("Chat"));},120000);
 		currentUrl = getDriver().getCurrentUrl();
 		return currentUrl;
 	}
@@ -738,6 +742,7 @@ public class GlobalHeaderPage extends BasePage{
 		WebElement headingWebElement =getWebElementFlyoutHeading(headingName);
 		getReusableActionsInstance().javascriptScrollByVisibleElement(headingWebElement);
 		getReusableActionsInstance().scrollToElement(headingWebElement);
+		waitForCondition(Driver->{return this.lstFirstLevelCategoryMenuList.isDisplayed();},5000);
 	}
 
 
@@ -760,8 +765,6 @@ public class GlobalHeaderPage extends BasePage{
 		first_flyout_menu_text.set(headingName.split(" ")[0]);
 		WebElement linkPopularBrand = listPopularBrandsLink.get(0);
 
-		//waitForCondition(Driver->{return (linkPopularBrand.isDisplayed());} ,30000);
-
 		waitForCondition(Driver->{return (linkPopularBrand.getAttribute("href").contains(first_flyout_menu_text.get()) && linkPopularBrand.getAttribute("class").contains(section.split(" ")[0].trim().toLowerCase()));} ,30000);
 		WebElement ShopAllWebElement = getWebElementShopAllPupularBrand();
 		if(verifyElementProperty(ShopAllWebElement,"Link")) {
@@ -769,7 +772,6 @@ public class GlobalHeaderPage extends BasePage{
 			getReusableActionsInstance().scrollToElement(ShopAllWebElement);
 			getReusableActionsInstance().clickIfAvailable(ShopAllWebElement);
 			(new GlobalFooterPage(this.getDriver())).waitForPageLoading();
-			getReusableActionsInstance().staticWait(3000);
 			currentUrl = getDriver().getCurrentUrl();
 		}
 		return currentUrl;
@@ -780,12 +782,11 @@ public class GlobalHeaderPage extends BasePage{
 	 * @return String:Heading of the page
 	 * @author Sachin Sharma
 	 */
-	public String getHeadingForLandingPage(boolean chatBoxAvailable) {
-		if(chatBoxAvailable)
-			waitForCondition(Driver->{return (this.isElementPresent(this.lblTSCChatBox) && this.lblTSCChatBox.getText().contains("Chat"));},120000);
+	public String getHeadingForLandingPage() {
 		this.waitForPageLoad();
-		waitForCondition(Driver->{return !this.lblPageTitleCategorySection.getText().isEmpty();},60000);
+		//waitForCondition(Driver->{return !this.lblPageTitleCategorySection.getText().isEmpty();},60000);
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblPageTitleCategorySection);
+		this.getReusableActionsInstance().staticWait(1000);
 		getReusableActionsInstance().scrollToElement(this.lblPageTitleCategorySection);
 		String title = this.getElementInnerText(this.lblPageTitleCategorySection);
 		reporter.reportLog("Title of page is: "+title);
@@ -829,7 +830,6 @@ public class GlobalHeaderPage extends BasePage{
 			for(WebElement headerItem: headingsElements) {
 				getReusableActionsInstance().javascriptScrollByVisibleElement(headerItem);
 				this.scrolltoWebElement(headerItem);
-				getReusableActionsInstance().staticWait(3000);
 				waitForCondition(Driver->{return (CategoriesLinks.get(0).getAttribute("href").contains(headerItem.getText().split(" ")[0]));} ,30000);
 				String headingName =headerItem.getText();
 				reporter.reportLog("Flyout heading "+headingName);
@@ -845,7 +845,6 @@ public class GlobalHeaderPage extends BasePage{
 			WebElement headingsElement=getWebElementFlyoutHeading(heading);
 			getReusableActionsInstance().javascriptScrollByVisibleElement(headingsElement);
 			this.scrolltoWebElement(headingsElement);
-			getReusableActionsInstance().staticWait(3000);
 			waitForCondition(Driver->{return (CategoriesLinks.get(0).getAttribute("href").contains(headingsElement.getText().split(" ")[0]));} ,30000);
 			String headingName =headingsElement.getText();
 			reporter.reportLog("Flyout heading "+headingName);
@@ -899,8 +898,7 @@ public class GlobalHeaderPage extends BasePage{
 
 				for (WebElement category:CategoriesLinks) {
 					getReusableActionsInstance().javascriptScrollByVisibleElement(category);
-					this.scrolltoWebElement(category);
-					getReusableActionsInstance().staticWait(3000);
+					this.scrollSubMenuItems(category);
 					reporter.reportLog("Verifying Left Section for: "+category.getText());
 					this.verifysubMenuhref(subMenuSection);
 				}

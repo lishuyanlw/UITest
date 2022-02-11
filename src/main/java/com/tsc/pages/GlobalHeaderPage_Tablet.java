@@ -65,7 +65,6 @@ public class GlobalHeaderPage_Tablet extends GlobalHeaderPage_Mobile{
                 for(int count=0;count<lstsubMenuItemsList.size();count++){
                     this.getReusableActionsInstance().javascriptScrollByVisibleElement(lstsubMenuItemsList.get(count));
                     this.getReusableActionsInstance().scrollToElement(lstsubMenuItemsList.get(count));
-                    this.getReusableActionsInstance().staticWait(1000);
                     String subMenuHeadingName = lstsubMenuItemsList.get(count).findElement((By.xpath("./span"))).getText();
                     reporter.reportLog("Verifying Tablet for sub-menu item: "+subMenuHeadingName);
                     this.getReusableActionsInstance().clickIfAvailable(lstsubMenuItemsList.get(count));
@@ -75,7 +74,7 @@ public class GlobalHeaderPage_Tablet extends GlobalHeaderPage_Mobile{
                     }
                     //Clicking on Back Button
                     this.getReusableActionsInstance().clickIfAvailable(this.btnBackButton);
-                    this.getReusableActionsInstance().staticWait(2000);
+                    waitForCondition(Driver->{return (this.lblShopAllBrands.isEnabled() && this.lblShopAllBrands.isDisplayed());},5000);
                 }
                 //Verifying Curated Collections
                 verifyCuratedCollection();
@@ -91,7 +90,7 @@ public class GlobalHeaderPage_Tablet extends GlobalHeaderPage_Mobile{
         reporter.reportLog("Verifying Curated Collection Section");
         //Opening Curated Collection Section
         this.getReusableActionsInstance().clickIfAvailable(this.btnCuratedCollection);
-        this.getReusableActionsInstance().staticWait(2000);
+        waitForCondition(Driver->{return (this.lstCuratedCollectionList.size()>0);},3000);
         for(WebElement webElement : this.lstCuratedCollectionList){
             this.getReusableActionsInstance().javascriptScrollByVisibleElement(webElement);
             this.getReusableActionsInstance().scrollToElement(webElement);
@@ -99,14 +98,13 @@ public class GlobalHeaderPage_Tablet extends GlobalHeaderPage_Mobile{
         }
         //Closing Curated Collection Section
         this.getReusableActionsInstance().clickIfAvailable(this.btnCuratedCollection);
-        this.getReusableActionsInstance().staticWait(2000);
     }
 
     public void verifyPopularBrand(){
         reporter.reportLog("Verifying Popular Brand Section");
         //Opening Popular Brand Section
         this.getReusableActionsInstance().clickIfAvailable(this.btnPopularBrand);
-        this.getReusableActionsInstance().staticWait(3000);
+        waitForCondition(Driver->{return (this.lstPopularBrandsList.size()>0);},3000);
         for(WebElement webElement : this.lstPopularBrandsList){
             this.getReusableActionsInstance().javascriptScrollByVisibleElement(webElement);
             this.getReusableActionsInstance().scrollToElement(webElement);
@@ -123,6 +121,5 @@ public class GlobalHeaderPage_Tablet extends GlobalHeaderPage_Mobile{
         this.verifyElementLink(this.lblSeeAllPopularBrand);
         //Closing Popular Brand Section
         this.getReusableActionsInstance().clickIfAvailable(this.btnPopularBrand);
-        this.getReusableActionsInstance().staticWait(3000);
     }
 }

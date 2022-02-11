@@ -249,11 +249,13 @@ public class LoginPage extends BasePage {
 		this.waitForPageToLoad();
 		if(System.getProperty("Device").equalsIgnoreCase("Mobile")){
 			waitForCondition(Driver->{return this.lblSignInPageTitle.isDisplayed();},30000);
-			getReusableActionsInstance().staticWait(2000);
+			//getReusableActionsInstance().staticWait(2000);
 		}
-		//Adding static wait here as otherwise next statement throws Stale Element Reference duw to page load
+		//Adding static wait here as otherwise next statement throws Stale Element Reference
+		// The page is loaded after a sec and hence this wait is required
 		getReusableActionsInstance().staticWait(5000);
-		waitForCondition(Driver->{return this.btnSignOut.isDisplayed() && this.btnSignOut.isEnabled();},30000);
+		if(System.getProperty("Device").equalsIgnoreCase("Desktop"))
+			waitForCondition(Driver->{return this.btnSignOut.isDisplayed() && this.btnSignOut.isEnabled();},30000);
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInMainMenu);
 		waitForCondition(Driver->{return !lsSignInMsg.equalsIgnoreCase(this.btnSignInMainMenu.getText())&&!this.btnSignInMainMenu.getText().isEmpty();},30000);
 		

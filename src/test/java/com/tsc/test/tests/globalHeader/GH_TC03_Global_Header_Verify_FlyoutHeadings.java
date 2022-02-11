@@ -20,20 +20,8 @@ public class GH_TC03_Global_Header_Verify_FlyoutHeadings extends BaseTest {
 		reporter.reportLogWithScreenshot("Home Page");
 		reporter.reportLog("Validating Flyouts all departments & it's URL before clicking it");
 		if(System.getProperty("Device").equalsIgnoreCase("Desktop"))
-			validateFlyout();
+			getglobalheaderPageThreadLocal().validateFlyout();
 		else
 			reporter.reportLog("This test is not required for other device as heading is a button and not a link");
-	}
-		
-	public void validateFlyout() {
-		List<WebElement> headingsElement=getglobalheaderPageThreadLocal().getFlyoutHeadingsWebelement();
-		for(WebElement lsHeading:headingsElement) {
-			getglobalheaderPageThreadLocal().scrolltoWebElement(lsHeading);
-			getGlobalFooterPageThreadLocal().applyStaticWait(3000);
-			String flyoutHeading =lsHeading.getText();
-			if(System.getProperty("Device").equalsIgnoreCase("Desktop")){
-				reporter.softAssert(getglobalheaderPageThreadLocal().verifyhrefFlyoutHeading(lsHeading), "Href is present for Flyout Heading "+flyoutHeading, "Href is not preset for "+flyoutHeading);
-			}
-		}
 	}
 }

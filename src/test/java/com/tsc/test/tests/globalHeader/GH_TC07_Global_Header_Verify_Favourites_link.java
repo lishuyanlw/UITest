@@ -39,10 +39,8 @@ public class GH_TC07_Global_Header_Verify_Favourites_link extends BaseTest {
 
 		if(getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword,lsFirstname)) {
 			getglobalheaderPageThreadLocal().waitForPageLoad();
-			getglobalheaderPageThreadLocal().getReusableActionsInstance().staticWait(5000);
 			String urlFavoritesLandingpageForLoggedinUser=getglobalheaderPageThreadLocal().getUrlForLandingpage(getglobalheaderPageThreadLocal().Favouriteslnk);
 			getglobalheaderPageThreadLocal().getReusableActionsInstance().waitForPageLoad();
-			getglobalheaderPageThreadLocal().getReusableActionsInstance().staticWait(5000);
 			/*
 			boolean flag = getglobalheaderPageThreadLocal().verifyFavoritePageTitle(lsFirstname);
 			if(flag)
@@ -55,7 +53,6 @@ public class GH_TC07_Global_Header_Verify_Favourites_link extends BaseTest {
 			reporter.reportLogFail("Login failed");
 		}
 
-		getglobalheaderPageThreadLocal().applyStaticWait(5000);
 		getglobalheaderPageThreadLocal().getReusableActionsInstance().waitForPageLoad();
 
 		//verify Favorite Link for anonymous user
