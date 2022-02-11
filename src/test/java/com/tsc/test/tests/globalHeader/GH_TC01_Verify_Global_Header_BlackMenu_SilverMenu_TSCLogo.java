@@ -20,7 +20,7 @@ public class GH_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo extends B
 	 * CER-565
 	 * BUG-19445 - [PR Defect] Adding the Why are we adding the "&fm=top_header" query string to the URL
 	 */
-	@Test(groups={"Home","Regression","GlobalHeader_Mobile","GlobalHeader"})
+	@Test(groups={"GlobalHeader","Regression"})
 		public void validateGlobalHeaderBlackMenu_SilverMenu_TSCLogoLinks() throws IOException {		
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 		BasePage basePage=new BasePage(this.getDriver());		

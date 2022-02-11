@@ -394,11 +394,12 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
 
     @Override
     public void validateFlyout() {
-//        this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.menuButton);
-//        this.getReusableActionsInstance().scrollToElement(this.menuButton);
-//        this.getReusableActionsInstance().clickIfAvailable(this.menuButton);
-//        waitForCondition(Driver->{return (this.btnMobileMenuCloseButton.isDisplayed() && this.btnMobileMenuCloseButton.isEnabled());},5000);
-        this.verifyFlyoutMenuItems(null,null);
+       //this.verifyFlyoutMenuItems(null,null);
+        if (System.getProperty("Device").equalsIgnoreCase("Tablet") &&
+                        (System.getProperty("Browser").contains("ios") || ((System.getProperty("chromeMobileDevice")!=null && System.getProperty("chromeMobileDevice").contains("iPad")))))
+            reporter.reportLog("WatchTSC is not present at bottom for iPad");
+        else
+            this.verifyWatchTSCAtPageBottom();
     }
 
     @Override

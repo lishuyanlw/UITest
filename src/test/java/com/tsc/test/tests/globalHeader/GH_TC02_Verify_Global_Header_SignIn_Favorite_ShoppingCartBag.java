@@ -17,7 +17,7 @@ public class GH_TC02_Verify_Global_Header_SignIn_Favorite_ShoppingCartBag extend
 	 * CER-153
 	 * CER-154
 	 */
-	@Test(groups={"Home","Regression","GlobalHeader_Mobile","GlobalHeader","GlobalHeader_Tablet"})
+	@Test(groups={"GlobalHeader","Regression"})
 		public void validateGlobalHeader_SignIn_Favorite_ShoppingCartBag() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 		BasePage basePage=new BasePage(this.getDriver());		
