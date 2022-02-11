@@ -75,8 +75,8 @@ public class SR_TC04_Verify_ProductSearchResult_SortAndFilterSectionFunction_Pri
 
                 productList=getProductResultsPageThreadLocal().getProductList();
                 if(productList.size()>0) {
-                    getProductResultsPageThreadLocal().verifySearchResultContent(productList);
-                    getProductResultsPageThreadLocal().verifySearchResultContentWithMouseHover(productList);
+                    getProductResultsPageThreadLocal().verifySearchResultContent(productList,true);
+//                    getProductResultsPageThreadLocal().verifySearchResultContentWithMouseHover(productList);
                 }
 
                 reporter.softAssert(getProductResultsPageThreadLocal().verifyProductPagination(), "Product pagination is existing", "Product pagination is not existing");

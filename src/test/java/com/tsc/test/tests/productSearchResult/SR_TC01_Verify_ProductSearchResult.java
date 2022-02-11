@@ -59,8 +59,8 @@ public class SR_TC01_Verify_ProductSearchResult extends BaseTest{
 			
 			productList=getProductResultsPageThreadLocal().getProductList();
 			if(productList.size()>0) {
-				getProductResultsPageThreadLocal().verifySearchResultContent(productList);
-				getProductResultsPageThreadLocal().verifySearchResultContentWithMouseHover(productList);
+				getProductResultsPageThreadLocal().verifySearchResultContent(productList,false);
+				getProductResultsPageThreadLocal().verifySearchResultContentWithMouseHover(productList,false);
 			}
 			
 			reporter.softAssert(getProductResultsPageThreadLocal().verifyProductPagination(), "Product pagination is existing", "Product pagination is not existing");
@@ -99,8 +99,8 @@ public class SR_TC01_Verify_ProductSearchResult extends BaseTest{
 			
 			productList=getProductResultsPageThreadLocal().getProductList();
 			if(productList.size()>0) {
-				getProductResultsPageThreadLocal().verifySearchResultContent(productList);
-				getProductResultsPageThreadLocal().verifySearchResultContentWithMouseHover(productList);
+				getProductResultsPageThreadLocal().verifySearchResultContent(productList,false);
+				getProductResultsPageThreadLocal().verifySearchResultContentWithMouseHover(productList,false);
 			}
 			
 			reporter.softAssert(getProductResultsPageThreadLocal().verifyProductPagination(), "Product pagination is existing", "Product pagination is not existing");

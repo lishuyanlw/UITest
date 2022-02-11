@@ -401,17 +401,16 @@ public class ProductResultsPage extends BasePage{
 	 */
 	public boolean getSearchResultLoad(String searchKeyword,boolean clickEnterButtonFromKeyboard) {
 		GlobalHeaderPage globalHeader=new GlobalHeaderPage(this.getDriver());
-//		this.waitForCondition(Driver->{return globalHeader.lblTSCChatBox.getText().toLowerCase().contains("chat");},8000);
 		this.getReusableActionsInstance().waitForElementVisibility(globalHeader.searchBox,120);
 		String[] data = searchKeyword.codePoints().mapToObj(cp->new String(Character.toChars(cp))).toArray(size->new String[size]);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeader.searchBox);
 		this.getReusableActionsInstance().clickIfAvailable(globalHeader.searchBox,3000);
 		for(String inputText:data){
 			globalHeader.searchBox.sendKeys(inputText);
-			this.getReusableActionsInstance().staticWait(6000);
+			//For thinking time
+			this.getReusableActionsInstance().staticWait(1000);
 		}
-		//globalHeader.searchBox.sendKeys(searchKeyword);
-		//globalHeader.btnSearchSubmit.click();
+
 		this.getReusableActionsInstance().staticWait(3000);
 		waitForCondition(Driver->{
 			return this.searchResultSection.isDisplayed();
@@ -426,20 +425,6 @@ public class ProductResultsPage extends BasePage{
 		}
 
 		this.getReusableActionsInstance().staticWait(5000);
-		/*waitForCondition(Driver->{
-			return this.lblShowing.isDisplayed();
-		},90000);
-		waitForCondition(Driver->{
-			return getDriver().findElement(By.xpath("//section[@class='tsc-container']//h2")).isDisplayed();
-		},90000);
-
-		return waitForCondition(Driver->{
-			String lsStyle=this.productResultLoadingIndicator.getAttribute("style");
-			if(lsStyle==null||lsStyle.isEmpty()) {
-				lsStyle="display: none;";
-			}
-			return !this.productResultLoadingIndicator.getAttribute("style").equalsIgnoreCase("display: block;")&&!lsUrl.equalsIgnoreCase(this.URL());
-			},90000);*/
 		this.waitForPageToLoad();
 		this.getReusableActionsInstance().staticWait(2000);
 
@@ -470,7 +455,8 @@ public class ProductResultsPage extends BasePage{
 		this.clearContent(globalHeader.searchBox);
 		for(int i=0;i<lsKeyword.length();i++) {
 			globalHeader.searchBox.sendKeys(lsKeyword.substring(i,i+1));
-			getReusableActionsInstance().staticWait(7000);
+			//For thinking time
+			getReusableActionsInstance().staticWait(1000);
 		}
 
 		switch(lsOption) {
@@ -876,9 +862,27 @@ public class ProductResultsPage extends BasePage{
 	/**
 	 * This method will verify the item content in product list without mouse hover.
 	 * @param-List<WebElement> productList: the input product list
+	 * @param boolean bMandatoryOnly: true/false
 	 * @author Wei.Li
 	 */
-	public void verifySearchResultContent(List<WebElement> productList) {
+	public void verifySearchResultContent(List<WebElement> productList,boolean bMandatoryOnly) {
+		if(bMandatoryOnly){
+			verifySearchResultContentForMandatoryFields(productList,false);
+		}
+		else{
+			verifySearchResultContentForMandatoryFields(productList,false);
+
+			verifySearchResultContentForOptionalFields(productList);
+		}
+	}
+
+	/**
+	 * This method will verify the optional item content in product list without mouse hover.
+	 * @param-List<WebElement> productList: the input product list
+	 * @param boolean bMouseHover: true/false
+	 * @author Wei.Li
+	 */
+	public void verifySearchResultContentForMandatoryFields(List<WebElement> productList,boolean bMouseHover) {
 		int loopSize;
 		WebElement item,element;
 		List<WebElement> reviewStarList;
@@ -888,6 +892,7 @@ public class ProductResultsPage extends BasePage{
 		loopSize=loopSize>15?15:loopSize;
 		for(int i=0;i<loopSize;i++) {
 			item=productList.get(i);
+
 			element=item.findElement(byProductName);
 			lsProductName=this.getElementInnerText(element);
 			reporter.reportLog("Product Name: "+lsProductName);
@@ -903,24 +908,6 @@ public class ProductResultsPage extends BasePage{
 			}
 			else {
 				reporter.reportLogFail("Product name is not semi bold font");
-			}
-
-			if(this.checkProductItemHeaderTitleExisting(item)) {
-				element=item.findElement(byProductHeaderTitle);
-				lsText=this.getElementInnerText(element);
-				if(!lsText.isEmpty()) {
-					reporter.reportLogPass("Product title is not empty");
-				}
-				else {
-					reporter.reportLogFail("Product title is empty");
-				}
-				//Bug 19683: [UAT Defect] PRP: Merchandising badges i.e. Clearance, BlockBuster etc. should be bolded
-				if(element.getCssValue("font-weight").equalsIgnoreCase("800")) {
-					reporter.reportLogPass("Product title is bold font");
-				}
-				else {
-					reporter.reportLogFail("Product title is not bold font");
-				}
 			}
 
 			element=item.findElement(byProductHeaderLike);
@@ -947,27 +934,18 @@ public class ProductResultsPage extends BasePage{
 				reporter.reportLogFail("Product image source is not empty");
 			}
 
-			if(!this.getProductOptionTypeWithoutMouseHover(item).equalsIgnoreCase("None")&&!this.getProductOptionTypeWithoutMouseHover(item).equalsIgnoreCase("Other")) {
-				element=item.findElement(byProductOptionListContainer);				
-				lsText=this.getElementInnerText(element);	
-				this.getReusableActionsInstance().staticWait(1000);
+			if(!bMouseHover){
+				if(!this.getProductOptionTypeWithoutMouseHover(item).equalsIgnoreCase("None")&&!this.getProductOptionTypeWithoutMouseHover(item).equalsIgnoreCase("Other")) {
+					element=item.findElement(byProductOptionListContainer);
+					lsText=this.getElementInnerText(element);
+					this.getReusableActionsInstance().staticWait(1000);
 
-				if(!lsText.isEmpty()) {
-					reporter.reportLogPass("Product option is not empty");
-				}
-				else {
-					reporter.reportLogFail("Product option is empty");
-				}
-			}
-
-			if(this.checkProductItemBrandNameExisting(item)) {
-				element=item.findElement(byProductBrand);
-				lsText=this.getElementInnerText(element);
-				if(!lsText.isEmpty()) {
-					reporter.reportLogPass("Product brand name is not empty");
-				}
-				else {
-					reporter.reportLogFail("Product brand name is empty");
+					if(!lsText.isEmpty()) {
+						reporter.reportLogPass("Product option is not empty");
+					}
+					else {
+						reporter.reportLogFail("Product option is empty");
+					}
 				}
 			}
 
@@ -985,6 +963,54 @@ public class ProductResultsPage extends BasePage{
 			}
 			else {
 				reporter.reportLogFail("Product NowPrice is not semi bold font");
+			}
+
+		}
+	}
+
+	/**
+	 * This method will verify the optional item content in product list without mouse hover.
+	 * @param-List<WebElement> productList: the input product list
+	 * @author Wei.Li
+	 */
+	public void verifySearchResultContentForOptionalFields(List<WebElement> productList) {
+		int loopSize;
+		WebElement item,element;
+		List<WebElement> reviewStarList;
+		String lsProductName,lsText;
+
+		loopSize=productList.size();
+		loopSize=loopSize>15?15:loopSize;
+		for(int i=0;i<loopSize;i++) {
+			item=productList.get(i);
+
+			if(this.checkProductItemHeaderTitleExisting(item)) {
+				element=item.findElement(byProductHeaderTitle);
+				lsText=this.getElementInnerText(element);
+				if(!lsText.isEmpty()) {
+					reporter.reportLogPass("Product title is not empty");
+				}
+				else {
+					reporter.reportLogFail("Product title is empty");
+				}
+				//Bug 19683: [UAT Defect] PRP: Merchandising badges i.e. Clearance, BlockBuster etc. should be bolded
+				if(element.getCssValue("font-weight").equalsIgnoreCase("800")) {
+					reporter.reportLogPass("Product title is bold font");
+				}
+				else {
+					reporter.reportLogFail("Product title is not bold font");
+				}
+			}
+
+			if(this.checkProductItemBrandNameExisting(item)) {
+				element=item.findElement(byProductBrand);
+				lsText=this.getElementInnerText(element);
+				if(!lsText.isEmpty()) {
+					reporter.reportLogPass("Product brand name is not empty");
+				}
+				else {
+					reporter.reportLogFail("Product brand name is empty");
+				}
 			}
 
 			if(this.checkProductItemWasPriceExisting(item)) {
@@ -1006,7 +1032,7 @@ public class ProductResultsPage extends BasePage{
 				else {
 					reporter.reportLogFail("Product review is not visible");
 				}
-				
+
 				//Bug 19536: [QA Defect - P3] PRP: Rating and Review not showing properly
 				reviewStarList=item.findElements(this.byProductReviewRatingImage);
 				if(reviewStarList.size()>0) {
@@ -1015,7 +1041,7 @@ public class ProductResultsPage extends BasePage{
 				else {
 					reporter.reportLogFail("Product review stars are not displaying correctly");
 				}
-				
+
 				lsText=this.getElementInnerText(item.findElement(this.byProductReviewRatingCount));
 				if(!lsText.isEmpty()) {
 					reporter.reportLogPass("Product review count info is displaying correctly");
@@ -1024,29 +1050,35 @@ public class ProductResultsPage extends BasePage{
 					reporter.reportLogFail("Product review count info is not displaying correctly");
 				}
 			}
-
-			/*
-			//Bug 19538: [QA Defect - P3] PRP: missing Free Shipping label
-			if(this.checkProductItemFreeShippingExisting(item)) {
-				element=item.findElement(byProductFreeShipping);
-				lsText=this.getElementInnerText(element);
-				if(!lsText.isEmpty()) {
-					reporter.reportLogPass("Product free shipping is not empty");
-				}
-				else {
-					reporter.reportLogFail("Product free shipping is empty");
-				}
-			}*/
-
 		}
 	}
 
 	/**
 	 * This method will verify the item content in product list with mouse hover.
 	 * @param-List<WebElement> productList: the input product list
+	 * @param boolean bMouseHoverOnly: true/false
 	 * @author Wei.Li
 	 */
-	public void verifySearchResultContentWithMouseHover(List<WebElement> productList) {
+	public void verifySearchResultContentWithMouseHover(List<WebElement> productList,boolean bMouseHoverOnly) {
+		if(bMouseHoverOnly){
+			verifySearchResultContentWithMouseHoverForStyleAndSize(productList);
+		}
+		else{
+			verifySearchResultContentForMandatoryFields(productList,true);
+
+			verifySearchResultContentForOptionalFields(productList);
+
+			verifySearchResultContentWithMouseHoverForStyleAndSize(productList);
+		}
+
+	}
+
+	/**
+	 * This method will verify the Style/Size content in product list with mouse hover.
+	 * @param-List<WebElement> productList: the input product list
+	 * @author Wei.Li
+	 */
+	public void verifySearchResultContentWithMouseHoverForStyleAndSize(List<WebElement> productList) {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(productList.get(0));
 		this.getReusableActionsInstance().scrollToElement(productList.get(0));
 
@@ -1054,7 +1086,7 @@ public class ProductResultsPage extends BasePage{
 		WebElement item,element;
 		String lsProductName,lsText;
 		List<WebElement> reviewStarList;
-		
+
 		if(checkAmount<=productList.size()) {
 			loopSize=checkAmount;
 		}
@@ -1066,65 +1098,6 @@ public class ProductResultsPage extends BasePage{
 			item=productList.get(i);
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 			this.getReusableActionsInstance().scrollToElement(item);
-
-			element=item.findElement(byProductName);
-			lsProductName=this.getElementInnerText(element);
-			reporter.reportLog("Product Name: "+lsProductName);
-			if(!lsProductName.isEmpty()) {
-				reporter.reportLogPass("Product Name is not empty");
-			}
-			else {
-				reporter.reportLogFail("Product Name is empty");
-			}
-			//Bug 19537: [QA Defect - P3] PRP: Is Price should be bold
-			if(element.getCssValue("font-weight").equalsIgnoreCase("600")) {
-				reporter.reportLogPass("Product Name is semi bold font");
-			}
-			else {
-				reporter.reportLogFail("Product Nanme is not semi bold font");
-			}
-
-			if(this.checkProductItemHeaderTitleExisting(item)) {
-				element=item.findElement(byProductHeaderTitle);
-				lsText=this.getElementInnerText(element);
-				if(!lsText.isEmpty()) {
-					reporter.reportLogPass("Product title is not empty");
-				}
-				else {
-					reporter.reportLogFail("Product title is empty");
-				}
-				//Bug 19683: [UAT Defect] PRP: Merchandising badges i.e. Clearance, BlockBuster etc. should be bolded
-				if(element.getCssValue("font-weight").equalsIgnoreCase("800")) {
-					reporter.reportLogPass("Product title is bold font");
-				}
-				else {
-					reporter.reportLogFail("Product title is not bold font");
-				}
-			}
-
-			element=item.findElement(byProductHeaderLike);
-			if(this.getReusableActionsInstance().isElementVisible(element)) {
-				reporter.reportLogPass("Product like icon is visible");
-			}
-			else {
-				reporter.reportLogFail("Product like icon is not visible");
-			}
-
-			element=item.findElement(byProductHref);
-			if(!this.getElementHref(element).isEmpty()) {
-				reporter.reportLogPass("Product link is not empty");
-			}
-			else {
-				reporter.reportLogFail("Product link is empty");
-			}
-
-			element=item.findElement(byProductImage);
-			if(!this.getElementImageSrc(element).isEmpty()) {
-				reporter.reportLogPass("Product image source is not empty");
-			}
-			else {
-				reporter.reportLogFail("Product image source is not empty");
-			}
 
 			lsText=judgeProductOptionType(item);
 			if(lsText.contains("Size")) {
@@ -1174,84 +1147,6 @@ public class ProductResultsPage extends BasePage{
 				}
 			}
 
-			if(this.checkProductItemBrandNameExisting(item)) {
-				element=item.findElement(byProductBrand);
-				lsText=this.getElementInnerText(element);
-				if(!lsText.isEmpty()) {
-					reporter.reportLogPass("Product brand name is not empty");
-				}
-				else {
-					reporter.reportLogFail("Product brand name is empty");
-				}
-			}
-
-			element=item.findElement(byProductNowPrice);
-			lsText=this.getElementInnerText(element);
-			if(!lsText.isEmpty()) {
-				reporter.reportLogPass("Product Now Price is not empty");
-			}
-			else {
-				reporter.reportLogFail("Product Now Price is not empty");
-			}
-			//Bug 19537: [QA Defect - P3] PRP: Is Price should be bold
-			if(element.getCssValue("font-weight").equalsIgnoreCase("600")) {
-				reporter.reportLogPass("Product NowPrice is semi bold font");
-			}
-			else {
-				reporter.reportLogFail("Product NowPrice is not semi bold font");
-			}
-
-			if(this.checkProductItemWasPriceExisting(item)) {
-				element=item.findElement(byProductWasPrice);
-				lsText=this.getElementInnerText(element);
-				if(!lsText.isEmpty()) {
-					reporter.reportLogPass("Product Was Price is not empty");
-				}
-				else {
-					reporter.reportLogFail("Product Was Price is empty");
-				}
-			}
-
-			if(this.checkProductItemReviewExisting(item)) {
-				element=item.findElement(byProductReviewContainer);
-				if(this.getReusableActionsInstance().isElementVisible(element)) {
-					reporter.reportLogPass("Product review is visible");
-				}
-				else {
-					reporter.reportLogFail("Product review is not visible");
-				}
-				
-				//Bug 19536: [QA Defect - P3] PRP: Rating and Review not showing properly
-				reviewStarList=item.findElements(this.byProductReviewRatingImage);
-				if(reviewStarList.size()>0) {
-					reporter.reportLogPass("Product review stars are displaying correctly");
-				}
-				else {
-					reporter.reportLogFail("Product review stars are not displaying correctly");
-				}
-				
-				lsText=this.getElementInnerText(item.findElement(this.byProductReviewRatingCount));
-				if(!lsText.isEmpty()) {
-					reporter.reportLogPass("Product review count info is displaying correctly");
-				}
-				else {
-					reporter.reportLogFail("Product review count info is not displaying correctly");
-				}
-			}
-
-			/*
-			//Bug 19538: [QA Defect - P3] PRP: missing Free Shipping label
-			if(this.checkProductItemFreeShippingExisting(item)) {
-				element=item.findElement(byProductFreeShipping);
-				lsText=this.getElementInnerText(element);
-				if(!lsText.isEmpty()) {
-					reporter.reportLogPass("Product free shipping is not empty");
-				}
-				else {
-					reporter.reportLogFail("Product free shipping is empty");
-				}
-			}*/
-			
 			element=item.findElement(byProductGoToDetails);
 			this.getReusableActionsInstance().staticWait(1000);
 			if(this.getReusableActionsInstance().isElementVisible(element)) {

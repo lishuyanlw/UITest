@@ -54,7 +54,7 @@ public class SR_TC10_Verify_ProductSearchResult_GlobalHeaderAndFooterAfterSortAn
 		if(productList.size()>0) {
 			List<WebElement> lstFirstproduct=new ArrayList<WebElement>();
 			lstFirstproduct.add(productList.get(0));
-			getProductResultsPageThreadLocal().verifySearchResultContent(lstFirstproduct);
+			getProductResultsPageThreadLocal().verifySearchResultContent(lstFirstproduct,true);
 		}	
 		
 		reporter.softAssert(getProductResultsPageThreadLocal().verifyProductPagination(), "Product pagination is existing", "Product pagination is not existing");
@@ -106,7 +106,7 @@ public class SR_TC10_Verify_ProductSearchResult_GlobalHeaderAndFooterAfterSortAn
 		if(productList.size()>0) {
 			List<WebElement> lstFirstproduct=new ArrayList<WebElement>();
 			lstFirstproduct.add(productList.get(0));
-			getProductResultsPageThreadLocal().verifySearchResultContent(lstFirstproduct);
+			getProductResultsPageThreadLocal().verifySearchResultContent(lstFirstproduct,true);
 		}	
 		
 		reporter.softAssert(getProductResultsPageThreadLocal().verifyProductPagination(), "Product pagination is existing", "Product pagination is not existing");		

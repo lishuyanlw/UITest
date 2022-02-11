@@ -47,8 +47,8 @@ public class SR_TC02_Verify_ProductSearchResult_DropDownMenu extends BaseTest{
 		
 		productList=getProductResultsPageThreadLocal().getProductList();
 		if(productList.size()>0) {
-			getProductResultsPageThreadLocal().verifySearchResultContent(productList);
-			getProductResultsPageThreadLocal().verifySearchResultContentWithMouseHover(productList);
+			getProductResultsPageThreadLocal().verifySearchResultContent(productList,true);
+//			getProductResultsPageThreadLocal().verifySearchResultContentWithMouseHover(productList);
 		}
 		
 		}	

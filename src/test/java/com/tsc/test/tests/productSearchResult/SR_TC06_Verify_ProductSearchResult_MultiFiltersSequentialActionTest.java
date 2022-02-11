@@ -65,8 +65,8 @@ public class SR_TC06_Verify_ProductSearchResult_MultiFiltersSequentialActionTest
 
 		productList=getProductResultsPageThreadLocal().getProductList();
 		if(productList.size()>0) {
-			getProductResultsPageThreadLocal().verifySearchResultContent(productList);
-			getProductResultsPageThreadLocal().verifySearchResultContentWithMouseHover(productList);
+			getProductResultsPageThreadLocal().verifySearchResultContent(productList,true);
+//			getProductResultsPageThreadLocal().verifySearchResultContentWithMouseHover(productList);
 		}
 	}
 

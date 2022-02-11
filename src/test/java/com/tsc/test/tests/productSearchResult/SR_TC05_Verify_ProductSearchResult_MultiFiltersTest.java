@@ -79,8 +79,8 @@ public class SR_TC05_Verify_ProductSearchResult_MultiFiltersTest extends BaseTes
 
 	productList=getProductResultsPageThreadLocal().getProductList();
 	if(productList.size()>0) {
-		getProductResultsPageThreadLocal().verifySearchResultContent(productList);
-		getProductResultsPageThreadLocal().verifySearchResultContentWithMouseHover(productList);
+		getProductResultsPageThreadLocal().verifySearchResultContent(productList,true);
+//		getProductResultsPageThreadLocal().verifySearchResultContentWithMouseHover(productList);
 	}
 	
 //	//To uncheck the first filter in selected filter options

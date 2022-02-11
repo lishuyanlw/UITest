@@ -92,8 +92,8 @@ searchResultPage:
   lst_SearchOption:
     - filterType: Product
       filterOption: 
-      - ["Category","Jeans"]
-      - ["Shop by colour","Black"]
+      - ["Shop by brand","Joan Rivers"]
+      - ["Shop by colour","Pink"]
     - filterType: Price
       filterOption:
         - ["Price","Under $100","Under"]
