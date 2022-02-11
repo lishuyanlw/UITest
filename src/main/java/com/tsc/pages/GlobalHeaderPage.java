@@ -248,6 +248,9 @@ public class GlobalHeaderPage extends BasePage{
 
 	@FindBy(xpath = "//*[contains(@class,'mega-categories mega-column')]//a[(contains(.,'Shop all'))]")
 	public WebElement lblShopAllEachSubMenu;
+
+	@FindBy(xpath = "//*[contains(@class,'mega-sub-items mega-column')]//a[contains(@class,'all')]")
+	public WebElement lblShopAllSubMenuItems;
 	
 	//Curated collection
 	@FindBy(xpath = "//a[contains(@class,'mega-curated__item-link')]")
@@ -800,17 +803,18 @@ public class GlobalHeaderPage extends BasePage{
 	 * @author Shruti Desai
 	 */
 	public void verifysubMenuhref(List<WebElement> webElements) {
-		if(isParentElementHasAttribute(webElements,"li")) {
-			for (WebElement element : this.subMenuLinks) {
-				if (!verifyElementProperty(element, "Link")) {//href is not present
-					getReporter().softAssert(false,"","Link is not present for: "+element.getText());
-				}else{
-					getReporter().reportLog("Href present for left side menu item: "+element.getText());
-				}
+		//if(isParentElementHasAttribute(webElements,"li")) {
+		reporter.reportLog("Total Items present in sub menu are: "+this.subMenuLinks.size());
+		for (WebElement element : this.subMenuLinks) {
+			if (!verifyElementProperty(element, "Link")) {//href is not present
+				getReporter().softAssert(false,"","Link is not present for: "+element.getText());
+			}else{
+				getReporter().reportLogPass("Href present for left side menu item: "+element.getText());
 			}
-		}else{
-			getReporter().reportLog("No sub-menu item present");
 		}
+		//}else{
+		//	getReporter().reportLog("No sub-menu item present");
+		//}
 	}
 
 	public Boolean isParentElementHasAttribute(List<WebElement> parent, String attribute) {
@@ -868,7 +872,7 @@ public class GlobalHeaderPage extends BasePage{
 					if(!verifyElementProperty(webElement,"Link")) {//href is not present
 						getReporter().softAssert(false,"","Href missing for Curated Collection item: "+webElement.getText());
 					}else{
-						getReporter().reportLog("Href present for Curated Collection item: "+webElement.getText());
+						getReporter().reportLogPass("Href present for Curated Collection item: "+webElement.getText());
 					}
 				}
 			break;
@@ -884,22 +888,26 @@ public class GlobalHeaderPage extends BasePage{
 					if(!verifyElementProperty(altAttribute,"Image")) {//img not present
 						getReporter().softAssert(false,"","Image missing for Popular Brand item: "+altAttribute.getText());
 					}else{
-						getReporter().reportLog("Image present for Popular Brand item: "+altAttribute.getAttribute("alt"));
+						getReporter().reportLogPass("Image present for Popular Brand item: "+altAttribute.getAttribute("alt"));
 					}
 				}
 			break;
 			case "Left Section":
 				//Verifying ShopAll section in left menu
+				String shopAllSubMenuItemName = null;
 				if (!verifyElementProperty(this.lblShopAllEachSubMenu, "Link")) {//href is not present
-					getReporter().softAssert(false,"","Link is not present for: "+this.lblShopAllEachSubMenu.getText());
+					getReporter().softAssert(false,"","Shop All Link is not present for: "+this.lblShopAllEachSubMenu.getText());
 				}else{
-					getReporter().reportLog("Href present for left side menu item: "+this.lblShopAllEachSubMenu.getText());
+					getReporter().reportLogPass("Shop All Href present for left side menu item: "+this.lblShopAllEachSubMenu.getText());
 				}
 
 				for (WebElement category:CategoriesLinks) {
 					getReusableActionsInstance().javascriptScrollByVisibleElement(category);
 					this.scrollSubMenuItems(category);
 					reporter.reportLog("Verifying Left Section for: "+category.getText());
+					String finalShopAllSubMenuItemName = shopAllSubMenuItemName;
+					waitForCondition(Driver->{return (!category.getText().equalsIgnoreCase(finalShopAllSubMenuItemName));},5000);
+					shopAllSubMenuItemName = category.getText();
 					this.verifysubMenuhref(subMenuSection);
 				}
 			break;
@@ -920,6 +928,8 @@ public class GlobalHeaderPage extends BasePage{
 			return true;
 		return false;
 	}
+
+	public void verifyWatchTSCAtPageBottom(){}
 
 }
 

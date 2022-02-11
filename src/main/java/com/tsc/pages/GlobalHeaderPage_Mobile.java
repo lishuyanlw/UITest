@@ -88,6 +88,12 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
     @FindBy(xpath="//div[contains(@class,'__heading')]/button")
     public WebElement btnMobileMenuCloseButton;
 
+    @FindBy(xpath="//section//nav[contains(@class,'__watch-tsc')]/ul/li[contains(@class,'showstopper')]/a")
+    public WebElement lblTodayShowstopper;
+
+    @FindBy(xpath="//section//nav[contains(@class,'__watch-tsc')]/ul//div[contains(@class,'watch-lhs')]//button")
+    public WebElement lblWatchTSCSection;
+
     /**
      * This method is to close mobile menu
      *
@@ -310,7 +316,7 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
                     if (!verifyElementProperty(webElement, "Link")) {//href is not present
                         getReporter().softAssert(false, "", "Href missing for Curated Collection item: " + webElement.getText());
                     } else {
-                        getReporter().reportLog("Href present for Curated Collection item: " + webElement.getText());
+                        getReporter().reportLogPass("Href present for Curated Collection item: " + webElement.getText());
                     }
                 }
                 break;
@@ -325,7 +331,7 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
                     if (!verifyElementProperty(webElement, "Link")) {//href not present
                         getReporter().softAssert(false, "", "Href missing for Popular Brand item: " + webElement.getText());
                     } else {
-                        getReporter().reportLog("Href present for Popular Brand item: " + webElement.getText());
+                        getReporter().reportLogPass("Href present for Popular Brand item: " + webElement.getText());
                     }
                 }
                 this.menuBackButton.click();
@@ -347,18 +353,18 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
 
     @Override
     public void verifysubMenuhref(List<WebElement> webElements) {
-        if (isParentElementHasAttribute(webElements, "li")) {
+        //if (isParentElementHasAttribute(webElements, "li")) {
             for (WebElement element : this.subMenuLinksMobile) {
                 getReusableActionsInstance().scrollToElement(element);
                 if (!verifyElementProperty(element, "Link")) {//href is not present
                     getReporter().softAssert(false, "", "Link is not present for: " + element.getText());
                 } else {
-                    getReporter().reportLog("Href present for left side menu item: " + element.getText());
+                    getReporter().reportLogPass("Href present for left side menu item: " + element.getText());
                 }
             }
-        } else {
-            getReporter().reportLog("No sub-menu item present");
-        }
+        //} else {
+        //    getReporter().reportLog("No sub-menu item present");
+        //}
     }
 
     //this method also verifies header href from GH_TC03
@@ -466,5 +472,45 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
         this.clickWebElementUsingJS(this.lnkTSClogo);
         waitForCondition(Driver->{return !currentUrl.equalsIgnoreCase(getDriver().getCurrentUrl());},10000);
         return this.getDriver().getCurrentUrl().equalsIgnoreCase(lsHomePage);
+    }
+
+    @Override
+    public void verifyWatchTSCAtPageBottom(){
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.menuButton);
+        this.getReusableActionsInstance().clickIfAvailable(this.menuButton);
+        waitForCondition(Driver->{return (this.btnMobileMenuCloseButton.isEnabled());},5000);
+
+        //Scroll to bottom of page
+        this.getReusableActionsInstance().javascriptScrollToBottomOfPage();
+
+        reporter.softAssert(this.lblTodayShowstopper.isDisplayed(),"Today's Showstopper is displayed","Today's ShowStopper is not displayed");
+        reporter.softAssert(this.lblWatchTSCSection.isDisplayed(),"Watch TSC is displayed","Watch TSC is not displayed");
+
+        //Verifying Today's Showstopper
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblTodayShowstopper);
+        this.getReusableActionsInstance().scrollToElement(this.lblTodayShowstopper);
+        String currentURL=this.waitForPageLoadingByUrlChange(this.lblTodayShowstopper);
+        waitForCondition(Driver->{return (new ProductResultsPage(this.getDriver()).getProductList().size()>0);},10000);
+        if(currentURL.contains("showstopper"))
+            reporter.reportLogPass("Page is navigated to Today's Showstopper Page");
+        else
+            reporter.reportLogFailWithScreenshot("Page is not navigated to Today's showstopper and utl is: "+currentURL);
+
+        //Verification of WatchTSC section
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.menuButton);
+        this.getReusableActionsInstance().clickIfAvailable(this.menuButton);
+        waitForCondition(Driver->{return (this.btnMobileMenuCloseButton.isDisplayed() && this.btnMobileMenuCloseButton.isEnabled());},5000);
+
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblWatchTSCSection);
+        this.getReusableActionsInstance().clickIfAvailable(this.lblWatchTSCSection);
+        waitForCondition(Driver->{return (this.subMenuLinksMobile.size()>0);},5000);
+
+        for(WebElement link:subMenuLinksMobile){
+            if(verifyElementProperty(link, "Link"))
+                reporter.reportLogPass("Href is present for WatchTSC item: "+link.getText());
+            else
+                reporter.reportLogFailWithScreenshot("Href is not present for WatchTSC item: "+link.getText());
+        }
+
     }
 }

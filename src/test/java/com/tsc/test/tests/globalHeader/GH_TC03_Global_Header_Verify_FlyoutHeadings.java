@@ -21,7 +21,9 @@ public class GH_TC03_Global_Header_Verify_FlyoutHeadings extends BaseTest {
 		reporter.reportLog("Validating Flyouts all departments & it's URL before clicking it");
 		if(System.getProperty("Device").equalsIgnoreCase("Desktop"))
 			getglobalheaderPageThreadLocal().validateFlyout();
-		else
-			reporter.reportLog("This test is not required for other device as heading is a button and not a link");
+		else if(!(System.getProperty("Device").equalsIgnoreCase("Tablet") &&
+				(System.getProperty("Browser").contains("ios") ||
+						System.getProperty("chromeMobileDevice").contains("iPad"))))
+			getglobalheaderPageThreadLocal().verifyWatchTSCAtPageBottom();
 	}
 }
