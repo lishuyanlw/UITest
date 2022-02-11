@@ -312,7 +312,7 @@ public class GlobalFooterPage extends BasePage {
 	///////////////////////////////////////////////////////////////
 
 	//Still need help
-	@FindBy(xpath = "//div[@id='customer-service']//div[@class='customer-service-faq']//div[@class='customer-service-faq__help']//*[@viewBox]")
+	@FindBy(xpath = "//div[@id='customer-service']//div[@class='customer-service-faq']//div[@class='customer-service-faq__help']//h3/preceding-sibling::*")
 	public WebElement iconStillNeedHelp;
 
 	@FindBy(xpath = "//div[@id='customer-service']//div[@class='customer-service-faq']//div[@class='customer-service-faq__help']//*[@class='customer-service-faq__help__title']")
@@ -945,7 +945,7 @@ public class GlobalFooterPage extends BasePage {
 				break;
 			}
 		}
-
+		this.applyStaticWait(5000);
 		lsCurrentUrl = this.removeLastSlashFromUrl(this.getDriver().getCurrentUrl());
 		lsExpectedUrl = this.removeLastSlashFromUrl(lsExpectedUrl);
 

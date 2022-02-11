@@ -65,22 +65,22 @@ public class GlobalFooterPage_Tablet_IOS extends GlobalFooterPage{
 		String lsMainWindowHandle = this.getDriver().getWindowHandle();
 		getReusableActionsInstance().javascriptScrollByVisibleElement(selectedItem);
 		getReusableActionsInstance().clickIfAvailable(selectedItem);
-
-		this.applyStaticWait(10000);
-
-		Set<String> lstWindowHandle = this.getDriver().getWindowHandles();
-
-		for (String windowHandle : lstWindowHandle) {
-			if(windowHandle!=lsMainWindowHandle){
-				System.out.println("Get into'");
-				this.getDriver().switchTo().window(windowHandle);
-				break;
-			}
-		}
-
+		this.waitForCondition(Driver->{return this.URL().contains("blog");},20000);
+//		getReusableActionsInstance().waitForNumberOfWindowsToBe(2, 90);
+//		Set<String> lstWindowHandle = this.getDriver().getWindowHandles();
+//		System.out.println("Window size: "+lstWindowHandle.size());
+//		for (String windowHandle : lstWindowHandle) {
+//			System.out.println(this.getDriver().getTitle());
+//			this.getDriver().switchTo().window(windowHandle);
+//			System.out.println(this.getDriver().getTitle());
+//			if(this.getDriver().getTitle().toLowerCase().contains("blog")){
+//				System.out.println(this.getDriver().getTitle());
+//				break;
+//			}
+//		}
+//		this.applyStaticWait(5000);
 		lsCurrentUrl = this.removeLastSlashFromUrl(this.getDriver().getCurrentUrl());
 		lsExpectedUrl = this.removeLastSlashFromUrl(lsExpectedUrl);
-		this.getDriver().switchTo().window(lsMainWindowHandle);
 
 		String strQaUrl=System.getProperty("QaUrl");
 		this.getDriver().get(strQaUrl);

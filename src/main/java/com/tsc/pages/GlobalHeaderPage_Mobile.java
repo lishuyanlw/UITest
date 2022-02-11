@@ -452,4 +452,9 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
         getReusableActionsInstance().clickIfAvailable(this.menuButton);
     }
 
+    @Override
+    public void verifyFlyoutMenuItemClickingThenHoverAnotherItemAction(){
+
+    }
+
 }

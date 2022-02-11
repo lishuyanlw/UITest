@@ -46,101 +46,101 @@ public class GF_TC04_Verify_GlobalFooter_TSCCustomerHub_LinksAndPageObjects exte
 		Map<String,String> hashMap = getGlobalFooterPageThreadLocal().getTestDataWithSpecificName(lstNameAndLinks, lsService, true);
 		reporter.reportLog(lsService);
 		WebElement selectedItem=getGlobalFooterPageThreadLocal().getServiceWebElement(lsService,hashMap.get("parent"));
-		lsHref=basePage.getElementHref(selectedItem);
-		//lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsService,true);
-		lsYmlHref=hashMap.get("Link");
-		if(lsYmlHref.isEmpty()) {
-			reporter.reportLogFail("Unable to find '"+lsService+"' link.");
-		}
-		if(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref)){
-			reporter.reportLogPass("The current '"+lsService+"' href of "+lsHref+" is equal to "+lsYmlHref);
-		}
-		else{
-			reporter.reportLogFailWithScreenshot("The current '"+lsService+"' href of "+lsHref+" is not equal to "+lsYmlHref);
-		}
-
-		if(!getGlobalFooterPageThreadLocal().goToService(lsService,getGlobalFooterPageThreadLocal().lblCustomerServiceWhatCanWeHelpYouWith,hashMap.get("parent"))) {
-			reporter.reportLogFail("Unable to navigate to '"+lsService+"' page objects.");
-		}
-		else {
-			reporter.reportLog("verifySearchBoxAndTopCustomerQuestionsInCustomerServicePageObject");
-			getGlobalFooterPageThreadLocal().verifySearchBoxAndTopCustomerQuestionsInCustomerServicePageObject();
-
-			reporter.reportLog("verifyBrowseByHelpTopicsInCustomerServicePageObject");
-			getGlobalFooterPageThreadLocal().verifyBrowseByHelpTopicsInCustomerServicePageObject();
-
-			reporter.reportLog("verifyWindowAfterClickingBrowseByHelpTopicsSubItemInCustomerServicePageObject");
-			getGlobalFooterPageThreadLocal().verifyWindowAfterClickingBrowseByHelpTopicsSubItemInCustomerServicePageObject();
-
-			reporter.reportLog("verifyStillNeedHelpInCustomerServicePageObject");
-			getGlobalFooterPageThreadLocal().verifyStillNeedHelpInCustomerServicePageObject();
-
-			reporter.reportLog("verifyLiveChatPopupWindowInCustomerServicePageObject");
-			getGlobalFooterPageThreadLocal().verifyLiveChatPopupWindowInCustomerServicePageObject(getGlobalFooterPageThreadLocal().btnCustomerLiveChat);
-		}
-		elementList.clear();
-
-		//Track Your Order
-		lsService="Track Your Order";
-		hashMap.clear();
-		hashMap = getGlobalFooterPageThreadLocal().getTestDataWithSpecificName(lstNameAndLinks, lsService, true);
-		reporter.reportLog(lsService);
-		List<String> lstTrackYourOrderObjectSectionTitle=TestDataHandler.constantData.getFooterSection().getLst_TrackYourOrderObjectSectionTitle();
-		selectedItem=getGlobalFooterPageThreadLocal().getServiceWebElement(lsService,hashMap.get("parent"));
-		lsHref=basePage.getElementHref(selectedItem);
-		//lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsService,true);
-		lsYmlHref=hashMap.get("Link");
-		if(lsYmlHref.isEmpty()) {
-			reporter.reportLogFail("Unable to find '"+lsService+"' link.");
-		}
-		if(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref)){
-			reporter.reportLogPass("The current '"+lsService+"' href of "+lsHref+" is equal to "+lsYmlHref);
-		}
-		else{
-			reporter.reportLogFailWithScreenshot("The current '"+lsService+"' href of "+lsHref+" is not equal to "+lsYmlHref);
-		}
-
-		if(!getGlobalFooterPageThreadLocal().goToService(lsService,getGlobalFooterPageThreadLocal().lblTrackYourOrder,hashMap.get("parent"))) {
-			reporter.reportLogFail("Unable to navigate to '"+lsService+"' page objects.");
-		}
-		else {
-			List<WebElement> mandotoryFieldList=new ArrayList<WebElement>();
-			mandotoryFieldList.add(getGlobalFooterPageThreadLocal().cntOrderNumber);
-			mandotoryFieldList.add(getGlobalFooterPageThreadLocal().cntBillingPostalCode);
-			mandotoryFieldList.add(getGlobalFooterPageThreadLocal().btnTrackYourOrderSubmit);
-			getGlobalFooterPageThreadLocal().verifyServiceObjectSectionTitle(mandotoryFieldList, lstTrackYourOrderObjectSectionTitle, false);
-
-			getGlobalFooterPageThreadLocal().displayAlertMessageForOrderNumberAndSignInInput();
-
-			//Add The alert message into the list
-			elementList.add(getGlobalFooterPageThreadLocal().lblOrderNumberAlertMsg);
-			elementList.add(getGlobalFooterPageThreadLocal().lblBillingPostalCodeAlertMsg);
-			elementList.add(getGlobalFooterPageThreadLocal().lblEmailAddressAlertMsg);
-			elementList.add(getGlobalFooterPageThreadLocal().lblPasswordAlertMsg);
-
-			//Add elements in order section
-			elementList.add(getGlobalFooterPageThreadLocal().lblTrackYourOrder);
-			elementList.add(getGlobalFooterPageThreadLocal().lblRequiredFieldsInfo);
-			elementList.add(getGlobalFooterPageThreadLocal().lblOrderNumberTitle);
-			elementList.add(getGlobalFooterPageThreadLocal().lblOrderNumberLable);
-			elementList.add(getGlobalFooterPageThreadLocal().inputOrderNumber);
-			elementList.add(getGlobalFooterPageThreadLocal().lblBillingPostalCodeLabel);
-			elementList.add(getGlobalFooterPageThreadLocal().inputBillingPostalCode);
-			elementList.add(getGlobalFooterPageThreadLocal().btnTrackYourOrderSubmit);
-
-			//Add elements in sign in section
-			elementList.add(getGlobalFooterPageThreadLocal().lblTrackYourOrderSignUpTitle);
-			elementList.add(getGlobalFooterPageThreadLocal().lblGetAllDetailsInfo);
-			elementList.add(getGlobalFooterPageThreadLocal().lblEmailAddressLable);
-			elementList.add(getGlobalFooterPageThreadLocal().inputEmailAddress);
-			elementList.add(getGlobalFooterPageThreadLocal().lblPasswordLabel);
-			elementList.add(getGlobalFooterPageThreadLocal().inputPassword);
-			elementList.add(getGlobalFooterPageThreadLocal().btnShowOrHidePassword);
-			elementList.add(getGlobalFooterPageThreadLocal().btnTrackYourOderSignIn);
-
-			getGlobalFooterPageThreadLocal().verifyElementListExistence(elementList);
-		}
-		elementList.clear();
+//		lsHref=basePage.getElementHref(selectedItem);
+//		//lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsService,true);
+//		lsYmlHref=hashMap.get("Link");
+//		if(lsYmlHref.isEmpty()) {
+//			reporter.reportLogFail("Unable to find '"+lsService+"' link.");
+//		}
+//		if(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref)){
+//			reporter.reportLogPass("The current '"+lsService+"' href of "+lsHref+" is equal to "+lsYmlHref);
+//		}
+//		else{
+//			reporter.reportLogFailWithScreenshot("The current '"+lsService+"' href of "+lsHref+" is not equal to "+lsYmlHref);
+//		}
+//
+//		if(!getGlobalFooterPageThreadLocal().goToService(lsService,getGlobalFooterPageThreadLocal().lblCustomerServiceWhatCanWeHelpYouWith,hashMap.get("parent"))) {
+//			reporter.reportLogFail("Unable to navigate to '"+lsService+"' page objects.");
+//		}
+//		else {
+//			reporter.reportLog("verifySearchBoxAndTopCustomerQuestionsInCustomerServicePageObject");
+//			getGlobalFooterPageThreadLocal().verifySearchBoxAndTopCustomerQuestionsInCustomerServicePageObject();
+//
+//			reporter.reportLog("verifyBrowseByHelpTopicsInCustomerServicePageObject");
+//			getGlobalFooterPageThreadLocal().verifyBrowseByHelpTopicsInCustomerServicePageObject();
+//
+//			reporter.reportLog("verifyWindowAfterClickingBrowseByHelpTopicsSubItemInCustomerServicePageObject");
+//			getGlobalFooterPageThreadLocal().verifyWindowAfterClickingBrowseByHelpTopicsSubItemInCustomerServicePageObject();
+//
+//			reporter.reportLog("verifyStillNeedHelpInCustomerServicePageObject");
+//			getGlobalFooterPageThreadLocal().verifyStillNeedHelpInCustomerServicePageObject();
+//
+//			reporter.reportLog("verifyLiveChatPopupWindowInCustomerServicePageObject");
+//			getGlobalFooterPageThreadLocal().verifyLiveChatPopupWindowInCustomerServicePageObject(getGlobalFooterPageThreadLocal().btnCustomerLiveChat);
+//		}
+//		elementList.clear();
+//
+//		//Track Your Order
+//		lsService="Track Your Order";
+//		hashMap.clear();
+//		hashMap = getGlobalFooterPageThreadLocal().getTestDataWithSpecificName(lstNameAndLinks, lsService, true);
+//		reporter.reportLog(lsService);
+//		List<String> lstTrackYourOrderObjectSectionTitle=TestDataHandler.constantData.getFooterSection().getLst_TrackYourOrderObjectSectionTitle();
+//		selectedItem=getGlobalFooterPageThreadLocal().getServiceWebElement(lsService,hashMap.get("parent"));
+//		lsHref=basePage.getElementHref(selectedItem);
+//		//lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsService,true);
+//		lsYmlHref=hashMap.get("Link");
+//		if(lsYmlHref.isEmpty()) {
+//			reporter.reportLogFail("Unable to find '"+lsService+"' link.");
+//		}
+//		if(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref)){
+//			reporter.reportLogPass("The current '"+lsService+"' href of "+lsHref+" is equal to "+lsYmlHref);
+//		}
+//		else{
+//			reporter.reportLogFailWithScreenshot("The current '"+lsService+"' href of "+lsHref+" is not equal to "+lsYmlHref);
+//		}
+//
+//		if(!getGlobalFooterPageThreadLocal().goToService(lsService,getGlobalFooterPageThreadLocal().lblTrackYourOrder,hashMap.get("parent"))) {
+//			reporter.reportLogFail("Unable to navigate to '"+lsService+"' page objects.");
+//		}
+//		else {
+//			List<WebElement> mandotoryFieldList=new ArrayList<WebElement>();
+//			mandotoryFieldList.add(getGlobalFooterPageThreadLocal().cntOrderNumber);
+//			mandotoryFieldList.add(getGlobalFooterPageThreadLocal().cntBillingPostalCode);
+//			mandotoryFieldList.add(getGlobalFooterPageThreadLocal().btnTrackYourOrderSubmit);
+//			getGlobalFooterPageThreadLocal().verifyServiceObjectSectionTitle(mandotoryFieldList, lstTrackYourOrderObjectSectionTitle, false);
+//
+//			getGlobalFooterPageThreadLocal().displayAlertMessageForOrderNumberAndSignInInput();
+//
+//			//Add The alert message into the list
+//			elementList.add(getGlobalFooterPageThreadLocal().lblOrderNumberAlertMsg);
+//			elementList.add(getGlobalFooterPageThreadLocal().lblBillingPostalCodeAlertMsg);
+//			elementList.add(getGlobalFooterPageThreadLocal().lblEmailAddressAlertMsg);
+//			elementList.add(getGlobalFooterPageThreadLocal().lblPasswordAlertMsg);
+//
+//			//Add elements in order section
+//			elementList.add(getGlobalFooterPageThreadLocal().lblTrackYourOrder);
+//			elementList.add(getGlobalFooterPageThreadLocal().lblRequiredFieldsInfo);
+//			elementList.add(getGlobalFooterPageThreadLocal().lblOrderNumberTitle);
+//			elementList.add(getGlobalFooterPageThreadLocal().lblOrderNumberLable);
+//			elementList.add(getGlobalFooterPageThreadLocal().inputOrderNumber);
+//			elementList.add(getGlobalFooterPageThreadLocal().lblBillingPostalCodeLabel);
+//			elementList.add(getGlobalFooterPageThreadLocal().inputBillingPostalCode);
+//			elementList.add(getGlobalFooterPageThreadLocal().btnTrackYourOrderSubmit);
+//
+//			//Add elements in sign in section
+//			elementList.add(getGlobalFooterPageThreadLocal().lblTrackYourOrderSignUpTitle);
+//			elementList.add(getGlobalFooterPageThreadLocal().lblGetAllDetailsInfo);
+//			elementList.add(getGlobalFooterPageThreadLocal().lblEmailAddressLable);
+//			elementList.add(getGlobalFooterPageThreadLocal().inputEmailAddress);
+//			elementList.add(getGlobalFooterPageThreadLocal().lblPasswordLabel);
+//			elementList.add(getGlobalFooterPageThreadLocal().inputPassword);
+//			elementList.add(getGlobalFooterPageThreadLocal().btnShowOrHidePassword);
+//			elementList.add(getGlobalFooterPageThreadLocal().btnTrackYourOderSignIn);
+//
+//			getGlobalFooterPageThreadLocal().verifyElementListExistence(elementList);
+//		}
+//		elementList.clear();
 
 		//Contact Us
 		lsService="Contact Us";
@@ -165,16 +165,17 @@ public class GF_TC04_Verify_GlobalFooter_TSCCustomerHub_LinksAndPageObjects exte
 			reporter.reportLogFail("Unable to navigate to '"+lsService+"' page objects.");
 		}
 		else {
-			getGlobalFooterPageThreadLocal().verifyLeftAsidePenalAfterClickingBrowseByHelpTopicsSubItemInCustomerServicePageObject();
-			getGlobalFooterPageThreadLocal().verifyContactUsRightPanelContent();
-
-			getGlobalFooterPageThreadLocal().verifyLiveChatPopupWindowInCustomerServicePageObject(getGlobalFooterPageThreadLocal().btnCustomerServiceContactUsLiveChat);
-
-			getGlobalFooterPageThreadLocal().verifyClickingActionForInquiriesOrFeedback("Email");
-
-			getGlobalFooterPageThreadLocal().verifyClickingActionForInquiriesOrFeedback("Billing");
-
-			getGlobalFooterPageThreadLocal().verifyClickingActionForInquiriesOrFeedback("Feedback");
+//			getGlobalFooterPageThreadLocal().verifyLeftAsidePenalAfterClickingBrowseByHelpTopicsSubItemInCustomerServicePageObject();
+//
+//			getGlobalFooterPageThreadLocal().verifyContactUsRightPanelContent();
+//
+//			getGlobalFooterPageThreadLocal().verifyLiveChatPopupWindowInCustomerServicePageObject(getGlobalFooterPageThreadLocal().btnCustomerServiceContactUsLiveChat);
+//
+//			getGlobalFooterPageThreadLocal().verifyClickingActionForInquiriesOrFeedback("Email");
+//
+//			getGlobalFooterPageThreadLocal().verifyClickingActionForInquiriesOrFeedback("Billing");
+//
+//			getGlobalFooterPageThreadLocal().verifyClickingActionForInquiriesOrFeedback("Feedback");
 		}
 
 		//Blog
@@ -190,10 +191,10 @@ public class GF_TC04_Verify_GlobalFooter_TSCCustomerHub_LinksAndPageObjects exte
 			reporter.reportLogFail("Unable to find '"+lsService+"' link.");
 		}
 		if(getGlobalFooterPageThreadLocal().compareUrlInNewWindow(lsService, lsYmlHref,hashMap.get("parent"))){
-			reporter.reportLogPass("The current '"+lsService+"' href of "+lsHref+" is equal to "+lsYmlHref);
+			reporter.reportLogPass("The Blog page is being navigated correctly");
 		}
 		else{
-			reporter.reportLogFailWithScreenshot("The current '"+lsService+"' href of "+lsHref+" is not equal to "+lsYmlHref);
+			reporter.reportLogFailWithScreenshot("The Blog page is not being navigated correctly");
 		}
 
 		//My Account
