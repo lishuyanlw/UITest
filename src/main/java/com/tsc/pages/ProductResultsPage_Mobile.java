@@ -389,6 +389,9 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 	public void expandFilterItem(WebElement filterContainerItem) {		
 		if(checkIfFilterItemIsCollapsed(filterContainerItem)) {
 			clickSeeMoreButton(filterContainerItem);
+			if(!checkIfFilterItemIsCollapsed(filterContainerItem)){
+				collapseFilterItemWithClickingProductTitle(filterContainerItem);
+			}
 			return;
 		}
 				
@@ -399,6 +402,9 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 		this.getReusableActionsInstance().staticWait(1000);
 		
 		clickSeeMoreButton(filterContainerItem);
+		if(!checkIfFilterItemIsCollapsed(filterContainerItem)){
+			collapseFilterItemWithClickingProductTitle(filterContainerItem);
+		}
 	}
 	
 	@Override
@@ -499,9 +505,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 	
 	@Override
 	public WebElement getFilterContainerWithSpecificFirstlevelFilterInLeftPanel(String lsFirstLevelItem) {
-		openFilterPopupWindow();
-		
-		int loopSize=this.productFilterList.size();
+		int loopSize=this.productFilterContainerList.size();
 		for(int i=0;i<loopSize;i++) {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i));
 			String lsHeader=this.productFilterList.get(i).getText().trim();
@@ -1545,6 +1549,56 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 		else {
 			reporter.reportLogFail("The user is not navigated to PDP page");
 		}
+	}
+
+	@Override
+	public void verifyMoreAndLessButton(List<String> lstMoreButton){
+		openFilterPopupWindow();
+		for(String lsHeader:lstMoreButton) {
+			//Get the element container corresponding to the first level filter
+			WebElement element = getFilterContainerWithSpecificFirstlevelFilterInLeftPanel(lsHeader);
+			if (element == null) {
+				System.out.println(lsHeader+" is null");
+				break;
+			}
+
+			if (!checkIfFilterItemIsCollapsed(element)) {
+				collapseFilterItemWithClickingProductTitle(element);
+			}
+			System.out.println(checkFilterItemSeeButtonExisting(element));
+			if (checkFilterItemSeeButtonExisting(element).equalsIgnoreCase("None")) {
+				uncollapseFilterItemWithClickingProductTitle(element);
+				continue;
+			}
+			int elementCountBeforeClickingSeeMoreButton = getFiltersCountInSecondLevel();
+
+			clickSeeMoreButton(element);
+			if (!checkIfFilterItemIsCollapsed(element)) {
+				collapseFilterItemWithClickingProductTitle(element);
+			}
+
+			int elementCountAfterClickingSeeMoreButton = getFiltersCountInSecondLevel();
+
+			if (elementCountAfterClickingSeeMoreButton > elementCountBeforeClickingSeeMoreButton) {
+				reporter.reportLogPass("The subitem count after clicking SeeMore button is more than the count before clicking SeeMore button");
+			} else {
+				reporter.reportLogFail("The subitem count after clicking SeeMore button is no more than the count before clicking SeeMore button");
+			}
+
+			clickSeeLessButton(element);
+			if (!checkIfFilterItemIsCollapsed(element)) {
+				collapseFilterItemWithClickingProductTitle(element);
+			}
+
+			int elementCountAfterClickingSeeLessButton = getFiltersCountInSecondLevel();
+
+			if (elementCountBeforeClickingSeeMoreButton == elementCountAfterClickingSeeLessButton) {
+				reporter.reportLogPass("The subitem count after clicking SeeLess button is equal to the count before clicking SeeMore button");
+			} else {
+				reporter.reportLogPass("The subitem count after clicking SeeLess button is not equal to the count before clicking SeeMore button");
+			}
+		}
+		closeFilterPopupWindow();
 	}
 	
 }

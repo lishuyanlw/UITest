@@ -46,48 +46,14 @@ public class SR_TC07_Verify_ProductSearchResult_MoreOrLessButtonTest extends Bas
 			
 	reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(), "Showing text pattern in filters is correct", "Showing text pattern in filters is incorrect");
 	
-	productList=getProductResultsPageThreadLocal().getProductList();
-	if(productList.size()>0) {
-		getProductResultsPageThreadLocal().verifySearchResultContent(productList,true);
-//		getProductResultsPageThreadLocal().verifySearchResultContentWithMouseHover(productList);
-	}
-	
-	for(String lsHeader:lstMoreButton) {
-		//Get the element container corresponding to the first level filter
-		WebElement element=getProductResultsPageThreadLocal().getFilterContainerWithSpecificFirstlevelFilterInLeftPanel(lsHeader);
-		if(element==null) {
-			break;
-		}
-		getProductResultsPageThreadLocal().collapseFilterItemWithClickingProductTitle(element);
-		if(getProductResultsPageThreadLocal().checkFilterItemSeeButtonExisting(element).equalsIgnoreCase("None")) {
-			getProductResultsPageThreadLocal().uncollapseFilterItemWithClickingProductTitle(element);
-			continue;			
-		}
-		int elementCountBeforeClickingSeeMoreButton=getProductResultsPageThreadLocal().getFiltersCountInSecondLevel();
-				
-		getProductResultsPageThreadLocal().clickSeeMoreButton(element);		
-		int elementCountAfterClickingSeeMoreButton=getProductResultsPageThreadLocal().getFiltersCountInSecondLevel();
-		
-		if(elementCountAfterClickingSeeMoreButton>elementCountBeforeClickingSeeMoreButton) {
-			reporter.reportLogPass("The subitem count after clicking SeeMore button is more than the count before clicking SeeMore button");
-		}
-		else {
-			reporter.reportLogFail("The subitem count after clicking SeeMore button is no more than the count before clicking SeeMore button");
-		}
-		
-		getProductResultsPageThreadLocal().clickSeeLessButton(element);		
-		int elementCountAfterClickingSeeLessButton=getProductResultsPageThreadLocal().getFiltersCountInSecondLevel();
-		
-		if(elementCountBeforeClickingSeeMoreButton==elementCountAfterClickingSeeLessButton) {
-			reporter.reportLogPass("The subitem count after clicking SeeLess button is equal to the count before clicking SeeMore button");
-		}
-		else {
-			reporter.reportLogPass("The subitem count after clicking SeeLess button is not equal to the count before clicking SeeMore button");
-		}
-		
-		getProductResultsPageThreadLocal().uncollapseFilterItemWithClickingProductTitle(element);
-	}
-		
+//	productList=getProductResultsPageThreadLocal().getProductList();
+//	if(productList.size()>0) {
+//		getProductResultsPageThreadLocal().verifySearchResultContent(productList,true);
+////		getProductResultsPageThreadLocal().verifySearchResultContentWithMouseHover(productList);
+//	}
+
+		getProductResultsPageThreadLocal().verifyMoreAndLessButton(lstMoreButton);
+
 	}
 }
 

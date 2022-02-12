@@ -3137,6 +3137,9 @@ public class ProductResultsPage extends BasePage{
 	public void expandFilterItem(WebElement filterContainerItem) {
 		if(checkIfFilterItemIsCollapsed(filterContainerItem)) {
 			clickSeeMoreButton(filterContainerItem);
+			if(!checkIfFilterItemIsCollapsed(filterContainerItem)){
+				collapseFilterItemWithClickingProductTitle(filterContainerItem);
+			}
 			return;
 		}
 
@@ -3146,6 +3149,9 @@ public class ProductResultsPage extends BasePage{
 		this.getReusableActionsInstance().staticWait(1000);
 
 		clickSeeMoreButton(filterContainerItem);
+		if(!checkIfFilterItemIsCollapsed(filterContainerItem)){
+			collapseFilterItemWithClickingProductTitle(filterContainerItem);
+		}
 	}
 
 	/**
@@ -3524,6 +3530,53 @@ public class ProductResultsPage extends BasePage{
 		}
 	}
 
+	public void verifyMoreAndLessButton(List<String> lstMoreButton){
+		for(String lsHeader:lstMoreButton) {
+			//Get the element container corresponding to the first level filter
+			WebElement element = getFilterContainerWithSpecificFirstlevelFilterInLeftPanel(lsHeader);
+			if (element == null) {
+				break;
+			}
+
+			if (!checkIfFilterItemIsCollapsed(element)) {
+				collapseFilterItemWithClickingProductTitle(element);
+			}
+
+			if (checkFilterItemSeeButtonExisting(element).equalsIgnoreCase("None")) {
+				uncollapseFilterItemWithClickingProductTitle(element);
+				continue;
+			}
+			int elementCountBeforeClickingSeeMoreButton = getFiltersCountInSecondLevel();
+
+			clickSeeMoreButton(element);
+			if (!checkIfFilterItemIsCollapsed(element)) {
+				collapseFilterItemWithClickingProductTitle(element);
+			}
+
+			int elementCountAfterClickingSeeMoreButton = getFiltersCountInSecondLevel();
+
+			if (elementCountAfterClickingSeeMoreButton > elementCountBeforeClickingSeeMoreButton) {
+				reporter.reportLogPass("The subitem count after clicking SeeMore button is more than the count before clicking SeeMore button");
+			} else {
+				reporter.reportLogFail("The subitem count after clicking SeeMore button is no more than the count before clicking SeeMore button");
+			}
+
+			clickSeeLessButton(element);
+			if (!checkIfFilterItemIsCollapsed(element)) {
+				collapseFilterItemWithClickingProductTitle(element);
+			}
+
+			int elementCountAfterClickingSeeLessButton = getFiltersCountInSecondLevel();
+
+			if (elementCountBeforeClickingSeeMoreButton == elementCountAfterClickingSeeLessButton) {
+				reporter.reportLogPass("The subitem count after clicking SeeLess button is equal to the count before clicking SeeMore button");
+			} else {
+				reporter.reportLogPass("The subitem count after clicking SeeLess button is not equal to the count before clicking SeeMore button");
+			}
+
+			uncollapseFilterItemWithClickingProductTitle(element);
+		}
+	}
 
 	public class ProductItem{
 		public String productNumber;
