@@ -23,7 +23,7 @@ public class GH_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo extends B
 	@Test(groups={"GlobalHeader","Regression"})
 		public void validateGlobalHeaderBlackMenu_SilverMenu_TSCLogoLinks() throws IOException {		
 		getGlobalFooterPageThreadLocal().closePopupDialog();
-		BasePage basePage=new BasePage(this.getDriver());		
+		BasePage basePage=new BasePage(this.getDriver());
 		String lsBaseUrl=basePage.getBaseURL()+"/";
 		
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl), "TSC url is correct", "TSC url is incorrect");

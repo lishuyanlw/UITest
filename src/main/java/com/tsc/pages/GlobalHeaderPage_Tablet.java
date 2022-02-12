@@ -56,7 +56,6 @@ public class GlobalHeaderPage_Tablet extends GlobalHeaderPage_Mobile{
             for(int parentCounter=0;parentCounter<lstMenuItemList.size();parentCounter++){
                 this.getReusableActionsInstance().javascriptScrollByVisibleElement(lstMenuItemList.get(parentCounter));
                 this.getReusableActionsInstance().scrollToElement(lstMenuItemList.get(parentCounter));
-                this.getReusableActionsInstance().staticWait(2000);
                 String headingName = lstMenuItemList.get(parentCounter).findElement(By.xpath(".//button/span")).getText();
                 reporter.reportLog("Verifying Tablet sub-menu: "+headingName);
                 this.getReusableActionsInstance().clickIfAvailable(lstMenuItemList.get(parentCounter));
