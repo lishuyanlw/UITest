@@ -18,7 +18,8 @@ public class GH_TC08_Verify_Global_Header_Language extends BaseTest {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 		BasePage basePage=new BasePage(this.getDriver());		
 		String lsBaseUrl=basePage.getBaseURL()+"/";
-		
+
+		Map<String,List<String>> headerMap= TestDataHandler.constantData.headerSection.getFlyout().getLst_FlyoutHeadingAndNameMap();
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl), "TSC url is correct", "TSC url is incorrect");
 		reporter.reportLog("Home Page");
 		String partialURLAtEnd = TestDataHandler.constantData.getHeaderSection().getLbl_ParialURLEndWatchTSC();
@@ -34,19 +35,12 @@ public class GH_TC08_Verify_Global_Header_Language extends BaseTest {
 		}
 		getglobalheaderPageThreadLocal().validateFlyout();
 		//Closing mobile sub-menu if running for mobile
-		if(!System.getProperty("Device").equalsIgnoreCase("desktop")){
+		if(System.getProperty("Device").equalsIgnoreCase("Mobile") ||
+				System.getProperty("Device").equalsIgnoreCase("Tablet") &&
+						(System.getProperty("Browser").contains("android") || ((System.getProperty("chromeMobileDevice")!=null && !System.getProperty("chromeMobileDevice").contains("iPad"))))){
 			getglobalheaderPageThreadLocal().closeMobileMenu();
 			getglobalheaderPageThreadLocal().waitForPageLoad();
 		}
-		switchToEnglish();
-	}
-	public void switchToEnglish() {
-		Map<String,List<String>> headerMap= TestDataHandler.constantData.headerSection.getFlyout().getLst_FlyoutHeadingAndNameMap();
-		//switch back to english
-		getGlobalFooterPageThreadLocal().switchlanguage();
-		List<WebElement> flyoutHeadingsElement=getglobalheaderPageThreadLocal().getFlyoutHeadingsWebelement();
-		getglobalheaderPageThreadLocal().scrolltoWebElement(flyoutHeadingsElement.get(1));
-		String englishNameFlyoutHeading=flyoutHeadingsElement.get(1).getText();
-		reporter.softAssert((headerMap.get(englishNameFlyoutHeading).contains(englishNameFlyoutHeading)), "Language is switch back to English.", "Language is not switch back to English.");
+		getglobalheaderPageThreadLocal().switchToEnglish(headerMap);
 	}
 }

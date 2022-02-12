@@ -7,6 +7,7 @@ import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 import org.openqa.selenium.By;
 import com.tsc.pages.base.BasePage;
@@ -685,6 +686,18 @@ public class GlobalHeaderPage extends BasePage{
 	public void scrollSubMenuItems(WebElement webElement) {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(webElement);
 		getReusableActionsInstance().scrollToElement(webElement);
+	}
+
+	public void switchToEnglish(Map<String,List<String>> headerMap) {
+		//switch back to english
+		new GlobalFooterPage(this.getDriver()).switchlanguage();
+		List<WebElement> flyoutHeadingsElement=this.getFlyoutHeadingsWebelement();
+		if(System.getProperty("Device").equalsIgnoreCase("Desktop"))
+			this.scrolltoWebElement(flyoutHeadingsElement.get(1));
+		else
+			this.scrollSubMenuItems(flyoutHeadingsElement.get(1));
+		String englishNameFlyoutHeading=flyoutHeadingsElement.get(1).getText();
+		reporter.softAssert((headerMap.get(englishNameFlyoutHeading).contains(englishNameFlyoutHeading)), "Language is switch back to English.", "Language is not switch back to English.");
 	}
 
 	/*Method to verify Flyout heading

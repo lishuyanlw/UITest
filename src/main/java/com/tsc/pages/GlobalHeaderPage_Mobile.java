@@ -244,7 +244,7 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
                 WebElement headingWebElement = FlyoutHeadingsMobile.findElement(By.xpath(xpathHeading));
                 getReusableActionsInstance().javascriptScrollByVisibleElement(headingWebElement);
                 getReusableActionsInstance().scrollToElement(headingWebElement);
-                headingWebElement.click();
+                getReusableActionsInstance().clickIfAvailable(headingWebElement,2000);
                 int iSize = getDriver().findElements(By.xpath(categoriesMobileStr)).size();
                 for (int i = 2; i <= iSize; i++) {
                     String SubmenuName = getDriver().findElement(By.xpath(categoriesMobileStr + "[" + i + "]//span")).getText();
@@ -256,7 +256,7 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
                     WebElement SubmenuheadingWebElement = getDriver().findElement(By.xpath(Submenuheading));
                     getReusableActionsInstance().javascriptScrollByVisibleElement(SubmenuheadingWebElement);
                     getReusableActionsInstance().scrollToElement(SubmenuheadingWebElement);
-                    this.getReusableActionsInstance().clickIfAvailable(SubmenuheadingWebElement);
+                    getReusableActionsInstance().clickIfAvailable(SubmenuheadingWebElement,2000);
                     reporter.softAssert(CateLinksMobile.getAttribute("href").contains(headingName.split(" ")[0]), headingName + " href is visible", headingName + " in href is not visible");
                     if (section == null) {
                         verifyFlyoutMenuSection(headingName, "Left Section");
@@ -310,7 +310,8 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
         switch (sectionName) {
             case "Curated Collections":
                 reporter.reportLog("Verifying Curated Collections items for : " + headingName);
-                this.getReusableActionsInstance().clickIfAvailable(this.curatedCollectionMobile);
+                this.getReusableActionsInstance().clickIfAvailable(this.curatedCollectionMobile,2000);
+                waitForCondition(driver->{return (this.listCuratedCollectionLinksMobile.size()>0);},5000);
                 for (WebElement webElement : listCuratedCollectionLinksMobile) {
                     getReusableActionsInstance().scrollToElement(webElement);
                     if (!verifyElementProperty(webElement, "Link")) {//href is not present
@@ -324,7 +325,8 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
                 reporter.reportLog("Verifying Popular Brands items for : " + headingName);
                 getReusableActionsInstance().javascriptScrollByVisibleElement(popularBrandsMobile);
                 getReusableActionsInstance().scrollToElement(popularBrandsMobile);
-                this.getReusableActionsInstance().clickIfAvailable(this.popularBrandsMobile);
+                this.getReusableActionsInstance().clickIfAvailable(this.popularBrandsMobile,2000);
+                waitForCondition(driver->{return (this.listPopularBrandsLinksMobile.size()>0);},5000);
                 for (WebElement webElement : listPopularBrandsLinksMobile) {
                     getReusableActionsInstance().scrollToElement(webElement);
                     //WebElement hrefAttribute =webElement.findElement(By.xpath("./ancestor::a"));
@@ -354,14 +356,17 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
     @Override
     public void verifysubMenuhref(List<WebElement> webElements) {
         //if (isParentElementHasAttribute(webElements, "li")) {
-            for (WebElement element : this.subMenuLinksMobile) {
-                getReusableActionsInstance().scrollToElement(element);
-                if (!verifyElementProperty(element, "Link")) {//href is not present
-                    getReporter().softAssert(false, "", "Link is not present for: " + element.getText());
-                } else {
-                    getReporter().reportLogPass("Href present for left side menu item: " + element.getText());
-                }
+        //Static wait is required here as there in no unique element on screen and
+        //page loads after a second. Page Sync issue
+        this.getReusableActionsInstance().staticWait(2000);
+        for (WebElement element : this.subMenuLinksMobile) {
+            getReusableActionsInstance().scrollToElement(element);
+            if (!verifyElementProperty(element, "Link")) {//href is not present
+                getReporter().softAssert(false, "", "Link is not present for: " + element.getText());
+            } else {
+                getReporter().reportLogPass("Href present for left side menu item: " + element.getText());
             }
+        }
         //} else {
         //    getReporter().reportLog("No sub-menu item present");
         //}
@@ -512,6 +517,5 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
             else
                 reporter.reportLogFailWithScreenshot("Href is not present for WatchTSC item: "+link.getText());
         }
-
     }
 }
