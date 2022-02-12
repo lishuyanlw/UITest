@@ -60,7 +60,7 @@ public class GlobalHeaderPage_Tablet extends GlobalHeaderPage_Mobile{
                 reporter.reportLog("Verifying Tablet sub-menu: "+headingName);
                 this.getReusableActionsInstance().clickIfAvailable(lstMenuItemList.get(parentCounter));
                 //Verifying ShopAll Link for subMenu
-                this.verifyElementLink(this.lblShopAllSubMenuLink);
+                this.verifyElementProperty(this.lblShopAllSubMenuLink,"Link");
                 for(int count=0;count<lstsubMenuItemsList.size();count++){
                     this.getReusableActionsInstance().javascriptScrollByVisibleElement(lstsubMenuItemsList.get(count));
                     this.getReusableActionsInstance().scrollToElement(lstsubMenuItemsList.get(count));
@@ -69,7 +69,7 @@ public class GlobalHeaderPage_Tablet extends GlobalHeaderPage_Mobile{
                     this.getReusableActionsInstance().clickIfAvailable(lstsubMenuItemsList.get(count));
                     for(WebElement subMenuItem: lstsubMenuDropDownList){
                         WebElement subMenuItemName = subMenuItem.findElement((By.xpath(".//li/a")));
-                        this.verifyElementLink(subMenuItemName);
+                        this.verifyElementProperty(subMenuItemName,"Link");
                     }
                     //Clicking on Back Button
                     this.getReusableActionsInstance().clickIfAvailable(this.btnBackButton);
@@ -80,7 +80,7 @@ public class GlobalHeaderPage_Tablet extends GlobalHeaderPage_Mobile{
                 //Verifying Popular Brands
                 verifyPopularBrand();
                 //Verifying Shop All Brands link
-                this.verifyElementLink(this.lblShopAllBrands);
+                this.verifyElementProperty(this.lblShopAllBrands,"Link");
             }
         }
     }
@@ -107,7 +107,7 @@ public class GlobalHeaderPage_Tablet extends GlobalHeaderPage_Mobile{
         for(WebElement webElement : this.lstPopularBrandsList){
             this.getReusableActionsInstance().javascriptScrollByVisibleElement(webElement);
             this.getReusableActionsInstance().scrollToElement(webElement);
-            this.verifyElementLink(webElement);
+            this.verifyElementProperty(webElement,"Link");
             //Verifying image of Brand
             WebElement imgElement = webElement.findElement(By.xpath(".//img"));
             boolean imgValue = this.verifyElementProperty(imgElement,"Image");
@@ -117,7 +117,7 @@ public class GlobalHeaderPage_Tablet extends GlobalHeaderPage_Mobile{
                 reporter.reportLogFail("Brand Name: "+imgElement.getAttribute("alt")+" has no image present");
         }
         //Verify See All Link in Popular Brand
-        this.verifyElementLink(this.lblSeeAllPopularBrand);
+        this.verifyElementProperty(this.lblSeeAllPopularBrand,"Link");
         //Closing Popular Brand Section
         this.getReusableActionsInstance().clickIfAvailable(this.btnPopularBrand);
     }

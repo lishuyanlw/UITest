@@ -519,7 +519,7 @@ public class GlobalHeaderPage extends BasePage{
 				//Program Guide url is appending daily in url and is not needed
 				if(lsUrlInSilverHeader.contains("programguide")) {
 					//This page takes time to load irrespective of using waitForCondition and hence using static wait here
-					waitForCondition(driver->{return (this.lstProgramGuidePageItems.size()>0 && this.lblProgramGuideSearchBox.isEnabled());},30000);
+					waitForCondition(driver->{return (this.lstProgramGuidePageItems.size()>0 && this.lblProgramGuideSearchBox.isEnabled());},150000);
 					reporter.softAssert(lsUrlInSilverHeader.replace("/daily", "").equalsIgnoreCase(lsHrefInBlackHeader), "The Url of " + lsUrlInSilverHeader + "  after clicking " + lsTitle + " in Black headers is equal to the href of " + lsHrefInBlackHeader, "The Url of " + lsUrlInSilverHeader + "  after clicking " + lsTitle + " in Black headers is not equal to the href of " + lsHrefInBlackHeader);
 				}else
 					reporter.softAssert(lsUrlInSilverHeader.equalsIgnoreCase(lsHrefInBlackHeader), "The Url of " + lsUrlInSilverHeader + "  after clicking " + lsTitle + " in Black headers is equal to the href of " + lsHrefInBlackHeader, "The Url of " + lsUrlInSilverHeader + "  after clicking " + lsTitle + " in Black headers is not equal to the href of " + lsHrefInBlackHeader);
