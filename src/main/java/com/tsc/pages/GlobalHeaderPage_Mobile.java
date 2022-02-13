@@ -30,7 +30,7 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
     @FindBy(xpath = "//section//nav[@class='mega-nav-mobile__wrapper']//ul")
     public WebElement Categories;
 
-    @FindBy(xpath="//section//nav[contains(@class,'mega-nav-tablet')]//ul")
+    @FindBy(xpath="//section//nav[contains(@class,'mega-nav-tablet__main__lhs__primary-nav-items')]//ul")
     public WebElement Categories_Tablet;
 
     @FindBy(xpath = "//section//div[@class='mega-nav-mobile__scroll']//ul//li//a")
@@ -83,90 +83,54 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
     public String getNameAndclickSubMenuItem(String headingName, String submenuHeading, String itemName) {
         this.menuButton.click();
         getReusableActionsInstance().staticWait(5000);
+
+        //For first level
         String xpathHeading = null;
         if((System.getProperty("Device").toLowerCase().equals("tablet") &&
                 (System.getProperty("Browser").toLowerCase().contains("ios"))) ||
                 (System.getProperty("Browser").toLowerCase().contains("mobile") &&
-                        System.getProperty("chromeMobileDevice").toLowerCase().contains("ipad")))
-            xpathHeading = createXPath(".//li//button//*[contains(@class,'mega-nav-tablet') and contains(.,'{0}')]", headingName);
-            //xpathHeading = createXPath("//*[contains(@class,'mega-nav-tablet')]//span[contains(.,'{0}')]", headingName);
-        else
-            //xpathHeading = createXPath("//li[contains(@class,'mobile__nav-items')]//span[contains(.,'{0}')]", headingName);
-            xpathHeading = createXPath(".//li//button//*[contains(@class,'mega-nav-mobile') and contains(.,'{0}')]", headingName);
-        WebElement headingWebElement = FlyoutHeadingsMobile.findElement(By.xpath(xpathHeading));
-        getReusableActionsInstance().scrollToElement(headingWebElement);
+                        System.getProperty("chromeMobileDevice").toLowerCase().contains("ipad"))){
+            xpathHeading = createXPath("//li[button[span[contains(@class,'mega-nav-tablet') and contains(.,'{0}')]]]", headingName);
+        }
+        else{
+            xpathHeading = createXPath("//li[button[span[contains(@class,'mega-nav-mobile') and contains(.,'{0}')]]]", headingName);
+        }
 
-        if (headingWebElement != null || submenuHeading == null) {
-            headingWebElement.click();
-            getReusableActionsInstance().staticWait(700);
-            //return headingWebElement.getText().trim();
+        WebElement headingWebElement = this.getDriver().findElement(By.xpath(xpathHeading));
+        getReusableActionsInstance().scrollToElement(headingWebElement);
+        headingWebElement.click();
+        getReusableActionsInstance().staticWait(700);
+
+        ////For second level
+        WebElement SubMenu = null;
+        String xpathSubMenu = createXPath("//li[contains(@class,'mega-nav-tablet__main__rhs__categories-item__wrapper') or contains(@class,'mega-nav-mobile__categories-item__wrapper')]//button//span[(contains(@class,'mega-nav-tablet__main__rhs__categories-item__text') or contains(@class,'mega-nav-mobile__categories-item__text')) and contains(.,'{0}')]", submenuHeading);
+        System.out.println("xpathSubMenu: "+xpathSubMenu);
+        SubMenu = this.getDriver().findElement(By.xpath(xpathSubMenu));
+        getReusableActionsInstance().scrollToElement(SubMenu);
+        String Title = SubMenu.getText();
+        SubMenu.click();
+        getReusableActionsInstance().staticWait(700);
+
+        //For third level
+        String title = null;
+        String xpathSubmenuItem;
+        WebElement SubMenuItem=null;
+        if((System.getProperty("Device").toLowerCase().equals("tablet") &&
+                (System.getProperty("Browser").toLowerCase().contains("ios"))) ||
+                (System.getProperty("Browser").toLowerCase().contains("mobile") &&
+                        System.getProperty("chromeMobileDevice").toLowerCase().contains("ipad"))){
+            xpathSubmenuItem = createXPath("//li[contains(@class,'mega-nav-tablet__main__rhs__categories-item__sub-items__item')]/a[contains(.,'{0}')]", itemName);
         }
-        if (submenuHeading != null) {
-            List<WebElement> SubMenu = null;
-            String xpathSubMenu = createXPath(".//li[contains(@class,'categories')]//button//span[contains(@class,'categories-item__text') and contains(.,'{0}')]", submenuHeading);
-            if((System.getProperty("Device").toLowerCase().equals("tablet") &&
-                    (System.getProperty("Browser").toLowerCase().contains("ios"))) ||
-                    (System.getProperty("Browser").toLowerCase().contains("mobile") &&
-                            System.getProperty("chromeMobileDevice").toLowerCase().contains("ipad")))
-                SubMenu = Categories_Tablet.findElements(By.xpath(xpathSubMenu));
-            else
-                SubMenu = Categories.findElements(By.xpath(xpathSubMenu));
-            if (SubMenu.size() > 0) {
-                getReusableActionsInstance().scrollToElement(SubMenu.get(0));
-                String Title = SubMenu.get(0).getText();
-                SubMenu.get(0).click();
-                getReusableActionsInstance().staticWait(700);
-                if (itemName != null) {
-                    String title = null;
-                    String xpathSubmenuItem;
-                    List<WebElement> SubMenuItem;
-                    if((System.getProperty("Device").toLowerCase().equals("tablet") &&
-                            (System.getProperty("Browser").toLowerCase().contains("ios"))) ||
-                            (System.getProperty("Browser").toLowerCase().contains("mobile") &&
-                                    System.getProperty("chromeMobileDevice").toLowerCase().contains("ipad")))
-                        xpathSubmenuItem = createXPath(".//li[contains(@class,'categories-item__sub-item')]/a[contains(.,'{0}')]", itemName);
-                    else
-                        xpathSubmenuItem = createXPath(".//li[contains(@class,'mobile__sub-categories-item__wrapper')]/a[contains(.,'{0}')]", itemName);
-                    SubMenuItem = getDriver().findElements(By.xpath(xpathSubmenuItem));
-                    if (SubMenuItem.size() > 0) {
-                        getReusableActionsInstance().scrollToElement(SubMenuItem.get(0));
-                        title = SubMenuItem.get(0).getText().trim();
-                        SubMenuItem.get(0).click();
-                    } else {
-                        SubMenuItem.clear();
-                        if((System.getProperty("Device").toLowerCase().equals("tablet") &&
-                                (System.getProperty("Browser").toLowerCase().contains("ios"))) ||
-                                (System.getProperty("Browser").toLowerCase().contains("mobile") &&
-                                        System.getProperty("chromeMobileDevice").toLowerCase().contains("ipad")))
-                            xpathSubmenuItem = createXPath(".//li[contains(@class,'categories-item__sub-item')]/a[contains(.,'{0}')]", itemName);
-                        else
-                            xpathSubmenuItem = createXPath(".//li[contains(@class,'mobile__sub-categories-item__wrapper')]/a[contains(.,'{0}')]", itemName);
-                        SubMenuItem = getDriver().findElements(By.xpath(xpathSubmenuItem));
-                        getReusableActionsInstance().scrollToElement(SubMenuItem.get(0));
-                        title = SubMenuItem.get(0).getText().trim();
-                        SubMenuItem.get(0).click();
-                    }
-                    return title;
-                } else {
-                    subHeadinds.get(0).click();
-                    return Title;
-                }
-                //Adding else condition to click on first element by default if passed submenu item is not present in list
-            } else {
-                WebElement element = null;
-                if((System.getProperty("Device").toLowerCase().equals("tablet") &&
-                        (System.getProperty("Browser").toLowerCase().contains("ios"))) ||
-                        (System.getProperty("Browser").toLowerCase().contains("mobile") &&
-                                System.getProperty("chromeMobileDevice").toLowerCase().contains("ipad")))
-                    element = Categories_Tablet.findElement(By.xpath("./a"));
-                else
-                    element = Categories.findElement(By.xpath("./a"));
-                String title = element.getText().trim();
-                element.click();
-                return title;
-            }
+        else{
+            xpathSubmenuItem = createXPath("//li[contains(@class,'mobile__sub-categories-item__wrapper')]/a[contains(.,'{0}')]", itemName);
         }
-        return null;
+
+        SubMenuItem = getDriver().findElement(By.xpath(xpathSubmenuItem));
+        getReusableActionsInstance().scrollToElement(SubMenuItem);
+        title = SubMenuItem.getText().trim();
+        SubMenuItem.click();
+
+        return title;
     }
     
     @Override
