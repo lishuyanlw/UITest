@@ -11,7 +11,7 @@ import com.tsc.test.base.BaseTest;
 public class GH_TC04_Global_Header_Verify_FlyoutSubMenuDisplay extends BaseTest {
 	
 	@Test(groups={"GlobalHeader","Regression"})
-	public void verifyFlyoutHeadingsSubMenuShopAllCategory() {
+	public void GH_TC04_Global_Header_Verify_FlyoutSubMenuDisplay() {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 		String lsBaseUrl=(new BasePage(this.getDriver())).getBaseURL();
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl+"/"), "TSC url is correct", "TSC url is incorrect");

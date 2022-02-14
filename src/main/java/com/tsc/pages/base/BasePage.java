@@ -964,6 +964,12 @@ import utils.ReusableActions;
 		return lsText;
 	}
 
+	/**
+	 * Method to getStaticWait
+	 */
+	public long getStaticWaitForApplication(){
+		return Long.valueOf(System.getProperty("staticWait"));
+	}
 
 
 }

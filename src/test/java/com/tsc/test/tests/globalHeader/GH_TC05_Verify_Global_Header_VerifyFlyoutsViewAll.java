@@ -12,7 +12,7 @@ import com.tsc.test.base.BaseTest;
 public class GH_TC05_Verify_Global_Header_VerifyFlyoutsViewAll extends BaseTest {
 
 	@Test(groups={"GlobalHeader","Regression"})
-	public void verifyFlyoutHeadingsShopAllForPopularBrand() {
+	public void GH_TC05_Verify_Global_Header_VerifyFlyoutsViewAll() {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 		String lsBaseUrl=(new BasePage(this.getDriver())).getBaseURL();
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl+"/"), "TSC url is correct", "TSC url is incorrect");

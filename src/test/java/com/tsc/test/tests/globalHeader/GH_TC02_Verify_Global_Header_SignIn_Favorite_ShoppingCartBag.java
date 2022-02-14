@@ -18,7 +18,7 @@ public class GH_TC02_Verify_Global_Header_SignIn_Favorite_ShoppingCartBag extend
 	 * CER-154
 	 */
 	@Test(groups={"GlobalHeader","Regression"})
-		public void validateGlobalHeader_SignIn_Favorite_ShoppingCartBag() throws IOException {
+		public void GH_TC02_Verify_Global_Header_SignIn_Favorite_ShoppingCartBag() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 		BasePage basePage=new BasePage(this.getDriver());		
 		String lsBaseUrl=basePage.getBaseURL()+"/";

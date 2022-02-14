@@ -802,9 +802,10 @@ public class GlobalHeaderPage extends BasePage{
 	 */
 	public String getHeadingForLandingPage() {
 		this.waitForPageLoad();
-		//waitForCondition(Driver->{return !this.lblPageTitleCategorySection.getText().isEmpty();},60000);
+		waitForCondition(Driver->{return (this.lblPageTitleCategorySection.isDisplayed());},60000);
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblPageTitleCategorySection);
-		this.getReusableActionsInstance().staticWait(1000);
+		//this static wait is necessary because even after applying wait above, page refreshes for mobile
+		//this.getReusableActionsInstance().staticWait(1000);
 		getReusableActionsInstance().scrollToElement(this.lblPageTitleCategorySection);
 		String title = this.getElementInnerText(this.lblPageTitleCategorySection);
 		reporter.reportLog("Title of page is: "+title);
