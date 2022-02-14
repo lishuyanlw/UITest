@@ -263,7 +263,7 @@ public class GlobalHeaderPage extends BasePage{
 	})
 	public WebElement lblPageTitleForMenuItems;
 
-	@FindBy(xpath="//div[contains(@class,'Middle')]//div[@class='PageTitle']//div[contains(@id,'Title')]|//div[contains(@class,'Middle')]//brand/div[contains(@class,'brand')]//*[contains(@class,'titleLink')]")
+	@FindBy(xpath="//div[contains(@class,'Middle')]//div[@class='PageTitle']//div[contains(@id,'Title')]|//div[contains(@class,'Middle')]//brand/div[contains(@class,'brand')]//*[contains(@class,'titleLink')]/b")
 	public WebElement lblPageTitleCategorySection;
 
 	@FindBy(xpath="//div[@class='mega-wrapper']//nav[contains(@class,'mega-categories')]")
