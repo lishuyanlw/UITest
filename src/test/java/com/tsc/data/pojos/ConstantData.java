@@ -81,7 +81,6 @@ public class ConstantData {
         private Map<String, List<String>> lst_WatchTSCNameAndLinksMap;
         private Map<String, List<String>> lst_HeaderNameAndLinksMap;
 
-
         public Map<String, List<String>> getLst_HeaderNameAndLinksMap() {
 			return lst_HeaderNameAndLinksMap;
 		}
@@ -463,6 +462,16 @@ public class ConstantData {
         private String lbl_ProductNumberWithBandAndReviewAndSeeMore;
         private List<String> lst_SearchKeyword_Bugs;
         private String lbl_ProductNumberToComparePRPAndPDPContent;
+
+        public List<String> getLst_ClearanceKeyword() {
+            return lst_ClearanceKeyword;
+        }
+
+        public void setLst_ClearanceKeyword(List<String> lst_ClearanceKeyword) {
+            this.lst_ClearanceKeyword = lst_ClearanceKeyword;
+        }
+
+        private List<String> lst_ClearanceKeyword;
 
 
 		public List<String> getLst_SearchKeyword_Bugs() { return lst_SearchKeyword_Bugs; }

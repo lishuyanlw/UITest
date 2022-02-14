@@ -23,11 +23,12 @@ public class SR_TC09_Verify_ProductSearchResult_SpecialOffersAndRecomendationSec
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 		//String lsSearchResultPageDefaultSetting = TestDataHandler.constantData.getSearchResultPage().getLbl_SearchResultPageDefaultSetting();
 		String lnkProductResult = TestDataHandler.constantData.getSearchResultPage().getLnk_product_result();
+		List<String> lst_ClearanceKeyword = TestDataHandler.constantData.getSearchResultPage().getLst_ClearanceKeyword();
 		//List<String> productRecommendationTitleText = TestDataHandler.constantData.getSearchResultPage().getLbl_ProductRecommendationTitlePage();
 		List<WebElement> productList;
 
 		// Corresponding actions (Clearance>>Beauty)
-		String subMenuItem = getglobalheaderPageThreadLocal().getNameAndclickSubMenuItem("Clearance","Home & Garden","Collectibles");
+		String subMenuItem = getglobalheaderPageThreadLocal().getNameAndclickSubMenuItem(lst_ClearanceKeyword.get(0),lst_ClearanceKeyword.get(1),lst_ClearanceKeyword.get(2));
 		//String subMenuItem = getglobalheaderPageThreadLocal().getNameAndclickSubMenuItem("Clearance","Beauty",null);
 		
 		(new BasePage(this.getDriver())).getReusableActionsInstance().staticWait(5000);
@@ -37,10 +38,13 @@ public class SR_TC09_Verify_ProductSearchResult_SpecialOffersAndRecomendationSec
 
 		// Verifying title of the page after navigation
 		String value = getProductResultsPageThreadLocal().getProductResultPageTitle(getProductResultsPageThreadLocal().lblSearchResultTitle);
-		if(subMenuItem.toLowerCase().contains("shop"))
+		if(subMenuItem.toLowerCase().contains(lst_ClearanceKeyword.get(0).toLowerCase())){
 			reporter.softAssert(subMenuItem.toLowerCase().contains(value.toLowerCase()), "Product Result Title Verified and title is " + value+" instead of "+subMenuItem,"Product Result Title is not as expected and title is " + value+" instead of "+subMenuItem);
-		else
-			reporter.softAssert(value.equalsIgnoreCase(subMenuItem), "Product Result Title Verified and title is " + value+" instead of "+subMenuItem,"Product Result Title is not as expected and title is " + value+" instead of "+subMenuItem);
+		}
+		else{
+			reporter.softAssert(value.equalsIgnoreCase(subMenuItem), "Product Result Title Verified and title is " + value,"Product Result Title is not as expected and title is " + value);
+		}
+
         // Verifying Search Result message and default Page Number Count on Page
 		reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(),"Showing text pattern in filters is correct","Showing text pattern in filters is incorrect");
 
