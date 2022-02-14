@@ -10,6 +10,7 @@ import org.openqa.selenium.support.FindBy;
 
 import java.sql.Driver;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
@@ -517,5 +518,14 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
             else
                 reporter.reportLogFailWithScreenshot("Href is not present for WatchTSC item: "+link.getText());
         }
+    }
+
+    @Override
+    public void switchToEnglish(Map<String,List<String>> headerMap) {
+        boolean language = new GlobalFooterPage(this.getDriver()).switchlanguage();
+        if(language)
+            reporter.reportLogPass("Language is switched as expected back to English");
+        else
+            reporter.reportLogFailWithScreenshot("Language is not switched back to English from French");
     }
 }
