@@ -968,7 +968,7 @@ import utils.ReusableActions;
 	 * Method to getStaticWait
 	 */
 	public long getStaticWaitForApplication(){
-		return Long.valueOf(System.getProperty("staticWait"));
+		return Long.valueOf(System.getProperty("test_staticWait"));
 	}
 
 

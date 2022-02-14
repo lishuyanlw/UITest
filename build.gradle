@@ -26,7 +26,7 @@ repositories {
 dependencies {
     implementation 'org.seleniumhq.selenium:selenium-java:3.141.59'
     implementation 'org.testng:testng:6.14.3'
-    implementation 'automation-utils:common-utils:latest.release'
+    implementation 'automation-utils:common-utils:1.64-SNAPSHOT'
     implementation 'org.yaml:snakeyaml:1.24'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.4'
     implementation (group: 'io.rest-assured', name: 'rest-assured', version: '4.4.0'){
@@ -49,10 +49,9 @@ def getDate() {
 def getTunnelName() {
     /*def tunnelName = "TSCWF-WebAutomation" + System.getenv('BUILD_TIMESTAMP')
     tunnelName = tunnelName.replaceAll(":","")*/
-
     //return "DigitalQETunnel"
-    return "Digital_Mobile_QA"
-    //return "TSCWF_Automation_Tunnel"
+    //return "Digital_Mobile_QA"
+    return "TSCWF_Automation_Tunnel"
     //return "TSCWF_Automation_Tunnel_01"
     //return "DigitalMobileQE"
 }
@@ -90,6 +89,7 @@ task "sauceTest"(type: Test) {
     systemProperty 'TunnelRequired', TunnelRequired
     systemProperty 'chromeMobileDevice', chromeMobileDevice
     systemProperty 'TunnelName', tunnelName
+    systemProperty 'test_staticWaitInMS', test_staticWait
     //systemProperty 'parentTunnelOwner', "DigitalQAWebAutomation"
     //Below system property is needed when we will create tunnel manually and use that to run test in sauce-lab
     //Test will be under DigitalQAWebAutomation owner in sauce-lab
@@ -98,7 +98,8 @@ task "sauceTest"(type: Test) {
     useTestNG(){
         parallel = test_parallel
         threadCount = test_threadCount as int
-        Set listeners = [ "com.tsc.test.listeners.TestListener" , "com.tsc.test.listeners.AnnotationTransformer"]
+        //Set listeners = [ "com.tsc.test.listeners.TestListener" , "com.tsc.test.listeners.AnnotationTransformer"]
+        Set listeners = ["extentreport.ExtentListener"]
         setListeners(listeners)
         if (project.hasProperty('test_groupName')){
             includeGroups test_groupName
@@ -120,13 +121,15 @@ task "localTest"(type: Test) {
     systemProperty 'Device', test_device
     systemProperty 'Language', test_language
     systemProperty 'chromeMobileDevice', chromeMobileDevice
+    systemProperty 'test_staticWaitInMS', test_staticWait
     systemProperties(System.getProperties())
     outputs.upToDateWhen { false }  // Always run tests
 
     useTestNG() {
         parallel = test_parallel
         threadCount = test_threadCount as int
-        Set listeners = [ "com.tsc.test.listeners.TestListener" , "com.tsc.test.listeners.AnnotationTransformer"]
+        //Set listeners = [ "com.tsc.test.listeners.TestListener" , "com.tsc.test.listeners.AnnotationTransformer"]
+        Set listeners = ["extentreport.ExtentListener"]
         setListeners(listeners)
 
         if (project.hasProperty('test_groupName')){
