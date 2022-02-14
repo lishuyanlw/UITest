@@ -1243,13 +1243,16 @@ public class ProductResultsPage extends BasePage{
 		List<Float> priceList=new ArrayList<Float>();
 		List<String> productNameList=new ArrayList<String>();
 		for(WebElement element:this.productResultList) {
-			getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+//			getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+//			String nowPriceText=element.findElement(this.byProductNowPrice).getText().trim();
 
-			String nowPriceText=element.findElement(this.byProductNowPrice).getText().trim();
+			String nowPriceText=this.getElementInnerText(element.findElement(this.byProductNowPrice));
+
 			float nowPriceValue=this.getFloatFromString(nowPriceText,bHighest);
 
 			priceList.add(nowPriceValue);
-			String productName=element.findElement(this.byProductName).getText().trim();
+//			String productName=element.findElement(this.byProductName).getText().trim();
+			String productName=this.getElementInnerText(element.findElement(this.byProductName));
 			productNameList.add(productName);
 		}
 
@@ -1287,7 +1290,7 @@ public class ProductResultsPage extends BasePage{
 		List<Integer> reviewList=new ArrayList<Integer>();
 		List<String> productNameList=new ArrayList<String>();
 		for(WebElement element:this.productResultList) {
-			getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+//			getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 
 			if(this.checkProductItemReviewExisting(element)) {
 				List<WebElement> reviewStarList=element.findElements(this.byProductReviewRatingImage);
@@ -1299,7 +1302,8 @@ public class ProductResultsPage extends BasePage{
 				reviewList.add(0);
 			}
 			
-			String productName=element.findElement(this.byProductName).getText().trim();
+//			String productName=element.findElement(this.byProductName).getText().trim();
+			String productName=this.getElementInnerText(element.findElement(this.byProductName));
 			productNameList.add(productName);
 		}
 
@@ -1331,7 +1335,7 @@ public class ProductResultsPage extends BasePage{
 		List<String> brandList=new ArrayList<String>();
 		List<String> productNameList=new ArrayList<String>();
 		for(WebElement element:this.productResultList) {
-			getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+//			getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 
 			if(this.checkProductItemBrandNameExisting(element)) {
 				item=element.findElement(byProductBrand);
@@ -1342,7 +1346,8 @@ public class ProductResultsPage extends BasePage{
 				brandList.add("Z");
 			}
 
-			String productName=element.findElement(this.byProductName).getText().trim();
+//			String productName=element.findElement(this.byProductName).getText().trim();
+			String productName=this.getElementInnerText(element.findElement(this.byProductName));
 			productNameList.add(productName);
 		}
 
@@ -3036,7 +3041,8 @@ public class ProductResultsPage extends BasePage{
 	 */
 	public boolean checkProductItemBrandNameExisting(WebElement itemContainer) {
 		WebElement item=itemContainer.findElement(this.byProductBrand);
-		String lsText=item.getText().trim();
+//		String lsText=item.getText().trim();
+		String lsText=this.getElementInnerText(item);
 
 		return !lsText.isEmpty();
 	}
