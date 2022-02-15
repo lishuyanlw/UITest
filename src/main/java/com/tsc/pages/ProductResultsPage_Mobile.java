@@ -38,7 +38,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 	public List<WebElement> selectedFiltersList;
 	
 	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='prp-filter-panel__mobile-subpanel']//button[@class='prp-filter-panel__submit-button prp-filter-panel__submit-button--panel']")
-	public WebElement btnViewProductsAferSelectingFilters;
+	public WebElement btnViewProductsAfterSelectingFilters;
 	
 	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='prp-filter-panel__mobile-subpanel']")
 	public WebElement cntSubPanelforSelectedFilters;
@@ -55,6 +55,8 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 	
 	//For size option	
 	public By byProductOptionSizeTitle=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//span[@class='product-card__size-title']");
+
+	public By byProductOptionSizeSelectedSizeContainer=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//span[@class='product-card__size-title']");
 			
 	public By byProductOptionSizeSelectedSize=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//span[@class='product-card__size-title']//strong");
 	
@@ -74,6 +76,8 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 	
 	//For color option
 	public By byProductOptionColorTitle=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//p[@class='product-card__color-and-taste-title']");
+
+	public By byProductOptionColorSelectedColorContainer=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//p[@class='product-card__color-and-taste-title']");
 	
 	public By byProductOptionColorSelectedColor=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//p[@class='product-card__color-and-taste-title']//strong");
 	
@@ -103,14 +107,14 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 //		getReusableActionsInstance().javascriptScrollByVisibleElement(btnFilterPopup);
 //		getReusableActionsInstance().clickIfAvailable(btnFilterPopup);
 		this.clickElement(this.btnFilterPopup);
-//		this.getReusableActionsInstance().waitForElementVisibility(lblFilterPopupHeaderTitle, 20);
-		getReusableActionsInstance().staticWait(5000);
+		this.getReusableActionsInstance().waitForElementVisibility(lblFilterPopupHeaderTitle, 20);
+//		getReusableActionsInstance().staticWait(5000);
 	}
 	
 	public void closeFilterPopupWindow() {
-		this.clickElement(this.btnViewProductsAferSelectingFilters);
-//		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnViewProductsAferSelectingFilters);
-//		getReusableActionsInstance().clickIfAvailable(this.btnViewProductsAferSelectingFilters);	
+		this.clickElement(this.btnViewProductsAfterSelectingFilters);
+//		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnViewProductsAfterSelectingFilters);
+//		getReusableActionsInstance().clickIfAvailable(this.btnViewProductsAfterSelectingFilters);
 		getReusableActionsInstance().staticWait(5000);
 	}
 	
@@ -168,8 +172,8 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 						//getReusableActionsInstance().javascriptScrollByVisibleElement(subItemList.get(0));
 						subItem=subItemList.get(0).findElement(By.xpath(".//label"));
 						getReusableActionsInstance().clickIfAvailable(subItem);
-//						waitForSortingOrFilteringCompleted();
-						getReusableActionsInstance().staticWait(8000);
+						waitForSortingOrFilteringCompleted();
+						//getReusableActionsInstance().staticWait(8000);
 												
 						//Bug 19628: [QA Defect - P3] PRP: no products display if user is on the last page and select a faucet from the left nav
 						if(!this.URL().contains("page=")) {
@@ -205,7 +209,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				else {
 					this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(0));
 				}
-				this.getReusableActionsInstance().staticWait(1000);
+				//this.getReusableActionsInstance().staticWait(1000);
 				subItemList=this.productFilterContainerList.get(i).findElements(this.bySecondaryFilterAll);				
 				for(int j=0;j<subItemList.size();j++) {	
 					subItem=subItemList.get(j);
@@ -252,8 +256,8 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 							subItem.click();
 						}	
 											
-//						this.waitForSortingOrFilteringCompleted();
-						getReusableActionsInstance().staticWait(5000);
+						this.waitForSortingOrFilteringCompleted();
+//						getReusableActionsInstance().staticWait(5000);
 						
 						//Bug 19628: [QA Defect - P3] PRP: no products display if user is on the last page and select a faucet from the left nav
 						//Bug 19556: [QA Defect - P3] PRP: when selecting a subcategory from Shop by category, the dimension in the URL should start over not appending
@@ -585,17 +589,13 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				reporter.reportLogFail("Product image source is not empty");
 			}
 
-			if(!this.getProductOptionTypeWithoutMouseHover(item).equalsIgnoreCase("None")) {
-				List<WebElement> optionList=item.findElements(this.byProductOptionList);
-				lsText=this.getElementInnerText(optionList.get(0));
-				if(!lsText.isEmpty()) {
-					reporter.reportLogPass("Product option is not empty");
-				}
-				else {
-					reporter.reportLogFail("Product option is empty");
-				}
+			if(!this.getProductOptionTypeWithoutMouseHover(item).equalsIgnoreCase("None")){
+				reporter.reportLogPass("Product option is not empty");
 			}
-
+			else{
+				reporter.reportLogFail("Product option is empty");
+			}
+			
 			element=item.findElement(byProductNowPrice);
 			lsText=this.getElementInnerText(element);
 			if(!lsText.isEmpty()) {
@@ -875,16 +875,30 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 	
 	public boolean selectSizeOrColorOption(By BySelectSizeAndColorButton) {
 		List<WebElement> optionList;
-		WebElement element;
+		WebElement element,elementSelectedText;
+		final WebElement tempElementSize,tempElementColor;
 		
 		String lsType=this.judgeProductOptionType();
 		if(lsType.contains("Size")) {	
-			if(checkProductSizeOptionEnabledItemAvailableWithMouseHover()) {				
+			if(checkProductSizeOptionEnabledItemAvailableWithMouseHover()) {
+				elementSelectedText=this.getDriver().findElement(byProductOptionSizeSelectedSizeContainer);
+				tempElementSize=elementSelectedText;
+
 				optionList=this.getDriver().findElements(byProductOptionSizeItemEnabledList);
-				this.clickElement(optionList.get(0));
-				this.getReusableActionsInstance().staticWait(3000);	
+				//this.clickElement(optionList.get(0));
+				element=optionList.get(0);
+				if(element.getTagName().equalsIgnoreCase("button")) {
+					this.getReusableActionsInstance().clickIfAvailable(element,5000);
+					this.waitForCondition(Driver->{return !this.getElementInnerText(tempElementSize).equalsIgnoreCase("Select size:");},10000);
+				}
+				else {
+					Select sizeSelect= new Select(element.findElement(By.xpath("./parent::select")));
+					sizeSelect.selectByIndex(0);
+					this.getReusableActionsInstance().staticWait(3000);
+				}
+
 				element=this.getDriver().findElement(byProductOptionSizeSelectedSize);
-				selectedProductItem.productSelectedSize=this.getElementInnerText(element);		
+				selectedProductItem.productSelectedSize=this.getElementInnerText(element);
 			}
 			else {
 				selectedProductItem.productSelectedSize="";
@@ -892,19 +906,32 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 		}
 		
 		if(lsType.contains("Colour")) {	
-			if(checkProductColorOptionEnabledItemAvailableWithMouseHover()) {	
+			if(checkProductColorOptionEnabledItemAvailableWithMouseHover()) {
+				elementSelectedText=this.getDriver().findElement(byProductOptionColorSelectedColorContainer);
+				tempElementColor=elementSelectedText;
+
 				optionList=this.getDriver().findElements(byProductOptionColorItemEnabledList);
-				this.clickElement(optionList.get(0));
-				this.getReusableActionsInstance().staticWait(3000);	
+				//this.clickElement(optionList.get(0));
+				element=optionList.get(0);
+				if(element.getTagName().equalsIgnoreCase("button")) {
+					this.getReusableActionsInstance().clickIfAvailable(element,5000);
+					this.waitForCondition(Driver->{return !this.getElementInnerText(tempElementColor).equalsIgnoreCase("Select colour:");},10000);
+				}
+				else {
+					Select sizeSelect= new Select(element.findElement(By.xpath("./parent::select")));
+					sizeSelect.selectByIndex(0);
+					this.getReusableActionsInstance().staticWait(3000);
+				}
+
 				element=this.getDriver().findElement(byProductOptionColorSelectedColor);
-				selectedProductItem.productSelectedColor=this.getElementInnerText(element);	
+				selectedProductItem.productSelectedColor=this.getElementInnerText(element);
 			}
 			else {
 				selectedProductItem.productSelectedColor="";
 			}			
 		}
 		
-		this.getReusableActionsInstance().staticWait(2000);
+		//this.getReusableActionsInstance().staticWait(2000);
 		element=this.getDriver().findElement(byProductGoToDetails);
 
 		return this.getElementInnerText(element).trim().equalsIgnoreCase("Go to detail page");
@@ -1086,18 +1113,24 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 	
 	private boolean verifySizeOption(String lsType) {
 		if(checkProductSizeOptionEnabledItemAvailableWithMouseHover()) {
+			WebElement elementSelectedText;
+			final WebElement tempElementSize;
+			elementSelectedText=this.getDriver().findElement(byProductOptionSizeSelectedSizeContainer);
+			tempElementSize=elementSelectedText;
+
 			List<WebElement> optionList=this.getDriver().findElements(byProductOptionSizeItemEnabledList);
 			WebElement element=optionList.get(optionList.size()-1);
 			String lsText=this.getElementInnerText(element).replace("Size", "").trim();
 			if(element.getTagName().equalsIgnoreCase("button")) {								
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 				this.getReusableActionsInstance().clickIfAvailable(element);
+				this.waitForCondition(Driver->{return !this.getElementInnerText(tempElementSize).equalsIgnoreCase("Select size:");},10000);
 			}
 			else {
 				Select sizeSelect= new Select(element.findElement(By.xpath("./parent::select")));
 				sizeSelect.selectByIndex(optionList.size()-1);
+				this.getReusableActionsInstance().staticWait(3000);
 			}			
-			this.getReusableActionsInstance().staticWait(7000);
 
 			element=this.getDriver().findElement(byProductOptionSizeSelectedSize);
 			String lsSelectedTitle=this.getElementInnerText(element).replace("Size", "").trim();
@@ -1118,6 +1151,8 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 		if(checkProductColorOptionEnabledItemAvailableWithMouseHover()) {
 			String lsColor,lsText;
 			WebElement element=null;
+			WebElement elementSelectedText;
+			final WebElement tempElementColor;
 			int selectNumber=0;
 			
 			//Bug 19285: Product image not updating when colour is chosen on smartphone or tablet
@@ -1149,17 +1184,20 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				element=this.getDriver().findElement(byProductOptionColorSelectedColor);
 				lsText=this.getElementInnerText(element);
 			}
-			
+
+			elementSelectedText=this.getDriver().findElement(byProductOptionColorSelectedColorContainer);
+			tempElementColor=elementSelectedText;
 			//Bug 19629: [QA Defect - P3] Product card: if a product doesn't have color swatch, all color options show as plain circles
 			if(element.getTagName().equalsIgnoreCase("button")) {								
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 				this.getReusableActionsInstance().clickIfAvailable(element);
+				this.waitForCondition(Driver->{return !this.getElementInnerText(tempElementColor).equalsIgnoreCase("Select colour:");},10000);
 			}
 			else {
 				Select sizeSelect= new Select(element.findElement(By.xpath("./parent::select")));
 				sizeSelect.selectByIndex(selectNumber);
+				this.getReusableActionsInstance().staticWait(3000);
 			}
-			this.getReusableActionsInstance().staticWait(3000);
 			
 			if(optionList.size()>1) {
 				String lsImageSrcAfterClickingColor=itemContainer.findElement(byProductImage).getAttribute("src");

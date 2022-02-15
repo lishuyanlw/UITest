@@ -91,18 +91,18 @@ public class SR_TC01_VerifyProductSearchResultWithMultiKeywords extends BaseTest
 			if(getProductResultsPageThreadLocal().getBannerImageListSize()>0) {
 				reporter.softAssert(getProductResultsPageThreadLocal().verifyBannerImageContainSpecificWord(lsKeywordList.get(i)), "Banner imgaes contain keyword", "Banner imgaes do not contain keyword");
 			}
-						
+
 			String lsTitle=getProductResultsPageThreadLocal().getProductResultPageTitle();
 			reporter.softAssert(lsTitle.equalsIgnoreCase(lsKeywordList.get(i))||lsTitle.equalsIgnoreCase("NoTitle")||lsTitle.toLowerCase().contains(lsKeywordList.get(i).toLowerCase())||lsKeywordList.get(i).toLowerCase().contains(lsTitle.toLowerCase()), "Search result page title is dispalyed as search keyword", "Search result page title is not dispalyed as search keyword");
 
 			reporter.softAssert(getProductResultsPageThreadLocal().verifyShowingTextPatternInFilters(), "Showing text pattern in filters is correct", "Showing text pattern in filters is incorrect");
-			
+
 			productList=getProductResultsPageThreadLocal().getProductList();
 			if(productList.size()>0) {
 				getProductResultsPageThreadLocal().verifySearchResultContent(productList,false);
 				getProductResultsPageThreadLocal().verifySearchResultContentWithMouseHover(productList,false);
 			}
-			
+
 			reporter.softAssert(getProductResultsPageThreadLocal().verifyProductPagination(), "Product pagination is existing", "Product pagination is not existing");
 			
 			if(this.getDriver().findElements(getProductResultsPageThreadLocal().byProductTitleAndText).size()==1) {

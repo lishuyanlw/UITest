@@ -138,6 +138,8 @@ public class ProductResultsPage extends BasePage{
 	//For size option
 	public By byProductOptionSizeTitle=By.xpath(".//fieldset//span[@class='product-card__size-title']");
 
+	public By byProductOptionSizeSelectedSizeContainer=By.xpath(".//fieldset//span[@class='product-card__size-title']");
+
 	public By byProductOptionSizeSelectedSize=By.xpath(".//fieldset//span[@class='product-card__size-title']//strong");
 
 	public By byProductOptionSizeWrapper=By.xpath(".//fieldset//div[@class='product-card__size-wrapper']");
@@ -154,6 +156,8 @@ public class ProductResultsPage extends BasePage{
 
 	//For color option
 	public By byProductOptionColorTitle=By.xpath(".//fieldset//p[@class='product-card__color-and-taste-title']");
+
+	public By byProductOptionColorSelectedColorContainer=By.xpath(".//fieldset//p[@class='product-card__color-and-taste-title']");
 
 	public By byProductOptionColorSelectedColor=By.xpath(".//fieldset//p[@class='product-card__color-and-taste-title']//strong");
 
@@ -384,11 +388,11 @@ public class ProductResultsPage extends BasePage{
 		this.getReusableActionsInstance().clickIfAvailable(globalHeader.searchBox,3000);
 		for(String inputText:data){
 			globalHeader.searchBox.sendKeys(inputText);
-			this.getReusableActionsInstance().staticWait(1000);
+			this.getReusableActionsInstance().staticWait(500);
 		}
 		//globalHeader.searchBox.sendKeys(searchKeyword);
 		//globalHeader.btnSearchSubmit.click();
-		this.getReusableActionsInstance().staticWait(3000);
+		//this.getReusableActionsInstance().staticWait(3000);
 		waitForCondition(Driver->{
 			return this.searchResultSection.isDisplayed();
 		},90000);
@@ -408,10 +412,10 @@ public class ProductResultsPage extends BasePage{
 		for(String inputText:data){
 			globalHeader.searchBox.sendKeys(inputText);
 			//For thinking time
-			this.getReusableActionsInstance().staticWait(1000);
+			this.getReusableActionsInstance().staticWait(500);
 		}
 
-		this.getReusableActionsInstance().staticWait(3000);
+		//this.getReusableActionsInstance().staticWait(3000);
 		waitForCondition(Driver->{
 			return this.searchResultSection.isDisplayed();
 		},150000);
@@ -456,7 +460,7 @@ public class ProductResultsPage extends BasePage{
 		for(int i=0;i<lsKeyword.length();i++) {
 			globalHeader.searchBox.sendKeys(lsKeyword.substring(i,i+1));
 			//For thinking time
-			getReusableActionsInstance().staticWait(1000);
+			getReusableActionsInstance().staticWait(500);
 		}
 
 		switch(lsOption) {
@@ -492,7 +496,7 @@ public class ProductResultsPage extends BasePage{
 		}
 
 		this.waitForPageToLoad();
-		this.getReusableActionsInstance().staticWait(2000);
+		//this.getReusableActionsInstance().staticWait(2000);
 		this.getReusableActionsInstance().waitForElementVisibility(this.lblSearchResultMessage,120);
 
 		return true;
@@ -796,21 +800,20 @@ public class ProductResultsPage extends BasePage{
 
 		String[] lstText= new String[1];
 		if(getReusableActionsInstance().isElementVisible(this.btnProductTitleAndTextMoreOrLess)) {
-			lstText[0]=this.getElementInnerText(this.btnProductTitleAndTextMoreOrLess);
+//			lstText[0]=this.getElementInnerText(this.btnProductTitleAndTextMoreOrLess);
 			getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnProductTitleAndTextMoreOrLess);
 			getReusableActionsInstance().clickIfAvailable(this.btnProductTitleAndTextMoreOrLess);
-			getReusableActionsInstance().staticWait(2000);
-			this.waitForCondition(Driver->{return !this.getElementInnerText(this.btnProductTitleAndTextMoreOrLess).equalsIgnoreCase(lstText[0]);}, 20000);
+			//getReusableActionsInstance().staticWait(2000);
+			this.waitForCondition(Driver->{return this.btnProductTitleAndTextMoreOrLess.getAttribute("class").isEmpty();}, 20000);
 
 			if(!this.getElementInnerText(this.btnProductTitleAndTextMoreOrLess).contains("Read Less")) {
 				return false;
 			}
 			else {
-				lstText[0]=this.getElementInnerText(this.btnProductTitleAndTextMoreOrLess);
-				getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnProductTitleAndTextMoreOrLess);
-				getReusableActionsInstance().clickIfAvailable(this.btnProductTitleAndTextMoreOrLess);
+				//This wait is for button text changes in DOM, need to be kept.
 				getReusableActionsInstance().staticWait(2000);
-				this.waitForCondition(Driver->{return !this.getElementInnerText(this.btnProductTitleAndTextMoreOrLess).equalsIgnoreCase(lstText[0]);}, 20000);
+				this.clickElement(this.btnProductTitleAndTextMoreOrLess);
+				this.waitForCondition(Driver->{return this.btnProductTitleAndTextMoreOrLess.getAttribute("class").equalsIgnoreCase("more");}, 20000);
 
 				if(!this.getElementInnerText(this.btnProductTitleAndTextMoreOrLess).contains("Read More")) {
 					return false;
@@ -935,17 +938,11 @@ public class ProductResultsPage extends BasePage{
 			}
 
 			if(!bMouseHover){
-				if(!this.getProductOptionTypeWithoutMouseHover(item).equalsIgnoreCase("None")&&!this.getProductOptionTypeWithoutMouseHover(item).equalsIgnoreCase("Other")) {
-					element=item.findElement(byProductOptionListContainer);
-					lsText=this.getElementInnerText(element);
-					this.getReusableActionsInstance().staticWait(1000);
-
-					if(!lsText.isEmpty()) {
-						reporter.reportLogPass("Product option is not empty");
-					}
-					else {
-						reporter.reportLogFail("Product option is empty");
-					}
+				if(!this.getProductOptionTypeWithoutMouseHover(item).equalsIgnoreCase("None")){
+					reporter.reportLogPass("Product option is not empty");
+				}
+				else{
+					reporter.reportLogFail("Product option is empty");
 				}
 			}
 
@@ -1148,7 +1145,7 @@ public class ProductResultsPage extends BasePage{
 			}
 
 			element=item.findElement(byProductGoToDetails);
-			this.getReusableActionsInstance().staticWait(1000);
+			//this.getReusableActionsInstance().staticWait(1000);
 			if(this.getReusableActionsInstance().isElementVisible(element)) {
 				reporter.reportLogPass("Product GoTo Details is visible");
 			}
@@ -1204,12 +1201,15 @@ public class ProductResultsPage extends BasePage{
 	 */
 	//Bug 19734: [UAT Defect]: PRP: Sorting filter is not retained when going past page 1
 	public boolean chooseSortOptionByVisibleText(String lsOption) {
+		String lsUrl=this.URL();
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSortSelect);
 		getReusableActionsInstance().scrollToElement(this.btnSortSelect);
 		Select sortOption= new Select(this.btnSortSelect);
 		sortOption.selectByVisibleText(lsOption);
 
-		this.getReusableActionsInstance().staticWait(8000);
+		this.waitForCondition(Driver->{return !lsUrl.equalsIgnoreCase(this.URL());},8000);
+		//this.getReusableActionsInstance().staticWait(8000);
+
 		if(!this.URL().contains("page=")) {
 			reporter.reportLogPass("The Url does not contain page term.");
 		}
@@ -1465,7 +1465,8 @@ public class ProductResultsPage extends BasePage{
 						getReusableActionsInstance().javascriptScrollByVisibleElement(subItemList.get(0));
 						getReusableActionsInstance().clickIfAvailable(subItemList.get(0));
 						
-						this.getReusableActionsInstance().staticWait(7000);
+						//this.getReusableActionsInstance().staticWait(7000);
+						this.waitForSortingOrFilteringCompleted();
 						
 						//Bug 19628: [QA Defect - P3] PRP: no products display if user is on the last page and select a faucet from the left nav
 						if(!this.URL().contains("page=")) {
@@ -1500,7 +1501,7 @@ public class ProductResultsPage extends BasePage{
 				
 				for(WebElement subItem : subItemList) {
 					getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
-					getReusableActionsInstance().staticWait(2000);
+					//getReusableActionsInstance().staticWait(2000);
 					//if statement to test Bug-19685 - Review filter
 					if(lsSecondLevelItem.toLowerCase().contains("star")){
 						lsSubItem =this.getElementInnerText(subItem.findElement(By.xpath(".//span[@class='prp-filter-panel__filter-list__item-label-text visually-hidden']")));
@@ -1520,13 +1521,14 @@ public class ProductResultsPage extends BasePage{
 						}
 												 
 					}
-					getReusableActionsInstance().staticWait(2000);
+					//getReusableActionsInstance().staticWait(2000);
 					//If found lsSecondLevelItem
 					if(lsSubItem.equalsIgnoreCase(lsSecondLevelItem)) {
-						getReusableActionsInstance().staticWait(2000);
+						//getReusableActionsInstance().staticWait(2000);
 						getReusableActionsInstance().clickIfAvailable(subItem);
 						
-						this.getReusableActionsInstance().staticWait(2000);
+						//this.getReusableActionsInstance().staticWait(2000);
+						this.waitForSortingOrFilteringCompleted();
 						
 						//Bug 19628: [QA Defect - P3] PRP: no products display if user is on the last page and select a faucet from the left nav
 						//Bug 19556: [QA Defect - P3] PRP: when selecting a subcategory from Shop by category, the dimension in the URL should start over not appending
@@ -1565,10 +1567,11 @@ public class ProductResultsPage extends BasePage{
 					this.secondLevelFilter=this.getElementInnerText(subItem);
 					this.firstLevelFilter=this.getElementInnerText(subItem.findElement(By.xpath("./ancestor::div[@class='prp-filter-panel__blocks']//button[@class='prp-filter-panel__block-title']")));
 
-					getReusableActionsInstance().staticWait(3000);
+					//getReusableActionsInstance().staticWait(3000);
 					getReusableActionsInstance().clickIfAvailable(subItem);
 					
-					this.getReusableActionsInstance().staticWait(2000);
+					//this.getReusableActionsInstance().staticWait(2000);
+					this.waitForSortingOrFilteringCompleted();
 					
 					//Bug 19628: [QA Defect - P3] PRP: no products display if user is on the last page and select a faucet from the left nav
 					if(!this.URL().contains("page=")) {
@@ -1630,8 +1633,9 @@ public class ProductResultsPage extends BasePage{
 			if(this.hasElementAttribute(element, "class")) {
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
 				this.getReusableActionsInstance().clickIfAvailable(element);
-				this.waitForPageToLoad();
-				this.getReusableActionsInstance().staticWait(3000);
+				//this.waitForPageToLoad();
+				//this.getReusableActionsInstance().staticWait(3000);
+				this.waitForSortingOrFilteringCompleted();
 				break;
 			}
 		}
@@ -1750,7 +1754,7 @@ public class ProductResultsPage extends BasePage{
 			return true;
 		}
 		
-		this.getReusableActionsInstance().staticWait(2000);
+		//this.getReusableActionsInstance().staticWait(2000);
 		WebElement element=this.selectedFiltersList.get(this.selectedFiltersList.size()-1);
 		getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 		getReusableActionsInstance().clickIfAvailable(element);
@@ -1839,7 +1843,7 @@ public class ProductResultsPage extends BasePage{
 
 		this.getReusableActionsInstance().waitForElementVisibility(this.lblSearchResultMessage,5000);
 		
-		this.getReusableActionsInstance().staticWait(10000);
+		//this.getReusableActionsInstance().staticWait(10000);
 		
 		this.waitForCondition(Driver->{return !lsFirstProductName.equalsIgnoreCase(this.getElementInnerText(this.getProductList().get(0).findElement(byProductName)));}, 120000);
 
@@ -2133,7 +2137,7 @@ public class ProductResultsPage extends BasePage{
 	 */
 	public boolean waitForSortingOrFilteringCompleted() {
 		this.waitForCondition(Driver->{return !checkProductResultLoadingStatusAfterSorting();}, 30000);
-		this.getReusableActionsInstance().staticWait(10000);
+		//this.getReusableActionsInstance().staticWait(10000);
 
 		return true;
 	}
@@ -2175,9 +2179,9 @@ public class ProductResultsPage extends BasePage{
 	public String getProductOptionTypeWithoutMouseHover(WebElement itemContainer) {
 		List<WebElement> optionList=itemContainer.findElements(this.byProductOptionList);
 		WebElement item=optionList.get(0);
-		this.getReusableActionsInstance().staticWait(300);
+		//this.getReusableActionsInstance().staticWait(300);
 		String lsText=this.getElementInnerText(item);
-		this.getReusableActionsInstance().staticWait(300);
+		//this.getReusableActionsInstance().staticWait(300);
 
 		if(lsText.isEmpty()) {
 			return "None";
@@ -2378,13 +2382,27 @@ public class ProductResultsPage extends BasePage{
 	 */
 	public boolean selectSizeOrColorOption(WebElement itemContainer, By BySelectSizeAndColorButton) {
 		List<WebElement> optionList;
-		WebElement element;
+		WebElement element,elementSelectedText;
+		final WebElement tempElementSize,tempElementColor;
 
 		if(this.checkProductOptionTypeExistingWithMouseHover(itemContainer, "size")) {
 			if(checkProductSizeOptionEnabledItemAvailableWithMouseHover(itemContainer)) {
+				elementSelectedText=itemContainer.findElement(byProductOptionSizeSelectedSizeContainer);
+				tempElementSize=elementSelectedText;
+
 				optionList=itemContainer.findElements(byProductOptionSizeItemEnabledList);
-				this.clickElement(optionList.get(optionList.size()-1));
-				this.getReusableActionsInstance().staticWait(3000);
+				element=optionList.get(optionList.size()-1);
+				if(element.getTagName().equalsIgnoreCase("button")) {
+					this.getReusableActionsInstance().clickIfAvailable(element,5000);
+					this.waitForCondition(Driver->{return !this.getElementInnerText(tempElementSize).equalsIgnoreCase("Select size:");},10000);
+				}
+				else {
+					Select sizeSelect= new Select(element.findElement(By.xpath("./parent::select")));
+					sizeSelect.selectByIndex(optionList.size()-1);
+					this.getReusableActionsInstance().staticWait(3000);
+				}
+//				this.clickElement(optionList.get(optionList.size()-1));
+
 				element=itemContainer.findElement(byProductOptionSizeSelectedSize);
 				selectedProductItem.productSelectedSize=this.getElementInnerText(element);
 			}
@@ -2395,9 +2413,22 @@ public class ProductResultsPage extends BasePage{
 
 		if(this.checkProductOptionTypeExistingWithMouseHover(itemContainer, "colour")) {
 			if(checkProductColorOptionEnabledItemAvailableWithMouseHover(itemContainer)) {
+				elementSelectedText=itemContainer.findElement(byProductOptionColorSelectedColorContainer);
+				tempElementColor=elementSelectedText;
+
 				optionList=itemContainer.findElements(byProductOptionColorItemEnabledList);
-				this.clickElement(optionList.get(optionList.size()-1));
-				this.getReusableActionsInstance().staticWait(3000);
+				//this.clickElement(optionList.get(optionList.size()-1));
+				element=optionList.get(optionList.size()-1);
+				if(element.getTagName().equalsIgnoreCase("button")) {
+					this.getReusableActionsInstance().clickIfAvailable(element,5000);
+					this.waitForCondition(Driver->{return !this.getElementInnerText(tempElementColor).equalsIgnoreCase("Select colour:");},10000);
+				}
+				else {
+					Select sizeSelect= new Select(element.findElement(By.xpath("./parent::select")));
+					sizeSelect.selectByIndex(optionList.size()-1);
+					this.getReusableActionsInstance().staticWait(3000);
+				}
+
 				element=itemContainer.findElement(byProductOptionColorSelectedColor);
 				selectedProductItem.productSelectedColor=this.getElementInnerText(element);
 			}
@@ -2598,19 +2629,27 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	private boolean verifySizeOption(WebElement itemContainer,String lsType) {
-		if(checkProductSizeOptionEnabledItemAvailableWithMouseHover(itemContainer)) {			
+		if(checkProductSizeOptionEnabledItemAvailableWithMouseHover(itemContainer)) {
+			WebElement elementSelectedText;
+			final WebElement tempElementSize;
+
+			elementSelectedText=itemContainer.findElement(byProductOptionSizeSelectedSizeContainer);
+			tempElementSize=elementSelectedText;
+
 			List<WebElement> optionList=itemContainer.findElements(byProductOptionSizeItemEnabledList);
 			WebElement element=optionList.get(optionList.size()-1);
 			String lsText=this.getElementInnerText(element).replace("Size", "").trim();
 			if(element.getTagName().equalsIgnoreCase("button")) {								
 				this.clickElement(element);
+				this.waitForCondition(Driver->{return !this.getElementInnerText(tempElementSize).equalsIgnoreCase("Select size:");},10000);
 			}
 			else {
 				Select sizeSelect= new Select(element.findElement(By.xpath("./parent::select")));
 				sizeSelect.selectByIndex(optionList.size()-1);
+				this.getReusableActionsInstance().staticWait(3000);
 			}			
 
-			this.getReusableActionsInstance().staticWait(7000);
+			//this.getReusableActionsInstance().staticWait(7000);
 
 			WebElement selectedSize = itemContainer.findElement(this.sizeSelected);
 			String lsSelectedTitle=this.getElementInnerText(selectedSize).split(":")[1].trim();
@@ -2634,6 +2673,8 @@ public class ProductResultsPage extends BasePage{
 		if(checkProductColorOptionEnabledItemAvailableWithMouseHover(itemContainer)) {	
 			String lsColor,lsText;
 			WebElement element=null;
+			WebElement elementSelectedText;
+			final WebElement tempElementColor;
 			int selectNumber=0;
 			
 			//Bug 19285: Product image not updating when colour is chosen on smartphone or tablet
@@ -2658,7 +2699,7 @@ public class ProductResultsPage extends BasePage{
 			else {
 				element=optionList.get(0);
 			}
-				
+
 			if(element.getTagName().equalsIgnoreCase("button")) {
 				lsText=this.getElementInnerText(element).replace("colours", "").trim();
 			}
@@ -2666,17 +2707,20 @@ public class ProductResultsPage extends BasePage{
 				element=this.getDriver().findElement(byProductOptionColorSelectedColor);
 				lsText=this.getElementInnerText(element);
 			}
-				
+
+			elementSelectedText=itemContainer.findElement(byProductOptionColorSelectedColorContainer);
+			tempElementColor=elementSelectedText;
 			//Bug 19629: [QA Defect - P3] Product card: if a product doesn't have color swatch, all color options show as plain circles
 			if(element.getTagName().equalsIgnoreCase("button")) {								
 				this.getReusableActionsInstance().clickIfAvailable(element,5000);
+				this.waitForCondition(Driver->{return !this.getElementInnerText(tempElementColor).equalsIgnoreCase("Select colour:");},10000);
 			}
 			else {
 				Select sizeSelect= new Select(element.findElement(By.xpath("./parent::select")));
 				sizeSelect.selectByIndex(selectNumber);
+				this.getReusableActionsInstance().staticWait(3000);
 			}	
-			this.getReusableActionsInstance().staticWait(3000);
-			
+
 			if(optionList.size()>1) {
 				String lsImageSrcAfterClickingColor=itemContainer.findElement(byProductImage).getAttribute("src");
 				if(!lsImageSrcBeforeClickingColor.equalsIgnoreCase(lsImageSrcAfterClickingColor)) {
