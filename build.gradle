@@ -49,7 +49,6 @@ def getDate() {
 def getTunnelName() {
     /*def tunnelName = "TSCWF-WebAutomation" + System.getenv('BUILD_TIMESTAMP')
     tunnelName = tunnelName.replaceAll(":","")*/
-
     //return "DigitalQETunnel"
     return "Digital_Mobile_QA"
     //return "TSCWF_Automation_Tunnel"
@@ -90,6 +89,7 @@ task "sauceTest"(type: Test) {
     systemProperty 'TunnelRequired', TunnelRequired
     systemProperty 'chromeMobileDevice', chromeMobileDevice
     systemProperty 'TunnelName', tunnelName
+    systemProperty 'test_staticWait', test_staticWaitInMS
     //systemProperty 'parentTunnelOwner', "DigitalQAWebAutomation"
     //Below system property is needed when we will create tunnel manually and use that to run test in sauce-lab
     //Test will be under DigitalQAWebAutomation owner in sauce-lab
@@ -98,7 +98,8 @@ task "sauceTest"(type: Test) {
     useTestNG(){
         parallel = test_parallel
         threadCount = test_threadCount as int
-        Set listeners = [ "extentreport.ExtentListener"]
+        //Set listeners = [ "com.tsc.test.listeners.TestListener" , "com.tsc.test.listeners.AnnotationTransformer"]
+        Set listeners = ["extentreport.ExtentListener"]
         setListeners(listeners)
         if (project.hasProperty('test_groupName')){
             includeGroups test_groupName
@@ -120,13 +121,15 @@ task "localTest"(type: Test) {
     systemProperty 'Device', test_device
     systemProperty 'Language', test_language
     systemProperty 'chromeMobileDevice', chromeMobileDevice
+    systemProperty 'test_staticWait', test_staticWaitInMS
     systemProperties(System.getProperties())
     outputs.upToDateWhen { false }  // Always run tests
 
     useTestNG() {
         parallel = test_parallel
         threadCount = test_threadCount as int
-        Set listeners = [ "extentreport.ExtentListener"]
+        //Set listeners = [ "com.tsc.test.listeners.TestListener" , "com.tsc.test.listeners.AnnotationTransformer"]
+        Set listeners = ["extentreport.ExtentListener"]
         setListeners(listeners)
 
         if (project.hasProperty('test_groupName')){

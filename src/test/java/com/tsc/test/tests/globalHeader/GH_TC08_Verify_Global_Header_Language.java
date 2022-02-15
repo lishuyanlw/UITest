@@ -13,39 +13,34 @@ public class GH_TC08_Verify_Global_Header_Language extends BaseTest {
 	/*
 	 * CER-557
 	 */
-	@Test(groups={"Home","Regression","GlobalHeader","GlobalHeader_Mobile","GlobalHeader_Tablet"})
-	public void Verify_GlobalHeader_Language() {
+	@Test(groups={"GlobalHeader","Regression"})
+	public void GH_TC08_Verify_Global_Header_Language() {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 		BasePage basePage=new BasePage(this.getDriver());		
 		String lsBaseUrl=basePage.getBaseURL()+"/";
-		
+
+		Map<String,List<String>> headerMap= TestDataHandler.constantData.headerSection.getFlyout().getLst_FlyoutHeadingAndNameMap();
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl), "TSC url is correct", "TSC url is incorrect");
 		reporter.reportLog("Home Page");
+		String partialURLAtEnd = TestDataHandler.constantData.getHeaderSection().getLbl_ParialURLEndWatchTSC();
+
 		getGlobalFooterPageThreadLocal().switchlanguage();
 		GH_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo gh_tc01_verify_global_header_blackMenu_silverMenu_tscLogo = new GH_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo();
+		//Below part will not be executed for Mobile as section is not present for mobile
 		gh_tc01_verify_global_header_blackMenu_silverMenu_tscLogo.validateMajorNameAndLinks();
 		if (System.getProperty("Device").equalsIgnoreCase("Desktop") ||
 				(System.getProperty("Device").equalsIgnoreCase("Tablet") &&
 						(System.getProperty("Browser").contains("ios") || ((System.getProperty("chromeMobileDevice")!=null && System.getProperty("chromeMobileDevice").contains("iPad")))))) {
-			gh_tc01_verify_global_header_blackMenu_silverMenu_tscLogo.validateActionContents();
+			gh_tc01_verify_global_header_blackMenu_silverMenu_tscLogo.validateActionContents(partialURLAtEnd);
 		}
-		GH_TC03_Global_Header_Verify_FlyoutHeadings GH_TC03_Global_Header_Verify_FlyoutHeadings = new GH_TC03_Global_Header_Verify_FlyoutHeadings();
-		GH_TC03_Global_Header_Verify_FlyoutHeadings.validateFlyout();
+		getglobalheaderPageThreadLocal().validateFlyout();
 		//Closing mobile sub-menu if running for mobile
-		if(!System.getProperty("Device").equalsIgnoreCase("desktop")){
+		if(System.getProperty("Device").equalsIgnoreCase("Mobile") ||
+				System.getProperty("Device").equalsIgnoreCase("Tablet") &&
+						(System.getProperty("Browser").contains("android") || ((System.getProperty("chromeMobileDevice")!=null && !System.getProperty("chromeMobileDevice").contains("iPad"))))){
 			getglobalheaderPageThreadLocal().closeMobileMenu();
 			getglobalheaderPageThreadLocal().waitForPageLoad();
 		}
-		switchToEnglish();
-	}
-	public void switchToEnglish() {
-		Map<String,List<String>> headerMap= TestDataHandler.constantData.headerSection.getFlyout().getLst_FlyoutHeadingAndNameMap();
-		//switch back to english
-		getGlobalFooterPageThreadLocal().switchlanguage();
-		List<WebElement> flyoutHeadingsElement=getglobalheaderPageThreadLocal().getFlyoutHeadingsWebelement();
-		getglobalheaderPageThreadLocal().scrolltoWebElement(flyoutHeadingsElement.get(1));
-		getGlobalFooterPageThreadLocal().applyStaticWait(3000);
-		String englishNameFlyoutHeading=flyoutHeadingsElement.get(1).getText();
-		reporter.softAssert((headerMap.get(englishNameFlyoutHeading).contains(englishNameFlyoutHeading)), "Language is switch back to English.", "Language is not switch back to English.");
+		getglobalheaderPageThreadLocal().switchToEnglish(headerMap);
 	}
 }

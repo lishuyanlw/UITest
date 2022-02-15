@@ -239,7 +239,7 @@ import utils.ReusableActions;
 				}
 			}
 		};
-		WebDriverWait wait = new WebDriverWait(getDriver(), 120);
+		WebDriverWait wait = new WebDriverWait(getDriver(), 200);
 		wait.until(javascriptDone);
 	}
 	
@@ -964,6 +964,12 @@ import utils.ReusableActions;
 		return lsText;
 	}
 
+	/**
+	 * Method to getStaticWait
+	 */
+	public long getStaticWaitForApplication(){
+		return Long.valueOf(System.getProperty("test_staticWait"));
+	}
 
 
 }

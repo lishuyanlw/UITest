@@ -80,7 +80,11 @@ public class ConstantData {
         private Flyout flyout;
         private Map<String, List<String>> lst_WatchTSCNameAndLinksMap;
         private Map<String, List<String>> lst_HeaderNameAndLinksMap;
+        private String lbl_ParialURLEndWatchTSC;
 
+        public String getLbl_ParialURLEndWatchTSC() {     return lbl_ParialURLEndWatchTSC;       }
+
+        public void setLbl_ParialURLEndWatchTSC(String lbl_ParialURLEndWatchTSC) {       this.lbl_ParialURLEndWatchTSC = lbl_ParialURLEndWatchTSC;      }
 
         public Map<String, List<String>> getLst_HeaderNameAndLinksMap() {
 			return lst_HeaderNameAndLinksMap;
@@ -463,9 +467,13 @@ public class ConstantData {
         private String lbl_ProductNumberWithBandAndReviewAndSeeMore;
         private List<String> lst_SearchKeyword_Bugs;
         private String lbl_ProductNumberToComparePRPAndPDPContent;
+        private String lbl_prp_partial_url;
 
+        public String getLbl_prp_partial_url() {  return lbl_prp_partial_url;    }
 
-		public List<String> getLst_SearchKeyword_Bugs() { return lst_SearchKeyword_Bugs; }
+        public void setLbl_prp_partial_url(String lbl_prp_partial_url) {  this.lbl_prp_partial_url = lbl_prp_partial_url;      }
+
+        public List<String> getLst_SearchKeyword_Bugs() { return lst_SearchKeyword_Bugs; }
 
         public void setLst_SearchKeyword_Bugs(List<String> lst_SearchKeyword_Bugs) { this.lst_SearchKeyword_Bugs = lst_SearchKeyword_Bugs; }
 

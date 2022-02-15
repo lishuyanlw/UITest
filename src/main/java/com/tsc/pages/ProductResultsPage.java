@@ -64,6 +64,9 @@ public class ProductResultsPage extends BasePage{
 	@FindBy(xpath = "//div[@class='Header']//div[contains(@class,'Breadcrumb')]/div")
 	public WebElement lblBreadcrumbNavigation;
 
+	@FindBy(xpath="//div[@class='Header']//div[contains(@class,'Breadcrumb')]/div//li[@class='breadcrumb__nav-item']//*/span")
+	public WebElement lblBreadcrumbLastProductName;
+
 	@FindBy(xpath = "//div[@class='Middle']")
 	public WebElement cntSearchResultTitleContainer;
 
@@ -384,7 +387,7 @@ public class ProductResultsPage extends BasePage{
 		this.getReusableActionsInstance().clickIfAvailable(globalHeader.searchBox,3000);
 		for(String inputText:data){
 			globalHeader.searchBox.sendKeys(inputText);
-			this.getReusableActionsInstance().staticWait(1000);
+			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 		}
 		//globalHeader.searchBox.sendKeys(searchKeyword);
 		//globalHeader.btnSearchSubmit.click();
@@ -546,10 +549,11 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	public boolean verifyShowingTextPatternInFilters() {
-//		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblShowing);
-//		String showingText=this.lblShowing.getText()+" "+this.txtShowingDynamicContent.getText();
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblShowing);
+		getReusableActionsInstance().scrollToElement(this.lblShowing);
+		String showingText=this.lblShowing.getText()+" "+this.txtShowingDynamicContent.getText();
 
-		String showingText=this.getElementInnerText(this.lblShowing)+" "+this.getElementInnerText(this.txtShowingDynamicContent);
+		//String showingText=this.getElementInnerText(this.lblShowing)+" "+this.getElementInnerText(this.txtShowingDynamicContent);
 
 		return showingText.matches("Displaying items: (\\d+) - (\\d+) out of (\\d+)");
 	}
@@ -3626,6 +3630,132 @@ public class ProductResultsPage extends BasePage{
 		}
 	}
 
+	/**
+	 * This method verifies PRP page after loading url directly in browser
+	 * @param-HashMap<String,String> pageData Loaded page data that will be used
+	 */
+	public void verifyPRPPageAfterLoadingDataUsingAPIParameter(HashMap<String,String> pageData){
+		this.getDriver().get(pageData.get("url"));
+
+		this.waitForPageLoading();
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.cntPagination);
+		this.getReusableActionsInstance().scrollToElement(this.cntPagination);
+		verifyShowingTextPatternInFilters();
+		this.verifySelectedFilterAndItemsOnPage(pageData);
+	}
+
+	/**
+	 * This method verifies PRP page after loading url directly in browser
+	 * @param-HashMap<String,String> pageData Loaded page data that will be used for verification
+	 */
+	public void verifySelectedFilterAndItemsOnPage(HashMap<String,String> pageData){
+		//Verification of selected sort filter on page
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSortSelect);
+		getReusableActionsInstance().scrollToElement(this.btnSortSelect);
+		Select sortOption= new Select(this.btnSortSelect);
+		String selectedFilter = sortOption.getFirstSelectedOption().getText();
+		if(selectedFilter.equalsIgnoreCase(pageData.get("sortKey")))
+			reporter.reportLogPass("Filter selected in dropdown: "+selectedFilter+" is as expected: "+pageData.get("sortKey"));
+		else
+			reporter.reportLogFail("Filter selected in dropdown: "+selectedFilter+" is not as expected: "+pageData.get("sortKey"));
+
+		//Verification of number of items displayed on page
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.cntPagination);
+		this.getReusableActionsInstance().scrollToElement(this.cntPagination);
+		this.getReusableActionsInstance().staticWait(2000);
+		int itemsOnPage;
+		if(pageData.get("page").equalsIgnoreCase("1"))
+			itemsOnPage = Integer.valueOf(this.txtShowingDynamicContent.getText().split(" ")[2]);
+		else
+			itemsOnPage = Integer.valueOf(this.txtShowingDynamicContent.getText().split(" ")[0])-1;
+		if(itemsOnPage > 0 && itemsOnPage<=Integer.valueOf(pageData.get("pageSize")))
+			reporter.reportLogPass("Items displayed on page are: "+itemsOnPage+" and is as expected: "+pageData.get("pageSize"));
+		else
+			reporter.reportLogFail("Items displayed on page are: "+itemsOnPage+" and is not as expected: "+pageData.get("pageSize"));
+
+		//Verification that title is as expected
+		String pageTitleType = this.judgeTestModel();
+		if(pageTitleType.contains("Banner")){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblBreadcrumbLastProductName);
+			this.getReusableActionsInstance().scrollToElement(this.lblBreadcrumbLastProductName);
+			this.getReusableActionsInstance().staticWait(2000);
+			String bannerProductName = this.lblBreadcrumbLastProductName.getText();
+			if(pageData.get("searchTerm").toLowerCase().contains(bannerProductName))
+				reporter.reportLogPass("Search Term on page for Banner Search: "+bannerProductName+" is same as in api call: "+pageData.get("searchTerm"));
+			else
+				reporter.reportLogFail("Search Term on page for Banner Search: "+bannerProductName+" is not same as in api call: "+pageData.get("searchTerm"));
+		}else if(pageTitleType.contains("Normal")){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSearchResultMessage);
+			this.getReusableActionsInstance().scrollToElement(this.lblSearchResultMessage);
+			this.getReusableActionsInstance().staticWait(2000);
+			String titleMessage = this.lblSearchResultMessage.getText().split("\"")[1];
+			if(titleMessage.equalsIgnoreCase(pageData.get("searchTerm")))
+				reporter.reportLogPass("Search Term on page for Normal Search: "+titleMessage+" is same as in api call: "+pageData.get("searchTerm"));
+			else
+				reporter.reportLogFail("Search Term on page for Normal Search: "+titleMessage+" is not same as in api call: "+pageData.get("searchTerm"));
+		}else
+			reporter.reportLogFail("Not a valid search criteria");
+	}
+
+	/**
+	 * @param - String - searchkeyword to search Product
+	 */
+	//BUG-19789 - PRP left nav should display all available facets
+	public void verifyCategoryDetailsOnPRPForProduct(List<Product.DimensionStates> categoryDimensions,String searchKeyword) {
+		List<String> categoryItemsOnPage = new ArrayList<>();
+		if(System.getProperty("Device").equalsIgnoreCase("Desktop")){
+			this.getSearchResultLoad(searchKeyword, true);
+			this.waitForPageLoading();
+		}
+		for (WebElement webElement : productFilterContainerList) {
+			boolean breakFlag = false;
+			String filterTitle = this.getElementInnerText(webElement.findElement(By.xpath(".//button/span")));
+			if (filterTitle.equalsIgnoreCase("Category")) {
+				breakFlag = true;
+				//Enter code here to check if Category is open
+
+				List<WebElement> lstCategoryItems = webElement.findElements(this.bySecondaryFilterAll);
+				for (WebElement categoryItem : lstCategoryItems) {
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(categoryItem);
+					categoryItemsOnPage.add(categoryItem.findElement(By.xpath("./a")).getText());
+					this.getReusableActionsInstance().staticWait(1000);
+				}
+			}
+			//Verification of categories displayed on UI
+			List<Product.Refinements> refinements = null;
+			List<String> refinementListfromAPI = new ArrayList<>();
+			for (Product.DimensionStates dimensionStates : categoryDimensions) {
+				if (dimensionStates.getDimensionType().equalsIgnoreCase("Category")) {
+					refinements = dimensionStates.getRefinements();
+					for (Product.Refinements data : refinements) {
+						refinementListfromAPI.add(data.getDimensionName());
+					}
+					break;
+				}
+			}
+
+			if (refinementListfromAPI.size() > 0) {
+				for (String refinementItem : refinementListfromAPI) {
+					boolean flag = false;
+					String categoryItemNameOnPage = null;
+					for (String categoryItemOnPage : categoryItemsOnPage) {
+						categoryItemNameOnPage = categoryItemOnPage;
+						if (refinementItem.equalsIgnoreCase(categoryItemOnPage)) {
+							flag = true;
+							break;
+						}
+					}
+					if (flag)
+						reporter.reportLogPass("Category displayed on PRP page: " + categoryItemNameOnPage + " is same as in api call: " + refinementItem);
+					else
+						reporter.reportLogFail("Category displayed on PRP page: " + categoryItemNameOnPage + " is not same as in api call: " + refinementItem);
+				}
+				if (breakFlag)
+					break;
+			} else
+				reporter.reportLog("Category items are not checked as refinement is null");
+		}
+	}
 
 	public class ProductItem{
 		public String productNumber;

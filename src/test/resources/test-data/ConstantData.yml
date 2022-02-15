@@ -37,7 +37,7 @@ headerSection:
     Car Gadgets: ["Car Gadgets","Car Gadgets","/pages/todaysshowstopper?ic=HP_TodaysShowstopper","false"],
     Designer Footwear: ["Designer Footwear","Nouveaux arrivages","/pages/productresults?nav=n:128153-2069664&ic=HDR_FlyoutNav_Shoes_And_Handbags_Designer_Footwear","false"],
     On Air Products: ["On Air Products","Sur les ondes","/pages/productresults?ic=HP_OnAir_T&dimensions=2037548&page=1&pageSize=36&rd=false","false"]
-    }
+  }
   flyout:
     lst_FlyoutHeadingAndNameMap: {
       Fashion: ['Fashion','Mode','100047'],
@@ -64,6 +64,7 @@ headerSection:
     lnk_ShopByBrandShopAll: pages/brand?dimensions=
     lbl_LandingPageBrandShopAll: Shop By Brand
     lbl_FlyoutHeadingLandingPageLink: /pages/category?nav=n
+  lbl_ParialURLEndWatchTSC: "&fm=top_header"
    
 homePage:
   lbl_OnAirNow: ON AIR NOW
@@ -78,6 +79,7 @@ homePage:
   lst_ShopByDepartmentCategories: [ FASHION, SHOES & HANDBAGS, JEWELLERY, BEAUTY, HOME & GARDEN, KITCHEN, HEALTH & FITNESS, ELECTRONICS, COINS & HOBBIES, CLEARANCE, SPORTS, MENS ]
   lbl_TopSellers: TOP SELLERS
 searchResultPage:
+  lbl_prp_partial_url: "/pages/productresults?"
   lst_SearchKeyword: [ "dyson vacuum","dfafasdfa","100501","Joan Rivers" ]
   lst_SearchKeyword_Bugs: ["iPads & Tablets","apple  ","https://qa-tsc.tsc.ca/pages/productresults?&searchterm=desk","Brian Bailey Asymmetrical Waterfall Drape Dress"]
   lbl_ProductNumberToComparePRPAndPDPContent: "Brian Bailey 3/4 Sleeve Trumpet Hem Dress"
@@ -119,6 +121,15 @@ searchResultPage:
         - ["Category","Pants & Shorts"]
         - ["Price","Under $100"] 
         - ["Category","Leggings & Jeggings"]
+    - filterType: PRPApiCallMultipleParameter
+      filterOption:
+        - ["page","2"]
+        - ["pageSize","45"]
+        - ["sortKey","NewestProducts","Newest First"]
+        - ["searchTerm","Silver"]
+    - filterType: PRPBugsSearchKeyword
+      filterOption:
+        - ["casper","3000786"]
   lst_MoreButton: ["Shop by brand","Shop by colour"]
   lst_DisappearAfterSelectFilter: ["SHOP BY CATEGORY"]
   lnk_product_result: /pages/productresults?
