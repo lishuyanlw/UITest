@@ -64,6 +64,9 @@ public class ProductResultsPage extends BasePage{
 	@FindBy(xpath = "//div[@class='Header']//div[contains(@class,'Breadcrumb')]/div")
 	public WebElement lblBreadcrumbNavigation;
 
+	@FindBy(xpath="//div[@class='Header']//div[contains(@class,'Breadcrumb')]/div//li[@class='breadcrumb__nav-item']//*/span")
+	public WebElement lblBreadcrumbLastProductName;
+
 	@FindBy(xpath = "//div[@class='Middle']")
 	public WebElement cntSearchResultTitleContainer;
 
@@ -388,7 +391,7 @@ public class ProductResultsPage extends BasePage{
 		this.getReusableActionsInstance().clickIfAvailable(globalHeader.searchBox,3000);
 		for(String inputText:data){
 			globalHeader.searchBox.sendKeys(inputText);
-			this.getReusableActionsInstance().staticWait(500);
+			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 		}
 		//globalHeader.searchBox.sendKeys(searchKeyword);
 		//globalHeader.btnSearchSubmit.click();
@@ -536,10 +539,11 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	public boolean verifyShowingTextPatternInFilters() {
-//		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblShowing);
-//		String showingText=this.lblShowing.getText()+" "+this.txtShowingDynamicContent.getText();
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblShowing);
+		getReusableActionsInstance().scrollToElement(this.lblShowing);
+		String showingText=this.lblShowing.getText()+" "+this.txtShowingDynamicContent.getText();
 
-		String showingText=this.getElementInnerText(this.lblShowing)+" "+this.getElementInnerText(this.txtShowingDynamicContent);
+		//String showingText=this.getElementInnerText(this.lblShowing)+" "+this.getElementInnerText(this.txtShowingDynamicContent);
 
 		return showingText.matches("Displaying items: (\\d+) - (\\d+) out of (\\d+)");
 	}
@@ -592,7 +596,7 @@ public class ProductResultsPage extends BasePage{
 	 */
 	public void verifySearchResultNotExisting() {
 		if(this.checkProductResultExisting()) {
-			reporter.reportLogFail("The product results are existing");
+			reporter.reportLogFailWithScreenshot("The product results are existing");
 		}
 		else {
 			reporter.reportLogPass("The product results are not existing");
@@ -903,14 +907,14 @@ public class ProductResultsPage extends BasePage{
 				reporter.reportLogPass("Product Name is not empty");
 			}
 			else {
-				reporter.reportLogFail("Product Name is empty");
+				reporter.reportLogFailWithScreenshot("Product Name is empty");
 			}
 			//Bug 19537: [QA Defect - P3] PRP: Is Price should be bold
 			if(element.getCssValue("font-weight").equalsIgnoreCase("600")) {
 				reporter.reportLogPass("Product name is semi bold font");
 			}
 			else {
-				reporter.reportLogFail("Product name is not semi bold font");
+				reporter.reportLogFailWithScreenshot("Product name is not semi bold font");
 			}
 
 			element=item.findElement(byProductHeaderLike);
@@ -918,7 +922,7 @@ public class ProductResultsPage extends BasePage{
 				reporter.reportLogPass("Product like icon is visible");
 			}
 			else {
-				reporter.reportLogFail("Product like icon is not visible");
+				reporter.reportLogFailWithScreenshot("Product like icon is not visible");
 			}
 
 			element=item.findElement(byProductHref);
@@ -926,7 +930,7 @@ public class ProductResultsPage extends BasePage{
 				reporter.reportLogPass("Product link is not empty");
 			}
 			else {
-				reporter.reportLogFail("Product link is empty");
+				reporter.reportLogFailWithScreenshot("Product link is empty");
 			}
 
 			element=item.findElement(byProductImage);
@@ -934,7 +938,7 @@ public class ProductResultsPage extends BasePage{
 				reporter.reportLogPass("Product image source is not empty");
 			}
 			else {
-				reporter.reportLogFail("Product image source is not empty");
+				reporter.reportLogFailWithScreenshot("Product image source is not empty");
 			}
 
 			if(!bMouseHover){
@@ -942,7 +946,12 @@ public class ProductResultsPage extends BasePage{
 					reporter.reportLogPass("Product option is not empty");
 				}
 				else{
-					reporter.reportLogFail("Product option is empty");
+					if(item.findElements(byProductOptionSizeItemList).size()==0&&item.findElements(byProductOptionColorItemList).size()==0){
+						reporter.reportLogPass("Product option is empty");
+					}
+					else{
+						reporter.reportLogFailWithScreenshot("Product option is empty");
+					}					
 				}
 			}
 
@@ -952,14 +961,14 @@ public class ProductResultsPage extends BasePage{
 				reporter.reportLogPass("Product Now Price is not empty");
 			}
 			else {
-				reporter.reportLogFail("Product Now Price is not empty");
+				reporter.reportLogFailWithScreenshot("Product Now Price is not empty");
 			}
 			//Bug 19537: [QA Defect - P3] PRP: Is Price should be bold
 			if(element.getCssValue("font-weight").equalsIgnoreCase("600")) {
 				reporter.reportLogPass("Product NowPrice is semi bold font");
 			}
 			else {
-				reporter.reportLogFail("Product NowPrice is not semi bold font");
+				reporter.reportLogFailWithScreenshot("Product NowPrice is not semi bold font");
 			}
 
 		}
@@ -988,14 +997,14 @@ public class ProductResultsPage extends BasePage{
 					reporter.reportLogPass("Product title is not empty");
 				}
 				else {
-					reporter.reportLogFail("Product title is empty");
+					reporter.reportLogFailWithScreenshot("Product title is empty");
 				}
 				//Bug 19683: [UAT Defect] PRP: Merchandising badges i.e. Clearance, BlockBuster etc. should be bolded
 				if(element.getCssValue("font-weight").equalsIgnoreCase("800")) {
 					reporter.reportLogPass("Product title is bold font");
 				}
 				else {
-					reporter.reportLogFail("Product title is not bold font");
+					reporter.reportLogFailWithScreenshot("Product title is not bold font");
 				}
 			}
 
@@ -1006,7 +1015,7 @@ public class ProductResultsPage extends BasePage{
 					reporter.reportLogPass("Product brand name is not empty");
 				}
 				else {
-					reporter.reportLogFail("Product brand name is empty");
+					reporter.reportLogFailWithScreenshot("Product brand name is empty");
 				}
 			}
 
@@ -1017,7 +1026,7 @@ public class ProductResultsPage extends BasePage{
 					reporter.reportLogPass("Product Was Price is not empty");
 				}
 				else {
-					reporter.reportLogFail("Product Was Price is empty");
+					reporter.reportLogFailWithScreenshot("Product Was Price is empty");
 				}
 			}
 
@@ -1027,7 +1036,7 @@ public class ProductResultsPage extends BasePage{
 					reporter.reportLogPass("Product review is visible");
 				}
 				else {
-					reporter.reportLogFail("Product review is not visible");
+					reporter.reportLogFailWithScreenshot("Product review is not visible");
 				}
 
 				//Bug 19536: [QA Defect - P3] PRP: Rating and Review not showing properly
@@ -1036,7 +1045,7 @@ public class ProductResultsPage extends BasePage{
 					reporter.reportLogPass("Product review stars are displaying correctly");
 				}
 				else {
-					reporter.reportLogFail("Product review stars are not displaying correctly");
+					reporter.reportLogFailWithScreenshot("Product review stars are not displaying correctly");
 				}
 
 				lsText=this.getElementInnerText(item.findElement(this.byProductReviewRatingCount));
@@ -1044,7 +1053,7 @@ public class ProductResultsPage extends BasePage{
 					reporter.reportLogPass("Product review count info is displaying correctly");
 				}
 				else {
-					reporter.reportLogFail("Product review count info is not displaying correctly");
+					reporter.reportLogFailWithScreenshot("Product review count info is not displaying correctly");
 				}
 			}
 		}
@@ -1104,14 +1113,14 @@ public class ProductResultsPage extends BasePage{
 					reporter.reportLogPass("Product option size title is not empty");
 				}
 				else {
-					reporter.reportLogFail("Product option size title is empty");
+					reporter.reportLogFailWithScreenshot("Product option size title is empty");
 				}
 
 				if(item.findElements(byProductOptionSizeItemList).size()>0) {
 					reporter.reportLogPass("Product option size button list is containing no less than 1 item");
 				}
 				else {
-					reporter.reportLogFail("Product option size button list is containing 0 item");
+					reporter.reportLogFailWithScreenshot("Product option size button list is containing 0 item");
 				}
 
 				if(checkViewAllSizesButtonExisting(item)) {
@@ -1121,7 +1130,7 @@ public class ProductResultsPage extends BasePage{
 						reporter.reportLogPass("Product ViewAlllSize button title is not empty");
 					}
 					else {
-						reporter.reportLogFail("Product ViewAlllSize button title is empty");
+						reporter.reportLogFailWithScreenshot("Product ViewAlllSize button title is empty");
 					}
 				}
 			}
@@ -1133,14 +1142,14 @@ public class ProductResultsPage extends BasePage{
 					reporter.reportLogPass("Product option color title is not empty");
 				}
 				else {
-					reporter.reportLogFail("Product option color title is empty");
+					reporter.reportLogFailWithScreenshot("Product option color title is empty");
 				}
 
 				if(item.findElements(byProductOptionColorItemList).size()>0) {
 					reporter.reportLogPass("Product option color button list is containing no less than 1 item");
 				}
 				else {
-					reporter.reportLogFail("Product option color button list is containing 0 item");
+					reporter.reportLogFailWithScreenshot("Product option color button list is containing 0 item");
 				}
 			}
 
@@ -1150,7 +1159,7 @@ public class ProductResultsPage extends BasePage{
 				reporter.reportLogPass("Product GoTo Details is visible");
 			}
 			else {
-				reporter.reportLogFail("Product GoTo Details is not visible");
+				reporter.reportLogFailWithScreenshot("Product GoTo Details is not visible");
 			}
 
 			if(this.getElementInnerText(element).equalsIgnoreCase("Go to detail page")) {
@@ -1214,14 +1223,14 @@ public class ProductResultsPage extends BasePage{
 			reporter.reportLogPass("The Url does not contain page term.");
 		}
 		else {
-			reporter.reportLogFail("The Url contains page term.");
+			reporter.reportLogFailWithScreenshot("The Url contains page term.");
 		}
 		
 		if(this.getElementInnerText(btnCurrentPage).equalsIgnoreCase("1")) {
 			reporter.reportLogPass("The current page is 1st page.");
 		}
 		else {
-			reporter.reportLogFail("The current page is not 1st page.");
+			reporter.reportLogFailWithScreenshot("The current page is not 1st page.");
 		}
 
 		return this.waitForSortingOrFilteringCompleted();
@@ -1473,14 +1482,14 @@ public class ProductResultsPage extends BasePage{
 							reporter.reportLogPass("The Url does not contain page term.");
 						}
 						else {
-							reporter.reportLogFail("The Url contains page term.");
+							reporter.reportLogFailWithScreenshot("The Url contains page term.");
 						}
 						
 						if(this.getElementInnerText(btnCurrentPage).equalsIgnoreCase("1")) {
 							reporter.reportLogPass("The current page is 1st page.");
 						}
 						else {
-							reporter.reportLogFail("The current page is not 1st page.");
+							reporter.reportLogFailWithScreenshot("The current page is not 1st page.");
 						}
 						
 						verifyUrlPatternAfterSelectFilter(false);
@@ -1536,14 +1545,14 @@ public class ProductResultsPage extends BasePage{
 							reporter.reportLogPass("The Url does not contain page term.");
 						}
 						else {
-							reporter.reportLogFail("The Url contains page term.");
+							reporter.reportLogFailWithScreenshot("The Url contains page term.");
 						}
 						
 						if(this.getElementInnerText(btnCurrentPage).equalsIgnoreCase("1")) {
 							reporter.reportLogPass("The current page is 1st page.");
 						}
 						else {
-							reporter.reportLogFail("The current page is not 1st page.");
+							reporter.reportLogFailWithScreenshot("The current page is not 1st page.");
 						}
 						
 						//Bug 19389: PRP Filter Panel - Shop by Category selection does not work as intended						
@@ -1578,14 +1587,14 @@ public class ProductResultsPage extends BasePage{
 						reporter.reportLogPass("The Url does not contain page term.");
 					}
 					else {
-						reporter.reportLogFail("The Url contains page term.");
+						reporter.reportLogFailWithScreenshot("The Url contains page term.");
 					}
 					
 					if(this.getElementInnerText(btnCurrentPage).equalsIgnoreCase("1")) {
 						reporter.reportLogPass("The current page is 1st page.");
 					}
 					else {
-						reporter.reportLogFail("The current page is not 1st page.");
+						reporter.reportLogFailWithScreenshot("The current page is not 1st page.");
 					}
 					
 					verifyUrlPatternAfterSelectFilter(false);
@@ -1660,7 +1669,7 @@ public class ProductResultsPage extends BasePage{
 				reporter.reportLogPass("The Url for Category filter is displaying correctly.");
 			}
 			else {
-				reporter.reportLogFail("The Url for Category filter is not displaying correctly.");
+				reporter.reportLogFailWithScreenshot("The Url for Category filter is not displaying correctly.");
 			}					
 		}
 		else {
@@ -1669,7 +1678,7 @@ public class ProductResultsPage extends BasePage{
 				reporter.reportLogPass("The Url for the filters except Category filter is displaying correctly.");
 			}
 			else {
-				reporter.reportLogFail("The Url for the filters except Category filter is not displaying correctly.");
+				reporter.reportLogFailWithScreenshot("The Url for the filters except Category filter is not displaying correctly.");
 			}						
 		}		
 	}
@@ -1994,7 +2003,7 @@ public class ProductResultsPage extends BasePage{
 	/*public boolean goToFirstProductItem() {
 
 		if(product==null){
-			reporter.reportLogFail("Unable to find the product with Vedio,Size,Style,Badge image, Review,EasyPay,Nowprice and WasPrice");
+			reporter.reportLogFailWithScreenshot("Unable to find the product with Vedio,Size,Style,Badge image, Review,EasyPay,Nowprice and WasPrice");
 			return false;
 		}
 
@@ -2047,7 +2056,7 @@ public class ProductResultsPage extends BasePage{
 		}
 
 		if(product==null){
-			reporter.reportLogFail("Unable to find the product with Vedio,Size,Style,Badge image, Review,EasyPay,Nowprice and WasPrice");
+			reporter.reportLogFailWithScreenshot("Unable to find the product with Vedio,Size,Style,Badge image, Review,EasyPay,Nowprice and WasPrice");
 			return false;
 		}
 
@@ -2179,9 +2188,9 @@ public class ProductResultsPage extends BasePage{
 	public String getProductOptionTypeWithoutMouseHover(WebElement itemContainer) {
 		List<WebElement> optionList=itemContainer.findElements(this.byProductOptionList);
 		WebElement item=optionList.get(0);
-		//this.getReusableActionsInstance().staticWait(300);
+//		this.getReusableActionsInstance().staticWait(300);
 		String lsText=this.getElementInnerText(item);
-		//this.getReusableActionsInstance().staticWait(300);
+//		this.getReusableActionsInstance().staticWait(300);
 
 		if(lsText.isEmpty()) {
 			return "None";
@@ -2468,7 +2477,7 @@ public class ProductResultsPage extends BasePage{
 					reporter.reportLogPass("The button text is equal to 'Go to detail page'");
 				}
 				else {
-					reporter.reportLogFail("The button text is not equal to 'Go to detail page'");
+					reporter.reportLogFailWithScreenshot("The button text is not equal to 'Go to detail page'");
 				}
 			}
 			
@@ -2477,7 +2486,7 @@ public class ProductResultsPage extends BasePage{
 					reporter.reportLogPass("The button text is equal to 'Select colour'");
 				}
 				else {
-					reporter.reportLogFail("The button text is not equal to 'Select colour'");
+					reporter.reportLogFailWithScreenshot("The button text is not equal to 'Select colour'");
 				}
 			}
 			
@@ -2486,7 +2495,7 @@ public class ProductResultsPage extends BasePage{
 					reporter.reportLogPass("The button text is equal to 'Select size'");
 				}
 				else {
-					reporter.reportLogFail("The button text is not equal to 'Select size'");
+					reporter.reportLogFailWithScreenshot("The button text is not equal to 'Select size'");
 				}
 			}
 			
@@ -2495,7 +2504,7 @@ public class ProductResultsPage extends BasePage{
 					reporter.reportLogPass("The button text is equal to 'Select size & colour'");
 				}
 				else {
-					reporter.reportLogFail("The button text is not equal to 'Select size & colour'");
+					reporter.reportLogFailWithScreenshot("The button text is not equal to 'Select size & colour'");
 				}
 			}			
 		}
@@ -2507,7 +2516,7 @@ public class ProductResultsPage extends BasePage{
 					reporter.reportLogPass("The button text is equal to 'Select size & colour'");
 				}
 				else {
-					reporter.reportLogFail("The button text is not equal to 'Select size & colour'");
+					reporter.reportLogFailWithScreenshot("The button text is not equal to 'Select size & colour'");
 				}
 			}
 			else {
@@ -2515,7 +2524,7 @@ public class ProductResultsPage extends BasePage{
 					reporter.reportLogPass("The button text is equal to 'Select size'");
 				}
 				else {
-					reporter.reportLogFail("The button text is not equal to 'Select size'");
+					reporter.reportLogFailWithScreenshot("The button text is not equal to 'Select size'");
 				}
 			}			
 		}
@@ -2527,7 +2536,7 @@ public class ProductResultsPage extends BasePage{
 					reporter.reportLogPass("The button text is equal to 'Select size & colour'");
 				}
 				else {
-					reporter.reportLogFail("The button text is not equal to 'Select size & colour'");
+					reporter.reportLogFailWithScreenshot("The button text is not equal to 'Select size & colour'");
 				}
 			}
 			else {
@@ -2535,7 +2544,7 @@ public class ProductResultsPage extends BasePage{
 					reporter.reportLogPass("The button text is equal to 'Select colour'");
 				}
 				else {
-					reporter.reportLogFail("The button text is not equal to 'Select colour'");
+					reporter.reportLogFailWithScreenshot("The button text is not equal to 'Select colour'");
 				}
 			}			
 		}
@@ -2561,7 +2570,7 @@ public class ProductResultsPage extends BasePage{
 							reporter.reportLogPass("The button text is equal to 'Go to detail page'");
 						}
 						else {
-							reporter.reportLogFail("The button text is not equal to 'Go to detail page'");
+							reporter.reportLogFailWithScreenshot("The button text is not equal to 'Go to detail page'");
 						}
 					}
 					else {
@@ -2569,7 +2578,7 @@ public class ProductResultsPage extends BasePage{
 							reporter.reportLogPass("The button text is equal to 'Select colour'");
 						}
 						else {
-							reporter.reportLogFail("The button text is not equal to 'Select colour'");
+							reporter.reportLogFailWithScreenshot("The button text is not equal to 'Select colour'");
 						}
 					}
 					
@@ -2578,7 +2587,7 @@ public class ProductResultsPage extends BasePage{
 						reporter.reportLogPass("The button text is equal to 'Go to detail page'");
 					}
 					else {
-						reporter.reportLogFail("The button text is not equal to 'Go to detail page'");
+						reporter.reportLogFailWithScreenshot("The button text is not equal to 'Go to detail page'");
 					}
 				}
 			}			
@@ -2599,7 +2608,7 @@ public class ProductResultsPage extends BasePage{
 				reporter.reportLogPass("The button text is equal to 'Go to detail page'");
 			}
 			else {
-				reporter.reportLogFail("The button text is not equal to 'Go to detail page'");
+				reporter.reportLogFailWithScreenshot("The button text is not equal to 'Go to detail page'");
 			}
 		}
 
@@ -2661,7 +2670,7 @@ public class ProductResultsPage extends BasePage{
 				reporter.reportLogPass("The selected size title is displaying correctly");
 			}
 			else {
-				reporter.reportLogFail("The selected size title is not displaying correctly");
+				reporter.reportLogFailWithScreenshot("The selected size title is not displaying correctly");
 			}
 
 			return true;
@@ -2727,7 +2736,7 @@ public class ProductResultsPage extends BasePage{
 					reporter.reportLogPass("The image is changing after choosing a different style");
 				}
 				else {
-					reporter.reportLogFail("The image is not changing after choosing a different style");
+					reporter.reportLogFailWithScreenshot("The image is not changing after choosing a different style");
 				}
 			}
 						
@@ -2738,7 +2747,7 @@ public class ProductResultsPage extends BasePage{
 				reporter.reportLogPass("The selected color title is displaying correctly");
 			}
 			else {
-				reporter.reportLogFail("The selected color title is not displaying correctly");
+				reporter.reportLogFailWithScreenshot("The selected color title is not displaying correctly");
 			}
 			return true;
 		}
@@ -2808,7 +2817,7 @@ public class ProductResultsPage extends BasePage{
 			reporter.reportLogPass("The product name of "+this.selectedProductItem.productName+" in PRP is the same as the one of "+lsProductName+" displayed in PDP");
 		}
 		else {
-			reporter.reportLogFail("The product name of "+this.selectedProductItem.productName+" in PRP is not the same as the one of "+lsProductName+" displayed in PDP");
+			reporter.reportLogFailWithScreenshot("The product name of "+this.selectedProductItem.productName+" in PRP is not the same as the one of "+lsProductName+" displayed in PDP");
 		}
 
 		if(!this.selectedProductItem.productBrand.isEmpty()) {
@@ -2817,7 +2826,7 @@ public class ProductResultsPage extends BasePage{
 				reporter.reportLogPass("The product brand of "+this.selectedProductItem.productBrand+" in PRP is the same as the one of "+lsProductBrand+" displayed in PDP");
 			}
 			else {
-				reporter.reportLogFail("The product brand of "+this.selectedProductItem.productBrand+" in PRP is not the same as the one of "+lsProductBrand+" displayed in PDP");
+				reporter.reportLogFailWithScreenshot("The product brand of "+this.selectedProductItem.productBrand+" in PRP is not the same as the one of "+lsProductBrand+" displayed in PDP");
 			}
 		}
 
@@ -2826,7 +2835,7 @@ public class ProductResultsPage extends BasePage{
 			reporter.reportLogPass("The product NowPrice of "+this.selectedProductItem.productNowPrice+" in PRP is the same as the one of "+lsProductNowPrice+" displayed in PDP");
 		}
 		else {
-			reporter.reportLogFail("The product NowPrice of "+this.selectedProductItem.productNowPrice+" in PRP is not the same as the one of "+lsProductNowPrice+" displayed in PDP");
+			reporter.reportLogFailWithScreenshot("The product NowPrice of "+this.selectedProductItem.productNowPrice+" in PRP is not the same as the one of "+lsProductNowPrice+" displayed in PDP");
 		}
 
 		String lsProductWasPrice=pdp.getElementInnerText(pdp.lblProductWasPrice);
@@ -2834,7 +2843,7 @@ public class ProductResultsPage extends BasePage{
 			reporter.reportLogPass("The product WasPrice of "+this.selectedProductItem.productWasPrice+" in PRP is the same as the one of "+lsProductWasPrice+" displayed in PDP");
 		}
 		else {
-			reporter.reportLogFail("The product WasPrice of "+this.selectedProductItem.productWasPrice+" in PRP is not the same as the one of "+lsProductWasPrice+" displayed in PDP");
+			reporter.reportLogFailWithScreenshot("The product WasPrice of "+this.selectedProductItem.productWasPrice+" in PRP is not the same as the one of "+lsProductWasPrice+" displayed in PDP");
 		}
 
 		if(!this.selectedProductItem.productSelectedSize.isEmpty()) {
@@ -2844,7 +2853,7 @@ public class ProductResultsPage extends BasePage{
 				reporter.reportLogPass("The selected size in PRP is the same as the one displayed in PDP");
 			}
 			else {
-				reporter.reportLogFail("The selected size in PRP is not the same as the one displayed in PDP");
+				reporter.reportLogFailWithScreenshot("The selected size in PRP is not the same as the one displayed in PDP");
 			}
 		}
 
@@ -2854,7 +2863,7 @@ public class ProductResultsPage extends BasePage{
 					reporter.reportLogPass("The selected color in PRP is the same as the one displayed in PDP");
 				}
 				else {
-					reporter.reportLogFail("The selected color in PRP is not the same as the one displayed in PDP");
+					reporter.reportLogFailWithScreenshot("The selected color in PRP is not the same as the one displayed in PDP");
 				}
 			}
 			else {
@@ -2862,7 +2871,7 @@ public class ProductResultsPage extends BasePage{
 					reporter.reportLogPass("The selected color in PRP is the same as the one displayed in PDP");
 				}
 				else {
-					reporter.reportLogFail("The selected color in PRP is not the same as the one displayed in PDP");
+					reporter.reportLogFailWithScreenshot("The selected color in PRP is not the same as the one displayed in PDP");
 				}
 			}
 		}
@@ -2917,7 +2926,7 @@ public class ProductResultsPage extends BasePage{
 			reporter.reportLogPass("The user is navigated to PDP page");
 		}
 		else {
-			reporter.reportLogFail("The user is not navigated to PDP page");
+			reporter.reportLogFailWithScreenshot("The user is not navigated to PDP page");
 		}
 	}
 
@@ -2950,7 +2959,7 @@ public class ProductResultsPage extends BasePage{
 			reporter.reportLogPass("The favorite icon is displaying not clicking status correctly");
 		}
 		else {
-			reporter.reportLogFail("The favorite icon is not displaying not clicking status correctly");
+			reporter.reportLogFailWithScreenshot("The favorite icon is not displaying not clicking status correctly");
 		}
 
 		this.getReusableActionsInstance().clickIfAvailable(item);
@@ -2975,7 +2984,7 @@ public class ProductResultsPage extends BasePage{
 			reporter.reportLogPass("The favorite icon is displaying clicking status correctly");
 		}
 		else {
-			reporter.reportLogFail("The favorite icon is not displaying clicking status correctly");			
+			reporter.reportLogFailWithScreenshot("The favorite icon is not displaying clicking status correctly");			
 		}
 				
 		//Bug 19538: [QA Defect - P3] PRP: missing Free Shipping label
@@ -2983,7 +2992,7 @@ public class ProductResultsPage extends BasePage{
 			reporter.reportLogPass("Product free shipping is not empty");
 		}
 		else {
-			reporter.reportLogFail("Product free shipping is empty");
+			reporter.reportLogFailWithScreenshot("Product free shipping is empty");
 		}
 				
 		item=this.productResultList.get(0).findElement(byProductHref);
@@ -3000,28 +3009,28 @@ public class ProductResultsPage extends BasePage{
 			reporter.reportLogPass("The Product name in PRP is the same as the one in PDP");
 		}
 		else {
-			reporter.reportLogFail("The Product name in PRP is not the same as the one in PDP");
+			reporter.reportLogFailWithScreenshot("The Product name in PRP is not the same as the one in PDP");
 		}
 
 		if( this.getFloatFromString(prpProductNowPrice,true)==this.getFloatFromString( pdpProductNowPrice,true)) {
 			reporter.reportLogPass("The Product NowPrice in PRP is the same as the one in PDP");
 		}
 		else {
-			reporter.reportLogFail("The Product NowPrice in PRP is not the same as the one in PDP");
+			reporter.reportLogFailWithScreenshot("The Product NowPrice in PRP is not the same as the one in PDP");
 		}
 		
 		if(prpReviewRateStarCount==pdpReviewRateStarCount) {
 			reporter.reportLogPass("The review rate star count in PRP is equal to the count in PDP");
 		}
 		else {
-			reporter.reportLogFail("The review rate star count in PRP is not equal to the count in PDP");
+			reporter.reportLogFailWithScreenshot("The review rate star count in PRP is not equal to the count in PDP");
 		}
 				
 		if(pdpReviewCountInfo.equalsIgnoreCase(prpReviewCountInfo)) {
 			reporter.reportLogPass("The review count info in PRP is the same as count info in PDP");
 		}
 		else {
-			reporter.reportLogFail("The review count info in PRP is not the same as count info in PDP");
+			reporter.reportLogFailWithScreenshot("The review count info in PRP is not the same as count info in PDP");
 		}
 	
 		//Bug 19539: [QA Defect - P3] Favorite an item in PRP doesn't sync up to PDP
@@ -3029,7 +3038,7 @@ public class ProductResultsPage extends BasePage{
 			reporter.reportLogPass("The FavShareMobile icon is highlighted correctly");
 		}
 		else {
-			reporter.reportLogFail("The FavShareMobile icon is not highlighted correctly");
+			reporter.reportLogFailWithScreenshot("The FavShareMobile icon is not highlighted correctly");
 		}		
 	}
 	
@@ -3051,7 +3060,7 @@ public class ProductResultsPage extends BasePage{
 			reporter.reportLogPass("The product list is displaying correctly after switching to French language");
 		}
 		else {
-			reporter.reportLogFail("The product list is not displaying correctly after switching to French language");
+			reporter.reportLogFailWithScreenshot("The product list is not displaying correctly after switching to French language");
 		}
 	}
 	
@@ -3073,7 +3082,7 @@ public class ProductResultsPage extends BasePage{
 			reporter.reportLogPass("The product list is loading correctly through inputting Url directly");
 		}
 		else {
-			reporter.reportLogFail("The product list is not loading correctly through inputting Url directly");
+			reporter.reportLogFailWithScreenshot("The product list is not loading correctly through inputting Url directly");
 		}
 	}
 
@@ -3401,7 +3410,7 @@ public class ProductResultsPage extends BasePage{
 		if(filterBrandNameFlag)
 			reporter.reportLogPass("Brand Name on PDP page i.e. "+brandName+" is same as in filter on PRP page: "+filterName);
 		else
-			reporter.reportLogFail("Brand Name on PDP page i.e. "+brandName+" is not same as in filter on PRP page: "+filterName);
+			reporter.reportLogFailWithScreenshot("Brand Name on PDP page i.e. "+brandName+" is not same as in filter on PRP page: "+filterName);
 
 		//Verifying product on page are of same selected brand
 		productList=this.getProductList();
@@ -3412,7 +3421,7 @@ public class ProductResultsPage extends BasePage{
 			if(lsBrandName.toLowerCase().trim().equals(brandName.toLowerCase().trim()))
 				reporter.reportLogPass("Brand name of product on PRP page: "+lsBrandName+" is same as on PDP page: "+brandName);
 			else
-				reporter.reportLogFail("Brand name of product on PRP page: "+lsBrandName+" is not same as on PDP page: "+brandName);
+				reporter.reportLogFailWithScreenshot("Brand name of product on PRP page: "+lsBrandName+" is not same as on PDP page: "+brandName);
 		}
 	}
 
@@ -3436,7 +3445,7 @@ public class ProductResultsPage extends BasePage{
 //			if(!itemExistenceFlag)
 //				reporter.reportLogPass("Search Result Text is not present for search keyword which is a brand");
 //			else
-//				reporter.reportLogFail("Search Result Text is present for search keyword which is a brand");
+//				reporter.reportLogFailWithScreenshot("Search Result Text is present for search keyword which is a brand");
 //		}else{
 			this.waitForCondition(Driver->{return this.lblSearchResultTitleMessage.isDisplayed();},5000);
 			if(System.getProperty("Browser").toLowerCase().contains("safari"))
@@ -3449,7 +3458,7 @@ public class ProductResultsPage extends BasePage{
 			if(this.searchkeyword.equals(searchTitleMessage))
 				reporter.reportLogPass("Search Result message on page: "+searchTitleMessage+ " is same as input search keyword: "+searchKeyword);
 			else
-				reporter.reportLogFail("Search Result message on page: "+searchTitleMessage+ " is not same as input search keyword: "+searchKeyword);
+				reporter.reportLogFailWithScreenshot("Search Result message on page: "+searchTitleMessage+ " is not same as input search keyword: "+searchKeyword);
 //		}
 	}
 	
@@ -3475,7 +3484,7 @@ public class ProductResultsPage extends BasePage{
 			reporter.reportLogPass("The product search results are changing after adding one more filter correctly"); 
 		}
 		else {
-			reporter.reportLogFail("The product search results are not changing after adding one more filter correctly"); 
+			reporter.reportLogFailWithScreenshot("The product search results are not changing after adding one more filter correctly"); 
 		}
 		
 		this.getDriver().navigate().back();
@@ -3490,7 +3499,7 @@ public class ProductResultsPage extends BasePage{
 			reporter.reportLogPass("The product search results are keeping the same status as just first filter applied"); 
 		}
 		else {
-			reporter.reportLogFail("The product search results are not keeping the same status as just first filter applied"); 
+			reporter.reportLogFailWithScreenshot("The product search results are not keeping the same status as just first filter applied"); 
 		}	
 	}
 	
@@ -3510,7 +3519,7 @@ public class ProductResultsPage extends BasePage{
 			reporter.reportLogPass("The selected filter list for first Category filter is not displaying"); 
 		}
 		else {
-			reporter.reportLogFail("The selected filter list for first Category filter is displaying wrongly"); 
+			reporter.reportLogFailWithScreenshot("The selected filter list for first Category filter is displaying wrongly"); 
 		}		
 		
 		//Apply a subfilter
@@ -3522,7 +3531,7 @@ public class ProductResultsPage extends BasePage{
 			reporter.reportLogPass("The selected filter list after selecting filters is displaying correctly"); 
 		}
 		else {
-			reporter.reportLogFail("The selected filter list after selecting filters is not displaying correctly"); 
+			reporter.reportLogFailWithScreenshot("The selected filter list after selecting filters is not displaying correctly"); 
 		}
 
 		//Select first category item
@@ -3543,7 +3552,7 @@ public class ProductResultsPage extends BasePage{
 			reporter.reportLogPass("The selected filter list after navigating from BreadCrumb is displaying correctly"); 
 		}
 		else {
-			reporter.reportLogFail("The selected filter list after navigating from BreadCrumb is not displaying correctly"); 
+			reporter.reportLogFailWithScreenshot("The selected filter list after navigating from BreadCrumb is not displaying correctly"); 
 		}
 	}
 	
@@ -3566,7 +3575,7 @@ public class ProductResultsPage extends BasePage{
 			reporter.reportLogPass("The Navigation Breadcrumb list is containing 2 items correctly"); 
 		}
 		else {
-			reporter.reportLogFail("The Navigation Breadcrumb list is not containing 2 items correctly"); 
+			reporter.reportLogFailWithScreenshot("The Navigation Breadcrumb list is not containing 2 items correctly"); 
 		}
 		
 		WebElement item=this.lstSearchResultNavigation.get(this.lstSearchResultNavigation.size()-1);
@@ -3576,12 +3585,12 @@ public class ProductResultsPage extends BasePage{
 			reporter.reportLogPass("The displaying pattern is Home>"+lstItem.get(1)); 
 		}
 		else {
-			reporter.reportLogFail("The displaying pattern is not Home>"+lstItem.get(1)); 
+			reporter.reportLogFailWithScreenshot("The displaying pattern is not Home>"+lstItem.get(1)); 
 		}
 	}
 
-	public void verifyMoreAndLessButton(List<String> lstMoreButton){
-		for(String lsHeader:lstMoreButton) {
+	public void verifyMoreAndLessButton(List<String> lstMoreButton) {
+		for (String lsHeader : lstMoreButton) {
 			//Get the element container corresponding to the first level filter
 			WebElement element = getFilterContainerWithSpecificFirstlevelFilterInLeftPanel(lsHeader);
 			if (element == null) {
@@ -3608,7 +3617,7 @@ public class ProductResultsPage extends BasePage{
 			if (elementCountAfterClickingSeeMoreButton > elementCountBeforeClickingSeeMoreButton) {
 				reporter.reportLogPass("The subitem count after clicking SeeMore button is more than the count before clicking SeeMore button");
 			} else {
-				reporter.reportLogFail("The subitem count after clicking SeeMore button is no more than the count before clicking SeeMore button");
+				reporter.reportLogFailWithScreenshot("The subitem count after clicking SeeMore button is no more than the count before clicking SeeMore button");
 			}
 
 			clickSeeLessButton(element);
@@ -3625,6 +3634,133 @@ public class ProductResultsPage extends BasePage{
 			}
 
 			uncollapseFilterItemWithClickingProductTitle(element);
+		}
+	}
+
+	/**
+	 * This method verifies PRP page after loading url directly in browser
+	 * @param-HashMap<String,String> pageData Loaded page data that will be used
+	 */
+	public void verifyPRPPageAfterLoadingDataUsingAPIParameter(HashMap<String,String> pageData){
+		this.getDriver().get(pageData.get("url"));
+
+		this.waitForPageLoading();
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.cntPagination);
+		this.getReusableActionsInstance().scrollToElement(this.cntPagination);
+		verifyShowingTextPatternInFilters();
+		this.verifySelectedFilterAndItemsOnPage(pageData);
+	}
+
+	/**
+	 * This method verifies PRP page after loading url directly in browser
+	 * @param-HashMap<String,String> pageData Loaded page data that will be used for verification
+	 */
+	public void verifySelectedFilterAndItemsOnPage(HashMap<String,String> pageData){
+		//Verification of selected sort filter on page
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSortSelect);
+		getReusableActionsInstance().scrollToElement(this.btnSortSelect);
+		Select sortOption= new Select(this.btnSortSelect);
+		String selectedFilter = sortOption.getFirstSelectedOption().getText();
+		if(selectedFilter.equalsIgnoreCase(pageData.get("sortKey")))
+			reporter.reportLogPass("Filter selected in dropdown: "+selectedFilter+" is as expected: "+pageData.get("sortKey"));
+		else
+			reporter.reportLogFailWithScreenshot("Filter selected in dropdown: "+selectedFilter+" is not as expected: "+pageData.get("sortKey"));
+
+		//Verification of number of items displayed on page
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.cntPagination);
+		this.getReusableActionsInstance().scrollToElement(this.cntPagination);
+		this.getReusableActionsInstance().staticWait(2000);
+		int itemsOnPage;
+		if(pageData.get("page").equalsIgnoreCase("1"))
+			itemsOnPage = Integer.valueOf(this.txtShowingDynamicContent.getText().split(" ")[2]);
+		else
+			itemsOnPage = Integer.valueOf(this.txtShowingDynamicContent.getText().split(" ")[0])-1;
+		if(itemsOnPage > 0 && itemsOnPage<=Integer.valueOf(pageData.get("pageSize")))
+			reporter.reportLogPass("Items displayed on page are: "+itemsOnPage+" and is as expected: "+pageData.get("pageSize"));
+		else
+			reporter.reportLogFailWithScreenshot("Items displayed on page are: "+itemsOnPage+" and is not as expected: "+pageData.get("pageSize"));
+
+		//Verification that title is as expected
+		String pageTitleType = this.judgeTestModel();
+		if(pageTitleType.contains("Banner")){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblBreadcrumbLastProductName);
+			this.getReusableActionsInstance().scrollToElement(this.lblBreadcrumbLastProductName);
+			this.getReusableActionsInstance().staticWait(2000);
+			String bannerProductName = this.lblBreadcrumbLastProductName.getText();
+			if(pageData.get("searchTerm").toLowerCase().contains(bannerProductName))
+				reporter.reportLogPass("Search Term on page for Banner Search: "+bannerProductName+" is same as in api call: "+pageData.get("searchTerm"));
+			else
+				reporter.reportLogFailWithScreenshot("Search Term on page for Banner Search: "+bannerProductName+" is not same as in api call: "+pageData.get("searchTerm"));
+		}else if(pageTitleType.contains("Normal")){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSearchResultMessage);
+			this.getReusableActionsInstance().scrollToElement(this.lblSearchResultMessage);
+			this.getReusableActionsInstance().staticWait(2000);
+			String titleMessage = this.lblSearchResultMessage.getText().split("\"")[1];
+			if(titleMessage.equalsIgnoreCase(pageData.get("searchTerm")))
+				reporter.reportLogPass("Search Term on page for Normal Search: "+titleMessage+" is same as in api call: "+pageData.get("searchTerm"));
+			else
+				reporter.reportLogFailWithScreenshot("Search Term on page for Normal Search: "+titleMessage+" is not same as in api call: "+pageData.get("searchTerm"));
+		}else
+			reporter.reportLogFailWithScreenshot("Not a valid search criteria");
+	}
+
+	/**
+	 * @param - String - searchkeyword to search Product
+	 */
+	//BUG-19789 - PRP left nav should display all available facets
+	public void verifyCategoryDetailsOnPRPForProduct(List<Product.DimensionStates> categoryDimensions,String searchKeyword) {
+		List<String> categoryItemsOnPage = new ArrayList<>();
+		if(System.getProperty("Device").equalsIgnoreCase("Desktop")){
+			this.getSearchResultLoad(searchKeyword, true);
+			this.waitForPageLoading();
+		}
+		for (WebElement webElement : productFilterContainerList) {
+			boolean breakFlag = false;
+			String filterTitle = this.getElementInnerText(webElement.findElement(By.xpath(".//button/span")));
+			if (filterTitle.equalsIgnoreCase("Category")) {
+				breakFlag = true;
+				//Enter code here to check if Category is open
+
+				List<WebElement> lstCategoryItems = webElement.findElements(this.bySecondaryFilterAll);
+				for (WebElement categoryItem : lstCategoryItems) {
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(categoryItem);
+					categoryItemsOnPage.add(categoryItem.findElement(By.xpath("./a")).getText());
+					this.getReusableActionsInstance().staticWait(1000);
+				}
+			}
+			//Verification of categories displayed on UI
+			List<Product.Refinements> refinements = null;
+			List<String> refinementListfromAPI = new ArrayList<>();
+			for (Product.DimensionStates dimensionStates : categoryDimensions) {
+				if (dimensionStates.getDimensionType().equalsIgnoreCase("Category")) {
+					refinements = dimensionStates.getRefinements();
+					for (Product.Refinements data : refinements) {
+						refinementListfromAPI.add(data.getDimensionName());
+					}
+					break;
+				}
+			}
+
+			if (refinementListfromAPI.size() > 0) {
+				for (String refinementItem : refinementListfromAPI) {
+					boolean flag = false;
+					String categoryItemNameOnPage = null;
+					for (String categoryItemOnPage : categoryItemsOnPage) {
+						categoryItemNameOnPage = categoryItemOnPage;
+						if (refinementItem.equalsIgnoreCase(categoryItemOnPage)) {
+							flag = true;
+							break;
+						}
+					}
+					if (flag)
+						reporter.reportLogPass("Category displayed on PRP page: " + categoryItemNameOnPage + " is same as in api call: " + refinementItem);
+					else
+						reporter.reportLogFailWithScreenshot("Category displayed on PRP page: " + categoryItemNameOnPage + " is not same as in api call: " + refinementItem);
+				}
+				if (breakFlag)
+					break;
+			} else
+				reporter.reportLog("Category items are not checked as refinement is null");
 		}
 	}
 

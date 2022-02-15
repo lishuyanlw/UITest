@@ -11,8 +11,8 @@ import com.tsc.test.base.BaseTest;
 
 public class GH_TC05_Verify_Global_Header_VerifyFlyoutsViewAll extends BaseTest {
 
-	@Test(groups={"Home","Regression","GlobalHeader","GlobalHeader_Mobile","GlobalHeader_Tablet"})
-	public void verifyFlyoutHeadings() {
+	@Test(groups={"GlobalHeader","Regression"})
+	public void GH_TC05_Verify_Global_Header_VerifyFlyoutsViewAll() {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 		String lsBaseUrl=(new BasePage(this.getDriver())).getBaseURL();
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl+"/"), "TSC url is correct", "TSC url is incorrect");
@@ -30,9 +30,7 @@ public class GH_TC05_Verify_Global_Header_VerifyFlyoutsViewAll extends BaseTest 
 		}
 		if(!System.getProperty("Device").equalsIgnoreCase("desktop")){
 			getglobalheaderPageThreadLocal().closeMobileMenu();
-			getglobalheaderPageThreadLocal().getReusableActionsInstance().staticWait(5000);
 		}
-		getglobalheaderPageThreadLocal().staticwait();
 		reporter.reportLog("Flyout header displays department: "+flyoutHeading);
 		for(String lsHeading:flyoutHeading) {
 			getglobalheaderPageThreadLocal().scrollToHeadingElement(lsHeading);
@@ -43,13 +41,9 @@ public class GH_TC05_Verify_Global_Header_VerifyFlyoutsViewAll extends BaseTest 
 			lsSuccessResult=String.format("The url [ %s ] does not contain [ %s ] after clicking shop all brands under >" + lsHeading + " > Popular Brands", shopAllUrl,lsYmlNotFound);
 			lsFailResult=String.format("The url of [ %s ] contains [ %s ] after clicking shop all brands under > " + lsHeading + " > Popular Brands", shopAllUrl,lsYmlNotFound);
 			reporter.softAssert(!shopAllUrl.contains(lsYmlNotFound), lsSuccessResult,lsFailResult);
-			pageHeading=getglobalheaderPageThreadLocal().getHeadingForLandingPage(lsHeading);
+			pageHeading=getglobalheaderPageThreadLocal().getHeadingForLandingPage();
 			reporter.reportLog("Heading of the landing page "+pageHeadingSection+" : "+pageHeading);
-			reporter.softAssert(pageHeading.toLowerCase().contains(lsHeading.toLowerCase()),"Landing page heading is verified with Flyout heading.","Landing page heading is not matching with Flyout heading > "+lsHeading +" > under Popular Brands >Shop all brands");
-			/*if(!System.getProperty("Device").equalsIgnoreCase("desktop")){
-				getglobalheaderPageThreadLocal().closeMobileMenu();
-				getglobalheaderPageThreadLocal().waitForPageLoad();
-			}*/
+			reporter.softAssert(pageHeading.toLowerCase().contains(lsHeading.toLowerCase()),"Landing page heading "+pageHeading+" is verified with Flyout heading "+lsHeading,"Landing page heading "+pageHeading+" is not matching with Flyout heading > "+lsHeading +" > under Popular Brands >Shop all brands");
 		}
 	}
 }	

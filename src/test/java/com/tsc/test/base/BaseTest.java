@@ -126,7 +126,6 @@ public class BaseTest {
 
 	private void init_Tablet() throws IOException {
 		productResultsPageThreadLocal.set(new ProductResultsPage_Tablet(getDriver()));
-		globalheaderPageThreadLocal.set(new GlobalHeaderPage_Mobile(getDriver()));
 
 		if(System.getProperty("Browser").equalsIgnoreCase("chromemobile")){
 			globalFooterPageThreadLocal.set(new GlobalFooterPage_Tablet_IOS(getDriver()));
@@ -144,7 +143,10 @@ public class BaseTest {
 				(System.getProperty("chromeMobileDevice")!=null
 						&& !System.getProperty("chromeMobileDevice").contains("iPad"))) {
 			productDetailPageThreadLocal.set(new ProductDetailPage_Mobile(getDriver()));
+			globalFooterPageThreadLocal.set(new GlobalFooterPage_Mobile(getDriver()));
+			globalheaderPageThreadLocal.set(new GlobalHeaderPage_Mobile(getDriver()));
 		}else {
+			globalheaderPageThreadLocal.set(new GlobalHeaderPage_Tablet(getDriver()));
 			productDetailPageThreadLocal.set(new ProductDetailPage_Tablet(getDriver()));
 		}
 
@@ -181,6 +183,7 @@ public class BaseTest {
 			sauceParameters = initializeSauceParamsMap(strBrowser);
 		}
 
+		//webDriverThreadLocal.set(browserDrivers.driverInit(strBrowser, sauceParameters, currentTestMethodName, ""));
 		webDriverThreadLocal.set(browserDrivers.driverInit(strBrowser, sauceParameters, currentTestMethodName, ""));
 		ExtentListener.setDriver(getDriver());
 		getDriver().get(strUrl);
