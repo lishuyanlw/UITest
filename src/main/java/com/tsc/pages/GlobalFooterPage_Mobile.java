@@ -2,7 +2,6 @@ package com.tsc.pages;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -17,46 +16,46 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 	@FindBy(xpath = "//div[@id='headingOne']//a")
 	public WebElement lblTSCCustomerHubText;
 	
-	@FindBy(xpath = "//div[@id='headingOne']/parent::div//ul//li//a")
+	@FindBy(xpath = "//div[@id='headingOne']/parent::div//ul/li//a")
 	public List<WebElement> lnkTSCCustomerHubAllLinks;
 	
 	// About TSC
 	@FindBy(xpath = "//div[@id='headingTwo']//a")
 	public WebElement lblAboutTSCText;
 	
-	@FindBy(xpath = "//div[@id='headingTwo']/parent::div//ul//li//a")
+	@FindBy(xpath = "//div[@id='headingTwo']/parent::div//ul/li//a")
 	public List<WebElement> lnkAboutTSCAllLinks;
 	
 	@FindBy(xpath = "//ng-component//div[contains(@class,'summary-logout')]//button")
 	public WebElement btnMyAccountSignOut;
 
 	//Browse Help Topics in Customer service
-	@FindBy(xpath="//div[@id='customer-service']//div[@class='customer-service-faq']//ul[@class='customer-service-faq__topics-accordion']//li")
+	@FindBy(xpath="//div[@id='customer-service']//div[@class='customer-service-faq']//ul[@class='customer-service-faq__topics-accordion']/li")
 	List<WebElement> lstCustomerServiceHelpTopics;
 
-	@FindBy(xpath="//div[@id='customer-service']//div[@class='customer-service-faq']//ul[@class='customer-service-faq__topics-accordion']//li//*[@class='customer-service-faq__topics-accordion__item-title__lhs__text']")
+	@FindBy(xpath="//div[@id='customer-service']//div[@class='customer-service-faq']//ul[@class='customer-service-faq__topics-accordion']/li//*[@class='customer-service-faq__topics-accordion__item-title__lhs__text']")
 	List<WebElement> lstCustomerServiceHelpTopicsTitle;
 
-	@FindBy(xpath="//div[@id='customer-service']//div[@class='customer-service-faq']//ul[@class='customer-service-faq__topics-accordion']//li//ul//li")
+	@FindBy(xpath="//div[@id='customer-service']//div[@class='customer-service-faq']//ul[@class='customer-service-faq__topics-accordion']/li//ul/li")
 	List<WebElement> lstCustomerServiceHelpTopicsSubItem;
 
-	@FindBy(xpath="//div[@id='customer-service']//div[@class='customer-service-faq']//ul[@class='customer-service-faq__topics-accordion']//li//div[@class='customer-service-faq__topics-accordion__item-title__lhs__icon']")
+	@FindBy(xpath="//div[@id='customer-service']//div[@class='customer-service-faq']//ul[@class='customer-service-faq__topics-accordion']/li//div[@class='customer-service-faq__topics-accordion__item-title__lhs__icon']")
 	List<WebElement> lstCustomerServiceHelpTopicsIcon;
 
 	//For contact us in Help Topics
-	@FindBy(xpath="//div[@id='customer-service']//div[@class='customer-service-faq']//ul[@class='customer-service-faq__topics-accordion']//li//a[contains(@href,'contact-info')]/ancestor::li[@class='customer-service-faq__topics-accordion__item']")
+	@FindBy(xpath="//div[@id='customer-service']//div[@class='customer-service-faq']//ul[@class='customer-service-faq__topics-accordion']/li//a[contains(@href,'contact-info')]/ancestor::li[@class='customer-service-faq__topics-accordion__item']")
 	WebElement lnkCustomerServiceContactTSC;
 
-	@FindBy(xpath="//div[@id='customer-service']//div[@class='customer-service-faq']//ul[@class='customer-service-faq__topics-accordion']//li//a[contains(@href,'contact-info')]")
+	@FindBy(xpath="//div[@id='customer-service']//div[@class='customer-service-faq']//ul[@class='customer-service-faq__topics-accordion']/li//a[contains(@href,'contact-info')]")
 	WebElement lnkCustomerServiceContactInfo;
 
-	@FindBy(xpath="//div[@id='customer-service']//div[@class='customer-service-faq']//ul[@class='customer-service-faq__topics-accordion']//li//a[contains(@href,'email')]")
+	@FindBy(xpath="//div[@id='customer-service']//div[@class='customer-service-faq']//ul[@class='customer-service-faq__topics-accordion']/li//a[contains(@href,'email')]")
 	WebElement lnkCustomerServiceGeneralEmailInquiries;
 
-	@FindBy(xpath="//div[@id='customer-service']//div[@class='customer-service-faq']//ul[@class='customer-service-faq__topics-accordion']//li//a[contains(@href,'billing')]")
+	@FindBy(xpath="//div[@id='customer-service']//div[@class='customer-service-faq']//ul[@class='customer-service-faq__topics-accordion']/li//a[contains(@href,'billing')]")
 	WebElement lnkCustomerServiceBillingOrRefundInquiries;
 
-	@FindBy(xpath="//div[@id='customer-service']//div[@class='customer-service-faq']//ul[@class='customer-service-faq__topics-accordion']//li//a[contains(@href,'feedback')]")
+	@FindBy(xpath="//div[@id='customer-service']//div[@class='customer-service-faq']//ul[@class='customer-service-faq__topics-accordion']/li//a[contains(@href,'feedback')]")
 	WebElement lnkCustomerServiceSendFeedback;
 
 	//For the right panel of window after clicking Help Topics subitem
@@ -76,11 +75,16 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 			lsText=this.getElementText(item);			
 			lsYmlHref=this.getLinkWithSpecificName(lstNameAndLinks,lsText,true);			
 			if(lsYmlHref.isEmpty()) {
-				reporter.reportLogFail("Unable to find "+lsText+" link.");
+				reporter.reportLogFailWithScreenshot("Unable to find "+lsText+" link.");
 			}
-			lsHref=this.getElementHref(item);	
-			reporter.softAssert(this.verifyLinks(lsHref,lsYmlHref),"The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref,"The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref);
-			
+			lsHref=this.getElementHref(item);
+			if(this.verifyLinks(lsHref,lsYmlHref)){
+				reporter.reportLogPass("The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref);
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref);
+			}
+
 		}
 	}
 	
@@ -97,10 +101,15 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 			lsText=this.getElementText(item);
 			lsYmlHref=this.getLinkWithSpecificName(lstNameAndLinks,lsText,true);
 			if(lsYmlHref.isEmpty()) {
-				reporter.reportLogFail("Unable to find "+lsText+" link.");
+				reporter.reportLogFailWithScreenshot("Unable to find "+lsText+" link.");
 			}
 			lsHref=this.getElementHref(item);
-			reporter.softAssert(this.verifyLinks(lsHref,lsYmlHref),"The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref,"The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref);			
+			if(this.verifyLinks(lsHref,lsYmlHref)){
+				reporter.reportLogPass("The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref);
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref);
+			}
 		}
 	}
 	
@@ -129,7 +138,7 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 	}
 	
 	@Override
-	public void verifyMyAccountSerivePanelItem() {
+	public void verifyMyAccountServicePanelItem() {
 		for(WebElement item: this.lstMyAccountSerivePanelHeading) {
 			if(item.getAttribute("class").contains("collapsed")) {
 				getReusableActionsInstance().javascriptScrollByVisibleElement(item);
@@ -214,13 +223,24 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 		
 		for(int i=0;i<this.lnkTSCCustomerHubAllLinks.size();i++) {
 			lsText=this.getUTFEnabledData(this.getElementText(this.lnkTSCCustomerHubAllLinks.get(i)));	
-			reporter.softAssert(lsText.equalsIgnoreCase(lstCustomerHubFr.get(i)),"The "+i+" CustomerHubLink French transaltion of "+lsText+" is the same as "+lstCustomerHubFr.get(i),"The "+i+" CustomerHubLink French transaltion of "+lsText+" is not the same as "+lstCustomerHubFr.get(i));
+			if(lsText.equalsIgnoreCase(lstCustomerHubFr.get(i))){
+				reporter.reportLogPass("The "+i+" CustomerHubLink French transaltion of "+lsText+" is the same as "+lstCustomerHubFr.get(i));
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The "+i+" CustomerHubLink French transaltion of "+lsText+" is not the same as "+lstCustomerHubFr.get(i));
+			}
+
 			lsYmlHref=this.getLinkWithSpecificName(lstNameAndLinks,lsText,false);			
 			if(lsYmlHref.isEmpty()) {
-				reporter.reportLogFail("Unable to find "+lsText+" link.");
+				reporter.reportLogFailWithScreenshot("Unable to find "+lsText+" link.");
 			}
-			lsHref=this.getElementHref(this.lnkTSCCustomerHubAllLinks.get(i));	
-			reporter.softAssert(this.verifyLinks(lsHref,lsYmlHref),"The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref,"The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref);
+			lsHref=this.getElementHref(this.lnkTSCCustomerHubAllLinks.get(i));
+			if(this.verifyLinks(lsHref,lsYmlHref)){
+				reporter.reportLogPass("The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref);
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref);
+			}
 		}
 	}
 	
@@ -237,22 +257,38 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 		}
 		
 		for(int i=0;i<this.lnkAboutTSCAllLinks.size();i++) {
-			lsText=this.getUTFEnabledData(this.getElementText(this.lnkAboutTSCAllLinks.get(i)));	
-			reporter.softAssert(lsText.equalsIgnoreCase(lstAboutTSCFr.get(i)),"The "+i+" AboutTSLink French transaltion of "+lsText+" is the same as "+lstAboutTSCFr.get(i),"The "+i+" AboutTSLink French transaltion of "+lsText+" is not the same as "+lstAboutTSCFr.get(i));
+			lsText=this.getUTFEnabledData(this.getElementText(this.lnkAboutTSCAllLinks.get(i)));
+			if(lsText.equalsIgnoreCase(lstAboutTSCFr.get(i))){
+				reporter.reportLogPass("The "+i+" AboutTSLink French transaltion of "+lsText+" is the same as "+lstAboutTSCFr.get(i));
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The "+i+" AboutTSLink French transaltion of "+lsText+" is not the same as "+lstAboutTSCFr.get(i));
+			}
+
 			lsYmlHref=this.getLinkWithSpecificName(lstNameAndLinks,lsText,false);
 			if(lsYmlHref.isEmpty()) {
-				reporter.reportLogFail("Unable to find "+lsText+" link.");
+				reporter.reportLogFailWithScreenshot("Unable to find "+lsText+" link.");
 			}
 			lsHref=this.getElementHref(this.lnkAboutTSCAllLinks.get(i));
-			reporter.softAssert(this.verifyLinks(lsHref,lsYmlHref),"The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref,"The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref);
+			if(this.verifyLinks(lsHref,lsYmlHref)){
+				reporter.reportLogPass("The current "+lsText+" href of "+lsHref+" is correct while compared to "+lsYmlHref);
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The current "+lsText+" href of "+lsHref+" is not correct while compared to "+lsYmlHref);
+			}
 		}
 	}
 	
 	@Override
 	public void verifyFaceBookLink(List<String> lstSocialMediaLinks) {
-		String lsCurrentUrl = waitForPageLoadingByUrlChange(this.lnkFacebook);		
-		reporter.softAssert(lsCurrentUrl.toLowerCase().contains("facebook"),"The Url after clicking Facebook link contains facebook","The Url after clicking Facebook link does not contain facebook");
-		
+		String lsCurrentUrl = waitForPageLoadingByUrlChange(this.lnkFacebook);
+		if(lsCurrentUrl.toLowerCase().contains("facebook")){
+			reporter.reportLogPass("The Url after clicking Facebook link contains facebook");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Url after clicking Facebook link does not contain facebook");
+		}
+
 		String lsBaseUrl=this.getBaseURL()+"/";		
 		this.navigateToURL(lsBaseUrl);
 		this.waitForPageLoading();
@@ -268,12 +304,13 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 			reporter.reportLogPass("The element of '"+ lsText+"'"+" is displaying correctly.");
 		}
 		else{
-			reporter.reportLogFail("The element of '"+ lsText+"'"+" is displaying correctly.");
+			reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" is displaying correctly.");
 		}
 
 		WebElement element,item;
 		List<WebElement> itemList;
-		for(int i=0;i<lstCustomerServiceHelpTopics.size();i++) {
+		int loopSize=lstCustomerServiceHelpTopics.size();
+		for(int i=0;i<loopSize;i++) {
 			item = lstCustomerServiceHelpTopics.get(i);
 			getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 			element = lstCustomerServiceHelpTopicsTitle.get(i);
@@ -282,14 +319,14 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 			if (!lsText.isEmpty()) {
 				reporter.reportLogPass("The element of '" + lsText + "'" + " in Help topics list is displaying correctly.");
 			} else {
-				reporter.reportLogFail("The element of '" + lsText + "'" + " in Help topics list is displaying correctly.");
+				reporter.reportLogFailWithScreenshot("The element of '" + lsText + "'" + " in Help topics list is displaying correctly.");
 			}
 
 			element = lstCustomerServiceHelpTopicsIcon.get(i);
 			if (getReusableActionsInstance().isElementVisible(element)) {
 				reporter.reportLogPass("The icon of Help Topics item is displaying correctly.");
 			} else {
-				reporter.reportLogFail("The icon of Help Topics item is not displaying correctly.");
+				reporter.reportLogFailWithScreenshot("The icon of Help Topics item is not displaying correctly.");
 			}
 
 			getReusableActionsInstance().clickIfAvailable(item);
@@ -301,7 +338,7 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 				if (!lsText.isEmpty()) {
 					reporter.reportLogPass("The element of '" + lsText + "'" + " in Help topics list is displaying correctly.");
 				} else {
-					reporter.reportLogFail("The element of '" + lsText + "'" + " in Help topics list is displaying correctly.");
+					reporter.reportLogFailWithScreenshot("The element of '" + lsText + "'" + " in Help topics list is displaying correctly.");
 				}
 			}
 		}
@@ -362,5 +399,6 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 		getReusableActionsInstance().clickIfAvailable(btnCustomerServiceBackToHelpCenter);
 		getReusableActionsInstance().waitForElementVisibility(lblCustomerServiceWhatCanWeHelpYouWith);
 	}
+
 
 }

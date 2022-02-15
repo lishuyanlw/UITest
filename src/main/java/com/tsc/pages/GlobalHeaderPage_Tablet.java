@@ -121,4 +121,5 @@ public class GlobalHeaderPage_Tablet extends GlobalHeaderPage_Mobile{
         //Closing Popular Brand Section
         this.getReusableActionsInstance().clickIfAvailable(this.btnPopularBrand);
     }
+
 }

@@ -233,7 +233,10 @@ public class GlobalHeaderPage extends BasePage{
 	//Categories menu
 	@FindBy(xpath = "//*[contains(@class,'mega-categories mega-column')]//ul")
 	WebElement Categories;
-	
+
+	@FindBy(xpath = "//*[contains(@class,'primary-navigation__wrapper')]//li[@class='primary-navigation__item']")
+	public List<WebElement> headingMenuItem;
+
 	@FindBy(xpath = "//*[contains(@class,'primary-navigation__wrapper')]//a//span[contains(@class,'primary-navigation__link-text')]")
 	public List<WebElement> headingLinks;
 	
@@ -930,7 +933,7 @@ public class GlobalHeaderPage extends BasePage{
 		}
 	}
 
-	/**Method to get get heading of Sign In page after clicking the Favourites's link for anonymous user
+	/**Method to get heading of Sign In page after clicking the Favourites's link for anonymous user
 	 * @return String:page heading
 	 * @author Shruti Desai
 	 */

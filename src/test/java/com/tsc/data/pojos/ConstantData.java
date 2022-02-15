@@ -468,6 +468,15 @@ public class ConstantData {
         private List<String> lst_SearchKeyword_Bugs;
         private String lbl_ProductNumberToComparePRPAndPDPContent;
         private String lbl_prp_partial_url;
+        private List<String> lst_ClearanceKeyword;
+
+        public List<String> getLst_ClearanceKeyword() {
+            return lst_ClearanceKeyword;
+        }
+
+        public void setLst_ClearanceKeyword(List<String> lst_ClearanceKeyword) {
+            this.lst_ClearanceKeyword = lst_ClearanceKeyword;
+        }
 
         public String getLbl_prp_partial_url() {  return lbl_prp_partial_url;    }
 

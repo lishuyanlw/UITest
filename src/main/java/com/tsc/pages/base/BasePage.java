@@ -3,34 +3,27 @@ package com.tsc.pages.base;
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.text.Normalizer;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.apache.commons.io.IOUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.interactions.touch.TouchActions;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedCondition;
-
 import extentreport.ExtentTestManager;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import utils.Reporter;
-
 import utils.ReusableActions;
 
 	/**
@@ -392,7 +385,7 @@ import utils.ReusableActions;
 	 */		
 	public String getElementInnerText(WebElement element) {
 		JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
-		String lsText= (String)jse.executeScript("return arguments[0].innerText;", element);	
+		String lsText= (String)jse.executeScript("return arguments[0].innerText;", element);
 		return lsText.replace("&nbsp;", "").trim();
 	}
     

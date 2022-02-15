@@ -1,8 +1,7 @@
 package com.tsc.test.tests.globalHeader;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
-
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 import com.tsc.data.Handler.TestDataHandler;

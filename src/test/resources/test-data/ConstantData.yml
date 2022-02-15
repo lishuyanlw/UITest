@@ -94,8 +94,8 @@ searchResultPage:
   lst_SearchOption:
     - filterType: Product
       filterOption: 
-      - ["Category","Jeans"]
-      - ["Shop by colour","Black"]
+      - ["Shop by brand","Joan Rivers"]
+      - ["Shop by colour","Pink"]
     - filterType: Price
       filterOption:
         - ["Price","Under $100","Under"]
@@ -142,6 +142,7 @@ searchResultPage:
   lst_WriteReviewSubmitMessage: ["THANK YOU!","We will process your review and publish it within 3-7 business days."]
   lbl_TellYourFriendsSentMessage: "Your message has been sent!"
   lbl_ProductNumberWithBandAndReviewAndSeeMore: 407389
+  lst_ClearanceKeyword: ["Clearance","Home & Garden","Collectibles"]
 footerSection: 
   lst_SocialMediaLinks: ["https://www.facebook.com/Shoptsc","https://twitter.com/shoptsc","https://instagram.com/shoptsc","www.youtube.com","https://www.pinterest.ca/shoptsc"]
   lst_NameAndLinks: 
