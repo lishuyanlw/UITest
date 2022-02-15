@@ -1,10 +1,8 @@
 package com.tsc.pages;
 
 import java.util.List;
-
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
-
 import com.tsc.pages.base.BasePage;
 
 public class LoginPage extends BasePage {

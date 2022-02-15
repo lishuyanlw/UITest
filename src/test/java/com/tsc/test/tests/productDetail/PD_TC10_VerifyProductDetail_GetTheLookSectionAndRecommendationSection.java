@@ -1,15 +1,10 @@
 package com.tsc.test.tests.productDetail;
 
 import java.io.IOException;
-import java.util.List;
-
 import org.testng.annotations.Test;
-
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
-import com.tsc.test.tests.globalHeader.GH_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo;
-import com.tsc.test.tests.globalHeader.GH_TC02_Verify_Global_Header_SignIn_Favorite_ShoppingCartBag;
 
 public class PD_TC10_VerifyProductDetail_GetTheLookSectionAndRecommendationSection extends BaseTest{
 	/*

@@ -3,8 +3,6 @@ package com.tsc.test.tests.productSearchResult;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.tsc.pages.HomePage;
 import com.tsc.test.tests.globalFooter.GF_TC01_VerifySocialMedia;
 import com.tsc.test.tests.globalFooter.GF_TC02_VerifyCustomerHubLinksAndAboutTSCLinks;
 import org.openqa.selenium.WebElement;

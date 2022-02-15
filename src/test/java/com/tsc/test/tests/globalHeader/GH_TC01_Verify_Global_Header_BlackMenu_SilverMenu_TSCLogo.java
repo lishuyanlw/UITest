@@ -1,7 +1,6 @@
 package com.tsc.test.tests.globalHeader;
 
 import java.io.IOException;
-
 import com.tsc.data.Handler.TestDataHandler;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;

@@ -4,11 +4,9 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import com.tsc.test.tests.globalFooter.GF_TC01_VerifySocialMedia;
 import com.tsc.test.tests.globalFooter.GF_TC02_VerifyCustomerHubLinksAndAboutTSCLinks;
 import org.testng.annotations.Test;
-
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;

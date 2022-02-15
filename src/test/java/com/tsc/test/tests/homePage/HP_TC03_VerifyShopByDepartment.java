@@ -1,11 +1,8 @@
 package com.tsc.test.tests.homePage;
 
 import java.io.IOException;
-
 import org.testng.annotations.Test;
-
 import com.tsc.test.base.BaseTest;
-
 import com.tsc.pages.base.BasePage;
 
 public class HP_TC03_VerifyShopByDepartment extends BaseTest{

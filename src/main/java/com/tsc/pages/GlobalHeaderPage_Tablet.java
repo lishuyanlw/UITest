@@ -122,8 +122,4 @@ public class GlobalHeaderPage_Tablet extends GlobalHeaderPage_Mobile{
         this.getReusableActionsInstance().clickIfAvailable(this.btnPopularBrand);
     }
 
-    @Override
-    public void verifyFlyoutMenuItemClickingThenHoverAnotherItemAction(){
-
-    }
 }

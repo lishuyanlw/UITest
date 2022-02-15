@@ -5,7 +5,6 @@ import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

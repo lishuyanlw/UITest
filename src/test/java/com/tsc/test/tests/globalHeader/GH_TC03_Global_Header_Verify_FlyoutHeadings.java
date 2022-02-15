@@ -1,17 +1,9 @@
 package com.tsc.test.tests.globalHeader;
 
-import java.util.List;
-import java.util.Map;
-
-import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
-import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 
-/**
- * //Bug 19563 - [QA Defect] Two categories are highlighted at the same time in the Mega Navigation - in verifyFlyoutMenuItemClickingThenHoverAnotherItemAction function
- */
 public class GH_TC03_Global_Header_Verify_FlyoutHeadings extends BaseTest {
 
 	@Test(groups={"GlobalHeader","Regression"})

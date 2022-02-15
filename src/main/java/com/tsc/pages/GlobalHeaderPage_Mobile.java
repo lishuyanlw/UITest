@@ -2,13 +2,9 @@ package com.tsc.pages;
 
 import com.tsc.pages.base.BasePage;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
-
-import java.sql.Driver;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
@@ -433,12 +429,6 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
     public void scrollToHeadingElement(String headingName) {
         getReusableActionsInstance().javascriptScrollByVisibleElement(this.menuButton);
         getReusableActionsInstance().clickIfAvailable(this.menuButton);
-    }
-
-    @Override
-
-    public void verifyFlyoutMenuItemClickingThenHoverAnotherItemAction(){
-
     }
 
     public boolean validateTSCLogoNavigateToHomePage() {

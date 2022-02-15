@@ -948,45 +948,6 @@ public class GlobalHeaderPage extends BasePage{
 		return false;
 	}
 
-	public void verifyFlyoutMenuItemClickingThenHoverAnotherItemAction(){
-		String lsTextFontWeightBeforeClicking=headingLinks.get(0).getCssValue("font-weight");
-		if(lsTextFontWeightBeforeClicking.equalsIgnoreCase("300")){
-			reporter.reportLogPass("The font-weight of first Flyout menuItem before clicking is 300");
-		}
-		else{
-			reporter.reportLogFailWithScreenshot("The font-weight of first Flyout menuItem before clicking is not 300");
-		}
-
-		String lsTextFontWeightBeforeHovering=headingLinks.get(1).getCssValue("font-weight");
-		if(lsTextFontWeightBeforeHovering.equalsIgnoreCase("300")){
-			reporter.reportLogPass("The font-weight of Flyout second menuItem before hovering is 300");
-		}
-		else{
-			reporter.reportLogFailWithScreenshot("The font-weight of second Flyout menuItem before hovering is not 300");
-		}
-
-		//this.getReusableActionsInstance().javascriptScrollByVisibleElement(headingMenuItem.get(1));
-		this.getReusableActionsInstance().scrollToElement(headingMenuItem.get(1));
-		this.applyStaticWait(1000);
-		String lsTextFontWeightAfterHovering=headingLinks.get(1).getCssValue("font-weight");
-		if(lsTextFontWeightAfterHovering.equalsIgnoreCase("700")){
-			reporter.reportLogPass("The font-weight of second Flyout menuItem after hovering is 700");
-		}
-		else{
-			reporter.reportLogFailWithScreenshot("The font-weight of second Flyout menuItem after hovering is not 700");
-		}
-
-		String lsFirstMenuItemFontWeight=headingLinks.get(0).getCssValue("font-weight");
-		String lsSecondMenuItemFontWeight=headingLinks.get(1).getCssValue("font-weight");
-
-		if(lsFirstMenuItemFontWeight.equalsIgnoreCase("300")&&lsSecondMenuItemFontWeight.equalsIgnoreCase("700")){
-			reporter.reportLogPass("The first menuItem is not highlighted and the second menuItem is highlighted correctly");
-		}
-		else{
-			reporter.reportLogFailWithScreenshot("The first menuItem and second menuItem are not highlighted correctly");
-		}
-	}
-
 	public void verifyWatchTSCAtPageBottom(){}
 
 }
