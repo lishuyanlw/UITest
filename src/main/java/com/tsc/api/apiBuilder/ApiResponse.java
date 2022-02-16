@@ -38,7 +38,7 @@ public class ApiResponse extends ApiConfigs {
         Product.Products productItem=null;
         boolean bSoldout=false;
         
-        Product product = getProductDetailsForKeyword(searchKeyword,true);
+        Product product = getProductDetailsForKeyword(searchKeyword,null,true);
         if(product==null) {
         	return null;
         }
@@ -115,7 +115,7 @@ public class ApiResponse extends ApiConfigs {
                     if(outputPage>totalPage||outputPage>=10) {
                     	flag = false;
                     }
-                    product = getProductDetailsForKeyword(searchKeyword,false);
+                    product = getProductDetailsForKeyword(searchKeyword,null,false);
                 }
             }else{
             	productItem = getProductInfoForInputParams(product,outputDataCriteria,isSoldOut);
@@ -124,7 +124,7 @@ public class ApiResponse extends ApiConfigs {
                     if(outputPage>totalPage||outputPage>=10) {
                     	flag = false;
                     }                    
-                    product = getProductDetailsForKeyword(searchKeyword,false);
+                    product = getProductDetailsForKeyword(searchKeyword,null,false);
                  }else{
                 	selectedProduct.productNumber=productItem.getItemNo();
              		selectedProduct.productName=productItem.getName();
@@ -148,7 +148,7 @@ public class ApiResponse extends ApiConfigs {
      * determines as if the call is made first time or not
      * @return - Product - Product Object from api Response
      */
-    private Product getProductDetailsForKeyword(String searchKeyword,boolean firstTimeFunctionCall){
+    private Product getProductDetailsForKeyword(String searchKeyword,String defaultPageItems,boolean firstTimeFunctionCall){
         Response response = null;
         Product product = null;
         boolean flag = true;
@@ -194,10 +194,10 @@ public class ApiResponse extends ApiConfigs {
         }
         
         if(bBrand) {
-        	configs = super.getProductSearchByKeywordInputConfig(searchKeyword, null, outputPage, super.getApiPropertyData().get("test_apiVersion"));
+        	configs = super.getProductSearchByKeywordInputConfig(searchKeyword, null, outputPage, defaultPageItems,super.getApiPropertyData().get("test_apiVersion"));
         }
         else {
-        	configs = super.getProductSearchByKeywordInputConfig(searchKeyword, dimensionNumber, outputPage, super.getApiPropertyData().get("test_apiVersion"));
+        	configs = super.getProductSearchByKeywordInputConfig(searchKeyword, dimensionNumber, outputPage, defaultPageItems,super.getApiPropertyData().get("test_apiVersion"));
         }
         
         
@@ -443,7 +443,7 @@ public class ApiResponse extends ApiConfigs {
     public Product.Products getProductOfPDPForAddToBagFromKeyword(String searchKeyword){
         boolean flag = true;
         
-        Product product = getProductDetailsForKeyword(searchKeyword,true);
+        Product product = getProductDetailsForKeyword(searchKeyword,null,true);
         if(product==null) {
         	return null;
         }
@@ -456,7 +456,7 @@ public class ApiResponse extends ApiConfigs {
                 if(outputPage>totalPage||outputPage>=10) {
                 	flag = false;
                 }                    
-                product = getProductDetailsForKeyword(searchKeyword,false);
+                product = getProductDetailsForKeyword(searchKeyword,null,false);
              }else{
                 flag = false;
             }
@@ -532,7 +532,7 @@ public class ApiResponse extends ApiConfigs {
     public Product.Products getProductInfoFromKeywordWithSoldOutInfo(String searchKeyword,Map<String,Object> outputDataCriteria){
         boolean flag = true,bSoldout=false;
                 
-        Product product = getProductDetailsForKeyword(searchKeyword,true);
+        Product product = getProductDetailsForKeyword(searchKeyword,null,true);
         if(product==null) {
         	return null;
         }
@@ -577,7 +577,7 @@ public class ApiResponse extends ApiConfigs {
                     if(outputPage>totalPage||outputPage>=10) {
                     	flag = false;
                     }
-                    product = getProductDetailsForKeyword(searchKeyword,false);
+                    product = getProductDetailsForKeyword(searchKeyword,null,false);
                 }
             }else{
             	productItem = getProductInfoForInputParamsWithSoldOutInfo(product,outputDataCriteria);
@@ -586,7 +586,7 @@ public class ApiResponse extends ApiConfigs {
                     if(outputPage>totalPage||outputPage>=10) {
                     	flag = false;
                     }                    
-                    product = getProductDetailsForKeyword(searchKeyword,false);
+                    product = getProductDetailsForKeyword(searchKeyword,null,false);
                  }else{
                     flag = false;
                 }
@@ -608,7 +608,7 @@ public class ApiResponse extends ApiConfigs {
      * @param - String - searchKeyword : search keyword for Product
      * @return - Product.Products - product for search keyword
      */
-    public Product.Products getProductInfoWithProductNumberAsSearchKeyword(String searchKeyword){
+    public Product.Products getProductInfoWithProductNumberAsSearchKeyword(String searchKeyword, String defaultPageItems){
         Response response = null;
         Product product = null;
         boolean flag = true;
@@ -618,7 +618,7 @@ public class ApiResponse extends ApiConfigs {
         if(configs!=null)
             configs.clear();
  
-        configs = super.getProductSearchByKeywordInputConfig(searchKeyword, null, 1, super.getApiPropertyData().get("test_apiVersion"));
+        configs = super.getProductSearchByKeywordInputConfig(searchKeyword, null, 1, defaultPageItems, super.getApiPropertyData().get("test_apiVersion"));
         
         repeatNumber=0;
         do{
@@ -664,7 +664,7 @@ public class ApiResponse extends ApiConfigs {
         ProductDetailsItem productDetailsItem=new ProductDetailsItem();
         String productNumber;
         
-        Product product = getProductDetailsForKeyword(searchKeyword,true);
+        Product product = getProductDetailsForKeyword(searchKeyword,null,true);
         if(product==null) {
         	return null;
         }
@@ -700,7 +700,7 @@ public class ApiResponse extends ApiConfigs {
                 if(outputPage>totalPage||outputPage>=10) {
                 	flag = false;
                 }
-                product = getProductDetailsForKeyword(searchKeyword,false);
+                product = getProductDetailsForKeyword(searchKeyword,null,false);
             }
         }while(flag);
 
@@ -734,6 +734,50 @@ public class ApiResponse extends ApiConfigs {
 		}
     	return null;
 	}
-    
 
+	/**
+	 * This method finds product info on the basis of input search keyword with preconditions(video,style,size,brand,badgeImage,review,easyPay,WasPrice,and AddToBag)
+	 * @param - String - searchKeyword : search keyword for Product
+	 * @param - Map<String,Object> - outputDataCriteria : criteria for searching a particular product
+	 * @param - boolean - isSoldOut :true for including soldout criteria and false for not checking soldout criteria
+	 * @return - Product.Products - product for search keyword
+	 */
+	public Map<String,String> getProductLastPageWhenPagesMoreThanOne(List<String> searchKeyword,Map<String,Object> mandatoryParameters, int totalPage, String defaultPageItems,String basePRPPageURL){
+		String pageURL = null;
+		Map<String,String> map = new HashMap<>();
+		Product product = null;
+
+		for(String searchProduct:searchKeyword){
+			product = getProductDetailsForKeyword(searchProduct,defaultPageItems,true);
+			if(product==null)
+				continue;
+			else if(product.getPaging().getTotalPages()>=totalPage){
+				if(mandatoryParameters!=null){
+					map.put("searchTerm",searchProduct);
+					String partialURL=null;
+					for(Map.Entry<String,Object> entry:mandatoryParameters.entrySet()){
+						partialURL = partialURL==null ? entry.getKey()+"="+entry.getValue() : partialURL+"&"+entry.getKey()+"="+entry.getValue();
+						pageURL = basePRPPageURL+partialURL+"&searchterm="+searchProduct;
+					}
+					break;
+				}else
+					map.put("searchTerm",searchProduct);
+					pageURL = basePRPPageURL+"&searchterm="+searchProduct;
+				break;
+			}else if(product.getPaging().getTotalPages()<totalPage)
+				continue;
+		}
+		if(pageURL!=null) {
+			//Getting last page for product on PRP page
+			double totalItems = product.getPaging().getTotalRecords();
+			long totalPages = product.getPaging().getTotalPages();
+			long lastPage = (long) Math.ceil(totalItems / Long.valueOf(defaultPageItems));
+			map.put("pageURL", pageURL + "&page=" + lastPage);
+			map.put("totalPages", String.valueOf(totalPages));
+			map.put("totalItems", String.valueOf(totalItems));
+			map.put("lastPage",String.valueOf(lastPage));
+			return map;
+		}
+	return null;
+	}
 }

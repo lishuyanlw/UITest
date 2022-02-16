@@ -198,7 +198,6 @@ public class ProductResultsPage extends BasePage{
 	//Pagination
 	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='prp__pagination']")
 	public WebElement cntPagination;
-
 	public By byPagination=By.xpath("//section[@class='tsc-container']//div[@class='prp__pagination']");
 
 	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='prp__pagination']//div[@class='prp__pagination__pages']//a")
@@ -866,7 +865,7 @@ public class ProductResultsPage extends BasePage{
 	/**
 	 * This method will verify the item content in product list without mouse hover.
 	 * @param-List<WebElement> productList: the input product list
-	 * @param boolean bMandatoryOnly: true/false
+	 * @param-boolean bMandatoryOnly: true/false
 	 * @author Wei.Li
 	 */
 	public void verifySearchResultContent(List<WebElement> productList,boolean bMandatoryOnly) {
@@ -883,7 +882,7 @@ public class ProductResultsPage extends BasePage{
 	/**
 	 * This method will verify the optional item content in product list without mouse hover.
 	 * @param-List<WebElement> productList: the input product list
-	 * @param boolean bMouseHover: true/false
+	 * @param-boolean bMouseHover: true/false
 	 * @author Wei.Li
 	 */
 	public void verifySearchResultContentForMandatoryFields(List<WebElement> productList,boolean bMouseHover) {
@@ -1059,7 +1058,7 @@ public class ProductResultsPage extends BasePage{
 	/**
 	 * This method will verify the item content in product list with mouse hover.
 	 * @param-List<WebElement> productList: the input product list
-	 * @param boolean bMouseHoverOnly: true/false
+	 * @param-boolean bMouseHoverOnly: true/false
 	 * @author Wei.Li
 	 */
 	public void verifySearchResultContentWithMouseHover(List<WebElement> productList,boolean bMouseHoverOnly) {
@@ -3759,6 +3758,53 @@ public class ProductResultsPage extends BasePage{
 			} else
 				reporter.reportLog("Category items are not checked as refinement is null");
 		}
+	}
+	/**
+	 * This method fetches the total count of pages on PRP page for searched product
+	 * @param-void
+	 * @return-int- total number of pages for searched product
+	 */
+	public int getTotalProductPageCountAfterSearch(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.cntPagination);
+		this.getReusableActionsInstance().scrollToElement(this.cntPagination);
+		return this.PageNumberList.size();
+	}
+
+	/**
+	 * This method verifies PRP page pagination after loading url directly in browser
+	 * @param-HashMap<String,String> prpPagePaginationData Loaded page data that will be used for verification
+	 */
+	public void verifyPaginationCountOnLastPage(Map<String,String> prpPagePaginationData){
+		int itemCount = Integer.valueOf(this.lblProductCountOnPage.getText().split(" ")[0]);
+		int totalPagesOnPRPForItem = this.getTotalProductPageCountAfterSearch();
+		getDriver().get(prpPagePaginationData.get("pageURL"));
+		waitForCondition(driver->{return (this.lblSearchResultMessage.isDisplayed() && !this.lblSearchResultMessage.getText().isEmpty() && this.getProductList().size()>0);},10000);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.cntPagination);
+		this.getReusableActionsInstance().scrollToElement(this.cntPagination);
+		//Verifying total page count for searched product
+		if(totalPagesOnPRPForItem==Integer.valueOf(prpPagePaginationData.get("totalPages")))
+			reporter.reportLogPass("Page Count on PRP page for no if items is: "+totalPagesOnPRPForItem+" and are same as fetched from API");
+		else
+			reporter.reportLogFailWithScreenshot("Page Count on PRP page for no if items is: "+totalPagesOnPRPForItem+" and are same as fetched from API: "+Integer.valueOf(prpPagePaginationData.get("pageCount")));
+		//Verifying total items on page count
+		String[] dynamicPaginationContent = this.txtShowingDynamicContent.getText().split(" ");
+		int startItemCountInDynamicText = Integer.valueOf(dynamicPaginationContent[0]);
+		int finalItemCountInDynamicText = Integer.valueOf(dynamicPaginationContent[2]);
+		int itemCountInPaginationSection = Integer.valueOf(dynamicPaginationContent[dynamicPaginationContent.length-1]);
+		if(itemCount==itemCountInPaginationSection)
+			reporter.reportLogPass("Item Count on PRP page displayed at top: "+itemCount+" is same as in pagination: "+itemCountInPaginationSection);
+		else
+			reporter.reportLogFailWithScreenshot("Item Count on PRP page displayed at top: "+itemCount+" is not same as in pagination: "+itemCountInPaginationSection);
+		//Verifying page items in Dynamic Text in Pagination
+		if(finalItemCountInDynamicText==itemCountInPaginationSection)
+			reporter.reportLogPass("Item Count on PRP page displayed in pagination: "+finalItemCountInDynamicText+" is same as in pagination: "+itemCountInPaginationSection);
+		else
+			reporter.reportLogFailWithScreenshot("Item Count on PRP page displayed in pagination:: "+finalItemCountInDynamicText+" is not same as in pagination: "+itemCountInPaginationSection);
+		//Verifying beginning page items in Dynamic Text is less than final Item Dynamic Text in Pagination
+		if(startItemCountInDynamicText<=finalItemCountInDynamicText)
+			reporter.reportLogPass("Starting item Count on PRP page displayed in pagination: "+startItemCountInDynamicText+" is less than final dynamic item count: "+finalItemCountInDynamicText);
+		else
+			reporter.reportLogFailWithScreenshot("Starting item Count on PRP page displayed in pagination:: "+startItemCountInDynamicText+" is not less than final dynamic item count: "+finalItemCountInDynamicText);
 	}
 
 	public class ProductItem{
