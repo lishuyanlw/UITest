@@ -3475,15 +3475,7 @@ public class ProductResultsPage extends BasePage{
 		
 		lstItem=lstFilter.get(1);
 		selectFilterItemInLeftPanel(lstItem.get(0), lstItem.get(1));
-		String lsFirstProductNameForSecondFilter=this.getElementInnerText(this.productResultList.get(0).findElement(byProductName));
-		
-		if(lsFirstProductNameForSecondFilter.equalsIgnoreCase(lsFirstProductNameForFirstFilter)) {
-			reporter.reportLogPass("The product search results are changing after adding one more filter correctly"); 
-		}
-		else {
-			reporter.reportLogFailWithScreenshot("The product search results are not changing after adding one more filter correctly"); 
-		}
-		
+
 		this.getDriver().navigate().back();
 		this.waitForPageToLoad();
 		this.getReusableActionsInstance().staticWait(3000);
