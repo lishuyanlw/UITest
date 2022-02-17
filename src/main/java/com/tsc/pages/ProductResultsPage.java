@@ -1966,7 +1966,7 @@ public class ProductResultsPage extends BasePage{
 
 		String productNumber="";
 		for(String lsKeyword:lstKeyword) {
-			product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,true);
+			product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,true,false);
 			if(product!=null) {
 				break;
 			}
@@ -2045,7 +2045,7 @@ public class ProductResultsPage extends BasePage{
 		Product.Products product=null;
 		String productName="";
 		for(String lsKeyword:lstKeyword) {
-			product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,true);
+			product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,true,false);
 			if(product!=null) {
 				break;
 			}
@@ -3776,16 +3776,18 @@ public class ProductResultsPage extends BasePage{
 	 */
 	public void verifyPaginationCountOnLastPage(Map<String,String> prpPagePaginationData){
 		int itemCount = Integer.valueOf(this.lblProductCountOnPage.getText().split(" ")[0]);
-		int totalPagesOnPRPForItem = this.getTotalProductPageCountAfterSearch();
+		//int totalPagesOnPRPForItem = this.getTotalProductPageCountAfterSearch();
 		getDriver().get(prpPagePaginationData.get("pageURL"));
 		waitForCondition(driver->{return (this.lblSearchResultMessage.isDisplayed() && !this.lblSearchResultMessage.getText().isEmpty() && this.getProductList().size()>0);},10000);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.cntPagination);
 		this.getReusableActionsInstance().scrollToElement(this.cntPagination);
+		/**
 		//Verifying total page count for searched product
 		if(totalPagesOnPRPForItem==Integer.valueOf(prpPagePaginationData.get("totalPages")))
-			reporter.reportLogPass("Page Count on PRP page for no if items is: "+totalPagesOnPRPForItem+" and are same as fetched from API");
+			reporter.reportLogPass("Page Count on PRP page for no if items is: "+totalPagesOnPRPForItem+" and are same as fetched from API: "+Integer.valueOf(prpPagePaginationData.get("totalPages")));
 		else
 			reporter.reportLogFailWithScreenshot("Page Count on PRP page for no if items is: "+totalPagesOnPRPForItem+" and are same as fetched from API: "+Integer.valueOf(prpPagePaginationData.get("pageCount")));
+		*/
 		//Verifying total items on page count
 		String[] dynamicPaginationContent = this.txtShowingDynamicContent.getText().split(" ");
 		int startItemCountInDynamicText = Integer.valueOf(dynamicPaginationContent[0]);
@@ -3805,6 +3807,22 @@ public class ProductResultsPage extends BasePage{
 			reporter.reportLogPass("Starting item Count on PRP page displayed in pagination: "+startItemCountInDynamicText+" is less than final dynamic item count: "+finalItemCountInDynamicText);
 		else
 			reporter.reportLogFailWithScreenshot("Starting item Count on PRP page displayed in pagination:: "+startItemCountInDynamicText+" is not less than final dynamic item count: "+finalItemCountInDynamicText);
+	}
+
+	/**
+	 * This method verifies that PRP page loads and display items for item that have no swatch and more than 16 items
+	 * @param-List<String> - inputParams containing properties of Product to look for
+	 */
+	public void loadProductOnPRPPageForItemWithMoreThanSixteenVariantsAndNoSwatch(List<String> inputParams,String defaultItemsCountOnPRP) throws IOException {
+		ApiResponse apiResponse=new ApiResponse();
+		Map<String,Object> inputParamMap = new HashMap<>();
+		inputParamMap.put("size",0);
+		inputParamMap.put("style",inputParams.get(1));
+		inputParamMap.put("pageSize",defaultItemsCountOnPRP);
+		inputParamMap.put("video",0);
+		Product.Products product = apiResponse.getProductInfoFromKeyword(inputParams.get(0),inputParamMap,false,true);
+
+		this.getSearchResultLoad(product.getName(),true);
 	}
 
 	public class ProductItem{

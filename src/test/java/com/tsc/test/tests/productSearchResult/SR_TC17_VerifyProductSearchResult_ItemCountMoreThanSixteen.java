@@ -1,18 +1,17 @@
 package com.tsc.test.tests.productSearchResult;
 
-import com.tsc.api.apiBuilder.ApiResponse;
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * BUG-20633 - PRP Page - Pagination on PRP page incorrect
+ * BUG-20719 - [POST PROD] PRP breaks when products have more than 16 variants and no swatches
  */
 public class SR_TC17_VerifyProductSearchResult_ItemCountMoreThanSixteen extends BaseTest {
 
@@ -26,12 +25,16 @@ public class SR_TC17_VerifyProductSearchResult_ItemCountMoreThanSixteen extends 
         //Arrange - Getting Test Data
         List<String> searchKeywordList = TestDataHandler.constantData.getSearchResultPage().getLst_APISearchingKeyword();
         String basePRPPageURL = System.getProperty("QaUrl")+TestDataHandler.constantData.getSearchResultPage().getLbl_prp_partial_url();
-        Map<String,Object> map = new HashMap<>();
-        map.put("rd",1);
+        String defaultPageSetting = TestDataHandler.constantData.getSearchResultPage().getLbl_SearchResultPageDefaultSetting();
+        List<String> productWithMoreThanSixteenSize = TestDataHandler.constantData.getSearchResultPage().getLst_SearchOption().get(8).getFilterOption().get(1);
 
         //Act & Assert - Verification of BUG-20633 - PRP Page - Pagination on PRP page incorrect
-        Map<String,String> pageData = getApiResponseThreadLocal().getProductLastPageWhenPagesMoreThanOne(searchKeywordList,map,5,"36",basePRPPageURL);
+        Map<String,String> pageData = getApiResponseThreadLocal().getProductLastPageWhenPagesMoreThanOne(searchKeywordList,null,5,defaultPageSetting,basePRPPageURL);
         getProductResultsPageThreadLocal().getSearchResultLoad(pageData.get("searchTerm"),true);
         getProductResultsPageThreadLocal().verifyPaginationCountOnLastPage(pageData);
+
+        //Act - BUG-20719 - [POST PROD] PRP breaks when products have more than 16 variants and no swatches
+        getProductResultsPageThreadLocal().loadProductOnPRPPageForItemWithMoreThanSixteenVariantsAndNoSwatch(productWithMoreThanSixteenSize,defaultPageSetting);
+        //Assert
     }
 }

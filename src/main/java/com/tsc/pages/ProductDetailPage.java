@@ -2289,7 +2289,7 @@ public class ProductDetailPage extends BasePage {
 		switch(lsType) {
 			case "AllConditionsWithoutCheckingSoldOutCriteria":
 				for(String lsKeyword:lstKeyword) {
-					product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,false);
+					product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,false,false);
 					if(product!=null) {
 						break;
 					}
@@ -2297,7 +2297,7 @@ public class ProductDetailPage extends BasePage {
 				break;
 			case "AllConditionsWithCheckingSoldOutCriteria":
 				for(String lsKeyword:lstKeyword) {
-					product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,true);
+					product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,true,false);
 					if(product!=null) {
 						break;
 					}

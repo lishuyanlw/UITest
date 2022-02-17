@@ -32,7 +32,7 @@ public class ApiResponse extends ApiConfigs {
      * @param - boolean - isSoldOut :true for including soldout criteria and false for not checking soldout criteria 
      * @return - Product.Products - product for search keyword
      */
-    public Product.Products getProductInfoFromKeyword(String searchKeyword,Map<String,Object> outputDataCriteria,boolean isSoldOut){
+    public Product.Products getProductInfoFromKeyword(String searchKeyword,Map<String,Object> outputDataCriteria,boolean isSoldOut,boolean basicCheck){
         boolean flag = true;
         String lsNowPrice,lsWasPrice;
         Product.Products productItem=null;
@@ -118,13 +118,16 @@ public class ApiResponse extends ApiConfigs {
                     product = getProductDetailsForKeyword(searchKeyword,null,false);
                 }
             }else{
-            	productItem = getProductInfoForInputParams(product,outputDataCriteria,isSoldOut);
+            	productItem = getProductInfoForInputParams(product,outputDataCriteria,isSoldOut,basicCheck);
                 if(productItem==null){
                     outputPage++;
                     if(outputPage>totalPage||outputPage>=10) {
                     	flag = false;
-                    }                    
-                    product = getProductDetailsForKeyword(searchKeyword,null,false);
+                    }
+                    String defaultItemCount = null;
+                    if(outputDataCriteria.get("pageSize")!=null)
+                    	defaultItemCount = outputDataCriteria.get("pageSize").toString();
+                    product = getProductDetailsForKeyword(searchKeyword,defaultItemCount,false);
                  }else{
                 	selectedProduct.productNumber=productItem.getItemNo();
              		selectedProduct.productName=productItem.getName();
@@ -141,7 +144,7 @@ public class ApiResponse extends ApiConfigs {
         return productItem;
     }
 
-    /**
+	/**
      * This method find Product Details for search Keyword as api call
      * @param - String - searchKeyword : search keyword for Product
      * @param - boolean - firstTimeFunctionCall : since this method is call multiple times, this parameter
@@ -306,7 +309,7 @@ public class ApiResponse extends ApiConfigs {
      * @param - boolean - isSoldOut :true for including soldout criteria and false for not checking soldout criteria 
      * @return - Product.Products - product for search keyword
      */
-    private Product.Products getProductInfoForInputParams(Product product,Map<String,Object> configs,boolean isSoldOut){
+    private Product.Products getProductInfoForInputParams(Product product,Map<String,Object> configs,boolean isSoldOut,boolean basicCheck){
     	if(product==null) {
         	return null;
         }
@@ -322,9 +325,9 @@ public class ApiResponse extends ApiConfigs {
                 if(entry.getKey().toLowerCase().contains("style")){
                     styleCount = Integer.valueOf(entry.getValue().toString());
                 }
-                if(entry.getKey().toLowerCase().contains("size")){
+                if(entry.getKey().equalsIgnoreCase("size")){
                     sizeCount = Integer.valueOf(entry.getValue().toString());
-                }                       
+                }
             }
          }
  
@@ -333,7 +336,12 @@ public class ApiResponse extends ApiConfigs {
         	lsNowPrice=data.getIsPriceRange();
         	lsWasPrice=data.getWasPriceRange();
             //if(data.getVideosCount()>=videoCount && data.getStyles().size()>=styleCount && data.getSizes().size()>=sizeCount &&data.isShowBadgeImage()&&data.getProductReviewRating()>0&&!data.getEasyPaymentPrice().isEmpty()&&!lsNowPrice.equalsIgnoreCase(lsWasPrice)&&data.isEnabledAddToCart()) {
-			if((videoCount==0 ? data.getVideosCount()==videoCount : data.getVideosCount()>=videoCount) && data.getStyles().size()>=styleCount && data.getSizes().size()>=sizeCount &&data.isShowBadgeImage()&&data.getProductReviewRating()>0&&!data.getEasyPaymentPrice().isEmpty()&&!lsNowPrice.equalsIgnoreCase(lsWasPrice)&&data.isEnabledAddToCart()) {
+			boolean flag = false;
+			if(basicCheck)
+				flag = (videoCount==0 ? data.getVideosCount()==videoCount : data.getVideosCount()>=videoCount) && data.getStyles().size()>=styleCount && data.getSizes().size()>=sizeCount;
+			else
+				flag = (videoCount==0 ? data.getVideosCount()==videoCount : data.getVideosCount()>=videoCount) && data.getStyles().size()>=styleCount && data.getSizes().size()>=sizeCount &&data.isShowBadgeImage()&&data.getProductReviewRating()>0&&!data.getEasyPaymentPrice().isEmpty()&&!lsNowPrice.equalsIgnoreCase(lsWasPrice)&&data.isEnabledAddToCart();
+			if(flag) {
             	if(data.getBrand()!=null) {
             		if(data.getBrand().isEmpty()) {
             			continue;
@@ -390,8 +398,8 @@ public class ApiResponse extends ApiConfigs {
         }
         return null;
     }
-    
-    /**
+
+	/**
      * This method finds PDP url for Add To Bag enabled product
      * @param - Product - product : Product class object
      * @return - Product.Products - product for search keyword
@@ -762,7 +770,7 @@ public class ApiResponse extends ApiConfigs {
 					break;
 				}else
 					map.put("searchTerm",searchProduct);
-					pageURL = basePRPPageURL+"&searchterm="+searchProduct;
+					pageURL = basePRPPageURL+"&rd=1&searchterm="+searchProduct;
 				break;
 			}else if(product.getPaging().getTotalPages()<totalPage)
 				continue;
