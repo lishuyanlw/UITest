@@ -112,7 +112,7 @@ searchResultPage:
     - filterType: FilterBugs
       filterOption:  
         - ["Shop by brand","Pajar"]
-        - ["Price","$50 - $100"] 
+        - ["Price","Under $100"] 
     - filterType: CuratedCollectionsBugs
       filterOption:  
         - ["Jewellery","The Vault"]              

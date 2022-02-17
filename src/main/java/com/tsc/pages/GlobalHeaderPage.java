@@ -581,6 +581,7 @@ public class GlobalHeaderPage extends BasePage{
 		WebElement headingWebElement = FlyoutHeadings.findElement(By.xpath(xpathHeading));
 		getReusableActionsInstance().javascriptScrollByVisibleElement(headingWebElement);
 		getReusableActionsInstance().scrollToElement(headingWebElement);
+		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 
 		if(headingWebElement!=null && submenuHeading==null) {
 			headingWebElement.click();
@@ -593,6 +594,7 @@ public class GlobalHeaderPage extends BasePage{
 			if(SubMenu.size()>0){
 				getReusableActionsInstance().javascriptScrollByVisibleElement(SubMenu.get(0));
 				getReusableActionsInstance().scrollToElement(SubMenu.get(0));
+				this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 				if(itemName!=null) {
 					String xpathSubmenuItem=createXPath(".//li[contains(@class,'sub-items')]//a[contains(.,'{0}')]",itemName);
 					WebElement SubMenuItem=getDriver().findElement(By.xpath(xpathSubmenuItem));

@@ -388,7 +388,8 @@ public class ProductResultsPage extends BasePage{
 		this.getReusableActionsInstance().clickIfAvailable(globalHeader.searchBox,3000);
 		for(String inputText:data){
 			globalHeader.searchBox.sendKeys(inputText);
-			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+			//For thinking time to wait for backend response
+			this.getReusableActionsInstance().staticWait(300);
 		}
 		//globalHeader.searchBox.sendKeys(searchKeyword);
 		//globalHeader.btnSearchSubmit.click();
@@ -411,8 +412,8 @@ public class ProductResultsPage extends BasePage{
 		this.getReusableActionsInstance().clickIfAvailable(globalHeader.searchBox,3000);
 		for(String inputText:data){
 			globalHeader.searchBox.sendKeys(inputText);
-			//For thinking time
-			this.getReusableActionsInstance().staticWait(500);
+			//For thinking time for waiting for backend response
+			this.getReusableActionsInstance().staticWait(300);
 		}
 
 		//this.getReusableActionsInstance().staticWait(3000);
@@ -428,9 +429,8 @@ public class ProductResultsPage extends BasePage{
 			this.getReusableActionsInstance().clickIfAvailable(globalHeader.btnSearchSubmit);
 		}
 
-		this.getReusableActionsInstance().staticWait(5000);
+//		this.getReusableActionsInstance().staticWait(5000);
 		this.waitForPageToLoad();
-		this.getReusableActionsInstance().staticWait(2000);
 
 		if(searchKeyword.matches("\\d+")){
 			this.getReusableActionsInstance().waitForElementVisibility(this.lblPDPProductName,120);
@@ -459,8 +459,8 @@ public class ProductResultsPage extends BasePage{
 		this.clearContent(globalHeader.searchBox);
 		for(int i=0;i<lsKeyword.length();i++) {
 			globalHeader.searchBox.sendKeys(lsKeyword.substring(i,i+1));
-			//For thinking time
-			getReusableActionsInstance().staticWait(500);
+			//For thinking time to wait for backend response
+			getReusableActionsInstance().staticWait(300);
 		}
 
 		switch(lsOption) {
@@ -496,8 +496,6 @@ public class ProductResultsPage extends BasePage{
 		}
 
 		this.waitForPageToLoad();
-		//this.getReusableActionsInstance().staticWait(2000);
-		this.getReusableActionsInstance().waitForElementVisibility(this.lblSearchResultMessage,120);
 
 		return true;
 	}
@@ -605,7 +603,6 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	public List<WebElement> getProductList(){
-		this.waitForPageToLoad();
 		return productResultList;
 	}
 
@@ -948,7 +945,7 @@ public class ProductResultsPage extends BasePage{
 					}
 					else{
 						reporter.reportLogFailWithScreenshot("Product option is empty");
-					}					
+					}
 				}
 			}
 
@@ -1441,6 +1438,7 @@ public class ProductResultsPage extends BasePage{
 
 		WebElement searchInputButton,item;
 		List<WebElement> subItemList;
+		String lsHeader;
 		boolean bCategory=lsFirstLevelItem.equalsIgnoreCase("category");
 		
 		if(bCategory&&this.bCategoryExpand) {
@@ -1449,8 +1447,9 @@ public class ProductResultsPage extends BasePage{
 		}
 				
 		for(int i=0;i<this.productFilterList.size();i++) {
+			final int tempIndex=i;
 			getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i));
-			String lsHeader=this.productFilterList.get(i).getText().trim();
+			lsHeader=this.productFilterList.get(i).getText().trim();
 			if(lsHeader.contains("(")) {
 				lsHeader=lsHeader.split("\\(")[0].trim();
 			}
@@ -1465,14 +1464,21 @@ public class ProductResultsPage extends BasePage{
 					searchInputButton=this.productFilterContainerList.get(i).findElement(this.byProductFilterSearchInput);
 					getReusableActionsInstance().javascriptScrollByVisibleElement(searchInputButton);
 					searchInputButton.sendKeys(lsSecondLevelItem);
-					getReusableActionsInstance().staticWait(3000);
+					//keep it to wait for search results
+					this.getReusableActionsInstance().staticWait(300);
 					subItemList=this.productFilterContainerList.get(i).findElements(this.bySecondaryFilterAll);
 					if(subItemList.size()>0) {
 						getReusableActionsInstance().javascriptScrollByVisibleElement(subItemList.get(0));
-						getReusableActionsInstance().clickIfAvailable(subItemList.get(0));
-						
-						//this.getReusableActionsInstance().staticWait(7000);
-						this.waitForSortingOrFilteringCompleted();
+						subItemList.get(0).click();;
+
+						final By bySelectedSecondFilter=By.xpath("//section[@class='tsc-container']//div[@class='prp-filter-panel']//div[@class='prp-filter-panel__blocks']//button[@class='prp-filter-panel__block-title'][.='"+lsHeader+" (1)']");
+						this.waitForCondition(Driver->{ return this.getDriver().findElement(bySelectedSecondFilter).isDisplayed();},8000);
+
+						//To keep this static to wait for DOM change
+						//this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+						//this.waitForSortingOrFilteringCompleted();
+
+						this.productFilterList.get(i).getText().trim();
 						
 						//Bug 19628: [QA Defect - P3] PRP: no products display if user is on the last page and select a faucet from the left nav
 						if(!this.URL().contains("page=")) {
@@ -1491,7 +1497,7 @@ public class ProductResultsPage extends BasePage{
 						
 						verifyUrlPatternAfterSelectFilter(false);
 						
-						return waitForSortingOrFilteringCompleted();
+						return true;
 					}
 					else {
 						break;
@@ -1507,7 +1513,7 @@ public class ProductResultsPage extends BasePage{
 				
 				for(WebElement subItem : subItemList) {
 					getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
-					//getReusableActionsInstance().staticWait(2000);
+
 					//if statement to test Bug-19685 - Review filter
 					if(lsSecondLevelItem.toLowerCase().contains("star")){
 						lsSubItem =this.getElementInnerText(subItem.findElement(By.xpath(".//span[@class='prp-filter-panel__filter-list__item-label-text visually-hidden']")));
@@ -1531,11 +1537,15 @@ public class ProductResultsPage extends BasePage{
 					//If found lsSecondLevelItem
 					if(lsSubItem.equalsIgnoreCase(lsSecondLevelItem)) {
 						//getReusableActionsInstance().staticWait(2000);
-						getReusableActionsInstance().clickIfAvailable(subItem);
-						
-						//this.getReusableActionsInstance().staticWait(2000);
-						this.waitForSortingOrFilteringCompleted();
-						
+						subItem.click();
+						if(lsHeader.toLowerCase().equalsIgnoreCase("category")){
+							this.waitForPageToLoad();
+						}
+						else{
+							final By bySelectedSecondFilter=By.xpath("//section[@class='tsc-container']//div[@class='prp-filter-panel']//div[@class='prp-filter-panel__blocks']//button[@class='prp-filter-panel__block-title'][.='"+lsHeader+" (1)']");
+							this.waitForCondition(Driver->{ return this.getDriver().findElement(bySelectedSecondFilter).isDisplayed();},8000);
+						}
+//
 						//Bug 19628: [QA Defect - P3] PRP: no products display if user is on the last page and select a faucet from the left nav
 						//Bug 19556: [QA Defect - P3] PRP: when selecting a subcategory from Shop by category, the dimension in the URL should start over not appending
 						if(!this.URL().contains("page=")) {
@@ -1555,7 +1565,7 @@ public class ProductResultsPage extends BasePage{
 						//Bug 19389: PRP Filter Panel - Shop by Category selection does not work as intended						
 						verifyUrlPatternAfterSelectFilter(bCategory);
 						
-						return waitForSortingOrFilteringCompleted();
+						return true;
 					}
 				}
 			}
@@ -1565,6 +1575,7 @@ public class ProductResultsPage extends BasePage{
 		this.bDefault=true;
 
 		for(int i=0;i<this.productFilterList.size();i++) {
+			final int tempIndex=i;
 			expandFilterItem(this.productFilterContainerList.get(i));
 
 			subItemList=this.productFilterContainerList.get(i).findElements(this.bySecondaryFilterAll);
@@ -1572,12 +1583,10 @@ public class ProductResultsPage extends BasePage{
 				if(!this.hasElementAttribute(subItem.findElement(By.xpath(".//button//input")), "checked")) {
 					this.secondLevelFilter=this.getElementInnerText(subItem);
 					this.firstLevelFilter=this.getElementInnerText(subItem.findElement(By.xpath("./ancestor::div[@class='prp-filter-panel__blocks']//button[@class='prp-filter-panel__block-title']")));
-
-					//getReusableActionsInstance().staticWait(3000);
-					getReusableActionsInstance().clickIfAvailable(subItem);
-					
-					//this.getReusableActionsInstance().staticWait(2000);
-					this.waitForSortingOrFilteringCompleted();
+					lsHeader=this.firstLevelFilter;
+					subItem.click();
+					final By bySelectedSecondFilter=By.xpath("//section[@class='tsc-container']//div[@class='prp-filter-panel']//div[@class='prp-filter-panel__blocks']//button[@class='prp-filter-panel__block-title'][.='"+lsHeader+" (1)']");
+					this.waitForCondition(Driver->{ return this.getDriver().findElement(bySelectedSecondFilter).isDisplayed();},8000);
 					
 					//Bug 19628: [QA Defect - P3] PRP: no products display if user is on the last page and select a faucet from the left nav
 					if(!this.URL().contains("page=")) {
@@ -1596,13 +1605,22 @@ public class ProductResultsPage extends BasePage{
 					
 					verifyUrlPatternAfterSelectFilter(false);
 					
-					return waitForSortingOrFilteringCompleted();
+					return true;
 				}
 			}
 		}
 		return false;
 	}
-	
+
+	public boolean checkFilterAddedStatus(String lsFilter){
+		for(WebElement item:this.productFilterList){
+			if(this.getElementInnerText(item).equalsIgnoreCase(lsFilter+" (1)")){
+				return true;
+			}
+		}
+		return false;
+	}
+
 	/**
 	 * This method will Expand Sub Expandable Item In Category Filter Section
 	 * @return void
@@ -1639,9 +1657,7 @@ public class ProductResultsPage extends BasePage{
 			if(this.hasElementAttribute(element, "class")) {
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
 				this.getReusableActionsInstance().clickIfAvailable(element);
-				//this.waitForPageToLoad();
-				//this.getReusableActionsInstance().staticWait(3000);
-				this.waitForSortingOrFilteringCompleted();
+				this.waitForPageToLoad();
 				break;
 			}
 		}
@@ -1764,6 +1780,9 @@ public class ProductResultsPage extends BasePage{
 		WebElement element=this.selectedFiltersList.get(this.selectedFiltersList.size()-1);
 		getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 		getReusableActionsInstance().clickIfAvailable(element);
+
+		//To keep it to wait for DOM change
+		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 		return this.waitForSortingOrFilteringCompleted();
 	}
 
@@ -2405,7 +2424,8 @@ public class ProductResultsPage extends BasePage{
 				else {
 					Select sizeSelect= new Select(element.findElement(By.xpath("./parent::select")));
 					sizeSelect.selectByIndex(optionList.size()-1);
-					this.getReusableActionsInstance().staticWait(3000);
+					//Unable to find explicit way, so have to use static wait
+					this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 				}
 //				this.clickElement(optionList.get(optionList.size()-1));
 
@@ -2432,7 +2452,8 @@ public class ProductResultsPage extends BasePage{
 				else {
 					Select sizeSelect= new Select(element.findElement(By.xpath("./parent::select")));
 					sizeSelect.selectByIndex(optionList.size()-1);
-					this.getReusableActionsInstance().staticWait(3000);
+					//Unable to find explicit wait condition, so hve to use static wait
+					this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 				}
 
 				element=itemContainer.findElement(byProductOptionColorSelectedColor);
@@ -2652,7 +2673,8 @@ public class ProductResultsPage extends BasePage{
 			else {
 				Select sizeSelect= new Select(element.findElement(By.xpath("./parent::select")));
 				sizeSelect.selectByIndex(optionList.size()-1);
-				this.getReusableActionsInstance().staticWait(3000);
+				//Unable to find explicit wait condition, so hve to use static wait
+				this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 			}			
 
 			//this.getReusableActionsInstance().staticWait(7000);
@@ -2724,7 +2746,8 @@ public class ProductResultsPage extends BasePage{
 			else {
 				Select sizeSelect= new Select(element.findElement(By.xpath("./parent::select")));
 				sizeSelect.selectByIndex(selectNumber);
-				this.getReusableActionsInstance().staticWait(3000);
+				//Unable to find explicit wait condition, so hve to use static wait
+				this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 			}	
 
 			if(optionList.size()>1) {
@@ -2898,8 +2921,9 @@ public class ProductResultsPage extends BasePage{
 		else {
 			Select sizeSelect= new Select(element.findElement(By.xpath("./parent::select")));
 			sizeSelect.selectByIndex(optionList.size()-1);
+			//Unable to find explicit wait condition, so hve to use static wait
+			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 		}		
-		this.getReusableActionsInstance().staticWait(3000);
 
 		//Choose color
 		optionList=itemContainer.findElements(byProductOptionColorItemEnabledList);
@@ -2912,8 +2936,10 @@ public class ProductResultsPage extends BasePage{
 		else {
 			Select sizeSelect= new Select(element.findElement(By.xpath("./parent::select")));
 			sizeSelect.selectByIndex(optionList.size()-1);
+			//Unable to find explicit wait condition, so hve to use static wait
+			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 		}		
-		this.getReusableActionsInstance().staticWait(3000);
+
 		//Storing size and color for verification on PDP page
 
 
@@ -2975,7 +3001,8 @@ public class ProductResultsPage extends BasePage{
 		}
 
 		this.getReusableActionsInstance().clickIfAvailable(item);
-		this.getReusableActionsInstance().staticWait(3000);
+		final WebElement tempItem=item;
+		this.waitForCondition(Driver->{ return tempItem.getAttribute("aria-pressed").equalsIgnoreCase("true");},5000);
 
 		if(item.getAttribute("aria-pressed").equalsIgnoreCase("true")) {
 			reporter.reportLogPass("The favorite icon is displaying clicking status correctly");
@@ -3049,9 +3076,8 @@ public class ProductResultsPage extends BasePage{
 	public void verifyProductContentExistingAfterSwitchToFrench(GlobalFooterPage globalFooterPage) {
 		globalFooterPage.switchlanguage();
 		this.waitForPageToLoad();
-		this.getReusableActionsInstance().staticWait(2000);
 		this.getReusableActionsInstance().waitForElementVisibility(this.lblSearchResultMessage,120);
-		this.getReusableActionsInstance().staticWait(1000);
+//		this.getReusableActionsInstance().staticWait(1000);
 		
 		if(productResultList.size()>0) {
 			reporter.reportLogPass("The product list is displaying correctly after switching to French language");
@@ -3071,9 +3097,8 @@ public class ProductResultsPage extends BasePage{
 	public void verifyProductLoadingThroughUrlDirectly(String lsUrl) {
 		this.getDriver().get(lsUrl);
 		this.waitForPageToLoad();
-		this.getReusableActionsInstance().staticWait(2000);
 		this.getReusableActionsInstance().waitForElementVisibility(this.lblSearchResultMessage,120);
-		this.getReusableActionsInstance().staticWait(1000);
+//		this.getReusableActionsInstance().staticWait(1000);
 		
 		if(productResultList.size()>0) {
 			reporter.reportLogPass("The product list is loading correctly through inputting Url directly");
@@ -3202,7 +3227,9 @@ public class ProductResultsPage extends BasePage{
 		WebElement productFilterTitle=filterContainerItem.findElement(this.byProductFilterTitle);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(productFilterTitle);
 		this.getReusableActionsInstance().clickIfAvailable(productFilterTitle);
-		this.getReusableActionsInstance().staticWait(1000);
+		this.waitForCondition(Driver->{return checkIfFilterItemIsCollapsed(filterContainerItem);},5000);
+//		//Wait for panel expansion
+//		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 
 		clickSeeMoreButton(filterContainerItem);
 		if(!checkIfFilterItemIsCollapsed(filterContainerItem)){
@@ -3224,7 +3251,8 @@ public class ProductResultsPage extends BasePage{
 		WebElement productFilterTitle=filterContainerItem.findElement(this.byProductFilterTitle);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(productFilterTitle);
 		this.getReusableActionsInstance().clickIfAvailable(productFilterTitle);
-		this.getReusableActionsInstance().staticWait(1000);
+		this.waitForCondition(Driver->{return !checkIfFilterItemIsCollapsed(filterContainerItem);},5000);
+//		this.getReusableActionsInstance().staticWait(1000);
 	}
 
 	/**
@@ -3241,7 +3269,8 @@ public class ProductResultsPage extends BasePage{
 		WebElement productFilterTitle=filterContainerItem.findElement(this.byProductFilterTitle);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(productFilterTitle);
 		this.getReusableActionsInstance().clickIfAvailable(productFilterTitle);
-		this.getReusableActionsInstance().staticWait(1000);
+		this.waitForCondition(Driver->{return checkIfFilterItemIsCollapsed(filterContainerItem);},5000);
+//		this.getReusableActionsInstance().staticWait(1000);
 	}
 
 	/**
@@ -3267,7 +3296,8 @@ public class ProductResultsPage extends BasePage{
 			WebElement seeMoreButton=filterContainerItem.findElement(this.bySecondaryFilterSeeMoreButton);
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(seeMoreButton);
 			this.getReusableActionsInstance().clickIfAvailable(seeMoreButton);
-			this.getReusableActionsInstance().staticWait(1000);
+			this.waitForCondition(Driver->{return this.checkFilterItemSeeButtonExisting(filterContainerItem).equalsIgnoreCase("SeeLess");},5000);
+//			this.getReusableActionsInstance().staticWait(1000);
 		}
 	}
 
@@ -3283,7 +3313,8 @@ public class ProductResultsPage extends BasePage{
 			WebElement seeLessButton=filterContainerItem.findElement(this.bySecondaryFilterSeeLessButton);
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(seeLessButton);
 			this.getReusableActionsInstance().clickIfAvailable(seeLessButton);
-			this.getReusableActionsInstance().staticWait(1000);
+			this.waitForCondition(Driver->{return this.checkFilterItemSeeButtonExisting(filterContainerItem).equalsIgnoreCase("SeeMore");},5000);
+//			this.getReusableActionsInstance().staticWait(1000);
 		}
 	}
 
@@ -3397,7 +3428,7 @@ public class ProductResultsPage extends BasePage{
 			}
 		}else{
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstFilterApplied_Mobile);
-			this.getReusableActionsInstance().staticWait(3000);
+//			this.getReusableActionsInstance().staticWait(3000);
 			filterName=this.lstFilterApplied_Mobile.getText();
 			if(brandName.toLowerCase().trim().equals(filterName.toLowerCase().trim()))
 				filterBrandNameFlag = true;
@@ -3478,7 +3509,6 @@ public class ProductResultsPage extends BasePage{
 
 		this.getDriver().navigate().back();
 		this.waitForPageToLoad();
-		this.getReusableActionsInstance().staticWait(3000);
 		this.getReusableActionsInstance().waitForElementVisibility(this.lblSearchResultMessage,120);
 		
 		String lsFirstProductNameForNavigateBackFilter=this.getElementInnerText(this.productResultList.get(0).findElement(byProductName));
@@ -3533,7 +3563,6 @@ public class ProductResultsPage extends BasePage{
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 		this.getReusableActionsInstance().clickIfAvailable(item);
 		this.waitForPageToLoad();
-		this.getReusableActionsInstance().staticWait(3000);
 		this.getReusableActionsInstance().waitForElementVisibility(this.lblSearchResultMessage,120);
 		
 		//Check if selected list existing
@@ -3556,7 +3585,6 @@ public class ProductResultsPage extends BasePage{
 		List<String> lstItem=lstFilter.get(0);
 		ghp.clickCuratedCollectionsMenuItem(lstItem.get(0), lstItem.get(1));
 		this.waitForPageToLoad();
-		this.getReusableActionsInstance().staticWait(3000);
 		this.getReusableActionsInstance().waitForElementVisibility(this.lblSearchResultMessage,120);
 		
 		int navigateItemCount=this.lstSearchResultNavigation.size();
@@ -3658,7 +3686,7 @@ public class ProductResultsPage extends BasePage{
 		//Verification of number of items displayed on page
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.cntPagination);
 		this.getReusableActionsInstance().scrollToElement(this.cntPagination);
-		this.getReusableActionsInstance().staticWait(2000);
+//		this.getReusableActionsInstance().staticWait(2000);
 		int itemsOnPage;
 		if(pageData.get("page").equalsIgnoreCase("1"))
 			itemsOnPage = Integer.valueOf(this.txtShowingDynamicContent.getText().split(" ")[2]);
@@ -3674,7 +3702,7 @@ public class ProductResultsPage extends BasePage{
 		if(pageTitleType.contains("Banner")){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblBreadcrumbLastProductName);
 			this.getReusableActionsInstance().scrollToElement(this.lblBreadcrumbLastProductName);
-			this.getReusableActionsInstance().staticWait(2000);
+//			this.getReusableActionsInstance().staticWait(2000);
 			String bannerProductName = this.lblBreadcrumbLastProductName.getText();
 			if(pageData.get("searchTerm").toLowerCase().contains(bannerProductName))
 				reporter.reportLogPass("Search Term on page for Banner Search: "+bannerProductName+" is same as in api call: "+pageData.get("searchTerm"));
@@ -3683,7 +3711,7 @@ public class ProductResultsPage extends BasePage{
 		}else if(pageTitleType.contains("Normal")){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSearchResultMessage);
 			this.getReusableActionsInstance().scrollToElement(this.lblSearchResultMessage);
-			this.getReusableActionsInstance().staticWait(2000);
+//			this.getReusableActionsInstance().staticWait(2000);
 			String titleMessage = this.lblSearchResultMessage.getText().split("\"")[1];
 			if(titleMessage.equalsIgnoreCase(pageData.get("searchTerm")))
 				reporter.reportLogPass("Search Term on page for Normal Search: "+titleMessage+" is same as in api call: "+pageData.get("searchTerm"));
@@ -3714,7 +3742,7 @@ public class ProductResultsPage extends BasePage{
 				for (WebElement categoryItem : lstCategoryItems) {
 					this.getReusableActionsInstance().javascriptScrollByVisibleElement(categoryItem);
 					categoryItemsOnPage.add(categoryItem.findElement(By.xpath("./a")).getText());
-					this.getReusableActionsInstance().staticWait(1000);
+//					this.getReusableActionsInstance().staticWait(1000);
 				}
 			}
 			//Verification of categories displayed on UI

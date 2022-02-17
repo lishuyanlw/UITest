@@ -7,12 +7,12 @@ import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 
-public class SR_TC15_VerifyProductSearchResult_FilterBugs extends BaseTest{
+public class SR_TC17_VerifyProductSearchResult_FilterBugs extends BaseTest{
 	/*
 	 * Bug 19658: [QA Defect - P3] PRP: Page not refreshed to previous state with browser back button with filter applied - covered in verifyProductContentNoChangesAfterNavigatingBackWithMultiFilters function 
 	 */
 	@Test(groups={"ProductSearch","Regression","Regression_Tablet","Regression_Mobile"})
-	public void SR_TC15_VerifyProductSearchResult_FilterBugs() throws IOException {
+	public void SR_TC17_VerifyProductSearchResult_FilterBugs() throws IOException {
 	getGlobalFooterPageThreadLocal().closePopupDialog();
 
 	reporter.softAssert(getglobalheaderPageThreadLocal().validateURL((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");
