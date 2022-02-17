@@ -361,6 +361,8 @@ public class ProductResultsPage extends BasePage{
 	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']")
 	public WebElement lblPDPProductName;
 
+	public By lstColourDropdown = By.xpath("//form//div//select[@id='nsColourTaste']");
+
 	String searchkeyword;
 	public boolean bVerifyTitle=true;
 	public String firstLevelFilter,secondLevelFilter;
@@ -3813,7 +3815,7 @@ public class ProductResultsPage extends BasePage{
 	 * This method verifies that PRP page loads and display items for item that have no swatch and more than 16 items
 	 * @param-List<String> - inputParams containing properties of Product to look for
 	 */
-	public void loadProductOnPRPPageForItemWithMoreThanSixteenVariantsAndNoSwatch(List<String> inputParams,String defaultItemsCountOnPRP) throws IOException {
+	public Product.Products loadProductOnPRPPageForItemWithMoreThanSixteenVariantsAndNoSize(List<String> inputParams,String defaultItemsCountOnPRP) throws IOException {
 		ApiResponse apiResponse=new ApiResponse();
 		Map<String,Object> inputParamMap = new HashMap<>();
 		inputParamMap.put("size",0);
@@ -3822,7 +3824,45 @@ public class ProductResultsPage extends BasePage{
 		inputParamMap.put("video",0);
 		Product.Products product = apiResponse.getProductInfoFromKeyword(inputParams.get(0),inputParamMap,false,true);
 
-		this.getSearchResultLoad(product.getName(),true);
+		if(product!=null){
+			reporter.reportLog("Searching product: "+product.getName());
+			this.getSearchResultLoad(product.getName(),true);
+			return product;
+		}
+		return null;
+	}
+
+	/**
+	 * This method verifies product on PRP that has more than sixteen color and no size by selecting color
+	 * @param-void
+	 */
+	public void verifyProductWithMoreThanSixteenVariant(){
+		waitForCondition(driver->{return (this.getProductList().size()>0);},10000);
+		List<WebElement> product = this.getProductList();
+		for(int counter=0;counter<product.size();counter++){
+			//Mouseover on product list displayed on PRP page
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(product.get(counter));
+			this.getReusableActionsInstance().scrollToElement(product.get(counter));
+			int finalCounterFirst = counter;
+			waitForCondition(driver->{return (product.get(finalCounterFirst).findElement(this.lstColourDropdown).isDisplayed() && product.get(finalCounterFirst).findElement(this.lstColourDropdown).isEnabled());},5000);
+			//Fetching all colors that are enabled and selecting last enabled color
+			List<WebElement> enabledColor = product.get(counter).findElements(this.byProductOptionColorItemEnabledList);
+
+			//Selecting color from dropdown
+			WebElement dropDown = product.get(counter).findElement(this.lstColourDropdown);
+			Select select = new Select(dropDown);
+			String colorToBeSelected = enabledColor.get(enabledColor.size()-1).getAttribute("value");
+			select.selectByValue(colorToBeSelected);
+
+			//Storing the value of selected color for verification
+			int finalCounterSecond = counter;
+			waitForCondition(driver->{return (!product.get(finalCounterSecond).findElement(this.byProductOptionColorSelectedColor).getText().isEmpty());},5000);
+			String selectedColor = product.get(counter).findElement(this.byProductOptionColorSelectedColor).getText();
+			if(selectedColor.equalsIgnoreCase(colorToBeSelected))
+				reporter.reportLogPass("Color selected for product with more than 16 swatch:"+selectedColor+" is same as selected from dropdown: "+colorToBeSelected);
+			else
+				reporter.reportLogFailWithScreenshot("Color selected for product with more than 16 swatch:"+selectedColor+" is not same as selected from dropdown: "+colorToBeSelected);
+		}
 	}
 
 	public class ProductItem{

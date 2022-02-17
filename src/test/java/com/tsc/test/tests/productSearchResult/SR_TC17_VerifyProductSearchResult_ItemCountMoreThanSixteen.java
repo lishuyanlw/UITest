@@ -34,7 +34,8 @@ public class SR_TC17_VerifyProductSearchResult_ItemCountMoreThanSixteen extends 
         getProductResultsPageThreadLocal().verifyPaginationCountOnLastPage(pageData);
 
         //Act - BUG-20719 - [POST PROD] PRP breaks when products have more than 16 variants and no swatches
-        getProductResultsPageThreadLocal().loadProductOnPRPPageForItemWithMoreThanSixteenVariantsAndNoSwatch(productWithMoreThanSixteenSize,defaultPageSetting);
+        getProductResultsPageThreadLocal().loadProductOnPRPPageForItemWithMoreThanSixteenVariantsAndNoSize(productWithMoreThanSixteenSize,defaultPageSetting);
         //Assert
+        getProductResultsPageThreadLocal().verifyProductWithMoreThanSixteenVariant();
     }
 }
