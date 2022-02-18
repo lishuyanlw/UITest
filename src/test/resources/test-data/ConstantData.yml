@@ -130,6 +130,7 @@ searchResultPage:
     - filterType: PRPBugsSearchKeyword
       filterOption:
         - ["casper","3000786"]
+        - ["Stefano Oro", "18"]
   lst_MoreButton: ["Shop by brand","Shop by colour"]
   lst_DisappearAfterSelectFilter: ["SHOP BY CATEGORY"]
   lnk_product_result: /pages/productresults?

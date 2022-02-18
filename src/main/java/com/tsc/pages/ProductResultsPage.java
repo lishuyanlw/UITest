@@ -144,15 +144,19 @@ public class ProductResultsPage extends BasePage{
 
 	public By byProductOptionSizeWrapper=By.xpath(".//fieldset//div[@class='product-card__size-wrapper']");
 
-	public By byProductOptionSizeItemList=By.xpath(".//fieldset//div[contains(@class,'product-card__size-items')]//button|.//fieldset//select[@class='product-card__size__dropdown']//option");
+	public By byProductOptionSizeItemList=By.xpath(".//fieldset//div[contains(@class,'product-card__size-items')]//button|.//fieldset//select[contains(@class,'product-card__size__dropdown')]//option");
 
-	public By byProductOptionSizeItemEnabledList=By.xpath(".//fieldset//div[contains(@class,'product-card__size-items')]//button[not(@disabled)]|.//fieldset//select[@class='product-card__size__dropdown']//option[not(@disabled)]");
+	public By byProductOptionSizeItemEnabledList=By.xpath(".//fieldset//div[contains(@class,'product-card__size-items')]//button[not(@disabled)]|.//fieldset//select[contains(@class,'product-card__size__dropdown')]//option[not(@disabled)]");
 
-	public By byProductOptionSizeItemDisabledList=By.xpath(".//fieldset//div[contains(@class,'product-card__size-items')]//button[@disabled]|.//fieldset//select[@class='product-card__size__dropdown']//option[@disabled]");
+	public By byProductOptionSizeItemDisabledList=By.xpath(".//fieldset//div[contains(@class,'product-card__size-items')]//button[@disabled]|.//fieldset//select[contains(@class,'product-card__size__dropdown')]//option[@disabled]");
 
-	public By byProductOptionSizeSelectedItem=By.xpath(".//fieldset//div[contains(@class,'product-card__size-items')]//button[@aria-pressed='true']|.//fieldset//select[@class='product-card__size__dropdown']//option[@selected]");
+	public By byProductOptionSizeSelectedItem=By.xpath(".//fieldset//div[contains(@class,'product-card__size-items')]//button[@aria-pressed='true']|.//fieldset//select[contains(@class,'product-card__size__dropdown')]//option[@selected]");
 
 	public By byProductOptionSizeViewAllSizes=By.xpath(".//fieldset//a[@class='product-card__size-view-all']");
+
+	public By byProductOptionSizeNiceSelectList=By.xpath(".//fieldset//select[contains(@class,'product-card__size__dropdown')]/following-sibling::div[@class='niceSelect__container']//ul/li/button");
+
+	public By byProductOptionSizeNiceSelectButton=By.xpath(".//fieldset//select[contains(@class,'product-card__size__dropdown')]/following-sibling::div[@class='niceSelect__container']//button[@id='niceSelect-nsSizeTaste-selected']");
 
 	//For color option
 	public By byProductOptionColorTitle=By.xpath(".//fieldset//p[@class='product-card__color-and-taste-title']");
@@ -163,18 +167,23 @@ public class ProductResultsPage extends BasePage{
 
 	public By byProductOptionColorWrapper=By.xpath(".//fieldset//div[@class='product-card__color-and-taste-wrapper']");
 
-	public By byProductOptionColorItemList=By.xpath(".//fieldset//div[contains(@class,'product-card__color-and-taste-items')]//button|.//fieldset//select[@class='product-card__color-and-taste__dropdown']//option");
+	public By byProductOptionColorItemList=By.xpath(".//fieldset//div[contains(@class,'product-card__color-and-taste-items')]//button|.//fieldset//select[contains(@class,'product-card__color-and-taste__dropdown')]//option");
 
 	public By byProductOptionColorDropDown=By.xpath(".//fieldset//select[@class='product-card__color-and-taste__dropdown']");
 
-	public By byProductOptionColorItemEnabledList=By.xpath(".//fieldset//div[contains(@class,'product-card__color-and-taste-items')]//button[not(@disabled)]|.//fieldset//select[@class='product-card__color-and-taste__dropdown']//option[not(@disabled)]");
+	public By byProductOptionColorItemEnabledList=By.xpath(".//fieldset//div[contains(@class,'product-card__color-and-taste-items')]//button[not(@disabled)]|.//fieldset//select[contains(@class,'product-card__color-and-taste__dropdown')]//option[not(@disabled)]");
 
-	public By byProductOptionColorItemDisabledList=By.xpath(".//fieldset//div[contains(@class,'product-card__color-and-taste-items')]//button[@disabled]|.//fieldset//select[@class='product-card__color-and-taste__dropdown']//option[@disabled]");
+	public By byProductOptionColorItemDisabledList=By.xpath(".//fieldset//div[contains(@class,'product-card__color-and-taste-items')]//button[@disabled]|.//fieldset//select[contains(@class,'product-card__color-and-taste__dropdown')]//option[@disabled]");
 
-	public By byProductOptionColorSelectedItem=By.xpath(".//fieldset//div[contains(@class,'product-card__color-and-taste-items')]//button[@aria-pressed='true']|.//fieldset//select[@class='product-card__color-and-taste__dropdown']//option[not(@selected)]");
+	public By byProductOptionColorSelectedItem=By.xpath(".//fieldset//div[contains(@class,'product-card__color-and-taste-items')]//button[@aria-pressed='true']|.//fieldset//select[contains(@class,'product-card__color-and-taste__dropdown')]//option[not(@selected)]");
 
 	public By byProductOptionColorViewAllColors=By.xpath(".//fieldset//a[@class='product-card__color-view-all']");
 
+	public By byProductOptionColorNiceSelectList=By.xpath(".//fieldset//select[contains(@class,'product-card__color-and-taste__dropdown')]/following-sibling::div[@class='niceSelect__container']//ul/li/button");
+
+	public By byProductOptionColorNiceSelectButton=By.xpath(".//fieldset//select[contains(@class,'product-card__color-and-taste__dropdown')]/following-sibling::div[@class='niceSelect__container']//button[@id='niceSelect-nsColourTaste-selected']");
+
+	//For product details
 	public By byProductName=By.xpath(".//form[@class='product-card__main']//div[@class='product-card__info']//a[@class='product-card__info-pname']");
 
 	public By byProductBrand=By.xpath(".//form[@class='product-card__main']//div[@class='product-card__info']//p[@class='product-card__info-brand']");
@@ -198,7 +207,6 @@ public class ProductResultsPage extends BasePage{
 	//Pagination
 	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='prp__pagination']")
 	public WebElement cntPagination;
-
 	public By byPagination=By.xpath("//section[@class='tsc-container']//div[@class='prp__pagination']");
 
 	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='prp__pagination']//div[@class='prp__pagination__pages']//a")
@@ -361,6 +369,12 @@ public class ProductResultsPage extends BasePage{
 	//For PDP page loading purpose
 	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']")
 	public WebElement lblPDPProductName;
+
+	public By lstColourDropdown = By.xpath(".//form//div//select[@id='nsColourTaste']");
+
+	public By btnColorSelectionDropdown = By.xpath(".//form//div//button[contains(@id,'nsColourTaste-selected')]");
+
+	public By btnEnabledColorInDropdown = By.xpath(".//form//div//ul[contains(@id,'nsColourTaste-ul')]/li/button[not(@disabled)]");
 
 	String searchkeyword;
 	public boolean bVerifyTitle=true;
@@ -866,7 +880,7 @@ public class ProductResultsPage extends BasePage{
 	/**
 	 * This method will verify the item content in product list without mouse hover.
 	 * @param-List<WebElement> productList: the input product list
-	 * @param boolean bMandatoryOnly: true/false
+	 * @param-boolean bMandatoryOnly: true/false
 	 * @author Wei.Li
 	 */
 	public void verifySearchResultContent(List<WebElement> productList,boolean bMandatoryOnly) {
@@ -883,7 +897,7 @@ public class ProductResultsPage extends BasePage{
 	/**
 	 * This method will verify the optional item content in product list without mouse hover.
 	 * @param-List<WebElement> productList: the input product list
-	 * @param boolean bMouseHover: true/false
+	 * @param-boolean bMouseHover: true/false
 	 * @author Wei.Li
 	 */
 	public void verifySearchResultContentForMandatoryFields(List<WebElement> productList,boolean bMouseHover) {
@@ -1059,7 +1073,7 @@ public class ProductResultsPage extends BasePage{
 	/**
 	 * This method will verify the item content in product list with mouse hover.
 	 * @param-List<WebElement> productList: the input product list
-	 * @param boolean bMouseHoverOnly: true/false
+	 * @param-boolean bMouseHoverOnly: true/false
 	 * @author Wei.Li
 	 */
 	public void verifySearchResultContentWithMouseHover(List<WebElement> productList,boolean bMouseHoverOnly) {
@@ -1967,7 +1981,7 @@ public class ProductResultsPage extends BasePage{
 
 		String productNumber="";
 		for(String lsKeyword:lstKeyword) {
-			product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,true);
+			product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,true,false);
 			if(product!=null) {
 				break;
 			}
@@ -2046,7 +2060,7 @@ public class ProductResultsPage extends BasePage{
 		Product.Products product=null;
 		String productName="";
 		for(String lsKeyword:lstKeyword) {
-			product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,true);
+			product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,true,false);
 			if(product!=null) {
 				break;
 			}
@@ -3758,6 +3772,161 @@ public class ProductResultsPage extends BasePage{
 					break;
 			} else
 				reporter.reportLog("Category items are not checked as refinement is null");
+		}
+	}
+	/**
+	 * This method fetches the total count of pages on PRP page for searched product
+	 * @param-void
+	 * @return-int- total number of pages for searched product
+	 */
+	public int getTotalProductPageCountAfterSearch(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.cntPagination);
+		this.getReusableActionsInstance().scrollToElement(this.cntPagination);
+		return this.PageNumberList.size();
+	}
+
+	/**
+	 * This method verifies PRP page pagination after loading url directly in browser
+	 * @param-HashMap<String,String> prpPagePaginationData Loaded page data that will be used for verification
+	 */
+	public void verifyPaginationCountOnLastPage(Map<String,String> prpPagePaginationData){
+		int itemCount = Integer.valueOf(this.lblProductCountOnPage.getText().split(" ")[0]);
+		//int totalPagesOnPRPForItem = this.getTotalProductPageCountAfterSearch();
+		getDriver().get(prpPagePaginationData.get("pageURL"));
+		waitForCondition(driver->{return (this.lblSearchResultMessage.isDisplayed() && !this.lblSearchResultMessage.getText().isEmpty() && this.getProductList().size()>0);},10000);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.cntPagination);
+		this.getReusableActionsInstance().scrollToElement(this.cntPagination);
+		/**
+		//Verifying total page count for searched product
+		if(totalPagesOnPRPForItem==Integer.valueOf(prpPagePaginationData.get("totalPages")))
+			reporter.reportLogPass("Page Count on PRP page for no if items is: "+totalPagesOnPRPForItem+" and are same as fetched from API: "+Integer.valueOf(prpPagePaginationData.get("totalPages")));
+		else
+			reporter.reportLogFailWithScreenshot("Page Count on PRP page for no if items is: "+totalPagesOnPRPForItem+" and are same as fetched from API: "+Integer.valueOf(prpPagePaginationData.get("pageCount")));
+		*/
+		//Verifying total items on page count
+		String[] dynamicPaginationContent = this.txtShowingDynamicContent.getText().split(" ");
+		int startItemCountInDynamicText = Integer.valueOf(dynamicPaginationContent[0]);
+		int finalItemCountInDynamicText = Integer.valueOf(dynamicPaginationContent[2]);
+		int itemCountInPaginationSection = Integer.valueOf(dynamicPaginationContent[dynamicPaginationContent.length-1]);
+		if(itemCount==itemCountInPaginationSection)
+			reporter.reportLogPass("Item Count on PRP page displayed at top: "+itemCount+" is same as in pagination: "+itemCountInPaginationSection);
+		else
+			reporter.reportLogFailWithScreenshot("Item Count on PRP page displayed at top: "+itemCount+" is not same as in pagination: "+itemCountInPaginationSection);
+		//Verifying page items in Dynamic Text in Pagination
+		if(finalItemCountInDynamicText==itemCountInPaginationSection)
+			reporter.reportLogPass("Item Count on PRP page displayed in pagination: "+finalItemCountInDynamicText+" is same as in pagination: "+itemCountInPaginationSection);
+		else
+			reporter.reportLogFailWithScreenshot("Item Count on PRP page displayed in pagination:: "+finalItemCountInDynamicText+" is not same as in pagination: "+itemCountInPaginationSection);
+		//Verifying beginning page items in Dynamic Text is less than final Item Dynamic Text in Pagination
+		if(startItemCountInDynamicText<=finalItemCountInDynamicText)
+			reporter.reportLogPass("Starting item Count on PRP page displayed in pagination: "+startItemCountInDynamicText+" is less than final dynamic item count: "+finalItemCountInDynamicText);
+		else
+			reporter.reportLogFailWithScreenshot("Starting item Count on PRP page displayed in pagination:: "+startItemCountInDynamicText+" is not less than final dynamic item count: "+finalItemCountInDynamicText);
+	}
+
+	/**
+	 * This method verifies that PRP page loads and display items for item that have no swatch and more than 16 items
+	 * @param-List<String> - inputParams containing properties of Product to look for
+	 */
+	public boolean loadProductOnPRPPageForItemWithMoreThanSixteenVariantsAndNoSwatch(List<String> inputParams,String defaultItemsCountOnPRP) throws IOException {
+		ApiResponse apiResponse=new ApiResponse();
+		Map<String,Object> inputParamMap = new HashMap<>();
+		inputParamMap.put("size",0);
+		inputParamMap.put("style",inputParams.get(1));
+		inputParamMap.put("pageSize",defaultItemsCountOnPRP);
+		inputParamMap.put("video",0);
+		Product.Products product = apiResponse.getProductInfoFromKeyword(inputParams.get(0),inputParamMap,false,true);
+
+		if(product!=null){
+			reporter.reportLog("Searching product: "+product.getName());
+			this.getSearchResultLoad(product.getName(),true);
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * This method verifies product on PRP that has more than sixteen color and no size by selecting color
+	 * @param-void
+	 */
+	public void verifyProductWithMoreThanSixteenVariant(){
+		waitForCondition(driver->{return (this.getProductList().size()>0);},10000);
+		List<WebElement> product = this.getProductList();
+		for(int counter=0;counter<product.size();counter++){
+			//Mouseover on product list displayed on PRP page
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(product.get(counter));
+			this.getReusableActionsInstance().scrollToElement(product.get(counter));
+
+			final int finalCounterFirst = counter;
+			waitForCondition(driver->{return (product.get(finalCounterFirst).findElement(this.lstColourDropdown).isDisplayed() && product.get(finalCounterFirst).findElement(this.lstColourDropdown).isEnabled());},5000);
+			//Fetching all colors that are enabled and selecting last enabled color
+
+			//Selecting color from dropdown
+			WebElement dropDown = product.get(counter).findElement(this.lstColourDropdown);
+			List<WebElement> itemList;
+			WebElement niceSelectButton;
+			String colorToBeSelected="";
+			if(dropDown.getAttribute("class").contains("visually-hidden")){
+				niceSelectButton=product.get(counter).findElement(byProductOptionColorNiceSelectButton);
+				this.clickElement(niceSelectButton);
+				this.applyStaticWait(1000);
+				itemList=product.get(counter).findElements(this.byProductOptionColorNiceSelectList);
+
+				for(int j=itemList.size()-1;j>=0;j--) {
+					if (!hasElementAttribute(itemList.get(j), "disabled")) {
+						colorToBeSelected=this.getElementInnerText(itemList.get(j));
+						this.clickElement(itemList.get(j));
+						break;
+					}
+				}
+			}
+			else{
+				Select select = new Select(dropDown);
+				List<WebElement> enabledColor = product.get(counter).findElements(this.byProductOptionColorItemEnabledList);
+				colorToBeSelected = enabledColor.get(enabledColor.size()-1).getAttribute("value");
+				select.selectByValue(colorToBeSelected);
+			}
+
+			//Storing the value of selected color for verification
+			int finalCounterSecond = counter;
+			waitForCondition(driver->{return (!product.get(finalCounterSecond).findElement(this.byProductOptionColorSelectedColor).getText().isEmpty());},5000);
+			String selectedColor = product.get(counter).findElement(this.byProductOptionColorSelectedColor).getText();
+			if(selectedColor.equalsIgnoreCase(colorToBeSelected))
+				reporter.reportLogPass("Color selected for product with more than 16 swatch:"+selectedColor+" is same as selected from dropdown: "+colorToBeSelected);
+			else
+				reporter.reportLogFailWithScreenshot("Color selected for product with more than 16 swatch:"+selectedColor+" is not same as selected from dropdown: "+colorToBeSelected);
+		}
+	}
+
+	/**
+	 * This method verifies product on PRP that has more than sixteen color and no size by selecting color
+	 * @param-void
+	 */
+	public void selectAndVerifyProductColor(){
+		waitForCondition(driver->{return (this.getProductList().size()>0 && (new GlobalHeaderPage(this.getDriver()).lblTSCChatBox.getText().contains("Chat")));},10000);
+		List<WebElement> productList = this.getProductList();
+		String colorToBeSelected = null;
+		for(int counter=0;counter<productList.size();counter++){
+			WebElement dropDown = productList.get(counter).findElement(this.lstColourDropdown);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(productList.get(counter));
+			this.getReusableActionsInstance().scrollToElement(productList.get(counter));
+			if(dropDown.getAttribute("class").contains("visually-hidden")){
+				WebElement dropDownButtonElement = productList.get(counter).findElement(this.btnColorSelectionDropdown);
+				this.getReusableActionsInstance().clickIfAvailable(dropDownButtonElement,2000);
+				List<WebElement> enabledColors = productList.get(counter).findElements(this.btnEnabledColorInDropdown);
+				colorToBeSelected=this.getElementInnerText(enabledColors.get(enabledColors.size()-1));
+				this.clickElement(enabledColors.get(enabledColors.size()-1));
+			}else{
+				Select select = new Select(dropDown);
+				List<WebElement> enabledColor = productList.get(counter).findElements(this.byProductOptionColorItemEnabledList);
+				colorToBeSelected = enabledColor.get(enabledColor.size()-1).getAttribute("value");
+				select.selectByValue(colorToBeSelected);
+			}
+			String selectedColor = productList.get(counter).findElement(this.byProductOptionColorSelectedColor).getText();
+			if(colorToBeSelected.equalsIgnoreCase(selectedColor))
+				reporter.reportLogPass("Selected color from dropdown: "+colorToBeSelected+" is same as displayed after selection: "+selectedColor);
+			else
+				reporter.reportLogFailWithScreenshot("Selected color from dropdown: "+colorToBeSelected+" is not same as displayed after selection: "+selectedColor);
 		}
 	}
 

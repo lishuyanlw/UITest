@@ -20,7 +20,7 @@ public class ApiConfigs extends ApiClient{
      * @param - String - apiVersion - api version implemented to be used
      * @return - Map<String, Object> - map object containing all default configs
      */
-    public Map<String, Object> getProductSearchByKeywordInputConfig(String keyword, String dimension, int outputPage, String apiVersion) {
+    public Map<String, Object> getProductSearchByKeywordInputConfig(String keyword, String dimension, int outputPage, String pageSize, String apiVersion) {
         inputMap = new HashMap<>();
         inputMap.put("searchTerm", keyword);
 //        inputMap.put("sortKey", "HighestPrice");
@@ -28,7 +28,10 @@ public class ApiConfigs extends ApiClient{
         if (dimension != null)
             inputMap.put("dimensions", Integer.parseInt(dimension));
         inputMap.put("page", outputPage);
-        inputMap.put("pageSize", Integer.parseInt("100"));
+        if(pageSize==null)
+            inputMap.put("pageSize", Integer.parseInt("100"));
+        else
+            inputMap.put("pageSize", Integer.parseInt(pageSize));
         if (apiVersion.contains("v2"))
             inputMap.put("rd", true);
         else
