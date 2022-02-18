@@ -28,11 +28,10 @@ public class SR_TC17_VerifyProductSearchResult_ItemCountMoreThanSixteen extends 
         String defaultPageSetting = TestDataHandler.constantData.getSearchResultPage().getLbl_SearchResultPageDefaultSetting();
         List<String> productWithMoreThanSixteenSize = TestDataHandler.constantData.getSearchResultPage().getLst_SearchOption().get(8).getFilterOption().get(1);
 
-//        //Act & Assert - Verification of BUG-20633 - PRP Page - Pagination on PRP page incorrect
-//        Map<String,String> pageData = getApiResponseThreadLocal().getProductLastPageWhenPagesMoreThanOne(searchKeywordList,null,5,defaultPageSetting,basePRPPageURL);
-//        System.out.println(pageData.get("searchTerm"));
-//        getProductResultsPageThreadLocal().getSearchResultLoad(pageData.get("searchTerm"),true);
-//        getProductResultsPageThreadLocal().verifyPaginationCountOnLastPage(pageData);
+        //Act & Assert - Verification of BUG-20633 - PRP Page - Pagination on PRP page incorrect
+        Map<String,String> pageData = getApiResponseThreadLocal().getProductLastPageWhenPagesMoreThanOne(searchKeywordList,null,5,defaultPageSetting,basePRPPageURL);
+        getProductResultsPageThreadLocal().getSearchResultLoad(pageData.get("searchTerm"),true);
+        getProductResultsPageThreadLocal().verifyPaginationCountOnLastPage(pageData);
 
         //Act - BUG-20719 - [POST PROD] PRP breaks when products have more than 16 variants and no swatches
         boolean productFound = getProductResultsPageThreadLocal().loadProductOnPRPPageForItemWithMoreThanSixteenVariantsAndNoSwatch(productWithMoreThanSixteenSize,defaultPageSetting);
