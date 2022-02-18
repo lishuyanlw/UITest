@@ -94,12 +94,6 @@ public class ProductResultsPage extends BasePage{
 	@FindBy(xpath = "//section[@class='tsc-container'][not(nav)][not(*[@class='breadcrumb'])]")
 	public WebElement cntTSCContainer;
 
-
-	/*@FindBy(xpath = "//product-results//div[contains(@class,'productItems')]//div[contains(@class,'productItemWrap')]")
-	List<WebElement> productResultList;*/
-	//@FindBy(xpath = "//div[@class='plp']//div[@class='plp__product-grid']//div[contains(@class,'plp-card-grid-item')]//div[@class='product-card']")
-	//List<WebElement> productResultList;
-
 	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='prp']//div[@class='prp__wrapper']")
 	public WebElement cntProductResultListContainer;
 
@@ -144,15 +138,19 @@ public class ProductResultsPage extends BasePage{
 
 	public By byProductOptionSizeWrapper=By.xpath(".//fieldset//div[@class='product-card__size-wrapper']");
 
-	public By byProductOptionSizeItemList=By.xpath(".//fieldset//div[contains(@class,'product-card__size-items')]//button|.//fieldset//select[@class='product-card__size__dropdown']//option");
+	public By byProductOptionSizeItemList=By.xpath(".//fieldset//div[contains(@class,'product-card__size-items')]//button|.//fieldset//select[contains(@class,'product-card__size__dropdown')]//option");
 
-	public By byProductOptionSizeItemEnabledList=By.xpath(".//fieldset//div[contains(@class,'product-card__size-items')]//button[not(@disabled)]|.//fieldset//select[@class='product-card__size__dropdown']//option[not(@disabled)]");
+	public By byProductOptionSizeItemEnabledList=By.xpath(".//fieldset//div[contains(@class,'product-card__size-items')]//button[not(@disabled)]|.//fieldset//select[contains(@class,'product-card__size__dropdown')]//option[not(@disabled)]");
 
-	public By byProductOptionSizeItemDisabledList=By.xpath(".//fieldset//div[contains(@class,'product-card__size-items')]//button[@disabled]|.//fieldset//select[@class='product-card__size__dropdown']//option[@disabled]");
+	public By byProductOptionSizeItemDisabledList=By.xpath(".//fieldset//div[contains(@class,'product-card__size-items')]//button[@disabled]|.//fieldset//select[contains(@class,'product-card__size__dropdown')]//option[@disabled]");
 
-	public By byProductOptionSizeSelectedItem=By.xpath(".//fieldset//div[contains(@class,'product-card__size-items')]//button[@aria-pressed='true']|.//fieldset//select[@class='product-card__size__dropdown']//option[@selected]");
+	public By byProductOptionSizeSelectedItem=By.xpath(".//fieldset//div[contains(@class,'product-card__size-items')]//button[@aria-pressed='true']|.//fieldset//select[contains(@class,'product-card__size__dropdown')]//option[@selected]");
 
 	public By byProductOptionSizeViewAllSizes=By.xpath(".//fieldset//a[@class='product-card__size-view-all']");
+
+	public By byProductOptionSizeNiceSelectList=By.xpath(".//fieldset//select[contains(@class,'product-card__size__dropdown')]/following-sibling::div[@class='niceSelect__container']//ul/li/button");
+
+	public By byProductOptionSizeNiceSelectButton=By.xpath(".//fieldset//select[contains(@class,'product-card__size__dropdown')]/following-sibling::div[@class='niceSelect__container']//button[@id='niceSelect-nsSizeTaste-selected']");
 
 	//For color option
 	public By byProductOptionColorTitle=By.xpath(".//fieldset//p[@class='product-card__color-and-taste-title']");
@@ -163,18 +161,23 @@ public class ProductResultsPage extends BasePage{
 
 	public By byProductOptionColorWrapper=By.xpath(".//fieldset//div[@class='product-card__color-and-taste-wrapper']");
 
-	public By byProductOptionColorItemList=By.xpath(".//fieldset//div[contains(@class,'product-card__color-and-taste-items')]//button|.//fieldset//select[@class='product-card__color-and-taste__dropdown']//option");
+	public By byProductOptionColorItemList=By.xpath(".//fieldset//div[contains(@class,'product-card__color-and-taste-items')]//button|.//fieldset//select[contains(@class,'product-card__color-and-taste__dropdown')]//option");
 
 	public By byProductOptionColorDropDown=By.xpath(".//fieldset//select[@class='product-card__color-and-taste__dropdown']");
 
-	public By byProductOptionColorItemEnabledList=By.xpath(".//fieldset//div[contains(@class,'product-card__color-and-taste-items')]//button[not(@disabled)]|.//fieldset//select[@class='product-card__color-and-taste__dropdown']//option[not(@disabled)]");
+	public By byProductOptionColorItemEnabledList=By.xpath(".//fieldset//div[contains(@class,'product-card__color-and-taste-items')]//button[not(@disabled)]|.//fieldset//select[contains(@class,'product-card__color-and-taste__dropdown')]//option[not(@disabled)]");
 
-	public By byProductOptionColorItemDisabledList=By.xpath(".//fieldset//div[contains(@class,'product-card__color-and-taste-items')]//button[@disabled]|.//fieldset//select[@class='product-card__color-and-taste__dropdown']//option[@disabled]");
+	public By byProductOptionColorItemDisabledList=By.xpath(".//fieldset//div[contains(@class,'product-card__color-and-taste-items')]//button[@disabled]|.//fieldset//select[contains(@class,'product-card__color-and-taste__dropdown')]//option[@disabled]");
 
-	public By byProductOptionColorSelectedItem=By.xpath(".//fieldset//div[contains(@class,'product-card__color-and-taste-items')]//button[@aria-pressed='true']|.//fieldset//select[@class='product-card__color-and-taste__dropdown']//option[not(@selected)]");
+	public By byProductOptionColorSelectedItem=By.xpath(".//fieldset//div[contains(@class,'product-card__color-and-taste-items')]//button[@aria-pressed='true']|.//fieldset//select[contains(@class,'product-card__color-and-taste__dropdown')]//option[not(@selected)]");
 
 	public By byProductOptionColorViewAllColors=By.xpath(".//fieldset//a[@class='product-card__color-view-all']");
 
+	public By byProductOptionColorNiceSelectList=By.xpath(".//fieldset//select[contains(@class,'product-card__color-and-taste__dropdown')]/following-sibling::div[@class='niceSelect__container']//ul/li/button");
+
+	public By byProductOptionColorNiceSelectButton=By.xpath(".//fieldset//select[contains(@class,'product-card__color-and-taste__dropdown')]/following-sibling::div[@class='niceSelect__container']//button[@id='niceSelect-nsColourTaste-selected']");
+
+	//For product details
 	public By byProductName=By.xpath(".//form[@class='product-card__main']//div[@class='product-card__info']//a[@class='product-card__info-pname']");
 
 	public By byProductBrand=By.xpath(".//form[@class='product-card__main']//div[@class='product-card__info']//p[@class='product-card__info-brand']");
@@ -377,9 +380,6 @@ public class ProductResultsPage extends BasePage{
 	 */
 	public void getSearchResultPopUpWindowLoad(String searchKeyword) {
 		GlobalHeaderPage globalHeader=new GlobalHeaderPage(this.getDriver());
-		//this.getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeader.searchBox);
-		//this.clearContent(globalHeader.searchBox);
-		//char[] inputString = searchKeyword.toCharArray();
 		waitForCondition(Driver->{
 			return globalHeader.searchBox.isDisplayed();
 		},90000);
@@ -391,9 +391,7 @@ public class ProductResultsPage extends BasePage{
 			//For thinking time to wait for backend response
 			this.getReusableActionsInstance().staticWait(300);
 		}
-		//globalHeader.searchBox.sendKeys(searchKeyword);
-		//globalHeader.btnSearchSubmit.click();
-		//this.getReusableActionsInstance().staticWait(3000);
+
 		waitForCondition(Driver->{
 			return this.searchResultSection.isDisplayed();
 		},90000);
@@ -416,7 +414,6 @@ public class ProductResultsPage extends BasePage{
 			this.getReusableActionsInstance().staticWait(300);
 		}
 
-		//this.getReusableActionsInstance().staticWait(3000);
 		waitForCondition(Driver->{
 			return this.searchResultSection.isDisplayed();
 		},150000);
@@ -428,8 +425,6 @@ public class ProductResultsPage extends BasePage{
 			globalHeader.validateSearchSubmitbtn();
 			this.getReusableActionsInstance().clickIfAvailable(globalHeader.btnSearchSubmit);
 		}
-
-//		this.getReusableActionsInstance().staticWait(5000);
 		this.waitForPageToLoad();
 
 		if(searchKeyword.matches("\\d+")){
@@ -537,8 +532,6 @@ public class ProductResultsPage extends BasePage{
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblShowing);
 		getReusableActionsInstance().scrollToElement(this.lblShowing);
 		String showingText=this.lblShowing.getText()+" "+this.txtShowingDynamicContent.getText();
-
-		//String showingText=this.getElementInnerText(this.lblShowing)+" "+this.getElementInnerText(this.txtShowingDynamicContent);
 
 		return showingText.matches("Displaying items: (\\d+) - (\\d+) out of (\\d+)");
 	}
@@ -676,18 +669,10 @@ public class ProductResultsPage extends BasePage{
 			return "NoSearchResult";
 		}
 
-		if(this.checkChildElementExistingByTagName(this.lblBreadcrumbNavigation,"div"))
-			//if(this.checkChildElementExistingByTagNameAndAttribute(this.cntSearchResultTitleContainer,"div","class","ScrollerContent"))
-			return "BannerImageSearch";
-
-		/*String lsUrl=this.URL();
-		if(!lsUrl.contains("dimensions=")) {
+		if(!this.lblBreadcrumbNavigation.getCssValue("height").equalsIgnoreCase("0px")){
 			return "BannerImageSearch";
 		}
 
-		if(!lsUrl.contains("dimensions=0&")) {
-			return "BannerImageSearch";
-		}*/
 		return "NormalSearch";
 	}
 
@@ -706,14 +691,6 @@ public class ProductResultsPage extends BasePage{
 			return lsKeyword.trim();
 		}
 		return lsKeyword.trim().replace(" ","%20");
-
-	/*	String lsUrl=this.URL();
-		if(lsUrl.contains("dimensions=0&")) {
-			return lsKeyword.trim().replace(" ","%20");
-		}
-		else {
-			return lsKeyword.trim().replace(" ","%2B");
-		}*/
 	}
 
 	/**
@@ -798,10 +775,8 @@ public class ProductResultsPage extends BasePage{
 
 		String[] lstText= new String[1];
 		if(getReusableActionsInstance().isElementVisible(this.btnProductTitleAndTextMoreOrLess)) {
-//			lstText[0]=this.getElementInnerText(this.btnProductTitleAndTextMoreOrLess);
 			getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnProductTitleAndTextMoreOrLess);
 			getReusableActionsInstance().clickIfAvailable(this.btnProductTitleAndTextMoreOrLess);
-			//getReusableActionsInstance().staticWait(2000);
 			this.waitForCondition(Driver->{return this.btnProductTitleAndTextMoreOrLess.getAttribute("class").isEmpty();}, 20000);
 
 			if(!this.getElementInnerText(this.btnProductTitleAndTextMoreOrLess).contains("Read Less")) {
@@ -938,14 +913,6 @@ public class ProductResultsPage extends BasePage{
 			if(!bMouseHover){
 				if(!this.getProductOptionTypeWithoutMouseHover(item).equalsIgnoreCase("None")){
 					reporter.reportLogPass("Product option is not empty");
-				}
-				else{
-					if(item.findElements(byProductOptionSizeItemList).size()==0&&item.findElements(byProductOptionColorItemList).size()==0){
-						reporter.reportLogPass("Product option is empty");
-					}
-					else{
-						reporter.reportLogFailWithScreenshot("Product option is empty");
-					}
 				}
 			}
 
@@ -1145,6 +1112,17 @@ public class ProductResultsPage extends BasePage{
 				else {
 					reporter.reportLogFailWithScreenshot("Product option color button list is containing 0 item");
 				}
+
+				if(checkViewAllColorsButtonExisting(item)) {
+					element=item.findElement(byProductOptionColorViewAllColors);
+					lsText=this.getElementInnerText(element);
+					if(!lsText.isEmpty()) {
+						reporter.reportLogPass("Product ViewAllColor button title is not empty");
+					}
+					else {
+						reporter.reportLogFailWithScreenshot("Product ViewAllColor button title is empty");
+					}
+				}
 			}
 
 			element=item.findElement(byProductGoToDetails);
@@ -1246,15 +1224,11 @@ public class ProductResultsPage extends BasePage{
 		List<Float> priceList=new ArrayList<Float>();
 		List<String> productNameList=new ArrayList<String>();
 		for(WebElement element:this.productResultList) {
-//			getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-//			String nowPriceText=element.findElement(this.byProductNowPrice).getText().trim();
-
 			String nowPriceText=this.getElementInnerText(element.findElement(this.byProductNowPrice));
 
 			float nowPriceValue=this.getFloatFromString(nowPriceText,bHighest);
 
 			priceList.add(nowPriceValue);
-//			String productName=element.findElement(this.byProductName).getText().trim();
 			String productName=this.getElementInnerText(element.findElement(this.byProductName));
 			productNameList.add(productName);
 		}
@@ -1293,8 +1267,6 @@ public class ProductResultsPage extends BasePage{
 		List<Integer> reviewList=new ArrayList<Integer>();
 		List<String> productNameList=new ArrayList<String>();
 		for(WebElement element:this.productResultList) {
-//			getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-
 			if(this.checkProductItemReviewExisting(element)) {
 				List<WebElement> reviewStarList=element.findElements(this.byProductReviewRatingImage);
 				int reviewCount=getProductItemReviewNumberAmountFromStarImage(reviewStarList);
@@ -1304,8 +1276,7 @@ public class ProductResultsPage extends BasePage{
 			else {
 				reviewList.add(0);
 			}
-			
-//			String productName=element.findElement(this.byProductName).getText().trim();
+
 			String productName=this.getElementInnerText(element.findElement(this.byProductName));
 			productNameList.add(productName);
 		}
@@ -1338,8 +1309,6 @@ public class ProductResultsPage extends BasePage{
 		List<String> brandList=new ArrayList<String>();
 		List<String> productNameList=new ArrayList<String>();
 		for(WebElement element:this.productResultList) {
-//			getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-
 			if(this.checkProductItemBrandNameExisting(element)) {
 				item=element.findElement(byProductBrand);
 				lsText=this.getElementInnerText(item);
@@ -1349,7 +1318,6 @@ public class ProductResultsPage extends BasePage{
 				brandList.add("Z");
 			}
 
-//			String productName=element.findElement(this.byProductName).getText().trim();
 			String productName=this.getElementInnerText(element.findElement(this.byProductName));
 			productNameList.add(productName);
 		}
@@ -1474,10 +1442,6 @@ public class ProductResultsPage extends BasePage{
 						final By bySelectedSecondFilter=By.xpath("//section[@class='tsc-container']//div[@class='prp-filter-panel']//div[@class='prp-filter-panel__blocks']//button[@class='prp-filter-panel__block-title'][.='"+lsHeader+" (1)']");
 						this.waitForCondition(Driver->{ return this.getDriver().findElement(bySelectedSecondFilter).isDisplayed();},8000);
 
-						//To keep this static to wait for DOM change
-						//this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
-						//this.waitForSortingOrFilteringCompleted();
-
 						this.productFilterList.get(i).getText().trim();
 						
 						//Bug 19628: [QA Defect - P3] PRP: no products display if user is on the last page and select a faucet from the left nav
@@ -1533,10 +1497,9 @@ public class ProductResultsPage extends BasePage{
 						}
 												 
 					}
-					//getReusableActionsInstance().staticWait(2000);
+
 					//If found lsSecondLevelItem
 					if(lsSubItem.equalsIgnoreCase(lsSecondLevelItem)) {
-						//getReusableActionsInstance().staticWait(2000);
 						subItem.click();
 						if(lsHeader.toLowerCase().equalsIgnoreCase("category")){
 							this.waitForPageToLoad();
@@ -1775,8 +1738,7 @@ public class ProductResultsPage extends BasePage{
 		if(!checkSelectedFilterListExisting()) {
 			return true;
 		}
-		
-		//this.getReusableActionsInstance().staticWait(2000);
+
 		WebElement element=this.selectedFiltersList.get(this.selectedFiltersList.size()-1);
 		getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 		getReusableActionsInstance().clickIfAvailable(element);
@@ -1844,8 +1806,6 @@ public class ProductResultsPage extends BasePage{
 			if(lastPageButton.getAttribute("class").contains("prp__pagination__pages__page--current")) {
 				return false;
 			}else {
-//				getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnNextPage);
-//				this.btnNextPage.click();
 				this.clickElement(this.btnNextPage);
 			}
 
@@ -1858,8 +1818,6 @@ public class ProductResultsPage extends BasePage{
 			if(firstPageButton.getAttribute("class").contains("prp__pagination__pages__page--current")) {
 				return false;
 			}else {
-//				getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnPreviousPage);
-//				this.btnPreviousPage.click();
 				this.clickElement(this.btnPreviousPage);
 			}
 		}
@@ -1867,9 +1825,7 @@ public class ProductResultsPage extends BasePage{
 		this.waitForPageToLoad();
 
 		this.getReusableActionsInstance().waitForElementVisibility(this.lblSearchResultMessage,5000);
-		
-		//this.getReusableActionsInstance().staticWait(10000);
-		
+
 		this.waitForCondition(Driver->{return !lsFirstProductName.equalsIgnoreCase(this.getElementInnerText(this.getProductList().get(0).findElement(byProductName)));}, 120000);
 
 		return true;
@@ -1993,60 +1949,8 @@ public class ProductResultsPage extends BasePage{
 		}
 
 		while(this.switchPage(true));
-		/*getDriver().findElement(By.xpath("//div[contains(@class,'prp-card-grid-item')]")).click();
-		return waitForCondition(Driver->{
-			return this.imgProductBadge.isDisplayed();
-		},90000);
-		//return this.waitForPageLoading();*/
 		return false;
 	}
-
-	/*public boolean goToFirstProductItem(String lsProductNumber) {
-		this.getSearchResultLoad(lsProductNumber);
-		this.waitForPageLoading();
-		WebElement item=this.productResultList.get(0).findElement(By.xpath(".//a"));
-
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-		item.click();
-		waitForCondition(Driver->{
-			return this.lblProductName.isDisplayed();
-		},90000);
-		this.waitForPageToLoad();
-
-		return true;
-	}*/
-
-	/*public boolean goToFirstProductItem() {
-
-		if(product==null){
-			reporter.reportLogFailWithScreenshot("Unable to find the product with Vedio,Size,Style,Badge image, Review,EasyPay,Nowprice and WasPrice");
-			return false;
-		}
-
-		selectedProduct=apiResponse.selectedProduct;
-
-		productNumber=selectedProduct.productNumber;
-
-		this.selectedProductItem.init();
-
-		this.getSearchResultLoad(productNumber);
-		WebElement item=this.productResultList.get(0);
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-		this.getReusableActionsInstance().scrollToElement(item);
-
-		this.selectedProductItem.productNumber=productNumber;
-		this.selectedProductItem.productName=this.getElementInnerText(item.findElement(this.byProductName));
-		if(this.checkProductItemBrandNameExisting(item)) {
-			this.selectedProductItem.productBrand=this.getElementInnerText(item.findElement(this.byProductBrand));
-		}
-		this.selectedProductItem.productNowPrice=this.getElementInnerText(item.findElement(this.byProductNowPrice)).replace("Current price:", "").trim();
-		this.selectedProductItem.productWasPrice=this.getElementInnerText(item.findElement(this.byProductWasPrice)).replace("Previous price:", "").trim();
-		this.selectedProductItem.productNavigationUrl=this.URL();
-
-		this.clickElement(item.findElement(this.byProductHref));
-
-		return this.waitForPDPPageLoading();
-	}*/
 
 	/**
 	 * This method will go to the product with with Vedio,Size,Style,Badge image, Review,EasyPay,Nowprice and WasPrice
@@ -2204,9 +2108,7 @@ public class ProductResultsPage extends BasePage{
 	public String getProductOptionTypeWithoutMouseHover(WebElement itemContainer) {
 		List<WebElement> optionList=itemContainer.findElements(this.byProductOptionList);
 		WebElement item=optionList.get(0);
-//		this.getReusableActionsInstance().staticWait(300);
 		String lsText=this.getElementInnerText(item);
-//		this.getReusableActionsInstance().staticWait(300);
 
 		if(lsText.isEmpty()) {
 			return "None";
@@ -2422,12 +2324,9 @@ public class ProductResultsPage extends BasePage{
 					this.waitForCondition(Driver->{return !this.getElementInnerText(tempElementSize).equalsIgnoreCase("Select size:");},10000);
 				}
 				else {
-					Select sizeSelect= new Select(element.findElement(By.xpath("./parent::select")));
-					sizeSelect.selectByIndex(optionList.size()-1);
-					//Unable to find explicit way, so have to use static wait
-					this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+					WebElement dropDown=element.findElement(By.xpath("./parent::select"));
+					checkSizeSelectOptions(itemContainer,dropDown);
 				}
-//				this.clickElement(optionList.get(optionList.size()-1));
 
 				element=itemContainer.findElement(byProductOptionSizeSelectedSize);
 				selectedProductItem.productSelectedSize=this.getElementInnerText(element);
@@ -2443,17 +2342,15 @@ public class ProductResultsPage extends BasePage{
 				tempElementColor=elementSelectedText;
 
 				optionList=itemContainer.findElements(byProductOptionColorItemEnabledList);
-				//this.clickElement(optionList.get(optionList.size()-1));
+
 				element=optionList.get(optionList.size()-1);
 				if(element.getTagName().equalsIgnoreCase("button")) {
 					this.getReusableActionsInstance().clickIfAvailable(element,5000);
 					this.waitForCondition(Driver->{return !this.getElementInnerText(tempElementColor).equalsIgnoreCase("Select colour:");},10000);
 				}
 				else {
-					Select sizeSelect= new Select(element.findElement(By.xpath("./parent::select")));
-					sizeSelect.selectByIndex(optionList.size()-1);
-					//Unable to find explicit wait condition, so hve to use static wait
-					this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+					WebElement dropDown=element.findElement(By.xpath("./parent::select"));
+					checkColorSelectOptions(itemContainer,dropDown);
 				}
 
 				element=itemContainer.findElement(byProductOptionColorSelectedColor);
@@ -2647,7 +2544,67 @@ public class ProductResultsPage extends BasePage{
 		}
 		return false;		
 	}
-	
+
+	private String checkColorSelectOptions(WebElement itemContainer,WebElement dropDown){
+		List<WebElement> itemList;
+		WebElement niceSelectButton;
+		String colorToBeSelected="";
+		if(dropDown.getAttribute("class").contains("visually-hidden")){
+			niceSelectButton=itemContainer.findElement(byProductOptionColorNiceSelectButton);
+			this.clickElement(niceSelectButton);
+			this.applyStaticWait(1000);
+			itemList=itemContainer.findElements(this.byProductOptionColorNiceSelectList);
+
+			for(int j=itemList.size()-1;j>=0;j--) {
+				if (!hasElementAttribute(itemList.get(j), "disabled")) {
+					colorToBeSelected=this.getElementInnerText(itemList.get(j));
+					this.clickElement(itemList.get(j));
+					break;
+				}
+			}
+		}
+		else{
+			Select select = new Select(dropDown);
+			List<WebElement> enabledColor = itemContainer.findElements(this.byProductOptionColorItemEnabledList);
+			colorToBeSelected = enabledColor.get(enabledColor.size()-1).getAttribute("value");
+			select.selectByValue(colorToBeSelected);
+		}
+		//Unable to find explicit wait condition, so hve to use static wait
+		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+
+		return colorToBeSelected;
+	}
+
+	private String checkSizeSelectOptions(WebElement itemContainer,WebElement dropDown){
+		List<WebElement> itemList;
+		WebElement niceSelectButton;
+		String sizeToBeSelected="";
+		if(dropDown.getAttribute("class").contains("visually-hidden")){
+			niceSelectButton=itemContainer.findElement(byProductOptionSizeNiceSelectButton);
+			this.clickElement(niceSelectButton);
+			this.applyStaticWait(1000);
+			itemList=itemContainer.findElements(this.byProductOptionSizeNiceSelectList);
+
+			for(int j=itemList.size()-1;j>=0;j--) {
+				if (!hasElementAttribute(itemList.get(j), "disabled")) {
+					sizeToBeSelected=this.getElementInnerText(itemList.get(j));
+					this.clickElement(itemList.get(j));
+					break;
+				}
+			}
+		}
+		else{
+			Select select = new Select(dropDown);
+			List<WebElement> enabledColor = itemContainer.findElements(this.byProductOptionSizeItemEnabledList);
+			sizeToBeSelected = enabledColor.get(enabledColor.size()-1).getAttribute("value");
+			select.selectByValue(sizeToBeSelected);
+		}
+		//Unable to find explicit wait condition, so hve to use static wait
+		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+
+		return sizeToBeSelected;
+	}
+
 	/**
 	 * This method will verify selecting size/color option
 	 * @param-WebElement-itemContainer: product search result item
@@ -2671,20 +2628,14 @@ public class ProductResultsPage extends BasePage{
 				this.waitForCondition(Driver->{return !this.getElementInnerText(tempElementSize).equalsIgnoreCase("Select size:");},10000);
 			}
 			else {
-				Select sizeSelect= new Select(element.findElement(By.xpath("./parent::select")));
-				sizeSelect.selectByIndex(optionList.size()-1);
-				//Unable to find explicit wait condition, so hve to use static wait
-				this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+				WebElement dropDown=element.findElement(By.xpath("./parent::select"));
+				checkSizeSelectOptions(itemContainer,dropDown);
 			}			
-
-			//this.getReusableActionsInstance().staticWait(7000);
 
 			WebElement selectedSize = itemContainer.findElement(this.sizeSelected);
 			String lsSelectedTitle=this.getElementInnerText(selectedSize).split(":")[1].trim();
 			this.selectedProductItem.productSelectedSize=lsSelectedTitle;			
-			//String lsSelectedTitle=this.getElementInnerText(element);
-			//String lsSelectedTitle=this.getElementInnerText(element).replace("Size", "").trim();
-			
+
 			if(lsText.equalsIgnoreCase(lsSelectedTitle)) {
 				reporter.reportLogPass("The selected size title is displaying correctly");
 			}
@@ -2744,10 +2695,8 @@ public class ProductResultsPage extends BasePage{
 				this.waitForCondition(Driver->{return !this.getElementInnerText(tempElementColor).equalsIgnoreCase("Select colour:");},10000);
 			}
 			else {
-				Select sizeSelect= new Select(element.findElement(By.xpath("./parent::select")));
-				sizeSelect.selectByIndex(selectNumber);
-				//Unable to find explicit wait condition, so hve to use static wait
-				this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+				WebElement dropDown=element.findElement(By.xpath("./parent::select"));
+				checkColorSelectOptions(itemContainer,dropDown);
 			}	
 
 			if(optionList.size()>1) {
@@ -2919,10 +2868,8 @@ public class ProductResultsPage extends BasePage{
 			this.getReusableActionsInstance().clickIfAvailable(element);
 		}
 		else {
-			Select sizeSelect= new Select(element.findElement(By.xpath("./parent::select")));
-			sizeSelect.selectByIndex(optionList.size()-1);
-			//Unable to find explicit wait condition, so hve to use static wait
-			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+			WebElement dropDown=element.findElement(By.xpath("./parent::select"));
+			checkSizeSelectOptions(itemContainer,dropDown);
 		}		
 
 		//Choose color
@@ -2934,10 +2881,8 @@ public class ProductResultsPage extends BasePage{
 			this.getReusableActionsInstance().clickIfAvailable(element);
 		}
 		else {
-			Select sizeSelect= new Select(element.findElement(By.xpath("./parent::select")));
-			sizeSelect.selectByIndex(optionList.size()-1);
-			//Unable to find explicit wait condition, so hve to use static wait
-			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+			WebElement dropDown=element.findElement(By.xpath("./parent::select"));
+			checkColorSelectOptions(itemContainer,dropDown);
 		}		
 
 		//Storing size and color for verification on PDP page
@@ -3077,8 +3022,7 @@ public class ProductResultsPage extends BasePage{
 		globalFooterPage.switchlanguage();
 		this.waitForPageToLoad();
 		this.getReusableActionsInstance().waitForElementVisibility(this.lblSearchResultMessage,120);
-//		this.getReusableActionsInstance().staticWait(1000);
-		
+
 		if(productResultList.size()>0) {
 			reporter.reportLogPass("The product list is displaying correctly after switching to French language");
 		}
@@ -3098,8 +3042,7 @@ public class ProductResultsPage extends BasePage{
 		this.getDriver().get(lsUrl);
 		this.waitForPageToLoad();
 		this.getReusableActionsInstance().waitForElementVisibility(this.lblSearchResultMessage,120);
-//		this.getReusableActionsInstance().staticWait(1000);
-		
+
 		if(productResultList.size()>0) {
 			reporter.reportLogPass("The product list is loading correctly through inputting Url directly");
 		}
@@ -3116,7 +3059,6 @@ public class ProductResultsPage extends BasePage{
 	 */
 	public boolean checkProductItemBrandNameExisting(WebElement itemContainer) {
 		WebElement item=itemContainer.findElement(this.byProductBrand);
-//		String lsText=item.getText().trim();
 		String lsText=this.getElementInnerText(item);
 
 		return !lsText.isEmpty();
@@ -3130,11 +3072,8 @@ public class ProductResultsPage extends BasePage{
 	 */
 	public boolean checkProductItemReviewExisting(WebElement itemContainer) {
 		return this.checkChildElementExistingByTagName(itemContainer.findElement(this.byProductReviewContainer),"span");
-		//WebElement item=itemContainer.findElement(this.byProductReviewContainer);
-
-		//return this.getChildElementCount(item)>0;
 	}
-	
+
 	/**
 	 * This method will check Product Item Free Shipping Existing
 	 * @param-WebElement itemContainer: product search result item
@@ -3228,8 +3167,6 @@ public class ProductResultsPage extends BasePage{
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(productFilterTitle);
 		this.getReusableActionsInstance().clickIfAvailable(productFilterTitle);
 		this.waitForCondition(Driver->{return checkIfFilterItemIsCollapsed(filterContainerItem);},5000);
-//		//Wait for panel expansion
-//		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 
 		clickSeeMoreButton(filterContainerItem);
 		if(!checkIfFilterItemIsCollapsed(filterContainerItem)){
@@ -3270,7 +3207,6 @@ public class ProductResultsPage extends BasePage{
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(productFilterTitle);
 		this.getReusableActionsInstance().clickIfAvailable(productFilterTitle);
 		this.waitForCondition(Driver->{return checkIfFilterItemIsCollapsed(filterContainerItem);},5000);
-//		this.getReusableActionsInstance().staticWait(1000);
 	}
 
 	/**
@@ -3297,7 +3233,6 @@ public class ProductResultsPage extends BasePage{
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(seeMoreButton);
 			this.getReusableActionsInstance().clickIfAvailable(seeMoreButton);
 			this.waitForCondition(Driver->{return this.checkFilterItemSeeButtonExisting(filterContainerItem).equalsIgnoreCase("SeeLess");},5000);
-//			this.getReusableActionsInstance().staticWait(1000);
 		}
 	}
 
@@ -3314,7 +3249,6 @@ public class ProductResultsPage extends BasePage{
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(seeLessButton);
 			this.getReusableActionsInstance().clickIfAvailable(seeLessButton);
 			this.waitForCondition(Driver->{return this.checkFilterItemSeeButtonExisting(filterContainerItem).equalsIgnoreCase("SeeMore");},5000);
-//			this.getReusableActionsInstance().staticWait(1000);
 		}
 	}
 
@@ -3357,6 +3291,17 @@ public class ProductResultsPage extends BasePage{
 	public boolean checkViewAllSizesButtonExisting(WebElement filterContainerItem) {
 		WebElement sizeContainer=filterContainerItem.findElement(this.byProductOptionSizeWrapper);
 		return this.checkChildElementExistingByTagNameAndAttribute(sizeContainer, "a", "class", "product-card__size-view-all");
+	}
+
+	/**
+	 * This method will check ViewAllColors Button Existing
+	 * @param-WebElement filterContainerItem: filter Container Item
+	 * @return boolean
+	 * @author Wei.Li
+	 */
+	public boolean checkViewAllColorsButtonExisting(WebElement filterContainerItem) {
+		WebElement colorContainer=filterContainerItem.findElement(this.byProductOptionColorWrapper);
+		return this.checkChildElementExistingByTagNameAndAttribute(colorContainer, "a", "class", "product-card__size-view-all");
 	}
 
 	/**
@@ -3428,7 +3373,6 @@ public class ProductResultsPage extends BasePage{
 			}
 		}else{
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstFilterApplied_Mobile);
-//			this.getReusableActionsInstance().staticWait(3000);
 			filterName=this.lstFilterApplied_Mobile.getText();
 			if(brandName.toLowerCase().trim().equals(filterName.toLowerCase().trim()))
 				filterBrandNameFlag = true;
@@ -3686,7 +3630,7 @@ public class ProductResultsPage extends BasePage{
 		//Verification of number of items displayed on page
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.cntPagination);
 		this.getReusableActionsInstance().scrollToElement(this.cntPagination);
-//		this.getReusableActionsInstance().staticWait(2000);
+
 		int itemsOnPage;
 		if(pageData.get("page").equalsIgnoreCase("1"))
 			itemsOnPage = Integer.valueOf(this.txtShowingDynamicContent.getText().split(" ")[2]);
@@ -3702,7 +3646,7 @@ public class ProductResultsPage extends BasePage{
 		if(pageTitleType.contains("Banner")){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblBreadcrumbLastProductName);
 			this.getReusableActionsInstance().scrollToElement(this.lblBreadcrumbLastProductName);
-//			this.getReusableActionsInstance().staticWait(2000);
+
 			String bannerProductName = this.lblBreadcrumbLastProductName.getText();
 			if(pageData.get("searchTerm").toLowerCase().contains(bannerProductName))
 				reporter.reportLogPass("Search Term on page for Banner Search: "+bannerProductName+" is same as in api call: "+pageData.get("searchTerm"));
@@ -3711,7 +3655,7 @@ public class ProductResultsPage extends BasePage{
 		}else if(pageTitleType.contains("Normal")){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSearchResultMessage);
 			this.getReusableActionsInstance().scrollToElement(this.lblSearchResultMessage);
-//			this.getReusableActionsInstance().staticWait(2000);
+
 			String titleMessage = this.lblSearchResultMessage.getText().split("\"")[1];
 			if(titleMessage.equalsIgnoreCase(pageData.get("searchTerm")))
 				reporter.reportLogPass("Search Term on page for Normal Search: "+titleMessage+" is same as in api call: "+pageData.get("searchTerm"));

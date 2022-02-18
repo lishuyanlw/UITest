@@ -464,8 +464,9 @@ import utils.ReusableActions;
 	 * @author Wei.Li
 	 */		
 	public boolean checkChildElementExistingByAttribute(WebElement parent,String lsAttribute,String lsAttributeValue) {
-		List<WebElement> lstChild=this.getChildrenList(parent);		
-		for(WebElement child:lstChild) {			
+		List<WebElement> lstChild=this.getChildrenList(parent);
+		for(WebElement child:lstChild) {
+			System.out.println(child.getTagName()+":  "+child.getAttribute("class"));
 			if(this.hasElementAttribute(child,lsAttribute)) {				
 				String lsValue=this.getChildElementAttribute(child,lsAttribute).trim();				
 				if(lsValue.isEmpty()||lsValue==null) {
@@ -566,6 +567,11 @@ import utils.ReusableActions;
 	public boolean hasElementAttribute(WebElement element,String lsAttribute) {
 		JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
 		return (boolean) jse.executeScript("return arguments[0].hasAttribute(arguments[1]);", element,lsAttribute);			
+	}
+
+	public void setElementValue(WebElement element,String lsValue) {
+		JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
+		jse.executeScript("arguments[0].value = arguments[1]);", element,lsValue);
 	}
 	
 	/**

@@ -37,9 +37,9 @@ public class SR_TC01_VerifyProductSearchResultWithMultiKeywords extends BaseTest
 	int keyWordSize=lsKeywordList.size();
 	for(int i=0;i<keyWordSize;i++) {		
 		getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(i).trim(),true);
-		
+		reporter.reportLog("Search keyword : "+lsKeywordList.get(i)+ " for browser: "+getProductResultsPageThreadLocal().getExecutionBrowserName());
 		String lsTestModel=getProductResultsPageThreadLocal().judgeTestModel();	
-		reporter.reportLog("Search Model and keyword : "+lsTestModel+" : "+lsKeywordList.get(i)+ " for browser: "+getProductResultsPageThreadLocal().getExecutionBrowserName());
+		reporter.reportLog("Search Model : "+lsTestModel+" : "+lsKeywordList.get(i)+ " for browser: "+getProductResultsPageThreadLocal().getExecutionBrowserName());
 		
 		switch(lsTestModel) {
 		case "NormalSearch":
