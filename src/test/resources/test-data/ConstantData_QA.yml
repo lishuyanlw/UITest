@@ -169,6 +169,6 @@ footerSection:
   lst_MyAccountObjectSectionTitle: ["SETTING UP AN ACCOUNT","PHONE BASED ACCOUNTS","PASSWORD RECOVERY"]
   lst_TrackYourOrderObjectSectionTitle: ["ORDER NUMBER","BILLING POSTAL CODE","SUBMIT"]
 loginUser:
-  lbl_Username: testDavid@test.com
+  lbl_Username: test123@test.com
   lbl_Password: testMail123
   lbl_FirstName: Test
