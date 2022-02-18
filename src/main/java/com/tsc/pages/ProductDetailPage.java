@@ -185,7 +185,8 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@class='style-container']//div[@id='divStyleSwatchDdl']//select")
 	public WebElement selectProductStyle;
 
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@class='style-container']//div[@id='divStyleSwatchDdl']//select//option")
+	//@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@class='style-container']//div[@id='divStyleSwatchDdl']//select//option")
+	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@class='style-container']//div[@id='divStyleSwatchDdl']//select//option[not(contains(@class,'disabled'))]")
 	public List<WebElement> lstDropdownProductStyle;
 
 	//TrueFit part
@@ -725,6 +726,9 @@ public class ProductDetailPage extends BasePage {
 
 	/*@FindBy(xpath = "//div[@id='findMine']//div[contains(@class,'findmine__slider')]//div[contains(@class,'findmine__item') and not(contains(@class,'findmine__itemid'))]")
 	public List<WebElement> lstGetTheLookItem;*/
+
+	@FindBy(xpath="//div[contains(@class,'draggable')]//figure[contains(@class,'current')]/a")
+	public WebElement imgCurrentImageDisplayedForProduct;
 
 	@FindBy(xpath = "//div[@id='findMine']//div[@class='slick-list']//div[contains(@class,'slick-current')]//div[contains(@class,'findmine__item') and not(contains(@class,'findmine__itemid'))]")
 	public List<WebElement> lstGetTheLookItem;
@@ -2266,8 +2270,8 @@ public class ProductDetailPage extends BasePage {
 
 	/**
 	 * This method will go to PDP page with the matched product
-	 * @param List<String> lstKeyword: keyword list
-	 * @param String lsType: method type with "AllConditionsWithoutCheckingSoldOutCriteria"/"AllConditionsWithCheckingSoldOutCriteria"/"SoldOut"/"AddToBag"/"AdvanceOrder"
+	 * @param-List<String> lstKeyword: keyword list
+	 * @param-String lsType: method type with "AllConditionsWithoutCheckingSoldOutCriteria"/"AllConditionsWithCheckingSoldOutCriteria"/"SoldOut"/"AddToBag"/"AdvanceOrder"
 	 * @return true/false
 	 * @author Wei.Li
 	 * @throws IOException

@@ -3898,6 +3898,10 @@ public class ProductResultsPage extends BasePage{
 		}
 	}
 
+	/**
+	 * This method verifies product on PRP that has more than sixteen color and no size by selecting color
+	 * @param-void
+	 */
 	public void selectAndVerifyProductColor(){
 		waitForCondition(driver->{return (this.getProductList().size()>0 && (new GlobalHeaderPage(this.getDriver()).lblTSCChatBox.getText().contains("Chat")));},10000);
 		List<WebElement> productList = this.getProductList();
