@@ -3342,9 +3342,11 @@ public class ProductResultsPage extends BasePage{
 		if(this.checkChildElementExistingByTagName(expectedWebElement,"li")){
 			long childElementCount = this.getChildElementCount(expectedWebElement);
 			if(childElementCount==Long.valueOf(2)){
-				WebElement dropDownItemList = webElement.findElement(this.byProductOptionColorDropDown);
-				if(this.checkChildElementExistingByTagName(dropDownItemList,"option"))
-					return true;
+				List<WebElement> dropDownItemList = webElement.findElements(this.byProductOptionColorDropDown);
+				if(dropDownItemList.size()>0){
+					if(this.checkChildElementExistingByTagName(dropDownItemList.get(0),"option"))
+						return true;
+				}
 			}
 		}
 		return false;
