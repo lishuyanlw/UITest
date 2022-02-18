@@ -34,8 +34,11 @@ public class SR_TC17_VerifyProductSearchResult_ItemCountMoreThanSixteen extends 
         getProductResultsPageThreadLocal().verifyPaginationCountOnLastPage(pageData);
 
         //Act - BUG-20719 - [POST PROD] PRP breaks when products have more than 16 variants and no swatches
-        getProductResultsPageThreadLocal().loadProductOnPRPPageForItemWithMoreThanSixteenVariantsAndNoSize(productWithMoreThanSixteenSize,defaultPageSetting);
+        boolean productFound = getProductResultsPageThreadLocal().loadProductOnPRPPageForItemWithMoreThanSixteenVariantsAndNoSwatch(productWithMoreThanSixteenSize,defaultPageSetting);
         //Assert
-        getProductResultsPageThreadLocal().verifyProductWithMoreThanSixteenVariant();
+        if(productFound)
+            getProductResultsPageThreadLocal().selectAndVerifyProductColor();
+        else
+            reporter.reportLogFail("No Product Found to test!!");
     }
 }

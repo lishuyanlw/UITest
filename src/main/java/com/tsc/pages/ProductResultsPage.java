@@ -144,15 +144,19 @@ public class ProductResultsPage extends BasePage{
 
 	public By byProductOptionSizeWrapper=By.xpath(".//fieldset//div[@class='product-card__size-wrapper']");
 
-	public By byProductOptionSizeItemList=By.xpath(".//fieldset//div[contains(@class,'product-card__size-items')]//button|.//fieldset//select[@class='product-card__size__dropdown']//option");
+	public By byProductOptionSizeItemList=By.xpath(".//fieldset//div[contains(@class,'product-card__size-items')]//button|.//fieldset//select[contains(@class,'product-card__size__dropdown')]//option");
 
-	public By byProductOptionSizeItemEnabledList=By.xpath(".//fieldset//div[contains(@class,'product-card__size-items')]//button[not(@disabled)]|.//fieldset//select[@class='product-card__size__dropdown']//option[not(@disabled)]");
+	public By byProductOptionSizeItemEnabledList=By.xpath(".//fieldset//div[contains(@class,'product-card__size-items')]//button[not(@disabled)]|.//fieldset//select[contains(@class,'product-card__size__dropdown')]//option[not(@disabled)]");
 
-	public By byProductOptionSizeItemDisabledList=By.xpath(".//fieldset//div[contains(@class,'product-card__size-items')]//button[@disabled]|.//fieldset//select[@class='product-card__size__dropdown']//option[@disabled]");
+	public By byProductOptionSizeItemDisabledList=By.xpath(".//fieldset//div[contains(@class,'product-card__size-items')]//button[@disabled]|.//fieldset//select[contains(@class,'product-card__size__dropdown')]//option[@disabled]");
 
-	public By byProductOptionSizeSelectedItem=By.xpath(".//fieldset//div[contains(@class,'product-card__size-items')]//button[@aria-pressed='true']|.//fieldset//select[@class='product-card__size__dropdown']//option[@selected]");
+	public By byProductOptionSizeSelectedItem=By.xpath(".//fieldset//div[contains(@class,'product-card__size-items')]//button[@aria-pressed='true']|.//fieldset//select[contains(@class,'product-card__size__dropdown')]//option[@selected]");
 
 	public By byProductOptionSizeViewAllSizes=By.xpath(".//fieldset//a[@class='product-card__size-view-all']");
+
+	public By byProductOptionSizeNiceSelectList=By.xpath(".//fieldset//select[contains(@class,'product-card__size__dropdown')]/following-sibling::div[@class='niceSelect__container']//ul/li/button");
+
+	public By byProductOptionSizeNiceSelectButton=By.xpath(".//fieldset//select[contains(@class,'product-card__size__dropdown')]/following-sibling::div[@class='niceSelect__container']//button[@id='niceSelect-nsSizeTaste-selected']");
 
 	//For color option
 	public By byProductOptionColorTitle=By.xpath(".//fieldset//p[@class='product-card__color-and-taste-title']");
@@ -163,18 +167,23 @@ public class ProductResultsPage extends BasePage{
 
 	public By byProductOptionColorWrapper=By.xpath(".//fieldset//div[@class='product-card__color-and-taste-wrapper']");
 
-	public By byProductOptionColorItemList=By.xpath(".//fieldset//div[contains(@class,'product-card__color-and-taste-items')]//button|.//fieldset//select[@class='product-card__color-and-taste__dropdown']//option");
+	public By byProductOptionColorItemList=By.xpath(".//fieldset//div[contains(@class,'product-card__color-and-taste-items')]//button|.//fieldset//select[contains(@class,'product-card__color-and-taste__dropdown')]//option");
 
 	public By byProductOptionColorDropDown=By.xpath(".//fieldset//select[@class='product-card__color-and-taste__dropdown']");
 
-	public By byProductOptionColorItemEnabledList=By.xpath(".//fieldset//div[contains(@class,'product-card__color-and-taste-items')]//button[not(@disabled)]|.//fieldset//select[@class='product-card__color-and-taste__dropdown']//option[not(@disabled)]");
+	public By byProductOptionColorItemEnabledList=By.xpath(".//fieldset//div[contains(@class,'product-card__color-and-taste-items')]//button[not(@disabled)]|.//fieldset//select[contains(@class,'product-card__color-and-taste__dropdown')]//option[not(@disabled)]");
 
-	public By byProductOptionColorItemDisabledList=By.xpath(".//fieldset//div[contains(@class,'product-card__color-and-taste-items')]//button[@disabled]|.//fieldset//select[@class='product-card__color-and-taste__dropdown']//option[@disabled]");
+	public By byProductOptionColorItemDisabledList=By.xpath(".//fieldset//div[contains(@class,'product-card__color-and-taste-items')]//button[@disabled]|.//fieldset//select[contains(@class,'product-card__color-and-taste__dropdown')]//option[@disabled]");
 
-	public By byProductOptionColorSelectedItem=By.xpath(".//fieldset//div[contains(@class,'product-card__color-and-taste-items')]//button[@aria-pressed='true']|.//fieldset//select[@class='product-card__color-and-taste__dropdown']//option[not(@selected)]");
+	public By byProductOptionColorSelectedItem=By.xpath(".//fieldset//div[contains(@class,'product-card__color-and-taste-items')]//button[@aria-pressed='true']|.//fieldset//select[contains(@class,'product-card__color-and-taste__dropdown')]//option[not(@selected)]");
 
 	public By byProductOptionColorViewAllColors=By.xpath(".//fieldset//a[@class='product-card__color-view-all']");
 
+	public By byProductOptionColorNiceSelectList=By.xpath(".//fieldset//select[contains(@class,'product-card__color-and-taste__dropdown')]/following-sibling::div[@class='niceSelect__container']//ul/li/button");
+
+	public By byProductOptionColorNiceSelectButton=By.xpath(".//fieldset//select[contains(@class,'product-card__color-and-taste__dropdown')]/following-sibling::div[@class='niceSelect__container']//button[@id='niceSelect-nsColourTaste-selected']");
+
+	//For product details
 	public By byProductName=By.xpath(".//form[@class='product-card__main']//div[@class='product-card__info']//a[@class='product-card__info-pname']");
 
 	public By byProductBrand=By.xpath(".//form[@class='product-card__main']//div[@class='product-card__info']//p[@class='product-card__info-brand']");
@@ -361,7 +370,11 @@ public class ProductResultsPage extends BasePage{
 	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']")
 	public WebElement lblPDPProductName;
 
-	public By lstColourDropdown = By.xpath("//form//div//select[@id='nsColourTaste']");
+	public By lstColourDropdown = By.xpath(".//form//div//select[@id='nsColourTaste']");
+
+	public By btnColorSelectionDropdown = By.xpath(".//form//div//button[contains(@id,'nsColourTaste-selected')]");
+
+	public By btnEnabledColorInDropdown = By.xpath(".//form//div//ul[contains(@id,'nsColourTaste-ul')]/li/button[not(@disabled)]");
 
 	String searchkeyword;
 	public boolean bVerifyTitle=true;
@@ -3815,7 +3828,7 @@ public class ProductResultsPage extends BasePage{
 	 * This method verifies that PRP page loads and display items for item that have no swatch and more than 16 items
 	 * @param-List<String> - inputParams containing properties of Product to look for
 	 */
-	public Product.Products loadProductOnPRPPageForItemWithMoreThanSixteenVariantsAndNoSize(List<String> inputParams,String defaultItemsCountOnPRP) throws IOException {
+	public boolean loadProductOnPRPPageForItemWithMoreThanSixteenVariantsAndNoSwatch(List<String> inputParams,String defaultItemsCountOnPRP) throws IOException {
 		ApiResponse apiResponse=new ApiResponse();
 		Map<String,Object> inputParamMap = new HashMap<>();
 		inputParamMap.put("size",0);
@@ -3827,9 +3840,9 @@ public class ProductResultsPage extends BasePage{
 		if(product!=null){
 			reporter.reportLog("Searching product: "+product.getName());
 			this.getSearchResultLoad(product.getName(),true);
-			return product;
+			return true;
 		}
-		return null;
+		return false;
 	}
 
 	/**
@@ -3843,16 +3856,36 @@ public class ProductResultsPage extends BasePage{
 			//Mouseover on product list displayed on PRP page
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(product.get(counter));
 			this.getReusableActionsInstance().scrollToElement(product.get(counter));
-			int finalCounterFirst = counter;
+
+			final int finalCounterFirst = counter;
 			waitForCondition(driver->{return (product.get(finalCounterFirst).findElement(this.lstColourDropdown).isDisplayed() && product.get(finalCounterFirst).findElement(this.lstColourDropdown).isEnabled());},5000);
 			//Fetching all colors that are enabled and selecting last enabled color
-			List<WebElement> enabledColor = product.get(counter).findElements(this.byProductOptionColorItemEnabledList);
 
 			//Selecting color from dropdown
 			WebElement dropDown = product.get(counter).findElement(this.lstColourDropdown);
-			Select select = new Select(dropDown);
-			String colorToBeSelected = enabledColor.get(enabledColor.size()-1).getAttribute("value");
-			select.selectByValue(colorToBeSelected);
+			List<WebElement> itemList;
+			WebElement niceSelectButton;
+			String colorToBeSelected="";
+			if(dropDown.getAttribute("class").contains("visually-hidden")){
+				niceSelectButton=product.get(counter).findElement(byProductOptionColorNiceSelectButton);
+				this.clickElement(niceSelectButton);
+				this.applyStaticWait(1000);
+				itemList=product.get(counter).findElements(this.byProductOptionColorNiceSelectList);
+
+				for(int j=itemList.size()-1;j>=0;j--) {
+					if (!hasElementAttribute(itemList.get(j), "disabled")) {
+						colorToBeSelected=this.getElementInnerText(itemList.get(j));
+						this.clickElement(itemList.get(j));
+						break;
+					}
+				}
+			}
+			else{
+				Select select = new Select(dropDown);
+				List<WebElement> enabledColor = product.get(counter).findElements(this.byProductOptionColorItemEnabledList);
+				colorToBeSelected = enabledColor.get(enabledColor.size()-1).getAttribute("value");
+				select.selectByValue(colorToBeSelected);
+			}
 
 			//Storing the value of selected color for verification
 			int finalCounterSecond = counter;
@@ -3862,6 +3895,34 @@ public class ProductResultsPage extends BasePage{
 				reporter.reportLogPass("Color selected for product with more than 16 swatch:"+selectedColor+" is same as selected from dropdown: "+colorToBeSelected);
 			else
 				reporter.reportLogFailWithScreenshot("Color selected for product with more than 16 swatch:"+selectedColor+" is not same as selected from dropdown: "+colorToBeSelected);
+		}
+	}
+
+	public void selectAndVerifyProductColor(){
+		waitForCondition(driver->{return (this.getProductList().size()>0 && (new GlobalHeaderPage(this.getDriver()).lblTSCChatBox.getText().contains("Chat")));},10000);
+		List<WebElement> productList = this.getProductList();
+		String colorToBeSelected = null;
+		for(int counter=0;counter<productList.size();counter++){
+			WebElement dropDown = productList.get(counter).findElement(this.lstColourDropdown);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(productList.get(counter));
+			this.getReusableActionsInstance().scrollToElement(productList.get(counter));
+			if(dropDown.getAttribute("class").contains("visually-hidden")){
+				WebElement dropDownButtonElement = productList.get(counter).findElement(this.btnColorSelectionDropdown);
+				this.getReusableActionsInstance().clickIfAvailable(dropDownButtonElement,2000);
+				List<WebElement> enabledColors = productList.get(counter).findElements(this.btnEnabledColorInDropdown);
+				colorToBeSelected=this.getElementInnerText(enabledColors.get(enabledColors.size()-1));
+				this.clickElement(enabledColors.get(enabledColors.size()-1));
+			}else{
+				Select select = new Select(dropDown);
+				List<WebElement> enabledColor = productList.get(counter).findElements(this.byProductOptionColorItemEnabledList);
+				colorToBeSelected = enabledColor.get(enabledColor.size()-1).getAttribute("value");
+				select.selectByValue(colorToBeSelected);
+			}
+			String selectedColor = productList.get(counter).findElement(this.byProductOptionColorSelectedColor).getText();
+			if(colorToBeSelected.equalsIgnoreCase(selectedColor))
+				reporter.reportLogPass("Selected color from dropdown: "+colorToBeSelected+" is same as displayed after selection: "+selectedColor);
+			else
+				reporter.reportLogFailWithScreenshot("Selected color from dropdown: "+colorToBeSelected+" is not same as displayed after selection: "+selectedColor);
 		}
 	}
 
