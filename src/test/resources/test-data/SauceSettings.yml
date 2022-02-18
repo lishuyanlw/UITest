@@ -29,8 +29,8 @@ androidChromeCapabilities:
    deviceType: Tablet
 iosSafariCapabilities:
    platformName: iOS
-   platformVersion: 15.0 #14.3
-   appiumVersion: 1.22.0 #1.20.1
+   platformVersion: 14.3 #15.0
+   appiumVersion: 1.20.1 #1.22.0
    deviceName: iPhone XS Simulator
    deviceOrientation: portrait
    deviceType: Phone

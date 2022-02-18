@@ -14,6 +14,12 @@ public class TestDataHandler {
 	public static void dataInit() throws FileNotFoundException {
 		sauceSettings = YamlHandler.getSauceSettings("/src/test/resources/test-data/SauceSettings.yml");
 		constantDataOldVariables = YamlHandler.getConstantDataVariables("/src/test/resources/test-data/ConstantData_Old.yml");
-		constantData = YamlHandler.getConstantDataVariable("/src/test/resources/test-data/ConstantData.yml");
+		if(System.getProperty("QaUrl").toLowerCase().contains("qa")){
+			constantData = YamlHandler.getConstantDataVariable("/src/test/resources/test-data/ConstantData_QA.yml");
+		}
+		else{
+			constantData = YamlHandler.getConstantDataVariable("/src/test/resources/test-data/ConstantData_ST.yml");
+		}
+
 	}
 }

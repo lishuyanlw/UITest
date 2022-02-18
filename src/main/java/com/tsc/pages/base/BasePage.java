@@ -234,6 +234,7 @@ import utils.ReusableActions;
 		};
 		WebDriverWait wait = new WebDriverWait(getDriver(), 200);
 		wait.until(javascriptDone);
+		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 	}
 	
 	public void navigateBack() {
@@ -463,8 +464,8 @@ import utils.ReusableActions;
 	 * @author Wei.Li
 	 */		
 	public boolean checkChildElementExistingByAttribute(WebElement parent,String lsAttribute,String lsAttributeValue) {
-		List<WebElement> lstChild=this.getChildrenList(parent);		
-		for(WebElement child:lstChild) {			
+		List<WebElement> lstChild=this.getChildrenList(parent);
+		for(WebElement child:lstChild) {
 			if(this.hasElementAttribute(child,lsAttribute)) {				
 				String lsValue=this.getChildElementAttribute(child,lsAttribute).trim();				
 				if(lsValue.isEmpty()||lsValue==null) {
@@ -569,7 +570,7 @@ import utils.ReusableActions;
 
 	public void setElementValue(WebElement element,String lsValue) {
 		JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
-		jse.executeScript("arguments[0].value = arguments[1];", element,lsValue);
+		jse.executeScript("arguments[0].value = arguments[1]);", element,lsValue);
 	}
 
 	/**

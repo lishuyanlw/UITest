@@ -507,6 +507,10 @@ public class GlobalFooterPage extends BasePage {
 	@FindBy(xpath = "//div[@id='contactus']//label[contains(@class,'label_please_visit')]/a")
 	public WebElement lnkPleaseVisitUS;
 
+	//For Blog
+	@FindBy(xpath = "//body[contains(@class,'blog')]")
+	public WebElement blogLoadingIndicator;
+
 	// Terms of Use
 	@FindBy(xpath = "//div[@class='Middle']//h2")
 	public WebElement lblTermsOfUseAboutOurService;
@@ -655,8 +659,7 @@ public class GlobalFooterPage extends BasePage {
 			this.getReusableActionsInstance().clickIfAvailable(homePage.btnClose,3000);
 		}
 		//btnClose.click();
-		homePage.waitForPageLoad();
-		getReusableActionsInstance().staticWait(5000);
+		this.waitForPageToLoad();
 		/**if (waitForCondition(Driver -> {
 			return (new HomePage(this.getDriver())).btnClose.isDisplayed();
 		}, 40000)) {
@@ -709,8 +712,13 @@ public class GlobalFooterPage extends BasePage {
 		String lsCurrentUrl = waitForPageLoadingByUrlChange(element);
 		lsCurrentUrl = removeProtocalHeaderFromUrl(lsCurrentUrl);
 
-		return lsCurrentUrl.equalsIgnoreCase(lsExpectedUrl)
-				|| lsCurrentUrl.toLowerCase().contains(lsExpectedUrl.toLowerCase());
+		if(lsExpectedUrl.contains("instagram.com")){
+			return lsCurrentUrl.contains("instagram.com");
+		}
+		else{
+			return lsCurrentUrl.equalsIgnoreCase(lsExpectedUrl)
+					|| lsCurrentUrl.toLowerCase().contains(lsExpectedUrl.toLowerCase());
+		}
 	}
 
 	/**
@@ -866,12 +874,13 @@ public class GlobalFooterPage extends BasePage {
 	 */
 	public boolean switchlanguage() {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkLanguage);
-		this.getReusableActionsInstance().waitForElementVisibility(this.lnkLanguage,  60);		
+//		this.getReusableActionsInstance().waitForElementVisibility(this.lnkLanguage,  60);
 		String lsLanguage=this.lnkLanguage.getText().trim();
-		getReusableActionsInstance().staticWait(5000);
-		this.lnkLanguage.click();
-		this.waitForPageLoading();
-		getReusableActionsInstance().staticWait(5000);
+//		getReusableActionsInstance().staticWait(5000);
+		this.getReusableActionsInstance().clickIfAvailable(this.lnkLanguage);
+		this.waitForPageToLoad();
+//		getReusableActionsInstance().staticWait(5000);
+//		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkLanguage);
 
 		return this.waitForCondition(Driver->{return !this.lnkLanguage.getText().trim().equalsIgnoreCase(lsLanguage);}, 30000);
@@ -908,11 +917,13 @@ public class GlobalFooterPage extends BasePage {
 		}
 
 		getReusableActionsInstance().javascriptScrollByVisibleElement(selectedItem);
-		selectedItem.click();
+		getReusableActionsInstance().clickIfAvailable(selectedItem);
 
+		this.waitForPageToLoad();
 		//waitForCondition(Driver -> { return !lsUrl.equalsIgnoreCase(this.URL());}, 60000);
-		(new ProductResultsPage(this.getDriver())).waitForPageLoading();
-		getReusableActionsInstance().staticWait(2000);
+//		(new ProductResultsPage(this.getDriver())).waitForPageLoading();
+//		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+//		getReusableActionsInstance().staticWait(2000);
 		return waitForCondition(Driver -> {return lblIndicator.isDisplayed();}, 60000);
 	}
 
@@ -933,7 +944,7 @@ public class GlobalFooterPage extends BasePage {
 		String lsCurrentUrl;
 		String lsMainWindowHandle = this.getDriver().getWindowHandle();
 		getReusableActionsInstance().javascriptScrollByVisibleElement(selectedItem);
-		selectedItem.click();
+		this.getReusableActionsInstance().clickIfAvailable(selectedItem);
 		getReusableActionsInstance().waitForNumberOfWindowsToBe(2, 90);
 		Set<String> lstWindowHandle = this.getDriver().getWindowHandles();
 
@@ -943,14 +954,15 @@ public class GlobalFooterPage extends BasePage {
 				break;
 			}
 		}
-		this.applyStaticWait(5000);
+		this.waitForCondition(Driver->{return this.blogLoadingIndicator.isDisplayed();},5000);
+//		this.applyStaticWait(5000);
+
 		lsCurrentUrl = this.removeLastSlashFromUrl(this.getDriver().getCurrentUrl());
 		lsExpectedUrl = this.removeLastSlashFromUrl(lsExpectedUrl);
 
 		String strQaUrl=System.getProperty("QaUrl");
 		this.getDriver().get(strQaUrl);
 		this.waitForPageToLoad();
-		this.applyStaticWait(5000);
 
 		return lsCurrentUrl.equalsIgnoreCase(lsExpectedUrl);
 	}
@@ -1509,7 +1521,7 @@ public class GlobalFooterPage extends BasePage {
 			String lsClass=item.getAttribute("class");
 			if(lsClass.equalsIgnoreCase("collapsed")) {
 				getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-				item.click();
+				getReusableActionsInstance().clickIfAvailable(item);
 				WebElement itemContent=lstPanelItemContent.get(i);
 				waitForCondition(Driver->{return itemContent.getAttribute("aria-expanded").equalsIgnoreCase("true");},10000);
 				getReusableActionsInstance().staticWait(1000);
@@ -1876,7 +1888,7 @@ public class GlobalFooterPage extends BasePage {
 		WebElement element=getDriver().findElement(By.xpath(path));
 		linkOftheTSC=element.getText();
 		reporter.reportLog("TSC Links Name is "+linkOftheTSC+"");
-		element.click();
+		getReusableActionsInstance().clickIfAvailable(element);
 	}
 
 	/**

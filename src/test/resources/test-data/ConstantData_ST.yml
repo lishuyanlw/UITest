@@ -81,14 +81,14 @@ homePage:
 searchResultPage:
   lbl_prp_partial_url: "/pages/productresults?"
   lst_SearchKeyword: [ "dyson vacuum","dfafasdfa","100501","Joan Rivers" ]
-  lst_SearchKeyword_Bugs: ["iPads & Tablets","apple  ","https://qa-tsc.tsc.ca/pages/productresults?&searchterm=desk","Brian Bailey Asymmetrical Waterfall Drape Dress"]
+  lst_SearchKeyword_Bugs: ["boots","apple  ","https://st-tsc.tsc.ca/pages/productresults?&searchterm=desk","Brian Bailey Asymmetrical Waterfall Drape Dress"]
   lbl_ProductNumberToComparePRPAndPDPContent: "Brian Bailey 3/4 Sleeve Trumpet Hem Dress"
   lst_SearchKeyword_DropDown: [[ "dress","Categories","0" ]]
   lst_APISearchingKeyword: ["dress","jegging","boots"]
   lbl_SearchResultPageDefaultSetting: 36
   lst_SearchResultMessage:  [ "Showing results for" , "able to find any results" ] 
   lst_SortOption: ["Featured Products","Newest First","Reviews: Highest First","Price: Lowest First","Price: Highest First","Brand Name: A to Z"]
-  lst_FilterOptionHeader: ["Category","Brand","Shop by brand","Shop by price label","Shop by colour","Size","Rollup size fashion","Shop by collection","Price","Reviews","Shop by more ways","Shop by clearance"]
+  lst_FilterOptionHeader: ["Category","Brand","Shop by brand","Shop by price label","Shop by colour","Size","Rollup size fashion","Shop by collection","Price","Reviews","Shop by more ways","Shop by clearance","New arrivals","Rollup size","Stone","Metal"]
   lst_Filter_Data: ["Price: Highest First","Price: Lowest First","Reviews: Highest First","Brand Name: A to Z"]
   lst_SortOptionMobile: ["Sort by : Featured Products","Sort by : Newest First","Sort by : Reviews: Highest First","Sort by : Price: Lowest First","Sort by : Price: Highest First","Sort by : Brand Name: A to Z"]
   lst_SearchOption:
@@ -98,17 +98,17 @@ searchResultPage:
       - ["Shop by colour","Pink"]
     - filterType: Price
       filterOption:
-        - ["Price","Under $100","Under"]
+        - ["Price","Under $50","Under"]
     - filterType: CombinatedAction
       filterOption:
-        - ["Shop by brand","N Natori"]
+        - ["Shop by brand","Joan Rivers"]
         - ["Reviews","3 Stars"]
-        - ["Price","Under $100"]
+        - ["Price","Under $50"]
     - filterType: SequentialAction
       filterOption: 
         - ["Shop by brand","Joan Rivers"]
-        - ["Price","Under $100"]
-        - ["Shop by colour","Green"]
+        - ["Price","Under $50"]
+        - ["Shop by colour","Black"]
     - filterType: FilterBugs
       filterOption:  
         - ["Shop by brand","Pajar"]
@@ -118,9 +118,9 @@ searchResultPage:
         - ["Jewellery","The Vault"]              
     - filterType: BreadCrumbBugs
       filterOption:  
-        - ["Category","Pants & Shorts"]
-        - ["Price","Under $100"] 
-        - ["Category","Leggings & Jeggings"]
+        - ["Shop by brand","Joan Rivers"]
+        - ["Price","Under $50"]
+        - ["Shop by colour","Black"]
     - filterType: PRPApiCallMultipleParameter
       filterOption:
         - ["page","2"]
@@ -130,7 +130,6 @@ searchResultPage:
     - filterType: PRPBugsSearchKeyword
       filterOption:
         - ["casper","3000786"]
-        - ["Stefano Oro", "18"]
   lst_MoreButton: ["Shop by brand","Shop by colour"]
   lst_DisappearAfterSelectFilter: ["SHOP BY CATEGORY"]
   lnk_product_result: /pages/productresults?
@@ -170,6 +169,6 @@ footerSection:
   lst_MyAccountObjectSectionTitle: ["SETTING UP AN ACCOUNT","PHONE BASED ACCOUNTS","PASSWORD RECOVERY"]
   lst_TrackYourOrderObjectSectionTitle: ["ORDER NUMBER","BILLING POSTAL CODE","SUBMIT"]
 loginUser:
-  lbl_Username: test123@test.com
+  lbl_Username: testDavid@test.com
   lbl_Password: testMail123
   lbl_FirstName: Test

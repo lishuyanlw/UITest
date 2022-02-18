@@ -19,6 +19,9 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 	public WebElement btnFilterPopup;
 	
 	//For filter popup window
+	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='prp']")
+	public WebElement cntFilterPopupContainer;
+
 	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='prp-filter-panel']//div[@class='prp-filter-panel__header']//button[@class='prp-filter-panel__header__close']")
 	public WebElement btnFilterPopupClose;
 	
@@ -52,53 +55,53 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 	public By byProductOptionFieldsetList=By.xpath("//div[@class='product-card__mobile-modal']//fieldset");
 	
 	public By byProductOptionTitle=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//*[contains(@class,'product-card__') and contains(@class,'-title')]");
-	
+
 	//For size option	
 	public By byProductOptionSizeTitle=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//span[@class='product-card__size-title']");
 
 	public By byProductOptionSizeSelectedSizeContainer=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//span[@class='product-card__size-title']");
-			
+
 	public By byProductOptionSizeSelectedSize=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//span[@class='product-card__size-title']//strong");
-	
+
 	public By byProductOptionSizeWrapper=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//div[@class='product-card__size-wrapper']");
-	
+
 	public By byProductOptionSizeDropDown=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//select[contains(@class,'product-card__size__dropdown')]");
-	
+
 	public By byProductOptionSizeItemList=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//div[contains(@class,'product-card__size-items')]//button|//div[@class='product-card__mobile-modal']//fieldset//select[contains(@class,'product-card__size__dropdown')]//option");
-	
+
 	public By byProductOptionSizeItemEnabledList=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//div[contains(@class,'product-card__size-items')]//button[not(@disabled)]|//div[@class='product-card__mobile-modal']//fieldset//select[contains(@class,'product-card__size__dropdown')]//option[not(@disabled)]");
-	
+
 	public By byProductOptionSizeItemDisabledList=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//div[contains(@class,'product-card__size-items')]//button[@disabled]|//div[@class='product-card__mobile-modal']//fieldset//select[contains(@class,'product-card__size__dropdown')]//option[@disabled]");
-	
+
 	public By byProductOptionSizeSelectedItem=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//div[contains(@class,'product-card__size-items')]//button[@aria-pressed='true']|//div[@class='product-card__mobile-modal']//fieldset//select[contains(@class,'product-card__size__dropdown')]//option[@selected]");
-	
+
 	public By byProductOptionSizeViewAllSizes=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//a[@class='product-card__size-view-all']");
 
 	public By byProductOptionSizeNiceSelectList=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//select[contains(@class,'product-card__size__dropdown')]/following-sibling::div[@class='niceSelect__container']//ul/li/button");
 
 	public By byProductOptionSizeNiceSelectButton=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//select[contains(@class,'product-card__size__dropdown')]/following-sibling::div[@class='niceSelect__container']//button[@id='niceSelect-nsSizeTaste-selected']");
-	
+
 	//For color option
 	public By byProductOptionColorTitle=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//p[@class='product-card__color-and-taste-title']");
 
 	public By byProductOptionColorSelectedColorContainer=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//p[@class='product-card__color-and-taste-title']");
-	
+
 	public By byProductOptionColorSelectedColor=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//p[@class='product-card__color-and-taste-title']//strong");
-	
+
 	public By byProductOptionColorWrapper=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//div[@class='product-card__color-and-taste-wrapper']");
-	
+
 	public By byProductOptionColorDropDown=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//select[contains(@class,'product-card__color-and-taste__dropdown')]");
-	
+
 	public By byProductOptionColorItemList=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//div[contains(@class,'product-card__color-and-taste-items')]//button|//div[@class='product-card__mobile-modal']//fieldset//select[contains(@class,'product-card__color-and-taste__dropdown')]//option");
-	
+
 	public By byProductOptionColorItemEnabledList=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//div[contains(@class,'product-card__color-and-taste-items')]//button[not(@disabled)]|//div[@class='product-card__mobile-modal']//fieldset//select[contains(@class,'product-card__color-and-taste__dropdown')]//option[not(@disabled)]");
-	
+
 	public By byProductOptionColorItemDisabledList=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//div[contains(@class,'product-card__color-and-taste-items')]//button[@disabled]|//div[@class='product-card__mobile-modal']//fieldset//select[contains(@class,'product-card__color-and-taste__dropdown')]//option[@disabled]");
-	
+
 	public By byProductOptionColorSelectedItem=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//div[contains(@class,'product-card__color-and-taste-items')]//button[@aria-pressed='true']|//div[@class='product-card__mobile-modal']//fieldset//select[contains(@class,'product-card__color-and-taste__dropdown')]//option[not(@selected)]");
-	
+
 	public By byProductGoToDetails=By.xpath("//div[@class='product-card__mobile-modal']//button[@class='product-card__add-button product-card__add-button--modal']");
-	
+
 	public By byProductSizeOrColorClose=By.xpath("//div[@class='product-card__mobile-modal']//button[@class='product-card__add-button product-card__add-button--modal']");
 
 	public By byProductOptionColorNiceSelectList=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//select[contains(@class,'product-card__color-and-taste__dropdown')]/following-sibling::div[@class='niceSelect__container']//ul/li/button");
@@ -133,25 +136,22 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 	public List<WebElement> lstTotalItemsOnPRPPage;
 	
 	public void openFilterPopupWindow() {
-//		getReusableActionsInstance().javascriptScrollByVisibleElement(btnFilterPopup);
-//		getReusableActionsInstance().clickIfAvailable(btnFilterPopup);
 		this.clickElement(this.btnFilterPopup);
 		this.getReusableActionsInstance().waitForElementVisibility(lblFilterPopupHeaderTitle, 20);
-//		getReusableActionsInstance().staticWait(5000);
 	}
 	
 	public void closeFilterPopupWindow() {
 		this.clickElement(this.btnViewProductsAfterSelectingFilters);
-//		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnViewProductsAfterSelectingFilters);
-//		getReusableActionsInstance().clickIfAvailable(this.btnViewProductsAfterSelectingFilters);
-		getReusableActionsInstance().staticWait(5000);
+		this.waitForCondition(Driver->{return !checkFilterPopupExisting();},5000);
 	}
 	
 	public void closeFilterPopupWindowWithCloseButton() {
-//		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnFilterPopupClose);
-//		getReusableActionsInstance().clickIfAvailable(this.btnFilterPopupClose);	
 		this.clickElement(this.btnFilterPopupClose);
-		getReusableActionsInstance().staticWait(5000);
+		this.waitForCondition(Driver->{return !checkFilterPopupExisting();},5000);
+	}
+
+	public boolean checkFilterPopupExisting(){
+		return this.checkChildElementExistingByAttribute(this.cntFilterPopupContainer,"class","prp-filter-panel");
 	}
 
 	//BUG-19745-[Release Defect - P3] the filter menu in PRP iOS is covered by a panel and can't be closed /cancelled
@@ -183,11 +183,10 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 		if(bCategory&&this.bCategoryExpand) {			
 			ExpandSubExpandableItemInCategoryFilterSection();
 			this.bCategoryExpand=false;
-			getReusableActionsInstance().staticWait(3000);
 			openFilterPopupWindow();
 		}
-		
-		for(int i=0;i<this.productFilterList.size();i++) {			
+
+		for(int i=0;i<this.productFilterList.size();i++) {
 			if(i>0) {
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i));
 			}			
@@ -195,7 +194,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 			if(lsHeader.contains("(")) {
 				lsHeader=lsHeader.split("\\(")[0].trim();
 			}	
-			
+			final String tempHeader=lsHeader;
 			//If found lsFirstLevelItem
 			if(lsHeader.equalsIgnoreCase(lsFirstLevelItem)) {					
 				if(!lsFirstLevelItem.equalsIgnoreCase("category")) {
@@ -207,17 +206,18 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				//If find a search input
 				if(checkSearchInputButtonExistingInSubFilter(this.productFilterContainerList.get(i))) {						
 					searchInputButton=this.productFilterContainerList.get(i).findElement(this.byProductFilterSearchInput);
-					//getReusableActionsInstance().javascriptScrollByVisibleElement(searchInputButton);
 					searchInputButton.sendKeys(lsSecondLevelItem);
-					getReusableActionsInstance().staticWait(1000);					
+					//Keep it to wait for search results displaying
+					this.getReusableActionsInstance().staticWait(300);
+
 					subItemList=this.productFilterContainerList.get(i).findElements(this.bySecondaryFilterAll);
 					if(subItemList.size()>0) {
-						//getReusableActionsInstance().javascriptScrollByVisibleElement(subItemList.get(0));
 						subItem=subItemList.get(0).findElement(By.xpath(".//label"));
 						getReusableActionsInstance().clickIfAvailable(subItem);
-						waitForSortingOrFilteringCompleted();
-						//getReusableActionsInstance().staticWait(8000);
-												
+
+						final By bySelectedSecondFilter=By.xpath("//section[@class='tsc-container']//div[@class='prp-filter-panel']//div[@class='prp-filter-panel__blocks']//button[@class='prp-filter-panel__block-title'][.='"+lsHeader+" (1)']");
+						this.waitForCondition(Driver->{ return this.getDriver().findElement(bySelectedSecondFilter).isDisplayed();},8000);
+
 						//Bug 19628: [QA Defect - P3] PRP: no products display if user is on the last page and select a faucet from the left nav
 						if(!this.URL().contains("page=")) {
 							reporter.reportLogPass("The Url does not contain page term.");
@@ -256,7 +256,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				else {
 					this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(0));
 				}
-				//this.getReusableActionsInstance().staticWait(1000);
+
 				subItemList=this.productFilterContainerList.get(i).findElements(this.bySecondaryFilterAll);				
 				for(int j=0;j<subItemList.size();j++) {	
 					subItem=subItemList.get(j);
@@ -279,13 +279,9 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 							lsSubItem=subItem.findElement(By.xpath(".//span[@class='prp-filter-panel__filter-list__item-label-text']")).getText().trim();
 						}
 					}
-					
-//					lsSubItem=this.getElementInnerText(subItem.findElement(By.xpath(".//span[@class='prp-filter-panel__filter-list__item-label-text']")));
-					getReusableActionsInstance().staticWait(500);
-					
+
 					//If found lsSecondLevelItem
 					if(lsSubItem.equalsIgnoreCase(lsSecondLevelItem)) {							
-						getReusableActionsInstance().staticWait(500);
 						if(lsFirstLevelItem.equalsIgnoreCase("category")) {
 							subItem=subItem.findElement(By.xpath(".//a"));
 						}
@@ -295,23 +291,25 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 												
 						if(j>4) {
 							this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItemList.get(j-3));
-							//getReusableActionsInstance().clickIfAvailable(subItem);
 							//Verification of BUG-19745
 							reporter.reportLog("Verifying BUG-19745-[Release Defect - P3] the filter menu in PRP iOS");
 							this.verifyFilterSection();
-							subItem.click();
+							this.getReusableActionsInstance().clickIfAvailable(subItem);
 						}
 						else {
-							//getReusableActionsInstance().clickIfAvailable(subItem);
 							//Verification of BUG-19745
 							reporter.reportLog("Verifying BUG-19745-[Release Defect - P3] the filter menu in PRP iOS");
 							this.verifyFilterSection();
-							subItem.click();
-						}	
-											
-						this.waitForSortingOrFilteringCompleted();
-//						getReusableActionsInstance().staticWait(5000);
-						
+							this.getReusableActionsInstance().clickIfAvailable(subItem);
+						}
+						if(lsHeader.toLowerCase().equalsIgnoreCase("category")){
+							this.waitForPageToLoad();
+						}
+						else{
+							final By bySelectedSecondFilter=By.xpath("//section[@class='tsc-container']//div[@class='prp-filter-panel']//div[@class='prp-filter-panel__blocks']//button[@class='prp-filter-panel__block-title'][.='"+lsHeader+" (1)']");
+							this.waitForCondition(Driver->{ return this.getDriver().findElement(bySelectedSecondFilter).isDisplayed();},8000);
+						}
+
 						//Bug 19628: [QA Defect - P3] PRP: no products display if user is on the last page and select a faucet from the left nav
 						//Bug 19556: [QA Defect - P3] PRP: when selecting a subcategory from Shop by category, the dimension in the URL should start over not appending
 						if(!this.URL().contains("page=")) {
@@ -335,11 +333,9 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 							this.verifyFilterSection();
 
 							closeFilterPopupWindow();
-							getReusableActionsInstance().staticWait(5000);
 							verifyUrlPatternAfterSelectFilter(false);
 						}	
 						else {
-							getReusableActionsInstance().staticWait(5000);
 							verifyUrlPatternAfterSelectFilter(true);
 						}
 
@@ -352,7 +348,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 		//If unable to find both lsFirstLevelItem and lsSecondLevelItem, then select the first choice
 		this.bDefault=true;
 		
-		for(int i=1;i<this.productFilterList.size();i++) {			
+		for(int i=1;i<this.productFilterList.size();i++) {
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i));
 			expandFilterItem(this.productFilterContainerList.get(i));
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productFilterList.get(i-1));
@@ -363,19 +359,19 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				if(!this.hasElementAttribute(subItem.findElement(By.xpath(".//button//input")), "checked")) {
 					this.secondLevelFilter=this.getElementInnerText(subItem);
 					this.firstLevelFilter=this.getElementInnerText(subItem.findElement(By.xpath("./ancestor::div[@class='prp-filter-panel__blocks']//button[@class='prp-filter-panel__block-title']")));
-					
-					getReusableActionsInstance().staticWait(3000);
-					
+					lsHeader=this.firstLevelFilter;
+
 					subItem=subItemList.get(j).findElement(By.xpath(".//label"));
 					if(j>4) {
 						this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItemList.get(j-2));
-						getReusableActionsInstance().clickIfAvailable(subItem);
+						subItem.click();
 					}
 					else {
-						getReusableActionsInstance().clickIfAvailable(subItem);
-					}										
-//					this.waitForSortingOrFilteringCompleted();
-					getReusableActionsInstance().staticWait(3000);
+						subItem.click();
+					}
+
+					final By bySelectedSecondFilter=By.xpath("//section[@class='tsc-container']//div[@class='prp-filter-panel']//div[@class='prp-filter-panel__blocks']//button[@class='prp-filter-panel__block-title'][.='"+lsHeader+" (1)']");
+					this.waitForCondition(Driver->{ return this.getDriver().findElement(bySelectedSecondFilter).isDisplayed();},8000);
 					
 					//Bug 19628: [QA Defect - P3] PRP: no products display if user is on the last page and select a faucet from the left nav
 					if(!this.URL().contains("page=")) {
@@ -443,10 +439,8 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 			element=subItem.findElement(By.xpath(".//a"));			
 			if(this.hasElementAttribute(element, "class")) {				
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
-				//this.getReusableActionsInstance().clickIfAvailable(element);
 				this.clickElement(element);
 				this.waitForPageToLoad();
-				this.getReusableActionsInstance().staticWait(3000);
 				break;
 			}
 		}
@@ -464,11 +458,9 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 		}
 				
 		WebElement productFilterTitle=filterContainerItem.findElement(this.byProductFilterTitle);
-//		this.getReusableActionsInstance().javascriptScrollByVisibleElement(productFilterTitle);
-//		this.getReusableActionsInstance().clickIfAvailable(productFilterTitle);
 		this.clickElement(productFilterTitle);
-		this.getReusableActionsInstance().staticWait(1000);
-		
+		this.waitForCondition(Driver->{return checkIfFilterItemIsCollapsed(filterContainerItem);},5000);
+
 		clickSeeMoreButton(filterContainerItem);
 		if(!checkIfFilterItemIsCollapsed(filterContainerItem)){
 			collapseFilterItemWithClickingProductTitle(filterContainerItem);
@@ -480,10 +472,8 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 		String lsButtonType=this.checkFilterItemSeeButtonExisting(filterContainerItem);
 		if(lsButtonType.equalsIgnoreCase("SeeMore")) {
 			WebElement seeMoreButton=filterContainerItem.findElement(this.bySecondaryFilterSeeMoreButton);
-//			this.getReusableActionsInstance().javascriptScrollByVisibleElement(seeMoreButton);
-//			this.getReusableActionsInstance().clickIfAvailable(seeMoreButton);
 			this.clickElement(seeMoreButton);
-			this.getReusableActionsInstance().staticWait(1000);
+			this.waitForCondition(Driver->{return this.checkFilterItemSeeButtonExisting(filterContainerItem).equalsIgnoreCase("SeeLess");},5000);
 		}
 	}
 	
@@ -491,7 +481,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 	public void collapseFilterItemWithClickingProductTitle(WebElement filterContainerItem) {		
 		WebElement productFilterTitle=filterContainerItem.findElement(this.byProductFilterTitle);
 		this.clickElement(productFilterTitle);
-		this.getReusableActionsInstance().staticWait(1000);		
+		this.waitForCondition(Driver->{return checkIfFilterItemIsCollapsed(filterContainerItem);},5000);
 	}
 	
 	@Override
@@ -538,18 +528,13 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 	@Override
 	public String verifySelectedFiltersContainSecondlevelFilter(List<String> lstFilterIncluded, List<String> lstFilterExcluded) {
 		openFilterPopupWindow();
-//		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnFiltersAdded);
-//		getReusableActionsInstance().clickIfAvailable(this.btnFiltersAdded);
 		this.clickElement(this.btnFiltersAdded);
-		getReusableActionsInstance().staticWait(5000);
-//		getReusableActionsInstance().waitForElementVisibility(this.selectedFiltersList.get(this.selectedFiltersList.size()-1), 20);
-		
+		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+
 		String lsMsg="";
 		List<String> lstSelectedFilterOption=new ArrayList<String>();		
 		int selectedFilterSize = this.selectedFiltersList.size() - 1;
 		for (int i = 0; i < selectedFilterSize; i++) {
-//			getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectedFiltersList.get(i));
-//			lstSelectedFilterOption.add(this.selectedFiltersList.get(i).getText().trim());
 			lstSelectedFilterOption.add(this.getElementInnerText(this.selectedFiltersList.get(i)));
 		}
 		
@@ -653,13 +638,6 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				reporter.reportLogFail("Product image source is not empty");
 			}
 
-			if(!this.getProductOptionTypeWithoutMouseHover(item).equalsIgnoreCase("None")){
-				reporter.reportLogPass("Product option is not empty");
-			}
-			else{
-				reporter.reportLogFail("Product option is empty");
-			}
-			
 			element=item.findElement(byProductNowPrice);
 			lsText=this.getElementInnerText(element);
 			if(!lsText.isEmpty()) {
@@ -684,6 +662,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 		WebElement item,element;
 		String lsProductName,lsText;
 		List<WebElement> reviewStarList;
+		List<WebElement> optionList;
 
 		loopSize=productList.size();
 		loopSize=loopSize>15?15:loopSize;
@@ -709,9 +688,18 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				}
 			}
 
-			if(!this.getProductOptionTypeWithoutMouseHover(item).equalsIgnoreCase("None")) {
-				List<WebElement> optionList=item.findElements(this.byProductOptionList);
-				lsText=this.getElementInnerText(optionList.get(0));
+			element=item.findElement(byProductItemSelectSizeOrColor);
+			optionList=item.findElements(this.byProductOptionList);
+			lsText=this.getElementInnerText(optionList.get(0));
+			if(this.getElementInnerText(element).equalsIgnoreCase("Go to detail page")) {
+				if(lsText.isEmpty()) {
+					reporter.reportLogPass("Product option is empty");
+				}
+				else {
+					reporter.reportLogFail("Product option is not empty");
+				}
+			}
+			else{
 				if(!lsText.isEmpty()) {
 					reporter.reportLogPass("Product option is not empty");
 				}
@@ -803,7 +791,6 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 			this.getReusableActionsInstance().scrollToElement(element);
-			this.getReusableActionsInstance().staticWait(2000);
 			this.getReusableActionsInstance().clickIfAvailable(element);
 			this.getReusableActionsInstance().waitForElementVisibility(this.btnProductGoToDetails,20);
 
@@ -829,10 +816,10 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 					element=item.findElement(byProductOptionSizeViewAllSizes);
 					lsText=this.getElementInnerText(element);
 					if(!lsText.isEmpty()) {
-						reporter.reportLogPass("Product ViewAlllSize button title is not empty");
+						reporter.reportLogPass("Product ViewAllSize button title is not empty");
 					}
 					else {
-						reporter.reportLogFail("Product ViewAlllSize button title is empty");
+						reporter.reportLogFail("Product ViewAllSize button title is empty");
 					}
 				}
 			}
@@ -853,6 +840,18 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				else {
 					reporter.reportLogFail("Product option color button list is containing 0 item");
 				}
+
+
+				if(checkViewAllColorsButtonExisting()) {
+					element=item.findElement(byProductOptionColorViewAllColors);
+					lsText=this.getElementInnerText(element);
+					if(!lsText.isEmpty()) {
+						reporter.reportLogPass("Product ViewAllColor button title is not empty");
+					}
+					else {
+						reporter.reportLogFail("Product ViewAllColor button title is empty");
+					}
+				}
 			}
 
 			element=item.findElement(byProductGoToDetails);
@@ -868,7 +867,6 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnProductSizeOrColorClose);
 			this.getReusableActionsInstance().scrollToElement(this.btnProductSizeOrColorClose);
 			this.getReusableActionsInstance().clickIfAvailable(this.btnProductSizeOrColorClose);
-			this.getReusableActionsInstance().staticWait(2000);
 
 		}
 	}
@@ -928,7 +926,6 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				
 		List<WebElement> itemAllList=this.getDriver().findElements(this.byProductOptionColorItemList);
 		List<WebElement> itemDisabledList=this.getDriver().findElements(this.byProductOptionColorItemDisabledList);
-		this.getReusableActionsInstance().staticWait(1000);
 		if(itemAllList.size()!=itemDisabledList.size()) {
 			return true;
 		}
@@ -956,9 +953,8 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 					this.waitForCondition(Driver->{return !this.getElementInnerText(tempElementSize).equalsIgnoreCase("Select size:");},10000);
 				}
 				else {
-					Select sizeSelect= new Select(element.findElement(By.xpath("./parent::select")));
-					sizeSelect.selectByIndex(0);
-					this.getReusableActionsInstance().staticWait(3000);
+					WebElement dropDown=element.findElement(By.xpath("./parent::select"));
+					checkSizeSelectOptions(dropDown);
 				}
 
 				element=this.getDriver().findElement(byProductOptionSizeSelectedSize);
@@ -982,9 +978,8 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 					this.waitForCondition(Driver->{return !this.getElementInnerText(tempElementColor).equalsIgnoreCase("Select colour:");},10000);
 				}
 				else {
-					Select sizeSelect= new Select(element.findElement(By.xpath("./parent::select")));
-					sizeSelect.selectByIndex(0);
-					this.getReusableActionsInstance().staticWait(3000);
+					WebElement dropDown=element.findElement(By.xpath("./parent::select"));
+					checkColorSelectOptions(dropDown);
 				}
 
 				element=this.getDriver().findElement(byProductOptionColorSelectedColor);
@@ -995,7 +990,6 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 			}			
 		}
 		
-		//this.getReusableActionsInstance().staticWait(2000);
 		element=this.getDriver().findElement(byProductGoToDetails);
 
 		return this.getElementInnerText(element).trim().equalsIgnoreCase("Go to detail page");
@@ -1174,7 +1168,67 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 		}
 		return false;		
 	}
-	
+
+	private String checkColorSelectOptions(WebElement dropDown){
+		List<WebElement> itemList;
+		WebElement niceSelectButton;
+		String colorToBeSelected="";
+		if(dropDown.getAttribute("class").contains("visually-hidden")){
+			niceSelectButton=this.getDriver().findElement(byProductOptionColorNiceSelectButton);
+			this.clickElement(niceSelectButton);
+			this.applyStaticWait(1000);
+			itemList=this.getDriver().findElements(this.byProductOptionColorNiceSelectList);
+
+			for(int j=itemList.size()-1;j>=0;j--) {
+				if (!hasElementAttribute(itemList.get(j), "disabled")) {
+					colorToBeSelected=this.getElementInnerText(itemList.get(j));
+					this.clickElement(itemList.get(j));
+					break;
+				}
+			}
+		}
+		else{
+			Select select = new Select(dropDown);
+			List<WebElement> enabledColor = this.getDriver().findElements(this.byProductOptionColorItemEnabledList);
+			colorToBeSelected = enabledColor.get(enabledColor.size()-1).getAttribute("value");
+			select.selectByValue(colorToBeSelected);
+		}
+		//Unable to find explicit wait condition, so hve to use static wait
+		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+
+		return colorToBeSelected;
+	}
+
+	private String checkSizeSelectOptions(WebElement dropDown){
+		List<WebElement> itemList;
+		WebElement niceSelectButton;
+		String sizeToBeSelected="";
+		if(dropDown.getAttribute("class").contains("visually-hidden")){
+			niceSelectButton=this.getDriver().findElement(byProductOptionSizeNiceSelectButton);
+			this.clickElement(niceSelectButton);
+			this.applyStaticWait(1000);
+			itemList=this.getDriver().findElements(this.byProductOptionSizeNiceSelectList);
+
+			for(int j=itemList.size()-1;j>=0;j--) {
+				if (!hasElementAttribute(itemList.get(j), "disabled")) {
+					sizeToBeSelected=this.getElementInnerText(itemList.get(j));
+					this.clickElement(itemList.get(j));
+					break;
+				}
+			}
+		}
+		else{
+			Select select = new Select(dropDown);
+			List<WebElement> enabledColor = this.getDriver().findElements(this.byProductOptionSizeItemEnabledList);
+			sizeToBeSelected = enabledColor.get(enabledColor.size()-1).getAttribute("value");
+			select.selectByValue(sizeToBeSelected);
+		}
+		//Unable to find explicit wait condition, so hve to use static wait
+		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+
+		return sizeToBeSelected;
+	}
+
 	private boolean verifySizeOption(String lsType) {
 		if(checkProductSizeOptionEnabledItemAvailableWithMouseHover()) {
 			WebElement elementSelectedText;
@@ -1191,9 +1245,8 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				this.waitForCondition(Driver->{return !this.getElementInnerText(tempElementSize).equalsIgnoreCase("Select size:");},10000);
 			}
 			else {
-				Select sizeSelect= new Select(element.findElement(By.xpath("./parent::select")));
-				sizeSelect.selectByIndex(optionList.size()-1);
-				this.getReusableActionsInstance().staticWait(3000);
+				WebElement dropDown=element.findElement(By.xpath("./parent::select"));
+				checkSizeSelectOptions(dropDown);
 			}			
 
 			element=this.getDriver().findElement(byProductOptionSizeSelectedSize);
@@ -1258,9 +1311,8 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				this.waitForCondition(Driver->{return !this.getElementInnerText(tempElementColor).equalsIgnoreCase("Select colour:");},10000);
 			}
 			else {
-				Select sizeSelect= new Select(element.findElement(By.xpath("./parent::select")));
-				sizeSelect.selectByIndex(selectNumber);
-				this.getReusableActionsInstance().staticWait(3000);
+				WebElement dropDown=element.findElement(By.xpath("./parent::select"));
+				checkColorSelectOptions(dropDown);
 			}
 			
 			if(optionList.size()>1) {
@@ -1326,7 +1378,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 		lsType=this.judgeProductOptionType();	
 		//If all displayed size or color are disabled
 		if(!checkProductSizeOptionEnabledItemAvailableWithMouseHover()||!checkProductColorOptionEnabledItemAvailableWithMouseHover()) {
-			reporter.reportLog("No enabled size/color opion available");
+			reporter.reportLog("No enabled size/color option available");
 			return;
 		}
 		
@@ -1436,7 +1488,12 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 	
 	public boolean checkViewAllSizesButtonExisting() {
 		WebElement sizeContainer=this.getDriver().findElement(this.byProductOptionSizeWrapper);
-		return this.checkChildElementExistingByTagNameAndAttribute(sizeContainer, "a", "class", "product-card__size-view-all");
+		return this.getChildElementCount(sizeContainer)>2;
+	}
+
+	public boolean checkViewAllColorsButtonExisting() {
+		WebElement colorContainer=this.getDriver().findElement(this.byProductOptionColorWrapper);
+		return this.getChildElementCount(colorContainer)>2;
 	}
 	
 	/**
@@ -1467,7 +1524,6 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 		
 		this.getDriver().navigate().back();
 		this.waitForPageToLoad();
-		this.getReusableActionsInstance().staticWait(3000);
 		this.getReusableActionsInstance().waitForElementVisibility(this.lblSearchResultMessage,120);
 		
 		String lsFirstProductNameForNavigateBackFilter=this.getElementInnerText(this.productResultList.get(0).findElement(byProductName));
@@ -1519,7 +1575,6 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 		this.getReusableActionsInstance().clickIfAvailable(item);
 		this.waitForPageToLoad();
-		this.getReusableActionsInstance().staticWait(3000);
 		this.getReusableActionsInstance().waitForElementVisibility(this.lblSearchResultMessage,120);
 		
 		//Check if selected list existing
@@ -1544,7 +1599,6 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 		List<String> lstItem=lstFilter.get(0);
 		ghp.clickCuratedCollectionsMenuItem(lstItem.get(0), lstItem.get(1));
 		this.waitForPageToLoad();
-		this.getReusableActionsInstance().staticWait(3000);
 		this.getReusableActionsInstance().waitForElementVisibility(this.lblSearchResultMessage,120);
 		
 		int navigateItemCount=this.lstSearchResultNavigation.size();
@@ -1606,6 +1660,8 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 		this.getReusableActionsInstance().scrollToElement(webElement);
 
 		WebElement itemContainer=webElement;
+		WebElement elementSelectedText;
+		final WebElement tempElementSize,tempElementColor;
 
 		//Open SizeOrColor popup dialog
 		WebElement element=itemContainer.findElement(byProductItemSelectSizeOrColor);
@@ -1614,37 +1670,41 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 		this.getReusableActionsInstance().waitForElementVisibility(this.btnProductGoToDetails,20);
 		
 		//Choose size
+		elementSelectedText=this.getDriver().findElement(byProductOptionSizeSelectedSizeContainer);
+		tempElementSize=elementSelectedText;
 		List<WebElement> optionList=this.getDriver().findElements(byProductOptionSizeItemEnabledList);
 		element=optionList.get(optionList.size()-1);
 		if(element.getTagName().equalsIgnoreCase("button")) {								
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 			this.getReusableActionsInstance().clickIfAvailable(element);
+			this.waitForCondition(Driver->{return !this.getElementInnerText(tempElementSize).equalsIgnoreCase("Select size:");},10000);
 		}
 		else {
-			Select sizeSelect= new Select(element.findElement(By.xpath("./parent::select")));
-			sizeSelect.selectByIndex(optionList.size()-1);
+			WebElement dropDown=element.findElement(By.xpath("./parent::select"));
+			checkSizeSelectOptions(dropDown);
 		}		
-		this.getReusableActionsInstance().staticWait(3000);
 
 		//Choose color
+		elementSelectedText=this.getDriver().findElement(byProductOptionColorSelectedColorContainer);
+		tempElementColor=elementSelectedText;
 		optionList=this.getDriver().findElements(byProductOptionColorItemEnabledList);
 		element= optionList.get(optionList.size()-1);
 
 		if(element.getTagName().equalsIgnoreCase("button")) {								
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 			this.getReusableActionsInstance().clickIfAvailable(element);
+			this.waitForCondition(Driver->{return !this.getElementInnerText(tempElementColor).equalsIgnoreCase("Select colour:");},10000);
 		}
 		else {
-			Select sizeSelect= new Select(element.findElement(By.xpath("./parent::select")));
-			sizeSelect.selectByIndex(optionList.size()-1);
+			WebElement dropDown=element.findElement(By.xpath("./parent::select"));
+			checkColorSelectOptions(dropDown);
 		}		
-		this.getReusableActionsInstance().staticWait(3000);
-		
+
 		//Close SizeOrColor popup dialog
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnProductGoToDetails);
 		this.getReusableActionsInstance().clickIfAvailable(this.btnProductGoToDetails);		
 		this.waitForPDPPageLoading();
-		this.getReusableActionsInstance().staticWait(2000);
+
 		if(this.URL().toLowerCase().contains("productdetails")) {
 			reporter.reportLogPass("The user is navigated to PDP page");
 		}

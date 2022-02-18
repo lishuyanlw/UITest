@@ -122,7 +122,7 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
         WebElement headingWebElement = this.getDriver().findElement(By.xpath(xpathHeading));
         getReusableActionsInstance().scrollToElement(headingWebElement);
         headingWebElement.click();
-        getReusableActionsInstance().staticWait(700);
+        this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 
         //For second level
         WebElement SubMenu = null;
@@ -132,7 +132,7 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
         getReusableActionsInstance().scrollToElement(SubMenu);
         String Title = SubMenu.getText();
         SubMenu.click();
-        getReusableActionsInstance().staticWait(700);
+        this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 
         //For third level
         String title = null;

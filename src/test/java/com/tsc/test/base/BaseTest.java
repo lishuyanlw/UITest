@@ -44,7 +44,6 @@ public class BaseTest {
 	protected static final ThreadLocal<GlobalFooterPage> globalFooterPageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<ProductResultsPage> productResultsPageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<ProductDetailPage> productDetailPageThreadLocal = new ThreadLocal<>();
-	protected static final ThreadLocal<ProductResultsPage_Mobile> productResultsPage_MobileThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<LoginPage> loginPageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<String> TestDeviceThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<ApiResponse> apiResponseThreadLocal = new ThreadLocal<>();
@@ -81,11 +80,6 @@ public class BaseTest {
 	//@return the ProductResultsPageThreadLocal
 	protected static ProductResultsPage getProductResultsPageThreadLocal() {
 		return productResultsPageThreadLocal.get();
-	}
-
-	//@return the ProductResultsPage_MobileThreadLocal
-	protected static ProductResultsPage_Mobile getProductResultsPage_MobileThreadLocal() {
-		return productResultsPage_MobileThreadLocal.get();
 	}
 
 	protected static ProductDetailPage getProductDetailPageThreadLocal() {
