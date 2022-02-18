@@ -466,7 +466,6 @@ import utils.ReusableActions;
 	public boolean checkChildElementExistingByAttribute(WebElement parent,String lsAttribute,String lsAttributeValue) {
 		List<WebElement> lstChild=this.getChildrenList(parent);
 		for(WebElement child:lstChild) {
-			System.out.println(child.getTagName()+":  "+child.getAttribute("class"));
 			if(this.hasElementAttribute(child,lsAttribute)) {				
 				String lsValue=this.getChildElementAttribute(child,lsAttribute).trim();				
 				if(lsValue.isEmpty()||lsValue==null) {

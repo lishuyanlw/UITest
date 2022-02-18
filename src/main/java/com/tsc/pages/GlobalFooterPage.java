@@ -659,8 +659,7 @@ public class GlobalFooterPage extends BasePage {
 			this.getReusableActionsInstance().clickIfAvailable(homePage.btnClose,3000);
 		}
 		//btnClose.click();
-		homePage.waitForPageLoad();
-		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+		this.waitForPageToLoad();
 		/**if (waitForCondition(Driver -> {
 			return (new HomePage(this.getDriver())).btnClose.isDisplayed();
 		}, 40000)) {
@@ -713,8 +712,13 @@ public class GlobalFooterPage extends BasePage {
 		String lsCurrentUrl = waitForPageLoadingByUrlChange(element);
 		lsCurrentUrl = removeProtocalHeaderFromUrl(lsCurrentUrl);
 
-		return lsCurrentUrl.equalsIgnoreCase(lsExpectedUrl)
-				|| lsCurrentUrl.toLowerCase().contains(lsExpectedUrl.toLowerCase());
+		if(lsExpectedUrl.contains("instagram.com")){
+			return lsCurrentUrl.contains("instagram.com");
+		}
+		else{
+			return lsCurrentUrl.equalsIgnoreCase(lsExpectedUrl)
+					|| lsCurrentUrl.toLowerCase().contains(lsExpectedUrl.toLowerCase());
+		}
 	}
 
 	/**
@@ -874,9 +878,9 @@ public class GlobalFooterPage extends BasePage {
 		String lsLanguage=this.lnkLanguage.getText().trim();
 //		getReusableActionsInstance().staticWait(5000);
 		this.getReusableActionsInstance().clickIfAvailable(this.lnkLanguage);
-		this.waitForPageLoading();
+		this.waitForPageToLoad();
 //		getReusableActionsInstance().staticWait(5000);
-		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+//		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkLanguage);
 
 		return this.waitForCondition(Driver->{return !this.lnkLanguage.getText().trim().equalsIgnoreCase(lsLanguage);}, 30000);
@@ -915,9 +919,10 @@ public class GlobalFooterPage extends BasePage {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(selectedItem);
 		getReusableActionsInstance().clickIfAvailable(selectedItem);
 
+		this.waitForPageToLoad();
 		//waitForCondition(Driver -> { return !lsUrl.equalsIgnoreCase(this.URL());}, 60000);
-		(new ProductResultsPage(this.getDriver())).waitForPageLoading();
-		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+//		(new ProductResultsPage(this.getDriver())).waitForPageLoading();
+//		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 //		getReusableActionsInstance().staticWait(2000);
 		return waitForCondition(Driver -> {return lblIndicator.isDisplayed();}, 60000);
 	}

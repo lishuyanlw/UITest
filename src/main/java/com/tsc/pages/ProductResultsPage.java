@@ -733,8 +733,8 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	public boolean verifyUrlAfterSelectSortStrategy(String lsKeyword,String lsSortKey) {
-		String lsUrl=this.URL();
-		return lsUrl.toLowerCase().contains("searchterm=")&&lsUrl.contains(this.getEncodingKeyword(lsKeyword))&&lsUrl.toLowerCase().contains("&sortkey="+lsSortKey.toLowerCase());
+		String lsUrl=this.URL().toLowerCase();
+		return lsUrl.contains("searchterm=")&&lsUrl.contains(this.getEncodingKeyword(lsKeyword.toLowerCase()))&&lsUrl.contains("sortkey="+lsSortKey.toLowerCase());
 	}
 
 	/**
