@@ -572,7 +572,7 @@ import utils.ReusableActions;
 		JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
 		jse.executeScript("arguments[0].value = arguments[1]);", element,lsValue);
 	}
-	
+
 	/**
 	 * This method will click an element.
 	 * @param-WebElement element: the element

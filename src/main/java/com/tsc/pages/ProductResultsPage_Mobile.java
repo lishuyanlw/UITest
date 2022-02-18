@@ -45,7 +45,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 	
 	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='prp-filter-panel__mobile-subpanel']")
 	public WebElement cntSubPanelforSelectedFilters;
-	
+
 	//For product options(Size/Color)
 	public By byProductItemSelectSizeOrColor=By.xpath(".//button[@class='product-card__add-button']");
 	
@@ -109,10 +109,31 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 	public By byProductOptionColorNiceSelectButton=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//select[contains(@class,'product-card__color-and-taste__dropdown')]/following-sibling::div[@class='niceSelect__container']//button[@id='niceSelect-nsColourTaste-selected']");
 
 	@FindBy(xpath = "//div[@class='product-card__mobile-modal']//button[@class='product-card__add-button product-card__add-button--modal']")
+	//@FindBy(xpath="//div[contains(@class,'product-card')]//button[contains(@class,'product-card__add-button')]")
 	public WebElement btnProductGoToDetails;
 	
 	@FindBy(xpath = "//div[@class='product-card__mobile-modal']//button[@class='product-card__mobile-modal__close-button']")
 	public WebElement btnProductSizeOrColorClose;
+
+	public By btnProductSizeOrColor = By.xpath(".//button[contains(@class,'product-card__add-button')]");
+
+	@FindBy(xpath="//div[contains(@class,'modal')]//a[contains(.,'View')]")
+	public WebElement lnkViewAllColors;
+
+	@FindBy(xpath="//div[contains(@class,'-modal')]/button[contains(@class,'close')]")
+	public WebElement btnPopUpMenuCloseButton;
+
+	@FindBy(xpath="//div[contains(@class,'-modal')]//div[contains(@class,'color-and-taste')]//*[contains(@class,'title')]/strong")
+	public WebElement lblSelectedColorTextLabel;
+
+	@FindBy(xpath="//div[contains(@class,'modal')]//select")
+	public WebElement lstDropDownForColorSelection;
+
+	@FindBy(xpath="//div[contains(@class,'modal')]//select/option[not(@disabled)]")
+	public List<WebElement> lblOptionEnabledColorForProduct;
+
+	@FindBy(xpath="//div[contains(@class,'modal')]//select/option")
+	public List<WebElement> lstTotalItemsOnPRPPage;
 	
 	public void openFilterPopupWindow() {
 		this.clickElement(this.btnFilterPopup);
@@ -1740,6 +1761,50 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 			}
 		}
 		closeFilterPopupWindow();
+	}
+
+	@Override
+	public void selectAndVerifyProductColor(){
+		waitForCondition(driver->{return (this.getProductList().size()>0 && (new GlobalHeaderPage(this.getDriver()).lblTSCChatBox.getText().contains("Chat")));},10000);
+		List<WebElement> productList = this.getProductList();
+		ProductDetailPage productDetailPage = new ProductDetailPage(this.getDriver());
+		for(int counter=0;counter<productList.size();counter++){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(productList.get(counter));
+			this.getReusableActionsInstance().scrollToElement(productList.get(counter));
+
+			WebElement itemButton = productList.get(counter).findElement(this.btnProductSizeOrColor);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(itemButton);
+			this.getReusableActionsInstance().clickIfAvailable(itemButton);
+			waitForCondition(driver->{return (this.btnProductSizeOrColorClose.isDisplayed() && this.btnProductSizeOrColorClose.isEnabled());},3000);
+
+			//Verification that only first 16 colors are displayed on screen
+			if(this.lstTotalItemsOnPRPPage.size()==16)
+				reporter.reportLogPass("Total items displayed om PRP page are: "+this.lstTotalItemsOnPRPPage.size());
+			else
+				reporter.reportLogFail("Total items displayed om PRP page are: "+this.lstTotalItemsOnPRPPage.size());
+
+			//Click on View all colors to navigate to PDP page
+			this.waitForPageLoadingByUrlChange(this.lnkViewAllColors);
+			this.waitForPDPPageLoading();
+
+			//Storing image that is displayed currently for verification
+			String currentSelectedImage = productDetailPage.imgCurrentImageDisplayedForProduct.getAttribute("href");
+
+			Select select = new Select(productDetailPage.selectProductStyle);
+			List<WebElement> enabledColor = productDetailPage.lstDropdownProductStyle;
+			String colorNameToBeSelected = enabledColor.get(enabledColor.size()-1).getAttribute("value");
+			select.selectByValue(colorNameToBeSelected);
+			//Static wait for 3 seconds is mandatory here as just image changes in DOM and rest
+			//everything is same on page. Since no unique change condition exists for waitForCondition
+			//function, using static wait of 2 sec below
+			this.getReusableActionsInstance().staticWait(2000);
+			String newSelectedImage = productDetailPage.imgCurrentImageDisplayedForProduct.getAttribute("href");
+
+			if(!currentSelectedImage.equals(newSelectedImage))
+				reporter.reportLogPass("New image is loaded after colour change as: "+currentSelectedImage+" replacing the last image: "+newSelectedImage);
+			else
+				reporter.reportLogFailWithScreenshot("New image is not loaded after colour change as: "+currentSelectedImage+" replacing the last image: "+newSelectedImage);
+		}
 	}
 
 	public void verifyCategoryDetailsOnPRPForProduct(List<Product.DimensionStates> categoryDimensions, String searchKeyword) {
