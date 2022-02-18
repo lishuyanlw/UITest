@@ -1126,7 +1126,6 @@ public class ProductResultsPage extends BasePage{
 			}
 
 			element=item.findElement(byProductGoToDetails);
-			//this.getReusableActionsInstance().staticWait(1000);
 			if(this.getReusableActionsInstance().isElementVisible(element)) {
 				reporter.reportLogPass("Product GoTo Details is visible");
 			}
@@ -1189,7 +1188,6 @@ public class ProductResultsPage extends BasePage{
 		sortOption.selectByVisibleText(lsOption);
 
 		this.waitForCondition(Driver->{return !lsUrl.equalsIgnoreCase(this.URL());},8000);
-		//this.getReusableActionsInstance().staticWait(8000);
 
 		if(!this.URL().contains("page=")) {
 			reporter.reportLogPass("The Url does not contain page term.");
@@ -2066,8 +2064,6 @@ public class ProductResultsPage extends BasePage{
 	 */
 	public boolean waitForSortingOrFilteringCompleted() {
 		this.waitForCondition(Driver->{return !checkProductResultLoadingStatusAfterSorting();}, 30000);
-		//this.getReusableActionsInstance().staticWait(10000);
-
 		return true;
 	}
 
@@ -2569,7 +2565,7 @@ public class ProductResultsPage extends BasePage{
 			colorToBeSelected = enabledColor.get(enabledColor.size()-1).getAttribute("value");
 			select.selectByValue(colorToBeSelected);
 		}
-		//Unable to find explicit wait condition, so hve to use static wait
+		//Unable to find explicit wait condition, so have to use static wait
 		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 
 		return colorToBeSelected;
@@ -3189,7 +3185,6 @@ public class ProductResultsPage extends BasePage{
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(productFilterTitle);
 		this.getReusableActionsInstance().clickIfAvailable(productFilterTitle);
 		this.waitForCondition(Driver->{return !checkIfFilterItemIsCollapsed(filterContainerItem);},5000);
-//		this.getReusableActionsInstance().staticWait(1000);
 	}
 
 	/**
@@ -3688,7 +3683,6 @@ public class ProductResultsPage extends BasePage{
 				for (WebElement categoryItem : lstCategoryItems) {
 					this.getReusableActionsInstance().javascriptScrollByVisibleElement(categoryItem);
 					categoryItemsOnPage.add(categoryItem.findElement(By.xpath("./a")).getText());
-//					this.getReusableActionsInstance().staticWait(1000);
 				}
 			}
 			//Verification of categories displayed on UI
