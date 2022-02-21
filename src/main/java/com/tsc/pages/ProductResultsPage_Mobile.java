@@ -56,7 +56,9 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 	
 	public By byProductOptionTitle=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//*[contains(@class,'product-card__') and contains(@class,'-title')]");
 
-	//For size option	
+	//For size option
+	public By byProductOptionSize=By.xpath("//div[@class='product-card__mobile-modal']//fieldset[legend[.='sizes']]");
+
 	public By byProductOptionSizeTitle=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//span[@class='product-card__size-title']");
 
 	public By byProductOptionSizeSelectedSizeContainer=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//span[@class='product-card__size-title']");
@@ -82,6 +84,8 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 	public By byProductOptionSizeNiceSelectButton=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//select[contains(@class,'product-card__size__dropdown')]/following-sibling::div[@class='niceSelect__container']//button[@id='niceSelect-nsSizeTaste-selected']");
 
 	//For color option
+	public By byProductOptionColor=By.xpath("//div[@class='product-card__mobile-modal']//fieldset[legend[.='colours']]");
+
 	public By byProductOptionColorTitle=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//p[@class='product-card__color-and-taste-title']");
 
 	public By byProductOptionColorSelectedColorContainer=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//p[@class='product-card__color-and-taste-title']");
@@ -210,13 +214,19 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 					//Keep it to wait for search results displaying
 					this.getReusableActionsInstance().staticWait(300);
 
-					subItemList=this.productFilterContainerList.get(i).findElements(this.bySecondaryFilterAll);
+					subItemList=this.productFilterContainerList.get(i).findElements(this.bySecondaryFilterAllWithoutCategory);
 					if(subItemList.size()>0) {
 						subItem=subItemList.get(0).findElement(By.xpath(".//label"));
 						getReusableActionsInstance().clickIfAvailable(subItem);
 
-						final By bySelectedSecondFilter=By.xpath("//section[@class='tsc-container']//div[@class='prp-filter-panel']//div[@class='prp-filter-panel__blocks']//button[@class='prp-filter-panel__block-title'][.='"+lsHeader+" (1)']");
-						this.waitForCondition(Driver->{ return this.getDriver().findElement(bySelectedSecondFilter).isDisplayed();},8000);
+						if(lsHeader.contains("(")) {
+							final By bySelectedSecondFilter=By.xpath("//section[@class='tsc-container']//div[@class='prp-filter-panel']//div[@class='prp-filter-panel__blocks']//button[@class='prp-filter-panel__block-title'][.='"+lsHeader+" (2)']");
+							this.waitForCondition(Driver->{ return this.getDriver().findElement(bySelectedSecondFilter).isDisplayed();},8000);
+						}
+						else{
+							final By bySelectedSecondFilter=By.xpath("//section[@class='tsc-container']//div[@class='prp-filter-panel']//div[@class='prp-filter-panel__blocks']//button[@class='prp-filter-panel__block-title'][.='"+lsHeader+" (1)']");
+							this.waitForCondition(Driver->{ return this.getDriver().findElement(bySelectedSecondFilter).isDisplayed();},8000);
+						}
 
 						//Bug 19628: [QA Defect - P3] PRP: no products display if user is on the last page and select a faucet from the left nav
 						if(!this.URL().contains("page=")) {
@@ -243,7 +253,10 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 
 						return true;
 					}
-					break;
+					else{
+						reporter.reportLogFailWithScreenshot("Unable to find "+lsSecondLevelItem);
+						break;
+					}
 				}
 				
 				if(!lsFirstLevelItem.equalsIgnoreCase("category")) {
@@ -872,15 +885,15 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 	}
 
 	public boolean checkSizeProductOptionIsDropdownWithMouseHover() {
-		WebElement item=this.getDriver().findElement(this.byProductOptionSizeWrapper);	
-		
-		return this.checkChildElementExistingByTagName(item, "select");		
+		WebElement item=this.getDriver().findElement(this.byProductOptionSizeWrapper);
+
+		return this.checkChildElementExistingByAttribute(item, "class","niceSelect");
 	}
 
 	public boolean checkColorProductOptionIsDropdownWithMouseHover() {
-		WebElement item=this.getDriver().findElement(this.byProductOptionColorWrapper);	
-		
-		return this.checkChildElementExistingByTagName(item, "select");		
+		WebElement item=this.getDriver().findElement(this.byProductOptionColorWrapper);
+
+		return this.checkChildElementExistingByAttribute(item, "class","niceSelect");
 	}
 
 	public boolean checkProductSizeOptionDisabledItemAvailableWithMouseHover() {
@@ -1727,7 +1740,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 			if (!checkIfFilterItemIsCollapsed(element)) {
 				collapseFilterItemWithClickingProductTitle(element);
 			}
-			System.out.println(checkFilterItemSeeButtonExisting(element));
+
 			if (checkFilterItemSeeButtonExisting(element).equalsIgnoreCase("None")) {
 				uncollapseFilterItemWithClickingProductTitle(element);
 				continue;
@@ -1814,6 +1827,41 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 		this.getReusableActionsInstance().scrollToElement(this.btnFilterPopup);
 		this.getReusableActionsInstance().clickIfAvailable(this.btnFilterPopup);
 		super.verifyCategoryDetailsOnPRPForProduct(categoryDimensions,searchKeyword);
+	}
+
+	@Override
+	public boolean findItemWithAvailableSizeAndColorDropDown(WebElement webElement){
+		//Open SizeOrColor popup dialog
+		WebElement element=webElement.findElement(byProductItemSelectSizeOrColor);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+		this.getReusableActionsInstance().clickIfAvailable(element);
+		this.getReusableActionsInstance().waitForElementVisibility(this.btnProductGoToDetails,20);
+
+		WebElement itemSize=this.getDriver().findElement(this.byProductOptionSize);
+		WebElement itemColor=this.getDriver().findElement(this.byProductOptionColor);
+
+		if(!(!itemSize.getCssValue("height").equalsIgnoreCase("0px")&&
+				!itemColor.getCssValue("height").equalsIgnoreCase("0px"))){
+			//Close SizeOrColor popup dialog
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnProductSizeOrColorClose);
+			this.getReusableActionsInstance().clickIfAvailable(this.btnProductSizeOrColorClose);
+			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+			return false;
+		}
+
+		if(checkColorProductOptionIsDropdownWithMouseHover()){
+			//Close SizeOrColor popup dialog
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnProductSizeOrColorClose);
+			this.getReusableActionsInstance().clickIfAvailable(this.btnProductSizeOrColorClose);
+			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+			return true;
+		}
+
+		//Close SizeOrColor popup dialog
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnProductSizeOrColorClose);
+		this.getReusableActionsInstance().clickIfAvailable(this.btnProductSizeOrColorClose);
+		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+		return false;
 	}
 
 }

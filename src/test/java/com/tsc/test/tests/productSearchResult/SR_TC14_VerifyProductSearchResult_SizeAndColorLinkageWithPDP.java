@@ -36,9 +36,7 @@ public class SR_TC14_VerifyProductSearchResult_SizeAndColorLinkageWithPDP extend
 		
 		reporter.reportLog("verifyInfoLinkageWithPDP using test data directly");
 		getProductResultsPageThreadLocal().verifyInfoLinkageWithPDP(getProductDetailPageThreadLocal(),lsProductNumberToComparePRPAndPDPContent);
-		
-		
-		
+				
 		reporter.reportLog("verifySearchResultMessageOnPage");
 		//Verification of Bug-19544, Bug-19651 Bug-19672
 		getProductResultsPageThreadLocal().getSearchResultLoad(lst_SearchKeyword.get(1),true);
@@ -46,7 +44,7 @@ public class SR_TC14_VerifyProductSearchResult_SizeAndColorLinkageWithPDP extend
 
 		reporter.reportLog("verifyInfoLinkageWithPDPWithoutSwatch");
 		//Verification of Bug-19703
-		//Searching keyword - iPads & Tablets on Home Page to load data on PRP page
+		//Searching keyword - iPads & Tablets on Home Page to load data on PRP page on QA
 		getProductResultsPageThreadLocal().getSearchResultLoad(lst_SearchKeyword.get(0),true);
 		//Fetching count of products loaded on screen
 		productList=getProductResultsPageThreadLocal().getProductList();
