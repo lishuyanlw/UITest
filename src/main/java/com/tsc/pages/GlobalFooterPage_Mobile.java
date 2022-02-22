@@ -2,6 +2,8 @@ package com.tsc.pages;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -66,10 +68,8 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 	public void verifyTSCCustomerHubLlinks(List<List<String>> lstNameAndLinks) {		
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblTSCCustomerHubText);
 		this.getReusableActionsInstance().clickIfAvailable(this.lblTSCCustomerHubText);
-		//this.lblTSCCustomerHubText.click();
 		this.waitForCondition(Driver->{return this.lblTSCCustomerHubText.getAttribute("class").isEmpty();}, 30000);
-		getReusableActionsInstance().staticWait(5000);
-				
+
 		String lsText,lsYmlHref,lsHref;
 		for(WebElement item:this.lnkTSCCustomerHubAllLinks) {
 			lsText=this.getElementText(item);			
@@ -92,10 +92,8 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 	public void verifyAboutTSCLinks(List<List<String>> lstNameAndLinks) {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAboutTSCText);
 		this.getReusableActionsInstance().clickIfAvailable(this.lblAboutTSCText);
-		//this.lblAboutTSCText.click();
 		this.waitForCondition(Driver->{return this.lblAboutTSCText.getAttribute("class").isEmpty();}, 30000);
-		getReusableActionsInstance().staticWait(5000);
-		
+
 		String lsText,lsYmlHref,lsHref;
 		for(WebElement item:this.lnkAboutTSCAllLinks) {
 			lsText=this.getElementText(item);
@@ -118,9 +116,9 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 		if(!this.lblTSCCustomerHubText.getAttribute("class").isEmpty()) {
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblTSCCustomerHubText);
 			this.getReusableActionsInstance().clickIfAvailable(this.lblTSCCustomerHubText);
-			//this.lblTSCCustomerHubText.click();
+			//The dom changes too fast even less than 500ms of explicit wait interval, so have to wait a little
+			getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 			this.waitForCondition(Driver->{return this.lblTSCCustomerHubText.getAttribute("class").isEmpty();}, 30000);
-			getReusableActionsInstance().staticWait(5000);
 		}
 			
 		WebElement selectedItem = this.getElementFromList(this.lnkTSCCustomerHubAllLinks, lsService);
@@ -128,7 +126,8 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 			if(!this.lblAboutTSCText.getAttribute("class").isEmpty()) {
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAboutTSCText);
 				this.getReusableActionsInstance().clickIfAvailable(this.lblAboutTSCText);
-				//this.lblAboutTSCText.click();
+				//The dom changes too fast even less than 500ms of explicit wait interval, so have to wait a little
+				getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 				this.waitForCondition(Driver->{return this.lblAboutTSCText.getAttribute("class").isEmpty();}, 30000);				
 			}
 			
@@ -143,9 +142,7 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 			if(item.getAttribute("class").contains("collapsed")) {
 				getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 				getReusableActionsInstance().clickIfAvailable(item);
-				//item.click();
 				this.waitForCondition(Driver->{return !item.getAttribute("class").contains("collapsed");}, 30000);
-				getReusableActionsInstance().staticWait(5000);
 			}
 		}
 			
@@ -170,9 +167,7 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 		if(!this.lblTSCCustomerHubText.getAttribute("class").isEmpty()) {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblTSCCustomerHubText);
 			getReusableActionsInstance().clickIfAvailable(this.lblTSCCustomerHubText);
-			//this.lblTSCCustomerHubText.click();
 			this.waitForCondition(Driver->{return this.lblTSCCustomerHubText.getAttribute("class").isEmpty();}, 30000);
-			getReusableActionsInstance().staticWait(5000);
 		}
 		
 		List<String> lstFr=new ArrayList<String>();
@@ -193,9 +188,7 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 		if(!this.lblAboutTSCText.getAttribute("class").isEmpty()) {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAboutTSCText);
 			getReusableActionsInstance().clickIfAvailable(this.lblAboutTSCText);
-			//this.lblAboutTSCText.click();
 			this.waitForCondition(Driver->{return this.lblAboutTSCText.getAttribute("class").isEmpty();}, 30000);
-			getReusableActionsInstance().staticWait(5000);
 		}
 		
 		List<String> lstFr=new ArrayList<String>();
@@ -216,9 +209,7 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 		if(!this.lblTSCCustomerHubText.getAttribute("class").isEmpty()) {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblTSCCustomerHubText);
 			getReusableActionsInstance().clickIfAvailable(this.lblTSCCustomerHubText);
-			//this.lblTSCCustomerHubText.click();
 			this.waitForCondition(Driver->{return this.lblTSCCustomerHubText.getAttribute("class").isEmpty();}, 30000);
-			getReusableActionsInstance().staticWait(5000);
 		}
 		
 		for(int i=0;i<this.lnkTSCCustomerHubAllLinks.size();i++) {
@@ -251,9 +242,7 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 		if(!this.lblAboutTSCText.getAttribute("class").isEmpty()) {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAboutTSCText);
 			getReusableActionsInstance().clickIfAvailable(this.lblAboutTSCText);
-			//this.lblAboutTSCText.click();
 			this.waitForCondition(Driver->{return this.lblAboutTSCText.getAttribute("class").isEmpty();}, 30000);
-			getReusableActionsInstance().staticWait(5000);
 		}
 		
 		for(int i=0;i<this.lnkAboutTSCAllLinks.size();i++) {
@@ -330,7 +319,8 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 			}
 
 			getReusableActionsInstance().clickIfAvailable(item);
-			getReusableActionsInstance().staticWait(2000);
+			final WebElement tempButton=item.findElement(By.xpath("./ancestor::li[@class='customer-service-faq__topics-accordion__item']"));
+			this.waitForCondition(Driver->{return this.getChildElementCount(tempButton)>1;},2000);
 			for (WebElement subItem : lstCustomerServiceHelpTopicsSubItem) {
 				getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
 				lsText = subItem.getText();
@@ -368,7 +358,8 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 			WebElement item=lstCustomerServiceHelpTopics.get(lstCustomerServiceHelpTopics.size()-1);
 			getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 			getReusableActionsInstance().clickIfAvailable(item);
-			getReusableActionsInstance().staticWait(2000);
+			final WebElement tempButton=item.findElement(By.xpath("./ancestor::li[@class='customer-service-faq__topics-accordion__item']"));
+			this.waitForCondition(Driver->{return this.getChildElementCount(tempButton)>1;},2000);
 
 			getReusableActionsInstance().javascriptScrollByVisibleElement(lnkCustomerServiceContactInfo);
 			getReusableActionsInstance().clickIfAvailable(lnkCustomerServiceContactInfo);
