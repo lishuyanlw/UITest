@@ -782,7 +782,7 @@ public class ProductDetailPage extends BasePage {
 		//this.getReusableActionsInstance().scrollToElement(this.lnkAutoPlayVideoToolTip);
 		//this.getReusableActionsInstance().clickIfAvailable(this.lnkAutoPlayVideoToolTip);
 		this.mouseHoverJScript(this.lnkAutoPlayVideoToolTip);
-		this.getReusableActionsInstance().staticWait(2000);
+		this.getReusableActionsInstance().waitForElementVisibility(this.lblAutoPlayVideoToolTipPopupMsg);
 
 		String lsText=this.lblAutoPlayVideoToolTipPopupMsg.getText().trim();
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnAutoPlayVideo);
@@ -898,6 +898,7 @@ public class ProductDetailPage extends BasePage {
 	private void verifySingleItemLinkageBetweenThumbnailAndZoomImage(WebElement item) {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 		item.click();
+		//Keep it to wait for clicking action result
 		this.getReusableActionsInstance().staticWait(500);
 
 		String lsThumbnail=this.getImageNameFromThumbnailOrZoomImagePath(lnkCurrentZoomImage.getAttribute("href"));
@@ -920,7 +921,7 @@ public class ProductDetailPage extends BasePage {
 		String lsFirstImageSrcBefore=this.lstThumbnailImageList.get(0).findElement(By.xpath(".//img")).getAttribute("src");
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnThumbnailPrev);
 		this.getReusableActionsInstance().clickIfAvailable(this.btnThumbnailPrev);
-		//this.btnThumbnailPrev.click();
+		//Keep it to wait for clicking action result
 		this.getReusableActionsInstance().staticWait(300);
 		String lsFirstIamgeSrcAfter=this.lstThumbnailImageList.get(0).findElement(By.xpath(".//img")).getAttribute("src");
 
@@ -937,7 +938,7 @@ public class ProductDetailPage extends BasePage {
 		String lsLastImageSrcBefore=this.lstThumbnailImageList.get(imageCount-1).findElement(By.xpath(".//img")).getAttribute("src");
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnThumbnailPrev);
 		this.getReusableActionsInstance().clickIfAvailable(this.btnThumbnailPrev);
-		//this.btnThumbnailPrev.click();
+		//Keep it to wait for clicking action result
 		this.getReusableActionsInstance().staticWait(300);
 		String lsLastIamgeSrcAfter=this.lstThumbnailImageList.get(imageCount-1).findElement(By.xpath(".//img")).getAttribute("src");
 
@@ -982,7 +983,8 @@ public class ProductDetailPage extends BasePage {
 				lsBeforeStyleName=selectStyle.getFirstSelectedOption().getText().trim();
 
 				selectStyle.selectByIndex(i);
-				this.getReusableActionsInstance().staticWait(3000);
+				this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+//				this.getReusableActionsInstance().staticWait(3000);
 				lsSwatch=this.getCurrentSwatchStyle();
 
 				if(this.lstDropdownProductStyle.get(i).getAttribute("class").contains("disable")) {
@@ -1017,7 +1019,8 @@ public class ProductDetailPage extends BasePage {
 				lsBeforeStyleName=this.lblRadioProductStyleTitle.getText().trim();
 
 				radioItem.click();
-				this.getReusableActionsInstance().staticWait(3000);
+				this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+//				this.getReusableActionsInstance().staticWait(3000);
 
 				lsSwatch=this.getCurrentSwatchStyle();
 				lsThumbnail=this.getImageNameFromThumbnailOrZoomImagePath(lnkCurrentZoomImage.getAttribute("href"));
@@ -1051,7 +1054,8 @@ public class ProductDetailPage extends BasePage {
 				lsBeforeStyleName=selectStyle.getFirstSelectedOption().getText().trim();
 
 				selectStyle.selectByIndex(i);
-				this.getReusableActionsInstance().staticWait(3000);
+				this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+//				this.getReusableActionsInstance().staticWait(3000);
 
 				lsAfterStyleName=selectStyle.getFirstSelectedOption().getText();
 				lsSwatch=this.getCurrentSwatchStyle();
@@ -1074,7 +1078,8 @@ public class ProductDetailPage extends BasePage {
 				lsBeforeStyleName=this.lblRadioProductStyleTitle.getText().trim();
 
 				radioItem.click();
-				this.getReusableActionsInstance().staticWait(3000);
+				this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+//				this.getReusableActionsInstance().staticWait(3000);
 
 				lsAfterStyleName=this.lblRadioProductStyleTitle.getText().trim();
 				lsLabelTitle=labelItem.getAttribute("title").trim();
@@ -1157,7 +1162,8 @@ public class ProductDetailPage extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblReviewTabReviewCount);
 		Select reviewSortings=new Select(this.selectReviewTabSortBy);
 		reviewSortings.selectByVisibleText(lsReviewSortingOption);
-		this.getReusableActionsInstance().staticWait(1000);
+		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+//		this.getReusableActionsInstance().staticWait(1000);
 	}
 
 	/**
@@ -1259,14 +1265,9 @@ public class ProductDetailPage extends BasePage {
 	 */
 	public void openTrueFitIFrame() {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkProductTrueFitLink);
-		//this.getReusableActionsInstance().scrollToElement(this.lnkProductTrueFitLink);
-		this.getReusableActionsInstance().staticWait(2000);
-		JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
-		jse.executeScript("arguments[0].click();", this.lnkProductTrueFitLink);
-		//this.getReusableActionsInstance().clickIfAvailable(this.lnkProductTrueFitLink);
-		//this.lnkProductTrueFitLink.click();
+		this.clickElement(this.lnkProductTrueFitLink);
 		this.waitForCondition(Driver->{return this.iframeProductTrueFitLoadingIndicator.getAttribute("style").contains("display: block");}, 30000);
-		//this.waitForCondition(Driver->{return this.imgProductTrueFitIframeHeaderLogo.isDisplayed();}, 30000);
+
 		this.getDriver().switchTo().frame(this.iframeProductTrueFit);
 	}
 
@@ -1319,9 +1320,11 @@ public class ProductDetailPage extends BasePage {
 			this.getReusableActionsInstance().staticWait(100);
 			item=this.lstSizeOption.get(i);
 			lsOption=item.getText().trim();
+			final String tempText=lsOption;
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 			item.click();
-			this.getReusableActionsInstance().staticWait(100);
+			this.waitForCondition(Driver->{return sizeOption.getFirstSelectedOption().getText().trim().equalsIgnoreCase(tempText);},2000);
+//			this.getReusableActionsInstance().staticWait(100);
 			lsSelected=sizeOption.getFirstSelectedOption().getText().trim();
 			if(!lsSelected.equalsIgnoreCase(lsOption)) {
 				return false;
@@ -1402,7 +1405,8 @@ public class ProductDetailPage extends BasePage {
 			for(int i=0;i<loopSize;i++) {
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectProductStyle);
 				selectStyle.selectByIndex(i);
-				this.getReusableActionsInstance().staticWait(1000);
+				this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+//				this.getReusableActionsInstance().staticWait(1000);
 				lsStyle=this.selectProductStyle.getText();
 
 				if(this.judgeStyleSizeAvailable()) {
@@ -1422,7 +1426,8 @@ public class ProductDetailPage extends BasePage {
 
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(radioItem);
 				radioItem.click();
-				this.getReusableActionsInstance().staticWait(1000);
+				this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+//				this.getReusableActionsInstance().staticWait(1000);
 				lsStyle=this.lstRadioStyleLabelList.get(i).getAttribute("title");
 
 				if(this.judgeStyleSizeAvailable()) {
@@ -1462,7 +1467,8 @@ public class ProductDetailPage extends BasePage {
 		for(int j=0;j<subLoopSize;j++) {
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectSizeOption);
 			sizeOption.selectByIndex(j);
-			this.getReusableActionsInstance().staticWait(1000);
+			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+//			this.getReusableActionsInstance().staticWait(1000);
 			lsSize=this.selectSizeOption.getText();
 
 			lsMsg=lsStyle+" Style and "+lsSize+" Size";
@@ -1691,31 +1697,34 @@ public class ProductDetailPage extends BasePage {
 			//Set AutoPlayVideo off
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnAutoPlayVideo);
 			this.getReusableActionsInstance().clickIfAvailable(this.btnAutoPlayVideo);
+			this.waitForCondition(Driver->{return !this.checkIfAutoPlayVideoStatusIsON();},2000);
 			//this.btnAutoPlayVideo.click();
-			this.getReusableActionsInstance().staticWait(1000);
+//			this.getReusableActionsInstance().staticWait(1000);
 			this.getDriver().navigate().refresh();
 			this.waitForPageToLoad();
 			this.getReusableActionsInstance().waitForElementVisibility(this.lblZoomImageMessage,  60);
-			this.getReusableActionsInstance().staticWait(1000);
-			this.getReusableActionsInstance().waitForElementVisibility(this.lblZoomImageMessage,  60);
+//			this.getReusableActionsInstance().staticWait(1000);
+//			this.getReusableActionsInstance().waitForElementVisibility(this.lblZoomImageMessage,  60);
 			reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lnkCurrentZoomImage),"The image is displaying after video off and page refreshing instead of video displaying","The image is not displaying after video off and page refreshing instead of video displaying");
 		}
 		else {
 			//Set AutoPlayVideo on
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnAutoPlayVideo);
 			this.getReusableActionsInstance().clickIfAvailable(this.btnAutoPlayVideo);
-			this.getReusableActionsInstance().staticWait(1000);
+			this.waitForCondition(Driver->{return this.checkIfAutoPlayVideoStatusIsON();},2000);
+//			this.getReusableActionsInstance().staticWait(1000);
 
 			//Set AutoPlayVideo off
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnAutoPlayVideo);
 			this.getReusableActionsInstance().clickIfAvailable(this.btnAutoPlayVideo);
+			this.waitForCondition(Driver->{return !this.checkIfAutoPlayVideoStatusIsON();},2000);
 			//this.btnAutoPlayVideo.click();
-			this.getReusableActionsInstance().staticWait(1000);
+//			this.getReusableActionsInstance().staticWait(1000);
 			this.getDriver().navigate().refresh();
 			this.waitForPageToLoad();
 			this.getReusableActionsInstance().waitForElementVisibility(this.lblZoomImageMessage,  60);
-			this.getReusableActionsInstance().staticWait(1000);
-			this.getReusableActionsInstance().waitForElementVisibility(this.lblZoomImageMessage,  60);
+//			this.getReusableActionsInstance().staticWait(1000);
+//			this.getReusableActionsInstance().waitForElementVisibility(this.lblZoomImageMessage,  60);
 			reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lnkCurrentZoomImage),"The image is displaying after video off and page refreshing instead of video displaying","The image is not displaying after video off and page refreshing instead of video displaying");
 		}
 	}
@@ -1790,12 +1799,12 @@ public class ProductDetailPage extends BasePage {
 
 		ProductResultsPage prp=new ProductResultsPage(this.getDriver());
 		String lsUrl=this.waitForPageLoadingByUrlChange(this.lnkTwitter);
-		this.getReusableActionsInstance().staticWait(10000);
+//		this.getReusableActionsInstance().staticWait(10000);
 		reporter.softAssert(lsUrl.contains("twitter"),"The page has been switched to twitter related page","The page has not been switched to twitter related page");
 		this.getDriver().navigate().back();
 		this.waitForPageToLoad();
-		prp.waitForPageLoading();
-		this.getReusableActionsInstance().staticWait(10000);
+//		prp.waitForPageLoading();
+//		this.getReusableActionsInstance().staticWait(10000);
 
 		/*if((System.getProperty("Device").toLowerCase().contains("tablet") &&
 				System.getProperty("Browser").toLowerCase().contains("ios")) ||
@@ -1807,7 +1816,7 @@ public class ProductDetailPage extends BasePage {
 			this.getReusableActionsInstance().clickIfAvailable(this.lnkFaceBook);
 			//this.clickWebElementUsingJS(this.lnkFaceBook);
 			this.waitForCondition(Driver->{return this.getReusableActionsInstance().getNumberOfOpenWindows()>1;}, 50000);
-			this.getReusableActionsInstance().staticWait(3000);
+//			this.getReusableActionsInstance().staticWait(3000);
 			Set<String> lstHandles=this.getDriver().getWindowHandles();
 			for(String handle:lstHandles) {
 				this.getDriver().switchTo().window(handle);
@@ -1821,12 +1830,12 @@ public class ProductDetailPage extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkPInterest);
 		this.getReusableActionsInstance().clickIfAvailable(this.lnkPInterest);
 		this.waitForCondition(Driver->{return this.getReusableActionsInstance().isElementVisible(this.iframePin);}, 10000);
-		this.getReusableActionsInstance().staticWait(3000);
+//		this.getReusableActionsInstance().staticWait(3000);
 		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.iframePin),"The page has been switched to PInterest related page","The page has not been switched to PInterest related page");
 		this.getDriver().navigate().back();
 		this.waitForPageToLoad();
-		prp.waitForPageLoading();
-		this.getReusableActionsInstance().staticWait(3000);
+//		prp.waitForPageLoading();
+//		this.getReusableActionsInstance().staticWait(3000);
 	}
 
 	public void verifyReviewTabContent() {
@@ -1940,7 +1949,7 @@ public class ProductDetailPage extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnWriteReviewSubmitReview);
 		this.btnWriteReviewSubmitReview.click();
 		this.getReusableActionsInstance().waitForElementVisibility(this.lblWriteReviewAlertHeading,  60);
-		this.getReusableActionsInstance().staticWait(1000);
+//		this.getReusableActionsInstance().staticWait(1000);
 
 		reporter.softAssert(!this.getElementText(this.lblWriteReviewAlertHeading).isEmpty(),"The Alert heading message is not empty","The Alert heading message is empty");
 		int alertMessageNumberInHeading=this.getIntegerFromString(this.getElementText(this.lblWriteReviewAlertHeading));
@@ -1956,7 +1965,7 @@ public class ProductDetailPage extends BasePage {
 		this.lstWriteReviewYourRatingList.get(0).click();
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputWriteReviewHeadline);
 		this.inputWriteReviewHeadline.sendKeys("Test heading line");
-		this.getReusableActionsInstance().staticWait(3000);
+//		this.getReusableActionsInstance().staticWait(3000);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.textareaWriteReviewComments);
 		this.textareaWriteReviewComments.sendKeys("Test write a review in comments");
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstWriteReviewRecommendToFriendList.get(0));
@@ -1972,7 +1981,7 @@ public class ProductDetailPage extends BasePage {
 		JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
 		jse.executeScript("arguments[0].click();", this.btnWriteReviewSubmitReview);
 		this.getReusableActionsInstance().waitForElementVisibility(this.lblWriteReviewAfterSubmitPageTitle,  60);
-		this.getReusableActionsInstance().staticWait(1000);
+//		this.getReusableActionsInstance().staticWait(1000);
 
 		reporter.softAssert(this.getElementText(this.lblWriteReviewAfterSubmitPageTitle).equalsIgnoreCase(lsTitle),"The Title after submited WriteReview is equal to "+lsTitle,"The Title after submited WriteReview is not equal to "+lsTitle);
 		reporter.softAssert(this.getElementText(this.lblWriteReviewAfterSubmitPageSubTitle).equalsIgnoreCase(lsSubTitle),"The SubTitle after submited WriteReview is equal to "+lsSubTitle,"The SubTitle after submited WriteReview is not equal to "+lsSubTitle);
@@ -2073,7 +2082,7 @@ public class ProductDetailPage extends BasePage {
 	public void verifyProductOverviewContent() {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnStickyTabProductOverview);
 		this.btnStickyTabProductOverview.click();
-		this.getReusableActionsInstance().staticWait(1000);
+		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 
 		reporter.softAssert(!this.getElementText(this.lblProductOverviewTabContent).isEmpty(),"The Product Overview contents is not empty","The Product Overview contents is empty");
 	}
@@ -2081,7 +2090,7 @@ public class ProductDetailPage extends BasePage {
 	public void verifyStickyTabClickingAction() {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnStickyTabProductOverview);
 		this.btnStickyTabProductOverview.click();
-		this.getReusableActionsInstance().staticWait(1000);
+		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblProductOverviewTabContent),"The Product Overview contents is displaying correctly","The Product Overview contents is not displaying correctly");
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnStickyTabProductReview);
@@ -2096,13 +2105,14 @@ public class ProductDetailPage extends BasePage {
 			this.getReusableActionsInstance().staticWait(1000);
 			reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.cntProductSizeChartTabContent),"The Product Overview contents is displaying correctly","The Product Overview contents is not displaying correctly");
 		*/
-		this.getReusableActionsInstance().staticWait(1000);
+		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.cntReviewTabContent),"The Product review contents is displaying correctly","The Product review contents is not displaying correctly");
 
 		if(this.checkProductSizingChartExisting()) {
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnStickyTabSizeChart);
 			this.btnStickyTabSizeChart.click();
-			this.getReusableActionsInstance().staticWait(3000);
+			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+//			this.getReusableActionsInstance().staticWait(3000);
 			reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.cntProductSizeChartTabContent),"The Product SizeChart contents is displaying correctly","The Product SizeChart contents is not displaying correctly");
 
 		}
@@ -2117,15 +2127,15 @@ public class ProductDetailPage extends BasePage {
 		this.lnkBrandName.click();
 
 		this.waitForPageToLoad();
-		prp.waitForPageLoading();
-		this.getReusableActionsInstance().staticWait(1000);
+//		prp.waitForPageLoading();
+//		this.getReusableActionsInstance().staticWait(1000);
 
 		reporter.softAssert(this.URL().toLowerCase().contains("productresults"),"The page has been switched to product results page","The page has not been switched to product results page");
 
 		//Verifying Bug-19107 - Issue navigating to brand page from PDP
 		//Verifying that PRP page is displaying results for expected brand
 		this.waitForPageToLoad();
-		prp.waitForPageLoading();
+//		prp.waitForPageLoading();
 		prp.verifyProductsOnPRPByBrandName(lsBrandName);
 
 		/*this.getReusableActionsInstance().javascriptScrollByVisibleElement(prp.lblSelectedFilters);
@@ -2194,12 +2204,12 @@ public class ProductDetailPage extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputTellYourFriendsWindowAddMessage);
 		this.inputTellYourFriendsWindowAddMessage.sendKeys(lsAddMessage);
 
-		this.getReusableActionsInstance().staticWait(1000);
+//		this.getReusableActionsInstance().staticWait(1000);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnTellYourFriendsWindowPreview);
 		this.getReusableActionsInstance().clickIfAvailable(this.btnTellYourFriendsWindowPreview);
 		//this.btnTellYourFriendsWindowPreview.click();
 		this.getReusableActionsInstance().waitForElementVisibility(this.lblTellYourFriendsPreviewWindowTitle,  60);
-		this.getReusableActionsInstance().staticWait(1000);
+//		this.getReusableActionsInstance().staticWait(1000);
 
 		String lsPreviewFromNameAndEmail=this.getElementText(this.lblTellYourFriendsPreviewWindowFromNameAndEmail);
 		reporter.softAssert(lsPreviewFromNameAndEmail.contains(lsFromName),"The preview From message is containing input From name","The preview From message is not containing input From name");
@@ -2219,14 +2229,14 @@ public class ProductDetailPage extends BasePage {
 		this.getReusableActionsInstance().clickIfAvailable(this.btnTellYourFriendsPreviewWindowBackToEditEmail);
 		//this.btnTellYourFriendsPreviewWindowBackToEditEmail.click();
 		this.getReusableActionsInstance().waitForElementVisibility(this.lblTellYourFriendsWindowTitle,  60);
-		this.getReusableActionsInstance().staticWait(1000);
+//		this.getReusableActionsInstance().staticWait(1000);
 	}
 
 	public void verifyTellYourFriendsSentWindowContent(String lsTellYourFriendsSentMessage) {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnTellYourFriendsWindowSend);
 		this.btnTellYourFriendsWindowSend.click();
 		this.getReusableActionsInstance().waitForElementVisibility(this.lblTellYourFriendsSentWindowTitle,  60);
-		this.getReusableActionsInstance().staticWait(1000);
+//		this.getReusableActionsInstance().staticWait(1000);
 
 		String lsMessage=this.getElementText(this.lblTellYourFriendsSentWindowSentMessage).trim();
 		reporter.softAssert(lsMessage.equalsIgnoreCase(lsTellYourFriendsSentMessage),"The confirmation message in sent window is equal to '"+lsTellYourFriendsSentMessage+"'","The confirmation message in sent window is not equal to '"+lsTellYourFriendsSentMessage+"'");
@@ -2237,7 +2247,7 @@ public class ProductDetailPage extends BasePage {
 		//this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavShareMobile);
 		this.getReusableActionsInstance().clickIfAvailable(this.btnTellYourFriendsWindowClose);
 		//this.btnTellYourFriendsWindowClose.click();
-		this.getReusableActionsInstance().staticWait(1000);
+		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 	}
 
 	public boolean checkIfFavShareMobileHighlighted() {
@@ -2250,7 +2260,7 @@ public class ProductDetailPage extends BasePage {
 		this.getReusableActionsInstance().clickIfAvailable(this.lnkFavShareMobile);
 		//this.lnkFavShareMobile.click();
 		this.getReusableActionsInstance().waitForElementVisibility(loginPage.lblSignIn,  60);
-		this.getReusableActionsInstance().staticWait(1000);
+//		this.getReusableActionsInstance().staticWait(1000);
 
 		reporter.softAssert(this.URL().toLowerCase().contains("signin"),"The page has been navigated to signin page while no user login","The page has not been navigated to signin page while no user login");
 
@@ -2264,7 +2274,8 @@ public class ProductDetailPage extends BasePage {
 			this.getReusableActionsInstance().clickIfAvailable(this.lnkFavShareMobile);
 		this.getReusableActionsInstance().clickIfAvailable(this.lnkFavShareMobile);
 		//this.lnkFavShareMobile.click();
-		this.getReusableActionsInstance().staticWait(5000);
+		this.waitForCondition(Driver->{return checkIfFavShareMobileHighlighted();},5000);
+//		this.getReusableActionsInstance().staticWait(5000);
 		reporter.softAssert(checkIfFavShareMobileHighlighted(),"The FavShareMobile icon is highlighted after clicking with user login", "The FavShareMobile icon is not highlighted after clicking with user login");
 	}
 
