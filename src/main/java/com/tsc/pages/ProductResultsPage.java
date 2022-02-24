@@ -3139,8 +3139,7 @@ public class ProductResultsPage extends BasePage{
 	 */
 	public String checkFilterItemSeeButtonExisting(WebElement filterContainerItem) {
 		WebElement item=filterContainerItem.findElement(this.bySecondaryFilterSeeButtonText);
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-		String lsText=item.getText().trim();
+		String lsText=this.getElementInnerText(item);
 
 		if(lsText.isEmpty()){
 			return "None";
@@ -3262,8 +3261,7 @@ public class ProductResultsPage extends BasePage{
 		String lsButtonType=this.checkFilterItemSeeButtonExisting(filterContainerItem);
 		if(lsButtonType.equalsIgnoreCase("SeeMore")) {
 			WebElement seeMoreButton=filterContainerItem.findElement(this.bySecondaryFilterSeeMoreButton);
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(seeMoreButton);
-			this.getReusableActionsInstance().clickIfAvailable(seeMoreButton);
+			this.clickElement(seeMoreButton);
 			this.waitForCondition(Driver->{return this.checkFilterItemSeeButtonExisting(filterContainerItem).equalsIgnoreCase("SeeLess");},5000);
 		}
 	}
@@ -3278,8 +3276,7 @@ public class ProductResultsPage extends BasePage{
 		String lsButtonType=this.checkFilterItemSeeButtonExisting(filterContainerItem);
 		if(lsButtonType.equalsIgnoreCase("SeeLess")) {
 			WebElement seeLessButton=filterContainerItem.findElement(this.bySecondaryFilterSeeLessButton);
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(seeLessButton);
-			this.getReusableActionsInstance().clickIfAvailable(seeLessButton);
+			this.clickElement(seeLessButton);
 			this.waitForCondition(Driver->{return this.checkFilterItemSeeButtonExisting(filterContainerItem).equalsIgnoreCase("SeeMore");},5000);
 		}
 	}

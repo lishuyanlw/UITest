@@ -17,9 +17,7 @@ public class PD_TC01_VerifyProductDetail_LeftSection_ContentsForImageAndVideo ex
 	 */
 	@Test(groups={"ProductDetail","Regression","Regression_Mobile","Regression_Tablet"})
 	public void PD_TC01_VerifyProductDetail_LeftSection_ContentsForImageAndVideo() throws IOException {
-		//We don't need to close popup dialog if use api to navigate to PDP page directly.
-		//getGlobalFooterPageThreadLocal().closePopupDialog();
-
+		getGlobalFooterPageThreadLocal().closePopupDialog();
 		BasePage basePage=new BasePage(this.getDriver());
 
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(basePage.getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");
@@ -28,11 +26,9 @@ public class PD_TC01_VerifyProductDetail_LeftSection_ContentsForImageAndVideo ex
 		String lsVideoDisclaimInfo=TestDataHandler.constantData.getSearchResultPage().getLbl_VideoDisclaimInfo();
 		List<String> lstKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_APISearchingKeyword();
 
-		//getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0));
 		reporter.reportLog("Switch to ProductDetail page");
 		String lsProductNumber,lsUrl;
 
-		//if(getProductResultsPageThreadLocal().goToFirstProductItem("522809")) {
 		if(getProductDetailPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList,"AllConditionsWithoutCheckingSoldOutCriteria",null)) {
 			reporter.reportLog("Verify URL");
 			//lsProductNumber=getProductDetailPageThreadLocal().selectedProduct.productNumber;

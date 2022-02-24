@@ -25,18 +25,11 @@ public class ProductDetailPage_Tablet extends ProductDetailPage {
                 System.getProperty("Browser").toLowerCase().contains("android")){
             this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.videoIcon);
             this.getReusableActionsInstance().clickIfAvailable(this.videoIcon);
-            applyStaticWait(1000);
+            applyStaticWait(this.getStaticWaitForApplication());
             this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.playButton);
             this.getReusableActionsInstance().scrollToElement(this.playButton);
             this.getReusableActionsInstance().clickIfAvailable(this.playButton);
-            applyStaticWait(2000);
-            //added if condition because in jenkins ios it is not clicking on first time so,
-            //I added second click with condition but still it is not clicking
-            /*if (!this.checkIfVideoisPlaying()){
-                this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.playButton);
-                this.getReusableActionsInstance().scrollToElement(this.playButton);
-                this.getReusableActionsInstance().clickIfAvailable(this.playButton);
-            }*/
+            applyStaticWait(this.getStaticWaitForApplication());
         }
 
         reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.videoBoxControl),"The video control section is displaying correctly","The video control section is not displaying correctly");
@@ -46,8 +39,6 @@ public class ProductDetailPage_Tablet extends ProductDetailPage {
         reporter.softAssert(this.getElementText(this.lblVideoDisclaim).equalsIgnoreCase(lsVideoDisclaimInfo),"The product video disclaim text is equal to the text of '"+lsVideoDisclaimInfo+"'","The product video disclaim text is not equal to the text of '"+lsVideoDisclaimInfo+"'");
 
         reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.videoBoxControl),"The video control section is displaying correctly","The video control section is not displaying correctly");
-        //commented because autoplay is not present for both tab and mobile
-        //reporter.softAssert(this.checkIfAutoPlayVideoStatusIsON(),"The product video AutoPlaying is on","The product video AutoPlaying is off");
         reporter.softAssert(this.checkIfVideoisPlaying(),"The product video is playing","The product video is not playing");
 
     }
@@ -68,27 +59,12 @@ public class ProductDetailPage_Tablet extends ProductDetailPage {
 
     @Override
     public void verifyThumbnailPrevButton() {
-        //String lsFirstImageSrcBefore=this.lstThumbnailImageList.get(0).findElement(By.xpath(".//img")).getAttribute("src");
-        this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnThumbnailPrev);
-        this.getReusableActionsInstance().clickIfAvailable(this.btnThumbnailPrev);
-        //this.btnThumbnailPrev.click();
-        this.getReusableActionsInstance().staticWait(300);
-        //String lsFirstIamgeSrcAfter=this.lstThumbnailImageList.get(0).findElement(By.xpath(".//img")).getAttribute("src");
 
-        //reporter.softAssert(!lsFirstImageSrcBefore.equalsIgnoreCase(lsFirstIamgeSrcAfter), "The Prev button clicking is working", "The Prev button clicking is not working");
-    }
+     }
 
     @Override
     public void verifyThumbnailNextButton() {
-        int imageCount=this.lstThumbnailImageList.size();
-        //String lsLastImageSrcBefore=this.lstThumbnailImageList.get(imageCount-1).findElement(By.xpath(".//img")).getAttribute("src");
-        this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnThumbnailPrev);
-        this.getReusableActionsInstance().clickIfAvailable(this.btnThumbnailPrev);
-        //this.btnThumbnailPrev.click();
-        this.getReusableActionsInstance().staticWait(300);
-        //String lsLastIamgeSrcAfter=this.lstThumbnailImageList.get(imageCount-1).findElement(By.xpath(".//img")).getAttribute("src");
 
-        //reporter.softAssert(!lsLastImageSrcBefore.equalsIgnoreCase(lsLastIamgeSrcAfter), "The Next button clicking is working", "The Next button clicking is not working");
     }
 
     @Override
@@ -99,8 +75,6 @@ public class ProductDetailPage_Tablet extends ProductDetailPage {
     @Override
     public void verifyCurrentZoomImage() {
         reporter.softAssert(!this.getElementHref(this.lnkCurrentZoomImage).isEmpty(),"The Current zoom image link is not empty","The Current zoom image link is empty");
-        //commented because lblZoomImageMessage is not present for both tab and mobile
-        //reporter.softAssert(!this.getElementText(this.lblZoomImageMessage).isEmpty(),"The Zoom image message is not empty","The Zoom image message is empty");
     }
 
     @Override
@@ -121,7 +95,7 @@ public class ProductDetailPage_Tablet extends ProductDetailPage {
                 lsBeforeStyleName=selectStyle.getFirstSelectedOption().getText().trim();
 
                 selectStyle.selectByIndex(i);
-                this.getReusableActionsInstance().staticWait(3000);
+                applyStaticWait(this.getStaticWaitForApplication());
                 lsSwatch=this.getCurrentSwatchStyle();
 
                 if(this.lstDropdownProductStyle.get(i).getAttribute("class").contains("disable")) {
@@ -132,13 +106,9 @@ public class ProductDetailPage_Tablet extends ProductDetailPage {
                 }
 
                 lsZoomImage=this.getImageNameFromThumbnailOrZoomImagePath(lnkCurrentZoomImage.getAttribute("href"));
-                //next line for Tablet image loading problem, there is no src
-                //lsThumbnail=this.getImageNameFromThumbnailOrZoomImagePath(imgCurrentThumbnail.getAttribute("src"));
-                //reporter.softAssert(lsThumbnail.toLowerCase().contains(lsSwatch.toLowerCase()), "The Thumbnail image src contains swatch style of " +lsSwatch, "The Thumbnail image src does not contain swatch style of "+lsSwatch);
                 if(!bDisable) {
                     reporter.softAssert(lsZoomImage.toLowerCase().contains(lsSwatch.toLowerCase()), "The Zoom image src contains swatch style of " +lsSwatch, "The Zoom image src does not contain swatch style of "+lsSwatch);
-                   // reporter.softAssert(lsThumbnail.equalsIgnoreCase(lsZoomImage), "The Thumbnail image is the same as the Zoom image with changing Swatch radio of '"+lsSwatch+"'", "The Thumbnail image is not the same as the Zoom image with changing Swatch radio of '"+lsSwatch+"'");
-                }
+                 }
             }
         }
         else {
@@ -156,7 +126,7 @@ public class ProductDetailPage_Tablet extends ProductDetailPage {
                 lsBeforeStyleName=this.lblRadioProductStyleTitle.getText().trim();
 
                 radioItem.click();
-                this.getReusableActionsInstance().staticWait(3000);
+                applyStaticWait(this.getStaticWaitForApplication());
 
                 lsSwatch=this.getCurrentSwatchStyle();
                 lsThumbnail=this.getImageNameFromThumbnailOrZoomImagePath(lnkCurrentZoomImage.getAttribute("href"));

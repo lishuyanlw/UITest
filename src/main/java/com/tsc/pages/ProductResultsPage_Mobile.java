@@ -169,7 +169,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 		if(btnCloseButton && btnClearAll && filterPopupText.toLowerCase().equals("filter"))
 			reporter.reportLogPass("Filter Section for mobile is present after selecting required filter");
 		else
-			reporter.reportLogFail("Filter Section is not for mobile is present after selecting required filter");
+			reporter.reportLogFailWithScreenshot("Filter Section is not for mobile is present after selecting required filter");
 	}
 
 	@Override
@@ -233,14 +233,14 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 							reporter.reportLogPass("The Url does not contain page term.");
 						}
 						else {
-							reporter.reportLogFail("The Url contains page term.");
+							reporter.reportLogFailWithScreenshot("The Url contains page term.");
 						}
 						
 						if(this.getElementInnerText(btnCurrentPage).equalsIgnoreCase("1")) {
 							reporter.reportLogPass("The current page is 1st page.");
 						}
 						else {
-							reporter.reportLogFail("The current page is not 1st page.");
+							reporter.reportLogFailWithScreenshot("The current page is not 1st page.");
 						}
 
 						//Verification of BUG-19745
@@ -329,14 +329,14 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 							reporter.reportLogPass("The Url does not contain page term.");
 						}
 						else {
-							reporter.reportLogFail("The Url contains page term.");
+							reporter.reportLogFailWithScreenshot("The Url contains page term.");
 						}
 						
 						if(this.getElementInnerText(btnCurrentPage).equalsIgnoreCase("1")) {
 							reporter.reportLogPass("The current page is 1st page.");
 						}
 						else {
-							reporter.reportLogFail("The current page is not 1st page.");
+							reporter.reportLogFailWithScreenshot("The current page is not 1st page.");
 						}
 						
 						//Bug 19389: PRP Filter Panel - Shop by Category selection does not work as intended						
@@ -391,14 +391,14 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 						reporter.reportLogPass("The Url does not contain page term.");
 					}
 					else {
-						reporter.reportLogFail("The Url contains page term.");
+						reporter.reportLogFailWithScreenshot("The Url contains page term.");
 					}
 					
 					if(this.getElementInnerText(btnCurrentPage).equalsIgnoreCase("1")) {
 						reporter.reportLogPass("The current page is 1st page.");
 					}
 					else {
-						reporter.reportLogFail("The current page is not 1st page.");
+						reporter.reportLogFailWithScreenshot("The current page is not 1st page.");
 					}
 
 					//Verification of BUG-19745
@@ -617,14 +617,14 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				reporter.reportLogPass("Product Name is not empty");
 			}
 			else {
-				reporter.reportLogFail("Product Name is empty");
+				reporter.reportLogFailWithScreenshot("Product Name is empty");
 			}
 			//Bug 19537: [QA Defect - P3] PRP: Is Price should be bold
 			if(element.getCssValue("font-weight").equalsIgnoreCase("600")) {
 				reporter.reportLogPass("Product name is semi bold font");
 			}
 			else {
-				reporter.reportLogFail("Product name is not semi bold font");
+				reporter.reportLogFailWithScreenshot("Product name is not semi bold font");
 			}
 
 			element=item.findElement(byProductHeaderLike);
@@ -632,7 +632,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				reporter.reportLogPass("Product like icon is visible");
 			}
 			else {
-				reporter.reportLogFail("Product like icon is not visible");
+				reporter.reportLogFailWithScreenshot("Product like icon is not visible");
 			}
 
 			element=item.findElement(byProductHref);
@@ -640,7 +640,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				reporter.reportLogPass("Product link is not empty");
 			}
 			else {
-				reporter.reportLogFail("Product link is empty");
+				reporter.reportLogFailWithScreenshot("Product link is empty");
 			}
 
 			element=item.findElement(byProductImage);
@@ -648,7 +648,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				reporter.reportLogPass("Product image source is not empty");
 			}
 			else {
-				reporter.reportLogFail("Product image source is not empty");
+				reporter.reportLogFailWithScreenshot("Product image source is not empty");
 			}
 
 			element=item.findElement(byProductNowPrice);
@@ -657,14 +657,14 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				reporter.reportLogPass("Product Now Price is not empty");
 			}
 			else {
-				reporter.reportLogFail("Product Now Price is not empty");
+				reporter.reportLogFailWithScreenshot("Product Now Price is not empty");
 			}
 			//Bug 19537: [QA Defect - P3] PRP: Is Price should be bold
 			if(element.getCssValue("font-weight").equalsIgnoreCase("600")) {
 				reporter.reportLogPass("Product NowPrice is semi bold font");
 			}
 			else {
-				reporter.reportLogFail("Product NowPrice is not semi bold font");
+				reporter.reportLogFailWithScreenshot("Product NowPrice is not semi bold font");
 			}
 
 		}
@@ -690,14 +690,14 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 					reporter.reportLogPass("Product title is not empty");
 				}
 				else {
-					reporter.reportLogFail("Product title is empty");
+					reporter.reportLogFailWithScreenshot("Product title is empty");
 				}
 				//Bug 19683: [UAT Defect] PRP: Merchandising badges i.e. Clearance, BlockBuster etc. should be bolded
 				if(element.getCssValue("font-weight").equalsIgnoreCase("800")) {
 					reporter.reportLogPass("Product title is bold font");
 				}
 				else {
-					reporter.reportLogFail("Product title is not bold font");
+					reporter.reportLogFailWithScreenshot("Product title is not bold font");
 				}
 			}
 
@@ -709,7 +709,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 					reporter.reportLogPass("Product option is empty");
 				}
 				else {
-					reporter.reportLogFail("Product option is not empty");
+					reporter.reportLogFailWithScreenshot("Product option is not empty");
 				}
 			}
 			else{
@@ -717,7 +717,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 					reporter.reportLogPass("Product option is not empty");
 				}
 				else {
-					reporter.reportLogFail("Product option is empty");
+					reporter.reportLogFailWithScreenshot("Product option is empty");
 				}
 			}
 
@@ -728,7 +728,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 					reporter.reportLogPass("Product brand name is not empty");
 				}
 				else {
-					reporter.reportLogFail("Product brand name is empty");
+					reporter.reportLogFailWithScreenshot("Product brand name is empty");
 				}
 			}
 
@@ -739,7 +739,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 					reporter.reportLogPass("Product Was Price is not empty");
 				}
 				else {
-					reporter.reportLogFail("Product Was Price is empty");
+					reporter.reportLogFailWithScreenshot("Product Was Price is empty");
 				}
 			}
 
@@ -749,7 +749,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 					reporter.reportLogPass("Product review is visible");
 				}
 				else {
-					reporter.reportLogFail("Product review is not visible");
+					reporter.reportLogFailWithScreenshot("Product review is not visible");
 				}
 
 				//Bug 19536: [QA Defect - P3] PRP: Rating and Review not showing properly
@@ -758,7 +758,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 					reporter.reportLogPass("Product review stars are displaying correctly");
 				}
 				else {
-					reporter.reportLogFail("Product review stars are not displaying correctly");
+					reporter.reportLogFailWithScreenshot("Product review stars are not displaying correctly");
 				}
 
 				lsText=this.getElementInnerText(item.findElement(this.byProductReviewRatingCount));
@@ -766,7 +766,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 					reporter.reportLogPass("Product review count info is displaying correctly");
 				}
 				else {
-					reporter.reportLogFail("Product review count info is not displaying correctly");
+					reporter.reportLogFailWithScreenshot("Product review count info is not displaying correctly");
 				}
 			}
 
@@ -795,7 +795,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				reporter.reportLogPass("Product select Size and Color is visible");
 			}
 			else {
-				reporter.reportLogFail("Product select Size and Color is not visible");
+				reporter.reportLogFailWithScreenshot("Product select Size and Color is not visible");
 			}
 
 			if(this.getElementInnerText(element).equalsIgnoreCase("Go to detail page")) {
@@ -815,14 +815,14 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 					reporter.reportLogPass("Product option size title is not empty");
 				}
 				else {
-					reporter.reportLogFail("Product option size title is empty");
+					reporter.reportLogFailWithScreenshot("Product option size title is empty");
 				}
 
 				if(this.getDriver().findElements(byProductOptionSizeItemList).size()>0) {
 					reporter.reportLogPass("Product option size button list is containing no less than 1 item");
 				}
 				else {
-					reporter.reportLogFail("Product option size button list is containing 0 item");
+					reporter.reportLogFailWithScreenshot("Product option size button list is containing 0 item");
 				}
 
 				if(checkViewAllSizesButtonExisting()) {
@@ -832,7 +832,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 						reporter.reportLogPass("Product ViewAllSize button title is not empty");
 					}
 					else {
-						reporter.reportLogFail("Product ViewAllSize button title is empty");
+						reporter.reportLogFailWithScreenshot("Product ViewAllSize button title is empty");
 					}
 				}
 			}
@@ -844,14 +844,14 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 					reporter.reportLogPass("Product option color title is not empty");
 				}
 				else {
-					reporter.reportLogFail("Product option color title is empty");
+					reporter.reportLogFailWithScreenshot("Product option color title is empty");
 				}
 
 				if(this.getDriver().findElements(byProductOptionColorItemList).size()>0) {
 					reporter.reportLogPass("Product option color button list is containing no less than 1 item");
 				}
 				else {
-					reporter.reportLogFail("Product option color button list is containing 0 item");
+					reporter.reportLogFailWithScreenshot("Product option color button list is containing 0 item");
 				}
 
 
@@ -862,7 +862,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 						reporter.reportLogPass("Product ViewAllColor button title is not empty");
 					}
 					else {
-						reporter.reportLogFail("Product ViewAllColor button title is empty");
+						reporter.reportLogFailWithScreenshot("Product ViewAllColor button title is empty");
 					}
 				}
 			}
@@ -872,7 +872,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				reporter.reportLogPass("Product GoTo details button is visible");
 			}
 			else {
-				reporter.reportLogFail("Product GoTo details button is not visible");
+				reporter.reportLogFailWithScreenshot("Product GoTo details button is not visible");
 			}
 
 			verifySelectSizeOrColorOption(item);
@@ -1028,7 +1028,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 					reporter.reportLogPass("The button text is equal to 'Go to detail page'");
 				}
 				else {
-					reporter.reportLogFail("The button text is not equal to 'Go to detail page'");
+					reporter.reportLogFailWithScreenshot("The button text is not equal to 'Go to detail page'");
 				}
 			}
 			
@@ -1037,7 +1037,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 					reporter.reportLogPass("The button text is equal to 'Select colour'");
 				}
 				else {
-					reporter.reportLogFail("The button text is not equal to 'Select colour'");
+					reporter.reportLogFailWithScreenshot("The button text is not equal to 'Select colour'");
 				}
 			}
 			
@@ -1046,7 +1046,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 					reporter.reportLogPass("The button text is equal to 'Select size'");
 				}
 				else {
-					reporter.reportLogFail("The button text is not equal to 'Select size'");
+					reporter.reportLogFailWithScreenshot("The button text is not equal to 'Select size'");
 				}
 			}
 			
@@ -1055,7 +1055,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 					reporter.reportLogPass("The button text is equal to 'Select size & colour'");
 				}
 				else {
-					reporter.reportLogFail("The button text is not equal to 'Select size & colour'");
+					reporter.reportLogFailWithScreenshot("The button text is not equal to 'Select size & colour'");
 				}
 			}			
 		}
@@ -1067,7 +1067,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 					reporter.reportLogPass("The button text is equal to 'Select size & colour'");
 				}
 				else {
-					reporter.reportLogFail("The button text is not equal to 'Select size & colour'");
+					reporter.reportLogFailWithScreenshot("The button text is not equal to 'Select size & colour'");
 				}
 			}
 			else {
@@ -1075,7 +1075,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 					reporter.reportLogPass("The button text is equal to 'Select size'");
 				}
 				else {
-					reporter.reportLogFail("The button text is not equal to 'Select size'");
+					reporter.reportLogFailWithScreenshot("The button text is not equal to 'Select size'");
 				}
 			}			
 		}
@@ -1087,7 +1087,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 					reporter.reportLogPass("The button text is equal to 'Select size & colour'");
 				}
 				else {
-					reporter.reportLogFail("The button text is not equal to 'Select size & colour'");
+					reporter.reportLogFailWithScreenshot("The button text is not equal to 'Select size & colour'");
 				}
 			}
 			else {
@@ -1095,7 +1095,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 					reporter.reportLogPass("The button text is equal to 'Select colour'");
 				}
 				else {
-					reporter.reportLogFail("The button text is not equal to 'Select colour'");
+					reporter.reportLogFailWithScreenshot("The button text is not equal to 'Select colour'");
 				}
 			}			
 		}
@@ -1122,7 +1122,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 							reporter.reportLogPass("The button text is equal to 'Go to detail page'");
 						}
 						else {
-							reporter.reportLogFail("The button text is not equal to 'Go to detail page'");
+							reporter.reportLogFailWithScreenshot("The button text is not equal to 'Go to detail page'");
 						}
 					}
 					else {
@@ -1130,7 +1130,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 							reporter.reportLogPass("The button text is equal to 'Select colour'");
 						}
 						else {
-							reporter.reportLogFail("The button text is not equal to 'Select colour'");
+							reporter.reportLogFailWithScreenshot("The button text is not equal to 'Select colour'");
 						}
 					}
 					
@@ -1139,7 +1139,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 						reporter.reportLogPass("The button text is equal to 'Go to detail page'");
 					}
 					else {
-						reporter.reportLogFail("The button text is not equal to 'Go to detail page'");
+						reporter.reportLogFailWithScreenshot("The button text is not equal to 'Go to detail page'");
 					}
 				}
 			}						
@@ -1161,7 +1161,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				reporter.reportLogPass("The button text is equal to 'Go to detail page'");
 			}
 			else {
-				reporter.reportLogFail("The button text is not equal to 'Go to detail page'");
+				reporter.reportLogFailWithScreenshot("The button text is not equal to 'Go to detail page'");
 			}
 		}
 	}
@@ -1269,7 +1269,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				reporter.reportLogPass("The selected size title is displaying correctly");
 			}
 			else {
-				reporter.reportLogFail("The selected size title is not displaying correctly");
+				reporter.reportLogFailWithScreenshot("The selected size title is not displaying correctly");
 			}
 			
 			return true;
@@ -1334,7 +1334,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 					reporter.reportLogPass("The image is changing after choosing a different style correctly");
 				}
 				else {
-					reporter.reportLogFail("The image is not changing after choosing a different style correctly");
+					reporter.reportLogFailWithScreenshot("The image is not changing after choosing a different style correctly");
 				}
 			}
 									
@@ -1346,7 +1346,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				reporter.reportLogPass("The selected color title is displaying correctly");
 			}
 			else {
-				reporter.reportLogFail("The selected color title is not displaying correctly");
+				reporter.reportLogFailWithScreenshot("The selected color title is not displaying correctly");
 			}	
 			return true;
 		}
@@ -1415,7 +1415,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 			reporter.reportLogPass("The product name of "+this.selectedProductItem.productName+" in PRP is the same as the one of "+lsProductName+" displayed in PDP");
 		}
 		else {
-			reporter.reportLogFail("The product name of "+this.selectedProductItem.productName+" in PRP is not the same as the one of "+lsProductName+" displayed in PDP");
+			reporter.reportLogFailWithScreenshot("The product name of "+this.selectedProductItem.productName+" in PRP is not the same as the one of "+lsProductName+" displayed in PDP");
 		}
 
 		if(!this.selectedProductItem.productBrand.isEmpty()) {
@@ -1424,7 +1424,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				reporter.reportLogPass("The product brand of "+this.selectedProductItem.productBrand+" in PRP is the same as the one of "+lsProductBrand+" displayed in PDP");
 			}
 			else {
-				reporter.reportLogFail("The product brand of "+this.selectedProductItem.productBrand+" in PRP is not the same as the one of "+lsProductBrand+" displayed in PDP");
+				reporter.reportLogFailWithScreenshot("The product brand of "+this.selectedProductItem.productBrand+" in PRP is not the same as the one of "+lsProductBrand+" displayed in PDP");
 			}
 		}
 
@@ -1433,7 +1433,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 			reporter.reportLogPass("The product NowPrice of "+this.selectedProductItem.productNowPrice+" in PRP is the same as the one of "+lsProductNowPrice+" displayed in PDP");
 		}
 		else {
-			reporter.reportLogFail("The product NowPrice of "+this.selectedProductItem.productNowPrice+" in PRP is not the same as the one of "+lsProductNowPrice+" displayed in PDP");
+			reporter.reportLogFailWithScreenshot("The product NowPrice of "+this.selectedProductItem.productNowPrice+" in PRP is not the same as the one of "+lsProductNowPrice+" displayed in PDP");
 		}
 
 		String lsProductWasPrice=pdp.getElementInnerText(pdp.lblProductWasPrice);
@@ -1441,7 +1441,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 			reporter.reportLogPass("The product WasPrice of "+this.selectedProductItem.productWasPrice+" in PRP is the same as the one of "+lsProductWasPrice+" displayed in PDP");
 		}
 		else {
-			reporter.reportLogFail("The product WasPrice of "+this.selectedProductItem.productWasPrice+" in PRP is not the same as the one of "+lsProductWasPrice+" displayed in PDP");
+			reporter.reportLogFailWithScreenshot("The product WasPrice of "+this.selectedProductItem.productWasPrice+" in PRP is not the same as the one of "+lsProductWasPrice+" displayed in PDP");
 		}
 
 		if(!this.selectedProductItem.productSelectedSize.isEmpty()) {
@@ -1451,7 +1451,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				reporter.reportLogPass("The selected size in PRP is the same as the one displayed in PDP");
 			}
 			else {
-				reporter.reportLogFail("The selected size in PRP is not the same as the one displayed in PDP");
+				reporter.reportLogFailWithScreenshot("The selected size in PRP is not the same as the one displayed in PDP");
 			}
 		}
 
@@ -1461,7 +1461,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 					reporter.reportLogPass("The selected color in PRP is the same as the one displayed in PDP");
 				}
 				else {
-					reporter.reportLogFail("The selected color in PRP is not the same as the one displayed in PDP");
+					reporter.reportLogFailWithScreenshot("The selected color in PRP is not the same as the one displayed in PDP");
 				}
 			}
 			else {
@@ -1469,7 +1469,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 					reporter.reportLogPass("The selected color in PRP is the same as the one displayed in PDP");
 				}
 				else {
-					reporter.reportLogFail("The selected color in PRP is not the same as the one displayed in PDP");
+					reporter.reportLogFailWithScreenshot("The selected color in PRP is not the same as the one displayed in PDP");
 				}
 			}
 		}
@@ -1527,14 +1527,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 		lstItem=lstFilter.get(1);
 		selectFilterItemInLeftPanel(lstItem.get(0), lstItem.get(1));
 		String lsFirstProductNameForSecondFilter=this.getElementInnerText(this.productResultList.get(0).findElement(byProductName));
-		
-		if(lsFirstProductNameForSecondFilter.equalsIgnoreCase(lsFirstProductNameForFirstFilter)) {
-			reporter.reportLogPass("The product search results are changing after adding one more filter correctly"); 
-		}
-		else {
-			reporter.reportLogFail("The product search results are not changing after adding one more filter correctly"); 
-		}
-		
+
 		this.getDriver().navigate().back();
 		this.waitForPageToLoad();
 		this.getReusableActionsInstance().waitForElementVisibility(this.lblSearchResultMessage,120);
@@ -1546,7 +1539,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 			reporter.reportLogPass("The product search results are keeping the same status as just first filter applied"); 
 		}
 		else {
-			reporter.reportLogFail("The product search results are not keeping the same status as just first filter applied"); 
+			reporter.reportLogFailWithScreenshot("The product search results are not keeping the same status as just first filter applied"); 
 		}	
 	}
 
@@ -1563,7 +1556,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 			reporter.reportLogPass("The selected filter list for first Category filter is not displaying"); 
 		}
 		else {
-			reporter.reportLogFail("The selected filter list for first Category filter is displaying wrongly"); 
+			reporter.reportLogFailWithScreenshot("The selected filter list for first Category filter is displaying wrongly"); 
 		}
 		
 		//Apply a subfilter
@@ -1575,7 +1568,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 			reporter.reportLogPass("The selected filter list after selecting filters is displaying correctly"); 
 		}
 		else {
-			reporter.reportLogFail("The selected filter list after selecting filters is not displaying correctly"); 
+			reporter.reportLogFailWithScreenshot("The selected filter list after selecting filters is not displaying correctly"); 
 		}
 
 		//Select first category item
@@ -1595,7 +1588,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 			reporter.reportLogPass("The selected filter list after navigating from BreadCrumb is displaying correctly"); 
 		}
 		else {
-			reporter.reportLogFail("The selected filter list after navigating from BreadCrumb is not displaying correctly"); 
+			reporter.reportLogFailWithScreenshot("The selected filter list after navigating from BreadCrumb is not displaying correctly"); 
 		}
 	}
 		
@@ -1619,7 +1612,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 			reporter.reportLogPass("The Navigation Breadcrumb list is containing 2 items correctly"); 
 		}
 		else {
-			reporter.reportLogFail("The Navigation Breadcrumb list is not containing 2 items correctly"); 
+			reporter.reportLogFailWithScreenshot("The Navigation Breadcrumb list is not containing 2 items correctly"); 
 		}
 		
 		WebElement item=this.lstSearchResultNavigation.get(this.lstSearchResultNavigation.size()-1);
@@ -1629,7 +1622,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 			reporter.reportLogPass("The displaying pattern is Home>"+lstItem.get(1)); 
 		}
 		else {
-			reporter.reportLogFail("The displaying pattern is not Home>"+lstItem.get(1)); 
+			reporter.reportLogFailWithScreenshot("The displaying pattern is not Home>"+lstItem.get(1)); 
 		}
 	}
 	
@@ -1722,7 +1715,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 			reporter.reportLogPass("The user is navigated to PDP page");
 		}
 		else {
-			reporter.reportLogFail("The user is not navigated to PDP page");
+			reporter.reportLogFailWithScreenshot("The user is not navigated to PDP page");
 		}
 	}
 
@@ -1757,7 +1750,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 			if (elementCountAfterClickingSeeMoreButton > elementCountBeforeClickingSeeMoreButton) {
 				reporter.reportLogPass("The subitem count after clicking SeeMore button is more than the count before clicking SeeMore button");
 			} else {
-				reporter.reportLogFail("The subitem count after clicking SeeMore button is no more than the count before clicking SeeMore button");
+				reporter.reportLogFailWithScreenshot("The subitem count after clicking SeeMore button is no more than the count before clicking SeeMore button");
 			}
 
 			clickSeeLessButton(element);
@@ -1794,7 +1787,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 			if(this.lstTotalItemsOnPRPPage.size()==16)
 				reporter.reportLogPass("Total items displayed om PRP page are: "+this.lstTotalItemsOnPRPPage.size());
 			else
-				reporter.reportLogFail("Total items displayed om PRP page are: "+this.lstTotalItemsOnPRPPage.size());
+				reporter.reportLogFailWithScreenshot("Total items displayed om PRP page are: "+this.lstTotalItemsOnPRPPage.size());
 
 			//Click on View all colors to navigate to PDP page
 			this.waitForPageLoadingByUrlChange(this.lnkViewAllColors);

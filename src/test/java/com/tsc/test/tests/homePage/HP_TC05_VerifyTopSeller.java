@@ -13,22 +13,57 @@ public class HP_TC05_VerifyTopSeller extends BaseTest{
 	@Test(groups={"Home","Regression"})
 	public void HP_TC05_VerifyTopSeller() throws IOException {
 	getGlobalFooterPageThreadLocal().closePopupDialog();
-	reporter.softAssert(getglobalheaderPageThreadLocal().validateURL((new BasePage(this.getDriver())).getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");
-	reporter.reportLogWithScreenshot("Home Page");
+	if(getglobalheaderPageThreadLocal().validateURL((new BasePage(this.getDriver())).getBaseURL()+"/")){
+		reporter.reportLogPass("TSC url is correct");
+	}
+	else{
+		reporter.reportLogFailWithScreenshot("TSC url is incorrect");
+	}
+	reporter.reportLog("Home Page");
 	
 	validateText(homePageThreadLocal().getTopSellerHeaderText(), TestDataHandler.constantData.getHomePage().getLbl_TopSellers(), "<Recommentdation product> text is visible and valid");
-	
-	reporter.softAssert(homePageThreadLocal().validateTopSellerIsAboveFooter(),"The TopSeller section is above Footer section","The TopSeller section isn't above Footer section");
-	
-	reporter.softAssert(homePageThreadLocal().validateTopSellerHref(),"All products in TopSeller have valid links","some products in TopSeller haven't valid links");
-	
-	reporter.softAssert(homePageThreadLocal().validateTopSellerImg(),"All products in TopSeller have valid image sources","some products in TopSeller haven't valid image sources");
-	
-	reporter.softAssert(homePageThreadLocal().validateTopSellerName(),"All products in TopSeller have valid names","some products in TopSeller haven't valid names");
-	
-	reporter.softAssert(homePageThreadLocal().validateTopSellerNowPrice(),"All products in TopSeller have valid  NowPrice contents","some products in TopSeller haven't valid NowPrice contents");
-	
-	reporter.softAssert(homePageThreadLocal().validateTopSellerWasPrice(),"All products in TopSeller have valid  WasPrice contents","some products in TopSeller haven't valid WasPrice contents");
+
+	if(homePageThreadLocal().validateTopSellerIsAboveFooter()){
+		reporter.reportLogPass("The TopSeller section is above Footer section");
+	}
+	else{
+		reporter.reportLogFailWithScreenshot("The TopSeller section isn't above Footer section");
+	}
+
+	if(homePageThreadLocal().validateTopSellerHref()){
+		reporter.reportLogPass("All products in TopSeller have valid links");
+	}
+	else{
+		reporter.reportLogFailWithScreenshot("some products in TopSeller haven't valid links");
+	}
+
+	if(homePageThreadLocal().validateTopSellerImg()){
+		reporter.reportLogPass("All products in TopSeller have valid image sources");
+	}
+	else{
+		reporter.reportLogFailWithScreenshot("some products in TopSeller haven't valid image sources");
+	}
+
+	if(homePageThreadLocal().validateTopSellerName()){
+		reporter.reportLogPass("All products in TopSeller have valid names");
+	}
+	else{
+		reporter.reportLogFailWithScreenshot("some products in TopSeller haven't valid names");
+	}
+
+	if(homePageThreadLocal().validateTopSellerNowPrice()){
+		reporter.reportLogPass("All products in TopSeller have valid  NowPrice contents");
+	}
+	else{
+		reporter.reportLogFailWithScreenshot("some products in TopSeller haven't valid NowPrice contents");
+	}
+
+	if(homePageThreadLocal().validateTopSellerWasPrice()){
+		reporter.reportLogPass("All products in TopSeller have valid  WasPrice contents");
+	}
+	else{
+		reporter.reportLogFailWithScreenshot("some products in TopSeller haven't valid WasPrice contents");
+	}
 
 	}
 

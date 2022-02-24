@@ -287,12 +287,22 @@ public class BaseTest {
 
 	
 	public void validateText(String strActualText, List<String> listExpectedText, String validationMsg) {
-		reporter.softAssert(listExpectedText.equals(strActualText), validationMsg + ":" + " Expected=" + listExpectedText +  " ; Actual="+ strActualText ,validationMsg + " expected=" + listExpectedText +  "; actual="+ strActualText);
-		
+		if(listExpectedText.equals(strActualText)){
+			reporter.reportLogPass(validationMsg + ":" + " Expected=" + listExpectedText +  " ; Actual="+ strActualText);
+		}
+		else{
+			reporter.reportLogFailWithScreenshot(validationMsg + " expected=" + listExpectedText +  "; actual="+ strActualText);
+		}
 	}
+
 	//Method to validate content of Link and button
 	public void validateText(String strActualText, String strExpectedText, String validationMsg) {
-	reporter.softAssert(strExpectedText.trim().equals(strActualText.trim()), validationMsg + ":" + " Expected=" + strExpectedText +  " ; Actual="+ strActualText ,validationMsg + " expected=" + strExpectedText +  "; actual="+ strActualText);
+		if(strExpectedText.trim().equals(strActualText.trim())){
+			reporter.reportLogPass(validationMsg + ":" + " Expected=" + strExpectedText +  " ; Actual="+ strActualText);
+		}
+		else{
+			reporter.reportLogFailWithScreenshot(validationMsg + " expected=" + strExpectedText +  "; actual="+ strActualText);
+		}
 	}
 
 	/**

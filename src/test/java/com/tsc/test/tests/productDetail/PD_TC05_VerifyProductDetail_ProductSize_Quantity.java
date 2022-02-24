@@ -15,9 +15,7 @@ public class PD_TC05_VerifyProductDetail_ProductSize_Quantity extends BaseTest{
 	 */
 	@Test(groups={"ProductDetail","Regression","Regression_Mobile","Regression_Tablet"})
 	public void PD_TC05_VerifyProductDetail_ProductSize_Quantity() throws IOException {
-		//We don't need to close popup dialog if use api to navigate to PDP page directly.
-		//getGlobalFooterPageThreadLocal().closePopupDialog();
-
+		getGlobalFooterPageThreadLocal().closePopupDialog();
 		BasePage basePage=new BasePage(this.getDriver());
 
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(basePage.getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");
@@ -28,7 +26,6 @@ public class PD_TC05_VerifyProductDetail_ProductSize_Quantity extends BaseTest{
 
 		String lsProductNumber,lsUrl;
 
-		//if(getProductResultsPageThreadLocal().goToFirstProductItem("402783")) {
 		if(getProductDetailPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList,"AllConditionsWithoutCheckingSoldOutCriteria",null)) {
 			reporter.reportLog("Verify URL");
 			lsProductNumber=getProductResultsPageThreadLocal().selectedProductItem.productNumber;

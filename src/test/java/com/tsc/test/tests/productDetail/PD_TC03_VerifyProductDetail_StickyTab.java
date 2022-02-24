@@ -32,21 +32,13 @@ public class PD_TC03_VerifyProductDetail_StickyTab extends BaseTest {
 			String lsKeyword = TestDataHandler.constantData.getSearchResultPage().getLbl_ProductNumberWithBandAndReviewAndSeeMore();
 			reporter.reportLog("Switch to ProductDetail page");
 			String lsProductNumber, lsUrl;
-			/*
-			"Have to look as how to get product no that has See More Button available as nothing I can find in response from api that can be used
-			e.g. 402783 - this has See More button present on screen. ProductReviewCount is also to be considered for this test
-			404791 - See More Text in response but not screen
-			 */
-			/*if(getProductResultsPageThreadLocal().goToFirstProductItem(lsKeyword)) {
+
+			if(getProductResultsPageThreadLocal().getSearchResultLoad(lsKeyword,true)) {
 				reporter.reportLog("Verify URL");
-				lsProductNumber=getProductResultsPageThreadLocal().selectedProductItem.productNumber;*/
-			if(getProductDetailPageThreadLocal().goToProductItemWithProductNumber("402783")){
-			//if (getProductResultsPageThreadLocal().goToFirstProductItem("402783")) {
-				reporter.reportLog("Verify URL");
-				//lsProductNumber=getProductResultsPageThreadLocal().selectedProductItem.productConvertedNumber;
+				lsProductNumber=lsKeyword;
 				lsUrl = basePage.URL();
 				reporter.softAssert(lsUrl.contains("productdetails"), "The Url is containing productdetails", "The Url is not containing productdetails");
-				//reporter.softAssert(lsUrl.contains(lsProductNumber),"The Url is containing selected product number of "+lsProductNumber,"The Url is not containing selected product number of "+lsProductNumber);
+				reporter.softAssert(lsUrl.contains(lsProductNumber),"The Url is containing selected product number of "+lsProductNumber,"The Url is not containing selected product number of "+lsProductNumber);
 
 				if (getProductDetailPageThreadLocal().goToProductReviewTab()) {
 					if (System.getProperty("Device").equalsIgnoreCase("Desktop")) {
