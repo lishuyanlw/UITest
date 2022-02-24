@@ -1,5 +1,6 @@
 package com.tsc.pages;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -59,12 +60,25 @@ public class ProductDetailPage_Tablet extends ProductDetailPage {
 
     @Override
     public void verifyThumbnailPrevButton() {
+        String lsFirstImageSrcBefore=this.lstThumbnailImageList.get(0).findElement(By.xpath(".//img")).getAttribute("src");
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnThumbnailPrev);
+        this.getReusableActionsInstance().clickIfAvailable(this.btnThumbnailPrev);
+        this.waitForCondition(Driver->{return !this.lstThumbnailImageList.get(0).findElement(By.xpath(".//img")).getAttribute("src").equalsIgnoreCase(lsFirstImageSrcBefore);},3000);
 
-     }
+        String lsFirstImageSrcAfter=this.lstThumbnailImageList.get(0).findElement(By.xpath(".//img")).getAttribute("src");
+        reporter.softAssert(!lsFirstImageSrcBefore.equalsIgnoreCase(lsFirstImageSrcAfter), "The Prev button clicking is working", "The Prev button clicking is not working");
+    }
 
     @Override
     public void verifyThumbnailNextButton() {
+        int imageCount=this.lstThumbnailImageList.size();
+        String lsLastImageSrcBefore=this.lstThumbnailImageList.get(imageCount-1).findElement(By.xpath(".//img")).getAttribute("src");
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnThumbnailPrev);
+        this.getReusableActionsInstance().clickIfAvailable(this.btnThumbnailPrev);
+        this.waitForCondition(Driver->{return !this.lstThumbnailImageList.get(imageCount-1).findElement(By.xpath(".//img")).getAttribute("src").equalsIgnoreCase(lsLastImageSrcBefore);},3000);
+        String lsLastIamgeSrcAfter=this.lstThumbnailImageList.get(imageCount-1).findElement(By.xpath(".//img")).getAttribute("src");
 
+        reporter.softAssert(!lsLastImageSrcBefore.equalsIgnoreCase(lsLastIamgeSrcAfter), "The Next button clicking is working", "The Next button clicking is not working");
     }
 
     @Override

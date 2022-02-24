@@ -223,6 +223,9 @@ public class ProductResultsPage extends BasePage{
 	public WebElement btnCurrentPage;
 
 	//Product title and text
+	@FindBy(xpath = "//div[@class='PageOneColumn']//div[@class='Middle']")
+	public WebElement cntProductTitleAndTextIdentifier;
+
 	@FindBy(xpath = "//div[@class='TitleAndTextSeo']")
 	public WebElement cntProductTitleAndText;
 
@@ -2087,6 +2090,8 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	public boolean checkProductResultExisting() {
+		//To keep it for product result section loading, otherwise sometimes will cause failure
+		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 		return this.checkChildElementExistingByAttribute(this.cntTSCContainer,"class","prp");
 	}
 
@@ -3912,6 +3917,10 @@ public class ProductResultsPage extends BasePage{
 			else
 				reporter.reportLogFailWithScreenshot("Selected color from dropdown: "+colorToBeSelected+" is not same as displayed after selection: "+selectedColor);
 		}
+	}
+
+	public boolean checkTitleAndTextSectionExisting(){
+		return this.checkChildElementExistingByAttribute(this.cntProductTitleAndTextIdentifier,"class","TitleAndTextSeo");
 	}
 
 	public class ProductItem{
