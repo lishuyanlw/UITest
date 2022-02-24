@@ -62,18 +62,20 @@ public class HP_TC03_VerifyShopByDepartment extends BaseTest{
 			reporter.reportLogFailWithScreenshot("Image link href is empty");
 		}
 	}
-	if(homePageThreadLocal().validateShopByDepartmentClickPrevButton()){
-		reporter.reportLogPass("The Prev button in Shop By Department section is working well");
-	}
-	else{
-		reporter.reportLogFailWithScreenshot("The Prev button in Shop By Department section is not working well");
-	}
-
 	if(homePageThreadLocal().validateShopByDepartmentClickNextButton()){
 		reporter.reportLogPass("The Next button in Shop By Department section is working well");
 	}
 	else{
 		reporter.reportLogFailWithScreenshot("The Next button in Shop By Department section is not working well");
+	}
+
+	(new BasePage(this.getDriver())).getReusableActionsInstance().staticWait(2000);
+
+	if(homePageThreadLocal().validateShopByDepartmentClickPrevButton()){
+		reporter.reportLogPass("The Prev button in Shop By Department section is working well");
+	}
+	else{
+		reporter.reportLogFailWithScreenshot("The Prev button in Shop By Department section is not working well");
 	}
 
 	}
