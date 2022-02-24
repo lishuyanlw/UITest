@@ -43,18 +43,20 @@ public class HP_TC04_VerifyShopByBrand extends BaseTest{
 		reporter.reportLogFailWithScreenshot("Some products in ShopByBrand have no valid image sources");
 	}
 
-	if(homePageThreadLocal().validateShopByBrandClickPrevButton()){
-		reporter.reportLogPass("The Prev button in ShopByBrand works well");
-	}
-	else{
-		reporter.reportLogFailWithScreenshot("The Prev button in ShopByBrand doesn't work");
-	}
-
 	if(homePageThreadLocal().validateShopByBrandClickNextButton()){
 		reporter.reportLogPass("The Next button in ShopByBrand works well");
 	}
 	else{
 		reporter.reportLogFailWithScreenshot("The Next button in ShopByBrand doesn't work");
+	}
+
+	(new BasePage(this.getDriver())).getReusableActionsInstance().staticWait(2000);
+
+	if(homePageThreadLocal().validateShopByBrandClickPrevButton()){
+		reporter.reportLogPass("The Prev button in ShopByBrand works well");
+	}
+	else{
+		reporter.reportLogFailWithScreenshot("The Prev button in ShopByBrand doesn't work");
 	}
 
 	if(homePageThreadLocal().validateShopByBrandViewAllLink(TestDataHandler.constantData.getHomePage().getLnk_ShopByBrandViewAll())){

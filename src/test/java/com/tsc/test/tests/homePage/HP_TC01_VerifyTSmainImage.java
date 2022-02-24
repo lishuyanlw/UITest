@@ -21,8 +21,8 @@ import com.tsc.test.base.BaseTest;
 
 			reporter.reportLog("Home Page");
 			String lsYmlNotFound=TestDataHandler.constantData.getHeaderSection().getLnk_NotFound();
-				
-			//Method to validate TS image in the upper section	
+
+			//Method to validate TS image in the upper section
 			int totalTSimageUpperSection = homePageThreadLocal().totalTSimage("Upper");
 			reporter.reportLog("Number of total TS image in the upper section: "+totalTSimageUpperSection);
 			homePageThreadLocal().clickTSimage("Upper");
@@ -49,7 +49,7 @@ import com.tsc.test.base.BaseTest;
 					}
 			}
 
-		
+			/*
 			//Method to validate TS image in the Lower Section	
 			int totalTSimageLowerSection = homePageThreadLocal().totalTSimage("Lower");
 			reporter.reportLog("Number of total TS image in the Lower Section: "+totalTSimageLowerSection);
@@ -75,7 +75,7 @@ import com.tsc.test.base.BaseTest;
 						}
 					}
 			}
-			
+			*/
 			
 		}
 	}
