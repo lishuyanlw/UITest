@@ -36,10 +36,11 @@ public class GH_TC07_Global_Header_Verify_Favourites_link extends BaseTest {
 			urlFavoritesLandingpageLoggedInUser = headerLinks.get(headerLinkName).get(2);
 		}
 
-		if(getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword,lsFirstname)) {
-			getglobalheaderPageThreadLocal().waitForPageLoad();
-			String urlFavoritesLandingpageForLoggedinUser=getglobalheaderPageThreadLocal().getUrlForLandingpage(getglobalheaderPageThreadLocal().Favouriteslnk);
-			getglobalheaderPageThreadLocal().getReusableActionsInstance().waitForPageLoad();
+		//if(!System.getProperty("Device").equalsIgnoreCase("Tablet")){
+			if(getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword,lsFirstname)) {
+				getglobalheaderPageThreadLocal().waitForPageLoad();
+				String urlFavoritesLandingpageForLoggedinUser=getglobalheaderPageThreadLocal().getUrlForLandingpage(getglobalheaderPageThreadLocal().Favouriteslnk);
+				getglobalheaderPageThreadLocal().getReusableActionsInstance().waitForPageLoad();
 			/*
 			boolean flag = getglobalheaderPageThreadLocal().verifyFavoritePageTitle(lsFirstname);
 			if(flag)
@@ -47,21 +48,22 @@ public class GH_TC07_Global_Header_Verify_Favourites_link extends BaseTest {
 			else
 				reporter.reportLogFail("Page Title for Favorite Page is as not as expected");
 			 */
-			reporter.softAssert(urlFavoritesLandingpageForLoggedinUser.contains(urlFavoritesLandingpageLoggedInUser), "Favourites link's Landing page url is correct for logged in user.", "Favourites link's Landing page url is incorrect for logged in user.");
-		}else {
-			reporter.reportLogFail("Login failed");
-		}
+				reporter.softAssert(urlFavoritesLandingpageForLoggedinUser.contains(urlFavoritesLandingpageLoggedInUser), "Favourites link's Landing page url is correct for logged in user.", "Favourites link's Landing page url is incorrect for logged in user.");
+			}else {
+				reporter.reportLogFail("Login failed");
+			}
 
-		getglobalheaderPageThreadLocal().getReusableActionsInstance().waitForPageLoad();
+			getglobalheaderPageThreadLocal().getReusableActionsInstance().waitForPageLoad();
 
-		//verify Favorite Link for anonymous user
-		if(getGlobalLoginPageThreadLocal().SignOut()) {
-			String urlFavoritesLandingPageLoggedInUser=getglobalheaderPageThreadLocal().getUrlForLandingpage(lnkFavoriteElement);
-			String PageHeadingSignin=getglobalheaderPageThreadLocal().getPageHeadingSignin();
-			reporter.softAssert(urlFavoritesLandingPageLoggedInUser.contains(urlFavoritesLandingpageAnonymousUser), "Favourites link's Landing page url is correct for anonymous user.", "Favourites link's Landing page url is incorrect for anonymous user.");
-			reporter.softAssert(PageHeadingSignin,lblSignInpageHeading, "Sign In page heading is correct for anonymous user.", "Sign In page heading  is incorrect for anonymous user.");
-		}else {
-			reporter.reportLogFail("SignOut failed");
-		}
+			//verify Favorite Link for anonymous user
+			if(getGlobalLoginPageThreadLocal().SignOut()) {
+				String urlFavoritesLandingPageLoggedInUser=getglobalheaderPageThreadLocal().getUrlForLandingpage(lnkFavoriteElement);
+				String PageHeadingSignin=getglobalheaderPageThreadLocal().getPageHeadingSignin();
+				reporter.softAssert(urlFavoritesLandingPageLoggedInUser.contains(urlFavoritesLandingpageAnonymousUser), "Favourites link's Landing page url is correct for anonymous user.", "Favourites link's Landing page url is incorrect for anonymous user.");
+				reporter.softAssert(PageHeadingSignin,lblSignInpageHeading, "Sign In page heading is correct for anonymous user.", "Sign In page heading  is incorrect for anonymous user.");
+			}else {
+				reporter.reportLogFail("SignOut failed");
+			}
+		//}
 	}
 }

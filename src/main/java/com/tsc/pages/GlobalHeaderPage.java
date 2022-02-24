@@ -516,7 +516,7 @@ public class GlobalHeaderPage extends BasePage{
 			if(lsUrlInSilverHeader.endsWith(endURLString))
 				reporter.reportLogPass("The URL for: "+lsTitle+" end with "+endURLString+" as expected");
 			else
-				reporter.reportLogFail("The URL for: "+lsTitle+" end with "+endURLString+" as expected");
+				reporter.reportLogFailWithScreenshot("The URL for: "+lsTitle+" end with "+endURLString+" as expected");
 
 			if(bCheckUrl) {
 				//Program Guide url is appending daily in url and is not needed
@@ -533,7 +533,6 @@ public class GlobalHeaderPage extends BasePage{
 				reporter.softAssert(lsStyle.toLowerCase().contains("color:#fff;")||lsStyle.toLowerCase().contains("color: rgb(255, 255, 255);"), lsTitle+" in Silver headers is being selected", lsTitle+" in Silver headers is not being selected");
 			}
 			//this.clickOnTSCLogo();
-			getReusableActionsInstance().waitForPageLoad();
 			this.hoverOnWatchTSC();
 		}
 	 }
@@ -560,7 +559,6 @@ public class GlobalHeaderPage extends BasePage{
 		 for(WebElement element:elementList) {
 			 getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 			 getReusableActionsInstance().scrollToElement(element);
-			 getReusableActionsInstance().staticWait(300);
 			 lsItem=element.getText();
 			 if(System.getProperty("Device").equalsIgnoreCase("Desktop")) {
 
@@ -810,7 +808,7 @@ public class GlobalHeaderPage extends BasePage{
 		waitForCondition(Driver->{return (this.lblPageTitleCategorySection.isDisplayed());},60000);
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblPageTitleCategorySection);
 		//this static wait is necessary because even after applying wait above, page refreshes for mobile
-		//this.getReusableActionsInstance().staticWait(1000);
+		this.getReusableActionsInstance().staticWait(1000);
 		getReusableActionsInstance().scrollToElement(this.lblPageTitleCategorySection);
 		String title = this.getElementInnerText(this.lblPageTitleCategorySection);
 		reporter.reportLog("Title of page is: "+title);
@@ -926,9 +924,11 @@ public class GlobalHeaderPage extends BasePage{
 					getReusableActionsInstance().javascriptScrollByVisibleElement(category);
 					this.scrollSubMenuItems(category);
 					reporter.reportLog("Verifying Left Section for: "+category.getText());
+					//If next menu name is also same as last menu name due to test data configuration, setting new menu name
+					//null as otherwise, above waitForCondition will always fail
+					shopAllSubMenuItemName = (shopAllSubMenuItemName!=null && shopAllSubMenuItemName.equalsIgnoreCase(category.getText())) ? category.getText() : null;
 					String finalShopAllSubMenuItemName = shopAllSubMenuItemName;
 					waitForCondition(Driver->{return (!category.getText().equalsIgnoreCase(finalShopAllSubMenuItemName));},5000);
-					shopAllSubMenuItemName = category.getText();
 					this.verifysubMenuhref(subMenuSection);
 				}
 			break;

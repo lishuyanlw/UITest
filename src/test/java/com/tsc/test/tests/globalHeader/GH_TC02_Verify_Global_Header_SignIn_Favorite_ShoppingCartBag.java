@@ -42,18 +42,23 @@ public class GH_TC02_Verify_Global_Header_SignIn_Favorite_ShoppingCartBag extend
 		//Verify Sign in Text and Icon
 		getGlobalLoginPageThreadLocal().verifySignInSection();
 		//getGlobalLoginPageThreadLocal().getReusableActionsInstance().staticWait(staticWait);
-		getGlobalLoginPageThreadLocal().verifyShowingUserFirstNameAfterSignin(lsUserName, lsPassword,lsFirstName);
-		//getGlobalLoginPageThreadLocal().getReusableActionsInstance().staticWait(2000);
-		getGlobalLoginPageThreadLocal().SignOut();
-		//getGlobalLoginPageThreadLocal().getReusableActionsInstance().staticWait(2000);
-		reporter.reportLog("Verify Shopping Cart section");
-		//Verify url does not contain not found after clicking Shopping Cart link
-		lsUrl=getglobalheaderPageThreadLocal().getUrlAfterClickingShoppingCartLink();
-		lsSuccessResult=String.format("The url of < %s > does not contain < %s > after clicking MiniCart link", lsUrl,lsYmlNotFound);
-		lsFailResult=String.format("The url of < %s > contains < %s > after clicking MiniCart link", lsUrl,lsYmlNotFound);
-		reporter.softAssert(!lsUrl.contains(lsYmlNotFound), lsSuccessResult,lsFailResult);
-		
-		getglobalheaderPageThreadLocal().waitForPageLoad();
+		//Since we can't do login in staging due to captcha that appears while login, not running below code
+		if(System.getProperty("QaUrl").contains("st-tsc"))
+			reporter.reportLog("SignIn can't be done for Staging, hence just testing SignIn page");
+		else{
+			getGlobalLoginPageThreadLocal().verifyShowingUserFirstNameAfterSignin(lsUserName, lsPassword,lsFirstName);
+			//getGlobalLoginPageThreadLocal().getReusableActionsInstance().staticWait(2000);
+			getGlobalLoginPageThreadLocal().SignOut();
+			//getGlobalLoginPageThreadLocal().getReusableActionsInstance().staticWait(2000);
+			reporter.reportLog("Verify Shopping Cart section");
+			//Verify url doesn't contain, not found after clicking Shopping Cart link
+			lsUrl=getglobalheaderPageThreadLocal().getUrlAfterClickingShoppingCartLink();
+			lsSuccessResult=String.format("The url of < %s > does not contain < %s > after clicking MiniCart link", lsUrl,lsYmlNotFound);
+			lsFailResult=String.format("The url of < %s > contains < %s > after clicking MiniCart link", lsUrl,lsYmlNotFound);
+			reporter.softAssert(!lsUrl.contains(lsYmlNotFound), lsSuccessResult,lsFailResult);
+
+			getglobalheaderPageThreadLocal().waitForPageLoad();
+		}
 	}
 	
 	public void validateMajorNameAndLinks() {

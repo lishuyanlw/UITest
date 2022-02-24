@@ -109,7 +109,7 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
 
         //For first level
         String xpathHeading = null;
-        if((System.getProperty("Device").toLowerCase().equals("tablet") &&
+        if((System.getProperty("Device").equalsIgnoreCase("tablet") &&
                 (System.getProperty("Browser").toLowerCase().contains("ios"))) ||
                 (System.getProperty("Browser").toLowerCase().contains("mobile") &&
                         System.getProperty("chromeMobileDevice").toLowerCase().contains("ipad"))){
@@ -122,23 +122,31 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
         WebElement headingWebElement = this.getDriver().findElement(By.xpath(xpathHeading));
         getReusableActionsInstance().scrollToElement(headingWebElement);
         headingWebElement.click();
-        this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+        if((System.getProperty("Device").equalsIgnoreCase("tablet") &&
+                (System.getProperty("Browser").toLowerCase().contains("ios"))) ||
+                (System.getProperty("Browser").toLowerCase().contains("mobile") &&
+                        System.getProperty("chromeMobileDevice").toLowerCase().contains("ipad"))){
+            waitForCondition(driver->{return (this.curatedCollectionMobile.isDisplayed() && this.curatedCollectionMobile.isEnabled());},5000);
+        }
+        else{
+            waitForCondition(driver->{return (this.lblTodayShowstopper.isDisplayed() && this.lblTodayShowstopper.isEnabled());},5000);
+        }
 
         //For second level
         WebElement SubMenu = null;
         String xpathSubMenu = createXPath("//li[contains(@class,'mega-nav-tablet__main__rhs__categories-item__wrapper') or contains(@class,'mega-nav-mobile__categories-item__wrapper')]//button//span[(contains(@class,'mega-nav-tablet__main__rhs__categories-item__text') or contains(@class,'mega-nav-mobile__categories-item__text')) and contains(.,'{0}')]", submenuHeading);
-        System.out.println("xpathSubMenu: "+xpathSubMenu);
         SubMenu = this.getDriver().findElement(By.xpath(xpathSubMenu));
         getReusableActionsInstance().scrollToElement(SubMenu);
-        String Title = SubMenu.getText();
         SubMenu.click();
-        this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+        //Using static wait here as there is no unique condition for mobile and tablet that can be
+        //used in waitForCondition function for page to load
+        getReusableActionsInstance().staticWait(700);
 
         //For third level
         String title = null;
         String xpathSubmenuItem;
         WebElement SubMenuItem=null;
-        if((System.getProperty("Device").toLowerCase().equals("tablet") &&
+        if((System.getProperty("Device").equalsIgnoreCase("tablet") &&
                 (System.getProperty("Browser").toLowerCase().contains("ios"))) ||
                 (System.getProperty("Browser").toLowerCase().contains("mobile") &&
                         System.getProperty("chromeMobileDevice").toLowerCase().contains("ipad"))){
