@@ -522,7 +522,7 @@ public class GlobalHeaderPage extends BasePage{
 				//Program Guide url is appending daily in url and is not needed
 				if(lsUrlInSilverHeader.contains("programguide")) {
 					//This page takes time to load irrespective of using waitForCondition and hence using static wait here
-					waitForCondition(driver->{return (this.lstProgramGuidePageItems.size()>0 && this.lblProgramGuideSearchBox.isEnabled());},150000);
+					waitForCondition(driver->{return (this.lstProgramGuidePageItems.size()>0 && this.lblProgramGuideSearchBox.isEnabled());},250000);
 					reporter.softAssert(lsUrlInSilverHeader.replace("/daily", "").equalsIgnoreCase(lsHrefInBlackHeader), "The Url of " + lsUrlInSilverHeader + "  after clicking " + lsTitle + " in Black headers is equal to the href of " + lsHrefInBlackHeader, "The Url of " + lsUrlInSilverHeader + "  after clicking " + lsTitle + " in Black headers is not equal to the href of " + lsHrefInBlackHeader);
 				}else
 					reporter.softAssert(lsUrlInSilverHeader.equalsIgnoreCase(lsHrefInBlackHeader), "The Url of " + lsUrlInSilverHeader + "  after clicking " + lsTitle + " in Black headers is equal to the href of " + lsHrefInBlackHeader, "The Url of " + lsUrlInSilverHeader + "  after clicking " + lsTitle + " in Black headers is not equal to the href of " + lsHrefInBlackHeader);
@@ -913,7 +913,9 @@ public class GlobalHeaderPage extends BasePage{
 			break;
 			case "Left Section":
 				//Verifying ShopAll section in left menu
-				String shopAllSubMenuItemName = null;
+				String previousSubMenuName = "InValidValue";
+				String nextSubMenuName = null;
+				int counter = 0;
 				if (!verifyElementProperty(this.lblShopAllEachSubMenu, "Link")) {//href is not present
 					getReporter().softAssert(false,"","Shop All Link is not present for: "+this.lblShopAllEachSubMenu.getText());
 				}else{
@@ -921,15 +923,19 @@ public class GlobalHeaderPage extends BasePage{
 				}
 
 				for (WebElement category:CategoriesLinks) {
+					nextSubMenuName = category.getText();
 					getReusableActionsInstance().javascriptScrollByVisibleElement(category);
 					this.scrollSubMenuItems(category);
 					reporter.reportLog("Verifying Left Section for: "+category.getText());
-					//If next menu name is also same as last menu name due to test data configuration, setting new menu name
-					//null as otherwise, above waitForCondition will always fail
-					shopAllSubMenuItemName = (shopAllSubMenuItemName!=null && shopAllSubMenuItemName.equalsIgnoreCase(category.getText())) ? category.getText() : null;
-					String finalShopAllSubMenuItemName = shopAllSubMenuItemName;
-					waitForCondition(Driver->{return (!category.getText().equalsIgnoreCase(finalShopAllSubMenuItemName));},5000);
+					previousSubMenuName = (previousSubMenuName!= "InValidValue" && nextSubMenuName.equalsIgnoreCase(previousSubMenuName)) ? "Invalid" : previousSubMenuName;
+					String finalNextSubMenuName = nextSubMenuName;
+					String finalPreviousSubMenuName = previousSubMenuName;
+					waitForCondition(Driver->{return (!finalNextSubMenuName.equalsIgnoreCase(finalPreviousSubMenuName));},10000);
+					//Sub Menu Items are taking time to load and hence adding wait For Condition for that
+					waitForCondition(Driver->{return (this.lblShopAllSubMenuItems.getText().contains(finalNextSubMenuName));},10000);
 					this.verifysubMenuhref(subMenuSection);
+					previousSubMenuName = category.getText();
+					counter++;
 				}
 			break;
 		}
