@@ -5,12 +5,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+
 import org.openqa.selenium.By;
 import com.tsc.api.apiBuilder.ApiResponse;
 import com.tsc.api.pojo.Product;
@@ -91,7 +87,7 @@ public class ProductResultsPage extends BasePage{
 	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='prp']")
 	public WebElement cntSortingAndFilteringProductResultLoadingIndicator;
 
-	@FindBy(xpath = "//section[@class='tsc-container'][not(nav)][not(*[@class='breadcrumb'])]")
+	@FindBy(xpath = "//div[@class='ProductResultsReact']//section[@class='tsc-container'][not(nav)][not(*[@class='breadcrumb'])]")
 	public WebElement cntTSCContainer;
 
 	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='prp']//div[@class='prp__wrapper']")
@@ -1323,7 +1319,7 @@ public class ProductResultsPage extends BasePage{
 		for(WebElement element:this.productResultList) {
 			if(this.checkProductItemBrandNameExisting(element)) {
 				item=element.findElement(byProductBrand);
-				lsText=this.getElementInnerText(item);
+				lsText=this.getElementInnerText(item).toUpperCase();
 				brandList.add(lsText);
 			}
 			else {
@@ -1337,6 +1333,8 @@ public class ProductResultsPage extends BasePage{
 		int brandListSize=brandList.size();
 		for(int i=0;i<brandListSize-1;i++) {
 			if(brandList.get(i).compareTo(brandList.get(i+1))>0) {
+				System.out.println(brandList.get(i));
+				System.out.println(brandList.get(i+1));
 				lsErrorMsg="Sort option of Brand Name: A to Z does not work: the BrandName of "+productNameList.get(i)+" is greater than "+productNameList.get(i+1)+" with alphabet order";
 				return lsErrorMsg;
 			}						

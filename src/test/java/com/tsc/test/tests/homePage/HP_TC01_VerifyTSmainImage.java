@@ -37,16 +37,21 @@ import com.tsc.test.base.BaseTest;
 			}
 
 			for(int i=0; i<totalTSimageUpperSection; i++) {
-				reporter.softAssert(!lsUrl_UpperSection.get(i).contains(lsYmlNotFound),("URL of tab " +(i+1)+" for TS image Upper Section is "+lsUrl_UpperSection.get(i)+" & it does not contain not found"),("URL of tab " +(i+1)+" for TS image Upper Section is "+lsUrl_UpperSection.get(i)+" & does contain not found"));
-					if(i<lsUrl_UpperSection.size()-1) {
-						if(!lsUrl_UpperSection.get(i).equals(lsUrl_UpperSection.get(i+1))){
-							reporter.reportLogPass("URL of tab " +(i+1)+ " is different than URL of Tab "+((i+1)+1)+" for TS image upper section.");
-						}
-						else{
-							reporter.reportLogFailWithScreenshot("URL of Tab " +(i+1)+" is same as URL of Tab"+((i+1)+1)+" for TS image upper section.");
-						}
+				if(!lsUrl_UpperSection.get(i).contains(lsYmlNotFound)){
+					reporter.reportLogPass(("URL of tab " +(i+1)+" for TS image Upper Section is "+lsUrl_UpperSection.get(i)+" & it does not contain not found"));
+				}
+				else{
+					reporter.reportLogFailWithScreenshot(("URL of tab " +(i+1)+" for TS image Upper Section is "+lsUrl_UpperSection.get(i)+" & does contain not found"));
+				}
 
+				if(i<lsUrl_UpperSection.size()-1) {
+					if(!lsUrl_UpperSection.get(i).equals(lsUrl_UpperSection.get(i+1))){
+						reporter.reportLogPass("URL of tab " +(i+1)+ " is different than URL of Tab "+((i+1)+1)+" for TS image upper section.");
 					}
+					else{
+						reporter.reportLogFailWithScreenshot("URL of Tab " +(i+1)+" is same as URL of Tab"+((i+1)+1)+" for TS image upper section.");
+					}
+				}
 			}
 
 			/*
