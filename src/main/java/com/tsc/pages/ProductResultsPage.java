@@ -1738,6 +1738,7 @@ public class ProductResultsPage extends BasePage{
 	 * @author Wei.Li
 	 */
 	public boolean checkSelectedFilterListExisting() {
+		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 		if(this.checkChildElementExistingByAttribute(this.cntSelectedFilters, "class", "prp__applied-filters")) {
 			return true;
 		}
