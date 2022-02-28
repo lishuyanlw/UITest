@@ -154,15 +154,15 @@ public class LoginPage extends BasePage {
 	 */
 	public boolean SignOut() {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInMainMenu);
-		getReusableActionsInstance().staticWait(4000);
+		//getReusableActionsInstance().staticWait(4000);
 		getReusableActionsInstance().scrollToElement(this.btnSignInMainMenu);
-		getReusableActionsInstance().staticWait(4000);
+		//getReusableActionsInstance().staticWait(4000);
 		String lsUserMsg=this.btnSignInMainMenu.getText();
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignOut);
 		this.getReusableActionsInstance().clickIfAvailable(this.btnSignOut);
 		//this.btnSignOutNav.click();
-				
-		return waitForCondition(Driver->{return !lsUserMsg.equalsIgnoreCase(this.btnSignInMainMenu.getText());},30000);
+
+		return waitForCondition(Driver->{return (this.btnSignInMainMenu.isDisplayed() && !lsUserMsg.equalsIgnoreCase(this.btnSignInMainMenu.getText()));},30000);
 	}
 	
 	

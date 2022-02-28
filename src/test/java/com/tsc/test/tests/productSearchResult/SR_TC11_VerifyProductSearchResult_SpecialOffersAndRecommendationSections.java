@@ -8,14 +8,14 @@ import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 
-public class SR_TC11_VerifyProductSearchResult_SpecialOffersAndRecomendationSections extends BaseTest {
+public class SR_TC11_VerifyProductSearchResult_SpecialOffersAndRecommendationSections extends BaseTest {
 	/**
 	 * This method will test Clearance in Special Offers and Recommendation sections.
 	 * @author Wei.Li
 	 * CER-231
 	 */
 	@Test(groups = { "ProductSearch", "Regression","Regression_Tablet","Regression_Mobile"})
-	public void SR_TC11_VerifyProductSearchResult_SpecialOffersAndRecomendationSections() throws IOException {
+	public void SR_TC11_VerifyProductSearchResult_SpecialOffersAndRecommendationSections() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 		//String lsSearchResultPageDefaultSetting = TestDataHandler.constantData.getSearchResultPage().getLbl_SearchResultPageDefaultSetting();
 		String lnkProductResult = TestDataHandler.constantData.getSearchResultPage().getLnk_product_result();
@@ -51,14 +51,16 @@ public class SR_TC11_VerifyProductSearchResult_SpecialOffersAndRecomendationSect
 //			getProductResultsPageThreadLocal().verifySearchResultContentWithMouseHover(productList);
 		}
 		reporter.softAssert(getProductResultsPageThreadLocal().verifyProductPagination(),"Product pagination is existing","Product pagination is not existing");
-//		reporter.softAssert(getProductResultsPageThreadLocal().verifyElementExisting(getProductResultsPageThreadLocal().getRecommendationContainer()),"Recommendation section is existing after choosing special offers","Recommendation section is not existing after choosing special offers");
-//
-//		// Verifying title of the Product Recommendation page
-//		String pageTitleValue = getProductResultsPageThreadLocal().getProductResultPageTitle(getProductResultsPageThreadLocal().productRecommendationTitle);
-//		boolean title_Value = pageTitleValue.equalsIgnoreCase(productRecommendationTitleText.get(0)) || pageTitleValue.equalsIgnoreCase(productRecommendationTitleText.get(1));
-//		reporter.softAssert(title_Value,"Product Recommendation Title is Verified and title is " + pageTitleValue,"Product Recommendation Title is Verified and title is " + pageTitleValue);
-//
-//		// Verifying Product Recommendation section details
-//		getProductResultsPageThreadLocal().verify_ProductRecommendationSection();
+		/**
+		reporter.softAssert(getProductResultsPageThreadLocal().verifyElementExisting(getProductResultsPageThreadLocal().getRecommendationContainer()),"Recommendation section is existing after choosing special offers","Recommendation section is not existing after choosing special offers");
+
+		// Verifying title of the Product Recommendation page
+		String pageTitleValue = getProductResultsPageThreadLocal().getProductResultPageTitle(getProductResultsPageThreadLocal().productRecommendationTitle);
+		boolean title_Value = pageTitleValue.equalsIgnoreCase(productRecommendationTitleText.get(0)) || pageTitleValue.equalsIgnoreCase(productRecommendationTitleText.get(1));
+		reporter.softAssert(title_Value,"Product Recommendation Title is Verified and title is " + pageTitleValue,"Product Recommendation Title is Verified and title is " + pageTitleValue);
+
+		// Verifying Product Recommendation section details
+		getProductResultsPageThreadLocal().verify_ProductRecommendationSection();
+		 */
 	}
 }
