@@ -24,44 +24,29 @@ public class PD_TC07_VerifyProductDetail_AdvancedOrder extends BaseTest{
 		String lsVideoDisclaimInfo=TestDataHandler.constantData.getSearchResultPage().getLbl_VideoDisclaimInfo();
 		String lsQuantityNumberToShowLeftItemInfo=TestDataHandler.constantData.getSearchResultPage().getLbl_QuantityNumberToShowLeftItemInfo();
 
-		//getProductResultsPageThreadLocal().getSearchResultLoad(lsKeyword);
 		reporter.reportLog("Switch to ProductDetail page");
 		String lsProductNumber,lsUrl;
 
-		if(getProductDetailPageThreadLocal().goToProductItemWithProductNumber("522809")){
-		//if(getProductResultsPageThreadLocal().goToFirstProductItem("522809")) {
+		if(getProductResultsPageThreadLocal().getSearchResultLoad(lsKeyword,true)){
 			reporter.reportLog("Switch to ProductDetail page");
 
-			//if(getProductResultsPageThreadLocal().goToFirstProductItem(lsKeyword)) {
 			reporter.reportLog("Verify URL");
-			//lsProductNumber=getProductResultsPageThreadLocal().selectedProductItem.productNumber;
+			lsProductNumber=lsKeyword;
 			lsUrl=basePage.URL();
 			reporter.softAssert(lsUrl.contains("productdetails"),"The Url is containing productdetails","The Url is not containing productdetails");
-			//reporter.softAssert(lsUrl.contains(lsProductNumber),"The Url is containing selected product number of "+lsProductNumber,"The Url is not containing selected product number of "+lsProductNumber);
-
-			reporter.reportLog("Verify Video info");
-			getProductDetailPageThreadLocal().verifyVideo(lsVideoDisclaimInfo);
+			reporter.softAssert(lsUrl.contains(lsProductNumber),"The Url is containing selected product number of "+lsProductNumber,"The Url is not containing selected product number of "+lsProductNumber);
 
 			reporter.reportLog("Verify Advanced order message");
 			getProductDetailPageThreadLocal().verifyProductAdvancedOrderMessage();
 
-			reporter.reportLog("Verify Thumbnail");
-			getProductDetailPageThreadLocal().verifyThumbnail();
-
 			reporter.reportLog("Verify product name,brand name and product number");
 			getProductDetailPageThreadLocal().verifyProductBasicInfo();
-
-			reporter.reportLog("Verify product review");
-			getProductDetailPageThreadLocal().verifyProductReview();
 
 			reporter.reportLog("Verify product price and shipping");
 			getProductDetailPageThreadLocal().verifyProductPriceAndShipping();
 
 			reporter.reportLog("Verify product style");
 			getProductDetailPageThreadLocal().verifyProductStyle();
-
-			/*reporter.reportLog("Verify product TrueFit");
-			getProductDetailPageThreadLocal().verifyProductSizeTrueFit();*/
 
 			reporter.reportLog("Verify product size dropdown");
 			getProductDetailPageThreadLocal().verifyProductSizeDropdown();

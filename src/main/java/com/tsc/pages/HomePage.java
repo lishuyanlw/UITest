@@ -356,19 +356,17 @@ public class HomePage extends BasePage{
 		 */			
 		public boolean validateShopByBrandClickPrevButton() {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(lblShopByBrand);
-			
+			if(!this.getReusableActionsInstance().isElementVisible(By.xpath("//div[contains(@class,'ImageAnchorCarousel') and not(contains(@class,'ImageAnchorCarouselData'))]//div[a[contains(@href,'ic=HP_BrandsCarousel')]]/ancestor::div[contains(@class,'ImageAnchorCarousel') and not(contains(@class,'ImageAnchorCarouselData'))]//button[contains(@class,'slick-prev')]"),30)) {
+				return true;
+			}
+
 			List<String> lnkListBefore= new ArrayList<String>();
 			for(WebElement item:this.lnkShopByBrandAllActiveLinks) {
 				lnkListBefore.add(item.getAttribute("href"));
 			}
-			if(!this.getReusableActionsInstance().isElementVisible(By.xpath("//div[contains(@class,'ImageAnchorCarousel') and not(contains(@class,'ImageAnchorCarouselData'))]//div[a[contains(@href,'ic=HP_BrandsCarousel')]]/ancestor::div[contains(@class,'ImageAnchorCarousel') and not(contains(@class,'ImageAnchorCarouselData'))]//button[contains(@class,'slick-prev')]"),30)) {
-				return true;
-			}
-			
-			this.btnShopByBrandPrev.click();
-			
+
 			String lsCurrentHref=lnkListBefore.get(0);
-			
+			this.btnShopByBrandPrev.click();
 			waitForCondition(Driver->{return !lsCurrentHref.equalsIgnoreCase(this.lnkShopByBrandAllActiveLinks.get(0).getAttribute("href"));},10000);
 						
 			List<String> lnkListAfter= new ArrayList<String>();
@@ -395,18 +393,17 @@ public class HomePage extends BasePage{
 		 */			
 		public boolean validateShopByBrandClickNextButton() {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(lblShopByBrand);
-			
+			if(!this.getReusableActionsInstance().isElementVisible(By.xpath("//div[contains(@class,'ImageAnchorCarousel') and not(contains(@class,'ImageAnchorCarouselData'))]//div[a[contains(@href,'ic=HP_BrandsCarousel')]]/ancestor::div[contains(@class,'ImageAnchorCarousel') and not(contains(@class,'ImageAnchorCarouselData'))]//button[contains(@class,'slick-next')]"),30)) {
+				return true;
+			}
+
 			List<String> lnkListBefore= new ArrayList<String>();
 			for(WebElement item:this.lnkShopByBrandAllActiveLinks) {
 				lnkListBefore.add(item.getAttribute("href"));
 			}
-			if(!this.getReusableActionsInstance().isElementVisible(By.xpath("//div[contains(@class,'ImageAnchorCarousel') and not(contains(@class,'ImageAnchorCarouselData'))]//div[a[contains(@href,'ic=HP_BrandsCarousel')]]/ancestor::div[contains(@class,'ImageAnchorCarousel') and not(contains(@class,'ImageAnchorCarouselData'))]//button[contains(@class,'slick-next')]"),30)) {
-				return true;
-			}
-			this.btnShopByBrandNext.click();
-			
+
 			String lsCurrentHref=lnkListBefore.get(0);
-			
+			this.btnShopByBrandNext.click();
 			waitForCondition(Driver->{return !lsCurrentHref.equalsIgnoreCase(this.lnkShopByBrandAllActiveLinks.get(0).getAttribute("href"));},10000);
 				
 			List<String> lnkListAfter= new ArrayList<String>();
@@ -524,13 +521,6 @@ public class HomePage extends BasePage{
 				lsHref=item.getAttribute("href");
 				if(lsHref.isEmpty()) {
 					return false;
-				}
-				else{
-					lsUrl=this.getRedirectUrlFromHref(lsHref).toLowerCase();
-					lsBaseUrl=this.getBaseURL().toLowerCase();
-					if(!lsUrl.contains(lsBaseUrl)){
-						return false;
-					}
 				}
 			}
 			return true;
@@ -840,9 +830,10 @@ public class HomePage extends BasePage{
 			if(gethrefListTSimage(hrefallTSimage).size()!=0) {
 				for (int i=1;i<=totalTsimage; i++) {
 					String clickonlinkTab = Keys.chord(Keys.CONTROL, Keys.ENTER);
-					getReusableActionsInstance().waitForElementAttributeToContain(attriTSimage,"class","swiper-slide-active",2);
+					String lsImageSrc=attriTSimage.findElement(By.xpath(".//img")).getAttribute("src");
+					this.waitForCondition(Driver->{return !attriTSimage.findElement(By.xpath(".//img")).getAttribute("src").equalsIgnoreCase(lsImageSrc);},3000);
 					linksTSimage.sendKeys(clickonlinkTab);
-					waitForCondition(Driver->{return !linksTSimage.getAttribute("href").equalsIgnoreCase(gethrefListTSimage(hrefallTSimage).get(0));},30000);
+					this.waitForCondition(Driver->{return !attriTSimage.findElement(By.xpath(".//img")).getAttribute("src").equalsIgnoreCase(lsImageSrc);},3000);
 				}
 			}
 		}
@@ -864,8 +855,7 @@ public class HomePage extends BasePage{
 				getDriver().switchTo().window(tabList.get(i)).close();
 				getDriver().switchTo().window(tabList.get(0));
 				returnList.add(getMultiTabUrl);
-				
-				}
+			}
 			return returnList;
 		}
 		

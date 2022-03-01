@@ -16,20 +16,16 @@ public class PD_TC02_VerifyProductDetail_RightSection_ItemDetails extends BaseTe
 	 */
 	@Test(groups={"ProductDetail","Regression","Regression_Mobile","Regression_Tablet"})
 	public void PD_TC02_VerifyProductDetail_RightSection_ItemDetails() throws IOException {
-		//We don't need to close popup dialog if use api to navigate to PDP page directly.
-		//getGlobalFooterPageThreadLocal().closePopupDialog();
-
+		getGlobalFooterPageThreadLocal().closePopupDialog();
 		BasePage basePage=new BasePage(this.getDriver());
 
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(basePage.getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");
 		reporter.reportLog("ProductDetail Page");
 
 		List<String> lstKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_APISearchingKeyword();
-		//getProductResultsPageThreadLocal().getSearchResultLoad(lsKeywordList.get(0).get(0));
 		reporter.reportLog("Switch to ProductDetail page");
 		String lsProductNumber,lsUrl;
-		//if(getProductResultsPageThreadLocal().goToFirstProductItem("522809")) {
-		//if(getProductResultsPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList)) {
+
 		if(getProductDetailPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList,"AllConditionsWithoutCheckingSoldOutCriteria",null)) {
 			reporter.reportLog("Verify URL");
 			lsProductNumber=getProductResultsPageThreadLocal().selectedProductItem.productNumber;

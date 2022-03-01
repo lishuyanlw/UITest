@@ -121,18 +121,11 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
         reporter.softAssert(!this.imgProductBadge.getAttribute("src").isEmpty(),"The product badge image source is not empty","The product badge image source is empty");
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.videoIcon);
         this.getReusableActionsInstance().clickIfAvailable(this.videoIcon);
-        //this.videoIcon.click();
-        applyStaticWait(1000);
+        applyStaticWait(this.getStaticWaitForApplication());
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.playButton);
         this.getReusableActionsInstance().scrollToElement(this.playButton);
         this.getReusableActionsInstance().clickIfAvailable(this.playButton);
-        applyStaticWait(2000);
-        //added if condition because in jenkins ios it is not clicking on first time so,
-        //I added second click with condition but still it is not clicking
-        /*if (!this.checkIfVideoisPlaying()){
-            JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
-            jse.executeScript("arguments[0].click();", this.playButton);
-        }*/
+        applyStaticWait(this.getStaticWaitForApplication());
 
         reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.videoBoxControl),"The video control section is displaying correctly","The video control section is not displaying correctly");
         reporter.softAssert(!this.lnkVideo.getAttribute("src").isEmpty(),"The product video source is not empty","The product video source is empty");
@@ -142,23 +135,14 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
 
         reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.videoBoxControl),"The video control section is displaying correctly","The video control section is not displaying correctly");
         //commented because autoplay is not present for both tab and mobile
-        //reporter.softAssert(this.checkIfAutoPlayVideoStatusIsON(),"The product video AutoPlaying is on","The product video AutoPlaying is off");
-        if(!System.getProperty("Browser").toLowerCase().contains("ios"))
+        if(!System.getProperty("Browser").toLowerCase().contains("ios")){
             reporter.softAssert(this.checkIfVideoisPlaying(),"The product video is playing","The product video is not playing");
-        //reporter.softAssert(!getAutoPlayVideoToolTipPopupMsg().isEmpty(),"The AutoPlayVideoToolTip is not empty","The AutoPlayVideoToolTip is empty");
-
+        }
     }
 
     @Override
     public void verifyThumbnailPrevButton() {
-        String lsFirstImageSrcBefore=this.lstThumbnailImageList.get(0).findElement(By.xpath(".//img")).getAttribute("src");
-        this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnThumbnailPrev);
-        this.getReusableActionsInstance().clickIfAvailable(this.btnThumbnailPrev);
-        //this.btnThumbnailPrev.click();
-        this.getReusableActionsInstance().staticWait(300);
-        String lsFirstIamgeSrcAfter=this.lstThumbnailImageList.get(0).findElement(By.xpath(".//img")).getAttribute("src");
 
-        reporter.softAssert(!lsFirstImageSrcBefore.equalsIgnoreCase(lsFirstIamgeSrcAfter), "The Prev button clicking is working", "The Prev button clicking is not working");
     }
 
     @Override
@@ -180,15 +164,7 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
 
     @Override
     public void verifyThumbnailNextButton() {
-        int imageCount=this.lstThumbnailImageList.size();
-        String lsLastImageSrcBefore=this.lstThumbnailImageList.get(imageCount-1).findElement(By.xpath(".//img")).getAttribute("src");
-        this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnThumbnailPrev);
-        this.getReusableActionsInstance().clickIfAvailable(this.btnThumbnailPrev);
-        //this.btnThumbnailPrev.click();
-        this.getReusableActionsInstance().staticWait(300);
-        String lsLastIamgeSrcAfter=this.lstThumbnailImageList.get(imageCount-1).findElement(By.xpath(".//img")).getAttribute("src");
 
-        reporter.softAssert(!lsLastImageSrcBefore.equalsIgnoreCase(lsLastIamgeSrcAfter), "The Next button clicking is working", "The Next button clicking is not working");
     }
 
     @Override
@@ -316,7 +292,7 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblReviewTabReviewCount);
         Select reviewSortings=new Select(this.selectReviewTabSortBy);
         reviewSortings.selectByVisibleText(lsReviewSortingOption);
-        this.getReusableActionsInstance().staticWait(1000);
+        this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
     }
 
     @Override
@@ -423,8 +399,7 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
     public void verifyProductOverviewContent() {
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productOverview);
         this.getReusableActionsInstance().clickIfAvailable(this.productOverview);
-        //this.productOverview.click();
-        this.getReusableActionsInstance().staticWait(1000);
+        this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 
         reporter.softAssert(!this.getElementText(this.btnStickyTabProductReview).isEmpty(),"The Product Overview contents is not empty","The Product Overview contents is empty");
         this.goBack();
@@ -440,22 +415,15 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
         if(System.getProperty("Device").toLowerCase().contains("mobile") &&
                 (System.getProperty("Browser").toLowerCase().contains("android") ||
                         (!"".equals(System.getProperty("chromeMobileDevice")) && !System.getProperty("chromeMobileDevice").toLowerCase().contains("iphone")))){
-            /*applyStaticWait(1000);
-            JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
-            jse.executeScript("arguments[0].click();", this.backButton);*/
+
             this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.backButton);
             this.getReusableActionsInstance().scrollToElement(this.backButton);
             this.getReusableActionsInstance().clickIfAvailable(this.backButton);
-            //this.backButton.click();
             applyStaticWait(500);
         }else{
-            applyStaticWait(2000);
-            //this.getReusableActionsInstance().javascriptScrollToTopOfPage();
             this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.backButton);
             this.getReusableActionsInstance().scrollToElement(this.backButton);
             this.getReusableActionsInstance().clickIfAvailable(this.backButton);
-            //JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
-            //jse.executeScript("arguments[0].click();", this.backButton);
             waitForCondition(Driver->{
                 return this.lblProductName.isDisplayed();
             },150000);
@@ -467,23 +435,20 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
     public void verifyStickyTabClickingAction() {
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productOverview);
         this.getReusableActionsInstance().clickIfAvailable(this.productOverview);
-        //this.productOverview.click();
-        this.getReusableActionsInstance().staticWait(1000);
+        this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
         reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.btnStickyTabProductReview),"The Product Overview contents is displaying correctly","The Product Overview contents is not displaying correctly");
         this.goBack();
 
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productReview);
         this.getReusableActionsInstance().clickIfAvailable(this.productReview);
-        //this.productReview.click();
-        this.getReusableActionsInstance().staticWait(1000);
+        this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
         reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.btnStickyTabProductReview),"The Product Overview contents is displaying correctly","The Product Overview contents is not displaying correctly");
         goBack();
 
         if(this.checkProductSizingChartExisting()) {
             this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.sizeChart);
             this.getReusableActionsInstance().clickIfAvailable(this.sizeChart);
-            //this.sizeChart.click();
-            this.getReusableActionsInstance().staticWait(1000);
+            this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
             reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.btnStickyTabProductReview),"The Product Overview contents is displaying correctly","The Product Overview contents is not displaying correctly");
             goBack();
         }
@@ -519,8 +484,6 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
     @Override
     public void verifyCurrentZoomImage() {
         reporter.softAssert(!this.getElementHref(this.lnkCurrentZoomImage).isEmpty(),"The Current zoom image link is not empty","The Current zoom image link is empty");
-        //commented because lblZoomImageMessage is not present for both tab and mobile
-        //reporter.softAssert(!this.getElementText(this.lblZoomImageMessage).isEmpty(),"The Zoom image message is not empty","The Zoom image message is empty");
     }
 
     @Override
@@ -531,7 +494,7 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
     @Override
     public void closeEmailPopUpWindow(){
         this.getReusableActionsInstance().clickIfAvailable(this.btnTellYourFriendsWindowClose);
-        this.getReusableActionsInstance().staticWait(1000);
+        this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
     }
 
 }

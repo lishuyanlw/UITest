@@ -49,6 +49,7 @@ def getDate() {
 def getTunnelName() {
     /*def tunnelName = "TSCWF-WebAutomation" + System.getenv('BUILD_TIMESTAMP')
     tunnelName = tunnelName.replaceAll(":","")*/
+
     //return "DigitalQETunnel"
     return "Digital_Mobile_QA"
     //return "TSCWF_Automation_Tunnel"
@@ -58,7 +59,7 @@ def getTunnelName() {
 
 //This method is used when we use parentTunnelOwner system property in sauce test below
 //def parentTunnelOwner() {
-//    return "sso-sauce-rogers-"
+//    return "sso-sauce-rogers-Wei.Li"
 //}
 
 def tunnel_name() {
@@ -88,8 +89,8 @@ task "sauceTest"(type: Test) {
     systemProperty 'Language', test_language
     systemProperty 'TunnelRequired', TunnelRequired
     systemProperty 'chromeMobileDevice', chromeMobileDevice
-    systemProperty 'TunnelName', tunnelName
     systemProperty 'test_staticWait', test_staticWaitInMS
+    systemProperty 'TunnelName', tunnelName
     //systemProperty 'parentTunnelOwner', "DigitalQAWebAutomation"
     //Below system property is needed when we will create tunnel manually and use that to run test in sauce-lab
     //Test will be under DigitalQAWebAutomation owner in sauce-lab
@@ -98,8 +99,7 @@ task "sauceTest"(type: Test) {
     useTestNG(){
         parallel = test_parallel
         threadCount = test_threadCount as int
-        //Set listeners = [ "com.tsc.test.listeners.TestListener" , "com.tsc.test.listeners.AnnotationTransformer"]
-        Set listeners = ["extentreport.ExtentListener"]
+        Set listeners = [ "extentreport.ExtentListener"]
         setListeners(listeners)
         if (project.hasProperty('test_groupName')){
             includeGroups test_groupName
@@ -110,7 +110,7 @@ task "sauceTest"(type: Test) {
 
 //To shutdown the sauceconnect
 //sauceTest.finalizedBy stopSauceConnect
- 
+
 task "localTest"(type: Test) {
     if (test_browser && test_browser.contains('sauce')){
         def browser = test_browser.replace('sauce','')
@@ -128,8 +128,7 @@ task "localTest"(type: Test) {
     useTestNG() {
         parallel = test_parallel
         threadCount = test_threadCount as int
-        //Set listeners = [ "com.tsc.test.listeners.TestListener" , "com.tsc.test.listeners.AnnotationTransformer"]
-        Set listeners = ["extentreport.ExtentListener"]
+        Set listeners = [ "extentreport.ExtentListener"]
         setListeners(listeners)
 
         if (project.hasProperty('test_groupName')){

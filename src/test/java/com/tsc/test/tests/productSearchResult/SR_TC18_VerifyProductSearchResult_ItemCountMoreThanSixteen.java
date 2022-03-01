@@ -13,10 +13,10 @@ import java.util.Map;
  * BUG-20633 - PRP Page - Pagination on PRP page incorrect
  * BUG-20719 - [POST PROD] PRP breaks when products have more than 16 variants and no swatches
  */
-public class SR_TC17_VerifyProductSearchResult_ItemCountMoreThanSixteen extends BaseTest {
+public class SR_TC18_VerifyProductSearchResult_ItemCountMoreThanSixteen extends BaseTest {
 
     @Test(groups={"ProductSearch","Regression"})
-    public void SR_TC17_VerifyProductSearchResult_ItemCountMoreThanSixteen() throws IOException {
+    public void SR_TC18_VerifyProductSearchResult_ItemCountMoreThanSixteen() throws IOException {
         getGlobalFooterPageThreadLocal().closePopupDialog();
 
         reporter.softAssert(getglobalheaderPageThreadLocal().validateURL((new BasePage(this.getDriver())).getBaseURL() + "/"), "TSC url is correct", "TSC url is incorrect");

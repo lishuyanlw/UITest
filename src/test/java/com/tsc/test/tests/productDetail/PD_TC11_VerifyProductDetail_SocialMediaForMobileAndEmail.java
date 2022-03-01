@@ -14,15 +14,12 @@ public class PD_TC11_VerifyProductDetail_SocialMediaForMobileAndEmail extends Ba
 	 */
 	@Test(groups={"ProductDetail","Regression","Regression_Mobile","Regression_Tablet"})
 	public void PD_TC11_VerifyProductDetail_SocialMediaForMobileAndEmail() throws IOException {
-		//We don't need to close popup dialog if use api to navigate to PDP page directly.
-		//getGlobalFooterPageThreadLocal().closePopupDialog();
-
+		getGlobalFooterPageThreadLocal().closePopupDialog();
 		BasePage basePage=new BasePage(this.getDriver());
 
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(basePage.getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");
 		reporter.reportLog("ProductDetail Page");
 
-		//List<List<String>> lsKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_SearchKeyword_DropDown();
 		List<String> lstKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_APISearchingKeyword();
 		String lsTellYourFriendsSentMessage=TestDataHandler.constantData.getSearchResultPage().getLbl_TellYourFriendsSentMessage();
 		String lsUserName=TestDataHandler.constantData.getLoginUser().getLbl_Username();
@@ -31,8 +28,6 @@ public class PD_TC11_VerifyProductDetail_SocialMediaForMobileAndEmail extends Ba
 		reporter.reportLog("Switch to ProductDetail page");
 		String lsProductNumber,lsUrl;
 
-		//if(getProductResultsPageThreadLocal().goToFirstProductItem("402783")) {
-			//if(getProductResultsPageThreadLocal().goToFirstProductItem(lsKeywordList.get(0).get(0))) {
 		if(getProductDetailPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList,"AddToBag",null)) {
 			reporter.reportLog("Verify URL");
 			lsProductNumber=getProductResultsPageThreadLocal().selectedProductItem.productNumber;

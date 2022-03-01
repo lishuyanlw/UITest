@@ -654,18 +654,16 @@ public class GlobalFooterPage extends BasePage {
 	 */
 	public void closePopupDialog() {
 		HomePage homePage = new HomePage(getDriver());
-		if(waitForCondition(Driver->{return homePage.btnClose.isDisplayed();},60000)){
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(homePage.btnClose);
-			this.getReusableActionsInstance().clickIfAvailable(homePage.btnClose,3000);
+		try{
+			if(waitForCondition(Driver->{return homePage.btnClose.isDisplayed();},60000)){
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(homePage.btnClose);
+				this.getReusableActionsInstance().clickIfAvailable(homePage.btnClose,3000);
+			}
+			this.waitForPageToLoad();
 		}
-		//btnClose.click();
-		this.waitForPageToLoad();
-		/**if (waitForCondition(Driver -> {
-			return (new HomePage(this.getDriver())).btnClose.isDisplayed();
-		}, 40000)) {
-			(new HomePage(this.getDriver())).btnClose.click();
+		catch(Exception e){
+			e.printStackTrace();
 		}
-		getReusableActionsInstance().staticWait(500); */
 	}
 
 	/**
@@ -874,13 +872,9 @@ public class GlobalFooterPage extends BasePage {
 	 */
 	public boolean switchlanguage() {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkLanguage);
-//		this.getReusableActionsInstance().waitForElementVisibility(this.lnkLanguage,  60);
 		String lsLanguage=this.lnkLanguage.getText().trim();
-//		getReusableActionsInstance().staticWait(5000);
 		this.getReusableActionsInstance().clickIfAvailable(this.lnkLanguage);
 		this.waitForPageToLoad();
-//		getReusableActionsInstance().staticWait(5000);
-//		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkLanguage);
 
 		return this.waitForCondition(Driver->{return !this.lnkLanguage.getText().trim().equalsIgnoreCase(lsLanguage);}, 30000);
@@ -920,10 +914,6 @@ public class GlobalFooterPage extends BasePage {
 		getReusableActionsInstance().clickIfAvailable(selectedItem);
 
 		this.waitForPageToLoad();
-		//waitForCondition(Driver -> { return !lsUrl.equalsIgnoreCase(this.URL());}, 60000);
-//		(new ProductResultsPage(this.getDriver())).waitForPageLoading();
-//		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
-//		getReusableActionsInstance().staticWait(2000);
 		return waitForCondition(Driver -> {return lblIndicator.isDisplayed();}, 60000);
 	}
 
@@ -955,7 +945,6 @@ public class GlobalFooterPage extends BasePage {
 			}
 		}
 		this.waitForCondition(Driver->{return this.blogLoadingIndicator.isDisplayed();},5000);
-//		this.applyStaticWait(5000);
 
 		lsCurrentUrl = this.removeLastSlashFromUrl(this.getDriver().getCurrentUrl());
 		lsExpectedUrl = this.removeLastSlashFromUrl(lsExpectedUrl);
@@ -1014,7 +1003,7 @@ public class GlobalFooterPage extends BasePage {
 			}
 
 			getReusableActionsInstance().clickIfAvailable(item);
-			getReusableActionsInstance().staticWait(5000);
+			this.waitForCondition(Driver->{return this.getChildElementCount(item)>1;},5000);
 			getReusableActionsInstance().javascriptScrollByVisibleElement(lblTopCustomerQuestionsContent);
 			lsText=lblTopCustomerQuestionsContent.getText();
 			lsText=this.getShortenText(lsText,100);
@@ -1070,7 +1059,8 @@ public class GlobalFooterPage extends BasePage {
 					reporter.reportLogFailWithScreenshot("The See more button is not displaying correctly");
 				}
 				getReusableActionsInstance().clickIfAvailable(element);
-				getReusableActionsInstance().staticWait(2000);
+				final WebElement tempButton=element;
+				this.waitForCondition(Driver->{return this.getElementInnerText(tempButton).equalsIgnoreCase("See less");},2000);
 
 				itemList=item.findElements(this.byBrowseByHelpTopicsSubItemList);
 				subItemCountAfterClicking=itemList.size();
@@ -1195,7 +1185,8 @@ public class GlobalFooterPage extends BasePage {
 
 			if(this.getChildElementCount(lstCustomerServiceSubItemWindowSideButtonContainer.get(i))==1){
 				this.getReusableActionsInstance().clickIfAvailable(subItem);
-				this.getReusableActionsInstance().staticWait(2000);
+				final WebElement tempButton=subItem.findElement(By.xpath(".."));
+				this.waitForCondition(Driver->{return this.getChildElementCount(tempButton)>1;},2000);
 			}
 
 			for(WebElement subElement:this.lstCustomerServiceSubItemWindowSideSubItemList){
@@ -1391,7 +1382,7 @@ public class GlobalFooterPage extends BasePage {
 
 		getReusableActionsInstance().javascriptScrollByVisibleElement(btnCustomerLiveChatCloseButton);
 		getReusableActionsInstance().clickIfAvailable(btnCustomerLiveChatCloseButton);
-		getReusableActionsInstance().staticWait(2000);
+		getReusableActionsInstance().staticWait(300);
 	}
 
 	/**
@@ -1498,16 +1489,19 @@ public class GlobalFooterPage extends BasePage {
 	public void displayAlertMessageForOrderNumberAndSignInInput() {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputOrderNumber);
 		this.inputOrderNumber.sendKeys("1");
-		getReusableActionsInstance().staticWait(300);
+		this.getReusableActionsInstance().waitForElementVisibility(lblOrderNumberAlertMsg);
+
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputBillingPostalCode);
 		this.inputBillingPostalCode.sendKeys("1");
-		getReusableActionsInstance().staticWait(300);
+		this.getReusableActionsInstance().waitForElementVisibility(lblBillingPostalCodeAlertMsg);
+
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputEmailAddress);
 		this.inputEmailAddress.sendKeys("1");
-		getReusableActionsInstance().staticWait(300);
+		this.getReusableActionsInstance().waitForElementVisibility(lblEmailAddressAlertMsg);
+
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputPassword);
 		this.inputPassword.sendKeys("1");
-		getReusableActionsInstance().staticWait(300);
+		this.getReusableActionsInstance().waitForElementVisibility(lblPasswordAlertMsg);
 	}
 
 	/**
@@ -1515,21 +1509,25 @@ public class GlobalFooterPage extends BasePage {
 	 * @author Wei.Li
 	 */
 	public void expandPanelItems(List<WebElement> lstPanelItem,List<WebElement> lstPanelItemContent) {
-		getReusableActionsInstance().staticWait(3000);
 		for(int i=0;i<lstPanelItem.size();i++) {
 			WebElement item=lstPanelItem.get(i);
 			String lsClass=item.getAttribute("class");
-			if(lsClass.equalsIgnoreCase("collapsed")) {
+			if(lsClass.isEmpty()){
+				continue;
+			}
+			if( lsClass.equalsIgnoreCase("collapsed")) {
 				getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 				getReusableActionsInstance().clickIfAvailable(item);
-				WebElement itemContent=lstPanelItemContent.get(i);
-				waitForCondition(Driver->{return itemContent.getAttribute("aria-expanded").equalsIgnoreCase("true");},10000);
-				getReusableActionsInstance().staticWait(1000);
+				//Need it to wait a little, otherwise will cause failure
+				getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+				final int tempIndex=i;
+				waitForCondition(Driver->{return lstPanelItem.get(tempIndex).getAttribute("class").isEmpty();},10000);
 			}
 		}
 	}
 
 	public Boolean verifyRespectiveSectionForLinkOnPage(List<WebElement> lstPanelItem){
+		//Need to wait for one of items to be expanded
 		getReusableActionsInstance().staticWait(3000);
 		int counter = 0;
 		for(int i=0;i<lstPanelItem.size();i++) {
@@ -1884,7 +1882,6 @@ public class GlobalFooterPage extends BasePage {
 	public void clickOnTSCOptionLink(int i) {
 		String linkOftheTSC=null;
 		String path="(//div[@class='quickLinkPanelWrap']//ul[@class='quickLinkUL col3Divs ']//li//a)["+i+"]";
-		getReusableActionsInstance().staticWait(3000);
 		WebElement element=getDriver().findElement(By.xpath(path));
 		linkOftheTSC=element.getText();
 		reporter.reportLog("TSC Links Name is "+linkOftheTSC+"");
@@ -1901,7 +1898,6 @@ public class GlobalFooterPage extends BasePage {
 		Select select = new Select(element);
 		int dropDownElementSize = select.getOptions().size();
 		for (int i = 1; i < dropDownElementSize; i++) {
-			getReusableActionsInstance().staticWait(2000);
 			select.selectByIndex(i);
 			getReusableActionsInstance().waitForPageLoad();
 			String title = lblShopByBrandTitleAfterDropDown.getText();
@@ -2072,15 +2068,16 @@ public class GlobalFooterPage extends BasePage {
 
 	public  void verifyFindByAlphabet(WebElement element, List<WebElement> elements) {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-		getReusableActionsInstance().staticWait(4000);
 		int counter=1;
 		int alphabetPathElementSize;
 		Select select=new Select(element);
 		select.selectByIndex(0);
 		for(int i=0;i<elements.size();i++) {
 			String alphabetPath="(//div[contains(@class,'lettersDiv')]//div//span)["+counter+"]";
-			waitForCondition(Driver->{return elements.get(0).isEnabled();},10000);
-			elements.get(i).click();
+			this.clickElement(elements.get(i));
+			//Need it to wait for page scrolling down to the chosen letter
+			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+
 			String alphabetLetterValue=getDriver().findElement(By.xpath(alphabetPath)).getText();
 			reporter.reportLog("Selected Alphabet is "+alphabetLetterValue+"");
 			String activeAlphabetLetterValue=activeAlphabetChar.getText();

@@ -130,18 +130,19 @@ searchResultPage:
     - filterType: PRPBugsSearchKeyword
       filterOption:
         - ["casper","3000786"]
+        - ["Stefano Oro", "18"]
   lst_MoreButton: ["Shop by brand","Shop by colour"]
   lst_DisappearAfterSelectFilter: ["SHOP BY CATEGORY"]
   lnk_product_result: /pages/productresults?
   lbl_ProductRecommendationTitlePage: ["People who viewed this item also viewed","TOP SELLERS"]
   lbl_AddToBagPopupWindowTitle: "\\d+ ITEM(S)? ADDED TO YOUR SHOPPING BAG"
   lbl_VideoDisclaimInfo: "Pre-recorded videos contain pricing or promotional offers that may have expired."
-  lbl_AdvancedOrderkeyword: 522809
+  lbl_AdvancedOrderkeyword: 219753
   lbl_SoldOutkeyword: 485939
-  lbl_QuantityNumberToShowLeftItemInfo: 7
+  lbl_QuantityNumberToShowLeftItemInfo: 10
   lst_WriteReviewSubmitMessage: ["THANK YOU!","We will process your review and publish it within 3-7 business days."]
   lbl_TellYourFriendsSentMessage: "Your message has been sent!"
-  lbl_ProductNumberWithBandAndReviewAndSeeMore: 407389
+  lbl_ProductNumberWithBandAndReviewAndSeeMore: 402783
   lst_ClearanceKeyword: ["Clearance","Home & Garden","Collectibles"]
 footerSection: 
   lst_SocialMediaLinks: ["https://www.facebook.com/Shoptsc","https://twitter.com/shoptsc","https://instagram.com/shoptsc","www.youtube.com","https://www.pinterest.ca/shoptsc"]

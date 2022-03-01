@@ -21,10 +21,7 @@ public class PD_TC08_VerifyProductDetail_SoldOut extends BaseTest{
 	 */
 	@Test(groups={"ProductDetail","Regression","Regression_Mobile","Regression_Tablet"})
 	public void PD_TC08_VerifyProductDetail_SoldOut() throws IOException {
-		//We need to close popup dialog while using api as otherwise sin-up popup will come as soon we navigate
-		//to homepage while test execution
 		getGlobalFooterPageThreadLocal().closePopupDialog();
-
 		BasePage basePage=new BasePage(this.getDriver());
 
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(basePage.getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");
@@ -38,10 +35,6 @@ public class PD_TC08_VerifyProductDetail_SoldOut extends BaseTest{
 		reporter.reportLog("Switch to ProductDetail page");
 		String lsProductNumber,lsUrl;
 
-		//if(getProductResultsPageThreadLocal().goToFirstProductItem("485939")) {
-		//if(getProductDetailPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList,"AllConditionsWithCheckingSoldOutCriteria")) {
-		//if(getProductResultsPageThreadLocal().goToFirstProductItem("402783")) {
-		//Changes made in function getProductInfoForInputParams used under below function for SoldOut with parameters
 		if(getProductDetailPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList,"AllConditionsWithCheckingSoldOutCriteria",outputDataCriteria)) {
 			reporter.reportLog("Verify URL");
 			lsProductNumber=getProductDetailPageThreadLocal().selectedProduct.productNumber;
@@ -54,9 +47,6 @@ public class PD_TC08_VerifyProductDetail_SoldOut extends BaseTest{
 
 			reporter.reportLog("Verify product name,brand name and product number");
 			getProductDetailPageThreadLocal().verifyProductSoldOutBasicInfo();
-
-			/*reporter.reportLog("Verify product TrueFit");
-			getProductDetailPageThreadLocal().verifyProductSizeTrueFit();*/
 
 			reporter.reportLog("Verify Sold out product messaage");
 			getProductDetailPageThreadLocal().verifyProductSoldOut();

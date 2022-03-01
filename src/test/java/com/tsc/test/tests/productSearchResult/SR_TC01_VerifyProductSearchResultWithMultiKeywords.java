@@ -103,7 +103,7 @@ public class SR_TC01_VerifyProductSearchResultWithMultiKeywords extends BaseTest
 
 			reporter.softAssert(getProductResultsPageThreadLocal().verifyProductPagination(), "Product pagination is existing", "Product pagination is not existing");
 			
-			if(this.getDriver().findElements(getProductResultsPageThreadLocal().byProductTitleAndText).size()==1) {
+			if(getProductResultsPageThreadLocal().checkTitleAndTextSectionExisting()) {
 				reporter.softAssert(getProductResultsPageThreadLocal().verifyProductBrandTitleOrText("Title"), "The tilte in product title and text region is not empty", "The tilte in product title and text region is empty");
 				reporter.softAssert(getProductResultsPageThreadLocal().verifyProductBrandTitleOrText("Text"), "The content in product title and text region is not empty", "The content in product title and text region is empty");
 				reporter.softAssert(getProductResultsPageThreadLocal().verifyProductBrandMoreOrLessButton(), "The More/Less button works", "The More/Less button does not work");
