@@ -970,7 +970,7 @@ public class GlobalFooterPage extends BasePage {
 			reporter.reportLogPass("The element of '"+ lsText+"'"+" is displaying correctly.");
 		}
 		else{
-			reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" is displaying correctly.");
+			reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" is not displaying correctly.");
 		}
 
 		getReusableActionsInstance().javascriptScrollByVisibleElement(inputCustomerServiceSearch);
@@ -988,7 +988,7 @@ public class GlobalFooterPage extends BasePage {
 			reporter.reportLogPass("The element of '"+ lsText+"'"+" is displaying correctly.");
 		}
 		else{
-			reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" is displaying correctly.");
+			reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" is not displaying correctly.");
 		}
 
 		for(WebElement item:lstTopCustomerQuestionsTitle){
@@ -999,7 +999,7 @@ public class GlobalFooterPage extends BasePage {
 				reporter.reportLogPass("The element of '"+ lsText+"'"+" in Top customer questions list is displaying correctly.");
 			}
 			else{
-				reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" in Top customer questions list is displaying correctly.");
+				reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" in Top customer questions list is not displaying correctly.");
 			}
 
 			getReusableActionsInstance().clickIfAvailable(item);
@@ -1012,7 +1012,7 @@ public class GlobalFooterPage extends BasePage {
 				reporter.reportLogPass("The sub element of '"+ lsText+"'"+" in Top customer questions list is displaying correctly.");
 			}
 			else{
-				reporter.reportLogFailWithScreenshot("The sub element of '"+ lsText+"'"+" in Top customer questions list is displaying correctly.");
+				reporter.reportLogFailWithScreenshot("The sub element of '"+ lsText+"'"+" in Top customer questions list is not displaying correctly.");
 			}
 		}
 	}
@@ -1031,7 +1031,7 @@ public class GlobalFooterPage extends BasePage {
 			reporter.reportLogPass("The element of '"+ lsText+"'"+" is displaying correctly.");
 		}
 		else{
-			reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" is displaying correctly.");
+			reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" is not displaying correctly.");
 		}
 
 		WebElement element;
@@ -1046,7 +1046,7 @@ public class GlobalFooterPage extends BasePage {
 				reporter.reportLogPass("The element of '"+ lsText+"'"+" in Help topics list is displaying correctly.");
 			}
 			else{
-				reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" in Help topics list is displaying correctly.");
+				reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" in Help topics list is not displaying correctly.");
 			}
 			itemList=item.findElements(this.byBrowseByHelpTopicsSubItemList);
 			subItemCountBeforeClicking=itemList.size();
@@ -1092,7 +1092,7 @@ public class GlobalFooterPage extends BasePage {
 					reporter.reportLogPass("The element of '"+ lsText+"'"+" in Help topics Sublist is displaying correctly.");
 				}
 				else{
-					reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" in Help topics Sublist is displaying correctly.");
+					reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" in Help topics Sublist is not displaying correctly.");
 				}
 			}
 		}
@@ -1145,7 +1145,7 @@ public class GlobalFooterPage extends BasePage {
 				reporter.reportLogPass("The element of '"+ lsText+"'"+" is displaying correctly.");
 			}
 			else{
-				reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" is displaying correctly.");
+				reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" is not displaying correctly.");
 			}
 
 			reporter.reportLog("verify Left aside panel of window content after clicking subitem in Browse By Help Topics");
@@ -1182,7 +1182,7 @@ public class GlobalFooterPage extends BasePage {
 				reporter.reportLogPass("The element of '"+ lsText+"'"+" is displaying correctly.");
 			}
 			else{
-				reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" is displaying correctly.");
+				reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" is not displaying correctly.");
 			}
 
 			if(this.getChildElementCount(lstCustomerServiceSubItemWindowSideButtonContainer.get(i))==1){
@@ -1199,7 +1199,7 @@ public class GlobalFooterPage extends BasePage {
 					reporter.reportLogPass("The sub element of '"+ lsText+"'"+" is displaying correctly.");
 				}
 				else{
-					reporter.reportLogFailWithScreenshot("The sub element of '"+ lsText+"'"+" is displaying correctly.");
+					reporter.reportLogFailWithScreenshot("The sub element of '"+ lsText+"'"+" is not displaying correctly.");
 				}
 			}
 		}
@@ -1227,7 +1227,7 @@ public class GlobalFooterPage extends BasePage {
 			reporter.reportLogPass("The element of '"+ lsText+"'"+" is displaying correctly.");
 		}
 		else{
-			reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" is displaying correctly.");
+			reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" is not displaying correctly.");
 		}
 
 		getReusableActionsInstance().javascriptScrollByVisibleElement(lblStillNeedHelpSubTitle);
@@ -1236,7 +1236,7 @@ public class GlobalFooterPage extends BasePage {
 			reporter.reportLogPass("The element of '"+ lsText+"'"+" is displaying correctly.");
 		}
 		else{
-			reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" is displaying correctly.");
+			reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" is not displaying correctly.");
 		}
 
 		getReusableActionsInstance().javascriptScrollByVisibleElement(btnCustomerLiveChat);
@@ -1253,7 +1253,7 @@ public class GlobalFooterPage extends BasePage {
 			reporter.reportLogPass("The element of '"+ lsText+"'"+" is displaying correctly.");
 		}
 		else{
-			reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" is displaying correctly.");
+			reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" is not displaying correctly.");
 		}
 
 		getReusableActionsInstance().javascriptScrollByVisibleElement(lnkCustomerServiceCenter);
@@ -1288,7 +1288,7 @@ public class GlobalFooterPage extends BasePage {
 			reporter.reportLogPass("The element of '"+ lsText+"'"+" is displaying correctly.");
 		}
 		else{
-			reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" is displaying correctly.");
+			reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" is not displaying correctly.");
 		}
 
 		getReusableActionsInstance().javascriptScrollByVisibleElement(btnCustomerLiveChatMinimizeButton);
@@ -1313,7 +1313,7 @@ public class GlobalFooterPage extends BasePage {
 			reporter.reportLogPass("The element of '"+ lsText+"'"+" is displaying correctly.");
 		}
 		else{
-			reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" is displaying correctly.");
+			reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" is not displaying correctly.");
 		}
 
 		getReusableActionsInstance().javascriptScrollByVisibleElement(inputCustomerLiveChatFirstName);
@@ -1330,7 +1330,7 @@ public class GlobalFooterPage extends BasePage {
 			reporter.reportLogPass("The element of '"+ lsText+"'"+" is displaying correctly.");
 		}
 		else{
-			reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" is displaying correctly.");
+			reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" is not displaying correctly.");
 		}
 
 		getReusableActionsInstance().javascriptScrollByVisibleElement(inputCustomerLiveChatLastName);
@@ -1347,7 +1347,7 @@ public class GlobalFooterPage extends BasePage {
 			reporter.reportLogPass("The element of '"+ lsText+"'"+" is displaying correctly.");
 		}
 		else{
-			reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" is displaying correctly.");
+			reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" is not displaying correctly.");
 		}
 
 		getReusableActionsInstance().javascriptScrollByVisibleElement(inputCustomerLiveChatEmail);
@@ -1364,7 +1364,7 @@ public class GlobalFooterPage extends BasePage {
 			reporter.reportLogPass("The element of '"+ lsText+"'"+" is displaying correctly.");
 		}
 		else{
-			reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" is displaying correctly.");
+			reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" is not displaying correctly.");
 		}
 
 		getReusableActionsInstance().javascriptScrollByVisibleElement(inputCustomerLiveChatSubject);
@@ -1564,7 +1564,7 @@ public class GlobalFooterPage extends BasePage {
 			reporter.reportLogPass("The element of '"+ lsText+"'"+" is displaying correctly.");
 		}
 		else{
-			reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" is displaying correctly.");
+			reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" is not displaying correctly.");
 		}
 
 		getReusableActionsInstance().javascriptScrollByVisibleElement(lblCustomerServiceContactUsChatDescription);
@@ -1573,7 +1573,7 @@ public class GlobalFooterPage extends BasePage {
 			reporter.reportLogPass("The element of '"+ lsText+"'"+" is displaying correctly.");
 		}
 		else{
-			reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" is displaying correctly.");
+			reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" is not displaying correctly.");
 		}
 
 		getReusableActionsInstance().javascriptScrollByVisibleElement(btnCustomerServiceContactUsLiveChat);
@@ -1590,7 +1590,7 @@ public class GlobalFooterPage extends BasePage {
 			reporter.reportLogPass("The element of '"+ lsText+"'"+" is displaying correctly.");
 		}
 		else{
-			reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" is displaying correctly.");
+			reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" is not displaying correctly.");
 		}
 
 		getReusableActionsInstance().javascriptScrollByVisibleElement(lblCustomerServiceContactUsCallSalesDescription);
@@ -1599,7 +1599,7 @@ public class GlobalFooterPage extends BasePage {
 			reporter.reportLogPass("The element of '"+ lsText+"'"+" is displaying correctly.");
 		}
 		else{
-			reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" is displaying correctly.");
+			reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" is not displaying correctly.");
 		}
 
 		getReusableActionsInstance().javascriptScrollByVisibleElement(lblCustomerServiceContactUsCompleteEmailFormsDescription);
@@ -1608,7 +1608,7 @@ public class GlobalFooterPage extends BasePage {
 			reporter.reportLogPass("The element of '"+ lsText+"'"+" is displaying correctly.");
 		}
 		else{
-			reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" is displaying correctly.");
+			reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" is not displaying correctly.");
 		}
 
 		getReusableActionsInstance().javascriptScrollByVisibleElement(lnkCustomerServiceContactUsGeneralEmailInquiries);
@@ -1635,7 +1635,7 @@ public class GlobalFooterPage extends BasePage {
 			reporter.reportLogPass("The element of '"+ lsText+"'"+" is displaying correctly.");
 		}
 		else{
-			reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" is displaying correctly.");
+			reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" is not displaying correctly.");
 		}
 
 		getReusableActionsInstance().javascriptScrollByVisibleElement(lnkCustomerServiceContactUsFeedback);
@@ -1698,7 +1698,7 @@ public class GlobalFooterPage extends BasePage {
 			reporter.reportLogPass("The element of '"+ lsText+"'"+" is displaying correctly.");
 		}
 		else{
-			reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" is displaying correctly.");
+			reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" is not displaying correctly.");
 		}
 
 		getReusableActionsInstance().javascriptScrollByVisibleElement(lblCustomerServiceGeneralEmailInquiriesDescription);
@@ -1707,7 +1707,7 @@ public class GlobalFooterPage extends BasePage {
 			reporter.reportLogPass("The element of '"+ lsText+"'"+" is displaying correctly.");
 		}
 		else{
-			reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" is displaying correctly.");
+			reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" is not displaying correctly.");
 		}
 
 		getReusableActionsInstance().javascriptScrollByVisibleElement(lblCustomerServiceGeneralEmailInquiriesRequiredFieldMessage);
@@ -1716,7 +1716,7 @@ public class GlobalFooterPage extends BasePage {
 			reporter.reportLogPass("The element of '"+ lsText+"'"+" is displaying correctly.");
 		}
 		else{
-			reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" is displaying correctly.");
+			reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" is not displaying correctly.");
 		}
 
 		getReusableActionsInstance().javascriptScrollByVisibleElement(lblCustomerServiceGeneralEmailInquiriesRequiredFieldEmailAddress);
@@ -1725,7 +1725,7 @@ public class GlobalFooterPage extends BasePage {
 			reporter.reportLogPass("The element of '"+ lsText+"'"+" is displaying correctly.");
 		}
 		else{
-			reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" is displaying correctly.");
+			reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" is not displaying correctly.");
 		}
 
 		getReusableActionsInstance().javascriptScrollByVisibleElement(inputCustomerServiceGeneralEmailInquiriesEmailAddress);
@@ -1743,7 +1743,7 @@ public class GlobalFooterPage extends BasePage {
 				reporter.reportLogPass("The element of '"+ lsText+"'"+" is displaying correctly.");
 			}
 			else{
-				reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" is displaying correctly.");
+				reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" is not displaying correctly.");
 			}
 
 			getReusableActionsInstance().javascriptScrollByVisibleElement(inputCustomerServiceGeneralEmailInquiriesOrderNumber);
@@ -1761,7 +1761,7 @@ public class GlobalFooterPage extends BasePage {
 			reporter.reportLogPass("The element of '"+ lsText+"'"+" is displaying correctly.");
 		}
 		else{
-			reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" is displaying correctly.");
+			reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" is not displaying correctly.");
 		}
 
 		getReusableActionsInstance().javascriptScrollByVisibleElement(inputCustomerServiceGeneralEmailInquiriesFirstName);
@@ -1778,7 +1778,7 @@ public class GlobalFooterPage extends BasePage {
 			reporter.reportLogPass("The element of '"+ lsText+"'"+" is displaying correctly.");
 		}
 		else{
-			reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" is displaying correctly.");
+			reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" is not displaying correctly.");
 		}
 
 		getReusableActionsInstance().javascriptScrollByVisibleElement(inputCustomerServiceGeneralEmailInquiriesLastName);
@@ -1795,7 +1795,7 @@ public class GlobalFooterPage extends BasePage {
 			reporter.reportLogPass("The element of '"+ lsText+"'"+" is displaying correctly.");
 		}
 		else{
-			reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" is displaying correctly.");
+			reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" is not displaying correctly.");
 		}
 
 		getReusableActionsInstance().javascriptScrollByVisibleElement(inputCustomerServiceGeneralEmailInquiriesRequiredFieldPhoneNumber);
@@ -1828,7 +1828,7 @@ public class GlobalFooterPage extends BasePage {
 			reporter.reportLogPass("The element of '"+ lsText+"'"+" is displaying correctly.");
 		}
 		else{
-			reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" is displaying correctly.");
+			reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" is not displaying correctly.");
 		}
 	}
 
