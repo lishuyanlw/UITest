@@ -1004,7 +1004,6 @@ public class GlobalFooterPage extends BasePage {
 
 			getReusableActionsInstance().clickIfAvailable(item);
 			this.waitForCondition(Driver->{return this.getChildElementCount(item)>1;},5000);
-//			getReusableActionsInstance().staticWait(5000);
 			getReusableActionsInstance().javascriptScrollByVisibleElement(lblTopCustomerQuestionsContent);
 			lsText=lblTopCustomerQuestionsContent.getText();
 			lsText=this.getShortenText(lsText,100);
@@ -1062,7 +1061,6 @@ public class GlobalFooterPage extends BasePage {
 				getReusableActionsInstance().clickIfAvailable(element);
 				final WebElement tempButton=element;
 				this.waitForCondition(Driver->{return this.getElementInnerText(tempButton).equalsIgnoreCase("See less");},2000);
-//				getReusableActionsInstance().staticWait(2000);
 
 				itemList=item.findElements(this.byBrowseByHelpTopicsSubItemList);
 				subItemCountAfterClicking=itemList.size();
@@ -1189,7 +1187,6 @@ public class GlobalFooterPage extends BasePage {
 				this.getReusableActionsInstance().clickIfAvailable(subItem);
 				final WebElement tempButton=subItem.findElement(By.xpath(".."));
 				this.waitForCondition(Driver->{return this.getChildElementCount(tempButton)>1;},2000);
-//				this.getReusableActionsInstance().staticWait(2000);
 			}
 
 			for(WebElement subElement:this.lstCustomerServiceSubItemWindowSideSubItemList){

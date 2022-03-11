@@ -516,13 +516,13 @@ public class GlobalHeaderPage extends BasePage{
 			if(lsUrlInSilverHeader.endsWith(endURLString))
 				reporter.reportLogPass("The URL for: "+lsTitle+" end with "+endURLString+" as expected");
 			else
-				reporter.reportLogFail("The URL for: "+lsTitle+" end with "+endURLString+" as expected");
+				reporter.reportLogFailWithScreenshot("The URL for: "+lsTitle+" end with "+endURLString+" as expected");
 
 			if(bCheckUrl) {
 				//Program Guide url is appending daily in url and is not needed
 				if(lsUrlInSilverHeader.contains("programguide")) {
 					//This page takes time to load irrespective of using waitForCondition and hence using static wait here
-					waitForCondition(driver->{return (this.lstProgramGuidePageItems.size()>0 && this.lblProgramGuideSearchBox.isEnabled());},150000);
+					waitForCondition(driver->{return (this.lstProgramGuidePageItems.size()>0 && this.lblProgramGuideSearchBox.isEnabled());},250000);
 					reporter.softAssert(lsUrlInSilverHeader.replace("/daily", "").equalsIgnoreCase(lsHrefInBlackHeader), "The Url of " + lsUrlInSilverHeader + "  after clicking " + lsTitle + " in Black headers is equal to the href of " + lsHrefInBlackHeader, "The Url of " + lsUrlInSilverHeader + "  after clicking " + lsTitle + " in Black headers is not equal to the href of " + lsHrefInBlackHeader);
 				}else
 					reporter.softAssert(lsUrlInSilverHeader.equalsIgnoreCase(lsHrefInBlackHeader), "The Url of " + lsUrlInSilverHeader + "  after clicking " + lsTitle + " in Black headers is equal to the href of " + lsHrefInBlackHeader, "The Url of " + lsUrlInSilverHeader + "  after clicking " + lsTitle + " in Black headers is not equal to the href of " + lsHrefInBlackHeader);
@@ -533,7 +533,6 @@ public class GlobalHeaderPage extends BasePage{
 				reporter.softAssert(lsStyle.toLowerCase().contains("color:#fff;")||lsStyle.toLowerCase().contains("color: rgb(255, 255, 255);"), lsTitle+" in Silver headers is being selected", lsTitle+" in Silver headers is not being selected");
 			}
 			//this.clickOnTSCLogo();
-			getReusableActionsInstance().waitForPageLoad();
 			this.hoverOnWatchTSC();
 		}
 	 }
@@ -560,7 +559,6 @@ public class GlobalHeaderPage extends BasePage{
 		 for(WebElement element:elementList) {
 			 getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 			 getReusableActionsInstance().scrollToElement(element);
-			 getReusableActionsInstance().staticWait(300);
 			 lsItem=element.getText();
 			 if(System.getProperty("Device").equalsIgnoreCase("Desktop")) {
 
@@ -810,7 +808,7 @@ public class GlobalHeaderPage extends BasePage{
 		waitForCondition(Driver->{return (this.lblPageTitleCategorySection.isDisplayed());},60000);
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblPageTitleCategorySection);
 		//this static wait is necessary because even after applying wait above, page refreshes for mobile
-		//this.getReusableActionsInstance().staticWait(1000);
+		this.getReusableActionsInstance().staticWait(1000);
 		getReusableActionsInstance().scrollToElement(this.lblPageTitleCategorySection);
 		String title = this.getElementInnerText(this.lblPageTitleCategorySection);
 		reporter.reportLog("Title of page is: "+title);
@@ -915,7 +913,9 @@ public class GlobalHeaderPage extends BasePage{
 			break;
 			case "Left Section":
 				//Verifying ShopAll section in left menu
-				String shopAllSubMenuItemName = null;
+				String previousSubMenuName = "InValidValue";
+				String nextSubMenuName = null;
+				int counter = 0;
 				if (!verifyElementProperty(this.lblShopAllEachSubMenu, "Link")) {//href is not present
 					getReporter().softAssert(false,"","Shop All Link is not present for: "+this.lblShopAllEachSubMenu.getText());
 				}else{
@@ -923,13 +923,19 @@ public class GlobalHeaderPage extends BasePage{
 				}
 
 				for (WebElement category:CategoriesLinks) {
+					nextSubMenuName = category.getText();
 					getReusableActionsInstance().javascriptScrollByVisibleElement(category);
 					this.scrollSubMenuItems(category);
 					reporter.reportLog("Verifying Left Section for: "+category.getText());
-					String finalShopAllSubMenuItemName = shopAllSubMenuItemName;
-					waitForCondition(Driver->{return (!category.getText().equalsIgnoreCase(finalShopAllSubMenuItemName));},5000);
-					shopAllSubMenuItemName = category.getText();
+					previousSubMenuName = (previousSubMenuName!= "InValidValue" && nextSubMenuName.equalsIgnoreCase(previousSubMenuName)) ? "Invalid" : previousSubMenuName;
+					String finalNextSubMenuName = nextSubMenuName;
+					String finalPreviousSubMenuName = previousSubMenuName;
+					waitForCondition(Driver->{return (!finalNextSubMenuName.equalsIgnoreCase(finalPreviousSubMenuName));},10000);
+					//Sub Menu Items are taking time to load and hence adding wait For Condition for that
+					waitForCondition(Driver->{return (this.lblShopAllSubMenuItems.getText().contains(finalNextSubMenuName));},10000);
 					this.verifysubMenuhref(subMenuSection);
+					previousSubMenuName = category.getText();
+					counter++;
 				}
 			break;
 		}
