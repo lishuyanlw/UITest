@@ -171,7 +171,7 @@ public class ApiResponse extends ApiConfigs {
         	
             do {
     	        try{
-    	            response = getApiCallResponse(initialConfig,propertyData.get("test_apiVersion")+"/"+propertyData.get("test_language")+"/products");    	            
+    	            response = getApiCallResponse(initialConfig,propertyData.get("test_apiVersion3")+"/"+propertyData.get("test_language")+"/products");
     	        }catch (Exception exception){
     	            exception.printStackTrace();
     	        }
@@ -197,16 +197,16 @@ public class ApiResponse extends ApiConfigs {
         }
         
         if(bBrand) {
-        	configs = super.getProductSearchByKeywordInputConfig(searchKeyword, null, outputPage, defaultPageItems,super.getApiPropertyData().get("test_apiVersion"));
+        	configs = super.getProductSearchByKeywordInputConfig(searchKeyword, null, outputPage, defaultPageItems,super.getApiPropertyData().get("test_apiVersion3"));
         }
         else {
-        	configs = super.getProductSearchByKeywordInputConfig(searchKeyword, dimensionNumber, outputPage, defaultPageItems,super.getApiPropertyData().get("test_apiVersion"));
+        	configs = super.getProductSearchByKeywordInputConfig(searchKeyword, dimensionNumber, outputPage, defaultPageItems,super.getApiPropertyData().get("test_apiVersion3"));
         }
         
         
         repeatNumber=0;
         do{
-        	response = getApiCallResponse(configs, propertyData.get("test_apiVersion")+"/"+propertyData.get("test_language")+"/products");
+        	response = getApiCallResponse(configs, propertyData.get("test_apiVersion3")+"/"+propertyData.get("test_language")+"/products");
             if(response!=null && response.statusCode()==200) {
             	product = JsonParser.getResponseObject(response.asString(), new TypeReference<Product>() {
                 });
@@ -239,7 +239,7 @@ public class ApiResponse extends ApiConfigs {
   
         selectedProduct.init();
         //do{
-		response = getApiCallResponse(null, propertyData.get("test_apiVersion2")+"/"+propertyData.get("test_language")+"/products/"+productNumber);
+		response = getApiCallResponse(null, propertyData.get("test_apiVersion")+"/"+propertyData.get("test_language")+"/products/"+productNumber);
 		if(response!=null && response.statusCode()==200) {
 			product = JsonParser.getResponseObject(response.asString(), new TypeReference<ProductDetailsItem>() {
 			});
@@ -288,7 +288,7 @@ public class ApiResponse extends ApiConfigs {
      */
     public String getDimensionNumberFromURL(String url){
     	String lsDimension;
-    	String lsVersion= super.getApiPropertyData().get("test_apiVersion");
+    	String lsVersion= super.getApiPropertyData().get("test_apiVersion3");
 
     	if(lsVersion.equalsIgnoreCase("v2")) {
     		lsDimension=url.split(":")[1];    		
@@ -626,11 +626,11 @@ public class ApiResponse extends ApiConfigs {
         if(configs!=null)
             configs.clear();
  
-        configs = super.getProductSearchByKeywordInputConfig(searchKeyword, null, 1, defaultPageItems, super.getApiPropertyData().get("test_apiVersion"));
+        configs = super.getProductSearchByKeywordInputConfig(searchKeyword, null, 1, defaultPageItems, super.getApiPropertyData().get("test_apiVersion3"));
         
         repeatNumber=0;
         do{
-        	response = getApiCallResponse(configs, propertyData.get("test_apiVersion")+"/"+propertyData.get("test_language")+"/products");
+        	response = getApiCallResponse(configs, propertyData.get("test_apiVersion3")+"/"+propertyData.get("test_language")+"/products");
             if(response!=null && response.statusCode()==200) {
             	product = JsonParser.getResponseObject(response.asString(), new TypeReference<Product>() {
                 });
@@ -732,7 +732,7 @@ public class ApiResponse extends ApiConfigs {
 		configs.put("dimensions",dimension);
 		configs.put("searchterm",searchKeyword);
 		try{
-			String apiEndpoint = propertyData.get("test_apiVersion")+"/"+propertyData.get("test_language")+"/products/";
+			String apiEndpoint = propertyData.get("test_apiVersion3")+"/"+propertyData.get("test_language")+"/products/";
 			Response response = this.getApiCallResponse(configs,apiEndpoint);
 			Product product = JsonParser.getResponseObject(response.asString(), new TypeReference<Product>() {});
 			return product.getDimensionStates();
