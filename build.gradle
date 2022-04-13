@@ -35,6 +35,7 @@ dependencies {
     implementation (group: 'io.rest-assured', name: 'json-schema-validator', version: '4.4.0')
     //Below guava dependency is needed to resolve wait.until() function issue for Expected Condition used in BasePage class
     implementation group: 'com.google.guava', name: 'guava', version: '31.0.1-jre'
+    implementation (group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1')
 }
 
 def sauce = [

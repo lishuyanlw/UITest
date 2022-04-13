@@ -1,0 +1,14 @@
+{
+  "tscCard": {
+    "Id": 0,
+    "ExpirationDate": "2050-01-01T05:00:00.000Z",
+    "Expired": false,
+    "Number": "6060160100000807",
+    "MaskedNumber": "************0807",
+    "IsDefault": true,
+    "Type": "FI",
+    "DisplayExpirationMonth": "01",
+    "DisplayExpirationYear": "2050",
+    "CVV": "123"
+  },
+}
