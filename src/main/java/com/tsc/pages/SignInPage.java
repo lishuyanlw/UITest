@@ -131,10 +131,24 @@ public class SignInPage extends BasePage {
 	}
 
 	/**
+	 *To get input password input status: true for Showing asterisks while false for text directly
+	 */
+	public boolean getInputPasswordStatus(){
+		return inputPassword.getAttribute("type").equalsIgnoreCase("password");
+	}
+
+	/**
 	 *To get Keep Me Signed In Status: true for checked while false for unchecked
 	 */
 	public boolean getKeepMeSignedInStatus(){
 		return ckbKeepMeSignedIn.isSelected();
+	}
+
+	/**
+	 * To check if cookies exist
+	 */
+	public boolean checkCookieExisting(){
+		return this.getDriver().manage().getCookies().size()>0;
 	}
 	
 	/**
@@ -350,5 +364,6 @@ public class SignInPage extends BasePage {
 		
 		reporter.softAssert(this.btnSignInMainMenu.getText().toUpperCase().contains(lsFirstName.toUpperCase()),"The user first name of '"+lsFirstName+"' is displaying in SignIn heading menu","The user first name of '"+lsFirstName+"' is not displaying in SignIn heading menu");
 	}
+
 	
 }
