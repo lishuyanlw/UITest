@@ -44,7 +44,7 @@ public class BaseTest {
 	protected static final ThreadLocal<GlobalFooterPage> globalFooterPageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<ProductResultsPage> productResultsPageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<ProductDetailPage> productDetailPageThreadLocal = new ThreadLocal<>();
-	protected static final ThreadLocal<LoginPage> loginPageThreadLocal = new ThreadLocal<>();
+	protected static final ThreadLocal<SignInPage> loginPageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<String> TestDeviceThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<ApiResponse> apiResponseThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<ShoppingCart> shoppingCartThreadLocal = new ThreadLocal<>();
@@ -86,7 +86,7 @@ public class BaseTest {
 		return productDetailPageThreadLocal.get();
 	}
 	
-	protected static LoginPage getGlobalLoginPageThreadLocal() {
+	protected static SignInPage getGlobalLoginPageThreadLocal() {
 		return loginPageThreadLocal.get();
 	}
 
@@ -101,7 +101,7 @@ public class BaseTest {
 		productResultsPageThreadLocal.set(new ProductResultsPage(getDriver()));
 		globalFooterPageThreadLocal.set(new GlobalFooterPage(getDriver()));
 		productDetailPageThreadLocal.set(new ProductDetailPage(getDriver()));
-		loginPageThreadLocal.set(new LoginPage(getDriver()));
+		loginPageThreadLocal.set(new SignInPage(getDriver()));
 		reporter = new ExtentTestManager(getDriver());
 		apiResponseThreadLocal.set(new ApiResponse());
 		shoppingCartThreadLocal.set(new ShoppingCart(getDriver()));
@@ -109,7 +109,7 @@ public class BaseTest {
 
 	private void init_Mobile() throws IOException {
 		globalheaderPageThreadLocal.set(new GlobalHeaderPage_Mobile(getDriver()));
-		loginPageThreadLocal.set(new LoginPage_Mobile(getDriver()));
+		loginPageThreadLocal.set(new SignInPage_Mobile(getDriver()));
 		globalFooterPageThreadLocal.set(new GlobalFooterPage_Mobile(getDriver()));
 		productResultsPageThreadLocal.set(new ProductResultsPage_Mobile(getDriver()));
 		productDetailPageThreadLocal.set(new ProductDetailPage_Mobile(getDriver()));
@@ -144,7 +144,7 @@ public class BaseTest {
 			productDetailPageThreadLocal.set(new ProductDetailPage_Tablet(getDriver()));
 		}
 
-		loginPageThreadLocal.set(new LoginPage_Mobile(getDriver()));
+		loginPageThreadLocal.set(new SignInPage_Mobile(getDriver()));
 		reporter = new ExtentTestManager(getDriver());
 		apiResponseThreadLocal.set(new ApiResponse());
 		shoppingCartThreadLocal.set(new ShoppingCart(getDriver()));

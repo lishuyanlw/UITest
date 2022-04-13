@@ -5,25 +5,22 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import java.util.List;
 
-public class LoginPage_Mobile extends LoginPage{
+public class SignInPage_Mobile extends SignInPage{
 
-    public LoginPage_Mobile(WebDriver driver) {
+    public SignInPage_Mobile(WebDriver driver) {
         super(driver);
     }
 
-    @FindBy(xpath = "//div[contains(@class,'secondary-navigation__rhs-account')]//a//*[@class='secondary-navigation__rhs-account-icon']")
-    public WebElement SigninIcon;
-
-    @FindBy(xpath="//div[contains(@class,'secondary-navigation__rhs-account')]//a[contains(@role,'button') and contains(@class,'sign')]")
-    public WebElement btnSignOutButton;
+    @FindBy(xpath="//div[contains(@class,'summary-logout')]")
+    public WebElement btnSignOut;
 
     @Override
     public boolean SignOut() {
         getReusableActionsInstance().javascriptScrollByVisibleElement(btnSignInMainMenu);
         getReusableActionsInstance().scrollToElement(btnSignInMainMenu);
-        getReusableActionsInstance().clickIfAvailable(this.SigninIcon);
+        getReusableActionsInstance().clickIfAvailable(this.SignInIcon);
         getReusableActionsInstance().staticWait(2000);
-        getReusableActionsInstance().clickIfAvailable(this.btnSignOutButton);
+        getReusableActionsInstance().clickIfAvailable(this.btnSignOut);
         waitForPageToLoad();
         return waitForCondition(Driver->{return super.inputUserName.isDisplayed();},90000);
     }
@@ -32,7 +29,7 @@ public class LoginPage_Mobile extends LoginPage{
     public void verifyMenuItemInPopover(List<String> lstMenuItemPopover) {
         getReusableActionsInstance().javascriptScrollByVisibleElement(btnSignInMainMenu);
         getReusableActionsInstance().scrollToElement(btnSignInMainMenu);
-        getReusableActionsInstance().clickIfAvailable(this.SigninIcon);
+        getReusableActionsInstance().clickIfAvailable(this.SignInIcon);
         getReusableActionsInstance().staticWait(2000);
         //getReusableActionsInstance().javascriptScrollByVisibleElement(this.cntSignInPopover);
         //this.hoverOnSignInHeadingMenu();
@@ -60,9 +57,9 @@ public class LoginPage_Mobile extends LoginPage{
 
     @Override
     public boolean Login(String lsUserName, String lsPassword,String lsFirstName) {
-        getReusableActionsInstance().javascriptScrollByVisibleElement(this.SigninIcon);
+        getReusableActionsInstance().javascriptScrollByVisibleElement(this.SignInIcon);
         getReusableActionsInstance().staticWait(3000);
-        getReusableActionsInstance().clickIfAvailable(this.SigninIcon);
+        getReusableActionsInstance().clickIfAvailable(this.SignInIcon);
         getReusableActionsInstance().staticWait(2000);
         getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInMainMenu);
         getReusableActionsInstance().scrollToElement(this.btnSignInMainMenu);

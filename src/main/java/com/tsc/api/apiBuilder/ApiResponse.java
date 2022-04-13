@@ -268,7 +268,7 @@ public class ApiResponse extends ApiConfigs {
      * @param - String - apiEndPoint : api endpoint after base URI where call will be made
      * @return - Response - Response from api
      */
-    private Response getApiCallResponse(Map<String,Object> config,String apiEndPoint){
+    public Response getApiCallResponse(Map<String,Object> config,String apiEndPoint){
     	if(config!=null) {
     		return RestAssured.given().
                     when().params(config).header("Content-Type","application/json").log().all().
@@ -286,7 +286,7 @@ public class ApiResponse extends ApiConfigs {
      * @param - String - url : url that contains dimension number
      * @return - String - Dimension Number
      */
-    private String getDimensionNumberFromURL(String url){
+    public String getDimensionNumberFromURL(String url){
     	String lsDimension;
     	String lsVersion= super.getApiPropertyData().get("test_apiVersion");
 
@@ -786,6 +786,8 @@ public class ApiResponse extends ApiConfigs {
 			map.put("lastPage",String.valueOf(lastPage));
 			return map;
 		}
-	return null;
+		return null;
 	}
+
+
 }
