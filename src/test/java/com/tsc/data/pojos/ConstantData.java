@@ -823,6 +823,7 @@ public class ConstantData {
         private String lbl_Username;
         private String lbl_Password;
         private String lbl_FirstName;
+        private String lbl_SignOutMessage;
         
         public String getLbl_Username() {
             return lbl_Username;
@@ -848,6 +849,9 @@ public class ConstantData {
             this.lbl_FirstName = lbl_FirstName;
         }
 
+        public String getLbl_SignOutMessage() {            return lbl_SignOutMessage;        }
+
+        public void setLbl_SignOutMessage(String lbl_SignOutMessage) {            this.lbl_SignOutMessage = lbl_SignOutMessage;        }
     }
 
 }

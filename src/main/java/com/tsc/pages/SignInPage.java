@@ -365,5 +365,25 @@ public class SignInPage extends BasePage {
 		reporter.softAssert(this.btnSignInMainMenu.getText().toUpperCase().contains(lsFirstName.toUpperCase()),"The user first name of '"+lsFirstName+"' is displaying in SignIn heading menu","The user first name of '"+lsFirstName+"' is not displaying in SignIn heading menu");
 	}
 
-	
+	/**
+	 * This function returns customer no for logged user
+	 * @return - String - customer no from UI
+	 */
+	public String getCustomerNumberForLoggedInUser(){
+		this.waitForCondition(Driver->{return this.lblCustomerNO.isDisplayed();},10000);
+		return this.getElementText(this.lblCustomerNO);
+	}
+
+	/**
+	 * This function verifies that user is signed out successfully
+	 * @param - String sign out message on UI
+	 */
+	public void verifySignOutMessage(String signOutMessage){
+		this.waitForCondition(Driver->{return !this.lblSignOut.getText().isEmpty();},10000);
+		String actualSignOutMessage = this.getElementText(this.lblSignOut);
+		if(actualSignOutMessage.equalsIgnoreCase(signOutMessage))
+			reporter.reportLogPass("User is successfully logged out with message as expected: "+actualSignOutMessage);
+		else
+			reporter.softAssert(actualSignOutMessage.equalsIgnoreCase(signOutMessage),"","User is not logged out with actual message: "+actualSignOutMessage+" whereas expected message was: "+signOutMessage);
+	}
 }

@@ -2,11 +2,8 @@ package com.tsc.api.apiBuilder;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.tsc.api.pojo.AccountCartResponse;
-import com.tsc.api.pojo.Product;
+import com.tsc.api.pojo.*;
 import com.tsc.api.pojo.Product.edps;
-import com.tsc.api.pojo.ProductDetailsItem;
-import com.tsc.api.pojo.SelectedProduct;
 import com.tsc.api.util.DataConverter;
 import com.tsc.api.util.JsonParser;
 import extentreport.ExtentTestManager;
@@ -912,8 +909,12 @@ public class ApiResponse extends ApiConfigs {
 	 * This method is to fetch account details for a user using EDP
 	 * @param - String - customerEDP
 	 */
-	public void getUserDetailsFromCustomerEDP(String customerEDP,String accessToken){
+	public AccountResponse getUserDetailsFromCustomerEDP(String customerEDP, String accessToken){
 		String apiEndPoint = propertyData.get("test_apiVersion") + "/" + propertyData.get("test_language")+"/accounts/" + customerEDP;
 		Response response = getApiCallResponseAfterAuthentication(null,apiEndPoint,accessToken);
+		if(response.getStatusCode()==200)
+			return JsonParser.getResponseObject(response.asString(), new TypeReference<AccountResponse>() {});
+		else
+			return null;
 	}
 }
