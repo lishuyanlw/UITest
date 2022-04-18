@@ -2299,4 +2299,34 @@ public class ProductDetailPage extends BasePage {
 		return prp.waitForPDPPageLoading();
 	}
 
+	/**
+	 * Method to set specific Style and Size
+	 * @return void
+	 * @author Wei.Li
+	 */
+	public void setProductStyleAndSize(String lsStyle,String lsSize) {
+		int loopSize;
+		if(this.judgeStyleDisplayModeIsDropdownMenu()) {
+			Select selectStyle= new Select(this.selectProductStyle);
+			selectStyle.selectByVisibleText(lsStyle);
+		}
+		else {
+			loopSize=this.lstRadioStyleLabelSpanList.size();
+			WebElement radioItem,labelItem;
+			for(int i=0;i<loopSize;i++) {
+				radioItem=this.lstRadioStyleLabelSpanList.get(i);
+				labelItem=this.lstRadioStyleLabelList.get(i);
+				if(labelItem.getAttribute("title").equalsIgnoreCase(lsStyle)){
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(radioItem);
+					labelItem.click();
+					this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+					break;
+				}
+			}
+		}
+		Select selectSize= new Select(this.selectSizeOption);
+		selectSize.selectByVisibleText(lsSize);
+		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+	}
+
 }

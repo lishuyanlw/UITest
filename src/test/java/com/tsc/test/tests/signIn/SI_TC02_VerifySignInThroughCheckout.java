@@ -1,6 +1,7 @@
 package com.tsc.test.tests.signIn;
 
 import com.tsc.api.apiBuilder.ProductAPI;
+import com.tsc.api.pojo.Product;
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
@@ -28,7 +29,10 @@ public class SI_TC02_VerifySignInThroughCheckout extends BaseTest{
 		this.getDriver().get(pdpNavigationUrl);
 		basePage.waitForCondition(Driver->{return getProductDetailPageThreadLocal().lblProductName.isDisplayed();},10000);
 
+		Product.edps edp=(Product.edps)mapEDP.get("EDP");
+		getProductDetailPageThreadLocal().setProductStyleAndSize(edp.getStyle(),edp.getSize());
 
+		basePage.getReusableActionsInstance().staticWait(5000);
 	}
 }
 
