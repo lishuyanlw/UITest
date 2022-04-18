@@ -893,8 +893,6 @@ public class ApiResponse extends ApiConfigs {
 		return null;
 	}
 
-
-
 	/**
 	 * This method is for placing oder for given user so that oder end on My Account page
 	 */
@@ -908,5 +906,14 @@ public class ApiResponse extends ApiConfigs {
 				this.addCreditCardToUser((org.json.JSONObject) creditCardDetails.get("tscCard"),customerEDP,accessToken);
 			}
 		}
+	}
+
+	/**
+	 * This method is to fetch account details for a user using EDP
+	 * @param - String - customerEDP
+	 */
+	public void getUserDetailsFromCustomerEDP(String customerEDP,String accessToken){
+		String apiEndPoint = propertyData.get("test_apiVersion") + "/" + propertyData.get("test_language")+"/accounts/" + customerEDP;
+		Response response = getApiCallResponseAfterAuthentication(null,apiEndPoint,accessToken);
 	}
 }

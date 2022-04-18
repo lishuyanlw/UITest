@@ -43,7 +43,7 @@ public class BaseTest {
 	protected static JSONObject apiAppSessionData = null;
 
 	protected static final ThreadLocal<WebDriver> webDriverThreadLocal = new ThreadLocal<>();
-	protected static final ThreadLocal<GlobalHeaderPage> globalheaderPageThreadLocal = new ThreadLocal<>();
+	protected static final ThreadLocal<GlobalHeaderPage> globalHeaderPageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<HomePage> homePageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<GlobalFooterPage> globalFooterPageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<ProductResultsPage> productResultsPageThreadLocal = new ThreadLocal<>();
@@ -73,7 +73,7 @@ public class BaseTest {
 	public static ApiResponse getApiResponseThreadLocal() {return apiResponseThreadLocal.get();}
 
 	// @return the globalheaderPageThreadLocal
-	protected static GlobalHeaderPage getglobalheaderPageThreadLocal() {return globalheaderPageThreadLocal.get();	}
+	protected static GlobalHeaderPage getglobalheaderPageThreadLocal() {return globalHeaderPageThreadLocal.get();	}
 
 	// @return the homePageThreadLocal
 	protected static HomePage homePageThreadLocal() {	return homePageThreadLocal.get();	}
@@ -111,7 +111,7 @@ public class BaseTest {
 
 	private void init() throws IOException {
 		homePageThreadLocal.set(new HomePage(getDriver()));
-		globalheaderPageThreadLocal.set(new GlobalHeaderPage(getDriver()));
+		globalHeaderPageThreadLocal.set(new GlobalHeaderPage(getDriver()));
 		globalFooterPageThreadLocal.set(new GlobalFooterPage(getDriver()));
 		productResultsPageThreadLocal.set(new ProductResultsPage(getDriver()));
 		globalFooterPageThreadLocal.set(new GlobalFooterPage(getDriver()));
@@ -123,7 +123,7 @@ public class BaseTest {
 	}
 
 	private void init_Mobile() throws IOException {
-		globalheaderPageThreadLocal.set(new GlobalHeaderPage_Mobile(getDriver()));
+		globalHeaderPageThreadLocal.set(new GlobalHeaderPage_Mobile(getDriver()));
 		loginPageThreadLocal.set(new SignInPage_Mobile(getDriver()));
 		globalFooterPageThreadLocal.set(new GlobalFooterPage_Mobile(getDriver()));
 		productResultsPageThreadLocal.set(new ProductResultsPage_Mobile(getDriver()));
@@ -153,9 +153,9 @@ public class BaseTest {
 						&& !System.getProperty("chromeMobileDevice").contains("iPad"))) {
 			productDetailPageThreadLocal.set(new ProductDetailPage_Mobile(getDriver()));
 			globalFooterPageThreadLocal.set(new GlobalFooterPage_Mobile(getDriver()));
-			globalheaderPageThreadLocal.set(new GlobalHeaderPage_Mobile(getDriver()));
+			globalHeaderPageThreadLocal.set(new GlobalHeaderPage_Mobile(getDriver()));
 		}else {
-			globalheaderPageThreadLocal.set(new GlobalHeaderPage_Tablet(getDriver()));
+			globalHeaderPageThreadLocal.set(new GlobalHeaderPage_Tablet(getDriver()));
 			productDetailPageThreadLocal.set(new ProductDetailPage_Tablet(getDriver()));
 		}
 
@@ -183,7 +183,7 @@ public class BaseTest {
 	}
 
 	public void startSession (String strUrl, String strBrowser, String strLanguage, Method currentTestMethodName,
-							  boolean bypassCaptcha) throws ClientProtocolException, IOException {
+							  boolean bypassCaptcha) throws IOException {
 		RunParameters = getExecutionParameters(strBrowser, strLanguage);
 		strBrowser = RunParameters.get("Browser").toLowerCase();
 		strLanguage = RunParameters.get("Language").toLowerCase();
