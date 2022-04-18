@@ -1,8 +1,6 @@
 package com.tsc.api.util;
-
 import org.json.simple.parser.JSONParser;
 import org.json.simple.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -90,5 +88,44 @@ public class DataConverter {
         }
 
         return jsonObject;
+    }
+
+    /**
+     * To generate random string
+     * @param length: generated string length
+     * @param lsType: numberType/stringType/upperStringType/upperStringType/mixType
+     * @return
+     */
+    public static String getSaltString(int length,String lsType) {
+        String SALTCHARS = "";
+        switch (lsType) {
+            case "numberType":
+                SALTCHARS = "1234567890";
+                break;
+            case "stringType":
+                SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+                break;
+            case "upperStringType":
+                SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                break;
+            case "lowerStringType":
+                SALTCHARS = "abcdefghijklmnopqrstuvwxyz";
+                break;
+            case "mixType":
+                SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
+                break;
+            default:
+                break;
+        }
+
+        StringBuilder salt = new StringBuilder();
+        Random rnd = new Random();
+        while (salt.length() < length) { // length of the random string.
+            int index = (int) (rnd.nextFloat() * SALTCHARS.length());
+            salt.append(SALTCHARS.charAt(index));
+        }
+        String saltStr = salt.toString();
+
+        return saltStr;
     }
 }

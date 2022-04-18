@@ -823,7 +823,14 @@ public class ConstantData {
         private String lbl_Username;
         private String lbl_Password;
         private String lbl_FirstName;
-        
+        private String lbl_SignInTitleFromStartPage;
+        private String lbl_SignInTitleFromCheckout;
+        private String lbl_SignInButtonFromStartPage;
+        private String lbl_SignInButtonFromCheckout;
+        private String lbl_ErrorMessageForUserName;
+        private String lbl_ErrorMessageForPassword;
+        private String lbl_ErrorMessageForUserNameAndPassword;
+
         public String getLbl_Username() {
             return lbl_Username;
         }
@@ -848,6 +855,61 @@ public class ConstantData {
             this.lbl_FirstName = lbl_FirstName;
         }
 
+        public String getLbl_SignInTitleFromStartPage() {
+            return lbl_SignInTitleFromStartPage;
+        }
+
+        public void setLbl_SignInTitleFromStartPage(String lbl_SignInTitleFromStartPage) {
+            this.lbl_SignInTitleFromStartPage = lbl_SignInTitleFromStartPage;
+        }
+
+        public String getLbl_SignInTitleFromCheckout() {
+            return lbl_SignInTitleFromCheckout;
+        }
+
+        public void setLbl_SignInTitleFromCheckout(String lbl_SignInTitleFromCheckout) {
+            this.lbl_SignInTitleFromCheckout = lbl_SignInTitleFromCheckout;
+        }
+
+        public String getLbl_SignInButtonFromStartPage() {
+            return lbl_SignInButtonFromStartPage;
+        }
+
+        public void setLbl_SignInButtonFromStartPage(String lbl_SignInButtonFromStartPage) {
+            this.lbl_SignInButtonFromStartPage = lbl_SignInButtonFromStartPage;
+        }
+
+        public String getLbl_SignInButtonFromCheckout() {
+            return lbl_SignInButtonFromCheckout;
+        }
+
+        public void setLbl_SignInButtonFromCheckout(String lbl_SignInButtonFromCheckout) {
+            this.lbl_SignInButtonFromCheckout = lbl_SignInButtonFromCheckout;
+        }
+
+        public String getLbl_ErrorMessageForUserName() {
+            return lbl_ErrorMessageForUserName;
+        }
+
+        public void setLbl_ErrorMessageForUserName(String lbl_ErrorMessageForUserName) {
+            this.lbl_ErrorMessageForUserName = lbl_ErrorMessageForUserName;
+        }
+
+        public String getLbl_ErrorMessageForPassword() {
+            return lbl_ErrorMessageForPassword;
+        }
+
+        public void setLbl_ErrorMessageForPassword(String lbl_ErrorMessageForPassword) {
+            this.lbl_ErrorMessageForPassword = lbl_ErrorMessageForPassword;
+        }
+
+        public String getLbl_ErrorMessageForUserNameAndPassword() {
+            return lbl_ErrorMessageForUserNameAndPassword;
+        }
+
+        public void setLbl_ErrorMessageForUserNameAndPassword(String lbl_ErrorMessageForUserNameAndPassword) {
+            this.lbl_ErrorMessageForUserNameAndPassword = lbl_ErrorMessageForUserNameAndPassword;
+        }
     }
 
 }

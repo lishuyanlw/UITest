@@ -2329,4 +2329,18 @@ public class ProductDetailPage extends BasePage {
 		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 	}
 
+	/**
+	 * Method to go To SignIn By Clicking Checkout button In AddToBag Popup Window
+	 * @return void
+	 * @author Wei.Li
+	 */
+	public void goToSignInByClickingCheckoutInAddToBagPopupWindow(){
+		openAddToBagPopupWindow();
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnAddToBagPopupWindowButtonSectionCheckOut);
+		this.getReusableActionsInstance().clickIfAvailable(this.btnAddToBagPopupWindowButtonSectionCheckOut);
+
+		SignInPage signInPage=new SignInPage(this.getDriver());
+		this.getReusableActionsInstance().waitForElementVisibility(signInPage.lblSignIn,20);
+	}
+
 }
