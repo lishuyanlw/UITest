@@ -10,6 +10,16 @@ public class ConstantData {
     public SearchResultPage searchResultPage;
     public FooterSection footerSection;
     public LoginUser loginUser;
+    public APIUserSessionParams apiUserSessionParams;
+    public APIAppSessionParams apiAppSessionParams;
+
+    public APIUserSessionParams getApiUserSessionParams() { return apiUserSessionParams; }
+
+    public void setApiUserSessionParams(APIUserSessionParams apiUserSessionParams) { this.apiUserSessionParams = apiUserSessionParams; }
+
+    public APIAppSessionParams getApiAppSessionParams() {        return apiAppSessionParams;    }
+
+    public void setApiAppSessionParams(APIAppSessionParams apiAppSessionParams) {        this.apiAppSessionParams = apiAppSessionParams;    }
 
     public HeaderSection getHeaderSection() {
         return headerSection;
@@ -439,6 +449,52 @@ public class ConstantData {
 
         public void setLbl_TopSellers(String lbl_TopSellers) {
             this.lbl_TopSellers = lbl_TopSellers;
+        }
+    }
+
+    public static class APIUserSessionParams{
+        private String lbl_username;
+        private String lbl_password;
+        private String lbl_grantType;
+        private String lbl_apiKey;
+
+        public String getLbl_username() { return lbl_username;  }
+        public void setLbl_username(String lbl_username) { this.lbl_username = lbl_username;     }
+        public String getLbl_password() {        return lbl_password;     }
+        public void setLbl_password(String lbl_password) {          this.lbl_password = lbl_password;    }
+        public String getLbl_grantType() {         return lbl_grantType;      }
+        public void setLbl_grantType(String lbl_grantType) {       this.lbl_grantType = lbl_grantType;     }
+        public String getLbl_apiKey() {         return lbl_apiKey;     }
+        public void setLbl_apiKey(String lbl_apiKey) {         this.lbl_apiKey = lbl_apiKey;     }
+    }
+
+    public static class APIAppSessionParams{
+        private String lbl_username;
+        private String lbl_password;
+        private String lbl_grantType;
+
+        public String getLbl_username() {
+            return lbl_username;
+        }
+
+        public void setLbl_username(String lbl_username) {
+            this.lbl_username = lbl_username;
+        }
+
+        public String getLbl_password() {
+            return lbl_password;
+        }
+
+        public void setLbl_password(String lbl_password) {
+            this.lbl_password = lbl_password;
+        }
+
+        public String getLbl_grantType() {
+            return lbl_grantType;
+        }
+
+        public void setLbl_grantType(String lbl_grantType) {
+            this.lbl_grantType = lbl_grantType;
         }
     }
 

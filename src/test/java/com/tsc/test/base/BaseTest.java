@@ -3,18 +3,20 @@ package com.tsc.test.base;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import com.tsc.api.apiBuilder.ApiResponse;
+import com.tsc.api.util.DataConverter;
+import com.tsc.data.pojos.ConstantData;
 import com.tsc.pages.*;
-import com.tsc.pages.base.BasePage;
 
 import extentreport.ExtentListener;
 import org.apache.http.client.ClientProtocolException;
+import org.json.JSONObject;
 import org.openqa.selenium.WebDriver;
 import org.testng.ITestContext;
 import org.testng.annotations.AfterMethod;
@@ -37,9 +39,11 @@ public class BaseTest {
 	protected BrowserDrivers browserDrivers;
 	protected String suiteName;
 	private Map<String, String> RunParameters;
+	protected static JSONObject apiUserSessionData = null;
+	protected static JSONObject apiAppSessionData = null;
 
 	protected static final ThreadLocal<WebDriver> webDriverThreadLocal = new ThreadLocal<>();
-	protected static final ThreadLocal<GlobalHeaderPage> globalheaderPageThreadLocal = new ThreadLocal<>();
+	protected static final ThreadLocal<GlobalHeaderPage> globalHeaderPageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<HomePage> homePageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<GlobalFooterPage> globalFooterPageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<ProductResultsPage> productResultsPageThreadLocal = new ThreadLocal<>();
@@ -48,6 +52,8 @@ public class BaseTest {
 	protected static final ThreadLocal<String> TestDeviceThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<ApiResponse> apiResponseThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<ShoppingCart> shoppingCartThreadLocal = new ThreadLocal<>();
+	protected static final ThreadLocal<JSONObject> apiUserSessionDataMapThreadLocal = new ThreadLocal<>();
+	protected static final ThreadLocal<JSONObject> apiAppSessionDataMapThreadLocal = new ThreadLocal<>();
 
 	public BaseTest() {
 		browserDrivers = new BrowserDrivers();
@@ -67,7 +73,7 @@ public class BaseTest {
 	public static ApiResponse getApiResponseThreadLocal() {return apiResponseThreadLocal.get();}
 
 	// @return the globalheaderPageThreadLocal
-	protected static GlobalHeaderPage getglobalheaderPageThreadLocal() {return globalheaderPageThreadLocal.get();	}
+	protected static GlobalHeaderPage getglobalheaderPageThreadLocal() {return globalHeaderPageThreadLocal.get();	}
 
 	// @return the homePageThreadLocal
 	protected static HomePage homePageThreadLocal() {	return homePageThreadLocal.get();	}
@@ -90,13 +96,22 @@ public class BaseTest {
 		return loginPageThreadLocal.get();
 	}
 
+	//@return the ProductResultsPageThreadLocal
 	protected static String getTestDeviceThreadLocal () {
 		return TestDeviceThreadLocal.get();
 	}
 
+	//@return UserSessionDataThreadLocal
+	protected static JSONObject getApiUserSessionDataMapThreadLocal () {		return apiUserSessionDataMapThreadLocal.get();	}
+
+	//@return ApiAppSessionDataThreadLocal
+	protected static JSONObject getApiAppSessionDataMapThreadLocal () {
+		return apiAppSessionDataMapThreadLocal.get();
+	}
+
 	private void init() throws IOException {
 		homePageThreadLocal.set(new HomePage(getDriver()));
-		globalheaderPageThreadLocal.set(new GlobalHeaderPage(getDriver()));
+		globalHeaderPageThreadLocal.set(new GlobalHeaderPage(getDriver()));
 		globalFooterPageThreadLocal.set(new GlobalFooterPage(getDriver()));
 		productResultsPageThreadLocal.set(new ProductResultsPage(getDriver()));
 		globalFooterPageThreadLocal.set(new GlobalFooterPage(getDriver()));
@@ -108,7 +123,7 @@ public class BaseTest {
 	}
 
 	private void init_Mobile() throws IOException {
-		globalheaderPageThreadLocal.set(new GlobalHeaderPage_Mobile(getDriver()));
+		globalHeaderPageThreadLocal.set(new GlobalHeaderPage_Mobile(getDriver()));
 		loginPageThreadLocal.set(new SignInPage_Mobile(getDriver()));
 		globalFooterPageThreadLocal.set(new GlobalFooterPage_Mobile(getDriver()));
 		productResultsPageThreadLocal.set(new ProductResultsPage_Mobile(getDriver()));
@@ -138,9 +153,9 @@ public class BaseTest {
 						&& !System.getProperty("chromeMobileDevice").contains("iPad"))) {
 			productDetailPageThreadLocal.set(new ProductDetailPage_Mobile(getDriver()));
 			globalFooterPageThreadLocal.set(new GlobalFooterPage_Mobile(getDriver()));
-			globalheaderPageThreadLocal.set(new GlobalHeaderPage_Mobile(getDriver()));
+			globalHeaderPageThreadLocal.set(new GlobalHeaderPage_Mobile(getDriver()));
 		}else {
-			globalheaderPageThreadLocal.set(new GlobalHeaderPage_Tablet(getDriver()));
+			globalHeaderPageThreadLocal.set(new GlobalHeaderPage_Tablet(getDriver()));
 			productDetailPageThreadLocal.set(new ProductDetailPage_Tablet(getDriver()));
 		}
 
@@ -168,7 +183,7 @@ public class BaseTest {
 	}
 
 	public void startSession (String strUrl, String strBrowser, String strLanguage, Method currentTestMethodName,
-							  boolean bypassCaptcha) throws ClientProtocolException, IOException {
+							  boolean bypassCaptcha) throws IOException {
 		RunParameters = getExecutionParameters(strBrowser, strLanguage);
 		strBrowser = RunParameters.get("Browser").toLowerCase();
 		strLanguage = RunParameters.get("Language").toLowerCase();
@@ -267,9 +282,38 @@ public class BaseTest {
 	@BeforeMethod(alwaysRun = true)
 	@Parameters({ "strBrowser", "strLanguage" })
 	public void beforeTest(@Optional("chrome") String strBrowser, @Optional("en") String strLanguage,
-			ITestContext testContext, Method method) throws ClientProtocolException, IOException {		
+			ITestContext testContext, Method method) throws ClientProtocolException, IOException, ParseException {
 		startSession(System.getProperty("QaUrl"), strBrowser, strLanguage, method, false);
 		getglobalheaderPageThreadLocal().waitForPageLoad();
+
+		//Getting api key to be used in api calls
+		//To get user token
+		if(apiUserSessionData == null) {
+			init();
+			ConstantData.APIUserSessionParams apiUserSessionParams = TestDataHandler.constantData.getApiUserSessionParams();
+			apiUserSessionData = apiResponseThreadLocal.get().getApiUserSessionData(apiUserSessionParams.getLbl_username(),apiUserSessionParams.getLbl_password(),apiUserSessionParams.getLbl_grantType(),apiUserSessionParams.getLbl_apiKey());
+		}
+
+		//To get app token
+		if(apiUserSessionData == null) {
+			ConstantData.APIAppSessionParams apiAppSessionParams = TestDataHandler.constantData.getApiAppSessionParams();
+			apiAppSessionData = apiResponseThreadLocal.get().getApiAppSessionData(apiAppSessionParams.getLbl_username(),apiAppSessionParams.getLbl_password(),apiAppSessionParams.getLbl_grantType(),apiUserSessionData.get("access_token").toString());
+		}
+
+		long apiSessionKeyValidTime = DataConverter.getTimeFromDate(apiUserSessionData.getString("expiration_time"),null);
+		long currentSystemTime = DataConverter.getLocalTimeInGMT();
+		//Will get new token every 51st minutes so that we have valid session token for all method execution
+		if((apiSessionKeyValidTime-currentSystemTime)>10*60*1000 ) {}
+		else{
+			ConstantData.APIUserSessionParams apiUserSessionParams = TestDataHandler.constantData.getApiUserSessionParams();
+			apiUserSessionData = apiResponseThreadLocal.get().getApiUserSessionData(apiUserSessionParams.getLbl_username(),apiUserSessionParams.getLbl_password(),apiUserSessionParams.getLbl_grantType(),apiUserSessionParams.getLbl_apiKey());
+
+			ConstantData.APIAppSessionParams apiAppSessionParams = TestDataHandler.constantData.getApiAppSessionParams();
+			apiAppSessionData = apiResponseThreadLocal.get().getApiAppSessionData(apiAppSessionParams.getLbl_username(),apiAppSessionParams.getLbl_password(),apiAppSessionParams.getLbl_grantType(),apiUserSessionData.get("access_token").toString());
+		}
+		apiUserSessionDataMapThreadLocal.set(apiUserSessionData);
+		apiAppSessionDataMapThreadLocal.set(apiAppSessionData);
+
 		// getHomePageThreadLocal().waitforOverlayLoadingSpinnerToDisapper();
 		// reporter.hardAssert(getHomePageThreadLocal().validateLogoRogers(), "Home Page
 		// Loaded", "Home Page Not Loaded");

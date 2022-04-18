@@ -1,6 +1,7 @@
 package com.tsc.api.apiBuilder;
 
 import com.tsc.api.util.PropertyReader;
+import com.tsc.pages.base.BasePage;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.json.JSONObject;
@@ -40,28 +41,30 @@ public class ApiClient {
             RestAssured.baseURI = propertyData.get("test_qaURL")+"/";
     }
 
-
-    /**************************************************************************************
-     *
-     * Common Methods used for API call
-     *
-     *************************************************************************************/
     /**
-     * This method makes GET call to api
-     * @param - Map<String,Object> - config : input params that are needed for GET call
+     * This method makes POST call to api after authentication
+     * @param - JSONObject - config : input Json object that is needed for POST call
      * @param - String - apiEndPoint : api endpoint after base URI where call will be made
      * @return - Response - Response from api
      */
-    protected Response getApiCallResponse(Map<String,Object> config, String apiEndPoint){
-        if(config!=null) {
-            return RestAssured.given().
-                    when().params(config).header("Content-Type","application/json").
-                    get(apiEndPoint);
+    protected Response postApiCallResponseAfterAuthenticationFromJSON(JSONObject config, String apiEndPoint, String accessToken){
+        if(config==null){
+            return RestAssured.given().header("Authorization",
+                            "Bearer " + accessToken).
+                    header("Content-Type","application/json").
+                    when().
+                    post(apiEndPoint).
+                    then().
+                    extract().response();
         }
-        else {
-            return RestAssured.given().
-                    when().header("Content-Type","application/json").
-                    get(apiEndPoint);
+        else{
+            return RestAssured.given().header("Authorization",
+                            "Bearer " + accessToken).
+                    header("Content-Type","application/json").
+                    when().body(config.toString()).
+                    post(apiEndPoint).
+                    then().
+                    extract().response();
         }
     }
 
@@ -90,30 +93,28 @@ public class ApiClient {
         }
     }
 
+
+    /**************************************************************************************
+     *
+     * Common Methods used for API call
+     *
+     *************************************************************************************/
     /**
-     * This method makes POST call to api after authentication
-     * @param - JSONObject - config : input Json object that is needed for POST call
+     * This method makes GET call to api
+     * @param - Map<String,Object> - config : input params that are needed for GET call
      * @param - String - apiEndPoint : api endpoint after base URI where call will be made
      * @return - Response - Response from api
      */
-    protected Response postApiCallResponseAfterAuthenticationFromJSON(JSONObject config, String apiEndPoint, String accessToken){
-        if(config==null){
-            return RestAssured.given().header("Authorization",
-                            "Bearer " + accessToken).
-                    header("Content-Type","application/json").
-                    when().
-                    post(apiEndPoint).
-                    then().
-                    extract().response();
+    protected Response getApiCallResponse(Map<String,Object> config, String apiEndPoint){
+        if(config!=null) {
+            return RestAssured.given().
+                    when().params(config).header("Content-Type","application/json").
+                    get(apiEndPoint);
         }
-        else{
-            return RestAssured.given().header("Authorization",
-                            "Bearer " + accessToken).
-                    header("Content-Type","application/json").
-                    when().body(config.toString()).
-                    post(apiEndPoint).
-                    then().
-                    extract().response();
+        else {
+            return RestAssured.given().
+                    when().header("Content-Type","application/json").
+                    get(apiEndPoint);
         }
     }
 
