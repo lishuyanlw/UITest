@@ -1,6 +1,7 @@
 package com.tsc.api.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -180,12 +181,6 @@ public class Product {
         AimRequestResponseLogThreshold = aimRequestResponseLogThreshold;
     }
 
-    @Override
-    public String toString(){
-        return null;
-    }
-
-    
     public static class Paging {
         public int TotalRecords;
         public int TotalPages;
@@ -482,6 +477,7 @@ public class Product {
         }
     }
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class OnAirInfo {
         public String OnAirStart;
         public int DurationInSecond;
@@ -503,6 +499,7 @@ public class Product {
         }
     }
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Styles {
         public String TypeId;
         public String DimensionId;
@@ -511,15 +508,6 @@ public class Product {
         public boolean HasChildren;
         public int ProductsCount;
         public ParentDimensions ParentDimensions;
-        public List<DimensionValueDetailSection> DimensionValueDetailSections;
-
-        public List<DimensionValueDetailSection> getDimensionValueDetailSections() {
-            return DimensionValueDetailSections;
-        }
-
-        public void setDimensionValueDetailSections(List<DimensionValueDetailSection> dimensionValueDetailSections) {
-            DimensionValueDetailSections = dimensionValueDetailSections;
-        }
 
         public String getTypeId() {
             return TypeId;
@@ -576,9 +564,9 @@ public class Product {
         public void setParentDimensions(Product.ParentDimensions parentDimensions) {
             ParentDimensions = parentDimensions;
         }
-
     }
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Sizes {
         public String TypeId;
         public String DimensionId;
@@ -587,15 +575,6 @@ public class Product {
         public boolean HasChildren;
         public int ProductsCount;
         public ParentDimensions ParentDimensions;
-        public List<DimensionValueDetailSection> DimensionValueDetailSections;
-
-        public List<DimensionValueDetailSection> getDimensionValueDetailSections() {
-            return DimensionValueDetailSections;
-        }
-
-        public void setDimensionValueDetailSections(List<DimensionValueDetailSection> dimensionValueDetailSections) {
-            DimensionValueDetailSections = dimensionValueDetailSections;
-        }
 
         public String getTypeId() {
             return TypeId;
@@ -656,141 +635,7 @@ public class Product {
 
     public static class ParentDimensions {}
 
-    public static class DimensionValueDetailSection{
-        public int InfoTabId;
-        public int TabTypeId;
-        public NameClass Name;
-        public NameClass OverrideTabName;
-        public int Order;
-        public List<Content> Contents;
-        public boolean IsItemLevel;
-
-        public int getInfoTabId() {
-            return InfoTabId;
-        }
-
-        public void setInfoTabId(int infoTabId) {
-            InfoTabId = infoTabId;
-        }
-
-        public int getTabTypeId() {
-            return TabTypeId;
-        }
-
-        public void setTabTypeId(int tabTypeId) {
-            TabTypeId = tabTypeId;
-        }
-
-        public NameClass getName() {
-            return Name;
-        }
-
-        public void setName(NameClass name) {
-            Name = name;
-        }
-
-        public NameClass getOverrideTabName() {
-            return OverrideTabName;
-        }
-
-        public void setOverrideTabName(NameClass overrideTabName) {
-            OverrideTabName = overrideTabName;
-        }
-
-        public int getOrder() {
-            return Order;
-        }
-
-        public void setOrder(int order) {
-            Order = order;
-        }
-
-        public List<Content> getContents() {
-            return Contents;
-        }
-
-        public void setContents(List<Content> contents) {
-            Contents = contents;
-        }
-
-        public boolean isItemLevel() {
-            return IsItemLevel;
-        }
-
-        public void setItemLevel(boolean itemLevel) {
-            IsItemLevel = itemLevel;
-        }
-    }
-
-    public static class NameClass{
-        public String En;
-        public String Fr;
-
-        public String getEn() {
-            return En;
-        }
-
-        public void setEn(String en) {
-            En = en;
-        }
-
-        public String getFr() {
-            return Fr;
-        }
-
-        public void setFr(String fr) {
-            Fr = fr;
-        }
-    }
-
-    public static class Content{
-        public int ContentOrder;
-        public String Type;
-        public int ContentPositionId;
-        public NameClass Content;
-        public boolean IsItemLevel;
-
-        public int getContentOrder() {
-            return ContentOrder;
-        }
-
-        public void setContentOrder(int contentOrder) {
-            ContentOrder = contentOrder;
-        }
-
-        public String getType() {
-            return Type;
-        }
-
-        public void setType(String type) {
-            Type = type;
-        }
-
-        public int getContentPositionId() {
-            return ContentPositionId;
-        }
-
-        public void setContentPositionId(int contentPositionId) {
-            ContentPositionId = contentPositionId;
-        }
-
-        public NameClass getContent() {
-            return Content;
-        }
-
-        public void setContent(NameClass content) {
-            Content = content;
-        }
-
-        public boolean isItemLevel() {
-            return IsItemLevel;
-        }
-
-        public void setItemLevel(boolean itemLevel) {
-            IsItemLevel = itemLevel;
-        }
-    }
-
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class edps {
         public String ItemNo;
         public int SkuAvailabilityType;
@@ -1011,6 +856,7 @@ public class Product {
         }
     }
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class DimensionStates {
         public String ListTitle;
         public String DimensionType;
@@ -1086,6 +932,7 @@ public class Product {
         }
     }
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Refinements {
         public String DimensionId;
         public String DimensionName;
@@ -1152,6 +999,7 @@ public class Product {
         }
     }
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Sorting {
         public SelectedSortOption SelectedSortOption;
         public List<SortOptions> SortOptions;
@@ -1173,6 +1021,7 @@ public class Product {
         }
     }
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class SelectedSortOption {
         public String Key;
         public String DisplayName;
@@ -1194,6 +1043,7 @@ public class Product {
         }
     }
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class SortOptions {
         public String Key;
         public String DisplayName;
@@ -1215,6 +1065,7 @@ public class Product {
         }
     }
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class QueryInfo {
         public String SearchTerm;
         public String QueryFilter;
@@ -1236,6 +1087,7 @@ public class Product {
         }
     }
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class QueryDims {
         public String TypeId;
         public String DimensionId;

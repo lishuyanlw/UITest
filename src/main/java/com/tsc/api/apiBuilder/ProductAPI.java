@@ -160,6 +160,50 @@ public class ProductAPI extends ApiClient {
      * @param - Boolean - firstTimeFunctionCall - determines as if the call is made first time or not
      * @return - List<Integer> - EDPNo
      */
+    public Map<String,Object> getNotSoldOutProductInfo(String searchKeyword,int inventoryAmount,boolean bEqual) throws IOException {
+        Map<String,Object> map=new HashMap<>();
+        Product product=getProductDetailsForKeyword(searchKeyword,null,true);;
+        List<Product.Products> dataList=null;
+        if(bEqual){
+            dataList =product.Products.stream().filter(item->item.getEdps().stream().anyMatch(subItem->subItem.getInventory()==inventoryAmount)).collect(Collectors.toList());
+        }
+        else{
+            dataList =product.Products.stream().filter(item->item.getEdps().stream().anyMatch(subItem->subItem.getInventory()>inventoryAmount)).collect(Collectors.toList());
+        }
+
+        for(Product.Products data:dataList) {
+            //To check if any Inventory is greater than 0, then means it is not SoldOut item
+            List<Product.edps> edpsList=null;
+            if(bEqual){
+                edpsList=data.getEdps().stream().filter(item->item.getInventory()==inventoryAmount).collect(Collectors.toList());
+            }
+            else{
+                edpsList=data.getEdps().stream().filter(item->item.getInventory()>inventoryAmount).collect(Collectors.toList());
+            }
+
+            for(Product.edps Edps:edpsList) {
+                if(getProductInventoryWithProductNumberAndEDPNumber(Edps.getItemNo(),Edps.getEdpNo())>2){
+                    map.put("productNumber",data.getItemNo());
+                    map.put("productName",data.getName());
+                    map.put("EDP",Edps);
+                    String pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName()+propertyData.get("test_partial_url_pdp")+data.getItemNo();
+                    map.put("pdpNavigationUrl",pdpNavigationUrl);
+
+                    return map;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * This method find EDPNo for not SoldOut product
+     * @param - String - searchKeyword : search keyword for Product
+     * @param - String - defaultPageItems : default items on page that you need in results
+     * @param - Boolean - firstTimeFunctionCall - determines as if the call is made first time or not
+     * @return - List<Integer> - EDPNo
+     */
     public List<Product.edps> getEDPNoForNotSoldOutProductContainTenQuantity(String searchKeyword,String defaultPageItems,boolean firstTimeFunctionCall,int returnProductCount) throws IOException {
         List<Product.edps> list = new ArrayList<>();
         Product product=getProductDetailsForKeyword(searchKeyword,defaultPageItems,firstTimeFunctionCall);
