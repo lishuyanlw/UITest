@@ -29,7 +29,7 @@ public class SI_TC01_VerifySignIn_SignOut_FromApplication_ForUser extends BaseTe
         if(customerNumber.equals(userCustomerNumber))
             getReporter().reportLogPass("User is successfully logged in with customer no: "+userCustomerNumber);
         else
-            getReporter().softAssert(customerNumber.equals(userCustomerNumber),"","User is not logged in with expected customer no: "+userCustomerNumber+" but with other customer no: "+customerNumber);
+            getReporter().reportLogFailWithScreenshot("User is not logged in with expected customer no: "+userCustomerNumber+" but with other customer no: "+customerNumber);
 
         //Sign out functionality
         getGlobalLoginPageThreadLocal().SignOut();

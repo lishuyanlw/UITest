@@ -186,3 +186,4 @@ loginUser:
   lbl_Password: testMail123
   lbl_FirstName: Test
   lbl_SignOutMessage: "You’ve been signed out successfully"
+  lst_RightSideSectionSignInPage: ["Create New Account","Continue As Guest"]

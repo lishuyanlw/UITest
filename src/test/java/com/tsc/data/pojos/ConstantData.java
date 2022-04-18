@@ -824,6 +824,7 @@ public class ConstantData {
         private String lbl_Password;
         private String lbl_FirstName;
         private String lbl_SignOutMessage;
+        private List<String> lst_RightSideSectionSignInPage;
         
         public String getLbl_Username() {
             return lbl_Username;
@@ -852,6 +853,10 @@ public class ConstantData {
         public String getLbl_SignOutMessage() {            return lbl_SignOutMessage;        }
 
         public void setLbl_SignOutMessage(String lbl_SignOutMessage) {            this.lbl_SignOutMessage = lbl_SignOutMessage;        }
+
+        public List<String> getLst_RightSideSectionSignInPage() {            return lst_RightSideSectionSignInPage;        }
+
+        public void setLst_RightSideSectionSignInPage(List<String> lst_RightSideSectionSignInPage) {            this.lst_RightSideSectionSignInPage = lst_RightSideSectionSignInPage;        }
     }
 
 }
