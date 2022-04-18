@@ -5,46 +5,151 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import com.tsc.pages.base.BasePage;
 
-public class LoginPage extends BasePage {
+public class SignInPage extends BasePage {
 	
-	public LoginPage(WebDriver driver) {
+	public SignInPage(WebDriver driver) {
 		super(driver);
-		
 	}
-	
+
+	@FindBy(xpath = "//div[contains(@class,'secondary-navigation__rhs-account')]//a//*[@class='secondary-navigation__rhs-account-icon']")
+	public WebElement SignInIcon;
+
 	//Sign in menu
 	@FindBy(xpath = "//div[contains(@class,'secondary-navigation__rhs-account')]//a[@href='/pages/myaccount']")
 	public WebElement btnSignInMainMenu;
-	
+
 	//DropDown menu
-	@FindBy(xpath = "//div[contains(@class,'secondary-navigation__rhs-account')]//nav//a[contains(@href,'signin')]")
-	public WebElement btnSignInNav;
-	
 	@FindBy(xpath = "//div[contains(@class,'secondary-navigation__rhs-account')]//nav")
 	public WebElement cntSignInPopover;
-		
-	//Sign in window
+
+	@FindBy(xpath = "//div[contains(@class,'secondary-navigation__rhs-account')]//nav//a[contains(@href,'signin')]")
+	public WebElement btnSignInNav;
+
+	@FindBy(xpath = "//div[contains(@class,'secondary-navigation__rhs-account')]//nav//a[@href='/pages/myaccount']")
+	public WebElement btnYourProfileNav;
+
+	@FindBy(xpath = "//div[contains(@class,'secondary-navigation__rhs-account')]//nav//a[@href='/pages/myaccount/orderstatus']")
+	public WebElement btnYourOrdersNav;
+
+	@FindBy(xpath = "//div[contains(@class,'secondary-navigation__rhs-account')]//nav//a[@href='/pages/myaccount/easypay']")
+	public WebElement btnYourEasyPaySchedule;
+
+	@FindBy(xpath = "//div[contains(@class,'secondary-navigation__rhs-account')]//nav//a[contains(@class,'secondary-navigation__rhs-account-panel-link--sign-out')]")
+	public WebElement btnSignOutNav;
+
+	//Sign in window on the left section
 	@FindBy(xpath = "//ng-component/div[@class='tsc-forms']/div[not(contains(@class,'signin-message'))][1]//h1")
 	public WebElement lblSignIn;
 	
 	@FindBy(xpath = "//ng-component/div[@class='tsc-forms']/div[not(contains(@class,'signin-message'))][1]//input[@id='username']")
 	public WebElement inputUserName;
+
+	@FindBy(xpath = "//ng-component/div[@class='tsc-forms']/div[not(contains(@class,'signin-message'))][1]//input[@id='username']/parent::div[contains(@class,'has-labels')]/following-sibling::div[@class='text-danger' and contains(.,'valid email')]")
+	public WebElement lbUserNameErrorMessage;
 	
 	@FindBy(xpath = "//ng-component/div[@class='tsc-forms']/div[not(contains(@class,'signin-message'))][1]//input[@id='password']")
 	public WebElement inputPassword;
+
+	@FindBy(xpath = "//ng-component/div[@class='tsc-forms']/div[not(contains(@class,'signin-message'))][1]//input[@id='password']/parent::div[contains(@class,'has-labels')]/following-sibling::div[@class='text-danger' and contains(.,'Password is required!')]")
+	public WebElement lbPasswordErrorMessage;
+
+	@FindBy(xpath = "//ng-component/div[@class='tsc-forms']/div[not(contains(@class,'signin-message'))][1]//input[@id='password']/parent::div[contains(@class,'has-labels')]/following-sibling::div[@class='text-danger' and contains(.,'email and password combination')]")
+	public WebElement lbUserNameAndPasswordCombinationErrorMessage;
+
+	@FindBy(xpath = "//ng-component/div[@class='tsc-forms']/div[not(contains(@class,'signin-message'))][1]//button[@id='pwdShowButton']")
+	public WebElement btnShowOrHidePassword;
+
+	@FindBy(xpath = "//ng-component/div[@class='tsc-forms']/div[not(contains(@class,'signin-message'))][1]//div[@class='tsc-checkbox']//input")
+	public WebElement ckbKeepMeSignedIn;
+
+	@FindBy(xpath = "//ng-component/div[@class='tsc-forms']/div[not(contains(@class,'signin-message'))][1]//div[@class='tsc-checkbox']//span")
+	public WebElement lblKeepMeSignedIn;
+
+	@FindBy(xpath = "//ng-component/div[@class='tsc-forms']/div[not(contains(@class,'signin-message'))][1]//a[@id='btn-learn-more']")
+	public WebElement lnkLearnMore;
+
+	@FindBy(xpath = "//ng-component/div[@class='tsc-forms']/div[not(contains(@class,'signin-message'))][1]//div[@id='recaptcha']")
+	public WebElement imgRecaptcha;
 	
 	@FindBy(xpath = "//ng-component/div[@class='tsc-forms']/div[not(contains(@class,'signin-message'))][1]//button[@type='submit']")
 	public WebElement btnSubmit;
+
+	@FindBy(xpath = "//ng-component/div[@class='tsc-forms']/div[not(contains(@class,'signin-message'))][1]//a[contains(@href,'passwordrequest')]")
+	public WebElement lnkForgotPassword;
+
+	@FindBy(xpath = "//div[contains(@class,'signin-bottomnote') and contains(@class,'hidden-xs')]")
+	public WebElement lblConfidence;
+
+	@FindBy(xpath = "//div[contains(@class,'signin-bottomnote') and contains(@class,'hidden-xs')]//a[contains(@href,'aboutusprivacy')]")
+	public WebElement lnkPrivacyAndSecurity;
+
+	//For Right section
+	@FindBy(xpath = "//ng-component/div[@class='tsc-forms']/div[not(contains(@class,'signin-message'))][2]//h1[@class='section-title']")
+	public WebElement lblRightSectionTitle;
+
+	@FindBy(xpath = "//ng-component/div[@class='tsc-forms']/div[not(contains(@class,'signin-message'))][2]//*[not(contains(@class,'tagTransfer')) and contains(@class,'btn')]")
+	public WebElement btnCreateAccountOrContinueAsGuest;
+
+	@FindBy(xpath = "//ng-component/div[@class='tsc-forms']/div[not(contains(@class,'signin-message'))][2]//div[@class='signin-subtitle-checkoutguest']")
+	public WebElement lblCheckoutWithoutCreatingAnAccount;
+
+	@FindBy(xpath = "//ng-component/div[@class='tsc-forms']/div[not(contains(@class,'signin-message'))][2]//a[contains(@class,'tagTransfer')]")
+	public WebElement btnTransferMyPhoneAccount;
 	
-	//After Sign in
+	//After Normal Sign in
 	@FindBy(xpath = "//ng-component//button[contains(@class,'btn-accnt-signout')]|//ul[contains(@class,'account-panel-content')]/li/a/span[contains(text(),'out')]")
 	public WebElement btnSignOut;
 	
 	@FindBy(xpath = "//div[@class='SuperCartridge']//div[@class='global-responsive-banner']")
 	public WebElement lblSignInGlobalResponseBanner;
 
-	@FindBy(xpath = "//ng-component//div[@class='clearfix']//*/span[contains(.,'ACCOUNT')]")
+	@FindBy(xpath = "//ng-component//span[contains(.,'ACCOUNT')]")
 	public WebElement lblSignInPageTitle;
+
+	@FindBy(xpath = "//ng-component//span[@class='custNo']/preceding-sibling::span")
+	public WebElement lblCustomerNOText;
+
+	@FindBy(xpath = "//ng-component//span[@class='custNo']")
+	public WebElement lblCustomerNO;
+
+	@FindBy(xpath = "//ng-component//div[@class='my-account-summary-container']")
+	public WebElement cntMyAccountSummary;
+
+	//Checkout page
+	@FindBy(xpath = "//div[@id='expressCheckout']//div[@class='header__progressbar']")
+	public WebElement cntCheckoutPaymentFlow;
+
+	//SignOut message
+	@FindBy(xpath = "//ng-component//div[contains(@class,'signin-message')]")
+	public WebElement lblSignOut;
+
+	/**
+	 *To get ShowOrHideButton Status: true for Show while false for Hide
+	 */
+	public boolean getShowOrHideButtonStatus(){
+		return btnShowOrHidePassword.findElement(By.xpath("./span[normalize-space(.)='Show']")).getAttribute("class").contains("label-show");
+	}
+
+	/**
+	 *To get input password input status: true for Showing asterisks while false for text directly
+	 */
+	public boolean getInputPasswordStatus(){
+		return inputPassword.getAttribute("type").equalsIgnoreCase("password");
+	}
+
+	/**
+	 *To get Keep Me Signed In Status: true for checked while false for unchecked
+	 */
+	public boolean getKeepMeSignedInStatus(){
+		return ckbKeepMeSignedIn.isSelected();
+	}
+
+	/**
+	 * To check if cookies exist
+	 */
+	public boolean checkCookieExisting(){
+		return this.getDriver().manage().getCookies().size()>0;
+	}
 	
 	/**
 	 * Method to login
@@ -259,5 +364,6 @@ public class LoginPage extends BasePage {
 		
 		reporter.softAssert(this.btnSignInMainMenu.getText().toUpperCase().contains(lsFirstName.toUpperCase()),"The user first name of '"+lsFirstName+"' is displaying in SignIn heading menu","The user first name of '"+lsFirstName+"' is not displaying in SignIn heading menu");
 	}
+
 	
 }

@@ -2170,7 +2170,7 @@ public class ProductDetailPage extends BasePage {
 	}
 
 	public void verifyFavShareMobileAction(String lsUserName, String lsPassword) {
-		LoginPage loginPage=new LoginPage(this.getDriver());
+		SignInPage loginPage=new SignInPage(this.getDriver());
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavShareMobile);
 		this.getReusableActionsInstance().clickIfAvailable(this.lnkFavShareMobile);
 		this.getReusableActionsInstance().waitForElementVisibility(loginPage.lblSignIn,  60);
