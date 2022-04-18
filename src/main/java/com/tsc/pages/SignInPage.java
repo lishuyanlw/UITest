@@ -549,10 +549,14 @@ public class SignInPage extends BasePage {
 	}
 
 	public void signInFromCheckout(String lsUserName, String lsPassword){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputUserName);
 		this.inputUserName.clear();
 		this.inputUserName.sendKeys(lsUserName);
+		
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputPassword);
 		this.inputPassword.clear();
 		this.inputPassword.sendKeys(lsPassword);
+
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSubmit);
 		this.getReusableActionsInstance().clickIfAvailable(this.btnSubmit);
 
