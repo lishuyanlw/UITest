@@ -23,7 +23,8 @@ public class SignInPage_Mobile extends SignInPage{
     @Override
     public boolean SignOut() {
         getReusableActionsInstance().javascriptScrollByVisibleElement(btnSignInMainMenu);
-        getReusableActionsInstance().clickIfAvailable(this.btnSignInMainMenu);
+        getReusableActionsInstance().staticWait(1000);
+        this.btnSignInMainMenu.click();
         getReusableActionsInstance().staticWait(2000);
         getReusableActionsInstance().clickIfAvailable(this.btnSignOut);
         waitForPageToLoad();
@@ -48,7 +49,9 @@ public class SignInPage_Mobile extends SignInPage{
 
     @Override
     public boolean Login(String lsUserName, String lsPassword,String lsFirstName) {
-        getReusableActionsInstance().clickIfAvailable(this.btnSignInMainMenu);
+        getReusableActionsInstance().javascriptScrollByVisibleElement(btnSignInMainMenu);
+        getReusableActionsInstance().staticWait(1000);
+        this.btnSignInMainMenu.click();
         getReusableActionsInstance().staticWait(2000);
         getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInNav);
         this.btnSignInNav.click();
@@ -89,7 +92,10 @@ public class SignInPage_Mobile extends SignInPage{
 
     @Override
     public boolean goToSignInPage() {
-        getReusableActionsInstance().clickIfAvailable(this.btnSignInMainMenu);
+        getReusableActionsInstance().javascriptScrollByVisibleElement(btnSignInMainMenu);
+        getReusableActionsInstance().scrollToElement(btnSignInMainMenu);
+        getReusableActionsInstance().staticWait(1000);
+        this.btnSignInMainMenu.click();
         getReusableActionsInstance().staticWait(2000);
         getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInNav);
         this.btnSignInNav.click();
