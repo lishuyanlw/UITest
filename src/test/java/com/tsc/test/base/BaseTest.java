@@ -289,7 +289,6 @@ public class BaseTest {
 		//Getting api key to be used in api calls
 		//To get user token
 		if(apiUserSessionData == null) {
-			init();
 			ConstantData.APIUserSessionParams apiUserSessionParams = TestDataHandler.constantData.getApiUserSessionParams();
 			apiUserSessionData = apiResponseThreadLocal.get().getApiUserSessionData(apiUserSessionParams.getLbl_username(),apiUserSessionParams.getLbl_password(),apiUserSessionParams.getLbl_grantType(),apiUserSessionParams.getLbl_apiKey());
 		}

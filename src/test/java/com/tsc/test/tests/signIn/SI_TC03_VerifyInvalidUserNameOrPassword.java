@@ -21,18 +21,8 @@ public class SI_TC03_VerifyInvalidUserNameOrPassword extends BaseTest{
 		BasePage basePage=new BasePage(this.getDriver());
 
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(basePage.getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");
-		reporter.reportLog("ProductDetail Page");
 
-		ProductAPI productAPI=new ProductAPI();
-		Map<String,Object> mapEDP=productAPI.getNotSoldOutProductInfo("boots",2,false);
-		String pdpNavigationUrl=mapEDP.get("pdpNavigationUrl").toString();
-		this.getDriver().get(pdpNavigationUrl);
-		basePage.waitForCondition(Driver->{return getProductDetailPageThreadLocal().lblProductName.isDisplayed();},10000);
-
-		Product.edps edp=(Product.edps)mapEDP.get("EDP");
-		getProductDetailPageThreadLocal().setProductStyleAndSize(edp.getStyle(),edp.getSize());
-
-		getProductDetailPageThreadLocal().goToSignInByClickingCheckoutInAddToBagPopupWindow();
+		getGlobalLoginPageThreadLocal().goToSignInPage();
 
 		String lsErrorMessageForUserName=TestDataHandler.constantData.getLoginUser().getLbl_ErrorMessageForUserName();
 		String lsErrorMessageForPassword=TestDataHandler.constantData.getLoginUser().getLbl_ErrorMessageForPassword();

@@ -824,6 +824,7 @@ public class ConstantData {
         private String lbl_Password;
         private String lbl_FirstName;
         private String lbl_SignOutMessage;
+        private String lbl_RightSideTitleSignInPage;
         private List<String> lst_RightSideSectionSignInPage;
         private String lbl_SignInTitleFromStartPage;
         private String lbl_SignInTitleFromCheckout;
@@ -921,6 +922,13 @@ public class ConstantData {
             this.lbl_ErrorMessageForUserNameAndPassword = lbl_ErrorMessageForUserNameAndPassword;
         }
 
+        public String getLbl_RightSideTitleSignInPage() {
+            return lbl_RightSideTitleSignInPage;
+        }
+
+        public void setLbl_RightSideTitleSignInPage(String lbl_RightSideTitleSignInPage) {
+            this.lbl_RightSideTitleSignInPage = lbl_RightSideTitleSignInPage;
+        }
     }
 
 }

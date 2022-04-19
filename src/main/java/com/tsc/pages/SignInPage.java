@@ -18,7 +18,7 @@ public class SignInPage extends BasePage {
 	public WebElement SignInIcon;
 
 	//Sign in menu
-	@FindBy(xpath = "//div[contains(@class,'secondary-navigation__rhs-account')]//a[@href='/pages/myaccount']")
+	@FindBy(xpath = "//div[@class='secondary-navigation__rhs-account']")
 	public WebElement btnSignInMainMenu;
 
 	//DropDown menu
@@ -130,10 +130,10 @@ public class SignInPage extends BasePage {
 	public WebElement lblSignOut;
 
 	/**
-	 *To get ShowOrHideButton Status: true for Show while false for Hide
+	 *To get ShowButton Status: true for Show while false for Hide
 	 */
-	public boolean getShowOrHideButtonStatus(){
-		return btnShowOrHidePassword.findElement(By.xpath("./span[normalize-space(.)='Show']")).getAttribute("class").contains("label-show");
+	public boolean getShowButtonStatus(){
+		return !btnShowOrHidePassword.findElement(By.xpath("./span[normalize-space(.)='Show']")).getAttribute("class").contains("hidden");
 	}
 
 	/**
@@ -196,6 +196,24 @@ public class SignInPage extends BasePage {
 		
 		return waitForCondition(Driver->{return lblSignInGlobalResponseBanner.isDisplayed();},90000);
 				
+	}
+
+	public boolean goToSignInPage() {
+		getReusableActionsInstance().javascriptScrollToTopOfPage();
+		String strBrowser = System.getProperty("Browser").trim();
+		if (strBrowser.toLowerCase().contains("android") || strBrowser.toLowerCase().contains("ios")
+				|| strBrowser.toLowerCase().contains("mobile")) {
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInMainMenu);
+			this.getReusableActionsInstance().clickIfAvailable(this.btnSignInMainMenu);
+			//this.btnSignInMainMenu.click();
+		} else {
+			this.getReusableActionsInstance().scrollToElement(this.btnSignInMainMenu);
+		}
+		getReusableActionsInstance().staticWait(3000);
+
+		this.getReusableActionsInstance().clickIfAvailable(this.btnSignInNav);
+
+		return waitForCondition(Driver->{return this.lblSignIn.isDisplayed();},30000);
 	}
 	
 	/**
@@ -411,7 +429,7 @@ public class SignInPage extends BasePage {
 	 */
 	public void verifyNewCustomerSignInRightSideSection(String sectionTitle,String createAccountOrGuestAccountButtonText){
 		String sectionTitleText = this.getElementText(this.lblSignInRightSideTitle);
-		if(sectionTitleText.equals(sectionTitle))
+		if(sectionTitleText.equalsIgnoreCase(sectionTitle))
 			reporter.reportLogPass("Sign In Page Right Section title is as expected: "+sectionTitleText);
 		else
 			reporter.reportLogFailWithScreenshot("Sign In Page Right Section title: "+sectionTitleText+" is not as expected: "+sectionTitle);
@@ -429,7 +447,7 @@ public class SignInPage extends BasePage {
 	public void verifyCommonSignInRightSideSectionControls(){
 		//Transfer My Phone Account
 		String transferPhoneAccountButtonText = this.getElementText(this.btnTransferMyPhoneAccount);
-		if(transferPhoneAccountButtonText.trim().equals("Transfer my Phone Account") &&
+		if(transferPhoneAccountButtonText.trim().equalsIgnoreCase("Transfer my Phone Account") &&
 		this.btnTransferMyPhoneAccount.isDisplayed() && this.btnTransferMyPhoneAccount.isEnabled())
 			reporter.reportLogPass("Transfer my Phone Account button is displayed as expected");
 		else
@@ -523,6 +541,7 @@ public class SignInPage extends BasePage {
 	}
 
 	public void verifyShowOrHidePasswordFunction(){
+		reporter.reportLog("Check the initial status");
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnShowOrHidePassword);
 		if(getInputPasswordStatus()){
 			reporter.reportLogPass("The input type is password");
@@ -531,15 +550,16 @@ public class SignInPage extends BasePage {
 			reporter.reportLogFailWithScreenshot("The input type is not password");
 		}
 
-		if(getShowOrHideButtonStatus()){
+		if(getShowButtonStatus()){
 			reporter.reportLogPass("The button text is 'show'");
 		}
 		else{
 			reporter.reportLogFailWithScreenshot("The button text is not 'show'");
 		}
 
+		reporter.reportLog("Check the status after clicking the button");
 		this.getReusableActionsInstance().clickIfAvailable(this.btnShowOrHidePassword);
-		this.waitForCondition(Driver->{return !getShowOrHideButtonStatus();},5000);
+		this.waitForCondition(Driver->{return !getShowButtonStatus();},5000);
 		if(!getInputPasswordStatus()){
 			reporter.reportLogPass("The input type is text");
 		}
@@ -547,7 +567,7 @@ public class SignInPage extends BasePage {
 			reporter.reportLogFailWithScreenshot("The input type is not text");
 		}
 
-		if(!getShowOrHideButtonStatus()){
+		if(!getShowButtonStatus()){
 			reporter.reportLogPass("The button text is 'hide'");
 		}
 		else{
@@ -598,7 +618,9 @@ public class SignInPage extends BasePage {
 		else{
 			reporter.reportLogFail("Forgot password link is empty");
 		}
+	}
 
+	public void verifyConfidence(){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblConfidence);
 		if(!this.lblConfidence.getText().isEmpty()){
 			reporter.reportLogPass("The confidence text is displaying correctly");
@@ -640,7 +662,7 @@ public class SignInPage extends BasePage {
 	 */
 	public void createNewAccountOrGuestAccountButton(String buttonText){
 		String appButtonText = this.getElementText(this.btnCreateAccountOrContinueAsGuest);
-		if(appButtonText.equals(buttonText))
+		if(appButtonText.equalsIgnoreCase(buttonText))
 			reporter.reportLogPass("Button Text is as expected: "+appButtonText);
 		else
 			reporter.reportLogFailWithScreenshot("Button Text displayed: "+appButtonText+" is not as expected: "+buttonText);
