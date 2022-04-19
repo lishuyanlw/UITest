@@ -11,7 +11,7 @@ public class SignInPage_Mobile extends SignInPage{
         super(driver);
     }
 
-    @FindBy(xpath="//div[contains(@class,'summary-logout')]")
+    @FindBy(xpath="//div[contains(@class,'summary-logout')]|//a/span[contains(@class,'rhs-account-panel-link__text') and contains(text(),'Sign')]")
     public WebElement btnSignOut;
 
     @Override
@@ -57,9 +57,9 @@ public class SignInPage_Mobile extends SignInPage{
 
     @Override
     public boolean Login(String lsUserName, String lsPassword,String lsFirstName) {
-        waitForCondition(Driver->{return this.SignInIcon.isDisplayed() && this.SignInIcon.isEnabled();},10000);
-        getReusableActionsInstance().javascriptScrollByVisibleElement(this.SignInIcon);
-        getReusableActionsInstance().staticWait(3000);
+        //waitForCondition(Driver->{return this.SignInIcon.isDisplayed() && this.SignInIcon.isEnabled();},10000);
+        //getReusableActionsInstance().javascriptScrollByVisibleElement(this.SignInIcon);
+        //getReusableActionsInstance().staticWait(3000);
         getReusableActionsInstance().clickIfAvailable(this.SignInIcon);
         getReusableActionsInstance().staticWait(2000);
         getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInMainMenu);
