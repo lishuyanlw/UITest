@@ -180,3 +180,5 @@ loginUser:
   lbl_ErrorMessageForUserName: A valid email is required!
   lbl_ErrorMessageForPassword: Password is required!
   lbl_ErrorMessageForUserNameAndPassword: Hm, this email and password combination does not match our records. Please double check and try again.
+  lbl_SignOutMessage: "You’ve been signed out successfully"
+
