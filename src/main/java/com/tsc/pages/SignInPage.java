@@ -101,7 +101,7 @@ public class SignInPage extends BasePage {
 
 	@FindBy(xpath = "//div[not(contains(@class,'divider-right'))]/div[@class='two-columns']//*[@class='section-title']/span")
 	public WebElement lblSignInRightSideTitle;
-	
+
 	//After Normal Sign in
 	@FindBy(xpath = "//ng-component//button[contains(@class,'btn-accnt-signout')]|//ul[contains(@class,'account-panel-content')]/li/a/span[contains(text(),'out')]")
 	public WebElement btnSignOut;
@@ -371,6 +371,71 @@ public class SignInPage extends BasePage {
 		reporter.softAssert(this.btnSignInMainMenu.getText().toUpperCase().contains(lsFirstName.toUpperCase()),"The user first name of '"+lsFirstName+"' is displaying in SignIn heading menu","The user first name of '"+lsFirstName+"' is not displaying in SignIn heading menu");
 	}
 
+	/**
+	 * This function returns customer no for logged user
+	 * @return - String - customer no from UI
+	 */
+	public String getCustomerNumberForLoggedInUser(){
+		this.waitForCondition(Driver->{return this.lblCustomerNO.isDisplayed();},10000);
+		return this.getElementText(this.lblCustomerNO);
+	}
+
+	/**
+	 * This function verifies that user is signed out successfully
+	 * @param - String sign out message on UI
+	 */
+	public void verifySignOutMessage(String signOutMessage){
+		this.waitForCondition(Driver->{return !this.lblSignOut.getText().isEmpty();},10000);
+		String actualSignOutMessage = this.getElementText(this.lblSignOut);
+		if(actualSignOutMessage.equalsIgnoreCase(signOutMessage))
+			reporter.reportLogPass("User is successfully logged out with message as expected: "+actualSignOutMessage);
+		else
+			reporter.reportLogFailWithScreenshot("User is not logged out with actual message: "+actualSignOutMessage+" whereas expected message was: "+signOutMessage);
+	}
+
+	/**
+	 * This function verifies right side section on Sign In page
+	 * @param - String - sectionTitle i.e. SignIn or Checkout from where we are navigated to Sign In Page
+	 * @param - String - createAccountOrGuestAccountButtonText - button text that is being displayed
+	 */
+	public void verifyRightSideSignInPageSection(String sectionTitle,String createAccountOrGuestAccountButtonText){
+		String currentPageURL = null;
+		if(this.getElementText(this.lblSignIn).toUpperCase().contains("SIGN"))
+			verifyNewCustomerSignInRightSideSection(sectionTitle,createAccountOrGuestAccountButtonText);
+	}
+
+	/**
+	 * This function verifies New Customer at right side section of page after navigating from sign in page
+	 * @param - String - sectionTitle i.e. SignIn or Checkout from where we are navigated to Sign In Page
+	 * @param - String - createAccountOrGuestAccountButtonText - button text that is being displayed
+	 */
+	public void verifyNewCustomerSignInRightSideSection(String sectionTitle,String createAccountOrGuestAccountButtonText){
+		String sectionTitleText = this.getElementText(this.lblSignInRightSideTitle);
+		if(sectionTitleText.equals(sectionTitle))
+			reporter.reportLogPass("Sign In Page Right Section title is as expected: "+sectionTitleText);
+		else
+			reporter.reportLogFailWithScreenshot("Sign In Page Right Section title: "+sectionTitleText+" is not as expected: "+sectionTitle);
+
+		//Create New Account Button
+		this.createNewAccountOrGuestAccountButton(createAccountOrGuestAccountButtonText);
+
+		//Transfer My Phone Account Button
+		this.verifyCommonSignInRightSideSectionControls();
+	}
+
+	/**
+	 * This section verifies common buttons on right side section of Sign In Page
+	 */
+	public void verifyCommonSignInRightSideSectionControls(){
+		//Transfer My Phone Account
+		String transferPhoneAccountButtonText = this.getElementText(this.btnTransferMyPhoneAccount);
+		if(transferPhoneAccountButtonText.trim().equals("Transfer my Phone Account") &&
+		this.btnTransferMyPhoneAccount.isDisplayed() && this.btnTransferMyPhoneAccount.isEnabled())
+			reporter.reportLogPass("Transfer my Phone Account button is displayed as expected");
+		else
+			reporter.reportLogFailWithScreenshot("Transfer my Phone Account Button is not as expected");
+	}
+
 	public void verifySignInTitle(String lsSignInTitle){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSignIn);
 		if(this.lblSignIn.getText().equalsIgnoreCase(lsSignInTitle)){
@@ -569,58 +634,6 @@ public class SignInPage extends BasePage {
 	}
 
 	/**
-	 * This function returns customer no for logged user
-	 * @return - String - customer no from UI
-	 */
-	public String getCustomerNumberForLoggedInUser(){
-		this.waitForCondition(Driver->{return this.lblCustomerNO.isDisplayed();},10000);
-		return this.getElementText(this.lblCustomerNO);
-	}
-
-	/**
-	 * This function verifies that user is signed out successfully
-	 * @param - String sign out message on UI
-	 */
-	public void verifySignOutMessage(String signOutMessage){
-		this.waitForCondition(Driver->{return !this.lblSignOut.getText().isEmpty();},10000);
-		String actualSignOutMessage = this.getElementText(this.lblSignOut);
-		if(actualSignOutMessage.equalsIgnoreCase(signOutMessage))
-			reporter.reportLogPass("User is successfully logged out with message as expected: "+actualSignOutMessage);
-		else
-			reporter.reportLogFailWithScreenshot("User is not logged out with actual message: "+actualSignOutMessage+" whereas expected message was: "+signOutMessage);
-	}
-
-	/**
-	 * This function verifies right side section on Sign In page
-	 * @param - String - sectionTitle i.e. SignIn or Checkout from where we are navigated to Sign In Page
-	 * @param - String - createAccountOrGuestAccountButtonText - button text that is being displayed
-	 */
-	public void verifyRightSideSignInPageSection(String sectionTitle,String createAccountOrGuestAccountButtonText){
-		String currentPageURL = null;
-		if(this.getElementText(this.lblSignIn).toUpperCase().contains("SIGN"))
-			verifyNewCustomerSignInRightSideSection(sectionTitle,createAccountOrGuestAccountButtonText);
-	}
-
-	/**
-	 * This function verifies New Customer at right side section of page after navigating from sign in page
-	 * @param - String - sectionTitle i.e. SignIn or Checkout from where we are navigated to Sign In Page
-	 * @param - String - createAccountOrGuestAccountButtonText - button text that is being displayed
-	 */
-	public void verifyNewCustomerSignInRightSideSection(String sectionTitle,String createAccountOrGuestAccountButtonText){
-		String sectionTitleText = this.getElementText(this.lblSignInRightSideTitle);
-		if(sectionTitleText.equals(sectionTitle))
-			reporter.reportLogPass("Sign In Page Right Section title is as expected: "+sectionTitleText);
-		else
-			reporter.reportLogFailWithScreenshot("Sign In Page Right Section title: "+sectionTitleText+" is not as expected: "+sectionTitle);
-
-		//Create New Account Button
-		this.createNewAccountOrGuestAccountButton(createAccountOrGuestAccountButtonText);
-
-		//Transfer My Phone Account Button
-		this.verifyCommonSignInRightSideSectionControls();
-	}
-
-	/**
 	 * This function verifies text on button displayed on Sign in page after navigating from different screens
 	 * @param - String - sectionTitle i.e. SignIn or Checkout from where we are navigated to Sign In Page
 	 * @param - String - buttonText that is displayed on screen
@@ -639,19 +652,6 @@ public class SignInPage extends BasePage {
 			else
 				reporter.reportLogFailWithScreenshot("Static Text displayed: "+staticText+" is not as expected: Checkout without creating an account");
 		}
-	}
-
-	/**
-	 * This section verifies common buttons on right side section of Sign In Page
-	 */
-	public void verifyCommonSignInRightSideSectionControls(){
-		//Transfer My Phone Account
-		String transferPhoneAccountButtonText = this.getElementText(this.btnTransferMyPhoneAccount);
-		if(transferPhoneAccountButtonText.trim().equals("Transfer my Phone Account") &&
-		this.btnTransferMyPhoneAccount.isDisplayed() && this.btnTransferMyPhoneAccount.isEnabled())
-			reporter.reportLogPass("Transfer my Phone Account button is displayed as expected");
-		else
-			reporter.reportLogFailWithScreenshot("Transfer my Phone Account Button is not as expected");
 	}
 
 }
