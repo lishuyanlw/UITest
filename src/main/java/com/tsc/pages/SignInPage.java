@@ -1,6 +1,9 @@
 package com.tsc.pages;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import com.tsc.pages.base.BasePage;
@@ -45,16 +48,16 @@ public class SignInPage extends BasePage {
 	public WebElement inputUserName;
 
 	@FindBy(xpath = "//ng-component/div[@class='tsc-forms']/div[not(contains(@class,'signin-message'))][1]//input[@id='username']/parent::div[contains(@class,'has-labels')]/following-sibling::div[@class='text-danger' and contains(.,'valid email')]")
-	public WebElement lbUserNameErrorMessage;
+	public WebElement lblUserNameErrorMessage;
 	
 	@FindBy(xpath = "//ng-component/div[@class='tsc-forms']/div[not(contains(@class,'signin-message'))][1]//input[@id='password']")
 	public WebElement inputPassword;
 
 	@FindBy(xpath = "//ng-component/div[@class='tsc-forms']/div[not(contains(@class,'signin-message'))][1]//input[@id='password']/parent::div[contains(@class,'has-labels')]/following-sibling::div[@class='text-danger' and contains(.,'Password is required!')]")
-	public WebElement lbPasswordErrorMessage;
+	public WebElement lblPasswordErrorMessage;
 
 	@FindBy(xpath = "//ng-component/div[@class='tsc-forms']/div[not(contains(@class,'signin-message'))][1]//input[@id='password']/parent::div[contains(@class,'has-labels')]/following-sibling::div[@class='text-danger' and contains(.,'email and password combination')]")
-	public WebElement lbUserNameAndPasswordCombinationErrorMessage;
+	public WebElement lblUserNameAndPasswordCombinationErrorMessage;
 
 	@FindBy(xpath = "//ng-component/div[@class='tsc-forms']/div[not(contains(@class,'signin-message'))][1]//button[@id='pwdShowButton']")
 	public WebElement btnShowOrHidePassword;
@@ -98,7 +101,7 @@ public class SignInPage extends BasePage {
 
 	@FindBy(xpath = "//div[not(contains(@class,'divider-right'))]/div[@class='two-columns']//*[@class='section-title']/span")
 	public WebElement lblSignInRightSideTitle;
-	
+
 	//After Normal Sign in
 	@FindBy(xpath = "//ng-component//button[contains(@class,'btn-accnt-signout')]|//ul[contains(@class,'account-panel-content')]/li/a/span[contains(text(),'out')]")
 	public WebElement btnSignOut;
@@ -452,6 +455,201 @@ public class SignInPage extends BasePage {
 			reporter.reportLogPass("Transfer my Phone Account button is displayed as expected");
 		else
 			reporter.reportLogFailWithScreenshot("Transfer my Phone Account Button is not as expected");
+	}
+
+	public void verifySignInTitle(String lsSignInTitle){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSignIn);
+		if(this.lblSignIn.getText().equalsIgnoreCase(lsSignInTitle)){
+			reporter.reportLogPass("SignIn title is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("SignIn title is not displaying correctly");
+		}
+	}
+
+	public void verifyUserNameAndPassword(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputUserName);
+		if(this.getReusableActionsInstance().isElementVisible(this.inputUserName)){
+			reporter.reportLogPass("Input username is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Input username is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputPassword);
+		if(this.getReusableActionsInstance().isElementVisible(this.inputPassword)){
+			reporter.reportLogPass("Input password is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Input password is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnShowOrHidePassword);
+		if(this.getReusableActionsInstance().isElementVisible(this.btnShowOrHidePassword)){
+			reporter.reportLogPass("ShowOrHide button is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("ShowOrHide button is not displaying correctly");
+		}
+	}
+
+	public void verifyErrorMessageForUserNameAndPassword(String lsUserName, String lsPassword, String lsErrorMessageForUserName,String lsErrorMessageForPassword,String lsErrorMessageForCombination){
+		if(!lsUserName.isEmpty()){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputUserName);
+			this.inputUserName.clear();
+			this.inputUserName.sendKeys(lsUserName);
+		}
+
+		if(!lsPassword.isEmpty()){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputPassword);
+			this.inputPassword.clear();
+			this.inputPassword.sendKeys(lsUserName);
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSubmit);
+		this.getReusableActionsInstance().clickIfAvailable(this.btnSubmit);
+
+		this.waitForCondition(Driver->{return this.lblUserNameAndPasswordCombinationErrorMessage.isDisplayed();},5000);
+
+		String regex = "^(.+)@(.+)$";
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(lsUserName);
+		if(!matcher.matches()){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblUserNameErrorMessage);
+			if(this.lblUserNameErrorMessage.getText().equalsIgnoreCase(lsErrorMessageForUserName)){
+				reporter.reportLogPass("Error message for username is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("Error message for username is not displaying correctly");
+			}
+		}
+
+		if(lsPassword.length()<2){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblPasswordErrorMessage);
+			if(this.lblPasswordErrorMessage.getText().equalsIgnoreCase(lsErrorMessageForPassword)){
+				reporter.reportLogPass("Error message for password is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("Error message for password is not displaying correctly");
+			}
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblUserNameAndPasswordCombinationErrorMessage);
+		if(this.lblUserNameAndPasswordCombinationErrorMessage.getText().equalsIgnoreCase(lsErrorMessageForCombination)){
+			reporter.reportLogPass("Error message for username and password is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Error message for username and password is not displaying correctly");
+		}
+	}
+
+	public void verifyShowOrHidePasswordFunction(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnShowOrHidePassword);
+		if(getInputPasswordStatus()){
+			reporter.reportLogPass("The input type is password");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The input type is not password");
+		}
+
+		if(getShowOrHideButtonStatus()){
+			reporter.reportLogPass("The button text is 'show'");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The button text is not 'show'");
+		}
+
+		this.getReusableActionsInstance().clickIfAvailable(this.btnShowOrHidePassword);
+		this.waitForCondition(Driver->{return !getShowOrHideButtonStatus();},5000);
+		if(!getInputPasswordStatus()){
+			reporter.reportLogPass("The input type is text");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The input type is not text");
+		}
+
+		if(!getShowOrHideButtonStatus()){
+			reporter.reportLogPass("The button text is 'hide'");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The button text is not 'hide'");
+		}
+	}
+
+	public void verifyKeepMeSignedInFunction(){
+		if(checkCookieExisting()){
+			reporter.reportLogPass("Cookie has been found when KeepMeSignedIn checked");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("No Cookie has been found when KeepMeSignedIn checked");
+		}
+	}
+
+	public void verifyKeepMeSignedInFunction(String lsButtonText){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSubmit);
+		if(this.btnSubmit.getText().equalsIgnoreCase(lsButtonText)){
+			reporter.reportLogPass("The button text is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The button text is not displaying correctly");
+		}
+	}
+
+	public void verifyOtherFieldsForLeftPart(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkLearnMore);
+		if(!this.lnkLearnMore.getAttribute("href").isEmpty()){
+			reporter.reportLogPass("Learn more link is not empty");
+		}
+		else{
+			reporter.reportLogFail("Learn more link is empty");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.imgRecaptcha);
+		if(this.getReusableActionsInstance().isElementVisible(this.imgRecaptcha)){
+			reporter.reportLogPass("The Recaptcha image is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Recaptcha image is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkForgotPassword);
+		if(!this.lnkForgotPassword.getAttribute("href").isEmpty()){
+			reporter.reportLogPass("Forgot password link is not empty");
+		}
+		else{
+			reporter.reportLogFail("Forgot password link is empty");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblConfidence);
+		if(!this.lblConfidence.getText().isEmpty()){
+			reporter.reportLogPass("The confidence text is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The confidence text is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkPrivacyAndSecurity);
+		if(!this.lnkPrivacyAndSecurity.getAttribute("href").isEmpty()){
+			reporter.reportLogPass("Privacy And Security link is not empty");
+		}
+		else{
+			reporter.reportLogFail("Privacy And Security link is empty");
+		}
+	}
+
+	public void signInFromCheckout(String lsUserName, String lsPassword){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputUserName);
+		this.inputUserName.clear();
+		this.inputUserName.sendKeys(lsUserName);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputPassword);
+		this.inputPassword.clear();
+		this.inputPassword.sendKeys(lsPassword);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSubmit);
+		this.getReusableActionsInstance().clickIfAvailable(this.btnSubmit);
+
+		this.waitForCondition(Driver->{return this.getReusableActionsInstance().isElementVisible(this.cntCheckoutPaymentFlow);},20000);
 	}
 
 }

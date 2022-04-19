@@ -187,3 +187,10 @@ loginUser:
   lbl_FirstName: Test
   lbl_SignOutMessage: "You’ve been signed out successfully"
   lst_RightSideSectionSignInPage: ["Create New Account","Continue As Guest"]
+  lbl_SignInTitleFromStartPage: SIGN IN
+  lbl_SignInTitleFromCheckout: SIGN-IN TO COMPLETE CHECKOUT
+  lbl_SignInButtonFromStartPage: SIGN IN
+  lbl_SignInButtonFromCheckout: CONTINUE CHECKOUT
+  lbl_ErrorMessageForUserName: A valid email is required!
+  lbl_ErrorMessageForPassword: Password is required!
+  lbl_ErrorMessageForUserNameAndPassword: Hm, this email and password combination does not match our records. Please double check and try again.
