@@ -283,9 +283,7 @@ public class SignInPage extends BasePage {
 	 */
 	public boolean SignOut() {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInMainMenu);
-		//getReusableActionsInstance().staticWait(4000);
 		getReusableActionsInstance().scrollToElement(this.btnSignInMainMenu);
-		//getReusableActionsInstance().staticWait(4000);
 		String lsUserMsg=this.btnSignInMainMenu.getText();
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignOut);
 		this.getReusableActionsInstance().clickIfAvailable(this.btnSignOut);

@@ -11,14 +11,14 @@ public class SignInPage_Mobile extends SignInPage{
         super(driver);
     }
 
-    @FindBy(xpath="//div[contains(@class,'summary-logout')]")
-    public WebElement btnSignOutSummary;
-
     @FindBy(xpath = "//div[contains(@class,'signin-bottomnote') and contains(@class,'visible-xs')]")
     public WebElement lblConfidence;
 
     @FindBy(xpath = "//div[contains(@class,'signin-bottomnote') and contains(@class,'visible-xs')]//a[contains(@href,'aboutusprivacy')]")
     public WebElement lnkPrivacyAndSecurity;
+
+    @FindBy(xpath="//div[contains(@class,'summary-logout')]|//a/span[contains(@class,'rhs-account-panel-link__text') and contains(text(),'Sign')]")
+    public WebElement btnSignOut;
 
     @Override
     public boolean SignOut() {
@@ -47,16 +47,34 @@ public class SignInPage_Mobile extends SignInPage{
         }
     }
 
+   /** @Override
+    public void verifySignInSection() {
+        getReusableActionsInstance().javascriptScrollByVisibleElement(this.SigninIcon);
+        this.SigninIcon.click();
+        getReusableActionsInstance().staticWait(2000);
+        //getReusableActionsInstance().javascriptScrollByVisibleElement(this.cntSignInPopover);
+        super.verifySignInSection();
+        /*getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInNav);
+        this.btnSignInNav.click();
+        (new GlobalFooterPage(this.getDriver())).waitForPageLoading();
+        reporter.softAssert(getReusableActionsInstance().isElementVisible(this.inputUserName),"Input field is existing","Input field is not existing");
+        reporter.softAssert(getReusableActionsInstance().isElementVisible(this.inputPassword),"Password field is existing","Password field is not existing");*//*
+    }*/
+
     @Override
     public boolean Login(String lsUserName, String lsPassword,String lsFirstName) {
-        //waitForCondition(Driver->{return this.SignInIcon.isDisplayed() && this.SignInIcon.isEnabled();},10000);
-        //getReusableActionsInstance().javascriptScrollByVisibleElement(this.SignInIcon);
-        //getReusableActionsInstance().staticWait(3000);
+        /**
+        waitForCondition(Driver->{return this.SignInIcon.isDisplayed() && this.SignInIcon.isEnabled();},10000);
+        getReusableActionsInstance().javascriptScrollByVisibleElement(this.SignInIcon);
+        getReusableActionsInstance().staticWait(3000);
+        */
         getReusableActionsInstance().clickIfAvailable(this.SignInIcon);
         getReusableActionsInstance().staticWait(2000);
-        getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInMainMenu);
+        /**
+        getReusableActionsInstance().javascriptScrollByVisibleElement(this.SignInIcon);
         getReusableActionsInstance().scrollToElement(this.btnSignInMainMenu);
         getReusableActionsInstance().staticWait(2000);
+        */
         getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInNav);
         this.btnSignInNav.click();
         (new GlobalFooterPage(this.getDriver())).waitForPageLoading();
@@ -98,8 +116,6 @@ public class SignInPage_Mobile extends SignInPage{
     @Override
     public boolean goToSignInPage() {
         this.clickElement(this.btnSignInMainMenu);
-//        getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInMainMenu);
-//        getReusableActionsInstance().scrollToElement(this.btnSignInMainMenu);
         getReusableActionsInstance().staticWait(2000);
         getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInNav);
         this.btnSignInNav.click();

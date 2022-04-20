@@ -37,7 +37,6 @@ public class BaseTest {
 	protected HashMap<String, String> xmlTestParameters;
 	Map<String, String> sauceParameters;
 	protected BrowserDrivers browserDrivers;
-	protected String suiteName;
 	private Map<String, String> RunParameters;
 	protected static JSONObject apiUserSessionData = null;
 	protected static JSONObject apiAppSessionData = null;

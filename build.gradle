@@ -59,7 +59,7 @@ def getTunnelName() {
 
 //This method is used when we use parentTunnelOwner system property in sauce test below
 //def parentTunnelOwner() {
-//    return "sso-sauce-rogers-Wei.Li"
+//    return "sso-sauce-rogers-Sachin.Sharma6"
 //}
 
 def tunnel_name() {
