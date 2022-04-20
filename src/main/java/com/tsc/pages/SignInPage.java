@@ -252,7 +252,7 @@ public class SignInPage extends BasePage {
 		getReusableActionsInstance().javascriptScrollToTopOfPage();
 		getReusableActionsInstance().staticWait(5000);
 
-		return waitForCondition(Driver->{return (new GlobalHeaderPage(this.getDriver())).Signinlnk.getText().toUpperCase().contains(lsFirstName.toUpperCase());},90000);
+		return waitForCondition(Driver->{return (new GlobalHeaderPage(this.getDriver())).Signinlnk.getText().trim().toUpperCase().contains(lsFirstName.trim().toUpperCase());},90000);
 	}
 
 	/**
@@ -284,12 +284,12 @@ public class SignInPage extends BasePage {
 	public boolean SignOut() {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInMainMenu);
 		getReusableActionsInstance().scrollToElement(this.btnSignInMainMenu);
-		String lsUserMsg=this.btnSignInMainMenu.getText();
+		String lsUserMsg=this.btnSignInMainMenu.getText().trim();
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignOut);
 		this.getReusableActionsInstance().clickIfAvailable(this.btnSignOut);
 		//this.btnSignOutNav.click();
 
-		return waitForCondition(Driver->{return (this.btnSignInMainMenu.isDisplayed() && !lsUserMsg.equalsIgnoreCase(this.btnSignInMainMenu.getText()));},30000);
+		return waitForCondition(Driver->{return (this.btnSignInMainMenu.isDisplayed() && !lsUserMsg.equalsIgnoreCase(this.btnSignInMainMenu.getText().trim()));},30000);
 	}
 	
 	
@@ -333,7 +333,7 @@ public class SignInPage extends BasePage {
 		WebElement element;
 		for(String lsItem:lstMenuItemPopover) {
 			element=this.getMenuItemInPopover(lsItem);			
-			reporter.softAssert(element.getText().trim().equalsIgnoreCase(lsItem),"'"+lsItem+"' in SignIn popver is existing","'"+lsItem+"' in SignIn popver is not existing");
+			reporter.softAssert(element.getText().trim().equalsIgnoreCase(lsItem.trim()),"'"+lsItem+"' in SignIn popver is existing","'"+lsItem+"' in SignIn popver is not existing");
 			reporter.softAssert(!element.getAttribute("href").isEmpty(),"The href of '"+lsItem+"' in SignIn popver is not empty","The href of '"+lsItem+"' in SignIn popver is empty");
 		}
 	}
@@ -367,7 +367,7 @@ public class SignInPage extends BasePage {
 		this.inputPassword.sendKeys(lsPassword);
 		
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInMainMenu);
-		String lsSignInMsg=this.btnSignInMainMenu.getText();
+		String lsSignInMsg=this.btnSignInMainMenu.getText().trim();
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSubmit);
 		this.getReusableActionsInstance().clickIfAvailable(this.btnSubmit);
 		//this.btnSubmit.click();
@@ -382,9 +382,9 @@ public class SignInPage extends BasePage {
 		if(System.getProperty("Device").equalsIgnoreCase("Desktop"))
 			waitForCondition(Driver->{return this.btnSignOut.isDisplayed() && this.btnSignOut.isEnabled();},30000);
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInMainMenu);
-		waitForCondition(Driver->{return !lsSignInMsg.equalsIgnoreCase(this.btnSignInMainMenu.getText())&&!this.btnSignInMainMenu.getText().isEmpty();},30000);
+		waitForCondition(Driver->{return !lsSignInMsg.trim().equalsIgnoreCase(this.btnSignInMainMenu.getText().trim())&&!this.btnSignInMainMenu.getText().isEmpty();},30000);
 		
-		reporter.softAssert(this.btnSignInMainMenu.getText().toUpperCase().contains(lsFirstName.toUpperCase()),"The user first name of '"+lsFirstName+"' is displaying in SignIn heading menu","The user first name of '"+lsFirstName+"' is not displaying in SignIn heading menu");
+		reporter.softAssert(this.btnSignInMainMenu.getText().trim().toUpperCase().contains(lsFirstName.trim().toUpperCase()),"The user first name of '"+lsFirstName+"' is displaying in SignIn heading menu","The user first name of '"+lsFirstName+"' is not displaying in SignIn heading menu");
 	}
 
 	/**
@@ -454,7 +454,7 @@ public class SignInPage extends BasePage {
 
 	public void verifySignInTitle(String lsSignInTitle){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSignIn);
-		if(this.lblSignIn.getText().equalsIgnoreCase(lsSignInTitle)){
+		if(this.lblSignIn.getText().trim().equalsIgnoreCase(lsSignInTitle.trim())){
 			reporter.reportLogPass("SignIn title is displaying correctly");
 		}
 		else{
@@ -503,6 +503,8 @@ public class SignInPage extends BasePage {
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSubmit);
 		this.getReusableActionsInstance().clickIfAvailable(this.btnSubmit);
+		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+		this.getReusableActionsInstance().clickIfAvailable(this.btnSubmit);
 
 		this.waitForCondition(Driver->{return this.lblUserNameAndPasswordCombinationErrorMessage.isDisplayed();},5000);
 
@@ -511,7 +513,7 @@ public class SignInPage extends BasePage {
 		Matcher matcher = pattern.matcher(lsUserName);
 		if(!matcher.matches()){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblUserNameErrorMessage);
-			if(this.lblUserNameErrorMessage.getText().equalsIgnoreCase(lsErrorMessageForUserName)){
+			if(this.lblUserNameErrorMessage.getText().trim().equalsIgnoreCase(lsErrorMessageForUserName.trim())){
 				reporter.reportLogPass("Error message for username is displaying correctly");
 			}
 			else{
@@ -521,7 +523,7 @@ public class SignInPage extends BasePage {
 
 		if(lsPassword.length()<2){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblPasswordErrorMessage);
-			if(this.lblPasswordErrorMessage.getText().equalsIgnoreCase(lsErrorMessageForPassword)){
+			if(this.lblPasswordErrorMessage.getText().trim().equalsIgnoreCase(lsErrorMessageForPassword.trim())){
 				reporter.reportLogPass("Error message for password is displaying correctly");
 			}
 			else{
@@ -530,7 +532,7 @@ public class SignInPage extends BasePage {
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblUserNameAndPasswordCombinationErrorMessage);
-		if(this.lblUserNameAndPasswordCombinationErrorMessage.getText().equalsIgnoreCase(lsErrorMessageForCombination)){
+		if(this.lblUserNameAndPasswordCombinationErrorMessage.getText().trim().equalsIgnoreCase(lsErrorMessageForCombination.trim())){
 			reporter.reportLogPass("Error message for username and password is displaying correctly");
 		}
 		else{
@@ -584,7 +586,7 @@ public class SignInPage extends BasePage {
 
 	public void verifyKeepMeSignedInFunction(String lsButtonText){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSubmit);
-		if(this.btnSubmit.getText().equalsIgnoreCase(lsButtonText)){
+		if(this.btnSubmit.getText().trim().equalsIgnoreCase(lsButtonText.trim())){
 			reporter.reportLogPass("The button text is displaying correctly");
 		}
 		else{
