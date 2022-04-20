@@ -1526,9 +1526,10 @@ public class ProductDetailPage extends BasePage {
 	 * @author Wei.Li
 	 */
 	public boolean openAddToBagPopupWindow() {
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnAddToBag);
-		this.getReusableActionsInstance().clickIfAvailable(this.btnAddToBag);
+//		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnAddToBag);
+//		this.getReusableActionsInstance().clickIfAvailable(this.btnAddToBag);
 		//this.btnAddToBag.click();
+		this.clickElement(this.btnAddToBag);
 		return this.waitForCondition(Drive->{return checkAddToBagPopupDisplaying();}, 30000);
 	}
 
@@ -2336,9 +2337,9 @@ public class ProductDetailPage extends BasePage {
 	 */
 	public void goToSignInByClickingCheckoutInAddToBagPopupWindow(){
 		openAddToBagPopupWindow();
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnAddToBagPopupWindowButtonSectionCheckOut);
-		this.getReusableActionsInstance().clickIfAvailable(this.btnAddToBagPopupWindowButtonSectionCheckOut);
-
+//		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnAddToBagPopupWindowButtonSectionCheckOut);
+//		this.getReusableActionsInstance().clickIfAvailable(this.btnAddToBagPopupWindowButtonSectionCheckOut);
+		this.clickElement(this.btnAddToBagPopupWindowButtonSectionCheckOut);
 		SignInPage signInPage=new SignInPage(this.getDriver());
 		this.getReusableActionsInstance().waitForElementVisibility(signInPage.lblSignIn,20);
 	}

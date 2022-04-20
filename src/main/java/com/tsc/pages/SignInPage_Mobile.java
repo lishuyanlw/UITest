@@ -23,8 +23,8 @@ public class SignInPage_Mobile extends SignInPage{
     @Override
     public boolean SignOut() {
         getReusableActionsInstance().javascriptScrollByVisibleElement(btnSignInMainMenu);
-        getReusableActionsInstance().staticWait(1000);
-        this.btnSignInMainMenu.click();
+        getReusableActionsInstance().scrollToElement(btnSignInMainMenu);
+        getReusableActionsInstance().clickIfAvailable(this.SignInIcon);
         getReusableActionsInstance().staticWait(2000);
         getReusableActionsInstance().clickIfAvailable(this.btnSignOut);
         waitForPageToLoad();
@@ -49,9 +49,13 @@ public class SignInPage_Mobile extends SignInPage{
 
     @Override
     public boolean Login(String lsUserName, String lsPassword,String lsFirstName) {
-        getReusableActionsInstance().javascriptScrollByVisibleElement(btnSignInMainMenu);
-        getReusableActionsInstance().staticWait(1000);
-        this.btnSignInMainMenu.click();
+        //waitForCondition(Driver->{return this.SignInIcon.isDisplayed() && this.SignInIcon.isEnabled();},10000);
+        //getReusableActionsInstance().javascriptScrollByVisibleElement(this.SignInIcon);
+        //getReusableActionsInstance().staticWait(3000);
+        getReusableActionsInstance().clickIfAvailable(this.SignInIcon);
+        getReusableActionsInstance().staticWait(2000);
+        getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInMainMenu);
+        getReusableActionsInstance().scrollToElement(this.btnSignInMainMenu);
         getReusableActionsInstance().staticWait(2000);
         getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInNav);
         this.btnSignInNav.click();
@@ -69,6 +73,7 @@ public class SignInPage_Mobile extends SignInPage{
         getReusableActionsInstance().staticWait(2000);
 
         return waitForCondition(Driver->{return !lsSignInMsg.equalsIgnoreCase(this.btnSignInMainMenu.getText());},30000);
+        //return super.Login(String lsUserName, String lsPassword);
     }
 
     @Override
@@ -92,13 +97,13 @@ public class SignInPage_Mobile extends SignInPage{
 
     @Override
     public boolean goToSignInPage() {
-        getReusableActionsInstance().javascriptScrollByVisibleElement(btnSignInMainMenu);
-        getReusableActionsInstance().scrollToElement(btnSignInMainMenu);
-        getReusableActionsInstance().staticWait(1000);
-        this.btnSignInMainMenu.click();
+        this.clickElement(this.btnSignInMainMenu);
+//        getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInMainMenu);
+//        getReusableActionsInstance().scrollToElement(this.btnSignInMainMenu);
         getReusableActionsInstance().staticWait(2000);
         getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInNav);
         this.btnSignInNav.click();
+        (new GlobalFooterPage(this.getDriver())).waitForPageLoading();
 
         return waitForCondition(Driver->{return this.lblSignIn.isDisplayed();},30000);
     }

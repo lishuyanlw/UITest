@@ -18,7 +18,7 @@ public class SignInPage extends BasePage {
 	public WebElement SignInIcon;
 
 	//Sign in menu
-	@FindBy(xpath = "//div[@class='secondary-navigation__rhs-account']")
+	@FindBy(xpath = "//div[@class='secondary-navigation__rhs-account']//a")
 	public WebElement btnSignInMainMenu;
 
 	//DropDown menu
