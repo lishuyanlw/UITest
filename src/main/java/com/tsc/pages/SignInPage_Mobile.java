@@ -41,14 +41,14 @@ public class SignInPage_Mobile extends SignInPage{
         }
     }
 
-   /* @Override
+   /** @Override
     public void verifySignInSection() {
         getReusableActionsInstance().javascriptScrollByVisibleElement(this.SigninIcon);
         this.SigninIcon.click();
         getReusableActionsInstance().staticWait(2000);
         //getReusableActionsInstance().javascriptScrollByVisibleElement(this.cntSignInPopover);
         super.verifySignInSection();
-        *//*getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInNav);
+        /*getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInNav);
         this.btnSignInNav.click();
         (new GlobalFooterPage(this.getDriver())).waitForPageLoading();
         reporter.softAssert(getReusableActionsInstance().isElementVisible(this.inputUserName),"Input field is existing","Input field is not existing");
@@ -57,14 +57,18 @@ public class SignInPage_Mobile extends SignInPage{
 
     @Override
     public boolean Login(String lsUserName, String lsPassword,String lsFirstName) {
-        //waitForCondition(Driver->{return this.SignInIcon.isDisplayed() && this.SignInIcon.isEnabled();},10000);
-        //getReusableActionsInstance().javascriptScrollByVisibleElement(this.SignInIcon);
-        //getReusableActionsInstance().staticWait(3000);
+        /**
+        waitForCondition(Driver->{return this.SignInIcon.isDisplayed() && this.SignInIcon.isEnabled();},10000);
+        getReusableActionsInstance().javascriptScrollByVisibleElement(this.SignInIcon);
+        getReusableActionsInstance().staticWait(3000);
+        */
         getReusableActionsInstance().clickIfAvailable(this.SignInIcon);
         getReusableActionsInstance().staticWait(2000);
-        getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInMainMenu);
+        /**
+        getReusableActionsInstance().javascriptScrollByVisibleElement(this.SignInIcon);
         getReusableActionsInstance().scrollToElement(this.btnSignInMainMenu);
         getReusableActionsInstance().staticWait(2000);
+        */
         getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInNav);
         this.btnSignInNav.click();
         (new GlobalFooterPage(this.getDriver())).waitForPageLoading();
