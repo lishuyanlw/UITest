@@ -159,7 +159,13 @@ public class BaseTest {
 			productDetailPageThreadLocal.set(new ProductDetailPage_Tablet(getDriver()));
 		}
 
-		loginPageThreadLocal.set(new SignInPage_Mobile(getDriver()));
+		if(System.getProperty("Browser").contains("ios")) {
+			loginPageThreadLocal.set(new SignInPage(getDriver()));
+		}
+		else{
+			loginPageThreadLocal.set(new SignInPage_Mobile(getDriver()));
+		}
+
 		reporter = new ExtentTestManager(getDriver());
 		apiResponseThreadLocal.set(new ApiResponse());
 		shoppingCartThreadLocal.set(new ShoppingCart(getDriver()));
