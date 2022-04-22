@@ -299,7 +299,7 @@ public class BaseTest {
 		}
 
 		//To get app token
-		if(apiUserSessionData == null) {
+		if(apiAppSessionData == null) {
 			ConstantData.APIAppSessionParams apiAppSessionParams = TestDataHandler.constantData.getApiAppSessionParams();
 			apiAppSessionData = apiResponseThreadLocal.get().getApiAppSessionData(apiAppSessionParams.getLbl_username(),apiAppSessionParams.getLbl_password(),apiAppSessionParams.getLbl_grantType(),apiUserSessionData.get("access_token").toString());
 		}

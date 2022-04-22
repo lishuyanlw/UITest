@@ -116,6 +116,7 @@ public class SignInPage_Mobile extends SignInPage{
     @Override
     public boolean goToSignInPage() {
         this.clickElement(this.btnSignInMainMenu);
+        //getReusableActionsInstance().clickIfAvailable(this.SignInIcon);
         getReusableActionsInstance().staticWait(2000);
         getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInNav);
         this.btnSignInNav.click();

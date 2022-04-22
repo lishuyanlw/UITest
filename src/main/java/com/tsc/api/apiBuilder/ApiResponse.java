@@ -51,7 +51,7 @@ public class ApiResponse extends ApiConfigs {
 				formParam("password",password).
 				formParam("grant_type",grant_type).
 				formParam("AppKey",apiKey).
-				formParam("recaptchaRequired","false").
+				formParam("recaptchaRequired","false").log().all().
 				when().post("/api/token").
 				then().extract().response();
 
@@ -64,6 +64,7 @@ public class ApiResponse extends ApiConfigs {
 			apiSessionInfo.put("refreshExpireInSeconds",response.jsonPath().get("refreshExpireInSeconds").toString());
 			apiSessionInfo.put("expiration_time",response.jsonPath().get("'.expires'").toString());
 		}else{
+			System.out.println("User status code: "+response.statusCode());
 			new ExtentTestManager().reportLogFail("Session Info for api is not fetched as expected..Run again!!");
 		}
 
@@ -87,7 +88,7 @@ public class ApiResponse extends ApiConfigs {
 						"Bearer " + access_token).
 				formParam("userName",userName).
 				formParam("password",password).
-				formParam("grant_type",grant_type).
+				formParam("grant_type",grant_type).log().all().
 				when().post("/api/token").
 				then().extract().response();
 
@@ -100,6 +101,7 @@ public class ApiResponse extends ApiConfigs {
 			apiSessionInfo.put("refreshExpireInSeconds",response.jsonPath().get("refreshExpireInSeconds").toString());
 			apiSessionInfo.put("expiration_time",response.jsonPath().get("'.expires'").toString());
 		}else{
+			System.out.println("App Status code: "+response.statusCode());
 			new ExtentTestManager().reportLogFail("Session Info for api is not fetched as expected..Run again!!");
 		}
 
