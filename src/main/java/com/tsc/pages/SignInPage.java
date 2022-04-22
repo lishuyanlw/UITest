@@ -647,12 +647,13 @@ public class SignInPage extends BasePage {
 		this.inputPassword.clear();
 		this.inputPassword.sendKeys(lsPassword);
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSubmit);
-		this.getReusableActionsInstance().clickIfAvailable(this.btnSubmit);
+//		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSubmit);
+//		this.getReusableActionsInstance().clickIfAvailable(this.btnSubmit);
+		this.clickElement(this.btnSubmit);
 
 		this.waitForCondition(Driver -> {
 			return this.getReusableActionsInstance().isElementVisible(this.cntCheckoutPaymentFlow);
-		}, 20000);
+		}, 40000);
 	}
 
 	/**

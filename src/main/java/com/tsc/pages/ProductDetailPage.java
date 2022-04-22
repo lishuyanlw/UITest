@@ -2318,8 +2318,9 @@ public class ProductDetailPage extends BasePage {
 				radioItem=this.lstRadioStyleLabelSpanList.get(i);
 				labelItem=this.lstRadioStyleLabelList.get(i);
 				if(labelItem.getAttribute("title").equalsIgnoreCase(lsStyle)){
-					this.getReusableActionsInstance().javascriptScrollByVisibleElement(radioItem);
-					labelItem.click();
+//					this.getReusableActionsInstance().javascriptScrollByVisibleElement(radioItem);
+//					labelItem.click();
+					this.clickElement(labelItem);
 					this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 					break;
 				}

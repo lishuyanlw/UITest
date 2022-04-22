@@ -28,7 +28,7 @@ public class SI_TC02_VerifySignInThroughCheckout extends BaseTest{
 		String pdpNavigationUrl=mapEDP.get("pdpNavigationUrl").toString();
 		reporter.reportLog(pdpNavigationUrl);
 		this.getDriver().get(pdpNavigationUrl);
-		basePage.waitForCondition(Driver->{return getProductDetailPageThreadLocal().lblProductName.isDisplayed();},10000);
+		basePage.waitForCondition(Driver->{return getProductDetailPageThreadLocal().lblProductName.isDisplayed();},30000);
 
 		Product.edps edp=(Product.edps)mapEDP.get("EDP");
 		reporter.reportLog(edp.getStyle()+":"+edp.getSize());
