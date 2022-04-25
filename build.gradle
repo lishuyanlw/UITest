@@ -25,7 +25,6 @@ repositories {
 
 dependencies {
     implementation 'org.seleniumhq.selenium:selenium-java:3.141.59'
-    implementation 'org.testng:testng:6.14.3'
     implementation 'automation-utils:common-utils:1.64-SNAPSHOT'
     implementation 'org.yaml:snakeyaml:1.24'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.4'
@@ -35,6 +34,7 @@ dependencies {
     implementation (group: 'io.rest-assured', name: 'json-schema-validator', version: '4.4.0')
     //Below guava dependency is needed to resolve wait.until() function issue for Expected Condition used in BasePage class
     implementation group: 'com.google.guava', name: 'guava', version: '31.0.1-jre'
+    implementation (group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1')
 }
 
 def sauce = [
@@ -59,7 +59,7 @@ def getTunnelName() {
 
 //This method is used when we use parentTunnelOwner system property in sauce test below
 //def parentTunnelOwner() {
-//    return "sso-sauce-rogers-Wei.Li"
+//    return "sso-sauce-rogers-Sachin.Sharma6"
 //}
 
 def tunnel_name() {

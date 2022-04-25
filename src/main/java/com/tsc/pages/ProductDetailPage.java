@@ -2170,7 +2170,7 @@ public class ProductDetailPage extends BasePage {
 	}
 
 	public void verifyFavShareMobileAction(String lsUserName, String lsPassword) {
-		LoginPage loginPage=new LoginPage(this.getDriver());
+		SignInPage loginPage=new SignInPage(this.getDriver());
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavShareMobile);
 		this.getReusableActionsInstance().clickIfAvailable(this.lnkFavShareMobile);
 		this.getReusableActionsInstance().waitForElementVisibility(loginPage.lblSignIn,  60);
@@ -2297,6 +2297,50 @@ public class ProductDetailPage extends BasePage {
 		this.getDriver().get(apiResponse.selectedProduct.pdpNavigationUrl);
 
 		return prp.waitForPDPPageLoading();
+	}
+
+	/**
+	 * Method to set specific Style and Size
+	 * @return void
+	 * @author Wei.Li
+	 */
+	public void setProductStyleAndSize(String lsStyle,String lsSize) {
+		int loopSize;
+		if(this.judgeStyleDisplayModeIsDropdownMenu()) {
+			Select selectStyle= new Select(this.selectProductStyle);
+			selectStyle.selectByVisibleText(lsStyle);
+		}
+		else {
+			loopSize=this.lstRadioStyleLabelSpanList.size();
+			WebElement radioItem,labelItem;
+			for(int i=0;i<loopSize;i++) {
+				radioItem=this.lstRadioStyleLabelSpanList.get(i);
+				labelItem=this.lstRadioStyleLabelList.get(i);
+				if(labelItem.getAttribute("title").equalsIgnoreCase(lsStyle)){
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(radioItem);
+					labelItem.click();
+					this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+					break;
+				}
+			}
+		}
+		Select selectSize= new Select(this.selectSizeOption);
+		selectSize.selectByVisibleText(lsSize);
+		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+	}
+
+	/**
+	 * Method to go To SignIn By Clicking Checkout button In AddToBag Popup Window
+	 * @return void
+	 * @author Wei.Li
+	 */
+	public void goToSignInByClickingCheckoutInAddToBagPopupWindow(){
+		openAddToBagPopupWindow();
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnAddToBagPopupWindowButtonSectionCheckOut);
+		this.getReusableActionsInstance().clickIfAvailable(this.btnAddToBagPopupWindowButtonSectionCheckOut);
+
+		SignInPage signInPage=new SignInPage(this.getDriver());
+		this.getReusableActionsInstance().waitForElementVisibility(signInPage.lblSignIn,20);
 	}
 
 }

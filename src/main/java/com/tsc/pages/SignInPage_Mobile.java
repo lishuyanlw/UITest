@@ -5,25 +5,22 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import java.util.List;
 
-public class LoginPage_Mobile extends LoginPage{
+public class SignInPage_Mobile extends SignInPage{
 
-    public LoginPage_Mobile(WebDriver driver) {
+    public SignInPage_Mobile(WebDriver driver) {
         super(driver);
     }
 
-    @FindBy(xpath = "//div[contains(@class,'secondary-navigation__rhs-account')]//a//*[@class='secondary-navigation__rhs-account-icon']")
-    public WebElement SigninIcon;
-
-    @FindBy(xpath="//div[contains(@class,'secondary-navigation__rhs-account')]//a[contains(@role,'button') and contains(@class,'sign')]")
-    public WebElement btnSignOutButton;
+    @FindBy(xpath="//div[contains(@class,'summary-logout')]|//a/span[contains(@class,'rhs-account-panel-link__text') and contains(text(),'Sign')]")
+    public WebElement btnSignOut;
 
     @Override
     public boolean SignOut() {
         getReusableActionsInstance().javascriptScrollByVisibleElement(btnSignInMainMenu);
         getReusableActionsInstance().scrollToElement(btnSignInMainMenu);
-        getReusableActionsInstance().clickIfAvailable(this.SigninIcon);
+        getReusableActionsInstance().clickIfAvailable(this.SignInIcon);
         getReusableActionsInstance().staticWait(2000);
-        getReusableActionsInstance().clickIfAvailable(this.btnSignOutButton);
+        getReusableActionsInstance().clickIfAvailable(this.btnSignOut);
         waitForPageToLoad();
         return waitForCondition(Driver->{return super.inputUserName.isDisplayed();},90000);
     }
@@ -32,7 +29,7 @@ public class LoginPage_Mobile extends LoginPage{
     public void verifyMenuItemInPopover(List<String> lstMenuItemPopover) {
         getReusableActionsInstance().javascriptScrollByVisibleElement(btnSignInMainMenu);
         getReusableActionsInstance().scrollToElement(btnSignInMainMenu);
-        getReusableActionsInstance().clickIfAvailable(this.SigninIcon);
+        getReusableActionsInstance().clickIfAvailable(this.SignInIcon);
         getReusableActionsInstance().staticWait(2000);
         //getReusableActionsInstance().javascriptScrollByVisibleElement(this.cntSignInPopover);
         //this.hoverOnSignInHeadingMenu();
@@ -44,14 +41,14 @@ public class LoginPage_Mobile extends LoginPage{
         }
     }
 
-   /* @Override
+   /** @Override
     public void verifySignInSection() {
         getReusableActionsInstance().javascriptScrollByVisibleElement(this.SigninIcon);
         this.SigninIcon.click();
         getReusableActionsInstance().staticWait(2000);
         //getReusableActionsInstance().javascriptScrollByVisibleElement(this.cntSignInPopover);
         super.verifySignInSection();
-        *//*getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInNav);
+        /*getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInNav);
         this.btnSignInNav.click();
         (new GlobalFooterPage(this.getDriver())).waitForPageLoading();
         reporter.softAssert(getReusableActionsInstance().isElementVisible(this.inputUserName),"Input field is existing","Input field is not existing");
@@ -60,13 +57,18 @@ public class LoginPage_Mobile extends LoginPage{
 
     @Override
     public boolean Login(String lsUserName, String lsPassword,String lsFirstName) {
-        getReusableActionsInstance().javascriptScrollByVisibleElement(this.SigninIcon);
+        /**
+        waitForCondition(Driver->{return this.SignInIcon.isDisplayed() && this.SignInIcon.isEnabled();},10000);
+        getReusableActionsInstance().javascriptScrollByVisibleElement(this.SignInIcon);
         getReusableActionsInstance().staticWait(3000);
-        getReusableActionsInstance().clickIfAvailable(this.SigninIcon);
+        */
+        getReusableActionsInstance().clickIfAvailable(this.SignInIcon);
         getReusableActionsInstance().staticWait(2000);
-        getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInMainMenu);
+        /**
+        getReusableActionsInstance().javascriptScrollByVisibleElement(this.SignInIcon);
         getReusableActionsInstance().scrollToElement(this.btnSignInMainMenu);
         getReusableActionsInstance().staticWait(2000);
+        */
         getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInNav);
         this.btnSignInNav.click();
         (new GlobalFooterPage(this.getDriver())).waitForPageLoading();

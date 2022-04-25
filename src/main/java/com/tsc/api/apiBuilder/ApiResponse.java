@@ -1,18 +1,22 @@
 package com.tsc.api.apiBuilder;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.tsc.api.pojo.Product;
+import com.tsc.api.pojo.*;
 import com.tsc.api.pojo.Product.edps;
-import com.tsc.api.pojo.ProductDetailsItem;
-import com.tsc.api.pojo.SelectedProduct;
+import com.tsc.api.util.DataConverter;
 import com.tsc.api.util.JsonParser;
+import extentreport.ExtentTestManager;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static io.restassured.RestAssured.given;
 
 public class ApiResponse extends ApiConfigs {
 
@@ -22,8 +26,105 @@ public class ApiResponse extends ApiConfigs {
     private String dimensionNumber;
     public SelectedProduct selectedProduct= new SelectedProduct();
     boolean bBrand=false;
+	public static Map<String, String> apiProperty;
 
-    public ApiResponse() throws IOException {}
+
+    public ApiResponse() throws IOException {
+		apiProperty = this.getApiInfo();
+	}
+
+	/**
+	 * This method get api User session token for authenticated api calls
+	 * @param - String - userName for getting session key that is present in application
+	 * @param - String - password for username provided above
+	 * @param - String - apiKey value that is constant value provided
+	 * @param - String - grant_type that is set as password
+	 * @return - JSONObject that contains session key and other info
+	 */
+	public JSONObject getApiUserSessionData(String userName, String password, String grant_type, String apiKey) throws IOException {
+		setApiClient(apiProperty.get("test_qaURL"));
+		//Api Call to get access token
+		Response response = given().
+				contentType("application/x-www-form-urlencoded").
+				header("cache-control","no-cache").
+				formParam("userName",userName).
+				formParam("password",password).
+				formParam("grant_type",grant_type).
+				formParam("AppKey",apiKey).
+				formParam("recaptchaRequired","false").
+				when().post("/api/token").
+				then().extract().response();
+
+		JSONObject apiSessionInfo = new JSONObject();
+		if(response.statusCode()==200){
+			//Return object containing api access token and expiration time
+			apiSessionInfo.put("access_token",response.jsonPath().get("access_token").toString());
+			apiSessionInfo.put("refresh_token",response.jsonPath().get("refresh_token").toString());
+			apiSessionInfo.put("customerEDP",response.jsonPath().get("customerEDP").toString());
+			apiSessionInfo.put("refreshExpireInSeconds",response.jsonPath().get("refreshExpireInSeconds").toString());
+			apiSessionInfo.put("expiration_time",response.jsonPath().get("'.expires'").toString());
+		}else{
+			new ExtentTestManager().reportLogFail("Session Info for api is not fetched as expected..Run again!!");
+		}
+
+		return apiSessionInfo;
+	}
+
+	/**
+	 * This method get api App session token for authenticated api calls
+	 * @param - String - userName for getting session key that is present in application
+	 * @param - String - password for username provided above
+	 * @param - String - grant_type that is set as password
+	 * @param - String - access token from user authentication
+	 * @return - JSONObject that contains session key and other info
+	 */
+	public JSONObject getApiAppSessionData(String userName, String password, String grant_type,String access_token) throws IOException {
+		setApiClient(apiProperty.get("test_qaURL"));
+		//Api Call to get access token
+		Response response = given().
+				contentType("application/x-www-form-urlencoded").
+				header("Authorization",
+						"Bearer " + access_token).
+				formParam("userName",userName).
+				formParam("password",password).
+				formParam("grant_type",grant_type).
+				when().post("/api/token").
+				then().extract().response();
+
+		JSONObject apiSessionInfo = new JSONObject();
+		if(response.statusCode()==200){
+			//Return object containing api access token and expiration time
+			apiSessionInfo.put("access_token",response.jsonPath().get("access_token").toString());
+			apiSessionInfo.put("refresh_token",response.jsonPath().get("refresh_token").toString());
+			apiSessionInfo.put("customerEDP",response.jsonPath().get("customerEDP").toString());
+			apiSessionInfo.put("refreshExpireInSeconds",response.jsonPath().get("refreshExpireInSeconds").toString());
+			apiSessionInfo.put("expiration_time",response.jsonPath().get("'.expires'").toString());
+		}else{
+			new ExtentTestManager().reportLogFail("Session Info for api is not fetched as expected..Run again!!");
+		}
+
+		return apiSessionInfo;
+	}
+
+	/**
+	 *This method adds credit card details to user
+	 * @param-JSONObject jsonObject containing credit card details to be added
+	 * @param-String customerEDP for CC addition
+	 * @param-String access_token required for api call
+	 * @return-Response response object after api call
+	 */
+	public Response addCreditCardToUser(JSONObject jsonObject, String customerEDP, String access_token) throws JsonProcessingException {
+		return postApiCallResponseAfterAuthenticationFromJSON(jsonObject, propertyData.get("test_apiVersion")+"/"+propertyData.get("test_language")+"/accounts/"+customerEDP+"/creditcards",access_token);
+	}
+
+	/**
+	 * @param - customerEDP - Customer EDP Number where cart is created
+	 * @param - access_token - access token for api authentication
+	 * @return - Response - API Response after AccountCart GET calling
+	 */
+	public Response getAccountCartContentWithCustomerEDP(String customerEDP, String access_token) {
+		return getApiCallResponseAfterAuthentication(null, propertyData.get("test_apiVersion") + "/" + propertyData.get("test_language")+"/accounts/" + customerEDP + "/cart", access_token);
+	}
 
     /**
      * This method finds product info on the basis of input search keyword with preconditions(video,style,size,brand,badgeImage,review,easyPay,WasPrice,and AddToBag)
@@ -171,7 +272,7 @@ public class ApiResponse extends ApiConfigs {
         	
             do {
     	        try{
-    	            response = getApiCallResponse(initialConfig,propertyData.get("test_apiVersion")+"/"+propertyData.get("test_language")+"/products");    	            
+    	            response = getApiCallResponse(initialConfig,propertyData.get("test_apiVersion3")+"/"+propertyData.get("test_language")+"/products");
     	        }catch (Exception exception){
     	            exception.printStackTrace();
     	        }
@@ -197,16 +298,16 @@ public class ApiResponse extends ApiConfigs {
         }
         
         if(bBrand) {
-        	configs = super.getProductSearchByKeywordInputConfig(searchKeyword, null, outputPage, defaultPageItems,super.getApiPropertyData().get("test_apiVersion"));
+        	configs = super.getProductSearchByKeywordInputConfig(searchKeyword, null, outputPage, defaultPageItems,super.getApiPropertyData().get("test_apiVersion3"));
         }
         else {
-        	configs = super.getProductSearchByKeywordInputConfig(searchKeyword, dimensionNumber, outputPage, defaultPageItems,super.getApiPropertyData().get("test_apiVersion"));
+        	configs = super.getProductSearchByKeywordInputConfig(searchKeyword, dimensionNumber, outputPage, defaultPageItems,super.getApiPropertyData().get("test_apiVersion3"));
         }
         
         
         repeatNumber=0;
         do{
-        	response = getApiCallResponse(configs, propertyData.get("test_apiVersion")+"/"+propertyData.get("test_language")+"/products");
+        	response = getApiCallResponse(configs, propertyData.get("test_apiVersion3")+"/"+propertyData.get("test_language")+"/products");
             if(response!=null && response.statusCode()==200) {
             	product = JsonParser.getResponseObject(response.asString(), new TypeReference<Product>() {
                 });
@@ -239,7 +340,7 @@ public class ApiResponse extends ApiConfigs {
   
         selectedProduct.init();
         //do{
-		response = getApiCallResponse(null, propertyData.get("test_apiVersion2")+"/"+propertyData.get("test_language")+"/products/"+productNumber);
+		response = getApiCallResponse(null, propertyData.get("test_apiVersion")+"/"+propertyData.get("test_language")+"/products/"+productNumber);
 		if(response!=null && response.statusCode()==200) {
 			product = JsonParser.getResponseObject(response.asString(), new TypeReference<ProductDetailsItem>() {
 			});
@@ -268,7 +369,7 @@ public class ApiResponse extends ApiConfigs {
      * @param - String - apiEndPoint : api endpoint after base URI where call will be made
      * @return - Response - Response from api
      */
-    private Response getApiCallResponse(Map<String,Object> config,String apiEndPoint){
+    public Response getApiCallResponse(Map<String,Object> config,String apiEndPoint){
     	if(config!=null) {
     		return RestAssured.given().
                     when().params(config).header("Content-Type","application/json").log().all().
@@ -286,9 +387,9 @@ public class ApiResponse extends ApiConfigs {
      * @param - String - url : url that contains dimension number
      * @return - String - Dimension Number
      */
-    private String getDimensionNumberFromURL(String url){
+    public String getDimensionNumberFromURL(String url){
     	String lsDimension;
-    	String lsVersion= super.getApiPropertyData().get("test_apiVersion");
+    	String lsVersion= super.getApiPropertyData().get("test_apiVersion3");
 
     	if(lsVersion.equalsIgnoreCase("v2")) {
     		lsDimension=url.split(":")[1];    		
@@ -626,11 +727,11 @@ public class ApiResponse extends ApiConfigs {
         if(configs!=null)
             configs.clear();
  
-        configs = super.getProductSearchByKeywordInputConfig(searchKeyword, null, 1, defaultPageItems, super.getApiPropertyData().get("test_apiVersion"));
+        configs = super.getProductSearchByKeywordInputConfig(searchKeyword, null, 1, defaultPageItems, super.getApiPropertyData().get("test_apiVersion3"));
         
         repeatNumber=0;
         do{
-        	response = getApiCallResponse(configs, propertyData.get("test_apiVersion")+"/"+propertyData.get("test_language")+"/products");
+        	response = getApiCallResponse(configs, propertyData.get("test_apiVersion3")+"/"+propertyData.get("test_language")+"/products");
             if(response!=null && response.statusCode()==200) {
             	product = JsonParser.getResponseObject(response.asString(), new TypeReference<Product>() {
                 });
@@ -732,7 +833,7 @@ public class ApiResponse extends ApiConfigs {
 		configs.put("dimensions",dimension);
 		configs.put("searchterm",searchKeyword);
 		try{
-			String apiEndpoint = propertyData.get("test_apiVersion")+"/"+propertyData.get("test_language")+"/products/";
+			String apiEndpoint = propertyData.get("test_apiVersion3")+"/"+propertyData.get("test_language")+"/products/";
 			Response response = this.getApiCallResponse(configs,apiEndpoint);
 			Product product = JsonParser.getResponseObject(response.asString(), new TypeReference<Product>() {});
 			return product.getDimensionStates();
@@ -786,6 +887,34 @@ public class ApiResponse extends ApiConfigs {
 			map.put("lastPage",String.valueOf(lastPage));
 			return map;
 		}
-	return null;
+		return null;
+	}
+
+	/**
+	 * This method is for placing oder for given user so that oder end on My Account page
+	 */
+	public void placeOrderForUser(String customerEDP, String accessToken) throws JsonProcessingException {
+		//Verifying that user has tsc credit card associated for placing order
+		Response userCartResponse = this.getAccountCartContentWithCustomerEDP(customerEDP,accessToken);
+		AccountCartResponse accountCartResponseForUser = JsonParser.getResponseObject(userCartResponse.asString(), new TypeReference<AccountCartResponse>() {});
+		if(accountCartResponseForUser.getCreditCard()!=null){
+			if(!accountCartResponseForUser.getCreditCard().getType().equalsIgnoreCase("FI")){
+				org.json.simple.JSONObject creditCardDetails = DataConverter.readJsonFileIntoJSONObject("test-data/CreditCard.json");
+				this.addCreditCardToUser((org.json.JSONObject) creditCardDetails.get("tscCard"),customerEDP,accessToken);
+			}
+		}
+	}
+
+	/**
+	 * This method is to fetch account details for a user using EDP
+	 * @param - String - customerEDP
+	 */
+	public AccountResponse getUserDetailsFromCustomerEDP(String customerEDP, String accessToken){
+		String apiEndPoint = propertyData.get("test_apiVersion") + "/" + propertyData.get("test_language")+"/accounts/" + customerEDP;
+		Response response = getApiCallResponseAfterAuthentication(null,apiEndPoint,accessToken);
+		if(response.getStatusCode()==200)
+			return JsonParser.getResponseObject(response.asString(), new TypeReference<AccountResponse>() {});
+		else
+			return null;
 	}
 }

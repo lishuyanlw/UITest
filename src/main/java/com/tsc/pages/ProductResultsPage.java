@@ -2955,8 +2955,8 @@ public class ProductResultsPage extends BasePage{
 		int prpReviewRateStarCount=this.getProductItemReviewNumberAmountFromStarImage(this.productResultList.get(0).findElements(this.byProductReviewRatingImage));
 		String prpReviewCountInfo=this.getElementInnerText(this.productResultList.get(0).findElement(this.byProductReviewRatingCount));
 		String prpProductFreeShipping=this.getElementInnerText(this.productResultList.get(0).findElement(this.byProductFreeShipping));
-		
-		LoginPage loginPage=new LoginPage(this.getDriver());
+
+		SignInPage loginPage=new SignInPage(this.getDriver());
 	
 		WebElement item=this.productResultList.get(0).findElement(this.byProductHeaderLike);
 
