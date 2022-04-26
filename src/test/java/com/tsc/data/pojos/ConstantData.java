@@ -824,8 +824,8 @@ public class ConstantData {
         private String lbl_Password;
         private String lbl_FirstName;
         private String lbl_SignOutMessage;
+        private String lbl_RightSideTitleSignInPage;
         private List<String> lst_RightSideSectionSignInPage;
-
         private String lbl_SignInTitleFromStartPage;
         private String lbl_SignInTitleFromCheckout;
         private String lbl_SignInButtonFromStartPage;
@@ -865,6 +865,7 @@ public class ConstantData {
         public List<String> getLst_RightSideSectionSignInPage() {            return lst_RightSideSectionSignInPage;        }
 
         public void setLst_RightSideSectionSignInPage(List<String> lst_RightSideSectionSignInPage) {            this.lst_RightSideSectionSignInPage = lst_RightSideSectionSignInPage;        }
+
         public String getLbl_SignInTitleFromStartPage() {
             return lbl_SignInTitleFromStartPage;
         }
@@ -919,6 +920,14 @@ public class ConstantData {
 
         public void setLbl_ErrorMessageForUserNameAndPassword(String lbl_ErrorMessageForUserNameAndPassword) {
             this.lbl_ErrorMessageForUserNameAndPassword = lbl_ErrorMessageForUserNameAndPassword;
+        }
+
+        public String getLbl_RightSideTitleSignInPage() {
+            return lbl_RightSideTitleSignInPage;
+        }
+
+        public void setLbl_RightSideTitleSignInPage(String lbl_RightSideTitleSignInPage) {
+            this.lbl_RightSideTitleSignInPage = lbl_RightSideTitleSignInPage;
         }
     }
 

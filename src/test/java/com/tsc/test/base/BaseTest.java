@@ -158,7 +158,13 @@ public class BaseTest {
 			productDetailPageThreadLocal.set(new ProductDetailPage_Tablet(getDriver()));
 		}
 
-		loginPageThreadLocal.set(new SignInPage_Mobile(getDriver()));
+		if(System.getProperty("Browser").contains("ios")) {
+			loginPageThreadLocal.set(new SignInPage(getDriver()));
+		}
+		else{
+			loginPageThreadLocal.set(new SignInPage_Mobile(getDriver()));
+		}
+
 		reporter = new ExtentTestManager(getDriver());
 		apiResponseThreadLocal.set(new ApiResponse());
 		shoppingCartThreadLocal.set(new ShoppingCart(getDriver()));
@@ -293,7 +299,7 @@ public class BaseTest {
 		}
 
 		//To get app token
-		if(apiUserSessionData == null) {
+		if(apiAppSessionData == null) {
 			ConstantData.APIAppSessionParams apiAppSessionParams = TestDataHandler.constantData.getApiAppSessionParams();
 			apiAppSessionData = apiResponseThreadLocal.get().getApiAppSessionData(apiAppSessionParams.getLbl_username(),apiAppSessionParams.getLbl_password(),apiAppSessionParams.getLbl_grantType(),apiUserSessionData.get("access_token").toString());
 		}

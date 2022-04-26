@@ -26,24 +26,28 @@ public class SI_TC02_VerifySignInThroughCheckout extends BaseTest{
 		ProductAPI productAPI=new ProductAPI();
 		Map<String,Object> mapEDP=productAPI.getNotSoldOutProductInfo("boots",2,false);
 		String pdpNavigationUrl=mapEDP.get("pdpNavigationUrl").toString();
+		reporter.reportLog(pdpNavigationUrl);
 		this.getDriver().get(pdpNavigationUrl);
-		basePage.waitForCondition(Driver->{return getProductDetailPageThreadLocal().lblProductName.isDisplayed();},10000);
+		basePage.waitForCondition(Driver->{return getProductDetailPageThreadLocal().lblProductName.isDisplayed();},30000);
 
 		Product.edps edp=(Product.edps)mapEDP.get("EDP");
+		reporter.reportLog(edp.getStyle()+":"+edp.getSize());
 		getProductDetailPageThreadLocal().setProductStyleAndSize(edp.getStyle(),edp.getSize());
 
 		getProductDetailPageThreadLocal().goToSignInByClickingCheckoutInAddToBagPopupWindow();
 
 		String lsSignInTitle=TestDataHandler.constantData.getLoginUser().getLbl_SignInTitleFromCheckout();
-		String lsErrorMessageForUserName=TestDataHandler.constantData.getLoginUser().getLbl_ErrorMessageForUserName();
-		String lsErrorMessageForPassword=TestDataHandler.constantData.getLoginUser().getLbl_ErrorMessageForPassword();
-		String lsErrorMessageForUserNameAndPassword=TestDataHandler.constantData.getLoginUser().getLbl_ErrorMessageForUserNameAndPassword();
 		String lsSignInFromCheckout=TestDataHandler.constantData.getLoginUser().getLbl_SignInButtonFromCheckout();
 
 		getGlobalLoginPageThreadLocal().verifySignInTitle(lsSignInTitle);
 		getGlobalLoginPageThreadLocal().verifyUserNameAndPassword();
 		getGlobalLoginPageThreadLocal().verifyKeepMeSignedInFunction(lsSignInFromCheckout);
+		getGlobalLoginPageThreadLocal().verifyConfidence();
 		getGlobalLoginPageThreadLocal().verifyOtherFieldsForLeftPart();
+
+		String lsSectionTitle=TestDataHandler.constantData.getLoginUser().getLbl_RightSideTitleSignInPage();
+		String lsAsAnGuest=TestDataHandler.constantData.getLoginUser().getLst_RightSideSectionSignInPage().get(1);
+		getGlobalLoginPageThreadLocal().verifyNewCustomerSignInRightSideSection(lsSectionTitle,lsAsAnGuest);
 
 		String lblUserName = TestDataHandler.constantData.getLoginUser().getLbl_Username();
 		String lblPassword = TestDataHandler.constantData.getLoginUser().getLbl_Password();

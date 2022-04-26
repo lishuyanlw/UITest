@@ -64,6 +64,7 @@ public class ApiResponse extends ApiConfigs {
 			apiSessionInfo.put("refreshExpireInSeconds",response.jsonPath().get("refreshExpireInSeconds").toString());
 			apiSessionInfo.put("expiration_time",response.jsonPath().get("'.expires'").toString());
 		}else{
+			System.out.println("User status code: "+response.statusCode());
 			new ExtentTestManager().reportLogFail("Session Info for api is not fetched as expected..Run again!!");
 		}
 
@@ -100,6 +101,7 @@ public class ApiResponse extends ApiConfigs {
 			apiSessionInfo.put("refreshExpireInSeconds",response.jsonPath().get("refreshExpireInSeconds").toString());
 			apiSessionInfo.put("expiration_time",response.jsonPath().get("'.expires'").toString());
 		}else{
+			System.out.println("App Status code: "+response.statusCode());
 			new ExtentTestManager().reportLogFail("Session Info for api is not fetched as expected..Run again!!");
 		}
 
@@ -372,12 +374,12 @@ public class ApiResponse extends ApiConfigs {
     public Response getApiCallResponse(Map<String,Object> config,String apiEndPoint){
     	if(config!=null) {
     		return RestAssured.given().
-                    when().params(config).header("Content-Type","application/json").log().all().
+                    when().params(config).header("Content-Type","application/json").
                     get(apiEndPoint);
     	}
     	else {
     		return RestAssured.given().
-                    when().header("Content-Type","application/json").log().all().
+                    when().header("Content-Type","application/json").
                     get(apiEndPoint);
     	}
     }

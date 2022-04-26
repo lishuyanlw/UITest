@@ -11,6 +11,12 @@ public class SignInPage_Mobile extends SignInPage{
         super(driver);
     }
 
+    @FindBy(xpath = "//div[contains(@class,'signin-bottomnote') and contains(@class,'visible-xs')]")
+    public WebElement lblConfidence;
+
+    @FindBy(xpath = "//div[contains(@class,'signin-bottomnote') and contains(@class,'visible-xs')]//a[contains(@href,'aboutusprivacy')]")
+    public WebElement lnkPrivacyAndSecurity;
+
     @FindBy(xpath="//div[contains(@class,'summary-logout')]|//a/span[contains(@class,'rhs-account-panel-link__text') and contains(text(),'Sign')]")
     public WebElement btnSignOut;
 
@@ -87,4 +93,36 @@ public class SignInPage_Mobile extends SignInPage{
         return waitForCondition(Driver->{return !lsSignInMsg.equalsIgnoreCase(this.btnSignInMainMenu.getText());},30000);
         //return super.Login(String lsUserName, String lsPassword);
     }
+
+    @Override
+    public void verifyConfidence(){
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblConfidence);
+        if(!this.lblConfidence.getText().isEmpty()){
+            reporter.reportLogPass("The confidence text is displaying correctly");
+        }
+        else{
+            reporter.reportLogFailWithScreenshot("The confidence text is not displaying correctly");
+        }
+
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkPrivacyAndSecurity);
+        if(!this.lnkPrivacyAndSecurity.getAttribute("href").isEmpty()){
+            reporter.reportLogPass("Privacy And Security link is not empty");
+        }
+        else{
+            reporter.reportLogFail("Privacy And Security link is empty");
+        }
+    }
+
+    @Override
+    public boolean goToSignInPage() {
+        this.clickElement(this.btnSignInMainMenu);
+        //getReusableActionsInstance().clickIfAvailable(this.SignInIcon);
+        getReusableActionsInstance().staticWait(2000);
+        getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInNav);
+        this.btnSignInNav.click();
+        (new GlobalFooterPage(this.getDriver())).waitForPageLoading();
+
+        return waitForCondition(Driver->{return this.lblSignIn.isDisplayed();},30000);
+    }
+
 }

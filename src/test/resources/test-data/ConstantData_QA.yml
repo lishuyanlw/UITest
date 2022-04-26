@@ -7,9 +7,10 @@ apiUserSessionParams:
 
 # API APP TOKEN INFO
 apiAppSessionParams:
-  lbl_username: D2604473-6E8C-4A17-A1AE-248D1A73B75F
-  lbl_password: F4F14887
+  lbl_username: A9607F64-D061-4279-8D00-F8469EA38DD1
+  lbl_password: 3AED6BD0
   lbl_grantType: password
+
 headerSection:
   lnk_NotFound: /pages/notfound
   lbl_TodaysShowstopper: Today's Showstopper
@@ -186,6 +187,7 @@ loginUser:
   lbl_Password: testMail123
   lbl_FirstName: Test
   lbl_SignOutMessage: "You’ve been signed out successfully"
+  lbl_RightSideTitleSignInPage: NEW CUSTOMERS?
   lst_RightSideSectionSignInPage: ["Create New Account","Continue As Guest"]
   lbl_SignInTitleFromStartPage: SIGN IN
   lbl_SignInTitleFromCheckout: SIGN-IN TO COMPLETE CHECKOUT
@@ -194,3 +196,4 @@ loginUser:
   lbl_ErrorMessageForUserName: A valid email is required!
   lbl_ErrorMessageForPassword: Password is required!
   lbl_ErrorMessageForUserNameAndPassword: Hm, this email and password combination does not match our records. Please double check and try again.
+
