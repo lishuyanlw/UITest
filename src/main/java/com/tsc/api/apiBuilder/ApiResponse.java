@@ -51,7 +51,7 @@ public class ApiResponse extends ApiConfigs {
 				formParam("password",password).
 				formParam("grant_type",grant_type).
 				formParam("AppKey",apiKey).
-				formParam("recaptchaRequired","false").log().all().
+				formParam("recaptchaRequired","false").
 				when().post("/api/token").
 				then().extract().response();
 
@@ -88,7 +88,7 @@ public class ApiResponse extends ApiConfigs {
 						"Bearer " + access_token).
 				formParam("userName",userName).
 				formParam("password",password).
-				formParam("grant_type",grant_type).log().all().
+				formParam("grant_type",grant_type).
 				when().post("/api/token").
 				then().extract().response();
 
@@ -374,12 +374,12 @@ public class ApiResponse extends ApiConfigs {
     public Response getApiCallResponse(Map<String,Object> config,String apiEndPoint){
     	if(config!=null) {
     		return RestAssured.given().
-                    when().params(config).header("Content-Type","application/json").log().all().
+                    when().params(config).header("Content-Type","application/json").
                     get(apiEndPoint);
     	}
     	else {
     		return RestAssured.given().
-                    when().header("Content-Type","application/json").log().all().
+                    when().header("Content-Type","application/json").
                     get(apiEndPoint);
     	}
     }
