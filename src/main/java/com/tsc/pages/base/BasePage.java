@@ -31,7 +31,7 @@ import utils.ReusableActions;
 	 */
 	public class BasePage {
 		
-	protected static Reporter reporter;
+	public static Reporter reporter;
 	
 	/**
 	 * The Wait.
