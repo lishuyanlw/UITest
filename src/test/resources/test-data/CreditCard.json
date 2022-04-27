@@ -11,4 +11,40 @@
     "DisplayExpirationYear": "2050",
     "CVV": "123"
   },
+  "masterCard": {
+    "Id": 0,
+    "ExpirationDate": "2050-03-02T14:44:34.633Z",
+    "Expired": false,
+    "Number": "5555555555554444",
+    "MaskedNumber": "5555555555554444",
+    "IsDefault": false,
+    "Type": "MC",
+    "DisplayExpirationMonth": "3",
+    "DisplayExpirationYear": "2050",
+    "CVV": "123"
+  },
+  "visaCard": {
+    "Id": 0,
+    "ExpirationDate": "2045-02-01T14:44:34.633Z",
+    "Expired": false,
+    "Number": "4012888888881881",
+    "MaskedNumber": "4012888888881881",
+    "IsDefault": false,
+    "Type": "VI",
+    "DisplayExpirationMonth": "2",
+    "DisplayExpirationYear": "2045",
+    "CVV": "123"
+  },
+  "amex": {
+    "Id": 0,
+    "ExpirationDate": "2053-04-06T14:44:34.633Z",
+    "Expired": false,
+    "Number": "378282246310005",
+    "MaskedNumber": "378282246310005",
+    "IsDefault": false,
+    "Type": "AX",
+    "DisplayExpirationMonth": "4",
+    "DisplayExpirationYear": "2053",
+    "CVV": "123"
+  }
 }

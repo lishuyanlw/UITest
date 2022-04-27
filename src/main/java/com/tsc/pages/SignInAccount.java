@@ -173,6 +173,7 @@ public class SignInAccount extends BasePage {
 	 * @param- String - cardNumber that is added
 	 * @param- String - expirationMonth of card that is added
 	 * @param- String - expirationYear of card that is added
+	 * @return - boolean - true/false
 	 */
 	public boolean verifyNewAddedCreditCardForUser(String cardType, String cardNumber, String expirationMonth, String expirationYear) {
 		int loopSize = lstCreditCardsPresent.size();
@@ -191,8 +192,12 @@ public class SignInAccount extends BasePage {
 					String cardTypeDisplayed = cardTypeWebElement.getText();
 					if (cardTypeDisplayed.equalsIgnoreCase(cardType)){
 						//Verifying the card number added
-
-						return true;
+						WebElement expiresWebElement = lstCreditCardsPresent.get(counter).findElement(By.xpath(".//div[contains(@class,'margin-top-md')]//div[contains(@class,'zeroRightPadding')]//span[@class='table-cell ']/span"));
+						boolean value = this.verifyCardNumberAddedForUser(expiresWebElement,cardNumber,cardType);
+						if(value)
+							return true;
+						else
+							return false;
 					}
 					else {
 						reporter.reportLogFailWithScreenshot("Card Type added is not same as expected: " + cardTypeDisplayed);
@@ -205,11 +210,22 @@ public class SignInAccount extends BasePage {
 	}
 
 	/**
-	 *
-	 * @param cardNumber
-	 * @return
+	 * This function verifies the displayed last digits of Credit Card Number
+	 * @param - String - cardNumber that is added
+	 * @param - String - cardType that is added
+	 * @return - boolean - true/false
 	 */
-	public boolean verifyCardNumberAddedForUser(String cardNumber){
-		return false;
+	public boolean verifyCardNumberAddedForUser(WebElement webElement, String cardNumber, String cardType){
+		String inputLastDigitsOfCard = null;
+		String lastDigitsOfCard = webElement.getText().split(" ")[2];
+		if(cardType.equalsIgnoreCase("visa"))
+			inputLastDigitsOfCard = cardNumber.substring(cardNumber.length()-3);
+		else if(cardType.equalsIgnoreCase("master"))
+			inputLastDigitsOfCard = cardNumber.substring(cardNumber.length()-4);
+
+		if(lastDigitsOfCard.equals(inputLastDigitsOfCard))
+			return true;
+		else
+			return false;
 	}
 }
