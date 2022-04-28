@@ -64,6 +64,16 @@ public class DataConverter {
     }
 
     /**
+     *This method converts local datetime to GMT
+     * @return- String - Date
+     */
+    public static String getLocalDate() throws ParseException {
+        Date date = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        return format.format(date);
+    }
+
+    /**
      *This method read json file into jsonObject
      * @param-jsonFilePath - jsonFile location at root location
      * @return-JSONObject

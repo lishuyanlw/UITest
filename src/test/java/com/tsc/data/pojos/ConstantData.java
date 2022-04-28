@@ -12,6 +12,7 @@ public class ConstantData {
     public LoginUser loginUser;
     public APIUserSessionParams apiUserSessionParams;
     public APIAppSessionParams apiAppSessionParams;
+    public MyAccount myAccount;
 
     public APIUserSessionParams getApiUserSessionParams() { return apiUserSessionParams; }
 
@@ -60,6 +61,10 @@ public class ConstantData {
     public void setLoginUser(LoginUser loginUser) {
         this.loginUser = loginUser;
     }
+
+    public MyAccount getMyAccount() {        return myAccount;    }
+
+    public void setMyAccount(MyAccount myAccount) {        this.myAccount = myAccount;    }
 
     public static class HeaderSection {
         private String lnk_NotFound;
@@ -929,6 +934,51 @@ public class ConstantData {
         public void setLbl_RightSideTitleSignInPage(String lbl_RightSideTitleSignInPage) {
             this.lbl_RightSideTitleSignInPage = lbl_RightSideTitleSignInPage;
         }
+    }
+
+    public static class MyAccount{
+        public String lbl_Username;
+        public String lbl_Password;
+        public String lbl_FirstName;
+        public String lnk_addNewCardURL;
+        public List<String> lst_newCreditCardType;
+        public List<String> lbl_invalidCardErrorMessage;
+
+        public String getLbl_Username() {
+            return lbl_Username;
+        }
+
+        public void setLbl_Username(String lbl_Username) {
+            this.lbl_Username = lbl_Username;
+        }
+
+        public String getLbl_Password() {
+            return lbl_Password;
+        }
+
+        public void setLbl_Password(String lbl_Password) {
+            this.lbl_Password = lbl_Password;
+        }
+
+        public String getLbl_FirstName() {
+            return lbl_FirstName;
+        }
+
+        public void setLbl_FirstName(String lbl_FirstName) {
+            this.lbl_FirstName = lbl_FirstName;
+        }
+
+        public String getLnk_addNewCardURL() {            return lnk_addNewCardURL;        }
+
+        public void setLnk_addNewCardURL(String lnk_addNewCardURL) {            this.lnk_addNewCardURL = lnk_addNewCardURL;        }
+
+        public List<String> getLst_newCreditCardType() {            return lst_newCreditCardType;        }
+
+        public void setLst_newCreditCardType(List<String> lst_newCreditCardType) {            this.lst_newCreditCardType = lst_newCreditCardType;        }
+
+        public List<String> getLbl_invalidCardErrorMessage() {            return lbl_invalidCardErrorMessage;        }
+
+        public void setLbl_invalidCardErrorMessage(List<String> lbl_invalidCardErrorMessage) {            this.lbl_invalidCardErrorMessage = lbl_invalidCardErrorMessage;        }
     }
 
 }

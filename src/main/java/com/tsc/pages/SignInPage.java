@@ -193,8 +193,9 @@ public class SignInPage extends BasePage {
 		//this.btnSubmit.click();
 		getReusableActionsInstance().javascriptScrollToTopOfPage();
 		getReusableActionsInstance().staticWait(5000);
-		
-		return waitForCondition(Driver->{return lblSignInGlobalResponseBanner.isDisplayed();},90000);
+
+		this.waitForPageToLoad();
+		return waitForCondition(Driver->{return lblSignInGlobalResponseBanner.isDisplayed();},1200000);
 				
 	}
 
