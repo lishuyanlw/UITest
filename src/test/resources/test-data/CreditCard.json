@@ -9,7 +9,8 @@
     "Type": "FI",
     "DisplayExpirationMonth": "01",
     "DisplayExpirationYear": "2050",
-    "CVV": "123"
+    "CVV": "123",
+    "CardType": "tsc"
   },
   "masterCard": {
     "Id": 0,
@@ -21,7 +22,8 @@
     "Type": "MC",
     "DisplayExpirationMonth": "3",
     "DisplayExpirationYear": "2050",
-    "CVV": "123"
+    "CVV": "123",
+    "CardType": "master"
   },
   "visaCard": {
     "Id": 0,
@@ -33,7 +35,8 @@
     "Type": "VI",
     "DisplayExpirationMonth": "2",
     "DisplayExpirationYear": "2045",
-    "CVV": "123"
+    "CVV": "123",
+    "CardType": "visa"
   },
   "amex": {
     "Id": 0,
@@ -45,6 +48,7 @@
     "Type": "AX",
     "DisplayExpirationMonth": "4",
     "DisplayExpirationYear": "2053",
-    "CVV": "123"
+    "CVV": "123",
+    "CardType": "amex"
   }
 }

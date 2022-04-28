@@ -1,5 +1,6 @@
 package com.tsc.pages;
 
+import com.tsc.api.util.DataConverter;
 import com.tsc.pages.base.BasePage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -7,12 +8,15 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
 
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class SignInAccount extends BasePage {
+public class MyAccount extends BasePage {
 
-	public SignInAccount(WebDriver driver) {
+	public MyAccount(WebDriver driver) {
 		super(driver);
 	}
 
@@ -135,6 +139,43 @@ public class SignInAccount extends BasePage {
 	}
 
 	/**
+	 * This function clicks on sub-menu item present on My Account Page
+	 */
+	public void clickOnPaymentOptionSubMenuItemsOnMyAccount(String subMenu){
+		this.waitForPageToLoad();
+		boolean flag = false;
+		for(WebElement webElement:this.lstpaymentOptions){
+			if(webElement.getText().contains(subMenu)){
+				this.clickElement(webElement);
+				flag=true;
+				break;
+			}
+		}
+		waitForCondition(Driver->{return this.btnCancelAddCreditCardForNewCreditCard.isEnabled() &&
+				this.btnCancelAddCreditCardForNewCreditCard.isDisplayed();},12000);
+		if(!flag)
+			reporter.reportLogFailWithScreenshot("Provided sub-menu: "+subMenu+" is not present. Please verify once again!");
+	}
+
+	/**
+	 * This function returns expiration data for new Credit Card
+	 * @return - Map<String,String> - Expiration Month and Year Data for Card
+	 * @throws ParseException
+	 */
+	public Map<String,String> getNewCardExpirationData() throws ParseException {
+		Map<String,String> cardData = new HashMap<>();
+		String[] date = new DataConverter().getLocalDate().split("-");
+		int calculatedExpirationMonth = Integer.valueOf(date[1])+2>12 ? (Integer.parseInt(date[1])+2)-12 : Integer.valueOf(date[1])+2;
+		String expirationMonth = String.valueOf(calculatedExpirationMonth);
+		if(expirationMonth.length()==1)
+			expirationMonth = "0"+expirationMonth;
+		String expirationYear = String.valueOf(Integer.valueOf(date[0])+3);
+		cardData.put("expirationMonth",expirationMonth);
+		cardData.put("expirationYear",expirationYear);
+		return cardData;
+	}
+
+	/**
 	 * Adding new Credit Card for User
 	 * @param- String - cardType to be added
 	 * @param - String - cardNumber to be added
@@ -142,29 +183,48 @@ public class SignInAccount extends BasePage {
 	 * @param - String - expirationYear for Credit Card
 	 * @param - boolean - isDefault value for Credit Card attached to user
 	 */
-	public void addNewValidCreditCardForUser(String cardType, String cardNumber, String expirationMonth, String expirationYear, boolean isDefault ){
+	public Map<String,String> addNewValidCreditCardForUser(String cardType, String cardNumber, boolean isDefault) throws ParseException {
 		String cardTypeToBeAdded = this.createXPath("//div[contains(@class,'editPayPad')]//ul/li/button/img[contains(@alt,'{0}')]",cardType);
 		WebElement cardTypeElement = getDriver().findElement(By.xpath(cardTypeToBeAdded));
+
+		//Calculating expiration Year And Month for Card
+		Map<String,String> cardData = this.getNewCardExpirationData();
 
 		waitForCondition(Driver->{return cardTypeElement.isDisplayed() && cardTypeElement.isEnabled();},5000);
 		this.clickWebElementUsingJS(cardTypeElement);
 
-		String mainWindowHandle = getDriver().getWindowHandle();
 		getDriver().switchTo().frame(iFrameForNewCreditCard);
 		waitForCondition(Driver->{return this.lblCardNumberForNewCreditCard.isEnabled() &&
 				this.lblCardNumberForNewCreditCard.isDisplayed();},6000);
 		//Adding Credit Card Number
 		this.clickWebElementUsingJS(this.lblCardNumberForNewCreditCard);
 		this.lblCardNumberForNewCreditCard.sendKeys(cardNumber);
-		waitForCondition(Driver->{return !this.lblMaskedCardNumberForNewCreditCard.getAttribute("value").isEmpty();},10000);
-		getDriver().switchTo().window(mainWindowHandle);
+		//Using static wait of 5 seconds here as wait for condition is throwing target frame detached error
+		getReusableActionsInstance().staticWait(5000);
+		//waitForCondition(Driver->{return !this.lblMaskedCardNumberForNewCreditCard.getAttribute("value").isEmpty();},10000);
+		getDriver().switchTo().defaultContent();
 
 		//Selecting Expiration Month and Year
-		getReusableActionsInstance().selectWhenReady(this.lblExpirationYearForNewCreditCard,expirationMonth,6000);
-		getReusableActionsInstance().selectWhenReady(this.lblMonthForNewCreditCard,expirationYear,6000);
+		getReusableActionsInstance().selectWhenReady(this.lblMonthForNewCreditCard,cardData.get("expirationMonth"),6000);
+		getReusableActionsInstance().selectWhenReady(this.lblExpirationYearForNewCreditCard,cardData.get("expirationYear"),6000);
 
 		//Click on Save Button
 		this.clickElement(this.btnSaveAddCreditCardForNewCreditCard);
+		return cardData;
+	}
+
+	/**
+	 * This function converts input expiration data to displayed format on application
+	 * @param -String - expirationMonth
+	 * @param - String - expirationYear
+	 * @return - String
+	 */
+	public String getExpirationDateDisplayedForCreditCard(String expirationMonth, String expirationYear){
+		if(expirationMonth.startsWith("0"))
+			expirationMonth = expirationMonth.substring(expirationMonth.length()-1);
+		if(expirationYear.length()>2)
+			expirationYear = expirationYear.substring(expirationYear.length()-2);
+		return expirationMonth + "/" + expirationYear;
 	}
 
 	/**
@@ -176,16 +236,20 @@ public class SignInAccount extends BasePage {
 	 * @return - boolean - true/false
 	 */
 	public boolean verifyNewAddedCreditCardForUser(String cardType, String cardNumber, String expirationMonth, String expirationYear) {
+		this.waitForPageToLoad();
+		//this.waitForCondition(Driver->{return this.lstCreditCardsPresent.size()>0;},10000);
 		int loopSize = lstCreditCardsPresent.size();
 		for (int counter = 0; counter < loopSize; counter++) {
 			//Verifying card type image that is added
 			WebElement cardImage = lstCreditCardsPresent.get(counter).findElement(By.xpath(".//div[contains(@class,'margin-top-md')]//div[contains(@class,'zeroRightPadding')]//span[contains(@class,'padding-right')]/img"));
-			String imageType = cardImage.getText();
+			String imageType = cardImage.getAttribute("alt");
 			if (imageType.equalsIgnoreCase(cardType)) {
 				//Checking the card expiration year now to verify it is same card that is added by user
 				WebElement expiresOnWebElement = lstCreditCardsPresent.get(counter).findElement(By.xpath(".//div[contains(@class,'margin-top-md')]//div[contains(@class,'zeroRightPadding')]//div[@class='table-cell']"));
 				String expiresOnData = expiresOnWebElement.getText().split(":")[1];
-				if (expiresOnData.equals(expirationMonth + "/" + expirationYear)) {
+				//Fetching input expiration month and year in required format
+				String inputExpirationData = this.getExpirationDateDisplayedForCreditCard(expirationMonth,expirationYear);
+				if (expiresOnData.trim().equals(inputExpirationData)) {
 					reporter.reportLog("Card Type: " + imageType + " and expiration year is same as added: " + expiresOnData);
 					//Verifying Image Type and CardType is same that is displayed in application for user
 					WebElement cardTypeWebElement = lstCreditCardsPresent.get(counter).findElement(By.xpath(".//div[contains(@class,'margin-top-md')]//div[contains(@class,'zeroRightPadding')]//span[@class='table-cell ']/label"));
@@ -218,11 +282,13 @@ public class SignInAccount extends BasePage {
 	public boolean verifyCardNumberAddedForUser(WebElement webElement, String cardNumber, String cardType){
 		String inputLastDigitsOfCard = null;
 		String lastDigitsOfCard = webElement.getText().split(" ")[2];
+		/**
 		if(cardType.equalsIgnoreCase("visa"))
 			inputLastDigitsOfCard = cardNumber.substring(cardNumber.length()-3);
 		else if(cardType.equalsIgnoreCase("master"))
 			inputLastDigitsOfCard = cardNumber.substring(cardNumber.length()-4);
-
+		*/
+		inputLastDigitsOfCard = cardNumber.substring(cardNumber.length()-4);
 		if(lastDigitsOfCard.equals(inputLastDigitsOfCard))
 			return true;
 		else

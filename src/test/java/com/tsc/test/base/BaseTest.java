@@ -53,6 +53,7 @@ public class BaseTest {
 	protected static final ThreadLocal<ShoppingCart> shoppingCartThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<JSONObject> apiUserSessionDataMapThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<JSONObject> apiAppSessionDataMapThreadLocal = new ThreadLocal<>();
+	protected static final ThreadLocal<MyAccount> myAccountPageThreadLocal = new ThreadLocal<>();
 
 	public BaseTest() {
 		browserDrivers = new BrowserDrivers();
@@ -108,6 +109,11 @@ public class BaseTest {
 		return apiAppSessionDataMapThreadLocal.get();
 	}
 
+	//@return ApiAppSessionDataThreadLocal
+	protected static MyAccount getMyAccountPageThreadLocal () {
+		return myAccountPageThreadLocal.get();
+	}
+
 	private void init() throws IOException {
 		homePageThreadLocal.set(new HomePage(getDriver()));
 		globalHeaderPageThreadLocal.set(new GlobalHeaderPage(getDriver()));
@@ -119,6 +125,7 @@ public class BaseTest {
 		reporter = new ExtentTestManager(getDriver());
 		apiResponseThreadLocal.set(new ApiResponse());
 		shoppingCartThreadLocal.set(new ShoppingCart(getDriver()));
+		myAccountPageThreadLocal.set(new MyAccount(getDriver()));
 	}
 
 	private void init_Mobile() throws IOException {
