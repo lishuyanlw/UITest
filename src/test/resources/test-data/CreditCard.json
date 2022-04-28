@@ -1,5 +1,5 @@
 {
-  "tscCard": {
+  "tsc": {
     "Id": 0,
     "ExpirationDate": "2050-01-01T05:00:00.000Z",
     "Expired": false,
@@ -10,9 +10,10 @@
     "DisplayExpirationMonth": "01",
     "DisplayExpirationYear": "2050",
     "CVV": "123",
-    "CardType": "tsc"
+    "CardType": "tsc",
+    "CardDisplayName": "TSC Card"
   },
-  "masterCard": {
+  "master": {
     "Id": 0,
     "ExpirationDate": "2050-03-02T14:44:34.633Z",
     "Expired": false,
@@ -23,9 +24,10 @@
     "DisplayExpirationMonth": "3",
     "DisplayExpirationYear": "2050",
     "CVV": "123",
-    "CardType": "master"
+    "CardType": "master",
+    "CardDisplayName": "MasterCard"
   },
-  "visaCard": {
+  "visa": {
     "Id": 0,
     "ExpirationDate": "2045-02-01T14:44:34.633Z",
     "Expired": false,
@@ -36,7 +38,8 @@
     "DisplayExpirationMonth": "2",
     "DisplayExpirationYear": "2045",
     "CVV": "123",
-    "CardType": "visa"
+    "CardType": "visa",
+    "CardDisplayName": "Visa"
   },
   "amex": {
     "Id": 0,
@@ -49,6 +52,7 @@
     "DisplayExpirationMonth": "4",
     "DisplayExpirationYear": "2053",
     "CVV": "123",
-    "CardType": "amex"
+    "CardType": "amex",
+    "CardDisplayName": "American Express"
   }
 }

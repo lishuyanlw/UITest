@@ -60,6 +60,9 @@ public class MyAccount extends BasePage {
 	@FindBy(xpath="//input[@id='pan']")
 	public WebElement lblCardNumberForNewCreditCard;
 
+	@FindBy(xpath="//input[@id='ficard']")
+	public WebElement lblTSCCreditCardInput;
+
 	@FindBy(xpath="//input[@id='maskedPan']")
 	public WebElement lblMaskedCardNumberForNewCreditCard;
 
@@ -84,11 +87,20 @@ public class MyAccount extends BasePage {
 	//.//div[contains(@class,'margin-top-md')]//div[contains(@class,'smallRightPadding')]/a[contains(@class,'negative')] - Edit Button
 	//.//div[contains(@class,'margin-top-md')]//div[contains(@class,'smallLeftPadding')]/a[contains(@class,'negative')] - Remove Button
 
-	@FindBy(xpath="//button[@id='addCardBtn']//*[@class='svgIconPlus']")
+	@FindBy(xpath="//button[@id='addCardBtn']")
 	public WebElement btnAddNewCreditCard;
 
 	@FindBy(xpath="//button[@id='addCardBtn']//div[contains(@class,'addBtnTxt')]")
 	public WebElement lblAddNewCreditCardText;
+
+	@FindBy(xpath="//div[@class='modal-body']//div[contains(@class,'clearfix')]/div/button[contains(text(),'REMOVE')]")
+	public WebElement btnRemoveCreditCardButton;
+
+	@FindBy(xpath="//div[@class='modal-body']//div[contains(@class,'clearfix')]/div/button/span")
+	public WebElement btnCancelRemoveCreditCardButton;
+
+	@FindBy(xpath="//*[@class='breadcrumb']/li/a[contains(text(),'Account')]")
+	public WebElement lnkBreadCrumbMyAccount;
 
 
 	/**
@@ -193,20 +205,23 @@ public class MyAccount extends BasePage {
 		waitForCondition(Driver->{return cardTypeElement.isDisplayed() && cardTypeElement.isEnabled();},5000);
 		this.clickWebElementUsingJS(cardTypeElement);
 
-		getDriver().switchTo().frame(iFrameForNewCreditCard);
-		waitForCondition(Driver->{return this.lblCardNumberForNewCreditCard.isEnabled() &&
-				this.lblCardNumberForNewCreditCard.isDisplayed();},6000);
-		//Adding Credit Card Number
-		this.clickWebElementUsingJS(this.lblCardNumberForNewCreditCard);
-		this.lblCardNumberForNewCreditCard.sendKeys(cardNumber);
-		//Using static wait of 5 seconds here as wait for condition is throwing target frame detached error
-		getReusableActionsInstance().staticWait(5000);
-		//waitForCondition(Driver->{return !this.lblMaskedCardNumberForNewCreditCard.getAttribute("value").isEmpty();},10000);
-		getDriver().switchTo().defaultContent();
+		if(!cardType.equalsIgnoreCase("tsc")){
+			getDriver().switchTo().frame(iFrameForNewCreditCard);
+			waitForCondition(Driver->{return this.lblCardNumberForNewCreditCard.isEnabled() &&
+					this.lblCardNumberForNewCreditCard.isDisplayed();},6000);
+			//Adding Credit Card Number
+			this.clickWebElementUsingJS(this.lblCardNumberForNewCreditCard);
+			this.lblCardNumberForNewCreditCard.sendKeys(cardNumber);
+			//Using static wait of 5 seconds here as wait for condition is throwing target frame detached error
+			getReusableActionsInstance().staticWait(5000);
+			//waitForCondition(Driver->{return !this.lblMaskedCardNumberForNewCreditCard.getAttribute("value").isEmpty();},10000);
+			getDriver().switchTo().defaultContent();
 
-		//Selecting Expiration Month and Year
-		getReusableActionsInstance().selectWhenReady(this.lblMonthForNewCreditCard,cardData.get("expirationMonth"),6000);
-		getReusableActionsInstance().selectWhenReady(this.lblExpirationYearForNewCreditCard,cardData.get("expirationYear"),6000);
+			//Selecting Expiration Month and Year
+			getReusableActionsInstance().selectWhenReady(this.lblMonthForNewCreditCard,cardData.get("expirationMonth"),6000);
+			getReusableActionsInstance().selectWhenReady(this.lblExpirationYearForNewCreditCard,cardData.get("expirationYear"),6000);
+		}else
+			this.lblTSCCreditCardInput.sendKeys(cardNumber);
 
 		//Click on Save Button
 		this.clickElement(this.btnSaveAddCreditCardForNewCreditCard);
@@ -235,7 +250,9 @@ public class MyAccount extends BasePage {
 	 * @param- String - expirationYear of card that is added
 	 * @return - boolean - true/false
 	 */
-	public boolean verifyNewAddedCreditCardForUser(String cardType, String cardNumber, String expirationMonth, String expirationYear) {
+	public void verifyNewAddedCreditCardForUser(String cardType, String cardDisplayName, String cardNumber, String expirationMonth, String expirationYear, boolean removeCard) {
+		boolean value = false;
+		String inputExpirationData = null;
 		this.waitForPageToLoad();
 		//this.waitForCondition(Driver->{return this.lstCreditCardsPresent.size()>0;},10000);
 		int loopSize = lstCreditCardsPresent.size();
@@ -243,34 +260,45 @@ public class MyAccount extends BasePage {
 			//Verifying card type image that is added
 			WebElement cardImage = lstCreditCardsPresent.get(counter).findElement(By.xpath(".//div[contains(@class,'margin-top-md')]//div[contains(@class,'zeroRightPadding')]//span[contains(@class,'padding-right')]/img"));
 			String imageType = cardImage.getAttribute("alt");
-			if (imageType.equalsIgnoreCase(cardType)) {
+			if (!cardType.contains("tsc") && imageType.equalsIgnoreCase(cardType)) {
 				//Checking the card expiration year now to verify it is same card that is added by user
 				WebElement expiresOnWebElement = lstCreditCardsPresent.get(counter).findElement(By.xpath(".//div[contains(@class,'margin-top-md')]//div[contains(@class,'zeroRightPadding')]//div[@class='table-cell']"));
 				String expiresOnData = expiresOnWebElement.getText().split(":")[1];
 				//Fetching input expiration month and year in required format
-				String inputExpirationData = this.getExpirationDateDisplayedForCreditCard(expirationMonth,expirationYear);
+				inputExpirationData = this.getExpirationDateDisplayedForCreditCard(expirationMonth,expirationYear);
 				if (expiresOnData.trim().equals(inputExpirationData)) {
 					reporter.reportLog("Card Type: " + imageType + " and expiration year is same as added: " + expiresOnData);
 					//Verifying Image Type and CardType is same that is displayed in application for user
 					WebElement cardTypeWebElement = lstCreditCardsPresent.get(counter).findElement(By.xpath(".//div[contains(@class,'margin-top-md')]//div[contains(@class,'zeroRightPadding')]//span[@class='table-cell ']/label"));
 					String cardTypeDisplayed = cardTypeWebElement.getText();
-					if (cardTypeDisplayed.equalsIgnoreCase(cardType)){
+					if (cardTypeDisplayed.equalsIgnoreCase(cardDisplayName)){
 						//Verifying the card number added
 						WebElement expiresWebElement = lstCreditCardsPresent.get(counter).findElement(By.xpath(".//div[contains(@class,'margin-top-md')]//div[contains(@class,'zeroRightPadding')]//span[@class='table-cell ']/span"));
-						boolean value = this.verifyCardNumberAddedForUser(expiresWebElement,cardNumber,cardType);
-						if(value)
-							return true;
-						else
-							return false;
+						value = this.verifyCardNumberAddedForUser(expiresWebElement,cardNumber,cardType);
+						break;
 					}
-					else {
+					else
 						reporter.reportLogFailWithScreenshot("Card Type added is not same as expected: " + cardTypeDisplayed);
-						return false;
-					}
+				}
+			}else{
+				WebElement cardTypeWebElement = lstCreditCardsPresent.get(counter).findElement(By.xpath(".//div[contains(@class,'margin-top-md')]//div[contains(@class,'zeroRightPadding')]//span[@class='table-cell ']/label"));
+				String cardTypeDisplayed = cardTypeWebElement.getText();
+				if (cardTypeDisplayed.equalsIgnoreCase(cardDisplayName)){
+					//Verifying the card number added
+					WebElement expiresWebElement = lstCreditCardsPresent.get(counter).findElement(By.xpath(".//div[contains(@class,'margin-top-md')]//div[contains(@class,'zeroRightPadding')]//span[@class='table-cell ']/span"));
+					value = this.verifyCardNumberAddedForUser(expiresWebElement,cardNumber,cardType);
+					break;
 				}
 			}
 		}
-		return false;
+		if(value)
+			reporter.reportLogPass("Credit Card: "+cardNumber+" with type: "+cardType+" is added as expected for the user");
+		else
+			reporter.reportLogFailWithScreenshot("Credit Card: "+cardNumber+" with type: "+cardType+" is not added as expected for the user");
+
+		//Remove Credit Card associated
+		if(removeCard)
+			this.removeCreditCardFromUser(cardType,cardNumber,inputExpirationData);
 	}
 
 	/**
@@ -293,5 +321,71 @@ public class MyAccount extends BasePage {
 			return true;
 		else
 			return false;
+	}
+
+	/**
+	 * This functions removes provided Credit Card attached to user
+	 * @param - String - cardType
+	 * @param - String - cardNumber
+	 * @param -String - expirationMonthAndYear
+	 */
+	public void removeCreditCardFromUser(String cardType, String cardNumber, String expirationMonthAndYear){
+		int beforeDeleteCreditCardsPresent = lstCreditCardsPresent.size();
+		WebElement expiresOnWebElement = null;
+		String expiresOnData = null;
+		boolean value = false;
+		for (int counter = 0; counter < beforeDeleteCreditCardsPresent; counter++) {
+			WebElement cardImage = lstCreditCardsPresent.get(counter).findElement(By.xpath(".//div[contains(@class,'margin-top-md')]//div[contains(@class,'zeroRightPadding')]//span[contains(@class,'padding-right')]/img"));
+			String imageType = cardImage.getAttribute("alt");
+			if(!imageType.toLowerCase().contains("tsc")){
+				expiresOnWebElement = lstCreditCardsPresent.get(counter).findElement(By.xpath(".//div[contains(@class,'margin-top-md')]//div[contains(@class,'zeroRightPadding')]//div[@class='table-cell']"));
+				expiresOnData = expiresOnWebElement.getText().split(":")[1];
+				if (expiresOnData.trim().equals(expirationMonthAndYear)) {
+					WebElement expiresWebElement = lstCreditCardsPresent.get(counter).findElement(By.xpath(".//div[contains(@class,'margin-top-md')]//div[contains(@class,'zeroRightPadding')]//span[@class='table-cell ']/span"));
+					value = this.verifyCardNumberAddedForUser(expiresWebElement,cardNumber,cardType);
+					if(value){
+						//Removing the matched Credit Card
+						WebElement removeButtonWebElement = lstCreditCardsPresent.get(counter).findElement(By.xpath(".//div[contains(@class,'margin-top-md')]//div[contains(@class,'smallLeftPadding')]/a[contains(@class,'negative')]"));
+						this.clickElement(removeButtonWebElement);
+						waitForCondition(Driver->{return this.btnRemoveCreditCardButton.isDisplayed() &&
+								this.btnRemoveCreditCardButton.isEnabled();},6000);
+						this.clickElement(this.btnRemoveCreditCardButton);
+						break;
+					}
+				}
+			}else if(cardType.toLowerCase().contains("tsc")){
+				WebElement removeButtonWebElement = lstCreditCardsPresent.get(counter).findElement(By.xpath(".//div[contains(@class,'margin-top-md')]//div[contains(@class,'smallLeftPadding')]/a[contains(@class,'negative')]"));
+				this.clickElement(removeButtonWebElement);
+				waitForCondition(Driver->{return this.btnRemoveCreditCardButton.isDisplayed() &&
+						this.btnRemoveCreditCardButton.isEnabled();},6000);
+				this.clickElement(this.btnRemoveCreditCardButton);
+				break;
+			}
+		}
+		//Verification that card is removed
+		//Applying static wait for 5 seconds as application takes time to refresh and there is no unique element for wait for condition to be used
+		getReusableActionsInstance().staticWait(5000);
+		int afterDeleteCreditCardsPresent = lstCreditCardsPresent.size();
+		if(afterDeleteCreditCardsPresent == beforeDeleteCreditCardsPresent-1)
+			reporter.reportLogPass("Credit Card: "+cardNumber+" of type: "+cardType+" is removed from user");
+		else
+			reporter.reportLogFailWithScreenshot("Credit Card: "+cardNumber+" of type: "+cardType+" is not removed from user");
+	}
+
+	/**
+	 * This function clicks on Add New Credit Card section on Manage Credit Card Screen
+	 */
+	public void clickAddNewCreditCardOnManageCreditCardScreen(){
+		this.clickElement(this.btnAddNewCreditCard);
+		this.waitForPageToLoad();
+		waitForCondition(Driver->{return this.btnCancelAddCreditCardForNewCreditCard.isEnabled() &&
+				this.btnCancelAddCreditCardForNewCreditCard.isDisplayed();},12000);
+	}
+
+	public void navigateToMyAccountFromBreadCrumb(){
+		this.clickElement(this.lnkBreadCrumbMyAccount);
+		this.waitForPageToLoad();
+		waitForCondition(Driver->{return this.lstpaymentOptions.size()>0 &&
+				this.lstpaymentOptions.get(0).isEnabled();},6000);
 	}
 }
