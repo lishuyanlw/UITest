@@ -92,6 +92,12 @@ public class MyAccount extends BasePage {
 	@FindBy(xpath="//button[@id='addCardBtn']//div[contains(@class,'addBtnTxt')]")
 	public WebElement lblAddNewCreditCardText;
 
+	@FindBy(xpath="//span[@class='table-cell']/label")
+	public WebElement lblCardNameOnRemovePopUp;
+
+	@FindBy(xpath="//span[@class='table-cell']/span")
+	public WebElement lblCardNumberOnRemovePopUp;
+
 	@FindBy(xpath="//div[@class='modal-body']//div[contains(@class,'clearfix')]/div/button[contains(text(),'REMOVE')]")
 	public WebElement btnRemoveCreditCardButton;
 
@@ -100,7 +106,6 @@ public class MyAccount extends BasePage {
 
 	@FindBy(xpath="//*[@class='breadcrumb']/li/a[contains(text(),'Account')]")
 	public WebElement lnkBreadCrumbMyAccount;
-
 
 	/**
 	 * To get subitem web element through sublitem text
@@ -192,7 +197,7 @@ public class MyAccount extends BasePage {
 	public void addNewCreditCardNumber(String cardNumber){
 		getDriver().switchTo().frame(iFrameForNewCreditCard);
 		waitForCondition(Driver->{return this.lblCardNumberForNewCreditCard.isEnabled() &&
-				this.lblCardNumberForNewCreditCard.isDisplayed();},6000);
+				this.lblCardNumberForNewCreditCard.isDisplayed();},15000);
 		//Adding Credit Card Number
 		this.clickWebElementUsingJS(this.lblCardNumberForNewCreditCard);
 		this.lblCardNumberForNewCreditCard.sendKeys(cardNumber);
@@ -391,6 +396,21 @@ public class MyAccount extends BasePage {
 			}
 		}
 	}
+
+	/**
+	 * This function verifies card on remove popup
+	 * @param - String - cardDetails
+	 */
+	public void verifyCardTypeAndNameOnRemove(String cardType, String cardNumber){
+		String appCardDetails = this.lblCardNameOnRemovePopUp.getText().trim()+" "+this.lblCardNumberOnRemovePopUp.getText().trim();
+		if(cardType.contains("amex"))
+			cardType = "american express";
+		if(appCardDetails.toLowerCase().contains(cardType) && appCardDetails.contains(cardNumber))
+			reporter.reportLogPass("Card Number deleted is same as expected: "+appCardDetails);
+		else
+			reporter.reportLogFailWithScreenshot("Card Number that is deleted: "+appCardDetails+" is not as expected for type: "+cardType);
+	}
+
 	/**
 	 * This functions removes provided Credit Card attached to user
 	 * @param - String - cardType
@@ -400,8 +420,10 @@ public class MyAccount extends BasePage {
 	public void removeCreditCardFromUser(String cardType, String cardNumber, String expirationMonthAndYear, boolean removeCard){
 		this.selectGivenCreditCard(cardNumber,cardType,expirationMonthAndYear,true);
 		int beforeDeleteCreditCardsPresent = lstCreditCardsPresent.size();
-		if(removeCard)
+		if(removeCard){
+			this.verifyCardTypeAndNameOnRemove(cardType,cardNumber.substring(cardNumber.length()-4));
 			this.clickElement(this.btnRemoveCreditCardButton);
+		}
 		else
 			this.clickElement(this.btnCancelRemoveCreditCardButton);
 		//Verification that card is removed
