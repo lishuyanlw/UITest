@@ -11,9 +11,9 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class SignInAccount extends BasePage {
+public class MyAccount extends BasePage {
 
-	public SignInAccount(WebDriver driver) {
+	public MyAccount(WebDriver driver) {
 		super(driver);
 	}
 

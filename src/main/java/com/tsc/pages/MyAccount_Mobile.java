@@ -8,9 +8,9 @@ import org.openqa.selenium.support.FindBy;
 
 import java.util.List;
 
-public class SignInAccount_Mobile extends BasePage {
+public class MyAccount_Mobile extends BasePage {
 
-	public SignInAccount_Mobile(WebDriver driver) {
+	public MyAccount_Mobile(WebDriver driver) {
 		super(driver);
 	}
 
