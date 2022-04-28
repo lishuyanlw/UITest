@@ -202,5 +202,5 @@ myAccount:
   lbl_FirstName: TestOne
   lnk_addNewCardURL: "/myaccount/paymentcards/addcard"
   lst_newCreditCardType: [visa,master,amex,tsc]
-  lbl_invalidCardErrorMessage: "Please enter a valid card number and try again."
+  lbl_invalidCardErrorMessage: ["Please enter a valid card number and try again.","Credit Card Number is required."]
 

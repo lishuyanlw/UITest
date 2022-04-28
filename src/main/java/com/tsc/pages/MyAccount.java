@@ -382,10 +382,27 @@ public class MyAccount extends BasePage {
 				this.btnCancelAddCreditCardForNewCreditCard.isDisplayed();},12000);
 	}
 
+	/**
+	 * This functions navigates to My Account page from breadcrumb
+	 */
 	public void navigateToMyAccountFromBreadCrumb(){
 		this.clickElement(this.lnkBreadCrumbMyAccount);
 		this.waitForPageToLoad();
 		waitForCondition(Driver->{return this.lstpaymentOptions.size()>0 &&
 				this.lstpaymentOptions.get(0).isEnabled();},6000);
+	}
+
+	/**
+	 * This function verifies error message on passing invalid Credit Card Number
+	 * @param - String - expectedErrorMessage
+	 */
+	public void verifyInvalidCreditCardErrorMessage(String expectedErrorMessage){
+		waitForCondition(Driver->{return this.lblErrorMessageForInvalidCreditCardNumber.isDisplayed();},5000);
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblErrorMessageForInvalidCreditCardNumber);
+		String actualErrorMessage = this.lblErrorMessageForInvalidCreditCardNumber.getText().trim();
+		if(actualErrorMessage.equalsIgnoreCase(expectedErrorMessage))
+			reporter.reportLogPass("Error Message on passing invalid Card Number is as expected: "+actualErrorMessage);
+		else
+			reporter.reportLogFailWithScreenshot("Error Message on passing invalid Card Number :"+actualErrorMessage+" is not as expected: "+expectedErrorMessage);
 	}
 }

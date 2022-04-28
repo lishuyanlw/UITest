@@ -20,6 +20,7 @@ public class MA_TC01_Payment_Options_Add_New_Credit_Card extends BaseTest {
         JSONObject creditCardData = new DataConverter().readJsonFileIntoJSONObject("test-data/CreditCard.json");
         List<String> creditCardTypes = TestDataHandler.constantData.getMyAccount().getLst_newCreditCardType();
         String landingPageURL = TestDataHandler.constantData.getMyAccount().getLnk_addNewCardURL();
+        List<String> errorMessage = TestDataHandler.constantData.getMyAccount().getLbl_invalidCardErrorMessage();
         JSONObject creditCard;
         String cardType,cardDisplayName,cardNumber;
         /**
@@ -46,6 +47,20 @@ public class MA_TC01_Payment_Options_Add_New_Credit_Card extends BaseTest {
             Map<String,String> addedCreditCardData = getMyAccountPageThreadLocal().addNewValidCreditCardForUser(cardType,cardNumber,false);
             getMyAccountPageThreadLocal().verifyNewAddedCreditCardForUser(cardType,cardDisplayName,cardNumber,addedCreditCardData.get("expirationMonth"),addedCreditCardData.get("expirationYear"),true);
             //Navigating back to Add New Credit Card Page
+            getMyAccountPageThreadLocal().navigateToMyAccountFromBreadCrumb();
+        }
+
+        /**
+         Scenario for adding invalid Credit Card to user for verifying error message
+         */
+        for(String inputCardType:creditCardTypes){
+            getMyAccountPageThreadLocal().clickOnPaymentOptionSubMenuItemsOnMyAccount("Add");
+            getMyAccountPageThreadLocal().addNewValidCreditCardForUser(inputCardType,"1234",false);
+            reporter.reportLog("Validating Error Message for Card Type: "+inputCardType);
+            if(inputCardType.toLowerCase().contains("tsc"))
+                getMyAccountPageThreadLocal().verifyInvalidCreditCardErrorMessage(errorMessage.get(1));
+            else
+                getMyAccountPageThreadLocal().verifyInvalidCreditCardErrorMessage(errorMessage.get(0));
             getMyAccountPageThreadLocal().navigateToMyAccountFromBreadCrumb();
         }
     }

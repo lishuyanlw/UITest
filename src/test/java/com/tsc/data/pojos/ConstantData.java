@@ -942,7 +942,7 @@ public class ConstantData {
         public String lbl_FirstName;
         public String lnk_addNewCardURL;
         public List<String> lst_newCreditCardType;
-        public String lbl_invalidCardErrorMessage;
+        public List<String> lbl_invalidCardErrorMessage;
 
         public String getLbl_Username() {
             return lbl_Username;
@@ -976,9 +976,9 @@ public class ConstantData {
 
         public void setLst_newCreditCardType(List<String> lst_newCreditCardType) {            this.lst_newCreditCardType = lst_newCreditCardType;        }
 
-        public String getLbl_invalidCardErrorMessage() {            return lbl_invalidCardErrorMessage;        }
+        public List<String> getLbl_invalidCardErrorMessage() {            return lbl_invalidCardErrorMessage;        }
 
-        public void setLbl_invalidCardErrorMessage(String lbl_invalidCardErrorMessage) {            this.lbl_invalidCardErrorMessage = lbl_invalidCardErrorMessage;        }
+        public void setLbl_invalidCardErrorMessage(List<String> lbl_invalidCardErrorMessage) {            this.lbl_invalidCardErrorMessage = lbl_invalidCardErrorMessage;        }
     }
 
 }
