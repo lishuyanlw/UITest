@@ -44,7 +44,7 @@ public class MA_TC01_Payment_Options_Add_New_Credit_Card extends BaseTest {
 
             getMyAccountPageThreadLocal().clickOnPaymentOptionSubMenuItemsOnMyAccount("Add");
             getGlobalLoginPageThreadLocal().validateCurrentUrlContains(landingPageURL);
-            Map<String,String> addedCreditCardData = getMyAccountPageThreadLocal().addNewValidCreditCardForUser(cardType,cardNumber,false);
+            Map<String,String> addedCreditCardData = getMyAccountPageThreadLocal().addNewValidCreditCardForUser(cardType,cardNumber,true);
             getMyAccountPageThreadLocal().verifyNewAddedCreditCardForUser(cardType,cardDisplayName,cardNumber,addedCreditCardData.get("expirationMonth"),addedCreditCardData.get("expirationYear"),true);
             //Navigating back to Add New Credit Card Page
             getMyAccountPageThreadLocal().navigateToMyAccountFromBreadCrumb();
