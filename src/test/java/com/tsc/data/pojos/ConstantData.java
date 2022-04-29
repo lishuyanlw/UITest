@@ -949,6 +949,8 @@ public class ConstantData {
         public String lnk_orderCancellationURL;
         public String lnk_orderReturnsURL;
         public String lbl_orderSearchErrorMessage;
+        public String lbl_orderModificationTitle;
+        public String lbl_orderReturnsTitle;
 
         public String getLbl_Username() {
             return lbl_Username;
@@ -1032,6 +1034,22 @@ public class ConstantData {
 
         public void setLbl_orderSearchErrorMessage(String lbl_orderSearchErrorMessage) {
             this.lbl_orderSearchErrorMessage = lbl_orderSearchErrorMessage;
+        }
+
+        public String getLbl_orderModificationTitle() {
+            return lbl_orderModificationTitle;
+        }
+
+        public void setLbl_orderModificationTitle(String lbl_orderModificationTitle) {
+            this.lbl_orderModificationTitle = lbl_orderModificationTitle;
+        }
+
+        public String getLbl_orderReturnsTitle() {
+            return lbl_orderReturnsTitle;
+        }
+
+        public void setLbl_orderReturnsTitle(String lbl_orderReturnsTitle) {
+            this.lbl_orderReturnsTitle = lbl_orderReturnsTitle;
         }
     }
 

@@ -208,5 +208,7 @@ myAccount:
   lnk_recentOrderURL: "/pages/myaccount/orderstatus?dateRange=30"
   lnk_orderDetailsURL: "/pages/myaccount/orderstatus?orderNo={OrderNO}"
   lnk_orderCancellationURL: "/go/customerservice/orderingpage#ordermodification"
+  lbl_orderModificationTitle: Ordering
   lnk_orderReturnsURL: "/go/customerservice/returnspage#returnpolicy"
+  lbl_orderReturnsTitle: Returns
 

@@ -1461,4 +1461,35 @@ public class MyAccount extends BasePage {
 		}
 	}
 
+	/**
+	 * To verify Order Modification And Order Returns Contents
+	 */
+	public void verifyOrderModificationAndOrderReturnsContents(){
+		UnCollapsedAllOrderServiceItems();
+
+		String lsText=null;
+		WebElement item;
+		for(int i=0;i<lstOrderServiceItemTitleLink.size();i++){
+			item=lstOrderServiceItemTitleLink.get(i);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsText=item.getText().trim();
+			if(!item.getAttribute("href").isEmpty()){
+				reporter.reportLogPass("The header link of '"+lsText+"' is not empty");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The header link of '"+lsText+"' is empty");
+			}
+
+			item=lstOrderServiceItemContent.get(i);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsText=item.getText().trim();
+			if(!lsText.isEmpty()){
+				reporter.reportLogPass("The content of '"+lsText+"' is not empty");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The content of '"+lsText+"' is empty");
+			}
+		}
+	}
+
 }
