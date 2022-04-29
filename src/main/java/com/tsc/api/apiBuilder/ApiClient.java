@@ -204,24 +204,4 @@ public class ApiClient {
         return inputMap;
     }
 
-    /**
-     * This method will get double from string.
-     * @param-String lsTarget: target string
-     * @return double value
-     */
-    public double getDoubleFromString(String lsTarget) {
-        lsTarget=lsTarget.replace(",", "").trim();
-
-        String regex="\\d+\\.\\d+";
-        String lsReturn="";
-        Pattern pattern=Pattern.compile(regex);
-        Matcher matcher=pattern.matcher(lsTarget);
-        while(matcher.find())
-        {
-            lsReturn=matcher.group();
-        }
-
-        return Double.parseDouble(lsReturn);
-    }
-
 }

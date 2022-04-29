@@ -1,22 +1,17 @@
 package com.tsc.test.tests.myAccount;
 
-import com.tsc.api.util.DataConverter;
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.data.pojos.ConstantData;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
-import org.json.simple.JSONObject;
-import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.List;
-import java.util.Map;
 
-public class MA_TC02_OrderStatus extends BaseTest {
+public class MA_TC03_RecentOrder extends BaseTest {
     @Test(groups={"MyAccount","Regression"})
-    public void MA_TC02_OrderStatus() throws ParseException, IOException {
+    public void MA_TC03_RecentOrder() throws ParseException, IOException {
         //Closing SignIn pop up on login
         getGlobalFooterPageThreadLocal().closePopupDialog();
 
@@ -28,10 +23,10 @@ public class MA_TC02_OrderStatus extends BaseTest {
         //Login using valid username and password
         getGlobalLoginPageThreadLocal().Login(lblUserName, lblPassword, lblFirstName);
 
-        getMyAccountPageThreadLocal().openSubItemWindow("Order Status", getMyAccountPageThreadLocal().lblOrderStatusSectionTitle);
+        getMyAccountPageThreadLocal().openSubItemWindow("Recent Orders", getMyAccountPageThreadLocal().lblOrderStatusSectionTitle);
 
-        String lnk_orderStatusURL=TestDataHandler.constantData.getMyAccount().getLnk_orderStatusURL();
-        String expectedURL=basePage.getBaseURL()+lnk_orderStatusURL;
+        String lnk_recentOrderURL=TestDataHandler.constantData.getMyAccount().getLnk_recentOrderURL();
+        String expectedURL=basePage.getBaseURL()+lnk_recentOrderURL;
         if(basePage.URL().equalsIgnoreCase(expectedURL)){
             reporter.reportLogPass("The navigated URL is equal to expected one:"+expectedURL);
         }

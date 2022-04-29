@@ -121,7 +121,7 @@ searchResultPage:
       filterOption: 
         - ["Shop by brand","Joan Rivers"]
         - ["Price","Under $50"]
-        - ["Shop by colour","Black"]
+        - ["Shop by colour","Green"]
     - filterType: FilterBugs
       filterOption:  
         - ["Shop by brand","Pajar"]

@@ -970,5 +970,53 @@ import utils.ReusableActions;
 		return Long.valueOf(System.getProperty("test_staticWait"));
 	}
 
+	/**
+	 * This method will get double from string.
+	 * @param-String lsTarget: target string
+	 * @return double value
+	 */
+	public double getDoubleFromString(String lsTarget) {
+		lsTarget=lsTarget.replace(",", "").trim();
 
+		String regex="\\d+\\.\\d+";
+		String lsReturn="";
+		Pattern pattern=Pattern.compile(regex);
+		Matcher matcher=pattern.matcher(lsTarget);
+		while(matcher.find())
+		{
+			lsReturn=matcher.group();
+		}
+
+		return Double.parseDouble(lsReturn);
+	}
+
+	/**
+	 * To compare double list sum with expected double value
+	 * @param - lstItem - List<String>
+	 * @param - expectedSummary - String
+	 * @return - boolean
+	 */
+	public boolean checkDoubleEquation(List<Double> lstItem,double expectedSummary){
+		double total=0.0;
+		for(double item:lstItem){
+			total+=item;
+		}
+		return Math.abs(total-expectedSummary)<0.01;
+	}
+
+	/**
+	 * To compare double list sum with expected double value
+	 * @param - lstItem - List<WebElement>
+	 * @param - expectedSummary -WebElement
+	 * @return - boolean
+	 */
+	public boolean checkDoubleEquation(List<WebElement> lstItem,WebElement expectedSummary){
+		double total=0.0;
+		for(WebElement item:lstItem){
+			total+=this.getDoubleFromString(this.getElementInnerText(item));
+		}
+
+		double expectedValue=this.getDoubleFromString(this.getElementInnerText(expectedSummary));
+		return Math.abs(total-expectedValue)<0.01;
+	}
 }

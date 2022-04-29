@@ -203,4 +203,10 @@ myAccount:
   lnk_addNewCardURL: "/myaccount/paymentcards/addcard"
   lst_newCreditCardType: [visa,master,amex,tsc]
   lbl_invalidCardErrorMessage: ["Please enter a valid card number and try again.","Credit Card Number is required."]
+  lnk_orderStatusURL: "/pages/myaccount/orderstatus"
+  lbl_orderSearchErrorMessage: "Oops - we can't find the order you're looking for. Please try again or browse for the order by date."
+  lnk_recentOrderURL: "/pages/myaccount/orderstatus?dateRange=30"
+  lnk_orderDetailsURL: "/pages/myaccount/orderstatus?orderNo={OrderNO}"
+  lnk_orderCancellationURL: "/go/customerservice/orderingpage#ordermodification"
+  lnk_orderReturnsURL: "/go/customerservice/returnspage#returnpolicy"
 

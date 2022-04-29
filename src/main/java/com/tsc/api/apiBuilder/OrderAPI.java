@@ -13,6 +13,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class OrderAPI extends ApiClient {
@@ -158,6 +160,26 @@ public class OrderAPI extends ApiClient {
        AccountCartResponse accountCart = JsonParser.getResponseObject(cartResponse.asString(), new TypeReference<AccountCartResponse>() {});
 //       reporter.reportLog(cartResponse.asString());
        return accountCart.getOrderSummary().getTotalOrderAmount();
+    }
+
+    /**
+     * This method will get double from string.
+     * @param-String lsTarget: target string
+     * @return double value
+     */
+    public double getDoubleFromString(String lsTarget) {
+        lsTarget=lsTarget.replace(",", "").trim();
+
+        String regex="\\d+\\.\\d+";
+        String lsReturn="";
+        Pattern pattern=Pattern.compile(regex);
+        Matcher matcher=pattern.matcher(lsTarget);
+        while(matcher.find())
+        {
+            lsReturn=matcher.group();
+        }
+
+        return Double.parseDouble(lsReturn);
     }
 
 }

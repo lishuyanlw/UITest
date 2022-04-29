@@ -943,6 +943,12 @@ public class ConstantData {
         public String lnk_addNewCardURL;
         public List<String> lst_newCreditCardType;
         public List<String> lbl_invalidCardErrorMessage;
+        public String lnk_orderStatusURL;
+        public String lnk_recentOrderURL;
+        public String lnk_orderDetailsURL;
+        public String lnk_orderCancellationURL;
+        public String lnk_orderReturnsURL;
+        public String lbl_orderSearchErrorMessage;
 
         public String getLbl_Username() {
             return lbl_Username;
@@ -979,6 +985,54 @@ public class ConstantData {
         public List<String> getLbl_invalidCardErrorMessage() {            return lbl_invalidCardErrorMessage;        }
 
         public void setLbl_invalidCardErrorMessage(List<String> lbl_invalidCardErrorMessage) {            this.lbl_invalidCardErrorMessage = lbl_invalidCardErrorMessage;        }
+
+        public String getLnk_orderStatusURL() {
+            return lnk_orderStatusURL;
+        }
+
+        public void setLnk_orderStatusURL(String lnk_orderStatusURL) {
+            this.lnk_orderStatusURL = lnk_orderStatusURL;
+        }
+
+        public String getLnk_recentOrderURL() {
+            return lnk_recentOrderURL;
+        }
+
+        public void setLnk_recentOrderURL(String lnk_recentOrderURL) {
+            this.lnk_recentOrderURL = lnk_recentOrderURL;
+        }
+
+        public String getLnk_orderDetailsURL() {
+            return lnk_orderDetailsURL;
+        }
+
+        public void setLnk_orderDetailsURL(String lnk_orderDetailsURL) {
+            this.lnk_orderDetailsURL = lnk_orderDetailsURL;
+        }
+
+        public String getLnk_orderCancellationURL() {
+            return lnk_orderCancellationURL;
+        }
+
+        public void setLnk_orderCancellationURL(String lnk_orderCancellationURL) {
+            this.lnk_orderCancellationURL = lnk_orderCancellationURL;
+        }
+
+        public String getLnk_orderReturnsURL() {
+            return lnk_orderReturnsURL;
+        }
+
+        public void setLnk_orderReturnsURL(String lnk_orderReturnsURL) {
+            this.lnk_orderReturnsURL = lnk_orderReturnsURL;
+        }
+
+        public String getLbl_orderSearchErrorMessage() {
+            return lbl_orderSearchErrorMessage;
+        }
+
+        public void setLbl_orderSearchErrorMessage(String lbl_orderSearchErrorMessage) {
+            this.lbl_orderSearchErrorMessage = lbl_orderSearchErrorMessage;
+        }
     }
 
 }
