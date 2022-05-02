@@ -203,4 +203,7 @@ myAccount:
   lnk_addNewCardURL: "/myaccount/paymentcards/addcard"
   lst_newCreditCardType: [visa,master,amex,tsc]
   lbl_invalidCardErrorMessage: ["Please enter a valid card number and try again.","Credit Card Number is required."]
+  lst_giftCardDetails: ["6006496682749900319","3974","$100.00"]
+  lbl_invalidGiftCardNumberErrorMessage: "Please enter a valid gift card number (19 numbers)"
+  lbl_invalidGiftCardPinErrorMessage: "Please enter a valid PIN (4 numbers)"
 

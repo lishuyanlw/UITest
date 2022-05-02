@@ -77,7 +77,7 @@ public class MyAccount extends BasePage {
 	public WebElement lblExpirationYearForNewCreditCard;
 
 	@FindBy(xpath="//div[contains(@class,'text-danger')]")
-	public WebElement lblErrorMessageForInvalidCreditCardNumber;
+	public List<WebElement> lblErrorMessageForInvalidCreditCardNumber;
 
 	@FindBy(xpath="//button[contains(@class,'signout')]")
 	public WebElement btnSignOutMyAccountPage;
@@ -110,6 +110,22 @@ public class MyAccount extends BasePage {
 
 	@FindBy(xpath="//*[@class='breadcrumb']/li/a[contains(text(),'Account')]")
 	public WebElement lnkBreadCrumbMyAccount;
+
+	//GIFT CARD BALANCE - PAYMENT OPTIONS
+	@FindBy(xpath="//*[contains(@id,'content')]//*[contains(@class,'titleLink')]")
+	public WebElement lblGiftCardPageTitle;
+
+	@FindBy(xpath="//input[@id='giftcardNumber']")
+	public WebElement lblGiftCardNumberEntryTextBox;
+
+	@FindBy(xpath="//input[@id='pin']")
+	public WebElement lblGiftCardPinEntryTextBox;
+
+	@FindBy(xpath="//button[contains(@class,'btnResizing')]")
+	public WebElement btmCheckGiftCardBalanceButton;
+
+	@FindBy(xpath="//form[contains(@class,'tsc-forms')]//div/strong")
+	public WebElement lblGiftCardBalanceText;
 
 	/**
 	 * To get subitem web element through sublitem text
@@ -174,9 +190,12 @@ public class MyAccount extends BasePage {
 		if(subMenu.toLowerCase().contains("add"))
 			waitForCondition(Driver->{return this.btnCancelAddCreditCardForNewCreditCard.isEnabled() &&
 				this.btnCancelAddCreditCardForNewCreditCard.isDisplayed();},12000);
-		else{
+		else if(subMenu.toLowerCase().contains("manage")){
 			this.waitForPageToLoad();
 			waitForCondition(Driver->{return this.lstCreditCardsPresent.size()>0;},6000);
+		}else{
+			this.waitForPageToLoad();
+			this.waitForCondition(Driver->{return this.lblGiftCardPageTitle.getText().toLowerCase().contains("gift");},6000);
 		}
 
 		if(!flag)
@@ -214,7 +233,6 @@ public class MyAccount extends BasePage {
 		this.lblCardNumberForNewCreditCard.sendKeys(cardNumber);
 		//Using static wait of 5 seconds here as wait for condition is throwing target frame detached error
 		getReusableActionsInstance().staticWait(5000);
-		this.waitForPageToLoad();
 		//waitForCondition(Driver->{return !this.getChildElementAttribute(this.getLblMaskedCardNumberForNewCreditCard,"value").isEmpty();},10000);
 		getDriver().switchTo().defaultContent();
 	}
@@ -479,6 +497,8 @@ public class MyAccount extends BasePage {
 			cardData.put("expirationYear",String.valueOf(updatedYear));
 		}
 		this.addExpirationMonthAndYear(cardData);
+		this.waitForPageToLoad();
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSaveAddCreditCardForNewCreditCard);
 
 		if(editCard)
 			this.clickElement(this.btnSaveAddCreditCardForNewCreditCard);
@@ -576,12 +596,62 @@ public class MyAccount extends BasePage {
 	 * @param - String - expectedErrorMessage
 	 */
 	public void verifyInvalidCreditCardErrorMessage(String expectedErrorMessage){
-		waitForCondition(Driver->{return this.lblErrorMessageForInvalidCreditCardNumber.isDisplayed();},5000);
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblErrorMessageForInvalidCreditCardNumber);
-		String actualErrorMessage = this.lblErrorMessageForInvalidCreditCardNumber.getText().trim();
+		waitForCondition(Driver->{return this.lblErrorMessageForInvalidCreditCardNumber.get(0).isDisplayed();},5000);
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblErrorMessageForInvalidCreditCardNumber.get(0));
+		String actualErrorMessage = this.lblErrorMessageForInvalidCreditCardNumber.get(0).getText().trim();
 		if(actualErrorMessage.equalsIgnoreCase(expectedErrorMessage))
 			reporter.reportLogPass("Error Message on passing invalid Card Number is as expected: "+actualErrorMessage);
 		else
 			reporter.reportLogFailWithScreenshot("Error Message on passing invalid Card Number :"+actualErrorMessage+" is not as expected: "+expectedErrorMessage);
 	}
+
+	/**
+	 * This function verifies gift card balance
+	 * @param - String - giftCardNumber for balance verification
+	 * @param - String - pin for card
+	 * @param - String - balance for gift card
+	 */
+	public void getAndVerifyGiftCardBalance(String giftCardNumber, String pin, String balance){
+		//Enter gift card
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblGiftCardNumberEntryTextBox);
+		this.lblGiftCardNumberEntryTextBox.sendKeys(giftCardNumber);
+		//Enter pin
+		this.lblGiftCardPinEntryTextBox.sendKeys(pin);
+		getReusableActionsInstance().clickIfAvailable(this.btmCheckGiftCardBalanceButton,2000);
+
+		this.waitForCondition(Driver->{return this.lblGiftCardBalanceText.isDisplayed() &&
+					!this.lblGiftCardBalanceText.getText().toLowerCase().trim().contains("pending");},30000);
+
+		String balanceText = this.lblGiftCardBalanceText.getText().trim().split(":")[1];
+
+		if(balanceText!=null && balanceText.equalsIgnoreCase(balance))
+			reporter.reportLogPass("Balance for Gift Card: "+giftCardNumber+" is same as expected: "+balanceText);
+		else if(balanceText.contains("$"))
+			reporter.reportLogPassWithScreenshot("Balance for Gift Card: "+giftCardNumber+" is present: "+balanceText);
+		else
+			reporter.reportLogFailWithScreenshot("Balance for Gift Card: "+giftCardNumber+" is not as expected: "+balanceText);
+	}
+
+	/**
+	 * This function verifies Gift Card Error Messages
+	 */
+	public void verifyGiftCardErrorMessage(String giftCardNumber, String errorType, String errorMessage){
+		String fetchedErrorMessage = null;
+		if(errorType.toLowerCase().contains("number")){
+			this.lblGiftCardNumberEntryTextBox.sendKeys("1234");
+			getReusableActionsInstance().clickIfAvailable(this.lblGiftCardPinEntryTextBox);
+			fetchedErrorMessage = this.lblErrorMessageForInvalidCreditCardNumber.get(0).getText().trim();
+		}else if(errorType.toLowerCase().contains("pin")){
+			this.lblGiftCardNumberEntryTextBox.sendKeys(giftCardNumber);
+			this.lblGiftCardPinEntryTextBox.sendKeys("12");
+			getReusableActionsInstance().clickIfAvailable(this.lblGiftCardNumberEntryTextBox);
+			fetchedErrorMessage = this.lblErrorMessageForInvalidCreditCardNumber.get(1).getText().trim();
+		}
+
+		if(fetchedErrorMessage.equalsIgnoreCase(errorMessage))
+			reporter.reportLogPassWithScreenshot("Error Message for invalid type: "+errorType+" is same as expected: "+fetchedErrorMessage);
+		else
+			reporter.reportLogFailWithScreenshot("Error Message for invalid type: "+errorType+" is "+fetchedErrorMessage+" and not same as expected: "+errorMessage);
+	}
+
 }
