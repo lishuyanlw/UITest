@@ -951,6 +951,11 @@ public class ConstantData {
         public String lbl_orderSearchErrorMessage;
         public String lbl_orderModificationTitle;
         public String lbl_orderReturnsTitle;
+        public String lnk_accountSettingsURL;
+        public String lnk_accountSettingsChangePasswordURL;
+        public String lnk_accountSettingsChangeSecurityQuestionsURL;
+        public String lbl_accountSettingsTitle;
+        public List<String>  lst_changingPasswordErrorMessage;
 
         public String getLbl_Username() {
             return lbl_Username;
@@ -1050,6 +1055,46 @@ public class ConstantData {
 
         public void setLbl_orderReturnsTitle(String lbl_orderReturnsTitle) {
             this.lbl_orderReturnsTitle = lbl_orderReturnsTitle;
+        }
+
+        public String getLnk_accountSettingsURL() {
+            return lnk_accountSettingsURL;
+        }
+
+        public void setLnk_accountSettingsURL(String lnk_accountSettingsURL) {
+            this.lnk_accountSettingsURL = lnk_accountSettingsURL;
+        }
+
+        public String getLnk_accountSettingsChangePasswordURL() {
+            return lnk_accountSettingsChangePasswordURL;
+        }
+
+        public void setLnk_accountSettingsChangePasswordURL(String lnk_accountSettingsChangePasswordURL) {
+            this.lnk_accountSettingsChangePasswordURL = lnk_accountSettingsChangePasswordURL;
+        }
+
+        public String getLnk_accountSettingsChangeSecurityQuestionsURL() {
+            return lnk_accountSettingsChangeSecurityQuestionsURL;
+        }
+
+        public void setLnk_accountSettingsChangeSecurityQuestionsURL(String lnk_accountSettingsChangeSecurityQuestionsURL) {
+            this.lnk_accountSettingsChangeSecurityQuestionsURL = lnk_accountSettingsChangeSecurityQuestionsURL;
+        }
+
+        public String getLbl_accountSettingsTitle() {
+            return lbl_accountSettingsTitle;
+        }
+
+        public void setLbl_accountSettingsTitle(String lbl_accountSettingsTitle) {
+            this.lbl_accountSettingsTitle = lbl_accountSettingsTitle;
+        }
+
+        public List<String> getLst_changingPasswordErrorMessage() {
+            return lst_changingPasswordErrorMessage;
+        }
+
+        public void setLst_changingPasswordErrorMessage(List<String> lst_changingPasswordErrorMessage) {
+            this.lst_changingPasswordErrorMessage = lst_changingPasswordErrorMessage;
         }
     }
 

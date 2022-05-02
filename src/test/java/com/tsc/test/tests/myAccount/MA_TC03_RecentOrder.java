@@ -2,14 +2,19 @@ package com.tsc.test.tests.myAccount;
 
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.data.pojos.ConstantData;
+import com.tsc.pages.GlobalHeaderPage;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
+import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
 import java.text.ParseException;
 
 public class MA_TC03_RecentOrder extends BaseTest {
+    /*
+     *CER-790
+     */
     @Test(groups={"MyAccount","Regression"})
     public void MA_TC03_RecentOrder() throws ParseException, IOException {
         //Closing SignIn pop up on login
@@ -21,7 +26,19 @@ public class MA_TC03_RecentOrder extends BaseTest {
         String lblPassword = TestDataHandler.constantData.getMyAccount().getLbl_Password();
         String lblFirstName = TestDataHandler.constantData.getMyAccount().getLbl_FirstName();
         //Login using valid username and password
-        getGlobalLoginPageThreadLocal().Login(lblUserName, lblPassword, lblFirstName);
+        getGlobalLoginPageThreadLocal().Login(lblUserName, lblPassword);
+
+        String lsTestDevice = System.getProperty("Device").trim();
+        if(lsTestDevice.equalsIgnoreCase("Desktop")) {
+            WebElement item=(new GlobalHeaderPage(this.getDriver())).Signinlnk;
+            basePage.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+            if(item.getText().trim().toUpperCase().contains(lblFirstName.trim().toUpperCase())) {
+                reporter.reportLogPass("The SignIn in the header contains SignIn first name");
+            }
+            else{
+                reporter.reportLogFailWithScreenshot("The SignIn in the header does not contain SignIn first name");
+            }
+        }
 
         getMyAccountPageThreadLocal().openSubItemWindow("Recent Orders", getMyAccountPageThreadLocal().lblOrderStatusSectionTitle);
 
@@ -34,7 +51,6 @@ public class MA_TC03_RecentOrder extends BaseTest {
             reporter.reportLogPass("The actual navigated URL:+"+basePage.URL()+" is not equal to expected one:"+expectedURL);
         }
 
-        String lsTestDevice = System.getProperty("Device").trim();
         if(!lsTestDevice.equalsIgnoreCase("Mobile")){
             reporter.reportLog("Verify customer information");
             //Fetching test data from test data file
@@ -69,7 +85,7 @@ public class MA_TC03_RecentOrder extends BaseTest {
 
         if(getMyAccountPageThreadLocal().checkOrderItemExisting()){
             reporter.reportLog("Verify Order status section");
-            getMyAccountPageThreadLocal().verifyOrderStatusSection(false);
+            getMyAccountPageThreadLocal().verifyOrderStatusSection(true);
 
             reporter.reportLog("Verify search order function with invalid orderNO");
             String lbl_orderSearchErrorMessage=TestDataHandler.constantData.getMyAccount().getLbl_orderSearchErrorMessage();

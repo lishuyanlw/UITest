@@ -32,8 +32,8 @@ public class AccountAPI extends ApiClient {
      * @throws IOException
      * @throws ParseException
      */
-    public Response createNormalAccount(String accessToken, String email, Map<String,Object> userData) throws IOException, ParseException {
-        JSONObject requestParams=DataConverter.readJsonFileIntoJSONObject("testData/NewUser.json");
+    public Response createNormalAccount(String accessToken, String email, Map<String,Object> userData) {
+        JSONObject requestParams=DataConverter.readJsonFileIntoJSONObject("test-data/NewUser.json");
 
         if(email==null){
             String lsEmail=DataConverter.getSaltString(8,"stringType")+"@"+DataConverter.getSaltString(5,"stringType")+".com";
@@ -61,10 +61,6 @@ public class AccountAPI extends ApiClient {
                     requestParams.put("IsPhoneCustomer",Boolean.valueOf(objectEntry.getValue().toString()));
             }
         }
-        else{
-            requestParams.put("Password","testMail123");
-            requestParams.put("RetypedPassword","testMail123");
-        }
 
         Response response = postApiCallResponseAfterAuthenticationFromJSON(requestParams, propertyData.get("test_apiVersion") + "/" + propertyData.get("test_language")+"/accounts", accessToken);
 
@@ -84,7 +80,7 @@ public class AccountAPI extends ApiClient {
      */
     public Response createPhoneAccount(String accessToken, String email,String phoneNumber,String customerNumber) throws IOException, ParseException {
         reporter.reportLog("Creating Phone Account");
-        JSONObject requestParams=DataConverter.readJsonFileIntoJSONObject("testData/NewUser.json");
+        JSONObject requestParams=DataConverter.readJsonFileIntoJSONObject("test-data/NewUser.json");
         JSONObject userPassword = DataConverter.readJsonFileIntoJSONObject("results/UserPassword.json");
 
         requestParams.put("IsPhoneCustomer", true);
@@ -250,7 +246,7 @@ public class AccountAPI extends ApiClient {
      * @throws ParseException
      */
     public Map<String,Object> AddingShippingAddressIntoAccount(String customerEDP,String accessToken,boolean isDefault,Map<String,Object> userData) throws IOException, ParseException {
-        JSONObject requestParams=DataConverter.readJsonFileIntoJSONObject("testData/AccountAddingShippingAddressPost.json");
+        JSONObject requestParams=DataConverter.readJsonFileIntoJSONObject("test-data/AccountAddingShippingAddressPost.json");
 
         requestParams.put("Id", DataConverter.getSaltString(8,"numberType"));
         requestParams.put("SalesForceAddressId", DataConverter.getSaltString(18,"mixType"));

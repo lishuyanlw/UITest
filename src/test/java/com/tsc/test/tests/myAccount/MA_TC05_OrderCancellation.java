@@ -2,14 +2,19 @@ package com.tsc.test.tests.myAccount;
 
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.data.pojos.ConstantData;
+import com.tsc.pages.GlobalHeaderPage;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
+import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
 import java.text.ParseException;
 
 public class MA_TC05_OrderCancellation extends BaseTest {
+    /*
+     *CER-791
+     */
     @Test(groups={"MyAccount","Regression"})
     public void MA_TC05_OrderCancellation() throws ParseException, IOException {
         //Closing SignIn pop up on login
@@ -21,7 +26,19 @@ public class MA_TC05_OrderCancellation extends BaseTest {
         String lblPassword = TestDataHandler.constantData.getMyAccount().getLbl_Password();
         String lblFirstName = TestDataHandler.constantData.getMyAccount().getLbl_FirstName();
         //Login using valid username and password
-        getGlobalLoginPageThreadLocal().Login(lblUserName, lblPassword, lblFirstName);
+        getGlobalLoginPageThreadLocal().Login(lblUserName, lblPassword);
+
+        String lsTestDevice = System.getProperty("Device").trim();
+        if(lsTestDevice.equalsIgnoreCase("Desktop")) {
+            WebElement item=(new GlobalHeaderPage(this.getDriver())).Signinlnk;
+            basePage.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+            if(item.getText().trim().toUpperCase().contains(lblFirstName.trim().toUpperCase())) {
+                reporter.reportLogPass("The SignIn in the header contains SignIn first name");
+            }
+            else{
+                reporter.reportLogFailWithScreenshot("The SignIn in the header does not contain SignIn first name");
+            }
+        }
 
         getMyAccountPageThreadLocal().openSubItemWindow("Order Cancellation", getMyAccountPageThreadLocal().lblOrderServiceTitle);
 
@@ -42,7 +59,7 @@ public class MA_TC05_OrderCancellation extends BaseTest {
             reporter.reportLogPass("The Order Modification title is displaying correctly");
         }
         else{
-            reporter.reportLogFailWithScreenshot("The Order Modification title:"+lsTitle+" is displaying correctly as the expected:"+lsExpectedTitle);
+            reporter.reportLogFailWithScreenshot("The Order Modification title:"+lsTitle+" is not displaying correctly as the expected:"+lsExpectedTitle);
         }
 
         reporter.reportLog("Verify Order Modification List section");

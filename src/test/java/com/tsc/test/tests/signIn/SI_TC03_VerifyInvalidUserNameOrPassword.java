@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class SI_TC03_VerifyInvalidUserNameOrPassword extends BaseTest{
 	/*
-	 * CER-785
+	 * CER-782
 	 */
 	@Test(groups={"SignIn","Regression","Regression_Mobile","Regression_Tablet"})
 	public void SI_TC03_VerifyInvalidUserNameOrPassword() throws IOException {

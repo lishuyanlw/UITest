@@ -405,7 +405,7 @@ public class CartAPI extends ApiClient {
         AccountCartResponse accountCartGet= JsonParser.getResponseObject(getCartResponse.asString(), new TypeReference<AccountCartResponse>() {});
         int shippingIdBeforeAdd=accountCartGet.getShippingAddress().getId();
 
-        JSONObject requestParams= DataConverter.readJsonFileIntoJSONObject("testData/AccountAddingShippingAddressPost.json");
+        JSONObject requestParams= DataConverter.readJsonFileIntoJSONObject("test-data/AccountAddingShippingAddressPost.json");
 
         requestParams.put("Id", DataConverter.getSaltString(8,"numberType"));
         requestParams.put("SalesForceAddressId", DataConverter.getSaltString(18,"mixType"));

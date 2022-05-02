@@ -165,7 +165,7 @@ public class SignInPage extends BasePage {
 	 * @return true/false
 	 * @author Wei.Li
 	 */
-	public boolean Login(String lsUserName, String lsPassword,String lsFirstName) {
+	public boolean Login(String lsUserName, String lsPassword) {
 		getReusableActionsInstance().javascriptScrollToTopOfPage();
 		String strBrowser = System.getProperty("Browser").trim();
 		if (strBrowser.toLowerCase().contains("android") || strBrowser.toLowerCase().contains("ios")
@@ -184,9 +184,10 @@ public class SignInPage extends BasePage {
 		waitForCondition(Driver->{return this.inputUserName.isEnabled();},10000);
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputUserName);
 		this.inputUserName.sendKeys(lsUserName);
+		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputPassword);
 		this.inputPassword.sendKeys(lsPassword);
-		getReusableActionsInstance().staticWait(1000);
+		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 		
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSubmit);
 		this.getReusableActionsInstance().clickIfAvailable(this.btnSubmit);
@@ -393,6 +394,7 @@ public class SignInPage extends BasePage {
 	 * @return - String - customer no from UI
 	 */
 	public String getCustomerNumberForLoggedInUser(){
+		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 		this.waitForCondition(Driver->{return this.lblCustomerNO.isDisplayed();},10000);
 		return this.getElementText(this.lblCustomerNO);
 	}

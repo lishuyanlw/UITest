@@ -248,6 +248,9 @@ public class MyAccount extends BasePage {
 	@FindBy(xpath = "//ng-component//div[@id='heading-email']//div[contains(@class,'subPage')]")
 	public WebElement lblAccountSettingEmail;
 
+	@FindBy(xpath = "//ng-component//div[@id='heading-password']")
+	public WebElement cntAccountSettingPasswordHeadingContainer;
+
 	@FindBy(xpath = "//ng-component//div[@id='heading-password']//div[contains(@class,'item-title')]")
 	public WebElement lblAccountSettingPasswordTitle;
 
@@ -258,6 +261,9 @@ public class MyAccount extends BasePage {
 	public WebElement btnAccountSettingPasswordEdit;
 
 	//For Change password
+	@FindBy(xpath = "//ng-component//div[@id='collapse-password']")
+	public WebElement cntChangePasswordPanelContainer;
+
 	@FindBy(xpath = "//ng-component//div[@id='panel-password']//div[@class='section-title']")
 	public WebElement lblChangePasswordSectionTitle;
 
@@ -294,9 +300,15 @@ public class MyAccount extends BasePage {
 	@FindBy(xpath = "//ng-component//div[@id='panel-password']//button[@type='submit']")
 	public WebElement btnChangePasswordSubmit;
 
-	@FindBy(xpath = "///ng-component//div[@id='panel-password']//a[normalize-space(text())='Cancel']")
+	@FindBy(xpath = "//ng-component//div[@id='panel-password']//a[normalize-space(text())='Cancel']")
 	public WebElement btnChangePasswordCancel;
+
+	@FindBy(xpath = "//ng-component//div[@id='panel-password']//input[@id='password']/parent::div/following-sibling::div[contains(@class,'text-danger')]")
+	public List<WebElement> lstChangePasswordErrorMessage;
 	////////////////////////
+
+	@FindBy(xpath = "//ng-component//div[@id='heading-securityquestion']//div[contains(@class,'item-title')]")
+	public WebElement cntAccountSettingSecurityQuestionHeadingContainer;
 
 	@FindBy(xpath = "//ng-component//div[@id='heading-securityquestion']//div[contains(@class,'item-title')]")
 	public WebElement lblAccountSettingSecurityQuestionTitle;
@@ -308,6 +320,9 @@ public class MyAccount extends BasePage {
 	public WebElement btnAccountSettingSecurityQuestionEdit;
 
 	//For change security question
+	@FindBy(xpath = "//ng-component//div[@id='collapse-securityquestion']")
+	public WebElement cntChangeSecurityQuestionPanelContainer;
+
 	@FindBy(xpath = "//ng-component//div[@id='panel-securityquestion']//div[@class='section-title']")
 	public WebElement lblChangeSecurityQuestionSectionTitle;
 
@@ -329,8 +344,11 @@ public class MyAccount extends BasePage {
 	@FindBy(xpath = "//ng-component//div[@id='panel-securityquestion']//button[@type='submit']")
 	public WebElement btnChangeSecurityQuestionSubmit;
 
-	@FindBy(xpath = "///ng-component//div[@id='panel-securityquestion']//a[normalize-space(text())='Cancel']")
+	@FindBy(xpath = "//ng-component//div[@id='panel-securityquestion']//a[normalize-space(text())='Cancel']")
 	public WebElement btnChangeSecurityQuestionCancel;
+
+	@FindBy(xpath = "//ng-component//div[@id='panel-password']//input[@id='password']/parent::div/following::div[contains(@class,'text-danger')]/[not(@hidden)]")
+	public WebElement lblChangeSecurityQuestionsErrorMessage;
 	////////////////////////////////
 
 	//PAYMENT OPTIONS - ADD NEW CREDIT CARD
@@ -758,6 +776,8 @@ public class MyAccount extends BasePage {
 		this.getReusableActionsInstance().clickIfAvailable(orderStatusButton);
 
 		this.waitForCondition(Driver->{return loadingIndicator.isDisplayed();},50000);
+
+		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 	}
 
 	/**
@@ -767,7 +787,7 @@ public class MyAccount extends BasePage {
 	public String getRandomOrderNumber(){
 		int optionSize=this.lstOrderItemList.size();
 		Random rand = new Random();
-		int randomNumber = rand.nextInt(optionSize);
+		int randomNumber = rand.nextInt(optionSize-1);
 		WebElement randomItem=this.lstOrderItemList.get(randomNumber).findElement(byOrderNo);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(randomItem);
 
@@ -971,7 +991,7 @@ public class MyAccount extends BasePage {
 	 * To go back to upper level page
 	 */
 	public void goBackUpperLevel(){
-		WebElement lastNavigationElement=this.lstNavigationCrumbList.get(this.lstNavigationCrumbList.size());
+		WebElement lastNavigationElement=this.lstNavigationCrumbList.get(this.lstNavigationCrumbList.size()-1);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lastNavigationElement);
 		this.getReusableActionsInstance().clickIfAvailable(lastNavigationElement);
 
@@ -1010,7 +1030,7 @@ public class MyAccount extends BasePage {
 	public String goToOrderDetailsPage(){
 		int optionSize=this.lstOrderItemList.size();
 		Random rand = new Random();
-		int randomNumber = rand.nextInt(optionSize);
+		int randomNumber = rand.nextInt(optionSize-1);
 
 		WebElement randomOrderNOItem=this.lstOrderItemList.get(randomNumber).findElement(this.byOrderNo);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(randomOrderNOItem);
@@ -1490,6 +1510,445 @@ public class MyAccount extends BasePage {
 				reporter.reportLogFailWithScreenshot("The content of '"+lsText+"' is empty");
 			}
 		}
+	}
+
+	/**
+	 * To verify Basic infomation of Account Settings section
+	 * @param - lsExpectedEmail - SignIn Email address
+	 */
+	public void verifyBasicInfoInAccountSettingsSection(String lsExpectedEmail){
+		String lsText;
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAccountSettingEmailTitle);
+		if(!lblAccountSettingEmailTitle.getText().isEmpty()){
+			reporter.reportLogPass("The Email title in Account settings is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Email title in Account settings is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAccountSettingEmail);
+		lsText=lblAccountSettingEmail.getText().trim();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The Email in Account settings is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Email in Account settings is not displaying correctly");
+		}
+
+		if(lsText.equalsIgnoreCase(lsExpectedEmail)){
+			reporter.reportLogPass("The Email in Account settings is the same as the expected SignIn Email");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Email in Account settings is not the same as the expected SignIn Email");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAccountSettingPasswordTitle);
+		if(!lblAccountSettingPasswordTitle.getText().isEmpty()){
+			reporter.reportLogPass("The Password title in Account settings is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Password title in Account settings is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAccountSettingPassword);
+		if(!lblAccountSettingPassword.getText().isEmpty()){
+			reporter.reportLogPass("The Password in Account settings is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Password in Account settings is not displaying correctly");
+		}
+
+		String lsTestDevice = System.getProperty("Device").trim();
+		if(lsTestDevice.equalsIgnoreCase("Mobile")) {
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAccountSettingPassword);
+			if(!lblAccountSettingPassword.getText().isEmpty()){
+				reporter.reportLogPass("The Password in Account settings is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The Password in Account settings is not displaying correctly");
+			}
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAccountSettingPasswordEdit);
+		if(this.getReusableActionsInstance().isElementVisible(btnAccountSettingPasswordEdit)){
+			reporter.reportLogPass("The Password Edit button in Account settings is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Password Edit button in Account settings is not displaying correctly");
+		}
+	}
+
+	/**
+	 * To verify Change password content of Account Settings section
+	 */
+	public void verifyChangePasswordContentInAccountSettingsSection(){
+		String lsText;
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblChangePasswordSectionTitle);
+		if(!lblChangePasswordSectionTitle.getText().isEmpty()){
+			reporter.reportLogPass("The Change password section title in Account settings is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Change password section title in Account settings is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblChangePasswordSectionTipMessage);
+		if(!lblChangePasswordSectionTipMessage.getText().isEmpty()){
+			reporter.reportLogPass("The Change password section tip message in Account settings is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Change password section tip message in Account settings is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblChangePasswordSectionCurrentPassword);
+		if(!lblChangePasswordSectionCurrentPassword.getText().isEmpty()){
+			reporter.reportLogPass("The current password title in Account settings is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The current password title in Account settings is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputChangePasswordSectionCurrentPassword);
+		if(this.getReusableActionsInstance().isElementVisible(inputChangePasswordSectionCurrentPassword)){
+			reporter.reportLogPass("The current password input field in Account settings is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The current password input field in Account settings is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnChangePasswordSectionCurrentPasswordShowButton);
+		if(this.getReusableActionsInstance().isElementVisible(btnChangePasswordSectionCurrentPasswordShowButton)){
+			reporter.reportLogPass("The current password show button in Account settings is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The current password show button in Account settings is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblChangePasswordSectionNewPassword);
+		if(!lblChangePasswordSectionNewPassword.getText().isEmpty()){
+			reporter.reportLogPass("The new password title in Account settings is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The new password title in Account settings is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputChangePasswordSectionNewPassword);
+		if(this.getReusableActionsInstance().isElementVisible(inputChangePasswordSectionNewPassword)){
+			reporter.reportLogPass("The new password input field in Account settings is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The new password input field in Account settings is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnChangePasswordSectionNewPasswordShowButton);
+		if(this.getReusableActionsInstance().isElementVisible(btnChangePasswordSectionNewPasswordShowButton)){
+			reporter.reportLogPass("The new password show button in Account settings is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The new password show button in Account settings is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblChangePasswordSectionReTypePassword);
+		if(!lblChangePasswordSectionReTypePassword.getText().isEmpty()){
+			reporter.reportLogPass("The Retype password title in Account settings is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Retype password title in Account settings is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputChangePasswordSectionReTypePassword);
+		if(this.getReusableActionsInstance().isElementVisible(inputChangePasswordSectionReTypePassword)){
+			reporter.reportLogPass("The Retype password input field in Account settings is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Retype password input field in Account settings is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnChangePasswordSectionReTypePasswordShowButton);
+		if(this.getReusableActionsInstance().isElementVisible(btnChangePasswordSectionReTypePasswordShowButton)){
+			reporter.reportLogPass("The Retype password show button in Account settings is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Retype password show button in Account settings is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnChangePasswordSubmit);
+		if(this.getReusableActionsInstance().isElementVisible(btnChangePasswordSubmit)){
+			reporter.reportLogPass("The Submit button for changing password is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Submit button for changing password is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnChangePasswordCancel);
+		if(this.getReusableActionsInstance().isElementVisible(btnChangePasswordCancel)){
+			reporter.reportLogPass("The Cancel button for changing password is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Cancel button for changing password is not displaying correctly");
+		}
+	}
+
+	/**
+	 * To change password function of Account Settings section
+	 * @param - lsCurrentPassword - current password
+	 * @param - bSubmit - true for clicking Submit button while false for clicking Cancel button
+	 * @return - String -  changed password
+	 */
+	public String changePasswordFunctionInAccountSettingsSection(String lsCurrentPassword,boolean bSubmit){
+		String lsChangedPassword=DataConverter.getSaltString(5,"stringType")+DataConverter.getSaltString(1,"numberType");
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputChangePasswordSectionCurrentPassword);
+		inputChangePasswordSectionCurrentPassword.clear();
+		inputChangePasswordSectionCurrentPassword.sendKeys(lsCurrentPassword);
+		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputChangePasswordSectionNewPassword);
+		inputChangePasswordSectionNewPassword.clear();
+		inputChangePasswordSectionNewPassword.sendKeys(lsChangedPassword);
+		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputChangePasswordSectionReTypePassword);
+		inputChangePasswordSectionReTypePassword.clear();
+		inputChangePasswordSectionReTypePassword.sendKeys(lsChangedPassword);
+		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+
+		String lsReturn;
+		if(bSubmit){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnChangePasswordSubmit);
+			this.getReusableActionsInstance().clickIfAvailable(btnChangePasswordSubmit);
+			lsReturn=lsChangedPassword;
+		}
+		else{
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnChangePasswordCancel);
+			this.getReusableActionsInstance().clickIfAvailable(btnChangePasswordCancel);
+			lsReturn=lsCurrentPassword;
+		}
+
+		waitForCondition(Driver->{return this.btnAccountSettingPasswordEdit.isDisplayed();},90000);
+
+		return lsReturn;
+	}
+
+	/**
+	 * To open Change Security Section
+	 * @return true/false
+	 */
+	public boolean openChangeSecuritySection(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAccountSettingSecurityQuestionEdit);
+		this.getReusableActionsInstance().clickIfAvailable(btnAccountSettingSecurityQuestionEdit);
+
+		this.waitForPageToLoad();
+		this.getReusableActionsInstance().staticWait(5*this.getStaticWaitForApplication());
+
+		return true;
+//		return this.waitForCondition(Driver->{return this.cntChangeSecurityQuestionPanelContainer.getAttribute("class").contains("in");},90000);
+	}
+
+	/**
+	 * To verify changing password function of Account Settings section with invalid value
+	 * @param - String - lsCurrentPassword - current password
+	 * @param - List<String> - lstPasswordErrorMessage
+	 */
+	public void VerifyChangePasswordFunctionInAccountSettingsSectionWithInvalidValue(String lsCurrentPassword,List<String> lstPasswordErrorMessage){
+		String lsChangedPassword=DataConverter.getSaltString(5,"stringType")+DataConverter.getSaltString(1,"numberType");
+		String lsInvalidCurrentPassword=lsCurrentPassword+"1";
+
+		reporter.reportLog("Verify invalid current password");
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputChangePasswordSectionCurrentPassword);
+		inputChangePasswordSectionCurrentPassword.clear();
+		inputChangePasswordSectionCurrentPassword.sendKeys(lsInvalidCurrentPassword);
+		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputChangePasswordSectionNewPassword);
+		inputChangePasswordSectionNewPassword.clear();
+		inputChangePasswordSectionNewPassword.sendKeys(lsChangedPassword);
+		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputChangePasswordSectionReTypePassword);
+		inputChangePasswordSectionReTypePassword.clear();
+		inputChangePasswordSectionReTypePassword.sendKeys(lsChangedPassword);
+		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnChangePasswordSubmit);
+		this.getReusableActionsInstance().clickIfAvailable(btnChangePasswordSubmit);
+		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstChangePasswordErrorMessage.get(0));
+		String lsErrorMessage=this.lstChangePasswordErrorMessage.get(0).getText().trim();
+		if(lsErrorMessage.equalsIgnoreCase(lstPasswordErrorMessage.get(0))){
+			reporter.reportLogPass("Current password error message is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Current password error message:'"+lsErrorMessage+"' is not matching the expected:'"+lstPasswordErrorMessage.get(0)+"'");
+		}
+
+		reporter.reportLog("Verify new password format error message and mismatching error message");
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputChangePasswordSectionCurrentPassword);
+		inputChangePasswordSectionCurrentPassword.clear();
+		inputChangePasswordSectionCurrentPassword.sendKeys(lsCurrentPassword);
+		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputChangePasswordSectionNewPassword);
+		inputChangePasswordSectionNewPassword.clear();
+		inputChangePasswordSectionNewPassword.sendKeys("11");
+		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputChangePasswordSectionReTypePassword);
+		inputChangePasswordSectionReTypePassword.click();
+		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstChangePasswordErrorMessage.get(0));
+		lsErrorMessage=this.lstChangePasswordErrorMessage.get(0).getText().trim();
+		if(lsErrorMessage.equalsIgnoreCase(lstPasswordErrorMessage.get(1))){
+			reporter.reportLogPass("New password format error message is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("New password format error message:'"+lsErrorMessage+"' is not matching the expected:'"+lstPasswordErrorMessage.get(1)+"'");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstChangePasswordErrorMessage.get(1));
+		lsErrorMessage=this.lstChangePasswordErrorMessage.get(1).getText().trim();
+		if(lsErrorMessage.equalsIgnoreCase(lstPasswordErrorMessage.get(2))){
+			reporter.reportLogPass("New password mismatching error message is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("New password mismatching error message:'"+lsErrorMessage+"' is not matching the expected:'"+lstPasswordErrorMessage.get(2)+"'");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstChangePasswordErrorMessage.get(2));
+		lsErrorMessage=this.lstChangePasswordErrorMessage.get(2).getText().trim();
+		if(lsErrorMessage.equalsIgnoreCase(lstPasswordErrorMessage.get(0))){
+			reporter.reportLogPass("Incorrect password error message is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Incorrect password error message:'"+lsErrorMessage+"' is not matching the expected:'"+lstPasswordErrorMessage.get(0)+"'");
+		}
+	}
+
+	/**
+	 * To verify Changing security question content of Account Settings section
+	 */
+	public void verifyChangeSecurityQuestionContentInAccountSettingsSection(){
+		String lsText;
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblChangeSecurityQuestionSectionTitle);
+		if(!lblChangeSecurityQuestionSectionTitle.getText().isEmpty()){
+			reporter.reportLogPass("The Change security question section title in Account settings is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Change security question section title in Account settings is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblChangeSecurityQuestionSectionTipMessage);
+		if(!lblChangeSecurityQuestionSectionTipMessage.getText().isEmpty()){
+			reporter.reportLogPass("The Change security question section tip message in Account settings is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Change security question section tip message in Account settings is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblChangeSecurityQuestionSectionQuestionTitle);
+		if(!lblChangeSecurityQuestionSectionQuestionTitle.getText().isEmpty()){
+			reporter.reportLogPass("The Change Security Question Section Question Title in Account settings is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Change Security Question Section Question Title in Account settings is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(selectChangeSecurityQuestionSectionQuestion);
+		if(this.getReusableActionsInstance().isElementVisible(selectChangeSecurityQuestionSectionQuestion)){
+			reporter.reportLogPass("The Change Security Question option list in Account settings is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Change Security Question option list in Account settings is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblChangeSecurityQuestionSectionAnswerTitle);
+		if(!lblChangeSecurityQuestionSectionAnswerTitle.getText().isEmpty()){
+			reporter.reportLogPass("The Change Security Question answer title in Account settings is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Change Security Question answer title in Account settings is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputChangeSecurityQuestionSectionAnswer);
+		if(this.getReusableActionsInstance().isElementVisible(inputChangeSecurityQuestionSectionAnswer)){
+			reporter.reportLogPass("The Change Security Question answer field in Account settings is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Change Security Question answer field in Account settings is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnChangeSecurityQuestionSubmit);
+		if(this.getReusableActionsInstance().isElementVisible(btnChangeSecurityQuestionSubmit)){
+			reporter.reportLogPass("The submit button in Account settings is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The submit button in Account settings is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnChangeSecurityQuestionCancel);
+		if(this.getReusableActionsInstance().isElementVisible(btnChangeSecurityQuestionCancel)){
+			reporter.reportLogPass("The cancel button in Account settings is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The cancel button in Account settings is not displaying correctly");
+		}
+	}
+
+	/**
+	 * To changing security question function of Account Settings section
+	 * @param - boolean  - bSubmit - true for clicking Submit button while false for clicking Cancel button
+	 * @return - Map<String,Object> - contains selected index and answer
+	 */
+	public Map<String,Object> changeSecurityQuestionFunctionInAccountSettingsSection(boolean bSubmit){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(selectChangeSecurityQuestionSectionQuestion);
+		Select select=new Select(selectChangeSecurityQuestionSectionQuestion);
+		int count=select.getOptions().size();
+
+		Random rand = new Random();
+		int randomNumber = rand.nextInt(count-1)+1;
+
+		String lsOption;
+		select.selectByIndex(randomNumber);
+		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputChangeSecurityQuestionSectionAnswer);
+		lsOption=select.getFirstSelectedOption().getText();
+		String lsAnswer;
+		if(lsOption.contains("born")){
+			lsAnswer="1950";
+		}
+		else{
+			lsAnswer="Answer";
+		}
+		inputChangeSecurityQuestionSectionAnswer.clear();
+		inputChangeSecurityQuestionSectionAnswer.sendKeys(lsAnswer);
+
+		if(bSubmit){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnChangeSecurityQuestionSubmit);
+			this.getReusableActionsInstance().clickIfAvailable(btnChangeSecurityQuestionSubmit);
+		}
+		else{
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnChangeSecurityQuestionCancel);
+			this.getReusableActionsInstance().clickIfAvailable(btnChangeSecurityQuestionCancel);
+		}
+		this.waitForPageToLoad();
+		this.getReusableActionsInstance().staticWait(5*this.getStaticWaitForApplication());
+//		this.waitForCondition(Driver->{return this.cntAccountSettingSecurityQuestionHeadingContainer.getAttribute("class").contains("in");},90000);
+
+		Map<String,Object> map=new HashMap<>();
+		if(bSubmit){
+			map.put("SelectedIndex",randomNumber);
+			map.put("Answer",lsAnswer);
+		}
+		else{
+			map.put("SelectedIndex",0);
+			map.put("Answer","");
+		}
+
+		return map;
 	}
 
 }
