@@ -16,6 +16,11 @@ public class MA_TC01_Payment_Options_Add_New_Credit_Card extends BaseTest {
     public void MA_TC01_Payment_Options_Add_New_Credit_Card() throws ParseException, IOException {
         //Closing SignIn pop up on login
         getGlobalFooterPageThreadLocal().closePopupDialog();
+        /**
+         Scenario for adding a new Credit Card to user
+         */
+        reporter.reportLog("Scenario for adding new Credit Card to user for all four types");
+
         //Fetching test data from test data file
         JSONObject creditCardData = new DataConverter().readJsonFileIntoJSONObject("test-data/CreditCard.json");
         List<String> creditCardTypes = TestDataHandler.constantData.getMyAccount().getLst_newCreditCardType();
@@ -23,10 +28,6 @@ public class MA_TC01_Payment_Options_Add_New_Credit_Card extends BaseTest {
         List<String> errorMessage = TestDataHandler.constantData.getMyAccount().getLbl_invalidCardErrorMessage();
         JSONObject creditCard;
         String cardType,cardDisplayName,cardNumber;
-        /**
-        Scenario for adding a new Credit Card to user
-        */
-        reporter.reportLog("Scenario for adding new Credit Card to user for all four types");
 
         String lblUserName = TestDataHandler.constantData.getMyAccount().getLbl_Username();
         String lblPassword = TestDataHandler.constantData.getMyAccount().getLbl_Password();

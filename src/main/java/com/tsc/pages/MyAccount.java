@@ -2,6 +2,7 @@ package com.tsc.pages;
 
 import com.tsc.api.util.DataConverter;
 import com.tsc.pages.base.BasePage;
+import org.json.simple.JSONObject;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -167,8 +168,14 @@ public class MyAccount extends BasePage {
 				break;
 			}
 		}
-		waitForCondition(Driver->{return this.btnCancelAddCreditCardForNewCreditCard.isEnabled() &&
+		if(subMenu.toLowerCase().contains("add"))
+			waitForCondition(Driver->{return this.btnCancelAddCreditCardForNewCreditCard.isEnabled() &&
 				this.btnCancelAddCreditCardForNewCreditCard.isDisplayed();},12000);
+		else{
+			this.waitForPageToLoad();
+			waitForCondition(Driver->{return this.lstCreditCardsPresent.size()>0;},6000);
+		}
+
 		if(!flag)
 			reporter.reportLogFailWithScreenshot("Provided sub-menu: "+subMenu+" is not present. Please verify once again!");
 	}
@@ -254,12 +261,12 @@ public class MyAccount extends BasePage {
 	 * @param - String - expirationYear
 	 * @return - String
 	 */
-	public String getExpirationDateDisplayedForCreditCard(String expirationMonth, String expirationYear){
+	public String formatExpirationDateForCreditCard(String expirationMonth, String expirationYear){
 		if(expirationMonth.startsWith("0"))
 			expirationMonth = expirationMonth.substring(expirationMonth.length()-1);
 		if(expirationYear.length()>2)
 			expirationYear = expirationYear.substring(expirationYear.length()-2);
-		return expirationMonth + "/" + expirationYear;
+		return (expirationMonth + "/" + expirationYear).trim();
 	}
 
 	/**
@@ -285,7 +292,7 @@ public class MyAccount extends BasePage {
 				WebElement expiresOnWebElement = lstCreditCardsPresent.get(counter).findElement(By.xpath(".//div[contains(@class,'margin-top-md')]//div[contains(@class,'zeroRightPadding')]//div[@class='table-cell']"));
 				String expiresOnData = expiresOnWebElement.getText().split(":")[1];
 				//Fetching input expiration month and year in required format
-				inputExpirationData = this.getExpirationDateDisplayedForCreditCard(expirationMonth,expirationYear);
+				inputExpirationData = this.formatExpirationDateForCreditCard(expirationMonth,expirationYear);
 				if (expiresOnData.trim().equals(inputExpirationData)) {
 					reporter.reportLog("Card Type: " + imageType + " and expiration year is same as added: " + expiresOnData);
 					//Verifying Image Type and CardType is same that is displayed in application for user
@@ -443,10 +450,17 @@ public class MyAccount extends BasePage {
 	 * @param - String - cardNumber
 	 * @param -String - expirationMonthAndYear
 	 */
-	public void editAndVerifyCreditCardAttachedToUser(String cardType, String cardDisplayName, String cardNumber, String expirationMonthAndYear, boolean editCard){
-		this.selectGivenCreditCard(cardNumber,cardType,expirationMonthAndYear,false);
-		this.addNewCreditCardNumber(cardNumber);
+	public void editAndVerifyCreditCardAttachedToUser(String cardType, String cardDisplayName, String cardNumber, String expirationMonthAndYear, JSONObject creditCardsData, boolean editCard) throws ParseException {
 		Map<String,String> cardData = new HashMap<>();
+		if(cardType!=null){
+			this.selectGivenCreditCard(cardNumber,cardType,expirationMonthAndYear,false);
+		}else{
+			cardData = this.getFirstCreditCardDetailsAndSelect();
+			String cardTypeAdded = this.getCreditCardTypeName(cardData.get("cardType"));
+			JSONObject creditCard = (JSONObject) creditCardsData.get(cardTypeAdded);
+			cardNumber = creditCard.get("Number").toString();
+		}
+		this.addNewCreditCardNumber(cardNumber);
 
 		if(expirationMonthAndYear!=null){
 			String[] expirationData = expirationMonthAndYear.split("/");
@@ -454,9 +468,8 @@ public class MyAccount extends BasePage {
 			int updatedYear = Integer.valueOf(expirationData[1])+1;
 			cardData.put("expirationMonth",String.valueOf(updatedMonth));
 			cardData.put("expirationYear",String.valueOf(updatedYear));
-
-			this.addExpirationMonthAndYear(cardData);
 		}
+		this.addExpirationMonthAndYear(cardData);
 
 		if(editCard)
 			this.clickElement(this.btnSaveAddCreditCardForNewCreditCard);
@@ -464,7 +477,53 @@ public class MyAccount extends BasePage {
 			this.clickElement(this.btnCancelAddCreditCardForNewCreditCard);
 
 		//Verification of Updated Data for Credit Card
-		this.verifyNewAddedCreditCardForUser(cardType,cardDisplayName,cardNumber,cardData.get("expirationMonth"),cardData.get("expirationYear"),false);
+		if(cardType!=null)
+			this.verifyNewAddedCreditCardForUser(cardType,cardDisplayName,cardNumber,cardData.get("expirationMonth"),cardData.get("expirationYear"),false);
+		else{
+			if(editCard)
+				this.verifyNewAddedCreditCardForUser(cardData.get("cardType"),cardData.get("cardDisplayName"),cardNumber,cardData.get("expirationMonth"),cardData.get("expirationYear"),false);
+			else
+				this.verifyNewAddedCreditCardForUser(cardData.get("cardType"),cardData.get("cardDisplayName"),cardNumber,cardData.get("actualExpirationMonth"),cardData.get("actualExpirationYear"),false);
+		}
+	}
+
+	/**
+	 * This function selects first credit card displayed on Manage Screen by default when no Credit Card is provided
+	 */
+	public Map<String,String> getFirstCreditCardDetailsAndSelect() throws ParseException {
+		Map<String,String> creditCardDisplayedData = new HashMap<>();
+		String updatedMonth=null,updatedYear = null,actualExpirationMonth=null,actualExpirationYear=null;
+		//Fetching Card Details to be edited to be used for verification
+		WebElement cardTypeWebElement = lstCreditCardsPresent.get(0).findElement(By.xpath(".//div[contains(@class,'margin-top-md')]//div[contains(@class,'zeroRightPadding')]//span[@class='table-cell ']/label"));
+		String cardType = cardTypeWebElement.getText();
+		WebElement cardDisplayTypeWebElement = lstCreditCardsPresent.get(0).findElement(By.xpath(".//div[contains(@class,'margin-top-md')]//div[contains(@class,'zeroRightPadding')]//span[@class='table-cell ']/label"));
+		String cardDisplayName = cardDisplayTypeWebElement.getText();
+		if(!cardType.toLowerCase().contains("tsc")) {
+			WebElement expiresOnWebElement = lstCreditCardsPresent.get(0).findElement(By.xpath(".//div[contains(@class,'margin-top-md')]//div[contains(@class,'zeroRightPadding')]//div[@class='table-cell']"));
+			String[] expiresOnData = expiresOnWebElement.getText().split(":")[1].split("/");
+
+			updatedMonth = Integer.valueOf(expiresOnData[0].trim())+1 > 12 ? String.valueOf((Integer.valueOf(expiresOnData[0].trim()) + 1) - 12) : String.valueOf(Integer.valueOf(expiresOnData[0].trim())+1);
+			if(updatedMonth.length()==1)
+				updatedMonth = "0"+updatedMonth;
+			Map<String,String> updatedYearData = getNewCardExpirationData();
+			updatedYear = updatedYearData.get("expirationYear");
+			actualExpirationMonth = expiresOnData[0];
+			actualExpirationYear = expiresOnData[1];
+
+			creditCardDisplayedData.put("cardType", cardType);
+			creditCardDisplayedData.put("cardDisplayName", cardDisplayName);
+			creditCardDisplayedData.put("expirationMonth", updatedMonth);
+			creditCardDisplayedData.put("expirationYear", updatedYear);
+			creditCardDisplayedData.put("actualExpirationMonth", actualExpirationMonth);
+			creditCardDisplayedData.put("actualExpirationYear", actualExpirationYear);
+		}
+
+		WebElement editButtonWebElement = lstCreditCardsPresent.get(0).findElement(By.xpath(".//div[contains(@class,'margin-top-md')]//div[contains(@class,'smallRightPadding')]/a[contains(@class,'negative')]"));
+		this.clickElement(editButtonWebElement);
+		//Wait for page load
+		this.waitForPageToLoad();
+
+		return creditCardDisplayedData;
 	}
 
 	/**
@@ -475,6 +534,20 @@ public class MyAccount extends BasePage {
 		this.waitForPageToLoad();
 		waitForCondition(Driver->{return this.btnCancelAddCreditCardForNewCreditCard.isEnabled() &&
 				this.btnCancelAddCreditCardForNewCreditCard.isDisplayed();},12000);
+	}
+
+	/**
+	 * This function fetches Credit Card type name on basis of displayed name on application
+	 */
+	public String getCreditCardTypeName(String displayName){
+		if(displayName.toLowerCase().contains("visa"))
+			return "visa";
+		else if(displayName.toLowerCase().contains("tsc"))
+			return "tsc";
+		else if(displayName.toLowerCase().contains("american"))
+			return "amex";
+		else
+			return "master";
 	}
 
 	/**
