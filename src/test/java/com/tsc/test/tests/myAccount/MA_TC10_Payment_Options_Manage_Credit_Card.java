@@ -45,5 +45,10 @@ public class MA_TC10_Payment_Options_Manage_Credit_Card extends BaseTest {
          */
         reporter.reportLog("Scenario for verifying Remove functionality on Manage Credit Card");
         getMyAccountPageThreadLocal().removeCreditCardFromUser(cardData.get("cardType"),cardData.get("cardNumber"),cardData.get("expirationMonthAndYear"),true);
+        /**
+         Scenario for verifying Cancel Remove functionality on Manage Credit Card
+         */
+        reporter.reportLog("Scenario for verifying Cancel Remove functionality on Manage Credit Card");
+        getMyAccountPageThreadLocal().removeCreditCardFromUser(cardData.get("cardType"),cardData.get("cardNumber"),cardData.get("expirationMonthAndYear"),false);
     }
 }

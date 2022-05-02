@@ -185,14 +185,14 @@ public class MyAccount extends BasePage {
 	 * @return - Map<String,String> - Expiration Month and Year Data for Card
 	 * @throws ParseException
 	 */
-	public Map<String,String> getNewCardExpirationData() throws ParseException {
+	public Map<String,String> getNewCardExpirationData(int monthsToBeAdded, int yearsToBeAdded) throws ParseException {
 		Map<String,String> cardData = new HashMap<>();
 		String[] date = new DataConverter().getLocalDate().split("-");
-		int calculatedExpirationMonth = Integer.valueOf(date[1])+2>12 ? (Integer.parseInt(date[1])+2)-12 : Integer.valueOf(date[1])+2;
+		int calculatedExpirationMonth = Integer.valueOf(date[1])+monthsToBeAdded>12 ? (Integer.parseInt(date[1])+monthsToBeAdded)-12 : Integer.valueOf(date[1])+monthsToBeAdded;
 		String expirationMonth = String.valueOf(calculatedExpirationMonth);
 		if(expirationMonth.length()==1)
 			expirationMonth = "0"+expirationMonth;
-		String expirationYear = String.valueOf(Integer.valueOf(date[0])+3);
+		String expirationYear = String.valueOf(Integer.valueOf(date[0])+yearsToBeAdded);
 		cardData.put("expirationMonth",expirationMonth);
 		cardData.put("expirationYear",expirationYear);
 		return cardData;
@@ -237,7 +237,7 @@ public class MyAccount extends BasePage {
 		WebElement cardTypeElement = getDriver().findElement(By.xpath(cardTypeToBeAdded));
 
 		//Calculating expiration Year And Month for Card
-		Map<String,String> cardData = this.getNewCardExpirationData();
+		Map<String,String> cardData = this.getNewCardExpirationData(2,0);
 
 		waitForCondition(Driver->{return cardTypeElement.isDisplayed() && cardTypeElement.isEnabled();},5000);
 		this.clickWebElementUsingJS(cardTypeElement);
@@ -511,7 +511,7 @@ public class MyAccount extends BasePage {
 			updatedMonth = Integer.valueOf(expiresOnData[0].trim())+1 > 12 ? String.valueOf((Integer.valueOf(expiresOnData[0].trim()) + 1) - 12) : String.valueOf(Integer.valueOf(expiresOnData[0].trim())+1);
 			if(updatedMonth.length()==1)
 				updatedMonth = "0"+updatedMonth;
-			Map<String,String> updatedYearData = getNewCardExpirationData();
+			Map<String,String> updatedYearData = getNewCardExpirationData(2,0);
 			updatedYear = updatedYearData.get("expirationYear");
 			actualExpirationMonth = expiresOnData[0].trim();
 			actualExpirationYear = expiresOnData[1].trim();
