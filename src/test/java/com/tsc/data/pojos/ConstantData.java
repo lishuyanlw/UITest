@@ -946,6 +946,7 @@ public class ConstantData {
         public List<String> lst_giftCardDetails;
         public String lbl_invalidGiftCardNumberErrorMessage;
         public String lbl_invalidGiftCardPinErrorMessage;
+        public String lnk_giftCardURL;
 
         public String getLbl_Username() {
             return lbl_Username;
@@ -994,6 +995,10 @@ public class ConstantData {
         public String getLbl_invalidGiftCardPinErrorMessage() {            return lbl_invalidGiftCardPinErrorMessage;        }
 
         public void setLbl_invalidGiftCardPinErrorMessage(String lbl_invalidGiftCardPinErrorMessage) {            this.lbl_invalidGiftCardPinErrorMessage = lbl_invalidGiftCardPinErrorMessage;        }
+
+        public String getLnk_giftCardURL() {            return lnk_giftCardURL;        }
+
+        public void setLnk_giftCardURL(String lnk_giftCardURL) {            this.lnk_giftCardURL = lnk_giftCardURL;        }
     }
 
 }

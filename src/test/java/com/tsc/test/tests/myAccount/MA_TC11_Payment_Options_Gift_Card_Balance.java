@@ -4,11 +4,12 @@ import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.test.base.BaseTest;
 import org.testng.annotations.Test;
 
+import java.io.IOException;
 import java.util.List;
 
 public class MA_TC11_Payment_Options_Gift_Card_Balance extends BaseTest {
     @Test(groups={"MyAccount","Regression"})
-    public void MA_TC11_Payment_Options_Gift_Card_Balance() {
+    public void MA_TC11_Payment_Options_Gift_Card_Balance() throws IOException {
         //Closing SignIn pop up on login
         getGlobalFooterPageThreadLocal().closePopupDialog();
         /**
@@ -20,6 +21,7 @@ public class MA_TC11_Payment_Options_Gift_Card_Balance extends BaseTest {
         List<String> giftCardBalanceData = TestDataHandler.constantData.getMyAccount().getLst_giftCardDetails();
         String invalidGiftCardNumberErrorMessage = TestDataHandler.constantData.getMyAccount().getLbl_invalidGiftCardNumberErrorMessage();
         String invalidGiftCardPinErrorMessage = TestDataHandler.constantData.getMyAccount().getLbl_invalidGiftCardPinErrorMessage();
+        String giftCardPageURL = TestDataHandler.constantData.getMyAccount().getLnk_giftCardURL();
 
         String lblUserName = TestDataHandler.constantData.getMyAccount().getLbl_Username();
         String lblPassword = TestDataHandler.constantData.getMyAccount().getLbl_Password();
@@ -29,6 +31,8 @@ public class MA_TC11_Payment_Options_Gift_Card_Balance extends BaseTest {
 
         //Navigate to Manage Credit Card Screen
         getMyAccountPageThreadLocal().clickOnPaymentOptionSubMenuItemsOnMyAccount("Gift");
+        String landingPageURL = System.getProperty("QaUrl")+giftCardPageURL;
+        getMyAccountPageThreadLocal().validateCurrentUrl(landingPageURL);
         getMyAccountPageThreadLocal().getAndVerifyGiftCardBalance(giftCardBalanceData.get(0),giftCardBalanceData.get(1),giftCardBalanceData.get(2));
 
         /**
