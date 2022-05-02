@@ -202,6 +202,7 @@ public class MyAccount extends BasePage {
 	 * This function adds Credit Card number for new Card addition
 	 */
 	public void addNewCreditCardNumber(String cardNumber){
+		this.waitForPageToLoad();
 		getDriver().switchTo().frame(iFrameForNewCreditCard);
 		waitForCondition(Driver->{return this.lblCardNumberForNewCreditCard.isEnabled() &&
 				this.lblCardNumberForNewCreditCard.isDisplayed();},15000);
@@ -367,7 +368,7 @@ public class MyAccount extends BasePage {
 			String imageType = cardImage.getAttribute("alt");
 			if(!imageType.toLowerCase().contains("tsc")){
 				expiresOnWebElement = lstCreditCardsPresent.get(counter).findElement(By.xpath(".//div[contains(@class,'margin-top-md')]//div[contains(@class,'zeroRightPadding')]//div[@class='table-cell']"));
-				expiresOnData = expiresOnWebElement.getText().split(":")[1];
+				expiresOnData = expiresOnWebElement.getText().split(":")[1].trim();
 				if (expiresOnData.trim().equals(expirationMonthAndYear)) {
 					WebElement expiresWebElement = lstCreditCardsPresent.get(counter).findElement(By.xpath(".//div[contains(@class,'margin-top-md')]//div[contains(@class,'zeroRightPadding')]//span[@class='table-cell ']/span"));
 					value = this.verifyCardNumberAddedForUser(expiresWebElement,cardNumber,cardType);
@@ -412,7 +413,7 @@ public class MyAccount extends BasePage {
 		String appCardDetails = this.lblCardNameOnRemovePopUp.getText().trim()+" "+this.lblCardNumberOnRemovePopUp.getText().trim();
 		if(cardType.contains("amex"))
 			cardType = "american express";
-		if(appCardDetails.toLowerCase().contains(cardType) && appCardDetails.contains(cardNumber))
+		if(appCardDetails.toLowerCase().contains(cardType.toLowerCase()) && appCardDetails.contains(cardNumber))
 			reporter.reportLogPass("Card Number deleted is same as expected: "+appCardDetails);
 		else
 			reporter.reportLogFailWithScreenshot("Card Number that is deleted: "+appCardDetails+" is not as expected for type: "+cardType);
@@ -425,8 +426,8 @@ public class MyAccount extends BasePage {
 	 * @param -String - expirationMonthAndYear
 	 */
 	public void removeCreditCardFromUser(String cardType, String cardNumber, String expirationMonthAndYear, boolean removeCard){
-		this.selectGivenCreditCard(cardNumber,cardType,expirationMonthAndYear,true);
 		int beforeDeleteCreditCardsPresent = lstCreditCardsPresent.size();
+		this.selectGivenCreditCard(cardNumber,cardType,expirationMonthAndYear,true);
 		if(removeCard){
 			this.verifyCardTypeAndNameOnRemove(cardType,cardNumber.substring(cardNumber.length()-4));
 			this.clickElement(this.btnRemoveCreditCardButton);
@@ -450,15 +451,19 @@ public class MyAccount extends BasePage {
 	 * @param - String - cardNumber
 	 * @param -String - expirationMonthAndYear
 	 */
-	public void editAndVerifyCreditCardAttachedToUser(String cardType, String cardDisplayName, String cardNumber, String expirationMonthAndYear, JSONObject creditCardsData, boolean editCard) throws ParseException {
+	public Map<String,String> editAndVerifyCreditCardAttachedToUser(String cardType, String cardDisplayName, String cardNumber, String expirationMonthAndYear, JSONObject creditCardsData, boolean editCard) throws ParseException {
 		Map<String,String> cardData = new HashMap<>();
 		if(cardType!=null){
+			cardData.put("cardType",cardType);
+			cardData.put("cardNumber",cardNumber);
+			cardData.put("expirationMonthAndYear",expirationMonthAndYear);
 			this.selectGivenCreditCard(cardNumber,cardType,expirationMonthAndYear,false);
 		}else{
 			cardData = this.getFirstCreditCardDetailsAndSelect();
 			String cardTypeAdded = this.getCreditCardTypeName(cardData.get("cardType"));
 			JSONObject creditCard = (JSONObject) creditCardsData.get(cardTypeAdded);
 			cardNumber = creditCard.get("Number").toString();
+			cardData.put("cardNumber",cardNumber);
 		}
 		this.addNewCreditCardNumber(cardNumber);
 
@@ -485,6 +490,7 @@ public class MyAccount extends BasePage {
 			else
 				this.verifyNewAddedCreditCardForUser(cardData.get("cardType"),cardData.get("cardDisplayName"),cardNumber,cardData.get("actualExpirationMonth"),cardData.get("actualExpirationYear"),false);
 		}
+		return cardData;
 	}
 
 	/**
@@ -507,8 +513,8 @@ public class MyAccount extends BasePage {
 				updatedMonth = "0"+updatedMonth;
 			Map<String,String> updatedYearData = getNewCardExpirationData();
 			updatedYear = updatedYearData.get("expirationYear");
-			actualExpirationMonth = expiresOnData[0];
-			actualExpirationYear = expiresOnData[1];
+			actualExpirationMonth = expiresOnData[0].trim();
+			actualExpirationYear = expiresOnData[1].trim();
 
 			creditCardDisplayedData.put("cardType", cardType);
 			creditCardDisplayedData.put("cardDisplayName", cardDisplayName);
@@ -516,6 +522,7 @@ public class MyAccount extends BasePage {
 			creditCardDisplayedData.put("expirationYear", updatedYear);
 			creditCardDisplayedData.put("actualExpirationMonth", actualExpirationMonth);
 			creditCardDisplayedData.put("actualExpirationYear", actualExpirationYear);
+			creditCardDisplayedData.put("expirationMonthAndYear",actualExpirationMonth+"/"+actualExpirationYear);
 		}
 
 		WebElement editButtonWebElement = lstCreditCardsPresent.get(0).findElement(By.xpath(".//div[contains(@class,'margin-top-md')]//div[contains(@class,'smallRightPadding')]/a[contains(@class,'negative')]"));

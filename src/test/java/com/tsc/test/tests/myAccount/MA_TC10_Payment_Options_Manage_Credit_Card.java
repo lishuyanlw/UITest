@@ -7,6 +7,7 @@ import org.json.simple.JSONObject;
 import org.testng.annotations.Test;
 
 import java.text.ParseException;
+import java.util.Map;
 
 public class MA_TC10_Payment_Options_Manage_Credit_Card extends BaseTest {
     @Test(groups={"MyAccount","Regression"})
@@ -37,7 +38,12 @@ public class MA_TC10_Payment_Options_Manage_Credit_Card extends BaseTest {
          Scenario for verifying Cancel Edit functionality on Manage Credit Card
          */
         reporter.reportLog("Scenario for verifying Cancel Edit functionality on Manage Credit Card");
-        getMyAccountPageThreadLocal().editAndVerifyCreditCardAttachedToUser(null,null,null,null,creditCardData,false);
+        Map<String,String> cardData = getMyAccountPageThreadLocal().editAndVerifyCreditCardAttachedToUser(null,null,null,null,creditCardData,false);
 
+        /**
+         Scenario for verifying Remove functionality on Manage Credit Card
+         */
+        reporter.reportLog("Scenario for verifying Remove functionality on Manage Credit Card");
+        getMyAccountPageThreadLocal().removeCreditCardFromUser(cardData.get("cardType"),cardData.get("cardNumber"),cardData.get("expirationMonthAndYear"),true);
     }
 }
