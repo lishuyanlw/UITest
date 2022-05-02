@@ -61,6 +61,9 @@ public class MyAccount extends BasePage {
 	@FindBy(xpath="//input[@id='pan']")
 	public WebElement lblCardNumberForNewCreditCard;
 
+	@FindBy(xpath="//input[@id='maskedPan']")
+	public WebElement getLblMaskedCardNumberForNewCreditCard;
+
 	@FindBy(xpath="//input[@id='ficard']")
 	public WebElement lblTSCCreditCardInput;
 
@@ -211,7 +214,8 @@ public class MyAccount extends BasePage {
 		this.lblCardNumberForNewCreditCard.sendKeys(cardNumber);
 		//Using static wait of 5 seconds here as wait for condition is throwing target frame detached error
 		getReusableActionsInstance().staticWait(5000);
-		//waitForCondition(Driver->{return !this.lblMaskedCardNumberForNewCreditCard.getAttribute("value").isEmpty();},10000);
+		this.waitForPageToLoad();
+		//waitForCondition(Driver->{return !this.getChildElementAttribute(this.getLblMaskedCardNumberForNewCreditCard,"value").isEmpty();},10000);
 		getDriver().switchTo().defaultContent();
 	}
 
