@@ -9,14 +9,13 @@ import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
-import java.text.ParseException;
 
 public class MA_TC03_RecentOrder extends BaseTest {
     /*
      *CER-790
      */
     @Test(groups={"MyAccount","Regression"})
-    public void MA_TC03_RecentOrder() throws ParseException, IOException {
+    public void MA_TC03_RecentOrder() throws IOException {
         //Closing SignIn pop up on login
         getGlobalFooterPageThreadLocal().closePopupDialog();
 

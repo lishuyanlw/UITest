@@ -1,22 +1,19 @@
 package com.tsc.test.tests.myAccount;
 
 import com.tsc.data.Handler.TestDataHandler;
-import com.tsc.data.pojos.ConstantData;
 import com.tsc.pages.GlobalHeaderPage;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 
-import java.io.IOException;
-import java.text.ParseException;
 
 public class MA_TC05_OrderCancellation extends BaseTest {
     /*
      *CER-791
      */
     @Test(groups={"MyAccount","Regression"})
-    public void MA_TC05_OrderCancellation() throws ParseException, IOException {
+    public void MA_TC05_OrderCancellation() {
         //Closing SignIn pop up on login
         getGlobalFooterPageThreadLocal().closePopupDialog();
 
