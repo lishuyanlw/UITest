@@ -4,11 +4,13 @@ import com.tsc.api.util.PropertyReader;
 import com.tsc.pages.base.BasePage;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
-import org.json.JSONObject;
+import org.json.simple.JSONObject;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ApiClient {
     Map<String,String> propertyData;
@@ -47,7 +49,7 @@ public class ApiClient {
      * @param - String - apiEndPoint : api endpoint after base URI where call will be made
      * @return - Response - Response from api
      */
-    protected Response postApiCallResponseAfterAuthenticationFromJSON(JSONObject config, String apiEndPoint, String accessToken){
+    protected Response postApiCallResponseAfterAuthenticationFromJSON(org.json.simple.JSONObject config, String apiEndPoint, String accessToken){
         if(config==null){
             return RestAssured.given().header("Authorization",
                             "Bearer " + accessToken).

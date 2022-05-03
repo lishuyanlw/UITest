@@ -9,8 +9,6 @@ import com.tsc.api.util.JsonParser;
 import extentreport.ExtentTestManager;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
-import org.json.JSONObject;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -41,7 +39,7 @@ public class ApiResponse extends ApiConfigs {
 	 * @param - String - grant_type that is set as password
 	 * @return - JSONObject that contains session key and other info
 	 */
-	public JSONObject getApiUserSessionData(String userName, String password, String grant_type, String apiKey) throws IOException {
+	public org.json.JSONObject getApiUserSessionData(String userName, String password, String grant_type, String apiKey) throws IOException {
 		setApiClient(apiProperty.get("test_qaURL"));
 		//Api Call to get access token
 		Response response = given().
@@ -55,7 +53,7 @@ public class ApiResponse extends ApiConfigs {
 				when().post("/api/token").
 				then().extract().response();
 
-		JSONObject apiSessionInfo = new JSONObject();
+		org.json.JSONObject apiSessionInfo = new org.json.JSONObject();
 		if(response.statusCode()==200){
 			//Return object containing api access token and expiration time
 			apiSessionInfo.put("access_token",response.jsonPath().get("access_token").toString());
@@ -79,7 +77,7 @@ public class ApiResponse extends ApiConfigs {
 	 * @param - String - access token from user authentication
 	 * @return - JSONObject that contains session key and other info
 	 */
-	public JSONObject getApiAppSessionData(String userName, String password, String grant_type,String access_token) throws IOException {
+	public org.json.JSONObject getApiAppSessionData(String userName, String password, String grant_type,String access_token) throws IOException {
 		setApiClient(apiProperty.get("test_qaURL"));
 		//Api Call to get access token
 		Response response = given().
@@ -92,7 +90,7 @@ public class ApiResponse extends ApiConfigs {
 				when().post("/api/token").
 				then().extract().response();
 
-		JSONObject apiSessionInfo = new JSONObject();
+		org.json.JSONObject apiSessionInfo = new org.json.JSONObject();
 		if(response.statusCode()==200){
 			//Return object containing api access token and expiration time
 			apiSessionInfo.put("access_token",response.jsonPath().get("access_token").toString());
@@ -115,7 +113,7 @@ public class ApiResponse extends ApiConfigs {
 	 * @param-String access_token required for api call
 	 * @return-Response response object after api call
 	 */
-	public Response addCreditCardToUser(JSONObject jsonObject, String customerEDP, String access_token) throws JsonProcessingException {
+	public Response addCreditCardToUser(org.json.simple.JSONObject jsonObject, String customerEDP, String access_token) throws JsonProcessingException {
 		return postApiCallResponseAfterAuthenticationFromJSON(jsonObject, propertyData.get("test_apiVersion")+"/"+propertyData.get("test_language")+"/accounts/"+customerEDP+"/creditcards",access_token);
 	}
 
@@ -902,7 +900,7 @@ public class ApiResponse extends ApiConfigs {
 		if(accountCartResponseForUser.getCreditCard()!=null){
 			if(!accountCartResponseForUser.getCreditCard().getType().equalsIgnoreCase("FI")){
 				org.json.simple.JSONObject creditCardDetails = DataConverter.readJsonFileIntoJSONObject("test-data/CreditCard.json");
-				this.addCreditCardToUser((org.json.JSONObject) creditCardDetails.get("tscCard"),customerEDP,accessToken);
+				this.addCreditCardToUser( (org.json.simple.JSONObject)creditCardDetails.get("tscCard"),customerEDP,accessToken);
 			}
 		}
 	}
@@ -919,4 +917,5 @@ public class ApiResponse extends ApiConfigs {
 		else
 			return null;
 	}
+
 }

@@ -4,26 +4,34 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.text.ParseException;
+import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.tsc.api.apiBuilder.AccountAPI;
 import com.tsc.api.apiBuilder.ApiResponse;
+import com.tsc.api.apiBuilder.CartAPI;
+import com.tsc.api.apiBuilder.OrderAPI;
+import com.tsc.api.pojo.AccountCartResponse;
+import com.tsc.api.pojo.ErrorResponse;
+import com.tsc.api.pojo.PlaceOrderResponse;
 import com.tsc.api.util.DataConverter;
+import com.tsc.api.util.JsonParser;
 import com.tsc.data.pojos.ConstantData;
 import com.tsc.pages.*;
 
+import com.tsc.pages.base.BasePage;
 import extentreport.ExtentListener;
+import io.restassured.response.Response;
 import org.apache.http.client.ClientProtocolException;
 import org.json.JSONObject;
 import org.openqa.selenium.WebDriver;
 import org.testng.ITestContext;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeSuite;
-import org.testng.annotations.Optional;
-import org.testng.annotations.Parameters;
+import org.testng.annotations.*;
 
 import com.tsc.data.Handler.TestDataHandler;
 
@@ -137,6 +145,7 @@ public class BaseTest {
 		reporter = new ExtentTestManager(getDriver());
 		apiResponseThreadLocal.set(new ApiResponse());
 		shoppingCartThreadLocal.set(new ShoppingCart(getDriver()));
+		myAccountPageThreadLocal.set(new MyAccount_Mobile(getDriver()));
 	}
 
 	private void init_Tablet() throws IOException {
@@ -175,6 +184,7 @@ public class BaseTest {
 		reporter = new ExtentTestManager(getDriver());
 		apiResponseThreadLocal.set(new ApiResponse());
 		shoppingCartThreadLocal.set(new ShoppingCart(getDriver()));
+		myAccountPageThreadLocal.set(new MyAccount(getDriver()));
 	}
 
 
@@ -294,7 +304,7 @@ public class BaseTest {
 	@BeforeMethod(alwaysRun = true)
 	@Parameters({ "strBrowser", "strLanguage" })
 	public void beforeTest(@Optional("chrome") String strBrowser, @Optional("en") String strLanguage,
-			ITestContext testContext, Method method) throws ClientProtocolException, IOException, ParseException {
+			ITestContext testContext, Method method) throws IOException, ParseException {
 		startSession(System.getProperty("QaUrl"), strBrowser, strLanguage, method, false);
 		getglobalheaderPageThreadLocal().waitForPageLoad();
 
@@ -337,6 +347,14 @@ public class BaseTest {
 		if (getDriver() != null) {
 			//(new BasePage(this.getDriver())).deleteSessionStorage();
 			closeSession();
+		}
+	}
+
+	@AfterSuite(alwaysRun = true)
+	public void afterSuite() throws IOException, org.json.simple.parser.ParseException {
+		LocalDate currentDate = LocalDate.now();
+		if(currentDate.getDayOfMonth()%5==0){
+			addPlaceOrder();
 		}
 	}
 
@@ -424,6 +442,41 @@ public class BaseTest {
 
 		return sauceOptions;
 	}
-	
+
+
+	public void addPlaceOrder() throws IOException, org.json.simple.parser.ParseException {
+		String lblUserName = TestDataHandler.constantData.getMyAccount().getLbl_Username();
+		String lblPassword = TestDataHandler.constantData.getMyAccount().getLbl_Password();
+
+		ConstantData.APIUserSessionParams apiUserSessionParams = TestDataHandler.constantData.getApiUserSessionParams();
+		apiUserSessionData = apiResponseThreadLocal.get().getApiUserSessionData(lblUserName,lblPassword,apiUserSessionParams.getLbl_grantType(),apiUserSessionParams.getLbl_apiKey());
+		String access_token = apiUserSessionData.get("access_token").toString();
+		String customerEDP = apiUserSessionData.get("customerEDP").toString();
+
+		AccountAPI accountAPI=new AccountAPI();
+		CartAPI cartAPI=new CartAPI();
+		OrderAPI orderAPI=new OrderAPI();
+		BasePage basePage=new BasePage(this.getDriver());
+
+		org.json.simple.JSONObject creditCardDetails = DataConverter.readJsonFileIntoJSONObject("test-data/CreditCard.json");
+		accountAPI.addCreditCardToUser((org.json.simple.JSONObject) creditCardDetails.get("tsc"),customerEDP,access_token);
+
+		Response responseInitial=cartAPI.getAccountCartContentWithCustomerEDP(customerEDP,access_token);
+		AccountCartResponse accountCartInitial = JsonParser.getResponseObject(responseInitial.asString(), new TypeReference<AccountCartResponse>() {});
+		String GuidId=accountCartInitial.getCartGuid();
+
+		//ProductEDP Number that will be added to cart for user
+		Map<String,Object> map=cartAPI.addItemsInExistingCart(Integer.parseInt(customerEDP), access_token, GuidId,null);
+		Response userCartResponse=(Response)map.get("Response");
+
+		Response responseReview=orderAPI.getOrderReview(customerEDP,access_token);
+		AccountCartResponse accountCartReview = JsonParser.getResponseObject(responseReview.asString(), new TypeReference<AccountCartResponse>() {});
+		List<Long> relatedCartIdsList=accountCartReview.getRelatedCartIds();
+
+		basePage.getReusableActionsInstance().staticWait(2000);
+
+		orderAPI.placeOrder(GuidId,customerEDP,access_token,relatedCartIdsList);
+		orderAPI.getOrderList(customerEDP,access_token);
+	}
 	
 }

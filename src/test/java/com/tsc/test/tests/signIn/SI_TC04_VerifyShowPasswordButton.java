@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class SI_TC04_VerifyShowPasswordButton extends BaseTest{
 	/*
-	 * CER-785
+	 * CER-783
 	 */
 	@Test(groups={"SignIn","Regression","Regression_Mobile","Regression_Tablet"})
 	public void SI_TC04_VerifyShowPasswordButton() throws IOException {

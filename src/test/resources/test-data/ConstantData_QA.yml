@@ -204,7 +204,19 @@ myAccount:
   lnk_giftCardURL: "/pages/giftcard"
   lst_newCreditCardType: [visa,master,amex,tsc]
   lbl_invalidCardErrorMessage: ["Please enter a valid card number and try again.","Credit Card Number is required."]
-  lst_giftCardDetails: ["6006496682749900319","3974","$100.00"]
-  lbl_invalidGiftCardNumberErrorMessage: "Please enter a valid gift card number (19 numbers)"
-  lbl_invalidGiftCardPinErrorMessage: "Please enter a valid PIN (4 numbers)"
+  lnk_orderStatusURL: "/pages/myaccount/orderstatus"
+  lbl_orderSearchErrorMessage: "Oops - we can't find the order you're looking for. Please try again or browse for the order by date."
+  lnk_recentOrderURL: "/pages/myaccount/orderstatus?dateRange=30"
+  lnk_orderDetailsURL: "/pages/myaccount/orderstatus?orderNo={OrderNO}"
+  lnk_orderCancellationURL: "/go/customerservice/orderingpage#ordermodification"
+  lbl_orderModificationTitle: Ordering
+  lnk_orderReturnsURL: "/go/customerservice/returnspage#returnpolicy"
+  lbl_orderReturnsTitle: Returns
+  lnk_accountSettingsURL: "/pages/myaccount/information"
+  lnk_accountSettingsChangePasswordURL: "/pages/myaccount/information/password"
+  lnk_accountSettingsChangeSecurityQuestionsURL: "/pages/myaccount/information/securityquestion"
+  lbl_accountSettingsTitle: "Account Settings"
+  lst_changingPasswordErrorMessage: ["Sorry! Your password was incorrect, please try again.","Your password must be a minimum of 6 characters with at least 1 number","Password mismatch"]
+
+
 

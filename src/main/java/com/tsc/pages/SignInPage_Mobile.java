@@ -62,7 +62,7 @@ public class SignInPage_Mobile extends SignInPage{
     }*/
 
     @Override
-    public boolean Login(String lsUserName, String lsPassword,String lsFirstName) {
+    public boolean Login(String lsUserName, String lsPassword) {
         /**
         waitForCondition(Driver->{return this.SignInIcon.isDisplayed() && this.SignInIcon.isEnabled();},10000);
         getReusableActionsInstance().javascriptScrollByVisibleElement(this.SignInIcon);

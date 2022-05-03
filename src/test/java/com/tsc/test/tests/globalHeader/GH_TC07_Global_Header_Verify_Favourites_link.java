@@ -37,7 +37,7 @@ public class GH_TC07_Global_Header_Verify_Favourites_link extends BaseTest {
 		}
 
 		//if(!System.getProperty("Device").equalsIgnoreCase("Tablet")){
-			if(getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword,lsFirstname)) {
+			if(getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword)) {
 				getglobalheaderPageThreadLocal().waitForPageLoad();
 				String urlFavoritesLandingpageForLoggedinUser=getglobalheaderPageThreadLocal().getUrlForLandingpage(getglobalheaderPageThreadLocal().Favouriteslnk);
 				getglobalheaderPageThreadLocal().getReusableActionsInstance().waitForPageLoad();
