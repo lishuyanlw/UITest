@@ -1,29 +1,21 @@
 package com.tsc.test.tests.myAccount;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.tsc.api.apiBuilder.AccountAPI;
-import com.tsc.api.pojo.AccountResponse;
-import com.tsc.api.util.JsonParser;
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.data.pojos.ConstantData;
 import com.tsc.pages.GlobalHeaderPage;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
-import io.restassured.response.Response;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
-import java.text.ParseException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class MA_TC07_AccountSettings extends BaseTest {
     /*
      *CER-798
      */
     @Test(groups={"MyAccount","Regression"})
-    public void MA_TC07_AccountSettings() throws ParseException, IOException {
+    public void MA_TC07_AccountSettings() throws IOException {
         //Closing SignIn pop up on login
         getGlobalFooterPageThreadLocal().closePopupDialog();
 

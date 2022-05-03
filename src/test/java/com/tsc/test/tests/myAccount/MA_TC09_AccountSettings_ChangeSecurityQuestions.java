@@ -15,7 +15,6 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +24,7 @@ public class MA_TC09_AccountSettings_ChangeSecurityQuestions extends BaseTest {
      *CER-800
      */
     @Test(groups={"MyAccount","Regression"})
-    public void MA_TC09_AccountSettings_ChangeSecurityQuestions() throws ParseException, IOException {
+    public void MA_TC09_AccountSettings_ChangeSecurityQuestions() throws IOException {
         //Closing SignIn pop up on login
         getGlobalFooterPageThreadLocal().closePopupDialog();
 

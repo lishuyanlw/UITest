@@ -943,6 +943,10 @@ public class ConstantData {
         public String lnk_addNewCardURL;
         public List<String> lst_newCreditCardType;
         public List<String> lbl_invalidCardErrorMessage;
+        public List<String> lst_giftCardDetails;
+        public String lbl_invalidGiftCardNumberErrorMessage;
+        public String lbl_invalidGiftCardPinErrorMessage;
+        public String lnk_giftCardURL;
         public String lnk_orderStatusURL;
         public String lnk_recentOrderURL;
         public String lnk_orderDetailsURL;
@@ -994,6 +998,22 @@ public class ConstantData {
         public List<String> getLbl_invalidCardErrorMessage() {            return lbl_invalidCardErrorMessage;        }
 
         public void setLbl_invalidCardErrorMessage(List<String> lbl_invalidCardErrorMessage) {            this.lbl_invalidCardErrorMessage = lbl_invalidCardErrorMessage;        }
+
+        public List<String> getLst_giftCardDetails() {            return lst_giftCardDetails;        }
+
+        public void setLst_giftCardDetails(List<String> lst_giftCardDetails) {            this.lst_giftCardDetails = lst_giftCardDetails;        }
+
+        public String getLbl_invalidGiftCardNumberErrorMessage() {            return lbl_invalidGiftCardNumberErrorMessage;        }
+
+        public void setLbl_invalidGiftCardNumberErrorMessage(String lbl_invalidGiftCardNumberErrorMessage) {            this.lbl_invalidGiftCardNumberErrorMessage = lbl_invalidGiftCardNumberErrorMessage;        }
+
+        public String getLbl_invalidGiftCardPinErrorMessage() {            return lbl_invalidGiftCardPinErrorMessage;        }
+
+        public void setLbl_invalidGiftCardPinErrorMessage(String lbl_invalidGiftCardPinErrorMessage) {            this.lbl_invalidGiftCardPinErrorMessage = lbl_invalidGiftCardPinErrorMessage;        }
+
+        public String getLnk_giftCardURL() {            return lnk_giftCardURL;        }
+
+        public void setLnk_giftCardURL(String lnk_giftCardURL) {            this.lnk_giftCardURL = lnk_giftCardURL;        }
 
         public String getLnk_orderStatusURL() {
             return lnk_orderStatusURL;

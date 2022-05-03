@@ -1,26 +1,21 @@
 package com.tsc.test.tests.myAccount;
 
-import com.tsc.api.util.DataConverter;
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.data.pojos.ConstantData;
 import com.tsc.pages.GlobalHeaderPage;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
-import org.json.simple.JSONObject;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
-import java.text.ParseException;
-import java.util.List;
-import java.util.Map;
 
 public class MA_TC02_OrderStatus extends BaseTest {
     /*
      *CER-789
      */
     @Test(groups={"MyAccount","Regression"})
-    public void MA_TC02_OrderStatus() throws ParseException, IOException {
+    public void MA_TC02_OrderStatus() throws IOException {
         //Closing SignIn pop up on login
         getGlobalFooterPageThreadLocal().closePopupDialog();
 

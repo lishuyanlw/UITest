@@ -7,15 +7,12 @@ import com.tsc.test.base.BaseTest;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 
-import java.io.IOException;
-import java.text.ParseException;
-
 public class MA_TC06_OrderReturns extends BaseTest {
     /*
      *CER-792
      */
     @Test(groups={"MyAccount","Regression"})
-    public void MA_TC06_OrderReturns() throws ParseException, IOException {
+    public void MA_TC06_OrderReturns() {
         //Closing SignIn pop up on login
         getGlobalFooterPageThreadLocal().closePopupDialog();
 

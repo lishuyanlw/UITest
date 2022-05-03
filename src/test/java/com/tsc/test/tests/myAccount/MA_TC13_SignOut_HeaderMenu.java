@@ -11,12 +11,12 @@ import org.testng.annotations.Test;
 import java.io.IOException;
 import java.text.ParseException;
 
-public class MA_TC11_LandingView extends BaseTest {
+public class MA_TC13_SignOut_HeaderMenu extends BaseTest {
     /*
      *CER-789
      */
     @Test(groups={"MyAccount","Regression"})
-    public void MA_TC11_LandingView() throws ParseException, IOException {
+    public void MA_TC13_SignOut_HeaderMenu() throws ParseException, IOException {
         //Closing SignIn pop up on login
         getGlobalFooterPageThreadLocal().closePopupDialog();
 
@@ -81,8 +81,36 @@ public class MA_TC11_LandingView extends BaseTest {
             }
         }
 
-        reporter.reportLog("Verify landing view content");
-        getMyAccountPageThreadLocal().verifyLandingViewContent();
+        reporter.reportLog("Verify SignOut");
+        getGlobalLoginPageThreadLocal().SignOut();
+
+        String lnk_urlAfterSignOut=TestDataHandler.constantData.getMyAccount().getLnk_URLAfterSignOut();
+        expectedURL=basePage.getBaseURL()+lnk_urlAfterSignOut;
+        if(basePage.URL().equalsIgnoreCase(expectedURL)){
+            reporter.reportLogPass("The navigated URL after SignOut is equal to expected one:"+expectedURL);
+        }
+        else{
+            reporter.reportLogPass("The actual navigated URL after SignOut:+"+basePage.URL()+" is not equal to expected one:"+expectedURL);
+        }
+
+        String lblSignOutMessage = TestDataHandler.constantData.getLoginUser().getLbl_SignOutMessage();
+        getGlobalLoginPageThreadLocal().verifySignOutMessage(lblSignOutMessage);
+
+        String lsSignInTitle=TestDataHandler.constantData.getLoginUser().getLbl_SignInTitleFromStartPage();
+        getGlobalLoginPageThreadLocal().verifySignInTitle(lsSignInTitle);
+
+        getGlobalLoginPageThreadLocal().verifyUserNameAndPassword();
+
+        String lsSignInButton=TestDataHandler.constantData.getLoginUser().getLbl_SignInButtonFromStartPage();
+        getGlobalLoginPageThreadLocal().verifyKeepMeSignedInFunction(lsSignInButton);
+
+        getGlobalLoginPageThreadLocal().verifyConfidence();
+
+        getGlobalLoginPageThreadLocal().verifyOtherFieldsForLeftPart();
+
+        String lsSectionTitle=TestDataHandler.constantData.getLoginUser().getLbl_RightSideTitleSignInPage();
+        String lsCreateNewAccount=TestDataHandler.constantData.getLoginUser().getLst_RightSideSectionSignInPage().get(0);
+        getGlobalLoginPageThreadLocal().verifyNewCustomerSignInRightSideSection(lsSectionTitle,lsCreateNewAccount);
 
     }
 }

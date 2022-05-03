@@ -2,6 +2,7 @@ package com.tsc.pages;
 
 import com.tsc.api.util.DataConverter;
 import com.tsc.pages.base.BasePage;
+import org.json.simple.JSONObject;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -376,6 +377,9 @@ public class MyAccount extends BasePage {
 	@FindBy(xpath="//input[@id='pan']")
 	public WebElement lblCardNumberForNewCreditCard;
 
+	@FindBy(xpath="//input[@id='maskedPan']")
+	public WebElement getLblMaskedCardNumberForNewCreditCard;
+
 	@FindBy(xpath="//input[@id='ficard']")
 	public WebElement lblTSCCreditCardInput;
 
@@ -389,7 +393,7 @@ public class MyAccount extends BasePage {
 	public WebElement lblExpirationYearForNewCreditCard;
 
 	@FindBy(xpath="//div[contains(@class,'text-danger')]")
-	public WebElement lblErrorMessageForInvalidCreditCardNumber;
+	public List<WebElement> lblErrorMessageForInvalidCreditCardNumber;
 
 	@FindBy(xpath="//button[contains(@class,'signout')]")
 	public WebElement btnSignOutMyAccountPage;
@@ -401,13 +405,18 @@ public class MyAccount extends BasePage {
 	@FindBy(xpath="//div[contains(@class,'desktop-divider')]")
 	public List<WebElement> lstCreditCardsPresent;
 	//.//div[contains(@class,'margin-top-md')]//div[contains(@class,'smallRightPadding')]/a[contains(@class,'negative')] - Edit Button
-	//.//div[contains(@class,'margin-top-md')]//div[contains(@class,'smallLeftPadding')]/a[contains(@class,'negative')] - Remove Button
 
 	@FindBy(xpath="//button[@id='addCardBtn']")
 	public WebElement btnAddNewCreditCard;
 
 	@FindBy(xpath="//button[@id='addCardBtn']//div[contains(@class,'addBtnTxt')]")
 	public WebElement lblAddNewCreditCardText;
+
+	@FindBy(xpath="//span[@class='table-cell']/label")
+	public WebElement lblCardNameOnRemovePopUp;
+
+	@FindBy(xpath="//span[@class='table-cell']/span")
+	public WebElement lblCardNumberOnRemovePopUp;
 
 	@FindBy(xpath="//div[@class='modal-body']//div[contains(@class,'clearfix')]/div/button[contains(text(),'REMOVE')]")
 	public WebElement btnRemoveCreditCardButton;
@@ -418,6 +427,21 @@ public class MyAccount extends BasePage {
 	@FindBy(xpath="//*[@class='breadcrumb']/li/a[contains(text(),'Account')]")
 	public WebElement lnkBreadCrumbMyAccount;
 
+	//GIFT CARD BALANCE - PAYMENT OPTIONS
+	@FindBy(xpath="//*[contains(@id,'content')]//*[contains(@class,'titleLink')]")
+	public WebElement lblGiftCardPageTitle;
+
+	@FindBy(xpath="//input[@id='giftcardNumber']")
+	public WebElement lblGiftCardNumberEntryTextBox;
+
+	@FindBy(xpath="//input[@id='pin']")
+	public WebElement lblGiftCardPinEntryTextBox;
+
+	@FindBy(xpath="//button[contains(@class,'btnResizing')]")
+	public WebElement btmCheckGiftCardBalanceButton;
+
+	@FindBy(xpath="//form[contains(@class,'tsc-forms')]//div/strong")
+	public WebElement lblGiftCardBalanceText;
 
 	/**
 	 * To get subitem web element through sublitem text
@@ -516,8 +540,17 @@ public class MyAccount extends BasePage {
 				break;
 			}
 		}
-		waitForCondition(Driver->{return this.btnCancelAddCreditCardForNewCreditCard.isEnabled() &&
+		if(subMenu.toLowerCase().contains("add"))
+			waitForCondition(Driver->{return this.btnCancelAddCreditCardForNewCreditCard.isEnabled() &&
 				this.btnCancelAddCreditCardForNewCreditCard.isDisplayed();},12000);
+		else if(subMenu.toLowerCase().contains("manage")){
+			this.waitForPageToLoad();
+			waitForCondition(Driver->{return this.lstCreditCardsPresent.size()>0;},6000);
+		}else{
+			this.waitForPageToLoad();
+			this.waitForCondition(Driver->{return this.lblGiftCardPageTitle.getText().toLowerCase().contains("gift");},6000);
+		}
+
 		if(!flag)
 			reporter.reportLogFailWithScreenshot("Provided sub-menu: "+subMenu+" is not present. Please verify once again!");
 	}
@@ -527,17 +560,43 @@ public class MyAccount extends BasePage {
 	 * @return - Map<String,String> - Expiration Month and Year Data for Card
 	 * @throws ParseException
 	 */
-	public Map<String,String> getNewCardExpirationData() throws ParseException {
+	public Map<String,String> getNewCardExpirationData(int monthsToBeAdded, int yearsToBeAdded) throws ParseException {
 		Map<String,String> cardData = new HashMap<>();
 		String[] date = new DataConverter().getLocalDate().split("-");
-		int calculatedExpirationMonth = Integer.valueOf(date[1])+2>12 ? (Integer.parseInt(date[1])+2)-12 : Integer.valueOf(date[1])+2;
+		int calculatedExpirationMonth = Integer.valueOf(date[1])+monthsToBeAdded>12 ? (Integer.parseInt(date[1])+monthsToBeAdded)-12 : Integer.valueOf(date[1])+monthsToBeAdded;
 		String expirationMonth = String.valueOf(calculatedExpirationMonth);
 		if(expirationMonth.length()==1)
 			expirationMonth = "0"+expirationMonth;
-		String expirationYear = String.valueOf(Integer.valueOf(date[0])+3);
+		String expirationYear = String.valueOf(Integer.valueOf(date[0])+yearsToBeAdded);
 		cardData.put("expirationMonth",expirationMonth);
 		cardData.put("expirationYear",expirationYear);
 		return cardData;
+	}
+
+	/**
+	 * This function adds Credit Card number for new Card addition
+	 */
+	public void addNewCreditCardNumber(String cardNumber){
+		this.waitForPageToLoad();
+		getDriver().switchTo().frame(iFrameForNewCreditCard);
+		waitForCondition(Driver->{return this.lblCardNumberForNewCreditCard.isEnabled() &&
+				this.lblCardNumberForNewCreditCard.isDisplayed();},15000);
+		//Adding Credit Card Number
+		this.clickWebElementUsingJS(this.lblCardNumberForNewCreditCard);
+		this.lblCardNumberForNewCreditCard.sendKeys(cardNumber);
+		//Using static wait of 5 seconds here as wait for condition is throwing target frame detached error
+		getReusableActionsInstance().staticWait(5000);
+		//waitForCondition(Driver->{return !this.getChildElementAttribute(this.getLblMaskedCardNumberForNewCreditCard,"value").isEmpty();},10000);
+		getDriver().switchTo().defaultContent();
+	}
+
+	/**
+	 * This function adds Credit Card Expiration Month and Year
+	 * @param -Map<String,String> - cardData
+	 */
+	public void addExpirationMonthAndYear(Map<String,String> cardData){
+		getReusableActionsInstance().selectWhenReady(this.lblMonthForNewCreditCard,cardData.get("expirationMonth"),6000);
+		getReusableActionsInstance().selectWhenReady(this.lblExpirationYearForNewCreditCard,cardData.get("expirationYear"),6000);
 	}
 
 	/**
@@ -553,30 +612,21 @@ public class MyAccount extends BasePage {
 		WebElement cardTypeElement = getDriver().findElement(By.xpath(cardTypeToBeAdded));
 
 		//Calculating expiration Year And Month for Card
-		Map<String,String> cardData = this.getNewCardExpirationData();
+		Map<String,String> cardData = this.getNewCardExpirationData(2,0);
 
 		waitForCondition(Driver->{return cardTypeElement.isDisplayed() && cardTypeElement.isEnabled();},5000);
 		this.clickWebElementUsingJS(cardTypeElement);
 
 		if(!cardType.equalsIgnoreCase("tsc")){
-			getDriver().switchTo().frame(iFrameForNewCreditCard);
-			waitForCondition(Driver->{return this.lblCardNumberForNewCreditCard.isEnabled() &&
-					this.lblCardNumberForNewCreditCard.isDisplayed();},6000);
-			//Adding Credit Card Number
-			this.clickWebElementUsingJS(this.lblCardNumberForNewCreditCard);
-			this.lblCardNumberForNewCreditCard.sendKeys(cardNumber);
-			//Using static wait of 5 seconds here as wait for condition is throwing target frame detached error
-			getReusableActionsInstance().staticWait(5000);
-			//waitForCondition(Driver->{return !this.lblMaskedCardNumberForNewCreditCard.getAttribute("value").isEmpty();},10000);
-			getDriver().switchTo().defaultContent();
-
+			this.addNewCreditCardNumber(cardNumber);
 			//Selecting Expiration Month and Year
-			getReusableActionsInstance().selectWhenReady(this.lblMonthForNewCreditCard,cardData.get("expirationMonth"),6000);
-			getReusableActionsInstance().selectWhenReady(this.lblExpirationYearForNewCreditCard,cardData.get("expirationYear"),6000);
+			this.addExpirationMonthAndYear(cardData);
 		}else
 			this.lblTSCCreditCardInput.sendKeys(cardNumber);
 
 		//Click on Save Button
+		if(isDefault)
+			getReusableActionsInstance().clickIfAvailable(this.isDefaultCheckBoxForNewCreditCard,2000);
 		this.clickElement(this.btnSaveAddCreditCardForNewCreditCard);
 		return cardData;
 	}
@@ -587,12 +637,12 @@ public class MyAccount extends BasePage {
 	 * @param - String - expirationYear
 	 * @return - String
 	 */
-	public String getExpirationDateDisplayedForCreditCard(String expirationMonth, String expirationYear){
+	public String formatExpirationDateForCreditCard(String expirationMonth, String expirationYear){
 		if(expirationMonth.startsWith("0"))
 			expirationMonth = expirationMonth.substring(expirationMonth.length()-1);
 		if(expirationYear.length()>2)
 			expirationYear = expirationYear.substring(expirationYear.length()-2);
-		return expirationMonth + "/" + expirationYear;
+		return (expirationMonth + "/" + expirationYear).trim();
 	}
 
 	/**
@@ -618,7 +668,7 @@ public class MyAccount extends BasePage {
 				WebElement expiresOnWebElement = lstCreditCardsPresent.get(counter).findElement(By.xpath(".//div[contains(@class,'margin-top-md')]//div[contains(@class,'zeroRightPadding')]//div[@class='table-cell']"));
 				String expiresOnData = expiresOnWebElement.getText().split(":")[1];
 				//Fetching input expiration month and year in required format
-				inputExpirationData = this.getExpirationDateDisplayedForCreditCard(expirationMonth,expirationYear);
+				inputExpirationData = this.formatExpirationDateForCreditCard(expirationMonth,expirationYear);
 				if (expiresOnData.trim().equals(inputExpirationData)) {
 					reporter.reportLog("Card Type: " + imageType + " and expiration year is same as added: " + expiresOnData);
 					//Verifying Image Type and CardType is same that is displayed in application for user
@@ -651,7 +701,7 @@ public class MyAccount extends BasePage {
 
 		//Remove Credit Card associated
 		if(removeCard)
-			this.removeCreditCardFromUser(cardType,cardNumber,inputExpirationData);
+			this.removeCreditCardFromUser(cardType,cardNumber,inputExpirationData,true);
 	}
 
 	/**
@@ -677,14 +727,15 @@ public class MyAccount extends BasePage {
 	}
 
 	/**
-	 * This functions removes provided Credit Card attached to user
-	 * @param - String - cardType
+	 * This functions selects the credit card either for removal or for edit functionality
 	 * @param - String - cardNumber
-	 * @param -String - expirationMonthAndYear
+	 * @param - String - cardType
+	 * @param - String - expirationMonthAndYear
 	 */
-	public void removeCreditCardFromUser(String cardType, String cardNumber, String expirationMonthAndYear){
+	public void selectGivenCreditCard(String cardNumber, String cardType, String expirationMonthAndYear,boolean selectForRemove){
 		int beforeDeleteCreditCardsPresent = lstCreditCardsPresent.size();
 		WebElement expiresOnWebElement = null;
+		WebElement removeButtonWebElement, editButtonWebElement;
 		String expiresOnData = null;
 		boolean value = false;
 		for (int counter = 0; counter < beforeDeleteCreditCardsPresent; counter++) {
@@ -692,37 +743,171 @@ public class MyAccount extends BasePage {
 			String imageType = cardImage.getAttribute("alt");
 			if(!imageType.toLowerCase().contains("tsc")){
 				expiresOnWebElement = lstCreditCardsPresent.get(counter).findElement(By.xpath(".//div[contains(@class,'margin-top-md')]//div[contains(@class,'zeroRightPadding')]//div[@class='table-cell']"));
-				expiresOnData = expiresOnWebElement.getText().split(":")[1];
+				expiresOnData = expiresOnWebElement.getText().split(":")[1].trim();
 				if (expiresOnData.trim().equals(expirationMonthAndYear)) {
 					WebElement expiresWebElement = lstCreditCardsPresent.get(counter).findElement(By.xpath(".//div[contains(@class,'margin-top-md')]//div[contains(@class,'zeroRightPadding')]//span[@class='table-cell ']/span"));
 					value = this.verifyCardNumberAddedForUser(expiresWebElement,cardNumber,cardType);
 					if(value){
 						//Removing the matched Credit Card
-						WebElement removeButtonWebElement = lstCreditCardsPresent.get(counter).findElement(By.xpath(".//div[contains(@class,'margin-top-md')]//div[contains(@class,'smallLeftPadding')]/a[contains(@class,'negative')]"));
-						this.clickElement(removeButtonWebElement);
-						waitForCondition(Driver->{return this.btnRemoveCreditCardButton.isDisplayed() &&
-								this.btnRemoveCreditCardButton.isEnabled();},6000);
-						this.clickElement(this.btnRemoveCreditCardButton);
+						if(selectForRemove){
+							removeButtonWebElement = lstCreditCardsPresent.get(counter).findElement(By.xpath(".//div[contains(@class,'margin-top-md')]//div[contains(@class,'smallLeftPadding')]/a[contains(@class,'negative')]"));
+							this.clickElement(removeButtonWebElement);
+							waitForCondition(Driver->{return this.btnRemoveCreditCardButton.isDisplayed() &&
+									this.btnRemoveCreditCardButton.isEnabled();},6000);
+						}else{
+							editButtonWebElement = lstCreditCardsPresent.get(counter).findElement(By.xpath(".//div[contains(@class,'margin-top-md')]//div[contains(@class,'smallRightPadding')]/a[contains(@class,'negative')]"));
+							this.clickElement(editButtonWebElement);
+							waitForCondition(Driver->{return this.btnSaveAddCreditCardForNewCreditCard.isDisplayed() &&
+									this.btnSaveAddCreditCardForNewCreditCard.isEnabled();},6000);
+						}
 						break;
 					}
 				}
 			}else if(cardType.toLowerCase().contains("tsc")){
-				WebElement removeButtonWebElement = lstCreditCardsPresent.get(counter).findElement(By.xpath(".//div[contains(@class,'margin-top-md')]//div[contains(@class,'smallLeftPadding')]/a[contains(@class,'negative')]"));
-				this.clickElement(removeButtonWebElement);
-				waitForCondition(Driver->{return this.btnRemoveCreditCardButton.isDisplayed() &&
-						this.btnRemoveCreditCardButton.isEnabled();},6000);
-				this.clickElement(this.btnRemoveCreditCardButton);
+				if(selectForRemove){
+					removeButtonWebElement = lstCreditCardsPresent.get(counter).findElement(By.xpath(".//div[contains(@class,'margin-top-md')]//div[contains(@class,'smallLeftPadding')]/a[contains(@class,'negative')]"));
+					this.clickElement(removeButtonWebElement);
+					waitForCondition(Driver->{return this.btnRemoveCreditCardButton.isDisplayed() &&
+							this.btnRemoveCreditCardButton.isEnabled();},6000);
+				}else{
+					editButtonWebElement = lstCreditCardsPresent.get(counter).findElement(By.xpath(".//div[contains(@class,'margin-top-md')]//div[contains(@class,'smallRightPadding')]/a[contains(@class,'negative')]"));
+					this.clickElement(editButtonWebElement);
+					waitForCondition(Driver->{return this.btnSaveAddCreditCardForNewCreditCard.isDisplayed() &&
+							this.btnSaveAddCreditCardForNewCreditCard.isEnabled();},6000);
+				}
 				break;
 			}
 		}
+	}
+
+	/**
+	 * This function verifies card on remove popup
+	 * @param - String - cardDetails
+	 */
+	public void verifyCardTypeAndNameOnRemove(String cardType, String cardNumber){
+		String appCardDetails = this.lblCardNameOnRemovePopUp.getText().trim()+" "+this.lblCardNumberOnRemovePopUp.getText().trim();
+		if(cardType.contains("amex"))
+			cardType = "american express";
+		if(appCardDetails.toLowerCase().contains(cardType.toLowerCase()) && appCardDetails.contains(cardNumber))
+			reporter.reportLogPass("Card Number deleted is same as expected: "+appCardDetails);
+		else
+			reporter.reportLogFailWithScreenshot("Card Number that is deleted: "+appCardDetails+" is not as expected for type: "+cardType);
+	}
+
+	/**
+	 * This functions removes provided Credit Card attached to user
+	 * @param - String - cardType
+	 * @param - String - cardNumber
+	 * @param -String - expirationMonthAndYear
+	 */
+	public void removeCreditCardFromUser(String cardType, String cardNumber, String expirationMonthAndYear, boolean removeCard){
+		int beforeDeleteCreditCardsPresent = lstCreditCardsPresent.size();
+		this.selectGivenCreditCard(cardNumber,cardType,expirationMonthAndYear,true);
+		if(removeCard){
+			this.verifyCardTypeAndNameOnRemove(cardType,cardNumber.substring(cardNumber.length()-4));
+			this.clickElement(this.btnRemoveCreditCardButton);
+		}
+		else
+			this.clickElement(this.btnCancelRemoveCreditCardButton);
 		//Verification that card is removed
 		//Applying static wait for 5 seconds as application takes time to refresh and there is no unique element for wait for condition to be used
 		getReusableActionsInstance().staticWait(5000);
 		int afterDeleteCreditCardsPresent = lstCreditCardsPresent.size();
-		if(afterDeleteCreditCardsPresent == beforeDeleteCreditCardsPresent-1)
+		boolean flag = removeCard == true ? afterDeleteCreditCardsPresent == beforeDeleteCreditCardsPresent-1 : afterDeleteCreditCardsPresent == beforeDeleteCreditCardsPresent;
+		if(flag)
 			reporter.reportLogPass("Credit Card: "+cardNumber+" of type: "+cardType+" is removed from user");
 		else
 			reporter.reportLogFailWithScreenshot("Credit Card: "+cardNumber+" of type: "+cardType+" is not removed from user");
+	}
+
+	/**
+	 * This functions edits added Credit Card with user
+	 * @param - String - cardType
+	 * @param - String - cardNumber
+	 * @param -String - expirationMonthAndYear
+	 */
+	public Map<String,String> editAndVerifyCreditCardAttachedToUser(String cardType, String cardDisplayName, String cardNumber, String expirationMonthAndYear, JSONObject creditCardsData, boolean editCard) throws ParseException {
+		Map<String,String> cardData = new HashMap<>();
+		if(cardType!=null){
+			cardData.put("cardType",cardType);
+			cardData.put("cardNumber",cardNumber);
+			cardData.put("expirationMonthAndYear",expirationMonthAndYear);
+			this.selectGivenCreditCard(cardNumber,cardType,expirationMonthAndYear,false);
+		}else{
+			cardData = this.getFirstCreditCardDetailsAndSelect();
+			String cardTypeAdded = this.getCreditCardTypeName(cardData.get("cardType"));
+			JSONObject creditCard = (JSONObject) creditCardsData.get(cardTypeAdded);
+			cardNumber = creditCard.get("Number").toString();
+			cardData.put("cardNumber",cardNumber);
+		}
+		this.addNewCreditCardNumber(cardNumber);
+
+		if(expirationMonthAndYear!=null){
+			String[] expirationData = expirationMonthAndYear.split("/");
+			int updatedMonth = Integer.valueOf(expirationData[0])+1 > 12 ? (Integer.valueOf(expirationData[0]) + 1) - 12 : Integer.valueOf(expirationData[0])+1;
+			int updatedYear = Integer.valueOf(expirationData[1])+1;
+			cardData.put("expirationMonth",String.valueOf(updatedMonth));
+			cardData.put("expirationYear",String.valueOf(updatedYear));
+		}
+		this.addExpirationMonthAndYear(cardData);
+		this.waitForPageToLoad();
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSaveAddCreditCardForNewCreditCard);
+
+		if(editCard)
+			this.clickElement(this.btnSaveAddCreditCardForNewCreditCard);
+		else
+			this.clickElement(this.btnCancelAddCreditCardForNewCreditCard);
+
+		//Verification of Updated Data for Credit Card
+		if(cardType!=null)
+			this.verifyNewAddedCreditCardForUser(cardType,cardDisplayName,cardNumber,cardData.get("expirationMonth"),cardData.get("expirationYear"),false);
+		else{
+			if(editCard)
+				this.verifyNewAddedCreditCardForUser(cardData.get("cardType"),cardData.get("cardDisplayName"),cardNumber,cardData.get("expirationMonth"),cardData.get("expirationYear"),false);
+			else
+				this.verifyNewAddedCreditCardForUser(cardData.get("cardType"),cardData.get("cardDisplayName"),cardNumber,cardData.get("actualExpirationMonth"),cardData.get("actualExpirationYear"),false);
+		}
+		return cardData;
+	}
+
+	/**
+	 * This function selects first credit card displayed on Manage Screen by default when no Credit Card is provided
+	 */
+	public Map<String,String> getFirstCreditCardDetailsAndSelect() throws ParseException {
+		Map<String,String> creditCardDisplayedData = new HashMap<>();
+		String updatedMonth=null,updatedYear = null,actualExpirationMonth=null,actualExpirationYear=null;
+		//Fetching Card Details to be edited to be used for verification
+		WebElement cardTypeWebElement = lstCreditCardsPresent.get(0).findElement(By.xpath(".//div[contains(@class,'margin-top-md')]//div[contains(@class,'zeroRightPadding')]//span[@class='table-cell ']/label"));
+		String cardType = cardTypeWebElement.getText();
+		WebElement cardDisplayTypeWebElement = lstCreditCardsPresent.get(0).findElement(By.xpath(".//div[contains(@class,'margin-top-md')]//div[contains(@class,'zeroRightPadding')]//span[@class='table-cell ']/label"));
+		String cardDisplayName = cardDisplayTypeWebElement.getText();
+		if(!cardType.toLowerCase().contains("tsc")) {
+			WebElement expiresOnWebElement = lstCreditCardsPresent.get(0).findElement(By.xpath(".//div[contains(@class,'margin-top-md')]//div[contains(@class,'zeroRightPadding')]//div[@class='table-cell']"));
+			String[] expiresOnData = expiresOnWebElement.getText().split(":")[1].split("/");
+
+			updatedMonth = Integer.valueOf(expiresOnData[0].trim())+1 > 12 ? String.valueOf((Integer.valueOf(expiresOnData[0].trim()) + 1) - 12) : String.valueOf(Integer.valueOf(expiresOnData[0].trim())+1);
+			if(updatedMonth.length()==1)
+				updatedMonth = "0"+updatedMonth;
+			Map<String,String> updatedYearData = getNewCardExpirationData(2,0);
+			updatedYear = updatedYearData.get("expirationYear");
+			actualExpirationMonth = expiresOnData[0].trim();
+			actualExpirationYear = expiresOnData[1].trim();
+
+			creditCardDisplayedData.put("cardType", cardType);
+			creditCardDisplayedData.put("cardDisplayName", cardDisplayName);
+			creditCardDisplayedData.put("expirationMonth", updatedMonth);
+			creditCardDisplayedData.put("expirationYear", updatedYear);
+			creditCardDisplayedData.put("actualExpirationMonth", actualExpirationMonth);
+			creditCardDisplayedData.put("actualExpirationYear", actualExpirationYear);
+			creditCardDisplayedData.put("expirationMonthAndYear",actualExpirationMonth+"/"+actualExpirationYear);
+		}
+
+		WebElement editButtonWebElement = lstCreditCardsPresent.get(0).findElement(By.xpath(".//div[contains(@class,'margin-top-md')]//div[contains(@class,'smallRightPadding')]/a[contains(@class,'negative')]"));
+		this.clickElement(editButtonWebElement);
+		//Wait for page load
+		this.waitForPageToLoad();
+
+		return creditCardDisplayedData;
 	}
 
 	/**
@@ -733,6 +918,20 @@ public class MyAccount extends BasePage {
 		this.waitForPageToLoad();
 		waitForCondition(Driver->{return this.btnCancelAddCreditCardForNewCreditCard.isEnabled() &&
 				this.btnCancelAddCreditCardForNewCreditCard.isDisplayed();},12000);
+	}
+
+	/**
+	 * This function fetches Credit Card type name on basis of displayed name on application
+	 */
+	public String getCreditCardTypeName(String displayName){
+		if(displayName.toLowerCase().contains("visa"))
+			return "visa";
+		else if(displayName.toLowerCase().contains("tsc"))
+			return "tsc";
+		else if(displayName.toLowerCase().contains("american"))
+			return "amex";
+		else
+			return "master";
 	}
 
 	/**
@@ -750,13 +949,40 @@ public class MyAccount extends BasePage {
 	 * @param - String - expectedErrorMessage
 	 */
 	public void verifyInvalidCreditCardErrorMessage(String expectedErrorMessage){
-		waitForCondition(Driver->{return this.lblErrorMessageForInvalidCreditCardNumber.isDisplayed();},5000);
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblErrorMessageForInvalidCreditCardNumber);
-		String actualErrorMessage = this.lblErrorMessageForInvalidCreditCardNumber.getText().trim();
+		waitForCondition(Driver->{return this.lblErrorMessageForInvalidCreditCardNumber.get(0).isDisplayed();},5000);
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblErrorMessageForInvalidCreditCardNumber.get(0));
+		String actualErrorMessage = this.lblErrorMessageForInvalidCreditCardNumber.get(0).getText().trim();
 		if(actualErrorMessage.equalsIgnoreCase(expectedErrorMessage))
 			reporter.reportLogPass("Error Message on passing invalid Card Number is as expected: "+actualErrorMessage);
 		else
 			reporter.reportLogFailWithScreenshot("Error Message on passing invalid Card Number :"+actualErrorMessage+" is not as expected: "+expectedErrorMessage);
+	}
+
+	/**
+	 * This function verifies gift card balance
+	 * @param - String - giftCardNumber for balance verification
+	 * @param - String - pin for card
+	 * @param - String - balance for gift card
+	 */
+	public void getAndVerifyGiftCardBalance(String giftCardNumber, String pin, String balance){
+		//Enter gift card
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblGiftCardNumberEntryTextBox);
+		this.lblGiftCardNumberEntryTextBox.sendKeys(giftCardNumber);
+		//Enter pin
+		this.lblGiftCardPinEntryTextBox.sendKeys(pin);
+		getReusableActionsInstance().clickIfAvailable(this.btmCheckGiftCardBalanceButton,2000);
+
+		this.waitForCondition(Driver->{return this.lblGiftCardBalanceText.isDisplayed() &&
+					!this.lblGiftCardBalanceText.getText().toLowerCase().trim().contains("pending");},30000);
+
+		String balanceText = this.lblGiftCardBalanceText.getText().trim().split(":")[1];
+
+		if(balanceText!=null && balanceText.equalsIgnoreCase(balance))
+			reporter.reportLogPass("Balance for Gift Card: "+giftCardNumber+" is same as expected: "+balanceText);
+		else if(balanceText.contains("$"))
+			reporter.reportLogPassWithScreenshot("Balance for Gift Card: "+giftCardNumber+" is present: "+balanceText);
+		else
+			reporter.reportLogFailWithScreenshot("Balance for Gift Card: "+giftCardNumber+" is not as expected: "+balanceText);
 	}
 
 	/**
@@ -1949,6 +2175,7 @@ public class MyAccount extends BasePage {
 	}
 
 	/**
+<<<<<<< HEAD
 	 * To verify changing security question error message
 	 */
 	public void verifyChangeSecurityQuestionErrorMessage(){
@@ -2012,4 +2239,27 @@ public class MyAccount extends BasePage {
 		}
 	}
 
+	/**
+	 * This function verifies Gift Card Error Messages
+	 */
+	public void verifyGiftCardErrorMessage(String giftCardNumber, String errorType, String errorMessage){
+		String fetchedErrorMessage = null;
+		if(errorType.toLowerCase().contains("number")){
+			this.lblGiftCardNumberEntryTextBox.sendKeys("1234");
+			getReusableActionsInstance().clickIfAvailable(this.lblGiftCardPinEntryTextBox);
+			fetchedErrorMessage = this.lblErrorMessageForInvalidCreditCardNumber.get(0).getText().trim();
+		}else if(errorType.toLowerCase().contains("pin")){
+			this.lblGiftCardNumberEntryTextBox.sendKeys(giftCardNumber);
+			this.lblGiftCardPinEntryTextBox.sendKeys("12");
+			getReusableActionsInstance().clickIfAvailable(this.lblGiftCardNumberEntryTextBox);
+			fetchedErrorMessage = this.lblErrorMessageForInvalidCreditCardNumber.get(1).getText().trim();
+		}
+
+		if(fetchedErrorMessage.equalsIgnoreCase(errorMessage))
+			reporter.reportLogPassWithScreenshot("Error Message for invalid type: "+errorType+" is same as expected: "+fetchedErrorMessage);
+		else
+			reporter.reportLogFailWithScreenshot("Error Message for invalid type: "+errorType+" is "+fetchedErrorMessage+" and not same as expected: "+errorMessage);
+	}
+
 }
+

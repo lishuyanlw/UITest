@@ -200,7 +200,8 @@ myAccount:
   lbl_Username: test123@test.com
   lbl_Password: testMail123
   lbl_FirstName: Test
-  lnk_addNewCardURL: "/myaccount/paymentcards/addcard"
+  lnk_addNewCardURL: "/pages/myaccount/paymentcards/addcard"
+  lnk_giftCardURL: "/pages/giftcard"
   lst_newCreditCardType: [visa,master,amex,tsc]
   lbl_invalidCardErrorMessage: ["Please enter a valid card number and try again.","Credit Card Number is required."]
   lnk_orderStatusURL: "/pages/myaccount/orderstatus"
