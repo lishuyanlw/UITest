@@ -108,5 +108,9 @@ public class MA_TC12_SignOut_HeaderMenu extends BaseTest {
 
         getGlobalLoginPageThreadLocal().verifyOtherFieldsForLeftPart();
 
+        String lsSectionTitle=TestDataHandler.constantData.getLoginUser().getLbl_RightSideTitleSignInPage();
+        String lsCreateNewAccount=TestDataHandler.constantData.getLoginUser().getLst_RightSideSectionSignInPage().get(0);
+        getGlobalLoginPageThreadLocal().verifyNewCustomerSignInRightSideSection(lsSectionTitle,lsCreateNewAccount);
+
     }
 }
