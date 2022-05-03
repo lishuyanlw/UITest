@@ -1980,8 +1980,8 @@ public class ProductResultsPage extends BasePage{
 		ApiResponse apiResponse=new ApiResponse();
 		Map<String,Object> outputDataCriteria= new HashMap<String,Object>();
 		outputDataCriteria.put("video", "1");
-		outputDataCriteria.put("style", "3");
-		outputDataCriteria.put("size", "3");
+		outputDataCriteria.put("style", "1");
+		outputDataCriteria.put("size", "1");
 
 		SelectedProduct selectedProduct= null;
 		Product.Products product=null;
@@ -2971,8 +2971,9 @@ public class ProductResultsPage extends BasePage{
 		this.getReusableActionsInstance().waitForElementVisibility(loginPage.lblSignIn, 60);
 
 		loginPage.LoginWithoutWaitingTime(lsUserName, lsPassword);
-		this.getReusableActionsInstance().waitForElementVisibility(loginPage.lblSignInGlobalResponseBanner);
-		
+		this.getReusableActionsInstance().waitForElementVisibility(this.lblSearchResultMessage,120);
+		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+
 		this.getSearchResultLoad(lsKeyword,true);
 		item=this.productResultList.get(0).findElement(this.byProductHeaderLike);
 

@@ -94,10 +94,10 @@ homePage:
 searchResultPage:
   lbl_prp_partial_url: "/pages/productresults?"
   lst_SearchKeyword: [ "dyson vacuum","dfafasdfa","Joan Rivers","100501" ]  
-  lst_SearchKeyword_Bugs: ["iPads & Tablets","apple  ","https://qa-tsc.tsc.ca/pages/productresults?&searchterm=desk","Brian Bailey Asymmetrical Waterfall Drape Dress"]
+  lst_SearchKeyword_Bugs: ["iPads & Tablets","apple  ","desk","Brian Bailey Asymmetrical Waterfall Drape Dress"]
   lbl_ProductNumberToComparePRPAndPDPContent: "Brian Bailey Wedge Dress"
   lst_SearchKeyword_DropDown: [[ "dress","Categories","0" ]]
-  lst_APISearchingKeyword: ["dress","jegging","shoes"]
+  lst_APISearchingKeyword: ["dress","jegging","boots"]
   lbl_SearchResultPageDefaultSetting: 36
   lst_SearchResultMessage:  [ "Showing results for" , "able to find any results" ] 
   lst_SortOption: ["Featured Products","Newest First","Reviews: Highest First","Price: Lowest First","Price: Highest First","Brand Name: A to Z"]
