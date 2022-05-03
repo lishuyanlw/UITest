@@ -24,7 +24,7 @@ public class MA_TC01_Payment_Options_Add_New_Credit_Card extends BaseTest {
         //Fetching test data from test data file
         JSONObject creditCardData = new DataConverter().readJsonFileIntoJSONObject("test-data/CreditCard.json");
         List<String> creditCardTypes = TestDataHandler.constantData.getMyAccount().getLst_newCreditCardType();
-        String landingPageURL = TestDataHandler.constantData.getMyAccount().getLnk_addNewCardURL();
+        String addCreditCardPageURL = TestDataHandler.constantData.getMyAccount().getLnk_addNewCardURL();
         List<String> errorMessage = TestDataHandler.constantData.getMyAccount().getLbl_invalidCardErrorMessage();
         JSONObject creditCard;
         String cardType,cardDisplayName,cardNumber;
@@ -44,7 +44,8 @@ public class MA_TC01_Payment_Options_Add_New_Credit_Card extends BaseTest {
             cardDisplayName = creditCard.get("CardDisplayName").toString();
 
             getMyAccountPageThreadLocal().clickOnPaymentOptionSubMenuItemsOnMyAccount("Add");
-            getGlobalLoginPageThreadLocal().validateCurrentUrlContains(landingPageURL);
+            String landingPageURL = System.getProperty("QaUrl")+addCreditCardPageURL;
+            getGlobalLoginPageThreadLocal().validateCurrentUrl(landingPageURL);
             Map<String,String> addedCreditCardData = getMyAccountPageThreadLocal().addNewValidCreditCardForUser(cardType,cardNumber,true);
             getMyAccountPageThreadLocal().verifyNewAddedCreditCardForUser(cardType,cardDisplayName,cardNumber,addedCreditCardData.get("expirationMonth"),addedCreditCardData.get("expirationYear"),true);
             //Navigating back to Add New Credit Card Page
