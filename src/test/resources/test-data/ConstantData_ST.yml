@@ -94,7 +94,7 @@ homePage:
 searchResultPage:
   lbl_prp_partial_url: "/pages/productresults?"
   lst_SearchKeyword: [ "dyson vacuum","dfafasdfa","100501","Joan Rivers" ]
-  lst_SearchKeyword_Bugs: ["boots","apple  ","desk","Brian Bailey Asymmetrical Waterfall Drape Dress"]
+  lst_SearchKeyword_Bugs: ["boots","desk  ","https://st-tsc.tsc.ca/pages/productresults?&searchterm=desk","Brian Bailey Asymmetrical Waterfall Drape Dress"]
   lbl_ProductNumberToComparePRPAndPDPContent: "Brian Bailey 3/4 Sleeve Trumpet Hem Dress"
   lst_SearchKeyword_DropDown: [[ "dress","Categories","0" ]]
   lst_APISearchingKeyword: ["dress","jegging","boots"]

@@ -3445,6 +3445,7 @@ public class ProductResultsPage extends BasePage{
 	//Bug-19544-Select a brand in SYAT should not display Search Term
 	//Bug-19672-PRP showing result label getting encoded from search
 	public void verifySearchResultMessageOnPage(String searchKeyword){
+		this.waitForCondition(Driver->{return this.lblProductCountOnPage.isDisplayed();},12000);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblProductCountOnPage);
 		this.getReusableActionsInstance().scrollToElement(this.lblProductCountOnPage);
 		String searchTitleMessage = null;
