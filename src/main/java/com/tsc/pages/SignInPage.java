@@ -293,8 +293,7 @@ public class SignInPage extends BasePage {
 
 		return waitForCondition(Driver->{return (this.btnSignInMainMenu.isDisplayed() && !lsUserMsg.equalsIgnoreCase(this.btnSignInMainMenu.getText().trim()));},30000);
 	}
-	
-	
+
 	/**
 	 * Method to hover on Sign in heading menu	  
 	 * @author Wei.Li

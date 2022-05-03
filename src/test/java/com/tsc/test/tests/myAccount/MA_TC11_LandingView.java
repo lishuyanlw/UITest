@@ -11,12 +11,12 @@ import org.testng.annotations.Test;
 import java.io.IOException;
 import java.text.ParseException;
 
-public class MA_TC04_OrderDetails extends BaseTest {
+public class MA_TC11_LandingView extends BaseTest {
     /*
-     *CER-793
+     *CER-789
      */
     @Test(groups={"MyAccount","Regression"})
-    public void MA_TC04_OrderDetails() throws ParseException, IOException {
+    public void MA_TC11_LandingView() throws ParseException, IOException {
         //Closing SignIn pop up on login
         getGlobalFooterPageThreadLocal().closePopupDialog();
 
@@ -40,34 +40,24 @@ public class MA_TC04_OrderDetails extends BaseTest {
             }
         }
 
-        getMyAccountPageThreadLocal().openSubItemWindow("Order Status", getMyAccountPageThreadLocal().lblOrderStatusSectionTitle);
-        if(!getMyAccountPageThreadLocal().checkOrderItemExisting()){
-            reporter.reportLogFail("No order items existing");
-            return;
-        }
-
-        String lsSelectedOrderNO=getMyAccountPageThreadLocal().goToOrderDetailsPage();
-
-        String lnk_orderDetailsURL=TestDataHandler.constantData.getMyAccount().getLnk_orderDetailsURL();
-        lnk_orderDetailsURL=lnk_orderDetailsURL.replace("{OrderNO}",lsSelectedOrderNO);
-        String expectedURL=basePage.getBaseURL()+lnk_orderDetailsURL;
+        String lnk_landingViewURL=TestDataHandler.constantData.getMyAccount().getLnk_myAccountLandingViewURL();
+        String expectedURL=basePage.getBaseURL()+lnk_landingViewURL;
         if(basePage.URL().equalsIgnoreCase(expectedURL)){
-            reporter.reportLogPass("The navigated order details URL is equal to expected one:"+expectedURL);
+            reporter.reportLogPass("The navigated URL is equal to expected one:"+expectedURL);
         }
         else{
-            reporter.reportLogPass("The actual order details navigated URL:+"+basePage.URL()+" is not equal to expected one:"+expectedURL);
+            reporter.reportLogPass("The actual navigated URL:+"+basePage.URL()+" is not equal to expected one:"+expectedURL);
         }
-
-        //Fetching test data from test data file
-        ConstantData.APIUserSessionParams apiUserSessionParams = TestDataHandler.constantData.getApiUserSessionParams();
-        apiUserSessionData = apiResponseThreadLocal.get().getApiUserSessionData(lblUserName,lblPassword,apiUserSessionParams.getLbl_grantType(),apiUserSessionParams.getLbl_apiKey());
-
-        String accessToken = apiUserSessionData.get("access_token").toString();
-        String customerEDP = apiUserSessionData.get("customerEDP").toString();
-        String customerNumber = getApiResponseThreadLocal().getUserDetailsFromCustomerEDP(customerEDP,accessToken).getCustomerNo();
 
         if(!lsTestDevice.equalsIgnoreCase("Mobile")){
             reporter.reportLog("Verify customer information");
+            //Fetching test data from test data file
+            ConstantData.APIUserSessionParams apiUserSessionParams = TestDataHandler.constantData.getApiUserSessionParams();
+            apiUserSessionData = apiResponseThreadLocal.get().getApiUserSessionData(lblUserName,lblPassword,apiUserSessionParams.getLbl_grantType(),apiUserSessionParams.getLbl_apiKey());
+
+            String accessToken = apiUserSessionData.get("access_token").toString();
+            String customerEDP = apiUserSessionData.get("customerEDP").toString();
+            String customerNumber = getApiResponseThreadLocal().getUserDetailsFromCustomerEDP(customerEDP,accessToken).getCustomerNo();
             String userCustomerNumber = getGlobalLoginPageThreadLocal().getCustomerNumberForLoggedInUser();
             if(customerNumber.equals(userCustomerNumber))
                 getReporter().reportLogPass("User is successfully logged in with customer no: "+userCustomerNumber);
@@ -91,22 +81,8 @@ public class MA_TC04_OrderDetails extends BaseTest {
             }
         }
 
-        reporter.reportLog("Verify order main header");
-        getMyAccountPageThreadLocal().verifyMainHeaderSectionInOrderDetails(lsSelectedOrderNO,customerNumber);
-        getMyAccountPageThreadLocal().verifyMainHeaderSectionInOrderDetails_DifferentDevice();
-
-        reporter.reportLog("Verify order sub header");
-        getMyAccountPageThreadLocal().verifySubHeaderSectionInOrderDetails(lsSelectedOrderNO);
-        getMyAccountPageThreadLocal().verifySubHeaderSectionInOrderDetails_DifferentDevices();
-
-        reporter.reportLog("Verify order item list section");
-        getMyAccountPageThreadLocal().verifyOrderItemListSectionInOrderDetails();
-
-        reporter.reportLog("Verify order summary section");
-        getMyAccountPageThreadLocal().verifySummarySectionInOrderDetails();
-
-        reporter.reportLog("To compare subTotal and order total");
-        getMyAccountPageThreadLocal().verifySubTotalAndOrderTotal();
+        reporter.reportLog("Verify landing view content");
+        getMyAccountPageThreadLocal().verifyLandingViewContent();
 
     }
 }

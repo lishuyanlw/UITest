@@ -20,7 +20,7 @@ public class MA_TC05_OrderCancellation extends BaseTest {
         //Closing SignIn pop up on login
         getGlobalFooterPageThreadLocal().closePopupDialog();
 
-        reporter.reportLog("Verify Order status URL");
+        reporter.reportLog("Verify SignIn");
         BasePage basePage=new BasePage(this.getDriver());
         String lblUserName = TestDataHandler.constantData.getMyAccount().getLbl_Username();
         String lblPassword = TestDataHandler.constantData.getMyAccount().getLbl_Password();
