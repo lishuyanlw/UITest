@@ -217,6 +217,3 @@ myAccount:
   lnk_accountSettingsChangeSecurityQuestionsURL: "/pages/myaccount/information/securityquestion"
   lbl_accountSettingsTitle: "Account Settings"
   lst_changingPasswordErrorMessage: ["Sorry! Your password was incorrect, please try again.","Your password must be a minimum of 6 characters with at least 1 number","Password mismatch"]
-
-
-
