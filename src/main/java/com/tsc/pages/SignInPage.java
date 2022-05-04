@@ -196,7 +196,7 @@ public class SignInPage extends BasePage {
 		getReusableActionsInstance().staticWait(5000);
 
 		this.waitForPageToLoad();
-		return waitForCondition(Driver->{return lblSignInGlobalResponseBanner.isDisplayed();},180000);
+		return waitForCondition(Driver->{return lblSignInGlobalResponseBanner.isDisplayed();},120000);
 				
 	}
 

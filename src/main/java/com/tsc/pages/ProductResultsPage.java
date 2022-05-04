@@ -3783,6 +3783,7 @@ public class ProductResultsPage extends BasePage{
 	 * @param-HashMap<String,String> prpPagePaginationData Loaded page data that will be used for verification
 	 */
 	public void verifyPaginationCountOnLastPage(Map<String,String> prpPagePaginationData){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblProductCountOnPage);
 		int itemCount = Integer.valueOf(this.lblProductCountOnPage.getText().split(" ")[0]);
 		//int totalPagesOnPRPForItem = this.getTotalProductPageCountAfterSearch();
 		getDriver().get(prpPagePaginationData.get("pageURL"));

@@ -31,6 +31,7 @@ public class SR_TC18_VerifyProductSearchResult_ItemCountMoreThanSixteen extends 
         //Act & Assert - Verification of BUG-20633 - PRP Page - Pagination on PRP page incorrect
         Map<String,String> pageData = getApiResponseThreadLocal().getProductLastPageWhenPagesMoreThanOne(searchKeywordList,null,5,defaultPageSetting,basePRPPageURL);
         getProductResultsPageThreadLocal().getSearchResultLoad(pageData.get("searchTerm"),true);
+        reporter.reportLog("Search keyword: "+pageData.get("searchTerm"));
         getProductResultsPageThreadLocal().verifyPaginationCountOnLastPage(pageData);
 
         //Act - BUG-20719 - [POST PROD] PRP breaks when products have more than 16 variants and no swatches
