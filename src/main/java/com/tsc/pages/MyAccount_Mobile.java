@@ -27,8 +27,8 @@ public class MyAccount_Mobile extends MyAccount {
 	public By byOrderDetailsOrderItemWriteReview=By.xpath(".//div[contains(@class,'product-review') and contains(@class,'visible-xs-block')]//a[contains(@href,'openreview')]");
 	public By byOrderDetailsOrderItemQTYTitle=By.xpath(".//span[contains(normalize-space(.),'QTY:')]/parent::div[contains(@class,'visible-xs-block')]/span[1]");
 	public By byOrderDetailsOrderItemQTY=By.xpath(".//span[contains(normalize-space(.),'QTY:')]/parent::div[contains(@class,'visible-xs-block')]/span[2]");
-	public By byOrderDetailsOrderItemStatusTitle=By.xpath(".//span[contains(normalize-space(.),'Status:')]/parent::div[contains(@class,'visible-xs-block')]/span[1]");
-	public By byOrderDetailsOrderItemStatus=By.xpath(".//span[contains(normalize-space(.),'Status:')]/parent::div[contains(@class,'visible-xs-block')]/span[2]");
+	public By byOrderDetailsOrderItemStatusTitle=By.xpath("./following-sibling::div//span[contains(normalize-space(.),'Status:')]/parent::div[contains(@class,'visible-xs-block')]/span[1]");
+	public By byOrderDetailsOrderItemStatus=By.xpath("./following-sibling::div//span[contains(normalize-space(.),'Status:')]/parent::div[contains(@class,'visible-xs-block')]/span[2]");
 
 	@Override
 	public void verifyMainHeaderSectionInOrderDetails_DifferentDevice(){

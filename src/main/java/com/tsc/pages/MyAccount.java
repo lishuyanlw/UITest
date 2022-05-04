@@ -119,7 +119,7 @@ public class MyAccount extends BasePage {
 	@FindBy(xpath = "//ng-component//*[@id='tagOrderCustomerNo']/preceding-sibling::span[contains(@class,'item-title')]")
 	public WebElement lblOrderDetailsHeaderCustomerNOTitle;
 
-	@FindBy(xpath = "//ng-component//*[@id='tagOrderCustomerNo']")
+	@FindBy(xpath = "//ng-component//*[@id='tagOrderCustomerNo']/preceding-sibling::span[contains(@class,'item-title')]/following-sibling::span")
 	public WebElement lblOrderDetailsHeaderCustomerNO;
 
 	@FindBy(xpath = "//ng-component//div[contains(@class,'viewInvoice')]//a[contains(@href,'orderinvoice')]")
@@ -536,6 +536,7 @@ public class MyAccount extends BasePage {
 		this.waitForPageToLoad();
 		boolean flag = false;
 		for(WebElement webElement:this.lstpaymentOptions){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(webElement);
 			if(webElement.getText().contains(subMenu)){
 				this.clickElement(webElement);
 				flag=true;
