@@ -464,9 +464,11 @@ public class MyAccount extends BasePage {
 	public void UnCollapsedAllOrderServiceItems(){
 		for(WebElement item:this.lstOrderServiceItemTitleLink){
 			if(!item.getAttribute("class").isEmpty()){
-				item.click();
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+				this.getReusableActionsInstance().clickIfAvailable(item);
 				this.waitForCondition(Driver->{
 					return item.getAttribute("class").isEmpty();},5000);
+				this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 			}
 		}
 	}

@@ -32,7 +32,8 @@ public class SR_TC13_VerifyProductSearchResult_FavoriteIconActionTest extends Ba
 	List<String> lst_SearchKeyword = TestDataHandler.constantData.getSearchResultPage().getLst_SearchKeyword_Bugs();
 	String lsMsg;
 	List<WebElement> productList;
-	
+
+	reporter.reportLog("Search keyword: "+lst_SearchKeyword.get(3));
 	getProductResultsPageThreadLocal().getSearchResultLoad(lst_SearchKeyword.get(3),true);
 	String lsTestModel=getProductResultsPageThreadLocal().judgeTestModel();	
 	
