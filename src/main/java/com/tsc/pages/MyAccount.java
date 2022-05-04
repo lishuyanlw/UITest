@@ -348,7 +348,7 @@ public class MyAccount extends BasePage {
 	@FindBy(xpath = "//ng-component//div[@id='panel-securityquestion']//a[normalize-space(text())='Cancel']")
 	public WebElement btnChangeSecurityQuestionCancel;
 
-	@FindBy(xpath = "//ng-component//div[@id='panel-password']//input[@id='password']/parent::div/following::div[contains(@class,'text-danger')]/[not(@hidden)]")
+	@FindBy(xpath = "//ng-component//input[@name='answerError']")
 	public WebElement lblChangeSecurityQuestionsErrorMessage;
 	////////////////////////////////
 
@@ -464,9 +464,11 @@ public class MyAccount extends BasePage {
 	public void UnCollapsedAllOrderServiceItems(){
 		for(WebElement item:this.lstOrderServiceItemTitleLink){
 			if(!item.getAttribute("class").isEmpty()){
-				item.click();
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+				this.getReusableActionsInstance().clickIfAvailable(item);
 				this.waitForCondition(Driver->{
 					return item.getAttribute("class").isEmpty();},5000);
+				this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 			}
 		}
 	}
@@ -1959,17 +1961,14 @@ public class MyAccount extends BasePage {
 
 	/**
 	 * To open Change Security Section
-	 * @return true/false
 	 */
-	public boolean openChangeSecuritySection(){
+	public void openChangeSecuritySection(){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAccountSettingSecurityQuestionEdit);
 		this.getReusableActionsInstance().clickIfAvailable(btnAccountSettingSecurityQuestionEdit);
 
 		this.waitForPageToLoad();
+		//Keep it for scrolling window
 		this.getReusableActionsInstance().staticWait(5*this.getStaticWaitForApplication());
-
-		return true;
-//		return this.waitForCondition(Driver->{return this.cntChangeSecurityQuestionPanelContainer.getAttribute("class").contains("in");},90000);
 	}
 
 	/**
@@ -2161,8 +2160,8 @@ public class MyAccount extends BasePage {
 			this.getReusableActionsInstance().clickIfAvailable(btnChangeSecurityQuestionCancel);
 		}
 		this.waitForPageToLoad();
+		//Keep it for scrolling window
 		this.getReusableActionsInstance().staticWait(5*this.getStaticWaitForApplication());
-//		this.waitForCondition(Driver->{return this.cntAccountSettingSecurityQuestionHeadingContainer.getAttribute("class").contains("in");},90000);
 
 		Map<String,Object> map=new HashMap<>();
 		if(bSubmit){
@@ -2175,6 +2174,71 @@ public class MyAccount extends BasePage {
 		}
 
 		return map;
+	}
+
+	/**
+<<<<<<< HEAD
+	 * To verify changing security question error message
+	 */
+	public void verifyChangeSecurityQuestionErrorMessage(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(selectChangeSecurityQuestionSectionQuestion);
+		Select select=new Select(selectChangeSecurityQuestionSectionQuestion);
+		int count=select.getOptions().size();
+
+		String lsOption,lsErrorMessage;
+		for(int i=1;i<count;i++){
+			select.selectByIndex(i);
+			this.getReusableActionsInstance().staticWait(300);
+
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputChangeSecurityQuestionSectionAnswer);
+			inputChangeSecurityQuestionSectionAnswer.clear();
+			inputChangeSecurityQuestionSectionAnswer.sendKeys("aa");
+			this.getReusableActionsInstance().staticWait(300);
+
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblChangeSecurityQuestionsErrorMessage);
+			lsErrorMessage=lblChangeSecurityQuestionsErrorMessage.getAttribute("value").trim();
+
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(selectChangeSecurityQuestionSectionQuestion);
+			lsOption=select.getFirstSelectedOption().getText();
+
+			reporter.reportLog("Verify error message for '"+lsOption+"'");
+			if(!lsErrorMessage.isEmpty()){
+				reporter.reportLogPass("The error message:"+lsErrorMessage+" is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The error message is not displaying correctly");
+			}
+		}
+	}
+
+	/**
+	 * To verify landing view content
+	 */
+	public void verifyLandingViewContent(){
+		List<WebElement> lstSubItem;
+		String lsText;
+		for(WebElement item:lstAccountSummaryPanelList){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsText=item.getText().trim();
+			reporter.reportLog("Verify header of '"+lsText+"'");
+			if(!lsText.isEmpty()){
+				reporter.reportLogPass("The Header of '"+lsText+"' is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The Header of '"+lsText+"' is not displaying correctly");
+			}
+			lstSubItem=item.findElements(bySubList);
+			for(WebElement subItem:lstSubItem){
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
+				lsText=subItem.getText().trim();
+				if(!lsText.isEmpty()){
+					reporter.reportLogPass("The sub item of '"+lsText+"' is displaying correctly");
+				}
+				else{
+					reporter.reportLogFailWithScreenshot("The sub item of '"+lsText+"' is not displaying correctly");
+				}
+			}
+		}
 	}
 
 	/**
@@ -2200,3 +2264,4 @@ public class MyAccount extends BasePage {
 	}
 
 }
+

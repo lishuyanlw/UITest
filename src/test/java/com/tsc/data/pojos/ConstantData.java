@@ -960,6 +960,8 @@ public class ConstantData {
         public String lnk_accountSettingsChangeSecurityQuestionsURL;
         public String lbl_accountSettingsTitle;
         public List<String>  lst_changingPasswordErrorMessage;
+        public String lnk_myAccountLandingViewURL;
+        public String lnk_URLAfterSignOut;
 
         public String getLbl_Username() {
             return lbl_Username;
@@ -1115,6 +1117,22 @@ public class ConstantData {
 
         public void setLst_changingPasswordErrorMessage(List<String> lst_changingPasswordErrorMessage) {
             this.lst_changingPasswordErrorMessage = lst_changingPasswordErrorMessage;
+        }
+
+        public String getLnk_myAccountLandingViewURL() {
+            return lnk_myAccountLandingViewURL;
+        }
+
+        public void setLnk_myAccountLandingViewURL(String lnk_myAccountLandingViewURL) {
+            this.lnk_myAccountLandingViewURL = lnk_myAccountLandingViewURL;
+        }
+
+        public String getLnk_URLAfterSignOut() {
+            return lnk_URLAfterSignOut;
+        }
+
+        public void setLnk_URLAfterSignOut(String lnk_URLAfterSignOut) {
+            this.lnk_URLAfterSignOut = lnk_URLAfterSignOut;
         }
     }
 

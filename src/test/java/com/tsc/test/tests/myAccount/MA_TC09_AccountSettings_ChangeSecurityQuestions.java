@@ -16,6 +16,7 @@ import org.testng.annotations.Test;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MA_TC09_AccountSettings_ChangeSecurityQuestions extends BaseTest {
@@ -114,6 +115,9 @@ public class MA_TC09_AccountSettings_ChangeSecurityQuestions extends BaseTest {
         else{
             reporter.reportLogFailWithScreenshot("The account settings title:"+lsTitle+" is not displaying correctly as the expected:"+lsExpectedTitle);
         }
+
+        reporter.reportLog("Verify error message");
+        getMyAccountPageThreadLocal().verifyChangeSecurityQuestionErrorMessage();
 
         reporter.reportLog("Verify clicking Cancel button");
         Map<String,Object> map=getMyAccountPageThreadLocal().changeSecurityQuestionFunctionInAccountSettingsSection(false);

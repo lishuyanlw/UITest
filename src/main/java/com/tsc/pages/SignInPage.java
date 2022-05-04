@@ -196,7 +196,7 @@ public class SignInPage extends BasePage {
 		getReusableActionsInstance().staticWait(5000);
 
 		this.waitForPageToLoad();
-		return waitForCondition(Driver->{return lblSignInGlobalResponseBanner.isDisplayed();},1200000);
+		return waitForCondition(Driver->{return lblSignInGlobalResponseBanner.isDisplayed();},180000);
 				
 	}
 
@@ -293,8 +293,7 @@ public class SignInPage extends BasePage {
 
 		return waitForCondition(Driver->{return (this.btnSignInMainMenu.isDisplayed() && !lsUserMsg.equalsIgnoreCase(this.btnSignInMainMenu.getText().trim()));},30000);
 	}
-	
-	
+
 	/**
 	 * Method to hover on Sign in heading menu	  
 	 * @author Wei.Li

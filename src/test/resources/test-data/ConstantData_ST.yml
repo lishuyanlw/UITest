@@ -94,7 +94,7 @@ homePage:
 searchResultPage:
   lbl_prp_partial_url: "/pages/productresults?"
   lst_SearchKeyword: [ "dyson vacuum","dfafasdfa","100501","Joan Rivers" ]
-  lst_SearchKeyword_Bugs: ["boots","apple  ","https://st-tsc.tsc.ca/pages/productresults?&searchterm=desk","Brian Bailey Asymmetrical Waterfall Drape Dress"]
+  lst_SearchKeyword_Bugs: ["boots","desk  ","https://st-tsc.tsc.ca/pages/productresults?&searchterm=desk","Brian Bailey Asymmetrical Waterfall Drape Dress"]
   lbl_ProductNumberToComparePRPAndPDPContent: "Brian Bailey 3/4 Sleeve Trumpet Hem Dress"
   lst_SearchKeyword_DropDown: [[ "dress","Categories","0" ]]
   lst_APISearchingKeyword: ["dress","jegging","boots"]
@@ -197,11 +197,10 @@ loginUser:
   lbl_ErrorMessageForPassword: Password is required!
   lbl_ErrorMessageForUserNameAndPassword: Hm, this email and password combination does not match our records. Please double check and try again.
 myAccount:
-  lbl_Username: test123@test.com
+  lbl_Username: testDavid@test.com
   lbl_Password: testMail123
   lbl_FirstName: Test
-  lnk_addNewCardURL: "/pages/myaccount/paymentcards/addcard"
-  lnk_giftCardURL: "/pages/giftcard"
+  lnk_addNewCardURL: "/myaccount/paymentcards/addcard"
   lst_newCreditCardType: [visa,master,amex,tsc]
   lbl_invalidCardErrorMessage: ["Please enter a valid card number and try again.","Credit Card Number is required."]
   lnk_orderStatusURL: "/pages/myaccount/orderstatus"
@@ -217,3 +216,6 @@ myAccount:
   lnk_accountSettingsChangeSecurityQuestionsURL: "/pages/myaccount/information/securityquestion"
   lbl_accountSettingsTitle: "Account Settings"
   lst_changingPasswordErrorMessage: ["Sorry! Your password was incorrect, please try again.","Your password must be a minimum of 6 characters with at least 1 number","Password mismatch"]
+  lnk_myAccountLandingViewURL: "/pages/myaccount"
+  lnk_URLAfterSignOut: "/pages/signin"
+
