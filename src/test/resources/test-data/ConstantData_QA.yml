@@ -219,6 +219,3 @@ myAccount:
   lst_changingPasswordErrorMessage: ["Sorry! Your password was incorrect, please try again.","Your password must be a minimum of 6 characters with at least 1 number","Password mismatch"]
   lnk_myAccountLandingViewURL: "/pages/myaccount"
   lnk_URLAfterSignOut: "/pages/signin"
-
-
-
