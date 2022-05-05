@@ -33,8 +33,7 @@ public class SignInPage_Mobile extends SignInPage{
         getReusableActionsInstance().clickIfAvailable(this.btnSignOut);
         getReusableActionsInstance().staticWait(5000);
 
-        return true;
-//        return waitForCondition(Driver->{return this.lblSignOut.isDisplayed();},20000);
+        return waitForCondition(Driver->{return this.lblSignOut.isDisplayed();},20000);
     }
 
     @Override
