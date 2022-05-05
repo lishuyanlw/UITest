@@ -343,22 +343,17 @@ public class BaseTest {
 	}
 
 	@AfterMethod(alwaysRun = true)
-	public void afterTest() {
+	public void afterTest() throws IOException, org.json.simple.parser.ParseException, InterruptedException {
 		if (getDriver() != null) {
+			LocalDate currentDate = LocalDate.now();
+			if(currentDate.getDayOfMonth()%5==0){
+				addPlaceOrder();
+			}
 			//(new BasePage(this.getDriver())).deleteSessionStorage();
 			closeSession();
 		}
 	}
 
-	@AfterSuite(alwaysRun = true)
-	public void afterSuite() throws IOException, org.json.simple.parser.ParseException {
-		LocalDate currentDate = LocalDate.now();
-		if(currentDate.getDayOfMonth()%5==0){
-			addPlaceOrder();
-		}
-	}
-
-	
 	public void validateText(String strActualText, List<String> listExpectedText, String validationMsg) {
 		if(listExpectedText.equals(strActualText)){
 			reporter.reportLogPass(validationMsg + ":" + " Expected=" + listExpectedText +  " ; Actual="+ strActualText);
@@ -444,7 +439,7 @@ public class BaseTest {
 	}
 
 
-	public void addPlaceOrder() throws IOException, org.json.simple.parser.ParseException {
+	public void addPlaceOrder() throws IOException, org.json.simple.parser.ParseException, InterruptedException {
 		String lblUserName = TestDataHandler.constantData.getMyAccount().getLbl_Username();
 		String lblPassword = TestDataHandler.constantData.getMyAccount().getLbl_Password();
 
@@ -456,7 +451,7 @@ public class BaseTest {
 		AccountAPI accountAPI=new AccountAPI();
 		CartAPI cartAPI=new CartAPI();
 		OrderAPI orderAPI=new OrderAPI();
-		BasePage basePage=new BasePage(this.getDriver());
+		//BasePage basePage=new BasePage(this.getDriver());
 
 		org.json.simple.JSONObject creditCardDetails = DataConverter.readJsonFileIntoJSONObject("test-data/CreditCard.json");
 		accountAPI.addCreditCardToUser((org.json.simple.JSONObject) creditCardDetails.get("tsc"),customerEDP,access_token);
@@ -473,7 +468,8 @@ public class BaseTest {
 		AccountCartResponse accountCartReview = JsonParser.getResponseObject(responseReview.asString(), new TypeReference<AccountCartResponse>() {});
 		List<Long> relatedCartIdsList=accountCartReview.getRelatedCartIds();
 
-		basePage.getReusableActionsInstance().staticWait(2000);
+		//basePage.getReusableActionsInstance().staticWait(2000);
+		Thread.sleep(2000);
 
 		orderAPI.placeOrder(GuidId,customerEDP,access_token,relatedCartIdsList);
 		orderAPI.getOrderList(customerEDP,access_token);

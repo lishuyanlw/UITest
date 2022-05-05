@@ -353,6 +353,9 @@ public class MyAccount extends BasePage {
 	////////////////////////////////
 
 	//PAYMENT OPTIONS - ADD NEW CREDIT CARD
+	@FindBy(xpath="//div[@data-target='#paymentOptionsLinks']")
+	public WebElement btnPaymentOptionsHeadingTitle;
+
 	@FindBy(xpath="//div[@id='paymentOptionsLinks']//li/a")
 	public List<WebElement> lstpaymentOptions;
 
@@ -544,6 +547,15 @@ public class MyAccount extends BasePage {
 	 */
 	public void clickOnPaymentOptionSubMenuItemsOnMyAccount(String subMenu){
 		this.waitForPageToLoad();
+		String lsTestDevice = System.getProperty("Device").trim();
+		if(lsTestDevice.equalsIgnoreCase("Mobile")) {
+			if(this.btnPaymentOptionsHeadingTitle.getAttribute("class").contains("collapsed")){
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnPaymentOptionsHeadingTitle);
+				this.getReusableActionsInstance().clickIfAvailable(this.btnPaymentOptionsHeadingTitle);
+				this.getReusableActionsInstance().staticWait(2*this.getStaticWaitForApplication());
+			}
+		}
+
 		boolean flag = false;
 		for(WebElement webElement:this.lstpaymentOptions){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(webElement);
@@ -2191,7 +2203,6 @@ public class MyAccount extends BasePage {
 	}
 
 	/**
-<<<<<<< HEAD
 	 * To verify changing security question error message
 	 */
 	public void verifyChangeSecurityQuestionErrorMessage(){
