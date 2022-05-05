@@ -352,10 +352,10 @@ public class BaseTest {
 
 	@AfterSuite(alwaysRun = true)
 	public void afterSuite() throws IOException, org.json.simple.parser.ParseException {
-		LocalDate currentDate = LocalDate.now();
-		if(currentDate.getDayOfMonth()%5==0){
-			addPlaceOrder();
-		}
+//		LocalDate currentDate = LocalDate.now();
+//		if(currentDate.getDayOfMonth()%5==0){
+//			addPlaceOrder();
+//		}
 	}
 
 	

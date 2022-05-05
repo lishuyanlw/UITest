@@ -377,6 +377,12 @@ public class MyAccount extends BasePage {
 	@FindBy(xpath="//input[@id='pan']")
 	public WebElement lblCardNumberForNewCreditCard;
 
+	@FindBy(xpath="//input[@id='ficard']")
+	public WebElement lblCardNumberForNewTSCCreditCard;
+
+	@FindBy(xpath="//ul[@class='list-inline']//li/button[contains(@class,'active')]/img")
+	public WebElement lblSelectedNewCreditCardToBeAdded;
+
 	@FindBy(xpath="//input[@id='maskedPan']")
 	public WebElement getLblMaskedCardNumberForNewCreditCard;
 
@@ -547,7 +553,7 @@ public class MyAccount extends BasePage {
 				this.btnCancelAddCreditCardForNewCreditCard.isDisplayed();},12000);
 		else if(subMenu.toLowerCase().contains("manage")){
 			this.waitForPageToLoad();
-			waitForCondition(Driver->{return this.lstCreditCardsPresent.size()>0;},6000);
+			waitForCondition(Driver->{return this.lstCreditCardsPresent.size()>=0;},6000);
 		}else{
 			this.waitForPageToLoad();
 			this.waitForCondition(Driver->{return this.lblGiftCardPageTitle.getText().toLowerCase().contains("gift");},6000);
@@ -578,18 +584,37 @@ public class MyAccount extends BasePage {
 	/**
 	 * This function adds Credit Card number for new Card addition
 	 */
-	public void addNewCreditCardNumber(String cardNumber){
+	public void addNewOrEditExistingCreditCardNumber(String cardType, String cardNumber, boolean isNewCard){
 		this.waitForPageToLoad();
-		getDriver().switchTo().frame(iFrameForNewCreditCard);
-		waitForCondition(Driver->{return this.lblCardNumberForNewCreditCard.isEnabled() &&
-				this.lblCardNumberForNewCreditCard.isDisplayed();},15000);
-		//Adding Credit Card Number
-		this.clickWebElementUsingJS(this.lblCardNumberForNewCreditCard);
-		this.lblCardNumberForNewCreditCard.sendKeys(cardNumber);
+		String selectedCreditCardType = this.getChildElementAttribute(this.lblSelectedNewCreditCardToBeAdded,"alt");
+		if(isNewCard)
+			getDriver().switchTo().frame(iFrameForNewCreditCard);
+		else if(!selectedCreditCardType.toLowerCase().contains("tsc"))
+			getDriver().switchTo().frame(iFrameForNewCreditCard);
+
+		if(!selectedCreditCardType.toLowerCase().contains("tsc")){
+			waitForCondition(Driver->{return this.lblCardNumberForNewCreditCard.isEnabled() &&
+					this.lblCardNumberForNewCreditCard.isDisplayed();},15000);
+			//Adding Credit Card Number
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblCardNumberForNewCreditCard);
+			this.clickWebElementUsingJS(this.lblCardNumberForNewCreditCard);
+			this.lblCardNumberForNewCreditCard.sendKeys(cardNumber);
+		}else{
+			waitForCondition(Driver->{return this.lblCardNumberForNewTSCCreditCard.isEnabled() &&
+					this.lblCardNumberForNewTSCCreditCard.isDisplayed();},15000);
+			//Adding Credit Card Number
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblCardNumberForNewTSCCreditCard);
+			this.clickWebElementUsingJS(this.lblCardNumberForNewTSCCreditCard);
+			this.lblCardNumberForNewTSCCreditCard.sendKeys(cardNumber);
+		}
+
 		//Using static wait of 5 seconds here as wait for condition is throwing target frame detached error
 		getReusableActionsInstance().staticWait(5000);
 		//waitForCondition(Driver->{return !this.getChildElementAttribute(this.getLblMaskedCardNumberForNewCreditCard,"value").isEmpty();},10000);
-		getDriver().switchTo().defaultContent();
+		if(isNewCard)
+			getDriver().switchTo().defaultContent();
+		else if(!selectedCreditCardType.toLowerCase().contains("tsc"))
+			getDriver().switchTo().defaultContent();
 	}
 
 	/**
@@ -620,7 +645,7 @@ public class MyAccount extends BasePage {
 		this.clickWebElementUsingJS(cardTypeElement);
 
 		if(!cardType.equalsIgnoreCase("tsc")){
-			this.addNewCreditCardNumber(cardNumber);
+			this.addNewOrEditExistingCreditCardNumber(cardType,cardNumber,true);
 			//Selecting Expiration Month and Year
 			this.addExpirationMonthAndYear(cardData);
 		}else
@@ -837,12 +862,12 @@ public class MyAccount extends BasePage {
 			this.selectGivenCreditCard(cardNumber,cardType,expirationMonthAndYear,false);
 		}else{
 			cardData = this.getFirstCreditCardDetailsAndSelect();
-			String cardTypeAdded = this.getCreditCardTypeName(cardData.get("cardType"));
-			JSONObject creditCard = (JSONObject) creditCardsData.get(cardTypeAdded);
+			//String cardTypeAdded = this.getCreditCardTypeName(cardData.get("cardType"));
+			JSONObject creditCard = (JSONObject) creditCardsData.get(cardData.get("cardType"));
 			cardNumber = creditCard.get("Number").toString();
 			cardData.put("cardNumber",cardNumber);
 		}
-		this.addNewCreditCardNumber(cardNumber);
+		this.addNewOrEditExistingCreditCardNumber(cardType,cardNumber,false);
 
 		if(expirationMonthAndYear!=null){
 			String[] expirationData = expirationMonthAndYear.split("/");
@@ -851,8 +876,10 @@ public class MyAccount extends BasePage {
 			cardData.put("expirationMonth",String.valueOf(updatedMonth));
 			cardData.put("expirationYear",String.valueOf(updatedYear));
 		}
-		this.addExpirationMonthAndYear(cardData);
-		this.waitForPageToLoad();
+		if(!cardData.get("cardType").toLowerCase().contains("tsc")){
+			this.addExpirationMonthAndYear(cardData);
+			this.waitForPageToLoad();
+		}
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSaveAddCreditCardForNewCreditCard);
 
 		if(editCard)
@@ -880,11 +907,14 @@ public class MyAccount extends BasePage {
 		String updatedMonth=null,updatedYear = null,actualExpirationMonth=null,actualExpirationYear=null;
 		//Fetching Card Details to be edited to be used for verification
 		WebElement cardTypeWebElement = lstCreditCardsPresent.get(0).findElement(By.xpath(".//div[contains(@class,'margin-top-md')]//div[contains(@class,'zeroRightPadding')]//span[@class='table-cell ']/label"));
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(cardTypeWebElement);
 		String cardType = cardTypeWebElement.getText();
 		WebElement cardDisplayTypeWebElement = lstCreditCardsPresent.get(0).findElement(By.xpath(".//div[contains(@class,'margin-top-md')]//div[contains(@class,'zeroRightPadding')]//span[@class='table-cell ']/label"));
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(cardDisplayTypeWebElement);
 		String cardDisplayName = cardDisplayTypeWebElement.getText();
 		if(!cardType.toLowerCase().contains("tsc")) {
 			WebElement expiresOnWebElement = lstCreditCardsPresent.get(0).findElement(By.xpath(".//div[contains(@class,'margin-top-md')]//div[contains(@class,'zeroRightPadding')]//div[@class='table-cell']"));
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(expiresOnWebElement);
 			String[] expiresOnData = expiresOnWebElement.getText().split(":")[1].split("/");
 
 			updatedMonth = Integer.valueOf(expiresOnData[0].trim())+1 > 12 ? String.valueOf((Integer.valueOf(expiresOnData[0].trim()) + 1) - 12) : String.valueOf(Integer.valueOf(expiresOnData[0].trim())+1);
@@ -895,13 +925,16 @@ public class MyAccount extends BasePage {
 			actualExpirationMonth = expiresOnData[0].trim();
 			actualExpirationYear = expiresOnData[1].trim();
 
-			creditCardDisplayedData.put("cardType", cardType);
+			creditCardDisplayedData.put("cardType", this.getCreditCardTypeName(cardType));
 			creditCardDisplayedData.put("cardDisplayName", cardDisplayName);
 			creditCardDisplayedData.put("expirationMonth", updatedMonth);
 			creditCardDisplayedData.put("expirationYear", updatedYear);
 			creditCardDisplayedData.put("actualExpirationMonth", actualExpirationMonth);
 			creditCardDisplayedData.put("actualExpirationYear", actualExpirationYear);
 			creditCardDisplayedData.put("expirationMonthAndYear",actualExpirationMonth+"/"+actualExpirationYear);
+		}else{
+			creditCardDisplayedData.put("cardType", "tsc");
+			creditCardDisplayedData.put("cardDisplayName", cardDisplayName);
 		}
 
 		WebElement editButtonWebElement = lstCreditCardsPresent.get(0).findElement(By.xpath(".//div[contains(@class,'margin-top-md')]//div[contains(@class,'smallRightPadding')]/a[contains(@class,'negative')]"));
@@ -2261,6 +2294,12 @@ public class MyAccount extends BasePage {
 			reporter.reportLogPassWithScreenshot("Error Message for invalid type: "+errorType+" is same as expected: "+fetchedErrorMessage);
 		else
 			reporter.reportLogFailWithScreenshot("Error Message for invalid type: "+errorType+" is "+fetchedErrorMessage+" and not same as expected: "+errorMessage);
+	}
+
+	public boolean verifyMinimumOneCardIsPresentForUser(){
+		if(this.lstCreditCardsPresent.size()==0)
+			return false;
+		return true;
 	}
 
 }

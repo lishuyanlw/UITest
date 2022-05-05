@@ -30,6 +30,14 @@ public class MyAccount_Mobile extends MyAccount {
 	public By byOrderDetailsOrderItemStatusTitle=By.xpath(".//span[contains(normalize-space(.),'Status:')]/parent::div[contains(@class,'visible-xs-block')]/span[1]");
 	public By byOrderDetailsOrderItemStatus=By.xpath(".//span[contains(normalize-space(.),'Status:')]/parent::div[contains(@class,'visible-xs-block')]/span[2]");
 
+
+	//Payment Options - Credit Card Section
+	@FindBy(xpath = "//div[@class='panel']//div[contains(@data-target,'payment')]//*[@class='svgIconAccordion']")
+	public WebElement lblPaymentOptionAccordion;
+
+	@FindBy(xpath = "//div[@id='paymentOptionsLinks']")
+	public WebElement lblPaymentOptionMenuItems;
+
 	@Override
 	public void verifyMainHeaderSectionInOrderDetails_DifferentDevice(){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnOrderDetailsHeaderViewInvoice);
@@ -153,6 +161,15 @@ public class MyAccount_Mobile extends MyAccount {
 				}
 			}
 		}
+	}
+
+	@Override
+	public void clickOnPaymentOptionSubMenuItemsOnMyAccount(String subMenu){
+		//Verify if Payment Option sub-menus are open
+		boolean menuStatus = Boolean.valueOf(this.getChildElementAttribute(this.lblPaymentOptionMenuItems,"aria-expanded"));
+		if(!menuStatus)
+			getReusableActionsInstance().clickIfAvailable(this.lblPaymentOptionAccordion,3000);
+		super.clickOnPaymentOptionSubMenuItemsOnMyAccount(subMenu);
 	}
 
 }
