@@ -345,10 +345,10 @@ public class BaseTest {
 	@AfterMethod(alwaysRun = true)
 	public void afterTest() throws IOException, org.json.simple.parser.ParseException, InterruptedException {
 		if (getDriver() != null) {
-			LocalDate currentDate = LocalDate.now();
-			if(currentDate.getDayOfMonth()%5==0){
-				addPlaceOrder();
-			}
+//			LocalDate currentDate = LocalDate.now();
+//			if(currentDate.getDayOfMonth()%5==0){
+//				addPlaceOrder();
+//			}
 			//(new BasePage(this.getDriver())).deleteSessionStorage();
 			closeSession();
 		}
@@ -438,7 +438,6 @@ public class BaseTest {
 		return sauceOptions;
 	}
 
-
 	public void addPlaceOrder() throws IOException, org.json.simple.parser.ParseException, InterruptedException {
 		String lblUserName = TestDataHandler.constantData.getMyAccount().getLbl_Username();
 		String lblPassword = TestDataHandler.constantData.getMyAccount().getLbl_Password();
@@ -466,6 +465,7 @@ public class BaseTest {
 
 		Response responseReview=orderAPI.getOrderReview(customerEDP,access_token);
 		AccountCartResponse accountCartReview = JsonParser.getResponseObject(responseReview.asString(), new TypeReference<AccountCartResponse>() {});
+		reporter.reportLog("Review: "+responseReview.asString());
 		List<Long> relatedCartIdsList=accountCartReview.getRelatedCartIds();
 
 		//basePage.getReusableActionsInstance().staticWait(2000);

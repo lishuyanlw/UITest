@@ -30,6 +30,14 @@ public class MyAccount_Mobile extends MyAccount {
 	public By byOrderDetailsOrderItemStatusTitle=By.xpath("./following-sibling::div//span[contains(normalize-space(.),'Status:')]/parent::div[contains(@class,'visible-xs-block')]/span[1]");
 	public By byOrderDetailsOrderItemStatus=By.xpath("./following-sibling::div//span[contains(normalize-space(.),'Status:')]/parent::div[contains(@class,'visible-xs-block')]/span[2]");
 
+
+	//Payment Options - Credit Card Section
+	@FindBy(xpath = "//div[@class='panel']//div[contains(@data-target,'payment')]//*[@class='svgIconAccordion']")
+	public WebElement lblPaymentOptionAccordion;
+
+	@FindBy(xpath = "//div[@id='paymentOptionsLinks']")
+	public WebElement lblPaymentOptionMenuItems;
+
 	@Override
 	public void verifyMainHeaderSectionInOrderDetails_DifferentDevice(){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnOrderDetailsHeaderViewInvoice);
@@ -156,38 +164,44 @@ public class MyAccount_Mobile extends MyAccount {
 	}
 
 	@Override
-	public void verifyLandingViewContent(){
+	public void verifyLandingViewContent() {
 		List<WebElement> lstSubItem;
 		String lsText;
 		WebElement element;
-		for(WebElement item:lstAccountSummaryPanelList){
-			element=item.findElement(By.xpath("./div[contains(@class,'panel-heading')]"));
-			if(element.getAttribute("class").contains("collapsed")){
+		for (WebElement item : lstAccountSummaryPanelList) {
+			element = item.findElement(By.xpath("./div[contains(@class,'panel-heading')]"));
+			if (element.getAttribute("class").contains("collapsed")) {
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 				this.getReusableActionsInstance().clickIfAvailable(element);
-				this.getReusableActionsInstance().staticWait(2*this.getStaticWaitForApplication());
+				this.getReusableActionsInstance().staticWait(2 * this.getStaticWaitForApplication());
 			}
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-			lsText=item.getText().trim();
-			reporter.reportLog("Verify header of '"+lsText+"'");
-			if(!lsText.isEmpty()){
-				reporter.reportLogPass("The Header of '"+lsText+"' is displaying correctly");
+			lsText = item.getText().trim();
+			reporter.reportLog("Verify header of '" + lsText + "'");
+			if (!lsText.isEmpty()) {
+				reporter.reportLogPass("The Header of '" + lsText + "' is displaying correctly");
+			} else {
+				reporter.reportLogFailWithScreenshot("The Header of '" + lsText + "' is not displaying correctly");
 			}
-			else{
-				reporter.reportLogFailWithScreenshot("The Header of '"+lsText+"' is not displaying correctly");
-			}
-			lstSubItem=item.findElements(bySubList);
-			for(WebElement subItem:lstSubItem){
+			lstSubItem = item.findElements(bySubList);
+			for (WebElement subItem : lstSubItem) {
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
-				lsText=subItem.getText().trim();
-				if(!lsText.isEmpty()){
-					reporter.reportLogPass("The sub item of '"+lsText+"' is displaying correctly");
-				}
-				else{
-					reporter.reportLogFailWithScreenshot("The sub item of '"+lsText+"' is not displaying correctly");
+				lsText = subItem.getText().trim();
+				if (!lsText.isEmpty()) {
+					reporter.reportLogPass("The sub item of '" + lsText + "' is displaying correctly");
+				} else {
+					reporter.reportLogFailWithScreenshot("The sub item of '" + lsText + "' is not displaying correctly");
 				}
 			}
 		}
+	}
+
+	public void clickOnPaymentOptionSubMenuItemsOnMyAccount(String subMenu){
+		//Verify if Payment Option sub-menus are open
+		boolean menuStatus = Boolean.valueOf(this.getChildElementAttribute(this.lblPaymentOptionMenuItems,"aria-expanded"));
+		if(!menuStatus)
+			getReusableActionsInstance().clickIfAvailable(this.lblPaymentOptionAccordion,3000);
+		super.clickOnPaymentOptionSubMenuItemsOnMyAccount(subMenu);
 	}
 
 }

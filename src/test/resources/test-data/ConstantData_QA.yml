@@ -222,3 +222,6 @@ myAccount:
   lst_changingPasswordErrorMessage: ["Sorry! Your password was incorrect, please try again.","Your password must be a minimum of 6 characters with at least 1 number","Password mismatch"]
   lnk_myAccountLandingViewURL: "/pages/myaccount"
   lnk_URLAfterSignOut: "/pages/signin"
+  lst_giftCardDetails: [ "6006496682749900319","3974","$100.00" ]
+  lbl_invalidGiftCardNumberErrorMessage: "Please enter a valid gift card number (19 numbers)"
+  lbl_invalidGiftCardPinErrorMessage: "Please enter a valid PIN (4 numbers)"
