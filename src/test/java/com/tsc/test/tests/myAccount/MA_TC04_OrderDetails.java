@@ -39,7 +39,7 @@ public class MA_TC04_OrderDetails extends BaseTest {
             }
         }
 
-        getMyAccountPageThreadLocal().openSubItemWindow("Order Status", getMyAccountPageThreadLocal().lblOrderStatusSectionTitle);
+        getMyAccountPageThreadLocal().openSubItemWindow("Your Orders","Order Status", getMyAccountPageThreadLocal().lblOrderStatusSectionTitle);
         if(!getMyAccountPageThreadLocal().checkOrderItemExisting()){
             reporter.reportLogFail("No order items existing");
             return;

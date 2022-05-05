@@ -39,7 +39,7 @@ public class MA_TC07_AccountSettings extends BaseTest {
             }
         }
 
-        getMyAccountPageThreadLocal().openSubItemWindow("Account Settings", getMyAccountPageThreadLocal().lblAccountSettingSectionTitle);
+        getMyAccountPageThreadLocal().openSubItemWindow("Your Profile","Account Settings", getMyAccountPageThreadLocal().lblAccountSettingSectionTitle);
 
         String lnk_accountSettingsURL=TestDataHandler.constantData.getMyAccount().getLnk_accountSettingsURL();
         String expectedURL=basePage.getBaseURL()+lnk_accountSettingsURL;

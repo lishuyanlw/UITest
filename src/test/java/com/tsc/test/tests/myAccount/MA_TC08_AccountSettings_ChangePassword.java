@@ -70,7 +70,7 @@ public class MA_TC08_AccountSettings_ChangePassword extends BaseTest {
         }
 
         reporter.reportLog("Verify Order status URL");
-        getMyAccountPageThreadLocal().openSubItemWindow("Change Password", getMyAccountPageThreadLocal().lblAccountSettingSectionTitle);
+        getMyAccountPageThreadLocal().openSubItemWindow("Your Profile","Change Password", getMyAccountPageThreadLocal().lblAccountSettingSectionTitle);
 
         String lnk_changePasswordURL=TestDataHandler.constantData.getMyAccount().getLnk_accountSettingsChangePasswordURL();
         String expectedURL=basePage.getBaseURL()+lnk_changePasswordURL;
@@ -119,14 +119,17 @@ public class MA_TC08_AccountSettings_ChangePassword extends BaseTest {
         reporter.reportLog("Verify canceling changed password");
         String lsPassword=getMyAccountPageThreadLocal().changePasswordFunctionInAccountSettingsSection(lblPassword,false);
         getGlobalLoginPageThreadLocal().SignOut();
-        if(getGlobalLoginPageThreadLocal().Login(lblUserName, lsPassword)){
+
+        reporter.reportLog("SignIn with "+lblUserName +" and "+lsPassword);
+        getGlobalLoginPageThreadLocal().LoginWithoutWaitingTime(lblUserName, lsPassword);
+        if(basePage.waitForCondition(Driver->{return getGlobalLoginPageThreadLocal().lblSignInGlobalResponseBanner.isDisplayed();},120000)){
             reporter.reportLogPass("Canceling password successfully");
         }
         else{
             reporter.reportLogFail("Canceling password failed");
         }
 
-        getMyAccountPageThreadLocal().openSubItemWindow("Change Password", getMyAccountPageThreadLocal().lblAccountSettingSectionTitle);
+        getMyAccountPageThreadLocal().openSubItemWindow("Your Profile","Change Password", getMyAccountPageThreadLocal().lblAccountSettingSectionTitle);
 
         reporter.reportLog("Verify error message for changing password");
         List<String> lstExpectedTitle=TestDataHandler.constantData.getMyAccount().getLst_changingPasswordErrorMessage();

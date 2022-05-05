@@ -39,7 +39,7 @@ public class MA_TC02_OrderStatus extends BaseTest {
             }
         }
 
-        getMyAccountPageThreadLocal().openSubItemWindow("Order Status", getMyAccountPageThreadLocal().lblOrderStatusSectionTitle);
+        getMyAccountPageThreadLocal().openSubItemWindow("Your Orders","Order Status", getMyAccountPageThreadLocal().lblOrderStatusSectionTitle);
 
         String lnk_orderStatusURL=TestDataHandler.constantData.getMyAccount().getLnk_orderStatusURL();
         String expectedURL=basePage.getBaseURL()+lnk_orderStatusURL;

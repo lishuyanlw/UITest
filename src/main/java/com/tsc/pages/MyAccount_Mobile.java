@@ -155,4 +155,39 @@ public class MyAccount_Mobile extends MyAccount {
 		}
 	}
 
+	@Override
+	public void verifyLandingViewContent(){
+		List<WebElement> lstSubItem;
+		String lsText;
+		WebElement element;
+		for(WebElement item:lstAccountSummaryPanelList){
+			element=item.findElement(By.xpath("./div[contains(@class,'panel-heading')]"));
+			if(element.getAttribute("class").contains("collapsed")){
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+				this.getReusableActionsInstance().clickIfAvailable(element);
+				this.getReusableActionsInstance().staticWait(2*this.getStaticWaitForApplication());
+			}
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsText=item.getText().trim();
+			reporter.reportLog("Verify header of '"+lsText+"'");
+			if(!lsText.isEmpty()){
+				reporter.reportLogPass("The Header of '"+lsText+"' is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The Header of '"+lsText+"' is not displaying correctly");
+			}
+			lstSubItem=item.findElements(bySubList);
+			for(WebElement subItem:lstSubItem){
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
+				lsText=subItem.getText().trim();
+				if(!lsText.isEmpty()){
+					reporter.reportLogPass("The sub item of '"+lsText+"' is displaying correctly");
+				}
+				else{
+					reporter.reportLogFailWithScreenshot("The sub item of '"+lsText+"' is not displaying correctly");
+				}
+			}
+		}
+	}
+
 }

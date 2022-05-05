@@ -36,7 +36,7 @@ public class MA_TC06_OrderReturns extends BaseTest {
             }
         }
 
-        getMyAccountPageThreadLocal().openSubItemWindow("Order Returns", getMyAccountPageThreadLocal().lblOrderServiceTitle);
+        getMyAccountPageThreadLocal().openSubItemWindow("Your Orders","Order Returns", getMyAccountPageThreadLocal().lblOrderServiceTitle);
 
         String lnk_orderReturnsURL=TestDataHandler.constantData.getMyAccount().getLnk_orderReturnsURL();
         String expectedURL=basePage.getBaseURL()+lnk_orderReturnsURL;

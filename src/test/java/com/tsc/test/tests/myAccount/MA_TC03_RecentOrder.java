@@ -39,7 +39,7 @@ public class MA_TC03_RecentOrder extends BaseTest {
             }
         }
 
-        getMyAccountPageThreadLocal().openSubItemWindow("Recent Orders", getMyAccountPageThreadLocal().lblOrderStatusSectionTitle);
+        getMyAccountPageThreadLocal().openSubItemWindow("Your Orders","Recent Orders", getMyAccountPageThreadLocal().lblOrderStatusSectionTitle);
 
         String lnk_recentOrderURL=TestDataHandler.constantData.getMyAccount().getLnk_recentOrderURL();
         String expectedURL=basePage.getBaseURL()+lnk_recentOrderURL;

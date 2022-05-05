@@ -70,7 +70,7 @@ public class MA_TC09_AccountSettings_ChangeSecurityQuestions extends BaseTest {
         }
 
         reporter.reportLog("Verify Order status URL");
-        getMyAccountPageThreadLocal().openSubItemWindow("Security Questions", getMyAccountPageThreadLocal().lblAccountSettingSectionTitle);
+        getMyAccountPageThreadLocal().openSubItemWindow("Your Profile","Security Questions", getMyAccountPageThreadLocal().lblAccountSettingSectionTitle);
 
         String lnk_securityQuestions=TestDataHandler.constantData.getMyAccount().getLnk_accountSettingsChangeSecurityQuestionsURL();
         String expectedURL=basePage.getBaseURL()+lnk_securityQuestions;

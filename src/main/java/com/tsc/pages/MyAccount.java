@@ -444,6 +444,16 @@ public class MyAccount extends BasePage {
 	public WebElement lblGiftCardBalanceText;
 
 	/**
+	 * To get header item web element through header item text
+	 * @param - lsHeaderItem -  header item text
+	 * @return header Item web element
+	 */
+	public WebElement getHeaderItem(String lsHeaderItem){
+		String lsByHeaderItem="//div[@class='my-account-summary-container']//div[@class='panel']/div[contains(@class,'panel-heading') and contains(normalize-space(.),'"+lsHeaderItem+"')]";
+		return this.getDriver().findElement(By.xpath(lsByHeaderItem));
+	}
+
+	/**
 	 * To get subitem web element through sublitem text
 	 * @param lsSubItem -  sublitem text
 	 * @return subitem web element
@@ -990,19 +1000,30 @@ public class MyAccount extends BasePage {
 
 	/**
 	 * To open the window by clicking sub item
+	 * @param - lsHeaderItem - header item name
 	 * @param - lsSubItem - sub item name
 	 * @param - loadingIndicator - the element to indicate window loading
 	 */
-	public void openSubItemWindow(String lsSubItem,WebElement loadingIndicator){
-		WebElement orderStatusButton=this.getSubItem(lsSubItem);
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(orderStatusButton);
-		if(this.getReusableActionsInstance().isElementVisible(orderStatusButton)){
+	public void openSubItemWindow(String lsHeaderItem,String lsSubItem,WebElement loadingIndicator){
+		String lsTestDevice = System.getProperty("Device").trim();
+		if(lsTestDevice.equalsIgnoreCase("Mobile")) {
+			WebElement headerButton=this.getHeaderItem(lsHeaderItem);
+			if(headerButton.getAttribute("class").contains("collapsed")){
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(headerButton);
+				this.getReusableActionsInstance().clickIfAvailable(headerButton);
+				this.getReusableActionsInstance().staticWait(2*this.getStaticWaitForApplication());
+			}
+		}
+
+		WebElement subButton=this.getSubItem(lsSubItem);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(subButton);
+		if(this.getReusableActionsInstance().isElementVisible(subButton)){
 			reporter.reportLogPass("'"+lsSubItem+ "' sub item is displaying correctly");
 		}
 		else{
 			reporter.reportLogFailWithScreenshot("'"+lsSubItem+ "' sub item is not displaying correctly");
 		}
-		this.getReusableActionsInstance().clickIfAvailable(orderStatusButton);
+		this.getReusableActionsInstance().clickIfAvailable(subButton);
 
 		this.waitForCondition(Driver->{return loadingIndicator.isDisplayed();},50000);
 
@@ -1780,16 +1801,8 @@ public class MyAccount extends BasePage {
 			reporter.reportLogFailWithScreenshot("The Password title in Account settings is not displaying correctly");
 		}
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAccountSettingPassword);
-		if(!lblAccountSettingPassword.getText().isEmpty()){
-			reporter.reportLogPass("The Password in Account settings is displaying correctly");
-		}
-		else{
-			reporter.reportLogFailWithScreenshot("The Password in Account settings is not displaying correctly");
-		}
-
 		String lsTestDevice = System.getProperty("Device").trim();
-		if(lsTestDevice.equalsIgnoreCase("Mobile")) {
+		if(!lsTestDevice.equalsIgnoreCase("Mobile")) {
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAccountSettingPassword);
 			if(!lblAccountSettingPassword.getText().isEmpty()){
 				reporter.reportLogPass("The Password in Account settings is displaying correctly");

@@ -14,6 +14,9 @@ public class SignInPage extends BasePage {
 		super(driver);
 	}
 
+	@FindBy(xpath = "//div[contains(@class,'tsc-container--BH')]")
+	public WebElement cntBlackHeaderContainer;
+
 	@FindBy(xpath = "//div[contains(@class,'secondary-navigation__rhs-account')]//a//*[@class='secondary-navigation__rhs-account-icon']")
 	public WebElement SignInIcon;
 

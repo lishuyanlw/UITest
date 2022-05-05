@@ -37,7 +37,7 @@ public class MA_TC05_OrderCancellation extends BaseTest {
             }
         }
 
-        getMyAccountPageThreadLocal().openSubItemWindow("Order Cancellation", getMyAccountPageThreadLocal().lblOrderServiceTitle);
+        getMyAccountPageThreadLocal().openSubItemWindow("Your Orders","Order Cancellation", getMyAccountPageThreadLocal().lblOrderServiceTitle);
 
         String lnk_orderCancellationURL=TestDataHandler.constantData.getMyAccount().getLnk_orderCancellationURL();
         String expectedURL=basePage.getBaseURL()+lnk_orderCancellationURL;
