@@ -39,6 +39,7 @@ public class SR_TC14_VerifyProductSearchResult_SizeAndColorLinkageWithPDP extend
 
 		reporter.reportLog("verifySearchResultMessageOnPage");
 		//Verification of Bug-19544, Bug-19651 Bug-19672
+		reporter.reportLog(lst_SearchKeyword.get(1));
 		getProductResultsPageThreadLocal().getSearchResultLoad(lst_SearchKeyword.get(1),true);
 		getProductResultsPageThreadLocal().verifySearchResultMessageOnPage(lst_SearchKeyword.get(1));
 

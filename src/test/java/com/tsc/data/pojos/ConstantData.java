@@ -12,6 +12,7 @@ public class ConstantData {
     public LoginUser loginUser;
     public APIUserSessionParams apiUserSessionParams;
     public APIAppSessionParams apiAppSessionParams;
+    public MyAccount myAccount;
 
     public APIUserSessionParams getApiUserSessionParams() { return apiUserSessionParams; }
 
@@ -60,6 +61,10 @@ public class ConstantData {
     public void setLoginUser(LoginUser loginUser) {
         this.loginUser = loginUser;
     }
+
+    public MyAccount getMyAccount() {        return myAccount;    }
+
+    public void setMyAccount(MyAccount myAccount) {        this.myAccount = myAccount;    }
 
     public static class HeaderSection {
         private String lnk_NotFound;
@@ -928,6 +933,206 @@ public class ConstantData {
 
         public void setLbl_RightSideTitleSignInPage(String lbl_RightSideTitleSignInPage) {
             this.lbl_RightSideTitleSignInPage = lbl_RightSideTitleSignInPage;
+        }
+    }
+
+    public static class MyAccount{
+        public String lbl_Username;
+        public String lbl_Password;
+        public String lbl_FirstName;
+        public String lnk_addNewCardURL;
+        public List<String> lst_newCreditCardType;
+        public List<String> lbl_invalidCardErrorMessage;
+        public List<String> lst_giftCardDetails;
+        public String lbl_invalidGiftCardNumberErrorMessage;
+        public String lbl_invalidGiftCardPinErrorMessage;
+        public String lnk_giftCardURL;
+        public String lnk_orderStatusURL;
+        public String lnk_recentOrderURL;
+        public String lnk_orderDetailsURL;
+        public String lnk_orderCancellationURL;
+        public String lnk_orderReturnsURL;
+        public String lbl_orderSearchErrorMessage;
+        public String lbl_orderModificationTitle;
+        public String lbl_orderReturnsTitle;
+        public String lnk_accountSettingsURL;
+        public String lnk_accountSettingsChangePasswordURL;
+        public String lnk_accountSettingsChangeSecurityQuestionsURL;
+        public String lbl_accountSettingsTitle;
+        public List<String>  lst_changingPasswordErrorMessage;
+        public String lnk_myAccountLandingViewURL;
+        public String lnk_URLAfterSignOut;
+
+        public String getLbl_Username() {
+            return lbl_Username;
+        }
+
+        public void setLbl_Username(String lbl_Username) {
+            this.lbl_Username = lbl_Username;
+        }
+
+        public String getLbl_Password() {
+            return lbl_Password;
+        }
+
+        public void setLbl_Password(String lbl_Password) {
+            this.lbl_Password = lbl_Password;
+        }
+
+        public String getLbl_FirstName() {
+            return lbl_FirstName;
+        }
+
+        public void setLbl_FirstName(String lbl_FirstName) {
+            this.lbl_FirstName = lbl_FirstName;
+        }
+
+        public String getLnk_addNewCardURL() {            return lnk_addNewCardURL;        }
+
+        public void setLnk_addNewCardURL(String lnk_addNewCardURL) {            this.lnk_addNewCardURL = lnk_addNewCardURL;        }
+
+        public List<String> getLst_newCreditCardType() {            return lst_newCreditCardType;        }
+
+        public void setLst_newCreditCardType(List<String> lst_newCreditCardType) {            this.lst_newCreditCardType = lst_newCreditCardType;        }
+
+        public List<String> getLbl_invalidCardErrorMessage() {            return lbl_invalidCardErrorMessage;        }
+
+        public void setLbl_invalidCardErrorMessage(List<String> lbl_invalidCardErrorMessage) {            this.lbl_invalidCardErrorMessage = lbl_invalidCardErrorMessage;        }
+
+        public List<String> getLst_giftCardDetails() {            return lst_giftCardDetails;        }
+
+        public void setLst_giftCardDetails(List<String> lst_giftCardDetails) {            this.lst_giftCardDetails = lst_giftCardDetails;        }
+
+        public String getLbl_invalidGiftCardNumberErrorMessage() {            return lbl_invalidGiftCardNumberErrorMessage;        }
+
+        public void setLbl_invalidGiftCardNumberErrorMessage(String lbl_invalidGiftCardNumberErrorMessage) {            this.lbl_invalidGiftCardNumberErrorMessage = lbl_invalidGiftCardNumberErrorMessage;        }
+
+        public String getLbl_invalidGiftCardPinErrorMessage() {            return lbl_invalidGiftCardPinErrorMessage;        }
+
+        public void setLbl_invalidGiftCardPinErrorMessage(String lbl_invalidGiftCardPinErrorMessage) {            this.lbl_invalidGiftCardPinErrorMessage = lbl_invalidGiftCardPinErrorMessage;        }
+
+        public String getLnk_giftCardURL() {            return lnk_giftCardURL;        }
+
+        public void setLnk_giftCardURL(String lnk_giftCardURL) {            this.lnk_giftCardURL = lnk_giftCardURL;        }
+
+        public String getLnk_orderStatusURL() {
+            return lnk_orderStatusURL;
+        }
+
+        public void setLnk_orderStatusURL(String lnk_orderStatusURL) {
+            this.lnk_orderStatusURL = lnk_orderStatusURL;
+        }
+
+        public String getLnk_recentOrderURL() {
+            return lnk_recentOrderURL;
+        }
+
+        public void setLnk_recentOrderURL(String lnk_recentOrderURL) {
+            this.lnk_recentOrderURL = lnk_recentOrderURL;
+        }
+
+        public String getLnk_orderDetailsURL() {
+            return lnk_orderDetailsURL;
+        }
+
+        public void setLnk_orderDetailsURL(String lnk_orderDetailsURL) {
+            this.lnk_orderDetailsURL = lnk_orderDetailsURL;
+        }
+
+        public String getLnk_orderCancellationURL() {
+            return lnk_orderCancellationURL;
+        }
+
+        public void setLnk_orderCancellationURL(String lnk_orderCancellationURL) {
+            this.lnk_orderCancellationURL = lnk_orderCancellationURL;
+        }
+
+        public String getLnk_orderReturnsURL() {
+            return lnk_orderReturnsURL;
+        }
+
+        public void setLnk_orderReturnsURL(String lnk_orderReturnsURL) {
+            this.lnk_orderReturnsURL = lnk_orderReturnsURL;
+        }
+
+        public String getLbl_orderSearchErrorMessage() {
+            return lbl_orderSearchErrorMessage;
+        }
+
+        public void setLbl_orderSearchErrorMessage(String lbl_orderSearchErrorMessage) {
+            this.lbl_orderSearchErrorMessage = lbl_orderSearchErrorMessage;
+        }
+
+        public String getLbl_orderModificationTitle() {
+            return lbl_orderModificationTitle;
+        }
+
+        public void setLbl_orderModificationTitle(String lbl_orderModificationTitle) {
+            this.lbl_orderModificationTitle = lbl_orderModificationTitle;
+        }
+
+        public String getLbl_orderReturnsTitle() {
+            return lbl_orderReturnsTitle;
+        }
+
+        public void setLbl_orderReturnsTitle(String lbl_orderReturnsTitle) {
+            this.lbl_orderReturnsTitle = lbl_orderReturnsTitle;
+        }
+
+        public String getLnk_accountSettingsURL() {
+            return lnk_accountSettingsURL;
+        }
+
+        public void setLnk_accountSettingsURL(String lnk_accountSettingsURL) {
+            this.lnk_accountSettingsURL = lnk_accountSettingsURL;
+        }
+
+        public String getLnk_accountSettingsChangePasswordURL() {
+            return lnk_accountSettingsChangePasswordURL;
+        }
+
+        public void setLnk_accountSettingsChangePasswordURL(String lnk_accountSettingsChangePasswordURL) {
+            this.lnk_accountSettingsChangePasswordURL = lnk_accountSettingsChangePasswordURL;
+        }
+
+        public String getLnk_accountSettingsChangeSecurityQuestionsURL() {
+            return lnk_accountSettingsChangeSecurityQuestionsURL;
+        }
+
+        public void setLnk_accountSettingsChangeSecurityQuestionsURL(String lnk_accountSettingsChangeSecurityQuestionsURL) {
+            this.lnk_accountSettingsChangeSecurityQuestionsURL = lnk_accountSettingsChangeSecurityQuestionsURL;
+        }
+
+        public String getLbl_accountSettingsTitle() {
+            return lbl_accountSettingsTitle;
+        }
+
+        public void setLbl_accountSettingsTitle(String lbl_accountSettingsTitle) {
+            this.lbl_accountSettingsTitle = lbl_accountSettingsTitle;
+        }
+
+        public List<String> getLst_changingPasswordErrorMessage() {
+            return lst_changingPasswordErrorMessage;
+        }
+
+        public void setLst_changingPasswordErrorMessage(List<String> lst_changingPasswordErrorMessage) {
+            this.lst_changingPasswordErrorMessage = lst_changingPasswordErrorMessage;
+        }
+
+        public String getLnk_myAccountLandingViewURL() {
+            return lnk_myAccountLandingViewURL;
+        }
+
+        public void setLnk_myAccountLandingViewURL(String lnk_myAccountLandingViewURL) {
+            this.lnk_myAccountLandingViewURL = lnk_myAccountLandingViewURL;
+        }
+
+        public String getLnk_URLAfterSignOut() {
+            return lnk_URLAfterSignOut;
+        }
+
+        public void setLnk_URLAfterSignOut(String lnk_URLAfterSignOut) {
+            this.lnk_URLAfterSignOut = lnk_URLAfterSignOut;
         }
     }
 

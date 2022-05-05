@@ -2205,8 +2205,8 @@ public class ProductDetailPage extends BasePage {
 		Map<String,Object> outputDataCriteria= new HashMap<String,Object>();
 		if(dataCriteria==null){
 			outputDataCriteria.put("video", "1");
-			outputDataCriteria.put("style", "3");
-			outputDataCriteria.put("size", "3");
+			outputDataCriteria.put("style", "1");
+			outputDataCriteria.put("size", "1");
 		}else{
 			outputDataCriteria = dataCriteria;
 		}

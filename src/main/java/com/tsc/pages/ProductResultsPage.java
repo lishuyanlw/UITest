@@ -19,8 +19,11 @@ public class ProductResultsPage extends BasePage{
 	}
 
 	//Search results return message
-	@FindBy(xpath = "//section[@class='tsc-container']//*[@class='prp__showing-results']|//section[@class='tsc-container']//div[@class='prp-no-search-results__copy__heading']|//span[contains(@class,'tagDimTitle')]")
+	@FindBy(xpath = "//section[@class='tsc-container']//*[@class='prp__showing-results']|//section[@class='tsc-container']//div[@class='prp-no-search-results__copy__heading']")
 	public WebElement lblSearchResultMessage;
+
+	@FindBy(xpath = "//span[contains(@class,'tagDimTitle')]")
+	public WebElement lblSearchResultMessageKeyWordTitle;
 
 	@FindBy(xpath = "//section[@class='tsc-container']//*[@class='prp__showing-results']")
 	public WebElement lblReturnMessageWithSearchResult;
@@ -108,7 +111,7 @@ public class ProductResultsPage extends BasePage{
 
 	public By byProductHeaderTitle=By.xpath(".//*[@class='product-card__header-title']");
 
-	public By byProductHeaderLike=By.xpath(".//*[@class='product-card__header-like']");
+	public By byProductHeaderLike=By.xpath(".//*[contains(@class,'product-card__header-like')]");
 
 	public By byProductHref=By.xpath(".//a[@data-lpos='product card image']");
 
@@ -1980,8 +1983,8 @@ public class ProductResultsPage extends BasePage{
 		ApiResponse apiResponse=new ApiResponse();
 		Map<String,Object> outputDataCriteria= new HashMap<String,Object>();
 		outputDataCriteria.put("video", "1");
-		outputDataCriteria.put("style", "3");
-		outputDataCriteria.put("size", "3");
+		outputDataCriteria.put("style", "1");
+		outputDataCriteria.put("size", "1");
 
 		SelectedProduct selectedProduct= null;
 		Product.Products product=null;
@@ -2971,9 +2974,10 @@ public class ProductResultsPage extends BasePage{
 		this.getReusableActionsInstance().waitForElementVisibility(loginPage.lblSignIn, 60);
 
 		loginPage.LoginWithoutWaitingTime(lsUserName, lsPassword);
-		this.getReusableActionsInstance().waitForElementVisibility(loginPage.lblSignInGlobalResponseBanner);
-		
-		this.getSearchResultLoad(lsKeyword,true);
+		this.getReusableActionsInstance().waitForElementVisibility(this.lblSearchResultMessage,180);
+		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+
+//		this.getSearchResultLoad(lsKeyword,true);
 		item=this.productResultList.get(0).findElement(this.byProductHeaderLike);
 
 		if(item.getAttribute("aria-pressed").equalsIgnoreCase("true")) {
@@ -3444,6 +3448,7 @@ public class ProductResultsPage extends BasePage{
 	//Bug-19544-Select a brand in SYAT should not display Search Term
 	//Bug-19672-PRP showing result label getting encoded from search
 	public void verifySearchResultMessageOnPage(String searchKeyword){
+		this.waitForCondition(Driver->{return this.lblProductCountOnPage.isDisplayed();},12000);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblProductCountOnPage);
 		this.getReusableActionsInstance().scrollToElement(this.lblProductCountOnPage);
 		String searchTitleMessage = null;
@@ -3568,7 +3573,7 @@ public class ProductResultsPage extends BasePage{
 		List<String> lstItem=lstFilter.get(0);
 		ghp.clickCuratedCollectionsMenuItem(lstItem.get(0), lstItem.get(1));
 		this.waitForPageToLoad();
-		this.getReusableActionsInstance().waitForElementVisibility(this.lblSearchResultMessage,120);
+		this.getReusableActionsInstance().waitForElementVisibility(this.lblSearchResultMessageKeyWordTitle,120);
 		
 		int navigateItemCount=this.lstSearchResultNavigation.size();
 		if(navigateItemCount==2) {
@@ -3778,6 +3783,7 @@ public class ProductResultsPage extends BasePage{
 	 * @param-HashMap<String,String> prpPagePaginationData Loaded page data that will be used for verification
 	 */
 	public void verifyPaginationCountOnLastPage(Map<String,String> prpPagePaginationData){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblProductCountOnPage);
 		int itemCount = Integer.valueOf(this.lblProductCountOnPage.getText().split(" ")[0]);
 		//int totalPagesOnPRPForItem = this.getTotalProductPageCountAfterSearch();
 		getDriver().get(prpPagePaginationData.get("pageURL"));

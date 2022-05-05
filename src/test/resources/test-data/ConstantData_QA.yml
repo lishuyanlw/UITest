@@ -94,10 +94,10 @@ homePage:
 searchResultPage:
   lbl_prp_partial_url: "/pages/productresults?"
   lst_SearchKeyword: [ "dyson vacuum","dfafasdfa","Joan Rivers","100501" ]  
-  lst_SearchKeyword_Bugs: ["iPads & Tablets","apple  ","https://qa-tsc.tsc.ca/pages/productresults?&searchterm=desk","Brian Bailey Asymmetrical Waterfall Drape Dress"]
+  lst_SearchKeyword_Bugs: ["iPads & Tablets","desk  ","https://qa-tsc.tsc.ca/pages/productresults?&searchterm=desk","Brian Bailey Asymmetrical Waterfall Drape Dress"]
   lbl_ProductNumberToComparePRPAndPDPContent: "Brian Bailey Wedge Dress"
   lst_SearchKeyword_DropDown: [[ "dress","Categories","0" ]]
-  lst_APISearchingKeyword: ["dress","jegging","shoes"]
+  lst_APISearchingKeyword: ["dress","jegging","boots"]
   lbl_SearchResultPageDefaultSetting: 36
   lst_SearchResultMessage:  [ "Showing results for" , "able to find any results" ] 
   lst_SortOption: ["Featured Products","Newest First","Reviews: Highest First","Price: Lowest First","Price: Highest First","Brand Name: A to Z"]
@@ -196,4 +196,32 @@ loginUser:
   lbl_ErrorMessageForUserName: A valid email is required!
   lbl_ErrorMessageForPassword: Password is required!
   lbl_ErrorMessageForUserNameAndPassword: Hm, this email and password combination does not match our records. Please double check and try again.
-
+myAccount:
+  lbl_Username: test123@test.com
+  lbl_Password: testMail123
+  lbl_FirstName: Test
+  lnk_addNewCardURL: "/pages/myaccount/paymentcards/addcard"
+  lnk_giftCardURL: "/pages/giftcard"
+  lst_newCreditCardType: [visa,master,amex,tsc]
+  lbl_invalidCardErrorMessage: ["Please enter a valid card number and try again.","Credit Card Number is required."]
+  lst_giftCardDetails: [ "6006496682749900319","3974","$100.00" ]
+  lbl_invalidGiftCardNumberErrorMessage: "Please enter a valid gift card number (19 numbers)"
+  lbl_invalidGiftCardPinErrorMessage: "Please enter a valid PIN (4 numbers)"
+  lnk_orderStatusURL: "/pages/myaccount/orderstatus"
+  lbl_orderSearchErrorMessage: "Oops - we can't find the order you're looking for. Please try again or browse for the order by date."
+  lnk_recentOrderURL: "/pages/myaccount/orderstatus?dateRange=30"
+  lnk_orderDetailsURL: "/pages/myaccount/orderstatus?orderNo={OrderNO}"
+  lnk_orderCancellationURL: "/go/customerservice/orderingpage#ordermodification"
+  lbl_orderModificationTitle: Ordering
+  lnk_orderReturnsURL: "/go/customerservice/returnspage#returnpolicy"
+  lbl_orderReturnsTitle: Returns
+  lnk_accountSettingsURL: "/pages/myaccount/information"
+  lnk_accountSettingsChangePasswordURL: "/pages/myaccount/information/password"
+  lnk_accountSettingsChangeSecurityQuestionsURL: "/pages/myaccount/information/securityquestion"
+  lbl_accountSettingsTitle: "Account Settings"
+  lst_changingPasswordErrorMessage: ["Sorry! Your password was incorrect, please try again.","Your password must be a minimum of 6 characters with at least 1 number","Password mismatch"]
+  lnk_myAccountLandingViewURL: "/pages/myaccount"
+  lnk_URLAfterSignOut: "/pages/signin"
+  lst_giftCardDetails: [ "6006496682749900319","3974","$100.00" ]
+  lbl_invalidGiftCardNumberErrorMessage: "Please enter a valid gift card number (19 numbers)"
+  lbl_invalidGiftCardPinErrorMessage: "Please enter a valid PIN (4 numbers)"

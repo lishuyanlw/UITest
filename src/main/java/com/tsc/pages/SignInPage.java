@@ -14,6 +14,9 @@ public class SignInPage extends BasePage {
 		super(driver);
 	}
 
+	@FindBy(xpath = "//div[contains(@class,'tsc-container--BH')]")
+	public WebElement cntBlackHeaderContainer;
+
 	@FindBy(xpath = "//div[contains(@class,'secondary-navigation__rhs-account')]//a//*[@class='secondary-navigation__rhs-account-icon']")
 	public WebElement SignInIcon;
 
@@ -165,7 +168,7 @@ public class SignInPage extends BasePage {
 	 * @return true/false
 	 * @author Wei.Li
 	 */
-	public boolean Login(String lsUserName, String lsPassword,String lsFirstName) {
+	public boolean Login(String lsUserName, String lsPassword) {
 		getReusableActionsInstance().javascriptScrollToTopOfPage();
 		String strBrowser = System.getProperty("Browser").trim();
 		if (strBrowser.toLowerCase().contains("android") || strBrowser.toLowerCase().contains("ios")
@@ -184,17 +187,19 @@ public class SignInPage extends BasePage {
 		waitForCondition(Driver->{return this.inputUserName.isEnabled();},10000);
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputUserName);
 		this.inputUserName.sendKeys(lsUserName);
+		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputPassword);
 		this.inputPassword.sendKeys(lsPassword);
-		getReusableActionsInstance().staticWait(1000);
+		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 		
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSubmit);
 		this.getReusableActionsInstance().clickIfAvailable(this.btnSubmit);
 		//this.btnSubmit.click();
 		getReusableActionsInstance().javascriptScrollToTopOfPage();
 		getReusableActionsInstance().staticWait(5000);
-		
-		return waitForCondition(Driver->{return lblSignInGlobalResponseBanner.isDisplayed();},90000);
+
+		this.waitForPageToLoad();
+		return waitForCondition(Driver->{return lblSignInGlobalResponseBanner.isDisplayed();},120000);
 				
 	}
 
@@ -291,8 +296,7 @@ public class SignInPage extends BasePage {
 
 		return waitForCondition(Driver->{return (this.btnSignInMainMenu.isDisplayed() && !lsUserMsg.equalsIgnoreCase(this.btnSignInMainMenu.getText().trim()));},30000);
 	}
-	
-	
+
 	/**
 	 * Method to hover on Sign in heading menu	  
 	 * @author Wei.Li
@@ -392,6 +396,7 @@ public class SignInPage extends BasePage {
 	 * @return - String - customer no from UI
 	 */
 	public String getCustomerNumberForLoggedInUser(){
+		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 		this.waitForCondition(Driver->{return this.lblCustomerNO.isDisplayed();},10000);
 		return this.getElementText(this.lblCustomerNO);
 	}
