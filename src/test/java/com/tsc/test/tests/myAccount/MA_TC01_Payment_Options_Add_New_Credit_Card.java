@@ -46,10 +46,9 @@ public class MA_TC01_Payment_Options_Add_New_Credit_Card extends BaseTest {
         String lblPassword = TestDataHandler.constantData.getMyAccount().getLbl_Password();
         String lblFirstName = TestDataHandler.constantData.getMyAccount().getLbl_FirstName();
 
-        //Fetching test data from test data file
+        //Fetching test data from test data file and remove CC info
         ConstantData.APIUserSessionParams apiUserSessionParams = TestDataHandler.constantData.getApiUserSessionParams();
         apiUserSessionData = apiResponseThreadLocal.get().getApiUserSessionData(lblUserName,lblPassword,apiUserSessionParams.getLbl_grantType(),apiUserSessionParams.getLbl_apiKey());
-
         String accessToken = apiUserSessionData.get("access_token").toString();
         String customerEDP = apiUserSessionData.get("customerEDP").toString();
         AccountAPI accountAPI=new AccountAPI();

@@ -4,43 +4,34 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.tsc.api.apiBuilder.AccountAPI;
 import com.tsc.api.apiBuilder.ApiResponse;
 import com.tsc.api.apiBuilder.CartAPI;
 import com.tsc.api.apiBuilder.OrderAPI;
 import com.tsc.api.pojo.AccountCartResponse;
-import com.tsc.api.pojo.ErrorResponse;
 import com.tsc.api.pojo.GetOrderListResponse;
-import com.tsc.api.pojo.PlaceOrderResponse;
 import com.tsc.api.util.DataConverter;
 import com.tsc.api.util.JsonParser;
 import com.tsc.data.pojos.ConstantData;
 import com.tsc.pages.*;
-
-import com.tsc.pages.base.BasePage;
 import extentreport.ExtentListener;
 import io.restassured.response.Response;
-import org.apache.http.client.ClientProtocolException;
 import org.json.JSONObject;
 import org.openqa.selenium.WebDriver;
 import org.testng.ITestContext;
 import org.testng.annotations.*;
-
 import com.tsc.data.Handler.TestDataHandler;
-
 import extentreport.ExtentTestManager;
 import org.testng.annotations.Optional;
 import utils.BrowserDrivers;
 import utils.Reporter;
+import static java.time.temporal.ChronoUnit.DAYS;
 
 public class BaseTest {
 
@@ -348,11 +339,7 @@ public class BaseTest {
 	@AfterMethod(alwaysRun = true)
 	public void afterTest() throws IOException, org.json.simple.parser.ParseException, InterruptedException, ParseException {
 		if (getDriver() != null) {
-//			addPlaceOrder();
-//			LocalDate currentDate = LocalDate.now();
-//			if(currentDate.getDayOfMonth()%5==0){
-//				addPlaceOrder();
-//			}
+			addPlaceOrder();
 			//(new BasePage(this.getDriver())).deleteSessionStorage();
 			closeSession();
 		}
@@ -442,7 +429,10 @@ public class BaseTest {
 		return sauceOptions;
 	}
 
-	public void addPlaceOrder() throws IOException, org.json.simple.parser.ParseException, InterruptedException, ParseException {
+	/**
+	 * To add place order once no order within 75 days
+	 */
+	public void addPlaceOrder() throws IOException,InterruptedException {
 		String lblUserName = TestDataHandler.constantData.getMyAccount().getLbl_Username();
 		String lblPassword = TestDataHandler.constantData.getMyAccount().getLbl_Password();
 
@@ -459,14 +449,15 @@ public class BaseTest {
 		GetOrderListResponse getOrderListResponse = JsonParser.getResponseObject(responseOrder.asString(), new TypeReference<GetOrderListResponse>() {});
 		List<GetOrderListResponse.OrderSummary> orderSummaryList=getOrderListResponse.getOrderSummary();
 		String lsDate;
-		Date orderDate;
-		LocalDateTime now = LocalDateTime.now();
-		LocalDateTime ldOrderDate;
+		LocalDate now = LocalDate.from(LocalDateTime.now());
+		LocalDate ldOrderDate;
+		long noOfDaysBetween;
 		for(GetOrderListResponse.OrderSummary orderSummary:orderSummaryList){
 			lsDate=orderSummary.getOrderDateTime().substring(0,10);
-			orderDate=new SimpleDateFormat("yyyy-MM-dd").parse(lsDate);
-			ldOrderDate= LocalDateTime.from(orderDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-			if( Duration.between(now, ldOrderDate).toDays()<=70){
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH);
+			ldOrderDate = LocalDate.parse(lsDate, formatter);
+			noOfDaysBetween = DAYS.between(ldOrderDate,now);
+			if( noOfDaysBetween<=75){
 				return;
 			}
 		}
@@ -478,7 +469,8 @@ public class BaseTest {
 		AccountCartResponse accountCartInitial = JsonParser.getResponseObject(responseInitial.asString(), new TypeReference<AccountCartResponse>() {});
 		String GuidId=accountCartInitial.getCartGuid();
 
-		cartAPI.deleteCartItemWithGuid(access_token, GuidId,4);
+		Response responseDelete=cartAPI.deleteCartItemWithGuid(access_token, GuidId,4);
+//		reporter.reportLog("responseDelete: "+responseDelete.asString());
 
 		//ProductEDP Number that will be added to cart for user
 		Map<String,Object> map=cartAPI.addItemsInExistingCart(Integer.parseInt(customerEDP), access_token, GuidId,null);
@@ -486,14 +478,12 @@ public class BaseTest {
 
 		Response responseReview=orderAPI.getOrderReview(customerEDP,access_token);
 		AccountCartResponse accountCartReview = JsonParser.getResponseObject(responseReview.asString(), new TypeReference<AccountCartResponse>() {});
-		reporter.reportLog("Review: "+responseReview.asString());
+//		reporter.reportLog("Review: "+responseReview.asString());
 		List<Long> relatedCartIdsList=accountCartReview.getRelatedCartIds();
 
-		//basePage.getReusableActionsInstance().staticWait(2000);
 		Thread.sleep(2000);
 
 		orderAPI.placeOrder(GuidId,customerEDP,access_token,relatedCartIdsList);
-		orderAPI.getOrderList(customerEDP,access_token);
 	}
 	
 }
