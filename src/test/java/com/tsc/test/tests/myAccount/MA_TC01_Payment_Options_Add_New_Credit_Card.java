@@ -67,6 +67,7 @@ public class MA_TC01_Payment_Options_Add_New_Credit_Card extends BaseTest {
         if(lsTestDevice.equalsIgnoreCase("Desktop")) {
             WebElement item=(new GlobalHeaderPage(this.getDriver())).Signinlnk;
             basePage.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+            basePage.waitForCondition(Driver->{return !item.getText().isEmpty()&&item.getText().trim().toUpperCase().contains(lblFirstName.trim().toUpperCase());},12000);
             if(item.getText().trim().toUpperCase().contains(lblFirstName.trim().toUpperCase())) {
                 reporter.reportLogPass("The SignIn in the header contains SignIn first name");
             }
