@@ -29,6 +29,7 @@ public class MA_TC05_OrderCancellation extends BaseTest {
         if(lsTestDevice.equalsIgnoreCase("Desktop")) {
             WebElement item=(new GlobalHeaderPage(this.getDriver())).Signinlnk;
             basePage.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+            basePage.waitForCondition(Driver->{return !item.getText().isEmpty()&&item.getText().trim().toUpperCase().contains(lblFirstName.trim().toUpperCase());},12000);
             if(item.getText().trim().toUpperCase().contains(lblFirstName.trim().toUpperCase())) {
                 reporter.reportLogPass("The SignIn in the header contains SignIn first name");
             }

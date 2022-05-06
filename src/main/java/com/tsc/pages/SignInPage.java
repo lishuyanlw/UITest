@@ -172,12 +172,12 @@ public class SignInPage extends BasePage {
 		getReusableActionsInstance().staticWait(2000);
 
 		this.clickElement(this.btnSignInMainMenu);
-		getReusableActionsInstance().staticWait(2000);
+		getReusableActionsInstance().staticWait(3000);
 
 		this.btnSignInNav.click();
 		(new GlobalFooterPage(this.getDriver())).waitForPageLoading();
-		this.waitForCondition(Driver->{return this.lblSignIn.isDisplayed();},18000);
-		getReusableActionsInstance().staticWait(2000);
+		this.waitForCondition(Driver->{return this.lblSignIn.isDisplayed();},300000);
+		getReusableActionsInstance().staticWait(3000);
 
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputUserName);
 		this.inputUserName.sendKeys(lsUserName);
@@ -188,10 +188,7 @@ public class SignInPage extends BasePage {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSubmit);
 		this.btnSubmit.click();
 
-		waitForCondition(Driver->{return this.lblSignInPageTitle.isDisplayed();},30000);
-		getReusableActionsInstance().staticWait(2000);
-
-		return waitForCondition(Driver->{return !lsSignInMsg.equalsIgnoreCase(this.btnSignInMainMenu.getText());},30000);
+		return waitForCondition(Driver->{return !lsSignInMsg.equalsIgnoreCase(this.btnSignInMainMenu.getText());},300000);
 	}
 
 	public boolean goToSignInPage() {
