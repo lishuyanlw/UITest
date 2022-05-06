@@ -481,12 +481,13 @@ public class MyAccount extends BasePage {
 	 * To uncollapse all order service items
 	 */
 	public void UnCollapsedAllOrderServiceItems(){
-		for(WebElement item:this.lstOrderServiceItemTitleLink){
-			if(!item.getAttribute("class").isEmpty()){
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-				this.getReusableActionsInstance().clickIfAvailable(item);
+		for(int i=0;i<this.lstOrderServiceItemTitleLink.size();i++){
+			final int tempIndex=i;
+			if(!this.lstOrderServiceItemTitleLink.get(i).getAttribute("class").isEmpty()){
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(lstOrderServiceItemTitleLink.get(i));
+				this.getReusableActionsInstance().clickIfAvailable(lstOrderServiceItemTitleLink.get(i));
 				this.waitForCondition(Driver->{
-					return item.getAttribute("class").isEmpty();},5000);
+					return lstOrderServiceItemTitleLink.get(tempIndex).getAttribute("class").isEmpty();},20000);
 				this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 			}
 		}
