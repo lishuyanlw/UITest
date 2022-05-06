@@ -1,10 +1,17 @@
 package com.tsc.test.tests.myAccount;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.tsc.api.apiBuilder.AccountAPI;
+import com.tsc.api.apiBuilder.CartAPI;
+import com.tsc.api.pojo.AccountResponse;
 import com.tsc.api.util.DataConverter;
+import com.tsc.api.util.JsonParser;
 import com.tsc.data.Handler.TestDataHandler;
+import com.tsc.data.pojos.ConstantData;
 import com.tsc.pages.GlobalHeaderPage;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
+import io.restassured.response.Response;
 import org.json.simple.JSONObject;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
@@ -38,6 +45,21 @@ public class MA_TC01_Payment_Options_Add_New_Credit_Card extends BaseTest {
         String lblUserName = TestDataHandler.constantData.getMyAccount().getLbl_Username();
         String lblPassword = TestDataHandler.constantData.getMyAccount().getLbl_Password();
         String lblFirstName = TestDataHandler.constantData.getMyAccount().getLbl_FirstName();
+
+        //Fetching test data from test data file
+        ConstantData.APIUserSessionParams apiUserSessionParams = TestDataHandler.constantData.getApiUserSessionParams();
+        apiUserSessionData = apiResponseThreadLocal.get().getApiUserSessionData(lblUserName,lblPassword,apiUserSessionParams.getLbl_grantType(),apiUserSessionParams.getLbl_apiKey());
+
+        String accessToken = apiUserSessionData.get("access_token").toString();
+        String customerEDP = apiUserSessionData.get("customerEDP").toString();
+        AccountAPI accountAPI=new AccountAPI();
+        CartAPI cartAPI=new CartAPI();
+        Response response=accountAPI.getAccountDetailsFromCustomerEDP(customerEDP, accessToken);
+        AccountResponse accountResponse= JsonParser.getResponseObject(response.asString(), new TypeReference<AccountResponse>() {});
+        for(AccountResponse.CreditCardsClass item:accountResponse.getCreditCards()){
+            cartAPI.deletePaymentDetailsForUserFromCart(customerEDP,item.getId()+"",accessToken);
+        }
+
         //Login using valid username and password
         getGlobalLoginPageThreadLocal().Login(lblUserName, lblPassword);
 
