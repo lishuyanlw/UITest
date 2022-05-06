@@ -164,43 +164,34 @@ public class SignInPage extends BasePage {
 	 * Method to login
 	 * @param-String lsUserName: user name
 	 * @param-String lsPassword: password
-	 * @param-String lsFirstName: user's first name
 	 * @return true/false
 	 * @author Wei.Li
 	 */
 	public boolean Login(String lsUserName, String lsPassword) {
-		getReusableActionsInstance().javascriptScrollToTopOfPage();
-		String strBrowser = System.getProperty("Browser").trim();
-		if (strBrowser.toLowerCase().contains("android") || strBrowser.toLowerCase().contains("ios")
-				|| strBrowser.toLowerCase().contains("mobile")) {
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInMainMenu);
-			this.getReusableActionsInstance().clickIfAvailable(this.btnSignInMainMenu);
-			//this.btnSignInMainMenu.click();
-		} else {
-			this.getReusableActionsInstance().scrollToElement(this.btnSignInMainMenu);
-		}			
-		getReusableActionsInstance().staticWait(3000);
-		
-		this.getReusableActionsInstance().clickIfAvailable(this.btnSignInNav);
-		//this.btnSignInNav.click();
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.cntBlackHeaderContainer);
+		getReusableActionsInstance().staticWait(2000);
+
+		this.clickElement(this.btnSignInMainMenu);
+		getReusableActionsInstance().staticWait(2000);
+
+		this.btnSignInNav.click();
 		(new GlobalFooterPage(this.getDriver())).waitForPageLoading();
-		waitForCondition(Driver->{return this.inputUserName.isEnabled();},10000);
+		this.waitForCondition(Driver->{return this.lblSignIn.isDisplayed();},18000);
+		getReusableActionsInstance().staticWait(2000);
+
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputUserName);
 		this.inputUserName.sendKeys(lsUserName);
-		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputPassword);
 		this.inputPassword.sendKeys(lsPassword);
-		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
-		
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSubmit);
-		this.getReusableActionsInstance().clickIfAvailable(this.btnSubmit);
-		//this.btnSubmit.click();
-		getReusableActionsInstance().javascriptScrollToTopOfPage();
-		getReusableActionsInstance().staticWait(5000);
 
-		this.waitForPageToLoad();
-		return waitForCondition(Driver->{return lblSignInGlobalResponseBanner.isDisplayed();},120000);
-				
+		String lsSignInMsg=this.btnSignInMainMenu.getText();
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSubmit);
+		this.btnSubmit.click();
+
+		waitForCondition(Driver->{return this.lblSignInPageTitle.isDisplayed();},30000);
+		getReusableActionsInstance().staticWait(2000);
+
+		return waitForCondition(Driver->{return !lsSignInMsg.equalsIgnoreCase(this.btnSignInMainMenu.getText());},30000);
 	}
 
 	public boolean goToSignInPage() {
@@ -369,7 +360,7 @@ public class SignInPage extends BasePage {
 		this.inputUserName.sendKeys(lsUserName);
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputPassword);
 		this.inputPassword.sendKeys(lsPassword);
-		
+
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInMainMenu);
 		String lsSignInMsg=this.btnSignInMainMenu.getText().trim();
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSubmit);
