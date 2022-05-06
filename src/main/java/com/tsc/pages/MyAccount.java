@@ -1072,7 +1072,7 @@ public class MyAccount extends BasePage {
 
 		this.waitForCondition(Driver->{return loadingIndicator.isDisplayed();},50000);
 
-		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+		this.getReusableActionsInstance().staticWait(3*this.getStaticWaitForApplication());
 	}
 
 	/**

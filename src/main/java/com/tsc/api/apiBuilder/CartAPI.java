@@ -83,6 +83,33 @@ public class CartAPI extends ApiClient {
     }
 
     /**
+     * @param - access_token - access token for api authentication
+     * @param - CartGuid - Cart Guid
+     * @param - int - keepingNumber
+     * @return - Response - API Response
+     */
+    public Response deleteCartItemWithGuid(String access_token, String CartGuid,int keepingNumber) {
+        Response getResponse=this.getCartContentWithCartGuid(access_token, CartGuid);
+        if(getResponse.jsonPath().getList("CartLines").size()<=keepingNumber){
+            return getResponse;
+        }
+
+        AccountCartResponse accountCartGet= JsonParser.getResponseObject(getResponse.asString(), new TypeReference<AccountCartResponse>() {});
+        List<AccountCartResponse.CartLinesClass> cartLines=accountCartGet.getCartLines();
+        Response response=null;
+        int cartLinesSize=cartLines.size();
+        AccountCartResponse.CartLinesClass lines=null;
+        if(cartLinesSize>0){
+            for(int i=0;i<cartLinesSize-keepingNumber;i++){
+                lines= cartLines.get(i);
+                response=deleteApiCallResponseAfterAuthentication(propertyData.get("test_apiVersion") + "/" + propertyData.get("test_language")+"/carts/" + CartGuid + "/cartLines/" + lines.getId(), access_token);
+            }
+        }
+
+        return response;
+    }
+
+    /**
      * @param - itemEDP - Item EDP Number to be added
      * @param - quantity - Quantity of item to be added
      * @param - customerEDP - Customer EDP Number where cart is created
