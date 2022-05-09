@@ -126,11 +126,21 @@ public class MA_TC09_AccountSettings_ChangeSecurityQuestions extends BaseTest {
         basePage.getReusableActionsInstance().javascriptScrollByVisibleElement(getMyAccountPageThreadLocal().selectChangeSecurityQuestionSectionQuestion);
         Select select=new Select(getMyAccountPageThreadLocal().selectChangeSecurityQuestionSectionQuestion);
         int selectedValue= Integer.parseInt(select.getFirstSelectedOption().getAttribute("value"));
-        if(selectedValue==-1){
-            reporter.reportLogPass("There is no selected security question by clicking Cancel button");
+        if(lsTestDevice.equalsIgnoreCase("Desktop")){
+            if(selectedValue==-1){
+                reporter.reportLogPass("There is no selected security question by clicking Cancel button");
+            }
+            else{
+                reporter.reportLogFailWithScreenshot("There still is selected security question:"+selectedValue+" by clicking Cancel button");
+            }
         }
         else{
-            reporter.reportLogFailWithScreenshot("There still is selected security question by clicking Cancel button");
+            if(selectedValue!=-1){
+                reporter.reportLogPass("The selected security question:"+selectedValue+" by clicking Cancel button is displaying correctly");
+            }
+            else{
+                reporter.reportLogFailWithScreenshot("There is no selected security question by clicking Cancel button is not displaying correctly");
+            }
         }
 
         reporter.reportLog("Verify clicking Submit button");
