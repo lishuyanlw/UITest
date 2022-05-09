@@ -184,11 +184,10 @@ public class SignInPage extends BasePage {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputPassword);
 		this.inputPassword.sendKeys(lsPassword);
 
-		String lsSignInMsg=this.btnSignInMainMenu.getText();
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSubmit);
 		this.btnSubmit.click();
 
-		return waitForCondition(Driver->{return !lsSignInMsg.equalsIgnoreCase(this.btnSignInMainMenu.getText());},300000);
+		return waitForCondition(Driver->{return lblSignInGlobalResponseBanner.isDisplayed();},300000);
 	}
 
 	public boolean goToSignInPage() {

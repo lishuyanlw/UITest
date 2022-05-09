@@ -3406,7 +3406,7 @@ public class ProductResultsPage extends BasePage{
 		WebElement item,element;
 
 		if(System.getProperty("Device").equalsIgnoreCase("Desktop")){
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lstFilterApplied.get(0));
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstFilterApplied.get(0));
 			for(int counter=0;counter<lstFilterApplied.size();counter++){
 				filterName = lstFilterApplied.get(counter).getText();
 				if(brandName.toLowerCase().trim().equals(filterName.toLowerCase().trim())){
