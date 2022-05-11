@@ -23,8 +23,8 @@ public class MA_TC11_Payment_Options_Gift_Card_Balance extends BaseTest {
         String invalidGiftCardPinErrorMessage = TestDataHandler.constantData.getMyAccount().getLbl_invalidGiftCardPinErrorMessage();
         String giftCardPageURL = TestDataHandler.constantData.getMyAccount().getLnk_giftCardURL();
 
-        String lblUserName = TestDataHandler.constantData.getMyAccount().getLbl_Username();
-        String lblPassword = TestDataHandler.constantData.getMyAccount().getLbl_Password();
+        String lblUserName = TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
+        String lblPassword = TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
 
         //Login using valid username and password
         getGlobalLoginPageThreadLocal().Login(lblUserName,lblPassword);

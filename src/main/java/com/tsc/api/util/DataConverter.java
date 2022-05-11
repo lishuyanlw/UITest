@@ -110,7 +110,7 @@ public class DataConverter {
         String SALTCHARS = "";
         switch (lsType) {
             case "numberType":
-                SALTCHARS = "1234567890";
+                SALTCHARS = "123456789";
                 break;
             case "stringType":
                 SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
