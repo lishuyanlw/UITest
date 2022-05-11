@@ -975,6 +975,7 @@ public class ConstantData {
         public String lnk_myAccountRecentlyViewedURL;
         public String lbl_myNewsLettersTitle;
         public String lnk_myAccountNewsLetterURL;
+        public String lbl_autoSearchKeyword;
 
         public String getLbl_Username() {
             return lbl_Username;
@@ -1250,6 +1251,14 @@ public class ConstantData {
 
         public void setLnk_myAccountNewsLetterURL(String lnk_myAccountNewsLetterURL) {
             this.lnk_myAccountNewsLetterURL = lnk_myAccountNewsLetterURL;
+        }
+
+        public String getLbl_autoSearchKeyword() {
+            return lbl_autoSearchKeyword;
+        }
+
+        public void setLbl_autoSearchKeyword(String lbl_autoSearchKeyword) {
+            this.lbl_autoSearchKeyword = lbl_autoSearchKeyword;
         }
     }
 

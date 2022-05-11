@@ -71,7 +71,7 @@ public class MA_TC02_OrderStatus extends BaseTest {
             String lbl_orderSearchErrorMessage=TestDataHandler.constantData.getMyAccount().getLbl_orderSearchErrorMessage();
             getMyAccountPageThreadLocal().verifyOrderSearchErrorMessage(lbl_orderSearchErrorMessage);
 
-            getMyAccountPageThreadLocal().goBackUpperLevel();
+            basePage.navigateBack();
 
             reporter.reportLog("Verify search order function with valid orderNO");
             String lnk_orderDetailsURL=TestDataHandler.constantData.getMyAccount().getLnk_orderDetailsURL();

@@ -33,10 +33,28 @@ public class MA_TC14_YourAddresses_AddingAddress extends BaseTest {
         String lblUserName = TestDataHandler.constantData.getMyAccount().getLbl_Username();
         String lblPassword = TestDataHandler.constantData.getMyAccount().getLbl_Password();
 
+        //Fetching test data from test data file and remove CC info
+        ConstantData.APIUserSessionParams apiUserSessionParams = TestDataHandler.constantData.getApiUserSessionParams();
+        apiUserSessionData = apiResponseThreadLocal.get().getApiUserSessionData(lblUserName,lblPassword,apiUserSessionParams.getLbl_grantType(),apiUserSessionParams.getLbl_apiKey());
+        String accessToken = apiUserSessionData.get("access_token").toString();
+        String customerEDP = apiUserSessionData.get("customerEDP").toString();
+        AccountAPI accountAPI=new AccountAPI();
+        AccountResponse accountResponse=getApiResponseThreadLocal().getUserDetailsFromCustomerEDP(customerEDP,accessToken);
+        List<AccountResponse.AddressClass> addressClasses=accountResponse.getShippingAddresses();
+        if(!addressClasses.isEmpty()){
+            for(int i=0;i<addressClasses.size();i++){
+                accountAPI.deletingShippingAddressInAccount(accountResponse,customerEDP,accessToken,i);
+            }
+        }
+
         //Login using valid username and password
         getGlobalLoginPageThreadLocal().Login(lblUserName, lblPassword);
 
         String lsTestDevice = System.getProperty("Device").trim();
+
+        getMyAccountPageThreadLocal().openSubItemWindow("Your Addresses", "Shipping Address", getMyAccountPageThreadLocal().lblYourAddressTitle);
+        int addressAmountBeforeAdding=getMyAccountPageThreadLocal().lstShippingAddressContainer.size();
+        getMyAccountPageThreadLocal().goBackUpperLevel();
 
         getMyAccountPageThreadLocal().openSubItemWindow("Your Addresses", "Add a New Address", getMyAccountPageThreadLocal().lblAddOrEditAddressTitle);
 
@@ -50,13 +68,6 @@ public class MA_TC14_YourAddresses_AddingAddress extends BaseTest {
 
         if (!lsTestDevice.equalsIgnoreCase("Mobile")) {
             reporter.reportLog("Verify customer information");
-            //Fetching test data from test data file
-            ConstantData.APIUserSessionParams apiUserSessionParams = TestDataHandler.constantData.getApiUserSessionParams();
-            apiUserSessionData = apiResponseThreadLocal.get().getApiUserSessionData(lblUserName, lblPassword, apiUserSessionParams.getLbl_grantType(), apiUserSessionParams.getLbl_apiKey());
-
-            String accessToken = apiUserSessionData.get("access_token").toString();
-            String customerEDP = apiUserSessionData.get("customerEDP").toString();
-            AccountResponse accountResponse=getApiResponseThreadLocal().getUserDetailsFromCustomerEDP(customerEDP, accessToken);
             String customerNumber = accountResponse.getCustomerNo();
             String userCustomerNumber = getGlobalLoginPageThreadLocal().getCustomerNumberForLoggedInUser();
             if (customerNumber.equals(userCustomerNumber))
@@ -71,7 +82,38 @@ public class MA_TC14_YourAddresses_AddingAddress extends BaseTest {
             }
         }
 
-        getMyAccountPageThreadLocal().addNewAddress(true,false,false);
+        reporter.reportLog("Adding a new shipping address");
+        String lsAutoSearchKeyword = TestDataHandler.constantData.getMyAccount().getLbl_autoSearchKeyword();
+        getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeyword,false,false,0);
+        getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
+        int addressAmountAfterAdding=getMyAccountPageThreadLocal().lstShippingAddressContainer.size();
+        if((addressAmountAfterAdding-addressAmountBeforeAdding)==1){
+            reporter.reportLogPass("Adding a new address successfully");
+        }
+        else{
+            reporter.reportLogFail("Adding a new address failed");
+        }
+
+        reporter.reportLog("Verify make default shipping address scenario");
+
+        reporter.reportLog("Verify auto search function for address");
+        getMyAccountPageThreadLocal().openAddOrEditAddressWindow("addShippingAddress",null);
+        getMyAccountPageThreadLocal().verifyAutoSearchForAddress(false);
+        getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(false);
+
+        reporter.reportLog("Verify adding duplicated address");
+        getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeyword,false,false,0);
+        basePage.getReusableActionsInstance().javascriptScrollByVisibleElement(getMyAccountPageThreadLocal().lblAddOrEditAddressExistingErrorMessage);
+        String lsActualErrorMessage=getMyAccountPageThreadLocal().lblAddOrEditAddressExistingErrorMessage.getText().trim();
+        String lsExpectedErrorMessage = TestDataHandler.constantData.getMyAccount().getLbl_addAddressExistingErrorMessage();
+        if(lsActualErrorMessage.equalsIgnoreCase(lsExpectedErrorMessage)){
+            reporter.reportLogPass("The duplicated address error message is displaying correctly");
+        }
+        else{
+            reporter.reportLogFailWithScreenshot("The duplicated address error message:'"+lsActualErrorMessage+"' is not displaying as expected:'"+lsExpectedErrorMessage+"'");
+        }
+        getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(false);
+
 
     }
 }

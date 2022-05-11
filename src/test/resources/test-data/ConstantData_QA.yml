@@ -235,3 +235,4 @@ myAccount:
   lnk_myAccountRecentlyViewedURL: "/pages/myaccount/recentlyviewed"
   lbl_myNewsLettersTitle: "MY NEWSLETTERS"
   lnk_myAccountNewsLetterURL: "/pages/myaccount/newsletter"
+  lbl_autoSearchKeyword: "200"

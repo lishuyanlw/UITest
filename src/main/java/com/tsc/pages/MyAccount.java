@@ -23,7 +23,7 @@ public class MyAccount extends BasePage {
 	}
 
 	//Navigation breadcrumb
-	@FindBy(xpath = "//ng-component/div[not(@hidden)]//div[contains(@class,'go-back')]//ol[@class='breadcrumb']//li//a")
+	@FindBy(xpath = "//ng-component//div[contains(@class,'go-back')]//ol[@class='breadcrumb']//li//a")
 	public List<WebElement> lstNavigationCrumbList;
 
 	//Account summary container
@@ -1525,11 +1525,11 @@ public class MyAccount extends BasePage {
 	 * To go back to upper level page
 	 */
 	public void goBackUpperLevel(){
-		WebElement lastNavigationElement=this.lstNavigationCrumbList.get(this.lstNavigationCrumbList.size()-1);
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lastNavigationElement);
-		this.getReusableActionsInstance().clickIfAvailable(lastNavigationElement);
+		WebElement upperNavigationElement=this.lstNavigationCrumbList.get(this.lstNavigationCrumbList.size()-2);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(upperNavigationElement);
+		this.getReusableActionsInstance().clickIfAvailable(upperNavigationElement);
 
-		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+		this.getReusableActionsInstance().staticWait(2*this.getStaticWaitForApplication());
 	}
 
 	public void verifyOrderSearchErrorMessage(String lsExpectedErrorMessage){
@@ -2882,6 +2882,23 @@ public class MyAccount extends BasePage {
 	}
 
 	/**
+	 * To close add or edit an address window
+	 * @param - boolean - bSave - clicking Save/Cancel button
+	 * @return - boolean
+	 */
+	public boolean closeAddOrEditAddressWindow(boolean bSave){
+		if(bSave){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnSave);
+			this.getReusableActionsInstance().clickIfAvailable(btnSave);
+		}
+		else{
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnCancel);
+			this.getReusableActionsInstance().clickIfAvailable(btnCancel);
+		}
+		return this.waitForCondition(Driver->{return this.lblYourAddressTitle.isDisplayed();},10000);
+	}
+
+	/**
 	 * To verify your address content
 	 */
 	public void verifyYourAddresses(){
@@ -2983,13 +3000,14 @@ public class MyAccount extends BasePage {
 	}
 
 	/**
-	 * To add an new address
-	 * @param - bSave
-	 * @param - bMakeDefaultShippingAddress
-	 * @param - bMakeBillingAddress
+	 * To add a new address
+	 * @param - String - lsAutoSearchKeyword
+	 * @param - false - bMakeDefaultShippingAddress
+	 * @param - false - bMakeBillingAddress
+	 * @param - int - selectedIndexInDropdownMenu
 	 * @return - Map<String,String> - including firstName,lastName,address
 	 */
-	public Map<String,String> addNewAddress(boolean bSave,boolean bMakeDefaultShippingAddress,boolean bMakeBillingAddress){
+	public Map<String,String> addNewAddress(String lsAutoSearchKeyword, boolean bMakeDefaultShippingAddress,boolean bMakeBillingAddress,int selectedIndexInDropdownMenu){
 		String lsFirstName=DataConverter.getSaltString(1,"upperStringType")+DataConverter.getSaltString(5,"lowerStringType");
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressFirstName);
 		inputAddOrEditAddressFirstName.clear();
@@ -3042,165 +3060,29 @@ public class MyAccount extends BasePage {
 			}
 		}
 
-		String lsAddress=DataConverter.getSaltString(3,"numberType")+DataConverter.getSaltString(1,"upperStringType")+DataConverter.getSaltString(9,"lowerStringType")+"Road";
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressLine1);
 		inputAddOrEditAddressLine1.clear();
-		inputAddOrEditAddressLine1.sendKeys(lsAddress);
-		this.getReusableActionsInstance().staticWait(300);
-
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressCity);
-		inputAddOrEditAddressCity.clear();
-		inputAddOrEditAddressCity.sendKeys("Ottawa");
-		this.getReusableActionsInstance().staticWait(300);
-
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(selectAddOrEditAddressProvince);
-		Select selectProvince=new Select(selectAddOrEditAddressProvince);
-		selectProvince.selectByVisibleText("Ontario");
-		this.getReusableActionsInstance().staticWait(300);
-
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPostalCode1);
-		inputAddOrEditAddressPostalCode1.clear();
-		inputAddOrEditAddressPostalCode1.sendKeys("K1V");
-		this.getReusableActionsInstance().staticWait(300);
-
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPostalCode2);
-		inputAddOrEditAddressPostalCode2.clear();
-		inputAddOrEditAddressPostalCode2.sendKeys("9A3");
-		this.getReusableActionsInstance().staticWait(300);
+		inputAddOrEditAddressLine1.sendKeys(lsAutoSearchKeyword);
+		this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: block;");},10000);
+		String lsAddress=this.lstAddOrEditAddressAutoSearchDropdownItems.get(selectedIndexInDropdownMenu).getText();
+		this.lstAddOrEditAddressAutoSearchDropdownItems.get(selectedIndexInDropdownMenu).click();
+		this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: none;");},10000);
+		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 
 		Map<String,String> map=new HashMap<>();
-		if(bSave){
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnSave);
-			this.getReusableActionsInstance().clickIfAvailable(btnSave);
-
-			map.put("firstName",lsFirstName);
-			map.put("lastName",lsLastName);
-			map.put("address",lsAddress);
-		}
-		else{
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnCancel);
-			this.getReusableActionsInstance().clickIfAvailable(btnCancel);
-			map=null;
-		}
-		this.waitForCondition(Driver->{return this.lblYourAddressTitle.isDisplayed();},10000);
+		map.put("firstName",lsFirstName);
+		map.put("lastName",lsLastName);
+		map.put("address",lsAddress);
 
 		return map;
 	}
 
-	/**
-	 * To verify adding duplicated address
-	 * @param mapAddress
-	 * @param errorMessage
-	 */
-	public void verifyAddingDuplicatedAddress(Map<String,String> mapAddress,String errorMessage){
-		String lsFirstName=DataConverter.getSaltString(1,"upperStringType")+DataConverter.getSaltString(5,"lowerStringType");
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressFirstName);
-		inputAddOrEditAddressFirstName.clear();
-		inputAddOrEditAddressFirstName.sendKeys(lsFirstName);
-		this.getReusableActionsInstance().staticWait(300);
-
-		String lsLastName=DataConverter.getSaltString(1,"upperStringType")+DataConverter.getSaltString(7,"lowerStringType");
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressLastName);
-		inputAddOrEditAddressLastName.clear();
-		inputAddOrEditAddressLastName.sendKeys(lsLastName);
-		this.getReusableActionsInstance().staticWait(300);
-
-		String lsPhoneNumber1="647";
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPhoneNumber1);
-		inputAddOrEditAddressPhoneNumber1.clear();
-		inputAddOrEditAddressPhoneNumber1.sendKeys(lsPhoneNumber1);
-		this.getReusableActionsInstance().staticWait(300);
-
-		String lsPhoneNumber2=DataConverter.getSaltString(3,"numberType");
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPhoneNumber2);
-		inputAddOrEditAddressPhoneNumber2.clear();
-		inputAddOrEditAddressPhoneNumber2.sendKeys(lsPhoneNumber2);
-		this.getReusableActionsInstance().staticWait(300);
-
-		String lsPhoneNumber3=DataConverter.getSaltString(4,"numberType");
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPhoneNumber3);
-		inputAddOrEditAddressPhoneNumber3.clear();
-		inputAddOrEditAddressPhoneNumber3.sendKeys(lsPhoneNumber3);
-		this.getReusableActionsInstance().staticWait(300);
-
-		String lsAddress=DataConverter.getSaltString(3,"numberType")+DataConverter.getSaltString(1,"upperStringType")+DataConverter.getSaltString(9,"lowerStringType")+"Road";
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressLine1);
-		inputAddOrEditAddressLine1.clear();
-		inputAddOrEditAddressLine1.sendKeys(lsAddress);
-		this.getReusableActionsInstance().staticWait(300);
-
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressCity);
-		inputAddOrEditAddressCity.clear();
-		inputAddOrEditAddressCity.sendKeys("Ottawa");
-		this.getReusableActionsInstance().staticWait(300);
-
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(selectAddOrEditAddressProvince);
-		Select selectProvince=new Select(selectAddOrEditAddressProvince);
-		selectProvince.selectByVisibleText("Ontario");
-		this.getReusableActionsInstance().staticWait(300);
-
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPostalCode1);
-		inputAddOrEditAddressPostalCode1.clear();
-		inputAddOrEditAddressPostalCode1.sendKeys("K1V");
-		this.getReusableActionsInstance().staticWait(300);
-
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPostalCode2);
-		inputAddOrEditAddressPostalCode2.clear();
-		inputAddOrEditAddressPostalCode2.sendKeys("9A3");
-		this.getReusableActionsInstance().staticWait(300);
-
-		for (Map.Entry<String, String> entry : mapAddress.entrySet()) {
-			switch(entry.getKey()){
-				case "address":
-					this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressLine1);
-					inputAddOrEditAddressLine1.clear();
-					inputAddOrEditAddressLine1.sendKeys(entry.getValue());
-					this.getReusableActionsInstance().staticWait(300);
-					break;
-				case "city":
-					this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressCity);
-					inputAddOrEditAddressCity.clear();
-					inputAddOrEditAddressCity.sendKeys(entry.getValue());
-					this.getReusableActionsInstance().staticWait(300);
-					break;
-				case "province":
-					this.getReusableActionsInstance().javascriptScrollByVisibleElement(selectAddOrEditAddressProvince);
-					selectProvince.selectByVisibleText(entry.getValue());
-					this.getReusableActionsInstance().staticWait(300);
-					break;
-				case "postalCode1":
-					this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPostalCode1);
-					inputAddOrEditAddressPostalCode1.clear();
-					inputAddOrEditAddressPostalCode1.sendKeys(entry.getValue());
-					this.getReusableActionsInstance().staticWait(300);
-					break;
-				case "postalCode2":
-					this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPostalCode2);
-					inputAddOrEditAddressPostalCode2.clear();
-					inputAddOrEditAddressPostalCode2.sendKeys(entry.getValue());
-					this.getReusableActionsInstance().staticWait(300);
-					break;
-			}
-		}
-
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnSave);
-		this.getReusableActionsInstance().clickIfAvailable(btnSave);
-		this.waitForCondition(Driver->{return this.lblAddOrEditAddressExistingErrorMessage.isDisplayed();},10000);
-
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAddOrEditAddressExistingErrorMessage);
-		String lsText=this.lblAddOrEditAddressExistingErrorMessage.getText().trim();
-		if(lsText.equalsIgnoreCase(errorMessage)){
-			reporter.reportLogPass("The error message for adding existing address is displaying correctly");
-		}
-		else{
-			reporter.reportLogFailWithScreenshot("The error message for adding existing address:'"+lsText+"' is not displaying correctly");
-		}
-	}
 
 	/**
 	 * To verify Auto Search function For Address input
+	 * @param - boolean - bCancel - clicking Cancel button to close Add/Edit window
 	 */
-	public void verifyAutoSearchForAddress(){
+	public void verifyAutoSearchForAddress(boolean bCancel){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressCity);
 		inputAddOrEditAddressCity.clear();
 		this.getReusableActionsInstance().staticWait(300);
@@ -3262,50 +3144,6 @@ public class MyAccount extends BasePage {
 		else{
 			reporter.reportLogFailWithScreenshot("Auto search function is not working well for Postal Code field 2");
 		}
-	}
-
-	/**
-	 * To get the given shipping address info(Address,city,province,postal code)
-	 * @param - shippingAddressIndex
-	 * @return - Map<String,String>
-	 */
-	public Map<String,String> getGivenShippingAddress(int shippingAddressIndex){
-		if(this.lstShippingAddressContainer.size()==1){
-			reporter.reportLogFail("Just only one shipping address, need add extra shipping address");
-		}
-
-		WebElement shippingAddressContainer=this.lstShippingAddressContainer.get(shippingAddressIndex);
-		WebElement editButton=shippingAddressContainer.findElement(this.byShippingAddressEdit);
-		this.openAddOrEditAddressWindow("editShippingAddress",editButton);
-
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressLine1);
-		String lsAddress=inputAddOrEditAddressLine1.getAttribute("value");
-
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressCity);
-		String lsCity=inputAddOrEditAddressCity.getAttribute("value");
-
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(selectAddOrEditAddressProvince);
-		Select selectProvince=new Select(selectAddOrEditAddressProvince);
-		String lsProvince=selectProvince.getFirstSelectedOption().getText();
-
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPostalCode1);
-		String lsPostalCode1=inputAddOrEditAddressPostalCode1.getAttribute("value");
-
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPostalCode2);
-		String lsPostalCode2=inputAddOrEditAddressPostalCode2.getAttribute("value");
-
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnCancel);
-		this.getReusableActionsInstance().clickIfAvailable(btnCancel);
-		this.waitForCondition(Driver->{return this.lblYourAddressTitle.isDisplayed();},10000);
-
-		Map<String,String> map=new HashMap<>();
-		map.put("address",lsAddress);
-		map.put("city",lsCity);
-		map.put("province",lsProvince);
-		map.put("postalCode1",lsPostalCode1);
-		map.put("postalCode2",lsPostalCode2);
-
-		return map;
 	}
 
 
