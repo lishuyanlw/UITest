@@ -53,7 +53,7 @@ public class SR_TC13_VerifyProductSearchResult_FavoriteIconActionTest extends Ba
 	productList=getProductResultsPageThreadLocal().getProductList();
 	if(productList.size()>0) {
 //		getProductResultsPageThreadLocal().verifySearchResultContent(productList);
-		getProductResultsPageThreadLocal().verifyFavoriteIconAction(lsUserName, lsPassword,lsFirstName,lst_SearchKeyword.get(3),getProductDetailPageThreadLocal());
+		getProductResultsPageThreadLocal().verifyFavoriteIconAction(lsUserName, lsPassword,lsFirstName,lst_SearchKeyword.get(3),getProductDetailPageThreadLocal(),getMyAccountPageThreadLocal());
 	}
 	else {
 		reporter.reportLogFail("No product results available");

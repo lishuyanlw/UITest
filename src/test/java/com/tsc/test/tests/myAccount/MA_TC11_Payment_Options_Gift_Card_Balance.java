@@ -25,7 +25,7 @@ public class MA_TC11_Payment_Options_Gift_Card_Balance extends BaseTest {
 
         String lblUserName = TestDataHandler.constantData.getMyAccount().getLbl_Username();
         String lblPassword = TestDataHandler.constantData.getMyAccount().getLbl_Password();
-        String lblFirstName = TestDataHandler.constantData.getMyAccount().getLbl_FirstName();
+
         //Login using valid username and password
         getGlobalLoginPageThreadLocal().Login(lblUserName,lblPassword);
 

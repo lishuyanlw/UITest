@@ -44,7 +44,6 @@ public class MA_TC01_Payment_Options_Add_New_Credit_Card extends BaseTest {
 
         String lblUserName = TestDataHandler.constantData.getMyAccount().getLbl_Username();
         String lblPassword = TestDataHandler.constantData.getMyAccount().getLbl_Password();
-        String lblFirstName = TestDataHandler.constantData.getMyAccount().getLbl_FirstName();
 
         //Fetching test data from test data file and remove CC info
         ConstantData.APIUserSessionParams apiUserSessionParams = TestDataHandler.constantData.getApiUserSessionParams();
@@ -61,20 +60,6 @@ public class MA_TC01_Payment_Options_Add_New_Credit_Card extends BaseTest {
 
         //Login using valid username and password
         getGlobalLoginPageThreadLocal().Login(lblUserName, lblPassword);
-
-        String lsTestDevice = System.getProperty("Device").trim();
-        BasePage basePage=new BasePage(this.getDriver());
-        if(lsTestDevice.equalsIgnoreCase("Desktop")) {
-            WebElement item=(new GlobalHeaderPage(this.getDriver())).Signinlnk;
-            basePage.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-            basePage.waitForCondition(Driver->{return !item.getText().isEmpty()&&item.getText().trim().toUpperCase().contains(lblFirstName.trim().toUpperCase());},12000);
-            if(item.getText().trim().toUpperCase().contains(lblFirstName.trim().toUpperCase())) {
-                reporter.reportLogPass("The SignIn in the header contains SignIn first name");
-            }
-            else{
-                reporter.reportLogFailWithScreenshot("The SignIn in the header does not contain SignIn first name");
-            }
-        }
 
         //Adding Credit Card of all types
         for(String inputCardType:creditCardTypes){

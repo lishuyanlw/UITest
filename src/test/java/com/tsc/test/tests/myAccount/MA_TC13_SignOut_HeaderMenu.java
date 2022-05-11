@@ -24,22 +24,11 @@ public class MA_TC13_SignOut_HeaderMenu extends BaseTest {
         BasePage basePage=new BasePage(this.getDriver());
         String lblUserName = TestDataHandler.constantData.getMyAccount().getLbl_Username();
         String lblPassword = TestDataHandler.constantData.getMyAccount().getLbl_Password();
-        String lblFirstName = TestDataHandler.constantData.getMyAccount().getLbl_FirstName();
+
         //Login using valid username and password
         getGlobalLoginPageThreadLocal().Login(lblUserName, lblPassword);
 
         String lsTestDevice = System.getProperty("Device").trim();
-        if(lsTestDevice.equalsIgnoreCase("Desktop")) {
-            WebElement item=(new GlobalHeaderPage(this.getDriver())).Signinlnk;
-            basePage.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-            basePage.waitForCondition(Driver->{return !item.getText().isEmpty()&&item.getText().trim().toUpperCase().contains(lblFirstName.trim().toUpperCase());},12000);
-            if(item.getText().trim().toUpperCase().contains(lblFirstName.trim().toUpperCase())) {
-                reporter.reportLogPass("The SignIn in the header contains SignIn first name");
-            }
-            else{
-                reporter.reportLogFailWithScreenshot("The SignIn in the header does not contain SignIn first name");
-            }
-        }
 
         String lnk_landingViewURL=TestDataHandler.constantData.getMyAccount().getLnk_myAccountLandingViewURL();
         String expectedURL=basePage.getBaseURL()+lnk_landingViewURL;
@@ -64,15 +53,6 @@ public class MA_TC13_SignOut_HeaderMenu extends BaseTest {
                 getReporter().reportLogPass("User is successfully logged in with customer no: "+userCustomerNumber);
             else
                 getReporter().reportLogFailWithScreenshot("User is not logged in with expected customer no: "+userCustomerNumber+" but with other customer no: "+customerNumber);
-
-            basePage.getReusableActionsInstance().javascriptScrollByVisibleElement(getGlobalLoginPageThreadLocal().lblSignInPageTitle);
-            String lsSignInPageTitle=getGlobalLoginPageThreadLocal().lblSignInPageTitle.getText();
-            if(lsSignInPageTitle.toUpperCase().contains(lblFirstName.toUpperCase())){
-                reporter.reportLogPass("The Title contains SignIn user's name");
-            }
-            else{
-                reporter.reportLogFailWithScreenshot("The Title does not contain SignIn user's name");
-            }
 
             if(basePage.getReusableActionsInstance().isElementVisible(getGlobalLoginPageThreadLocal().btnSignOut)){
                 reporter.reportLogPass("SignOut button is displaying correctly");
