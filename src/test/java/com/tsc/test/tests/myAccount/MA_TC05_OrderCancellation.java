@@ -19,8 +19,8 @@ public class MA_TC05_OrderCancellation extends BaseTest {
 
         reporter.reportLog("Verify SignIn");
         BasePage basePage=new BasePage(this.getDriver());
-        String lblUserName = TestDataHandler.constantData.getMyAccount().getLbl_Username();
-        String lblPassword = TestDataHandler.constantData.getMyAccount().getLbl_Password();
+        String lblUserName = TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
+        String lblPassword = TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
 
         //Login using valid username and password
         getGlobalLoginPageThreadLocal().Login(lblUserName, lblPassword);

@@ -433,8 +433,8 @@ public class BaseTest {
 	 * To add place order once no order within 75 days
 	 */
 	public void addPlaceOrder() throws IOException,InterruptedException {
-		String lblUserName = TestDataHandler.constantData.getMyAccount().getLbl_Username();
-		String lblPassword = TestDataHandler.constantData.getMyAccount().getLbl_Password();
+		String lblUserName = TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
+		String lblPassword = TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
 
 		ConstantData.APIUserSessionParams apiUserSessionParams = TestDataHandler.constantData.getApiUserSessionParams();
 		apiUserSessionData = apiResponseThreadLocal.get().getApiUserSessionData(lblUserName,lblPassword,apiUserSessionParams.getLbl_grantType(),apiUserSessionParams.getLbl_apiKey());

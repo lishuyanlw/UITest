@@ -937,9 +937,6 @@ public class ConstantData {
     }
 
     public static class MyAccount{
-        public String lbl_Username;
-        public String lbl_Password;
-        public String lbl_FirstName;
         public String lnk_addNewCardURL;
         public List<String> lst_newCreditCardType;
         public List<String> lbl_invalidCardErrorMessage;
@@ -975,31 +972,6 @@ public class ConstantData {
         public String lnk_myAccountRecentlyViewedURL;
         public String lbl_myNewsLettersTitle;
         public String lnk_myAccountNewsLetterURL;
-        public String lbl_autoSearchKeyword;
-
-        public String getLbl_Username() {
-            return lbl_Username;
-        }
-
-        public void setLbl_Username(String lbl_Username) {
-            this.lbl_Username = lbl_Username;
-        }
-
-        public String getLbl_Password() {
-            return lbl_Password;
-        }
-
-        public void setLbl_Password(String lbl_Password) {
-            this.lbl_Password = lbl_Password;
-        }
-
-        public String getLbl_FirstName() {
-            return lbl_FirstName;
-        }
-
-        public void setLbl_FirstName(String lbl_FirstName) {
-            this.lbl_FirstName = lbl_FirstName;
-        }
 
         public String getLnk_addNewCardURL() {            return lnk_addNewCardURL;        }
 
@@ -1253,13 +1225,6 @@ public class ConstantData {
             this.lnk_myAccountNewsLetterURL = lnk_myAccountNewsLetterURL;
         }
 
-        public String getLbl_autoSearchKeyword() {
-            return lbl_autoSearchKeyword;
-        }
-
-        public void setLbl_autoSearchKeyword(String lbl_autoSearchKeyword) {
-            this.lbl_autoSearchKeyword = lbl_autoSearchKeyword;
-        }
     }
 
 }
