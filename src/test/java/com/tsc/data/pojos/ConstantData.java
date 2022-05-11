@@ -962,6 +962,19 @@ public class ConstantData {
         public List<String>  lst_changingPasswordErrorMessage;
         public String lnk_myAccountLandingViewURL;
         public String lnk_URLAfterSignOut;
+        public String lbl_shippingAddressTitle;
+        public String lnk_myAccountShippingAddressURL;
+        public String lbl_addingAddressTitle;
+        public String lnk_myAccountAddingAddressURL;
+        public String lbl_billingAddressTitle;
+        public String lnk_myAccountBillingAddressURL;
+        public String lbl_addAddressExistingErrorMessage;
+        public String lbl_myFavouriteTitle;
+        public String lnk_myAccountFavouritesURL;
+        public String lbl_recentlyViewedTitle;
+        public String lnk_myAccountRecentlyViewedURL;
+        public String lbl_myNewsLettersTitle;
+        public String lnk_myAccountNewsLetterURL;
 
         public String getLbl_Username() {
             return lbl_Username;
@@ -1133,6 +1146,110 @@ public class ConstantData {
 
         public void setLnk_URLAfterSignOut(String lnk_URLAfterSignOut) {
             this.lnk_URLAfterSignOut = lnk_URLAfterSignOut;
+        }
+
+        public String getLbl_shippingAddressTitle() {
+            return lbl_shippingAddressTitle;
+        }
+
+        public void setLbl_shippingAddressTitle(String lbl_shippingAddressTitle) {
+            this.lbl_shippingAddressTitle = lbl_shippingAddressTitle;
+        }
+
+        public String getLnk_myAccountShippingAddressURL() {
+            return lnk_myAccountShippingAddressURL;
+        }
+
+        public void setLnk_myAccountShippingAddressURL(String lnk_myAccountShippingAddressURL) {
+            this.lnk_myAccountShippingAddressURL = lnk_myAccountShippingAddressURL;
+        }
+
+        public String getLbl_addingAddressTitle() {
+            return lbl_addingAddressTitle;
+        }
+
+        public void setLbl_addingAddressTitle(String lbl_addingAddressTitle) {
+            this.lbl_addingAddressTitle = lbl_addingAddressTitle;
+        }
+
+        public String getLnk_myAccountAddingAddressURL() {
+            return lnk_myAccountAddingAddressURL;
+        }
+
+        public void setLnk_myAccountAddingAddressURL(String lnk_myAccountAddingAddressURL) {
+            this.lnk_myAccountAddingAddressURL = lnk_myAccountAddingAddressURL;
+        }
+
+        public String getLbl_billingAddressTitle() {
+            return lbl_billingAddressTitle;
+        }
+
+        public void setLbl_billingAddressTitle(String lbl_billingAddressTitle) {
+            this.lbl_billingAddressTitle = lbl_billingAddressTitle;
+        }
+
+        public String getLnk_myAccountBillingAddressURL() {
+            return lnk_myAccountBillingAddressURL;
+        }
+
+        public void setLnk_myAccountBillingAddressURL(String lnk_myAccountBillingAddressURL) {
+            this.lnk_myAccountBillingAddressURL = lnk_myAccountBillingAddressURL;
+        }
+
+        public String getLbl_addAddressExistingErrorMessage() {
+            return lbl_addAddressExistingErrorMessage;
+        }
+
+        public void setLbl_addAddressExistingErrorMessage(String lbl_addAddressExistingErrorMessage) {
+            this.lbl_addAddressExistingErrorMessage = lbl_addAddressExistingErrorMessage;
+        }
+
+        public String getLbl_myFavouriteTitle() {
+            return lbl_myFavouriteTitle;
+        }
+
+        public void setLbl_myFavouriteTitle(String lbl_myFavouriteTitle) {
+            this.lbl_myFavouriteTitle = lbl_myFavouriteTitle;
+        }
+
+        public String getLnk_myAccountFavouritesURL() {
+            return lnk_myAccountFavouritesURL;
+        }
+
+        public void setLnk_myAccountFavouritesURL(String lnk_myAccountFavouritesURL) {
+            this.lnk_myAccountFavouritesURL = lnk_myAccountFavouritesURL;
+        }
+
+        public String getLbl_recentlyViewedTitle() {
+            return lbl_recentlyViewedTitle;
+        }
+
+        public void setLbl_recentlyViewedTitle(String lbl_recentlyViewedTitle) {
+            this.lbl_recentlyViewedTitle = lbl_recentlyViewedTitle;
+        }
+
+        public String getLnk_myAccountRecentlyViewedURL() {
+            return lnk_myAccountRecentlyViewedURL;
+        }
+
+        public void setLnk_myAccountRecentlyViewedURL(String lnk_myAccountRecentlyViewedURL) {
+            this.lnk_myAccountRecentlyViewedURL = lnk_myAccountRecentlyViewedURL;
+        }
+
+        public String getLbl_myNewsLettersTitle() {
+            return lbl_myNewsLettersTitle;
+        }
+
+        public void setLbl_myNewsLettersTitle(String lbl_myNewsLettersTitle) {
+            this.lbl_myNewsLettersTitle = lbl_myNewsLettersTitle;
+        }
+
+        public String getLnk_myAccountNewsLetterURL() {
+            return lnk_myAccountNewsLetterURL;
+        }
+
+        public void setLnk_myAccountNewsLetterURL(String lnk_myAccountNewsLetterURL) {
+            this.lnk_myAccountNewsLetterURL = lnk_myAccountNewsLetterURL;
         }
     }
 

@@ -323,43 +323,6 @@ public class ProductResultsPage extends BasePage{
 	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']")
 	public WebElement lblProductName;
 
-	//The page while clicking Favorite button on header menu
-	@FindBy(xpath = "//ng-component//div[contains(@class,'tsc-forms')]")
-	public WebElement cntMyFavouritesContainer;
-
-	@FindBy(xpath = "//ng-component//div[@class='recently-viewed-title']")
-	public WebElement lblMyFavouritesTitle;
-
-	//Favorite history available
-	@FindBy(xpath = "//ng-component//button[contains(@class,'btn-clear-viewing-history')]")
-	public WebElement btnClearAllFavouriteHistory;
-
-	@FindBy(xpath = "//ng-component//div[@class='recently-viewed-container']//div[contains(@class,'recently-viewed-item-container')]//a")
-	public List<WebElement> lstFavouriteProduct;
-
-	//Favorite history not available
-	@FindBy(xpath = "//ng-component//div[contains(@class,'no-history-container')]//div[contains(@class,'no-history-msg')]")
-	public List<WebElement> lstNoHistoryMessage;
-
-	@FindBy(xpath = "//ng-component//div[contains(@class,'no-history-container')]//div[contains(@class,'btn-shop-now')]")
-	public WebElement btnShoppingNow;
-
-	//The popup window after clicking ClearAllFavouriteHistory button
-	@FindBy(xpath = "//ng-component//div[@class='modal-dialog']//div[@class='modal-header']//button[@class='close']")
-	public WebElement btnCloseButtonInClearMyFavouritesPopupWindow;
-
-	@FindBy(xpath = "//ng-component//div[@class='modal-dialog']//div[@class='modal-header']//div[@class='crv-title']")
-	public WebElement lblTitleInClearMyFavouritesPopupWindow;
-
-	@FindBy(xpath = "//ng-component//div[@class='modal-dialog']//div[@class='modal-body']//div[@class='crv-warning']")
-	public WebElement lblWarningMessageInClearMyFavouritesPopupWindow;
-
-	@FindBy(xpath = "//ng-component//div[@class='modal-dialog']//div[@class='crv-btn-block']//button[contains(@class,'btnResizing') and not(contains(@class,'btn-negative'))]")
-	public WebElement btnClearInClearMyFavouritesPopupWindow;
-
-	@FindBy(xpath = "//ng-component//div[@class='modal-dialog']//div[@class='crv-btn-block']//button[contains(@class,'btnResizing') and contains(@class,'btn-negative')]")
-	public WebElement btnCancelInClearMyFavouritesPopupWindow;
-
 	@FindBy(xpath = "//section[@class='tsc-container']//div[@class='prp__applied-filters']/button/span")
 	public List<WebElement> lstFilterApplied;
 
@@ -2944,10 +2907,11 @@ public class ProductResultsPage extends BasePage{
 	 * @param-String lsPassword: password
 	 * @param-String lsFirstName: user's first name
 	 * @param-ProductDetailPage pdp: ProductDetailPag pageobject
+	 * @param - MyAccount - myAccount
 	 * @return void
 	 * @author Wei.Li
 	 */
-	public void verifyFavoriteIconAction(String lsUserName, String lsPassword,String lsFirstName,String lsKeyword,ProductDetailPage pdp) {
+	public void verifyFavoriteIconAction(String lsUserName, String lsPassword,String lsFirstName,String lsKeyword,ProductDetailPage pdp,MyAccount myAccount) {
 		if(this.productResultList.size()==0) {
 			reporter.reportLog("No product search result available.");
 			return;
@@ -2981,7 +2945,7 @@ public class ProductResultsPage extends BasePage{
 		item=this.productResultList.get(0).findElement(this.byProductHeaderLike);
 
 		if(item.getAttribute("aria-pressed").equalsIgnoreCase("true")) {
-			clearFavoriteHistory();
+			myAccount.clearFavoriteHistory();
 			this.getSearchResultLoad(lsKeyword,true);
 			item=this.productResultList.get(0).findElement(this.byProductHeaderLike);
 		}
@@ -3339,34 +3303,6 @@ public class ProductResultsPage extends BasePage{
 	public boolean checkViewAllColorsButtonExisting(WebElement filterContainerItem) {
 		WebElement colorContainer=filterContainerItem.findElement(this.byProductOptionColorWrapper);
 		return this.checkChildElementExistingByTagNameAndAttribute(colorContainer, "a", "class", "product-card__size-view-all");
-	}
-
-	/**
-	 * This method will check no-history-container Existing
-	 * @return boolean
-	 * @author Wei.Li
-	 */
-	public boolean checkNoFavoriteHistoryContainerExisting() {
-		return this.checkChildElementExistingByAttribute(cntMyFavouritesContainer, "class", "no-history-container");
-	}
-
-	public void clearFavoriteHistory() {
-		WebElement favoriteLink= (new GlobalHeaderPage(this.getDriver())).Favouriteslnk;
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(favoriteLink);
-		this.getReusableActionsInstance().clickIfAvailable(favoriteLink);
-		this.getReusableActionsInstance().waitForElementVisibility(this.lblMyFavouritesTitle, 20);
-
-		if(checkNoFavoriteHistoryContainerExisting()) {
-			return;
-		}
-
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnClearAllFavouriteHistory);
-		this.getReusableActionsInstance().clickIfAvailable(this.btnClearAllFavouriteHistory);
-		this.getReusableActionsInstance().waitForElementVisibility(this.lblTitleInClearMyFavouritesPopupWindow, 20);
-
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnClearInClearMyFavouritesPopupWindow);
-		this.getReusableActionsInstance().clickIfAvailable(this.btnClearInClearMyFavouritesPopupWindow);
-		this.getReusableActionsInstance().waitForElementVisibility(this.btnShoppingNow, 20);
 	}
 
 	/**

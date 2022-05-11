@@ -452,6 +452,236 @@ public class MyAccount extends BasePage {
 	@FindBy(xpath="//form[contains(@class,'tsc-forms')]//div/strong")
 	public WebElement lblGiftCardBalanceText;
 
+	//For Your Addresses
+	@FindBy(xpath = "//ng-component//*[contains(@class,'paymentPageTitle')]")
+	public WebElement lblYourAddressTitle;
+
+	@FindBy(xpath = "//ng-component//div[normalize-space(.)='Shipping Address']")
+	public WebElement lblShippingAddressSectionTitle;
+
+	@FindBy(xpath = "//ng-component//div[contains(@class,'bigAddressDiv') and not(contains(@class,'billing'))]//div[contains(@class,'tab-bottom-row')]")
+	public List<WebElement> lstShippingAddressContainer;
+
+	public By byShippingAddressTitle=By.xpath(".//div[contains(@class,'defaultDiv')]");
+	public By byShippingAddress=By.xpath(".//div[contains(@class,'defaultDiv')]/following-sibling::div[contains(@class,'address')]");
+	public By byShippingAddressEdit=By.xpath(".//div[contains(@class,'defaultDiv')]/following-sibling::div//a");
+
+	@FindBy(xpath = "//ng-component//button[contains(normalize-space(.),'Add An Address')]")
+	public WebElement btnAddAddress;
+
+	@FindBy(xpath = "//ng-component//span[contains(normalize-space(text()),'Billing Address')]")
+	public WebElement lblBillingAddressTitle;
+
+	@FindBy(xpath = "//ng-component//div[contains(@class,'billingAddressDesktopDiv')]//div[contains(@class,'address')]")
+	public WebElement lblBillingAddress;
+
+	@FindBy(xpath = "//ng-component//div[contains(@class,'billingAddressDesktopDiv')]//div[contains(@class,'address')]/parent::div/following-sibling::div//a")
+	public WebElement lnkBillingAddressEdit;
+
+	//Edit or Add address
+	@FindBy(xpath = "//ng-component//h3[contains(@class,'paymentPageTitle')]")
+	public WebElement lblAddOrEditAddressTitle;
+
+	@FindBy(xpath = "//ng-component//div[contains(@class,'notes')]")
+	public WebElement lblAddOrEditAddressRequiredInfoTitle;
+
+	@FindBy(xpath = "//form[contains(@class,'update-address-form')]//div[@class='text-danger']")
+	public WebElement lblAddOrEditAddressExistingErrorMessage;
+
+	@FindBy(xpath = "//ng-component//label[@for='firstName']")
+	public WebElement lblAddOrEditAddressFirstNameTitle;
+
+	@FindBy(xpath = "//ng-component//input[@id='firstName']")
+	public WebElement inputAddOrEditAddressFirstName;
+
+	@FindBy(xpath = "//ng-component//label[@for='lastName']")
+	public WebElement lblAddOrEditAddressLastNameTitle;
+
+	@FindBy(xpath = "//ng-component//input[@id='lastName']")
+	public WebElement inputAddOrEditAddressLastName;
+
+	@FindBy(xpath = "//ng-component//label[contains(normalize-space(.),'Phone Number')]")
+	public WebElement lblAddOrEditAddressPhoneNumberTitle;
+
+	@FindBy(xpath = "//ng-component//input[@formcontrolname='phoneNumber1']")
+	public WebElement inputAddOrEditAddressPhoneNumber1;
+
+	@FindBy(xpath = "//ng-component//input[@formcontrolname='phoneNumber2']")
+	public WebElement inputAddOrEditAddressPhoneNumber2;
+
+	@FindBy(xpath = "//ng-component//input[@formcontrolname='phoneNumber3']")
+	public WebElement inputAddOrEditAddressPhoneNumber3;
+
+	@FindBy(xpath = "//ng-component//div[@class='tsc-checkbox']//input[@id='makeDefaultShippingAddress']")
+	public WebElement ckbAddOrEditMakeDefaultShippingAddress;
+
+	@FindBy(xpath = "//ng-component//div[@class='tsc-checkbox']//label[@for='makeDefaultShippingAddress']")
+	public WebElement labelAddOrEditMakeDefaultShippingAddress;
+
+	@FindBy(xpath = "//ng-component//div[@class='tsc-checkbox']//input[@id='makeDefaultShippingAddress']/parent::div/following-sibling::span[contains(@class,'notes')]")
+	public WebElement lblAddOrEditMakeDefaultShippingAddress;
+
+	@FindBy(xpath = "//ng-component//div[@class='tsc-checkbox']//input[@id='makeShippingAsBillingAddress']")
+	public WebElement ckbAddOrEditMakeShippingAsBillingAddress;
+
+	@FindBy(xpath = "//ng-component//div[@class='tsc-checkbox']//label[@for='makeShippingAsBillingAddress']")
+	public WebElement labelAddOrEditMakeShippingAsBillingAddress;
+
+	@FindBy(xpath = "//ng-component//div[@class='tsc-checkbox']//input[@id='makeShippingAsBillingAddress']/parent::div/following-sibling::span[contains(@class,'notes')]")
+	public WebElement lblAddOrEditMakeShippingAsBillingAddress;
+
+	@FindBy(xpath = "//ng-component//label[@for='addressLine1']")
+	public WebElement lblAddOrEditAddressLine1Title;
+
+	@FindBy(xpath = "//ng-component//p-autocomplete//input")
+	public WebElement inputAddOrEditAddressLine1;
+
+	@FindBy(xpath = "//ng-component//div[contains(@class,'ui-autocomplete-panel')]")
+	public WebElement cntAddOrEditAddressAutoSearch;
+
+	@FindBy(xpath = "//ng-component//div[contains(@class,'ui-autocomplete-panel')]//li")
+	public List<WebElement> lstAddOrEditAddressAutoSearchDropdownItems;
+
+	@FindBy(xpath = "//ng-component//label[@for='addressLine2']")
+	public WebElement lblAddOrEditAddressLine2Title;
+
+	@FindBy(xpath = "//ng-component//input[@id='addressLine2']")
+	public WebElement inputAddOrEditAddressLine2;
+
+	@FindBy(xpath = "//ng-component//label[@for='city']")
+	public WebElement lblAddOrEditAddressCityTitle;
+
+	@FindBy(xpath = "//ng-component//input[@id='city']")
+	public WebElement inputAddOrEditAddressCity;
+
+	@FindBy(xpath = "//ng-component//label[@for='province']")
+	public WebElement lblAddOrEditAddressProvinceTitle;
+
+	@FindBy(xpath = "//ng-component//select[@id='province']")
+	public WebElement selectAddOrEditAddressProvince;
+
+	@FindBy(xpath = "//ng-component//label[contains(normalize-space(.),'Postal Code')]")
+	public WebElement lblAddOrEditAddressPostalCodeTitle;
+
+	@FindBy(xpath = "//ng-component//input[@formcontrolname='postalCode1']")
+	public WebElement inputAddOrEditAddressPostalCode1;
+
+	@FindBy(xpath = "//ng-component//input[@formcontrolname='postalCode2']")
+	public WebElement inputAddOrEditAddressPostalCode2;
+
+	@FindBy(xpath = "//ng-component//button[contains(normalize-space(.),'Cancel')]")
+	public WebElement btnCancel;
+
+	@FindBy(xpath = "//ng-component//button[@type='submit']")
+	public WebElement btnSave;
+
+	//For My Easy Pay Schedule
+	@FindBy(xpath = "//ng-component//h3[@class='paymentPageTitle']")
+	public WebElement lblUpComingEasyPaymentTitle;
+
+	@FindBy(xpath = "//ng-component//div[contains(@class,'easyPayRow')]//span[contains(normalize-space(text()),'No Upcoming Easy Pay Payment')]")
+	public WebElement lblNoUpComingPayment;
+
+	@FindBy(xpath = "//ng-component//div[contains(@class,'easyPayRow')]//div[contains(normalize-space(.),'Learn about EASY PAY')]")
+	public WebElement lblLearnAboutEasyPayTitle;
+
+	@FindBy(xpath = "//ng-component//div[contains(@class,'easyPayRow')]//div[contains(normalize-space(.),'Learn about EASY PAY')]/following-sibling::div")
+	public WebElement lblLearnAboutEasyPay;
+
+	//For favourite part
+	@FindBy(xpath = "//ng-component//div[contains(@class,'tsc-forms')]")
+	public WebElement cntMyFavouritesContainer;
+
+	@FindBy(xpath = "//ng-component//div[@class='recently-viewed-title']")
+	public WebElement lblMyFavouritesTitle;
+
+	//Favorite history available
+	@FindBy(xpath = "//ng-component//button[contains(@class,'btn-clear-viewing-history')]")
+	public WebElement btnClearAllFavouriteHistory;
+
+	@FindBy(xpath = "//ng-component//div[@class='recently-viewed-container']//div[contains(@class,'recently-viewed-item-container')]//a")
+	public List<WebElement> lstFavouriteProduct;
+
+	//Favorite history not available
+	@FindBy(xpath = "//ng-component//div[contains(@class,'no-history-container')]//div[contains(@class,'no-history-msg')]")
+	public List<WebElement> lstNoHistoryMessage;
+
+	@FindBy(xpath = "//ng-component//div[contains(@class,'no-history-container')]//div[contains(@class,'btn-shop-now')]")
+	public WebElement btnShoppingNow;
+
+	//The popup window after clicking ClearAllFavouriteHistory button
+	@FindBy(xpath = "//ng-component//div[@class='modal-dialog']//div[@class='modal-header']//button[@class='close']")
+	public WebElement btnCloseButtonInClearMyFavouritesPopupWindow;
+
+	@FindBy(xpath = "//ng-component//div[@class='modal-dialog']//div[@class='modal-header']//div[@class='crv-title']")
+	public WebElement lblTitleInClearMyFavouritesPopupWindow;
+
+	@FindBy(xpath = "//ng-component//div[@class='modal-dialog']//div[@class='modal-body']//div[@class='crv-warning']")
+	public WebElement lblWarningMessageInClearMyFavouritesPopupWindow;
+
+	@FindBy(xpath = "//ng-component//div[@class='modal-dialog']//div[@class='crv-btn-block']//button[contains(@class,'btnResizing') and not(contains(@class,'btn-negative'))]")
+	public WebElement btnClearInClearMyFavouritesPopupWindow;
+
+	@FindBy(xpath = "//ng-component//div[@class='modal-dialog']//div[@class='crv-btn-block']//button[contains(@class,'btnResizing') and contains(@class,'btn-negative')]")
+	public WebElement btnCancelInClearMyFavouritesPopupWindow;
+
+	//For Recently Viewed
+	@FindBy(xpath = "//ng-component//div[@class='recently-viewed-title']")
+	public WebElement lblRecentlyViewedTitle;
+
+	@FindBy(xpath = "//ng-component//div[@class='no-history-msg']")
+	public List<WebElement> lstRecentlyViewedNoHistoryMessage;
+
+	@FindBy(xpath = "//ng-component//a[contains(@class,'btn-shop-now')]")
+	public WebElement lnkRecentlyViewedShopNow;
+
+	//For My Newsletter
+	@FindBy(xpath = "//label[@for='MyNewsletters']")
+	public WebElement lblMyNewsLettersTitle;
+
+	@FindBy(xpath = "//span[contains(normalize-space(text()),'Manage your email preferences below:')]")
+	public WebElement lblMyNewsLettersManageYourEmailPreferences;
+
+	@FindBy(xpath = "//input[@id='TSnwsl']")
+	public WebElement ckbMyNewsLettersTodayShowStopperNewsLetter;
+
+	@FindBy(xpath = "//label[@for='TSnwsl']")
+	public WebElement lblMyNewsLettersTodayShowStopperNewsLetterTitle;
+
+	@FindBy(xpath = "//input[@id='SOnwsl']")
+	public WebElement ckbMyNewsLettersSpecialOfferAndEventNewsLetter;
+
+	@FindBy(xpath = "//label[@for='SOnwsl']")
+	public WebElement lblMyNewsLettersSpecialOfferAndEventNewsLetterTitle;
+
+	@FindBy(xpath = "//input[@id='SAOnwsl']")
+	public WebElement ckbMyNewsLettersPreferredCustomerOffer;
+
+	@FindBy(xpath = "//label[@for='SAOnwsl']")
+	public WebElement lblMyNewsLettersPreferredCustomerOfferTitle;
+
+	@FindBy(xpath = "//input[@id='AUAnwsl']")
+	public WebElement ckbMyNewsLettersProductUpdatesAndAlerts;
+
+	@FindBy(xpath = "//label[@for='AUAnwsl']")
+	public WebElement lblMyNewsLettersProductUpdatesAndAlertsTitle;
+
+	@FindBy(xpath = "//input[@id='btnUpdatePrefs']")
+	public WebElement btnMyNewsLettersUpdatePrefs;
+
+	@FindBy(xpath = "//input[@id='Unsub']")
+	public WebElement ckbMyNewsLettersUnsubscribe;
+
+	@FindBy(xpath = "//td[normalize-space(.)='Unsubscribe']")
+	public WebElement lblMyNewsLettersUnsubscribeTitle;
+
+	@FindBy(xpath = "//span[contains(normalize-space(text()),'Unsubscribe from all TSC emails.')]")
+	public WebElement lblMyNewsLettersUnsubscribeDescription;
+
+	@FindBy(xpath = "//input[@id='btnUnSub']")
+	public WebElement btnMyNewsLettersUnsubscribe;
+
+
 	/**
 	 * To get header item web element through header item text
 	 * @param - lsHeaderItem -  header item text
@@ -1050,7 +1280,7 @@ public class MyAccount extends BasePage {
 	 * @param - lsSubItem - sub item name
 	 * @param - loadingIndicator - the element to indicate window loading
 	 */
-	public void openSubItemWindow(String lsHeaderItem,String lsSubItem,WebElement loadingIndicator){
+	public int openSubItemWindow(String lsHeaderItem,String lsSubItem,WebElement loadingIndicator){
 		String lsTestDevice = System.getProperty("Device").trim();
 		if(lsTestDevice.equalsIgnoreCase("Mobile")) {
 			WebElement headerButton=this.getHeaderItem(lsHeaderItem);
@@ -1063,6 +1293,12 @@ public class MyAccount extends BasePage {
 
 		WebElement subButton=this.getSubItem(lsSubItem);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(subButton);
+		int count=0;
+		String lsText=subButton.getText();
+		if(lsText.contains("(")){
+			count=this.getIntegerFromString(lsText);
+		}
+
 		if(this.getReusableActionsInstance().isElementVisible(subButton)){
 			reporter.reportLogPass("'"+lsSubItem+ "' sub item is displaying correctly");
 		}
@@ -1073,7 +1309,9 @@ public class MyAccount extends BasePage {
 
 		this.waitForCondition(Driver->{return loadingIndicator.isDisplayed();},50000);
 
-		this.getReusableActionsInstance().staticWait(3*this.getStaticWaitForApplication());
+		this.getReusableActionsInstance().staticWait(5*this.getStaticWaitForApplication());
+
+		return count;
 	}
 
 	/**
@@ -2327,6 +2565,751 @@ public class MyAccount extends BasePage {
 			return false;
 		return true;
 	}
+
+	/**
+	 * This method will check no-history-container Existing
+	 * @return boolean
+	 * @author Wei.Li
+	 */
+	public boolean checkNoFavoriteHistoryContainerExisting() {
+		return this.checkChildElementExistingByAttribute(this.cntMyFavouritesContainer, "class", "no-history-container");
+	}
+
+	/**
+	 * To clear favorite history
+	 */
+	public void clearFavoriteHistory() {
+		WebElement favoriteLink= (new GlobalHeaderPage(this.getDriver())).Favouriteslnk;
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(favoriteLink);
+		this.getReusableActionsInstance().clickIfAvailable(favoriteLink);
+		this.getReusableActionsInstance().waitForElementVisibility(this.lblMyFavouritesTitle, 20);
+
+		if(checkNoFavoriteHistoryContainerExisting()) {
+			return;
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnClearAllFavouriteHistory);
+		this.getReusableActionsInstance().clickIfAvailable(this.btnClearAllFavouriteHistory);
+		this.getReusableActionsInstance().waitForElementVisibility(this.lblTitleInClearMyFavouritesPopupWindow, 20);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnClearInClearMyFavouritesPopupWindow);
+		this.getReusableActionsInstance().clickIfAvailable(this.btnClearInClearMyFavouritesPopupWindow);
+		this.getReusableActionsInstance().waitForElementVisibility(this.btnShoppingNow, 20);
+	}
+
+	/**
+	 * This method will add favorite item by clicking favorite icon on product item
+	 * @param - ProductResultsPage - prp
+	 */
+	public void addFavoriteItem(ProductResultsPage prp) {
+		if(prp.productResultList.size()==0) {
+			reporter.reportLogFail("No product search result available.");
+			return;
+		}
+
+		WebElement item;
+		for(WebElement element:prp.productResultList){
+			item=element.findElement(prp.byProductHeaderLike);
+			if(item.getAttribute("aria-pressed").equalsIgnoreCase("true")){
+				continue;
+			}
+
+			this.getReusableActionsInstance().clickIfAvailable(item);
+			final WebElement tempItem=item;
+			this.waitForCondition(Driver->{ return tempItem.getAttribute("aria-pressed").equalsIgnoreCase("true");},15000);
+		}
+	}
+
+	/**
+	 * To verify address content
+	 * @param - boolean - bAdd - to identify it is for Add an address or edit an address
+	 */
+	public void verifyAddressContent(boolean bAdd){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddOrEditAddressTitle);
+		if(!lblAddOrEditAddressTitle.getText().isEmpty()){
+			reporter.reportLogPass("Address title is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Address title is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddOrEditAddressRequiredInfoTitle);
+		if(!lblAddOrEditAddressRequiredInfoTitle.getText().isEmpty()){
+			reporter.reportLogPass("Address Required Info is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Address Required Info is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddOrEditAddressFirstNameTitle);
+		if(!lblAddOrEditAddressFirstNameTitle.getText().isEmpty()){
+			reporter.reportLogPass("First name title is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("First name title is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddOrEditAddressFirstNameTitle);
+		if(!this.getReusableActionsInstance().isElementVisible(inputAddOrEditAddressFirstName)){
+			reporter.reportLogPass("First name input field is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("First name input field is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddOrEditAddressLastNameTitle);
+		if(!lblAddOrEditAddressLastNameTitle.getText().isEmpty()){
+			reporter.reportLogPass("Last name title is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Last name title is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddOrEditAddressLastNameTitle);
+		if(!this.getReusableActionsInstance().isElementVisible(inputAddOrEditAddressLastName)){
+			reporter.reportLogPass("Last name input field is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Last name input field is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddOrEditAddressPhoneNumberTitle);
+		if(!lblAddOrEditAddressPhoneNumberTitle.getText().isEmpty()){
+			reporter.reportLogPass("Phone number title is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Phone number title is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPhoneNumber1);
+		if(!this.getReusableActionsInstance().isElementVisible(inputAddOrEditAddressPhoneNumber1)){
+			reporter.reportLogPass("Phone number input field 1 is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Phone number input field 1 is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPhoneNumber2);
+		if(!this.getReusableActionsInstance().isElementVisible(inputAddOrEditAddressPhoneNumber2)){
+			reporter.reportLogPass("Phone number input field 2 is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Phone number input field 2 is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPhoneNumber3);
+		if(!this.getReusableActionsInstance().isElementVisible(inputAddOrEditAddressPhoneNumber3)){
+			reporter.reportLogPass("Phone number input field 3 is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Phone number input field 3 is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddOrEditMakeDefaultShippingAddress);
+		if(!lblAddOrEditMakeDefaultShippingAddress.getText().isEmpty()){
+			reporter.reportLogPass("Make default shipping address label is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Make default shipping address label is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(ckbAddOrEditMakeDefaultShippingAddress);
+		if(!this.getReusableActionsInstance().isElementVisible(ckbAddOrEditMakeDefaultShippingAddress)){
+			reporter.reportLogPass("Make default shipping address checkbox is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Make default shipping address checkbox is not displaying correctly");
+		}
+
+		if(bAdd){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddOrEditMakeShippingAsBillingAddress);
+			if(!lblAddOrEditMakeShippingAsBillingAddress.getText().isEmpty()){
+				reporter.reportLogPass("Make shipping address as billing address label is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("Make shipping address as billing address label is not displaying correctly");
+			}
+
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(ckbAddOrEditMakeShippingAsBillingAddress);
+			if(!this.getReusableActionsInstance().isElementVisible(ckbAddOrEditMakeShippingAsBillingAddress)){
+				reporter.reportLogPass("Make shipping address as billing address checkbox is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("Make shipping address as billing address checkbox is not displaying correctly");
+			}
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddOrEditAddressLine1Title);
+		if(!lblAddOrEditAddressLine1Title.getText().isEmpty()){
+			reporter.reportLogPass("Address line1 title is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Address line1 title is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressLine1);
+		if(!this.getReusableActionsInstance().isElementVisible(inputAddOrEditAddressLine1)){
+			reporter.reportLogPass("Address line1 input field is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Address line1 input field is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddOrEditAddressLine2Title);
+		if(!lblAddOrEditAddressLine2Title.getText().isEmpty()){
+			reporter.reportLogPass("Address line2 title is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Address line2 title is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressLine2);
+		if(!this.getReusableActionsInstance().isElementVisible(inputAddOrEditAddressLine2)){
+			reporter.reportLogPass("Address line2 input field is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Address line2 input field is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddOrEditAddressCityTitle);
+		if(!lblAddOrEditAddressCityTitle.getText().isEmpty()){
+			reporter.reportLogPass("City title is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("City title is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressCity);
+		if(!this.getReusableActionsInstance().isElementVisible(inputAddOrEditAddressCity)){
+			reporter.reportLogPass("City input field is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("City input field is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddOrEditAddressProvinceTitle);
+		if(!lblAddOrEditAddressProvinceTitle.getText().isEmpty()){
+			reporter.reportLogPass("Province title is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Province title is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(selectAddOrEditAddressProvince);
+		if(!this.getReusableActionsInstance().isElementVisible(selectAddOrEditAddressProvince)){
+			reporter.reportLogPass("Province option field is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Province option field is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddOrEditAddressPostalCodeTitle);
+		if(!lblAddOrEditAddressPostalCodeTitle.getText().isEmpty()){
+			reporter.reportLogPass("Postal code title is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Postal code title is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPostalCode1);
+		if(!this.getReusableActionsInstance().isElementVisible(inputAddOrEditAddressPostalCode1)){
+			reporter.reportLogPass("Postal code input field 1 is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Postal code input field 1 is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPostalCode2);
+		if(!this.getReusableActionsInstance().isElementVisible(inputAddOrEditAddressPostalCode2)){
+			reporter.reportLogPass("Postal code input field 2 is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Postal code input field 2 is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnCancel);
+		if(!btnCancel.getText().isEmpty()){
+			reporter.reportLogPass("Cancel button is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Cancel button is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnSave);
+		String lsText=btnSave.getText().trim();
+		if(bAdd){
+			if(lsText.equalsIgnoreCase("Add Address")){
+				reporter.reportLogPass("Add button is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("Add button is displaying correctly");
+			}
+		}
+		else{
+			if(lsText.equalsIgnoreCase("Save Address")){
+				reporter.reportLogPass("Save button is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("Save button is displaying correctly");
+			}
+		}
+	}
+
+	/**
+	 * To open add or edit an address window
+	 * @param - lsOption - editShippingAddress/editBillingAddress/addShippingAddress
+	 * @param - WebElement - lnkShippingEdit - if not editShippingAddress type, pass null
+	 * @return - boolean
+	 */
+	public boolean openAddOrEditAddressWindow(String lsOption,WebElement lnkShippingEdit){
+		switch(lsOption){
+			case "editShippingAddress":
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(lnkShippingEdit);
+				this.getReusableActionsInstance().clickIfAvailable(lnkShippingEdit);
+				break;
+			case "editBillingAddress":
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(lnkBillingAddressEdit);
+				this.getReusableActionsInstance().clickIfAvailable(lnkBillingAddressEdit);
+				break;
+			case "addShippingAddress":
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddAddress);
+				this.getReusableActionsInstance().clickIfAvailable(btnAddAddress);
+				break;
+			default:
+				break;
+		}
+		return this.waitForCondition(Driver->{return lblAddOrEditAddressTitle.isDisplayed();},12000);
+	}
+
+	/**
+	 * To verify your address content
+	 */
+	public void verifyYourAddresses(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblYourAddressTitle);
+		if(!lblYourAddressTitle.getText().isEmpty()){
+			reporter.reportLogPass("Your address title is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Your address title is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblShippingAddressSectionTitle);
+		if(!lblShippingAddressSectionTitle.getText().isEmpty()){
+			reporter.reportLogPass("Shipping address title is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Shipping address title is not displaying correctly");
+		}
+
+		WebElement item,element;
+		for(int i=0;i<this.lstShippingAddressContainer.size();i++){
+			item=this.lstShippingAddressContainer.get(0);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			if(i==0){
+				element=item.findElement(this.byShippingAddressTitle);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+				if(!element.getText().isEmpty()){
+					reporter.reportLogPass("Default Shipping address title is displaying correctly");
+				}
+				else{
+					reporter.reportLogFailWithScreenshot("Default Shipping address title is not displaying correctly");
+				}
+			}
+
+			element=item.findElement(this.byShippingAddress);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+			if(!element.getText().isEmpty()){
+				reporter.reportLogPass("Default Shipping address is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("Default Shipping address is not displaying correctly");
+			}
+
+			element=item.findElement(this.byShippingAddressEdit);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+			if(!element.getText().isEmpty()){
+				reporter.reportLogPass("Edit Default Shipping address link is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("Edit Default Shipping address link is not displaying correctly");
+			}
+
+			if(!element.getAttribute("href").isEmpty()){
+				reporter.reportLogPass("Edit Default Shipping address link is not empty");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("Edit Default Shipping address link is empty");
+			}
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddAddress);
+		if(!this.getReusableActionsInstance().isElementVisible(btnAddAddress)){
+			reporter.reportLogPass("Add address button is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Add address button is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblBillingAddressTitle);
+		if(!lblBillingAddressTitle.getText().isEmpty()){
+			reporter.reportLogPass("Billing address title is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Billing address title is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblBillingAddress);
+		if(!lblBillingAddress.getText().isEmpty()){
+			reporter.reportLogPass("Billing address is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Billing address is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lnkBillingAddressEdit);
+		if(!lnkBillingAddressEdit.getText().isEmpty()){
+			reporter.reportLogPass("Edit Billing address link is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Edit Billing address link is not displaying correctly");
+		}
+
+		if(!lnkBillingAddressEdit.getAttribute("href").isEmpty()){
+			reporter.reportLogPass("Edit Billing address link is not empty");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Edit Billing address link is empty");
+		}
+	}
+
+	/**
+	 * To add an new address
+	 * @param - bSave
+	 * @param - bMakeDefaultShippingAddress
+	 * @param - bMakeBillingAddress
+	 * @return - Map<String,String> - including firstName,lastName,address
+	 */
+	public Map<String,String> addNewAddress(boolean bSave,boolean bMakeDefaultShippingAddress,boolean bMakeBillingAddress){
+		String lsFirstName=DataConverter.getSaltString(1,"upperStringType")+DataConverter.getSaltString(5,"lowerStringType");
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressFirstName);
+		inputAddOrEditAddressFirstName.clear();
+		inputAddOrEditAddressFirstName.sendKeys(lsFirstName);
+		this.getReusableActionsInstance().staticWait(300);
+
+		String lsLastName=DataConverter.getSaltString(1,"upperStringType")+DataConverter.getSaltString(7,"lowerStringType");
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressLastName);
+		inputAddOrEditAddressLastName.clear();
+		inputAddOrEditAddressLastName.sendKeys(lsLastName);
+		this.getReusableActionsInstance().staticWait(300);
+
+		String lsPhoneNumber1="647";
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPhoneNumber1);
+		inputAddOrEditAddressPhoneNumber1.clear();
+		inputAddOrEditAddressPhoneNumber1.sendKeys(lsPhoneNumber1);
+		this.getReusableActionsInstance().staticWait(300);
+
+		String lsPhoneNumber2=DataConverter.getSaltString(3,"numberType");
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPhoneNumber2);
+		inputAddOrEditAddressPhoneNumber2.clear();
+		inputAddOrEditAddressPhoneNumber2.sendKeys(lsPhoneNumber2);
+		this.getReusableActionsInstance().staticWait(300);
+
+		String lsPhoneNumber3=DataConverter.getSaltString(4,"numberType");
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPhoneNumber3);
+		inputAddOrEditAddressPhoneNumber3.clear();
+		inputAddOrEditAddressPhoneNumber3.sendKeys(lsPhoneNumber3);
+		this.getReusableActionsInstance().staticWait(300);
+
+		if(bMakeDefaultShippingAddress){
+			if(!ckbAddOrEditMakeDefaultShippingAddress.isSelected()){
+				labelAddOrEditMakeDefaultShippingAddress.click();
+			}
+		}
+		else{
+			if(ckbAddOrEditMakeDefaultShippingAddress.isSelected()){
+				labelAddOrEditMakeDefaultShippingAddress.click();
+			}
+		}
+
+		if(bMakeBillingAddress){
+			if(!ckbAddOrEditMakeShippingAsBillingAddress.isSelected()){
+				labelAddOrEditMakeShippingAsBillingAddress.click();
+			}
+		}
+		else{
+			if(ckbAddOrEditMakeShippingAsBillingAddress.isSelected()){
+				labelAddOrEditMakeShippingAsBillingAddress.click();
+			}
+		}
+
+		String lsAddress=DataConverter.getSaltString(3,"numberType")+DataConverter.getSaltString(1,"upperStringType")+DataConverter.getSaltString(9,"lowerStringType")+"Road";
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressLine1);
+		inputAddOrEditAddressLine1.clear();
+		inputAddOrEditAddressLine1.sendKeys(lsAddress);
+		this.getReusableActionsInstance().staticWait(300);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressCity);
+		inputAddOrEditAddressCity.clear();
+		inputAddOrEditAddressCity.sendKeys("Ottawa");
+		this.getReusableActionsInstance().staticWait(300);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(selectAddOrEditAddressProvince);
+		Select selectProvince=new Select(selectAddOrEditAddressProvince);
+		selectProvince.selectByVisibleText("Ontario");
+		this.getReusableActionsInstance().staticWait(300);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPostalCode1);
+		inputAddOrEditAddressPostalCode1.clear();
+		inputAddOrEditAddressPostalCode1.sendKeys("K1V");
+		this.getReusableActionsInstance().staticWait(300);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPostalCode2);
+		inputAddOrEditAddressPostalCode2.clear();
+		inputAddOrEditAddressPostalCode2.sendKeys("9A3");
+		this.getReusableActionsInstance().staticWait(300);
+
+		Map<String,String> map=new HashMap<>();
+		if(bSave){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnSave);
+			this.getReusableActionsInstance().clickIfAvailable(btnSave);
+
+			map.put("firstName",lsFirstName);
+			map.put("lastName",lsLastName);
+			map.put("address",lsAddress);
+		}
+		else{
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnCancel);
+			this.getReusableActionsInstance().clickIfAvailable(btnCancel);
+			map=null;
+		}
+		this.waitForCondition(Driver->{return this.lblYourAddressTitle.isDisplayed();},10000);
+
+		return map;
+	}
+
+	/**
+	 * To verify adding duplicated address
+	 * @param mapAddress
+	 * @param errorMessage
+	 */
+	public void verifyAddingDuplicatedAddress(Map<String,String> mapAddress,String errorMessage){
+		String lsFirstName=DataConverter.getSaltString(1,"upperStringType")+DataConverter.getSaltString(5,"lowerStringType");
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressFirstName);
+		inputAddOrEditAddressFirstName.clear();
+		inputAddOrEditAddressFirstName.sendKeys(lsFirstName);
+		this.getReusableActionsInstance().staticWait(300);
+
+		String lsLastName=DataConverter.getSaltString(1,"upperStringType")+DataConverter.getSaltString(7,"lowerStringType");
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressLastName);
+		inputAddOrEditAddressLastName.clear();
+		inputAddOrEditAddressLastName.sendKeys(lsLastName);
+		this.getReusableActionsInstance().staticWait(300);
+
+		String lsPhoneNumber1="647";
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPhoneNumber1);
+		inputAddOrEditAddressPhoneNumber1.clear();
+		inputAddOrEditAddressPhoneNumber1.sendKeys(lsPhoneNumber1);
+		this.getReusableActionsInstance().staticWait(300);
+
+		String lsPhoneNumber2=DataConverter.getSaltString(3,"numberType");
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPhoneNumber2);
+		inputAddOrEditAddressPhoneNumber2.clear();
+		inputAddOrEditAddressPhoneNumber2.sendKeys(lsPhoneNumber2);
+		this.getReusableActionsInstance().staticWait(300);
+
+		String lsPhoneNumber3=DataConverter.getSaltString(4,"numberType");
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPhoneNumber3);
+		inputAddOrEditAddressPhoneNumber3.clear();
+		inputAddOrEditAddressPhoneNumber3.sendKeys(lsPhoneNumber3);
+		this.getReusableActionsInstance().staticWait(300);
+
+		String lsAddress=DataConverter.getSaltString(3,"numberType")+DataConverter.getSaltString(1,"upperStringType")+DataConverter.getSaltString(9,"lowerStringType")+"Road";
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressLine1);
+		inputAddOrEditAddressLine1.clear();
+		inputAddOrEditAddressLine1.sendKeys(lsAddress);
+		this.getReusableActionsInstance().staticWait(300);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressCity);
+		inputAddOrEditAddressCity.clear();
+		inputAddOrEditAddressCity.sendKeys("Ottawa");
+		this.getReusableActionsInstance().staticWait(300);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(selectAddOrEditAddressProvince);
+		Select selectProvince=new Select(selectAddOrEditAddressProvince);
+		selectProvince.selectByVisibleText("Ontario");
+		this.getReusableActionsInstance().staticWait(300);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPostalCode1);
+		inputAddOrEditAddressPostalCode1.clear();
+		inputAddOrEditAddressPostalCode1.sendKeys("K1V");
+		this.getReusableActionsInstance().staticWait(300);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPostalCode2);
+		inputAddOrEditAddressPostalCode2.clear();
+		inputAddOrEditAddressPostalCode2.sendKeys("9A3");
+		this.getReusableActionsInstance().staticWait(300);
+
+		for (Map.Entry<String, String> entry : mapAddress.entrySet()) {
+			switch(entry.getKey()){
+				case "address":
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressLine1);
+					inputAddOrEditAddressLine1.clear();
+					inputAddOrEditAddressLine1.sendKeys(entry.getValue());
+					this.getReusableActionsInstance().staticWait(300);
+					break;
+				case "city":
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressCity);
+					inputAddOrEditAddressCity.clear();
+					inputAddOrEditAddressCity.sendKeys(entry.getValue());
+					this.getReusableActionsInstance().staticWait(300);
+					break;
+				case "province":
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(selectAddOrEditAddressProvince);
+					selectProvince.selectByVisibleText(entry.getValue());
+					this.getReusableActionsInstance().staticWait(300);
+					break;
+				case "postalCode1":
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPostalCode1);
+					inputAddOrEditAddressPostalCode1.clear();
+					inputAddOrEditAddressPostalCode1.sendKeys(entry.getValue());
+					this.getReusableActionsInstance().staticWait(300);
+					break;
+				case "postalCode2":
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPostalCode2);
+					inputAddOrEditAddressPostalCode2.clear();
+					inputAddOrEditAddressPostalCode2.sendKeys(entry.getValue());
+					this.getReusableActionsInstance().staticWait(300);
+					break;
+			}
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnSave);
+		this.getReusableActionsInstance().clickIfAvailable(btnSave);
+		this.waitForCondition(Driver->{return this.lblAddOrEditAddressExistingErrorMessage.isDisplayed();},10000);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAddOrEditAddressExistingErrorMessage);
+		String lsText=this.lblAddOrEditAddressExistingErrorMessage.getText().trim();
+		if(lsText.equalsIgnoreCase(errorMessage)){
+			reporter.reportLogPass("The error message for adding existing address is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The error message for adding existing address:'"+lsText+"' is not displaying correctly");
+		}
+	}
+
+	/**
+	 * To verify Auto Search function For Address input
+	 */
+	public void verifyAutoSearchForAddress(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressCity);
+		inputAddOrEditAddressCity.clear();
+		this.getReusableActionsInstance().staticWait(300);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(selectAddOrEditAddressProvince);
+		Select selectProvince=new Select(selectAddOrEditAddressProvince);
+		selectProvince.selectByIndex(0);
+		this.getReusableActionsInstance().staticWait(300);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPostalCode1);
+		inputAddOrEditAddressPostalCode1.clear();
+		this.getReusableActionsInstance().staticWait(300);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPostalCode2);
+		inputAddOrEditAddressPostalCode2.clear();
+		this.getReusableActionsInstance().staticWait(300);
+
+		String lsAddress1="112";
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressLine1);
+		inputAddOrEditAddressLine1.clear();
+		inputAddOrEditAddressLine1.sendKeys(lsAddress1);
+		this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: block;");},10000);
+		this.lstAddOrEditAddressAutoSearchDropdownItems.get(0).click();
+		this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: none;");},10000);
+		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressCity);
+		String lsAddress=inputAddOrEditAddressCity.getAttribute("value").trim();
+		if(!lsAddress.isEmpty()){
+			reporter.reportLogPass("Auto search function is working well for City field");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Auto search function is not working well for City field");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(selectAddOrEditAddressProvince);
+		String lsText=selectProvince.getFirstSelectedOption().getText().trim();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("Auto search function is working well for Province field");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Auto search function is not working well for Province field");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPostalCode1);
+		lsText=inputAddOrEditAddressPostalCode1.getAttribute("value").trim();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("Auto search function is working well for Postal Code field 1");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Auto search function is not working well for Postal Code field 1");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPostalCode2);
+		lsText=inputAddOrEditAddressPostalCode2.getAttribute("value").trim();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("Auto search function is working well for Postal Code field 2");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Auto search function is not working well for Postal Code field 2");
+		}
+	}
+
+	/**
+	 * To get the given shipping address info(Address,city,province,postal code)
+	 * @param - shippingAddressIndex
+	 * @return - Map<String,String>
+	 */
+	public Map<String,String> getGivenShippingAddress(int shippingAddressIndex){
+		if(this.lstShippingAddressContainer.size()==1){
+			reporter.reportLogFail("Just only one shipping address, need add extra shipping address");
+		}
+
+		WebElement shippingAddressContainer=this.lstShippingAddressContainer.get(shippingAddressIndex);
+		WebElement editButton=shippingAddressContainer.findElement(this.byShippingAddressEdit);
+		this.openAddOrEditAddressWindow("editShippingAddress",editButton);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressLine1);
+		String lsAddress=inputAddOrEditAddressLine1.getAttribute("value");
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressCity);
+		String lsCity=inputAddOrEditAddressCity.getAttribute("value");
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(selectAddOrEditAddressProvince);
+		Select selectProvince=new Select(selectAddOrEditAddressProvince);
+		String lsProvince=selectProvince.getFirstSelectedOption().getText();
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPostalCode1);
+		String lsPostalCode1=inputAddOrEditAddressPostalCode1.getAttribute("value");
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPostalCode2);
+		String lsPostalCode2=inputAddOrEditAddressPostalCode2.getAttribute("value");
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnCancel);
+		this.getReusableActionsInstance().clickIfAvailable(btnCancel);
+		this.waitForCondition(Driver->{return this.lblYourAddressTitle.isDisplayed();},10000);
+
+		Map<String,String> map=new HashMap<>();
+		map.put("address",lsAddress);
+		map.put("city",lsCity);
+		map.put("province",lsProvince);
+		map.put("postalCode1",lsPostalCode1);
+		map.put("postalCode2",lsPostalCode2);
+
+		return map;
+	}
+
+
+
 
 }
 

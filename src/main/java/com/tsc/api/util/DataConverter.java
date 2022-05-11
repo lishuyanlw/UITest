@@ -102,8 +102,8 @@ public class DataConverter {
 
     /**
      * To generate random string
-     * @param length: generated string length
-     * @param lsType: numberType/stringType/upperStringType/upperStringType/mixType
+     * @param - length: generated string length
+     * @param - lsType: numberType/stringType/upperStringType/lowerStringType/mixType
      * @return
      */
     public static String getSaltString(int length,String lsType) {
