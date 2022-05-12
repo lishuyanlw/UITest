@@ -3062,6 +3062,13 @@ public class MyAccount extends BasePage {
 		this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: block;");},20000);
 		this.getReusableActionsInstance().staticWait(2*this.getStaticWaitForApplication());
 
+		if(this.lstAddOrEditAddressAutoSearchDropdownItems.size()>=1){
+			reporter.reportLogPass("Getting dropdown auto search results successfully");
+		}
+		else{
+			reporter.reportLogPassWithScreenshot("Unable to get dropdown auto search results");
+		}
+
 		if(selectedIndexInAutoSearchDropdownMenu==-1){
 			int optionSize=this.lstAddOrEditAddressAutoSearchDropdownItems.size();
 			Random rand = new Random();
@@ -3116,6 +3123,13 @@ public class MyAccount extends BasePage {
 					this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: block;");},20000);
 					this.getReusableActionsInstance().staticWait(2*this.getStaticWaitForApplication());
 
+					if(this.lstAddOrEditAddressAutoSearchDropdownItems.size()>=1){
+						reporter.reportLogPass("Getting dropdown auto search results successfully");
+					}
+					else{
+						reporter.reportLogPassWithScreenshot("Unable to get dropdown auto search results");
+					}
+					
 					this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
 					this.lstAddOrEditAddressAutoSearchDropdownItems.get(0).click();
 					this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: none;");},20000);
@@ -3190,6 +3204,13 @@ public class MyAccount extends BasePage {
 		}
 		this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: block;");},20000);
 		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+
+		if(this.lstAddOrEditAddressAutoSearchDropdownItems.size()>=1){
+			reporter.reportLogPass("Getting dropdown auto search results successfully");
+		}
+		else{
+			reporter.reportLogPassWithScreenshot("Unable to get dropdown auto search results");
+		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
 		this.lstAddOrEditAddressAutoSearchDropdownItems.get(0).click();
