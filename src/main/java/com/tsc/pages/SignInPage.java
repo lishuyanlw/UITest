@@ -312,7 +312,7 @@ public class SignInPage extends BasePage {
 	 * @return void
 	 * @author Wei.Li
 	 */
-	public void verifyShowingUserFirstNameAfterSignin(String lsUserName, String lsPassword,String lsFirstName) {
+	public void verifyShowingUserFirstNameAfterSignin(String lsUserName, String lsPassword) {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputUserName);
 		this.inputUserName.sendKeys(lsUserName);
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputPassword);
@@ -336,7 +336,7 @@ public class SignInPage extends BasePage {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInMainMenu);
 		waitForCondition(Driver->{return !lsSignInMsg.trim().equalsIgnoreCase(this.btnSignInMainMenu.getText().trim())&&!this.btnSignInMainMenu.getText().isEmpty();},30000);
 		
-		reporter.softAssert(this.btnSignInMainMenu.getText().trim().toUpperCase().contains(lsFirstName.trim().toUpperCase()),"The user first name of '"+lsFirstName+"' is displaying in SignIn heading menu","The user first name of '"+lsFirstName+"' is not displaying in SignIn heading menu");
+		reporter.softAssert(!this.btnSignInMainMenu.getText().isEmpty(),"The user name is displaying in SignIn heading menu","The user name is not displaying in SignIn heading menu");
 	}
 
 	/**

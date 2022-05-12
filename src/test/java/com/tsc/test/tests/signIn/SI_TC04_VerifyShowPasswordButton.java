@@ -17,7 +17,8 @@ public class SI_TC04_VerifyShowPasswordButton extends BaseTest{
 	@Test(groups={"SignIn","Regression","Regression_Mobile","Regression_Tablet"})
 	public void SI_TC04_VerifyShowPasswordButton() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
-		BasePage basePage=new BasePage(this.getDriver());
+
+		reporter.reportLog("Go to SignIn page");
 
 		getGlobalLoginPageThreadLocal().goToSignInPage();
 

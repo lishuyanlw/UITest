@@ -35,10 +35,9 @@ public class GH_TC02_Verify_Global_Header_SignIn_Favorite_ShoppingCartBag extend
 		String lsUrl,lsYmlNotFound,lsSuccessResult, lsFailResult;		
 		lsYmlNotFound=TestDataHandler.constantData.getHeaderSection().getLnk_NotFound();
 		reporter.reportLog("Verify Sign in section");
-		String lsUserName=TestDataHandler.constantData.getLoginUser().getLbl_Username();
-		String lsPassword=TestDataHandler.constantData.getLoginUser().getLbl_Password();
-		String lsFirstName=TestDataHandler.constantData.getLoginUser().getLbl_FirstName();
-				
+		String lsUserName=TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
+		String lsPassword=TestDataHandler.constantData.getApiAppSessionParams().getLbl_password();
+
 		//Verify Sign in Text and Icon
 		getGlobalLoginPageThreadLocal().verifySignInSection();
 		//getGlobalLoginPageThreadLocal().getReusableActionsInstance().staticWait(staticWait);
@@ -46,7 +45,7 @@ public class GH_TC02_Verify_Global_Header_SignIn_Favorite_ShoppingCartBag extend
 		if(System.getProperty("QaUrl").contains("st-tsc"))
 			reporter.reportLog("SignIn can't be done for Staging, hence just testing SignIn page");
 		else{
-			getGlobalLoginPageThreadLocal().verifyShowingUserFirstNameAfterSignin(lsUserName, lsPassword,lsFirstName);
+			getGlobalLoginPageThreadLocal().verifyShowingUserFirstNameAfterSignin(lsUserName, lsPassword);
 			//getGlobalLoginPageThreadLocal().getReusableActionsInstance().staticWait(2000);
 			getGlobalLoginPageThreadLocal().SignOut();
 			//getGlobalLoginPageThreadLocal().getReusableActionsInstance().staticWait(2000);

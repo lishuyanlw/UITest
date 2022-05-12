@@ -26,9 +26,9 @@ public class SR_TC13_VerifyProductSearchResult_FavoriteIconActionTest extends Ba
 		
 	List<String> lstSearchResultMessage=TestDataHandler.constantData.getSearchResultPage().getLst_SearchResultMessage();
 //	String lsSearchResultPageDefaultSetting=TestDataHandler.constantData.getSearchResultPage().getLbl_SearchResultPageDefaultSetting();
-	String lsUserName=TestDataHandler.constantData.getLoginUser().getLbl_Username();
-	String lsPassword=TestDataHandler.constantData.getLoginUser().getLbl_Password();
-	String lsFirstName=TestDataHandler.constantData.getLoginUser().getLbl_FirstName();
+	String lsUserName=TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
+	String lsPassword=TestDataHandler.constantData.getApiAppSessionParams().getLbl_password();
+
 	List<String> lst_SearchKeyword = TestDataHandler.constantData.getSearchResultPage().getLst_SearchKeyword_Bugs();
 	String lsMsg;
 	List<WebElement> productList;
@@ -53,7 +53,7 @@ public class SR_TC13_VerifyProductSearchResult_FavoriteIconActionTest extends Ba
 	productList=getProductResultsPageThreadLocal().getProductList();
 	if(productList.size()>0) {
 //		getProductResultsPageThreadLocal().verifySearchResultContent(productList);
-		getProductResultsPageThreadLocal().verifyFavoriteIconAction(lsUserName, lsPassword,lsFirstName,lst_SearchKeyword.get(3),getProductDetailPageThreadLocal(),getMyAccountPageThreadLocal());
+		getProductResultsPageThreadLocal().verifyFavoriteIconAction(lsUserName, lsPassword,lst_SearchKeyword.get(3),getProductDetailPageThreadLocal(),getMyAccountPageThreadLocal());
 	}
 	else {
 		reporter.reportLogFail("No product results available");

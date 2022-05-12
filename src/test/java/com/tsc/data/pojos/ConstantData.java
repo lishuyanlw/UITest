@@ -825,9 +825,6 @@ public class ConstantData {
     }
     
     public static class LoginUser {
-        private String lbl_Username;
-        private String lbl_Password;
-        private String lbl_FirstName;
         private String lbl_SignOutMessage;
         private String lbl_RightSideTitleSignInPage;
         private List<String> lst_RightSideSectionSignInPage;
@@ -838,30 +835,6 @@ public class ConstantData {
         private String lbl_ErrorMessageForUserName;
         private String lbl_ErrorMessageForPassword;
         private String lbl_ErrorMessageForUserNameAndPassword;
-
-        public String getLbl_Username() {
-            return lbl_Username;
-        }
-
-        public void setLbl_Username(String lbl_Username) {
-            this.lbl_Username = lbl_Username;
-        }
-        
-        public String getLbl_Password() {
-            return lbl_Password;
-        }
-
-        public void setLbl_Password(String lbl_Password) {
-            this.lbl_Password = lbl_Password;
-        }
-        
-        public String getLbl_FirstName() {
-            return lbl_FirstName;
-        }
-
-        public void setLbl_FirstName(String lbl_FirstName) {
-            this.lbl_FirstName = lbl_FirstName;
-        }
 
         public String getLbl_SignOutMessage() {            return lbl_SignOutMessage;        }
 
