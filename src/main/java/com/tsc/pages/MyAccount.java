@@ -2859,9 +2859,9 @@ public class MyAccount extends BasePage {
 	 * To open add or edit an address window
 	 * @param - lsOption - editShippingAddress/editBillingAddress/addShippingAddress
 	 * @param - WebElement - lnkShippingEdit - if not editShippingAddress type, pass null
-	 * @return - boolean
+	 * @return - void
 	 */
-	public boolean openAddOrEditAddressWindow(String lsOption,WebElement lnkShippingEdit){
+	public void openAddOrEditAddressWindow(String lsOption,WebElement lnkShippingEdit){
 		switch(lsOption){
 			case "editShippingAddress":
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(lnkShippingEdit);
@@ -2878,7 +2878,8 @@ public class MyAccount extends BasePage {
 			default:
 				break;
 		}
-		return this.waitForCondition(Driver->{return inputAddOrEditAddressFirstName.isDisplayed();},12000);
+		this.waitForCondition(Driver->{return inputAddOrEditAddressFirstName.isDisplayed();},12000);
+		this.getReusableActionsInstance().staticWait(5*this.getStaticWaitForApplication());
 	}
 
 	/**
@@ -2894,8 +2895,8 @@ public class MyAccount extends BasePage {
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnCancel);
 			btnCancel.click();
 		}
-		this.waitForCondition(Driver->{return this.lblShippingAddressSectionTitle.isDisplayed();},20000);
-		this.getReusableActionsInstance().staticWait(3*getStaticWaitForApplication());
+		this.waitForCondition(Driver->{return this.lblShippingAddressSectionTitle.isDisplayed();},40000);
+		this.getReusableActionsInstance().staticWait(5*getStaticWaitForApplication());
 	}
 
 	/**
@@ -3078,10 +3079,12 @@ public class MyAccount extends BasePage {
 		}
 		reporter.reportLog("selectedIndexInDropdownMenu: "+selectedIndexInAutoSearchDropdownMenu);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstAddOrEditAddressAutoSearchDropdownItems.get(selectedIndexInAutoSearchDropdownMenu));
-		String lsAddress=this.lstAddOrEditAddressAutoSearchDropdownItems.get(selectedIndexInAutoSearchDropdownMenu).getText();
 		this.lstAddOrEditAddressAutoSearchDropdownItems.get(selectedIndexInAutoSearchDropdownMenu).click();
 		this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: none;");},20000);
 		this.getReusableActionsInstance().staticWait(3*this.getStaticWaitForApplication());
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressLine1);
+		String lsAddress=inputAddOrEditAddressLine1.getAttribute("value").trim();
 
 		Map<String,String> map=new HashMap<>();
 		map.put("firstName",lsFirstName);
@@ -3094,10 +3097,12 @@ public class MyAccount extends BasePage {
 
 	/**
 	 * To edit an address
-	 * @param - Map<String,Object> map
+	 * @param - Map<String,String> map
+	 * @param - String - lsAuoSearchKeyword - can be set as null
+	 * @param - String - address
 	 */
-	public void editAddress(Map<String,Object> map){
-		for (Map.Entry<String, Object> entry : map.entrySet()) {
+	public String editAddress(Map<String,String> map,String lsAuoSearchKeyword){
+		for (Map.Entry<String, String> entry : map.entrySet()) {
 			switch(entry.getKey()){
 				case "firstName":
 					this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressFirstName);
@@ -3129,16 +3134,49 @@ public class MyAccount extends BasePage {
 					else{
 						reporter.reportLogPassWithScreenshot("Unable to get dropdown auto search results");
 					}
-					
+
 					this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
 					this.lstAddOrEditAddressAutoSearchDropdownItems.get(0).click();
 					this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: none;");},20000);
 					this.getReusableActionsInstance().staticWait(3*this.getStaticWaitForApplication());
 					break;
+			}
+		}
 
+		String lsAddress=null;
+		if(lsAuoSearchKeyword!=null){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressLine1);
+			inputAddOrEditAddressLine1.clear();
+			String[] data = lsAuoSearchKeyword.codePoints().mapToObj(cp->new String(Character.toChars(cp))).toArray(size->new String[size]);
+			for(String inputText:data){
+				inputAddOrEditAddressLine1.sendKeys(inputText);
+				//For thinking time for waiting for backend response
+				this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+			}
+			this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: block;");},20000);
+			this.getReusableActionsInstance().staticWait(2*this.getStaticWaitForApplication());
+
+			if(this.lstAddOrEditAddressAutoSearchDropdownItems.size()>=1){
+				reporter.reportLogPass("Getting dropdown auto search results successfully");
+			}
+			else{
+				reporter.reportLogPassWithScreenshot("Unable to get dropdown auto search results");
 			}
 
+			int optionSize=this.lstAddOrEditAddressAutoSearchDropdownItems.size();
+			Random rand = new Random();
+			int randomNumber = rand.nextInt(optionSize-2);
+
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstAddOrEditAddressAutoSearchDropdownItems.get(randomNumber));
+			this.lstAddOrEditAddressAutoSearchDropdownItems.get(randomNumber).click();
+			this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: none;");},20000);
+			this.getReusableActionsInstance().staticWait(3*this.getStaticWaitForApplication());
+
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressLine1);
+			lsAddress=inputAddOrEditAddressLine1.getAttribute("value").trim();
 		}
+
+		return lsAddress;
 	}
 
 	/**
@@ -3294,7 +3332,7 @@ public class MyAccount extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnCancel);
 		this.getReusableActionsInstance().clickIfAvailable(btnCancel);
 		this.waitForCondition(Driver->{return this.lblShippingAddressSectionTitle.isDisplayed();},30000);
-		this.getReusableActionsInstance().staticWait(3*this.getStaticWaitForApplication());
+		this.getReusableActionsInstance().staticWait(5*this.getStaticWaitForApplication());
 
 		Map<String,String> map=new HashMap<>();
 		map.put("firstName",lsFirstName);

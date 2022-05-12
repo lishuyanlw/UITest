@@ -26,8 +26,25 @@ public class SI_TC01_VerifySignIn_SignOut_FromApplication_ForUser extends BaseTe
         String accessToken = getApiUserSessionDataMapThreadLocal().get("access_token").toString();
         String customerEDP = getApiUserSessionDataMapThreadLocal().get("customerEDP").toString();
 
+        reporter.reportLog("Go to SignIn page");
+        getGlobalLoginPageThreadLocal().goToSignInPage();
+        String lsSignInTitle=TestDataHandler.constantData.getLoginUser().getLbl_SignInTitleFromStartPage();
+        String lsSignInFromStartPage=TestDataHandler.constantData.getLoginUser().getLbl_SignInButtonFromStartPage();
+
+        getGlobalLoginPageThreadLocal().verifySignInTitle(lsSignInTitle);
+        getGlobalLoginPageThreadLocal().verifyUserNameAndPassword();
+        getGlobalLoginPageThreadLocal().verifyKeepMeSignedInFunction(lsSignInFromStartPage);
+        getGlobalLoginPageThreadLocal().verifyConfidence();
+        getGlobalLoginPageThreadLocal().verifyOtherFieldsForLeftPart();
+
+        String lsSectionTitle=TestDataHandler.constantData.getLoginUser().getLbl_RightSideTitleSignInPage();
+        String lsAsAnGuest=TestDataHandler.constantData.getLoginUser().getLst_RightSideSectionSignInPage().get(0);
+        getGlobalLoginPageThreadLocal().verifyNewCustomerSignInRightSideSection(lsSectionTitle,lsAsAnGuest);
+
         //Login using valid username and password
-        getGlobalLoginPageThreadLocal().Login(lblUserName,lblPassword);
+        getGlobalLoginPageThreadLocal().LoginWithoutWaitingTime(lblUserName,lblPassword);
+        BasePage basePage=new BasePage(this.getDriver());
+        basePage.waitForCondition(Driver->{return getGlobalLoginPageThreadLocal().lblSignInGlobalResponseBanner.isDisplayed();},300000);
 
         //Assert - user is landed on My Account Page
         getGlobalLoginPageThreadLocal().validateCurrentUrlContains("myaccount");

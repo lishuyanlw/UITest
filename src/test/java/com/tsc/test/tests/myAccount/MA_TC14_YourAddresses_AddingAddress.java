@@ -89,7 +89,14 @@ public class MA_TC14_YourAddresses_AddingAddress extends BaseTest {
         reporter.reportLog("Adding a new shipping address");
         String lsAutoSearchKeywordAdd = DataConverter.getSaltString(4,"numberType");
         Map<String,String> map=getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeywordAdd,false,false,-1);
-        getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
+        try{
+            getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
+        }
+        catch(Exception e){
+            map=getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeywordAdd,false,false,-1);
+            getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
+        }
+
         int selectedIndex= Integer.parseInt(map.get("selectedIndex"));
         int addressAmountAfterAdding=getMyAccountPageThreadLocal().lstShippingAddressContainer.size();
         if((addressAmountAfterAdding-addressAmountBeforeAdding)==1){
@@ -105,8 +112,15 @@ public class MA_TC14_YourAddresses_AddingAddress extends BaseTest {
         String lsAutoSearchKeywordSetDefault = DataConverter.getSaltString(4,"numberType");
         reporter.reportLog("lsAutoSearchKeywordSetDefault: "+lsAutoSearchKeywordSetDefault);
         map=getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeywordSetDefault,true,false,-1);
+        try{
+            getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
+        }
+        catch(Exception e){
+            map=getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeywordSetDefault,true,false,-1);
+            getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
+        }
+
         String lsExpectedFirstname=map.get("firstName").toString();
-        getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
         basePage.getReusableActionsInstance().staticWait(3000);
         Map<String,String> mapAfterMakeDefaultShippingAddress=getMyAccountPageThreadLocal().getGivenShippingOrBillingAddress(0);
         String lsFirstNameBeforeMakeDefaultShippingAddress=mapBeforeMakeDefaultShippingAddress.get("firstName").toString();
@@ -125,8 +139,14 @@ public class MA_TC14_YourAddresses_AddingAddress extends BaseTest {
         lsAutoSearchKeywordSetDefault = DataConverter.getSaltString(4,"numberType");
         reporter.reportLog("lsAutoSearchKeywordSetDefault: "+lsAutoSearchKeywordSetDefault);
         map=getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeywordSetDefault,false,true,-1);
+        try{
+            getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
+        }
+        catch(Exception e){
+            map=getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeywordSetDefault,false,true,-1);
+            getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
+        }
         lsExpectedFirstname=map.get("firstName").toString();
-        getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
         basePage.getReusableActionsInstance().staticWait(3000);
         Map<String,String> mapAfterMakeAsBillingAddress=getMyAccountPageThreadLocal().getGivenShippingOrBillingAddress(-1);
         String lsFirstNameBeforeMakeAsBillingAddress=mapBeforeMakeAsBillingAddress.get("firstName").toString();
