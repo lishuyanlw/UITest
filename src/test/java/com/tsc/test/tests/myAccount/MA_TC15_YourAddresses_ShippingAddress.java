@@ -12,6 +12,7 @@ import org.testng.annotations.Test;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -82,9 +83,15 @@ public class MA_TC15_YourAddresses_ShippingAddress extends BaseTest {
         getMyAccountPageThreadLocal().openAddOrEditAddressWindow("addShippingAddress",null);
         String lsAutoSearchKeywordAdd = DataConverter.getSaltString(4,"numberType");
         Map<String,String> mapAdd=getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeywordAdd,false,false,-1);
+        try{
+            getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
+        }
+        catch(Exception e){
+            mapAdd=getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeywordAdd,false,false,-1);
+            getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
+        }
         String lsFirstNameAdd=mapAdd.get("firstName").toString();
         reporter.reportLog("lsFirstNameAdd: "+lsFirstNameAdd);
-        getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
         int selectedIndex= Integer.parseInt(mapAdd.get("selectedIndex"));
         int addressAmountAfterAdding=getMyAccountPageThreadLocal().lstShippingAddressContainer.size();
         if((addressAmountAfterAdding-addressAmountBeforeAdding)==1){
@@ -112,6 +119,39 @@ public class MA_TC15_YourAddresses_ShippingAddress extends BaseTest {
         else{
             reporter.reportLogFailWithScreenshot("Make default shipping address failed with "+lsFirstNameBeforeMakeDefaultShippingAddress+" : "+lsFirstNameAfterMakeDefaultShippingAddress);
         }
+
+        reporter.reportLog("Edit default shipping address");
+        String lsFirstNameEdit=DataConverter.getSaltString(1,"upperStringType")+DataConverter.getSaltString(5,"lowerStringType");
+        String lsLastNameEdit=DataConverter.getSaltString(1,"upperStringType")+DataConverter.getSaltString(7,"lowerStringType");
+        String lsAutoSearchKeywordEdit = DataConverter.getSaltString(4,"numberType");
+        Map<String,String> mapEditInput=new HashMap<>();
+        mapEditInput.put("firstName",lsFirstNameEdit);
+        mapEditInput.put("lastName",lsLastNameEdit);
+        editButton=getMyAccountPageThreadLocal().getGivenShippingAddressEditButton(0);
+        getMyAccountPageThreadLocal().openAddOrEditAddressWindow("editShippingAddress",editButton);
+        String lsAddressEdit=getMyAccountPageThreadLocal().editAddress(mapEditInput,lsAutoSearchKeywordEdit);
+        try{
+            getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
+        }
+        catch(Exception e){
+            lsAddressEdit=getMyAccountPageThreadLocal().editAddress(mapEditInput,lsAutoSearchKeywordEdit);
+            getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
+        }
+        Map<String,String> mapAfterEdit=getMyAccountPageThreadLocal().getGivenShippingOrBillingAddress(0);
+        String lsFirstName=mapAfterEdit.get("firstName");
+        String lsLastName=mapAfterEdit.get("lastName");
+        String lsAddress=mapAfterEdit.get("address");
+        reporter.reportLog(lsFirstName+":"+lsFirstNameEdit);
+        reporter.reportLog(lsLastName+":"+lsLastNameEdit);
+        reporter.reportLog(lsAddress+":"+lsAddressEdit);
+        if(lsFirstName.equalsIgnoreCase(lsFirstNameEdit)&&lsLastName.equalsIgnoreCase(lsLastNameEdit)&&
+                lsAddress.equalsIgnoreCase(lsAddressEdit)){
+            reporter.reportLogPass("Editing address successfully");
+        }
+        else{
+            reporter.reportLogFail("Editing address failed");
+        }
+
 
 
 
