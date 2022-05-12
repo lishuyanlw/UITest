@@ -49,8 +49,8 @@ public class SI_TC02_VerifySignInThroughCheckout extends BaseTest{
 		String lsAsAnGuest=TestDataHandler.constantData.getLoginUser().getLst_RightSideSectionSignInPage().get(1);
 		getGlobalLoginPageThreadLocal().verifyNewCustomerSignInRightSideSection(lsSectionTitle,lsAsAnGuest);
 
-		String lblUserName = TestDataHandler.constantData.getLoginUser().getLbl_Username();
-		String lblPassword = TestDataHandler.constantData.getLoginUser().getLbl_Password();
+		String lblUserName = TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
+		String lblPassword = TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
 		getGlobalLoginPageThreadLocal().signInFromCheckout(lblUserName,lblPassword);
 
 		if(this.getDriver().getCurrentUrl().contains("expresscheckout")){

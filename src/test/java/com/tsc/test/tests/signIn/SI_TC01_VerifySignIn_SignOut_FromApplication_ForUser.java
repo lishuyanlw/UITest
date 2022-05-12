@@ -20,8 +20,8 @@ public class SI_TC01_VerifySignIn_SignOut_FromApplication_ForUser extends BaseTe
         //Closing SignIn pop up on login
         getGlobalFooterPageThreadLocal().closePopupDialog();
         //Fetching test data from test data file
-        String lblUserName = TestDataHandler.constantData.getLoginUser().getLbl_Username();
-        String lblPassword = TestDataHandler.constantData.getLoginUser().getLbl_Password();
+        String lblUserName = TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
+        String lblPassword = TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
         String lblSignOutMessage = TestDataHandler.constantData.getLoginUser().getLbl_SignOutMessage();
         String accessToken = getApiUserSessionDataMapThreadLocal().get("access_token").toString();
         String customerEDP = getApiUserSessionDataMapThreadLocal().get("customerEDP").toString();

@@ -2911,7 +2911,7 @@ public class ProductResultsPage extends BasePage{
 	 * @return void
 	 * @author Wei.Li
 	 */
-	public void verifyFavoriteIconAction(String lsUserName, String lsPassword,String lsFirstName,String lsKeyword,ProductDetailPage pdp,MyAccount myAccount) {
+	public void verifyFavoriteIconAction(String lsUserName, String lsPassword,String lsKeyword,ProductDetailPage pdp,MyAccount myAccount) {
 		if(this.productResultList.size()==0) {
 			reporter.reportLog("No product search result available.");
 			return;

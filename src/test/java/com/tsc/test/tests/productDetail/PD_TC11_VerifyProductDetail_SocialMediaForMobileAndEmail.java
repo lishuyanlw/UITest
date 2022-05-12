@@ -22,8 +22,8 @@ public class PD_TC11_VerifyProductDetail_SocialMediaForMobileAndEmail extends Ba
 
 		List<String> lstKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_APISearchingKeyword();
 		String lsTellYourFriendsSentMessage=TestDataHandler.constantData.getSearchResultPage().getLbl_TellYourFriendsSentMessage();
-		String lsUserName=TestDataHandler.constantData.getLoginUser().getLbl_Username();
-		String lsPassword=TestDataHandler.constantData.getLoginUser().getLbl_Password();
+		String lsUserName=TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
+		String lsPassword=TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
 
 		reporter.reportLog("Switch to ProductDetail page");
 		String lsProductNumber,lsUrl;
