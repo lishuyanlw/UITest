@@ -2884,9 +2884,8 @@ public class MyAccount extends BasePage {
 	/**
 	 * To close add or edit an address window
 	 * @param - boolean - bSave - clicking Save/Cancel button
-	 * @return - boolean
 	 */
-	public boolean closeAddOrEditAddressWindow(boolean bSave){
+	public void closeAddOrEditAddressWindow(boolean bSave){
 		if(bSave){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnSave);
 			btnSave.click();;
@@ -2895,7 +2894,8 @@ public class MyAccount extends BasePage {
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnCancel);
 			btnCancel.click();
 		}
-		return this.waitForCondition(Driver->{return this.lblShippingAddressSectionTitle.isDisplayed();},20000);
+		this.waitForCondition(Driver->{return this.lblShippingAddressSectionTitle.isDisplayed();},20000);
+		this.getReusableActionsInstance().staticWait(3*getStaticWaitForApplication());
 	}
 
 	/**
@@ -2950,17 +2950,10 @@ public class MyAccount extends BasePage {
 			else{
 				reporter.reportLogFailWithScreenshot("Edit Default Shipping address link is not displaying correctly");
 			}
-
-			if(!element.getAttribute("href").isEmpty()){
-				reporter.reportLogPass("Edit Default Shipping address link is not empty");
-			}
-			else{
-				reporter.reportLogFailWithScreenshot("Edit Default Shipping address link is empty");
-			}
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddAddress);
-		if(!this.getReusableActionsInstance().isElementVisible(btnAddAddress)){
+		if(this.getReusableActionsInstance().isElementVisible(btnAddAddress)){
 			reporter.reportLogPass("Add address button is displaying correctly");
 		}
 		else{
@@ -2990,24 +2983,17 @@ public class MyAccount extends BasePage {
 		else{
 			reporter.reportLogFailWithScreenshot("Edit Billing address link is not displaying correctly");
 		}
-
-		if(!lnkBillingAddressEdit.getAttribute("href").isEmpty()){
-			reporter.reportLogPass("Edit Billing address link is not empty");
-		}
-		else{
-			reporter.reportLogFailWithScreenshot("Edit Billing address link is empty");
-		}
 	}
 
 	/**
 	 * To add a new address
 	 * @param - String - lsAutoSearchKeyword
-	 * @param - false - bMakeDefaultShippingAddress
-	 * @param - false - bMakeBillingAddress
-	 * @param - int - selectedIndexInDropdownMenu - if equal to -1, then will choose a random index
+	 * @param - boolean - bMakeDefaultShippingAddress
+	 * @param - boolean - bMakeBillingAddress
+	 * @param - int - selectedIndexInAutoSearchDropdownMenu - select item from auto search dropdown menu list, if equal to -1, then will choose a random index
 	 * @return - Map<String,String> - including firstName,lastName,address
 	 */
-	public Map<String,String> addNewAddress(String lsAutoSearchKeyword, boolean bMakeDefaultShippingAddress,boolean bMakeBillingAddress,int selectedIndexInDropdownMenu){
+	public Map<String,String> addNewAddress(String lsAutoSearchKeyword, boolean bMakeDefaultShippingAddress,boolean bMakeBillingAddress,int selectedIndexInAutoSearchDropdownMenu){
 		String lsFirstName=DataConverter.getSaltString(1,"upperStringType")+DataConverter.getSaltString(5,"lowerStringType");
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressFirstName);
 		inputAddOrEditAddressFirstName.clear();
@@ -3071,22 +3057,22 @@ public class MyAccount extends BasePage {
 		for(String inputText:data){
 			inputAddOrEditAddressLine1.sendKeys(inputText);
 			//For thinking time for waiting for backend response
-			this.getReusableActionsInstance().staticWait(300);
+			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 		}
 		this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: block;");},20000);
 		this.getReusableActionsInstance().staticWait(2*this.getStaticWaitForApplication());
 
-		if(selectedIndexInDropdownMenu==-1){
+		if(selectedIndexInAutoSearchDropdownMenu==-1){
 			int optionSize=this.lstAddOrEditAddressAutoSearchDropdownItems.size();
 			Random rand = new Random();
 			int randomNumber = rand.nextInt(optionSize-2);
 
-			selectedIndexInDropdownMenu=randomNumber;
+			selectedIndexInAutoSearchDropdownMenu=randomNumber;
 		}
-		reporter.reportLog("selectedIndexInDropdownMenu: "+selectedIndexInDropdownMenu);
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstAddOrEditAddressAutoSearchDropdownItems.get(selectedIndexInDropdownMenu));
-		String lsAddress=this.lstAddOrEditAddressAutoSearchDropdownItems.get(selectedIndexInDropdownMenu).getText();
-		this.lstAddOrEditAddressAutoSearchDropdownItems.get(selectedIndexInDropdownMenu).click();
+		reporter.reportLog("selectedIndexInDropdownMenu: "+selectedIndexInAutoSearchDropdownMenu);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstAddOrEditAddressAutoSearchDropdownItems.get(selectedIndexInAutoSearchDropdownMenu));
+		String lsAddress=this.lstAddOrEditAddressAutoSearchDropdownItems.get(selectedIndexInAutoSearchDropdownMenu).getText();
+		this.lstAddOrEditAddressAutoSearchDropdownItems.get(selectedIndexInAutoSearchDropdownMenu).click();
 		this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: none;");},20000);
 		this.getReusableActionsInstance().staticWait(3*this.getStaticWaitForApplication());
 
@@ -3094,11 +3080,52 @@ public class MyAccount extends BasePage {
 		map.put("firstName",lsFirstName);
 		map.put("lastName",lsLastName);
 		map.put("address",lsAddress);
-		map.put("selectedIndex",selectedIndexInDropdownMenu+"");
+		map.put("selectedIndex",selectedIndexInAutoSearchDropdownMenu+"");
 
 		return map;
 	}
 
+	/**
+	 * To edit an address
+	 * @param - Map<String,Object> map
+	 */
+	public void editAddress(Map<String,Object> map){
+		for (Map.Entry<String, Object> entry : map.entrySet()) {
+			switch(entry.getKey()){
+				case "firstName":
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressFirstName);
+					inputAddOrEditAddressFirstName.clear();
+					inputAddOrEditAddressFirstName.sendKeys(entry.getValue().toString());
+					this.getReusableActionsInstance().staticWait(300);
+					break;
+				case "lastName":
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressLastName);
+					inputAddOrEditAddressLastName.clear();
+					inputAddOrEditAddressLastName.sendKeys(entry.getValue().toString());
+					this.getReusableActionsInstance().staticWait(300);
+					break;
+				case "address":
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressLine1);
+					inputAddOrEditAddressLine1.clear();
+					String[] data = entry.getValue().toString().codePoints().mapToObj(cp->new String(Character.toChars(cp))).toArray(size->new String[size]);
+					for(String inputText:data){
+						inputAddOrEditAddressLine1.sendKeys(inputText);
+						//For thinking time for waiting for backend response
+						this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+					}
+					this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: block;");},20000);
+					this.getReusableActionsInstance().staticWait(2*this.getStaticWaitForApplication());
+
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
+					this.lstAddOrEditAddressAutoSearchDropdownItems.get(0).click();
+					this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: none;");},20000);
+					this.getReusableActionsInstance().staticWait(3*this.getStaticWaitForApplication());
+					break;
+
+			}
+
+		}
+	}
 
 	/**
 	 * To verify Auto Search function For Address input
@@ -3246,6 +3273,7 @@ public class MyAccount extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnCancel);
 		this.getReusableActionsInstance().clickIfAvailable(btnCancel);
 		this.waitForCondition(Driver->{return this.lblShippingAddressSectionTitle.isDisplayed();},30000);
+		this.getReusableActionsInstance().staticWait(3*this.getStaticWaitForApplication());
 
 		Map<String,String> map=new HashMap<>();
 		map.put("firstName",lsFirstName);
@@ -3259,6 +3287,27 @@ public class MyAccount extends BasePage {
 		return map;
 	}
 
+	/**
+	 * To set Default Shipping Address Or Billing Address
+	 */
+	public void setDefaultShippingAddress(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(ckbAddOrEditMakeDefaultShippingAddress);
+		if(!ckbAddOrEditMakeDefaultShippingAddress.isSelected()){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(labelAddOrEditMakeDefaultShippingAddress);
+			labelAddOrEditMakeDefaultShippingAddress.click();
+		}
+		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+	}
+
+	/**
+	 * To get edit button for given shipping address
+	 * @param selectedIndex
+	 * @return edit button
+	 */
+	public WebElement getGivenShippingAddressEditButton(int selectedIndex){
+		WebElement container=this.lstShippingAddressContainer.get(selectedIndex);
+		return container.findElement(this.byShippingAddressEdit);
+	}
 
 }
 
