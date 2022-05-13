@@ -58,8 +58,24 @@ public class MA_TC01_Payment_Options_Add_New_Credit_Card extends BaseTest {
             cartAPI.deletePaymentDetailsForUserFromCart(customerEDP,item.getId()+"",accessToken);
         }
 
+        AccountResponse accountUserResponse=getApiResponseThreadLocal().getUserDetailsFromCustomerEDP(customerEDP,accessToken);
+        String lblFirstName=accountUserResponse.getBillingAddress().getFirstName().trim();
+
         //Login using valid username and password
         getGlobalLoginPageThreadLocal().Login(lblUserName, lblPassword);
+
+        BasePage basePage=new BasePage(this.getDriver());
+        String lsTestDevice = System.getProperty("Device").trim();
+        if(lsTestDevice.equalsIgnoreCase("Desktop")) {
+            WebElement item=(new GlobalHeaderPage(this.getDriver())).Signinlnk;
+            basePage.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+            if(item.getText().trim().toUpperCase().contains(lblFirstName.trim().toUpperCase())) {
+                reporter.reportLogPass("The SignIn in the header contains SignIn first name");
+            }
+            else{
+                reporter.reportLogFailWithScreenshot("The SignIn in the header does not contain SignIn first name");
+            }
+        }
 
         //Adding Credit Card of all types
         for(String inputCardType:creditCardTypes){

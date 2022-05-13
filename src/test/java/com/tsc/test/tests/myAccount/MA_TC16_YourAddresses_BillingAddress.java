@@ -5,6 +5,7 @@ import com.tsc.api.pojo.AccountResponse;
 import com.tsc.api.util.DataConverter;
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.data.pojos.ConstantData;
+import com.tsc.pages.GlobalHeaderPage;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 import org.openqa.selenium.WebElement;
@@ -36,6 +37,7 @@ public class MA_TC16_YourAddresses_BillingAddress extends BaseTest {
         String customerEDP = apiUserSessionData.get("customerEDP").toString();
         AccountAPI accountAPI=new AccountAPI();
         AccountResponse accountResponse=getApiResponseThreadLocal().getUserDetailsFromCustomerEDP(customerEDP,accessToken);
+        String lblFirstName=accountResponse.getBillingAddress().getFirstName().trim();
         List<AccountResponse.AddressClass> addressClasses=accountResponse.getShippingAddresses();
         if(!addressClasses.isEmpty()){
             for(int i=0;i<addressClasses.size();i++){
@@ -47,6 +49,16 @@ public class MA_TC16_YourAddresses_BillingAddress extends BaseTest {
         getGlobalLoginPageThreadLocal().Login(lblUserName, lblPassword);
 
         String lsTestDevice = System.getProperty("Device").trim();
+        if(lsTestDevice.equalsIgnoreCase("Desktop")) {
+            WebElement item=(new GlobalHeaderPage(this.getDriver())).Signinlnk;
+            basePage.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+            if(item.getText().trim().toUpperCase().contains(lblFirstName.trim().toUpperCase())) {
+                reporter.reportLogPass("The SignIn in the header contains SignIn first name");
+            }
+            else{
+                reporter.reportLogFailWithScreenshot("The SignIn in the header does not contain SignIn first name");
+            }
+        }
 
         getMyAccountPageThreadLocal().openSubItemWindow("Your Addresses", "Billing Address", getMyAccountPageThreadLocal().lblYourAddressTitle);
         int addressAmountBeforeAdding=getMyAccountPageThreadLocal().lstShippingAddressContainer.size();
@@ -176,56 +188,6 @@ public class MA_TC16_YourAddresses_BillingAddress extends BaseTest {
         else{
             reporter.reportLogFail("Editing address failed");
         }
-
-//        reporter.reportLog("Adding a new shipping address");
-//        getMyAccountPageThreadLocal().openAddOrEditAddressWindow("addShippingAddress",null);
-//        lsAutoSearchKeywordAdd = DataConverter.getSaltString(4,"numberType");
-//        mapAdd=getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeywordAdd,false,false,-1);
-//        try{
-//            getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
-//        }
-//        catch(Exception e){
-//            lsAutoSearchKeywordAdd = DataConverter.getSaltString(4,"numberType");
-//            mapAdd=getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeywordAdd,false,false,-1);
-//            getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
-//        }
-//
-//        lsFirstNameAdd=mapAdd.get("firstName").toString();
-//        String lsAddressAdd=mapAdd.get("address").toString();
-//        reporter.reportLog(lsFirstNameAdd+":"+lsAddressAdd);
-
-//        reporter.reportLog("Verify duplicated shipping address");
-//        Map<String,String> mapLastShippingAddress=getMyAccountPageThreadLocal().getGivenShippingOrBillingAddress(getMyAccountPageThreadLocal().lstShippingAddressContainer.size()-1);
-//        String lsFirstNameForLastShippingAddress=mapLastShippingAddress.get("firstName");
-//        String lsLastNameForLastShippingAddress=mapLastShippingAddress.get("lastName");
-//        String lsPhoneNumber1ForLastShippingAddress=mapLastShippingAddress.get("phoneNumber1");
-//        String lsPhoneNumber2ForLastShippingAddress=mapLastShippingAddress.get("phoneNumber2");
-//        String lsPhoneNumber3ForLastShippingAddress=mapLastShippingAddress.get("phoneNumber3");
-//        String lsAddressForLastShippingAddress=mapLastShippingAddress.get("address");
-//        reporter.reportLog(lsFirstNameForLastShippingAddress+":"+lsAddressForLastShippingAddress);
-//        mapEditInput.clear();
-//        mapEditInput.put("firstName",lsFirstNameForLastShippingAddress);
-//        mapEditInput.put("lastName",lsLastNameForLastShippingAddress);
-//        mapEditInput.put("phoneNumber1",lsPhoneNumber1ForLastShippingAddress);
-//        mapEditInput.put("phoneNumber2",lsPhoneNumber2ForLastShippingAddress);
-//        mapEditInput.put("phoneNumber3",lsPhoneNumber3ForLastShippingAddress);
-//        mapEditInput.put("address",lsAddressForLastShippingAddress);
-//        getMyAccountPageThreadLocal().openAddOrEditAddressWindow("editBillingAddress",null);
-//        getMyAccountPageThreadLocal().editAddress(mapEditInput,null);
-//        basePage.getReusableActionsInstance().javascriptScrollByVisibleElement(getMyAccountPageThreadLocal().btnSave);
-//        getMyAccountPageThreadLocal().btnSave.click();
-//        basePage.waitForCondition(Driver->{return getMyAccountPageThreadLocal().lblAddOrEditAddressExistingErrorMessage.isDisplayed();},60000);
-//        basePage.getReusableActionsInstance().javascriptScrollByVisibleElement(getMyAccountPageThreadLocal().lblAddOrEditAddressExistingErrorMessage);
-//        String lsActualErrorMessage=getMyAccountPageThreadLocal().lblAddOrEditAddressExistingErrorMessage.getText().trim();
-//        String lsExpectedErrorMessage = TestDataHandler.constantData.getMyAccount().getLbl_addAddressExistingErrorMessage();
-//        if(lsActualErrorMessage.equalsIgnoreCase(lsExpectedErrorMessage)){
-//            reporter.reportLogPass("The duplicated address error message is displaying correctly");
-//        }
-//        else{
-//            reporter.reportLogFailWithScreenshot("The duplicated address error message:'"+lsActualErrorMessage+"' is not displaying as expected:'"+lsExpectedErrorMessage+"'");
-//        }
-//        getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(false);
-
 
     }
 }

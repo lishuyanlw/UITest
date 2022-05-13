@@ -160,56 +160,5 @@ public class MA_TC15_YourAddresses_ShippingAddress extends BaseTest {
             reporter.reportLogFail("Editing address failed");
         }
 
-//        reporter.reportLog("Adding a new shipping address");
-//        getMyAccountPageThreadLocal().openAddOrEditAddressWindow("addShippingAddress",null);
-//        lsAutoSearchKeywordAdd = DataConverter.getSaltString(4,"numberType");
-//        mapAdd=getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeywordAdd,false,false,-1);
-//        try{
-//            getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
-//        }
-//        catch(Exception e){
-//            lsAutoSearchKeywordAdd = DataConverter.getSaltString(4,"numberType");
-//            mapAdd=getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeywordAdd,false,false,-1);
-//            getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
-//        }
-//
-//        lsFirstNameAdd=mapAdd.get("firstName").toString();
-//        String lsAddressAdd=mapAdd.get("address").toString();
-//        reporter.reportLog(lsFirstNameAdd+":"+lsAddressAdd);
-
-//        reporter.reportLog("Verify duplicated shipping address");
-//        Map<String,String> mapLastShippingAddress=getMyAccountPageThreadLocal().getGivenShippingOrBillingAddress(getMyAccountPageThreadLocal().lstShippingAddressContainer.size()-1);
-//        String lsFirstNameForLastShippingAddress=mapLastShippingAddress.get("firstName");
-//        String lsLastNameForLastShippingAddress=mapLastShippingAddress.get("lastName");
-//        String lsPhoneNumber1ForLastShippingAddress=mapLastShippingAddress.get("phoneNumber1");
-//        String lsPhoneNumber2ForLastShippingAddress=mapLastShippingAddress.get("phoneNumber2");
-//        String lsPhoneNumber3ForLastShippingAddress=mapLastShippingAddress.get("phoneNumber3");
-//        String lsAddressForLastShippingAddress=mapLastShippingAddress.get("address");
-//        reporter.reportLog(lsFirstNameForLastShippingAddress+":"+lsAddressForLastShippingAddress);
-//        mapEditInput.clear();
-//        mapEditInput.put("firstName",lsFirstNameForLastShippingAddress);
-//        mapEditInput.put("lastName",lsLastNameForLastShippingAddress);
-//        mapEditInput.put("phoneNumber1",lsPhoneNumber1ForLastShippingAddress);
-//        mapEditInput.put("phoneNumber2",lsPhoneNumber2ForLastShippingAddress);
-//        mapEditInput.put("phoneNumber3",lsPhoneNumber3ForLastShippingAddress);
-//        mapEditInput.put("address",lsAddressForLastShippingAddress);
-//        editButton=getMyAccountPageThreadLocal().getGivenShippingAddressEditButton(0);
-//        getMyAccountPageThreadLocal().openAddOrEditAddressWindow("editShippingAddress",editButton);
-//        getMyAccountPageThreadLocal().editAddress(mapEditInput,null);
-//        basePage.getReusableActionsInstance().javascriptScrollByVisibleElement(getMyAccountPageThreadLocal().btnSave);
-//        getMyAccountPageThreadLocal().btnSave.click();
-//        basePage.waitForCondition(Driver->{return getMyAccountPageThreadLocal().lblAddOrEditAddressExistingErrorMessage.isDisplayed();},60000);
-//        basePage.getReusableActionsInstance().javascriptScrollByVisibleElement(getMyAccountPageThreadLocal().lblAddOrEditAddressExistingErrorMessage);
-//        String lsActualErrorMessage=getMyAccountPageThreadLocal().lblAddOrEditAddressExistingErrorMessage.getText().trim();
-//        String lsExpectedErrorMessage = TestDataHandler.constantData.getMyAccount().getLbl_addAddressExistingErrorMessage();
-//        if(lsActualErrorMessage.equalsIgnoreCase(lsExpectedErrorMessage)){
-//            reporter.reportLogPass("The duplicated address error message is displaying correctly");
-//        }
-//        else{
-//            reporter.reportLogFailWithScreenshot("The duplicated address error message:'"+lsActualErrorMessage+"' is not displaying as expected:'"+lsExpectedErrorMessage+"'");
-//        }
-//        getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(false);
-
-
     }
 }

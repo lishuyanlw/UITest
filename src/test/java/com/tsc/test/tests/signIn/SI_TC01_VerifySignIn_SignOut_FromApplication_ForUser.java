@@ -1,5 +1,6 @@
 package com.tsc.test.tests.signIn;
 
+import com.tsc.api.pojo.AccountResponse;
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.GlobalHeaderPage;
 import com.tsc.pages.base.BasePage;
@@ -45,6 +46,20 @@ public class SI_TC01_VerifySignIn_SignOut_FromApplication_ForUser extends BaseTe
         getGlobalLoginPageThreadLocal().LoginWithoutWaitingTime(lblUserName,lblPassword);
         BasePage basePage=new BasePage(this.getDriver());
         basePage.waitForCondition(Driver->{return getGlobalLoginPageThreadLocal().lblSignInGlobalResponseBanner.isDisplayed();},300000);
+
+        AccountResponse accountResponse=getApiResponseThreadLocal().getUserDetailsFromCustomerEDP(customerEDP,accessToken);
+        String lblFirstName=accountResponse.getBillingAddress().getFirstName().trim();
+        String lsTestDevice = System.getProperty("Device").trim();
+        if(lsTestDevice.equalsIgnoreCase("Desktop")) {
+            WebElement item=(new GlobalHeaderPage(this.getDriver())).Signinlnk;
+            basePage.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+            if(item.getText().trim().toUpperCase().contains(lblFirstName.trim().toUpperCase())) {
+                reporter.reportLogPass("The SignIn in the header contains SignIn first name");
+            }
+            else{
+                reporter.reportLogFailWithScreenshot("The SignIn in the header does not contain SignIn first name");
+            }
+        }
 
         //Assert - user is landed on My Account Page
         getGlobalLoginPageThreadLocal().validateCurrentUrlContains("myaccount");

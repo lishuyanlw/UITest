@@ -172,38 +172,5 @@ public class MA_TC14_YourAddresses_AddingAddress extends BaseTest {
         getMyAccountPageThreadLocal().verifyAutoSearchForAddress(false);
         getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(false);
 
-//        reporter.reportLog("Verify adding duplicated address");
-//        Map<String,String> mapLastShippingAddress=getMyAccountPageThreadLocal().getGivenShippingOrBillingAddress(getMyAccountPageThreadLocal().lstShippingAddressContainer.size()-1);
-//        String lsFirstNameForLastShippingAddress=mapLastShippingAddress.get("firstName");
-//        String lsLastNameForLastShippingAddress=mapLastShippingAddress.get("lastName");
-//        String lsPhoneNumber1ForLastShippingAddress=mapLastShippingAddress.get("phoneNumber1");
-//        String lsPhoneNumber2ForLastShippingAddress=mapLastShippingAddress.get("phoneNumber2");
-//        String lsPhoneNumber3ForLastShippingAddress=mapLastShippingAddress.get("phoneNumber3");
-//        String lsAddressForLastShippingAddress=mapLastShippingAddress.get("address");
-//        reporter.reportLog(lsFirstNameForLastShippingAddress+":"+lsAddressForLastShippingAddress);
-//        Map<String,String> mapEditInput=new HashMap<>();
-//        mapEditInput.put("firstName",lsFirstNameForLastShippingAddress);
-//        mapEditInput.put("lastName",lsLastNameForLastShippingAddress);
-//        mapEditInput.put("phoneNumber1",lsPhoneNumber1ForLastShippingAddress);
-//        mapEditInput.put("phoneNumber2",lsPhoneNumber2ForLastShippingAddress);
-//        mapEditInput.put("phoneNumber3",lsPhoneNumber3ForLastShippingAddress);
-//        mapEditInput.put("address",lsAddressForLastShippingAddress);
-//        getMyAccountPageThreadLocal().openAddOrEditAddressWindow("addShippingAddress",null);
-//        getMyAccountPageThreadLocal().editAddress(mapEditInput,null);
-//        basePage.getReusableActionsInstance().javascriptScrollByVisibleElement(getMyAccountPageThreadLocal().btnSave);
-//        getMyAccountPageThreadLocal().btnSave.click();
-//        basePage.waitForCondition(Driver->{return getMyAccountPageThreadLocal().lblAddOrEditAddressExistingErrorMessage.isDisplayed();},60000);
-//        basePage.getReusableActionsInstance().javascriptScrollByVisibleElement(getMyAccountPageThreadLocal().lblAddOrEditAddressExistingErrorMessage);
-//        String lsActualErrorMessage=getMyAccountPageThreadLocal().lblAddOrEditAddressExistingErrorMessage.getText().trim();
-//        String lsExpectedErrorMessage = TestDataHandler.constantData.getMyAccount().getLbl_addAddressExistingErrorMessage();
-//        if(lsActualErrorMessage.equalsIgnoreCase(lsExpectedErrorMessage)){
-//            reporter.reportLogPass("The duplicated address error message is displaying correctly");
-//        }
-//        else{
-//            reporter.reportLogFailWithScreenshot("The duplicated address error message:'"+lsActualErrorMessage+"' is not displaying as expected:'"+lsExpectedErrorMessage+"'");
-//        }
-//        getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(false);
-
-
     }
 }
