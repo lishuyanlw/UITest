@@ -2650,7 +2650,7 @@ public class MyAccount extends BasePage {
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddOrEditAddressFirstNameTitle);
-		if(!this.getReusableActionsInstance().isElementVisible(inputAddOrEditAddressFirstName)){
+		if(this.getReusableActionsInstance().isElementVisible(inputAddOrEditAddressFirstName)){
 			reporter.reportLogPass("First name input field is displaying correctly");
 		}
 		else{
@@ -2666,7 +2666,7 @@ public class MyAccount extends BasePage {
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddOrEditAddressLastNameTitle);
-		if(!this.getReusableActionsInstance().isElementVisible(inputAddOrEditAddressLastName)){
+		if(this.getReusableActionsInstance().isElementVisible(inputAddOrEditAddressLastName)){
 			reporter.reportLogPass("Last name input field is displaying correctly");
 		}
 		else{
@@ -2682,7 +2682,7 @@ public class MyAccount extends BasePage {
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPhoneNumber1);
-		if(!this.getReusableActionsInstance().isElementVisible(inputAddOrEditAddressPhoneNumber1)){
+		if(this.getReusableActionsInstance().isElementVisible(inputAddOrEditAddressPhoneNumber1)){
 			reporter.reportLogPass("Phone number input field 1 is displaying correctly");
 		}
 		else{
@@ -2690,7 +2690,7 @@ public class MyAccount extends BasePage {
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPhoneNumber2);
-		if(!this.getReusableActionsInstance().isElementVisible(inputAddOrEditAddressPhoneNumber2)){
+		if(this.getReusableActionsInstance().isElementVisible(inputAddOrEditAddressPhoneNumber2)){
 			reporter.reportLogPass("Phone number input field 2 is displaying correctly");
 		}
 		else{
@@ -2698,7 +2698,7 @@ public class MyAccount extends BasePage {
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPhoneNumber3);
-		if(!this.getReusableActionsInstance().isElementVisible(inputAddOrEditAddressPhoneNumber3)){
+		if(this.getReusableActionsInstance().isElementVisible(inputAddOrEditAddressPhoneNumber3)){
 			reporter.reportLogPass("Phone number input field 3 is displaying correctly");
 		}
 		else{
@@ -2713,14 +2713,6 @@ public class MyAccount extends BasePage {
 			reporter.reportLogFailWithScreenshot("Make default shipping address label is not displaying correctly");
 		}
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(ckbAddOrEditMakeDefaultShippingAddress);
-		if(!this.getReusableActionsInstance().isElementVisible(ckbAddOrEditMakeDefaultShippingAddress)){
-			reporter.reportLogPass("Make default shipping address checkbox is displaying correctly");
-		}
-		else{
-			reporter.reportLogFailWithScreenshot("Make default shipping address checkbox is not displaying correctly");
-		}
-
 		if(bAdd){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddOrEditMakeShippingAsBillingAddress);
 			if(!lblAddOrEditMakeShippingAsBillingAddress.getText().isEmpty()){
@@ -2728,14 +2720,6 @@ public class MyAccount extends BasePage {
 			}
 			else{
 				reporter.reportLogFailWithScreenshot("Make shipping address as billing address label is not displaying correctly");
-			}
-
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(ckbAddOrEditMakeShippingAsBillingAddress);
-			if(!this.getReusableActionsInstance().isElementVisible(ckbAddOrEditMakeShippingAsBillingAddress)){
-				reporter.reportLogPass("Make shipping address as billing address checkbox is displaying correctly");
-			}
-			else{
-				reporter.reportLogFailWithScreenshot("Make shipping address as billing address checkbox is not displaying correctly");
 			}
 		}
 
@@ -2748,7 +2732,7 @@ public class MyAccount extends BasePage {
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressLine1);
-		if(!this.getReusableActionsInstance().isElementVisible(inputAddOrEditAddressLine1)){
+		if(this.getReusableActionsInstance().isElementVisible(inputAddOrEditAddressLine1)){
 			reporter.reportLogPass("Address line1 input field is displaying correctly");
 		}
 		else{
@@ -2764,7 +2748,7 @@ public class MyAccount extends BasePage {
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressLine2);
-		if(!this.getReusableActionsInstance().isElementVisible(inputAddOrEditAddressLine2)){
+		if(this.getReusableActionsInstance().isElementVisible(inputAddOrEditAddressLine2)){
 			reporter.reportLogPass("Address line2 input field is displaying correctly");
 		}
 		else{
@@ -2780,7 +2764,7 @@ public class MyAccount extends BasePage {
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressCity);
-		if(!this.getReusableActionsInstance().isElementVisible(inputAddOrEditAddressCity)){
+		if(this.getReusableActionsInstance().isElementVisible(inputAddOrEditAddressCity)){
 			reporter.reportLogPass("City input field is displaying correctly");
 		}
 		else{
@@ -2796,7 +2780,7 @@ public class MyAccount extends BasePage {
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(selectAddOrEditAddressProvince);
-		if(!this.getReusableActionsInstance().isElementVisible(selectAddOrEditAddressProvince)){
+		if(this.getReusableActionsInstance().isElementVisible(selectAddOrEditAddressProvince)){
 			reporter.reportLogPass("Province option field is displaying correctly");
 		}
 		else{
@@ -2812,7 +2796,7 @@ public class MyAccount extends BasePage {
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPostalCode1);
-		if(!this.getReusableActionsInstance().isElementVisible(inputAddOrEditAddressPostalCode1)){
+		if(this.getReusableActionsInstance().isElementVisible(inputAddOrEditAddressPostalCode1)){
 			reporter.reportLogPass("Postal code input field 1 is displaying correctly");
 		}
 		else{
@@ -2820,7 +2804,7 @@ public class MyAccount extends BasePage {
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPostalCode2);
-		if(!this.getReusableActionsInstance().isElementVisible(inputAddOrEditAddressPostalCode2)){
+		if(this.getReusableActionsInstance().isElementVisible(inputAddOrEditAddressPostalCode2)){
 			reporter.reportLogPass("Postal code input field 2 is displaying correctly");
 		}
 		else{
@@ -2889,7 +2873,7 @@ public class MyAccount extends BasePage {
 	public void closeAddOrEditAddressWindow(boolean bSave){
 		if(bSave){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnSave);
-			btnSave.click();;
+			btnSave.click();
 		}
 		else{
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnCancel);
@@ -3109,12 +3093,35 @@ public class MyAccount extends BasePage {
 					inputAddOrEditAddressFirstName.clear();
 					inputAddOrEditAddressFirstName.sendKeys(entry.getValue().toString());
 					this.getReusableActionsInstance().staticWait(300);
+					reporter.reportLog(entry.getValue());
 					break;
 				case "lastName":
 					this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressLastName);
 					inputAddOrEditAddressLastName.clear();
 					inputAddOrEditAddressLastName.sendKeys(entry.getValue().toString());
 					this.getReusableActionsInstance().staticWait(300);
+					reporter.reportLog(entry.getValue());
+					break;
+				case "phoneNumber1":
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPhoneNumber1);
+					inputAddOrEditAddressPhoneNumber1.clear();
+					inputAddOrEditAddressPhoneNumber1.sendKeys(entry.getValue().toString());
+					this.getReusableActionsInstance().staticWait(300);
+					reporter.reportLog(entry.getValue());
+					break;
+				case "phoneNumber2":
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPhoneNumber2);
+					inputAddOrEditAddressPhoneNumber2.clear();
+					inputAddOrEditAddressPhoneNumber2.sendKeys(entry.getValue().toString());
+					this.getReusableActionsInstance().staticWait(300);
+					reporter.reportLog(entry.getValue());
+					break;
+				case "phoneNumber3":
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPhoneNumber3);
+					inputAddOrEditAddressPhoneNumber3.clear();
+					inputAddOrEditAddressPhoneNumber3.sendKeys(entry.getValue().toString());
+					this.getReusableActionsInstance().staticWait(300);
+					reporter.reportLog(entry.getValue());
 					break;
 				case "address":
 					this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressLine1);
@@ -3139,6 +3146,9 @@ public class MyAccount extends BasePage {
 					this.lstAddOrEditAddressAutoSearchDropdownItems.get(0).click();
 					this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: none;");},20000);
 					this.getReusableActionsInstance().staticWait(3*this.getStaticWaitForApplication());
+					reporter.reportLog(entry.getValue());
+					break;
+				default:
 					break;
 			}
 		}
@@ -3313,35 +3323,27 @@ public class MyAccount extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressLastName);
 		String lsLastName=inputAddOrEditAddressLastName.getAttribute("value");
 
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPhoneNumber1);
+		String lsPhoneNumber1=inputAddOrEditAddressPhoneNumber1.getAttribute("value");
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPhoneNumber2);
+		String lsPhoneNumber2=inputAddOrEditAddressPhoneNumber2.getAttribute("value");
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPhoneNumber3);
+		String lsPhoneNumber3=inputAddOrEditAddressPhoneNumber3.getAttribute("value");
+
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressLine1);
 		String lsAddress=inputAddOrEditAddressLine1.getAttribute("value");
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressCity);
-		String lsCity=inputAddOrEditAddressCity.getAttribute("value");
-
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(selectAddOrEditAddressProvince);
-		Select selectProvince=new Select(selectAddOrEditAddressProvince);
-		String lsProvince=selectProvince.getFirstSelectedOption().getText();
-
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPostalCode1);
-		String lsPostalCode1=inputAddOrEditAddressPostalCode1.getAttribute("value");
-
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPostalCode2);
-		String lsPostalCode2=inputAddOrEditAddressPostalCode2.getAttribute("value");
-
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnCancel);
-		this.getReusableActionsInstance().clickIfAvailable(btnCancel);
-		this.waitForCondition(Driver->{return this.lblShippingAddressSectionTitle.isDisplayed();},30000);
-		this.getReusableActionsInstance().staticWait(5*this.getStaticWaitForApplication());
+		this.closeAddOrEditAddressWindow(false);
 
 		Map<String,String> map=new HashMap<>();
 		map.put("firstName",lsFirstName);
 		map.put("lastName",lsLastName);
+		map.put("phoneNumber1",lsPhoneNumber1);
+		map.put("phoneNumber2",lsPhoneNumber2);
+		map.put("phoneNumber3",lsPhoneNumber3);
 		map.put("address",lsAddress);
-		map.put("city",lsCity);
-		map.put("province",lsProvince);
-		map.put("postalCode1",lsPostalCode1);
-		map.put("postalCode2",lsPostalCode2);
 
 		return map;
 	}
