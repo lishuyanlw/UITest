@@ -105,7 +105,14 @@ public class MA_TC16_YourAddresses_BillingAddress extends BaseTest {
         catch(Exception e){
             lsAutoSearchKeywordAdd = DataConverter.getSaltString(4,"numberType");
             mapAdd=getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeywordAdd,false,false,-1);
-            getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
+            try{
+                getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
+            }
+            catch(Exception ex){
+                lsAutoSearchKeywordAdd = DataConverter.getSaltString(4,"numberType");
+                mapAdd=getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeywordAdd,false,false,-1);
+                getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
+            }
         }
         String lsFirstNameAdd=mapAdd.get("firstName").toString();
         reporter.reportLog("lsFirstNameAdd: "+lsFirstNameAdd);
@@ -172,8 +179,16 @@ public class MA_TC16_YourAddresses_BillingAddress extends BaseTest {
         catch(Exception e){
             lsAutoSearchKeywordEdit = DataConverter.getSaltString(4,"numberType");
             lsAddressEdit=getMyAccountPageThreadLocal().editAddress(mapEditInput,lsAutoSearchKeywordEdit);
-            getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
+            try{
+                getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
+            }
+            catch (Exception ex){
+                lsAutoSearchKeywordEdit = DataConverter.getSaltString(4,"numberType");
+                lsAddressEdit=getMyAccountPageThreadLocal().editAddress(mapEditInput,lsAutoSearchKeywordEdit);
+                getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
+            }
         }
+
         Map<String,String> mapAfterEdit=getMyAccountPageThreadLocal().getGivenShippingOrBillingAddress(-1);
         String lsFirstName=mapAfterEdit.get("firstName");
         String lsLastName=mapAfterEdit.get("lastName");

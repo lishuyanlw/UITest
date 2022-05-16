@@ -95,10 +95,16 @@ public class MA_TC14_YourAddresses_AddingAddress extends BaseTest {
         catch(Exception e){
             lsAutoSearchKeywordAdd = DataConverter.getSaltString(4,"numberType");
             map=getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeywordAdd,false,false,-1);
-            getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
+            try{
+                getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
+            }
+            catch (Exception ex){
+                lsAutoSearchKeywordAdd = DataConverter.getSaltString(4,"numberType");
+                map=getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeywordAdd,false,false,-1);
+                getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
+            }
         }
 
-        int selectedIndex= Integer.parseInt(map.get("selectedIndex"));
         int addressAmountAfterAdding=getMyAccountPageThreadLocal().lstShippingAddressContainer.size();
         if((addressAmountAfterAdding-addressAmountBeforeAdding)>=1){
             reporter.reportLogPass("Adding a new address successfully");
@@ -119,7 +125,14 @@ public class MA_TC14_YourAddresses_AddingAddress extends BaseTest {
         catch(Exception e){
             lsAutoSearchKeywordSetDefault = DataConverter.getSaltString(4,"numberType");
             map=getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeywordSetDefault,true,false,-1);
-            getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
+            try{
+                getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
+            }
+            catch(Exception ex){
+                lsAutoSearchKeywordSetDefault = DataConverter.getSaltString(4,"numberType");
+                map=getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeywordSetDefault,true,false,-1);
+                getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
+            }
         }
 
         String lsExpectedFirstname=map.get("firstName").toString();
@@ -147,7 +160,14 @@ public class MA_TC14_YourAddresses_AddingAddress extends BaseTest {
         catch(Exception e){
             lsAutoSearchKeywordSetDefault = DataConverter.getSaltString(4,"numberType");
             map=getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeywordSetDefault,false,true,-1);
-            getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
+            try{
+                getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
+            }
+            catch (Exception ex){
+                lsAutoSearchKeywordSetDefault = DataConverter.getSaltString(4,"numberType");
+                map=getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeywordSetDefault,false,true,-1);
+                getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
+            }
         }
         lsExpectedFirstname=map.get("firstName").toString();
 
