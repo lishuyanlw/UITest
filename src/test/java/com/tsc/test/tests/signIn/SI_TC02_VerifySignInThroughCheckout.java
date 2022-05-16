@@ -1,10 +1,13 @@
 package com.tsc.test.tests.signIn;
 
 import com.tsc.api.apiBuilder.ProductAPI;
+import com.tsc.api.pojo.AccountResponse;
 import com.tsc.api.pojo.Product;
 import com.tsc.data.Handler.TestDataHandler;
+import com.tsc.pages.GlobalHeaderPage;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
+import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
@@ -18,6 +21,9 @@ public class SI_TC02_VerifySignInThroughCheckout extends BaseTest{
 	@Test(groups={"SignIn","Regression","Regression_Mobile","Regression_Tablet"})
 	public void SI_TC02_VerifySignInThroughCheckout() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
+		//Fetching test data from test data file
+		String lblUserName = TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
+		String lblPassword = TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
 		BasePage basePage=new BasePage(this.getDriver());
 
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(basePage.getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");
@@ -49,8 +55,6 @@ public class SI_TC02_VerifySignInThroughCheckout extends BaseTest{
 		String lsAsAnGuest=TestDataHandler.constantData.getLoginUser().getLst_RightSideSectionSignInPage().get(1);
 		getGlobalLoginPageThreadLocal().verifyNewCustomerSignInRightSideSection(lsSectionTitle,lsAsAnGuest);
 
-		String lblUserName = TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
-		String lblPassword = TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
 		getGlobalLoginPageThreadLocal().signInFromCheckout(lblUserName,lblPassword);
 
 		if(this.getDriver().getCurrentUrl().contains("expresscheckout")){

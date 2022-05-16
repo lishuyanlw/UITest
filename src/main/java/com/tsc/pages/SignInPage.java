@@ -190,6 +190,44 @@ public class SignInPage extends BasePage {
 		return waitForCondition(Driver->{return lblSignInGlobalResponseBanner.isDisplayed();},300000);
 	}
 
+	/**
+	 * Go to Your Profile page
+	 */
+	public void goToYourProfilePage() {
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.cntBlackHeaderContainer);
+		getReusableActionsInstance().staticWait(2000);
+
+		this.clickElement(this.btnSignInMainMenu);
+		getReusableActionsInstance().staticWait(3000);
+
+		this.btnYourProfileNav.click();
+		(new GlobalFooterPage(this.getDriver())).waitForPageLoading();
+		MyAccount myAccount=new MyAccount(this.getDriver());
+		this.waitForCondition(Driver->{return (new MyAccount(this.getDriver())).lblCustomerNumber.isDisplayed();},300000);
+		getReusableActionsInstance().staticWait(3000);
+	}
+
+	/**
+	 * Go to Your Orders page
+	 */
+	public void goToYourOrdersPage() {
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.cntBlackHeaderContainer);
+		getReusableActionsInstance().staticWait(2000);
+
+		this.clickElement(this.btnSignInMainMenu);
+		getReusableActionsInstance().staticWait(3000);
+
+		this.btnYourOrdersNav.click();
+		(new GlobalFooterPage(this.getDriver())).waitForPageLoading();
+		MyAccount myAccount=new MyAccount(this.getDriver());
+		this.waitForCondition(Driver->{return (new MyAccount(this.getDriver())).lblCustomerNumber.isDisplayed();},300000);
+		getReusableActionsInstance().staticWait(3000);
+	}
+
+	/**
+	 * Go to SignIn page
+	 * @return
+	 */
 	public boolean goToSignInPage() {
 		getReusableActionsInstance().javascriptScrollToTopOfPage();
 		String strBrowser = System.getProperty("Browser").trim();

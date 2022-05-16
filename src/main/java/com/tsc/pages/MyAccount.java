@@ -602,6 +602,12 @@ public class MyAccount extends BasePage {
 	@FindBy(xpath = "//ng-component//div[@class='recently-viewed-container']//div[contains(@class,'recently-viewed-item-container')]//a")
 	public List<WebElement> lstFavouriteProduct;
 
+	public By byFavoriteItemImage=By.xpath(".//div[@class='on-air-prod-img']//img");
+	public By byFavoriteItemName=By.xpath(".//div[@class='on-air-prod-name']");
+	public By byFavoriteItemPriceContainer=By.xpath(".//div[@class='on-air-price-blk']");
+	public By byFavoriteItemNowPrice=By.xpath(".//div[@class='on-air-price-blk']//span[@class='on-air-prod-price']");
+	public By byFavoriteItemWasPrice=By.xpath(".//div[@class='on-air-price-blk']//span[@class='on-air-prod-was-price']");
+
 	//Favorite history not available
 	@FindBy(xpath = "//ng-component//div[contains(@class,'no-history-container')]//div[contains(@class,'no-history-msg')]")
 	public List<WebElement> lstNoHistoryMessage;
@@ -2577,12 +2583,15 @@ public class MyAccount extends BasePage {
 
 	/**
 	 * To clear favorite history
+	 * @param - boolean - bFromFavoriteLinkOnHeaderMenu - if clicking favorite link on header menu
 	 */
-	public void clearFavoriteHistory() {
-		WebElement favoriteLink= (new GlobalHeaderPage(this.getDriver())).Favouriteslnk;
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(favoriteLink);
-		this.getReusableActionsInstance().clickIfAvailable(favoriteLink);
-		this.getReusableActionsInstance().waitForElementVisibility(this.lblMyFavouritesTitle, 20);
+	public void clearFavoriteHistory(boolean bFromFavoriteLinkOnHeaderMenu) {
+		if(bFromFavoriteLinkOnHeaderMenu){
+			WebElement favoriteLink= (new GlobalHeaderPage(this.getDriver())).Favouriteslnk;
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(favoriteLink);
+			this.getReusableActionsInstance().clickIfAvailable(favoriteLink);
+			this.getReusableActionsInstance().waitForElementVisibility(this.lblMyFavouritesTitle, 20);
+		}
 
 		if(checkNoFavoriteHistoryContainerExisting()) {
 			return;
@@ -2650,7 +2659,7 @@ public class MyAccount extends BasePage {
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddOrEditAddressFirstNameTitle);
-		if(!this.getReusableActionsInstance().isElementVisible(inputAddOrEditAddressFirstName)){
+		if(this.getReusableActionsInstance().isElementVisible(inputAddOrEditAddressFirstName)){
 			reporter.reportLogPass("First name input field is displaying correctly");
 		}
 		else{
@@ -2666,7 +2675,7 @@ public class MyAccount extends BasePage {
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddOrEditAddressLastNameTitle);
-		if(!this.getReusableActionsInstance().isElementVisible(inputAddOrEditAddressLastName)){
+		if(this.getReusableActionsInstance().isElementVisible(inputAddOrEditAddressLastName)){
 			reporter.reportLogPass("Last name input field is displaying correctly");
 		}
 		else{
@@ -2682,7 +2691,7 @@ public class MyAccount extends BasePage {
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPhoneNumber1);
-		if(!this.getReusableActionsInstance().isElementVisible(inputAddOrEditAddressPhoneNumber1)){
+		if(this.getReusableActionsInstance().isElementVisible(inputAddOrEditAddressPhoneNumber1)){
 			reporter.reportLogPass("Phone number input field 1 is displaying correctly");
 		}
 		else{
@@ -2690,7 +2699,7 @@ public class MyAccount extends BasePage {
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPhoneNumber2);
-		if(!this.getReusableActionsInstance().isElementVisible(inputAddOrEditAddressPhoneNumber2)){
+		if(this.getReusableActionsInstance().isElementVisible(inputAddOrEditAddressPhoneNumber2)){
 			reporter.reportLogPass("Phone number input field 2 is displaying correctly");
 		}
 		else{
@@ -2698,7 +2707,7 @@ public class MyAccount extends BasePage {
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPhoneNumber3);
-		if(!this.getReusableActionsInstance().isElementVisible(inputAddOrEditAddressPhoneNumber3)){
+		if(this.getReusableActionsInstance().isElementVisible(inputAddOrEditAddressPhoneNumber3)){
 			reporter.reportLogPass("Phone number input field 3 is displaying correctly");
 		}
 		else{
@@ -2713,14 +2722,6 @@ public class MyAccount extends BasePage {
 			reporter.reportLogFailWithScreenshot("Make default shipping address label is not displaying correctly");
 		}
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(ckbAddOrEditMakeDefaultShippingAddress);
-		if(!this.getReusableActionsInstance().isElementVisible(ckbAddOrEditMakeDefaultShippingAddress)){
-			reporter.reportLogPass("Make default shipping address checkbox is displaying correctly");
-		}
-		else{
-			reporter.reportLogFailWithScreenshot("Make default shipping address checkbox is not displaying correctly");
-		}
-
 		if(bAdd){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddOrEditMakeShippingAsBillingAddress);
 			if(!lblAddOrEditMakeShippingAsBillingAddress.getText().isEmpty()){
@@ -2728,14 +2729,6 @@ public class MyAccount extends BasePage {
 			}
 			else{
 				reporter.reportLogFailWithScreenshot("Make shipping address as billing address label is not displaying correctly");
-			}
-
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(ckbAddOrEditMakeShippingAsBillingAddress);
-			if(!this.getReusableActionsInstance().isElementVisible(ckbAddOrEditMakeShippingAsBillingAddress)){
-				reporter.reportLogPass("Make shipping address as billing address checkbox is displaying correctly");
-			}
-			else{
-				reporter.reportLogFailWithScreenshot("Make shipping address as billing address checkbox is not displaying correctly");
 			}
 		}
 
@@ -2748,7 +2741,7 @@ public class MyAccount extends BasePage {
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressLine1);
-		if(!this.getReusableActionsInstance().isElementVisible(inputAddOrEditAddressLine1)){
+		if(this.getReusableActionsInstance().isElementVisible(inputAddOrEditAddressLine1)){
 			reporter.reportLogPass("Address line1 input field is displaying correctly");
 		}
 		else{
@@ -2764,7 +2757,7 @@ public class MyAccount extends BasePage {
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressLine2);
-		if(!this.getReusableActionsInstance().isElementVisible(inputAddOrEditAddressLine2)){
+		if(this.getReusableActionsInstance().isElementVisible(inputAddOrEditAddressLine2)){
 			reporter.reportLogPass("Address line2 input field is displaying correctly");
 		}
 		else{
@@ -2780,7 +2773,7 @@ public class MyAccount extends BasePage {
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressCity);
-		if(!this.getReusableActionsInstance().isElementVisible(inputAddOrEditAddressCity)){
+		if(this.getReusableActionsInstance().isElementVisible(inputAddOrEditAddressCity)){
 			reporter.reportLogPass("City input field is displaying correctly");
 		}
 		else{
@@ -2796,7 +2789,7 @@ public class MyAccount extends BasePage {
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(selectAddOrEditAddressProvince);
-		if(!this.getReusableActionsInstance().isElementVisible(selectAddOrEditAddressProvince)){
+		if(this.getReusableActionsInstance().isElementVisible(selectAddOrEditAddressProvince)){
 			reporter.reportLogPass("Province option field is displaying correctly");
 		}
 		else{
@@ -2812,7 +2805,7 @@ public class MyAccount extends BasePage {
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPostalCode1);
-		if(!this.getReusableActionsInstance().isElementVisible(inputAddOrEditAddressPostalCode1)){
+		if(this.getReusableActionsInstance().isElementVisible(inputAddOrEditAddressPostalCode1)){
 			reporter.reportLogPass("Postal code input field 1 is displaying correctly");
 		}
 		else{
@@ -2820,7 +2813,7 @@ public class MyAccount extends BasePage {
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPostalCode2);
-		if(!this.getReusableActionsInstance().isElementVisible(inputAddOrEditAddressPostalCode2)){
+		if(this.getReusableActionsInstance().isElementVisible(inputAddOrEditAddressPostalCode2)){
 			reporter.reportLogPass("Postal code input field 2 is displaying correctly");
 		}
 		else{
@@ -2889,7 +2882,7 @@ public class MyAccount extends BasePage {
 	public void closeAddOrEditAddressWindow(boolean bSave){
 		if(bSave){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnSave);
-			btnSave.click();;
+			btnSave.click();
 		}
 		else{
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnCancel);
@@ -3077,7 +3070,7 @@ public class MyAccount extends BasePage {
 
 			selectedIndexInAutoSearchDropdownMenu=randomNumber;
 		}
-		reporter.reportLog("selectedIndexInDropdownMenu: "+selectedIndexInAutoSearchDropdownMenu);
+
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstAddOrEditAddressAutoSearchDropdownItems.get(selectedIndexInAutoSearchDropdownMenu));
 		this.lstAddOrEditAddressAutoSearchDropdownItems.get(selectedIndexInAutoSearchDropdownMenu).click();
 		this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: none;");},20000);
@@ -3116,6 +3109,24 @@ public class MyAccount extends BasePage {
 					inputAddOrEditAddressLastName.sendKeys(entry.getValue().toString());
 					this.getReusableActionsInstance().staticWait(300);
 					break;
+				case "phoneNumber1":
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPhoneNumber1);
+					inputAddOrEditAddressPhoneNumber1.clear();
+					inputAddOrEditAddressPhoneNumber1.sendKeys(entry.getValue().toString());
+					this.getReusableActionsInstance().staticWait(300);
+					break;
+				case "phoneNumber2":
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPhoneNumber2);
+					inputAddOrEditAddressPhoneNumber2.clear();
+					inputAddOrEditAddressPhoneNumber2.sendKeys(entry.getValue().toString());
+					this.getReusableActionsInstance().staticWait(300);
+					break;
+				case "phoneNumber3":
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPhoneNumber3);
+					inputAddOrEditAddressPhoneNumber3.clear();
+					inputAddOrEditAddressPhoneNumber3.sendKeys(entry.getValue().toString());
+					this.getReusableActionsInstance().staticWait(300);
+					break;
 				case "address":
 					this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressLine1);
 					inputAddOrEditAddressLine1.clear();
@@ -3139,6 +3150,8 @@ public class MyAccount extends BasePage {
 					this.lstAddOrEditAddressAutoSearchDropdownItems.get(0).click();
 					this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: none;");},20000);
 					this.getReusableActionsInstance().staticWait(3*this.getStaticWaitForApplication());
+					break;
+				default:
 					break;
 			}
 		}
@@ -3313,35 +3326,27 @@ public class MyAccount extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressLastName);
 		String lsLastName=inputAddOrEditAddressLastName.getAttribute("value");
 
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPhoneNumber1);
+		String lsPhoneNumber1=inputAddOrEditAddressPhoneNumber1.getAttribute("value");
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPhoneNumber2);
+		String lsPhoneNumber2=inputAddOrEditAddressPhoneNumber2.getAttribute("value");
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPhoneNumber3);
+		String lsPhoneNumber3=inputAddOrEditAddressPhoneNumber3.getAttribute("value");
+
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressLine1);
 		String lsAddress=inputAddOrEditAddressLine1.getAttribute("value");
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressCity);
-		String lsCity=inputAddOrEditAddressCity.getAttribute("value");
-
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(selectAddOrEditAddressProvince);
-		Select selectProvince=new Select(selectAddOrEditAddressProvince);
-		String lsProvince=selectProvince.getFirstSelectedOption().getText();
-
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPostalCode1);
-		String lsPostalCode1=inputAddOrEditAddressPostalCode1.getAttribute("value");
-
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPostalCode2);
-		String lsPostalCode2=inputAddOrEditAddressPostalCode2.getAttribute("value");
-
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnCancel);
-		this.getReusableActionsInstance().clickIfAvailable(btnCancel);
-		this.waitForCondition(Driver->{return this.lblShippingAddressSectionTitle.isDisplayed();},30000);
-		this.getReusableActionsInstance().staticWait(5*this.getStaticWaitForApplication());
+		this.closeAddOrEditAddressWindow(false);
 
 		Map<String,String> map=new HashMap<>();
 		map.put("firstName",lsFirstName);
 		map.put("lastName",lsLastName);
+		map.put("phoneNumber1",lsPhoneNumber1);
+		map.put("phoneNumber2",lsPhoneNumber2);
+		map.put("phoneNumber3",lsPhoneNumber3);
 		map.put("address",lsAddress);
-		map.put("city",lsCity);
-		map.put("province",lsProvince);
-		map.put("postalCode1",lsPostalCode1);
-		map.put("postalCode2",lsPostalCode2);
 
 		return map;
 	}
@@ -3366,6 +3371,168 @@ public class MyAccount extends BasePage {
 	public WebElement getGivenShippingAddressEditButton(int selectedIndex){
 		WebElement container=this.lstShippingAddressContainer.get(selectedIndex);
 		return container.findElement(this.byShippingAddressEdit);
+	}
+
+	/**
+	 * To verify favorite page
+	 */
+	public void verifyFavoritePageContent(int favoriteItemAmount){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblMyFavouritesTitle);
+		if(!lblMyFavouritesTitle.getText().isEmpty()){
+			reporter.reportLogPass("Favorite title is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Favorite title is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnClearAllFavouriteHistory);
+		if(!btnClearAllFavouriteHistory.getText().isEmpty()){
+			reporter.reportLogPass("Clear All Favorite History button is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Clear All Favorite History button is not displaying correctly");
+		}
+
+		if(favoriteItemAmount==this.lstFavouriteProduct.size()){
+			reporter.reportLogPass("The favorite item list size is equal to the favorite amount under My Preference");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The favorite item list size is not equal to the favorite amount under My Preference");
+		}
+
+		WebElement element;
+		for(WebElement item:this.lstFavouriteProduct){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			element=item.findElement(byFavoriteItemImage);
+			if(!element.getAttribute("src").isEmpty()){
+				reporter.reportLogPass("The favorite item image source is not empty");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The favorite item image source not empty");
+			}
+
+			element=item.findElement(byFavoriteItemName);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+			if(!element.getText().isEmpty()){
+				reporter.reportLogPass("The favorite item name is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The favorite item name is not displaying correctly");
+			}
+
+			element=item.findElement(byFavoriteItemNowPrice);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+			if(!element.getText().isEmpty()){
+				reporter.reportLogPass("The favorite item NowPrice is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The favorite item NowPrice is not displaying correctly");
+			}
+
+			if(this.getChildElementCount(item.findElement(byFavoriteItemPriceContainer))>1){
+				element=item.findElement(byFavoriteItemWasPrice);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+				if(!element.getText().isEmpty()){
+					reporter.reportLogPass("The favorite item WasPrice is displaying correctly");
+				}
+				else{
+					reporter.reportLogFailWithScreenshot("The favorite item WasPrice is not displaying correctly");
+				}
+			}
+		}
+	}
+
+	/**
+	 * To add Favorite Item From PRP
+	 * @param - String - lsKeyword
+	 * @param - ProductResultsPage - prp
+	 */
+	public void addFavoriteItemFromPRP(String lsKeyword,ProductResultsPage prp){
+		prp.getSearchResultLoad(lsKeyword,true);
+		for(WebElement item:prp.getProductList()){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			WebElement element=item.findElement(prp.byProductHeaderLike);
+			if(element.getAttribute("aria-pressed").equalsIgnoreCase("false")) {
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+				this.getReusableActionsInstance().clickIfAvailable(element);
+				this.waitForCondition(Driver->{return element.getAttribute("aria-pressed").equalsIgnoreCase("true");},10000);
+				if(element.getAttribute("aria-pressed").equalsIgnoreCase("true")){
+					reporter.reportLogPass("The favorite icon on PRP page is highlighted correctly");
+				}
+				else{
+					reporter.reportLogFailWithScreenshot("The favorite icon on PRP page is not highlighted correctly");
+				}
+				break;
+			}
+		}
+	}
+
+	/**
+	 * To add Favorite Item From PRP
+	 * @param - String - lsKeyword
+	 * @param - ProductResultsPage - prp
+	 */
+	public void verifyFavoriteItemOnPDP(ProductDetailPage pdp){
+		WebElement item=this.lstFavouriteProduct.get(0);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+
+		WebElement imageElement,element;
+		imageElement=item.findElement(byFavoriteItemImage);
+
+		element=item.findElement(byFavoriteItemName);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+		String lsFavoriteItemName=element.getText().trim();
+
+		element=item.findElement(byFavoriteItemNowPrice);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+		String lsFavoriteItemNowPrice=element.getText().trim();
+
+		String lsFavoriteItemWasPrice=null;
+		if(this.getChildElementCount(item.findElement(byFavoriteItemPriceContainer))>1){
+			element=item.findElement(byFavoriteItemWasPrice);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+			lsFavoriteItemWasPrice=element.getText().trim();
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(imageElement);
+		this.getReusableActionsInstance().clickIfAvailable(imageElement);
+		this.waitForCondition(Driver->{return pdp.lblProductName.isDisplayed();},30000);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(pdp.lblProductName);
+		String lsPDPItemName=pdp.lblProductName.getText().trim();
+		if(lsFavoriteItemName.equalsIgnoreCase(lsPDPItemName)){
+			reporter.reportLogPass("The favorite name is the same as the PDP product name");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The favorite name is not the same as the PDP product name");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(pdp.lblProductNowPrice);
+		String lsPDPItemNowPrice=pdp.lblProductNowPrice.getText().trim();
+		if(lsFavoriteItemNowPrice.equalsIgnoreCase(lsPDPItemNowPrice)){
+			reporter.reportLogPass("The favorite NowPrice is the same as the PDP product NowPrice");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The favorite NowPrice is not the same as the PDP product NowPrice");
+		}
+
+		if(lsFavoriteItemWasPrice!=null){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(pdp.lblProductWasPrice);
+			String lsPDPItemWasPrice=pdp.lblProductWasPrice.getText().trim();
+			if(lsFavoriteItemWasPrice.equalsIgnoreCase(lsPDPItemWasPrice)){
+				reporter.reportLogPass("The favorite WasPrice is the same as the PDP product WasPrice");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The favorite WasPrice is not the same as the PDP product WasPrice");
+			}
+		}
+
+		if(pdp.checkIfFavShareMobileHighlighted()) {
+			reporter.reportLogPass("The FavShareMobile icon is highlighted correctly");
+		}
+		else {
+			reporter.reportLogFailWithScreenshot("The FavShareMobile icon is not highlighted correctly");
+		}
 	}
 
 }

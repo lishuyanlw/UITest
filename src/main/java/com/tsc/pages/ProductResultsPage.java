@@ -2945,7 +2945,7 @@ public class ProductResultsPage extends BasePage{
 		item=this.productResultList.get(0).findElement(this.byProductHeaderLike);
 
 		if(item.getAttribute("aria-pressed").equalsIgnoreCase("true")) {
-			myAccount.clearFavoriteHistory();
+			myAccount.clearFavoriteHistory(true);
 			this.getSearchResultLoad(lsKeyword,true);
 			item=this.productResultList.get(0).findElement(this.byProductHeaderLike);
 		}
