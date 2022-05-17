@@ -18,7 +18,7 @@ import java.util.Map;
 
 public class MA_TC16_YourAddresses_BillingAddress extends BaseTest {
     /*
-     *CER-799
+     *CER-806
      */
     @Test(groups={"MyAccount","Regression"})
     public void MA_TC16_YourAddresses_BillingAddress() throws IOException, org.json.simple.parser.ParseException {
