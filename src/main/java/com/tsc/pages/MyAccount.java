@@ -3375,8 +3375,10 @@ public class MyAccount extends BasePage {
 
 	/**
 	 * To verify favorite page
+	 * @param - Map<String,String> - map - including productName,ProductNowPrice, ProductWasPrice
+	 * @param - int - favoriteItemAmount
 	 */
-	public void verifyFavoritePageContent(int favoriteItemAmount){
+	public void verifyFavoritePageContent(Map<String,String> map,int favoriteItemAmount){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblMyFavouritesTitle);
 		if(!lblMyFavouritesTitle.getText().isEmpty()){
 			reporter.reportLogPass("Favorite title is displaying correctly");
@@ -3400,44 +3402,76 @@ public class MyAccount extends BasePage {
 			reporter.reportLogFailWithScreenshot("The favorite item list size is not equal to the favorite amount under My Preference");
 		}
 
-		WebElement element;
-		for(WebElement item:this.lstFavouriteProduct){
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-			element=item.findElement(byFavoriteItemImage);
-			if(!element.getAttribute("src").isEmpty()){
-				reporter.reportLogPass("The favorite item image source is not empty");
-			}
-			else{
-				reporter.reportLogFailWithScreenshot("The favorite item image source not empty");
-			}
+		String lsProductName=map.get("productName").toString();
+		String lsProductNowPrice=map.get("productNowPrice").toString();
+		String lsProductWasPrice=null;
+		if(map.get("productName")!=null){
+			lsProductWasPrice=map.get("productWasPrice").toString();
+		}
 
-			element=item.findElement(byFavoriteItemName);
+		String lsFavoriteItemName=null,lsFavoriteItemNowPrice=null,lsFavoriteItemWasPrice=null;
+		WebElement item=this.lstFavouriteProduct.get(0);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+		WebElement element=item.findElement(byFavoriteItemImage);
+		if(!element.getAttribute("src").isEmpty()){
+			reporter.reportLogPass("The favorite item image source is not empty");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The favorite item image source not empty");
+		}
+
+		element=item.findElement(byFavoriteItemName);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+		lsFavoriteItemName=element.getText().trim();
+		if(!lsFavoriteItemName.isEmpty()){
+			reporter.reportLogPass("The favorite item name is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The favorite item name is not displaying correctly");
+		}
+
+		element=item.findElement(byFavoriteItemNowPrice);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+		lsFavoriteItemNowPrice=element.getText().trim();
+		if(!lsFavoriteItemNowPrice.isEmpty()){
+			reporter.reportLogPass("The favorite item NowPrice is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The favorite item NowPrice is not displaying correctly");
+		}
+
+		if(lsProductWasPrice!=null){
+			element=item.findElement(byFavoriteItemWasPrice);
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-			if(!element.getText().isEmpty()){
-				reporter.reportLogPass("The favorite item name is displaying correctly");
+			lsFavoriteItemWasPrice=element.getText().trim();
+			if(!lsFavoriteItemWasPrice.isEmpty()){
+				reporter.reportLogPass("The favorite item WasPrice is displaying correctly");
 			}
 			else{
-				reporter.reportLogFailWithScreenshot("The favorite item name is not displaying correctly");
+				reporter.reportLogFailWithScreenshot("The favorite item WasPrice is not displaying correctly");
 			}
+		}
 
-			element=item.findElement(byFavoriteItemNowPrice);
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-			if(!element.getText().isEmpty()){
-				reporter.reportLogPass("The favorite item NowPrice is displaying correctly");
+		if(lsFavoriteItemName.equalsIgnoreCase(lsProductName)){
+			reporter.reportLogPass("The product name on PRP page is equal to the favorite item name");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The product name on PRP page is not equal to the favorite item name");
+		}
+
+		if(lsFavoriteItemNowPrice.equalsIgnoreCase(lsProductNowPrice)){
+			reporter.reportLogPass("The product NowPrice on PRP page is equal to the favorite item NowPrice");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The product NowPrice on PRP page is not equal to the favorite item NowPrice");
+		}
+
+		if(lsProductWasPrice!=null){
+			if(lsFavoriteItemWasPrice.equalsIgnoreCase(lsProductWasPrice)){
+				reporter.reportLogPass("The product WasPrice on PRP page is equal to the favorite item WasPrice");
 			}
 			else{
-				reporter.reportLogFailWithScreenshot("The favorite item NowPrice is not displaying correctly");
-			}
-
-			if(this.getChildElementCount(item.findElement(byFavoriteItemPriceContainer))>1){
-				element=item.findElement(byFavoriteItemWasPrice);
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-				if(!element.getText().isEmpty()){
-					reporter.reportLogPass("The favorite item WasPrice is displaying correctly");
-				}
-				else{
-					reporter.reportLogFailWithScreenshot("The favorite item WasPrice is not displaying correctly");
-				}
+				reporter.reportLogFailWithScreenshot("The product WasPrice on PRP page is not equal to the favorite item WasPrice");
 			}
 		}
 	}
@@ -3446,25 +3480,46 @@ public class MyAccount extends BasePage {
 	 * To add Favorite Item From PRP
 	 * @param - String - lsKeyword
 	 * @param - ProductResultsPage - prp
+	 * @return - Map<String,String> - including productName,ProductNowPrice,ProductWasPrice
 	 */
-	public void addFavoriteItemFromPRP(String lsKeyword,ProductResultsPage prp){
+	public Map<String,String> addFavoriteItemFromPRP(String lsKeyword,ProductResultsPage prp){
+		Map<String,String> map=new HashMap<>();
 		prp.getSearchResultLoad(lsKeyword,true);
 		for(WebElement item:prp.getProductList()){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 			WebElement element=item.findElement(prp.byProductHeaderLike);
+			final WebElement tmpElement=element;
 			if(element.getAttribute("aria-pressed").equalsIgnoreCase("false")) {
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 				this.getReusableActionsInstance().clickIfAvailable(element);
-				this.waitForCondition(Driver->{return element.getAttribute("aria-pressed").equalsIgnoreCase("true");},10000);
+				this.waitForCondition(Driver->{return tmpElement.getAttribute("aria-pressed").equalsIgnoreCase("true");},10000);
 				if(element.getAttribute("aria-pressed").equalsIgnoreCase("true")){
 					reporter.reportLogPass("The favorite icon on PRP page is highlighted correctly");
 				}
 				else{
 					reporter.reportLogFailWithScreenshot("The favorite icon on PRP page is not highlighted correctly");
 				}
+
+				element=item.findElement(prp.byProductName);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+				map.put("productName",element.getText().trim());
+
+				element=item.findElement(prp.byProductNowPrice);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+				map.put("productNowPrice",element.getText().trim().split(":")[1].trim());
+
+				if(prp.checkProductItemWasPriceExisting(item)){
+					element=item.findElement(prp.byProductWasPrice);
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+					map.put("productWasPrice",element.getText().trim().split(":")[1].trim());
+				}
+				else{
+					map.put("productWasPrice",null);
+				}
 				break;
 			}
 		}
+		return map;
 	}
 
 	/**
@@ -3532,6 +3587,46 @@ public class MyAccount extends BasePage {
 		}
 		else {
 			reporter.reportLogFailWithScreenshot("The FavShareMobile icon is not highlighted correctly");
+		}
+	}
+
+	/**
+	 * To cancel Favorite Item On PDP page
+	 * @param - ProductDetailPage - pdp
+	 * @return - String - product name
+	 */
+	public String cancelFavoriteItemOnPDP(ProductDetailPage pdp){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(pdp.lblProductName);
+		String lsPDPProductName=pdp.lblProductName.getText().trim();
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(pdp.lnkFavShareMobile);
+		this.getReusableActionsInstance().clickIfAvailable(pdp.lnkFavShareMobile);
+		this.waitForCondition(Driver->{return !pdp.checkIfFavShareMobileHighlighted();},5000);
+
+		if(!pdp.checkIfFavShareMobileHighlighted()){
+			reporter.reportLogPass("The cancel favorite item action is working well");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The cancel favorite item action is not working well");
+		}
+
+		return lsPDPProductName;
+	}
+
+	/**
+	 * To verify PRP Favorite Icon After Cancel Action From PDP
+	 * @param - String - lsKeyword - product name
+	 * @param - ProductResultsPage - prp
+	 */
+	public void verifyPRPFavoriteIconAfterCancelActionFromPDP(String lsKeyword,ProductResultsPage prp){
+		prp.getSearchResultLoad(lsKeyword,true);
+		WebElement item=prp.getProductList().get(0).findElement(prp.byProductHeaderLike);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+		if(item.getAttribute("aria-pressed").equalsIgnoreCase("false")) {
+			reporter.reportLogPass("The favorite icon on PDP is not highlighted");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The favorite icon on PDP is highlighted wrongly");
 		}
 	}
 
