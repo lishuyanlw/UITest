@@ -34,7 +34,7 @@ public class MA_TC14_YourAddresses_AddingAddress extends BaseTest {
         String lblUserName = TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
         String lblPassword = TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
 
-        //Fetching test data from test data file and remove CC info
+        //Fetching test data from test data file
         ConstantData.APIUserSessionParams apiUserSessionParams = TestDataHandler.constantData.getApiUserSessionParams();
         apiUserSessionData = apiResponseThreadLocal.get().getApiUserSessionData(lblUserName,lblPassword,apiUserSessionParams.getLbl_grantType(),apiUserSessionParams.getLbl_apiKey());
         String accessToken = apiUserSessionData.get("access_token").toString();
@@ -190,6 +190,37 @@ public class MA_TC14_YourAddresses_AddingAddress extends BaseTest {
         reporter.reportLog("Verify auto search function for address");
         getMyAccountPageThreadLocal().openAddOrEditAddressWindow("addShippingAddress",null);
         getMyAccountPageThreadLocal().verifyAutoSearchForAddress(false);
+        getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(false);
+
+        reporter.reportLog("Verify adding duplicated address");
+        Map<String,String> mapLastShippingAddress=getMyAccountPageThreadLocal().getGivenShippingOrBillingAddress(getMyAccountPageThreadLocal().lstShippingAddressContainer.size()-1);
+        getMyAccountPageThreadLocal().openAddOrEditAddressWindow("addShippingAddress",null);
+        getMyAccountPageThreadLocal().editAddress(mapLastShippingAddress,null);
+
+        if(getMyAccountPageThreadLocal().ckbAddOrEditMakeDefaultShippingAddress.isSelected()){
+            basePage.getReusableActionsInstance().javascriptScrollByVisibleElement(getMyAccountPageThreadLocal().labelAddOrEditMakeDefaultShippingAddress);
+            getMyAccountPageThreadLocal().labelAddOrEditMakeDefaultShippingAddress.click();
+        }
+        basePage.getReusableActionsInstance().staticWait(300);
+
+        if(getMyAccountPageThreadLocal().ckbAddOrEditMakeShippingAsBillingAddress.isSelected()){
+            basePage.getReusableActionsInstance().javascriptScrollByVisibleElement(getMyAccountPageThreadLocal().labelAddOrEditMakeShippingAsBillingAddress);
+            getMyAccountPageThreadLocal().labelAddOrEditMakeShippingAsBillingAddress.click();
+        }
+        basePage.getReusableActionsInstance().staticWait(300);
+
+        basePage.getReusableActionsInstance().javascriptScrollByVisibleElement(getMyAccountPageThreadLocal().btnSave);
+        getMyAccountPageThreadLocal().btnSave.click();
+        basePage.waitForCondition(Driver->{return getMyAccountPageThreadLocal().lblAddOrEditAddressExistingErrorMessage.isDisplayed();},60000);
+        basePage.getReusableActionsInstance().javascriptScrollByVisibleElement(getMyAccountPageThreadLocal().lblAddOrEditAddressExistingErrorMessage);
+        String lsActualErrorMessage=getMyAccountPageThreadLocal().lblAddOrEditAddressExistingErrorMessage.getText().trim();
+        String lsExpectedErrorMessage = TestDataHandler.constantData.getMyAccount().getLbl_addAddressExistingErrorMessage();
+        if(lsActualErrorMessage.equalsIgnoreCase(lsExpectedErrorMessage)){
+            reporter.reportLogPass("The duplicated address error message is displaying correctly");
+        }
+        else{
+            reporter.reportLogFailWithScreenshot("The duplicated address error message:'"+lsActualErrorMessage+"' is not displaying as expected:'"+lsExpectedErrorMessage+"'");
+        }
         getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(false);
 
     }
