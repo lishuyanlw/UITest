@@ -19,7 +19,7 @@ import java.util.Map;
 
 public class MA_TC17_MyPreferences_Favorites extends BaseTest {
     /*
-     *CER-799
+     *CER-808
      */
     @Test(groups={"MyAccount","Regression"})
     public void MA_TC17_MyPreferences_Favorites() throws IOException, org.json.simple.parser.ParseException {

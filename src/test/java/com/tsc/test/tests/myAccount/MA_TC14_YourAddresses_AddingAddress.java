@@ -22,7 +22,7 @@ import java.util.Map;
 
 public class MA_TC14_YourAddresses_AddingAddress extends BaseTest {
     /*
-     *CER-799
+     *CER-805
      */
     @Test(groups={"MyAccount","Regression"})
     public void MA_TC14_YourAddresses_AddingAddress() throws IOException, org.json.simple.parser.ParseException {
@@ -152,7 +152,6 @@ public class MA_TC14_YourAddresses_AddingAddress extends BaseTest {
         Map<String,String> mapBeforeMakeAsBillingAddress=getMyAccountPageThreadLocal().getGivenShippingOrBillingAddress(-1);
         getMyAccountPageThreadLocal().openAddOrEditAddressWindow("addShippingAddress",null);
         lsAutoSearchKeywordSetDefault = DataConverter.getSaltString(4,"numberType");
-        reporter.reportLog("lsAutoSearchKeywordSetDefault: "+lsAutoSearchKeywordSetDefault);
         map=getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeywordSetDefault,false,true,-1);
         try{
             getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
