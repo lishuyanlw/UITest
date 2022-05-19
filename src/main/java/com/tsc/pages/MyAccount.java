@@ -3,6 +3,7 @@ package com.tsc.pages;
 import com.tsc.api.util.DataConverter;
 import com.tsc.pages.base.BasePage;
 import org.json.simple.JSONObject;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -641,6 +642,23 @@ public class MyAccount extends BasePage {
 	@FindBy(xpath = "//ng-component//a[contains(@class,'btn-shop-now')]")
 	public WebElement lnkRecentlyViewedShopNow;
 
+	@FindBy(xpath = "//ng-component//div[contains(@class,'recently-viewed-container')]//div[contains(@class,'recently-viewed-item-container')]")
+	public List<WebElement> lstRecentlyViewedItemContainerList;
+
+	public By byRecentlyViewedItemLink=By.xpath(".//a");
+	public By byRecentlyViewedItemImage=By.xpath(".//div[@class='on-air-prod-img']//img");
+	public By byRecentlyViewedItemName=By.xpath(".//div[@class='on-air-prod-name']");
+	public By byRecentlyViewedItemPriceContainer=By.xpath(".//div[@class='on-air-price-blk']");
+	public By byRecentlyViewedItemNowPrice=By.xpath(".//div[@class='on-air-price-blk']//span[@class='on-air-prod-price']");
+	public By byRecentlyViewedItemWasPrice=By.xpath(".//div[@class='on-air-price-blk']//span[@class='on-air-prod-was-price']");
+	public By byRecentlyViewedItemEasyPayment=By.xpath(".//span[@class='or-payments']");
+	public By byRecentlyViewedItemReviewRateStarList=By.xpath(".//div[@class='pr-rating-stars']//div[contains(@class,'pr-star-v4')]");
+	public By byRecentlyViewedItemReviewAmount=By.xpath(".//div[contains(@class,'pr-category-snippet__total')]");
+
+	//The same popup window as clear favorite history after clicking
+	@FindBy(xpath = "//ng-component//div[contains(@class,'recently-viewed-title-block')]//button[contains(@class,'btn-clear-viewing-history')]")
+	public WebElement btnClearViewingHistory;
+
 	//For My Newsletter
 	@FindBy(xpath = "//label[@for='MyNewsletters']")
 	public WebElement lblMyNewsLettersTitle;
@@ -686,6 +704,12 @@ public class MyAccount extends BasePage {
 
 	@FindBy(xpath = "//input[@id='btnUnSub']")
 	public WebElement btnMyNewsLettersUnsubscribe;
+
+	@FindBy(xpath = "//iFrame[@id='ifrmEmailSignup']")
+	public WebElement iFrameEmailSignup;
+
+	@FindBy(xpath = "//div[@id='bodycontent']")
+	public WebElement lblSubscriptionSuccessMessage;
 
 
 	/**
@@ -3649,6 +3673,120 @@ public class MyAccount extends BasePage {
 			reporter.reportLogFailWithScreenshot("The favorite icon on PDP is highlighted wrongly");
 		}
 	}
+
+	/**
+	 * To clear viewing history
+	 */
+	public void clearViewingHistory() {
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnClearViewingHistory);
+		this.getReusableActionsInstance().clickIfAvailable(this.btnClearViewingHistory);
+		this.getReusableActionsInstance().waitForElementVisibility(this.lblTitleInClearMyFavouritesPopupWindow, 20);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnClearInClearMyFavouritesPopupWindow);
+		this.getReusableActionsInstance().clickIfAvailable(this.btnClearInClearMyFavouritesPopupWindow);
+		this.getReusableActionsInstance().waitForElementVisibility(this.lnkRecentlyViewedShopNow, 20);
+	}
+
+	/**
+	 * verify Changing Subscription Success Message in NewsLetters
+	 * @param - WebElement - ckbItem
+	 * @param - boolean - bCheck - if check the related Subscription checkbox
+	 * @param - String - lsExpectedMessage
+	 */
+	public void verifyNewsLettersChangingSubscriptionSuccessMessage(WebElement ckbItem,boolean bCheck,String lsExpectedMessage){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(ckbItem);
+		if(bCheck){
+			if(!ckbItem.isSelected()){
+				this.getReusableActionsInstance().clickIfAvailable(ckbItem);
+			}
+		}
+		else{
+			if(ckbItem.isSelected()){
+				this.getReusableActionsInstance().clickIfAvailable(ckbItem);
+			}
+		}
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnMyNewsLettersUpdatePrefs);
+		this.getReusableActionsInstance().clickIfAvailable(btnMyNewsLettersUpdatePrefs);
+		this.waitForCondition(Driver->{return iFrameEmailSignup.isDisplayed();},10000);
+
+		this.getDriver().switchTo().frame(iFrameEmailSignup);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSubscriptionSuccessMessage);
+		String lsActualMessage=this.lblSubscriptionSuccessMessage.getText();
+		if(lsActualMessage.toLowerCase().contains(lsExpectedMessage.toLowerCase())){
+			reporter.reportLogPass("The subscription message is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The subscription message is not displaying correctly");
+		}
+
+		this.getDriver().switchTo().defaultContent();
+		this.navigateBack();
+		this.waitForCondition(Driver->{return this.lblMyNewsLettersTitle.isDisplayed();},10000);
+	}
+
+	/**
+	 * verify UnSubscription Success Message in NewsLetters
+	 * @param - boolean - bCheckUnSubscription - if check the UnSubscription checkbox
+	 * @param - String - lsExpectedAlertMessage
+	 * @param - String - lsExpectedUnSubscriptionMessage
+	 */
+	public void verifyNewsLettersUnSubscriptionSuccessMessage(boolean bCheckUnSubscription,String lsExpectedAlertMessage,String lsExpectedUnSubscriptionMessage){
+		if(bCheckUnSubscription){
+			if(this.ckbMyNewsLettersUnsubscribe.isSelected()){
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.ckbMyNewsLettersUnsubscribe);
+				this.getReusableActionsInstance().clickIfAvailable(this.ckbMyNewsLettersUnsubscribe);
+			}
+
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnMyNewsLettersUnsubscribe);
+			this.getReusableActionsInstance().clickIfAvailable(btnMyNewsLettersUnsubscribe);
+			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+			Alert alert=this.getDriver().switchTo().alert();
+			String lsActualAlertMessage=alert.getText().trim();
+			if(lsActualAlertMessage.toLowerCase().contains(lsExpectedAlertMessage.toLowerCase())){
+				reporter.reportLogPass("The Alert message for not checking UnSubscription is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The Alert message for not checking UnSubscription is not displaying correctly");
+			}
+			alert.accept();
+		}
+		else{
+			if(!this.ckbMyNewsLettersUnsubscribe.isSelected()){
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.ckbMyNewsLettersUnsubscribe);
+				this.getReusableActionsInstance().clickIfAvailable(this.ckbMyNewsLettersUnsubscribe);
+			}
+
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnMyNewsLettersUnsubscribe);
+			this.getReusableActionsInstance().clickIfAvailable(btnMyNewsLettersUnsubscribe);
+			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+			Alert alert=this.getDriver().switchTo().alert();
+			String lsActualAlertMessage=alert.getText().trim();
+			if(lsActualAlertMessage.toLowerCase().contains(lsExpectedAlertMessage.toLowerCase())){
+				reporter.reportLogPass("The Alert message for checking UnSubscription is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The Alert message for checking UnSubscription is not displaying correctly");
+			}
+			alert.accept();
+
+			this.waitForCondition(Driver->{return iFrameEmailSignup.isDisplayed();},10000);
+
+			this.getDriver().switchTo().frame(iFrameEmailSignup);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSubscriptionSuccessMessage);
+			String lsActualMessage=this.lblSubscriptionSuccessMessage.getText();
+			if(lsActualMessage.toLowerCase().contains(lsExpectedUnSubscriptionMessage.toLowerCase())){
+				reporter.reportLogPass("The UnSubscription message is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The UnSubscription message is not displaying correctly");
+			}
+
+			this.getDriver().switchTo().defaultContent();
+			this.navigateBack();
+			this.waitForCondition(Driver->{return this.lblMyNewsLettersTitle.isDisplayed();},10000);
+		}
+	}
+
 
 }
 

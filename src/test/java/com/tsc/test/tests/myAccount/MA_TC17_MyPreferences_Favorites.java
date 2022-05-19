@@ -2,6 +2,7 @@ package com.tsc.test.tests.myAccount;
 
 import com.tsc.api.apiBuilder.AccountAPI;
 import com.tsc.api.pojo.AccountResponse;
+import com.tsc.api.pojo.Product;
 import com.tsc.api.util.DataConverter;
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.data.pojos.ConstantData;
@@ -127,6 +128,31 @@ public class MA_TC17_MyPreferences_Favorites extends BaseTest {
         }
         else{
             reporter.reportLogFailWithScreenshot("Shopping Now button are not displaying correctly");
+        }
+
+        reporter.reportLog("Verify clear favorite history action");
+        getMyAccountPageThreadLocal().addFavoriteItemFromPRP(lsKeywordDropdownList.get(0).get(0), getProductResultsPageThreadLocal());
+        getGlobalLoginPageThreadLocal().goToYourProfilePage();
+        favoriteItemAmount=getMyAccountPageThreadLocal().openSubItemWindow("My Preferences", "Favourites", getMyAccountPageThreadLocal().lblMyFavouritesTitle);
+        if(favoriteItemAmount>0){
+            reporter.reportLog("Clear all favorite history");
+            getMyAccountPageThreadLocal().clearFavoriteHistory(false);
+            if(getMyAccountPageThreadLocal().lstNoHistoryMessage.size()>0){
+                reporter.reportLogPass("No history messages are displaying correctly");
+            }
+            else{
+                reporter.reportLogFailWithScreenshot("No history messages are not displaying correctly");
+            }
+
+            if(basePage.getReusableActionsInstance().isElementVisible(getMyAccountPageThreadLocal().btnShoppingNow)){
+                reporter.reportLogPass("Shopping Now button are displaying correctly");
+            }
+            else{
+                reporter.reportLogFailWithScreenshot("Shopping Now button are not displaying correctly");
+            }
+        }
+        else{
+            reporter.reportLogPassWithScreenshot("Add favorite action failed");
         }
 
     }

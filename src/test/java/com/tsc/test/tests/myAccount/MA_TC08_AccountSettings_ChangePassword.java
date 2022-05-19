@@ -3,6 +3,7 @@ package com.tsc.test.tests.myAccount;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.tsc.api.apiBuilder.AccountAPI;
 import com.tsc.api.pojo.AccountResponse;
+import com.tsc.api.util.DataConverter;
 import com.tsc.api.util.JsonParser;
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.data.pojos.ConstantData;
@@ -121,9 +122,16 @@ public class MA_TC08_AccountSettings_ChangePassword extends BaseTest {
         getGlobalLoginPageThreadLocal().SignOut();
         if(getGlobalLoginPageThreadLocal().Login(lblUserName, lsChangedPassword)){
             reporter.reportLogPass("Changing password successfully");
+            getGlobalLoginPageThreadLocal().SignOut();
         }
         else{
             reporter.reportLogFail("Changing password failed");
         }
+
+        reporter.reportLog("Test with the Password before changing");
+        String lsErrorMessageForUserName=TestDataHandler.constantData.getLoginUser().getLbl_ErrorMessageForUserName();
+        String lsErrorMessageForPassword=TestDataHandler.constantData.getLoginUser().getLbl_ErrorMessageForPassword();
+        String lsErrorMessageForUserNameAndPassword=TestDataHandler.constantData.getLoginUser().getLbl_ErrorMessageForUserNameAndPassword();
+        getGlobalLoginPageThreadLocal().verifyErrorMessageForUserNameAndPassword(lblUserName,lblPassword,lsErrorMessageForUserName,lsErrorMessageForPassword,lsErrorMessageForUserNameAndPassword);
     }
 }
