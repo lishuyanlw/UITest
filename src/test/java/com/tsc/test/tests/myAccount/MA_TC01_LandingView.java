@@ -11,12 +11,12 @@ import org.testng.annotations.Test;
 import java.io.IOException;
 import java.text.ParseException;
 
-public class MA_TC12_LandingView extends BaseTest {
+public class MA_TC01_LandingView extends BaseTest {
     /*
      *CER-789
      */
     @Test(groups={"MyAccount","Regression"})
-    public void MA_TC12_LandingView() throws ParseException, IOException {
+    public void MA_TC01_LandingView() throws ParseException, IOException {
         //Closing SignIn pop up on login
         getGlobalFooterPageThreadLocal().closePopupDialog();
 

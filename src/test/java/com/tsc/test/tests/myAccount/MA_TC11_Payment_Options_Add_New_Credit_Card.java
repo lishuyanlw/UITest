@@ -21,12 +21,12 @@ import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
-public class MA_TC01_Payment_Options_Add_New_Credit_Card extends BaseTest {
+public class MA_TC11_Payment_Options_Add_New_Credit_Card extends BaseTest {
     /*
     *CER-802
      */
     @Test(groups={"MyAccount","Regression"})
-    public void MA_TC01_Payment_Options_Add_New_Credit_Card() throws ParseException, IOException {
+    public void MA_TC11_Payment_Options_Add_New_Credit_Card() throws ParseException, IOException {
         //Closing SignIn pop up on login
         getGlobalFooterPageThreadLocal().closePopupDialog();
         /**
