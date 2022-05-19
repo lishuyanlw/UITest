@@ -229,4 +229,8 @@ myAccount:
   lnk_myAccountRecentlyViewedURL: "/pages/myaccount/recentlyviewed"
   lbl_myNewsLettersTitle: "MY NEWSLETTERS"
   lnk_myAccountNewsLetterURL: "/pages/myaccount/newsletter"
+  lbl_myNewsLettersSubscriptionSuccessMessage: "Your subscription settings have now been updated."
+  lbl_myNewsLettersUnSubscriptionSuccessMessage: "You have now been successfully unsubscribed."
+  lbl_myNewsLettersNoCheckUnSubscriptionAlertMessage: "You have not chosen the unsubscribe checkbox."
+  lbl_myNewsLettersCheckUnSubscriptionAlertMessage: "Are you sure you want to completely unsubscribe from all of our exciting email marketing communications?"
 

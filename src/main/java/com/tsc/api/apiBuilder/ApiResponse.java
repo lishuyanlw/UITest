@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static io.restassured.RestAssured.given;
 
@@ -916,6 +917,53 @@ public class ApiResponse extends ApiConfigs {
 			return JsonParser.getResponseObject(response.asString(), new TypeReference<AccountResponse>() {});
 		else
 			return null;
+	}
+
+	/**
+	 * This method finds an active product with full info(badgeImage,product name,brand,style,size,NowPrice,WasPrice,review) on the basis of input search keyword
+	 * @param - String - searchKeyword : search keyword for Product
+	 * @return - Product.Products - product for search keyword
+	 */
+	public Product.Products getActiveProductWithFullInfoFromKeyword(String searchKeyword){
+		boolean flag = true;
+		String lsNowPrice,lsWasPrice;
+		Product.Products productItem=null;
+
+		Product product = getProductDetailsForKeyword(searchKeyword,null,true);
+		if(product==null) {
+			return null;
+		}
+
+		List<Product.Products> dataList;
+		do{
+			dataList =product.Products.stream().filter(item->item.getEdps().stream().anyMatch(subItem->subItem.getAppliedShipping().isEmpty()&&subItem.getInventory()>2)).collect(Collectors.toList());
+			for(Product.Products data:dataList) {
+				lsNowPrice=data.getIsPriceRange();
+				lsWasPrice=data.getWasPriceRange();
+				if (data.isActive()&&data.getStyles().size() >= 0 && data.getSizes().size() >= 0&&data.isShowBadgeImage()&&data.getProductReviewRating()>0&&!lsNowPrice.equalsIgnoreCase(lsWasPrice)) {
+					if(data.getBrand()!=null) {
+						if(data.getBrand().isEmpty()) {
+							continue;
+						}
+					}
+					else {
+						continue;
+					}
+					productItem=data;
+					flag = false;
+					break;
+				}
+			}
+			if(flag) {
+				outputPage++;
+				if(outputPage>totalPage||outputPage>=10) {
+					flag = false;
+				}
+				product = getProductDetailsForKeyword(searchKeyword,null,false);
+			}
+		}while(flag);
+
+		return productItem;
 	}
 
 }
