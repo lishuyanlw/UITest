@@ -5,6 +5,8 @@ boolean success(String message) {
 }
 
 boolean shouldRun() {
+    echo sh(label: 'Add safe.directory for Git', script: 'git config --global --add safe.directory "$(pwd)"', returnStdout:true).trim()
+    
     String message = sh(label: 'Get Commit Message', script: 'git log -1 --pretty=%B', returnStdout: true).trim()
 
     if (message.matches('.*\\[skip ci].*')) {
