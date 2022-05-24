@@ -89,6 +89,8 @@ public class MA_TC14_YourAddresses_AddingAddress extends BaseTest {
         reporter.reportLog("Adding a new shipping address");
         String lsAutoSearchKeywordAdd = DataConverter.getSaltString(4,"numberType");
         Map<String,String> map=getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeywordAdd,false,false,-1);
+
+        //To avoid duplicated data issue
         try{
             getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
         }
@@ -119,6 +121,8 @@ public class MA_TC14_YourAddresses_AddingAddress extends BaseTest {
         String lsAutoSearchKeywordSetDefault = DataConverter.getSaltString(4,"numberType");
         reporter.reportLog("lsAutoSearchKeywordSetDefault: "+lsAutoSearchKeywordSetDefault);
         map=getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeywordSetDefault,true,false,-1);
+
+        //To avoid duplicated data issue
         try{
             getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
         }
@@ -153,6 +157,8 @@ public class MA_TC14_YourAddresses_AddingAddress extends BaseTest {
         getMyAccountPageThreadLocal().openAddOrEditAddressWindow("addShippingAddress",null);
         lsAutoSearchKeywordSetDefault = DataConverter.getSaltString(4,"numberType");
         map=getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeywordSetDefault,false,true,-1);
+
+        //To avoid duplicated data issue
         try{
             getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
         }

@@ -90,6 +90,8 @@ public class MA_TC15_YourAddresses_ShippingAddress extends BaseTest {
         getMyAccountPageThreadLocal().openAddOrEditAddressWindow("addShippingAddress",null);
         String lsAutoSearchKeywordAdd = DataConverter.getSaltString(4,"numberType");
         Map<String,String> mapAdd=getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeywordAdd,false,false,-1);
+
+        //To avoid duplicated data issue
         try{
             getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
         }
@@ -109,6 +111,8 @@ public class MA_TC15_YourAddresses_ShippingAddress extends BaseTest {
         getMyAccountPageThreadLocal().openAddOrEditAddressWindow("addShippingAddress",null);
         lsAutoSearchKeywordAdd = DataConverter.getSaltString(4,"numberType");
         mapAdd=getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeywordAdd,false,false,-1);
+
+        //To avoid duplicated data issue
         try{
             getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
         }
@@ -162,6 +166,8 @@ public class MA_TC15_YourAddresses_ShippingAddress extends BaseTest {
         editButton=getMyAccountPageThreadLocal().getGivenShippingAddressEditButton(0);
         getMyAccountPageThreadLocal().openAddOrEditAddressWindow("editShippingAddress",editButton);
         String lsAddressEdit=getMyAccountPageThreadLocal().editAddress(mapEditInput,lsAutoSearchKeywordEdit);
+
+        //To avoid duplicated data issue
         try{
             getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
         }
