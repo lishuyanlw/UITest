@@ -151,7 +151,7 @@ public class ApiResponse extends ApiConfigs {
                 for(Product.Products data:product.getProducts()) {
                 	lsNowPrice=data.getIsPriceRange();
                 	lsWasPrice=data.getWasPriceRange();
-                    if (data.getVideosCount() >= 1 && data.getStyles().size() >= 3 && data.getSizes().size() >= 3&&data.isShowBadgeImage()&&data.getProductReviewRating()>0&&!data.getEasyPaymentPrice().isEmpty()&&!lsNowPrice.equalsIgnoreCase(lsWasPrice)&&data.isEnabledAddToCart()) {
+                    if (data.getVideosCount() >= 1 && data.getStyles().size() >= 1 && data.getSizes().size() >= 1&&data.isShowBadgeImage()&&data.getProductReviewRating()>0&&!data.getEasyPaymentPrice().isEmpty()&&!lsNowPrice.equalsIgnoreCase(lsWasPrice)&&data.isEnabledAddToCart()) {
                     	if(data.getBrand()!=null) {
                     		if(data.getBrand().isEmpty()) {
                     			continue;
