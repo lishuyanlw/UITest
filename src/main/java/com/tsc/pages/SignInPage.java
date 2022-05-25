@@ -670,4 +670,12 @@ public class SignInPage extends BasePage {
 		}
 	}
 
+	/**
+	 * This function verifies SignOut Button visibility on page
+	 */
+	public boolean verifySignOutButtonVisibilityOnPage(){
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignOut);
+		return getReusableActionsInstance().isElementVisible(this.btnSignOut);
+	}
+
 }

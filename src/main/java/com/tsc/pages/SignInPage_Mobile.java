@@ -18,7 +18,7 @@ public class SignInPage_Mobile extends SignInPage{
     @FindBy(xpath = "//div[contains(@class,'signin-bottomnote') and contains(@class,'visible-xs')]//a[contains(@href,'aboutusprivacy')]")
     public WebElement lnkPrivacyAndSecurity;
 
-    @FindBy(xpath="//div[contains(@class,'summary-logout')]|//a/span[contains(@class,'rhs-account-panel-link__text') and contains(text(),'Sign')]")
+    @FindBy(xpath="//div[contains(@class,'summary-logout')]/button|//a/span[contains(@class,'rhs-account-panel-link__text') and contains(text(),'Sign')]")
     public WebElement btnSignOut;
 
     @Override
@@ -83,6 +83,12 @@ public class SignInPage_Mobile extends SignInPage{
         (new GlobalFooterPage(this.getDriver())).waitForPageLoading();
 
         return waitForCondition(Driver->{return this.lblSignIn.isDisplayed();},30000);
+    }
+
+    @Override
+    public boolean verifySignOutButtonVisibilityOnPage(){
+        getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignOut);
+        return getReusableActionsInstance().isElementVisible(this.btnSignOut);
     }
 
 }

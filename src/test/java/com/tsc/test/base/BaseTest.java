@@ -168,17 +168,20 @@ public class BaseTest {
 			productDetailPageThreadLocal.set(new ProductDetailPage_Tablet(getDriver()));
 		}
 
-		if(System.getProperty("Browser").contains("ios")) {
+		if(System.getProperty("Browser").contains("ios") ||
+				(System.getProperty("chromeMobileDevice")!=null
+						&& System.getProperty("chromeMobileDevice").contains("iPad"))) {
 			loginPageThreadLocal.set(new SignInPage(getDriver()));
+			myAccountPageThreadLocal.set(new MyAccount(getDriver()));
 		}
 		else{
 			loginPageThreadLocal.set(new SignInPage_Mobile(getDriver()));
+			myAccountPageThreadLocal.set(new MyAccount_Mobile(getDriver()));
 		}
 
 		reporter = new ExtentTestManager(getDriver());
 		apiResponseThreadLocal.set(new ApiResponse());
 		shoppingCartThreadLocal.set(new ShoppingCart(getDriver()));
-		myAccountPageThreadLocal.set(new MyAccount(getDriver()));
 	}
 
 
