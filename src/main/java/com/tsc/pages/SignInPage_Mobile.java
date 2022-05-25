@@ -85,7 +85,7 @@ public class SignInPage_Mobile extends SignInPage{
         return waitForCondition(Driver->{return this.lblSignIn.isDisplayed();},30000);
     }
 
-    @Override
+    //@Override
     public boolean verifySignOutButtonVisibilityOnPage(){
         getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignOut);
         return getReusableActionsInstance().isElementVisible(this.btnSignOut);

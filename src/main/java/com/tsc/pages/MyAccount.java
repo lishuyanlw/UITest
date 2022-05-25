@@ -1331,16 +1331,6 @@ public class MyAccount extends BasePage {
 	 * @param - loadingIndicator - the element to indicate window loading
 	 */
 	public int openSubItemWindow(String lsHeaderItem,String lsSubItem,WebElement loadingIndicator){
-		String lsTestDevice = System.getProperty("Device").trim();
-		if(lsTestDevice.equalsIgnoreCase("Mobile")) {
-			WebElement headerButton=this.getHeaderItem(lsHeaderItem);
-			if(headerButton.getAttribute("class").contains("collapsed")){
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(headerButton);
-				this.getReusableActionsInstance().clickIfAvailable(headerButton);
-				this.getReusableActionsInstance().staticWait(2*this.getStaticWaitForApplication());
-			}
-		}
-
 		WebElement subButton=this.getSubItem(lsSubItem);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(subButton);
 		int count=0;
@@ -2136,7 +2126,7 @@ public class MyAccount extends BasePage {
 		}
 
 		String lsTestDevice = System.getProperty("Device").trim();
-		if(!lsTestDevice.equalsIgnoreCase("Mobile")) {
+		if(lsTestDevice.equalsIgnoreCase("Desktop")) {
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAccountSettingPassword);
 			if(!lblAccountSettingPassword.getText().isEmpty()){
 				reporter.reportLogPass("The Password in Account settings is displaying correctly");

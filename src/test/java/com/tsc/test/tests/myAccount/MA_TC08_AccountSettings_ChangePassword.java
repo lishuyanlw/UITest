@@ -3,19 +3,15 @@ package com.tsc.test.tests.myAccount;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.tsc.api.apiBuilder.AccountAPI;
 import com.tsc.api.pojo.AccountResponse;
-import com.tsc.api.util.DataConverter;
 import com.tsc.api.util.JsonParser;
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.data.pojos.ConstantData;
-import com.tsc.pages.GlobalHeaderPage;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 import io.restassured.response.Response;
-import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +21,7 @@ public class MA_TC08_AccountSettings_ChangePassword extends BaseTest {
      *CER-799
      */
     @Test(groups={"MyAccount","Regression"})
-    public void MA_TC08_AccountSettings_ChangePassword() throws ParseException, IOException {
+    public void MA_TC08_AccountSettings_ChangePassword() throws IOException {
         //Closing SignIn pop up on login
         getGlobalFooterPageThreadLocal().closePopupDialog();
 
@@ -57,7 +53,20 @@ public class MA_TC08_AccountSettings_ChangePassword extends BaseTest {
         getGlobalLoginPageThreadLocal().Login(lblUserName, lblPassword);
 
         BasePage basePage=new BasePage(this.getDriver());
-        String lsTestDevice = System.getProperty("Device").trim();
+        //String lsTestDevice = System.getProperty("Device").trim();
+
+        reporter.reportLog("Verify customer information");
+        String userCustomerNumber = getGlobalLoginPageThreadLocal().getCustomerNumberForLoggedInUser();
+        if(customerNumber.equals(userCustomerNumber))
+            getReporter().reportLogPass("User is successfully logged in with customer no: "+userCustomerNumber);
+        else
+            getReporter().reportLogFailWithScreenshot("User is not logged in with expected customer no: "+userCustomerNumber+" but with other customer no: "+customerNumber);
+
+        boolean value = getGlobalLoginPageThreadLocal().verifySignOutButtonVisibilityOnPage();
+        if(value)
+            reporter.reportLogPass("SignOut button is displaying correctly");
+        else
+            reporter.reportLogFailWithScreenshot("SignOut button is not displaying correctly");
 
         reporter.reportLog("Verify Order status URL");
         getMyAccountPageThreadLocal().openSubItemWindow("Your Profile","Change Password", getMyAccountPageThreadLocal().lblAccountSettingSectionTitle);
@@ -69,22 +78,6 @@ public class MA_TC08_AccountSettings_ChangePassword extends BaseTest {
         }
         else{
             reporter.reportLogPass("The actual navigated URL:+"+basePage.URL()+" is not equal to expected one:"+expectedURL);
-        }
-
-        if(!lsTestDevice.equalsIgnoreCase("Mobile")){
-            reporter.reportLog("Verify customer information");
-            String userCustomerNumber = getGlobalLoginPageThreadLocal().getCustomerNumberForLoggedInUser();
-            if(customerNumber.equals(userCustomerNumber))
-                getReporter().reportLogPass("User is successfully logged in with customer no: "+userCustomerNumber);
-            else
-                getReporter().reportLogFailWithScreenshot("User is not logged in with expected customer no: "+userCustomerNumber+" but with other customer no: "+customerNumber);
-
-            if(basePage.getReusableActionsInstance().isElementVisible(getGlobalLoginPageThreadLocal().btnSignOut)){
-                reporter.reportLogPass("SignOut button is displaying correctly");
-            }
-            else{
-                reporter.reportLogFailWithScreenshot("SignOut button is not displaying correctly");
-            }
         }
 
         basePage.getReusableActionsInstance().javascriptScrollByVisibleElement(getMyAccountPageThreadLocal().lblAccountSettingSectionTitle);

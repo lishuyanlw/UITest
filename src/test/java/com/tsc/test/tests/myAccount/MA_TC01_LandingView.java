@@ -51,12 +51,10 @@ public class MA_TC01_LandingView extends BaseTest {
             getReporter().reportLogFailWithScreenshot("User is not logged in with expected customer no: "+userCustomerNumber+" but with other customer no: "+customerNumber);
 
         boolean value = getGlobalLoginPageThreadLocal().verifySignOutButtonVisibilityOnPage();
-        if(value){
+        if(value)
             reporter.reportLogPass("SignOut button is displaying correctly");
-        }
-        else{
+        else
             reporter.reportLogFailWithScreenshot("SignOut button is not displaying correctly");
-        }
 
         reporter.reportLog("Verify landing view content");
         getMyAccountPageThreadLocal().verifyLandingViewContent();
