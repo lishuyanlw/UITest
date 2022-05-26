@@ -2137,7 +2137,7 @@ public class ProductResultsPage extends BasePage{
 	/**
 	 * This method will check Product Item colour option Existing with mouse hover
 	 * @param-WebElement itemContainer: product search result item
-	 * @param-String lsOption: "size"/"colour"
+	 * @param-String lsOption: "size"/"style"
 	 * @return boolean
 	 * @author Wei.Li
 	 */
@@ -2316,13 +2316,13 @@ public class ProductResultsPage extends BasePage{
 			}
 		}
 
-		if(this.checkProductOptionTypeExistingWithMouseHover(itemContainer, "colour")) {
+		if(this.checkProductOptionTypeExistingWithMouseHover(itemContainer, "style")) {
 			if(checkProductColorOptionEnabledItemAvailableWithMouseHover(itemContainer)) {
 				elementSelectedText=itemContainer.findElement(byProductOptionColorSelectedColorContainer);
 				tempElementColor=elementSelectedText;
 
 				optionList=itemContainer.findElements(byProductOptionColorItemEnabledList);
-
+				reporter.reportLog("Color optionList.size(): "+optionList.size());
 				element=optionList.get(optionList.size()-1);
 				if(element.getTagName().equalsIgnoreCase("button")) {
 					this.getReusableActionsInstance().clickIfAvailable(element,5000);
@@ -3862,6 +3862,95 @@ public class ProductResultsPage extends BasePage{
 
 	public boolean checkTitleAndTextSectionExisting(){
 		return this.checkChildElementExistingByAttribute(this.cntProductTitleAndTextIdentifier,"class","TitleAndTextSeo");
+	}
+
+	/**
+	 * To navigate from PRP to PDP
+	 * @param - String - lsKeyword
+	 * @param - boolean - bStyleAndSize - if check Style and Size
+	 * @return - Map<String,String> - including productName,productBrand,productNowPrice,
+	 * 			productWasPrice,productReviewRate,productReviewCount, productStyle, productSize
+	 */
+	public Map<String,String> navigateFromPRPToPDP(String lsKeyword, boolean bStyleAndSize){
+		Map<String,String> map=new HashMap<>();
+		WebElement element;
+		String lsText;
+
+		ProductDetailPage pdp=new ProductDetailPage(this.getDriver());
+
+		this.getSearchResultLoad(lsKeyword,true);
+		List<WebElement> productList=this.getProductList();
+		WebElement item=productList.get(0);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+		this.getReusableActionsInstance().scrollToElement(item);
+
+		element=item.findElement(this.byProductName);
+		lsText=this.getElementInnerText(element);
+		map.put("productName",lsText);
+
+		if(this.checkProductItemBrandNameExisting(item)){
+			element=item.findElement(this.byProductBrand);
+			lsText=this.getElementInnerText(element);
+			map.put("productBrand",lsText);
+		}
+		else{
+			map.put("productBrand",null);
+		}
+
+		element=item.findElement(this.byProductNowPrice);
+		lsText=this.getElementInnerText(element);
+		map.put("productNowPrice",lsText.trim().split(":")[1].trim());
+
+		if(this.checkProductItemWasPriceExisting(item)){
+			element=item.findElement(this.byProductWasPrice);
+			lsText=this.getElementInnerText(element);
+			map.put("productWasPrice",lsText.trim().split(":")[1].trim());
+		}
+		else{
+			map.put("productWasPrice",null);
+		}
+
+		if(this.checkProductItemReviewExisting(item)){
+			List<WebElement> reviewStarList=item.findElements(this.byProductReviewRatingImage);
+			int reviewRate=this.getProductItemReviewNumberAmountFromStarImage(reviewStarList);
+			map.put("productReviewRate",reviewRate+"");
+
+			element=item.findElement(this.byProductReviewRatingCount);
+			lsText=this.getElementInnerText(element);
+			int reviewCount=this.getIntegerFromString(lsText);
+			map.put("productReviewCount",reviewCount+"");
+		}
+		else{
+			map.put("productReviewRate",null);
+			map.put("productReviewCount",null);
+		}
+
+		if(bStyleAndSize){
+			this.selectSizeOrColorOption(item, this.byProductGoToDetails);
+			if(!this.selectedProductItem.productSelectedSize.isEmpty()){
+				map.put("productSize",this.selectedProductItem.productSelectedSize);
+			}
+			else{
+				map.put("productSize",null);
+			}
+
+			if(!this.selectedProductItem.productSelectedColor.isEmpty()){
+				map.put("productStyle",this.selectedProductItem.productSelectedColor);
+			}
+			else{
+				map.put("productStyle",null);
+			}
+
+			element=item.findElement(this.byProductGoToDetails);
+			this.clickElement(element);
+		}
+		else{
+			element=item.findElement(this.byProductImage);
+			this.clickElement(element);
+		}
+		this.waitForCondition(Driver->{return pdp.lblProductName.isDisplayed();},20000);
+
+		return map;
 	}
 
 	public class ProductItem{

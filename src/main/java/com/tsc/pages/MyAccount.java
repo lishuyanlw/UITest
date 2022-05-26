@@ -633,6 +633,9 @@ public class MyAccount extends BasePage {
 	public WebElement btnCancelInClearMyFavouritesPopupWindow;
 
 	//For Recently Viewed
+	@FindBy(xpath = "//ng-component//div[contains(@class,'recently-viewed-title-block')]//div[contains(@class,'form-head')]")
+	public WebElement cntRecentlyViewedTitleContainer;
+
 	@FindBy(xpath = "//ng-component//div[@class='recently-viewed-title']")
 	public WebElement lblRecentlyViewedTitle;
 
@@ -660,7 +663,7 @@ public class MyAccount extends BasePage {
 	public WebElement btnClearViewingHistory;
 
 	//For My Newsletter
-	@FindBy(xpath = "//label[@for='MyNewsletters']")
+	@FindBy(xpath = "//label[@for='MyNewsletters']/b")
 	public WebElement lblMyNewsLettersTitle;
 
 	@FindBy(xpath = "//span[contains(normalize-space(text()),'Manage your email preferences below:')]")
@@ -1357,9 +1360,15 @@ public class MyAccount extends BasePage {
 		}
 		this.getReusableActionsInstance().clickIfAvailable(subButton);
 
-		this.waitForCondition(Driver->{return loadingIndicator.isDisplayed();},50000);
-
-		this.getReusableActionsInstance().staticWait(5*this.getStaticWaitForApplication());
+		if(loadingIndicator!=null){
+			this.waitForCondition(Driver->{return loadingIndicator.isDisplayed();},50000);
+			this.getReusableActionsInstance().staticWait(5*this.getStaticWaitForApplication());
+		}
+		else{
+			this.getReusableActionsInstance().staticWait(5*this.getStaticWaitForApplication());
+			this.getDriver().switchTo().frame(this.iFrameEmailSignup);
+			this.waitForCondition(Driver->{return this.lblMyNewsLettersTitle.isDisplayed();},10000);
+		}
 
 		return count;
 	}
@@ -3567,9 +3576,8 @@ public class MyAccount extends BasePage {
 	}
 
 	/**
-	 * To add Favorite Item From PRP
-	 * @param - String - lsKeyword
-	 * @param - ProductResultsPage - prp
+	 * To verify Favorite Item on PDP
+	 * @param - ProductDetailPage - pdp
 	 */
 	public void verifyFavoriteItemOnPDP(ProductDetailPage pdp){
 		WebElement item=this.lstFavouriteProduct.get(0);
@@ -3688,6 +3696,161 @@ public class MyAccount extends BasePage {
 	}
 
 	/**
+	 * To verify Recently Viewing History Content
+	 * @param - Map<String,String> - productMap
+	 */
+	public void verifyRecentlyViewingHistoryContent(Map<String,String> productMap){
+		String lsText,lsTextMap;
+		WebElement item,element;
+
+		ProductResultsPage prp=new ProductResultsPage(this.getDriver());
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblRecentlyViewedTitle);
+		lsText=lblRecentlyViewedTitle.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The Recently Viewing history title is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Recently Viewing history title is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnClearViewingHistory);
+		lsText=btnClearViewingHistory.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The Clear Viewing history button is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Clear Viewing history button is not displaying correctly");
+		}
+
+		reporter.reportLog("verify Recently Viewing History item");
+		item=this.lstRecentlyViewedItemContainerList.get(0);
+		element=item.findElement(byRecentlyViewedItemLink);
+		lsText=element.getAttribute("href");
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The link of recently viewing history item is not empty");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The link of recently viewing history item is empty");
+		}
+
+		element=item.findElement(byRecentlyViewedItemImage);
+		lsText=element.getAttribute("src");
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The image source of recently viewing history item is not empty");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The image source of recently viewing history item is empty");
+		}
+
+		element=item.findElement(byRecentlyViewedItemName);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+		lsText=element.getText().trim();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The product name of recently viewing history item is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The product name of recently viewing history item is not displaying correctly");
+		}
+
+		lsTextMap=productMap.get("productName");
+		if(lsTextMap.length()>25){
+			if(lsTextMap.substring(0,25).equalsIgnoreCase(lsText.substring(0,25))){
+				reporter.reportLogPass("The product name of recently viewing history item is the same as the one on PRP page");
+			}
+			else{
+				reporter.reportLogFail("The product name of recently viewing history item is not the same as the one on PRP page");
+			}
+		}
+		else{
+			if(lsText.equalsIgnoreCase(lsTextMap)){
+				reporter.reportLogPass("The product name of recently viewing history item is the same as the one on PRP page");
+			}
+			else{
+				reporter.reportLogFail("The product name of recently viewing history item is not the same as the one on PRP page");
+			}
+		}
+
+		element=item.findElement(byRecentlyViewedItemNowPrice);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+		lsText=element.getText().trim();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The product NowPrice of recently viewing history item is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The product NowPrice of recently viewing history item is not displaying correctly");
+		}
+
+		lsTextMap=productMap.get("productNowPrice");
+		if(lsText.equalsIgnoreCase(lsTextMap)){
+			reporter.reportLogPass("The product NowPrice of recently viewing history item is the same as the one on PRP page");
+		}
+		else{
+			reporter.reportLogFail("The product NowPrice of recently viewing history item is not the same as the one on PRP page");
+		}
+
+		lsTextMap=productMap.get("productWasPrice");
+		if(lsText!=null){
+			element=item.findElement(byRecentlyViewedItemWasPrice);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+			lsText=element.getText().trim();
+			if(!lsText.isEmpty()){
+				reporter.reportLogPass("The product WasPrice of recently viewing history item is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The product WasPrice of recently viewing history item is not displaying correctly");
+			}
+
+			if(lsText.equalsIgnoreCase(lsTextMap)){
+				reporter.reportLogPass("The product WasPrice of recently viewing history item is the same as the one on PRP page");
+			}
+			else{
+				reporter.reportLogFail("The product WasPrice of recently viewing history item is not the same as the one on PRP page");
+			}
+		}
+
+		lsTextMap=productMap.get("productReviewRate");
+		if(lsTextMap!=null){
+			List<WebElement> itemList=item.findElements(byRecentlyViewedItemReviewRateStarList);
+			if(itemList.size()>0){
+				reporter.reportLogPass("Review star list is not empty");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("Review star list is empty");
+			}
+
+			int reviewRate=prp.getProductItemReviewNumberAmountFromStarImage(itemList);
+			if(lsTextMap.equalsIgnoreCase(reviewRate+"")){
+				reporter.reportLogPass("The product review rate of recently viewing history item is the same as the one on PRP page");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The product review rate of recently viewing history item is not the same as the one on PRP page");
+			}
+		}
+
+		lsTextMap=productMap.get("productReviewCount");
+		if(lsTextMap!=null){
+			element=item.findElement(byRecentlyViewedItemReviewAmount);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+			lsText=element.getText().trim();
+			if(!lsText.isEmpty()){
+				reporter.reportLogPass("The product review rate of recently viewing history item is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The product review rate of recently viewing history item is not displaying correctly");
+			}
+
+			int reviewCount=this.getIntegerFromString(lsText);
+			if(lsTextMap.equalsIgnoreCase(reviewCount+"")){
+				reporter.reportLogPass("The product review count of recently viewing history item is the same as the one on PRP page");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The product review count of recently viewing history item is not the same as the one on PRP page");
+			}
+		}
+	}
+
+	/**
 	 * verify Changing Subscription Success Message in NewsLetters
 	 * @param - WebElement - ckbItem
 	 * @param - boolean - bCheck - if check the related Subscription checkbox
@@ -3707,9 +3870,10 @@ public class MyAccount extends BasePage {
 		}
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnMyNewsLettersUpdatePrefs);
 		this.getReusableActionsInstance().clickIfAvailable(btnMyNewsLettersUpdatePrefs);
-		this.waitForCondition(Driver->{return iFrameEmailSignup.isDisplayed();},10000);
 
-		this.getDriver().switchTo().frame(iFrameEmailSignup);
+		this.getReusableActionsInstance().staticWait(5*this.getStaticWaitForApplication());
+//		this.waitForCondition(Driver->{return this.lblSubscriptionSuccessMessage.isDisplayed();},10000);
+
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSubscriptionSuccessMessage);
 		String lsActualMessage=this.lblSubscriptionSuccessMessage.getText();
 		if(lsActualMessage.toLowerCase().contains(lsExpectedMessage.toLowerCase())){
@@ -3719,9 +3883,7 @@ public class MyAccount extends BasePage {
 			reporter.reportLogFailWithScreenshot("The subscription message is not displaying correctly");
 		}
 
-		this.getDriver().switchTo().defaultContent();
 		this.navigateBack();
-		this.waitForCondition(Driver->{return this.lblMyNewsLettersTitle.isDisplayed();},10000);
 	}
 
 	/**
@@ -3731,7 +3893,7 @@ public class MyAccount extends BasePage {
 	 * @param - String - lsExpectedUnSubscriptionMessage
 	 */
 	public void verifyNewsLettersUnSubscriptionSuccessMessage(boolean bCheckUnSubscription,String lsExpectedAlertMessage,String lsExpectedUnSubscriptionMessage){
-		if(bCheckUnSubscription){
+		if(!bCheckUnSubscription){
 			if(this.ckbMyNewsLettersUnsubscribe.isSelected()){
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.ckbMyNewsLettersUnsubscribe);
 				this.getReusableActionsInstance().clickIfAvailable(this.ckbMyNewsLettersUnsubscribe);
@@ -3739,7 +3901,7 @@ public class MyAccount extends BasePage {
 
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnMyNewsLettersUnsubscribe);
 			this.getReusableActionsInstance().clickIfAvailable(btnMyNewsLettersUnsubscribe);
-			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+			this.getReusableActionsInstance().staticWait(5*this.getStaticWaitForApplication());
 			Alert alert=this.getDriver().switchTo().alert();
 			String lsActualAlertMessage=alert.getText().trim();
 			if(lsActualAlertMessage.toLowerCase().contains(lsExpectedAlertMessage.toLowerCase())){
@@ -3758,7 +3920,7 @@ public class MyAccount extends BasePage {
 
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnMyNewsLettersUnsubscribe);
 			this.getReusableActionsInstance().clickIfAvailable(btnMyNewsLettersUnsubscribe);
-			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+			this.getReusableActionsInstance().staticWait(5*this.getStaticWaitForApplication());
 			Alert alert=this.getDriver().switchTo().alert();
 			String lsActualAlertMessage=alert.getText().trim();
 			if(lsActualAlertMessage.toLowerCase().contains(lsExpectedAlertMessage.toLowerCase())){
@@ -3769,9 +3931,9 @@ public class MyAccount extends BasePage {
 			}
 			alert.accept();
 
-			this.waitForCondition(Driver->{return iFrameEmailSignup.isDisplayed();},10000);
+			this.getReusableActionsInstance().staticWait(5*this.getStaticWaitForApplication());
+			//waitForCondition(Driver->{return this.lblSubscriptionSuccessMessage.isDisplayed();},10000);
 
-			this.getDriver().switchTo().frame(iFrameEmailSignup);
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSubscriptionSuccessMessage);
 			String lsActualMessage=this.lblSubscriptionSuccessMessage.getText();
 			if(lsActualMessage.toLowerCase().contains(lsExpectedUnSubscriptionMessage.toLowerCase())){
@@ -3781,10 +3943,151 @@ public class MyAccount extends BasePage {
 				reporter.reportLogFailWithScreenshot("The UnSubscription message is not displaying correctly");
 			}
 
-			this.getDriver().switchTo().defaultContent();
 			this.navigateBack();
-			this.waitForCondition(Driver->{return this.lblMyNewsLettersTitle.isDisplayed();},10000);
 		}
+	}
+
+	/**
+	 * To verify My NewsLetter Content
+	 */
+	public void verifyMyNewsLetterContent(){
+		String lsText;
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblMyNewsLettersTitle);
+		lsText=lblMyNewsLettersTitle.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("MyNewsLetter title is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("MyNewsLetter title is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblMyNewsLettersManageYourEmailPreferences);
+		lsText=lblMyNewsLettersManageYourEmailPreferences.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("Manage Your Email Preferences static text is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Manage Your Email Preferences static text is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(ckbMyNewsLettersTodayShowStopperNewsLetter);
+		if(this.getReusableActionsInstance().isElementVisible(ckbMyNewsLettersTodayShowStopperNewsLetter)){
+			reporter.reportLogPass("Today Show Stopper NewsLetter checkbox is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Today Show Stopper NewsLetter checkbox is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblMyNewsLettersTodayShowStopperNewsLetterTitle);
+		lsText=lblMyNewsLettersTodayShowStopperNewsLetterTitle.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("Today Show Stopper NewsLetter checkbox label is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Today Show Stopper NewsLetter checkbox label is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(ckbMyNewsLettersSpecialOfferAndEventNewsLetter);
+		if(this.getReusableActionsInstance().isElementVisible(ckbMyNewsLettersSpecialOfferAndEventNewsLetter)){
+			reporter.reportLogPass("Special Offer And Event NewsLetter checkbox is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Special Offer And Event NewsLetter checkbox is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblMyNewsLettersSpecialOfferAndEventNewsLetterTitle);
+		lsText=lblMyNewsLettersSpecialOfferAndEventNewsLetterTitle.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("Special Offer And Event NewsLetter checkbox label is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Special Offer And Event NewsLetter checkbox label is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(ckbMyNewsLettersPreferredCustomerOffer);
+		if(this.getReusableActionsInstance().isElementVisible(ckbMyNewsLettersPreferredCustomerOffer)){
+			reporter.reportLogPass("Preferred Customer Offer checkbox is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Preferred Customer Offer checkbox is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblMyNewsLettersPreferredCustomerOfferTitle);
+		lsText=lblMyNewsLettersPreferredCustomerOfferTitle.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("Preferred Customer Offer checkbox label is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Preferred Customer Offer checkbox label is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(ckbMyNewsLettersProductUpdatesAndAlerts);
+		if(this.getReusableActionsInstance().isElementVisible(ckbMyNewsLettersProductUpdatesAndAlerts)){
+			reporter.reportLogPass("Product Updates And Alerts checkbox is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Product Updates And Alerts checkbox is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblMyNewsLettersProductUpdatesAndAlertsTitle);
+		lsText=lblMyNewsLettersProductUpdatesAndAlertsTitle.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("Product Updates And Alerts checkbox label is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Product Updates And Alerts checkbox label is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnMyNewsLettersUpdatePrefs);
+		if(this.getReusableActionsInstance().isElementVisible(btnMyNewsLettersUpdatePrefs)){
+			reporter.reportLogPass("UpdatePrefs button is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("UpdatePrefs button is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(ckbMyNewsLettersUnsubscribe);
+		if(this.getReusableActionsInstance().isElementVisible(ckbMyNewsLettersUnsubscribe)){
+			reporter.reportLogPass("Unsubscribe checkbox is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Unsubscribe checkbox is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblMyNewsLettersUnsubscribeTitle);
+		lsText=lblMyNewsLettersUnsubscribeTitle.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("Unsubscribe checkbox label is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Unsubscribe checkbox label is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblMyNewsLettersUnsubscribeDescription);
+		lsText=lblMyNewsLettersUnsubscribeDescription.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("Unsubscribe Description is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Unsubscribe Description is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnMyNewsLettersUnsubscribe);
+		if(this.getReusableActionsInstance().isElementVisible(btnMyNewsLettersUnsubscribe)){
+			reporter.reportLogPass("Unsubscribe button is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Unsubscribe button is not displaying correctly");
+		}
+	}
+
+	/**
+	 * To check Viewed History Existing
+	 * @return - boolean
+	 */
+	public boolean checkViewedHistoryExisting(){
+		return this.getChildElementCount(cntRecentlyViewedTitleContainer)>1;
 	}
 
 

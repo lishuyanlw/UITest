@@ -5,7 +5,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.Select;
 
@@ -947,7 +950,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 		}		
 	}
 	
-	public boolean selectSizeOrColorOption(By BySelectSizeAndColorButton) {
+	public boolean selectSizeOrColorOption() {
 		List<WebElement> optionList;
 		WebElement element,elementSelectedText;
 		final WebElement tempElementSize,tempElementColor;
@@ -960,7 +963,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 
 				optionList=this.getDriver().findElements(byProductOptionSizeItemEnabledList);
 				//this.clickElement(optionList.get(0));
-				element=optionList.get(0);
+				element=optionList.get(optionList.size()-1);
 				if(element.getTagName().equalsIgnoreCase("button")) {
 					this.getReusableActionsInstance().clickIfAvailable(element,5000);
 					this.waitForCondition(Driver->{return !this.getElementInnerText(tempElementSize).equalsIgnoreCase("Select size:");},10000);
@@ -985,7 +988,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 
 				optionList=this.getDriver().findElements(byProductOptionColorItemEnabledList);
 				//this.clickElement(optionList.get(0));
-				element=optionList.get(0);
+				element=optionList.get(optionList.size()-1);
 				if(element.getTagName().equalsIgnoreCase("button")) {
 					this.getReusableActionsInstance().clickIfAvailable(element,5000);
 					this.waitForCondition(Driver->{return !this.getElementInnerText(tempElementColor).equalsIgnoreCase("Select colour:");},10000);
@@ -1002,10 +1005,8 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				selectedProductItem.productSelectedColor="";
 			}			
 		}
-		
-		element=this.getDriver().findElement(byProductGoToDetails);
 
-		return this.getElementInnerText(element).trim().equalsIgnoreCase("Go to detail page");
+		return this.getElementInnerText(this.btnProductGoToDetails).trim().equalsIgnoreCase("Go to detail page");
 	}
 			
 	public void verifySelectSizeOrColorOption(WebElement itemContainer) {
@@ -1483,15 +1484,15 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 			return "GoToDetailPage";
 		}
 		
-		if(lsText.toLowerCase().contains("size")&&lsText.toLowerCase().contains("colour")) {
+		if(lsText.toLowerCase().contains("size")&&lsText.toLowerCase().contains("style")) {
 			return "SizeAndColour";
 		}
 		
-		if(lsText.toLowerCase().contains("size")&&!lsText.toLowerCase().contains("colour")) {
+		if(lsText.toLowerCase().contains("size")&&!lsText.toLowerCase().contains("style")) {
 			return "Size";
 		}
 		
-		if(!lsText.toLowerCase().contains("size")&&lsText.toLowerCase().contains("colour")) {
+		if(!lsText.toLowerCase().contains("size")&&lsText.toLowerCase().contains("style")) {
 			return "Colour";
 		}
 		
@@ -1855,6 +1856,92 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 		this.getReusableActionsInstance().clickIfAvailable(this.btnProductSizeOrColorClose);
 		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 		return false;
+	}
+
+	@Override
+	public Map<String,String> navigateFromPRPToPDP(String lsKeyword, boolean bStyleAndSize){
+		Map<String,String> map=new HashMap<>();
+		WebElement element;
+		String lsText;
+
+		ProductDetailPage_Mobile pdp=new ProductDetailPage_Mobile(this.getDriver());
+
+		this.getSearchResultLoad(lsKeyword,true);
+		List<WebElement> productList=this.getProductList();
+		WebElement item=productList.get(0);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+
+		element=item.findElement(this.byProductName);
+		lsText=this.getElementInnerText(element);
+		map.put("productName",lsText);
+
+		if(this.checkProductItemBrandNameExisting(item)){
+			element=item.findElement(this.byProductBrand);
+			lsText=this.getElementInnerText(element);
+			map.put("productBrand",lsText);
+		}
+		else{
+			map.put("productBrand",null);
+		}
+
+		element=item.findElement(this.byProductNowPrice);
+		lsText=this.getElementInnerText(element);
+		map.put("productNowPrice",lsText.trim().split(":")[1].trim());
+
+		if(this.checkProductItemWasPriceExisting(item)){
+			element=item.findElement(this.byProductWasPrice);
+			lsText=this.getElementInnerText(element);
+			map.put("productWasPrice",lsText.trim().split(":")[1].trim());
+		}
+		else{
+			map.put("productWasPrice",null);
+		}
+
+		if(this.checkProductItemReviewExisting(item)){
+			List<WebElement> reviewStarList=item.findElements(this.byProductReviewRatingImage);
+			int reviewRate=this.getProductItemReviewNumberAmountFromStarImage(reviewStarList);
+			map.put("productReviewRate",reviewRate+"");
+
+			element=item.findElement(this.byProductReviewRatingCount);
+			lsText=this.getElementInnerText(element);
+			int reviewCount=this.getIntegerFromString(lsText);
+			map.put("productReviewCount",reviewCount+"");
+		}
+		else{
+			map.put("productReviewRate",null);
+			map.put("productReviewCount",null);
+		}
+
+		if(bStyleAndSize){
+			element=item.findElement(this.byProductItemSelectSizeOrColor);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+			this.getReusableActionsInstance().clickIfAvailable(element);
+
+			this.selectSizeOrColorOption();
+			if(!this.selectedProductItem.productSelectedSize.isEmpty()){
+				map.put("productSize",this.selectedProductItem.productSelectedSize);
+			}
+			else{
+				map.put("productSize",null);
+			}
+
+			if(!this.selectedProductItem.productSelectedColor.isEmpty()){
+				map.put("productStyle",this.selectedProductItem.productSelectedColor);
+			}
+			else{
+				map.put("productStyle",null);
+			}
+
+			element=item.findElement(this.byProductGoToDetails);
+			this.clickElement(element);
+		}
+		else{
+			element=item.findElement(this.byProductImage);
+			this.clickElement(element);
+		}
+		this.waitForCondition(Driver->{return pdp.lblProductName.isDisplayed();},20000);
+
+		return map;
 	}
 
 }

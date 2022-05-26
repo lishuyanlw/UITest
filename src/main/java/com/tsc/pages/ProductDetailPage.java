@@ -2345,4 +2345,178 @@ public class ProductDetailPage extends BasePage {
 		this.getReusableActionsInstance().waitForElementVisibility(signInPage.lblSignIn,20);
 	}
 
+	/**
+	 * To get Full Information On PDP
+	 * @param - boolean - bBrand
+	 * @param - boolean - bReview
+	 * @param - boolean - bWasPrice
+	 * @param - boolean - bStyle
+	 * @param - boolean - bSize
+	 * @return - Map<String,String> - including productName,productBrand,productNowPrice,
+	 * 	  			productWasPrice,productReviewRate,productReviewCount, productStyle, productSize
+	 */
+	public Map<String,String> getFullInformationOnPDP(boolean bBrand,boolean bReview,boolean bWasPrice,boolean bStyle,boolean bSize){
+		Map<String,String> map=new HashMap<>();
+		String lsText;
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblProductName);
+		lsText=lblProductName.getText().trim();
+		map.put("productName",lsText);
+
+		if(bBrand){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lnkBrandName);
+			lsText=lblProductName.getText().trim();
+			map.put("productBrand",lsText);
+		}
+		else{
+			map.put("productBrand",null);
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblProductNowPrice);
+		lsText=lblProductNowPrice.getText().trim();
+		map.put("productNowPrice",lsText);
+
+		if(bWasPrice){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblProductWasPrice);
+			lsText=lblProductWasPrice.getText().trim();
+			map.put("productWasPrice",lsText);
+		}
+		else{
+			map.put("productWasPrice",null);
+		}
+
+		if(bReview){
+			ProductResultsPage prp=new ProductResultsPage(this.getDriver());
+			int reviewRate=prp.getProductItemReviewNumberAmountFromStarImage(lstProductReviewStar);
+			map.put("productReviewRate",reviewRate+"");
+
+			lsText=this.getElementInnerText(lblProductReviewCount);
+			int reviewCount=this.getIntegerFromString(lsText);
+			map.put("productReviewCount",reviewCount+"");
+		}
+		else{
+			map.put("productReviewRate",null);
+			map.put("productReviewCount",null);
+		}
+
+		if(bStyle){
+			if(this.judgeStyleDisplayModeIsDropdownMenu()) {
+				Select selectStyle = new Select(this.selectProductStyle);
+				lsText=selectStyle.getFirstSelectedOption().getText();
+				map.put("productStyle",lsText);
+			}
+			else{
+				lsText=this.getElementInnerText(lblRadioProductStyleTitle);
+				map.put("productStyle",lsText);
+			}
+		}
+		else{
+			map.put("productStyle",null);
+		}
+
+		if(bSize){
+			Select selectSize = new Select(this.selectSizeOption);
+			lsText=selectSize.getFirstSelectedOption().getText();
+			map.put("productSize",lsText);
+		}
+		else{
+			map.put("productSize",null);
+		}
+
+		return map;
+	}
+
+	/**
+	 * To verify Linkage Info Between PRP And PDP
+	 * @param - Map<String,String> - prpMap
+	 * @param - Map<String,String> - pdpMap
+	 */
+	public void verifyLinkageInfoBetweenPRPAndPDP(Map<String,String> prpMap,Map<String,String> pdpMap){
+		String lsTextPRP,lsTextPDP;
+
+		lsTextPRP=prpMap.get("productName");
+		lsTextPDP=pdpMap.get("productName");
+		if(lsTextPRP.equalsIgnoreCase(lsTextPDP)){
+			reporter.reportLogPass("The product name:'"+lsTextPRP+"' on PRP is the same as the one:'"+lsTextPDP+"' on PDP");
+		}
+		else{
+			reporter.reportLogFail("The product name:'"+lsTextPRP+"' on PRP is not the same as the one:'"+lsTextPDP+"' on PDP");
+		}
+
+		lsTextPRP=prpMap.get("productBrand");
+		if(lsTextPRP!=null){
+			lsTextPDP=pdpMap.get("productBrand");
+			if(lsTextPRP.equalsIgnoreCase(lsTextPDP)){
+				reporter.reportLogPass("The product brand:'"+lsTextPRP+"' on PRP is the same as the one:'"+lsTextPDP+"' on PDP");
+			}
+			else{
+				reporter.reportLogFail("The product brand:'"+lsTextPRP+"' on PRP is not the same as the one:'"+lsTextPDP+"' on PDP");
+			}
+		}
+
+		lsTextPRP=prpMap.get("productReviewRate");
+		if(lsTextPRP!=null){
+			lsTextPDP=pdpMap.get("productReviewRate");
+			if(lsTextPRP.equalsIgnoreCase(lsTextPDP)){
+				reporter.reportLogPass("The product review rate:'"+lsTextPRP+"' on PRP is the same as the one:'"+lsTextPDP+"' on PDP");
+			}
+			else{
+				reporter.reportLogFail("The product review rate:'"+lsTextPRP+"' on PRP is not the same as the one:'"+lsTextPDP+"' on PDP");
+			}
+		}
+
+		lsTextPRP=prpMap.get("productReviewCount");
+		if(lsTextPRP!=null){
+			lsTextPDP=pdpMap.get("productReviewCount");
+			if(lsTextPRP.equalsIgnoreCase(lsTextPDP)){
+				reporter.reportLogPass("The product review count:'"+lsTextPRP+"' on PRP is the same as the one:'"+lsTextPDP+"' on PDP");
+			}
+			else{
+				reporter.reportLogFail("The product review count:'"+lsTextPRP+"' on PRP is not the same as the one:'"+lsTextPDP+"' on PDP");
+			}
+		}
+
+		lsTextPRP=prpMap.get("productNowPrice");
+		lsTextPDP=pdpMap.get("productNowPrice");
+		if(lsTextPRP.equalsIgnoreCase(lsTextPDP)){
+			reporter.reportLogPass("The product NowPrice:'"+lsTextPRP+"' on PRP is the same as the one:'"+lsTextPDP+"' on PDP");
+		}
+		else{
+			reporter.reportLogFail("The product NowPrice:'"+lsTextPRP+"' on PRP is not the same as the one:'"+lsTextPDP+"' on PDP");
+		}
+
+		lsTextPRP=prpMap.get("productWasPrice");
+		if(lsTextPRP!=null){
+			lsTextPDP=pdpMap.get("productWasPrice");
+			if(lsTextPRP.equalsIgnoreCase(lsTextPDP)){
+				reporter.reportLogPass("The product WasPrice:'"+lsTextPRP+"' on PRP is the same as the one:'"+lsTextPDP+"' on PDP");
+			}
+			else{
+				reporter.reportLogFail("The product WasPrice:'"+lsTextPRP+"' on PRP is not the same as the one:'"+lsTextPDP+"' on PDP");
+			}
+		}
+
+		lsTextPRP=prpMap.get("productStyle");
+		if(lsTextPRP!=null){
+			lsTextPDP=pdpMap.get("productStyle");
+			if(lsTextPRP.equalsIgnoreCase(lsTextPDP)){
+				reporter.reportLogPass("The product style:'"+lsTextPRP+"' on PRP is the same as the one:'"+lsTextPDP+"' on PDP");
+			}
+			else{
+				reporter.reportLogFail("The product style:'"+lsTextPRP+"' on PRP is not the same as the one:'"+lsTextPDP+"' on PDP");
+			}
+		}
+
+		lsTextPRP=prpMap.get("productSize");
+		if(lsTextPRP!=null){
+			lsTextPDP=pdpMap.get("productSize");
+			if(lsTextPRP.equalsIgnoreCase(lsTextPDP)){
+				reporter.reportLogPass("The product size:'"+lsTextPRP+"' on PRP is the same as the one:'"+lsTextPDP+"' on PDP");
+			}
+			else{
+				reporter.reportLogFail("The product size:'"+lsTextPRP+"' on PRP is not the same as the one:'"+lsTextPDP+"' on PDP");
+			}
+		}
+	}
+
 }

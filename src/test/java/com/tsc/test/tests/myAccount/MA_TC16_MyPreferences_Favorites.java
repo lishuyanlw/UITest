@@ -18,12 +18,12 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-public class MA_TC17_MyPreferences_Favorites extends BaseTest {
+public class MA_TC16_MyPreferences_Favorites extends BaseTest {
     /*
      *CER-808
      */
     @Test(groups={"MyAccount","Regression"})
-    public void MA_TC17_MyPreferences_Favorites() throws IOException, org.json.simple.parser.ParseException {
+    public void MA_TC16_MyPreferences_Favorites() throws IOException, org.json.simple.parser.ParseException {
         //Closing SignIn pop up on login
         getGlobalFooterPageThreadLocal().closePopupDialog();
 

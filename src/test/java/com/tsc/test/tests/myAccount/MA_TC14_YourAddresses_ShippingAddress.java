@@ -16,12 +16,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MA_TC15_YourAddresses_ShippingAddress extends BaseTest {
+public class MA_TC14_YourAddresses_ShippingAddress extends BaseTest {
     /*
      *CER-804
      */
     @Test(groups={"MyAccount","Regression"})
-    public void MA_TC15_YourAddresses_ShippingAddress() throws IOException, org.json.simple.parser.ParseException {
+    public void MA_TC14_YourAddresses_ShippingAddress() throws IOException, org.json.simple.parser.ParseException {
         //Closing SignIn pop up on login
         getGlobalFooterPageThreadLocal().closePopupDialog();
 

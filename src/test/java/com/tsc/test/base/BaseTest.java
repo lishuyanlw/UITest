@@ -339,7 +339,7 @@ public class BaseTest {
 	@AfterMethod(alwaysRun = true)
 	public void afterTest() throws IOException, org.json.simple.parser.ParseException, InterruptedException, ParseException {
 		if (getDriver() != null) {
-			addPlaceOrder();
+			//addPlaceOrder();
 			//(new BasePage(this.getDriver())).deleteSessionStorage();
 			closeSession();
 		}

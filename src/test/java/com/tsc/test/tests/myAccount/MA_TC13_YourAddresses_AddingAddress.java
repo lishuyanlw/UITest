@@ -20,12 +20,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MA_TC14_YourAddresses_AddingAddress extends BaseTest {
+public class MA_TC13_YourAddresses_AddingAddress extends BaseTest {
     /*
      *CER-805
      */
     @Test(groups={"MyAccount","Regression"})
-    public void MA_TC14_YourAddresses_AddingAddress() throws IOException, org.json.simple.parser.ParseException {
+    public void MA_TC13_YourAddresses_AddingAddress() throws IOException, org.json.simple.parser.ParseException {
         //Closing SignIn pop up on login
         getGlobalFooterPageThreadLocal().closePopupDialog();
 
