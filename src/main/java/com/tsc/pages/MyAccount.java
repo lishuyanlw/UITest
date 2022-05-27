@@ -417,6 +417,9 @@ public class MyAccount extends BasePage {
 	public List<WebElement> lstCreditCardsPresent;
 	//.//div[contains(@class,'margin-top-md')]//div[contains(@class,'smallRightPadding')]/a[contains(@class,'negative')] - Edit Button
 
+	@FindBy(xpath="//div[@class='bigPaymentDiv']/div[contains(@class,'col')]")
+	public List<WebElement> lstTotalCardsPresent;
+
 	@FindBy(xpath="//button[@id='addCardBtn']")
 	public WebElement btnAddNewCreditCard;
 
@@ -461,7 +464,12 @@ public class MyAccount extends BasePage {
 	@FindBy(xpath = "//ng-component//div[normalize-space(.)='Shipping Address']")
 	public WebElement lblShippingAddressSectionTitle;
 
+	/**
 	@FindBy(xpath = "//ng-component//div[contains(@class,'bigAddressDiv') and not(contains(@class,'billing'))]//div[contains(@class,'tab-bottom-row')]")
+	public List<WebElement> lstShippingAddressContainer;
+	*/
+
+	@FindBy(xpath = "//ng-component//div[contains(@class,'bigAddressDiv') and not(contains(@class,'billing'))]//div[contains(@class,'desktop-bottom-row')]")
 	public List<WebElement> lstShippingAddressContainer;
 
 	public By byShippingAddressTitle=By.xpath(".//div[contains(@class,'defaultDiv')]");
@@ -843,7 +851,7 @@ public class MyAccount extends BasePage {
 				waitForCondition(Driver->{return this.lstCreditCardsPresent.size()>=0;},6000);
 			else if(pageTitle.toLowerCase().contains("add"))
 				waitForCondition(Driver->{return (this.btnCancelAddCreditCardForNewCreditCard.isEnabled() &&
-					this.btnCancelAddCreditCardForNewCreditCard.isDisplayed() && this.lstCreditCardsPresent.size()==0);},6000);
+					this.btnCancelAddCreditCardForNewCreditCard.isDisplayed());},6000);
 		}else{
 			this.waitForPageToLoad();
 			this.waitForCondition(Driver->{return this.lblGiftCardPageTitle.getText().toLowerCase().contains("gift");},6000);
@@ -1143,7 +1151,8 @@ public class MyAccount extends BasePage {
 		//Verification that card is removed
 		//Applying static wait for 5 seconds as application takes time to refresh and there is no unique element for wait for condition to be used
 		getReusableActionsInstance().staticWait(5000);
-		int afterDeleteCreditCardsPresent = lstCreditCardsPresent.size();
+		//Subtracting 1 from size as we are including 'Add Credit Card' xpath as well for decreasing execution time
+		int afterDeleteCreditCardsPresent = lstTotalCardsPresent.size()-1;
 		boolean flag = removeCard == true ? afterDeleteCreditCardsPresent == beforeDeleteCreditCardsPresent-1 : afterDeleteCreditCardsPresent == beforeDeleteCreditCardsPresent;
 		if(flag)
 			reporter.reportLogPass("Credit Card: "+cardNumber+" of type: "+cardType+" is removed from user");
@@ -2924,12 +2933,14 @@ public class MyAccount extends BasePage {
 	 */
 	public void closeAddOrEditAddressWindow(boolean bSave){
 		if(bSave){
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnSave);
-			btnSave.click();
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSave);
+			//btnSave.click();
+			this.clickElement(this.btnSave);
 		}
 		else{
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnCancel);
-			btnCancel.click();
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnCancel);
+			this.clickElement(this.btnCancel);
+			//btnCancel.click();
 		}
 		this.waitForCondition(Driver->{return this.lblShippingAddressSectionTitle.isDisplayed();},40000);
 		this.getReusableActionsInstance().staticWait(5*getStaticWaitForApplication());
