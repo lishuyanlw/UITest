@@ -1366,8 +1366,6 @@ public class MyAccount extends BasePage {
 		}
 		else{
 			this.getReusableActionsInstance().staticWait(5*this.getStaticWaitForApplication());
-			this.getDriver().switchTo().frame(this.iFrameEmailSignup);
-			this.waitForCondition(Driver->{return this.lblMyNewsLettersTitle.isDisplayed();},10000);
 		}
 
 		return count;
@@ -3504,19 +3502,28 @@ public class MyAccount extends BasePage {
 				reporter.reportLogFailWithScreenshot("The favorite item WasPrice is not displaying correctly");
 			}
 		}
-
-		if(lsFavoriteItemName.equalsIgnoreCase(lsProductName)){
-			reporter.reportLogPass("The product name on PRP page is equal to the favorite item name");
+		if(lsProductName.length()>25){
+			if(lsFavoriteItemName.substring(0,25).equalsIgnoreCase(lsProductName.substring(0,25))){
+				reporter.reportLogPass("The product name on PRP page is equal to the favorite item name");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The product name on PRP page:'"+lsProductName+"' is not equal to the favorite item name:'"+lsFavoriteItemName+"'");
+			}
 		}
 		else{
-			reporter.reportLogFailWithScreenshot("The product name on PRP page is not equal to the favorite item name");
+			if(lsFavoriteItemName.equalsIgnoreCase(lsProductName)){
+				reporter.reportLogPass("The product name on PRP page is equal to the favorite item name");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The product name on PRP page:'"+lsProductName+"' is not equal to the favorite item name:'"+lsFavoriteItemName+"'");
+			}
 		}
 
 		if(lsFavoriteItemNowPrice.equalsIgnoreCase(lsProductNowPrice)){
 			reporter.reportLogPass("The product NowPrice on PRP page is equal to the favorite item NowPrice");
 		}
 		else{
-			reporter.reportLogFailWithScreenshot("The product NowPrice on PRP page is not equal to the favorite item NowPrice");
+			reporter.reportLogFailWithScreenshot("The product NowPrice:"+lsProductNowPrice+" on PRP page is not equal to the favorite item NowPrice:"+lsFavoriteItemNowPrice);
 		}
 
 		if(lsProductWasPrice!=null){
@@ -3524,7 +3531,7 @@ public class MyAccount extends BasePage {
 				reporter.reportLogPass("The product WasPrice on PRP page is equal to the favorite item WasPrice");
 			}
 			else{
-				reporter.reportLogFailWithScreenshot("The product WasPrice on PRP page is not equal to the favorite item WasPrice");
+				reporter.reportLogFailWithScreenshot("The product WasPrice:"+lsProductWasPrice+" on PRP page is not equal to the favorite item WasPrice:"+lsFavoriteItemWasPrice);
 			}
 		}
 	}
@@ -3592,13 +3599,13 @@ public class MyAccount extends BasePage {
 
 		element=item.findElement(byFavoriteItemNowPrice);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-		String lsFavoriteItemNowPrice=element.getText().trim();
+		String lsFavoriteItemNowPrice=String.valueOf(this.getFloatFromString(element.getText(),true));;
 
 		String lsFavoriteItemWasPrice=null;
 		if(this.getChildElementCount(item.findElement(byFavoriteItemPriceContainer))>1){
 			element=item.findElement(byFavoriteItemWasPrice);
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-			lsFavoriteItemWasPrice=element.getText().trim();
+			lsFavoriteItemWasPrice= String.valueOf(this.getFloatFromString(element.getText(),true));
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(imageElement);
@@ -3607,30 +3614,40 @@ public class MyAccount extends BasePage {
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(pdp.lblProductName);
 		String lsPDPItemName=pdp.lblProductName.getText().trim();
-		if(lsFavoriteItemName.equalsIgnoreCase(lsPDPItemName)){
-			reporter.reportLogPass("The favorite name is the same as the PDP product name");
+		if(lsPDPItemName.length()>25){
+			if(lsFavoriteItemName.substring(0,25).equalsIgnoreCase(lsPDPItemName.substring(0,25))){
+				reporter.reportLogPass("The favorite name is the same as the PDP product name");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The favorite name:"+lsFavoriteItemName+" is not the same as the PDP product name:"+lsPDPItemName);
+			}
 		}
 		else{
-			reporter.reportLogFailWithScreenshot("The favorite name is not the same as the PDP product name");
+			if(lsFavoriteItemName.equalsIgnoreCase(lsPDPItemName)){
+				reporter.reportLogPass("The favorite name is the same as the PDP product name");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The favorite name:"+lsFavoriteItemName+" is not the same as the PDP product name:"+lsPDPItemName);
+			}
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(pdp.lblProductNowPrice);
-		String lsPDPItemNowPrice=pdp.lblProductNowPrice.getText().trim();
+		String lsPDPItemNowPrice=String.valueOf(this.getFloatFromString(pdp.lblProductNowPrice.getText(),true));
 		if(lsFavoriteItemNowPrice.equalsIgnoreCase(lsPDPItemNowPrice)){
 			reporter.reportLogPass("The favorite NowPrice is the same as the PDP product NowPrice");
 		}
 		else{
-			reporter.reportLogFailWithScreenshot("The favorite NowPrice is not the same as the PDP product NowPrice");
+			reporter.reportLogFailWithScreenshot("The favorite NowPrice:"+lsFavoriteItemNowPrice+" is not the same as the PDP product NowPrice:"+lsPDPItemNowPrice);
 		}
 
 		if(lsFavoriteItemWasPrice!=null){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(pdp.lblProductWasPrice);
-			String lsPDPItemWasPrice=pdp.lblProductWasPrice.getText().trim();
+			String lsPDPItemWasPrice=String.valueOf(this.getFloatFromString(pdp.lblProductWasPrice.getText(),true));
 			if(lsFavoriteItemWasPrice.equalsIgnoreCase(lsPDPItemWasPrice)){
 				reporter.reportLogPass("The favorite WasPrice is the same as the PDP product WasPrice");
 			}
 			else{
-				reporter.reportLogFailWithScreenshot("The favorite WasPrice is not the same as the PDP product WasPrice");
+				reporter.reportLogFailWithScreenshot("The favorite WasPrice:"+lsFavoriteItemWasPrice+" is not the same as the PDP product WasPrice:"+lsPDPItemWasPrice);
 			}
 		}
 
@@ -3852,27 +3869,30 @@ public class MyAccount extends BasePage {
 
 	/**
 	 * verify Changing Subscription Success Message in NewsLetters
+	 * @param - WebElement - ckbLabel
 	 * @param - WebElement - ckbItem
 	 * @param - boolean - bCheck - if check the related Subscription checkbox
 	 * @param - String - lsExpectedMessage
 	 */
-	public void verifyNewsLettersChangingSubscriptionSuccessMessage(WebElement ckbItem,boolean bCheck,String lsExpectedMessage){
+	public void verifyNewsLettersChangingSubscriptionSuccessMessage(WebElement ckbLabel, WebElement ckbItem,boolean bCheck,String lsExpectedMessage){
+		this.getDriver().switchTo().frame(this.iFrameEmailSignup);
+
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(ckbItem);
 		if(bCheck){
 			if(!ckbItem.isSelected()){
-				this.getReusableActionsInstance().clickIfAvailable(ckbItem);
+				this.getReusableActionsInstance().clickIfAvailable(ckbLabel);
 			}
 		}
 		else{
 			if(ckbItem.isSelected()){
-				this.getReusableActionsInstance().clickIfAvailable(ckbItem);
+				this.getReusableActionsInstance().clickIfAvailable(ckbLabel);
 			}
 		}
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnMyNewsLettersUpdatePrefs);
 		this.getReusableActionsInstance().clickIfAvailable(btnMyNewsLettersUpdatePrefs);
 
-		this.getReusableActionsInstance().staticWait(5*this.getStaticWaitForApplication());
-//		this.waitForCondition(Driver->{return this.lblSubscriptionSuccessMessage.isDisplayed();},10000);
+		this.waitForCondition(Driver->{return this.lblSubscriptionSuccessMessage.isDisplayed();},10000);
+		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSubscriptionSuccessMessage);
 		String lsActualMessage=this.lblSubscriptionSuccessMessage.getText();
@@ -3893,6 +3913,8 @@ public class MyAccount extends BasePage {
 	 * @param - String - lsExpectedUnSubscriptionMessage
 	 */
 	public void verifyNewsLettersUnSubscriptionSuccessMessage(boolean bCheckUnSubscription,String lsExpectedAlertMessage,String lsExpectedUnSubscriptionMessage){
+		this.getDriver().switchTo().frame(this.iFrameEmailSignup);
+
 		if(!bCheckUnSubscription){
 			if(this.ckbMyNewsLettersUnsubscribe.isSelected()){
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.ckbMyNewsLettersUnsubscribe);
@@ -3901,7 +3923,7 @@ public class MyAccount extends BasePage {
 
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnMyNewsLettersUnsubscribe);
 			this.getReusableActionsInstance().clickIfAvailable(btnMyNewsLettersUnsubscribe);
-			this.getReusableActionsInstance().staticWait(5*this.getStaticWaitForApplication());
+			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 			Alert alert=this.getDriver().switchTo().alert();
 			String lsActualAlertMessage=alert.getText().trim();
 			if(lsActualAlertMessage.toLowerCase().contains(lsExpectedAlertMessage.toLowerCase())){
@@ -3920,7 +3942,7 @@ public class MyAccount extends BasePage {
 
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnMyNewsLettersUnsubscribe);
 			this.getReusableActionsInstance().clickIfAvailable(btnMyNewsLettersUnsubscribe);
-			this.getReusableActionsInstance().staticWait(5*this.getStaticWaitForApplication());
+			this.getReusableActionsInstance().staticWait(2*this.getStaticWaitForApplication());
 			Alert alert=this.getDriver().switchTo().alert();
 			String lsActualAlertMessage=alert.getText().trim();
 			if(lsActualAlertMessage.toLowerCase().contains(lsExpectedAlertMessage.toLowerCase())){
@@ -3931,8 +3953,8 @@ public class MyAccount extends BasePage {
 			}
 			alert.accept();
 
-			this.getReusableActionsInstance().staticWait(5*this.getStaticWaitForApplication());
-			//waitForCondition(Driver->{return this.lblSubscriptionSuccessMessage.isDisplayed();},10000);
+			waitForCondition(Driver->{return this.lblSubscriptionSuccessMessage.isDisplayed();},10000);
+			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSubscriptionSuccessMessage);
 			String lsActualMessage=this.lblSubscriptionSuccessMessage.getText();
@@ -3951,6 +3973,8 @@ public class MyAccount extends BasePage {
 	 * To verify My NewsLetter Content
 	 */
 	public void verifyMyNewsLetterContent(){
+		this.getDriver().switchTo().frame(this.iFrameEmailSignup);
+
 		String lsText;
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblMyNewsLettersTitle);
@@ -4080,6 +4104,8 @@ public class MyAccount extends BasePage {
 		else{
 			reporter.reportLogFailWithScreenshot("Unsubscribe button is not displaying correctly");
 		}
+
+		this.getDriver().switchTo().defaultContent();
 	}
 
 	/**

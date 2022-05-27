@@ -32,10 +32,10 @@ public class IN_TC01_LinkageInfoBetweenPRPAndPDP extends BaseTest {
         Map<String,String> pdpMap=getProductDetailPageThreadLocal().getFullInformationOnPDP(true,true,true,false,false);
         getProductDetailPageThreadLocal().verifyLinkageInfoBetweenPRPAndPDP(prpMap,pdpMap);
 
-        reporter.reportLog("Compare the linkage information between PRP and PDP with full coverage");
-        prpMap=getProductResultsPageThreadLocal().navigateFromPRPToPDP(lsProductName, true);
-        pdpMap=getProductDetailPageThreadLocal().getFullInformationOnPDP(true,true,true,true,true);
-        getProductDetailPageThreadLocal().verifyLinkageInfoBetweenPRPAndPDP(prpMap,pdpMap);
+//        reporter.reportLog("Compare the linkage information between PRP and PDP with full coverage");
+//        prpMap=getProductResultsPageThreadLocal().navigateFromPRPToPDP(lsProductName, true);
+//        pdpMap=getProductDetailPageThreadLocal().getFullInformationOnPDP(true,true,true,true,true);
+//        getProductDetailPageThreadLocal().verifyLinkageInfoBetweenPRPAndPDP(prpMap,pdpMap);
 
     }
 }

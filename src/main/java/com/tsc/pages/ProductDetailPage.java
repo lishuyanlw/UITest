@@ -100,54 +100,47 @@ public class ProductDetailPage extends BasePage {
 	public WebElement lblZoomImageMessage;
 
 	//Product details
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']/div[2]")
-	public WebElement cntProductDetailsContainer;
+	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__brand-and-reviews']")
+	public WebElement cntProductDetailsBrandAndReviewContainer;
 
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']")
+	@FindBy(xpath = "//section[@class='pdp-description']//*[@id='lblProductName']")
 	public WebElement lblProductName;
 
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@id='divBrandName']//a")
+	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__brand-and-reviews']/div[@id='divBrandName']/a")
 	public WebElement lnkBrandName;
 
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'product-name-sub')]//span[@id='lblItemNo']")
+	@FindBy(xpath = "//section[@class='pdp-description']//span[@id='lblItemNo']")
 	public WebElement lblProductNumber;
 
 	//Review part
-	//@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'product-name-sub')]//div[@id='panReviewSnippet']//div[@class='p-w-r'][last()]//section")
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'product-name-sub')]//div[@id='panReviewSnippet']//div[@class='p-w-r'][last()]//section//div[contains(@class,'read-and-write')]")
+	@FindBy(xpath = "//section[@class='pdp-description']//a[@class='pr-snippet-review-count']")
 	public WebElement productReviewSection;
 
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'product-name-sub')]//div[@id='panReviewSnippet']//div[@class='p-w-r'][last()]//section//div[contains(@class,'pr-star-v4')]")
+	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pr-snippet-stars-container']//div[contains(@class,'pr-star-v4')]")
 	public List<WebElement> lstProductReviewStar;
 
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'product-name-sub')]//div[@id='panReviewSnippet']//div[@class='p-w-r'][last()]//section//span[contains(@class,'pr-accessible-text')]")
-	public List<WebElement> lstProductReviewAccessibleText;
-
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'product-name-sub')]//div[@id='panReviewSnippet']//div[@class='p-w-r'][last()]//section")
+	@FindBy(xpath = "//section[@class='pdp-description']//section[contains(@class,'pr-review-snippet-container')]")
 	public WebElement lblProductReview;
 	
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'product-name-sub')]//div[@id='panReviewSnippet']//div[@class='p-w-r']//a[@class='pr-snippet-review-count']")
+	@FindBy(xpath = "//section[@class='pdp-description']//a[@class='pr-snippet-review-count']")
 	public WebElement lblProductReviewCount;
 
 	//Price part
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@class='price-div']//span[@id='lblPriceLabel']")
-	public WebElement lblProductPriceLabel;
-
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@class='price-div']//span[@id='lblCurrentPrice']")
+	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__prices--is-price']")
 	public WebElement lblProductNowPrice;
 
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@class='price-div']//span[@id='lblShowWasPrice']")
+	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__prices--was-price']")
 	public WebElement lblProductWasPrice;
 
 	//EasyPay part
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@id='divEasyPayment']")
+	@FindBy(xpath = "//section[@class='pdp-description']//div[@id='easyPayWrap']")
 	public WebElement lblProductEasyPay;
 
 	//Shipping part
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@class='savings-shipping']//*[@id='divSavings']")
+	@FindBy(xpath = "//section[@class='pdp-description']//span[@class='pdp-description__prices__saving-and-shipping__savings-amount']")
 	public WebElement lblProductSavings;
 
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@class='savings-shipping']//*[@class='shipping']")
+	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__prices__saving-and-shipping']")
 	public WebElement lblProductShipping;
 
 	//Style part
@@ -273,9 +266,17 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@id='divAddToCart']//div[@id='divAdvanceOrder']")
 	public WebElement lblAdvanceOrderMsg;
 
-	//Social links part
-	@FindBy(xpath = "//div[@id='pdpMainDiv']//div[@id='favShare']/div[contains(@class,'mob-middle-social')]/div")
+	//Add to favorites
+	@FindBy(xpath = "//section[@class='pdp-description']//span[@class='pdp-description__add-to-bag__favorite__text']")
+	public WebElement lblAddToFavoriteText;
+
+	//To keep here for now, may change it for separated WebElement
+	@FindBy(xpath = "//section[@class='pdp-description']//button[@class='pdp-description__add-to-bag__favorite__icon-wrapper']")
 	public WebElement lnkFavShareMobile;
+
+	//Social links part
+//	@FindBy(xpath = "//section[@class='pdp-description']//button[@class='pdp-description__add-to-bag__favorite__icon-wrapper']")
+//	public WebElement lnkFavShareMobile;
 
 	@FindBy(xpath = "//div[@id='pdpMainDiv']//div[@id='favShare']/div[not(contains(@class,'mob-middle-social'))]/div")
 	public WebElement lnkFavShareEmail;
@@ -1724,7 +1725,7 @@ public class ProductDetailPage extends BasePage {
 	}
 
 	public boolean checkProductBrandExisting() {
-		return this.checkChildElementExistingByAttribute(cntProductDetailsContainer, "id", "divBrandName");
+		return this.checkChildElementExistingByAttribute(cntProductDetailsBrandAndReviewContainer, "id", "divBrandName");
 	}
 
 	public void verifyProductBasicInfo() {
@@ -1745,7 +1746,6 @@ public class ProductDetailPage extends BasePage {
 	}
 
 	public void verifyProductPriceAndShipping() {
-		reporter.softAssert(!this.getElementText(this.lblProductPriceLabel).isEmpty(),"The product price label is not empty","The product price label is empty");
 		reporter.softAssert(!this.getElementText(this.lblProductNowPrice).isEmpty(),"The product Now price is not empty","The product Now price is empty");
 		reporter.softAssert(!this.getElementText(this.lblProductWasPrice).isEmpty(),"The product Was price is not empty","The product Was price is empty");
 		reporter.softAssert(!this.getElementText(this.lblProductNowPrice).isEmpty()&&!this.getElementText(this.lblProductWasPrice).isEmpty(),"The product price range is not empty","The product price range is empty");
@@ -1841,7 +1841,6 @@ public class ProductDetailPage extends BasePage {
 		reporter.softAssert(this.lstProductReviewStar.size()>0,"The product review star count is greater than 0","The product review star count is not greater than 0");
 		reporter.softAssert(!this.getElementText(this.lblProductReview).isEmpty(),"The product review text is not empty","The product review text is empty");
 
-		reporter.softAssert(!this.getElementText(this.lblProductPriceLabel).isEmpty(),"The product price label is not empty","The product price label is empty");
 		reporter.softAssert(!this.getElementText(this.lblProductNowPrice).isEmpty(),"The product Now price is not empty","The product Now price is empty");
 		reporter.softAssert(!this.getElementText(this.lblProductEasyPay).isEmpty(),"The product EasyPay message is not empty","The product EasyPay message is empty");
 		reporter.softAssert(!this.getElementText(this.lblProductShipping).isEmpty(),"The product Shipping message is not empty","The product Shipping message is empty");
@@ -2167,7 +2166,8 @@ public class ProductDetailPage extends BasePage {
 	}
 
 	public boolean checkIfFavShareMobileHighlighted() {
-		return !this.hasElementAttribute(this.lnkFavShareMobile, "class");
+
+		return this.getElementInnerText(this.lblAddToFavoriteText).equalsIgnoreCase("Added to favorites");
 	}
 
 	public void verifyFavShareMobileAction(String lsUserName, String lsPassword) {
@@ -2365,7 +2365,7 @@ public class ProductDetailPage extends BasePage {
 
 		if(bBrand){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lnkBrandName);
-			lsText=lblProductName.getText().trim();
+			lsText=lnkBrandName.getText().trim();
 			map.put("productBrand",lsText);
 		}
 		else{
@@ -2373,12 +2373,12 @@ public class ProductDetailPage extends BasePage {
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblProductNowPrice);
-		lsText=lblProductNowPrice.getText().trim();
+		lsText= String.valueOf(this.getFloatFromString(lblProductNowPrice.getText(),true));
 		map.put("productNowPrice",lsText);
 
 		if(bWasPrice){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblProductWasPrice);
-			lsText=lblProductWasPrice.getText().trim();
+			lsText=String.valueOf(this.getFloatFromString(lblProductWasPrice.getText(),true));
 			map.put("productWasPrice",lsText);
 		}
 		else{

@@ -69,27 +69,26 @@ public class MA_TC18_MyPreferences_MyNewsletters extends BaseTest {
         reporter.reportLog("Verify My NewsLetter Content");
         getMyAccountPageThreadLocal().verifyMyNewsLetterContent();
 
-        reporter.reportLog("Check alert message while not checking UnSubscription checkbox");
-        String lsExpectedAlertMessage=TestDataHandler.constantData.getMyAccount().getLbl_myNewsLettersNoCheckUnSubscriptionAlertMessage();
-        getMyAccountPageThreadLocal().verifyNewsLettersUnSubscriptionSuccessMessage(false,lsExpectedAlertMessage,null);
+        String lsExpectedSubscriptionSuccessMessage=TestDataHandler.constantData.getMyAccount().getLbl_myNewsLettersSubscriptionSuccessMessage();
+        reporter.reportLog("Check Today Show Stopper NewsLetter subscription");
+        getMyAccountPageThreadLocal().verifyNewsLettersChangingSubscriptionSuccessMessage(getMyAccountPageThreadLocal().lblMyNewsLettersTodayShowStopperNewsLetterTitle,getMyAccountPageThreadLocal().ckbMyNewsLettersTodayShowStopperNewsLetter,true,lsExpectedSubscriptionSuccessMessage);
+
+        reporter.reportLog("Check Special Offer And Event NewsLetter subscription");
+        getMyAccountPageThreadLocal().verifyNewsLettersChangingSubscriptionSuccessMessage(getMyAccountPageThreadLocal().lblMyNewsLettersSpecialOfferAndEventNewsLetterTitle,getMyAccountPageThreadLocal().ckbMyNewsLettersSpecialOfferAndEventNewsLetter,true,lsExpectedSubscriptionSuccessMessage);
+
+        reporter.reportLog("Check Preferred Customer Offer subscription");
+        getMyAccountPageThreadLocal().verifyNewsLettersChangingSubscriptionSuccessMessage(getMyAccountPageThreadLocal().lblMyNewsLettersPreferredCustomerOfferTitle,getMyAccountPageThreadLocal().ckbMyNewsLettersPreferredCustomerOffer,true,lsExpectedSubscriptionSuccessMessage);
+
+        reporter.reportLog("Check Product Updates And Alerts subscription");
+        getMyAccountPageThreadLocal().verifyNewsLettersChangingSubscriptionSuccessMessage(getMyAccountPageThreadLocal().lblMyNewsLettersProductUpdatesAndAlertsTitle,getMyAccountPageThreadLocal().ckbMyNewsLettersProductUpdatesAndAlerts,true,lsExpectedSubscriptionSuccessMessage);
 
         reporter.reportLog("Check alert message and UnSubscription successful message while checking UnSubscription checkbox");
-        lsExpectedAlertMessage=TestDataHandler.constantData.getMyAccount().getLbl_myNewsLettersCheckUnSubscriptionAlertMessage();
+        String  lsExpectedAlertMessage=TestDataHandler.constantData.getMyAccount().getLbl_myNewsLettersCheckUnSubscriptionAlertMessage();
         String lsExpectedUnSubscriptionMessage=TestDataHandler.constantData.getMyAccount().getLbl_myNewsLettersUnSubscriptionSuccessMessage();
         getMyAccountPageThreadLocal().verifyNewsLettersUnSubscriptionSuccessMessage(true,lsExpectedAlertMessage,lsExpectedUnSubscriptionMessage);
 
-        String lsExpectedSubscriptionSuccessMessage=TestDataHandler.constantData.getMyAccount().getLbl_myNewsLettersSubscriptionSuccessMessage();
-        reporter.reportLog("Check Today Show Stopper NewsLetter subscription");
-        getMyAccountPageThreadLocal().verifyNewsLettersChangingSubscriptionSuccessMessage(getMyAccountPageThreadLocal().ckbMyNewsLettersTodayShowStopperNewsLetter,true,lsExpectedSubscriptionSuccessMessage);
-
-        reporter.reportLog("Check Special Offer And Event NewsLetter subscription");
-        getMyAccountPageThreadLocal().verifyNewsLettersChangingSubscriptionSuccessMessage(getMyAccountPageThreadLocal().ckbMyNewsLettersSpecialOfferAndEventNewsLetter,true,lsExpectedSubscriptionSuccessMessage);
-
-        reporter.reportLog("Check Preferred Customer Offer subscription");
-        getMyAccountPageThreadLocal().verifyNewsLettersChangingSubscriptionSuccessMessage(getMyAccountPageThreadLocal().ckbMyNewsLettersPreferredCustomerOffer,true,lsExpectedSubscriptionSuccessMessage);
-
-        reporter.reportLog("Check Product Updates And Alerts subscription");
-        getMyAccountPageThreadLocal().verifyNewsLettersChangingSubscriptionSuccessMessage(getMyAccountPageThreadLocal().ckbMyNewsLettersProductUpdatesAndAlerts,true,lsExpectedSubscriptionSuccessMessage);
-
+        reporter.reportLog("Check alert message while not checking UnSubscription checkbox");
+        lsExpectedAlertMessage=TestDataHandler.constantData.getMyAccount().getLbl_myNewsLettersNoCheckUnSubscriptionAlertMessage();
+        getMyAccountPageThreadLocal().verifyNewsLettersUnSubscriptionSuccessMessage(false,lsExpectedAlertMessage,null);
     }
 }
