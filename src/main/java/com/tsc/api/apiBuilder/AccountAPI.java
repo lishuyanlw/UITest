@@ -37,6 +37,7 @@ public class AccountAPI extends ApiClient {
 
         if(email==null){
             String lsEmail=DataConverter.getSaltString(8,"stringType")+"@"+DataConverter.getSaltString(5,"stringType")+".com";
+            //String lsEmail=DataConverter.getSaltString(8,"stringType")+"@rogers.com";
             reporter.reportLog("Creating Normal Account with Email: "+lsEmail);
             requestParams.put("Email", lsEmail);
         }

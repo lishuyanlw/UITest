@@ -24,14 +24,14 @@ public class SignInPage_Mobile extends SignInPage{
     @Override
     public boolean SignOut() {
         getReusableActionsInstance().javascriptScrollByVisibleElement(this.cntBlackHeaderContainer);
-        getReusableActionsInstance().staticWait(2000);
+        //getReusableActionsInstance().staticWait(2000);
 
         this.clickElement(this.btnSignInMainMenu);
-        getReusableActionsInstance().staticWait(2000);
+        //getReusableActionsInstance().staticWait(2000);
 
-        this.btnSignOut.click();
+        //this.btnSignOut.click();
         getReusableActionsInstance().clickIfAvailable(this.btnSignOut);
-        getReusableActionsInstance().staticWait(5000);
+        //getReusableActionsInstance().staticWait(5000);
 
         return waitForCondition(Driver->{return this.lblSignOut.isDisplayed();},20000);
     }
@@ -39,11 +39,11 @@ public class SignInPage_Mobile extends SignInPage{
     @Override
     public void verifyMenuItemInPopover(List<String> lstMenuItemPopover) {
         getReusableActionsInstance().javascriptScrollByVisibleElement(cntBlackHeaderContainer);
-        this.getReusableActionsInstance().staticWait(2000);
+        //this.getReusableActionsInstance().staticWait(2000);
 
         getReusableActionsInstance().scrollToElement(btnSignInMainMenu);
         getReusableActionsInstance().clickIfAvailable(this.SignInIcon);
-        getReusableActionsInstance().staticWait(2000);
+        //getReusableActionsInstance().staticWait(2000);
         //getReusableActionsInstance().javascriptScrollByVisibleElement(this.cntSignInPopover);
         //this.hoverOnSignInHeadingMenu();
         WebElement element;
@@ -77,7 +77,7 @@ public class SignInPage_Mobile extends SignInPage{
     public boolean goToSignInPage() {
         this.clickElement(this.btnSignInMainMenu);
         //getReusableActionsInstance().clickIfAvailable(this.SignInIcon);
-        getReusableActionsInstance().staticWait(2000);
+        //getReusableActionsInstance().staticWait(2000);
         getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInNav);
         this.btnSignInNav.click();
         (new GlobalFooterPage(this.getDriver())).waitForPageLoading();

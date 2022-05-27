@@ -23,6 +23,9 @@ public class MyAccount extends BasePage {
 		super(driver);
 	}
 
+	@FindBy(xpath="//ng-component//*[@class='paymentPageTitle']")
+	public WebElement lblPageTitle;
+
 	//Navigation breadcrumb
 	@FindBy(xpath = "//ng-component//div[contains(@class,'go-back')]//ol[@class='breadcrumb']//li//a")
 	public List<WebElement> lstNavigationCrumbList;
@@ -307,7 +310,6 @@ public class MyAccount extends BasePage {
 
 	@FindBy(xpath = "//ng-component//div[@id='panel-password']//input[@id='password']/parent::div/following-sibling::div[contains(@class,'text-danger')]")
 	public List<WebElement> lstChangePasswordErrorMessage;
-	////////////////////////
 
 	@FindBy(xpath = "//ng-component//div[@id='heading-securityquestion']//div[contains(@class,'item-title')]")
 	public WebElement cntAccountSettingSecurityQuestionHeadingContainer;
@@ -351,7 +353,6 @@ public class MyAccount extends BasePage {
 
 	@FindBy(xpath = "//ng-component//input[@name='answerError']")
 	public WebElement lblChangeSecurityQuestionsErrorMessage;
-	////////////////////////////////
 
 	//PAYMENT OPTIONS - ADD NEW CREDIT CARD
 	@FindBy(xpath="//div[@data-target='#paymentOptionsLinks']")
@@ -837,7 +838,12 @@ public class MyAccount extends BasePage {
 				this.btnCancelAddCreditCardForNewCreditCard.isDisplayed();},12000);
 		else if(subMenu.toLowerCase().contains("manage")){
 			this.waitForPageToLoad();
-			waitForCondition(Driver->{return this.lstCreditCardsPresent.size()>=0;},6000);
+			String pageTitle = this.lblPageTitle.getText();
+			if(pageTitle.toLowerCase().contains("manage"))
+				waitForCondition(Driver->{return this.lstCreditCardsPresent.size()>=0;},6000);
+			else if(pageTitle.toLowerCase().contains("add"))
+				waitForCondition(Driver->{return (this.btnCancelAddCreditCardForNewCreditCard.isEnabled() &&
+					this.btnCancelAddCreditCardForNewCreditCard.isDisplayed() && this.lstCreditCardsPresent.size()==0);},6000);
 		}else{
 			this.waitForPageToLoad();
 			this.waitForCondition(Driver->{return this.lblGiftCardPageTitle.getText().toLowerCase().contains("gift");},6000);
@@ -1023,7 +1029,7 @@ public class MyAccount extends BasePage {
 	 */
 	public boolean verifyCardNumberAddedForUser(WebElement webElement, String cardNumber, String cardType){
 		String inputLastDigitsOfCard = null;
-		String lastDigitsOfCard = webElement.getText().split(" ")[2];
+		String lastDigitsOfCard = webElement.getText().split("\\s+")[2];
 		/**
 		if(cardType.equalsIgnoreCase("visa"))
 			inputLastDigitsOfCard = cardNumber.substring(cardNumber.length()-3);
@@ -2601,7 +2607,10 @@ public class MyAccount extends BasePage {
 	}
 
 	public boolean verifyMinimumOneCardIsPresentForUser(){
-		if(this.lstCreditCardsPresent.size()==0)
+		String titleText = this.lblPageTitle.getText();
+		if(titleText.toLowerCase().contains("manage") && this.lstCreditCardsPresent.size()>0)
+			return true;
+		if(titleText.toLowerCase().contains("add"))
 			return false;
 		return true;
 	}

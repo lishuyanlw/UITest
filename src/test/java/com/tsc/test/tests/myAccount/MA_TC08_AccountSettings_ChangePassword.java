@@ -30,7 +30,6 @@ public class MA_TC08_AccountSettings_ChangePassword extends BaseTest {
         ConstantData.APIUserSessionParams apiUserSessionParams = TestDataHandler.constantData.getApiUserSessionParams();
         apiUserSessionData = apiResponseThreadLocal.get().getApiUserSessionData(lblUserName,lblPassword,apiUserSessionParams.getLbl_grantType(),apiUserSessionParams.getLbl_apiKey());
         String accessToken = apiUserSessionData.get("access_token").toString();
-
         AccountAPI accountAPI=new AccountAPI();
         Map<String,Object> userData= new HashMap<>();
         userData.put("Password","testMail123");
@@ -48,7 +47,6 @@ public class MA_TC08_AccountSettings_ChangePassword extends BaseTest {
         lblUserName=accountResponse.getEmail();
         lblPassword="testMail123";
         String customerNumber=accountResponse.getCustomerNo();
-
         reporter.reportLog("SignIn with Username: "+lblUserName+" and Password: "+lblPassword);
         getGlobalLoginPageThreadLocal().Login(lblUserName, lblPassword);
 

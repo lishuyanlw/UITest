@@ -341,11 +341,11 @@ public class BaseTest {
 
 	@AfterMethod(alwaysRun = true)
 	public void afterTest() throws IOException, org.json.simple.parser.ParseException, InterruptedException, ParseException {
-		if (getDriver() != null) {
-			addPlaceOrder();
-			//(new BasePage(this.getDriver())).deleteSessionStorage();
-			closeSession();
-		}
+//		if (getDriver() != null) {
+//			addPlaceOrder();
+//			//(new BasePage(this.getDriver())).deleteSessionStorage();
+//		}
+		closeSession();
 	}
 
 	public void validateText(String strActualText, List<String> listExpectedText, String validationMsg) {
