@@ -24,8 +24,20 @@ public class MA_TC04_OrderDetails extends BaseTest {
 
         //Login using valid username and password
         getGlobalLoginPageThreadLocal().Login(lblUserName, lblPassword);
+        String accessToken = apiUserSessionData.get("access_token").toString();
+        String customerEDP = apiUserSessionData.get("customerEDP").toString();
+        String customerNumber = getApiResponseThreadLocal().getUserDetailsFromCustomerEDP(customerEDP,accessToken).getCustomerNo();
+        String userCustomerNumber = getGlobalLoginPageThreadLocal().getCustomerNumberForLoggedInUser();
+        if(customerNumber.equals(userCustomerNumber))
+            getReporter().reportLogPass("User is successfully logged in with customer no: "+userCustomerNumber);
+        else
+            getReporter().reportLogFailWithScreenshot("User is not logged in with expected customer no: "+userCustomerNumber+" but with other customer no: "+customerNumber);
 
-        String lsTestDevice = System.getProperty("Device").trim();
+        boolean value = getGlobalLoginPageThreadLocal().verifySignOutButtonVisibilityOnPage();
+        if(value)
+            reporter.reportLogPass("SignOut button is displaying correctly");
+        else
+            reporter.reportLogFailWithScreenshot("SignOut button is not displaying correctly");
 
         getMyAccountPageThreadLocal().openSubItemWindow("Your Orders","Order Status", getMyAccountPageThreadLocal().lblOrderStatusSectionTitle);
         if(!getMyAccountPageThreadLocal().checkOrderItemExisting()){
@@ -49,26 +61,6 @@ public class MA_TC04_OrderDetails extends BaseTest {
         ConstantData.APIUserSessionParams apiUserSessionParams = TestDataHandler.constantData.getApiUserSessionParams();
         apiUserSessionData = apiResponseThreadLocal.get().getApiUserSessionData(lblUserName,lblPassword,apiUserSessionParams.getLbl_grantType(),apiUserSessionParams.getLbl_apiKey());
 
-        String accessToken = apiUserSessionData.get("access_token").toString();
-        String customerEDP = apiUserSessionData.get("customerEDP").toString();
-        String customerNumber = getApiResponseThreadLocal().getUserDetailsFromCustomerEDP(customerEDP,accessToken).getCustomerNo();
-
-        if(!lsTestDevice.equalsIgnoreCase("Mobile")){
-            reporter.reportLog("Verify customer information");
-            String userCustomerNumber = getGlobalLoginPageThreadLocal().getCustomerNumberForLoggedInUser();
-            if(customerNumber.equals(userCustomerNumber))
-                getReporter().reportLogPass("User is successfully logged in with customer no: "+userCustomerNumber);
-            else
-                getReporter().reportLogFailWithScreenshot("User is not logged in with expected customer no: "+userCustomerNumber+" but with other customer no: "+customerNumber);
-
-            if(basePage.getReusableActionsInstance().isElementVisible(getGlobalLoginPageThreadLocal().btnSignOut)){
-                reporter.reportLogPass("SignOut button is displaying correctly");
-            }
-            else{
-                reporter.reportLogFailWithScreenshot("SignOut button is not displaying correctly");
-            }
-        }
-
         reporter.reportLog("Verify order main header");
         getMyAccountPageThreadLocal().verifyMainHeaderSectionInOrderDetails(lsSelectedOrderNO,customerNumber);
         getMyAccountPageThreadLocal().verifyMainHeaderSectionInOrderDetails_DifferentDevice();
@@ -85,6 +77,5 @@ public class MA_TC04_OrderDetails extends BaseTest {
 
         reporter.reportLog("To compare subTotal and order total");
         getMyAccountPageThreadLocal().verifySubTotalAndOrderTotal();
-
     }
 }

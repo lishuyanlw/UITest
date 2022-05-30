@@ -2093,7 +2093,8 @@ public class MyAccount extends BasePage {
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 			lsText=item.getText().trim();
 			if(!lsText.isEmpty()){
-				reporter.reportLogPass("The content of '"+lsText+"' is not empty");
+				//reporter.reportLogPass("The content of '"+lsText+"' is not empty");
+				reporter.reportLogPass("The content is not empty as expected!");
 			}
 			else{
 				reporter.reportLogFailWithScreenshot("The content of '"+lsText+"' is empty");

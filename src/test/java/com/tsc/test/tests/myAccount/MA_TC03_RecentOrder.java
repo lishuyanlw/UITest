@@ -25,7 +25,25 @@ public class MA_TC03_RecentOrder extends BaseTest {
         //Login using valid username and password
         getGlobalLoginPageThreadLocal().Login(lblUserName, lblPassword);
 
-        String lsTestDevice = System.getProperty("Device").trim();
+        reporter.reportLog("Verify customer information");
+        //Fetching test data from test data file
+        ConstantData.APIUserSessionParams apiUserSessionParams = TestDataHandler.constantData.getApiUserSessionParams();
+        apiUserSessionData = apiResponseThreadLocal.get().getApiUserSessionData(lblUserName,lblPassword,apiUserSessionParams.getLbl_grantType(),apiUserSessionParams.getLbl_apiKey());
+
+        String accessToken = apiUserSessionData.get("access_token").toString();
+        String customerEDP = apiUserSessionData.get("customerEDP").toString();
+        String customerNumber = getApiResponseThreadLocal().getUserDetailsFromCustomerEDP(customerEDP,accessToken).getCustomerNo();
+        String userCustomerNumber = getGlobalLoginPageThreadLocal().getCustomerNumberForLoggedInUser();
+        if(customerNumber.equals(userCustomerNumber))
+            getReporter().reportLogPass("User is successfully logged in with customer no: "+userCustomerNumber);
+        else
+            getReporter().reportLogFailWithScreenshot("User is not logged in with expected customer no: "+userCustomerNumber+" but with other customer no: "+customerNumber);
+
+        boolean value = getGlobalLoginPageThreadLocal().verifySignOutButtonVisibilityOnPage();
+        if(value)
+            reporter.reportLogPass("SignOut button is displaying correctly");
+        else
+            reporter.reportLogFailWithScreenshot("SignOut button is not displaying correctly");
 
         getMyAccountPageThreadLocal().openSubItemWindow("Your Orders","Recent Orders", getMyAccountPageThreadLocal().lblOrderStatusSectionTitle);
 
@@ -36,29 +54,6 @@ public class MA_TC03_RecentOrder extends BaseTest {
         }
         else{
             reporter.reportLogPass("The actual navigated URL:+"+basePage.URL()+" is not equal to expected one:"+expectedURL);
-        }
-
-        if(!lsTestDevice.equalsIgnoreCase("Mobile")){
-            reporter.reportLog("Verify customer information");
-            //Fetching test data from test data file
-            ConstantData.APIUserSessionParams apiUserSessionParams = TestDataHandler.constantData.getApiUserSessionParams();
-            apiUserSessionData = apiResponseThreadLocal.get().getApiUserSessionData(lblUserName,lblPassword,apiUserSessionParams.getLbl_grantType(),apiUserSessionParams.getLbl_apiKey());
-
-            String accessToken = apiUserSessionData.get("access_token").toString();
-            String customerEDP = apiUserSessionData.get("customerEDP").toString();
-            String customerNumber = getApiResponseThreadLocal().getUserDetailsFromCustomerEDP(customerEDP,accessToken).getCustomerNo();
-            String userCustomerNumber = getGlobalLoginPageThreadLocal().getCustomerNumberForLoggedInUser();
-            if(customerNumber.equals(userCustomerNumber))
-                getReporter().reportLogPass("User is successfully logged in with customer no: "+userCustomerNumber);
-            else
-                getReporter().reportLogFailWithScreenshot("User is not logged in with expected customer no: "+userCustomerNumber+" but with other customer no: "+customerNumber);
-
-            if(basePage.getReusableActionsInstance().isElementVisible(getGlobalLoginPageThreadLocal().btnSignOut)){
-                reporter.reportLogPass("SignOut button is displaying correctly");
-            }
-            else{
-                reporter.reportLogFailWithScreenshot("SignOut button is not displaying correctly");
-            }
         }
 
         if(getMyAccountPageThreadLocal().checkOrderItemExisting()){
@@ -78,6 +73,5 @@ public class MA_TC03_RecentOrder extends BaseTest {
         else{
             reporter.reportLogFail("No order items existing");
         }
-
     }
 }
