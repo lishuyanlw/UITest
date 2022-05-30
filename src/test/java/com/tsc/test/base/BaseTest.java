@@ -341,10 +341,10 @@ public class BaseTest {
 
 	@AfterMethod(alwaysRun = true)
 	public void afterTest() throws IOException, org.json.simple.parser.ParseException, InterruptedException, ParseException {
-//		if (getDriver() != null) {
-//			addPlaceOrder();
-//			//(new BasePage(this.getDriver())).deleteSessionStorage();
-//		}
+		if (getDriver() != null) {
+			addPlaceOrder();
+			//(new BasePage(this.getDriver())).deleteSessionStorage();
+		}
 		closeSession();
 	}
 
@@ -471,17 +471,17 @@ public class BaseTest {
 		Response responseInitial=cartAPI.getAccountCartContentWithCustomerEDP(customerEDP,access_token);
 		AccountCartResponse accountCartInitial = JsonParser.getResponseObject(responseInitial.asString(), new TypeReference<AccountCartResponse>() {});
 		String GuidId=accountCartInitial.getCartGuid();
-
+		/**
 		Response responseDelete=cartAPI.deleteCartItemWithGuid(access_token, GuidId,4);
-//		reporter.reportLog("responseDelete: "+responseDelete.asString());
+		reporter.reportLog("responseDelete: "+responseDelete.asString());
 
 		//ProductEDP Number that will be added to cart for user
 		Map<String,Object> map=cartAPI.addItemsInExistingCart(Integer.parseInt(customerEDP), access_token, GuidId,null);
 		Response userCartResponse=(Response)map.get("Response");
-
+		*/
 		Response responseReview=orderAPI.getOrderReview(customerEDP,access_token);
 		AccountCartResponse accountCartReview = JsonParser.getResponseObject(responseReview.asString(), new TypeReference<AccountCartResponse>() {});
-//		reporter.reportLog("Review: "+responseReview.asString());
+		//reporter.reportLog("Review: "+responseReview.asString());
 		List<Long> relatedCartIdsList=accountCartReview.getRelatedCartIds();
 
 		Thread.sleep(2000);

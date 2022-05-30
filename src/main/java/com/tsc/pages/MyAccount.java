@@ -1361,7 +1361,7 @@ public class MyAccount extends BasePage {
 			reporter.reportLogFailWithScreenshot("'"+lsSubItem+ "' sub item is not displaying correctly");
 		}
 		this.getReusableActionsInstance().clickIfAvailable(subButton);
-
+		this.waitForPageToLoad();
 		this.waitForCondition(Driver->{return loadingIndicator.isDisplayed();},50000);
 
 		this.getReusableActionsInstance().staticWait(5*this.getStaticWaitForApplication());
@@ -2502,15 +2502,18 @@ public class MyAccount extends BasePage {
 			lsAnswer="Answer";
 		}
 		inputChangeSecurityQuestionSectionAnswer.clear();
+		this.getReusableActionsInstance().staticWait(2*this.getStaticWaitForApplication());
 		inputChangeSecurityQuestionSectionAnswer.sendKeys(lsAnswer);
 
 		if(bSubmit){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnChangeSecurityQuestionSubmit);
+			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 			this.getReusableActionsInstance().clickIfAvailable(btnChangeSecurityQuestionSubmit);
 		}
 		else{
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnChangeSecurityQuestionCancel);
-			this.getReusableActionsInstance().clickIfAvailable(btnChangeSecurityQuestionCancel);
+			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+			this.clickWebElementUsingJS(btnChangeSecurityQuestionCancel);
 		}
 		this.waitForPageToLoad();
 		//Keep it for scrolling window
@@ -3122,7 +3125,8 @@ public class MyAccount extends BasePage {
 			Random rand = new Random();
 			int randomNumber = rand.nextInt(optionSize-2);
 
-			selectedIndexInAutoSearchDropdownMenu=randomNumber;
+			//selectedIndexInAutoSearchDropdownMenu=randomNumber;
+			selectedIndexInAutoSearchDropdownMenu=0;
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstAddOrEditAddressAutoSearchDropdownItems.get(selectedIndexInAutoSearchDropdownMenu));
@@ -3201,7 +3205,9 @@ public class MyAccount extends BasePage {
 					}
 
 					this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
-					this.getReusableActionsInstance().clickIfAvailable(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
+					//this.getReusableActionsInstance().clickIfAvailable(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
+					this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+					this.clickWebElementUsingJS(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
 					this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: none;");},20000);
 					this.getReusableActionsInstance().staticWait(3*this.getStaticWaitForApplication());
 					break;
@@ -3214,6 +3220,7 @@ public class MyAccount extends BasePage {
 		if(lsAuoSearchKeyword!=null){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressLine1);
 			inputAddOrEditAddressLine1.clear();
+			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 			String[] data = lsAuoSearchKeyword.codePoints().mapToObj(cp->new String(Character.toChars(cp))).toArray(size->new String[size]);
 			for(String inputText:data){
 				inputAddOrEditAddressLine1.sendKeys(inputText);
@@ -3229,13 +3236,18 @@ public class MyAccount extends BasePage {
 			else{
 				reporter.reportLogPassWithScreenshot("Unable to get dropdown auto search results");
 			}
-
+			/**
 			int optionSize=this.lstAddOrEditAddressAutoSearchDropdownItems.size();
 			Random rand = new Random();
 			int randomNumber = rand.nextInt(optionSize-2);
 
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstAddOrEditAddressAutoSearchDropdownItems.get(randomNumber));
 			this.getReusableActionsInstance().clickIfAvailable(this.lstAddOrEditAddressAutoSearchDropdownItems.get(randomNumber));
+			 */
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
+			//this.getReusableActionsInstance().clickIfAvailable(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
+			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+			this.clickWebElementUsingJS(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
 			this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: none;");},20000);
 			this.getReusableActionsInstance().staticWait(3*this.getStaticWaitForApplication());
 

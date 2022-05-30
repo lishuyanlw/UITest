@@ -139,7 +139,7 @@ public class MA_TC14_YourAddresses_AddingAddress extends BaseTest {
             reporter.reportLogPass("Make default shipping address successfully");
         }
         else{
-            reporter.reportLogFailWithScreenshot("Make default shipping address failed with "+lsFirstNameBeforeMakeDefaultShippingAddress+" : "+lsFirstNameAfterMakeDefaultShippingAddress);
+            reporter.reportLogFailWithScreenshot("Make default shipping address failed with "+lsFirstNameBeforeMakeDefaultShippingAddress+" but actual: "+lsFirstNameAfterMakeDefaultShippingAddress+" and expected first name is: "+lsExpectedFirstname);
         }
 
         reporter.reportLog("Verify make address as billing address scenario");
