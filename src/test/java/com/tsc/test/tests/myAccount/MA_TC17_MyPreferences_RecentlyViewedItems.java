@@ -51,7 +51,8 @@ public class MA_TC17_MyPreferences_RecentlyViewedItems extends BaseTest {
         }
 
         String lsTestDevice = System.getProperty("Device").trim();
-        if (!lsTestDevice.equalsIgnoreCase("Mobile")) {
+        String lsTestBrowser= System.getProperty("Browser").toLowerCase().trim();
+        if((lsTestDevice.equalsIgnoreCase("Desktop"))||(lsTestDevice.equalsIgnoreCase("Tablet")&&lsTestBrowser.contains("ios"))){
             reporter.reportLog("Verify customer information");
             String customerNumber = accountResponse.getCustomerNo();
             String userCustomerNumber = getGlobalLoginPageThreadLocal().getCustomerNumberForLoggedInUser();
@@ -89,7 +90,7 @@ public class MA_TC17_MyPreferences_RecentlyViewedItems extends BaseTest {
             reporter.reportLogPass("Adding viewed item successfully");
         }
         else{
-            reporter.reportLogPass("Adding viewed item failed");
+            reporter.reportLogFailWithScreenshot("Adding viewed item failed");
         }
 
         reporter.reportLog("Verify Viewed history page");

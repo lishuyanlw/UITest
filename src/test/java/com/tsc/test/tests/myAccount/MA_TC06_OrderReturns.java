@@ -24,8 +24,6 @@ public class MA_TC06_OrderReturns extends BaseTest {
         //Login using valid username and password
         getGlobalLoginPageThreadLocal().Login(lblUserName, lblPassword);
 
-        String lsTestDevice = System.getProperty("Device").trim();
-
         getMyAccountPageThreadLocal().openSubItemWindow("Your Orders","Order Returns", getMyAccountPageThreadLocal().lblOrderServiceTitle);
 
         String lnk_orderReturnsURL=TestDataHandler.constantData.getMyAccount().getLnk_orderReturnsURL();

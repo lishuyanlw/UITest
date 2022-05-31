@@ -178,7 +178,13 @@ public class BaseTest {
 		reporter = new ExtentTestManager(getDriver());
 		apiResponseThreadLocal.set(new ApiResponse());
 		shoppingCartThreadLocal.set(new ShoppingCart(getDriver()));
-		myAccountPageThreadLocal.set(new MyAccount(getDriver()));
+		if(System.getProperty("Browser").contains("ios")) {
+			myAccountPageThreadLocal.set(new MyAccount(getDriver()));
+		}
+		else{
+			myAccountPageThreadLocal.set(new MyAccount_Mobile(getDriver()));
+		}
+
 	}
 
 

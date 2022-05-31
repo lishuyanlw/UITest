@@ -27,8 +27,6 @@ public class MA_TC07_AccountSettings extends BaseTest {
         //Login using valid username and password
         getGlobalLoginPageThreadLocal().Login(lblUserName, lblPassword);
 
-        String lsTestDevice = System.getProperty("Device").trim();
-
         getMyAccountPageThreadLocal().openSubItemWindow("Your Profile","Account Settings", getMyAccountPageThreadLocal().lblAccountSettingSectionTitle);
 
         String lnk_accountSettingsURL=TestDataHandler.constantData.getMyAccount().getLnk_accountSettingsURL();
@@ -40,7 +38,9 @@ public class MA_TC07_AccountSettings extends BaseTest {
             reporter.reportLogPass("The actual navigated URL:+"+basePage.URL()+" is not equal to expected one:"+expectedURL);
         }
 
-        if(!lsTestDevice.equalsIgnoreCase("Mobile")){
+        String lsTestDevice = System.getProperty("Device").trim();
+        String lsTestBrowser= System.getProperty("Browser").toLowerCase().trim();
+        if((lsTestDevice.equalsIgnoreCase("Desktop"))||(lsTestDevice.equalsIgnoreCase("Tablet")&&lsTestBrowser.contains("ios"))){
             reporter.reportLog("Verify customer information");
             //Fetching test data from test data file
             ConstantData.APIUserSessionParams apiUserSessionParams = TestDataHandler.constantData.getApiUserSessionParams();

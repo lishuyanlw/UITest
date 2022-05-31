@@ -57,7 +57,6 @@ public class MA_TC08_AccountSettings_ChangePassword extends BaseTest {
         getGlobalLoginPageThreadLocal().Login(lblUserName, lblPassword);
 
         BasePage basePage=new BasePage(this.getDriver());
-        String lsTestDevice = System.getProperty("Device").trim();
 
         reporter.reportLog("Verify Order status URL");
         getMyAccountPageThreadLocal().openSubItemWindow("Your Profile","Change Password", getMyAccountPageThreadLocal().lblAccountSettingSectionTitle);
@@ -71,7 +70,9 @@ public class MA_TC08_AccountSettings_ChangePassword extends BaseTest {
             reporter.reportLogPass("The actual navigated URL:+"+basePage.URL()+" is not equal to expected one:"+expectedURL);
         }
 
-        if(!lsTestDevice.equalsIgnoreCase("Mobile")){
+        String lsTestDevice = System.getProperty("Device").trim();
+        String lsTestBrowser= System.getProperty("Browser").toLowerCase().trim();
+        if((lsTestDevice.equalsIgnoreCase("Desktop"))||(lsTestDevice.equalsIgnoreCase("Tablet")&&lsTestBrowser.contains("ios"))){
             reporter.reportLog("Verify customer information");
             String userCustomerNumber = getGlobalLoginPageThreadLocal().getCustomerNumberForLoggedInUser();
             if(customerNumber.equals(userCustomerNumber))

@@ -47,8 +47,6 @@ public class MA_TC14_YourAddresses_ShippingAddress extends BaseTest {
         //Login using valid username and password
         getGlobalLoginPageThreadLocal().Login(lblUserName, lblPassword);
 
-        String lsTestDevice = System.getProperty("Device").trim();
-
         getMyAccountPageThreadLocal().openSubItemWindow("Your Addresses", "Shipping Address", getMyAccountPageThreadLocal().lblYourAddressTitle);
         int addressAmountBeforeAdding=getMyAccountPageThreadLocal().lstShippingAddressContainer.size();
 
@@ -60,7 +58,9 @@ public class MA_TC14_YourAddresses_ShippingAddress extends BaseTest {
             reporter.reportLogPass("The actual navigated URL:+" + basePage.URL() + " is not equal to expected one:" + expectedURL);
         }
 
-        if (!lsTestDevice.equalsIgnoreCase("Mobile")) {
+        String lsTestDevice = System.getProperty("Device").trim();
+        String lsTestBrowser= System.getProperty("Browser").toLowerCase().trim();
+        if((lsTestDevice.equalsIgnoreCase("Desktop"))||(lsTestDevice.equalsIgnoreCase("Tablet")&&lsTestBrowser.contains("ios"))){
             reporter.reportLog("Verify customer information");
             String customerNumber = accountResponse.getCustomerNo();
             String userCustomerNumber = getGlobalLoginPageThreadLocal().getCustomerNumberForLoggedInUser();

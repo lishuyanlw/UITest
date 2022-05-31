@@ -28,8 +28,6 @@ public class MA_TC19_SignOut_HeaderMenu extends BaseTest {
         //Login using valid username and password
         getGlobalLoginPageThreadLocal().Login(lblUserName, lblPassword);
 
-        String lsTestDevice = System.getProperty("Device").trim();
-
         String lnk_landingViewURL=TestDataHandler.constantData.getMyAccount().getLnk_myAccountLandingViewURL();
         String expectedURL=basePage.getBaseURL()+lnk_landingViewURL;
         if(basePage.URL().equalsIgnoreCase(expectedURL)){
@@ -39,7 +37,9 @@ public class MA_TC19_SignOut_HeaderMenu extends BaseTest {
             reporter.reportLogPass("The actual navigated URL:+"+basePage.URL()+" is not equal to expected one:"+expectedURL);
         }
 
-        if(!lsTestDevice.equalsIgnoreCase("Mobile")){
+        String lsTestDevice = System.getProperty("Device").trim();
+        String lsTestBrowser= System.getProperty("Browser").toLowerCase().trim();
+        if((lsTestDevice.equalsIgnoreCase("Desktop"))||(lsTestDevice.equalsIgnoreCase("Tablet")&&lsTestBrowser.contains("ios"))){
             reporter.reportLog("Verify customer information");
             //Fetching test data from test data file
             ConstantData.APIUserSessionParams apiUserSessionParams = TestDataHandler.constantData.getApiUserSessionParams();

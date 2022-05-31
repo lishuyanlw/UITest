@@ -1885,13 +1885,13 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 		}
 
 		element=item.findElement(this.byProductNowPrice);
-		lsText=this.getElementInnerText(element);
-		map.put("productNowPrice",lsText.trim().split(":")[1].trim());
+		lsText= String.valueOf(this.getFloatFromString(this.getElementInnerText(element),true));
+		map.put("productNowPrice",lsText);
 
 		if(this.checkProductItemWasPriceExisting(item)){
 			element=item.findElement(this.byProductWasPrice);
-			lsText=this.getElementInnerText(element);
-			map.put("productWasPrice",lsText.trim().split(":")[1].trim());
+			lsText= String.valueOf(this.getFloatFromString(this.getElementInnerText(element),true));
+			map.put("productWasPrice",lsText);
 		}
 		else{
 			map.put("productWasPrice",null);

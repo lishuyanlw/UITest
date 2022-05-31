@@ -13,12 +13,12 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-public class IN_TC01_LinkageInfoBetweenPRPAndPDP extends BaseTest {
+public class IN_TC01_PDP extends BaseTest {
     /*
      *CER-810
      */
     @Test(groups={"Integration","Regression"})
-    public void IN_TC01_LinkageInfoBetweenPRPAndPDP() throws IOException, org.json.simple.parser.ParseException {
+    public void IN_TC01_PDP() throws IOException, org.json.simple.parser.ParseException {
         //Closing SignIn pop up on login
         getGlobalFooterPageThreadLocal().closePopupDialog();
 
@@ -27,15 +27,23 @@ public class IN_TC01_LinkageInfoBetweenPRPAndPDP extends BaseTest {
         String lsProductName=product.getName();
         reporter.reportLog("Product name: "+lsProductName);
 
-        reporter.reportLog("Compare the linkage information between PRP and PDP without style and size by clicking product image action");
-        Map<String,String> prpMap=getProductResultsPageThreadLocal().navigateFromPRPToPDP(lsProductName, false);
-        Map<String,String> pdpMap=getProductDetailPageThreadLocal().getFullInformationOnPDP(true,true,true,false,false);
+        reporter.reportLog("Compare the linkage information between PRP and PDP with full coverage");
+        Map<String,String> prpMap=getProductResultsPageThreadLocal().navigateFromPRPToPDP(lsProductName, true);
+        Map<String,String> pdpMap=getProductDetailPageThreadLocal().getFullInformationOnPDP(true,true,true,true,true);
         getProductDetailPageThreadLocal().verifyLinkageInfoBetweenPRPAndPDP(prpMap,pdpMap);
 
-//        reporter.reportLog("Compare the linkage information between PRP and PDP with full coverage");
-//        prpMap=getProductResultsPageThreadLocal().navigateFromPRPToPDP(lsProductName, true);
-//        pdpMap=getProductDetailPageThreadLocal().getFullInformationOnPDP(true,true,true,true,true);
-//        getProductDetailPageThreadLocal().verifyLinkageInfoBetweenPRPAndPDP(prpMap,pdpMap);
+        reporter.reportLog("Compare the linkage information between PRP and PDP without style and size by clicking product image action");
+        prpMap=getProductResultsPageThreadLocal().navigateFromPRPToPDP(lsProductName, false);
+        pdpMap=getProductDetailPageThreadLocal().getFullInformationOnPDP(true,true,true,false,false);
+        getProductDetailPageThreadLocal().verifyLinkageInfoBetweenPRPAndPDP(prpMap,pdpMap);
+
+//        BasePage basePage=new BasePage(this.getDriver());
+//
+//        basePage.getReusableActionsInstance().javascriptScrollByVisibleElement(getglobalheaderPageThreadLocal().lnkTSClogo);
+//        getglobalheaderPageThreadLocal().lnkTSClogo.click();
+//        basePage.getReusableActionsInstance().staticWait(5*basePage.getStaticWaitForApplication());
+
+
 
     }
 }

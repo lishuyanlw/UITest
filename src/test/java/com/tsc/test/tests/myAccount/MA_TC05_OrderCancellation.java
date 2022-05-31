@@ -25,8 +25,6 @@ public class MA_TC05_OrderCancellation extends BaseTest {
         //Login using valid username and password
         getGlobalLoginPageThreadLocal().Login(lblUserName, lblPassword);
 
-        String lsTestDevice = System.getProperty("Device").trim();
-
         getMyAccountPageThreadLocal().openSubItemWindow("Your Orders","Order Cancellation", getMyAccountPageThreadLocal().lblOrderServiceTitle);
 
         String lnk_orderCancellationURL=TestDataHandler.constantData.getMyAccount().getLnk_orderCancellationURL();

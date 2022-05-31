@@ -2322,7 +2322,6 @@ public class ProductResultsPage extends BasePage{
 				tempElementColor=elementSelectedText;
 
 				optionList=itemContainer.findElements(byProductOptionColorItemEnabledList);
-				reporter.reportLog("Color optionList.size(): "+optionList.size());
 				element=optionList.get(optionList.size()-1);
 				if(element.getTagName().equalsIgnoreCase("button")) {
 					this.getReusableActionsInstance().clickIfAvailable(element,5000);
@@ -3878,7 +3877,7 @@ public class ProductResultsPage extends BasePage{
 
 		ProductDetailPage pdp=new ProductDetailPage(this.getDriver());
 
-		this.getSearchResultLoad(lsKeyword,true);
+		this.getSearchResultLoad(lsKeyword,false);
 		List<WebElement> productList=this.getProductList();
 		WebElement item=productList.get(0);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);

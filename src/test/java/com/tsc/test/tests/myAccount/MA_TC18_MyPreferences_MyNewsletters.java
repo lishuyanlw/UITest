@@ -47,7 +47,8 @@ public class MA_TC18_MyPreferences_MyNewsletters extends BaseTest {
         }
 
         String lsTestDevice = System.getProperty("Device").trim();
-        if (!lsTestDevice.equalsIgnoreCase("Mobile")) {
+        String lsTestBrowser= System.getProperty("Browser").toLowerCase().trim();
+        if((lsTestDevice.equalsIgnoreCase("Desktop"))||(lsTestDevice.equalsIgnoreCase("Tablet")&&lsTestBrowser.contains("ios"))){
             reporter.reportLog("Verify customer information");
             String customerNumber = accountResponse.getCustomerNo();
             String userCustomerNumber = getGlobalLoginPageThreadLocal().getCustomerNumberForLoggedInUser();

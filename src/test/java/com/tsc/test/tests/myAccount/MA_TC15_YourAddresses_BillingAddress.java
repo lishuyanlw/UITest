@@ -71,7 +71,8 @@ public class MA_TC15_YourAddresses_BillingAddress extends BaseTest {
             reporter.reportLogPass("The actual navigated URL:+" + basePage.URL() + " is not equal to expected one:" + expectedURL);
         }
 
-        if (!lsTestDevice.equalsIgnoreCase("Mobile")) {
+        String lsTestBrowser= System.getProperty("Browser").toLowerCase().trim();
+        if((lsTestDevice.equalsIgnoreCase("Desktop"))||(lsTestDevice.equalsIgnoreCase("Tablet")&&lsTestBrowser.contains("ios"))){
             reporter.reportLog("Verify customer information");
             String customerNumber = accountResponse.getCustomerNo();
             String userCustomerNumber = getGlobalLoginPageThreadLocal().getCustomerNumberForLoggedInUser();

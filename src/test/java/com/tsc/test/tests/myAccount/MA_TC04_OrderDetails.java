@@ -27,8 +27,6 @@ public class MA_TC04_OrderDetails extends BaseTest {
         //Login using valid username and password
         getGlobalLoginPageThreadLocal().Login(lblUserName, lblPassword);
 
-        String lsTestDevice = System.getProperty("Device").trim();
-
         getMyAccountPageThreadLocal().openSubItemWindow("Your Orders","Order Status", getMyAccountPageThreadLocal().lblOrderStatusSectionTitle);
         if(!getMyAccountPageThreadLocal().checkOrderItemExisting()){
             reporter.reportLogFail("No order items existing");
@@ -55,7 +53,9 @@ public class MA_TC04_OrderDetails extends BaseTest {
         String customerEDP = apiUserSessionData.get("customerEDP").toString();
         String customerNumber = getApiResponseThreadLocal().getUserDetailsFromCustomerEDP(customerEDP,accessToken).getCustomerNo();
 
-        if(!lsTestDevice.equalsIgnoreCase("Mobile")){
+        String lsTestDevice = System.getProperty("Device").trim();
+        String lsTestBrowser= System.getProperty("Browser").toLowerCase().trim();
+        if((lsTestDevice.equalsIgnoreCase("Desktop"))||(lsTestDevice.equalsIgnoreCase("Tablet")&&lsTestBrowser.contains("ios"))){
             reporter.reportLog("Verify customer information");
             String userCustomerNumber = getGlobalLoginPageThreadLocal().getCustomerNumberForLoggedInUser();
             if(customerNumber.equals(userCustomerNumber))

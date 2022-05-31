@@ -672,25 +672,25 @@ public class MyAccount extends BasePage {
 	@FindBy(xpath = "//input[@id='TSnwsl']")
 	public WebElement ckbMyNewsLettersTodayShowStopperNewsLetter;
 
-	@FindBy(xpath = "//label[@for='TSnwsl']")
+	@FindBy(xpath = "//input[@id='TSnwsl']/parent::td/following-sibling::td//label")
 	public WebElement lblMyNewsLettersTodayShowStopperNewsLetterTitle;
 
 	@FindBy(xpath = "//input[@id='SOnwsl']")
 	public WebElement ckbMyNewsLettersSpecialOfferAndEventNewsLetter;
 
-	@FindBy(xpath = "//label[@for='SOnwsl']")
+	@FindBy(xpath = "//input[@id='SOnwsl']/parent::td/following-sibling::td//label")
 	public WebElement lblMyNewsLettersSpecialOfferAndEventNewsLetterTitle;
 
 	@FindBy(xpath = "//input[@id='SAOnwsl']")
 	public WebElement ckbMyNewsLettersPreferredCustomerOffer;
 
-	@FindBy(xpath = "//label[@for='SAOnwsl']")
+	@FindBy(xpath = "//input[@id='SAOnwsl']/parent::td/following-sibling::td//label")
 	public WebElement lblMyNewsLettersPreferredCustomerOfferTitle;
 
 	@FindBy(xpath = "//input[@id='AUAnwsl']")
 	public WebElement ckbMyNewsLettersProductUpdatesAndAlerts;
 
-	@FindBy(xpath = "//label[@for='AUAnwsl']")
+	@FindBy(xpath = "//input[@id='AUAnwsl']/parent::td/following-sibling::td//label")
 	public WebElement lblMyNewsLettersProductUpdatesAndAlertsTitle;
 
 	@FindBy(xpath = "//input[@id='btnUpdatePrefs']")
@@ -818,7 +818,8 @@ public class MyAccount extends BasePage {
 	public void clickOnPaymentOptionSubMenuItemsOnMyAccount(String subMenu){
 		this.waitForPageToLoad();
 		String lsTestDevice = System.getProperty("Device").trim();
-		if(lsTestDevice.equalsIgnoreCase("Mobile")) {
+		String lsTestBrowser= System.getProperty("Browser").toLowerCase().trim();
+		if(lsTestDevice.equalsIgnoreCase("Mobile")||(lsTestDevice.equalsIgnoreCase("Tablet")&&lsTestBrowser.contains("android"))) {
 			if(this.btnPaymentOptionsHeadingTitle.getAttribute("class").contains("collapsed")){
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnPaymentOptionsHeadingTitle);
 				this.getReusableActionsInstance().clickIfAvailable(this.btnPaymentOptionsHeadingTitle);
@@ -1335,12 +1336,13 @@ public class MyAccount extends BasePage {
 	 */
 	public int openSubItemWindow(String lsHeaderItem,String lsSubItem,WebElement loadingIndicator){
 		String lsTestDevice = System.getProperty("Device").trim();
-		if(lsTestDevice.equalsIgnoreCase("Mobile")) {
+		String lsTestBrowser= System.getProperty("Browser").toLowerCase().trim();
+		if(lsTestDevice.equalsIgnoreCase("Mobile")||(lsTestDevice.equalsIgnoreCase("Tablet")&&lsTestBrowser.contains("android"))) {
 			WebElement headerButton=this.getHeaderItem(lsHeaderItem);
 			if(headerButton.getAttribute("class").contains("collapsed")){
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(headerButton);
 				this.getReusableActionsInstance().clickIfAvailable(headerButton);
-				this.getReusableActionsInstance().staticWait(2*this.getStaticWaitForApplication());
+				this.getReusableActionsInstance().staticWait(6*this.getStaticWaitForApplication());
 			}
 		}
 
@@ -2143,7 +2145,8 @@ public class MyAccount extends BasePage {
 		}
 
 		String lsTestDevice = System.getProperty("Device").trim();
-		if(!lsTestDevice.equalsIgnoreCase("Mobile")) {
+		String lsTestBrowser= System.getProperty("Browser").toLowerCase().trim();
+		if(lsTestDevice.equalsIgnoreCase("Mobile")||(lsTestDevice.equalsIgnoreCase("Tablet")&&lsTestBrowser.contains("android"))) {
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAccountSettingPassword);
 			if(!lblAccountSettingPassword.getText().isEmpty()){
 				reporter.reportLogPass("The Password in Account settings is displaying correctly");
@@ -3877,7 +3880,6 @@ public class MyAccount extends BasePage {
 	public void verifyNewsLettersChangingSubscriptionSuccessMessage(WebElement ckbLabel, WebElement ckbItem,boolean bCheck,String lsExpectedMessage){
 		this.getDriver().switchTo().frame(this.iFrameEmailSignup);
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(ckbItem);
 		if(bCheck){
 			if(!ckbItem.isSelected()){
 				this.getReusableActionsInstance().clickIfAvailable(ckbLabel);
@@ -3888,11 +3890,12 @@ public class MyAccount extends BasePage {
 				this.getReusableActionsInstance().clickIfAvailable(ckbLabel);
 			}
 		}
+
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnMyNewsLettersUpdatePrefs);
 		this.getReusableActionsInstance().clickIfAvailable(btnMyNewsLettersUpdatePrefs);
 
 		this.waitForCondition(Driver->{return this.lblSubscriptionSuccessMessage.isDisplayed();},10000);
-		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+		this.getReusableActionsInstance().staticWait(5*this.getStaticWaitForApplication());
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSubscriptionSuccessMessage);
 		String lsActualMessage=this.lblSubscriptionSuccessMessage.getText();
@@ -3904,6 +3907,7 @@ public class MyAccount extends BasePage {
 		}
 
 		this.navigateBack();
+		this.getDriver().switchTo().defaultContent();
 	}
 
 	/**
@@ -3954,7 +3958,7 @@ public class MyAccount extends BasePage {
 			alert.accept();
 
 			waitForCondition(Driver->{return this.lblSubscriptionSuccessMessage.isDisplayed();},10000);
-			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+			this.getReusableActionsInstance().staticWait(5*this.getStaticWaitForApplication());
 
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSubscriptionSuccessMessage);
 			String lsActualMessage=this.lblSubscriptionSuccessMessage.getText();
@@ -3966,6 +3970,7 @@ public class MyAccount extends BasePage {
 			}
 
 			this.navigateBack();
+			this.getDriver().switchTo().defaultContent();
 		}
 	}
 

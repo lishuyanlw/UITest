@@ -99,6 +99,57 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'pdImageSection__zoom')]//p[contains(@class,'pdImageSection__zoom--message')]")
 	public WebElement lblZoomImageMessage;
 
+//	//Product details
+//	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']/div[2]")
+//	public WebElement cntProductDetailsContainer;
+//
+//	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']")
+//	public WebElement lblProductName;
+//
+//	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@id='divBrandName']//a")
+//	public WebElement lnkBrandName;
+//
+//	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'product-name-sub')]//span[@id='lblItemNo']")
+//	public WebElement lblProductNumber;
+//
+//	//Review part
+//	//@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'product-name-sub')]//div[@id='panReviewSnippet']//div[@class='p-w-r'][last()]//section")
+//	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'product-name-sub')]//div[@id='panReviewSnippet']//div[@class='p-w-r'][last()]//section//div[contains(@class,'read-and-write')]")
+//	public WebElement productReviewSection;
+//
+//	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'product-name-sub')]//div[@id='panReviewSnippet']//div[@class='p-w-r'][last()]//section//div[contains(@class,'pr-star-v4')]")
+//	public List<WebElement> lstProductReviewStar;
+//
+//	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'product-name-sub')]//div[@id='panReviewSnippet']//div[@class='p-w-r'][last()]//section//span[contains(@class,'pr-accessible-text')]")
+//	public List<WebElement> lstProductReviewAccessibleText;
+//
+//	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'product-name-sub')]//div[@id='panReviewSnippet']//div[@class='p-w-r'][last()]//section")
+//	public WebElement lblProductReview;
+//
+//	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'product-name-sub')]//div[@id='panReviewSnippet']//div[@class='p-w-r']//a[@class='pr-snippet-review-count']")
+//	public WebElement lblProductReviewCount;
+//
+//	//Price part
+//	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@class='price-div']//span[@id='lblPriceLabel']")
+//	public WebElement lblProductPriceLabel;
+//
+//	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@class='price-div']//span[@id='lblCurrentPrice']")
+//	public WebElement lblProductNowPrice;
+//
+//	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@class='price-div']//span[@id='lblShowWasPrice']")
+//	public WebElement lblProductWasPrice;
+//
+//	//EasyPay part
+//	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@id='divEasyPayment']")
+//	public WebElement lblProductEasyPay;
+//
+//	//Shipping part
+//	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@class='savings-shipping']//*[@id='divSavings']")
+//	public WebElement lblProductSavings;
+//
+//	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@class='savings-shipping']//*[@class='shipping']")
+//	public WebElement lblProductShipping;
+
 	//Product details
 	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__brand-and-reviews']")
 	public WebElement cntProductDetailsBrandAndReviewContainer;
@@ -121,7 +172,7 @@ public class ProductDetailPage extends BasePage {
 
 	@FindBy(xpath = "//section[@class='pdp-description']//section[contains(@class,'pr-review-snippet-container')]")
 	public WebElement lblProductReview;
-	
+
 	@FindBy(xpath = "//section[@class='pdp-description']//a[@class='pr-snippet-review-count']")
 	public WebElement lblProductReviewCount;
 
@@ -154,7 +205,7 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@class='style-container']//div[@id='divStyleSwatch']//span[@class='style-lbl']")
 	public WebElement lblRadioProductStyleStatic;
 
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@class='style-container']//div[@id='divStyleSwatch']//span[@id='lblStyle']")
+	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__form__colours__selected']")
 	public WebElement lblRadioProductStyleTitle;
 
 	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@class='style-container']//div[@id='divStyleSwatch']//input")
@@ -233,6 +284,9 @@ public class ProductDetailPage extends BasePage {
 	//Size part
 	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@id='divAvailableSizes']//span[contains(@class,'size-lbl')]")
 	public WebElement lblSizeStatic;
+
+	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__form__sizes__selected']")
+	public WebElement lblSizeTitle;
 
 	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@id='divAvailableSizes']//select")
 	public WebElement selectSizeOption;
@@ -1725,6 +1779,7 @@ public class ProductDetailPage extends BasePage {
 	}
 
 	public boolean checkProductBrandExisting() {
+		//return this.checkChildElementExistingByAttribute(cntProductDetailsContainer, "id", "divBrandName");
 		return this.checkChildElementExistingByAttribute(cntProductDetailsBrandAndReviewContainer, "id", "divBrandName");
 	}
 
@@ -2400,23 +2455,15 @@ public class ProductDetailPage extends BasePage {
 		}
 
 		if(bStyle){
-			if(this.judgeStyleDisplayModeIsDropdownMenu()) {
-				Select selectStyle = new Select(this.selectProductStyle);
-				lsText=selectStyle.getFirstSelectedOption().getText();
-				map.put("productStyle",lsText);
-			}
-			else{
-				lsText=this.getElementInnerText(lblRadioProductStyleTitle);
-				map.put("productStyle",lsText);
-			}
+			lsText=this.getElementInnerText(lblRadioProductStyleTitle).split(":")[1].trim();
+			map.put("productStyle",lsText);
 		}
 		else{
 			map.put("productStyle",null);
 		}
 
 		if(bSize){
-			Select selectSize = new Select(this.selectSizeOption);
-			lsText=selectSize.getFirstSelectedOption().getText();
+			lsText=this.getElementInnerText(lblSizeTitle).split(":")[1].trim();
 			map.put("productSize",lsText);
 		}
 		else{

@@ -3,6 +3,8 @@ package com.tsc.test.tests.myAccount;
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.data.pojos.ConstantData;
 import com.tsc.pages.GlobalHeaderPage;
+import com.tsc.pages.MyAccount;
+import com.tsc.pages.MyAccount_Mobile;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 import org.openqa.selenium.WebElement;
@@ -10,6 +12,7 @@ import org.testng.annotations.Test;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.Locale;
 
 public class MA_TC01_LandingView extends BaseTest {
     /*
@@ -28,8 +31,6 @@ public class MA_TC01_LandingView extends BaseTest {
         //Login using valid username and password
         getGlobalLoginPageThreadLocal().Login(lblUserName, lblPassword);
 
-        String lsTestDevice = System.getProperty("Device").trim();
-
         String lnk_landingViewURL=TestDataHandler.constantData.getMyAccount().getLnk_myAccountLandingViewURL();
         String expectedURL=basePage.getBaseURL()+lnk_landingViewURL;
         if(basePage.URL().equalsIgnoreCase(expectedURL)){
@@ -39,7 +40,9 @@ public class MA_TC01_LandingView extends BaseTest {
             reporter.reportLogPass("The actual navigated URL:+"+basePage.URL()+" is not equal to expected one:"+expectedURL);
         }
 
-        if(!lsTestDevice.equalsIgnoreCase("Mobile")){
+        String lsTestDevice = System.getProperty("Device").trim();
+        String lsTestBrowser= System.getProperty("Browser").toLowerCase().trim();
+        if((lsTestDevice.equalsIgnoreCase("Desktop"))||(lsTestDevice.equalsIgnoreCase("Tablet")&&lsTestBrowser.contains("ios"))){
             reporter.reportLog("Verify customer information");
             //Fetching test data from test data file
             ConstantData.APIUserSessionParams apiUserSessionParams = TestDataHandler.constantData.getApiUserSessionParams();
