@@ -3281,19 +3281,19 @@ public class MyAccount extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPhoneNumber1);
 		inputAddOrEditAddressPhoneNumber1.clear();
 		inputAddOrEditAddressPhoneNumber1.sendKeys(lsPhoneNumber1);
-		this.getReusableActionsInstance().staticWait(300);
+		this.getReusableActionsInstance().staticWait(1000);
 
 		String lsPhoneNumber2=DataConverter.getSaltString(3,"numberType");
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPhoneNumber2);
 		inputAddOrEditAddressPhoneNumber2.clear();
 		inputAddOrEditAddressPhoneNumber2.sendKeys(lsPhoneNumber2);
-		this.getReusableActionsInstance().staticWait(300);
+		this.getReusableActionsInstance().staticWait(1000);
 
 		String lsPhoneNumber3=DataConverter.getSaltString(4,"numberType");
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPhoneNumber3);
 		inputAddOrEditAddressPhoneNumber3.clear();
 		inputAddOrEditAddressPhoneNumber3.sendKeys(lsPhoneNumber3);
-		this.getReusableActionsInstance().staticWait(300);
+		this.getReusableActionsInstance().staticWait(1000);
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressCity);
 		inputAddOrEditAddressCity.clear();
