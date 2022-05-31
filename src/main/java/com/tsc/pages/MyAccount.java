@@ -23,6 +23,9 @@ public class MyAccount extends BasePage {
 		super(driver);
 	}
 
+	@FindBy(xpath="//ng-component//*[@class='paymentPageTitle']")
+	public WebElement lblPageTitle;
+
 	//Navigation breadcrumb
 	@FindBy(xpath = "//ng-component//div[contains(@class,'go-back')]//ol[@class='breadcrumb']//li//a")
 	public List<WebElement> lstNavigationCrumbList;
@@ -307,7 +310,6 @@ public class MyAccount extends BasePage {
 
 	@FindBy(xpath = "//ng-component//div[@id='panel-password']//input[@id='password']/parent::div/following-sibling::div[contains(@class,'text-danger')]")
 	public List<WebElement> lstChangePasswordErrorMessage;
-	////////////////////////
 
 	@FindBy(xpath = "//ng-component//div[@id='heading-securityquestion']//div[contains(@class,'item-title')]")
 	public WebElement cntAccountSettingSecurityQuestionHeadingContainer;
@@ -351,7 +353,6 @@ public class MyAccount extends BasePage {
 
 	@FindBy(xpath = "//ng-component//input[@name='answerError']")
 	public WebElement lblChangeSecurityQuestionsErrorMessage;
-	////////////////////////////////
 
 	//PAYMENT OPTIONS - ADD NEW CREDIT CARD
 	@FindBy(xpath="//div[@data-target='#paymentOptionsLinks']")
@@ -416,6 +417,9 @@ public class MyAccount extends BasePage {
 	public List<WebElement> lstCreditCardsPresent;
 	//.//div[contains(@class,'margin-top-md')]//div[contains(@class,'smallRightPadding')]/a[contains(@class,'negative')] - Edit Button
 
+	@FindBy(xpath="//div[@class='bigPaymentDiv']/div[contains(@class,'col')]")
+	public List<WebElement> lstTotalCardsPresent;
+
 	@FindBy(xpath="//button[@id='addCardBtn']")
 	public WebElement btnAddNewCreditCard;
 
@@ -460,7 +464,12 @@ public class MyAccount extends BasePage {
 	@FindBy(xpath = "//ng-component//div[normalize-space(.)='Shipping Address']")
 	public WebElement lblShippingAddressSectionTitle;
 
+	/**
 	@FindBy(xpath = "//ng-component//div[contains(@class,'bigAddressDiv') and not(contains(@class,'billing'))]//div[contains(@class,'tab-bottom-row')]")
+	public List<WebElement> lstShippingAddressContainer;
+	*/
+
+	@FindBy(xpath = "//ng-component//div[contains(@class,'bigAddressDiv') and not(contains(@class,'billing'))]//div[contains(@class,'desktop-bottom-row')]")
 	public List<WebElement> lstShippingAddressContainer;
 
 	public By byShippingAddressTitle=By.xpath(".//div[contains(@class,'defaultDiv')]");
@@ -748,7 +757,8 @@ public class MyAccount extends BasePage {
 			final int tempIndex=i;
 			if(!this.lstOrderServiceItemTitleLink.get(i).getAttribute("class").isEmpty()){
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(lstOrderServiceItemTitleLink.get(i));
-				this.getReusableActionsInstance().clickIfAvailable(lstOrderServiceItemTitleLink.get(i));
+				this.clickWebElementUsingJS(lstOrderServiceItemTitleLink.get(i));
+				//this.getReusableActionsInstance().clickIfAvailable(lstOrderServiceItemTitleLink.get(i));
 				this.waitForCondition(Driver->{
 					return lstOrderServiceItemTitleLink.get(tempIndex).getAttribute("class").isEmpty();},20000);
 				this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
@@ -841,7 +851,12 @@ public class MyAccount extends BasePage {
 				this.btnCancelAddCreditCardForNewCreditCard.isDisplayed();},12000);
 		else if(subMenu.toLowerCase().contains("manage")){
 			this.waitForPageToLoad();
-			waitForCondition(Driver->{return this.lstCreditCardsPresent.size()>=0;},6000);
+			String pageTitle = this.lblPageTitle.getText();
+			if(pageTitle.toLowerCase().contains("manage"))
+				waitForCondition(Driver->{return this.lstCreditCardsPresent.size()>=0;},6000);
+			else if(pageTitle.toLowerCase().contains("add"))
+				waitForCondition(Driver->{return (this.btnCancelAddCreditCardForNewCreditCard.isEnabled() &&
+					this.btnCancelAddCreditCardForNewCreditCard.isDisplayed());},6000);
 		}else{
 			this.waitForPageToLoad();
 			this.waitForCondition(Driver->{return this.lblGiftCardPageTitle.getText().toLowerCase().contains("gift");},6000);
@@ -1027,7 +1042,7 @@ public class MyAccount extends BasePage {
 	 */
 	public boolean verifyCardNumberAddedForUser(WebElement webElement, String cardNumber, String cardType){
 		String inputLastDigitsOfCard = null;
-		String lastDigitsOfCard = webElement.getText().split(" ")[2];
+		String lastDigitsOfCard = webElement.getText().split("\\s+")[2];
 		/**
 		if(cardType.equalsIgnoreCase("visa"))
 			inputLastDigitsOfCard = cardNumber.substring(cardNumber.length()-3);
@@ -1141,7 +1156,8 @@ public class MyAccount extends BasePage {
 		//Verification that card is removed
 		//Applying static wait for 5 seconds as application takes time to refresh and there is no unique element for wait for condition to be used
 		getReusableActionsInstance().staticWait(5000);
-		int afterDeleteCreditCardsPresent = lstCreditCardsPresent.size();
+		//Subtracting 1 from size as we are including 'Add Credit Card' xpath as well for decreasing execution time
+		int afterDeleteCreditCardsPresent = lstTotalCardsPresent.size()-1;
 		boolean flag = removeCard == true ? afterDeleteCreditCardsPresent == beforeDeleteCreditCardsPresent-1 : afterDeleteCreditCardsPresent == beforeDeleteCreditCardsPresent;
 		if(flag)
 			reporter.reportLogPass("Credit Card: "+cardNumber+" of type: "+cardType+" is removed from user");
@@ -2097,7 +2113,8 @@ public class MyAccount extends BasePage {
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 			lsText=item.getText().trim();
 			if(!lsText.isEmpty()){
-				reporter.reportLogPass("The content of '"+lsText+"' is not empty");
+				//reporter.reportLogPass("The content of '"+lsText+"' is not empty");
+				reporter.reportLogPass("The content is not empty as expected!");
 			}
 			else{
 				reporter.reportLogFailWithScreenshot("The content of '"+lsText+"' is empty");
@@ -2507,15 +2524,18 @@ public class MyAccount extends BasePage {
 			lsAnswer="Answer";
 		}
 		inputChangeSecurityQuestionSectionAnswer.clear();
+		this.getReusableActionsInstance().staticWait(2*this.getStaticWaitForApplication());
 		inputChangeSecurityQuestionSectionAnswer.sendKeys(lsAnswer);
 
 		if(bSubmit){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnChangeSecurityQuestionSubmit);
+			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 			this.getReusableActionsInstance().clickIfAvailable(btnChangeSecurityQuestionSubmit);
 		}
 		else{
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnChangeSecurityQuestionCancel);
-			this.getReusableActionsInstance().clickIfAvailable(btnChangeSecurityQuestionCancel);
+			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+			this.clickWebElementUsingJS(btnChangeSecurityQuestionCancel);
 		}
 		this.waitForPageToLoad();
 		//Keep it for scrolling window
@@ -2621,7 +2641,10 @@ public class MyAccount extends BasePage {
 	}
 
 	public boolean verifyMinimumOneCardIsPresentForUser(){
-		if(this.lstCreditCardsPresent.size()==0)
+		String titleText = this.lblPageTitle.getText();
+		if(titleText.toLowerCase().contains("manage") && this.lstCreditCardsPresent.size()>0)
+			return true;
+		if(titleText.toLowerCase().contains("add"))
 			return false;
 		return true;
 	}
@@ -2935,12 +2958,14 @@ public class MyAccount extends BasePage {
 	 */
 	public void closeAddOrEditAddressWindow(boolean bSave){
 		if(bSave){
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnSave);
-			btnSave.click();
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSave);
+			//btnSave.click();
+			this.clickElement(this.btnSave);
 		}
 		else{
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnCancel);
-			btnCancel.click();
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnCancel);
+			this.clickElement(this.btnCancel);
+			//btnCancel.click();
 		}
 		this.waitForCondition(Driver->{return this.lblShippingAddressSectionTitle.isDisplayed();},40000);
 		this.getReusableActionsInstance().staticWait(5*getStaticWaitForApplication());
@@ -3122,7 +3147,8 @@ public class MyAccount extends BasePage {
 			Random rand = new Random();
 			int randomNumber = rand.nextInt(optionSize-2);
 
-			selectedIndexInAutoSearchDropdownMenu=randomNumber;
+			//selectedIndexInAutoSearchDropdownMenu=randomNumber;
+			selectedIndexInAutoSearchDropdownMenu=0;
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstAddOrEditAddressAutoSearchDropdownItems.get(selectedIndexInAutoSearchDropdownMenu));
@@ -3201,7 +3227,9 @@ public class MyAccount extends BasePage {
 					}
 
 					this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
-					this.getReusableActionsInstance().clickIfAvailable(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
+					//this.getReusableActionsInstance().clickIfAvailable(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
+					this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+					this.clickWebElementUsingJS(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
 					this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: none;");},20000);
 					this.getReusableActionsInstance().staticWait(3*this.getStaticWaitForApplication());
 					break;
@@ -3214,6 +3242,7 @@ public class MyAccount extends BasePage {
 		if(lsAuoSearchKeyword!=null){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressLine1);
 			inputAddOrEditAddressLine1.clear();
+			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 			String[] data = lsAuoSearchKeyword.codePoints().mapToObj(cp->new String(Character.toChars(cp))).toArray(size->new String[size]);
 			for(String inputText:data){
 				inputAddOrEditAddressLine1.sendKeys(inputText);
@@ -3229,13 +3258,18 @@ public class MyAccount extends BasePage {
 			else{
 				reporter.reportLogPassWithScreenshot("Unable to get dropdown auto search results");
 			}
-
+			/**
 			int optionSize=this.lstAddOrEditAddressAutoSearchDropdownItems.size();
 			Random rand = new Random();
 			int randomNumber = rand.nextInt(optionSize-2);
 
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstAddOrEditAddressAutoSearchDropdownItems.get(randomNumber));
 			this.getReusableActionsInstance().clickIfAvailable(this.lstAddOrEditAddressAutoSearchDropdownItems.get(randomNumber));
+			 */
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
+			//this.getReusableActionsInstance().clickIfAvailable(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
+			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+			this.clickWebElementUsingJS(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
 			this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: none;");},20000);
 			this.getReusableActionsInstance().staticWait(3*this.getStaticWaitForApplication());
 
@@ -3267,19 +3301,19 @@ public class MyAccount extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPhoneNumber1);
 		inputAddOrEditAddressPhoneNumber1.clear();
 		inputAddOrEditAddressPhoneNumber1.sendKeys(lsPhoneNumber1);
-		this.getReusableActionsInstance().staticWait(300);
+		this.getReusableActionsInstance().staticWait(1000);
 
 		String lsPhoneNumber2=DataConverter.getSaltString(3,"numberType");
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPhoneNumber2);
 		inputAddOrEditAddressPhoneNumber2.clear();
 		inputAddOrEditAddressPhoneNumber2.sendKeys(lsPhoneNumber2);
-		this.getReusableActionsInstance().staticWait(300);
+		this.getReusableActionsInstance().staticWait(1000);
 
 		String lsPhoneNumber3=DataConverter.getSaltString(4,"numberType");
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPhoneNumber3);
 		inputAddOrEditAddressPhoneNumber3.clear();
 		inputAddOrEditAddressPhoneNumber3.sendKeys(lsPhoneNumber3);
-		this.getReusableActionsInstance().staticWait(300);
+		this.getReusableActionsInstance().staticWait(1000);
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressCity);
 		inputAddOrEditAddressCity.clear();

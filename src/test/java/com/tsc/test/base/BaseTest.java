@@ -168,23 +168,20 @@ public class BaseTest {
 			productDetailPageThreadLocal.set(new ProductDetailPage_Tablet(getDriver()));
 		}
 
-		if(System.getProperty("Browser").contains("ios")) {
+		if(System.getProperty("Browser").contains("ios") ||
+				(System.getProperty("chromeMobileDevice")!=null
+						&& System.getProperty("chromeMobileDevice").contains("iPad"))) {
 			loginPageThreadLocal.set(new SignInPage(getDriver()));
+			myAccountPageThreadLocal.set(new MyAccount(getDriver()));
 		}
 		else{
 			loginPageThreadLocal.set(new SignInPage_Mobile(getDriver()));
+			myAccountPageThreadLocal.set(new MyAccount_Mobile(getDriver()));
 		}
 
 		reporter = new ExtentTestManager(getDriver());
 		apiResponseThreadLocal.set(new ApiResponse());
 		shoppingCartThreadLocal.set(new ShoppingCart(getDriver()));
-		if(System.getProperty("Browser").contains("ios")) {
-			myAccountPageThreadLocal.set(new MyAccount(getDriver()));
-		}
-		else{
-			myAccountPageThreadLocal.set(new MyAccount_Mobile(getDriver()));
-		}
-
 	}
 
 
@@ -343,12 +340,12 @@ public class BaseTest {
 	}
 
 	@AfterMethod(alwaysRun = true)
-	public void afterTest() throws IOException, org.json.simple.parser.ParseException, InterruptedException, ParseException {
+	public void afterTest() throws IOException, InterruptedException {
 		if (getDriver() != null) {
 			//addPlaceOrder();
 			//(new BasePage(this.getDriver())).deleteSessionStorage();
-			closeSession();
 		}
+		closeSession();
 	}
 
 	public void validateText(String strActualText, List<String> listExpectedText, String validationMsg) {
@@ -474,17 +471,17 @@ public class BaseTest {
 		Response responseInitial=cartAPI.getAccountCartContentWithCustomerEDP(customerEDP,access_token);
 		AccountCartResponse accountCartInitial = JsonParser.getResponseObject(responseInitial.asString(), new TypeReference<AccountCartResponse>() {});
 		String GuidId=accountCartInitial.getCartGuid();
-
+		/**
 		Response responseDelete=cartAPI.deleteCartItemWithGuid(access_token, GuidId,4);
-//		reporter.reportLog("responseDelete: "+responseDelete.asString());
+		reporter.reportLog("responseDelete: "+responseDelete.asString());
 
 		//ProductEDP Number that will be added to cart for user
 		Map<String,Object> map=cartAPI.addItemsInExistingCart(Integer.parseInt(customerEDP), access_token, GuidId,null);
 		Response userCartResponse=(Response)map.get("Response");
-
+		*/
 		Response responseReview=orderAPI.getOrderReview(customerEDP,access_token);
 		AccountCartResponse accountCartReview = JsonParser.getResponseObject(responseReview.asString(), new TypeReference<AccountCartResponse>() {});
-//		reporter.reportLog("Review: "+responseReview.asString());
+		//reporter.reportLog("Review: "+responseReview.asString());
 		List<Long> relatedCartIdsList=accountCartReview.getRelatedCartIds();
 
 		Thread.sleep(2000);

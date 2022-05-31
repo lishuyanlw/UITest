@@ -46,12 +46,12 @@ public class MA_TC10_Payment_Options_Manage_Credit_Card extends BaseTest {
         Map<String,String> cardData = getMyAccountPageThreadLocal().editAndVerifyCreditCardAttachedToUser(null,null,null,null,creditCardData,false);
 
         /**
-         Scenario for verifying Remove functionality on Manage Credit Card
+         Scenario for verifying Cancel Remove functionality on Manage Credit Card
          */
         reporter.reportLog("Scenario for verifying Cancel Remove functionality on Manage Credit Card");
         getMyAccountPageThreadLocal().removeCreditCardFromUser(cardData.get("cardType"),cardData.get("cardNumber"),cardData.get("expirationMonthAndYear"),false);
         /**
-         Scenario for verifying Cancel Remove functionality on Manage Credit Card
+         Scenario for verifying Remove functionality on Manage Credit Card
          */
         reporter.reportLog("Scenario for verifying Remove functionality on Manage Credit Card");
         getMyAccountPageThreadLocal().removeCreditCardFromUser(cardData.get("cardType"),cardData.get("cardNumber"),cardData.get("expirationMonthAndYear"),true);

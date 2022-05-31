@@ -273,6 +273,7 @@ public class SignInPage extends BasePage {
 	 * @author Wei.Li
 	 */
 	public boolean SignOut() {
+		this.waitForPageToLoad();
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInMainMenu);
 		getReusableActionsInstance().scrollToElement(this.btnSignInMainMenu);
 		String lsUserMsg=this.btnSignInMainMenu.getText().trim();
@@ -668,6 +669,14 @@ public class SignInPage extends BasePage {
 			else
 				reporter.reportLogFailWithScreenshot("Static Text displayed: "+staticText+" is not as expected: Checkout without creating an account");
 		}
+	}
+
+	/**
+	 * This function verifies SignOut Button visibility on page
+	 */
+	public boolean verifySignOutButtonVisibilityOnPage(){
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignOut);
+		return getReusableActionsInstance().isElementVisible(this.btnSignOut);
 	}
 
 }

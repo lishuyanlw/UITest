@@ -206,7 +206,23 @@ public class MyAccount_Mobile extends MyAccount {
 		super.clickOnPaymentOptionSubMenuItemsOnMyAccount(subMenu);
 	}
 
+	@Override
+	public int openSubItemWindow(String lsHeaderItem,String lsSubItem,WebElement loadingIndicator){
+		String lsTestDevice = System.getProperty("Device").trim();
+		if(lsTestDevice.equalsIgnoreCase("Mobile") ||
+				(System.getProperty("Device").contains("Tablet") && System.getProperty("Browser").contains("android")) ||
+				(System.getProperty("Browser").equalsIgnoreCase("chromemobile") &&
+						System.getProperty("Device").contains("Tablet") &&
+						!System.getProperty("chromeMobileDevice").contains("iPad"))) {
+			WebElement headerButton=this.getHeaderItem(lsHeaderItem);
+			if(headerButton.getAttribute("class").contains("collapsed")){
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(headerButton);
+				this.getReusableActionsInstance().clickIfAvailable(headerButton);
+				this.getReusableActionsInstance().staticWait(2*this.getStaticWaitForApplication());
+			}
+		}
 
-
+		return super.openSubItemWindow(lsHeaderItem,lsSubItem,loadingIndicator);
+	}
 
 }

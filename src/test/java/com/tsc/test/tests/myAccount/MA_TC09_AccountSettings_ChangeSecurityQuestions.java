@@ -1,23 +1,23 @@
 package com.tsc.test.tests.myAccount;
 
+import com.tsc.data.Handler.TestDataHandler;
+import com.tsc.data.pojos.ConstantData;
+import com.tsc.pages.base.BasePage;
+import com.tsc.test.base.BaseTest;
+import org.openqa.selenium.support.ui.Select;
+import org.testng.annotations.Test;
+import java.io.IOException;
+import java.util.Map;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.tsc.api.apiBuilder.AccountAPI;
 import com.tsc.api.pojo.AccountResponse;
 import com.tsc.api.util.JsonParser;
-import com.tsc.data.Handler.TestDataHandler;
-import com.tsc.data.pojos.ConstantData;
 import com.tsc.pages.GlobalHeaderPage;
-import com.tsc.pages.base.BasePage;
-import com.tsc.test.base.BaseTest;
 import io.restassured.response.Response;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.Select;
-import org.testng.annotations.Test;
-
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class MA_TC09_AccountSettings_ChangeSecurityQuestions extends BaseTest {
     /*
@@ -32,8 +32,8 @@ public class MA_TC09_AccountSettings_ChangeSecurityQuestions extends BaseTest {
         String lblPassword = TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
         ConstantData.APIUserSessionParams apiUserSessionParams = TestDataHandler.constantData.getApiUserSessionParams();
         apiUserSessionData = apiResponseThreadLocal.get().getApiUserSessionData(lblUserName,lblPassword,apiUserSessionParams.getLbl_grantType(),apiUserSessionParams.getLbl_apiKey());
+        /**
         String accessToken = apiUserSessionData.get("access_token").toString();
-
         AccountAPI accountAPI=new AccountAPI();
         Map<String,Object> userData= new HashMap<>();
         userData.put("Password","testMail123");
@@ -57,6 +57,42 @@ public class MA_TC09_AccountSettings_ChangeSecurityQuestions extends BaseTest {
 
         BasePage basePage=new BasePage(this.getDriver());
 
+        //if(!lsTestDevice.equalsIgnoreCase("Mobile")){
+        reporter.reportLog("Verify customer information");
+        String userCustomerNumber = getGlobalLoginPageThreadLocal().getCustomerNumberForLoggedInUser();
+        if(customerNumber.equals(userCustomerNumber))
+            getReporter().reportLogPass("User is successfully logged in with customer no: "+userCustomerNumber);
+        else
+            getReporter().reportLogFailWithScreenshot("User is not logged in with expected customer no: "+userCustomerNumber+" but with other customer no: "+customerNumber);
+
+        boolean value = getGlobalLoginPageThreadLocal().verifySignOutButtonVisibilityOnPage();
+        if(value)
+            reporter.reportLogPass("SignOut button is displaying correctly");
+        else
+            reporter.reportLogFailWithScreenshot("SignOut button is not displaying correctly");
+        //}
+        */
+
+        BasePage basePage=new BasePage(this.getDriver());
+        String lsTestDevice = System.getProperty("Device").trim();
+        getGlobalLoginPageThreadLocal().Login(lblUserName, lblPassword);
+
+        reporter.reportLog("Verify customer information");
+        String accessToken = apiUserSessionData.get("access_token").toString();
+        String customerEDP = apiUserSessionData.get("customerEDP").toString();
+        String customerNumber = getApiResponseThreadLocal().getUserDetailsFromCustomerEDP(customerEDP,accessToken).getCustomerNo();
+        String userCustomerNumber = getGlobalLoginPageThreadLocal().getCustomerNumberForLoggedInUser();
+        if(customerNumber.equals(userCustomerNumber))
+            getReporter().reportLogPass("User is successfully logged in with customer no: "+userCustomerNumber);
+        else
+            getReporter().reportLogFailWithScreenshot("User is not logged in with expected customer no: "+userCustomerNumber+" but with other customer no: "+customerNumber);
+
+        boolean value = getGlobalLoginPageThreadLocal().verifySignOutButtonVisibilityOnPage();
+        if(value)
+            reporter.reportLogPass("SignOut button is displaying correctly");
+        else
+            reporter.reportLogFailWithScreenshot("SignOut button is not displaying correctly");
+
         reporter.reportLog("Verify Order status URL");
         getMyAccountPageThreadLocal().openSubItemWindow("Your Profile","Security Questions", getMyAccountPageThreadLocal().lblAccountSettingSectionTitle);
 
@@ -67,24 +103,6 @@ public class MA_TC09_AccountSettings_ChangeSecurityQuestions extends BaseTest {
         }
         else{
             reporter.reportLogPass("The actual navigated URL:+"+basePage.URL()+" is not equal to expected one:"+expectedURL);
-        }
-
-        String lsTestDevice = System.getProperty("Device").trim();
-        String lsTestBrowser= System.getProperty("Browser").toLowerCase().trim();
-        if((lsTestDevice.equalsIgnoreCase("Desktop"))||(lsTestDevice.equalsIgnoreCase("Tablet")&&lsTestBrowser.contains("ios"))){
-            reporter.reportLog("Verify customer information");
-            String userCustomerNumber = getGlobalLoginPageThreadLocal().getCustomerNumberForLoggedInUser();
-            if(customerNumber.equals(userCustomerNumber))
-                getReporter().reportLogPass("User is successfully logged in with customer no: "+userCustomerNumber);
-            else
-                getReporter().reportLogFailWithScreenshot("User is not logged in with expected customer no: "+userCustomerNumber+" but with other customer no: "+customerNumber);
-
-            if(basePage.getReusableActionsInstance().isElementVisible(getGlobalLoginPageThreadLocal().btnSignOut)){
-                reporter.reportLogPass("SignOut button is displaying correctly");
-            }
-            else{
-                reporter.reportLogFailWithScreenshot("SignOut button is not displaying correctly");
-            }
         }
 
         basePage.getReusableActionsInstance().javascriptScrollByVisibleElement(getMyAccountPageThreadLocal().lblAccountSettingSectionTitle);
@@ -100,6 +118,7 @@ public class MA_TC09_AccountSettings_ChangeSecurityQuestions extends BaseTest {
         reporter.reportLog("Verify error message");
         getMyAccountPageThreadLocal().verifyChangeSecurityQuestionErrorMessage();
 
+        /**
         reporter.reportLog("Verify clicking Cancel button");
         Map<String,Object> map=getMyAccountPageThreadLocal().changeSecurityQuestionFunctionInAccountSettingsSection(false);
         getMyAccountPageThreadLocal().openChangeSecuritySection();
@@ -122,14 +141,15 @@ public class MA_TC09_AccountSettings_ChangeSecurityQuestions extends BaseTest {
                 reporter.reportLogFailWithScreenshot("There is no selected security question by clicking Cancel button is not displaying correctly");
             }
         }
+        */
 
         reporter.reportLog("Verify clicking Submit button");
-        map=getMyAccountPageThreadLocal().changeSecurityQuestionFunctionInAccountSettingsSection(true);
+        Map<String,Object> map=getMyAccountPageThreadLocal().changeSecurityQuestionFunctionInAccountSettingsSection(true);
         basePage.getReusableActionsInstance().staticWait(basePage.getStaticWaitForApplication());
         getMyAccountPageThreadLocal().openChangeSecuritySection();
         basePage.getReusableActionsInstance().javascriptScrollByVisibleElement(getMyAccountPageThreadLocal().selectChangeSecurityQuestionSectionQuestion);
-        select=new Select(getMyAccountPageThreadLocal().selectChangeSecurityQuestionSectionQuestion);
-        selectedValue= Integer.parseInt(select.getFirstSelectedOption().getAttribute("value"))+1;
+        Select select=new Select(getMyAccountPageThreadLocal().selectChangeSecurityQuestionSectionQuestion);
+        int selectedValue= Integer.parseInt(select.getFirstSelectedOption().getAttribute("value"))+1;
         int expectedSelectedValue= Integer.parseInt(map.get("SelectedIndex").toString());
         if(selectedValue==expectedSelectedValue){
             reporter.reportLogPass("The security question is displaying correctly");
@@ -137,7 +157,5 @@ public class MA_TC09_AccountSettings_ChangeSecurityQuestions extends BaseTest {
         else{
             reporter.reportLogFailWithScreenshot("The displayed security question value:"+selectedValue+" is not the same as the expected:"+expectedSelectedValue);
         }
-
-
     }
 }

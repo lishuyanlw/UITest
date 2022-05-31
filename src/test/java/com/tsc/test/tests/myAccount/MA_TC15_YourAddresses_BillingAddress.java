@@ -48,6 +48,20 @@ public class MA_TC15_YourAddresses_BillingAddress extends BaseTest {
         //Login using valid username and password
         getGlobalLoginPageThreadLocal().Login(lblUserName, lblPassword);
 
+        reporter.reportLog("Verify customer information");
+        String customerNumber = accountResponse.getCustomerNo();
+        String userCustomerNumber = getGlobalLoginPageThreadLocal().getCustomerNumberForLoggedInUser();
+        if (customerNumber.equals(userCustomerNumber))
+            getReporter().reportLogPass("User is successfully logged in with customer no: " + userCustomerNumber);
+        else
+            getReporter().reportLogFailWithScreenshot("User is not logged in with expected customer no: " + userCustomerNumber + " but with other customer no: " + customerNumber);
+
+        boolean value = getGlobalLoginPageThreadLocal().verifySignOutButtonVisibilityOnPage();
+        if(value)
+            reporter.reportLogPass("SignOut button is displaying correctly");
+        else
+            reporter.reportLogFailWithScreenshot("SignOut button is not displaying correctly");
+
         String lsTestDevice = System.getProperty("Device").trim();
         if(lsTestDevice.equalsIgnoreCase("Desktop")) {
             WebElement item=(new GlobalHeaderPage(this.getDriver())).Signinlnk;
@@ -69,23 +83,6 @@ public class MA_TC15_YourAddresses_BillingAddress extends BaseTest {
             reporter.reportLogPass("The navigated URL is equal to expected one:" + expectedURL);
         } else {
             reporter.reportLogPass("The actual navigated URL:+" + basePage.URL() + " is not equal to expected one:" + expectedURL);
-        }
-
-        String lsTestBrowser= System.getProperty("Browser").toLowerCase().trim();
-        if((lsTestDevice.equalsIgnoreCase("Desktop"))||(lsTestDevice.equalsIgnoreCase("Tablet")&&lsTestBrowser.contains("ios"))){
-            reporter.reportLog("Verify customer information");
-            String customerNumber = accountResponse.getCustomerNo();
-            String userCustomerNumber = getGlobalLoginPageThreadLocal().getCustomerNumberForLoggedInUser();
-            if (customerNumber.equals(userCustomerNumber))
-                getReporter().reportLogPass("User is successfully logged in with customer no: " + userCustomerNumber);
-            else
-                getReporter().reportLogFailWithScreenshot("User is not logged in with expected customer no: " + userCustomerNumber + " but with other customer no: " + customerNumber);
-
-            if (basePage.getReusableActionsInstance().isElementVisible(getGlobalLoginPageThreadLocal().btnSignOut)) {
-                reporter.reportLogPass("SignOut button is displaying correctly");
-            } else {
-                reporter.reportLogFailWithScreenshot("SignOut button is not displaying correctly");
-            }
         }
 
         reporter.reportLog("Verify address content");
@@ -198,9 +195,11 @@ public class MA_TC15_YourAddresses_BillingAddress extends BaseTest {
         String lsFirstName=mapAfterEdit.get("firstName");
         String lsLastName=mapAfterEdit.get("lastName");
         String lsAddress=mapAfterEdit.get("address");
+        /**
         reporter.reportLog(lsFirstName+":"+lsFirstNameEdit);
         reporter.reportLog(lsLastName+":"+lsLastNameEdit);
         reporter.reportLog(lsAddress+":"+lsAddressEdit);
+         */
         if(lsFirstName.equalsIgnoreCase(lsFirstNameEdit)&&lsLastName.equalsIgnoreCase(lsLastNameEdit)&&
                 lsAddress.equalsIgnoreCase(lsAddressEdit)){
             reporter.reportLogPass("Editing address successfully");
@@ -208,6 +207,5 @@ public class MA_TC15_YourAddresses_BillingAddress extends BaseTest {
         else{
             reporter.reportLogFail("Editing address failed");
         }
-
     }
 }
