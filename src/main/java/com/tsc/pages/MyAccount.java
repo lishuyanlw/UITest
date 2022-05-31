@@ -1229,6 +1229,7 @@ public class MyAccount extends BasePage {
 	public Map<String,String> getFirstCreditCardDetailsAndSelect() throws ParseException {
 		Map<String,String> creditCardDisplayedData = new HashMap<>();
 		String updatedMonth=null,updatedYear = null,actualExpirationMonth=null,actualExpirationYear=null;
+		this.waitForCondition(Driver->{return lstCreditCardsPresent.size()>0;},10000);
 		//Fetching Card Details to be edited to be used for verification
 		WebElement cardTypeWebElement = lstCreditCardsPresent.get(0).findElement(By.xpath(".//div[contains(@class,'margin-top-md')]//div[contains(@class,'zeroRightPadding')]//span[@class='table-cell ']/label"));
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(cardTypeWebElement);
@@ -3152,6 +3153,14 @@ public class MyAccount extends BasePage {
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstAddOrEditAddressAutoSearchDropdownItems.get(selectedIndexInAutoSearchDropdownMenu));
+		try{
+			this.getReusableActionsInstance().clickIfAvailable(this.lstAddOrEditAddressAutoSearchDropdownItems.get(selectedIndexInAutoSearchDropdownMenu));
+			this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: none;");},20000);
+		}
+		catch(Exception e){
+			this.getReusableActionsInstance().clickIfAvailable(this.lstAddOrEditAddressAutoSearchDropdownItems.get(selectedIndexInAutoSearchDropdownMenu));
+			this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: none;");},20000);
+		}
 		this.getReusableActionsInstance().clickIfAvailable(this.lstAddOrEditAddressAutoSearchDropdownItems.get(selectedIndexInAutoSearchDropdownMenu));
 		this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: none;");},20000);
 		this.getReusableActionsInstance().staticWait(3*this.getStaticWaitForApplication());
