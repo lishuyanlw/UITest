@@ -754,7 +754,8 @@ public class MyAccount extends BasePage {
 			final int tempIndex=i;
 			if(!this.lstOrderServiceItemTitleLink.get(i).getAttribute("class").isEmpty()){
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(lstOrderServiceItemTitleLink.get(i));
-				this.getReusableActionsInstance().clickIfAvailable(lstOrderServiceItemTitleLink.get(i));
+				this.clickWebElementUsingJS(lstOrderServiceItemTitleLink.get(i));
+				//this.getReusableActionsInstance().clickIfAvailable(lstOrderServiceItemTitleLink.get(i));
 				this.waitForCondition(Driver->{
 					return lstOrderServiceItemTitleLink.get(tempIndex).getAttribute("class").isEmpty();},20000);
 				this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());

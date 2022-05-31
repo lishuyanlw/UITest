@@ -273,6 +273,7 @@ public class SignInPage extends BasePage {
 	 * @author Wei.Li
 	 */
 	public boolean SignOut() {
+		this.waitForPageToLoad();
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInMainMenu);
 		getReusableActionsInstance().scrollToElement(this.btnSignInMainMenu);
 		String lsUserMsg=this.btnSignInMainMenu.getText().trim();
