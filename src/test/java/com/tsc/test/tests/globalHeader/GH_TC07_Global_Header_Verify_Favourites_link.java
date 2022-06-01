@@ -18,7 +18,7 @@ public class GH_TC07_Global_Header_Verify_Favourites_link extends BaseTest {
 		//Declaring test variables and fetching data from data file to be used in test
 		String urlFavoritesLandingpageLoggedInUser=null;
 		String lsUserName=TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
-		String lsPassword=TestDataHandler.constantData.getApiAppSessionParams().getLbl_password();
+		String lsPassword=TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
 
 		Map<String, List<String>> headerLinks = TestDataHandler.constantData.headerSection.getLst_HeaderNameAndLinksMap();
 		String urlFavoritesLandingpageAnonymousUser=TestDataHandler.constantData.getHeaderSection().getlbl_SignInLandingPage();

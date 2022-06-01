@@ -18,7 +18,7 @@ public class GF_TC06_VerifyLinksAndPageObjectsForBrandInAboutTSC extends BaseTes
      * CER 196
      * CER 197
      */
-    @Test(groups={"Home","Regression","GlobalFooter"})
+    @Test(groups={"Regression","GlobalFooter"})
     public void GF_TC06_VerifyLinksAndPageObjectsForBrandInAboutTSC() {
         getGlobalFooterPageThreadLocal().closePopupDialog();
         BasePage basePage = new BasePage(this.getDriver());
