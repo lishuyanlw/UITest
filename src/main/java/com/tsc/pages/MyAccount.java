@@ -3132,7 +3132,8 @@ public class MyAccount extends BasePage {
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstAddOrEditAddressAutoSearchDropdownItems.get(selectedIndexInAutoSearchDropdownMenu));
-		this.getReusableActionsInstance().clickIfAvailable(this.lstAddOrEditAddressAutoSearchDropdownItems.get(selectedIndexInAutoSearchDropdownMenu));
+		this.clickWebElementUsingJS(this.lstAddOrEditAddressAutoSearchDropdownItems.get(selectedIndexInAutoSearchDropdownMenu));
+		//this.getReusableActionsInstance().clickIfAvailable(this.lstAddOrEditAddressAutoSearchDropdownItems.get(selectedIndexInAutoSearchDropdownMenu));
 		this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: none;");},20000);
 		this.getReusableActionsInstance().staticWait(3*this.getStaticWaitForApplication());
 

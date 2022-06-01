@@ -118,7 +118,7 @@ public class MA_TC09_AccountSettings_ChangeSecurityQuestions extends BaseTest {
 
         reporter.reportLog("Verify error message");
         getMyAccountPageThreadLocal().verifyChangeSecurityQuestionErrorMessage();
-
+        /**
         reporter.reportLog("Verify clicking Cancel button");
         Map<String,Object> map=getMyAccountPageThreadLocal().changeSecurityQuestionFunctionInAccountSettingsSection(false);
         getMyAccountPageThreadLocal().openChangeSecuritySection();
@@ -141,14 +141,15 @@ public class MA_TC09_AccountSettings_ChangeSecurityQuestions extends BaseTest {
                 reporter.reportLogFailWithScreenshot("There is no selected security question by clicking Cancel button is not displaying correctly");
             }
         }
-
+        */
+        Map<String,Object> map=getMyAccountPageThreadLocal().changeSecurityQuestionFunctionInAccountSettingsSection(false);
         reporter.reportLog("Verify clicking Submit button");
         map=getMyAccountPageThreadLocal().changeSecurityQuestionFunctionInAccountSettingsSection(true);
         basePage.getReusableActionsInstance().staticWait(basePage.getStaticWaitForApplication());
         getMyAccountPageThreadLocal().openChangeSecuritySection();
         basePage.getReusableActionsInstance().javascriptScrollByVisibleElement(getMyAccountPageThreadLocal().selectChangeSecurityQuestionSectionQuestion);
-        select=new Select(getMyAccountPageThreadLocal().selectChangeSecurityQuestionSectionQuestion);
-        selectedValue= Integer.parseInt(select.getFirstSelectedOption().getAttribute("value"))+1;
+        Select select=new Select(getMyAccountPageThreadLocal().selectChangeSecurityQuestionSectionQuestion);
+        int selectedValue= Integer.parseInt(select.getFirstSelectedOption().getAttribute("value"))+1;
         int expectedSelectedValue= Integer.parseInt(map.get("SelectedIndex").toString());
         if(selectedValue==expectedSelectedValue){
             reporter.reportLogPass("The security question is displaying correctly");
