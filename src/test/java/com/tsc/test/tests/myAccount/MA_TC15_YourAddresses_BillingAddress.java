@@ -125,6 +125,37 @@ public class MA_TC15_YourAddresses_BillingAddress extends BaseTest {
             reporter.reportLogFail("Adding a new address failed");
         }
 
+        reporter.reportLog("Adding a new shipping address");
+        getMyAccountPageThreadLocal().openAddOrEditAddressWindow("addShippingAddress",null);
+        lsAutoSearchKeywordAdd = DataConverter.getSaltString(4,"numberType");
+        mapAdd=getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeywordAdd,false,false,-1);
+
+        //To avoid duplicated data issue
+        try{
+            getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
+        }
+        catch(Exception e){
+            lsAutoSearchKeywordAdd = DataConverter.getSaltString(4,"numberType");
+            mapAdd=getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeywordAdd,false,false,-1);
+            try{
+                getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
+            }
+            catch(Exception ex){
+                lsAutoSearchKeywordAdd = DataConverter.getSaltString(4,"numberType");
+                mapAdd=getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeywordAdd,false,false,-1);
+                getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
+            }
+        }
+        lsFirstNameAdd=mapAdd.get("firstName").toString();
+        reporter.reportLog("lsFirstNameAdd: "+lsFirstNameAdd);
+        addressAmountAfterAdding=getMyAccountPageThreadLocal().lstShippingAddressContainer.size();
+        if((addressAmountAfterAdding-addressAmountBeforeAdding)>=2){
+            reporter.reportLogPass("Adding a new address successfully");
+        }
+        else{
+            reporter.reportLogFail("Adding a new address failed");
+        }
+
         reporter.reportLog("Change default shipping address");
         Map<String,String> mapBeforeMakeDefaultShippingAddress=getMyAccountPageThreadLocal().getGivenShippingOrBillingAddress(0);
         reporter.reportLog("Shipping list size: "+getMyAccountPageThreadLocal().lstShippingAddressContainer.size());
@@ -132,7 +163,7 @@ public class MA_TC15_YourAddresses_BillingAddress extends BaseTest {
         getMyAccountPageThreadLocal().openAddOrEditAddressWindow("editShippingAddress",editButton);
         getMyAccountPageThreadLocal().setDefaultShippingAddress();
         getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
-        basePage.getReusableActionsInstance().staticWait(3000);
+        basePage.getReusableActionsInstance().staticWait(5*basePage.getStaticWaitForApplication());
         Map<String,String> mapAfterMakeDefaultShippingAddress=getMyAccountPageThreadLocal().getGivenShippingOrBillingAddress(0);
         String lsFirstNameBeforeMakeDefaultShippingAddress=mapBeforeMakeDefaultShippingAddress.get("firstName").toString();
         String lsFirstNameAfterMakeDefaultShippingAddress=mapAfterMakeDefaultShippingAddress.get("firstName").toString();
@@ -152,7 +183,7 @@ public class MA_TC15_YourAddresses_BillingAddress extends BaseTest {
         getMyAccountPageThreadLocal().openAddOrEditAddressWindow("editBillingAddress",null);
         getMyAccountPageThreadLocal().setDefaultShippingAddress();
         getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
-        basePage.getReusableActionsInstance().staticWait(3000);
+        basePage.getReusableActionsInstance().staticWait(5*basePage.getStaticWaitForApplication());
         mapAfterMakeDefaultShippingAddress=getMyAccountPageThreadLocal().getGivenShippingOrBillingAddress(0);
         lsFirstNameBeforeMakeDefaultShippingAddress=mapBeforeMakeDefaultShippingAddress.get("firstName").toString();
         lsFirstNameAfterMakeDefaultShippingAddress=mapAfterMakeDefaultShippingAddress.get("firstName").toString();

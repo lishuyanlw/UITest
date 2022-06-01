@@ -150,6 +150,7 @@ public class ProductDetailPage extends BasePage {
 //	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@class='savings-shipping']//*[@class='shipping']")
 //	public WebElement lblProductShipping;
 
+	//Added new xpath for changes on PDP page for Integration as per new design
 	//Product details
 	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__brand-and-reviews']")
 	public WebElement cntProductDetailsBrandAndReviewContainer;
@@ -193,6 +194,7 @@ public class ProductDetailPage extends BasePage {
 
 	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__prices__saving-and-shipping']")
 	public WebElement lblProductShipping;
+    //All changes for new xpath as per design change are ended here
 
 	//Style part
 	@FindBy(xpath = "//form[@id='pdpForm']")

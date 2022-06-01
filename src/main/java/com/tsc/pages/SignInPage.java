@@ -361,8 +361,8 @@ public class SignInPage extends BasePage {
 		String lsSignInMsg=this.btnSignInMainMenu.getText().trim();
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSubmit);
 		this.getReusableActionsInstance().clickIfAvailable(this.btnSubmit);
-		//this.btnSubmit.click();
-		this.waitForPageToLoad();
+		waitForCondition(Driver->{return lblSignInGlobalResponseBanner.isDisplayed();},300000);
+
 		if(System.getProperty("Device").equalsIgnoreCase("Mobile")){
 			waitForCondition(Driver->{return this.lblSignInPageTitle.isDisplayed();},30000);
 			//getReusableActionsInstance().staticWait(2000);

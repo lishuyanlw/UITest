@@ -129,7 +129,7 @@ public class MA_TC13_YourAddresses_AddingAddress extends BaseTest {
         }
 
         String lsExpectedFirstname=map.get("firstName").toString();
-        basePage.getReusableActionsInstance().staticWait(3000);
+        basePage.getReusableActionsInstance().staticWait(5*basePage.getStaticWaitForApplication());
         Map<String,String> mapAfterMakeDefaultShippingAddress=getMyAccountPageThreadLocal().getGivenShippingOrBillingAddress(0);
         String lsFirstNameBeforeMakeDefaultShippingAddress=mapBeforeMakeDefaultShippingAddress.get("firstName").toString();
         String lsFirstNameAfterMakeDefaultShippingAddress=mapAfterMakeDefaultShippingAddress.get("firstName").toString();
@@ -166,7 +166,7 @@ public class MA_TC13_YourAddresses_AddingAddress extends BaseTest {
         lsExpectedFirstname=map.get("firstName").toString();
 
         //Waiting for Default shipping address change
-        basePage.getReusableActionsInstance().staticWait(8000);
+        basePage.getReusableActionsInstance().staticWait(8*basePage.getStaticWaitForApplication());
         Map<String,String> mapAfterMakeAsBillingAddress=getMyAccountPageThreadLocal().getGivenShippingOrBillingAddress(-1);
         String lsFirstNameBeforeMakeAsBillingAddress=mapBeforeMakeAsBillingAddress.get("firstName").toString();
         String lsFirstNameAfterMakeAsBillingAddress=mapAfterMakeAsBillingAddress.get("firstName").toString();
@@ -215,6 +215,5 @@ public class MA_TC13_YourAddresses_AddingAddress extends BaseTest {
         else{
             reporter.reportLogFailWithScreenshot("The duplicated address error message:'"+lsActualErrorMessage+"' is not displaying as expected:'"+lsExpectedErrorMessage+"'");
         }
-        //getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(false);
     }
 }

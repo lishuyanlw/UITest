@@ -36,7 +36,7 @@ public class GH_TC02_Verify_Global_Header_SignIn_Favorite_ShoppingCartBag extend
 		lsYmlNotFound=TestDataHandler.constantData.getHeaderSection().getLnk_NotFound();
 		reporter.reportLog("Verify Sign in section");
 		String lsUserName=TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
-		String lsPassword=TestDataHandler.constantData.getApiAppSessionParams().getLbl_password();
+		String lsPassword=TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
 
 		//Verify Sign in Text and Icon
 		getGlobalLoginPageThreadLocal().verifySignInSection();

@@ -342,7 +342,7 @@ public class BaseTest {
 	@AfterMethod(alwaysRun = true)
 	public void afterTest() throws IOException, InterruptedException {
 		if (getDriver() != null) {
-			//addPlaceOrder();
+//			addPlaceOrder();
 			//(new BasePage(this.getDriver())).deleteSessionStorage();
 		}
 		closeSession();

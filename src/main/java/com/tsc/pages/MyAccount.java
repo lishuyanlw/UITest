@@ -829,7 +829,7 @@ public class MyAccount extends BasePage {
 		this.waitForPageToLoad();
 		String lsTestDevice = System.getProperty("Device").trim();
 		String lsTestBrowser= System.getProperty("Browser").toLowerCase().trim();
-		if(lsTestDevice.equalsIgnoreCase("Mobile")||(lsTestDevice.equalsIgnoreCase("Tablet")&&lsTestBrowser.contains("android"))) {
+		if(lsTestDevice.equalsIgnoreCase("Mobile")||(lsTestDevice.equalsIgnoreCase("Tablet")&&lsTestBrowser.contains("android"))||System.getProperty("chromeMobileDevice").contains("iPad")) {
 			if(this.btnPaymentOptionsHeadingTitle.getAttribute("class").contains("collapsed")){
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnPaymentOptionsHeadingTitle);
 				this.getReusableActionsInstance().clickIfAvailable(this.btnPaymentOptionsHeadingTitle);
@@ -1354,7 +1354,7 @@ public class MyAccount extends BasePage {
 	public int openSubItemWindow(String lsHeaderItem,String lsSubItem,WebElement loadingIndicator){
 		String lsTestDevice = System.getProperty("Device").trim();
 		String lsTestBrowser= System.getProperty("Browser").toLowerCase().trim();
-		if(lsTestDevice.equalsIgnoreCase("Mobile")||(lsTestDevice.equalsIgnoreCase("Tablet")&&lsTestBrowser.contains("android"))) {
+		if(lsTestDevice.equalsIgnoreCase("Mobile")||(lsTestDevice.equalsIgnoreCase("Tablet")&&lsTestBrowser.contains("android"))||System.getProperty("chromeMobileDevice").contains("iPad")) {
 			WebElement headerButton=this.getHeaderItem(lsHeaderItem);
 			if(headerButton.getAttribute("class").contains("collapsed")){
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(headerButton);
@@ -1379,12 +1379,9 @@ public class MyAccount extends BasePage {
 		}
 		this.getReusableActionsInstance().clickIfAvailable(subButton);
 
+		this.getReusableActionsInstance().staticWait(5*this.getStaticWaitForApplication());
 		if(loadingIndicator!=null){
 			this.waitForCondition(Driver->{return loadingIndicator.isDisplayed();},50000);
-			this.getReusableActionsInstance().staticWait(5*this.getStaticWaitForApplication());
-		}
-		else{
-			this.getReusableActionsInstance().staticWait(5*this.getStaticWaitForApplication());
 		}
 
 		return count;
@@ -1605,7 +1602,7 @@ public class MyAccount extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(upperNavigationElement);
 		this.getReusableActionsInstance().clickIfAvailable(upperNavigationElement);
 
-		this.getReusableActionsInstance().staticWait(2*this.getStaticWaitForApplication());
+		this.getReusableActionsInstance().staticWait(5*this.getStaticWaitForApplication());
 	}
 
 	public void verifyOrderSearchErrorMessage(String lsExpectedErrorMessage){
@@ -2164,7 +2161,11 @@ public class MyAccount extends BasePage {
 
 		String lsTestDevice = System.getProperty("Device").trim();
 		String lsTestBrowser= System.getProperty("Browser").toLowerCase().trim();
-		if(lsTestDevice.equalsIgnoreCase("Mobile")||(lsTestDevice.equalsIgnoreCase("Tablet")&&lsTestBrowser.contains("android"))) {
+		if(!(lsTestDevice.equalsIgnoreCase("Mobile") ||
+				(System.getProperty("Device").contains("Tablet") && System.getProperty("Browser").contains("android")) ||
+				(System.getProperty("Browser").equalsIgnoreCase("chromemobile") &&
+						System.getProperty("Device").contains("Tablet") &&
+						!System.getProperty("chromeMobileDevice").contains("iPad")))) {
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAccountSettingPassword);
 			if(!lblAccountSettingPassword.getText().isEmpty()){
 				reporter.reportLogPass("The Password in Account settings is displaying correctly");
@@ -3152,17 +3153,16 @@ public class MyAccount extends BasePage {
 			selectedIndexInAutoSearchDropdownMenu=0;
 		}
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstAddOrEditAddressAutoSearchDropdownItems.get(selectedIndexInAutoSearchDropdownMenu));
 		try{
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstAddOrEditAddressAutoSearchDropdownItems.get(selectedIndexInAutoSearchDropdownMenu));
 			this.getReusableActionsInstance().clickIfAvailable(this.lstAddOrEditAddressAutoSearchDropdownItems.get(selectedIndexInAutoSearchDropdownMenu));
 			this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: none;");},20000);
 		}
 		catch(Exception e){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstAddOrEditAddressAutoSearchDropdownItems.get(selectedIndexInAutoSearchDropdownMenu));
 			this.getReusableActionsInstance().clickIfAvailable(this.lstAddOrEditAddressAutoSearchDropdownItems.get(selectedIndexInAutoSearchDropdownMenu));
 			this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: none;");},20000);
 		}
-		this.getReusableActionsInstance().clickIfAvailable(this.lstAddOrEditAddressAutoSearchDropdownItems.get(selectedIndexInAutoSearchDropdownMenu));
-		this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: none;");},20000);
 		this.getReusableActionsInstance().staticWait(3*this.getStaticWaitForApplication());
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressLine1);
@@ -3235,11 +3235,18 @@ public class MyAccount extends BasePage {
 						reporter.reportLogPassWithScreenshot("Unable to get dropdown auto search results");
 					}
 
-					this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
-					//this.getReusableActionsInstance().clickIfAvailable(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
-					this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
-					this.clickWebElementUsingJS(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
-					this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: none;");},20000);
+					try{
+						this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
+						this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+						this.clickWebElementUsingJS(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
+						this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: none;");},20000);
+					}
+					catch (Exception e){
+						this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
+						this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+						this.clickWebElementUsingJS(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
+						this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: none;");},20000);
+					}
 					this.getReusableActionsInstance().staticWait(3*this.getStaticWaitForApplication());
 					break;
 				default:
@@ -3275,11 +3282,18 @@ public class MyAccount extends BasePage {
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstAddOrEditAddressAutoSearchDropdownItems.get(randomNumber));
 			this.getReusableActionsInstance().clickIfAvailable(this.lstAddOrEditAddressAutoSearchDropdownItems.get(randomNumber));
 			 */
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
-			//this.getReusableActionsInstance().clickIfAvailable(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
-			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
-			this.clickWebElementUsingJS(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
-			this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: none;");},20000);
+			try{
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
+				this.getReusableActionsInstance().clickIfAvailable(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
+				this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+				this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: none;");},20000);
+			}
+			catch (Exception e){
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
+				this.getReusableActionsInstance().clickIfAvailable(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
+				this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+				this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: none;");},20000);
+			}
 			this.getReusableActionsInstance().staticWait(3*this.getStaticWaitForApplication());
 
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressLine1);
@@ -3360,9 +3374,16 @@ public class MyAccount extends BasePage {
 			reporter.reportLogPassWithScreenshot("Unable to get dropdown auto search results");
 		}
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
-		this.getReusableActionsInstance().clickIfAvailable(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
-		this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: none;");},20000);
+		try{
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
+			this.getReusableActionsInstance().clickIfAvailable(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
+			this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: none;");},20000);
+		}
+		catch(Exception e){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
+			this.getReusableActionsInstance().clickIfAvailable(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
+			this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: none;");},20000);
+		}
 		this.getReusableActionsInstance().staticWait(3*this.getStaticWaitForApplication());
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressCity);
