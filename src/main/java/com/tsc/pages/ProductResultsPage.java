@@ -331,10 +331,6 @@ public class ProductResultsPage extends BasePage{
 
 	public By sizeSelected = By.xpath(".//form[contains(@class,'product-card__main')]//span[contains(@class,'size-title')]");
 
-	//For PDP page loading purpose
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']")
-	public WebElement lblPDPProductName;
-
 	public By lstColourDropdown = By.xpath(".//form//div//select[@id='nsColourTaste']");
 
 	public By btnColorSelectionDropdown = By.xpath(".//form//div//button[contains(@id,'nsColourTaste-selected')]");
@@ -404,7 +400,8 @@ public class ProductResultsPage extends BasePage{
 		this.waitForPageToLoad();
 
 		if(searchKeyword.matches("\\d+")){
-			this.getReusableActionsInstance().waitForElementVisibility(this.lblPDPProductName,120);
+			ProductDetailPage pdp= new ProductDetailPage(this.getDriver());
+			this.getReusableActionsInstance().waitForElementVisibility(pdp.lblProductName,120);
 		}
 		else{
 			this.getReusableActionsInstance().waitForElementVisibility(this.lblSearchResultMessage,120);

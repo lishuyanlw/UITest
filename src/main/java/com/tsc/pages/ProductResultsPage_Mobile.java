@@ -87,7 +87,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 	public By byProductOptionSizeNiceSelectButton=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//select[contains(@class,'product-card__size__dropdown')]/following-sibling::div[@class='niceSelect__container']//button[@id='niceSelect-nsSizeTaste-selected']");
 
 	//For color option
-	public By byProductOptionColor=By.xpath("//div[@class='product-card__mobile-modal']//fieldset[legend[.='colours']]");
+	public By byProductOptionColor=By.xpath("//div[@class='product-card__mobile-modal']//fieldset[legend[.='styles']]");
 
 	public By byProductOptionColorTitle=By.xpath("//div[@class='product-card__mobile-modal']//fieldset//p[@class='product-card__color-and-taste-title']");
 
@@ -1038,11 +1038,11 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 			}
 			
 			if(bSizeDropdown&&!bColorDoprdown) {
-				if(lsText.equalsIgnoreCase("Select style")) {
-					reporter.reportLogPass("The button text is equal to 'Select style'");
+				if(lsText.equalsIgnoreCase("selectStyle")) {
+					reporter.reportLogPass("The button text is equal to 'selectStyle'");
 				}
 				else {
-					reporter.reportLogFailWithScreenshot("The button text is not equal to 'Select style'");
+					reporter.reportLogFailWithScreenshot("The button text is not equal to 'selectStyle'");
 				}
 			}
 			
@@ -1056,11 +1056,11 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 			}
 			
 			if(!bSizeDropdown&&!bColorDoprdown) {
-				if(lsText.equalsIgnoreCase("Select size & colour")) {
-					reporter.reportLogPass("The button text is equal to 'Select size & colour'");
+				if(lsText.equalsIgnoreCase("selectSizeAndStyle")) {
+					reporter.reportLogPass("The button text is equal to 'selectSizeAndStyle'");
 				}
 				else {
-					reporter.reportLogFailWithScreenshot("The button text is not equal to 'Select size & colour'");
+					reporter.reportLogFailWithScreenshot("The button text is not equal to 'selectSizeAndStyle'");
 				}
 			}			
 		}
@@ -1068,11 +1068,11 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 		if(lsType.equalsIgnoreCase("Size")) {
 			bSizeDropdown=checkSizeOrColorOptionIsDropDown(true);
 			if(bSizeDropdown) {
-				if(lsText.equalsIgnoreCase("Select size & colour")) {
-					reporter.reportLogPass("The button text is equal to 'Select size & colour'");
+				if(lsText.equalsIgnoreCase("Go to detail page")) {
+					reporter.reportLogPass("The button text is equal to 'Go to detail page'");
 				}
 				else {
-					reporter.reportLogFailWithScreenshot("The button text is not equal to 'Select size & colour'");
+					reporter.reportLogFailWithScreenshot("The button text is not equal to 'Go to detail page'");
 				}
 			}
 			else {
@@ -1088,19 +1088,19 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 		if(lsType.equalsIgnoreCase("Colour")) {
 			bColorDoprdown=checkSizeOrColorOptionIsDropDown(false);
 			if(bColorDoprdown) {
-				if(lsText.equalsIgnoreCase("Select size & colour")) {
-					reporter.reportLogPass("The button text is equal to 'Select size & colour'");
+				if(lsText.equalsIgnoreCase("Go to detail page")) {
+					reporter.reportLogPass("The button text is equal to 'Go to detail page'");
 				}
 				else {
-					reporter.reportLogFailWithScreenshot("The button text is not equal to 'Select size & colour'");
+					reporter.reportLogFailWithScreenshot("The button text is not equal to 'Go to detail page'");
 				}
 			}
 			else {
-				if(lsText.equalsIgnoreCase("Select style")) {
-					reporter.reportLogPass("The button text is equal to 'Select style'");
+				if(lsText.equalsIgnoreCase("selectStyle")) {
+					reporter.reportLogPass("The button text is equal to 'selectStyle'");
 				}
 				else {
-					reporter.reportLogFailWithScreenshot("The button text is not equal to 'Select style'");
+					reporter.reportLogFailWithScreenshot("The button text is not equal to 'selectStyle'");
 				}
 			}			
 		}
@@ -1131,11 +1131,11 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 						}
 					}
 					else {
-						if(lsText.equalsIgnoreCase("Select style")) {
-							reporter.reportLogPass("The button text is equal to 'Select style'");
+						if(lsText.equalsIgnoreCase("selectStyle")) {
+							reporter.reportLogPass("The button text is equal to 'selectStyle'");
 						}
 						else {
-							reporter.reportLogFailWithScreenshot("The button text is not equal to 'Select style'");
+							reporter.reportLogFailWithScreenshot("The button text is not equal to 'selectStyle'");
 						}
 					}
 					
