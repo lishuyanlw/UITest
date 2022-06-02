@@ -132,6 +132,7 @@ public class BaseTest {
 	}
 
 	private void init_Mobile() throws IOException {
+		homePageThreadLocal.set(new HomePage(getDriver()));
 		globalHeaderPageThreadLocal.set(new GlobalHeaderPage_Mobile(getDriver()));
 		loginPageThreadLocal.set(new SignInPage_Mobile(getDriver()));
 		globalFooterPageThreadLocal.set(new GlobalFooterPage_Mobile(getDriver()));
@@ -183,6 +184,7 @@ public class BaseTest {
 		reporter = new ExtentTestManager(getDriver());
 		apiResponseThreadLocal.set(new ApiResponse());
 		shoppingCartThreadLocal.set(new ShoppingCart(getDriver()));
+		homePageThreadLocal.set(new HomePage(getDriver()));
 	}
 
 

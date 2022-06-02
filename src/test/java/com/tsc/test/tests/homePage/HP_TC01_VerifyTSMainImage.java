@@ -1,6 +1,7 @@
 package com.tsc.test.tests.homePage;
 
 import java.util.List;
+import java.util.Set;
 import org.testng.annotations.Test;
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
@@ -21,33 +22,44 @@ public class HP_TC01_VerifyTSMainImage extends BaseTest{
 		String lsYmlNotFound=TestDataHandler.constantData.getHeaderSection().getLnk_NotFound();
 
 		//Method to validate TS image in the upper section
-		int totalTSimageUpperSection = homePageThreadLocal().totalTSimage("Upper");
-		reporter.reportLog("Number of total TS image in the upper section: "+totalTSimageUpperSection);
-		homePageThreadLocal().clickTSimage("Upper");
-		int numberOfWindows_UpperSection = homePageThreadLocal().getNumberOftabs();
-		List<String> lsUrl_UpperSection=homePageThreadLocal().getTabUrlListTSimage();
-		reporter.reportLog("Total number of tabs open for TS image Upper Section: "+numberOfWindows_UpperSection);
-		if(totalTSimageUpperSection==(numberOfWindows_UpperSection-1)){
-			reporter.reportLogPass("All TS images in upper section have been clicked");
+		int totalTSImageUpperSection = homePageThreadLocal().totalTSimage("Upper");
+		reporter.reportLog("Number of total TS image in the upper section: "+totalTSImageUpperSection);
+		if(System.getProperty("Browser").contains("ios") ||
+				(System.getProperty("Browser").equalsIgnoreCase("chromemobile") &&
+						(System.getProperty("Device").contains("iPad") || System.getProperty("Device").contains("iPhone")))){
+			Set<String> totalTSImageLink = homePageThreadLocal().getTSImageLinkForSafariPostClick();
+			if(totalTSImageUpperSection==totalTSImageLink.size())
+				reporter.reportLogPass("All TS images in upper section for Safari are clicked");
+			else
+				reporter.reportLogFailWithScreenshot("All TS images in upper section for Safari are not clicked. Expected Image: "+totalTSImageUpperSection+" : Actual Image clicked: "+totalTSImageLink.size());
 		}
 		else{
-			reporter.reportLogFailWithScreenshot("All TS images in upper section have not been clicked");
-		}
-
-		for(int i=0; i<totalTSimageUpperSection; i++) {
-			if(!lsUrl_UpperSection.get(i).contains(lsYmlNotFound)){
-				reporter.reportLogPass(("URL of tab " +(i+1)+" for TS image Upper Section is "+lsUrl_UpperSection.get(i)+" & it does not contain not found"));
+			homePageThreadLocal().clickTSimage("Upper");
+			int numberOfWindows_UpperSection = homePageThreadLocal().getNumberOftabs();
+			List<String> lsUrl_UpperSection=homePageThreadLocal().getTabUrlListTSimage();
+			reporter.reportLog("Total number of tabs open for TS image Upper Section: "+numberOfWindows_UpperSection);
+			if(totalTSImageUpperSection==(numberOfWindows_UpperSection-1)){
+				reporter.reportLogPass("All TS images in upper section have been clicked");
 			}
 			else{
-				reporter.reportLogFailWithScreenshot(("URL of tab " +(i+1)+" for TS image Upper Section is "+lsUrl_UpperSection.get(i)+" & does contain not found"));
+				reporter.reportLogFailWithScreenshot("All TS images in upper section have not been clicked");
 			}
 
-			if(i<lsUrl_UpperSection.size()-1) {
-				if(!lsUrl_UpperSection.get(i).equals(lsUrl_UpperSection.get(i+1))){
-					reporter.reportLogPass("URL of tab " +(i+1)+ " is different than URL of Tab "+((i+1)+1)+" for TS image upper section.");
+			for(int i=0; i<totalTSImageUpperSection; i++) {
+				if(!lsUrl_UpperSection.get(i).contains(lsYmlNotFound)){
+					reporter.reportLogPass(("URL of tab " +(i+1)+" for TS image Upper Section is "+lsUrl_UpperSection.get(i)+" & it does not contain not found"));
 				}
 				else{
-					reporter.reportLogFailWithScreenshot("URL of Tab " +(i+1)+" is same as URL of Tab"+((i+1)+1)+" for TS image upper section.");
+					reporter.reportLogFailWithScreenshot(("URL of tab " +(i+1)+" for TS image Upper Section is "+lsUrl_UpperSection.get(i)+" & does contain not found"));
+				}
+
+				if(i<lsUrl_UpperSection.size()-1) {
+					if(!lsUrl_UpperSection.get(i).equals(lsUrl_UpperSection.get(i+1))){
+						reporter.reportLogPass("URL of tab " +(i+1)+ " is different than URL of Tab "+((i+1)+1)+" for TS image upper section.");
+					}
+					else{
+						reporter.reportLogFailWithScreenshot("URL of Tab " +(i+1)+" is same as URL of Tab"+((i+1)+1)+" for TS image upper section.");
+					}
 				}
 			}
 		}

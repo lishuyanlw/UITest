@@ -95,6 +95,9 @@ public class HP_TC02_VerifyOnAirSection extends BaseTest {
 	 else
 		 reporter.reportLogFailWithScreenshot("Shop All Today'S Items button is not visible");
 
-	 validateText(homePageThreadLocal().validatebtnShopAllTodaysItem(),"Shop All Today'S Items","Shop All Today'S Items Button Link is present & Text is visible");
+	 if(!System.getProperty("Device").equalsIgnoreCase("Desktop"))
+		 validateText(homePageThreadLocal().validatebtnShopAllTodaysItem(),"SHOP ALL TODAY'S ITEMS","Shop All Today'S Items Button Link is present & Text is visible");
+	 else
+	 	validateText(homePageThreadLocal().validatebtnShopAllTodaysItem(),"Shop All Today'S Items","Shop All Today'S Items Button Link is present & Text is visible");
 	}
 }

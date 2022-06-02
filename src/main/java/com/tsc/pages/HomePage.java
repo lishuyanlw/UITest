@@ -1,9 +1,7 @@
 package com.tsc.pages;
 
-import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
@@ -11,7 +9,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
 import com.tsc.pages.base.BasePage;
 
 public class HomePage extends BasePage{
@@ -61,7 +58,6 @@ public class HomePage extends BasePage{
 	//WebElement btnClose;
 		
 	//TS Main Image section
-	
 	@FindBy(xpath = "//*[@class='TsZone']//div[contains(@class,'tsZoneHero')]")
 	WebElement TSimageUpperSection;
 	
@@ -162,7 +158,10 @@ public class HomePage extends BasePage{
 	WebElement btnShopByDepartmentPrev;
 		
 	@FindBy(xpath = "//div[contains(@class,'ImageAnchorCarousel') and not(contains(@class,'ImageAnchorCarouselData'))]//div[a[contains(@href,'ic=HP_SBD')]]/ancestor::div[contains(@class,'ImageAnchorCarousel') and not(contains(@class,'ImageAnchorCarouselData'))]//button[contains(@class,'slick-next')]")
-	WebElement btnShopByDepartmentNext;	
+	WebElement btnShopByDepartmentNext;
+
+	@FindBy(xpath = "//div[@class='breadcrumb']//a")
+	WebElement btnHomePageBreadcrumb;
 			
 	public void waitForPageLoad() {
 		new WebDriverWait(getDriver(), 1000).until(
@@ -827,21 +826,54 @@ public class HomePage extends BasePage{
 	 * Method to click on each image for all sections of TS image  
 	 * @author Shruti Desai
 	 */
-		public void clickallTSimageLinks(WebElement totalImage,WebElement attriTSimage,WebElement linksTSimage,List<WebElement> hrefallTSimage) throws InterruptedException {
-			int totalTsimage = getTSimgCount(totalImage);
-			String clickonlinkTab = Keys.chord(Keys.CONTROL, Keys.ENTER);
-			if(gethrefListTSimage(hrefallTSimage).size()!=0) {
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(attriTSimage.findElement(By.xpath(".//img")));
-				for (int i=1;i<=totalTsimage; i++) {
-					String lsImageSrc=attriTSimage.findElement(By.xpath(".//img")).getAttribute("src");
-					AtomicReference<String> finalTempLsImageSrc = new AtomicReference<>();
-					this.waitForCondition(Driver->{return (!lsImageSrc.equalsIgnoreCase(finalTempLsImageSrc.get()) && !attriTSimage.findElement(By.xpath(".//img")).getAttribute("src").equalsIgnoreCase(lsImageSrc));},7000);
-					linksTSimage.sendKeys(clickonlinkTab);
-					//this.waitForCondition(Driver->{return !attriTSimage.findElement(By.xpath(".//img")).getAttribute("src").equalsIgnoreCase(lsImageSrc);},3000);
-					finalTempLsImageSrc.set(lsImageSrc);
-				}
+	public void clickallTSimageLinks(WebElement totalImage,WebElement attriTSimage,WebElement linksTSimage,List<WebElement> hrefallTSimage) {
+		int totalTsImage = getTSimgCount(totalImage);
+		String clickOnLinkTab = Keys.chord(Keys.CONTROL, Keys.ENTER);
+		AtomicReference<String> finalTempLsImageSrc = new AtomicReference<>();
+		if(gethrefListTSimage(hrefallTSimage).size()!=0) {
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(attriTSimage.findElement(By.xpath(".//img")));
+			for (int i=1;i<=totalTsImage; i++) {
+				String lsImageSrc=attriTSimage.findElement(By.xpath(".//img")).getAttribute("src");
+				if(this.waitForCondition(Driver->{return (!lsImageSrc.equalsIgnoreCase(finalTempLsImageSrc.get()) && !attriTSimage.findElement(By.xpath(".//img")).getAttribute("src").equalsIgnoreCase(lsImageSrc));},7000))
+					linksTSimage.sendKeys(clickOnLinkTab);
+				//this.waitForCondition(Driver->{return !attriTSimage.findElement(By.xpath(".//img")).getAttribute("src").equalsIgnoreCase(lsImageSrc);},3000);
+				System.out.println("lsImage: "+lsImageSrc+" and finalTempLsImageSrc: "+finalTempLsImageSrc.get());
+				finalTempLsImageSrc.set(lsImageSrc);
 			}
 		}
+	}
+
+	/*
+	 * Method to verify each image for all sections of TS image for Safari
+	 */
+	public Set<String> getTSImageLinkForSafariPostClick() {
+		int tempCounter = 1;
+		Set<String> tsImageLinkSet = new HashSet<>();
+		int totalTsImage = getTSimgCount(totalTSimageUpperSection);
+		String clickOnLinkTab = Keys.chord(Keys.COMMAND, "T");
+		AtomicReference<String> finalTempLsImageSrc = new AtomicReference<>();
+		if(gethrefListTSimage(hrefallTSimageUpperSection).size()!=0) {
+			for (int i=1;i<=totalTsImage; i++) {
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(attriTSimageUpperSection.findElement(By.xpath(".//img")));
+				String lsImageSrc=attriTSimageUpperSection.findElement(By.xpath(".//img")).getAttribute("src");
+				if(this.waitForCondition(Driver->{return (!lsImageSrc.equalsIgnoreCase(finalTempLsImageSrc.get()) && !attriTSimageUpperSection.findElement(By.xpath(".//img")).getAttribute("src").equalsIgnoreCase(lsImageSrc));},7000)){
+					linksTSimageUpperSection.sendKeys(clickOnLinkTab);
+					this.waitForPageLoad();
+					tsImageLinkSet.add(this.URL());
+					if(tempCounter<totalTsImage){
+						this.waitForCondition(Driver->{return this.btnHomePageBreadcrumb.isEnabled() &&
+								this.btnHomePageBreadcrumb.isDisplayed();},6000);
+						this.getReusableActionsInstance().clickIfAvailable(this.btnHomePageBreadcrumb);
+						this.waitForPageLoad();
+						tempCounter++;
+					}
+				}
+				System.out.println("lsImage: "+lsImageSrc+" and finalTempLsImageSrc: "+finalTempLsImageSrc.get());
+				finalTempLsImageSrc.set(lsImageSrc);
+			}
+		}
+		return tsImageLinkSet;
+	}
 				
 	/*
 	 * Method to Get list of url for clicked TS images (upper section) open in different tabs  
