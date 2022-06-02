@@ -63,9 +63,15 @@ public class HP_TC02_VerifyOnAirSection extends BaseTest {
 	 else
 		 reporter.reportLogFailWithScreenshot("Shop Now button is not visible");
 
-	 validateText(homePageThreadLocal().validatebtnShopNow(),"SHOP NOW","SHOP NOW Button Link is present & Text is visible");
-
-	 validateText(homePageThreadLocal().validateROsection(),"RECENTLY AIRED","Recently Aired Section");
+	 if(System.getProperty("Device").equalsIgnoreCase("Desktop") &&
+			 System.getProperty("Browser").contains("safari")){
+		 validateText(homePageThreadLocal().validatebtnShopNow(),"Shop Now","SHOP NOW Button Link is present & Text is visible");
+		 validateText(homePageThreadLocal().validateROsection(),"Recently Aired","Recently Aired Section");
+	 }
+	 else{
+	 	validateText(homePageThreadLocal().validatebtnShopNow(),"SHOP NOW","SHOP NOW Button Link is present & Text is visible");
+		validateText(homePageThreadLocal().validateROsection(),"RECENTLY AIRED","Recently Aired Section");
+	 }
 
 	 int imageCount = homePageThreadLocal().getRAimgCount();
 	 if(imageCount>=1){
@@ -95,9 +101,17 @@ public class HP_TC02_VerifyOnAirSection extends BaseTest {
 	 else
 		 reporter.reportLogFailWithScreenshot("Shop All Today'S Items button is not visible");
 
-	 if(!System.getProperty("Device").equalsIgnoreCase("Desktop"))
-		 validateText(homePageThreadLocal().validatebtnShopAllTodaysItem(),"SHOP ALL TODAY'S ITEMS","Shop All Today'S Items Button Link is present & Text is visible");
+	 if(System.getProperty("Device").equalsIgnoreCase("Mobile") ||
+			 (System.getProperty("Device").equalsIgnoreCase("Tablet") &&
+					 System.getProperty("Browser").contains("android")) ||
+			 (System.getProperty("Browser").equals("chromemobile") &&
+					 System.getProperty("Device").equalsIgnoreCase("Tablet") &&
+					 !System.getProperty("chromeMobileDevice").contains("iPad")))
+		 validateText(homePageThreadLocal().validatebtnShopAllTodaysItem(),"SHOP ALL TODAY'S ITEMS","SHOP ALL TODAY'S ITEMS Button Link is present & Text is visible");
+	 else if(System.getProperty("Device").equalsIgnoreCase("Desktop") &&
+			 (System.getProperty("Browser").contains("firefox") || System.getProperty("Browser").contains("safari")))
+	 	validateText(homePageThreadLocal().validatebtnShopAllTodaysItem(),"Shop All Today's Items","Shop All Today's Items Button Link is present & Text is visible");
 	 else
-	 	validateText(homePageThreadLocal().validatebtnShopAllTodaysItem(),"Shop All Today'S Items","Shop All Today'S Items Button Link is present & Text is visible");
+		 validateText(homePageThreadLocal().validatebtnShopAllTodaysItem(),"Shop All Today'S Items","Shop All Today'S Items Button Link is present & Text is visible");
 	}
 }
