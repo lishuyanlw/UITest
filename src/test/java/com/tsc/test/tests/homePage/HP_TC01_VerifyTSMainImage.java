@@ -24,10 +24,10 @@ public class HP_TC01_VerifyTSMainImage extends BaseTest{
 		//Method to validate TS image in the upper section
 		int totalTSImageUpperSection = homePageThreadLocal().totalTSimage("Upper");
 		reporter.reportLog("Number of total TS image in the upper section: "+totalTSImageUpperSection);
-		if(System.getProperty("Browser").contains("ios") ||
+		if(System.getProperty("Browser").contains("safari") || System.getProperty("Browser").contains("ios") ||
 				(System.getProperty("Browser").equalsIgnoreCase("chromemobile") &&
 						(System.getProperty("Device").contains("iPad") || System.getProperty("Device").contains("iPhone")))){
-			Set<String> totalTSImageLink = homePageThreadLocal().getTSImageLinkForSafariPostClick();
+			Set<String> totalTSImageLink = homePageThreadLocal().getTSImageLinkForSafariPostClick(System.getProperty("Device"));
 			if(totalTSImageUpperSection==totalTSImageLink.size())
 				reporter.reportLogPass("All TS images in upper section for Safari are clicked");
 			else

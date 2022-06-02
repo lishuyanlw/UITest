@@ -108,8 +108,13 @@ public class HP_TC02_VerifyOnAirSection extends BaseTest {
 					 System.getProperty("Device").equalsIgnoreCase("Tablet") &&
 					 !System.getProperty("chromeMobileDevice").contains("iPad")))
 		 validateText(homePageThreadLocal().validatebtnShopAllTodaysItem(),"SHOP ALL TODAY'S ITEMS","SHOP ALL TODAY'S ITEMS Button Link is present & Text is visible");
-	 else if(System.getProperty("Device").equalsIgnoreCase("Desktop") &&
-			 (System.getProperty("Browser").contains("firefox") || System.getProperty("Browser").contains("safari")))
+	 else if((System.getProperty("Device").equalsIgnoreCase("Desktop") &&
+			 (System.getProperty("Browser").contains("firefox") || System.getProperty("Browser").contains("safari")) ||
+			 	(System.getProperty("Device").equalsIgnoreCase("Tablet") &&
+					 System.getProperty("Browser").contains("ios")) ||
+			 	(System.getProperty("Browser").equals("chromemobile") &&
+					 System.getProperty("Device").equalsIgnoreCase("Tablet") &&
+					 System.getProperty("chromeMobileDevice").contains("iPad"))))
 	 	validateText(homePageThreadLocal().validatebtnShopAllTodaysItem(),"Shop All Today's Items","Shop All Today's Items Button Link is present & Text is visible");
 	 else
 		 validateText(homePageThreadLocal().validatebtnShopAllTodaysItem(),"Shop All Today'S Items","Shop All Today'S Items Button Link is present & Text is visible");

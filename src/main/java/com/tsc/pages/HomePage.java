@@ -837,7 +837,6 @@ public class HomePage extends BasePage{
 				if(this.waitForCondition(Driver->{return (!lsImageSrc.equalsIgnoreCase(finalTempLsImageSrc.get()) && !attriTSimage.findElement(By.xpath(".//img")).getAttribute("src").equalsIgnoreCase(lsImageSrc));},7000))
 					linksTSimage.sendKeys(clickOnLinkTab);
 				//this.waitForCondition(Driver->{return !attriTSimage.findElement(By.xpath(".//img")).getAttribute("src").equalsIgnoreCase(lsImageSrc);},3000);
-				System.out.println("lsImage: "+lsImageSrc+" and finalTempLsImageSrc: "+finalTempLsImageSrc.get());
 				finalTempLsImageSrc.set(lsImageSrc);
 			}
 		}
@@ -846,11 +845,15 @@ public class HomePage extends BasePage{
 	/*
 	 * Method to verify each image for all sections of TS image for Safari
 	 */
-	public Set<String> getTSImageLinkForSafariPostClick() {
+	public Set<String> getTSImageLinkForSafariPostClick(String testDevice) {
 		int tempCounter = 1;
 		Set<String> tsImageLinkSet = new HashSet<>();
+		String clickOnLinkTab;
 		int totalTsImage = getTSimgCount(totalTSimageUpperSection);
-		String clickOnLinkTab = Keys.chord(Keys.COMMAND, "T");
+		if(testDevice.equalsIgnoreCase("Desktop"))
+			clickOnLinkTab = Keys.chord(Keys.COMMAND, Keys.ENTER);
+		else
+			clickOnLinkTab = Keys.chord(Keys.COMMAND, "T");
 		AtomicReference<String> finalTempLsImageSrc = new AtomicReference<>();
 		if(gethrefListTSimage(hrefallTSimageUpperSection).size()!=0) {
 			for (int i=1;i<=totalTsImage; i++) {
@@ -860,7 +863,7 @@ public class HomePage extends BasePage{
 					linksTSimageUpperSection.sendKeys(clickOnLinkTab);
 					this.waitForPageLoad();
 					tsImageLinkSet.add(this.URL());
-					if(tempCounter<totalTsImage){
+					if(tempCounter<totalTsImage && !testDevice.equalsIgnoreCase("Desktop")){
 						this.waitForCondition(Driver->{return this.btnHomePageBreadcrumb.isEnabled() &&
 								this.btnHomePageBreadcrumb.isDisplayed();},6000);
 						this.getReusableActionsInstance().clickIfAvailable(this.btnHomePageBreadcrumb);
@@ -868,7 +871,7 @@ public class HomePage extends BasePage{
 						tempCounter++;
 					}
 				}
-				System.out.println("lsImage: "+lsImageSrc+" and finalTempLsImageSrc: "+finalTempLsImageSrc.get());
+				//System.out.println("lsImage: "+lsImageSrc+" and finalTempLsImageSrc: "+finalTempLsImageSrc.get());
 				finalTempLsImageSrc.set(lsImageSrc);
 			}
 		}
