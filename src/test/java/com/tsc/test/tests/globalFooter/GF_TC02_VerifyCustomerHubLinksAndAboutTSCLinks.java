@@ -12,7 +12,7 @@ public class GF_TC02_VerifyCustomerHubLinksAndAboutTSCLinks extends BaseTest {
 	 * CER-169
 	 * CER-170
 	 */
-	@Test(groups={"Home","Regression","GlobalFooter"})
+	@Test(groups={"Regression","GlobalFooter"})
 	public void GF_TC02_VerifyCustomerHubLinksAndAboutTSCLinks() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 		BasePage basePage=new BasePage(this.getDriver());		

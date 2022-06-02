@@ -42,6 +42,7 @@ public class BaseTest {
 	private Map<String, String> RunParameters;
 	protected static JSONObject apiUserSessionData = null;
 	protected static JSONObject apiAppSessionData = null;
+	protected static boolean placeOrderValue = false;
 
 	protected static final ThreadLocal<WebDriver> webDriverThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<GlobalHeaderPage> globalHeaderPageThreadLocal = new ThreadLocal<>();
@@ -131,6 +132,7 @@ public class BaseTest {
 	}
 
 	private void init_Mobile() throws IOException {
+		homePageThreadLocal.set(new HomePage(getDriver()));
 		globalHeaderPageThreadLocal.set(new GlobalHeaderPage_Mobile(getDriver()));
 		loginPageThreadLocal.set(new SignInPage_Mobile(getDriver()));
 		globalFooterPageThreadLocal.set(new GlobalFooterPage_Mobile(getDriver()));
@@ -182,6 +184,7 @@ public class BaseTest {
 		reporter = new ExtentTestManager(getDriver());
 		apiResponseThreadLocal.set(new ApiResponse());
 		shoppingCartThreadLocal.set(new ShoppingCart(getDriver()));
+		homePageThreadLocal.set(new HomePage(getDriver()));
 	}
 
 
@@ -340,10 +343,9 @@ public class BaseTest {
 	}
 
 	@AfterMethod(alwaysRun = true)
-	public void afterTest() throws IOException, InterruptedException {
-		if (getDriver() != null) {
-//			addPlaceOrder();
-			//(new BasePage(this.getDriver())).deleteSessionStorage();
+	public void afterTest() throws IOException, InterruptedException{
+		if (getDriver() != null && !placeOrderValue) {
+			addPlaceOrder();
 		}
 		closeSession();
 	}
@@ -461,6 +463,7 @@ public class BaseTest {
 			ldOrderDate = LocalDate.parse(lsDate, formatter);
 			noOfDaysBetween = DAYS.between(ldOrderDate,now);
 			if( noOfDaysBetween<=75){
+				placeOrderValue = true;
 				return;
 			}
 		}
@@ -487,6 +490,7 @@ public class BaseTest {
 		Thread.sleep(2000);
 
 		orderAPI.placeOrder(GuidId,customerEDP,access_token,relatedCartIdsList);
+		placeOrderValue = true;
 	}
 	
 }

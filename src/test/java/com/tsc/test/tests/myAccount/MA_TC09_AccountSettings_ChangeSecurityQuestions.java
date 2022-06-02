@@ -142,7 +142,6 @@ public class MA_TC09_AccountSettings_ChangeSecurityQuestions extends BaseTest {
             }
         }
         */
-
         reporter.reportLog("Verify clicking Submit button");
         Map<String,Object> map=getMyAccountPageThreadLocal().changeSecurityQuestionFunctionInAccountSettingsSection(true);
         basePage.getReusableActionsInstance().staticWait(basePage.getStaticWaitForApplication());
