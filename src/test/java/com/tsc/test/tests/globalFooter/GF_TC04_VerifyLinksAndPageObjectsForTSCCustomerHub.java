@@ -20,7 +20,7 @@ public class GF_TC04_VerifyLinksAndPageObjectsForTSCCustomerHub extends BaseTest
 	 * CER-181
 	 * CER-182	 
 	 */
-	@Test(groups={"Home","Regression","GlobalFooter"})
+	@Test(groups={"Regression","GlobalFooter"})
 	public void GF_TC04_VerifyLinksAndPageObjectsForTSCCustomerHub() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 		BasePage basePage=new BasePage(this.getDriver());		

@@ -10,7 +10,7 @@ public class GF_TC01_VerifySocialMedia extends BaseTest {
 	/*
 	 * CER-167
 	 */
-	@Test(groups={"Sanity","Home","Regression","GlobalFooter"})
+	@Test(groups={"Sanity","Regression","GlobalFooter"})
 	public void GF_TC01_VerifySocialMedia() {
 
 		getGlobalFooterPageThreadLocal().closePopupDialog();

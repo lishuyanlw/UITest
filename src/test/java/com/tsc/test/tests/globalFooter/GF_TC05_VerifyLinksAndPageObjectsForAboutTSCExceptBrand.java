@@ -21,7 +21,7 @@ public class GF_TC05_VerifyLinksAndPageObjectsForAboutTSCExceptBrand extends Bas
 	 * CER 190
 	 */
 
-    @Test(groups={"Home","Regression","GlobalFooter"})
+    @Test(groups={"Regression","GlobalFooter"})
     public void GF_TC05_VerifyLinksAndPageObjectsForAboutTSCExceptBrand() {
         getGlobalFooterPageThreadLocal().closePopupDialog();
         BasePage basePage = new BasePage(this.getDriver());

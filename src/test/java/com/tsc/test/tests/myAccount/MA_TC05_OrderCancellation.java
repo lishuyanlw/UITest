@@ -1,12 +1,9 @@
 package com.tsc.test.tests.myAccount;
 
 import com.tsc.data.Handler.TestDataHandler;
-import com.tsc.pages.GlobalHeaderPage;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
-import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
-
 
 public class MA_TC05_OrderCancellation extends BaseTest {
     /*
@@ -24,9 +21,6 @@ public class MA_TC05_OrderCancellation extends BaseTest {
 
         //Login using valid username and password
         getGlobalLoginPageThreadLocal().Login(lblUserName, lblPassword);
-
-        String lsTestDevice = System.getProperty("Device").trim();
-
         getMyAccountPageThreadLocal().openSubItemWindow("Your Orders","Order Cancellation", getMyAccountPageThreadLocal().lblOrderServiceTitle);
 
         String lnk_orderCancellationURL=TestDataHandler.constantData.getMyAccount().getLnk_orderCancellationURL();
@@ -51,6 +45,5 @@ public class MA_TC05_OrderCancellation extends BaseTest {
 
         reporter.reportLog("Verify Order Modification List section");
         getMyAccountPageThreadLocal().verifyOrderModificationAndOrderReturnsContents();
-
     }
 }

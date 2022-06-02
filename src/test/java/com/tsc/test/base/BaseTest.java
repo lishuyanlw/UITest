@@ -42,6 +42,7 @@ public class BaseTest {
 	private Map<String, String> RunParameters;
 	protected static JSONObject apiUserSessionData = null;
 	protected static JSONObject apiAppSessionData = null;
+	protected static boolean placeOrderValue = false;
 
 	protected static final ThreadLocal<WebDriver> webDriverThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<GlobalHeaderPage> globalHeaderPageThreadLocal = new ThreadLocal<>();
@@ -131,6 +132,7 @@ public class BaseTest {
 	}
 
 	private void init_Mobile() throws IOException {
+		homePageThreadLocal.set(new HomePage(getDriver()));
 		globalHeaderPageThreadLocal.set(new GlobalHeaderPage_Mobile(getDriver()));
 		loginPageThreadLocal.set(new SignInPage_Mobile(getDriver()));
 		globalFooterPageThreadLocal.set(new GlobalFooterPage_Mobile(getDriver()));
@@ -168,17 +170,21 @@ public class BaseTest {
 			productDetailPageThreadLocal.set(new ProductDetailPage_Tablet(getDriver()));
 		}
 
-		if(System.getProperty("Browser").contains("ios")) {
+		if(System.getProperty("Browser").contains("ios") ||
+				(System.getProperty("chromeMobileDevice")!=null
+						&& System.getProperty("chromeMobileDevice").contains("iPad"))) {
 			loginPageThreadLocal.set(new SignInPage(getDriver()));
+			myAccountPageThreadLocal.set(new MyAccount(getDriver()));
 		}
 		else{
 			loginPageThreadLocal.set(new SignInPage_Mobile(getDriver()));
+			myAccountPageThreadLocal.set(new MyAccount_Mobile(getDriver()));
 		}
 
 		reporter = new ExtentTestManager(getDriver());
 		apiResponseThreadLocal.set(new ApiResponse());
 		shoppingCartThreadLocal.set(new ShoppingCart(getDriver()));
-		myAccountPageThreadLocal.set(new MyAccount(getDriver()));
+		homePageThreadLocal.set(new HomePage(getDriver()));
 	}
 
 
@@ -337,12 +343,11 @@ public class BaseTest {
 	}
 
 	@AfterMethod(alwaysRun = true)
-	public void afterTest() throws IOException, org.json.simple.parser.ParseException, InterruptedException, ParseException {
-		if (getDriver() != null) {
-			addPlaceOrder();
-			//(new BasePage(this.getDriver())).deleteSessionStorage();
-			closeSession();
-		}
+	public void afterTest() throws IOException, InterruptedException{
+//		if (getDriver() != null && !placeOrderValue) {
+//			addPlaceOrder();
+//		}
+		closeSession();
 	}
 
 	public void validateText(String strActualText, List<String> listExpectedText, String validationMsg) {
@@ -458,6 +463,7 @@ public class BaseTest {
 			ldOrderDate = LocalDate.parse(lsDate, formatter);
 			noOfDaysBetween = DAYS.between(ldOrderDate,now);
 			if( noOfDaysBetween<=75){
+				placeOrderValue = true;
 				return;
 			}
 		}
@@ -468,22 +474,23 @@ public class BaseTest {
 		Response responseInitial=cartAPI.getAccountCartContentWithCustomerEDP(customerEDP,access_token);
 		AccountCartResponse accountCartInitial = JsonParser.getResponseObject(responseInitial.asString(), new TypeReference<AccountCartResponse>() {});
 		String GuidId=accountCartInitial.getCartGuid();
-
+		/**
 		Response responseDelete=cartAPI.deleteCartItemWithGuid(access_token, GuidId,4);
-//		reporter.reportLog("responseDelete: "+responseDelete.asString());
+		reporter.reportLog("responseDelete: "+responseDelete.asString());
 
 		//ProductEDP Number that will be added to cart for user
 		Map<String,Object> map=cartAPI.addItemsInExistingCart(Integer.parseInt(customerEDP), access_token, GuidId,null);
 		Response userCartResponse=(Response)map.get("Response");
-
+		*/
 		Response responseReview=orderAPI.getOrderReview(customerEDP,access_token);
 		AccountCartResponse accountCartReview = JsonParser.getResponseObject(responseReview.asString(), new TypeReference<AccountCartResponse>() {});
-//		reporter.reportLog("Review: "+responseReview.asString());
+		//reporter.reportLog("Review: "+responseReview.asString());
 		List<Long> relatedCartIdsList=accountCartReview.getRelatedCartIds();
 
 		Thread.sleep(2000);
 
 		orderAPI.placeOrder(GuidId,customerEDP,access_token,relatedCartIdsList);
+		placeOrderValue = true;
 	}
 	
 }

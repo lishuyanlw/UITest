@@ -22,7 +22,7 @@ public class MA_TC17_MyPreferences_Favorites extends BaseTest {
     /*
      *CER-808
      */
-    @Test(groups={"MyAccount","Regression"})
+    @Test(groups={"MyAccountT","Regression"})
     public void MA_TC17_MyPreferences_Favorites() throws IOException, org.json.simple.parser.ParseException {
         //Closing SignIn pop up on login
         getGlobalFooterPageThreadLocal().closePopupDialog();

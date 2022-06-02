@@ -12,7 +12,7 @@ public class GF_TC03_VerifyLanguageForCustomerHubLinksAndAboutTSCLinks extends B
 	/*
 	 * CER-168
 	 */
-	@Test(groups={"Home","Regression","GlobalFooter"})
+	@Test(groups={"Regression","GlobalFooter"})
 	public void GF_TC03_VerifyLanguageForCustomerHubLinksAndAboutTSCLinks() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 		BasePage basePage=new BasePage(this.getDriver());		

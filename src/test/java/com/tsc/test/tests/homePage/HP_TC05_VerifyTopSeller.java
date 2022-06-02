@@ -1,6 +1,5 @@
 package com.tsc.test.tests.homePage;
 
-import java.io.IOException;
 import org.testng.annotations.Test;
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
@@ -11,60 +10,45 @@ public class HP_TC05_VerifyTopSeller extends BaseTest{
 	 * CER-204
 	 */
 	@Test(groups={"Home","Regression"})
-	public void HP_TC05_VerifyTopSeller() throws IOException {
+	public void HP_TC05_VerifyTopSeller() {
 	getGlobalFooterPageThreadLocal().closePopupDialog();
-	if(getglobalheaderPageThreadLocal().validateURL((new BasePage(this.getDriver())).getBaseURL()+"/")){
+	if(getglobalheaderPageThreadLocal().validateURL((new BasePage(this.getDriver())).getBaseURL()+"/"))
 		reporter.reportLogPass("TSC url is correct");
-	}
-	else{
+	else
 		reporter.reportLogFailWithScreenshot("TSC url is incorrect");
-	}
+
 	reporter.reportLog("Home Page");
 	
-	validateText(homePageThreadLocal().getTopSellerHeaderText(), TestDataHandler.constantData.getHomePage().getLbl_TopSellers(), "<Recommentdation product> text is visible and valid");
+	validateText(homePageThreadLocal().getTopSellerHeaderText().toLowerCase(), TestDataHandler.constantData.getHomePage().getLbl_TopSellers().toLowerCase(), "<Recommentdation product> text is visible and valid");
 
-	if(homePageThreadLocal().validateTopSellerIsAboveFooter()){
+	if(homePageThreadLocal().validateTopSellerIsAboveFooter())
 		reporter.reportLogPass("The TopSeller section is above Footer section");
-	}
-	else{
+	else
 		reporter.reportLogFailWithScreenshot("The TopSeller section isn't above Footer section");
-	}
 
-	if(homePageThreadLocal().validateTopSellerHref()){
+	if(homePageThreadLocal().validateTopSellerHref())
 		reporter.reportLogPass("All products in TopSeller have valid links");
-	}
-	else{
+	else
 		reporter.reportLogFailWithScreenshot("some products in TopSeller haven't valid links");
-	}
 
-	if(homePageThreadLocal().validateTopSellerImg()){
+	if(homePageThreadLocal().validateTopSellerImg())
 		reporter.reportLogPass("All products in TopSeller have valid image sources");
-	}
-	else{
+	else
 		reporter.reportLogFailWithScreenshot("some products in TopSeller haven't valid image sources");
-	}
 
-	if(homePageThreadLocal().validateTopSellerName()){
+	if(homePageThreadLocal().validateTopSellerName())
 		reporter.reportLogPass("All products in TopSeller have valid names");
-	}
-	else{
+	else
 		reporter.reportLogFailWithScreenshot("some products in TopSeller haven't valid names");
-	}
 
-	if(homePageThreadLocal().validateTopSellerNowPrice()){
+	if(homePageThreadLocal().validateTopSellerNowPrice())
 		reporter.reportLogPass("All products in TopSeller have valid  NowPrice contents");
-	}
-	else{
+	else
 		reporter.reportLogFailWithScreenshot("some products in TopSeller haven't valid NowPrice contents");
-	}
 
-	if(homePageThreadLocal().validateTopSellerWasPrice()){
+	if(homePageThreadLocal().validateTopSellerWasPrice())
 		reporter.reportLogPass("All products in TopSeller have valid  WasPrice contents");
-	}
-	else{
+	else
 		reporter.reportLogFailWithScreenshot("some products in TopSeller haven't valid WasPrice contents");
 	}
-
-	}
-
 }

@@ -1,7 +1,7 @@
 package com.tsc.pages;
 
-import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
@@ -9,7 +9,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
 import com.tsc.pages.base.BasePage;
 
 public class HomePage extends BasePage{
@@ -22,7 +21,7 @@ public class HomePage extends BasePage{
 	//On Air Section 
 	//Now On Air (NOA) section elements
 	
-	@FindBy(xpath = "//h2[@class='oanHeader'][contains(text(),'On Air')]")
+	@FindBy(xpath = "//*[@class='oanHeader'][contains(text(),'On Air')]")
 	WebElement NOAsection;
 	
 	@FindBy(xpath = "//*[@class='Middle']//*[@class='onAirNowImg']")
@@ -31,15 +30,15 @@ public class HomePage extends BasePage{
 	@FindBy(xpath = "//*[@class='Middle']//div[@class='oanItemDesc']")
 	WebElement lblNOAProductName;
 	
-	@FindBy(xpath = "//*[@class='Middle']//*[@class='oanSingleProduct']//a[contains(@href, 'productdetails')]")
+	@FindBy(xpath = "//*[@class='Middle']//*[@class='oanSingleProduct']//a[contains(@href, 'productdetails') and not(contains(@class,'btn'))]")
 	WebElement lnkNOA;
 	
-	@FindBy(xpath = "//*[contains(@class, 'oanBtn')]")
+	@FindBy(xpath = "//*[@class='Middle']//*[@class='oanSingleProduct']//a[contains(@href, 'productdetails') and contains(@class,'btn')]")
 	WebElement btnShopNow;
 	
 	//Recently Aired (RA) section elements
 	
-	@FindBy(xpath = "//*[@class='recentlyAiredWrapper']//h2[@class='oanHeader']")
+	@FindBy(xpath = "//*[@class='recentlyAiredWrapper']//*[@class='oanHeader']")
 	WebElement RAsection;
 	
 	@FindBy(xpath = "//*[@class='shopAllDiv']//*[contains(@class, 'oanBtn')]")
@@ -59,7 +58,6 @@ public class HomePage extends BasePage{
 	//WebElement btnClose;
 		
 	//TS Main Image section
-	
 	@FindBy(xpath = "//*[@class='TsZone']//div[contains(@class,'tsZoneHero')]")
 	WebElement TSimageUpperSection;
 	
@@ -116,22 +114,28 @@ public class HomePage extends BasePage{
 		
 	//TOP SELLERS by Wei.Li	
 	
-	@FindBy(xpath = "//product-recommendations-endeca//*[contains(@class,'prec-header')]")
+	//@FindBy(xpath = "//product-recommendations-endeca//*[contains(@class,'prec-header')]")
+	@FindBy(xpath="//div[@class='Footer']/preceding-sibling::div[@class='Middle']//div[@class='recommend']//*[contains(@class,'header')]")
 	WebElement lblTopSeller;
 	
-	@FindBy(xpath = "//product-recommendations-endeca//*[contains(@class,'prec-col')]//a")
+	//@FindBy(xpath = "//product-recommendations-endeca//*[contains(@class,'prec-col')]//a")
+	@FindBy(xpath="//div[@class='recommend']//*[contains(@class,'products')]/div[contains(@class,'products__item')]/a")
 	List<WebElement> lnkTopSellerAllLinks;
 	
-	@FindBy(xpath = "//product-recommendations-endeca//*[contains(@class,'prec-col')]//img")
+	//@FindBy(xpath = "//product-recommendations-endeca//*[contains(@class,'prec-col')]//img")
+	@FindBy(xpath="//div[@class='recommend']//*[contains(@class,'products')]/div[contains(@class,'products__item')]//img")
 	List<WebElement> imgTopSellerAllImages;
 	
-	@FindBy(xpath = "//product-recommendations-endeca//*[contains(@class,'prec-col')]//div[contains(@class,'prec-name')]")
+	//@FindBy(xpath = "//product-recommendations-endeca//*[contains(@class,'prec-col')]//div[contains(@class,'prec-name')]")
+	@FindBy(xpath="//div[@class='recommend']//*[contains(@class,'products')]/div[contains(@class,'products__item')]//div[contains(@class,'name')]")
 	List<WebElement> lblTopSellerAllNames;
 	
-	@FindBy(xpath = "//product-recommendations-endeca//*[contains(@class,'prec-col')]//div[contains(@class,'now-price')]")
+	//@FindBy(xpath = "//product-recommendations-endeca//*[contains(@class,'prec-col')]//div[contains(@class,'now-price')]")
+	@FindBy(xpath="//div[@class='recommend']//*[contains(@class,'products')]/div[contains(@class,'products__item')]//div[contains(@class,'now-price')]")
 	List<WebElement> lblTopSellerAllNowPrices;
 	
-	@FindBy(xpath = "//product-recommendations-endeca//*[contains(@class,'prec-col')]//div[contains(@class,'was-price')]")
+	//@FindBy(xpath = "//product-recommendations-endeca//*[contains(@class,'prec-col')]//div[contains(@class,'was-price')]")
+	@FindBy(xpath="//div[@class='recommend']//*[contains(@class,'products')]/div[contains(@class,'products__item')]//*[contains(@class,'was-price')]")
 	List<WebElement> lblTopSellerAllWasPrices;
 	
 	//For Shop By Department by Shruti.Desai
@@ -154,7 +158,10 @@ public class HomePage extends BasePage{
 	WebElement btnShopByDepartmentPrev;
 		
 	@FindBy(xpath = "//div[contains(@class,'ImageAnchorCarousel') and not(contains(@class,'ImageAnchorCarouselData'))]//div[a[contains(@href,'ic=HP_SBD')]]/ancestor::div[contains(@class,'ImageAnchorCarousel') and not(contains(@class,'ImageAnchorCarouselData'))]//button[contains(@class,'slick-next')]")
-	WebElement btnShopByDepartmentNext;	
+	WebElement btnShopByDepartmentNext;
+
+	@FindBy(xpath = "//div[@class='breadcrumb']//a")
+	WebElement btnHomePageBreadcrumb;
 			
 	public void waitForPageLoad() {
 		new WebDriverWait(getDriver(), 1000).until(
@@ -171,57 +178,51 @@ public class HomePage extends BasePage{
 	//Validate Now On Air link
 	public String validatelnkNOA() {
 		String emptyhref="NOA href is empty";
-		if (lnkNOA.getAttribute("href").isEmpty()) {
-							
+		if (lnkNOA.getAttribute("href").isEmpty())
 			return emptyhref;
-			
-		}else{
+		else
 			return lnkNOA.getAttribute("href");
-			}
-		}
+	}
 		
 	//Now On Air(NOA) Image is visible
-	
 	public boolean validateNOAimg() {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(NOAsection);
-			return getReusableActionsInstance().isElementVisible(imgNOA, 10);
-		}
+		return getReusableActionsInstance().isElementVisible(imgNOA, 10);
+	}
 	
 	public boolean validatelblNOAProductName() {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(NOAsection);
-			return getReusableActionsInstance().isElementVisible(lblNOAProductName, 10);
-		}
+		return getReusableActionsInstance().isElementVisible(lblNOAProductName, 10);
+	}
 			
 	public String getlblNOAProductName() {
-			return lblNOAProductName.getText();
-			}
+		return lblNOAProductName.getText();
+	}
 	
 	//Product Price
 	
 	public boolean validateWasPricetag() {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(NOAsection);
-			return getReusableActionsInstance().isElementVisible(lblitemPriceWas, 10);
-		}
+		return getReusableActionsInstance().isElementVisible(lblitemPriceWas, 5);
+	}
 	
 	public boolean validateNowPricetag() {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(NOAsection);
-			return getReusableActionsInstance().isElementVisible(lblitemPriceNow, 10);
-		}
+		return getReusableActionsInstance().isElementVisible(lblitemPriceNow, 10);
+	}
 	
 	
 	//Shop now button is visible
 	
 	public boolean btnShopNowVisible() {
 		 getReusableActionsInstance().javascriptScrollByVisibleElement(NOAsection);
-		 	return	getReusableActionsInstance().isElementVisible(btnShopNow, 10);
-		}
+		 return	getReusableActionsInstance().isElementVisible(btnShopNow, 10);
+	}
 	// Shop Now button link is not empty and get text of button
 	public String validatebtnShopNow() {
 		String emptySNbtn="Shop Now Button href is empty";
 		if (btnShopNow.getAttribute("href").isEmpty()) {
-							
 			return emptySNbtn;
-			
 		}else{
 			return btnShopNow.getText();
 			}
@@ -232,21 +233,23 @@ public class HomePage extends BasePage{
 	public String validateROsection() {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(RAsection);
 		return RAsection.getText();
-		}
+	}
 	
 	public boolean verifyRAimgCount() {
 		List<WebElement> image = getAllRAimg();
-		if (image.size() >=1 && image.size() <= 8) {
+		if(image.size() == 0)
+			return true;
+		else if (image.size() >=1 && image.size() <= 8) {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(image.get(1));
-				return true;
+			return true;
 		}
 		return false;
-		}
+	}
 	
 	 public int getRAimgCount() {
-			List<WebElement> image = getAllRAimg();
-				return image.size();
-		}
+		List<WebElement> image = getAllRAimg();
+		return image.size();
+	}
 	
 	 public List<WebElement> getAllRAimg() { 
 		List<WebElement> RAimage = getDriver().findElements(By.xpath(
@@ -289,21 +292,18 @@ public class HomePage extends BasePage{
 		// Shop All Today's Items button link is not empty and get text of button
 		public String validatebtnShopAllTodaysItem() {
 			String emptySTAIbtn="Shop All Today's Item href is empty";
-			if (btnShopAllTodaysItem.getAttribute("href").isEmpty()) {
-								
+			if (btnShopAllTodaysItem.getAttribute("href").isEmpty())
 				return emptySTAIbtn;
-				
-			}else{
+			else
 				return btnShopAllTodaysItem.getText();
-				}
-			}
+		}
 		
 		//Shop now button is visible
 		
 		public boolean btnShopAllTodaysItemVisible() {
 			 getReusableActionsInstance().javascriptScrollByVisibleElement(RAsection);
-			 	return	getReusableActionsInstance().isElementVisible(btnShopAllTodaysItem, 10);
-			}
+			 return	getReusableActionsInstance().isElementVisible(btnShopAllTodaysItem, 10);
+		}
 		
 		/**
 		 * This method will validate ShopByBrand header text
@@ -505,7 +505,8 @@ public class HomePage extends BasePage{
 		 * @author Wei.Li
 		 */		
 		public boolean validateTopSellerIsAboveFooter() {
-			return this.getReusableActionsInstance().isElementVisible(By.xpath("//div[@class='Footer']/preceding-sibling::div[@class='Middle']//product-recommendations-endeca//*[contains(@class,'prec-header')]"),30);
+			//String old_xpath="//div[@class='Footer']/preceding-sibling::div[@class='Middle']//product-recommendations-endeca//*[contains(@class,'prec-header')]";
+			return this.getReusableActionsInstance().isElementVisible(By.xpath("//div[@class='Footer']/preceding-sibling::div[@class='Middle']//div[@class='recommend']"),30);
 		}
 		
 		/**
@@ -513,10 +514,10 @@ public class HomePage extends BasePage{
 		 * @return true/false
 		 * @author Wei.Li
 		 */			
-		public boolean validateTopSellerHref() throws IOException {
+		public boolean validateTopSellerHref() {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(lblTopSeller);
 
-			String lsUrl,lsHref,lsBaseUrl;
+			String lsHref;
 			for(WebElement item: this.lnkTopSellerAllLinks) {
 				lsHref=item.getAttribute("href");
 				if(lsHref.isEmpty()) {
@@ -573,7 +574,7 @@ public class HomePage extends BasePage{
 		public boolean validateTopSellerName() {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(lblTopSeller);
 			for(WebElement item: this.lblTopSellerAllNames) {				
-				if(item.getText().isEmpty()) {
+				if(item.getAttribute("innerText").isEmpty()) {
 					return false;
 				}
 			}
@@ -589,7 +590,7 @@ public class HomePage extends BasePage{
 		public boolean validateTopSellerNowPrice() {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(lblTopSeller);
 			for(WebElement item: this.lblTopSellerAllNowPrices) {				
-				if(item.getText().isEmpty()) {
+				if(item.getAttribute("innerText").isEmpty()) {
 					return false;
 				}
 			}
@@ -825,18 +826,57 @@ public class HomePage extends BasePage{
 	 * Method to click on each image for all sections of TS image  
 	 * @author Shruti Desai
 	 */
-		public void clickallTSimageLinks(WebElement totalImage,WebElement attriTSimage,WebElement linksTSimage,List<WebElement> hrefallTSimage) throws InterruptedException {
-			int totalTsimage = getTSimgCount(totalImage);
-			if(gethrefListTSimage(hrefallTSimage).size()!=0) {
-				for (int i=1;i<=totalTsimage; i++) {
-					String clickonlinkTab = Keys.chord(Keys.CONTROL, Keys.ENTER);
-					String lsImageSrc=attriTSimage.findElement(By.xpath(".//img")).getAttribute("src");
-					this.waitForCondition(Driver->{return !attriTSimage.findElement(By.xpath(".//img")).getAttribute("src").equalsIgnoreCase(lsImageSrc);},3000);
-					linksTSimage.sendKeys(clickonlinkTab);
-					this.waitForCondition(Driver->{return !attriTSimage.findElement(By.xpath(".//img")).getAttribute("src").equalsIgnoreCase(lsImageSrc);},3000);
-				}
+	public void clickallTSimageLinks(WebElement totalImage,WebElement attriTSimage,WebElement linksTSimage,List<WebElement> hrefallTSimage) {
+		int totalTsImage = getTSimgCount(totalImage);
+		String clickOnLinkTab = Keys.chord(Keys.CONTROL, Keys.ENTER);
+		AtomicReference<String> finalTempLsImageSrc = new AtomicReference<>();
+		if(gethrefListTSimage(hrefallTSimage).size()!=0) {
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(attriTSimage.findElement(By.xpath(".//img")));
+			for (int i=1;i<=totalTsImage; i++) {
+				String lsImageSrc=attriTSimage.findElement(By.xpath(".//img")).getAttribute("src");
+				if(this.waitForCondition(Driver->{return (!lsImageSrc.equalsIgnoreCase(finalTempLsImageSrc.get()) && !attriTSimage.findElement(By.xpath(".//img")).getAttribute("src").equalsIgnoreCase(lsImageSrc));},7000))
+					linksTSimage.sendKeys(clickOnLinkTab);
+				//this.waitForCondition(Driver->{return !attriTSimage.findElement(By.xpath(".//img")).getAttribute("src").equalsIgnoreCase(lsImageSrc);},3000);
+				finalTempLsImageSrc.set(lsImageSrc);
 			}
 		}
+	}
+
+	/*
+	 * Method to verify each image for all sections of TS image for Safari
+	 */
+	public Set<String> getTSImageLinkForSafariPostClick(String testDevice) {
+		int tempCounter = 1;
+		Set<String> tsImageLinkSet = new HashSet<>();
+		String clickOnLinkTab;
+		int totalTsImage = getTSimgCount(totalTSimageUpperSection);
+		if(testDevice.equalsIgnoreCase("Desktop"))
+			clickOnLinkTab = Keys.chord(Keys.COMMAND, Keys.ENTER);
+		else
+			clickOnLinkTab = Keys.chord(Keys.COMMAND, "T");
+		AtomicReference<String> finalTempLsImageSrc = new AtomicReference<>();
+		if(gethrefListTSimage(hrefallTSimageUpperSection).size()!=0) {
+			for (int i=1;i<=totalTsImage; i++) {
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(attriTSimageUpperSection.findElement(By.xpath(".//img")));
+				String lsImageSrc=attriTSimageUpperSection.findElement(By.xpath(".//img")).getAttribute("src");
+				if(this.waitForCondition(Driver->{return (!lsImageSrc.equalsIgnoreCase(finalTempLsImageSrc.get()) && !attriTSimageUpperSection.findElement(By.xpath(".//img")).getAttribute("src").equalsIgnoreCase(lsImageSrc));},7000)){
+					linksTSimageUpperSection.sendKeys(clickOnLinkTab);
+					this.waitForPageLoad();
+					tsImageLinkSet.add(this.URL());
+					if(tempCounter<totalTsImage && !testDevice.equalsIgnoreCase("Desktop")){
+						this.waitForCondition(Driver->{return this.btnHomePageBreadcrumb.isEnabled() &&
+								this.btnHomePageBreadcrumb.isDisplayed();},6000);
+						this.getReusableActionsInstance().clickIfAvailable(this.btnHomePageBreadcrumb);
+						this.waitForPageLoad();
+						tempCounter++;
+					}
+				}
+				//System.out.println("lsImage: "+lsImageSrc+" and finalTempLsImageSrc: "+finalTempLsImageSrc.get());
+				finalTempLsImageSrc.set(lsImageSrc);
+			}
+		}
+		return tsImageLinkSet;
+	}
 				
 	/*
 	 * Method to Get list of url for clicked TS images (upper section) open in different tabs  
@@ -911,7 +951,8 @@ public class HomePage extends BasePage{
 	 * @return int: number of all images in TS image all sections
 	 * @author Shruti Desai
 	 */
-		public int totalTSimage(String Section) {	
+		public int totalTSimage(String Section) {
+			this.waitForPageLoad();
 			int TSimageCount = 0;
 			switch (Section){
 				case "Upper" :

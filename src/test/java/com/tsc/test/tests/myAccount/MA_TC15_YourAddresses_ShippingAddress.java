@@ -11,7 +11,6 @@ import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,8 +45,20 @@ public class MA_TC15_YourAddresses_ShippingAddress extends BaseTest {
 
         //Login using valid username and password
         getGlobalLoginPageThreadLocal().Login(lblUserName, lblPassword);
+        //String lsTestDevice = System.getProperty("Device").trim();
+        reporter.reportLog("Verify customer information");
+        String customerNumber = accountResponse.getCustomerNo();
+        String userCustomerNumber = getGlobalLoginPageThreadLocal().getCustomerNumberForLoggedInUser();
+        if (customerNumber.equals(userCustomerNumber))
+            getReporter().reportLogPass("User is successfully logged in with customer no: " + userCustomerNumber);
+        else
+            getReporter().reportLogFailWithScreenshot("User is not logged in with expected customer no: " + userCustomerNumber + " but with other customer no: " + customerNumber);
 
-        String lsTestDevice = System.getProperty("Device").trim();
+        boolean value = getGlobalLoginPageThreadLocal().verifySignOutButtonVisibilityOnPage();
+        if(value)
+            reporter.reportLogPass("SignOut button is displaying correctly");
+        else
+            reporter.reportLogFailWithScreenshot("SignOut button is not displaying correctly");
 
         getMyAccountPageThreadLocal().openSubItemWindow("Your Addresses", "Shipping Address", getMyAccountPageThreadLocal().lblYourAddressTitle);
         int addressAmountBeforeAdding=getMyAccountPageThreadLocal().lstShippingAddressContainer.size();
@@ -58,23 +69,6 @@ public class MA_TC15_YourAddresses_ShippingAddress extends BaseTest {
             reporter.reportLogPass("The navigated URL is equal to expected one:" + expectedURL);
         } else {
             reporter.reportLogPass("The actual navigated URL:+" + basePage.URL() + " is not equal to expected one:" + expectedURL);
-        }
-
-        if (!lsTestDevice.equalsIgnoreCase("Mobile")) {
-            reporter.reportLog("Verify customer information");
-            String customerNumber = accountResponse.getCustomerNo();
-            String userCustomerNumber = getGlobalLoginPageThreadLocal().getCustomerNumberForLoggedInUser();
-            if (customerNumber.equals(userCustomerNumber))
-                getReporter().reportLogPass("User is successfully logged in with customer no: " + userCustomerNumber);
-            else
-                getReporter().reportLogFailWithScreenshot("User is not logged in with expected customer no: " + userCustomerNumber + " but with other customer no: " + customerNumber);
-
-            if (basePage.getReusableActionsInstance().isElementVisible(getGlobalLoginPageThreadLocal().btnSignOut)) {
-                reporter.reportLogPass("SignOut button is displaying correctly");
-            }
-            else {
-                reporter.reportLogFailWithScreenshot("SignOut button is not displaying correctly");
-            }
         }
 
         reporter.reportLog("Verify address content");
@@ -89,7 +83,8 @@ public class MA_TC15_YourAddresses_ShippingAddress extends BaseTest {
         reporter.reportLog("Adding 2 new shipping addresses");
         getMyAccountPageThreadLocal().openAddOrEditAddressWindow("addShippingAddress",null);
         String lsAutoSearchKeywordAdd = DataConverter.getSaltString(4,"numberType");
-        Map<String,String> mapAdd=getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeywordAdd,false,false,-1);
+        getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeywordAdd, false, false, -1);
+        Map<String,String> mapAdd;
 
         //To avoid duplicated data issue
         try{
@@ -219,7 +214,6 @@ public class MA_TC15_YourAddresses_ShippingAddress extends BaseTest {
         else{
             reporter.reportLogFailWithScreenshot("The duplicated address error message:'"+lsActualErrorMessage+"' is not displaying as expected:'"+lsExpectedErrorMessage+"'");
         }
-        getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(false);
-
+        //getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(false);
     }
 }
