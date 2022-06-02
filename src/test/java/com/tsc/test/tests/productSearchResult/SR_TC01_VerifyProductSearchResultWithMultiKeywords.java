@@ -97,7 +97,9 @@ public class SR_TC01_VerifyProductSearchResultWithMultiKeywords extends BaseTest
 
 			productList=getProductResultsPageThreadLocal().getProductList();
 			if(productList.size()>0) {
+				reporter.reportLog("Verify search content without mouse over");
 				getProductResultsPageThreadLocal().verifySearchResultContent(productList,false);
+				reporter.reportLog("Verify search content with mouse over");
 				getProductResultsPageThreadLocal().verifySearchResultContentWithMouseHover(productList,false);
 			}
 

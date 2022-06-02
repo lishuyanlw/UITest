@@ -592,11 +592,13 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 	@Override
 	public void verifySearchResultContent(List<WebElement> productList,boolean bMandatoryOnly) {
 		if(bMandatoryOnly){
+			reporter.reportLog("Verify Search Result Content For Mandatory Fields");
 			verifySearchResultContentForMandatoryFields(productList);
 		}
 		else{
+			reporter.reportLog("Verify Search Result Content For Mandatory Fields");
 			verifySearchResultContentForMandatoryFields(productList);
-
+			reporter.reportLog("Verify Search Result Content For Optional Fields");
 			verifySearchResultContentForOptionalFields(productList);
 		}
 	}
@@ -778,6 +780,8 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 
 	@Override
 	public void verifySearchResultContentWithMouseHover(List<WebElement> productList,boolean bMouseHoverOnly) {
+		reporter.reportLog("Verify Search Result Content With Mouse Hover");
+
 		int loopSize;
 		WebElement item,element;
 		String lsText;
@@ -1034,11 +1038,11 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 			}
 			
 			if(bSizeDropdown&&!bColorDoprdown) {
-				if(lsText.equalsIgnoreCase("Select colour")) {
-					reporter.reportLogPass("The button text is equal to 'Select colour'");
+				if(lsText.equalsIgnoreCase("Select style")) {
+					reporter.reportLogPass("The button text is equal to 'Select style'");
 				}
 				else {
-					reporter.reportLogFailWithScreenshot("The button text is not equal to 'Select colour'");
+					reporter.reportLogFailWithScreenshot("The button text is not equal to 'Select style'");
 				}
 			}
 			
@@ -1092,11 +1096,11 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 				}
 			}
 			else {
-				if(lsText.equalsIgnoreCase("Select colour")) {
-					reporter.reportLogPass("The button text is equal to 'Select colour'");
+				if(lsText.equalsIgnoreCase("Select style")) {
+					reporter.reportLogPass("The button text is equal to 'Select style'");
 				}
 				else {
-					reporter.reportLogFailWithScreenshot("The button text is not equal to 'Select colour'");
+					reporter.reportLogFailWithScreenshot("The button text is not equal to 'Select style'");
 				}
 			}			
 		}
@@ -1127,11 +1131,11 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 						}
 					}
 					else {
-						if(lsText.equalsIgnoreCase("Select colour")) {
-							reporter.reportLogPass("The button text is equal to 'Select colour'");
+						if(lsText.equalsIgnoreCase("Select style")) {
+							reporter.reportLogPass("The button text is equal to 'Select style'");
 						}
 						else {
-							reporter.reportLogFailWithScreenshot("The button text is not equal to 'Select colour'");
+							reporter.reportLogFailWithScreenshot("The button text is not equal to 'Select style'");
 						}
 					}
 					
@@ -1343,6 +1347,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 			String lsSelectedTitle=element.getText().trim();
 			this.selectedProductItem.productSelectedColor=lsSelectedTitle;
+			lsText=lsText.replace("styles","").trim();
 			if(lsText.equalsIgnoreCase(lsSelectedTitle)) {
 				reporter.reportLogPass("The selected color title is displaying correctly");
 			}
@@ -1437,7 +1442,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 			reporter.reportLogFailWithScreenshot("The product NowPrice of "+this.selectedProductItem.productNowPrice+" in PRP is not the same as the one of "+lsProductNowPrice+" displayed in PDP");
 		}
 
-		String lsProductWasPrice=pdp.getElementInnerText(pdp.lblProductWasPrice);
+		String lsProductWasPrice=pdp.getElementInnerText(pdp.lblProductWasPrice).replace("Was","").trim();
 		if(lsProductWasPrice.equalsIgnoreCase(this.selectedProductItem.productWasPrice)) {
 			reporter.reportLogPass("The product WasPrice of "+this.selectedProductItem.productWasPrice+" in PRP is the same as the one of "+lsProductWasPrice+" displayed in PDP");
 		}
@@ -1446,8 +1451,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 		}
 
 		if(!this.selectedProductItem.productSelectedSize.isEmpty()) {
-			Select sizeOption=new Select(pdp.selectSizeOption);
-			lsSelectedTitle=sizeOption.getFirstSelectedOption().getText().trim();
+			lsSelectedTitle=this.getElementInnerText(pdp.lblSizeTitle).split(":")[1].trim();
 			if(lsSelectedTitle.equalsIgnoreCase(this.selectedProductItem.productSelectedSize)) {
 				reporter.reportLogPass("The selected size in PRP is the same as the one displayed in PDP");
 			}
@@ -1457,24 +1461,15 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 		}
 
 		if(!this.selectedProductItem.productSelectedColor.isEmpty()) {
-			if(pdp.judgeStyleDisplayModeIsDropdownMenu()) {
-				if(this.getElementText(pdp.selectProductStyle).equalsIgnoreCase(this.selectedProductItem.productSelectedColor)) {
-					reporter.reportLogPass("The selected color in PRP is the same as the one displayed in PDP");
-				}
-				else {
-					reporter.reportLogFailWithScreenshot("The selected color in PRP is not the same as the one displayed in PDP");
-				}
+			lsSelectedTitle=this.getElementInnerText(pdp.lblRadioProductStyleTitle).split(":")[1].trim();
+			if(lsSelectedTitle.equalsIgnoreCase(this.selectedProductItem.productSelectedColor)) {
+				reporter.reportLogPass("The selected color in PRP is the same as the one displayed in PDP");
 			}
 			else {
-				if(this.getElementText(pdp.lblRadioProductStyleTitle).equalsIgnoreCase(this.selectedProductItem.productSelectedColor)) {
-					reporter.reportLogPass("The selected color in PRP is the same as the one displayed in PDP");
-				}
-				else {
-					reporter.reportLogFailWithScreenshot("The selected color in PRP is not the same as the one displayed in PDP");
-				}
+				reporter.reportLogFailWithScreenshot("The selected color in PRP is not the same as the one displayed in PDP");
 			}
 		}
-			
+
 	}
 
 	public String judgeProductOptionType() {
