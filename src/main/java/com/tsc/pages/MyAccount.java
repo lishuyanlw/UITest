@@ -3857,7 +3857,7 @@ public class MyAccount extends BasePage {
 
 		element=item.findElement(byRecentlyViewedItemNowPrice);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-		lsText=element.getText().trim();
+		lsText= String.valueOf(this.getFloatFromString(element.getText(),true));
 		if(!lsText.isEmpty()){
 			reporter.reportLogPass("The product NowPrice of recently viewing history item is displaying correctly");
 		}
@@ -3877,7 +3877,7 @@ public class MyAccount extends BasePage {
 		if(lsText!=null){
 			element=item.findElement(byRecentlyViewedItemWasPrice);
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-			lsText=element.getText().trim();
+			lsText= String.valueOf(this.getFloatFromString(element.getText(),true));
 			if(!lsText.isEmpty()){
 				reporter.reportLogPass("The product WasPrice of recently viewing history item is displaying correctly");
 			}
