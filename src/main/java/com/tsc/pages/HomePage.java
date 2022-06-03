@@ -238,7 +238,8 @@ public class HomePage extends BasePage{
 	public boolean verifyRAimgCount() {
 		List<WebElement> image = getAllRAimg();
 		if(image.size() == 0)
-			return true;
+			//Returning false if no image is present for On Air Section
+			return false;
 		else if (image.size() >=1 && image.size() <= 8) {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(image.get(1));
 			return true;
