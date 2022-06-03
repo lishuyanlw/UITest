@@ -1166,7 +1166,7 @@ public class ProductResultsPage extends BasePage{
 		Select sortOption= new Select(this.btnSortSelect);
 		sortOption.selectByVisibleText(lsOption);
 
-		this.waitForCondition(Driver->{return !lsUrl.equalsIgnoreCase(this.URL());},8000);
+		this.waitForCondition(Driver->{return !lsUrl.equalsIgnoreCase(this.URL());},18000);
 
 		if(!this.URL().contains("page=")) {
 			reporter.reportLogPass("The Url does not contain page term.");
@@ -2059,7 +2059,7 @@ public class ProductResultsPage extends BasePage{
 	 */
 	public boolean checkProductResultExisting() {
 		//To keep it for product result section loading, otherwise sometimes will cause failure
-		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+		this.getReusableActionsInstance().staticWait(3*this.getStaticWaitForApplication());
 		return this.checkChildElementExistingByAttribute(this.cntTSCContainer,"class","prp");
 	}
 
@@ -2934,7 +2934,6 @@ public class ProductResultsPage extends BasePage{
 		this.getReusableActionsInstance().waitForElementVisibility(this.lblSearchResultMessage,180);
 		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 
-//		this.getSearchResultLoad(lsKeyword,true);
 		item=this.productResultList.get(0).findElement(this.byProductHeaderLike);
 
 		if(item.getAttribute("aria-pressed").equalsIgnoreCase("true")) {
@@ -2944,8 +2943,7 @@ public class ProductResultsPage extends BasePage{
 		}
 
 		this.getReusableActionsInstance().clickIfAvailable(item);
-		final WebElement tempItem=item;
-		this.waitForCondition(Driver->{ return tempItem.getAttribute("aria-pressed").equalsIgnoreCase("true");},5000);
+		this.getReusableActionsInstance().staticWait(5*this.getStaticWaitForApplication());
 
 		if(item.getAttribute("aria-pressed").equalsIgnoreCase("true")) {
 			reporter.reportLogPass("The favorite icon is displaying clicking status correctly");
@@ -3184,8 +3182,8 @@ public class ProductResultsPage extends BasePage{
 
 		WebElement productFilterTitle=filterContainerItem.findElement(this.byProductFilterTitle);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(productFilterTitle);
-		this.getReusableActionsInstance().clickIfAvailable(productFilterTitle);
-		this.waitForCondition(Driver->{return !checkIfFilterItemIsCollapsed(filterContainerItem);},5000);
+		this.clickElement(productFilterTitle);
+		this.waitForCondition(Driver->{return !checkIfFilterItemIsCollapsed(filterContainerItem);},15000);
 	}
 
 	/**

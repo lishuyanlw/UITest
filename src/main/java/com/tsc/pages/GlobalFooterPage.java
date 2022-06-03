@@ -962,7 +962,7 @@ public class GlobalFooterPage extends BasePage {
 	 * @author Wei.Li
 	 */
 	public void verifySearchBoxAndTopCustomerQuestionsInCustomerServicePageObject() {
-		String lsText;
+		String lsHeaderText,lsText;
 		getReusableActionsInstance().javascriptScrollByVisibleElement(lblCustomerServiceWhatCanWeHelpYouWith);
 		lsText=lblCustomerServiceWhatCanWeHelpYouWith.getText();
 		lsText=this.getShortenText(lsText,100);
@@ -993,25 +993,25 @@ public class GlobalFooterPage extends BasePage {
 
 		for(WebElement item:lstTopCustomerQuestionsTitle){
 			getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-			lsText=item.getText();
-			lsText=this.getShortenText(lsText,100);
-			if(!lsText.isEmpty()){
-				reporter.reportLogPass("The element of '"+ lsText+"'"+" in Top customer questions list is displaying correctly.");
+			lsHeaderText=item.getText();
+			lsHeaderText=this.getShortenText(lsHeaderText,100);
+			if(!lsHeaderText.isEmpty()){
+				reporter.reportLogPass("The element of '"+ lsHeaderText+"'"+" in Top customer questions list is displaying correctly.");
 			}
 			else{
-				reporter.reportLogFailWithScreenshot("The element of '"+ lsText+"'"+" in Top customer questions list is not displaying correctly.");
+				reporter.reportLogFailWithScreenshot("The element of '"+ lsHeaderText+"'"+" in Top customer questions list is not displaying correctly.");
 			}
 
-			getReusableActionsInstance().clickIfAvailable(item);
-			this.waitForCondition(Driver->{return this.getChildElementCount(item)>1;},5000);
+			this.clickElement(item);
+			this.getReusableActionsInstance().staticWait(5*this.getStaticWaitForApplication());
 			getReusableActionsInstance().javascriptScrollByVisibleElement(lblTopCustomerQuestionsContent);
 			lsText=lblTopCustomerQuestionsContent.getText();
 			lsText=this.getShortenText(lsText,100);
 			if(!lsText.isEmpty()){
-				reporter.reportLogPass("The sub element of '"+ lsText+"'"+" in Top customer questions list is displaying correctly.");
+				reporter.reportLogPass("The sub element of '"+ lsText+"' for '"+lsHeaderText+"' in Top customer questions list is displaying correctly.");
 			}
 			else{
-				reporter.reportLogFailWithScreenshot("The sub element of '"+ lsText+"'"+" in Top customer questions list is not displaying correctly.");
+				reporter.reportLogFailWithScreenshot("The sub element of '"+ lsText+"' for '"+lsHeaderText+"' in Top customer questions list is not displaying correctly.");
 			}
 		}
 	}
@@ -1387,7 +1387,7 @@ public class GlobalFooterPage extends BasePage {
 
 	/**
 	 * This method is to verify Live Chat popup window in CustomerService Page Objects.
-	 * @param WebElement btnLiveChat: to tell it is for Customer service or Contact info
+	 * @param - WebElement - btnLiveChat: to tell it is for Customer service or Contact info
 	 * @author Wei.Li
 	 */
 	public void verifyLiveChatPopupWindowInCustomerServicePageObject(WebElement btnLiveChat) {
@@ -1647,7 +1647,7 @@ public class GlobalFooterPage extends BasePage {
 
 	/**
 	 * This method is to verify Email inquiries/Billing or Refund/Feedback clicking action and content in Contact TSC.
-	 * @param String lsType : Email/Billing/Feedback
+	 * @param - String - lsType : Email/Billing/Feedback
 	 * @author Wei.Li
 	 */
 	public void verifyClickingActionForInquiriesOrFeedback(String lsType) {
@@ -1683,7 +1683,7 @@ public class GlobalFooterPage extends BasePage {
 
 	/**
 	 * This method is to verify Email inquiries/Billing or Refund/Feedback content in Contact TSC.
-	 * @param String lsType : Email/Billing/Feedback
+	 * @param - String - lsType : Email/Billing/Feedback
 	 * @author Wei.Li
 	 */
 	public void verifyInquiriesOrFeedbackContent(String lsType) {

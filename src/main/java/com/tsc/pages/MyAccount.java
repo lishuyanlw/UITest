@@ -3129,10 +3129,15 @@ public class MyAccount extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressLine1);
 		inputAddOrEditAddressLine1.clear();
 		String[] data = lsAutoSearchKeyword.codePoints().mapToObj(cp->new String(Character.toChars(cp))).toArray(size->new String[size]);
+		int sum=0;
 		for(String inputText:data){
+			if(sum>=30){
+				break;
+			}
 			inputAddOrEditAddressLine1.sendKeys(inputText);
 			//For thinking time for waiting for backend response
 			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+			sum++;
 		}
 		this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: block;");},20000);
 		this.getReusableActionsInstance().staticWait(2*this.getStaticWaitForApplication());
@@ -3220,10 +3225,15 @@ public class MyAccount extends BasePage {
 					this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressLine1);
 					inputAddOrEditAddressLine1.clear();
 					String[] data = entry.getValue().toString().codePoints().mapToObj(cp->new String(Character.toChars(cp))).toArray(size->new String[size]);
+					int sum=0;
 					for(String inputText:data){
+						if(sum>=30){
+							break;
+						}
 						inputAddOrEditAddressLine1.sendKeys(inputText);
 						//For thinking time for waiting for backend response
 						this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+						sum++;
 					}
 					this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: block;");},20000);
 					this.getReusableActionsInstance().staticWait(2*this.getStaticWaitForApplication());
@@ -3260,10 +3270,15 @@ public class MyAccount extends BasePage {
 			inputAddOrEditAddressLine1.clear();
 			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 			String[] data = lsAuoSearchKeyword.codePoints().mapToObj(cp->new String(Character.toChars(cp))).toArray(size->new String[size]);
+			int sum=0;
 			for(String inputText:data){
+				if(sum>=30){
+					break;
+				}
 				inputAddOrEditAddressLine1.sendKeys(inputText);
 				//For thinking time for waiting for backend response
 				this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+				sum++;
 			}
 			this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: block;");},20000);
 			this.getReusableActionsInstance().staticWait(3*this.getStaticWaitForApplication());
@@ -3359,10 +3374,15 @@ public class MyAccount extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressLine1);
 		inputAddOrEditAddressLine1.clear();
 		String[] data = lsAddress1.codePoints().mapToObj(cp->new String(Character.toChars(cp))).toArray(size->new String[size]);
+		int sum=0;
 		for(String inputText:data){
+			if(sum>=30){
+				break;
+			}
 			inputAddOrEditAddressLine1.sendKeys(inputText);
 			//For thinking time for waiting for backend response
 			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+			sum++;
 		}
 		this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: block;");},20000);
 		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());

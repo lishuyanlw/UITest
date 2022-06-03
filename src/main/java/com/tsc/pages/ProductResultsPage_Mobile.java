@@ -1601,7 +1601,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 		List<String> lstItem=lstFilter.get(0);
 		ghp.clickCuratedCollectionsMenuItem(lstItem.get(0), lstItem.get(1));
 		this.waitForPageToLoad();
-		this.getReusableActionsInstance().waitForElementVisibility(this.lblSearchResultMessage,120);
+		this.getReusableActionsInstance().waitForElementVisibility(this.lblSearchResultMessageKeyWordTitle,120);
 		
 		int navigateItemCount=this.lstSearchResultNavigation.size();
 		if(navigateItemCount==2) {
