@@ -2909,7 +2909,8 @@ public class ProductResultsPage extends BasePage{
 			reporter.reportLog("No product search result available.");
 			return;
 		}
-				
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productResultList.get(0));
 		String prpProductName=this.getElementInnerText(this.productResultList.get(0).findElement(this.byProductName));
 		String prpProductNowPrice=this.getElementInnerText(this.productResultList.get(0).findElement(this.byProductNowPrice)).split(":")[1].trim();
 		int prpReviewRateStarCount=this.getProductItemReviewNumberAmountFromStarImage(this.productResultList.get(0).findElements(this.byProductReviewRatingImage));
@@ -2920,7 +2921,7 @@ public class ProductResultsPage extends BasePage{
 	
 		WebElement item=this.productResultList.get(0).findElement(this.byProductHeaderLike);
 
-		if(item.getAttribute("aria-pressed").equalsIgnoreCase("false")) {
+		if(!item.getAttribute("class").contains("product-card__header-like--liked")) {
 			reporter.reportLogPass("The favorite icon is displaying not clicking status correctly");
 		}
 		else {
@@ -2936,16 +2937,19 @@ public class ProductResultsPage extends BasePage{
 
 		item=this.productResultList.get(0).findElement(this.byProductHeaderLike);
 
-		if(item.getAttribute("aria-pressed").equalsIgnoreCase("true")) {
+		if(item.getAttribute("class").contains("product-card__header-like--liked")) {
 			myAccount.clearFavoriteHistory(true);
 			this.getSearchResultLoad(lsKeyword,true);
 			item=this.productResultList.get(0).findElement(this.byProductHeaderLike);
 		}
 
+		final WebElement tmpItem=item;
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productResultList.get(0));
 		this.getReusableActionsInstance().clickIfAvailable(item);
 		this.getReusableActionsInstance().staticWait(5*this.getStaticWaitForApplication());
+		this.waitForCondition(Driver->{return tmpItem.getAttribute("class").contains("product-card__header-like--liked");},10000);
 
-		if(item.getAttribute("aria-pressed").equalsIgnoreCase("true")) {
+		if(item.getAttribute("class").contains("product-card__header-like--liked")) {
 			reporter.reportLogPass("The favorite icon is displaying clicking status correctly");
 		}
 		else {
