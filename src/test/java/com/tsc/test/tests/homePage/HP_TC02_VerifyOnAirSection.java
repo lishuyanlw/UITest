@@ -36,27 +36,13 @@ public class HP_TC02_VerifyOnAirSection extends BaseTest {
 		reporter.reportLogFailWithScreenshot("NOA href is empty");
 
 	 if(homePageThreadLocal().validateNowPricetag()) {
-		 if(homePageThreadLocal().validateWasPricetag()) {
-			 if(homePageThreadLocal().validateWasPricetag()){
-				 reporter.reportLogPass("Was Price tag is visible");
-			 }
-			 else{
-				 reporter.reportLogFailWithScreenshot("Was Price tag is not visible");
-			 }
-
-			 if(homePageThreadLocal().validateNowPricetag()){
-				 reporter.reportLogPass("Now Price tag is visible");
-			 }
-			 else{
-				 reporter.reportLogFailWithScreenshot("Now Price tag is not visible");
-			 }
-		 }else {
-			 if(homePageThreadLocal().validateNowPricetag())
-				 reporter.reportLogPass("Now Price tag is visible");
-			 else
-				 reporter.reportLogFailWithScreenshot("Now Price tag is not visible");
-			}
-		}
+		 reporter.reportLogPass("Now Price tag is visible");
+		 if (homePageThreadLocal().validateWasPricetag())
+		 	reporter.reportLogPass("Was Price tag is visible");
+		 else
+		 	reporter.reportLog("Was Price is not available for product");
+	 }else
+		 reporter.reportLogFailWithScreenshot("Now Price tag is not visible");
 
 	 if(homePageThreadLocal().btnShopNowVisible())
 		 reporter.reportLogPass("Shop Now button is visible");
@@ -73,13 +59,9 @@ public class HP_TC02_VerifyOnAirSection extends BaseTest {
 		validateText(homePageThreadLocal().validateROsection(),"RECENTLY AIRED","Recently Aired Section");
 	 }
 
-	 int imageCount = homePageThreadLocal().getRAimgCount();
-	 if(imageCount>=1){
-		 if(homePageThreadLocal().verifyRAimgCount())
-			 reporter.reportLogPass("Image Count in On Air Section is: "+imageCount);
-		 else
-			 reporter.reportLogFailWithScreenshot("Image Count in On Air Section is: "+homePageThreadLocal().getRAimgCount());
-
+	 if(homePageThreadLocal().verifyRAimgCount()){
+		int imageCount = homePageThreadLocal().getRAimgCount();
+		 reporter.reportLogPass("Image Count in Recently Aired Section is: "+imageCount);
 		 for(int i=0; i<imageCount; i++) {
 			 if(homePageThreadLocal().validateRAsectionImages(i)){
 				 reporter.reportLogPass("Image & Link is present for tile: "+(i+1));
@@ -95,6 +77,8 @@ public class HP_TC02_VerifyOnAirSection extends BaseTest {
 			 }
 		 }
 	 }
+	 else
+		 reporter.reportLogFailWithScreenshot("Image Count in Recently Aired Section is: "+homePageThreadLocal().getRAimgCount());
 
 	 if(homePageThreadLocal().btnShopAllTodaysItemVisible())
 		 reporter.reportLogPass("Shop All Today'S Items button is visible");

@@ -1,15 +1,9 @@
 package com.tsc.test.tests.integration;
 
-import com.tsc.api.apiBuilder.AccountAPI;
-import com.tsc.api.pojo.AccountResponse;
 import com.tsc.api.pojo.Product;
 import com.tsc.data.Handler.TestDataHandler;
-import com.tsc.data.pojos.ConstantData;
-import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 import org.testng.annotations.Test;
-
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +12,7 @@ public class IN_TC01_PDP extends BaseTest {
      *CER-810
      */
     @Test(groups={"Integration","Regression"})
-    public void IN_TC01_PDP() throws IOException, org.json.simple.parser.ParseException {
+    public void IN_TC01_PDP() {
         //Closing SignIn pop up on login
         getGlobalFooterPageThreadLocal().closePopupDialog();
 
@@ -37,13 +31,10 @@ public class IN_TC01_PDP extends BaseTest {
         pdpMap=getProductDetailPageThreadLocal().getFullInformationOnPDP(true,true,true,false,false);
         getProductDetailPageThreadLocal().verifyLinkageInfoBetweenPRPAndPDP(prpMap,pdpMap);
 
-//        BasePage basePage=new BasePage(this.getDriver());
-//
-//        basePage.getReusableActionsInstance().javascriptScrollByVisibleElement(getglobalheaderPageThreadLocal().lnkTSClogo);
-//        getglobalheaderPageThreadLocal().lnkTSClogo.click();
-//        basePage.getReusableActionsInstance().staticWait(5*basePage.getStaticWaitForApplication());
-
-
-
+        /**BasePage basePage=new BasePage(this.getDriver());//
+        basePage.getReusableActionsInstance().javascriptScrollByVisibleElement(getglobalheaderPageThreadLocal().lnkTSClogo);
+        getglobalheaderPageThreadLocal().lnkTSClogo.click();
+        basePage.getReusableActionsInstance().staticWait(5*basePage.getStaticWaitForApplication());
+        */
     }
 }
