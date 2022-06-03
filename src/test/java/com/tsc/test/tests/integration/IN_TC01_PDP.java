@@ -37,13 +37,5 @@ public class IN_TC01_PDP extends BaseTest {
         pdpMap=getProductDetailPageThreadLocal().getFullInformationOnPDP(true,true,true,false,false);
         getProductDetailPageThreadLocal().verifyLinkageInfoBetweenPRPAndPDP(prpMap,pdpMap);
 
-//        BasePage basePage=new BasePage(this.getDriver());
-//
-//        basePage.getReusableActionsInstance().javascriptScrollByVisibleElement(getglobalheaderPageThreadLocal().lnkTSClogo);
-//        getglobalheaderPageThreadLocal().lnkTSClogo.click();
-//        basePage.getReusableActionsInstance().staticWait(5*basePage.getStaticWaitForApplication());
-
-
-
     }
 }

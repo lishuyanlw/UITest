@@ -22,7 +22,8 @@ public class MA_TC16_MyPreferences_Favorites extends BaseTest {
     /*
      *CER-808
      */
-    public void MA_TC17_MyPreferences_Favorites() throws IOException, org.json.simple.parser.ParseException {
+    @Test(groups={"MyAccount","Regression"})
+    public void MA_TC16_MyPreferences_Favorites() throws IOException, org.json.simple.parser.ParseException {
         //Closing SignIn pop up on login
         getGlobalFooterPageThreadLocal().closePopupDialog();
 

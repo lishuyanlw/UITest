@@ -2422,7 +2422,7 @@ public class ProductDetailPage extends BasePage {
 
 		if(bBrand){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lnkBrandName);
-			lsText=lnkBrandName.getText().trim();
+			lsText=lnkBrandName.getAttribute("Title").trim();
 			map.put("productBrand",lsText);
 		}
 		else{

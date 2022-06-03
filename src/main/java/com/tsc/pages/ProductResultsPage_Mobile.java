@@ -1872,7 +1872,7 @@ public class ProductResultsPage_Mobile extends ProductResultsPage {
 
 		if(this.checkProductItemBrandNameExisting(item)){
 			element=item.findElement(this.byProductBrand);
-			lsText=this.getElementInnerText(element);
+			lsText=this.getElementInnerText(element).replace("By","").trim();
 			map.put("productBrand",lsText);
 		}
 		else{
