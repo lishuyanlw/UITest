@@ -243,7 +243,7 @@ public class SignInPage extends BasePage {
 
 		this.getReusableActionsInstance().clickIfAvailable(this.btnSignInNav);
 
-		return waitForCondition(Driver->{return this.lblSignIn.isDisplayed();},30000);
+		return waitForCondition(Driver->{return this.lblSignIn.isDisplayed();},300000);
 	}
 
 	/**
@@ -481,24 +481,28 @@ public class SignInPage extends BasePage {
 	}
 
 	public void verifyErrorMessageForUserNameAndPassword(String lsUserName, String lsPassword, String lsErrorMessageForUserName,String lsErrorMessageForPassword,String lsErrorMessageForCombination){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputUserName);
+		this.inputUserName.clear();
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputPassword);
+		this.inputPassword.clear();
+
 		if(!lsUserName.isEmpty()){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputUserName);
-			this.inputUserName.clear();
 			this.inputUserName.sendKeys(lsUserName);
 		}
 
 		if(!lsPassword.isEmpty()){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputPassword);
-			this.inputPassword.clear();
 			this.inputPassword.sendKeys(lsUserName);
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSubmit);
 		this.getReusableActionsInstance().clickIfAvailable(this.btnSubmit);
 		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSubmit);
 		this.getReusableActionsInstance().clickIfAvailable(this.btnSubmit);
 
-		this.waitForCondition(Driver->{return this.lblUserNameAndPasswordCombinationErrorMessage.isDisplayed();},5000);
+		this.waitForCondition(Driver->{return this.lblUserNameAndPasswordCombinationErrorMessage.isDisplayed();},15000);
 
 		String regex = "^(.+)@(.+)$";
 		Pattern pattern = Pattern.compile(regex);
