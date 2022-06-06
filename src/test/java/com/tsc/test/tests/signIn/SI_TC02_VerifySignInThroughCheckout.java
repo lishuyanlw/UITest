@@ -37,8 +37,8 @@ public class SI_TC02_VerifySignInThroughCheckout extends BaseTest{
 		basePage.waitForCondition(Driver->{return getProductDetailPageThreadLocal().lblProductName.isDisplayed();},30000);
 
 		Product.edps edp=(Product.edps)mapEDP.get("EDP");
-		reporter.reportLog(edp.getStyle()+":"+edp.getSize());
-		getProductDetailPageThreadLocal().setProductStyleAndSize(edp.getStyle(),edp.getSize());
+//		reporter.reportLog(edp.getStyle()+":"+edp.getSize());
+//		getProductDetailPageThreadLocal().setProductStyleAndSize(edp.getStyle(),edp.getSize());
 
 		getProductDetailPageThreadLocal().goToSignInByClickingCheckoutInAddToBagPopupWindow();
 

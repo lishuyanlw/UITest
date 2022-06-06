@@ -316,7 +316,11 @@ public class ProductDetailPage extends BasePage {
 	public WebElement lblQuantityLeft;
 
 	//Add to Bag button section
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@id='divAddToCart']//button[@id='btnAddToCart']")
+//	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@id='divAddToCart']//button[@id='btnAddToCart']")
+//	public WebElement btnAddToBag;
+
+	//For new designed Add To Bag button
+	@FindBy(xpath = "//section[@class='pdp-description']//button[@class='pdp-description__add-to-bag__add-to-bag-button']")
 	public WebElement btnAddToBag;
 
 	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@id='divAddToCart']//div[@id='divAdvanceOrder']")
@@ -693,8 +697,12 @@ public class ProductDetailPage extends BasePage {
 	public WebElement lnkWriteReviewAfterSubmitPageContinueShopping;
 
 	//Add to Bag popup window part
-	@FindBy(xpath = "//div[@id='tagCartContainer']")
-	public WebElement cntAddToBagOoverlay;
+//	@FindBy(xpath = "//div[@id='tagCartContainer']")
+//	public WebElement cntAddToBagOverlay;
+
+	//For new designing
+	@FindBy(xpath = "//div[@class='secondary-navigation__popup-container']")
+	public WebElement cntAddToBagOverlay;
 
 	@FindBy(xpath = "//div[contains(@class,'cart-section')]")
 	public WebElement cntAddToBagPopupWindow;
@@ -753,7 +761,10 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__button-wrap']//div[contains(@class,'add-to-bag__subtotal')]")
 	public WebElement lblAddToBagPopupWindowButtonSectionSubtotal;
 
-	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__button-wrap']//button[not(contains(@class,'btn-go-to-bag'))]")
+//	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__button-wrap']//button[not(contains(@class,'btn-go-to-bag'))]")
+//	public WebElement btnAddToBagPopupWindowButtonSectionCheckOut;
+
+	@FindBy(xpath = "//div[@class='add-to-bag__button-wrap']//button[normalize-space(.)='Checkout']")
 	public WebElement btnAddToBagPopupWindowButtonSectionCheckOut;
 
 	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__button-wrap']//button[contains(@class,'btn-go-to-bag')]")
@@ -1547,7 +1558,7 @@ public class ProductDetailPage extends BasePage {
 	 * @author Wei.Li
 	 */
 	public boolean checkAddToBagPopupDisplaying() {
-		return this.checkChildElementExistingByAttribute(this.cntAddToBagOoverlay, "class", "add-to-bag__overlay");
+		return this.checkChildElementExistingByAttribute(this.cntAddToBagOverlay, "class", "add-to-bag__overlay");
 	}
 
 	/**
