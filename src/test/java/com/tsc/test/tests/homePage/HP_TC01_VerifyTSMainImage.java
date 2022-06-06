@@ -37,31 +37,7 @@ public class HP_TC01_VerifyTSMainImage extends BaseTest{
 			homePageThreadLocal().clickTSimage("Upper");
 			int numberOfWindows_UpperSection = homePageThreadLocal().getNumberOftabs();
 			List<String> lsUrl_UpperSection=homePageThreadLocal().getTabUrlListTSimage();
-			reporter.reportLog("Total number of tabs open for TS image Upper Section: "+numberOfWindows_UpperSection);
-			if(totalTSImageUpperSection==(numberOfWindows_UpperSection-1)){
-				reporter.reportLogPass("All TS images in upper section have been clicked");
-			}
-			else{
-				reporter.reportLogFailWithScreenshot("All TS images in upper section have not been clicked");
-			}
-
-			for(int i=0; i<totalTSImageUpperSection; i++) {
-				if(!lsUrl_UpperSection.get(i).contains(lsYmlNotFound)){
-					reporter.reportLogPass(("URL of tab " +(i+1)+" for TS image Upper Section is "+lsUrl_UpperSection.get(i)+" & it does not contain not found"));
-				}
-				else{
-					reporter.reportLogFailWithScreenshot(("URL of tab " +(i+1)+" for TS image Upper Section is "+lsUrl_UpperSection.get(i)+" & does contain not found"));
-				}
-
-				if(i<lsUrl_UpperSection.size()-1) {
-					if(!lsUrl_UpperSection.get(i).equals(lsUrl_UpperSection.get(i+1))){
-						reporter.reportLogPass("URL of tab " +(i+1)+ " is different than URL of Tab "+((i+1)+1)+" for TS image upper section.");
-					}
-					else{
-						reporter.reportLogFailWithScreenshot("URL of Tab " +(i+1)+" is same as URL of Tab"+((i+1)+1)+" for TS image upper section.");
-					}
-				}
-			}
+			homePageThreadLocal().verifyImageTabsAndURL(numberOfWindows_UpperSection,totalTSImageUpperSection,lsUrl_UpperSection,lsYmlNotFound);
 		}
 
 		/*
