@@ -58,6 +58,9 @@ public class HomePage extends BasePage{
 	//WebElement btnClose;
 		
 	//TS Main Image section
+	@FindBy(xpath = "//div[contains(@class,'tsZoneHero')]//span[contains(@class,'pagination-bullet')]")
+	List<WebElement> totalImageNavigateLink;
+
 	@FindBy(xpath = "//*[@class='TsZone']//div[contains(@class,'tsZoneHero')]")
 	WebElement TSimageUpperSection;
 	
@@ -827,6 +830,7 @@ public class HomePage extends BasePage{
 	 * Method to click on each image for all sections of TS image  
 	 * @author Shruti Desai
 	 */
+	/**
 	public void clickallTSimageLinks(WebElement totalImage,WebElement attriTSimage,WebElement linksTSimage,List<WebElement> hrefallTSimage) {
 		int totalTsImage = getTSimgCount(totalImage);
 		String clickOnLinkTab = Keys.chord(Keys.CONTROL, Keys.ENTER);
@@ -837,6 +841,23 @@ public class HomePage extends BasePage{
 				String lsImageSrc=attriTSimage.findElement(By.xpath(".//img")).getAttribute("src");
 				if(this.waitForCondition(Driver->{return (!lsImageSrc.equalsIgnoreCase(finalTempLsImageSrc.get()) && !attriTSimage.findElement(By.xpath(".//img")).getAttribute("src").equalsIgnoreCase(lsImageSrc));},10000))
 				//if(this.waitForCondition(Driver->{return (!lsImageSrc.equalsIgnoreCase(finalTempLsImageSrc.get()));},12000))
+					linksTSimage.sendKeys(clickOnLinkTab);
+				finalTempLsImageSrc.set(lsImageSrc);
+			}
+		}
+	}
+	*/
+	public void clickallTSimageLinks(WebElement totalImage,WebElement attriTSimage,WebElement linksTSimage,List<WebElement> hrefallTSimage) {
+		int totalNavigateLinks = this.totalImageNavigateLink.size();
+		String clickOnLinkTab = Keys.chord(Keys.CONTROL, Keys.ENTER);
+		AtomicReference<String> finalTempLsImageSrc = new AtomicReference<>();
+		if(gethrefListTSimage(hrefallTSimage).size()!=0) {
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(attriTSimage.findElement(By.xpath(".//img")));
+			for (int i=0;i<totalNavigateLinks; i++) {
+				this.totalImageNavigateLink.get(i).click();
+				String lsImageSrc=attriTSimage.findElement(By.xpath(".//img")).getAttribute("src");
+				//if(this.waitForCondition(Driver->{return (!lsImageSrc.equalsIgnoreCase(finalTempLsImageSrc.get()) );},10000))
+				if(!lsImageSrc.equalsIgnoreCase(finalTempLsImageSrc.get()))
 					linksTSimage.sendKeys(clickOnLinkTab);
 				finalTempLsImageSrc.set(lsImageSrc);
 			}
