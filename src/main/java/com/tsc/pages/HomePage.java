@@ -867,6 +867,7 @@ public class HomePage extends BasePage{
 	/*
 	 * Method to verify each image for all sections of TS image for Safari
 	 */
+	/**
 	public Set<String> getTSImageLinkForSafariPostClick(String testDevice) {
 		int tempCounter = 1;
 		Set<String> tsImageLinkSet = new HashSet<>();
@@ -893,13 +894,98 @@ public class HomePage extends BasePage{
 						tempCounter++;
 					}
 				}
-				//System.out.println("lsImage: "+lsImageSrc+" and finalTempLsImageSrc: "+finalTempLsImageSrc.get());
 				finalTempLsImageSrc.set(lsImageSrc);
 			}
 		}
 		return tsImageLinkSet;
 	}
-				
+	*/
+	/*
+	 * Method to verify each image for all sections of TS image for Safari
+	 */
+	public Set<String> getTSImageLinkForSafariPostClick(String testDevice) {
+		int tempCounter = 1;
+		int totalNavigateLinks = this.totalImageNavigateLink.size();
+		Set<String> tsImageLinkSet = new HashSet<>();
+		String clickOnLinkTab;
+		if(testDevice.equalsIgnoreCase("Desktop"))
+			clickOnLinkTab = Keys.chord(Keys.COMMAND, Keys.ENTER);
+		else
+			clickOnLinkTab = Keys.chord(Keys.COMMAND, "T");
+
+		AtomicReference<String> finalTempLsImageSrc = new AtomicReference<>();
+		String lsImageSrc = null;
+		if(gethrefListTSimage(hrefallTSimageUpperSection).size()!=0) {
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(attriTSimageUpperSection.findElement(By.xpath(".//img")));
+			for (int i=0;i<totalNavigateLinks; i++) {
+				//if(testDevice.equalsIgnoreCase("Mobile")) {
+				this.waitForPageLoad();
+				this.waitForCondition(Driver->{return this.totalImageNavigateLink.get(0).isDisplayed();},6000);
+				this.totalImageNavigateLink.get(i).click();
+				lsImageSrc = attriTSimageUpperSection.findElement(By.xpath(".//img")).getAttribute("src");
+				if (!lsImageSrc.equalsIgnoreCase(finalTempLsImageSrc.get())) {
+					this.waitForCondition(Driver->{return this.linksTSimageUpperSection.isDisplayed();},6000);
+					linksTSimageUpperSection.sendKeys(clickOnLinkTab);
+					this.waitForPageLoad();
+					tsImageLinkSet.add(this.URL());
+				}
+				if(tempCounter<totalNavigateLinks && !testDevice.equalsIgnoreCase("Desktop")){
+					this.waitForCondition(Driver->{return this.btnHomePageBreadcrumb.isEnabled() &&
+							this.btnHomePageBreadcrumb.isDisplayed();},6000);
+					this.getReusableActionsInstance().clickIfAvailable(this.btnHomePageBreadcrumb);
+					this.waitForPageLoad();
+					tempCounter++;
+				}
+				//}
+				/**else{
+					String lsImageSrcMob=attriTSimageUpperSection.findElement(By.xpath(".//img")).getAttribute("src");
+					if(this.waitForCondition(Driver->{return (!lsImageSrcMob.equalsIgnoreCase(finalTempLsImageSrc.get()) && !attriTSimageUpperSection.findElement(By.xpath(".//img")).getAttribute("src").equalsIgnoreCase(lsImageSrcMob));},7000)){
+						linksTSimageUpperSection.sendKeys(clickOnLinkTab);
+						this.waitForPageLoad();
+						tsImageLinkSet.add(this.URL());
+						if(tempCounter<totalNavigateLinks && !testDevice.equalsIgnoreCase("Desktop")){
+							this.waitForCondition(Driver->{return this.btnHomePageBreadcrumb.isEnabled() &&
+									this.btnHomePageBreadcrumb.isDisplayed();},6000);
+							this.getReusableActionsInstance().clickIfAvailable(this.btnHomePageBreadcrumb);
+							this.waitForPageLoad();
+							tempCounter++;
+						}
+					}
+				}*/
+				finalTempLsImageSrc.set(lsImageSrc);
+			}
+		}
+		return tsImageLinkSet;
+	}
+
+	public void verifyImageTabsAndURL(int numberOfWindows_UpperSection,int totalTSImageUpperSection,List<String> lsUrl_UpperSection,String lsYmlNotFound){
+		reporter.reportLog("Total number of tabs open for TS image Upper Section: "+numberOfWindows_UpperSection);
+		if(totalTSImageUpperSection==(numberOfWindows_UpperSection-1)){
+			reporter.reportLogPass("All TS images in upper section have been clicked");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("All TS images in upper section have not been clicked");
+		}
+
+		for(int i=0; i<totalTSImageUpperSection; i++) {
+			if(!lsUrl_UpperSection.get(i).contains(lsYmlNotFound)){
+				reporter.reportLogPass(("URL of tab " +(i+1)+" for TS image Upper Section is "+lsUrl_UpperSection.get(i)+" & it does not contain not found"));
+			}
+			else{
+				reporter.reportLogFailWithScreenshot(("URL of tab " +(i+1)+" for TS image Upper Section is "+lsUrl_UpperSection.get(i)+" & does contain not found"));
+			}
+
+			if(i<lsUrl_UpperSection.size()-1) {
+				if(!lsUrl_UpperSection.get(i).equals(lsUrl_UpperSection.get(i+1))){
+					reporter.reportLogPass("URL of tab " +(i+1)+ " is different than URL of Tab "+((i+1)+1)+" for TS image upper section.");
+				}
+				else{
+					reporter.reportLogFailWithScreenshot("URL of Tab " +(i+1)+" is same as URL of Tab"+((i+1)+1)+" for TS image upper section.");
+				}
+			}
+		}
+	}
+
 	/*
 	 * Method to Get list of url for clicked TS images (upper section) open in different tabs  
 	 * @return list: url of all open images
