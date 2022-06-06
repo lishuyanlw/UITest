@@ -835,9 +835,9 @@ public class HomePage extends BasePage{
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(attriTSimage.findElement(By.xpath(".//img")));
 			for (int i=1;i<=totalTsImage; i++) {
 				String lsImageSrc=attriTSimage.findElement(By.xpath(".//img")).getAttribute("src");
-				if(this.waitForCondition(Driver->{return (!lsImageSrc.equalsIgnoreCase(finalTempLsImageSrc.get()) && !attriTSimage.findElement(By.xpath(".//img")).getAttribute("src").equalsIgnoreCase(lsImageSrc));},7000))
+				if(this.waitForCondition(Driver->{return (!lsImageSrc.equalsIgnoreCase(finalTempLsImageSrc.get()) && !attriTSimage.findElement(By.xpath(".//img")).getAttribute("src").equalsIgnoreCase(lsImageSrc));},10000))
+				//if(this.waitForCondition(Driver->{return (!lsImageSrc.equalsIgnoreCase(finalTempLsImageSrc.get()));},12000))
 					linksTSimage.sendKeys(clickOnLinkTab);
-				//this.waitForCondition(Driver->{return !attriTSimage.findElement(By.xpath(".//img")).getAttribute("src").equalsIgnoreCase(lsImageSrc);},3000);
 				finalTempLsImageSrc.set(lsImageSrc);
 			}
 		}
