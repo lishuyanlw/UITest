@@ -2410,7 +2410,7 @@ public class ProductDetailPage extends BasePage {
 //		this.getReusableActionsInstance().clickIfAvailable(this.btnAddToBagPopupWindowButtonSectionCheckOut);
 		this.clickElement(this.btnAddToBagPopupWindowButtonSectionCheckOut);
 		SignInPage signInPage=new SignInPage(this.getDriver());
-		this.getReusableActionsInstance().waitForElementVisibility(signInPage.lblSignIn,20);
+		this.getReusableActionsInstance().waitForElementVisibility(signInPage.lblSignIn,120);
 	}
 
 	/**

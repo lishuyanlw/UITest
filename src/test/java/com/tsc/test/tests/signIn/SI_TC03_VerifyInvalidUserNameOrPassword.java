@@ -29,17 +29,14 @@ public class SI_TC03_VerifyInvalidUserNameOrPassword extends BaseTest{
 		String lsErrorMessageForUserNameAndPassword=TestDataHandler.constantData.getLoginUser().getLbl_ErrorMessageForUserNameAndPassword();
 
 		reporter.reportLog("Test without inputting UserName and Password");
-		getGlobalLoginPageThreadLocal().verifyErrorMessageForUserNameAndPassword("","",lsErrorMessageForUserName,lsErrorMessageForPassword,lsErrorMessageForUserNameAndPassword);
+		getGlobalLoginPageThreadLocal().verifyErrorMessageForUserNameAndPassword("","",lsErrorMessageForUserName,lsErrorMessageForPassword,lsErrorMessageForUserNameAndPassword,false);
 
 		reporter.reportLog("Test with invalid UserName and without Password");
-		getGlobalLoginPageThreadLocal().verifyErrorMessageForUserNameAndPassword("1","",lsErrorMessageForUserName,lsErrorMessageForPassword,lsErrorMessageForUserNameAndPassword);
+		getGlobalLoginPageThreadLocal().verifyErrorMessageForUserNameAndPassword("1","",lsErrorMessageForUserName,lsErrorMessageForPassword,lsErrorMessageForUserNameAndPassword,false);
 
 		reporter.reportLog("Test with valid UserName and invalid Password");
 		String lsEmail=DataConverter.getSaltString(6,"mixType")+"@"+DataConverter.getSaltString(6,"stringType")+".com";
-		getGlobalLoginPageThreadLocal().verifyErrorMessageForUserNameAndPassword(lsEmail,"",lsErrorMessageForUserName,lsErrorMessageForPassword,lsErrorMessageForUserNameAndPassword);
-
-		reporter.reportLog("Test with invalid UserName and valid Password");
-		getGlobalLoginPageThreadLocal().verifyErrorMessageForUserNameAndPassword("1","testMail123",lsErrorMessageForUserName,lsErrorMessageForPassword,lsErrorMessageForUserNameAndPassword);
+		getGlobalLoginPageThreadLocal().verifyErrorMessageForUserNameAndPassword(lsEmail,"",lsErrorMessageForUserName,lsErrorMessageForPassword,lsErrorMessageForUserNameAndPassword,true);
 
 	}
 }

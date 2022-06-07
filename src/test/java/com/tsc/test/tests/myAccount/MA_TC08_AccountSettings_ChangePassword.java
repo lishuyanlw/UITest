@@ -122,6 +122,7 @@ public class MA_TC08_AccountSettings_ChangePassword extends BaseTest {
         String lsErrorMessageForUserName=TestDataHandler.constantData.getLoginUser().getLbl_ErrorMessageForUserName();
         String lsErrorMessageForPassword=TestDataHandler.constantData.getLoginUser().getLbl_ErrorMessageForPassword();
         String lsErrorMessageForUserNameAndPassword=TestDataHandler.constantData.getLoginUser().getLbl_ErrorMessageForUserNameAndPassword();
-        getGlobalLoginPageThreadLocal().verifyErrorMessageForUserNameAndPassword(lblUserName,lblPassword,lsErrorMessageForUserName,lsErrorMessageForPassword,lsErrorMessageForUserNameAndPassword);
+        getGlobalLoginPageThreadLocal().verifyErrorMessageForUserNameAndPassword(lblUserName,lblPassword,lsErrorMessageForUserName,lsErrorMessageForPassword,lsErrorMessageForUserNameAndPassword,true);
+
     }
 }
