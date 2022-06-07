@@ -99,56 +99,102 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'pdImageSection__zoom')]//p[contains(@class,'pdImageSection__zoom--message')]")
 	public WebElement lblZoomImageMessage;
 
-	//Product details
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']/div[2]")
-	public WebElement cntProductDetailsContainer;
+//	//Product details
+//	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']/div[2]")
+//	public WebElement cntProductDetailsContainer;
+//
+//	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']")
+//	public WebElement lblProductName;
+//
+//	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@id='divBrandName']//a")
+//	public WebElement lnkBrandName;
+//
+//	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'product-name-sub')]//span[@id='lblItemNo']")
+//	public WebElement lblProductNumber;
+//
+//	//Review part
+//	//@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'product-name-sub')]//div[@id='panReviewSnippet']//div[@class='p-w-r'][last()]//section")
+//	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'product-name-sub')]//div[@id='panReviewSnippet']//div[@class='p-w-r'][last()]//section//div[contains(@class,'read-and-write')]")
+//	public WebElement productReviewSection;
+//
+//	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'product-name-sub')]//div[@id='panReviewSnippet']//div[@class='p-w-r'][last()]//section//div[contains(@class,'pr-star-v4')]")
+//	public List<WebElement> lstProductReviewStar;
+//
+//	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'product-name-sub')]//div[@id='panReviewSnippet']//div[@class='p-w-r'][last()]//section//span[contains(@class,'pr-accessible-text')]")
+//	public List<WebElement> lstProductReviewAccessibleText;
+//
+//	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'product-name-sub')]//div[@id='panReviewSnippet']//div[@class='p-w-r'][last()]//section")
+//	public WebElement lblProductReview;
+//
+//	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'product-name-sub')]//div[@id='panReviewSnippet']//div[@class='p-w-r']//a[@class='pr-snippet-review-count']")
+//	public WebElement lblProductReviewCount;
+//
+//	//Price part
+//	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@class='price-div']//span[@id='lblPriceLabel']")
+//	public WebElement lblProductPriceLabel;
+//
+//	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@class='price-div']//span[@id='lblCurrentPrice']")
+//	public WebElement lblProductNowPrice;
+//
+//	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@class='price-div']//span[@id='lblShowWasPrice']")
+//	public WebElement lblProductWasPrice;
+//
+//	//EasyPay part
+//	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@id='divEasyPayment']")
+//	public WebElement lblProductEasyPay;
+//
+//	//Shipping part
+//	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@class='savings-shipping']//*[@id='divSavings']")
+//	public WebElement lblProductSavings;
+//
+//	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@class='savings-shipping']//*[@class='shipping']")
+//	public WebElement lblProductShipping;
 
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']")
+	//Added new xpath for changes on PDP page for Integration as per new design
+	//Product details
+	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__brand-and-reviews']")
+	public WebElement cntProductDetailsBrandAndReviewContainer;
+
+	@FindBy(xpath = "//section[@class='pdp-description']//*[@id='lblProductName']")
 	public WebElement lblProductName;
 
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@id='divBrandName']//a")
+	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__brand-and-reviews']/div[@id='divBrandName']/a")
 	public WebElement lnkBrandName;
 
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'product-name-sub')]//span[@id='lblItemNo']")
+	@FindBy(xpath = "//section[@class='pdp-description']//span[@id='lblItemNo']")
 	public WebElement lblProductNumber;
 
 	//Review part
-	//@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'product-name-sub')]//div[@id='panReviewSnippet']//div[@class='p-w-r'][last()]//section")
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'product-name-sub')]//div[@id='panReviewSnippet']//div[@class='p-w-r'][last()]//section//div[contains(@class,'read-and-write')]")
+	@FindBy(xpath = "//section[@class='pdp-description']//a[@class='pr-snippet-review-count']")
 	public WebElement productReviewSection;
 
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'product-name-sub')]//div[@id='panReviewSnippet']//div[@class='p-w-r'][last()]//section//div[contains(@class,'pr-star-v4')]")
+	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pr-snippet-stars-container']//div[contains(@class,'pr-star-v4')]")
 	public List<WebElement> lstProductReviewStar;
 
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'product-name-sub')]//div[@id='panReviewSnippet']//div[@class='p-w-r'][last()]//section//span[contains(@class,'pr-accessible-text')]")
-	public List<WebElement> lstProductReviewAccessibleText;
-
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'product-name-sub')]//div[@id='panReviewSnippet']//div[@class='p-w-r'][last()]//section")
+	@FindBy(xpath = "//section[@class='pdp-description']//section[contains(@class,'pr-review-snippet-container')]")
 	public WebElement lblProductReview;
-	
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'product-name-sub')]//div[@id='panReviewSnippet']//div[@class='p-w-r']//a[@class='pr-snippet-review-count']")
+
+	@FindBy(xpath = "//section[@class='pdp-description']//a[@class='pr-snippet-review-count']")
 	public WebElement lblProductReviewCount;
 
 	//Price part
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@class='price-div']//span[@id='lblPriceLabel']")
-	public WebElement lblProductPriceLabel;
-
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@class='price-div']//span[@id='lblCurrentPrice']")
+	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__prices--is-price']")
 	public WebElement lblProductNowPrice;
 
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@class='price-div']//span[@id='lblShowWasPrice']")
+	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__prices--was-price']")
 	public WebElement lblProductWasPrice;
 
 	//EasyPay part
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@id='divEasyPayment']")
+	@FindBy(xpath = "//section[@class='pdp-description']//div[@id='easyPayWrap']")
 	public WebElement lblProductEasyPay;
 
 	//Shipping part
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@class='savings-shipping']//*[@id='divSavings']")
+	@FindBy(xpath = "//section[@class='pdp-description']//span[@class='pdp-description__prices__saving-and-shipping__savings-amount']")
 	public WebElement lblProductSavings;
 
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@class='savings-shipping']//*[@class='shipping']")
+	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__prices__saving-and-shipping']")
 	public WebElement lblProductShipping;
+    //All changes for new xpath as per design change are ended here
 
 	//Style part
 	@FindBy(xpath = "//form[@id='pdpForm']")
@@ -161,7 +207,7 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@class='style-container']//div[@id='divStyleSwatch']//span[@class='style-lbl']")
 	public WebElement lblRadioProductStyleStatic;
 
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@class='style-container']//div[@id='divStyleSwatch']//span[@id='lblStyle']")
+	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__form__colours__selected']")
 	public WebElement lblRadioProductStyleTitle;
 
 	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@class='style-container']//div[@id='divStyleSwatch']//input")
@@ -241,6 +287,9 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@id='divAvailableSizes']//span[contains(@class,'size-lbl')]")
 	public WebElement lblSizeStatic;
 
+	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__form__sizes__selected']")
+	public WebElement lblSizeTitle;
+
 	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@id='divAvailableSizes']//select")
 	public WebElement selectSizeOption;
 
@@ -267,15 +316,27 @@ public class ProductDetailPage extends BasePage {
 	public WebElement lblQuantityLeft;
 
 	//Add to Bag button section
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@id='divAddToCart']//button[@id='btnAddToCart']")
+//	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@id='divAddToCart']//button[@id='btnAddToCart']")
+//	public WebElement btnAddToBag;
+
+	//For new designed Add To Bag button
+	@FindBy(xpath = "//section[@class='pdp-description']//button[@class='pdp-description__add-to-bag__add-to-bag-button']")
 	public WebElement btnAddToBag;
 
 	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@id='divAddToCart']//div[@id='divAdvanceOrder']")
 	public WebElement lblAdvanceOrderMsg;
 
-	//Social links part
-	@FindBy(xpath = "//div[@id='pdpMainDiv']//div[@id='favShare']/div[contains(@class,'mob-middle-social')]/div")
+	//Add to favorites
+	@FindBy(xpath = "//section[@class='pdp-description']//span[@class='pdp-description__add-to-bag__favorite__text']")
+	public WebElement lblAddToFavoriteText;
+
+	//To keep here for now, may change it for separated WebElement
+	@FindBy(xpath = "//section[@class='pdp-description']//button[@class='pdp-description__add-to-bag__favorite__icon-wrapper']")
 	public WebElement lnkFavShareMobile;
+
+	//Social links part
+//	@FindBy(xpath = "//section[@class='pdp-description']//button[@class='pdp-description__add-to-bag__favorite__icon-wrapper']")
+//	public WebElement lnkFavShareMobile;
 
 	@FindBy(xpath = "//div[@id='pdpMainDiv']//div[@id='favShare']/div[not(contains(@class,'mob-middle-social'))]/div")
 	public WebElement lnkFavShareEmail;
@@ -636,8 +697,12 @@ public class ProductDetailPage extends BasePage {
 	public WebElement lnkWriteReviewAfterSubmitPageContinueShopping;
 
 	//Add to Bag popup window part
-	@FindBy(xpath = "//div[@id='tagCartContainer']")
-	public WebElement cntAddToBagOoverlay;
+//	@FindBy(xpath = "//div[@id='tagCartContainer']")
+//	public WebElement cntAddToBagOverlay;
+
+	//For new designing
+	@FindBy(xpath = "//div[@class='secondary-navigation__popup-container']")
+	public WebElement cntAddToBagOverlay;
 
 	@FindBy(xpath = "//div[contains(@class,'cart-section')]")
 	public WebElement cntAddToBagPopupWindow;
@@ -696,7 +761,10 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__button-wrap']//div[contains(@class,'add-to-bag__subtotal')]")
 	public WebElement lblAddToBagPopupWindowButtonSectionSubtotal;
 
-	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__button-wrap']//button[not(contains(@class,'btn-go-to-bag'))]")
+//	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__button-wrap']//button[not(contains(@class,'btn-go-to-bag'))]")
+//	public WebElement btnAddToBagPopupWindowButtonSectionCheckOut;
+
+	@FindBy(xpath = "//div[@class='add-to-bag__button-wrap']//button[normalize-space(.)='Checkout']")
 	public WebElement btnAddToBagPopupWindowButtonSectionCheckOut;
 
 	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__button-wrap']//button[contains(@class,'btn-go-to-bag')]")
@@ -1490,7 +1558,7 @@ public class ProductDetailPage extends BasePage {
 	 * @author Wei.Li
 	 */
 	public boolean checkAddToBagPopupDisplaying() {
-		return this.checkChildElementExistingByAttribute(this.cntAddToBagOoverlay, "class", "add-to-bag__overlay");
+		return this.checkChildElementExistingByAttribute(this.cntAddToBagOverlay, "class", "add-to-bag__overlay");
 	}
 
 	/**
@@ -1724,7 +1792,8 @@ public class ProductDetailPage extends BasePage {
 	}
 
 	public boolean checkProductBrandExisting() {
-		return this.checkChildElementExistingByAttribute(cntProductDetailsContainer, "id", "divBrandName");
+		//return this.checkChildElementExistingByAttribute(cntProductDetailsContainer, "id", "divBrandName");
+		return this.checkChildElementExistingByAttribute(cntProductDetailsBrandAndReviewContainer, "id", "divBrandName");
 	}
 
 	public void verifyProductBasicInfo() {
@@ -1745,7 +1814,6 @@ public class ProductDetailPage extends BasePage {
 	}
 
 	public void verifyProductPriceAndShipping() {
-		reporter.softAssert(!this.getElementText(this.lblProductPriceLabel).isEmpty(),"The product price label is not empty","The product price label is empty");
 		reporter.softAssert(!this.getElementText(this.lblProductNowPrice).isEmpty(),"The product Now price is not empty","The product Now price is empty");
 		reporter.softAssert(!this.getElementText(this.lblProductWasPrice).isEmpty(),"The product Was price is not empty","The product Was price is empty");
 		reporter.softAssert(!this.getElementText(this.lblProductNowPrice).isEmpty()&&!this.getElementText(this.lblProductWasPrice).isEmpty(),"The product price range is not empty","The product price range is empty");
@@ -1841,7 +1909,6 @@ public class ProductDetailPage extends BasePage {
 		reporter.softAssert(this.lstProductReviewStar.size()>0,"The product review star count is greater than 0","The product review star count is not greater than 0");
 		reporter.softAssert(!this.getElementText(this.lblProductReview).isEmpty(),"The product review text is not empty","The product review text is empty");
 
-		reporter.softAssert(!this.getElementText(this.lblProductPriceLabel).isEmpty(),"The product price label is not empty","The product price label is empty");
 		reporter.softAssert(!this.getElementText(this.lblProductNowPrice).isEmpty(),"The product Now price is not empty","The product Now price is empty");
 		reporter.softAssert(!this.getElementText(this.lblProductEasyPay).isEmpty(),"The product EasyPay message is not empty","The product EasyPay message is empty");
 		reporter.softAssert(!this.getElementText(this.lblProductShipping).isEmpty(),"The product Shipping message is not empty","The product Shipping message is empty");
@@ -2167,7 +2234,8 @@ public class ProductDetailPage extends BasePage {
 	}
 
 	public boolean checkIfFavShareMobileHighlighted() {
-		return !this.hasElementAttribute(this.lnkFavShareMobile, "class");
+
+		return this.getElementInnerText(this.lblAddToFavoriteText).equalsIgnoreCase("Added to favorites");
 	}
 
 	public void verifyFavShareMobileAction(String lsUserName, String lsPassword) {
@@ -2342,7 +2410,173 @@ public class ProductDetailPage extends BasePage {
 //		this.getReusableActionsInstance().clickIfAvailable(this.btnAddToBagPopupWindowButtonSectionCheckOut);
 		this.clickElement(this.btnAddToBagPopupWindowButtonSectionCheckOut);
 		SignInPage signInPage=new SignInPage(this.getDriver());
-		this.getReusableActionsInstance().waitForElementVisibility(signInPage.lblSignIn,20);
+		this.getReusableActionsInstance().waitForElementVisibility(signInPage.lblSignIn,120);
+	}
+
+	/**
+	 * To get Full Information On PDP
+	 * @param - boolean - bBrand
+	 * @param - boolean - bReview
+	 * @param - boolean - bWasPrice
+	 * @param - boolean - bStyle
+	 * @param - boolean - bSize
+	 * @return - Map<String,String> - including productName,productBrand,productNowPrice,
+	 * 	  			productWasPrice,productReviewRate,productReviewCount, productStyle, productSize
+	 */
+	public Map<String,String> getFullInformationOnPDP(boolean bBrand,boolean bReview,boolean bWasPrice,boolean bStyle,boolean bSize){
+		Map<String,String> map=new HashMap<>();
+		String lsText;
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblProductName);
+		lsText=lblProductName.getText().trim();
+		map.put("productName",lsText);
+
+		if(bBrand){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lnkBrandName);
+			lsText=lnkBrandName.getAttribute("Title").trim();
+			map.put("productBrand",lsText);
+		}
+		else{
+			map.put("productBrand",null);
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblProductNowPrice);
+		lsText= String.valueOf(this.getFloatFromString(lblProductNowPrice.getText(),true));
+		map.put("productNowPrice",lsText);
+
+		if(bWasPrice){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblProductWasPrice);
+			lsText=String.valueOf(this.getFloatFromString(lblProductWasPrice.getText(),true));
+			map.put("productWasPrice",lsText);
+		}
+		else{
+			map.put("productWasPrice",null);
+		}
+
+		if(bReview){
+			ProductResultsPage prp=new ProductResultsPage(this.getDriver());
+			int reviewRate=prp.getProductItemReviewNumberAmountFromStarImage(lstProductReviewStar);
+			map.put("productReviewRate",reviewRate+"");
+
+			lsText=this.getElementInnerText(lblProductReviewCount);
+			int reviewCount=this.getIntegerFromString(lsText);
+			map.put("productReviewCount",reviewCount+"");
+		}
+		else{
+			map.put("productReviewRate",null);
+			map.put("productReviewCount",null);
+		}
+
+		if(bStyle){
+			lsText=this.getElementInnerText(lblRadioProductStyleTitle).split(":")[1].trim();
+			map.put("productStyle",lsText);
+		}
+		else{
+			map.put("productStyle",null);
+		}
+
+		if(bSize){
+			lsText=this.getElementInnerText(lblSizeTitle).split(":")[1].trim();
+			map.put("productSize",lsText);
+		}
+		else{
+			map.put("productSize",null);
+		}
+
+		return map;
+	}
+
+	/**
+	 * To verify Linkage Info Between PRP And PDP
+	 * @param - Map<String,String> - prpMap
+	 * @param - Map<String,String> - pdpMap
+	 */
+	public void verifyLinkageInfoBetweenPRPAndPDP(Map<String,String> prpMap,Map<String,String> pdpMap){
+		String lsTextPRP,lsTextPDP;
+
+		lsTextPRP=prpMap.get("productName");
+		lsTextPDP=pdpMap.get("productName");
+		if(lsTextPRP.equalsIgnoreCase(lsTextPDP)){
+			reporter.reportLogPass("The product name:'"+lsTextPRP+"' on PRP is the same as the one:'"+lsTextPDP+"' on PDP");
+		}
+		else{
+			reporter.reportLogFail("The product name:'"+lsTextPRP+"' on PRP is not the same as the one:'"+lsTextPDP+"' on PDP");
+		}
+
+		lsTextPRP=prpMap.get("productBrand");
+		if(lsTextPRP!=null){
+			lsTextPDP=pdpMap.get("productBrand");
+			if(lsTextPRP.equalsIgnoreCase(lsTextPDP)){
+				reporter.reportLogPass("The product brand:'"+lsTextPRP+"' on PRP is the same as the one:'"+lsTextPDP+"' on PDP");
+			}
+			else{
+				reporter.reportLogFail("The product brand:'"+lsTextPRP+"' on PRP is not the same as the one:'"+lsTextPDP+"' on PDP");
+			}
+		}
+
+		lsTextPRP=prpMap.get("productReviewRate");
+		if(lsTextPRP!=null){
+			lsTextPDP=pdpMap.get("productReviewRate");
+			if(lsTextPRP.equalsIgnoreCase(lsTextPDP)){
+				reporter.reportLogPass("The product review rate:'"+lsTextPRP+"' on PRP is the same as the one:'"+lsTextPDP+"' on PDP");
+			}
+			else{
+				reporter.reportLogFail("The product review rate:'"+lsTextPRP+"' on PRP is not the same as the one:'"+lsTextPDP+"' on PDP");
+			}
+		}
+
+		lsTextPRP=prpMap.get("productReviewCount");
+		if(lsTextPRP!=null){
+			lsTextPDP=pdpMap.get("productReviewCount");
+			if(lsTextPRP.equalsIgnoreCase(lsTextPDP)){
+				reporter.reportLogPass("The product review count:'"+lsTextPRP+"' on PRP is the same as the one:'"+lsTextPDP+"' on PDP");
+			}
+			else{
+				reporter.reportLogFail("The product review count:'"+lsTextPRP+"' on PRP is not the same as the one:'"+lsTextPDP+"' on PDP");
+			}
+		}
+
+		lsTextPRP=prpMap.get("productNowPrice");
+		lsTextPDP=pdpMap.get("productNowPrice");
+		if(lsTextPRP.equalsIgnoreCase(lsTextPDP)){
+			reporter.reportLogPass("The product NowPrice:'"+lsTextPRP+"' on PRP is the same as the one:'"+lsTextPDP+"' on PDP");
+		}
+		else{
+			reporter.reportLogFail("The product NowPrice:'"+lsTextPRP+"' on PRP is not the same as the one:'"+lsTextPDP+"' on PDP");
+		}
+
+		lsTextPRP=prpMap.get("productWasPrice");
+		if(lsTextPRP!=null){
+			lsTextPDP=pdpMap.get("productWasPrice");
+			if(lsTextPRP.equalsIgnoreCase(lsTextPDP)){
+				reporter.reportLogPass("The product WasPrice:'"+lsTextPRP+"' on PRP is the same as the one:'"+lsTextPDP+"' on PDP");
+			}
+			else{
+				reporter.reportLogFail("The product WasPrice:'"+lsTextPRP+"' on PRP is not the same as the one:'"+lsTextPDP+"' on PDP");
+			}
+		}
+
+		lsTextPRP=prpMap.get("productStyle");
+		if(lsTextPRP!=null){
+			lsTextPDP=pdpMap.get("productStyle");
+			if(lsTextPRP.equalsIgnoreCase(lsTextPDP)){
+				reporter.reportLogPass("The product style:'"+lsTextPRP+"' on PRP is the same as the one:'"+lsTextPDP+"' on PDP");
+			}
+			else{
+				reporter.reportLogFail("The product style:'"+lsTextPRP+"' on PRP is not the same as the one:'"+lsTextPDP+"' on PDP");
+			}
+		}
+
+		lsTextPRP=prpMap.get("productSize");
+		if(lsTextPRP!=null){
+			lsTextPDP=pdpMap.get("productSize");
+			if(lsTextPRP.equalsIgnoreCase(lsTextPDP)){
+				reporter.reportLogPass("The product size:'"+lsTextPRP+"' on PRP is the same as the one:'"+lsTextPDP+"' on PDP");
+			}
+			else{
+				reporter.reportLogFail("The product size:'"+lsTextPRP+"' on PRP is not the same as the one:'"+lsTextPDP+"' on PDP");
+			}
+		}
 	}
 
 }

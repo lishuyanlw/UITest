@@ -642,6 +642,9 @@ public class MyAccount extends BasePage {
 	public WebElement btnCancelInClearMyFavouritesPopupWindow;
 
 	//For Recently Viewed
+	@FindBy(xpath = "//ng-component//div[contains(@class,'recently-viewed-title-block')]//div[contains(@class,'form-head')]")
+	public WebElement cntRecentlyViewedTitleContainer;
+
 	@FindBy(xpath = "//ng-component//div[@class='recently-viewed-title']")
 	public WebElement lblRecentlyViewedTitle;
 
@@ -669,7 +672,7 @@ public class MyAccount extends BasePage {
 	public WebElement btnClearViewingHistory;
 
 	//For My Newsletter
-	@FindBy(xpath = "//label[@for='MyNewsletters']")
+	@FindBy(xpath = "//label[@for='MyNewsletters']/b")
 	public WebElement lblMyNewsLettersTitle;
 
 	@FindBy(xpath = "//span[contains(normalize-space(text()),'Manage your email preferences below:')]")
@@ -678,25 +681,25 @@ public class MyAccount extends BasePage {
 	@FindBy(xpath = "//input[@id='TSnwsl']")
 	public WebElement ckbMyNewsLettersTodayShowStopperNewsLetter;
 
-	@FindBy(xpath = "//label[@for='TSnwsl']")
+	@FindBy(xpath = "//input[@id='TSnwsl']/parent::td/following-sibling::td//label")
 	public WebElement lblMyNewsLettersTodayShowStopperNewsLetterTitle;
 
 	@FindBy(xpath = "//input[@id='SOnwsl']")
 	public WebElement ckbMyNewsLettersSpecialOfferAndEventNewsLetter;
 
-	@FindBy(xpath = "//label[@for='SOnwsl']")
+	@FindBy(xpath = "//input[@id='SOnwsl']/parent::td/following-sibling::td//label")
 	public WebElement lblMyNewsLettersSpecialOfferAndEventNewsLetterTitle;
 
 	@FindBy(xpath = "//input[@id='SAOnwsl']")
 	public WebElement ckbMyNewsLettersPreferredCustomerOffer;
 
-	@FindBy(xpath = "//label[@for='SAOnwsl']")
+	@FindBy(xpath = "//input[@id='SAOnwsl']/parent::td/following-sibling::td//label")
 	public WebElement lblMyNewsLettersPreferredCustomerOfferTitle;
 
 	@FindBy(xpath = "//input[@id='AUAnwsl']")
 	public WebElement ckbMyNewsLettersProductUpdatesAndAlerts;
 
-	@FindBy(xpath = "//label[@for='AUAnwsl']")
+	@FindBy(xpath = "//input[@id='AUAnwsl']/parent::td/following-sibling::td//label")
 	public WebElement lblMyNewsLettersProductUpdatesAndAlertsTitle;
 
 	@FindBy(xpath = "//input[@id='btnUpdatePrefs']")
@@ -825,7 +828,8 @@ public class MyAccount extends BasePage {
 	public void clickOnPaymentOptionSubMenuItemsOnMyAccount(String subMenu){
 		this.waitForPageToLoad();
 		String lsTestDevice = System.getProperty("Device").trim();
-		if(lsTestDevice.equalsIgnoreCase("Mobile")) {
+		String lsTestBrowser= System.getProperty("Browser").toLowerCase().trim();
+		if(lsTestDevice.equalsIgnoreCase("Mobile")||(lsTestDevice.equalsIgnoreCase("Tablet")&&lsTestBrowser.contains("android"))||System.getProperty("chromeMobileDevice").contains("iPad")) {
 			if(this.btnPaymentOptionsHeadingTitle.getAttribute("class").contains("collapsed")){
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnPaymentOptionsHeadingTitle);
 				this.getReusableActionsInstance().clickIfAvailable(this.btnPaymentOptionsHeadingTitle);
@@ -1225,6 +1229,7 @@ public class MyAccount extends BasePage {
 	public Map<String,String> getFirstCreditCardDetailsAndSelect() throws ParseException {
 		Map<String,String> creditCardDisplayedData = new HashMap<>();
 		String updatedMonth=null,updatedYear = null,actualExpirationMonth=null,actualExpirationYear=null;
+		this.waitForCondition(Driver->{return lstCreditCardsPresent.size()>0;},10000);
 		//Fetching Card Details to be edited to be used for verification
 		WebElement cardTypeWebElement = lstCreditCardsPresent.get(0).findElement(By.xpath(".//div[contains(@class,'margin-top-md')]//div[contains(@class,'zeroRightPadding')]//span[@class='table-cell ']/label"));
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(cardTypeWebElement);
@@ -1347,6 +1352,17 @@ public class MyAccount extends BasePage {
 	 * @param - loadingIndicator - the element to indicate window loading
 	 */
 	public int openSubItemWindow(String lsHeaderItem,String lsSubItem,WebElement loadingIndicator){
+		String lsTestDevice = System.getProperty("Device").trim();
+		String lsTestBrowser= System.getProperty("Browser").toLowerCase().trim();
+		if(lsTestDevice.equalsIgnoreCase("Mobile")||(lsTestDevice.equalsIgnoreCase("Tablet")&&lsTestBrowser.contains("android"))||System.getProperty("chromeMobileDevice").contains("iPad")) {
+			WebElement headerButton=this.getHeaderItem(lsHeaderItem);
+			if(headerButton.getAttribute("class").contains("collapsed")){
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(headerButton);
+				this.getReusableActionsInstance().clickIfAvailable(headerButton);
+				this.getReusableActionsInstance().staticWait(6*this.getStaticWaitForApplication());
+			}
+		}
+
 		WebElement subButton=this.getSubItem(lsSubItem);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(subButton);
 		int count=0;
@@ -1362,10 +1378,11 @@ public class MyAccount extends BasePage {
 			reporter.reportLogFailWithScreenshot("'"+lsSubItem+ "' sub item is not displaying correctly");
 		}
 		this.getReusableActionsInstance().clickIfAvailable(subButton);
-		this.waitForPageToLoad();
-		this.waitForCondition(Driver->{return loadingIndicator.isDisplayed();},50000);
 
 		this.getReusableActionsInstance().staticWait(5*this.getStaticWaitForApplication());
+		if(loadingIndicator!=null){
+			this.waitForCondition(Driver->{return loadingIndicator.isDisplayed();},50000);
+		}
 
 		return count;
 	}
@@ -1585,7 +1602,7 @@ public class MyAccount extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(upperNavigationElement);
 		this.getReusableActionsInstance().clickIfAvailable(upperNavigationElement);
 
-		this.getReusableActionsInstance().staticWait(2*this.getStaticWaitForApplication());
+		this.getReusableActionsInstance().staticWait(5*this.getStaticWaitForApplication());
 	}
 
 	public void verifyOrderSearchErrorMessage(String lsExpectedErrorMessage){
@@ -2143,7 +2160,12 @@ public class MyAccount extends BasePage {
 		}
 
 		String lsTestDevice = System.getProperty("Device").trim();
-		if(lsTestDevice.equalsIgnoreCase("Desktop")) {
+		String lsTestBrowser= System.getProperty("Browser").toLowerCase().trim();
+		if(!(lsTestDevice.equalsIgnoreCase("Mobile") ||
+				(System.getProperty("Device").contains("Tablet") && System.getProperty("Browser").contains("android")) ||
+				(System.getProperty("Browser").equalsIgnoreCase("chromemobile") &&
+						System.getProperty("Device").contains("Tablet") &&
+						!System.getProperty("chromeMobileDevice").contains("iPad")))) {
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAccountSettingPassword);
 			if(!lblAccountSettingPassword.getText().isEmpty()){
 				reporter.reportLogPass("The Password in Account settings is displaying correctly");
@@ -3107,10 +3129,15 @@ public class MyAccount extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressLine1);
 		inputAddOrEditAddressLine1.clear();
 		String[] data = lsAutoSearchKeyword.codePoints().mapToObj(cp->new String(Character.toChars(cp))).toArray(size->new String[size]);
+		int sum=0;
 		for(String inputText:data){
+			if(sum>=30){
+				break;
+			}
 			inputAddOrEditAddressLine1.sendKeys(inputText);
 			//For thinking time for waiting for backend response
 			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+			sum++;
 		}
 		this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: block;");},20000);
 		this.getReusableActionsInstance().staticWait(2*this.getStaticWaitForApplication());
@@ -3131,10 +3158,16 @@ public class MyAccount extends BasePage {
 			selectedIndexInAutoSearchDropdownMenu=0;
 		}
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstAddOrEditAddressAutoSearchDropdownItems.get(selectedIndexInAutoSearchDropdownMenu));
-		this.clickWebElementUsingJS(this.lstAddOrEditAddressAutoSearchDropdownItems.get(selectedIndexInAutoSearchDropdownMenu));
-		//this.getReusableActionsInstance().clickIfAvailable(this.lstAddOrEditAddressAutoSearchDropdownItems.get(selectedIndexInAutoSearchDropdownMenu));
-		this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: none;");},20000);
+		try{
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstAddOrEditAddressAutoSearchDropdownItems.get(selectedIndexInAutoSearchDropdownMenu));
+			this.getReusableActionsInstance().clickIfAvailable(this.lstAddOrEditAddressAutoSearchDropdownItems.get(selectedIndexInAutoSearchDropdownMenu));
+			this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: none;");},20000);
+		}
+		catch(Exception e){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstAddOrEditAddressAutoSearchDropdownItems.get(selectedIndexInAutoSearchDropdownMenu));
+			this.getReusableActionsInstance().clickIfAvailable(this.lstAddOrEditAddressAutoSearchDropdownItems.get(selectedIndexInAutoSearchDropdownMenu));
+			this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: none;");},20000);
+		}
 		this.getReusableActionsInstance().staticWait(3*this.getStaticWaitForApplication());
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressLine1);
@@ -3192,10 +3225,15 @@ public class MyAccount extends BasePage {
 					this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressLine1);
 					inputAddOrEditAddressLine1.clear();
 					String[] data = entry.getValue().toString().codePoints().mapToObj(cp->new String(Character.toChars(cp))).toArray(size->new String[size]);
+					int sum=0;
 					for(String inputText:data){
+						if(sum>=30){
+							break;
+						}
 						inputAddOrEditAddressLine1.sendKeys(inputText);
 						//For thinking time for waiting for backend response
 						this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+						sum++;
 					}
 					this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: block;");},20000);
 					this.getReusableActionsInstance().staticWait(2*this.getStaticWaitForApplication());
@@ -3207,11 +3245,18 @@ public class MyAccount extends BasePage {
 						reporter.reportLogPassWithScreenshot("Unable to get dropdown auto search results");
 					}
 
-					this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
-					//this.getReusableActionsInstance().clickIfAvailable(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
-					this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
-					this.clickWebElementUsingJS(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
-					this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: none;");},20000);
+					try{
+						this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
+						this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+						this.clickWebElementUsingJS(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
+						this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: none;");},20000);
+					}
+					catch (Exception e){
+						this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
+						this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+						this.clickWebElementUsingJS(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
+						this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: none;");},20000);
+					}
 					this.getReusableActionsInstance().staticWait(3*this.getStaticWaitForApplication());
 					break;
 				default:
@@ -3225,10 +3270,15 @@ public class MyAccount extends BasePage {
 			inputAddOrEditAddressLine1.clear();
 			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 			String[] data = lsAuoSearchKeyword.codePoints().mapToObj(cp->new String(Character.toChars(cp))).toArray(size->new String[size]);
+			int sum=0;
 			for(String inputText:data){
+				if(sum>=30){
+					break;
+				}
 				inputAddOrEditAddressLine1.sendKeys(inputText);
 				//For thinking time for waiting for backend response
 				this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+				sum++;
 			}
 			this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: block;");},20000);
 			this.getReusableActionsInstance().staticWait(3*this.getStaticWaitForApplication());
@@ -3247,11 +3297,18 @@ public class MyAccount extends BasePage {
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstAddOrEditAddressAutoSearchDropdownItems.get(randomNumber));
 			this.getReusableActionsInstance().clickIfAvailable(this.lstAddOrEditAddressAutoSearchDropdownItems.get(randomNumber));
 			 */
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
-			//this.getReusableActionsInstance().clickIfAvailable(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
-			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
-			this.clickWebElementUsingJS(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
-			this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: none;");},20000);
+			try{
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
+				this.getReusableActionsInstance().clickIfAvailable(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
+				this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+				this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: none;");},20000);
+			}
+			catch (Exception e){
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
+				this.getReusableActionsInstance().clickIfAvailable(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
+				this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+				this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: none;");},20000);
+			}
 			this.getReusableActionsInstance().staticWait(3*this.getStaticWaitForApplication());
 
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressLine1);
@@ -3317,10 +3374,15 @@ public class MyAccount extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressLine1);
 		inputAddOrEditAddressLine1.clear();
 		String[] data = lsAddress1.codePoints().mapToObj(cp->new String(Character.toChars(cp))).toArray(size->new String[size]);
+		int sum=0;
 		for(String inputText:data){
+			if(sum>=30){
+				break;
+			}
 			inputAddOrEditAddressLine1.sendKeys(inputText);
 			//For thinking time for waiting for backend response
 			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+			sum++;
 		}
 		this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: block;");},20000);
 		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
@@ -3332,9 +3394,16 @@ public class MyAccount extends BasePage {
 			reporter.reportLogPassWithScreenshot("Unable to get dropdown auto search results");
 		}
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
-		this.getReusableActionsInstance().clickIfAvailable(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
-		this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: none;");},20000);
+		try{
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
+			this.getReusableActionsInstance().clickIfAvailable(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
+			this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: none;");},20000);
+		}
+		catch(Exception e){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
+			this.getReusableActionsInstance().clickIfAvailable(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
+			this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: none;");},20000);
+		}
 		this.getReusableActionsInstance().staticWait(3*this.getStaticWaitForApplication());
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressCity);
@@ -3520,19 +3589,28 @@ public class MyAccount extends BasePage {
 				reporter.reportLogFailWithScreenshot("The favorite item WasPrice is not displaying correctly");
 			}
 		}
-
-		if(lsFavoriteItemName.equalsIgnoreCase(lsProductName)){
-			reporter.reportLogPass("The product name on PRP page is equal to the favorite item name");
+		if(lsProductName.length()>25){
+			if(lsFavoriteItemName.substring(0,25).equalsIgnoreCase(lsProductName.substring(0,25))){
+				reporter.reportLogPass("The product name on PRP page is equal to the favorite item name");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The product name on PRP page:'"+lsProductName+"' is not equal to the favorite item name:'"+lsFavoriteItemName+"'");
+			}
 		}
 		else{
-			reporter.reportLogFailWithScreenshot("The product name on PRP page is not equal to the favorite item name");
+			if(lsFavoriteItemName.equalsIgnoreCase(lsProductName)){
+				reporter.reportLogPass("The product name on PRP page is equal to the favorite item name");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The product name on PRP page:'"+lsProductName+"' is not equal to the favorite item name:'"+lsFavoriteItemName+"'");
+			}
 		}
 
 		if(lsFavoriteItemNowPrice.equalsIgnoreCase(lsProductNowPrice)){
 			reporter.reportLogPass("The product NowPrice on PRP page is equal to the favorite item NowPrice");
 		}
 		else{
-			reporter.reportLogFailWithScreenshot("The product NowPrice on PRP page is not equal to the favorite item NowPrice");
+			reporter.reportLogFailWithScreenshot("The product NowPrice:"+lsProductNowPrice+" on PRP page is not equal to the favorite item NowPrice:"+lsFavoriteItemNowPrice);
 		}
 
 		if(lsProductWasPrice!=null){
@@ -3540,7 +3618,7 @@ public class MyAccount extends BasePage {
 				reporter.reportLogPass("The product WasPrice on PRP page is equal to the favorite item WasPrice");
 			}
 			else{
-				reporter.reportLogFailWithScreenshot("The product WasPrice on PRP page is not equal to the favorite item WasPrice");
+				reporter.reportLogFailWithScreenshot("The product WasPrice:"+lsProductWasPrice+" on PRP page is not equal to the favorite item WasPrice:"+lsFavoriteItemWasPrice);
 			}
 		}
 	}
@@ -3592,9 +3670,8 @@ public class MyAccount extends BasePage {
 	}
 
 	/**
-	 * To add Favorite Item From PRP
-	 * @param - String - lsKeyword
-	 * @param - ProductResultsPage - prp
+	 * To verify Favorite Item on PDP
+	 * @param - ProductDetailPage - pdp
 	 */
 	public void verifyFavoriteItemOnPDP(ProductDetailPage pdp){
 		WebElement item=this.lstFavouriteProduct.get(0);
@@ -3609,13 +3686,13 @@ public class MyAccount extends BasePage {
 
 		element=item.findElement(byFavoriteItemNowPrice);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-		String lsFavoriteItemNowPrice=element.getText().trim();
+		String lsFavoriteItemNowPrice=String.valueOf(this.getFloatFromString(element.getText(),true));;
 
 		String lsFavoriteItemWasPrice=null;
 		if(this.getChildElementCount(item.findElement(byFavoriteItemPriceContainer))>1){
 			element=item.findElement(byFavoriteItemWasPrice);
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-			lsFavoriteItemWasPrice=element.getText().trim();
+			lsFavoriteItemWasPrice= String.valueOf(this.getFloatFromString(element.getText(),true));
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(imageElement);
@@ -3624,30 +3701,40 @@ public class MyAccount extends BasePage {
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(pdp.lblProductName);
 		String lsPDPItemName=pdp.lblProductName.getText().trim();
-		if(lsFavoriteItemName.equalsIgnoreCase(lsPDPItemName)){
-			reporter.reportLogPass("The favorite name is the same as the PDP product name");
+		if(lsPDPItemName.length()>25){
+			if(lsFavoriteItemName.substring(0,25).equalsIgnoreCase(lsPDPItemName.substring(0,25))){
+				reporter.reportLogPass("The favorite name is the same as the PDP product name");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The favorite name:"+lsFavoriteItemName+" is not the same as the PDP product name:"+lsPDPItemName);
+			}
 		}
 		else{
-			reporter.reportLogFailWithScreenshot("The favorite name is not the same as the PDP product name");
+			if(lsFavoriteItemName.equalsIgnoreCase(lsPDPItemName)){
+				reporter.reportLogPass("The favorite name is the same as the PDP product name");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The favorite name:"+lsFavoriteItemName+" is not the same as the PDP product name:"+lsPDPItemName);
+			}
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(pdp.lblProductNowPrice);
-		String lsPDPItemNowPrice=pdp.lblProductNowPrice.getText().trim();
+		String lsPDPItemNowPrice=String.valueOf(this.getFloatFromString(pdp.lblProductNowPrice.getText(),true));
 		if(lsFavoriteItemNowPrice.equalsIgnoreCase(lsPDPItemNowPrice)){
 			reporter.reportLogPass("The favorite NowPrice is the same as the PDP product NowPrice");
 		}
 		else{
-			reporter.reportLogFailWithScreenshot("The favorite NowPrice is not the same as the PDP product NowPrice");
+			reporter.reportLogFailWithScreenshot("The favorite NowPrice:"+lsFavoriteItemNowPrice+" is not the same as the PDP product NowPrice:"+lsPDPItemNowPrice);
 		}
 
 		if(lsFavoriteItemWasPrice!=null){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(pdp.lblProductWasPrice);
-			String lsPDPItemWasPrice=pdp.lblProductWasPrice.getText().trim();
+			String lsPDPItemWasPrice=String.valueOf(this.getFloatFromString(pdp.lblProductWasPrice.getText(),true));
 			if(lsFavoriteItemWasPrice.equalsIgnoreCase(lsPDPItemWasPrice)){
 				reporter.reportLogPass("The favorite WasPrice is the same as the PDP product WasPrice");
 			}
 			else{
-				reporter.reportLogFailWithScreenshot("The favorite WasPrice is not the same as the PDP product WasPrice");
+				reporter.reportLogFailWithScreenshot("The favorite WasPrice:"+lsFavoriteItemWasPrice+" is not the same as the PDP product WasPrice:"+lsPDPItemWasPrice);
 			}
 		}
 
@@ -3713,28 +3800,187 @@ public class MyAccount extends BasePage {
 	}
 
 	/**
+	 * To verify Recently Viewing History Content
+	 * @param - Map<String,String> - productMap
+	 */
+	public void verifyRecentlyViewingHistoryContent(Map<String,String> productMap){
+		String lsText,lsTextMap;
+		WebElement item,element;
+
+		ProductResultsPage prp=new ProductResultsPage(this.getDriver());
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblRecentlyViewedTitle);
+		lsText=lblRecentlyViewedTitle.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The Recently Viewing history title is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Recently Viewing history title is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnClearViewingHistory);
+		lsText=btnClearViewingHistory.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The Clear Viewing history button is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Clear Viewing history button is not displaying correctly");
+		}
+
+		reporter.reportLog("verify Recently Viewing History item");
+		item=this.lstRecentlyViewedItemContainerList.get(0);
+		element=item.findElement(byRecentlyViewedItemLink);
+		lsText=element.getAttribute("href");
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The link of recently viewing history item is not empty");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The link of recently viewing history item is empty");
+		}
+
+		element=item.findElement(byRecentlyViewedItemImage);
+		lsText=element.getAttribute("src");
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The image source of recently viewing history item is not empty");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The image source of recently viewing history item is empty");
+		}
+
+		element=item.findElement(byRecentlyViewedItemName);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+		lsText=element.getText().trim();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The product name of recently viewing history item is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The product name of recently viewing history item is not displaying correctly");
+		}
+
+		lsTextMap=productMap.get("productName");
+		if(lsTextMap.length()>25){
+			if(lsTextMap.substring(0,25).equalsIgnoreCase(lsText.substring(0,25))){
+				reporter.reportLogPass("The product name of recently viewing history item is the same as the one on PRP page");
+			}
+			else{
+				reporter.reportLogFail("The product name of recently viewing history item is not the same as the one on PRP page");
+			}
+		}
+		else{
+			if(lsText.equalsIgnoreCase(lsTextMap)){
+				reporter.reportLogPass("The product name of recently viewing history item is the same as the one on PRP page");
+			}
+			else{
+				reporter.reportLogFail("The product name of recently viewing history item is not the same as the one on PRP page");
+			}
+		}
+
+		element=item.findElement(byRecentlyViewedItemNowPrice);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+		lsText= String.valueOf(this.getFloatFromString(element.getText(),true));
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The product NowPrice of recently viewing history item is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The product NowPrice of recently viewing history item is not displaying correctly");
+		}
+
+		lsTextMap=productMap.get("productNowPrice");
+		if(lsText.equalsIgnoreCase(lsTextMap)){
+			reporter.reportLogPass("The product NowPrice of recently viewing history item is the same as the one on PRP page");
+		}
+		else{
+			reporter.reportLogFail("The product NowPrice of recently viewing history item is not the same as the one on PRP page");
+		}
+
+		lsTextMap=productMap.get("productWasPrice");
+		if(lsText!=null){
+			element=item.findElement(byRecentlyViewedItemWasPrice);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+			lsText= String.valueOf(this.getFloatFromString(element.getText(),true));
+			if(!lsText.isEmpty()){
+				reporter.reportLogPass("The product WasPrice of recently viewing history item is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The product WasPrice of recently viewing history item is not displaying correctly");
+			}
+
+			if(lsText.equalsIgnoreCase(lsTextMap)){
+				reporter.reportLogPass("The product WasPrice of recently viewing history item is the same as the one on PRP page");
+			}
+			else{
+				reporter.reportLogFail("The product WasPrice of recently viewing history item is not the same as the one on PRP page");
+			}
+		}
+
+		lsTextMap=productMap.get("productReviewRate");
+		if(lsTextMap!=null){
+			List<WebElement> itemList=item.findElements(byRecentlyViewedItemReviewRateStarList);
+			if(itemList.size()>0){
+				reporter.reportLogPass("Review star list is not empty");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("Review star list is empty");
+			}
+
+			int reviewRate=prp.getProductItemReviewNumberAmountFromStarImage(itemList);
+			if(lsTextMap.equalsIgnoreCase(reviewRate+"")){
+				reporter.reportLogPass("The product review rate of recently viewing history item is the same as the one on PRP page");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The product review rate of recently viewing history item is not the same as the one on PRP page");
+			}
+		}
+
+		lsTextMap=productMap.get("productReviewCount");
+		if(lsTextMap!=null){
+			element=item.findElement(byRecentlyViewedItemReviewAmount);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+			lsText=element.getText().trim();
+			if(!lsText.isEmpty()){
+				reporter.reportLogPass("The product review rate of recently viewing history item is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The product review rate of recently viewing history item is not displaying correctly");
+			}
+
+			int reviewCount=this.getIntegerFromString(lsText);
+			if(lsTextMap.equalsIgnoreCase(reviewCount+"")){
+				reporter.reportLogPass("The product review count of recently viewing history item is the same as the one on PRP page");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The product review count of recently viewing history item is not the same as the one on PRP page");
+			}
+		}
+	}
+
+	/**
 	 * verify Changing Subscription Success Message in NewsLetters
+	 * @param - WebElement - ckbLabel
 	 * @param - WebElement - ckbItem
 	 * @param - boolean - bCheck - if check the related Subscription checkbox
 	 * @param - String - lsExpectedMessage
 	 */
-	public void verifyNewsLettersChangingSubscriptionSuccessMessage(WebElement ckbItem,boolean bCheck,String lsExpectedMessage){
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(ckbItem);
+	public void verifyNewsLettersChangingSubscriptionSuccessMessage(WebElement ckbLabel, WebElement ckbItem,boolean bCheck,String lsExpectedMessage){
+		this.getDriver().switchTo().frame(this.iFrameEmailSignup);
+
 		if(bCheck){
 			if(!ckbItem.isSelected()){
-				this.getReusableActionsInstance().clickIfAvailable(ckbItem);
+				this.getReusableActionsInstance().clickIfAvailable(ckbLabel);
 			}
 		}
 		else{
 			if(ckbItem.isSelected()){
-				this.getReusableActionsInstance().clickIfAvailable(ckbItem);
+				this.getReusableActionsInstance().clickIfAvailable(ckbLabel);
 			}
 		}
+
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnMyNewsLettersUpdatePrefs);
 		this.getReusableActionsInstance().clickIfAvailable(btnMyNewsLettersUpdatePrefs);
-		this.waitForCondition(Driver->{return iFrameEmailSignup.isDisplayed();},10000);
 
-		this.getDriver().switchTo().frame(iFrameEmailSignup);
+		this.waitForCondition(Driver->{return this.lblSubscriptionSuccessMessage.isDisplayed();},10000);
+		this.getReusableActionsInstance().staticWait(5*this.getStaticWaitForApplication());
+
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSubscriptionSuccessMessage);
 		String lsActualMessage=this.lblSubscriptionSuccessMessage.getText();
 		if(lsActualMessage.toLowerCase().contains(lsExpectedMessage.toLowerCase())){
@@ -3744,9 +3990,8 @@ public class MyAccount extends BasePage {
 			reporter.reportLogFailWithScreenshot("The subscription message is not displaying correctly");
 		}
 
-		this.getDriver().switchTo().defaultContent();
 		this.navigateBack();
-		this.waitForCondition(Driver->{return this.lblMyNewsLettersTitle.isDisplayed();},10000);
+		this.getDriver().switchTo().defaultContent();
 	}
 
 	/**
@@ -3756,7 +4001,9 @@ public class MyAccount extends BasePage {
 	 * @param - String - lsExpectedUnSubscriptionMessage
 	 */
 	public void verifyNewsLettersUnSubscriptionSuccessMessage(boolean bCheckUnSubscription,String lsExpectedAlertMessage,String lsExpectedUnSubscriptionMessage){
-		if(bCheckUnSubscription){
+		this.getDriver().switchTo().frame(this.iFrameEmailSignup);
+
+		if(!bCheckUnSubscription){
 			if(this.ckbMyNewsLettersUnsubscribe.isSelected()){
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.ckbMyNewsLettersUnsubscribe);
 				this.getReusableActionsInstance().clickIfAvailable(this.ckbMyNewsLettersUnsubscribe);
@@ -3783,7 +4030,7 @@ public class MyAccount extends BasePage {
 
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnMyNewsLettersUnsubscribe);
 			this.getReusableActionsInstance().clickIfAvailable(btnMyNewsLettersUnsubscribe);
-			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+			this.getReusableActionsInstance().staticWait(2*this.getStaticWaitForApplication());
 			Alert alert=this.getDriver().switchTo().alert();
 			String lsActualAlertMessage=alert.getText().trim();
 			if(lsActualAlertMessage.toLowerCase().contains(lsExpectedAlertMessage.toLowerCase())){
@@ -3794,9 +4041,9 @@ public class MyAccount extends BasePage {
 			}
 			alert.accept();
 
-			this.waitForCondition(Driver->{return iFrameEmailSignup.isDisplayed();},10000);
+			waitForCondition(Driver->{return this.lblSubscriptionSuccessMessage.isDisplayed();},10000);
+			this.getReusableActionsInstance().staticWait(5*this.getStaticWaitForApplication());
 
-			this.getDriver().switchTo().frame(iFrameEmailSignup);
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSubscriptionSuccessMessage);
 			String lsActualMessage=this.lblSubscriptionSuccessMessage.getText();
 			if(lsActualMessage.toLowerCase().contains(lsExpectedUnSubscriptionMessage.toLowerCase())){
@@ -3806,10 +4053,156 @@ public class MyAccount extends BasePage {
 				reporter.reportLogFailWithScreenshot("The UnSubscription message is not displaying correctly");
 			}
 
-			this.getDriver().switchTo().defaultContent();
 			this.navigateBack();
-			this.waitForCondition(Driver->{return this.lblMyNewsLettersTitle.isDisplayed();},10000);
+			this.getDriver().switchTo().defaultContent();
 		}
+	}
+
+	/**
+	 * To verify My NewsLetter Content
+	 */
+	public void verifyMyNewsLetterContent(){
+		this.getDriver().switchTo().frame(this.iFrameEmailSignup);
+
+		String lsText;
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblMyNewsLettersTitle);
+		lsText=lblMyNewsLettersTitle.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("MyNewsLetter title is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("MyNewsLetter title is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblMyNewsLettersManageYourEmailPreferences);
+		lsText=lblMyNewsLettersManageYourEmailPreferences.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("Manage Your Email Preferences static text is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Manage Your Email Preferences static text is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(ckbMyNewsLettersTodayShowStopperNewsLetter);
+		if(this.getReusableActionsInstance().isElementVisible(ckbMyNewsLettersTodayShowStopperNewsLetter)){
+			reporter.reportLogPass("Today Show Stopper NewsLetter checkbox is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Today Show Stopper NewsLetter checkbox is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblMyNewsLettersTodayShowStopperNewsLetterTitle);
+		lsText=lblMyNewsLettersTodayShowStopperNewsLetterTitle.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("Today Show Stopper NewsLetter checkbox label is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Today Show Stopper NewsLetter checkbox label is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(ckbMyNewsLettersSpecialOfferAndEventNewsLetter);
+		if(this.getReusableActionsInstance().isElementVisible(ckbMyNewsLettersSpecialOfferAndEventNewsLetter)){
+			reporter.reportLogPass("Special Offer And Event NewsLetter checkbox is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Special Offer And Event NewsLetter checkbox is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblMyNewsLettersSpecialOfferAndEventNewsLetterTitle);
+		lsText=lblMyNewsLettersSpecialOfferAndEventNewsLetterTitle.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("Special Offer And Event NewsLetter checkbox label is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Special Offer And Event NewsLetter checkbox label is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(ckbMyNewsLettersPreferredCustomerOffer);
+		if(this.getReusableActionsInstance().isElementVisible(ckbMyNewsLettersPreferredCustomerOffer)){
+			reporter.reportLogPass("Preferred Customer Offer checkbox is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Preferred Customer Offer checkbox is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblMyNewsLettersPreferredCustomerOfferTitle);
+		lsText=lblMyNewsLettersPreferredCustomerOfferTitle.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("Preferred Customer Offer checkbox label is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Preferred Customer Offer checkbox label is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(ckbMyNewsLettersProductUpdatesAndAlerts);
+		if(this.getReusableActionsInstance().isElementVisible(ckbMyNewsLettersProductUpdatesAndAlerts)){
+			reporter.reportLogPass("Product Updates And Alerts checkbox is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Product Updates And Alerts checkbox is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblMyNewsLettersProductUpdatesAndAlertsTitle);
+		lsText=lblMyNewsLettersProductUpdatesAndAlertsTitle.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("Product Updates And Alerts checkbox label is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Product Updates And Alerts checkbox label is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnMyNewsLettersUpdatePrefs);
+		if(this.getReusableActionsInstance().isElementVisible(btnMyNewsLettersUpdatePrefs)){
+			reporter.reportLogPass("UpdatePrefs button is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("UpdatePrefs button is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(ckbMyNewsLettersUnsubscribe);
+		if(this.getReusableActionsInstance().isElementVisible(ckbMyNewsLettersUnsubscribe)){
+			reporter.reportLogPass("Unsubscribe checkbox is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Unsubscribe checkbox is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblMyNewsLettersUnsubscribeTitle);
+		lsText=lblMyNewsLettersUnsubscribeTitle.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("Unsubscribe checkbox label is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Unsubscribe checkbox label is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblMyNewsLettersUnsubscribeDescription);
+		lsText=lblMyNewsLettersUnsubscribeDescription.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("Unsubscribe Description is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Unsubscribe Description is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnMyNewsLettersUnsubscribe);
+		if(this.getReusableActionsInstance().isElementVisible(btnMyNewsLettersUnsubscribe)){
+			reporter.reportLogPass("Unsubscribe button is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Unsubscribe button is not displaying correctly");
+		}
+
+		this.getDriver().switchTo().defaultContent();
+	}
+
+	/**
+	 * To check Viewed History Existing
+	 * @return - boolean
+	 */
+	public boolean checkViewedHistoryExisting(){
+		return this.getChildElementCount(cntRecentlyViewedTitleContainer)>1;
 	}
 
 

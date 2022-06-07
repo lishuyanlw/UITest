@@ -25,7 +25,6 @@ public class MA_TC07_AccountSettings extends BaseTest {
         //Login using valid username and password
         getGlobalLoginPageThreadLocal().Login(lblUserName, lblPassword);
 
-        //String lsTestDevice = System.getProperty("Device").trim();
         reporter.reportLog("Verify customer information");
         //Fetching test data from test data file
         ConstantData.APIUserSessionParams apiUserSessionParams = TestDataHandler.constantData.getApiUserSessionParams();

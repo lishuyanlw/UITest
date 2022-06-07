@@ -56,7 +56,6 @@ public class MA_TC09_AccountSettings_ChangeSecurityQuestions extends BaseTest {
         getGlobalLoginPageThreadLocal().Login(lblUserName, lblPassword);
 
         BasePage basePage=new BasePage(this.getDriver());
-        String lsTestDevice = System.getProperty("Device").trim();
 
         //if(!lsTestDevice.equalsIgnoreCase("Mobile")){
         reporter.reportLog("Verify customer information");
@@ -118,6 +117,7 @@ public class MA_TC09_AccountSettings_ChangeSecurityQuestions extends BaseTest {
 
         reporter.reportLog("Verify error message");
         getMyAccountPageThreadLocal().verifyChangeSecurityQuestionErrorMessage();
+
         /**
         reporter.reportLog("Verify clicking Cancel button");
         Map<String,Object> map=getMyAccountPageThreadLocal().changeSecurityQuestionFunctionInAccountSettingsSection(false);
@@ -142,9 +142,8 @@ public class MA_TC09_AccountSettings_ChangeSecurityQuestions extends BaseTest {
             }
         }
         */
-        Map<String,Object> map=getMyAccountPageThreadLocal().changeSecurityQuestionFunctionInAccountSettingsSection(false);
         reporter.reportLog("Verify clicking Submit button");
-        map=getMyAccountPageThreadLocal().changeSecurityQuestionFunctionInAccountSettingsSection(true);
+        Map<String,Object> map=getMyAccountPageThreadLocal().changeSecurityQuestionFunctionInAccountSettingsSection(true);
         basePage.getReusableActionsInstance().staticWait(basePage.getStaticWaitForApplication());
         getMyAccountPageThreadLocal().openChangeSecuritySection();
         basePage.getReusableActionsInstance().javascriptScrollByVisibleElement(getMyAccountPageThreadLocal().selectChangeSecurityQuestionSectionQuestion);

@@ -7,18 +7,20 @@ import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.data.pojos.ConstantData;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
+import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MA_TC14_YourAddresses_AddingAddress extends BaseTest {
+public class MA_TC14_YourAddresses_ShippingAddress extends BaseTest {
     /*
-     *CER-805
+     *CER-804
      */
     @Test(groups={"MyAccount","Regression"})
-    public void MA_TC14_YourAddresses_AddingAddress() throws IOException, org.json.simple.parser.ParseException {
+    public void MA_TC14_YourAddresses_ShippingAddress() throws IOException, org.json.simple.parser.ParseException {
         //Closing SignIn pop up on login
         getGlobalFooterPageThreadLocal().closePopupDialog();
 
@@ -44,7 +46,6 @@ public class MA_TC14_YourAddresses_AddingAddress extends BaseTest {
         //Login using valid username and password
         getGlobalLoginPageThreadLocal().Login(lblUserName, lblPassword);
         //String lsTestDevice = System.getProperty("Device").trim();
-
         reporter.reportLog("Verify customer information");
         String customerNumber = accountResponse.getCustomerNo();
         String userCustomerNumber = getGlobalLoginPageThreadLocal().getCustomerNumberForLoggedInUser();
@@ -61,11 +62,8 @@ public class MA_TC14_YourAddresses_AddingAddress extends BaseTest {
 
         getMyAccountPageThreadLocal().openSubItemWindow("Your Addresses", "Shipping Address", getMyAccountPageThreadLocal().lblYourAddressTitle);
         int addressAmountBeforeAdding=getMyAccountPageThreadLocal().lstShippingAddressContainer.size();
-        getMyAccountPageThreadLocal().goBackUpperLevel();
 
-        getMyAccountPageThreadLocal().openSubItemWindow("Your Addresses", "Add a New Address", getMyAccountPageThreadLocal().lblAddOrEditAddressTitle);
-
-        String lnk_URL = TestDataHandler.constantData.getMyAccount().getLnk_myAccountAddingAddressURL();
+        String lnk_URL = TestDataHandler.constantData.getMyAccount().getLnk_myAccountShippingAddressURL();
         String expectedURL = basePage.getBaseURL() + lnk_URL;
         if (basePage.URL().equalsIgnoreCase(expectedURL)) {
             reporter.reportLogPass("The navigated URL is equal to expected one:" + expectedURL);
@@ -73,12 +71,20 @@ public class MA_TC14_YourAddresses_AddingAddress extends BaseTest {
             reporter.reportLogPass("The actual navigated URL:+" + basePage.URL() + " is not equal to expected one:" + expectedURL);
         }
 
-        reporter.reportLog("Verify adding address content");
-        getMyAccountPageThreadLocal().verifyAddressContent(true);
+        reporter.reportLog("Verify address content");
+        getMyAccountPageThreadLocal().verifyYourAddresses();
 
-        reporter.reportLog("Adding a new shipping address");
+        reporter.reportLog("Verify editing address content");
+        WebElement editButton=getMyAccountPageThreadLocal().getGivenShippingAddressEditButton(0);
+        getMyAccountPageThreadLocal().openAddOrEditAddressWindow("editShippingAddress",editButton);
+        getMyAccountPageThreadLocal().verifyAddressContent(false);
+        getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(false);
+
+        reporter.reportLog("Adding 2 new shipping addresses");
+        getMyAccountPageThreadLocal().openAddOrEditAddressWindow("addShippingAddress",null);
         String lsAutoSearchKeywordAdd = DataConverter.getSaltString(4,"numberType");
-        Map<String,String> map=getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeywordAdd,false,false,-1);
+        getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeywordAdd, false, false, -1);
+        Map<String,String> mapAdd;
 
         //To avoid duplicated data issue
         try{
@@ -86,19 +92,41 @@ public class MA_TC14_YourAddresses_AddingAddress extends BaseTest {
         }
         catch(Exception e){
             lsAutoSearchKeywordAdd = DataConverter.getSaltString(4,"numberType");
-            map=getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeywordAdd,false,false,-1);
+            mapAdd=getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeywordAdd,false,false,-1);
             try{
                 getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
             }
-            catch (Exception ex){
+            catch(Exception ex){
                 lsAutoSearchKeywordAdd = DataConverter.getSaltString(4,"numberType");
-                map=getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeywordAdd,false,false,-1);
+                mapAdd=getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeywordAdd,false,false,-1);
                 getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
             }
         }
 
+        getMyAccountPageThreadLocal().openAddOrEditAddressWindow("addShippingAddress",null);
+        lsAutoSearchKeywordAdd = DataConverter.getSaltString(4,"numberType");
+        mapAdd=getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeywordAdd,false,false,-1);
+
+        //To avoid duplicated data issue
+        try{
+            getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
+        }
+        catch(Exception e){
+            lsAutoSearchKeywordAdd = DataConverter.getSaltString(4,"numberType");
+            mapAdd=getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeywordAdd,false,false,-1);
+            try{
+                getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
+            }
+            catch(Exception ex){
+                lsAutoSearchKeywordAdd = DataConverter.getSaltString(4,"numberType");
+                mapAdd=getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeywordAdd,false,false,-1);
+                getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
+            }
+        }
+
+        String lsFirstNameAdd=mapAdd.get("firstName").toString();
         int addressAmountAfterAdding=getMyAccountPageThreadLocal().lstShippingAddressContainer.size();
-        if((addressAmountAfterAdding-addressAmountBeforeAdding)>=1){
+        if((addressAmountAfterAdding-addressAmountBeforeAdding)>=2){
             reporter.reportLogPass("Adding a new address successfully");
         }
         else{
@@ -107,100 +135,70 @@ public class MA_TC14_YourAddresses_AddingAddress extends BaseTest {
 
         reporter.reportLog("Verify make default shipping address scenario");
         Map<String,String> mapBeforeMakeDefaultShippingAddress=getMyAccountPageThreadLocal().getGivenShippingOrBillingAddress(0);
-        getMyAccountPageThreadLocal().openAddOrEditAddressWindow("addShippingAddress",null);
-        String lsAutoSearchKeywordSetDefault = DataConverter.getSaltString(4,"numberType");
-        reporter.reportLog("lsAutoSearchKeywordSetDefault: "+lsAutoSearchKeywordSetDefault);
-        map=getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeywordSetDefault,true,false,-1);
-
-        //To avoid duplicated data issue
-        try{
-            getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
-        }
-        catch(Exception e){
-            lsAutoSearchKeywordSetDefault = DataConverter.getSaltString(4,"numberType");
-            map=getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeywordSetDefault,true,false,-1);
-            try{
-                getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
-            }
-            catch(Exception ex){
-                lsAutoSearchKeywordSetDefault = DataConverter.getSaltString(4,"numberType");
-                map=getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeywordSetDefault,true,false,-1);
-                getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
-            }
-        }
-
-        String lsExpectedFirstname=map.get("firstName").toString();
+        editButton=getMyAccountPageThreadLocal().getGivenShippingAddressEditButton(getMyAccountPageThreadLocal().lstShippingAddressContainer.size()-1);
+        getMyAccountPageThreadLocal().openAddOrEditAddressWindow("editShippingAddress",editButton);
+        getMyAccountPageThreadLocal().setDefaultShippingAddress();
+        getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
         basePage.getReusableActionsInstance().staticWait(3000);
         Map<String,String> mapAfterMakeDefaultShippingAddress=getMyAccountPageThreadLocal().getGivenShippingOrBillingAddress(0);
         String lsFirstNameBeforeMakeDefaultShippingAddress=mapBeforeMakeDefaultShippingAddress.get("firstName").toString();
         String lsFirstNameAfterMakeDefaultShippingAddress=mapAfterMakeDefaultShippingAddress.get("firstName").toString();
         if(!lsFirstNameBeforeMakeDefaultShippingAddress.equalsIgnoreCase(lsFirstNameAfterMakeDefaultShippingAddress)&&
-            lsExpectedFirstname.equalsIgnoreCase(lsFirstNameAfterMakeDefaultShippingAddress)){
+                lsFirstNameAdd.equalsIgnoreCase(lsFirstNameAfterMakeDefaultShippingAddress)){
             reporter.reportLogPass("Make default shipping address successfully");
         }
         else{
-            reporter.reportLogFailWithScreenshot("Make default shipping address failed with "+lsFirstNameBeforeMakeDefaultShippingAddress+" but actual: "+lsFirstNameAfterMakeDefaultShippingAddress+" and expected first name is: "+lsExpectedFirstname);
+            reporter.reportLogFailWithScreenshot("Make default shipping address failed with "+lsFirstNameBeforeMakeDefaultShippingAddress+" : "+lsFirstNameAfterMakeDefaultShippingAddress);
         }
 
-        reporter.reportLog("Verify make address as billing address scenario");
-        Map<String,String> mapBeforeMakeAsBillingAddress=getMyAccountPageThreadLocal().getGivenShippingOrBillingAddress(-1);
-        getMyAccountPageThreadLocal().openAddOrEditAddressWindow("addShippingAddress",null);
-        lsAutoSearchKeywordSetDefault = DataConverter.getSaltString(4,"numberType");
-        map=getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeywordSetDefault,false,true,-1);
+        reporter.reportLog("Edit default shipping address");
+        String lsFirstNameEdit=DataConverter.getSaltString(1,"upperStringType")+DataConverter.getSaltString(5,"lowerStringType");
+        String lsLastNameEdit=DataConverter.getSaltString(1,"upperStringType")+DataConverter.getSaltString(7,"lowerStringType");
+        String lsAutoSearchKeywordEdit = DataConverter.getSaltString(4,"numberType");
+        Map<String,String> mapEditInput=new HashMap<>();
+        mapEditInput.put("firstName",lsFirstNameEdit);
+        mapEditInput.put("lastName",lsLastNameEdit);
+        editButton=getMyAccountPageThreadLocal().getGivenShippingAddressEditButton(0);
+        getMyAccountPageThreadLocal().openAddOrEditAddressWindow("editShippingAddress",editButton);
+        String lsAddressEdit=getMyAccountPageThreadLocal().editAddress(mapEditInput,lsAutoSearchKeywordEdit);
 
         //To avoid duplicated data issue
         try{
             getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
         }
         catch(Exception e){
-            lsAutoSearchKeywordSetDefault = DataConverter.getSaltString(4,"numberType");
-            map=getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeywordSetDefault,false,true,-1);
+            lsAutoSearchKeywordEdit = DataConverter.getSaltString(4,"numberType");
+            lsAddressEdit=getMyAccountPageThreadLocal().editAddress(mapEditInput,lsAutoSearchKeywordEdit);
             try{
                 getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
             }
             catch (Exception ex){
-                lsAutoSearchKeywordSetDefault = DataConverter.getSaltString(4,"numberType");
-                map=getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeywordSetDefault,false,true,-1);
+                lsAutoSearchKeywordEdit = DataConverter.getSaltString(4,"numberType");
+                lsAddressEdit=getMyAccountPageThreadLocal().editAddress(mapEditInput,lsAutoSearchKeywordEdit);
                 getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
             }
         }
-        lsExpectedFirstname=map.get("firstName").toString();
-
-        //Waiting for Default shipping address change
-        basePage.getReusableActionsInstance().staticWait(8000);
-        Map<String,String> mapAfterMakeAsBillingAddress=getMyAccountPageThreadLocal().getGivenShippingOrBillingAddress(-1);
-        String lsFirstNameBeforeMakeAsBillingAddress=mapBeforeMakeAsBillingAddress.get("firstName").toString();
-        String lsFirstNameAfterMakeAsBillingAddress=mapAfterMakeAsBillingAddress.get("firstName").toString();
-        Map<String,String> mapDefaultShippingAddress=getMyAccountPageThreadLocal().getGivenShippingOrBillingAddress(0);
-        String lsFirstDefaultShippingAddress=mapDefaultShippingAddress.get("firstName").toString();
-        reporter.reportLog(lsFirstNameBeforeMakeAsBillingAddress+":"+lsExpectedFirstname+":"+lsFirstNameAfterMakeAsBillingAddress+":"+lsFirstDefaultShippingAddress);
-        if(!lsFirstNameBeforeMakeAsBillingAddress.equalsIgnoreCase(lsFirstNameAfterMakeAsBillingAddress)&&
-                lsExpectedFirstname.equalsIgnoreCase(lsFirstNameAfterMakeAsBillingAddress)){
-            reporter.reportLogPass("Make As billing address successfully");
+        Map<String,String> mapAfterEdit=getMyAccountPageThreadLocal().getGivenShippingOrBillingAddress(0);
+        String lsFirstName=mapAfterEdit.get("firstName");
+        String lsLastName=mapAfterEdit.get("lastName");
+        String lsAddress=mapAfterEdit.get("address");
+        if(lsFirstName.equalsIgnoreCase(lsFirstNameEdit)&&lsLastName.equalsIgnoreCase(lsLastNameEdit)&&
+                lsAddress.equalsIgnoreCase(lsAddressEdit)){
+            reporter.reportLogPass("Editing address successfully");
         }
         else{
-            reporter.reportLogFail("Make As billing address failed with "+lsExpectedFirstname+" : "+lsFirstNameAfterMakeAsBillingAddress);
+            reporter.reportLogFail("Editing address failed");
         }
 
-        reporter.reportLog("Verify auto search function for address");
-        getMyAccountPageThreadLocal().openAddOrEditAddressWindow("addShippingAddress",null);
-        getMyAccountPageThreadLocal().verifyAutoSearchForAddress(false);
-        getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(false);
-
-        reporter.reportLog("Verify adding duplicated address");
-        Map<String,String> mapLastShippingAddress=getMyAccountPageThreadLocal().getGivenShippingOrBillingAddress(getMyAccountPageThreadLocal().lstShippingAddressContainer.size()-1);
-        getMyAccountPageThreadLocal().openAddOrEditAddressWindow("addShippingAddress",null);
+        reporter.reportLog("Verify Editing duplicated address");
+        Map<String,String> mapLastShippingAddress=getMyAccountPageThreadLocal().getGivenShippingOrBillingAddress(0);
+        editButton=getMyAccountPageThreadLocal().getGivenShippingAddressEditButton(getMyAccountPageThreadLocal().lstShippingAddressContainer.size()-1);
+        getMyAccountPageThreadLocal().openAddOrEditAddressWindow("editShippingAddress",editButton);
         getMyAccountPageThreadLocal().editAddress(mapLastShippingAddress,null);
 
         if(getMyAccountPageThreadLocal().ckbAddOrEditMakeDefaultShippingAddress.isSelected()){
             basePage.getReusableActionsInstance().javascriptScrollByVisibleElement(getMyAccountPageThreadLocal().labelAddOrEditMakeDefaultShippingAddress);
             getMyAccountPageThreadLocal().labelAddOrEditMakeDefaultShippingAddress.click();
-        }
-        basePage.getReusableActionsInstance().staticWait(300);
-
-        if(getMyAccountPageThreadLocal().ckbAddOrEditMakeShippingAsBillingAddress.isSelected()){
-            basePage.getReusableActionsInstance().javascriptScrollByVisibleElement(getMyAccountPageThreadLocal().labelAddOrEditMakeShippingAsBillingAddress);
-            getMyAccountPageThreadLocal().labelAddOrEditMakeShippingAsBillingAddress.click();
         }
         basePage.getReusableActionsInstance().staticWait(300);
 

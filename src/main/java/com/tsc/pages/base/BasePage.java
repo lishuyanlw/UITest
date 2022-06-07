@@ -234,7 +234,7 @@ import utils.ReusableActions;
 		};
 		WebDriverWait wait = new WebDriverWait(getDriver(), 200);
 		wait.until(javascriptDone);
-		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+		this.getReusableActionsInstance().staticWait(3*this.getStaticWaitForApplication());
 	}
 	
 	public void navigateBack() {

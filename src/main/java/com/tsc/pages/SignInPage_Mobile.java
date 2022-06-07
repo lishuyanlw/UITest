@@ -28,8 +28,6 @@ public class SignInPage_Mobile extends SignInPage{
 
         this.clickElement(this.btnSignInMainMenu);
         //getReusableActionsInstance().staticWait(2000);
-
-        //this.btnSignOut.click();
         getReusableActionsInstance().clickIfAvailable(this.btnSignOut);
         //getReusableActionsInstance().staticWait(5000);
 

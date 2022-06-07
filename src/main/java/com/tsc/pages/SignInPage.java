@@ -243,7 +243,7 @@ public class SignInPage extends BasePage {
 
 		this.getReusableActionsInstance().clickIfAvailable(this.btnSignInNav);
 
-		return waitForCondition(Driver->{return this.lblSignIn.isDisplayed();},30000);
+		return waitForCondition(Driver->{return this.lblSignIn.isDisplayed();},300000);
 	}
 
 	/**
@@ -361,8 +361,8 @@ public class SignInPage extends BasePage {
 		String lsSignInMsg=this.btnSignInMainMenu.getText().trim();
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSubmit);
 		this.getReusableActionsInstance().clickIfAvailable(this.btnSubmit);
-		//this.btnSubmit.click();
-		this.waitForPageToLoad();
+		waitForCondition(Driver->{return lblSignInGlobalResponseBanner.isDisplayed();},300000);
+
 		if(System.getProperty("Device").equalsIgnoreCase("Mobile")){
 			waitForCondition(Driver->{return this.lblSignInPageTitle.isDisplayed();},30000);
 			//getReusableActionsInstance().staticWait(2000);
@@ -480,30 +480,56 @@ public class SignInPage extends BasePage {
 		}
 	}
 
-	public void verifyErrorMessageForUserNameAndPassword(String lsUserName, String lsPassword, String lsErrorMessageForUserName,String lsErrorMessageForPassword,String lsErrorMessageForCombination){
+	public void verifyErrorMessageForUserNameAndPassword(String lsUserName, String lsPassword, String lsErrorMessageForUserName,String lsErrorMessageForPassword,String lsErrorMessageForCombination,boolean bUserValid){
+		boolean bUserEmpty=true,bPasswordEmpty=true;
 		if(!lsUserName.isEmpty()){
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputUserName);
-			this.inputUserName.clear();
-			this.inputUserName.sendKeys(lsUserName);
+			bUserEmpty=false;
 		}
 
 		if(!lsPassword.isEmpty()){
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputPassword);
-			this.inputPassword.clear();
-			this.inputPassword.sendKeys(lsUserName);
+			bPasswordEmpty=false;
 		}
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSubmit);
-		this.getReusableActionsInstance().clickIfAvailable(this.btnSubmit);
-		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
-		this.getReusableActionsInstance().clickIfAvailable(this.btnSubmit);
+		if(bUserEmpty&&bPasswordEmpty){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSubmit);
+			this.getReusableActionsInstance().clickIfAvailable(this.btnSubmit);
+			this.waitForCondition(Driver->{return this.lblUserNameAndPasswordCombinationErrorMessage.isDisplayed();},15000);
 
-		this.waitForCondition(Driver->{return this.lblUserNameAndPasswordCombinationErrorMessage.isDisplayed();},5000);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblUserNameErrorMessage);
+			if(this.lblUserNameErrorMessage.getText().trim().equalsIgnoreCase(lsErrorMessageForUserName.trim())){
+				reporter.reportLogPass("Error message for username is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("Error message for username is not displaying correctly");
+			}
 
-		String regex = "^(.+)@(.+)$";
-		Pattern pattern = Pattern.compile(regex);
-		Matcher matcher = pattern.matcher(lsUserName);
-		if(!matcher.matches()){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblPasswordErrorMessage);
+			if(this.lblPasswordErrorMessage.getText().trim().equalsIgnoreCase(lsErrorMessageForPassword.trim())){
+				reporter.reportLogPass("Error message for password is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("Error message for password is not displaying correctly");
+			}
+
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblUserNameAndPasswordCombinationErrorMessage);
+			if(this.lblUserNameAndPasswordCombinationErrorMessage.getText().trim().equalsIgnoreCase(lsErrorMessageForCombination.trim())){
+				reporter.reportLogPass("Error message for combination is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("Error message for combination is not displaying correctly");
+			}
+		}
+
+		if(!bUserEmpty&&!bUserValid){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputUserName);
+			this.inputUserName.clear();
+			this.inputUserName.sendKeys(lsUserName);
+			this.getReusableActionsInstance().staticWait(300);
+
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputPassword);
+			this.inputPassword.click();
+			this.waitForCondition(Driver->{return this.lblUserNameErrorMessage.isDisplayed();},15000);
+
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblUserNameErrorMessage);
 			if(this.lblUserNameErrorMessage.getText().trim().equalsIgnoreCase(lsErrorMessageForUserName.trim())){
 				reporter.reportLogPass("Error message for username is displaying correctly");
@@ -513,7 +539,16 @@ public class SignInPage extends BasePage {
 			}
 		}
 
-		if(lsPassword.length()<2){
+		if(bUserValid&&bPasswordEmpty){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputUserName);
+			this.inputUserName.clear();
+			this.inputUserName.sendKeys(lsUserName);
+			this.getReusableActionsInstance().staticWait(300);
+
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSubmit);
+			this.getReusableActionsInstance().clickIfAvailable(this.btnSubmit);
+			this.waitForCondition(Driver->{return this.lblUserNameAndPasswordCombinationErrorMessage.isDisplayed();},15000);
+
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblPasswordErrorMessage);
 			if(this.lblPasswordErrorMessage.getText().trim().equalsIgnoreCase(lsErrorMessageForPassword.trim())){
 				reporter.reportLogPass("Error message for password is displaying correctly");
@@ -521,14 +556,38 @@ public class SignInPage extends BasePage {
 			else{
 				reporter.reportLogFailWithScreenshot("Error message for password is not displaying correctly");
 			}
+
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblUserNameAndPasswordCombinationErrorMessage);
+			if(this.lblUserNameAndPasswordCombinationErrorMessage.getText().trim().equalsIgnoreCase(lsErrorMessageForCombination.trim())){
+				reporter.reportLogPass("Error message for combination is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("Error message for combination is not displaying correctly");
+			}
 		}
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblUserNameAndPasswordCombinationErrorMessage);
-		if(this.lblUserNameAndPasswordCombinationErrorMessage.getText().trim().equalsIgnoreCase(lsErrorMessageForCombination.trim())){
-			reporter.reportLogPass("Error message for username and password is displaying correctly");
-		}
-		else{
-			reporter.reportLogFailWithScreenshot("Error message for username and password is not displaying correctly");
+		if(bUserValid&&!bPasswordEmpty){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputUserName);
+			this.inputUserName.clear();
+			this.inputUserName.sendKeys(lsUserName);
+			this.getReusableActionsInstance().staticWait(300);
+
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputPassword);
+			this.inputPassword.clear();
+			this.inputPassword.sendKeys(lsPassword);
+			this.getReusableActionsInstance().staticWait(300);
+
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSubmit);
+			this.getReusableActionsInstance().clickIfAvailable(this.btnSubmit);
+			this.waitForCondition(Driver->{return this.lblUserNameAndPasswordCombinationErrorMessage.isDisplayed();},15000);
+
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblUserNameAndPasswordCombinationErrorMessage);
+			if(this.lblUserNameAndPasswordCombinationErrorMessage.getText().trim().equalsIgnoreCase(lsErrorMessageForCombination.trim())){
+				reporter.reportLogPass("Error message for combination is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("Error message for combination is not displaying correctly");
+			}
 		}
 	}
 

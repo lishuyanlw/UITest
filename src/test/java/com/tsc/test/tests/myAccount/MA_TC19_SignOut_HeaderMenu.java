@@ -8,12 +8,12 @@ import org.testng.annotations.Test;
 
 import java.io.IOException;
 
-public class MA_TC13_SignOut_HeaderMenu extends BaseTest {
+public class MA_TC19_SignOut_HeaderMenu extends BaseTest {
     /*
      *CER-789
      */
     @Test(groups={"MyAccount","Regression"})
-    public void MA_TC13_SignOut_HeaderMenu() throws IOException {
+    public void MA_TC19_SignOut_HeaderMenu() throws IOException {
         //Closing SignIn pop up on login
         getGlobalFooterPageThreadLocal().closePopupDialog();
 
@@ -24,7 +24,6 @@ public class MA_TC13_SignOut_HeaderMenu extends BaseTest {
 
         //Login using valid username and password
         getGlobalLoginPageThreadLocal().Login(lblUserName, lblPassword);
-        //String lsTestDevice = System.getProperty("Device").trim();
 
         String lnk_landingViewURL=TestDataHandler.constantData.getMyAccount().getLnk_myAccountLandingViewURL();
         String expectedURL=basePage.getBaseURL()+lnk_landingViewURL;

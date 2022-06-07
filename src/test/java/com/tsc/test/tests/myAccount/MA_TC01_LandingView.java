@@ -5,7 +5,6 @@ import com.tsc.data.pojos.ConstantData;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 import org.testng.annotations.Test;
-
 import java.io.IOException;
 
 public class MA_TC01_LandingView extends BaseTest {
@@ -24,8 +23,6 @@ public class MA_TC01_LandingView extends BaseTest {
 
         //Login using valid username and password
         getGlobalLoginPageThreadLocal().Login(lblUserName, lblPassword);
-
-        //String lsTestDevice = System.getProperty("Device").trim();
 
         String lnk_landingViewURL=TestDataHandler.constantData.getMyAccount().getLnk_myAccountLandingViewURL();
         String expectedURL=basePage.getBaseURL()+lnk_landingViewURL;

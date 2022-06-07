@@ -51,7 +51,6 @@ public class MA_TC08_AccountSettings_ChangePassword extends BaseTest {
         getGlobalLoginPageThreadLocal().Login(lblUserName, lblPassword);
 
         BasePage basePage=new BasePage(this.getDriver());
-        //String lsTestDevice = System.getProperty("Device").trim();
 
         reporter.reportLog("Verify customer information");
         String userCustomerNumber = getGlobalLoginPageThreadLocal().getCustomerNumberForLoggedInUser();
@@ -123,6 +122,7 @@ public class MA_TC08_AccountSettings_ChangePassword extends BaseTest {
         String lsErrorMessageForUserName=TestDataHandler.constantData.getLoginUser().getLbl_ErrorMessageForUserName();
         String lsErrorMessageForPassword=TestDataHandler.constantData.getLoginUser().getLbl_ErrorMessageForPassword();
         String lsErrorMessageForUserNameAndPassword=TestDataHandler.constantData.getLoginUser().getLbl_ErrorMessageForUserNameAndPassword();
-        getGlobalLoginPageThreadLocal().verifyErrorMessageForUserNameAndPassword(lblUserName,lblPassword,lsErrorMessageForUserName,lsErrorMessageForPassword,lsErrorMessageForUserNameAndPassword);
+        getGlobalLoginPageThreadLocal().verifyErrorMessageForUserNameAndPassword(lblUserName,lblPassword,lsErrorMessageForUserName,lsErrorMessageForPassword,lsErrorMessageForUserNameAndPassword,true);
+
     }
 }

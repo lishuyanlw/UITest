@@ -18,12 +18,12 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-public class MA_TC17_MyPreferences_Favorites extends BaseTest {
+public class MA_TC16_MyPreferences_Favorites extends BaseTest {
     /*
      *CER-808
      */
-    @Test(groups={"MyAccountT","Regression"})
-    public void MA_TC17_MyPreferences_Favorites() throws IOException, org.json.simple.parser.ParseException {
+    @Test(groups={"MyAccount","Regression"})
+    public void MA_TC16_MyPreferences_Favorites() throws IOException, org.json.simple.parser.ParseException {
         //Closing SignIn pop up on login
         getGlobalFooterPageThreadLocal().closePopupDialog();
 
@@ -54,7 +54,8 @@ public class MA_TC17_MyPreferences_Favorites extends BaseTest {
         }
 
         String lsTestDevice = System.getProperty("Device").trim();
-        if (!lsTestDevice.equalsIgnoreCase("Mobile")) {
+        String lsTestBrowser= System.getProperty("Browser").toLowerCase().trim();
+        if((lsTestDevice.equalsIgnoreCase("Desktop"))||(lsTestDevice.equalsIgnoreCase("Tablet")&&lsTestBrowser.contains("ios"))){
             reporter.reportLog("Verify customer information");
             String customerNumber = accountResponse.getCustomerNo();
             String userCustomerNumber = getGlobalLoginPageThreadLocal().getCustomerNumberForLoggedInUser();
