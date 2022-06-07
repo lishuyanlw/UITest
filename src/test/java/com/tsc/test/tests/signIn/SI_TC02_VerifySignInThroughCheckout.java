@@ -1,17 +1,13 @@
 package com.tsc.test.tests.signIn;
 
 import com.tsc.api.apiBuilder.ProductAPI;
-import com.tsc.api.pojo.AccountResponse;
 import com.tsc.api.pojo.Product;
 import com.tsc.data.Handler.TestDataHandler;
-import com.tsc.pages.GlobalHeaderPage;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
-import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 public class SI_TC02_VerifySignInThroughCheckout extends BaseTest{
