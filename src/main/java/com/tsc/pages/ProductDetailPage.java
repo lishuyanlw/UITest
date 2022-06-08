@@ -24,136 +24,76 @@ public class ProductDetailPage extends BasePage {
 
 	}
 
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'pdImageSection') and not(contains(@class,'pdImageSection__zoom')) and not(@style='display: none;')]")
+	@FindBy(xpath = "//section[@class='pdp-gallery']")
 	public WebElement cntLeftContainer;
 
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//*[@id='lblProductName']/parent::div")
+	@FindBy(xpath = "//section[@class='pdp-description']")
 	public WebElement cntRightContainer;
 
 	//Thumbnail part
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'pdImageSection') and not(contains(@class,'pdImageSection__zoom')) and not(@style='display: none;')]//div[@id='divThumbnail']//div[contains(@class,'slick-list')]")
+	@FindBy(xpath = "//section[@class='pdp-gallery']//div[@id='thumbGallery']")
 	public WebElement cntThumbnailContainer;
 
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'pdImageSection') and not(contains(@class,'pdImageSection__zoom')) and not(@style='display: none;')]//div[@id='divThumbnail']//button[contains(@class,'slick-prev')]")
+	@FindBy(xpath = "//section[@class='pdp-gallery']//div[@id='thumbGallery']//button[contains(@class,'gallery-button-prev')]")
 	public WebElement btnThumbnailPrev;
 
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'pdImageSection') and not(contains(@class,'pdImageSection__zoom')) and not(@style='display: none;')]//div[@id='divThumbnail']//button[contains(@class,'slick-next')]")
+	@FindBy(xpath = "//section[@class='pdp-gallery']//div[@id='thumbGallery']//button[contains(@class,'gallery-button-next')]")
 	public WebElement btnThumbnailNext;
 
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'pdImageSection') and not(contains(@class,'pdImageSection__zoom')) and not(@style='display: none;')]//div[@id='divThumbnail']//div[contains(@class,'slick-list')]//div[contains(@class,'slick-active') and not(contains(@class,'videolink'))]")
+	@FindBy(xpath = "//section[@class='pdp-gallery']//div[@id='thumbGallery']//div[@id='pdp__galleryThumb']//button[contains(@class,'swiper-slide-visible')]")
 	public List<WebElement> lstThumbnailImageList;
 
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'pdImageSection') and not(contains(@class,'pdImageSection__zoom')) and not(@style='display: none;')]//div[@id='divThumbnail']//div[contains(@class,'slick-list')]//div[contains(@class,'slick-active') and not(contains(@class,'videolink'))][@data-styleid]")
+	@FindBy(xpath = "//section[@class='pdp-gallery']//div[@id='thumbGallery']//div[@id='pdp__galleryThumb']//button[contains(@class,'swiper-slide-visible')][not(@data-video)]")
 	public List<WebElement> lstThumbnailImageListForDropdownMenu;
 
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'pdImageSection') and not(contains(@class,'pdImageSection__zoom')) and not(@style='display: none;')]//div[@id='divThumbnail']//div[contains(@class,'slick-list')]//div[contains(@class,'slick-current') and not(contains(@class,'videolink'))]//img")
+	@FindBy(xpath = "//section[@class='pdp-gallery']//div[@id='thumbGallery']//div[@id='pdp__galleryThumb']//button[contains(@class,'swiper-slide-active')][not(@data-video)]//img")
 	public WebElement imgCurrentThumbnail;
 
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'pdImageSection') and not(contains(@class,'pdImageSection__zoom')) and not(@style='display: none;')]//div[@id='divThumbnail']//div[contains(@class,'slick-list')]//div[contains(@class,'slick-current')]")
+	@FindBy(xpath = "//section[@class='pdp-gallery']//div[@id='thumbGallery']//div[@id='pdp__galleryThumb']//button[contains(@class,'swiper-slide-active')][not(@data-video)]")
 	public WebElement currentThumbnailItem;
 
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'pdImageSection') and not(contains(@class,'pdImageSection__zoom')) and not(@style='display: none;')]//div[@id='divThumbnail']//div[contains(@class,'slick-list')]//div[contains(@class,'slick-active') and contains(@class,'videolink')]")
+	@FindBy(xpath = "//section[@class='pdp-gallery']//div[@id='thumbGallery']//div[@id='pdp__galleryThumb']//button[contains(@class,'swiper-slide-visible')][@data-video]")
 	public WebElement lnkThumbnailVideo;
 
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'pdImageSection') and not(contains(@class,'pdImageSection__zoom')) and not(@style='display: none;')]//div[@id='divThumbnail']//div[contains(@class,'slick-list')]//div[contains(@class,'slick-active') and contains(@class,'videolink')]//img")
+	@FindBy(xpath = "//section[@class='pdp-gallery']//div[@id='thumbGallery']//div[@id='pdp__galleryThumb']//button[contains(@class,'swiper-slide-visible')][@data-video]//img")
 	public WebElement imgThumbnailVideo;
 
 	//Video part
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'pdImageSection') and not(contains(@class,'pdImageSection__zoom')) and not(@style='display: none;')]//div[@id='divImageBox']")
-	public WebElement cntJudgeVideoBoxControlBadgeExisting;
-
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'pdImageSection') and not(contains(@class,'pdImageSection__zoom')) and not(@style='display: none;')]//div[@id='divItemBadge']/img")
-	public WebElement imgProductBadge;
-
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'pdImageSection') and not(contains(@class,'pdImageSection__zoom')) and not(@style='display: none;')]//div[@class='videoBox']")
+	@FindBy(xpath = "//section[@class='pdp-gallery']//div[@class='video-container']")
 	public WebElement videoBoxControl;
 
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'pdImageSection') and not(contains(@class,'pdImageSection__zoom')) and not(@style='display: none;')]//div[@class='videoBox']//video")
+	@FindBy(xpath = "//section[@class='pdp-gallery']//div[@class='video-container']//div[contains(@class,'video-item__video')]")
 	public WebElement lnkVideo;
 
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'pdImageSection') and not(contains(@class,'pdImageSection__zoom')) and not(@style='display: none;')]//p[contains(@class,'disclaim')]")
+	@FindBy(xpath = "//section[@class='pdp-gallery']//div[@class='video-container']//p[@class='video-item__video-desc']")
 	public WebElement lblVideoDisclaim;
 
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//p[contains(@class,'pdImageSection__zoom--message')]")
-	public WebElement lblImageDisclaim;
-
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'pdImageSection') and not(contains(@class,'pdImageSection__zoom')) and not(@style='display: none;')]//div[contains(@class,'videoCustomControls')]//div[contains(@class,'autoplayDiv')]//label[contains(@class,'control-label')]")
+	@FindBy(xpath = "//section[@class='pdp-gallery']//div[@class='video-container']//label[@class='video-item__auto-play__text']")
 	public WebElement lblAutoPlayVideo;
 
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'pdImageSection') and not(contains(@class,'pdImageSection__zoom')) and not(@style='display: none;')]//div[contains(@class,'videoCustomControls')]//div[contains(@class,'autoplayDiv')]//div[contains(@class,'checkboxSlide')]")
+	@FindBy(xpath = "//section[@class='pdp-gallery']//div[@class='video-container']//input[@class='video-item__auto-play__checkbox']")
 	public WebElement btnAutoPlayVideo;
 
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'pdImageSection') and not(contains(@class,'pdImageSection__zoom')) and not(@style='display: none;')]//div[contains(@class,'videoCustomControls')]//div[contains(@class,'tooltipClass')]//a")
+	@FindBy(xpath = "//section[@class='pdp-gallery']//div[@class='video-container']//button[@class='video-item__auto-play__info']")
 	public WebElement lnkAutoPlayVideoToolTip;
 
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'pdImageSection') and not(contains(@class,'pdImageSection__zoom')) and not(@style='display: none;')]//div[contains(@class,'videoCustomControls')]//div[contains(@class,'tooltipClass')]//div[contains(@class,'tooltip-inner')]")
+	@FindBy(xpath = "//section[@class='pdp-gallery']//div[@class='video-container']//span[@class='video-item__auto-play__tooltip-content__text']")
 	public WebElement lblAutoPlayVideoToolTipPopupMsg;
 
 	//Zoom Image part
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'pdImageSection') and not(contains(@class,'pdImageSection__zoom')) and not(@style='display: none;')]//div[@id='divImageGallery']//figure[@aria-hidden='false']//a")
+	@FindBy(xpath = "//section[@class='pdp-gallery']//figure[contains(@class,'swiper-slide-active')]")
+	public WebElement currentZoomImageIndicator;
+
+	@FindBy(xpath = "//section[@class='pdp-gallery']//figure[contains(@class,'swiper-slide-active')]//a[contains(@class,'gallery__image--aspect-ratio-wrap')]")
 	public WebElement lnkCurrentZoomImage;
-
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@id='divVideoIcon']")
-	public WebElement lnkVideoInZoomImage;
-
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'pdImageSection__zoom')]//p[contains(@class,'pdImageSection__zoom--message')]")
-	public WebElement lblZoomImageMessage;
-
-//	//Product details
-//	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']/div[2]")
-//	public WebElement cntProductDetailsContainer;
-//
-//	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@id='lblProductName']")
-//	public WebElement lblProductName;
-//
-//	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@id='divBrandName']//a")
-//	public WebElement lnkBrandName;
-//
-//	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'product-name-sub')]//span[@id='lblItemNo']")
-//	public WebElement lblProductNumber;
-//
-//	//Review part
-//	//@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'product-name-sub')]//div[@id='panReviewSnippet']//div[@class='p-w-r'][last()]//section")
-//	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'product-name-sub')]//div[@id='panReviewSnippet']//div[@class='p-w-r'][last()]//section//div[contains(@class,'read-and-write')]")
-//	public WebElement productReviewSection;
-//
-//	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'product-name-sub')]//div[@id='panReviewSnippet']//div[@class='p-w-r'][last()]//section//div[contains(@class,'pr-star-v4')]")
-//	public List<WebElement> lstProductReviewStar;
-//
-//	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'product-name-sub')]//div[@id='panReviewSnippet']//div[@class='p-w-r'][last()]//section//span[contains(@class,'pr-accessible-text')]")
-//	public List<WebElement> lstProductReviewAccessibleText;
-//
-//	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'product-name-sub')]//div[@id='panReviewSnippet']//div[@class='p-w-r'][last()]//section")
-//	public WebElement lblProductReview;
-//
-//	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[contains(@class,'product-name-sub')]//div[@id='panReviewSnippet']//div[@class='p-w-r']//a[@class='pr-snippet-review-count']")
-//	public WebElement lblProductReviewCount;
-//
-//	//Price part
-//	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@class='price-div']//span[@id='lblPriceLabel']")
-//	public WebElement lblProductPriceLabel;
-//
-//	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@class='price-div']//span[@id='lblCurrentPrice']")
-//	public WebElement lblProductNowPrice;
-//
-//	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//*[@class='price-div']//span[@id='lblShowWasPrice']")
-//	public WebElement lblProductWasPrice;
-//
-//	//EasyPay part
-//	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@id='divEasyPayment']")
-//	public WebElement lblProductEasyPay;
-//
-//	//Shipping part
-//	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@class='savings-shipping']//*[@id='divSavings']")
-//	public WebElement lblProductSavings;
-//
-//	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@class='savings-shipping']//*[@class='shipping']")
-//	public WebElement lblProductShipping;
 
 	//Added new xpath for changes on PDP page for Integration as per new design
 	//Product details
 	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__brand-and-reviews']")
 	public WebElement cntProductDetailsBrandAndReviewContainer;
+
+	@FindBy(xpath = "//section[@class='pdp-description']//span[@class='pdp-description__badges--badge']")
+	public WebElement imgProductBadge;
 
 	@FindBy(xpath = "//section[@class='pdp-description']//*[@id='lblProductName']")
 	public WebElement lblProductName;
@@ -197,127 +137,152 @@ public class ProductDetailPage extends BasePage {
     //All changes for new xpath as per design change are ended here
 
 	//Style part
-	@FindBy(xpath = "//form[@id='pdpForm']")
-	public WebElement cntProductSizeJudgeIndicator;
+	@FindBy(xpath = "//section[@class='pdp-description']//form[@class='pdp-description__form']")
+	public WebElement cntProductStyleAndSizeJudgeIndicator;
 
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@class='style-container']")
+	@FindBy(xpath = "//section[@class='pdp-description']//div[contains(@class,'pdp-description__form__colours__selections')]")
 	public WebElement cntProductStyleSection;
 
 	//For radio style
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@class='style-container']//div[@id='divStyleSwatch']//span[@class='style-lbl']")
+	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__form__colours__selected']")
 	public WebElement lblRadioProductStyleStatic;
 
 	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__form__colours__selected']")
 	public WebElement lblRadioProductStyleTitle;
 
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@class='style-container']//div[@id='divStyleSwatch']//input")
+	@FindBy(xpath = "//section[@class='pdp-description']//div[contains(@class,'pdp-description__form__colours__selections')]//button[not(contains(@class,'pdp-description__form__colours--disabled'))]")
 	public List<WebElement> lstStyleRadioList;
 
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@class='style-container']//div[@id='divStyleSwatch']//label[not(div[contains(@class,'disable')])]")
+	@FindBy(xpath = "//section[@class='pdp-description']//div[contains(@class,'pdp-description__form__colours__selections')]//button[not(contains(@class,'pdp-description__form__colours--disabled'))]//label")
 	public List<WebElement> lstRadioStyleLabelList;
 
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@class='style-container']//div[@id='divStyleSwatch']//label[not(div[contains(@class,'disable')])]//span")
+	@FindBy(xpath = "//section[@class='pdp-description']//div[contains(@class,'pdp-description__form__colours__selections')]//button[not(contains(@class,'pdp-description__form__colours--disabled'))]//label//span")
 	public List<WebElement> lstRadioStyleLabelSpanList;
 
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@class='style-container']//div[@id='divStyleSwatch']//label[contains(@class,'style-selected')]/preceding-sibling::input[1]")
+	@FindBy(xpath = "//section[@class='pdp-description']//div[contains(@class,'pdp-description__form__colours__selections')]//button[not(contains(@class,'pdp-description__form__colours--disabled'))][input[@checked]]")
 	public WebElement btnRadioProductStyleSelected;
 
 	//For dropdown menu style
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@class='style-container']//div[@id='divStyleSwatchDdl']//span[@class='style-lbl']")
+	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__form__colours__selected']")
 	public WebElement lblDropDownProductStyleStatic;
 
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@class='style-container']//div[@id='divStyleSwatchDdl']//select")
+	@FindBy(xpath = "//section[@class='pdp-description']//div[contains(@class,'pdp-description__form__colours__selections')]//select")
 	public WebElement selectProductStyle;
 
-	//@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@class='style-container']//div[@id='divStyleSwatchDdl']//select//option")
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@class='style-container']//div[@id='divStyleSwatchDdl']//select//option[not(contains(@class,'disabled'))]")
+	@FindBy(xpath = "//section[@class='pdp-description']//div[contains(@class,'pdp-description__form__colours__selections')]//select//option[not(@disabled)]")
 	public List<WebElement> lstDropdownProductStyle;
 
 	//TrueFit part
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@id='tf-wrapper']")
+	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__form__size-chart-wrapper']")
+	public WebElement cntProductTrueFitAndSizingSection;
+
+	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__form__size-chart-wrapper']//div[@class='tfc-fitrec-product']")
 	public WebElement cntProductTrueFitSection;
 
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@id='tf-wrapper']//div[@class='tfc-cfg-logo']")
+	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__form__size-chart-wrapper']//div[@class='tfc-cfg-logo']")
 	public WebElement imgProductTrueFitLogo;
 
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@id='tf-wrapper']//a[@class='tfc-popup-click-open']")
+	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__form__size-chart-wrapper']//a[@class='tfc-popup-click-open']")
 	public WebElement lnkProductTrueFitLink;
 
 	//TrueFit iframe part
-	@FindBy(xpath = "//iframe[contains(@src,'truefit')]")
+	@FindBy(xpath = "//iframe[@title='True Fit'][@src]")
 	public WebElement iframeProductTrueFit;
 
-	@FindBy(xpath = "//div[@aria-label='True Fit']")
+	@FindBy(xpath = "//div[contains(@class,'tfc-cfg-modal') and contains(@class,'tfc-popup-wrap')]")
 	public WebElement iframeProductTrueFitLoadingIndicator;
 
-	@FindBy(xpath = "//div[@tfc-popup]")
+	@FindBy(xpath = "//div[contains(@class,'tfp-app')]")
 	public WebElement cntProductTrueFitIframe;
 
-	@FindBy(xpath = "//button[contains(@class,'tfc-popup-click-close')][img]")
+	@FindBy(xpath = "//div[contains(@class,'tfp-app')]//button[contains(@aria-label,'Close True Fit')][img]")
 	public WebElement btnProductTrueFitIframeClose;
 
-	@FindBy(xpath = "//div[@class='tfc-popup-contents']//div[@ui-view='header']//div[@class='tfc-logo-wrapper']//img")
-	public WebElement imgProductTrueFitIframeHeaderLogo;
-
-	@FindBy(xpath = "//div[@class='tfc-popup-contents']//div[@ui-view='page']//div[contains(@class,'tfc-cfg-splash-page-image')]")
-	public WebElement imgProductTrueFitIframePage;
-
-	@FindBy(xpath = "//div[@class='tfc-popup-contents']//div[@ui-view='page']//div[contains(@class,'tfc-page')]//div[@class='tfc-cfg-title-container']//*[contains(@class,'tfc-page-title')]")
-	public WebElement lblProductTrueFitIframePageTitle;
-
-	@FindBy(xpath = "//div[@class='tfc-popup-contents']//div[@ui-view='page']//div[contains(@class,'tfc-page')]//div[@class='tfc-cfg-title-container']//*[contains(@class,'tfc-cfg-subtitle-container')]")
-	public WebElement lblProductTrueFitIframePageSubTitle;
-
-	@FindBy(xpath = "//div[@class='tfc-popup-contents']//tfc-footer-content//tfc-button-bar//button")
-	public WebElement btnProductTrueFitIframeFooterGetStarted;
-
-	@FindBy(xpath = "//div[@class='tfc-popup-contents']//div[contains(@class,'tfc-cfg-gdpr-message')]")
-	public WebElement lblProductTrueFitIframeConfirmMessage;
-
-	@FindBy(xpath = "//div[@class='tfc-popup-contents']//div[contains(@class,'tfc-cfg-gdpr-message')]//a[contains(@class,'tfc-cfg-page-link')]")
-	public WebElement lnkProductTrueFitIframePrivacyPolicy;
-
-	@FindBy(xpath = "//div[@class='tfc-popup-contents']//a[contains(@class,'sign-in')]")
+	@FindBy(xpath = "//div[contains(@class,'tfp-app')]//button[contains(@aria-label,'Sign in to True Fit')]")
 	public WebElement lnkProductTrueFitIframeSignIn;
 
-	@FindBy(xpath = "//div[@class='tfc-popup-contents']//button[contains(@class,'tfc-cfg-info-button')]")
-	public WebElement btnProductTrueFitIframeInfo;
+	@FindBy(xpath = "//div[contains(@class,'tfp-app')]//button[contains(@aria-label,'Sign in to True Fit')]//img")
+	public WebElement imgProductTrueFitIframeHeaderLogo;
+
+	@FindBy(xpath = "//div[contains(@class,'tfp-app')]//div[@class='main-content']//img[contains(@class,'t-logo')]")
+	public WebElement imgProductTrueFitIframePage;
+
+	@FindBy(xpath = "//div[contains(@class,'tfp-app')]//div[@class='main-content']//div[@class='prompt-title']")
+	public WebElement lblProductTrueFitIframePageTitle;
+
+	@FindBy(xpath = "//div[contains(@class,'tfp-app')]//div[@class='main-content']//div[@class='prompt-subtitle']")
+	public WebElement lblProductTrueFitIframePageSubTitle;
+
+	@FindBy(xpath = "//div[contains(@class,'tfp-app')]//div[@class='main-content']//button[@aria-label='Search all brands']")
+	public WebElement btnProductTrueFitIframePageSearchAllBrands;
+
+	@FindBy(xpath = "//div[contains(@class,'tfp-app')]//div[@class='main-content']//div[@class='suggested-brands-paged']//button")
+	public List<WebElement> lstProductTrueFitIframeSuggestedBrandList;
+
+	@FindBy(xpath = "//div[contains(@class,'tfp-app')]//div[@class='main-content']//button[contains(@class,'prev')]")
+	public WebElement btnProductTrueFitIframePagePrevButton;
+
+	@FindBy(xpath = "//div[contains(@class,'tfp-app')]//div[@class='main-content']//button[contains(@class,'next')]")
+	public WebElement btnProductTrueFitIframePageNextButton;
+
+	@FindBy(xpath = "//div[contains(@class,'tfp-app')]//div[@class='footer']")
+	public WebElement lblProductTrueFitIframeConfirmMessage;
+
+	@FindBy(xpath = "//div[contains(@class,'tfp-app')]//div[@class='footer']//a")
+	public WebElement lnkProductTrueFitIframePrivacyPolicy;
 
 	//Size part
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@id='divAvailableSizes']//span[contains(@class,'size-lbl')]")
+	@FindBy(xpath = "//section[contains(@class,'pdp-description']//div[@class='pdp-description__form__sizes__selections')]")
+	public WebElement cntProductSizeSection;
+
+	//For radio style
+	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__form__sizes__selected']")
 	public WebElement lblSizeStatic;
 
 	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__form__sizes__selected']")
 	public WebElement lblSizeTitle;
 
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@id='divAvailableSizes']//select")
+	@FindBy(xpath = "//section[contains(@class,'pdp-description']//div[@class='pdp-description__form__sizes__selections')]//button[not(contains(@class,'pdp-description__form__colours--disabled'))]")
+	public List<WebElement> lstSizeRadioList;
+
+	@FindBy(xpath = "//section[contains(@class,'pdp-description']//div[@class='pdp-description__form__sizes__selections')]//button[not(contains(@class,'pdp-description__form__colours--disabled'))]//label")
+	public List<WebElement> lstRadioSizeLabelList;
+
+	@FindBy(xpath = "//section[contains(@class,'pdp-description']//div[@class='pdp-description__form__sizes__selections')]//button[not(contains(@class,'pdp-description__form__colours--disabled'))]//label//span")
+	public List<WebElement> lstRadioSizeLabelSpanList;
+
+	@FindBy(xpath = "//section[contains(@class,'pdp-description']//div[@class='pdp-description__form__sizes__selections')]//button[not(contains(@class,'pdp-description__form__colours--disabled'))][input[@checked]]")
+	public WebElement btnRadioProductSizeSelected;
+
+	//For dropdown menu style
+	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__form__sizes__selected']")
+	public WebElement lblDropDownProductSizeStatic;
+
+	@FindBy(xpath = "//section[contains(@class,'pdp-description']//div[@class='pdp-description__form__sizes__selections')]//select")
 	public WebElement selectSizeOption;
 
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@id='divAvailableSizes']//select//option")
+	@FindBy(xpath = "//section[contains(@class,'pdp-description']//div[@class='pdp-description__form__sizes__selections')]//select//option[not(@disabled)]")
 	public List<WebElement> lstSizeOption;
 
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@id='divAvailableSizes']//div[@id='divSizeChart']")
+	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__form__size-chart-wrapper']//button[@class='pdp-description__form__size-chart-link']")
 	public WebElement lnkSizingChart;
 
+	//Will change later
 	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@id='soldoutContainer']")
 	public WebElement lblSoldOut;
 
 	//Quantity part
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@class='qty-container']//span[contains(@class,'qty-lbl')]")
+	@FindBy(xpath = "//section[@class='pdp-description']//div[contains(@class,'pdp-description__add-to-bag')]//div[contains(@class,'pdp-description__add-to-bag__quantity')]//span[@class='pdp-description__add-to-bag__quantity__self']")
 	public WebElement lblQuantityStatic;
 
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@class='qty-container']//select")
+	@FindBy(xpath = "//section[@class='pdp-description']//div[contains(@class,'pdp-description__add-to-bag')]//div[contains(@class,'pdp-description__add-to-bag__quantity')]//select")
 	public WebElement selectQuantityOption;
 
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@class='qty-container']//select//option[last()]")
+	@FindBy(xpath = "//section[@class='pdp-description']//div[contains(@class,'pdp-description__add-to-bag')]//div[contains(@class,'pdp-description__add-to-bag__quantity')]//select//option[last()]")
 	public WebElement lblQuantityLastOption;
 
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@class='qty-container']//div[@class='qty-left']")
+	@FindBy(xpath = "//section[@class='pdp-description']//div[contains(@class,'pdp-description__add-to-bag')]//div[contains(@class,'pdp-description__add-to-bag__quantity')]//span[@class='pdp-description__add-to-bag__quantity__count--critic-stock']")
 	public WebElement lblQuantityLeft;
-
-	//Add to Bag button section
-//	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@id='divAddToCart']//button[@id='btnAddToCart']")
-//	public WebElement btnAddToBag;
 
 	//For new designed Add To Bag button
 	@FindBy(xpath = "//section[@class='pdp-description']//button[@class='pdp-description__add-to-bag__add-to-bag-button']")
@@ -332,11 +297,11 @@ public class ProductDetailPage extends BasePage {
 
 	//To keep here for now, may change it for separated WebElement
 	@FindBy(xpath = "//section[@class='pdp-description']//button[@class='pdp-description__add-to-bag__favorite__icon-wrapper']")
-	public WebElement lnkFavShareMobile;
+	public WebElement lnkFavIcon;
 
 	//Social links part
-//	@FindBy(xpath = "//section[@class='pdp-description']//button[@class='pdp-description__add-to-bag__favorite__icon-wrapper']")
-//	public WebElement lnkFavShareMobile;
+	@FindBy(xpath = "//section[@class='pdp-description']//button[@class='pdp-description__add-to-bag__favorite__icon-wrapper']")
+	public WebElement lnkFavShareMobile;
 
 	@FindBy(xpath = "//div[@id='pdpMainDiv']//div[@id='favShare']/div[not(contains(@class,'mob-middle-social'))]/div")
 	public WebElement lnkFavShareEmail;
@@ -472,8 +437,11 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//div[@class='sticky-swiper-container']//div[@class='stickyIcon']")
 	public WebElement imgStickyIcon;
 
-	@FindBy(xpath = "//div[@class='stickyHeader']//div[@id='divProductDetailTab']//div[contains(@class,'swiper-slide')]")
+	@FindBy(xpath = "//div[@id='accordion']//div[@class='field-wrapper']")
 	public List<WebElement> lstStickyTabProductTabList;
+
+	@FindBy(xpath = "//div[@id='accordion']//div[@class='field-wrapper']//span[@class='field-wrapper__accordion-heading__text']")
+	public List<WebElement> lstStickyTabProductTabHeaderList;
 
 	@FindBy(xpath = "//div[@class='sticky-swiper-container']//a[@data-text='PRODUCT OVERVIEW']")
 	public WebElement btnStickyTabProductOverview;
@@ -863,21 +831,35 @@ public class ProductDetailPage extends BasePage {
 	 * @author Wei.Li
 	 */
 	public boolean judgeStyleDisplayModeIsDropdownMenu() {
-		return !this.cntProductStyleSection.findElement(By.xpath(".//div[@id='divStyleSwatchDdl']")).getCssValue("height").equalsIgnoreCase("auto");
+		return this.getChildElementCount(cntProductStyleSection)==1;
+	}
+
+	/**
+	 * Method to check the product size is displaying with Dropdown mode
+	 * @return true	for Dropdown menu and false for Radio list
+	 * @author Wei.Li
+	 */
+	public boolean judgeSizeDisplayModeIsDropdownMenu() {
+		return this.getChildElementCount(cntProductSizeSection)==1;
 	}
 
 	/**
 	 * Method to check if Style size is existing
+	 * @param - boolean - bStyle - true for style while false for size
 	 * @return true/false
 	 * @author Wei.Li
 	 */
-	public boolean judgeStyleSizeAvailable() {
-		return this.checkChildElementExistingByAttribute(this.cntProductSizeJudgeIndicator, "id", "divAvailableSizes");
+	public boolean judgeStyleSizeAvailable(boolean bStyle) {
+		if(bStyle){
+			return this.checkChildElementExistingByTagNameAndAttribute(this.cntProductStyleAndSizeJudgeIndicator, "fieldset","class", "pdp-description__form__colours");
+		}
+		else{
+			return this.checkChildElementExistingByTagNameAndAttribute(this.cntProductStyleAndSizeJudgeIndicator, "fieldset","class", "pdp-description__form__sizes");
+		}
 	}
 
 	public boolean judgeQuantityDropdownAvailable() {
 		return this.checkChildElementExistingByTagName(this.selectQuantityOption,"option");
-		//return !this.getElementText(this.cntProductSizeJudgeIndicator.findElement(By.xpath(".//div[@class='qty-container']"))).isEmpty();
 	}
 
 	public boolean judgeAddToBagButtonAvailable() {
@@ -885,7 +867,6 @@ public class ProductDetailPage extends BasePage {
 		if(buttonState.equalsIgnoreCase("false"))
 			return true;
 		return false;
-		//return this.checkChildElementExistingByAttribute(this.cntProductSizeJudgeIndicator, "id", "divAddToCart");
 	}
 
 	public boolean judgeTeaserInfoDisplaying() {
@@ -898,7 +879,17 @@ public class ProductDetailPage extends BasePage {
 	 * @author Wei.Li
 	 */
 	public boolean judgeStyleTrueFitExisting() {
-		return !this.cntProductTrueFitSection.getCssValue("height").equalsIgnoreCase("0px");
+		if(this.checkChildElementExistingByAttribute(this.cntProductStyleAndSizeJudgeIndicator, "class", "pdp-description__form__size-chart-wrapper")){
+			if(!this.cntProductTrueFitSection.getCssValue("height").equalsIgnoreCase("0px")){
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+		else{
+			return false;
+		}
 	}
 
 	/**
@@ -973,9 +964,6 @@ public class ProductDetailPage extends BasePage {
 			reporter.softAssert(lsThumbnail.equalsIgnoreCase(lsZoomImage), "The Thumbnail image is the same as the Zoom image with changing Swatch style", "The Thumbnail image is not the same as the Zoom image with changing Swatch style");
 		}
 
-		if (System.getProperty("Device").equalsIgnoreCase("Desktop")) {
-			reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblImageDisclaim), "The Image disclaim message section is displaying correctly", "The Image disclaim message section is not displaying correctly");
-		}
 	}
 
 	/**
@@ -1355,9 +1343,9 @@ public class ProductDetailPage extends BasePage {
 	 * @author Wei.Li
 	 */
 	public boolean checkProductSizingChartExisting() {
-		for(WebElement item:this.lstStickyTabProductTabList) {
+		for(WebElement item:this.lstStickyTabProductTabHeaderList) {
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-			if(item.getText().trim().equalsIgnoreCase("SIZE CHART")) {
+			if(item.getText().trim().equalsIgnoreCase("Size Chart")) {
 				return true;
 			}
 		}
@@ -1431,8 +1419,7 @@ public class ProductDetailPage extends BasePage {
 		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.cntProductTrueFitIframe),"The product TrueFit popup window is displaying","The product TrueFit popup window is not displaying");
 		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.imgProductTrueFitIframeHeaderLogo),"The header icon in product TrueFit popup window is displaying","The header icon in product TrueFit popup window is not displaying");
 		reporter.softAssert(!this.getElementImageSrc(this.imgProductTrueFitIframeHeaderLogo).isEmpty(),"The header icon src in product TrueFit popup window is not empty","The header icon src in product TrueFit popup window is empty");
-		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.btnProductTrueFitIframeFooterGetStarted),"The GetStarted button in product TrueFit popup window is displaying","The GetStarted button in product TrueFit popup window is not displaying");
-		reporter.softAssert(this.btnProductTrueFitIframeFooterGetStarted.isEnabled(),"The GetStarted button in product TrueFit popup window is enabled","The GetStarted button in product TrueFit popup window is not enabled");
+
 	}
 
 	/**
@@ -1468,7 +1455,7 @@ public class ProductDetailPage extends BasePage {
 				this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 				lsStyle=this.selectProductStyle.getText();
 
-				if(this.judgeStyleSizeAvailable()) {
+				if(this.judgeStyleSizeAvailable(false)) {
 					verifyQuantityLeftMessageForProductSize(lsStyle, quantityNumberToShowLeftItemInfo);
 				}
 				else {
@@ -1489,7 +1476,7 @@ public class ProductDetailPage extends BasePage {
 				this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 				lsStyle=this.lstRadioStyleLabelList.get(i).getAttribute("title");
 
-				if(this.judgeStyleSizeAvailable()) {
+				if(this.judgeStyleSizeAvailable(false)) {
 					verifyQuantityLeftMessageForProductSize(lsStyle, quantityNumberToShowLeftItemInfo);
 				}
 				else {
@@ -1748,8 +1735,8 @@ public class ProductDetailPage extends BasePage {
 	}
 
 	public void verifyVideoOff() {
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkVideoInZoomImage);
-		this.getReusableActionsInstance().clickIfAvailable(this.lnkVideoInZoomImage);
+//		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkVideoInZoomImage);
+//		this.getReusableActionsInstance().clickIfAvailable(this.lnkVideoInZoomImage);
 		//this.lnkVideoInZoomImage.click();
 		this.getReusableActionsInstance().waitForElementVisibility(this.btnAutoPlayVideo,  60);
 		if(this.checkIfAutoPlayVideoStatusIsON()) {
@@ -1759,7 +1746,7 @@ public class ProductDetailPage extends BasePage {
 			this.waitForCondition(Driver->{return !this.checkIfAutoPlayVideoStatusIsON();},2000);
 			this.getDriver().navigate().refresh();
 			this.waitForPageToLoad();
-			this.getReusableActionsInstance().waitForElementVisibility(this.lblZoomImageMessage,  60);
+//			this.getReusableActionsInstance().waitForElementVisibility(this.lblZoomImageMessage,  60);
 			reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lnkCurrentZoomImage),"The image is displaying after video off and page refreshing instead of video displaying","The image is not displaying after video off and page refreshing instead of video displaying");
 		}
 		else {
@@ -1775,7 +1762,7 @@ public class ProductDetailPage extends BasePage {
 
 			this.getDriver().navigate().refresh();
 			this.waitForPageToLoad();
-			this.getReusableActionsInstance().waitForElementVisibility(this.lblZoomImageMessage,  60);
+//			this.getReusableActionsInstance().waitForElementVisibility(this.lblZoomImageMessage,  60);
 			reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lnkCurrentZoomImage),"The image is displaying after video off and page refreshing instead of video displaying","The image is not displaying after video off and page refreshing instead of video displaying");
 		}
 	}
@@ -1939,7 +1926,7 @@ public class ProductDetailPage extends BasePage {
 
 	public void verifyCurrentZoomImage() {
 		reporter.softAssert(!this.getElementHref(this.lnkCurrentZoomImage).isEmpty(),"The Current zoom image link is not empty","The Current zoom image link is empty");
-		reporter.softAssert(!this.getElementText(this.lblZoomImageMessage).isEmpty(),"The Zoom image message is not empty","The Zoom image message is empty");
+//		reporter.softAssert(!this.getElementText(this.lblZoomImageMessage).isEmpty(),"The Zoom image message is not empty","The Zoom image message is empty");
 	}
 
 	public boolean checkIfIsRequiredFieldForWrireReview(WebElement element) {
@@ -2240,8 +2227,8 @@ public class ProductDetailPage extends BasePage {
 
 	public void verifyFavShareMobileAction(String lsUserName, String lsPassword) {
 		SignInPage loginPage=new SignInPage(this.getDriver());
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavShareMobile);
-		this.getReusableActionsInstance().clickIfAvailable(this.lnkFavShareMobile);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavIcon);
+		this.getReusableActionsInstance().clickIfAvailable(this.lnkFavIcon);
 		this.getReusableActionsInstance().waitForElementVisibility(loginPage.lblSignIn,  60);
 
 		reporter.softAssert(this.URL().toLowerCase().contains("signin"),"The page has been navigated to signin page while no user login","The page has not been navigated to signin page while no user login");
@@ -2250,10 +2237,10 @@ public class ProductDetailPage extends BasePage {
 		this.getReusableActionsInstance().waitForElementVisibility(this.lblProductName,  60);
 		waitForPageToLoad();
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavShareMobile);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavIcon);
 		if(checkIfFavShareMobileHighlighted())
-			this.getReusableActionsInstance().clickIfAvailable(this.lnkFavShareMobile);
-		this.getReusableActionsInstance().clickIfAvailable(this.lnkFavShareMobile);
+			this.getReusableActionsInstance().clickIfAvailable(this.lnkFavIcon);
+		this.getReusableActionsInstance().clickIfAvailable(this.lnkFavIcon);
 		this.waitForCondition(Driver->{return checkIfFavShareMobileHighlighted();},5000);
 		reporter.softAssert(checkIfFavShareMobileHighlighted(),"The FavShareMobile icon is highlighted after clicking with user login", "The FavShareMobile icon is not highlighted after clicking with user login");
 	}
@@ -2577,6 +2564,14 @@ public class ProductDetailPage extends BasePage {
 				reporter.reportLogFail("The product size:'"+lsTextPRP+"' on PRP is not the same as the one:'"+lsTextPDP+"' on PDP");
 			}
 		}
+	}
+
+	/**
+	 * To check Image Zooming Status
+	 * @return true/false
+	 */
+	public boolean checkImageZoomingStatus(){
+		return this.currentZoomImageIndicator.getAttribute("class").contains("swiper-slide-zoomed");
 	}
 
 }
