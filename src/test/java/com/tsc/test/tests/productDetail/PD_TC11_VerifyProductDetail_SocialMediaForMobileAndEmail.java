@@ -1,7 +1,10 @@
 package com.tsc.test.tests.productDetail;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.testng.annotations.Test;
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
@@ -28,7 +31,11 @@ public class PD_TC11_VerifyProductDetail_SocialMediaForMobileAndEmail extends Ba
 		reporter.reportLog("Switch to ProductDetail page");
 		String lsProductNumber,lsUrl;
 
-		if(getProductDetailPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList,"AddToBag",null)) {
+		Map<String,Object> outputDataCriteria= new HashMap<String,Object>();
+		outputDataCriteria.put("video", "0");
+		outputDataCriteria.put("style", "1");
+		outputDataCriteria.put("size", "1");
+		if(getProductDetailPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList,"AddToBag",outputDataCriteria)) {
 			reporter.reportLog("Verify URL");
 			lsProductNumber=getProductResultsPageThreadLocal().selectedProductItem.productNumber;
 			lsUrl=basePage.URL();

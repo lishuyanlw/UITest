@@ -323,6 +323,19 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//section[@class='pdp-description']//button[@class='pdp-description__add-to-bag__favorite__icon-wrapper']")
 	public WebElement lnkFavIcon;
 
+	//For popup window after clicking Fav Icon
+	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__add-to-bag__favorite__tooltip']//span[@class='pdp-description__add-to-bag__favorite__tooltip-content__text']")
+	public WebElement lblFavIconPopupContent;
+
+	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__add-to-bag__favorite__tooltip']//span[@class='pdp-description__add-to-bag__favorite__tooltip-content__text']//a[@class='pdp-description__add-to-bag__favorite__tooltip__sign-in']")
+	public WebElement lnkFavIconPopupSignIn;
+
+	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__add-to-bag__favorite__tooltip']//span[@class='pdp-description__add-to-bag__favorite__tooltip-content__text']//a[@class='pdp-description__add-to-bag__favorite__tooltip__register']")
+	public WebElement lnkFavIconPopupRegister;
+
+	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__add-to-bag__favorite__tooltip']//button[@class='pdp-description__add-to-bag__favorite__tooltip-content__close-button']")
+	public WebElement btnFavIconPopupClose;
+
 	//For Accordions
 	@FindBy(xpath = "//div[@id='accordion']//div[@class='field-wrapper']")
 	public List<WebElement> lstAccordionSections;
