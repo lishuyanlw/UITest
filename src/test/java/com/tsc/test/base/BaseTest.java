@@ -163,7 +163,7 @@ public class BaseTest {
 				(System.getProperty("chromeMobileDevice")!=null
 						&& !System.getProperty("chromeMobileDevice").contains("iPad"))) {
 			productDetailPageThreadLocal.set(new ProductDetailPage_Mobile(getDriver()));
-			globalFooterPageThreadLocal.set(new GlobalFooterPage_Mobile(getDriver()));
+			//globalFooterPageThreadLocal.set(new GlobalFooterPage_Mobile(getDriver()));
 			globalHeaderPageThreadLocal.set(new GlobalHeaderPage_Mobile(getDriver()));
 		}else {
 			globalHeaderPageThreadLocal.set(new GlobalHeaderPage_Tablet(getDriver()));
