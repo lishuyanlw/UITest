@@ -1,6 +1,10 @@
 package com.tsc.test.tests.productDetail;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.testng.annotations.Test;
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;

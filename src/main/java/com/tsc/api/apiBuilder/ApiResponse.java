@@ -151,7 +151,7 @@ public class ApiResponse extends ApiConfigs {
                 for(Product.Products data:product.getProducts()) {
                 	lsNowPrice=data.getIsPriceRange();
                 	lsWasPrice=data.getWasPriceRange();
-                    if (data.getVideosCount() >= 1 && data.getStyles().size() >= 1 && data.getSizes().size() >= 1&&data.isShowBadgeImage()&&data.getProductReviewRating()>0&&!data.getEasyPaymentPrice().isEmpty()&&!lsNowPrice.equalsIgnoreCase(lsWasPrice)&&data.isEnabledAddToCart()) {
+                    if (data.getVideosCount() >= 1 && data.getStyles().size() >= 1 && data.getSizes().size() >= 1&&data.isShowBadgeImage()&&data.getProductReviewRating()>0&&data.getEasyPaymentPrice()!=null&&!lsNowPrice.equalsIgnoreCase(lsWasPrice)&&data.isEnabledAddToCart()) {
                     	if(data.getBrand()!=null) {
                     		if(data.getBrand().isEmpty()) {
                     			continue;
@@ -442,7 +442,7 @@ public class ApiResponse extends ApiConfigs {
 			if(basicCheck)
 				flag = (videoCount==0 ? data.getVideosCount()==videoCount : data.getVideosCount()>=videoCount) && data.getStyles().size()>=styleCount && data.getSizes().size()>=sizeCount;
 			else
-				flag = (videoCount==0 ? data.getVideosCount()==videoCount : data.getVideosCount()>=videoCount) && data.getStyles().size()>=styleCount && data.getSizes().size()>=sizeCount &&data.isShowBadgeImage()&&data.getProductReviewRating()>0&&!data.getEasyPaymentPrice().isEmpty()&&!lsNowPrice.equalsIgnoreCase(lsWasPrice)&&data.isEnabledAddToCart();
+				flag = (videoCount==0 ? data.getVideosCount()==videoCount : data.getVideosCount()>=videoCount) && data.getStyles().size()>=styleCount && data.getSizes().size()>=sizeCount &&data.isShowBadgeImage()&&data.getProductReviewRating()>0&&!lsNowPrice.equalsIgnoreCase(lsWasPrice)&&data.isEnabledAddToCart();
 			if(flag) {
             	if(data.getBrand()!=null) {
             		if(data.getBrand().isEmpty()) {

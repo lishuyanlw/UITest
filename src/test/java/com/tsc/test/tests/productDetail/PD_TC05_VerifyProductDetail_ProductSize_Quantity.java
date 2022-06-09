@@ -1,7 +1,10 @@
 package com.tsc.test.tests.productDetail;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.testng.annotations.Test;
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
@@ -26,7 +29,11 @@ public class PD_TC05_VerifyProductDetail_ProductSize_Quantity extends BaseTest{
 
 		String lsProductNumber,lsUrl;
 
-		if(getProductDetailPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList,"AllConditionsWithoutCheckingSoldOutCriteria",null)) {
+		Map<String,Object> outputDataCriteria= new HashMap<String,Object>();
+		outputDataCriteria.put("video", "0");
+		outputDataCriteria.put("style", "3");
+		outputDataCriteria.put("size", "3");
+		if(getProductDetailPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList,"AllConditionsWithoutCheckingSoldOutCriteria",outputDataCriteria)) {
 			reporter.reportLog("Verify URL");
 			lsProductNumber=getProductResultsPageThreadLocal().selectedProductItem.productNumber;
 			lsUrl=basePage.URL();
@@ -34,16 +41,15 @@ public class PD_TC05_VerifyProductDetail_ProductSize_Quantity extends BaseTest{
 			reporter.reportLog("Switch to ProductDetail page");
 			reporter.softAssert(lsUrl.contains(lsProductNumber),"The Url is containing selected product number of "+lsProductNumber,"The Url is not containing selected product number of "+lsProductNumber);
 
-			reporter.reportLog("Verify product size dropdown");
-			getProductDetailPageThreadLocal().verifyProductSizeDropdown();
+			reporter.reportLog("Verify product size changing action");
+			getProductDetailPageThreadLocal().verifyProductSizeChangingAction();
 
-			if(System.getProperty("Device").toLowerCase().contains("tablet") &&
-					(System.getProperty("Browser").toLowerCase().contains("android") ||
-							(!"".equals(System.getProperty("chromeMobileDevice")) && !System.getProperty("chromeMobileDevice").toLowerCase().contains("ipad")))){
-				reporter.reportLog("Verify product TrueFit");
-				getProductDetailPageThreadLocal().verifyProductSizeTrueFit();
-			}
-			getProductDetailPageThreadLocal().verifyProductSizeDropdown();
+//			if(System.getProperty("Device").toLowerCase().contains("tablet") &&
+//					(System.getProperty("Browser").toLowerCase().contains("android") ||
+//							(!"".equals(System.getProperty("chromeMobileDevice")) && !System.getProperty("chromeMobileDevice").toLowerCase().contains("ipad")))){
+//				reporter.reportLog("Verify product TrueFit");
+//				getProductDetailPageThreadLocal().verifyProductSizeTrueFit();
+//			}
 
 			reporter.reportLog("Verify product quantity");
 			getProductDetailPageThreadLocal().verifyProductQuantityDropdown(Integer.parseInt(lsQuantityNumberToShowLeftItemInfo));

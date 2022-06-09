@@ -317,10 +317,10 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
     }
 
     @Override
-    public void verifyProductSizeDropdown() {
+    public void verifyProductSizeChangingAction() {
         reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblSizeStatic),"Product size title is existing","Product size title is not existing");
-        reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.selectSizeOption),"Product size dropdown is existing","Product size dropdown is not existing");
-        reporter.softAssert(checkProductSizingDrodownOptionChangeAction(),"Product size dropdown action is working","Product size dropdown action is not working");
+        reporter.softAssert(this.lstRadioSizeLabelList.size()>0,"Product size radio list is existing","Product size radio list is not existing");
+        reporter.softAssert(checkProductSizingChangeAction(),"Product size changing action is working","Product size changing action is not working");
         if(IsSoldOutExisting()) {
             reporter.softAssert(!this.getElementText(this.lblSoldOut).isEmpty(),"The product Soldout message is not empty","The product Soldout message is empty");
         }
@@ -382,17 +382,6 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
         this.getReusableActionsInstance().scrollToElement(this.lblAddToBagPopupWindowButtonSectionSubtotal);
         reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblAddToBagPopupWindowButtonSectionSubtotal),"The product Subtotal in Add to Bag popup window is visible","The product Subtotal in Add to Bag popup window is not visible");
         reporter.softAssert(!this.lblAddToBagPopupWindowButtonSectionSubtotal.getText().isEmpty(),"The product Subtotal in Add to Bag popup window is not empty","The product Subtotal in Add to Bag popup window is empty");
-    }
-
-    @Override
-    public void verifyClickingSeeMoreButtonAction() {
-        this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkProductTeaserSeeMore);
-        this.getReusableActionsInstance().clickIfAvailable(this.lnkProductTeaserSeeMore);
-        //this.lnkProductTeaserSeeMore.click();
-        this.getReusableActionsInstance().waitForElementVisibility(this.btnStickyTabProductReview,  60);
-
-        reporter.softAssert(getStickyTabSelectedStatus(this.btnStickyTabProductReview),"The Product Overview tab is being selected","The Product Overview tab is not being selected");
-        goBack();
     }
 
     @Override
@@ -484,17 +473,6 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
     @Override
     public void verifyCurrentZoomImage() {
         reporter.softAssert(!this.getElementHref(this.lnkCurrentZoomImage).isEmpty(),"The Current zoom image link is not empty","The Current zoom image link is empty");
-    }
-
-    @Override
-    public void tellYourFriendsWindowClose(){
-        reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.btnTellYourFriendsWindowClose),"The back button of TellYourFriends Window is displaying correctly","The back button of TellYourFriends Window is not displaying correctly");
-    }
-
-    @Override
-    public void closeEmailPopUpWindow(){
-        this.getReusableActionsInstance().clickIfAvailable(this.btnTellYourFriendsWindowClose);
-        this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
     }
 
 }

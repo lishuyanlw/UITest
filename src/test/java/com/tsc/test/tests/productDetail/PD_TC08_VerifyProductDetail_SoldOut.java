@@ -51,9 +51,6 @@ public class PD_TC08_VerifyProductDetail_SoldOut extends BaseTest{
 			reporter.reportLog("Verify Sold out product messaage");
 			getProductDetailPageThreadLocal().verifyProductSoldOut();
 
-			reporter.reportLog("Verify Social media");
-			getProductDetailPageThreadLocal().verifySocialMedia();
-
 			if(System.getProperty("Device").equalsIgnoreCase("Desktop") ||
 					(System.getProperty("Device").equalsIgnoreCase("Tablet")
 							&& System.getProperty("Browser").contains("ios")) ||

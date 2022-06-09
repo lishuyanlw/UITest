@@ -71,7 +71,6 @@ public class PD_TC03_VerifyProductDetail_StickyTab extends BaseTest {
 					reporter.reportLogFail("Unable to go to Review Tab");
 				}
 				reporter.reportLog("See More button action and Product overview content");
-				getProductDetailPageThreadLocal().verifyClickingSeeMoreButtonAction();
 				getProductDetailPageThreadLocal().verifyProductOverviewContent();
 
 				reporter.reportLog("Verify sticky tab clicking actions");

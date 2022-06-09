@@ -38,16 +38,6 @@ public class PD_TC11_VerifyProductDetail_SocialMediaForMobileAndEmail extends Ba
 			reporter.reportLog("Verify FavShareMobile action");
 			getProductDetailPageThreadLocal().verifyFavShareMobileAction(lsUserName, lsPassword);
 
-			reporter.reportLog("Verify TellYourFriends Window Content");
-			getProductDetailPageThreadLocal().verifyTellYourFriendsWindowContent();
-
-			reporter.reportLog("Verify TellYourFriends Preview Window Content");
-			getProductDetailPageThreadLocal().verifyTellYourFriendsPreviewWindowContent();
-
-			reporter.reportLog("Verify TellYourFriends Sent Window Content");
-			getProductDetailPageThreadLocal().verifyTellYourFriendsSentWindowContent(lsTellYourFriendsSentMessage);
-			getProductDetailPageThreadLocal().closeEmailPopUpWindow();
-
 			if(getProductDetailPageThreadLocal().getShoppingCartNumber()>0){
 				reporter.reportLog("Removing Items from shopping Cart after test");
 				getShoppingCartThreadLocal().removeItemsAddedToShoppingCart();
