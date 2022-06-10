@@ -2049,8 +2049,8 @@ public class ProductDetailPage extends BasePage {
 		Map<String,Object> outputDataCriteria= new HashMap<String,Object>();
 		if(dataCriteria==null){
 			outputDataCriteria.put("video", "1");
-			outputDataCriteria.put("style", "5");
-			outputDataCriteria.put("size", "2");
+			outputDataCriteria.put("style", "1");
+			outputDataCriteria.put("size", "1");
 		}else{
 			outputDataCriteria = dataCriteria;
 		}
@@ -2118,6 +2118,7 @@ public class ProductDetailPage extends BasePage {
 
 		this.getDriver().get(apiResponse.selectedProduct.pdpNavigationUrl);
 
+		this.waitForPageToLoad();
 		return prp.waitForPDPPageLoading();
 	}
 

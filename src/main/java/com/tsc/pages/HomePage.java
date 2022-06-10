@@ -916,12 +916,13 @@ public class HomePage extends BasePage{
 		AtomicReference<String> finalTempLsImageSrc = new AtomicReference<>();
 		String lsImageSrc = null;
 		if(gethrefListTSimage(hrefallTSimageUpperSection).size()!=0) {
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(attriTSimageUpperSection.findElement(By.xpath(".//img")));
 			for (int i=0;i<totalNavigateLinks; i++) {
-				//if(testDevice.equalsIgnoreCase("Mobile")) {
 				this.waitForPageLoad();
-				this.waitForCondition(Driver->{return this.totalImageNavigateLink.get(0).isDisplayed();},6000);
-				this.totalImageNavigateLink.get(i).click();
+				int finalCounter = i;
+				this.waitForCondition(Driver->{return this.totalImageNavigateLink.get(finalCounter).isDisplayed() && this.totalImageNavigateLink.get(finalCounter).isEnabled();},6000);
+				//Using static wait as Stale Element Reference comes in between due to browser load
+				getReusableActionsInstance().staticWait(2000);
+				this.getReusableActionsInstance().clickIfAvailable(this.totalImageNavigateLink.get(i));
 				lsImageSrc = attriTSimageUpperSection.findElement(By.xpath(".//img")).getAttribute("src");
 				if (!lsImageSrc.equalsIgnoreCase(finalTempLsImageSrc.get())) {
 					this.waitForCondition(Driver->{return this.linksTSimageUpperSection.isDisplayed();},6000);
@@ -932,26 +933,12 @@ public class HomePage extends BasePage{
 				if(tempCounter<totalNavigateLinks && !testDevice.equalsIgnoreCase("Desktop")){
 					this.waitForCondition(Driver->{return this.btnHomePageBreadcrumb.isEnabled() &&
 							this.btnHomePageBreadcrumb.isDisplayed();},6000);
+					//Using static wait as Stale Element Reference comes in between due to browser load
+					getReusableActionsInstance().staticWait(3000);
 					this.getReusableActionsInstance().clickIfAvailable(this.btnHomePageBreadcrumb);
 					this.waitForPageLoad();
 					tempCounter++;
 				}
-				//}
-				/**else{
-					String lsImageSrcMob=attriTSimageUpperSection.findElement(By.xpath(".//img")).getAttribute("src");
-					if(this.waitForCondition(Driver->{return (!lsImageSrcMob.equalsIgnoreCase(finalTempLsImageSrc.get()) && !attriTSimageUpperSection.findElement(By.xpath(".//img")).getAttribute("src").equalsIgnoreCase(lsImageSrcMob));},7000)){
-						linksTSimageUpperSection.sendKeys(clickOnLinkTab);
-						this.waitForPageLoad();
-						tsImageLinkSet.add(this.URL());
-						if(tempCounter<totalNavigateLinks && !testDevice.equalsIgnoreCase("Desktop")){
-							this.waitForCondition(Driver->{return this.btnHomePageBreadcrumb.isEnabled() &&
-									this.btnHomePageBreadcrumb.isDisplayed();},6000);
-							this.getReusableActionsInstance().clickIfAvailable(this.btnHomePageBreadcrumb);
-							this.waitForPageLoad();
-							tempCounter++;
-						}
-					}
-				}*/
 				finalTempLsImageSrc.set(lsImageSrc);
 			}
 		}
