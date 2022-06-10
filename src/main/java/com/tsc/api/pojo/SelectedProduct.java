@@ -11,6 +11,7 @@ public class SelectedProduct {
 	public String productNowPrice;
 	public String productWasPrice;
 	public String pdpNavigationUrl;
+	public String easyPayPrice;
 	
 	public SelectedProduct() {
 		this.productNumber="";
@@ -23,11 +24,12 @@ public class SelectedProduct {
 		this.productNowPrice="";
 		this.productWasPrice="";
 		this.pdpNavigationUrl="";
+		this.easyPayPrice="";
 	}
 	
 	public SelectedProduct(String productNumber,String productName,String productBrand,String productSizeForSoldout,
 			String productColorForSoldout,String productSizeForEnabledAddToBag,String productColorForEnabledAddToBag,
-			String productNowPrice,String productWasPrice,String pdpNavigationUrl){
+			String productNowPrice,String productWasPrice,String pdpNavigationUrl,String easyPayPrice){
 		this.productNumber=productNumber;
 		this.productName=productName;
 		this.productBrand=productBrand;
@@ -38,6 +40,7 @@ public class SelectedProduct {
 		this.productNowPrice=productNowPrice;
 		this.productWasPrice=productWasPrice;
 		this.pdpNavigationUrl=pdpNavigationUrl;
+		this.easyPayPrice=easyPayPrice;
 	}
 	
 	public void init() {
@@ -51,5 +54,6 @@ public class SelectedProduct {
 		this.productNowPrice="";
 		this.productWasPrice="";
 		this.pdpNavigationUrl="";
+		this.easyPayPrice="";
 	}
 }

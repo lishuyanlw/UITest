@@ -2126,6 +2126,14 @@ public class ProductDetailPage extends BasePage {
 					}
 				}
 				break;
+			case "ProductWithEasyPaySizeChartAndReviews":
+				for(String lsKeyword:lstKeyword) {
+					product=apiResponse.getProductInfoFromKeywordWithEasyPayReviewsTrueFitAndSizeChart(lsKeyword,dataCriteria);
+					if(product!=null) {
+						break;
+					}
+				}
+				break;
 			default:
 				break;		
 		}		
