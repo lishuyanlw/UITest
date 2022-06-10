@@ -43,7 +43,7 @@ public class PD_TC11_VerifyProductDetail_SocialMediaForMobileAndEmail extends Ba
 			reporter.softAssert(lsUrl.contains(lsProductNumber),"The Url is containing selected product number of "+lsProductNumber,"The Url is not containing selected product number of "+lsProductNumber);
 
 			reporter.reportLog("Verify FavShareMobile action");
-			getProductDetailPageThreadLocal().verifyFavShareMobileAction(lsUserName, lsPassword);
+			getProductDetailPageThreadLocal().verifyFavIconAction(lsUserName, lsPassword);
 
 			if(getProductDetailPageThreadLocal().getShoppingCartNumber()>0){
 				reporter.reportLog("Removing Items from shopping Cart after test");

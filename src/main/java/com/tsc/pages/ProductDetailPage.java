@@ -737,7 +737,7 @@ public class ProductDetailPage extends BasePage {
 	 * @author Wei.Li
 	 */
 	public boolean judgeStyleDisplayModeIsDropdownMenu() {
-		return this.getChildElementCount(cntProductStyleSection)==1;
+		return this.checkChildElementExistingByTagName(cntProductStyleSection,"select");
 	}
 
 	/**
@@ -746,7 +746,7 @@ public class ProductDetailPage extends BasePage {
 	 * @author Wei.Li
 	 */
 	public boolean judgeSizeDisplayModeIsDropdownMenu() {
-		return this.getChildElementCount(cntProductSizeSection)==1;
+		return this.checkChildElementExistingByTagName(cntProductSizeSection,"select");
 	}
 
 	/**
@@ -1682,7 +1682,7 @@ public class ProductDetailPage extends BasePage {
 	public void verifyThumbnail() {
 		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.cntThumbnailContainer),"The Thumbnail section is displaying correctly","The Thumbnail section is not displaying correctly");
 		reporter.softAssert(!this.lnkThumbnailVideo.getAttribute("data-video").isEmpty(),"The video src is not empty","The video src is empty");
-		reporter.softAssert(!this.imgThumbnailVideo.getAttribute("src").isEmpty(),"The video image is not empty","The video image is empty");
+		reporter.softAssert(!this.imgThumbnailVideo.getAttribute("src").contains("videoBtn.jpg"),"The video image is displaying correctly","The video image is not displaying correctly");
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnThumbnailNext);
 		this.getReusableActionsInstance().clickIfAvailable(this.btnThumbnailNext);
@@ -1792,7 +1792,10 @@ public class ProductDetailPage extends BasePage {
 		reporter.softAssert(!this.getElementText(this.lblProductShipping).isEmpty(),"The product Shipping message is not empty","The product Shipping message is empty");
 	}
 
-	public void verifyProductSoldOut() {
+	public void verifyProductSoldOut() throws IOException {
+		ApiResponse apiResponse=new ApiResponse();
+		this.chooseGivenStyleAndSize(apiResponse.selectedProduct.productColorForSoldout,apiResponse.selectedProduct.productSizeForSoldout);
+
 		WebElement item;
 		if(this.checkChildElementExistingByTagName(this.selectQuantityOption,"option")){
 			int listSize = this.lstSizeOption.size();
@@ -2014,10 +2017,17 @@ public class ProductDetailPage extends BasePage {
 		return this.getElementInnerText(this.lblAddToFavoriteText).equalsIgnoreCase("Added to favorites");
 	}
 
-	public void verifyFavShareMobileAction(String lsUserName, String lsPassword) {
+	/**
+	 * To verify Fav icon  Action
+	 * @param - lsUserName
+	 * @param - lsPassword
+	 */
+	public void verifyFavIconAction(String lsUserName, String lsPassword) {
 		SignInPage loginPage=new SignInPage(this.getDriver());
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavIcon);
 		this.getReusableActionsInstance().clickIfAvailable(this.lnkFavIcon);
+		this.getReusableActionsInstance().staticWait(300);
+		this.getReusableActionsInstance().clickIfAvailable(this.lnkFavIconPopupSignIn);
 		this.getReusableActionsInstance().waitForElementVisibility(loginPage.lblSignIn,  60);
 
 		reporter.softAssert(this.URL().toLowerCase().contains("signin"),"The page has been navigated to signin page while no user login","The page has not been navigated to signin page while no user login");
@@ -2049,12 +2059,11 @@ public class ProductDetailPage extends BasePage {
 		Map<String,Object> outputDataCriteria= new HashMap<String,Object>();
 		if(dataCriteria==null){
 			outputDataCriteria.put("video", "1");
-			outputDataCriteria.put("style", "5");
-			outputDataCriteria.put("size", "2");
+			outputDataCriteria.put("style", "1");
+			outputDataCriteria.put("size", "1");
 		}else{
 			outputDataCriteria = dataCriteria;
 		}
-
 
 		switch(lsType) {
 			case "AllConditionsWithoutCheckingSoldOutCriteria":
@@ -2065,10 +2074,30 @@ public class ProductDetailPage extends BasePage {
 					}
 				}
 				break;
+			case "ConditionsForVideoAndStyleAndSizeWithoutCheckingSoldOutCriteria":
+				for(String lsKeyword:lstKeyword) {
+					product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,false,true);
+					if(product!=null) {
+						break;
+					}
+				}
+				break;
 			case "AllConditionsWithCheckingSoldOutCriteria":
 				for(String lsKeyword:lstKeyword) {
 					product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,true,false);
 					if(product!=null) {
+						reporter.reportLog(apiResponse.selectedProduct.productColorForSoldout);
+						reporter.reportLog(apiResponse.selectedProduct.productSizeForSoldout);
+						break;
+					}
+				}
+				break;
+			case "ConditionsForVideoAndStyleAndSizeWithCheckingSoldOutCriteria":
+				for(String lsKeyword:lstKeyword) {
+					product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,true,true);
+					if(product!=null) {
+						reporter.reportLog(apiResponse.selectedProduct.productColorForSoldout);
+						reporter.reportLog(apiResponse.selectedProduct.productSizeForSoldout);
 						break;
 					}
 				}
@@ -2356,11 +2385,78 @@ public class ProductDetailPage extends BasePage {
 	}
 
 	/**
+	 * Method to choose given Style and Size
+	 * @param - lsStyle - given Style
+	 * @param - lsSize - given Size
+	 * @return void
+	 * @author Wei.Li
+	 */
+	public void chooseGivenStyleAndSize(String lsStyle,String lsSize) {
+		int loopSize;
+		WebElement labelItem;
+
+		//To choose Size
+		loopSize=this.lstRadioSizeLabelSpanList.size();
+		for(int i=0;i<loopSize;i++) {
+			labelItem=this.lstRadioSizeLabelList.get(i);
+			if(labelItem.getAttribute("for").equalsIgnoreCase(lsSize)){
+				labelItem.click();
+				break;
+			}
+		}
+		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+
+		//To choose Style
+		if(this.judgeStyleDisplayModeIsDropdownMenu()) {
+			Select selectStyle= new Select(this.selectProductStyle);
+			selectStyle.selectByValue(lsStyle);
+		}
+		else {
+			loopSize=this.lstRadioStyleLabelSpanList.size();
+			for(int i=0;i<loopSize;i++) {
+				labelItem=this.lstRadioStyleLabelList.get(i);
+				if(labelItem.getAttribute("for").equalsIgnoreCase(lsStyle)){
+					labelItem.click();
+					break;
+				}
+			}
+		}
+		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+	}
+
+	/**
 	 * To check Image Zooming Status
 	 * @return true/false
 	 */
 	public boolean checkImageZoomingStatus(){
 		return this.currentZoomImageIndicator.getAttribute("class").contains("swiper-slide-zoomed");
+	}
+
+	/**
+	 * To verify zooming image action
+	 */
+	public void verifyZoomingImageAction(){
+		WebElement item=lstThumbnailImageButtonWithoutVideoList.get(0);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+		item.click();
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lnkCurrentZoomImage);
+		lnkCurrentZoomImage.click();
+		if(checkImageZoomingStatus()){
+			reporter.reportLogPass("Zooming out action is working");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Zooming out action is not working");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lnkCurrentZoomImage);
+		lnkCurrentZoomImage.click();
+		if(!checkImageZoomingStatus()){
+			reporter.reportLogPass("Zooming in action is working");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Zooming in action is not working");
+		}
 	}
 
 }

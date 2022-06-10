@@ -151,7 +151,7 @@ public class ApiResponse extends ApiConfigs {
                 for(Product.Products data:product.getProducts()) {
                 	lsNowPrice=data.getIsPriceRange();
                 	lsWasPrice=data.getWasPriceRange();
-                    if (data.getVideosCount() >= 1 && data.getStyles().size() >= 1 && data.getSizes().size() >= 1&&data.isShowBadgeImage()&&data.getProductReviewRating()>0&&data.getEasyPaymentPrice()!=null&&!lsNowPrice.equalsIgnoreCase(lsWasPrice)&&data.isEnabledAddToCart()) {
+                    if (data.getVideosCount() >= 1 && data.getStyles().size() >= 1 && data.getSizes().size() >= 1&&data.isShowBadgeImage()&&data.getProductReviewRating()>0&&data.getProductReviewCount()>0&&!lsNowPrice.equalsIgnoreCase(lsWasPrice)&&data.isEnabledAddToCart()) {
                     	if(data.getBrand()!=null) {
                     		if(data.getBrand().isEmpty()) {
                     			continue;
@@ -437,22 +437,25 @@ public class ApiResponse extends ApiConfigs {
         for(Product.Products data:product.getProducts()) {
         	lsNowPrice=data.getIsPriceRange();
         	lsWasPrice=data.getWasPriceRange();
-            //if(data.getVideosCount()>=videoCount && data.getStyles().size()>=styleCount && data.getSizes().size()>=sizeCount &&data.isShowBadgeImage()&&data.getProductReviewRating()>0&&!data.getEasyPaymentPrice().isEmpty()&&!lsNowPrice.equalsIgnoreCase(lsWasPrice)&&data.isEnabledAddToCart()) {
-			boolean flag = false;
-			if(basicCheck)
-				flag = (videoCount==0 ? data.getVideosCount()==videoCount : data.getVideosCount()>=videoCount) && data.getStyles().size()>=styleCount && data.getSizes().size()>=sizeCount;
-			else
-				flag = (videoCount==0 ? data.getVideosCount()==videoCount : data.getVideosCount()>=videoCount) && data.getStyles().size()>=styleCount && data.getSizes().size()>=sizeCount &&data.isShowBadgeImage()&&data.getProductReviewRating()>0&&!lsNowPrice.equalsIgnoreCase(lsWasPrice)&&data.isEnabledAddToCart();
+            boolean flag = false;
+			if(basicCheck) {
+				flag = data.getVideosCount() >= videoCount && data.getStyles().size() >= styleCount && data.getSizes().size() >= sizeCount;
+			}
+			else {
+				flag = data.getVideosCount() >= videoCount && data.getStyles().size() >= styleCount && data.getSizes().size() >= sizeCount && data.isShowBadgeImage() && data.getProductReviewRating() > 0 &&data.getProductReviewCount()>0&& !lsNowPrice.equalsIgnoreCase(lsWasPrice) && data.isEnabledAddToCart();
+			}
 			if(flag) {
-            	if(data.getBrand()!=null) {
-            		if(data.getBrand().isEmpty()) {
-            			continue;
-            		}            		
-            	}
-            	else {
-            		continue;
-            	}
-            	
+				if(!basicCheck){
+					if(data.getBrand()!=null) {
+						if(data.getBrand().isEmpty()) {
+							continue;
+						}
+					}
+					else {
+						continue;
+					}
+				}
+
             	List<edps> edpsList=data.getEdps(); 
             	if(isSoldOut) {
                 	//To check if any Inventory is equal to 0, then get the related Style and Size, 
@@ -626,7 +629,7 @@ public class ApiResponse extends ApiConfigs {
         		selectedProduct.productBrand=data.getBrand();
         		selectedProduct.productNowPrice=data.getIsPriceRange();
         		selectedProduct.productWasPrice=data.getWasPriceRange();        		
-        		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName()+propertyData.get("test_partial_url_pdp")+data.getItemNo();            	
+        		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName()+propertyData.get("test_partial_url_pdp")+data.getItemNo();
                 return data;
             }
         }
@@ -940,7 +943,7 @@ public class ApiResponse extends ApiConfigs {
 			for(Product.Products data:dataList) {
 				lsNowPrice=data.getIsPriceRange();
 				lsWasPrice=data.getWasPriceRange();
-				if (data.isActive()&&data.getStyles().size() >= 0 && data.getSizes().size() >= 0&&data.isShowBadgeImage()&&data.getProductReviewRating()>0&&!lsNowPrice.equalsIgnoreCase(lsWasPrice)) {
+				if (data.isActive()&&data.getStyles().size() >= 0 && data.getSizes().size() >= 0&&data.isShowBadgeImage()&&data.getProductReviewRating()>0&&data.getProductReviewCount()>0&&!lsNowPrice.equalsIgnoreCase(lsWasPrice)) {
 					if(data.getBrand()!=null) {
 						if(data.getBrand().isEmpty()) {
 							continue;
