@@ -30,10 +30,9 @@ public class PD_TC05_VerifyProductDetail_ProductSize_Quantity extends BaseTest{
 		String lsProductNumber,lsUrl;
 
 		Map<String,Object> outputDataCriteria= new HashMap<String,Object>();
-		outputDataCriteria.put("video", "0");
 		outputDataCriteria.put("style", "3");
 		outputDataCriteria.put("size", "3");
-		if(getProductDetailPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList,"AllConditionsWithoutCheckingSoldOutCriteria",outputDataCriteria)) {
+		if(getProductDetailPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList,"ConditionsForVideoAndStyleAndSizeWithoutCheckingSoldOutCriteria",outputDataCriteria)) {
 			reporter.reportLog("Verify URL");
 			lsProductNumber=getProductResultsPageThreadLocal().selectedProductItem.productNumber;
 			lsUrl=basePage.URL();
@@ -44,12 +43,12 @@ public class PD_TC05_VerifyProductDetail_ProductSize_Quantity extends BaseTest{
 			reporter.reportLog("Verify product size changing action");
 			getProductDetailPageThreadLocal().verifyProductSizeChangingAction();
 
-//			if(System.getProperty("Device").toLowerCase().contains("tablet") &&
-//					(System.getProperty("Browser").toLowerCase().contains("android") ||
-//							(!"".equals(System.getProperty("chromeMobileDevice")) && !System.getProperty("chromeMobileDevice").toLowerCase().contains("ipad")))){
-//				reporter.reportLog("Verify product TrueFit");
-//				getProductDetailPageThreadLocal().verifyProductSizeTrueFit();
-//			}
+			if(System.getProperty("Device").toLowerCase().contains("tablet") &&
+					(System.getProperty("Browser").toLowerCase().contains("android") ||
+							(!"".equals(System.getProperty("chromeMobileDevice")) && !System.getProperty("chromeMobileDevice").toLowerCase().contains("ipad")))){
+				reporter.reportLog("Verify product TrueFit");
+				getProductDetailPageThreadLocal().verifyProductSizeTrueFit();
+			}
 
 			reporter.reportLog("Verify product quantity");
 			getProductDetailPageThreadLocal().verifyProductQuantityDropdown(Integer.parseInt(lsQuantityNumberToShowLeftItemInfo));

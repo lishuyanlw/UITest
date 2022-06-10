@@ -172,6 +172,12 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__form__colours__selected']")
 	public WebElement lblRadioProductStyleTitle;
 
+	@FindBy(xpath = "//section[@class='pdp-description']//div[contains(@class,'pdp-description__form__colours__selections')]//button")
+	public List<WebElement> lstAllStyleRadioList;
+
+	@FindBy(xpath = "//section[@class='pdp-description']//div[contains(@class,'pdp-description__form__colours__selections')]//button//label")
+	public List<WebElement> lstAllStyleLabelRadioList;
+
 	@FindBy(xpath = "//section[@class='pdp-description']//div[contains(@class,'pdp-description__form__colours__selections')]//button[not(contains(@class,'pdp-description__form__colours--disabled'))]")
 	public List<WebElement> lstStyleRadioList;
 
@@ -238,14 +244,23 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//div[contains(@class,'tfp-app')]//div[@class='main-content']//button[@aria-label='Search all brands']")
 	public WebElement btnProductTrueFitIframePageSearchAllBrands;
 
+	@FindBy(xpath = "//div[contains(@class,'tfp-app')]//div[@class='suggested-brands-paged-wrapper']")
+	public WebElement cntProductTrueFitIframeSuggestedBrandContainer;
+
 	@FindBy(xpath = "//div[contains(@class,'tfp-app')]//div[@class='main-content']//div[@class='suggested-brands-paged']//button")
 	public List<WebElement> lstProductTrueFitIframeSuggestedBrandList;
 
 	@FindBy(xpath = "//div[contains(@class,'tfp-app')]//div[@class='main-content']//button[contains(@class,'prev')]")
 	public WebElement btnProductTrueFitIframePagePrevButton;
 
+	@FindBy(xpath = "//div[contains(@class,'tfp-app')]//div[@class='main-content']//button[contains(@class,'prev')]//img")
+	public WebElement imgProductTrueFitIframePagePrevButton;
+
 	@FindBy(xpath = "//div[contains(@class,'tfp-app')]//div[@class='main-content']//button[contains(@class,'next')]")
 	public WebElement btnProductTrueFitIframePageNextButton;
+
+	@FindBy(xpath = "//div[contains(@class,'tfp-app')]//div[@class='main-content']//button[contains(@class,'next')]//img")
+	public WebElement imgProductTrueFitIframePageNextButton;
 
 	@FindBy(xpath = "//div[contains(@class,'tfp-app')]//div[@class='footer']")
 	public WebElement lblProductTrueFitIframeConfirmMessage;
@@ -263,6 +278,12 @@ public class ProductDetailPage extends BasePage {
 
 	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__form__sizes__selected']")
 	public WebElement lblSizeTitle;
+
+	@FindBy(xpath = "//section[contains(@class,'pdp-description')]//div[contains(@class,'pdp-description__form__sizes__selections')]//button")
+	public List<WebElement> lstAllSizeRadioList;
+
+	@FindBy(xpath = "//section[contains(@class,'pdp-description')]//div[contains(@class,'pdp-description__form__sizes__selections')]//button//label")
+	public List<WebElement> lstAllSizeLabelRadioList;
 
 	@FindBy(xpath = "//section[contains(@class,'pdp-description')]//div[contains(@class,'pdp-description__form__sizes__selections')]//button[not(contains(@class,'pdp-description__form__sizes--disabled'))]")
 	public List<WebElement> lstSizeRadioList;
@@ -768,8 +789,14 @@ public class ProductDetailPage extends BasePage {
 		return this.checkChildElementExistingByTagName(this.selectQuantityOption,"option");
 	}
 
+	public boolean checkOutOfStockForQuantityDropdown() {
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectQuantityOption);
+		Select select=new Select(this.selectQuantityOption);
+		return select.getFirstSelectedOption().getText().trim().equalsIgnoreCase("0");
+	}
+
 	public boolean judgeAddToBagButtonAvailable() {
-		return this.checkChildElementExistingByAttribute(this.cntProductStyleAndSizeJudgeIndicator, "class", "pdp-description__add-to-bag");
+		return !this.getElementInnerText(this.btnAddToBag).equalsIgnoreCase("Out of Stock");
 	}
 
 	/**
@@ -1329,10 +1356,96 @@ public class ProductDetailPage extends BasePage {
 	}
 
 	public void trueFitDetails(){
-		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.cntProductTrueFitIframe),"The product TrueFit popup window is displaying","The product TrueFit popup window is not displaying");
-		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.imgProductTrueFitIframeHeaderLogo),"The header icon in product TrueFit popup window is displaying","The header icon in product TrueFit popup window is not displaying");
-		reporter.softAssert(!this.getElementImageSrc(this.imgProductTrueFitIframeHeaderLogo).isEmpty(),"The header icon src in product TrueFit popup window is not empty","The header icon src in product TrueFit popup window is empty");
+		if(this.getReusableActionsInstance().isElementVisible(this.btnProductTrueFitIframeClose)){
+			reporter.reportLogPass("The close button on product TrueFit popup window is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The close button on product TrueFit popup window is not displaying correctly");
+		}
 
+		if(this.getReusableActionsInstance().isElementVisible(this.lnkProductTrueFitIframeSignIn)){
+			reporter.reportLogPass("The SignIn button on product TrueFit popup window is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The SignIn button on product TrueFit popup window is not displaying correctly");
+		}
+
+		if(!imgProductTrueFitIframeHeaderLogo.getAttribute("src").isEmpty()){
+			reporter.reportLogPass("The SignIn Logo on product TrueFit popup window is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The SignIn Logo on product TrueFit popup window is not displaying correctly");
+		}
+
+		if(!imgProductTrueFitIframePage.getAttribute("src").isEmpty()){
+			reporter.reportLogPass("The TrueFit Logo on product TrueFit popup window is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The TrueFit Logo on product TrueFit popup window is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblProductTrueFitIframePageTitle);
+		if(!this.lblProductTrueFitIframePageTitle.getText().isEmpty()){
+			reporter.reportLogPass("The page title on product TrueFit popup window is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The page title on product TrueFit popup window is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblProductTrueFitIframePageSubTitle);
+		if(!this.lblProductTrueFitIframePageSubTitle.getText().isEmpty()){
+			reporter.reportLogPass("The page Subtitle on product TrueFit popup window is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The page Subtitle on product TrueFit popup window is not displaying correctly");
+		}
+
+		if(this.getReusableActionsInstance().isElementVisible(this.btnProductTrueFitIframePageSearchAllBrands)){
+			reporter.reportLogPass("The search all brands button on product TrueFit popup window is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The search all brands button on product TrueFit popup window is not displaying correctly");
+		}
+
+		if(this.lstProductTrueFitIframeSuggestedBrandList.size()>0){
+			reporter.reportLogPass("The suggested brands on product TrueFit popup window is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The suggested brands on product TrueFit popup window is not displaying correctly");
+		}
+
+		if(this.checkChildElementExistingByTagNameAndAttribute(cntProductTrueFitIframeSuggestedBrandContainer,"button","class","prev")){
+			if(!this.imgProductTrueFitIframePagePrevButton.getAttribute("src").isEmpty()){
+				reporter.reportLogPass("The Prev button for suggested brands on product TrueFit popup window is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The Prev button for suggested brands on product TrueFit popup window is not displaying correctly");
+			}
+		}
+
+		if(this.checkChildElementExistingByTagNameAndAttribute(cntProductTrueFitIframeSuggestedBrandContainer,"button","class","next")){
+			if(!this.imgProductTrueFitIframePageNextButton.getAttribute("src").isEmpty()){
+				reporter.reportLogPass("The Next button for suggested brands on product TrueFit popup window is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The Next button for suggested brands on product TrueFit popup window is not displaying correctly");
+			}
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblProductTrueFitIframeConfirmMessage);
+		if(!this.lblProductTrueFitIframeConfirmMessage.getText().isEmpty()){
+			reporter.reportLogPass("The confirm message on the footer for suggested brands on product TrueFit popup window is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The confirm message on the footer for suggested brands on product TrueFit popup window is not displaying correctly");
+		}
+
+		if(!this.lnkProductTrueFitIframePrivacyPolicy.getAttribute("href").isEmpty()){
+			reporter.reportLogPass("The Privacy Policy on the footer for suggested brands on product TrueFit popup window is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Privacy Policy on the footer for suggested brands on product TrueFit popup window is not displaying correctly");
+		}
 	}
 
 	/**
@@ -1735,6 +1848,35 @@ public class ProductDetailPage extends BasePage {
 		reporter.softAssert(!this.getElementText(this.lblProductNowPrice).isEmpty()&&!this.getElementText(this.lblProductWasPrice).isEmpty(),"The product price range is not empty","The product price range is empty");
 		if(this.checkProductEasyPayExisting()){
 			reporter.softAssert(!this.getElementText(this.lblProductEasyPay).isEmpty(),"The product EasyPay message is not empty","The product EasyPay message is empty");
+			reporter.softAssert(!this.getElementText(this.btnProductEasyPay).isEmpty(),"The product EasyPay button is displaying correctly","The product EasyPay button is not displaying correctly");
+
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnProductEasyPay);
+			this.getReusableActionsInstance().clickIfAvailable(this.btnProductEasyPay);
+			this.waitForCondition(Driver->{return this.lblProductEasyPayPopupHeading.isDisplayed();},10000);
+			if(this.getReusableActionsInstance().isElementVisible(this.btnProductEasyPayPopupClose)){
+				reporter.reportLogPass("The close button for easyPay popup window is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The close button for easyPay popup window is displaying correctly");
+			}
+
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblProductEasyPayPopupHeading);
+			if(!this.lblProductEasyPayPopupHeading.getText().isEmpty()){
+				reporter.reportLogPass("The heading for easyPay popup window is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The heading for easyPay popup window is displaying correctly");
+			}
+
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblProductEasyPayPopupContent);
+			if(!this.lblProductEasyPayPopupContent.getText().isEmpty()){
+				reporter.reportLogPass("The content for easyPay popup window is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The content for easyPay popup window is displaying correctly");
+			}
+			this.btnProductEasyPayPopupClose.click();
+			this.getReusableActionsInstance().staticWait(300);
 		}
 		reporter.softAssert(!this.getElementText(this.lblProductSavings).isEmpty(),"The product Saving message is not empty","The product Saving message is empty");
 		reporter.softAssert(!this.getElementText(this.lblProductShipping).isEmpty(),"The product Shipping message is not empty","The product Shipping message is empty");
@@ -1793,8 +1935,7 @@ public class ProductDetailPage extends BasePage {
 	}
 
 	public void verifyProductSoldOut() throws IOException {
-		ApiResponse apiResponse=new ApiResponse();
-		this.chooseGivenStyleAndSize(apiResponse.selectedProduct.productColorForSoldout,apiResponse.selectedProduct.productSizeForSoldout);
+		this.chooseGivenStyleAndSize(selectedProduct.productColorForSoldout,selectedProduct.productSizeForSoldout);
 
 		WebElement item;
 		if(this.checkChildElementExistingByTagName(this.selectQuantityOption,"option")){
@@ -1812,9 +1953,9 @@ public class ProductDetailPage extends BasePage {
 			}
 		}
 		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblSoldOut),"The Soldout message is displaying correctly","The Soldout message is not displaying correctly");
-		reporter.softAssert(!this.getElementText(this.lblSoldOut).isEmpty(),"The Soldout message is not empty","The Soldout message is empty");
-		reporter.softAssert(!this.judgeQuantityDropdownAvailable(),"The Quantity Dropdown is not displaying","The Quantity Dropdown is still displaying");
-		reporter.softAssert(this.judgeAddToBagButtonAvailable(),"The Add to Bag button is not displaying","The Add to Bag button is still displaying");
+		reporter.softAssert(this.getElementText(this.lblSoldOut).equalsIgnoreCase("Out of Stock"),"The Soldout message is displaying correctly","The Soldout message is not displaying correctly");
+		reporter.softAssert(this.checkOutOfStockForQuantityDropdown(),"The Quantity Dropdown for Soldout is displaying correctly","The Quantity Dropdown for Soldout is not displaying correctly");
+		reporter.softAssert(!this.judgeAddToBagButtonAvailable(),"The Out of Stock button is displaying correctly","The Out of Stock button is not displaying correctly");
 
 	}
 
@@ -2086,8 +2227,6 @@ public class ProductDetailPage extends BasePage {
 				for(String lsKeyword:lstKeyword) {
 					product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,true,false);
 					if(product!=null) {
-						reporter.reportLog(apiResponse.selectedProduct.productColorForSoldout);
-						reporter.reportLog(apiResponse.selectedProduct.productSizeForSoldout);
 						break;
 					}
 				}
@@ -2096,8 +2235,6 @@ public class ProductDetailPage extends BasePage {
 				for(String lsKeyword:lstKeyword) {
 					product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,true,true);
 					if(product!=null) {
-						reporter.reportLog(apiResponse.selectedProduct.productColorForSoldout);
-						reporter.reportLog(apiResponse.selectedProduct.productSizeForSoldout);
 						break;
 					}
 				}
@@ -2129,8 +2266,8 @@ public class ProductDetailPage extends BasePage {
 			default:
 				break;		
 		}		
-		
-		selectedProduct=apiResponse.selectedProduct;
+
+		selectedProduct=selectedProduct.assignValue(apiResponse.selectedProduct);
 		if(!lsType.equalsIgnoreCase("AdvanceOrder")) {
 			if(product==null){
 				reporter.reportLogFail("Unable to find the matched product");
@@ -2396,11 +2533,11 @@ public class ProductDetailPage extends BasePage {
 		WebElement labelItem;
 
 		//To choose Size
-		loopSize=this.lstRadioSizeLabelSpanList.size();
+		loopSize=this.lstAllSizeRadioList.size();
 		for(int i=0;i<loopSize;i++) {
-			labelItem=this.lstRadioSizeLabelList.get(i);
+			labelItem=this.lstAllSizeLabelRadioList.get(i);
 			if(labelItem.getAttribute("for").equalsIgnoreCase(lsSize)){
-				labelItem.click();
+				this.lstAllSizeRadioList.get(i).click();
 				break;
 			}
 		}
@@ -2412,9 +2549,9 @@ public class ProductDetailPage extends BasePage {
 			selectStyle.selectByValue(lsStyle);
 		}
 		else {
-			loopSize=this.lstRadioStyleLabelSpanList.size();
+			loopSize=this.lstAllStyleRadioList.size();
 			for(int i=0;i<loopSize;i++) {
-				labelItem=this.lstRadioStyleLabelList.get(i);
+				labelItem=this.lstAllStyleLabelRadioList.get(i);
 				if(labelItem.getAttribute("for").equalsIgnoreCase(lsStyle)){
 					labelItem.click();
 					break;
