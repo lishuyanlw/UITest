@@ -42,6 +42,21 @@ public class SelectedProduct {
 		this.pdpNavigationUrl=pdpNavigationUrl;
 		this.easyPayPrice=easyPayPrice;
 	}
+
+	public SelectedProduct assignValue(SelectedProduct productItem){
+		this.productNumber=productItem.productNumber;
+		this.productName=productItem.productName;
+		this.productBrand=productItem.productBrand;
+		this.productSizeForSoldout=productItem.productSizeForSoldout;
+		this.productColorForSoldout=productItem.productColorForSoldout;
+		this.productSizeForEnabledAddToBag=productItem.productSizeForEnabledAddToBag;
+		this.productColorForEnabledAddToBag=productItem.productColorForEnabledAddToBag;
+		this.productNowPrice=productItem.productNowPrice;
+		this.productWasPrice=productItem.productWasPrice;
+		this.pdpNavigationUrl=productItem.pdpNavigationUrl;
+
+		return this;
+	}
 	
 	public void init() {
 		this.productNumber="";

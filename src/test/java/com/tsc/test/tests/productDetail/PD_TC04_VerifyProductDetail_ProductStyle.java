@@ -15,6 +15,7 @@ public class PD_TC04_VerifyProductDetail_ProductStyle extends BaseTest{
 	 * CER-575
 	 * CER-576
 	 * CER-577
+	 * CER-817
 	 */
 	@Test(groups={"ProductDetail","Regression","Regression_Mobile","Regression_Tablet"})
 	public void PD_TC04_VerifyProductDetail_ProductStyle() throws IOException {
@@ -31,7 +32,7 @@ public class PD_TC04_VerifyProductDetail_ProductStyle extends BaseTest{
 		outputDataCriteria.put("video", "0");
 		outputDataCriteria.put("style", "3");
 		outputDataCriteria.put("size", "2");
-		if(getProductDetailPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList,"AllConditionsWithoutCheckingSoldOutCriteria",outputDataCriteria)) {
+		if(getProductDetailPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList,"ConditionsForVideoAndStyleAndSizeWithoutCheckingSoldOutCriteria",outputDataCriteria)) {
 			reporter.reportLog("Verify URL");
 			lsProductNumber=getProductResultsPageThreadLocal().selectedProductItem.productNumber;
 			lsUrl=basePage.URL();

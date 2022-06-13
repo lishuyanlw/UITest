@@ -15,7 +15,7 @@ public class PD_TC06_VerifyProductDetail_AddToBag extends BaseTest{
 	 * CER-583
 	 * CER-606
 	 * CER-608
-	 *
+	 * CER-818
 	 */
 	@Test(groups={"ProductDetail","Regression","Regression_Mobile","Regression_Tablet"})
 	public void PD_TC06_VerifyProductDetail_AddToBag() throws IOException {

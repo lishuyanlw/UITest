@@ -416,7 +416,7 @@ public class ApiResponse extends ApiConfigs {
         	return null;
         }
     	
-        int videoCount=1,styleCount=3,sizeCount=3;
+        int videoCount=-1,styleCount=3,sizeCount=3;
 		String lsNowPrice,lsWasPrice;
         boolean bSoldout=false;
 
@@ -439,10 +439,20 @@ public class ApiResponse extends ApiConfigs {
         	lsWasPrice=data.getWasPriceRange();
             boolean flag = false;
 			if(basicCheck) {
-				flag = data.getVideosCount() >= videoCount && data.getStyles().size() >= styleCount && data.getSizes().size() >= sizeCount;
+				if(videoCount!=-1){
+					flag = (videoCount==0 ? data.getVideosCount()==videoCount : data.getVideosCount()>=videoCount)&&data.getStyles().size() >= styleCount && data.getSizes().size() >= sizeCount;
+				}
+				else{
+					flag = data.getStyles().size() >= styleCount && data.getSizes().size() >= sizeCount;
+				}
 			}
 			else {
-				flag = data.getVideosCount() >= videoCount && data.getStyles().size() >= styleCount && data.getSizes().size() >= sizeCount && data.isShowBadgeImage() && data.getProductReviewRating() > 0 &&data.getProductReviewCount()>0&& !lsNowPrice.equalsIgnoreCase(lsWasPrice) && data.isEnabledAddToCart();
+				if(videoCount!=-1){
+					flag = (videoCount==0 ? data.getVideosCount()==videoCount : data.getVideosCount()>=videoCount) && data.getStyles().size() >= styleCount && data.getSizes().size() >= sizeCount && data.isShowBadgeImage() && data.getProductReviewRating() > 0 &&data.getProductReviewCount()>0&& !lsNowPrice.equalsIgnoreCase(lsWasPrice) && data.isEnabledAddToCart();
+				}
+				else{
+					flag = data.getStyles().size() >= styleCount && data.getSizes().size() >= sizeCount && data.isShowBadgeImage() && data.getProductReviewRating() > 0 &&data.getProductReviewCount()>0&& !lsNowPrice.equalsIgnoreCase(lsWasPrice) && data.isEnabledAddToCart();
+				}
 			}
 			if(flag) {
 				if(!basicCheck){
