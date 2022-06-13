@@ -63,11 +63,6 @@ public class PD_TC02_VerifyProductDetail_RightSection_ItemDetails extends BaseTe
 				reporter.reportLogFail("Unable to find the product item with Review, EasyPay, Swatch item>=4 and Video");
 			}
 		}
-		/**
-		if(getProductDetailPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList,"ProductWithEasyPaySizeChartAndReviews",outputDataCriteria)){
-
-		}*/
 	}
-
 }
 

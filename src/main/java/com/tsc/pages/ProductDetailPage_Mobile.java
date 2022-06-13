@@ -173,7 +173,7 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
     }
 
     @Override
-    public boolean goToProductReviewTab() {
+    public boolean goToProductReviewSection() {
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productReviewSection);
         this.getReusableActionsInstance().scrollToElement(this.productReviewSection);
         this.getReusableActionsInstance().clickIfAvailable(this.productReviewSection);
@@ -193,9 +193,9 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
     }
 
     @Override
-    public void verifyReviewTabContent() {
+    public void verifyReviewSectionContent() {
         reporter.softAssert(!this.getElementText(this.lblReviewTabHeader).isEmpty(),"The Review tab header is not empty","The Review tab header is empty");
-        reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.imgReviewTabHistogram),"The Review tab histogram is displaying correctly","The Review tab histogram is not displaying correctly");
+        //reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.imgReviewTabHistogram),"The Review tab histogram is displaying correctly","The Review tab histogram is not displaying correctly");
         reporter.softAssert(!this.getElementText(this.lblReviewTabRateDecimalText).isEmpty(),"The Review tab rate number is not empty","The Review tab rate number is empty");
         reporter.softAssert(this.lstReviewTabStar.size()>0,"The product review tab star count is greater than 0","The product review tab star count is not greater than 0");
         reporter.softAssert(!this.getElementText(this.lblReviewTabReviewCount).isEmpty(),"The Review count message is not empty","The Review count message is empty");
@@ -417,29 +417,6 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
                 return this.lblProductName.isDisplayed();
             },150000);
             this.waitForPageToLoad();
-        }
-    }
-
-    @Override
-    public void verifyStickyTabClickingAction() {
-        this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productOverview);
-        this.getReusableActionsInstance().clickIfAvailable(this.productOverview);
-        this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
-        reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.btnStickyTabProductReview),"The Product Overview contents is displaying correctly","The Product Overview contents is not displaying correctly");
-        this.goBack();
-
-        this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productReview);
-        this.getReusableActionsInstance().clickIfAvailable(this.productReview);
-        this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
-        reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.btnStickyTabProductReview),"The Product Overview contents is displaying correctly","The Product Overview contents is not displaying correctly");
-        goBack();
-
-        if(this.checkProductSizingChartExisting()) {
-            this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.sizeChart);
-            this.getReusableActionsInstance().clickIfAvailable(this.sizeChart);
-            this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
-            reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.btnStickyTabProductReview),"The Product Overview contents is displaying correctly","The Product Overview contents is not displaying correctly");
-            goBack();
         }
     }
 

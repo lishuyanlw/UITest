@@ -380,9 +380,6 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//div[@id='accordion']//div[@class='field-wrapper']//span[@class='field-wrapper__accordion-heading__text']")
 	public List<WebElement> lstStickyTabProductTabHeaderList;
 
-	@FindBy(xpath = "//div[@class='sticky-swiper-container']//a[@data-text='PRODUCT OVERVIEW']")
-	public WebElement btnStickyTabProductOverview;
-
 	@FindBy(xpath = "//div[@class='sticky-swiper-container']//a[@data-text='SIZE CHART']")
 	public WebElement btnStickyTabSizeChart;
 
@@ -407,32 +404,33 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//div[@id='productReviewSection']")
 	public WebElement cntReviewTabContent;
 
-	@FindBy(xpath = "//div[@id='productReviewSection']//*[@class='pr-reviewHeader']")
+	@FindBy(xpath = "//*[contains(@class,'customer-reviews')]")
 	public WebElement lblReviewTabHeader;
 
 	@FindBy(xpath = "//div[@id='productReviewSection']//section[@id='pr-review-snapshot']//div[@class='pr-review-snapshot-histogram']")
 	public WebElement imgReviewTabHistogram;
 
-	@FindBy(xpath = "//div[@id='productReviewSection']//section[@id='pr-review-snapshot']//div[@class='pr-snippet-stars-reco-stars']//div[@class='pr-snippet-rating-decimal']")
+	@FindBy(xpath = "//section[@id='pr-review-snapshot']//div[@class='pr-snippet-stars-reco-stars']//div[@class='pr-snippet-rating-decimal']")
 	public WebElement lblReviewTabRateDecimalText;
 
-	@FindBy(xpath = "//div[@id='productReviewSection']//section[@id='pr-review-snapshot']//div[@class='pr-snippet-stars-reco-stars']//div[@class='pr-rating-stars']//div[contains(@class,'pr-star-v4')]")
+	@FindBy(xpath = "//section[@id='pr-review-snapshot']//div[@class='pr-snippet-stars-reco-stars']//div[@class='pr-rating-stars']")
 	public List<WebElement> lstReviewTabStar;
 
 	@FindBy(xpath = "//div[@id='productReviewSection']//section[@id='pr-review-snapshot']//div[@class='pr-snippet-stars-reco-stars']//span[@class='pr-accessible-text']")
 	public WebElement lblReviewTabStarAccessibleText;
 
-	@FindBy(xpath = "//div[@id='productReviewSection']//section[@id='pr-review-snapshot']//span[@class='pr-snippet-review-count']")
+	@FindBy(xpath = "//section[@id='pr-review-snapshot']//div[@class='pr-snippet-read-and-write']/span")
 	public WebElement lblReviewTabReviewCount;
 
-	@FindBy(xpath = "//div[@id='productReviewSection']//a[contains(@href,'writereview')]")
+	//@FindBy(xpath = "//div[@id='productReviewSection']//a[contains(@href,'writereview')]")
+	@FindBy(xpath = "//section[@id='pr-review-snapshot']//a[contains(@href,'writereview')]")
 	public WebElement lnkReviewTabWriteReview;
 
-	@FindBy(xpath = "//div[@id='productReviewSection']//section[@id='pr-review-display']//select[@id='pr-rd-sort-by']")
+	@FindBy(xpath = "//div[@id='pr-reviewdisplay']//section[@id='pr-review-display']//select[@id='pr-rd-sort-by']")
 	public WebElement selectReviewTabSortBy;
 
 	//Review list part
-	@FindBy(xpath = "//div[@id='productReviewSection']//section[@id='pr-review-display']//div[@class='pr-review']")
+	@FindBy(xpath = "//div[@id='pr-reviewdisplay']//section[@id='pr-review-display']//div[@class='pr-review']")
 	public List<WebElement> lstReviewTabPerReviewList;
 
 	public By byReviewTabHeader=By.xpath(".//header");
@@ -443,7 +441,8 @@ public class ProductDetailPage extends BasePage {
 
 	public By byReviewTabFooter=By.xpath(".//footer");
 
-	public By byReviewTabStarSection=By.xpath(".//div[@class='pr-rating-stars']//div[contains(@class,'pr-star-v4')]");
+	//public By byReviewTabStarSection=By.xpath(".//div[@class='pr-rating-stars']//div[contains(@class,'pr-star-v4')]");
+	public By byReviewTabStarSection=By.xpath(".//div[@class='pr-rating-stars']");
 
 	public By byReviewTabStarList=By.xpath(".//div[@class='pr-rating-stars']//div[contains(@class,'pr-star-v4')]");
 
@@ -470,10 +469,10 @@ public class ProductDetailPage extends BasePage {
 	public By byReviewTabImage=By.xpath(".//section[contains(@class,'pr-rd-images')]");
 
 	//Review Tab footer part
-	@FindBy(xpath = "//div[@id='productReviewSection']//section[@id='pr-review-display']//p[@class='pr-rd-review-position']")
+	@FindBy(xpath = "//div[@id='pr-reviewdisplay']//section[@id='pr-review-display']//footer[@class='pr-rd-main-footer']//p[@class='pr-rd-review-position']")
 	public WebElement lblReviewTabDisplayingReviewMsg;
 
-	@FindBy(xpath = "//div[@id='productReviewSection']//section[@id='pr-review-display']//a[contains(@class,'pr-rd-to-top')]")
+	@FindBy(xpath = "//div[@id='pr-reviewdisplay']//section[@id='pr-review-display']//footer[@class='pr-rd-main-footer']//a[contains(@class,'pr-rd-to-top')]")
 	public WebElement lnkReviewTabBackToTop;
 
 	@FindBy(xpath = "//div[@id='productReviewSection']//section[@id='pr-review-display']//div[@class='pr-rd-pagination']")
@@ -709,6 +708,23 @@ public class ProductDetailPage extends BasePage {
 	public By byGetTheLookProductNowPrice=By.xpath(".//div[@class='findmine__now-price']");
 
 	public By byGetTheLookProductWasPrice=By.xpath(".//del[@class='findmine__was-price']");
+
+	//Accordions Section
+	@FindBy(xpath = "//div[@id='accordion']//div[@class='field-wrapper']")
+	public List<WebElement> lstProductAccordions;
+
+	@FindBy(xpath = "//div[@id='accordion']//div[@class='field-wrapper__accordion-heading']/span[contains(text(),'Product')]")
+	public WebElement lblProductOverviewHeader;
+
+	public By accordionHeading = By.xpath(".//span[contains(@class,'accordion-heading')]");
+
+	public By accordionPlusMinusIcon = By.xpath(".//div[contains(@class,'accordion-heading__icon')]");
+
+	public By accordionContents = By.xpath(".//div[@class='field-wrapper__content-wrapper']");
+
+	public By accordionReadMoreLessButton = By.xpath(".//button");
+
+	public By accordionContentElement = By.xpath(".//div[contains(@id,'content')]");
 
 	public ProductDetailsItem productDetailsItem = new ProductDetailsItem();
 	public Product.Products product=null;
@@ -1106,13 +1122,13 @@ public class ProductDetailPage extends BasePage {
 	 * @return true/false
 	 * @author Wei.Li
 	 */
-	public boolean goToProductReviewTab() {
+	public boolean goToProductReviewSection() {
 		this.waitForPageToLoad();
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productReviewSection);
 		//this.getReusableActionsInstance().clickIfAvailable(this.productReviewSection);
 		//this.getReusableActionsInstance().scrollToElementAndClick(this.productReviewSection);
 		this.clickWebElementUsingJS(this.productReviewSection);
-		return this.waitForCondition(Driver->{return this.btnStickyTabProductReview.getAttribute("class").contains("selected");},30000);
+		return this.waitForCondition(Driver->{return this.lblReviewTabHeader.isDisplayed();},30000);
 	}
 
 	/**
@@ -1904,23 +1920,23 @@ public class ProductDetailPage extends BasePage {
 		}
 	}
 
-	public void verifyReviewTabContent() {
+	public void verifyReviewSectionContent() {
 		reporter.softAssert(!this.getElementText(this.lblReviewTabHeader).isEmpty(),"The Review tab header is not empty","The Review tab header is empty");
-		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.imgReviewTabHistogram),"The Review tab histogram is displaying correctly","The Review tab histogram is not displaying correctly");
+		//reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.imgReviewTabHistogram),"The Review tab histogram is displaying correctly","The Review tab histogram is not displaying correctly");
 		reporter.softAssert(!this.getElementText(this.lblReviewTabRateDecimalText).isEmpty(),"The Review tab rate number is not empty","The Review tab rate number is empty");
 		reporter.softAssert(this.lstReviewTabStar.size()>0,"The product review tab star count is greater than 0","The product review tab star count is not greater than 0");
 		reporter.softAssert(!this.getElementText(this.lblReviewTabReviewCount).isEmpty(),"The Review count message is not empty","The Review count message is empty");
 		reporter.softAssert(!this.getElementHref(this.lnkReviewTabWriteReview).isEmpty(),"The Write Review link is not empty","The Write Review link is empty");
-		reporter.softAssert(!this.getElementText(this.lblReviewTabRateDecimalText).isEmpty(),"The Review tab rate number is not empty","The Review tab rate number is empty");
 		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.selectReviewTabSortBy),"The Review sorting is displaying correctly","The Review sorting is not displaying correctly");
 	}
 
 	public void verifyReviewTabFooterAndBackToTopAndPagination() {
 		reporter.softAssert(!this.getElementText(this.lblReviewTabDisplayingReviewMsg).isEmpty(),"The Review message in Review tab footer is not empty","The Review message in Review tab footer is empty");
 		reporter.softAssert(!this.getElementHref(this.lnkReviewTabBackToTop).isEmpty(),"The BackToTop link is not empty","The BackToTop link is empty");
+		/**
 		if(this.getChildElementCount(this.cntReviewTabPagination)>0) {
 			reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.cntReviewTabPagination),"The Review pagination section is displaying correctly","The Review pagination section is not displaying correctly");
-		}
+		}*/
 	}
 
 	public void verifyProductAdvancedOrderMessage() {
@@ -2114,31 +2130,65 @@ public class ProductDetailPage extends BasePage {
 	}
 
 	public void verifyProductOverviewContent() {
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnStickyTabProductOverview);
-		this.btnStickyTabProductOverview.click();
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblProductOverviewHeader);
 		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 
 		reporter.softAssert(!this.getElementText(this.lblProductOverviewTabContent).isEmpty(),"The Product Overview contents is not empty","The Product Overview contents is empty");
 	}
 
-	public void verifyStickyTabClickingAction() {
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnStickyTabProductOverview);
-		this.btnStickyTabProductOverview.click();
-		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
-		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblProductOverviewTabContent),"The Product Overview contents is displaying correctly","The Product Overview contents is not displaying correctly");
+	/**
+	 * Function verifies all accordions displayed for a product on PDP page
+	 */
+	public void verifyAccordionsForProductOnPage() {
+		if(this.lstProductAccordions.size()>0){
+			int counter = 0;
+			for(WebElement accordion:this.lstProductAccordions){
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(accordion);
+				//Accordion Heading
+				String accordionHeadingName = accordion.findElement(this.accordionHeading).getText();
+				if(!accordionHeadingName.isEmpty())
+					reporter.reportLogPass("Accordion Heading is present as expected for: "+accordionHeadingName);
+				else
+					reporter.reportLogFail("Accordion Heading is not present for product on page");
+				//Verify Product Overview Section is open by default
+				WebElement accordionDisplayIcon = accordion.findElement(this.accordionPlusMinusIcon);
+				if(accordionHeadingName.equalsIgnoreCase("Product Overview")){
+					if(accordionDisplayIcon.getAttribute("class").contains("minus-icon"))
+						reporter.reportLogPass("Product Overview Accordion is expanded by default for product");
+					else
+						reporter.reportLogFail("Product Overview Accordion is not expanded by default for product");
+				}else{
+					this.getReusableActionsInstance().clickIfAvailable(accordionDisplayIcon);
+				}
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnStickyTabProductReview);
-		this.btnStickyTabProductReview.click();
+				//Verify Accordion Content
+				this.verifyAccordionContent(this.lstProductAccordions.get(counter));
+				counter++;
+			}
+		}else
+			reporter.reportLogFail("No Accordion is present for selected product on page");
+	}
 
-		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
-		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.cntReviewTabContent),"The Product review contents is displaying correctly","The Product review contents is not displaying correctly");
-
-		if(this.checkProductSizingChartExisting()) {
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnStickyTabSizeChart);
-			this.btnStickyTabSizeChart.click();
-			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
-			reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.cntProductSizeChartTabContent),"The Product SizeChart contents is displaying correctly","The Product SizeChart contents is not displaying correctly");
-
+	/**
+	 * Function verifies accordion content for a product on PDP page
+	 * @param - accordion - WebElement for accordion
+	 */
+	public void verifyAccordionContent(WebElement accordion) {
+		WebElement accordionContentWebElement = accordion.findElement(this.accordionContents);
+		String accordionName = accordion.findElement(this.accordionHeading).getText();
+		reporter.reportLog("Verifying content for accordion: "+accordionName);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(accordionContentWebElement);
+		reporter.softAssert(!this.getElementText(accordionContentWebElement).isEmpty(),"The accordion content for: "+accordionName+" is not empty","The accordion content for: "+accordionName+" is empty");
+		//Verifying ReadMore and ReadLess button functionality
+		WebElement readMoreLessButton = accordion.findElement(this.accordionContentElement);
+		if(this.checkChildElementExistingByTagName(readMoreLessButton,"button")){
+			//Verifying Read More is displayed
+			WebElement accordionButton = accordion.findElement(this.accordionReadMoreLessButton);
+			if(accordionButton.getText().equals("Read More")){
+				reporter.reportLogPass("Read More for Accordion is present");
+				this.getReusableActionsInstance().clickIfAvailable(accordionButton);
+				//Verification of Read Less Button to be done here
+			}
 		}
 	}
 
