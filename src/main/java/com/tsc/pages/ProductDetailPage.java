@@ -720,7 +720,7 @@ public class ProductDetailPage extends BasePage {
 
 	public By accordionPlusMinusIcon = By.xpath(".//div[contains(@class,'accordion-heading__icon')]");
 
-	public By accordionContents = By.xpath(".//div[@class='field-wrapper__content-wrapper']");
+	public By accordionContents = By.xpath(".//div[@class='field-wrapper__content-wrapper']//div[@class='field-wrapper__content']");
 
 	public By accordionReadMoreLessButton = By.xpath(".//button");
 
@@ -2176,9 +2176,14 @@ public class ProductDetailPage extends BasePage {
 	public void verifyAccordionContent(WebElement accordion) {
 		WebElement accordionContentWebElement = accordion.findElement(this.accordionContents);
 		String accordionName = accordion.findElement(this.accordionHeading).getText();
+		String accordionData;
 		reporter.reportLog("Verifying content for accordion: "+accordionName);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(accordionContentWebElement);
-		reporter.softAssert(!this.getElementText(accordionContentWebElement).isEmpty(),"The accordion content for: "+accordionName+" is not empty","The accordion content for: "+accordionName+" is empty");
+		if(accordionName.contains("Chart"))
+			accordionData = accordionContentWebElement.findElement(By.xpath(".//img")).getAttribute("src");
+		else
+			accordionData = this.getElementText(accordionContentWebElement);
+		reporter.softAssert(!accordionData.isEmpty(),"The accordion content for: "+accordionName+" is not empty","The accordion content for: "+accordionName+" is empty");
 		//Verifying ReadMore and ReadLess button functionality
 		WebElement readMoreLessButton = accordion.findElement(this.accordionContentElement);
 		if(this.checkChildElementExistingByTagName(readMoreLessButton,"button")){
