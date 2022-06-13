@@ -15,14 +15,15 @@ public class PD_TC03_VerifyProductDetail_Accordions extends BaseTest {
 	 * CER-591
 	 * CER-607
 	 * Bug-19717 - Issue navigating to brand page from PDP
+	 * CER-821 - Havas Change R4 Product Overview and other PDP Accordions
 	 */
 	@Test(groups = {"ProductDetail", "Regression", "Regression_Mobile", "Regression_Tablet"})
 	public void PD_TC03_VerifyProductDetail_Accordions() {
-		if ((System.getProperty("Device").toLowerCase().contains("mobile") &&
+		/**if ((System.getProperty("Device").toLowerCase().contains("mobile") &&
 				(System.getProperty("Browser").toLowerCase().contains("android"))) ||
 				System.getProperty("Device").toLowerCase().contains("tablet") ||
 				System.getProperty("Device").toLowerCase().contains("desktop") ||
-				(!"".equals(System.getProperty("chromeMobileDevice")) && System.getProperty("chromeMobileDevice").toLowerCase().contains("iphone"))) {
+				(!"".equals(System.getProperty("chromeMobileDevice")) && System.getProperty("chromeMobileDevice").toLowerCase().contains("iphone"))) {*/
 			getGlobalFooterPageThreadLocal().closePopupDialog();
 			BasePage basePage = new BasePage(this.getDriver());
 			reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(basePage.getBaseURL() + "/"), "TSC url is correct", "TSC url is incorrect");
@@ -80,4 +81,4 @@ public class PD_TC03_VerifyProductDetail_Accordions extends BaseTest {
 			}
 		}
 	}
-}
+//}
