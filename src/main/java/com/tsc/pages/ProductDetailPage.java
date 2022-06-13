@@ -137,7 +137,7 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//section[@class='pdp-description']//div[@id='divEasyPayment']")
 	public WebElement lblProductEasyPay;
 
-	@FindBy(xpath = "//section[@class='pdp-description']//div[@id='divEasyPayment']//button[@class='pdp-description__easy-pay__button']")
+	@FindBy(xpath = "//section[@class='pdp-description']//div[@id='divEasyPayment']//button[contains(@class,'pay')]")
 	public WebElement btnProductEasyPay;
 
 	//For EasyPay popup
@@ -1326,6 +1326,8 @@ public class ProductDetailPage extends BasePage {
 			trueFitDetails();
 			closeTrueFitIFrame();
 		}
+		else
+			reporter.reportLog("True Fit Section is not present for selected item on PDP");
 	}
 
 	public void trueFitDetails(){
@@ -1735,9 +1737,12 @@ public class ProductDetailPage extends BasePage {
 		reporter.softAssert(!this.getElementText(this.lblProductNowPrice).isEmpty()&&!this.getElementText(this.lblProductWasPrice).isEmpty(),"The product price range is not empty","The product price range is empty");
 		if(this.checkProductEasyPayExisting()){
 			reporter.softAssert(!this.getElementText(this.lblProductEasyPay).isEmpty(),"The product EasyPay message is not empty","The product EasyPay message is empty");
+			this.verifyEasyPayPopUp();
 		}
 		reporter.softAssert(!this.getElementText(this.lblProductSavings).isEmpty(),"The product Saving message is not empty","The product Saving message is empty");
 		reporter.softAssert(!this.getElementText(this.lblProductShipping).isEmpty(),"The product Shipping message is not empty","The product Shipping message is empty");
+		//Verify True Fit
+		this.verifyProductSizeTrueFit();
 	}
 
 	public void verifyProductStyle() {
@@ -2466,6 +2471,23 @@ public class ProductDetailPage extends BasePage {
 		else{
 			reporter.reportLogFailWithScreenshot("Zooming in action is not working");
 		}
+	}
+
+	/**
+	 * Function verifies Easy Pay pop up after clicking
+	 */
+	public void verifyEasyPayPopUp(){
+		this.getReusableActionsInstance().clickIfAvailable(this.btnProductEasyPay);
+		if(this.waitForCondition(Driver->{return this.lblProductEasyPayPopupHeading.isDisplayed();},7000)){
+			//Verifying the content
+			if(this.waitForCondition(Driver->{return this.lblProductEasyPayPopupContent.isDisplayed() && !this.lblProductEasyPayPopupContent.getText().isEmpty();},7000)) {
+				reporter.reportLogPass("Easy Pay pop up contains text as expected after clicking on Easy Pay on PDP");
+				//Closing Easy Pay pop up
+				this.getReusableActionsInstance().clickIfAvailable(this.btnProductEasyPayPopupClose);
+			}else
+				reporter.reportLogFailWithScreenshot("Easy Pay pop up contains text as expected after clicking on Easy Pay on PDP");
+		}else
+			reporter.reportLogFailWithScreenshot("Easy Pay pop up is not displayed as expected after clicking on Easy Pay on PDP");
 	}
 
 }
