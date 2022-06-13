@@ -15,7 +15,7 @@ public class PD_TC02_VerifyProductDetail_RightSection_ItemDetails extends BaseTe
 	 * CER-572
 	 * CER-588
 	 * CER-600
-	 *
+	 * CER-816
 	 */
 	@Test(groups={"ProductDetail","Regression","Regression_Mobile","Regression_Tablet"})
 	public void PD_TC02_VerifyProductDetail_RightSection_ItemDetails() throws IOException {

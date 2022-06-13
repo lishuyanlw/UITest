@@ -15,6 +15,7 @@ public class PD_TC04_VerifyProductDetail_ProductStyle extends BaseTest{
 	 * CER-575
 	 * CER-576
 	 * CER-577
+	 * CER-817
 	 */
 	@Test(groups={"ProductDetail","Regression","Regression_Mobile","Regression_Tablet"})
 	public void PD_TC04_VerifyProductDetail_ProductStyle() throws IOException {

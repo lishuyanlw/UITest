@@ -17,6 +17,7 @@ public class PD_TC01_VerifyProductDetail_LeftSection_ContentsForImageAndVideo ex
 	 * CER-598
 	 * CER-599
 	 * CER-604
+	 * CER-819
 	 */
 	@Test(groups={"ProductDetail","Regression","Regression_Mobile","Regression_Tablet"})
 	public void PD_TC01_VerifyProductDetail_LeftSection_ContentsForImageAndVideo() throws IOException {
