@@ -169,8 +169,8 @@ public class ApiResponse extends ApiConfigs {
                         	for(edps Edps:edpsList) {
                         		if(Edps.Inventory==0) {
                         			bSoldout=true;
-                        			selectedProduct.productColorForSoldout=Edps.getStyle();
-                        			selectedProduct.productSizeForSoldout=Edps.getSize();
+                        			selectedProduct.productEDPColor=Edps.getStyle();
+                        			selectedProduct.productEDPSize=Edps.getSize();
                         			break;
                         		}
                         	}
@@ -182,8 +182,8 @@ public class ApiResponse extends ApiConfigs {
                             	//which we will use in PDP to select the style and size in order to get Enabled AddToBag information
                         		for(edps Edps:edpsList) {
                             		if(Edps.Inventory>0) {                			
-                            			selectedProduct.productSizeForEnabledAddToBag=Edps.getStyle();
-                            			selectedProduct.productColorForEnabledAddToBag=Edps.getSize();
+                            			selectedProduct.productEDPSize=Edps.getStyle();
+                            			selectedProduct.productEDPColor=Edps.getSize();
                             			break;
                             		}
                             	}
@@ -194,8 +194,8 @@ public class ApiResponse extends ApiConfigs {
                         	//which we will use in PDP to select the style and size in order to get Enabled AddToBag information
                     		for(edps Edps:edpsList) {
                         		if(Edps.Inventory>0) {                			
-                        			selectedProduct.productSizeForEnabledAddToBag=Edps.getStyle();
-                        			selectedProduct.productColorForEnabledAddToBag=Edps.getSize();
+                        			selectedProduct.productEDPSize=Edps.getStyle();
+                        			selectedProduct.productEDPColor=Edps.getSize();
                         			break;
                         		}
                         	}
@@ -474,8 +474,8 @@ public class ApiResponse extends ApiConfigs {
                 	for(edps Edps:edpsList) {
                 		if(Edps.Inventory==0) {
                 			bSoldout=true;
-                			selectedProduct.productColorForSoldout=Edps.getStyle();
-                			selectedProduct.productSizeForSoldout=Edps.getSize();
+                			selectedProduct.productEDPColor=Edps.getStyle();
+                			selectedProduct.productEDPSize=Edps.getSize();
                 			break;
                 		}
                 	}
@@ -487,8 +487,8 @@ public class ApiResponse extends ApiConfigs {
                     	//which we will use in PDP to select the style and size in order to get Enabled AddToBag information
                 		for(edps Edps:edpsList) {
                     		if(Edps.Inventory>0) {                			
-                    			selectedProduct.productSizeForEnabledAddToBag=Edps.getStyle();
-                    			selectedProduct.productColorForEnabledAddToBag=Edps.getSize();
+                    			selectedProduct.productEDPSize=Edps.getStyle();
+                    			selectedProduct.productEDPColor=Edps.getSize();
                     			break;
                     		}
                     	}
@@ -499,8 +499,8 @@ public class ApiResponse extends ApiConfigs {
                 	//which we will use in PDP to select the style and size in order to get Enabled AddToBag information
             		for(edps Edps:edpsList) {
                 		if(Edps.Inventory>0) {                			
-                			selectedProduct.productSizeForEnabledAddToBag=Edps.getStyle();
-                			selectedProduct.productColorForEnabledAddToBag=Edps.getSize();
+                			selectedProduct.productEDPSize=Edps.getStyle();
+                			selectedProduct.productEDPColor=Edps.getSize();
                 			break;
                 		}
                 	}
@@ -536,8 +536,8 @@ public class ApiResponse extends ApiConfigs {
         		for(edps Edps:edpsList) {
             		if(Edps.Inventory>0) {  
             			bAddToBag=true;
-            			selectedProduct.productSizeForEnabledAddToBag=Edps.getStyle();
-            			selectedProduct.productColorForEnabledAddToBag=Edps.getSize();
+            			selectedProduct.productEDPSize=Edps.getStyle();
+            			selectedProduct.productEDPColor=Edps.getSize();
             			break;
             		}
             	}
@@ -625,8 +625,8 @@ public class ApiResponse extends ApiConfigs {
             	for(edps Edps:edpsList) {
             		if(Edps.Inventory==0) {
             			bSoldout=true;
-            			selectedProduct.productSizeForSoldout=Edps.getStyle();
-            			selectedProduct.productColorForSoldout=Edps.getSize();
+            			selectedProduct.productEDPSize=Edps.getStyle();
+            			selectedProduct.productEDPColor=Edps.getSize();
             			break;
             		}
             	}
@@ -674,8 +674,8 @@ public class ApiResponse extends ApiConfigs {
                     	for(edps Edps:edpsList) {
                     		if(Edps.Inventory==0) {
                     			bSoldout=true;
-                    			selectedProduct.productSizeForSoldout=Edps.getStyle();
-                    			selectedProduct.productColorForSoldout=Edps.getSize();
+                    			selectedProduct.productEDPSize=Edps.getStyle();
+                    			selectedProduct.productEDPColor=Edps.getSize();
                     			break;
                     		}
                     	}
@@ -768,12 +768,8 @@ public class ApiResponse extends ApiConfigs {
 
 		}while(flag);
 
-		if(loopBreakFlag) {
-			return productItem;
-		}
-		else {
-			return null;
-		}
+		return productItem;
+
 
 	}
 
@@ -804,37 +800,30 @@ public class ApiResponse extends ApiConfigs {
 
 		selectedProduct.init();
 		for(Product.Products data:product.getProducts()) {
-			if(data.getStyles().size()>=styleCount && data.getSizes().size()>=sizeCount && data.getProductReviewCount()>=3
-					&& data.isEnabledAddToCart()==true) {
-				List<edps> edpsList=data.getEdps();
-				loopBreakFlag=false;
-				for(edps Edps:edpsList) {
-					if(!Edps.isSoldOut()==true && Edps.Inventory>0 && data.getInstallments()>1) {
-						List<Sections> sections = this.getSectionDetailsFromProductNumber(data.getItemNo());
-						if(sections.size()>0){
-							for(int counter=0;counter<sections.size();counter++){
-								if(sections.get(counter).getName().contains("Size")){
-									loopBreakFlag=true;
-									selectedProduct.easyPayPrice=Edps.getEasyPaymentPrice();
-									break;
+			if(data.getStyles().size()>=styleCount && data.getSizes().size()>=sizeCount && data.getProductReviewCount()>=3 && data.isEnabledAddToCart()){
+				List<edps> edpsList = data.getEdps();
+				loopBreakFlag = false;
+				for (edps Edps : edpsList) {
+					if (!Edps.isSoldOut() == true && Edps.Inventory > 0 && data.getInstallments() > 1) {
+						if (data.getInstallments() > 1) {
+							List<Sections> sections = this.getSectionDetailsFromProductNumber(data.getItemNo());
+							if (sections.size() > 0) {
+								for (int counter = 0; counter < sections.size(); counter++) {
+									if (sections.get(counter).getName().contains("Size")) {
+										selectedProduct.productNumber = data.getItemNo();
+										selectedProduct.productName = data.getName();
+										selectedProduct.productBrand = data.getBrand();
+										selectedProduct.productNowPrice = data.getIsPriceRange();
+										selectedProduct.productWasPrice = data.getWasPriceRange();
+										selectedProduct.easyPayPrice=Edps.getEasyPaymentPrice();
+										selectedProduct.pdpNavigationUrl = propertyData.get("test_qaURL") + "/" + data.getName() + propertyData.get("test_partial_url_pdp") + data.getItemNo();
+										return data;
+									}
 								}
 							}
 						}
 					}
-					if(!loopBreakFlag) {
-						loopBreakFlag = false;
-						continue;
-					}else
-						break;
 				}
-
-				selectedProduct.productNumber=data.getItemNo();
-				selectedProduct.productName=data.getName();
-				selectedProduct.productBrand=data.getBrand();
-				selectedProduct.productNowPrice=data.getIsPriceRange();
-				selectedProduct.productWasPrice=data.getWasPriceRange();
-				selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName()+propertyData.get("test_partial_url_pdp")+data.getItemNo();
-				return data;
 			}
 		}
 		return null;
@@ -920,8 +909,8 @@ public class ApiResponse extends ApiConfigs {
                 		selectedProduct.productBrand=productDetailsItem.getBrand();
                 		selectedProduct.productNowPrice=productDetailsItem.getIsPriceRange();
                 		selectedProduct.productWasPrice=productDetailsItem.getWasPriceRange();
-                		selectedProduct.productSizeForSoldout=edp.Size;
-                		selectedProduct.productColorForSoldout=edp.Style;
+                		selectedProduct.productEDPSize=edp.Size;
+                		selectedProduct.productEDPColor=edp.Style;
                 		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+productDetailsItem.getName()+propertyData.get("test_partial_url_pdp")+productDetailsItem.getItemNo();
                 		
                 		break;
@@ -1105,6 +1094,61 @@ public class ApiResponse extends ApiConfigs {
 			return JsonParser.getResponseObject(response.asString(), new TypeReference<List<Sections>>() {});
 		else
 			return null;
+	}
+
+	/**
+	 * This method finds product info with AdvanceOrder info
+	 * @param - String - searchKeyword : search keyword for Product
+	 * @return - ProductDetailsItem - product details item for search keyword
+	 */
+	public ProductDetailsItem getProductInfoFromKeywordWithDeliveryOptionsInfo(String searchKeyword){
+		boolean flag = true, bSelected=false;
+		ProductDetailsItem productDetailsItem=new ProductDetailsItem();
+		String productNumber;
+
+		Product product = getProductDetailsForKeyword(searchKeyword,null,true);
+		if(product==null) {
+			return null;
+		}
+
+		do{
+			for(Product.Products data:product.getProducts()) {
+				selectedProduct.init();
+				productNumber=data.getItemNo();
+				productDetailsItem=getProductDetailsForSpecificProductNumber(productNumber);
+				bSelected=false;
+				if(!productDetailsItem.getDeliveryOptions().isEmpty()){
+					bSelected=true;
+					selectedProduct.productNumber=productDetailsItem.getItemNo();
+					selectedProduct.productName=productDetailsItem.getName();
+					selectedProduct.productBrand=productDetailsItem.getBrand();
+					selectedProduct.productNowPrice=productDetailsItem.getIsPriceRange();
+					selectedProduct.productWasPrice=productDetailsItem.getWasPriceRange();
+					selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+productDetailsItem.getName()+propertyData.get("test_partial_url_pdp")+productDetailsItem.getItemNo();
+
+					break;
+				}
+
+				if(bSelected) {
+					flag = false;
+					break;
+				}
+			}
+			if(flag) {
+				outputPage++;
+				if(outputPage>totalPage||outputPage>=10) {
+					flag = false;
+				}
+				product = getProductDetailsForKeyword(searchKeyword,null,false);
+			}
+		}while(flag);
+
+		if(bSelected) {
+			return productDetailsItem;
+		}
+		else {
+			return null;
+		}
 	}
 
 }

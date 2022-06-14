@@ -6,16 +6,20 @@ import com.tsc.test.base.BaseTest;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PD_TC12_VerifyProductDetail_ProductZoomingImage extends BaseTest{
+public class PD_TC05_VerifyProductDetail_RightSection_EasyPayAndTrueFit extends BaseTest{
 	/*
-	 * CER-820
+	 * CER-572
+	 * CER-588
+	 * CER-600
+	 * CER-816
 	 */
 	@Test(groups={"ProductDetail","Regression","Regression_Mobile","Regression_Tablet"})
-	public void PD_TC12_VerifyProductDetail_ProductZoomingImage() throws IOException {
+	public void PD_TC05_VerifyProductDetail_RightSection_ItemDetailsWithoutEasyPayAndTrueFit() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 		BasePage basePage=new BasePage(this.getDriver());
 
@@ -23,26 +27,30 @@ public class PD_TC12_VerifyProductDetail_ProductZoomingImage extends BaseTest{
 		reporter.reportLog("ProductDetail Page");
 
 		List<String> lstKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_APISearchingKeyword();
-
+		reporter.reportLog("Switch to ProductDetail page");
 		String lsProductNumber,lsUrl;
+
 		Map<String,Object> outputDataCriteria= new HashMap<String,Object>();
-		outputDataCriteria.put("video", "0");
-		outputDataCriteria.put("style", "3");
-		outputDataCriteria.put("size", "2");
-		if(getProductDetailPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList,"ConditionsForVideoAndStyleAndSizeWithoutCheckingSoldOutCriteria",outputDataCriteria)) {
-			reporter.reportLog("Verify URL");
-			lsProductNumber=getProductResultsPageThreadLocal().selectedProductItem.productNumber;
+		outputDataCriteria.put("style", "1");
+		outputDataCriteria.put("size", "1");
+
+		if(getProductDetailPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList,"ProductWithEasyPaySizeChartAndReviews",outputDataCriteria)) {
+			lsProductNumber=getProductDetailPageThreadLocal().selectedProduct.productNumber;
+			reporter.reportLog("Verify URL for Product Number: "+lsProductNumber);
 			lsUrl=basePage.URL();
 			reporter.softAssert(lsUrl.contains("productdetails"),"The Url is containing productdetails","The Url is not containing productdetails");
-			reporter.reportLog("Switch to ProductDetail page");
 			reporter.softAssert(lsUrl.contains(lsProductNumber),"The Url is containing selected product number of "+lsProductNumber,"The Url is not containing selected product number of "+lsProductNumber);
 
-			reporter.reportLog("Verify product image zooming action");
-			getProductDetailPageThreadLocal().verifyZoomingImageAction();
+			reporter.reportLog("Verify Easy payment");
+			getProductDetailPageThreadLocal().verifyEasyPay();
+
+			reporter.reportLog("Verify product size TrueFit");
+			getProductDetailPageThreadLocal().verifyProductSizeTrueFit();
 		}
-		else {
-			reporter.reportLogFail("Unable to find the product item with Review, EasyPay, Swatch item>=4 and Video");
+		else{
+			reporter.reportLogFail("Test case Failed!");
 		}
 	}
+
 }
 

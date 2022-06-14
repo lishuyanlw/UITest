@@ -317,7 +317,7 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
     }
 
     @Override
-    public void verifyProductSizeChangingAction() {
+    public void verifyProductSize() {
         reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblSizeStatic),"Product size title is existing","Product size title is not existing");
         reporter.softAssert(this.lstRadioSizeLabelList.size()>0,"Product size radio list is existing","Product size radio list is not existing");
         reporter.softAssert(checkProductSizingChangeAction(),"Product size changing action is working","Product size changing action is not working");

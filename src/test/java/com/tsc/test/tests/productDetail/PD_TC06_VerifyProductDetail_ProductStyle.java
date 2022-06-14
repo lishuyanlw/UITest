@@ -10,7 +10,7 @@ import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 
-public class PD_TC04_VerifyProductDetail_ProductStyle extends BaseTest{
+public class PD_TC06_VerifyProductDetail_ProductStyle extends BaseTest{
 	/*
 	 * CER-575
 	 * CER-576
@@ -18,7 +18,7 @@ public class PD_TC04_VerifyProductDetail_ProductStyle extends BaseTest{
 	 * CER-817
 	 */
 	@Test(groups={"ProductDetail","Regression","Regression_Mobile","Regression_Tablet"})
-	public void PD_TC04_VerifyProductDetail_ProductStyle() throws IOException {
+	public void PD_TC06_VerifyProductDetail_ProductStyle() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 		BasePage basePage=new BasePage(this.getDriver());
 
@@ -34,7 +34,7 @@ public class PD_TC04_VerifyProductDetail_ProductStyle extends BaseTest{
 		outputDataCriteria.put("size", "2");
 		if(getProductDetailPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList,"ConditionsForVideoAndStyleAndSizeWithoutCheckingSoldOutCriteria",outputDataCriteria)) {
 			reporter.reportLog("Verify URL");
-			lsProductNumber=getProductResultsPageThreadLocal().selectedProductItem.productNumber;
+			lsProductNumber=getProductDetailPageThreadLocal().selectedProduct.productNumber;
 			lsUrl=basePage.URL();
 			reporter.softAssert(lsUrl.contains("productdetails"),"The Url is containing productdetails","The Url is not containing productdetails");
 			reporter.reportLog("Switch to ProductDetail page");
