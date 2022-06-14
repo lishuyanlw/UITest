@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class SR_TC15_Verify_ProductSearchResult_SearchProductWithAPI extends BaseTest {
     @Test(groups={"ProductSearch","Regression","Regression_Tablet","Regression_Mobile"})
-    public void verify_productSearchResult_ApiCall(){
+    public void SR_TC15_Verify_ProductSearchResult_SearchProductWithAPI(){
         //Closing the popup appearing on screen after application launch
         getGlobalFooterPageThreadLocal().closePopupDialog();
         BasePage basePage=new BasePage(this.getDriver());

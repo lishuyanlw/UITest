@@ -7,7 +7,7 @@ import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 
-public class PD_TC13_VerifyProductDetail_WriteReview extends BaseTest{
+public class PD_TC14_VerifyProductDetail_WriteReview extends BaseTest{
 	/*
 	 * CER-592
 	 * CER-593
@@ -15,7 +15,7 @@ public class PD_TC13_VerifyProductDetail_WriteReview extends BaseTest{
 	 * CER-595
 	 */
 	@Test(groups={"ProductDetail","Regression","Regression_Mobile","Regression_Tablet"})
-	public void PD_TC13_VerifyProductDetail_WriteReview() throws IOException {
+	public void PD_TC14_VerifyProductDetail_WriteReview() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 		BasePage basePage=new BasePage(this.getDriver());
 
@@ -34,7 +34,7 @@ public class PD_TC13_VerifyProductDetail_WriteReview extends BaseTest{
 			reporter.softAssert(lsUrl.contains("productdetails"),"The Url is containing productdetails","The Url is not containing productdetails");
 			reporter.softAssert(lsUrl.contains(lsProductNumber),"The Url is containing selected product number of "+lsProductNumber,"The Url is not containing selected product number of "+lsProductNumber);
 
-			if(getProductDetailPageThreadLocal().goToProductReviewTab()) {
+			if(getProductDetailPageThreadLocal().goToProductReviewSection()) {
 				reporter.reportLog("Open Write a review window");
 				getProductDetailPageThreadLocal().openWriteReview();
 
