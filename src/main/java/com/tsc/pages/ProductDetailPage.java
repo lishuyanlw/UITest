@@ -2185,6 +2185,14 @@ public class ProductDetailPage extends BasePage {
 			accordionData = this.getElementText(accordionContentWebElement);
 		reporter.softAssert(!accordionData.isEmpty(),"The accordion content for: "+accordionName+" is not empty","The accordion content for: "+accordionName+" is empty");
 		//Verifying ReadMore and ReadLess button functionality
+		this.verifyReadMoreLessButtonOnPDP(accordion);
+	}
+
+	/**
+	 * Function verifies Read More and Less Button on PDP page for accordions
+	 * @param - accordion - WebElement
+	 */
+	public void verifyReadMoreLessButtonOnPDP(WebElement accordion){
 		WebElement readMoreLessButton = accordion.findElement(this.accordionContentElement);
 		if(this.checkChildElementExistingByTagName(readMoreLessButton,"button")){
 			//Verifying Read More is displayed
@@ -2192,7 +2200,19 @@ public class ProductDetailPage extends BasePage {
 			if(accordionButton.getText().equals("Read More")){
 				reporter.reportLogPass("Read More for Accordion is present");
 				this.getReusableActionsInstance().clickIfAvailable(accordionButton);
-				//Verification of Read Less Button to be done here
+			}
+		}
+		//Verification of Read Less Button
+		if(this.checkChildElementExistingByTagName(readMoreLessButton,"button")){
+			//Verifying Read More is displayed
+			WebElement accordionButton = accordion.findElement(this.accordionReadMoreLessButton);
+			if(accordionButton.getText().equals("Read Less")){
+				reporter.reportLogPass("Read Less for Accordion is present");
+				this.getReusableActionsInstance().clickIfAvailable(accordionButton);
+				this.getReusableActionsInstance().staticWait(3000);
+				if(accordionButton.getText().equals("Read More")){
+					reporter.reportLogPass("Read More for Accordion is displayed after clicking Real Less");
+				}
 			}
 		}
 	}
