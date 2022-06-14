@@ -23,7 +23,7 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
     //@FindBy(xpath = "//div[@class='scrolling']//*[@class='pr-reviewHeader']")
     //public WebElement lblReviewTabHeader;
 
-    @FindBy(xpath = "//section[@id='pr-review-snapshot']//div[@class='pr-review-snapshot-histogram']")
+    @FindBy(xpath = "//div[@id='pr-reviewdisplay']//section[@id='pr-review-snapshot']//div[contains(@class,'snapshot-histogram')]")
     public WebElement imgReviewTabHistogram;
 
     @FindBy(xpath = "//section[@id='pr-review-snapshot']//div[@class='pr-snippet-stars-reco-stars']//div[@class='pr-snippet-rating-decimal']")
@@ -195,12 +195,14 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
     @Override
     public void verifyReviewSectionContent() {
         reporter.softAssert(!this.getElementText(this.lblReviewTabHeader).isEmpty(),"The Review tab header is not empty","The Review tab header is empty");
-        //reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.imgReviewTabHistogram),"The Review tab histogram is displaying correctly","The Review tab histogram is not displaying correctly");
+        reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.imgReviewTabHistogram),"The Review tab histogram is displaying correctly","The Review tab histogram is not displaying correctly");
         reporter.softAssert(!this.getElementText(this.lblReviewTabRateDecimalText).isEmpty(),"The Review tab rate number is not empty","The Review tab rate number is empty");
         reporter.softAssert(this.lstReviewTabStar.size()>0,"The product review tab star count is greater than 0","The product review tab star count is not greater than 0");
         reporter.softAssert(!this.getElementText(this.lblReviewTabReviewCount).isEmpty(),"The Review count message is not empty","The Review count message is empty");
         reporter.softAssert(!this.getElementHref(this.lnkReviewTabWriteReview).isEmpty(),"The Write Review link is not empty","The Write Review link is empty");
         reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.selectReviewTabSortBy),"The Review sorting is displaying correctly","The Review sorting is not displaying correctly");
+        //Verifying review count displayed on review stars
+        this.verifyReviewStarCount();
     }
 
     @Override
