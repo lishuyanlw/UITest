@@ -29,7 +29,7 @@ public class PD_TC08_VerifyProductDetail_SoldOut extends BaseTest{
 		List<String> lstKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_APISearchingKeyword();
 		Map<String,Object> outputDataCriteria = new HashMap<>();
 		outputDataCriteria.put("video", "0");
-		outputDataCriteria.put("style", "2");
+		outputDataCriteria.put("style", "1");
 		outputDataCriteria.put("size", "1");
 
 		reporter.reportLog("Switch to ProductDetail page");
@@ -50,9 +50,6 @@ public class PD_TC08_VerifyProductDetail_SoldOut extends BaseTest{
 
 			reporter.reportLog("Verify Sold out product messaage");
 			getProductDetailPageThreadLocal().verifyProductSoldOut();
-
-			reporter.reportLog("Verify Social media");
-			getProductDetailPageThreadLocal().verifySocialMedia();
 
 			if(System.getProperty("Device").equalsIgnoreCase("Desktop") ||
 					(System.getProperty("Device").equalsIgnoreCase("Tablet")

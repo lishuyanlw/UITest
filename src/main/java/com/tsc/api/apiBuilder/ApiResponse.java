@@ -151,7 +151,7 @@ public class ApiResponse extends ApiConfigs {
                 for(Product.Products data:product.getProducts()) {
                 	lsNowPrice=data.getIsPriceRange();
                 	lsWasPrice=data.getWasPriceRange();
-                    if (data.getVideosCount() >= 1 && data.getStyles().size() >= 1 && data.getSizes().size() >= 1&&data.isShowBadgeImage()&&data.getProductReviewRating()>0&&!data.getEasyPaymentPrice().isEmpty()&&!lsNowPrice.equalsIgnoreCase(lsWasPrice)&&data.isEnabledAddToCart()) {
+                    if (data.getVideosCount() >= 1 && data.getStyles().size() >= 1 && data.getSizes().size() >= 1&&data.isShowBadgeImage()&&data.getProductReviewRating()>0&&data.getProductReviewCount()>0&&!lsNowPrice.equalsIgnoreCase(lsWasPrice)&&data.isEnabledAddToCart()) {
                     	if(data.getBrand()!=null) {
                     		if(data.getBrand().isEmpty()) {
                     			continue;
@@ -416,7 +416,7 @@ public class ApiResponse extends ApiConfigs {
         	return null;
         }
     	
-        int videoCount=1,styleCount=3,sizeCount=3;
+        int videoCount=-1,styleCount=3,sizeCount=3;
 		String lsNowPrice,lsWasPrice;
         boolean bSoldout=false;
 
@@ -437,22 +437,35 @@ public class ApiResponse extends ApiConfigs {
         for(Product.Products data:product.getProducts()) {
         	lsNowPrice=data.getIsPriceRange();
         	lsWasPrice=data.getWasPriceRange();
-            //if(data.getVideosCount()>=videoCount && data.getStyles().size()>=styleCount && data.getSizes().size()>=sizeCount &&data.isShowBadgeImage()&&data.getProductReviewRating()>0&&!data.getEasyPaymentPrice().isEmpty()&&!lsNowPrice.equalsIgnoreCase(lsWasPrice)&&data.isEnabledAddToCart()) {
-			boolean flag = false;
-			if(basicCheck)
-				flag = (videoCount==0 ? data.getVideosCount()==videoCount : data.getVideosCount()>=videoCount) && data.getStyles().size()>=styleCount && data.getSizes().size()>=sizeCount;
-			else
-				flag = (videoCount==0 ? data.getVideosCount()==videoCount : data.getVideosCount()>=videoCount) && data.getStyles().size()>=styleCount && data.getSizes().size()>=sizeCount &&data.isShowBadgeImage()&&data.getProductReviewRating()>0&&!data.getEasyPaymentPrice().isEmpty()&&!lsNowPrice.equalsIgnoreCase(lsWasPrice)&&data.isEnabledAddToCart();
+            boolean flag = false;
+			if(basicCheck) {
+				if(videoCount!=-1){
+					flag = (videoCount==0 ? data.getVideosCount()==videoCount : data.getVideosCount()>=videoCount)&&data.getStyles().size() >= styleCount && data.getSizes().size() >= sizeCount;
+				}
+				else{
+					flag = data.getStyles().size() >= styleCount && data.getSizes().size() >= sizeCount;
+				}
+			}
+			else {
+				if(videoCount!=-1){
+					flag = (videoCount==0 ? data.getVideosCount()==videoCount : data.getVideosCount()>=videoCount) && data.getStyles().size() >= styleCount && data.getSizes().size() >= sizeCount && data.isShowBadgeImage() && data.getProductReviewRating() > 0 &&data.getProductReviewCount()>0&& !lsNowPrice.equalsIgnoreCase(lsWasPrice) && data.isEnabledAddToCart();
+				}
+				else{
+					flag = data.getStyles().size() >= styleCount && data.getSizes().size() >= sizeCount && data.isShowBadgeImage() && data.getProductReviewRating() > 0 &&data.getProductReviewCount()>0&& !lsNowPrice.equalsIgnoreCase(lsWasPrice) && data.isEnabledAddToCart();
+				}
+			}
 			if(flag) {
-            	if(data.getBrand()!=null) {
-            		if(data.getBrand().isEmpty()) {
-            			continue;
-            		}            		
-            	}
-            	else {
-            		continue;
-            	}
-            	
+				if(!basicCheck){
+					if(data.getBrand()!=null) {
+						if(data.getBrand().isEmpty()) {
+							continue;
+						}
+					}
+					else {
+						continue;
+					}
+				}
+
             	List<edps> edpsList=data.getEdps(); 
             	if(isSoldOut) {
                 	//To check if any Inventory is equal to 0, then get the related Style and Size, 
@@ -626,7 +639,7 @@ public class ApiResponse extends ApiConfigs {
         		selectedProduct.productBrand=data.getBrand();
         		selectedProduct.productNowPrice=data.getIsPriceRange();
         		selectedProduct.productWasPrice=data.getWasPriceRange();        		
-        		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName()+propertyData.get("test_partial_url_pdp")+data.getItemNo();            	
+        		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName()+propertyData.get("test_partial_url_pdp")+data.getItemNo();
                 return data;
             }
         }
@@ -712,6 +725,120 @@ public class ApiResponse extends ApiConfigs {
         }
         
     }
+
+	/**
+	 * This method finds product info on the basis of input search keyword that contains Easy Pay, Reviews, True Fit and Size Chart
+	 * @param - String - searchKeyword : search keyword for Product
+	 * @param - Map<String,Object> - outputDataCriteria : criteria for searching a particular product with precondition
+	 * @return - Product.Products - product for search keyword
+	 */
+	public Product.Products getProductInfoFromKeywordWithEasyPayReviewsTrueFitAndSizeChart(String searchKeyword,Map<String,Object> outputDataCriteria){
+		boolean flag = true, loopBreakFlag=false;
+
+		Product product = getProductDetailsForKeyword(searchKeyword,null,true);
+		if(product==null) {
+			return null;
+		}
+
+		Product.Products productItem=null;
+		do{
+			if(outputDataCriteria==null){
+				productItem = getProductInfoWithEasyPayReviewTrueFitSizeChartForConfig(product,null);
+				if(productItem!=null)
+					flag = false;
+				if(flag) {
+					outputPage++;
+					if(outputPage>totalPage||outputPage>=10) {
+						flag = false;
+					}
+					product = getProductDetailsForKeyword(searchKeyword,null,false);
+				}
+			}else{
+				productItem = getProductInfoWithEasyPayReviewTrueFitSizeChartForConfig(product,outputDataCriteria);
+				if(productItem==null){
+					outputPage++;
+					if(outputPage>totalPage||outputPage>=10) {
+						flag = false;
+					}
+					product = getProductDetailsForKeyword(searchKeyword,null,false);
+				}else{
+					flag = false;
+				}
+			}
+
+		}while(flag);
+
+		if(loopBreakFlag) {
+			return productItem;
+		}
+		else {
+			return null;
+		}
+
+	}
+
+	/**
+	 * This method finds product info on the basis of input conditions
+	 * @param - Product - product : Product class object
+	 * @param - Map<String,Object> - configs : configs on basis of which product info will be fetched
+	 * @return - Product.Products - product for search keyword
+	 */
+	private Product.Products getProductInfoWithEasyPayReviewTrueFitSizeChartForConfig(Product product,Map<String,Object> config){
+		if(product==null) {
+			return null;
+		}
+
+		int styleCount=1,sizeCount=1;
+		boolean loopBreakFlag=false;
+
+		if(config!=null) {
+			for(Map.Entry<String,Object> entry:config.entrySet()){
+				if(entry.getKey().toLowerCase().contains("style")){
+					styleCount = Integer.valueOf(entry.getValue().toString());
+				}
+				if(entry.getKey().toLowerCase().contains("size")){
+					sizeCount = Integer.valueOf(entry.getValue().toString());
+				}
+			}
+		}
+
+		selectedProduct.init();
+		for(Product.Products data:product.getProducts()) {
+			if(data.getStyles().size()>=styleCount && data.getSizes().size()>=sizeCount && data.getProductReviewCount()>=3
+					&& data.isEnabledAddToCart()==true) {
+				List<edps> edpsList=data.getEdps();
+				loopBreakFlag=false;
+				for(edps Edps:edpsList) {
+					if(!Edps.isSoldOut()==true && Edps.Inventory>0 && data.getInstallments()>1) {
+						List<Sections> sections = this.getSectionDetailsFromProductNumber(data.getItemNo());
+						if(sections.size()>0){
+							for(int counter=0;counter<sections.size();counter++){
+								if(sections.get(counter).getName().contains("Size")){
+									loopBreakFlag=true;
+									selectedProduct.easyPayPrice=Edps.getEasyPaymentPrice();
+									break;
+								}
+							}
+						}
+					}
+					if(!loopBreakFlag) {
+						loopBreakFlag = false;
+						continue;
+					}else
+						break;
+				}
+
+				selectedProduct.productNumber=data.getItemNo();
+				selectedProduct.productName=data.getName();
+				selectedProduct.productBrand=data.getBrand();
+				selectedProduct.productNowPrice=data.getIsPriceRange();
+				selectedProduct.productWasPrice=data.getWasPriceRange();
+				selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName()+propertyData.get("test_partial_url_pdp")+data.getItemNo();
+				return data;
+			}
+		}
+		return null;
+	}
     
     /**
      * This method find Product info while search keyword is product number
@@ -940,7 +1067,7 @@ public class ApiResponse extends ApiConfigs {
 			for(Product.Products data:dataList) {
 				lsNowPrice=data.getIsPriceRange();
 				lsWasPrice=data.getWasPriceRange();
-				if (data.isActive()&&data.getStyles().size() >= 0 && data.getSizes().size() >= 0&&data.isShowBadgeImage()&&data.getProductReviewRating()>0&&!lsNowPrice.equalsIgnoreCase(lsWasPrice)) {
+				if (data.isActive()&&data.getStyles().size() >= 0 && data.getSizes().size() >= 0&&data.isShowBadgeImage()&&data.getProductReviewRating()>0&&data.getProductReviewCount()>0&&!lsNowPrice.equalsIgnoreCase(lsWasPrice)) {
 					if(data.getBrand()!=null) {
 						if(data.getBrand().isEmpty()) {
 							continue;
@@ -964,6 +1091,20 @@ public class ApiResponse extends ApiConfigs {
 		}while(flag);
 
 		return productItem;
+	}
+
+	/**
+	 * This method returns section details i.e. Product Review, Size Chart etc. for a product number
+	 * @param - String - productNumber : item no of a product
+	 * @return - Sections - Sections object for product
+	 */
+	public List<Sections> getSectionDetailsFromProductNumber(String productNumber){
+		String apiEndPoint = propertyData.get("test_apiVersion") + "/" + propertyData.get("test_language")+"/products/" + productNumber+"/sections";
+		Response response = getApiCallResponse(null,apiEndPoint);
+		if(response.getStatusCode()==200)
+			return JsonParser.getResponseObject(response.asString(), new TypeReference<List<Sections>>() {});
+		else
+			return null;
 	}
 
 }

@@ -49,7 +49,7 @@ public class PD_TC07_VerifyProductDetail_AdvancedOrder extends BaseTest{
 			getProductDetailPageThreadLocal().verifyProductStyle();
 
 			reporter.reportLog("Verify product size dropdown");
-			getProductDetailPageThreadLocal().verifyProductSizeDropdown();
+			getProductDetailPageThreadLocal().verifyProductSizeChangingAction();
 
 			reporter.reportLog("Verify product Add to Bag button");
 			getProductDetailPageThreadLocal().verifyProductAddToBagButton();

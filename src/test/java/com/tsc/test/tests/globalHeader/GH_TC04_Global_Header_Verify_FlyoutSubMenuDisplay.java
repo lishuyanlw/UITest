@@ -39,7 +39,7 @@ public class GH_TC04_Global_Header_Verify_FlyoutSubMenuDisplay extends BaseTest 
 			reporter.softAssert(!FlyoutUrl.contains(lsYmlNotFound), lsSuccessResult,lsFailResult);
 			pageHeading=getglobalheaderPageThreadLocal().getHeadingForLandingPage();
 			reporter.reportLog(" landing page  heading "+pageHeading);
-			//reporter.softAssert(pageHeading.equalsIgnoreCase(lsHeading), "Landing page "+pageHeading+" is loaded correctly for "+lsHeading+" flyout heading link.","Landing page "+pageHeading+" is not loaded correctly for "+lsHeading+" flyout heading link.");
+			reporter.reportLog("Landing page "+pageHeading+" is loaded with flyout heading for "+lsHeading+" flyout heading link.");
 			reporter.softAssert(!pageHeading.isEmpty(), "Landing page "+pageHeading+" is loaded correctly for "+lsHeading+" flyout heading link.","Landing page "+pageHeading+" is not loaded correctly for "+lsHeading+" flyout heading link.");
 		}
 	}

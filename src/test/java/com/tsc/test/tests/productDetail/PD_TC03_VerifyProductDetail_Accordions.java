@@ -1,12 +1,11 @@
 package com.tsc.test.tests.productDetail;
 
-import java.io.IOException;
 import org.testng.annotations.Test;
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 
-public class PD_TC03_VerifyProductDetail_StickyTab extends BaseTest {
+public class PD_TC03_VerifyProductDetail_Accordions extends BaseTest {
 	/*
 	 * CER-573
 	 * CER-574
@@ -16,14 +15,15 @@ public class PD_TC03_VerifyProductDetail_StickyTab extends BaseTest {
 	 * CER-591
 	 * CER-607
 	 * Bug-19717 - Issue navigating to brand page from PDP
+	 * CER-821 - Havas Change R4 Product Overview and other PDP Accordions
 	 */
 	@Test(groups = {"ProductDetail", "Regression", "Regression_Mobile", "Regression_Tablet"})
-	public void PD_TC03_VerifyProductDetail_StickyTab() throws IOException {
-		if ((System.getProperty("Device").toLowerCase().contains("mobile") &&
+	public void PD_TC03_VerifyProductDetail_Accordions() {
+		/**if ((System.getProperty("Device").toLowerCase().contains("mobile") &&
 				(System.getProperty("Browser").toLowerCase().contains("android"))) ||
 				System.getProperty("Device").toLowerCase().contains("tablet") ||
 				System.getProperty("Device").toLowerCase().contains("desktop") ||
-				(!"".equals(System.getProperty("chromeMobileDevice")) && System.getProperty("chromeMobileDevice").toLowerCase().contains("iphone"))) {
+				(!"".equals(System.getProperty("chromeMobileDevice")) && System.getProperty("chromeMobileDevice").toLowerCase().contains("iphone"))) {*/
 			getGlobalFooterPageThreadLocal().closePopupDialog();
 			BasePage basePage = new BasePage(this.getDriver());
 			reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(basePage.getBaseURL() + "/"), "TSC url is correct", "TSC url is incorrect");
@@ -40,13 +40,9 @@ public class PD_TC03_VerifyProductDetail_StickyTab extends BaseTest {
 				reporter.softAssert(lsUrl.contains("productdetails"), "The Url is containing productdetails", "The Url is not containing productdetails");
 				reporter.softAssert(lsUrl.contains(lsProductNumber),"The Url is containing selected product number of "+lsProductNumber,"The Url is not containing selected product number of "+lsProductNumber);
 
-				if (getProductDetailPageThreadLocal().goToProductReviewTab()) {
-					if (System.getProperty("Device").equalsIgnoreCase("Desktop")) {
-						reporter.softAssert(getProductDetailPageThreadLocal().getStickyTabSelectedStatus(getProductDetailPageThreadLocal().btnStickyTabProductReview), "The Review tab has been selected and undrlined correctly", "The Review tab has not been selected and underlined correctly");
-					}
-
+				if (getProductDetailPageThreadLocal().goToProductReviewSection()) {
 					reporter.reportLog("Review tab content");
-					getProductDetailPageThreadLocal().verifyReviewTabContent();
+					getProductDetailPageThreadLocal().verifyReviewSectionContent();
 
 					reporter.reportLog("Review tab review list contents");
 					getProductDetailPageThreadLocal().verifyReviewTabPerReviewListContents();
@@ -70,12 +66,9 @@ public class PD_TC03_VerifyProductDetail_StickyTab extends BaseTest {
 				} else {
 					reporter.reportLogFail("Unable to go to Review Tab");
 				}
-				reporter.reportLog("See More button action and Product overview content");
-				getProductDetailPageThreadLocal().verifyClickingSeeMoreButtonAction();
-				getProductDetailPageThreadLocal().verifyProductOverviewContent();
-
-				reporter.reportLog("Verify sticky tab clicking actions");
-				getProductDetailPageThreadLocal().verifyStickyTabClickingAction();
+				reporter.reportLog("See More button action and Accordion content");
+				//getProductDetailPageThreadLocal().verifyProductOverviewContent();
+				getProductDetailPageThreadLocal().verifyAccordionsForProductOnPage();
 
 				//Verifying Bug-19717 - Issue navigating to brand page from PDP
 				reporter.reportLog("Verify product brand name link");
@@ -88,4 +81,4 @@ public class PD_TC03_VerifyProductDetail_StickyTab extends BaseTest {
 			}
 		}
 	}
-}
+//}

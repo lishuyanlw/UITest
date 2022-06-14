@@ -3755,8 +3755,8 @@ public class MyAccount extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(pdp.lblProductName);
 		String lsPDPProductName=pdp.lblProductName.getText().trim();
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(pdp.lnkFavShareMobile);
-		this.getReusableActionsInstance().clickIfAvailable(pdp.lnkFavShareMobile);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(pdp.lnkFavIcon);
+		this.getReusableActionsInstance().clickIfAvailable(pdp.lnkFavIcon);
 		this.waitForCondition(Driver->{return !pdp.checkIfFavShareMobileHighlighted();},5000);
 
 		if(!pdp.checkIfFavShareMobileHighlighted()){

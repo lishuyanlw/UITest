@@ -34,7 +34,7 @@ public class PD_TC09_VerifyProductDetail_WriteReview extends BaseTest{
 			reporter.softAssert(lsUrl.contains("productdetails"),"The Url is containing productdetails","The Url is not containing productdetails");
 			reporter.softAssert(lsUrl.contains(lsProductNumber),"The Url is containing selected product number of "+lsProductNumber,"The Url is not containing selected product number of "+lsProductNumber);
 
-			if(getProductDetailPageThreadLocal().goToProductReviewTab()) {
+			if(getProductDetailPageThreadLocal().goToProductReviewSection()) {
 				reporter.reportLog("Open Write a review window");
 				getProductDetailPageThreadLocal().openWriteReview();
 

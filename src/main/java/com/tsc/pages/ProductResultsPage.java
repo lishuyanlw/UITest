@@ -285,21 +285,23 @@ public class ProductResultsPage extends BasePage{
 	public WebElement footerContainer;
 
 	//People Also Viewed items
-	@FindBy(xpath = "//product-recommendations-endeca//h2[@class='prec-header']")
+	@FindBy(xpath = "//div[@id='product-recommend']//h2[@class='recommend__header']")
 	public WebElement productRecommendationTitle;
 
-	@FindBy(xpath="//product-recommendations-endeca//*[contains(@class,'prec-col')]")
+	@FindBy(xpath="//div[@id='product-recommend']//div[@class='recommend__products']//div[@class='recommend__products__item']")
 	public List<WebElement> lstPeopleAlsoBoughtItems;
 
-	public By byRecommendationImage = By.xpath(".//div[contains(@class,'imgEmbedContainer')]//img[@class='img-responsive pprec-img']");
+	public By byRecommendationLink = By.xpath(".//a");
 
-	public By byRecommendationName=By.xpath(".//div[contains(@class,'prec-name')]");
+	public By byRecommendationName=By.xpath(".//div[@class='recommend__products__item--name']");
 
-	public By byRecommendationPriceContainer=By.xpath(".//div[@class='prec-price']");
+	public By byRecommendationBrand=By.xpath(".//div[@class='recommend__products__item--brand']");
 
-	public By byRecommendationNowPrice=By.xpath(".//div[@class='prec-price']/div[contains(@class,'now-price')]//span");
+	public By byRecommendationPriceContainer=By.xpath(".//div[@class='recommend__products__price']");
 
-	public By byRecommendationWasPrice =By.xpath(".//div[@class='prec-price']/div[@class='was-price']");
+	public By byRecommendationNowPrice=By.xpath(".//div[@class='recommend__products__price--now-price']");
+
+	public By byRecommendationWasPrice =By.xpath(".//del[@class='recommend__products__price--was-price']");
 
 	@FindBy(xpath="//div[contains(@class,'PageTitle')]//*[contains(@class,'gatewayTitle')]")
 	public WebElement pageTitle;
@@ -2016,19 +2018,34 @@ public class ProductResultsPage extends BasePage{
 	 */
 	public void verify_ProductRecommendationSection() {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(productRecommendationTitle);
+		if(!this.getElementInnerText(productRecommendationTitle).isEmpty()){
+			reporter.reportLogPass("Product recommendation title is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Product recommendation title is not displaying correctly");
+		}
+
+		WebElement element;
 		for(WebElement item: this.lstPeopleAlsoBoughtItems) {
 			//Verifying Image of the Product
-			reporter.softAssert(!item.findElement(byRecommendationImage).getAttribute("src").isEmpty(), "ProductImage in Recommendation result is correct", "ProductImage in Recommendation result is incorrect");
+			element=item.findElement(byRecommendationLink);
+			reporter.softAssert(!element.getAttribute("href").isEmpty(), "Product link in Recommendation result is not empty", "Product link in Recommendation result is empty");
 
 			//Verifying Name of the Product
-			reporter.softAssert(!item.findElement(byRecommendationName).getText().isEmpty(), "ProductName in Recommendation result is correct", "ProductName in Recommendation result is incorrect");
+			element=item.findElement(byRecommendationName);
+			reporter.softAssert(!this.getElementInnerText(element).isEmpty(), "ProductName in Recommendation result is correct", "ProductName in Recommendation result is incorrect");
+
+			//Verifying brand of the Product
+			reporter.softAssert(this.checkChildElementExistingByAttribute(item,"class","recommend__products__item--brand"), "ProductBrand in Recommendation result is correct", "ProductBrand in Recommendation result is incorrect");
 
 			//Verifying Price of the Product
-			reporter.softAssert(!item.findElement(byRecommendationNowPrice).getText().isEmpty(), "ProductNowPrice in Recommendation result is correct", "ProductNowPrice in Recommendation result is incorrect");
+			element=item.findElement(byRecommendationNowPrice);
+			reporter.softAssert(!this.getElementInnerText(element).isEmpty(), "ProductNowPrice in Recommendation result is correct", "ProductNowPrice in Recommendation result is incorrect");
 
 			//Verifying Was Price is Displayed
 			if(this.getChildElementCount(item.findElement(this.byRecommendationPriceContainer))>1) {
-				reporter.softAssert(!item.findElement(byRecommendationWasPrice).getText().isEmpty(), "ProductWasPrice in Recommendation result is correct", "ProductWasPrice in Recommendation result is incorrect");
+				element=item.findElement(byRecommendationWasPrice);
+				reporter.softAssert(!this.getElementInnerText(element).isEmpty(), "ProductWasPrice in Recommendation result is correct", "ProductWasPrice in Recommendation result is incorrect");
 			}
 		}
 	}

@@ -35,7 +35,7 @@ public class ShoppingCart extends BasePage {
         if(this.btnItemRemoveButtonFromCart.size()>0){
             for(WebElement removeButton: this.btnItemRemoveButtonFromCart){
                 this.getReusableActionsInstance().clickIfAvailable(removeButton);
-                this.waitForCondition(Driver->{return (this.btnRemoveItem.isDisplayed() && this.btnRemoveItem.isEnabled());},60000);
+                this.waitForCondition(Driver->{return this.btnRemoveItem.isDisplayed();},60000);
                 this.getReusableActionsInstance().clickIfAvailable(this.btnRemoveItem);
                 this.waitForPageToLoad();
             }

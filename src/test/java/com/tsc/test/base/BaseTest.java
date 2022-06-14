@@ -165,6 +165,7 @@ public class BaseTest {
 			productDetailPageThreadLocal.set(new ProductDetailPage_Mobile(getDriver()));
 			//globalFooterPageThreadLocal.set(new GlobalFooterPage_Mobile(getDriver()));
 			globalHeaderPageThreadLocal.set(new GlobalHeaderPage_Mobile(getDriver()));
+			productDetailPageThreadLocal.set(new ProductDetailPage_Mobile(getDriver()));
 		}else {
 			globalHeaderPageThreadLocal.set(new GlobalHeaderPage_Tablet(getDriver()));
 			productDetailPageThreadLocal.set(new ProductDetailPage_Tablet(getDriver()));
