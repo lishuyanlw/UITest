@@ -54,10 +54,12 @@ pipeline {
   		    		#00 19 * * 4 %Browser=saucesafari;Language=en;Groups=GlobalHeader;ThreadCount=1;TunnelRequired=No;Device=Desktop;TestProfile=TSCWF-Automation
   		    		#00 20 * * 4 %Browser=saucefirefox;Language=en;Groups=GlobalHeader;ThreadCount=1;TunnelRequired=No;Device=Desktop;TestProfile=TSCWF-Automation
   		    		#00 21 * * 4 %Browser=saucechrome;Language=en;Groups=GlobalHeader;ThreadCount=1;TunnelRequired=No;Device=Desktop;TestProfile=TSCWF-Automation
-  		    		#00 22 * * 4 %Browser=sauceioschrome;Language=en;Groups=GlobalHeader;ThreadCount=1;TunnelRequired=No;Device=Tablet;TestProfile=TSCWF-Automation
-  		    		#00 23 * * 4 %Browser=sauceioschrome;Language=en;Groups=GlobalHeader;ThreadCount=1;TunnelRequired=No;Device=Mobile;TestProfile=TSCWF-Automation
-  		    		#00 01 * * 5 %Browser=sauceandroidchrome;Language=en;Groups=GlobalHeader;ThreadCount=1;TunnelRequired=No;Device=Tablet;TestProfile=TSCWF-Automation
-  		    		#30 02 * * 5 %Browser=sauceandroidchrome;Language=en;Groups=GlobalHeader;ThreadCount=1;TunnelRequired=No;Device=Mobile;TestProfile=TSCWF-Automation
+  		    		00 20 * * 4 %Browser=sauceioschrome;Language=en;Groups=SignIn;ThreadCount=1;TunnelRequired=Yes;Device=Tablet;TestProfile=TSCWF-Automation
+  		    		00 22 * * 4 %Browser=sauceioschrome;Language=en;Groups=GlobalHeader;ThreadCount=1;TunnelRequired=No;Device=Tablet;TestProfile=TSCWF-Automation
+  		    		00 23 * * 4 %Browser=sauceioschrome;Language=en;Groups=Home;ThreadCount=1;TunnelRequired=No;Device=Tablet;TestProfile=TSCWF-Automation
+  		    		00 01 * * 5 %Browser=sauceioschrome;Language=en;Groups=Integration;ThreadCount=1;TunnelRequired=No;Device=Tablet;TestProfile=TSCWF-Automation
+  		    		30 01 * * 5 %Browser=sauceioschrome;Language=en;Groups=ProductSearch;ThreadCount=1;TunnelRequired=No;Device=Tablet;TestProfile=TSCWF-Automation
+  		    		30 03 * * 5 %Browser=sauceioschrome;Language=en;Groups=MyAccount;ThreadCount=1;TunnelRequired=Yes;Device=Tablet;TestProfile=TSCWF-Automation
 
                     #30 19 * * 4 %Browser=saucesafari;Language=en;Groups=GlobalFooter;ThreadCount=1;TunnelRequired=No;Device=Desktop;TestProfile=TSCWF-Automation
    		    		#30 20 * * 4 %Browser=saucefirefox;Language=en;Groups=GlobalFooter;ThreadCount=1;TunnelRequired=No;Device=Desktop;TestProfile=TSCWF-Automation
