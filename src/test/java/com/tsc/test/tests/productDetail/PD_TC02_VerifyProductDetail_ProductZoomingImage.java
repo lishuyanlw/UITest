@@ -1,5 +1,6 @@
 package com.tsc.test.tests.productDetail;
 
+import com.tsc.api.apiBuilder.ApiResponse;
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
@@ -43,6 +44,8 @@ public class PD_TC02_VerifyProductDetail_ProductZoomingImage extends BaseTest{
 		else {
 			reporter.reportLogFail("Unable to find the product item with Review, EasyPay, Swatch item>=4 and Video");
 		}
+
+
 	}
 }
 

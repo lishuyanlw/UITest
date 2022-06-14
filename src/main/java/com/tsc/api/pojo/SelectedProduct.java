@@ -10,6 +10,7 @@ public class SelectedProduct {
 	public String productWasPrice;
 	public String pdpNavigationUrl;
 	public String easyPayPrice;
+	public String productStyleDimensionId;
 	
 	public SelectedProduct() {
 		this.productNumber="";
@@ -21,6 +22,7 @@ public class SelectedProduct {
 		this.productWasPrice="";
 		this.pdpNavigationUrl="";
 		this.easyPayPrice="";
+		this.productStyleDimensionId="";
 	}
 
 	public SelectedProduct assignValue(SelectedProduct productItem){
@@ -32,6 +34,8 @@ public class SelectedProduct {
 		this.productNowPrice=productItem.productNowPrice;
 		this.productWasPrice=productItem.productWasPrice;
 		this.pdpNavigationUrl=productItem.pdpNavigationUrl;
+		this.easyPayPrice=productItem.easyPayPrice;
+		this.productStyleDimensionId=productItem.productStyleDimensionId;
 
 		return this;
 	}
@@ -46,5 +50,6 @@ public class SelectedProduct {
 		this.productWasPrice="";
 		this.pdpNavigationUrl="";
 		this.easyPayPrice="";
+		this.productStyleDimensionId="";
 	}
 }

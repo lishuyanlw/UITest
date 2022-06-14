@@ -385,19 +385,6 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//div[@id='accordion']//div[@class='field-wrapper']//div[@class='field-wrapper__content-wrapper']")
 	public List<WebElement> lstAccordionSectionContents;
 
-	//Sticky swiper container part
-	@FindBy(xpath = "//div[@class='sticky-swiper-container']")
-	public WebElement cntStickyContainner;
-
-	@FindBy(xpath = "//div[@class='sticky-swiper-container']//div[@class='stickyIcon']")
-	public WebElement imgStickyIcon;
-
-	@FindBy(xpath = "//div[@id='accordion']//div[@class='field-wrapper']")
-	public List<WebElement> lstStickyTabProductTabList;
-
-	@FindBy(xpath = "//div[@id='accordion']//div[@class='field-wrapper']//span[@class='field-wrapper__accordion-heading__text']")
-	public List<WebElement> lstStickyTabProductTabHeaderList;
-
 	@FindBy(xpath = "//div[@class='sticky-swiper-container']//a[@data-text='SIZE CHART']")
 	public WebElement btnStickyTabSizeChart;
 
@@ -440,7 +427,6 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//section[@id='pr-review-snapshot']//div[@class='pr-snippet-read-and-write']/span")
 	public WebElement lblReviewTabReviewCount;
 
-	//@FindBy(xpath = "//div[@id='productReviewSection']//a[contains(@href,'writereview')]")
 	@FindBy(xpath = "//section[@id='pr-review-snapshot']//a[contains(@href,'writereview')]")
 	public WebElement lnkReviewTabWriteReview;
 
@@ -2009,7 +1995,7 @@ public class ProductDetailPage extends BasePage {
 	}
 
 	public void openWriteReview() {
-		this.lnkReviewTabWriteReview.click();
+		this.clickElement(this.lnkReviewTabWriteReview);
 		this.getReusableActionsInstance().waitForElementVisibility(this.lblWriteReviewHeaderTitle,  60);
 	}
 
@@ -2144,13 +2130,6 @@ public class ProductDetailPage extends BasePage {
 			lsLinkAfter=this.lstGetTheLookItem.get(this.lstGetTheLookItem.size()-1).findElement(this.byGetTheLookProductLink).getAttribute("data-link-title");
 			reporter.softAssert(!lsLinkNextBefore.equalsIgnoreCase(lsLinkAfter),"The Next button works","The Next button does not work");
 		}
-	}
-
-	public void verifyProductOverviewContent() {
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblProductOverviewHeader);
-		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
-
-		reporter.softAssert(!this.getElementText(this.lblProductOverviewTabContent).isEmpty(),"The Product Overview contents is not empty","The Product Overview contents is empty");
 	}
 
 	/**

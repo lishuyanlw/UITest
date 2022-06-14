@@ -9,6 +9,8 @@ import com.tsc.api.util.JsonParser;
 import extentreport.ExtentTestManager;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
+import org.json.simple.JSONObject;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -378,7 +380,7 @@ public class ApiResponse extends ApiConfigs {
     	}
     	else {
     		return RestAssured.given().
-                    when().header("Content-Type","application/json").
+                    when().header("Content-Type","application/json").log().all().
                     get(apiEndPoint);
     	}
     }
@@ -1097,7 +1099,7 @@ public class ApiResponse extends ApiConfigs {
 	}
 
 	/**
-	 * This method finds product info with AdvanceOrder info
+	 * This method finds product info with Delivery options info
 	 * @param - String - searchKeyword : search keyword for Product
 	 * @return - ProductDetailsItem - product details item for search keyword
 	 */
@@ -1149,6 +1151,90 @@ public class ApiResponse extends ApiConfigs {
 		else {
 			return null;
 		}
+	}
+
+	/**
+	 * This method finds product info with Get The Look info
+	 * @param - String - searchKeyword : search keyword for Product
+	 * @return - ProductDetailsItem - product details item for search keyword
+	 */
+	public ProductDetailsItem getProductInfoFromKeywordWithGetTheLookInfo(String searchKeyword){
+		boolean flag = true, bSelected=false;
+		ProductDetailsItem productDetailsItem=new ProductDetailsItem();
+		String productNumber;
+
+		Product product = getProductDetailsForKeyword(searchKeyword,null,true);
+		if(product==null) {
+			return null;
+		}
+
+		List<ProductDetailsItem.Edp> dataList;
+		Response response;
+		String lsUrl;
+		do{
+			for(Product.Products data:product.getProducts()) {
+				selectedProduct.init();
+				productNumber=data.getItemNo();
+				productDetailsItem=getProductDetailsForSpecificProductNumber(productNumber);
+				bSelected=false;
+				dataList =productDetailsItem.Edps.stream().filter(item->item.getStyleDimensionId()!=null&&!item.getStyleDimensionId().isEmpty()).collect(Collectors.toList());
+				if(!dataList.isEmpty()){
+					String savedBaseURI=RestAssured.baseURI;
+					RestAssured.baseURI="https://api.findmine.com/api/v2/";
+					lsUrl="complete-the-look?application=964F141E3FA264316345&product_id="+productDetailsItem.getItemNo()+"&product_color_id="+dataList.get(0).getStyleDimensionId()+"&product_in_stock=true";
+					System.out.println("lsUrl: "+lsUrl);
+					response=getApiCallResponse(null, lsUrl);
+					RestAssured.baseURI=savedBaseURI;
+					System.out.println("response: "+response.asString());
+					if(response.asString().contains("\"featured\": 1")){
+						bSelected=true;
+					}
+
+					if(bSelected){
+						System.out.println("product number: "+productDetailsItem.getItemNo());
+
+						return productDetailsItem;
+					}
+				}
+/*
+				for( ProductDetailsItem.Edp edp: productDetailsItem.Edps) {
+					if(edp.IsAdvanceOrBackOrder) {
+						bSelected=true;
+						selectedProduct.productNumber=productDetailsItem.getItemNo();
+						selectedProduct.productName=productDetailsItem.getName();
+						selectedProduct.productBrand=productDetailsItem.getBrand();
+						selectedProduct.productNowPrice=productDetailsItem.getIsPriceRange();
+						selectedProduct.productWasPrice=productDetailsItem.getWasPriceRange();
+						selectedProduct.productEDPSize=edp.Size;
+						selectedProduct.productEDPColor=edp.Style;
+						selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+productDetailsItem.getName()+propertyData.get("test_partial_url_pdp")+productDetailsItem.getItemNo();
+
+						break;
+					}
+				}
+				*/
+
+				if(bSelected) {
+					flag = false;
+					break;
+				}
+			}
+			if(flag) {
+				outputPage++;
+				if(outputPage>totalPage||outputPage>=10) {
+					flag = false;
+				}
+				product = getProductDetailsForKeyword(searchKeyword,null,false);
+			}
+		}while(flag);
+
+		if(bSelected) {
+			return productDetailsItem;
+		}
+		else {
+			return null;
+		}
+
 	}
 
 }

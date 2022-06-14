@@ -383,16 +383,6 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
         reporter.softAssert(!this.lblAddToBagPopupWindowButtonSectionSubtotal.getText().isEmpty(),"The product Subtotal in Add to Bag popup window is not empty","The product Subtotal in Add to Bag popup window is empty");
     }
 
-    @Override
-    public void verifyProductOverviewContent() {
-        this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.productOverview);
-        this.getReusableActionsInstance().clickIfAvailable(this.productOverview);
-        this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
-
-        reporter.softAssert(!this.getElementText(this.btnStickyTabProductReview).isEmpty(),"The Product Overview contents is not empty","The Product Overview contents is empty");
-        this.goBack();
-    }
-
     /**
      * Method to click on back button for mobile
      * @return void
