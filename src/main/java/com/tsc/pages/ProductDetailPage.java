@@ -56,10 +56,10 @@ public class ProductDetailPage extends BasePage {
 	public WebElement currentThumbnailItem;
 
 	@FindBy(xpath = "//section[@class='pdp-gallery']//div[@id='thumbGallery']//div[@id='pdp__galleryThumb']//button[contains(@class,'swiper-slide-visible')][@data-video]")
-	public WebElement lnkThumbnailVideo;
+	public List<WebElement> lstThumbnailVideoLink;
 
 	@FindBy(xpath = "//section[@class='pdp-gallery']//div[@id='thumbGallery']//div[@id='pdp__galleryThumb']//button[contains(@class,'swiper-slide-visible')][@data-video]//img")
-	public WebElement imgThumbnailVideo;
+	public List<WebElement> lstThumbnailVideoImage;
 
 	//Video part
 	@FindBy(xpath = "//section[@class='pdp-gallery']//div[@class='video-container']")
@@ -940,12 +940,6 @@ public class ProductDetailPage extends BasePage {
 		this.getReusableActionsInstance().clickIfAvailable(this.btnThumbnailNext);
 		//Keep it to wait for clicking action result
 		this.getReusableActionsInstance().staticWait(300);
-
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnThumbnailNext);
-		this.getReusableActionsInstance().clickIfAvailable(this.btnThumbnailNext);
-		//Keep it to wait for clicking action result
-		this.getReusableActionsInstance().staticWait(300);
-
 		String lsLastIamgeSrcAfter=this.lstThumbnailImageList.get(0).findElement(By.xpath(".//img")).getAttribute("src");
 
 		reporter.softAssert(!lsLastImageSrcBefore.equalsIgnoreCase(lsLastIamgeSrcAfter), "The Next button clicking is working", "The Next button clicking is not working");
@@ -1739,6 +1733,14 @@ public class ProductDetailPage extends BasePage {
 
 		reporter.softAssert(!getAutoPlayVideoToolTipPopupMsg().isEmpty(),"The AutoPlayVideoToolTip is not empty","The AutoPlayVideoToolTip is empty");
 
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.cntThumbnailContainer),"The Thumbnail section is displaying correctly","The Thumbnail section is not displaying correctly");
+		for(WebElement item:this.lstThumbnailVideoLink){
+			reporter.softAssert(!item.getAttribute("data-video").isEmpty(),"The video src is not empty","The video src is empty");
+		}
+
+		for(WebElement item:this.lstThumbnailVideoImage){
+			reporter.softAssert(item.getAttribute("src").contains("videoBtn.jpg"),"The video image is displaying correctly","The video image is not displaying correctly");
+		}
 	}
 
 	public void verifyVideoOff() {
@@ -1774,19 +1776,12 @@ public class ProductDetailPage extends BasePage {
 	}
 
 	public void verifyThumbnail() {
-		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.cntThumbnailContainer),"The Thumbnail section is displaying correctly","The Thumbnail section is not displaying correctly");
-		reporter.softAssert(!this.lnkThumbnailVideo.getAttribute("data-video").isEmpty(),"The video src is not empty","The video src is empty");
-		reporter.softAssert(!this.imgThumbnailVideo.getAttribute("src").contains("videoBtn.jpg"),"The video image is displaying correctly","The video image is not displaying correctly");
-
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnThumbnailNext);
-		this.getReusableActionsInstance().clickIfAvailable(this.btnThumbnailNext);
-		//Keep it to wait for clicking action result
-		this.getReusableActionsInstance().staticWait(300);
-		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.btnThumbnailPrev),"The Thumbnail prev button is displaying correctly","The Thumbnail prev button is not displaying correctly");
-		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.btnThumbnailNext),"The Thumbnail next button is displaying correctly","The Thumbnail next button is not displaying correctly");
-
 		this.verifyThumbnailImageListSrc();
+
+		setPrevButtonDisplayingInThumbnailList();
 		this.verifyThumbnailPrevButton();
+
+		setNextButtonDisplayingInThumbnailList();
 		this.verifyThumbnailNextButton();
 	}
 
@@ -1835,6 +1830,19 @@ public class ProductDetailPage extends BasePage {
 		//Verify Easypay and popup dialog content
 		if(this.checkProductEasyPayExisting()){
 			reporter.softAssert(!this.getElementText(this.lblProductEasyPay).isEmpty(),"The product EasyPay message is not empty","The product EasyPay message is empty");
+
+			//verify nowPrice and installation sum
+			float nowPrice=this.getFloatFromString(this.getElementInnerText(this.lblProductNowPrice),true);
+			String[] lstProductEasyPay=this.getElementInnerText(this.lblProductEasyPay).split("of");
+			int installationCount=this.getIntegerFromString(lstProductEasyPay[0]);
+			float intallationFee=this.getFloatFromString(lstProductEasyPay[1],true);
+			if(Math.abs(nowPrice-installationCount*intallationFee)<0.1){
+				reporter.reportLogPass("Installation sum is equal to nowPrice");
+			}
+			else{
+				reporter.reportLogPass("Installation sum is not equal to nowPrice");
+			}
+
 			this.verifyEasyPayPopUp();
 			reporter.softAssert(!this.getElementText(this.btnProductEasyPay).isEmpty(),"The product EasyPay button is displaying correctly","The product EasyPay button is not displaying correctly");
 
@@ -2331,6 +2339,7 @@ public class ProductDetailPage extends BasePage {
 	public boolean goToProductItemWithPreConditions(List<String> lstKeyword,String lsType,Map<String,Object> dataCriteria) throws IOException {
 		ProductResultsPage prp=new ProductResultsPage(this.getDriver());
 		ApiResponse apiResponse=new ApiResponse();
+		ApiResponse.lsUrlType="-";
 
 		Map<String,Object> outputDataCriteria= new HashMap<String,Object>();
 		if(dataCriteria==null){
@@ -2433,6 +2442,8 @@ public class ProductDetailPage extends BasePage {
 			}
 		}
 
+		System.out.println(apiResponse.selectedProduct.pdpNavigationUrl);
+		reporter.reportLog(apiResponse.selectedProduct.pdpNavigationUrl);
 		this.getDriver().get(apiResponse.selectedProduct.pdpNavigationUrl);
 
 		this.waitForPageToLoad();
@@ -2768,6 +2779,131 @@ public class ProductDetailPage extends BasePage {
 				reporter.reportLogFailWithScreenshot("Easy Pay pop up contains text as expected after clicking on Easy Pay on PDP");
 		}else
 			reporter.reportLogFailWithScreenshot("Easy Pay pop up is not displayed as expected after clicking on Easy Pay on PDP");
+	}
+
+	/**
+	 * To set Video As First Item In ThumbnailList, which is to handle mobile device
+	 * @return true/false
+	 */
+	public boolean setVideoAsFirstItemInThumbnailList(){
+		WebElement firstItem=this.lstThumbnailImageList.get(0);
+		if(this.hasElementAttribute(firstItem,"data-video")){
+			return true;
+		}
+
+		int sum=0;
+		do{
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnThumbnailPrev);
+			this.getReusableActionsInstance().clickIfAvailable(this.btnThumbnailPrev);
+			//Keep it to wait for clicking action result
+			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+			firstItem=this.lstThumbnailImageList.get(0);
+			sum++;
+			if(sum>10){
+				return false;
+			}
+		}
+		while(this.hasElementAttribute(firstItem,"data-video"));
+
+		return true;
+	}
+
+	/**
+	 * To set Prev button displayed In ThumbnailList
+	 * @return true/false
+	 */
+	public boolean setPrevButtonDisplayingInThumbnailList(){
+		WebElement firstItem=this.lstThumbnailImageList.get(0);
+		if(checkThumbnailPrevButtonExisting()){
+			return true;
+		}
+
+		int sum=0;
+		do{
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnThumbnailNext);
+			this.getReusableActionsInstance().clickIfAvailable(this.btnThumbnailNext);
+			//Keep it to wait for clicking action result
+			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+			sum++;
+			if(sum>10){
+				return false;
+			}
+		}
+		while(checkThumbnailPrevButtonExisting());
+
+		return true;
+	}
+
+	/**
+	 * To set Next button displayed In ThumbnailList
+	 * @return true/false
+	 */
+	public boolean setNextButtonDisplayingInThumbnailList(){
+		WebElement firstItem=this.lstThumbnailImageList.get(0);
+		if(checkThumbnailNextButtonExisting()){
+			return true;
+		}
+
+		int sum=0;
+		do{
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnThumbnailPrev);
+			this.getReusableActionsInstance().clickIfAvailable(this.btnThumbnailPrev);
+			//Keep it to wait for clicking action result
+			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+			sum++;
+			if(sum>10){
+				return false;
+			}
+		}
+		while(checkThumbnailNextButtonExisting());
+
+		return true;
+	}
+
+	/**
+	 * To set Next button disappear In ThumbnailList
+	 * @return true/false
+	 */
+	public boolean setNextButtonDisappearInThumbnailList(){
+		setNextButtonDisplayingInThumbnailList();
+
+		int sum=0;
+		do{
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnThumbnailNext);
+			this.getReusableActionsInstance().clickIfAvailable(this.btnThumbnailNext);
+			//Keep it to wait for clicking action result
+			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+			sum++;
+			if(sum>10){
+				return false;
+			}
+		}
+		while(!checkThumbnailNextButtonExisting());
+
+		return true;
+	}
+
+	/**
+	 * To set Prev button disappear In ThumbnailList
+	 * @return true/false
+	 */
+	public boolean setPrevButtonDisappearInThumbnailList(){
+		setPrevButtonDisplayingInThumbnailList();
+
+		int sum=0;
+		do{
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnThumbnailPrev);
+			this.getReusableActionsInstance().clickIfAvailable(this.btnThumbnailPrev);
+			//Keep it to wait for clicking action result
+			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+			sum++;
+			if(sum>10){
+				return false;
+			}
+		}
+		while(!checkThumbnailPrevButtonExisting());
+
+		return true;
 	}
 
 }

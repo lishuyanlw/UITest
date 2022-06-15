@@ -6,13 +6,13 @@ import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 
-public class PD_TC08_VerifyProductDetail_AdvancedOrder extends BaseTest{
+public class PD_TC09_VerifyProductDetail_AdvancedOrder extends BaseTest{
 	/*
 	 * CER-602
 	 *
 	 */
 	@Test(groups={"ProductDetail","Regression","Regression_Mobile","Regression_Tablet"})
-	public void PD_TC08_VerifyProductDetail_AdvancedOrder() throws IOException {
+	public void PD_TC09_VerifyProductDetail_AdvancedOrder() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 
 		BasePage basePage=new BasePage(this.getDriver());

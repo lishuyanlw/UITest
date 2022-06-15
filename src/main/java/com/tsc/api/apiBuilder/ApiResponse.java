@@ -28,6 +28,7 @@ public class ApiResponse extends ApiConfigs {
     public SelectedProduct selectedProduct= new SelectedProduct();
     boolean bBrand=false;
 	public static Map<String, String> apiProperty;
+	public static String lsUrlType="";
 
 
     public ApiResponse() throws IOException {
@@ -210,7 +211,13 @@ public class ApiResponse extends ApiConfigs {
                 		selectedProduct.productBrand=data.getBrand();
                 		selectedProduct.productNowPrice=data.getIsPriceRange();
                 		selectedProduct.productWasPrice=data.getWasPriceRange();
-                		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName()+propertyData.get("test_partial_url_pdp")+data.getItemNo();            	
+						if(!lsUrlType.isEmpty()){
+							selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName().trim().replace(".","").replace(" ","-")+propertyData.get("test_partial_url_pdp")+data.getItemNo();
+						}
+						else{
+							selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName().trim()+propertyData.get("test_partial_url_pdp")+data.getItemNo();
+						}
+
                         break;
                     }
                 }
@@ -238,7 +245,13 @@ public class ApiResponse extends ApiConfigs {
              		selectedProduct.productBrand=productItem.getBrand();
              		selectedProduct.productNowPrice=productItem.getIsPriceRange();
              		selectedProduct.productWasPrice=productItem.getWasPriceRange();
-             		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+productItem.getName()+propertyData.get("test_partial_url_pdp")+productItem.getItemNo();
+					if(!lsUrlType.isEmpty()){
+						selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+productItem.getName().trim().replace(".","").replace(" ","-")+propertyData.get("test_partial_url_pdp")+productItem.getItemNo();
+					}
+					else{
+						selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+productItem.getName().trim()+propertyData.get("test_partial_url_pdp")+productItem.getItemNo();
+					}
+
                     flag = false;
                 }
             }
@@ -352,7 +365,13 @@ public class ApiResponse extends ApiConfigs {
 		selectedProduct.productBrand=product.getBrand();
 		selectedProduct.productNowPrice=product.getIsPriceRange();
 		selectedProduct.productWasPrice=product.getWasPriceRange();
-		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+product.getName()+propertyData.get("test_partial_url_pdp")+product.getItemNo();
+		if(!lsUrlType.isEmpty()){
+			selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+product.getName().trim().replace(".","").replace(" ","-")+propertyData.get("test_partial_url_pdp")+product.getItemNo();
+		}
+		else{
+			selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+product.getName().trim()+propertyData.get("test_partial_url_pdp")+product.getItemNo();
+		}
+
 		//flag=false;
         }
           /*  else {
@@ -380,7 +399,7 @@ public class ApiResponse extends ApiConfigs {
     	}
     	else {
     		return RestAssured.given().
-                    when().header("Content-Type","application/json").log().all().
+                    when().header("Content-Type","application/json").
                     get(apiEndPoint);
     	}
     }
@@ -552,8 +571,13 @@ public class ApiResponse extends ApiConfigs {
         		selectedProduct.productBrand=data.getBrand();
         		selectedProduct.productNowPrice=data.getIsPriceRange();
         		selectedProduct.productWasPrice=data.getWasPriceRange();
-        		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName()+propertyData.get("test_partial_url_pdp")+data.getItemNo();
-        		
+				if(!lsUrlType.isEmpty()){
+					selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName().trim().replace(".","").replace(" ","-")+propertyData.get("test_partial_url_pdp")+data.getItemNo();
+				}
+				else{
+					selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName().trim()+propertyData.get("test_partial_url_pdp")+data.getItemNo();
+				}
+
         		return data;        		
         	}
         }
@@ -640,8 +664,14 @@ public class ApiResponse extends ApiConfigs {
         		selectedProduct.productName=data.getName();
         		selectedProduct.productBrand=data.getBrand();
         		selectedProduct.productNowPrice=data.getIsPriceRange();
-        		selectedProduct.productWasPrice=data.getWasPriceRange();        		
-        		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName()+propertyData.get("test_partial_url_pdp")+data.getItemNo();
+        		selectedProduct.productWasPrice=data.getWasPriceRange();
+				if(!lsUrlType.isEmpty()){
+					selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName().trim().replace(".","").replace(" ","-")+propertyData.get("test_partial_url_pdp")+data.getItemNo();
+				}
+				else{
+					selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName().trim()+propertyData.get("test_partial_url_pdp")+data.getItemNo();
+				}
+
                 return data;
             }
         }
@@ -691,8 +721,13 @@ public class ApiResponse extends ApiConfigs {
                 		selectedProduct.productBrand=data.getBrand();
                 		selectedProduct.productNowPrice=data.getIsPriceRange();
                 		selectedProduct.productWasPrice=data.getWasPriceRange();
-                		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName()+propertyData.get("test_partial_url_pdp")+data.getItemNo();
-                		
+						if(!lsUrlType.isEmpty()){
+							selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName().trim().replace(".","").replace(" ","-")+propertyData.get("test_partial_url_pdp")+data.getItemNo();
+						}
+						else{
+							selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName().trim()+propertyData.get("test_partial_url_pdp")+data.getItemNo();
+						}
+
                 		productItem=data;
                         break;
                     }
@@ -818,7 +853,13 @@ public class ApiResponse extends ApiConfigs {
 										selectedProduct.productNowPrice = data.getIsPriceRange();
 										selectedProduct.productWasPrice = data.getWasPriceRange();
 										selectedProduct.easyPayPrice=Edps.getEasyPaymentPrice();
-										selectedProduct.pdpNavigationUrl = propertyData.get("test_qaURL") + "/" + data.getName() + propertyData.get("test_partial_url_pdp") + data.getItemNo();
+										if(!lsUrlType.isEmpty()){
+											selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName().trim().replace(".","").replace(" ","-")+propertyData.get("test_partial_url_pdp")+data.getItemNo();
+										}
+										else{
+											selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName().trim()+propertyData.get("test_partial_url_pdp")+data.getItemNo();
+										}
+
 										return data;
 									}
 								}
@@ -876,7 +917,13 @@ public class ApiResponse extends ApiConfigs {
     		selectedProduct.productBrand=data.getBrand();
     		selectedProduct.productNowPrice=data.getIsPriceRange();
     		selectedProduct.productWasPrice=data.getWasPriceRange();
-    		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName()+propertyData.get("test_partial_url_pdp")+data.getItemNo();
+			if(!lsUrlType.isEmpty()){
+				selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName().trim().replace(".","").replace(" ","-")+propertyData.get("test_partial_url_pdp")+data.getItemNo();
+			}
+			else{
+				selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName().trim()+propertyData.get("test_partial_url_pdp")+data.getItemNo();
+			}
+
         }
 
         return product.getProducts().get(0);
@@ -913,8 +960,13 @@ public class ApiResponse extends ApiConfigs {
                 		selectedProduct.productWasPrice=productDetailsItem.getWasPriceRange();
                 		selectedProduct.productEDPSize=edp.Size;
                 		selectedProduct.productEDPColor=edp.Style;
-                		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+productDetailsItem.getName()+propertyData.get("test_partial_url_pdp")+productDetailsItem.getItemNo();
-                		
+						if(!lsUrlType.isEmpty()){
+							selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+productDetailsItem.getName().trim().replace(".","").replace(" ","-")+propertyData.get("test_partial_url_pdp")+productDetailsItem.getItemNo();
+						}
+						else{
+							selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+productDetailsItem.getName().trim()+propertyData.get("test_partial_url_pdp")+productDetailsItem.getItemNo();
+						}
+
                 		break;
             		}
             	}
@@ -1126,7 +1178,12 @@ public class ApiResponse extends ApiConfigs {
 					selectedProduct.productBrand=productDetailsItem.getBrand();
 					selectedProduct.productNowPrice=productDetailsItem.getIsPriceRange();
 					selectedProduct.productWasPrice=productDetailsItem.getWasPriceRange();
-					selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+productDetailsItem.getName()+propertyData.get("test_partial_url_pdp")+productDetailsItem.getItemNo();
+					if(!lsUrlType.isEmpty()){
+						selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+productDetailsItem.getName().trim().replace(".","").replace(" ","-")+propertyData.get("test_partial_url_pdp")+productDetailsItem.getItemNo();
+					}
+					else{
+						selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+productDetailsItem.getName().trim()+propertyData.get("test_partial_url_pdp")+productDetailsItem.getItemNo();
+					}
 
 					break;
 				}
@@ -1207,7 +1264,12 @@ public class ApiResponse extends ApiConfigs {
 						selectedProduct.productWasPrice=productDetailsItem.getWasPriceRange();
 						selectedProduct.productEDPSize=edp.Size;
 						selectedProduct.productEDPColor=edp.Style;
-						selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+productDetailsItem.getName()+propertyData.get("test_partial_url_pdp")+productDetailsItem.getItemNo();
+						if(!lsUrlType.isEmpty()){
+							selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+productDetailsItem.getName().trim().replace(".","").replace(" ","-")+propertyData.get("test_partial_url_pdp")+productDetailsItem.getItemNo();
+						}
+						else{
+							selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+productDetailsItem.getName().trim()+propertyData.get("test_partial_url_pdp")+productDetailsItem.getItemNo();
+						}
 
 						break;
 					}

@@ -4,19 +4,18 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.testng.annotations.Test;
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 
-public class PD_TC11_VerifyProductDetail_FavIconAction extends BaseTest{
+public class PD_TC12_VerifyProductDetail_FavIconAction extends BaseTest{
 	/*
 	 * CER-585
 	 * CER-818
 	 */
 	@Test(groups={"ProductDetail","Regression","Regression_Mobile","Regression_Tablet"})
-	public void PD_TC11_VerifyProductDetail_FavIconAction() throws IOException {
+	public void PD_TC12_VerifyProductDetail_FavIconAction() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 		BasePage basePage=new BasePage(this.getDriver());
 

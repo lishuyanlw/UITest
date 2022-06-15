@@ -1,22 +1,18 @@
 package com.tsc.test.tests.productDetail;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.testng.annotations.Test;
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 
-public class PD_TC12_VerifyProductDetail_GetTheLookSectionAndRecommendationSection extends BaseTest{
+public class PD_TC13_VerifyProductDetail_GetTheLookSectionAndRecommendationSection extends BaseTest{
 	/*
 	 * CER-596
 	 * CER-597
 	 */
 	@Test(groups={"ProductDetail","Regression","Regression_Mobile","Regression_Tablet"})
-	public void PD_TC12_VerifyProductDetail_GetTheLookSectionAndRecommendationSection() throws IOException {
+	public void PD_TC13_VerifyProductDetail_GetTheLookSectionAndRecommendationSection() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 
 		BasePage basePage=new BasePage(this.getDriver());
