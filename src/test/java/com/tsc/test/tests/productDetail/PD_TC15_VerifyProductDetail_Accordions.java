@@ -41,6 +41,9 @@ public class PD_TC15_VerifyProductDetail_Accordions extends BaseTest {
 				reporter.softAssert(lsUrl.contains(lsProductNumber),"The Url is containing selected product number of "+lsProductNumber,"The Url is not containing selected product number of "+lsProductNumber);
 
 				if (getProductDetailPageThreadLocal().goToProductReviewSection()) {
+					reporter.reportLog("Review Histogram");
+					getProductDetailPageThreadLocal().verifyReviewHistogramItemClickingAction();
+
 					reporter.reportLog("Review tab content");
 					getProductDetailPageThreadLocal().verifyReviewSectionContent();
 

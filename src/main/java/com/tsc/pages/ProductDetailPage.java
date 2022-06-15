@@ -390,35 +390,18 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//div[@id='accordion']//div[@class='field-wrapper']//div[@class='field-wrapper__content-wrapper']")
 	public List<WebElement> lstAccordionSectionContents;
 
-	@FindBy(xpath = "//div[@class='sticky-swiper-container']//a[@data-text='SIZE CHART']")
-	public WebElement btnStickyTabSizeChart;
-
-	@FindBy(xpath = "//div[@class='sticky-swiper-container']//a[@data-href='#pr-reviewdisplay']")
-	public WebElement btnStickyTabProductReview;
-
-	//Product Overview Tab part
-	@FindBy(xpath = "//div[contains(@class,'tabs')]//div[@id='infoTabContent']//div[@id='tab0']")
-	public WebElement lblProductOverviewTabContent;
-
-	//Product Size Chart Tab part
-	@FindBy(xpath = "//div[contains(@class,'tabs')]//div[@id='infoTabContent']//div[@id='tab1']")
-	public WebElement cntProductSizeChartTabContent;
-
-	@FindBy(xpath = "//div[@id='accordion']//span[@data-text='Size Chart']")
-	public WebElement lblProductSizeChartTabHeader;
-
-	@FindBy(xpath = "//div[contains(@class,'tabs')]//div[@id='infoTabContent']//img[contains(@src,'SIZE') and contains(@src,'CHART')]")
-	public List<WebElement> lstProductSizeChartTabContentList;
-
 	//Product Review Tab part
-	@FindBy(xpath = "//div[@id='productReviewSection']")
-	public WebElement cntReviewTabContent;
-
 	@FindBy(xpath = "//*[contains(@class,'customer-reviews')]")
 	public WebElement lblReviewTabHeader;
 
-	@FindBy(xpath = "//div[@id='productReviewSection']//section[@id='pr-review-snapshot']//div[@class='pr-review-snapshot-histogram']")
-	public WebElement imgReviewTabHistogram;
+	@FindBy(xpath = "//section[@class='pr-review-snapshot-block pr-review-snapshot-block-histogram']//ul//li")
+	public List<WebElement> lstReviewTabHistogramItem;
+
+	@FindBy(xpath = "//section[@class='pr-review-snapshot-block pr-review-snapshot-block-histogram']//ul//li//p[@class='pr-histogram-label']")
+	public List<WebElement> lstReviewTabHistogramItemLabel;
+
+	@FindBy(xpath = "//section[@class='pr-review-snapshot-block pr-review-snapshot-block-histogram']//ul//li//p[@class='pr-histogram-count']")
+	public List<WebElement> lstReviewTabHistogramItemCount;
 
 	@FindBy(xpath = "//section[@id='pr-review-snapshot']//div[@class='pr-snippet-stars-reco-stars']//div[@class='pr-snippet-rating-decimal']")
 	public WebElement lblReviewTabRateDecimalText;
@@ -450,7 +433,6 @@ public class ProductDetailPage extends BasePage {
 
 	public By byReviewTabFooter=By.xpath(".//footer");
 
-	//public By byReviewTabStarSection=By.xpath(".//div[@class='pr-rating-stars']//div[contains(@class,'pr-star-v4')]");
 	public By byReviewTabStarSection=By.xpath(".//div[@class='pr-rating-stars']");
 
 	public By byReviewTabStarList=By.xpath(".//div[@class='pr-rating-stars']//div[contains(@class,'pr-star-v4')]");
@@ -610,7 +592,6 @@ public class ProductDetailPage extends BasePage {
 	public WebElement lnkWriteReviewAfterSubmitPageContinueShopping;
 
 	//Add to Bag popup window part
-	//For new designing
 	@FindBy(xpath = "//div[@class='secondary-navigation__popup-container']")
 	public WebElement cntAddToBagOverlay;
 
@@ -1431,20 +1412,6 @@ public class ProductDetailPage extends BasePage {
 		else{
 			reporter.reportLogFailWithScreenshot("The Privacy Policy on the footer for suggested brands on product TrueFit popup window is not displaying correctly");
 		}
-	}
-
-	/**
-	 * Method to verify product Sizing chart
-	 * @return void
-	 * @author Wei.Li
-	 */
-	public void verifyProductQuantitySizingChart() {
-		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lnkSizingChart),"The product Sizing Chart is existing","The product Sizing Chart is not existing");
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkSizingChart);
-		this.getReusableActionsInstance().clickIfAvailable(this.lnkSizingChart);
-		//this.lnkSizingChart.click();
-		this.waitForCondition(Driver->{return this.btnStickyTabSizeChart.getAttribute("class").contains("selected");},5000);
-		reporter.softAssert(this.getStickyTabSelectedStatus(this.btnStickyTabSizeChart),"The SIZE CHART tab has been selected correctly","The SIZE CHART tab has not been selected correctly");
 	}
 
 	/**
@@ -2922,6 +2889,46 @@ public class ProductDetailPage extends BasePage {
 	public void verifyProductAdvancedOrderMessage() {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAdvanceOrderMsg);
 		reporter.softAssert(!this.lblAdvanceOrderMsg.getText().isEmpty(),"The Advanced order message is not empty","The Advanced order message is empty");
+	}
+
+	/**
+	 * To verify Review Histogram Item Clicking Action
+	 */
+	public void verifyReviewHistogramItemClickingAction(){
+		int reviewHisRate,reviewHisItemCount,reviewRate;
+		ProductResultsPage prp=new ProductResultsPage(this.getDriver());
+
+		int loopSize=this.lstReviewTabHistogramItem.size();
+		for(int i=0;i<loopSize;i++){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstReviewTabHistogramItem.get(i));
+			reviewHisRate=this.getIntegerFromString(this.lstReviewTabHistogramItemLabel.get(i).getText().trim());
+			reviewHisItemCount=this.getIntegerFromString(this.lstReviewTabHistogramItemCount.get(i).getText().trim());
+			if(reviewHisItemCount==0){
+				continue;
+			}
+
+			this.getReusableActionsInstance().clickIfAvailable(this.lstReviewTabHistogramItem.get(i));
+			this.getReusableActionsInstance().staticWait(10*this.getStaticWaitForApplication());
+
+			int reviewListAmount=lstReviewTabPerReviewList.size();
+			if(reviewHisItemCount==reviewListAmount){
+				reporter.reportLogPass("The filtering review amount is equal to the related review histogram item count");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The filtering review amount is not equal to the related review histogram item count");
+			}
+
+			for(WebElement element:this.lstReviewTabPerReviewList){
+				List<WebElement> lstReviewStar=element.findElements(byReviewTabStarList);
+				reviewRate=prp.getProductItemReviewNumberAmountFromStarImage(lstReviewStar)/100;
+				if(reviewRate==reviewHisRate){
+					reporter.reportLogPass("The review rate of filtering item is equal to the related review histogram item review rate");
+				}
+				else{
+					reporter.reportLogFailWithScreenshot("The review rate of filtering item:"+reviewRate+" is not equal to the related review histogram item review rate:"+reviewHisRate);
+				}
+			}
+		}
 	}
 
 }
