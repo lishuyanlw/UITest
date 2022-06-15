@@ -6,13 +6,13 @@ import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 
-public class PD_TC13_VerifyProductDetail_GetTheLookSectionAndRecommendationSection extends BaseTest{
+public class PD_TC14_VerifyProductDetail_GetTheLookSectionAndRecommendationSection extends BaseTest{
 	/*
 	 * CER-596
 	 * CER-597
 	 */
 	@Test(groups={"ProductDetail","Regression","Regression_Mobile","Regression_Tablet"})
-	public void PD_TC13_VerifyProductDetail_GetTheLookSectionAndRecommendationSection() throws IOException {
+	public void PD_TC14_VerifyProductDetail_GetTheLookSectionAndRecommendationSection() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 
 		BasePage basePage=new BasePage(this.getDriver());

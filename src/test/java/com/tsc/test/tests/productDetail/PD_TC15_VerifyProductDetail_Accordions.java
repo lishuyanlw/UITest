@@ -5,7 +5,7 @@ import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 
-public class PD_TC14_VerifyProductDetail_Accordions extends BaseTest {
+public class PD_TC15_VerifyProductDetail_Accordions extends BaseTest {
 	/*
 	 * CER-573
 	 * CER-574
@@ -18,7 +18,7 @@ public class PD_TC14_VerifyProductDetail_Accordions extends BaseTest {
 	 * CER-821 - Havas Change R4 Product Overview and other PDP Accordions
 	 */
 	@Test(groups = {"ProductDetail", "Regression", "Regression_Mobile", "Regression_Tablet"})
-	public void PD_TC14_VerifyProductDetail_Accordions() {
+	public void PD_TC15_VerifyProductDetail_Accordions() {
 		/**if ((System.getProperty("Device").toLowerCase().contains("mobile") &&
 				(System.getProperty("Browser").toLowerCase().contains("android"))) ||
 				System.getProperty("Device").toLowerCase().contains("tablet") ||

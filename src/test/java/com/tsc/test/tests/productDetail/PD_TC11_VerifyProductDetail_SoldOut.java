@@ -13,14 +13,14 @@ import com.tsc.test.base.BaseTest;
 import com.tsc.test.tests.globalHeader.GH_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo;
 import com.tsc.test.tests.globalHeader.GH_TC02_Verify_Global_Header_SignIn_Favorite_ShoppingCartBag;
 
-public class PD_TC10_VerifyProductDetail_SoldOut extends BaseTest{
+public class PD_TC11_VerifyProductDetail_SoldOut extends BaseTest{
 	/*
 	 * CER-603
 	 * CER-605
 	 *
 	 */
 	@Test(groups={"ProductDetail","Regression","Regression_Mobile","Regression_Tablet"})
-	public void PD_TC10_VerifyProductDetail_SoldOut() throws IOException {
+	public void PD_TC11_VerifyProductDetail_SoldOut() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 		BasePage basePage=new BasePage(this.getDriver());
 

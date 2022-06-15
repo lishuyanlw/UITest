@@ -9,15 +9,13 @@ import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 
-public class PD_TC11_VerifyProductDetail_AddToBag extends BaseTest{
+public class PD_TC13_VerifyProductDetail_FavIconAction extends BaseTest{
 	/*
-	 * CER-583
-	 * CER-606
-	 * CER-608
+	 * CER-585
 	 * CER-818
 	 */
 	@Test(groups={"ProductDetail","Regression","Regression_Mobile","Regression_Tablet"})
-	public void PD_TC11_VerifyProductDetail_AddToBag() throws IOException {
+	public void PD_TC13_VerifyProductDetail_FavIconAction() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 		BasePage basePage=new BasePage(this.getDriver());
 
@@ -25,33 +23,37 @@ public class PD_TC11_VerifyProductDetail_AddToBag extends BaseTest{
 		reporter.reportLog("ProductDetail Page");
 
 		List<String> lstKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_APISearchingKeyword();
+		String lsTellYourFriendsSentMessage=TestDataHandler.constantData.getSearchResultPage().getLbl_TellYourFriendsSentMessage();
+		String lsUserName=TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
+		String lsPassword=TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
+
+		reporter.reportLog("Switch to ProductDetail page");
 		String lsProductNumber,lsUrl;
 
 		Map<String,Object> outputDataCriteria= new HashMap<String,Object>();
 		outputDataCriteria.put("video", "0");
 		outputDataCriteria.put("style", "1");
 		outputDataCriteria.put("size", "1");
-		if(getProductDetailPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList,"AllConditionsWithoutCheckingSoldOutCriteria",outputDataCriteria)) {
-			String lbl_AddToBagPopupWindowTitle=TestDataHandler.constantData.getSearchResultPage().getLbl_AddToBagPopupWindowTitle();
+		if(getProductDetailPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList,"AddToBag",outputDataCriteria)) {
 			reporter.reportLog("Verify URL");
-			int shoppingCartCount = getProductDetailPageThreadLocal().getShoppingCartNumber();
 			lsProductNumber=getProductDetailPageThreadLocal().selectedProduct.productNumber;
 			lsUrl=basePage.URL();
 			reporter.softAssert(lsUrl.contains("productdetails"),"The Url is containing productdetails","The Url is not containing productdetails");
-			reporter.reportLog("Switch to ProductDetail page");
 			reporter.softAssert(lsUrl.contains(lsProductNumber),"The Url is containing selected product number of "+lsProductNumber,"The Url is not containing selected product number of "+lsProductNumber);
 
-			reporter.reportLog("Verify product Add to Bag button");
-			getProductDetailPageThreadLocal().verifyProductAddToBagButton();
+			reporter.reportLog("Verify FavIcon contents");
+			getProductDetailPageThreadLocal().verifyPopupDialogAfterClickingFavIcon();
 
-			reporter.reportLog("Verify product Add to Bag title and contents");
-			getProductDetailPageThreadLocal().verifyProductDetailsInAddToBagPopupWindow(lbl_AddToBagPopupWindowTitle,getProductDetailPageThreadLocal().selectedProduct);
+			reporter.reportLog("Verify FavIcon action");
+			getProductDetailPageThreadLocal().verifyFavIconAction(lsUserName, lsPassword);
 
-			reporter.reportLog("Verify Shopping cart number");
-			getProductDetailPageThreadLocal().verifyShoppingCartNumber(shoppingCartCount);
+			if(getProductDetailPageThreadLocal().getShoppingCartNumber()>0){
+				reporter.reportLog("Removing Items from shopping Cart after test");
+				getShoppingCartThreadLocal().removeItemsAddedToShoppingCart();
+			}
 		}
 		else {
-			reporter.reportLogFail("Unable to find the product item with Review, EasyPay, Swatch item>=4 and Video");
+			reporter.reportLogFail("Unable to find the product item");
 		}
 	}
 }

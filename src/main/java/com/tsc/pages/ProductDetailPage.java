@@ -127,6 +127,9 @@ public class ProductDetailPage extends BasePage {
 	public WebElement lblProductReviewCount;
 
 	//Price part
+	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__prices--layout']")
+	public WebElement cntProductPriceContainer;
+
 	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__prices--is-price']")
 	public WebElement lblProductNowPrice;
 
@@ -151,6 +154,9 @@ public class ProductDetailPage extends BasePage {
 	public WebElement lblProductEasyPayPopupContent;
 
 	//Shipping part
+	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__prices__saving-and-shipping']")
+	public WebElement cntProductShippingAndSavingsContainer;
+
 	@FindBy(xpath = "//section[@class='pdp-description']//span[@class='pdp-description__prices__saving-and-shipping__savings-amount']")
 	public WebElement lblProductSavings;
 
@@ -351,8 +357,7 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//section[@class='pdp-description']//button[@class='pdp-description__add-to-bag__add-to-bag-button']")
 	public WebElement btnAddToBag;
 
-	//Need to be changed later
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@id='divAddToCart']//div[@id='divAdvanceOrder']")
+	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__advance-order']")
 	public WebElement lblAdvanceOrderMsg;
 
 	//Add to favorites
@@ -1321,6 +1326,11 @@ public class ProductDetailPage extends BasePage {
 	 * @author Wei.Li
 	 */
 	public void verifyProductSize() {
+		if(!this.judgeStyleSizeAvailable(false)){
+			reporter.reportLog("No Size available");
+			return;
+		}
+
 		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblSizeStatic),"Product size title is existing","Product size title is not existing");
 		reporter.softAssert(this.lstRadioSizeLabelList.size()>0,"Product size radio list is existing","Product size radio list is not existing");
 		reporter.softAssert(checkProductSizingChangeAction(),"Product size changing action is working","Product size changing action is not working");
@@ -1820,10 +1830,18 @@ public class ProductDetailPage extends BasePage {
 
 	public void verifyProductPriceAndShipping() {
 		reporter.softAssert(!this.getElementText(this.lblProductNowPrice).isEmpty(),"The product Now price is not empty","The product Now price is empty");
-		reporter.softAssert(!this.getElementText(this.lblProductWasPrice).isEmpty(),"The product Was price is not empty","The product Was price is empty");
-		reporter.softAssert(!this.getElementText(this.lblProductNowPrice).isEmpty()&&!this.getElementText(this.lblProductWasPrice).isEmpty(),"The product price range is not empty","The product price range is empty");
-		reporter.softAssert(!this.getElementText(this.lblProductSavings).isEmpty(),"The product Saving message is not empty","The product Saving message is empty");
-		reporter.softAssert(!this.getElementText(this.lblProductShipping).isEmpty(),"The product Shipping message is not empty","The product Shipping message is empty");
+		if(this.getChildElementCount(this.cntProductPriceContainer)>1){
+			reporter.softAssert(!this.getElementText(this.lblProductWasPrice).isEmpty(),"The product Was price is not empty","The product Was price is empty");
+			reporter.softAssert(!this.getElementText(this.lblProductNowPrice).isEmpty()&&!this.getElementText(this.lblProductWasPrice).isEmpty(),"The product price range is not empty","The product price range is empty");
+		}
+
+		if(this.checkChildElementExistingByAttribute(this.cntProductShippingAndSavingsContainer,"class","pdp-description__prices__saving-and-shipping__shipping")){
+			reporter.softAssert(!this.getElementText(this.lblProductShipping).isEmpty(),"The product Shipping message is not empty","The product Shipping message is empty");
+		}
+
+		if(this.checkChildElementExistingByAttribute(this.cntProductShippingAndSavingsContainer,"class","pdp-description__prices__saving-and-shipping__savings")){
+			reporter.softAssert(!this.getElementText(this.lblProductSavings).isEmpty(),"The product Saving message is not empty","The product Saving message is empty");
+		}
 	}
 
 	public void verifyEasyPay(){
@@ -1946,13 +1964,6 @@ public class ProductDetailPage extends BasePage {
 		if(this.getChildElementCount(this.cntReviewTabPagination)>0) {
 			reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.cntReviewTabPagination),"The Review pagination section is displaying correctly","The Review pagination section is not displaying correctly");
 		}*/
-	}
-
-	public void verifyProductAdvancedOrderMessage() {
-//		this.chooseGivenStyleAndSize(selectedProduct.productEDPColor,selectedProduct.productEDPSize);
-
-		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblAdvanceOrderMsg),"The Advanced order message is displaying correctly","The Advanced order message is not displaying correctly");
-		reporter.softAssert(!this.getElementText(this.lblAdvanceOrderMsg).isEmpty(),"The Advanced order message is not empty","The Advanced order message is empty");
 	}
 
 	public void verifyProductSoldOutBasicInfo() {
@@ -2903,6 +2914,14 @@ public class ProductDetailPage extends BasePage {
 		while(!checkThumbnailPrevButtonExisting());
 
 		return true;
+	}
+
+	/**
+	 * To verify Product AdvancedOrder Message
+	 */
+	public void verifyProductAdvancedOrderMessage() {
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAdvanceOrderMsg);
+		reporter.softAssert(!this.lblAdvanceOrderMsg.getText().isEmpty(),"The Advanced order message is not empty","The Advanced order message is empty");
 	}
 
 }

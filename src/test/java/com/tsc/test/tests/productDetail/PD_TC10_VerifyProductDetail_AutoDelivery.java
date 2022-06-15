@@ -1,18 +1,19 @@
 package com.tsc.test.tests.productDetail;
 
-import java.io.IOException;
-import org.testng.annotations.Test;
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
+import org.testng.annotations.Test;
 
-public class PD_TC09_VerifyProductDetail_AdvancedOrder extends BaseTest{
+import java.io.IOException;
+
+public class PD_TC10_VerifyProductDetail_AutoDelivery extends BaseTest{
 	/*
 	 * CER-602
 	 *
 	 */
 	@Test(groups={"ProductDetail","Regression","Regression_Mobile","Regression_Tablet"})
-	public void PD_TC09_VerifyProductDetail_AdvancedOrder() throws IOException {
+	public void PD_TC10_VerifyProductDetail_AutoDelivery() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 
 		BasePage basePage=new BasePage(this.getDriver());
@@ -20,7 +21,7 @@ public class PD_TC09_VerifyProductDetail_AdvancedOrder extends BaseTest{
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(basePage.getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");
 		reporter.reportLog("ProductDetail Page");
 
-		String lsKeyword=TestDataHandler.constantData.getSearchResultPage().getLbl_AdvancedOrderkeyword();
+		String lsKeyword=TestDataHandler.constantData.getSearchResultPage().getLbl_AutoDeliverykeyword();
 		String lsQuantityNumberToShowLeftItemInfo=TestDataHandler.constantData.getSearchResultPage().getLbl_QuantityNumberToShowLeftItemInfo();
 
 		reporter.reportLog("Switch to ProductDetail page");
@@ -33,9 +34,6 @@ public class PD_TC09_VerifyProductDetail_AdvancedOrder extends BaseTest{
 			lsUrl=basePage.URL();
 			reporter.softAssert(lsUrl.contains("productdetails"),"The Url is containing productdetails","The Url is not containing productdetails");
 			reporter.softAssert(lsUrl.contains(lsProductNumber),"The Url is containing selected product number of "+lsProductNumber,"The Url is not containing selected product number of "+lsProductNumber);
-
-			reporter.reportLog("Verify Advanced order message");
-			getProductDetailPageThreadLocal().verifyProductAdvancedOrderMessage();
 
 			reporter.reportLog("Verify product name,brand name and product number");
 			getProductDetailPageThreadLocal().verifyProductBasicInfo();
@@ -57,7 +55,7 @@ public class PD_TC09_VerifyProductDetail_AdvancedOrder extends BaseTest{
 
 		}
 		else {
-			reporter.reportLogFail("Unable to find the advanced order product item");
+			reporter.reportLogFail("Unable to find the auto delivery product item");
 		}
 	}
 }
