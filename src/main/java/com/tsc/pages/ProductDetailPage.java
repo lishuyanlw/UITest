@@ -1971,21 +1971,21 @@ public class ProductDetailPage extends BasePage {
 	public void verifyProductSoldOut() throws IOException {
 		this.chooseGivenStyleAndSize(selectedProduct.productEDPColor,selectedProduct.productEDPSize);
 
-		WebElement item;
-		if(this.checkChildElementExistingByTagName(this.selectQuantityOption,"option")){
-			int listSize = this.lstSizeOption.size();
-			for(int counter=0;counter<listSize;counter++){
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectSizeOption);
-				this.getReusableActionsInstance().clickIfAvailable(this.selectSizeOption);
-				this.getReusableActionsInstance().staticWait(100);
-				item=this.lstSizeOption.get(counter);
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-				item.click();
-				this.getReusableActionsInstance().staticWait(100);
-				if(!this.checkChildElementExistingByTagName(this.selectQuantityOption,"option"))
-					break;
-			}
-		}
+//		WebElement item;
+//		if(this.checkChildElementExistingByTagName(this.selectQuantityOption,"option")){
+//			int listSize = this.lstSizeOption.size();
+//			for(int counter=0;counter<listSize;counter++){
+//				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectSizeOption);
+//				this.getReusableActionsInstance().clickIfAvailable(this.selectSizeOption);
+//				this.getReusableActionsInstance().staticWait(100);
+//				item=this.lstSizeOption.get(counter);
+//				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+//				item.click();
+//				this.getReusableActionsInstance().staticWait(100);
+//				if(!this.checkChildElementExistingByTagName(this.selectQuantityOption,"option"))
+//					break;
+//			}
+//		}
 		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblSoldOut),"The Soldout message is displaying correctly","The Soldout message is not displaying correctly");
 		reporter.softAssert(this.getElementText(this.lblSoldOut).equalsIgnoreCase("Out of Stock"),"The Soldout message is displaying correctly","The Soldout message is not displaying correctly");
 		reporter.softAssert(this.checkOutOfStockForQuantityDropdown(),"The Quantity Dropdown for Soldout is displaying correctly","The Quantity Dropdown for Soldout is not displaying correctly");
@@ -2267,7 +2267,7 @@ public class ProductDetailPage extends BasePage {
 		if(checkIfFavShareMobileHighlighted())
 			this.getReusableActionsInstance().clickIfAvailable(this.lnkFavIcon);
 		this.getReusableActionsInstance().clickIfAvailable(this.lnkFavIcon);
-		this.waitForCondition(Driver->{return checkIfFavShareMobileHighlighted();},5000);
+		this.waitForCondition(Driver->{return checkIfFavShareMobileHighlighted();},20000);
 		reporter.softAssert(checkIfFavShareMobileHighlighted(),"The FavShareMobile icon is highlighted after clicking with user login", "The FavShareMobile icon is not highlighted after clicking with user login");
 	}
 
@@ -2299,7 +2299,7 @@ public class ProductDetailPage extends BasePage {
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavIconPopupSignIn);
 		this.getReusableActionsInstance().clickIfAvailable(this.lnkFavIconPopupSignIn);
-		this.waitForCondition(Driver->{return this.URL().contains("signin");},10000);
+		this.waitForCondition(Driver->{return this.URL().contains("signin");},20000);
 		if(this.URL().contains("signin")){
 			reporter.reportLogPass("The URL has been navigated to SignIn page correctly");
 		}
@@ -2316,7 +2316,7 @@ public class ProductDetailPage extends BasePage {
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavIconPopupRegister);
 		this.getReusableActionsInstance().clickIfAvailable(this.lnkFavIconPopupRegister);
-		this.waitForCondition(Driver->{return this.URL().contains("createaccount");},10000);
+		this.waitForCondition(Driver->{return this.URL().contains("createaccount");},20000);
 		if(this.URL().contains("createaccount")){
 			reporter.reportLogPass("The URL has been navigated to Register page correctly");
 		}
@@ -2442,7 +2442,6 @@ public class ProductDetailPage extends BasePage {
 			}
 		}
 
-		System.out.println(apiResponse.selectedProduct.pdpNavigationUrl);
 		reporter.reportLog(apiResponse.selectedProduct.pdpNavigationUrl);
 		this.getDriver().get(apiResponse.selectedProduct.pdpNavigationUrl);
 

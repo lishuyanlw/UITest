@@ -148,6 +148,7 @@ public class ApiResponse extends ApiConfigs {
         	return null;
         }
 
+		ProductDetailsItem productDetailsItem=null;
     	selectedProduct.init();
         do{
             if(outputDataCriteria==null){
@@ -163,48 +164,33 @@ public class ApiResponse extends ApiConfigs {
                     	else {
                     		continue;
                     	}
-                    	
-                    	List<edps> edpsList=data.getEdps(); 
-                    	if(isSoldOut) {
-                        	//To check if any Inventory is equal to 0, then get the related Style and Size, 
-                        	//which we will use in PDP to select the style and size in order to get soldout information
-                        	bSoldout=false;
-                        	for(edps Edps:edpsList) {
-                        		if(Edps.Inventory==0) {
-                        			bSoldout=true;
-                        			selectedProduct.productEDPColor=Edps.getStyle();
-                        			selectedProduct.productEDPSize=Edps.getSize();
-                        			break;
-                        		}
-                        	}
-                        	if(!bSoldout) {
-                        		continue;
-                        	}
-                        	else {
-                        		//To check if any Inventory is greater than 0, then get the related Style and Size, 
-                            	//which we will use in PDP to select the style and size in order to get Enabled AddToBag information
-                        		for(edps Edps:edpsList) {
-                            		if(Edps.Inventory>0) {                			
-                            			selectedProduct.productEDPSize=Edps.getStyle();
-                            			selectedProduct.productEDPColor=Edps.getSize();
-                            			break;
-                            		}
-                            	}
-                        	}
-                    	}
-                    	else {
-                    		//To check if any Inventory is greater than 0, then get the related Style and Size, 
-                        	//which we will use in PDP to select the style and size in order to get Enabled AddToBag information
-                    		for(edps Edps:edpsList) {
-                        		if(Edps.Inventory>0) {                			
-                        			selectedProduct.productEDPSize=Edps.getStyle();
-                        			selectedProduct.productEDPColor=Edps.getSize();
-                        			break;
-                        		}
-                        	}
-                    	}
-                     	
-                    	productItem=data;
+
+						productDetailsItem=getProductDetailsForSpecificProductNumber(data.getItemNo());
+						List<ProductDetailsItem.Edp> edpsList=productDetailsItem.getEdps();
+						if(isSoldOut) {
+							//To check if any Inventory is equal to 0, then get the related Style and Size,
+							//which we will use in PDP to select the style and size in order to get soldout information
+							for(ProductDetailsItem.Edp Edps:edpsList) {
+								if(Edps.Inventory==0) {
+									selectedProduct.productEDPColor=Edps.getStyle();
+									selectedProduct.productEDPSize=Edps.getSize();
+									break;
+								}
+							}
+						}
+						else {
+							//To check if any Inventory is greater than 0, then get the related Style and Size,
+							//which we will use in PDP to select the style and size in order to get Enabled AddToBag information
+							for(ProductDetailsItem.Edp Edps:edpsList) {
+								if(Edps.Inventory>0) {
+									selectedProduct.productEDPSize=Edps.getSize();
+									selectedProduct.productEDPColor=Edps.getStyle();
+									break;
+								}
+							}
+						}
+
+						productItem=data;
                         flag = false;
                         selectedProduct.productNumber=data.getItemNo();
                 		selectedProduct.productName=data.getName();
@@ -439,7 +425,6 @@ public class ApiResponse extends ApiConfigs {
     	
         int videoCount=-1,styleCount=3,sizeCount=3;
 		String lsNowPrice,lsWasPrice;
-        boolean bSoldout=false;
 
         if(configs!=null) {
         	for(Map.Entry<String,Object> entry:configs.entrySet()){
@@ -455,6 +440,7 @@ public class ApiResponse extends ApiConfigs {
          }
  
         Product.Products productItem=null;
+		ProductDetailsItem productDetailsItem=null;
         for(Product.Products data:product.getProducts()) {
         	lsNowPrice=data.getIsPriceRange();
         	lsWasPrice=data.getWasPriceRange();
@@ -487,41 +473,26 @@ public class ApiResponse extends ApiConfigs {
 					}
 				}
 
-            	List<edps> edpsList=data.getEdps(); 
+				productDetailsItem=getProductDetailsForSpecificProductNumber(data.getItemNo());
+            	List<ProductDetailsItem.Edp> edpsList=productDetailsItem.getEdps();
             	if(isSoldOut) {
                 	//To check if any Inventory is equal to 0, then get the related Style and Size, 
                 	//which we will use in PDP to select the style and size in order to get soldout information
-                	bSoldout=false;
-                	for(edps Edps:edpsList) {
+                	for(ProductDetailsItem.Edp Edps:edpsList) {
                 		if(Edps.Inventory==0) {
-                			bSoldout=true;
                 			selectedProduct.productEDPColor=Edps.getStyle();
                 			selectedProduct.productEDPSize=Edps.getSize();
                 			break;
                 		}
                 	}
-                	if(!bSoldout) {
-                		continue;
-                	}
-                	else {
-                		//To check if any Inventory is greater than 0, then get the related Style and Size, 
-                    	//which we will use in PDP to select the style and size in order to get Enabled AddToBag information
-                		for(edps Edps:edpsList) {
-                    		if(Edps.Inventory>0) {                			
-                    			selectedProduct.productEDPSize=Edps.getStyle();
-                    			selectedProduct.productEDPColor=Edps.getSize();
-                    			break;
-                    		}
-                    	}
-                	}
             	}
             	else {
             		//To check if any Inventory is greater than 0, then get the related Style and Size, 
                 	//which we will use in PDP to select the style and size in order to get Enabled AddToBag information
-            		for(edps Edps:edpsList) {
+            		for(ProductDetailsItem.Edp Edps:edpsList) {
                 		if(Edps.Inventory>0) {                			
-                			selectedProduct.productEDPSize=Edps.getStyle();
-                			selectedProduct.productEDPColor=Edps.getSize();
+                			selectedProduct.productEDPSize=Edps.getSize();
+                			selectedProduct.productEDPColor=Edps.getStyle();
                 			break;
                 		}
                 	}
@@ -557,8 +528,8 @@ public class ApiResponse extends ApiConfigs {
         		for(edps Edps:edpsList) {
             		if(Edps.Inventory>0) {  
             			bAddToBag=true;
-            			selectedProduct.productEDPSize=Edps.getStyle();
-            			selectedProduct.productEDPColor=Edps.getSize();
+            			selectedProduct.productEDPSize=Edps.getSize();
+            			selectedProduct.productEDPColor=Edps.getStyle();
             			break;
             		}
             	}
@@ -651,8 +622,8 @@ public class ApiResponse extends ApiConfigs {
             	for(edps Edps:edpsList) {
             		if(Edps.Inventory==0) {
             			bSoldout=true;
-            			selectedProduct.productEDPSize=Edps.getStyle();
-            			selectedProduct.productEDPColor=Edps.getSize();
+            			selectedProduct.productEDPSize=Edps.getSize();
+            			selectedProduct.productEDPColor=Edps.getStyle();
             			break;
             		}
             	}
@@ -706,8 +677,8 @@ public class ApiResponse extends ApiConfigs {
                     	for(edps Edps:edpsList) {
                     		if(Edps.Inventory==0) {
                     			bSoldout=true;
-                    			selectedProduct.productEDPSize=Edps.getStyle();
-                    			selectedProduct.productEDPColor=Edps.getSize();
+                    			selectedProduct.productEDPSize=Edps.getSize();
+                    			selectedProduct.productEDPColor=Edps.getStyle();
                     			break;
                     		}
                     	}
