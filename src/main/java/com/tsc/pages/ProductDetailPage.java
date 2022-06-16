@@ -56,10 +56,10 @@ public class ProductDetailPage extends BasePage {
 	public WebElement currentThumbnailItem;
 
 	@FindBy(xpath = "//section[@class='pdp-gallery']//div[@id='thumbGallery']//div[@id='pdp__galleryThumb']//button[contains(@class,'swiper-slide-visible')][@data-video]")
-	public WebElement lnkThumbnailVideo;
+	public List<WebElement> lstThumbnailVideoLink;
 
 	@FindBy(xpath = "//section[@class='pdp-gallery']//div[@id='thumbGallery']//div[@id='pdp__galleryThumb']//button[contains(@class,'swiper-slide-visible')][@data-video]//img")
-	public WebElement imgThumbnailVideo;
+	public List<WebElement> lstThumbnailVideoImage;
 
 	//Video part
 	@FindBy(xpath = "//section[@class='pdp-gallery']//div[@class='video-container']")
@@ -127,6 +127,9 @@ public class ProductDetailPage extends BasePage {
 	public WebElement lblProductReviewCount;
 
 	//Price part
+	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__prices--layout']")
+	public WebElement cntProductPriceContainer;
+
 	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__prices--is-price']")
 	public WebElement lblProductNowPrice;
 
@@ -151,12 +154,21 @@ public class ProductDetailPage extends BasePage {
 	public WebElement lblProductEasyPayPopupContent;
 
 	//Shipping part
+	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__prices__saving-and-shipping']")
+	public WebElement cntProductShippingAndSavingsContainer;
+
 	@FindBy(xpath = "//section[@class='pdp-description']//span[@class='pdp-description__prices__saving-and-shipping__savings-amount']")
 	public WebElement lblProductSavings;
 
 	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__prices__saving-and-shipping']")
 	public WebElement lblProductShipping;
-    //All changes for new xpath as per design change are ended here
+
+	//Delivery Options
+	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__form__auto-delivery__selections']/b")
+	public WebElement lblProductDeliveryOptionsTitle;
+
+	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__form__auto-delivery__selections']/select")
+	public WebElement drpProductDeliveryOptionsMenu;
 
 	//Style part
 	@FindBy(xpath = "//section[@class='pdp-description']//form[@class='pdp-description__form']")
@@ -241,6 +253,10 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//div[contains(@class,'tfp-app')]//div[@class='main-content']//div[@class='prompt-subtitle']")
 	public WebElement lblProductTrueFitIframePageSubTitle;
 
+	@FindBy(xpath = "//div[contains(@class,'tfp-app')]//div[@class='main-content']")
+	public WebElement cntProductTrueFitIframePageMainContent;
+
+	//Brand prompt
 	@FindBy(xpath = "//div[contains(@class,'tfp-app')]//div[@class='main-content']//button[@aria-label='Search all brands']")
 	public WebElement btnProductTrueFitIframePageSearchAllBrands;
 
@@ -261,6 +277,14 @@ public class ProductDetailPage extends BasePage {
 
 	@FindBy(xpath = "//div[contains(@class,'tfp-app')]//div[@class='main-content']//button[contains(@class,'next')]//img")
 	public WebElement imgProductTrueFitIframePageNextButton;
+
+	//Height prompt
+	@FindBy(xpath = "//div[contains(@class,'tfp-app')]//div[@class='main-content']//div[contains(@class,'height')]//div[@class='slider-input-box']//input[1]")
+	public WebElement inputProductTrueFitIframeMeasureInput1;
+
+	@FindBy(xpath = "//div[contains(@class,'tfp-app')]//div[@class='main-content']//div[contains(@class,'height')]//div[@class='slider-input-box']//input[2]")
+	public WebElement inputProductTrueFitIframeMeasureInput2;
+
 
 	@FindBy(xpath = "//div[contains(@class,'tfp-app')]//div[@class='footer']")
 	public WebElement lblProductTrueFitIframeConfirmMessage;
@@ -333,8 +357,7 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//section[@class='pdp-description']//button[@class='pdp-description__add-to-bag__add-to-bag-button']")
 	public WebElement btnAddToBag;
 
-	//Need to be changed later
-	@FindBy(xpath = "//div[@class='ProductDetailWithFindmine']//div[@id='pdpMainDiv']//div[@id='divAddToCart']//div[@id='divAdvanceOrder']")
+	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__advance-order']")
 	public WebElement lblAdvanceOrderMsg;
 
 	//Add to favorites
@@ -367,48 +390,21 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//div[@id='accordion']//div[@class='field-wrapper']//div[@class='field-wrapper__content-wrapper']")
 	public List<WebElement> lstAccordionSectionContents;
 
-	//Sticky swiper container part
-	@FindBy(xpath = "//div[@class='sticky-swiper-container']")
-	public WebElement cntStickyContainner;
-
-	@FindBy(xpath = "//div[@class='sticky-swiper-container']//div[@class='stickyIcon']")
-	public WebElement imgStickyIcon;
-
-	@FindBy(xpath = "//div[@id='accordion']//div[@class='field-wrapper']")
-	public List<WebElement> lstStickyTabProductTabList;
-
-	@FindBy(xpath = "//div[@id='accordion']//div[@class='field-wrapper']//span[@class='field-wrapper__accordion-heading__text']")
-	public List<WebElement> lstStickyTabProductTabHeaderList;
-
-	@FindBy(xpath = "//div[@class='sticky-swiper-container']//a[@data-text='SIZE CHART']")
-	public WebElement btnStickyTabSizeChart;
-
-	@FindBy(xpath = "//div[@class='sticky-swiper-container']//a[@data-href='#pr-reviewdisplay']")
-	public WebElement btnStickyTabProductReview;
-
-	//Product Overview Tab part
-	@FindBy(xpath = "//div[contains(@class,'tabs')]//div[@id='infoTabContent']//div[@id='tab0']")
-	public WebElement lblProductOverviewTabContent;
-
-	//Product Size Chart Tab part
-	@FindBy(xpath = "//div[contains(@class,'tabs')]//div[@id='infoTabContent']//div[@id='tab1']")
-	public WebElement cntProductSizeChartTabContent;
-
-	@FindBy(xpath = "//div[@id='accordion']//span[@data-text='Size Chart']")
-	public WebElement lblProductSizeChartTabHeader;
-
-	@FindBy(xpath = "//div[contains(@class,'tabs')]//div[@id='infoTabContent']//img[contains(@src,'SIZE') and contains(@src,'CHART')]")
-	public List<WebElement> lstProductSizeChartTabContentList;
-
 	//Product Review Tab part
-	@FindBy(xpath = "//div[@id='productReviewSection']")
-	public WebElement cntReviewTabContent;
-
 	@FindBy(xpath = "//*[contains(@class,'customer-reviews')]")
 	public WebElement lblReviewTabHeader;
 
-	@FindBy(xpath = "//div[@id='productReviewSection']//section[@id='pr-review-snapshot']//div[@class='pr-review-snapshot-histogram']")
-	public WebElement imgReviewTabHistogram;
+	@FindBy(xpath = "//section[@class='pr-review-snapshot-block pr-review-snapshot-block-histogram']//ul//li")
+	public List<WebElement> lstReviewTabHistogramItem;
+
+	@FindBy(xpath = "//section[@class='pr-review-snapshot-block pr-review-snapshot-block-histogram']//ul//li//div[contains(@class,'pr-histogram-stars')]")
+	public List<WebElement> lstReviewTabHistogramClickingButton;
+
+	@FindBy(xpath = "//section[@class='pr-review-snapshot-block pr-review-snapshot-block-histogram']//ul//li//p[@class='pr-histogram-label']")
+	public List<WebElement> lstReviewTabHistogramItemLabel;
+
+	@FindBy(xpath = "//section[@class='pr-review-snapshot-block pr-review-snapshot-block-histogram']//ul//li//p[@class='pr-histogram-count']")
+	public List<WebElement> lstReviewTabHistogramItemCount;
 
 	@FindBy(xpath = "//section[@id='pr-review-snapshot']//div[@class='pr-snippet-stars-reco-stars']//div[@class='pr-snippet-rating-decimal']")
 	public WebElement lblReviewTabRateDecimalText;
@@ -422,7 +418,6 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//section[@id='pr-review-snapshot']//div[@class='pr-snippet-read-and-write']/span")
 	public WebElement lblReviewTabReviewCount;
 
-	//@FindBy(xpath = "//div[@id='productReviewSection']//a[contains(@href,'writereview')]")
 	@FindBy(xpath = "//section[@id='pr-review-snapshot']//a[contains(@href,'writereview')]")
 	public WebElement lnkReviewTabWriteReview;
 
@@ -441,7 +436,6 @@ public class ProductDetailPage extends BasePage {
 
 	public By byReviewTabFooter=By.xpath(".//footer");
 
-	//public By byReviewTabStarSection=By.xpath(".//div[@class='pr-rating-stars']//div[contains(@class,'pr-star-v4')]");
 	public By byReviewTabStarSection=By.xpath(".//div[@class='pr-rating-stars']");
 
 	public By byReviewTabStarList=By.xpath(".//div[@class='pr-rating-stars']//div[contains(@class,'pr-star-v4')]");
@@ -601,7 +595,6 @@ public class ProductDetailPage extends BasePage {
 	public WebElement lnkWriteReviewAfterSubmitPageContinueShopping;
 
 	//Add to Bag popup window part
-	//For new designing
 	@FindBy(xpath = "//div[@class='secondary-navigation__popup-container']")
 	public WebElement cntAddToBagOverlay;
 
@@ -816,25 +809,6 @@ public class ProductDetailPage extends BasePage {
 	}
 
 	/**
-	 * Method to check if TrueFit part is existing
-	 * @return true/false
-	 * @author Wei.Li
-	 */
-	public boolean judgeStyleTrueFitExisting() {
-		if(this.checkChildElementExistingByAttribute(this.cntProductStyleAndSizeJudgeIndicator, "class", "pdp-description__form__size-chart-wrapper")){
-			if(!this.cntProductTrueFitSection.getCssValue("height").equalsIgnoreCase("0px")){
-				return true;
-			}
-			else{
-				return false;
-			}
-		}
-		else{
-			return false;
-		}
-	}
-
-	/**
 	 * Method to load product true fit iframe
 	 * @return true/false
 	 * @author Wei.Li
@@ -955,12 +929,6 @@ public class ProductDetailPage extends BasePage {
 		this.getReusableActionsInstance().clickIfAvailable(this.btnThumbnailNext);
 		//Keep it to wait for clicking action result
 		this.getReusableActionsInstance().staticWait(300);
-
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnThumbnailNext);
-		this.getReusableActionsInstance().clickIfAvailable(this.btnThumbnailNext);
-		//Keep it to wait for clicking action result
-		this.getReusableActionsInstance().staticWait(300);
-
 		String lsLastIamgeSrcAfter=this.lstThumbnailImageList.get(0).findElement(By.xpath(".//img")).getAttribute("src");
 
 		reporter.softAssert(!lsLastImageSrcBefore.equalsIgnoreCase(lsLastIamgeSrcAfter), "The Next button clicking is working", "The Next button clicking is not working");
@@ -1016,7 +984,7 @@ public class ProductDetailPage extends BasePage {
 				labelItem=this.lstRadioStyleLabelList.get(i);
 
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblRadioProductStyleStatic);
-				labelItem.click();
+				this.clickElement(labelItem);
 				this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 				lsText=this.btnRadioProductStyleSelectedLabel.getAttribute("style").split("url")[1];
 				lsSwatch=this.getImageNameFromThumbnailOrZoomImagePath(lsText);
@@ -1080,7 +1048,7 @@ public class ProductDetailPage extends BasePage {
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblRadioProductStyleStatic);
 				lsBeforeStyleName=this.getCurrentSwatchStyle();
 
-				labelItem.click();
+				this.clickElement(labelItem);
 				this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 				lsAfterStyleName=this.getCurrentSwatchStyle();
 
@@ -1325,7 +1293,7 @@ public class ProductDetailPage extends BasePage {
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSizeStatic);
 			lsBeforeSizeName=this.getCurrentSize();
 
-			labelItem.click();
+			this.clickElement(labelItem);
 			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 			lsAfterSizeName=this.getCurrentSize();
 
@@ -1341,13 +1309,20 @@ public class ProductDetailPage extends BasePage {
 	 * @return void
 	 * @author Wei.Li
 	 */
-	public void verifyProductSizeChangingAction() {
+	public void verifyProductSize() {
+		if(!this.judgeStyleSizeAvailable(false)){
+			reporter.reportLog("No Size available");
+			return;
+		}
+
 		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblSizeStatic),"Product size title is existing","Product size title is not existing");
 		reporter.softAssert(this.lstRadioSizeLabelList.size()>0,"Product size radio list is existing","Product size radio list is not existing");
 		reporter.softAssert(checkProductSizingChangeAction(),"Product size changing action is working","Product size changing action is not working");
 		if(IsSoldOutExisting()) {
 			reporter.softAssert(!this.getElementText(this.lblSoldOut).isEmpty(),"The product Soldout message is not empty","The product Soldout message is empty");
 		}
+
+		checkProductSizingChangeAction();
 
 		if(checkProductSizingChartExisting()) {
 			//Will change later
@@ -1361,7 +1336,7 @@ public class ProductDetailPage extends BasePage {
 	 * @author Wei.Li
 	 */
 	public void verifyProductSizeTrueFit() {
-		if(judgeStyleTrueFitExisting()) {
+		if(checkProductSizingChartExisting()) {
 			reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.imgProductTrueFitLogo),"The product TrueFit icon is displaying correctly","The product TrueFit icon is not displaying correctly");
 			reporter.softAssert(!this.getElementHref(this.lnkProductTrueFitLink).isEmpty(),"The product TrueFit link is not empty","The product TrueFit link is empty");
 
@@ -1418,36 +1393,12 @@ public class ProductDetailPage extends BasePage {
 			reporter.reportLogFailWithScreenshot("The page Subtitle on product TrueFit popup window is not displaying correctly");
 		}
 
-		if(this.getReusableActionsInstance().isElementVisible(this.btnProductTrueFitIframePageSearchAllBrands)){
-			reporter.reportLogPass("The search all brands button on product TrueFit popup window is displaying correctly");
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.cntProductTrueFitIframePageMainContent);
+		if(this.getReusableActionsInstance().isElementVisible(cntProductTrueFitIframePageMainContent)){
+			reporter.reportLogPass("The page main content on product TrueFit popup window is displaying correctly");
 		}
 		else{
-			reporter.reportLogFailWithScreenshot("The search all brands button on product TrueFit popup window is not displaying correctly");
-		}
-
-		if(this.lstProductTrueFitIframeSuggestedBrandList.size()>0){
-			reporter.reportLogPass("The suggested brands on product TrueFit popup window is displaying correctly");
-		}
-		else{
-			reporter.reportLogFailWithScreenshot("The suggested brands on product TrueFit popup window is not displaying correctly");
-		}
-
-		if(this.checkChildElementExistingByTagNameAndAttribute(cntProductTrueFitIframeSuggestedBrandContainer,"button","class","prev")){
-			if(!this.imgProductTrueFitIframePagePrevButton.getAttribute("src").isEmpty()){
-				reporter.reportLogPass("The Prev button for suggested brands on product TrueFit popup window is displaying correctly");
-			}
-			else{
-				reporter.reportLogFailWithScreenshot("The Prev button for suggested brands on product TrueFit popup window is not displaying correctly");
-			}
-		}
-
-		if(this.checkChildElementExistingByTagNameAndAttribute(cntProductTrueFitIframeSuggestedBrandContainer,"button","class","next")){
-			if(!this.imgProductTrueFitIframePageNextButton.getAttribute("src").isEmpty()){
-				reporter.reportLogPass("The Next button for suggested brands on product TrueFit popup window is displaying correctly");
-			}
-			else{
-				reporter.reportLogFailWithScreenshot("The Next button for suggested brands on product TrueFit popup window is not displaying correctly");
-			}
+			reporter.reportLogFailWithScreenshot("The page main content on product TrueFit popup window is not displaying correctly");
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblProductTrueFitIframeConfirmMessage);
@@ -1464,20 +1415,6 @@ public class ProductDetailPage extends BasePage {
 		else{
 			reporter.reportLogFailWithScreenshot("The Privacy Policy on the footer for suggested brands on product TrueFit popup window is not displaying correctly");
 		}
-	}
-
-	/**
-	 * Method to verify product Sizing chart
-	 * @return void
-	 * @author Wei.Li
-	 */
-	public void verifyProductQuantitySizingChart() {
-		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lnkSizingChart),"The product Sizing Chart is existing","The product Sizing Chart is not existing");
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkSizingChart);
-		this.getReusableActionsInstance().clickIfAvailable(this.lnkSizingChart);
-		//this.lnkSizingChart.click();
-		this.waitForCondition(Driver->{return this.btnStickyTabSizeChart.getAttribute("class").contains("selected");},5000);
-		reporter.softAssert(this.getStickyTabSelectedStatus(this.btnStickyTabSizeChart),"The SIZE CHART tab has been selected correctly","The SIZE CHART tab has not been selected correctly");
 	}
 
 	/**
@@ -1516,7 +1453,7 @@ public class ProductDetailPage extends BasePage {
 				labelItem=this.lstRadioStyleLabelList.get(i);
 
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(radioItem);
-				labelItem.click();
+				this.clickElement(labelItem);
 				this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 				lsStyle=this.getCurrentSwatchStyle();
 
@@ -1558,7 +1495,7 @@ public class ProductDetailPage extends BasePage {
 		loopSize=this.lstRadioSizeLabelSpanList.size();
 		for(int i=0;i<loopSize;i++) {
 			labelItem=this.lstRadioSizeLabelList.get(i);
-			labelItem.click();
+			this.clickElement(labelItem);
 			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 			lsSize=this.getCurrentSize();
 
@@ -1776,6 +1713,14 @@ public class ProductDetailPage extends BasePage {
 
 		reporter.softAssert(!getAutoPlayVideoToolTipPopupMsg().isEmpty(),"The AutoPlayVideoToolTip is not empty","The AutoPlayVideoToolTip is empty");
 
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.cntThumbnailContainer),"The Thumbnail section is displaying correctly","The Thumbnail section is not displaying correctly");
+		for(WebElement item:this.lstThumbnailVideoLink){
+			reporter.softAssert(!item.getAttribute("data-video").isEmpty(),"The video src is not empty","The video src is empty");
+		}
+
+		for(WebElement item:this.lstThumbnailVideoImage){
+			reporter.softAssert(item.getAttribute("src").contains("videoBtn.jpg"),"The video image is displaying correctly","The video image is not displaying correctly");
+		}
 	}
 
 	public void verifyVideoOff() {
@@ -1811,19 +1756,12 @@ public class ProductDetailPage extends BasePage {
 	}
 
 	public void verifyThumbnail() {
-		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.cntThumbnailContainer),"The Thumbnail section is displaying correctly","The Thumbnail section is not displaying correctly");
-		reporter.softAssert(!this.lnkThumbnailVideo.getAttribute("data-video").isEmpty(),"The video src is not empty","The video src is empty");
-		reporter.softAssert(!this.imgThumbnailVideo.getAttribute("src").contains("videoBtn.jpg"),"The video image is displaying correctly","The video image is not displaying correctly");
-
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnThumbnailNext);
-		this.getReusableActionsInstance().clickIfAvailable(this.btnThumbnailNext);
-		//Keep it to wait for clicking action result
-		this.getReusableActionsInstance().staticWait(300);
-		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.btnThumbnailPrev),"The Thumbnail prev button is displaying correctly","The Thumbnail prev button is not displaying correctly");
-		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.btnThumbnailNext),"The Thumbnail next button is displaying correctly","The Thumbnail next button is not displaying correctly");
-
 		this.verifyThumbnailImageListSrc();
+
+		setPrevButtonDisplayingInThumbnailList();
 		this.verifyThumbnailPrevButton();
+
+		setNextButtonDisplayingInThumbnailList();
 		this.verifyThumbnailNextButton();
 	}
 
@@ -1862,12 +1800,37 @@ public class ProductDetailPage extends BasePage {
 
 	public void verifyProductPriceAndShipping() {
 		reporter.softAssert(!this.getElementText(this.lblProductNowPrice).isEmpty(),"The product Now price is not empty","The product Now price is empty");
-		reporter.softAssert(!this.getElementText(this.lblProductWasPrice).isEmpty(),"The product Was price is not empty","The product Was price is empty");
-		reporter.softAssert(!this.getElementText(this.lblProductNowPrice).isEmpty()&&!this.getElementText(this.lblProductWasPrice).isEmpty(),"The product price range is not empty","The product price range is empty");
+		if(this.getChildElementCount(this.cntProductPriceContainer)>1){
+			reporter.softAssert(!this.getElementText(this.lblProductWasPrice).isEmpty(),"The product Was price is not empty","The product Was price is empty");
+			reporter.softAssert(!this.getElementText(this.lblProductNowPrice).isEmpty()&&!this.getElementText(this.lblProductWasPrice).isEmpty(),"The product price range is not empty","The product price range is empty");
+		}
 
+		if(this.checkChildElementExistingByAttribute(this.cntProductShippingAndSavingsContainer,"class","pdp-description__prices__saving-and-shipping__shipping")){
+			reporter.softAssert(!this.getElementText(this.lblProductShipping).isEmpty(),"The product Shipping message is not empty","The product Shipping message is empty");
+		}
+
+		if(this.checkChildElementExistingByAttribute(this.cntProductShippingAndSavingsContainer,"class","pdp-description__prices__saving-and-shipping__savings")){
+			reporter.softAssert(!this.getElementText(this.lblProductSavings).isEmpty(),"The product Saving message is not empty","The product Saving message is empty");
+		}
+	}
+
+	public void verifyEasyPay(){
 		//Verify Easypay and popup dialog content
 		if(this.checkProductEasyPayExisting()){
 			reporter.softAssert(!this.getElementText(this.lblProductEasyPay).isEmpty(),"The product EasyPay message is not empty","The product EasyPay message is empty");
+
+			//verify nowPrice and installation sum
+			float nowPrice=this.getFloatFromString(this.getElementInnerText(this.lblProductNowPrice),true);
+			String[] lstProductEasyPay=this.getElementInnerText(this.lblProductEasyPay).split("of");
+			int installationCount=this.getIntegerFromString(lstProductEasyPay[0]);
+			float intallationFee=this.getFloatFromString(lstProductEasyPay[1],true);
+			if(Math.abs(nowPrice-installationCount*intallationFee)<0.1){
+				reporter.reportLogPass("Installation sum is equal to nowPrice");
+			}
+			else{
+				reporter.reportLogPass("Installation sum is not equal to nowPrice");
+			}
+
 			this.verifyEasyPayPopUp();
 			reporter.softAssert(!this.getElementText(this.btnProductEasyPay).isEmpty(),"The product EasyPay button is displaying correctly","The product EasyPay button is not displaying correctly");
 
@@ -1899,10 +1862,44 @@ public class ProductDetailPage extends BasePage {
 			this.btnProductEasyPayPopupClose.click();
 			this.getReusableActionsInstance().staticWait(300);
 		}
-		reporter.softAssert(!this.getElementText(this.lblProductSavings).isEmpty(),"The product Saving message is not empty","The product Saving message is empty");
-		reporter.softAssert(!this.getElementText(this.lblProductShipping).isEmpty(),"The product Shipping message is not empty","The product Shipping message is empty");
-		//Verify True Fit
-		this.verifyProductSizeTrueFit();
+	}
+
+	public void verifyProductDeliveryOptions() {
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblProductDeliveryOptionsTitle);
+		if(!lblProductDeliveryOptionsTitle.getText().isEmpty()){
+			reporter.reportLogPass("Delivery options title is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Delivery options title is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(drpProductDeliveryOptionsMenu);
+		Select select= new Select(drpProductDeliveryOptionsMenu);
+		String lsMenu,lsProductName;
+		for(int i=0;i<select.getOptions().size();i++){
+			select.selectByIndex(i);
+			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+			lsMenu=select.getFirstSelectedOption().getText().trim();
+			lsProductName=this.getElementInnerText(this.lblProductName);
+			if(lsMenu.equalsIgnoreCase(lsProductName)){
+				reporter.reportLogPass("The product name is changed correctly with delivery option change");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The product name is not changed correctly with delivery option change");
+			}
+		}
+
+		if(checkProductBadgeExisting()){
+			reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.imgProductBadge),"The product badge is displaying correctly","The product badge is not displaying correctly");
+		}
+
+		reporter.softAssert(!this.getElementText(this.lblProductName).isEmpty(),"The product name is not empty","The product name is empty");
+
+		if(checkProductBrandExisting()) {
+			reporter.softAssert(!this.getElementText(this.lnkBrandName).isEmpty(),"The product brand name is not empty","The product brand name is empty");
+		}
+
+		reporter.softAssert(!this.getElementText(this.lblProductNumber).isEmpty(),"The product number is not empty","The product number is empty");
 	}
 
 	public void verifyProductStyle() {
@@ -1939,11 +1936,6 @@ public class ProductDetailPage extends BasePage {
 		}*/
 	}
 
-	public void verifyProductAdvancedOrderMessage() {
-		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblAdvanceOrderMsg),"The Advanced order message is displaying correctly","The Advanced order message is not displaying correctly");
-		reporter.softAssert(!this.getElementText(this.lblAdvanceOrderMsg).isEmpty(),"The Advanced order message is not empty","The Advanced order message is empty");
-	}
-
 	public void verifyProductSoldOutBasicInfo() {
 		reporter.softAssert(!this.getElementText(this.lblProductName).isEmpty(),"The product name is not empty","The product name is empty");
 		reporter.softAssert(!this.getElementText(this.lblProductNumber).isEmpty(),"The product number is not empty","The product number is empty");
@@ -1958,23 +1950,23 @@ public class ProductDetailPage extends BasePage {
 	}
 
 	public void verifyProductSoldOut() throws IOException {
-		this.chooseGivenStyleAndSize(selectedProduct.productColorForSoldout,selectedProduct.productSizeForSoldout);
+		this.chooseGivenStyleAndSize(selectedProduct.productEDPColor,selectedProduct.productEDPSize);
 
-		WebElement item;
-		if(this.checkChildElementExistingByTagName(this.selectQuantityOption,"option")){
-			int listSize = this.lstSizeOption.size();
-			for(int counter=0;counter<listSize;counter++){
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectSizeOption);
-				this.getReusableActionsInstance().clickIfAvailable(this.selectSizeOption);
-				this.getReusableActionsInstance().staticWait(100);
-				item=this.lstSizeOption.get(counter);
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-				item.click();
-				this.getReusableActionsInstance().staticWait(100);
-				if(!this.checkChildElementExistingByTagName(this.selectQuantityOption,"option"))
-					break;
-			}
-		}
+//		WebElement item;
+//		if(this.checkChildElementExistingByTagName(this.selectQuantityOption,"option")){
+//			int listSize = this.lstSizeOption.size();
+//			for(int counter=0;counter<listSize;counter++){
+//				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectSizeOption);
+//				this.getReusableActionsInstance().clickIfAvailable(this.selectSizeOption);
+//				this.getReusableActionsInstance().staticWait(100);
+//				item=this.lstSizeOption.get(counter);
+//				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+//				item.click();
+//				this.getReusableActionsInstance().staticWait(100);
+//				if(!this.checkChildElementExistingByTagName(this.selectQuantityOption,"option"))
+//					break;
+//			}
+//		}
 		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblSoldOut),"The Soldout message is displaying correctly","The Soldout message is not displaying correctly");
 		reporter.softAssert(this.getElementText(this.lblSoldOut).equalsIgnoreCase("Out of Stock"),"The Soldout message is displaying correctly","The Soldout message is not displaying correctly");
 		reporter.softAssert(this.checkOutOfStockForQuantityDropdown(),"The Quantity Dropdown for Soldout is displaying correctly","The Quantity Dropdown for Soldout is not displaying correctly");
@@ -1992,7 +1984,7 @@ public class ProductDetailPage extends BasePage {
 	}
 
 	public void openWriteReview() {
-		this.lnkReviewTabWriteReview.click();
+		this.clickElement(this.lnkReviewTabWriteReview);
 		this.getReusableActionsInstance().waitForElementVisibility(this.lblWriteReviewHeaderTitle,  60);
 	}
 
@@ -2129,13 +2121,6 @@ public class ProductDetailPage extends BasePage {
 		}
 	}
 
-	public void verifyProductOverviewContent() {
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblProductOverviewHeader);
-		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
-
-		reporter.softAssert(!this.getElementText(this.lblProductOverviewTabContent).isEmpty(),"The Product Overview contents is not empty","The Product Overview contents is empty");
-	}
-
 	/**
 	 * Function verifies all accordions displayed for a product on PDP page
 	 */
@@ -2263,7 +2248,7 @@ public class ProductDetailPage extends BasePage {
 		if(checkIfFavShareMobileHighlighted())
 			this.getReusableActionsInstance().clickIfAvailable(this.lnkFavIcon);
 		this.getReusableActionsInstance().clickIfAvailable(this.lnkFavIcon);
-		this.waitForCondition(Driver->{return checkIfFavShareMobileHighlighted();},5000);
+		this.waitForCondition(Driver->{return checkIfFavShareMobileHighlighted();},20000);
 		reporter.softAssert(checkIfFavShareMobileHighlighted(),"The FavShareMobile icon is highlighted after clicking with user login", "The FavShareMobile icon is not highlighted after clicking with user login");
 	}
 
@@ -2295,7 +2280,7 @@ public class ProductDetailPage extends BasePage {
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavIconPopupSignIn);
 		this.getReusableActionsInstance().clickIfAvailable(this.lnkFavIconPopupSignIn);
-		this.waitForCondition(Driver->{return this.URL().contains("signin");},10000);
+		this.waitForCondition(Driver->{return this.URL().contains("signin");},20000);
 		if(this.URL().contains("signin")){
 			reporter.reportLogPass("The URL has been navigated to SignIn page correctly");
 		}
@@ -2312,7 +2297,7 @@ public class ProductDetailPage extends BasePage {
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavIconPopupRegister);
 		this.getReusableActionsInstance().clickIfAvailable(this.lnkFavIconPopupRegister);
-		this.waitForCondition(Driver->{return this.URL().contains("createaccount");},10000);
+		this.waitForCondition(Driver->{return this.URL().contains("createaccount");},20000);
 		if(this.URL().contains("createaccount")){
 			reporter.reportLogPass("The URL has been navigated to Register page correctly");
 		}
@@ -2335,6 +2320,7 @@ public class ProductDetailPage extends BasePage {
 	public boolean goToProductItemWithPreConditions(List<String> lstKeyword,String lsType,Map<String,Object> dataCriteria) throws IOException {
 		ProductResultsPage prp=new ProductResultsPage(this.getDriver());
 		ApiResponse apiResponse=new ApiResponse();
+		ApiResponse.lsUrlType="-";
 
 		Map<String,Object> outputDataCriteria= new HashMap<String,Object>();
 		if(dataCriteria==null){
@@ -2410,12 +2396,20 @@ public class ProductDetailPage extends BasePage {
 					}
 				}
 				break;
+			case "DeliveryOptions":
+				for(String lsKeyword:lstKeyword) {
+					productDetailsItem=apiResponse.getProductInfoFromKeywordWithDeliveryOptionsInfo(lsKeyword);
+					if(productDetailsItem!=null) {
+						break;
+					}
+				}
+				break;
 			default:
 				break;		
 		}		
 
 		selectedProduct=selectedProduct.assignValue(apiResponse.selectedProduct);
-		if(!lsType.equalsIgnoreCase("AdvanceOrder")) {
+		if(!lsType.equalsIgnoreCase("AdvanceOrder")&&!lsType.equalsIgnoreCase("DeliveryOptions")) {
 			if(product==null){
 				reporter.reportLogFail("Unable to find the matched product");
 				return false;
@@ -2429,6 +2423,7 @@ public class ProductDetailPage extends BasePage {
 			}
 		}
 
+		reporter.reportLog(apiResponse.selectedProduct.pdpNavigationUrl);
 		this.getDriver().get(apiResponse.selectedProduct.pdpNavigationUrl);
 
 		this.waitForPageToLoad();
@@ -2685,7 +2680,7 @@ public class ProductDetailPage extends BasePage {
 		for(int i=0;i<loopSize;i++) {
 			labelItem=this.lstAllSizeLabelRadioList.get(i);
 			if(labelItem.getAttribute("for").equalsIgnoreCase(lsSize)){
-				this.lstAllSizeRadioList.get(i).click();
+				this.clickElement(this.lstAllSizeRadioList.get(i));
 				break;
 			}
 		}
@@ -2701,7 +2696,7 @@ public class ProductDetailPage extends BasePage {
 			for(int i=0;i<loopSize;i++) {
 				labelItem=this.lstAllStyleLabelRadioList.get(i);
 				if(labelItem.getAttribute("for").equalsIgnoreCase(lsStyle)){
-					labelItem.click();
+					this.clickElement(labelItem);
 					break;
 				}
 			}
@@ -2750,17 +2745,193 @@ public class ProductDetailPage extends BasePage {
 	 * Function verifies Easy Pay pop up after clicking
 	 */
 	public void verifyEasyPayPopUp(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnProductEasyPay);
 		this.getReusableActionsInstance().clickIfAvailable(this.btnProductEasyPay);
-		if(this.waitForCondition(Driver->{return this.lblProductEasyPayPopupHeading.isDisplayed();},7000)){
+		if(this.waitForCondition(Driver->{return this.lblProductEasyPayPopupHeading.isDisplayed();},20000)){
 			//Verifying the content
 			if(this.waitForCondition(Driver->{return this.lblProductEasyPayPopupContent.isDisplayed() && !this.lblProductEasyPayPopupContent.getText().isEmpty();},7000)) {
 				reporter.reportLogPass("Easy Pay pop up contains text as expected after clicking on Easy Pay on PDP");
 				//Closing Easy Pay pop up
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnProductEasyPayPopupClose);
 				this.getReusableActionsInstance().clickIfAvailable(this.btnProductEasyPayPopupClose);
+				this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 			}else
 				reporter.reportLogFailWithScreenshot("Easy Pay pop up contains text as expected after clicking on Easy Pay on PDP");
 		}else
 			reporter.reportLogFailWithScreenshot("Easy Pay pop up is not displayed as expected after clicking on Easy Pay on PDP");
+	}
+
+	/**
+	 * To set Video As First Item In ThumbnailList, which is to handle mobile device
+	 * @return true/false
+	 */
+	public boolean setVideoAsFirstItemInThumbnailList(){
+		WebElement firstItem=this.lstThumbnailImageList.get(0);
+		if(this.hasElementAttribute(firstItem,"data-video")){
+			return true;
+		}
+
+		int sum=0;
+		do{
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnThumbnailPrev);
+			this.getReusableActionsInstance().clickIfAvailable(this.btnThumbnailPrev);
+			//Keep it to wait for clicking action result
+			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+			firstItem=this.lstThumbnailImageList.get(0);
+			sum++;
+			if(sum>10){
+				return false;
+			}
+		}
+		while(this.hasElementAttribute(firstItem,"data-video"));
+
+		return true;
+	}
+
+	/**
+	 * To set Prev button displayed In ThumbnailList
+	 * @return true/false
+	 */
+	public boolean setPrevButtonDisplayingInThumbnailList(){
+		WebElement firstItem=this.lstThumbnailImageList.get(0);
+		if(checkThumbnailPrevButtonExisting()){
+			return true;
+		}
+
+		int sum=0;
+		do{
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnThumbnailNext);
+			this.getReusableActionsInstance().clickIfAvailable(this.btnThumbnailNext);
+			//Keep it to wait for clicking action result
+			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+			sum++;
+			if(sum>10){
+				return false;
+			}
+		}
+		while(checkThumbnailPrevButtonExisting());
+
+		return true;
+	}
+
+	/**
+	 * To set Next button displayed In ThumbnailList
+	 * @return true/false
+	 */
+	public boolean setNextButtonDisplayingInThumbnailList(){
+		WebElement firstItem=this.lstThumbnailImageList.get(0);
+		if(checkThumbnailNextButtonExisting()){
+			return true;
+		}
+
+		int sum=0;
+		do{
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnThumbnailPrev);
+			this.getReusableActionsInstance().clickIfAvailable(this.btnThumbnailPrev);
+			//Keep it to wait for clicking action result
+			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+			sum++;
+			if(sum>10){
+				return false;
+			}
+		}
+		while(checkThumbnailNextButtonExisting());
+
+		return true;
+	}
+
+	/**
+	 * To set Next button disappear In ThumbnailList
+	 * @return true/false
+	 */
+	public boolean setNextButtonDisappearInThumbnailList(){
+		setNextButtonDisplayingInThumbnailList();
+
+		int sum=0;
+		do{
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnThumbnailNext);
+			this.getReusableActionsInstance().clickIfAvailable(this.btnThumbnailNext);
+			//Keep it to wait for clicking action result
+			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+			sum++;
+			if(sum>10){
+				return false;
+			}
+		}
+		while(!checkThumbnailNextButtonExisting());
+
+		return true;
+	}
+
+	/**
+	 * To set Prev button disappear In ThumbnailList
+	 * @return true/false
+	 */
+	public boolean setPrevButtonDisappearInThumbnailList(){
+		setPrevButtonDisplayingInThumbnailList();
+
+		int sum=0;
+		do{
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnThumbnailPrev);
+			this.getReusableActionsInstance().clickIfAvailable(this.btnThumbnailPrev);
+			//Keep it to wait for clicking action result
+			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+			sum++;
+			if(sum>10){
+				return false;
+			}
+		}
+		while(!checkThumbnailPrevButtonExisting());
+
+		return true;
+	}
+
+	/**
+	 * To verify Product AdvancedOrder Message
+	 */
+	public void verifyProductAdvancedOrderMessage() {
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAdvanceOrderMsg);
+		reporter.softAssert(!this.lblAdvanceOrderMsg.getText().isEmpty(),"The Advanced order message is not empty","The Advanced order message is empty");
+	}
+
+	/**
+	 * To verify Review Histogram Item Clicking Action
+	 */
+	public void verifyReviewHistogramItemClickingAction(){
+		int reviewHisRate,reviewHisItemCount,reviewRate;
+		ProductResultsPage prp=new ProductResultsPage(this.getDriver());
+
+		int loopSize=this.lstReviewTabHistogramItem.size();
+		for(int i=0;i<loopSize;i++){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstReviewTabHistogramItem.get(i));
+			reviewHisRate=this.getIntegerFromString(this.getElementInnerText(this.lstReviewTabHistogramItemLabel.get(i)));
+			reviewHisItemCount=this.getIntegerFromString(this.getElementInnerText(this.lstReviewTabHistogramItemCount.get(i)));
+			if(reviewHisItemCount==0){
+				continue;
+			}
+
+			this.clickElement(this.lstReviewTabHistogramClickingButton.get(i));
+			this.getReusableActionsInstance().staticWait(10*this.getStaticWaitForApplication());
+
+			int reviewListAmount=lstReviewTabPerReviewList.size();
+			if(reviewHisItemCount==reviewListAmount){
+				reporter.reportLogPass("The filtering review amount is equal to the related review histogram item count");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The filtering review amount is not equal to the related review histogram item count");
+			}
+
+			for(WebElement element:this.lstReviewTabPerReviewList){
+				List<WebElement> lstReviewStar=element.findElements(byReviewTabStarList);
+				reviewRate=prp.getProductItemReviewNumberAmountFromStarImage(lstReviewStar)/100;
+				if(reviewRate==reviewHisRate){
+					reporter.reportLogPass("The review rate of filtering item is equal to the related review histogram item review rate");
+				}
+				else{
+					reporter.reportLogFailWithScreenshot("The review rate of filtering item:"+reviewRate+" is not equal to the related review histogram item review rate:"+reviewHisRate);
+				}
+			}
+		}
 	}
 
 }

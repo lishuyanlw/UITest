@@ -4,13 +4,12 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.testng.annotations.Test;
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 
-public class PD_TC05_VerifyProductDetail_ProductSize_Quantity extends BaseTest{
+public class PD_TC08_VerifyProductDetail_ProductSize_Quantity extends BaseTest{
 	/*
 	 * CER-578
 	 * CER-582
@@ -18,7 +17,7 @@ public class PD_TC05_VerifyProductDetail_ProductSize_Quantity extends BaseTest{
 	 * CER-817
 	 */
 	@Test(groups={"ProductDetail","Regression","Regression_Mobile","Regression_Tablet"})
-	public void PD_TC05_VerifyProductDetail_ProductSize_Quantity() throws IOException {
+	public void PD_TC08_VerifyProductDetail_ProductSize_Quantity() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 		BasePage basePage=new BasePage(this.getDriver());
 
@@ -35,14 +34,14 @@ public class PD_TC05_VerifyProductDetail_ProductSize_Quantity extends BaseTest{
 		outputDataCriteria.put("size", "3");
 		if(getProductDetailPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList,"ConditionsForVideoAndStyleAndSizeWithoutCheckingSoldOutCriteria",outputDataCriteria)) {
 			reporter.reportLog("Verify URL");
-			lsProductNumber=getProductResultsPageThreadLocal().selectedProductItem.productNumber;
+			lsProductNumber=getProductDetailPageThreadLocal().selectedProduct.productNumber;
 			lsUrl=basePage.URL();
 			reporter.softAssert(lsUrl.contains("productdetails"),"The Url is containing productdetails","The Url is not containing productdetails");
 			reporter.reportLog("Switch to ProductDetail page");
 			reporter.softAssert(lsUrl.contains(lsProductNumber),"The Url is containing selected product number of "+lsProductNumber,"The Url is not containing selected product number of "+lsProductNumber);
 
 			reporter.reportLog("Verify product size changing action");
-			getProductDetailPageThreadLocal().verifyProductSizeChangingAction();
+			getProductDetailPageThreadLocal().verifyProductSize();
 
 			if(System.getProperty("Device").toLowerCase().contains("tablet") &&
 					(System.getProperty("Browser").toLowerCase().contains("android") ||
