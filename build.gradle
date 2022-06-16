@@ -65,7 +65,7 @@ def parentTunnelOwner() {
 }
 
 def tunnel_name() {
-    return "Digital_Mobile_QA"
+    return "TSC_TestTunnel"
 }
 
 sauceconnect {
