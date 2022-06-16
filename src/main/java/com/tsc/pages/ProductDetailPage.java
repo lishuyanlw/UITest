@@ -397,6 +397,9 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//section[@class='pr-review-snapshot-block pr-review-snapshot-block-histogram']//ul//li")
 	public List<WebElement> lstReviewTabHistogramItem;
 
+	@FindBy(xpath = "//section[@class='pr-review-snapshot-block pr-review-snapshot-block-histogram']//ul//li//div[contains(@class,'pr-histogram-stars')]")
+	public List<WebElement> lstReviewTabHistogramClickingButton;
+
 	@FindBy(xpath = "//section[@class='pr-review-snapshot-block pr-review-snapshot-block-histogram']//ul//li//p[@class='pr-histogram-label']")
 	public List<WebElement> lstReviewTabHistogramItemLabel;
 
@@ -981,7 +984,7 @@ public class ProductDetailPage extends BasePage {
 				labelItem=this.lstRadioStyleLabelList.get(i);
 
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblRadioProductStyleStatic);
-				labelItem.click();
+				this.clickElement(labelItem);
 				this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 				lsText=this.btnRadioProductStyleSelectedLabel.getAttribute("style").split("url")[1];
 				lsSwatch=this.getImageNameFromThumbnailOrZoomImagePath(lsText);
@@ -1045,7 +1048,7 @@ public class ProductDetailPage extends BasePage {
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblRadioProductStyleStatic);
 				lsBeforeStyleName=this.getCurrentSwatchStyle();
 
-				labelItem.click();
+				this.clickElement(labelItem);
 				this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 				lsAfterStyleName=this.getCurrentSwatchStyle();
 
@@ -1290,7 +1293,7 @@ public class ProductDetailPage extends BasePage {
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSizeStatic);
 			lsBeforeSizeName=this.getCurrentSize();
 
-			labelItem.click();
+			this.clickElement(labelItem);
 			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 			lsAfterSizeName=this.getCurrentSize();
 
@@ -1450,7 +1453,7 @@ public class ProductDetailPage extends BasePage {
 				labelItem=this.lstRadioStyleLabelList.get(i);
 
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(radioItem);
-				labelItem.click();
+				this.clickElement(labelItem);
 				this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 				lsStyle=this.getCurrentSwatchStyle();
 
@@ -1492,7 +1495,7 @@ public class ProductDetailPage extends BasePage {
 		loopSize=this.lstRadioSizeLabelSpanList.size();
 		for(int i=0;i<loopSize;i++) {
 			labelItem=this.lstRadioSizeLabelList.get(i);
-			labelItem.click();
+			this.clickElement(labelItem);
 			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 			lsSize=this.getCurrentSize();
 
@@ -2677,7 +2680,7 @@ public class ProductDetailPage extends BasePage {
 		for(int i=0;i<loopSize;i++) {
 			labelItem=this.lstAllSizeLabelRadioList.get(i);
 			if(labelItem.getAttribute("for").equalsIgnoreCase(lsSize)){
-				this.lstAllSizeRadioList.get(i).click();
+				this.clickElement(this.lstAllSizeRadioList.get(i));
 				break;
 			}
 		}
@@ -2693,7 +2696,7 @@ public class ProductDetailPage extends BasePage {
 			for(int i=0;i<loopSize;i++) {
 				labelItem=this.lstAllStyleLabelRadioList.get(i);
 				if(labelItem.getAttribute("for").equalsIgnoreCase(lsStyle)){
-					labelItem.click();
+					this.clickElement(labelItem);
 					break;
 				}
 			}
@@ -2901,13 +2904,13 @@ public class ProductDetailPage extends BasePage {
 		int loopSize=this.lstReviewTabHistogramItem.size();
 		for(int i=0;i<loopSize;i++){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstReviewTabHistogramItem.get(i));
-			reviewHisRate=this.getIntegerFromString(this.lstReviewTabHistogramItemLabel.get(i).getText().trim());
-			reviewHisItemCount=this.getIntegerFromString(this.lstReviewTabHistogramItemCount.get(i).getText().trim());
+			reviewHisRate=this.getIntegerFromString(this.getElementInnerText(this.lstReviewTabHistogramItemLabel.get(i)));
+			reviewHisItemCount=this.getIntegerFromString(this.getElementInnerText(this.lstReviewTabHistogramItemCount.get(i)));
 			if(reviewHisItemCount==0){
 				continue;
 			}
 
-			this.getReusableActionsInstance().clickIfAvailable(this.lstReviewTabHistogramItem.get(i));
+			this.clickElement(this.lstReviewTabHistogramClickingButton.get(i));
 			this.getReusableActionsInstance().staticWait(10*this.getStaticWaitForApplication());
 
 			int reviewListAmount=lstReviewTabPerReviewList.size();
