@@ -1662,9 +1662,7 @@ public class ProductDetailPage extends BasePage {
 
 	//this method checks subtotal section
 	public void subTotal(){
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAddToBagPopupWindowButtonSectionSubtotal);
-		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblAddToBagPopupWindowButtonSectionSubtotal),"The product Subtotal in Add to Bag popup window is visible","The product Subtotal in Add to Bag popup window is not visible");
-		reporter.softAssert(!this.lblAddToBagPopupWindowButtonSectionSubtotal.getText().isEmpty(),"The product Subtotal in Add to Bag popup window is not empty","The product Subtotal in Add to Bag popup window is empty");
+		reporter.softAssert(!this.getElementInnerText(this.lblAddToBagPopupWindowButtonSectionSubtotal).isEmpty(),"The product Subtotal in Add to Bag popup window is not empty","The product Subtotal in Add to Bag popup window is empty");
 	}
 
 	/**
@@ -2796,14 +2794,14 @@ public class ProductDetailPage extends BasePage {
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnThumbnailPrev);
 			this.getReusableActionsInstance().clickIfAvailable(this.btnThumbnailPrev);
 			//Keep it to wait for clicking action result
-			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+			this.getReusableActionsInstance().staticWait(5*this.getStaticWaitForApplication());
 			firstItem=this.lstThumbnailImageList.get(0);
 			sum++;
 			if(sum>10){
 				return false;
 			}
 		}
-		while(this.hasElementAttribute(firstItem,"data-video"));
+		while(!this.hasElementAttribute(firstItem,"data-video"));
 
 		return true;
 	}

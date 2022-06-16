@@ -43,6 +43,8 @@ public class PD_TC01_VerifyProductDetail_LeftSection_ContentsForVideo extends Ba
 			reporter.softAssert(lsUrl.contains("productdetails"),"The Url is containing productdetails","The Url is not containing productdetails");
 			reporter.softAssert(lsUrl.contains(lsProductNumber),"The Url is containing selected product number of "+lsProductNumber,"The Url is not containing selected product number of "+lsProductNumber);
 
+			getProductDetailPageThreadLocal().setVideoAsFirstItemInThumbnailList();
+
 			reporter.reportLog("Verify Video part");
 			getProductDetailPageThreadLocal().verifyVideo(lsVideoDisclaimInfo);
 
