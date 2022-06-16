@@ -97,7 +97,7 @@ searchResultPage:
   lst_SearchKeyword_Bugs: ["iPads & Tablets","desk  ","https://qa-tsc.tsc.ca/pages/productresults?&searchterm=desk","Brian Bailey Asymmetrical Waterfall Drape Dress"]
   lbl_ProductNumberToComparePRPAndPDPContent: "Brian Bailey Wedge Dress"
   lst_SearchKeyword_DropDown: [[ "dress","Categories","0" ]]
-  lst_APISearchingKeyword: ["dress","jegging","boots"]
+  lst_APISearchingKeyword: ["dress","jegging","boots","Beauty"]
   lbl_SearchResultPageDefaultSetting: 36
   lst_SearchResultMessage:  [ "Showing results for" , "able to find any results" ] 
   lst_SortOption: ["Featured Products","Newest First","Reviews: Highest First","Price: Lowest First","Price: Highest First","Brand Name: A to Z"]
@@ -150,7 +150,9 @@ searchResultPage:
   lbl_ProductRecommendationTitlePage: ["People who viewed this item also viewed","TOP SELLERS"]
   lbl_AddToBagPopupWindowTitle: "\\d+ ITEM(S)? ADDED TO YOUR SHOPPING BAG"
   lbl_VideoDisclaimInfo: "Pre-recorded videos contain pricing or promotional offers that may have expired."
-  lbl_AdvancedOrderkeyword: 522809
+  lbl_AdvancedOrderkeyword: 486049
+  lbl_AutoDeliverykeyword: 593608
+  lbl_ProductDeliveryOptions: 289485
   lbl_SoldOutkeyword: 485939
   lbl_QuantityNumberToShowLeftItemInfo: 7
   lst_WriteReviewSubmitMessage: ["THANK YOU!","We will process your review and publish it within 3-7 business days."]

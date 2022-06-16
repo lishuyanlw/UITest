@@ -9,6 +9,8 @@ import com.tsc.api.util.JsonParser;
 import extentreport.ExtentTestManager;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
+import org.json.simple.JSONObject;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -26,6 +28,7 @@ public class ApiResponse extends ApiConfigs {
     public SelectedProduct selectedProduct= new SelectedProduct();
     boolean bBrand=false;
 	public static Map<String, String> apiProperty;
+	public static String lsUrlType="";
 
 
     public ApiResponse() throws IOException {
@@ -145,6 +148,7 @@ public class ApiResponse extends ApiConfigs {
         	return null;
         }
 
+		ProductDetailsItem productDetailsItem=null;
     	selectedProduct.init();
         do{
             if(outputDataCriteria==null){
@@ -160,55 +164,46 @@ public class ApiResponse extends ApiConfigs {
                     	else {
                     		continue;
                     	}
-                    	
-                    	List<edps> edpsList=data.getEdps(); 
-                    	if(isSoldOut) {
-                        	//To check if any Inventory is equal to 0, then get the related Style and Size, 
-                        	//which we will use in PDP to select the style and size in order to get soldout information
-                        	bSoldout=false;
-                        	for(edps Edps:edpsList) {
-                        		if(Edps.Inventory==0) {
-                        			bSoldout=true;
-                        			selectedProduct.productColorForSoldout=Edps.getStyle();
-                        			selectedProduct.productSizeForSoldout=Edps.getSize();
-                        			break;
-                        		}
-                        	}
-                        	if(!bSoldout) {
-                        		continue;
-                        	}
-                        	else {
-                        		//To check if any Inventory is greater than 0, then get the related Style and Size, 
-                            	//which we will use in PDP to select the style and size in order to get Enabled AddToBag information
-                        		for(edps Edps:edpsList) {
-                            		if(Edps.Inventory>0) {                			
-                            			selectedProduct.productSizeForEnabledAddToBag=Edps.getStyle();
-                            			selectedProduct.productColorForEnabledAddToBag=Edps.getSize();
-                            			break;
-                            		}
-                            	}
-                        	}
-                    	}
-                    	else {
-                    		//To check if any Inventory is greater than 0, then get the related Style and Size, 
-                        	//which we will use in PDP to select the style and size in order to get Enabled AddToBag information
-                    		for(edps Edps:edpsList) {
-                        		if(Edps.Inventory>0) {                			
-                        			selectedProduct.productSizeForEnabledAddToBag=Edps.getStyle();
-                        			selectedProduct.productColorForEnabledAddToBag=Edps.getSize();
-                        			break;
-                        		}
-                        	}
-                    	}
-                     	
-                    	productItem=data;
+
+						productDetailsItem=getProductDetailsForSpecificProductNumber(data.getItemNo());
+						List<ProductDetailsItem.Edp> edpsList=productDetailsItem.getEdps();
+						if(isSoldOut) {
+							//To check if any Inventory is equal to 0, then get the related Style and Size,
+							//which we will use in PDP to select the style and size in order to get soldout information
+							for(ProductDetailsItem.Edp Edps:edpsList) {
+								if(Edps.Inventory==0) {
+									selectedProduct.productEDPColor=Edps.getStyle();
+									selectedProduct.productEDPSize=Edps.getSize();
+									break;
+								}
+							}
+						}
+						else {
+							//To check if any Inventory is greater than 0, then get the related Style and Size,
+							//which we will use in PDP to select the style and size in order to get Enabled AddToBag information
+							for(ProductDetailsItem.Edp Edps:edpsList) {
+								if(Edps.Inventory>0) {
+									selectedProduct.productEDPSize=Edps.getSize();
+									selectedProduct.productEDPColor=Edps.getStyle();
+									break;
+								}
+							}
+						}
+
+						productItem=data;
                         flag = false;
                         selectedProduct.productNumber=data.getItemNo();
                 		selectedProduct.productName=data.getName();
                 		selectedProduct.productBrand=data.getBrand();
                 		selectedProduct.productNowPrice=data.getIsPriceRange();
                 		selectedProduct.productWasPrice=data.getWasPriceRange();
-                		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName()+propertyData.get("test_partial_url_pdp")+data.getItemNo();            	
+						if(!lsUrlType.isEmpty()){
+							selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName().trim().replace(".","").replace(" ","-")+propertyData.get("test_partial_url_pdp")+data.getItemNo();
+						}
+						else{
+							selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName().trim()+propertyData.get("test_partial_url_pdp")+data.getItemNo();
+						}
+
                         break;
                     }
                 }
@@ -236,7 +231,13 @@ public class ApiResponse extends ApiConfigs {
              		selectedProduct.productBrand=productItem.getBrand();
              		selectedProduct.productNowPrice=productItem.getIsPriceRange();
              		selectedProduct.productWasPrice=productItem.getWasPriceRange();
-             		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+productItem.getName()+propertyData.get("test_partial_url_pdp")+productItem.getItemNo();
+					if(!lsUrlType.isEmpty()){
+						selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+productItem.getName().trim().replace(".","").replace(" ","-")+propertyData.get("test_partial_url_pdp")+productItem.getItemNo();
+					}
+					else{
+						selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+productItem.getName().trim()+propertyData.get("test_partial_url_pdp")+productItem.getItemNo();
+					}
+
                     flag = false;
                 }
             }
@@ -350,7 +351,13 @@ public class ApiResponse extends ApiConfigs {
 		selectedProduct.productBrand=product.getBrand();
 		selectedProduct.productNowPrice=product.getIsPriceRange();
 		selectedProduct.productWasPrice=product.getWasPriceRange();
-		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+product.getName()+propertyData.get("test_partial_url_pdp")+product.getItemNo();
+		if(!lsUrlType.isEmpty()){
+			selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+product.getName().trim().replace(".","").replace(" ","-")+propertyData.get("test_partial_url_pdp")+product.getItemNo();
+		}
+		else{
+			selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+product.getName().trim()+propertyData.get("test_partial_url_pdp")+product.getItemNo();
+		}
+
 		//flag=false;
         }
           /*  else {
@@ -418,7 +425,6 @@ public class ApiResponse extends ApiConfigs {
     	
         int videoCount=-1,styleCount=3,sizeCount=3;
 		String lsNowPrice,lsWasPrice;
-        boolean bSoldout=false;
 
         if(configs!=null) {
         	for(Map.Entry<String,Object> entry:configs.entrySet()){
@@ -434,6 +440,7 @@ public class ApiResponse extends ApiConfigs {
          }
  
         Product.Products productItem=null;
+		ProductDetailsItem productDetailsItem=null;
         for(Product.Products data:product.getProducts()) {
         	lsNowPrice=data.getIsPriceRange();
         	lsWasPrice=data.getWasPriceRange();
@@ -466,41 +473,26 @@ public class ApiResponse extends ApiConfigs {
 					}
 				}
 
-            	List<edps> edpsList=data.getEdps(); 
+				productDetailsItem=getProductDetailsForSpecificProductNumber(data.getItemNo());
+            	List<ProductDetailsItem.Edp> edpsList=productDetailsItem.getEdps();
             	if(isSoldOut) {
                 	//To check if any Inventory is equal to 0, then get the related Style and Size, 
                 	//which we will use in PDP to select the style and size in order to get soldout information
-                	bSoldout=false;
-                	for(edps Edps:edpsList) {
+                	for(ProductDetailsItem.Edp Edps:edpsList) {
                 		if(Edps.Inventory==0) {
-                			bSoldout=true;
-                			selectedProduct.productColorForSoldout=Edps.getStyle();
-                			selectedProduct.productSizeForSoldout=Edps.getSize();
+                			selectedProduct.productEDPColor=Edps.getStyle();
+                			selectedProduct.productEDPSize=Edps.getSize();
                 			break;
                 		}
-                	}
-                	if(!bSoldout) {
-                		continue;
-                	}
-                	else {
-                		//To check if any Inventory is greater than 0, then get the related Style and Size, 
-                    	//which we will use in PDP to select the style and size in order to get Enabled AddToBag information
-                		for(edps Edps:edpsList) {
-                    		if(Edps.Inventory>0) {                			
-                    			selectedProduct.productSizeForEnabledAddToBag=Edps.getStyle();
-                    			selectedProduct.productColorForEnabledAddToBag=Edps.getSize();
-                    			break;
-                    		}
-                    	}
                 	}
             	}
             	else {
             		//To check if any Inventory is greater than 0, then get the related Style and Size, 
                 	//which we will use in PDP to select the style and size in order to get Enabled AddToBag information
-            		for(edps Edps:edpsList) {
+            		for(ProductDetailsItem.Edp Edps:edpsList) {
                 		if(Edps.Inventory>0) {                			
-                			selectedProduct.productSizeForEnabledAddToBag=Edps.getStyle();
-                			selectedProduct.productColorForEnabledAddToBag=Edps.getSize();
+                			selectedProduct.productEDPSize=Edps.getSize();
+                			selectedProduct.productEDPColor=Edps.getStyle();
                 			break;
                 		}
                 	}
@@ -536,8 +528,8 @@ public class ApiResponse extends ApiConfigs {
         		for(edps Edps:edpsList) {
             		if(Edps.Inventory>0) {  
             			bAddToBag=true;
-            			selectedProduct.productSizeForEnabledAddToBag=Edps.getStyle();
-            			selectedProduct.productColorForEnabledAddToBag=Edps.getSize();
+            			selectedProduct.productEDPSize=Edps.getSize();
+            			selectedProduct.productEDPColor=Edps.getStyle();
             			break;
             		}
             	}
@@ -550,8 +542,13 @@ public class ApiResponse extends ApiConfigs {
         		selectedProduct.productBrand=data.getBrand();
         		selectedProduct.productNowPrice=data.getIsPriceRange();
         		selectedProduct.productWasPrice=data.getWasPriceRange();
-        		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName()+propertyData.get("test_partial_url_pdp")+data.getItemNo();
-        		
+				if(!lsUrlType.isEmpty()){
+					selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName().trim().replace(".","").replace(" ","-")+propertyData.get("test_partial_url_pdp")+data.getItemNo();
+				}
+				else{
+					selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName().trim()+propertyData.get("test_partial_url_pdp")+data.getItemNo();
+				}
+
         		return data;        		
         	}
         }
@@ -625,8 +622,8 @@ public class ApiResponse extends ApiConfigs {
             	for(edps Edps:edpsList) {
             		if(Edps.Inventory==0) {
             			bSoldout=true;
-            			selectedProduct.productSizeForSoldout=Edps.getStyle();
-            			selectedProduct.productColorForSoldout=Edps.getSize();
+            			selectedProduct.productEDPSize=Edps.getSize();
+            			selectedProduct.productEDPColor=Edps.getStyle();
             			break;
             		}
             	}
@@ -638,8 +635,14 @@ public class ApiResponse extends ApiConfigs {
         		selectedProduct.productName=data.getName();
         		selectedProduct.productBrand=data.getBrand();
         		selectedProduct.productNowPrice=data.getIsPriceRange();
-        		selectedProduct.productWasPrice=data.getWasPriceRange();        		
-        		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName()+propertyData.get("test_partial_url_pdp")+data.getItemNo();
+        		selectedProduct.productWasPrice=data.getWasPriceRange();
+				if(!lsUrlType.isEmpty()){
+					selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName().trim().replace(".","").replace(" ","-")+propertyData.get("test_partial_url_pdp")+data.getItemNo();
+				}
+				else{
+					selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName().trim()+propertyData.get("test_partial_url_pdp")+data.getItemNo();
+				}
+
                 return data;
             }
         }
@@ -674,8 +677,8 @@ public class ApiResponse extends ApiConfigs {
                     	for(edps Edps:edpsList) {
                     		if(Edps.Inventory==0) {
                     			bSoldout=true;
-                    			selectedProduct.productSizeForSoldout=Edps.getStyle();
-                    			selectedProduct.productColorForSoldout=Edps.getSize();
+                    			selectedProduct.productEDPSize=Edps.getSize();
+                    			selectedProduct.productEDPColor=Edps.getStyle();
                     			break;
                     		}
                     	}
@@ -689,8 +692,13 @@ public class ApiResponse extends ApiConfigs {
                 		selectedProduct.productBrand=data.getBrand();
                 		selectedProduct.productNowPrice=data.getIsPriceRange();
                 		selectedProduct.productWasPrice=data.getWasPriceRange();
-                		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName()+propertyData.get("test_partial_url_pdp")+data.getItemNo();
-                		
+						if(!lsUrlType.isEmpty()){
+							selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName().trim().replace(".","").replace(" ","-")+propertyData.get("test_partial_url_pdp")+data.getItemNo();
+						}
+						else{
+							selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName().trim()+propertyData.get("test_partial_url_pdp")+data.getItemNo();
+						}
+
                 		productItem=data;
                         break;
                     }
@@ -768,12 +776,8 @@ public class ApiResponse extends ApiConfigs {
 
 		}while(flag);
 
-		if(loopBreakFlag) {
-			return productItem;
-		}
-		else {
-			return null;
-		}
+		return productItem;
+
 
 	}
 
@@ -804,37 +808,36 @@ public class ApiResponse extends ApiConfigs {
 
 		selectedProduct.init();
 		for(Product.Products data:product.getProducts()) {
-			if(data.getStyles().size()>=styleCount && data.getSizes().size()>=sizeCount && data.getProductReviewCount()>=3
-					&& data.isEnabledAddToCart()==true) {
-				List<edps> edpsList=data.getEdps();
-				loopBreakFlag=false;
-				for(edps Edps:edpsList) {
-					if(!Edps.isSoldOut()==true && Edps.Inventory>0 && data.getInstallments()>1) {
-						List<Sections> sections = this.getSectionDetailsFromProductNumber(data.getItemNo());
-						if(sections.size()>0){
-							for(int counter=0;counter<sections.size();counter++){
-								if(sections.get(counter).getName().contains("Size")){
-									loopBreakFlag=true;
-									selectedProduct.easyPayPrice=Edps.getEasyPaymentPrice();
-									break;
+			if(data.getStyles().size()>=styleCount && data.getSizes().size()>=sizeCount && data.getProductReviewCount()>=3 && data.isEnabledAddToCart()){
+				List<edps> edpsList = data.getEdps();
+				loopBreakFlag = false;
+				for (edps Edps : edpsList) {
+					if (!Edps.isSoldOut() == true && Edps.Inventory > 0 && data.getInstallments() > 1) {
+						if (data.getInstallments() > 1) {
+							List<Sections> sections = this.getSectionDetailsFromProductNumber(data.getItemNo());
+							if (sections.size() > 0) {
+								for (int counter = 0; counter < sections.size(); counter++) {
+									if (sections.get(counter).getName().contains("Size")) {
+										selectedProduct.productNumber = data.getItemNo();
+										selectedProduct.productName = data.getName();
+										selectedProduct.productBrand = data.getBrand();
+										selectedProduct.productNowPrice = data.getIsPriceRange();
+										selectedProduct.productWasPrice = data.getWasPriceRange();
+										selectedProduct.easyPayPrice=Edps.getEasyPaymentPrice();
+										if(!lsUrlType.isEmpty()){
+											selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName().trim().replace(".","").replace(" ","-")+propertyData.get("test_partial_url_pdp")+data.getItemNo();
+										}
+										else{
+											selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName().trim()+propertyData.get("test_partial_url_pdp")+data.getItemNo();
+										}
+
+										return data;
+									}
 								}
 							}
 						}
 					}
-					if(!loopBreakFlag) {
-						loopBreakFlag = false;
-						continue;
-					}else
-						break;
 				}
-
-				selectedProduct.productNumber=data.getItemNo();
-				selectedProduct.productName=data.getName();
-				selectedProduct.productBrand=data.getBrand();
-				selectedProduct.productNowPrice=data.getIsPriceRange();
-				selectedProduct.productWasPrice=data.getWasPriceRange();
-				selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName()+propertyData.get("test_partial_url_pdp")+data.getItemNo();
-				return data;
 			}
 		}
 		return null;
@@ -885,7 +888,13 @@ public class ApiResponse extends ApiConfigs {
     		selectedProduct.productBrand=data.getBrand();
     		selectedProduct.productNowPrice=data.getIsPriceRange();
     		selectedProduct.productWasPrice=data.getWasPriceRange();
-    		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName()+propertyData.get("test_partial_url_pdp")+data.getItemNo();
+			if(!lsUrlType.isEmpty()){
+				selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName().trim().replace(".","").replace(" ","-")+propertyData.get("test_partial_url_pdp")+data.getItemNo();
+			}
+			else{
+				selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName().trim()+propertyData.get("test_partial_url_pdp")+data.getItemNo();
+			}
+
         }
 
         return product.getProducts().get(0);
@@ -920,10 +929,15 @@ public class ApiResponse extends ApiConfigs {
                 		selectedProduct.productBrand=productDetailsItem.getBrand();
                 		selectedProduct.productNowPrice=productDetailsItem.getIsPriceRange();
                 		selectedProduct.productWasPrice=productDetailsItem.getWasPriceRange();
-                		selectedProduct.productSizeForSoldout=edp.Size;
-                		selectedProduct.productColorForSoldout=edp.Style;
-                		selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+productDetailsItem.getName()+propertyData.get("test_partial_url_pdp")+productDetailsItem.getItemNo();
-                		
+                		selectedProduct.productEDPSize=edp.Size;
+                		selectedProduct.productEDPColor=edp.Style;
+						if(!lsUrlType.isEmpty()){
+							selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+productDetailsItem.getName().trim().replace(".","").replace(" ","-")+propertyData.get("test_partial_url_pdp")+productDetailsItem.getItemNo();
+						}
+						else{
+							selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+productDetailsItem.getName().trim()+propertyData.get("test_partial_url_pdp")+productDetailsItem.getItemNo();
+						}
+
                 		break;
             		}
             	}
@@ -1105,6 +1119,155 @@ public class ApiResponse extends ApiConfigs {
 			return JsonParser.getResponseObject(response.asString(), new TypeReference<List<Sections>>() {});
 		else
 			return null;
+	}
+
+	/**
+	 * This method finds product info with Delivery options info
+	 * @param - String - searchKeyword : search keyword for Product
+	 * @return - ProductDetailsItem - product details item for search keyword
+	 */
+	public ProductDetailsItem getProductInfoFromKeywordWithDeliveryOptionsInfo(String searchKeyword){
+		boolean flag = true, bSelected=false;
+		ProductDetailsItem productDetailsItem=new ProductDetailsItem();
+		String productNumber;
+
+		Product product = getProductDetailsForKeyword(searchKeyword,null,true);
+		if(product==null) {
+			return null;
+		}
+
+		do{
+			for(Product.Products data:product.getProducts()) {
+				selectedProduct.init();
+				productNumber=data.getItemNo();
+				productDetailsItem=getProductDetailsForSpecificProductNumber(productNumber);
+				bSelected=false;
+				if(!productDetailsItem.getDeliveryOptions().isEmpty()){
+					bSelected=true;
+					selectedProduct.productNumber=productDetailsItem.getItemNo();
+					selectedProduct.productName=productDetailsItem.getName();
+					selectedProduct.productBrand=productDetailsItem.getBrand();
+					selectedProduct.productNowPrice=productDetailsItem.getIsPriceRange();
+					selectedProduct.productWasPrice=productDetailsItem.getWasPriceRange();
+					if(!lsUrlType.isEmpty()){
+						selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+productDetailsItem.getName().trim().replace(".","").replace(" ","-")+propertyData.get("test_partial_url_pdp")+productDetailsItem.getItemNo();
+					}
+					else{
+						selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+productDetailsItem.getName().trim()+propertyData.get("test_partial_url_pdp")+productDetailsItem.getItemNo();
+					}
+
+					break;
+				}
+
+				if(bSelected) {
+					flag = false;
+					break;
+				}
+			}
+			if(flag) {
+				outputPage++;
+				if(outputPage>totalPage||outputPage>=10) {
+					flag = false;
+				}
+				product = getProductDetailsForKeyword(searchKeyword,null,false);
+			}
+		}while(flag);
+
+		if(bSelected) {
+			return productDetailsItem;
+		}
+		else {
+			return null;
+		}
+	}
+
+	/**
+	 * This method finds product info with Get The Look info
+	 * @param - String - searchKeyword : search keyword for Product
+	 * @return - ProductDetailsItem - product details item for search keyword
+	 */
+	public ProductDetailsItem getProductInfoFromKeywordWithGetTheLookInfo(String searchKeyword){
+		boolean flag = true, bSelected=false;
+		ProductDetailsItem productDetailsItem=new ProductDetailsItem();
+		String productNumber;
+
+		Product product = getProductDetailsForKeyword(searchKeyword,null,true);
+		if(product==null) {
+			return null;
+		}
+
+		List<ProductDetailsItem.Edp> dataList;
+		Response response;
+		String lsUrl;
+		do{
+			for(Product.Products data:product.getProducts()) {
+				selectedProduct.init();
+				productNumber=data.getItemNo();
+				productDetailsItem=getProductDetailsForSpecificProductNumber(productNumber);
+				bSelected=false;
+				dataList =productDetailsItem.Edps.stream().filter(item->item.getStyleDimensionId()!=null&&!item.getStyleDimensionId().isEmpty()).collect(Collectors.toList());
+				if(!dataList.isEmpty()){
+					String savedBaseURI=RestAssured.baseURI;
+					RestAssured.baseURI="https://api.findmine.com/api/v2/";
+					lsUrl="complete-the-look?application=964F141E3FA264316345&product_id="+productDetailsItem.getItemNo()+"&product_color_id="+dataList.get(0).getStyleDimensionId()+"&product_in_stock=true";
+					System.out.println("lsUrl: "+lsUrl);
+					response=getApiCallResponse(null, lsUrl);
+					RestAssured.baseURI=savedBaseURI;
+					System.out.println("response: "+response.asString());
+					if(response.asString().contains("\"featured\": 1")){
+						bSelected=true;
+					}
+
+					if(bSelected){
+						System.out.println("product number: "+productDetailsItem.getItemNo());
+
+						return productDetailsItem;
+					}
+				}
+/*
+				for( ProductDetailsItem.Edp edp: productDetailsItem.Edps) {
+					if(edp.IsAdvanceOrBackOrder) {
+						bSelected=true;
+						selectedProduct.productNumber=productDetailsItem.getItemNo();
+						selectedProduct.productName=productDetailsItem.getName();
+						selectedProduct.productBrand=productDetailsItem.getBrand();
+						selectedProduct.productNowPrice=productDetailsItem.getIsPriceRange();
+						selectedProduct.productWasPrice=productDetailsItem.getWasPriceRange();
+						selectedProduct.productEDPSize=edp.Size;
+						selectedProduct.productEDPColor=edp.Style;
+						if(!lsUrlType.isEmpty()){
+							selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+productDetailsItem.getName().trim().replace(".","").replace(" ","-")+propertyData.get("test_partial_url_pdp")+productDetailsItem.getItemNo();
+						}
+						else{
+							selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+productDetailsItem.getName().trim()+propertyData.get("test_partial_url_pdp")+productDetailsItem.getItemNo();
+						}
+
+						break;
+					}
+				}
+				*/
+
+				if(bSelected) {
+					flag = false;
+					break;
+				}
+			}
+			if(flag) {
+				outputPage++;
+				if(outputPage>totalPage||outputPage>=10) {
+					flag = false;
+				}
+				product = getProductDetailsForKeyword(searchKeyword,null,false);
+			}
+		}while(flag);
+
+		if(bSelected) {
+			return productDetailsItem;
+		}
+		else {
+			return null;
+		}
+
 	}
 
 }

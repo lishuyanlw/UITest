@@ -1,16 +1,15 @@
 package com.tsc.test.tests.productDetail;
 
+import com.tsc.data.Handler.TestDataHandler;
+import com.tsc.pages.base.BasePage;
+import com.tsc.test.base.BaseTest;
+import org.testng.annotations.Test;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.testng.annotations.Test;
-import com.tsc.data.Handler.TestDataHandler;
-import com.tsc.pages.base.BasePage;
-import com.tsc.test.base.BaseTest;
-
-public class PD_TC01_VerifyProductDetail_LeftSection_ContentsForImageAndVideo extends BaseTest{
+public class PD_TC01_VerifyProductDetail_LeftSection_ContentsForVideo extends BaseTest{
 	/*
 	 * CER-567
 	 * CER-570
@@ -20,7 +19,7 @@ public class PD_TC01_VerifyProductDetail_LeftSection_ContentsForImageAndVideo ex
 	 * CER-819
 	 */
 	@Test(groups={"ProductDetail","Regression","Regression_Mobile","Regression_Tablet"})
-	public void PD_TC01_VerifyProductDetail_LeftSection_ContentsForImageAndVideo() throws IOException {
+	public void PD_TC01_VerifyProductDetail_LeftSection_ContentsForVideo() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 		BasePage basePage=new BasePage(this.getDriver());
 
@@ -35,20 +34,17 @@ public class PD_TC01_VerifyProductDetail_LeftSection_ContentsForImageAndVideo ex
 
 		Map<String,Object> outputDataCriteria= new HashMap<String,Object>();
 		outputDataCriteria.put("video", "1");
-		outputDataCriteria.put("style", "6");
-		outputDataCriteria.put("size", "2");
+		outputDataCriteria.put("style", "1");
+		outputDataCriteria.put("size", "1");
 		if(getProductDetailPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList,"ConditionsForVideoAndStyleAndSizeWithoutCheckingSoldOutCriteria",outputDataCriteria)) {
 			reporter.reportLog("Verify URL");
-			//lsProductNumber=getProductDetailPageThreadLocal().selectedProduct.productNumber;
+			lsProductNumber=getProductDetailPageThreadLocal().selectedProduct.productNumber;
 			lsUrl=basePage.URL();
 			reporter.softAssert(lsUrl.contains("productdetails"),"The Url is containing productdetails","The Url is not containing productdetails");
-			//reporter.softAssert(lsUrl.contains(lsProductNumber),"The Url is containing selected product number of "+lsProductNumber,"The Url is not containing selected product number of "+lsProductNumber);
+			reporter.softAssert(lsUrl.contains(lsProductNumber),"The Url is containing selected product number of "+lsProductNumber,"The Url is not containing selected product number of "+lsProductNumber);
 
 			reporter.reportLog("Verify Video part");
 			getProductDetailPageThreadLocal().verifyVideo(lsVideoDisclaimInfo);
-
-			reporter.reportLog("Verify Thumbnail");
-			getProductDetailPageThreadLocal().verifyThumbnail();
 
 			//there is no autoplay option for tablet and mobile
 			reporter.reportLog("Verify Video off function");
