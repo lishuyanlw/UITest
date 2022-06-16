@@ -1634,11 +1634,6 @@ public class ProductDetailPage extends BasePage {
 		subTotal();
 
 		reporter.softAssert(this.lblAddToBagPopupWindowDetailsProductNumber.getText().trim().replace("-", "").equalsIgnoreCase(productItem.productNumber),"The product number of "+this.lblAddToBagPopupWindowDetailsProductNumber.getText().trim().replace("-", "")+" in Add to Bag popup window is equal to the original product number of "+productItem.productNumber+" from product search result page","The product number of "+this.lblAddToBagPopupWindowDetailsProductNumber.getText().trim().replace("-", "")+" in Add to Bag popup window is not equal to the original product number of "+productItem.productNumber+" from product search result page");
-		/**
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAddToBagPopupWindowButtonSectionSubtotal);
-		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblAddToBagPopupWindowButtonSectionSubtotal),"The product Subtotal in Add to Bag popup window is visible","The product Subtotal in Add to Bag popup window is not visible");
-		reporter.softAssert(!this.lblAddToBagPopupWindowButtonSectionSubtotal.getText().isEmpty(),"The product Subtotal in Add to Bag popup window is not empty","The product Subtotal in Add to Bag popup window is empty");
-		*/
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnAddToBagPopupWindowButtonSectionCheckOut);
 		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.btnAddToBagPopupWindowButtonSectionCheckOut),"The CheckOut button in Add to Bag popup window is visible","The CheckOut button in Add to Bag popup window is not visible");
 		reporter.softAssert(!this.btnAddToBagPopupWindowButtonSectionCheckOut.getText().isEmpty(),"The CheckOut button in Add to Bag popup window is not empty","The CheckOut button in Add to Bag popup window is empty");
@@ -1656,9 +1651,7 @@ public class ProductDetailPage extends BasePage {
 
 	//this method checks subtotal section
 	public void subTotal(){
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAddToBagPopupWindowButtonSectionSubtotal);
-		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblAddToBagPopupWindowButtonSectionSubtotal),"The product Subtotal in Add to Bag popup window is visible","The product Subtotal in Add to Bag popup window is not visible");
-		reporter.softAssert(!this.lblAddToBagPopupWindowButtonSectionSubtotal.getText().isEmpty(),"The product Subtotal in Add to Bag popup window is not empty","The product Subtotal in Add to Bag popup window is empty");
+		reporter.softAssert(!this.getElementInnerText(this.lblAddToBagPopupWindowButtonSectionSubtotal).isEmpty(),"The product Subtotal in Add to Bag popup window is not empty","The product Subtotal in Add to Bag popup window is empty");
 	}
 
 	/**
@@ -2776,14 +2769,14 @@ public class ProductDetailPage extends BasePage {
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnThumbnailPrev);
 			this.getReusableActionsInstance().clickIfAvailable(this.btnThumbnailPrev);
 			//Keep it to wait for clicking action result
-			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+			this.getReusableActionsInstance().staticWait(5*this.getStaticWaitForApplication());
 			firstItem=this.lstThumbnailImageList.get(0);
 			sum++;
 			if(sum>10){
 				return false;
 			}
 		}
-		while(this.hasElementAttribute(firstItem,"data-video"));
+		while(!this.hasElementAttribute(firstItem,"data-video"));
 
 		return true;
 	}
