@@ -2252,8 +2252,7 @@ public class ProductDetailPage extends BasePage {
 		SignInPage loginPage=new SignInPage(this.getDriver());
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavIcon);
 		this.getReusableActionsInstance().clickIfAvailable(this.lnkFavIcon);
-		this.getReusableActionsInstance().staticWait(300);
-		this.getReusableActionsInstance().clickIfAvailable(this.lnkFavIconPopupSignIn);
+		this.clickWebElementUsingJS(this.lnkFavIconPopupSignIn);
 		this.getReusableActionsInstance().waitForElementVisibility(loginPage.lblSignIn,  60);
 
 		reporter.softAssert(this.URL().toLowerCase().contains("signin"),"The page has been navigated to signin page while no user login","The page has not been navigated to signin page while no user login");
@@ -2274,30 +2273,39 @@ public class ProductDetailPage extends BasePage {
 	 * To verify Popup Dialog After Clicking FavIcon
 	 */
 	public void verifyPopupDialogAfterClickingFavIcon() {
-		SignInPage loginPage=new SignInPage(this.getDriver());
-
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavIcon);
 		this.getReusableActionsInstance().clickIfAvailable(this.lnkFavIcon);
 		this.waitForCondition(Driver->{return this.lnkFavIconPopupSignIn.isDisplayed();},20000);
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavIconPopupSignIn);
-		if(!this.lnkFavIconPopupSignIn.getText().isEmpty()){
-			reporter.reportLogPass("SignIn link on FavoIcon popup dialog is displaying correctly");
+		String favIconPopUpSignInText = this.lnkFavIconPopupSignIn.getText();
+		String favIconPopUpRegisterText = this.lnkFavIconPopupRegister.getText();
+		if(!favIconPopUpSignInText.isEmpty() &&
+				!favIconPopUpRegisterText.isEmpty()) {
+			reporter.reportLogPass("SignIn Link with text: " + favIconPopUpSignInText + " and Register link with text: " + favIconPopUpRegisterText + " on FavoIcon popup dialog is displaying correctly");
+			//Applying static wait for Safari and browser execution
+			this.applyStaticWait(3000);
+		}else
+			reporter.reportLogFailWithScreenshot("SignIn Link with text: "+favIconPopUpSignInText+" and Register link with text: "+favIconPopUpRegisterText+" on FavoIcon popup dialog is not displaying correctly");
+		/**
+		if(!this.lnkFavIconPopupSignIn.isDisplayed()){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavIcon);
 		}
-		else{
-			reporter.reportLogFailWithScreenshot("SignIn link on FavoIcon popup dialog is not displaying correctly");
-		}
-
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavIconPopupRegister);
 		if(!this.lnkFavIconPopupRegister.getText().isEmpty()){
 			reporter.reportLogPass("Register link on FavoIcon popup dialog is displaying correctly");
+			//Applying static wait here as fav sign in pop up closes
+			this.applyStaticWait(3000);
 		}
 		else{
 			reporter.reportLogFailWithScreenshot("Register link on FavoIcon popup dialog is not displaying correctly");
 		}
+		*/
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavIcon);
+		this.clickWebElementUsingJS(this.lnkFavIcon);
+		this.waitForCondition(Driver->{return this.lnkFavIconPopupSignIn.isDisplayed();},20000);
+		this.clickWebElementUsingJS(this.lnkFavIconPopupSignIn);
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavIconPopupSignIn);
-		this.getReusableActionsInstance().clickIfAvailable(this.lnkFavIconPopupSignIn);
 		this.waitForCondition(Driver->{return this.URL().contains("signin");},20000);
 		if(this.URL().contains("signin")){
 			reporter.reportLogPass("The URL has been navigated to SignIn page correctly");
@@ -2314,7 +2322,7 @@ public class ProductDetailPage extends BasePage {
 		this.waitForCondition(Driver->{return this.lnkFavIconPopupSignIn.isDisplayed();},20000);
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavIconPopupRegister);
-		this.getReusableActionsInstance().clickIfAvailable(this.lnkFavIconPopupRegister);
+		this.clickWebElementUsingJS(this.lnkFavIconPopupRegister);
 		this.waitForCondition(Driver->{return this.URL().contains("createaccount");},20000);
 		if(this.URL().contains("createaccount")){
 			reporter.reportLogPass("The URL has been navigated to Register page correctly");

@@ -290,7 +290,12 @@ public class SignInPage extends BasePage {
 	 */
 	public void hoverOnSignInHeadingMenu() {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInMainMenu);
-		getReusableActionsInstance().scrollToElement(this.btnSignInMainMenu);
+		if(System.getProperty("Browser").contains("ios") ||
+				(System.getProperty("chromeMobileDevice")!=null
+						&& System.getProperty("chromeMobileDevice").contains("iPad"))) {
+			this.clickWebElementUsingJS(this.btnSignInMainMenu);
+		}else
+			getReusableActionsInstance().scrollToElement(this.btnSignInMainMenu);
 		getReusableActionsInstance().staticWait(300);
 	}
 	
