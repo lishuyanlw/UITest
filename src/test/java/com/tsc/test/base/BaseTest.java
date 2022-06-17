@@ -161,7 +161,7 @@ public class BaseTest {
 
 		if(System.getProperty("Browser").contains("android") ||
 				(System.getProperty("chromeMobileDevice")!=null
-						&& !System.getProperty("chromeMobileDevice").contains("iPad"))) {
+						&& (!System.getProperty("chromeMobileDevice").contains("iPad")||!System.getProperty("chromeMobileDevice").contains("Surface")))) {
 			productDetailPageThreadLocal.set(new ProductDetailPage_Mobile(getDriver()));
 			//globalFooterPageThreadLocal.set(new GlobalFooterPage_Mobile(getDriver()));
 			globalHeaderPageThreadLocal.set(new GlobalHeaderPage_Mobile(getDriver()));
@@ -173,7 +173,7 @@ public class BaseTest {
 
 		if(System.getProperty("Browser").contains("ios") ||
 				(System.getProperty("chromeMobileDevice")!=null
-						&& System.getProperty("chromeMobileDevice").contains("iPad"))) {
+						&& (!System.getProperty("chromeMobileDevice").contains("iPad")||!System.getProperty("chromeMobileDevice").contains("Surface")))) {
 			loginPageThreadLocal.set(new SignInPage(getDriver()));
 			myAccountPageThreadLocal.set(new MyAccount(getDriver()));
 		}
