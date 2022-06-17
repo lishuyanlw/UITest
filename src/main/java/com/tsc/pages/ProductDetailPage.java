@@ -1253,6 +1253,15 @@ public class ProductDetailPage extends BasePage {
 	}
 
 	/**
+	 * Method to check if TrueFit is existing
+	 * @return boolean
+	 * @author Wei.Li
+	 */
+	public boolean checkProductTrueFitExisting() {
+		return !cntProductTrueFitSection.getCssValue("height").equalsIgnoreCase("0px");
+	}
+
+	/**
 	 * Method to check if Sizing chart is existing
 	 * @return boolean
 	 * @author Wei.Li
@@ -1336,7 +1345,7 @@ public class ProductDetailPage extends BasePage {
 	 * @author Wei.Li
 	 */
 	public void verifyProductSizeTrueFit() {
-		if(checkProductSizingChartExisting()) {
+		if(checkProductTrueFitExisting()) {
 			reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.imgProductTrueFitLogo),"The product TrueFit icon is displaying correctly","The product TrueFit icon is not displaying correctly");
 			reporter.softAssert(!this.getElementHref(this.lnkProductTrueFitLink).isEmpty(),"The product TrueFit link is not empty","The product TrueFit link is empty");
 
@@ -2682,7 +2691,7 @@ public class ProductDetailPage extends BasePage {
 		//To choose Style
 		if(this.judgeStyleDisplayModeIsDropdownMenu()) {
 			Select selectStyle= new Select(this.selectProductStyle);
-			selectStyle.selectByValue(lsStyle);
+			selectStyle.selectByVisibleText(lsStyle);
 		}
 		else {
 			loopSize=this.lstAllStyleRadioList.size();

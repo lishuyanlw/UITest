@@ -520,6 +520,7 @@ public class ConstantData {
         private String lbl_VideoDisclaimInfo;
         private String lbl_AdvancedOrderkeyword;
         private String lbl_AutoDeliverykeyword;
+        private String lbl_productTrueFitAndSizingChart;
         private String lbl_ProductDeliveryOptions;
         private String lbl_SoldOutkeyword;
         private String lbl_QuantityNumberToShowLeftItemInfo;
@@ -683,6 +684,14 @@ public class ConstantData {
 
         public void setLbl_AutoDeliverykeyword(String lbl_AutoDeliverykeyword) {
             this.lbl_AutoDeliverykeyword = lbl_AutoDeliverykeyword;
+        }
+
+        public String getLbl_productTrueFitAndSizingChart() {
+            return lbl_productTrueFitAndSizingChart;
+        }
+
+        public void setLbl_productTrueFitAndSizingChart(String lbl_productTrueFitAndSizingChart) {
+            this.lbl_productTrueFitAndSizingChart = lbl_productTrueFitAndSizingChart;
         }
 
         public String getLbl_ProductDeliveryOptions() {
