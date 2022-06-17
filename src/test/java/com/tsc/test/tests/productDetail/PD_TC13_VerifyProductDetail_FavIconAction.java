@@ -23,7 +23,7 @@ public class PD_TC13_VerifyProductDetail_FavIconAction extends BaseTest{
 		reporter.reportLog("ProductDetail Page");
 
 		List<String> lstKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_APISearchingKeyword();
-		String lsTellYourFriendsSentMessage=TestDataHandler.constantData.getSearchResultPage().getLbl_TellYourFriendsSentMessage();
+		//String lsTellYourFriendsSentMessage=TestDataHandler.constantData.getSearchResultPage().getLbl_TellYourFriendsSentMessage();
 		String lsUserName=TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
 		String lsPassword=TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
 
