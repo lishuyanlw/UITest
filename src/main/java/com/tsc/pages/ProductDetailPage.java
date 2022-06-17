@@ -1844,9 +1844,6 @@ public class ProductDetailPage extends BasePage {
 				reporter.reportLogPass("Installation sum is not equal to nowPrice");
 			}
 
-			this.verifyEasyPayPopUp();
-			reporter.softAssert(!this.getElementText(this.btnProductEasyPay).isEmpty(),"The product EasyPay button is displaying correctly","The product EasyPay button is not displaying correctly");
-
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnProductEasyPay);
 			this.getReusableActionsInstance().clickIfAvailable(this.btnProductEasyPay);
 			this.waitForCondition(Driver->{return this.lblProductEasyPayPopupHeading.isDisplayed();},10000);
