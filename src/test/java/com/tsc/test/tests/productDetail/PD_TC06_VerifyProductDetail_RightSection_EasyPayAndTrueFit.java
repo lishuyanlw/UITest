@@ -24,16 +24,19 @@ public class PD_TC06_VerifyProductDetail_RightSection_EasyPayAndTrueFit extends 
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(basePage.getBaseURL()+"/"), "TSC url is correct", "TSC url is incorrect");
 		reporter.reportLog("ProductDetail Page");
 
-		List<String> lstKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_APISearchingKeyword();
+		String lsKeyword=TestDataHandler.constantData.getSearchResultPage().getLbl_productTrueFitAndSizingChart();
+//		List<String> lstKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_APISearchingKeyword();
 		reporter.reportLog("Switch to ProductDetail page");
 		String lsProductNumber,lsUrl;
 
-		Map<String,Object> outputDataCriteria= new HashMap<String,Object>();
-		outputDataCriteria.put("style", "1");
-		outputDataCriteria.put("size", "1");
+//		Map<String,Object> outputDataCriteria= new HashMap<String,Object>();
+//		outputDataCriteria.put("style", "1");
+//		outputDataCriteria.put("size", "1");
 
-		if(getProductDetailPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList,"ProductWithEasyPaySizeChartAndReviews",outputDataCriteria)) {
-			lsProductNumber=getProductDetailPageThreadLocal().selectedProduct.productNumber;
+		//if(getProductDetailPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList,"ProductWithEasyPaySizeChartAndReviews",outputDataCriteria)) {
+		if(getProductResultsPageThreadLocal().getSearchResultLoad(lsKeyword,true)){
+//			lsProductNumber=getProductDetailPageThreadLocal().selectedProduct.productNumber;
+			lsProductNumber=lsKeyword;
 			reporter.reportLog("Verify URL for Product Number: "+lsProductNumber);
 			lsUrl=basePage.URL();
 			reporter.softAssert(lsUrl.contains("productdetails"),"The Url is containing productdetails","The Url is not containing productdetails");
