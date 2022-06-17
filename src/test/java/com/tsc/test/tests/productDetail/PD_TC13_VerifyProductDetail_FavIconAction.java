@@ -14,7 +14,7 @@ public class PD_TC13_VerifyProductDetail_FavIconAction extends BaseTest{
 	 * CER-585
 	 * CER-818
 	 */
-	@Test(groups={"ProductDetail","Regression","Regression_Mobile","Regression_Tablet"})
+	@Test(groups={"ProductDetail","Regression","Regression_Mobile","Regression_Tablet","TunnelTest"})
 	public void PD_TC13_VerifyProductDetail_FavIconAction() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 		BasePage basePage=new BasePage(this.getDriver());

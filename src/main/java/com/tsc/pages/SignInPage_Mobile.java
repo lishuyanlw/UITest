@@ -37,10 +37,10 @@ public class SignInPage_Mobile extends SignInPage{
     @Override
     public void verifyMenuItemInPopover(List<String> lstMenuItemPopover) {
         getReusableActionsInstance().javascriptScrollByVisibleElement(cntBlackHeaderContainer);
-        //this.getReusableActionsInstance().staticWait(2000);
 
         getReusableActionsInstance().scrollToElement(btnSignInMainMenu);
-        getReusableActionsInstance().clickIfAvailable(this.SignInIcon);
+        //getReusableActionsInstance().clickIfAvailable(this.SignInIcon);
+        this.clickWebElementUsingJS(this.btnSignInMainMenu);
         //getReusableActionsInstance().staticWait(2000);
         //getReusableActionsInstance().javascriptScrollByVisibleElement(this.cntSignInPopover);
         //this.hoverOnSignInHeadingMenu();

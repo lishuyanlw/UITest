@@ -169,6 +169,7 @@ public class ProductDetailPage extends BasePage {
 
 	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__form__auto-delivery__selections']/select")
 	public WebElement drpProductDeliveryOptionsMenu;
+	//All changes for new xpath as per design change are ended here
 
 	//Style part
 	@FindBy(xpath = "//section[@class='pdp-description']//form[@class='pdp-description__form']")
@@ -405,6 +406,11 @@ public class ProductDetailPage extends BasePage {
 
 	@FindBy(xpath = "//section[@class='pr-review-snapshot-block pr-review-snapshot-block-histogram']//ul//li//p[@class='pr-histogram-count']")
 	public List<WebElement> lstReviewTabHistogramItemCount;
+	@FindBy(xpath = "//div[@id='pr-reviewdisplay']//section[@id='pr-review-snapshot']//div[@class='pr-review-snapshot-histogram']")
+	public WebElement imgReviewTabHistogram;
+
+	@FindBy(xpath = "//div[@id='pr-reviewdisplay']//section[@id='pr-review-snapshot']//div[@class='pr-review-snapshot-histogram']//p[contains(@class,'histogram-count')]")
+	public List<WebElement> lstHistogramReviewsCountForStars;
 
 	@FindBy(xpath = "//section[@id='pr-review-snapshot']//div[@class='pr-snippet-stars-reco-stars']//div[@class='pr-snippet-rating-decimal']")
 	public WebElement lblReviewTabRateDecimalText;
@@ -1064,7 +1070,7 @@ public class ProductDetailPage extends BasePage {
 	 * @author Wei.Li
 	 */
 	public String getImageNameFromThumbnailOrZoomImagePath(String lsPath) {
-			return lsPath.split("\\.jpg")[0].split("_")[1];
+		return lsPath.split("\\.jpg")[0].split("_")[1];
 	}
 
 	/**
@@ -1634,6 +1640,11 @@ public class ProductDetailPage extends BasePage {
 		subTotal();
 
 		reporter.softAssert(this.lblAddToBagPopupWindowDetailsProductNumber.getText().trim().replace("-", "").equalsIgnoreCase(productItem.productNumber),"The product number of "+this.lblAddToBagPopupWindowDetailsProductNumber.getText().trim().replace("-", "")+" in Add to Bag popup window is equal to the original product number of "+productItem.productNumber+" from product search result page","The product number of "+this.lblAddToBagPopupWindowDetailsProductNumber.getText().trim().replace("-", "")+" in Add to Bag popup window is not equal to the original product number of "+productItem.productNumber+" from product search result page");
+		/**
+		 this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAddToBagPopupWindowButtonSectionSubtotal);
+		 reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblAddToBagPopupWindowButtonSectionSubtotal),"The product Subtotal in Add to Bag popup window is visible","The product Subtotal in Add to Bag popup window is not visible");
+		 reporter.softAssert(!this.lblAddToBagPopupWindowButtonSectionSubtotal.getText().isEmpty(),"The product Subtotal in Add to Bag popup window is not empty","The product Subtotal in Add to Bag popup window is empty");
+		 */
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnAddToBagPopupWindowButtonSectionCheckOut);
 		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.btnAddToBagPopupWindowButtonSectionCheckOut),"The CheckOut button in Add to Bag popup window is visible","The CheckOut button in Add to Bag popup window is not visible");
 		reporter.softAssert(!this.btnAddToBagPopupWindowButtonSectionCheckOut.getText().isEmpty(),"The CheckOut button in Add to Bag popup window is not empty","The CheckOut button in Add to Bag popup window is empty");
@@ -1912,21 +1923,35 @@ public class ProductDetailPage extends BasePage {
 
 	public void verifyReviewSectionContent() {
 		reporter.softAssert(!this.getElementText(this.lblReviewTabHeader).isEmpty(),"The Review tab header is not empty","The Review tab header is empty");
-		//reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.imgReviewTabHistogram),"The Review tab histogram is displaying correctly","The Review tab histogram is not displaying correctly");
+		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.imgReviewTabHistogram),"The Review tab histogram is displaying correctly","The Review tab histogram is not displaying correctly");
 		reporter.softAssert(!this.getElementText(this.lblReviewTabRateDecimalText).isEmpty(),"The Review tab rate number is not empty","The Review tab rate number is empty");
 		reporter.softAssert(this.lstReviewTabStar.size()>0,"The product review tab star count is greater than 0","The product review tab star count is not greater than 0");
 		reporter.softAssert(!this.getElementText(this.lblReviewTabReviewCount).isEmpty(),"The Review count message is not empty","The Review count message is empty");
 		reporter.softAssert(!this.getElementHref(this.lnkReviewTabWriteReview).isEmpty(),"The Write Review link is not empty","The Write Review link is empty");
 		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.selectReviewTabSortBy),"The Review sorting is displaying correctly","The Review sorting is not displaying correctly");
+		//Verifying review count displayed on review stars
+		this.verifyReviewStarCount();
+	}
+
+	public void verifyReviewStarCount(){
+		int reviewStarCount = 0;
+		int reviewCount = Integer.valueOf(this.lblReviewTabReviewCount.getText().trim().split(" Reviews")[0]);
+		for(WebElement webElement:lstHistogramReviewsCountForStars)
+			reviewStarCount = reviewStarCount + Integer.valueOf(webElement.getText().trim());
+
+		if(reviewCount==reviewStarCount)
+			reporter.reportLogPass("Review Counts for Reviews: "+reviewCount+" is same as count of reviews from review stars: "+reviewStarCount);
+		else
+			reporter.reportLogFail("Review Counts for Reviews: "+reviewCount+" is not same as count of reviews from review stars: "+reviewStarCount);
 	}
 
 	public void verifyReviewTabFooterAndBackToTopAndPagination() {
 		reporter.softAssert(!this.getElementText(this.lblReviewTabDisplayingReviewMsg).isEmpty(),"The Review message in Review tab footer is not empty","The Review message in Review tab footer is empty");
 		reporter.softAssert(!this.getElementHref(this.lnkReviewTabBackToTop).isEmpty(),"The BackToTop link is not empty","The BackToTop link is empty");
 		/**
-		if(this.getChildElementCount(this.cntReviewTabPagination)>0) {
-			reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.cntReviewTabPagination),"The Review pagination section is displaying correctly","The Review pagination section is not displaying correctly");
-		}*/
+		 if(this.getChildElementCount(this.cntReviewTabPagination)>0) {
+		 reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.cntReviewTabPagination),"The Review pagination section is displaying correctly","The Review pagination section is not displaying correctly");
+		 }*/
 	}
 
 	public void verifyProductSoldOutBasicInfo() {
@@ -2227,8 +2252,7 @@ public class ProductDetailPage extends BasePage {
 		SignInPage loginPage=new SignInPage(this.getDriver());
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavIcon);
 		this.getReusableActionsInstance().clickIfAvailable(this.lnkFavIcon);
-		this.getReusableActionsInstance().staticWait(300);
-		this.getReusableActionsInstance().clickIfAvailable(this.lnkFavIconPopupSignIn);
+		this.clickWebElementUsingJS(this.lnkFavIconPopupSignIn);
 		this.getReusableActionsInstance().waitForElementVisibility(loginPage.lblSignIn,  60);
 
 		reporter.softAssert(this.URL().toLowerCase().contains("signin"),"The page has been navigated to signin page while no user login","The page has not been navigated to signin page while no user login");
@@ -2249,30 +2273,39 @@ public class ProductDetailPage extends BasePage {
 	 * To verify Popup Dialog After Clicking FavIcon
 	 */
 	public void verifyPopupDialogAfterClickingFavIcon() {
-		SignInPage loginPage=new SignInPage(this.getDriver());
-
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavIcon);
 		this.getReusableActionsInstance().clickIfAvailable(this.lnkFavIcon);
 		this.waitForCondition(Driver->{return this.lnkFavIconPopupSignIn.isDisplayed();},20000);
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavIconPopupSignIn);
-		if(!this.lnkFavIconPopupSignIn.getText().isEmpty()){
-			reporter.reportLogPass("SignIn link on FavoIcon popup dialog is displaying correctly");
+		String favIconPopUpSignInText = this.lnkFavIconPopupSignIn.getText();
+		String favIconPopUpRegisterText = this.lnkFavIconPopupRegister.getText();
+		if(!favIconPopUpSignInText.isEmpty() &&
+				!favIconPopUpRegisterText.isEmpty()) {
+			reporter.reportLogPass("SignIn Link with text: " + favIconPopUpSignInText + " and Register link with text: " + favIconPopUpRegisterText + " on FavoIcon popup dialog is displaying correctly");
+			//Applying static wait for Safari and browser execution
+			this.applyStaticWait(3000);
+		}else
+			reporter.reportLogFailWithScreenshot("SignIn Link with text: "+favIconPopUpSignInText+" and Register link with text: "+favIconPopUpRegisterText+" on FavoIcon popup dialog is not displaying correctly");
+		/**
+		if(!this.lnkFavIconPopupSignIn.isDisplayed()){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavIcon);
 		}
-		else{
-			reporter.reportLogFailWithScreenshot("SignIn link on FavoIcon popup dialog is not displaying correctly");
-		}
-
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavIconPopupRegister);
 		if(!this.lnkFavIconPopupRegister.getText().isEmpty()){
 			reporter.reportLogPass("Register link on FavoIcon popup dialog is displaying correctly");
+			//Applying static wait here as fav sign in pop up closes
+			this.applyStaticWait(3000);
 		}
 		else{
 			reporter.reportLogFailWithScreenshot("Register link on FavoIcon popup dialog is not displaying correctly");
 		}
+		*/
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavIcon);
+		this.clickWebElementUsingJS(this.lnkFavIcon);
+		this.waitForCondition(Driver->{return this.lnkFavIconPopupSignIn.isDisplayed();},20000);
+		this.clickWebElementUsingJS(this.lnkFavIconPopupSignIn);
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavIconPopupSignIn);
-		this.getReusableActionsInstance().clickIfAvailable(this.lnkFavIconPopupSignIn);
 		this.waitForCondition(Driver->{return this.URL().contains("signin");},20000);
 		if(this.URL().contains("signin")){
 			reporter.reportLogPass("The URL has been navigated to SignIn page correctly");
@@ -2289,7 +2322,7 @@ public class ProductDetailPage extends BasePage {
 		this.waitForCondition(Driver->{return this.lnkFavIconPopupSignIn.isDisplayed();},20000);
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavIconPopupRegister);
-		this.getReusableActionsInstance().clickIfAvailable(this.lnkFavIconPopupRegister);
+		this.clickWebElementUsingJS(this.lnkFavIconPopupRegister);
 		this.waitForCondition(Driver->{return this.URL().contains("createaccount");},20000);
 		if(this.URL().contains("createaccount")){
 			reporter.reportLogPass("The URL has been navigated to Register page correctly");
@@ -2398,8 +2431,8 @@ public class ProductDetailPage extends BasePage {
 				}
 				break;
 			default:
-				break;		
-		}		
+				break;
+		}
 
 		selectedProduct=selectedProduct.assignValue(apiResponse.selectedProduct);
 		if(!lsType.equalsIgnoreCase("AdvanceOrder")&&!lsType.equalsIgnoreCase("DeliveryOptions")) {
