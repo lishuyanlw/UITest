@@ -17,7 +17,7 @@ public class PD_TC06_VerifyProductDetail_RightSection_EasyPayAndTrueFit extends 
 	 * CER-816
 	 */
 	@Test(groups={"ProductDetail","Regression","Regression_Mobile","Regression_Tablet"})
-	public void PD_TC06_VerifyProductDetail_RightSection_ItemDetailsWithoutEasyPayAndTrueFit() throws IOException {
+	public void PD_TC06_VerifyProductDetail_RightSection_EasyPayAndTrueFit() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 		BasePage basePage=new BasePage(this.getDriver());
 
@@ -28,11 +28,11 @@ public class PD_TC06_VerifyProductDetail_RightSection_EasyPayAndTrueFit extends 
 //		List<String> lstKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_APISearchingKeyword();
 		reporter.reportLog("Switch to ProductDetail page");
 		String lsProductNumber,lsUrl;
-
-//		Map<String,Object> outputDataCriteria= new HashMap<String,Object>();
-//		outputDataCriteria.put("style", "1");
-//		outputDataCriteria.put("size", "1");
-
+		/**
+		Map<String,Object> outputDataCriteria= new HashMap<String,Object>();
+		outputDataCriteria.put("style", "1");
+		outputDataCriteria.put("size", "1");
+		*/
 		//if(getProductDetailPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList,"ProductWithEasyPaySizeChartAndReviews",outputDataCriteria)) {
 		if(getProductResultsPageThreadLocal().getSearchResultLoad(lsKeyword,true)){
 //			lsProductNumber=getProductDetailPageThreadLocal().selectedProduct.productNumber;
