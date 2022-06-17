@@ -2284,11 +2284,12 @@ public class ProductDetailPage extends BasePage {
 	public void verifyPopupDialogAfterClickingFavIcon() {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavIcon);
 		this.getReusableActionsInstance().clickIfAvailable(this.lnkFavIcon);
-		this.waitForCondition(Driver->{return this.lnkFavIconPopupSignIn.isDisplayed();},20000);
+		this.applyStaticWait(300);
+//		this.waitForCondition(Driver->{return this.lnkFavIconPopupSignIn.isDisplayed();},20000);
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavIconPopupSignIn);
-		String favIconPopUpSignInText = this.lnkFavIconPopupSignIn.getText();
-		String favIconPopUpRegisterText = this.lnkFavIconPopupRegister.getText();
+//		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavIconPopupSignIn);
+		String favIconPopUpSignInText = this.getElementInnerText(this.lnkFavIconPopupSignIn);
+		String favIconPopUpRegisterText = this.getElementInnerText(this.lnkFavIconPopupRegister);
 		if(!favIconPopUpSignInText.isEmpty() &&
 				!favIconPopUpRegisterText.isEmpty()) {
 			reporter.reportLogPass("SignIn Link with text: " + favIconPopUpSignInText + " and Register link with text: " + favIconPopUpRegisterText + " on FavoIcon popup dialog is displaying correctly");
