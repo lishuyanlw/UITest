@@ -2754,9 +2754,11 @@ public class ProductDetailPage extends BasePage {
 		WebElement item=lstThumbnailImageButtonWithoutVideoList.get(0);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 		item.click();
+		this.applyStaticWait(2*this.getStaticWaitForApplication());
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lnkCurrentZoomImage);
 		lnkCurrentZoomImage.click();
+		this.applyStaticWait(2*this.getStaticWaitForApplication());
 		if(checkImageZoomingStatus()){
 			reporter.reportLogPass("Zooming out action is working");
 		}
@@ -2768,6 +2770,7 @@ public class ProductDetailPage extends BasePage {
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lnkCurrentZoomImage);
 		lnkCurrentZoomImage.click();
+		this.applyStaticWait(2*this.getStaticWaitForApplication());
 		if(!checkImageZoomingStatus()){
 			reporter.reportLogPass("Zooming in action is working");
 		}
