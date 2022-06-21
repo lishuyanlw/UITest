@@ -51,27 +51,27 @@ pipeline {
                     # leave spaces where you want them around the parameters. They'll be trimmed.
                     # we let the build run with the default name
 		    
-		    #00 06 * * * %Browser=saucechrome;Language=en;Groups=GlobalHeader;ThreadCount=1;TunnelRequired=No;Device=Desktop;TestProfile=TSCWF-Automation
-		    #10 06 * * * %Browser=saucefirefox;Language=en;Groups=GlobalHeader;ThreadCount=1;TunnelRequired=No;Device=Desktop;TestProfile=TSCWF-Automation
-		    #20 06 * * * %Browser=saucesafari;Language=en;Groups=GlobalHeader;ThreadCount=1;TunnelRequired=No;Device=Desktop;TestProfile=TSCWF-Automation
-		    #30 06 * * * %Browser=saucechrome;Language=en;Groups=Home;ThreadCount=1;TunnelRequired=No;Device=Desktop;TestProfile=TSCWF-Automation
-                    #40 06 * * * %Browser=saucefirefox;Language=en;Groups=Home;ThreadCount=1;TunnelRequired=No;Device=Desktop;TestProfile=TSCWF-Automation
-                    #50 06 * * * %Browser=saucesafari;Language=en;Groups=Home;ThreadCount=1;TunnelRequired=No;Device=Desktop;TestProfile=TSCWF-Automation
-                    #00 07 * * * %Browser=saucechrome;Language=en;Groups=GlobalFooter;ThreadCount=1;TunnelRequired=No;Device=Desktop;TestProfile=TSCWF-Automation
-                    #10 07 * * * %Browser=saucefirefox;Language=en;Groups=GlobalFooter;ThreadCount=1;TunnelRequired=No;Device=Desktop;TestProfile=TSCWF-Automation
-                    #20 07 * * * %Browser=saucesafari;Language=en;Groups=GlobalFooter;ThreadCount=1;TunnelRequired=No;Device=Desktop;TestProfile=TSCWF-Automation
-                    #30 07 * * * %Browser=saucechrome;Language=en;Groups=ProductSearch;ThreadCount=1;TunnelRequired=No;Device=Desktop;TestProfile=TSCWF-Automation
-                    #40 07 * * * %Browser=saucefirefox;Language=en;Groups=ProductSearch;ThreadCount=1;TunnelRequired=No;Device=Desktop;TestProfile=TSCWF-Automation
-                    #50 07 * * * %Browser=saucesafari;Language=en;Groups=ProductSearch;ThreadCount=1;TunnelRequired=No;Device=Desktop;TestProfile=TSCWF-Automation
-                    #00 08 * * * %Browser=saucechrome;Language=en;Groups=ProductDetail;ThreadCount=1;TunnelRequired=No;Device=Desktop;TestProfile=TSCWF-Automation
-                    #10 08 * * * %Browser=saucefirefox;Language=en;Groups=ProductDetail;ThreadCount=1;TunnelRequired=No;Device=Desktop;TestProfile=TSCWF-Automation
-                    #20 08 * * * %Browser=saucesafari;Language=en;Groups=ProductDetail;ThreadCount=1;TunnelRequired=No;Device=Desktop;TestProfile=TSCWF-Automation
-                    #00 22 * * * %Browser=saucechrome;Language=en;Groups=SignIn;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
-                    #30 22 * * * %Browser=saucefirefox;Language=en;Groups=SignIn;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
-                    #00 23 * * * %Browser=saucesafari;Language=en;Groups=SignIn;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
-                    #00 19 * * * %Browser=saucechrome;Language=en;Groups=MyAccount;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
-                    #00 20 * * * %Browser=saucefirefox;Language=en;Groups=MyAccount;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
-                    #00 21 * * * %Browser=saucesafari;Language=en;Groups=MyAccount;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
+		    00 06 * * 1-5 %Browser=saucechrome;Language=en;Groups=GlobalHeader;ThreadCount=1;TunnelRequired=No;Device=Desktop;TestProfile=TSCWF-Automation
+		    10 06 * * 1-5 %Browser=saucefirefox;Language=en;Groups=GlobalHeader;ThreadCount=1;TunnelRequired=No;Device=Desktop;TestProfile=TSCWF-Automation
+		    20 06 * * 1-5 %Browser=saucesafari;Language=en;Groups=GlobalHeader;ThreadCount=1;TunnelRequired=No;Device=Desktop;TestProfile=TSCWF-Automation
+		    30 06 * * 1-5 %Browser=saucechrome;Language=en;Groups=Home;ThreadCount=1;TunnelRequired=No;Device=Desktop;TestProfile=TSCWF-Automation
+                    40 06 * * 1-5 %Browser=saucefirefox;Language=en;Groups=Home;ThreadCount=1;TunnelRequired=No;Device=Desktop;TestProfile=TSCWF-Automation
+                    50 06 * * 1-5 %Browser=saucesafari;Language=en;Groups=Home;ThreadCount=1;TunnelRequired=No;Device=Desktop;TestProfile=TSCWF-Automation
+                    00 07 * * 1-5 %Browser=saucechrome;Language=en;Groups=GlobalFooter;ThreadCount=1;TunnelRequired=No;Device=Desktop;TestProfile=TSCWF-Automation
+                    10 07 * * 1-5 %Browser=saucefirefox;Language=en;Groups=GlobalFooter;ThreadCount=1;TunnelRequired=No;Device=Desktop;TestProfile=TSCWF-Automation
+                    20 07 * * 1-5 %Browser=saucesafari;Language=en;Groups=GlobalFooter;ThreadCount=1;TunnelRequired=No;Device=Desktop;TestProfile=TSCWF-Automation
+                    30 07 * * 1-5 %Browser=saucechrome;Language=en;Groups=ProductSearch;ThreadCount=1;TunnelRequired=No;Device=Desktop;TestProfile=TSCWF-Automation
+                    40 07 * * 1-5 %Browser=saucefirefox;Language=en;Groups=ProductSearch;ThreadCount=1;TunnelRequired=No;Device=Desktop;TestProfile=TSCWF-Automation
+                    50 07 * * 1-5 %Browser=saucesafari;Language=en;Groups=ProductSearch;ThreadCount=1;TunnelRequired=No;Device=Desktop;TestProfile=TSCWF-Automation
+                    00 08 * * 1-5 %Browser=saucechrome;Language=en;Groups=ProductDetail;ThreadCount=1;TunnelRequired=No;Device=Desktop;TestProfile=TSCWF-Automation
+                    10 08 * * 1-5 %Browser=saucefirefox;Language=en;Groups=ProductDetail;ThreadCount=1;TunnelRequired=No;Device=Desktop;TestProfile=TSCWF-Automation
+                    20 08 * * 1-5 %Browser=saucesafari;Language=en;Groups=ProductDetail;ThreadCount=1;TunnelRequired=No;Device=Desktop;TestProfile=TSCWF-Automation
+                    00 22 * * 1-5 %Browser=saucechrome;Language=en;Groups=SignIn;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
+                    30 22 * * 1-5 %Browser=saucefirefox;Language=en;Groups=SignIn;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
+                    00 23 * * 1-5 %Browser=saucesafari;Language=en;Groups=SignIn;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
+                    00 19 * * 1-5 %Browser=saucechrome;Language=en;Groups=MyAccount;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
+                    00 20 * * 1-5 %Browser=saucefirefox;Language=en;Groups=MyAccount;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
+                    00 21 * * 1-5 %Browser=saucesafari;Language=en;Groups=MyAccount;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
 
                     #00 20 * * 4 %Browser=sauceioschrome;Language=en;Groups=SignIn;ThreadCount=1;TunnelRequired=Yes;Device=Tablet;TestProfile=TSCWF-Automation
 		    #00 22 * * 4 %Browser=sauceioschrome;Language=en;Groups=GlobalHeader;ThreadCount=1;TunnelRequired=No;Device=Tablet;TestProfile=TSCWF-Automation
