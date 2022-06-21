@@ -1844,9 +1844,6 @@ public class ProductDetailPage extends BasePage {
 				reporter.reportLogPass("Installation sum is not equal to nowPrice");
 			}
 
-			this.verifyEasyPayPopUp();
-			reporter.softAssert(!this.getElementText(this.btnProductEasyPay).isEmpty(),"The product EasyPay button is displaying correctly","The product EasyPay button is not displaying correctly");
-
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnProductEasyPay);
 			this.getReusableActionsInstance().clickIfAvailable(this.btnProductEasyPay);
 			this.waitForCondition(Driver->{return this.lblProductEasyPayPopupHeading.isDisplayed();},10000);
@@ -2284,11 +2281,12 @@ public class ProductDetailPage extends BasePage {
 	public void verifyPopupDialogAfterClickingFavIcon() {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavIcon);
 		this.getReusableActionsInstance().clickIfAvailable(this.lnkFavIcon);
-		this.waitForCondition(Driver->{return this.lnkFavIconPopupSignIn.isDisplayed();},20000);
+		this.applyStaticWait(300);
+//		this.waitForCondition(Driver->{return this.lnkFavIconPopupSignIn.isDisplayed();},20000);
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavIconPopupSignIn);
-		String favIconPopUpSignInText = this.lnkFavIconPopupSignIn.getText();
-		String favIconPopUpRegisterText = this.lnkFavIconPopupRegister.getText();
+//		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavIconPopupSignIn);
+		String favIconPopUpSignInText = this.getElementInnerText(this.lnkFavIconPopupSignIn);
+		String favIconPopUpRegisterText = this.getElementInnerText(this.lnkFavIconPopupRegister);
 		if(!favIconPopUpSignInText.isEmpty() &&
 				!favIconPopUpRegisterText.isEmpty()) {
 			reporter.reportLogPass("SignIn Link with text: " + favIconPopUpSignInText + " and Register link with text: " + favIconPopUpRegisterText + " on FavoIcon popup dialog is displaying correctly");
@@ -2311,9 +2309,10 @@ public class ProductDetailPage extends BasePage {
 		}
 		*/
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavIcon);
-		this.clickWebElementUsingJS(this.lnkFavIcon);
-		this.waitForCondition(Driver->{return this.lnkFavIconPopupSignIn.isDisplayed();},20000);
-		this.clickWebElementUsingJS(this.lnkFavIconPopupSignIn);
+		this.clickElement(this.lnkFavIcon);
+		this.applyStaticWait(300);
+//		this.waitForCondition(Driver->{return this.lnkFavIconPopupSignIn.isDisplayed();},20000);
+		this.clickElement(this.lnkFavIconPopupSignIn);
 
 		this.waitForCondition(Driver->{return this.URL().contains("signin");},20000);
 		if(this.URL().contains("signin")){
@@ -2328,10 +2327,11 @@ public class ProductDetailPage extends BasePage {
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavIcon);
 		this.getReusableActionsInstance().clickIfAvailable(this.lnkFavIcon);
-		this.waitForCondition(Driver->{return this.lnkFavIconPopupSignIn.isDisplayed();},20000);
+		this.applyStaticWait(300);
+//		this.waitForCondition(Driver->{return this.lnkFavIconPopupSignIn.isDisplayed();},20000);
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavIconPopupRegister);
-		this.clickWebElementUsingJS(this.lnkFavIconPopupRegister);
+//		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavIconPopupRegister);
+		this.clickElement(this.lnkFavIconPopupRegister);
 		this.waitForCondition(Driver->{return this.URL().contains("createaccount");},20000);
 		if(this.URL().contains("createaccount")){
 			reporter.reportLogPass("The URL has been navigated to Register page correctly");
@@ -2754,9 +2754,11 @@ public class ProductDetailPage extends BasePage {
 		WebElement item=lstThumbnailImageButtonWithoutVideoList.get(0);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 		item.click();
+		this.applyStaticWait(2*this.getStaticWaitForApplication());
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lnkCurrentZoomImage);
 		lnkCurrentZoomImage.click();
+		this.applyStaticWait(2*this.getStaticWaitForApplication());
 		if(checkImageZoomingStatus()){
 			reporter.reportLogPass("Zooming out action is working");
 		}
@@ -2768,6 +2770,7 @@ public class ProductDetailPage extends BasePage {
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lnkCurrentZoomImage);
 		lnkCurrentZoomImage.click();
+		this.applyStaticWait(2*this.getStaticWaitForApplication());
 		if(!checkImageZoomingStatus()){
 			reporter.reportLogPass("Zooming in action is working");
 		}
