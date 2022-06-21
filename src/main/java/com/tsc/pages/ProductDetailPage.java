@@ -2061,20 +2061,36 @@ public class ProductDetailPage extends BasePage {
 	public void verifyWriteReviewAfterSuccessfulSubmitMessage(String lsTitle, String lsSubTitle) {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstWriteReviewYourRatingList.get(0));
 		this.lstWriteReviewYourRatingList.get(0).click();
+		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputWriteReviewHeadline);
+		this.inputWriteReviewHeadline.click();
 		this.inputWriteReviewHeadline.sendKeys("Test heading line");
+		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.textareaWriteReviewComments);
-		this.textareaWriteReviewComments.sendKeys("Test write a review in comments");
+		this.textareaWriteReviewComments.click();
+		this.textareaWriteReviewComments.sendKeys("Test");
+		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+		
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstWriteReviewRecommendToFriendList.get(0));
 		this.lstWriteReviewRecommendToFriendList.get(0).click();
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputWriteReviewNickName);
-		this.inputWriteReviewNickName.sendKeys("Cat");
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputWriteReviewLocation);
-		this.inputWriteReviewLocation.sendKeys("Toronto");
+		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputWriteReviewNickName);
+		this.inputWriteReviewNickName.click();
+		this.inputWriteReviewNickName.sendKeys("Cat");
+		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputWriteReviewLocation);
+		this.inputWriteReviewLocation.click();
+		this.inputWriteReviewLocation.sendKeys("Toronto");
+		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnWriteReviewSubmitReview);
 		this.clickElement(this.btnWriteReviewSubmitReview);
 		this.getReusableActionsInstance().waitForElementVisibility(this.lblWriteReviewAfterSubmitPageTitle,  60);
+
 		reporter.softAssert(this.getElementText(this.lblWriteReviewAfterSubmitPageTitle).equalsIgnoreCase(lsTitle),"The Title after submited WriteReview is equal to "+lsTitle,"The Title after submited WriteReview is not equal to "+lsTitle);
 		reporter.softAssert(this.getElementText(this.lblWriteReviewAfterSubmitPageSubTitle).equalsIgnoreCase(lsSubTitle),"The SubTitle after submited WriteReview is equal to "+lsSubTitle,"The SubTitle after submited WriteReview is not equal to "+lsSubTitle);
 	}
