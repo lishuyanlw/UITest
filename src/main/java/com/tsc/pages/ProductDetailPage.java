@@ -1922,7 +1922,6 @@ public class ProductDetailPage extends BasePage {
 		}
 		else {
 			reporter.softAssert(!this.getElementText(this.lblRadioProductStyleStatic).isEmpty(),"The product style label message is not empty","The product style label message is empty");
-			reporter.softAssert(!this.getElementText(this.lblRadioProductStyleTitle).isEmpty(),"The product style title message is not empty","The product style title message is empty");
 			reporter.softAssert(this.lstStyleRadioList.size()>0,"The product style radio button count is greater than 0","The product style radio button count is not greater than 0");
 		}
 	}
