@@ -942,7 +942,7 @@ public class MyAccount extends BasePage {
 		WebElement cardTypeElement = getDriver().findElement(By.xpath(cardTypeToBeAdded));
 
 		//Calculating expiration Year And Month for Card
-		Map<String,String> cardData = this.getNewCardExpirationData(2,0);
+		Map<String,String> cardData = this.getNewCardExpirationData(2,2);
 
 		waitForCondition(Driver->{return cardTypeElement.isDisplayed() && cardTypeElement.isEnabled();},5000);
 		this.clickWebElementUsingJS(cardTypeElement);
@@ -1245,7 +1245,7 @@ public class MyAccount extends BasePage {
 			updatedMonth = Integer.valueOf(expiresOnData[0].trim())+1 > 12 ? String.valueOf((Integer.valueOf(expiresOnData[0].trim()) + 1) - 12) : String.valueOf(Integer.valueOf(expiresOnData[0].trim())+1);
 			if(updatedMonth.length()==1)
 				updatedMonth = "0"+updatedMonth;
-			Map<String,String> updatedYearData = getNewCardExpirationData(2,0);
+			Map<String,String> updatedYearData = getNewCardExpirationData(2,2);
 			updatedYear = updatedYearData.get("expirationYear");
 			actualExpirationMonth = expiresOnData[0].trim();
 			actualExpirationYear = expiresOnData[1].trim();
