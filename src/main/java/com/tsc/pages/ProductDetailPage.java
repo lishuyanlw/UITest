@@ -3,6 +3,7 @@ package com.tsc.pages;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -2983,9 +2984,16 @@ public class ProductDetailPage extends BasePage {
 	/**
 	 * To verify Product AdvancedOrder Message
 	 */
-	public void verifyProductAdvancedOrderMessage() {
+	public void verifyProductAdvancedOrderMessage(String lsAdvancedOrderMessage) {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAdvanceOrderMsg);
-		reporter.softAssert(!this.lblAdvanceOrderMsg.getText().isEmpty(),"The Advanced order message is not empty","The Advanced order message is empty");
+		String lsMsg=this.lblAdvanceOrderMsg.getText();
+		reporter.softAssert(!lsMsg.isEmpty(),"The Advanced order message is not empty","The Advanced order message is empty");
+		if(lsMsg.toLowerCase().contains(lsAdvancedOrderMessage.trim().toLowerCase())){
+			reporter.reportLogPass("The Advanced Order message is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Advanced Order message is not containing '"+lsAdvancedOrderMessage+"' correctly");
+		}
 	}
 
 	/**

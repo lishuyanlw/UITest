@@ -289,6 +289,7 @@ public class SignInPage extends BasePage {
 	 * @author Wei.Li
 	 */
 	public void hoverOnSignInHeadingMenu() {
+		/*
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInMainMenu);
 		if(System.getProperty("Browser").contains("ios") ||
 				(System.getProperty("chromeMobileDevice")!=null
@@ -297,6 +298,12 @@ public class SignInPage extends BasePage {
 		}else
 			getReusableActionsInstance().scrollToElement(this.btnSignInMainMenu);
 		getReusableActionsInstance().staticWait(300);
+		 */
+		getReusableActionsInstance().javascriptScrollByVisibleElement(this.cntBlackHeaderContainer);
+		getReusableActionsInstance().staticWait(2000);
+
+		this.clickElement(this.btnSignInMainMenu);
+		getReusableActionsInstance().staticWait(3000);
 	}
 	
 	/**

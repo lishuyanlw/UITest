@@ -519,6 +519,7 @@ public class ConstantData {
         private String lbl_AddToBagPopupWindowTitle;
         private String lbl_VideoDisclaimInfo;
         private String lbl_AdvancedOrderkeyword;
+        private String lbl_AdvancedOrderMessage;
         private String lbl_AutoDeliverykeyword;
         private String lbl_productTrueFitAndSizingChart;
         private String lbl_ProductDeliveryOptions;
@@ -676,6 +677,14 @@ public class ConstantData {
 
         public void setLbl_AdvancedOrderkeyword(String lbl_AdvancedOrderkeyword) {
             this.lbl_AdvancedOrderkeyword = lbl_AdvancedOrderkeyword;
+        }
+
+        public String getLbl_AdvancedOrderMessage() {
+            return lbl_AdvancedOrderMessage;
+        }
+
+        public void setLbl_AdvancedOrderMessage(String lbl_AdvancedOrderMessage) {
+            this.lbl_AdvancedOrderMessage = lbl_AdvancedOrderMessage;
         }
 
         public String getLbl_AutoDeliverykeyword() {
