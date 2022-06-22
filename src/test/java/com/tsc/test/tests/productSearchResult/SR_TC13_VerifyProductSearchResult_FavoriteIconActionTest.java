@@ -17,7 +17,7 @@ public class SR_TC13_VerifyProductSearchResult_FavoriteIconActionTest extends Ba
 	 * Bug 19538: [QA Defect - P3] PRP: missing Free Shipping label - covered in verifyFavoriteIconAction function
 	 * 
 	 */
-	@Test(groups={"ProductSearch","Regression","Regression_Tablet"})
+	@Test(groups={"SauceTunnelTest","Regression","Regression_Tablet"})
 	public void SR_TC13_VerifyProductSearchResult_FavoriteIconActionTest() throws IOException {
 	getGlobalFooterPageThreadLocal().closePopupDialog();
 	

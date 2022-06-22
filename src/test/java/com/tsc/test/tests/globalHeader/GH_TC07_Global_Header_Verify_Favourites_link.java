@@ -10,7 +10,7 @@ import com.tsc.test.base.BaseTest;
 
 public class GH_TC07_Global_Header_Verify_Favourites_link extends BaseTest {
 	
-	@Test(groups={"GlobalHeader","Regression"})
+	@Test(groups={"SauceTunnelTest","Regression"})
 	public void GH_TC07_Global_Header_Verify_Favourites_link() {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 		BasePage basePage=new BasePage(this.getDriver());
