@@ -73,6 +73,9 @@ public class PD_TC15_VerifyProductDetail_Accordions extends BaseTest {
 				//getProductDetailPageThreadLocal().verifyProductOverviewContent();
 				getProductDetailPageThreadLocal().verifyAccordionsForProductOnPage();
 
+				reporter.reportLog("Verifying Sizing Chart Navigation");
+				getProductDetailPageThreadLocal().verifyAccordionNavigationForSizeGuide();
+
 				//Verifying Bug-19717 - Issue navigating to brand page from PDP
 				reporter.reportLog("Verify product brand name link");
 				getProductDetailPageThreadLocal().verifyProductBrandNameRedirectAction();

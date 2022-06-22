@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -24,8 +23,8 @@ public class ProductDetailPage extends BasePage {
 
 	}
 
-	@FindBy(xpath = "//section[@class='pdp-gallery']")
-	public WebElement cntLeftContainer;
+	//@FindBy(xpath = "//section[@class='pdp-gallery']")
+	//public WebElement cntLeftContainer;
 
 	@FindBy(xpath = "//section[@class='pdp-description']")
 	public WebElement cntRightContainer;
@@ -46,12 +45,13 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//section[@class='pdp-gallery']//div[@id='thumbGallery']//div[@id='pdp__galleryThumb']//button[contains(@class,'swiper-slide-visible')][@data-styleid]")
 	public List<WebElement> lstThumbnailImageButtonWithoutVideoList;
 
+	/**
 	@FindBy(xpath = "//section[@class='pdp-gallery']//div[@id='thumbGallery']//div[@id='pdp__galleryThumb']//button[contains(@class,'swiper-slide-visible')][@data-styleid]//img")
 	public List<WebElement> lstThumbnailImageWithoutVideoList;
 
 	@FindBy(xpath = "//section[@class='pdp-gallery']//div[@id='thumbGallery']//div[@id='pdp__galleryThumb']//button[contains(@class,'swiper-slide-thumb-active')][@data-styleid]//img")
 	public WebElement imgCurrentThumbnail;
-
+	*/
 	@FindBy(xpath = "//section[@class='pdp-gallery']//div[@id='thumbGallery']//div[@id='pdp__galleryThumb']//button[contains(@class,'swiper-slide-thumb-active')][@data-styleid]")
 	public WebElement currentThumbnailItem;
 
@@ -71,8 +71,8 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//section[@class='pdp-gallery']//div[@class='video-container']//p[@class='video-item__video-desc']")
 	public WebElement lblVideoDisclaim;
 
-	@FindBy(xpath = "//section[@class='pdp-gallery']//div[@class='video-container']//label[@class='video-item__auto-play__text']")
-	public WebElement lblAutoPlayVideo;
+	//@FindBy(xpath = "//section[@class='pdp-gallery']//div[@class='video-container']//label[@class='video-item__auto-play__text']")
+	//public WebElement lblAutoPlayVideo;
 
 	@FindBy(xpath = "//section[@class='pdp-gallery']//div[@class='video-container']//input[@class='video-item__auto-play__checkbox']")
 	public WebElement btnAutoPlayVideo;
@@ -93,8 +93,8 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//section[@class='pdp-gallery']//figure[contains(@class,'swiper-slide-active')]//a[contains(@class,'gallery__image--aspect-ratio-wrap')]")
 	public WebElement lnkCurrentZoomImage;
 
-	@FindBy(xpath = "//section[@class='pdp-gallery']//figure[contains(@class,'swiper-slide-active')]//a[contains(@class,'gallery__image--aspect-ratio-wrap')]//img")
-	public WebElement imgCurrentZoomImage;
+	//@FindBy(xpath = "//section[@class='pdp-gallery']//figure[contains(@class,'swiper-slide-active')]//a[contains(@class,'gallery__image--aspect-ratio-wrap')]//img")
+	//public WebElement imgCurrentZoomImage;
 
 	//Added new xpath for changes on PDP page for Integration as per new design
 	//Product details
@@ -214,8 +214,8 @@ public class ProductDetailPage extends BasePage {
 	public List<WebElement> lstDropdownProductStyle;
 
 	//TrueFit part
-	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__form__size-chart-wrapper']")
-	public WebElement cntProductTrueFitAndSizingSection;
+	//@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__form__size-chart-wrapper']")
+	//public WebElement cntProductTrueFitAndSizingSection;
 
 	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__form__size-chart-wrapper']//div[@class='tfc-fitrec-product']")
 	public WebElement cntProductTrueFitSection;
@@ -233,8 +233,8 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//div[contains(@class,'tfc-cfg-modal') and contains(@class,'tfc-popup-wrap')]")
 	public WebElement iframeProductTrueFitLoadingIndicator;
 
-	@FindBy(xpath = "//div[contains(@class,'tfp-app')]")
-	public WebElement cntProductTrueFitIframe;
+	//@FindBy(xpath = "//div[contains(@class,'tfp-app')]")
+	//public WebElement cntProductTrueFitIframe;
 
 	@FindBy(xpath = "//div[contains(@class,'tfp-app')]//button[contains(@aria-label,'Close True Fit')][img]")
 	public WebElement btnProductTrueFitIframeClose;
@@ -258,6 +258,7 @@ public class ProductDetailPage extends BasePage {
 	public WebElement cntProductTrueFitIframePageMainContent;
 
 	//Brand prompt
+	/**
 	@FindBy(xpath = "//div[contains(@class,'tfp-app')]//div[@class='main-content']//button[@aria-label='Search all brands']")
 	public WebElement btnProductTrueFitIframePageSearchAllBrands;
 
@@ -285,7 +286,7 @@ public class ProductDetailPage extends BasePage {
 
 	@FindBy(xpath = "//div[contains(@class,'tfp-app')]//div[@class='main-content']//div[contains(@class,'height')]//div[@class='slider-input-box']//input[2]")
 	public WebElement inputProductTrueFitIframeMeasureInput2;
-
+	*/
 
 	@FindBy(xpath = "//div[contains(@class,'tfp-app')]//div[@class='footer']")
 	public WebElement lblProductTrueFitIframeConfirmMessage;
@@ -310,8 +311,8 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//section[contains(@class,'pdp-description')]//div[contains(@class,'pdp-description__form__sizes__selections')]//button//label")
 	public List<WebElement> lstAllSizeLabelRadioList;
 
-	@FindBy(xpath = "//section[contains(@class,'pdp-description')]//div[contains(@class,'pdp-description__form__sizes__selections')]//button[not(contains(@class,'pdp-description__form__sizes--disabled'))]")
-	public List<WebElement> lstSizeRadioList;
+	//@FindBy(xpath = "//section[contains(@class,'pdp-description')]//div[contains(@class,'pdp-description__form__sizes__selections')]//button[not(contains(@class,'pdp-description__form__sizes--disabled'))]")
+	//public List<WebElement> lstSizeRadioList;
 
 	@FindBy(xpath = "//section[contains(@class,'pdp-description')]//div[contains(@class,'pdp-description__form__sizes__selections')]//button[not(contains(@class,'pdp-description__form__sizes--disabled'))]//label")
 	public List<WebElement> lstRadioSizeLabelList;
@@ -319,19 +320,19 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//section[contains(@class,'pdp-description')]//div[contains(@class,'pdp-description__form__sizes__selections')]//button[not(contains(@class,'pdp-description__form__sizes--disabled'))]//label//span")
 	public List<WebElement> lstRadioSizeLabelSpanList;
 
-	@FindBy(xpath = "//section[contains(@class,'pdp-description')]//div[contains(@class,'pdp-description__form__sizes__selections')]//button[not(contains(@class,'pdp-description__form__sizes--disabled'))][input[@checked]]")
+	/**@FindBy(xpath = "//section[contains(@class,'pdp-description')]//div[contains(@class,'pdp-description__form__sizes__selections')]//button[not(contains(@class,'pdp-description__form__sizes--disabled'))][input[@checked]]")
 	public WebElement btnRadioProductSizeSelected;
 
 	//For dropdown menu style
 	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__form__sizes__selected']")
 	public WebElement lblDropDownProductSizeStatic;
-
+	*/
 	@FindBy(xpath = "//section[contains(@class,'pdp-description')]//div[contains(@class,'pdp-description__form__sizes__selections')]//select")
 	public WebElement selectSizeOption;
-
+	/**
 	@FindBy(xpath = "//section[contains(@class,'pdp-description')]//div[contains(@class,'pdp-description__form__sizes__selections')]//select//option[not(@disabled)]")
 	public List<WebElement> lstSizeOption;
-
+	*/
 	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__form__size-chart-wrapper']//button[@class='pdp-description__form__size-chart-link']")
 	public WebElement lnkSizingChart;
 
@@ -351,8 +352,8 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//section[@class='pdp-description']//div[contains(@class,'pdp-description__add-to-bag')]//div[contains(@class,'pdp-description__add-to-bag__quantity')]//select//option[last()]")
 	public WebElement lblQuantityLastOption;
 
-	@FindBy(xpath = "//section[@class='pdp-description']//div[contains(@class,'pdp-description__add-to-bag')]//div[contains(@class,'pdp-description__add-to-bag__quantity')]//span[@class='pdp-description__add-to-bag__quantity__count--critic-stock']")
-	public WebElement lblQuantityLeft;
+	//@FindBy(xpath = "//section[@class='pdp-description']//div[contains(@class,'pdp-description__add-to-bag')]//div[contains(@class,'pdp-description__add-to-bag__quantity')]//span[@class='pdp-description__add-to-bag__quantity__count--critic-stock']")
+	//public WebElement lblQuantityLeft;
 
 	//For new designed Add To Bag button
 	@FindBy(xpath = "//section[@class='pdp-description']//button[@class='pdp-description__add-to-bag__add-to-bag-button']")
@@ -369,8 +370,8 @@ public class ProductDetailPage extends BasePage {
 	public WebElement lnkFavIcon;
 
 	//For popup window after clicking Fav Icon
-	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__add-to-bag__favorite__tooltip']//span[@class='pdp-description__add-to-bag__favorite__tooltip-content__text']")
-	public WebElement lblFavIconPopupContent;
+	//@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__add-to-bag__favorite__tooltip']//span[@class='pdp-description__add-to-bag__favorite__tooltip-content__text']")
+	//public WebElement lblFavIconPopupContent;
 
 	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__add-to-bag__favorite__tooltip']//span[@class='pdp-description__add-to-bag__favorite__tooltip-content__text']//a[@class='pdp-description__add-to-bag__favorite__tooltip__sign-in']")
 	public WebElement lnkFavIconPopupSignIn;
@@ -378,18 +379,18 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__add-to-bag__favorite__tooltip']//span[@class='pdp-description__add-to-bag__favorite__tooltip-content__text']//a[@class='pdp-description__add-to-bag__favorite__tooltip__register']")
 	public WebElement lnkFavIconPopupRegister;
 
-	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__add-to-bag__favorite__tooltip']//button[@class='pdp-description__add-to-bag__favorite__tooltip-content__close-button']")
+	/**@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__add-to-bag__favorite__tooltip']//button[@class='pdp-description__add-to-bag__favorite__tooltip-content__close-button']")
 	public WebElement btnFavIconPopupClose;
 
 	//For Accordions
 	@FindBy(xpath = "//div[@id='accordion']//div[@class='field-wrapper']")
 	public List<WebElement> lstAccordionSections;
-
+	*/
 	@FindBy(xpath = "//div[@id='accordion']//div[@class='field-wrapper']//div[@class='field-wrapper__accordion-heading']//span[@class='field-wrapper__accordion-heading__text']")
 	public List<WebElement> lstAccordionSectionHeadings;
 
-	@FindBy(xpath = "//div[@id='accordion']//div[@class='field-wrapper']//div[@class='field-wrapper__content-wrapper']")
-	public List<WebElement> lstAccordionSectionContents;
+	//@FindBy(xpath = "//div[@id='accordion']//div[@class='field-wrapper']//div[@class='field-wrapper__content-wrapper']")
+	//public List<WebElement> lstAccordionSectionContents;
 
 	//Product Review Tab part
 	@FindBy(xpath = "//*[contains(@class,'customer-reviews')]")
@@ -418,8 +419,8 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//section[@id='pr-review-snapshot']//div[@class='pr-snippet-stars-reco-stars']//div[@class='pr-rating-stars']")
 	public List<WebElement> lstReviewTabStar;
 
-	@FindBy(xpath = "//div[@id='productReviewSection']//section[@id='pr-review-snapshot']//div[@class='pr-snippet-stars-reco-stars']//span[@class='pr-accessible-text']")
-	public WebElement lblReviewTabStarAccessibleText;
+	//@FindBy(xpath = "//div[@id='productReviewSection']//section[@id='pr-review-snapshot']//div[@class='pr-snippet-stars-reco-stars']//span[@class='pr-accessible-text']")
+	//public WebElement lblReviewTabStarAccessibleText;
 
 	@FindBy(xpath = "//section[@id='pr-review-snapshot']//div[@class='pr-snippet-read-and-write']/span")
 	public WebElement lblReviewTabReviewCount;
@@ -434,21 +435,23 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//div[@id='pr-reviewdisplay']//section[@id='pr-review-display']//div[@class='pr-review']")
 	public List<WebElement> lstReviewTabPerReviewList;
 
-	public By byReviewTabHeader=By.xpath(".//header");
+	/**public By byReviewTabHeader=By.xpath(".//header");
 
 	public By byReviewTabDescriptionSection=By.xpath(".//section[contains(@class,'pr-rd-description')]");
 
 	public By byReviewTabImagesSection=By.xpath(".//div[@class='pr-rating-stars']");
 
+	public By byReviewTabRatingDecimal=By.xpath(".//div[@class='pr-snippet-rating-decimal']");
+
+	public By byReviewTabReviewAccessibleText=By.xpath(".//span[@class='pr-accessible-text']");
+
+	public By byReviewTabAuthorLocation=By.xpath(".//section[contains(@class,'pr-rd-description')]//div[contains(@class,'pr-rd-right')]//p[contains(@class,'pr-rd-author-location')]");
+	*/
 	public By byReviewTabFooter=By.xpath(".//footer");
 
 	public By byReviewTabStarSection=By.xpath(".//div[@class='pr-rating-stars']");
 
 	public By byReviewTabStarList=By.xpath(".//div[@class='pr-rating-stars']//div[contains(@class,'pr-star-v4')]");
-
-	public By byReviewTabRatingDecimal=By.xpath(".//div[@class='pr-snippet-rating-decimal']");
-
-	public By byReviewTabReviewAccessibleText=By.xpath(".//span[@class='pr-accessible-text']");
 
 	public By byReviewTabHeadingLine=By.xpath(".//*[@class='pr-rd-review-headline']");
 
@@ -457,8 +460,6 @@ public class ProductDetailPage extends BasePage {
 	public By byReviewTabSubmittedTime=By.xpath(".//section[contains(@class,'pr-rd-description')]//div[contains(@class,'pr-rd-right')]//p[contains(@class,'pr-rd-author-submission-date')]");
 
 	public By byReviewTabNickName=By.xpath(".//section[contains(@class,'pr-rd-description')]//div[contains(@class,'pr-rd-right')]//p[contains(@class,'pr-rd-author-nickname')]");
-
-	public By byReviewTabAuthorLocation=By.xpath(".//section[contains(@class,'pr-rd-description')]//div[contains(@class,'pr-rd-right')]//p[contains(@class,'pr-rd-author-location')]");
 
 	public By byReviewTabVerifiedBuyerIcon=By.xpath(".//section[contains(@class,'pr-rd-description')]//div[contains(@class,'pr-rd-right')]//p[contains(@class,'pr-verified_buyer')]//span[contains(@class,'pr-badging-icon')]");
 
@@ -478,12 +479,12 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//div[@id='productReviewSection']//section[@id='pr-review-display']//div[@class='pr-rd-pagination']")
 	public WebElement cntReviewTabPagination;
 
-	@FindBy(xpath = "//div[@id='productReviewSection']//section[@id='pr-review-display']//a[@aria-label='Previous']")
+	/**@FindBy(xpath = "//div[@id='productReviewSection']//section[@id='pr-review-display']//a[@aria-label='Previous']")
 	public WebElement lnkReviewTabPrev;
 
 	@FindBy(xpath = "//div[@id='productReviewSection']//section[@id='pr-review-display']//a[@aria-label='Next']")
 	public WebElement lnkReviewTabNext;
-
+	*/
 	//Write a review part
 	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//a[@id='backToProduct']")
 	public WebElement lnkWriteReviewBackToProduct;
@@ -542,8 +543,8 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//div[@role='form']//div[@id='pr-war-form']//div[contains(@class,'pr-media_image-form-group')]//label")
 	public WebElement lblWriteReviewAddImage;
 
-	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//div[@role='form']//div[@id='pr-war-form']//div[contains(@class,'pr-file-input-btn-group')]//input[@id='pr-media_image']")
-	public WebElement inputWriteReviewUploadImage;
+	//@FindBy(xpath = "//div[contains(@class,'WriteReview')]//div[@role='form']//div[@id='pr-war-form']//div[contains(@class,'pr-file-input-btn-group')]//input[@id='pr-media_image']")
+	//public WebElement inputWriteReviewUploadImage;
 
 	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//div[@role='form']//div[@id='pr-war-form']//div[contains(@class,'pr-file-input-btn-group')]//button")
 	public WebElement btnWriteReviewUploadImage;
@@ -551,8 +552,8 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//div[@role='form']//div[@id='pr-war-form']//div[contains(@class,'pr-media_videourl-form-group')]//label")
 	public WebElement lblWriteReviewAddVideo;
 
-	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//div[@role='form']//div[@id='pr-war-form']//div[contains(@class,'pr-file-input-btn-group')]//input[@id='pr-media_videourl']")
-	public WebElement inputWriteReviewUploadVideo;
+	//@FindBy(xpath = "//div[contains(@class,'WriteReview')]//div[@role='form']//div[@id='pr-war-form']//div[contains(@class,'pr-file-input-btn-group')]//input[@id='pr-media_videourl']")
+	//public WebElement inputWriteReviewUploadVideo;
 
 	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//div[@role='form']//div[@id='pr-war-form']//div[contains(@class,'pr-media_videourl-form-group')]//button")
 	public WebElement btnWriteReviewUploadVideo;
@@ -581,8 +582,8 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//div[@class='pr-form-control-error-wrapper']//*[@class='pr-form-control-error-icon']")
 	public List<WebElement> lstWriteReviewErrorIcon;
 
-	@FindBy(xpath = "//div[@role='alert'][div]")
-	public WebElement cntWriteReviewAlert;
+	//@FindBy(xpath = "//div[@role='alert'][div]")
+	//public WebElement cntWriteReviewAlert;
 
 	@FindBy(xpath = "//div[@role='alert']//*[@class='pr-alert_heading']")
 	public WebElement lblWriteReviewAlertHeading;
@@ -604,8 +605,8 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//div[@class='secondary-navigation__popup-container']")
 	public WebElement cntAddToBagOverlay;
 
-	@FindBy(xpath = "//div[contains(@class,'cart-section')]")
-	public WebElement cntAddToBagPopupWindow;
+	//@FindBy(xpath = "//div[contains(@class,'cart-section')]")
+	//public WebElement cntAddToBagPopupWindow;
 
 	@FindBy(xpath = "//div[contains(@class,'cart-section')]//button[@class='add-to-bag__button-close']")
 	public WebElement btnAddToBagPopupWindowClose;
@@ -613,12 +614,12 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag-title']")
 	public WebElement lblAddToBagPopupWindowTitle;
 
-	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__details']")
+	/**@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__details']")
 	public WebElement cntAddToBagPopupWindowDetailsSection;
 
 	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__details']//div[@class='add-to-bag__inside-left']")
 	public WebElement cntAddToBagPopupWindowDetailsLeftSection;
-
+	*/
 	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__details']//div[@class='add-to-bag__inside-left']//div[@class='add-to-bag__img']")
 	public WebElement cntAddToBagPopupWindowDetailsLeftSectionImage;
 
@@ -631,8 +632,8 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__details']//div[@class='add-to-bag__inside-left']//div[@class='add-to-bag__img']//a//img")
 	public WebElement imgAddToBagPopupWindowDetailsProductImage;
 
-	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__details']//div[@class='add-to-bag__inside-right']")
-	public WebElement cntAddToBagPopupWindowDetailsRightSection;
+	//@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__details']//div[@class='add-to-bag__inside-right']")
+	//public WebElement cntAddToBagPopupWindowDetailsRightSection;
 
 	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__details']//div[@class='add-to-bag__inside-right']//a[@class='add-to-bag__item-link']")
 	public WebElement lnkAddToBagPopupWindowDetailsProductInfo;
@@ -646,17 +647,17 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__details']//div[@class='add-to-bag__inside-right']//a[@class='add-to-bag__item-link']//span[@class='add-to-bag__product-size']")
 	public WebElement lblAddToBagPopupWindowDetailsProductSize;
 
-	public By byAddToBagPopupWindowDetailProductName = By.xpath(".//span[@class='add-to-bag__product-name']");
+	/**public By byAddToBagPopupWindowDetailProductName = By.xpath(".//span[@class='add-to-bag__product-name']");
 
 	public By byAddToBagPopupWindowDetailProductStyle = By.xpath(".//span[@class='add-to-bag__product-style']");
 
 	public By byAddToBagPopupWindowDetailProductSize = By.xpath(".//span[@class='add-to-bag__product-size']");
-
+	*/
 	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__details']//div[@class='add-to-bag__inside-right']//div[@class='add-to-bag__product-number']")
 	public WebElement lblAddToBagPopupWindowDetailsProductNumber;
 
-	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__button-wrap']")
-	public WebElement cntAddToBagPopupWindowButtonSection;
+	//@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__button-wrap']")
+	//public WebElement cntAddToBagPopupWindowButtonSection;
 
 	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__button-wrap']//div[contains(@class,'add-to-bag__subtotal')]")
 	public WebElement lblAddToBagPopupWindowButtonSectionSubtotal;
@@ -687,7 +688,7 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//div[@id='findMine']//div[contains(@class,'findmine__slider')]//button[contains(@class,'slick-next')]")
 	public WebElement btnGetTheLookNext;
 
-	/*@FindBy(xpath = "//div[@id='findMine']//div[contains(@class,'findmine__slider')]//div[contains(@class,'findmine__item') and not(contains(@class,'findmine__itemid'))]")
+	/**@FindBy(xpath = "//div[@id='findMine']//div[contains(@class,'findmine__slider')]//div[contains(@class,'findmine__item') and not(contains(@class,'findmine__itemid'))]")
 	public List<WebElement> lstGetTheLookItem;*/
 
 	@FindBy(xpath="//div[contains(@class,'draggable')]//figure[contains(@class,'current')]/a")
@@ -712,8 +713,8 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//div[@id='accordion']//div[@class='field-wrapper']")
 	public List<WebElement> lstProductAccordions;
 
-	@FindBy(xpath = "//div[@id='accordion']//div[@class='field-wrapper__accordion-heading']/span[contains(text(),'Product')]")
-	public WebElement lblProductOverviewHeader;
+	//@FindBy(xpath = "//div[@id='accordion']//div[@class='field-wrapper__accordion-heading']/span[contains(text(),'Product')]")
+	//public WebElement lblProductOverviewHeader;
 
 	public By accordionHeading = By.xpath(".//span[contains(@class,'accordion-heading')]");
 
@@ -2210,6 +2211,46 @@ public class ProductDetailPage extends BasePage {
 		reporter.softAssert(!accordionData.isEmpty(),"The accordion content for: "+accordionName+" is not empty","The accordion content for: "+accordionName+" is empty");
 		//Verifying ReadMore and ReadLess button functionality
 		this.verifyReadMoreLessButtonOnPDP(accordion);
+	}
+
+	/**
+	 * Function to verify Accordion navigation from right side of PDP page
+	 */
+	public void verifyAccordionNavigationForSizeGuide(){
+		//Closing Size Chart Accordion section if it is open by default or by some another test
+		for(WebElement accordion:this.lstProductAccordions){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(accordion);
+			String accordionName = accordion.findElement(this.accordionHeading).getText();
+			if(accordionName.contains("Chart")){
+				WebElement accordionDisplayIcon = accordion.findElement(this.accordionPlusMinusIcon);
+				if(accordionDisplayIcon.getAttribute("class").contains("minus-icon")){
+					this.getReusableActionsInstance().clickIfAvailable(accordionDisplayIcon);
+					this.applyStaticWait(2000);
+					if(accordionDisplayIcon.getAttribute("class").contains("plus-icon"))
+						reporter.reportLogPass("Sizing Chart section is closed as expected");
+					else
+						reporter.reportLogFail("Sizing Chart section is not closed");
+				}
+				break;
+			}
+		}
+		//Navigating to Sizing Chart to click and verify if user is navigating to Sizing Chart section
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkSizingChart);
+		waitForCondition(Driver->{return this.lnkSizingChart.isDisplayed();},3000);
+		this.getReusableActionsInstance().clickIfAvailable(this.lnkSizingChart);
+
+		//Verification
+		for(WebElement accordion:this.lstProductAccordions){
+			String accordionName = accordion.findElement(this.accordionHeading).getText();
+			if(accordionName.contains("Chart")){
+				WebElement accordionDisplayIcon = accordion.findElement(this.accordionPlusMinusIcon);
+				if(accordionDisplayIcon.getAttribute("class").contains("minus-icon"))
+					reporter.reportLogPass("User is navigated to Sizing Chart accordion");
+				else
+					reporter.reportLogFail("User is not navigated to Sizing Chart accordion");
+				break;
+			}
+		}
 	}
 
 	/**
