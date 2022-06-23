@@ -2337,20 +2337,32 @@ public class ProductDetailPage extends BasePage {
 	 */
 	public void verifyPopupDialogAfterClickingFavIcon() {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavIcon);
-		this.getReusableActionsInstance().clickIfAvailable(this.lnkFavIcon);
-		this.applyStaticWait(300);
-//		this.waitForCondition(Driver->{return this.lnkFavIconPopupSignIn.isDisplayed();},20000);
+		this.clickElement(this.lnkFavIcon);
+//		this.applyStaticWait(300);
+//		this.waitForCondition(Driver->{return this.lnkFavIconPopupSignIn.isDisplayed();},1000);
 
 //		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavIconPopupSignIn);
-		String favIconPopUpSignInText = this.getElementInnerText(this.lnkFavIconPopupSignIn);
-		String favIconPopUpRegisterText = this.getElementInnerText(this.lnkFavIconPopupRegister);
+
+		String favIconPopUpSignInText,favIconPopUpRegisterText;
+		try{
+			favIconPopUpSignInText = this.getElementInnerText(this.lnkFavIconPopupSignIn);
+			favIconPopUpRegisterText = this.getElementInnerText(this.lnkFavIconPopupRegister);
+		}
+		catch (Exception e){
+			this.clickElement(this.lnkFavIcon);
+			this.applyStaticWait(100);
+			favIconPopUpSignInText = this.lnkFavIconPopupSignIn.getText();
+			favIconPopUpRegisterText = this.lnkFavIconPopupRegister.getText();
+		}
+
 		if(!favIconPopUpSignInText.isEmpty() &&
 				!favIconPopUpRegisterText.isEmpty()) {
 			reporter.reportLogPass("SignIn Link with text: " + favIconPopUpSignInText + " and Register link with text: " + favIconPopUpRegisterText + " on FavoIcon popup dialog is displaying correctly");
 			//Applying static wait for Safari and browser execution
 			this.applyStaticWait(3000);
-		}else
-			reporter.reportLogFailWithScreenshot("SignIn Link with text: "+favIconPopUpSignInText+" and Register link with text: "+favIconPopUpRegisterText+" on FavoIcon popup dialog is not displaying correctly");
+		}else {
+			reporter.reportLogFailWithScreenshot("SignIn Link with text: " + favIconPopUpSignInText + " and Register link with text: " + favIconPopUpRegisterText + " on FavoIcon popup dialog is not displaying correctly");
+		}
 		/**
 		if(!this.lnkFavIconPopupSignIn.isDisplayed()){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavIcon);
@@ -2367,9 +2379,15 @@ public class ProductDetailPage extends BasePage {
 		*/
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavIcon);
 		this.clickElement(this.lnkFavIcon);
-		this.applyStaticWait(300);
-//		this.waitForCondition(Driver->{return this.lnkFavIconPopupSignIn.isDisplayed();},20000);
-		this.clickElement(this.lnkFavIconPopupSignIn);
+//		this.applyStaticWait(300);
+//		this.waitForCondition(Driver->{return this.lnkFavIconPopupSignIn.isDisplayed();},1000);
+
+		try{
+			this.clickElement(this.lnkFavIconPopupSignIn);
+		}
+		catch (Exception e){
+
+		}
 
 		this.waitForCondition(Driver->{return this.URL().contains("signin");},20000);
 		if(this.URL().contains("signin")){
@@ -2379,16 +2397,29 @@ public class ProductDetailPage extends BasePage {
 			reporter.reportLogFailWithScreenshot("The URL has not been navigated to SignIn page correctly");
 		}
 
-		this.navigateBack();
+		try{
+			this.navigateBack();
+		}
+		catch (Exception e){
+
+		}
+
 		this.waitForCondition(Driver->{return this.lblProductName.isDisplayed();},60000);
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavIcon);
-		this.getReusableActionsInstance().clickIfAvailable(this.lnkFavIcon);
-		this.applyStaticWait(300);
-//		this.waitForCondition(Driver->{return this.lnkFavIconPopupSignIn.isDisplayed();},20000);
+		this.clickElement(this.lnkFavIcon);
+//		this.applyStaticWait(300);
+//		this.waitForCondition(Driver->{return this.lnkFavIconPopupSignIn.isDisplayed();},1000);
 
 //		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavIconPopupRegister);
-		this.clickElement(this.lnkFavIconPopupRegister);
+
+		try{
+			this.clickElement(this.lnkFavIconPopupRegister);
+		}
+		catch(Exception e){
+
+		}
+
 		this.waitForCondition(Driver->{return this.URL().contains("createaccount");},20000);
 		if(this.URL().contains("createaccount")){
 			reporter.reportLogPass("The URL has been navigated to Register page correctly");
@@ -2397,7 +2428,13 @@ public class ProductDetailPage extends BasePage {
 			reporter.reportLogFailWithScreenshot("The URL has not been navigated to Register page correctly");
 		}
 
-		this.navigateBack();
+		try{
+			this.navigateBack();
+		}
+		catch (Exception e){
+
+		}
+
 		this.waitForCondition(Driver->{return this.lblProductName.isDisplayed();},60000);
 	}
 
@@ -2516,7 +2553,13 @@ public class ProductDetailPage extends BasePage {
 		}
 
 		reporter.reportLog(apiResponse.selectedProduct.pdpNavigationUrl);
-		this.getDriver().get(apiResponse.selectedProduct.pdpNavigationUrl);
+
+		try{
+			this.getDriver().get(apiResponse.selectedProduct.pdpNavigationUrl);
+		}
+		catch (Exception e){
+
+		}
 
 		this.waitForPageToLoad();
 		return prp.waitForPDPPageLoading();
