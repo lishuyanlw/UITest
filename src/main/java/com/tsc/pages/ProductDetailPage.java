@@ -992,7 +992,13 @@ public class ProductDetailPage extends BasePage {
 				labelItem=this.lstRadioStyleLabelList.get(i);
 
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblRadioProductStyleStatic);
-				this.clickElement(labelItem);
+				try{
+					this.clickElement(labelItem);
+				}
+				catch(Exception e){
+
+				}
+
 				this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 				lsText=this.btnRadioProductStyleSelectedLabel.getAttribute("style").split("url")[1];
 				lsSwatch=this.getImageNameFromThumbnailOrZoomImagePath(lsText);
