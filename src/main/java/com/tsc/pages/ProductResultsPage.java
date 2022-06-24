@@ -403,7 +403,12 @@ public class ProductResultsPage extends BasePage{
 
 		if(searchKeyword.matches("\\d+")){
 			ProductDetailPage pdp= new ProductDetailPage(this.getDriver());
-			this.getReusableActionsInstance().waitForElementVisibility(pdp.lblProductName,120);
+			try{
+				this.getReusableActionsInstance().waitForElementVisibility(pdp.lblProductName,120);
+			}
+			catch(Exception e){
+
+			}
 		}
 		else{
 			this.getReusableActionsInstance().waitForElementVisibility(this.lblSearchResultMessage,120);
