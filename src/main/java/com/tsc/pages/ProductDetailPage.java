@@ -2321,8 +2321,12 @@ public class ProductDetailPage extends BasePage {
 		reporter.softAssert(this.URL().toLowerCase().contains("signin"),"The page has been navigated to signin page while no user login","The page has not been navigated to signin page while no user login");
 
 		loginPage.LoginWithoutWaitingTime(lsUserName,lsPassword);
-		this.getReusableActionsInstance().waitForElementVisibility(this.lblProductName,  60);
-		waitForPageToLoad();
+		try{
+			this.waitForCondition(Driver->{return this.lblProductName.isDisplayed();},120000);
+		}
+		catch(Exception e){
+
+		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavIcon);
 		if(checkIfFavShareMobileHighlighted())
