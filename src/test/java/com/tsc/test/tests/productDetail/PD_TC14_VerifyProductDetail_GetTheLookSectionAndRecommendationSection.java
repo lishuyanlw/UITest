@@ -12,7 +12,7 @@ public class PD_TC14_VerifyProductDetail_GetTheLookSectionAndRecommendationSecti
 	 * CER-597
 	 */
 	@Test(groups={"ProductDetail","Regression","Regression_Mobile","Regression_Tablet"})
-	public void PD_TC14_VerifyProductDetail_GetTheLookSectionAndRecommendationSection() throws IOException {
+	public void PD_TC14_VerifyProductDetail_GetTheLookSectionAndRecommendationSection() {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 
 		BasePage basePage=new BasePage(this.getDriver());
