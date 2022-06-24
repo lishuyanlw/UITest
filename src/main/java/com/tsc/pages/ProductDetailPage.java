@@ -1488,7 +1488,13 @@ public class ProductDetailPage extends BasePage {
 				labelItem=this.lstRadioStyleLabelList.get(i);
 
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(radioItem);
-				this.clickElement(labelItem);
+				try{
+					this.clickElement(labelItem);
+				}
+				catch(Exception e){
+
+				}
+
 				this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 				lsStyle=this.getCurrentSwatchStyle();
 
@@ -1530,7 +1536,13 @@ public class ProductDetailPage extends BasePage {
 		loopSize=this.lstRadioSizeLabelSpanList.size();
 		for(int i=0;i<loopSize;i++) {
 			labelItem=this.lstRadioSizeLabelList.get(i);
-			this.clickElement(labelItem);
+			try{
+				this.clickElement(labelItem);
+			}
+			catch (Exception e){
+
+			}
+
 			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 			lsSize=this.getCurrentSize();
 
