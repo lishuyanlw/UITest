@@ -1056,7 +1056,13 @@ public class ProductDetailPage extends BasePage {
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblRadioProductStyleStatic);
 				lsBeforeStyleName=this.getCurrentSwatchStyle();
 
-				this.clickElement(labelItem);
+				try{
+					this.clickElement(labelItem);
+				}
+				catch(Exception e){
+
+				}
+
 				this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 				lsAfterStyleName=this.getCurrentSwatchStyle();
 
@@ -1310,7 +1316,13 @@ public class ProductDetailPage extends BasePage {
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSizeStatic);
 			lsBeforeSizeName=this.getCurrentSize();
 
-			this.clickElement(labelItem);
+			try {
+				this.clickElement(labelItem);
+			}
+			catch (Exception e){
+
+			}
+
 			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 			lsAfterSizeName=this.getCurrentSize();
 
