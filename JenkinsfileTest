@@ -72,10 +72,10 @@ pipeline {
             30 05 * * 4 %Browser=sauceioschrome;Language=en;Groups=ProductSearch;ThreadCount=1;TunnelRequired=No;Device=Mobile;TestProfile=TSCWF-Automation
             30 05 * * 5 %Browser=sauceandroidchrome;Language=en;Groups=ProductSearch;ThreadCount=1;TunnelRequired=No;Device=Tablet;TestProfile=TSCWF-Automation
             00 06 * * 1-5 %Browser=saucechrome;Language=en;Groups=ProductDetail;ThreadCount=1;TunnelRequired=No;Device=Desktop;TestProfile=TSCWF-Automation
-            00 06 * * 1-5 %Browser=saucefirefox;Language=en;Groups=ProductDetail;ThreadCount=1;TunnelRequired=No;Device=Desktop;TestProfile=TSCWF-Automation
-            00 06 * * 1-5 %Browser=saucesafari;Language=en;Groups=ProductDetail;ThreadCount=1;TunnelRequired=No;Device=Desktop;TestProfile=TSCWF-Automation
-            00 06 * * 1-5 %Browser=sauceioschrome;Language=en;Groups=ProductDetail;ThreadCount=1;TunnelRequired=No;Device=Mobile;TestProfile=TSCWF-Automation
-            00 06 * * 1-5 %Browser=sauceandroidchrome;Language=en;Groups=ProductDetail;ThreadCount=1;TunnelRequired=No;Device=Tablet;TestProfile=TSCWF-Automation
+            05 06 * * 1-5 %Browser=saucefirefox;Language=en;Groups=ProductDetail;ThreadCount=1;TunnelRequired=No;Device=Desktop;TestProfile=TSCWF-Automation
+            10 06 * * 1-5 %Browser=saucesafari;Language=en;Groups=ProductDetail;ThreadCount=1;TunnelRequired=No;Device=Desktop;TestProfile=TSCWF-Automation
+            15 06 * * 1-5 %Browser=sauceioschrome;Language=en;Groups=ProductDetail;ThreadCount=1;TunnelRequired=No;Device=Mobile;TestProfile=TSCWF-Automation
+            20 06 * * 1-5 %Browser=sauceandroidchrome;Language=en;Groups=ProductDetail;ThreadCount=1;TunnelRequired=No;Device=Tablet;TestProfile=TSCWF-Automation
             30 06 * * 1 %Browser=saucechrome;Language=en;Groups=Integration;ThreadCount=1;TunnelRequired=No;Device=Desktop;TestProfile=TSCWF-Automation
             30 06 * * 2 %Browser=saucefirefox;Language=en;Groups=Integration;ThreadCount=1;TunnelRequired=No;Device=Desktop;TestProfile=TSCWF-Automation
             30 06 * * 3 %Browser=saucesafari;Language=en;Groups=Integration;ThreadCount=1;TunnelRequired=No;Device=Desktop;TestProfile=TSCWF-Automation
@@ -92,10 +92,10 @@ pipeline {
             00 22 * * 1-5 %Browser=sauceioschrome;Language=en;Groups=MyAccount;ThreadCount=1;TunnelRequired=Yes;Device=Mobile;TestProfile=TSCWF-Automation
             00 23 * * 1-5 %Browser=sauceandroidchrome;Language=en;Groups=MyAccount;ThreadCount=1;TunnelRequired=Yes;Device=Tablet;TestProfile=TSCWF-Automation
             30 00 * * 1-5 %Browser=saucechrome;Language=en;Groups=SauceTunnelTest;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
-            30 00 * * 1-5 %Browser=saucefirefox;Language=en;Groups=SauceTunnelTest;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
-            30 00 * * 1-5 %Browser=saucesafari;Language=en;Groups=SauceTunnelTest;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
-            00 01 * * 1-5 %Browser=sauceioschrome;Language=en;Groups=SauceTunnelTest;ThreadCount=1;TunnelRequired=Yes;Device=Mobile;TestProfile=TSCWF-Automation
-            00 01 * * 1-5 %Browser=sauceandroidchrome;Language=en;Groups=SauceTunnelTest;ThreadCount=1;TunnelRequired=Yes;Device=Tablet;TestProfile=TSCWF-Automation
+            35 00 * * 1-5 %Browser=saucefirefox;Language=en;Groups=SauceTunnelTest;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
+            40 00 * * 1-5 %Browser=saucesafari;Language=en;Groups=SauceTunnelTest;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
+            45 01 * * 1-5 %Browser=sauceioschrome;Language=en;Groups=SauceTunnelTest;ThreadCount=1;TunnelRequired=Yes;Device=Mobile;TestProfile=TSCWF-Automation
+            50 01 * * 1-5 %Browser=sauceandroidchrome;Language=en;Groups=SauceTunnelTest;ThreadCount=1;TunnelRequired=Yes;Device=Tablet;TestProfile=TSCWF-Automation
 
             #00 20 * * 4 %Browser=sauceioschrome;Language=en;Groups=SignIn;ThreadCount=1;TunnelRequired=Yes;Device=Tablet;TestProfile=TSCWF-Automation
 		    #00 22 * * 4 %Browser=sauceioschrome;Language=en;Groups=GlobalHeader;ThreadCount=1;TunnelRequired=No;Device=Tablet;TestProfile=TSCWF-Automation
