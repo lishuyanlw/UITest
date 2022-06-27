@@ -840,8 +840,15 @@ public class ProductDetailPage extends BasePage {
 	 * @author Wei.Li
 	 */
 	public String getCurrentSize() {
-		reporter.reportLog("Size Title: "+this.getElementInnerText(lblSizeTitle));
-		return this.getElementInnerText(lblSizeTitle).split(":")[1].trim();
+		String lsTitle="";
+		try{
+			lsTitle=this.getElementInnerText(lblSizeTitle);
+		}
+		catch (Exception e){
+
+		}
+
+		return lsTitle.split(":")[1].trim();
 	}
 
 	/**

@@ -238,4 +238,4 @@ myAccount:
   lbl_myNewsLettersNoCheckUnSubscriptionAlertMessage: "You have not chosen the unsubscribe checkbox."
   lbl_myNewsLettersCheckUnSubscriptionAlertMessage: "Are you sure you want to completely unsubscribe from all of our exciting email marketing communications?"
 
-lstTestName: ["MA_TC10_Payment_Options_Manage_Credit_Card"]
+lstTestName: ["MA_TC10_Payment_Options_Manage_Credit_Card","PD_TC08_VerifyProductDetail_ProductSize_Quantity"]
