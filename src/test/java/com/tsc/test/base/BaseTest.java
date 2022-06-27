@@ -215,6 +215,13 @@ public class BaseTest {
 			sauceParameters = initializeSauceParamsMap(strBrowser);
 		}
 
+		//Setting browser version for Sauce Execution
+		List<String> testNames = TestDataHandler.constantData.getLstTestName();
+		if(testNames.contains(currentTestMethodName.getName()) &&
+				System.getProperty("Device").equalsIgnoreCase("Desktop") &&
+				System.getProperty("Browser").equalsIgnoreCase("saucechrome"))
+			sauceParameters.put("browserVersion","99");
+
 		//webDriverThreadLocal.set(browserDrivers.driverInit(strBrowser, sauceParameters, currentTestMethodName, ""));
 		webDriverThreadLocal.set(browserDrivers.driverInit(strBrowser, sauceParameters, currentTestMethodName, ""));
 		ExtentListener.setDriver(getDriver());

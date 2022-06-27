@@ -13,6 +13,11 @@ public class ConstantData {
     public APIUserSessionParams apiUserSessionParams;
     public APIAppSessionParams apiAppSessionParams;
     public MyAccount myAccount;
+    private List<String> lstTestName;
+
+    public List<String> getLstTestName() {        return lstTestName;    }
+
+    public void setLstTestName(List<String> lstTestName) {        this.lstTestName = lstTestName;    }
 
     public APIUserSessionParams getApiUserSessionParams() { return apiUserSessionParams; }
 
