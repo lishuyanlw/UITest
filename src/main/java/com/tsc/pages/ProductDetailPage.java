@@ -1257,7 +1257,13 @@ public class ProductDetailPage extends BasePage {
 	 */
 	public void openTrueFitIFrame() {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkProductTrueFitLink);
-		this.clickElement(this.lnkProductTrueFitLink);
+		try{
+			this.clickElement(this.lnkProductTrueFitLink);
+		}
+		catch(Exception e){
+
+		}
+
 		this.waitForCondition(Driver->{return this.iframeProductTrueFitLoadingIndicator.getAttribute("style").contains("display: block");}, 30000);
 
 		this.getDriver().switchTo().frame(this.iframeProductTrueFit);
@@ -2857,7 +2863,13 @@ public class ProductDetailPage extends BasePage {
 		for(int i=0;i<loopSize;i++) {
 			labelItem=this.lstAllSizeLabelRadioList.get(i);
 			if(labelItem.getAttribute("for").equalsIgnoreCase(lsSize)){
-				this.clickElement(this.lstAllSizeRadioList.get(i));
+				try{
+					this.clickElement(this.lstAllSizeRadioList.get(i));
+				}
+				catch(Exception e){
+
+				}
+
 				break;
 			}
 		}
