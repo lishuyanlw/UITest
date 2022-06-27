@@ -238,4 +238,4 @@ myAccount:
   lbl_myNewsLettersNoCheckUnSubscriptionAlertMessage: "You have not chosen the unsubscribe checkbox."
   lbl_myNewsLettersCheckUnSubscriptionAlertMessage: "Are you sure you want to completely unsubscribe from all of our exciting email marketing communications?"
 
-lstTestName: ["MA_TC10_Payment_Options_Manage_Credit_Card","PD_TC05_VerifyProductDetail_RightSection_DeliveryOptions","PD_TC06_VerifyProductDetail_RightSection_EasyPayAndTrueFit","PD_TC07_VerifyProductDetail_ProductStyle","PD_TC08_VerifyProductDetail_ProductSize_Quantity","PD_TC09_VerifyProductDetail_AdvancedOrder","PD_TC11_VerifyProductDetail_SoldOut","PD_TC15_VerifyProductDetail_Accordions"]
+lstTestName: ["MA_TC10_Payment_Options_Manage_Credit_Card","PD_TC05_VerifyProductDetail_RightSection_DeliveryOptions","PD_TC06_VerifyProductDetail_RightSection_EasyPayAndTrueFit","PD_TC07_VerifyProductDetail_ProductStyle","PD_TC08_VerifyProductDetail_ProductSize_Quantity","PD_TC09_VerifyProductDetail_AdvancedOrder","PD_TC11_VerifyProductDetail_SoldOut","PD_TC13_VerifyProductDetail_FavIconAction","PD_TC15_VerifyProductDetail_Accordions"]
