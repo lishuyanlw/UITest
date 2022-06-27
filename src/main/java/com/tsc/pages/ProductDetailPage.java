@@ -840,6 +840,7 @@ public class ProductDetailPage extends BasePage {
 	 * @author Wei.Li
 	 */
 	public String getCurrentSize() {
+		reporter.reportLog("Size Title: "+this.getElementInnerText(lblSizeTitle));
 		return this.getElementInnerText(lblSizeTitle).split(":")[1].trim();
 	}
 
@@ -992,7 +993,13 @@ public class ProductDetailPage extends BasePage {
 				labelItem=this.lstRadioStyleLabelList.get(i);
 
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblRadioProductStyleStatic);
-				this.clickElement(labelItem);
+				try{
+					this.clickElement(labelItem);
+				}
+				catch(Exception e){
+
+				}
+
 				this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 				lsText=this.btnRadioProductStyleSelectedLabel.getAttribute("style").split("url")[1];
 				lsSwatch=this.getImageNameFromThumbnailOrZoomImagePath(lsText);
@@ -1056,7 +1063,13 @@ public class ProductDetailPage extends BasePage {
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblRadioProductStyleStatic);
 				lsBeforeStyleName=this.getCurrentSwatchStyle();
 
-				this.clickElement(labelItem);
+				try{
+					this.clickElement(labelItem);
+				}
+				catch(Exception e){
+
+				}
+
 				this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 				lsAfterStyleName=this.getCurrentSwatchStyle();
 
@@ -1310,7 +1323,13 @@ public class ProductDetailPage extends BasePage {
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSizeStatic);
 			lsBeforeSizeName=this.getCurrentSize();
 
-			this.clickElement(labelItem);
+			try {
+				this.clickElement(labelItem);
+			}
+			catch (Exception e){
+
+			}
+
 			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 			lsAfterSizeName=this.getCurrentSize();
 
@@ -1470,7 +1489,13 @@ public class ProductDetailPage extends BasePage {
 				labelItem=this.lstRadioStyleLabelList.get(i);
 
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(radioItem);
-				this.clickElement(labelItem);
+				try{
+					this.clickElement(labelItem);
+				}
+				catch(Exception e){
+
+				}
+
 				this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 				lsStyle=this.getCurrentSwatchStyle();
 
@@ -1512,7 +1537,13 @@ public class ProductDetailPage extends BasePage {
 		loopSize=this.lstRadioSizeLabelSpanList.size();
 		for(int i=0;i<loopSize;i++) {
 			labelItem=this.lstRadioSizeLabelList.get(i);
-			this.clickElement(labelItem);
+			try{
+				this.clickElement(labelItem);
+			}
+			catch (Exception e){
+
+			}
+
 			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 			lsSize=this.getCurrentSize();
 
