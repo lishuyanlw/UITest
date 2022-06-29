@@ -14,6 +14,11 @@ public class ConstantData {
     public APIAppSessionParams apiAppSessionParams;
     public MyAccount myAccount;
     private List<String> lstTestName;
+    private String lblChromeBrowserVersion;
+
+    public String getLblChromeBrowserVersion() {        return lblChromeBrowserVersion;    }
+
+    public void setLblChromeBrowserVersion(String lblChromeBrowserVersion) {        this.lblChromeBrowserVersion = lblChromeBrowserVersion;    }
 
     public List<String> getLstTestName() {        return lstTestName;    }
 

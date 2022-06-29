@@ -220,7 +220,7 @@ public class BaseTest {
 		if(runningTestName(testNames,currentTestMethodName.getName()) &&
 				System.getProperty("Device").equalsIgnoreCase("Desktop") &&
 				System.getProperty("Browser").equalsIgnoreCase("saucechrome"))
-			sauceParameters.put("browserVersion","99");
+			sauceParameters.put("browserVersion",TestDataHandler.constantData.getLblChromeBrowserVersion());
 
 		//webDriverThreadLocal.set(browserDrivers.driverInit(strBrowser, sauceParameters, currentTestMethodName, ""));
 		webDriverThreadLocal.set(browserDrivers.driverInit(strBrowser, sauceParameters, currentTestMethodName, ""));
