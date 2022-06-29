@@ -43,11 +43,12 @@ public class PD_TC08_VerifyProductDetail_ProductSize_Quantity extends BaseTest{
 			reporter.reportLog("Verify product size changing action");
 			getProductDetailPageThreadLocal().verifyProductSize();
 
-			if(System.getProperty("Device").toLowerCase().contains("tablet") &&
-					(System.getProperty("Browser").toLowerCase().contains("android") ||
-							(!"".equals(System.getProperty("chromeMobileDevice")) && !System.getProperty("chromeMobileDevice").toLowerCase().contains("ipad")))){
-				reporter.reportLog("Verify product TrueFit");
+			if(!System.getProperty("Browser").equalsIgnoreCase("sauceioschrome")){
+				reporter.reportLog("Verify product size TrueFit");
 				getProductDetailPageThreadLocal().verifyProductSizeTrueFit();
+			}
+			else{
+				reporter.reportLog("TrueFit functionality is not tested for ios Mobile and Tablet due to cross-origin frame issue");
 			}
 
 			reporter.reportLog("Verify product quantity");
