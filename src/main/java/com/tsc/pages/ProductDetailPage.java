@@ -1292,6 +1292,8 @@ public class ProductDetailPage extends BasePage {
 	 * @author Wei.Li
 	 */
 	public boolean checkProductTrueFitExisting() {
+		//To wait for TrueFit section displaying
+		this.applyStaticWait(5*this.getStaticWaitForApplication());
 		return !cntProductTrueFitSection.getCssValue("height").equalsIgnoreCase("0px");
 	}
 
