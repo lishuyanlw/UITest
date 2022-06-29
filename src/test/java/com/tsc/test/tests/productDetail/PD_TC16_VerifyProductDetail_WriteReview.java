@@ -44,11 +44,14 @@ public class PD_TC16_VerifyProductDetail_WriteReview extends BaseTest{
 				reporter.reportLog("Check the alert message");
 				getProductDetailPageThreadLocal().verifyWriteReviewAfterFailSubmitValidationMessage();
 
-				reporter.reportLog("Verify the message after submitting");
-				getProductDetailPageThreadLocal().verifyWriteReviewAfterSuccessfulSubmitMessage(lstTitle.get(0), lstTitle.get(1));
+				if(!System.getProperty("Browser").equalsIgnoreCase("sauceioschrome")){
+					reporter.reportLog("Verify the message after submitting");
+					getProductDetailPageThreadLocal().verifyWriteReviewAfterSuccessfulSubmitMessage(lstTitle.get(0), lstTitle.get(1));
 
-				reporter.reportLog("Verify continue shopping action");
-				getProductDetailPageThreadLocal().verifyWriteReviewAfterSubmitContinueShoppingBackToProductDetails();
+					reporter.reportLog("Verify continue shopping action");
+					getProductDetailPageThreadLocal().verifyWriteReviewAfterSubmitContinueShoppingBackToProductDetails();
+				}else
+					reporter.reportLog("Write Review functionality is not tested for ios Mobile and Tablet as Review Comment are not accepted via automation");
 			}
 			else {
 				reporter.reportLogFail("Unable to go to Review Tab");
