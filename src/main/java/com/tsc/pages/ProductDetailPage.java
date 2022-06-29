@@ -1322,7 +1322,6 @@ public class ProductDetailPage extends BasePage {
 		loopSize=this.lstRadioSizeLabelSpanList.size();
 		lsInitialText=this.getCurrentSize();
 		lsFirstOption=this.lstRadioSizeLabelList.get(0).getAttribute("for").trim();
-		reporter.reportLog(lsInitialText+":"+lsFirstOption);
 		if(lsFirstOption.equalsIgnoreCase(lsInitialText)){
 			startNumber=1;
 		}
@@ -1372,11 +1371,6 @@ public class ProductDetailPage extends BasePage {
 		}
 
 		checkProductSizingChangeAction();
-
-		if(checkProductSizingChartExisting()) {
-			//Will change later
-			//verifyProductQuantitySizingChart();
-		}
 	}
 
 	/**
