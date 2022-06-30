@@ -35,7 +35,8 @@ public class PD_TC09_VerifyProductDetail_AdvancedOrder extends BaseTest{
 			reporter.softAssert(lsUrl.contains(lsProductNumber),"The Url is containing selected product number of "+lsProductNumber,"The Url is not containing selected product number of "+lsProductNumber);
 
 			reporter.reportLog("Verify Advanced order message");
-			getProductDetailPageThreadLocal().verifyProductAdvancedOrderMessage();
+			String lsAdvanceOrderMessage=TestDataHandler.constantData.getSearchResultPage().getLbl_AdvancedOrderMessage();
+			getProductDetailPageThreadLocal().verifyProductAdvancedOrderMessage(lsAdvanceOrderMessage);
 
 			reporter.reportLog("Verify product name,brand name and product number");
 			getProductDetailPageThreadLocal().verifyProductBasicInfo();

@@ -13,6 +13,16 @@ public class ConstantData {
     public APIUserSessionParams apiUserSessionParams;
     public APIAppSessionParams apiAppSessionParams;
     public MyAccount myAccount;
+    private List<String> lstTestName;
+    private String lblChromeBrowserVersion;
+
+    public String getLblChromeBrowserVersion() {        return lblChromeBrowserVersion;    }
+
+    public void setLblChromeBrowserVersion(String lblChromeBrowserVersion) {        this.lblChromeBrowserVersion = lblChromeBrowserVersion;    }
+
+    public List<String> getLstTestName() {        return lstTestName;    }
+
+    public void setLstTestName(List<String> lstTestName) {        this.lstTestName = lstTestName;    }
 
     public APIUserSessionParams getApiUserSessionParams() { return apiUserSessionParams; }
 
@@ -519,6 +529,7 @@ public class ConstantData {
         private String lbl_AddToBagPopupWindowTitle;
         private String lbl_VideoDisclaimInfo;
         private String lbl_AdvancedOrderkeyword;
+        private String lbl_AdvancedOrderMessage;
         private String lbl_AutoDeliverykeyword;
         private String lbl_productTrueFitAndSizingChart;
         private String lbl_ProductDeliveryOptions;
@@ -676,6 +687,14 @@ public class ConstantData {
 
         public void setLbl_AdvancedOrderkeyword(String lbl_AdvancedOrderkeyword) {
             this.lbl_AdvancedOrderkeyword = lbl_AdvancedOrderkeyword;
+        }
+
+        public String getLbl_AdvancedOrderMessage() {
+            return lbl_AdvancedOrderMessage;
+        }
+
+        public void setLbl_AdvancedOrderMessage(String lbl_AdvancedOrderMessage) {
+            this.lbl_AdvancedOrderMessage = lbl_AdvancedOrderMessage;
         }
 
         public String getLbl_AutoDeliverykeyword() {

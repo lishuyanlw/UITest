@@ -393,17 +393,33 @@ public class ProductResultsPage extends BasePage{
 		},150000);
 
 		//Bug-19680 - Change the placeholder text in the brand section - Search Product using magnifying glass icon
-		if(clickEnterButtonFromKeyboard)
-			super.pressEnterKey(globalHeader.searchBox);
+		if(clickEnterButtonFromKeyboard) {
+			try{
+				super.pressEnterKey(globalHeader.searchBox);
+			}
+			catch(Exception e){
+
+			}
+		}
 		else {
 			globalHeader.validateSearchSubmitbtn();
-			this.getReusableActionsInstance().clickIfAvailable(globalHeader.btnSearchSubmit);
+			try{
+				this.getReusableActionsInstance().clickIfAvailable(globalHeader.btnSearchSubmit);
+			}
+			catch (Exception e){
+
+			}
 		}
 		this.waitForPageToLoad();
 
 		if(searchKeyword.matches("\\d+")){
 			ProductDetailPage pdp= new ProductDetailPage(this.getDriver());
-			this.getReusableActionsInstance().waitForElementVisibility(pdp.lblProductName,120);
+			try{
+				this.getReusableActionsInstance().waitForElementVisibility(pdp.lblProductName,120);
+			}
+			catch(Exception e){
+
+			}
 		}
 		else{
 			this.getReusableActionsInstance().waitForElementVisibility(this.lblSearchResultMessage,120);

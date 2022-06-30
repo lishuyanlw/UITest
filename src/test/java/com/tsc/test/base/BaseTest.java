@@ -215,6 +215,13 @@ public class BaseTest {
 			sauceParameters = initializeSauceParamsMap(strBrowser);
 		}
 
+		//Setting browser version for Sauce Execution
+		List<String> testNames = TestDataHandler.constantData.getLstTestName();
+		if(runningTestName(testNames,currentTestMethodName.getName()) &&
+				System.getProperty("Device").equalsIgnoreCase("Desktop") &&
+				System.getProperty("Browser").equalsIgnoreCase("saucechrome"))
+			sauceParameters.put("browserVersion",TestDataHandler.constantData.getLblChromeBrowserVersion());
+
 		//webDriverThreadLocal.set(browserDrivers.driverInit(strBrowser, sauceParameters, currentTestMethodName, ""));
 		webDriverThreadLocal.set(browserDrivers.driverInit(strBrowser, sauceParameters, currentTestMethodName, ""));
 		ExtentListener.setDriver(getDriver());
@@ -492,6 +499,15 @@ public class BaseTest {
 
 		orderAPI.placeOrder(GuidId,customerEDP,access_token,relatedCartIdsList);
 		placeOrderValue = true;
+	}
+
+	private boolean runningTestName(List<String> lstTestName,String currentTestMethodName){
+		for(String lsTestName:lstTestName){
+			if(currentTestMethodName.equalsIgnoreCase(lsTestName)||currentTestMethodName.toLowerCase().contains(lsTestName.toLowerCase())){
+				return true;
+			}
+		}
+		return false;
 	}
 	
 }

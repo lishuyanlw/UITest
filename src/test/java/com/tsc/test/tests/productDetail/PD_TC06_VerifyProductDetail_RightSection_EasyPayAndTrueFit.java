@@ -45,8 +45,14 @@ public class PD_TC06_VerifyProductDetail_RightSection_EasyPayAndTrueFit extends 
 			reporter.reportLog("Verify Easy payment");
 			getProductDetailPageThreadLocal().verifyEasyPay();
 
-			reporter.reportLog("Verify product size TrueFit");
-			getProductDetailPageThreadLocal().verifyProductSizeTrueFit();
+			if(!System.getProperty("Browser").equalsIgnoreCase("sauceioschrome")){
+				reporter.reportLog("Verify product size TrueFit");
+				getProductDetailPageThreadLocal().verifyProductSizeTrueFit();
+			}
+			else{
+				reporter.reportLog("TrueFit functionality is not tested for ios Mobile and Tablet due to cross-origin frame issue");
+			}
+
 		}
 		else{
 			reporter.reportLogFail("Test case Failed!");
