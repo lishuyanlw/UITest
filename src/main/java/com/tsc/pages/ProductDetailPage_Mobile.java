@@ -47,8 +47,24 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
     }
 
     @Override
+    public int getOrderAmountFromSubTotalInAddToBagModel(){
+        String lsText=this.getElementInnerText(lblAddToBagPopupWindowButtonSectionSubtotal);
+        lsText=lsText.split(":")[0];
+
+        return this.getIntegerFromString(lsText);
+    }
+
+    @Override
+    public float getOrderSubTotalInAddToBagModel(){
+        String lsText=this.getElementInnerText(lblAddToBagPopupWindowButtonSectionSubtotal);
+        lsText=lsText.split(":")[1];
+
+        return this.getFloatFromString(lsText,true);
+    }
+
+    @Override
     public void subTotal(){
-       reporter.softAssert(!this.getElementInnerText(this.lblAddToBagPopupWindowButtonSectionSubtotal).isEmpty(),"The product Subtotal in Add to Bag popup window is not empty","The product Subtotal in Add to Bag popup window is empty");
+       reporter.softAssert(!this.getElementInnerText(lblAddToBagPopupWindowButtonSectionSubtotal).isEmpty(),"The product Subtotal in Add to Bag popup window is not empty","The product Subtotal in Add to Bag popup window is empty");
     }
 
     @Override
