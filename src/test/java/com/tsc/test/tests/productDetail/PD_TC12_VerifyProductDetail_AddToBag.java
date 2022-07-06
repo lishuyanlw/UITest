@@ -29,8 +29,9 @@ public class PD_TC12_VerifyProductDetail_AddToBag extends BaseTest{
 
 		Map<String,Object> outputDataCriteria= new HashMap<String,Object>();
 		outputDataCriteria.put("video", "0");
-		outputDataCriteria.put("style", "1");
-		outputDataCriteria.put("size", "1");
+		outputDataCriteria.put("style", "2");
+		outputDataCriteria.put("size", "2");
+		outputDataCriteria.put("quantity", "2");
 		if(getProductDetailPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList,"AllConditionsWithoutCheckingSoldOutCriteria",outputDataCriteria)) {
 			String lbl_AddToBagPopupWindowTitle=TestDataHandler.constantData.getSearchResultPage().getLbl_AddToBagPopupWindowTitle();
 			reporter.reportLog("Verify URL");

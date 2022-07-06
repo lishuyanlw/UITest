@@ -371,6 +371,12 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__advance-order']")
 	public WebElement lblAdvanceOrderMsg;
 
+	@FindBy(xpath="/div[@id='product-details-page']//div[contains(@class,'add-to-bag__quantity')]")
+	public WebElement lblAvailableQuantity;
+
+	@FindBy(xpath = "//div[@id='product-details-page']//div[contains(@class,'add-to-bag__quantity')]//span[contains(@class,'stock')]")
+	public WebElement lblAvailableQuantityNumber;
+
 	//Add to favorites
 	@FindBy(xpath = "//section[@class='pdp-description']//span[@class='pdp-description__add-to-bag__favorite__text']")
 	public WebElement lblAddToFavoriteText;
@@ -1622,9 +1628,49 @@ public class ProductDetailPage extends BasePage {
 	 */
 	public boolean closeAddToBagPopupWindow() {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnAddToBagPopupWindowClose);
-		this.getReusableActionsInstance().clickIfAvailable(this.btnAddToBagPopupWindowClose);
-		//this.btnAddToBagPopupWindowClose.click();
+		if(this.btnAddToBagPopupWindowClose.isDisplayed() && this.btnAddToBagPopupWindowClose.isEnabled()){
+			reporter.reportLogPass("Close Button on Add to Bag pop-up is displayed as expected");
+			this.getReusableActionsInstance().clickIfAvailable(this.btnAddToBagPopupWindowClose);
+			//this.btnAddToBagPopupWindowClose.click();
+			return this.waitForCondition(Drive->{return !checkAddToBagPopupDisplaying();}, 30000);
+		}else{
+			reporter.reportLogFail("Close Button on Add to Bag pop-up is not displayed as expected");
+			return false;
+		}
+	}
+
+	/**
+	 * This function closes Add to Bag pop up window after clicking outside the pop-up window
+	 */
+	public boolean closeAddToBagPopUpWindowAfterClickingOutsidePopUp(String lbl_AddToBagPopupWindowTitle){
+		openAddToBagPopupWindow();
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAddToBagPopupWindowTitle);
+		reporter.softAssert(this.lblAddToBagPopupWindowTitle.getText().toUpperCase().matches(lbl_AddToBagPopupWindowTitle),"The title of Add to Bag popup window is matching to '"+lbl_AddToBagPopupWindowTitle+"' pattern","The title of Add to Bag popup window is not matching to '"+lbl_AddToBagPopupWindowTitle+"' pattern");
+		//Clicking on Add to Bag button again to close Pop-Up Window
+		this.applyStaticWait(3000);
+		this.clickElement(this.btnAddToBag);
 		return this.waitForCondition(Drive->{return !checkAddToBagPopupDisplaying();}, 30000);
+	}
+
+	/**
+	 * This functions selects product that has more than one quantity available for product
+	 */
+	public void selectSizeAndStyleWithMoreThanOneQuantity(){
+		if(!verifyAvailableQuantityGreaterThanOne()){
+
+		}
+	}
+
+	public boolean verifyAvailableQuantityGreaterThanOne(){
+		int quantityAvailable = 1;
+		if(this.checkChildElementExistingByTagNameAndAttribute(this.lblAvailableQuantity,"span","class","pdp-description__add-to-bag__quantity__count--critic-stock")){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAvailableQuantityNumber);
+			quantityAvailable = Integer.valueOf(this.lblAvailableQuantity.getText().trim().split(" ")[1]);
+		}
+		if(quantityAvailable>1)
+			return true;
+
+		return false;
 	}
 
 	/**
@@ -1696,6 +1742,8 @@ public class ProductDetailPage extends BasePage {
 		reporter.softAssert(!this.lblAddToBagPopupWindowFooterInfo.getText().isEmpty(),"The Footer info in Add to Bag popup window is not empty","The Footer info in Add to Bag popup window is empty");
 
 		closeAddToBagPopupWindow();
+		//https://reqcentral.com/browse/CER-838 - Verifying close button is present and clickable
+		closeAddToBagPopUpWindowAfterClickingOutsidePopUp(lbl_AddToBagPopupWindowTitle);
 	}
 
 	//this method checks subtotal section
