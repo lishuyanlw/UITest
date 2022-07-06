@@ -1019,4 +1019,39 @@ import utils.ReusableActions;
 		double expectedValue=this.getDoubleFromString(this.getElementInnerText(expectedSummary));
 		return Math.abs(total-expectedValue)<0.01;
 	}
+
+	/**
+	 * To get the string before identifier
+	 * @param - wholeString
+	 * @param - beforeIdentifier
+	 * @return - the string before identifier
+	 */
+	public String getBeforeString(String wholeString,String beforeIdentifier){
+		int findPos=wholeString.lastIndexOf(beforeIdentifier);
+		return wholeString.substring(0,findPos);
+	}
+
+	/**
+	 * To get the string after identifier
+	 * @param - wholeString
+	 * @param - afterIdentifier
+	 * @return - the string after identifier
+	 */
+	public String getAfterString(String wholeString,String afterIdentifier){
+		int findPos=wholeString.lastIndexOf(afterIdentifier);
+		return wholeString.substring(findPos+1);
+	}
+
+	/**
+	 * To get the string between beforeIdentifier and afterIdentifier
+	 * @param - wholeString
+	 * @param - beforeIdentifier
+	 * @param - afterIdentifier
+	 * @return - the string between beforeIdentifier and afterIdentifier
+	 */
+	public String getBetweenString(String wholeString,String beforeIdentifier,String afterIdentifier){
+		int beginPos=wholeString.lastIndexOf(beforeIdentifier);
+		int endPos=wholeString.lastIndexOf(afterIdentifier);
+		return wholeString.substring(beginPos+1,endPos);
+	}
 }

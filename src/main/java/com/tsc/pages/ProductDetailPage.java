@@ -606,21 +606,12 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//div[@class='secondary-navigation__popup-container']")
 	public WebElement cntAddToBagOverlay;
 
-	//@FindBy(xpath = "//div[contains(@class,'cart-section')]")
-	//public WebElement cntAddToBagPopupWindow;
-
 	@FindBy(xpath = "//div[contains(@class,'cart-section')]//button[@class='add-to-bag__button-close']")
 	public WebElement btnAddToBagPopupWindowClose;
 
 	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag-title']")
 	public WebElement lblAddToBagPopupWindowTitle;
 
-	/**@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__details']")
-	public WebElement cntAddToBagPopupWindowDetailsSection;
-
-	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__details']//div[@class='add-to-bag__inside-left']")
-	public WebElement cntAddToBagPopupWindowDetailsLeftSection;
-	*/
 	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__details']//div[@class='add-to-bag__inside-left']//div[@class='add-to-bag__img']")
 	public WebElement cntAddToBagPopupWindowDetailsLeftSectionImage;
 
@@ -632,9 +623,6 @@ public class ProductDetailPage extends BasePage {
 
 	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__details']//div[@class='add-to-bag__inside-left']//div[@class='add-to-bag__img']//a//img")
 	public WebElement imgAddToBagPopupWindowDetailsProductImage;
-
-	//@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__details']//div[@class='add-to-bag__inside-right']")
-	//public WebElement cntAddToBagPopupWindowDetailsRightSection;
 
 	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__details']//div[@class='add-to-bag__inside-right']//a[@class='add-to-bag__item-link']")
 	public WebElement lnkAddToBagPopupWindowDetailsProductInfo;
@@ -648,17 +636,8 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__details']//div[@class='add-to-bag__inside-right']//a[@class='add-to-bag__item-link']//span[@class='add-to-bag__product-size']")
 	public WebElement lblAddToBagPopupWindowDetailsProductSize;
 
-	/**public By byAddToBagPopupWindowDetailProductName = By.xpath(".//span[@class='add-to-bag__product-name']");
-
-	public By byAddToBagPopupWindowDetailProductStyle = By.xpath(".//span[@class='add-to-bag__product-style']");
-
-	public By byAddToBagPopupWindowDetailProductSize = By.xpath(".//span[@class='add-to-bag__product-size']");
-	*/
 	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__details']//div[@class='add-to-bag__inside-right']//div[@class='add-to-bag__product-number']")
 	public WebElement lblAddToBagPopupWindowDetailsProductNumber;
-
-	//@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__button-wrap']")
-	//public WebElement cntAddToBagPopupWindowButtonSection;
 
 	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__button-wrap']//div[contains(@class,'add-to-bag__subtotal')]")
 	public WebElement lblAddToBagPopupWindowButtonSectionSubtotal;
@@ -1735,6 +1714,54 @@ public class ProductDetailPage extends BasePage {
 	 */
 	public void verifyShoppingCartNumber(int cartCount) {
 		reporter.softAssert(getShoppingCartNumber()>=cartCount,"The Shopping cart number is equal to 1","The Shopping cart number is not equal to 1");
+	}
+
+	public int getOrderAmountFromSubTotalInAddToBagModel(){
+		String lsText=this.getElementInnerText(lblAddToBagPopupWindowButtonSectionSubtotal);
+		lsText=lsText.split(":")[0];
+
+		return this.getIntegerFromString(lsText);
+	}
+
+	public float getOrderSubTotalInAddToBagModel(){
+		String lsText=this.getElementInnerText(lblAddToBagPopupWindowButtonSectionSubtotal);
+		lsText=lsText.split(":")[1];
+
+		return this.getFloatFromString(lsText,true);
+	}
+
+	public Map<String,Object> getAddToBagDesc(){
+		Map<String,Object> map=new HashMap<>();
+		String lsText;
+
+		if(this.checkProductBadgeInAddToBagPopupDisplaying()){
+			map.put("productBadge",true);
+		}
+		else{
+			map.put("productBadge",false);
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddToBagPopupWindowDetailsProductName);
+		lsText=lblAddToBagPopupWindowDetailsProductName.getText();
+		map.put("productName",lsText);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddToBagPopupWindowDetailsProductStyle);
+		lsText=lblAddToBagPopupWindowDetailsProductStyle.getText();
+		map.put("productStyle",lsText);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddToBagPopupWindowDetailsProductSize);
+		lsText=lblAddToBagPopupWindowDetailsProductSize.getText();
+		map.put("productSize",lsText);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddToBagPopupWindowDetailsProductNumber);
+		lsText=lblAddToBagPopupWindowDetailsProductNumber.getText();
+		map.put("productNumber",lsText);
+
+		map.put("ItemAmount",getOrderAmountFromSubTotalInAddToBagModel());
+
+		map.put("SubTotal",getOrderSubTotalInAddToBagModel());
+
+		return map;
 	}
 
 	/**
@@ -3123,5 +3150,7 @@ public class ProductDetailPage extends BasePage {
 			}
 		}
 	}
+
+
 
 }
