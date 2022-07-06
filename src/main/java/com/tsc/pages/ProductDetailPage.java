@@ -1643,9 +1643,15 @@ public class ProductDetailPage extends BasePage {
 	 */
 	public boolean closeAddToBagPopupWindow() {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnAddToBagPopupWindowClose);
-		this.getReusableActionsInstance().clickIfAvailable(this.btnAddToBagPopupWindowClose);
-		//this.btnAddToBagPopupWindowClose.click();
-		return this.waitForCondition(Drive->{return !checkAddToBagPopupDisplaying();}, 30000);
+		if(this.btnAddToBagPopupWindowClose.isDisplayed() && this.btnAddToBagPopupWindowClose.isEnabled()){
+			reporter.reportLogPass("Close Button on Add to Bag pop-up is displayed as expected");
+			this.getReusableActionsInstance().clickIfAvailable(this.btnAddToBagPopupWindowClose);
+			//this.btnAddToBagPopupWindowClose.click();
+			return this.waitForCondition(Drive->{return !checkAddToBagPopupDisplaying();}, 30000);
+		}else{
+			reporter.reportLogFail("Close Button on Add to Bag pop-up is not displayed as expected");
+			return false;
+		}
 	}
 
 	/**
@@ -1716,6 +1722,7 @@ public class ProductDetailPage extends BasePage {
 		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblAddToBagPopupWindowFooterInfo),"The Footer info in Add to Bag popup window is visible","The Footer info in Add to Bag popup window is not visible");
 		reporter.softAssert(!this.lblAddToBagPopupWindowFooterInfo.getText().isEmpty(),"The Footer info in Add to Bag popup window is not empty","The Footer info in Add to Bag popup window is empty");
 
+		//https://reqcentral.com/browse/CER-838 - Verifying close button is present and clickable
 		closeAddToBagPopupWindow();
 	}
 
