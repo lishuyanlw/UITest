@@ -1,7 +1,7 @@
 package com.tsc.api.apiBuilder;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.tsc.api.pojo.AccountCartResponse;
+import com.tsc.api.pojo.CartResponse;
 import com.tsc.api.pojo.GetOrderListResponse;
 import com.tsc.api.util.JsonParser;
 import io.restassured.response.Response;
@@ -157,7 +157,7 @@ public class OrderAPI extends ApiClient {
     public double getCartOrderAmountWithGuidId(String access_token,String CartGuid) throws IOException {
        CartAPI cartAPI=new CartAPI();
        Response cartResponse=cartAPI.getCartContentWithCartGuid(access_token,CartGuid);
-       AccountCartResponse accountCart = JsonParser.getResponseObject(cartResponse.asString(), new TypeReference<AccountCartResponse>() {});
+       CartResponse accountCart = JsonParser.getResponseObject(cartResponse.asString(), new TypeReference<CartResponse>() {});
 //       reporter.reportLog(cartResponse.asString());
        return accountCart.getOrderSummary().getTotalOrderAmount();
     }

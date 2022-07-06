@@ -1,20 +1,14 @@
 package com.tsc.api.apiBuilder;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tsc.api.pojo.AccountCartResponse;
 import com.tsc.api.pojo.AccountResponse;
 import com.tsc.api.util.DataConverter;
-import com.tsc.api.util.JsonParser;
 import io.restassured.response.Response;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.*;
 
 import static com.tsc.pages.base.BasePage.reporter;

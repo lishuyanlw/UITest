@@ -9,7 +9,6 @@ import com.tsc.api.util.JsonParser;
 import extentreport.ExtentTestManager;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
-import org.json.simple.JSONObject;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -1038,9 +1037,9 @@ public class ApiResponse extends ApiConfigs {
 	public void placeOrderForUser(String customerEDP, String accessToken) throws JsonProcessingException {
 		//Verifying that user has tsc credit card associated for placing order
 		Response userCartResponse = this.getAccountCartContentWithCustomerEDP(customerEDP,accessToken);
-		AccountCartResponse accountCartResponseForUser = JsonParser.getResponseObject(userCartResponse.asString(), new TypeReference<AccountCartResponse>() {});
-		if(accountCartResponseForUser.getCreditCard()!=null){
-			if(!accountCartResponseForUser.getCreditCard().getType().equalsIgnoreCase("FI")){
+		CartResponse cartResponseForUser = JsonParser.getResponseObject(userCartResponse.asString(), new TypeReference<CartResponse>() {});
+		if(cartResponseForUser.getCreditCard()!=null){
+			if(!cartResponseForUser.getCreditCard().getType().equalsIgnoreCase("FI")){
 				org.json.simple.JSONObject creditCardDetails = DataConverter.readJsonFileIntoJSONObject("test-data/CreditCard.json");
 				this.addCreditCardToUser( (org.json.simple.JSONObject)creditCardDetails.get("tscCard"),customerEDP,accessToken);
 			}

@@ -544,6 +544,11 @@ public class ConstantData {
         private String lbl_ProductNumberToComparePRPAndPDPContent;
         private String lbl_prp_partial_url;
         private List<String> lst_ClearanceKeyword;
+        private List<String> lst_ShoppingCartSearchKeyword;
+
+        public List<String> getLst_ShoppingCartSearchKeyword() {            return lst_ShoppingCartSearchKeyword;        }
+
+        public void setLst_ShoppingCartSearchKeyword(List<String> lst_ShoppingCartSearchKeyword) {            this.lst_ShoppingCartSearchKeyword = lst_ShoppingCartSearchKeyword;        }
 
         public List<String> getLst_ClearanceKeyword() {
             return lst_ClearanceKeyword;

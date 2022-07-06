@@ -14,7 +14,7 @@ import com.tsc.api.apiBuilder.AccountAPI;
 import com.tsc.api.apiBuilder.ApiResponse;
 import com.tsc.api.apiBuilder.CartAPI;
 import com.tsc.api.apiBuilder.OrderAPI;
-import com.tsc.api.pojo.AccountCartResponse;
+import com.tsc.api.pojo.CartResponse;
 import com.tsc.api.pojo.GetOrderListResponse;
 import com.tsc.api.util.DataConverter;
 import com.tsc.api.util.JsonParser;
@@ -480,7 +480,7 @@ public class BaseTest {
 		accountAPI.addCreditCardToUser((org.json.simple.JSONObject) creditCardDetails.get("tsc"),customerEDP,access_token);
 
 		Response responseInitial=cartAPI.getAccountCartContentWithCustomerEDP(customerEDP,access_token);
-		AccountCartResponse accountCartInitial = JsonParser.getResponseObject(responseInitial.asString(), new TypeReference<AccountCartResponse>() {});
+		CartResponse accountCartInitial = JsonParser.getResponseObject(responseInitial.asString(), new TypeReference<CartResponse>() {});
 		String GuidId=accountCartInitial.getCartGuid();
 		/**
 		Response responseDelete=cartAPI.deleteCartItemWithGuid(access_token, GuidId,4);
@@ -491,7 +491,7 @@ public class BaseTest {
 		Response userCartResponse=(Response)map.get("Response");
 		*/
 		Response responseReview=orderAPI.getOrderReview(customerEDP,access_token);
-		AccountCartResponse accountCartReview = JsonParser.getResponseObject(responseReview.asString(), new TypeReference<AccountCartResponse>() {});
+		CartResponse accountCartReview = JsonParser.getResponseObject(responseReview.asString(), new TypeReference<CartResponse>() {});
 		//reporter.reportLog("Review: "+responseReview.asString());
 		List<Long> relatedCartIdsList=accountCartReview.getRelatedCartIds();
 

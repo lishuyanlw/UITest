@@ -5,6 +5,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.stream.Collectors;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.tsc.api.apiBuilder.CartAPI;
+import com.tsc.api.apiBuilder.ProductAPI;
+import com.tsc.api.pojo.CartResponse;
+import com.tsc.api.util.JsonParser;
+import io.restassured.response.Response;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -3151,6 +3159,36 @@ public class ProductDetailPage extends BasePage {
 		}
 	}
 
+	/**
+	 * This functions add items to shopping cart page for logged-in user
+	 * @param - List<String> searchKeyword - search keyword list for items to be added to shopping cart
+	 * @param - String customerEDP - customerEDP number for user
+	 * @param - String accessToken - access token for api
+	 * @return - CartResponse - CartResponse class object
+	 */
+	public CartResponse addItemsToShoppingCartForUser(List<String> searchKeyword,String customerEDP, String accessToken) throws IOException {
+		//Fetching item to be added for a new cart
+		ProductAPI productAPI=new ProductAPI();
+		CartAPI cartAPI=new CartAPI();
+		Response response = null;
+		List<Product.edps> products = productAPI.getEDPNoForNotSoldOutProduct(searchKeyword.get(0),null,true,5);
+		List<Integer> edpsList = products.stream().map(Product.edps::getEdpNo).collect(Collectors.toList());
 
+		if(products.size()>0){
+			//Creating a new cart and adding an item to created cart
+			response = cartAPI.createNewCartOrAddItems(edpsList,1,Integer.valueOf(customerEDP),accessToken,null);
+		}else
+			return null;
 
+		//Adding second item to cart created for the user
+		CartResponse cartResponse = JsonParser.getResponseObject(response.asString(), new TypeReference<CartResponse>() {});
+		if(cartResponse!=null){
+			products = productAPI.getEDPNoForNotSoldOutProduct(searchKeyword.get(1),null,true,1);
+			edpsList.clear();
+			edpsList = products.stream().map(Product.edps::getEdpNo).collect(Collectors.toList());
+			response = cartAPI.createNewCartOrAddItems(edpsList,1,Integer.valueOf(customerEDP),accessToken,cartResponse.getCartGuid());
+			return JsonParser.getResponseObject(response.asString(), new TypeReference<CartResponse>() {});
+		}else
+			return null;
+	}
 }
