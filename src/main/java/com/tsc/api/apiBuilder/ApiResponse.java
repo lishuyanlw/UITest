@@ -140,8 +140,7 @@ public class ApiResponse extends ApiConfigs {
         boolean flag = true;
         String lsNowPrice,lsWasPrice;
         Product.Products productItem=null;
-        boolean bSoldout=false;
-        
+
         Product product = getProductDetailsForKeyword(searchKeyword,null,true);
         if(product==null) {
         	return null;
@@ -422,7 +421,7 @@ public class ApiResponse extends ApiConfigs {
         	return null;
         }
     	
-        int videoCount=-1,styleCount=3,sizeCount=3;
+        int videoCount=-1,styleCount=3,sizeCount=3,quantity=0;
 		String lsNowPrice,lsWasPrice;
 
         if(configs!=null) {
@@ -435,6 +434,9 @@ public class ApiResponse extends ApiConfigs {
                 if(entry.getKey().equalsIgnoreCase("size")){
                     sizeCount = Integer.valueOf(entry.getValue().toString());
                 }
+                if(entry.getKey().toLowerCase().contains("quantity")){
+                	quantity = Integer.valueOf(entry.getValue().toString());
+				}
             }
          }
  
@@ -489,7 +491,7 @@ public class ApiResponse extends ApiConfigs {
             		//To check if any Inventory is greater than 0, then get the related Style and Size, 
                 	//which we will use in PDP to select the style and size in order to get Enabled AddToBag information
             		for(ProductDetailsItem.Edp Edps:edpsList) {
-                		if(Edps.Inventory>0) {                			
+                		if(Edps.Inventory>quantity) {
                 			selectedProduct.productEDPSize=Edps.getSize();
                 			selectedProduct.productEDPColor=Edps.getStyle();
                 			break;
