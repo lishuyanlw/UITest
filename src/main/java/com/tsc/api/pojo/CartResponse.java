@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class AccountCartResponse {
+public class CartResponse {
     public String CartGuid;
     public String PaymentMethod;
     public String ShipCode;

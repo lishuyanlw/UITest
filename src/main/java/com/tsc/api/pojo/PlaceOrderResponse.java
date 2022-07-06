@@ -7,23 +7,23 @@ public class PlaceOrderResponse {
 
     public PlaceOrderResponse(){}
 
-    public AccountCartResponse OrderedCart;
-    public AccountCartResponse NewCart;
+    public CartResponse OrderedCart;
+    public CartResponse NewCart;
     public String OrderModificationDeadline;
 
-    public AccountCartResponse getOrderedCart() {
+    public CartResponse getOrderedCart() {
         return OrderedCart;
     }
 
-    public void setOrderedCart(AccountCartResponse orderedCart) {
+    public void setOrderedCart(CartResponse orderedCart) {
         OrderedCart = orderedCart;
     }
 
-    public AccountCartResponse getNewCart() {
+    public CartResponse getNewCart() {
         return NewCart;
     }
 
-    public void setNewCart(AccountCartResponse newCart) {
+    public void setNewCart(CartResponse newCart) {
         NewCart = newCart;
     }
 
