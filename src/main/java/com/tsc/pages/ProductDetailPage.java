@@ -1850,7 +1850,7 @@ public class ProductDetailPage extends BasePage {
 		String lsText;
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddToBagPopupWindowTitle);
-		lsText= String.valueOf(this.getIntegerFromString(this.getElementInnerText(lblAddToBagPopupWindowDetailsProductName)));
+		lsText= String.valueOf(this.getIntegerFromString(this.getElementInnerText(lblAddToBagPopupWindowTitle)));
 		map.put("productQuantity",lsText);
 
 		if(this.checkProductBadgeInAddToBagPopupDisplaying()){
@@ -1917,8 +1917,8 @@ public class ProductDetailPage extends BasePage {
 		lsText=lblProductNumber.getText();
 		map.put("productNumber",lsText);
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(selectReviewTabSortBy);
-		Select select= new Select(selectReviewTabSortBy);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(selectQuantityOption);
+		Select select= new Select(selectQuantityOption);
 		lsText=select.getFirstSelectedOption().getText().trim();
 		map.put("productQuantity",lsText);
 
@@ -1946,7 +1946,7 @@ public class ProductDetailPage extends BasePage {
 			reporter.reportLogPass("The Product name displaying in AddToBag is the same as PDP ");
 		}
 		else{
-			reporter.reportLogFail("The Product name displaying in AddToBag is not the same as PDP ");
+			reporter.reportLogFail("The Product name:"+lsAddToBagProductName+" displaying in AddToBag is not the same as PDP:"+lsPDPProductName);
 		}
 
 		String lsPDPProductNumber=mapPDP.get("productNumber").toString();
@@ -1955,7 +1955,7 @@ public class ProductDetailPage extends BasePage {
 			reporter.reportLogPass("The Product number displaying in AddToBag is the same as PDP ");
 		}
 		else{
-			reporter.reportLogFail("The Product number displaying in AddToBag is not the same as PDP ");
+			reporter.reportLogFail("The Product number:"+lsAddToBagProductNumber+" displaying in AddToBag is not the same as PDP:"+lsPDPProductNumber);
 		}
 
 		String lsPDPProductStyle=mapPDP.get("productStyle").toString();
@@ -1964,7 +1964,7 @@ public class ProductDetailPage extends BasePage {
 			reporter.reportLogPass("The Product style displaying in AddToBag is the same as PDP ");
 		}
 		else{
-			reporter.reportLogFail("The Product style displaying in AddToBag is not the same as PDP ");
+			reporter.reportLogFail("The Product style:"+lsAddToBagProductStyle+" displaying in AddToBag is not the same as PDP:"+lsPDPProductStyle);
 		}
 
 		String lsPDPProductSize=mapPDP.get("productSize").toString();
@@ -1973,7 +1973,7 @@ public class ProductDetailPage extends BasePage {
 			reporter.reportLogPass("The Product size displaying in AddToBag is the same as PDP ");
 		}
 		else{
-			reporter.reportLogFail("The Product size displaying in AddToBag is not the same as PDP ");
+			reporter.reportLogFail("The Product size:"+lsAddToBagProductSize+" displaying in AddToBag is not the same as PDP:"+lsPDPProductSize);
 		}
 
 		String lsPDPProductQuantity=mapPDP.get("productQuantity").toString();
@@ -1982,7 +1982,7 @@ public class ProductDetailPage extends BasePage {
 			reporter.reportLogPass("The Product quantity displaying in AddToBag is the same as PDP ");
 		}
 		else{
-			reporter.reportLogFail("The Product quantity displaying in AddToBag is not the same as PDP ");
+			reporter.reportLogFail("The Product quantity:"+lsAddToBagProductQuantity+" displaying in AddToBag is not the same as PDP:"+lsPDPProductQuantity);
 		}
 	}
 
@@ -3155,10 +3155,12 @@ public class ProductDetailPage extends BasePage {
 
 		//To choose Style
 		if(this.judgeStyleDisplayModeIsDropdownMenu()) {
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectProductStyle);
 			Select selectStyle= new Select(this.selectProductStyle);
 			selectStyle.selectByVisibleText(lsStyle);
 		}
 		else {
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblRadioProductStyleTitle);
 			loopSize=this.lstAllStyleRadioList.size();
 			for(int i=0;i<loopSize;i++) {
 				labelItem=this.lstAllStyleLabelRadioList.get(i);
@@ -3171,6 +3173,7 @@ public class ProductDetailPage extends BasePage {
 		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 
 		//To choose Size
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSizeTitle);
 		loopSize=this.lstAllSizeRadioList.size();
 		for(int i=0;i<loopSize;i++) {
 			labelItem=this.lstAllSizeLabelRadioList.get(i);
@@ -3188,6 +3191,7 @@ public class ProductDetailPage extends BasePage {
 		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 
 		//To choose quantity
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectQuantityOption);
 		Select selectQuantity= new Select(this.selectQuantityOption);
 		selectQuantity.selectByVisibleText(String.valueOf(quantity));
 		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());

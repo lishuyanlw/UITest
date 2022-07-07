@@ -55,15 +55,16 @@ public class PD_TC17_VerifyProductDetail_AddToBag_MergeCard extends BaseTest{
 			reporter.reportLog(getProductDetailPageThreadLocal().selectedProduct.productEDPSize);
 
 			//Including Style 1 and Style 1
-			String[] lstStyle=getProductDetailPageThreadLocal().selectedProduct.productEDPColor.split("|");
+			String[] lstStyle=getProductDetailPageThreadLocal().selectedProduct.productEDPColor.split("\\|");
 
 			//For Style 1
-			String[] lstSize1=getProductDetailPageThreadLocal().selectedProduct.productEDPSize.split("|")[0].split(":");
+			String[] lstSize1=getProductDetailPageThreadLocal().selectedProduct.productEDPSize.split("\\|")[0].split(":");
 			//For Style 2
-			String[] lstSize2=getProductDetailPageThreadLocal().selectedProduct.productEDPSize.split("|")[1].split(":");
+			String[] lstSize2=getProductDetailPageThreadLocal().selectedProduct.productEDPSize.split("\\|")[1].split(":");
 
 			//To choose Style/Size/Quantity as needed
-			getProductDetailPageThreadLocal().chooseGivenStyleAndSizeAndQuantity(lstStyle[0],lstSize1[0],1);
+			getProductDetailPageThreadLocal().chooseGivenStyleAndSizeAndQuantity(lstStyle[1],lstSize2[2],2);
+
 
 		}
 		else {

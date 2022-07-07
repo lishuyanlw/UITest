@@ -43,13 +43,12 @@ public class PD_TC12_VerifyProductDetail_AddToBag extends BaseTest{
 			reporter.reportLog("Switch to ProductDetail page");
 			reporter.softAssert(lsUrl.contains(lsProductNumber),"The Url is containing selected product number of "+lsProductNumber,"The Url is not containing selected product number of "+lsProductNumber);
 
-			Map<String,Object> mapPDP=getProductDetailPageThreadLocal().getPDPDesc();
-
 			reporter.reportLog("Verify product Add to Bag button");
 			getProductDetailPageThreadLocal().verifyProductAddToBagButton();
 
 			reporter.reportLog("Verify product Add to Bag title and contents");
 			getProductDetailPageThreadLocal().selectSizeAndStyleWithMoreThanOneQuantity();
+			Map<String,Object> mapPDP=getProductDetailPageThreadLocal().getPDPDesc();
 			Map<String,Object> mapAddToBag=getProductDetailPageThreadLocal().verifyProductDetailsInAddToBagPopupWindow(lbl_AddToBagPopupWindowTitle,getProductDetailPageThreadLocal().selectedProduct);
 
 			reporter.reportLog("Verify contents between PDP and AddToBag");
