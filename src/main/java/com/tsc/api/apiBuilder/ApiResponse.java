@@ -444,6 +444,7 @@ public class ApiResponse extends ApiConfigs {
      * @param - Map<String,Object> - configs : configs on basis of which product info will be fetched
      * @param - boolean - isSoldOut :true for including soldout criteria and false for not checking soldout criteria
 	 * @param - boolean - basicCheck - check with default settings
+	 * @param - boolean - isMultiStyleAndSize - to choose 2 Style/Size combination with more than presetting quantity
      * @return - Product.Products - product for search keyword
      */
     private Product.Products getProductInfoForInputParams(Product product,Map<String,Object> configs,boolean isSoldOut,boolean basicCheck,boolean isMultiStyleAndSize){
@@ -472,7 +473,9 @@ public class ApiResponse extends ApiConfigs {
  
         Product.Products productItem=null;
 		ProductDetailsItem productDetailsItem=null;
+
         for(Product.Products data:product.getProducts()) {
+			int styleAmount=-1;
         	lsNowPrice=data.getIsPriceRange();
         	lsWasPrice=data.getWasPriceRange();
             boolean flag = false;
@@ -520,44 +523,90 @@ public class ApiResponse extends ApiConfigs {
             	else {
             		//To check if any Inventory is greater than 0, then get the related Style and Size, 
                 	//which we will use in PDP to select the style and size in order to get Enabled AddToBag information
-					final int tmpInt=quantity;
-					List<ProductDetailsItem.Edp> dataList=edpsList.stream().filter(item->item.getInventory()>tmpInt).sorted((p1,p2)->p1.getStyle().compareTo(p2.getStyle())).collect(Collectors.toList());
+					List<ProductDetailsItem.Edp> dataList=edpsList.stream().sorted((p1,p2)->p1.getStyle().compareTo(p2.getStyle())).collect(Collectors.toList());
+					if(isMultiStyleAndSize){
+						if(dataList.size()<2){
+							return null;
+						}
+					}
+					else{
+						if(dataList.size()<1){
+							return null;
+						}
+					}
+
 					String checkStyle="NoStyle";
-					int count=-1,amount=-1;
-					for(ProductDetailsItem.Edp Edps:dataList) {
+					int sizeAmount=-1;
+					selectedProduct.productEDPSize="";
+					selectedProduct.productEDPColor="";
+					String lsSize="";
+					ProductDetailsItem.Edp currentEDP=null;
+					for(int i=0;i<dataList.size();i++) {
+						ProductDetailsItem.Edp Edps=dataList.get(i);
 						if (isMultiStyleAndSize) {
 							if (checkStyle.equalsIgnoreCase(Edps.getStyle())) {
-								count += 1;
-							} else {
-								if (count > 0) {
-									selectedProduct.productEDPSize = selectedProduct.productEDPSize + checkStyle + "|";
-									selectedProduct.productEDPColor = selectedProduct.productEDPColor + checkStyle + "|";
-									amount += 1;
+								if(Edps.getInventory()>quantity){
+									sizeAmount += 1;
+									lsSize=lsSize+":"+Edps.getSize();
 								}
-								checkStyle = Edps.getStyle();
-								count = 0;
+							}
+							else {
+								if (sizeAmount > 0) {
+									if(styleAmount==-1){
+										selectedProduct.productEDPColor = selectedProduct.productEDPColor + checkStyle + "|";
+										selectedProduct.productEDPSize = selectedProduct.productEDPSize + lsSize + "|";
+									}
+									else{
+										selectedProduct.productEDPColor = selectedProduct.productEDPColor + checkStyle;
+										selectedProduct.productEDPSize = selectedProduct.productEDPSize + lsSize;
+									}
+									sizeAmount = 0;
+									styleAmount += 1;
+								}
+								else{
+									if(Edps.getInventory()<=quantity){
+										continue;
+									}
+									else{
+										checkStyle = Edps.getStyle();
+										sizeAmount = 0;
+										lsSize=Edps.getSize();
+									}
+								}
 							}
 
-							if (amount > 0) {
+							if(i==(dataList.size()-1)){
+								if(sizeAmount>0){
+									selectedProduct.productEDPColor = selectedProduct.productEDPColor + checkStyle;
+									selectedProduct.productEDPSize = selectedProduct.productEDPSize + lsSize;
+									styleAmount += 1;
+								}
+							}
+
+							if (styleAmount > 0) {
 								break;
 							}
-						} else {
-							selectedProduct.productEDPSize = Edps.getSize();
-							selectedProduct.productEDPColor = Edps.getStyle();
-							break;
 						}
-
-//            		for(ProductDetailsItem.Edp Edps:edpsList) {
-//                		if(Edps.Inventory>quantity) {
-//                			selectedProduct.productEDPSize=Edps.getSize();
-//                			selectedProduct.productEDPColor=Edps.getStyle();
-//                			break;
-//                		}
-//                	}
+						else {
+							if(Edps.getInventory()>quantity){
+								selectedProduct.productEDPSize = Edps.getSize();
+								selectedProduct.productEDPColor = Edps.getStyle();
+								break;
+							}
+						}
 					}
-            	}            	
-            	
-            	productItem=data;
+            	}
+            	if(isMultiStyleAndSize){
+					if(styleAmount>0){
+						productItem=data;
+					}
+					else{
+						productItem=null;
+					}
+				}
+				else{
+					productItem=data;
+				}
             	            	            	
                 return productItem;
             }

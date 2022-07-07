@@ -2692,6 +2692,14 @@ public class ProductDetailPage extends BasePage {
 					}
 				}
 				break;
+			case "ConditionsForMultipleStyleAndSize":
+				for(String lsKeyword:lstKeyword) {
+					product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,false,false,true);
+					if(product!=null) {
+						break;
+					}
+				}
+				break;
 			case "ConditionsForVideoAndStyleAndSizeWithoutCheckingSoldOutCriteria":
 				for(String lsKeyword:lstKeyword) {
 					product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,false,true,false);
