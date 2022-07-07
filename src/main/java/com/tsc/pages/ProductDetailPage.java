@@ -307,6 +307,9 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//section[contains(@class,'pdp-description']//div[@class='pdp-description__form__sizes__selections')]")
 	public WebElement cntProductSizeSection;
 
+	@FindBy(xpath="//div[@id='product-details-page']//div[@class='pdp-description__form__sizes__selected']/b")
+	public WebElement lblSelectedSize;
+
 	//For radio style
 	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__form__sizes__selected']")
 	public WebElement lblSizeStatic;
@@ -371,7 +374,7 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__advance-order']")
 	public WebElement lblAdvanceOrderMsg;
 
-	@FindBy(xpath="/div[@id='product-details-page']//div[contains(@class,'add-to-bag__quantity')]")
+	@FindBy(xpath="//div[@id='product-details-page']//div[contains(@class,'add-to-bag__quantity')]/span")
 	public WebElement lblAvailableQuantity;
 
 	@FindBy(xpath = "//div[@id='product-details-page']//div[contains(@class,'add-to-bag__quantity')]//span[contains(@class,'stock')]")
@@ -1646,9 +1649,12 @@ public class ProductDetailPage extends BasePage {
 		openAddToBagPopupWindow();
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAddToBagPopupWindowTitle);
 		reporter.softAssert(this.lblAddToBagPopupWindowTitle.getText().toUpperCase().matches(lbl_AddToBagPopupWindowTitle),"The title of Add to Bag popup window is matching to '"+lbl_AddToBagPopupWindowTitle+"' pattern","The title of Add to Bag popup window is not matching to '"+lbl_AddToBagPopupWindowTitle+"' pattern");
-		//Clicking on Add to Bag button again to close Pop-Up Window
+		//Clicking on TSC Home Page Link to close Pop-Up Window without clicking on close button on Pop-Up
 		this.applyStaticWait(3000);
-		this.clickElement(this.btnAddToBag);
+		//Clicking two times below as clicking single time is not working
+		this.getReusableActionsInstance().clickIfAvailable(new HomePage(getDriver()).lblTSCLink);
+		this.clickElement(new HomePage(getDriver()).lblTSCLink);
+		this.waitForPageToLoad();
 		return this.waitForCondition(Drive->{return !checkAddToBagPopupDisplaying();}, 30000);
 	}
 
@@ -1656,21 +1662,65 @@ public class ProductDetailPage extends BasePage {
 	 * This functions selects product that has more than one quantity available for product
 	 */
 	public void selectSizeAndStyleWithMoreThanOneQuantity(){
-		if(!verifyAvailableQuantityGreaterThanOne()){
+		int quantity = this.verifyAvailableQuantityGreaterThanOne();
+		boolean flag = false;
+		if(quantity>0){
+			if(quantity==1){
+				//Selecting available size
+				int sizeList = this.lstRadioSizeLabelList.size();
+				WebElement sizeElement;
+				for(int j=0;j<sizeList;j++){
+					sizeElement = this.lstRadioSizeLabelList.get(j);
+					try {
+						this.clickElement(sizeElement);
+						WebElement finalSizeElement = sizeElement;
+						waitForCondition(Driver->{return this.lblSelectedSize.getText().trim().equalsIgnoreCase(finalSizeElement.getText());},5000);
+					}catch (Exception e){}
 
+					//Selecting available Style
+					int loopSize=this.lstRadioStyleLabelSpanList.size();
+					WebElement labelItem;
+
+					for(int i=0;i<loopSize;i++) {
+						labelItem = this.lstRadioStyleLabelList.get(i);
+
+						this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblRadioProductStyleStatic);
+						try {
+							String previousZoomImage = this.lnkCurrentZoomImage.getAttribute("href");
+							this.clickElement(labelItem);
+							String currentZoomImage = this.lnkCurrentZoomImage.getAttribute("href");
+							waitForCondition(Driver->{return !previousZoomImage.equalsIgnoreCase(currentZoomImage);},10000);
+							int newQuantity = this.verifyAvailableQuantityGreaterThanOne();
+							if(newQuantity>1){
+								flag = true;
+								break;
+							}
+						} catch (Exception e) {}
+					}
+					if(flag)
+						break;
+				}
+			}
+		}else{
+			reporter.reportLog("No Quantity text is available for this product on PDP page");
 		}
 	}
 
-	public boolean verifyAvailableQuantityGreaterThanOne(){
-		int quantityAvailable = 1;
+	/**
+	 * This function verifies that select size and style for product on PDP page has more than 1 quantity selected
+	 * @return - boolean - true/false
+	 */
+	public int verifyAvailableQuantityGreaterThanOne(){
+		int quantityAvailable = 0;
 		if(this.checkChildElementExistingByTagNameAndAttribute(this.lblAvailableQuantity,"span","class","pdp-description__add-to-bag__quantity__count--critic-stock")){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAvailableQuantityNumber);
-			quantityAvailable = Integer.valueOf(this.lblAvailableQuantity.getText().trim().split(" ")[1]);
+			String quantityText = this.lblAvailableQuantity.getText().trim();
+			if(quantityText.toLowerCase().contains("sold"))
+				return quantityAvailable;
+			else
+				quantityAvailable = Integer.valueOf(quantityText.split(" ")[1]);
 		}
-		if(quantityAvailable>1)
-			return true;
-
-		return false;
+		return quantityAvailable;
 	}
 
 	/**

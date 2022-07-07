@@ -126,6 +126,8 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
         reporter.softAssert(!this.lblAddToBagPopupWindowFooterInfo.getText().isEmpty(),"The Footer info in Add to Bag popup window is not empty","The Footer info in Add to Bag popup window is empty");
 
         closeAddToBagPopupWindow();
+        //https://reqcentral.com/browse/CER-838 - Verifying close button is present and clickable
+        closeAddToBagPopUpWindowAfterClickingOutsidePopUp(lbl_AddToBagPopupWindowTitle);
     }
 
     @Override
