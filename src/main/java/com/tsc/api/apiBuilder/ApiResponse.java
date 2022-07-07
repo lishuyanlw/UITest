@@ -133,10 +133,12 @@ public class ApiResponse extends ApiConfigs {
      * This method finds product info on the basis of input search keyword with preconditions(video,style,size,brand,badgeImage,review,easyPay,WasPrice,and AddToBag)
      * @param - String - searchKeyword : search keyword for Product
      * @param - Map<String,Object> - outputDataCriteria : criteria for searching a particular product
-     * @param - boolean - isSoldOut :true for including soldout criteria and false for not checking soldout criteria 
+     * @param - boolean - isSoldOut - true for including soldout criteria and false for not checking soldout criteria
+	 * @param - boolean - basicCheck - Check default settings
+	 * @param - boolean - isMultiStyleAndSize
      * @return - Product.Products - product for search keyword
      */
-    public Product.Products getProductInfoFromKeyword(String searchKeyword,Map<String,Object> outputDataCriteria,boolean isSoldOut,boolean basicCheck){
+    public Product.Products getProductInfoFromKeyword(String searchKeyword,Map<String,Object> outputDataCriteria,boolean isSoldOut,boolean basicCheck,boolean isMultiStyleAndSize){
         boolean flag = true;
         String lsNowPrice,lsWasPrice;
         Product.Products productItem=null;
@@ -179,12 +181,39 @@ public class ApiResponse extends ApiConfigs {
 						else {
 							//To check if any Inventory is greater than 0, then get the related Style and Size,
 							//which we will use in PDP to select the style and size in order to get Enabled AddToBag information
-							for(ProductDetailsItem.Edp Edps:edpsList) {
-								if(Edps.Inventory>0) {
+							List<ProductDetailsItem.Edp> dataList=edpsList.stream().filter(item->item.getInventory()>0).sorted((p1,p2)->p1.getStyle().compareTo(p2.getStyle())).collect(Collectors.toList());
+							String checkStyle="NoStyle";
+							int count=-1,amount=-1;
+							for(ProductDetailsItem.Edp Edps:dataList) {
+								if(isMultiStyleAndSize){
+									if(checkStyle.equalsIgnoreCase(Edps.getStyle())){
+										count+=1;
+									}
+									else{
+										if(count>0){
+											selectedProduct.productEDPSize=selectedProduct.productEDPSize+checkStyle+"|";
+											selectedProduct.productEDPColor=selectedProduct.productEDPColor+checkStyle+"|";
+											amount+=1;
+										}
+										checkStyle=Edps.getStyle();
+										count=0;
+									}
+
+									if(amount>0){
+										break;
+									}
+								}
+								else{
 									selectedProduct.productEDPSize=Edps.getSize();
 									selectedProduct.productEDPColor=Edps.getStyle();
 									break;
 								}
+
+//								if(Edps.Inventory>0) {
+//									selectedProduct.productEDPSize=Edps.getSize();
+////								selectedProduct.productEDPColor=Edps.getStyle();
+////								break;
+//								}
 							}
 						}
 
@@ -213,7 +242,7 @@ public class ApiResponse extends ApiConfigs {
                     product = getProductDetailsForKeyword(searchKeyword,null,false);
                 }
             }else{
-            	productItem = getProductInfoForInputParams(product,outputDataCriteria,isSoldOut,basicCheck);
+            	productItem = getProductInfoForInputParams(product,outputDataCriteria,isSoldOut,basicCheck,isMultiStyleAndSize);
                 if(productItem==null){
                     outputPage++;
                     if(outputPage>totalPage||outputPage>=10) {
@@ -413,10 +442,12 @@ public class ApiResponse extends ApiConfigs {
      * This method finds product number on the basis of input conditions(video,style,size,brand,badgeImage,review,easyPay,WasPrice,and AddToBag)
      * @param - Product - product : Product class object
      * @param - Map<String,Object> - configs : configs on basis of which product info will be fetched
-     * @param - boolean - isSoldOut :true for including soldout criteria and false for not checking soldout criteria 
+     * @param - boolean - isSoldOut :true for including soldout criteria and false for not checking soldout criteria
+	 * @param - boolean - basicCheck - check with default settings
+	 * @param - boolean - isMultiStyleAndSize - to choose 2 Style/Size combination with more than presetting quantity
      * @return - Product.Products - product for search keyword
      */
-    private Product.Products getProductInfoForInputParams(Product product,Map<String,Object> configs,boolean isSoldOut,boolean basicCheck){
+    private Product.Products getProductInfoForInputParams(Product product,Map<String,Object> configs,boolean isSoldOut,boolean basicCheck,boolean isMultiStyleAndSize){
     	if(product==null) {
         	return null;
         }
@@ -442,7 +473,9 @@ public class ApiResponse extends ApiConfigs {
  
         Product.Products productItem=null;
 		ProductDetailsItem productDetailsItem=null;
+
         for(Product.Products data:product.getProducts()) {
+			int styleAmount=-1;
         	lsNowPrice=data.getIsPriceRange();
         	lsWasPrice=data.getWasPriceRange();
             boolean flag = false;
@@ -490,16 +523,90 @@ public class ApiResponse extends ApiConfigs {
             	else {
             		//To check if any Inventory is greater than 0, then get the related Style and Size, 
                 	//which we will use in PDP to select the style and size in order to get Enabled AddToBag information
-            		for(ProductDetailsItem.Edp Edps:edpsList) {
-                		if(Edps.Inventory>quantity) {
-                			selectedProduct.productEDPSize=Edps.getSize();
-                			selectedProduct.productEDPColor=Edps.getStyle();
-                			break;
-                		}
-                	}
-            	}            	
-            	
-            	productItem=data;
+					List<ProductDetailsItem.Edp> dataList=edpsList.stream().sorted((p1,p2)->p1.getStyle().compareTo(p2.getStyle())).collect(Collectors.toList());
+					if(isMultiStyleAndSize){
+						if(dataList.size()<2){
+							return null;
+						}
+					}
+					else{
+						if(dataList.size()<1){
+							return null;
+						}
+					}
+
+					String checkStyle="NoStyle";
+					int sizeAmount=-1;
+					selectedProduct.productEDPSize="";
+					selectedProduct.productEDPColor="";
+					String lsSize="";
+					ProductDetailsItem.Edp currentEDP=null;
+					for(int i=0;i<dataList.size();i++) {
+						ProductDetailsItem.Edp Edps=dataList.get(i);
+						if (isMultiStyleAndSize) {
+							if (checkStyle.equalsIgnoreCase(Edps.getStyle())) {
+								if(Edps.getInventory()>quantity){
+									sizeAmount += 1;
+									lsSize=lsSize+":"+Edps.getSize();
+								}
+							}
+							else {
+								if (sizeAmount > 0) {
+									if(styleAmount==-1){
+										selectedProduct.productEDPColor = selectedProduct.productEDPColor + checkStyle + "|";
+										selectedProduct.productEDPSize = selectedProduct.productEDPSize + lsSize + "|";
+									}
+									else{
+										selectedProduct.productEDPColor = selectedProduct.productEDPColor + checkStyle;
+										selectedProduct.productEDPSize = selectedProduct.productEDPSize + lsSize;
+									}
+									sizeAmount = 0;
+									styleAmount += 1;
+								}
+								else{
+									if(Edps.getInventory()<=quantity){
+										continue;
+									}
+									else{
+										checkStyle = Edps.getStyle();
+										sizeAmount = 0;
+										lsSize=Edps.getSize();
+									}
+								}
+							}
+
+							if(i==(dataList.size()-1)){
+								if(sizeAmount>0){
+									selectedProduct.productEDPColor = selectedProduct.productEDPColor + checkStyle;
+									selectedProduct.productEDPSize = selectedProduct.productEDPSize + lsSize;
+									styleAmount += 1;
+								}
+							}
+
+							if (styleAmount > 0) {
+								break;
+							}
+						}
+						else {
+							if(Edps.getInventory()>quantity){
+								selectedProduct.productEDPSize = Edps.getSize();
+								selectedProduct.productEDPColor = Edps.getStyle();
+								break;
+							}
+						}
+					}
+            	}
+            	if(isMultiStyleAndSize){
+					if(styleAmount>0){
+						productItem=data;
+					}
+					else{
+						productItem=null;
+					}
+				}
+				else{
+					productItem=data;
+				}
             	            	            	
                 return productItem;
             }

@@ -1947,7 +1947,7 @@ public class ProductResultsPage extends BasePage{
 
 		String productNumber="";
 		for(String lsKeyword:lstKeyword) {
-			product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,true,false);
+			product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,true,false,false);
 			if(product!=null) {
 				break;
 			}
@@ -1974,7 +1974,7 @@ public class ProductResultsPage extends BasePage{
 		Product.Products product=null;
 		String productName="";
 		for(String lsKeyword:lstKeyword) {
-			product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,false,true);
+			product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,false,true,false);
 			if(product!=null) {
 				break;
 			}
@@ -3791,7 +3791,7 @@ public class ProductResultsPage extends BasePage{
 		inputParamMap.put("style",inputParams.get(1));
 		inputParamMap.put("pageSize",defaultItemsCountOnPRP);
 		inputParamMap.put("video",0);
-		Product.Products product = apiResponse.getProductInfoFromKeyword(inputParams.get(0),inputParamMap,false,true);
+		Product.Products product = apiResponse.getProductInfoFromKeyword(inputParams.get(0),inputParamMap,false,true,false);
 
 		if(product!=null){
 			reporter.reportLog("Searching product: "+product.getName());
