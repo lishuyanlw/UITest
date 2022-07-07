@@ -3348,4 +3348,36 @@ public class ProductDetailPage extends BasePage {
 		}else
 			return null;
 	}
+
+	/**
+	 * This function returns shopping bag items details for a user
+	 * @param - CartResponse object fetched from api containing shopping bag details object
+	 * @return - Map<String,Map<String,String> - Map object containing item details
+	 */
+	public Map<String,Map<String,String>> getShoppingBagItemsDetailAddedForUser(CartResponse cartResponse){
+		Map<String,Map<String,String>> cartItemDetails = null;
+		int mapCounter = 1;
+		if(cartResponse!=null){
+			cartItemDetails = new HashMap<>();
+			List<CartResponse.CartLinesClass> cartLinesClass = cartResponse.getCartLines();
+			List<CartResponse.ProductsClass> productsClasses = cartResponse.getProducts();
+			for(CartResponse.CartLinesClass cartLines : cartLinesClass){
+				Map<String,String> itemDetails = new HashMap<>();
+				itemDetails.put("itemNo",cartLines.getCartLineItem().getItemNo());
+				itemDetails.put("productStyle",cartLines.getCartLineItem().getStyle());
+				itemDetails.put("productStyleDimension",cartLines.getCartLineItem().getStyleDimensionId());
+				itemDetails.put("productSize",cartLines.getCartLineItem().getSize());
+				itemDetails.put("nowPrice",cartLines.getCartLineItem().getAppliedPrice());
+				for(CartResponse.ProductsClass products : productsClasses){
+					if(products.getItemNo().equalsIgnoreCase(itemDetails.get("itemNo"))){
+						itemDetails.put("productName",products.getName());
+						break;
+					}
+				}
+				cartItemDetails.put(String.valueOf(mapCounter),itemDetails);
+				mapCounter++;
+			}
+		}
+		return cartItemDetails;
+	}
 }
