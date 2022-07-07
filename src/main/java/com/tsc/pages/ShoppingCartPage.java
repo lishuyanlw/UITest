@@ -122,6 +122,9 @@ public class ShoppingCartPage extends BasePage {
 	@FindBy(xpath = "//div[@class='cartridge']//div[@id='removeItemModal']//button[@aria-label='Cancel']")
 	public WebElement btnRemoveDialogCancel;
 
+	@FindBy(xpath="//shopping-cart//div[contains(@class,'cart-items')]//div/a[contains(@class,'pull-right')]")
+	public List<WebElement> btnItemRemoveButtonFromCart;
+
 	////////////////For Order summary section////////////////////////////
 
 	//Pricing
@@ -318,11 +321,11 @@ public class ShoppingCartPage extends BasePage {
 	}
 
 	/**
-	 * To close remove dialog
+	 * To close remove dialog Without Remove Action
 	 * @param - boolean - bCancel - true for clicking Cancel button while false for clicking close button
 	 * @return - boolean
 	 */
-	public boolean closeRemoveDialog(boolean bCancel){
+	public boolean closeRemoveDialogWithoutRemoveAction(boolean bCancel){
 		if(bCancel){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnRemoveDialogCancel);
 			btnRemoveDialogCancel.click();
@@ -335,16 +338,47 @@ public class ShoppingCartPage extends BasePage {
 	}
 
 	/**
+	 * To close remove dialog with remove action
+	 * @return - boolean
+	 */
+	public boolean closeRemoveDialogWithRemoveAction(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnRemoveDialogRemove);
+		btnRemoveDialogRemove.click();
+		return this.waitForCondition(Driver->{return removeDialogLoadingIndicator.getAttribute("style").contains("display: none;");},15000);
+	}
+
+	/**
+	 * To remove Items from Shopping cart
+	 */
+	public void removeItemsAddedToShoppingCart(){
+		GlobalHeaderPage globalHeaderPage = new GlobalHeaderPage(this.getDriver());
+		ProductDetailPage productDetailPage = new ProductDetailPage(this.getDriver());
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeaderPage.CartBagCounter);
+		this.getReusableActionsInstance().clickIfAvailable(globalHeaderPage.CartBagCounter);
+		this.waitForPageToLoad();
+		if(this.btnItemRemoveButtonFromCart.size()>0){
+			for(WebElement removeButton: this.btnItemRemoveButtonFromCart){
+				openRemoveDialog(removeButton);
+				closeRemoveDialogWithRemoveAction();
+			}
+		}
+		//Verify that all items are removed
+		this.getReusableActionsInstance().staticWait(3000);
+		reporter.softAssert(productDetailPage.getShoppingCartNumber()==0,"All Items are removed from shopping Cart","Items are still present in shopping Cart with no of items: "+productDetailPage.getShoppingCartNumber());
+	}
+
+	/**
 	 * To get Product Name, Style and Size through splitting product description string with pipeline separator
 	 * @param - lsProductDesc - the given product description string with pipeline separator
-	 * @return - map<String,String> - including Product Name, Style and Size
+	 * @return - map<String,Object> - including Product Name, Style and Size
 	 */
-	public Map<String,String> getProductNameAndStyleAndSize(String lsProductDesc){
-		Map<String,String> map=new HashMap<>();
+	public Map<String,Object> getProductNameAndStyleAndSize(String lsProductDesc){
+		Map<String,Object> map=new HashMap<>();
+
 		String[] lsSplit=lsProductDesc.split("|");
-		map.put("productName",lsSplit[0]);
-		map.put("productStyle",lsSplit[1]);
-		map.put("productSize",lsSplit[2]);
+		map.put("productName",lsSplit[0].trim());
+		map.put("productStyle",lsSplit[1].trim());
+		map.put("productSize",lsSplit[2].split(":")[1].trim());
 
 		return map;
 	}
@@ -356,9 +390,9 @@ public class ShoppingCartPage extends BasePage {
 	 * @return - boolean
 	 */
 	public boolean matchGivenAddToBagItem(Map<String,Object> addToBagMap,Map<String,String> orderItemMap){
-		if(addToBagMap.get("productName").toString().equalsIgnoreCase(orderItemMap.get("productName"))&&
-				addToBagMap.get("productStyle").toString().equalsIgnoreCase(orderItemMap.get("productStyle"))&&
-				addToBagMap.get("productSize").toString().equalsIgnoreCase(orderItemMap.get("productSize"))){
+		if(addToBagMap.get("productName").toString().equalsIgnoreCase(orderItemMap.get("productName").toString())&&
+				addToBagMap.get("productStyle").toString().equalsIgnoreCase(orderItemMap.get("productStyle").toString())&&
+				addToBagMap.get("productSize").toString().equalsIgnoreCase(orderItemMap.get("productSize").toString())){
 			return true;
 		}
 		else{

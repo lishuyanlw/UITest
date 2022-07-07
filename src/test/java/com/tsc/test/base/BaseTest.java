@@ -53,7 +53,7 @@ public class BaseTest {
 	protected static final ThreadLocal<SignInPage> loginPageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<String> TestDeviceThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<ApiResponse> apiResponseThreadLocal = new ThreadLocal<>();
-	protected static final ThreadLocal<ShoppingCart> shoppingCartThreadLocal = new ThreadLocal<>();
+	protected static final ThreadLocal<ShoppingCartPage> shoppingCartThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<JSONObject> apiUserSessionDataMapThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<JSONObject> apiAppSessionDataMapThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<MyAccount> myAccountPageThreadLocal = new ThreadLocal<>();
@@ -70,7 +70,7 @@ public class BaseTest {
 	}
 
 	//@return shoppingCartThreadLocal
-	public static ShoppingCart getShoppingCartThreadLocal() {return shoppingCartThreadLocal.get();}
+	public static ShoppingCartPage getShoppingCartThreadLocal() {return shoppingCartThreadLocal.get();}
 
 	//@return apiResponseThreadLocal
 	public static ApiResponse getApiResponseThreadLocal() {return apiResponseThreadLocal.get();}
@@ -127,7 +127,7 @@ public class BaseTest {
 		loginPageThreadLocal.set(new SignInPage(getDriver()));
 		reporter = new ExtentTestManager(getDriver());
 		apiResponseThreadLocal.set(new ApiResponse());
-		shoppingCartThreadLocal.set(new ShoppingCart(getDriver()));
+		shoppingCartThreadLocal.set(new ShoppingCartPage(getDriver()));
 		myAccountPageThreadLocal.set(new MyAccount(getDriver()));
 	}
 
@@ -140,7 +140,7 @@ public class BaseTest {
 		productDetailPageThreadLocal.set(new ProductDetailPage_Mobile(getDriver()));
 		reporter = new ExtentTestManager(getDriver());
 		apiResponseThreadLocal.set(new ApiResponse());
-		shoppingCartThreadLocal.set(new ShoppingCart(getDriver()));
+		shoppingCartThreadLocal.set(new ShoppingCartPage(getDriver()));
 		myAccountPageThreadLocal.set(new MyAccount_Mobile(getDriver()));
 	}
 
@@ -184,7 +184,7 @@ public class BaseTest {
 
 		reporter = new ExtentTestManager(getDriver());
 		apiResponseThreadLocal.set(new ApiResponse());
-		shoppingCartThreadLocal.set(new ShoppingCart(getDriver()));
+		shoppingCartThreadLocal.set(new ShoppingCartPage(getDriver()));
 		homePageThreadLocal.set(new HomePage(getDriver()));
 	}
 

@@ -1836,6 +1836,20 @@ public class ProductDetailPage extends BasePage {
 		return this.getFloatFromString(lsText,true);
 	}
 
+	/**
+	 * To go To Shopping Cart page by clicking ViewShoppingBag button in AddToBag Popup window
+	 */
+	public void goToShoppingCartFromAddToBagPopup(){
+		this.openAddToBagPopupWindow();
+		this.btnAddToBagPopupWindowButtonSectionViewShoppingBag.click();
+		ShoppingCartPage shoppingCartPage=new ShoppingCartPage(this.getDriver());
+		this.waitForCondition(Driver->{return shoppingCartPage.lblCartTitle.isDisplayed();},20000);
+	}
+
+	/**
+	 * To get AddToBag description
+	 * @return - Map<String,Object> - including product name/style/size, item amount and subtotal
+	 */
 	public Map<String,Object> getAddToBagDesc(){
 		Map<String,Object> map=new HashMap<>();
 		String lsText;
@@ -1857,6 +1871,7 @@ public class ProductDetailPage extends BasePage {
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddToBagPopupWindowDetailsProductSize);
 		lsText=lblAddToBagPopupWindowDetailsProductSize.getText();
+		lsText=lsText.split(":")[1].trim();
 		map.put("productSize",lsText);
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddToBagPopupWindowDetailsProductNumber);
@@ -1866,6 +1881,42 @@ public class ProductDetailPage extends BasePage {
 		map.put("ItemAmount",getOrderAmountFromSubTotalInAddToBagModel());
 
 		map.put("SubTotal",getOrderSubTotalInAddToBagModel());
+
+		return map;
+	}
+
+	/**
+	 * To get PDP description
+	 * @return - Map<String,Object> - including product name/style/size
+	 */
+	public Map<String,Object> getPDPDesc(){
+		Map<String,Object> map=new HashMap<>();
+		String lsText;
+
+		if(this.checkProductBadgeExisting()){
+			map.put("productBadge",true);
+		}
+		else{
+			map.put("productBadge",false);
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblProductName);
+		lsText=lblProductName.getText();
+		map.put("productName",lsText);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblRadioProductStyleStatic);
+		lsText=lblRadioProductStyleStatic.getText();
+		lsText=lsText.split(":")[1].trim();
+		map.put("productStyle",lsText);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblSizeStatic);
+		lsText=lblSizeStatic.getText();
+		lsText=lsText.split(":")[1].trim();
+		map.put("productSize",lsText);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblProductNumber);
+		lsText=lblProductNumber.getText();
+		map.put("productNumber",lsText);
 
 		return map;
 	}
