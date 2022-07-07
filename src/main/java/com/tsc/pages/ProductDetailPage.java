@@ -2636,7 +2636,7 @@ public class ProductDetailPage extends BasePage {
 		switch(lsType) {
 			case "AllConditionsWithoutCheckingSoldOutCriteria":
 				for(String lsKeyword:lstKeyword) {
-					product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,false,false);
+					product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,false,false,false);
 					if(product!=null) {
 						break;
 					}
@@ -2644,7 +2644,7 @@ public class ProductDetailPage extends BasePage {
 				break;
 			case "ConditionsForVideoAndStyleAndSizeWithoutCheckingSoldOutCriteria":
 				for(String lsKeyword:lstKeyword) {
-					product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,false,true);
+					product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,false,true,false);
 					if(product!=null) {
 						break;
 					}
@@ -2652,7 +2652,7 @@ public class ProductDetailPage extends BasePage {
 				break;
 			case "AllConditionsWithCheckingSoldOutCriteria":
 				for(String lsKeyword:lstKeyword) {
-					product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,true,false);
+					product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,true,false,false);
 					if(product!=null) {
 						break;
 					}
@@ -2660,7 +2660,7 @@ public class ProductDetailPage extends BasePage {
 				break;
 			case "ConditionsForVideoAndStyleAndSizeWithCheckingSoldOutCriteria":
 				for(String lsKeyword:lstKeyword) {
-					product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,true,true);
+					product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,true,true,false);
 					if(product!=null) {
 						break;
 					}

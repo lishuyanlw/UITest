@@ -133,10 +133,12 @@ public class ApiResponse extends ApiConfigs {
      * This method finds product info on the basis of input search keyword with preconditions(video,style,size,brand,badgeImage,review,easyPay,WasPrice,and AddToBag)
      * @param - String - searchKeyword : search keyword for Product
      * @param - Map<String,Object> - outputDataCriteria : criteria for searching a particular product
-     * @param - boolean - isSoldOut :true for including soldout criteria and false for not checking soldout criteria 
+     * @param - boolean - isSoldOut - true for including soldout criteria and false for not checking soldout criteria
+	 * @param - boolean - basicCheck - Check default settings
+	 * @param - boolean - isMultiStyleAndSize
      * @return - Product.Products - product for search keyword
      */
-    public Product.Products getProductInfoFromKeyword(String searchKeyword,Map<String,Object> outputDataCriteria,boolean isSoldOut,boolean basicCheck){
+    public Product.Products getProductInfoFromKeyword(String searchKeyword,Map<String,Object> outputDataCriteria,boolean isSoldOut,boolean basicCheck,boolean isMultiStyleAndSize){
         boolean flag = true;
         String lsNowPrice,lsWasPrice;
         Product.Products productItem=null;
@@ -179,12 +181,39 @@ public class ApiResponse extends ApiConfigs {
 						else {
 							//To check if any Inventory is greater than 0, then get the related Style and Size,
 							//which we will use in PDP to select the style and size in order to get Enabled AddToBag information
-							for(ProductDetailsItem.Edp Edps:edpsList) {
-								if(Edps.Inventory>0) {
+							List<ProductDetailsItem.Edp> dataList=edpsList.stream().filter(item->item.getInventory()>0).sorted((p1,p2)->p1.getStyle().compareTo(p2.getStyle())).collect(Collectors.toList());
+							String checkStyle="NoStyle";
+							int count=-1,amount=-1;
+							for(ProductDetailsItem.Edp Edps:dataList) {
+								if(isMultiStyleAndSize){
+									if(checkStyle.equalsIgnoreCase(Edps.getStyle())){
+										count+=1;
+									}
+									else{
+										if(count>0){
+											selectedProduct.productEDPSize=selectedProduct.productEDPSize+checkStyle+"|";
+											selectedProduct.productEDPColor=selectedProduct.productEDPColor+checkStyle+"|";
+											amount+=1;
+										}
+										checkStyle=Edps.getStyle();
+										count=0;
+									}
+
+									if(amount>0){
+										break;
+									}
+								}
+								else{
 									selectedProduct.productEDPSize=Edps.getSize();
 									selectedProduct.productEDPColor=Edps.getStyle();
 									break;
 								}
+
+//								if(Edps.Inventory>0) {
+//									selectedProduct.productEDPSize=Edps.getSize();
+////								selectedProduct.productEDPColor=Edps.getStyle();
+////								break;
+//								}
 							}
 						}
 
@@ -213,7 +242,7 @@ public class ApiResponse extends ApiConfigs {
                     product = getProductDetailsForKeyword(searchKeyword,null,false);
                 }
             }else{
-            	productItem = getProductInfoForInputParams(product,outputDataCriteria,isSoldOut,basicCheck);
+            	productItem = getProductInfoForInputParams(product,outputDataCriteria,isSoldOut,basicCheck,isMultiStyleAndSize);
                 if(productItem==null){
                     outputPage++;
                     if(outputPage>totalPage||outputPage>=10) {
@@ -413,10 +442,11 @@ public class ApiResponse extends ApiConfigs {
      * This method finds product number on the basis of input conditions(video,style,size,brand,badgeImage,review,easyPay,WasPrice,and AddToBag)
      * @param - Product - product : Product class object
      * @param - Map<String,Object> - configs : configs on basis of which product info will be fetched
-     * @param - boolean - isSoldOut :true for including soldout criteria and false for not checking soldout criteria 
+     * @param - boolean - isSoldOut :true for including soldout criteria and false for not checking soldout criteria
+	 * @param - boolean - basicCheck - check with default settings
      * @return - Product.Products - product for search keyword
      */
-    private Product.Products getProductInfoForInputParams(Product product,Map<String,Object> configs,boolean isSoldOut,boolean basicCheck){
+    private Product.Products getProductInfoForInputParams(Product product,Map<String,Object> configs,boolean isSoldOut,boolean basicCheck,boolean isMultiStyleAndSize){
     	if(product==null) {
         	return null;
         }
@@ -490,13 +520,41 @@ public class ApiResponse extends ApiConfigs {
             	else {
             		//To check if any Inventory is greater than 0, then get the related Style and Size, 
                 	//which we will use in PDP to select the style and size in order to get Enabled AddToBag information
-            		for(ProductDetailsItem.Edp Edps:edpsList) {
-                		if(Edps.Inventory>quantity) {
-                			selectedProduct.productEDPSize=Edps.getSize();
-                			selectedProduct.productEDPColor=Edps.getStyle();
-                			break;
-                		}
-                	}
+					final int tmpInt=quantity;
+					List<ProductDetailsItem.Edp> dataList=edpsList.stream().filter(item->item.getInventory()>tmpInt).sorted((p1,p2)->p1.getStyle().compareTo(p2.getStyle())).collect(Collectors.toList());
+					String checkStyle="NoStyle";
+					int count=-1,amount=-1;
+					for(ProductDetailsItem.Edp Edps:dataList) {
+						if (isMultiStyleAndSize) {
+							if (checkStyle.equalsIgnoreCase(Edps.getStyle())) {
+								count += 1;
+							} else {
+								if (count > 0) {
+									selectedProduct.productEDPSize = selectedProduct.productEDPSize + checkStyle + "|";
+									selectedProduct.productEDPColor = selectedProduct.productEDPColor + checkStyle + "|";
+									amount += 1;
+								}
+								checkStyle = Edps.getStyle();
+								count = 0;
+							}
+
+							if (amount > 0) {
+								break;
+							}
+						} else {
+							selectedProduct.productEDPSize = Edps.getSize();
+							selectedProduct.productEDPColor = Edps.getStyle();
+							break;
+						}
+
+//            		for(ProductDetailsItem.Edp Edps:edpsList) {
+//                		if(Edps.Inventory>quantity) {
+//                			selectedProduct.productEDPSize=Edps.getSize();
+//                			selectedProduct.productEDPColor=Edps.getStyle();
+//                			break;
+//                		}
+//                	}
+					}
             	}            	
             	
             	productItem=data;
