@@ -6,6 +6,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 
+import java.util.Map;
+
 public class ProductDetailPage_Mobile extends ProductDetailPage{
 
     public ProductDetailPage_Mobile(WebDriver driver) {
@@ -68,7 +70,7 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
     }
 
     @Override
-    public void verifyProductDetailsInAddToBagPopupWindow(String lbl_AddToBagPopupWindowTitle, SelectedProduct productItem){
+    public Map<String,Object> verifyProductDetailsInAddToBagPopupWindow(String lbl_AddToBagPopupWindowTitle, SelectedProduct productItem){
         openAddToBagPopupWindow();
 
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAddToBagPopupWindowTitle);
@@ -125,9 +127,13 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
         reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblAddToBagPopupWindowFooterInfo),"The Footer info in Add to Bag popup window is visible","The Footer info in Add to Bag popup window is not visible");
         reporter.softAssert(!this.lblAddToBagPopupWindowFooterInfo.getText().isEmpty(),"The Footer info in Add to Bag popup window is not empty","The Footer info in Add to Bag popup window is empty");
 
+        Map<String,Object> map=this.getAddToBagDesc();
+
         closeAddToBagPopupWindow();
         //https://reqcentral.com/browse/CER-838 - Verifying close button is present and clickable
         closeAddToBagPopUpWindowAfterClickingOutsidePopUp(lbl_AddToBagPopupWindowTitle);
+
+        return map;
     }
 
     @Override

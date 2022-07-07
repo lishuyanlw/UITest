@@ -1726,10 +1726,10 @@ public class ProductDetailPage extends BasePage {
 	/**
 	 * Method to verify the product details in Add to Bag popup window
 	 * @param-String lbl_AddToBagPopupWindowTitle: the expected title
-	 * @return void
+	 * @return - Map<String,Object> - AddToBag information
 	 * @author Wei.Li
 	 */
-	public void verifyProductDetailsInAddToBagPopupWindow(String lbl_AddToBagPopupWindowTitle, SelectedProduct productItem){
+	public Map<String,Object> verifyProductDetailsInAddToBagPopupWindow(String lbl_AddToBagPopupWindowTitle, SelectedProduct productItem){
 		openAddToBagPopupWindow();
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAddToBagPopupWindowTitle);
@@ -1749,8 +1749,6 @@ public class ProductDetailPage extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAddToBagPopupWindowDetailsProductName);
 		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblAddToBagPopupWindowDetailsProductName),"The product name in Add to Bag popup window is visible","The product name in Add to Bag popup window is not visible");
 		reporter.softAssert(!this.lblAddToBagPopupWindowDetailsProductName.getText().isEmpty(),"The product name in Add to Bag popup window is not empty","The product name in Add to Bag popup window is empty");
-		//commented below line because of the new havas changes where PRP is changed
-		//reporter.softAssert(this.lblAddToBagPopupWindowDetailsProductName.getText().trim().equalsIgnoreCase(productItem.productName),"The product name in Add to Bag popup window is equal to the original product name from product search result page","The product name in Add to Bag popup window is not equal to the original product name from product search result page");
 
 		if(checkProductStyleInAddToBagPopupDisplaying()) {
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAddToBagPopupWindowDetailsProductStyle);
@@ -1768,17 +1766,10 @@ public class ProductDetailPage extends BasePage {
 		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblAddToBagPopupWindowDetailsProductNumber),"The product Number in Add to Bag popup window is visible","The product Number in Add to Bag popup window is not visible");
 		reporter.softAssert(!this.lblAddToBagPopupWindowDetailsProductNumber.getText().isEmpty(),"The product Number in Add to Bag popup window is not empty","The product Number in Add to Bag popup window is empty");
 
-		//commented below line because of the havas changes where PRP is changed
-		//reporter.softAssert(this.lblAddToBagPopupWindowDetailsProductNumber.getText().trim().equalsIgnoreCase(productItem.productNumber),"The product number in Add to Bag popup window is equal to the original product number from product search result page","The product number in Add to Bag popup window is not equal to the original product number from product search result page");
-
 		subTotal();
 
 		reporter.softAssert(this.lblAddToBagPopupWindowDetailsProductNumber.getText().trim().replace("-", "").equalsIgnoreCase(productItem.productNumber),"The product number of "+this.lblAddToBagPopupWindowDetailsProductNumber.getText().trim().replace("-", "")+" in Add to Bag popup window is equal to the original product number of "+productItem.productNumber+" from product search result page","The product number of "+this.lblAddToBagPopupWindowDetailsProductNumber.getText().trim().replace("-", "")+" in Add to Bag popup window is not equal to the original product number of "+productItem.productNumber+" from product search result page");
-		/**
-		 this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAddToBagPopupWindowButtonSectionSubtotal);
-		 reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblAddToBagPopupWindowButtonSectionSubtotal),"The product Subtotal in Add to Bag popup window is visible","The product Subtotal in Add to Bag popup window is not visible");
-		 reporter.softAssert(!this.lblAddToBagPopupWindowButtonSectionSubtotal.getText().isEmpty(),"The product Subtotal in Add to Bag popup window is not empty","The product Subtotal in Add to Bag popup window is empty");
-		 */
+
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnAddToBagPopupWindowButtonSectionCheckOut);
 		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.btnAddToBagPopupWindowButtonSectionCheckOut),"The CheckOut button in Add to Bag popup window is visible","The CheckOut button in Add to Bag popup window is not visible");
 		reporter.softAssert(!this.btnAddToBagPopupWindowButtonSectionCheckOut.getText().isEmpty(),"The CheckOut button in Add to Bag popup window is not empty","The CheckOut button in Add to Bag popup window is empty");
@@ -1791,9 +1782,13 @@ public class ProductDetailPage extends BasePage {
 		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblAddToBagPopupWindowFooterInfo),"The Footer info in Add to Bag popup window is visible","The Footer info in Add to Bag popup window is not visible");
 		reporter.softAssert(!this.lblAddToBagPopupWindowFooterInfo.getText().isEmpty(),"The Footer info in Add to Bag popup window is not empty","The Footer info in Add to Bag popup window is empty");
 
+		Map<String,Object> map=this.getAddToBagDesc();
+
 		closeAddToBagPopupWindow();
 		//https://reqcentral.com/browse/CER-838 - Verifying close button is present and clickable
 		closeAddToBagPopUpWindowAfterClickingOutsidePopUp(lbl_AddToBagPopupWindowTitle);
+
+		return map;
 	}
 
 	//this method checks subtotal section
@@ -1853,6 +1848,10 @@ public class ProductDetailPage extends BasePage {
 	public Map<String,Object> getAddToBagDesc(){
 		Map<String,Object> map=new HashMap<>();
 		String lsText;
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddToBagPopupWindowTitle);
+		lsText= String.valueOf(this.getIntegerFromString(this.getElementInnerText(lblAddToBagPopupWindowDetailsProductName)));
+		map.put("productQuantity",lsText);
 
 		if(this.checkProductBadgeInAddToBagPopupDisplaying()){
 			map.put("productBadge",true);
@@ -1918,7 +1917,73 @@ public class ProductDetailPage extends BasePage {
 		lsText=lblProductNumber.getText();
 		map.put("productNumber",lsText);
 
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(selectReviewTabSortBy);
+		Select select= new Select(selectReviewTabSortBy);
+		lsText=select.getFirstSelectedOption().getText().trim();
+		map.put("productQuantity",lsText);
+
 		return map;
+	}
+
+	/**
+	 * To verify contents Between PDP And AddToBag
+	 * @param - mapPDP
+	 * @param - mapAddToBag
+	 */
+	public void verifyContentsBetweenPDPAndAddToBag(Map<String,Object> mapPDP,Map<String,Object> mapAddToBag){
+		boolean bPDPBadge=(boolean)mapPDP.get("productBadge");
+		boolean bAddToBagBadge=(boolean)mapAddToBag.get("productBadge");
+		if(bAddToBagBadge==bPDPBadge){
+			reporter.reportLogPass("The Badge displaying in AddToBag is the same as PDP ");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Badge displaying in AddToBag is not the same as PDP ");
+		}
+
+		String lsPDPProductName=mapPDP.get("productName").toString();
+		String lsAddToBagProductName=mapAddToBag.get("productName").toString();
+		if(lsAddToBagProductName.equalsIgnoreCase(lsPDPProductName)){
+			reporter.reportLogPass("The Product name displaying in AddToBag is the same as PDP ");
+		}
+		else{
+			reporter.reportLogFail("The Product name displaying in AddToBag is not the same as PDP ");
+		}
+
+		String lsPDPProductNumber=mapPDP.get("productNumber").toString();
+		String lsAddToBagProductNumber=mapAddToBag.get("productNumber").toString();
+		if(lsAddToBagProductNumber.equalsIgnoreCase(lsPDPProductNumber)){
+			reporter.reportLogPass("The Product number displaying in AddToBag is the same as PDP ");
+		}
+		else{
+			reporter.reportLogFail("The Product number displaying in AddToBag is not the same as PDP ");
+		}
+
+		String lsPDPProductStyle=mapPDP.get("productStyle").toString();
+		String lsAddToBagProductStyle=mapAddToBag.get("productStyle").toString();
+		if(lsAddToBagProductStyle.equalsIgnoreCase(lsPDPProductStyle)){
+			reporter.reportLogPass("The Product style displaying in AddToBag is the same as PDP ");
+		}
+		else{
+			reporter.reportLogFail("The Product style displaying in AddToBag is not the same as PDP ");
+		}
+
+		String lsPDPProductSize=mapPDP.get("productSize").toString();
+		String lsAddToBagProductSize=mapAddToBag.get("productSize").toString();
+		if(lsAddToBagProductSize.equalsIgnoreCase(lsPDPProductSize)){
+			reporter.reportLogPass("The Product size displaying in AddToBag is the same as PDP ");
+		}
+		else{
+			reporter.reportLogFail("The Product size displaying in AddToBag is not the same as PDP ");
+		}
+
+		String lsPDPProductQuantity=mapPDP.get("productQuantity").toString();
+		String lsAddToBagProductQuantity=mapAddToBag.get("productQuantity").toString();
+		if(lsAddToBagProductQuantity.equalsIgnoreCase(lsPDPProductQuantity)){
+			reporter.reportLogPass("The Product quantity displaying in AddToBag is the same as PDP ");
+		}
+		else{
+			reporter.reportLogFail("The Product quantity displaying in AddToBag is not the same as PDP ");
+		}
 	}
 
 	/**
@@ -3073,6 +3138,58 @@ public class ProductDetailPage extends BasePage {
 				}
 			}
 		}
+		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+	}
+
+	/**
+	 * Method to choose given Style, Size and quantity
+	 * @param - String - lsStyle - given Style
+	 * @param - String - lsSize - given Size
+	 * @param - int - quantity - given quantity
+	 * @return void
+	 * @author Wei.Li
+	 */
+	public void chooseGivenStyleAndSizeAndQuantity(String lsStyle,String lsSize,int quantity) {
+		int loopSize;
+		WebElement labelItem;
+
+		//To choose Style
+		if(this.judgeStyleDisplayModeIsDropdownMenu()) {
+			Select selectStyle= new Select(this.selectProductStyle);
+			selectStyle.selectByVisibleText(lsStyle);
+		}
+		else {
+			loopSize=this.lstAllStyleRadioList.size();
+			for(int i=0;i<loopSize;i++) {
+				labelItem=this.lstAllStyleLabelRadioList.get(i);
+				if(labelItem.getAttribute("for").equalsIgnoreCase(lsStyle)){
+					this.clickElement(labelItem);
+					break;
+				}
+			}
+		}
+		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+
+		//To choose Size
+		loopSize=this.lstAllSizeRadioList.size();
+		for(int i=0;i<loopSize;i++) {
+			labelItem=this.lstAllSizeLabelRadioList.get(i);
+			if(labelItem.getAttribute("for").equalsIgnoreCase(lsSize)){
+				try{
+					this.clickElement(this.lstAllSizeRadioList.get(i));
+				}
+				catch(Exception e){
+
+				}
+
+				break;
+			}
+		}
+		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+
+		//To choose quantity
+		Select selectQuantity= new Select(this.selectQuantityOption);
+		selectQuantity.selectByVisibleText(String.valueOf(quantity));
 		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 	}
 

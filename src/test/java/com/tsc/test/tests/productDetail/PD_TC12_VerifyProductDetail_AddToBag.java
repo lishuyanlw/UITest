@@ -15,6 +15,7 @@ public class PD_TC12_VerifyProductDetail_AddToBag extends BaseTest{
 	 * CER-606
 	 * CER-608
 	 * CER-818
+	 * CER-839
 	 */
 	@Test(groups={"ProductDetail","Regression","Regression_Mobile","Regression_Tablet"})
 	public void PD_TC12_VerifyProductDetail_AddToBag() throws IOException {
@@ -42,12 +43,17 @@ public class PD_TC12_VerifyProductDetail_AddToBag extends BaseTest{
 			reporter.reportLog("Switch to ProductDetail page");
 			reporter.softAssert(lsUrl.contains(lsProductNumber),"The Url is containing selected product number of "+lsProductNumber,"The Url is not containing selected product number of "+lsProductNumber);
 
+			Map<String,Object> mapPDP=getProductDetailPageThreadLocal().getPDPDesc();
+
 			reporter.reportLog("Verify product Add to Bag button");
 			getProductDetailPageThreadLocal().verifyProductAddToBagButton();
 
 			reporter.reportLog("Verify product Add to Bag title and contents");
 			getProductDetailPageThreadLocal().selectSizeAndStyleWithMoreThanOneQuantity();
-			getProductDetailPageThreadLocal().verifyProductDetailsInAddToBagPopupWindow(lbl_AddToBagPopupWindowTitle,getProductDetailPageThreadLocal().selectedProduct);
+			Map<String,Object> mapAddToBag=getProductDetailPageThreadLocal().verifyProductDetailsInAddToBagPopupWindow(lbl_AddToBagPopupWindowTitle,getProductDetailPageThreadLocal().selectedProduct);
+
+			reporter.reportLog("Verify contents between PDP and AddToBag");
+			getProductDetailPageThreadLocal().verifyContentsBetweenPDPAndAddToBag(mapPDP,mapAddToBag);
 
 			reporter.reportLog("Verify Shopping cart number");
 			getProductDetailPageThreadLocal().verifyShoppingCartNumber(shoppingCartCount);
