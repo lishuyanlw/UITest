@@ -20,7 +20,9 @@ public class HomePage extends BasePage{
 	
 	//On Air Section 
 	//Now On Air (NOA) section elements
-	
+	@FindBy(xpath="//section[contains(@class,'tsc-container container')]//div[@class='secondary-navigation__logo']/a")
+	WebElement lblTSCLink;
+
 	@FindBy(xpath = "//*[@class='oanHeader'][contains(text(),'On Air')]")
 	WebElement NOAsection;
 	

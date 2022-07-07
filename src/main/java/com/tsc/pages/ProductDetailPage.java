@@ -1649,9 +1649,12 @@ public class ProductDetailPage extends BasePage {
 		openAddToBagPopupWindow();
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAddToBagPopupWindowTitle);
 		reporter.softAssert(this.lblAddToBagPopupWindowTitle.getText().toUpperCase().matches(lbl_AddToBagPopupWindowTitle),"The title of Add to Bag popup window is matching to '"+lbl_AddToBagPopupWindowTitle+"' pattern","The title of Add to Bag popup window is not matching to '"+lbl_AddToBagPopupWindowTitle+"' pattern");
-		//Clicking on Add to Bag button again to close Pop-Up Window
+		//Clicking on TSC Home Page Link to close Pop-Up Window without clicking on close button on Pop-Up
 		this.applyStaticWait(3000);
-		this.clickElement(this.btnAddToBag);
+		//Clicking two times below as clicking single time is not working
+		this.getReusableActionsInstance().clickIfAvailable(new HomePage(getDriver()).lblTSCLink);
+		this.clickElement(new HomePage(getDriver()).lblTSCLink);
+		this.waitForPageToLoad();
 		return this.waitForCondition(Drive->{return !checkAddToBagPopupDisplaying();}, 30000);
 	}
 
@@ -1683,10 +1686,10 @@ public class ProductDetailPage extends BasePage {
 
 						this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblRadioProductStyleStatic);
 						try {
+							String previousZoomImage = this.lnkCurrentZoomImage.getAttribute("href");
 							this.clickElement(labelItem);
-							String imageLink = labelItem.getAttribute("style").split("\"")[1];
-							//waitForCondition(Driver->{return imageLink.equalsIgnoreCase(this.lnkCurrentZoomImage.getAttribute("href").split("\\?")[0]);},5000);
-							this.applyStaticWait(3000);
+							String currentZoomImage = this.lnkCurrentZoomImage.getAttribute("href");
+							waitForCondition(Driver->{return !previousZoomImage.equalsIgnoreCase(currentZoomImage);},10000);
 							int newQuantity = this.verifyAvailableQuantityGreaterThanOne();
 							if(newQuantity>1){
 								flag = true;
