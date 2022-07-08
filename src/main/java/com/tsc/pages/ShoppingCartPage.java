@@ -5,7 +5,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.Select;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -230,7 +232,7 @@ public class ShoppingCartPage extends BasePage {
 	}
 
 	/**
-	 * To check Product Badge Existing for cart item
+	 * To check Product Badge Existing for cart item in shopping item list
 	 * @param - cartItem - item in lstCartItems
 	 * @return - boolean
 	 */
@@ -250,7 +252,7 @@ public class ShoppingCartPage extends BasePage {
 	}
 
 	/**
-	 * To check Shipping date message existing for cart item
+	 * To check Shipping date message existing for cart item in the shopping item list
 	 * @param - cartItem - item in lstCartItems
 	 * @return - boolean
 	 */
@@ -260,7 +262,7 @@ public class ShoppingCartPage extends BasePage {
 	}
 
 	/**
-	 * To check Red message existing for cart item
+	 * To check Red message existing for cart item in the shopping item list
 	 * @param - cartItem - item in lstCartItems
 	 * @return - boolean
 	 */
@@ -270,7 +272,7 @@ public class ShoppingCartPage extends BasePage {
 	}
 
 	/**
-	 * To check Remove button existing for cart item
+	 * To check Remove button existing for cart item in the shopping item list, for example, for free shipping scenario
 	 * @param - cartItem - item in lstCartItems
 	 * @return - boolean
 	 */
@@ -288,10 +290,10 @@ public class ShoppingCartPage extends BasePage {
 	}
 
 	/**
-	 * To get order amount
-	 * @return - int - order amount
+	 * To get Shopping amount
+	 * @return - int - shopping amount
 	 */
-	public int getOrderAmount(){
+	public int getShoppingAmount(){
 		String lsText=this.getElementInnerText(lblCartTableSubTotal);
 		lsText=lsText.split(":")[0];
 
@@ -299,10 +301,10 @@ public class ShoppingCartPage extends BasePage {
 	}
 
 	/**
-	 * To get order subtotal
-	 * @return - float - order subtotal
+	 * To get Shopping subtotal
+	 * @return - float - shopping subtotal
 	 */
-	public float getOrderSubTotal(){
+	public float getShoppingSubTotal(){
 		String lsText=this.getElementInnerText(lblCartTableSubTotal);
 		lsText=lsText.split(":")[1];
 
@@ -368,6 +370,116 @@ public class ShoppingCartPage extends BasePage {
 	}
 
 	/**
+	 * To get Shopping Item Description in shopping list
+	 * @param - cartItem - item in lstCartItems
+	 * @return - Map<String,Object> - Item detail description
+	 */
+	Map<String,Object> getShoppingItemDesc(WebElement cartItem){
+		Map<String,Object> map=new HashMap<>();
+
+		if(this.checkProductBadgeExisting(cartItem)){
+			map.put("productBadge",true);
+		}
+		else{
+			map.put("productBadge",true);
+		}
+
+		WebElement item=cartItem.findElement(byProductItemDesc);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+		String lsText=item.getText().trim();
+		String[] lsSplit=lsText.split("|");
+		map.put("productName",lsSplit[0].trim());
+		map.put("productStyle",lsSplit[1].trim());
+		map.put("productSize",lsSplit[2].split(":")[1].trim());
+
+		item=cartItem.findElement(byProductNumber);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+		lsText=item.getText().trim();
+		map.put("productNumber",lsText);
+
+		item=cartItem.findElement(byProductNumber);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+		lsText=item.getText().trim();
+		map.put("productNumber",lsText);
+
+		if(this.checkShippingDateExisting(cartItem)){
+			item=cartItem.findElement(byProductShippingDate);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsText=item.getText().trim();
+			map.put("productShippingDate",lsText);
+		}
+		else{
+			map.put("productShippingDate",null);
+		}
+
+		if(this.checkRedMessageExisting(cartItem)){
+			item=cartItem.findElement(byProductRedMessage);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsText=item.getText().trim();
+			map.put("productLeftNumber",this.getIntegerFromString(lsText));
+		}
+		else{
+			map.put("productLeftNumber",null);
+		}
+
+		if(!this.checkSelectQuantityEnabled(cartItem)){
+			item=cartItem.findElement(byProductBlackMessage);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsText=item.getText().trim();
+			map.put("productFreeShipping",lsText);
+		}
+		else{
+			map.put("productFreeShipping",null);
+		}
+
+		item=cartItem.findElement(byProductNowPrice);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+		lsText=item.getText().trim();
+		map.put("productNowPrice",lsText);
+
+		if(!this.checkSelectQuantityEnabled(cartItem)){
+			item=cartItem.findElement(byProductSelectQuantity);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			Select select = new Select(item);
+			lsText=select.getFirstSelectedOption().getText();
+			map.put("productQuantity",Integer.parseInt(lsText));
+		}
+		else{
+			map.put("productQuantity",null);
+		}
+
+		return map;
+	}
+
+	/**
+	 * To get Shopping Item List Description
+	 * @return - List<Map<String,Object>>
+	 */
+	List<Map<String,Object>> getShoppingItemListDesc(){
+		List<Map<String,Object>> mapList=new ArrayList<>();
+
+		for(WebElement cartItem:this.lstCartItems){
+			mapList.add(this.getShoppingItemDesc(cartItem));
+		}
+
+		return mapList;
+	}
+
+	/**
+	 * To get Shopping Section Details
+	 * @return - Map<String,Object> - including shopping list,shopping amount, and shopping subtotal
+	 */
+	Map<String,Object> getShoppingSectionDetails(){
+		Map<String,Object> map=new HashMap<>();
+
+		map.put("shoppingList",this.getShoppingItemListDesc());
+		map.put("shoppingAmount",this.getShoppingAmount());
+		map.put("shoppingSubTotal",this.getShoppingSubTotal());
+
+		return map;
+	}
+
+	/**
 	 * To get Product Name, Style and Size through splitting product description string with pipeline separator
 	 * @param - lsProductDesc - the given product description string with pipeline separator
 	 * @return - map<String,Object> - including Product Name, Style and Size
@@ -384,19 +496,115 @@ public class ShoppingCartPage extends BasePage {
 	}
 
 	/**
-	 * To compare the Product Name, Style and Size between AddToBag and Shopping Cart
-	 * @param - Map<String,String> - addToBagMap
-	 * @param - Map<String,String> - orderItemMap
+	 * To check if the AddToBag item match the given cart item
+	 * @param - Map<String,Object> - addToBagMap
+	 * @param - Map<String,Object> - shoppingItemMap
 	 * @return - boolean
 	 */
-	public boolean matchGivenAddToBagItem(Map<String,Object> addToBagMap,Map<String,String> orderItemMap){
-		if(addToBagMap.get("productName").toString().equalsIgnoreCase(orderItemMap.get("productName").toString())&&
-				addToBagMap.get("productStyle").toString().equalsIgnoreCase(orderItemMap.get("productStyle").toString())&&
-				addToBagMap.get("productSize").toString().equalsIgnoreCase(orderItemMap.get("productSize").toString())){
+	public boolean checkIfMatchGivenAddToBagItem(Map<String,Object> addToBagMap,Map<String,Object> shoppingItemMap){
+		if(addToBagMap.get("productName").toString().equalsIgnoreCase(shoppingItemMap.get("productName").toString())&&
+				addToBagMap.get("productStyle").toString().equalsIgnoreCase(shoppingItemMap.get("productStyle").toString())&&
+				addToBagMap.get("productSize").toString().equalsIgnoreCase(shoppingItemMap.get("productSize").toString())){
 			return true;
 		}
 		else{
 			return false;
 		}
 	}
+
+	/**
+	 * To verify Contents Between AddToBag And given ShoppingCartItem in shopping item list
+	 * @param - addToBagMap
+	 * @param - cartItemMap
+	 */
+	public void verifyContentsBetweenAddToBagAndShoppingCartItem(Map<String,Object> addToBagMap,Map<String,Object> cartItemMap){
+		boolean bAddToBagBadge= (boolean) addToBagMap.get("productBadge");
+		boolean bShoppingCartBadge=(boolean) cartItemMap.get("productBadge");
+		if(bAddToBagBadge==bShoppingCartBadge){
+			reporter.reportLogPass("The Badge in AddToBag displaying is the same as shopping cart");
+		}
+		else{
+			reporter.reportLogFail("The Badge in AddToBag:"+bAddToBagBadge+" displaying is not the same as shopping cart:"+bShoppingCartBadge);
+		}
+
+		String productNameAddToBag= addToBagMap.get("productName").toString();
+		String productNameShoppingCart=cartItemMap.get("productName").toString();
+		if(productNameAddToBag==productNameShoppingCart){
+			reporter.reportLogPass("The Product name in AddToBag displaying is the same as shopping cart");
+		}
+		else{
+			reporter.reportLogFail("The Product name in AddToBag:"+productNameAddToBag+" displaying is not the same as shopping cart:"+productNameShoppingCart);
+		}
+
+		String productStyleAddToBag= addToBagMap.get("productStyle").toString();
+		String productStyleShoppingCart=cartItemMap.get("productStyle").toString();
+		if(productStyleAddToBag==productStyleShoppingCart){
+			reporter.reportLogPass("The Product style in AddToBag displaying is the same as shopping cart");
+		}
+		else{
+			reporter.reportLogFail("The Product style in AddToBag:"+productStyleAddToBag+" displaying is not the same as shopping cart:"+productStyleShoppingCart);
+		}
+
+		String productSizeAddToBag= addToBagMap.get("productSize").toString();
+		String productSizeShoppingCart=cartItemMap.get("productSize").toString();
+		if(productSizeAddToBag==productSizeShoppingCart){
+			reporter.reportLogPass("The Product size in AddToBag displaying is the same as shopping cart");
+		}
+		else{
+			reporter.reportLogFail("The Product size in AddToBag:"+productSizeAddToBag+" displaying is not the same as shopping cart:"+productSizeShoppingCart);
+		}
+
+		String productNumberAddToBag= addToBagMap.get("productNumber").toString();
+		String productNumberShoppingCart=cartItemMap.get("productNumber").toString();
+		if(productNumberAddToBag==productNumberShoppingCart){
+			reporter.reportLogPass("The Product number in AddToBag displaying is the same as shopping cart");
+		}
+		else{
+			reporter.reportLogFail("The Product number in AddToBag:"+productNumberAddToBag+" displaying is not the same as shopping cart:"+productNumberShoppingCart);
+		}
+
+		int productQuantityAddToBag= Integer.parseInt(addToBagMap.get("productQuantity").toString());
+		int productQuantityShoppingCart= Integer.parseInt(cartItemMap.get("productQuantity").toString());
+		if(productQuantityAddToBag<=productQuantityShoppingCart){
+			reporter.reportLogPass("The Product Quantity in AddToBag displaying is no more than the one in shopping cart");
+		}
+		else{
+			reporter.reportLogFail("The Product Quantity in AddToBag:"+productQuantityAddToBag+" displaying is more than the one in shopping cart:"+productQuantityShoppingCart);
+		}
+	}
+
+	/**
+	 * To verify Contents Between AddToBag And ShoppingCartSection Details
+	 * @param - addToBagMap
+	 * @param - shoppingSectionDetailsMap
+	 */
+	public void verifyContentsBetweenAddToBagAndShoppingCartSectionDetails(Map<String,Object> addToBagMap,Map<String,Object> shoppingSectionDetailsMap){
+		List<Map<String,Object>> shoppingList=(List<Map<String,Object>>)shoppingSectionDetailsMap.get("shoppingList");
+		int shoppingAmount= (int) shoppingSectionDetailsMap.get("shoppingAmount");
+		float shoppingSubTotal= (float) shoppingSectionDetailsMap.get("shoppingSubTotal");
+
+		for(Map<String,Object> cartItemMap:shoppingList){
+			if(this.checkIfMatchGivenAddToBagItem(addToBagMap,cartItemMap)){
+				this.verifyContentsBetweenAddToBagAndShoppingCartItem(addToBagMap,cartItemMap);
+				break;
+			}
+		}
+
+		int itemAmountAddToBag= Integer.parseInt(addToBagMap.get("itemAmount").toString());
+		if(itemAmountAddToBag==shoppingAmount){
+			reporter.reportLogPass("The Item amount in AddToBag is equal to shopping amount in Shopping cart");
+		}
+		else{
+			reporter.reportLogFail("The Item amount:"+itemAmountAddToBag+" in AddToBag is not equal to shopping amount:"+shoppingAmount+" in Shopping cart");
+		}
+
+		float subTotalAddToBag= Float.parseFloat(addToBagMap.get("SubTotal").toString());
+		if(Math.abs(subTotalAddToBag-shoppingSubTotal)<0.1){
+			reporter.reportLogPass("The SubTotal in AddToBag is equal to SubTotal in Shopping cart");
+		}
+		else{
+			reporter.reportLogFail("The SubTotal:"+subTotalAddToBag+" in AddToBag is not equal to SubTotal:"+shoppingSubTotal+" in Shopping cart");
+		}
+	}
+
 }

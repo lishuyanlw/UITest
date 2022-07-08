@@ -1922,6 +1922,15 @@ public class ProductDetailPage extends BasePage {
 		lsText=select.getFirstSelectedOption().getText().trim();
 		map.put("productQuantity",lsText);
 
+		if(IsQuantityLeftExisting()) {
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSoldOut);
+			lsText=this.lblSoldOut.getText();
+			map.put("productLeftNumber",this.getIntegerFromString(lsText));
+		}
+		else{
+			map.put("productLeftNumber",null);
+		}
+
 		return map;
 	}
 
@@ -3468,5 +3477,16 @@ public class ProductDetailPage extends BasePage {
 			return JsonParser.getResponseObject(response.asString(), new TypeReference<CartResponse>() {});
 		}else
 			return null;
+	}
+
+	/**
+	 * To open shopping page through clicking ViewShoppingBag button on AddToBag popup window
+	 * @return
+	 */
+	public boolean goToShoppingCartPage(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnAddToBagPopupWindowButtonSectionViewShoppingBag);
+		this.btnAddToBagPopupWindowButtonSectionViewShoppingBag.click();
+		ShoppingCartPage shoppingCartPage=new ShoppingCartPage(this.getDriver());
+		return this.waitForCondition(Driver->{return shoppingCartPage.lblCartTitle.isDisplayed();},20000);
 	}
 }
