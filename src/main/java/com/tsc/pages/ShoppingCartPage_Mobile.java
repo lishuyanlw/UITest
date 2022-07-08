@@ -39,7 +39,7 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 	}
 
 	@Override
-	Map<String,Object> getShoppingItemDesc(WebElement cartItem){
+	public Map<String,Object> getShoppingItemDesc(WebElement cartItem){
 		Map<String,Object> map=new HashMap<>();
 
 		if(this.checkProductBadgeExisting(cartItem)){
@@ -117,7 +117,7 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 	}
 
 	@Override
-	Map<String,Object> getShoppingSectionDetails(){
+	public Map<String,Object> getShoppingSectionDetails(){
 		Map<String,Object> map=new HashMap<>();
 
 		map.put("shoppingList",this.getShoppingItemListDesc());

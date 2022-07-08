@@ -374,7 +374,7 @@ public class ShoppingCartPage extends BasePage {
 	 * @param - cartItem - item in lstCartItems
 	 * @return - Map<String,Object> - Item detail description
 	 */
-	Map<String,Object> getShoppingItemDesc(WebElement cartItem){
+	public Map<String,Object> getShoppingItemDesc(WebElement cartItem){
 		Map<String,Object> map=new HashMap<>();
 
 		if(this.checkProductBadgeExisting(cartItem)){
@@ -455,7 +455,7 @@ public class ShoppingCartPage extends BasePage {
 	 * To get Shopping Item List Description
 	 * @return - List<Map<String,Object>>
 	 */
-	List<Map<String,Object>> getShoppingItemListDesc(){
+	public List<Map<String,Object>> getShoppingItemListDesc(){
 		List<Map<String,Object>> mapList=new ArrayList<>();
 
 		for(WebElement cartItem:this.lstCartItems){
@@ -469,7 +469,7 @@ public class ShoppingCartPage extends BasePage {
 	 * To get Shopping Section Details
 	 * @return - Map<String,Object> - including shopping list,shopping amount, and shopping subtotal
 	 */
-	Map<String,Object> getShoppingSectionDetails(){
+	public Map<String,Object> getShoppingSectionDetails(){
 		Map<String,Object> map=new HashMap<>();
 
 		map.put("shoppingList",this.getShoppingItemListDesc());
@@ -514,10 +514,11 @@ public class ShoppingCartPage extends BasePage {
 
 	/**
 	 * To verify Contents Between AddToBag And given ShoppingCartItem in shopping item list
-	 * @param - addToBagMap
-	 * @param - cartItemMap
+	 * @param - Map<String,Object> - PDPMap
+	 * @param - Map<String,Object> - addToBagMap
+	 * @param - Map<String,Object> - cartItemMap
 	 */
-	public void verifyContentsBetweenAddToBagAndShoppingCartItem(Map<String,Object> addToBagMap,Map<String,Object> cartItemMap){
+	public void verifyContentsBetweenAddToBagAndShoppingCartItem(Map<String,Object> PDPMap, Map<String,Object> addToBagMap,Map<String,Object> cartItemMap){
 		boolean bAddToBagBadge= (boolean) addToBagMap.get("productBadge");
 		boolean bShoppingCartBadge=(boolean) cartItemMap.get("productBadge");
 		if(bAddToBagBadge==bShoppingCartBadge){
@@ -571,21 +572,34 @@ public class ShoppingCartPage extends BasePage {
 		else{
 			reporter.reportLogFail("The Product Quantity in AddToBag:"+productQuantityAddToBag+" displaying is more than the one in shopping cart:"+productQuantityShoppingCart);
 		}
+
+		if(PDPMap.get("productLeftNumber")!=null){
+			int productLeftNumberPDP= Integer.parseInt(PDPMap.get("productLeftNumber").toString());
+			int productLeftNumberShoppingCart= Integer.parseInt(cartItemMap.get("productLeftNumber").toString());
+
+			if(productLeftNumberPDP==productLeftNumberShoppingCart){
+				reporter.reportLogPass("The Product left number in PDP displaying is the same as shopping cart");
+			}
+			else{
+				reporter.reportLogFail("The Product left number:"+productLeftNumberPDP+" in PDP displaying is not the same as shopping cart:"+productLeftNumberShoppingCart);
+			}
+		}
 	}
 
 	/**
-	 * To verify Contents Between AddToBag And ShoppingCartSection Details
-	 * @param - addToBagMap
-	 * @param - shoppingSectionDetailsMap
+	 * To verify Contents among PDP, AddToBag And ShoppingCartSection Details
+	 * @param - Map<String,Object> - PDPMap,
+	 * @param - Map<String,Object> - addToBagMap
+	 * @param - Map<String,Object> - shoppingSectionDetailsMap
 	 */
-	public void verifyContentsBetweenAddToBagAndShoppingCartSectionDetails(Map<String,Object> addToBagMap,Map<String,Object> shoppingSectionDetailsMap){
+	public void verifyContentsAmongPDPAndAddToBagAndShoppingCartSectionDetails(Map<String,Object> PDPMap, Map<String,Object> addToBagMap,Map<String,Object> shoppingSectionDetailsMap){
 		List<Map<String,Object>> shoppingList=(List<Map<String,Object>>)shoppingSectionDetailsMap.get("shoppingList");
 		int shoppingAmount= (int) shoppingSectionDetailsMap.get("shoppingAmount");
 		float shoppingSubTotal= (float) shoppingSectionDetailsMap.get("shoppingSubTotal");
 
 		for(Map<String,Object> cartItemMap:shoppingList){
 			if(this.checkIfMatchGivenAddToBagItem(addToBagMap,cartItemMap)){
-				this.verifyContentsBetweenAddToBagAndShoppingCartItem(addToBagMap,cartItemMap);
+				this.verifyContentsBetweenAddToBagAndShoppingCartItem(PDPMap,addToBagMap,cartItemMap);
 				break;
 			}
 		}

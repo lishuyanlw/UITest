@@ -4,6 +4,7 @@ import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.data.pojos.ConstantData;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
+import org.testng.Reporter;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
@@ -63,12 +64,21 @@ public class PD_TC17_VerifyProductDetail_AddToBag_MergeCard extends BaseTest{
 			String[] lstSize2=getProductDetailPageThreadLocal().selectedProduct.productEDPSize.split("\\|")[1].split(":");
 
 			//To choose Style/Size/Quantity as needed
-			getProductDetailPageThreadLocal().chooseGivenStyleAndSizeAndQuantity(lstStyle[1],lstSize2[2],2);
+			getProductDetailPageThreadLocal().chooseGivenStyleAndSizeAndQuantity(lstStyle[1],lstSize2[2],1);
 
+			Map<String,Object> PDPMap=getProductDetailPageThreadLocal().getPDPDesc();
+			getProductDetailPageThreadLocal().openAddToBagPopupWindow();
+			Map<String,Object> AddToBagMap=getProductDetailPageThreadLocal().getAddToBagDesc();
+			getProductDetailPageThreadLocal().goToShoppingCartFromAddToBagPopup();
+			Map<String,Object> shoppingCartMap=getShoppingCartThreadLocal().getShoppingSectionDetails();
+
+			//To verify Contents among PDP, AddToBag And ShoppingCartSection Details
+			reporter.reportLog("To verify Contents among PDP, AddToBag And ShoppingCartSection Details");
+			getShoppingCartThreadLocal().verifyContentsAmongPDPAndAddToBagAndShoppingCartSectionDetails(PDPMap,AddToBagMap,shoppingCartMap);
 
 		}
 		else {
-			reporter.reportLogFail("Unable to find the product item with Review, EasyPay, Swatch item>=4 and Video");
+			reporter.reportLogFail("Unable to find the matched product item");
 		}
 	}
 }
