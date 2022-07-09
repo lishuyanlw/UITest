@@ -12,6 +12,7 @@ import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Random;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -1053,5 +1054,16 @@ import utils.ReusableActions;
 		int beginPos=wholeString.lastIndexOf(beforeIdentifier);
 		int endPos=wholeString.lastIndexOf(afterIdentifier);
 		return wholeString.substring(beginPos+1,endPos);
+	}
+
+	/**
+	 * To get a number between 0 and maximalNumber
+	 * @param - int - maximalNumber
+	 * @return - int - a number between 0 and maximalNumber
+	 */
+	public int getRandomNumber(int maximalNumber){
+		Random rand = new Random();
+		int randomNumber = rand.nextInt(maximalNumber);
+		return randomNumber;
 	}
 }

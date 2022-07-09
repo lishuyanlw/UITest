@@ -1874,7 +1874,7 @@ public class ProductDetailPage extends BasePage {
 		map.put("productSize",lsText);
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddToBagPopupWindowDetailsProductNumber);
-		lsText=lblAddToBagPopupWindowDetailsProductNumber.getText();
+		lsText=lblAddToBagPopupWindowDetailsProductNumber.getText().replace("-","").trim();
 		map.put("productNumber",lsText);
 
 		map.put("ItemAmount",getOrderAmountFromSubTotalInAddToBagModel());
@@ -1914,7 +1914,7 @@ public class ProductDetailPage extends BasePage {
 		map.put("productSize",lsText);
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblProductNumber);
-		lsText=lblProductNumber.getText();
+		lsText=lblProductNumber.getText().replace("-","").trim();
 		map.put("productNumber",lsText);
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(selectQuantityOption);

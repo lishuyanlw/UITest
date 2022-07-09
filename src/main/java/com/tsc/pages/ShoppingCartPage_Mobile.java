@@ -128,7 +128,7 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 	}
 
 	@Override
-	public void verifyContentsBetweenAddToBagAndShoppingCartItem(Map<String,Object> addToBagMap,Map<String,Object> cartItemMap){
+	public void verifyContentsAmongPDPAndAddToBagAndShoppingCartItem(Map<String,Object> PDPMap, Map<String,Object> addToBagMap,Map<String,Object> cartItemMap,boolean bAPI){
 		boolean bAddToBagBadge= (boolean) addToBagMap.get("productBadge");
 		boolean bShoppingCartBadge=(boolean) cartItemMap.get("productBadge");
 		if(bAddToBagBadge==bShoppingCartBadge){
@@ -174,25 +174,39 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 			reporter.reportLogFail("The Product number in AddToBag:"+productNumberAddToBag+" displaying is not the same as shopping cart:"+productNumberShoppingCart);
 		}
 
-		int productQuantityAddToBag= Integer.parseInt(addToBagMap.get("productQuantity").toString());
-		int productQuantityShoppingCart= Integer.parseInt(cartItemMap.get("productQuantity").toString());
-		if(productQuantityAddToBag<=productQuantityShoppingCart){
-			reporter.reportLogPass("The Product Quantity in AddToBag displaying is no more than the one in shopping cart");
-		}
-		else{
-			reporter.reportLogFail("The Product Quantity in AddToBag:"+productQuantityAddToBag+" displaying is more than the one in shopping cart:"+productQuantityShoppingCart);
+		if(!bAPI){
+			int productQuantityAddToBag= Integer.parseInt(addToBagMap.get("productQuantity").toString());
+			int productQuantityShoppingCart= Integer.parseInt(cartItemMap.get("productQuantity").toString());
+			if(productQuantityAddToBag<=productQuantityShoppingCart){
+				reporter.reportLogPass("The Product Quantity in AddToBag displaying is no more than the one in shopping cart");
+			}
+			else{
+				reporter.reportLogFail("The Product Quantity in AddToBag:"+productQuantityAddToBag+" displaying is more than the one in shopping cart:"+productQuantityShoppingCart);
+			}
+
+			if(PDPMap.get("productLeftNumber")!=null){
+				int productLeftNumberPDP= Integer.parseInt(PDPMap.get("productLeftNumber").toString());
+				int productLeftNumberShoppingCart= Integer.parseInt(cartItemMap.get("productLeftNumber").toString());
+
+				if(productLeftNumberPDP==productLeftNumberShoppingCart){
+					reporter.reportLogPass("The Product left number in PDP displaying is the same as shopping cart");
+				}
+				else{
+					reporter.reportLogFail("The Product left number:"+productLeftNumberPDP+" in PDP displaying is not the same as shopping cart:"+productLeftNumberShoppingCart);
+				}
+			}
 		}
 	}
 
 	@Override
-	public void verifyContentsBetweenAddToBagAndShoppingCartSectionDetails(Map<String,Object> addToBagMap,Map<String,Object> shoppingSectionDetailsMap){
+	public void verifyContentsAmongPDPAndAddToBagAndShoppingCartSectionDetails(Map<String,Object> PDPMap, Map<String,Object> addToBagMap,Map<String,Object> shoppingSectionDetailsMap,boolean bAPI){
 		List<Map<String,Object>> shoppingList=(List<Map<String,Object>>)shoppingSectionDetailsMap.get("shoppingList");
 		int shoppingAmount= (int) shoppingSectionDetailsMap.get("shoppingAmount");
 		float shoppingSubTotal= (float) shoppingSectionDetailsMap.get("shoppingSubTotal");
 
 		for(Map<String,Object> cartItemMap:shoppingList){
 			if(this.checkIfMatchGivenAddToBagItem(addToBagMap,cartItemMap)){
-				this.verifyContentsBetweenAddToBagAndShoppingCartItem(addToBagMap,cartItemMap);
+				this.verifyContentsAmongPDPAndAddToBagAndShoppingCartItem(PDPMap,addToBagMap,cartItemMap,bAPI);
 				break;
 			}
 		}

@@ -55,7 +55,7 @@ public class PD_TC17_VerifyProductDetail_AddToBag_MergeCard extends BaseTest{
 			reporter.reportLog(getProductDetailPageThreadLocal().selectedProduct.productEDPColor);
 			reporter.reportLog(getProductDetailPageThreadLocal().selectedProduct.productEDPSize);
 
-			//Including Style 1 and Style 1
+			//Including Style 1 and Style 2
 			String[] lstStyle=getProductDetailPageThreadLocal().selectedProduct.productEDPColor.split("\\|");
 
 			//For Style 1
@@ -74,7 +74,7 @@ public class PD_TC17_VerifyProductDetail_AddToBag_MergeCard extends BaseTest{
 
 			//To verify Contents among PDP, AddToBag And ShoppingCartSection Details
 			reporter.reportLog("To verify Contents among PDP, AddToBag And ShoppingCartSection Details");
-			getShoppingCartThreadLocal().verifyContentsAmongPDPAndAddToBagAndShoppingCartSectionDetails(PDPMap,AddToBagMap,shoppingCartMap);
+			getShoppingCartThreadLocal().verifyContentsAmongPDPAndAddToBagAndShoppingCartSectionDetails(PDPMap,AddToBagMap,shoppingCartMap,false);
 
 		}
 		else {
