@@ -220,7 +220,7 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 	}
 
 	@Override
-	public void verifyContentsOnShoppingCartSectionDetailsWithAddToBag(Map<String,Object> PDPMap, Map<String,Object> addToBagMap,Map<String,Object> shoppingSectionDetailsMap,boolean bAPI){
+	public void verifyContentsOnShoppingCartSectionDetailsWithAddToBag(Map<String,Object> PDPMap, Map<String,Object> addToBagMap,Map<String,Object> shoppingSectionDetailsMap, boolean bAPI){
 		List<Map<String,Object>> shoppingList=(List<Map<String,Object>>)shoppingSectionDetailsMap.get("shoppingList");
 		int shoppingAmount= (int) shoppingSectionDetailsMap.get("shoppingAmount");
 		float shoppingSubTotal= (float) shoppingSectionDetailsMap.get("shoppingSubTotal");
@@ -232,20 +232,22 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 			}
 		}
 
-		int itemAmountAddToBag= Integer.parseInt(addToBagMap.get("itemAmount").toString());
-		if(itemAmountAddToBag==shoppingAmount){
-			reporter.reportLogPass("The Item amount in AddToBag is equal to shopping amount in Shopping cart");
-		}
-		else{
-			reporter.reportLogFail("The Item amount:"+itemAmountAddToBag+" in AddToBag is not equal to shopping amount:"+shoppingAmount+" in Shopping cart");
-		}
+		if(!bAPI){
+			int itemAmountAddToBag= Integer.parseInt(addToBagMap.get("itemAmount").toString());
+			if(itemAmountAddToBag==shoppingAmount){
+				reporter.reportLogPass("The Item amount in AddToBag is equal to shopping amount in Shopping cart");
+			}
+			else{
+				reporter.reportLogFail("The Item amount:"+itemAmountAddToBag+" in AddToBag is not equal to shopping amount:"+shoppingAmount+" in Shopping cart");
+			}
 
-		float subTotalAddToBag= Float.parseFloat(addToBagMap.get("SubTotal").toString());
-		if(Math.abs(subTotalAddToBag-shoppingSubTotal)<0.1){
-			reporter.reportLogPass("The SubTotal in AddToBag is equal to SubTotal in Shopping cart");
-		}
-		else{
-			reporter.reportLogFail("The SubTotal:"+subTotalAddToBag+" in AddToBag is not equal to SubTotal:"+shoppingSubTotal+" in Shopping cart");
+			float subTotalAddToBag= Float.parseFloat(addToBagMap.get("SubTotal").toString());
+			if(Math.abs(subTotalAddToBag-shoppingSubTotal)<0.1){
+				reporter.reportLogPass("The SubTotal in AddToBag is equal to SubTotal in Shopping cart");
+			}
+			else{
+				reporter.reportLogFail("The SubTotal:"+subTotalAddToBag+" in AddToBag is not equal to SubTotal:"+shoppingSubTotal+" in Shopping cart");
+			}
 		}
 	}
 

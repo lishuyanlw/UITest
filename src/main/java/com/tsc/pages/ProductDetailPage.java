@@ -1832,9 +1832,9 @@ public class ProductDetailPage extends BasePage {
 	}
 
 	/**
-	 * To go To Shopping Cart page by clicking ViewShoppingBag button in AddToBag Popup window after login
+	 * To go To Shopping Cart page by clicking ViewShoppingBag button in AddToBag Popup window with login first
 	 */
-	public void goToShoppingCartFromAddToBagPopupAfterLogin(){
+	public void goToShoppingCartFromAddToBagPopupWithLoginFirst(){
 		this.openAddToBagPopupWindow();
 		this.btnAddToBagPopupWindowButtonSectionViewShoppingBag.click();
 		ShoppingCartPage shoppingCartPage=new ShoppingCartPage(this.getDriver());
@@ -1842,13 +1842,12 @@ public class ProductDetailPage extends BasePage {
 	}
 
 	/**
-	 * To go To Shopping Cart page by clicking ViewShoppingBag button in AddToBag Popup window before login
+	 * To go To Shopping Cart page by clicking ViewShoppingBag button in AddToBag Popup window without login first
 	 * @param - String - lsUserName
 	 * @param - String - lsPassword
 	 */
-	public void goToShoppingCartFromAddToBagPopupBeforeLogin(String lsUserName,String lsPassword){
+	public void goToShoppingCartFromAddToBagPopupWithoutLoginFirst(String lsUserName,String lsPassword){
 		ShoppingCartPage shoppingCartPage=new ShoppingCartPage(this.getDriver());
-		this.openAddToBagPopupWindow();
 		this.btnAddToBagPopupWindowButtonSectionViewShoppingBag.click();
 		this.waitForCondition(Driver->{return shoppingCartPage.lblCartTitle.isDisplayed();},20000);
 
@@ -3544,4 +3543,22 @@ public class ProductDetailPage extends BasePage {
 		}
 		return cartItemDetails;
 	}
+
+	/**
+	 * To get style list related togoToProductItemWithPreConditions(lstKeywordList,"ConditionsForMultipleStyleAndSize",outputDataCriteria)
+	 * @return - String[]
+	 */
+	public String[] getStyleList(){
+		return this.selectedProduct.productEDPColor.split("\\|");
+	}
+
+	/**
+	 * To get size list for given style related to goToProductItemWithPreConditions(lstKeywordList,"ConditionsForMultipleStyleAndSize",outputDataCriteria)
+	 * @param - int - styleIndex - the given style index
+	 * @return - String[]
+	 */
+	public String[] getSizeListForGivenStyle(int styleIndex){
+		return selectedProduct.productEDPSize.split("\\|")[styleIndex].split(":");
+	}
+
 }

@@ -391,8 +391,8 @@ public class GlobalHeaderPage extends BasePage{
 		}else{
 			getReusableActionsInstance().isElementVisible(Signinlnk, 5);
 			return Signinlnk.getText();
-			}
 		}
+	}
 	
 	//Shopping cart Link visible
 	public String validateShoppingCartLinkName() {
@@ -957,6 +957,10 @@ public class GlobalHeaderPage extends BasePage{
 	}
 
 	public void verifyWatchTSCAtPageBottom(){}
+
+	public int getShoppingCartBagCounter(){
+		return this.getIntegerFromString(this.getElementInnerText(CartBagCounter));
+	}
 
 }
 

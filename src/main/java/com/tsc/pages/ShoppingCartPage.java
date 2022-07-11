@@ -623,7 +623,7 @@ public class ShoppingCartPage extends BasePage {
 	 * @param - Map<String,Object> - shoppingSectionDetailsMap
 	 * @param - boolean - bAPI - true represents addToBagMap from API while false represents for addToBagMap from UI
 	 */
-	public void verifyContentsOnShoppingCartSectionDetailsWithAddToBag(Map<String,Object> PDPMap, Map<String,Object> addToBagMap,Map<String,Object> shoppingSectionDetailsMap,boolean bAPI){
+	public void verifyContentsOnShoppingCartSectionDetailsWithAddToBag(Map<String,Object> PDPMap, Map<String,Object> addToBagMap,Map<String,Object> shoppingSectionDetailsMap, boolean bAPI){
 		List<Map<String,Object>> shoppingList=(List<Map<String,Object>>)shoppingSectionDetailsMap.get("shoppingList");
 		int shoppingAmount= (int) shoppingSectionDetailsMap.get("shoppingAmount");
 		float shoppingSubTotal= (float) shoppingSectionDetailsMap.get("shoppingSubTotal");
@@ -652,7 +652,6 @@ public class ShoppingCartPage extends BasePage {
 				reporter.reportLogFail("The SubTotal:"+subTotalAddToBag+" in AddToBag is not equal to SubTotal:"+shoppingSubTotal+" in Shopping cart");
 			}
 		}
-
 	}
 
 }

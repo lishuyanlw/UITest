@@ -5,7 +5,6 @@ import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.data.pojos.ConstantData;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
-import org.testng.Reporter;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
@@ -13,12 +12,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PD_TC17_VerifyProductDetail_AddToBag_MergeCart extends BaseTest{
+public class PD_TC18_VerifyProductDetail_AddToBag_MergeCart_LogInFirst extends BaseTest{
 	/*
 	 * CER-840
 	 */
 	@Test(groups={"ProductDetail","Regression","Regression_Mobile","Regression_Tablet"})
-	public void PD_TC17_VerifyProductDetail_AddToBag_MergeCart() throws IOException {
+	public void PD_TC18_VerifyProductDetail_AddToBag_MergeCart_LogInFirst() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 		BasePage basePage=new BasePage(this.getDriver());
 
@@ -59,20 +58,42 @@ public class PD_TC17_VerifyProductDetail_AddToBag_MergeCart extends BaseTest{
 			reporter.reportLog(getProductDetailPageThreadLocal().selectedProduct.productEDPSize);
 
 			//Including Style 1 and Style 2
-			String[] lstStyle=getProductDetailPageThreadLocal().selectedProduct.productEDPColor.split("\\|");
+			String[] lstStyle=getProductDetailPageThreadLocal().getStyleList();
 
-			//For Style 1
-			String[] lstSize1=getProductDetailPageThreadLocal().selectedProduct.productEDPSize.split("\\|")[0].split(":");
-			//For Style 2
-			String[] lstSize2=getProductDetailPageThreadLocal().selectedProduct.productEDPSize.split("\\|")[1].split(":");
+			//The Size list for Style 1
+			String[] lstSize1=getProductDetailPageThreadLocal().getSizeListForGivenStyle(0);
+			//For Size list for Style 2
+			String[] lstSize2=getProductDetailPageThreadLocal().getSizeListForGivenStyle(1);
 
 			//To choose Style/Size/Quantity as needed
 			getProductDetailPageThreadLocal().chooseGivenStyleAndSizeAndQuantity(lstStyle[1],lstSize2[2],1);
 
 			Map<String,Object> PDPMap=getProductDetailPageThreadLocal().getPDPDesc();
+
 			getProductDetailPageThreadLocal().openAddToBagPopupWindow();
 			Map<String,Object> AddToBagMap=getProductDetailPageThreadLocal().getAddToBagDesc();
-			getProductDetailPageThreadLocal().goToShoppingCartFromAddToBagPopupAfterLogin();
+
+			reporter.reportLog("Verify initial shopping cart bag counter before clicking AddToBag button");
+			int shoppingCartBagCounterBeforeClickingAddToBagButton= getglobalheaderPageThreadLocal().getShoppingCartBagCounter();
+			if(shoppingCartBagCounterBeforeClickingAddToBagButton>=2){
+				reporter.reportLogPass("The initial shopping cart bag counter is no less than 2");
+			}
+			else{
+				reporter.reportLogFail("The initial shopping cart bag counter is less than 2, instead of "+shoppingCartBagCounterBeforeClickingAddToBagButton);
+			}
+
+			getProductDetailPageThreadLocal().goToShoppingCartFromAddToBagPopupWithLoginFirst();
+
+			reporter.reportLog("Verify shopping cart bag counter after clicking AddToBag button");
+			int shoppingListAmount=getShoppingCartThreadLocal().lstCartItems.size();
+			int shoppingCartBagCounterAfterClickingAddToBagButton= getglobalheaderPageThreadLocal().getShoppingCartBagCounter();
+			if(shoppingCartBagCounterAfterClickingAddToBagButton==shoppingListAmount){
+				reporter.reportLogPass("The shopping cart bag counter is equal to shopping item amount");
+			}
+			else{
+				reporter.reportLogFail("The shopping cart bag counter is not equal to shopping item amount, instead of "+shoppingCartBagCounterAfterClickingAddToBagButton);
+			}
+
 			Map<String,Object> shoppingCartMap=getShoppingCartThreadLocal().getShoppingSectionDetails();
 
 			//To verify Contents among PDP, AddToBag And ShoppingCartSection Details
