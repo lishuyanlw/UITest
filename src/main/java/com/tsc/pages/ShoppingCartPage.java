@@ -74,7 +74,7 @@ public class ShoppingCartPage extends BasePage {
 	//Hide in mobile
 	public By byProductBlackMessage=By.xpath(".//div[contains(@class,'item-status')][span[@class='boldBlackColor']]");
 
-	public By byProductNowPrice=By.xpath(".//span[contains(@class,'now-price')]");
+	public By byProductNowPrice=By.xpath(".//div[contains(@class,'cart-desc-line') and not(contains(@class,'visible-xs-block'))]//span[contains(@class,'now-price')]");
 	public By byProductSelectQuantity=By.xpath(".//div[@class='tsc-forms']//select");
 	public By byProductRemoveButton=By.xpath(".//a[contains(@class,'cta-remove')]");
 
@@ -438,7 +438,7 @@ public class ShoppingCartPage extends BasePage {
 		item=cartItem.findElement(byProductNowPrice);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 		lsText=item.getText().trim();
-		map.put("productNowPrice",lsText);
+		map.put("productNowPrice",this.getFloatFromString(lsText,true));
 
 		if(this.checkSelectQuantityEnabled(cartItem)){
 			item=cartItem.findElement(byProductSelectQuantity);
@@ -516,20 +516,22 @@ public class ShoppingCartPage extends BasePage {
 	}
 
 	/**
-	 * To verify Contents Among PDP, AddToBag And given ShoppingCartItem in shopping item list
+	 * To verify Contents on ShoppingCartItem in shopping item list with AddToBag
 	 * @param - Map<String,Object> - PDPMap
 	 * @param - Map<String,Object> - addToBagMap
 	 * @param - Map<String,Object> - cartItemMap
 	 * @param - boolean - bAPI - true represents addToBagMap from API while false represents for addToBagMap from UI
 	 */
-	public void verifyContentsAmongPDPAndAddToBagAndShoppingCartItem(Map<String,Object> PDPMap, Map<String,Object> addToBagMap,Map<String,Object> cartItemMap,boolean bAPI){
-		boolean bAddToBagBadge= (boolean) addToBagMap.get("productBadge");
-		boolean bShoppingCartBadge=(boolean) cartItemMap.get("productBadge");
-		if(bAddToBagBadge==bShoppingCartBadge){
-			reporter.reportLogPass("The Badge in AddToBag displaying is the same as shopping cart");
-		}
-		else{
-			reporter.reportLogFail("The Badge in AddToBag:"+bAddToBagBadge+" displaying is not the same as shopping cart:"+bShoppingCartBadge);
+	public void verifyContentsOnShoppingCartItemWithAddToBag(Map<String,Object> PDPMap, Map<String,Object> addToBagMap,Map<String,Object> cartItemMap,boolean bAPI){
+		if(!bAPI){
+			boolean bAddToBagBadge= (boolean) addToBagMap.get("productBadge");
+			boolean bShoppingCartBadge=(boolean) cartItemMap.get("productBadge");
+			if(bAddToBagBadge==bShoppingCartBadge){
+				reporter.reportLogPass("The Badge in AddToBag displaying is the same as shopping cart");
+			}
+			else{
+				reporter.reportLogFail("The Badge in AddToBag:"+bAddToBagBadge+" displaying is not the same as shopping cart:"+bShoppingCartBadge);
+			}
 		}
 
 		String productNameAddToBag= addToBagMap.get("productName").toString();
@@ -589,43 +591,68 @@ public class ShoppingCartPage extends BasePage {
 					reporter.reportLogFail("The Product left number:"+productLeftNumberPDP+" in PDP displaying is not the same as shopping cart:"+productLeftNumberShoppingCart);
 				}
 			}
+
+			if(!bAPI){
+				float nowPricePDP=(float)PDPMap.get("productNowPrice");
+				float appliedPriceShoppingCart=(float)cartItemMap.get("productNowPrice");
+				if(Math.abs(nowPricePDP-appliedPriceShoppingCart)<0.1){
+					reporter.reportLogPass("The Product nowPrice in PDP displaying is the same as shopping cart");
+				}
+				else{
+					reporter.reportLogFail("The Product nowPrice:"+nowPricePDP+" in PDP displaying is not the same as shopping cart:"+appliedPriceShoppingCart);
+				}
+			}
+			else{
+				float nowPricePDP= (float) addToBagMap.get("productNowPrice");
+				float appliedPriceShoppingCart=Float.parseFloat(cartItemMap.get("productNowPrice").toString());
+				if(Math.abs(nowPricePDP-appliedPriceShoppingCart)<0.1){
+					reporter.reportLogPass("The Product nowPrice in API call results is the same as shopping cart");
+				}
+				else{
+					reporter.reportLogFail("The Product nowPrice:"+nowPricePDP+" in API call results is not the same as shopping cart:"+appliedPriceShoppingCart);
+				}
+			}
+
 		}
 	}
 
 	/**
-	 * To verify Contents among PDP, AddToBag And ShoppingCartSection Details
+	 * To verify Contents Contents On ShoppingCart Section Details With AddToBag
 	 * @param - Map<String,Object> - PDPMap,
 	 * @param - Map<String,Object> - addToBagMap
 	 * @param - Map<String,Object> - shoppingSectionDetailsMap
 	 * @param - boolean - bAPI - true represents addToBagMap from API while false represents for addToBagMap from UI
 	 */
-	public void verifyContentsAmongPDPAndAddToBagAndShoppingCartSectionDetails(Map<String,Object> PDPMap, Map<String,Object> addToBagMap,Map<String,Object> shoppingSectionDetailsMap,boolean bAPI){
+	public void verifyContentsOnShoppingCartSectionDetailsWithAddToBag(Map<String,Object> PDPMap, Map<String,Object> addToBagMap,Map<String,Object> shoppingSectionDetailsMap,boolean bAPI){
 		List<Map<String,Object>> shoppingList=(List<Map<String,Object>>)shoppingSectionDetailsMap.get("shoppingList");
 		int shoppingAmount= (int) shoppingSectionDetailsMap.get("shoppingAmount");
 		float shoppingSubTotal= (float) shoppingSectionDetailsMap.get("shoppingSubTotal");
 
 		for(Map<String,Object> cartItemMap:shoppingList){
 			if(this.checkIfMatchGivenAddToBagItem(addToBagMap,cartItemMap)){
-				this.verifyContentsAmongPDPAndAddToBagAndShoppingCartItem(PDPMap,addToBagMap,cartItemMap,bAPI);
+				this.verifyContentsOnShoppingCartItemWithAddToBag(PDPMap,addToBagMap,cartItemMap,bAPI);
 				break;
 			}
 		}
 
-		int itemAmountAddToBag= Integer.parseInt(addToBagMap.get("itemAmount").toString());
-		if(itemAmountAddToBag==shoppingAmount){
-			reporter.reportLogPass("The Item amount in AddToBag is equal to shopping amount in Shopping cart");
-		}
-		else{
-			reporter.reportLogFail("The Item amount:"+itemAmountAddToBag+" in AddToBag is not equal to shopping amount:"+shoppingAmount+" in Shopping cart");
+		if(!bAPI){
+			int itemAmountAddToBag= Integer.parseInt(addToBagMap.get("itemAmount").toString());
+			if(itemAmountAddToBag==shoppingAmount){
+				reporter.reportLogPass("The Item amount in AddToBag is equal to shopping amount in Shopping cart");
+			}
+			else{
+				reporter.reportLogFail("The Item amount:"+itemAmountAddToBag+" in AddToBag is not equal to shopping amount:"+shoppingAmount+" in Shopping cart");
+			}
+
+			float subTotalAddToBag= Float.parseFloat(addToBagMap.get("SubTotal").toString());
+			if(Math.abs(subTotalAddToBag-shoppingSubTotal)<0.1){
+				reporter.reportLogPass("The SubTotal in AddToBag is equal to SubTotal in Shopping cart");
+			}
+			else{
+				reporter.reportLogFail("The SubTotal:"+subTotalAddToBag+" in AddToBag is not equal to SubTotal:"+shoppingSubTotal+" in Shopping cart");
+			}
 		}
 
-		float subTotalAddToBag= Float.parseFloat(addToBagMap.get("SubTotal").toString());
-		if(Math.abs(subTotalAddToBag-shoppingSubTotal)<0.1){
-			reporter.reportLogPass("The SubTotal in AddToBag is equal to SubTotal in Shopping cart");
-		}
-		else{
-			reporter.reportLogFail("The SubTotal:"+subTotalAddToBag+" in AddToBag is not equal to SubTotal:"+shoppingSubTotal+" in Shopping cart");
-		}
 	}
 
 }

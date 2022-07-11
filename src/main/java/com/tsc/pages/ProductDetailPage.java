@@ -1832,12 +1832,31 @@ public class ProductDetailPage extends BasePage {
 	}
 
 	/**
-	 * To go To Shopping Cart page by clicking ViewShoppingBag button in AddToBag Popup window
+	 * To go To Shopping Cart page by clicking ViewShoppingBag button in AddToBag Popup window after login
 	 */
-	public void goToShoppingCartFromAddToBagPopup(){
+	public void goToShoppingCartFromAddToBagPopupAfterLogin(){
 		this.openAddToBagPopupWindow();
 		this.btnAddToBagPopupWindowButtonSectionViewShoppingBag.click();
 		ShoppingCartPage shoppingCartPage=new ShoppingCartPage(this.getDriver());
+		this.waitForCondition(Driver->{return shoppingCartPage.lblCartTitle.isDisplayed();},20000);
+	}
+
+	/**
+	 * To go To Shopping Cart page by clicking ViewShoppingBag button in AddToBag Popup window before login
+	 * @param - String - lsUserName
+	 * @param - String - lsPassword
+	 */
+	public void goToShoppingCartFromAddToBagPopupBeforeLogin(String lsUserName,String lsPassword){
+		ShoppingCartPage shoppingCartPage=new ShoppingCartPage(this.getDriver());
+		this.openAddToBagPopupWindow();
+		this.btnAddToBagPopupWindowButtonSectionViewShoppingBag.click();
+		this.waitForCondition(Driver->{return shoppingCartPage.lblCartTitle.isDisplayed();},20000);
+
+		SignInPage signInPage=new SignInPage(this.getDriver());
+		signInPage.Login(lsUserName,lsPassword);
+
+		GlobalHeaderPage globalHeaderPage=new GlobalHeaderPage(this.getDriver());
+		globalHeaderPage.ShoppingCartlnk.click();
 		this.waitForCondition(Driver->{return shoppingCartPage.lblCartTitle.isDisplayed();},20000);
 	}
 
@@ -1912,6 +1931,10 @@ public class ProductDetailPage extends BasePage {
 		lsText=lblSizeStatic.getText();
 		lsText=lsText.split(":")[1].trim();
 		map.put("productSize",lsText);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblProductNowPrice);
+		float nowPrice=this.getFloatFromString(lblProductNowPrice.getText(),true);
+		map.put("productNowPrice",nowPrice);
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblProductNumber);
 		lsText=lblProductNumber.getText().replace("-","").trim();
@@ -3495,28 +3518,28 @@ public class ProductDetailPage extends BasePage {
 	/**
 	 * This function returns shopping bag items details for a user
 	 * @param - CartResponse object fetched from api containing shopping bag details object
-	 * @return - Map<String,Map<String,String> - Map object containing item details
+	 * @return - Map<String,Map<String,Object> - Map object containing item details
 	 */
-	public Map<String,Map<String,String>> getShoppingBagItemsDetailAddedForUser(CartResponse cartResponse){
-		Map<String,Map<String,String>> cartItemDetails = null;
+	public Map<String,Map<String,Object>> getShoppingBagItemsDetailAddedForUser(CartResponse cartResponse){
+		Map<String,Map<String,Object>> cartItemDetails = null;
 		if(cartResponse!=null){
 			cartItemDetails = new HashMap<>();
 			List<CartResponse.CartLinesClass> cartLinesClass = cartResponse.getCartLines();
 			List<CartResponse.ProductsClass> productsClasses = cartResponse.getProducts();
 			for(CartResponse.CartLinesClass cartLines : cartLinesClass){
-				Map<String,String> itemDetails = new HashMap<>();
-				itemDetails.put("itemNo",cartLines.getCartLineItem().getItemNo());
+				Map<String,Object> itemDetails = new HashMap<>();
+				itemDetails.put("productNumber",this.getIntegerFromString(cartLines.getCartLineItem().getItemNo()));
 				itemDetails.put("productStyle",cartLines.getCartLineItem().getStyle());
 				itemDetails.put("productStyleDimension",cartLines.getCartLineItem().getStyleDimensionId());
 				itemDetails.put("productSize",cartLines.getCartLineItem().getSize());
-				itemDetails.put("nowPrice",cartLines.getCartLineItem().getAppliedPrice());
+				itemDetails.put("productNowPrice",this.getFloatFromString(cartLines.getCartLineItem().getAppliedPrice(),true));
 				for(CartResponse.ProductsClass products : productsClasses){
-					if(products.getItemNo().equalsIgnoreCase(itemDetails.get("itemNo"))){
+					if(products.getItemNo().equalsIgnoreCase(itemDetails.get("productNumber").toString())){
 						itemDetails.put("productName",products.getName());
 						break;
 					}
 				}
-				cartItemDetails.put(itemDetails.get("itemNo"),itemDetails);
+				cartItemDetails.put(itemDetails.get("productNumber").toString(),itemDetails);
 			}
 		}
 		return cartItemDetails;

@@ -1,5 +1,6 @@
 package com.tsc.test.tests.productDetail;
 
+import com.tsc.api.pojo.CartResponse;
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.data.pojos.ConstantData;
 import com.tsc.pages.base.BasePage;
@@ -12,12 +13,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PD_TC17_VerifyProductDetail_AddToBag_MergeCard extends BaseTest{
+public class PD_TC17_VerifyProductDetail_AddToBag_MergeCart extends BaseTest{
 	/*
 	 * CER-840
 	 */
 	@Test(groups={"ProductDetail","Regression","Regression_Mobile","Regression_Tablet"})
-	public void PD_TC17_VerifyProductDetail_AddToBag_MergeCard() throws IOException {
+	public void PD_TC17_VerifyProductDetail_AddToBag_MergeCart() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 		BasePage basePage=new BasePage(this.getDriver());
 
@@ -34,7 +35,9 @@ public class PD_TC17_VerifyProductDetail_AddToBag_MergeCard extends BaseTest{
 
 		String accessToken = apiUserSessionData.get("access_token").toString();
 		String customerEDP = apiUserSessionData.get("customerEDP").toString();
-		getProductDetailPageThreadLocal().addItemsToShoppingCartForUser(lstKeywordList,customerEDP, accessToken);
+		CartResponse cartResponse = getProductDetailPageThreadLocal().addItemsToShoppingCartForUser(lstKeywordList,customerEDP, accessToken);
+		Map<String,Map<String,Object>> cartMap = getProductDetailPageThreadLocal().getShoppingBagItemsDetailAddedForUser(cartResponse);
+
 		//Login using valid username and password
 		getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword);
 
@@ -69,12 +72,19 @@ public class PD_TC17_VerifyProductDetail_AddToBag_MergeCard extends BaseTest{
 			Map<String,Object> PDPMap=getProductDetailPageThreadLocal().getPDPDesc();
 			getProductDetailPageThreadLocal().openAddToBagPopupWindow();
 			Map<String,Object> AddToBagMap=getProductDetailPageThreadLocal().getAddToBagDesc();
-			getProductDetailPageThreadLocal().goToShoppingCartFromAddToBagPopup();
+			getProductDetailPageThreadLocal().goToShoppingCartFromAddToBagPopupAfterLogin();
 			Map<String,Object> shoppingCartMap=getShoppingCartThreadLocal().getShoppingSectionDetails();
 
 			//To verify Contents among PDP, AddToBag And ShoppingCartSection Details
-			reporter.reportLog("To verify Contents among PDP, AddToBag And ShoppingCartSection Details");
-			getShoppingCartThreadLocal().verifyContentsAmongPDPAndAddToBagAndShoppingCartSectionDetails(PDPMap,AddToBagMap,shoppingCartMap,false);
+			reporter.reportLog("To verify Contents on ShoppingCartSection Details with AddToBag information from UI interface");
+			getShoppingCartThreadLocal().verifyContentsOnShoppingCartSectionDetailsWithAddToBag(PDPMap,AddToBagMap,shoppingCartMap,false);
+
+			reporter.reportLog("To verify Contents on ShoppingCartSection Details with addToBag information from API calling");
+			for(Map.Entry<String,Map<String,Object>> entry:cartMap.entrySet()){
+				reporter.reportLog("Verify product number: "+entry.getKey());
+				AddToBagMap=entry.getValue();
+				getShoppingCartThreadLocal().verifyContentsOnShoppingCartSectionDetailsWithAddToBag(PDPMap,AddToBagMap,shoppingCartMap,true);
+			}
 
 		}
 		else {

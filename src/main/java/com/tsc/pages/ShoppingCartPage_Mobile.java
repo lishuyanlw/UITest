@@ -19,6 +19,7 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 
 	public By byProductRedMessage=By.xpath(".//span[contains(@class,'item-status') and contains(@class,'visible-xs-inline')][span[@class='boldRedColor']]");
 	public By byProductSelectQuantity=By.xpath(".//div[contains(@class,'tsc-forms') and contains(@class,'visible-xs-inline')]//select");
+	public By byProductNowPrice=By.xpath(".//div[contains(@class,'cart-desc-line') and contains(@class,'visible-xs-block')]//span[contains(@class,'now-price')]");
 
 	@Override
 	public boolean checkSelectQuantityEnabled(WebElement cartItem){
@@ -131,14 +132,16 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 	}
 
 	@Override
-	public void verifyContentsAmongPDPAndAddToBagAndShoppingCartItem(Map<String,Object> PDPMap, Map<String,Object> addToBagMap,Map<String,Object> cartItemMap,boolean bAPI){
-		boolean bAddToBagBadge= (boolean) addToBagMap.get("productBadge");
-		boolean bShoppingCartBadge=(boolean) cartItemMap.get("productBadge");
-		if(bAddToBagBadge==bShoppingCartBadge){
-			reporter.reportLogPass("The Badge in AddToBag displaying is the same as shopping cart");
-		}
-		else{
-			reporter.reportLogFail("The Badge in AddToBag:"+bAddToBagBadge+" displaying is not the same as shopping cart:"+bShoppingCartBadge);
+	public void verifyContentsOnShoppingCartItemWithAddToBag(Map<String,Object> PDPMap, Map<String,Object> addToBagMap,Map<String,Object> cartItemMap,boolean bAPI){
+		if(!bAPI){
+			boolean bAddToBagBadge= (boolean) addToBagMap.get("productBadge");
+			boolean bShoppingCartBadge=(boolean) cartItemMap.get("productBadge");
+			if(bAddToBagBadge==bShoppingCartBadge){
+				reporter.reportLogPass("The Badge in AddToBag displaying is the same as shopping cart");
+			}
+			else{
+				reporter.reportLogFail("The Badge in AddToBag:"+bAddToBagBadge+" displaying is not the same as shopping cart:"+bShoppingCartBadge);
+			}
 		}
 
 		String productNameAddToBag= addToBagMap.get("productName").toString();
@@ -198,18 +201,33 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 					reporter.reportLogFail("The Product left number:"+productLeftNumberPDP+" in PDP displaying is not the same as shopping cart:"+productLeftNumberShoppingCart);
 				}
 			}
+
+			float nowPricePDP;
+			if(!bAPI){
+				nowPricePDP=Float.parseFloat(PDPMap.get("productNowPrice").toString());
+			}
+			else{
+				nowPricePDP= (float) addToBagMap.get("productNowPrice");
+			}
+			float appliedPriceShoppingCart=Float.parseFloat(cartItemMap.get("cartItemMap").toString());
+			if(Math.abs(nowPricePDP-appliedPriceShoppingCart)<0.1){
+				reporter.reportLogPass("The Product nowPrice in PDP displaying is the same as shopping cart");
+			}
+			else{
+				reporter.reportLogFail("The Product nowPrice:"+nowPricePDP+" in PDP displaying is not the same as shopping cart:"+appliedPriceShoppingCart);
+			}
 		}
 	}
 
 	@Override
-	public void verifyContentsAmongPDPAndAddToBagAndShoppingCartSectionDetails(Map<String,Object> PDPMap, Map<String,Object> addToBagMap,Map<String,Object> shoppingSectionDetailsMap,boolean bAPI){
+	public void verifyContentsOnShoppingCartSectionDetailsWithAddToBag(Map<String,Object> PDPMap, Map<String,Object> addToBagMap,Map<String,Object> shoppingSectionDetailsMap,boolean bAPI){
 		List<Map<String,Object>> shoppingList=(List<Map<String,Object>>)shoppingSectionDetailsMap.get("shoppingList");
 		int shoppingAmount= (int) shoppingSectionDetailsMap.get("shoppingAmount");
 		float shoppingSubTotal= (float) shoppingSectionDetailsMap.get("shoppingSubTotal");
 
 		for(Map<String,Object> cartItemMap:shoppingList){
 			if(this.checkIfMatchGivenAddToBagItem(addToBagMap,cartItemMap)){
-				this.verifyContentsAmongPDPAndAddToBagAndShoppingCartItem(PDPMap,addToBagMap,cartItemMap,bAPI);
+				this.verifyContentsOnShoppingCartItemWithAddToBag(PDPMap,addToBagMap,cartItemMap,bAPI);
 				break;
 			}
 		}
