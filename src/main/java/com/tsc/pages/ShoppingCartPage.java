@@ -387,19 +387,22 @@ public class ShoppingCartPage extends BasePage {
 		WebElement item=cartItem.findElement(byProductItemDesc);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 		String lsText=item.getText().trim();
-		String[] lsSplit=lsText.split("|");
-		map.put("productName",lsSplit[0].trim());
-		map.put("productStyle",lsSplit[1].trim());
-		map.put("productSize",lsSplit[2].split(":")[1].trim());
+		if(this.checkSelectQuantityEnabled(cartItem)){
+			String[] lsSplit=lsText.split("\\|");
+			map.put("productName",lsSplit[0].trim());
+			map.put("productStyle",lsSplit[1].trim());
+			map.put("productSize",lsSplit[2].split(":")[1].trim());
+		}
+		else{
+			map.put("productName",lsText);
+			map.put("productStyle",null);
+			map.put("productSize",null);
+		}
+
 
 		item=cartItem.findElement(byProductNumber);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 		lsText=item.getText().replace("-","").trim();
-		map.put("productNumber",lsText);
-
-		item=cartItem.findElement(byProductNumber);
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-		lsText=item.getText().trim();
 		map.put("productNumber",lsText);
 
 		if(this.checkShippingDateExisting(cartItem)){
@@ -437,7 +440,7 @@ public class ShoppingCartPage extends BasePage {
 		lsText=item.getText().trim();
 		map.put("productNowPrice",lsText);
 
-		if(!this.checkSelectQuantityEnabled(cartItem)){
+		if(this.checkSelectQuantityEnabled(cartItem)){
 			item=cartItem.findElement(byProductSelectQuantity);
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 			Select select = new Select(item);
@@ -531,7 +534,7 @@ public class ShoppingCartPage extends BasePage {
 
 		String productNameAddToBag= addToBagMap.get("productName").toString();
 		String productNameShoppingCart=cartItemMap.get("productName").toString();
-		if(productNameAddToBag==productNameShoppingCart){
+		if(productNameAddToBag.equalsIgnoreCase(productNameShoppingCart)){
 			reporter.reportLogPass("The Product name in AddToBag displaying is the same as shopping cart");
 		}
 		else{
@@ -540,7 +543,7 @@ public class ShoppingCartPage extends BasePage {
 
 		String productStyleAddToBag= addToBagMap.get("productStyle").toString();
 		String productStyleShoppingCart=cartItemMap.get("productStyle").toString();
-		if(productStyleAddToBag==productStyleShoppingCart){
+		if(productStyleAddToBag.equalsIgnoreCase(productStyleShoppingCart)){
 			reporter.reportLogPass("The Product style in AddToBag displaying is the same as shopping cart");
 		}
 		else{
@@ -549,7 +552,7 @@ public class ShoppingCartPage extends BasePage {
 
 		String productSizeAddToBag= addToBagMap.get("productSize").toString();
 		String productSizeShoppingCart=cartItemMap.get("productSize").toString();
-		if(productSizeAddToBag==productSizeShoppingCart){
+		if(productSizeAddToBag.equalsIgnoreCase(productSizeShoppingCart)){
 			reporter.reportLogPass("The Product size in AddToBag displaying is the same as shopping cart");
 		}
 		else{
@@ -558,7 +561,7 @@ public class ShoppingCartPage extends BasePage {
 
 		String productNumberAddToBag= addToBagMap.get("productNumber").toString();
 		String productNumberShoppingCart=cartItemMap.get("productNumber").toString();
-		if(productNumberAddToBag==productNumberShoppingCart){
+		if(productNumberAddToBag.equalsIgnoreCase(productNumberShoppingCart)){
 			reporter.reportLogPass("The Product number in AddToBag displaying is the same as shopping cart");
 		}
 		else{

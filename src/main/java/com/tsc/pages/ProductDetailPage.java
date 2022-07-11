@@ -364,8 +364,8 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//section[@class='pdp-description']//div[contains(@class,'pdp-description__add-to-bag')]//div[contains(@class,'pdp-description__add-to-bag__quantity')]//select//option[last()]")
 	public WebElement lblQuantityLastOption;
 
-	//@FindBy(xpath = "//section[@class='pdp-description']//div[contains(@class,'pdp-description__add-to-bag')]//div[contains(@class,'pdp-description__add-to-bag__quantity')]//span[@class='pdp-description__add-to-bag__quantity__count--critic-stock']")
-	//public WebElement lblQuantityLeft;
+	@FindBy(xpath = "//section[@class='pdp-description']//div[contains(@class,'pdp-description__add-to-bag')]//div[contains(@class,'pdp-description__add-to-bag__quantity')]//span[@class='pdp-description__add-to-bag__quantity__count--critic-stock']")
+	public WebElement lblQuantityLeft;
 
 	//For new designed Add To Bag button
 	@FindBy(xpath = "//section[@class='pdp-description']//button[@class='pdp-description__add-to-bag__add-to-bag-button']")
@@ -1877,7 +1877,7 @@ public class ProductDetailPage extends BasePage {
 		lsText=lblAddToBagPopupWindowDetailsProductNumber.getText().replace("-","").trim();
 		map.put("productNumber",lsText);
 
-		map.put("ItemAmount",getOrderAmountFromSubTotalInAddToBagModel());
+		map.put("itemAmount",getOrderAmountFromSubTotalInAddToBagModel());
 
 		map.put("SubTotal",getOrderSubTotalInAddToBagModel());
 
@@ -1923,8 +1923,8 @@ public class ProductDetailPage extends BasePage {
 		map.put("productQuantity",lsText);
 
 		if(IsQuantityLeftExisting()) {
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSoldOut);
-			lsText=this.lblSoldOut.getText();
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblQuantityLeft);
+			lsText=this.lblQuantityLeft.getText();
 			map.put("productLeftNumber",this.getIntegerFromString(lsText));
 		}
 		else{
