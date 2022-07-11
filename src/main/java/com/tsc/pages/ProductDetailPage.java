@@ -3483,10 +3483,42 @@ public class ProductDetailPage extends BasePage {
 	 * To open shopping page through clicking ViewShoppingBag button on AddToBag popup window
 	 * @return
 	 */
-	public boolean goToShoppingCartPage(){
+	public boolean goToShoppingCartPage() {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnAddToBagPopupWindowButtonSectionViewShoppingBag);
 		this.btnAddToBagPopupWindowButtonSectionViewShoppingBag.click();
-		ShoppingCartPage shoppingCartPage=new ShoppingCartPage(this.getDriver());
-		return this.waitForCondition(Driver->{return shoppingCartPage.lblCartTitle.isDisplayed();},20000);
+		ShoppingCartPage shoppingCartPage = new ShoppingCartPage(this.getDriver());
+		return this.waitForCondition(Driver -> {
+			return shoppingCartPage.lblCartTitle.isDisplayed();
+		}, 20000);
+	}
+
+	/**
+	 * This function returns shopping bag items details for a user
+	 * @param - CartResponse object fetched from api containing shopping bag details object
+	 * @return - Map<String,Map<String,String> - Map object containing item details
+	 */
+	public Map<String,Map<String,String>> getShoppingBagItemsDetailAddedForUser(CartResponse cartResponse){
+		Map<String,Map<String,String>> cartItemDetails = null;
+		if(cartResponse!=null){
+			cartItemDetails = new HashMap<>();
+			List<CartResponse.CartLinesClass> cartLinesClass = cartResponse.getCartLines();
+			List<CartResponse.ProductsClass> productsClasses = cartResponse.getProducts();
+			for(CartResponse.CartLinesClass cartLines : cartLinesClass){
+				Map<String,String> itemDetails = new HashMap<>();
+				itemDetails.put("itemNo",cartLines.getCartLineItem().getItemNo());
+				itemDetails.put("productStyle",cartLines.getCartLineItem().getStyle());
+				itemDetails.put("productStyleDimension",cartLines.getCartLineItem().getStyleDimensionId());
+				itemDetails.put("productSize",cartLines.getCartLineItem().getSize());
+				itemDetails.put("nowPrice",cartLines.getCartLineItem().getAppliedPrice());
+				for(CartResponse.ProductsClass products : productsClasses){
+					if(products.getItemNo().equalsIgnoreCase(itemDetails.get("itemNo"))){
+						itemDetails.put("productName",products.getName());
+						break;
+					}
+				}
+				cartItemDetails.put(itemDetails.get("itemNo"),itemDetails);
+			}
+		}
+		return cartItemDetails;
 	}
 }
