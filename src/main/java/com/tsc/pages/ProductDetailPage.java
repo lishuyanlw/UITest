@@ -3356,7 +3356,6 @@ public class ProductDetailPage extends BasePage {
 	 */
 	public Map<String,Map<String,String>> getShoppingBagItemsDetailAddedForUser(CartResponse cartResponse){
 		Map<String,Map<String,String>> cartItemDetails = null;
-		int mapCounter = 1;
 		if(cartResponse!=null){
 			cartItemDetails = new HashMap<>();
 			List<CartResponse.CartLinesClass> cartLinesClass = cartResponse.getCartLines();
@@ -3374,8 +3373,7 @@ public class ProductDetailPage extends BasePage {
 						break;
 					}
 				}
-				cartItemDetails.put(String.valueOf(mapCounter),itemDetails);
-				mapCounter++;
+				cartItemDetails.put(itemDetails.get("itemNo"),itemDetails);
 			}
 		}
 		return cartItemDetails;
