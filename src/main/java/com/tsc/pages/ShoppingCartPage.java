@@ -366,8 +366,12 @@ public class ShoppingCartPage extends BasePage {
 		this.getReusableActionsInstance().clickIfAvailable(globalHeaderPage.CartBagCounter);
 		this.waitForPageToLoad();
 		if(this.btnItemRemoveButtonFromCart.size()>0){
-			for(WebElement removeButton: this.btnItemRemoveButtonFromCart){
+			/**for(WebElement removeButton: this.btnItemRemoveButtonFromCart){
 				openRemoveDialog(removeButton);
+				closeRemoveDialogWithRemoveAction();
+			}*/
+			for(int counter = 0;counter < this.btnItemRemoveButtonFromCart.size(); counter++){
+				openRemoveDialog(this.btnItemRemoveButtonFromCart.get(counter));
 				closeRemoveDialogWithRemoveAction();
 			}
 		}

@@ -130,9 +130,6 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
         Map<String,Object> map=this.getAddToBagDesc();
 
         closeAddToBagPopupWindow();
-        //https://reqcentral.com/browse/CER-838 - Verifying close button is present and clickable
-        closeAddToBagPopUpWindowAfterClickingOutsidePopUp(lbl_AddToBagPopupWindowTitle);
-
         return map;
     }
 

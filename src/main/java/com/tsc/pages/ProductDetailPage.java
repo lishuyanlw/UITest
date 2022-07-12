@@ -212,6 +212,9 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//section[@class='pdp-description']//div[contains(@class,'pdp-description__form__colours__selections')]//button[not(contains(@class,'pdp-description__form__colours--disabled'))][@aria-pressed='true']//label")
 	public WebElement btnRadioProductStyleSelectedLabel;
 
+	@FindBy(xpath = "//div[@id='product-details-page']//div[contains(@class,'pdp-description__form__colour')]/button[not(contains(@class,'option--selected'))]")
+	public List<WebElement> lstRadioStyleLabelNotSelectedList;
+
 	//For dropdown menu style
 	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__form__colours__selected']")
 	public WebElement lblDropDownProductStyleStatic;
@@ -310,6 +313,12 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath="//div[@id='product-details-page']//div[@class='pdp-description__form__sizes__selected']/b")
 	public WebElement lblSelectedSize;
 
+	@FindBy(xpath="//div[@id='product-details-page']//div[contains(@class,'pdp-description__form__sizes')]/button[contains(@class,'option--selected')]")
+	public WebElement lblSelectedDefaultSize;
+
+	@FindBy(xpath="//div[@id='product-details-page']//div[contains(@class,'pdp-description__form__colours')]/button[contains(@class,'option--selected')]")
+	public WebElement lblSelectedDefaultColour;
+
 	//For radio style
 	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__form__sizes__selected']")
 	public WebElement lblSizeStatic;
@@ -331,6 +340,9 @@ public class ProductDetailPage extends BasePage {
 
 	@FindBy(xpath = "//section[contains(@class,'pdp-description')]//div[contains(@class,'pdp-description__form__sizes__selections')]//button[not(contains(@class,'pdp-description__form__sizes--disabled'))]//label//span")
 	public List<WebElement> lstRadioSizeLabelSpanList;
+
+	@FindBy(xpath="//div[@id='product-details-page']//div[contains(@class,'pdp-description__form__sizes')]/button[not(contains(@class,'option--selected')) and not(contains(@class,'sizes--disabled'))]")
+	public List<WebElement> lstRadioSizeLabelNotSelectedList;
 
 	/**@FindBy(xpath = "//section[contains(@class,'pdp-description')]//div[contains(@class,'pdp-description__form__sizes__selections')]//button[not(contains(@class,'pdp-description__form__sizes--disabled'))][input[@checked]]")
 	public WebElement btnRadioProductSizeSelected;
@@ -1645,17 +1657,19 @@ public class ProductDetailPage extends BasePage {
 	/**
 	 * This function closes Add to Bag pop up window after clicking outside the pop-up window
 	 */
-	public boolean closeAddToBagPopUpWindowAfterClickingOutsidePopUp(String lbl_AddToBagPopupWindowTitle){
+	public Map<String,Object> closeAddToBagPopUpWindowAfterClickingOutsidePopUp(String lbl_AddToBagPopupWindowTitle){
 		openAddToBagPopupWindow();
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAddToBagPopupWindowTitle);
 		reporter.softAssert(this.lblAddToBagPopupWindowTitle.getText().toUpperCase().matches(lbl_AddToBagPopupWindowTitle),"The title of Add to Bag popup window is matching to '"+lbl_AddToBagPopupWindowTitle+"' pattern","The title of Add to Bag popup window is not matching to '"+lbl_AddToBagPopupWindowTitle+"' pattern");
+		Map<String,Object> addToBagData = this.getAddToBagDesc();
 		//Clicking on TSC Home Page Link to close Pop-Up Window without clicking on close button on Pop-Up
 		this.applyStaticWait(3000);
 		//Clicking two times below as clicking single time is not working
 		this.getReusableActionsInstance().clickIfAvailable(new HomePage(getDriver()).lblTSCLink);
 		this.clickElement(new HomePage(getDriver()).lblTSCLink);
 		this.waitForPageToLoad();
-		return this.waitForCondition(Drive->{return !checkAddToBagPopupDisplaying();}, 30000);
+		this.waitForCondition(Drive->{return !checkAddToBagPopupDisplaying();}, 30000);
+		return addToBagData;
 	}
 
 	/**
@@ -1785,9 +1799,6 @@ public class ProductDetailPage extends BasePage {
 		Map<String,Object> map=this.getAddToBagDesc();
 
 		closeAddToBagPopupWindow();
-		//https://reqcentral.com/browse/CER-838 - Verifying close button is present and clickable
-		closeAddToBagPopUpWindowAfterClickingOutsidePopUp(lbl_AddToBagPopupWindowTitle);
-
 		return map;
 	}
 
@@ -3573,6 +3584,66 @@ public class ProductDetailPage extends BasePage {
 	 */
 	public String[] getSizeListForGivenStyle(int styleIndex){
 		return selectedProduct.productEDPSize.split("\\|")[styleIndex].split(":");
+	}
+
+	/**
+	 * This function returns default values for product selected on PDP page for user
+	 * @return - Map<String,Object> - map object of default size and style selected for user
+	 */
+	public Map<String,String> fetchDefaultSizeAndStyleSelectedForUserOnPDP(){
+		ProductResultsPage prp=new ProductResultsPage(this.getDriver());
+		Map<String,String> defaultValueMap = new HashMap<>();
+		this.waitForPageToLoad();
+		prp.waitForPDPPageLoading();
+		//Fetching default selected size
+		this.getReusableActionsInstance().scrollToElement(this.lblSelectedDefaultSize);
+		defaultValueMap.put("size",this.lblSelectedDefaultSize.findElement(By.xpath("./input")).getAttribute("id"));
+		//Fetching default selected colour
+		defaultValueMap.put("colour",this.lblSelectedDefaultColour.findElement(By.xpath("./input")).getAttribute("id"));
+		return defaultValueMap;
+	}
+
+	/**
+	 * This function selects size and colour other than default one selected on PDP
+	 * @param - Map<String,String> - map object with default values for product
+	 * @param - String[] - list of string for all styles that are available for product
+	 */
+	public void selectSizeAndColourOtherThanDefaultOnPDP(Map<String,String> defaultSelectedValues,String[] lstStyle){
+		boolean flag = false;
+		if(lstStyle.length>0){
+			//Selecting the colour other than default colour on PDP page
+			for(int counter=0;counter<lstStyle.length;counter++){
+				if(!lstStyle[counter].equalsIgnoreCase(defaultSelectedValues.get("colour"))){
+					String[] lstSize=this.getSizeListForGivenStyle(counter);
+					//Selecting the size
+					for(int i = 0; i< this.lstRadioStyleLabelNotSelectedList.size();i++){
+						if(this.lstRadioStyleLabelNotSelectedList.get(i).findElement(By.xpath("./input")).getAttribute("id").equalsIgnoreCase(lstStyle[counter])){
+							this.getReusableActionsInstance().clickIfAvailable(this.lstRadioStyleLabelNotSelectedList.get(i));
+							flag = true;
+							break;
+						}
+					}
+					if(flag){
+						boolean sizeFlag = false;
+						//Selecting the size
+						for(String size:lstSize){
+							if(!size.equalsIgnoreCase(defaultSelectedValues.get("size"))){
+								for(int i = 0; i< this.lstRadioSizeLabelNotSelectedList.size();i++){
+									if(this.lstRadioSizeLabelNotSelectedList.get(i).findElement(By.xpath("./input")).getAttribute("id").equalsIgnoreCase(size)){
+										sizeFlag = true;
+										this.getReusableActionsInstance().clickIfAvailable(this.lstRadioSizeLabelNotSelectedList.get(i));
+										break;
+									}
+								}
+							}
+							if(sizeFlag)
+								break;
+						}
+						break;
+					}
+				}
+			}
+		}
 	}
 
 }
