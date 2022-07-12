@@ -223,6 +223,13 @@ public class ShoppingCartPage extends BasePage {
 	public WebElement lnkCartPrivacy;
 
 	/**
+	 * To get added item amount
+	 */
+	public int GetAddedItemAmount(){
+		return this.getIntegerFromString(this.getElementInnerText(this.lblCartTitle));
+	}
+
+	/**
 	 * To check Product TrueFit Message Existing,
 	 * 2 different size for same product will show TrueFit message
 	 * @return - boolean

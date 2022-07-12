@@ -14,12 +14,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PD_TC17_VerifyProductDetail_AddToBag_MergeCart_NotLoginFirst extends BaseTest{
+public class PD_TC17_VerifyProductDetail_AddToBag_ShoppingBagCounter_withoutLogin extends BaseTest{
 	/*
 	 * CER-840
 	 */
 	@Test(groups={"ProductDetail","Regression","Regression_Mobile","Regression_Tablet"})
-	public void PD_TC17_VerifyProductDetail_AddToBag_MergeCart_NotLoginFirst() throws IOException {
+	public void PD_TC17_VerifyProductDetail_AddToBag_ShoppingBagCounter_withoutLogin() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 		BasePage basePage=new BasePage(this.getDriver());
 
@@ -27,19 +27,7 @@ public class PD_TC17_VerifyProductDetail_AddToBag_MergeCart_NotLoginFirst extend
 		reporter.reportLog("ProductDetail Page");
 
 		List<String> lstKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_APISearchingKeyword();
-		String lsUserName=TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
-		String lsPassword=TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
 
-		//Fetching test data from test data file
-		ConstantData.APIUserSessionParams apiUserSessionParams = TestDataHandler.constantData.getApiUserSessionParams();
-		apiUserSessionData = apiResponseThreadLocal.get().getApiUserSessionData(lsUserName,lsPassword,apiUserSessionParams.getLbl_grantType(),apiUserSessionParams.getLbl_apiKey());
-
-		String accessToken = apiUserSessionData.get("access_token").toString();
-		String customerEDP = apiUserSessionData.get("customerEDP").toString();
-		CartResponse cartResponse = getProductDetailPageThreadLocal().addItemsToShoppingCartForUser(lstKeywordList,customerEDP, accessToken);
-		Map<String,Map<String,Object>> cartMap = getProductDetailPageThreadLocal().getShoppingBagItemsDetailAddedForUser(cartResponse);
-
-		//
 		reporter.reportLog("Switch to ProductDetail page");
 		String lsProductNumber,lsUrl;
 

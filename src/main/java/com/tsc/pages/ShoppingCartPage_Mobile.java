@@ -104,7 +104,7 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 		item=cartItem.findElement(byProductNowPrice);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 		lsText=item.getText().trim();
-		map.put("productNowPrice",lsText);
+		map.put("productNowPrice",this.getFloatFromString(lsText,true));
 
 		if(this.checkSelectQuantityEnabled(cartItem)){
 			item=cartItem.findElement(byProductSelectQuantity);
@@ -202,19 +202,25 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 				}
 			}
 
-			float nowPricePDP;
 			if(!bAPI){
-				nowPricePDP=Float.parseFloat(PDPMap.get("productNowPrice").toString());
+				float nowPricePDP=(float)PDPMap.get("productNowPrice");
+				float appliedPriceShoppingCart=(float)cartItemMap.get("productNowPrice");
+				if(Math.abs(nowPricePDP-appliedPriceShoppingCart)<0.1){
+					reporter.reportLogPass("The Product nowPrice in PDP displaying is the same as shopping cart");
+				}
+				else{
+					reporter.reportLogFail("The Product nowPrice:"+nowPricePDP+" in PDP displaying is not the same as shopping cart:"+appliedPriceShoppingCart);
+				}
 			}
 			else{
-				nowPricePDP= (float) addToBagMap.get("productNowPrice");
-			}
-			float appliedPriceShoppingCart=Float.parseFloat(cartItemMap.get("cartItemMap").toString());
-			if(Math.abs(nowPricePDP-appliedPriceShoppingCart)<0.1){
-				reporter.reportLogPass("The Product nowPrice in PDP displaying is the same as shopping cart");
-			}
-			else{
-				reporter.reportLogFail("The Product nowPrice:"+nowPricePDP+" in PDP displaying is not the same as shopping cart:"+appliedPriceShoppingCart);
+				float nowPricePDP= (float) addToBagMap.get("productNowPrice");
+				float appliedPriceShoppingCart=Float.parseFloat(cartItemMap.get("productNowPrice").toString());
+				if(Math.abs(nowPricePDP-appliedPriceShoppingCart)<0.1){
+					reporter.reportLogPass("The Product nowPrice in API call results is the same as shopping cart");
+				}
+				else{
+					reporter.reportLogFail("The Product nowPrice:"+nowPricePDP+" in API call results is not the same as shopping cart:"+appliedPriceShoppingCart);
+				}
 			}
 		}
 	}

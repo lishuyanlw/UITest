@@ -84,15 +84,26 @@ public class PD_TC18_VerifyProductDetail_AddToBag_MergeCart_LogInFirst extends B
 
 			getProductDetailPageThreadLocal().goToShoppingCartFromAddToBagPopupWithLoginFirst();
 
-			reporter.reportLog("Verify shopping cart bag counter after clicking AddToBag button");
-			int shoppingListAmount=getShoppingCartThreadLocal().lstCartItems.size();
+			reporter.reportLog("Verify shopping cart bag counter after clicking AddToBag button with the added item number in cart title");
+			int shoppingItemAmount=getShoppingCartThreadLocal().getShoppingAmount();
 			int shoppingCartBagCounterAfterClickingAddToBagButton= getglobalheaderPageThreadLocal().getShoppingCartBagCounter();
+			if(shoppingCartBagCounterAfterClickingAddToBagButton==shoppingItemAmount){
+				reporter.reportLogPass("The shopping cart bag counter is equal to the added shopping item number in cart title");
+			}
+			else{
+				reporter.reportLogFail("The shopping cart bag counter is not equal to the added shopping item number:"+shoppingItemAmount+" in cart title, instead of "+shoppingCartBagCounterAfterClickingAddToBagButton);
+			}
+
+			reporter.reportLog("Verify shopping cart bag counter after clicking AddToBag button with shopping item list");
+			int shoppingListAmount=getShoppingCartThreadLocal().lstCartItems.size();
+			shoppingCartBagCounterAfterClickingAddToBagButton= getglobalheaderPageThreadLocal().getShoppingCartBagCounter();
 			if(shoppingCartBagCounterAfterClickingAddToBagButton==shoppingListAmount){
 				reporter.reportLogPass("The shopping cart bag counter is equal to shopping item amount");
 			}
 			else{
-				reporter.reportLogFail("The shopping cart bag counter is not equal to shopping item amount, instead of "+shoppingCartBagCounterAfterClickingAddToBagButton);
+				reporter.reportLogFail("The shopping cart bag counter is not equal to shopping item amount:"+shoppingListAmount+", instead of "+shoppingCartBagCounterAfterClickingAddToBagButton);
 			}
+
 
 			Map<String,Object> shoppingCartMap=getShoppingCartThreadLocal().getShoppingSectionDetails();
 

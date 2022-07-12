@@ -1840,10 +1840,14 @@ public class ProductDetailPage extends BasePage {
 	 * To go To Shopping Cart page by clicking ViewShoppingBag button in AddToBag Popup window with login first
 	 */
 	public void goToShoppingCartFromAddToBagPopupWithLoginFirst(){
-		this.openAddToBagPopupWindow();
 		this.btnAddToBagPopupWindowButtonSectionViewShoppingBag.click();
 		ShoppingCartPage shoppingCartPage=new ShoppingCartPage(this.getDriver());
-		this.waitForCondition(Driver->{return shoppingCartPage.lblCartTitle.isDisplayed();},20000);
+		try{
+			this.waitForCondition(Driver->{return shoppingCartPage.lblCartTitle.isDisplayed();},20000);
+		}
+		catch(Exception e){
+			this.applyStaticWait(10*this.getStaticWaitForApplication());
+		}
 	}
 
 	/**
@@ -1854,14 +1858,24 @@ public class ProductDetailPage extends BasePage {
 	public void goToShoppingCartFromAddToBagPopupWithoutLoginFirst(String lsUserName,String lsPassword){
 		ShoppingCartPage shoppingCartPage=new ShoppingCartPage(this.getDriver());
 		this.btnAddToBagPopupWindowButtonSectionViewShoppingBag.click();
-		this.waitForCondition(Driver->{return shoppingCartPage.lblCartTitle.isDisplayed();},20000);
+		try{
+			this.waitForCondition(Driver->{return shoppingCartPage.lblCartTitle.isDisplayed();},20000);
+		}
+		catch(Exception e){
+			this.applyStaticWait(10*this.getStaticWaitForApplication());
+		}
 
 		SignInPage signInPage=new SignInPage(this.getDriver());
 		signInPage.Login(lsUserName,lsPassword);
 
 		GlobalHeaderPage globalHeaderPage=new GlobalHeaderPage(this.getDriver());
 		globalHeaderPage.ShoppingCartlnk.click();
-		this.waitForCondition(Driver->{return shoppingCartPage.lblCartTitle.isDisplayed();},20000);
+		try{
+			this.waitForCondition(Driver->{return shoppingCartPage.lblCartTitle.isDisplayed();},20000);
+		}
+		catch(Exception e){
+			this.applyStaticWait(10*this.getStaticWaitForApplication());
+		}
 	}
 
 	/**

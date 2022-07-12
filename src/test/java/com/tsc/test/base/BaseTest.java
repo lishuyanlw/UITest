@@ -140,7 +140,7 @@ public class BaseTest {
 		productDetailPageThreadLocal.set(new ProductDetailPage_Mobile(getDriver()));
 		reporter = new ExtentTestManager(getDriver());
 		apiResponseThreadLocal.set(new ApiResponse());
-		shoppingCartThreadLocal.set(new ShoppingCartPage(getDriver()));
+		shoppingCartThreadLocal.set(new ShoppingCartPage_Mobile(getDriver()));
 		myAccountPageThreadLocal.set(new MyAccount_Mobile(getDriver()));
 	}
 
