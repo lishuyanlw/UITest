@@ -29,11 +29,12 @@ public class PD_TC12_VerifyProductDetail_AddToBag extends BaseTest{
 		String lsProductNumber,lsUrl;
 
 		Map<String,Object> outputDataCriteria= new HashMap<String,Object>();
-		outputDataCriteria.put("video", "0");
+		//outputDataCriteria.put("video", "0");
 		outputDataCriteria.put("style", "2");
 		outputDataCriteria.put("size", "2");
 		outputDataCriteria.put("quantity", "2");
-		if(getProductDetailPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList,"AllConditionsWithoutCheckingSoldOutCriteria",outputDataCriteria)) {
+		//if(getProductDetailPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList,"AllConditionsWithoutCheckingSoldOutCriteria",outputDataCriteria)) {
+		if(getProductDetailPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList,"ConditionsForMultipleStyleAndSize",outputDataCriteria)) {
 			String lbl_AddToBagPopupWindowTitle=TestDataHandler.constantData.getSearchResultPage().getLbl_AddToBagPopupWindowTitle();
 			reporter.reportLog("Verify URL");
 			int shoppingCartCount = getProductDetailPageThreadLocal().getShoppingCartNumber();
@@ -47,18 +48,31 @@ public class PD_TC12_VerifyProductDetail_AddToBag extends BaseTest{
 			getProductDetailPageThreadLocal().verifyProductAddToBagButton();
 
 			reporter.reportLog("Verify product Add to Bag title and contents");
-			getProductDetailPageThreadLocal().selectSizeAndStyleWithMoreThanOneQuantity();
 			Map<String,Object> mapPDP=getProductDetailPageThreadLocal().getPDPDesc();
 			Map<String,Object> mapAddToBag=getProductDetailPageThreadLocal().verifyProductDetailsInAddToBagPopupWindow(lbl_AddToBagPopupWindowTitle,getProductDetailPageThreadLocal().selectedProduct);
-
 			reporter.reportLog("Verify contents between PDP and AddToBag");
 			getProductDetailPageThreadLocal().verifyContentsBetweenPDPAndAddToBag(mapPDP,mapAddToBag);
+
+			//Selecting product again that has more than one quantity to test close Add to Bag pop-up functionality
+			//https://reqcentral.com/browse/CER-838 - Verifying close button is present and clickable
+			mapPDP=null;
+			mapAddToBag = null;
+			getProductDetailPageThreadLocal().selectSizeAndStyleWithMoreThanOneQuantity();
+			mapPDP = getProductDetailPageThreadLocal().getPDPDesc();
+			mapAddToBag = getProductDetailPageThreadLocal().closeAddToBagPopUpWindowAfterClickingOutsidePopUp(lbl_AddToBagPopupWindowTitle);
+			reporter.reportLog("Verify contents between PDP and AddToBag after closing Pop-Up window");
+			getProductDetailPageThreadLocal().verifyContentsBetweenPDPAndAddToBag(mapPDP,mapAddToBag);
+
+			//Navigate back to PDP page
+			getDriver().navigate().to(lsUrl);
+			Map<String,String> defaultSelectedValues = getProductDetailPageThreadLocal().fetchDefaultSizeAndStyleSelectedForUserOnPDP();
+			String[] lstStyle=getProductDetailPageThreadLocal().getStyleList();
 
 			reporter.reportLog("Verify Shopping cart number");
 			getProductDetailPageThreadLocal().verifyShoppingCartNumber(shoppingCartCount);
 		}
 		else {
-			reporter.reportLogFail("Unable to find the product item with Review, EasyPay, Swatch item>=4 and Video");
+			reporter.reportLogFail("Unable to find the product item with given search criteria");
 		}
 	}
 }
