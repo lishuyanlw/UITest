@@ -1835,7 +1835,6 @@ public class ProductDetailPage extends BasePage {
 	 * To go To Shopping Cart page by clicking ViewShoppingBag button in AddToBag Popup window with login first
 	 */
 	public void goToShoppingCartFromAddToBagPopupWithLoginFirst(){
-		this.openAddToBagPopupWindow();
 		this.btnAddToBagPopupWindowButtonSectionViewShoppingBag.click();
 		ShoppingCartPage shoppingCartPage=new ShoppingCartPage(this.getDriver());
 		try{
