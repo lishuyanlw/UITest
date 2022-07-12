@@ -212,6 +212,9 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//section[@class='pdp-description']//div[contains(@class,'pdp-description__form__colours__selections')]//button[not(contains(@class,'pdp-description__form__colours--disabled'))][@aria-pressed='true']//label")
 	public WebElement btnRadioProductStyleSelectedLabel;
 
+	@FindBy(xpath = "//div[@id='product-details-page']//div[contains(@class,'pdp-description__form__colour')]/button[not(contains(@class,'option--selected'))]")
+	public List<WebElement> lstRadioStyleLabelNotSelectedList;
+
 	//For dropdown menu style
 	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__form__colours__selected']")
 	public WebElement lblDropDownProductStyleStatic;
@@ -337,6 +340,9 @@ public class ProductDetailPage extends BasePage {
 
 	@FindBy(xpath = "//section[contains(@class,'pdp-description')]//div[contains(@class,'pdp-description__form__sizes__selections')]//button[not(contains(@class,'pdp-description__form__sizes--disabled'))]//label//span")
 	public List<WebElement> lstRadioSizeLabelSpanList;
+
+	@FindBy(xpath="//div[@id='product-details-page']//div[contains(@class,'pdp-description__form__sizes')]/button[not(contains(@class,'option--selected')) and not(contains(@class,'sizes--disabled'))]")
+	public List<WebElement> lstRadioSizeLabelNotSelectedList;
 
 	/**@FindBy(xpath = "//section[contains(@class,'pdp-description')]//div[contains(@class,'pdp-description__form__sizes__selections')]//button[not(contains(@class,'pdp-description__form__sizes--disabled'))][input[@checked]]")
 	public WebElement btnRadioProductSizeSelected;
@@ -3603,10 +3609,38 @@ public class ProductDetailPage extends BasePage {
 	 * @param - String[] - list of string for all styles that are available for product
 	 */
 	public void selectSizeAndColourOtherThanDefaultOnPDP(Map<String,String> defaultSelectedValues,String[] lstStyle){
+		boolean flag = false;
 		if(lstStyle.length>0){
-			for(String style:lstStyle){
-				if(!style.equalsIgnoreCase(defaultSelectedValues.get("colour"))){
-
+			//Selecting the colour other than default colour on PDP page
+			for(int counter=0;counter<lstStyle.length;counter++){
+				if(!lstStyle[counter].equalsIgnoreCase(defaultSelectedValues.get("colour"))){
+					String[] lstSize=this.getSizeListForGivenStyle(counter);
+					//Selecting the size
+					for(int i = 0; i< this.lstRadioStyleLabelNotSelectedList.size();i++){
+						if(this.lstRadioStyleLabelNotSelectedList.get(i).findElement(By.xpath("./input")).getAttribute("id").equalsIgnoreCase(lstStyle[counter])){
+							this.getReusableActionsInstance().clickIfAvailable(this.lstRadioStyleLabelNotSelectedList.get(i));
+							flag = true;
+							break;
+						}
+					}
+					if(flag){
+						boolean sizeFlag = false;
+						//Selecting the size
+						for(String size:lstSize){
+							if(!size.equalsIgnoreCase(defaultSelectedValues.get("size"))){
+								for(int i = 0; i< this.lstRadioSizeLabelNotSelectedList.size();i++){
+									if(this.lstRadioSizeLabelNotSelectedList.get(i).findElement(By.xpath("./input")).getAttribute("id").equalsIgnoreCase(size)){
+										sizeFlag = true;
+										this.getReusableActionsInstance().clickIfAvailable(this.lstRadioSizeLabelNotSelectedList.get(i));
+										break;
+									}
+								}
+							}
+							if(sizeFlag)
+								break;
+						}
+						break;
+					}
 				}
 			}
 		}

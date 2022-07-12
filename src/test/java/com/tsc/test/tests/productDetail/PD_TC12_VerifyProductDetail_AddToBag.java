@@ -57,16 +57,23 @@ public class PD_TC12_VerifyProductDetail_AddToBag extends BaseTest{
 			//https://reqcentral.com/browse/CER-838 - Verifying close button is present and clickable
 			mapPDP=null;
 			mapAddToBag = null;
+			reporter.reportLog("Verify contents between PDP and AddToBag after closing Pop-Up window");
 			getProductDetailPageThreadLocal().selectSizeAndStyleWithMoreThanOneQuantity();
 			mapPDP = getProductDetailPageThreadLocal().getPDPDesc();
 			mapAddToBag = getProductDetailPageThreadLocal().closeAddToBagPopUpWindowAfterClickingOutsidePopUp(lbl_AddToBagPopupWindowTitle);
-			reporter.reportLog("Verify contents between PDP and AddToBag after closing Pop-Up window");
 			getProductDetailPageThreadLocal().verifyContentsBetweenPDPAndAddToBag(mapPDP,mapAddToBag);
 
 			//Navigate back to PDP page
+			reporter.reportLog("Verify contents between PDP and AddToBag after selecting size and colour other than default values on PDP");
 			getDriver().navigate().to(lsUrl);
 			Map<String,String> defaultSelectedValues = getProductDetailPageThreadLocal().fetchDefaultSizeAndStyleSelectedForUserOnPDP();
 			String[] lstStyle=getProductDetailPageThreadLocal().getStyleList();
+			getProductDetailPageThreadLocal().selectSizeAndColourOtherThanDefaultOnPDP(defaultSelectedValues,lstStyle);
+			mapPDP=null;
+			mapAddToBag = null;
+			mapPDP=getProductDetailPageThreadLocal().getPDPDesc();
+			mapAddToBag=getProductDetailPageThreadLocal().verifyProductDetailsInAddToBagPopupWindow(lbl_AddToBagPopupWindowTitle,getProductDetailPageThreadLocal().selectedProduct);
+			getProductDetailPageThreadLocal().verifyContentsBetweenPDPAndAddToBag(mapPDP,mapAddToBag);
 
 			reporter.reportLog("Verify Shopping cart number");
 			getProductDetailPageThreadLocal().verifyShoppingCartNumber(shoppingCartCount);
