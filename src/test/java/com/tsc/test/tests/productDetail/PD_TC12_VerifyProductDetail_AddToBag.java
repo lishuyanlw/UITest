@@ -16,6 +16,8 @@ public class PD_TC12_VerifyProductDetail_AddToBag extends BaseTest{
 	 * CER-608
 	 * CER-818
 	 * CER-839
+	 * CER-838
+	 * CER-847
 	 */
 	@Test(groups={"ProductDetail","Regression","Regression_Mobile","Regression_Tablet"})
 	public void PD_TC12_VerifyProductDetail_AddToBag() throws IOException {
@@ -68,6 +70,7 @@ public class PD_TC12_VerifyProductDetail_AddToBag extends BaseTest{
 			getDriver().navigate().to(lsUrl);
 			Map<String,String> defaultSelectedValues = getProductDetailPageThreadLocal().fetchDefaultSizeAndStyleSelectedForUserOnPDP();
 			String[] lstStyle=getProductDetailPageThreadLocal().getStyleList();
+			//https://reqcentral.com/browse/CER-847
 			getProductDetailPageThreadLocal().selectSizeAndColourOtherThanDefaultOnPDP(defaultSelectedValues,lstStyle);
 			mapPDP=null;
 			mapAddToBag = null;
