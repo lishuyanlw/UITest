@@ -442,6 +442,8 @@ public class ApiResponse extends ApiConfigs {
      * This method finds product number on the basis of input conditions(video,style,size,brand,badgeImage,review,easyPay,WasPrice,and AddToBag)
      * @param - Product - product : Product class object
      * @param - Map<String,Object> - configs : configs on basis of which product info will be fetched
+	 *        - If quantity in configs <0, to get the Inventory>0 and Inventory<quantity
+	 * 		  - If quantity in configs >0, to get the Inventory>quantity
      * @param - boolean - isSoldOut :true for including soldout criteria and false for not checking soldout criteria
 	 * @param - boolean - basicCheck - check with default settings
 	 * @param - boolean - isMultiStyleAndSize - to choose 2 Style/Size combination with more than presetting quantity
@@ -588,10 +590,21 @@ public class ApiResponse extends ApiConfigs {
 							}
 						}
 						else {
-							if(Edps.getInventory()>quantity){
-								selectedProduct.productEDPSize = Edps.getSize();
-								selectedProduct.productEDPColor = Edps.getStyle();
-								break;
+							//If quantity<0, to get the Inventory>0 and Inventory<quantity
+							//If quantity>0, to get the Inventory>quantity
+							if(quantity<0){
+								if(Edps.getInventory()>0&&Edps.getInventory()<Math.abs(quantity)){
+									selectedProduct.productEDPSize = Edps.getSize();
+									selectedProduct.productEDPColor = Edps.getStyle();
+									break;
+								}
+							}
+							else{
+								if(Edps.getInventory()>quantity){
+									selectedProduct.productEDPSize = Edps.getSize();
+									selectedProduct.productEDPColor = Edps.getStyle();
+									break;
+								}
 							}
 						}
 					}
