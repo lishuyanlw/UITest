@@ -1833,7 +1833,7 @@ public class ProductDetailPage extends BasePage {
 	 * @author Wei.Li
 	 */
 	public void verifyShoppingCartNumber(int cartCount) {
-		reporter.softAssert(getShoppingCartNumber()>=cartCount,"The Shopping cart number is equal to 1","The Shopping cart number is not equal to 1");
+		reporter.softAssert(getShoppingCartNumber()>=cartCount,"The Shopping cart number is equal to "+cartCount,"The Shopping cart number is not equal to "+cartCount);
 	}
 
 	public int getOrderAmountFromSubTotalInAddToBagModel(){
@@ -2674,7 +2674,7 @@ public class ProductDetailPage extends BasePage {
 		reporter.softAssert(this.URL().toLowerCase().contains("signin"),"The page has been navigated to signin page while no user login","The page has not been navigated to signin page while no user login");
 
 		loginPage.LoginWithoutWaitingTime(lsUserName,lsPassword);
-		this.waitForCondition(Driver->{return this.lblProductName.isDisplayed();},120000);
+		this.waitForCondition(Driver->{return this.lblProductName.isDisplayed();},2000000);
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavIcon);
 		if(checkIfFavShareMobileHighlighted())

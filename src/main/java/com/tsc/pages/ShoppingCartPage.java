@@ -377,14 +377,18 @@ public class ShoppingCartPage extends BasePage {
 		this.getReusableActionsInstance().clickIfAvailable(globalHeaderPage.CartBagCounter);
 		this.waitForPageToLoad();
 		if(this.btnItemRemoveButtonFromCart.size()>0){
-			/**for(WebElement removeButton: this.btnItemRemoveButtonFromCart){
+			for(WebElement removeButton: this.btnItemRemoveButtonFromCart){
 				openRemoveDialog(removeButton);
 				closeRemoveDialogWithRemoveAction();
-			}*/
-			for(int counter = 0;counter < this.btnItemRemoveButtonFromCart.size(); counter++){
+				this.waitForPageToLoad();
+				//Applying static wait here after wait for page load function again
+				//as sometimes page loads but DOM is still getting refreshed and hence Stale Element Exception is thrown
+				this.applyStaticWait(3000);
+			}
+			/**for(int counter = 0;counter < this.btnItemRemoveButtonFromCart.size(); counter++){
 				openRemoveDialog(this.btnItemRemoveButtonFromCart.get(counter));
 				closeRemoveDialogWithRemoveAction();
-			}
+			}*/
 		}
 		//Verify that all items are removed
 		this.getReusableActionsInstance().staticWait(3000);
