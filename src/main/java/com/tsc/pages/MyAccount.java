@@ -2973,7 +2973,7 @@ public class MyAccount extends BasePage {
 			this.waitForCondition(Driver->{return this.lblShippingAddressSectionTitle.isDisplayed();},40000);
 		}
 		catch (Exception e){
-			this.getReusableActionsInstance().staticWait(10*getStaticWaitForApplication())
+			this.getReusableActionsInstance().staticWait(10*getStaticWaitForApplication());
 		}
 		this.getReusableActionsInstance().staticWait(5*getStaticWaitForApplication());
 	}
