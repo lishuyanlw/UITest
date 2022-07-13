@@ -190,9 +190,16 @@ public class SignInPage extends BasePage {
 			waitForCondition(Driver->{return lblSignInGlobalResponseBanner.isDisplayed();},300000);
 		}
 		catch(Exception e){
-			getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSubmit);
-			this.btnSubmit.click();
-			waitForCondition(Driver->{return lblSignInGlobalResponseBanner.isDisplayed();},300000);
+			try{
+				getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSubmit);
+				this.btnSubmit.click();
+				waitForCondition(Driver->{return lblSignInGlobalResponseBanner.isDisplayed();},300000);
+			}
+			catch (Exception ex){
+				getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSubmit);
+				this.btnSubmit.click();
+				waitForCondition(Driver->{return lblSignInGlobalResponseBanner.isDisplayed();},300000);
+			}
 		}
 
 		return true;

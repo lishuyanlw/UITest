@@ -281,4 +281,37 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 		}
 	}
 
+	@Override
+	public boolean checkDuplicatedStyleAndSizeInShoppingItemList(Map<String,Object> shoppingCartMap){
+		List<Map<String,Object>> shoppingList=(List<Map<String,Object>>)shoppingCartMap.get("shoppingList");
+		String outerName,outerStyle,outerSize,innerName,innerStyle,innerSize;
+		int amount;
+
+		for(Map<String,Object> shoppingItemOuter:shoppingList){
+			if(shoppingItemOuter.get("productStyle")==null&&shoppingItemOuter.get("productSize")==null){
+				continue;
+			}
+			amount=0;
+			outerName= shoppingItemOuter.get("productName").toString();
+			outerStyle= shoppingItemOuter.get("productStyle").toString();
+			outerSize= shoppingItemOuter.get("productSize").toString();
+			for(Map<String,Object> shoppingItemInner:shoppingList){
+				if(shoppingItemInner.get("productStyle")==null&&shoppingItemInner.get("productSize")==null){
+					continue;
+				}
+				innerName= shoppingItemInner.get("productName").toString();
+				innerStyle= shoppingItemInner.get("productStyle").toString();
+				innerSize= shoppingItemInner.get("productSize").toString();
+				if(outerName.equalsIgnoreCase(innerName)&&outerStyle.equalsIgnoreCase(innerStyle)&&outerSize.equalsIgnoreCase(innerSize)){
+					amount+=1;
+				}
+			}
+			if(amount>1){
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 }
