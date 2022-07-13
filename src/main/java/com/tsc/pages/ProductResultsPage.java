@@ -1920,7 +1920,7 @@ public class ProductResultsPage extends BasePage{
 	}
 
 	public boolean waitForPDPPageLoading() {
-		this.getReusableActionsInstance().waitForElementVisibility((new ProductDetailPage(this.getDriver())).lblProductName,120);
+		this.getReusableActionsInstance().waitForElementVisibility((new ProductDetailPage(this.getDriver())).lblProductName,200);
 		return true;
 	}
 	
