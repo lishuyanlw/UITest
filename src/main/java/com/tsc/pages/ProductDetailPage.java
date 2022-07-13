@@ -1633,7 +1633,15 @@ public class ProductDetailPage extends BasePage {
 //		this.getReusableActionsInstance().clickIfAvailable(this.btnAddToBag);
 		//this.btnAddToBag.click();
 		this.clickElement(this.btnAddToBag);
-		return this.waitForCondition(Drive->{return checkAddToBagPopupDisplaying();}, 30000);
+
+		try{
+			this.waitForCondition(Drive->{return checkAddToBagPopupDisplaying();}, 30000);
+		}
+		catch(Exception e){
+			this.applyStaticWait(10000);
+		}
+
+		return true;
 	}
 
 	/**

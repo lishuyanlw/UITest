@@ -46,8 +46,8 @@ public class PD_TC18_VerifyProductDetail_AddToBag_MergeCart_LogInFirst extends B
 		Map<String,Object> outputDataCriteria= new HashMap<String,Object>();
 		outputDataCriteria.put("style", "2");
 		outputDataCriteria.put("size", "2");
-		outputDataCriteria.put("quantity", "2");
-		if(getProductDetailPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList,"ConditionsForMultipleStyleAndSize",outputDataCriteria)) {
+		outputDataCriteria.put("quantity", "-10");
+		if(getProductDetailPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList,"AllConditionsWithoutCheckingSoldOutCriteria",outputDataCriteria)) {
 			reporter.reportLog("Verify URL");
 			lsProductNumber=getProductDetailPageThreadLocal().selectedProduct.productNumber;
 			lsUrl=basePage.URL();
@@ -57,16 +57,7 @@ public class PD_TC18_VerifyProductDetail_AddToBag_MergeCart_LogInFirst extends B
 			reporter.reportLog(getProductDetailPageThreadLocal().selectedProduct.productEDPColor);
 			reporter.reportLog(getProductDetailPageThreadLocal().selectedProduct.productEDPSize);
 
-			//Including Style 1 and Style 2
-			String[] lstStyle=getProductDetailPageThreadLocal().getStyleList();
-
-			//The Size list for Style 1
-			String[] lstSize1=getProductDetailPageThreadLocal().getSizeListForGivenStyle(0);
-			//For Size list for Style 2
-			String[] lstSize2=getProductDetailPageThreadLocal().getSizeListForGivenStyle(1);
-
-			//To choose Style/Size/Quantity as needed
-			getProductDetailPageThreadLocal().chooseGivenStyleAndSizeAndQuantity(lstStyle[1],lstSize2[2],1);
+			getProductDetailPageThreadLocal().chooseGivenStyleAndSize(getProductDetailPageThreadLocal().selectedProduct.productEDPColor,getProductDetailPageThreadLocal().selectedProduct.productEDPSize);
 
 			Map<String,Object> PDPMap=getProductDetailPageThreadLocal().getPDPDesc();
 
