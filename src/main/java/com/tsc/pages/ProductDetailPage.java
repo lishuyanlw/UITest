@@ -1833,7 +1833,7 @@ public class ProductDetailPage extends BasePage {
 	 * @author Wei.Li
 	 */
 	public void verifyShoppingCartNumber(int cartCount) {
-		reporter.softAssert(getShoppingCartNumber()>=cartCount,"The Shopping cart number is equal to 1","The Shopping cart number is not equal to 1");
+		reporter.softAssert(getShoppingCartNumber()>=cartCount,"The Shopping cart number is equal to "+cartCount,"The Shopping cart number is not equal to "+cartCount);
 	}
 
 	public int getOrderAmountFromSubTotalInAddToBagModel(){
