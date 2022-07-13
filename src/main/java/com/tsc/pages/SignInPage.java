@@ -184,10 +184,18 @@ public class SignInPage extends BasePage {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputPassword);
 		this.inputPassword.sendKeys(lsPassword);
 
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSubmit);
-		this.btnSubmit.click();
+		try{
+			getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSubmit);
+			this.btnSubmit.click();
+			waitForCondition(Driver->{return lblSignInGlobalResponseBanner.isDisplayed();},300000);
+		}
+		catch(Exception e){
+			getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSubmit);
+			this.btnSubmit.click();
+			waitForCondition(Driver->{return lblSignInGlobalResponseBanner.isDisplayed();},300000);
+		}
 
-		return waitForCondition(Driver->{return lblSignInGlobalResponseBanner.isDisplayed();},300000);
+		return true;
 	}
 
 	/**

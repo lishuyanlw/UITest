@@ -72,6 +72,7 @@ public class ShoppingCartPage extends BasePage {
 	public By byProductRedMessage=By.xpath(".//div[contains(@class,'item-status')][span[@class='boldRedColor']]");
 
 	//Hide in mobile
+	public By byProductBlackMessageContainer=By.xpath(".//div[contains(@class,'cart-desc-line') and not(contains(@class,'visible-xs-block'))][div[span[@class='now-price']]]/..");
 	public By byProductBlackMessage=By.xpath(".//div[contains(@class,'item-status')][span[@class='boldBlackColor']]");
 
 	public By byProductNowPrice=By.xpath(".//div[contains(@class,'cart-desc-line') and not(contains(@class,'visible-xs-block'))]//span[contains(@class,'now-price')]");
@@ -279,6 +280,16 @@ public class ShoppingCartPage extends BasePage {
 	}
 
 	/**
+	 * To check Free Shipping message existing for cart item in the shopping item list
+	 * @param - cartItem - item in lstCartItems
+	 * @return - boolean
+	 */
+	public boolean checkFreeShippingMessageExisting(WebElement cartItem){
+		WebElement item=cartItem.findElement(this.byProductBlackMessageContainer);
+		return this.checkChildElementExistingByAttribute(item,"class","item-status");
+	}
+
+	/**
 	 * To check Remove button existing for cart item in the shopping item list, for example, for free shipping scenario
 	 * @param - cartItem - item in lstCartItems
 	 * @return - boolean
@@ -436,7 +447,7 @@ public class ShoppingCartPage extends BasePage {
 			map.put("productLeftNumber",null);
 		}
 
-		if(!this.checkSelectQuantityEnabled(cartItem)){
+		if(this.checkFreeShippingMessageExisting(cartItem)){
 			item=cartItem.findElement(byProductBlackMessage);
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 			lsText=item.getText().trim();
@@ -662,6 +673,41 @@ public class ShoppingCartPage extends BasePage {
 			else{
 				reporter.reportLogFail("The SubTotal:"+subTotalAddToBag+" in AddToBag is not equal to SubTotal:"+shoppingSubTotal+" in Shopping cart");
 			}
+		}
+	}
+
+	/**
+	 * To verify Quantity And Price Between ShoppingItem List And SubTotalSection
+	 * @param - Map<String,Object> - shoppingCartMap
+	 */
+	public void verifyQuantityAndPriceBetweenShoppingItemListAndSubTotalSection(Map<String,Object> shoppingCartMap){
+		List<Map<String,Object>> shoppingList=(List<Map<String,Object>>)shoppingCartMap.get("shoppingList");
+		int shoppingAmount= (int) shoppingCartMap.get("shoppingCartMap");
+		float shoppingSubTotal= (float) shoppingCartMap.get("shoppingSubTotal");
+
+		float priceAmount=0.0f;
+		int quantityAmount=0,itemQuantity;
+		for(Map<String,Object> shoppingItem:shoppingList){
+			if(shoppingItem.get("productQuantity")==null){
+				continue;
+			}
+			itemQuantity= (int) shoppingItem.get("productQuantity");
+			quantityAmount+=itemQuantity;
+			priceAmount=priceAmount+itemQuantity*(float)shoppingItem.get("productNowPrice");
+		}
+
+		if(shoppingAmount==quantityAmount){
+			reporter.reportLogPass("The quantity amount in shopping item list is equal to item amount in subtotal section");
+		}
+		else{
+			reporter.reportLogFail("The quantity amount:"+quantityAmount+" in shopping item list is equal to item amount:"+shoppingAmount+" in subtotal section");
+		}
+
+		if(Math.abs(shoppingSubTotal-priceAmount)<0.1){
+			reporter.reportLogPass("The total price*quantity amount in shopping item list is equal to subtotal amount in subtotal section");
+		}
+		else{
+			reporter.reportLogFail("The total price*quantity amount:"+priceAmount+" in shopping item list is equal to subtotal amount:"+shoppingSubTotal+" in subtotal section");
 		}
 	}
 

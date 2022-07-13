@@ -91,15 +91,7 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 			map.put("productLeftNumber",null);
 		}
 
-		if(!this.checkSelectQuantityEnabled(cartItem)){
-			item=cartItem.findElement(byProductBlackMessage);
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-			lsText=item.getText().trim();
-			map.put("productFreeShipping",lsText);
-		}
-		else{
-			map.put("productFreeShipping",null);
-		}
+		map.put("productFreeShipping",null);
 
 		item=cartItem.findElement(byProductNowPrice);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
@@ -257,5 +249,36 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 		}
 	}
 
+	@Override
+	public void verifyQuantityAndPriceBetweenShoppingItemListAndSubTotalSection(Map<String,Object> shoppingCartMap){
+		List<Map<String,Object>> shoppingList=(List<Map<String,Object>>)shoppingCartMap.get("shoppingList");
+		int shoppingAmount= (int) shoppingCartMap.get("shoppingCartMap");
+		float shoppingSubTotal= (float) shoppingCartMap.get("shoppingSubTotal");
+
+		float priceAmount=0.0f;
+		int quantityAmount=0,itemQuantity;
+		for(Map<String,Object> shoppingItem:shoppingList){
+			if(shoppingItem.get("productQuantity")==null){
+				continue;
+			}
+			itemQuantity= (int) shoppingItem.get("productQuantity");
+			quantityAmount+=itemQuantity;
+			priceAmount=priceAmount+itemQuantity*(float)shoppingItem.get("productNowPrice");
+		}
+
+		if(shoppingAmount==quantityAmount){
+			reporter.reportLogPass("The quantity amount in shopping item list is equal to item amount in subtotal section");
+		}
+		else{
+			reporter.reportLogFail("The quantity amount:"+quantityAmount+" in shopping item list is equal to item amount:"+shoppingAmount+" in subtotal section");
+		}
+
+		if(Math.abs(shoppingSubTotal-priceAmount)<0.1){
+			reporter.reportLogPass("The total price*quantity amount in shopping item list is equal to subtotal amount in subtotal section");
+		}
+		else{
+			reporter.reportLogFail("The total price*quantity amount:"+priceAmount+" in shopping item list is equal to subtotal amount:"+shoppingSubTotal+" in subtotal section");
+		}
+	}
 
 }
