@@ -42,6 +42,9 @@ public class ShoppingCartPage extends BasePage {
 	@FindBy(xpath = "//div[@class='cartridge']//div[@id='tf-cart-wrapper']")
 	public WebElement lblCartNoticeTrueFitMessage;
 
+	@FindBy(xpath = "//div[@class='cartridge']//div[@id='tf-cart-wrapper']//a[contains(@class,'tfc-popup-click-open')]")
+	public WebElement lnkCartNoticeTrueFit;
+
 	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'estimateDate__wrapper')]")
 	public WebElement lblCartGetItByDate;
 
@@ -131,6 +134,9 @@ public class ShoppingCartPage extends BasePage {
 	////////////////For Order summary section////////////////////////////
 
 	//Pricing
+	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'details-box')]")
+	public WebElement cntCartPricingDetails;
+
 	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-pricing')]")
 	public WebElement cntCartPricingSection;
 
@@ -305,6 +311,30 @@ public class ShoppingCartPage extends BasePage {
 	 */
 	public boolean checkRemoveDialogBadgeExisting(){
 		return this.checkChildElementExistingByAttribute(cntRemoveDialogImageContainer,"class","badgeWrap");
+	}
+
+	/**
+	 * To check MultiPack Message In OrderSummary Section Existing
+	 * @return - boolean
+	 */
+	public boolean checkMultiPackMessageInOrderSummarySectionExisting(){
+		return this.checkChildElementExistingByAttribute(this.cntCartPricingDetails,"class","multipack");
+	}
+
+	/**
+	 * To check ShippingWasPrice in orderSummary section Existing
+	 * @return - boolean
+	 */
+	public boolean checkShippingWasPriceExisting(){
+		return !this.getElementInnerText(lblCartPricingShippingWasPrice).isEmpty();
+	}
+
+	/**
+	 * To check Shipping saving in orderSummary section Existing
+	 * @return - boolean
+	 */
+	public boolean checkShippingSavingExisting(){
+		return checkShippingWasPriceExisting();
 	}
 
 	/**
@@ -750,6 +780,14 @@ public class ShoppingCartPage extends BasePage {
 		}
 
 		return false;
+	}
+
+	/**
+	 * To get Shopping Item Amount From OrderSummary Section
+	 * @return - int
+	 */
+	public int getShoppingItemAmountFromOrderSummarySection(){
+		return this.getIntegerFromString(this.getElementInnerText(this.lblCartPricingOrderSummaryTitle));
 	}
 
 }

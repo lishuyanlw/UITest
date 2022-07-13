@@ -39,6 +39,14 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 		return !this.hasElementAttribute(item,"disabled");
 	}
 
+	/**
+	 * To check Contents Head Message In OrderSummary Section Existing
+	 * @return - boolean
+	 */
+	public boolean checkContentsHeadMessageInOrderSummarySectionExisting(){
+		return this.checkChildElementExistingByAttribute(this.cntCartPricingDetails,"class","contents-head");
+	}
+
 	@Override
 	public Map<String,Object> getShoppingItemDesc(WebElement cartItem){
 		Map<String,Object> map=new HashMap<>();
