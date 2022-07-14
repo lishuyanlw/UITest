@@ -842,8 +842,14 @@ public class ShoppingCartPage extends BasePage {
 		else{
 			map.put("savePrice",0.0);
 		}
-
 		return map;
+	}
+
+	/**
+	 * To verify OrderSummary Section
+	 */
+	public void verifyOrderSummarySection(Map<String,Object> orderSummaryMap){
+
 	}
 
 
