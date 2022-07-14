@@ -17,9 +17,14 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 		super(driver);
 	}
 
+	//For Shopping item section
 	public By byProductRedMessage=By.xpath(".//span[contains(@class,'item-status') and contains(@class,'visible-xs-inline')][span[@class='boldRedColor']]");
 	public By byProductSelectQuantity=By.xpath(".//div[contains(@class,'tsc-forms') and contains(@class,'visible-xs-inline')]//select");
 	public By byProductNowPrice=By.xpath(".//div[contains(@class,'cart-desc-line') and contains(@class,'visible-xs-block')]//span[contains(@class,'now-price')]");
+
+	//For OrderSummary section
+	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'details-box')]//div[contains(@class,'contents-head')]")
+	public WebElement lblCartPricingContentHead;
 
 	@Override
 	public boolean checkSelectQuantityEnabled(WebElement cartItem){
@@ -37,6 +42,14 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 	public boolean checkRemoveButtonExisting(WebElement cartItem){
 		WebElement item=cartItem.findElement(byProductSelectQuantity);
 		return !this.hasElementAttribute(item,"disabled");
+	}
+
+	/**
+	 * To check Contents Head Message In OrderSummary Section Existing
+	 * @return - boolean
+	 */
+	public boolean checkContentsHeadMessageInOrderSummarySectionExisting(){
+		return this.checkChildElementExistingByAttribute(this.cntCartPricingDetails,"class","contents-head");
 	}
 
 	@Override
@@ -91,15 +104,7 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 			map.put("productLeftNumber",null);
 		}
 
-		if(!this.checkSelectQuantityEnabled(cartItem)){
-			item=cartItem.findElement(byProductBlackMessage);
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-			lsText=item.getText().trim();
-			map.put("productFreeShipping",lsText);
-		}
-		else{
-			map.put("productFreeShipping",null);
-		}
+		map.put("productFreeShipping",null);
 
 		item=cartItem.findElement(byProductNowPrice);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
@@ -257,5 +262,69 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 		}
 	}
 
+	@Override
+	public void verifyQuantityAndPriceBetweenShoppingItemListAndSubTotalSection(Map<String,Object> shoppingCartMap){
+		List<Map<String,Object>> shoppingList=(List<Map<String,Object>>)shoppingCartMap.get("shoppingList");
+		int shoppingAmount= (int) shoppingCartMap.get("shoppingCartMap");
+		float shoppingSubTotal= (float) shoppingCartMap.get("shoppingSubTotal");
+
+		float priceAmount=0.0f;
+		int quantityAmount=0,itemQuantity;
+		for(Map<String,Object> shoppingItem:shoppingList){
+			if(shoppingItem.get("productQuantity")==null){
+				continue;
+			}
+			itemQuantity= (int) shoppingItem.get("productQuantity");
+			quantityAmount+=itemQuantity;
+			priceAmount=priceAmount+itemQuantity*(float)shoppingItem.get("productNowPrice");
+		}
+
+		if(shoppingAmount==quantityAmount){
+			reporter.reportLogPass("The quantity amount in shopping item list is equal to item amount in subtotal section");
+		}
+		else{
+			reporter.reportLogFail("The quantity amount:"+quantityAmount+" in shopping item list is equal to item amount:"+shoppingAmount+" in subtotal section");
+		}
+
+		if(Math.abs(shoppingSubTotal-priceAmount)<0.1){
+			reporter.reportLogPass("The total price*quantity amount in shopping item list is equal to subtotal amount in subtotal section");
+		}
+		else{
+			reporter.reportLogFail("The total price*quantity amount:"+priceAmount+" in shopping item list is equal to subtotal amount:"+shoppingSubTotal+" in subtotal section");
+		}
+	}
+
+	@Override
+	public boolean checkDuplicatedStyleAndSizeInShoppingItemList(Map<String,Object> shoppingCartMap){
+		List<Map<String,Object>> shoppingList=(List<Map<String,Object>>)shoppingCartMap.get("shoppingList");
+		String outerName,outerStyle,outerSize,innerName,innerStyle,innerSize;
+		int amount;
+
+		for(Map<String,Object> shoppingItemOuter:shoppingList){
+			if(shoppingItemOuter.get("productStyle")==null&&shoppingItemOuter.get("productSize")==null){
+				continue;
+			}
+			amount=0;
+			outerName= shoppingItemOuter.get("productName").toString();
+			outerStyle= shoppingItemOuter.get("productStyle").toString();
+			outerSize= shoppingItemOuter.get("productSize").toString();
+			for(Map<String,Object> shoppingItemInner:shoppingList){
+				if(shoppingItemInner.get("productStyle")==null&&shoppingItemInner.get("productSize")==null){
+					continue;
+				}
+				innerName= shoppingItemInner.get("productName").toString();
+				innerStyle= shoppingItemInner.get("productStyle").toString();
+				innerSize= shoppingItemInner.get("productSize").toString();
+				if(outerName.equalsIgnoreCase(innerName)&&outerStyle.equalsIgnoreCase(innerStyle)&&outerSize.equalsIgnoreCase(innerSize)){
+					amount+=1;
+				}
+			}
+			if(amount>1){
+				return true;
+			}
+		}
+
+		return false;
+	}
 
 }

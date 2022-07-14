@@ -42,6 +42,9 @@ public class ShoppingCartPage extends BasePage {
 	@FindBy(xpath = "//div[@class='cartridge']//div[@id='tf-cart-wrapper']")
 	public WebElement lblCartNoticeTrueFitMessage;
 
+	@FindBy(xpath = "//div[@class='cartridge']//div[@id='tf-cart-wrapper']//a[contains(@class,'tfc-popup-click-open')]")
+	public WebElement lnkCartNoticeTrueFit;
+
 	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'estimateDate__wrapper')]")
 	public WebElement lblCartGetItByDate;
 
@@ -72,6 +75,7 @@ public class ShoppingCartPage extends BasePage {
 	public By byProductRedMessage=By.xpath(".//div[contains(@class,'item-status')][span[@class='boldRedColor']]");
 
 	//Hide in mobile
+	public By byProductBlackMessageContainer=By.xpath(".//div[contains(@class,'cart-desc-line') and not(contains(@class,'visible-xs-block'))][div[span[@class='now-price']]]/..");
 	public By byProductBlackMessage=By.xpath(".//div[contains(@class,'item-status')][span[@class='boldBlackColor']]");
 
 	public By byProductNowPrice=By.xpath(".//div[contains(@class,'cart-desc-line') and not(contains(@class,'visible-xs-block'))]//span[contains(@class,'now-price')]");
@@ -130,8 +134,14 @@ public class ShoppingCartPage extends BasePage {
 	////////////////For Order summary section////////////////////////////
 
 	//Pricing
+	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'details-box')]")
+	public WebElement cntCartPricingDetails;
+
 	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-pricing')]")
 	public WebElement cntCartPricingSection;
+
+	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'details-box')]/*[contains(@class,'multipack')]")
+	public WebElement lblCartPricingMultiPackMessage;
 
 	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-pricing')]//div[contains(@class,'details-title')]")
 	public WebElement lblCartPricingOrderSummaryTitle;
@@ -279,6 +289,16 @@ public class ShoppingCartPage extends BasePage {
 	}
 
 	/**
+	 * To check Free Shipping message existing for cart item in the shopping item list
+	 * @param - cartItem - item in lstCartItems
+	 * @return - boolean
+	 */
+	public boolean checkFreeShippingMessageExisting(WebElement cartItem){
+		WebElement item=cartItem.findElement(this.byProductBlackMessageContainer);
+		return this.checkChildElementExistingByAttribute(item,"class","item-status");
+	}
+
+	/**
 	 * To check Remove button existing for cart item in the shopping item list, for example, for free shipping scenario
 	 * @param - cartItem - item in lstCartItems
 	 * @return - boolean
@@ -294,6 +314,30 @@ public class ShoppingCartPage extends BasePage {
 	 */
 	public boolean checkRemoveDialogBadgeExisting(){
 		return this.checkChildElementExistingByAttribute(cntRemoveDialogImageContainer,"class","badgeWrap");
+	}
+
+	/**
+	 * To check MultiPack Message In OrderSummary Section Existing
+	 * @return - boolean
+	 */
+	public boolean checkMultiPackMessageInOrderSummarySectionExisting(){
+		return this.checkChildElementExistingByAttribute(this.cntCartPricingDetails,"class","multipack");
+	}
+
+	/**
+	 * To check ShippingWasPrice in orderSummary section Existing
+	 * @return - boolean
+	 */
+	public boolean checkShippingWasPriceExisting(){
+		return !this.getElementInnerText(lblCartPricingShippingWasPrice).isEmpty();
+	}
+
+	/**
+	 * To check Shipping saving in orderSummary section Existing
+	 * @return - boolean
+	 */
+	public boolean checkShippingSavingExisting(){
+		return checkShippingWasPriceExisting();
 	}
 
 	/**
@@ -440,7 +484,7 @@ public class ShoppingCartPage extends BasePage {
 			map.put("productLeftNumber",null);
 		}
 
-		if(!this.checkSelectQuantityEnabled(cartItem)){
+		if(this.checkFreeShippingMessageExisting(cartItem)){
 			item=cartItem.findElement(byProductBlackMessage);
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 			lsText=item.getText().trim();
@@ -668,5 +712,139 @@ public class ShoppingCartPage extends BasePage {
 			}
 		}
 	}
+
+	/**
+	 * To verify Quantity And Price Between ShoppingItem List And SubTotalSection
+	 * @param - Map<String,Object> - shoppingCartMap
+	 */
+	public void verifyQuantityAndPriceBetweenShoppingItemListAndSubTotalSection(Map<String,Object> shoppingCartMap){
+		List<Map<String,Object>> shoppingList=(List<Map<String,Object>>)shoppingCartMap.get("shoppingList");
+		int shoppingAmount= (int) shoppingCartMap.get("shoppingCartMap");
+		float shoppingSubTotal= (float) shoppingCartMap.get("shoppingSubTotal");
+
+		float priceAmount=0.0f;
+		int quantityAmount=0,itemQuantity;
+		for(Map<String,Object> shoppingItem:shoppingList){
+			if(shoppingItem.get("productQuantity")==null){
+				continue;
+			}
+			itemQuantity= (int) shoppingItem.get("productQuantity");
+			quantityAmount+=itemQuantity;
+			priceAmount=priceAmount+itemQuantity*(float)shoppingItem.get("productNowPrice");
+		}
+
+		if(shoppingAmount==quantityAmount){
+			reporter.reportLogPass("The quantity amount in shopping item list is equal to item amount in subtotal section");
+		}
+		else{
+			reporter.reportLogFail("The quantity amount:"+quantityAmount+" in shopping item list is equal to item amount:"+shoppingAmount+" in subtotal section");
+		}
+
+		if(Math.abs(shoppingSubTotal-priceAmount)<0.1){
+			reporter.reportLogPass("The total price*quantity amount in shopping item list is equal to subtotal amount in subtotal section");
+		}
+		else{
+			reporter.reportLogFail("The total price*quantity amount:"+priceAmount+" in shopping item list is equal to subtotal amount:"+shoppingSubTotal+" in subtotal section");
+		}
+	}
+
+	/**
+	 * To check Duplicated Style And Size In ShoppingItem List
+	 * @param - Map<String,Object> - shoppingCartMap
+	 * @return - boolean
+	 */
+	public boolean checkDuplicatedStyleAndSizeInShoppingItemList(Map<String,Object> shoppingCartMap){
+		List<Map<String,Object>> shoppingList=(List<Map<String,Object>>)shoppingCartMap.get("shoppingList");
+		String outerName,outerStyle,outerSize,innerName,innerStyle,innerSize;
+		int amount;
+
+		for(Map<String,Object> shoppingItemOuter:shoppingList){
+			if(shoppingItemOuter.get("productStyle")==null&&shoppingItemOuter.get("productSize")==null){
+				continue;
+			}
+			amount=0;
+			outerName= shoppingItemOuter.get("productName").toString();
+			outerStyle= shoppingItemOuter.get("productStyle").toString();
+			outerSize= shoppingItemOuter.get("productSize").toString();
+			for(Map<String,Object> shoppingItemInner:shoppingList){
+				if(shoppingItemInner.get("productStyle")==null&&shoppingItemInner.get("productSize")==null){
+					continue;
+				}
+				innerName= shoppingItemInner.get("productName").toString();
+				innerStyle= shoppingItemInner.get("productStyle").toString();
+				innerSize= shoppingItemInner.get("productSize").toString();
+				if(outerName.equalsIgnoreCase(innerName)&&outerStyle.equalsIgnoreCase(innerStyle)&&outerSize.equalsIgnoreCase(innerSize)){
+					amount+=1;
+				}
+			}
+			if(amount>1){
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * To get Shopping Item Amount From OrderSummary Section
+	 * @return - int
+	 */
+	public int getShoppingItemAmountFromOrderSummarySection(){
+		return this.getIntegerFromString(this.getElementInnerText(this.lblCartPricingOrderSummaryTitle));
+	}
+
+	/**
+	 * To get OrderSummary Description
+	 * @return - Map<String,Object>
+	 */
+	public Map<String,Object> getOrderSummaryDesc(){
+		Map<String,Object> map=new HashMap<>();
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblCartPricingOrderSummaryTitle);
+		String lsText=this.lblCartPricingOrderSummaryTitle.getText();
+		map.put("itemAmount",this.getIntegerFromString(lsText));
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblCartPricingSubTotal);
+		lsText=this.lblCartPricingSubTotal.getText();
+		map.put("subTotal",this.getFloatFromString(lsText,true));
+
+		if(this.checkShippingWasPriceExisting()){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblCartPricingShippingWasPrice);
+			lsText=this.lblCartPricingShippingWasPrice.getText();
+			map.put("wasPrice",this.getFloatFromString(lsText,true));
+		}
+		else{
+			map.put("wasPrice",0.0);
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblCartPricingShippingNowPrice);
+		lsText=this.lblCartPricingShippingNowPrice.getText().trim();
+		if(!lsText.equalsIgnoreCase("Free")){
+			map.put("nowPrice",this.getFloatFromString(lsText,true));
+		}
+		else{
+			map.put("nowPrice",0.0);
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblCartPricingShippingEstimateTax);
+		lsText=this.lblCartPricingShippingEstimateTax.getText();
+		map.put("tax",this.getFloatFromString(lsText,true));
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblCartPricingTotalPrice);
+		lsText=this.lblCartPricingTotalPrice.getText();
+		map.put("totalPrice",this.getFloatFromString(lsText,true));
+
+		if(this.checkShippingSavingExisting()){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblCartPricingYouAreSaving);
+			lsText=this.lblCartPricingYouAreSaving.getText();
+			map.put("savePrice",this.getFloatFromString(lsText,true));
+		}
+		else{
+			map.put("savePrice",0.0);
+		}
+
+		return map;
+	}
+
 
 }

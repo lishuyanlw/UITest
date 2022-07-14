@@ -360,9 +360,9 @@ public class BaseTest {
 
 	@AfterMethod(alwaysRun = true)
 	public void afterTest() throws IOException, InterruptedException{
-//		if (getDriver() != null && !placeOrderValue) {
-//			addPlaceOrder();
-//		}
+		if (getDriver() != null && !placeOrderValue) {
+			addPlaceOrder();
+		}
 		closeSession();
 	}
 

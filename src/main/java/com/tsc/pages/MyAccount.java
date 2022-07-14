@@ -2969,7 +2969,12 @@ public class MyAccount extends BasePage {
 			this.clickElement(this.btnCancel);
 			//btnCancel.click();
 		}
-		this.waitForCondition(Driver->{return this.lblShippingAddressSectionTitle.isDisplayed();},40000);
+		try{
+			this.waitForCondition(Driver->{return this.lblShippingAddressSectionTitle.isDisplayed();},40000);
+		}
+		catch (Exception e){
+			this.getReusableActionsInstance().staticWait(10*getStaticWaitForApplication());
+		}
 		this.getReusableActionsInstance().staticWait(5*getStaticWaitForApplication());
 	}
 
@@ -3417,7 +3422,7 @@ public class MyAccount extends BasePage {
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(selectAddOrEditAddressProvince);
 		String lsText=selectProvince.getFirstSelectedOption().getText().trim();
-		if(!lsText.isEmpty()){
+		if(!lsText.isEmpty()&&!lsText.equalsIgnoreCase("Select Province")){
 			reporter.reportLogPass("Auto search function is working well for Province field");
 		}
 		else{
