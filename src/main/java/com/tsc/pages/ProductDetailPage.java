@@ -465,6 +465,9 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//div[@id='pr-reviewdisplay']//section[@id='pr-review-display']//div[@class='pr-review']")
 	public List<WebElement> lstReviewTabPerReviewList;
 
+	@FindBy(xpath = "//div[@class='pr-review-snapshot-histogram']//li[@class='pr-ratings-histogram-list-item']//div[@class='pr-histogram-cross']/span")
+	public WebElement lblReviewHistogramCrossButton;
+
 	/**public By byReviewTabHeader=By.xpath(".//header");
 
 	public By byReviewTabDescriptionSection=By.xpath(".//section[contains(@class,'pr-rd-description')]");
@@ -1210,6 +1213,45 @@ public class ProductDetailPage extends BasePage {
 			element=item.findElement(this.byReviewTabFooter);
 			reporter.softAssert(this.getReusableActionsInstance().isElementVisible(element), "The Footer section is existing", "The Footer section is not existing");
 		}
+	}
+
+	/**
+	 * Method to verify image for added review in review section
+	 * @return - int - Number of reviews that have reviews containing images
+	 */
+	public int verifyReviewImageForAddedReviews(){
+		int counter = 0;
+		for(WebElement item:this.lstReviewTabPerReviewList) {
+			WebElement reviewNickNameElement=item.findElement(this.byReviewTabNickName);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			WebElement imageReview = item.findElement(By.xpath("./section[contains(@class,'images')]"));
+			List<WebElement> imageReviewList = this.getChildrenList(imageReview);
+			if(imageReviewList.size()>0){
+				List<WebElement> imageReviewContent = this.getChildrenList(imageReviewList.get(0));
+				if(imageReviewContent.size()==2){
+					reporter.reportLog("Both image and text is present for review by: "+reviewNickNameElement.getText());
+					String reviewImageLink = imageReviewContent.get(0).findElement(By.xpath("./img")).getAttribute("src").trim();
+					String reviewImageComment = imageReviewContent.get(1).getText();
+					if(!reviewImageLink.isEmpty() && !reviewImageComment.isEmpty())
+						reporter.reportLogPass("Review Image Link and Comment is present for the review");
+					else
+						reporter.reportLogFailWithScreenshot("Either review image link or comment is missing for review");
+				}
+				if(imageReviewContent.size()==1){
+					reporter.reportLog("Only review image is present for review by: "+reviewNickNameElement.getText());
+					String reviewImageLink = imageReviewContent.get(0).findElement(By.xpath("./img")).getAttribute("src").trim();
+					if(!reviewImageLink.isEmpty())
+						reporter.reportLogPass("Review Image link is present for the review");
+					else
+						reporter.reportLogFailWithScreenshot("Review image link is missing for review");
+				}
+				counter++;
+			}
+		}
+		if(counter>0)
+			return counter;
+		else
+			return 0;
 	}
 
 	/**
@@ -2536,9 +2578,10 @@ public class ProductDetailPage extends BasePage {
 						reporter.reportLogPass("Product Overview Accordion is expanded by default for product");
 					else
 						reporter.reportLogFail("Product Overview Accordion is not expanded by default for product");
-				}else{
-					this.getReusableActionsInstance().clickIfAvailable(accordionDisplayIcon);
 				}
+				/**else{
+					this.getReusableActionsInstance().clickIfAvailable(accordionDisplayIcon);
+				}*/
 
 				//Verify Accordion Content
 				this.verifyAccordionContent(this.lstProductAccordions.get(counter));
@@ -2555,16 +2598,19 @@ public class ProductDetailPage extends BasePage {
 	public void verifyAccordionContent(WebElement accordion) {
 		WebElement accordionContentWebElement = accordion.findElement(this.accordionContents);
 		String accordionName = accordion.findElement(this.accordionHeading).getText();
-		String accordionData;
-		reporter.reportLog("Verifying content for accordion: "+accordionName);
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(accordionContentWebElement);
-		if(accordionName.contains("Chart"))
-			accordionData = accordionContentWebElement.findElement(By.xpath(".//img")).getAttribute("src");
-		else
-			accordionData = this.getElementText(accordionContentWebElement);
-		reporter.softAssert(!accordionData.isEmpty(),"The accordion content for: "+accordionName+" is not empty","The accordion content for: "+accordionName+" is empty");
-		//Verifying ReadMore and ReadLess button functionality
-		this.verifyReadMoreLessButtonOnPDP(accordion);
+		if(this.getChildElementCount(accordionContentWebElement)>0){
+			String accordionData;
+			reporter.reportLog("Verifying content for accordion: "+accordionName);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(accordionContentWebElement);
+			if(accordionName.contains("Chart"))
+				accordionData = accordionContentWebElement.findElement(By.xpath(".//img")).getAttribute("src");
+			else
+				accordionData = this.getElementText(accordionContentWebElement);
+			reporter.softAssert(!accordionData.isEmpty(),"The accordion content for: "+accordionName+" is not empty","The accordion content for: "+accordionName+" is empty");
+			//Verifying ReadMore and ReadLess button functionality
+			this.verifyReadMoreLessButtonOnPDP(accordion);
+		}else
+			reporter.reportLog("No content is present for accordion : "+accordionName+" on PDP page");
 	}
 
 	/**
@@ -2879,7 +2925,15 @@ public class ProductDetailPage extends BasePage {
 				break;
 			case "ProductWithEasyPaySizeChartAndReviews":
 				for(String lsKeyword:lstKeyword) {
-					product=apiResponse.getProductInfoFromKeywordWithEasyPayReviewsTrueFitAndSizeChart(lsKeyword,dataCriteria);
+					product=apiResponse.getProductInfoFromKeywordWithEasyPayReviewsTrueFitAndSizeChart(lsKeyword,dataCriteria,false);
+					if(product!=null) {
+						break;
+					}
+				}
+				break;
+			case "ProductWithEasyPaySizeChartAndReviewWithImage":
+				for(String lsKeyword:lstKeyword) {
+					product=apiResponse.getProductInfoFromKeywordWithEasyPayReviewsTrueFitAndSizeChart(lsKeyword,dataCriteria,true);
 					if(product!=null) {
 						break;
 					}
@@ -3499,6 +3553,11 @@ public class ProductDetailPage extends BasePage {
 				}
 			}
 		}
+
+		//Removing selected histogram stars for further verification
+		this.getReusableActionsInstance().scrollToElement(this.lblReviewHistogramCrossButton);
+		this.getReusableActionsInstance().clickIfAvailable(this.lblReviewHistogramCrossButton);
+		this.waitForPageToLoad();
 	}
 
 	/**

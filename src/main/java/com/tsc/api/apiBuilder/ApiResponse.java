@@ -861,7 +861,7 @@ public class ApiResponse extends ApiConfigs {
 	 * @param - Map<String,Object> - outputDataCriteria : criteria for searching a particular product with precondition
 	 * @return - Product.Products - product for search keyword
 	 */
-	public Product.Products getProductInfoFromKeywordWithEasyPayReviewsTrueFitAndSizeChart(String searchKeyword,Map<String,Object> outputDataCriteria){
+	public Product.Products getProductInfoFromKeywordWithEasyPayReviewsTrueFitAndSizeChart(String searchKeyword,Map<String,Object> outputDataCriteria,boolean reviewImageRequired){
 		boolean flag = true, loopBreakFlag=false;
 
 		Product product = getProductDetailsForKeyword(searchKeyword,null,true);
@@ -872,7 +872,7 @@ public class ApiResponse extends ApiConfigs {
 		Product.Products productItem=null;
 		do{
 			if(outputDataCriteria==null){
-				productItem = getProductInfoWithEasyPayReviewTrueFitSizeChartForConfig(product,null);
+				productItem = getProductInfoWithEasyPayReviewTrueFitSizeChartForConfig(product,null,reviewImageRequired);
 				if(productItem!=null)
 					flag = false;
 				if(flag) {
@@ -883,7 +883,7 @@ public class ApiResponse extends ApiConfigs {
 					product = getProductDetailsForKeyword(searchKeyword,null,false);
 				}
 			}else{
-				productItem = getProductInfoWithEasyPayReviewTrueFitSizeChartForConfig(product,outputDataCriteria);
+				productItem = getProductInfoWithEasyPayReviewTrueFitSizeChartForConfig(product,outputDataCriteria,reviewImageRequired);
 				if(productItem==null){
 					outputPage++;
 					if(outputPage>totalPage||outputPage>=10) {
@@ -908,7 +908,7 @@ public class ApiResponse extends ApiConfigs {
 	 * @param - Map<String,Object> - configs : configs on basis of which product info will be fetched
 	 * @return - Product.Products - product for search keyword
 	 */
-	private Product.Products getProductInfoWithEasyPayReviewTrueFitSizeChartForConfig(Product product,Map<String,Object> config){
+	private Product.Products getProductInfoWithEasyPayReviewTrueFitSizeChartForConfig(Product product,Map<String,Object> config, boolean reviewImageRequired){
 		if(product==null) {
 			return null;
 		}
@@ -930,31 +930,49 @@ public class ApiResponse extends ApiConfigs {
 		selectedProduct.init();
 		for(Product.Products data:product.getProducts()) {
 			if(data.getStyles().size()>=styleCount && data.getSizes().size()>=sizeCount && data.getProductReviewCount()>=3 && data.isEnabledAddToCart()){
-				List<edps> edpsList = data.getEdps();
-				loopBreakFlag = false;
-				for (edps Edps : edpsList) {
-					if (!Edps.isSoldOut() == true && Edps.Inventory > 0 && data.getInstallments() > 1) {
-						if (data.getInstallments() > 1) {
-							List<Sections> sections = this.getSectionDetailsFromProductNumber(data.getItemNo());
-							if (sections.size() > 0) {
-								for (int counter = 0; counter < sections.size(); counter++) {
-									if (sections.get(counter).getName().contains("Size")) {
-										selectedProduct.productNumber = data.getItemNo();
-										selectedProduct.productName = data.getName();
-										selectedProduct.productBrand = data.getBrand();
-										selectedProduct.productNowPrice = data.getIsPriceRange();
-										selectedProduct.productWasPrice = data.getWasPriceRange();
-										selectedProduct.easyPayPrice=Edps.getEasyPaymentPrice();
-										if(!lsUrlType.isEmpty()){
-											selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName().trim().replace(".","").replace(" ","-")+propertyData.get("test_partial_url_pdp")+data.getItemNo();
-										}
-										else{
-											selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName().trim()+propertyData.get("test_partial_url_pdp")+data.getItemNo();
-										}
+				if(reviewImageRequired){
+					Review reviewsForProduct = this.getProductReviewsForProductNumber(data.getItemNo());
+					List<Review.Reviews> reviewList = reviewsForProduct.getReviewSummary().getReviews();
+					for(Review.Reviews review:reviewList){
+						if(review.getMedia()!=null)
+							if(!review.getMedia().get(0).getUrl().isEmpty())
+								return getProductDataForSelectedProduct(data);
+					}
+				}else
+					return getProductDataForSelectedProduct(data);
+			}
+		}
+		return null;
+	}
 
-										return data;
-									}
+	/**
+	 * This function returns data for a selected product number
+	 * @param data - Product.Products data object selected for fetching data
+	 * @return - Product.Product object for selected product
+	 */
+	public Product.Products getProductDataForSelectedProduct(Product.Products data){
+		List<edps> edpsList = data.getEdps();
+		for (edps Edps : edpsList) {
+			if (!Edps.isSoldOut() == true && Edps.Inventory > 0 && data.getInstallments() > 1) {
+				if (data.getInstallments() > 1) {
+					List<Sections> sections = this.getSectionDetailsFromProductNumber(data.getItemNo());
+					if (sections.size() > 0) {
+						for (int counter = 0; counter < sections.size(); counter++) {
+							if (sections.get(counter).getName().contains("Size")) {
+								selectedProduct.productNumber = data.getItemNo();
+								selectedProduct.productName = data.getName();
+								selectedProduct.productBrand = data.getBrand();
+								selectedProduct.productNowPrice = data.getIsPriceRange();
+								selectedProduct.productWasPrice = data.getWasPriceRange();
+								selectedProduct.easyPayPrice=Edps.getEasyPaymentPrice();
+								if(!lsUrlType.isEmpty()){
+									selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName().trim().replace(".","").replace(" ","-")+propertyData.get("test_partial_url_pdp")+data.getItemNo();
 								}
+								else{
+									selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName().trim()+propertyData.get("test_partial_url_pdp")+data.getItemNo();
+								}
+
+								return data;
 							}
 						}
 					}
@@ -962,6 +980,18 @@ public class ApiResponse extends ApiConfigs {
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * This method returns reviews of a product number
+	 */
+	public Review getProductReviewsForProductNumber(String productNumber){
+		String apiEndPoint = propertyData.get("test_qaURL")+"/"+propertyData.get("test_apiVersion3")+"/"+propertyData.get("test_language")+"/products/"+productNumber+"/reviews";
+		Response response = this.getApiCallResponse(null,apiEndPoint);
+		if(response.statusCode()==200)
+			return JsonParser.getResponseObject(response.asString(), new TypeReference<Review>() {});
+		else
+			return null;
 	}
     
     /**
