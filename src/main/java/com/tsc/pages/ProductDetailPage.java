@@ -1229,19 +1229,21 @@ public class ProductDetailPage extends BasePage {
 			if(imageReviewList.size()>0){
 				List<WebElement> imageReviewContent = this.getChildrenList(imageReviewList.get(0));
 				if(imageReviewContent.size()==2){
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(imageReviewContent.get(0));
 					reporter.reportLog("Both image and text is present for review by: "+reviewNickNameElement.getText());
 					String reviewImageLink = imageReviewContent.get(0).findElement(By.xpath("./img")).getAttribute("src").trim();
 					String reviewImageComment = imageReviewContent.get(1).getText();
 					if(!reviewImageLink.isEmpty() && !reviewImageComment.isEmpty())
-						reporter.reportLogPass("Review Image Link and Comment is present for the review");
+						reporter.reportLogPassWithScreenshot("Review Image Link and Comment is present for the review");
 					else
 						reporter.reportLogFailWithScreenshot("Either review image link or comment is missing for review");
 				}
 				if(imageReviewContent.size()==1){
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(imageReviewContent.get(0));
 					reporter.reportLog("Only review image is present for review by: "+reviewNickNameElement.getText());
 					String reviewImageLink = imageReviewContent.get(0).findElement(By.xpath("./img")).getAttribute("src").trim();
 					if(!reviewImageLink.isEmpty())
-						reporter.reportLogPass("Review Image link is present for the review");
+						reporter.reportLogPassWithScreenshot("Review Image link is present for the review");
 					else
 						reporter.reportLogFailWithScreenshot("Review image link is missing for review");
 				}
@@ -2579,9 +2581,9 @@ public class ProductDetailPage extends BasePage {
 					else
 						reporter.reportLogFail("Product Overview Accordion is not expanded by default for product");
 				}
-				/**else{
+				else{
 					this.getReusableActionsInstance().clickIfAvailable(accordionDisplayIcon);
-				}*/
+				}
 
 				//Verify Accordion Content
 				this.verifyAccordionContent(this.lstProductAccordions.get(counter));
