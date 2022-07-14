@@ -6,7 +6,6 @@ import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 
 import java.io.IOException;
-import java.util.Arrays;
 
 public class PD_TC15_VerifyProductDetail_Accordions extends BaseTest {
 	/*
@@ -36,11 +35,9 @@ public class PD_TC15_VerifyProductDetail_Accordions extends BaseTest {
 			reporter.reportLog("Switch to ProductDetail page");
 			String lsProductNumber, lsUrl;
 
-			//if(getProductResultsPageThreadLocal().getSearchResultLoad(lsKeyword,true)) {
-			if(getProductDetailPageThreadLocal().goToProductItemWithPreConditions(Arrays.asList("leggings"),"ProductWithEasyPaySizeChartAndReviewWithImage",null)) {
+			if(getProductResultsPageThreadLocal().getSearchResultLoad(lsKeyword,true)) {
 				reporter.reportLog("Verify URL");
-				//lsProductNumber=lsKeyword;
-				lsProductNumber = getProductDetailPageThreadLocal().selectedProduct.productNumber;
+				lsProductNumber=lsKeyword;
 				lsUrl = basePage.URL();
 				reporter.softAssert(lsUrl.contains("productdetails"), "The Url is containing productdetails", "The Url is not containing productdetails");
 				reporter.softAssert(lsUrl.contains(lsProductNumber),"The Url is containing selected product number of "+lsProductNumber,"The Url is not containing selected product number of "+lsProductNumber);
@@ -54,13 +51,6 @@ public class PD_TC15_VerifyProductDetail_Accordions extends BaseTest {
 
 					reporter.reportLog("Review tab review list contents");
 					getProductDetailPageThreadLocal().verifyReviewTabPerReviewListContents();
-
-					reporter.reportLog("Verify review image is present for reviews");
-					int counter = getProductDetailPageThreadLocal().verifyReviewImageForAddedReviews();
-					if(counter>0)
-						reporter.reportLogPass("Review Section contains reviews with image uploaded");
-					else
-						reporter.reportLogFail("Review Section does not contains reviews with images");
 
 					String lsMsg = getProductDetailPageThreadLocal().checkReviewRateSortingBy(true);
 					if (lsMsg.isEmpty() || lsMsg.contains("less than 2")) {
