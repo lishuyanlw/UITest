@@ -3422,7 +3422,7 @@ public class MyAccount extends BasePage {
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(selectAddOrEditAddressProvince);
 		String lsText=selectProvince.getFirstSelectedOption().getText().trim();
-		if(!lsText.isEmpty()){
+		if(!lsText.isEmpty()&&!lsText.equalsIgnoreCase("Select Province")){
 			reporter.reportLogPass("Auto search function is working well for Province field");
 		}
 		else{

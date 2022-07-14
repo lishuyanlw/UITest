@@ -140,6 +140,9 @@ public class ShoppingCartPage extends BasePage {
 	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-pricing')]")
 	public WebElement cntCartPricingSection;
 
+	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'details-box')]/*[contains(@class,'multipack')]")
+	public WebElement lblCartPricingMultiPackMessage;
+
 	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-pricing')]//div[contains(@class,'details-title')]")
 	public WebElement lblCartPricingOrderSummaryTitle;
 
@@ -789,5 +792,59 @@ public class ShoppingCartPage extends BasePage {
 	public int getShoppingItemAmountFromOrderSummarySection(){
 		return this.getIntegerFromString(this.getElementInnerText(this.lblCartPricingOrderSummaryTitle));
 	}
+
+	/**
+	 * To get OrderSummary Description
+	 * @return - Map<String,Object>
+	 */
+	public Map<String,Object> getOrderSummaryDesc(){
+		Map<String,Object> map=new HashMap<>();
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblCartPricingOrderSummaryTitle);
+		String lsText=this.lblCartPricingOrderSummaryTitle.getText();
+		map.put("itemAmount",this.getIntegerFromString(lsText));
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblCartPricingSubTotal);
+		lsText=this.lblCartPricingSubTotal.getText();
+		map.put("subTotal",this.getFloatFromString(lsText,true));
+
+		if(this.checkShippingWasPriceExisting()){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblCartPricingShippingWasPrice);
+			lsText=this.lblCartPricingShippingWasPrice.getText();
+			map.put("wasPrice",this.getFloatFromString(lsText,true));
+		}
+		else{
+			map.put("wasPrice",0.0);
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblCartPricingShippingNowPrice);
+		lsText=this.lblCartPricingShippingNowPrice.getText().trim();
+		if(!lsText.equalsIgnoreCase("Free")){
+			map.put("nowPrice",this.getFloatFromString(lsText,true));
+		}
+		else{
+			map.put("nowPrice",0.0);
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblCartPricingShippingEstimateTax);
+		lsText=this.lblCartPricingShippingEstimateTax.getText();
+		map.put("tax",this.getFloatFromString(lsText,true));
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblCartPricingTotalPrice);
+		lsText=this.lblCartPricingTotalPrice.getText();
+		map.put("totalPrice",this.getFloatFromString(lsText,true));
+
+		if(this.checkShippingSavingExisting()){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblCartPricingYouAreSaving);
+			lsText=this.lblCartPricingYouAreSaving.getText();
+			map.put("savePrice",this.getFloatFromString(lsText,true));
+		}
+		else{
+			map.put("savePrice",0.0);
+		}
+
+		return map;
+	}
+
 
 }

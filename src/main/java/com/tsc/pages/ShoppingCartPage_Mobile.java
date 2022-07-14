@@ -17,9 +17,14 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 		super(driver);
 	}
 
+	//For Shopping item section
 	public By byProductRedMessage=By.xpath(".//span[contains(@class,'item-status') and contains(@class,'visible-xs-inline')][span[@class='boldRedColor']]");
 	public By byProductSelectQuantity=By.xpath(".//div[contains(@class,'tsc-forms') and contains(@class,'visible-xs-inline')]//select");
 	public By byProductNowPrice=By.xpath(".//div[contains(@class,'cart-desc-line') and contains(@class,'visible-xs-block')]//span[contains(@class,'now-price')]");
+
+	//For OrderSummary section
+	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'details-box')]//div[contains(@class,'contents-head')]")
+	public WebElement lblCartPricingContentHead;
 
 	@Override
 	public boolean checkSelectQuantityEnabled(WebElement cartItem){
