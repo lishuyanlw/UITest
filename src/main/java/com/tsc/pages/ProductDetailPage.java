@@ -166,6 +166,9 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//form[@id='pr-flag-reviews']//button[contains(@class,'cancel')]")
 	public WebElement btnFlagImagePopUpWindowCancelButton;
 
+	@FindBy(xpath = "//form[@id='pr-flag-reviews']//input[@id='pr-email-field']")
+	public WebElement lblFlagImageEmailText;
+
 	//Read Review on Review Pop-Up
 	@FindBy(xpath = "//div[contains(@class,'pr-read-review pr-read-review-in pr-read-review-flagging-in')]/button")
 	public WebElement btnBackToMediaBtn;
@@ -3849,8 +3852,8 @@ public class ProductDetailPage extends BasePage {
 			this.getReusableActionsInstance().scrollToElement(this.lnlFlagImageOnPopUpWindow);
 			if(this.lnlFlagImageOnPopUpWindow.isEnabled()){
 				this.lnlFlagImageOnPopUpWindow.click();
-				waitForCondition(Driver->{return this.btnFlagImagePopUpWindowCancelButton.isEnabled() &&
-								this.btnFlagImagePopUpWindowCancelButton.isDisplayed();},5000);
+				waitForCondition(Driver->{return this.lblFlagImageEmailText.isEnabled() &&
+								this.lblFlagImageEmailText.isDisplayed();},5000);
 				reporter.reportLogPassWithScreenshot("Flag Image is a link and navigates to pop-up window on clicking as expected");
 				this.getReusableActionsInstance().scrollToElement(this.btnFlagImagePopUpWindowCancelButton);
 				this.getReusableActionsInstance().clickIfAvailable(this.btnFlagImagePopUpWindowCancelButton);
