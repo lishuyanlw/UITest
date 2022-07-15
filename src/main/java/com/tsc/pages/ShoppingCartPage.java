@@ -917,5 +917,79 @@ public class ShoppingCartPage extends BasePage {
 		}
 	}
 
+	/**
+	 * To set Installment Setting
+	 * @param -int - optionIndex - option index for dropdown menu options for select installment
+	 */
+	public void setInstallmentSetting(int optionIndex){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectCartEasyPayInstallmentNumber);
+		Select select = new Select(this.selectCartEasyPayInstallmentNumber);
+		if(optionIndex==0){
+			select.selectByVisibleText("-");
+		}
+		else{
+			select.selectByVisibleText(String.valueOf(optionIndex));
+		}
+		this.applyStaticWait(10*this.getStaticWaitForApplication());
+	}
+
+	/**
+	 * To get Installment Section Description
+	 * @param - totalPrice - total price from OrderSummary section
+	 */
+	public void verifyInstallmentLogic(float totalPriceFromOrderSummary){
+		String lsText;
+		int totalInstallmentNumber;
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectCartEasyPayInstallmentNumber);
+		Select select = new Select(this.selectCartEasyPayInstallmentNumber);
+		String lsInstallmentNumber=select.getFirstSelectedOption().getText().trim();
+		if(lsInstallmentNumber.equalsIgnoreCase("-")){
+			reporter.reportLogFail("Need choose correct installment option to verify it");
+			return;
+		}
+		else{
+			totalInstallmentNumber= Integer.parseInt(lsInstallmentNumber);
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblCartEasyPayTodayPayment);
+		float todayPayment=this.getFloatFromString(this.lblCartEasyPayTodayPayment.getText(),true);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblCartEasyPayLeftPayment);
+		float leftPayment=this.getFloatFromString(this.lblCartEasyPayLeftPayment.getText(),true);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblCartEasyPayFutureMonthlyPayment);
+		float futureMonthlyPayment=this.getFloatFromString(this.lblCartEasyPayFutureMonthlyPayment.getText(),true);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblCartEasyPayFutureMonthlyPaymentTitle);
+		int futureMonthlyPaymentNumber=this.getIntegerFromString(this.lblCartEasyPayFutureMonthlyPaymentTitle.getText());
+
+		float calLeftPayment=totalPriceFromOrderSummary-todayPayment;
+		if(Math.abs(calLeftPayment-leftPayment)<0.1){
+			reporter.reportLogPass("The calculated left payment is equal to the left payment in installment section");
+		}
+		else{
+			reporter.reportLogFail("The calculated left payment:"+calLeftPayment+" is equal to the left payment:"+leftPayment+" in installment section");
+		}
+
+		int calFutureMonthlyPaymentNumber=totalInstallmentNumber-1;
+		if(calFutureMonthlyPaymentNumber==futureMonthlyPaymentNumber){
+			reporter.reportLogPass("The calculated future monthly payment number is equal to the future monthly payment number in installment section");
+		}
+		else{
+			reporter.reportLogFail("The calculated future monthly payment number:"+calFutureMonthlyPaymentNumber+" is equal to the future monthly payment number:"+futureMonthlyPaymentNumber+" in installment section");
+		}
+
+		float calFutureMonthlyPayment=calLeftPayment/futureMonthlyPaymentNumber;
+		if(Math.abs(calFutureMonthlyPayment-futureMonthlyPayment)<0.1){
+			reporter.reportLogPass("The calculated future monthly payment is equal to the future monthly payment in installment section");
+		}
+		else{
+			reporter.reportLogFail("The calculated future monthly payment:"+calFutureMonthlyPayment+" is equal to the future monthly payment:"+futureMonthlyPayment+" in installment section");
+		}
+
+
+	}
+
 
 }
