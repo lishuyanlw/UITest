@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -134,6 +135,46 @@ public class ProductDetailPage extends BasePage {
 
 	@FindBy(xpath = "//section[@class='pdp-description']//a[@class='pr-snippet-review-count']")
 	public WebElement lblProductReviewCount;
+
+	@FindBy(xpath = "//div[@id='pr-reviewdisplay']//div[@class='pr-irlsnippet']/div")
+	public WebElement lblReviewPicturesInHistogram;
+
+	@FindBy(xpath = "//div[@class='pr-media-modal']/section[@class='modal__body']/button")
+	public WebElement lblReviewImagePopUpModelCloseButton;
+
+	@FindBy(xpath = "//section[@class='pr-media-card pr-media-card-in']//picture/img")
+	public WebElement lblReviewImageOnPopUpWindow;
+
+	@FindBy(xpath = "//section[@class='pr-media-card pr-media-card-in']//div[contains(@class,'text-stars')]//div[@class='pr-snippet-rating-decimal']")
+	public WebElement lblReviewStarsOnPopUpWindow;
+
+	@FindBy(xpath = "//section[@class='pr-media-card pr-media-card-in']//p[contains(@class,'text-headline')]")
+	public WebElement lblReviewHeadlineOnPopUpWindow;
+
+	@FindBy(xpath = "//section[@class='pr-media-card pr-media-card-in']//p[contains(@class,'text-comments')]")
+	public WebElement lblReviewCommentOnPopUpWindow;
+
+	@FindBy(xpath = "//section[@class='pr-media-card pr-media-card-in']//p[contains(@class,'text-date')]")
+	public WebElement lblReviewPostedDateOnPopUpWindow;
+
+	@FindBy(xpath = "//section[@class='pr-media-card pr-media-card-in']//button[contains(@class,'text-readreview')]")
+	public WebElement btnReadReviewOnPopUpWindowBtn;
+
+	@FindBy(xpath = "//section[@class='pr-media-card pr-media-card-in']//footer//div[@class='pr-media-card-footer-flagging']/a")
+	public WebElement lnlFlagImageOnPopUpWindow;
+
+	@FindBy(xpath = "//form[@id='pr-flag-reviews']//button[contains(@class,'cancel')]")
+	public WebElement btnFlagImagePopUpWindowCancelButton;
+
+	//Read Review on Review Pop-Up
+	@FindBy(xpath = "//div[contains(@class,'pr-read-review pr-read-review-in pr-read-review-flagging-in')]/button")
+	public WebElement btnBackToMediaBtn;
+
+	@FindBy(xpath="//div[contains(@class,'pr-read-review pr-read-review-in pr-read-review-flagging-in')]/div[@class='pr-review']/section/p")
+	public WebElement lblComment;
+
+	@FindBy(xpath="//div[contains(@class,'pr-read-review pr-read-review-in pr-read-review-flagging-in')]/div[@class='pr-review']/section/div//p[contains(@class,'nickname')]/span")
+	public WebElement lblCommentBy;
 
 	//Price part
 	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__prices--layout']")
@@ -480,6 +521,8 @@ public class ProductDetailPage extends BasePage {
 
 	public By byReviewTabAuthorLocation=By.xpath(".//section[contains(@class,'pr-rd-description')]//div[contains(@class,'pr-rd-right')]//p[contains(@class,'pr-rd-author-location')]");
 	*/
+	public By byReviewRatingStarDecimal=By.xpath(".//div[@class='pr-rating-stars']/div[contains(@class,'100-filled')]");
+
 	public By byReviewTabFooter=By.xpath(".//footer");
 
 	public By byReviewTabStarSection=By.xpath(".//div[@class='pr-rating-stars']");
@@ -1219,8 +1262,8 @@ public class ProductDetailPage extends BasePage {
 	 * Method to verify image for added review in review section
 	 * @return - int - Number of reviews that have reviews containing images
 	 */
-	public int verifyReviewImageForAddedReviews(){
-		int counter = 0;
+	public HashMap<String,HashMap<String,String>> verifyReviewImageForAddedReviews(){
+		HashMap<String,HashMap<String,String>> map = new HashMap<>();
 		for(WebElement item:this.lstReviewTabPerReviewList) {
 			WebElement reviewNickNameElement=item.findElement(this.byReviewTabNickName);
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
@@ -1228,11 +1271,15 @@ public class ProductDetailPage extends BasePage {
 			List<WebElement> imageReviewList = this.getChildrenList(imageReview);
 			if(imageReviewList.size()>0){
 				List<WebElement> imageReviewContent = this.getChildrenList(imageReviewList.get(0));
+				//Fetching image details and comments by user
+				HashMap<String,String> reviewData = this.getReviewImageWithCommentsProvidedByUser(item);
 				if(imageReviewContent.size()==2){
 					this.getReusableActionsInstance().javascriptScrollByVisibleElement(imageReviewContent.get(0));
 					reporter.reportLog("Both image and text is present for review by: "+reviewNickNameElement.getText());
 					String reviewImageLink = imageReviewContent.get(0).findElement(By.xpath("./img")).getAttribute("src").trim();
 					String reviewImageComment = imageReviewContent.get(1).getText();
+					reviewData.put("imageLink",reviewImageLink);
+					reviewData.put("imageComment",reviewImageComment);
 					if(!reviewImageLink.isEmpty() && !reviewImageComment.isEmpty())
 						reporter.reportLogPassWithScreenshot("Review Image Link and Comment is present for the review");
 					else
@@ -1242,20 +1289,56 @@ public class ProductDetailPage extends BasePage {
 					this.getReusableActionsInstance().javascriptScrollByVisibleElement(imageReviewContent.get(0));
 					reporter.reportLog("Only review image is present for review by: "+reviewNickNameElement.getText());
 					String reviewImageLink = imageReviewContent.get(0).findElement(By.xpath("./img")).getAttribute("src").trim();
+					reviewData.put("imageLink",reviewImageLink);
 					if(!reviewImageLink.isEmpty())
 						reporter.reportLogPassWithScreenshot("Review Image link is present for the review");
 					else
 						reporter.reportLogFailWithScreenshot("Review image link is missing for review");
 				}
-				counter++;
+				map.put(reviewData.get("heading"),reviewData);
 			}
 		}
-		if(counter>0)
-			return counter;
+		if(map.size()>0)
+			return map;
 		else
-			return 0;
+			return null;
 	}
 
+	/**
+	 * Function gets details of review image with comment provided by user
+	 */
+	public HashMap<String,String> getReviewImageWithCommentsProvidedByUser(WebElement imageElement){
+		WebElement element;
+		String lsHeadingLine;
+		HashMap<String,String> map = new HashMap<>();
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(imageElement);
+		element=imageElement.findElement(this.byReviewTabHeadingLine);
+		lsHeadingLine=element.getText().trim();
+		map.put("heading",lsHeadingLine);
+
+		List<WebElement> starElement=imageElement.findElements(this.byReviewRatingStarDecimal);
+		map.put("reviewStars",String.valueOf(starElement.size()));
+
+		element=imageElement.findElement(this.byReviewTabSubmittedTime);
+		String timeInMonths = element.getText().trim();
+		if(timeInMonths.contains("year"))
+			map.put("reviewSubmittedTime",String.valueOf(Integer.valueOf(timeInMonths.split(" ")[0])*12));
+
+		element=imageElement.findElement(this.byReviewTabNickName);
+		map.put("reviewTabNickName",element.getText().trim());
+
+		element=imageElement.findElement(this.byReviewTabDescriptionText);
+		map.put("reviewTabDescription",element.getText().trim());
+
+		element=imageElement.findElement(this.byReviewTabFooter);
+		map.put("reviewTabFooterDescription",element.getText().trim());
+
+		if(map.size()>0)
+			return map;
+		else
+			return null;
+	}
 	/**
 	 * Method to check Review rate sorting function
 	 * @param-boolean bHighestRateFirst: true for Highest rated sorting while false for Lowest rated sorting
@@ -3713,6 +3796,103 @@ public class ProductDetailPage extends BasePage {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Function verifies that uploaded images in review is displayed in review histogram section
+	 */
+	public void verifyReviewImagesInHistogram(HashMap<String,HashMap<String,String>> reviewDataMap){
+		//Navigating to Histogram section
+		this.getReusableActionsInstance().scrollToElement(this.lstReviewTabHistogramItem.get(0));
+		if(waitForCondition(Driver->{return lblReviewPicturesInHistogram.isDisplayed();},5000)){
+			reporter.reportLogPassWithScreenshot("Review Images are displayed in Histogram section of reviews");
+			//Verifying click functionality for image
+			this.lblReviewPicturesInHistogram.findElement(By.xpath("./button")).click();
+			waitForCondition(Driver->{return this.lblReviewImagePopUpModelCloseButton.isDisplayed() &&
+							this.lblReviewImagePopUpModelCloseButton.isEnabled();},6000);
+
+			//Verifying data on image window for user comments
+			//Fetching map data to be used for verification
+			this.getReusableActionsInstance().scrollToElement(this.lblReviewHeadlineOnPopUpWindow);
+			String headingForReviewFromWindow = this.lblReviewHeadlineOnPopUpWindow.getText().trim();
+			Map<String,String> reviewDataByUser = reviewDataMap.get(headingForReviewFromWindow);
+
+			reporter.reportLog("Verifying image source on review image pop-up");
+			this.getReusableActionsInstance().scrollToElement(this.lblReviewImageOnPopUpWindow);
+			String[] imageURLSplit = this.lblReviewImageOnPopUpWindow.getAttribute("src").split(Pattern.quote("/"));
+			String[] imageURLFromReviewSplit = reviewDataByUser.get("imageLink").split(Pattern.quote("/"));
+			if(imageURLSplit[imageURLSplit.length-1].equalsIgnoreCase(imageURLFromReviewSplit[imageURLFromReviewSplit.length-1]))
+				reporter.reportLogPass("Image URL is same as expected on review pop-up window");
+			else
+				reporter.reportLogFailWithScreenshot("Image URL is not same as expected on window");
+
+			reporter.reportLog("Verifying stars count on review image pop-up");
+			this.getReusableActionsInstance().scrollToElement(this.lblReviewStarsOnPopUpWindow);
+			String reviewPopUpStarsCount = this.lblReviewStarsOnPopUpWindow.getText().trim();
+			if(reviewPopUpStarsCount.equalsIgnoreCase(reviewDataByUser.get("reviewStars")))
+				reporter.reportLogPass("Review Stars are same as expected on review pop-up window");
+			else
+				reporter.reportLogFailWithScreenshot("Review Stars are not same as expected on window");
+
+			reporter.reportLog("Verifying review submitted time on review image pop-up");
+			this.getReusableActionsInstance().scrollToElement(this.lblReviewPostedDateOnPopUpWindow);
+			String reviewPopUpReviewSubmittedTime = this.lblReviewPostedDateOnPopUpWindow.getText().trim().split(" ")[0];
+			if(Integer.valueOf(reviewPopUpReviewSubmittedTime)>=Integer.valueOf(reviewDataByUser.get("reviewSubmittedTime")))
+				reporter.reportLogPass("Review Submitted Time is same as expected on review pop-up window");
+			else
+				reporter.reportLogFailWithScreenshot("Review Submitted Time is not same as expected on window");
+
+			reporter.reportLog("Verifying Flag Image is a link on review image pop-up");
+			this.getReusableActionsInstance().scrollToElement(this.lnlFlagImageOnPopUpWindow);
+			if(this.lnlFlagImageOnPopUpWindow.isEnabled()){
+				this.lnlFlagImageOnPopUpWindow.click();
+				waitForCondition(Driver->{return this.btnFlagImagePopUpWindowCancelButton.isEnabled() &&
+								this.btnFlagImagePopUpWindowCancelButton.isDisplayed();},5000);
+				reporter.reportLogPassWithScreenshot("Flag Image is a link and navigates to pop-up window on clicking as expected");
+				this.getReusableActionsInstance().scrollToElement(this.btnFlagImagePopUpWindowCancelButton);
+				this.getReusableActionsInstance().clickIfAvailable(this.btnFlagImagePopUpWindowCancelButton);
+				waitForCondition(Driver -> {return this.lnlFlagImageOnPopUpWindow.isDisplayed() &&
+								this.lnlFlagImageOnPopUpWindow.isEnabled();},6000);
+
+			}else
+				reporter.reportLogFailWithScreenshot("Flag Image Link is not displayed on review window");
+
+			reporter.reportLog("Verifying Read Review is a link on review image pop-up");
+			this.getReusableActionsInstance().scrollToElement(this.btnReadReviewOnPopUpWindowBtn);
+			this.getReusableActionsInstance().clickIfAvailable(this.btnReadReviewOnPopUpWindowBtn);
+			if(waitForCondition(Driver->{return this.btnBackToMediaBtn.isEnabled() &&
+				this.btnBackToMediaBtn.isDisplayed();},6000)){
+				reporter.reportLogPassWithScreenshot("Read Review pop up window is displayed as expected");
+				//Verifying comment provided
+				this.getReusableActionsInstance().scrollToElement(this.lblComment);
+				String comments = this.lblComment.getText().trim();
+				if(comments.equalsIgnoreCase(reviewDataByUser.get("reviewTabDescription")))
+					reporter.reportLogPass("Comments displayed matches with comments by user");
+				else
+					reporter.reportLogFail("Comments displayed are not same as that by user");
+				//Verifying comment By
+				this.getReusableActionsInstance().scrollToElement(this.lblCommentBy);
+				String commentsBy = this.lblCommentBy.getText().trim();
+				if(commentsBy.equalsIgnoreCase(reviewDataByUser.get("reviewTabNickName")))
+					reporter.reportLogPass("Comments Nick Name displayed matches with that of user");
+				else
+					reporter.reportLogFail("Comments Nick Name displayed are not same as that as of user");
+
+				//Navigating back to pop-up window
+				this.getReusableActionsInstance().scrollToElement(this.btnBackToMediaBtn);
+				this.getReusableActionsInstance().clickIfAvailable(this.btnBackToMediaBtn);
+				waitForCondition(Driver->{return this.lblReviewImagePopUpModelCloseButton.isDisplayed() &&
+						this.lblReviewImagePopUpModelCloseButton.isEnabled();},6000);
+			}else
+				reporter.reportLogFailWithScreenshot("Read Review pop up window is not displayed");
+
+			//Closing pop-up window
+			this.getReusableActionsInstance().clickIfAvailable(this.lblReviewImagePopUpModelCloseButton);
+			waitForCondition(Driver->{return this.lstReviewTabHistogramItem.get(0).isDisplayed() &&
+					this.lstReviewTabHistogramItem.get(0).isEnabled();},5000);
+		}
+		else
+			reporter.reportLogFailWithScreenshot("Review Images are not displayed in Histogram section of review");
 	}
 
 }

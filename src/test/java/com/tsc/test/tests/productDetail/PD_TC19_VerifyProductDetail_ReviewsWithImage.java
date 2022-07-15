@@ -7,6 +7,7 @@ import org.testng.annotations.Test;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class PD_TC19_VerifyProductDetail_ReviewsWithImage extends BaseTest {
     @Test(groups = {"ProductDetail", "Regression", "Regression_Mobile", "Regression_Tablet"})
@@ -26,8 +27,10 @@ public class PD_TC19_VerifyProductDetail_ReviewsWithImage extends BaseTest {
             reporter.softAssert(lsUrl.contains(lsProductNumber),"The Url is containing selected product number of "+lsProductNumber,"The Url is not containing selected product number of "+lsProductNumber);
             if (getProductDetailPageThreadLocal().goToProductReviewSection()) {
                 reporter.reportLog("Verify review image is present for reviews");
-                int counter = getProductDetailPageThreadLocal().verifyReviewImageForAddedReviews();
-                if(counter>0)
+                HashMap<String, HashMap<String,String>> map = getProductDetailPageThreadLocal().verifyReviewImageForAddedReviews();
+                reporter.reportLog("Verify review data on pop-up window under review histogram");
+                getProductDetailPageThreadLocal().verifyReviewImagesInHistogram(map);
+                if(map.size()>0)
                     reporter.reportLogPass("Review Section contains reviews with image uploaded");
                 else
                     reporter.reportLogFail("Review Section does not contains reviews with images");
