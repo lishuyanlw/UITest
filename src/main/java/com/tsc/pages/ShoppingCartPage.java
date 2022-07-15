@@ -23,6 +23,9 @@ public class ShoppingCartPage extends BasePage {
 	@FindBy(xpath = "//div[@class='cartridge']")
 	public WebElement cntCart;
 
+	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-contents')]")
+	public WebElement cntCartContents;
+
 	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-title')]")
 	public WebElement lblCartTitle;
 
@@ -240,12 +243,19 @@ public class ShoppingCartPage extends BasePage {
 	}
 
 	/**
-	 * To check Product TrueFit Message Existing,
-	 * 2 different size for same product will show TrueFit message
+	 * To check Product TrueFit Message Existing, note that 2 different size for same product will show TrueFit message
 	 * @return - boolean
 	 */
 	public boolean checkProductTrueFitMessageExisting(){
 		return this.checkChildElementExistingByAttribute(cntCartNotice,"id","tf-cart-wrapper");
+	}
+
+	/**
+	 * To check GetItBy Shipping Message Existing, note that false means advanced order
+	 * @return - boolean
+	 */
+	public boolean checkGetItByShippingMessageExisting(){
+		return this.checkChildElementExistingByAttribute(cntCartContents,"class","estimateDate__wrapper");
 	}
 
 	/**
@@ -575,6 +585,22 @@ public class ShoppingCartPage extends BasePage {
 	}
 
 	/**
+	 * To get Shopping Cart Quantity With Given AddToBag Information
+	 * @param - Map<String,Object> - addToBagMap
+	 * @param - Map<String,Object> - shoppingSectionDetailsMap
+	 * @return - int - the product quantity, note that -1 represents not found
+	 */
+	public int getShoppingCartQuantityWithGivenAddToBagInfo(Map<String,Object> addToBagMap,Map<String,Object> shoppingSectionDetailsMap){
+		List<Map<String,Object>> shoppingList=(List<Map<String,Object>>)shoppingSectionDetailsMap.get("shoppingList");
+		for(Map<String,Object> cartItemMap:shoppingList){
+			if(this.checkIfMatchGivenAddToBagItem(addToBagMap,cartItemMap)){
+				return (int)cartItemMap.get("productQuantity");
+			}
+		}
+		return -1;
+	}
+
+	/**
 	 * To verify Contents on ShoppingCartItem in shopping item list with AddToBag
 	 * @param - Map<String,Object> - PDPMap
 	 * @param - Map<String,Object> - addToBagMap
@@ -749,7 +775,7 @@ public class ShoppingCartPage extends BasePage {
 	}
 
 	/**
-	 * To check Duplicated Style And Size In ShoppingItem List
+	 * To check Duplicated Style And Size In ShoppingItem List, note that the function is for TrueFit size
 	 * @param - Map<String,Object> - shoppingCartMap
 	 * @return - boolean
 	 */
@@ -842,8 +868,127 @@ public class ShoppingCartPage extends BasePage {
 		else{
 			map.put("savePrice",0.0);
 		}
-
 		return map;
+	}
+
+	/**
+	 * To verify OrderSummary Logic Section
+	 * @param - itemAmountShoppingCart - int - Shopping item amount in shopping cart
+	 * @param - savePriceShoppingCart - float - saving price in shopping cart, note that if pass 0.0, means no saving message
+	 * @param - orderSummaryMap - Map<String,Object>
+	 */
+	public void verifyOrderSummaryLogicSection(int itemAmountShoppingCart,float savePriceShoppingCart,Map<String,Object> orderSummaryMap){
+		int itemAmountOrderSummary= (int) orderSummaryMap.get("orderSummary");
+		if(itemAmountOrderSummary==itemAmountShoppingCart){
+			reporter.reportLogPass("The item amount in OrderSummary section is equal to the one in Shopping Cart item section");
+		}
+		else{
+			reporter.reportLogFail("The item amount:"+itemAmountOrderSummary+" in OrderSummary section is equal to the one:"+itemAmountShoppingCart+" in Shopping Cart item section");
+		}
+
+		float wasPriceOrderSummary= (float) orderSummaryMap.get("wasPrice");
+		float nowPriceOrderSummary=(float) orderSummaryMap.get("nowPrice");
+		float calSavePriceOrderSummary=Math.abs(wasPriceOrderSummary-nowPriceOrderSummary);
+		if(Math.abs(calSavePriceOrderSummary-savePriceShoppingCart)<0.01){
+			reporter.reportLogPass("The calculated saving price in OrderSummary section is equal to the one in Shopping Cart item section");
+		}
+		else{
+			reporter.reportLogFail("The calculated saving price:"+calSavePriceOrderSummary+" in OrderSummary section is equal to the one:"+savePriceShoppingCart+" in Shopping Cart item section");
+		}
+
+		float savePriceOrderSummary=(float) orderSummaryMap.get("savePrice");
+		if(Math.abs(calSavePriceOrderSummary-savePriceOrderSummary)<0.01){
+			reporter.reportLogPass("The calculated saving price in OrderSummary section is equal to the saving price in OrderSummary section");
+		}
+		else{
+			reporter.reportLogFail("The calculated saving price:"+calSavePriceOrderSummary+" in OrderSummary section is equal to the saving price:"+savePriceOrderSummary+" in OrderSummary section");
+		}
+
+		float subTotal=(float) orderSummaryMap.get("subTotal");
+		float tax=(float) orderSummaryMap.get("tax");
+		float calTotalPrice=subTotal+tax+nowPriceOrderSummary;
+		float totalPrice=(float) orderSummaryMap.get("totalPrice");
+
+		if(Math.abs(calTotalPrice-totalPrice)<0.01){
+			reporter.reportLogPass("The calculated total price in OrderSummary section is equal to the total price in OrderSummary section");
+		}
+		else{
+			reporter.reportLogFail("The calculated total price:"+calTotalPrice+" in OrderSummary section is equal to the total price:"+totalPrice+" in OrderSummary section");
+		}
+	}
+
+	/**
+	 * To set Installment Setting
+	 * @param -int - optionIndex - option index for dropdown menu options for select installment
+	 */
+	public void setInstallmentSetting(int optionIndex){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectCartEasyPayInstallmentNumber);
+		Select select = new Select(this.selectCartEasyPayInstallmentNumber);
+		if(optionIndex==0){
+			select.selectByVisibleText("-");
+		}
+		else{
+			select.selectByVisibleText(String.valueOf(optionIndex));
+		}
+		this.applyStaticWait(10*this.getStaticWaitForApplication());
+	}
+
+	/**
+	 * To get Installment Section Description
+	 * @param - totalPrice - total price from OrderSummary section
+	 */
+	public void verifyInstallmentLogic(float totalPriceFromOrderSummary){
+		String lsText;
+		int totalInstallmentNumber;
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectCartEasyPayInstallmentNumber);
+		Select select = new Select(this.selectCartEasyPayInstallmentNumber);
+		String lsInstallmentNumber=select.getFirstSelectedOption().getText().trim();
+		if(lsInstallmentNumber.equalsIgnoreCase("-")){
+			reporter.reportLogFail("Need choose correct installment option to verify it");
+			return;
+		}
+		else{
+			totalInstallmentNumber= Integer.parseInt(lsInstallmentNumber);
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblCartEasyPayTodayPayment);
+		float todayPayment=this.getFloatFromString(this.lblCartEasyPayTodayPayment.getText(),true);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblCartEasyPayLeftPayment);
+		float leftPayment=this.getFloatFromString(this.lblCartEasyPayLeftPayment.getText(),true);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblCartEasyPayFutureMonthlyPayment);
+		float futureMonthlyPayment=this.getFloatFromString(this.lblCartEasyPayFutureMonthlyPayment.getText(),true);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblCartEasyPayFutureMonthlyPaymentTitle);
+		int futureMonthlyPaymentNumber=this.getIntegerFromString(this.lblCartEasyPayFutureMonthlyPaymentTitle.getText());
+
+		float calLeftPayment=totalPriceFromOrderSummary-todayPayment;
+		if(Math.abs(calLeftPayment-leftPayment)<0.1){
+			reporter.reportLogPass("The calculated left payment is equal to the left payment in installment section");
+		}
+		else{
+			reporter.reportLogFail("The calculated left payment:"+calLeftPayment+" is equal to the left payment:"+leftPayment+" in installment section");
+		}
+
+		int calFutureMonthlyPaymentNumber=totalInstallmentNumber-1;
+		if(calFutureMonthlyPaymentNumber==futureMonthlyPaymentNumber){
+			reporter.reportLogPass("The calculated future monthly payment number is equal to the future monthly payment number in installment section");
+		}
+		else{
+			reporter.reportLogFail("The calculated future monthly payment number:"+calFutureMonthlyPaymentNumber+" is equal to the future monthly payment number:"+futureMonthlyPaymentNumber+" in installment section");
+		}
+
+		float calFutureMonthlyPayment=calLeftPayment/futureMonthlyPaymentNumber;
+		if(Math.abs(calFutureMonthlyPayment-futureMonthlyPayment)<0.1){
+			reporter.reportLogPass("The calculated future monthly payment is equal to the future monthly payment in installment section");
+		}
+		else{
+			reporter.reportLogFail("The calculated future monthly payment:"+calFutureMonthlyPayment+" is equal to the future monthly payment:"+futureMonthlyPayment+" in installment section");
+		}
+
+
 	}
 
 
