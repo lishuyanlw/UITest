@@ -1324,6 +1324,8 @@ public class ProductDetailPage extends BasePage {
 		String timeInMonths = element.getText().trim();
 		if(timeInMonths.contains("year"))
 			map.put("reviewSubmittedTime",String.valueOf(Integer.valueOf(timeInMonths.split(" ")[0])*12));
+		else
+			map.put("reviewSubmittedTime",timeInMonths);
 
 		element=imageElement.findElement(this.byReviewTabNickName);
 		map.put("reviewTabNickName",element.getText().trim());
@@ -3802,6 +3804,7 @@ public class ProductDetailPage extends BasePage {
 	 * Function verifies that uploaded images in review is displayed in review histogram section
 	 */
 	public void verifyReviewImagesInHistogram(HashMap<String,HashMap<String,String>> reviewDataMap){
+		this.waitForPageToLoad();
 		//Navigating to Histogram section
 		this.getReusableActionsInstance().scrollToElement(this.lstReviewTabHistogramItem.get(0));
 		if(waitForCondition(Driver->{return lblReviewPicturesInHistogram.isDisplayed();},5000)){
