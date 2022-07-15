@@ -3890,6 +3890,7 @@ public class ProductDetailPage extends BasePage {
 				reporter.reportLogFailWithScreenshot("Read Review pop up window is not displayed");
 
 			//Closing pop-up window
+			this.getReusableActionsInstance().scrollToElement(this.lblReviewImagePopUpModelCloseButton);
 			this.getReusableActionsInstance().clickIfAvailable(this.lblReviewImagePopUpModelCloseButton);
 			waitForCondition(Driver->{return this.lstReviewTabHistogramItem.get(0).isDisplayed() &&
 					this.lstReviewTabHistogramItem.get(0).isEnabled();},5000);
