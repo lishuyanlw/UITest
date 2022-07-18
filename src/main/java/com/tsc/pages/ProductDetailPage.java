@@ -3878,16 +3878,15 @@ public class ProductDetailPage extends BasePage {
 					reporter.reportLogPass("Comments displayed matches with comments by user");
 				else
 					reporter.reportLogFail("Comments displayed are not same as that by user");
-				if(!System.getProperty("Browser").contains("safari")){
-					//Verifying comment By
-					this.getReusableActionsInstance().scrollToElement(this.lblCommentBy);
-					String commentsBy = this.lblCommentBy.getText().trim();
-					if(commentsBy.equalsIgnoreCase(reviewDataByUser.get("reviewTabNickName")))
-						reporter.reportLogPass("Comments Nick Name displayed matches with that of user");
-					else
-						reporter.reportLogFail("Comments Nick Name displayed are not same as that as of user");
 
-				}
+				//Verifying comment By
+				this.getReusableActionsInstance().scrollToElement(this.lblCommentBy);
+				String commentsBy = this.lblCommentBy.getText().trim();
+				if(commentsBy.equalsIgnoreCase(reviewDataByUser.get("reviewTabNickName")))
+					reporter.reportLogPass("Comments Nick Name displayed matches with that of user");
+				else
+					reporter.reportLogFail("Comments Nick Name displayed are not same as that as of user");
+
 				//Navigating back to pop-up window
 				this.getReusableActionsInstance().scrollToElement(this.btnBackToMediaBtn);
 				this.getReusableActionsInstance().clickIfAvailable(this.btnBackToMediaBtn);
