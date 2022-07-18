@@ -3809,8 +3809,9 @@ public class ProductDetailPage extends BasePage {
 	public void verifyReviewImagesInHistogram(HashMap<String,HashMap<String,String>> reviewDataMap){
 		this.waitForPageToLoad();
 		//Navigating to Histogram section
-		if(System.getProperty("Browser").contains("safari"))
-			this.getReusableActionsInstance().javascriptScrollToMiddleOfPage();
+		//if(System.getProperty("Browser").contains("safari"))
+		this.getReusableActionsInstance().javascriptScrollToMiddleOfPage();
+		//this.getReusableActionsInstance().clickIfAvailable(this.lnkReviewTabBackToTop);
 		this.getReusableActionsInstance().scrollToElement(this.lblReviewPicturesInHistogram);
 		if(waitForCondition(Driver->{return lblReviewPicturesInHistogram.isDisplayed();},5000)){
 			reporter.reportLogPassWithScreenshot("Review Images are displayed in Histogram section of reviews");

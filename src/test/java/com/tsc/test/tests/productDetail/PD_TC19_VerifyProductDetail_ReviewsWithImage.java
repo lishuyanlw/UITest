@@ -29,10 +29,9 @@ public class PD_TC19_VerifyProductDetail_ReviewsWithImage extends BaseTest {
                 reporter.reportLog("Verify review image is present for reviews");
                 HashMap<String, HashMap<String,String>> map = getProductDetailPageThreadLocal().verifyReviewImageForAddedReviews();
                 reporter.reportLog("Verify review data on pop-up window under review histogram");
-                if((System.getProperty("Browser").equalsIgnoreCase("sauceandroidchrome") &&
-                        System.getProperty("Device").equalsIgnoreCase("Mobile"))
+                if(System.getProperty("Device").equalsIgnoreCase("Mobile")
                         || System.getProperty("Browser").contains("safari"))
-                    reporter.reportLog("Review image in histogram functionality can't be tested on android mobile due to emulator not displaying image as expected or on Safari due to xpath");
+                    reporter.reportLog("Review image in histogram functionality can't be tested on mobile due to emulator not displaying image as expected or on Safari due to xpath");
                 else
                     getProductDetailPageThreadLocal().verifyReviewImagesInHistogram(map);
                 if(map.size()>0)
