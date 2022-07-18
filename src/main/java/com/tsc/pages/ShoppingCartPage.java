@@ -601,6 +601,113 @@ public class ShoppingCartPage extends BasePage {
 	}
 
 	/**
+	 * To get remove dialog description
+	 * @return - Map<String,Object>
+	 */
+	public Map<String,Object> getRemoveDialogDesc(){
+		String lsText;
+		Map<String,Object> map=new HashMap<>();
+
+		if(checkRemoveDialogBadgeExisting()){
+			map.put("productBadge",true);
+		}
+		else{
+			map.put("productBadge",false);
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblRemoveDialogProductItemDesc);
+		lsText=lblRemoveDialogProductItemDesc.getText();
+		String[] lsSplit=lsText.split("|");
+		map.put("productName",lsSplit[0].trim());
+		map.put("productStyle",lsSplit[1].trim());
+		map.put("productSize",lsSplit[2].split(":")[1].trim());
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblRemoveDialogProductItemNumber);
+		lsText=lblRemoveDialogProductItemNumber.getText().trim();
+		map.put("productNumber",lsText.replace("-",""));
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblRemoveDialogProductItemPrice);
+		lsText=lblRemoveDialogProductItemPrice.getText();
+		map.put("productNowPrice",this.getFloatFromString(lsText,true));
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblRemoveDialogProductItemQuantity);
+		lsText=lblRemoveDialogProductItemQuantity.getText();
+		map.put("productQuantity",Integer.parseInt(lsText));
+
+		return map;
+	}
+
+	/**
+	 * To verify Contents Between CartItem And Remove Dialog
+	 * @param - Map<String,Object> - cartItemMap - the cart item in shopping cart list
+	 * @param - Map<String,Object> - removeDialogMap - the contents in remove dialog
+	 */
+	public void verifyContentsBetweenCartItemAndRemoveDialog(Map<String,Object> cartItemMap,Map<String,Object> removeDialogMap){
+		boolean bCartItemProductBadge= (boolean) cartItemMap.get("productBadge");
+		boolean bRemoveDialogProductBadge= (boolean) removeDialogMap.get("productBadge");
+		if(bCartItemProductBadge==bRemoveDialogProductBadge){
+			reporter.reportLogPass("The product badge in cart item is the same as the one in remove dialog");
+		}
+		else{
+			reporter.reportLogFail("The product badge:"+bCartItemProductBadge+" in cart item is not the same as the one:"+bRemoveDialogProductBadge+" in remove dialog");
+		}
+
+		String cartItemProductName= cartItemMap.get("productName").toString();
+		String removeDialogProductName= removeDialogMap.get("productName").toString();
+		if(cartItemProductName.equalsIgnoreCase(removeDialogProductName)){
+			reporter.reportLogPass("The product name in cart item is the same as the one in remove dialog");
+		}
+		else{
+			reporter.reportLogFail("The product name:"+cartItemProductName+" in cart item is not the same as the one:"+removeDialogProductName+" in remove dialog");
+		}
+
+		String cartItemProductStyle= cartItemMap.get("productStyle").toString();
+		String removeDialogProductStyle= removeDialogMap.get("productStyle").toString();
+		if(cartItemProductStyle.equalsIgnoreCase(removeDialogProductStyle)){
+			reporter.reportLogPass("The product style in cart item is the same as the one in remove dialog");
+		}
+		else{
+			reporter.reportLogFail("The product style:"+cartItemProductStyle+" in cart item is not the same as the one:"+removeDialogProductStyle+" in remove dialog");
+		}
+
+		String cartItemProductSize= cartItemMap.get("productSize").toString();
+		String removeDialogProductSize= removeDialogMap.get("productSize").toString();
+		if(cartItemProductSize.equalsIgnoreCase(removeDialogProductSize)){
+			reporter.reportLogPass("The product size in cart item is the same as the one in remove dialog");
+		}
+		else{
+			reporter.reportLogFail("The product size:"+cartItemProductSize+" in cart item is not the same as the one:"+removeDialogProductSize+" in remove dialog");
+		}
+
+		String cartItemProductNumber= cartItemMap.get("productNumber").toString();
+		String removeDialogProductNumber= removeDialogMap.get("productNumber").toString();
+		if(cartItemProductNumber.equalsIgnoreCase(removeDialogProductNumber)){
+			reporter.reportLogPass("The product number in cart item is the same as the one in remove dialog");
+		}
+		else{
+			reporter.reportLogFail("The product number:"+cartItemProductSize+" in cart item is not the same as the one:"+removeDialogProductSize+" in remove dialog");
+		}
+
+		float cartItemProductNowPrice= (float) cartItemMap.get("productNowPrice");
+		float removeDialogProductNowPrice= (float) removeDialogMap.get("productNowPrice");
+		if(Math.abs(cartItemProductNowPrice-removeDialogProductNowPrice)<0.1){
+			reporter.reportLogPass("The product now price in cart item is equal to the one in remove dialog");
+		}
+		else{
+			reporter.reportLogFail("The product now price:"+cartItemProductNowPrice+" in cart item is not equal to the one:"+removeDialogProductNowPrice+" in remove dialog");
+		}
+
+		int cartItemProductQuantity= (int) cartItemMap.get("productQuantity");
+		int removeDialogProductQuantity= (int) removeDialogMap.get("productQuantity");
+		if(cartItemProductQuantity==removeDialogProductQuantity){
+			reporter.reportLogPass("The product Quantity in cart item is equal to the one in remove dialog");
+		}
+		else{
+			reporter.reportLogFail("The product Quantity:"+cartItemProductQuantity+" in cart item is not equal to the one:"+removeDialogProductQuantity+" in remove dialog");
+		}
+	}
+
+	/**
 	 * To verify Contents on ShoppingCartItem in shopping item list with AddToBag
 	 * @param - Map<String,Object> - PDPMap
 	 * @param - Map<String,Object> - addToBagMap
@@ -1476,6 +1583,122 @@ public class ShoppingCartPage extends BasePage {
 		}
 		else{
 			reporter.reportLogFailWithScreenshot("The Future monthly payment is not displaying correctly");
+		}
+	}
+
+	/**
+	 * To verify Remove Dialog Contents
+	 */
+	public void verifyRemoveDialogContents(){
+		String lsText;
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnRemoveDialogClose);
+		if(this.getReusableActionsInstance().isElementVisible(btnRemoveDialogClose)){
+			reporter.reportLogPass("The Close button in Remove dialog is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Close button in Remove dialog is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblRemoveDialogTitle);
+		lsText=lblRemoveDialogTitle.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The title in Remove dialog is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The title in Remove dialog is not displaying correctly");
+		}
+
+		if(checkRemoveDialogBadgeExisting()){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(imgRemoveDialogProductBadge);
+			lsText=imgRemoveDialogProductBadge.getAttribute("src");
+			if(!lsText.isEmpty()){
+				reporter.reportLogPass("The product badge in Remove dialog is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The product badge in Remove dialog is not displaying correctly");
+			}
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(imgRemoveDialogProductImage);
+		lsText=imgRemoveDialogProductImage.getAttribute("src");
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The product image in Remove dialog is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The product image in Remove dialog is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblRemoveDialogProductItemDesc);
+		lsText=lblRemoveDialogProductItemDesc.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The product description in Remove dialog is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The product description in Remove dialog is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblRemoveDialogProductItemNumber);
+		lsText=lblRemoveDialogProductItemNumber.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The product item number in Remove dialog is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The product item number in Remove dialog is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblRemoveDialogProductItemPriceTitle);
+		lsText=lblRemoveDialogProductItemPriceTitle.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The product item price title in Remove dialog is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The product item price title in Remove dialog is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblRemoveDialogProductItemPrice);
+		lsText=lblRemoveDialogProductItemPrice.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The product item price in Remove dialog is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The product item price in Remove dialog is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblRemoveDialogProductItemQuantityTitle);
+		lsText=lblRemoveDialogProductItemQuantityTitle.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The product item quantity title in Remove dialog is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The product item quantity title in Remove dialog is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblRemoveDialogProductItemQuantity);
+		lsText=lblRemoveDialogProductItemQuantity.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The product item quantity in Remove dialog is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The product item quantity in Remove dialog is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnRemoveDialogRemove);
+		lsText=btnRemoveDialogRemove.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The remove button in Remove dialog is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The remove button in Remove dialog is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnRemoveDialogCancel);
+		lsText=btnRemoveDialogCancel.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The cancel button in Remove dialog is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The cancel button in Remove dialog is not displaying correctly");
 		}
 	}
 
