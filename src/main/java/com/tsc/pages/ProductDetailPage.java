@@ -536,7 +536,7 @@ public class ProductDetailPage extends BasePage {
 
 	public By byReviewTabRightPartSection=By.xpath(".//div[contains(@class,'pr-rd-right')]");
 
-	public By byReviewTabSubmittedTime=By.xpath(".//section[contains(@class,'pr-rd-description')]//div[contains(@class,'pr-rd-right')]//p[contains(@class,'pr-rd-author-submission-date')]");
+	public By byReviewTabSubmittedTime=By.xpath(".//section[contains(@class,'pr-rd-description')]//div[contains(@class,'pr-rd-right')]//p[contains(@class,'pr-rd-author-submission-date')]/time");
 
 	public By byReviewTabNickName=By.xpath(".//section[contains(@class,'pr-rd-description')]//div[contains(@class,'pr-rd-right')]//p[contains(@class,'pr-rd-author-nickname')]");
 
@@ -3809,7 +3809,10 @@ public class ProductDetailPage extends BasePage {
 	public void verifyReviewImagesInHistogram(HashMap<String,HashMap<String,String>> reviewDataMap){
 		this.waitForPageToLoad();
 		//Navigating to Histogram section
-		this.getReusableActionsInstance().scrollToElement(this.lstReviewTabHistogramItem.get(0));
+		//if(System.getProperty("Browser").contains("safari"))
+		this.getReusableActionsInstance().javascriptScrollToMiddleOfPage();
+		//this.getReusableActionsInstance().clickIfAvailable(this.lnkReviewTabBackToTop);
+		this.getReusableActionsInstance().scrollToElement(this.lblReviewPicturesInHistogram);
 		if(waitForCondition(Driver->{return lblReviewPicturesInHistogram.isDisplayed();},5000)){
 			reporter.reportLogPassWithScreenshot("Review Images are displayed in Histogram section of reviews");
 			//Verifying click functionality for image
@@ -3876,6 +3879,7 @@ public class ProductDetailPage extends BasePage {
 					reporter.reportLogPass("Comments displayed matches with comments by user");
 				else
 					reporter.reportLogFail("Comments displayed are not same as that by user");
+
 				//Verifying comment By
 				this.getReusableActionsInstance().scrollToElement(this.lblCommentBy);
 				String commentsBy = this.lblCommentBy.getText().trim();
