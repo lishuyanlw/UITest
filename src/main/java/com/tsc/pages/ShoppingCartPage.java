@@ -740,10 +740,10 @@ public class ShoppingCartPage extends BasePage {
 	}
 
 	/**
-	 * To verify Quantity And Price Between ShoppingItem List And SubTotalSection
+	 * To verify business logic Between ShoppingItem List And SubTotalSection
 	 * @param - Map<String,Object> - shoppingCartMap
 	 */
-	public void verifyQuantityAndPriceBetweenShoppingItemListAndSubTotalSection(Map<String,Object> shoppingCartMap){
+	public void verifyBusinessLogicBetweenShoppingItemListAndSubTotalSection(Map<String,Object> shoppingCartMap){
 		List<Map<String,Object>> shoppingList=(List<Map<String,Object>>)shoppingCartMap.get("shoppingList");
 		int shoppingAmount= (int) shoppingCartMap.get("shoppingCartMap");
 		float shoppingSubTotal= (float) shoppingCartMap.get("shoppingSubTotal");
@@ -872,12 +872,12 @@ public class ShoppingCartPage extends BasePage {
 	}
 
 	/**
-	 * To verify OrderSummary Logic Section
+	 * To verify OrderSummary business Logic
 	 * @param - itemAmountShoppingCart - int - Shopping item amount in shopping cart
 	 * @param - savePriceShoppingCart - float - saving price in shopping cart, note that if pass 0.0, means no saving message
 	 * @param - orderSummaryMap - Map<String,Object>
 	 */
-	public void verifyOrderSummaryLogicSection(int itemAmountShoppingCart,float savePriceShoppingCart,Map<String,Object> orderSummaryMap){
+	public void verifyOrderSummaryBusinessLogic(int itemAmountShoppingCart,float savePriceShoppingCart,Map<String,Object> orderSummaryMap){
 		int itemAmountOrderSummary= (int) orderSummaryMap.get("orderSummary");
 		if(itemAmountOrderSummary==itemAmountShoppingCart){
 			reporter.reportLogPass("The item amount in OrderSummary section is equal to the one in Shopping Cart item section");
@@ -934,10 +934,10 @@ public class ShoppingCartPage extends BasePage {
 	}
 
 	/**
-	 * To get Installment Section Description
+	 * To get Installment business logic
 	 * @param - totalPrice - total price from OrderSummary section
 	 */
-	public void verifyInstallmentLogic(float totalPriceFromOrderSummary){
+	public void verifyInstallmentBusinessLogic(float totalPriceFromOrderSummary){
 		String lsText;
 		int totalInstallmentNumber;
 
@@ -987,7 +987,9 @@ public class ShoppingCartPage extends BasePage {
 		else{
 			reporter.reportLogFail("The calculated future monthly payment:"+calFutureMonthlyPayment+" is equal to the future monthly payment:"+futureMonthlyPayment+" in installment section");
 		}
+	}
 
+	public void verifyShoppingCartHeaderContents(boolean bUnKnown,boolean bTrueFit,boolean bAdvancedOrder){
 
 	}
 

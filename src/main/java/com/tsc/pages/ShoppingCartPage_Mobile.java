@@ -263,7 +263,7 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 	}
 
 	@Override
-	public void verifyQuantityAndPriceBetweenShoppingItemListAndSubTotalSection(Map<String,Object> shoppingCartMap){
+	public void verifyBusinessLogicBetweenShoppingItemListAndSubTotalSection(Map<String,Object> shoppingCartMap){
 		List<Map<String,Object>> shoppingList=(List<Map<String,Object>>)shoppingCartMap.get("shoppingList");
 		int shoppingAmount= (int) shoppingCartMap.get("shoppingCartMap");
 		float shoppingSubTotal= (float) shoppingCartMap.get("shoppingSubTotal");

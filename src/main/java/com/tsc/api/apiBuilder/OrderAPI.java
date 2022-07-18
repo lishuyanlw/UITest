@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.tsc.pages.base.BasePage.reporter;
+
 
 public class OrderAPI extends ApiClient {
     public OrderAPI() throws IOException { super(); }
@@ -58,9 +60,9 @@ public class OrderAPI extends ApiClient {
 
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         final Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DATE, -1);
+        cal.add(Calendar.DATE, -100);
         String fromDate=dateFormat.format(cal.getTime());
-        cal.add(Calendar.DATE, +2);
+        cal.add(Calendar.DATE, +101);
         String toDate=dateFormat.format(cal.getTime());
 
         apiEndPoint = propertyData.get("test_apiVersion") + "/" + propertyData.get("test_language") + "/accounts/" + customerEDP + "/orders";
