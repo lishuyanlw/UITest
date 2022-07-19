@@ -3645,6 +3645,7 @@ public class ProductDetailPage extends BasePage {
 		}
 
 		//Removing selected histogram stars for further verification
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblReviewHistogramCrossButton);
 		this.getReusableActionsInstance().scrollToElement(this.lblReviewHistogramCrossButton);
 		this.getReusableActionsInstance().clickIfAvailable(this.lblReviewHistogramCrossButton);
 		this.waitForPageToLoad();
