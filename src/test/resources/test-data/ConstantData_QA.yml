@@ -240,6 +240,7 @@ myAccount:
   lbl_myNewsLettersCheckUnSubscriptionAlertMessage: "Are you sure you want to completely unsubscribe from all of our exciting email marketing communications?"
 
 lstTestName: ["MA_TC10_Payment_Options_Manage_Credit_Card",
+              "PD_TC01_VerifyProductDetail_LeftSection_ContentsForVideo",
               "PD_TC05_VerifyProductDetail_RightSection_DeliveryOptions",
               "PD_TC06_VerifyProductDetail_RightSection_EasyPayAndTrueFit",
               "PD_TC07_VerifyProductDetail_ProductStyle",
