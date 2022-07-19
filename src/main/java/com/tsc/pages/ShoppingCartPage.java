@@ -1,12 +1,18 @@
 package com.tsc.pages;
 
 import com.tsc.pages.base.BasePage;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -1026,6 +1032,11 @@ public class ShoppingCartPage extends BasePage {
 			map.put("nowPrice",0.0);
 		}
 
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectCartPricingShippingEstimateTaxProvince);
+		Select select=new Select(selectCartPricingShippingEstimateTaxProvince);
+		lsText=select.getFirstSelectedOption().getText();
+		map.put("province",lsText);
+
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblCartPricingShippingEstimateTax);
 		lsText=this.lblCartPricingShippingEstimateTax.getText();
 		map.put("tax",this.getFloatFromString(lsText,true));
@@ -1046,12 +1057,38 @@ public class ShoppingCartPage extends BasePage {
 	}
 
 	/**
+	 * To get Province Tax Rate Map
+	 * @return - Map<String,Float> - province as key and tax rate as value
+	 * @throws IOException
+	 */
+	public Map<String,Float> getProvinceTaxRateMap() throws IOException {
+		String fileName = ".//src//test//resources//test-data//ProvinceRate.txt";
+		Map<String,Float> map=new HashMap<>();
+
+		File file = new File(fileName);
+		if(file.length() != 0L){
+			BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName));
+			if(bufferedReader!= null){
+				String line;
+				while ((line = bufferedReader.readLine()) != null) {
+					String[] splitLine=line.split("\\s+");
+					map.put(splitLine[0].trim(), Float.valueOf(splitLine[1].trim()));
+				}
+			}
+		}
+
+		return map;
+	}
+
+	/**
 	 * To verify OrderSummary business Logic
 	 * @param - itemAmountShoppingCart - int - Shopping item amount in shopping cart
 	 * @param - savePriceShoppingCart - float - saving price in shopping cart, note that if pass 0.0, means no saving message
+	 * @param - subTotalShoppingCart - float - subTotal in shopping cart
 	 * @param - orderSummaryMap - Map<String,Object>
+	 * @param - Map<String,Float> - provincialTaxRate
 	 */
-	public void verifyOrderSummaryBusinessLogic(int itemAmountShoppingCart,float savePriceShoppingCart,Map<String,Object> orderSummaryMap){
+	public void verifyOrderSummaryBusinessLogic(int itemAmountShoppingCart,float savePriceShoppingCart,float subTotalShoppingCart,Map<String,Object> orderSummaryMap,Map<String,Float> provincialTaxRate){
 		int itemAmountOrderSummary= (int) orderSummaryMap.get("orderSummary");
 		if(itemAmountOrderSummary==itemAmountShoppingCart){
 			reporter.reportLogPass("The item amount in OrderSummary section is equal to the one in Shopping Cart item section");
@@ -1079,16 +1116,48 @@ public class ShoppingCartPage extends BasePage {
 		}
 
 		float subTotal=(float) orderSummaryMap.get("subTotal");
+		if(Math.abs(subTotal-subTotalShoppingCart)<0.01){
+			reporter.reportLogPass("The subtotal price in OrderSummary section is equal to the subtotal price in shopping cart section");
+		}
+		else{
+			reporter.reportLogFail("The subtotal price:"+subTotal+" in OrderSummary section is equal to the subtotal price:"+subTotalShoppingCart+" in shopping cart section");
+		}
+
+		String province=orderSummaryMap.get("province").toString();
+		float calProvinceTax=getProvinceTax(province,provincialTaxRate);
 		float tax=(float) orderSummaryMap.get("tax");
+		if(Math.abs(calProvinceTax-tax)<0.01){
+			reporter.reportLogPass("The calculated tax in OrderSummary section is equal to the tax in OrderSummary section");
+		}
+		else{
+			reporter.reportLogFail("The calculated tax:"+calProvinceTax+" in OrderSummary section is equal to the tax:"+tax+" in OrderSummary section");
+		}
+
 		float calTotalPrice=subTotal+tax+nowPriceOrderSummary;
 		float totalPrice=(float) orderSummaryMap.get("totalPrice");
-
 		if(Math.abs(calTotalPrice-totalPrice)<0.01){
 			reporter.reportLogPass("The calculated total price in OrderSummary section is equal to the total price in OrderSummary section");
 		}
 		else{
 			reporter.reportLogFail("The calculated total price:"+calTotalPrice+" in OrderSummary section is equal to the total price:"+totalPrice+" in OrderSummary section");
 		}
+	}
+
+	/**
+	 * To get provincial tax with given province
+	 * @param - String - province
+	 * @param - Map<String,Float> -provincialTaxRate
+	 * @return - float province tax
+	 */
+	public float getProvinceTax(String province,Map<String,Float> provincialTaxRate){
+		float calProvinceTax=0.0f;
+		for(Map.Entry<String,Float> entry:provincialTaxRate.entrySet()){
+			if(entry.getKey().equalsIgnoreCase(province)) {
+				calProvinceTax = entry.getValue();
+				break;
+			}
+		}
+		return calProvinceTax;
 	}
 
 	/**
@@ -1109,9 +1178,9 @@ public class ShoppingCartPage extends BasePage {
 
 	/**
 	 * To get Installment business logic
-	 * @param - totalPrice - total price from OrderSummary section
+	 * @param - Map<String,Object> - orderSummaryMap
 	 */
-	public void verifyInstallmentBusinessLogic(float totalPriceFromOrderSummary){
+	public void verifyInstallmentBusinessLogic(Map<String,Object> orderSummaryMap){
 		String lsText;
 		int totalInstallmentNumber;
 
@@ -1138,7 +1207,21 @@ public class ShoppingCartPage extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblCartEasyPayFutureMonthlyPaymentTitle);
 		int futureMonthlyPaymentNumber=this.getIntegerFromString(this.lblCartEasyPayFutureMonthlyPaymentTitle.getText());
 
-		float calLeftPayment=totalPriceFromOrderSummary-todayPayment;
+		float subTotalOrderSummary= (float) orderSummaryMap.get("subTotal");
+		float shippingPriceOrderSummary=(float) orderSummaryMap.get("nowPrice");
+		float taxOrderSummary=(float) orderSummaryMap.get("tax");
+		float totalPriceOrderSummary=(float) orderSummaryMap.get("totalPrice");
+
+		float eachInstallmentPayment=subTotalOrderSummary/totalInstallmentNumber;
+		float calTodayPayment=eachInstallmentPayment+shippingPriceOrderSummary+taxOrderSummary;
+		if(Math.abs(calTodayPayment-todayPayment)<0.1){
+			reporter.reportLogPass("The calculated today payment is equal to the today payment in installment section");
+		}
+		else{
+			reporter.reportLogFail("The calculated today payment:"+calTodayPayment+" is equal to the today payment:"+todayPayment+" in installment section");
+		}
+
+		float calLeftPayment=totalPriceOrderSummary-todayPayment;
 		if(Math.abs(calLeftPayment-leftPayment)<0.1){
 			reporter.reportLogPass("The calculated left payment is equal to the left payment in installment section");
 		}
