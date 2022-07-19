@@ -1,5 +1,8 @@
 package com.tsc.pages;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tsc.api.util.DataConverter;
 import com.tsc.pages.base.BasePage;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -1062,20 +1065,10 @@ public class ShoppingCartPage extends BasePage {
 	 * @throws IOException
 	 */
 	public Map<String,Float> getProvinceTaxRateMap() throws IOException {
-		String fileName = ".//src//test//resources//test-data//ProvinceRate.txt";
-		Map<String,Float> map=new HashMap<>();
-
-		File file = new File(fileName);
-		if(file.length() != 0L){
-			BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName));
-			if(bufferedReader!= null){
-				String line;
-				while ((line = bufferedReader.readLine()) != null) {
-					String[] splitLine=line.split("\\s+");
-					map.put(splitLine[0].trim(), Float.valueOf(splitLine[1].trim()));
-				}
-			}
-		}
+		String fileName = ".//src//test//resources//test-data//ProvinceRate.json";
+		JSONObject jsonObject = DataConverter.readJsonFileIntoJSONObject(fileName);
+		ObjectMapper objectMapper=new ObjectMapper();
+		Map<String,Float> map = objectMapper.readValue(jsonObject.toJSONString(),Map.class);
 
 		return map;
 	}
