@@ -16,7 +16,7 @@ public class PD_TC18_VerifyProductDetail_AddToBag_MergeCart_LogInFirst extends B
 	/*
 	 * CER-840
 	 */
-	@Test(groups={"ProductDetail","Regression","Regression_Mobile","Regression_Tablet"})
+	@Test(groups={"Regression","Regression_Mobile","Regression_Tablet","SauceTunnelTest"})
 	public void PD_TC18_VerifyProductDetail_AddToBag_MergeCart_LogInFirst() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 		BasePage basePage=new BasePage(this.getDriver());
