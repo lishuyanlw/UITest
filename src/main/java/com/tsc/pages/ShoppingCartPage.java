@@ -456,18 +456,31 @@ public class ShoppingCartPage extends BasePage {
 		WebElement item=cartItem.findElement(byProductItemDesc);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 		String lsText=item.getText().trim();
-		if(this.checkSelectQuantityEnabled(cartItem)){
+		if(lsText.contains("|")){
 			String[] lsSplit=lsText.split("\\|");
-			map.put("productName",lsSplit[0].trim());
-			map.put("productStyle",lsSplit[1].trim());
-			map.put("productSize",lsSplit[2].split(":")[1].trim());
+			if(lsSplit.length==2){
+				if(lsSplit[1].contains("Size")){
+					map.put("productName",lsSplit[0].trim());
+					map.put("productStyle",null);
+					map.put("productSize",lsSplit[1].trim());
+				}
+				else{
+					map.put("productName",lsSplit[0].trim());
+					map.put("productStyle",lsSplit[1].trim());
+					map.put("productSize",null);
+				}
+			}
+			else{
+				map.put("productName",lsSplit[0].trim());
+				map.put("productStyle",lsSplit[1].trim());
+				map.put("productSize",lsSplit[2].split(":")[1].trim());
+			}
 		}
 		else{
 			map.put("productName",lsText);
 			map.put("productStyle",null);
 			map.put("productSize",null);
 		}
-
 
 		item=cartItem.findElement(byProductNumber);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
@@ -574,14 +587,47 @@ public class ShoppingCartPage extends BasePage {
 	 * @return - boolean
 	 */
 	public boolean checkIfMatchGivenAddToBagItem(Map<String,Object> addToBagMap,Map<String,Object> shoppingItemMap){
-		if(addToBagMap.get("productName").toString().equalsIgnoreCase(shoppingItemMap.get("productName").toString())&&
-				addToBagMap.get("productStyle").toString().equalsIgnoreCase(shoppingItemMap.get("productStyle").toString())&&
-				addToBagMap.get("productSize").toString().equalsIgnoreCase(shoppingItemMap.get("productSize").toString())){
-			return true;
+		if(shoppingItemMap.get("productStyle")!=null&&shoppingItemMap.get("productSize")!=null){
+			if(addToBagMap.get("productName").toString().equalsIgnoreCase(shoppingItemMap.get("productName").toString())&&
+					addToBagMap.get("productStyle").toString().equalsIgnoreCase(shoppingItemMap.get("productStyle").toString())&&
+					addToBagMap.get("productSize").toString().equalsIgnoreCase(shoppingItemMap.get("productSize").toString())){
+				return true;
+			}
+			else{
+				return false;
+			}
 		}
-		else{
-			return false;
+
+		if(shoppingItemMap.get("productStyle")!=null&&shoppingItemMap.get("productSize")==null){
+			if(addToBagMap.get("productName").toString().equalsIgnoreCase(shoppingItemMap.get("productName").toString())&&
+					addToBagMap.get("productStyle").toString().equalsIgnoreCase(shoppingItemMap.get("productStyle").toString())){
+				return true;
+			}
+			else{
+				return false;
+			}
 		}
+
+		if(shoppingItemMap.get("productStyle")==null&&shoppingItemMap.get("productSize")!=null){
+			if(addToBagMap.get("productName").toString().equalsIgnoreCase(shoppingItemMap.get("productName").toString())&&
+					addToBagMap.get("productSize").toString().equalsIgnoreCase(shoppingItemMap.get("productSize").toString())){
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+
+		if(shoppingItemMap.get("productStyle")==null&&shoppingItemMap.get("productSize")==null){
+			if(addToBagMap.get("productName").toString().equalsIgnoreCase(shoppingItemMap.get("productName").toString())){
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+
+		return false;
 	}
 
 	/**
@@ -617,10 +663,31 @@ public class ShoppingCartPage extends BasePage {
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblRemoveDialogProductItemDesc);
 		lsText=lblRemoveDialogProductItemDesc.getText();
-		String[] lsSplit=lsText.split("|");
-		map.put("productName",lsSplit[0].trim());
-		map.put("productStyle",lsSplit[1].trim());
-		map.put("productSize",lsSplit[2].split(":")[1].trim());
+		if(lsText.contains("|")){
+			String[] lsSplit=lsText.split("\\|");
+			if(lsSplit.length==2){
+				if(lsSplit[1].contains("Size")){
+					map.put("productName",lsSplit[0].trim());
+					map.put("productStyle",null);
+					map.put("productSize",lsSplit[1].trim());
+				}
+				else{
+					map.put("productName",lsSplit[0].trim());
+					map.put("productStyle",lsSplit[1].trim());
+					map.put("productSize",null);
+				}
+			}
+			else{
+				map.put("productName",lsSplit[0].trim());
+				map.put("productStyle",lsSplit[1].trim());
+				map.put("productSize",lsSplit[2].split(":")[1].trim());
+			}
+		}
+		else{
+			map.put("productName",lsText);
+			map.put("productStyle",null);
+			map.put("productSize",null);
+		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblRemoveDialogProductItemNumber);
 		lsText=lblRemoveDialogProductItemNumber.getText().trim();

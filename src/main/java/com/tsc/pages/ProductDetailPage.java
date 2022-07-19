@@ -705,6 +705,9 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__details']//div[@class='add-to-bag__inside-right']//a[@class='add-to-bag__item-link']")
 	public WebElement lnkAddToBagPopupWindowDetailsProductInfo;
 
+	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__details']//a[@class='add-to-bag__item-link']")
+	public WebElement cntAddToBagPopupWindowDetailsItemLink;
+
 	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__details']//div[@class='add-to-bag__inside-right']//a[@class='add-to-bag__item-link']//span[@class='add-to-bag__product-name']")
 	public WebElement lblAddToBagPopupWindowDetailsProductName;
 
@@ -2024,6 +2027,15 @@ public class ProductDetailPage extends BasePage {
 		}
 	}
 
+	public boolean checkProductStyleExistingInAddToBagPopup(){
+		return this.checkChildElementExistingByAttribute(cntAddToBagPopupWindowDetailsItemLink,"class","add-to-bag__product-style");
+	}
+
+	public boolean checkProductSizeExistingInAddToBagPopup(){
+		return this.checkChildElementExistingByAttribute(cntAddToBagPopupWindowDetailsItemLink,"class","add-to-bag__product-size");
+	}
+
+
 	/**
 	 * To get AddToBag description
 	 * @return - Map<String,Object> - including product name/style/size, item amount and subtotal
@@ -2047,14 +2059,24 @@ public class ProductDetailPage extends BasePage {
 		lsText=lblAddToBagPopupWindowDetailsProductName.getText();
 		map.put("productName",lsText);
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddToBagPopupWindowDetailsProductStyle);
-		lsText=lblAddToBagPopupWindowDetailsProductStyle.getText();
-		map.put("productStyle",lsText);
+		if(checkProductStyleExistingInAddToBagPopup()){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddToBagPopupWindowDetailsProductStyle);
+			lsText=lblAddToBagPopupWindowDetailsProductStyle.getText();
+			map.put("productStyle",lsText);
+		}
+		else{
+			map.put("productStyle",null);
+		}
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddToBagPopupWindowDetailsProductSize);
-		lsText=lblAddToBagPopupWindowDetailsProductSize.getText();
-		lsText=lsText.split(":")[1].trim();
-		map.put("productSize",lsText);
+		if(checkProductSizeExistingInAddToBagPopup()){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddToBagPopupWindowDetailsProductSize);
+			lsText=lblAddToBagPopupWindowDetailsProductSize.getText();
+			lsText=lsText.split(":")[1].trim();
+			map.put("productSize",lsText);
+		}
+		else{
+			map.put("productSize",null);
+		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddToBagPopupWindowDetailsProductNumber);
 		lsText=lblAddToBagPopupWindowDetailsProductNumber.getText().replace("-","").trim();
@@ -2086,15 +2108,25 @@ public class ProductDetailPage extends BasePage {
 		lsText=lblProductName.getText();
 		map.put("productName",lsText);
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblRadioProductStyleStatic);
-		lsText=lblRadioProductStyleStatic.getText();
-		lsText=lsText.split(":")[1].trim();
-		map.put("productStyle",lsText);
+		if(this.judgeStyleSizeAvailable(true)){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblRadioProductStyleStatic);
+			lsText=lblRadioProductStyleStatic.getText();
+			lsText=lsText.split(":")[1].trim();
+			map.put("productStyle",lsText);
+		}
+		else{
+			map.put("productStyle",null);
+		}
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblSizeStatic);
-		lsText=lblSizeStatic.getText();
-		lsText=lsText.split(":")[1].trim();
-		map.put("productSize",lsText);
+		if(this.judgeStyleSizeAvailable(false)){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblSizeStatic);
+			lsText=lblSizeStatic.getText();
+			lsText=lsText.split(":")[1].trim();
+			map.put("productSize",lsText);
+		}
+		else{
+			map.put("productSize",null);
+		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblProductNowPrice);
 		float nowPrice=this.getFloatFromString(lblProductNowPrice.getText(),true);
