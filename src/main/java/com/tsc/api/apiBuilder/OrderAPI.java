@@ -1,7 +1,7 @@
 package com.tsc.api.apiBuilder;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.tsc.api.pojo.AccountCartResponse;
+import com.tsc.api.pojo.CartResponse;
 import com.tsc.api.pojo.GetOrderListResponse;
 import com.tsc.api.util.JsonParser;
 import io.restassured.response.Response;
@@ -15,6 +15,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static com.tsc.pages.base.BasePage.reporter;
 
 
 public class OrderAPI extends ApiClient {
@@ -58,9 +60,9 @@ public class OrderAPI extends ApiClient {
 
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         final Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DATE, -1);
+        cal.add(Calendar.DATE, -100);
         String fromDate=dateFormat.format(cal.getTime());
-        cal.add(Calendar.DATE, +2);
+        cal.add(Calendar.DATE, +101);
         String toDate=dateFormat.format(cal.getTime());
 
         apiEndPoint = propertyData.get("test_apiVersion") + "/" + propertyData.get("test_language") + "/accounts/" + customerEDP + "/orders";
@@ -157,7 +159,7 @@ public class OrderAPI extends ApiClient {
     public double getCartOrderAmountWithGuidId(String access_token,String CartGuid) throws IOException {
        CartAPI cartAPI=new CartAPI();
        Response cartResponse=cartAPI.getCartContentWithCartGuid(access_token,CartGuid);
-       AccountCartResponse accountCart = JsonParser.getResponseObject(cartResponse.asString(), new TypeReference<AccountCartResponse>() {});
+       CartResponse accountCart = JsonParser.getResponseObject(cartResponse.asString(), new TypeReference<CartResponse>() {});
 //       reporter.reportLog(cartResponse.asString());
        return accountCart.getOrderSummary().getTotalOrderAmount();
     }

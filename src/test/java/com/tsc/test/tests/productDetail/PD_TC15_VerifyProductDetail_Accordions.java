@@ -5,6 +5,8 @@ import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 
+import java.io.IOException;
+
 public class PD_TC15_VerifyProductDetail_Accordions extends BaseTest {
 	/*
 	 * CER-573
@@ -18,7 +20,7 @@ public class PD_TC15_VerifyProductDetail_Accordions extends BaseTest {
 	 * CER-821 - Havas Change R4 Product Overview and other PDP Accordions
 	 */
 	@Test(groups = {"ProductDetail", "Regression", "Regression_Mobile", "Regression_Tablet"})
-	public void PD_TC15_VerifyProductDetail_Accordions() {
+	public void PD_TC15_VerifyProductDetail_Accordions() throws IOException {
 		/**if ((System.getProperty("Device").toLowerCase().contains("mobile") &&
 				(System.getProperty("Browser").toLowerCase().contains("android"))) ||
 				System.getProperty("Device").toLowerCase().contains("tablet") ||
@@ -49,6 +51,7 @@ public class PD_TC15_VerifyProductDetail_Accordions extends BaseTest {
 
 					reporter.reportLog("Review tab review list contents");
 					getProductDetailPageThreadLocal().verifyReviewTabPerReviewListContents();
+
 					String lsMsg = getProductDetailPageThreadLocal().checkReviewRateSortingBy(true);
 					if (lsMsg.isEmpty() || lsMsg.contains("less than 2")) {
 						reporter.reportLogPass("Sorting by Highest rated passed!");

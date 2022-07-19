@@ -9,7 +9,6 @@ import com.tsc.api.util.JsonParser;
 import extentreport.ExtentTestManager;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
-import org.json.simple.JSONObject;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -134,15 +133,16 @@ public class ApiResponse extends ApiConfigs {
      * This method finds product info on the basis of input search keyword with preconditions(video,style,size,brand,badgeImage,review,easyPay,WasPrice,and AddToBag)
      * @param - String - searchKeyword : search keyword for Product
      * @param - Map<String,Object> - outputDataCriteria : criteria for searching a particular product
-     * @param - boolean - isSoldOut :true for including soldout criteria and false for not checking soldout criteria 
+     * @param - boolean - isSoldOut - true for including soldout criteria and false for not checking soldout criteria
+	 * @param - boolean - basicCheck - Check default settings
+	 * @param - boolean - isMultiStyleAndSize
      * @return - Product.Products - product for search keyword
      */
-    public Product.Products getProductInfoFromKeyword(String searchKeyword,Map<String,Object> outputDataCriteria,boolean isSoldOut,boolean basicCheck){
+    public Product.Products getProductInfoFromKeyword(String searchKeyword,Map<String,Object> outputDataCriteria,boolean isSoldOut,boolean basicCheck,boolean isMultiStyleAndSize){
         boolean flag = true;
         String lsNowPrice,lsWasPrice;
         Product.Products productItem=null;
-        boolean bSoldout=false;
-        
+
         Product product = getProductDetailsForKeyword(searchKeyword,null,true);
         if(product==null) {
         	return null;
@@ -181,12 +181,39 @@ public class ApiResponse extends ApiConfigs {
 						else {
 							//To check if any Inventory is greater than 0, then get the related Style and Size,
 							//which we will use in PDP to select the style and size in order to get Enabled AddToBag information
-							for(ProductDetailsItem.Edp Edps:edpsList) {
-								if(Edps.Inventory>0) {
+							List<ProductDetailsItem.Edp> dataList=edpsList.stream().filter(item->item.getInventory()>0).sorted((p1,p2)->p1.getStyle().compareTo(p2.getStyle())).collect(Collectors.toList());
+							String checkStyle="NoStyle";
+							int count=-1,amount=-1;
+							for(ProductDetailsItem.Edp Edps:dataList) {
+								if(isMultiStyleAndSize){
+									if(checkStyle.equalsIgnoreCase(Edps.getStyle())){
+										count+=1;
+									}
+									else{
+										if(count>0){
+											selectedProduct.productEDPSize=selectedProduct.productEDPSize+checkStyle+"|";
+											selectedProduct.productEDPColor=selectedProduct.productEDPColor+checkStyle+"|";
+											amount+=1;
+										}
+										checkStyle=Edps.getStyle();
+										count=0;
+									}
+
+									if(amount>0){
+										break;
+									}
+								}
+								else{
 									selectedProduct.productEDPSize=Edps.getSize();
 									selectedProduct.productEDPColor=Edps.getStyle();
 									break;
 								}
+
+//								if(Edps.Inventory>0) {
+//									selectedProduct.productEDPSize=Edps.getSize();
+////								selectedProduct.productEDPColor=Edps.getStyle();
+////								break;
+//								}
 							}
 						}
 
@@ -215,7 +242,7 @@ public class ApiResponse extends ApiConfigs {
                     product = getProductDetailsForKeyword(searchKeyword,null,false);
                 }
             }else{
-            	productItem = getProductInfoForInputParams(product,outputDataCriteria,isSoldOut,basicCheck);
+            	productItem = getProductInfoForInputParams(product,outputDataCriteria,isSoldOut,basicCheck,isMultiStyleAndSize);
                 if(productItem==null){
                     outputPage++;
                     if(outputPage>totalPage||outputPage>=10) {
@@ -415,15 +442,19 @@ public class ApiResponse extends ApiConfigs {
      * This method finds product number on the basis of input conditions(video,style,size,brand,badgeImage,review,easyPay,WasPrice,and AddToBag)
      * @param - Product - product : Product class object
      * @param - Map<String,Object> - configs : configs on basis of which product info will be fetched
-     * @param - boolean - isSoldOut :true for including soldout criteria and false for not checking soldout criteria 
+	 *        - If quantity in configs <0, to get the Inventory>0 and Inventory<quantity
+	 * 		  - If quantity in configs >0, to get the Inventory>quantity
+     * @param - boolean - isSoldOut :true for including soldout criteria and false for not checking soldout criteria
+	 * @param - boolean - basicCheck - check with default settings
+	 * @param - boolean - isMultiStyleAndSize - to choose 2 Style/Size combination with more than presetting quantity
      * @return - Product.Products - product for search keyword
      */
-    private Product.Products getProductInfoForInputParams(Product product,Map<String,Object> configs,boolean isSoldOut,boolean basicCheck){
+    private Product.Products getProductInfoForInputParams(Product product,Map<String,Object> configs,boolean isSoldOut,boolean basicCheck,boolean isMultiStyleAndSize){
     	if(product==null) {
         	return null;
         }
     	
-        int videoCount=-1,styleCount=3,sizeCount=3;
+        int videoCount=-1,styleCount=3,sizeCount=3,quantity=0;
 		String lsNowPrice,lsWasPrice;
 
         if(configs!=null) {
@@ -436,12 +467,17 @@ public class ApiResponse extends ApiConfigs {
                 if(entry.getKey().equalsIgnoreCase("size")){
                     sizeCount = Integer.valueOf(entry.getValue().toString());
                 }
+                if(entry.getKey().toLowerCase().contains("quantity")){
+                	quantity = Integer.valueOf(entry.getValue().toString());
+				}
             }
          }
  
         Product.Products productItem=null;
 		ProductDetailsItem productDetailsItem=null;
+
         for(Product.Products data:product.getProducts()) {
+			int styleAmount=-1;
         	lsNowPrice=data.getIsPriceRange();
         	lsWasPrice=data.getWasPriceRange();
             boolean flag = false;
@@ -489,16 +525,101 @@ public class ApiResponse extends ApiConfigs {
             	else {
             		//To check if any Inventory is greater than 0, then get the related Style and Size, 
                 	//which we will use in PDP to select the style and size in order to get Enabled AddToBag information
-            		for(ProductDetailsItem.Edp Edps:edpsList) {
-                		if(Edps.Inventory>0) {                			
-                			selectedProduct.productEDPSize=Edps.getSize();
-                			selectedProduct.productEDPColor=Edps.getStyle();
-                			break;
-                		}
-                	}
-            	}            	
-            	
-            	productItem=data;
+					List<ProductDetailsItem.Edp> dataList=edpsList.stream().sorted((p1,p2)->p1.getStyle().compareTo(p2.getStyle())).collect(Collectors.toList());
+					if(isMultiStyleAndSize){
+						if(dataList.size()<2){
+							return null;
+						}
+					}
+					else{
+						if(dataList.size()<1){
+							return null;
+						}
+					}
+
+					String checkStyle="NoStyle";
+					int sizeAmount=-1;
+					selectedProduct.productEDPSize="";
+					selectedProduct.productEDPColor="";
+					String lsSize="";
+					ProductDetailsItem.Edp currentEDP=null;
+					for(int i=0;i<dataList.size();i++) {
+						ProductDetailsItem.Edp Edps=dataList.get(i);
+						if (isMultiStyleAndSize) {
+							if (checkStyle.equalsIgnoreCase(Edps.getStyle())) {
+								if(Edps.getInventory()>quantity){
+									sizeAmount += 1;
+									lsSize=lsSize+":"+Edps.getSize();
+								}
+							}
+							else {
+								if (sizeAmount > 0) {
+									if(styleAmount==-1){
+										selectedProduct.productEDPColor = selectedProduct.productEDPColor + checkStyle + "|";
+										selectedProduct.productEDPSize = selectedProduct.productEDPSize + lsSize + "|";
+									}
+									else{
+										selectedProduct.productEDPColor = selectedProduct.productEDPColor + checkStyle;
+										selectedProduct.productEDPSize = selectedProduct.productEDPSize + lsSize;
+									}
+									sizeAmount = 0;
+									styleAmount += 1;
+								}
+								else{
+									if(Edps.getInventory()<=quantity){
+										continue;
+									}
+									else{
+										checkStyle = Edps.getStyle();
+										sizeAmount = 0;
+										lsSize=Edps.getSize();
+									}
+								}
+							}
+
+							if(i==(dataList.size()-1)){
+								if(sizeAmount>0){
+									selectedProduct.productEDPColor = selectedProduct.productEDPColor + checkStyle;
+									selectedProduct.productEDPSize = selectedProduct.productEDPSize + lsSize;
+									styleAmount += 1;
+								}
+							}
+
+							if (styleAmount > 0) {
+								break;
+							}
+						}
+						else {
+							//If quantity<0, to get the Inventory>0 and Inventory<quantity
+							//If quantity>0, to get the Inventory>quantity
+							if(quantity<0){
+								if(Edps.getInventory()>1&&Edps.getInventory()<Math.abs(quantity)){
+									selectedProduct.productEDPSize = Edps.getSize();
+									selectedProduct.productEDPColor = Edps.getStyle();
+									break;
+								}
+							}
+							else{
+								if(Edps.getInventory()>quantity){
+									selectedProduct.productEDPSize = Edps.getSize();
+									selectedProduct.productEDPColor = Edps.getStyle();
+									break;
+								}
+							}
+						}
+					}
+            	}
+            	if(isMultiStyleAndSize){
+					if(styleAmount>0){
+						productItem=data;
+					}
+					else{
+						productItem=null;
+					}
+				}
+				else{
+					productItem=data;
+				}
             	            	            	
                 return productItem;
             }
@@ -740,7 +861,7 @@ public class ApiResponse extends ApiConfigs {
 	 * @param - Map<String,Object> - outputDataCriteria : criteria for searching a particular product with precondition
 	 * @return - Product.Products - product for search keyword
 	 */
-	public Product.Products getProductInfoFromKeywordWithEasyPayReviewsTrueFitAndSizeChart(String searchKeyword,Map<String,Object> outputDataCriteria){
+	public Product.Products getProductInfoFromKeywordWithEasyPayReviewsTrueFitAndSizeChart(String searchKeyword,Map<String,Object> outputDataCriteria,boolean reviewImageRequired){
 		boolean flag = true, loopBreakFlag=false;
 
 		Product product = getProductDetailsForKeyword(searchKeyword,null,true);
@@ -751,7 +872,7 @@ public class ApiResponse extends ApiConfigs {
 		Product.Products productItem=null;
 		do{
 			if(outputDataCriteria==null){
-				productItem = getProductInfoWithEasyPayReviewTrueFitSizeChartForConfig(product,null);
+				productItem = getProductInfoWithEasyPayReviewTrueFitSizeChartForConfig(product,null,reviewImageRequired);
 				if(productItem!=null)
 					flag = false;
 				if(flag) {
@@ -762,7 +883,7 @@ public class ApiResponse extends ApiConfigs {
 					product = getProductDetailsForKeyword(searchKeyword,null,false);
 				}
 			}else{
-				productItem = getProductInfoWithEasyPayReviewTrueFitSizeChartForConfig(product,outputDataCriteria);
+				productItem = getProductInfoWithEasyPayReviewTrueFitSizeChartForConfig(product,outputDataCriteria,reviewImageRequired);
 				if(productItem==null){
 					outputPage++;
 					if(outputPage>totalPage||outputPage>=10) {
@@ -787,7 +908,7 @@ public class ApiResponse extends ApiConfigs {
 	 * @param - Map<String,Object> - configs : configs on basis of which product info will be fetched
 	 * @return - Product.Products - product for search keyword
 	 */
-	private Product.Products getProductInfoWithEasyPayReviewTrueFitSizeChartForConfig(Product product,Map<String,Object> config){
+	private Product.Products getProductInfoWithEasyPayReviewTrueFitSizeChartForConfig(Product product,Map<String,Object> config, boolean reviewImageRequired){
 		if(product==null) {
 			return null;
 		}
@@ -809,31 +930,49 @@ public class ApiResponse extends ApiConfigs {
 		selectedProduct.init();
 		for(Product.Products data:product.getProducts()) {
 			if(data.getStyles().size()>=styleCount && data.getSizes().size()>=sizeCount && data.getProductReviewCount()>=3 && data.isEnabledAddToCart()){
-				List<edps> edpsList = data.getEdps();
-				loopBreakFlag = false;
-				for (edps Edps : edpsList) {
-					if (!Edps.isSoldOut() == true && Edps.Inventory > 0 && data.getInstallments() > 1) {
-						if (data.getInstallments() > 1) {
-							List<Sections> sections = this.getSectionDetailsFromProductNumber(data.getItemNo());
-							if (sections.size() > 0) {
-								for (int counter = 0; counter < sections.size(); counter++) {
-									if (sections.get(counter).getName().contains("Size")) {
-										selectedProduct.productNumber = data.getItemNo();
-										selectedProduct.productName = data.getName();
-										selectedProduct.productBrand = data.getBrand();
-										selectedProduct.productNowPrice = data.getIsPriceRange();
-										selectedProduct.productWasPrice = data.getWasPriceRange();
-										selectedProduct.easyPayPrice=Edps.getEasyPaymentPrice();
-										if(!lsUrlType.isEmpty()){
-											selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName().trim().replace(".","").replace(" ","-")+propertyData.get("test_partial_url_pdp")+data.getItemNo();
-										}
-										else{
-											selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName().trim()+propertyData.get("test_partial_url_pdp")+data.getItemNo();
-										}
+				if(reviewImageRequired){
+					Review reviewsForProduct = this.getProductReviewsForProductNumber(data.getItemNo());
+					List<Review.Reviews> reviewList = reviewsForProduct.getReviewSummary().getReviews();
+					for(Review.Reviews review:reviewList){
+						if(review.getMedia()!=null)
+							if(!review.getMedia().get(0).getUrl().isEmpty())
+								return getProductDataForSelectedProduct(data);
+					}
+				}else
+					return getProductDataForSelectedProduct(data);
+			}
+		}
+		return null;
+	}
 
-										return data;
-									}
+	/**
+	 * This function returns data for a selected product number
+	 * @param data - Product.Products data object selected for fetching data
+	 * @return - Product.Product object for selected product
+	 */
+	public Product.Products getProductDataForSelectedProduct(Product.Products data){
+		List<edps> edpsList = data.getEdps();
+		for (edps Edps : edpsList) {
+			if (!Edps.isSoldOut() == true && Edps.Inventory > 0 && data.getInstallments() > 1) {
+				if (data.getInstallments() > 1) {
+					List<Sections> sections = this.getSectionDetailsFromProductNumber(data.getItemNo());
+					if (sections.size() > 0) {
+						for (int counter = 0; counter < sections.size(); counter++) {
+							if (sections.get(counter).getName().contains("Size")) {
+								selectedProduct.productNumber = data.getItemNo();
+								selectedProduct.productName = data.getName();
+								selectedProduct.productBrand = data.getBrand();
+								selectedProduct.productNowPrice = data.getIsPriceRange();
+								selectedProduct.productWasPrice = data.getWasPriceRange();
+								selectedProduct.easyPayPrice=Edps.getEasyPaymentPrice();
+								if(!lsUrlType.isEmpty()){
+									selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName().trim().replace(".","").replace(" ","-")+propertyData.get("test_partial_url_pdp")+data.getItemNo();
 								}
+								else{
+									selectedProduct.pdpNavigationUrl= propertyData.get("test_qaURL")+"/"+data.getName().trim()+propertyData.get("test_partial_url_pdp")+data.getItemNo();
+								}
+
+								return data;
 							}
 						}
 					}
@@ -841,6 +980,18 @@ public class ApiResponse extends ApiConfigs {
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * This method returns reviews of a product number
+	 */
+	public Review getProductReviewsForProductNumber(String productNumber){
+		String apiEndPoint = propertyData.get("test_qaURL")+"/"+propertyData.get("test_apiVersion3")+"/"+propertyData.get("test_language")+"/products/"+productNumber+"/reviews";
+		Response response = this.getApiCallResponse(null,apiEndPoint);
+		if(response.statusCode()==200)
+			return JsonParser.getResponseObject(response.asString(), new TypeReference<Review>() {});
+		else
+			return null;
 	}
     
     /**
@@ -1038,9 +1189,9 @@ public class ApiResponse extends ApiConfigs {
 	public void placeOrderForUser(String customerEDP, String accessToken) throws JsonProcessingException {
 		//Verifying that user has tsc credit card associated for placing order
 		Response userCartResponse = this.getAccountCartContentWithCustomerEDP(customerEDP,accessToken);
-		AccountCartResponse accountCartResponseForUser = JsonParser.getResponseObject(userCartResponse.asString(), new TypeReference<AccountCartResponse>() {});
-		if(accountCartResponseForUser.getCreditCard()!=null){
-			if(!accountCartResponseForUser.getCreditCard().getType().equalsIgnoreCase("FI")){
+		CartResponse cartResponseForUser = JsonParser.getResponseObject(userCartResponse.asString(), new TypeReference<CartResponse>() {});
+		if(cartResponseForUser.getCreditCard()!=null){
+			if(!cartResponseForUser.getCreditCard().getType().equalsIgnoreCase("FI")){
 				org.json.simple.JSONObject creditCardDetails = DataConverter.readJsonFileIntoJSONObject("test-data/CreditCard.json");
 				this.addCreditCardToUser( (org.json.simple.JSONObject)creditCardDetails.get("tscCard"),customerEDP,accessToken);
 			}

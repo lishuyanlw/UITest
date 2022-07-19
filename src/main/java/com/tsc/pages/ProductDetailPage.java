@@ -5,6 +5,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.tsc.api.apiBuilder.CartAPI;
+import com.tsc.api.apiBuilder.ProductAPI;
+import com.tsc.api.pojo.CartResponse;
+import com.tsc.api.util.JsonParser;
+import io.restassured.response.Response;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -127,6 +136,49 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//section[@class='pdp-description']//a[@class='pr-snippet-review-count']")
 	public WebElement lblProductReviewCount;
 
+	@FindBy(xpath = "//div[@id='pr-reviewdisplay']//div[@class='pr-irlsnippet']/div")
+	public WebElement lblReviewPicturesInHistogram;
+
+	@FindBy(xpath = "//div[@class='pr-media-modal']/section[@class='modal__body']/button")
+	public WebElement lblReviewImagePopUpModelCloseButton;
+
+	@FindBy(xpath = "//section[@class='pr-media-card pr-media-card-in']//picture/img")
+	public WebElement lblReviewImageOnPopUpWindow;
+
+	@FindBy(xpath = "//section[@class='pr-media-card pr-media-card-in']//div[contains(@class,'text-stars')]//div[@class='pr-snippet-rating-decimal']")
+	public WebElement lblReviewStarsOnPopUpWindow;
+
+	@FindBy(xpath = "//section[@class='pr-media-card pr-media-card-in']//p[contains(@class,'text-headline')]")
+	public WebElement lblReviewHeadlineOnPopUpWindow;
+
+	@FindBy(xpath = "//section[@class='pr-media-card pr-media-card-in']//p[contains(@class,'text-comments')]")
+	public WebElement lblReviewCommentOnPopUpWindow;
+
+	@FindBy(xpath = "//section[@class='pr-media-card pr-media-card-in']//p[contains(@class,'text-date')]")
+	public WebElement lblReviewPostedDateOnPopUpWindow;
+
+	@FindBy(xpath = "//section[@class='pr-media-card pr-media-card-in']//button[contains(@class,'text-readreview')]")
+	public WebElement btnReadReviewOnPopUpWindowBtn;
+
+	@FindBy(xpath = "//section[@class='pr-media-card pr-media-card-in']//footer//div[@class='pr-media-card-footer-flagging']/a")
+	public WebElement lnlFlagImageOnPopUpWindow;
+
+	@FindBy(xpath = "//form[@id='pr-flag-reviews']//button[contains(@class,'cancel')]")
+	public WebElement btnFlagImagePopUpWindowCancelButton;
+
+	@FindBy(xpath = "//form[@id='pr-flag-reviews']//input[@id='pr-email-field']")
+	public WebElement lblFlagImageEmailText;
+
+	//Read Review on Review Pop-Up
+	@FindBy(xpath = "//div[contains(@class,'pr-read-review pr-read-review-in pr-read-review-flagging-in')]/button")
+	public WebElement btnBackToMediaBtn;
+
+	@FindBy(xpath="//div[contains(@class,'pr-read-review pr-read-review-in pr-read-review-flagging-in')]/div[@class='pr-review']/section/p")
+	public WebElement lblComment;
+
+	@FindBy(xpath="//div[contains(@class,'pr-read-review pr-read-review-in pr-read-review-flagging-in')]/div[@class='pr-review']/section/div//p[contains(@class,'nickname')]/span")
+	public WebElement lblCommentBy;
+
 	//Price part
 	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__prices--layout']")
 	public WebElement cntProductPriceContainer;
@@ -203,6 +255,9 @@ public class ProductDetailPage extends BasePage {
 
 	@FindBy(xpath = "//section[@class='pdp-description']//div[contains(@class,'pdp-description__form__colours__selections')]//button[not(contains(@class,'pdp-description__form__colours--disabled'))][@aria-pressed='true']//label")
 	public WebElement btnRadioProductStyleSelectedLabel;
+
+	@FindBy(xpath = "//div[@id='product-details-page']//div[contains(@class,'pdp-description__form__colour')]/button[not(contains(@class,'option--selected'))]")
+	public List<WebElement> lstRadioStyleLabelNotSelectedList;
 
 	//For dropdown menu style
 	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__form__colours__selected']")
@@ -299,6 +354,15 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//section[contains(@class,'pdp-description']//div[@class='pdp-description__form__sizes__selections')]")
 	public WebElement cntProductSizeSection;
 
+	@FindBy(xpath="//div[@id='product-details-page']//div[@class='pdp-description__form__sizes__selected']/b")
+	public WebElement lblSelectedSize;
+
+	@FindBy(xpath="//div[@id='product-details-page']//div[contains(@class,'pdp-description__form__sizes')]/button[contains(@class,'option--selected')]")
+	public WebElement lblSelectedDefaultSize;
+
+	@FindBy(xpath="//div[@id='product-details-page']//div[contains(@class,'pdp-description__form__colours')]/button[contains(@class,'option--selected')]")
+	public WebElement lblSelectedDefaultColour;
+
 	//For radio style
 	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__form__sizes__selected']")
 	public WebElement lblSizeStatic;
@@ -320,6 +384,9 @@ public class ProductDetailPage extends BasePage {
 
 	@FindBy(xpath = "//section[contains(@class,'pdp-description')]//div[contains(@class,'pdp-description__form__sizes__selections')]//button[not(contains(@class,'pdp-description__form__sizes--disabled'))]//label//span")
 	public List<WebElement> lstRadioSizeLabelSpanList;
+
+	@FindBy(xpath="//div[@id='product-details-page']//div[contains(@class,'pdp-description__form__sizes')]/button[not(contains(@class,'option--selected')) and not(contains(@class,'sizes--disabled'))]")
+	public List<WebElement> lstRadioSizeLabelNotSelectedList;
 
 	/**@FindBy(xpath = "//section[contains(@class,'pdp-description')]//div[contains(@class,'pdp-description__form__sizes__selections')]//button[not(contains(@class,'pdp-description__form__sizes--disabled'))][input[@checked]]")
 	public WebElement btnRadioProductSizeSelected;
@@ -353,8 +420,8 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//section[@class='pdp-description']//div[contains(@class,'pdp-description__add-to-bag')]//div[contains(@class,'pdp-description__add-to-bag__quantity')]//select//option[last()]")
 	public WebElement lblQuantityLastOption;
 
-	//@FindBy(xpath = "//section[@class='pdp-description']//div[contains(@class,'pdp-description__add-to-bag')]//div[contains(@class,'pdp-description__add-to-bag__quantity')]//span[@class='pdp-description__add-to-bag__quantity__count--critic-stock']")
-	//public WebElement lblQuantityLeft;
+	@FindBy(xpath = "//section[@class='pdp-description']//div[contains(@class,'pdp-description__add-to-bag')]//div[contains(@class,'pdp-description__add-to-bag__quantity')]//span[@class='pdp-description__add-to-bag__quantity__count--critic-stock']")
+	public WebElement lblQuantityLeft;
 
 	//For new designed Add To Bag button
 	@FindBy(xpath = "//section[@class='pdp-description']//button[@class='pdp-description__add-to-bag__add-to-bag-button']")
@@ -362,6 +429,12 @@ public class ProductDetailPage extends BasePage {
 
 	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__advance-order']")
 	public WebElement lblAdvanceOrderMsg;
+
+	@FindBy(xpath="//div[@id='product-details-page']//div[contains(@class,'add-to-bag__quantity')]/span")
+	public WebElement lblAvailableQuantity;
+
+	@FindBy(xpath = "//div[@id='product-details-page']//div[contains(@class,'add-to-bag__quantity')]//span[contains(@class,'stock')]")
+	public WebElement lblAvailableQuantityNumber;
 
 	//Add to favorites
 	@FindBy(xpath = "//section[@class='pdp-description']//span[@class='pdp-description__add-to-bag__favorite__text']")
@@ -436,6 +509,9 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//div[@id='pr-reviewdisplay']//section[@id='pr-review-display']//div[@class='pr-review']")
 	public List<WebElement> lstReviewTabPerReviewList;
 
+	@FindBy(xpath = "//div[@class='pr-review-snapshot-histogram']//li[@class='pr-ratings-histogram-list-item']//div[@class='pr-histogram-cross']/span")
+	public WebElement lblReviewHistogramCrossButton;
+
 	/**public By byReviewTabHeader=By.xpath(".//header");
 
 	public By byReviewTabDescriptionSection=By.xpath(".//section[contains(@class,'pr-rd-description')]");
@@ -448,6 +524,8 @@ public class ProductDetailPage extends BasePage {
 
 	public By byReviewTabAuthorLocation=By.xpath(".//section[contains(@class,'pr-rd-description')]//div[contains(@class,'pr-rd-right')]//p[contains(@class,'pr-rd-author-location')]");
 	*/
+	public By byReviewRatingStarDecimal=By.xpath(".//div[@class='pr-rating-stars']/div[contains(@class,'100-filled')]");
+
 	public By byReviewTabFooter=By.xpath(".//footer");
 
 	public By byReviewTabStarSection=By.xpath(".//div[@class='pr-rating-stars']");
@@ -458,7 +536,7 @@ public class ProductDetailPage extends BasePage {
 
 	public By byReviewTabRightPartSection=By.xpath(".//div[contains(@class,'pr-rd-right')]");
 
-	public By byReviewTabSubmittedTime=By.xpath(".//section[contains(@class,'pr-rd-description')]//div[contains(@class,'pr-rd-right')]//p[contains(@class,'pr-rd-author-submission-date')]");
+	public By byReviewTabSubmittedTime=By.xpath(".//section[contains(@class,'pr-rd-description')]//div[contains(@class,'pr-rd-right')]//p[contains(@class,'pr-rd-author-submission-date')]/time");
 
 	public By byReviewTabNickName=By.xpath(".//section[contains(@class,'pr-rd-description')]//div[contains(@class,'pr-rd-right')]//p[contains(@class,'pr-rd-author-nickname')]");
 
@@ -606,21 +684,12 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//div[@class='secondary-navigation__popup-container']")
 	public WebElement cntAddToBagOverlay;
 
-	//@FindBy(xpath = "//div[contains(@class,'cart-section')]")
-	//public WebElement cntAddToBagPopupWindow;
-
 	@FindBy(xpath = "//div[contains(@class,'cart-section')]//button[@class='add-to-bag__button-close']")
 	public WebElement btnAddToBagPopupWindowClose;
 
 	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag-title']")
 	public WebElement lblAddToBagPopupWindowTitle;
 
-	/**@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__details']")
-	public WebElement cntAddToBagPopupWindowDetailsSection;
-
-	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__details']//div[@class='add-to-bag__inside-left']")
-	public WebElement cntAddToBagPopupWindowDetailsLeftSection;
-	*/
 	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__details']//div[@class='add-to-bag__inside-left']//div[@class='add-to-bag__img']")
 	public WebElement cntAddToBagPopupWindowDetailsLeftSectionImage;
 
@@ -633,11 +702,11 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__details']//div[@class='add-to-bag__inside-left']//div[@class='add-to-bag__img']//a//img")
 	public WebElement imgAddToBagPopupWindowDetailsProductImage;
 
-	//@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__details']//div[@class='add-to-bag__inside-right']")
-	//public WebElement cntAddToBagPopupWindowDetailsRightSection;
-
 	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__details']//div[@class='add-to-bag__inside-right']//a[@class='add-to-bag__item-link']")
 	public WebElement lnkAddToBagPopupWindowDetailsProductInfo;
+
+	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__details']//a[@class='add-to-bag__item-link']")
+	public WebElement cntAddToBagPopupWindowDetailsItemLink;
 
 	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__details']//div[@class='add-to-bag__inside-right']//a[@class='add-to-bag__item-link']//span[@class='add-to-bag__product-name']")
 	public WebElement lblAddToBagPopupWindowDetailsProductName;
@@ -648,17 +717,8 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__details']//div[@class='add-to-bag__inside-right']//a[@class='add-to-bag__item-link']//span[@class='add-to-bag__product-size']")
 	public WebElement lblAddToBagPopupWindowDetailsProductSize;
 
-	/**public By byAddToBagPopupWindowDetailProductName = By.xpath(".//span[@class='add-to-bag__product-name']");
-
-	public By byAddToBagPopupWindowDetailProductStyle = By.xpath(".//span[@class='add-to-bag__product-style']");
-
-	public By byAddToBagPopupWindowDetailProductSize = By.xpath(".//span[@class='add-to-bag__product-size']");
-	*/
 	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__details']//div[@class='add-to-bag__inside-right']//div[@class='add-to-bag__product-number']")
 	public WebElement lblAddToBagPopupWindowDetailsProductNumber;
-
-	//@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__button-wrap']")
-	//public WebElement cntAddToBagPopupWindowButtonSection;
 
 	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__button-wrap']//div[contains(@class,'add-to-bag__subtotal')]")
 	public WebElement lblAddToBagPopupWindowButtonSectionSubtotal;
@@ -1205,6 +1265,89 @@ public class ProductDetailPage extends BasePage {
 	}
 
 	/**
+	 * Method to verify image for added review in review section
+	 * @return - int - Number of reviews that have reviews containing images
+	 */
+	public HashMap<String,HashMap<String,String>> verifyReviewImageForAddedReviews(){
+		HashMap<String,HashMap<String,String>> map = new HashMap<>();
+		for(WebElement item:this.lstReviewTabPerReviewList) {
+			WebElement reviewNickNameElement=item.findElement(this.byReviewTabNickName);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			WebElement imageReview = item.findElement(By.xpath("./section[contains(@class,'images')]"));
+			List<WebElement> imageReviewList = this.getChildrenList(imageReview);
+			if(imageReviewList.size()>0){
+				List<WebElement> imageReviewContent = this.getChildrenList(imageReviewList.get(0));
+				//Fetching image details and comments by user
+				HashMap<String,String> reviewData = this.getReviewImageWithCommentsProvidedByUser(item);
+				if(imageReviewContent.size()==2){
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(imageReviewContent.get(0));
+					reporter.reportLog("Both image and text is present for review by: "+reviewNickNameElement.getText());
+					String reviewImageLink = imageReviewContent.get(0).findElement(By.xpath("./img")).getAttribute("src").trim();
+					String reviewImageComment = imageReviewContent.get(1).getText();
+					reviewData.put("imageLink",reviewImageLink);
+					reviewData.put("imageComment",reviewImageComment);
+					if(!reviewImageLink.isEmpty() && !reviewImageComment.isEmpty())
+						reporter.reportLogPassWithScreenshot("Review Image Link and Comment is present for the review");
+					else
+						reporter.reportLogFailWithScreenshot("Either review image link or comment is missing for review");
+				}
+				if(imageReviewContent.size()==1){
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(imageReviewContent.get(0));
+					reporter.reportLog("Only review image is present for review by: "+reviewNickNameElement.getText());
+					String reviewImageLink = imageReviewContent.get(0).findElement(By.xpath("./img")).getAttribute("src").trim();
+					reviewData.put("imageLink",reviewImageLink);
+					if(!reviewImageLink.isEmpty())
+						reporter.reportLogPassWithScreenshot("Review Image link is present for the review");
+					else
+						reporter.reportLogFailWithScreenshot("Review image link is missing for review");
+				}
+				map.put(reviewData.get("heading"),reviewData);
+			}
+		}
+		if(map.size()>0)
+			return map;
+		else
+			return null;
+	}
+
+	/**
+	 * Function gets details of review image with comment provided by user
+	 */
+	public HashMap<String,String> getReviewImageWithCommentsProvidedByUser(WebElement imageElement){
+		WebElement element;
+		String lsHeadingLine;
+		HashMap<String,String> map = new HashMap<>();
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(imageElement);
+		element=imageElement.findElement(this.byReviewTabHeadingLine);
+		lsHeadingLine=element.getText().trim();
+		map.put("heading",lsHeadingLine);
+
+		List<WebElement> starElement=imageElement.findElements(this.byReviewRatingStarDecimal);
+		map.put("reviewStars",String.valueOf(starElement.size()));
+
+		element=imageElement.findElement(this.byReviewTabSubmittedTime);
+		String timeInMonths = element.getText().trim();
+		if(timeInMonths.contains("year"))
+			map.put("reviewSubmittedTime",String.valueOf(Integer.valueOf(timeInMonths.split(" ")[0])*12));
+		else
+			map.put("reviewSubmittedTime",timeInMonths);
+
+		element=imageElement.findElement(this.byReviewTabNickName);
+		map.put("reviewTabNickName",element.getText().trim());
+
+		element=imageElement.findElement(this.byReviewTabDescriptionText);
+		map.put("reviewTabDescription",element.getText().trim());
+
+		element=imageElement.findElement(this.byReviewTabFooter);
+		map.put("reviewTabFooterDescription",element.getText().trim());
+
+		if(map.size()>0)
+			return map;
+		else
+			return null;
+	}
+	/**
 	 * Method to check Review rate sorting function
 	 * @param-boolean bHighestRateFirst: true for Highest rated sorting while false for Lowest rated sorting
 	 * @return String
@@ -1625,7 +1768,15 @@ public class ProductDetailPage extends BasePage {
 //		this.getReusableActionsInstance().clickIfAvailable(this.btnAddToBag);
 		//this.btnAddToBag.click();
 		this.clickElement(this.btnAddToBag);
-		return this.waitForCondition(Drive->{return checkAddToBagPopupDisplaying();}, 30000);
+
+		try{
+			this.waitForCondition(Drive->{return checkAddToBagPopupDisplaying();}, 30000);
+		}
+		catch(Exception e){
+			this.applyStaticWait(10000);
+		}
+
+		return true;
 	}
 
 	/**
@@ -1635,18 +1786,107 @@ public class ProductDetailPage extends BasePage {
 	 */
 	public boolean closeAddToBagPopupWindow() {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnAddToBagPopupWindowClose);
-		this.getReusableActionsInstance().clickIfAvailable(this.btnAddToBagPopupWindowClose);
-		//this.btnAddToBagPopupWindowClose.click();
-		return this.waitForCondition(Drive->{return !checkAddToBagPopupDisplaying();}, 30000);
+		if(this.btnAddToBagPopupWindowClose.isDisplayed() && this.btnAddToBagPopupWindowClose.isEnabled()){
+			reporter.reportLogPass("Close Button on Add to Bag pop-up is displayed as expected");
+			this.getReusableActionsInstance().clickIfAvailable(this.btnAddToBagPopupWindowClose);
+			//this.btnAddToBagPopupWindowClose.click();
+			return this.waitForCondition(Drive->{return !checkAddToBagPopupDisplaying();}, 30000);
+		}else{
+			reporter.reportLogFail("Close Button on Add to Bag pop-up is not displayed as expected");
+			return false;
+		}
+	}
+
+	/**
+	 * This function closes Add to Bag pop up window after clicking outside the pop-up window
+	 */
+	public Map<String,Object> closeAddToBagPopUpWindowAfterClickingOutsidePopUp(String lbl_AddToBagPopupWindowTitle){
+		openAddToBagPopupWindow();
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAddToBagPopupWindowTitle);
+		reporter.softAssert(this.lblAddToBagPopupWindowTitle.getText().toUpperCase().matches(lbl_AddToBagPopupWindowTitle),"The title of Add to Bag popup window is matching to '"+lbl_AddToBagPopupWindowTitle+"' pattern","The title of Add to Bag popup window is not matching to '"+lbl_AddToBagPopupWindowTitle+"' pattern");
+		Map<String,Object> addToBagData = this.getAddToBagDesc();
+		//Clicking on TSC Home Page Link to close Pop-Up Window without clicking on close button on Pop-Up
+		this.applyStaticWait(3000);
+		//Clicking two times below as clicking single time is not working
+		this.getReusableActionsInstance().clickIfAvailable(new HomePage(getDriver()).lblTSCLink);
+		this.clickElement(new HomePage(getDriver()).lblTSCLink);
+		this.waitForPageToLoad();
+		this.waitForCondition(Drive->{return !checkAddToBagPopupDisplaying();}, 30000);
+		return addToBagData;
+	}
+
+	/**
+	 * This functions selects product that has more than one quantity available for product
+	 */
+	public void selectSizeAndStyleWithMoreThanOneQuantity(){
+		int quantity = this.verifyAvailableQuantityGreaterThanOne();
+		boolean flag = false;
+		if(quantity>0){
+			if(quantity==1){
+				//Selecting available size
+				int sizeList = this.lstRadioSizeLabelList.size();
+				WebElement sizeElement;
+				for(int j=0;j<sizeList;j++){
+					sizeElement = this.lstRadioSizeLabelList.get(j);
+					try {
+						this.clickElement(sizeElement);
+						WebElement finalSizeElement = sizeElement;
+						waitForCondition(Driver->{return this.lblSelectedSize.getText().trim().equalsIgnoreCase(finalSizeElement.getText());},5000);
+					}catch (Exception e){}
+
+					//Selecting available Style
+					int loopSize=this.lstRadioStyleLabelSpanList.size();
+					WebElement labelItem;
+
+					for(int i=0;i<loopSize;i++) {
+						labelItem = this.lstRadioStyleLabelList.get(i);
+
+						this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblRadioProductStyleStatic);
+						try {
+							String previousZoomImage = this.lnkCurrentZoomImage.getAttribute("href");
+							this.clickElement(labelItem);
+							String currentZoomImage = this.lnkCurrentZoomImage.getAttribute("href");
+							waitForCondition(Driver->{return !previousZoomImage.equalsIgnoreCase(currentZoomImage);},10000);
+							int newQuantity = this.verifyAvailableQuantityGreaterThanOne();
+							if(newQuantity>1){
+								flag = true;
+								break;
+							}
+						} catch (Exception e) {}
+					}
+					if(flag)
+						break;
+				}
+			}
+		}else{
+			reporter.reportLog("No Quantity text is available for this product on PDP page");
+		}
+	}
+
+	/**
+	 * This function verifies that select size and style for product on PDP page has more than 1 quantity selected
+	 * @return - boolean - true/false
+	 */
+	public int verifyAvailableQuantityGreaterThanOne(){
+		int quantityAvailable = 0;
+		if(this.checkChildElementExistingByTagNameAndAttribute(this.lblAvailableQuantity,"span","class","pdp-description__add-to-bag__quantity__count--critic-stock")){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAvailableQuantityNumber);
+			String quantityText = this.lblAvailableQuantity.getText().trim();
+			if(quantityText.toLowerCase().contains("sold"))
+				return quantityAvailable;
+			else
+				quantityAvailable = Integer.valueOf(quantityText.split(" ")[1]);
+		}
+		return quantityAvailable;
 	}
 
 	/**
 	 * Method to verify the product details in Add to Bag popup window
 	 * @param-String lbl_AddToBagPopupWindowTitle: the expected title
-	 * @return void
+	 * @return - Map<String,Object> - AddToBag information
 	 * @author Wei.Li
 	 */
-	public void verifyProductDetailsInAddToBagPopupWindow(String lbl_AddToBagPopupWindowTitle, SelectedProduct productItem){
+	public Map<String,Object> verifyProductDetailsInAddToBagPopupWindow(String lbl_AddToBagPopupWindowTitle, SelectedProduct productItem){
 		openAddToBagPopupWindow();
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAddToBagPopupWindowTitle);
@@ -1666,8 +1906,6 @@ public class ProductDetailPage extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAddToBagPopupWindowDetailsProductName);
 		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblAddToBagPopupWindowDetailsProductName),"The product name in Add to Bag popup window is visible","The product name in Add to Bag popup window is not visible");
 		reporter.softAssert(!this.lblAddToBagPopupWindowDetailsProductName.getText().isEmpty(),"The product name in Add to Bag popup window is not empty","The product name in Add to Bag popup window is empty");
-		//commented below line because of the new havas changes where PRP is changed
-		//reporter.softAssert(this.lblAddToBagPopupWindowDetailsProductName.getText().trim().equalsIgnoreCase(productItem.productName),"The product name in Add to Bag popup window is equal to the original product name from product search result page","The product name in Add to Bag popup window is not equal to the original product name from product search result page");
 
 		if(checkProductStyleInAddToBagPopupDisplaying()) {
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAddToBagPopupWindowDetailsProductStyle);
@@ -1685,17 +1923,10 @@ public class ProductDetailPage extends BasePage {
 		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblAddToBagPopupWindowDetailsProductNumber),"The product Number in Add to Bag popup window is visible","The product Number in Add to Bag popup window is not visible");
 		reporter.softAssert(!this.lblAddToBagPopupWindowDetailsProductNumber.getText().isEmpty(),"The product Number in Add to Bag popup window is not empty","The product Number in Add to Bag popup window is empty");
 
-		//commented below line because of the havas changes where PRP is changed
-		//reporter.softAssert(this.lblAddToBagPopupWindowDetailsProductNumber.getText().trim().equalsIgnoreCase(productItem.productNumber),"The product number in Add to Bag popup window is equal to the original product number from product search result page","The product number in Add to Bag popup window is not equal to the original product number from product search result page");
-
 		subTotal();
 
 		reporter.softAssert(this.lblAddToBagPopupWindowDetailsProductNumber.getText().trim().replace("-", "").equalsIgnoreCase(productItem.productNumber),"The product number of "+this.lblAddToBagPopupWindowDetailsProductNumber.getText().trim().replace("-", "")+" in Add to Bag popup window is equal to the original product number of "+productItem.productNumber+" from product search result page","The product number of "+this.lblAddToBagPopupWindowDetailsProductNumber.getText().trim().replace("-", "")+" in Add to Bag popup window is not equal to the original product number of "+productItem.productNumber+" from product search result page");
-		/**
-		 this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAddToBagPopupWindowButtonSectionSubtotal);
-		 reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblAddToBagPopupWindowButtonSectionSubtotal),"The product Subtotal in Add to Bag popup window is visible","The product Subtotal in Add to Bag popup window is not visible");
-		 reporter.softAssert(!this.lblAddToBagPopupWindowButtonSectionSubtotal.getText().isEmpty(),"The product Subtotal in Add to Bag popup window is not empty","The product Subtotal in Add to Bag popup window is empty");
-		 */
+
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnAddToBagPopupWindowButtonSectionCheckOut);
 		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.btnAddToBagPopupWindowButtonSectionCheckOut),"The CheckOut button in Add to Bag popup window is visible","The CheckOut button in Add to Bag popup window is not visible");
 		reporter.softAssert(!this.btnAddToBagPopupWindowButtonSectionCheckOut.getText().isEmpty(),"The CheckOut button in Add to Bag popup window is not empty","The CheckOut button in Add to Bag popup window is empty");
@@ -1708,7 +1939,10 @@ public class ProductDetailPage extends BasePage {
 		reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblAddToBagPopupWindowFooterInfo),"The Footer info in Add to Bag popup window is visible","The Footer info in Add to Bag popup window is not visible");
 		reporter.softAssert(!this.lblAddToBagPopupWindowFooterInfo.getText().isEmpty(),"The Footer info in Add to Bag popup window is not empty","The Footer info in Add to Bag popup window is empty");
 
+		Map<String,Object> map=this.getAddToBagDesc();
+
 		closeAddToBagPopupWindow();
+		return map;
 	}
 
 	//this method checks subtotal section
@@ -1734,7 +1968,250 @@ public class ProductDetailPage extends BasePage {
 	 * @author Wei.Li
 	 */
 	public void verifyShoppingCartNumber(int cartCount) {
-		reporter.softAssert(getShoppingCartNumber()>=cartCount,"The Shopping cart number is equal to 1","The Shopping cart number is not equal to 1");
+		reporter.softAssert(getShoppingCartNumber()>=cartCount,"The Shopping cart number is equal to "+cartCount,"The Shopping cart number is not equal to "+cartCount);
+	}
+
+	public int getOrderAmountFromSubTotalInAddToBagModel(){
+		String lsText=this.getElementInnerText(lblAddToBagPopupWindowButtonSectionSubtotal);
+		lsText=lsText.split(":")[0];
+
+		return this.getIntegerFromString(lsText);
+	}
+
+	public float getOrderSubTotalInAddToBagModel(){
+		String lsText=this.getElementInnerText(lblAddToBagPopupWindowButtonSectionSubtotal);
+		lsText=lsText.split(":")[1];
+
+		return this.getFloatFromString(lsText,true);
+	}
+
+	/**
+	 * To go To Shopping Cart page by clicking ViewShoppingBag button in AddToBag Popup window with login first
+	 */
+	public void goToShoppingCartFromAddToBagPopupWithLoginFirst(){
+		this.btnAddToBagPopupWindowButtonSectionViewShoppingBag.click();
+		ShoppingCartPage shoppingCartPage=new ShoppingCartPage(this.getDriver());
+		try{
+			this.waitForCondition(Driver->{return shoppingCartPage.lblCartTitle.isDisplayed();},20000);
+		}
+		catch(Exception e){
+			this.applyStaticWait(10*this.getStaticWaitForApplication());
+		}
+	}
+
+	/**
+	 * To go To Shopping Cart page by clicking ViewShoppingBag button in AddToBag Popup window without login first
+	 * @param - String - lsUserName
+	 * @param - String - lsPassword
+	 */
+	public void goToShoppingCartFromAddToBagPopupWithoutLoginFirst(String lsUserName,String lsPassword){
+		ShoppingCartPage shoppingCartPage=new ShoppingCartPage(this.getDriver());
+		this.btnAddToBagPopupWindowButtonSectionViewShoppingBag.click();
+		try{
+			this.waitForCondition(Driver->{return shoppingCartPage.lblCartTitle.isDisplayed();},20000);
+		}
+		catch(Exception e){
+			this.applyStaticWait(10*this.getStaticWaitForApplication());
+		}
+
+		SignInPage signInPage=new SignInPage(this.getDriver());
+		signInPage.Login(lsUserName,lsPassword);
+
+		GlobalHeaderPage globalHeaderPage=new GlobalHeaderPage(this.getDriver());
+		globalHeaderPage.ShoppingCartlnk.click();
+		try{
+			this.waitForCondition(Driver->{return shoppingCartPage.lblCartTitle.isDisplayed();},20000);
+		}
+		catch(Exception e){
+			this.applyStaticWait(10*this.getStaticWaitForApplication());
+		}
+	}
+
+	public boolean checkProductStyleExistingInAddToBagPopup(){
+		return this.checkChildElementExistingByAttribute(cntAddToBagPopupWindowDetailsItemLink,"class","add-to-bag__product-style");
+	}
+
+	public boolean checkProductSizeExistingInAddToBagPopup(){
+		return this.checkChildElementExistingByAttribute(cntAddToBagPopupWindowDetailsItemLink,"class","add-to-bag__product-size");
+	}
+
+
+	/**
+	 * To get AddToBag description
+	 * @return - Map<String,Object> - including product name/style/size, item amount and subtotal
+	 */
+	public Map<String,Object> getAddToBagDesc(){
+		Map<String,Object> map=new HashMap<>();
+		String lsText;
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddToBagPopupWindowTitle);
+		lsText= String.valueOf(this.getIntegerFromString(this.getElementInnerText(lblAddToBagPopupWindowTitle)));
+		map.put("productQuantity",lsText);
+
+		if(this.checkProductBadgeInAddToBagPopupDisplaying()){
+			map.put("productBadge",true);
+		}
+		else{
+			map.put("productBadge",false);
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddToBagPopupWindowDetailsProductName);
+		lsText=lblAddToBagPopupWindowDetailsProductName.getText();
+		map.put("productName",lsText);
+
+		if(checkProductStyleExistingInAddToBagPopup()){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddToBagPopupWindowDetailsProductStyle);
+			lsText=lblAddToBagPopupWindowDetailsProductStyle.getText();
+			map.put("productStyle",lsText);
+		}
+		else{
+			map.put("productStyle",null);
+		}
+
+		if(checkProductSizeExistingInAddToBagPopup()){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddToBagPopupWindowDetailsProductSize);
+			lsText=lblAddToBagPopupWindowDetailsProductSize.getText();
+			lsText=lsText.split(":")[1].trim();
+			map.put("productSize",lsText);
+		}
+		else{
+			map.put("productSize",null);
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddToBagPopupWindowDetailsProductNumber);
+		lsText=lblAddToBagPopupWindowDetailsProductNumber.getText().replace("-","").trim();
+		map.put("productNumber",lsText);
+
+		map.put("itemAmount",getOrderAmountFromSubTotalInAddToBagModel());
+
+		map.put("SubTotal",getOrderSubTotalInAddToBagModel());
+
+		return map;
+	}
+
+	/**
+	 * To get PDP description
+	 * @return - Map<String,Object> - including product name/style/size
+	 */
+	public Map<String,Object> getPDPDesc(){
+		Map<String,Object> map=new HashMap<>();
+		String lsText;
+
+		if(this.checkProductBadgeExisting()){
+			map.put("productBadge",true);
+		}
+		else{
+			map.put("productBadge",false);
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblProductName);
+		lsText=lblProductName.getText();
+		map.put("productName",lsText);
+
+		if(this.judgeStyleSizeAvailable(true)){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblRadioProductStyleStatic);
+			lsText=lblRadioProductStyleStatic.getText();
+			lsText=lsText.split(":")[1].trim();
+			map.put("productStyle",lsText);
+		}
+		else{
+			map.put("productStyle",null);
+		}
+
+		if(this.judgeStyleSizeAvailable(false)){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblSizeStatic);
+			lsText=lblSizeStatic.getText();
+			lsText=lsText.split(":")[1].trim();
+			map.put("productSize",lsText);
+		}
+		else{
+			map.put("productSize",null);
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblProductNowPrice);
+		float nowPrice=this.getFloatFromString(lblProductNowPrice.getText(),true);
+		map.put("productNowPrice",nowPrice);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblProductNumber);
+		lsText=lblProductNumber.getText().replace("-","").trim();
+		map.put("productNumber",lsText);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(selectQuantityOption);
+		Select select= new Select(selectQuantityOption);
+		lsText=select.getFirstSelectedOption().getText().trim();
+		map.put("productQuantity",lsText);
+
+		if(IsQuantityLeftExisting()) {
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblQuantityLeft);
+			lsText=this.lblQuantityLeft.getText();
+			map.put("productLeftNumber",this.getIntegerFromString(lsText));
+		}
+		else{
+			map.put("productLeftNumber",null);
+		}
+
+		return map;
+	}
+
+	/**
+	 * To verify contents Between PDP And AddToBag
+	 * @param - mapPDP
+	 * @param - mapAddToBag
+	 */
+	public void verifyContentsBetweenPDPAndAddToBag(Map<String,Object> mapPDP,Map<String,Object> mapAddToBag){
+		boolean bPDPBadge=(boolean)mapPDP.get("productBadge");
+		boolean bAddToBagBadge=(boolean)mapAddToBag.get("productBadge");
+		if(bAddToBagBadge==bPDPBadge){
+			reporter.reportLogPass("The Badge displaying in AddToBag is the same as PDP ");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Badge displaying in AddToBag is not the same as PDP ");
+		}
+
+		String lsPDPProductName=mapPDP.get("productName").toString();
+		String lsAddToBagProductName=mapAddToBag.get("productName").toString();
+		if(lsAddToBagProductName.equalsIgnoreCase(lsPDPProductName)){
+			reporter.reportLogPass("The Product name displaying in AddToBag is the same as PDP ");
+		}
+		else{
+			reporter.reportLogFail("The Product name:"+lsAddToBagProductName+" displaying in AddToBag is not the same as PDP:"+lsPDPProductName);
+		}
+
+		String lsPDPProductNumber=mapPDP.get("productNumber").toString();
+		String lsAddToBagProductNumber=mapAddToBag.get("productNumber").toString();
+		if(lsAddToBagProductNumber.equalsIgnoreCase(lsPDPProductNumber)){
+			reporter.reportLogPass("The Product number displaying in AddToBag is the same as PDP ");
+		}
+		else{
+			reporter.reportLogFail("The Product number:"+lsAddToBagProductNumber+" displaying in AddToBag is not the same as PDP:"+lsPDPProductNumber);
+		}
+
+		String lsPDPProductStyle=mapPDP.get("productStyle").toString();
+		String lsAddToBagProductStyle=mapAddToBag.get("productStyle").toString();
+		if(lsAddToBagProductStyle.equalsIgnoreCase(lsPDPProductStyle)){
+			reporter.reportLogPass("The Product style displaying in AddToBag is the same as PDP ");
+		}
+		else{
+			reporter.reportLogFail("The Product style:"+lsAddToBagProductStyle+" displaying in AddToBag is not the same as PDP:"+lsPDPProductStyle);
+		}
+
+		String lsPDPProductSize=mapPDP.get("productSize").toString();
+		String lsAddToBagProductSize=mapAddToBag.get("productSize").toString();
+		if(lsAddToBagProductSize.equalsIgnoreCase(lsPDPProductSize)){
+			reporter.reportLogPass("The Product size displaying in AddToBag is the same as PDP ");
+		}
+		else{
+			reporter.reportLogFail("The Product size:"+lsAddToBagProductSize+" displaying in AddToBag is not the same as PDP:"+lsPDPProductSize);
+		}
+
+		String lsPDPProductQuantity=mapPDP.get("productQuantity").toString();
+		String lsAddToBagProductQuantity=mapAddToBag.get("productQuantity").toString();
+		if(lsAddToBagProductQuantity.equalsIgnoreCase(lsPDPProductQuantity)){
+			reporter.reportLogPass("The Product quantity displaying in AddToBag is the same as PDP ");
+		}
+		else{
+			reporter.reportLogFail("The Product quantity:"+lsAddToBagProductQuantity+" displaying in AddToBag is not the same as PDP:"+lsPDPProductQuantity);
+		}
 	}
 
 	/**
@@ -2185,7 +2662,6 @@ public class ProductDetailPage extends BasePage {
 			String lsLinkPrevBefore=this.lstGetTheLookItem.get(0).findElement(this.byGetTheLookProductLink).getAttribute("data-link-title");
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnGetTheLookPrev);
 			this.btnGetTheLookPrev.click();
-			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 			this.waitForCondition(Driver->{return !this.lstGetTheLookItem.get(0).findElement(this.byGetTheLookProductLink).getAttribute("data-link-title").equalsIgnoreCase(lsLinkPrevBefore);}, 10000);
 
 			String lsLinkAfter=this.lstGetTheLookItem.get(0).findElement(this.byGetTheLookProductLink).getAttribute("data-link-title");
@@ -2194,7 +2670,6 @@ public class ProductDetailPage extends BasePage {
 			String lsLinkNextBefore=this.lstGetTheLookItem.get(this.lstGetTheLookItem.size()-1).findElement(this.byGetTheLookProductLink).getAttribute("data-link-title");
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnGetTheLookNext);
 			this.btnGetTheLookNext.click();
-			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 			this.waitForCondition(Driver->{return !this.lstGetTheLookItem.get(this.lstGetTheLookItem.size()-1).findElement(this.byGetTheLookProductLink).getAttribute("data-link-title").equalsIgnoreCase(lsLinkNextBefore);}, 10000);
 
 			lsLinkAfter=this.lstGetTheLookItem.get(this.lstGetTheLookItem.size()-1).findElement(this.byGetTheLookProductLink).getAttribute("data-link-title");
@@ -2223,7 +2698,8 @@ public class ProductDetailPage extends BasePage {
 						reporter.reportLogPass("Product Overview Accordion is expanded by default for product");
 					else
 						reporter.reportLogFail("Product Overview Accordion is not expanded by default for product");
-				}else{
+				}
+				else{
 					this.getReusableActionsInstance().clickIfAvailable(accordionDisplayIcon);
 				}
 
@@ -2242,16 +2718,19 @@ public class ProductDetailPage extends BasePage {
 	public void verifyAccordionContent(WebElement accordion) {
 		WebElement accordionContentWebElement = accordion.findElement(this.accordionContents);
 		String accordionName = accordion.findElement(this.accordionHeading).getText();
-		String accordionData;
-		reporter.reportLog("Verifying content for accordion: "+accordionName);
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(accordionContentWebElement);
-		if(accordionName.contains("Chart"))
-			accordionData = accordionContentWebElement.findElement(By.xpath(".//img")).getAttribute("src");
-		else
-			accordionData = this.getElementText(accordionContentWebElement);
-		reporter.softAssert(!accordionData.isEmpty(),"The accordion content for: "+accordionName+" is not empty","The accordion content for: "+accordionName+" is empty");
-		//Verifying ReadMore and ReadLess button functionality
-		this.verifyReadMoreLessButtonOnPDP(accordion);
+		if(this.getChildElementCount(accordionContentWebElement)>0){
+			String accordionData;
+			reporter.reportLog("Verifying content for accordion: "+accordionName);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(accordionContentWebElement);
+			if(accordionName.contains("Chart"))
+				accordionData = accordionContentWebElement.findElement(By.xpath(".//img")).getAttribute("src");
+			else
+				accordionData = this.getElementText(accordionContentWebElement);
+			reporter.softAssert(!accordionData.isEmpty(),"The accordion content for: "+accordionName+" is not empty","The accordion content for: "+accordionName+" is empty");
+			//Verifying ReadMore and ReadLess button functionality
+			this.verifyReadMoreLessButtonOnPDP(accordion);
+		}else
+			reporter.reportLog("No content is present for accordion : "+accordionName+" on PDP page");
 	}
 
 	/**
@@ -2361,7 +2840,7 @@ public class ProductDetailPage extends BasePage {
 		reporter.softAssert(this.URL().toLowerCase().contains("signin"),"The page has been navigated to signin page while no user login","The page has not been navigated to signin page while no user login");
 
 		loginPage.LoginWithoutWaitingTime(lsUserName,lsPassword);
-		this.waitForCondition(Driver->{return this.lblProductName.isDisplayed();},120000);
+		this.waitForCondition(Driver->{return this.lblProductName.isDisplayed();},2000000);
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavIcon);
 		if(checkIfFavShareMobileHighlighted())
@@ -2502,7 +2981,15 @@ public class ProductDetailPage extends BasePage {
 		switch(lsType) {
 			case "AllConditionsWithoutCheckingSoldOutCriteria":
 				for(String lsKeyword:lstKeyword) {
-					product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,false,false);
+					product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,false,false,false);
+					if(product!=null) {
+						break;
+					}
+				}
+				break;
+			case "ConditionsForMultipleStyleAndSize":
+				for(String lsKeyword:lstKeyword) {
+					product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,false,false,true);
 					if(product!=null) {
 						break;
 					}
@@ -2510,7 +2997,7 @@ public class ProductDetailPage extends BasePage {
 				break;
 			case "ConditionsForVideoAndStyleAndSizeWithoutCheckingSoldOutCriteria":
 				for(String lsKeyword:lstKeyword) {
-					product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,false,true);
+					product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,false,true,false);
 					if(product!=null) {
 						break;
 					}
@@ -2518,7 +3005,7 @@ public class ProductDetailPage extends BasePage {
 				break;
 			case "AllConditionsWithCheckingSoldOutCriteria":
 				for(String lsKeyword:lstKeyword) {
-					product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,true,false);
+					product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,true,false,false);
 					if(product!=null) {
 						break;
 					}
@@ -2526,7 +3013,7 @@ public class ProductDetailPage extends BasePage {
 				break;
 			case "ConditionsForVideoAndStyleAndSizeWithCheckingSoldOutCriteria":
 				for(String lsKeyword:lstKeyword) {
-					product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,true,true);
+					product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,true,true,false);
 					if(product!=null) {
 						break;
 					}
@@ -2558,7 +3045,15 @@ public class ProductDetailPage extends BasePage {
 				break;
 			case "ProductWithEasyPaySizeChartAndReviews":
 				for(String lsKeyword:lstKeyword) {
-					product=apiResponse.getProductInfoFromKeywordWithEasyPayReviewsTrueFitAndSizeChart(lsKeyword,dataCriteria);
+					product=apiResponse.getProductInfoFromKeywordWithEasyPayReviewsTrueFitAndSizeChart(lsKeyword,dataCriteria,false);
+					if(product!=null) {
+						break;
+					}
+				}
+				break;
+			case "ProductWithEasyPaySizeChartAndReviewWithImage":
+				for(String lsKeyword:lstKeyword) {
+					product=apiResponse.getProductInfoFromKeywordWithEasyPayReviewsTrueFitAndSizeChart(lsKeyword,dataCriteria,true);
 					if(product!=null) {
 						break;
 					}
@@ -2885,6 +3380,62 @@ public class ProductDetailPage extends BasePage {
 	}
 
 	/**
+	 * Method to choose given Style, Size and quantity
+	 * @param - String - lsStyle - given Style
+	 * @param - String - lsSize - given Size
+	 * @param - int - quantity - given quantity
+	 * @return void
+	 * @author Wei.Li
+	 */
+	public void chooseGivenStyleAndSizeAndQuantity(String lsStyle,String lsSize,int quantity) {
+		int loopSize;
+		WebElement labelItem;
+
+		//To choose Style
+		if(this.judgeStyleDisplayModeIsDropdownMenu()) {
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectProductStyle);
+			Select selectStyle= new Select(this.selectProductStyle);
+			selectStyle.selectByVisibleText(lsStyle);
+		}
+		else {
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblRadioProductStyleTitle);
+			loopSize=this.lstAllStyleRadioList.size();
+			for(int i=0;i<loopSize;i++) {
+				labelItem=this.lstAllStyleLabelRadioList.get(i);
+				if(labelItem.getAttribute("for").equalsIgnoreCase(lsStyle)){
+					this.clickElement(labelItem);
+					break;
+				}
+			}
+		}
+		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+
+		//To choose Size
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSizeTitle);
+		loopSize=this.lstAllSizeRadioList.size();
+		for(int i=0;i<loopSize;i++) {
+			labelItem=this.lstAllSizeLabelRadioList.get(i);
+			if(labelItem.getAttribute("for").equalsIgnoreCase(lsSize)){
+				try{
+					this.clickElement(this.lstAllSizeRadioList.get(i));
+				}
+				catch(Exception e){
+
+				}
+
+				break;
+			}
+		}
+		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+
+		//To choose quantity
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectQuantityOption);
+		Select selectQuantity= new Select(this.selectQuantityOption);
+		selectQuantity.selectByVisibleText(String.valueOf(quantity));
+		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+	}
+
+	/**
 	 * To check Image Zooming Status
 	 * @return true/false
 	 */
@@ -3122,6 +3673,268 @@ public class ProductDetailPage extends BasePage {
 				}
 			}
 		}
+
+		//Removing selected histogram stars for further verification
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblReviewHistogramCrossButton);
+		this.getReusableActionsInstance().scrollToElement(this.lblReviewHistogramCrossButton);
+		this.getReusableActionsInstance().clickIfAvailable(this.lblReviewHistogramCrossButton);
+		this.waitForPageToLoad();
+	}
+
+	/**
+	 * This functions add items to shopping cart page for logged-in user
+	 * @param - List<String> searchKeyword - search keyword list for items to be added to shopping cart
+	 * @param - String customerEDP - customerEDP number for user
+	 * @param - String accessToken - access token for api
+	 * @return - CartResponse - CartResponse class object
+	 */
+	public CartResponse addItemsToShoppingCartForUser(List<String> searchKeyword,String customerEDP, String accessToken) throws IOException {
+		//Fetching item to be added for a new cart
+		ProductAPI productAPI=new ProductAPI();
+		CartAPI cartAPI=new CartAPI();
+		Response response = null;
+		List<Product.edps> products = productAPI.getEDPNoForNotSoldOutProduct(searchKeyword.get(0),null,true,5);
+		List<Integer> edpsList = products.stream().map(Product.edps::getEdpNo).collect(Collectors.toList());
+
+		if(products.size()>0){
+			//Creating a new cart and adding an item to created cart
+			response = cartAPI.createNewCartOrAddItems(edpsList,1,Integer.valueOf(customerEDP),accessToken,null);
+		}else
+			return null;
+
+		//Adding second item to cart created for the user
+		CartResponse cartResponse = JsonParser.getResponseObject(response.asString(), new TypeReference<CartResponse>() {});
+		if(cartResponse!=null){
+			products = productAPI.getEDPNoForNotSoldOutProduct(searchKeyword.get(1),null,true,1);
+			edpsList.clear();
+			edpsList = products.stream().map(Product.edps::getEdpNo).collect(Collectors.toList());
+			response = cartAPI.createNewCartOrAddItems(edpsList,1,Integer.valueOf(customerEDP),accessToken,cartResponse.getCartGuid());
+			return JsonParser.getResponseObject(response.asString(), new TypeReference<CartResponse>() {});
+		}else
+			return null;
+	}
+
+	/**
+	 * To open shopping page through clicking ViewShoppingBag button on AddToBag popup window
+	 * @return
+	 */
+	public boolean goToShoppingCartPage() {
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnAddToBagPopupWindowButtonSectionViewShoppingBag);
+		this.btnAddToBagPopupWindowButtonSectionViewShoppingBag.click();
+		ShoppingCartPage shoppingCartPage = new ShoppingCartPage(this.getDriver());
+		return this.waitForCondition(Driver -> {
+			return shoppingCartPage.lblCartTitle.isDisplayed();
+		}, 20000);
+	}
+
+	/**
+	 * This function returns shopping bag items details for a user
+	 * @param - CartResponse object fetched from api containing shopping bag details object
+	 * @return - Map<String,Map<String,Object> - Map object containing item details
+	 */
+	public Map<String,Map<String,Object>> getShoppingBagItemsDetailAddedForUser(CartResponse cartResponse){
+		Map<String,Map<String,Object>> cartItemDetails = null;
+		if(cartResponse!=null){
+			cartItemDetails = new HashMap<>();
+			List<CartResponse.CartLinesClass> cartLinesClass = cartResponse.getCartLines();
+			List<CartResponse.ProductsClass> productsClasses = cartResponse.getProducts();
+			for(CartResponse.CartLinesClass cartLines : cartLinesClass){
+				Map<String,Object> itemDetails = new HashMap<>();
+				itemDetails.put("productNumber",this.getIntegerFromString(cartLines.getCartLineItem().getItemNo()));
+				itemDetails.put("productStyle",cartLines.getCartLineItem().getStyle());
+				itemDetails.put("productStyleDimension",cartLines.getCartLineItem().getStyleDimensionId());
+				itemDetails.put("productSize",cartLines.getCartLineItem().getSize());
+				itemDetails.put("productNowPrice",this.getFloatFromString(cartLines.getCartLineItem().getAppliedPrice(),true));
+				for(CartResponse.ProductsClass products : productsClasses){
+					if(products.getItemNo().equalsIgnoreCase(itemDetails.get("productNumber").toString())){
+						itemDetails.put("productName",products.getName());
+						break;
+					}
+				}
+				cartItemDetails.put(itemDetails.get("productNumber").toString(),itemDetails);
+			}
+		}
+		return cartItemDetails;
+	}
+
+	/**
+	 * To get style list related togoToProductItemWithPreConditions(lstKeywordList,"ConditionsForMultipleStyleAndSize",outputDataCriteria)
+	 * @return - String[]
+	 */
+	public String[] getStyleList(){
+		return this.selectedProduct.productEDPColor.split("\\|");
+	}
+
+	/**
+	 * To get size list for given style related to goToProductItemWithPreConditions(lstKeywordList,"ConditionsForMultipleStyleAndSize",outputDataCriteria)
+	 * @param - int - styleIndex - the given style index
+	 * @return - String[]
+	 */
+	public String[] getSizeListForGivenStyle(int styleIndex){
+		return selectedProduct.productEDPSize.split("\\|")[styleIndex].split(":");
+	}
+
+	/**
+	 * This function returns default values for product selected on PDP page for user
+	 * @return - Map<String,Object> - map object of default size and style selected for user
+	 */
+	public Map<String,String> fetchDefaultSizeAndStyleSelectedForUserOnPDP(){
+		ProductResultsPage prp=new ProductResultsPage(this.getDriver());
+		Map<String,String> defaultValueMap = new HashMap<>();
+		this.waitForPageToLoad();
+		prp.waitForPDPPageLoading();
+		//Fetching default selected size
+		this.getReusableActionsInstance().scrollToElement(this.lblSelectedDefaultSize);
+		defaultValueMap.put("size",this.lblSelectedDefaultSize.findElement(By.xpath("./input")).getAttribute("id"));
+		//Fetching default selected colour
+		defaultValueMap.put("colour",this.lblSelectedDefaultColour.findElement(By.xpath("./input")).getAttribute("id"));
+		return defaultValueMap;
+	}
+
+	/**
+	 * This function selects size and colour other than default one selected on PDP
+	 * @param - Map<String,String> - map object with default values for product
+	 * @param - String[] - list of string for all styles that are available for product
+	 */
+	public void selectSizeAndColourOtherThanDefaultOnPDP(Map<String,String> defaultSelectedValues,String[] lstStyle){
+		boolean flag = false;
+		if(lstStyle.length>0){
+			//Selecting the colour other than default colour on PDP page
+			for(int counter=0;counter<lstStyle.length;counter++){
+				if(!lstStyle[counter].equalsIgnoreCase(defaultSelectedValues.get("colour"))){
+					String[] lstSize=this.getSizeListForGivenStyle(counter);
+					//Selecting the size
+					for(int i = 0; i< this.lstRadioStyleLabelNotSelectedList.size();i++){
+						if(this.lstRadioStyleLabelNotSelectedList.get(i).findElement(By.xpath("./input")).getAttribute("id").equalsIgnoreCase(lstStyle[counter])){
+							this.getReusableActionsInstance().clickIfAvailable(this.lstRadioStyleLabelNotSelectedList.get(i));
+							flag = true;
+							break;
+						}
+					}
+					if(flag){
+						boolean sizeFlag = false;
+						//Selecting the size
+						for(String size:lstSize){
+							if(!size.equalsIgnoreCase(defaultSelectedValues.get("size"))){
+								for(int i = 0; i< this.lstRadioSizeLabelNotSelectedList.size();i++){
+									if(this.lstRadioSizeLabelNotSelectedList.get(i).findElement(By.xpath("./input")).getAttribute("id").equalsIgnoreCase(size)){
+										sizeFlag = true;
+										this.getReusableActionsInstance().clickIfAvailable(this.lstRadioSizeLabelNotSelectedList.get(i));
+										break;
+									}
+								}
+							}
+							if(sizeFlag)
+								break;
+						}
+						break;
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * Function verifies that uploaded images in review is displayed in review histogram section
+	 */
+	public void verifyReviewImagesInHistogram(HashMap<String,HashMap<String,String>> reviewDataMap){
+		this.waitForPageToLoad();
+		//Navigating to Histogram section
+		//if(System.getProperty("Browser").contains("safari"))
+		this.getReusableActionsInstance().javascriptScrollToMiddleOfPage();
+		//this.getReusableActionsInstance().clickIfAvailable(this.lnkReviewTabBackToTop);
+		this.getReusableActionsInstance().scrollToElement(this.lblReviewPicturesInHistogram);
+		if(waitForCondition(Driver->{return lblReviewPicturesInHistogram.isDisplayed();},5000)){
+			reporter.reportLogPassWithScreenshot("Review Images are displayed in Histogram section of reviews");
+			//Verifying click functionality for image
+			this.lblReviewPicturesInHistogram.findElement(By.xpath("./button")).click();
+			waitForCondition(Driver->{return this.lblReviewImagePopUpModelCloseButton.isDisplayed() &&
+							this.lblReviewImagePopUpModelCloseButton.isEnabled();},6000);
+
+			//Verifying data on image window for user comments
+			//Fetching map data to be used for verification
+			this.getReusableActionsInstance().scrollToElement(this.lblReviewHeadlineOnPopUpWindow);
+			String headingForReviewFromWindow = this.lblReviewHeadlineOnPopUpWindow.getText().trim();
+			Map<String,String> reviewDataByUser = reviewDataMap.get(headingForReviewFromWindow);
+
+			reporter.reportLog("Verifying image source on review image pop-up");
+			this.getReusableActionsInstance().scrollToElement(this.lblReviewImageOnPopUpWindow);
+			String[] imageURLSplit = this.lblReviewImageOnPopUpWindow.getAttribute("src").split(Pattern.quote("/"));
+			String[] imageURLFromReviewSplit = reviewDataByUser.get("imageLink").split(Pattern.quote("/"));
+			if(imageURLSplit[imageURLSplit.length-1].equalsIgnoreCase(imageURLFromReviewSplit[imageURLFromReviewSplit.length-1]))
+				reporter.reportLogPass("Image URL is same as expected on review pop-up window");
+			else
+				reporter.reportLogFailWithScreenshot("Image URL is not same as expected on window");
+
+			reporter.reportLog("Verifying stars count on review image pop-up");
+			this.getReusableActionsInstance().scrollToElement(this.lblReviewStarsOnPopUpWindow);
+			String reviewPopUpStarsCount = this.lblReviewStarsOnPopUpWindow.getText().trim();
+			if(reviewPopUpStarsCount.equalsIgnoreCase(reviewDataByUser.get("reviewStars")))
+				reporter.reportLogPass("Review Stars are same as expected on review pop-up window");
+			else
+				reporter.reportLogFailWithScreenshot("Review Stars are not same as expected on window");
+
+			reporter.reportLog("Verifying review submitted time on review image pop-up");
+			this.getReusableActionsInstance().scrollToElement(this.lblReviewPostedDateOnPopUpWindow);
+			String reviewPopUpReviewSubmittedTime = this.lblReviewPostedDateOnPopUpWindow.getText().trim().split(" ")[0];
+			if(Integer.valueOf(reviewPopUpReviewSubmittedTime)>=Integer.valueOf(reviewDataByUser.get("reviewSubmittedTime")))
+				reporter.reportLogPass("Review Submitted Time is same as expected on review pop-up window");
+			else
+				reporter.reportLogFailWithScreenshot("Review Submitted Time is not same as expected on window");
+
+			reporter.reportLog("Verifying Flag Image is a link on review image pop-up");
+			this.getReusableActionsInstance().scrollToElement(this.lnlFlagImageOnPopUpWindow);
+			if(this.lnlFlagImageOnPopUpWindow.isEnabled()){
+				this.lnlFlagImageOnPopUpWindow.click();
+				waitForCondition(Driver->{return this.lblFlagImageEmailText.isEnabled() &&
+								this.lblFlagImageEmailText.isDisplayed();},5000);
+				reporter.reportLogPassWithScreenshot("Flag Image is a link and navigates to pop-up window on clicking as expected");
+				this.getReusableActionsInstance().scrollToElement(this.btnFlagImagePopUpWindowCancelButton);
+				this.getReusableActionsInstance().clickIfAvailable(this.btnFlagImagePopUpWindowCancelButton);
+				waitForCondition(Driver -> {return this.lnlFlagImageOnPopUpWindow.isDisplayed() &&
+								this.lnlFlagImageOnPopUpWindow.isEnabled();},6000);
+
+			}else
+				reporter.reportLogFailWithScreenshot("Flag Image Link is not displayed on review window");
+
+			reporter.reportLog("Verifying Read Review is a link on review image pop-up");
+			this.getReusableActionsInstance().scrollToElement(this.btnReadReviewOnPopUpWindowBtn);
+			this.getReusableActionsInstance().clickIfAvailable(this.btnReadReviewOnPopUpWindowBtn);
+			if(waitForCondition(Driver->{return this.btnBackToMediaBtn.isEnabled() &&
+				this.btnBackToMediaBtn.isDisplayed();},6000)){
+				reporter.reportLogPassWithScreenshot("Read Review pop up window is displayed as expected");
+				//Verifying comment provided
+				this.getReusableActionsInstance().scrollToElement(this.lblComment);
+				String comments = this.lblComment.getText().trim();
+				if(comments.equalsIgnoreCase(reviewDataByUser.get("reviewTabDescription")))
+					reporter.reportLogPass("Comments displayed matches with comments by user");
+				else
+					reporter.reportLogFail("Comments displayed are not same as that by user");
+
+				//Verifying comment By
+				this.getReusableActionsInstance().scrollToElement(this.lblCommentBy);
+				String commentsBy = this.lblCommentBy.getText().trim();
+				if(commentsBy.equalsIgnoreCase(reviewDataByUser.get("reviewTabNickName")))
+					reporter.reportLogPass("Comments Nick Name displayed matches with that of user");
+				else
+					reporter.reportLogFail("Comments Nick Name displayed are not same as that as of user");
+
+				//Navigating back to pop-up window
+				this.getReusableActionsInstance().scrollToElement(this.btnBackToMediaBtn);
+				this.getReusableActionsInstance().clickIfAvailable(this.btnBackToMediaBtn);
+				waitForCondition(Driver->{return this.lblReviewImagePopUpModelCloseButton.isDisplayed() &&
+						this.lblReviewImagePopUpModelCloseButton.isEnabled();},6000);
+			}else
+				reporter.reportLogFailWithScreenshot("Read Review pop up window is not displayed");
+
+			//Closing pop-up window
+			this.getReusableActionsInstance().scrollToElement(this.lblReviewImagePopUpModelCloseButton);
+			this.getReusableActionsInstance().clickIfAvailable(this.lblReviewImagePopUpModelCloseButton);
+			waitForCondition(Driver->{return this.lstReviewTabHistogramItem.get(0).isDisplayed() &&
+					this.lstReviewTabHistogramItem.get(0).isEnabled();},5000);
+		}
+		else
+			reporter.reportLogFailWithScreenshot("Review Images are not displayed in Histogram section of review");
 	}
 
 }

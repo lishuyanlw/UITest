@@ -12,6 +12,7 @@ import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Random;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -1018,5 +1019,51 @@ import utils.ReusableActions;
 
 		double expectedValue=this.getDoubleFromString(this.getElementInnerText(expectedSummary));
 		return Math.abs(total-expectedValue)<0.01;
+	}
+
+	/**
+	 * To get the string before identifier
+	 * @param - wholeString
+	 * @param - beforeIdentifier
+	 * @return - the string before identifier
+	 */
+	public String getBeforeString(String wholeString,String beforeIdentifier){
+		int findPos=wholeString.lastIndexOf(beforeIdentifier);
+		return wholeString.substring(0,findPos);
+	}
+
+	/**
+	 * To get the string after identifier
+	 * @param - wholeString
+	 * @param - afterIdentifier
+	 * @return - the string after identifier
+	 */
+	public String getAfterString(String wholeString,String afterIdentifier){
+		int findPos=wholeString.lastIndexOf(afterIdentifier);
+		return wholeString.substring(findPos+1);
+	}
+
+	/**
+	 * To get the string between beforeIdentifier and afterIdentifier
+	 * @param - wholeString
+	 * @param - beforeIdentifier
+	 * @param - afterIdentifier
+	 * @return - the string between beforeIdentifier and afterIdentifier
+	 */
+	public String getBetweenString(String wholeString,String beforeIdentifier,String afterIdentifier){
+		int beginPos=wholeString.lastIndexOf(beforeIdentifier);
+		int endPos=wholeString.lastIndexOf(afterIdentifier);
+		return wholeString.substring(beginPos+1,endPos);
+	}
+
+	/**
+	 * To get a number between 0 and maximalNumber
+	 * @param - int - maximalNumber
+	 * @return - int - a number between 0 and maximalNumber
+	 */
+	public int getRandomNumber(int maximalNumber){
+		Random rand = new Random();
+		int randomNumber = rand.nextInt(maximalNumber);
+		return randomNumber;
 	}
 }

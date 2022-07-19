@@ -14,7 +14,7 @@ import com.tsc.api.apiBuilder.AccountAPI;
 import com.tsc.api.apiBuilder.ApiResponse;
 import com.tsc.api.apiBuilder.CartAPI;
 import com.tsc.api.apiBuilder.OrderAPI;
-import com.tsc.api.pojo.AccountCartResponse;
+import com.tsc.api.pojo.CartResponse;
 import com.tsc.api.pojo.GetOrderListResponse;
 import com.tsc.api.util.DataConverter;
 import com.tsc.api.util.JsonParser;
@@ -53,7 +53,7 @@ public class BaseTest {
 	protected static final ThreadLocal<SignInPage> loginPageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<String> TestDeviceThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<ApiResponse> apiResponseThreadLocal = new ThreadLocal<>();
-	protected static final ThreadLocal<ShoppingCart> shoppingCartThreadLocal = new ThreadLocal<>();
+	protected static final ThreadLocal<ShoppingCartPage> shoppingCartThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<JSONObject> apiUserSessionDataMapThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<JSONObject> apiAppSessionDataMapThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<MyAccount> myAccountPageThreadLocal = new ThreadLocal<>();
@@ -70,7 +70,7 @@ public class BaseTest {
 	}
 
 	//@return shoppingCartThreadLocal
-	public static ShoppingCart getShoppingCartThreadLocal() {return shoppingCartThreadLocal.get();}
+	public static ShoppingCartPage getShoppingCartThreadLocal() {return shoppingCartThreadLocal.get();}
 
 	//@return apiResponseThreadLocal
 	public static ApiResponse getApiResponseThreadLocal() {return apiResponseThreadLocal.get();}
@@ -127,7 +127,7 @@ public class BaseTest {
 		loginPageThreadLocal.set(new SignInPage(getDriver()));
 		reporter = new ExtentTestManager(getDriver());
 		apiResponseThreadLocal.set(new ApiResponse());
-		shoppingCartThreadLocal.set(new ShoppingCart(getDriver()));
+		shoppingCartThreadLocal.set(new ShoppingCartPage(getDriver()));
 		myAccountPageThreadLocal.set(new MyAccount(getDriver()));
 	}
 
@@ -140,7 +140,7 @@ public class BaseTest {
 		productDetailPageThreadLocal.set(new ProductDetailPage_Mobile(getDriver()));
 		reporter = new ExtentTestManager(getDriver());
 		apiResponseThreadLocal.set(new ApiResponse());
-		shoppingCartThreadLocal.set(new ShoppingCart(getDriver()));
+		shoppingCartThreadLocal.set(new ShoppingCartPage_Mobile(getDriver()));
 		myAccountPageThreadLocal.set(new MyAccount_Mobile(getDriver()));
 	}
 
@@ -184,7 +184,15 @@ public class BaseTest {
 
 		reporter = new ExtentTestManager(getDriver());
 		apiResponseThreadLocal.set(new ApiResponse());
-		shoppingCartThreadLocal.set(new ShoppingCart(getDriver()));
+		if(System.getProperty("Browser").contains("ios") ||
+				(System.getProperty("chromeMobileDevice")!=null
+						&& (System.getProperty("chromeMobileDevice").contains("iPad")))) {
+			shoppingCartThreadLocal.set(new ShoppingCartPage(getDriver()));
+		}
+		else{
+			shoppingCartThreadLocal.set(new ShoppingCartPage_Mobile(getDriver()));
+		}
+
 		homePageThreadLocal.set(new HomePage(getDriver()));
 	}
 
@@ -352,9 +360,9 @@ public class BaseTest {
 
 	@AfterMethod(alwaysRun = true)
 	public void afterTest() throws IOException, InterruptedException{
-//		if (getDriver() != null && !placeOrderValue) {
-//			addPlaceOrder();
-//		}
+		if (getDriver() != null && !placeOrderValue) {
+			addPlaceOrder();
+		}
 		closeSession();
 	}
 
@@ -480,7 +488,7 @@ public class BaseTest {
 		accountAPI.addCreditCardToUser((org.json.simple.JSONObject) creditCardDetails.get("tsc"),customerEDP,access_token);
 
 		Response responseInitial=cartAPI.getAccountCartContentWithCustomerEDP(customerEDP,access_token);
-		AccountCartResponse accountCartInitial = JsonParser.getResponseObject(responseInitial.asString(), new TypeReference<AccountCartResponse>() {});
+		CartResponse accountCartInitial = JsonParser.getResponseObject(responseInitial.asString(), new TypeReference<CartResponse>() {});
 		String GuidId=accountCartInitial.getCartGuid();
 		/**
 		Response responseDelete=cartAPI.deleteCartItemWithGuid(access_token, GuidId,4);
@@ -491,7 +499,7 @@ public class BaseTest {
 		Response userCartResponse=(Response)map.get("Response");
 		*/
 		Response responseReview=orderAPI.getOrderReview(customerEDP,access_token);
-		AccountCartResponse accountCartReview = JsonParser.getResponseObject(responseReview.asString(), new TypeReference<AccountCartResponse>() {});
+		CartResponse accountCartReview = JsonParser.getResponseObject(responseReview.asString(), new TypeReference<CartResponse>() {});
 		//reporter.reportLog("Review: "+responseReview.asString());
 		List<Long> relatedCartIdsList=accountCartReview.getRelatedCartIds();
 

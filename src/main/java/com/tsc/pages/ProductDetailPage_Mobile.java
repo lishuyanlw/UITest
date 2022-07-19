@@ -6,6 +6,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 
+import java.util.Map;
+
 public class ProductDetailPage_Mobile extends ProductDetailPage{
 
     public ProductDetailPage_Mobile(WebDriver driver) {
@@ -47,12 +49,28 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
     }
 
     @Override
-    public void subTotal(){
-       reporter.softAssert(!this.getElementInnerText(this.lblAddToBagPopupWindowButtonSectionSubtotal).isEmpty(),"The product Subtotal in Add to Bag popup window is not empty","The product Subtotal in Add to Bag popup window is empty");
+    public int getOrderAmountFromSubTotalInAddToBagModel(){
+        String lsText=this.getElementInnerText(lblAddToBagPopupWindowButtonSectionSubtotal);
+        lsText=lsText.split(":")[0];
+
+        return this.getIntegerFromString(lsText);
     }
 
     @Override
-    public void verifyProductDetailsInAddToBagPopupWindow(String lbl_AddToBagPopupWindowTitle, SelectedProduct productItem){
+    public float getOrderSubTotalInAddToBagModel(){
+        String lsText=this.getElementInnerText(lblAddToBagPopupWindowButtonSectionSubtotal);
+        lsText=lsText.split(":")[1];
+
+        return this.getFloatFromString(lsText,true);
+    }
+
+    @Override
+    public void subTotal(){
+       reporter.softAssert(!this.getElementInnerText(lblAddToBagPopupWindowButtonSectionSubtotal).isEmpty(),"The product Subtotal in Add to Bag popup window is not empty","The product Subtotal in Add to Bag popup window is empty");
+    }
+
+    @Override
+    public Map<String,Object> verifyProductDetailsInAddToBagPopupWindow(String lbl_AddToBagPopupWindowTitle, SelectedProduct productItem){
         openAddToBagPopupWindow();
 
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAddToBagPopupWindowTitle);
@@ -109,7 +127,10 @@ public class ProductDetailPage_Mobile extends ProductDetailPage{
         reporter.softAssert(this.getReusableActionsInstance().isElementVisible(this.lblAddToBagPopupWindowFooterInfo),"The Footer info in Add to Bag popup window is visible","The Footer info in Add to Bag popup window is not visible");
         reporter.softAssert(!this.lblAddToBagPopupWindowFooterInfo.getText().isEmpty(),"The Footer info in Add to Bag popup window is not empty","The Footer info in Add to Bag popup window is empty");
 
+        Map<String,Object> map=this.getAddToBagDesc();
+
         closeAddToBagPopupWindow();
+        return map;
     }
 
     @Override

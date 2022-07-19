@@ -2,7 +2,7 @@ package com.tsc.api.apiBuilder;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tsc.api.pojo.AccountCartResponse;
+import com.tsc.api.pojo.CartResponse;
 import com.tsc.api.pojo.AccountResponse;
 import com.tsc.api.pojo.Product;
 import com.tsc.api.util.DataConverter;
@@ -12,9 +12,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import java.io.File;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -67,11 +65,11 @@ public class CartAPI extends ApiClient {
             return getResponse;
         }
         
-        AccountCartResponse accountCartGet= JsonParser.getResponseObject(getResponse.asString(), new TypeReference<AccountCartResponse>() {});
-        List<AccountCartResponse.CartLinesClass> cartLines=accountCartGet.getCartLines();
+        CartResponse accountCartGet= JsonParser.getResponseObject(getResponse.asString(), new TypeReference<CartResponse>() {});
+        List<CartResponse.CartLinesClass> cartLines=accountCartGet.getCartLines();
         Response response=null;
         int cartLinesSize=cartLines.size();
-        AccountCartResponse.CartLinesClass lines=null;
+        CartResponse.CartLinesClass lines=null;
         if(cartLinesSize>0){
             for(int i=0;i<cartLinesSize;i++){
                 lines= cartLines.get(i);
@@ -94,11 +92,11 @@ public class CartAPI extends ApiClient {
             return getResponse;
         }
 
-        AccountCartResponse accountCartGet= JsonParser.getResponseObject(getResponse.asString(), new TypeReference<AccountCartResponse>() {});
-        List<AccountCartResponse.CartLinesClass> cartLines=accountCartGet.getCartLines();
+        CartResponse accountCartGet= JsonParser.getResponseObject(getResponse.asString(), new TypeReference<CartResponse>() {});
+        List<CartResponse.CartLinesClass> cartLines=accountCartGet.getCartLines();
         Response response=null;
         int cartLinesSize=cartLines.size();
-        AccountCartResponse.CartLinesClass lines=null;
+        CartResponse.CartLinesClass lines=null;
         if(cartLinesSize>0){
             for(int i=0;i<cartLinesSize-keepingNumber;i++){
                 lines= cartLines.get(i);
@@ -169,7 +167,7 @@ public class CartAPI extends ApiClient {
         double appliedPrice=0.0;
         if(itemEDPNo==null){
             Response responseExisting=getAccountCartContentWithCustomerEDP(String.valueOf(customerEDP), access_token);
-            AccountCartResponse accountCart = JsonParser.getResponseObject(responseExisting.asString(), new TypeReference<AccountCartResponse>() {});
+            CartResponse accountCart = JsonParser.getResponseObject(responseExisting.asString(), new TypeReference<CartResponse>() {});
 
             //Get the EdpNo list in the current CartLines
             List<Integer> existingEdpNoList=getEdpNoListInCartLines(accountCart);
@@ -230,24 +228,24 @@ public class CartAPI extends ApiClient {
     /**
      * To get Cart MerchandiseSubTotalAmount In OrderSummary
      */
-    public double getCartMerchandiseSubTotalAmountInOrderSummary(AccountCartResponse cartResponse){
+    public double getCartMerchandiseSubTotalAmountInOrderSummary(CartResponse cartResponse){
         return cartResponse.getOrderSummary().getMerchandiseSubTotalAmount();
     }
 
     /**
      * To get Cart ShippingHandling Fee In OrderSummary
      */
-    public double getCartShippingHandlingFeeInOrderSummary(AccountCartResponse cartResponse){
+    public double getCartShippingHandlingFeeInOrderSummary(CartResponse cartResponse){
         return cartResponse.getOrderSummary().getShippingHandlingAmount();
     }
 
     /**
      * To get total price in CartLines
      */
-    public double getCartTotalPriceInCartLines(AccountCartResponse cartResponse){
-       List<AccountCartResponse.CartLinesClass> cartLinesClasses=cartResponse.getCartLines();
+    public double getCartTotalPriceInCartLines(CartResponse cartResponse){
+       List<CartResponse.CartLinesClass> cartLinesClasses=cartResponse.getCartLines();
        double totalAmount=0.0;
-       for(AccountCartResponse.CartLinesClass cartLinesClass:cartLinesClasses){
+       for(CartResponse.CartLinesClass cartLinesClass:cartLinesClasses){
            totalAmount = totalAmount + cartLinesClass.getInCart().getQuantity()*cartLinesClass.getInCart().getPriceUnit();
        }
        return totalAmount;
@@ -259,10 +257,10 @@ public class CartAPI extends ApiClient {
      * @param - int - lineId
      * @return - double - totalAmount
      */
-    public double getCartItemPriceInCartLinesWithLineId(AccountCartResponse cartResponse,int lineId){
-        List<AccountCartResponse.CartLinesClass> cartLinesClasses=cartResponse.getCartLines();
+    public double getCartItemPriceInCartLinesWithLineId(CartResponse cartResponse, int lineId){
+        List<CartResponse.CartLinesClass> cartLinesClasses=cartResponse.getCartLines();
         double totalAmount=0.0;
-        for(AccountCartResponse.CartLinesClass cartLinesClass:cartLinesClasses){
+        for(CartResponse.CartLinesClass cartLinesClass:cartLinesClasses){
             if(cartLinesClass.getId()==lineId){
                 totalAmount = totalAmount + cartLinesClass.getInCart().getQuantity()*cartLinesClass.getInCart().getPriceUnit();
                 return totalAmount;
@@ -274,10 +272,10 @@ public class CartAPI extends ApiClient {
     /**
      * To get shippingHandling fee in CartLines
      */
-    public double getCartShippingHandlingFeeInCartLines(AccountCartResponse cartResponse){
-        List<AccountCartResponse.CartLinesClass> cartLinesClasses=cartResponse.getCartLines();
+    public double getCartShippingHandlingFeeInCartLines(CartResponse cartResponse){
+        List<CartResponse.CartLinesClass> cartLinesClasses=cartResponse.getCartLines();
         double totalAmount=0.0;
-        for(AccountCartResponse.CartLinesClass cartLinesClass:cartLinesClasses){
+        for(CartResponse.CartLinesClass cartLinesClass:cartLinesClasses){
             if(cartLinesClass.getInCart().getShippingHandling().equalsIgnoreCase("FREE")){
                 continue;
             }
@@ -290,10 +288,10 @@ public class CartAPI extends ApiClient {
     /**
      * To get shippingHandling fee From Available Ship Methods
      */
-    public double getCartShippingCostFromAvailableShipMethods(AccountCartResponse cartResponse,String shipCode){
-        List<AccountCartResponse.AvailableShipMethodsClass> cartAvailableShipMethods=cartResponse.getAvailableShipMethods();
+    public double getCartShippingCostFromAvailableShipMethods(CartResponse cartResponse, String shipCode){
+        List<CartResponse.AvailableShipMethodsClass> cartAvailableShipMethods=cartResponse.getAvailableShipMethods();
         double shippingCost=0.0;
-        for(AccountCartResponse.AvailableShipMethodsClass cartAvailableShipMethod:cartAvailableShipMethods){
+        for(CartResponse.AvailableShipMethodsClass cartAvailableShipMethod:cartAvailableShipMethods){
             if(cartAvailableShipMethod.getMethod().equalsIgnoreCase(shipCode)){
                 shippingCost= getDoubleFromString(cartAvailableShipMethod.getShippingCost());
                 break;
@@ -306,9 +304,9 @@ public class CartAPI extends ApiClient {
      * @param - AccountCartResponse - accountCar
      * @return - List<String> - Shipping method list
      */
-    public List<String> getAvailableShipMethodList(AccountCartResponse accountCart) {
+    public List<String> getAvailableShipMethodList(CartResponse accountCart) {
         List<String> lstMethod = new ArrayList<>();
-        for (AccountCartResponse.AvailableShipMethodsClass item : accountCart.getAvailableShipMethods()) {
+        for (CartResponse.AvailableShipMethodsClass item : accountCart.getAvailableShipMethods()) {
             lstMethod.add(item.getMethod());
         }
         return lstMethod;
@@ -318,9 +316,9 @@ public class CartAPI extends ApiClient {
      * @param - AccountCartResponse - accountCart
      * @return - List<String> - Standard Ship code in available shipping method list
      */
-    public String getStandardShipCodeFromAvailableShipMethodList(AccountCartResponse accountCart) {
+    public String getStandardShipCodeFromAvailableShipMethodList(CartResponse accountCart) {
         String lsStandardCode=null;
-        for (AccountCartResponse.AvailableShipMethodsClass item : accountCart.getAvailableShipMethods()) {
+        for (CartResponse.AvailableShipMethodsClass item : accountCart.getAvailableShipMethods()) {
             if(item.getLabel().equalsIgnoreCase("Standard")){
                 lsStandardCode=item.getMethod();
                 break;
@@ -333,9 +331,9 @@ public class CartAPI extends ApiClient {
      * @param - AccountCartResponse - accountCart
      * @return - List<Integer> - Cart linesId list
      */
-    public List<Integer> getCartLinesIdList(AccountCartResponse accountCart) {
+    public List<Integer> getCartLinesIdList(CartResponse accountCart) {
         List<Integer> lstCartLinesId = new ArrayList<>();
-        for (AccountCartResponse.CartLinesClass item : accountCart.getCartLines()) {
+        for (CartResponse.CartLinesClass item : accountCart.getCartLines()) {
             lstCartLinesId.add(item.getId());
         }
 
@@ -348,8 +346,8 @@ public class CartAPI extends ApiClient {
      * @param - int - EDPNo
      * @return - Integer - Cart LinesId
      */
-    public Integer getLineIdFromCartLinesIdListWithEDPNo(AccountCartResponse accountCart,int EDPNo) {
-        for (AccountCartResponse.CartLinesClass item : accountCart.getCartLines()) {
+    public Integer getLineIdFromCartLinesIdListWithEDPNo(CartResponse accountCart, int EDPNo) {
+        for (CartResponse.CartLinesClass item : accountCart.getCartLines()) {
             if(item.getCartLineItem().EdpNo==EDPNo){
                 return item.getId();
             }
@@ -362,9 +360,9 @@ public class CartAPI extends ApiClient {
      * @param - AccountCartResponse - accountCart
      * @return - List<Integer> - EdpNo list in CartLines
      */
-    public List<Integer> getEdpNoListInCartLines(AccountCartResponse accountCart) {
+    public List<Integer> getEdpNoListInCartLines(CartResponse accountCart) {
         List<Integer> lstEdpNo = new ArrayList<>();
-        List<AccountCartResponse.CartLinesClass> lstCartLines=accountCart.getCartLines();
+        List<CartResponse.CartLinesClass> lstCartLines=accountCart.getCartLines();
         if(!lstCartLines.isEmpty()){
             int itemLoopSize=lstCartLines.size();
             for (int i=0;i<itemLoopSize;i++) {
@@ -381,8 +379,8 @@ public class CartAPI extends ApiClient {
      * @param - AccountCartResponse - accountCart
      * @return - Item quantity amount in CartLines
      */
-    public int getQuantityAmountInCartLines(AccountCartResponse accountCart) {
-        List<AccountCartResponse.CartLinesClass> lstCartLines=accountCart.getCartLines();
+    public int getQuantityAmountInCartLines(CartResponse accountCart) {
+        List<CartResponse.CartLinesClass> lstCartLines=accountCart.getCartLines();
         int totalQuantity=0;
         if(!lstCartLines.isEmpty()){
             int itemLoopSize=lstCartLines.size();
@@ -400,8 +398,8 @@ public class CartAPI extends ApiClient {
      * @param -int - itemEDPNo
      * @return - Map<String,Object> - including item Quantity and item PriceUnit
      */
-    public Map<String,Object> getItemContentWithEdpNoInCartLines(AccountCartResponse accountCart,int itemEDPNo) {
-        List<AccountCartResponse.CartLinesClass> lstCartLines=accountCart.getCartLines();
+    public Map<String,Object> getItemContentWithEdpNoInCartLines(CartResponse accountCart, int itemEDPNo) {
+        List<CartResponse.CartLinesClass> lstCartLines=accountCart.getCartLines();
 
         Map<String,Object> map=new HashMap<>();
         int itemLoopSize=lstCartLines.size();
@@ -429,7 +427,7 @@ public class CartAPI extends ApiClient {
      */
     public Map<String,Object> createShippingAddressIntoAccountCart(String customerEDP,String access_token,boolean isDefault,Map<String,Object> userData) throws IOException, ParseException {
         Response getCartResponse=getAccountCartContentWithCustomerEDP(customerEDP, access_token);
-        AccountCartResponse accountCartGet= JsonParser.getResponseObject(getCartResponse.asString(), new TypeReference<AccountCartResponse>() {});
+        CartResponse accountCartGet= JsonParser.getResponseObject(getCartResponse.asString(), new TypeReference<CartResponse>() {});
         int shippingIdBeforeAdd=accountCartGet.getShippingAddress().getId();
 
         JSONObject requestParams= DataConverter.readJsonFileIntoJSONObject("test-data/AccountAddingShippingAddressPost.json");
@@ -482,7 +480,7 @@ public class CartAPI extends ApiClient {
             return map;
         }
 
-        accountCartGet= JsonParser.getResponseObject(response.asString(), new TypeReference<AccountCartResponse>() {});
+        accountCartGet= JsonParser.getResponseObject(response.asString(), new TypeReference<CartResponse>() {});
         int shippingIdAfterAdd=accountCartGet.getShippingAddress().getId();
 
         map.put("shippingIdBefore",shippingIdBeforeAdd);
@@ -504,9 +502,9 @@ public class CartAPI extends ApiClient {
      */
     public Map<String,Object> createShippingAddressIntoAccountCartWithExistingShippingAddress(String customerEDP,String access_token,boolean bSameAsCurrent) throws IOException, ParseException {
         Response getCartResponse=getAccountCartContentWithCustomerEDP(customerEDP, access_token);
-        AccountCartResponse accountCartGet= JsonParser.getResponseObject(getCartResponse.asString(), new TypeReference<AccountCartResponse>() {});
+        CartResponse accountCartGet= JsonParser.getResponseObject(getCartResponse.asString(), new TypeReference<CartResponse>() {});
         int shippingIdBeforeAdd=accountCartGet.getShippingAddress().getId();
-        AccountCartResponse.AddressClass lsBody;
+        CartResponse.AddressClass lsBody;
         if(bSameAsCurrent){
             lsBody=accountCartGet.getShippingAddress();
         }
@@ -541,7 +539,7 @@ public class CartAPI extends ApiClient {
             map.put("Response",response);
         }
         else{
-            accountCartGet= JsonParser.getResponseObject(response.asString(), new TypeReference<AccountCartResponse>() {});
+            accountCartGet= JsonParser.getResponseObject(response.asString(), new TypeReference<CartResponse>() {});
             int shippingIdAfterAdd=accountCartGet.getShippingAddress().getId();
             map.put("shippingIdBefore",shippingIdBeforeAdd);
             map.put("shippingIdAfter",shippingIdAfterAdd);
@@ -559,7 +557,7 @@ public class CartAPI extends ApiClient {
         JSONObject cartResponse = DataConverter.readJsonFileIntoJSONObject("results/UserCartResponse.json");
         Map<String,Object> map=new HashMap<>();
         if(cartResponse!=null){
-            AccountCartResponse accountCartData = JsonParser.getResponseObject(cartResponse.toString(), new TypeReference<AccountCartResponse>() {});
+            CartResponse accountCartData = JsonParser.getResponseObject(cartResponse.toString(), new TypeReference<CartResponse>() {});
             map.put("cartGuidId",accountCartData.getCartGuid());
             map.put("customerEDP",accountCartData.getBuyer().getCustomerEDP());
             map.put("email",accountCartData.getBuyer().getEmail());
@@ -574,11 +572,11 @@ public class CartAPI extends ApiClient {
      * To get Info From Existing Cart Json File
      * @return Map<String,Object> - including cartGuidId, CustomerEDP and email
      */
-    public AccountCartResponse getAccountInfoFromExistingCartJsonFile() throws IOException, ParseException {
-        AccountCartResponse accountCartData = null;
+    public CartResponse getAccountInfoFromExistingCartJsonFile() throws IOException, ParseException {
+        CartResponse accountCartData = null;
         JSONObject cartResponse = DataConverter.readJsonFileIntoJSONObject("results/UserCartResponse.json");
         if(cartResponse!=null)
-            accountCartData = JsonParser.getResponseObject(cartResponse.toString(), new TypeReference<AccountCartResponse>() {});
+            accountCartData = JsonParser.getResponseObject(cartResponse.toString(), new TypeReference<CartResponse>() {});
         else
             return null;
         return accountCartData;
@@ -587,10 +585,10 @@ public class CartAPI extends ApiClient {
     /**
      * To get Buyer's shipping address Id list
      */
-    public List<Integer> getBuyerShippingAddressId(AccountCartResponse accountCart){
+    public List<Integer> getBuyerShippingAddressId(CartResponse accountCart){
         List<Integer> lstId=new ArrayList<>();
-        List<AccountCartResponse.AddressClass> lstAddressId=accountCart.getBuyer().getShippingAddresses();
-        for(AccountCartResponse.AddressClass address:lstAddressId){
+        List<CartResponse.AddressClass> lstAddressId=accountCart.getBuyer().getShippingAddresses();
+        for(CartResponse.AddressClass address:lstAddressId){
             lstId.add(address.Id);
         }
         return lstId;
@@ -608,7 +606,7 @@ public class CartAPI extends ApiClient {
      */
     public Map<String,Object> updateCartShippingAddress(String customerEDP,String access_token,String lsType){
         Response getCartResponse=getAccountCartContentWithCustomerEDP(customerEDP, access_token);
-        AccountCartResponse accountCartGet= JsonParser.getResponseObject(getCartResponse.asString(), new TypeReference<AccountCartResponse>() {});
+        CartResponse accountCartGet= JsonParser.getResponseObject(getCartResponse.asString(), new TypeReference<CartResponse>() {});
 
         int lsCurrentCartShippingAddressId=accountCartGet.getShippingAddress().getId();
         int selectedId=lsCurrentCartShippingAddressId;
@@ -654,7 +652,7 @@ public class CartAPI extends ApiClient {
      */
     public Map<String,Object> updateCartShippingCode(String customerEDP,String access_token,String lsType){
         Response getCartResponse=getAccountCartContentWithCustomerEDP(customerEDP, access_token);
-        AccountCartResponse accountCartGet= JsonParser.getResponseObject(getCartResponse.asString(), new TypeReference<AccountCartResponse>() {});
+        CartResponse accountCartGet= JsonParser.getResponseObject(getCartResponse.asString(), new TypeReference<CartResponse>() {});
 
         String lsCurrentCartShippingCode=accountCartGet.getShipCode();
         String selectedCode=lsCurrentCartShippingCode;
