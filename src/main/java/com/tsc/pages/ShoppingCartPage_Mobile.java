@@ -53,24 +53,51 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 	}
 
 	@Override
-	public Map<String,Object> getShoppingItemDesc(WebElement cartItem){
-		Map<String,Object> map=new HashMap<>();
+	public Map<String,Object> getShoppingItemDesc(WebElement cartItem,String lsOption){
+		Map<String,Object> map=null;
+		switch(lsOption){
+			case "mandatory":
+				map=this.getMandatoryShoppingItemDesc(cartItem);
+				break;
+			case "optional":
+				map=this.getOptionalShoppingItemDesc(cartItem);
+				break;
+			case "all":
+				map=this.getAllShoppingItemDesc(cartItem);
+				break;
+			default:
+				break;
+		}
 
-		if(this.checkProductBadgeExisting(cartItem)){
-			map.put("productBadge",true);
-		}
-		else{
-			map.put("productBadge",true);
-		}
+		return map;
+	}
+
+	@Override
+	public Map<String,Object> getMandatoryShoppingItemDesc(WebElement cartItem){
+		Map<String,Object> map=new HashMap<>();
 
 		WebElement item=cartItem.findElement(byProductItemDesc);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 		String lsText=item.getText().trim();
-		if(this.checkSelectQuantityEnabled(cartItem)){
+		if(lsText.contains("|")){
 			String[] lsSplit=lsText.split("\\|");
-			map.put("productName",lsSplit[0].trim());
-			map.put("productStyle",lsSplit[1].trim());
-			map.put("productSize",lsSplit[2].split(":")[1].trim());
+			if(lsSplit.length==2){
+				if(lsSplit[1].contains("Size")){
+					map.put("productName",lsSplit[0].trim());
+					map.put("productStyle",null);
+					map.put("productSize",lsSplit[1].trim());
+				}
+				else{
+					map.put("productName",lsSplit[0].trim());
+					map.put("productStyle",lsSplit[1].trim());
+					map.put("productSize",null);
+				}
+			}
+			else{
+				map.put("productName",lsSplit[0].trim());
+				map.put("productStyle",lsSplit[1].trim());
+				map.put("productSize",lsSplit[2].split(":")[1].trim());
+			}
 		}
 		else{
 			map.put("productName",lsText);
@@ -78,33 +105,10 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 			map.put("productSize",null);
 		}
 
-
 		item=cartItem.findElement(byProductNumber);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 		lsText=item.getText().replace("-","").trim();
 		map.put("productNumber",lsText);
-
-		if(this.checkShippingDateExisting(cartItem)){
-			item=cartItem.findElement(byProductShippingDate);
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-			lsText=item.getText().trim();
-			map.put("productShippingDate",lsText);
-		}
-		else{
-			map.put("productShippingDate",null);
-		}
-
-		if(this.checkRedMessageExisting(cartItem)){
-			item=cartItem.findElement(byProductRedMessage);
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-			lsText=item.getText().trim();
-			map.put("productLeftNumber",this.getIntegerFromString(lsText));
-		}
-		else{
-			map.put("productLeftNumber",null);
-		}
-
-		map.put("productFreeShipping",null);
 
 		item=cartItem.findElement(byProductNowPrice);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
@@ -126,10 +130,57 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 	}
 
 	@Override
-	public Map<String,Object> getShoppingSectionDetails(){
+	public Map<String,Object> getOptionalShoppingItemDesc(WebElement cartItem){
 		Map<String,Object> map=new HashMap<>();
 
-		map.put("shoppingList",this.getShoppingItemListDesc());
+		if(this.checkProductBadgeExisting(cartItem)){
+			map.put("productBadge",true);
+		}
+		else{
+			map.put("productBadge",true);
+		}
+
+		WebElement item;
+		String lsText;
+
+		if(this.checkShippingDateExisting(cartItem)){
+			item=cartItem.findElement(byProductShippingDate);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsText=item.getText().trim();
+			map.put("productShippingDate",lsText);
+		}
+		else{
+			map.put("productShippingDate",null);
+		}
+
+		if(this.checkRedMessageExisting(cartItem)){
+			item=cartItem.findElement(byProductRedMessage);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsText=item.getText().trim();
+			map.put("productLeftNumber",this.getIntegerFromString(lsText));
+		}
+		else{
+			map.put("productLeftNumber",null);
+		}
+
+		if(this.checkFreeShippingMessageExisting(cartItem)){
+			item=cartItem.findElement(byProductBlackMessage);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsText=item.getText().trim();
+			map.put("productFreeShipping",lsText);
+		}
+		else{
+			map.put("productFreeShipping",null);
+		}
+
+		return map;
+	}
+
+	@Override
+	public Map<String,Object> getShoppingSectionDetails(String lsOption){
+		Map<String,Object> map=new HashMap<>();
+
+		map.put("shoppingList",this.getShoppingItemListDesc(lsOption));
 		map.put("shoppingAmount",this.getShoppingAmount());
 		map.put("shoppingSubTotal",this.getShoppingSubTotal());
 
@@ -328,7 +379,7 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 	}
 
 	@Override
-	public void verifyShoppingCartContents(boolean bUnKnown,boolean bTrueFit,boolean bAdvancedOrder){
+	public void verifyShoppingCartContents(boolean bUnKnown,boolean bTrueFit,boolean bProductNameOnly){
 		String lsText;
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartTitle);
@@ -456,7 +507,7 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 				}
 			}
 
-			if(bAdvancedOrder){
+			if(bProductNameOnly){
 				if(!this.checkGetItByShippingMessageExisting()){
 					reporter.reportLogPass("The cart GetByDate message is not displaying");
 				}
@@ -564,7 +615,7 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 				}
 			}
 			else{
-				if(bAdvancedOrder){
+				if(bProductNameOnly){
 					element=cartItem.findElement(byProductShippingDate);
 					this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 					lsText=element.getText();

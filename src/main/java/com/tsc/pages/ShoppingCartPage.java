@@ -462,7 +462,7 @@ public class ShoppingCartPage extends BasePage {
 	/**
 	 * To remove Items from Shopping cart
 	 */
-	public void removeItemsAddedToShoppingCart(){
+	public void removeItemsAddedFromShoppingCart(){
 		GlobalHeaderPage globalHeaderPage = new GlobalHeaderPage(this.getDriver());
 		ProductDetailPage productDetailPage = new ProductDetailPage(this.getDriver());
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeaderPage.CartBagCounter);
@@ -490,17 +490,57 @@ public class ShoppingCartPage extends BasePage {
 	/**
 	 * To get Shopping Item Description in shopping list
 	 * @param - cartItem - item in lstCartItems
+	 * @param - lsOption - "mandatory"/"optional"/"all"
+	 *        -
 	 * @return - Map<String,Object> - Item detail description
 	 */
-	public Map<String,Object> getShoppingItemDesc(WebElement cartItem){
-		Map<String,Object> map=new HashMap<>();
+	public Map<String,Object> getShoppingItemDesc(WebElement cartItem,String lsOption){
+		Map<String,Object> map=null;
+		switch(lsOption){
+			case "mandatory":
+				map=this.getMandatoryShoppingItemDesc(cartItem);
+				break;
+			case "optional":
+				map=this.getOptionalShoppingItemDesc(cartItem);
+				break;
+			case "all":
+				map=this.getAllShoppingItemDesc(cartItem);
+				break;
+			default:
+				break;
+		}
 
-		if(this.checkProductBadgeExisting(cartItem)){
-			map.put("productBadge",true);
+		return map;
+	}
+
+	/**
+	 * To get all Shopping Item Description in shopping list
+	 * @param - cartItem - item in lstCartItems
+	 * @return - Map<String,Object> - Item detail description
+	 */
+	public Map<String,Object> getAllShoppingItemDesc(WebElement cartItem){
+		Map<String,Object> mapAll=new HashMap<>();
+
+		Map<String,Object> mapMandatory=this.getMandatoryShoppingItemDesc(cartItem);
+		for(Map.Entry<String,Object> entry:mapMandatory.entrySet()){
+			mapAll.put(entry.getKey(),entry.getValue());
 		}
-		else{
-			map.put("productBadge",true);
+
+		Map<String,Object> mapOptional=this.getOptionalShoppingItemDesc(cartItem);
+		for(Map.Entry<String,Object> entry:mapOptional.entrySet()){
+			mapAll.put(entry.getKey(),entry.getValue());
 		}
+
+		return mapAll;
+	}
+
+	/**
+	 * To get Mandatory Shopping Item Description in shopping list
+	 * @param - cartItem - item in lstCartItems
+	 * @return - Map<String,Object> - Item detail description
+	 */
+	public Map<String,Object> getMandatoryShoppingItemDesc(WebElement cartItem){
+		Map<String,Object> map=new HashMap<>();
 
 		WebElement item=cartItem.findElement(byProductItemDesc);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
@@ -536,6 +576,43 @@ public class ShoppingCartPage extends BasePage {
 		lsText=item.getText().replace("-","").trim();
 		map.put("productNumber",lsText);
 
+		item=cartItem.findElement(byProductNowPrice);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+		lsText=item.getText().trim();
+		map.put("productNowPrice",this.getFloatFromString(lsText,true));
+
+		if(this.checkSelectQuantityEnabled(cartItem)){
+			item=cartItem.findElement(byProductSelectQuantity);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			Select select = new Select(item);
+			lsText=select.getFirstSelectedOption().getText();
+			map.put("productQuantity",Integer.parseInt(lsText));
+		}
+		else{
+			map.put("productQuantity",null);
+		}
+
+		return map;
+	}
+
+	/**
+	 * To get Optional Shopping Item Description in shopping list
+	 * @param - cartItem - item in lstCartItems
+	 * @return - Map<String,Object> - Item detail description
+	 */
+	public Map<String,Object> getOptionalShoppingItemDesc(WebElement cartItem){
+		Map<String,Object> map=new HashMap<>();
+
+		if(this.checkProductBadgeExisting(cartItem)){
+			map.put("productBadge",true);
+		}
+		else{
+			map.put("productBadge",true);
+		}
+
+		WebElement item;
+		String lsText;
+
 		if(this.checkShippingDateExisting(cartItem)){
 			item=cartItem.findElement(byProductShippingDate);
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
@@ -566,34 +643,19 @@ public class ShoppingCartPage extends BasePage {
 			map.put("productFreeShipping",null);
 		}
 
-		item=cartItem.findElement(byProductNowPrice);
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-		lsText=item.getText().trim();
-		map.put("productNowPrice",this.getFloatFromString(lsText,true));
-
-		if(this.checkSelectQuantityEnabled(cartItem)){
-			item=cartItem.findElement(byProductSelectQuantity);
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-			Select select = new Select(item);
-			lsText=select.getFirstSelectedOption().getText();
-			map.put("productQuantity",Integer.parseInt(lsText));
-		}
-		else{
-			map.put("productQuantity",null);
-		}
-
 		return map;
 	}
 
 	/**
 	 * To get Shopping Item List Description
+	 * @param - lsOption - "mandatory"/"optional"/"all"
 	 * @return - List<Map<String,Object>>
 	 */
-	public List<Map<String,Object>> getShoppingItemListDesc(){
+	public List<Map<String,Object>> getShoppingItemListDesc(String lsOption){
 		List<Map<String,Object>> mapList=new ArrayList<>();
 
 		for(WebElement cartItem:this.lstCartItems){
-			mapList.add(this.getShoppingItemDesc(cartItem));
+			mapList.add(this.getShoppingItemDesc(cartItem,lsOption));
 		}
 
 		return mapList;
@@ -601,12 +663,13 @@ public class ShoppingCartPage extends BasePage {
 
 	/**
 	 * To get Shopping Section Details
+	 * @param - lsOption - "mandatory"/"optional"/"all"
 	 * @return - Map<String,Object> - including shopping list,shopping amount, and shopping subtotal
 	 */
-	public Map<String,Object> getShoppingSectionDetails(){
+	public Map<String,Object> getShoppingSectionDetails(String lsOption){
 		Map<String,Object> map=new HashMap<>();
 
-		map.put("shoppingList",this.getShoppingItemListDesc());
+		map.put("shoppingList",this.getShoppingItemListDesc(lsOption));
 		map.put("shoppingAmount",this.getShoppingAmount());
 		map.put("shoppingSubTotal",this.getShoppingSubTotal());
 
@@ -1006,8 +1069,11 @@ public class ShoppingCartPage extends BasePage {
 		List<Map<String,Object>> shoppingList=(List<Map<String,Object>>)shoppingCartMap.get("shoppingList");
 		String outerName,outerStyle,outerSize,innerName,innerStyle,innerSize;
 		int amount;
+		int loopSize=shoppingList.size();
+		Map<String,Object> shoppingItemOuter,shoppingItemInner;
 
-		for(Map<String,Object> shoppingItemOuter:shoppingList){
+		for(int i=0; i<loopSize-1;i++){
+			shoppingItemOuter=shoppingList.get(i);
 			if(shoppingItemOuter.get("productStyle")==null&&shoppingItemOuter.get("productSize")==null){
 				continue;
 			}
@@ -1015,7 +1081,8 @@ public class ShoppingCartPage extends BasePage {
 			outerName= shoppingItemOuter.get("productName").toString();
 			outerStyle= shoppingItemOuter.get("productStyle").toString();
 			outerSize= shoppingItemOuter.get("productSize").toString();
-			for(Map<String,Object> shoppingItemInner:shoppingList){
+			for(int j=i+1;j<loopSize;j++){
+				shoppingItemInner=shoppingList.get(j);
 				if(shoppingItemInner.get("productStyle")==null&&shoppingItemInner.get("productSize")==null){
 					continue;
 				}
@@ -1283,9 +1350,9 @@ public class ShoppingCartPage extends BasePage {
 	 * To verify Shopping Cart Contents
 	 * @param - boolean - bUnKnown - with unknown status
 	 * @param - boolean - bTrueFit - known as TrueFit existing
-	 * @param - boolean - bAdvancedOrder - known as Advanced order existing
+	 * @param - boolean - bProductNameOnly - only show product name
 	 */
-	public void verifyShoppingCartContents(boolean bUnKnown,boolean bTrueFit,boolean bAdvancedOrder){
+	public void verifyShoppingCartContents(boolean bUnKnown,boolean bTrueFit,boolean bProductNameOnly){
 		String lsText;
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartTitle);
@@ -1413,7 +1480,7 @@ public class ShoppingCartPage extends BasePage {
 				}
 			}
 
-			if(bAdvancedOrder){
+			if(bProductNameOnly){
 				if(!this.checkGetItByShippingMessageExisting()){
 					reporter.reportLogPass("The cart GetByDate message is not displaying");
 				}
@@ -1521,7 +1588,7 @@ public class ShoppingCartPage extends BasePage {
 				}
 			}
 			else{
-				if(bAdvancedOrder){
+				if(bProductNameOnly){
 					element=cartItem.findElement(byProductShippingDate);
 					this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 					lsText=element.getText();

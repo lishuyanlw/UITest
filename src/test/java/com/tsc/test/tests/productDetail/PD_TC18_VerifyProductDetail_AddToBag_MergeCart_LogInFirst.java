@@ -95,7 +95,7 @@ public class PD_TC18_VerifyProductDetail_AddToBag_MergeCart_LogInFirst extends B
 				reporter.reportLogFail("The shopping cart bag counter is not equal to shopping item amount:"+shoppingListAmount+", instead of "+shoppingCartBagCounterAfterClickingAddToBagButton);
 			}
 
-			Map<String,Object> shoppingCartMap=getShoppingCartThreadLocal().getShoppingSectionDetails();
+			Map<String,Object> shoppingCartMap=getShoppingCartThreadLocal().getShoppingSectionDetails("all");
 
 			//To verify Contents among PDP, AddToBag And ShoppingCartSection Details
 			reporter.reportLog("To verify Contents on ShoppingCartSection Details with AddToBag information from UI interface");
