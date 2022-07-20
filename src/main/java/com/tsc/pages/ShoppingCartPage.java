@@ -1,16 +1,16 @@
 package com.tsc.pages;
 
+import com.tsc.api.apiBuilder.CartAPI;
 import com.tsc.pages.base.BasePage;
+import io.restassured.response.Response;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.IOException;
+import java.util.*;
 
 public class ShoppingCartPage extends BasePage {
 
@@ -1767,6 +1767,30 @@ public class ShoppingCartPage extends BasePage {
 		else{
 			reporter.reportLogFailWithScreenshot("The cancel button in Remove dialog is not displaying correctly");
 		}
+	}
+
+	/**
+	 * This function adds items to cart for a user
+	 * @param - List<Map<String,Object>> - productData - list of map containing items data
+	 * @param - String - customerEDP of user
+	 * @param -String - access_token
+	 * @param - String - cartGuidId for cart
+	 * @return - Response - Response object from api
+	 */
+	public Response addItemsToCartForUser(List<Map<String,Object>> productData, int customerEDP, String access_token, String cartGuidId) throws IOException {
+		Response cartResponse = null;
+		if(productData.size()>0){
+			String cartGuidIdValue = cartGuidId;
+			CartAPI cartAPI = new CartAPI();
+			for(Map<String,Object> cartData:productData){
+				if(cartGuidIdValue==null){
+					cartResponse = cartAPI.createNewCartOrAddItems(Arrays.asList(Integer.valueOf(cartData.get("edpNo").toString())),Integer.valueOf(cartData.get("itemToBeAdded").toString()),customerEDP,access_token,null);
+					cartGuidIdValue = cartResponse.jsonPath().get("CartGuid");
+				}else
+					cartResponse = cartAPI.createNewCartOrAddItems(Arrays.asList(Integer.valueOf(cartData.get("edpNo").toString())),Integer.valueOf(cartData.get("itemToBeAdded").toString()),customerEDP,access_token,cartGuidIdValue);
+			}
+		}
+		return cartResponse;
 	}
 
 

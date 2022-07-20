@@ -1,17 +1,13 @@
 package com.tsc.api.apiBuilder;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import com.tsc.api.pojo.Product;
 import com.tsc.api.pojo.ProductDetailsItem;
 import com.tsc.api.util.JsonParser;
 import io.restassured.response.Response;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ProductAPI extends ApiClient {
@@ -311,7 +307,13 @@ public class ProductAPI extends ApiClient {
         return list;
     }
 
-    public List<Map<String,Object>> addAndGetProductDetailsAddedToCartForUser(List<Map<String,String>> keywordData) throws IOException {
+    /**
+     * This function returns a list of items that will be added to cart for a user
+     * @param - List<Map<String,String>> - keywordData - items that are to be added to the cart for user
+     * @return - List<Map<String,String>> - List of Map Object that are added to cart
+     * @throws IOException
+     */
+    public List<Map<String,Object>> getProductDetailsToBeAddedToCartForUser(List<Map<String,String>> keywordData) throws IOException {
         List<Map<String,Object>> productList = new ArrayList<>();
         List<Map<String,Object>> tempDataList = null;
         boolean innerForLoop = false;
@@ -319,7 +321,7 @@ public class ProductAPI extends ApiClient {
             boolean outerloop = false;
             Product product = this.getProductDetailsForKeyword(data.get("searchKeyword"),null,true);
             List<Product.Products> products = product.getProducts();
-            Boolean badgeRequired = Boolean.valueOf(data.get("badge"));
+            Boolean badgeRequired = Boolean.valueOf(data.get("badgeRequired"));
             Boolean styleExist = Boolean.valueOf(data.get("styleExist"));
             Boolean sameSizeAndStyle = Boolean.valueOf(data.get("sameSizeAndStyle"));
             int itemToBeAdded = Integer.valueOf(data.get("itemToBeAdded"));
@@ -378,7 +380,7 @@ public class ProductAPI extends ApiClient {
                                             counter++;
                                         }
                                         if(secondValue){
-                                            productMapData.put("itemToBeAdded",itemToBeAdded);
+                                            productMapData.put("itemToBeAdded",1);
                                             tempDataList.add(productMapData);
                                         }
                                         if(forLoopCounter == dataList.size() && counter!=itemToBeAdded)
@@ -426,6 +428,14 @@ public class ProductAPI extends ApiClient {
         return productList;
     }
 
+    /**
+     * This function returns edps data for a product
+     * @param - String - quantityCondition - Inventory item that will be selected
+     * @param - Integer - itemToBeAddedNumber - Number of items that will be added
+     * @param - Product.edps - edpsData - edps data object for product
+     * @param - Product.Products - productsData - Product.Products object for product
+     * @return - Map<String,Object> - Map Object
+     */
     public Map<String,Object> getEDPNumberForInputCondition(String quantityCondition, int itemToBeAddedNumber, Product.edps edpsData,Product.Products productsData){
         Map<String,Object> productMap = new HashMap<>();
         if(quantityCondition!=null){
