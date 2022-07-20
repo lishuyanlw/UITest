@@ -160,25 +160,25 @@ public class ProductAPI extends ApiClient {
      * @param - Boolean - firstTimeFunctionCall - determines as if the call is made first time or not
      * @return - List<Integer> - EDPNo
      */
-    public Map<String,Object> getNotSoldOutProductInfo(String searchKeyword,int inventoryAmount,boolean bEqual) throws IOException {
+    public Map<String,Object> getNotSoldOutProductInfo(String searchKeyword,int inventoryCount,boolean bEqual) throws IOException {
         Map<String,Object> map=new HashMap<>();
         Product product=getProductDetailsForKeyword(searchKeyword,null,true);;
         List<Product.Products> dataList=null;
         if(bEqual){
-            dataList =product.Products.stream().filter(item->item.getEdps().stream().anyMatch(subItem->subItem.getInventory()==inventoryAmount)).collect(Collectors.toList());
+            dataList =product.Products.stream().filter(item->item.getEdps().stream().anyMatch(subItem->subItem.getInventory()==inventoryCount)).collect(Collectors.toList());
         }
         else{
-            dataList =product.Products.stream().filter(item->item.getEdps().stream().anyMatch(subItem->subItem.getInventory()>inventoryAmount)).collect(Collectors.toList());
+            dataList =product.Products.stream().filter(item->item.getEdps().stream().anyMatch(subItem->subItem.getInventory()>inventoryCount)).collect(Collectors.toList());
         }
 
         for(Product.Products data:dataList) {
             //To check if any Inventory is greater than 0, then means it is not SoldOut item
             List<Product.edps> edpsList=null;
             if(bEqual){
-                edpsList=data.getEdps().stream().filter(item->item.getInventory()==inventoryAmount).collect(Collectors.toList());
+                edpsList=data.getEdps().stream().filter(item->item.getInventory()==inventoryCount).collect(Collectors.toList());
             }
             else{
-                edpsList=data.getEdps().stream().filter(item->item.getInventory()>inventoryAmount).collect(Collectors.toList());
+                edpsList=data.getEdps().stream().filter(item->item.getInventory()>inventoryCount).collect(Collectors.toList());
             }
 
             for(Product.edps Edps:edpsList) {
@@ -210,14 +210,11 @@ public class ProductAPI extends ApiClient {
         List<Product.Products> dataList =product.Products.stream().filter(item->item.getEdps().stream().anyMatch(subItem->subItem.getInventory()>=10)).collect(Collectors.toList());
         for(Product.Products data:dataList) {
             //To check if any Inventory is greater than 0, then means it is not SoldOut item
-            List<Product.edps> edpsList=data.getEdps().stream().filter(item->item.getInventory()>=10).collect(Collectors.toList());
+            List<Product.edps> edpsList=data.getEdps().stream().filter(item->item.getInventory()>=10 && !item.isSoldOut()).collect(Collectors.toList());
             for(Product.edps Edps:edpsList) {
                 if(getProductInventoryWithProductNumberAndEDPNumber(Edps.getItemNo(),Edps.getEdpNo())>=10){
                     list.add(Edps);
                 }
-//                if (Edps.Inventory > 2 && !Edps.isSoldOut()) {
-//                    list.add(Edps);
-//                }
                 if(returnProductCount!=0){
                     if(list.size()==returnProductCount)
                         return list;
@@ -240,14 +237,11 @@ public class ProductAPI extends ApiClient {
         List<Product.Products> dataList =product.Products.stream().filter(item->item.getEdps().stream().anyMatch(subItem->subItem.getAppliedShipping().isEmpty()&&subItem.getInventory()>2)).collect(Collectors.toList());
         for(Product.Products data:dataList) {
             //To check if any Inventory is greater than 0, then means it is not SoldOut item
-            List<Product.edps> edpsList=data.getEdps().stream().filter(item->item.getInventory()>2).collect(Collectors.toList());
+            List<Product.edps> edpsList=data.getEdps().stream().filter(item->item.getInventory()>2 && item.getAppliedShipping().isEmpty()).collect(Collectors.toList());
             for(Product.edps Edps:edpsList) {
                 if(getProductInventoryWithProductNumberAndEDPNumber(Edps.getItemNo(),Edps.getEdpNo())>2){
                     list.add(Edps);
                 }
-//                if (Edps.Inventory > 2 && !Edps.isSoldOut()&&Edps.getAppliedShipping().isEmpty()) {
-//                    list.add(Edps);
-//                }
                 if(returnProductCount!=0){
                     if(list.size()==returnProductCount){
                         return list;
