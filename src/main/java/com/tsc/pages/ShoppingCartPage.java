@@ -1006,19 +1006,22 @@ public class ShoppingCartPage extends BasePage {
 	}
 
 	/**
-	 * To check Given Product Existing In Shopping Cart Item List
+	 * To find Given Product index In Shopping Cart Item List
 	 * @param - addToBagMap - given product map data
 	 * @param - shoppingSectionDetailsMap
-	 * @return boolean
+	 * @return - int - note that -1 represents not found
 	 */
-	public boolean checkGivenProductExistingInShoppingCartItemList(Map<String,Object> addToBagMap,Map<String,Object> shoppingSectionDetailsMap) {
+	public int findGivenProductIndexInShoppingCartItemList(Map<String,Object> addToBagMap,Map<String,Object> shoppingSectionDetailsMap) {
 		List<Map<String, Object>> shoppingList = (List<Map<String, Object>>) shoppingSectionDetailsMap.get("shoppingList");
-		for (Map<String, Object> cartItemMap : shoppingList) {
+		Map<String, Object> cartItemMap=null;
+		int loopSize=shoppingList.size();
+		for (int i=0;i<loopSize;i++) {
+			cartItemMap = shoppingList.get(i);
 			if (this.checkIfMatchGivenAddToBagItem(addToBagMap, cartItemMap)) {
-				return true;
+				return i;
 			}
 		}
-		return false;
+		return -1;
 	}
 
 

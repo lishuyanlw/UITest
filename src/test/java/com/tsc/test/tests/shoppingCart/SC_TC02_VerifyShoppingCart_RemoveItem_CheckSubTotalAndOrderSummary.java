@@ -90,8 +90,8 @@ public class SC_TC02_VerifyShoppingCart_RemoveItem_CheckSubTotalAndOrderSummary 
 			reporter.reportLog("To verify business logic Between Shopping Item List And SubTotal Section");
 			getShoppingCartThreadLocal().verifyBusinessLogicBetweenShoppingItemListAndSubTotalSection(shoppingCartMap);
 
-			boolean bCheckExisting=getShoppingCartThreadLocal().checkGivenProductExistingInShoppingCartItemList(mapRemoveDialog,shoppingCartMap);
-			if(bCheckExisting){
+			int findIndex=getShoppingCartThreadLocal().findGivenProductIndexInShoppingCartItemList(mapRemoveDialog,shoppingCartMap);
+			if(findIndex!=-1){
 				reporter.reportLogPass("Able to find the removed item");
 			}
 			else{
@@ -106,8 +106,8 @@ public class SC_TC02_VerifyShoppingCart_RemoveItem_CheckSubTotalAndOrderSummary 
 			reporter.reportLog("To verify business logic Between Shopping Item List And SubTotal Section");
 			getShoppingCartThreadLocal().verifyBusinessLogicBetweenShoppingItemListAndSubTotalSection(shoppingCartMap);
 
-			bCheckExisting=getShoppingCartThreadLocal().checkGivenProductExistingInShoppingCartItemList(mapRemoveDialog,shoppingCartMap);
-			if(!bCheckExisting){
+			findIndex=getShoppingCartThreadLocal().findGivenProductIndexInShoppingCartItemList(mapRemoveDialog,shoppingCartMap);
+			if(findIndex==-1){
 				reporter.reportLogPass("Unable to find the removed item");
 			}
 			else{
