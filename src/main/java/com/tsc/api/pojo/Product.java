@@ -243,6 +243,15 @@ public class Product {
         public List<Sizes> Sizes;
         public int DefaultEdp;
         public List<edps> Edps;
+        public String PriceIsLabel;
+
+        public String getPriceIsLabel() {
+            return PriceIsLabel;
+        }
+
+        public void setPriceIsLabel(String priceIsLabel) {
+            PriceIsLabel = priceIsLabel;
+        }
 
         public String getItemNo() {
             return ItemNo;

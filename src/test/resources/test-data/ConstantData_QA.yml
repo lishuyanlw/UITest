@@ -251,3 +251,23 @@ lstTestName: ["MA_TC10_Payment_Options_Manage_Credit_Card",
               "PD_TC13_VerifyProductDetail_FavIconAction",
               "PD_TC15_VerifyProductDetail_Accordions"]
 lblChromeBrowserVersion: "99"
+shoppingCart:
+  lst_SearchKeywords:
+    - searchKeyword: "dress"
+      quantity: "more than 3"
+      badge: "true"
+      itemToBeAdded: "1"
+      styleExist: "true"
+      sameSizeAndStyle: "true"
+    - searchKeyword: "dress"
+      quantity: "more than 3"
+      badge: "true"
+      itemToBeAdded: "2"
+      styleExist: "true"
+      sameSizeAndStyle: "false"
+    - searchKeyword: "gym"
+      quantity: ""
+      badge: "false"
+      itemToBeAdded: "1"
+      styleExist: "false"
+      sameStyleAndSize: "false"

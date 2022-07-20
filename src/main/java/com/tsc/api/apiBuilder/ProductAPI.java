@@ -1,6 +1,7 @@
 package com.tsc.api.apiBuilder;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import com.tsc.api.pojo.Product;
 import com.tsc.api.pojo.ProductDetailsItem;
 import com.tsc.api.util.JsonParser;
@@ -141,9 +142,6 @@ public class ProductAPI extends ApiClient {
                 if(getProductInventoryWithProductNumberAndEDPNumber(Edps.getItemNo(),Edps.getEdpNo())>2){
                     list.add(Edps);
                 }
-//                if (Edps.Inventory > 2 && !Edps.isSoldOut()) {
-//                    list.add(Edps);
-//                }
                 if(returnProductCount!=0){
                     if(list.size()==returnProductCount)
                         return list;
@@ -204,7 +202,7 @@ public class ProductAPI extends ApiClient {
      * @param - Boolean - firstTimeFunctionCall - determines as if the call is made first time or not
      * @return - List<Integer> - EDPNo
      */
-    public List<Product.edps> getEDPNoForNotSoldOutProductContainTenQuantity(String searchKeyword,String defaultPageItems,boolean firstTimeFunctionCall,int returnProductCount) throws IOException {
+    public List<Product.edps> getEDPNoForProductContainingTenQuantity(String searchKeyword,String defaultPageItems,boolean firstTimeFunctionCall,int returnProductCount) throws IOException {
         List<Product.edps> list = new ArrayList<>();
         Product product=getProductDetailsForKeyword(searchKeyword,defaultPageItems,firstTimeFunctionCall);
         List<Product.Products> dataList =product.Products.stream().filter(item->item.getEdps().stream().anyMatch(subItem->subItem.getInventory()>=10)).collect(Collectors.toList());
@@ -291,7 +289,7 @@ public class ProductAPI extends ApiClient {
      * @param - Boolean - firstTimeFunctionCall - determines as if the call is made first time or not
      * @return - List<Integer> - EDPNo
      */
-    public List getEDPNoForNotSoldOutAndNoFreeShippingProduct(String searchKeyword,String defaultPageItems,boolean firstTimeFunctionCall,int returnProductCount,double minimumItemPrice) throws IOException {
+    public List getEDPNoForNoFreeShippingProduct(String searchKeyword,String defaultPageItems,boolean firstTimeFunctionCall,int returnProductCount,double minimumItemPrice) throws IOException {
         List<Product.edps> list = new ArrayList<>();
         Product product=getProductDetailsForKeyword(searchKeyword,defaultPageItems,firstTimeFunctionCall);
         List<Product.Products> dataList =product.Products.stream().filter(item->item.getEdps().stream().anyMatch(subItem->!subItem.getAppliedShipping().isEmpty()&&subItem.getInventory()>2)).collect(Collectors.toList());
@@ -311,5 +309,149 @@ public class ProductAPI extends ApiClient {
             }
         }
         return list;
+    }
+
+    public List<Map<String,Object>> addAndGetProductDetailsAddedToCartForUser(List<Map<String,String>> keywordData) throws IOException {
+        List<Map<String,Object>> productList = new ArrayList<>();
+        List<Map<String,Object>> tempDataList = null;
+        boolean innerForLoop = false;
+        for(Map<String,String> data:keywordData){
+            boolean outerloop = false;
+            Product product = this.getProductDetailsForKeyword(data.get("searchKeyword"),null,true);
+            List<Product.Products> products = product.getProducts();
+            Boolean badgeRequired = Boolean.valueOf(data.get("badge"));
+            Boolean styleExist = Boolean.valueOf(data.get("styleExist"));
+            Boolean sameSizeAndStyle = Boolean.valueOf(data.get("sameSizeAndStyle"));
+            int itemToBeAdded = Integer.valueOf(data.get("itemToBeAdded"));
+
+            for(Product.Products productsData:products){
+                Map<String,Object> productMap = new HashMap<>();
+                if(Boolean.valueOf(data.get("styleExist"))){
+                    //Fetching item edp number for same product with badge, style and size
+                    if(productsData.getVideosCount() >= 0 && productsData.getStyles().size() >= 1 && productsData.getSizes().size() >= 1&&productsData.isShowBadgeImage() && productsData.isEnabledAddToCart()){
+                        if(badgeRequired && styleExist && sameSizeAndStyle){
+                            for(Product.edps edpsData: productsData.getEdps()){
+                                if(!productsData.getPriceIsLabel().isEmpty()){
+                                    productMap = this.getEDPNumberForInputCondition(data.get("quantity"),itemToBeAdded,edpsData,productsData);
+                                    if(productMap.keySet().size()>0)
+                                        innerForLoop = true;
+                                    else
+                                        continue;
+                                }
+                                if(productMap.keySet().size()>0){
+                                    productMap.put("itemToBeAdded",itemToBeAdded);
+                                    productList.add(productMap);
+                                }
+                                if(innerForLoop){
+                                    innerForLoop = false;
+                                    outerloop = true;
+                                    break;
+                                }
+                            }
+                        }
+                        //Fetching item edp numbers for same product with badge, style but with different style and size
+                        //True Fit condition scenario
+                        else if(badgeRequired && styleExist && !sameSizeAndStyle){
+                            ProductDetailsItem productDetailsItem=null;
+                            if(tempDataList==null)
+                                tempDataList = new ArrayList<>();
+                            if(productsData.getVideosCount() >= 0 && productsData.getStyles().size() >= 1 && productsData.getSizes().size() >= 1&&productsData.isShowBadgeImage() && productsData.isEnabledAddToCart()){
+                                productDetailsItem=getProductDetailsForSpecificProductNumber(productsData.getItemNo());
+                                List<ProductDetailsItem.Edp> edpsList=productDetailsItem.getEdps();
+                                List<ProductDetailsItem.Edp> dataList=edpsList.stream().filter(item->item.getInventory()>0).sorted((p1,p2)->p1.getStyle().compareTo(p2.getStyle())).collect(Collectors.toList());
+                                String checkStyle="FirstItem";
+                                if(dataList.size()>1){
+                                    int counter = 0,forLoopCounter = 0;
+                                    for(ProductDetailsItem.Edp edpsData:dataList) {
+                                        forLoopCounter++;
+                                        Map<String,Object> productMapData = new HashMap<>();
+                                        boolean secondValue = false;
+                                        if(!checkStyle.equalsIgnoreCase(edpsData.getStyle()) && edpsData.getInventory()>1){
+                                            if(counter==0 && productMapData.size()>0)
+                                                productMapData.clear();
+                                            checkStyle = edpsData.getStyle();
+                                            productMapData.put("productName",productsData.getName());
+                                            productMapData.put("productNumber",productsData.getItemNo());
+                                            productMapData.put("edpNo",edpsData.getEdpNo());
+                                            productMapData.put("edpsData",edpsData);
+                                            secondValue = true;
+                                            counter++;
+                                        }
+                                        if(secondValue){
+                                            productMapData.put("itemToBeAdded",itemToBeAdded);
+                                            tempDataList.add(productMapData);
+                                        }
+                                        if(forLoopCounter == dataList.size() && counter!=itemToBeAdded)
+                                            tempDataList.clear();
+                                        if(counter==itemToBeAdded){
+                                            tempDataList.forEach(item->{productList.add(item);});
+                                            outerloop = true;
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                //Fetching item edp number for product with badge and has no style and size available
+                else if(!styleExist && data.get("quantity").isEmpty()){
+                    if(productsData.getVideosCount() >= 0 && productsData.getStyles().size() == 0 && productsData.getSizes().size() == 0 && productsData.isEnabledAddToCart()){
+                        for(Product.edps edpsData: productsData.getEdps()){
+                            if(!edpsData.isSoldOut()){
+                                productMap = this.getEDPNumberForInputCondition(null,itemToBeAdded,edpsData,productsData);
+                                if(productMap.keySet().size()>0)
+                                    innerForLoop = true;
+                                else
+                                    continue;
+                            }
+                            if(productMap.keySet().size()>0){
+                                productMap.put("itemToBeAdded",itemToBeAdded);
+                                productList.add(productMap);
+                            }
+                            if(innerForLoop){
+                                innerForLoop = false;
+                                outerloop = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+                if(outerloop)
+                    break;
+                else
+                    continue;
+            }
+        }
+        return productList;
+    }
+
+    public Map<String,Object> getEDPNumberForInputCondition(String quantityCondition, int itemToBeAddedNumber, Product.edps edpsData,Product.Products productsData){
+        Map<String,Object> productMap = new HashMap<>();
+        if(quantityCondition!=null){
+            String[] quantityConditionArray = quantityCondition.split(" ");
+            if(quantityConditionArray[0].contains("more") || quantityConditionArray[0].contains("greater")){
+                if(edpsData.getInventory()>Integer.valueOf(quantityConditionArray[2]))
+                    productMap.put("edpsData",edpsData);
+            }else if(quantityConditionArray[0].contains("less") || quantityConditionArray[0].contains("lower")){
+                if(edpsData.getInventory()<Integer.valueOf(quantityConditionArray[2]))
+                    productMap.put("edpsData",edpsData);
+            }else if(quantityConditionArray[0].contains("equal")){
+                if(edpsData.getInventory()==Integer.valueOf(quantityConditionArray[2]))
+                    productMap.put("edpsData",edpsData);
+            }
+        }else{
+            if(edpsData.getInventory()>=itemToBeAddedNumber)
+                productMap.put("edpsData",edpsData);
+        }
+
+        if(productMap.keySet().contains("edpsData")){
+            productMap.put("productName",productsData.getName());
+            productMap.put("productNumber",productsData.getItemNo());
+            productMap.put("edpNo",edpsData.getEdpNo());
+            return productMap;
+        }
+
+        return productMap;
     }
 }
