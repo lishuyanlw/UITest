@@ -422,6 +422,24 @@ public class ShoppingCartPage extends BasePage {
 	}
 
 	/**
+	 * To get First Cart Item With Available Remove Button
+	 * @return - Map<String,WebElement> - including cartItem and removeButton
+	 */
+	public Map<String,WebElement> getFirstCartItemWithAvailableRemoveButton(){
+		Map<String,WebElement> map=new HashMap<>();
+
+		for(WebElement cartItem:this.lstCartItems){
+			if(this.checkRemoveButtonExisting(cartItem)){
+				map.put("cartItem",cartItem);
+				WebElement removeButton=cartItem.findElement(this.byProductRemoveButton);
+				map.put("removeButton",removeButton);
+				return map;
+			}
+		}
+		return null;
+	}
+
+	/**
 	 * To open remove dialog
 	 * @param - removeButtonInOrderList - the given remove button in order list
 	 * @return - boolean
@@ -988,12 +1006,29 @@ public class ShoppingCartPage extends BasePage {
 	}
 
 	/**
-	 * To verify Contents Contents On ShoppingCart Section Details With AddToBag
-	 * @param - Map<String,Object> - PDPMap,
-	 * @param - Map<String,Object> - addToBagMap
-	 * @param - Map<String,Object> - shoppingSectionDetailsMap
-	 * @param - boolean - bAPI - true represents addToBagMap from API while false represents for addToBagMap from UI
+	 * To check Given Product Existing In Shopping Cart Item List
+	 * @param - addToBagMap - given product map data
+	 * @param - shoppingSectionDetailsMap
+	 * @return boolean
 	 */
+	public boolean checkGivenProductExistingInShoppingCartItemList(Map<String,Object> addToBagMap,Map<String,Object> shoppingSectionDetailsMap) {
+		List<Map<String, Object>> shoppingList = (List<Map<String, Object>>) shoppingSectionDetailsMap.get("shoppingList");
+		for (Map<String, Object> cartItemMap : shoppingList) {
+			if (this.checkIfMatchGivenAddToBagItem(addToBagMap, cartItemMap)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+
+		/**
+         * To verify Contents Contents On ShoppingCart Section Details With AddToBag
+         * @param - Map<String,Object> - PDPMap,
+         * @param - Map<String,Object> - addToBagMap
+         * @param - Map<String,Object> - shoppingSectionDetailsMap
+         * @param - boolean - bAPI - true represents addToBagMap from API while false represents for addToBagMap from UI
+         */
 	public void verifyContentsOnShoppingCartSectionDetailsWithAddToBag(Map<String,Object> PDPMap, Map<String,Object> addToBagMap,Map<String,Object> shoppingSectionDetailsMap, boolean bAPI){
 		List<Map<String,Object>> shoppingList=(List<Map<String,Object>>)shoppingSectionDetailsMap.get("shoppingList");
 		int shoppingAmount= (int) shoppingSectionDetailsMap.get("shoppingAmount");
@@ -1817,6 +1852,11 @@ public class ShoppingCartPage extends BasePage {
 		}
 		else{
 			reporter.reportLogFailWithScreenshot("The EasyPay installment options is not displaying correctly");
+		}
+
+		Select select=new Select(selectCartEasyPayInstallmentNumber);
+		if(select.getFirstSelectedOption().getText().trim().equalsIgnoreCase("-")){
+			return;
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartEasyPayTodayPaymentTitle);
