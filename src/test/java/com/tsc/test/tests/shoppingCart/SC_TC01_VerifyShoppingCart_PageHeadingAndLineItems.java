@@ -66,6 +66,10 @@ public class SC_TC01_VerifyShoppingCart_PageHeadingAndLineItems extends BaseTest
 
 			Map<String,Object> shoppingCartMap=getShoppingCartThreadLocal().getShoppingSectionDetails("all");
 
+			//To verify heading and Shopping Item List contents
+			reporter.reportLog("To verify heading and Shopping Item List contents");
+			getShoppingCartThreadLocal().verifyShoppingCartContents(true,false,false);
+
 			//To verify business logic Between Shopping Item List And SubTotal Section
 			reporter.reportLog("To verify business logic Between Shopping Item List And SubTotal Section");
 			getShoppingCartThreadLocal().verifyBusinessLogicBetweenShoppingItemListAndSubTotalSection(shoppingCartMap);

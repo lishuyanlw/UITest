@@ -655,12 +655,12 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 			if(this.checkRemoveButtonExisting(cartItem)){
 				element=cartItem.findElement(byProductRemoveButton);
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-				lsText=element.getAttribute("href");
+				lsText=element.getText();
 				if(!lsText.isEmpty()){
-					reporter.reportLogPass("The cart item remove button link is not empty");
+					reporter.reportLogPass("The cart item remove button is displaying correctly");
 				}
 				else{
-					reporter.reportLogFailWithScreenshot("The cart item remove button link is empty");
+					reporter.reportLogFailWithScreenshot("The cart item remove button is not displaying correctly");
 				}
 			}
 
