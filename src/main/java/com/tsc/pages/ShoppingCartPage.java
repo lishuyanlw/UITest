@@ -48,8 +48,14 @@ public class ShoppingCartPage extends BasePage {
 	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-notices')]//div[@class='notice-title']")
 	public WebElement lblCartNoticeTitle;
 
+	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-notices')]//div[@class='notice-group'][div[strong]]")
+	public WebElement lblCartNoticeMultiPackMessage;
+
 	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-notices')]//div[@class='notice-group']")
-	public WebElement lblCartNoticeMessage;
+	public List<WebElement> lstCartNoticeMessage;
+
+	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-notices')]//div[@class='notice-group'][div[span]]")
+	public WebElement lblCartNoticeQuantityExceedingMessage;
 
 	@FindBy(xpath = "//div[@class='cartridge']//div[@id='tf-cart-wrapper']")
 	public WebElement lblCartNoticeTrueFitMessage;
@@ -252,11 +258,45 @@ public class ShoppingCartPage extends BasePage {
 	}
 
 	/**
+	 * To check Cart Notice Title Existing
+	 * @return -boolean
+	 */
+	public boolean checkCartNoticeTitleExisting(){
+		return this.checkChildElementExistingByAttribute(this.cntCartNotice,"class","notice-title");
+	}
+
+	/**
+	 * To check Cart Notice Message Existing
+	 * @return -String
+	 */
+	public String checkCartNoticeMessageExisting(){
+		if(this.checkChildElementExistingByAttribute(this.cntCartNotice,"class","notice-group")){
+			if(this.lstCartNoticeMessage.size()==2){
+				return "both";
+			}
+			else{
+				if(this.checkChildElementExistingByAttribute(this.lstCartNoticeMessage.get(0),"class","clearfix")){
+					return "errorMessage";
+				}
+				else{
+					return "multiPackMessage";
+				}
+			}
+		}
+		return null;
+	}
+
+	/**
 	 * To check Product TrueFit Message Existing, note that 2 different size for same product will show TrueFit message
 	 * @return - boolean
 	 */
 	public boolean checkProductTrueFitMessageExisting(){
-		return this.checkChildElementExistingByAttribute(cntCartNotice,"id","tf-cart-wrapper");
+		if(!this.cntCartNotice.getAttribute("class").contains("hidden")){
+			return !this.getElementInnerText(this.lblCartNoticeTrueFitMessage).isEmpty();
+		}
+		else{
+			return false;
+		}
 	}
 
 	/**
@@ -1266,25 +1306,63 @@ public class ShoppingCartPage extends BasePage {
 			reporter.reportLogFailWithScreenshot("The cart top message is not displaying correctly");
 		}
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartNoticeTitle);
-		lsText=lblCartNoticeTitle.getText();
-		if(!lsText.isEmpty()){
-			reporter.reportLogPass("The cart notice title is displaying correctly");
-		}
-		else{
-			reporter.reportLogFailWithScreenshot("The cart notice title is not displaying correctly");
-		}
-
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartNoticeMessage);
-		lsText=lblCartNoticeMessage.getText();
-		if(!lsText.isEmpty()){
-			reporter.reportLogPass("The cart notice message is displaying correctly");
-		}
-		else{
-			reporter.reportLogFailWithScreenshot("The cart notice message is not displaying correctly");
-		}
-
 		if(bUnKnown){
+			if(this.checkCartNoticeTitleExisting()){
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartNoticeTitle);
+				lsText=lblCartNoticeTitle.getText();
+				if(!lsText.isEmpty()){
+					reporter.reportLogPass("The cart notice title is displaying correctly");
+				}
+				else{
+					reporter.reportLogFailWithScreenshot("The cart notice title is not displaying correctly");
+				}
+			}
+
+			String lsCartNoticeMessage=this.checkCartNoticeMessageExisting();
+			switch(lsCartNoticeMessage){
+				case "both":
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartNoticeMultiPackMessage);
+					lsText=lblCartNoticeMultiPackMessage.getText();
+					if(!lsText.isEmpty()){
+						reporter.reportLogPass("The cart notice MultiPack message is displaying correctly");
+					}
+					else{
+						reporter.reportLogFailWithScreenshot("The cart notice MultiPack message is not displaying correctly");
+					}
+
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartNoticeQuantityExceedingMessage);
+					lsText=lblCartNoticeQuantityExceedingMessage.getText();
+					if(!lsText.isEmpty()){
+						reporter.reportLogPass("The cart notice quantity exceeding message is displaying correctly");
+					}
+					else{
+						reporter.reportLogFailWithScreenshot("The cart notice quantity exceeding message is not displaying correctly");
+					}
+					break;
+				case "errorMessage":
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartNoticeQuantityExceedingMessage);
+					lsText=lblCartNoticeQuantityExceedingMessage.getText();
+					if(!lsText.isEmpty()){
+						reporter.reportLogPass("The cart notice quantity exceeding message is displaying correctly");
+					}
+					else{
+						reporter.reportLogFailWithScreenshot("The cart notice quantity exceeding message is not displaying correctly");
+					}
+					break;
+				case "multiPackMessage":
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartNoticeMultiPackMessage);
+					lsText=lblCartNoticeMultiPackMessage.getText();
+					if(!lsText.isEmpty()){
+						reporter.reportLogPass("The cart notice MultiPack message is displaying correctly");
+					}
+					else{
+						reporter.reportLogFailWithScreenshot("The cart notice MultiPack message is not displaying correctly");
+					}
+					break;
+				default:
+					break;
+			}
+
 			if(this.checkProductTrueFitMessageExisting()){
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartNoticeTrueFitMessage);
 				lsText=lblCartNoticeTrueFitMessage.getText();
