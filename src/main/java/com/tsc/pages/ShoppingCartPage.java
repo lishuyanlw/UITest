@@ -1031,7 +1031,7 @@ public class ShoppingCartPage extends BasePage {
 	 */
 	public void verifyBusinessLogicBetweenShoppingItemListAndSubTotalSection(Map<String,Object> shoppingCartMap){
 		List<Map<String,Object>> shoppingList=(List<Map<String,Object>>)shoppingCartMap.get("shoppingList");
-		int shoppingAmount= (int) shoppingCartMap.get("shoppingCartMap");
+		int shoppingAmount= (int) shoppingCartMap.get("shoppingAmount");
 		float shoppingSubTotal= (float) shoppingCartMap.get("shoppingSubTotal");
 
 		float priceAmount=0.0f;

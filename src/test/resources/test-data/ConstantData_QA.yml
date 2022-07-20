@@ -249,5 +249,6 @@ lstTestName: ["MA_TC10_Payment_Options_Manage_Credit_Card",
               "PD_TC11_VerifyProductDetail_SoldOut",
               "PD_TC12_VerifyProductDetail_AddToBag",
               "PD_TC13_VerifyProductDetail_FavIconAction",
-              "PD_TC15_VerifyProductDetail_Accordions"]
+              "PD_TC15_VerifyProductDetail_Accordions",
+              "SC_TC01_VerifyShoppingCart_PageHeadingAndLineItems"]
 lblChromeBrowserVersion: "99"
