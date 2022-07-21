@@ -69,6 +69,14 @@ public class SC_TC01_VerifyShoppingCart_PageHeadingAndLineItems extends BaseTest
 
 			Map<String,Object> shoppingCartMap=getShoppingCartThreadLocal().getShoppingSectionDetails("all");
 
+			int findIndex=getShoppingCartThreadLocal().findGivenProductIndexInShoppingCartItemList(PDPMap,shoppingCartMap);
+			if(findIndex==0){
+				reporter.reportLogPass("The latest added item is displaying on the top of shopping item list correctly");
+			}
+			else{
+				reporter.reportLogFail("The latest added item is not displaying on the top of shopping item list correctly");
+			}
+
 			//To verify heading and Shopping Item List contents
 			reporter.reportLog("To verify heading and Shopping Item List contents");
 			getShoppingCartThreadLocal().verifyShoppingCartContents(true,false,false);
@@ -78,7 +86,7 @@ public class SC_TC01_VerifyShoppingCart_PageHeadingAndLineItems extends BaseTest
 			getShoppingCartThreadLocal().verifyBusinessLogicBetweenShoppingItemListAndSubTotalSection(shoppingCartMap);
 
 			int itemAmountInShoppingCartHeader=getShoppingCartThreadLocal().GetAddedItemAmount();
-			int shoppingItemListAmount=((List<Map<String,Object>>)shoppingCartMap.get("shoppingList")).size();
+			int shoppingItemListAmount=getShoppingCartThreadLocal().getItemAmountInShoppingList((List<Map<String,Object>>)shoppingCartMap.get("shoppingList"));
 			int shoppingAmountInSubtotal=(int)shoppingCartMap.get("shoppingAmount");
 			int itemAmountInOrderSummary=getShoppingCartThreadLocal().getShoppingItemAmountFromOrderSummarySection();
 			if(itemAmountInShoppingCartHeader==shoppingItemListAmount&&
