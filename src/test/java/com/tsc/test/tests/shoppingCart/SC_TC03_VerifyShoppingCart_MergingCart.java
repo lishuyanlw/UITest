@@ -1,8 +1,14 @@
 package com.tsc.test.tests.shoppingCart;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.tsc.api.apiBuilder.AccountAPI;
+import com.tsc.api.apiBuilder.CartAPI;
+import com.tsc.api.pojo.AccountCartResponse;
+import com.tsc.api.util.JsonParser;
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
+import io.restassured.response.Response;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
@@ -100,6 +106,9 @@ public class SC_TC03_VerifyShoppingCart_MergingCart extends BaseTest{
 					reporter.reportLogFail("The added product"+productName+" using API cannot be found in ShoppingCart list");
 				}
 			}
+
+			//To empty the cart
+			getShoppingCartThreadLocal().emptyCart(customerEDP,accessToken);
 		}
 		else {
 			reporter.reportLogFail("Unable to find the matched product item");

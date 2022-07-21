@@ -1,6 +1,7 @@
 package com.tsc.pages;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tsc.api.pojo.AccountCartResponse;
 import com.tsc.api.util.DataConverter;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.tsc.api.apiBuilder.CartAPI;
@@ -2161,5 +2162,20 @@ public class ShoppingCartPage extends BasePage {
 				return null;
 		}
 	}
+
+	/**
+	 * To empty cart
+	 * @param - int - customerEDP
+	 * @param - String - accessToken
+	 * @throws IOException
+	 */
+	public void emptyCart(int customerEDP,String accessToken) throws IOException {
+		CartAPI cartAPI=new CartAPI();
+		Response responseGet=cartAPI.getAccountCartContentWithCustomerEDP(String.valueOf(customerEDP),accessToken);
+		AccountCartResponse accountCartResponseGet = JsonParser.getResponseObject(responseGet.asString(), new TypeReference<AccountCartResponse>() {});
+		String cartGuidId=accountCartResponseGet.getCartGuid();
+		cartAPI.emptyCartWithGuid(accessToken,cartGuidId);
+	}
+
 
 }
