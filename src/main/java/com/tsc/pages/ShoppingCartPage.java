@@ -1834,6 +1834,10 @@ public class ShoppingCartPage extends BasePage {
 				map.put("productStyleDimensionId",cartLineItemClass.getStyleDimensionId());
 				map.put("productSize",cartLineItemClass.getSize());
 				map.put("productSizeDimensionId",cartLineItemClass.getSizeDimensionId());
+				map.put("productAppliedPrice",cartLineItemClass.getAppliedPrice());
+				map.put("productWasPrice",cartLineItemClass.getWasPrice());
+				map.put("productSavePrice",cartLineItemClass.getSavePrice());
+				map.put("productAppliedShipping",cartLineItemClass.getAppliedShipping());
 
 				for(CartResponse.ProductsClass productsClass:productsClassList){
 					boolean outerForLoop = false;

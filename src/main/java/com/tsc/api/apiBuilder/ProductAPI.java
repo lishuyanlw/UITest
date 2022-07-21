@@ -380,6 +380,10 @@ public class ProductAPI extends ApiClient {
                                             productMapData.put("productStyleDimensionId",edpsData.getStyleDimensionId());
                                             productMapData.put("productSize",edpsData.getSize());
                                             productMapData.put("productSizeDimensionId",edpsData.getSizeDimensionId());
+                                            productMapData.put("productAppliedPrice",edpsData.getAppliedPrice());
+                                            productMapData.put("productWasPrice",edpsData.getWasPrice());
+                                            productMapData.put("productSavePrice",edpsData.getSavePrice());
+                                            productMapData.put("productAppliedShipping",edpsData.getAppliedShipping());
                                             secondValue = true;
                                             counter++;
                                         }
@@ -467,6 +471,10 @@ public class ProductAPI extends ApiClient {
             productMap.put("productStyleDimensionId",edpsData.getStyleDimensionId());
             productMap.put("productSize",edpsData.getSize());
             productMap.put("productSizeDimensionId",edpsData.getSizeDimensionId());
+            productMap.put("productAppliedPrice",edpsData.getAppliedPrice());
+            productMap.put("productWasPrice",edpsData.getWasPrice());
+            productMap.put("productSavePrice",edpsData.getSavePrice());
+            productMap.put("productAppliedShipping",edpsData.getAppliedShipping());
             return productMap;
         }
 
