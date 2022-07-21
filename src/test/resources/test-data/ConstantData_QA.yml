@@ -240,15 +240,27 @@ myAccount:
   lbl_myNewsLettersCheckUnSubscriptionAlertMessage: "Are you sure you want to completely unsubscribe from all of our exciting email marketing communications?"
 
 lstTestName: ["MA_TC10_Payment_Options_Manage_Credit_Card",
-              "PD_TC01_VerifyProductDetail_LeftSection_ContentsForVideo",
-              "PD_TC05_VerifyProductDetail_RightSection_DeliveryOptions",
-              "PD_TC06_VerifyProductDetail_RightSection_EasyPayAndTrueFit",
-              "PD_TC07_VerifyProductDetail_ProductStyle",
-              "PD_TC08_VerifyProductDetail_ProductSize_Quantity",
-              "PD_TC09_VerifyProductDetail_AdvancedOrder",
-              "PD_TC11_VerifyProductDetail_SoldOut",
-              "PD_TC12_VerifyProductDetail_AddToBag",
-              "PD_TC13_VerifyProductDetail_FavIconAction",
-              "PD_TC15_VerifyProductDetail_Accordions",
-              "SC_TC"]
+              "PD_TC",
+               "SC_TC"]
 lblChromeBrowserVersion: "99"
+shoppingCart:
+  lst_SearchKeywords:
+    - searchKeyword: "dress"
+      quantity: "more than 3"
+      badge: "true"
+      itemToBeAdded: "1"
+      styleExist: "true"
+      sameSizeAndStyle: "true"
+    - searchKeyword: "dress"
+      quantity: "more than 3"
+      badge: "true"
+      itemToBeAdded: "2"
+      styleExist: "true"
+      sameSizeAndStyle: "false"
+    - searchKeyword: "gym"
+      quantity: ""
+      badge: "false"
+      itemToBeAdded: "1"
+      styleExist: "false"
+      sameStyleAndSize: "false"
+
