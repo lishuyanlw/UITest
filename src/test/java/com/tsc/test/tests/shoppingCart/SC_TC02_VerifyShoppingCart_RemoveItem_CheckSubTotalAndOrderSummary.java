@@ -1,10 +1,14 @@
 package com.tsc.test.tests.shoppingCart;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.tsc.api.apiBuilder.ProductAPI;
 import com.tsc.api.pojo.CartResponse;
+import com.tsc.api.util.JsonParser;
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.data.pojos.ConstantData;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
+import io.restassured.response.Response;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 
@@ -30,12 +34,12 @@ public class SC_TC02_VerifyShoppingCart_RemoveItem_CheckSubTotalAndOrderSummary 
 		String lsPassword=TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
 
 		//Fetching test data from test data file
-		ConstantData.APIUserSessionParams apiUserSessionParams = TestDataHandler.constantData.getApiUserSessionParams();
-		apiUserSessionData = apiResponseThreadLocal.get().getApiUserSessionData(lsUserName,lsPassword,apiUserSessionParams.getLbl_grantType(),apiUserSessionParams.getLbl_apiKey());
-
-		String accessToken = apiUserSessionData.get("access_token").toString();
-		String customerEDP = apiUserSessionData.get("customerEDP").toString();
-		CartResponse cartResponse = getProductDetailPageThreadLocal().addItemsToShoppingCartForUser(lstKeywordList,customerEDP, accessToken);
+		String accessToken = getApiUserSessionDataMapThreadLocal().get("access_token").toString();
+		int customerEDP = Integer.valueOf(getApiUserSessionDataMapThreadLocal().get("customerEDP").toString());
+		List<Map<String,String>> keyword = TestDataHandler.constantData.getShoppingCart().getLst_SearchKeywords();
+		List<Map<String,Object>> data = new ProductAPI().getProductDetailsToBeAddedToCartForUser(keyword);
+		Response response = getShoppingCartThreadLocal().addItemsToCartForUser(data,customerEDP,accessToken,null);
+		CartResponse cartResponse = JsonParser.getResponseObject(response.asString(), new TypeReference<CartResponse>() {});
 		Map<String,Map<String,Object>> cartMap = getProductDetailPageThreadLocal().getShoppingBagItemsDetailAddedForUser(cartResponse);
 
 		//Login using valid username and password
@@ -115,10 +119,17 @@ public class SC_TC02_VerifyShoppingCart_RemoveItem_CheckSubTotalAndOrderSummary 
 			}
 
 			reporter.reportLog("Verify OrderSummary section content");
-			getShoppingCartThreadLocal().verifyOrderSummaryContents();
+			int itemAmount=getShoppingCartThreadLocal().GetAddedItemAmount();
+			float savingPrice=getShoppingCartThreadLocal().getSavingPriceFromShoppingCartHeader();
+			float subTotal=getShoppingCartThreadLocal().getShoppingSubTotal();
+			Map<String,Object> mapOrderSummary=getShoppingCartThreadLocal().getOrderSummaryDesc();
+			getShoppingCartThreadLocal().verifyOrderSummaryBusinessLogic(itemAmount,savingPrice,subTotal,mapOrderSummary,null);
+//			getShoppingCartThreadLocal().verifyOrderSummaryContents();
 
 			reporter.reportLog("Verify EasyPayment section content");
-			getShoppingCartThreadLocal().verifyEasyPaymentContents();
+			getShoppingCartThreadLocal().setInstallmentSetting(1);
+			getShoppingCartThreadLocal().verifyInstallmentBusinessLogic(mapOrderSummary);
+//			getShoppingCartThreadLocal().verifyEasyPaymentContents();
 
 
 		}

@@ -76,6 +76,13 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 	public Map<String,Object> getMandatoryShoppingItemDesc(WebElement cartItem){
 		Map<String,Object> map=new HashMap<>();
 
+		if(this.checkProductBadgeExisting(cartItem)){
+			map.put("productBadge",true);
+		}
+		else{
+			map.put("productBadge",true);
+		}
+
 		WebElement item=cartItem.findElement(byProductItemDesc);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 		String lsText=item.getText().trim();
@@ -132,13 +139,6 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 	@Override
 	public Map<String,Object> getOptionalShoppingItemDesc(WebElement cartItem){
 		Map<String,Object> map=new HashMap<>();
-
-		if(this.checkProductBadgeExisting(cartItem)){
-			map.put("productBadge",true);
-		}
-		else{
-			map.put("productBadge",true);
-		}
 
 		WebElement item;
 		String lsText;

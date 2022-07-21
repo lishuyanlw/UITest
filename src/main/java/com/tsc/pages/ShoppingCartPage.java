@@ -216,10 +216,10 @@ public class ShoppingCartPage extends BasePage {
 	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'easypay')]//div[contains(normalize-space(text()),'Payment Amount Left After Today:')]/following-sibling::div[last()]")
 	public WebElement lblCartEasyPayLeftPayment;
 
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'easypay')]//div[contains(normalize-space(text()),'5 Future Monthly Payments:')]")
+	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'easypay')]//div[contains(normalize-space(text()),'Future Monthly Payments:')]")
 	public WebElement lblCartEasyPayFutureMonthlyPaymentTitle;
 
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'easypay')]//div[contains(normalize-space(text()),'5 Future Monthly Payments:')]/following-sibling::div[last()]")
+	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'easypay')]//div[contains(normalize-space(text()),'Future Monthly Payments:')]/following-sibling::div[last()]")
 	public WebElement lblCartEasyPayFutureMonthlyPayment;
 
 	//Checkout
@@ -392,8 +392,21 @@ public class ShoppingCartPage extends BasePage {
 	 * To check Shipping saving in orderSummary section Existing
 	 * @return - boolean
 	 */
-	public boolean checkShippingSavingExisting(){
+	public boolean checkShippingSavingExistingFromOrderSummary(){
 		return checkShippingWasPriceExisting();
+	}
+
+	/**
+	 * To get saving price from Shopping Cart Header
+	 * @return - float
+	 */
+	public float getSavingPriceFromShoppingCartHeader(){
+		if(!this.checkCartNoticeMessageExisting().equalsIgnoreCase("errorMessage")){
+			return this.getFloatFromString(this.getElementInnerText(lblCartNoticeMultiPackMessage),true);
+		}
+		else{
+			return 0.0f;
+		}
 	}
 
 	/**
@@ -557,6 +570,13 @@ public class ShoppingCartPage extends BasePage {
 	public Map<String,Object> getMandatoryShoppingItemDesc(WebElement cartItem){
 		Map<String,Object> map=new HashMap<>();
 
+		if(this.checkProductBadgeExisting(cartItem)){
+			map.put("productBadge",true);
+		}
+		else{
+			map.put("productBadge",true);
+		}
+
 		WebElement item=cartItem.findElement(byProductItemDesc);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 		String lsText=item.getText().trim();
@@ -617,13 +637,6 @@ public class ShoppingCartPage extends BasePage {
 	 */
 	public Map<String,Object> getOptionalShoppingItemDesc(WebElement cartItem){
 		Map<String,Object> map=new HashMap<>();
-
-		if(this.checkProductBadgeExisting(cartItem)){
-			map.put("productBadge",true);
-		}
-		else{
-			map.put("productBadge",true);
-		}
 
 		WebElement item;
 		String lsText;
@@ -1190,7 +1203,7 @@ public class ShoppingCartPage extends BasePage {
 		lsText=this.lblCartPricingTotalPrice.getText();
 		map.put("totalPrice",this.getFloatFromString(lsText,true));
 
-		if(this.checkShippingSavingExisting()){
+		if(this.checkShippingSavingExistingFromOrderSummary()){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblCartPricingYouAreSaving);
 			lsText=this.lblCartPricingYouAreSaving.getText();
 			map.put("savePrice",this.getFloatFromString(lsText,true));
@@ -1221,10 +1234,10 @@ public class ShoppingCartPage extends BasePage {
 	 * @param - savePriceShoppingCart - float - saving price in shopping cart, note that if pass 0.0, means no saving message
 	 * @param - subTotalShoppingCart - float - subTotal in shopping cart
 	 * @param - orderSummaryMap - Map<String,Object>
-	 * @param - Map<String,Float> - provincialTaxRate
+	 * @param - Map<String,Float> - provincialTaxRate - note that if pass null, will not calculate tax for comparison
 	 */
 	public void verifyOrderSummaryBusinessLogic(int itemAmountShoppingCart,float savePriceShoppingCart,float subTotalShoppingCart,Map<String,Object> orderSummaryMap,Map<String,Float> provincialTaxRate){
-		int itemAmountOrderSummary= (int) orderSummaryMap.get("orderSummary");
+		int itemAmountOrderSummary= (int) orderSummaryMap.get("itemAmount");
 		if(itemAmountOrderSummary==itemAmountShoppingCart){
 			reporter.reportLogPass("The item amount in OrderSummary section is equal to the one in Shopping Cart item section");
 		}
@@ -1258,14 +1271,16 @@ public class ShoppingCartPage extends BasePage {
 			reporter.reportLogFail("The subtotal price:"+subTotal+" in OrderSummary section is equal to the subtotal price:"+subTotalShoppingCart+" in shopping cart section");
 		}
 
-		String province=orderSummaryMap.get("province").toString();
-		float calProvinceTax=getProvinceTax(province,provincialTaxRate);
 		float tax=(float) orderSummaryMap.get("tax");
-		if(Math.abs(calProvinceTax-tax)<0.01){
-			reporter.reportLogPass("The calculated tax in OrderSummary section is equal to the tax in OrderSummary section");
-		}
-		else{
-			reporter.reportLogFail("The calculated tax:"+calProvinceTax+" in OrderSummary section is equal to the tax:"+tax+" in OrderSummary section");
+		if(provincialTaxRate!=null){
+			String province=orderSummaryMap.get("province").toString();
+			float calProvinceTax=getProvinceTax(province,provincialTaxRate);
+			if(Math.abs(calProvinceTax-tax)<0.01){
+				reporter.reportLogPass("The calculated tax in OrderSummary section is equal to the tax in OrderSummary section");
+			}
+			else{
+				reporter.reportLogFail("The calculated tax:"+calProvinceTax+" in OrderSummary section is equal to the tax:"+tax+" in OrderSummary section");
+			}
 		}
 
 		float calTotalPrice=subTotal+tax+nowPriceOrderSummary;
@@ -1302,12 +1317,7 @@ public class ShoppingCartPage extends BasePage {
 	public void setInstallmentSetting(int optionIndex){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectCartEasyPayInstallmentNumber);
 		Select select = new Select(this.selectCartEasyPayInstallmentNumber);
-		if(optionIndex==0){
-			select.selectByVisibleText("-");
-		}
-		else{
-			select.selectByVisibleText(String.valueOf(optionIndex));
-		}
+		select.selectByIndex(optionIndex);
 		this.applyStaticWait(10*this.getStaticWaitForApplication());
 	}
 
@@ -1810,7 +1820,7 @@ public class ShoppingCartPage extends BasePage {
 			reporter.reportLogFailWithScreenshot("The total price in OrderSummary is not displaying correctly");
 		}
 
-		if(checkShippingSavingExisting()){
+		if(checkShippingSavingExistingFromOrderSummary()){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartPricingYouAreSaving);
 			lsText=lblCartPricingYouAreSaving.getText();
 			if(!lsText.isEmpty()){
