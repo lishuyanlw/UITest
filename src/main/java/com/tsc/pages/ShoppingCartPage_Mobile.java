@@ -122,16 +122,11 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 		lsText=item.getText().trim();
 		map.put("productNowPrice",this.getFloatFromString(lsText,true));
 
-		if(this.checkSelectQuantityEnabled(cartItem)){
-			item=cartItem.findElement(byProductSelectQuantity);
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-			Select select = new Select(item);
-			lsText=select.getFirstSelectedOption().getText();
-			map.put("productQuantity",Integer.parseInt(lsText));
-		}
-		else{
-			map.put("productQuantity",null);
-		}
+		item=cartItem.findElement(byProductSelectQuantity);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+		Select select = new Select(item);
+		lsText=select.getFirstSelectedOption().getText();
+		map.put("productQuantity",Integer.parseInt(lsText));
 
 		return map;
 	}

@@ -421,6 +421,15 @@ public class ShoppingCartPage extends BasePage {
 	}
 
 	/**
+	 * To get subtotal from OrderSummary section
+	 * @return - float - Subtotal
+	 */
+	public float getOrderSummarySubTotal(){
+		String lsText=this.getElementInnerText(lblCartPricingSubTotal);
+		return this.getFloatFromString(lsText,true);
+	}
+
+	/**
 	 * To get Shopping subtotal
 	 * @return - float - shopping subtotal
 	 */
@@ -429,6 +438,18 @@ public class ShoppingCartPage extends BasePage {
 		lsText=lsText.split(":")[1];
 
 		return this.getFloatFromString(lsText,true);
+	}
+
+	/**
+	 * To get Item Amount In Shopping cart List
+	 * @return - int
+	 */
+	public int getItemAmountInShoppingList(List<Map<String,Object>> mapShoppingCartList){
+		int sum=0;
+		for(Map<String,Object> cartItem:mapShoppingCartList){
+			sum+=(int)cartItem.get("productQuantity");
+		}
+		return sum;
 	}
 
 	/**
@@ -616,16 +637,11 @@ public class ShoppingCartPage extends BasePage {
 		lsText=item.getText().trim();
 		map.put("productNowPrice",this.getFloatFromString(lsText,true));
 
-		if(this.checkSelectQuantityEnabled(cartItem)){
-			item=cartItem.findElement(byProductSelectQuantity);
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-			Select select = new Select(item);
-			lsText=select.getFirstSelectedOption().getText();
-			map.put("productQuantity",Integer.parseInt(lsText));
-		}
-		else{
-			map.put("productQuantity",null);
-		}
+		item=cartItem.findElement(byProductSelectQuantity);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+		Select select = new Select(item);
+		lsText=select.getFirstSelectedOption().getText();
+		map.put("productQuantity",Integer.parseInt(lsText));
 
 		return map;
 	}

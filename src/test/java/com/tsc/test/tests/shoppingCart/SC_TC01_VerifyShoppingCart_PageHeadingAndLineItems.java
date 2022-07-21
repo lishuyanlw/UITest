@@ -50,7 +50,6 @@ public class SC_TC01_VerifyShoppingCart_PageHeadingAndLineItems extends BaseTest
 		Map<String,Object> outputDataCriteria= new HashMap<String,Object>();
 		outputDataCriteria.put("style", "2");
 		outputDataCriteria.put("size", "2");
-		outputDataCriteria.put("quantity", "-10");
 		if(getProductDetailPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList,"AllConditionsWithoutCheckingSoldOutCriteria",outputDataCriteria)) {
 			reporter.reportLog("Verify URL");
 			lsProductNumber=getProductDetailPageThreadLocal().selectedProduct.productNumber;
@@ -77,6 +76,19 @@ public class SC_TC01_VerifyShoppingCart_PageHeadingAndLineItems extends BaseTest
 			//To verify business logic Between Shopping Item List And SubTotal Section
 			reporter.reportLog("To verify business logic Between Shopping Item List And SubTotal Section");
 			getShoppingCartThreadLocal().verifyBusinessLogicBetweenShoppingItemListAndSubTotalSection(shoppingCartMap);
+
+			int itemAmountInShoppingCartHeader=getShoppingCartThreadLocal().GetAddedItemAmount();
+			int shoppingItemListAmount=((List<Map<String,Object>>)shoppingCartMap.get("shoppingList")).size();
+			int shoppingAmountInSubtotal=(int)shoppingCartMap.get("shoppingAmount");
+			int itemAmountInOrderSummary=getShoppingCartThreadLocal().getShoppingItemAmountFromOrderSummarySection();
+			if(itemAmountInShoppingCartHeader==shoppingItemListAmount&&
+					shoppingItemListAmount==shoppingAmountInSubtotal&&
+					itemAmountInShoppingCartHeader==itemAmountInOrderSummary){
+				reporter.reportLogPass("The added item amount among Shopping cart header,Shopping cart list and OrderSummary are same");
+			}
+			else{
+				reporter.reportLogFail("The added item amount among Shopping cart header,Shopping cart list and OrderSummary are not same");
+			}
 		}
 		else {
 			reporter.reportLogFail("Unable to find the matched product item");
