@@ -37,10 +37,7 @@ public class SC_TC02_VerifyShoppingCart_RemoveItem_CheckSubTotalAndOrderSummary 
 		String accessToken = getApiUserSessionDataMapThreadLocal().get("access_token").toString();
 		int customerEDP = Integer.valueOf(getApiUserSessionDataMapThreadLocal().get("customerEDP").toString());
 		List<Map<String,String>> keyword = TestDataHandler.constantData.getShoppingCart().getLst_SearchKeywords();
-		List<Map<String,Object>> data = new ProductAPI().getProductDetailsToBeAddedToCartForUser(keyword);
-		Response response = getShoppingCartThreadLocal().addItemsToCartForUser(data,customerEDP,accessToken,null);
-		CartResponse cartResponse = JsonParser.getResponseObject(response.asString(), new TypeReference<CartResponse>() {});
-		Map<String,Map<String,Object>> cartMap = getProductDetailPageThreadLocal().getShoppingBagItemsDetailAddedForUser(cartResponse);
+		List<Map<String,Object>> data = getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP,accessToken,keyword);
 
 		//Login using valid username and password
 		getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword);
@@ -186,6 +183,7 @@ public class SC_TC02_VerifyShoppingCart_RemoveItem_CheckSubTotalAndOrderSummary 
 			else{
 				reporter.reportLogPass("The added item amount among Shopping cart header,Shopping cart list and OrderSummary after clicking remove button in remove dialog are not same as the initial ones");
 			}
+
 			if(Math.abs(subTotalShoppingCartInitial-subTotalShoppingCartRemove-nowPrice)<0.1&&
 					Math.abs(subTotalOrderSummaryInitial-subTotalOrderSummaryRemove-nowPrice)<0.1){
 				reporter.reportLogPass("The difference between shopping cart subtotal and orderSummary is correct");
