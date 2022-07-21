@@ -2093,10 +2093,11 @@ public class ShoppingCartPage extends BasePage {
 	 * @param - Integer - customerEDP - edp for user to create cart
 	 * @param - String - accessToken - accessToken for api
 	 * @param - List<Map<String,Object> - itemsToBeAdded - List of Map Object for items in cart for user
+	 * @param - boolean - bCheckExisting - if check the cart existing
 	 * @return - List<Map<String,Object> - List of map object for all items in cart for user
 	 * @throws IOException
 	 */
-	public List<Map<String,Object>> verifyCartExistsForUser(int customerEDP, String accessToken,List<Map<String,String>> itemsToBeAdded) throws IOException {
+	public List<Map<String,Object>> verifyCartExistsForUser(int customerEDP, String accessToken,List<Map<String,String>> itemsToBeAdded,boolean bCheckExisting) throws IOException {
 		CartAPI cartApi = new CartAPI();
 		CartResponse accountCart = null;
 		Response responseExisting=cartApi.getAccountCartContentWithCustomerEDP(String.valueOf(customerEDP), accessToken);
@@ -2106,7 +2107,7 @@ public class ShoppingCartPage extends BasePage {
 			return null;
 
 		//If there is cart present for user, returning the data in cart
-		if(accountCart.getProducts().size()>0){
+		if(bCheckExisting&&accountCart.getProducts().size()>0){
 			List<Map<String,Object>> data = new ArrayList<>();
 			/**String cartGuidId = accountCart.getCartGuid();
 			Response response = cartApi.getCartContentWithCartGuid(cartGuidId,accessToken);
@@ -2125,7 +2126,7 @@ public class ShoppingCartPage extends BasePage {
 				map.put("productStyleDimensionId",cartLineItemClass.getStyleDimensionId());
 				map.put("productSize",cartLineItemClass.getSize());
 				map.put("productSizeDimensionId",cartLineItemClass.getSizeDimensionId());
-				map.put("productAppliedPrice",cartLineItemClass.getAppliedPrice());
+				map.put("productNowPrice",this.getFloatFromString(cartLineItemClass.getAppliedPrice(),true));
 				map.put("productWasPrice",cartLineItemClass.getWasPrice());
 				map.put("productSavePrice",cartLineItemClass.getSavePrice());
 				map.put("productAppliedShipping",cartLineItemClass.getAppliedShipping());
@@ -2133,6 +2134,8 @@ public class ShoppingCartPage extends BasePage {
 				for(CartResponse.ProductsClass productsClass:productsClassList){
 					boolean outerForLoop = false;
 					if(productsClass.getItemNo().equalsIgnoreCase(map.get("productNumber").toString())){
+						map.put("productName",productsClass.getName());
+						map.put("productBadge",productsClass.isShowBadgeImage());
 						for(CartResponse.ProductsClass.EdpsClass edps:productsClass.getEdps()){
 							if(edps.getEdpNo()==Integer.valueOf(map.get("edpNo").toString())){
 								map.put("edpsData",edps);

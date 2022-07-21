@@ -37,7 +37,7 @@ public class SC_TC02_VerifyShoppingCart_RemoveItem_CheckSubTotalAndOrderSummary 
 		String accessToken = getApiUserSessionDataMapThreadLocal().get("access_token").toString();
 		int customerEDP = Integer.valueOf(getApiUserSessionDataMapThreadLocal().get("customerEDP").toString());
 		List<Map<String,String>> keyword = TestDataHandler.constantData.getShoppingCart().getLst_SearchKeywords();
-		List<Map<String,Object>> data = getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP,accessToken,keyword);
+		List<Map<String,Object>> data = getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP,accessToken,keyword,false);
 
 		//Login using valid username and password
 		getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword);

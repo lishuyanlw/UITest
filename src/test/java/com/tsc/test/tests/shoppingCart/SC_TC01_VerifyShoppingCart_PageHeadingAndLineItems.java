@@ -1,6 +1,7 @@
 package com.tsc.test.tests.shoppingCart;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.tsc.api.apiBuilder.CartAPI;
 import com.tsc.api.apiBuilder.ProductAPI;
 import com.tsc.api.pojo.CartResponse;
 import com.tsc.api.util.JsonParser;
@@ -36,72 +37,50 @@ public class SC_TC01_VerifyShoppingCart_PageHeadingAndLineItems extends BaseTest
 		String accessToken = getApiUserSessionDataMapThreadLocal().get("access_token").toString();
 		int customerEDP = Integer.valueOf(getApiUserSessionDataMapThreadLocal().get("customerEDP").toString());
 		List<Map<String, String>> keyword = TestDataHandler.constantData.getShoppingCart().getLst_SearchKeywords();
-		List<Map<String, Object>> data = getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP, accessToken, keyword);
+		List<Map<String, Object>> data = getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP, accessToken, keyword,true);
 
 		//Login using valid username and password
 		getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword);
 
 		reporter.reportLog("Switch to ProductDetail page");
 		String lsProductNumber, lsUrl;
+		getProductDetailPageThreadLocal().goToShoppingCartByClickingShoppingCartIconInGlobalHeader();
 
-		Map<String, Object> outputDataCriteria = new HashMap<String, Object>();
-		outputDataCriteria.put("style", "2");
-		outputDataCriteria.put("size", "2");
-		if (getProductDetailPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList, "AllConditionsWithoutCheckingSoldOutCriteria", outputDataCriteria)) {
-			reporter.reportLog("Verify URL");
-			lsProductNumber = getProductDetailPageThreadLocal().selectedProduct.productNumber;
-			lsUrl = basePage.URL();
-			reporter.softAssert(lsUrl.contains("productdetails"), "The Url is containing productdetails", "The Url is not containing productdetails");
-			reporter.softAssert(lsUrl.contains(lsProductNumber), "The Url is containing selected product number of " + lsProductNumber, "The Url is not containing selected product number of " + lsProductNumber);
+		Map<String, Object> shoppingCartMap = getShoppingCartThreadLocal().getShoppingSectionDetails("all");
 
-			reporter.reportLog(getProductDetailPageThreadLocal().selectedProduct.productEDPColor);
-			reporter.reportLog(getProductDetailPageThreadLocal().selectedProduct.productEDPSize);
+		//To verify heading and Shopping Item List contents
+		reporter.reportLog("To verify heading and Shopping Item List contents");
+		getShoppingCartThreadLocal().verifyShoppingCartContents(true, false, false);
 
-			getProductDetailPageThreadLocal().chooseGivenStyleAndSize(getProductDetailPageThreadLocal().selectedProduct.productEDPColor, getProductDetailPageThreadLocal().selectedProduct.productEDPSize);
+		//To verify business logic Between Shopping Item List And SubTotal Section
+		reporter.reportLog("To verify business logic Between Shopping Item List And SubTotal Section");
+		getShoppingCartThreadLocal().verifyBusinessLogicBetweenShoppingItemListAndSubTotalSection(shoppingCartMap);
 
-			Map<String, Object> PDPMap = getProductDetailPageThreadLocal().getPDPDesc();
-
-			getProductDetailPageThreadLocal().openAddToBagPopupWindow();
-			getProductDetailPageThreadLocal().goToShoppingCartFromAddToBagPopupWithLoginFirst();
-
-			Map<String, Object> shoppingCartMap = getShoppingCartThreadLocal().getShoppingSectionDetails("all");
-
-			int findIndex = getShoppingCartThreadLocal().findGivenProductIndexInShoppingCartItemList(PDPMap, shoppingCartMap);
-			if (findIndex == 0) {
-				reporter.reportLogPass("The latest added item is displaying on the top of shopping item list correctly");
-			} else {
-				reporter.reportLogFail("The latest added item is not displaying on the top of shopping item list correctly");
-			}
-
-			//To verify heading and Shopping Item List contents
-			reporter.reportLog("To verify heading and Shopping Item List contents");
-			getShoppingCartThreadLocal().verifyShoppingCartContents(true, false, false);
-
-			//To verify business logic Between Shopping Item List And SubTotal Section
-			reporter.reportLog("To verify business logic Between Shopping Item List And SubTotal Section");
-			getShoppingCartThreadLocal().verifyBusinessLogicBetweenShoppingItemListAndSubTotalSection(shoppingCartMap);
-
-			int itemAmountInShoppingCartHeader = getShoppingCartThreadLocal().GetAddedItemAmount();
-			int shoppingItemListAmount = getShoppingCartThreadLocal().getItemAmountInShoppingList((List<Map<String, Object>>) shoppingCartMap.get("shoppingList"));
-			int shoppingAmountInSubtotal = (int) shoppingCartMap.get("shoppingAmount");
-			int itemAmountInOrderSummary = getShoppingCartThreadLocal().getShoppingItemAmountFromOrderSummarySection();
-			if (itemAmountInShoppingCartHeader == shoppingItemListAmount &&
-					shoppingItemListAmount == shoppingAmountInSubtotal &&
-					itemAmountInShoppingCartHeader == itemAmountInOrderSummary) {
-				reporter.reportLogPass("The added item amount among Shopping cart header,Shopping cart list and OrderSummary are same");
-			} else {
-				reporter.reportLogFail("The added item amount among Shopping cart header,Shopping cart list and OrderSummary are not same");
-			}
-
-			reporter.reportLog("To verify Contents on ShoppingCartSection Details with addToBag information from API calling");
-			for (Map<String, Object> item : data) {
-				String
-//			reporter.reportLog("Verify product number: "+entry.getKey());
-				getShoppingCartThreadLocal().checkIfMatchGivenAddToBagItem(item, shoppingCartMap);
-			}
+		int itemAmountInShoppingCartHeader = getShoppingCartThreadLocal().GetAddedItemAmount();
+		int shoppingItemListAmount = getShoppingCartThreadLocal().getItemAmountInShoppingList((List<Map<String, Object>>) shoppingCartMap.get("shoppingList"));
+		int shoppingAmountInSubtotal = (int) shoppingCartMap.get("shoppingAmount");
+		int itemAmountInOrderSummary = getShoppingCartThreadLocal().getShoppingItemAmountFromOrderSummarySection();
+		if (itemAmountInShoppingCartHeader == shoppingItemListAmount &&
+				shoppingItemListAmount == shoppingAmountInSubtotal &&
+				itemAmountInShoppingCartHeader == itemAmountInOrderSummary) {
+			reporter.reportLogPass("The added item amount among Shopping cart header,Shopping cart list and OrderSummary are same");
+		} else {
+			reporter.reportLogFail("The added item amount among Shopping cart header,Shopping cart list and OrderSummary are not same");
 		}
-		else {
-			reporter.reportLogFail("Unable to find the matched product item");
+
+		reporter.reportLog("Verify added products using API");
+		String productName;
+		int findIndex;
+		for (Map<String, Object> item : data) {
+			productName=item.get("productName").toString();
+			reporter.reportLog("Verify product name: "+productName);
+			findIndex=getShoppingCartThreadLocal().findGivenProductIndexInShoppingCartItemList(item, shoppingCartMap);
+			if(findIndex!=-1){
+				reporter.reportLogPass("The added product"+productName+" using API can be found in ShoppingCart list");
+			}
+			else{
+				reporter.reportLogFail("The added product"+productName+" using API cannot be found in ShoppingCart list");
+			}
 		}
 	}
 }

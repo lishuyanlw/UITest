@@ -8,6 +8,8 @@ import io.restassured.response.Response;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class ProductAPI extends ApiClient {
@@ -373,6 +375,7 @@ public class ProductAPI extends ApiClient {
                                                 productMapData.clear();
                                             checkStyle = edpsData.getStyle();
                                             productMapData.put("productName",productsData.getName());
+                                            productMapData.put("productBadge",productsData.isShowBadgeImage());
                                             productMapData.put("productNumber",productsData.getItemNo());
                                             productMapData.put("edpNo",edpsData.getEdpNo());
                                             productMapData.put("edpsData",edpsData);
@@ -380,7 +383,7 @@ public class ProductAPI extends ApiClient {
                                             productMapData.put("productStyleDimensionId",edpsData.getStyleDimensionId());
                                             productMapData.put("productSize",edpsData.getSize());
                                             productMapData.put("productSizeDimensionId",edpsData.getSizeDimensionId());
-                                            productMapData.put("productAppliedPrice",edpsData.getAppliedPrice());
+                                            productMapData.put("productNowPrice",this.getFloatFromString(edpsData.getAppliedPrice(),true));
                                             productMapData.put("productWasPrice",edpsData.getWasPrice());
                                             productMapData.put("productSavePrice",edpsData.getSavePrice());
                                             productMapData.put("productAppliedShipping",edpsData.getAppliedShipping());
@@ -465,13 +468,14 @@ public class ProductAPI extends ApiClient {
 
         if(productMap.keySet().contains("edpsData")){
             productMap.put("productName",productsData.getName());
+            productMap.put("productBadge",productsData.isShowBadgeImage());
             productMap.put("productNumber",productsData.getItemNo());
             productMap.put("edpNo",edpsData.getEdpNo());
             productMap.put("productStyle",edpsData.getStyle());
             productMap.put("productStyleDimensionId",edpsData.getStyleDimensionId());
             productMap.put("productSize",edpsData.getSize());
             productMap.put("productSizeDimensionId",edpsData.getSizeDimensionId());
-            productMap.put("productAppliedPrice",edpsData.getAppliedPrice());
+            productMap.put("productNowPrice",this.getFloatFromString(edpsData.getAppliedPrice(),true));
             productMap.put("productWasPrice",edpsData.getWasPrice());
             productMap.put("productSavePrice",edpsData.getSavePrice());
             productMap.put("productAppliedShipping",edpsData.getAppliedShipping());
@@ -479,5 +483,35 @@ public class ProductAPI extends ApiClient {
         }
 
         return productMap;
+    }
+
+    /**
+     * This method will get float from string.
+     * @param-String lsTarget: target string
+     * @param-boolean bHighestFirst
+     * @return float value
+     * @author Wei.Li
+     */
+    public float getFloatFromString(String lsTarget,boolean bHighestFirst) {
+        if(lsTarget.contains("-")) {
+            if(bHighestFirst) {
+                lsTarget=lsTarget.split("-")[1].trim();
+            }
+            else {
+                lsTarget=lsTarget.split("-")[0].trim();
+            }
+        }
+        lsTarget=lsTarget.replace(",", "").trim();
+
+        String regex="\\d+\\.\\d+";
+        String lsReturn="";
+        Pattern pattern=Pattern.compile(regex);
+        Matcher matcher=pattern.matcher(lsTarget);
+        while(matcher.find())
+        {
+            lsReturn=matcher.group();
+        }
+
+        return Float.parseFloat(lsReturn);
     }
 }

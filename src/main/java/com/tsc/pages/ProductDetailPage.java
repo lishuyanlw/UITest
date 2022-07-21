@@ -1986,6 +1986,22 @@ public class ProductDetailPage extends BasePage {
 	}
 
 	/**
+	 * To go To Shopping Cart page By Clicking Shopping Cart Icon In GlobalHeader
+	 */
+	public void goToShoppingCartByClickingShoppingCartIconInGlobalHeader(){
+		GlobalHeaderPage globalHeaderPage=new GlobalHeaderPage(this.getDriver());
+		globalHeaderPage.ShoppingCartlnk.click();
+
+		ShoppingCartPage shoppingCartPage=new ShoppingCartPage(this.getDriver());
+		try{
+			this.waitForCondition(Driver->{return shoppingCartPage.lblCartTitle.isDisplayed();},20000);
+		}
+		catch(Exception e){
+			this.applyStaticWait(10*this.getStaticWaitForApplication());
+		}
+	}
+
+	/**
 	 * To go To Shopping Cart page by clicking ViewShoppingBag button in AddToBag Popup window with login first
 	 */
 	public void goToShoppingCartFromAddToBagPopupWithLoginFirst(){
