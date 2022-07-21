@@ -376,6 +376,10 @@ public class ProductAPI extends ApiClient {
                                             productMapData.put("productNumber",productsData.getItemNo());
                                             productMapData.put("edpNo",edpsData.getEdpNo());
                                             productMapData.put("edpsData",edpsData);
+                                            productMapData.put("productStyle",edpsData.getStyle());
+                                            productMapData.put("productStyleDimensionId",edpsData.getStyleDimensionId());
+                                            productMapData.put("productSize",edpsData.getSize());
+                                            productMapData.put("productSizeDimensionId",edpsData.getSizeDimensionId());
                                             secondValue = true;
                                             counter++;
                                         }
@@ -459,6 +463,10 @@ public class ProductAPI extends ApiClient {
             productMap.put("productName",productsData.getName());
             productMap.put("productNumber",productsData.getItemNo());
             productMap.put("edpNo",edpsData.getEdpNo());
+            productMap.put("productStyle",edpsData.getStyle());
+            productMap.put("productStyleDimensionId",edpsData.getStyleDimensionId());
+            productMap.put("productSize",edpsData.getSize());
+            productMap.put("productSizeDimensionId",edpsData.getSizeDimensionId());
             return productMap;
         }
 

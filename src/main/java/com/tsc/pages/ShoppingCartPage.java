@@ -1,6 +1,10 @@
 package com.tsc.pages;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.tsc.api.apiBuilder.CartAPI;
+import com.tsc.api.apiBuilder.ProductAPI;
+import com.tsc.api.pojo.CartResponse;
+import com.tsc.api.util.JsonParser;
 import com.tsc.pages.base.BasePage;
 import io.restassured.response.Response;
 import org.openqa.selenium.By;
@@ -1793,5 +1797,71 @@ public class ShoppingCartPage extends BasePage {
 		return cartResponse;
 	}
 
+	/**
+	 * This function checks the cart if it exists or not and creates accordingly
+	 * @param - Integer - customerEDP - edp for user to create cart
+	 * @param - String - accessToken - accessToken for api
+	 * @param - List<Map<String,Object> - itemsToBeAdded - List of Map Object for items in cart for user
+	 * @return - List<Map<String,Object> - List of map object for all items in cart for user
+	 * @throws IOException
+	 */
+	public List<Map<String,Object>> verifyCartExistsForUser(int customerEDP, String accessToken,List<Map<String,String>> itemsToBeAdded) throws IOException {
+		CartAPI cartApi = new CartAPI();
+		CartResponse accountCart = null;
+		Response responseExisting=cartApi.getAccountCartContentWithCustomerEDP(String.valueOf(customerEDP), accessToken);
+		if(responseExisting.statusCode()==200)
+			accountCart = JsonParser.getResponseObject(responseExisting.asString(), new TypeReference<CartResponse>() {});
+		else
+			return null;
+
+		//If there is cart present for user, returning the data in cart
+		if(accountCart.getProducts().size()>0){
+			List<Map<String,Object>> data = new ArrayList<>();
+			/**String cartGuidId = accountCart.getCartGuid();
+			Response response = cartApi.getCartContentWithCartGuid(cartGuidId,accessToken);
+			CartResponse cartResponse = JsonParser.getResponseObject(response.asString(), new TypeReference<CartResponse>() {});
+			*/List<CartResponse.ProductsClass> productsClassList = accountCart.getProducts();
+			List<CartResponse.CartLinesClass> cartLinesClassList = accountCart.getCartLines();
+
+			for(CartResponse.CartLinesClass cartLinesClass:cartLinesClassList){
+				CartResponse.CartLinesClass.CartLineItemClass cartLineItemClass = cartLinesClass.getCartLineItem();
+				CartResponse.CartLinesClass.InCartClass inCartClass = cartLinesClass.getInCart();
+				Map<String,Object> map = new HashMap<>();
+				map.put("productNumber",cartLineItemClass.getItemNo());
+				map.put("edpNo",cartLineItemClass.getEdpNo());
+				map.put("itemToBeAdded",inCartClass.getQuantity());
+				map.put("productStyle",cartLineItemClass.getStyle());
+				map.put("productStyleDimensionId",cartLineItemClass.getStyleDimensionId());
+				map.put("productSize",cartLineItemClass.getSize());
+				map.put("productSizeDimensionId",cartLineItemClass.getSizeDimensionId());
+
+				for(CartResponse.ProductsClass productsClass:productsClassList){
+					boolean outerForLoop = false;
+					if(productsClass.getItemNo().equalsIgnoreCase(map.get("productNumber").toString())){
+						for(CartResponse.ProductsClass.EdpsClass edps:productsClass.getEdps()){
+							if(edps.getEdpNo()==Integer.valueOf(map.get("edpNo").toString())){
+								map.put("edpsData",edps);
+								outerForLoop = true;
+								break;
+							}
+						}
+						if(outerForLoop)
+							break;
+					}
+				}
+				data.add(map);
+			}
+			return data;
+		}
+		//If there is no cart present fo user, creating the cart for user and returning data
+		else{
+			List<Map<String,Object>> data = new ProductAPI().getProductDetailsToBeAddedToCartForUser(itemsToBeAdded);
+			Response response = this.addItemsToCartForUser(data,customerEDP,accessToken,null);
+			if(response.statusCode()==200)
+				return data;
+			else
+				return null;
+		}
+	}
 
 }
