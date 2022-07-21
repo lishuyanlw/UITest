@@ -256,7 +256,7 @@ shoppingCart:
     - searchKeyword: "jeggings"
       quantity: "more than 3"
       badge: "true"
-      itemToBeAdded: "1"
+      itemToBeAdded: "2"
       styleExist: "true"
       sameSizeAndStyle: "true"
     - searchKeyword: "dress"
