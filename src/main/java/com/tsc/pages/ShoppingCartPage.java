@@ -37,6 +37,9 @@ public class ShoppingCartPage extends BasePage {
 	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-contents')]")
 	public WebElement cntCartContents;
 
+	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-contents')]//div[@class='emptyContents']")
+	public WebElement lblEmptyCartMessage;
+
 	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-title')]")
 	public WebElement lblCartTitle;
 
@@ -155,10 +158,10 @@ public class ShoppingCartPage extends BasePage {
 
 	//Pricing
 	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'details-box')]")
-	public WebElement cntCartPricingDetails;
+	public WebElement cntCartPricingMultiPack;
 
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-pricing')]")
-	public WebElement cntCartPricingSection;
+	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-details')]")
+	public WebElement cntCartPricingDetails;
 
 	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'details-box')]/*[contains(@class,'multipack')]")
 	public WebElement lblCartPricingMultiPackMessage;
@@ -257,6 +260,14 @@ public class ShoppingCartPage extends BasePage {
 	 */
 	public int GetAddedItemAmount(){
 		return this.getIntegerFromString(this.getElementInnerText(this.lblCartTitle));
+	}
+
+	/**
+	 * To check empty cart message Existing
+	 * @return -boolean
+	 */
+	public boolean checkEmptyCartMessageExisting() {
+		return this.checkChildElementExistingByAttribute(this.cntCartContents, "class", "emptyContents");
 	}
 
 	/**
@@ -378,11 +389,19 @@ public class ShoppingCartPage extends BasePage {
 	}
 
 	/**
+	 * To check OrderSummary And EasyPayment Sections Existing
+	 * @return - boolean
+	 */
+	public boolean checkOrderSummaryAndEasyPaymentSectionsExisting(){
+		return this.checkChildElementExistingByAttribute(this.cntCartPricingDetails,"class","details-box");
+	}
+
+	/**
 	 * To check MultiPack Message In OrderSummary Section Existing
 	 * @return - boolean
 	 */
 	public boolean checkMultiPackMessageInOrderSummarySectionExisting(){
-		return this.checkChildElementExistingByAttribute(this.cntCartPricingDetails,"class","multipack");
+		return this.checkChildElementExistingByAttribute(this.cntCartPricingMultiPack,"class","multipack");
 	}
 
 	/**
@@ -406,6 +425,10 @@ public class ShoppingCartPage extends BasePage {
 	 * @return - float
 	 */
 	public float getSavingPriceFromShoppingCartHeader(){
+		if(this.checkCartNoticeMessageExisting()==null){
+			return 0.0f;
+		}
+
 		if(!this.checkCartNoticeMessageExisting().equalsIgnoreCase("errorMessage")){
 			return this.getFloatFromString(this.getElementInnerText(lblCartNoticeMultiPackMessage),true);
 		}
@@ -446,10 +469,10 @@ public class ShoppingCartPage extends BasePage {
 	}
 
 	/**
-	 * To get Item Amount In Shopping cart List
+	 * To get Item count from Shopping cart List
 	 * @return - int
 	 */
-	public int getItemAmountInShoppingList(List<Map<String,Object>> mapShoppingCartList){
+	public int getItemCountFromShoppingList(List<Map<String,Object>> mapShoppingCartList){
 		int sum=0;
 		for(Map<String,Object> cartItem:mapShoppingCartList){
 			sum+=(int)cartItem.get("productQuantity");
@@ -531,10 +554,6 @@ public class ShoppingCartPage extends BasePage {
 				//as sometimes page loads but DOM is still getting refreshed and hence Stale Element Exception is thrown
 				this.applyStaticWait(3000);
 			}
-			/**for(int counter = 0;counter < this.btnItemRemoveButtonFromCart.size(); counter++){
-				openRemoveDialog(this.btnItemRemoveButtonFromCart.get(counter));
-				closeRemoveDialogWithRemoveAction();
-			}*/
 		}
 		//Verify that all items are removed
 		this.getReusableActionsInstance().staticWait(3000);
@@ -600,7 +619,7 @@ public class ShoppingCartPage extends BasePage {
 			map.put("productBadge",true);
 		}
 		else{
-			map.put("productBadge",true);
+			map.put("productBadge",false);
 		}
 
 		WebElement item=cartItem.findElement(byProductItemDesc);
@@ -893,22 +912,26 @@ public class ShoppingCartPage extends BasePage {
 			reporter.reportLogFail("The product name:"+cartItemProductName+" in cart item is not the same as the one:"+removeDialogProductName+" in remove dialog");
 		}
 
-		String cartItemProductStyle= cartItemMap.get("productStyle").toString();
-		String removeDialogProductStyle= removeDialogMap.get("productStyle").toString();
-		if(cartItemProductStyle.equalsIgnoreCase(removeDialogProductStyle)){
-			reporter.reportLogPass("The product style in cart item is the same as the one in remove dialog");
-		}
-		else{
-			reporter.reportLogFail("The product style:"+cartItemProductStyle+" in cart item is not the same as the one:"+removeDialogProductStyle+" in remove dialog");
+		if(cartItemMap.get("productStyle")!=null){
+			String cartItemProductStyle= cartItemMap.get("productStyle").toString();
+			String removeDialogProductStyle= removeDialogMap.get("productStyle").toString();
+			if(cartItemProductStyle.equalsIgnoreCase(removeDialogProductStyle)){
+				reporter.reportLogPass("The product style in cart item is the same as the one in remove dialog");
+			}
+			else{
+				reporter.reportLogFail("The product style:"+cartItemProductStyle+" in cart item is not the same as the one:"+removeDialogProductStyle+" in remove dialog");
+			}
 		}
 
-		String cartItemProductSize= cartItemMap.get("productSize").toString();
-		String removeDialogProductSize= removeDialogMap.get("productSize").toString();
-		if(cartItemProductSize.equalsIgnoreCase(removeDialogProductSize)){
-			reporter.reportLogPass("The product size in cart item is the same as the one in remove dialog");
-		}
-		else{
-			reporter.reportLogFail("The product size:"+cartItemProductSize+" in cart item is not the same as the one:"+removeDialogProductSize+" in remove dialog");
+		if(cartItemMap.get("productSize")!=null){
+			String cartItemProductSize= cartItemMap.get("productSize").toString();
+			String removeDialogProductSize= removeDialogMap.get("productSize").toString();
+			if(cartItemProductSize.equalsIgnoreCase(removeDialogProductSize)){
+				reporter.reportLogPass("The product size in cart item is the same as the one in remove dialog");
+			}
+			else{
+				reporter.reportLogFail("The product size:"+cartItemProductSize+" in cart item is not the same as the one:"+removeDialogProductSize+" in remove dialog");
+			}
 		}
 
 		String cartItemProductNumber= cartItemMap.get("productNumber").toString();
@@ -917,7 +940,7 @@ public class ShoppingCartPage extends BasePage {
 			reporter.reportLogPass("The product number in cart item is the same as the one in remove dialog");
 		}
 		else{
-			reporter.reportLogFail("The product number:"+cartItemProductSize+" in cart item is not the same as the one:"+removeDialogProductSize+" in remove dialog");
+			reporter.reportLogFail("The product number:"+cartItemProductNumber+" in cart item is not the same as the one:"+removeDialogProductNumber+" in remove dialog");
 		}
 
 		float cartItemProductNowPrice= (float) cartItemMap.get("productNowPrice");
@@ -967,22 +990,26 @@ public class ShoppingCartPage extends BasePage {
 			reporter.reportLogFail("The Product name in AddToBag:"+productNameAddToBag+" displaying is not the same as shopping cart:"+productNameShoppingCart);
 		}
 
-		String productStyleAddToBag= addToBagMap.get("productStyle").toString();
-		String productStyleShoppingCart=cartItemMap.get("productStyle").toString();
-		if(productStyleAddToBag.equalsIgnoreCase(productStyleShoppingCart)){
-			reporter.reportLogPass("The Product style in AddToBag displaying is the same as shopping cart");
-		}
-		else{
-			reporter.reportLogFail("The Product style in AddToBag:"+productStyleAddToBag+" displaying is not the same as shopping cart:"+productStyleShoppingCart);
+		if(addToBagMap.get("productStyle")!=null){
+			String productStyleAddToBag= addToBagMap.get("productStyle").toString();
+			String productStyleShoppingCart=cartItemMap.get("productStyle").toString();
+			if(productStyleAddToBag.equalsIgnoreCase(productStyleShoppingCart)){
+				reporter.reportLogPass("The Product style in AddToBag displaying is the same as shopping cart");
+			}
+			else{
+				reporter.reportLogFail("The Product style in AddToBag:"+productStyleAddToBag+" displaying is not the same as shopping cart:"+productStyleShoppingCart);
+			}
 		}
 
-		String productSizeAddToBag= addToBagMap.get("productSize").toString();
-		String productSizeShoppingCart=cartItemMap.get("productSize").toString();
-		if(productSizeAddToBag.equalsIgnoreCase(productSizeShoppingCart)){
-			reporter.reportLogPass("The Product size in AddToBag displaying is the same as shopping cart");
-		}
-		else{
-			reporter.reportLogFail("The Product size in AddToBag:"+productSizeAddToBag+" displaying is not the same as shopping cart:"+productSizeShoppingCart);
+		if(addToBagMap.get("productSize")!=null){
+			String productSizeAddToBag= addToBagMap.get("productSize").toString();
+			String productSizeShoppingCart=cartItemMap.get("productSize").toString();
+			if(productSizeAddToBag.equalsIgnoreCase(productSizeShoppingCart)){
+				reporter.reportLogPass("The Product size in AddToBag displaying is the same as shopping cart");
+			}
+			else{
+				reporter.reportLogFail("The Product size in AddToBag:"+productSizeAddToBag+" displaying is not the same as shopping cart:"+productSizeShoppingCart);
+			}
 		}
 
 		String productNumberAddToBag= addToBagMap.get("productNumber").toString();
@@ -1140,7 +1167,8 @@ public class ShoppingCartPage extends BasePage {
 	 */
 	public boolean checkDuplicatedStyleAndSizeInShoppingItemList(Map<String,Object> shoppingCartMap){
 		List<Map<String,Object>> shoppingList=(List<Map<String,Object>>)shoppingCartMap.get("shoppingList");
-		String outerName,outerStyle,outerSize,innerName,innerStyle,innerSize;
+		String outerName,innerName;
+		Object outerStyle,outerSize,innerStyle,innerSize;
 		int amount;
 		int loopSize=shoppingList.size();
 		Map<String,Object> shoppingItemOuter,shoppingItemInner;
@@ -1152,18 +1180,35 @@ public class ShoppingCartPage extends BasePage {
 			}
 			amount=0;
 			outerName= shoppingItemOuter.get("productName").toString();
-			outerStyle= shoppingItemOuter.get("productStyle").toString();
-			outerSize= shoppingItemOuter.get("productSize").toString();
+			outerStyle= shoppingItemOuter.get("productStyle");
+			outerSize= shoppingItemOuter.get("productSize");
 			for(int j=i+1;j<loopSize;j++){
 				shoppingItemInner=shoppingList.get(j);
-				if(shoppingItemInner.get("productStyle")==null&&shoppingItemInner.get("productSize")==null){
-					continue;
-				}
 				innerName= shoppingItemInner.get("productName").toString();
-				innerStyle= shoppingItemInner.get("productStyle").toString();
-				innerSize= shoppingItemInner.get("productSize").toString();
-				if(outerName.equalsIgnoreCase(innerName)&&outerStyle.equalsIgnoreCase(innerStyle)&&outerSize.equalsIgnoreCase(innerSize)){
-					amount+=1;
+				innerStyle= shoppingItemInner.get("productStyle");
+				innerSize= shoppingItemInner.get("productSize");
+				if(outerStyle!=null&&outerSize!=null){
+					if(outerName.equalsIgnoreCase(innerName)&&outerStyle.toString().equalsIgnoreCase(innerStyle.toString())&&outerSize.toString().equalsIgnoreCase(innerSize.toString())){
+						amount+=1;
+					}
+				}
+
+				if(outerStyle!=null&&outerSize==null){
+					if(outerName.equalsIgnoreCase(innerName)&&outerStyle.toString().equalsIgnoreCase(innerStyle.toString())&&innerSize==null){
+						amount+=1;
+					}
+				}
+
+				if(outerStyle==null&&outerSize!=null){
+					if(outerName.equalsIgnoreCase(innerName)&&outerStyle==null&&outerSize.toString().equalsIgnoreCase(innerSize.toString())){
+						amount+=1;
+					}
+				}
+
+				if(outerStyle==null&&outerSize==null){
+					if(outerName.equalsIgnoreCase(innerName)&&outerStyle==null&&outerSize==null){
+						amount+=1;
+					}
 				}
 			}
 			if(amount>1){
@@ -1203,7 +1248,7 @@ public class ShoppingCartPage extends BasePage {
 			map.put("wasPrice",this.getFloatFromString(lsText,true));
 		}
 		else{
-			map.put("wasPrice",0.0);
+			map.put("wasPrice",0.0f);
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblCartPricingShippingNowPrice);
@@ -1212,7 +1257,7 @@ public class ShoppingCartPage extends BasePage {
 			map.put("nowPrice",this.getFloatFromString(lsText,true));
 		}
 		else{
-			map.put("nowPrice",0.0);
+			map.put("nowPrice",0.0f);
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectCartPricingShippingEstimateTaxProvince);
@@ -1234,7 +1279,7 @@ public class ShoppingCartPage extends BasePage {
 			map.put("savePrice",this.getFloatFromString(lsText,true));
 		}
 		else{
-			map.put("savePrice",0.0);
+			map.put("savePrice",0.0f);
 		}
 		return map;
 	}
@@ -1244,11 +1289,11 @@ public class ShoppingCartPage extends BasePage {
 	 * @return - Map<String,Float> - province as key and tax rate as value
 	 * @throws IOException
 	 */
-	public Map<String,Float> getProvinceTaxRateMap() throws IOException {
-		String fileName = ".//src//test//resources//test-data//ProvinceRate.json";
+	public Map<String,Object> getProvinceTaxRateMap() throws IOException {
+		String fileName = "test-data/ProvinceRate.json";
 		JSONObject jsonObject = DataConverter.readJsonFileIntoJSONObject(fileName);
 		ObjectMapper objectMapper=new ObjectMapper();
-		Map<String,Float> map = objectMapper.readValue(jsonObject.toJSONString(),Map.class);
+		Map<String,Object> map = objectMapper.readValue(jsonObject.toJSONString(),Map.class);
 
 		return map;
 	}
@@ -1259,15 +1304,15 @@ public class ShoppingCartPage extends BasePage {
 	 * @param - savePriceShoppingCart - float - saving price in shopping cart, note that if pass 0.0, means no saving message
 	 * @param - subTotalShoppingCart - float - subTotal in shopping cart
 	 * @param - orderSummaryMap - Map<String,Object>
-	 * @param - Map<String,Float> - provincialTaxRate - note that if pass null, will not calculate tax for comparison
+	 * @param - Map<String,Object> - provincialTaxRate - note that if pass null, will not calculate tax for comparison
 	 */
-	public void verifyOrderSummaryBusinessLogic(int itemAmountShoppingCart,float savePriceShoppingCart,float subTotalShoppingCart,Map<String,Object> orderSummaryMap,Map<String,Float> provincialTaxRate){
+	public void verifyOrderSummaryBusinessLogic(int itemAmountShoppingCart,float savePriceShoppingCart,float subTotalShoppingCart,Map<String,Object> orderSummaryMap,Map<String,Object> provincialTaxRate){
 		int itemAmountOrderSummary= (int) orderSummaryMap.get("itemAmount");
 		if(itemAmountOrderSummary==itemAmountShoppingCart){
 			reporter.reportLogPass("The item amount in OrderSummary section is equal to the one in Shopping Cart item section");
 		}
 		else{
-			reporter.reportLogFail("The item amount:"+itemAmountOrderSummary+" in OrderSummary section is equal to the one:"+itemAmountShoppingCart+" in Shopping Cart item section");
+			reporter.reportLogFail("The item amount:"+itemAmountOrderSummary+" in OrderSummary section is not equal to the one:"+itemAmountShoppingCart+" in Shopping Cart item section");
 		}
 
 		float wasPriceOrderSummary= (float) orderSummaryMap.get("wasPrice");
@@ -1277,7 +1322,7 @@ public class ShoppingCartPage extends BasePage {
 			reporter.reportLogPass("The calculated saving price in OrderSummary section is equal to the one in Shopping Cart item section");
 		}
 		else{
-			reporter.reportLogFail("The calculated saving price:"+calSavePriceOrderSummary+" in OrderSummary section is equal to the one:"+savePriceShoppingCart+" in Shopping Cart item section");
+			reporter.reportLogFail("The calculated saving price:"+calSavePriceOrderSummary+" in OrderSummary section is not equal to the one:"+savePriceShoppingCart+" in Shopping Cart item section");
 		}
 
 		float savePriceOrderSummary=(float) orderSummaryMap.get("savePrice");
@@ -1285,7 +1330,7 @@ public class ShoppingCartPage extends BasePage {
 			reporter.reportLogPass("The calculated saving price in OrderSummary section is equal to the saving price in OrderSummary section");
 		}
 		else{
-			reporter.reportLogFail("The calculated saving price:"+calSavePriceOrderSummary+" in OrderSummary section is equal to the saving price:"+savePriceOrderSummary+" in OrderSummary section");
+			reporter.reportLogFail("The calculated saving price:"+calSavePriceOrderSummary+" in OrderSummary section is not equal to the saving price:"+savePriceOrderSummary+" in OrderSummary section");
 		}
 
 		float subTotal=(float) orderSummaryMap.get("subTotal");
@@ -1293,18 +1338,18 @@ public class ShoppingCartPage extends BasePage {
 			reporter.reportLogPass("The subtotal price in OrderSummary section is equal to the subtotal price in shopping cart section");
 		}
 		else{
-			reporter.reportLogFail("The subtotal price:"+subTotal+" in OrderSummary section is equal to the subtotal price:"+subTotalShoppingCart+" in shopping cart section");
+			reporter.reportLogFail("The subtotal price:"+subTotal+" in OrderSummary section is not equal to the subtotal price:"+subTotalShoppingCart+" in shopping cart section");
 		}
 
 		float tax=(float) orderSummaryMap.get("tax");
 		if(provincialTaxRate!=null){
 			String province=orderSummaryMap.get("province").toString();
-			float calProvinceTax=getProvinceTax(province,provincialTaxRate);
+			float calProvinceTax=getCalculatedProvinceTax(subTotal,province,provincialTaxRate);
 			if(Math.abs(calProvinceTax-tax)<0.01){
 				reporter.reportLogPass("The calculated tax in OrderSummary section is equal to the tax in OrderSummary section");
 			}
 			else{
-				reporter.reportLogFail("The calculated tax:"+calProvinceTax+" in OrderSummary section is equal to the tax:"+tax+" in OrderSummary section");
+				reporter.reportLogFail("The calculated tax:"+calProvinceTax+" in OrderSummary section is not equal to the tax:"+tax+" in OrderSummary section");
 			}
 		}
 
@@ -1314,21 +1359,22 @@ public class ShoppingCartPage extends BasePage {
 			reporter.reportLogPass("The calculated total price in OrderSummary section is equal to the total price in OrderSummary section");
 		}
 		else{
-			reporter.reportLogFail("The calculated total price:"+calTotalPrice+" in OrderSummary section is equal to the total price:"+totalPrice+" in OrderSummary section");
+			reporter.reportLogFail("The calculated total price:"+calTotalPrice+" in OrderSummary section is not equal to the total price:"+totalPrice+" in OrderSummary section");
 		}
 	}
 
 	/**
-	 * To get provincial tax with given province
+	 * To get calculated provincial tax with given province
+	 * @param - float - subTotal
 	 * @param - String - province
-	 * @param - Map<String,Float> -provincialTaxRate
-	 * @return - float province tax
+	 * @param - Map<String,Object> - provincialTaxRate
+	 * @return - float - province tax
 	 */
-	public float getProvinceTax(String province,Map<String,Float> provincialTaxRate){
+	public float getCalculatedProvinceTax(float subTotal,String province,Map<String,Object> provincialTaxRate){
 		float calProvinceTax=0.0f;
-		for(Map.Entry<String,Float> entry:provincialTaxRate.entrySet()){
+		for(Map.Entry<String,Object> entry:provincialTaxRate.entrySet()){
 			if(entry.getKey().equalsIgnoreCase(province)) {
-				calProvinceTax = entry.getValue();
+				calProvinceTax = subTotal*Float.parseFloat(entry.getValue().toString())/100.0f;
 				break;
 			}
 		}
@@ -1336,8 +1382,19 @@ public class ShoppingCartPage extends BasePage {
 	}
 
 	/**
+	 * To set province code for estimated tax
+	 * @param - String - provinceCode
+	 */
+	public void setProvinceCodeForEstimatedTax(String provinceCode){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectCartPricingShippingEstimateTaxProvince);
+		Select select = new Select(this.selectCartPricingShippingEstimateTaxProvince);
+		select.selectByVisibleText(provinceCode);
+		this.applyStaticWait(5*this.getStaticWaitForApplication());
+	}
+
+	/**
 	 * To set Installment Setting
-	 * @param -int - optionIndex - option index for dropdown menu options for select installment
+	 * @param - int - optionIndex - option index for dropdown menu options for select installment
 	 */
 	public void setInstallmentSetting(int optionIndex){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectCartEasyPayInstallmentNumber);
@@ -1388,7 +1445,7 @@ public class ShoppingCartPage extends BasePage {
 			reporter.reportLogPass("The calculated today payment is equal to the today payment in installment section");
 		}
 		else{
-			reporter.reportLogFail("The calculated today payment:"+calTodayPayment+" is equal to the today payment:"+todayPayment+" in installment section");
+			reporter.reportLogFail("The calculated today payment:"+calTodayPayment+" is not equal to the today payment:"+todayPayment+" in installment section");
 		}
 
 		float calLeftPayment=totalPriceOrderSummary-todayPayment;
@@ -1396,7 +1453,7 @@ public class ShoppingCartPage extends BasePage {
 			reporter.reportLogPass("The calculated left payment is equal to the left payment in installment section");
 		}
 		else{
-			reporter.reportLogFail("The calculated left payment:"+calLeftPayment+" is equal to the left payment:"+leftPayment+" in installment section");
+			reporter.reportLogFail("The calculated left payment:"+calLeftPayment+" is not equal to the left payment:"+leftPayment+" in installment section");
 		}
 
 		int calFutureMonthlyPaymentNumber=totalInstallmentNumber-1;
@@ -1404,7 +1461,7 @@ public class ShoppingCartPage extends BasePage {
 			reporter.reportLogPass("The calculated future monthly payment number is equal to the future monthly payment number in installment section");
 		}
 		else{
-			reporter.reportLogFail("The calculated future monthly payment number:"+calFutureMonthlyPaymentNumber+" is equal to the future monthly payment number:"+futureMonthlyPaymentNumber+" in installment section");
+			reporter.reportLogFail("The calculated future monthly payment number:"+calFutureMonthlyPaymentNumber+" is not equal to the future monthly payment number:"+futureMonthlyPaymentNumber+" in installment section");
 		}
 
 		float calFutureMonthlyPayment=calLeftPayment/futureMonthlyPaymentNumber;
@@ -1418,32 +1475,169 @@ public class ShoppingCartPage extends BasePage {
 
 	/**
 	 * To verify Shopping Cart Contents
-	 * @param - boolean - bUnKnown - with unknown status
-	 * @param - boolean - bTrueFit - known as TrueFit existing
-	 * @param - boolean - bProductNameOnly - only show product name
+	 * @param - String - lsOption - "mandatory"/"Optional"/"all"
 	 */
-	public void verifyShoppingCartContents(boolean bUnKnown,boolean bTrueFit,boolean bProductNameOnly){
+	public void verifyShoppingCartContents(String lsOption){
+		switch(lsOption){
+			case "mandatory":
+				verifyMandatoryOrOptionalShoppingCartContents(true);
+				break;
+			case "optional":
+				verifyMandatoryOrOptionalShoppingCartContents(false);
+				break;
+			case "all":
+				verifyMandatoryOrOptionalShoppingCartContents(true);
+				verifyMandatoryOrOptionalShoppingCartContents(false);
+				break;
+			default:
+				break;
+		}
+	}
+
+	/**
+	 * To verify Mandatory/Optional Shopping Cart Contents
+	 * @param - boolean - bMandatory
+	 */
+	public void verifyMandatoryOrOptionalShoppingCartContents(boolean bMandatory){
 		String lsText;
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartTitle);
-		lsText=lblCartTitle.getText();
-		if(!lsText.isEmpty()){
-			reporter.reportLogPass("The cart title is displaying correctly");
+		if(bMandatory){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartTitle);
+			lsText=lblCartTitle.getText();
+			if(!lsText.isEmpty()){
+				reporter.reportLogPass("The cart title is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The cart title is not displaying correctly");
+			}
+
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartTopMessage);
+			lsText=lblCartTopMessage.getText();
+			if(!lsText.isEmpty()){
+				reporter.reportLogPass("The cart top message is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The cart top message is not displaying correctly");
+			}
+
+
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartTableHeadingITEM);
+			lsText=lblCartTableHeadingITEM.getText();
+			if(!lsText.isEmpty()){
+				reporter.reportLogPass("The cart table heading ITEM title is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The cart table heading ITEM title is not displaying correctly");
+			}
+
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartTableHeadingPRICE);
+			lsText=lblCartTableHeadingPRICE.getText();
+			if(!lsText.isEmpty()){
+				reporter.reportLogPass("The cart table heading PRICE title is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The cart table heading PRICE title is not displaying correctly");
+			}
+
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartTableHeadingQUANTITY);
+			lsText=lblCartTableHeadingQUANTITY.getText();
+			if(!lsText.isEmpty()){
+				reporter.reportLogPass("The cart table heading QUANTITY title is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The cart table heading QUANTITY title is not displaying correctly");
+			}
+
+			WebElement element;
+			int index=0;
+			for(WebElement cartItem:lstCartItems){
+				reporter.reportLog("Verify cart item "+index);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(cartItem);
+				if(checkProductBadgeExisting(cartItem)){
+					element=cartItem.findElement(byProductPicBadge);
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+					lsText=element.getAttribute("src");
+					if(!lsText.isEmpty()){
+						reporter.reportLogPass("The cart item badge is displaying correctly");
+					}
+					else{
+						reporter.reportLogFailWithScreenshot("The cart item badge is not displaying correctly");
+					}
+				}
+
+				element=cartItem.findElement(byProductPicLink);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+				lsText=element.getAttribute("href");
+				if(!lsText.isEmpty()){
+					reporter.reportLogPass("The cart item pic link is not empty");
+				}
+				else{
+					reporter.reportLogFailWithScreenshot("The cart item pic link is empty");
+				}
+
+				element=cartItem.findElement(byProductPicImage);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+				lsText=element.getAttribute("src");
+				if(!lsText.isEmpty()){
+					reporter.reportLogPass("The cart item pic src is not empty");
+				}
+				else{
+					reporter.reportLogFailWithScreenshot("The cart item pic src is empty");
+				}
+
+				element=cartItem.findElement(byProductItemDesc);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+				lsText=element.getText();
+				if(!lsText.isEmpty()){
+					reporter.reportLogPass("The cart item product description is displaying correctly");
+				}
+				else{
+					reporter.reportLogFailWithScreenshot("The cart item product description is not displaying correctly");
+				}
+
+				element=cartItem.findElement(byProductNumber);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+				lsText=element.getText();
+				if(!lsText.isEmpty()){
+					reporter.reportLogPass("The cart item product product number is displaying correctly");
+				}
+				else{
+					reporter.reportLogFailWithScreenshot("The cart item product number is not displaying correctly");
+				}
+
+				if(this.checkRemoveButtonExisting(cartItem)){
+					element=cartItem.findElement(byProductRemoveButton);
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+					lsText=element.getText();
+					if(!lsText.isEmpty()){
+						reporter.reportLogPass("The cart item remove button is displaying correctly");
+					}
+					else{
+						reporter.reportLogFailWithScreenshot("The cart item remove button is not displaying correctly");
+					}
+				}
+
+				element=cartItem.findElement(byProductSelectQuantity);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+				if(this.getReusableActionsInstance().isElementVisible(element)){
+					reporter.reportLogPass("The cart item shopping quantity is displaying correctly");
+				}
+				else{
+					reporter.reportLogFailWithScreenshot("The cart item shopping quantity is not displaying correctly");
+				}
+				index++;
+			}
+
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartTableSubTotal);
+			lsText=lblCartTableSubTotal.getText();
+			if(!lsText.isEmpty()){
+				reporter.reportLogPass("The cart table subtotal is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The cart table subtotal is not displaying correctly");
+			}
 		}
 		else{
-			reporter.reportLogFailWithScreenshot("The cart title is not displaying correctly");
-		}
-
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartTopMessage);
-		lsText=lblCartTopMessage.getText();
-		if(!lsText.isEmpty()){
-			reporter.reportLogPass("The cart top message is displaying correctly");
-		}
-		else{
-			reporter.reportLogFailWithScreenshot("The cart top message is not displaying correctly");
-		}
-
-		if(bUnKnown){
 			if(this.checkCartNoticeTitleExisting()){
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartNoticeTitle);
 				lsText=lblCartNoticeTitle.getText();
@@ -1529,122 +1723,11 @@ public class ShoppingCartPage extends BasePage {
 					reporter.reportLogFailWithScreenshot("The cart GetByDate message is not displaying correctly");
 				}
 			}
-		}
-		else{
-			if(bTrueFit){
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartNoticeTrueFitMessage);
-				lsText=lblCartNoticeTrueFitMessage.getText();
-				if(!lsText.isEmpty()){
-					reporter.reportLogPass("The cart TrueFit message is displaying correctly");
-				}
-				else{
-					reporter.reportLogFailWithScreenshot("The cart TrueFit message is not displaying correctly");
-				}
 
-				lsText=lnkCartNoticeTrueFit.getAttribute("href");
-				if(!lsText.isEmpty()){
-					reporter.reportLogPass("The cart TrueFit link is not empty");
-				}
-				else{
-					reporter.reportLogFailWithScreenshot("The cart TrueFit link is empty");
-				}
-			}
-
-			if(bProductNameOnly){
-				if(!this.checkGetItByShippingMessageExisting()){
-					reporter.reportLogPass("The cart GetByDate message is not displaying");
-				}
-				else{
-					reporter.reportLogPass("The cart GetByDate message is displaying incorrectly");
-				}
-			}
-		}
-
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartTableHeadingITEM);
-		lsText=lblCartTableHeadingITEM.getText();
-		if(!lsText.isEmpty()){
-			reporter.reportLogPass("The cart table heading ITEM title is displaying correctly");
-		}
-		else{
-			reporter.reportLogFailWithScreenshot("The cart table heading ITEM title is not displaying correctly");
-		}
-
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartTableHeadingPRICE);
-		lsText=lblCartTableHeadingPRICE.getText();
-		if(!lsText.isEmpty()){
-			reporter.reportLogPass("The cart table heading PRICE title is displaying correctly");
-		}
-		else{
-			reporter.reportLogFailWithScreenshot("The cart table heading PRICE title is not displaying correctly");
-		}
-
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartTableHeadingQUANTITY);
-		lsText=lblCartTableHeadingQUANTITY.getText();
-		if(!lsText.isEmpty()){
-			reporter.reportLogPass("The cart table heading QUANTITY title is displaying correctly");
-		}
-		else{
-			reporter.reportLogFailWithScreenshot("The cart table heading QUANTITY title is not displaying correctly");
-		}
-
-		WebElement element;
-		int index=0;
-		for(WebElement cartItem:lstCartItems){
-			reporter.reportLog("Verify cart item "+index);
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(cartItem);
-			if(checkProductBadgeExisting(cartItem)){
-				element=cartItem.findElement(byProductPicBadge);
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-				lsText=element.getAttribute("src");
-				if(!lsText.isEmpty()){
-					reporter.reportLogPass("The cart item badge is displaying correctly");
-				}
-				else{
-					reporter.reportLogFailWithScreenshot("The cart item badge is not displaying correctly");
-				}
-			}
-
-			element=cartItem.findElement(byProductPicLink);
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-			lsText=element.getAttribute("href");
-			if(!lsText.isEmpty()){
-				reporter.reportLogPass("The cart item pic link is not empty");
-			}
-			else{
-				reporter.reportLogFailWithScreenshot("The cart item pic link is empty");
-			}
-
-			element=cartItem.findElement(byProductPicImage);
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-			lsText=element.getAttribute("src");
-			if(!lsText.isEmpty()){
-				reporter.reportLogPass("The cart item pic src is not empty");
-			}
-			else{
-				reporter.reportLogFailWithScreenshot("The cart item pic src is empty");
-			}
-
-			element=cartItem.findElement(byProductItemDesc);
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-			lsText=element.getText();
-			if(!lsText.isEmpty()){
-				reporter.reportLogPass("The cart item product description is displaying correctly");
-			}
-			else{
-				reporter.reportLogFailWithScreenshot("The cart item product description is not displaying correctly");
-			}
-
-			element=cartItem.findElement(byProductNumber);
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-			lsText=element.getText();
-			if(!lsText.isEmpty()){
-				reporter.reportLogPass("The cart item product product number is displaying correctly");
-			}
-			else{
-				reporter.reportLogFailWithScreenshot("The cart item product number is not displaying correctly");
-			}
-
-			if(bUnKnown){
+			WebElement element;
+			int index=0;
+			for(WebElement cartItem:lstCartItems){
+				reporter.reportLog("Verify cart item "+index);
 				if(this.checkShippingDateExisting(cartItem)){
 					element=cartItem.findElement(byProductShippingDate);
 					this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
@@ -1656,75 +1739,32 @@ public class ShoppingCartPage extends BasePage {
 						reporter.reportLogFailWithScreenshot("The cart item product shipping date is not displaying correctly");
 					}
 				}
-			}
-			else{
-				if(bProductNameOnly){
-					element=cartItem.findElement(byProductShippingDate);
+
+				if(this.checkRedMessageExisting(cartItem)){
+					element=cartItem.findElement(byProductRedMessage);
 					this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 					lsText=element.getText();
 					if(!lsText.isEmpty()){
-						reporter.reportLogPass("The cart item product shipping date is displaying correctly");
+						reporter.reportLogPass("The cart item red message is displaying correctly");
 					}
 					else{
-						reporter.reportLogFailWithScreenshot("The cart item product shipping date is not displaying correctly");
+						reporter.reportLogFailWithScreenshot("The cart item red message is not displaying correctly");
 					}
 				}
-			}
 
-			if(this.checkRedMessageExisting(cartItem)){
-				element=cartItem.findElement(byProductRedMessage);
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-				lsText=element.getText();
-				if(!lsText.isEmpty()){
-					reporter.reportLogPass("The cart item red message is displaying correctly");
+				if(this.checkFreeShippingMessageExisting(cartItem)){
+					element=cartItem.findElement(byProductBlackMessage);
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+					lsText=element.getText();
+					if(!lsText.isEmpty()){
+						reporter.reportLogPass("The cart item free shipping message is displaying correctly");
+					}
+					else{
+						reporter.reportLogFailWithScreenshot("The cart item free shipping message is not displaying correctly");
+					}
 				}
-				else{
-					reporter.reportLogFailWithScreenshot("The cart item red message is not displaying correctly");
-				}
+				index++;
 			}
-
-			if(this.checkFreeShippingMessageExisting(cartItem)){
-				element=cartItem.findElement(byProductBlackMessage);
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-				lsText=element.getText();
-				if(!lsText.isEmpty()){
-					reporter.reportLogPass("The cart item free shipping message is displaying correctly");
-				}
-				else{
-					reporter.reportLogFailWithScreenshot("The cart item free shipping message is not displaying correctly");
-				}
-			}
-
-			if(this.checkRemoveButtonExisting(cartItem)){
-				element=cartItem.findElement(byProductRemoveButton);
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-				lsText=element.getText();
-				if(!lsText.isEmpty()){
-					reporter.reportLogPass("The cart item remove button is displaying correctly");
-				}
-				else{
-					reporter.reportLogFailWithScreenshot("The cart item remove button is not displaying correctly");
-				}
-			}
-
-			element=cartItem.findElement(byProductSelectQuantity);
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-			if(this.getReusableActionsInstance().isElementVisible(element)){
-				reporter.reportLogPass("The cart item shopping quantity is displaying correctly");
-			}
-			else{
-				reporter.reportLogFailWithScreenshot("The cart item shopping quantity is not displaying correctly");
-			}
-			index++;
-		}
-
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartTableSubTotal);
-		lsText=lblCartTableSubTotal.getText();
-		if(!lsText.isEmpty()){
-			reporter.reportLogPass("The cart table subtotal is displaying correctly");
-		}
-		else{
-			reporter.reportLogFailWithScreenshot("The cart table subtotal is not displaying correctly");
 		}
 	}
 
@@ -2175,6 +2215,38 @@ public class ShoppingCartPage extends BasePage {
 		AccountCartResponse accountCartResponseGet = JsonParser.getResponseObject(responseGet.asString(), new TypeReference<AccountCartResponse>() {});
 		String cartGuidId=accountCartResponseGet.getCartGuid();
 		cartAPI.emptyCartWithGuid(accessToken,cartGuidId);
+	}
+
+	/**
+	 * To get Item Count And Price Information
+	 * @param - Map<String,Object> - shoppingCartMap
+	 * @param - boolean - bItemCountOnly
+	 * @return - Map<String,Object>
+	 */
+	public Map<String,Object> getItemCountAndPriceInfo(Map<String,Object> shoppingCartMap,boolean bItemCountOnly){
+		Map<String,Object> map=new HashMap<>();
+
+		int itemCountInShoppingCartHeader=this.GetAddedItemAmount();
+		map.put("itemCountInShoppingCartHeader",itemCountInShoppingCartHeader);
+
+		int shoppingItemListCount=this.getItemCountFromShoppingList((List<Map<String,Object>>)shoppingCartMap.get("shoppingList"));
+		map.put("shoppingItemCount",shoppingItemListCount);
+
+		int shoppingItemCountInSubtotal=(int)shoppingCartMap.get("shoppingAmount");
+		map.put("shoppingItemCountInSubtotal",shoppingItemCountInSubtotal);
+
+		int itemCountInOrderSummary=this.getShoppingItemAmountFromOrderSummarySection();
+		map.put("itemCountInOrderSummary",itemCountInOrderSummary);
+
+		if(!bItemCountOnly){
+			float subTotalShoppingCart=this.getShoppingSubTotal();
+			map.put("subTotalShoppingCart",subTotalShoppingCart);
+
+			float subTotalOrderSummary=this.getOrderSummarySubTotal();
+			map.put("subTotalOrderSummary",subTotalOrderSummary);
+		}
+
+		return map;
 	}
 
 

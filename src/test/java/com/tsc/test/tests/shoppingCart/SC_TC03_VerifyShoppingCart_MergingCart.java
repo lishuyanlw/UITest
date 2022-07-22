@@ -28,7 +28,7 @@ public class SC_TC03_VerifyShoppingCart_MergingCart extends BaseTest{
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(basePage.getBaseURL() + "/"), "TSC url is correct", "TSC url is incorrect");
 		reporter.reportLog("ProductDetail Page");
 
-		List<String> lstKeywordList = TestDataHandler.constantData.getSearchResultPage().getLst_APISearchingKeyword();
+		List<String> lstKeywordList = TestDataHandler.constantData.getSearchResultPage().getLst_ShoppingCartSearchKeyword();
 		String lsUserName = TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
 		String lsPassword = TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
 
@@ -36,7 +36,7 @@ public class SC_TC03_VerifyShoppingCart_MergingCart extends BaseTest{
 		String accessToken = getApiUserSessionDataMapThreadLocal().get("access_token").toString();
 		int customerEDP = Integer.valueOf(getApiUserSessionDataMapThreadLocal().get("customerEDP").toString());
 		List<Map<String, String>> keyword = TestDataHandler.constantData.getShoppingCart().getLst_SearchKeywords();
-		List<Map<String, Object>> data = getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP, accessToken, keyword,false);
+		List<Map<String, Object>> data = getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP, accessToken, keyword,true);
 
 		//Login using valid username and password
 		getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword);
@@ -75,22 +75,23 @@ public class SC_TC03_VerifyShoppingCart_MergingCart extends BaseTest{
 
 			//To verify heading and Shopping Item List contents
 			reporter.reportLog("To verify heading and Shopping Item List contents");
-			getShoppingCartThreadLocal().verifyShoppingCartContents(true, false, false);
+			getShoppingCartThreadLocal().verifyShoppingCartContents("all");
 
 			//To verify business logic Between Shopping Item List And SubTotal Section
 			reporter.reportLog("To verify business logic Between Shopping Item List And SubTotal Section");
 			getShoppingCartThreadLocal().verifyBusinessLogicBetweenShoppingItemListAndSubTotalSection(shoppingCartMap);
 
-			int itemAmountInShoppingCartHeader = getShoppingCartThreadLocal().GetAddedItemAmount();
-			int shoppingItemListAmount = getShoppingCartThreadLocal().getItemAmountInShoppingList((List<Map<String, Object>>) shoppingCartMap.get("shoppingList"));
-			int shoppingAmountInSubtotal = (int) shoppingCartMap.get("shoppingAmount");
-			int itemAmountInOrderSummary = getShoppingCartThreadLocal().getShoppingItemAmountFromOrderSummarySection();
-			if (itemAmountInShoppingCartHeader == shoppingItemListAmount &&
-					shoppingItemListAmount == shoppingAmountInSubtotal &&
-					itemAmountInShoppingCartHeader == itemAmountInOrderSummary) {
-				reporter.reportLogPass("The added item amount among Shopping cart header,Shopping cart list and OrderSummary are same");
+			Map<String,Object> map=getShoppingCartThreadLocal().getItemCountAndPriceInfo(shoppingCartMap,true);
+			int itemCountInShoppingCartHeader= (int) map.get("itemCountInShoppingCartHeader");
+			int shoppingItemCount= (int) map.get("shoppingItemCount");
+			int shoppingItemCountInSubtotal= (int) map.get("shoppingItemCountInSubtotal");
+			int itemCountInOrderSummary= (int) map.get("itemCountInOrderSummary");
+			if (itemCountInShoppingCartHeader == shoppingItemCount &&
+					shoppingItemCount == shoppingItemCountInSubtotal &&
+					itemCountInShoppingCartHeader == itemCountInOrderSummary) {
+				reporter.reportLogPass("The added item count among Shopping cart header,Shopping cart list and OrderSummary are same");
 			} else {
-				reporter.reportLogFail("The added item amount among Shopping cart header,Shopping cart list and OrderSummary are not same");
+				reporter.reportLogFail("The added item count among Shopping cart header,Shopping cart list and OrderSummary are not same");
 			}
 
 			reporter.reportLog("Verify added products using API");
@@ -107,8 +108,8 @@ public class SC_TC03_VerifyShoppingCart_MergingCart extends BaseTest{
 				}
 			}
 
-			//To empty the cart
-			getShoppingCartThreadLocal().emptyCart(customerEDP,accessToken);
+//			//To empty the cart
+//			getShoppingCartThreadLocal().emptyCart(customerEDP,accessToken);
 		}
 		else {
 			reporter.reportLogFail("Unable to find the matched product item");

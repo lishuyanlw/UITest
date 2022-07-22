@@ -1990,15 +1990,11 @@ public class ProductDetailPage extends BasePage {
 	 */
 	public void goToShoppingCartByClickingShoppingCartIconInGlobalHeader(){
 		GlobalHeaderPage globalHeaderPage=new GlobalHeaderPage(this.getDriver());
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeaderPage.ShoppingCartlnk);
 		globalHeaderPage.ShoppingCartlnk.click();
 
 		ShoppingCartPage shoppingCartPage=new ShoppingCartPage(this.getDriver());
-		try{
-			this.waitForCondition(Driver->{return shoppingCartPage.lblCartTitle.isDisplayed();},20000);
-		}
-		catch(Exception e){
-			this.applyStaticWait(10*this.getStaticWaitForApplication());
-		}
+		this.waitForCondition(Driver->{return shoppingCartPage.lblCartTitle.isDisplayed();},20000);
 	}
 
 	/**

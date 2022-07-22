@@ -24,10 +24,6 @@ public class SC_TC01_VerifyShoppingCart_PageHeadingAndLineItems extends BaseTest
 	@Test(groups={"Regression","Regression_Mobile","Regression_Tablet","SauceTunnelTest"})
 	public void SC_TC01_VerifyShoppingCart_PageHeadingAndLineItems() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
-		BasePage basePage = new BasePage(this.getDriver());
-
-		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(basePage.getBaseURL() + "/"), "TSC url is correct", "TSC url is incorrect");
-		reporter.reportLog("ProductDetail Page");
 
 		String lsUserName = TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
 		String lsPassword = TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
@@ -40,20 +36,21 @@ public class SC_TC01_VerifyShoppingCart_PageHeadingAndLineItems extends BaseTest
 
 		//Login using valid username and password
 		getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword);
+		(new BasePage(this.getDriver())).applyStaticWait(2000);
 		getProductDetailPageThreadLocal().goToShoppingCartByClickingShoppingCartIconInGlobalHeader();
 
 		Map<String, Object> shoppingCartMap = getShoppingCartThreadLocal().getShoppingSectionDetails("all");
 
 		//To verify heading and Shopping Item List contents
 		reporter.reportLog("To verify heading and Shopping Item List contents");
-		getShoppingCartThreadLocal().verifyShoppingCartContents(true, false, false);
+		getShoppingCartThreadLocal().verifyShoppingCartContents("all");
 
 		//To verify business logic Between Shopping Item List And SubTotal Section
 		reporter.reportLog("To verify business logic Between Shopping Item List And SubTotal Section");
 		getShoppingCartThreadLocal().verifyBusinessLogicBetweenShoppingItemListAndSubTotalSection(shoppingCartMap);
 
 		int itemAmountInShoppingCartHeader = getShoppingCartThreadLocal().GetAddedItemAmount();
-		int shoppingItemListAmount = getShoppingCartThreadLocal().getItemAmountInShoppingList((List<Map<String, Object>>) shoppingCartMap.get("shoppingList"));
+		int shoppingItemListAmount = getShoppingCartThreadLocal().getItemCountFromShoppingList((List<Map<String, Object>>) shoppingCartMap.get("shoppingList"));
 		int shoppingAmountInSubtotal = (int) shoppingCartMap.get("shoppingAmount");
 		int itemAmountInOrderSummary = getShoppingCartThreadLocal().getShoppingItemAmountFromOrderSummarySection();
 		if (itemAmountInShoppingCartHeader == shoppingItemListAmount &&
