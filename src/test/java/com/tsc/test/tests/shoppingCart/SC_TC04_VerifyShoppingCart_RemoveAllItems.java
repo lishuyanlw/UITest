@@ -50,6 +50,9 @@ public class SC_TC04_VerifyShoppingCart_RemoveAllItems extends BaseTest{
 			reporter.reportLogFail("The OrderSummary and EasyPayment are still displaying");
 		}
 
+		reporter.reportLog("Verify checkout section contents");
+		getShoppingCartThreadLocal().verifyCheckOutContents(true);
+
 	}
 }
 

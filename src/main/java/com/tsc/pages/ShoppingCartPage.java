@@ -2267,5 +2267,99 @@ public class ShoppingCartPage extends BasePage {
 		return map;
 	}
 
+	/**
+	 * To verify CheckOut section Contents
+	 * @param - boolean - bBlueJaysOnly
+	 */
+	public void verifyCheckOutContents(boolean bBlueJaysOnly){
+		String lsText;
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(imgCartCheckoutDonationLogo);
+		if(this.getReusableActionsInstance().isElementVisible(imgCartCheckoutDonationLogo)){
+			reporter.reportLogPass("The checkout donation logo is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The checkout donation logo is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(imgCartCheckoutDonationLogo);
+		lsText=imgCartCheckoutDonationLogo.getAttribute("src");
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The image source of checkout donation logo is not empty");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The image source of checkout donation logo is empty");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(imgCartCheckoutDonationDesc);
+		lsText=imgCartCheckoutDonationDesc.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The checkout donation description is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The checkout donation description is not displaying correctly");
+		}
+
+		for(WebElement button:lstCartCheckoutDonationButton){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(button);
+			lsText=button.getText().trim();
+			if(!lsText.isEmpty()){
+				reporter.reportLogPass("The "+lsText+" button is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The "+lsText+" button is not displaying correctly");
+			}
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartCheckoutDonationReceiptMessage);
+		lsText=lblCartCheckoutDonationReceiptMessage.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The checkout donation receipt message is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The checkout donation receipt message is not displaying correctly");
+		}
+
+		if(bBlueJaysOnly){
+			return;
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartCheckoutRedeemMessage);
+		lsText=lblCartCheckoutRedeemMessage.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The checkout redeem message is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The checkout redeem message is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnCartCheckoutButton);
+		lsText=btnCartCheckoutButton.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The checkout button is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The checkout button is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartPrivacy);
+		lsText=lblCartPrivacy.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The cart privacy message is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The cart privacy message is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lnkCartPrivacy);
+		lsText=lnkCartPrivacy.getAttribute("href");
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The link of cart privacy is not empty");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The link of cart privacy is empty");
+		}
+
+	}
 
 }

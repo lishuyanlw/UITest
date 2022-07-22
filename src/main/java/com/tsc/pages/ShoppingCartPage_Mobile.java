@@ -414,34 +414,6 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 				reporter.reportLogFailWithScreenshot("The cart top message is not displaying correctly");
 			}
 
-
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartTableHeadingITEM);
-			lsText=lblCartTableHeadingITEM.getText();
-			if(!lsText.isEmpty()){
-				reporter.reportLogPass("The cart table heading ITEM title is displaying correctly");
-			}
-			else{
-				reporter.reportLogFailWithScreenshot("The cart table heading ITEM title is not displaying correctly");
-			}
-
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartTableHeadingPRICE);
-			lsText=lblCartTableHeadingPRICE.getText();
-			if(!lsText.isEmpty()){
-				reporter.reportLogPass("The cart table heading PRICE title is displaying correctly");
-			}
-			else{
-				reporter.reportLogFailWithScreenshot("The cart table heading PRICE title is not displaying correctly");
-			}
-
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartTableHeadingQUANTITY);
-			lsText=lblCartTableHeadingQUANTITY.getText();
-			if(!lsText.isEmpty()){
-				reporter.reportLogPass("The cart table heading QUANTITY title is displaying correctly");
-			}
-			else{
-				reporter.reportLogFailWithScreenshot("The cart table heading QUANTITY title is not displaying correctly");
-			}
-
 			WebElement element;
 			int index=0;
 			for(WebElement cartItem:lstCartItems){
