@@ -1994,7 +1994,9 @@ public class ProductDetailPage extends BasePage {
 		globalHeaderPage.ShoppingCartlnk.click();
 
 		ShoppingCartPage shoppingCartPage=new ShoppingCartPage(this.getDriver());
+		this.waitForPageToLoad();
 		this.waitForCondition(Driver->{return shoppingCartPage.lblCartTitle.isDisplayed();},20000);
+		this.applyStaticWait(3*this.getStaticWaitForApplication());
 	}
 
 	/**

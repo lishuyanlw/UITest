@@ -152,7 +152,7 @@ public class ShoppingCartPage extends BasePage {
 	public WebElement btnRemoveDialogCancel;
 
 	@FindBy(xpath="//shopping-cart//div[contains(@class,'cart-items')]//div/a[contains(@class,'pull-right')]")
-	public List<WebElement> btnItemRemoveButtonFromCart;
+	public List<WebElement> lstItemRemoveButtonFromCart;
 
 	////////////////For Order summary section////////////////////////////
 
@@ -545,8 +545,9 @@ public class ShoppingCartPage extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeaderPage.CartBagCounter);
 		this.getReusableActionsInstance().clickIfAvailable(globalHeaderPage.CartBagCounter);
 		this.waitForPageToLoad();
-		if(this.btnItemRemoveButtonFromCart.size()>0){
-			for(WebElement removeButton: this.btnItemRemoveButtonFromCart){
+		if(this.lstItemRemoveButtonFromCart.size()>0){
+			for(int i=this.lstItemRemoveButtonFromCart.size()-1;i>=0;i--){
+				WebElement removeButton=this.lstItemRemoveButtonFromCart.get(i);
 				openRemoveDialog(removeButton);
 				closeRemoveDialogWithRemoveAction();
 				this.waitForPageToLoad();
@@ -558,6 +559,23 @@ public class ShoppingCartPage extends BasePage {
 		//Verify that all items are removed
 		this.getReusableActionsInstance().staticWait(3000);
 		reporter.softAssert(productDetailPage.getShoppingCartNumber()==0,"All Items are removed from shopping Cart","Items are still present in shopping Cart with no of items: "+productDetailPage.getShoppingCartNumber());
+	}
+
+	/**
+	 * To remove All Items From ShoppingCart List
+	 */
+	public void removeAllItemsFromShoppingCartList(){
+		if(this.lstItemRemoveButtonFromCart.size()>0){
+			for(int i=this.lstItemRemoveButtonFromCart.size()-1;i>=0;i--){
+				WebElement removeButton=this.lstItemRemoveButtonFromCart.get(i);
+				openRemoveDialog(removeButton);
+				closeRemoveDialogWithRemoveAction();
+				this.waitForPageToLoad();
+				//Applying static wait here after wait for page load function again
+				//as sometimes page loads but DOM is still getting refreshed and hence Stale Element Exception is thrown
+				this.applyStaticWait(3000);
+			}
+		}
 	}
 
 	/**
