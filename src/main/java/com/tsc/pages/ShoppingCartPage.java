@@ -29,6 +29,9 @@ public class ShoppingCartPage extends BasePage {
 		super(driver);
 	}
 
+	@FindBy(xpath = "//div[contains(@class,'go-back')]//a")
+	public WebElement lnkBackToShopping;
+
 	////////////////For Shopping bag section////////////////////////////
 
 	@FindBy(xpath = "//div[@class='cartridge']")
