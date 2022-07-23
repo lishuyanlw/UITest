@@ -1412,13 +1412,27 @@ public class ShoppingCartPage extends BasePage {
 
 	/**
 	 * To set Installment Setting
-	 * @param - int - optionIndex - option index for dropdown menu options for select installment
+	 * @param - String - optionText - option text for dropdown menu options for select installment
 	 */
-	public void setInstallmentSetting(int optionIndex){
+	public void setInstallmentSetting(String optionText){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectCartEasyPayInstallmentNumber);
 		Select select = new Select(this.selectCartEasyPayInstallmentNumber);
-		select.selectByIndex(optionIndex);
+		select.selectByVisibleText(optionText);
 		this.applyStaticWait(10*this.getStaticWaitForApplication());
+	}
+
+	/**
+	 * To get Installment Options
+ 	 * @return - List<String>
+	 */
+	public List<String> getInstallmentOptions(){
+		Select select = new Select(this.selectCartEasyPayInstallmentNumber);
+		List<WebElement> lstOptions=select.getOptions();
+		List<String> lstOptionText=new ArrayList<>();
+		for(WebElement option:lstOptions){
+			lstOptionText.add(this.getElementInnerText(option));
+		}
+		return lstOptionText;
 	}
 
 	/**

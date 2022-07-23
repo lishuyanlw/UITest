@@ -182,7 +182,8 @@ public class SC_TC02_VerifyShoppingCart_RemoveItem_CheckSubTotalAndOrderSummary 
 
 		reporter.reportLog("Verify EasyPayment section content");
 		mapOrderSummary=getShoppingCartThreadLocal().getOrderSummaryDesc();
-		getShoppingCartThreadLocal().setInstallmentSetting(1);
+		List<String> lstOptionText=getShoppingCartThreadLocal().getInstallmentOptions();
+		getShoppingCartThreadLocal().setInstallmentSetting(lstOptionText.get(1));
 		getShoppingCartThreadLocal().verifyInstallmentBusinessLogic(mapOrderSummary);
 		getShoppingCartThreadLocal().verifyEasyPaymentContents();
 
