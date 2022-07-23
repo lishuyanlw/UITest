@@ -19,7 +19,7 @@ import java.util.Map;
 
 public class SC_TC02_VerifyShoppingCart_RemoveItem_CheckSubTotalAndOrderSummary extends BaseTest{
 	/*
-	 * CER-840
+	 * CER-849
 	 */
 	@Test(groups={"Regression","Regression_Mobile","Regression_Tablet","SauceTunnelTest"})
 	public void SC_TC02_VerifyShoppingCart_RemoveItem_CheckSubTotalAndOrderSummary() throws IOException {

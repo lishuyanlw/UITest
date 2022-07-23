@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class SC_TC06_VerifyShoppingCart_EasyPayment_ChangeInstallmentNumberAndCheckOrderSummary extends BaseTest{
 	/*
-	 * CER-840
+	 * CER-851
 	 */
 	@Test(groups={"Regression","Regression_Mobile","Regression_Tablet","SauceTunnelTest"})
 	public void SC_TC06_VerifyShoppingCart_EasyPayment_ChangeInstallmentNumberAndCheckOrderSummary() throws IOException {

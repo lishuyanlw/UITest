@@ -3,19 +3,18 @@ package com.tsc.test.tests.shoppingCart;
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
-import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-public class SC_TC05_VerifyShoppingCart_OrderSummary_ChangeProvinceAndCheckTax extends BaseTest{
+public class SC_TC07_VerifyShoppingCart_OrderSummary_EasyPayment_CheckoutSection extends BaseTest{
 	/*
-	 * CER-850
+	 * CER-846
 	 */
 	@Test(groups={"Regression","Regression_Mobile","Regression_Tablet","SauceTunnelTest"})
-	public void SC_TC05_VerifyShoppingCart_OrderSummary_ChangeProvinceAndCheckTax() throws IOException {
+	public void SC_TC07_VerifyShoppingCart_OrderSummary_EasyPayment_CheckoutSection() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 
 		String lsUserName=TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
@@ -37,22 +36,16 @@ public class SC_TC05_VerifyShoppingCart_OrderSummary_ChangeProvinceAndCheckTax e
 		float savingPrice=getShoppingCartThreadLocal().getSavingPriceFromShoppingCartHeader();
 		float subTotal=getShoppingCartThreadLocal().getShoppingSubTotal();
 
-		Map<String,Object> mapOrderSummary;
-		Map<String,Object> mapTaxRate=getShoppingCartThreadLocal().getProvinceTaxRateMap();
+		Map<String,Object> mapOrderSummary=getShoppingCartThreadLocal().getOrderSummaryDesc();
+		getShoppingCartThreadLocal().verifyOrderSummaryBusinessLogic(itemAmount,savingPrice,subTotal,mapOrderSummary,null);
+		getShoppingCartThreadLocal().verifyOrderSummaryContents();
+
+		reporter.reportLog("Verify EasyPayment section content");
+		mapOrderSummary=getShoppingCartThreadLocal().getOrderSummaryDesc();
 		List<String> lstOptionText=getShoppingCartThreadLocal().getInstallmentOptions();
 		getShoppingCartThreadLocal().setInstallmentSetting(lstOptionText.get(1));
-		for(Map.Entry<String,Object> entry:mapTaxRate.entrySet()){
-			reporter.reportLog("Verify province: "+entry.getKey().toString());
-			getShoppingCartThreadLocal().setProvinceCodeForEstimatedTax(entry.getKey().toString());
-			mapOrderSummary=getShoppingCartThreadLocal().getOrderSummaryDesc();
-			getShoppingCartThreadLocal().verifyOrderSummaryBusinessLogic(itemAmount,savingPrice,subTotal,mapOrderSummary,mapTaxRate);
-			getShoppingCartThreadLocal().verifyOrderSummaryContents();
-
-			reporter.reportLog("Verify EasyPayment section content related to "+entry.getKey().toString());
-			mapOrderSummary=getShoppingCartThreadLocal().getOrderSummaryDesc();
-			getShoppingCartThreadLocal().verifyInstallmentBusinessLogic(mapOrderSummary);
-			getShoppingCartThreadLocal().verifyEasyPaymentContents();
-		}
+		getShoppingCartThreadLocal().verifyInstallmentBusinessLogic(mapOrderSummary);
+		getShoppingCartThreadLocal().verifyEasyPaymentContents();
 
 		reporter.reportLog("Verify checkout section contents");
 		getShoppingCartThreadLocal().verifyCheckOutContents(false);

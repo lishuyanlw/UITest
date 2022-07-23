@@ -18,7 +18,7 @@ import java.util.Map;
 
 public class SC_TC03_VerifyShoppingCart_MergingCart extends BaseTest{
 	/*
-	 * CER-840
+	 * CER-848
 	 */
 	@Test(groups={"Regression","Regression_Mobile","Regression_Tablet","SauceTunnelTest"})
 	public void SC_TC03_VerifyShoppingCart_MergingCart() throws IOException {

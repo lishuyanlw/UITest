@@ -19,7 +19,7 @@ import java.util.Map;
 
 public class SC_TC01_VerifyShoppingCart_PageHeadingAndLineItems extends BaseTest{
 	/*
-	 * CER-840
+	 * CER-844
 	 */
 	@Test(groups={"Regression","Regression_Mobile","Regression_Tablet","SauceTunnelTest"})
 	public void SC_TC01_VerifyShoppingCart_PageHeadingAndLineItems() throws IOException {
