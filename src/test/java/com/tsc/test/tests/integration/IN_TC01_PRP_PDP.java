@@ -7,12 +7,12 @@ import org.testng.annotations.Test;
 import java.util.List;
 import java.util.Map;
 
-public class IN_TC01_PDP extends BaseTest {
+public class IN_TC01_PRP_PDP extends BaseTest {
     /*
      *CER-810
      */
     @Test(groups={"Integration","Regression"})
-    public void IN_TC01_PDP() {
+    public void IN_TC01_PRP_PDP() {
         //Closing SignIn pop up on login
         getGlobalFooterPageThreadLocal().closePopupDialog();
 

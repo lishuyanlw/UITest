@@ -791,8 +791,7 @@ public class ShoppingCartPage extends BasePage {
 		if(shoppingItemMap.get("productStyle")!=null&&shoppingItemMap.get("productSize")!=null){
 			if(addToBagMap.get("productName").toString().equalsIgnoreCase(shoppingItemMap.get("productName").toString())&&
 					addToBagMap.get("productStyle").toString().equalsIgnoreCase(shoppingItemMap.get("productStyle").toString())&&
-					addToBagMap.get("productSize").toString().equalsIgnoreCase(shoppingItemMap.get("productSize").toString())&&
-					Math.abs((float)addToBagMap.get("productNowPrice")-(float)shoppingItemMap.get("productNowPrice"))<0.1){
+					addToBagMap.get("productSize").toString().equalsIgnoreCase(shoppingItemMap.get("productSize").toString())){
 				return true;
 			}
 			else{
@@ -802,8 +801,7 @@ public class ShoppingCartPage extends BasePage {
 
 		if(shoppingItemMap.get("productStyle")!=null&&shoppingItemMap.get("productSize")==null){
 			if(addToBagMap.get("productName").toString().equalsIgnoreCase(shoppingItemMap.get("productName").toString())&&
-					addToBagMap.get("productStyle").toString().equalsIgnoreCase(shoppingItemMap.get("productStyle").toString())&&
-					Math.abs((float)addToBagMap.get("productNowPrice")-(float)shoppingItemMap.get("productNowPrice"))<0.1){
+					addToBagMap.get("productStyle").toString().equalsIgnoreCase(shoppingItemMap.get("productStyle").toString())){
 				return true;
 			}
 			else{
@@ -813,8 +811,7 @@ public class ShoppingCartPage extends BasePage {
 
 		if(shoppingItemMap.get("productStyle")==null&&shoppingItemMap.get("productSize")!=null){
 			if(addToBagMap.get("productName").toString().equalsIgnoreCase(shoppingItemMap.get("productName").toString())&&
-					addToBagMap.get("productSize").toString().equalsIgnoreCase(shoppingItemMap.get("productSize").toString())&&
-					Math.abs((float)addToBagMap.get("productNowPrice")-(float)shoppingItemMap.get("productNowPrice"))<0.1){
+					addToBagMap.get("productSize").toString().equalsIgnoreCase(shoppingItemMap.get("productSize").toString())){
 				return true;
 			}
 			else{
@@ -823,8 +820,7 @@ public class ShoppingCartPage extends BasePage {
 		}
 
 		if(shoppingItemMap.get("productStyle")==null&&shoppingItemMap.get("productSize")==null){
-			if(addToBagMap.get("productName").toString().equalsIgnoreCase(shoppingItemMap.get("productName").toString())&&
-					Math.abs((float)addToBagMap.get("productNowPrice")-(float)shoppingItemMap.get("productNowPrice"))<0.1){
+			if(addToBagMap.get("productName").toString().equalsIgnoreCase(shoppingItemMap.get("productName").toString())){
 				return true;
 			}
 			else{

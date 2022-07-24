@@ -3114,6 +3114,38 @@ public class ProductDetailPage extends BasePage {
 	}
 
 	/**
+	 * To get Product With Conditions For Video And Style And Size Without CheckingSoldOutCriteria
+	 * @param-List<String> lstKeyword: keyword list
+	 * @return true/false
+	 * @author Wei.Li
+	 * @throws IOException
+	 */
+	public String getProductWithConditionsForVideoAndStyleAndSizeWithoutCheckingSoldOutCriteria(List<String> lstKeyword,Map<String,Object> dataCriteria) throws IOException {
+		ProductResultsPage prp=new ProductResultsPage(this.getDriver());
+		ApiResponse apiResponse=new ApiResponse();
+		ApiResponse.lsUrlType="-";
+
+		Map<String,Object> outputDataCriteria= new HashMap<String,Object>();
+		if(dataCriteria==null){
+			outputDataCriteria.put("video", "1");
+			outputDataCriteria.put("style", "1");
+			outputDataCriteria.put("size", "1");
+		}else{
+			outputDataCriteria = dataCriteria;
+		}
+
+		for(String lsKeyword:lstKeyword) {
+			product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,false,true,false);
+			if(product!=null) {
+				break;
+			}
+		}
+		selectedProduct=selectedProduct.assignValue(apiResponse.selectedProduct);
+
+		return selectedProduct.productName;
+	}
+
+	/**
 	 * This method will go to PDP page with the matched product
 	 * @param-int productNumber : Product Number
 	 * @return true/false
