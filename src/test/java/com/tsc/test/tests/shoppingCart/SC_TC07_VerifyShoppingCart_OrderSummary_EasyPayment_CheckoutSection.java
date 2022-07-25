@@ -41,7 +41,6 @@ public class SC_TC07_VerifyShoppingCart_OrderSummary_EasyPayment_CheckoutSection
 		getShoppingCartThreadLocal().verifyOrderSummaryContents();
 
 		reporter.reportLog("Verify EasyPayment section content");
-		mapOrderSummary=getShoppingCartThreadLocal().getOrderSummaryDesc();
 		List<String> lstOptionText=getShoppingCartThreadLocal().getInstallmentOptions();
 		getShoppingCartThreadLocal().setInstallmentSetting(lstOptionText.get(1));
 		getShoppingCartThreadLocal().verifyInstallmentBusinessLogic(mapOrderSummary);
