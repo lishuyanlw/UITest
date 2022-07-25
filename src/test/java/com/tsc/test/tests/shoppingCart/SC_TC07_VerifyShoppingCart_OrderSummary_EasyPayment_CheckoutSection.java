@@ -40,16 +40,6 @@ public class SC_TC07_VerifyShoppingCart_OrderSummary_EasyPayment_CheckoutSection
 		getShoppingCartThreadLocal().verifyOrderSummaryBusinessLogic(itemAmount,savingPrice,subTotal,mapOrderSummary,null);
 		getShoppingCartThreadLocal().verifyOrderSummaryContents();
 
-		reporter.reportLog("Verify EasyPayment section content");
-		mapOrderSummary=getShoppingCartThreadLocal().getOrderSummaryDesc();
-		List<String> lstOptionText=getShoppingCartThreadLocal().getInstallmentOptions();
-		getShoppingCartThreadLocal().setInstallmentSetting(lstOptionText.get(1));
-		getShoppingCartThreadLocal().verifyInstallmentBusinessLogic(mapOrderSummary);
-		getShoppingCartThreadLocal().verifyEasyPaymentContents();
-
-		reporter.reportLog("Verify checkout section contents");
-		getShoppingCartThreadLocal().verifyCheckOutContents(false);
-
 	}
 }
 
