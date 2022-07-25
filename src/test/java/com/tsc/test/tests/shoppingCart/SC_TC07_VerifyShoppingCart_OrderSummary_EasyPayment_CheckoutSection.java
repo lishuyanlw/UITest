@@ -40,6 +40,8 @@ public class SC_TC07_VerifyShoppingCart_OrderSummary_EasyPayment_CheckoutSection
 		getShoppingCartThreadLocal().verifyOrderSummaryBusinessLogic(itemAmount,savingPrice,subTotal,mapOrderSummary,null);
 		getShoppingCartThreadLocal().verifyOrderSummaryContents();
 
+		reporter.reportLog("Verify checkout section contents");
+		getShoppingCartThreadLocal().verifyCheckOutContents(false);
 	}
 }
 

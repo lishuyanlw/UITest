@@ -38,14 +38,13 @@ public class SC_TC06_VerifyShoppingCart_EasyPayment_ChangeInstallmentNumberAndCh
 		int loopSize=lstOptionText.size();
 		for(int i=1;i<loopSize;i++){
 			getShoppingCartThreadLocal().setInstallmentSetting(lstOptionText.get(i));
+			int easyPayNumber = Integer.valueOf(lstOptionText.get(i));
+			getShoppingCartThreadLocal().waitForCondition(Driver->{return
+					getShoppingCartThreadLocal().getFutureMonthlyPaymentNumber()==easyPayNumber-1;},20000);
 			reporter.reportLog("Verify installment number "+ lstOptionText.get(i));
 			getShoppingCartThreadLocal().verifyInstallmentBusinessLogic(mapOrderSummary);
 			getShoppingCartThreadLocal().verifyEasyPaymentContents();
 		}
-
-		reporter.reportLog("Verify checkout section contents");
-		getShoppingCartThreadLocal().verifyCheckOutContents(false);
-
 	}
 }
 

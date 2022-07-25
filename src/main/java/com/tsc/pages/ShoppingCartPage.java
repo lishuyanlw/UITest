@@ -1479,7 +1479,7 @@ public class ShoppingCartPage extends BasePage {
 		float eachInstallmentPayment=subTotalOrderSummary/totalInstallmentNumber;
 		float calTodayPayment=eachInstallmentPayment+shippingPriceOrderSummary+taxOrderSummary;
 		if(Math.abs(calTodayPayment-todayPayment)<0.1){
-			reporter.reportLogPass("The calculated today payment is equal to the today payment in installment section");
+			reporter.reportLogPass("The calculated today payment is equal to the today payment in installment section: "+todayPayment);
 		}
 		else{
 			reporter.reportLogFail("The calculated today payment:"+calTodayPayment+" is not equal to the today payment:"+todayPayment+" in installment section");
@@ -1487,7 +1487,7 @@ public class ShoppingCartPage extends BasePage {
 
 		float calLeftPayment=totalPriceOrderSummary-todayPayment;
 		if(Math.abs(calLeftPayment-leftPayment)<0.1){
-			reporter.reportLogPass("The calculated left payment is equal to the left payment in installment section");
+			reporter.reportLogPass("The calculated left payment is equal to the left payment in installment section: "+leftPayment);
 		}
 		else{
 			reporter.reportLogFail("The calculated left payment:"+calLeftPayment+" is not equal to the left payment:"+leftPayment+" in installment section");
@@ -1495,7 +1495,7 @@ public class ShoppingCartPage extends BasePage {
 
 		int calFutureMonthlyPaymentNumber=totalInstallmentNumber-1;
 		if(calFutureMonthlyPaymentNumber==futureMonthlyPaymentNumber){
-			reporter.reportLogPass("The calculated future monthly payment number is equal to the future monthly payment number in installment section");
+			reporter.reportLogPass("The calculated future monthly payment number is equal to the future monthly payment number in installment section: "+futureMonthlyPaymentNumber);
 		}
 		else{
 			reporter.reportLogFail("The calculated future monthly payment number:"+calFutureMonthlyPaymentNumber+" is not equal to the future monthly payment number:"+futureMonthlyPaymentNumber+" in installment section");
@@ -1503,7 +1503,7 @@ public class ShoppingCartPage extends BasePage {
 
 		float calFutureMonthlyPayment=calLeftPayment/futureMonthlyPaymentNumber;
 		if(Math.abs(calFutureMonthlyPayment-futureMonthlyPayment)<0.1){
-			reporter.reportLogPass("The calculated future monthly payment is equal to the future monthly payment in installment section");
+			reporter.reportLogPass("The calculated future monthly payment is equal to the future monthly payment in installment section: "+futureMonthlyPayment);
 		}
 		else{
 			reporter.reportLogFail("The calculated future monthly payment:"+calFutureMonthlyPayment+" is equal to the future monthly payment:"+futureMonthlyPayment+" in installment section");
@@ -2381,4 +2381,11 @@ public class ShoppingCartPage extends BasePage {
 
 	}
 
+	/**
+	 * This function returns the future monthly payment number left
+	 * @return - int - future monthly payment number
+	 */
+	public int getFutureMonthlyPaymentNumber(){
+		return Integer.valueOf(this.lblCartEasyPayFutureMonthlyPaymentTitle.getText().trim().split(" ")[0]);
+	}
 }
