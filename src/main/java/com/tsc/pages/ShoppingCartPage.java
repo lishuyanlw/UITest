@@ -17,6 +17,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
 import java.io.IOException;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -1395,9 +1397,11 @@ public class ShoppingCartPage extends BasePage {
 	 */
 	public float getCalculatedProvinceTax(float subTotal,String province,Map<String,Object> provincialTaxRate){
 		float calProvinceTax=0.0f;
+		final DecimalFormat df = new DecimalFormat("0.00");
+		df.setRoundingMode(RoundingMode.UP);
 		for(Map.Entry<String,Object> entry:provincialTaxRate.entrySet()){
 			if(entry.getKey().equalsIgnoreCase(province)) {
-				calProvinceTax = subTotal*Float.parseFloat(entry.getValue().toString())/100.0f;
+				calProvinceTax = Float.parseFloat(df.format(subTotal*Float.parseFloat(entry.getValue().toString())/100.0f));
 				break;
 			}
 		}
@@ -1411,8 +1415,14 @@ public class ShoppingCartPage extends BasePage {
 	public void setProvinceCodeForEstimatedTax(String provinceCode){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectCartPricingShippingEstimateTaxProvince);
 		Select select = new Select(this.selectCartPricingShippingEstimateTaxProvince);
+		String lsTextSelectedOptionBefore=select.getFirstSelectedOption().getText();
 		select.selectByVisibleText(provinceCode);
-		this.applyStaticWait(5*this.getStaticWaitForApplication());
+		String lsTextSelectedOptionAfter=select.getFirstSelectedOption().getText();
+		//Checking this condition and applying static wait as there is no other check for waitForConditoin
+		//method. Since two province can have same tax rate and since sub-total is same, tax will also be same
+		if(!lsTextSelectedOptionBefore.equalsIgnoreCase(lsTextSelectedOptionAfter)){
+			this.applyStaticWait(5*this.getStaticWaitForApplication());
+		}
 	}
 
 	/**
