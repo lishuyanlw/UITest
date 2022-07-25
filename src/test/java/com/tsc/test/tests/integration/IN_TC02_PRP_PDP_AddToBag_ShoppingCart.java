@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class IN_TC02_PRP_PDP_AddToBag_ShoppingCart extends BaseTest {
     /*
-     *CER-810
+     *CER-845
      */
     @Test(groups={"Integration","Regression"})
     public void IN_TC02_PRP_PDP_AddToBag_ShoppingCart() throws IOException {

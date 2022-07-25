@@ -1334,12 +1334,18 @@ public class ShoppingCartPage extends BasePage {
 
 		float wasPriceOrderSummary= (float) orderSummaryMap.get("wasPrice");
 		float nowPriceOrderSummary=(float) orderSummaryMap.get("nowPrice");
-		float calSavePriceOrderSummary=Math.abs(wasPriceOrderSummary-nowPriceOrderSummary);
-		if(Math.abs(calSavePriceOrderSummary-savePriceShoppingCart)<0.01){
-			reporter.reportLogPass("The calculated saving price in OrderSummary section is equal to the one in Shopping Cart item section");
+		float calSavePriceOrderSummary;
+		if(wasPriceOrderSummary<0.01){
+			calSavePriceOrderSummary=0.0f;
 		}
 		else{
-			reporter.reportLogFail("The calculated saving price:"+calSavePriceOrderSummary+" in OrderSummary section is not equal to the one:"+savePriceShoppingCart+" in Shopping Cart item section");
+			calSavePriceOrderSummary=Math.abs(wasPriceOrderSummary-nowPriceOrderSummary);
+			if(Math.abs(calSavePriceOrderSummary-savePriceShoppingCart)<0.01){
+				reporter.reportLogPass("The calculated saving price in OrderSummary section is equal to the one in Shopping Cart item section");
+			}
+			else{
+				reporter.reportLogFail("The calculated saving price:"+calSavePriceOrderSummary+" in OrderSummary section is not equal to the one:"+savePriceShoppingCart+" in Shopping Cart item section");
+			}
 		}
 
 		float savePriceOrderSummary=(float) orderSummaryMap.get("savePrice");
