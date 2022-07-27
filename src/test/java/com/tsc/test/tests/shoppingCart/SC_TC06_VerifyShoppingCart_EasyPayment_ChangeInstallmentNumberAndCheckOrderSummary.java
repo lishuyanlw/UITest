@@ -13,7 +13,7 @@ public class SC_TC06_VerifyShoppingCart_EasyPayment_ChangeInstallmentNumberAndCh
 	/*
 	 * CER-851
 	 */
-	@Test(groups={"Regression","Regression_Mobile","Regression_Tablet","SauceTunnelTest"})
+	@Test(groups={"Regression","ShoppingCart","SauceTunnelTest"})
 	public void SC_TC06_VerifyShoppingCart_EasyPayment_ChangeInstallmentNumberAndCheckOrderSummary() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 

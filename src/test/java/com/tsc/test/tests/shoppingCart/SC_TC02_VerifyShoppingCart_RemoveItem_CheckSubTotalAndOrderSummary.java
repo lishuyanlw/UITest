@@ -21,7 +21,7 @@ public class SC_TC02_VerifyShoppingCart_RemoveItem_CheckSubTotalAndOrderSummary 
 	/*
 	 * CER-849
 	 */
-	@Test(groups={"Regression","Regression_Mobile","Regression_Tablet","SauceTunnelTest"})
+	@Test(groups={"Regression","ShoppingCart","SauceTunnelTest"})
 	public void SC_TC02_VerifyShoppingCart_RemoveItem_CheckSubTotalAndOrderSummary() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 

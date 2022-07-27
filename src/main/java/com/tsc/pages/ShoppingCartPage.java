@@ -1368,13 +1368,14 @@ public class ShoppingCartPage extends BasePage {
 
 		float tax=(float) orderSummaryMap.get("tax");
 		if(provincialTaxRate!=null){
+			final DecimalFormat df = new DecimalFormat("0.00");
 			String province=orderSummaryMap.get("province").toString();
-			float calProvinceTax=getCalculatedProvinceTax(subTotal,province,provincialTaxRate);
-			if(Math.abs(calProvinceTax-tax)<0.01){
+			float calProvinceTax=getCalculatedProvinceTax(subTotal,(float) orderSummaryMap.get("nowPrice"),province,provincialTaxRate);
+			if(Math.abs(Float.parseFloat(df.format(calProvinceTax-tax)))<0.01){
 				reporter.reportLogPass("The calculated tax in OrderSummary section is equal to the tax in OrderSummary section");
 			}
 			else{
-				reporter.reportLogFail("The calculated tax:"+calProvinceTax+" in OrderSummary section is not equal to the tax:"+tax+" in OrderSummary section");
+				reporter.reportLogFail("The calculated tax:"+calProvinceTax+" in OrderSummary section for province: "+province+" is not equal to the tax:"+tax+" in OrderSummary section");
 			}
 		}
 
@@ -1395,13 +1396,14 @@ public class ShoppingCartPage extends BasePage {
 	 * @param - Map<String,Object> - provincialTaxRate
 	 * @return - float - province tax
 	 */
-	public float getCalculatedProvinceTax(float subTotal,String province,Map<String,Object> provincialTaxRate){
+	public float getCalculatedProvinceTax(float subTotal,float shippingAmount, String province,Map<String,Object> provincialTaxRate){
 		float calProvinceTax=0.0f;
 		final DecimalFormat df = new DecimalFormat("0.00");
 		df.setRoundingMode(RoundingMode.UP);
 		for(Map.Entry<String,Object> entry:provincialTaxRate.entrySet()){
 			if(entry.getKey().equalsIgnoreCase(province)) {
 				calProvinceTax = Float.parseFloat(df.format(subTotal*Float.parseFloat(entry.getValue().toString())/100.0f));
+				calProvinceTax = calProvinceTax + Float.parseFloat(df.format(shippingAmount*Float.parseFloat(entry.getValue().toString())/100.0f));
 				break;
 			}
 		}

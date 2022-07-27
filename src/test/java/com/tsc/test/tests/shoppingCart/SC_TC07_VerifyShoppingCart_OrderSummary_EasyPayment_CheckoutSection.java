@@ -13,7 +13,7 @@ public class SC_TC07_VerifyShoppingCart_OrderSummary_EasyPayment_CheckoutSection
 	/*
 	 * CER-846
 	 */
-	@Test(groups={"Regression","Regression_Mobile","Regression_Tablet","SauceTunnelTest"})
+	@Test(groups={"Regression","ShoppingCart","SauceTunnelTest"})
 	public void SC_TC07_VerifyShoppingCart_OrderSummary_EasyPayment_CheckoutSection() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 

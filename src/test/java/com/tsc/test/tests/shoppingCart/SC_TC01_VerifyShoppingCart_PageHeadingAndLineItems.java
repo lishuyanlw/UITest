@@ -21,7 +21,7 @@ public class SC_TC01_VerifyShoppingCart_PageHeadingAndLineItems extends BaseTest
 	/*
 	 * CER-844
 	 */
-	@Test(groups={"Regression","Regression_Mobile","Regression_Tablet","SauceTunnelTest"})
+	@Test(groups={"Regression","ShoppingCart","SauceTunnelTest"})
 	public void SC_TC01_VerifyShoppingCart_PageHeadingAndLineItems() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 

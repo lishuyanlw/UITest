@@ -13,7 +13,7 @@ public class SC_TC08_VerifyShoppingCart_BackToShopping extends BaseTest{
 	/*
 	 * CER-857
 	 */
-	@Test(groups={"Regression","Regression_Mobile","Regression_Tablet","SauceTunnelTest"})
+	@Test(groups={"Regression","ShoppingCart","SauceTunnelTest"})
 	public void SC_TC08_VerifyShoppingCart_BackToShopping() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 
