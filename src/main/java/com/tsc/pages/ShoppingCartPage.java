@@ -1371,7 +1371,7 @@ public class ShoppingCartPage extends BasePage {
 			final DecimalFormat df = new DecimalFormat("0.00");
 			String province=orderSummaryMap.get("province").toString();
 			float calProvinceTax=getCalculatedProvinceTax(subTotal,(float) orderSummaryMap.get("nowPrice"),province,provincialTaxRate);
-			if(Math.abs(Float.parseFloat(df.format(calProvinceTax-tax)))<0.01){
+			if(Math.abs(Float.parseFloat(df.format(calProvinceTax-tax)))<0.02){
 				reporter.reportLogPass("The calculated tax in OrderSummary section is equal to the tax in OrderSummary section");
 			}
 			else{
@@ -1423,6 +1423,7 @@ public class ShoppingCartPage extends BasePage {
 		//Checking this condition and applying static wait as there is no other check for waitForConditoin
 		//method. Since two province can have same tax rate and since sub-total is same, tax will also be same
 		if(!lsTextSelectedOptionBefore.equalsIgnoreCase(lsTextSelectedOptionAfter)){
+			this.waitForPageToLoad();
 			this.applyStaticWait(5*this.getStaticWaitForApplication());
 		}
 	}
