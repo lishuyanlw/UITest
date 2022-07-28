@@ -52,6 +52,7 @@ public class PD_TC15_VerifyProductDetail_Accordions extends BaseTest {
 					reporter.reportLog("Review tab review list contents");
 					getProductDetailPageThreadLocal().verifyReviewTabPerReviewListContents();
 
+					getProductDetailPageThreadLocal().chooseReviewSortingOption("Highest Rated");
 					String lsMsg = getProductDetailPageThreadLocal().checkReviewRateSortingBy(true);
 					if (lsMsg.isEmpty() || lsMsg.contains("less than 2")) {
 						reporter.reportLogPass("Sorting by Highest rated passed!");
