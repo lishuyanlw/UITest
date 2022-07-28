@@ -1,10 +1,7 @@
 package com.tsc.pages;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -424,7 +421,7 @@ public class ProductDetailPage extends BasePage {
 	public WebElement lblQuantityLeft;
 
 	//For new designed Add To Bag button
-	@FindBy(xpath = "//section[@class='pdp-description']//button[@class='pdp-description__add-to-bag__add-to-bag-button']")
+	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__add-to-bag']//button[@class='pdp-description__add-to-bag__add-to-bag-button']")
 	public WebElement btnAddToBag;
 
 	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__advance-order']")
@@ -816,14 +813,16 @@ public class ProductDetailPage extends BasePage {
 	 */
 	public String getAutoPlayVideoToolTipPopupMsg() {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkAutoPlayVideoToolTip);
-		this.getReusableActionsInstance().clickIfAvailable(this.lnkAutoPlayVideoToolTip);
+		this.clickWebElementUsingJS(this.lnkAutoPlayVideoToolTip);
+		//this.getReusableActionsInstance().clickIfAvailable(this.lnkAutoPlayVideoToolTip);
 		this.getReusableActionsInstance().staticWait(3*this.getStaticWaitForApplication());
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAutoPlayVideoToolTipPopupMsg);
 		String lsText=this.lblAutoPlayVideoToolTipPopupMsg.getText().trim();
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnAutoPlayVideoToolTipPopupMsgClose);
-		this.getReusableActionsInstance().clickIfAvailable(this.btnAutoPlayVideoToolTipPopupMsgClose);
+		this.clickWebElementUsingJS(this.btnAutoPlayVideoToolTipPopupMsgClose);
+		//this.getReusableActionsInstance().clickIfAvailable(this.btnAutoPlayVideoToolTipPopupMsgClose);
 		this.getReusableActionsInstance().staticWait(3*this.getStaticWaitForApplication());
 
 		return lsText;
@@ -920,7 +919,8 @@ public class ProductDetailPage extends BasePage {
 		String lsText,lsSelectedStyle;
 		for(WebElement item:this.lstThumbnailImageButtonWithoutVideoList) {
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-			item.click();
+			this.clickWebElementUsingJS(item);
+			//item.click();
 			//Keep it to wait for clicking action result
 			this.getReusableActionsInstance().staticWait(500);
 
@@ -980,7 +980,8 @@ public class ProductDetailPage extends BasePage {
 
 		String lsFirstImageSrcBefore=this.lstThumbnailImageList.get(0).findElement(By.xpath(".//img")).getAttribute("src");
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnThumbnailPrev);
-		this.getReusableActionsInstance().clickIfAvailable(this.btnThumbnailPrev);
+		this.clickWebElementUsingJS(this.btnThumbnailPrev);
+		//this.getReusableActionsInstance().clickIfAvailable(this.btnThumbnailPrev);
 		//Keep it to wait for clicking action result
 		this.getReusableActionsInstance().staticWait(300);
 		String lsFirstIamgeSrcAfter=this.lstThumbnailImageList.get(0).findElement(By.xpath(".//img")).getAttribute("src");
@@ -1002,7 +1003,8 @@ public class ProductDetailPage extends BasePage {
 		int imageCount=this.lstThumbnailImageList.size();
 		String lsLastImageSrcBefore=this.lstThumbnailImageList.get(0).findElement(By.xpath(".//img")).getAttribute("src");
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnThumbnailNext);
-		this.getReusableActionsInstance().clickIfAvailable(this.btnThumbnailNext);
+		this.clickWebElementUsingJS(this.btnThumbnailNext);
+		//this.getReusableActionsInstance().clickIfAvailable(this.btnThumbnailNext);
 		//Keep it to wait for clicking action result
 		this.getReusableActionsInstance().staticWait(300);
 		String lsLastIamgeSrcAfter=this.lstThumbnailImageList.get(0).findElement(By.xpath(".//img")).getAttribute("src");
@@ -1618,9 +1620,15 @@ public class ProductDetailPage extends BasePage {
 		if(this.judgeStyleDisplayModeIsDropdownMenu()) {
 			Select selectStyle= new Select(this.selectProductStyle);
 			loopSize=this.lstDropdownProductStyle.size();
-			for(int i=0;i<loopSize;i++) {
+			List<String> dropDownText = new ArrayList<>();
+			for(WebElement element:this.lstDropdownProductStyle){
+				dropDownText.add(element.getText());
+			}
+			//for(int i=0;i<loopSize;i++) {
+			for(int i=0;i<dropDownText.size();i++){
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectProductStyle);
-				selectStyle.selectByIndex(i);
+				//selectStyle.selectByIndex(i);
+				selectStyle.selectByVisibleText(dropDownText.get(i));
 				this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 				lsStyle=this.getCurrentSwatchStyle();
 
@@ -2224,7 +2232,8 @@ public class ProductDetailPage extends BasePage {
 		WebElement item=this.lstBreadCrumbNav.get(this.lstBreadCrumbNav.size()-1);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 		this.getReusableActionsInstance().scrollToElement(item);
-		item.click();
+		this.clickWebElementUsingJS(item);
+		//item.click();
 
 		(new ProductResultsPage(this.getDriver())).waitForPageLoading();
 
@@ -2262,7 +2271,8 @@ public class ProductDetailPage extends BasePage {
 		if(this.checkIfAutoPlayVideoStatusIsON()) {
 			//Set AutoPlayVideo off
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnAutoPlayVideo);
-			this.getReusableActionsInstance().clickIfAvailable(this.btnAutoPlayVideo);
+			this.clickWebElementUsingJS(this.btnAutoPlayVideo);
+			//this.getReusableActionsInstance().clickIfAvailable(this.btnAutoPlayVideo);
 			this.waitForCondition(Driver->{return !this.checkIfAutoPlayVideoStatusIsON();},2000);
 			this.getDriver().navigate().refresh();
 			this.waitForPageToLoad();
@@ -2364,7 +2374,8 @@ public class ProductDetailPage extends BasePage {
 			}
 
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnProductEasyPay);
-			this.getReusableActionsInstance().clickIfAvailable(this.btnProductEasyPay);
+			//this.getReusableActionsInstance().clickIfAvailable(this.btnProductEasyPay);
+			this.clickWebElementUsingJS(this.btnProductEasyPay);
 			this.waitForCondition(Driver->{return this.lblProductEasyPayPopupHeading.isDisplayed();},10000);
 			if(this.getReusableActionsInstance().isElementVisible(this.btnProductEasyPayPopupClose)){
 				reporter.reportLogPass("The close button for easyPay popup window is displaying correctly");
@@ -2661,7 +2672,8 @@ public class ProductDetailPage extends BasePage {
 
 			String lsLinkPrevBefore=this.lstGetTheLookItem.get(0).findElement(this.byGetTheLookProductLink).getAttribute("data-link-title");
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnGetTheLookPrev);
-			this.btnGetTheLookPrev.click();
+			this.clickWebElementUsingJS(this.btnGetTheLookPrev);
+			//this.btnGetTheLookPrev.click();
 			this.waitForCondition(Driver->{return !this.lstGetTheLookItem.get(0).findElement(this.byGetTheLookProductLink).getAttribute("data-link-title").equalsIgnoreCase(lsLinkPrevBefore);}, 10000);
 
 			String lsLinkAfter=this.lstGetTheLookItem.get(0).findElement(this.byGetTheLookProductLink).getAttribute("data-link-title");
@@ -2669,7 +2681,8 @@ public class ProductDetailPage extends BasePage {
 
 			String lsLinkNextBefore=this.lstGetTheLookItem.get(this.lstGetTheLookItem.size()-1).findElement(this.byGetTheLookProductLink).getAttribute("data-link-title");
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnGetTheLookNext);
-			this.btnGetTheLookNext.click();
+			this.clickWebElementUsingJS(this.btnGetTheLookNext);
+			//this.btnGetTheLookNext.click();
 			this.waitForCondition(Driver->{return !this.lstGetTheLookItem.get(this.lstGetTheLookItem.size()-1).findElement(this.byGetTheLookProductLink).getAttribute("data-link-title").equalsIgnoreCase(lsLinkNextBefore);}, 10000);
 
 			lsLinkAfter=this.lstGetTheLookItem.get(this.lstGetTheLookItem.size()-1).findElement(this.byGetTheLookProductLink).getAttribute("data-link-title");
@@ -2700,7 +2713,8 @@ public class ProductDetailPage extends BasePage {
 						reporter.reportLogFail("Product Overview Accordion is not expanded by default for product");
 				}
 				else{
-					this.getReusableActionsInstance().clickIfAvailable(accordionDisplayIcon);
+					//this.getReusableActionsInstance().clickIfAvailable(accordionDisplayIcon);
+					this.clickWebElementUsingJS(accordionDisplayIcon);
 				}
 
 				//Verify Accordion Content
@@ -2716,6 +2730,7 @@ public class ProductDetailPage extends BasePage {
 	 * @param - accordion - WebElement for accordion
 	 */
 	public void verifyAccordionContent(WebElement accordion) {
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(accordion);
 		WebElement accordionContentWebElement = accordion.findElement(this.accordionContents);
 		String accordionName = accordion.findElement(this.accordionHeading).getText();
 		if(this.getChildElementCount(accordionContentWebElement)>0){
@@ -2744,7 +2759,8 @@ public class ProductDetailPage extends BasePage {
 			if(accordionName.contains("Chart")){
 				WebElement accordionDisplayIcon = accordion.findElement(this.accordionPlusMinusIcon);
 				if(accordionDisplayIcon.getAttribute("class").contains("minus-icon")){
-					this.getReusableActionsInstance().clickIfAvailable(accordionDisplayIcon);
+					//this.getReusableActionsInstance().clickIfAvailable(accordionDisplayIcon);
+					this.clickWebElementUsingJS(accordionDisplayIcon);
 					this.applyStaticWait(2000);
 					if(accordionDisplayIcon.getAttribute("class").contains("plus-icon"))
 						reporter.reportLogPass("Sizing Chart section is closed as expected");
@@ -2757,7 +2773,8 @@ public class ProductDetailPage extends BasePage {
 		//Navigating to Sizing Chart to click and verify if user is navigating to Sizing Chart section
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkSizingChart);
 		waitForCondition(Driver->{return this.lnkSizingChart.isDisplayed();},3000);
-		this.getReusableActionsInstance().clickIfAvailable(this.lnkSizingChart);
+		//this.getReusableActionsInstance().clickIfAvailable(this.lnkSizingChart);
+		this.clickWebElementUsingJS(this.lnkSizingChart);
 
 		//Verification
 		for(WebElement accordion:this.lstProductAccordions){
@@ -2808,7 +2825,8 @@ public class ProductDetailPage extends BasePage {
 		reporter.softAssert(!this.getElementHref(this.lnkBrandName).isEmpty(),"The Brand name link is not empty","The Brand name link is empty");
 		reporter.softAssert(!this.getElementText(this.lnkBrandName).isEmpty(),"TheBrand name text is not empty","The Brand name text is empty");
 		String lsBrandName=this.lnkBrandName.getText().split(":")[1].trim();
-		this.lnkBrandName.click();
+		this.clickWebElementUsingJS(this.lnkBrandName);
+		//this.lnkBrandName.click();
 		this.waitForPageToLoad();
 
 		reporter.softAssert(this.URL().toLowerCase().contains("productresults"),"The page has been switched to product results page","The page has not been switched to product results page");
@@ -3449,12 +3467,14 @@ public class ProductDetailPage extends BasePage {
 	public void verifyZoomingImageAction(){
 		WebElement item=lstThumbnailImageButtonWithoutVideoList.get(0);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-		item.click();
+		this.clickWebElementUsingJS(item);
+		//item.click();
 		this.applyStaticWait(2*this.getStaticWaitForApplication());
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lnkCurrentZoomImage);
 		lnkCurrentZoomImage.click();
-		this.applyStaticWait(2*this.getStaticWaitForApplication());
+		//this.applyStaticWait(2*this.getStaticWaitForApplication());
+		this.waitForCondition(Driver->{return this.currentZoomImageIndicator.getAttribute("class").contains("swiper-slide-zoomed");},7000);
 		if(checkImageZoomingStatus()){
 			reporter.reportLogPass("Zooming out action is working");
 		}
@@ -3656,20 +3676,20 @@ public class ProductDetailPage extends BasePage {
 
 			int reviewListAmount=lstReviewTabPerReviewList.size();
 			if(reviewHisItemCount==reviewListAmount){
-				reporter.reportLogPass("The filtering review amount is equal to the related review histogram item count");
+				reporter.reportLogPass("The filtering review amount: "+reviewHisItemCount+" is equal to the related review histogram item count: "+reviewListAmount);
 			}
 			else{
-				reporter.reportLogFailWithScreenshot("The filtering review amount is not equal to the related review histogram item count");
+				reporter.reportLogFailWithScreenshot("The filtering review amount: "+reviewHisItemCount+" is not equal to the related review histogram item count: "+reviewListAmount);
 			}
 
 			for(WebElement element:this.lstReviewTabPerReviewList){
 				List<WebElement> lstReviewStar=element.findElements(byReviewTabStarList);
 				reviewRate=prp.getProductItemReviewNumberAmountFromStarImage(lstReviewStar)/100;
 				if(reviewRate==reviewHisRate){
-					reporter.reportLogPass("The review rate of filtering item is equal to the related review histogram item review rate");
+					reporter.reportLogPass("The review rate: "+reviewRate+" of filtering item is equal to the related review histogram item review rate: "+reviewHisRate);
 				}
 				else{
-					reporter.reportLogFailWithScreenshot("The review rate of filtering item:"+reviewRate+" is not equal to the related review histogram item review rate:"+reviewHisRate);
+					reporter.reportLogFailWithScreenshot("The review rate of filtering item:"+reviewRate+" is not equal to the related review histogram item review rate: "+reviewHisRate);
 				}
 			}
 		}
@@ -3677,7 +3697,9 @@ public class ProductDetailPage extends BasePage {
 		//Removing selected histogram stars for further verification
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblReviewHistogramCrossButton);
 		this.getReusableActionsInstance().scrollToElement(this.lblReviewHistogramCrossButton);
-		this.getReusableActionsInstance().clickIfAvailable(this.lblReviewHistogramCrossButton);
+		//this.getReusableActionsInstance().clickIfAvailable(this.lblReviewHistogramCrossButton);
+		this.clickWebElementUsingJS(this.lblReviewHistogramCrossButton);
+
 		this.waitForPageToLoad();
 	}
 
@@ -3847,7 +3869,8 @@ public class ProductDetailPage extends BasePage {
 		if(waitForCondition(Driver->{return lblReviewPicturesInHistogram.isDisplayed();},5000)){
 			reporter.reportLogPassWithScreenshot("Review Images are displayed in Histogram section of reviews");
 			//Verifying click functionality for image
-			this.lblReviewPicturesInHistogram.findElement(By.xpath("./button")).click();
+			//this.lblReviewPicturesInHistogram.findElement(By.xpath("./button")).click();
+			this.clickWebElementUsingJS(this.lblReviewPicturesInHistogram.findElement(By.xpath("./button")));
 			waitForCondition(Driver->{return this.lblReviewImagePopUpModelCloseButton.isDisplayed() &&
 							this.lblReviewImagePopUpModelCloseButton.isEnabled();},6000);
 
@@ -3885,12 +3908,14 @@ public class ProductDetailPage extends BasePage {
 			reporter.reportLog("Verifying Flag Image is a link on review image pop-up");
 			this.getReusableActionsInstance().scrollToElement(this.lnlFlagImageOnPopUpWindow);
 			if(this.lnlFlagImageOnPopUpWindow.isEnabled()){
-				this.lnlFlagImageOnPopUpWindow.click();
+				//this.lnlFlagImageOnPopUpWindow.click();
+				this.clickWebElementUsingJS(this.lnlFlagImageOnPopUpWindow);
 				waitForCondition(Driver->{return this.lblFlagImageEmailText.isEnabled() &&
 								this.lblFlagImageEmailText.isDisplayed();},5000);
 				reporter.reportLogPassWithScreenshot("Flag Image is a link and navigates to pop-up window on clicking as expected");
 				this.getReusableActionsInstance().scrollToElement(this.btnFlagImagePopUpWindowCancelButton);
-				this.getReusableActionsInstance().clickIfAvailable(this.btnFlagImagePopUpWindowCancelButton);
+				//this.getReusableActionsInstance().clickIfAvailable(this.btnFlagImagePopUpWindowCancelButton);
+				this.clickWebElementUsingJS(this.btnFlagImagePopUpWindowCancelButton);
 				waitForCondition(Driver -> {return this.lnlFlagImageOnPopUpWindow.isDisplayed() &&
 								this.lnlFlagImageOnPopUpWindow.isEnabled();},6000);
 
@@ -3899,7 +3924,8 @@ public class ProductDetailPage extends BasePage {
 
 			reporter.reportLog("Verifying Read Review is a link on review image pop-up");
 			this.getReusableActionsInstance().scrollToElement(this.btnReadReviewOnPopUpWindowBtn);
-			this.getReusableActionsInstance().clickIfAvailable(this.btnReadReviewOnPopUpWindowBtn);
+			//this.getReusableActionsInstance().clickIfAvailable(this.btnReadReviewOnPopUpWindowBtn);
+			this.clickWebElementUsingJS(this.btnReadReviewOnPopUpWindowBtn);
 			if(waitForCondition(Driver->{return this.btnBackToMediaBtn.isEnabled() &&
 				this.btnBackToMediaBtn.isDisplayed();},6000)){
 				reporter.reportLogPassWithScreenshot("Read Review pop up window is displayed as expected");
@@ -3921,7 +3947,8 @@ public class ProductDetailPage extends BasePage {
 
 				//Navigating back to pop-up window
 				this.getReusableActionsInstance().scrollToElement(this.btnBackToMediaBtn);
-				this.getReusableActionsInstance().clickIfAvailable(this.btnBackToMediaBtn);
+				//this.getReusableActionsInstance().clickIfAvailable(this.btnBackToMediaBtn);
+				this.clickWebElementUsingJS(this.btnBackToMediaBtn);
 				waitForCondition(Driver->{return this.lblReviewImagePopUpModelCloseButton.isDisplayed() &&
 						this.lblReviewImagePopUpModelCloseButton.isEnabled();},6000);
 			}else
@@ -3929,7 +3956,8 @@ public class ProductDetailPage extends BasePage {
 
 			//Closing pop-up window
 			this.getReusableActionsInstance().scrollToElement(this.lblReviewImagePopUpModelCloseButton);
-			this.getReusableActionsInstance().clickIfAvailable(this.lblReviewImagePopUpModelCloseButton);
+			//this.getReusableActionsInstance().clickIfAvailable(this.lblReviewImagePopUpModelCloseButton);
+			this.clickWebElementUsingJS(this.lblReviewImagePopUpModelCloseButton);
 			waitForCondition(Driver->{return this.lstReviewTabHistogramItem.get(0).isDisplayed() &&
 					this.lstReviewTabHistogramItem.get(0).isEnabled();},5000);
 		}
