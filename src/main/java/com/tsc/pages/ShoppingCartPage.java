@@ -1458,13 +1458,16 @@ public class ShoppingCartPage extends BasePage {
 	 * @param - Map<String,Object> - orderSummaryMap
 	 */
 	public void verifyInstallmentBusinessLogic(Map<String,Object> orderSummaryMap){
-		String lsText;
+		String lsText,lsInstallmentNumber = null;
 		int totalInstallmentNumber;
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectCartEasyPayInstallmentNumber);
 		Select select = new Select(this.selectCartEasyPayInstallmentNumber);
-		String lsInstallmentNumber=select.getFirstSelectedOption().getText().trim();
-		if(lsInstallmentNumber.equalsIgnoreCase("-")){
+		if(select.getOptions().size()>=2){
+			lsInstallmentNumber = select.getOptions().get(1).getText();
+			select.selectByVisibleText(lsInstallmentNumber);
+		}
+		if(lsInstallmentNumber==null || lsInstallmentNumber.equalsIgnoreCase("-")){
 			reporter.reportLogFail("Need choose correct installment option to verify it");
 			return;
 		}

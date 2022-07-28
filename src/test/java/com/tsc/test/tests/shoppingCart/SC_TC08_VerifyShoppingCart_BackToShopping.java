@@ -14,7 +14,7 @@ public class SC_TC08_VerifyShoppingCart_BackToShopping extends BaseTest{
 	 * CER-857
 	 */
 	@Test(groups={"Regression","ShoppingCart","SauceTunnelTest"})
-	public void SC_TC08_VerifyShoppingCart_BackToShopping() throws IOException {
+	public void SC_TC08_ShoppingCart_BackToShopping() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 
 		String lsUserName=TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();

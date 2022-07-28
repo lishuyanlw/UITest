@@ -9,12 +9,12 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-public class SC_TC06_VerifyShoppingCart_EasyPayment_ChangeInstallmentNumberAndCheckOrderSummary extends BaseTest{
+public class SC_TC06_VerifyShoppingCart_ChangeChangeInstallmentNumber_And_OrderSummary extends BaseTest{
 	/*
 	 * CER-851
 	 */
 	@Test(groups={"Regression","ShoppingCart","SauceTunnelTest"})
-	public void SC_TC06_VerifyShoppingCart_EasyPayment_ChangeInstallmentNumberAndCheckOrderSummary() throws IOException {
+	public void SC_TC06_VerifyShoppingCart_ChangeChangeInstallmentNumber_And_OrderSummary() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 
 		String lsUserName=TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
