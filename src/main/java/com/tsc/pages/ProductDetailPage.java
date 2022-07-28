@@ -219,6 +219,9 @@ public class ProductDetailPage extends BasePage {
 
 	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__form__auto-delivery__selections']/select")
 	public WebElement drpProductDeliveryOptionsMenu;
+
+	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__form__auto-delivery__selections']/select/option")
+	public List<WebElement> lstProductDeliveryOptionList;
 	//All changes for new xpath as per design change are ended here
 
 	//Style part
@@ -2417,6 +2420,7 @@ public class ProductDetailPage extends BasePage {
 		Select select= new Select(drpProductDeliveryOptionsMenu);
 		String lsMenu,lsProductName;
 		for(int i=0;i<select.getOptions().size();i++){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblProductEasyPay);
 			select.selectByIndex(i);
 			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 			lsMenu=select.getFirstSelectedOption().getText().trim();
