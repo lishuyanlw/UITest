@@ -17,6 +17,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
 import java.io.IOException;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -1366,13 +1368,14 @@ public class ShoppingCartPage extends BasePage {
 
 		float tax=(float) orderSummaryMap.get("tax");
 		if(provincialTaxRate!=null){
+			final DecimalFormat df = new DecimalFormat("0.00");
 			String province=orderSummaryMap.get("province").toString();
-			float calProvinceTax=getCalculatedProvinceTax(subTotal,province,provincialTaxRate);
-			if(Math.abs(calProvinceTax-tax)<0.01){
+			float calProvinceTax=getCalculatedProvinceTax(subTotal,(float) orderSummaryMap.get("nowPrice"),province,provincialTaxRate);
+			if(Math.abs(Float.parseFloat(df.format(calProvinceTax-tax)))<0.02){
 				reporter.reportLogPass("The calculated tax in OrderSummary section is equal to the tax in OrderSummary section");
 			}
 			else{
-				reporter.reportLogFail("The calculated tax:"+calProvinceTax+" in OrderSummary section is not equal to the tax:"+tax+" in OrderSummary section");
+				reporter.reportLogFail("The calculated tax:"+calProvinceTax+" in OrderSummary section for province: "+province+" is not equal to the tax:"+tax+" in OrderSummary section");
 			}
 		}
 
@@ -1393,11 +1396,14 @@ public class ShoppingCartPage extends BasePage {
 	 * @param - Map<String,Object> - provincialTaxRate
 	 * @return - float - province tax
 	 */
-	public float getCalculatedProvinceTax(float subTotal,String province,Map<String,Object> provincialTaxRate){
+	public float getCalculatedProvinceTax(float subTotal,float shippingAmount, String province,Map<String,Object> provincialTaxRate){
 		float calProvinceTax=0.0f;
+		final DecimalFormat df = new DecimalFormat("0.00");
+		df.setRoundingMode(RoundingMode.UP);
 		for(Map.Entry<String,Object> entry:provincialTaxRate.entrySet()){
 			if(entry.getKey().equalsIgnoreCase(province)) {
-				calProvinceTax = subTotal*Float.parseFloat(entry.getValue().toString())/100.0f;
+				calProvinceTax = Float.parseFloat(df.format(subTotal*Float.parseFloat(entry.getValue().toString())/100.0f));
+				calProvinceTax = calProvinceTax + Float.parseFloat(df.format(shippingAmount*Float.parseFloat(entry.getValue().toString())/100.0f));
 				break;
 			}
 		}
@@ -1411,8 +1417,15 @@ public class ShoppingCartPage extends BasePage {
 	public void setProvinceCodeForEstimatedTax(String provinceCode){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectCartPricingShippingEstimateTaxProvince);
 		Select select = new Select(this.selectCartPricingShippingEstimateTaxProvince);
+		String lsTextSelectedOptionBefore=select.getFirstSelectedOption().getText();
 		select.selectByVisibleText(provinceCode);
-		this.applyStaticWait(5*this.getStaticWaitForApplication());
+		String lsTextSelectedOptionAfter=select.getFirstSelectedOption().getText();
+		//Checking this condition and applying static wait as there is no other check for waitForConditoin
+		//method. Since two province can have same tax rate and since sub-total is same, tax will also be same
+		if(!lsTextSelectedOptionBefore.equalsIgnoreCase(lsTextSelectedOptionAfter)){
+			this.waitForPageToLoad();
+			this.applyStaticWait(5*this.getStaticWaitForApplication());
+		}
 	}
 
 	/**
@@ -1452,8 +1465,10 @@ public class ShoppingCartPage extends BasePage {
 		Select select = new Select(this.selectCartEasyPayInstallmentNumber);
 		String lsInstallmentNumber=select.getFirstSelectedOption().getText().trim();
 		if(lsInstallmentNumber.equalsIgnoreCase("-")){
-			reporter.reportLogFail("Need choose correct installment option to verify it");
-			return;
+			//Selecting 2 as installment number by default for test
+			if(select.getOptions().size()>=2)
+				select.selectByValue("2");
+			totalInstallmentNumber = 2;
 		}
 		else{
 			totalInstallmentNumber= Integer.parseInt(lsInstallmentNumber);
@@ -1479,7 +1494,7 @@ public class ShoppingCartPage extends BasePage {
 		float eachInstallmentPayment=subTotalOrderSummary/totalInstallmentNumber;
 		float calTodayPayment=eachInstallmentPayment+shippingPriceOrderSummary+taxOrderSummary;
 		if(Math.abs(calTodayPayment-todayPayment)<0.1){
-			reporter.reportLogPass("The calculated today payment is equal to the today payment in installment section");
+			reporter.reportLogPass("The calculated today payment is equal to the today payment in installment section: "+todayPayment);
 		}
 		else{
 			reporter.reportLogFail("The calculated today payment:"+calTodayPayment+" is not equal to the today payment:"+todayPayment+" in installment section");
@@ -1487,7 +1502,7 @@ public class ShoppingCartPage extends BasePage {
 
 		float calLeftPayment=totalPriceOrderSummary-todayPayment;
 		if(Math.abs(calLeftPayment-leftPayment)<0.1){
-			reporter.reportLogPass("The calculated left payment is equal to the left payment in installment section");
+			reporter.reportLogPass("The calculated left payment is equal to the left payment in installment section: "+leftPayment);
 		}
 		else{
 			reporter.reportLogFail("The calculated left payment:"+calLeftPayment+" is not equal to the left payment:"+leftPayment+" in installment section");
@@ -1495,7 +1510,7 @@ public class ShoppingCartPage extends BasePage {
 
 		int calFutureMonthlyPaymentNumber=totalInstallmentNumber-1;
 		if(calFutureMonthlyPaymentNumber==futureMonthlyPaymentNumber){
-			reporter.reportLogPass("The calculated future monthly payment number is equal to the future monthly payment number in installment section");
+			reporter.reportLogPass("The calculated future monthly payment number is equal to the future monthly payment number in installment section: "+futureMonthlyPaymentNumber);
 		}
 		else{
 			reporter.reportLogFail("The calculated future monthly payment number:"+calFutureMonthlyPaymentNumber+" is not equal to the future monthly payment number:"+futureMonthlyPaymentNumber+" in installment section");
@@ -1503,7 +1518,7 @@ public class ShoppingCartPage extends BasePage {
 
 		float calFutureMonthlyPayment=calLeftPayment/futureMonthlyPaymentNumber;
 		if(Math.abs(calFutureMonthlyPayment-futureMonthlyPayment)<0.1){
-			reporter.reportLogPass("The calculated future monthly payment is equal to the future monthly payment in installment section");
+			reporter.reportLogPass("The calculated future monthly payment is equal to the future monthly payment in installment section: "+futureMonthlyPayment);
 		}
 		else{
 			reporter.reportLogFail("The calculated future monthly payment:"+calFutureMonthlyPayment+" is equal to the future monthly payment:"+futureMonthlyPayment+" in installment section");
@@ -2381,4 +2396,11 @@ public class ShoppingCartPage extends BasePage {
 
 	}
 
+	/**
+	 * This function returns the future monthly payment number left
+	 * @return - int - future monthly payment number
+	 */
+	public int getFutureMonthlyPaymentNumber(){
+		return Integer.valueOf(this.lblCartEasyPayFutureMonthlyPaymentTitle.getText().trim().split(" ")[0]);
+	}
 }

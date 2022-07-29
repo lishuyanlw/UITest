@@ -9,12 +9,12 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-public class SC_TC07_VerifyShoppingCart_OrderSummary_EasyPayment_CheckoutSection extends BaseTest{
+public class SC_TC06_VerifyShoppingCart_ChangeChangeInstallmentNumber_And_OrderSummary extends BaseTest{
 	/*
-	 * CER-846
+	 * CER-851
 	 */
-	@Test(groups={"Regression","Regression_Mobile","Regression_Tablet","SauceTunnelTest"})
-	public void SC_TC07_VerifyShoppingCart_OrderSummary_EasyPayment_CheckoutSection() throws IOException {
+	@Test(groups={"Regression","ShoppingCart","SauceTunnelTest"})
+	public void SC_TC06_VerifyShoppingCart_ChangeChangeInstallmentNumber_And_OrderSummary() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 
 		String lsUserName=TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
@@ -31,24 +31,20 @@ public class SC_TC07_VerifyShoppingCart_OrderSummary_EasyPayment_CheckoutSection
 		(new BasePage(this.getDriver())).applyStaticWait(2000);
 		getProductDetailPageThreadLocal().goToShoppingCartByClickingShoppingCartIconInGlobalHeader();
 
-		reporter.reportLog("Verify OrderSummary and EasyPayment sections contents");
-		int itemAmount=getShoppingCartThreadLocal().GetAddedItemAmount();
-		float savingPrice=getShoppingCartThreadLocal().getSavingPriceFromShoppingCartHeader();
-		float subTotal=getShoppingCartThreadLocal().getShoppingSubTotal();
-
+		reporter.reportLog("Verify EasyPayment sections contents");
 		Map<String,Object> mapOrderSummary=getShoppingCartThreadLocal().getOrderSummaryDesc();
-		getShoppingCartThreadLocal().verifyOrderSummaryBusinessLogic(itemAmount,savingPrice,subTotal,mapOrderSummary,null);
-		getShoppingCartThreadLocal().verifyOrderSummaryContents();
 
-		reporter.reportLog("Verify EasyPayment section content");
 		List<String> lstOptionText=getShoppingCartThreadLocal().getInstallmentOptions();
-		getShoppingCartThreadLocal().setInstallmentSetting(lstOptionText.get(1));
-		getShoppingCartThreadLocal().verifyInstallmentBusinessLogic(mapOrderSummary);
-		getShoppingCartThreadLocal().verifyEasyPaymentContents();
-
-		reporter.reportLog("Verify checkout section contents");
-		getShoppingCartThreadLocal().verifyCheckOutContents(false);
-
+		int loopSize=lstOptionText.size();
+		for(int i=1;i<loopSize;i++){
+			getShoppingCartThreadLocal().setInstallmentSetting(lstOptionText.get(i));
+			int easyPayNumber = Integer.valueOf(lstOptionText.get(i));
+			getShoppingCartThreadLocal().waitForCondition(Driver->{return
+					getShoppingCartThreadLocal().getFutureMonthlyPaymentNumber()==easyPayNumber-1;},20000);
+			reporter.reportLog("Verify installment number "+ lstOptionText.get(i));
+			getShoppingCartThreadLocal().verifyInstallmentBusinessLogic(mapOrderSummary);
+			getShoppingCartThreadLocal().verifyEasyPaymentContents();
+		}
 	}
 }
 

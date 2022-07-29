@@ -13,8 +13,8 @@ public class SC_TC08_VerifyShoppingCart_BackToShopping extends BaseTest{
 	/*
 	 * CER-857
 	 */
-	@Test(groups={"Regression","Regression_Mobile","Regression_Tablet","SauceTunnelTest"})
-	public void SC_TC08_VerifyShoppingCart_BackToShopping() throws IOException {
+	@Test(groups={"Regression","ShoppingCart","SauceTunnelTest"})
+	public void SC_TC08_ShoppingCart_BackToShopping() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 
 		String lsUserName=TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
@@ -24,7 +24,7 @@ public class SC_TC08_VerifyShoppingCart_BackToShopping extends BaseTest{
 		String accessToken = getApiUserSessionDataMapThreadLocal().get("access_token").toString();
 		int customerEDP = Integer.valueOf(getApiUserSessionDataMapThreadLocal().get("customerEDP").toString());
 		List<Map<String,String>> keyword = TestDataHandler.constantData.getShoppingCart().getLst_SearchKeywords();
-		List<Map<String,Object>> data = getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP,accessToken,keyword,true);
+		getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP,accessToken,keyword,true);
 
 		//Login using valid username and password
 		getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword);
@@ -38,13 +38,10 @@ public class SC_TC08_VerifyShoppingCart_BackToShopping extends BaseTest{
 		basePage.waitForCondition(Driver->{return !currentURL.equalsIgnoreCase(basePage.URL());},15000);
 		String expectedURL=System.getProperty("QaUrl");
 		String actualURL=basePage.URL();
-		if(actualURL.equalsIgnoreCase(expectedURL)){
+		if(actualURL.equalsIgnoreCase(expectedURL))
 			reporter.reportLogPass("The page has been navigated to home page after clicking BackToShopping link");
-		}
-		else{
-			reporter.reportLogFail("The page has not been navigated to home page after clicking BackToShopping link");
-		}
-
+		else
+			reporter.reportLogFail("The page has not been navigated to home page i.e.: "+expectedURL+" after clicking BackToShopping link and navigated to: "+actualURL);
 	}
 }
 

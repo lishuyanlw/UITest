@@ -9,12 +9,12 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-public class SC_TC06_VerifyShoppingCart_EasyPayment_ChangeInstallmentNumberAndCheckOrderSummary extends BaseTest{
+public class SC_TC07_VerifyShoppingCart_VerifyOrderSummary_Section extends BaseTest{
 	/*
-	 * CER-851
+	 * CER-846
 	 */
-	@Test(groups={"Regression","Regression_Mobile","Regression_Tablet","SauceTunnelTest"})
-	public void SC_TC06_VerifyShoppingCart_EasyPayment_ChangeInstallmentNumberAndCheckOrderSummary() throws IOException {
+	@Test(groups={"Regression","ShoppingCart","SauceTunnelTest"})
+	public void SC_TC07_VerifyShoppingCart_VerifyOrderSummary_Section() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 
 		String lsUserName=TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
@@ -24,7 +24,7 @@ public class SC_TC06_VerifyShoppingCart_EasyPayment_ChangeInstallmentNumberAndCh
 		String accessToken = getApiUserSessionDataMapThreadLocal().get("access_token").toString();
 		int customerEDP = Integer.valueOf(getApiUserSessionDataMapThreadLocal().get("customerEDP").toString());
 		List<Map<String,String>> keyword = TestDataHandler.constantData.getShoppingCart().getLst_SearchKeywords();
-		List<Map<String,Object>> data = getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP,accessToken,keyword,true);
+		getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP,accessToken,keyword,true);
 
 		//Login using valid username and password
 		getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword);
@@ -40,21 +40,8 @@ public class SC_TC06_VerifyShoppingCart_EasyPayment_ChangeInstallmentNumberAndCh
 		getShoppingCartThreadLocal().verifyOrderSummaryBusinessLogic(itemAmount,savingPrice,subTotal,mapOrderSummary,null);
 		getShoppingCartThreadLocal().verifyOrderSummaryContents();
 
-		List<String> lstOptionText=getShoppingCartThreadLocal().getInstallmentOptions();
-		int loopSize=lstOptionText.size();
-		String option;
-		for(int i=1;i<loopSize;i++){
-			option=lstOptionText.get(i);
-			getShoppingCartThreadLocal().setInstallmentSetting(lstOptionText.get(i));
-			reporter.reportLog("Verify installment number "+ lstOptionText.get(i));
-			getShoppingCartThreadLocal().verifyInstallmentBusinessLogic(mapOrderSummary);
-			getShoppingCartThreadLocal().verifyEasyPaymentContents();
-
-		}
-
 		reporter.reportLog("Verify checkout section contents");
 		getShoppingCartThreadLocal().verifyCheckOutContents(false);
-
 	}
 }
 

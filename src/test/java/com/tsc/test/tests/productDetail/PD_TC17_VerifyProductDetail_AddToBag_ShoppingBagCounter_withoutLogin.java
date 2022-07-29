@@ -1,12 +1,8 @@
 package com.tsc.test.tests.productDetail;
 
-import com.tsc.api.pojo.CartResponse;
 import com.tsc.data.Handler.TestDataHandler;
-import com.tsc.data.pojos.ConstantData;
-import com.tsc.pages.GlobalHeaderPage;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
-import org.testng.Reporter;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
@@ -54,7 +50,7 @@ public class PD_TC17_VerifyProductDetail_AddToBag_ShoppingBagCounter_withoutLogi
 			String[] lstSize2=getProductDetailPageThreadLocal().getSizeListForGivenStyle(1);
 
 			//To choose Style/Size/Quantity as needed
-			getProductDetailPageThreadLocal().chooseGivenStyleAndSizeAndQuantity(lstStyle[1],lstSize2[2],1);
+			getProductDetailPageThreadLocal().chooseGivenStyleAndSizeAndQuantity(lstStyle[1],lstSize2[0],1);
 
 			Map<String,Object> PDPMap=getProductDetailPageThreadLocal().getPDPDesc();
 

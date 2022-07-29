@@ -3147,7 +3147,7 @@ public class MyAccount extends BasePage {
 		this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: block;");},20000);
 		this.getReusableActionsInstance().staticWait(2*this.getStaticWaitForApplication());
 
-		if(this.lstAddOrEditAddressAutoSearchDropdownItems.size()>=1){
+		if(this.lstAddOrEditAddressAutoSearchDropdownItems.size()>1){
 			reporter.reportLogPass("Getting dropdown auto search results successfully");
 		}
 		else{
