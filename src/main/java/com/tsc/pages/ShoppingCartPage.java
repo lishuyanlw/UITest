@@ -1458,18 +1458,17 @@ public class ShoppingCartPage extends BasePage {
 	 * @param - Map<String,Object> - orderSummaryMap
 	 */
 	public void verifyInstallmentBusinessLogic(Map<String,Object> orderSummaryMap){
-		String lsText,lsInstallmentNumber = null;
+		String lsText;
 		int totalInstallmentNumber;
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectCartEasyPayInstallmentNumber);
 		Select select = new Select(this.selectCartEasyPayInstallmentNumber);
-		if(select.getOptions().size()>=2){
-			lsInstallmentNumber = select.getOptions().get(1).getText();
-			select.selectByVisibleText(lsInstallmentNumber);
-		}
-		if(lsInstallmentNumber==null || lsInstallmentNumber.equalsIgnoreCase("-")){
-			reporter.reportLogFail("Need choose correct installment option to verify it");
-			return;
+		String lsInstallmentNumber=select.getFirstSelectedOption().getText().trim();
+		if(lsInstallmentNumber.equalsIgnoreCase("-")){
+			//Selecting 2 as installment number by default for test
+			if(select.getOptions().size()>=2)
+				select.selectByValue("2");
+			totalInstallmentNumber = 2;
 		}
 		else{
 			totalInstallmentNumber= Integer.parseInt(lsInstallmentNumber);
