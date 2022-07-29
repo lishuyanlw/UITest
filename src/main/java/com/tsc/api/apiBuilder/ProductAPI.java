@@ -7,10 +7,9 @@ import com.tsc.api.util.JsonParser;
 import io.restassured.response.Response;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class ProductAPI extends ApiClient {
@@ -141,9 +140,6 @@ public class ProductAPI extends ApiClient {
                 if(getProductInventoryWithProductNumberAndEDPNumber(Edps.getItemNo(),Edps.getEdpNo())>2){
                     list.add(Edps);
                 }
-//                if (Edps.Inventory > 2 && !Edps.isSoldOut()) {
-//                    list.add(Edps);
-//                }
                 if(returnProductCount!=0){
                     if(list.size()==returnProductCount)
                         return list;
@@ -160,25 +156,25 @@ public class ProductAPI extends ApiClient {
      * @param - Boolean - firstTimeFunctionCall - determines as if the call is made first time or not
      * @return - List<Integer> - EDPNo
      */
-    public Map<String,Object> getNotSoldOutProductInfo(String searchKeyword,int inventoryAmount,boolean bEqual) throws IOException {
+    public Map<String,Object> getNotSoldOutProductInfo(String searchKeyword,int inventoryCount,boolean bEqual) throws IOException {
         Map<String,Object> map=new HashMap<>();
         Product product=getProductDetailsForKeyword(searchKeyword,null,true);;
         List<Product.Products> dataList=null;
         if(bEqual){
-            dataList =product.Products.stream().filter(item->item.getEdps().stream().anyMatch(subItem->subItem.getInventory()==inventoryAmount)).collect(Collectors.toList());
+            dataList =product.Products.stream().filter(item->item.getEdps().stream().anyMatch(subItem->subItem.getInventory()==inventoryCount)).collect(Collectors.toList());
         }
         else{
-            dataList =product.Products.stream().filter(item->item.getEdps().stream().anyMatch(subItem->subItem.getInventory()>inventoryAmount)).collect(Collectors.toList());
+            dataList =product.Products.stream().filter(item->item.getEdps().stream().anyMatch(subItem->subItem.getInventory()>inventoryCount)).collect(Collectors.toList());
         }
 
         for(Product.Products data:dataList) {
             //To check if any Inventory is greater than 0, then means it is not SoldOut item
             List<Product.edps> edpsList=null;
             if(bEqual){
-                edpsList=data.getEdps().stream().filter(item->item.getInventory()==inventoryAmount).collect(Collectors.toList());
+                edpsList=data.getEdps().stream().filter(item->item.getInventory()==inventoryCount).collect(Collectors.toList());
             }
             else{
-                edpsList=data.getEdps().stream().filter(item->item.getInventory()>inventoryAmount).collect(Collectors.toList());
+                edpsList=data.getEdps().stream().filter(item->item.getInventory()>inventoryCount).collect(Collectors.toList());
             }
 
             for(Product.edps Edps:edpsList) {
@@ -204,20 +200,17 @@ public class ProductAPI extends ApiClient {
      * @param - Boolean - firstTimeFunctionCall - determines as if the call is made first time or not
      * @return - List<Integer> - EDPNo
      */
-    public List<Product.edps> getEDPNoForNotSoldOutProductContainTenQuantity(String searchKeyword,String defaultPageItems,boolean firstTimeFunctionCall,int returnProductCount) throws IOException {
+    public List<Product.edps> getEDPNoForProductContainingTenQuantity(String searchKeyword,String defaultPageItems,boolean firstTimeFunctionCall,int returnProductCount) throws IOException {
         List<Product.edps> list = new ArrayList<>();
         Product product=getProductDetailsForKeyword(searchKeyword,defaultPageItems,firstTimeFunctionCall);
         List<Product.Products> dataList =product.Products.stream().filter(item->item.getEdps().stream().anyMatch(subItem->subItem.getInventory()>=10)).collect(Collectors.toList());
         for(Product.Products data:dataList) {
             //To check if any Inventory is greater than 0, then means it is not SoldOut item
-            List<Product.edps> edpsList=data.getEdps().stream().filter(item->item.getInventory()>=10).collect(Collectors.toList());
+            List<Product.edps> edpsList=data.getEdps().stream().filter(item->item.getInventory()>=10 && !item.isSoldOut()).collect(Collectors.toList());
             for(Product.edps Edps:edpsList) {
                 if(getProductInventoryWithProductNumberAndEDPNumber(Edps.getItemNo(),Edps.getEdpNo())>=10){
                     list.add(Edps);
                 }
-//                if (Edps.Inventory > 2 && !Edps.isSoldOut()) {
-//                    list.add(Edps);
-//                }
                 if(returnProductCount!=0){
                     if(list.size()==returnProductCount)
                         return list;
@@ -240,14 +233,11 @@ public class ProductAPI extends ApiClient {
         List<Product.Products> dataList =product.Products.stream().filter(item->item.getEdps().stream().anyMatch(subItem->subItem.getAppliedShipping().isEmpty()&&subItem.getInventory()>2)).collect(Collectors.toList());
         for(Product.Products data:dataList) {
             //To check if any Inventory is greater than 0, then means it is not SoldOut item
-            List<Product.edps> edpsList=data.getEdps().stream().filter(item->item.getInventory()>2).collect(Collectors.toList());
+            List<Product.edps> edpsList=data.getEdps().stream().filter(item->item.getInventory()>2 && item.getAppliedShipping().isEmpty()).collect(Collectors.toList());
             for(Product.edps Edps:edpsList) {
                 if(getProductInventoryWithProductNumberAndEDPNumber(Edps.getItemNo(),Edps.getEdpNo())>2){
                     list.add(Edps);
                 }
-//                if (Edps.Inventory > 2 && !Edps.isSoldOut()&&Edps.getAppliedShipping().isEmpty()) {
-//                    list.add(Edps);
-//                }
                 if(returnProductCount!=0){
                     if(list.size()==returnProductCount){
                         return list;
@@ -297,7 +287,7 @@ public class ProductAPI extends ApiClient {
      * @param - Boolean - firstTimeFunctionCall - determines as if the call is made first time or not
      * @return - List<Integer> - EDPNo
      */
-    public List getEDPNoForNotSoldOutAndNoFreeShippingProduct(String searchKeyword,String defaultPageItems,boolean firstTimeFunctionCall,int returnProductCount,double minimumItemPrice) throws IOException {
+    public List getEDPNoForNoFreeShippingProduct(String searchKeyword,String defaultPageItems,boolean firstTimeFunctionCall,int returnProductCount,double minimumItemPrice) throws IOException {
         List<Product.edps> list = new ArrayList<>();
         Product product=getProductDetailsForKeyword(searchKeyword,defaultPageItems,firstTimeFunctionCall);
         List<Product.Products> dataList =product.Products.stream().filter(item->item.getEdps().stream().anyMatch(subItem->!subItem.getAppliedShipping().isEmpty()&&subItem.getInventory()>2)).collect(Collectors.toList());
@@ -317,5 +307,211 @@ public class ProductAPI extends ApiClient {
             }
         }
         return list;
+    }
+
+    /**
+     * This function returns a list of items that will be added to cart for a user
+     * @param - List<Map<String,String>> - keywordData - items that are to be added to the cart for user
+     * @return - List<Map<String,String>> - List of Map Object that are added to cart
+     * @throws IOException
+     */
+    public List<Map<String,Object>> getProductDetailsToBeAddedToCartForUser(List<Map<String,String>> keywordData) throws IOException {
+        List<Map<String,Object>> productList = new ArrayList<>();
+        List<Map<String,Object>> tempDataList = null;
+        boolean innerForLoop = false;
+        for(Map<String,String> data:keywordData){
+            boolean outerloop = false;
+            Product product = this.getProductDetailsForKeyword(data.get("searchKeyword"),null,true);
+            List<Product.Products> products = product.getProducts();
+            Boolean badgeRequired = Boolean.valueOf(data.get("badgeRequired"));
+            Boolean styleExist = Boolean.valueOf(data.get("styleExist"));
+            Boolean sameSizeAndStyle = Boolean.valueOf(data.get("sameSizeAndStyle"));
+            int itemToBeAdded = Integer.valueOf(data.get("itemToBeAdded"));
+
+            for(Product.Products productsData:products){
+                Map<String,Object> productMap = new HashMap<>();
+                if(Boolean.valueOf(data.get("styleExist"))){
+                    //Fetching item edp number for same product with badge, style and size
+                    if(productsData.getVideosCount() >= 0 && productsData.getStyles().size() >= 1 && productsData.getSizes().size() >= 1&&productsData.isShowBadgeImage() && productsData.isEnabledAddToCart()){
+                        if(badgeRequired && styleExist && sameSizeAndStyle){
+                            for(Product.edps edpsData: productsData.getEdps()){
+                                if(!productsData.getPriceIsLabel().isEmpty()){
+                                    productMap = this.getEDPNumberForInputCondition(data.get("quantity"),itemToBeAdded,edpsData,productsData);
+                                    if(productMap.keySet().size()>0)
+                                        innerForLoop = true;
+                                    else
+                                        continue;
+                                }
+                                if(productMap.keySet().size()>0){
+                                    productMap.put("itemToBeAdded",itemToBeAdded);
+                                    productList.add(productMap);
+                                }
+                                if(innerForLoop){
+                                    innerForLoop = false;
+                                    outerloop = true;
+                                    break;
+                                }
+                            }
+                        }
+                        //Fetching item edp numbers for same product with badge, style but with different style and size
+                        //True Fit condition scenario
+                        else if(badgeRequired && styleExist && !sameSizeAndStyle){
+                            ProductDetailsItem productDetailsItem=null;
+                            if(tempDataList==null)
+                                tempDataList = new ArrayList<>();
+                            if(productsData.getVideosCount() >= 0 && productsData.getStyles().size() >= 1 && productsData.getSizes().size() >= 1&&productsData.isShowBadgeImage() && productsData.isEnabledAddToCart()){
+                                productDetailsItem=getProductDetailsForSpecificProductNumber(productsData.getItemNo());
+                                List<ProductDetailsItem.Edp> edpsList=productDetailsItem.getEdps();
+                                List<ProductDetailsItem.Edp> dataList=edpsList.stream().filter(item->item.getInventory()>0).sorted((p1,p2)->p1.getStyle().compareTo(p2.getStyle())).collect(Collectors.toList());
+                                String checkStyle="FirstItem";
+                                if(dataList.size()>1){
+                                    int counter = 0,forLoopCounter = 0;
+                                    for(ProductDetailsItem.Edp edpsData:dataList) {
+                                        forLoopCounter++;
+                                        Map<String,Object> productMapData = new HashMap<>();
+                                        boolean secondValue = false;
+                                        if(!checkStyle.equalsIgnoreCase(edpsData.getStyle()) && edpsData.getInventory()>1){
+                                            if(counter==0 && productMapData.size()>0)
+                                                productMapData.clear();
+                                            checkStyle = edpsData.getStyle();
+                                            productMapData.put("productName",productsData.getName());
+                                            productMapData.put("productBadge",productsData.isShowBadgeImage());
+                                            productMapData.put("productNumber",productsData.getItemNo());
+                                            productMapData.put("edpNo",edpsData.getEdpNo());
+                                            productMapData.put("edpsData",edpsData);
+                                            productMapData.put("productStyle",edpsData.getStyle());
+                                            productMapData.put("productStyleDimensionId",edpsData.getStyleDimensionId());
+                                            productMapData.put("productSize",edpsData.getSize());
+                                            productMapData.put("productSizeDimensionId",edpsData.getSizeDimensionId());
+                                            productMapData.put("productNowPrice",this.getFloatFromString(edpsData.getAppliedPrice(),true));
+                                            productMapData.put("productWasPrice",edpsData.getWasPrice());
+                                            productMapData.put("productSavePrice",edpsData.getSavePrice());
+                                            productMapData.put("productAppliedShipping",edpsData.getAppliedShipping());
+                                            secondValue = true;
+                                            counter++;
+                                        }
+                                        if(secondValue){
+                                            productMapData.put("itemToBeAdded",1);
+                                            tempDataList.add(productMapData);
+                                        }
+                                        if(forLoopCounter == dataList.size() && counter!=itemToBeAdded)
+                                            tempDataList.clear();
+                                        if(counter==itemToBeAdded){
+                                            tempDataList.forEach(item->{productList.add(item);});
+                                            outerloop = true;
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                //Fetching item edp number for product with badge and has no style and size available
+                else if(!styleExist && data.get("quantity").isEmpty()){
+                    if(productsData.getVideosCount() >= 0 && productsData.getStyles().size() == 0 && productsData.getSizes().size() == 0 && productsData.isEnabledAddToCart()){
+                        for(Product.edps edpsData: productsData.getEdps()){
+                            if(!edpsData.isSoldOut()){
+                                productMap = this.getEDPNumberForInputCondition(null,itemToBeAdded,edpsData,productsData);
+                                if(productMap.keySet().size()>0)
+                                    innerForLoop = true;
+                                else
+                                    continue;
+                            }
+                            if(productMap.keySet().size()>0){
+                                productMap.put("itemToBeAdded",itemToBeAdded);
+                                productList.add(productMap);
+                            }
+                            if(innerForLoop){
+                                innerForLoop = false;
+                                outerloop = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+                if(outerloop)
+                    break;
+                else
+                    continue;
+            }
+        }
+        return productList;
+    }
+
+    /**
+     * This function returns edps data for a product
+     * @param - String - quantityCondition - Inventory item that will be selected
+     * @param - Integer - itemToBeAddedNumber - Number of items that will be added
+     * @param - Product.edps - edpsData - edps data object for product
+     * @param - Product.Products - productsData - Product.Products object for product
+     * @return - Map<String,Object> - Map Object
+     */
+    public Map<String,Object> getEDPNumberForInputCondition(String quantityCondition, int itemToBeAddedNumber, Product.edps edpsData,Product.Products productsData){
+        Map<String,Object> productMap = new HashMap<>();
+        if(quantityCondition!=null){
+            String[] quantityConditionArray = quantityCondition.split(" ");
+            if(quantityConditionArray[0].contains("more") || quantityConditionArray[0].contains("greater")){
+                if(edpsData.getInventory()>Integer.valueOf(quantityConditionArray[2]))
+                    productMap.put("edpsData",edpsData);
+            }else if(quantityConditionArray[0].contains("less") || quantityConditionArray[0].contains("lower")){
+                if(edpsData.getInventory()<Integer.valueOf(quantityConditionArray[2]))
+                    productMap.put("edpsData",edpsData);
+            }else if(quantityConditionArray[0].contains("equal")){
+                if(edpsData.getInventory()==Integer.valueOf(quantityConditionArray[2]))
+                    productMap.put("edpsData",edpsData);
+            }
+        }else{
+            if(edpsData.getInventory()>=itemToBeAddedNumber)
+                productMap.put("edpsData",edpsData);
+        }
+
+        if(productMap.keySet().contains("edpsData")){
+            productMap.put("productName",productsData.getName());
+            productMap.put("productBadge",productsData.isShowBadgeImage());
+            productMap.put("productNumber",productsData.getItemNo());
+            productMap.put("edpNo",edpsData.getEdpNo());
+            productMap.put("productStyle",edpsData.getStyle());
+            productMap.put("productStyleDimensionId",edpsData.getStyleDimensionId());
+            productMap.put("productSize",edpsData.getSize());
+            productMap.put("productSizeDimensionId",edpsData.getSizeDimensionId());
+            productMap.put("productNowPrice",this.getFloatFromString(edpsData.getAppliedPrice(),true));
+            productMap.put("productWasPrice",edpsData.getWasPrice());
+            productMap.put("productSavePrice",edpsData.getSavePrice());
+            productMap.put("productAppliedShipping",edpsData.getAppliedShipping());
+            return productMap;
+        }
+
+        return productMap;
+    }
+
+    /**
+     * This method will get float from string.
+     * @param-String lsTarget: target string
+     * @param-boolean bHighestFirst
+     * @return float value
+     * @author Wei.Li
+     */
+    public float getFloatFromString(String lsTarget,boolean bHighestFirst) {
+        if(lsTarget.contains("-")) {
+            if(bHighestFirst) {
+                lsTarget=lsTarget.split("-")[1].trim();
+            }
+            else {
+                lsTarget=lsTarget.split("-")[0].trim();
+            }
+        }
+        lsTarget=lsTarget.replace(",", "").trim();
+
+        String regex="\\d+\\.\\d+";
+        String lsReturn="";
+        Pattern pattern=Pattern.compile(regex);
+        Matcher matcher=pattern.matcher(lsTarget);
+        while(matcher.find())
+        {
+            lsReturn=matcher.group();
+        }
+
+        return Float.parseFloat(lsReturn);
     }
 }

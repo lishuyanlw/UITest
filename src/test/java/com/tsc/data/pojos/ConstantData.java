@@ -15,6 +15,11 @@ public class ConstantData {
     public MyAccount myAccount;
     private List<String> lstTestName;
     private String lblChromeBrowserVersion;
+    private ShoppingCart shoppingCart;
+
+    public ShoppingCart getShoppingCart() {        return shoppingCart;    }
+
+    public void setShoppingCart(ShoppingCart shoppingCart) {        this.shoppingCart = shoppingCart;    }
 
     public String getLblChromeBrowserVersion() {        return lblChromeBrowserVersion;    }
 
@@ -1283,6 +1288,18 @@ public class ConstantData {
 
         public void setLbl_myNewsLettersCheckUnSubscriptionAlertMessage(String lbl_myNewsLettersCheckUnSubscriptionAlertMessage) {
             this.lbl_myNewsLettersCheckUnSubscriptionAlertMessage = lbl_myNewsLettersCheckUnSubscriptionAlertMessage;
+        }
+    }
+
+    public static class ShoppingCart{
+        List<Map<String,String>> lst_SearchKeywords;
+
+        public List<Map<String, String>> getLst_SearchKeywords() {
+            return lst_SearchKeywords;
+        }
+
+        public void setLst_SearchKeywords(List<Map<String, String>> lst_SearchKeywords) {
+            this.lst_SearchKeywords = lst_SearchKeywords;
         }
     }
 

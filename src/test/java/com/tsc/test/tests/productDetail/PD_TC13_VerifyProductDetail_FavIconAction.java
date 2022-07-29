@@ -49,7 +49,7 @@ public class PD_TC13_VerifyProductDetail_FavIconAction extends BaseTest{
 
 			if(getProductDetailPageThreadLocal().getShoppingCartNumber()>0){
 				reporter.reportLog("Removing Items from shopping Cart after test");
-				getShoppingCartThreadLocal().removeItemsAddedToShoppingCart();
+				getShoppingCartThreadLocal().removeItemsAddedFromShoppingCart();
 			}
 		}
 		else {

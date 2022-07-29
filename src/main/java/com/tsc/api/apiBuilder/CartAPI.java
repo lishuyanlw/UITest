@@ -141,9 +141,7 @@ public class CartAPI extends ApiClient {
         }
 
         return response;
-    }
-
-    /**
+    }/**
      * @param - itemEDP - Item EDP Number to be added
      * @param - customerEDP - Customer EDP Number where cart is created
      * @param - access_token - access token for api authentication
@@ -154,15 +152,13 @@ public class CartAPI extends ApiClient {
      *     - appliedPrice
      *     - Response - API Response after adding items to cart for user
      */
-    public Map<String,Object> addItemsInExistingCart(int customerEDP, String access_token, String cartGuidId,String itemEDPNo) throws IOException {
+    public Map<String,Object> addItemsToExistingCart(int customerEDP, String access_token, String cartGuidId,String itemEDPNo) throws IOException {
         ProductAPI productAPI=new ProductAPI();
         JSONObject jsonObject = new JSONObject();
         Response response = null;
         String apiEndPoint = null;
 
-//        reporter.reportLog("Adding items to existing cart for customerEDP: " + customerEDP + " and cartGuid Id: " + cartGuidId);
         apiEndPoint = propertyData.get("test_apiVersion") + "/" + propertyData.get("test_language") + "/carts/" + cartGuidId + "/cartlines";
-//        reporter.reportLog("apiEndPoint: "+apiEndPoint);
         int selectedEdpNo=-1;
         double appliedPrice=0.0;
         if(itemEDPNo==null){
@@ -767,6 +763,8 @@ public class CartAPI extends ApiClient {
 
         return Double.parseDouble(lsReturn);
     }
+
+
 
 
 }

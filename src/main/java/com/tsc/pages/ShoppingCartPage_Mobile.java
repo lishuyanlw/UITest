@@ -53,7 +53,27 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 	}
 
 	@Override
-	public Map<String,Object> getShoppingItemDesc(WebElement cartItem){
+	public Map<String,Object> getShoppingItemDesc(WebElement cartItem,String lsOption){
+		Map<String,Object> map=null;
+		switch(lsOption){
+			case "mandatory":
+				map=this.getMandatoryShoppingItemDesc(cartItem);
+				break;
+			case "optional":
+				map=this.getOptionalShoppingItemDesc(cartItem);
+				break;
+			case "all":
+				map=this.getAllShoppingItemDesc(cartItem);
+				break;
+			default:
+				break;
+		}
+
+		return map;
+	}
+
+	@Override
+	public Map<String,Object> getMandatoryShoppingItemDesc(WebElement cartItem){
 		Map<String,Object> map=new HashMap<>();
 
 		if(this.checkProductBadgeExisting(cartItem)){
@@ -66,11 +86,25 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 		WebElement item=cartItem.findElement(byProductItemDesc);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 		String lsText=item.getText().trim();
-		if(this.checkSelectQuantityEnabled(cartItem)){
+		if(lsText.contains("|")){
 			String[] lsSplit=lsText.split("\\|");
-			map.put("productName",lsSplit[0].trim());
-			map.put("productStyle",lsSplit[1].trim());
-			map.put("productSize",lsSplit[2].split(":")[1].trim());
+			if(lsSplit.length==2){
+				if(lsSplit[1].contains("Size")){
+					map.put("productName",lsSplit[0].trim());
+					map.put("productStyle",null);
+					map.put("productSize",lsSplit[1].trim());
+				}
+				else{
+					map.put("productName",lsSplit[0].trim());
+					map.put("productStyle",lsSplit[1].trim());
+					map.put("productSize",null);
+				}
+			}
+			else{
+				map.put("productName",lsSplit[0].trim());
+				map.put("productStyle",lsSplit[1].trim());
+				map.put("productSize",lsSplit[2].split(":")[1].trim());
+			}
 		}
 		else{
 			map.put("productName",lsText);
@@ -78,11 +112,31 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 			map.put("productSize",null);
 		}
 
-
 		item=cartItem.findElement(byProductNumber);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 		lsText=item.getText().replace("-","").trim();
 		map.put("productNumber",lsText);
+
+		item=cartItem.findElement(byProductNowPrice);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+		lsText=item.getText().trim();
+		map.put("productNowPrice",this.getFloatFromString(lsText,true));
+
+		item=cartItem.findElement(byProductSelectQuantity);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+		Select select = new Select(item);
+		lsText=select.getFirstSelectedOption().getText();
+		map.put("productQuantity",Integer.parseInt(lsText));
+
+		return map;
+	}
+
+	@Override
+	public Map<String,Object> getOptionalShoppingItemDesc(WebElement cartItem){
+		Map<String,Object> map=new HashMap<>();
+
+		WebElement item;
+		String lsText;
 
 		if(this.checkShippingDateExisting(cartItem)){
 			item=cartItem.findElement(byProductShippingDate);
@@ -104,32 +158,24 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 			map.put("productLeftNumber",null);
 		}
 
-		map.put("productFreeShipping",null);
-
-		item=cartItem.findElement(byProductNowPrice);
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-		lsText=item.getText().trim();
-		map.put("productNowPrice",this.getFloatFromString(lsText,true));
-
-		if(this.checkSelectQuantityEnabled(cartItem)){
-			item=cartItem.findElement(byProductSelectQuantity);
+		if(this.checkFreeShippingMessageExisting(cartItem)){
+			item=cartItem.findElement(byProductBlackMessage);
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-			Select select = new Select(item);
-			lsText=select.getFirstSelectedOption().getText();
-			map.put("productQuantity",Integer.parseInt(lsText));
+			lsText=item.getText().trim();
+			map.put("productFreeShipping",lsText);
 		}
 		else{
-			map.put("productQuantity",null);
+			map.put("productFreeShipping",null);
 		}
 
 		return map;
 	}
 
 	@Override
-	public Map<String,Object> getShoppingSectionDetails(){
+	public Map<String,Object> getShoppingSectionDetails(String lsOption){
 		Map<String,Object> map=new HashMap<>();
 
-		map.put("shoppingList",this.getShoppingItemListDesc());
+		map.put("shoppingList",this.getShoppingItemListDesc(lsOption));
 		map.put("shoppingAmount",this.getShoppingAmount());
 		map.put("shoppingSubTotal",this.getShoppingSubTotal());
 
@@ -328,37 +374,192 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 	}
 
 	@Override
-	public void verifyShoppingCartContents(boolean bUnKnown,boolean bTrueFit,boolean bAdvancedOrder){
+	public void verifyShoppingCartContents(String lsOption){
+		switch(lsOption){
+			case "mandatory":
+				verifyMandatoryOrOptionalShoppingCartContents(true);
+				break;
+			case "optional":
+				verifyMandatoryOrOptionalShoppingCartContents(false);
+				break;
+			case "all":
+				verifyMandatoryOrOptionalShoppingCartContents(true);
+				verifyMandatoryOrOptionalShoppingCartContents(false);
+				break;
+			default:
+				break;
+		}
+	}
+
+	@Override
+	public void verifyMandatoryOrOptionalShoppingCartContents(boolean bMandatory){
 		String lsText;
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartTitle);
-		lsText=lblCartTitle.getText();
-		if(!lsText.isEmpty()){
-			reporter.reportLogPass("The cart title is displaying correctly");
+		if(bMandatory){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartTitle);
+			lsText=lblCartTitle.getText();
+			if(!lsText.isEmpty()){
+				reporter.reportLogPass("The cart title is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The cart title is not displaying correctly");
+			}
+
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartTopMessage);
+			lsText=lblCartTopMessage.getText();
+			if(!lsText.isEmpty()){
+				reporter.reportLogPass("The cart top message is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The cart top message is not displaying correctly");
+			}
+
+			WebElement element;
+			int index=0;
+			for(WebElement cartItem:lstCartItems){
+				reporter.reportLog("Verify cart item "+index);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(cartItem);
+				if(checkProductBadgeExisting(cartItem)){
+					element=cartItem.findElement(byProductPicBadge);
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+					lsText=element.getAttribute("src");
+					if(!lsText.isEmpty()){
+						reporter.reportLogPass("The cart item badge is displaying correctly");
+					}
+					else{
+						reporter.reportLogFailWithScreenshot("The cart item badge is not displaying correctly");
+					}
+				}
+
+				element=cartItem.findElement(byProductPicLink);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+				lsText=element.getAttribute("href");
+				if(!lsText.isEmpty()){
+					reporter.reportLogPass("The cart item pic link is not empty");
+				}
+				else{
+					reporter.reportLogFailWithScreenshot("The cart item pic link is empty");
+				}
+
+				element=cartItem.findElement(byProductPicImage);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+				lsText=element.getAttribute("src");
+				if(!lsText.isEmpty()){
+					reporter.reportLogPass("The cart item pic src is not empty");
+				}
+				else{
+					reporter.reportLogFailWithScreenshot("The cart item pic src is empty");
+				}
+
+				element=cartItem.findElement(byProductItemDesc);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+				lsText=element.getText();
+				if(!lsText.isEmpty()){
+					reporter.reportLogPass("The cart item product description is displaying correctly");
+				}
+				else{
+					reporter.reportLogFailWithScreenshot("The cart item product description is not displaying correctly");
+				}
+
+				element=cartItem.findElement(byProductNumber);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+				lsText=element.getText();
+				if(!lsText.isEmpty()){
+					reporter.reportLogPass("The cart item product product number is displaying correctly");
+				}
+				else{
+					reporter.reportLogFailWithScreenshot("The cart item product number is not displaying correctly");
+				}
+
+				if(this.checkRemoveButtonExisting(cartItem)){
+					element=cartItem.findElement(byProductRemoveButton);
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+					lsText=element.getText();
+					if(!lsText.isEmpty()){
+						reporter.reportLogPass("The cart item remove button is displaying correctly");
+					}
+					else{
+						reporter.reportLogFailWithScreenshot("The cart item remove button is not displaying correctly");
+					}
+				}
+
+				element=cartItem.findElement(byProductSelectQuantity);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+				if(this.getReusableActionsInstance().isElementVisible(element)){
+					reporter.reportLogPass("The cart item shopping quantity is displaying correctly");
+				}
+				else{
+					reporter.reportLogFailWithScreenshot("The cart item shopping quantity is not displaying correctly");
+				}
+				index++;
+			}
+
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartTableSubTotal);
+			lsText=lblCartTableSubTotal.getText();
+			if(!lsText.isEmpty()){
+				reporter.reportLogPass("The cart table subtotal is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The cart table subtotal is not displaying correctly");
+			}
 		}
 		else{
-			reporter.reportLogFailWithScreenshot("The cart title is not displaying correctly");
-		}
+			if(this.checkCartNoticeTitleExisting()){
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartNoticeTitle);
+				lsText=lblCartNoticeTitle.getText();
+				if(!lsText.isEmpty()){
+					reporter.reportLogPass("The cart notice title is displaying correctly");
+				}
+				else{
+					reporter.reportLogFailWithScreenshot("The cart notice title is not displaying correctly");
+				}
+			}
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartNoticeTitle);
-		lsText=lblCartNoticeTitle.getText();
-		if(!lsText.isEmpty()){
-			reporter.reportLogPass("The cart notice title is displaying correctly");
-		}
-		else{
-			reporter.reportLogFailWithScreenshot("The cart notice title is not displaying correctly");
-		}
+			String lsCartNoticeMessage=this.checkCartNoticeMessageExisting();
+			switch(lsCartNoticeMessage){
+				case "both":
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartNoticeMultiPackMessage);
+					lsText=lblCartNoticeMultiPackMessage.getText();
+					if(!lsText.isEmpty()){
+						reporter.reportLogPass("The cart notice MultiPack message is displaying correctly");
+					}
+					else{
+						reporter.reportLogFailWithScreenshot("The cart notice MultiPack message is not displaying correctly");
+					}
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartNoticeMessage);
-		lsText=lblCartNoticeMessage.getText();
-		if(!lsText.isEmpty()){
-			reporter.reportLogPass("The cart notice message is displaying correctly");
-		}
-		else{
-			reporter.reportLogFailWithScreenshot("The cart notice message is not displaying correctly");
-		}
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartNoticeQuantityExceedingMessage);
+					lsText=lblCartNoticeQuantityExceedingMessage.getText();
+					if(!lsText.isEmpty()){
+						reporter.reportLogPass("The cart notice quantity exceeding message is displaying correctly");
+					}
+					else{
+						reporter.reportLogFailWithScreenshot("The cart notice quantity exceeding message is not displaying correctly");
+					}
+					break;
+				case "errorMessage":
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartNoticeQuantityExceedingMessage);
+					lsText=lblCartNoticeQuantityExceedingMessage.getText();
+					if(!lsText.isEmpty()){
+						reporter.reportLogPass("The cart notice quantity exceeding message is displaying correctly");
+					}
+					else{
+						reporter.reportLogFailWithScreenshot("The cart notice quantity exceeding message is not displaying correctly");
+					}
+					break;
+				case "multiPackMessage":
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartNoticeMultiPackMessage);
+					lsText=lblCartNoticeMultiPackMessage.getText();
+					if(!lsText.isEmpty()){
+						reporter.reportLogPass("The cart notice MultiPack message is displaying correctly");
+					}
+					else{
+						reporter.reportLogFailWithScreenshot("The cart notice MultiPack message is not displaying correctly");
+					}
+					break;
+				default:
+					break;
+			}
 
-		if(bUnKnown){
 			if(this.checkProductTrueFitMessageExisting()){
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartNoticeTrueFitMessage);
 				lsText=lblCartNoticeTrueFitMessage.getText();
@@ -388,95 +589,11 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 					reporter.reportLogFailWithScreenshot("The cart GetByDate message is not displaying correctly");
 				}
 			}
-		}
-		else{
-			if(bTrueFit){
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartNoticeTrueFitMessage);
-				lsText=lblCartNoticeTrueFitMessage.getText();
-				if(!lsText.isEmpty()){
-					reporter.reportLogPass("The cart TrueFit message is displaying correctly");
-				}
-				else{
-					reporter.reportLogFailWithScreenshot("The cart TrueFit message is not displaying correctly");
-				}
 
-				lsText=lnkCartNoticeTrueFit.getAttribute("href");
-				if(!lsText.isEmpty()){
-					reporter.reportLogPass("The cart TrueFit link is not empty");
-				}
-				else{
-					reporter.reportLogFailWithScreenshot("The cart TrueFit link is empty");
-				}
-			}
-
-			if(bAdvancedOrder){
-				if(!this.checkGetItByShippingMessageExisting()){
-					reporter.reportLogPass("The cart GetByDate message is not displaying");
-				}
-				else{
-					reporter.reportLogPass("The cart GetByDate message is displaying incorrectly");
-				}
-			}
-		}
-
-		WebElement element;
-		int index=0;
-		for(WebElement cartItem:lstCartItems){
-			reporter.reportLog("Verify cart item "+index);
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(cartItem);
-			if(checkProductBadgeExisting(cartItem)){
-				element=cartItem.findElement(byProductPicBadge);
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-				lsText=element.getAttribute("src");
-				if(!lsText.isEmpty()){
-					reporter.reportLogPass("The cart item badge is displaying correctly");
-				}
-				else{
-					reporter.reportLogFailWithScreenshot("The cart item badge is not displaying correctly");
-				}
-			}
-
-			element=cartItem.findElement(byProductPicLink);
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-			lsText=element.getAttribute("href");
-			if(!lsText.isEmpty()){
-				reporter.reportLogPass("The cart item pic link is not empty");
-			}
-			else{
-				reporter.reportLogFailWithScreenshot("The cart item pic link is empty");
-			}
-
-			element=cartItem.findElement(byProductPicImage);
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-			lsText=element.getAttribute("src");
-			if(!lsText.isEmpty()){
-				reporter.reportLogPass("The cart item pic src is not empty");
-			}
-			else{
-				reporter.reportLogFailWithScreenshot("The cart item pic src is empty");
-			}
-
-			element=cartItem.findElement(byProductItemDesc);
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-			lsText=element.getText();
-			if(!lsText.isEmpty()){
-				reporter.reportLogPass("The cart item product description is displaying correctly");
-			}
-			else{
-				reporter.reportLogFailWithScreenshot("The cart item product description is not displaying correctly");
-			}
-
-			element=cartItem.findElement(byProductNumber);
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-			lsText=element.getText();
-			if(!lsText.isEmpty()){
-				reporter.reportLogPass("The cart item product product number is displaying correctly");
-			}
-			else{
-				reporter.reportLogFailWithScreenshot("The cart item product number is not displaying correctly");
-			}
-
-			if(bUnKnown){
+			WebElement element;
+			int index=0;
+			for(WebElement cartItem:lstCartItems){
+				reporter.reportLog("Verify cart item "+index);
 				if(this.checkShippingDateExisting(cartItem)){
 					element=cartItem.findElement(byProductShippingDate);
 					this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
@@ -488,75 +605,32 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 						reporter.reportLogFailWithScreenshot("The cart item product shipping date is not displaying correctly");
 					}
 				}
-			}
-			else{
-				if(bAdvancedOrder){
-					element=cartItem.findElement(byProductShippingDate);
+
+				if(this.checkRedMessageExisting(cartItem)){
+					element=cartItem.findElement(byProductRedMessage);
 					this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 					lsText=element.getText();
 					if(!lsText.isEmpty()){
-						reporter.reportLogPass("The cart item product shipping date is displaying correctly");
+						reporter.reportLogPass("The cart item red message is displaying correctly");
 					}
 					else{
-						reporter.reportLogFailWithScreenshot("The cart item product shipping date is not displaying correctly");
+						reporter.reportLogFailWithScreenshot("The cart item red message is not displaying correctly");
 					}
 				}
-			}
 
-			if(this.checkRedMessageExisting(cartItem)){
-				element=cartItem.findElement(byProductRedMessage);
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-				lsText=element.getText();
-				if(!lsText.isEmpty()){
-					reporter.reportLogPass("The cart item red message is displaying correctly");
+				if(this.checkFreeShippingMessageExisting(cartItem)){
+					element=cartItem.findElement(byProductBlackMessage);
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+					lsText=element.getText();
+					if(!lsText.isEmpty()){
+						reporter.reportLogPass("The cart item free shipping message is displaying correctly");
+					}
+					else{
+						reporter.reportLogFailWithScreenshot("The cart item free shipping message is not displaying correctly");
+					}
 				}
-				else{
-					reporter.reportLogFailWithScreenshot("The cart item red message is not displaying correctly");
-				}
+				index++;
 			}
-
-			if(this.checkFreeShippingMessageExisting(cartItem)){
-				element=cartItem.findElement(byProductBlackMessage);
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-				lsText=element.getText();
-				if(!lsText.isEmpty()){
-					reporter.reportLogPass("The cart item free shipping message is displaying correctly");
-				}
-				else{
-					reporter.reportLogFailWithScreenshot("The cart item free shipping message is not displaying correctly");
-				}
-			}
-
-			if(this.checkRemoveButtonExisting(cartItem)){
-				element=cartItem.findElement(byProductRemoveButton);
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-				lsText=element.getAttribute("href");
-				if(!lsText.isEmpty()){
-					reporter.reportLogPass("The cart item remove button link is not empty");
-				}
-				else{
-					reporter.reportLogFailWithScreenshot("The cart item remove button link is empty");
-				}
-			}
-
-			element=cartItem.findElement(byProductSelectQuantity);
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-			if(this.getReusableActionsInstance().isElementVisible(element)){
-				reporter.reportLogPass("The cart item shopping quantity is displaying correctly");
-			}
-			else{
-				reporter.reportLogFailWithScreenshot("The cart item shopping quantity is not displaying correctly");
-			}
-			index++;
-		}
-
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartTableSubTotal);
-		lsText=lblCartTableSubTotal.getText();
-		if(!lsText.isEmpty()){
-			reporter.reportLogPass("The cart table subtotal is displaying correctly");
-		}
-		else{
-			reporter.reportLogFailWithScreenshot("The cart table subtotal is not displaying correctly");
 		}
 	}
 

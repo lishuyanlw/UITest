@@ -1997,6 +1997,20 @@ public class ProductDetailPage extends BasePage {
 	}
 
 	/**
+	 * To go To Shopping Cart page By Clicking Shopping Cart Icon In GlobalHeader
+	 */
+	public void goToShoppingCartByClickingShoppingCartIconInGlobalHeader(){
+		GlobalHeaderPage globalHeaderPage=new GlobalHeaderPage(this.getDriver());
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeaderPage.ShoppingCartlnk);
+		globalHeaderPage.ShoppingCartlnk.click();
+
+		ShoppingCartPage shoppingCartPage=new ShoppingCartPage(this.getDriver());
+		this.waitForPageToLoad();
+		this.waitForCondition(Driver->{return shoppingCartPage.lblCartTitle.isDisplayed();},20000);
+		this.applyStaticWait(3*this.getStaticWaitForApplication());
+	}
+
+	/**
 	 * To go To Shopping Cart page by clicking ViewShoppingBag button in AddToBag Popup window with login first
 	 */
 	public void goToShoppingCartFromAddToBagPopupWithLoginFirst(){
@@ -3119,6 +3133,38 @@ public class ProductDetailPage extends BasePage {
 
 		this.waitForPageToLoad();
 		return prp.waitForPDPPageLoading();
+	}
+
+	/**
+	 * To get Product With Conditions For Video And Style And Size Without CheckingSoldOutCriteria
+	 * @param-List<String> lstKeyword: keyword list
+	 * @return true/false
+	 * @author Wei.Li
+	 * @throws IOException
+	 */
+	public String getProductWithConditionsForVideoAndStyleAndSizeWithoutCheckingSoldOutCriteria(List<String> lstKeyword,Map<String,Object> dataCriteria) throws IOException {
+		ProductResultsPage prp=new ProductResultsPage(this.getDriver());
+		ApiResponse apiResponse=new ApiResponse();
+		ApiResponse.lsUrlType="-";
+
+		Map<String,Object> outputDataCriteria= new HashMap<String,Object>();
+		if(dataCriteria==null){
+			outputDataCriteria.put("video", "1");
+			outputDataCriteria.put("style", "1");
+			outputDataCriteria.put("size", "1");
+		}else{
+			outputDataCriteria = dataCriteria;
+		}
+
+		for(String lsKeyword:lstKeyword) {
+			product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,false,true,false);
+			if(product!=null) {
+				break;
+			}
+		}
+		selectedProduct=selectedProduct.assignValue(apiResponse.selectedProduct);
+
+		return selectedProduct.productName;
 	}
 
 	/**

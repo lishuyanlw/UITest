@@ -360,10 +360,14 @@ public class BaseTest {
 
 	@AfterMethod(alwaysRun = true)
 	public void afterTest() throws IOException, InterruptedException{
-		if (getDriver() != null && !placeOrderValue) {
+		closeSession();
+	}
+
+	@AfterSuite(alwaysRun = true)
+	public void afterSuite() throws IOException, InterruptedException {
+		if (!placeOrderValue) {
 			addPlaceOrder();
 		}
-		closeSession();
 	}
 
 	public void validateText(String strActualText, List<String> listExpectedText, String validationMsg) {
@@ -457,6 +461,7 @@ public class BaseTest {
 		String lblUserName = TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
 		String lblPassword = TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
 
+		apiResponseThreadLocal.set(new ApiResponse());
 		ConstantData.APIUserSessionParams apiUserSessionParams = TestDataHandler.constantData.getApiUserSessionParams();
 		apiUserSessionData = apiResponseThreadLocal.get().getApiUserSessionData(lblUserName,lblPassword,apiUserSessionParams.getLbl_grantType(),apiUserSessionParams.getLbl_apiKey());
 		String access_token = apiUserSessionData.get("access_token").toString();
@@ -480,6 +485,7 @@ public class BaseTest {
 			noOfDaysBetween = DAYS.between(ldOrderDate,now);
 			if( noOfDaysBetween<=75){
 				placeOrderValue = true;
+				apiResponseThreadLocal.remove();
 				return;
 			}
 		}
@@ -507,6 +513,7 @@ public class BaseTest {
 
 		orderAPI.placeOrder(GuidId,customerEDP,access_token,relatedCartIdsList);
 		placeOrderValue = true;
+		apiResponseThreadLocal.remove();
 	}
 
 	private boolean runningTestName(List<String> lstTestName,String currentTestMethodName){
