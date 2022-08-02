@@ -387,6 +387,7 @@ public class ProductAPI extends ApiClient {
                                             productMapData.put("productWasPrice",edpsData.getWasPrice());
                                             productMapData.put("productSavePrice",edpsData.getSavePrice());
                                             productMapData.put("productAppliedShipping",edpsData.getAppliedShipping());
+                                            productMapData.put("advanceOrderMessage",edpsData.getSkuAvailabilityMessage());
                                             secondValue = true;
                                             counter++;
                                         }
@@ -479,6 +480,7 @@ public class ProductAPI extends ApiClient {
             productMap.put("productWasPrice",edpsData.getWasPrice());
             productMap.put("productSavePrice",edpsData.getSavePrice());
             productMap.put("productAppliedShipping",edpsData.getAppliedShipping());
+            productMap.put("advanceOrderMessage",edpsData.getSkuAvailabilityMessage());
             return productMap;
         }
 

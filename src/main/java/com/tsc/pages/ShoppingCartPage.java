@@ -2224,6 +2224,7 @@ public class ShoppingCartPage extends BasePage {
 				map.put("productWasPrice",cartLineItemClass.getWasPrice());
 				map.put("productSavePrice",cartLineItemClass.getSavePrice());
 				map.put("productAppliedShipping",cartLineItemClass.getAppliedShipping());
+				map.put("advanceOrderMessage",cartLineItemClass.getSkuAvailabilityMessage());
 
 				for(CartResponse.ProductsClass productsClass:productsClassList){
 					boolean outerForLoop = false;
