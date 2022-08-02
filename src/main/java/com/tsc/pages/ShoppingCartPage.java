@@ -2,6 +2,7 @@ package com.tsc.pages;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tsc.api.pojo.AccountCartResponse;
+import com.tsc.api.pojo.ProductDetailsItem;
 import com.tsc.api.util.DataConverter;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.tsc.api.apiBuilder.CartAPI;
@@ -2402,5 +2403,51 @@ public class ShoppingCartPage extends BasePage {
 	 */
 	public int getFutureMonthlyPaymentNumber(){
 		return Integer.valueOf(this.lblCartEasyPayFutureMonthlyPaymentTitle.getText().trim().split(" ")[0]);
+	}
+
+	/**
+	 * This function adds advance Order Info to a cart for user
+	 * @param - String - productNumber
+	 * @param - int - quantity
+	 * @param - String - customerEDP
+	 * @param - String - accessToken
+	 * @return - Map<String,Object> - Map containing advance order info for a product
+	 * @throws IOException
+	 */
+	public Map<String,Object> addAdvanceOrderProductToCart(String productNumber, int quantity, String customerEDP, String accessToken) throws IOException {
+		Map<String,Object> advanceOrderInfo = new HashMap<>();
+		boolean flag = false;
+		ProductDetailsItem productItem = new ProductAPI().getProductDetailsForSpecificProductNumber(productNumber);
+		if(productItem==null)
+			return null;
+		else{
+			for(ProductDetailsItem.Edp edps : productItem.getEdps()){
+				if(edps.isIsAdvanceOrBackOrder()==true){
+					advanceOrderInfo.put("edpNo",edps.getEdpNo());
+					advanceOrderInfo.put("productNumber",edps.getItemNo());
+					advanceOrderInfo.put("advanceOrderMessage",edps.getSkuAvailabilityMessage());
+					advanceOrderInfo.put("productStyle",edps.getStyle());
+					advanceOrderInfo.put("productSize",edps.getSize());
+					advanceOrderInfo.put("productNowPrice",edps.getAppliedPrice());
+					advanceOrderInfo.put("productName",productItem.getName());
+					advanceOrderInfo.put("itemToBeAdded",quantity);
+					flag = true;
+				}
+				if(flag){
+					CartAPI cartApi = new CartAPI();
+					CartResponse accountCart = null;
+					Response responseExisting=cartApi.getAccountCartContentWithCustomerEDP(customerEDP, accessToken);
+					if(responseExisting.statusCode()==200){
+						accountCart = JsonParser.getResponseObject(responseExisting.asString(), new TypeReference<CartResponse>() {});
+						Response response = this.addItemsToCartForUser(Arrays.asList(advanceOrderInfo),Integer.valueOf(customerEDP),accessToken,accountCart.getCartGuid());
+						if(response.statusCode()==200)
+							break;
+					}
+					else
+						return null;
+				}
+			}
+			return advanceOrderInfo;
+		}
 	}
 }

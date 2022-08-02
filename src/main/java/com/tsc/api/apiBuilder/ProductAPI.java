@@ -255,7 +255,7 @@ public class ProductAPI extends ApiClient {
      */
     public ProductDetailsItem getProductDetailsForSpecificProductNumber(String productNumber){
         Response response = null;
-        ProductDetailsItem product=new ProductDetailsItem();
+        ProductDetailsItem product = null;
         response = getApiCallResponse(null, propertyData.get("test_apiVersion")+"/"+propertyData.get("test_language")+"/products/"+productNumber);
         if(response!=null && response.statusCode()==200) {
             product = JsonParser.getResponseObject(response.asString(), new TypeReference<ProductDetailsItem>() {});
