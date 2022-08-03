@@ -28,60 +28,60 @@ public class SC_TC10_VerifyShoppingCart_ShippingDateAndMultiPackMessage extends 
 		List<Map<String, String>> keyword = TestDataHandler.constantData.getShoppingCart().getLst_SearchKeywords();
 		List<Map<String, Object>> data = getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP, accessToken, keyword,true);
 
+		//Add advanced order product using API
+		String lsAdvancedOrderKeyword=TestDataHandler.constantData.getSearchResultPage().getLbl_AdvancedOrderkeyword();
+		Map<String,Object> mapAdvancedOrder=getShoppingCartThreadLocal().addAdvanceOrderProductToCart(lsAdvancedOrderKeyword, 1, String.valueOf(customerEDP), accessToken);
+		data.add(mapAdvancedOrder);
+		String lsEstimatedShippingDate= (String) mapAdvancedOrder.get("advanceOrderMessage");
+		lsEstimatedShippingDate=lsEstimatedShippingDate.split(":")[1].trim();
+
 		//Login using valid username and password
 		getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword);
 		BasePage basePage=new BasePage(this.getDriver());
+		basePage.applyStaticWait(2000);
+		getProductDetailPageThreadLocal().goToShoppingCartByClickingShoppingCartIconInGlobalHeader();
 
-		String lsAdvancedOrderKeyword=TestDataHandler.constantData.getSearchResultPage().getLbl_AdvancedOrderkeyword();
-		if(getProductResultsPageThreadLocal().getSearchResultLoad(lsAdvancedOrderKeyword,true)) {
-			String lsEstimatedShippingDate=basePage.getElementInnerText(getProductDetailPageThreadLocal().lblAdvanceOrderMsg);
-			lsEstimatedShippingDate=lsEstimatedShippingDate.split(":")[1].trim();
-			basePage.clickElement(getProductDetailPageThreadLocal().btnAddToBag);
-			basePage.waitForCondition(Driver->{return getProductDetailPageThreadLocal().lblAddToBagPopupWindowTitle.isDisplayed();},30000);
-			getProductDetailPageThreadLocal().goToShoppingCartFromAddToBagPopupWithLoginFirst();
+		reporter.reportLog("Verify shipping message in shopping cart header");
+		boolean bCheckGetItByShippingMessage=getShoppingCartThreadLocal().checkGetItByShippingMessageExisting();
+		if(!bCheckGetItByShippingMessage){
+			reporter.reportLogPass("The GetItByShippingMessage is not displaying in the shopping cart header");
+		}
+		else{
+			reporter.reportLogFail("The GetItByShippingMessage is still displaying in the shopping cart header");
+		}
 
-			reporter.reportLog("Verify shipping message in shopping cart header");
-			boolean bCheckGetItByShippingMessage=getShoppingCartThreadLocal().checkGetItByShippingMessageExisting();
-			if(!bCheckGetItByShippingMessage){
-				reporter.reportLogPass("The GetItByShippingMessage is not displaying in the shopping cart header");
+		reporter.reportLog("Verify Estimated shipping message for first shopping item");
+		Map<String, Object> shoppingCartMap = getShoppingCartThreadLocal().getShoppingSectionDetails("optional");
+		List<Map<String,Object>> shoppingList=(List<Map<String,Object>>)shoppingCartMap.get("shoppingList");
+		String lsFirstShoppingDate= (String) shoppingList.get(0).get("productShippingDate");
+		if(lsFirstShoppingDate.contains("Est. Ship Date")){
+			reporter.reportLogPass("The first shopping item is containing 'Est. Ship Date'");
+		}
+		else{
+			reporter.reportLogFail("The first shopping item is not containing 'Est. Ship Date'");
+		}
+
+		reporter.reportLog("Verify the Estimated shipping message linkage between PDP and Shopping cart page");
+		String lsShippingDateInfo,shippingDate;
+		for(Map<String,Object> shoppingItem:shoppingList){
+			lsShippingDateInfo= (String) shoppingItem.get("productShippingDate");
+			shippingDate=lsShippingDateInfo.split(":")[1].split(",")[1].trim();
+			if(lsShippingDateInfo.contains("Est. Ship Date")&&shippingDate.equalsIgnoreCase(lsEstimatedShippingDate)){
+				reporter.reportLogPass("Able to find estimated shipping date correctly");
+				break;
 			}
 			else{
-				reporter.reportLogFail("The GetItByShippingMessage is still displaying in the shopping cart header");
+				reporter.reportLogPass("Unable to find estimated shipping date");
 			}
+		}
 
-			reporter.reportLog("Verify Estimated shipping message for first shopping item");
-			Map<String, Object> shoppingCartMap = getShoppingCartThreadLocal().getShoppingSectionDetails("optional");
-			List<Map<String,Object>> shoppingList=(List<Map<String,Object>>)shoppingCartMap.get("shoppingList");
-			String lsFirstShoppingDate= (String) shoppingList.get(0).get("productShippingDate");
-			if(lsFirstShoppingDate.contains("Est. Ship Date")){
-				reporter.reportLogPass("The first shopping item is containing 'Est. Ship Date'");
-			}
-			else{
-				reporter.reportLogFail("The first shopping item is not containing 'Est. Ship Date'");
-			}
-
-			reporter.reportLog("Verify the Estimated shipping message linkage between PDP and Shopping cart page");
-			String lsShippingDateInfo,shippingDate;
-			for(Map<String,Object> shoppingItem:shoppingList){
-				lsShippingDateInfo= (String) shoppingItem.get("productShippingDate");
-				shippingDate=lsShippingDateInfo.split(":")[1].split(",")[1].trim();
-				if(lsShippingDateInfo.contains("Est. Ship Date")&&shippingDate.equalsIgnoreCase(lsEstimatedShippingDate)){
-					reporter.reportLogPass("Able to find estimated shipping date correctly");
-					break;
-				}
-				else{
-					reporter.reportLogPass("Unable to find estimated shipping date");
-				}
-			}
-
-			reporter.reportLog("Verify the MultiPack message in shopping cart header");
-			String lsCartNoticeMessage=getShoppingCartThreadLocal().checkCartNoticeMessageExisting();
-			if(!lsCartNoticeMessage.equalsIgnoreCase("errorMessage")){
-				reporter.reportLogPass("The MultiPack message is displaying correctly");
-			}
-			else{
-				reporter.reportLogFail("The MultiPack message is not displaying correctly");
-			}
+		reporter.reportLog("Verify the MultiPack message in shopping cart header");
+		String lsCartNoticeMessage=getShoppingCartThreadLocal().checkCartNoticeMessageExisting();
+		if(!lsCartNoticeMessage.equalsIgnoreCase("errorMessage")){
+			reporter.reportLogPass("The MultiPack message is displaying correctly");
+		}
+		else{
+			reporter.reportLogFail("The MultiPack message is not displaying correctly");
 		}
 
 		//To empty the cart

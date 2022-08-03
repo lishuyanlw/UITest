@@ -255,7 +255,7 @@ public class ProductAPI extends ApiClient {
      */
     public ProductDetailsItem getProductDetailsForSpecificProductNumber(String productNumber){
         Response response = null;
-        ProductDetailsItem product=new ProductDetailsItem();
+        ProductDetailsItem product = null;
         response = getApiCallResponse(null, propertyData.get("test_apiVersion")+"/"+propertyData.get("test_language")+"/products/"+productNumber);
         if(response!=null && response.statusCode()==200) {
             product = JsonParser.getResponseObject(response.asString(), new TypeReference<ProductDetailsItem>() {});
@@ -387,6 +387,7 @@ public class ProductAPI extends ApiClient {
                                             productMapData.put("productWasPrice",edpsData.getWasPrice());
                                             productMapData.put("productSavePrice",edpsData.getSavePrice());
                                             productMapData.put("productAppliedShipping",edpsData.getAppliedShipping());
+                                            productMapData.put("advanceOrderMessage",edpsData.getSkuAvailabilityMessage());
                                             secondValue = true;
                                             counter++;
                                         }
@@ -479,6 +480,7 @@ public class ProductAPI extends ApiClient {
             productMap.put("productWasPrice",edpsData.getWasPrice());
             productMap.put("productSavePrice",edpsData.getSavePrice());
             productMap.put("productAppliedShipping",edpsData.getAppliedShipping());
+            productMap.put("advanceOrderMessage",edpsData.getSkuAvailabilityMessage());
             return productMap;
         }
 

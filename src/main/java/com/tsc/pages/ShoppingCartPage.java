@@ -2,6 +2,7 @@ package com.tsc.pages;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tsc.api.pojo.AccountCartResponse;
+import com.tsc.api.pojo.ProductDetailsItem;
 import com.tsc.api.util.DataConverter;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.tsc.api.apiBuilder.CartAPI;
@@ -2225,6 +2226,7 @@ public class ShoppingCartPage extends BasePage {
 				map.put("productWasPrice",cartLineItemClass.getWasPrice());
 				map.put("productSavePrice",cartLineItemClass.getSavePrice());
 				map.put("productAppliedShipping",cartLineItemClass.getAppliedShipping());
+				map.put("advanceOrderMessage",cartLineItemClass.getSkuAvailabilityMessage());
 
 				for(CartResponse.ProductsClass productsClass:productsClassList){
 					boolean outerForLoop = false;
@@ -2407,46 +2409,95 @@ public class ShoppingCartPage extends BasePage {
 	}
 
 	/**
+<<<<<<< HEAD
 	 * To change Shopping Item Quantity by given shopping item index
 	 * @param - int - given shopping Item Index
 	 * @return - Map<String,Object> - including itemTotalDifference and itemQuantityDifference
 	 */
-	public Map<String,Object> changeShoppingItemQuantityByGivenIndex(int shoppingItemIndex){
-		WebElement shoppingItem=this.lstCartItems.get(shoppingItemIndex);
-		WebElement selectQuantity=shoppingItem.findElement(this.byProductSelectQuantity);
-		Select select=new Select(selectQuantity);
+	public Map<String,Object> changeShoppingItemQuantityByGivenIndex(int shoppingItemIndex) {
+		WebElement shoppingItem = this.lstCartItems.get(shoppingItemIndex);
+		WebElement selectQuantity = shoppingItem.findElement(this.byProductSelectQuantity);
+		Select select = new Select(selectQuantity);
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(selectQuantity);
-		int quantityBeforeChange=this.getIntegerFromString(select.getFirstSelectedOption().getText());
-		float price=this.getFloatFromString(this.getElementInnerText(shoppingItem.findElement(this.byProductNowPrice)),true);
-		float itemTotalBeforeChange=price*quantityBeforeChange;
+		int quantityBeforeChange = this.getIntegerFromString(select.getFirstSelectedOption().getText());
+		float price = this.getFloatFromString(this.getElementInnerText(shoppingItem.findElement(this.byProductNowPrice)), true);
+		float itemTotalBeforeChange = price * quantityBeforeChange;
 
-		int itemQuantityDifference=0;
-		List<WebElement> quantityOptionItemList=select.getOptions();
-		for(WebElement option:quantityOptionItemList){
-			String optionText=this.getElementInnerText(option);
-			int optionIndex=Integer.parseInt(optionText.trim());
-			if(optionIndex!=quantityBeforeChange){
-				itemQuantityDifference=optionIndex-quantityBeforeChange;
+		int itemQuantityDifference = 0;
+		List<WebElement> quantityOptionItemList = select.getOptions();
+		for (WebElement option : quantityOptionItemList) {
+			String optionText = this.getElementInnerText(option);
+			int optionIndex = Integer.parseInt(optionText.trim());
+			if (optionIndex != quantityBeforeChange) {
+				itemQuantityDifference = optionIndex - quantityBeforeChange;
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(selectQuantity);
 				select.selectByVisibleText(optionText);
-				this.waitForCondition(Driver->{return this.pageLoadingIndicator.getAttribute("style").contains("display: none");},20000);
+				this.waitForCondition(Driver -> {
+					return this.pageLoadingIndicator.getAttribute("style").contains("display: none");
+				}, 20000);
 				break;
 			}
 		}
 
-		shoppingItem=this.lstCartItems.get(shoppingItemIndex);
-		selectQuantity=shoppingItem.findElement(this.byProductSelectQuantity);
-		select=new Select(selectQuantity);
+		shoppingItem = this.lstCartItems.get(shoppingItemIndex);
+		selectQuantity = shoppingItem.findElement(this.byProductSelectQuantity);
+		select = new Select(selectQuantity);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(selectQuantity);
-		int quantityAfterChange=this.getIntegerFromString(select.getFirstSelectedOption().getText());
-		price=this.getFloatFromString(this.getElementInnerText(shoppingItem.findElement(this.byProductNowPrice)),true);
-		float itemTotalAfterChange=price*quantityAfterChange;
+		int quantityAfterChange = this.getIntegerFromString(select.getFirstSelectedOption().getText());
+		price = this.getFloatFromString(this.getElementInnerText(shoppingItem.findElement(this.byProductNowPrice)), true);
+		float itemTotalAfterChange = price * quantityAfterChange;
 
-		Map<String,Object> map=new HashMap<>();
-		map.put("itemTotalDifference",itemTotalAfterChange-itemTotalBeforeChange);
-		map.put("itemQuantityDifference",itemQuantityDifference);
+		Map<String, Object> map = new HashMap<>();
+		map.put("itemTotalDifference", itemTotalAfterChange - itemTotalBeforeChange);
+		map.put("itemQuantityDifference", itemQuantityDifference);
 
 		return map;
+	}
+
+	/**
+	 * This function adds advance Order Info to a cart for user
+	 * @param - String - productNumber
+	 * @param - int - quantity
+	 * @param - String - customerEDP
+	 * @param - String - accessToken
+	 * @return - Map<String,Object> - Map containing advance order info for a product
+	 * @throws IOException
+	 */
+	public Map<String,Object> addAdvanceOrderProductToCart(String productNumber, int quantity, String customerEDP, String accessToken) throws IOException {
+		Map<String,Object> advanceOrderInfo = new HashMap<>();
+		boolean flag = false;
+		ProductDetailsItem productItem = new ProductAPI().getProductDetailsForSpecificProductNumber(productNumber);
+		if(productItem==null)
+			return null;
+		else{
+			for(ProductDetailsItem.Edp edps : productItem.getEdps()){
+				if(edps.isIsAdvanceOrBackOrder()==true){
+					advanceOrderInfo.put("edpNo",edps.getEdpNo());
+					advanceOrderInfo.put("productNumber",edps.getItemNo());
+					advanceOrderInfo.put("advanceOrderMessage",edps.getSkuAvailabilityMessage());
+					advanceOrderInfo.put("productStyle",edps.getStyle());
+					advanceOrderInfo.put("productSize",edps.getSize());
+					advanceOrderInfo.put("productNowPrice",edps.getAppliedPrice());
+					advanceOrderInfo.put("productName",productItem.getName());
+					advanceOrderInfo.put("itemToBeAdded",quantity);
+					flag = true;
+				}
+				if(flag){
+					CartAPI cartApi = new CartAPI();
+					CartResponse accountCart = null;
+					Response responseExisting=cartApi.getAccountCartContentWithCustomerEDP(customerEDP, accessToken);
+					if(responseExisting.statusCode()==200){
+						accountCart = JsonParser.getResponseObject(responseExisting.asString(), new TypeReference<CartResponse>() {});
+						Response response = this.addItemsToCartForUser(Arrays.asList(advanceOrderInfo),Integer.valueOf(customerEDP),accessToken,accountCart.getCartGuid());
+						if(response.statusCode()==200)
+							break;
+					}
+					else
+						return null;
+				}
+			}
+			return advanceOrderInfo;
+		}
 	}
 }
