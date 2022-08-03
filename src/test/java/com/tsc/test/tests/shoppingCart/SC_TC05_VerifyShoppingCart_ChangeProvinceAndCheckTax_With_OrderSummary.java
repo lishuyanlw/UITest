@@ -13,7 +13,7 @@ public class SC_TC05_VerifyShoppingCart_ChangeProvinceAndCheckTax_With_OrderSumm
 	/*
 	 * CER-850
 	 */
-	@Test(groups={"Regression","ShoppingCart","SauceTunnelTest"})
+	@Test(groups={"Regression","ShoppingCart"})
 	public void SC_TC05_VerifyShoppingCart_ChangeProvinceAndCheckTax_With_OrderSummary() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 

@@ -13,7 +13,7 @@ public class SC_TC06_VerifyShoppingCart_ChangeChangeInstallmentNumber_And_OrderS
 	/*
 	 * CER-851
 	 */
-	@Test(groups={"Regression","ShoppingCart","SauceTunnelTest"})
+	@Test(groups={"Regression","ShoppingCart"})
 	public void SC_TC06_VerifyShoppingCart_ChangeChangeInstallmentNumber_And_OrderSummary() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 

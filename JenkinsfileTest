@@ -83,9 +83,10 @@ pipeline {
             30 06 * * 5 %Browser=sauceandroidchrome;Language=en;Groups=Integration;ThreadCount=1;TunnelRequired=No;Device=Tablet;TestProfile=TSCWF-Automation
             00 19 * * 1-5 %Browser=saucechrome;Language=en;Groups=MyAccount;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
             00 20 * * 1-5 %Browser=saucefirefox;Language=en;Groups=MyAccount;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
-            00 21 * * 1-5 %Browser=saucesafari;Language=en;Groups=MyAccount;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
-            00 22 * * 1-5 %Browser=sauceioschrome;Language=en;Groups=MyAccount;ThreadCount=1;TunnelRequired=Yes;Device=Mobile;TestProfile=TSCWF-Automation
+            #00 21 * * 1-5 %Browser=saucesafari;Language=en;Groups=MyAccount;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
+            #00 22 * * 1-5 %Browser=sauceioschrome;Language=en;Groups=MyAccount;ThreadCount=1;TunnelRequired=Yes;Device=Mobile;TestProfile=TSCWF-Automation
             00 23 * * 1-5 %Browser=sauceandroidchrome;Language=en;Groups=MyAccount;ThreadCount=1;TunnelRequired=Yes;Device=Tablet;TestProfile=TSCWF-Automation
+            00 21 * * 1-5 %Browser=saucechrome;Language=en;Groups=ShoppingCart;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
             00 00 * * 1-5 %Browser=saucechrome;Language=en;Groups=SignIn;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
             15 00 * * 2 %Browser=saucefirefox;Language=en;Groups=SignIn;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
             15 00 * * 3 %Browser=saucesafari;Language=en;Groups=SignIn;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
@@ -96,19 +97,6 @@ pipeline {
             50 00 * * 1-5 %Browser=saucesafari;Language=en;Groups=SauceTunnelTest;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
             00 01 * * 1-5 %Browser=sauceioschrome;Language=en;Groups=SauceTunnelTest;ThreadCount=1;TunnelRequired=Yes;Device=Mobile;TestProfile=TSCWF-Automation
             10 01 * * 1-5 %Browser=sauceandroidchrome;Language=en;Groups=SauceTunnelTest;ThreadCount=1;TunnelRequired=Yes;Device=Tablet;TestProfile=TSCWF-Automation
-
-            #00 20 * * 4 %Browser=sauceioschrome;Language=en;Groups=SignIn;ThreadCount=1;TunnelRequired=Yes;Device=Tablet;TestProfile=TSCWF-Automation
-		    #00 22 * * 4 %Browser=sauceioschrome;Language=en;Groups=GlobalHeader;ThreadCount=1;TunnelRequired=No;Device=Tablet;TestProfile=TSCWF-Automation
-		    #00 23 * * 4 %Browser=sauceioschrome;Language=en;Groups=Home;ThreadCount=1;TunnelRequired=No;Device=Tablet;TestProfile=TSCWF-Automation
-		    #00 01 * * 5 %Browser=sauceioschrome;Language=en;Groups=Integration;ThreadCount=1;TunnelRequired=No;Device=Tablet;TestProfile=TSCWF-Automation
-		    #30 01 * * 5 %Browser=sauceioschrome;Language=en;Groups=ProductSearch;ThreadCount=1;TunnelRequired=No;Device=Tablet;TestProfile=TSCWF-Automation
-		    #30 03 * * 5 %Browser=sauceioschrome;Language=en;Groups=MyAccount;ThreadCount=1;TunnelRequired=Yes;Device=Tablet;TestProfile=TSCWF-Automation
-
-            #30 22 * * 4 %Browser=sauceioschrome;Language=en;Groups=GlobalFooter;ThreadCount=1;TunnelRequired=No;Device=Tablet;TestProfile=TSCWF-Automation
-            #30 23 * * 4 %Browser=sauceioschrome;Language=en;Groups=GlobalFooter;ThreadCount=1;TunnelRequired=No;Device=Mobile;TestProfile=TSCWF-Automation
-            #30 03 * * 5 %Browser=sauceandroidchrome;Language=en;Groups=GlobalFooter;ThreadCount=1;TunnelRequired=No;Device=Tablet;TestProfile=TSCWF-Automation
-            #30 05 * * 5 %Browser=sauceandroidchrome;Language=en;Groups=GlobalFooter;ThreadCount=1;TunnelRequired=No;Device=Mobile;TestProfile=TSCWF-Automation
-
 
                 ''':'')
     }
