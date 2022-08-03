@@ -1,13 +1,12 @@
 package com.tsc.pages;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tsc.api.pojo.AccountCartResponse;
-import com.tsc.api.pojo.ProductDetailsItem;
+import com.tsc.api.apiBuilder.AccountAPI;
+import com.tsc.api.pojo.*;
 import com.tsc.api.util.DataConverter;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.tsc.api.apiBuilder.CartAPI;
 import com.tsc.api.apiBuilder.ProductAPI;
-import com.tsc.api.pojo.CartResponse;
 import com.tsc.api.util.JsonParser;
 import com.tsc.pages.base.BasePage;
 import org.json.simple.JSONObject;
@@ -2450,5 +2449,89 @@ public class ShoppingCartPage extends BasePage {
 			}
 			return advanceOrderInfo;
 		}
+	}
+
+	/**
+	 * This function verifies if configuration needs TSC as default Credit Card and adds it if necessary
+	 * @param - List<Configuration> - Configuration from contentful present in system
+	 * @param -JSONObject - creditCardData
+	 * @param - String - customerEDP
+	 * @param - String - accessToken
+	 * @throws IOException
+	 */
+	public void verifyAndUpdateCreditCardAsPerSystemConfiguration(List<Configuration> configuration,JSONObject creditCardData,String customerEDP,String accessToken) throws IOException {
+		if(configuration.size()>0){
+			AccountAPI accountAPI = new AccountAPI();
+			boolean outerFlag = false;
+			boolean innerFlag = false;
+			for(Configuration configurations:configuration){
+				if(configurations.getKey().equalsIgnoreCase("GWPTscCCPaymentEnabled")){
+					Boolean configValue = Boolean.valueOf(configurations.getValue());
+					//Verifying if configValue is true, CC associated with user is TSC Card, else any other card will do
+					if(configValue){
+						Response response = accountAPI.getAccountDetailsFromCustomerEDP(customerEDP,accessToken);
+						AccountResponse accountCartResponse = JsonParser.getResponseObject(response.asString(), new TypeReference<AccountResponse>() {});
+						if(response.statusCode()==200){
+							List<AccountResponse.CreditCardsClass> creditCardsClassList = accountCartResponse.getCreditCards();
+							for(AccountResponse.CreditCardsClass creditCardsClass:creditCardsClassList){
+								if(creditCardsClass.getType().equalsIgnoreCase("FI")){
+									//Check if Credit Card is default
+									boolean isDefault = creditCardsClass.isDefault();
+									if(isDefault){
+										outerFlag = true;
+										break;
+									}else{
+										//Updating Default Credit Card for user to be TSC
+										int creditCardId = creditCardsClass.getId();
+
+										JSONObject jsonObject = new JSONObject();
+										jsonObject.put("Id",creditCardId);
+										jsonObject.put("ExpirationDate",creditCardsClass.getExpirationDate());
+										jsonObject.put("Expired",creditCardsClass.isExpired());
+										jsonObject.put("Number",creditCardsClass.getNumber());
+										jsonObject.put("MaskedNumber",creditCardsClass.getMaskedNumber());
+										jsonObject.put("IsDefault",true);
+										jsonObject.put("Type",creditCardsClass.getType());
+										jsonObject.put("DisplayExpirationMonth",creditCardsClass.getDisplayExpirationMonth());
+										jsonObject.put("DisplayExpirationYear",creditCardsClass.getDisplayExpirationYear());
+										jsonObject.put("CVV",null);
+
+										Response updateResponse = accountAPI.updateCreditCardForUser(jsonObject,customerEDP,creditCardId,accessToken);
+										if(updateResponse.statusCode()==200){
+											reporter.reportLog("Default Credit Card is updated to be TSC for user");
+											outerFlag = true;
+											break;
+										}
+										else
+											reporter.reportLogFail("Default Credit Card is not updated to be TSC for user");
+									}
+									innerFlag = true;
+								}
+							}
+						if(!innerFlag){
+							//Adding TSC card to user as configuration for TSC is set to true and no TSC card is present for user
+							JSONObject tscCardObject = (JSONObject) creditCardData.get("tsc");
+							tscCardObject.put("IsDefault",true);
+							tscCardObject.put("CVV",null);
+							tscCardObject.remove("CardType");
+							tscCardObject.remove("CardDisplayName");
+							Response tscCardResponse = accountAPI.addCreditCardToUser((org.json.simple.JSONObject) creditCardData.get("tsc"),customerEDP,accessToken);
+							if(tscCardResponse.statusCode()==200)
+								reporter.reportLog("New TSC Credit Card is added for user as default Card");
+							else
+								reporter.reportLogFail("New TSC Credit Card is not added for user as default Card");
+							outerFlag = true;
+						}
+						}else{
+							reporter.reportLogFail("Account Cart Response is not fetched as expected for Credit Card!");
+							outerFlag = true;
+						}
+					}
+				}
+				if(outerFlag)
+					break;
+			}
+		}else
+			reporter.reportLogFail("Configuration object passed to function is null. Please verify api response!");
 	}
 }
