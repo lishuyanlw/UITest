@@ -42,6 +42,9 @@ public class SC_TC07_VerifyShoppingCart_VerifyOrderSummary_Section extends BaseT
 
 		reporter.reportLog("Verify checkout section contents");
 		getShoppingCartThreadLocal().verifyCheckOutContents(false);
+
+		//To empty the cart
+		getShoppingCartThreadLocal().emptyCart(customerEDP,accessToken);
 	}
 }
 

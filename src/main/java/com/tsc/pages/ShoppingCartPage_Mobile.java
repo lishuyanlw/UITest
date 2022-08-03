@@ -341,28 +341,40 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 	}
 
 	@Override
-	public boolean checkDuplicatedStyleAndSizeInShoppingItemList(Map<String,Object> shoppingCartMap){
+	public boolean checkProductWithSameStyleAndDifferentSizesInShoppingItemList(Map<String,Object> shoppingCartMap){
 		List<Map<String,Object>> shoppingList=(List<Map<String,Object>>)shoppingCartMap.get("shoppingList");
-		String outerName,outerStyle,outerSize,innerName,innerStyle,innerSize;
+		String lsOuterName,lsInnerName;
+		Object outerStyle,outerSize,innerStyle,innerSize;
+		String lsOuterStyle,lsOuterSize,lsInnerStyle,lsInnerSize;
 		int amount;
+		int loopSize=shoppingList.size();
+		Map<String,Object> shoppingItemOuter,shoppingItemInner;
 
-		for(Map<String,Object> shoppingItemOuter:shoppingList){
-			if(shoppingItemOuter.get("productStyle")==null&&shoppingItemOuter.get("productSize")==null){
+		for(int i=0; i<loopSize-1;i++){
+			shoppingItemOuter=shoppingList.get(i);
+			if(shoppingItemOuter.get("productStyle")==null||shoppingItemOuter.get("productSize")==null){
 				continue;
 			}
 			amount=0;
-			outerName= shoppingItemOuter.get("productName").toString();
-			outerStyle= shoppingItemOuter.get("productStyle").toString();
-			outerSize= shoppingItemOuter.get("productSize").toString();
-			for(Map<String,Object> shoppingItemInner:shoppingList){
-				if(shoppingItemInner.get("productStyle")==null&&shoppingItemInner.get("productSize")==null){
+			lsOuterName= shoppingItemOuter.get("productName").toString();
+			outerStyle= shoppingItemOuter.get("productStyle");
+			outerSize= shoppingItemOuter.get("productSize");
+			lsOuterStyle=outerStyle.toString();
+			lsOuterSize=outerSize.toString();
+			for(int j=i+1;j<loopSize;j++){
+				shoppingItemInner=shoppingList.get(j);
+				lsInnerName= shoppingItemInner.get("productName").toString();
+				if(shoppingItemInner.get("productStyle")==null||shoppingItemInner.get("productSize")==null){
 					continue;
 				}
-				innerName= shoppingItemInner.get("productName").toString();
-				innerStyle= shoppingItemInner.get("productStyle").toString();
-				innerSize= shoppingItemInner.get("productSize").toString();
-				if(outerName.equalsIgnoreCase(innerName)&&outerStyle.equalsIgnoreCase(innerStyle)&&outerSize.equalsIgnoreCase(innerSize)){
-					amount+=1;
+				innerStyle= shoppingItemInner.get("productStyle");
+				innerSize= shoppingItemInner.get("productSize");
+				lsInnerStyle=innerStyle.toString();
+				lsInnerSize=innerSize.toString();
+				if(outerStyle!=null&&outerSize!=null){
+					if(lsOuterName.equalsIgnoreCase(lsInnerName)&&lsOuterStyle.equalsIgnoreCase(lsInnerStyle)&&!lsOuterSize.equalsIgnoreCase(lsInnerSize)){
+						amount+=1;
+					}
 				}
 			}
 			if(amount>1){
@@ -632,6 +644,46 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 				index++;
 			}
 		}
+	}
+
+	@Override
+	public Map<String,Object> changeShoppingItemQuantityByGivenIndex(int shoppingItemIndex){
+		WebElement shoppingItem=this.lstCartItems.get(shoppingItemIndex);
+		WebElement selectQuantity=shoppingItem.findElement(this.byProductSelectQuantity);
+		Select select=new Select(selectQuantity);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(selectQuantity);
+		int quantityBeforeChange=this.getIntegerFromString(select.getFirstSelectedOption().getText());
+		float price=this.getFloatFromString(this.getElementInnerText(shoppingItem.findElement(this.byProductNowPrice)),true);
+		float itemTotalBeforeChange=price*quantityBeforeChange;
+
+		int itemQuantityDifference=0;
+		List<WebElement> quantityOptionItemList=select.getOptions();
+		for(WebElement option:quantityOptionItemList){
+			String optionText=this.getElementInnerText(option);
+			int optionIndex=Integer.parseInt(optionText.trim());
+			if(optionIndex!=quantityBeforeChange){
+				itemQuantityDifference=optionIndex-quantityBeforeChange;
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(selectQuantity);
+				select.selectByVisibleText(optionText);
+				this.waitForCondition(Driver->{return this.pageLoadingIndicator.getAttribute("style").contains("display: none");},20000);
+				break;
+			}
+		}
+
+		shoppingItem=this.lstCartItems.get(shoppingItemIndex);
+		selectQuantity=shoppingItem.findElement(this.byProductSelectQuantity);
+		select=new Select(selectQuantity);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(selectQuantity);
+		int quantityAfterChange=this.getIntegerFromString(select.getFirstSelectedOption().getText());
+		price=this.getFloatFromString(this.getElementInnerText(shoppingItem.findElement(this.byProductNowPrice)),true);
+		float itemTotalAfterChange=price*quantityAfterChange;
+
+		Map<String,Object> map=new HashMap<>();
+		map.put("itemTotalDifference",itemTotalAfterChange-itemTotalBeforeChange);
+		map.put("itemQuantityDifference",itemQuantityDifference);
+
+		return map;
 	}
 
 }

@@ -187,8 +187,8 @@ public class SC_TC02_VerifyShoppingCart_RemoveItem_CheckSubTotalAndOrderSummary 
 		getShoppingCartThreadLocal().verifyInstallmentBusinessLogic(mapOrderSummary);
 		getShoppingCartThreadLocal().verifyEasyPaymentContents();
 
-//		//To empty the cart
-//		getShoppingCartThreadLocal().emptyCart(customerEDP,accessToken);
+		//To empty the cart
+		getShoppingCartThreadLocal().emptyCart(customerEDP,accessToken);
 
 	}
 }

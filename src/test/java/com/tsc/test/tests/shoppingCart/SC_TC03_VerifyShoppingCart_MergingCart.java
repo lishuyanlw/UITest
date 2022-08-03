@@ -111,8 +111,9 @@ public class SC_TC03_VerifyShoppingCart_MergingCart extends BaseTest{
 
 			reporter.reportLog("Verify checkout section contents");
 			getShoppingCartThreadLocal().verifyCheckOutContents(false);
-//			//To empty the cart
-//			getShoppingCartThreadLocal().emptyCart(customerEDP,accessToken);
+
+			//To empty the cart
+			getShoppingCartThreadLocal().emptyCart(customerEDP,accessToken);
 		}
 		else {
 			reporter.reportLogFail("Unable to find the matched product item");

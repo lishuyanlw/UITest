@@ -481,6 +481,7 @@ public class ApiResponse extends ApiConfigs {
         	lsNowPrice=data.getIsPriceRange();
         	lsWasPrice=data.getWasPriceRange();
             boolean flag = false;
+			boolean bFoundQuantity=false;
 			if(basicCheck) {
 				if(videoCount!=-1){
 					flag = (videoCount==0 ? data.getVideosCount()==videoCount : data.getVideosCount()>=videoCount)&&data.getStyles().size() >= styleCount && data.getSizes().size() >= sizeCount;
@@ -601,6 +602,7 @@ public class ApiResponse extends ApiConfigs {
 							}
 							else{
 								if(Edps.getInventory()>quantity){
+									bFoundQuantity=true;
 									selectedProduct.productEDPSize = Edps.getSize();
 									selectedProduct.productEDPColor = Edps.getStyle();
 									break;
@@ -618,7 +620,13 @@ public class ApiResponse extends ApiConfigs {
 					}
 				}
 				else{
-					productItem=data;
+					if(bFoundQuantity){
+						productItem=data;
+					}
+					else{
+						productItem=null;
+					}
+
 				}
             	            	            	
                 return productItem;

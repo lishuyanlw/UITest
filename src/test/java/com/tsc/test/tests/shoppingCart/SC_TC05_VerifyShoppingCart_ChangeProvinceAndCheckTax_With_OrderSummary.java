@@ -48,6 +48,9 @@ public class SC_TC05_VerifyShoppingCart_ChangeProvinceAndCheckTax_With_OrderSumm
 			reporter.reportLog("Verify EasyPayment section content related to "+entry.getKey());
 			getShoppingCartThreadLocal().verifyInstallmentBusinessLogic(mapOrderSummary);
 		}
+
+		//To empty the cart
+		getShoppingCartThreadLocal().emptyCart(customerEDP,accessToken);
 	}
 }
 

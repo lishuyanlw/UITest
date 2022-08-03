@@ -75,6 +75,9 @@ public class SC_TC01_VerifyShoppingCart_PageHeadingAndLineItems extends BaseTest
 				reporter.reportLogFail("The added product"+productName+" using API cannot be found in ShoppingCart list");
 			}
 		}
+
+		//To empty the cart
+		getShoppingCartThreadLocal().emptyCart(customerEDP,accessToken);
 	}
 }
 
