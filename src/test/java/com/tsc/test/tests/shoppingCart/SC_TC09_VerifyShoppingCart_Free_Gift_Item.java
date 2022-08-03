@@ -1,7 +1,9 @@
 package com.tsc.test.tests.shoppingCart;
 
+import com.tsc.api.apiBuilder.ApiResponse;
 import com.tsc.api.apiBuilder.ConfigurationAPI;
 import com.tsc.api.pojo.Configuration;
+import com.tsc.api.pojo.Product;
 import com.tsc.api.util.DataConverter;
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.test.base.BaseTest;
@@ -30,13 +32,18 @@ public class SC_TC09_VerifyShoppingCart_Free_Gift_Item extends BaseTest {
         //Deleting all items from cart to be added again with free shipping item
         String accessToken = getApiUserSessionDataMapThreadLocal().get("access_token").toString();
         String customerEDP = getApiUserSessionDataMapThreadLocal().get("customerEDP").toString();
-        getShoppingCartThreadLocal().emptyCart(Integer.valueOf(customerEDP),accessToken);
+        try{
+            getShoppingCartThreadLocal().emptyCart(Integer.valueOf(customerEDP),accessToken);
 
-        //Verifying configurations and adding necessary credit Card for user
-        getShoppingCartThreadLocal().verifyAndUpdateCreditCardAsPerSystemConfiguration(configurations,creditCardData,customerEDP,accessToken);
+            //Verifying configurations and adding necessary credit Card for user
+            getShoppingCartThreadLocal().verifyAndUpdateCreditCardAsPerSystemConfiguration(configurations,creditCardData,customerEDP,accessToken);
 
-        //Adding item to cart for user
-        List<Map<String,String>> keyword = TestDataHandler.constantData.getShoppingCart().getLst_SearchKeywords();
-        getShoppingCartThreadLocal().verifyCartExistsForUser(Integer.valueOf(customerEDP),accessToken,keyword,true);
+            //Adding item to cart for user
+            Product.Products products = new ApiResponse().getProductOfPDPForAddToBagFromKeyword("dress");
+            getShoppingCartThreadLocal().addAdvanceOrderProductToCart(products.getItemNo(),1,false,customerEDP,accessToken);
+        }finally {
+            //Emptying Cart for next test to run with right state
+            //getShoppingCartThreadLocal().emptyCart(Integer.valueOf(customerEDP),accessToken);
+        }
     }
 }

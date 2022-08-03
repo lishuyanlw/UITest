@@ -2414,40 +2414,43 @@ public class ShoppingCartPage extends BasePage {
 	 * @return - Map<String,Object> - Map containing advance order info for a product
 	 * @throws IOException
 	 */
-	public Map<String,Object> addAdvanceOrderProductToCart(String productNumber, int quantity, String customerEDP, String accessToken) throws IOException {
-		Map<String,Object> advanceOrderInfo = new HashMap<>();
-		boolean flag = false;
+	public Map<String,Object> addAdvanceOrderProductToCart(String productNumber, int quantity, boolean isAdvanceOrder, String customerEDP, String accessToken) throws IOException {
+		Map<String,Object> addedProductInfo = new HashMap<>();
 		ProductDetailsItem productItem = new ProductAPI().getProductDetailsForSpecificProductNumber(productNumber);
 		if(productItem==null)
 			return null;
 		else{
 			for(ProductDetailsItem.Edp edps : productItem.getEdps()){
-				if(edps.isIsAdvanceOrBackOrder()==true){
-					advanceOrderInfo.put("edpNo",edps.getEdpNo());
-					advanceOrderInfo.put("productNumber",edps.getItemNo());
-					advanceOrderInfo.put("advanceOrderMessage",edps.getSkuAvailabilityMessage());
-					advanceOrderInfo.put("productStyle",edps.getStyle());
-					advanceOrderInfo.put("productSize",edps.getSize());
-					advanceOrderInfo.put("productNowPrice",edps.getAppliedPrice());
-					advanceOrderInfo.put("productName",productItem.getName());
-					advanceOrderInfo.put("itemToBeAdded",quantity);
-					flag = true;
+				if(isAdvanceOrder){
+					if(!edps.isIsAdvanceOrBackOrder()==true)
+						continue;
+				}else{
+					if(edps.isIsSoldOut()==true)
+						continue;
 				}
-				if(flag){
-					CartAPI cartApi = new CartAPI();
-					CartResponse accountCart = null;
-					Response responseExisting=cartApi.getAccountCartContentWithCustomerEDP(customerEDP, accessToken);
-					if(responseExisting.statusCode()==200){
-						accountCart = JsonParser.getResponseObject(responseExisting.asString(), new TypeReference<CartResponse>() {});
-						Response response = this.addItemsToCartForUser(Arrays.asList(advanceOrderInfo),Integer.valueOf(customerEDP),accessToken,accountCart.getCartGuid());
-						if(response.statusCode()==200)
-							break;
-					}
-					else
-						return null;
+
+				addedProductInfo.put("edpNo",edps.getEdpNo());
+				addedProductInfo.put("productNumber",edps.getItemNo());
+				addedProductInfo.put("advanceOrderMessage",edps.getSkuAvailabilityMessage());
+				addedProductInfo.put("productStyle",edps.getStyle());
+				addedProductInfo.put("productSize",edps.getSize());
+				addedProductInfo.put("productNowPrice",edps.getAppliedPrice());
+				addedProductInfo.put("productName",productItem.getName());
+				addedProductInfo.put("itemToBeAdded",quantity);
+
+				CartAPI cartApi = new CartAPI();
+				CartResponse accountCart = null;
+				Response responseExisting=cartApi.getAccountCartContentWithCustomerEDP(customerEDP, accessToken);
+				if(responseExisting.statusCode()==200){
+					accountCart = JsonParser.getResponseObject(responseExisting.asString(), new TypeReference<CartResponse>() {});
+					Response response = this.addItemsToCartForUser(Arrays.asList(addedProductInfo),Integer.valueOf(customerEDP),accessToken,accountCart.getCartGuid());
+					if(response.statusCode()==200)
+						break;
 				}
+				else
+					return null;
 			}
-			return advanceOrderInfo;
+			return addedProductInfo;
 		}
 	}
 
@@ -2475,16 +2478,29 @@ public class ShoppingCartPage extends BasePage {
 							List<AccountResponse.CreditCardsClass> creditCardsClassList = accountCartResponse.getCreditCards();
 							for(AccountResponse.CreditCardsClass creditCardsClass:creditCardsClassList){
 								if(creditCardsClass.getType().equalsIgnoreCase("FI")){
+									JSONObject jsonObject = new JSONObject();
 									//Check if Credit Card is default
 									boolean isDefault = creditCardsClass.isDefault();
 									if(isDefault){
-										outerFlag = true;
-										break;
+										jsonObject.clear();
+										jsonObject.put("CardType",creditCardsClass.getType());
+										jsonObject.put("CardNumber",creditCardsClass.getNumber());
+										jsonObject.put("CardExpiryMonth",creditCardsClass.getDisplayExpirationMonth());
+										jsonObject.put("CardExpiryYear",creditCardsClass.getDisplayExpirationYear());
+										jsonObject.put("RememberCard",false);
+										jsonObject.put("MakeDefaultCard",true);
+
+										Response updatePaymentMethodResponse = accountAPI.updateCartPaymentMethod(jsonObject,customerEDP,accessToken);
+										if(updatePaymentMethodResponse.getStatusCode()==200){
+											outerFlag = true;
+											break;
+										}else
+											reporter.reportLogFail("Payment Method for user is not updated to TSC Card");
 									}else{
 										//Updating Default Credit Card for user to be TSC
 										int creditCardId = creditCardsClass.getId();
 
-										JSONObject jsonObject = new JSONObject();
+										jsonObject.clear();
 										jsonObject.put("Id",creditCardId);
 										jsonObject.put("ExpirationDate",creditCardsClass.getExpirationDate());
 										jsonObject.put("Expired",creditCardsClass.isExpired());
