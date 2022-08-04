@@ -6,6 +6,7 @@ import com.tsc.api.pojo.Configuration;
 import com.tsc.api.pojo.Product;
 import com.tsc.api.util.DataConverter;
 import com.tsc.data.Handler.TestDataHandler;
+import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 import org.json.simple.JSONObject;
 import org.testng.annotations.Test;
@@ -25,6 +26,7 @@ public class SC_TC09_VerifyShoppingCart_Free_Gift_Item extends BaseTest {
         //Fetching test data from test data file
         String lsUserName= TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
         String lsPassword=TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
+        List<String> searchKeyword = TestDataHandler.constantData.searchResultPage.getLst_APISearchingKeyword();
         JSONObject creditCardData = new DataConverter().readJsonFileIntoJSONObject("test-data/CreditCard.json");
 
         List<Configuration> configurations = new ConfigurationAPI().getContentFulConfigurationForFreeItem();
@@ -38,12 +40,28 @@ public class SC_TC09_VerifyShoppingCart_Free_Gift_Item extends BaseTest {
             //Verifying configurations and adding necessary credit Card for user
             getShoppingCartThreadLocal().verifyAndUpdateCreditCardAsPerSystemConfiguration(configurations,creditCardData,customerEDP,accessToken);
 
-            //Adding item to cart for user
-            Product.Products products = new ApiResponse().getProductOfPDPForAddToBagFromKeyword("dress");
-            getShoppingCartThreadLocal().addAdvanceOrderProductToCart(products.getItemNo(),1,false,customerEDP,accessToken);
+            //Adding item to cart for user for dress keyword
+            reporter.reportLog("Searching items for keyword dress : "+searchKeyword.get(0));
+            Product.Products products = new ApiResponse().getProductOfPDPForAddToBagFromKeyword(searchKeyword.get(0));
+            getShoppingCartThreadLocal().addAdvanceOrderOrSingleProductToCartForUser(products.getItemNo(),1,false,customerEDP,accessToken);
+
+            //Login using valid username and password
+            getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword);
+            getShoppingCartThreadLocal().waitForCondition(Driver->{return Integer.valueOf(getglobalheaderPageThreadLocal().CartBagCounter.getText())>0;},6000);
+            getProductDetailPageThreadLocal().goToShoppingCartByClickingShoppingCartIconInGlobalHeader();
+
+            reporter.reportLog("Verify OrderSummary and EasyPayment sections contents");
+            int itemAmount=getShoppingCartThreadLocal().GetAddedItemAmount();
+            float savingPrice=getShoppingCartThreadLocal().getSavingPriceFromShoppingCartHeader();
+            float subTotal=getShoppingCartThreadLocal().getShoppingSubTotal();
+
+            Map<String,Object> mapOrderSummary=getShoppingCartThreadLocal().getOrderSummaryDesc();
+            getShoppingCartThreadLocal().verifyOrderSummaryBusinessLogic(itemAmount,savingPrice,subTotal,mapOrderSummary,null);
+            getShoppingCartThreadLocal().verifyOrderSummaryContents();
+
         }finally {
             //Emptying Cart for next test to run with right state
-            //getShoppingCartThreadLocal().emptyCart(Integer.valueOf(customerEDP),accessToken);
+            getShoppingCartThreadLocal().emptyCart(Integer.valueOf(customerEDP),accessToken);
         }
     }
 }

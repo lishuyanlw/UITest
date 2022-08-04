@@ -2405,6 +2405,7 @@ public class ShoppingCartPage extends BasePage {
 		return Integer.valueOf(this.lblCartEasyPayFutureMonthlyPaymentTitle.getText().trim().split(" ")[0]);
 	}
 
+
 	/**
 	 * This function adds advance Order Info to a cart for user
 	 * @param - String - productNumber
@@ -2414,43 +2415,40 @@ public class ShoppingCartPage extends BasePage {
 	 * @return - Map<String,Object> - Map containing advance order info for a product
 	 * @throws IOException
 	 */
-	public Map<String,Object> addAdvanceOrderProductToCart(String productNumber, int quantity, boolean isAdvanceOrder, String customerEDP, String accessToken) throws IOException {
-		Map<String,Object> addedProductInfo = new HashMap<>();
+	public Map<String,Object> addAdvanceOrderProductToCart(String productNumber, int quantity, String customerEDP, String accessToken) throws IOException {
+		Map<String,Object> advanceOrderInfo = new HashMap<>();
+		boolean flag = false;
 		ProductDetailsItem productItem = new ProductAPI().getProductDetailsForSpecificProductNumber(productNumber);
 		if(productItem==null)
 			return null;
 		else{
 			for(ProductDetailsItem.Edp edps : productItem.getEdps()){
-				if(isAdvanceOrder){
-					if(!edps.isIsAdvanceOrBackOrder()==true)
-						continue;
-				}else{
-					if(edps.isIsSoldOut()==true)
-						continue;
+				if(edps.isIsAdvanceOrBackOrder()==true){
+					advanceOrderInfo.put("edpNo",edps.getEdpNo());
+					advanceOrderInfo.put("productNumber",edps.getItemNo());
+					advanceOrderInfo.put("advanceOrderMessage",edps.getSkuAvailabilityMessage());
+					advanceOrderInfo.put("productStyle",edps.getStyle());
+					advanceOrderInfo.put("productSize",edps.getSize());
+					advanceOrderInfo.put("productNowPrice",edps.getAppliedPrice());
+					advanceOrderInfo.put("productName",productItem.getName());
+					advanceOrderInfo.put("itemToBeAdded",quantity);
+					flag = true;
 				}
-
-				addedProductInfo.put("edpNo",edps.getEdpNo());
-				addedProductInfo.put("productNumber",edps.getItemNo());
-				addedProductInfo.put("advanceOrderMessage",edps.getSkuAvailabilityMessage());
-				addedProductInfo.put("productStyle",edps.getStyle());
-				addedProductInfo.put("productSize",edps.getSize());
-				addedProductInfo.put("productNowPrice",edps.getAppliedPrice());
-				addedProductInfo.put("productName",productItem.getName());
-				addedProductInfo.put("itemToBeAdded",quantity);
-
-				CartAPI cartApi = new CartAPI();
-				CartResponse accountCart = null;
-				Response responseExisting=cartApi.getAccountCartContentWithCustomerEDP(customerEDP, accessToken);
-				if(responseExisting.statusCode()==200){
-					accountCart = JsonParser.getResponseObject(responseExisting.asString(), new TypeReference<CartResponse>() {});
-					Response response = this.addItemsToCartForUser(Arrays.asList(addedProductInfo),Integer.valueOf(customerEDP),accessToken,accountCart.getCartGuid());
-					if(response.statusCode()==200)
-						break;
+				if(flag){
+					CartAPI cartApi = new CartAPI();
+					CartResponse accountCart = null;
+					Response responseExisting=cartApi.getAccountCartContentWithCustomerEDP(customerEDP, accessToken);
+					if(responseExisting.statusCode()==200){
+						accountCart = JsonParser.getResponseObject(responseExisting.asString(), new TypeReference<CartResponse>() {});
+						Response response = this.addItemsToCartForUser(Arrays.asList(advanceOrderInfo),Integer.valueOf(customerEDP),accessToken,accountCart.getCartGuid());
+						if(response.statusCode()==200)
+							break;
+					}
+					else
+						return null;
 				}
-				else
-					return null;
 			}
-			return addedProductInfo;
+			return advanceOrderInfo;
 		}
 	}
 
@@ -2549,5 +2547,61 @@ public class ShoppingCartPage extends BasePage {
 			}
 		}else
 			reporter.reportLogFail("Configuration object passed to function is null. Please verify api response!");
+	}
+
+	/**
+	 * This function adds advance Order Info to a cart for user
+	 * @param - String - productNumber
+	 * @param - int - quantity
+	 * @param - String - customerEDP
+	 * @param - String - accessToken
+	 * @return - Map<String,Object> - Map containing advance order info for a product
+	 * @throws IOException
+	 */
+	public Map<String,Object> addAdvanceOrderOrSingleProductToCartForUser(String productNumber, int quantity, boolean isAdvanceOrder, String customerEDP, String accessToken) throws IOException {
+		Map<String,Object> addedProductInfo = new HashMap<>();
+		ProductDetailsItem productItem = new ProductAPI().getProductDetailsForSpecificProductNumber(productNumber);
+		if(productItem==null)
+			return null;
+		else{
+			for(ProductDetailsItem.Edp edps : productItem.getEdps()){
+				if(isAdvanceOrder){
+					if(!edps.isIsAdvanceOrBackOrder()==true)
+						continue;
+				}else{
+					if(edps.isIsSoldOut()==true)
+						continue;
+				}
+
+				addedProductInfo.put("edpNo",edps.getEdpNo());
+				addedProductInfo.put("productNumber",edps.getItemNo());
+				addedProductInfo.put("advanceOrderMessage",edps.getSkuAvailabilityMessage());
+				addedProductInfo.put("productStyle",edps.getStyle());
+				addedProductInfo.put("productSize",edps.getSize());
+				addedProductInfo.put("productNowPrice",edps.getAppliedPrice());
+				addedProductInfo.put("productName",productItem.getName());
+				addedProductInfo.put("itemToBeAdded",quantity);
+
+				CartAPI cartApi = new CartAPI();
+				CartResponse accountCart = null;
+				Response responseExisting=cartApi.getAccountCartContentWithCustomerEDP(customerEDP, accessToken);
+				if(responseExisting.statusCode()==200){
+					accountCart = JsonParser.getResponseObject(responseExisting.asString(), new TypeReference<CartResponse>() {});
+					Response response = this.addItemsToCartForUser(Arrays.asList(addedProductInfo),Integer.valueOf(customerEDP),accessToken,accountCart.getCartGuid());
+					if(response.statusCode()==200)
+						break;
+				}
+				else
+					return null;
+			}
+			return addedProductInfo;
+		}
+	}
+
+	/**
+	 * This function verifies that free shipping item is present in cart
+	 */
+	public void verifyFreeShippingPresentInCart(){
+
 	}
 }
