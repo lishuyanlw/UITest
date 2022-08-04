@@ -2601,7 +2601,19 @@ public class ShoppingCartPage extends BasePage {
 	/**
 	 * This function verifies that free shipping item is present in cart
 	 */
-	public void verifyFreeShippingPresentInCart(){
-
+	public void verifyFreeShippingItemPresentInCart(){
+		boolean flag = false;
+		for(WebElement webElement:lstCartItems){
+			if(checkFreeShippingMessageExisting(webElement)){
+				if(!checkSelectQuantityEnabled(webElement)){
+					flag = true;
+					break;
+				}
+			}
+		}
+		if(flag)
+			reporter.reportLogPassWithScreenshot("Free Shipping item is added to cart as expected for user");
+		else
+			reporter.reportLogFailWithScreenshot("Free Shipping item is not added to cart as expected for user");
 	}
 }

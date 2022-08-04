@@ -50,6 +50,9 @@ public class SC_TC09_VerifyShoppingCart_Free_Gift_Item extends BaseTest {
             getShoppingCartThreadLocal().waitForCondition(Driver->{return Integer.valueOf(getglobalheaderPageThreadLocal().CartBagCounter.getText())>0;},6000);
             getProductDetailPageThreadLocal().goToShoppingCartByClickingShoppingCartIconInGlobalHeader();
 
+            reporter.reportLog("Verifying that free shipping item is added for user");
+            getShoppingCartThreadLocal().verifyFreeShippingItemPresentInCart();
+
             reporter.reportLog("Verify OrderSummary and EasyPayment sections contents");
             int itemAmount=getShoppingCartThreadLocal().GetAddedItemAmount();
             float savingPrice=getShoppingCartThreadLocal().getSavingPriceFromShoppingCartHeader();
