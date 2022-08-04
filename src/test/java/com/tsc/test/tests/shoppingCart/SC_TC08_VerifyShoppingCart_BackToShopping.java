@@ -28,7 +28,7 @@ public class SC_TC08_VerifyShoppingCart_BackToShopping extends BaseTest{
 
 		//Login using valid username and password
 		getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword);
-		(new BasePage(this.getDriver())).applyStaticWait(2000);
+		getShoppingCartThreadLocal().waitForCondition(Driver->{return Integer.valueOf(getglobalheaderPageThreadLocal().CartBagCounter.getText())>0;},6000);
 		getProductDetailPageThreadLocal().goToShoppingCartByClickingShoppingCartIconInGlobalHeader();
 
 		BasePage basePage=new BasePage(this.getDriver());

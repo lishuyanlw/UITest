@@ -37,7 +37,7 @@ public class SC_TC14_VerifyShoppingCart_CheckOrderExceedingQuantityMessage exten
 		//Login using valid username and password
 		getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword);
 		BasePage basePage=new BasePage(this.getDriver());
-		basePage.applyStaticWait(2000);
+		getShoppingCartThreadLocal().waitForCondition(Driver->{return Integer.valueOf(getglobalheaderPageThreadLocal().CartBagCounter.getText())>0;},6000);
 		getProductDetailPageThreadLocal().goToShoppingCartByClickingShoppingCartIconInGlobalHeader();
 
 		Map<String, Object> shoppingCartMap = getShoppingCartThreadLocal().getShoppingSectionDetails("all");
