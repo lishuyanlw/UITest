@@ -1,7 +1,9 @@
 package com.tsc.test.tests.shoppingCart;
 
 import com.tsc.api.apiBuilder.ApiResponse;
+import com.tsc.api.apiBuilder.BrandAPI;
 import com.tsc.api.apiBuilder.ConfigurationAPI;
+import com.tsc.api.pojo.BrandResponse;
 import com.tsc.api.pojo.Configuration;
 import com.tsc.api.pojo.Product;
 import com.tsc.api.util.DataConverter;
@@ -11,6 +13,7 @@ import org.json.simple.JSONObject;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -25,7 +28,6 @@ public class SC_TC09_VerifyShoppingCart_Free_Gift_Item extends BaseTest {
         //Fetching test data from test data file
         String lsUserName= TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
         String lsPassword=TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
-        List<String> searchKeyword = TestDataHandler.constantData.searchResultPage.getLst_APISearchingKeyword();
         JSONObject creditCardData = new DataConverter().readJsonFileIntoJSONObject("test-data/CreditCard.json");
 
         List<Configuration> configurations = new ConfigurationAPI().getContentFulConfigurationForFreeItem();
@@ -39,9 +41,13 @@ public class SC_TC09_VerifyShoppingCart_Free_Gift_Item extends BaseTest {
             //Verifying configurations and adding necessary credit Card for user
             getShoppingCartThreadLocal().verifyAndUpdateCreditCardAsPerSystemConfiguration(configurations,creditCardData,customerEDP,accessToken);
 
-            //Adding item to cart for user for dress keyword
-            reporter.reportLog("Searching items for keyword dress : "+searchKeyword.get(0));
-            Product.Products products = new ApiResponse().getProductOfPDPForAddToBagFromKeyword(searchKeyword.get(0));
+            //Adding item to cart for user for dimensionId fetched from configuration
+            Map<String,Object> configData = getShoppingCartThreadLocal().getRequiredDetailsFromContentFulConfiguration(configurations, Arrays.asList("GWPCategoryFacetIdsIncluded","GWPCartSubTotalThreshold"));
+            String dimensionId = configData.get("GWPCategoryFacetIdsIncluded").toString().split(",")[0];
+            List<BrandResponse> brandResponse = new BrandAPI().getProductListForDimensionId(dimensionId);
+            String brandName = brandResponse.get(0).getName();
+            reporter.reportLog("Searching items for keyword : "+brandName);
+            Product.Products products = new ApiResponse().getProductOfPDPForAddToBagFromKeyword(brandName);
             getShoppingCartThreadLocal().addAdvanceOrderOrSingleProductToCartForUser(products.getItemNo(),1,false,customerEDP,accessToken);
 
             //Login using valid username and password

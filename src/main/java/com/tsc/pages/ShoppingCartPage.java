@@ -2616,4 +2616,23 @@ public class ShoppingCartPage extends BasePage {
 		else
 			reporter.reportLogFailWithScreenshot("Free Shipping item is not added to cart as expected for user");
 	}
+
+	/**
+	 * This function returns key:value pair for specified key for contentful configurations
+	 * @param - List<Configuration> - Configuration Object
+	 * @param - List<String> - ConfigKeys for fetching values
+	 * @return - Map<String,Object>
+	 */
+	public Map<String,Object> getRequiredDetailsFromContentFulConfiguration(List<Configuration> configuration,List<String> configKeys){
+		Map<String,Object> map = new HashMap<>();
+		for(String key:configKeys){
+			for(Configuration config:configuration){
+				if(config.getKey().equalsIgnoreCase(key)){
+					map.put(key,config.getValue());
+					break;
+				}
+			}
+		}
+		return map;
+	}
 }
