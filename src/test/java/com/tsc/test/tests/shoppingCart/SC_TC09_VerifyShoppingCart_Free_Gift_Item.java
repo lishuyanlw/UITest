@@ -6,7 +6,6 @@ import com.tsc.api.pojo.Configuration;
 import com.tsc.api.pojo.Product;
 import com.tsc.api.util.DataConverter;
 import com.tsc.data.Handler.TestDataHandler;
-import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 import org.json.simple.JSONObject;
 import org.testng.annotations.Test;
