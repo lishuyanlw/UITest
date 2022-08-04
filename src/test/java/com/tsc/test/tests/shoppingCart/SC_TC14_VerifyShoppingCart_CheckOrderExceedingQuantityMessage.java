@@ -54,7 +54,7 @@ public class SC_TC14_VerifyShoppingCart_CheckOrderExceedingQuantityMessage exten
 
 		getShoppingCartThreadLocal().chooseShoppingItemByGivenItemIndexAndQuantity(findIndex, 1);
 		String lsCheckErrorMessage = getShoppingCartThreadLocal().checkCartNoticeMessageExisting();
-		if (lsCheckErrorMessage.equalsIgnoreCase("multiPackMessage")) {
+		if (lsCheckErrorMessage==null||lsCheckErrorMessage.equalsIgnoreCase("multiPackMessage")) {
 			reporter.reportLogPass("The order quantity exceeding message is not displaying as expected");
 		} else {
 			reporter.reportLogFail("The order quantity exceeding message is still displaying");

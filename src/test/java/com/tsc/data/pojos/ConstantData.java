@@ -1295,6 +1295,7 @@ public class ConstantData {
         List<Map<String,String>> lst_SearchKeywords;
         String lblOrderExceedingQuantityMessage;
         String lblProductNumberForOrderExceedingQuantity;
+        String lblCartExceedingLimitMessage;
 
         public List<Map<String, String>> getLst_SearchKeywords() {
             return lst_SearchKeywords;
@@ -1318,6 +1319,14 @@ public class ConstantData {
 
         public void setLblProductNumberForOrderExceedingQuantity(String lblProductNumberForOrderExceedingQuantity) {
             this.lblProductNumberForOrderExceedingQuantity = lblProductNumberForOrderExceedingQuantity;
+        }
+
+        public String getLblCartExceedingLimitMessage() {
+            return lblCartExceedingLimitMessage;
+        }
+
+        public void setLblCartExceedingLimitMessage(String lblCartExceedingLimitMessage) {
+            this.lblCartExceedingLimitMessage = lblCartExceedingLimitMessage;
         }
     }
 

@@ -1,7 +1,9 @@
 package com.tsc.pages;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tsc.api.apiBuilder.ApiResponse;
 import com.tsc.api.pojo.AccountCartResponse;
+import com.tsc.api.pojo.Product;
 import com.tsc.api.pojo.ProductDetailsItem;
 import com.tsc.api.util.DataConverter;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -2534,5 +2536,36 @@ public class ShoppingCartPage extends BasePage {
 			}
 			return shoppingInfo;
 		}
+	}
+
+	/**
+	 * To add Multiple Product EDP No
+	 * @param - String - productName
+	 * @param - String - customerEDP
+	 * @param - String - accessToken
+	 * @param - int - expectedInventory - the expected inventory for each EDP NO
+	 * @param - int - addCountEDPNo - added EDP NO count
+	 * @param - int - addCountPerEDPNO - added quantity for every EDP NO
+	 * @return - Response
+	 * @throws IOException
+	 */
+	public Response addMultiProductEDPNo(String productName,String customerEDP, String accessToken,int expectedInventory, int addCountEDPNo,int addCountPerEDPNO) throws IOException {
+		ApiResponse apiResponse=new ApiResponse();
+		List<Product.edps> products = apiResponse.getEDPNoListWithGivenExpectedInventory(productName,expectedInventory, addCountEDPNo);
+		List<Integer> productEDP = new ArrayList<>();
+		for (Product.edps productEDPS : products) {
+			productEDP.add(productEDPS.getEdpNo());
+		}
+
+		CartAPI cartApi = new CartAPI();
+		CartResponse accountCart = null;
+		Response responseAdd=null;
+		Response responseExisting=cartApi.getAccountCartContentWithCustomerEDP(customerEDP, accessToken);
+		if(responseExisting.statusCode()==200){
+			accountCart = JsonParser.getResponseObject(responseExisting.asString(), new TypeReference<CartResponse>() {});
+			responseAdd=cartApi.createNewCartOrAddItems(productEDP, addCountPerEDPNO, Integer.parseInt(customerEDP), accessToken, accountCart.getCartGuid());
+		}
+
+		return responseAdd;
 	}
 }
