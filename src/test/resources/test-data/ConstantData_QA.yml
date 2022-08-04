@@ -263,4 +263,6 @@ shoppingCart:
       itemToBeAdded: "1"
       styleExist: "false"
       sameStyleAndSize: "false"
+  lblOrderExceedingQuantityMessage: "The size of your order exceeds our on-line shopping limits but one of our Customer Service agents will be happy to assist you with your purchase. Please call our Customer Care Centre at 1-888-2020-888 to complete your order."
+  lblProductNumberForOrderExceedingQuantity: 713070
 

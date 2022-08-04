@@ -25,12 +25,16 @@ public class SC_TC10_VerifyShoppingCart_ShippingDateAndMultiPackMessage extends 
 		//Fetching test data from test data file
 		String accessToken = getApiUserSessionDataMapThreadLocal().get("access_token").toString();
 		int customerEDP = Integer.valueOf(getApiUserSessionDataMapThreadLocal().get("customerEDP").toString());
+
+		//To empty the cart
+		getShoppingCartThreadLocal().emptyCart(customerEDP,accessToken);
+
 		List<Map<String, String>> keyword = TestDataHandler.constantData.getShoppingCart().getLst_SearchKeywords();
 		List<Map<String, Object>> data = getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP, accessToken, keyword,true);
 
 		//Add advanced order product using API
 		String lsAdvancedOrderKeyword=TestDataHandler.constantData.getSearchResultPage().getLbl_AdvancedOrderkeyword();
-		Map<String,Object> mapAdvancedOrder=getShoppingCartThreadLocal().addAdvanceOrderProductToCart(lsAdvancedOrderKeyword, 1, String.valueOf(customerEDP), accessToken);
+		Map<String,Object> mapAdvancedOrder=getShoppingCartThreadLocal().addSingleProductWithConditions(lsAdvancedOrderKeyword, 1,1, String.valueOf(customerEDP), accessToken,true);
 		data.add(mapAdvancedOrder);
 		String lsEstimatedShippingDate= (String) mapAdvancedOrder.get("advanceOrderMessage");
 		lsEstimatedShippingDate=lsEstimatedShippingDate.split(":")[1].trim();

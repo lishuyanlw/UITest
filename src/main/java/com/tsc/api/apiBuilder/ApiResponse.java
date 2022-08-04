@@ -11,6 +11,7 @@ import io.restassured.RestAssured;
 import io.restassured.response.Response;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -1426,7 +1427,34 @@ public class ApiResponse extends ApiConfigs {
 		else {
 			return null;
 		}
+	}
 
+	/**
+	 * This method get EDPNo List With Given Expected Inventory
+	 * @param - String - searchKeyword : search keyword for Product
+	 * @param - int - expectedInventory : expected inventory
+	 * @param - int - returnProductCount : returned Product Count
+	 * @return - List<Integer> - EDPNo
+	 */
+	public List<Product.edps> getEDPNoListWithGivenExpectedInventory(String searchKeyword,int expectedInventory, int returnProductCount) throws IOException {
+		List<Product.edps> list = new ArrayList<>();
+		Product product=getProductDetailsForKeyword(searchKeyword,null,true);
+		List<Product.Products> dataList =product.Products.stream().filter(item->item.getEdps().stream().anyMatch(subItem->subItem.getInventory()>=expectedInventory)).collect(Collectors.toList());
+		for(Product.Products data:dataList) {
+			//To check if any Inventory is greater than 0, then means it is not SoldOut item
+			List<Product.edps> edpsList=data.getEdps().stream().filter(item->item.getInventory()>=expectedInventory).collect(Collectors.toList());
+			for(Product.edps Edps:edpsList) {
+				if(Edps.getInventory()>=expectedInventory){
+					list.add(Edps);
+				}
+
+				if(returnProductCount!=0){
+					if(list.size()==returnProductCount)
+						return list;
+				}
+			}
+		}
+		return list;
 	}
 
 }

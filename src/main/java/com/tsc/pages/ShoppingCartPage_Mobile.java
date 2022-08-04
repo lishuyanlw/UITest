@@ -686,4 +686,17 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 		return map;
 	}
 
+	@Override
+	public boolean chooseShoppingItemByGivenItemIndexAndQuantity(int shoppingItemIndex,int quantity) {
+		WebElement shoppingItem = this.lstCartItems.get(shoppingItemIndex);
+		WebElement selectQuantity = shoppingItem.findElement(this.byProductSelectQuantity);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(selectQuantity);
+		Select select = new Select(selectQuantity);
+		select.selectByVisibleText(String.valueOf(quantity));
+
+		return this.waitForCondition(Driver -> {
+			return this.pageLoadingIndicator.getAttribute("style").contains("display: none");
+		}, 20000);
+	}
+
 }

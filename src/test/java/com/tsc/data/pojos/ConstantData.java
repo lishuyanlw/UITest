@@ -1293,6 +1293,8 @@ public class ConstantData {
 
     public static class ShoppingCart{
         List<Map<String,String>> lst_SearchKeywords;
+        String lblOrderExceedingQuantityMessage;
+        String lblProductNumberForOrderExceedingQuantity;
 
         public List<Map<String, String>> getLst_SearchKeywords() {
             return lst_SearchKeywords;
@@ -1300,6 +1302,22 @@ public class ConstantData {
 
         public void setLst_SearchKeywords(List<Map<String, String>> lst_SearchKeywords) {
             this.lst_SearchKeywords = lst_SearchKeywords;
+        }
+
+        public String getLblOrderExceedingQuantityMessage() {
+            return lblOrderExceedingQuantityMessage;
+        }
+
+        public void setLblOrderExceedingQuantityMessage(String lblOrderExceedingQuantityMessage) {
+            this.lblOrderExceedingQuantityMessage = lblOrderExceedingQuantityMessage;
+        }
+
+        public String getLblProductNumberForOrderExceedingQuantity() {
+            return lblProductNumberForOrderExceedingQuantity;
+        }
+
+        public void setLblProductNumberForOrderExceedingQuantity(String lblProductNumberForOrderExceedingQuantity) {
+            this.lblProductNumberForOrderExceedingQuantity = lblProductNumberForOrderExceedingQuantity;
         }
     }
 

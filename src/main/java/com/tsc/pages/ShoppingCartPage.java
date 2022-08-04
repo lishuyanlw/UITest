@@ -2409,7 +2409,6 @@ public class ShoppingCartPage extends BasePage {
 	}
 
 	/**
-<<<<<<< HEAD
 	 * To change Shopping Item Quantity by given shopping item index
 	 * @param - int - given shopping Item Index
 	 * @return - Map<String,Object> - including itemTotalDifference and itemQuantityDifference
@@ -2456,40 +2455,76 @@ public class ShoppingCartPage extends BasePage {
 	}
 
 	/**
-	 * This function adds advance Order Info to a cart for user
+	 * To choose Shopping Item By Given Item Index And Quantity
+	 * @param - int - given shopping Item Index
+	 * @param - int - given item quantity
+	 * @return - boolean
+	 */
+	public boolean chooseShoppingItemByGivenItemIndexAndQuantity(int shoppingItemIndex,int quantity) {
+		WebElement shoppingItem = this.lstCartItems.get(shoppingItemIndex);
+		WebElement selectQuantity = shoppingItem.findElement(this.byProductSelectQuantity);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(selectQuantity);
+		Select select = new Select(selectQuantity);
+		select.selectByVisibleText(String.valueOf(quantity));
+
+		return this.waitForCondition(Driver -> {
+			return this.pageLoadingIndicator.getAttribute("style").contains("display: none");
+		}, 20000);
+	}
+
+	/**
+	 * This function adds Single Product With Conditions
 	 * @param - String - productNumber
-	 * @param - int - quantity
+	 * @param - int - expectedQuantity
+	 * @param - int - addQuantity
 	 * @param - String - customerEDP
 	 * @param - String - accessToken
+	 * @param - boolean - bAdvancedOrder
 	 * @return - Map<String,Object> - Map containing advance order info for a product
 	 * @throws IOException
 	 */
-	public Map<String,Object> addAdvanceOrderProductToCart(String productNumber, int quantity, String customerEDP, String accessToken) throws IOException {
-		Map<String,Object> advanceOrderInfo = new HashMap<>();
+	public Map<String,Object> addSingleProductWithConditions(String productNumber, int expectedQuantity, int addQuantity, String customerEDP, String accessToken, boolean bAdvancedOrder) throws IOException {
+		Map<String,Object> shoppingInfo = new HashMap<>();
 		boolean flag = false;
 		ProductDetailsItem productItem = new ProductAPI().getProductDetailsForSpecificProductNumber(productNumber);
 		if(productItem==null)
 			return null;
 		else{
 			for(ProductDetailsItem.Edp edps : productItem.getEdps()){
-				if(edps.isIsAdvanceOrBackOrder()==true){
-					advanceOrderInfo.put("edpNo",edps.getEdpNo());
-					advanceOrderInfo.put("productNumber",edps.getItemNo());
-					advanceOrderInfo.put("advanceOrderMessage",edps.getSkuAvailabilityMessage());
-					advanceOrderInfo.put("productStyle",edps.getStyle());
-					advanceOrderInfo.put("productSize",edps.getSize());
-					advanceOrderInfo.put("productNowPrice",edps.getAppliedPrice());
-					advanceOrderInfo.put("productName",productItem.getName());
-					advanceOrderInfo.put("itemToBeAdded",quantity);
-					flag = true;
+				if(bAdvancedOrder){
+					if(edps.isIsAdvanceOrBackOrder()==true){
+						shoppingInfo.put("edpNo",edps.getEdpNo());
+						shoppingInfo.put("productNumber",edps.getItemNo());
+						shoppingInfo.put("advanceOrderMessage",edps.getSkuAvailabilityMessage());
+						shoppingInfo.put("productStyle",edps.getStyle());
+						shoppingInfo.put("productSize",edps.getSize());
+						shoppingInfo.put("productNowPrice",edps.getAppliedPrice());
+						shoppingInfo.put("productName",productItem.getName());
+						shoppingInfo.put("itemToBeAdded",addQuantity);
+						flag = true;
+					}
 				}
+				else{
+					if(edps.getInventory()>=expectedQuantity){
+						shoppingInfo.put("edpNo",edps.getEdpNo());
+						shoppingInfo.put("productNumber",edps.getItemNo());
+						shoppingInfo.put("advanceOrderMessage",edps.getSkuAvailabilityMessage());
+						shoppingInfo.put("productStyle",edps.getStyle());
+						shoppingInfo.put("productSize",edps.getSize());
+						shoppingInfo.put("productNowPrice",edps.getAppliedPrice());
+						shoppingInfo.put("productName",productItem.getName());
+						shoppingInfo.put("itemToBeAdded",addQuantity);
+						flag = true;
+					}
+				}
+
 				if(flag){
 					CartAPI cartApi = new CartAPI();
 					CartResponse accountCart = null;
 					Response responseExisting=cartApi.getAccountCartContentWithCustomerEDP(customerEDP, accessToken);
 					if(responseExisting.statusCode()==200){
 						accountCart = JsonParser.getResponseObject(responseExisting.asString(), new TypeReference<CartResponse>() {});
-						Response response = this.addItemsToCartForUser(Arrays.asList(advanceOrderInfo),Integer.valueOf(customerEDP),accessToken,accountCart.getCartGuid());
+						Response response = this.addItemsToCartForUser(Arrays.asList(shoppingInfo),Integer.valueOf(customerEDP),accessToken,accountCart.getCartGuid());
 						if(response.statusCode()==200)
 							break;
 					}
@@ -2497,7 +2532,7 @@ public class ShoppingCartPage extends BasePage {
 						return null;
 				}
 			}
-			return advanceOrderInfo;
+			return shoppingInfo;
 		}
 	}
 }
