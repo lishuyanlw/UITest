@@ -13,7 +13,7 @@ public class SC_TC07_VerifyShoppingCart_VerifyOrderSummary_Section extends BaseT
 	/*
 	 * CER-846
 	 */
-	@Test(groups={"Regression","ShoppingCart","SauceTunnelTest"})
+	@Test(groups={"Regression","ShoppingCart"})
 	public void SC_TC07_VerifyShoppingCart_VerifyOrderSummary_Section() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 

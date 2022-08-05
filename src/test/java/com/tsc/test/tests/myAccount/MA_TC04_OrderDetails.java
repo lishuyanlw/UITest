@@ -46,6 +46,10 @@ public class MA_TC04_OrderDetails extends BaseTest {
         }
 
         String lsSelectedOrderNO=getMyAccountPageThreadLocal().goToOrderDetailsPage();
+        if(lsSelectedOrderNO==null){
+            reporter.reportLog("There are no order records, please check it");
+            return;
+        }
 
         String lnk_orderDetailsURL=TestDataHandler.constantData.getMyAccount().getLnk_orderDetailsURL();
         lnk_orderDetailsURL=lnk_orderDetailsURL.replace("{OrderNO}",lsSelectedOrderNO);

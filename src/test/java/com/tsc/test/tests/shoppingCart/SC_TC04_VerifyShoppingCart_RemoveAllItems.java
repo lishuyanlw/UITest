@@ -14,7 +14,7 @@ public class SC_TC04_VerifyShoppingCart_RemoveAllItems extends BaseTest{
 	/*
 	 * CER-856
 	 */
-	@Test(groups={"Regression","ShoppingCart","SauceTunnelTest"})
+	@Test(groups={"Regression","ShoppingCart"})
 	public void SC_TC04_VerifyShoppingCart_RemoveAllItems() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 

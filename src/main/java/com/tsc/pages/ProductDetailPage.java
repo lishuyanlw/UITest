@@ -2869,7 +2869,7 @@ public class ProductDetailPage extends BasePage {
 	public void verifyFavIconAction(String lsUserName, String lsPassword) {
 		SignInPage loginPage=new SignInPage(this.getDriver());
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavIcon);
-		this.getReusableActionsInstance().clickIfAvailable(this.lnkFavIcon);
+		this.clickElement(this.lnkFavIcon);
 		this.clickWebElementUsingJS(this.lnkFavIconPopupSignIn);
 		this.getReusableActionsInstance().waitForElementVisibility(loginPage.lblSignIn,  60);
 
@@ -2880,8 +2880,8 @@ public class ProductDetailPage extends BasePage {
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavIcon);
 		if(checkIfFavShareMobileHighlighted())
-			this.getReusableActionsInstance().clickIfAvailable(this.lnkFavIcon);
-		this.getReusableActionsInstance().clickIfAvailable(this.lnkFavIcon);
+			this.clickElement(this.lnkFavIcon);
+		this.clickElement(this.lnkFavIcon);
 		this.waitForCondition(Driver->{return checkIfFavShareMobileHighlighted();},20000);
 		reporter.softAssert(checkIfFavShareMobileHighlighted(),"The FavShareMobile icon is highlighted after clicking with user login", "The FavShareMobile icon is not highlighted after clicking with user login");
 	}

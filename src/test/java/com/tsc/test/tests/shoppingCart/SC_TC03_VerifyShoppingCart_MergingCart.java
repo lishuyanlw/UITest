@@ -20,7 +20,7 @@ public class SC_TC03_VerifyShoppingCart_MergingCart extends BaseTest{
 	/*
 	 * CER-848
 	 */
-	@Test(groups={"Regression","ShoppingCart","SauceTunnelTest"})
+	@Test(groups={"Regression","ShoppingCart"})
 	public void SC_TC03_VerifyShoppingCart_MergingCart() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 		BasePage basePage = new BasePage(this.getDriver());
