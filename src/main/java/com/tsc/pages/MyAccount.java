@@ -1393,12 +1393,20 @@ public class MyAccount extends BasePage {
 	 */
 	public String getRandomOrderNumber(){
 		int optionSize=this.lstOrderItemList.size();
-		Random rand = new Random();
-		int randomNumber = rand.nextInt(optionSize-1);
-		WebElement randomItem=this.lstOrderItemList.get(randomNumber).findElement(byOrderNo);
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(randomItem);
+		if(optionSize>1){
+			Random rand = new Random();
+			int randomNumber = rand.nextInt(optionSize-1);
+			WebElement randomItem=this.lstOrderItemList.get(randomNumber).findElement(byOrderNo);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(randomItem);
 
-		return randomItem.getText().trim();
+			return randomItem.getText().trim();
+		}
+		else{
+			WebElement item=this.lstOrderItemList.get(0).findElement(byOrderNo);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+
+			return item.getText().trim();
+		}
 	}
 
 	/**
