@@ -1393,20 +1393,20 @@ public class MyAccount extends BasePage {
 	 */
 	public String getRandomOrderNumber(){
 		int optionSize=this.lstOrderItemList.size();
+		if(optionSize==0){
+			return null;
+		}
+
+		int randomNumber=0;
 		if(optionSize>1){
 			Random rand = new Random();
-			int randomNumber = rand.nextInt(optionSize-1);
-			WebElement randomItem=this.lstOrderItemList.get(randomNumber).findElement(byOrderNo);
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(randomItem);
-
-			return randomItem.getText().trim();
+			randomNumber = rand.nextInt(optionSize-1);
 		}
-		else{
-			WebElement item=this.lstOrderItemList.get(0).findElement(byOrderNo);
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 
-			return item.getText().trim();
-		}
+		WebElement randomItem=this.lstOrderItemList.get(randomNumber).findElement(byOrderNo);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(randomItem);
+
+		return randomItem.getText().trim();
 	}
 
 	/**
@@ -1471,6 +1471,11 @@ public class MyAccount extends BasePage {
 			else{
 				reporter.reportLogFailWithScreenshot("The select period is not 'last 30 days'");
 			}
+		}
+
+		if(this.lstOrderItemList.size()==0){
+			reporter.reportLog("There are no order records, please check it");
+			return;
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblEditOrderNote);
@@ -1576,6 +1581,10 @@ public class MyAccount extends BasePage {
 	 */
 	public void verifySearchOrderFunction(String lsOrderDetailsURL){
 		String orderNumber=this.getRandomOrderNumber();
+		if(orderNumber==null){
+			reporter.reportLog("There are no order records, please check it");
+			return;
+		}
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputAccountOrderSearch);
 		this.inputAccountOrderSearch.clear();
 		this.inputAccountOrderSearch.sendKeys(orderNumber);
@@ -1644,8 +1653,15 @@ public class MyAccount extends BasePage {
 	 */
 	public String goToOrderDetailsPage(){
 		int optionSize=this.lstOrderItemList.size();
-		Random rand = new Random();
-		int randomNumber = rand.nextInt(optionSize-1);
+		if(optionSize==0){
+			return null;
+		}
+
+		int randomNumber=0;
+		if(optionSize>1){
+			Random rand = new Random();
+			randomNumber = rand.nextInt(optionSize-1);
+		}
 
 		WebElement randomOrderNOItem=this.lstOrderItemList.get(randomNumber).findElement(this.byOrderNo);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(randomOrderNOItem);
@@ -3769,7 +3785,7 @@ public class MyAccount extends BasePage {
 		String lsPDPProductName=pdp.lblProductName.getText().trim();
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(pdp.lnkFavIcon);
-		this.getReusableActionsInstance().clickIfAvailable(pdp.lnkFavIcon);
+		this.clickElement(pdp.lnkFavIcon);
 		this.waitForCondition(Driver->{return !pdp.checkIfFavShareMobileHighlighted();},5000);
 
 		if(!pdp.checkIfFavShareMobileHighlighted()){
