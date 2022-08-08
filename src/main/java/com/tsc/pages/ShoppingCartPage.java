@@ -1459,6 +1459,33 @@ public class ShoppingCartPage extends BasePage {
 	}
 
 	/**
+	 * To get EasyPay Description
+	 * @return - Map<String,Object>
+	 */
+	public Map<String,Object> getEasyPayDesc(){
+		Map<String,Object> map=new HashMap<>();
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectCartEasyPayInstallmentNumber);
+		Select select=new Select(selectCartEasyPayInstallmentNumber);
+		String lsText=select.getFirstSelectedOption().getText();
+		map.put("installmentsNumber",this.getIntegerFromString(lsText));
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblCartEasyPayTodayPayment);
+		lsText=this.lblCartEasyPayTodayPayment.getText();
+		map.put("todayPayment",this.getFloatFromString(lsText,true));
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblCartEasyPayLeftPayment);
+		lsText=this.lblCartEasyPayLeftPayment.getText();
+		map.put("leftPayment",this.getFloatFromString(lsText,true));
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblCartEasyPayFutureMonthlyPayment);
+		lsText=this.lblCartEasyPayFutureMonthlyPayment.getText();
+		map.put("futureMonthlyPayment",this.getFloatFromString(lsText,true));
+
+		return map;
+	}
+
+	/**
 	 * To get Installment business logic
 	 * @param - Map<String,Object> - orderSummaryMap
 	 */
