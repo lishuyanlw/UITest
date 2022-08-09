@@ -1,12 +1,21 @@
 package com.tsc.test.tests.shoppingCart;
 
+import com.tsc.api.apiBuilder.ApiResponse;
+import com.tsc.api.apiBuilder.BrandAPI;
 import com.tsc.api.apiBuilder.ConfigurationAPI;
+import com.tsc.api.pojo.BrandResponse;
 import com.tsc.api.pojo.Configuration;
+import com.tsc.api.pojo.Product;
+import com.tsc.api.util.DataConverter;
+import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.test.base.BaseTest;
+import org.json.simple.JSONObject;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class SC_TC09_VerifyShoppingCart_Free_Gift_Item extends BaseTest {
     /*
@@ -16,7 +25,54 @@ public class SC_TC09_VerifyShoppingCart_Free_Gift_Item extends BaseTest {
     public void SC_TC09_VerifyShoppingCart_Free_Gift_Item() throws IOException {
         getGlobalFooterPageThreadLocal().closePopupDialog();
 
-        List<Configuration> configurations = new ConfigurationAPI().getContentFulConfigurationForFreeItem();
+        //Fetching test data from test data file
+        String lsUserName= TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
+        String lsPassword= TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
+        String apiEndPoint = TestDataHandler.constantData.getContentfulApiParams().getLbl_apiEndPoint();
+        String authorization = TestDataHandler.constantData.getContentfulApiParams().getLbl_authorization();
 
+        JSONObject creditCardData = new DataConverter().readJsonFileIntoJSONObject("test-data/CreditCard.json");
+
+        List<Configuration> configurations = new ConfigurationAPI().getContentFulConfigurationForFreeItem(apiEndPoint,authorization);
+
+        //Deleting all items from cart to be added again with free shipping item
+        String accessToken = getApiUserSessionDataMapThreadLocal().get("access_token").toString();
+        String customerEDP = getApiUserSessionDataMapThreadLocal().get("customerEDP").toString();
+        try{
+            getShoppingCartThreadLocal().emptyCart(Integer.valueOf(customerEDP),accessToken);
+
+            //Verifying configurations and adding necessary credit Card for user
+            getShoppingCartThreadLocal().verifyAndUpdateCreditCardAsPerSystemConfiguration(configurations,creditCardData,customerEDP,accessToken);
+
+            //Adding item to cart for user for dimensionId fetched from configuration
+            Map<String,Object> configData = getShoppingCartThreadLocal().getRequiredDetailsFromContentFulConfiguration(configurations, Arrays.asList("GWPCategoryFacetIdsIncluded","GWPCartSubTotalThreshold"));
+            String dimensionId = configData.get("GWPCategoryFacetIdsIncluded").toString().split(",")[0];
+            List<BrandResponse> brandResponse = new BrandAPI().getProductListForDimensionId(dimensionId);
+            String brandName = brandResponse.get(0).getName();
+            reporter.reportLog("Searching items for keyword : "+brandName);
+            Product.Products products = new ApiResponse().getProductOfPDPForAddToBagFromKeyword(brandName);
+            getShoppingCartThreadLocal().addAdvanceOrderOrSingleProductToCartForUser(products.getItemNo(),1,false,customerEDP,accessToken);
+
+            //Login using valid username and password
+            getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword);
+            getShoppingCartThreadLocal().waitForCondition(Driver->{return Integer.valueOf(getglobalheaderPageThreadLocal().CartBagCounter.getText())>0;},6000);
+            getProductDetailPageThreadLocal().goToShoppingCartByClickingShoppingCartIconInGlobalHeader();
+
+            reporter.reportLog("Verifying that free shipping item is added for user");
+            getShoppingCartThreadLocal().verifyFreeShippingItemPresentInCart();
+
+            reporter.reportLog("Verify OrderSummary and EasyPayment sections contents");
+            int itemAmount=getShoppingCartThreadLocal().GetAddedItemAmount();
+            float savingPrice=getShoppingCartThreadLocal().getSavingPriceFromShoppingCartHeader();
+            float subTotal=getShoppingCartThreadLocal().getShoppingSubTotal();
+
+            Map<String,Object> mapOrderSummary=getShoppingCartThreadLocal().getOrderSummaryDesc();
+            getShoppingCartThreadLocal().verifyOrderSummaryBusinessLogic(itemAmount,savingPrice,subTotal,mapOrderSummary,null);
+            getShoppingCartThreadLocal().verifyOrderSummaryContents();
+
+        }finally {
+            //Emptying Cart for next test to run with right state
+            getShoppingCartThreadLocal().emptyCart(Integer.valueOf(customerEDP),accessToken);
+        }
     }
 }

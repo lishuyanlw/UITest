@@ -631,4 +631,20 @@ public class AccountAPI extends ApiClient {
         return this.updateCreditCardDetailsForUserAfterAuthentication(config,propertyData.get("test_apiVersion")+"/"+propertyData.get("test_language")+"/accounts/"+customerEDP+"/cart/payment",access_token);
     }
 
+    /**
+     * This functions checks if any CC is default and returns it. If no CC is default, it returns random CC
+     */
+    public AccountResponse.CreditCardsClass getCreditCardInfoDefault(List<AccountResponse.CreditCardsClass> creditCardsClassList){
+        AccountResponse.CreditCardsClass creditCardsClass = null;
+        for(AccountResponse.CreditCardsClass creditCard : creditCardsClassList){
+            if(creditCard.isDefault()){
+                creditCardsClass = creditCard;
+                return creditCardsClass;
+            }
+        }
+        if(creditCardsClass==null)
+            return creditCardsClassList.get(0);
+        return creditCardsClass;
+    }
+
 }

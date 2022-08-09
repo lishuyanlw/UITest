@@ -5,11 +5,12 @@ import com.tsc.api.apiBuilder.ApiResponse;
 import com.tsc.api.pojo.AccountCartResponse;
 import com.tsc.api.pojo.Product;
 import com.tsc.api.pojo.ProductDetailsItem;
+import com.tsc.api.apiBuilder.AccountAPI;
+import com.tsc.api.pojo.*;
 import com.tsc.api.util.DataConverter;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.tsc.api.apiBuilder.CartAPI;
 import com.tsc.api.apiBuilder.ProductAPI;
-import com.tsc.api.pojo.CartResponse;
 import com.tsc.api.util.JsonParser;
 import com.tsc.pages.base.BasePage;
 import org.json.simple.JSONObject;
@@ -1788,6 +1789,7 @@ public class ShoppingCartPage extends BasePage {
 					reporter.reportLogFailWithScreenshot("The cart TrueFit message is not displaying correctly");
 				}
 
+				this.applyStaticWait(5*this.getStaticWaitForApplication());
 				lsText=lnkCartNoticeTrueFit.getAttribute("href");
 				if(!lsText.isEmpty()){
 					reporter.reportLogPass("The cart TrueFit link is not empty");
@@ -2437,6 +2439,7 @@ public class ShoppingCartPage extends BasePage {
 		return Integer.valueOf(this.lblCartEasyPayFutureMonthlyPaymentTitle.getText().trim().split(" ")[0]);
 	}
 
+
 	/**
 	 * To change Shopping Item Quantity by given shopping item index
 	 * @param - int - given shopping Item Index
@@ -2566,6 +2569,7 @@ public class ShoppingCartPage extends BasePage {
 	}
 
 	/**
+<<<<<<< HEAD
 	 * To add Multiple Product EDP No
 	 * @param - String - productName
 	 * @param - String - customerEDP
@@ -2577,8 +2581,8 @@ public class ShoppingCartPage extends BasePage {
 	 * @throws IOException
 	 */
 	public Response addMultiProductEDPNo(String productName,String customerEDP, String accessToken,int expectedInventory, int addCountEDPNo,int addCountPerEDPNO) throws IOException {
-		ApiResponse apiResponse=new ApiResponse();
-		List<Product.edps> products = apiResponse.getEDPNoListWithGivenExpectedInventory(productName,expectedInventory, addCountEDPNo);
+		ApiResponse apiResponse = new ApiResponse();
+		List<Product.edps> products = apiResponse.getEDPNoListWithGivenExpectedInventory(productName, expectedInventory, addCountEDPNo);
 		List<Integer> productEDP = new ArrayList<>();
 		for (Product.edps productEDPS : products) {
 			productEDP.add(productEDPS.getEdpNo());
@@ -2586,13 +2590,197 @@ public class ShoppingCartPage extends BasePage {
 
 		CartAPI cartApi = new CartAPI();
 		CartResponse accountCart = null;
-		Response responseAdd=null;
-		Response responseExisting=cartApi.getAccountCartContentWithCustomerEDP(customerEDP, accessToken);
-		if(responseExisting.statusCode()==200){
-			accountCart = JsonParser.getResponseObject(responseExisting.asString(), new TypeReference<CartResponse>() {});
-			responseAdd=cartApi.createNewCartOrAddItems(productEDP, addCountPerEDPNO, Integer.parseInt(customerEDP), accessToken, accountCart.getCartGuid());
+		Response responseAdd = null;
+		Response responseExisting = cartApi.getAccountCartContentWithCustomerEDP(customerEDP, accessToken);
+		if (responseExisting.statusCode() == 200) {
+			accountCart = JsonParser.getResponseObject(responseExisting.asString(), new TypeReference<CartResponse>() {
+			});
+			responseAdd = cartApi.createNewCartOrAddItems(productEDP, addCountPerEDPNO, Integer.parseInt(customerEDP), accessToken, accountCart.getCartGuid());
 		}
 
 		return responseAdd;
+	}
+	/**
+	 * This function verifies if configuration needs TSC as default Credit Card and adds it if necessary
+	 * @param - List<Configuration> - Configuration from contentful present in system
+	 * @param -JSONObject - creditCardData
+	 * @param - String - customerEDP
+	 * @param - String - accessToken
+	 * @throws IOException
+	 */
+	public void verifyAndUpdateCreditCardAsPerSystemConfiguration(List<Configuration> configuration,JSONObject creditCardData,String customerEDP,String accessToken) throws IOException {
+		if(configuration.size()>0){
+			AccountAPI accountAPI = new AccountAPI();
+			boolean outerFlag = false;
+			boolean innerFlag = false;
+			for(Configuration configurations:configuration){
+				if(configurations.getKey().equalsIgnoreCase("GWPTscCCPaymentEnabled")){
+					Boolean configValue = Boolean.valueOf(configurations.getValue());
+					//Verifying if configValue is true, CC associated with user is TSC Card, else any other card will do
+					if(configValue){
+						Response response = accountAPI.getAccountDetailsFromCustomerEDP(customerEDP,accessToken);
+						AccountResponse accountCartResponse = JsonParser.getResponseObject(response.asString(), new TypeReference<AccountResponse>() {});
+						if(response.statusCode()==200){
+							List<AccountResponse.CreditCardsClass> creditCardsClassList = accountCartResponse.getCreditCards();
+							for(AccountResponse.CreditCardsClass creditCardsClass:creditCardsClassList){
+								if(creditCardsClass.getType().equalsIgnoreCase("FI")){
+									JSONObject jsonObject = new JSONObject();
+									//Check if Credit Card is default
+									boolean isDefault = creditCardsClass.isDefault();
+									if(isDefault){
+										jsonObject.clear();
+										jsonObject.put("CardType",creditCardsClass.getType());
+										jsonObject.put("CardNumber",creditCardsClass.getNumber());
+										jsonObject.put("CardExpiryMonth",creditCardsClass.getDisplayExpirationMonth());
+										jsonObject.put("CardExpiryYear",creditCardsClass.getDisplayExpirationYear());
+										jsonObject.put("RememberCard",false);
+										jsonObject.put("MakeDefaultCard",true);
+
+										Response updatePaymentMethodResponse = accountAPI.updateCartPaymentMethod(jsonObject,customerEDP,accessToken);
+										if(updatePaymentMethodResponse.getStatusCode()==200){
+											outerFlag = true;
+											break;
+										}else
+											reporter.reportLogFail("Payment Method for user is not updated to TSC Card");
+									}else{
+										//Updating Default Credit Card for user to be TSC
+										int creditCardId = creditCardsClass.getId();
+
+										jsonObject.clear();
+										jsonObject.put("Id",creditCardId);
+										jsonObject.put("ExpirationDate",creditCardsClass.getExpirationDate());
+										jsonObject.put("Expired",creditCardsClass.isExpired());
+										jsonObject.put("Number",creditCardsClass.getNumber());
+										jsonObject.put("MaskedNumber",creditCardsClass.getMaskedNumber());
+										jsonObject.put("IsDefault",true);
+										jsonObject.put("Type",creditCardsClass.getType());
+										jsonObject.put("DisplayExpirationMonth",creditCardsClass.getDisplayExpirationMonth());
+										jsonObject.put("DisplayExpirationYear",creditCardsClass.getDisplayExpirationYear());
+										jsonObject.put("CVV",null);
+
+										Response updateResponse = accountAPI.updateCreditCardForUser(jsonObject,customerEDP,creditCardId,accessToken);
+										if(updateResponse.statusCode()==200){
+											reporter.reportLog("Default Credit Card is updated to be TSC for user");
+											outerFlag = true;
+											break;
+										}
+										else
+											reporter.reportLogFail("Default Credit Card is not updated to be TSC for user");
+									}
+									innerFlag = true;
+								}
+							}
+						if(!innerFlag){
+							//Adding TSC card to user as configuration for TSC is set to true and no TSC card is present for user
+							JSONObject tscCardObject = (JSONObject) creditCardData.get("tsc");
+							tscCardObject.put("IsDefault",true);
+							tscCardObject.put("CVV",null);
+							tscCardObject.remove("CardType");
+							tscCardObject.remove("CardDisplayName");
+							Response tscCardResponse = accountAPI.addCreditCardToUser((org.json.simple.JSONObject) creditCardData.get("tsc"),customerEDP,accessToken);
+							if(tscCardResponse.statusCode()==200)
+								reporter.reportLog("New TSC Credit Card is added for user as default Card");
+							else
+								reporter.reportLogFail("New TSC Credit Card is not added for user as default Card");
+							outerFlag = true;
+						}
+						}else{
+							reporter.reportLogFail("Account Cart Response is not fetched as expected for Credit Card!");
+							outerFlag = true;
+						}
+					}
+				}
+				if(outerFlag)
+					break;
+			}
+		}else
+			reporter.reportLogFail("Configuration object passed to function is null. Please verify api response!");
+	}
+
+	/**
+	 * This function adds advance Order Info to a cart for user
+	 * @param - String - productNumber
+	 * @param - int - quantity
+	 * @param - String - customerEDP
+	 * @param - String - accessToken
+	 * @return - Map<String,Object> - Map containing advance order info for a product
+	 * @throws IOException
+	 */
+	public Map<String,Object> addAdvanceOrderOrSingleProductToCartForUser(String productNumber, int quantity, boolean isAdvanceOrder, String customerEDP, String accessToken) throws IOException {
+		Map<String,Object> addedProductInfo = new HashMap<>();
+		ProductDetailsItem productItem = new ProductAPI().getProductDetailsForSpecificProductNumber(productNumber);
+		if(productItem==null)
+			return null;
+		else{
+			for(ProductDetailsItem.Edp edps : productItem.getEdps()){
+				if(isAdvanceOrder){
+					if(!edps.isIsAdvanceOrBackOrder()==true)
+						continue;
+				}else{
+					if(edps.isIsSoldOut()==true)
+						continue;
+				}
+
+				addedProductInfo.put("edpNo",edps.getEdpNo());
+				addedProductInfo.put("productNumber",edps.getItemNo());
+				addedProductInfo.put("advanceOrderMessage",edps.getSkuAvailabilityMessage());
+				addedProductInfo.put("productStyle",edps.getStyle());
+				addedProductInfo.put("productSize",edps.getSize());
+				addedProductInfo.put("productNowPrice",edps.getAppliedPrice());
+				addedProductInfo.put("productName",productItem.getName());
+				addedProductInfo.put("itemToBeAdded",quantity);
+
+				CartAPI cartApi = new CartAPI();
+				CartResponse accountCart = null;
+				Response responseExisting=cartApi.getAccountCartContentWithCustomerEDP(customerEDP, accessToken);
+				if(responseExisting.statusCode()==200){
+					accountCart = JsonParser.getResponseObject(responseExisting.asString(), new TypeReference<CartResponse>() {});
+					Response response = this.addItemsToCartForUser(Arrays.asList(addedProductInfo),Integer.valueOf(customerEDP),accessToken,accountCart.getCartGuid());
+					if(response.statusCode()==200)
+						break;
+				}
+				else
+					return null;
+			}
+			return addedProductInfo;
+		}
+	}
+
+	/**
+	 * This function verifies that free shipping item is present in cart
+	 */
+	public void verifyFreeShippingItemPresentInCart(){
+		boolean flag = false;
+		for(WebElement webElement:lstCartItems){
+			if(checkFreeShippingMessageExisting(webElement)){
+				if(!checkSelectQuantityEnabled(webElement)){
+					flag = true;
+					break;
+				}
+			}
+		}
+		if(flag)
+			reporter.reportLogPassWithScreenshot("Free Shipping item is added to cart as expected for user");
+		else
+			reporter.reportLogFailWithScreenshot("Free Shipping item is not added to cart as expected for user");
+	}
+
+	/**
+	 * This function returns key:value pair for specified key for contentful configurations
+	 * @param - List<Configuration> - Configuration Object
+	 * @param - List<String> - ConfigKeys for fetching values
+	 * @return - Map<String,Object>
+	 */
+	public Map<String,Object> getRequiredDetailsFromContentFulConfiguration(List<Configuration> configuration,List<String> configKeys){
+		Map<String,Object> map = new HashMap<>();
+		for(String key:configKeys){
+			for(Configuration config:configuration){
+				if(config.getKey().equalsIgnoreCase(key)){
+					map.put(key,config.getValue());
+					break;
+				}
+			}
+		}
+		return map;
 	}
 }

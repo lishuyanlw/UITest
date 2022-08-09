@@ -707,22 +707,6 @@ public class CartAPI extends ApiClient {
     }
 
     /**
-     * This functions checks if any CC is default and returns it. If no CC is default, it returns random CC
-     */
-    public AccountResponse.CreditCardsClass getCreditCardInfoDefault(List<AccountResponse.CreditCardsClass> creditCardsClassList){
-        AccountResponse.CreditCardsClass creditCardsClass = null;
-        for(AccountResponse.CreditCardsClass creditCard : creditCardsClassList){
-            if(creditCard.isDefault()){
-                creditCardsClass = creditCard;
-                return creditCardsClass;
-            }
-        }
-        if(creditCardsClass==null)
-            return creditCardsClassList.get(0);
-        return creditCardsClass;
-    }
-
-    /**
      * @param - JSONObject -config or body for input request
      * @param - String - cartGuidId on which promo will be applied
      * @param - access_token - access token for api authentication
@@ -763,8 +747,4 @@ public class CartAPI extends ApiClient {
 
         return Double.parseDouble(lsReturn);
     }
-
-
-
-
 }
