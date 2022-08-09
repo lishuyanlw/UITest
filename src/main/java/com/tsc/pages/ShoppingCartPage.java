@@ -49,6 +49,12 @@ public class ShoppingCartPage extends BasePage {
 	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-contents')]//div[@class='emptyContents']")
 	public WebElement lblEmptyCartMessage;
 
+	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-title')]/parent::div")
+	public WebElement cntCartContainPreviouslyAddedItemsMessage;
+
+	@FindBy(xpath = "//shopping-cart//span[normalize-space(text())='Shopping Bag contains previously added items.']")
+	public WebElement lblCartContainPreviouslyAddedItemsMessage;
+
 	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-title')]")
 	public WebElement lblCartTitle;
 
@@ -273,6 +279,15 @@ public class ShoppingCartPage extends BasePage {
 	public int GetAddedItemAmount(){
 		return this.getIntegerFromString(this.getElementInnerText(this.lblCartTitle));
 	}
+
+	/**
+	 * To check Contain Previously Added Items Message Existing
+	 * @return
+	 */
+	public boolean checkContainPreviouslyAddedItemsMessageExisting(){
+		return this.checkChildElementExistingByAttribute(this.cntCartContainPreviouslyAddedItemsMessage,"class","cart-merge");
+	}
+
 
 	/**
 	 * To check empty cart message Existing
@@ -1723,6 +1738,17 @@ public class ShoppingCartPage extends BasePage {
 			}
 		}
 		else{
+			if(this.checkContainPreviouslyAddedItemsMessageExisting()){
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblCartContainPreviouslyAddedItemsMessage);
+				lsText=this.lblCartContainPreviouslyAddedItemsMessage.getText();
+				if(!lsText.isEmpty()){
+					reporter.reportLogPass("The Cart Containing Previously Added Items Message is displaying correctly");
+				}
+				else{
+					reporter.reportLogFailWithScreenshot("The Cart Containing Previously Added Items Message is not displaying correctly");
+				}
+			}
+
 			if(this.checkCartNoticeTitleExisting()){
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartNoticeTitle);
 				lsText=lblCartNoticeTitle.getText();
