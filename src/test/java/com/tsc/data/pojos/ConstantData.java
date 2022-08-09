@@ -12,10 +12,15 @@ public class ConstantData {
     public LoginUser loginUser;
     public APIUserSessionParams apiUserSessionParams;
     public APIAppSessionParams apiAppSessionParams;
+    public ContentfulApiParams contentfulApiParams;
     public MyAccount myAccount;
     private List<String> lstTestName;
     private String lblChromeBrowserVersion;
     private ShoppingCart shoppingCart;
+
+    public ContentfulApiParams getContentfulApiParams() {        return contentfulApiParams;    }
+
+    public void setContentfulApiParams(ContentfulApiParams contentfulApiParams) {        this.contentfulApiParams = contentfulApiParams;    }
 
     public ShoppingCart getShoppingCart() {        return shoppingCart;    }
 
@@ -778,6 +783,19 @@ public class ConstantData {
 		public void setLbl_ProductNumberToComparePRPAndPDPContent(String lbl_ProductNumberToComparePRPAndPDPContent) {
 			this.lbl_ProductNumberToComparePRPAndPDPContent = lbl_ProductNumberToComparePRPAndPDPContent;
 		}
+    }
+
+    public static class ContentfulApiParams{
+        private String lbl_authorization;
+        private String lbl_apiEndPoint;
+
+        public String getLbl_authorization() {            return lbl_authorization;        }
+
+        public void setLbl_authorization(String lbl_authorization) {            this.lbl_authorization = lbl_authorization;        }
+
+        public String getLbl_apiEndPoint() {            return lbl_apiEndPoint;        }
+
+        public void setLbl_apiEndPoint(String lbl_apiEndPoint) {            this.lbl_apiEndPoint = lbl_apiEndPoint;        }
     }
 
     public static class Flyout {

@@ -12,19 +12,19 @@ import java.util.List;
 public class ConfigurationAPI extends ApiClient{
     public ConfigurationAPI() throws IOException {super();}
 
-    public List<Configuration> getContentFulConfigurationForFreeItem(){
+    public List<Configuration> getContentFulConfigurationForFreeItem(String apiEndPoint,String authorization){
         String test_URL = System.getProperty("QaUrl");
 
-        String apiEndPoint = "https://qa-api.tsc.ca/configuration/v1/Web/";
         if(test_URL.contains("qa"))
             apiEndPoint = apiEndPoint+"QA";
-        else if(test_URL.contains("st"))
+        else if(test_URL.contains("st")){
             apiEndPoint = apiEndPoint+"ST";
+        }
 
         Response response = RestAssured.
                 given().
                 when().
-                    header("Authorization","Basic 1321A95C-4BD0-4D29-AA55-B040D48C6992:5346C7F8").
+                    header("Authorization",authorization).
                     get(apiEndPoint).
                 then().
                     extract().response();

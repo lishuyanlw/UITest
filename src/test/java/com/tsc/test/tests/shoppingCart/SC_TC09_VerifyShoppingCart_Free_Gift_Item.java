@@ -27,10 +27,13 @@ public class SC_TC09_VerifyShoppingCart_Free_Gift_Item extends BaseTest {
 
         //Fetching test data from test data file
         String lsUserName= TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
-        String lsPassword=TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
+        String lsPassword= TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
+        String apiEndPoint = TestDataHandler.constantData.getContentfulApiParams().getLbl_apiEndPoint();
+        String authorization = TestDataHandler.constantData.getContentfulApiParams().getLbl_authorization();
+
         JSONObject creditCardData = new DataConverter().readJsonFileIntoJSONObject("test-data/CreditCard.json");
 
-        List<Configuration> configurations = new ConfigurationAPI().getContentFulConfigurationForFreeItem();
+        List<Configuration> configurations = new ConfigurationAPI().getContentFulConfigurationForFreeItem(apiEndPoint,authorization);
 
         //Deleting all items from cart to be added again with free shipping item
         String accessToken = getApiUserSessionDataMapThreadLocal().get("access_token").toString();
