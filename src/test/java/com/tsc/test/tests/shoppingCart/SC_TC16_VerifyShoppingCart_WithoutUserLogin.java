@@ -19,9 +19,6 @@ public class SC_TC16_VerifyShoppingCart_WithoutUserLogin extends BaseTest{
 	@Test(groups={"Regression","ShoppingCart"})
 	public void SC_TC16_VerifyShoppingCart_WithoutUserLogin() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
-
-		String accessToken = getApiUserSessionDataMapThreadLocal().get("access_token").toString();
-		int customerEDP = Integer.valueOf(getApiUserSessionDataMapThreadLocal().get("customerEDP").toString());
 		BasePage basePage=new BasePage(this.getDriver());
 		List<String> lstKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_APISearchingKeyword();
 
@@ -122,12 +119,7 @@ public class SC_TC16_VerifyShoppingCart_WithoutUserLogin extends BaseTest{
 			else{
 				reporter.reportLogPassWithScreenshot("The page failed to be navigated to SignIn page");
 			}
-
-			//To empty the cart
-			getShoppingCartThreadLocal().emptyCart(customerEDP,accessToken);
-
 		}
-
 	}
 }
 

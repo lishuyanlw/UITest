@@ -17,80 +17,79 @@ public class SC_TC10_VerifyShoppingCart_ShippingDateAndMultiPackMessage extends 
 	 */
 	@Test(groups={"Regression","ShoppingCart","SauceTunnelTest"})
 	public void SC_TC10_VerifyShoppingCart_ShippingDateAndMultiPackMessage() throws IOException {
-		getGlobalFooterPageThreadLocal().closePopupDialog();
-
 		String lsUserName = TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
 		String lsPassword = TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
 
 		//Fetching test data from test data file
 		String accessToken = getApiUserSessionDataMapThreadLocal().get("access_token").toString();
 		int customerEDP = Integer.valueOf(getApiUserSessionDataMapThreadLocal().get("customerEDP").toString());
+		try{
+			getGlobalFooterPageThreadLocal().closePopupDialog();
+			//To empty the cart
+			getShoppingCartThreadLocal().emptyCart(customerEDP,accessToken);
 
-		//To empty the cart
-		getShoppingCartThreadLocal().emptyCart(customerEDP,accessToken);
+			List<Map<String, String>> keyword = TestDataHandler.constantData.getShoppingCart().getLst_SearchKeywords();
+			List<Map<String, Object>> data = getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP, accessToken, keyword,true);
 
-		List<Map<String, String>> keyword = TestDataHandler.constantData.getShoppingCart().getLst_SearchKeywords();
-		List<Map<String, Object>> data = getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP, accessToken, keyword,true);
+			//Add advanced order product using API
+			String lsAdvancedOrderKeyword=TestDataHandler.constantData.getSearchResultPage().getLbl_AdvancedOrderkeyword();
+			Map<String,Object> mapAdvancedOrder=getShoppingCartThreadLocal().addSingleProductWithConditions(lsAdvancedOrderKeyword, 1,1, String.valueOf(customerEDP), accessToken,true);
+			data.add(mapAdvancedOrder);
+			String lsEstimatedShippingDate= (String) mapAdvancedOrder.get("advanceOrderMessage");
+			lsEstimatedShippingDate=lsEstimatedShippingDate.split(":")[1].trim();
 
-		//Add advanced order product using API
-		String lsAdvancedOrderKeyword=TestDataHandler.constantData.getSearchResultPage().getLbl_AdvancedOrderkeyword();
-		Map<String,Object> mapAdvancedOrder=getShoppingCartThreadLocal().addSingleProductWithConditions(lsAdvancedOrderKeyword, 1,1, String.valueOf(customerEDP), accessToken,true);
-		data.add(mapAdvancedOrder);
-		String lsEstimatedShippingDate= (String) mapAdvancedOrder.get("advanceOrderMessage");
-		lsEstimatedShippingDate=lsEstimatedShippingDate.split(":")[1].trim();
+			//Login using valid username and password
+			getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword);
+			BasePage basePage=new BasePage(this.getDriver());
+			getShoppingCartThreadLocal().waitForCondition(Driver->{return Integer.valueOf(getglobalheaderPageThreadLocal().CartBagCounter.getText())>0;},6000);
+			getProductDetailPageThreadLocal().goToShoppingCartByClickingShoppingCartIconInGlobalHeader();
 
-		//Login using valid username and password
-		getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword);
-		BasePage basePage=new BasePage(this.getDriver());
-		getShoppingCartThreadLocal().waitForCondition(Driver->{return Integer.valueOf(getglobalheaderPageThreadLocal().CartBagCounter.getText())>0;},6000);
-		getProductDetailPageThreadLocal().goToShoppingCartByClickingShoppingCartIconInGlobalHeader();
-
-		reporter.reportLog("Verify shipping message in shopping cart header");
-		boolean bCheckGetItByShippingMessage=getShoppingCartThreadLocal().checkGetItByShippingMessageExisting();
-		if(!bCheckGetItByShippingMessage){
-			reporter.reportLogPass("The GetItByShippingMessage is not displaying in the shopping cart header");
-		}
-		else{
-			reporter.reportLogFail("The GetItByShippingMessage is still displaying in the shopping cart header");
-		}
-
-		reporter.reportLog("Verify Estimated shipping message for first shopping item");
-		Map<String, Object> shoppingCartMap = getShoppingCartThreadLocal().getShoppingSectionDetails("optional");
-		List<Map<String,Object>> shoppingList=(List<Map<String,Object>>)shoppingCartMap.get("shoppingList");
-		String lsFirstShoppingDate= (String) shoppingList.get(0).get("productShippingDate");
-		if(lsFirstShoppingDate.contains("Est. Ship Date")){
-			reporter.reportLogPass("The first shopping item is containing 'Est. Ship Date'");
-		}
-		else{
-			reporter.reportLogFail("The first shopping item is not containing 'Est. Ship Date'");
-		}
-
-		reporter.reportLog("Verify the Estimated shipping message linkage between PDP and Shopping cart page");
-		String lsShippingDateInfo,shippingDate;
-		for(Map<String,Object> shoppingItem:shoppingList){
-			lsShippingDateInfo= (String) shoppingItem.get("productShippingDate");
-			shippingDate=lsShippingDateInfo.split(":")[1].split(",")[1].trim();
-			if(lsShippingDateInfo.contains("Est. Ship Date")&&shippingDate.equalsIgnoreCase(lsEstimatedShippingDate)){
-				reporter.reportLogPass("Able to find estimated shipping date correctly");
-				break;
+			reporter.reportLog("Verify shipping message in shopping cart header");
+			boolean bCheckGetItByShippingMessage=getShoppingCartThreadLocal().checkGetItByShippingMessageExisting();
+			if(!bCheckGetItByShippingMessage){
+				reporter.reportLogPass("The GetItByShippingMessage is not displaying in the shopping cart header");
 			}
 			else{
-				reporter.reportLogPass("Unable to find estimated shipping date");
+				reporter.reportLogFail("The GetItByShippingMessage is still displaying in the shopping cart header");
 			}
-		}
 
-		reporter.reportLog("Verify the MultiPack message in shopping cart header");
-		String lsCartNoticeMessage=getShoppingCartThreadLocal().checkCartNoticeMessageExisting();
-		if(!lsCartNoticeMessage.equalsIgnoreCase("errorMessage")){
-			reporter.reportLogPass("The MultiPack message is displaying correctly");
-		}
-		else{
-			reporter.reportLogFail("The MultiPack message is not displaying correctly");
-		}
+			reporter.reportLog("Verify Estimated shipping message for first shopping item");
+			Map<String, Object> shoppingCartMap = getShoppingCartThreadLocal().getShoppingSectionDetails("optional");
+			List<Map<String,Object>> shoppingList=(List<Map<String,Object>>)shoppingCartMap.get("shoppingList");
+			String lsFirstShoppingDate= (String) shoppingList.get(0).get("productShippingDate");
+			if(lsFirstShoppingDate.contains("Est. Ship Date")){
+				reporter.reportLogPass("The first shopping item is containing 'Est. Ship Date'");
+			}
+			else{
+				reporter.reportLogFail("The first shopping item is not containing 'Est. Ship Date'");
+			}
 
-		//To empty the cart
-		getShoppingCartThreadLocal().emptyCart(customerEDP,accessToken);
+			reporter.reportLog("Verify the Estimated shipping message linkage between PDP and Shopping cart page");
+			String lsShippingDateInfo,shippingDate;
+			for(Map<String,Object> shoppingItem:shoppingList){
+				lsShippingDateInfo= (String) shoppingItem.get("productShippingDate");
+				shippingDate=lsShippingDateInfo.split(":")[1].split(",")[1].trim();
+				if(lsShippingDateInfo.contains("Est. Ship Date")&&shippingDate.equalsIgnoreCase(lsEstimatedShippingDate)){
+					reporter.reportLogPass("Able to find estimated shipping date correctly");
+					break;
+				}
+				else{
+					reporter.reportLogPass("Unable to find estimated shipping date");
+				}
+			}
 
+			reporter.reportLog("Verify the MultiPack message in shopping cart header");
+			String lsCartNoticeMessage=getShoppingCartThreadLocal().checkCartNoticeMessageExisting();
+			if(!lsCartNoticeMessage.equalsIgnoreCase("errorMessage")){
+				reporter.reportLogPass("The MultiPack message is displaying correctly");
+			}
+			else{
+				reporter.reportLogFail("The MultiPack message is not displaying correctly");
+			}
+		}finally {
+			//To empty the cart
+			getShoppingCartThreadLocal().emptyCart(customerEDP,accessToken);
+		}
 	}
 }
 
