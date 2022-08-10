@@ -47,7 +47,7 @@ pipeline {
 
     triggers {
 
-        parameterizedCron(env.BRANCH_NAME == 'master' ?'''
+        parameterizedCron(env.BRANCH_NAME == 'CER_853_ShoppingCart_VerifyShippingDateAndMultiPackMessage' ?'''
                     # leave spaces where you want them around the parameters. They'll be trimmed.
                     # we let the build run with the default name
 		    
