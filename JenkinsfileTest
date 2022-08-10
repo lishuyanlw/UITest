@@ -89,6 +89,9 @@ pipeline {
             00 08 * * 1-5 %Browser=saucechrome;Language=en;Groups=ShoppingCart;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
             00 09 * * 1-5 %Browser=saucesafari;Language=en;Groups=ShoppingCart;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
             00 10 * * 1-5 %Browser=saucefirefox;Language=en;Groups=ShoppingCart;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
+            30 11 * * 1-5 %Browser=saucechrome;Language=en;Groups=ShoppingCart;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
+            30 12 * * 1-5 %Browser=saucesafari;Language=en;Groups=ShoppingCart;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
+            30 13 * * 1-5 %Browser=saucefirefox;Language=en;Groups=ShoppingCart;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
             00 00 * * 1-5 %Browser=saucechrome;Language=en;Groups=SignIn;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
             15 00 * * 2 %Browser=saucefirefox;Language=en;Groups=SignIn;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
             15 00 * * 3 %Browser=saucesafari;Language=en;Groups=SignIn;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
