@@ -42,7 +42,7 @@ public class SC_TC16_VerifyShoppingCart_WithoutUserLogin extends BaseTest{
 			basePage.clickElement(getProductDetailPageThreadLocal().btnAddToBagPopupWindowClose);
 			basePage.applyStaticWait(basePage.getStaticWaitForApplication());
 
-			getProductDetailPageThreadLocal().chooseGivenStyleAndSizeAndQuantity(lstStyle[0], lstSize0[1], 1);
+			getProductDetailPageThreadLocal().chooseGivenStyleAndSizeAndQuantity(lstStyle[1], lstSize1[0], 1);
 			basePage.clickElement(getProductDetailPageThreadLocal().btnAddToBag);
 			basePage.waitForCondition(Driver -> {
 				return getProductDetailPageThreadLocal().lblAddToBagPopupWindowTitle.isDisplayed();

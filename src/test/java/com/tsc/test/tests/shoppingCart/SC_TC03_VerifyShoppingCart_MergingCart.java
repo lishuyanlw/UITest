@@ -55,7 +55,7 @@ public class SC_TC03_VerifyShoppingCart_MergingCart extends BaseTest{
 			basePage.applyStaticWait(basePage.getStaticWaitForApplication());
 			Map<String, Object> PDPMapFirst = getProductDetailPageThreadLocal().getPDPDesc();
 
-			getProductDetailPageThreadLocal().chooseGivenStyleAndSizeAndQuantity(lstStyle[0], lstSize0[1], 1);
+			getProductDetailPageThreadLocal().chooseGivenStyleAndSizeAndQuantity(lstStyle[1], lstSize1[0], 1);
 			basePage.clickElement(getProductDetailPageThreadLocal().btnAddToBag);
 			basePage.waitForCondition(Driver -> {
 				return getProductDetailPageThreadLocal().lblAddToBagPopupWindowTitle.isDisplayed();
