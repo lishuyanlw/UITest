@@ -1,7 +1,6 @@
 package com.tsc.test.tests.shoppingCart;
 
 import com.tsc.data.Handler.TestDataHandler;
-import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 import org.testng.annotations.Test;
 
@@ -67,9 +66,6 @@ public class SC_TC01_VerifyShoppingCart_PageHeadingAndLineItems extends BaseTest
 				reporter.reportLogFail("The added product"+productName+" using API cannot be found in ShoppingCart list");
 			}
 		}
-
-		//To empty the cart
-		getShoppingCartThreadLocal().emptyCart(customerEDP,accessToken);
 	}
 }
 

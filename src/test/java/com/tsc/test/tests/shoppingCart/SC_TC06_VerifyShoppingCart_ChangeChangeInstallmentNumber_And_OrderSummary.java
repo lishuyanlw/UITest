@@ -45,9 +45,6 @@ public class SC_TC06_VerifyShoppingCart_ChangeChangeInstallmentNumber_And_OrderS
 			getShoppingCartThreadLocal().verifyInstallmentBusinessLogic(mapOrderSummary);
 			getShoppingCartThreadLocal().verifyEasyPaymentContents();
 		}
-
-		//To empty the cart
-		getShoppingCartThreadLocal().emptyCart(customerEDP,accessToken);
 	}
 }
 

@@ -1,7 +1,6 @@
 package com.tsc.test.tests.shoppingCart;
 
 import com.tsc.data.Handler.TestDataHandler;
-import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
@@ -179,10 +178,6 @@ public class SC_TC02_VerifyShoppingCart_RemoveItem_CheckSubTotalAndOrderSummary 
 		getShoppingCartThreadLocal().setInstallmentSetting(lstOptionText.get(1));
 		getShoppingCartThreadLocal().verifyInstallmentBusinessLogic(mapOrderSummary);
 		getShoppingCartThreadLocal().verifyEasyPaymentContents();
-
-		//To empty the cart
-		getShoppingCartThreadLocal().emptyCart(customerEDP,accessToken);
-
 	}
 }
 
