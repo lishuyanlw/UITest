@@ -33,9 +33,9 @@ public class SC_TC12_VerifyShoppingCart_LeftInventoryMessage extends BaseTest{
 			BasePage basePage=new BasePage(this.getDriver());
 
 			Map<String,Object> outputDataCriteria= new HashMap<String,Object>();
-			outputDataCriteria.put("style", "2");
-			outputDataCriteria.put("size", "2");
-			outputDataCriteria.put("quantity", "-5");
+			outputDataCriteria.put("style", "1");
+			outputDataCriteria.put("size", "1");
+			outputDataCriteria.put("quantity", "-10");
 			if(getProductDetailPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList,"ConditionsForVideoAndStyleAndSizeWithoutCheckingSoldOutCriteria",outputDataCriteria)) {
 				String lsStyle=getProductDetailPageThreadLocal().selectedProduct.productEDPColor;
 				String lsSize=getProductDetailPageThreadLocal().selectedProduct.productEDPSize;

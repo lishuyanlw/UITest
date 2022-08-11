@@ -596,6 +596,7 @@ public class ApiResponse extends ApiConfigs {
 							//If quantity>0, to get the Inventory>quantity
 							if(quantity<0){
 								if(Edps.getInventory()>1&&Edps.getInventory()<Math.abs(quantity)){
+									bFoundQuantity=true;
 									selectedProduct.productEDPSize = Edps.getSize();
 									selectedProduct.productEDPColor = Edps.getStyle();
 									break;
