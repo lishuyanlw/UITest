@@ -238,6 +238,7 @@ myAccount:
   lbl_myNewsLettersUnSubscriptionSuccessMessage: "You have now been successfully unsubscribed."
   lbl_myNewsLettersNoCheckUnSubscriptionAlertMessage: "You have not chosen the unsubscribe checkbox."
   lbl_myNewsLettersCheckUnSubscriptionAlertMessage: "Are you sure you want to completely unsubscribe from all of our exciting email marketing communications?"
+  lbl_noOrderRecordsMessage: "No orders yet. TSC has tons of deals to offer"
 
 lstTestName: ["MA_TC10_Payment_Options_Manage_Credit_Card",
               "PD_TC",

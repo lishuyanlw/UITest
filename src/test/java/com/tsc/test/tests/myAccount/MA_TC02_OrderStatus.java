@@ -56,10 +56,10 @@ public class MA_TC02_OrderStatus extends BaseTest {
             reporter.reportLogPass("The actual navigated URL:+"+basePage.URL()+" is not equal to expected one:"+expectedURL);
         }
 
-
+        String expectedNoOrderRecorderMessage=TestDataHandler.constantData.getMyAccount().getLbl_noOrderRecordsMessage();
         if(getMyAccountPageThreadLocal().checkOrderItemExisting()){
             reporter.reportLog("Verify Order status section");
-            getMyAccountPageThreadLocal().verifyOrderStatusSection(false);
+            getMyAccountPageThreadLocal().verifyOrderStatusSection(false,expectedNoOrderRecorderMessage);
 
             reporter.reportLog("Verify search order function with invalid orderNO");
             String lbl_orderSearchErrorMessage=TestDataHandler.constantData.getMyAccount().getLbl_orderSearchErrorMessage();
@@ -72,7 +72,7 @@ public class MA_TC02_OrderStatus extends BaseTest {
             getMyAccountPageThreadLocal().verifySearchOrderFunction(lnk_orderDetailsURL);
         }
         else{
-            reporter.reportLogFail("No order items existing");
+            getMyAccountPageThreadLocal().verifyNoOrderRecordsMessage(expectedNoOrderRecorderMessage);
         }
     }
 }

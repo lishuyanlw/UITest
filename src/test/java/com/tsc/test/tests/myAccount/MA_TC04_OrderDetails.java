@@ -47,7 +47,8 @@ public class MA_TC04_OrderDetails extends BaseTest {
 
         String lsSelectedOrderNO=getMyAccountPageThreadLocal().goToOrderDetailsPage();
         if(lsSelectedOrderNO==null){
-            reporter.reportLog("There are no order records, please check it");
+            String expectedNoOrderRecorderMessage=TestDataHandler.constantData.getMyAccount().getLbl_noOrderRecordsMessage();
+            getMyAccountPageThreadLocal().verifyNoOrderRecordsMessage(expectedNoOrderRecorderMessage);
             return;
         }
 

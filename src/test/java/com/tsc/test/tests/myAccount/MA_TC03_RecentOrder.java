@@ -56,9 +56,10 @@ public class MA_TC03_RecentOrder extends BaseTest {
             reporter.reportLogPass("The actual navigated URL:+"+basePage.URL()+" is not equal to expected one:"+expectedURL);
         }
 
+        String expectedNoOrderRecorderMessage=TestDataHandler.constantData.getMyAccount().getLbl_noOrderRecordsMessage();
         if(getMyAccountPageThreadLocal().checkOrderListExisting()){
             reporter.reportLog("Verify Order status section");
-            getMyAccountPageThreadLocal().verifyOrderStatusSection(true);
+            getMyAccountPageThreadLocal().verifyOrderStatusSection(true,expectedNoOrderRecorderMessage);
 
             reporter.reportLog("Verify search order function with invalid orderNO");
             String lbl_orderSearchErrorMessage=TestDataHandler.constantData.getMyAccount().getLbl_orderSearchErrorMessage();
@@ -71,7 +72,7 @@ public class MA_TC03_RecentOrder extends BaseTest {
             getMyAccountPageThreadLocal().verifySearchOrderFunction(lnk_orderDetailsURL);
         }
         else{
-            reporter.reportLog("No order items existing,and showing 'No orders yet. TSC has tons of deals to offer' message!");
+            getMyAccountPageThreadLocal().verifyNoOrderRecordsMessage(expectedNoOrderRecorderMessage);
         }
     }
 }

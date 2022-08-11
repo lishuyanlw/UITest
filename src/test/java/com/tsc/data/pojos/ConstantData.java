@@ -1005,6 +1005,7 @@ public class ConstantData {
         public String lbl_myNewsLettersUnSubscriptionSuccessMessage;
         public String lbl_myNewsLettersNoCheckUnSubscriptionAlertMessage;
         public String lbl_myNewsLettersCheckUnSubscriptionAlertMessage;
+        public String lbl_noOrderRecordsMessage;
 
         public String getLnk_addNewCardURL() {            return lnk_addNewCardURL;        }
 
@@ -1288,6 +1289,14 @@ public class ConstantData {
 
         public void setLbl_myNewsLettersCheckUnSubscriptionAlertMessage(String lbl_myNewsLettersCheckUnSubscriptionAlertMessage) {
             this.lbl_myNewsLettersCheckUnSubscriptionAlertMessage = lbl_myNewsLettersCheckUnSubscriptionAlertMessage;
+        }
+
+        public String getLbl_noOrderRecordsMessage() {
+            return lbl_noOrderRecordsMessage;
+        }
+
+        public void setLbl_noOrderRecordsMessage(String lbl_noOrderRecordsMessage) {
+            this.lbl_noOrderRecordsMessage = lbl_noOrderRecordsMessage;
         }
     }
 

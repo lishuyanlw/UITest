@@ -1425,7 +1425,7 @@ public class MyAccount extends BasePage {
 	 * To verify order status
 	 * @param - bRecentOrder - is order status or recent order
 	 */
-	public void verifyOrderStatusSection(boolean bRecentOrder){
+	public void verifyOrderStatusSection(boolean bRecentOrder,String expectedNoOrderRecorderMessage){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderStatusSectionTitle);
 		if(!this.lblOrderStatusSectionTitle.getText().isEmpty()){
 			reporter.reportLogPass("Order Status Section Title is displaying correctly");
@@ -1486,7 +1486,7 @@ public class MyAccount extends BasePage {
 		}
 
 		if(!this.checkOrderListExisting()){
-			reporter.reportLog("No order items existing,and showing 'No orders yet. TSC has tons of deals to offer' message!");
+			verifyNoOrderRecordsMessage(expectedNoOrderRecorderMessage);
 			return;
 		}
 
@@ -4244,6 +4244,22 @@ public class MyAccount extends BasePage {
 	 */
 	public boolean checkViewedHistoryExisting(){
 		return this.getChildElementCount(cntRecentlyViewedTitleContainer)>1;
+	}
+
+	/**
+	 * To verify No Order Records Message
+	 * @param - String - expectedNoOrderRecorderMessage
+	 */
+	public void verifyNoOrderRecordsMessage(String expectedNoOrderRecorderMessage){
+		reporter.reportLog("No order item existing");
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblNoOrderInfo);
+		String lsText=lblNoOrderInfo.getText().trim();
+		if(lsText.equalsIgnoreCase(expectedNoOrderRecorderMessage)){
+			reporter.reportLogPass("The no order record message is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The no order record message is not displaying as expected: '"+expectedNoOrderRecorderMessage+"'");
+		}
 	}
 
 
