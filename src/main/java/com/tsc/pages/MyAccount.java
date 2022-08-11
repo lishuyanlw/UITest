@@ -1486,7 +1486,7 @@ public class MyAccount extends BasePage {
 		}
 
 		if(!this.checkOrderListExisting()){
-			reporter.reportLog("There are no order records, please check it");
+			reporter.reportLog("No order items existing,and showing 'No orders yet. TSC has tons of deals to offer' message!");
 			return;
 		}
 
@@ -1594,7 +1594,7 @@ public class MyAccount extends BasePage {
 	public void verifySearchOrderFunction(String lsOrderDetailsURL){
 		String orderNumber=this.getRandomOrderNumber();
 		if(orderNumber==null){
-			reporter.reportLog("There are no order records, please check it");
+			reporter.reportLog("No order items existing,and showing 'No orders yet. TSC has tons of deals to offer' message!");
 			return;
 		}
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputAccountOrderSearch);

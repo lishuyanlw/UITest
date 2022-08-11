@@ -71,7 +71,7 @@ public class MA_TC03_RecentOrder extends BaseTest {
             getMyAccountPageThreadLocal().verifySearchOrderFunction(lnk_orderDetailsURL);
         }
         else{
-            reporter.reportLogFail("No order items existing");
+            reporter.reportLog("No order items existing,and showing 'No orders yet. TSC has tons of deals to offer' message!");
         }
     }
 }
