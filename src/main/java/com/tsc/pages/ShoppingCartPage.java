@@ -1138,6 +1138,24 @@ public class ShoppingCartPage extends BasePage {
 		return -1;
 	}
 
+	/**
+	 * To find Given Product index In product List
+	 * @param - Map<String,Object> - expectedProductItemMap - given product item map data
+	 * @param - List<Map<String,Object>> - productListMap
+	 * @return - int - note that -1 represents not found
+	 */
+	public int findGivenProductIndexInProductList(Map<String,Object> expectedProductItemMap,List<Map<String,Object>> productListMap) {
+		Map<String, Object> productItemMap=null;
+		int loopSize=productListMap.size();
+		for (int i=0;i<loopSize;i++) {
+			productItemMap = productListMap.get(i);
+			if (this.checkIfMatchGivenAddToBagItem(expectedProductItemMap, productItemMap)) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
 
 		/**
          * To verify Contents Contents On ShoppingCart Section Details With AddToBag
