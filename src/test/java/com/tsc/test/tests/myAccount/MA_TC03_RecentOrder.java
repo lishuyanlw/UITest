@@ -56,7 +56,7 @@ public class MA_TC03_RecentOrder extends BaseTest {
             reporter.reportLogPass("The actual navigated URL:+"+basePage.URL()+" is not equal to expected one:"+expectedURL);
         }
 
-        if(getMyAccountPageThreadLocal().checkOrderItemExisting()){
+        if(getMyAccountPageThreadLocal().checkOrderListExisting()){
             reporter.reportLog("Verify Order status section");
             getMyAccountPageThreadLocal().verifyOrderStatusSection(true);
 

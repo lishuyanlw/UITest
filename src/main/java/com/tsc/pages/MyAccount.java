@@ -44,6 +44,9 @@ public class MyAccount extends BasePage {
 	@FindBy(xpath = "//ng-component//p[@class='section-title']")
 	public WebElement lblOrderStatusSectionTitle;
 
+	@FindBy(xpath = "//ng-component//div[@class='tsc-forms']/div[last()]/div")
+	public WebElement cntOrderListContainer;
+
 	@FindBy(xpath = "//ng-component//div[contains(@class,'tsc-forms')]//div[contains(text(),'No orders yet')]")
 	public WebElement lblNoOrderInfo;
 
@@ -723,6 +726,15 @@ public class MyAccount extends BasePage {
 	@FindBy(xpath = "//div[@id='bodycontent']")
 	public WebElement lblSubscriptionSuccessMessage;
 
+
+	/**
+	 * To check OrderList Existing
+	 * @return - boolean
+	 */
+	public boolean checkOrderListExisting(){
+		this.applyStaticWait(3*this.getStaticWaitForApplication());
+		return !this.getElementInnerText(cntOrderListContainer).trim().contains("No orders yet");
+	}
 
 	/**
 	 * To get header item web element through header item text
@@ -1473,7 +1485,7 @@ public class MyAccount extends BasePage {
 			}
 		}
 
-		if(this.lstOrderItemList.size()==0){
+		if(!this.checkOrderListExisting()){
 			reporter.reportLog("There are no order records, please check it");
 			return;
 		}
@@ -1652,11 +1664,11 @@ public class MyAccount extends BasePage {
 	 * @return - selected orderNO
 	 */
 	public String goToOrderDetailsPage(){
-		int optionSize=this.lstOrderItemList.size();
-		if(optionSize==0){
+		if(!this.checkOrderListExisting()){
 			return null;
 		}
 
+		int optionSize=this.lstOrderItemList.size();
 		int randomNumber=0;
 		if(optionSize>1){
 			Random rand = new Random();
