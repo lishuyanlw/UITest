@@ -1,10 +1,7 @@
 package com.tsc.test.tests.shoppingCart;
 
-import com.tsc.api.apiBuilder.ApiResponse;
-import com.tsc.api.apiBuilder.BrandAPI;
 import com.tsc.api.apiBuilder.ConfigurationAPI;
 import com.tsc.api.apiBuilder.ProductAPI;
-import com.tsc.api.pojo.BrandResponse;
 import com.tsc.api.pojo.Configuration;
 import com.tsc.api.pojo.Product;
 import com.tsc.api.util.DataConverter;
