@@ -564,7 +564,7 @@ public class ProductAPI extends ApiClient {
                         productItem=null;
                     }
                 }
-               
+
                 return productItem;
             }
         }
