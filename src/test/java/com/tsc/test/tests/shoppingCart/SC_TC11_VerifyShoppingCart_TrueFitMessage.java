@@ -22,6 +22,9 @@ public class SC_TC11_VerifyShoppingCart_TrueFitMessage extends BaseTest{
 		String accessToken = getApiUserSessionDataMapThreadLocal().get("access_token").toString();
 		int customerEDP = Integer.valueOf(getApiUserSessionDataMapThreadLocal().get("customerEDP").toString());
 		try{
+			//To empty the cart
+			getShoppingCartThreadLocal().emptyCart(customerEDP,accessToken);
+
 			getGlobalFooterPageThreadLocal().closePopupDialog();
 			//Fetching test data from test data file
 			List<Map<String, String>> keyword = TestDataHandler.constantData.getShoppingCart().getLst_SearchKeywords();
