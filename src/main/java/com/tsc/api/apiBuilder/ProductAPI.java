@@ -406,6 +406,7 @@ public class ProductAPI extends ApiClient {
             lsWasPrice=data.getWasPriceRange();
             boolean flag = false;
             boolean bFoundQuantity=false;
+            boolean bSoldOut=false;
             if(basicCheck) {
                 if(videoCount!=-1){
                     flag = (videoCount==0 ? data.getVideosCount()==videoCount : data.getVideosCount()>=videoCount)&&data.getStyles().size() >= styleCount && data.getSizes().size() >= sizeCount;
@@ -441,6 +442,7 @@ public class ProductAPI extends ApiClient {
                     //which we will use in PDP to select the style and size in order to get soldout information
                     for(ProductDetailsItem.Edp Edps:edpsList) {
                         if(Edps.Inventory==0) {
+                            bSoldOut=true;
                             selectedProduct.productEDPColor=Edps.getStyle();
                             selectedProduct.productEDPSize=Edps.getSize();
                             break;
@@ -544,16 +546,25 @@ public class ProductAPI extends ApiClient {
                         productItem=null;
                     }
                 }
-                else{
+
+                if(isSoldOut){
+                    if(bSoldOut){
+                        productItem=data;
+                    }
+                    else{
+                        productItem=null;
+                    }
+                }
+
+                if(!isMultiStyleAndSize&&!isSoldOut){
                     if(bFoundQuantity){
                         productItem=data;
                     }
                     else{
                         productItem=null;
                     }
-
                 }
-
+               
                 return productItem;
             }
         }
