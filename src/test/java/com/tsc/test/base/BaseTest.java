@@ -10,10 +10,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.tsc.api.apiBuilder.AccountAPI;
-import com.tsc.api.apiBuilder.ApiResponse;
-import com.tsc.api.apiBuilder.CartAPI;
-import com.tsc.api.apiBuilder.OrderAPI;
+import com.tsc.api.apiBuilder.*;
 import com.tsc.api.pojo.AccountCartResponse;
 import com.tsc.api.pojo.CartResponse;
 import com.tsc.api.pojo.GetOrderListResponse;
@@ -54,6 +51,7 @@ public class BaseTest {
 	protected static final ThreadLocal<SignInPage> loginPageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<String> TestDeviceThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<ApiResponse> apiResponseThreadLocal = new ThreadLocal<>();
+	protected static final ThreadLocal<ProductAPI> productAPIThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<ShoppingCartPage> shoppingCartThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<JSONObject> apiUserSessionDataMapThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<JSONObject> apiAppSessionDataMapThreadLocal = new ThreadLocal<>();
@@ -75,6 +73,9 @@ public class BaseTest {
 
 	//@return apiResponseThreadLocal
 	public static ApiResponse getApiResponseThreadLocal() {return apiResponseThreadLocal.get();}
+
+	//@return productAPIThreadLocal
+	public static ProductAPI getProductAPIThreadLocal() {return productAPIThreadLocal.get();}
 
 	// @return the globalheaderPageThreadLocal
 	protected static GlobalHeaderPage getglobalheaderPageThreadLocal() {return globalHeaderPageThreadLocal.get();	}
@@ -128,6 +129,7 @@ public class BaseTest {
 		loginPageThreadLocal.set(new SignInPage(getDriver()));
 		reporter = new ExtentTestManager(getDriver());
 		apiResponseThreadLocal.set(new ApiResponse());
+		productAPIThreadLocal.set(new ProductAPI());
 		shoppingCartThreadLocal.set(new ShoppingCartPage(getDriver()));
 		myAccountPageThreadLocal.set(new MyAccount(getDriver()));
 	}
@@ -141,6 +143,7 @@ public class BaseTest {
 		productDetailPageThreadLocal.set(new ProductDetailPage_Mobile(getDriver()));
 		reporter = new ExtentTestManager(getDriver());
 		apiResponseThreadLocal.set(new ApiResponse());
+		productAPIThreadLocal.set(new ProductAPI());
 		shoppingCartThreadLocal.set(new ShoppingCartPage_Mobile(getDriver()));
 		myAccountPageThreadLocal.set(new MyAccount_Mobile(getDriver()));
 	}
@@ -185,6 +188,7 @@ public class BaseTest {
 
 		reporter = new ExtentTestManager(getDriver());
 		apiResponseThreadLocal.set(new ApiResponse());
+		productAPIThreadLocal.set(new ProductAPI());
 		if(System.getProperty("Browser").contains("ios") ||
 				(System.getProperty("chromeMobileDevice")!=null
 						&& (System.getProperty("chromeMobileDevice").contains("iPad")))) {

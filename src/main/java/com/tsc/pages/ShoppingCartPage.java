@@ -1,7 +1,6 @@
 package com.tsc.pages;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tsc.api.apiBuilder.ApiResponse;
 import com.tsc.api.pojo.AccountCartResponse;
 import com.tsc.api.pojo.Product;
 import com.tsc.api.pojo.ProductDetailsItem;
@@ -2625,8 +2624,8 @@ public class ShoppingCartPage extends BasePage {
 	 * @throws IOException
 	 */
 	public Response addMultiProductEDPNo(String productName,String customerEDP, String accessToken,int expectedInventory, int addCountEDPNo,int addCountPerEDPNO) throws IOException {
-		ApiResponse apiResponse = new ApiResponse();
-		List<Product.edps> products = apiResponse.getEDPNoListWithGivenExpectedInventory(productName, expectedInventory, addCountEDPNo);
+		ProductAPI productAPI=new ProductAPI();
+		List<Product.edps> products = productAPI.getEDPNoListWithGivenExpectedInventory(productName, expectedInventory, addCountEDPNo);
 		List<Integer> productEDP = new ArrayList<>();
 		for (Product.edps productEDPS : products) {
 			productEDP.add(productEDPS.getEdpNo());

@@ -17,7 +17,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
-import com.tsc.api.apiBuilder.ApiResponse;
 import com.tsc.api.pojo.Product;
 import com.tsc.api.pojo.ProductDetailsItem;
 import com.tsc.api.pojo.SelectedProduct;
@@ -3002,8 +3001,8 @@ public class ProductDetailPage extends BasePage {
 	 */
 	public boolean goToProductItemWithPreConditions(List<String> lstKeyword,String lsType,Map<String,Object> dataCriteria) throws IOException {
 		ProductResultsPage prp=new ProductResultsPage(this.getDriver());
-		ApiResponse apiResponse=new ApiResponse();
-		ApiResponse.lsUrlType="-";
+		ProductAPI productAPI=new ProductAPI();
+		productAPI.lsUrlType="-";
 
 		Map<String,Object> outputDataCriteria= new HashMap<String,Object>();
 		if(dataCriteria==null){
@@ -3017,7 +3016,7 @@ public class ProductDetailPage extends BasePage {
 		switch(lsType) {
 			case "AllConditionsWithoutCheckingSoldOutCriteria":
 				for(String lsKeyword:lstKeyword) {
-					product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,false,false,false);
+					product=productAPI.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,false,false,false);
 					if(product!=null) {
 						break;
 					}
@@ -3025,7 +3024,7 @@ public class ProductDetailPage extends BasePage {
 				break;
 			case "ConditionsForMultipleStyleAndSize":
 				for(String lsKeyword:lstKeyword) {
-					product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,false,false,true);
+					product=productAPI.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,false,false,true);
 					if(product!=null) {
 						break;
 					}
@@ -3033,7 +3032,7 @@ public class ProductDetailPage extends BasePage {
 				break;
 			case "ConditionsForVideoAndStyleAndSizeWithoutCheckingSoldOutCriteria":
 				for(String lsKeyword:lstKeyword) {
-					product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,false,true,false);
+					product=productAPI.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,false,true,false);
 					if(product!=null) {
 						break;
 					}
@@ -3041,7 +3040,7 @@ public class ProductDetailPage extends BasePage {
 				break;
 			case "AllConditionsWithCheckingSoldOutCriteria":
 				for(String lsKeyword:lstKeyword) {
-					product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,true,false,false);
+					product=productAPI.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,true,false,false);
 					if(product!=null) {
 						break;
 					}
@@ -3049,7 +3048,7 @@ public class ProductDetailPage extends BasePage {
 				break;
 			case "ConditionsForVideoAndStyleAndSizeWithCheckingSoldOutCriteria":
 				for(String lsKeyword:lstKeyword) {
-					product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,true,true,false);
+					product=productAPI.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,true,true,false);
 					if(product!=null) {
 						break;
 					}
@@ -3057,7 +3056,7 @@ public class ProductDetailPage extends BasePage {
 				break;
 			case "SoldOut":
 				for(String lsKeyword:lstKeyword) {
-					product=apiResponse.getProductInfoFromKeywordWithSoldOutInfo(lsKeyword, outputDataCriteria);
+					product=productAPI.getProductInfoFromKeywordWithSoldOutInfo(lsKeyword, outputDataCriteria);
 					if(product!=null) {
 						break;
 					}
@@ -3065,7 +3064,7 @@ public class ProductDetailPage extends BasePage {
 				break;
 			case "AddToBag":
 				for(String lsKeyword:lstKeyword) {
-					product=apiResponse.getProductOfPDPForAddToBagFromKeyword(lsKeyword);
+					product=productAPI.getProductOfPDPForAddToBagFromKeyword(lsKeyword);
 					if(product!=null) {
 						break;
 					}
@@ -3073,7 +3072,7 @@ public class ProductDetailPage extends BasePage {
 				break;
 			case "AdvanceOrder":
 				for(String lsKeyword:lstKeyword) {
-					productDetailsItem=apiResponse.getProductInfoFromKeywordWithAdvanceOrderInfo(lsKeyword);
+					productDetailsItem=productAPI.getProductInfoFromKeywordWithAdvanceOrderInfo(lsKeyword);
 					if(productDetailsItem!=null) {
 						break;
 					}
@@ -3081,7 +3080,7 @@ public class ProductDetailPage extends BasePage {
 				break;
 			case "ProductWithEasyPaySizeChartAndReviews":
 				for(String lsKeyword:lstKeyword) {
-					product=apiResponse.getProductInfoFromKeywordWithEasyPayReviewsTrueFitAndSizeChart(lsKeyword,dataCriteria,false);
+					product=productAPI.getProductInfoFromKeywordWithEasyPayReviewsTrueFitAndSizeChart(lsKeyword,dataCriteria,false);
 					if(product!=null) {
 						break;
 					}
@@ -3089,7 +3088,7 @@ public class ProductDetailPage extends BasePage {
 				break;
 			case "ProductWithEasyPaySizeChartAndReviewWithImage":
 				for(String lsKeyword:lstKeyword) {
-					product=apiResponse.getProductInfoFromKeywordWithEasyPayReviewsTrueFitAndSizeChart(lsKeyword,dataCriteria,true);
+					product=productAPI.getProductInfoFromKeywordWithEasyPayReviewsTrueFitAndSizeChart(lsKeyword,dataCriteria,true);
 					if(product!=null) {
 						break;
 					}
@@ -3097,7 +3096,7 @@ public class ProductDetailPage extends BasePage {
 				break;
 			case "DeliveryOptions":
 				for(String lsKeyword:lstKeyword) {
-					productDetailsItem=apiResponse.getProductInfoFromKeywordWithDeliveryOptionsInfo(lsKeyword);
+					productDetailsItem=productAPI.getProductInfoFromKeywordWithDeliveryOptionsInfo(lsKeyword);
 					if(productDetailsItem!=null) {
 						break;
 					}
@@ -3107,13 +3106,13 @@ public class ProductDetailPage extends BasePage {
 				break;
 		}
 
-		selectedProduct=selectedProduct.assignValue(apiResponse.selectedProduct);
+		selectedProduct=selectedProduct.assignValue(productAPI.selectedProduct);
 		if(!lsType.equalsIgnoreCase("AdvanceOrder")&&!lsType.equalsIgnoreCase("DeliveryOptions")) {
 			if(product==null){
 				reporter.reportLogFail("Unable to find the matched product");
 				return false;
 			}
-			productDetailsItem=apiResponse.getProductDetailsForSpecificProductNumber(selectedProduct.productNumber);
+			productDetailsItem=productAPI.getProductDetailsForSpecificProductNumber(selectedProduct.productNumber);
 		}
 		else {
 			if(productDetailsItem==null){
@@ -3122,10 +3121,10 @@ public class ProductDetailPage extends BasePage {
 			}
 		}
 
-		reporter.reportLog(apiResponse.selectedProduct.pdpNavigationUrl);
+		reporter.reportLog(productAPI.selectedProduct.pdpNavigationUrl);
 
 		try{
-			this.getDriver().get(apiResponse.selectedProduct.pdpNavigationUrl);
+			this.getDriver().get(productAPI.selectedProduct.pdpNavigationUrl);
 		}
 		catch (Exception e){
 
@@ -3144,8 +3143,8 @@ public class ProductDetailPage extends BasePage {
 	 */
 	public String getProductWithConditionsForVideoAndStyleAndSizeWithoutCheckingSoldOutCriteria(List<String> lstKeyword,Map<String,Object> dataCriteria) throws IOException {
 		ProductResultsPage prp=new ProductResultsPage(this.getDriver());
-		ApiResponse apiResponse=new ApiResponse();
-		ApiResponse.lsUrlType="-";
+		ProductAPI productAPI=new ProductAPI();
+		productAPI.lsUrlType="-";
 
 		Map<String,Object> outputDataCriteria= new HashMap<String,Object>();
 		if(dataCriteria==null){
@@ -3157,12 +3156,12 @@ public class ProductDetailPage extends BasePage {
 		}
 
 		for(String lsKeyword:lstKeyword) {
-			product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,false,true,false);
+			product=productAPI.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,false,true,false);
 			if(product!=null) {
 				break;
 			}
 		}
-		selectedProduct=selectedProduct.assignValue(apiResponse.selectedProduct);
+		selectedProduct=selectedProduct.assignValue(productAPI.selectedProduct);
 
 		return selectedProduct.productName;
 	}
@@ -3176,16 +3175,16 @@ public class ProductDetailPage extends BasePage {
 	 */
 	public boolean goToProductItemWithProductNumber(String productNumber) throws IOException {
 		ProductResultsPage prp=new ProductResultsPage(this.getDriver());
-		ApiResponse apiResponse=new ApiResponse();
+		ProductAPI productAPI=new ProductAPI();
 
-		productDetailsItem=apiResponse.getProductDetailsForSpecificProductNumber(productNumber);
+		productDetailsItem=productAPI.getProductDetailsForSpecificProductNumber(productNumber);
 
 		if(selectedProduct.productName==null){
 			reporter.reportLogFail("Unable to find the matched product");
 			return false;
 		}
 
-		this.getDriver().get(apiResponse.selectedProduct.pdpNavigationUrl);
+		this.getDriver().get(productAPI.selectedProduct.pdpNavigationUrl);
 
 		return prp.waitForPDPPageLoading();
 	}

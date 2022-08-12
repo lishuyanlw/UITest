@@ -31,7 +31,7 @@ public class SR_TC15_Verify_ProductSearchResult_SearchProductWithAPI extends Bas
         HashMap<String,String> prpURL;
 
         //BUG-19789 - PRP left nav should display all available facets -- "category" facet is missing on search results.
-        List<Product.DimensionStates> categoryDimension = getApiResponseThreadLocal().getProductCategoryCategory(prpSearchKeywordData.get(0).get(0),prpSearchKeywordData.get(0).get(1));
+        List<Product.DimensionStates> categoryDimension = getProductAPIThreadLocal().getProductCategoryCategory(prpSearchKeywordData.get(0).get(0),prpSearchKeywordData.get(0).get(1));
         getProductResultsPageThreadLocal().verifyCategoryDetailsOnPRPForProduct(categoryDimension,prpSearchKeywordData.get(0).get(0));
 
         //verification of prp page by loading url in browser

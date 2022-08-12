@@ -17,7 +17,7 @@ public class IN_TC01_PRP_PDP extends BaseTest {
         getGlobalFooterPageThreadLocal().closePopupDialog();
 
         List<List<String>> lsKeywordDropdownList=TestDataHandler.constantData.getSearchResultPage().getLst_SearchKeyword_DropDown();
-        Product.Products product=apiResponseThreadLocal.get().getActiveProductWithFullInfoFromKeyword(lsKeywordDropdownList.get(0).get(0));
+        Product.Products product=getProductAPIThreadLocal().getActiveProductWithFullInfoFromKeyword(lsKeywordDropdownList.get(0).get(0));
         String lsProductName=product.getName();
         reporter.reportLog("Product name: "+lsProductName);
 
