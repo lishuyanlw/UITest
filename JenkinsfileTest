@@ -51,12 +51,12 @@ pipeline {
                     # leave spaces where you want them around the parameters. They'll be trimmed.
                     # we let the build run with the default name
 		    
-	        00 08 * * 1-5 %Browser=saucechrome;Language=en;Groups=ShoppingCart;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
-            00 09 * * 1-5 %Browser=saucesafari;Language=en;Groups=ShoppingCart;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
-            00 10 * * 1-5 %Browser=saucefirefox;Language=en;Groups=ShoppingCart;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
-            30 11 * * 1-5 %Browser=saucechrome;Language=en;Groups=ShoppingCart;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
-            30 12 * * 1-5 %Browser=saucesafari;Language=en;Groups=ShoppingCart;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
-            30 13 * * 1-5 %Browser=saucefirefox;Language=en;Groups=ShoppingCart;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
+	        00 07 * * 1-7 %Browser=saucechrome;Language=en;Groups=ShoppingCart;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
+            00 09 * * 1-7 %Browser=saucesafari;Language=en;Groups=ShoppingCart;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
+            00 11 * * 1-7 %Browser=saucefirefox;Language=en;Groups=ShoppingCart;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
+            00 13 * * 1-7 %Browser=saucechrome;Language=en;Groups=ShoppingCart;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
+            00 15 * * 1-7 %Browser=saucesafari;Language=en;Groups=ShoppingCart;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
+            00 17 * * 1-7 %Browser=saucefirefox;Language=en;Groups=ShoppingCart;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
 
                 ''':'')
     }
