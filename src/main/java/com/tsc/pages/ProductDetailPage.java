@@ -3987,7 +3987,7 @@ public class ProductDetailPage extends BasePage {
 					reporter.reportLogFail("Comments displayed are not same as that by user");
 
 				//Verifying comment By
-				this.getReusableActionsInstance().scrollToElement(this.lblCommentBy);
+				//this.getReusableActionsInstance().scrollToElement(this.lblCommentBy);
 				String commentsBy = this.lblCommentBy.getText().trim();
 				if(commentsBy.equalsIgnoreCase(reviewDataByUser.get("reviewTabNickName")))
 					reporter.reportLogPass("Comments Nick Name displayed matches with that of user");
