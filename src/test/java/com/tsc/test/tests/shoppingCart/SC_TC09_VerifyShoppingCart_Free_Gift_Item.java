@@ -3,6 +3,7 @@ package com.tsc.test.tests.shoppingCart;
 import com.tsc.api.apiBuilder.ApiResponse;
 import com.tsc.api.apiBuilder.BrandAPI;
 import com.tsc.api.apiBuilder.ConfigurationAPI;
+import com.tsc.api.apiBuilder.ProductAPI;
 import com.tsc.api.pojo.BrandResponse;
 import com.tsc.api.pojo.Configuration;
 import com.tsc.api.pojo.Product;
@@ -47,11 +48,12 @@ public class SC_TC09_VerifyShoppingCart_Free_Gift_Item extends BaseTest {
             //Adding item to cart for user for dimensionId fetched from configuration
             Map<String,Object> configData = getShoppingCartThreadLocal().getRequiredDetailsFromContentFulConfiguration(configurations, Arrays.asList("GWPCategoryFacetIdsIncluded","GWPCartSubTotalThreshold"));
             String dimensionId = configData.get("GWPCategoryFacetIdsIncluded").toString().split(",")[0];
-            List<BrandResponse> brandResponse = new BrandAPI().getProductListForDimensionId(dimensionId);
-            String brandName = brandResponse.get(0).getName();
-            reporter.reportLog("Searching items for keyword : "+brandName);
-            Product.Products products = new ApiResponse().getProductOfPDPForAddToBagFromKeyword(brandName);
-            getShoppingCartThreadLocal().addAdvanceOrderOrSingleProductToCartForUser(products.getItemNo(),1,false,customerEDP,accessToken);
+            //Calling api to get product item no to be added to bag for user that has free shipping condition satisfied
+            List<Product.edps> edpNoForFreeShippingProduct = new ProductAPI().getEDPNoForFreeShippingProduct(dimensionId,1);
+            if(edpNoForFreeShippingProduct.size()>0)
+                getShoppingCartThreadLocal().addAdvanceOrderOrSingleProductToCartForUser(edpNoForFreeShippingProduct.get(0).getItemNo(),1,false,customerEDP,accessToken);
+            else
+                reporter.reportLogFail("Product is not fetched from dimension number fetched from configuration api");
 
             //Login using valid username and password
             getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword);

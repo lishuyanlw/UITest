@@ -227,9 +227,9 @@ public class ProductAPI extends ApiClient {
      * @param - Boolean - firstTimeFunctionCall - determines as if the call is made first time or not
      * @return - List<Integer> - EDPNo
      */
-    public List getEDPNoForFreeShippingProduct(String searchKeyword,String defaultPageItems,boolean firstTimeFunctionCall,int returnProductCount) throws IOException {
+    public List getEDPNoForFreeShippingProduct(String dimensionNumber,int returnProductCount) {
         List<Product.edps> list = new ArrayList<>();
-        Product product=getProductDetailsForKeyword(searchKeyword,defaultPageItems,firstTimeFunctionCall);
+        Product product=getProductDetailsFromDimensionNumber(dimensionNumber);
         List<Product.Products> dataList =product.Products.stream().filter(item->item.getEdps().stream().anyMatch(subItem->subItem.getAppliedShipping().isEmpty()&&subItem.getInventory()>2)).collect(Collectors.toList());
         for(Product.Products data:dataList) {
             //To check if any Inventory is greater than 0, then means it is not SoldOut item
@@ -516,4 +516,29 @@ public class ProductAPI extends ApiClient {
 
         return Float.parseFloat(lsReturn);
     }
+
+    /**
+     * This method find Product Details from dimension Number as api call
+     * @param - String - dimensionNumber : dimensionNumber for Product
+     * @return - Product - Product Object from api Response
+     */
+    public Product getProductDetailsFromDimensionNumber(String dimensionNumber) {
+        Response response = null;
+        Product product = null;
+        Map<String, Object> initialConfig=new HashMap<>();
+
+        initialConfig.put("dimensions", dimensionNumber);
+            try{
+                response = getApiCallResponse(initialConfig,propertyData.get("test_apiVersion3")+"/"+propertyData.get("test_language")+"/products");
+            }catch (Exception exception){
+                exception.printStackTrace();
+            }
+
+        if(response!=null && response.statusCode()==200) {
+            product = JsonParser.getResponseObject(response.asString(), new TypeReference<Product>() {});
+        }
+
+        return product;
+    }
+
 }
