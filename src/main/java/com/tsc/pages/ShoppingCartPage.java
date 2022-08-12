@@ -1156,13 +1156,13 @@ public class ShoppingCartPage extends BasePage {
 	}
 
 
-		/**
-         * To verify Contents Contents On ShoppingCart Section Details With AddToBag
-         * @param - Map<String,Object> - PDPMap,
-         * @param - Map<String,Object> - addToBagMap
-         * @param - Map<String,Object> - shoppingSectionDetailsMap
-         * @param - boolean - bAPI - true represents addToBagMap from API while false represents for addToBagMap from UI
-         */
+	/**
+	 * To verify Contents Contents On ShoppingCart Section Details With AddToBag
+	 * @param - Map<String,Object> - PDPMap,
+	 * @param - Map<String,Object> - addToBagMap
+	 * @param - Map<String,Object> - shoppingSectionDetailsMap
+	 * @param - boolean - bAPI - true represents addToBagMap from API while false represents for addToBagMap from UI
+	 */
 	public void verifyContentsOnShoppingCartSectionDetailsWithAddToBag(Map<String,Object> PDPMap, Map<String,Object> addToBagMap,Map<String,Object> shoppingSectionDetailsMap, boolean bAPI){
 		List<Map<String,Object>> shoppingList=(List<Map<String,Object>>)shoppingSectionDetailsMap.get("shoppingList");
 		int shoppingAmount= (int) shoppingSectionDetailsMap.get("shoppingAmount");
@@ -1195,14 +1195,11 @@ public class ShoppingCartPage extends BasePage {
 	}
 
 	/**
-	 * To verify business logic Between ShoppingItem List And SubTotalSection
-	 * @param - Map<String,Object> - shoppingCartMap
+	 * To calculate Item Count And SubTotal From ShoppingCart List
+	 * @param - List<Map<String,Object>> - shoppingList
+	 * @return - Map<String,Object> - including itemCount and subTotal
 	 */
-	public void verifyBusinessLogicBetweenShoppingItemListAndSubTotalSection(Map<String,Object> shoppingCartMap){
-		List<Map<String,Object>> shoppingList=(List<Map<String,Object>>)shoppingCartMap.get("shoppingList");
-		int shoppingAmount= (int) shoppingCartMap.get("shoppingAmount");
-		float shoppingSubTotal= (float) shoppingCartMap.get("shoppingSubTotal");
-
+	public Map<String,Object> calculateItemCountAndSubTotalFromShoppingCartList(List<Map<String,Object>> shoppingList){
 		float priceAmount=0.0f;
 		int quantityAmount=0,itemQuantity;
 		for(Map<String,Object> shoppingItem:shoppingList){
@@ -1213,6 +1210,26 @@ public class ShoppingCartPage extends BasePage {
 			quantityAmount+=itemQuantity;
 			priceAmount=priceAmount+itemQuantity*(float)shoppingItem.get("productNowPrice");
 		}
+
+		Map<String,Object> map=new HashMap<>();
+		map.put("itemCount",quantityAmount);
+		map.put("subTotal",priceAmount);
+
+		return map;
+	}
+
+	/**
+	 * To verify business logic Between ShoppingItem List And SubTotalSection
+	 * @param - Map<String,Object> - shoppingCartMap
+	 */
+	public void verifyBusinessLogicBetweenShoppingItemListAndSubTotalSection(Map<String,Object> shoppingCartMap){
+		List<Map<String,Object>> shoppingList=(List<Map<String,Object>>)shoppingCartMap.get("shoppingList");
+		int shoppingAmount= (int) shoppingCartMap.get("shoppingAmount");
+		float shoppingSubTotal= (float) shoppingCartMap.get("shoppingSubTotal");
+
+		Map<String,Object> calculateMap=calculateItemCountAndSubTotalFromShoppingCartList(shoppingList);
+		int quantityAmount= (int) calculateMap.get("itemCount");
+		float priceAmount= (float) calculateMap.get("subTotal");
 
 		if(shoppingAmount==quantityAmount){
 			reporter.reportLogPass("The quantity amount in shopping item list is equal to item amount in subtotal section");
