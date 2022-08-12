@@ -2707,8 +2707,8 @@ public class ProductResultsPage extends BasePage{
 			elementSelectedText=itemContainer.findElement(byProductOptionColorSelectedColorContainer);
 			tempElementColor=elementSelectedText;
 			//Bug 19629: [QA Defect - P3] Product card: if a product doesn't have color swatch, all color options show as plain circles
-			if(element.getTagName().equalsIgnoreCase("button")) {								
-				this.getReusableActionsInstance().clickIfAvailable(element,5000);
+			if(element.getTagName().equalsIgnoreCase("button")) {
+				this.clickElement(element);
 				this.waitForCondition(Driver->{return !this.getElementInnerText(tempElementColor).equalsIgnoreCase("Select colour:");},10000);
 			}
 			else {
@@ -2725,7 +2725,7 @@ public class ProductResultsPage extends BasePage{
 					reporter.reportLogFailWithScreenshot("The image is not changing after choosing a different style");
 				}
 			}
-						
+
 			element=itemContainer.findElement(byProductOptionColorSelectedColor);
 			String lsSelectedTitle=this.getElementInnerText(element);
 			this.selectedProductItem.productSelectedColor=lsSelectedTitle;
