@@ -330,12 +330,8 @@ public class ShoppingCartPage extends BasePage {
 	 * @return - boolean
 	 */
 	public boolean checkProductTrueFitMessageExisting(){
-		if(!this.cntCartNotice.getAttribute("class").contains("hidden")){
-			return !this.getElementInnerText(this.lblCartNoticeTrueFitMessage).isEmpty();
-		}
-		else{
-			return false;
-		}
+		this.applyStaticWait(3000);
+		return !this.getElementInnerText(this.lblCartNoticeTrueFitMessage).isEmpty();
 	}
 
 	/**
@@ -919,7 +915,7 @@ public class ShoppingCartPage extends BasePage {
 			}
 		}
 		else{
-			map.put("productName",lsText);
+			map.put("productName",lsText.trim());
 			map.put("productStyle",null);
 			map.put("productSize",null);
 		}
