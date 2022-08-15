@@ -1,6 +1,7 @@
 package com.tsc.test.tests.shoppingCart;
 
 import com.tsc.data.Handler.TestDataHandler;
+import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
@@ -28,7 +29,14 @@ public class SC_TC02_VerifyShoppingCart_RemoveItem_CheckSubTotalAndOrderSummary 
 
 		//Login using valid username and password
 		getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword);
-		getShoppingCartThreadLocal().waitForCondition(Driver->{return Integer.valueOf(getglobalheaderPageThreadLocal().CartBagCounter.getText())>0;},6000);
+		try {
+			getShoppingCartThreadLocal().waitForCondition(Driver -> {
+				return Integer.valueOf(getglobalheaderPageThreadLocal().CartBagCounter.getText()) > 0;
+			}, 6000);
+		}
+		catch(Exception e){
+			(new BasePage(this.getDriver())).applyStaticWait(3000);
+		}
 		getProductDetailPageThreadLocal().goToShoppingCartByClickingShoppingCartIconInGlobalHeader();
 
 		Map<String,Object> shoppingCartMap=getShoppingCartThreadLocal().getShoppingSectionDetails("mandatory");

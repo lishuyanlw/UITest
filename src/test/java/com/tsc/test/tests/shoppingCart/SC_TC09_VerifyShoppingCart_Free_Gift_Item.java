@@ -6,6 +6,7 @@ import com.tsc.api.pojo.Configuration;
 import com.tsc.api.pojo.Product;
 import com.tsc.api.util.DataConverter;
 import com.tsc.data.Handler.TestDataHandler;
+import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 import org.json.simple.JSONObject;
 import org.testng.annotations.Test;
@@ -54,7 +55,14 @@ public class SC_TC09_VerifyShoppingCart_Free_Gift_Item extends BaseTest {
 
             //Login using valid username and password
             getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword);
-            getShoppingCartThreadLocal().waitForCondition(Driver->{return Integer.valueOf(getglobalheaderPageThreadLocal().CartBagCounter.getText())>0;},6000);
+            try {
+                getShoppingCartThreadLocal().waitForCondition(Driver -> {
+                    return Integer.valueOf(getglobalheaderPageThreadLocal().CartBagCounter.getText()) > 0;
+                }, 6000);
+            }
+            catch(Exception e){
+                (new BasePage(this.getDriver())).applyStaticWait(3000);
+            }
             getProductDetailPageThreadLocal().goToShoppingCartByClickingShoppingCartIconInGlobalHeader();
 
             reporter.reportLog("Verifying that free shipping item is added for user");

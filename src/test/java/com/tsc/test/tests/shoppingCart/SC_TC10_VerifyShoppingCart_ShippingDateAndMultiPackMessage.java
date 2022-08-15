@@ -41,7 +41,14 @@ public class SC_TC10_VerifyShoppingCart_ShippingDateAndMultiPackMessage extends 
 			//Login using valid username and password
 			getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword);
 			BasePage basePage=new BasePage(this.getDriver());
-			getShoppingCartThreadLocal().waitForCondition(Driver->{return Integer.valueOf(getglobalheaderPageThreadLocal().CartBagCounter.getText())>0;},6000);
+			try {
+				getShoppingCartThreadLocal().waitForCondition(Driver -> {
+					return Integer.valueOf(getglobalheaderPageThreadLocal().CartBagCounter.getText()) > 0;
+				}, 6000);
+			}
+			catch(Exception e){
+				(new BasePage(this.getDriver())).applyStaticWait(3000);
+			}
 			getProductDetailPageThreadLocal().goToShoppingCartByClickingShoppingCartIconInGlobalHeader();
 
 			reporter.reportLog("Verify shipping message in shopping cart header");
