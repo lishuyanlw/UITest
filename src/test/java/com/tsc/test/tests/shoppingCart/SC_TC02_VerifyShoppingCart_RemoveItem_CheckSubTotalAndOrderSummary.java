@@ -1,19 +1,12 @@
 package com.tsc.test.tests.shoppingCart;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.tsc.api.apiBuilder.ProductAPI;
-import com.tsc.api.pojo.CartResponse;
-import com.tsc.api.util.JsonParser;
 import com.tsc.data.Handler.TestDataHandler;
-import com.tsc.data.pojos.ConstantData;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
-import io.restassured.response.Response;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -36,7 +29,14 @@ public class SC_TC02_VerifyShoppingCart_RemoveItem_CheckSubTotalAndOrderSummary 
 
 		//Login using valid username and password
 		getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword);
-		(new BasePage(this.getDriver())).applyStaticWait(2000);
+		try {
+			getShoppingCartThreadLocal().waitForCondition(Driver -> {
+				return Integer.valueOf(getglobalheaderPageThreadLocal().CartBagCounter.getText()) > 0;
+			}, 6000);
+		}
+		catch(Exception e){
+			(new BasePage(this.getDriver())).applyStaticWait(3000);
+		}
 		getProductDetailPageThreadLocal().goToShoppingCartByClickingShoppingCartIconInGlobalHeader();
 
 		Map<String,Object> shoppingCartMap=getShoppingCartThreadLocal().getShoppingSectionDetails("mandatory");
@@ -186,10 +186,6 @@ public class SC_TC02_VerifyShoppingCart_RemoveItem_CheckSubTotalAndOrderSummary 
 		getShoppingCartThreadLocal().setInstallmentSetting(lstOptionText.get(1));
 		getShoppingCartThreadLocal().verifyInstallmentBusinessLogic(mapOrderSummary);
 		getShoppingCartThreadLocal().verifyEasyPaymentContents();
-
-//		//To empty the cart
-//		getShoppingCartThreadLocal().emptyCart(customerEDP,accessToken);
-
 	}
 }
 

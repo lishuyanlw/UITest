@@ -1,5 +1,6 @@
 package com.tsc.pages;
 
+import com.tsc.api.apiBuilder.ProductAPI;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -8,7 +9,6 @@ import java.io.IOException;
 import java.util.*;
 
 import org.openqa.selenium.By;
-import com.tsc.api.apiBuilder.ApiResponse;
 import com.tsc.api.pojo.Product;
 import com.tsc.api.pojo.SelectedProduct;
 import com.tsc.pages.base.BasePage;
@@ -1936,7 +1936,7 @@ public class ProductResultsPage extends BasePage{
 	 * @throws IOException
 	 */
 	public boolean goToProductItemWithPreConditions(List<String> lstKeyword) throws IOException {
-		ApiResponse apiResponse=new ApiResponse();
+		ProductAPI productAPI=new ProductAPI();
 		Map<String,Object> outputDataCriteria= new HashMap<String,Object>();
 		outputDataCriteria.put("video", "1");
 		outputDataCriteria.put("style", "3");
@@ -1947,7 +1947,7 @@ public class ProductResultsPage extends BasePage{
 
 		String productNumber="";
 		for(String lsKeyword:lstKeyword) {
-			product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,true,false,false);
+			product=productAPI.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,true,false,false);
 			if(product!=null) {
 				break;
 			}
@@ -1964,7 +1964,7 @@ public class ProductResultsPage extends BasePage{
 	 * @throws IOException
 	 */
 	public boolean findProductItemWithPreConditions(List<String> lstKeyword) throws IOException {
-		ApiResponse apiResponse=new ApiResponse();
+		ProductAPI productAPI=new ProductAPI();
 		Map<String,Object> outputDataCriteria= new HashMap<String,Object>();
 		outputDataCriteria.put("video", "1");
 		outputDataCriteria.put("style", "1");
@@ -1974,7 +1974,7 @@ public class ProductResultsPage extends BasePage{
 		Product.Products product=null;
 		String productName="";
 		for(String lsKeyword:lstKeyword) {
-			product=apiResponse.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,false,true,false);
+			product=productAPI.getProductInfoFromKeyword(lsKeyword, outputDataCriteria,false,true,false);
 			if(product!=null) {
 				break;
 			}
@@ -1985,7 +1985,7 @@ public class ProductResultsPage extends BasePage{
 			return false;
 		}
 
-		selectedProduct=apiResponse.selectedProduct;
+		selectedProduct=productAPI.selectedProduct;
 		productName=selectedProduct.productName;
 
 		this.selectedProductItem.init();
@@ -2707,8 +2707,8 @@ public class ProductResultsPage extends BasePage{
 			elementSelectedText=itemContainer.findElement(byProductOptionColorSelectedColorContainer);
 			tempElementColor=elementSelectedText;
 			//Bug 19629: [QA Defect - P3] Product card: if a product doesn't have color swatch, all color options show as plain circles
-			if(element.getTagName().equalsIgnoreCase("button")) {								
-				this.getReusableActionsInstance().clickIfAvailable(element,5000);
+			if(element.getTagName().equalsIgnoreCase("button")) {
+				this.clickElement(element);
 				this.waitForCondition(Driver->{return !this.getElementInnerText(tempElementColor).equalsIgnoreCase("Select colour:");},10000);
 			}
 			else {
@@ -2725,7 +2725,7 @@ public class ProductResultsPage extends BasePage{
 					reporter.reportLogFailWithScreenshot("The image is not changing after choosing a different style");
 				}
 			}
-						
+
 			element=itemContainer.findElement(byProductOptionColorSelectedColor);
 			String lsSelectedTitle=this.getElementInnerText(element);
 			this.selectedProductItem.productSelectedColor=lsSelectedTitle;
@@ -3785,13 +3785,13 @@ public class ProductResultsPage extends BasePage{
 	 * @param-List<String> - inputParams containing properties of Product to look for
 	 */
 	public boolean loadProductOnPRPPageForItemWithMoreThanSixteenVariantsAndNoSwatch(List<String> inputParams,String defaultItemsCountOnPRP) throws IOException {
-		ApiResponse apiResponse=new ApiResponse();
+		ProductAPI productAPI=new ProductAPI();
 		Map<String,Object> inputParamMap = new HashMap<>();
 		inputParamMap.put("size",0);
 		inputParamMap.put("style",inputParams.get(1));
 		inputParamMap.put("pageSize",defaultItemsCountOnPRP);
 		inputParamMap.put("video",0);
-		Product.Products product = apiResponse.getProductInfoFromKeyword(inputParams.get(0),inputParamMap,false,true,false);
+		Product.Products product = productAPI.getProductInfoFromKeyword(inputParams.get(0),inputParamMap,false,true,false);
 
 		if(product!=null){
 			reporter.reportLog("Searching product: "+product.getName());

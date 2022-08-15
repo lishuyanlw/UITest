@@ -10,10 +10,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.tsc.api.apiBuilder.AccountAPI;
-import com.tsc.api.apiBuilder.ApiResponse;
-import com.tsc.api.apiBuilder.CartAPI;
-import com.tsc.api.apiBuilder.OrderAPI;
+import com.tsc.api.apiBuilder.*;
+import com.tsc.api.pojo.AccountCartResponse;
 import com.tsc.api.pojo.CartResponse;
 import com.tsc.api.pojo.GetOrderListResponse;
 import com.tsc.api.util.DataConverter;
@@ -53,6 +51,7 @@ public class BaseTest {
 	protected static final ThreadLocal<SignInPage> loginPageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<String> TestDeviceThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<ApiResponse> apiResponseThreadLocal = new ThreadLocal<>();
+	protected static final ThreadLocal<ProductAPI> productAPIThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<ShoppingCartPage> shoppingCartThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<JSONObject> apiUserSessionDataMapThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<JSONObject> apiAppSessionDataMapThreadLocal = new ThreadLocal<>();
@@ -74,6 +73,9 @@ public class BaseTest {
 
 	//@return apiResponseThreadLocal
 	public static ApiResponse getApiResponseThreadLocal() {return apiResponseThreadLocal.get();}
+
+	//@return productAPIThreadLocal
+	public static ProductAPI getProductAPIThreadLocal() {return productAPIThreadLocal.get();}
 
 	// @return the globalheaderPageThreadLocal
 	protected static GlobalHeaderPage getglobalheaderPageThreadLocal() {return globalHeaderPageThreadLocal.get();	}
@@ -127,6 +129,7 @@ public class BaseTest {
 		loginPageThreadLocal.set(new SignInPage(getDriver()));
 		reporter = new ExtentTestManager(getDriver());
 		apiResponseThreadLocal.set(new ApiResponse());
+		productAPIThreadLocal.set(new ProductAPI());
 		shoppingCartThreadLocal.set(new ShoppingCartPage(getDriver()));
 		myAccountPageThreadLocal.set(new MyAccount(getDriver()));
 	}
@@ -140,6 +143,7 @@ public class BaseTest {
 		productDetailPageThreadLocal.set(new ProductDetailPage_Mobile(getDriver()));
 		reporter = new ExtentTestManager(getDriver());
 		apiResponseThreadLocal.set(new ApiResponse());
+		productAPIThreadLocal.set(new ProductAPI());
 		shoppingCartThreadLocal.set(new ShoppingCartPage_Mobile(getDriver()));
 		myAccountPageThreadLocal.set(new MyAccount_Mobile(getDriver()));
 	}
@@ -184,6 +188,7 @@ public class BaseTest {
 
 		reporter = new ExtentTestManager(getDriver());
 		apiResponseThreadLocal.set(new ApiResponse());
+		productAPIThreadLocal.set(new ProductAPI());
 		if(System.getProperty("Browser").contains("ios") ||
 				(System.getProperty("chromeMobileDevice")!=null
 						&& (System.getProperty("chromeMobileDevice").contains("iPad")))) {
@@ -368,6 +373,8 @@ public class BaseTest {
 		if (!placeOrderValue) {
 			addPlaceOrder();
 		}
+		//Emptying the cart for user in Shopping Cart
+		emptyCart();
 	}
 
 	public void validateText(String strActualText, List<String> listExpectedText, String validationMsg) {
@@ -454,24 +461,32 @@ public class BaseTest {
 		return sauceOptions;
 	}
 
-	/**
-	 * To add place order once no order within 75 days
+	/*
+	Fetch access token and customer edp for user
 	 */
-	public void addPlaceOrder() throws IOException,InterruptedException {
+	private HashMap<String,String> getAccessTokenAndCustomerEDPForUser() throws IOException {
+		HashMap<String,String> map = new HashMap<>();
 		String lblUserName = TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
 		String lblPassword = TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
 
 		apiResponseThreadLocal.set(new ApiResponse());
 		ConstantData.APIUserSessionParams apiUserSessionParams = TestDataHandler.constantData.getApiUserSessionParams();
 		apiUserSessionData = apiResponseThreadLocal.get().getApiUserSessionData(lblUserName,lblPassword,apiUserSessionParams.getLbl_grantType(),apiUserSessionParams.getLbl_apiKey());
-		String access_token = apiUserSessionData.get("access_token").toString();
-		String customerEDP = apiUserSessionData.get("customerEDP").toString();
+		map.put("access_token",apiUserSessionData.get("access_token").toString());
+		map.put("customerEDP",apiUserSessionData.get("customerEDP").toString());
+		return map;
+	}
+	/**
+	 * To add place order once no order within 75 days
+	 */
+	public void addPlaceOrder() throws IOException,InterruptedException {
+		HashMap<String,String> hashMap = getAccessTokenAndCustomerEDPForUser();
 
 		AccountAPI accountAPI=new AccountAPI();
 		CartAPI cartAPI=new CartAPI();
 		OrderAPI orderAPI=new OrderAPI();
 
-		Response responseOrder=orderAPI.getOrderList(customerEDP,access_token);
+		Response responseOrder=orderAPI.getOrderList(hashMap.get("customerEDP"),hashMap.get("access_token"));
 		GetOrderListResponse getOrderListResponse = JsonParser.getResponseObject(responseOrder.asString(), new TypeReference<GetOrderListResponse>() {});
 		List<GetOrderListResponse.OrderSummary> orderSummaryList=getOrderListResponse.getOrderSummary();
 		String lsDate;
@@ -491,9 +506,9 @@ public class BaseTest {
 		}
 
 		org.json.simple.JSONObject creditCardDetails = DataConverter.readJsonFileIntoJSONObject("test-data/CreditCard.json");
-		accountAPI.addCreditCardToUser((org.json.simple.JSONObject) creditCardDetails.get("tsc"),customerEDP,access_token);
+		accountAPI.addCreditCardToUser((org.json.simple.JSONObject) creditCardDetails.get("tsc"),hashMap.get("customerEDP"),hashMap.get("access_token"));
 
-		Response responseInitial=cartAPI.getAccountCartContentWithCustomerEDP(customerEDP,access_token);
+		Response responseInitial=cartAPI.getAccountCartContentWithCustomerEDP(hashMap.get("customerEDP"),hashMap.get("access_token"));
 		CartResponse accountCartInitial = JsonParser.getResponseObject(responseInitial.asString(), new TypeReference<CartResponse>() {});
 		String GuidId=accountCartInitial.getCartGuid();
 		/**
@@ -504,18 +519,21 @@ public class BaseTest {
 		Map<String,Object> map=cartAPI.addItemsInExistingCart(Integer.parseInt(customerEDP), access_token, GuidId,null);
 		Response userCartResponse=(Response)map.get("Response");
 		*/
-		Response responseReview=orderAPI.getOrderReview(customerEDP,access_token);
+		Response responseReview=orderAPI.getOrderReview(hashMap.get("customerEDP"),hashMap.get("access_token"));
 		CartResponse accountCartReview = JsonParser.getResponseObject(responseReview.asString(), new TypeReference<CartResponse>() {});
 		//reporter.reportLog("Review: "+responseReview.asString());
 		List<Long> relatedCartIdsList=accountCartReview.getRelatedCartIds();
 
 		Thread.sleep(2000);
 
-		orderAPI.placeOrder(GuidId,customerEDP,access_token,relatedCartIdsList);
+		orderAPI.placeOrder(GuidId,hashMap.get("customerEDP"),hashMap.get("access_token"),relatedCartIdsList);
 		placeOrderValue = true;
 		apiResponseThreadLocal.remove();
 	}
 
+	/*
+	Fetching test names that are to be executed on different chrome version
+	 */
 	private boolean runningTestName(List<String> lstTestName,String currentTestMethodName){
 		for(String lsTestName:lstTestName){
 			if(currentTestMethodName.equalsIgnoreCase(lsTestName)||currentTestMethodName.toLowerCase().contains(lsTestName.toLowerCase())){
@@ -523,6 +541,18 @@ public class BaseTest {
 			}
 		}
 		return false;
+	}
+
+	/*
+	Empty the cart for user after suite completion
+	 */
+	private void emptyCart() throws IOException {
+		HashMap<String,String> hashMap = getAccessTokenAndCustomerEDPForUser();
+		CartAPI cartAPI=new CartAPI();
+		Response responseGet=cartAPI.getAccountCartContentWithCustomerEDP(hashMap.get("customerEDP"),hashMap.get("access_token"));
+		AccountCartResponse accountCartResponseGet = JsonParser.getResponseObject(responseGet.asString(), new TypeReference<AccountCartResponse>() {});
+		String cartGuidId=accountCartResponseGet.getCartGuid();
+		cartAPI.emptyCartWithGuid(hashMap.get("access_token"),cartGuidId);
 	}
 	
 }

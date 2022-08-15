@@ -11,6 +11,10 @@ apiAppSessionParams:
   lbl_password: 3AED6BD0
   lbl_grantType: password
 
+contentfulApiParams:
+  lbl_authorization: Basic 1321A95C-4BD0-4D29-AA55-B040D48C6992:5346C7F8
+  lbl_apiEndPoint: https://qa-api.tsc.ca/configuration/v1/Web/
+
 headerSection:
   lnk_NotFound: /pages/notfound
   lbl_TodaysShowstopper: Today's Showstopper
@@ -264,4 +268,7 @@ shoppingCart:
       itemToBeAdded: "1"
       styleExist: "false"
       sameStyleAndSize: "false"
+  lblOrderExceedingQuantityMessage: "The size of your order exceeds our on-line shopping limits but one of our Customer Service agents will be happy to assist you with your purchase. Please call our Customer Care Centre at 1-888-2020-888 to complete your order."
+  lblProductNumberForOrderExceedingQuantity: 713070
+  lblCartExceedingLimitMessage: "The size of your order exceeds our on-line shopping limits but one of our Customer Service agents will be happy to assist you with your purchase. Please call our Customer Care Centre at 1-888-2020-888 to complete your order."
 

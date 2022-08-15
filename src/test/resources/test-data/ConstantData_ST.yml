@@ -11,6 +11,10 @@ apiAppSessionParams:
   lbl_password: 3AED6BD0
   lbl_grantType: password
 
+contentfulApiParams:
+  lbl_authorization: Basic 1321A95C-4BD0-4D29-AA55-B040D48C6992:5346C7F8
+  lbl_apiEndPoint: https://st-api.tsc.ca/configuration/v1/Web/
+
 headerSection:
   lnk_NotFound: /pages/notfound
   lbl_TodaysShowstopper: Today's Showstopper

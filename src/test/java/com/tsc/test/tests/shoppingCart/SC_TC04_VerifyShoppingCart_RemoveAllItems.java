@@ -29,7 +29,14 @@ public class SC_TC04_VerifyShoppingCart_RemoveAllItems extends BaseTest{
 
 		//Login using valid username and password
 		getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword);
-		(new BasePage(this.getDriver())).applyStaticWait(2000);
+		try {
+			getShoppingCartThreadLocal().waitForCondition(Driver -> {
+				return Integer.valueOf(getglobalheaderPageThreadLocal().CartBagCounter.getText()) > 0;
+			}, 6000);
+		}
+		catch(Exception e){
+			(new BasePage(this.getDriver())).applyStaticWait(3000);
+		}
 		getProductDetailPageThreadLocal().goToShoppingCartByClickingShoppingCartIconInGlobalHeader();
 
 		getShoppingCartThreadLocal().removeAllItemsFromShoppingCartList();

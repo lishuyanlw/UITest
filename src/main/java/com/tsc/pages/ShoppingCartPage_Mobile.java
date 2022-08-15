@@ -80,7 +80,7 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 			map.put("productBadge",true);
 		}
 		else{
-			map.put("productBadge",true);
+			map.put("productBadge",false);
 		}
 
 		WebElement item=cartItem.findElement(byProductItemDesc);
@@ -204,22 +204,26 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 			reporter.reportLogFail("The Product name in AddToBag:"+productNameAddToBag+" displaying is not the same as shopping cart:"+productNameShoppingCart);
 		}
 
-		String productStyleAddToBag= addToBagMap.get("productStyle").toString();
-		String productStyleShoppingCart=cartItemMap.get("productStyle").toString();
-		if(productStyleAddToBag.equalsIgnoreCase(productStyleShoppingCart)){
-			reporter.reportLogPass("The Product style in AddToBag displaying is the same as shopping cart");
-		}
-		else{
-			reporter.reportLogFail("The Product style in AddToBag:"+productStyleAddToBag+" displaying is not the same as shopping cart:"+productStyleShoppingCart);
+		if(addToBagMap.get("productStyle")!=null){
+			String productStyleAddToBag= addToBagMap.get("productStyle").toString();
+			String productStyleShoppingCart=cartItemMap.get("productStyle").toString();
+			if(productStyleAddToBag.equalsIgnoreCase(productStyleShoppingCart)){
+				reporter.reportLogPass("The Product style in AddToBag displaying is the same as shopping cart");
+			}
+			else{
+				reporter.reportLogFail("The Product style in AddToBag:"+productStyleAddToBag+" displaying is not the same as shopping cart:"+productStyleShoppingCart);
+			}
 		}
 
-		String productSizeAddToBag= addToBagMap.get("productSize").toString();
-		String productSizeShoppingCart=cartItemMap.get("productSize").toString();
-		if(productSizeAddToBag.equalsIgnoreCase(productSizeShoppingCart)){
-			reporter.reportLogPass("The Product size in AddToBag displaying is the same as shopping cart");
-		}
-		else{
-			reporter.reportLogFail("The Product size in AddToBag:"+productSizeAddToBag+" displaying is not the same as shopping cart:"+productSizeShoppingCart);
+		if(addToBagMap.get("productSize")!=null){
+			String productSizeAddToBag= addToBagMap.get("productSize").toString();
+			String productSizeShoppingCart=cartItemMap.get("productSize").toString();
+			if(productSizeAddToBag.equalsIgnoreCase(productSizeShoppingCart)){
+				reporter.reportLogPass("The Product size in AddToBag displaying is the same as shopping cart");
+			}
+			else{
+				reporter.reportLogFail("The Product size in AddToBag:"+productSizeAddToBag+" displaying is not the same as shopping cart:"+productSizeShoppingCart);
+			}
 		}
 
 		String productNumberAddToBag= addToBagMap.get("productNumber").toString();
@@ -273,6 +277,7 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 					reporter.reportLogFail("The Product nowPrice:"+nowPricePDP+" in API call results is not the same as shopping cart:"+appliedPriceShoppingCart);
 				}
 			}
+
 		}
 	}
 
@@ -311,19 +316,12 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 	@Override
 	public void verifyBusinessLogicBetweenShoppingItemListAndSubTotalSection(Map<String,Object> shoppingCartMap){
 		List<Map<String,Object>> shoppingList=(List<Map<String,Object>>)shoppingCartMap.get("shoppingList");
-		int shoppingAmount= (int) shoppingCartMap.get("shoppingCartMap");
+		int shoppingAmount= (int) shoppingCartMap.get("shoppingAmount");
 		float shoppingSubTotal= (float) shoppingCartMap.get("shoppingSubTotal");
 
-		float priceAmount=0.0f;
-		int quantityAmount=0,itemQuantity;
-		for(Map<String,Object> shoppingItem:shoppingList){
-			if(shoppingItem.get("productQuantity")==null){
-				continue;
-			}
-			itemQuantity= (int) shoppingItem.get("productQuantity");
-			quantityAmount+=itemQuantity;
-			priceAmount=priceAmount+itemQuantity*(float)shoppingItem.get("productNowPrice");
-		}
+		Map<String,Object> calculateMap=calculateItemCountAndSubTotalFromShoppingCartList(shoppingList);
+		int quantityAmount= (int) calculateMap.get("itemCount");
+		float priceAmount= (float) calculateMap.get("subTotal");
 
 		if(shoppingAmount==quantityAmount){
 			reporter.reportLogPass("The quantity amount in shopping item list is equal to item amount in subtotal section");
@@ -341,31 +339,41 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 	}
 
 	@Override
-	public boolean checkDuplicatedStyleAndSizeInShoppingItemList(Map<String,Object> shoppingCartMap){
+	public boolean checkProductWithSameStyleAndDifferentSizesInShoppingItemList(Map<String,Object> shoppingCartMap){
 		List<Map<String,Object>> shoppingList=(List<Map<String,Object>>)shoppingCartMap.get("shoppingList");
-		String outerName,outerStyle,outerSize,innerName,innerStyle,innerSize;
+		String lsOuterName,lsInnerName;
+		Object outerStyle,outerSize,innerStyle,innerSize;
+		String lsOuterStyle,lsOuterSize,lsInnerStyle,lsInnerSize;
 		int amount;
+		int loopSize=shoppingList.size();
+		Map<String,Object> shoppingItemOuter,shoppingItemInner;
 
-		for(Map<String,Object> shoppingItemOuter:shoppingList){
-			if(shoppingItemOuter.get("productStyle")==null&&shoppingItemOuter.get("productSize")==null){
+		for(int i=0; i<loopSize-1;i++){
+			shoppingItemOuter=shoppingList.get(i);
+			if(shoppingItemOuter.get("productStyle")==null||shoppingItemOuter.get("productSize")==null){
 				continue;
 			}
 			amount=0;
-			outerName= shoppingItemOuter.get("productName").toString();
-			outerStyle= shoppingItemOuter.get("productStyle").toString();
-			outerSize= shoppingItemOuter.get("productSize").toString();
-			for(Map<String,Object> shoppingItemInner:shoppingList){
-				if(shoppingItemInner.get("productStyle")==null&&shoppingItemInner.get("productSize")==null){
+			lsOuterName= shoppingItemOuter.get("productName").toString();
+			outerStyle= shoppingItemOuter.get("productStyle");
+			outerSize= shoppingItemOuter.get("productSize");
+			lsOuterStyle=outerStyle.toString();
+			lsOuterSize=outerSize.toString();
+			for(int j=i+1;j<loopSize;j++){
+				shoppingItemInner=shoppingList.get(j);
+				if(shoppingItemInner.get("productStyle")==null||shoppingItemInner.get("productSize")==null){
 					continue;
 				}
-				innerName= shoppingItemInner.get("productName").toString();
-				innerStyle= shoppingItemInner.get("productStyle").toString();
-				innerSize= shoppingItemInner.get("productSize").toString();
-				if(outerName.equalsIgnoreCase(innerName)&&outerStyle.equalsIgnoreCase(innerStyle)&&outerSize.equalsIgnoreCase(innerSize)){
+				lsInnerName= shoppingItemInner.get("productName").toString();
+				innerStyle= shoppingItemInner.get("productStyle");
+				innerSize= shoppingItemInner.get("productSize");
+				lsInnerStyle=innerStyle.toString();
+				lsInnerSize=innerSize.toString();
+				if(lsOuterName.equalsIgnoreCase(lsInnerName)&&lsOuterStyle.equalsIgnoreCase(lsInnerStyle)&&!lsOuterSize.equalsIgnoreCase(lsInnerSize)){
 					amount+=1;
 				}
 			}
-			if(amount>1){
+			if(amount>=1){
 				return true;
 			}
 		}
@@ -412,6 +420,34 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 			}
 			else{
 				reporter.reportLogFailWithScreenshot("The cart top message is not displaying correctly");
+			}
+
+
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartTableHeadingITEM);
+			lsText=lblCartTableHeadingITEM.getText();
+			if(!lsText.isEmpty()){
+				reporter.reportLogPass("The cart table heading ITEM title is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The cart table heading ITEM title is not displaying correctly");
+			}
+
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartTableHeadingPRICE);
+			lsText=lblCartTableHeadingPRICE.getText();
+			if(!lsText.isEmpty()){
+				reporter.reportLogPass("The cart table heading PRICE title is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The cart table heading PRICE title is not displaying correctly");
+			}
+
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartTableHeadingQUANTITY);
+			lsText=lblCartTableHeadingQUANTITY.getText();
+			if(!lsText.isEmpty()){
+				reporter.reportLogPass("The cart table heading QUANTITY title is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The cart table heading QUANTITY title is not displaying correctly");
 			}
 
 			WebElement element;
@@ -504,6 +540,17 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 			}
 		}
 		else{
+			if(this.checkContainPreviouslyAddedItemsMessageExisting()){
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblCartContainPreviouslyAddedItemsMessage);
+				lsText=this.lblCartContainPreviouslyAddedItemsMessage.getText();
+				if(!lsText.isEmpty()){
+					reporter.reportLogPass("The Cart Containing Previously Added Items Message is displaying correctly");
+				}
+				else{
+					reporter.reportLogFailWithScreenshot("The Cart Containing Previously Added Items Message is not displaying correctly");
+				}
+			}
+
 			if(this.checkCartNoticeTitleExisting()){
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartNoticeTitle);
 				lsText=lblCartNoticeTitle.getText();
@@ -570,6 +617,7 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 					reporter.reportLogFailWithScreenshot("The cart TrueFit message is not displaying correctly");
 				}
 
+				this.applyStaticWait(5*this.getStaticWaitForApplication());
 				lsText=lnkCartNoticeTrueFit.getAttribute("href");
 				if(!lsText.isEmpty()){
 					reporter.reportLogPass("The cart TrueFit link is not empty");
@@ -632,6 +680,61 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 				index++;
 			}
 		}
+	}
+
+	@Override
+	public Map<String,Object> changeShoppingItemQuantityByGivenIndex(int shoppingItemIndex) {
+		WebElement shoppingItem = this.lstCartItems.get(shoppingItemIndex);
+		WebElement selectQuantity = shoppingItem.findElement(this.byProductSelectQuantity);
+		Select select = new Select(selectQuantity);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(selectQuantity);
+		int quantityBeforeChange = this.getIntegerFromString(select.getFirstSelectedOption().getText());
+		float price = this.getFloatFromString(this.getElementInnerText(shoppingItem.findElement(this.byProductNowPrice)), true);
+		float itemTotalBeforeChange = price * quantityBeforeChange;
+
+		int itemQuantityDifference = 0;
+		List<WebElement> quantityOptionItemList = select.getOptions();
+		for (WebElement option : quantityOptionItemList) {
+			String optionText = this.getElementInnerText(option);
+			int optionIndex = Integer.parseInt(optionText.trim());
+			if (optionIndex != quantityBeforeChange) {
+				itemQuantityDifference = optionIndex - quantityBeforeChange;
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(selectQuantity);
+				select.selectByVisibleText(optionText);
+				this.waitForCondition(Driver -> {
+					return this.pageLoadingIndicator.getAttribute("style").contains("display: none");
+				}, 20000);
+				break;
+			}
+		}
+
+		shoppingItem = this.lstCartItems.get(shoppingItemIndex);
+		selectQuantity = shoppingItem.findElement(this.byProductSelectQuantity);
+		select = new Select(selectQuantity);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(selectQuantity);
+		int quantityAfterChange = this.getIntegerFromString(select.getFirstSelectedOption().getText());
+		price = this.getFloatFromString(this.getElementInnerText(shoppingItem.findElement(this.byProductNowPrice)), true);
+		float itemTotalAfterChange = price * quantityAfterChange;
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("itemTotalDifference", itemTotalAfterChange - itemTotalBeforeChange);
+		map.put("itemQuantityDifference", itemQuantityDifference);
+
+		return map;
+	}
+
+	@Override
+	public boolean chooseShoppingItemByGivenItemIndexAndQuantity(int shoppingItemIndex,int quantity) {
+		WebElement shoppingItem = this.lstCartItems.get(shoppingItemIndex);
+		WebElement selectQuantity = shoppingItem.findElement(this.byProductSelectQuantity);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(selectQuantity);
+		Select select = new Select(selectQuantity);
+		select.selectByVisibleText(String.valueOf(quantity));
+
+		return this.waitForCondition(Driver -> {
+			return this.pageLoadingIndicator.getAttribute("style").contains("display: none");
+		}, 20000);
 	}
 
 }

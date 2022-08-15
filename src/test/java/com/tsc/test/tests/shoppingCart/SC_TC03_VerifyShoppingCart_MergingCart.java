@@ -23,54 +23,71 @@ public class SC_TC03_VerifyShoppingCart_MergingCart extends BaseTest{
 	@Test(groups={"Regression","ShoppingCart"})
 	public void SC_TC03_VerifyShoppingCart_MergingCart() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
+
+		String accessToken = getApiUserSessionDataMapThreadLocal().get("access_token").toString();
+		int customerEDP = Integer.valueOf(getApiUserSessionDataMapThreadLocal().get("customerEDP").toString());
 		BasePage basePage = new BasePage(this.getDriver());
 
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(basePage.getBaseURL() + "/"), "TSC url is correct", "TSC url is incorrect");
 		reporter.reportLog("ProductDetail Page");
 
-		List<String> lstKeywordList = TestDataHandler.constantData.getSearchResultPage().getLst_ShoppingCartSearchKeyword();
+		List<String> lstKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_APISearchingKeyword();
 		String lsUserName = TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
 		String lsPassword = TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
 
-		//Fetching test data from test data file
-		String accessToken = getApiUserSessionDataMapThreadLocal().get("access_token").toString();
-		int customerEDP = Integer.valueOf(getApiUserSessionDataMapThreadLocal().get("customerEDP").toString());
 		List<Map<String, String>> keyword = TestDataHandler.constantData.getShoppingCart().getLst_SearchKeywords();
-		List<Map<String, Object>> data = getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP, accessToken, keyword,true);
 
-		//Login using valid username and password
-		getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword);
-
-		reporter.reportLog("Switch to ProductDetail page");
-		String lsProductNumber, lsUrl;
-
-		Map<String, Object> outputDataCriteria = new HashMap<String, Object>();
+		Map<String,Object> outputDataCriteria= new HashMap<String,Object>();
 		outputDataCriteria.put("style", "2");
 		outputDataCriteria.put("size", "2");
-		if (getProductDetailPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList, "AllConditionsWithoutCheckingSoldOutCriteria", outputDataCriteria)) {
-			reporter.reportLog("Verify URL");
-			lsProductNumber = getProductDetailPageThreadLocal().selectedProduct.productNumber;
-			lsUrl = basePage.URL();
-			reporter.softAssert(lsUrl.contains("productdetails"), "The Url is containing productdetails", "The Url is not containing productdetails");
-			reporter.softAssert(lsUrl.contains(lsProductNumber), "The Url is containing selected product number of " + lsProductNumber, "The Url is not containing selected product number of " + lsProductNumber);
+		outputDataCriteria.put("quantity", "2");
+		if(getProductDetailPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList,"ConditionsForMultipleStyleAndSize",outputDataCriteria)) {
+			String[] lstStyle = getProductDetailPageThreadLocal().getStyleList();
+			String[] lstSize0 = getProductDetailPageThreadLocal().getSizeListForGivenStyle(0);
+			String[] lstSize1 = getProductDetailPageThreadLocal().getSizeListForGivenStyle(1);
 
-			reporter.reportLog(getProductDetailPageThreadLocal().selectedProduct.productEDPColor);
-			reporter.reportLog(getProductDetailPageThreadLocal().selectedProduct.productEDPSize);
+			getProductDetailPageThreadLocal().chooseGivenStyleAndSizeAndQuantity(lstStyle[0], lstSize0[0], 1);
+			basePage.clickElement(getProductDetailPageThreadLocal().btnAddToBag);
+			basePage.waitForCondition(Driver -> {
+				return getProductDetailPageThreadLocal().lblAddToBagPopupWindowTitle.isDisplayed();
+			}, 30000);
+			basePage.clickElement(getProductDetailPageThreadLocal().btnAddToBagPopupWindowClose);
+			basePage.applyStaticWait(basePage.getStaticWaitForApplication());
+			Map<String, Object> PDPMapFirst = getProductDetailPageThreadLocal().getPDPDesc();
 
-			getProductDetailPageThreadLocal().chooseGivenStyleAndSize(getProductDetailPageThreadLocal().selectedProduct.productEDPColor, getProductDetailPageThreadLocal().selectedProduct.productEDPSize);
+			getProductDetailPageThreadLocal().chooseGivenStyleAndSizeAndQuantity(lstStyle[1], lstSize1[0], 1);
+			basePage.clickElement(getProductDetailPageThreadLocal().btnAddToBag);
+			basePage.waitForCondition(Driver -> {
+				return getProductDetailPageThreadLocal().lblAddToBagPopupWindowTitle.isDisplayed();
+			}, 30000);
+			basePage.clickElement(getProductDetailPageThreadLocal().btnAddToBagPopupWindowClose);
+			basePage.applyStaticWait(basePage.getStaticWaitForApplication());
+			Map<String, Object> PDPMapSecond = getProductDetailPageThreadLocal().getPDPDesc();
 
-			Map<String, Object> PDPMap = getProductDetailPageThreadLocal().getPDPDesc();
-
-			getProductDetailPageThreadLocal().openAddToBagPopupWindow();
-			getProductDetailPageThreadLocal().goToShoppingCartFromAddToBagPopupWithLoginFirst();
+			//Login using valid username and password
+			getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword);
+			getProductDetailPageThreadLocal().goToShoppingCartByClickingShoppingCartIconInGlobalHeader();
+			if(getShoppingCartThreadLocal().checkContainPreviouslyAddedItemsMessageExisting()){
+				reporter.reportLogPass("The Cart containing previously added items message is displaying correctly");
+			}
+			else{
+				reporter.reportLogPassWithScreenshot("The Cart containing previously added items message is not displaying correctly");
+			}
 
 			Map<String, Object> shoppingCartMap = getShoppingCartThreadLocal().getShoppingSectionDetails("all");
 
-			int findIndex = getShoppingCartThreadLocal().findGivenProductIndexInShoppingCartItemList(PDPMap, shoppingCartMap);
-			if (findIndex == 0) {
-				reporter.reportLogPass("The latest added item is displaying on the top of shopping item list correctly");
+			int findIndex = getShoppingCartThreadLocal().findGivenProductIndexInShoppingCartItemList(PDPMapFirst, shoppingCartMap);
+			if (findIndex != -1) {
+				reporter.reportLogPass("The first added item can be found in shopping item list correctly");
 			} else {
-				reporter.reportLogFail("The latest added item is not displaying on the top of shopping item list correctly");
+				reporter.reportLogFail("The first added item can be found in shopping item list correctly");
+			}
+
+			findIndex = getShoppingCartThreadLocal().findGivenProductIndexInShoppingCartItemList(PDPMapSecond, shoppingCartMap);
+			if (findIndex != -1) {
+				reporter.reportLogPass("The second added item can be found in shopping item list correctly");
+			} else {
+				reporter.reportLogFail("The second added item iscan be found in shopping item list correctly");
 			}
 
 			//To verify heading and Shopping Item List contents
@@ -94,25 +111,8 @@ public class SC_TC03_VerifyShoppingCart_MergingCart extends BaseTest{
 				reporter.reportLogFail("The added item count among Shopping cart header,Shopping cart list and OrderSummary are not same");
 			}
 
-			reporter.reportLog("Verify added products using API");
-			String productName;
-			for (Map<String, Object> item : data) {
-				productName=item.get("productName").toString();
-				reporter.reportLog("Verify product name: "+productName);
-				findIndex=getShoppingCartThreadLocal().findGivenProductIndexInShoppingCartItemList(item, shoppingCartMap);
-				if(findIndex!=-1){
-					reporter.reportLogPass("The added product"+productName+" using API can be found in ShoppingCart list");
-				}
-				else{
-					reporter.reportLogFail("The added product"+productName+" using API cannot be found in ShoppingCart list");
-				}
-			}
-
-
 			reporter.reportLog("Verify checkout section contents");
 			getShoppingCartThreadLocal().verifyCheckOutContents(false);
-//			//To empty the cart
-//			getShoppingCartThreadLocal().emptyCart(customerEDP,accessToken);
 		}
 		else {
 			reporter.reportLogFail("Unable to find the matched product item");

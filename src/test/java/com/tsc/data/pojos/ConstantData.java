@@ -12,10 +12,15 @@ public class ConstantData {
     public LoginUser loginUser;
     public APIUserSessionParams apiUserSessionParams;
     public APIAppSessionParams apiAppSessionParams;
+    public ContentfulApiParams contentfulApiParams;
     public MyAccount myAccount;
     private List<String> lstTestName;
     private String lblChromeBrowserVersion;
     private ShoppingCart shoppingCart;
+
+    public ContentfulApiParams getContentfulApiParams() {        return contentfulApiParams;    }
+
+    public void setContentfulApiParams(ContentfulApiParams contentfulApiParams) {        this.contentfulApiParams = contentfulApiParams;    }
 
     public ShoppingCart getShoppingCart() {        return shoppingCart;    }
 
@@ -780,6 +785,19 @@ public class ConstantData {
 		}
     }
 
+    public static class ContentfulApiParams{
+        private String lbl_authorization;
+        private String lbl_apiEndPoint;
+
+        public String getLbl_authorization() {            return lbl_authorization;        }
+
+        public void setLbl_authorization(String lbl_authorization) {            this.lbl_authorization = lbl_authorization;        }
+
+        public String getLbl_apiEndPoint() {            return lbl_apiEndPoint;        }
+
+        public void setLbl_apiEndPoint(String lbl_apiEndPoint) {            this.lbl_apiEndPoint = lbl_apiEndPoint;        }
+    }
+
     public static class Flyout {
         private String lbl_FlyoutHeadingLandingPageLink;
         private String lbl_LandingPageBrandShopAll;
@@ -1302,6 +1320,9 @@ public class ConstantData {
 
     public static class ShoppingCart{
         List<Map<String,String>> lst_SearchKeywords;
+        String lblOrderExceedingQuantityMessage;
+        String lblProductNumberForOrderExceedingQuantity;
+        String lblCartExceedingLimitMessage;
 
         public List<Map<String, String>> getLst_SearchKeywords() {
             return lst_SearchKeywords;
@@ -1309,6 +1330,30 @@ public class ConstantData {
 
         public void setLst_SearchKeywords(List<Map<String, String>> lst_SearchKeywords) {
             this.lst_SearchKeywords = lst_SearchKeywords;
+        }
+
+        public String getLblOrderExceedingQuantityMessage() {
+            return lblOrderExceedingQuantityMessage;
+        }
+
+        public void setLblOrderExceedingQuantityMessage(String lblOrderExceedingQuantityMessage) {
+            this.lblOrderExceedingQuantityMessage = lblOrderExceedingQuantityMessage;
+        }
+
+        public String getLblProductNumberForOrderExceedingQuantity() {
+            return lblProductNumberForOrderExceedingQuantity;
+        }
+
+        public void setLblProductNumberForOrderExceedingQuantity(String lblProductNumberForOrderExceedingQuantity) {
+            this.lblProductNumberForOrderExceedingQuantity = lblProductNumberForOrderExceedingQuantity;
+        }
+
+        public String getLblCartExceedingLimitMessage() {
+            return lblCartExceedingLimitMessage;
+        }
+
+        public void setLblCartExceedingLimitMessage(String lblCartExceedingLimitMessage) {
+            this.lblCartExceedingLimitMessage = lblCartExceedingLimitMessage;
         }
     }
 
