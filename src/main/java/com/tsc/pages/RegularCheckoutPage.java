@@ -422,6 +422,14 @@ public class RegularCheckoutPage extends BasePage {
 
 
 	/**
+	 * To check Alert Message In Header Existing
+	 * @return - boolean
+	 */
+	public boolean checkAlertMessageInHeaderExisting(){
+		return this.checkChildElementExistingByAttribute(this.cntProductOrderSection,"class","alert");
+	}
+
+	/**
 	 * To expand Product List
 	 * @return - boolean
 	 */
@@ -574,7 +582,7 @@ public class RegularCheckoutPage extends BasePage {
 	 * @return - boolean
 	 */
 	public boolean checkOrderSummaryWasPriceExisting(){
-		return this.checkChildElementExistingByAttribute(cntOrderSummaryShippingPriceContainer,"class","del");
+		return this.checkChildElementExistingByTagName(cntOrderSummaryShippingPriceContainer,"del");
 	}
 
 	/**
@@ -582,7 +590,7 @@ public class RegularCheckoutPage extends BasePage {
 	 * @return - boolean
 	 */
 	public boolean checkOrderSummarySavingPriceExisting(){
-		return this.checkChildElementExistingByAttribute(cntOrderSummaryShippingPriceContainer,"class","del");
+		return this.checkChildElementExistingByTagName(cntOrderSummaryShippingPriceContainer,"del");
 	}
 
 	/**
@@ -695,8 +703,7 @@ public class RegularCheckoutPage extends BasePage {
 
 		item=productItem.findElement(byProductSelectQuantity);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-		Select select = new Select(item);
-		lsText=select.getFirstSelectedOption().getText();
+        lsText=this.getElementInnerText(item).split(":")[1].trim();
 		map.put("productQuantity",Integer.parseInt(lsText));
 
 		return map;
@@ -813,15 +820,10 @@ public class RegularCheckoutPage extends BasePage {
 		}
 		else{
 			if(this.checkOrderSummaryWasPriceExisting()){
-				if(this.checkOrderSummaryWasPriceExisting()){
-					return this.getMultiFloatFromString(lsText).get(1);
-				}
-				else{
-					return this.getMultiFloatFromString(lsText).get(0);
-				}
+				return this.getMultiFloatFromString(lsText).get(1);
 			}
 			else{
-				return 0.0f;
+				return this.getMultiFloatFromString(lsText).get(0);
 			}
 		}
 	}
@@ -1350,15 +1352,7 @@ public class RegularCheckoutPage extends BasePage {
 	 * @param - orderSummaryMap - Map<String,Object>
 	 * @param - Map<String,Object> - provincialTaxRate - note that if pass null, will not calculate tax for comparison
 	 */
-	public void verifyOrderSummaryBusinessLogic(int itemAmountShoppingCart,float subTotalShoppingCart,Map<String,Object> orderSummaryMap,Map<String,Object> provincialTaxRate){
-		int itemAmountOrderSummary= (int) orderSummaryMap.get("itemAmount");
-		if(itemAmountOrderSummary==itemAmountShoppingCart){
-			reporter.reportLogPass("The item amount in OrderSummary section is equal to the one in Shopping Cart item section");
-		}
-		else{
-			reporter.reportLogFail("The item amount:"+itemAmountOrderSummary+" in OrderSummary section is not equal to the one:"+itemAmountShoppingCart+" in Shopping Cart item section");
-		}
-
+	public void verifyOrderSummaryBusinessLogic(float subTotalShoppingCart,Map<String,Object> orderSummaryMap,Map<String,Object> provincialTaxRate){
 		float wasPriceOrderSummary= (float) orderSummaryMap.get("wasPrice");
 		float nowPriceOrderSummary=(float) orderSummaryMap.get("nowPrice");
 		float calSavePriceOrderSummary;
@@ -1543,10 +1537,9 @@ public class RegularCheckoutPage extends BasePage {
 				reporter.reportLogFailWithScreenshot("The product nowPrice is not displaying correctly");
 			}
 
-			item = productItem.findElement(byProductSelectQuantity);
+			item=productItem.findElement(byProductSelectQuantity);
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-			Select select = new Select(item);
-			lsText = select.getFirstSelectedOption().getText();
+			lsText=this.getElementInnerText(item).split(":")[1].trim();
 			if (!lsText.isEmpty()) {
 				reporter.reportLogPass("The product quantity is displaying correctly");
 			} else {
@@ -1570,6 +1563,16 @@ public class RegularCheckoutPage extends BasePage {
 	public void verifyOptionalContentsForCheckoutProductList() {
 		String lsText;
 		WebElement item;
+
+		if(this.checkAlertMessageInHeaderExisting()){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAlertMessage);
+			lsText = this.lblAlertMessage.getText().trim();
+			if (!lsText.isEmpty()) {
+				reporter.reportLogPass("The alert message in header is displaying correctly");
+			} else {
+				reporter.reportLogFailWithScreenshot("The alert message in header is not displaying correctly");
+			}
+		}
 
 		for(WebElement productItem:this.lstProductList){
 			if(this.checkProductInventoryExisting(productItem)){
@@ -1656,13 +1659,26 @@ public class RegularCheckoutPage extends BasePage {
 			reporter.reportLogFailWithScreenshot("The Shipping Payment Method Title is not displaying correctly");
 		}
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblPaymentMethod);
-		lsText=lblPaymentMethod.getText();
-		if(!lsText.isEmpty()){
-			reporter.reportLogPass("The Payment Method is displaying correctly");
+
+		if(!this.checkAlertMessageInHeaderExisting()){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblPaymentMethod);
+			lsText=lblPaymentMethod.getText();
+			if(!lsText.isEmpty()){
+				reporter.reportLogPass("The Payment Method is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The Payment Method is not displaying correctly");
+			}
 		}
 		else{
-			reporter.reportLogFailWithScreenshot("The Payment Method is not displaying correctly");
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblPaymentMethodErrorMessage);
+			lsText=lblPaymentMethodErrorMessage.getText();
+			if(!lsText.isEmpty()){
+				reporter.reportLogPass("The Payment Method error message is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The Payment Method error message is not displaying correctly");
+			}
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrChangePaymentMethod);

@@ -2840,4 +2840,22 @@ public class ShoppingCartPage extends BasePage {
 		}
 		return map;
 	}
+
+	/**
+	 * To check If CheckOut Button Disabled
+	 * @return - boolean - true for disabled and false for enabled
+	 */
+	public boolean checkIfCheckOutButtonDisabled(){
+		return this.hasElementAttribute(this.btnCartCheckoutButton,"disabled");
+	}
+
+	/**
+	 * To go To checkout page by clicking checkout button
+	 */
+	public void goToCheckoutPage(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnCartCheckoutButton);
+		this.btnCartCheckoutButton.click();
+		RegularCheckoutPage checkoutPage= new RegularCheckoutPage(this.getDriver());
+		this.waitForCondition(Driver->{return checkoutPage.lblCheckout.isDisplayed();},20000);
+	}
 }

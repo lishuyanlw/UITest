@@ -52,6 +52,14 @@ public class SC_TC15_VerifyShoppingCart_CheckCartExceedingLimitMessage extends B
 				reporter.reportLogFailWithScreenshot("The cart exceeding limit message is not displaying correctly");
 			}
 
+			boolean bCheckoutButtonDisabled=getShoppingCartThreadLocal().checkIfCheckOutButtonDisabled();
+			if(bCheckoutButtonDisabled){
+				reporter.reportLogPass("The checkout button is disabled after ordering oversize shopping items");
+			}
+			else{
+				reporter.reportLogFail("The checkout button is disabled after ordering oversize shopping items");
+			}
+
 			for(int i=getShoppingCartThreadLocal().lstItemRemoveButtonFromCart.size()-2;i>=0;i--){
 				WebElement removeButton=getShoppingCartThreadLocal().lstItemRemoveButtonFromCart.get(i);
 				getShoppingCartThreadLocal().openRemoveDialog(removeButton);
@@ -67,6 +75,14 @@ public class SC_TC15_VerifyShoppingCart_CheckCartExceedingLimitMessage extends B
 				reporter.reportLogPass("The cart exceeding limit message is not displaying as expected");
 			} else {
 				reporter.reportLogFail("The cart exceeding limit message is still displaying");
+			}
+
+			bCheckoutButtonDisabled=getShoppingCartThreadLocal().checkIfCheckOutButtonDisabled();
+			if(!bCheckoutButtonDisabled){
+				reporter.reportLogPass("The checkout button is enabled after ordering not oversize shopping items");
+			}
+			else{
+				reporter.reportLogFail("The checkout button is disabled after ordering not oversize shopping items");
 			}
 		}finally {
 			//To empty the cart for next test run
