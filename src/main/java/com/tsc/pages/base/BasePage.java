@@ -1027,7 +1027,7 @@ import utils.ReusableActions;
 	 * @param - beforeIdentifier
 	 * @return - the string before identifier
 	 */
-	public String getBeforeString(String wholeString,String beforeIdentifier){
+	public String getStringBeforeGivenIdentifier(String wholeString,String beforeIdentifier){
 		int findPos=wholeString.lastIndexOf(beforeIdentifier);
 		return wholeString.substring(0,findPos);
 	}
@@ -1038,7 +1038,7 @@ import utils.ReusableActions;
 	 * @param - afterIdentifier
 	 * @return - the string after identifier
 	 */
-	public String getAfterString(String wholeString,String afterIdentifier){
+	public String getStringAfterGivenIdentifier(String wholeString,String afterIdentifier){
 		int findPos=wholeString.lastIndexOf(afterIdentifier);
 		return wholeString.substring(findPos+1);
 	}
@@ -1065,5 +1065,25 @@ import utils.ReusableActions;
 		Random rand = new Random();
 		int randomNumber = rand.nextInt(maximalNumber);
 		return randomNumber;
+	}
+
+	/**
+	 * To get Multiple Float From String
+	 * @param - String - lsSourceString
+	 * @return
+	 */
+	public List<Float> getMultiFloatFromString(String lsSourceString) {
+		//ArrayList to store the output
+		ArrayList<Float> f = new ArrayList<Float>();
+		//Creating a pattern to identify floats
+		Pattern pat = Pattern.compile("[-]?[0-9]*\\.?[0-9]+");
+		//matching the string with the pattern
+		Matcher m = pat.matcher(lsSourceString);
+		//extracting and storing the float values
+		while(m.find()) {
+			f.add(Float.parseFloat(m.group()));
+		}
+
+		return f;
 	}
 }
