@@ -58,7 +58,7 @@ public class ShoppingCartPage extends BasePage {
 	public WebElement lblCartTitle;
 
 	//Hide in mobile
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart__message--top contents-head')]")
+	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'contents-head') and contains(@class,'hidden-xs')]")
 	public WebElement lblCartTopMessage;
 
 	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-notices')]")
@@ -309,6 +309,7 @@ public class ShoppingCartPage extends BasePage {
 	 * @return -String
 	 */
 	public String checkCartNoticeMessageExisting(){
+		this.applyStaticWait(3*this.getStaticWaitForApplication());
 		if(this.checkChildElementExistingByAttribute(this.cntCartNotice,"class","notice-group")){
 			if(this.lstCartNoticeMessage.size()==2){
 				return "both";
@@ -330,7 +331,7 @@ public class ShoppingCartPage extends BasePage {
 	 * @return - boolean
 	 */
 	public boolean checkProductTrueFitMessageExisting(){
-		this.applyStaticWait(3000);
+		this.applyStaticWait(5*this.getStaticWaitForApplication());
 		return !this.getElementInnerText(this.lblCartNoticeTrueFitMessage).isEmpty();
 	}
 

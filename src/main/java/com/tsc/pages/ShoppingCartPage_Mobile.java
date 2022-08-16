@@ -7,6 +7,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,10 +18,15 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 		super(driver);
 	}
 
+	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'contents-head') and not(contains(@class,'hidden-xs'))]")
+	public WebElement lblCartTopMessage;
+
 	//For Shopping item section
+	public By byProductDescContainer=By.xpath(".//div[contains(@class,'status-line')]");
 	public By byProductRedMessage=By.xpath(".//span[contains(@class,'item-status') and contains(@class,'visible-xs-inline')][span[@class='boldRedColor']]");
 	public By byProductSelectQuantity=By.xpath(".//div[contains(@class,'tsc-forms') and contains(@class,'visible-xs-inline')]//select");
 	public By byProductNowPrice=By.xpath(".//div[contains(@class,'cart-desc-line') and contains(@class,'visible-xs-block')]//span[contains(@class,'now-price')]");
+	public By byProductShippingDate=By.xpath(".//div[contains(@class,'estimateDate__lineItem--mobileWrapper')]");
 
 	//For OrderSummary section
 	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'details-box')]//div[contains(@class,'contents-head')]")
@@ -35,7 +41,7 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 	@Override
 	public boolean checkRedMessageExisting(WebElement cartItem){
 		WebElement item=cartItem.findElement(byProductDescContainer);
-		return this.checkChildElementExistingByAttribute(item,"class","item-status");
+		return !this.getElementInnerText(item).isEmpty();
 	}
 
 	@Override
@@ -169,6 +175,17 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 		}
 
 		return map;
+	}
+
+	@Override
+	public List<Map<String,Object>> getShoppingItemListDesc(String lsOption){
+		List<Map<String,Object>> mapList=new ArrayList<>();
+
+		for(WebElement cartItem:this.lstCartItems){
+			mapList.add(this.getShoppingItemDesc(cartItem,lsOption));
+		}
+
+		return mapList;
 	}
 
 	@Override
@@ -422,34 +439,6 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 				reporter.reportLogFailWithScreenshot("The cart top message is not displaying correctly");
 			}
 
-
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartTableHeadingITEM);
-			lsText=lblCartTableHeadingITEM.getText();
-			if(!lsText.isEmpty()){
-				reporter.reportLogPass("The cart table heading ITEM title is displaying correctly");
-			}
-			else{
-				reporter.reportLogFailWithScreenshot("The cart table heading ITEM title is not displaying correctly");
-			}
-
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartTableHeadingPRICE);
-			lsText=lblCartTableHeadingPRICE.getText();
-			if(!lsText.isEmpty()){
-				reporter.reportLogPass("The cart table heading PRICE title is displaying correctly");
-			}
-			else{
-				reporter.reportLogFailWithScreenshot("The cart table heading PRICE title is not displaying correctly");
-			}
-
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartTableHeadingQUANTITY);
-			lsText=lblCartTableHeadingQUANTITY.getText();
-			if(!lsText.isEmpty()){
-				reporter.reportLogPass("The cart table heading QUANTITY title is displaying correctly");
-			}
-			else{
-				reporter.reportLogFailWithScreenshot("The cart table heading QUANTITY title is not displaying correctly");
-			}
-
 			WebElement element;
 			int index=0;
 			for(WebElement cartItem:lstCartItems){
@@ -663,18 +652,6 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 					}
 					else{
 						reporter.reportLogFailWithScreenshot("The cart item red message is not displaying correctly");
-					}
-				}
-
-				if(this.checkFreeShippingMessageExisting(cartItem)){
-					element=cartItem.findElement(byProductBlackMessage);
-					this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-					lsText=element.getText();
-					if(!lsText.isEmpty()){
-						reporter.reportLogPass("The cart item free shipping message is displaying correctly");
-					}
-					else{
-						reporter.reportLogFailWithScreenshot("The cart item free shipping message is not displaying correctly");
 					}
 				}
 				index++;
