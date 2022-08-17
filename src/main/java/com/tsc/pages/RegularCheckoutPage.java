@@ -69,6 +69,7 @@ public class RegularCheckoutPage extends BasePage {
 	public By byProductBadge=By.xpath(".//div[@class='productlist__row']//div[@class='productlist__left']//img[@class='productlist__badge']");
 	public By byProductImage=By.xpath(".//div[@class='productlist__row']//div[@class='productlist__left']//img[not(@class='productlist__badge')]");
 	public By byProductItemDesc=By.xpath(".//div[@class='productlist__row']//div[@class='productlist__right']//div[@class='productlist__description']");
+	public By byProductNumberContainer=By.xpath(".//div[@class='productlist__row']//div[@class='productlist__right']");
 	public By byProductNumber=By.xpath(".//div[@class='productlist__row']//div[@class='productlist__right']//div[@class='productlist__itemnumber']");
 	public By byProductSelectQuantity=By.xpath(".//div[@class='productlist__pricerow']//div[@class='productlist__left--qty']");
 	public By byProductInventoryContainer=By.xpath(".//div[@class='productlist__pricerow']//div[@class='productlist__right']");
@@ -541,6 +542,16 @@ public class RegularCheckoutPage extends BasePage {
 	}
 
 	/**
+	 * To check Product number Existing
+	 * @param - WebElement - productItem - the item in product list
+	 * @return - boolean
+	 */
+	public boolean checkProductNumberExisting(WebElement productItem){
+		WebElement item=productItem.findElement(this.byProductNumberContainer);
+		return this.checkChildElementExistingByAttribute(item,"class","productlist__itemnumber");
+	}
+
+	/**
 	 * To check Product inventory Existing
 	 * @param - WebElement - productItem - the item in product list
 	 * @return - boolean
@@ -751,10 +762,15 @@ public class RegularCheckoutPage extends BasePage {
 			map.put("productSize",null);
 		}
 
-		item=productItem.findElement(byProductNumber);
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-		lsText=item.getText().replace("-","").trim();
-		map.put("productNumber",lsText);
+		if(this.checkProductNumberExisting(productItem)){
+			item=productItem.findElement(byProductNumber);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsText=item.getText().replace("-","").trim();
+			map.put("productNumber",lsText);
+		}
+		else{
+			map.put("productNumber",null);
+		}
 
 		item=productItem.findElement(byProductNowPrice);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
@@ -1744,13 +1760,15 @@ public class RegularCheckoutPage extends BasePage {
 				reporter.reportLogFailWithScreenshot("The product description is not displaying correctly");
 			}
 
-			item = productItem.findElement(byProductNumber);
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-			lsText = item.getText().replace("-", "").trim();
-			if (!lsText.isEmpty()) {
-				reporter.reportLogPass("The product number is displaying correctly");
-			} else {
-				reporter.reportLogFailWithScreenshot("The product number is not displaying correctly");
+			if(this.checkProductNumberExisting(productItem)){
+				item = productItem.findElement(byProductNumber);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+				lsText = item.getText().replace("-", "").trim();
+				if (!lsText.isEmpty()) {
+					reporter.reportLogPass("The product number is displaying correctly");
+				} else {
+					reporter.reportLogFailWithScreenshot("The product number is not displaying correctly");
+				}
 			}
 
 			item = productItem.findElement(byProductNowPrice);
