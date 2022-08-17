@@ -29,6 +29,7 @@ public class SC_TC09_VerifyShoppingCart_Free_Gift_Item_And_Blue_Jay_Donation ext
         String lsPassword= TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
         String apiEndPoint = TestDataHandler.constantData.getContentfulApiParams().getLbl_apiEndPoint();
         String authorization = TestDataHandler.constantData.getContentfulApiParams().getLbl_authorization();
+        String jayCareFoundationMessage = TestDataHandler.constantData.getShoppingCart().getLblJayCareFoundationDonationMessage();
 
         JSONObject creditCardData = new DataConverter().readJsonFileIntoJSONObject("test-data/CreditCard.json");
 
@@ -79,7 +80,7 @@ public class SC_TC09_VerifyShoppingCart_Free_Gift_Item_And_Blue_Jay_Donation ext
 
             reporter.reportLog("Verify Blue Jay Donation Addition to cart for user");
             String selectedDonation = getShoppingCartThreadLocal().selectAndGetTextForBlueJayCare();
-            getShoppingCartThreadLocal().verifyBlueJayDonationAdditionInCart(selectedDonation);
+            getShoppingCartThreadLocal().verifyBlueJayDonationAdditionInCart(selectedDonation,jayCareFoundationMessage);
 
             reporter.reportLog("Verify OrderSummary after adding Blue Jay Donation amount");
             itemAmount=getShoppingCartThreadLocal().GetAddedItemAmount();

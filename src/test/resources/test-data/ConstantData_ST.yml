@@ -155,6 +155,10 @@ searchResultPage:
   lbl_AddToBagPopupWindowTitle: "\\d+ ITEM(S)? ADDED TO YOUR SHOPPING BAG"
   lbl_VideoDisclaimInfo: "Pre-recorded videos contain pricing or promotional offers that may have expired."
   lbl_AdvancedOrderkeyword: 219753
+  lbl_AdvancedOrderMessage: "Est. Ship/Pick-up Date"
+  lbl_AutoDeliverykeyword: 593608
+  lbl_productTrueFitAndSizingChart: 404791
+  lbl_ProductDeliveryOptions: 289485
   lbl_SoldOutkeyword: 485939
   lbl_QuantityNumberToShowLeftItemInfo: 10
   lst_WriteReviewSubmitMessage: ["THANK YOU!","We will process your review and publish it within 3-7 business days."]
@@ -237,4 +241,33 @@ myAccount:
   lbl_myNewsLettersUnSubscriptionSuccessMessage: "You have now been successfully unsubscribed."
   lbl_myNewsLettersNoCheckUnSubscriptionAlertMessage: "You have not chosen the unsubscribe checkbox."
   lbl_myNewsLettersCheckUnSubscriptionAlertMessage: "Are you sure you want to completely unsubscribe from all of our exciting email marketing communications?"
+  lbl_noOrderRecordsMessage: "No orders yet. TSC has tons of deals to offer"
 
+  lstTestName: [ "MA_TC10_Payment_Options_Manage_Credit_Card",
+                 "PD_TC",
+                 "SC_TC" ]
+  lblChromeBrowserVersion: "99"
+  shoppingCart:
+    lst_SearchKeywords:
+      - searchKeyword: "jeggings"
+        quantity: "more than 3"
+        badgeRequired: "true"
+        itemToBeAdded: "2"
+        styleExist: "true"
+        sameSizeAndStyle: "true"
+      - searchKeyword: "dress"
+        quantity: "more than 3"
+        badgeRequired: "true"
+        itemToBeAdded: "2"
+        styleExist: "true"
+        sameSizeAndStyle: "false"
+      - searchKeyword: "gym"
+        quantity: ""
+        badgeRequired: "false"
+        itemToBeAdded: "1"
+        styleExist: "false"
+        sameStyleAndSize: "false"
+    lblOrderExceedingQuantityMessage: "The size of your order exceeds our on-line shopping limits but one of our Customer Service agents will be happy to assist you with your purchase. Please call our Customer Care Centre at 1-888-2020-888 to complete your order."
+    lblProductNumberForOrderExceedingQuantity: 713070
+    lblCartExceedingLimitMessage: "The size of your order exceeds our on-line shopping limits but one of our Customer Service agents will be happy to assist you with your purchase. Please call our Customer Care Centre at 1-888-2020-888 to complete your order."
+    lblJayCareFoundationDonationMessage: "Jays Care Foundation Donation"

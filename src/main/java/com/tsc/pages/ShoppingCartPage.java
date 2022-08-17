@@ -2865,15 +2865,16 @@ public class ShoppingCartPage extends BasePage {
 
 	/**
 	 * @param - String - jayCareAddedAmount added by user
+	 * @param - String - jayCareFoundationMessage message added in cart for user
 	 */
-	public void verifyBlueJayDonationAdditionInCart(String jayCareAddedAmount){
+	public void verifyBlueJayDonationAdditionInCart(String jayCareAddedAmount,String jayCareFoundationMessage){
 		boolean flag = false;
 		if(this.lstCartItems.size()>0){
 			if(!jayCareAddedAmount.contains("."))
 				jayCareAddedAmount = jayCareAddedAmount+".00";
 			for(WebElement element:this.lstCartItems){
 				String jayCareDescription = element.findElement(this.byProductItemDesc).getText();
-				if(jayCareDescription.contains("Jays Care Foundation Donation")){
+				if(jayCareDescription.contains(jayCareFoundationMessage)){
 					flag = true;
 					String donationAmount = element.findElement(this.byProductNowPrice).getText();
 					if(donationAmount.equalsIgnoreCase(jayCareAddedAmount))

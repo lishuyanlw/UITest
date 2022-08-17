@@ -1323,6 +1323,13 @@ public class ConstantData {
         String lblOrderExceedingQuantityMessage;
         String lblProductNumberForOrderExceedingQuantity;
         String lblCartExceedingLimitMessage;
+        String lblJayCareFoundationDonationMessage;
+
+        public String getLblJayCareFoundationDonationMessage() {            return lblJayCareFoundationDonationMessage;        }
+
+        public void setLblJayCareFoundationDonationMessage(String lblJayCareFoundationDonationMessage) {
+            this.lblJayCareFoundationDonationMessage = lblJayCareFoundationDonationMessage;
+        }
 
         public List<Map<String, String>> getLst_SearchKeywords() {
             return lst_SearchKeywords;
