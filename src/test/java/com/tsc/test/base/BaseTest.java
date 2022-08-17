@@ -150,6 +150,7 @@ public class BaseTest {
 		apiResponseThreadLocal.set(new ApiResponse());
 		productAPIThreadLocal.set(new ProductAPI());
 		shoppingCartThreadLocal.set(new ShoppingCartPage_Mobile(getDriver()));
+		regularCheckoutPageThreadLocal.set(new RegularCheckoutPage_Mobile(getDriver()));
 		myAccountPageThreadLocal.set(new MyAccount_Mobile(getDriver()));
 	}
 
@@ -195,7 +196,7 @@ public class BaseTest {
 		apiResponseThreadLocal.set(new ApiResponse());
 		productAPIThreadLocal.set(new ProductAPI());
 		shoppingCartThreadLocal.set(new ShoppingCartPage(getDriver()));
-
+		regularCheckoutPageThreadLocal.set(new RegularCheckoutPage(getDriver()));
 		homePageThreadLocal.set(new HomePage(getDriver()));
 	}
 

@@ -77,6 +77,12 @@ public class RegularCheckoutPage extends BasePage {
 	public By byProductFreeShipping=By.xpath(".//span[@class='productlist__right--freeship']");
 	public By byProductShippingDate=By.xpath(".//div[@class='estimateDateCheckout__lineItem']");
 
+	@FindBy(xpath = "//article[@class='leftSide']//div[contains(@class,'reviewWrap')]//div[@class='estimatedlabel__left']//span[@class='estimatedLabel__date']")
+	public WebElement lblShippingDateTitle;
+
+	@FindBy(xpath = "//article[@class='leftSide']//div[contains(@class,'reviewWrap')]//div[@class='estimatedlabel__left']/following-sibling::span")
+	public WebElement lblShippingDate;
+
 	@FindBy(xpath = "//article[@class='leftSide']//div[contains(@class,'shippingAddressWrap')]//div[@class='shippingaddress__label']")
 	public WebElement lblShippingAddressTitle;
 
@@ -91,8 +97,8 @@ public class RegularCheckoutPage extends BasePage {
 	@FindBy(xpath = "//div[@class='ReactModal__Overlay ReactModal__Overlay--after-open modal__overlay']//div[@class='modal__header']//h3")
 	public WebElement lblAddOrChangeShippingAddressDialogTitle;
 
-	@FindBy(xpath = "//div[@class='ReactModal__Overlay ReactModal__Overlay--after-open modal__overlay']//button[@class='modal__button-close']")
-	public WebElement btnAddOrChangeShippingAddressDialogCloseButton;
+	@FindBy(xpath = "//div[@class='ReactModal__Overlay ReactModal__Overlay--after-open modal__overlay']//button[@class='modal__button-back']")
+	public WebElement btnAddOrChangeShippingAddressDialogBackButton;
 
 	@FindBy(xpath = "//div[@class='ReactModal__Overlay ReactModal__Overlay--after-open modal__overlay']//div[@class='card__wrap']")
 	public List<WebElement> lstAddOrChangeShippingAddressDialogCardWrapSectionIncludingAddNewAddress;
@@ -910,7 +916,7 @@ public class RegularCheckoutPage extends BasePage {
 			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 			sum++;
 		}
-		this.waitForCondition(Driver->{return this.cntAddOrEditAddressDialogAddressDropDownList.getAttribute("class").contains("react-autosuggest__container--open");},20000);
+		this.waitForCondition(Driver->{return this.cntAddOrEditAddressDialogAddressDropDownList.getAttribute("class").contains("react-autosuggest__suggestions-container--open");},20000);
 		this.getReusableActionsInstance().staticWait(2*this.getStaticWaitForApplication());
 
 		if(this.lstAddOrEditAddressDialogAddressDropDownList.size()>1){
@@ -925,7 +931,7 @@ public class RegularCheckoutPage extends BasePage {
 		int randomNumber = rand.nextInt(optionSize-2);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstAddOrEditAddressDialogAddressDropDownList.get(randomNumber));
 		this.getReusableActionsInstance().clickIfAvailable(this.lstAddOrEditAddressDialogAddressDropDownList.get(randomNumber));
-		this.waitForCondition(Driver->{return !this.cntAddOrEditAddressDialogAddressDropDownList.getAttribute("class").contains("react-autosuggest__container--open");},20000);
+		this.waitForCondition(Driver->{return !this.cntAddOrEditAddressDialogAddressDropDownList.getAttribute("class").contains("react-autosuggest__suggestions-container--open");},20000);
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressDialogAddress);
 		String lsAddress=inputAddOrEditAddressDialogAddress.getAttribute("value").trim();
@@ -988,8 +994,8 @@ public class RegularCheckoutPage extends BasePage {
 			this.applyStaticWait(5*getStaticWaitForApplication());
 		}
 		else{
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrChangeShippingAddressDialogCloseButton);
-			btnAddOrChangeShippingAddressDialogCloseButton.click();
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrChangeShippingAddressDialogBackButton);
+			btnAddOrChangeShippingAddressDialogBackButton.click();
 			this.applyStaticWait(2*getStaticWaitForApplication());
 		}
 	}
@@ -1064,7 +1070,7 @@ public class RegularCheckoutPage extends BasePage {
 	 * To open Using A New Card Dialog
 	 * @return - boolean
 	 */
-	public boolean openUsingANewCardDialog(){
+	public boolean openUsingNewCardDialog(){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrChangePaymentMethodDialogUsingANewCardButton);
 		btnAddOrChangePaymentMethodDialogUsingANewCardButton.click();
 		return this.waitForCondition(Driver->{return this.lblUsingANewCardDialogTitle.isDisplayed();},10000);
@@ -1134,7 +1140,7 @@ public class RegularCheckoutPage extends BasePage {
 	 */
 	public int addOrChangePaymentMethod(boolean bTSC){
 		if(!this.checkAvailablePaymentMethodExisting()){
-			openUsingANewCardDialog();
+			openUsingNewCardDialog();
 			if(bTSC){
 				addNewTSCCard();
 			}
@@ -1169,7 +1175,7 @@ public class RegularCheckoutPage extends BasePage {
 		}
 
 		if(!bFind){
-			openUsingANewCardDialog();
+			openUsingNewCardDialog();
 			if(bTSC){
 				addNewTSCCard();
 			}
@@ -1676,6 +1682,24 @@ public class RegularCheckoutPage extends BasePage {
 				}
 			}
 		}
+
+		if(this.checkProductShippingDateExisting()){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblShippingDateTitle);
+			lsText = this.lblShippingDateTitle.getText().trim();
+			if (!lsText.isEmpty()) {
+				reporter.reportLogPass("The GetItBy date title is displaying correctly");
+			} else {
+				reporter.reportLogFailWithScreenshot("The GetItBy date title is not displaying correctly");
+			}
+
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblShippingDate);
+			lsText = this.lblShippingDate.getText().trim();
+			if (!lsText.isEmpty()) {
+				reporter.reportLogPass("The GetItBy date is displaying correctly");
+			} else {
+				reporter.reportLogFailWithScreenshot("The GetItBy date is not displaying correctly");
+			}
+		}
 	}
 
 	/**
@@ -2122,12 +2146,12 @@ public class RegularCheckoutPage extends BasePage {
 			reporter.reportLogFailWithScreenshot("The title in Add Or Change Address Dialog is not displaying correctly");
 		}
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrChangeShippingAddressDialogCloseButton);
-		if(this.getReusableActionsInstance().isElementVisible(btnAddOrChangeShippingAddressDialogCloseButton)){
-			reporter.reportLogPass("The close button in Add Or Change Address Dialog is displaying correctly");
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrChangeShippingAddressDialogBackButton);
+		if(this.getReusableActionsInstance().isElementVisible(btnAddOrChangeShippingAddressDialogBackButton)){
+			reporter.reportLogPass("The Back button in Add Or Change Address Dialog is displaying correctly");
 		}
 		else{
-			reporter.reportLogFailWithScreenshot("The close button in Add Or Change Address Dialog is not displaying correctly");
+			reporter.reportLogFailWithScreenshot("The Back button in Add Or Change Address Dialog is not displaying correctly");
 		}
 
 		if(this.checkAvailableShippingAddressExisting()){
@@ -2592,5 +2616,17 @@ public class RegularCheckoutPage extends BasePage {
 			reporter.reportLogFailWithScreenshot("The save button in using a new card Dialog is not displaying correctly");
 		}
 	}
+
+	/**
+	 * To Go To Shopping Bag by clicking btnGoToShoppingBag button in header
+	 * @return - boolean
+	 */
+	public boolean GoToShoppingBag(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnGoToShoppingBag);
+		btnGoToShoppingBag.click();
+		ShoppingCartPage shoppingCartPage=new ShoppingCartPage(this.getDriver());
+		return this.waitForCondition(Driver->{return shoppingCartPage.lblCartTitle.isDisplayed();},20000);
+	}
+
 
 }
