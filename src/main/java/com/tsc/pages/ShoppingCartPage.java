@@ -104,6 +104,7 @@ public class ShoppingCartPage extends BasePage {
 	public By byProductPicBadge=By.xpath(".//div[contains(@class,'product-pic')]//div[@class='badgeWrap']//img");
 	public By byProductPicLink=By.xpath(".//div[contains(@class,'product-pic')]//a");
 	public By byProductPicImage=By.xpath(".//div[contains(@class,'product-pic')]//a//img");
+	public By byBlueJaysCareFoundationImage=By.xpath(".//div[@class='cartridge']//div[contains(@class,'cart-items')]//div[contains(@class,'product-pic')]/div/img[contains(@class,'responsive')]");
 
 	public By byProductDescContainer=By.xpath(".//div[contains(@class,'cart-desc') and not(contains(@class,'cart-desc-line'))]");
 	public By byProductItemDesc=By.xpath(".//div[contains(@class,'cart-desc') and not(contains(@class,'cart-desc-line'))]//div[@class='item-desc']");
@@ -256,6 +257,9 @@ public class ShoppingCartPage extends BasePage {
 
 	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'donationWrap')]//div[contains(@class,'donationButtonWrap')]//a")
 	public List<WebElement> lstCartCheckoutDonationButton;
+
+	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'donationWrap')]//div[contains(@class,'donationButtonWrap')]//a[contains(@class,'active')]/div")
+	public WebElement lblBlueJaySelectedDonation;
 
 	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'donationWrap')]//div[contains(@class,'donationRecieptMsg')]")
 	public WebElement lblCartCheckoutDonationReceiptMessage;
@@ -2839,5 +2843,49 @@ public class ShoppingCartPage extends BasePage {
 			}
 		}
 		return map;
+	}
+
+	/**
+	 * @return - String - selected button data to be used for verification
+	 */
+	public String selectAndGetTextForBlueJayCare(){
+		int size = this.lstCartCheckoutDonationButton.size();
+		if (size>0){
+			getReusableActionsInstance().clickIfAvailable(this.lstCartCheckoutDonationButton.get(0));
+			this.applyStaticWait(3000);
+			String selectedDonation = getReusableActionsInstance().getElementText(this.lblBlueJaySelectedDonation).trim();
+			return selectedDonation;
+		}
+		return null;
+	}
+
+	/**
+	 * @param - String - jayCareAddedAmount added by user
+	 */
+	public void verifyBlueJayDonationAdditionInCart(String jayCareAddedAmount){
+		boolean flag = false;
+		if(this.lstCartItems.size()>0){
+			if(!jayCareAddedAmount.contains("."))
+				jayCareAddedAmount = jayCareAddedAmount+".00";
+			for(WebElement element:this.lstCartItems){
+				String jayCareDescription = element.findElement(this.byProductItemDesc).getText();
+				if(jayCareDescription.contains("Jays Care Foundation Donation")){
+					flag = true;
+					String donationAmount = element.findElement(this.byProductNowPrice).getText();
+					if(donationAmount.equalsIgnoreCase(jayCareAddedAmount))
+						reporter.reportLogPassWithScreenshot("Jay Care Foundation Donation is added with amount: "+donationAmount+" as expected");
+					else
+						reporter.reportLogFailWithScreenshot("Jay Care Foundation Donation is not added with amount: "+donationAmount+" as expected");
+				}
+				if(flag)
+					break;
+			}
+		}else
+			reporter.reportLogFailWithScreenshot("No item is present in cart for user");
+
+		if(flag)
+			reporter.reportLog("Verification for Blue Jays Foundation is done as expected");
+		else
+			reporter.reportLogFailWithScreenshot("Blue Jays Foundation verification is not done!!");
 	}
 }

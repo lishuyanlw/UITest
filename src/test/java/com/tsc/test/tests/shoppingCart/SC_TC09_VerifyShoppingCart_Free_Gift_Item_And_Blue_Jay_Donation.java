@@ -16,12 +16,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public class SC_TC09_VerifyShoppingCart_Free_Gift_Item extends BaseTest {
+public class SC_TC09_VerifyShoppingCart_Free_Gift_Item_And_Blue_Jay_Donation extends BaseTest {
     /*
      * CER-852 - Shopping Cart - Add item (having associate gift item) and check sub-total and order summary
      */
     @Test(groups={"Regression","ShoppingCart","SauceTunnelTest"})
-    public void SC_TC09_VerifyShoppingCart_Free_Gift_Item() throws IOException {
+    public void SC_TC09_VerifyShoppingCart_Free_Gift_Item_And_Blue_Jay_Donation() throws IOException {
         getGlobalFooterPageThreadLocal().closePopupDialog();
 
         //Fetching test data from test data file
@@ -74,6 +74,22 @@ public class SC_TC09_VerifyShoppingCart_Free_Gift_Item extends BaseTest {
             float subTotal=getShoppingCartThreadLocal().getShoppingSubTotal();
 
             Map<String,Object> mapOrderSummary=getShoppingCartThreadLocal().getOrderSummaryDesc();
+            getShoppingCartThreadLocal().verifyOrderSummaryBusinessLogic(itemAmount,savingPrice,subTotal,mapOrderSummary,null);
+            getShoppingCartThreadLocal().verifyOrderSummaryContents();
+
+            reporter.reportLog("Verify Blue Jay Donation Addition to cart for user");
+            String selectedDonation = getShoppingCartThreadLocal().selectAndGetTextForBlueJayCare();
+            getShoppingCartThreadLocal().verifyBlueJayDonationAdditionInCart(selectedDonation);
+
+            reporter.reportLog("Verify OrderSummary after adding Blue Jay Donation amount");
+            itemAmount=getShoppingCartThreadLocal().GetAddedItemAmount();
+            savingPrice=getShoppingCartThreadLocal().getSavingPriceFromShoppingCartHeader();
+            float donationAmountAddedToCart = Float.valueOf(selectedDonation.split("\\$")[1]);
+            subTotal=subTotal+donationAmountAddedToCart;
+
+            if(mapOrderSummary.size()>0)
+                mapOrderSummary.clear();
+            mapOrderSummary=getShoppingCartThreadLocal().getOrderSummaryDesc();
             getShoppingCartThreadLocal().verifyOrderSummaryBusinessLogic(itemAmount,savingPrice,subTotal,mapOrderSummary,null);
             getShoppingCartThreadLocal().verifyOrderSummaryContents();
 

@@ -714,4 +714,31 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 		}, 20000);
 	}
 
+	@Override
+	public void verifyBlueJayDonationAdditionInCart(String jayCareAddedAmount){
+		boolean flag = false;
+		if(this.lstCartItems.size()>0){
+			if(!jayCareAddedAmount.contains("."))
+				jayCareAddedAmount = jayCareAddedAmount+".00";
+			for(WebElement element:this.lstCartItems){
+				String jayCareDescription = element.findElement(this.byProductItemDesc).getText();
+				if(jayCareDescription.contains("Jays Care Foundation Donation")){
+					flag = true;
+					String donationAmount = element.findElement(this.byProductNowPrice).getText();
+					if(donationAmount.equalsIgnoreCase(jayCareAddedAmount))
+						reporter.reportLogPassWithScreenshot("Jay Care Foundation Donation is added with amount: "+donationAmount+" as expected");
+					else
+						reporter.reportLogFailWithScreenshot("Jay Care Foundation Donation is not added with amount: "+donationAmount+" as expected");
+				}
+				if(flag)
+					break;
+			}
+		}else
+			reporter.reportLogFailWithScreenshot("No item is present in cart for user");
+
+		if(flag)
+			reporter.reportLog("Verification for Blue Jays Foundation is done as expected");
+		else
+			reporter.reportLogFailWithScreenshot("Blue Jays Foundation verification is not done!!");
+	}
 }

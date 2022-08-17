@@ -55,8 +55,8 @@ pipeline {
 	    00 03 * * 1-7 %Browser=sauceioschrome;Language=en;Groups=ShoppingCart;ThreadCount=1;TunnelRequired=Yes;Device=Tablet;TestProfile=TSCWF-Automation
 	    15 05 * * 1-7 %Browser=sauceandroidchrome;Language=en;Groups=ShoppingCart;ThreadCount=1;TunnelRequired=Yes;Device=Mobile;TestProfile=TSCWF-Automation
 	    00 07 * * 1-7 %Browser=sauceandroidchrome;Language=en;Groups=ShoppingCart;ThreadCount=1;TunnelRequired=Yes;Device=Tablet;TestProfile=TSCWF-Automation
-	    #30 10 * * 1-7 %Browser=sauceandroidchrome;Language=en;Groups=ShoppingCart;ThreadCount=1;TunnelRequired=Yes;Device=Tablet;TestProfile=TSCWF-Automation
-	    #00 01 * * 1-7 %Browser=sauceioschrome;Language=en;Groups=ShoppingCart;ThreadCount=1;TunnelRequired=Yes;Device=Tablet;TestProfile=TSCWF-Automation
+	    00 17 * * 1-7 %Browser=sauceandroidchrome;Language=en;Groups=ShoppingCart;ThreadCount=1;TunnelRequired=Yes;Device=Tablet;TestProfile=TSCWF-Automation
+	    30 19 * * 1-7 %Browser=sauceioschrome;Language=en;Groups=ShoppingCart;ThreadCount=1;TunnelRequired=Yes;Device=Tablet;TestProfile=TSCWF-Automation
         ''':'')
     }
 
