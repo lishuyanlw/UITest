@@ -261,6 +261,9 @@ public class ShoppingCartPage extends BasePage {
 	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'donationWrap')]//div[contains(@class,'donationButtonWrap')]//a[contains(@class,'active')]/div")
 	public WebElement lblBlueJaySelectedDonation;
 
+	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'donationWrap')]//div[contains(@class,'donationButtonWrap')]")
+	public WebElement lblBlueJayDonation;
+
 	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'donationWrap')]//div[contains(@class,'donationRecieptMsg')]")
 	public WebElement lblCartCheckoutDonationReceiptMessage;
 
@@ -2852,7 +2855,8 @@ public class ShoppingCartPage extends BasePage {
 		int size = this.lstCartCheckoutDonationButton.size();
 		if (size>0){
 			getReusableActionsInstance().clickIfAvailable(this.lstCartCheckoutDonationButton.get(0));
-			this.applyStaticWait(3000);
+			this.waitForPageToLoad();
+			this.waitForCondition(Driver->{return this.checkChildElementExistingByTagNameAndAttribute(lblBlueJayDonation,"a","class","donationButton active");},10000);
 			String selectedDonation = getReusableActionsInstance().getElementText(this.lblBlueJaySelectedDonation).trim();
 			return selectedDonation;
 		}
