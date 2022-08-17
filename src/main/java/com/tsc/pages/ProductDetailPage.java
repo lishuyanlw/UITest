@@ -2006,7 +2006,7 @@ public class ProductDetailPage extends BasePage {
 		ShoppingCartPage shoppingCartPage=new ShoppingCartPage(this.getDriver());
 		this.waitForPageToLoad();
 		this.waitForCondition(Driver->{return shoppingCartPage.lblCartTitle.isDisplayed();},20000);
-		this.applyStaticWait(3*this.getStaticWaitForApplication());
+		this.applyStaticWait(5*this.getStaticWaitForApplication());
 	}
 
 	/**

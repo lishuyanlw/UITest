@@ -37,6 +37,7 @@ public class CP_TC01_VerifyLeftSection_Header_ProductList_Address_Payment extend
 			(new BasePage(this.getDriver())).applyStaticWait(3000);
 		}
 		getProductDetailPageThreadLocal().goToShoppingCartByClickingShoppingCartIconInGlobalHeader();
+
 		List<String> lstOptionText=getShoppingCartThreadLocal().getInstallmentOptions();
 		getShoppingCartThreadLocal().setInstallmentSetting(lstOptionText.get(1));
 
@@ -69,11 +70,36 @@ public class CP_TC01_VerifyLeftSection_Header_ProductList_Address_Payment extend
 		getRegularCheckoutThreadLocal().verifyEasyPayContents();
 		getRegularCheckoutThreadLocal().verifyGiftCardAndPlaceOrderContents();
 
+
+		if(getRegularCheckoutThreadLocal().checkChangeShippingMethodButtonExisting()){
+			reporter.reportLog("Verify Shipping method");
+			getRegularCheckoutThreadLocal().openAddOrChangePaymentMethodDialog();
+			getRegularCheckoutThreadLocal().chooseShippingMethodInChangeShippingMethodDialogWithGivenIndex(1);
+			getRegularCheckoutThreadLocal().closeChangeShippingMethodDialog(true);
+		}
+
+		reporter.reportLog("Verify Payment Method");
+		getRegularCheckoutThreadLocal().openAddOrChangePaymentMethodDialog();
+		getRegularCheckoutThreadLocal().openUsingNewCardDialog();
+		getRegularCheckoutThreadLocal().addNewTSCCard();
+		getRegularCheckoutThreadLocal().closeUsingANewCardDialog(true);
+
+		reporter.reportLog("Verify payment option");
+		List<String> paymentOptionList=getRegularCheckoutThreadLocal().getPaymentOptionTextList();
+		getRegularCheckoutThreadLocal().setPaymentOptionByGivenText(paymentOptionList.get(1));
+
+		reporter.reportLog("Verify shipping address");
 		getRegularCheckoutThreadLocal().openAddOrChangeAddressDialog();
 		getRegularCheckoutThreadLocal().openAddOrEditAddressDialog(getRegularCheckoutThreadLocal().btnAddOrChangeShippingAddressDialogAddNewAddressButton);
 		getRegularCheckoutThreadLocal().addOrEditAddress();
 		getRegularCheckoutThreadLocal().closeAddOrEditAddressDialog(true);
-		getRegularCheckoutThreadLocal().closeAddOrChangeAddressDialog(true);
+
+		reporter.reportLog("Verify billing address");
+		getRegularCheckoutThreadLocal().openChangeBillingAddressDialog();
+		getRegularCheckoutThreadLocal().addOrEditAddress();
+		getRegularCheckoutThreadLocal().closeChangeBillingAddressDialog(true);
+
+
 
 	}
 }

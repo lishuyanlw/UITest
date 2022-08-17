@@ -969,6 +969,7 @@ public class RegularCheckoutPage extends BasePage {
 		inputAddOrEditAddressDialogPhoneNumber.sendKeys(lsPhoneNumber);
 		this.getReusableActionsInstance().staticWait(300);
 
+		inputAddOrEditAddressDialogAddress.clear();
 		String lsAutoSearchKeyword = DataConverter.getSaltString(4,"numberType");
 		String[] data = lsAutoSearchKeyword.codePoints().mapToObj(cp->new String(Character.toChars(cp))).toArray(size->new String[size]);
 		int sum=0;
@@ -992,11 +993,8 @@ public class RegularCheckoutPage extends BasePage {
 		}
 
 		int optionSize=this.lstAddOrEditAddressDialogAddressDropDownList.size();
-		int randomNumber;
-		if(optionSize==1){
-			randomNumber=0;
-		}
-		else{
+		int randomNumber=0;
+		if(optionSize>1){
 			Random rand = new Random();
 			randomNumber = rand.nextInt(optionSize-2);
 		}
@@ -1246,7 +1244,7 @@ public class RegularCheckoutPage extends BasePage {
 	 * To add a new TSC card
 	 */
 	public void addNewTSCCard(){
-		JSONObject cardData=this.getCardDataFromYamlFile("TSC");
+		JSONObject cardData=this.getCardDataFromYamlFile("tsc");
 		String TSCCardNumber= (String) cardData.get("Number");
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(labelUsingANewCardDialogTSCCardRadio);
 		labelUsingANewCardDialogTSCCardRadio.click();
