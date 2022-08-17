@@ -189,7 +189,12 @@ public class BaseTest {
 		reporter = new ExtentTestManager(getDriver());
 		apiResponseThreadLocal.set(new ApiResponse());
 		productAPIThreadLocal.set(new ProductAPI());
-		shoppingCartThreadLocal.set(new ShoppingCartPage(getDriver()));
+		if(System.getProperty("Browser").contains("android") ||
+				(System.getProperty("chromeMobileDevice")!=null
+						&& (!System.getProperty("chromeMobileDevice").contains("iPad"))))
+			shoppingCartThreadLocal.set(new ShoppingCartPage_Mobile(getDriver()));
+		else
+			shoppingCartThreadLocal.set(new ShoppingCartPage(getDriver()));
 
 		homePageThreadLocal.set(new HomePage(getDriver()));
 	}
