@@ -37,37 +37,37 @@ public class CP_TC01_VerifyLeftSection_Header_ProductList_Address_Payment extend
 			(new BasePage(this.getDriver())).applyStaticWait(3000);
 		}
 		getProductDetailPageThreadLocal().goToShoppingCartByClickingShoppingCartIconInGlobalHeader();
-//		List<String> lstOptionText=getShoppingCartThreadLocal().getInstallmentOptions();
-//		getShoppingCartThreadLocal().setInstallmentSetting(lstOptionText.get(1));
-//
-//		Map<String, Object> productMapForShoppingCart = getShoppingCartThreadLocal().getShoppingSectionDetails("all");
-//		List<Map<String,Object>> productListForShoppingCart= (List<Map<String, Object>>) productMapForShoppingCart.get("shoppingList");
-//		int itemCountForShoppingCart= (int) productMapForShoppingCart.get("shoppingAmount");
-//		float subTotalForShoppingCart= (float) productMapForShoppingCart.get("shoppingSubTotal");
-//
-//		Map<String, Object> orderSummaryMapForShoppingCart = getShoppingCartThreadLocal().getOrderSummaryDesc();
-//		Map<String, Object> easyPaymentMapForShoppingCart = getShoppingCartThreadLocal().getEasyPayDesc();
-//		int installmentsNumberForShoppingCart= (int) easyPaymentMapForShoppingCart.get("installmentsNumber");
+		List<String> lstOptionText=getShoppingCartThreadLocal().getInstallmentOptions();
+		getShoppingCartThreadLocal().setInstallmentSetting(lstOptionText.get(1));
+
+		Map<String, Object> productMapForShoppingCart = getShoppingCartThreadLocal().getShoppingSectionDetails("all");
+		List<Map<String,Object>> productListForShoppingCart= (List<Map<String, Object>>) productMapForShoppingCart.get("shoppingList");
+		int itemCountForShoppingCart= (int) productMapForShoppingCart.get("shoppingAmount");
+		float subTotalForShoppingCart= (float) productMapForShoppingCart.get("shoppingSubTotal");
+
+		Map<String, Object> orderSummaryMapForShoppingCart = getShoppingCartThreadLocal().getOrderSummaryDesc();
+		Map<String, Object> easyPaymentMapForShoppingCart = getShoppingCartThreadLocal().getEasyPayDesc();
+		int installmentsNumberForShoppingCart= (int) easyPaymentMapForShoppingCart.get("installmentsNumber");
 
 		getShoppingCartThreadLocal().goToCheckoutPage();
-//		List<Map<String,Object>> productListMapForCheckOutPage = getRegularCheckoutThreadLocal().getCheckoutItemListDesc("all");
-//		Map<String,Object> summaryMapForCheckOutList=getRegularCheckoutThreadLocal().getCheckoutItemCountAndSubTotal(productListMapForCheckOutPage);
-//		int itemCountForCheckOutList= (int) summaryMapForCheckOutList.get("itemCount");
-//		float subTotalForCheckOutList= (float) summaryMapForCheckOutList.get("subTotal");
-//
-//		Map<String, Object> orderSummaryMapForCheckOutPage = getRegularCheckoutThreadLocal().getOrderSummaryDesc();
-//		Map<String, Object> easyPaymentMapForCheckOutPage = getRegularCheckoutThreadLocal().getEasyPayDesc();
-//
-//		getRegularCheckoutThreadLocal().verifyOrderSummaryBusinessLogic(subTotalForCheckOutList,orderSummaryMapForCheckOutPage,null);
-//		getRegularCheckoutThreadLocal().verifyInstallmentBusinessLogic(installmentsNumberForShoppingCart,orderSummaryMapForCheckOutPage);
-//
-//		getRegularCheckoutThreadLocal().verifyCheckoutHeaderContents();
-//		getRegularCheckoutThreadLocal().verifyMandatoryContentsForCheckoutProductList();
-//		getRegularCheckoutThreadLocal().verifyOptionalContentsForCheckoutProductList();
-//		getRegularCheckoutThreadLocal().verifyAddressAndPaymentContents();
-//		getRegularCheckoutThreadLocal().verifyOrderSummaryContents();
-//		getRegularCheckoutThreadLocal().verifyEasyPayContents();
-//		getRegularCheckoutThreadLocal().verifyGiftCardAndPlaceOrderContents();
+		List<Map<String,Object>> productListMapForCheckOutPage = getRegularCheckoutThreadLocal().getCheckoutItemListDesc("all");
+		Map<String,Object> summaryMapForCheckOutList=getRegularCheckoutThreadLocal().getCheckoutItemCountAndSubTotal(productListMapForCheckOutPage);
+		int itemCountForCheckOutList= (int) summaryMapForCheckOutList.get("itemCount");
+		float subTotalForCheckOutList= (float) summaryMapForCheckOutList.get("subTotal");
+
+		Map<String, Object> orderSummaryMapForCheckOutPage = getRegularCheckoutThreadLocal().getOrderSummaryDesc();
+		Map<String, Object> easyPaymentMapForCheckOutPage = getRegularCheckoutThreadLocal().getEasyPayDesc();
+
+		getRegularCheckoutThreadLocal().verifyOrderSummaryBusinessLogic(subTotalForCheckOutList,orderSummaryMapForCheckOutPage,null);
+		getRegularCheckoutThreadLocal().verifyInstallmentBusinessLogic(installmentsNumberForShoppingCart,orderSummaryMapForCheckOutPage);
+
+		getRegularCheckoutThreadLocal().verifyCheckoutHeaderContents();
+		getRegularCheckoutThreadLocal().verifyMandatoryContentsForCheckoutProductList();
+		getRegularCheckoutThreadLocal().verifyOptionalContentsForCheckoutProductList();
+		getRegularCheckoutThreadLocal().verifyAddressAndPaymentContents();
+		getRegularCheckoutThreadLocal().verifyOrderSummaryContents();
+		getRegularCheckoutThreadLocal().verifyEasyPayContents();
+		getRegularCheckoutThreadLocal().verifyGiftCardAndPlaceOrderContents();
 
 		getRegularCheckoutThreadLocal().openAddOrChangeAddressDialog();
 		getRegularCheckoutThreadLocal().openAddOrEditAddressDialog(getRegularCheckoutThreadLocal().btnAddOrChangeShippingAddressDialogAddNewAddressButton);

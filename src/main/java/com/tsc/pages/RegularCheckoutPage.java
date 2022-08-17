@@ -100,6 +100,9 @@ public class RegularCheckoutPage extends BasePage {
 	@FindBy(xpath = "//div[@class='ReactModal__Overlay ReactModal__Overlay--after-open modal__overlay']//button[@class='modal__button-back']")
 	public WebElement btnAddOrChangeShippingAddressDialogBackButton;
 
+	@FindBy(xpath = "//div[@class='ReactModal__Overlay ReactModal__Overlay--after-open modal__overlay']//button[@class='modal__button-close']")
+	public WebElement btnAddOrChangeShippingAddressDialogCloseButton;
+
 	@FindBy(xpath = "//div[@class='ReactModal__Overlay ReactModal__Overlay--after-open modal__overlay']//div[@class='card__wrap']")
 	public List<WebElement> lstAddOrChangeShippingAddressDialogCardWrapSectionIncludingAddNewAddress;
 
@@ -123,6 +126,9 @@ public class RegularCheckoutPage extends BasePage {
 
 	@FindBy(xpath = "//div[contains(@class,'ReactModal__Overlay--after-open')]//button[@class='modal__button-close']")
 	public WebElement btnAddOrEditAddressDialogCloseButton;
+
+	@FindBy(xpath = "//div[contains(@class,'ReactModal__Overlay--after-open')]//button[@class='modal__button-back']")
+	public WebElement btnAddOrEditAddressDialogBackButton;
 
 	@FindBy(xpath = "//div[contains(@class,'ReactModal__Overlay--after-open')]//span[@class='form__required']")
 	public WebElement lblAddOrEditAddressDialogFormRequiredMessage;
@@ -195,6 +201,36 @@ public class RegularCheckoutPage extends BasePage {
 	@FindBy(xpath = "//article[@class='leftSide']//div[contains(@class,'shippingMethodWrap')]//div[@class='shippingmethod__description']")
 	public WebElement lblShippingMethod;
 
+	@FindBy(xpath = "//article[@class='leftSide']//div[contains(@class,'shippingMethodWrap')]")
+	public WebElement cntChangeShippingMethodContainer;
+
+	@FindBy(xpath = "//article[@class='leftSide']//div[contains(@class,'shippingMethodWrap')]//button[@class='button__change']")
+	public WebElement btnChangeShippingMethod;
+
+	/////////////////////////////////////////////////////////////
+	//For change shipping method popup window by clicking btnChangeShippingMethod
+	@FindBy(xpath = "//div[contains(@class,'ReactModal__Content')]//div[@class='modal__header']//h3")
+	public WebElement lblChangeShippingMethodDialogHeaderTitle;
+
+	@FindBy(xpath = "//div[contains(@class,'ReactModal__Content')]//div[@class='modal__header']//button[@class='modal__button-back']")
+	public WebElement btnChangeShippingMethodDialogBackButton;
+
+	@FindBy(xpath = "//div[contains(@class,'ReactModal__Content')]//div[@class='modal__header']//button[@class='modal__button-close']")
+	public WebElement btnChangeShippingMethodDialogCloseButton;
+
+	@FindBy(xpath = "//div[contains(@class,'ReactModal__Content')]//div[@class='modal__body']//div[@class='shipmethod__container']")
+	public List<WebElement> lstChangeShippingMethodDialogShippingMethodList;
+
+	public By byShippingMethodLabel=By.xpath(".//label");
+	public By byShippingMethodRadioButton=By.xpath(".//span[@class='shipmethod__radio-button']");
+	public By byShippingMethodDescription=By.xpath(".//div[@class='shipmethod__description']");
+	public By byShippingMethodDetails=By.xpath(".//div[@class='shipmethod__detail']");
+	public By byShippingMethodLearMoreLink=By.xpath(".//a[@class='shipmethod__link']");
+
+	@FindBy(xpath = "//div[contains(@class,'ReactModal__Content')]//div[@class='modal__footer']//button")
+	public WebElement btnChangeShippingMethodDialogSaveAndContinueButton;
+	/////////////////////////////////////////////////////////////
+
 	@FindBy(xpath = "//article[@class='leftSide']//div[contains(@class,'paymentMethodWrap')]//div[@class='paymentmethod__label']")
 	public WebElement lblShippingPaymentMethodTitle;
 
@@ -217,6 +253,9 @@ public class RegularCheckoutPage extends BasePage {
 
 	@FindBy(xpath = "//div[@class='ReactModal__Overlay ReactModal__Overlay--after-open modal__overlay']//div[@class='modal__header']//button[@class='modal__button-close']")
 	public WebElement btnAddOrChangePaymentMethodDialogCloseButton;
+
+	@FindBy(xpath = "//div[@class='ReactModal__Overlay ReactModal__Overlay--after-open modal__overlay']//div[@class='modal__header']//button[@class='modal__button-back']")
+	public WebElement btnAddOrChangePaymentMethodDialogBackButton;
 
 	@FindBy(xpath = "//div[@class='ReactModal__Overlay ReactModal__Overlay--after-open modal__overlay']//div[@class='card__wrap']")
 	public List<WebElement> lstAddOrChangePaymentMethodDialogCardWrapSectionIncludingUsingANewCard;
@@ -246,6 +285,9 @@ public class RegularCheckoutPage extends BasePage {
 	//For the popup window by clicking using a new card button
 	@FindBy(xpath = "//div[contains(@aria-label,'Use A New Card')]//div[@class='card__header']")
 	public WebElement lblUsingANewCardDialogTitle;
+
+	@FindBy(xpath = "//div[contains(@aria-label,'Use A New Card')]//button[contains(@class,'modal__button-back')]")
+	public WebElement btnUsingANewCardDialogBackButton;
 
 	@FindBy(xpath = "//div[contains(@aria-label,'Use A New Card')]//button[contains(@class,'modal__button-close')]")
 	public WebElement btnUsingANewCardDialogCloseButton;
@@ -302,7 +344,6 @@ public class RegularCheckoutPage extends BasePage {
 	public WebElement btnUsingANewCardDialogSaveButton;
 
 	/////////////////////////////////////////////////////////
-
 
 	@FindBy(xpath = "//article[@class='leftSide']//div[contains(@class,'billingAddressWrap')]//div[@class='billingaddress__label']")
 	public WebElement lblBillingAddressTitle;
@@ -542,6 +583,14 @@ public class RegularCheckoutPage extends BasePage {
 	public boolean checkIfAddressSelected(WebElement addressItem){
 		WebElement statusItem=addressItem.findElement(this.byAddOrChangeShippingAddressDialogSelectedStatus);
 		return statusItem.getAttribute("class").equalsIgnoreCase("card__box--selected");
+	}
+
+	/**
+	 * To check Change Shipping Method Button Existing
+	 * @return - boolean
+	 */
+	public boolean checkChangeShippingMethodButtonExisting(){
+		return this.checkChildElementExistingByAttribute(cntChangeShippingMethodContainer,"class","button__change");
 	}
 
 	/**
@@ -927,11 +976,21 @@ public class RegularCheckoutPage extends BasePage {
 		}
 
 		int optionSize=this.lstAddOrEditAddressDialogAddressDropDownList.size();
-		Random rand = new Random();
-		int randomNumber = rand.nextInt(optionSize-2);
+		int randomNumber;
+		if(optionSize==1){
+			randomNumber=0;
+		}
+		else{
+			Random rand = new Random();
+			randomNumber = rand.nextInt(optionSize-2);
+		}
+
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstAddOrEditAddressDialogAddressDropDownList.get(randomNumber));
 		this.getReusableActionsInstance().clickIfAvailable(this.lstAddOrEditAddressDialogAddressDropDownList.get(randomNumber));
 		this.waitForCondition(Driver->{return !this.cntAddOrEditAddressDialogAddressDropDownList.getAttribute("class").contains("react-autosuggest__suggestions-container--open");},20000);
+
+		//Wait for province and postal code update
+		this.getReusableActionsInstance().staticWait(2*this.getStaticWaitForApplication());
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressDialogAddress);
 		String lsAddress=inputAddOrEditAddressDialogAddress.getAttribute("value").trim();
@@ -994,9 +1053,16 @@ public class RegularCheckoutPage extends BasePage {
 			this.applyStaticWait(5*getStaticWaitForApplication());
 		}
 		else{
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrChangeShippingAddressDialogBackButton);
-			btnAddOrChangeShippingAddressDialogBackButton.click();
-			this.applyStaticWait(2*getStaticWaitForApplication());
+			if(System.getProperty("Device").equalsIgnoreCase("Mobile")){
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrChangeShippingAddressDialogBackButton);
+				btnAddOrChangeShippingAddressDialogBackButton.click();
+				this.applyStaticWait(2*getStaticWaitForApplication());
+			}
+			else{
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrChangeShippingAddressDialogCloseButton);
+				btnAddOrChangeShippingAddressDialogCloseButton.click();
+				this.applyStaticWait(2*getStaticWaitForApplication());
+			}
 		}
 	}
 
@@ -1022,10 +1088,63 @@ public class RegularCheckoutPage extends BasePage {
 			this.applyStaticWait(5*getStaticWaitForApplication());
 		}
 		else{
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrEditAddressDialogCloseButton);
-			btnAddOrEditAddressDialogCloseButton.click();
-			this.applyStaticWait(2*getStaticWaitForApplication());
+			if(System.getProperty("Device").equalsIgnoreCase("Mobile")){
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrEditAddressDialogBackButton);
+				btnAddOrEditAddressDialogBackButton.click();
+				this.applyStaticWait(2*getStaticWaitForApplication());
+			}
+			else{
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrEditAddressDialogCloseButton);
+				btnAddOrEditAddressDialogCloseButton.click();
+				this.applyStaticWait(2*getStaticWaitForApplication());
+			}
 		}
+	}
+
+	/**
+	 * To open Change Shipping Method Dialog
+	 * @return - boolean
+	 */
+	public boolean openChangeShippingMethodDialog(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnChangeShippingMethod);
+		btnChangeShippingMethod.click();
+		return this.waitForCondition(Driver->{return this.lblChangeShippingMethodDialogHeaderTitle.isDisplayed();},10000);
+	}
+
+	/**
+	 * To close Change Shipping Method Dialog
+	 * @param -boolean - bSave - true for save and false for close it directly
+	 */
+	public void closeChangeShippingMethodDialog(boolean bSave){
+		if(bSave){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnChangeShippingMethodDialogSaveAndContinueButton);
+			btnChangeShippingMethodDialogSaveAndContinueButton.click();
+			this.applyStaticWait(5*getStaticWaitForApplication());
+		}
+		else{
+			if(System.getProperty("Device").equalsIgnoreCase("Mobile")){
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnChangeShippingMethodDialogBackButton);
+				btnChangeShippingMethodDialogBackButton.click();
+				this.applyStaticWait(2*getStaticWaitForApplication());
+			}
+			else{
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnChangeShippingMethodDialogCloseButton);
+				btnChangeShippingMethodDialogCloseButton.click();
+				this.applyStaticWait(2*getStaticWaitForApplication());
+			}
+		}
+	}
+
+	/**
+	 * To choose Shipping Method In Change Shipping Method Dialog with given index
+	 * @param - int - selectedIndex - given index
+	 */
+	public void chooseShippingMethodInChangeShippingMethodDialogWithGivenIndex(int selectedIndex){
+		WebElement item=lstChangeShippingMethodDialogShippingMethodList.get(selectedIndex);
+		WebElement itemLabel=item.findElement(byShippingMethodLabel);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(itemLabel);
+		itemLabel.click();
+		this.applyStaticWait(300);
 	}
 
 	/**
@@ -1060,9 +1179,16 @@ public class RegularCheckoutPage extends BasePage {
 			this.applyStaticWait(5*getStaticWaitForApplication());
 		}
 		else{
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrChangePaymentMethodDialogCloseButton);
-			btnAddOrChangePaymentMethodDialogCloseButton.click();
-			this.applyStaticWait(2*getStaticWaitForApplication());
+			if(System.getProperty("Device").equalsIgnoreCase("Mobile")){
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrChangePaymentMethodDialogBackButton);
+				btnAddOrChangePaymentMethodDialogBackButton.click();
+				this.applyStaticWait(2*getStaticWaitForApplication());
+			}
+			else{
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrChangePaymentMethodDialogCloseButton);
+				btnAddOrChangePaymentMethodDialogCloseButton.click();
+				this.applyStaticWait(2*getStaticWaitForApplication());
+			}
 		}
 	}
 
@@ -1087,9 +1213,16 @@ public class RegularCheckoutPage extends BasePage {
 			this.applyStaticWait(5*getStaticWaitForApplication());
 		}
 		else{
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnUsingANewCardDialogCloseButton);
-			btnUsingANewCardDialogCloseButton.click();
-			this.applyStaticWait(2*getStaticWaitForApplication());
+			if(System.getProperty("Device").equalsIgnoreCase("Mobile")){
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnUsingANewCardDialogBackButton);
+				btnUsingANewCardDialogBackButton.click();
+				this.applyStaticWait(2*getStaticWaitForApplication());
+			}
+			else{
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnUsingANewCardDialogCloseButton);
+				btnUsingANewCardDialogCloseButton.click();
+				this.applyStaticWait(2*getStaticWaitForApplication());
+			}
 		}
 	}
 
@@ -1214,9 +1347,16 @@ public class RegularCheckoutPage extends BasePage {
 			this.applyStaticWait(5*getStaticWaitForApplication());
 		}
 		else{
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrEditAddressDialogCloseButton);
-			btnAddOrEditAddressDialogCloseButton.click();
-			this.applyStaticWait(2*getStaticWaitForApplication());
+			if(System.getProperty("Device").equalsIgnoreCase("Mobile")){
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrEditAddressDialogBackButton);
+				btnAddOrEditAddressDialogBackButton.click();
+				this.applyStaticWait(2*getStaticWaitForApplication());
+			}
+			else{
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrEditAddressDialogCloseButton);
+				btnAddOrEditAddressDialogCloseButton.click();
+				this.applyStaticWait(2*getStaticWaitForApplication());
+			}
 		}
 	}
 
@@ -1753,6 +1893,17 @@ public class RegularCheckoutPage extends BasePage {
 			reporter.reportLogFailWithScreenshot("The Shipping Method is not displaying correctly");
 		}
 
+		if(this.checkChangeShippingMethodButtonExisting()){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnChangeShippingMethod);
+			lsText=btnChangeShippingMethod.getText();
+			if(!lsText.isEmpty()){
+				reporter.reportLogPass("The change Shipping Method button is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The change Shipping Method button is not displaying correctly");
+			}
+		}
+
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblShippingPaymentMethodTitle);
 		lsText=lblShippingPaymentMethodTitle.getText();
 		if(!lsText.isEmpty()){
@@ -2146,13 +2297,25 @@ public class RegularCheckoutPage extends BasePage {
 			reporter.reportLogFailWithScreenshot("The title in Add Or Change Address Dialog is not displaying correctly");
 		}
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrChangeShippingAddressDialogBackButton);
-		if(this.getReusableActionsInstance().isElementVisible(btnAddOrChangeShippingAddressDialogBackButton)){
-			reporter.reportLogPass("The Back button in Add Or Change Address Dialog is displaying correctly");
+		if(System.getProperty("Device").equalsIgnoreCase("Mobile")){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrChangeShippingAddressDialogBackButton);
+			if(this.getReusableActionsInstance().isElementVisible(btnAddOrChangeShippingAddressDialogBackButton)){
+				reporter.reportLogPass("The Back button in Add Or Change Address Dialog is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The Back button in Add Or Change Address Dialog is not displaying correctly");
+			}
 		}
 		else{
-			reporter.reportLogFailWithScreenshot("The Back button in Add Or Change Address Dialog is not displaying correctly");
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrChangeShippingAddressDialogCloseButton);
+			if(this.getReusableActionsInstance().isElementVisible(btnAddOrChangeShippingAddressDialogCloseButton)){
+				reporter.reportLogPass("The Close button in Add Or Change Address Dialog is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The Close button in Add Or Change Address Dialog is not displaying correctly");
+			}
 		}
+
 
 		if(this.checkAvailableShippingAddressExisting()){
 			WebElement item, addressItem;
@@ -2226,12 +2389,23 @@ public class RegularCheckoutPage extends BasePage {
 			reporter.reportLogFailWithScreenshot("The title in Add or edit address Dialog is not displaying correctly");
 		}
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrEditAddressDialogCloseButton);
-		if(this.getReusableActionsInstance().isElementVisible(btnAddOrEditAddressDialogCloseButton)){
-			reporter.reportLogPass("The close button in Add or edit address Dialog is displaying correctly");
+		if(System.getProperty("Device").equalsIgnoreCase("Mobile")){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrEditAddressDialogBackButton);
+			if(this.getReusableActionsInstance().isElementVisible(btnAddOrEditAddressDialogBackButton)){
+				reporter.reportLogPass("The Back button in Add or edit address Dialog is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The Back button in Add or edit address Dialog is not displaying correctly");
+			}
 		}
 		else{
-			reporter.reportLogFailWithScreenshot("The close button in Add or edit address Dialog is not displaying correctly");
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrEditAddressDialogCloseButton);
+			if(this.getReusableActionsInstance().isElementVisible(btnAddOrEditAddressDialogCloseButton)){
+				reporter.reportLogPass("The close button in Add or edit address Dialog is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The close button in Add or edit address Dialog is not displaying correctly");
+			}
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddOrEditAddressDialogFormRequiredMessage);
@@ -2388,6 +2562,88 @@ public class RegularCheckoutPage extends BasePage {
 	}
 
 	/**
+	 * To verify Change Shipping Method Dialog Contents
+	 */
+	public void verifyChangeShippingMethodDialogContents() {
+		String lsText;
+		WebElement item;
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblChangeShippingMethodDialogHeaderTitle);
+		lsText = lblChangeShippingMethodDialogHeaderTitle.getText();
+		if (!lsText.isEmpty()) {
+			reporter.reportLogPass("The title in Change shipping method Dialog is displaying correctly");
+		} else {
+			reporter.reportLogFailWithScreenshot("The title in Change shipping method Dialog is not displaying correctly");
+		}
+
+		if(System.getProperty("Device").equalsIgnoreCase("Mobile")){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnChangeShippingMethodDialogBackButton);
+			lsText = btnChangeShippingMethodDialogBackButton.getText();
+			if (!lsText.isEmpty()) {
+				reporter.reportLogPass("The Back button in Change shipping method Dialog is displaying correctly");
+			} else {
+				reporter.reportLogFailWithScreenshot("The Back button in Change shipping method Dialog is not displaying correctly");
+			}
+		}
+		else{
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnChangeShippingMethodDialogCloseButton);
+			lsText = btnChangeShippingMethodDialogCloseButton.getText();
+			if (!lsText.isEmpty()) {
+				reporter.reportLogPass("The Close button in Change shipping method Dialog is displaying correctly");
+			} else {
+				reporter.reportLogFailWithScreenshot("The Close button in Change shipping method Dialog is not displaying correctly");
+			}
+		}
+
+		for(WebElement shippingMethodItem:lstChangeShippingMethodDialogShippingMethodList){
+			item=shippingMethodItem.findElement(byShippingMethodDescription);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsText = item.getText();
+			reporter.reportLog("Verify '"+lsText+"'");
+			if (!lsText.isEmpty()) {
+				reporter.reportLogPass("The shipping method item description in Change shipping method Dialog is displaying correctly");
+			} else {
+				reporter.reportLogFailWithScreenshot("The shipping method item description in Change shipping method Dialog is not displaying correctly");
+			}
+
+			item=shippingMethodItem.findElement(byShippingMethodLabel);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsText = item.getText();
+			if (!lsText.isEmpty()) {
+				reporter.reportLogPass("The shipping method item label in Change shipping method Dialog is displaying correctly");
+			} else {
+				reporter.reportLogFailWithScreenshot("The shipping method item label in Change shipping method Dialog is not displaying correctly");
+			}
+
+			item=shippingMethodItem.findElement(byShippingMethodRadioButton);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			if (this.getReusableActionsInstance().isElementVisible(item)) {
+				reporter.reportLogPass("The shipping method item radio button in Change shipping method Dialog is displaying correctly");
+			} else {
+				reporter.reportLogFailWithScreenshot("The shipping method item radio button in Change shipping method Dialog is not displaying correctly");
+			}
+
+			item=shippingMethodItem.findElement(byShippingMethodDetails);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsText = item.getText();
+			if (!lsText.isEmpty()) {
+				reporter.reportLogPass("The shipping method item details info in Change shipping method Dialog is displaying correctly");
+			} else {
+				reporter.reportLogFailWithScreenshot("The shipping method item details info in Change shipping method Dialog is not displaying correctly");
+			}
+
+			item=shippingMethodItem.findElement(byShippingMethodLearMoreLink);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsText = item.getAttribute("href");
+			if (!lsText.isEmpty()) {
+				reporter.reportLogPass("The shipping method item learn more link in Change shipping method Dialog is not empty");
+			} else {
+				reporter.reportLogFailWithScreenshot("The shipping method item learn more link in Change shipping method Dialog is empty");
+			}
+		}
+	}
+
+	/**
 	 * To verify Add Or Change Payment Method Dialog Contents
 	 */
 	public void verifyAddOrChangePaymentMethodDialogContents() {
@@ -2401,12 +2657,23 @@ public class RegularCheckoutPage extends BasePage {
 			reporter.reportLogFailWithScreenshot("The title in Add Or Change Payment Method Dialog is not displaying correctly");
 		}
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrChangePaymentMethodDialogCloseButton);
-		if(this.getReusableActionsInstance().isElementVisible(btnAddOrChangePaymentMethodDialogCloseButton)){
-			reporter.reportLogPass("The close button in Add Or Change Payment Method Dialog is displaying correctly");
+		if(System.getProperty("Device").equalsIgnoreCase("Mobile")){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrChangePaymentMethodDialogBackButton);
+			if(this.getReusableActionsInstance().isElementVisible(btnAddOrChangePaymentMethodDialogBackButton)){
+				reporter.reportLogPass("The Back button in Add Or Change Payment Method Dialog is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The Back button in Add Or Change Payment Method Dialog is not displaying correctly");
+			}
 		}
 		else{
-			reporter.reportLogFailWithScreenshot("The close button in Add Or Change Payment Method Dialog is not displaying correctly");
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrChangePaymentMethodDialogCloseButton);
+			if(this.getReusableActionsInstance().isElementVisible(btnAddOrChangePaymentMethodDialogCloseButton)){
+				reporter.reportLogPass("The close button in Add Or Change Payment Method Dialog is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The close button in Add Or Change Payment Method Dialog is not displaying correctly");
+			}
 		}
 
 		if(this.checkAvailablePaymentMethodExisting()){
@@ -2508,12 +2775,23 @@ public class RegularCheckoutPage extends BasePage {
 			reporter.reportLogFailWithScreenshot("The title in using a new card Dialog is not displaying correctly");
 		}
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnUsingANewCardDialogCloseButton);
-		if(this.getReusableActionsInstance().isElementVisible(btnUsingANewCardDialogCloseButton)){
-			reporter.reportLogPass("The close button in using a new card Dialog is displaying correctly");
+		if(System.getProperty("Device").equalsIgnoreCase("Mobile")){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnUsingANewCardDialogBackButton);
+			if(this.getReusableActionsInstance().isElementVisible(btnUsingANewCardDialogBackButton)){
+				reporter.reportLogPass("The Back button in using a new card Dialog is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The Back button in using a new card Dialog is not displaying correctly");
+			}
 		}
 		else{
-			reporter.reportLogFailWithScreenshot("The close button in using a new card Dialog is not displaying correctly");
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnUsingANewCardDialogCloseButton);
+			if(this.getReusableActionsInstance().isElementVisible(btnUsingANewCardDialogCloseButton)){
+				reporter.reportLogPass("The close button in using a new card Dialog is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The close button in using a new card Dialog is not displaying correctly");
+			}
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputUsingANewCardDialogCreditCardRadio);
