@@ -18,7 +18,10 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
 import java.io.IOException;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -27,6 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class ShoppingCartPage extends BasePage {
 
@@ -2855,8 +2859,11 @@ public class ShoppingCartPage extends BasePage {
 		int size = this.lstCartCheckoutDonationButton.size();
 		if (size>0){
 			getReusableActionsInstance().clickIfAvailable(this.lstCartCheckoutDonationButton.get(0));
-			this.waitForPageToLoad();
-			this.waitForCondition(Driver->{return this.checkChildElementExistingByTagNameAndAttribute(lblBlueJayDonation,"a","class","donationButton active");},10000);
+			try{
+				this.waitForCondition(Driver->{return this.checkChildElementExistingByTagNameAndAttribute(lblBlueJayDonation,"a","class","donationButton active");},10000);
+			}catch (Exception exception){
+				this.applyStaticWait(5000);
+			}
 			String selectedDonation = getReusableActionsInstance().getElementText(this.lblBlueJaySelectedDonation).trim();
 			return selectedDonation;
 		}
