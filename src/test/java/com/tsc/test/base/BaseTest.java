@@ -177,7 +177,7 @@ public class BaseTest {
 
 		if(System.getProperty("Browser").contains("ios") ||
 				(System.getProperty("chromeMobileDevice")!=null
-						&& (!System.getProperty("chromeMobileDevice").contains("iPad")))) {
+						&& (System.getProperty("chromeMobileDevice").contains("iPad")))) {
 			loginPageThreadLocal.set(new SignInPage(getDriver()));
 			myAccountPageThreadLocal.set(new MyAccount(getDriver()));
 		}

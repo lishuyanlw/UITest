@@ -723,7 +723,8 @@ public class MyAccount extends BasePage {
 	@FindBy(xpath = "//iFrame[@id='ifrmEmailSignup']")
 	public WebElement iFrameEmailSignup;
 
-	@FindBy(xpath = "//div[@id='bodycontent']")
+	//@FindBy(xpath = "//div[@id='bodycontent']")
+	@FindBy(xpath = "//div[@id='header']/p")
 	public WebElement lblSubscriptionSuccessMessage;
 
 

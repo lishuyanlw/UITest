@@ -50,7 +50,7 @@ public class MA_TC16_MyPreferences_Favorites extends BaseTest {
         if (basePage.URL().equalsIgnoreCase(expectedURL)) {
             reporter.reportLogPass("The navigated URL is equal to expected one:" + expectedURL);
         } else {
-            reporter.reportLogPass("The actual navigated URL:+" + basePage.URL() + " is not equal to expected one:" + expectedURL);
+            reporter.reportLogFailWithScreenshot("The actual navigated URL:" + basePage.URL() + " is not equal to expected one:" + expectedURL);
         }
 
         String lsTestDevice = System.getProperty("Device").trim();

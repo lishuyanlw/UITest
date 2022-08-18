@@ -25,14 +25,17 @@ public class MA_TC19_SignOut_HeaderMenu extends BaseTest {
         //Login using valid username and password
         getGlobalLoginPageThreadLocal().Login(lblUserName, lblPassword);
 
+
         String lnk_landingViewURL=TestDataHandler.constantData.getMyAccount().getLnk_myAccountLandingViewURL();
         String expectedURL=basePage.getBaseURL()+lnk_landingViewURL;
+        /**
         if(basePage.URL().equalsIgnoreCase(expectedURL)){
             reporter.reportLogPass("The navigated URL is equal to expected one:"+expectedURL);
         }
         else{
-            reporter.reportLogPass("The actual navigated URL:+"+basePage.URL()+" is not equal to expected one:"+expectedURL);
+            reporter.reportLogFailWithScreenshot("The actual navigated URL:"+basePage.URL()+" is not equal to expected one:"+expectedURL);
         }
+        */
 
         reporter.reportLog("Verify customer information");
         //Fetching test data from test data file
