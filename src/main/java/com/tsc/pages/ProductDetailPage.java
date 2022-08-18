@@ -1999,6 +1999,7 @@ public class ProductDetailPage extends BasePage {
 	 * To go To Shopping Cart page By Clicking Shopping Cart Icon In GlobalHeader
 	 */
 	public void goToShoppingCartByClickingShoppingCartIconInGlobalHeader(){
+		this.waitForPageToLoad();
 		GlobalHeaderPage globalHeaderPage=new GlobalHeaderPage(this.getDriver());
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeaderPage.ShoppingCartlnk);
 		globalHeaderPage.ShoppingCartlnk.click();
