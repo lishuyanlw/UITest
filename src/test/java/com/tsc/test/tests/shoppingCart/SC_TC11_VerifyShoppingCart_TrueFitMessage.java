@@ -14,7 +14,7 @@ public class SC_TC11_VerifyShoppingCart_TrueFitMessage extends BaseTest{
 	/*
 	 * CER-861
 	 */
-	@Test(groups={"Regression","ShoppingCart","SauceTunnelTest"})
+	@Test(groups={"Regression","ShoppingCart"})
 	public void SC_TC11_VerifyShoppingCart_TrueFitMessage() throws IOException {
 
 		String lsUserName = TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();

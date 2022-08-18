@@ -20,7 +20,7 @@ public class SC_TC09_VerifyShoppingCart_Free_Gift_Item extends BaseTest {
     /*
      * CER-852 - Shopping Cart - Add item (having associate gift item) and check sub-total and order summary
      */
-    @Test(groups={"Regression","ShoppingCart","SauceTunnelTest"})
+    @Test(groups={"Regression","ShoppingCart"})
     public void SC_TC09_VerifyShoppingCart_Free_Gift_Item() throws IOException {
         getGlobalFooterPageThreadLocal().closePopupDialog();
 

@@ -14,7 +14,7 @@ public class SC_TC13_VerifyShoppingCart_ChangeItemQuantity extends BaseTest{
 	/*
 	 * CER-855
 	 */
-	@Test(groups={"Regression","ShoppingCart","SauceTunnelTest"})
+	@Test(groups={"Regression","ShoppingCart"})
 	public void SC_TC13_VerifyShoppingCart_ChangeItemQuantity() throws IOException {
 		String lsUserName = TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
 		String lsPassword = TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
