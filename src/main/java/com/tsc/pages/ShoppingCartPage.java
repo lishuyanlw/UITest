@@ -738,6 +738,13 @@ public class ShoppingCartPage extends BasePage {
 		lsText=select.getFirstSelectedOption().getText();
 		map.put("productQuantity",Integer.parseInt(lsText));
 
+		if(this.checkSelectQuantityEnabled(cartItem)){
+			map.put("productQuantityDisabled",false);
+		}
+		else{
+			map.put("productQuantityDisabled",true);
+		}
+
 		return map;
 	}
 
