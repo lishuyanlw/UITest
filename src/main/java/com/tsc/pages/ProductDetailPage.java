@@ -2007,13 +2007,14 @@ public class ProductDetailPage extends BasePage {
 		ShoppingCartPage shoppingCartPage=new ShoppingCartPage(this.getDriver());
 		this.waitForPageToLoad();
 		this.waitForCondition(Driver->{return shoppingCartPage.lblCartTitle.isDisplayed();},20000);
-		this.applyStaticWait(3*this.getStaticWaitForApplication());
+		this.applyStaticWait(5*this.getStaticWaitForApplication());
 	}
 
 	/**
 	 * To go To Shopping Cart page by clicking ViewShoppingBag button in AddToBag Popup window with login first
 	 */
 	public void goToShoppingCartFromAddToBagPopupWithLoginFirst(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnAddToBagPopupWindowButtonSectionViewShoppingBag);
 		this.btnAddToBagPopupWindowButtonSectionViewShoppingBag.click();
 		ShoppingCartPage shoppingCartPage=new ShoppingCartPage(this.getDriver());
 		try{
@@ -2022,6 +2023,16 @@ public class ProductDetailPage extends BasePage {
 		catch(Exception e){
 			this.applyStaticWait(10*this.getStaticWaitForApplication());
 		}
+	}
+
+	/**
+	 * To go To checkout page by clicking checkout button in AddToBag Popup window
+	 */
+	public void goToCheckoutPageFromAddToBagPopup(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnAddToBagPopupWindowButtonSectionCheckOut);
+		this.btnAddToBagPopupWindowButtonSectionCheckOut.click();
+		RegularCheckoutPage checkoutPage= new RegularCheckoutPage(this.getDriver());
+		this.waitForCondition(Driver->{return checkoutPage.lblCheckout.isDisplayed();},20000);
 	}
 
 	/**

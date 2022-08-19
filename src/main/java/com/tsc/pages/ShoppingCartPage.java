@@ -113,6 +113,7 @@ public class ShoppingCartPage extends BasePage {
 
 	public By byProductDescContainer=By.xpath(".//div[contains(@class,'cart-desc') and not(contains(@class,'cart-desc-line'))]");
 	public By byProductItemDesc=By.xpath(".//div[contains(@class,'cart-desc') and not(contains(@class,'cart-desc-line'))]//div[@class='item-desc']");
+	public By byProductNumberContainer=By.xpath(".//div[contains(@class,'cart-desc') and not(contains(@class,'cart-desc-line'))]");
 	public By byProductNumber=By.xpath(".//div[contains(@class,'item-num')]");
 	public By byProductShippingDate=By.xpath(".//div[contains(@class,'cart-desc') and not(contains(@class,'cart-desc-line'))]//div[contains(@class,'estimateDate')]");
 	public By byProductRedMessage=By.xpath(".//div[contains(@class,'item-status')][span[@class='boldRedColor']]");
@@ -223,6 +224,9 @@ public class ShoppingCartPage extends BasePage {
 	public WebElement lblCartPricingYouAreSaving;
 
 	//EasyPay
+	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'easypay')]//div[contains(@class,'cart-installment-more')]")
+	public WebElement cntEasyPayContainer;
+
 	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'easypay')]//strong")
 	public WebElement lblCartEasyPayTitle;
 
@@ -377,6 +381,16 @@ public class ShoppingCartPage extends BasePage {
 	public boolean checkProductBadgeExisting(WebElement cartItem){
 		WebElement item=cartItem.findElement(byProductPicBadgeContainer);
 		return this.checkChildElementExistingByAttribute(item,"class","badgeWrap");
+	}
+
+	/**
+	 * To check Product number Existing for cart item in shopping item list
+	 * @param - cartItem - item in lstCartItems
+	 * @return - boolean
+	 */
+	public boolean checkProductNumberExisting(WebElement cartItem){
+		WebElement item=cartItem.findElement(byProductNumberContainer);
+		return this.checkChildElementExistingByAttribute(item,"class","item-num");
 	}
 
 	/**
@@ -729,10 +743,15 @@ public class ShoppingCartPage extends BasePage {
 			map.put("productSize",null);
 		}
 
-		item=cartItem.findElement(byProductNumber);
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-		lsText=item.getText().replace("-","").trim();
-		map.put("productNumber",lsText);
+		if(this.checkProductNumberExisting(cartItem)){
+			item=cartItem.findElement(byProductNumber);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsText=item.getText().replace("-","").trim();
+			map.put("productNumber",lsText);
+		}
+		else{
+			map.put("productNumber",null);
+		}
 
 		item=cartItem.findElement(byProductNowPrice);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
@@ -744,6 +763,13 @@ public class ShoppingCartPage extends BasePage {
 		Select select = new Select(item);
 		lsText=select.getFirstSelectedOption().getText();
 		map.put("productQuantity",Integer.parseInt(lsText));
+
+		if(this.checkSelectQuantityEnabled(cartItem)){
+			map.put("productQuantityDisabled",false);
+		}
+		else{
+			map.put("productQuantityDisabled",true);
+		}
 
 		return map;
 	}
@@ -1514,7 +1540,7 @@ public class ShoppingCartPage extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectCartEasyPayInstallmentNumber);
 		Select select = new Select(this.selectCartEasyPayInstallmentNumber);
 		select.selectByVisibleText(optionText);
-		this.applyStaticWait(10*this.getStaticWaitForApplication());
+		this.waitForEasyPaySectionLoadingFromNonInstallmentState();
 	}
 
 	/**
@@ -1752,14 +1778,16 @@ public class ShoppingCartPage extends BasePage {
 					reporter.reportLogFailWithScreenshot("The cart item product description is not displaying correctly");
 				}
 
-				element=cartItem.findElement(byProductNumber);
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-				lsText=element.getText();
-				if(!lsText.isEmpty()){
-					reporter.reportLogPass("The cart item product product number is displaying correctly");
-				}
-				else{
-					reporter.reportLogFailWithScreenshot("The cart item product number is not displaying correctly");
+				if(this.checkProductNumberExisting(cartItem)){
+					element=cartItem.findElement(byProductNumber);
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+					lsText=element.getText();
+					if(!lsText.isEmpty()){
+						reporter.reportLogPass("The cart item product product number is displaying correctly");
+					}
+					else{
+						reporter.reportLogFailWithScreenshot("The cart item product number is not displaying correctly");
+					}
 				}
 
 				if(this.checkRemoveButtonExisting(cartItem)){
@@ -2652,7 +2680,6 @@ public class ShoppingCartPage extends BasePage {
 	}
 
 	/**
-<<<<<<< HEAD
 	 * To add Multiple Product EDP No
 	 * @param - String - productName
 	 * @param - String - customerEDP
@@ -2865,6 +2892,32 @@ public class ShoppingCartPage extends BasePage {
 			}
 		}
 		return map;
+	}
+
+	/**
+	 * To check If CheckOut Button Disabled
+	 * @return - boolean - true for disabled and false for enabled
+	 */
+	public boolean checkIfCheckOutButtonDisabled(){
+		return this.hasElementAttribute(this.btnCartCheckoutButton,"disabled");
+	}
+
+	/**
+	 * To go To checkout page by clicking checkout button
+	 */
+	public void goToCheckoutPage(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnCartCheckoutButton);
+		this.btnCartCheckoutButton.click();
+		RegularCheckoutPage checkoutPage= new RegularCheckoutPage(this.getDriver());
+		this.waitForCondition(Driver->{return checkoutPage.lblCheckout.isDisplayed();},30000);
+	}
+
+	/**
+	 * To wait For EasyPay Section Loading From NonInstallment State
+	 * @return- boolean
+	 */
+	public boolean waitForEasyPaySectionLoadingFromNonInstallmentState(){
+		return this.waitForCondition(Driver->{return this.getChildElementCount(this.cntEasyPayContainer)>1;},30000);
 	}
 
 	/**
