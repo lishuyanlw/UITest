@@ -67,9 +67,10 @@ public class SC_TC09_VerifyShoppingCart_Free_Gift_Item_And_Blue_Jay_Donation_Wit
                 (new BasePage(this.getDriver())).applyStaticWait(3000);
             }
             getProductDetailPageThreadLocal().goToShoppingCartByClickingShoppingCartIconInGlobalHeader();
+            Map<String,Object> shoppingCartMap=getShoppingCartThreadLocal().getShoppingSectionDetails("mandatory");
 
             reporter.reportLog("Verifying that free shipping item is added for user");
-            getShoppingCartThreadLocal().verifyFreeShippingItemPresentInCart();
+            getShoppingCartThreadLocal().verifyFreeGiftItemPresentInCart(shoppingCartMap, Integer.valueOf(getShoppingCartThreadLocal().getKeyValueFromContentfulConfiguration(configurations,"GWPGiftItemEdp").toString()));
 
             reporter.reportLog("Verify OrderSummary and EasyPayment sections contents");
             int itemAmount=getShoppingCartThreadLocal().GetAddedItemAmount();

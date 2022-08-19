@@ -19,9 +19,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.IOException;
 import java.math.RoundingMode;
@@ -31,7 +29,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 public class ShoppingCartPage extends BasePage {
 
@@ -2858,21 +2855,54 @@ public class ShoppingCartPage extends BasePage {
 
 	/**
 	 * This function verifies that free shipping item is present in cart
+	 * @param - Map<String,Object> - shopping cart map object
+	 * @param - int - edp number for free gift item
 	 */
-	public void verifyFreeShippingItemPresentInCart(){
+	public void verifyFreeGiftItemPresentInCart(Map<String,Object> shoppingCartMap,int edpNumber) throws IOException {
 		boolean flag = false;
-		for(WebElement webElement:lstCartItems){
-			if(checkFreeShippingMessageExisting(webElement)){
-				if(!checkSelectQuantityEnabled(webElement)){
+		//Fetching product edp number and name from product item number
+		if(shoppingCartMap.size()>0){
+			List<Map<String,Object>> shoppingCartItemList = (List<Map<String, Object>>) shoppingCartMap.get("shoppingList");
+			for(Map<String,Object> map:shoppingCartItemList){
+				if(Boolean.valueOf(map.get("productQuantityDisabled").toString())){
 					flag = true;
+					ProductDetailsItem productDetailsItem = new ProductAPI().getProductDetailsForSpecificProductNumber(map.get("productNumber").toString());
+					//Verifying free gift product name
+					if(productDetailsItem.getName().equalsIgnoreCase(map.get("productName").toString()))
+						reporter.reportLogPass("Product Name for free gift item is as expected: "+productDetailsItem.getName());
+					else
+						reporter.reportLogFailWithScreenshot("Product Name for free gift item is not as expected: "+productDetailsItem.getName());
+
+					//Verifying free gift product edp number
+					if(productDetailsItem.getDefaultEdp()==edpNumber)
+						reporter.reportLogPass("Edp Number for free gift item is as expected: "+edpNumber);
+					else
+						reporter.reportLogFailWithScreenshot("Edp Number for free gift item is not as expected: "+edpNumber+" actual: "+productDetailsItem.getDefaultEdp());
+
 					break;
 				}
 			}
+			if(flag)
+				reporter.reportLogPassWithScreenshot("Free Shipping item is added to cart as expected for user");
+			else
+				reporter.reportLogFailWithScreenshot("Free Shipping item is not added to cart as expected for user");
+		}else
+			reporter.reportLogFailWithScreenshot("No item is present in shopping cart!");
+	}
+
+	/**
+	 * This function returns particular config key value provided by user
+	 * @param configurations - configuration List from contentful
+	 * @param keyName - keyName whose value is to be fetched
+	 * @return - Object
+	 */
+	public Object getKeyValueFromContentfulConfiguration(List<Configuration> configurations, String keyName){
+		for(Configuration configuration:configurations){
+			if(configuration.getKey().equalsIgnoreCase(keyName)){
+				return configuration.getValue();
+			}
 		}
-		if(flag)
-			reporter.reportLogPassWithScreenshot("Free Shipping item is added to cart as expected for user");
-		else
-			reporter.reportLogFailWithScreenshot("Free Shipping item is not added to cart as expected for user");
+		return null;
 	}
 
 	/**
@@ -2900,16 +2930,6 @@ public class ShoppingCartPage extends BasePage {
 	 */
 	public boolean checkIfCheckOutButtonDisabled(){
 		return this.hasElementAttribute(this.btnCartCheckoutButton,"disabled");
-	}
-
-	/**
-	 * To go To checkout page by clicking checkout button
-	 */
-	public void goToCheckoutPage(){
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnCartCheckoutButton);
-		this.btnCartCheckoutButton.click();
-		RegularCheckoutPage checkoutPage= new RegularCheckoutPage(this.getDriver());
-		this.waitForCondition(Driver->{return checkoutPage.lblCheckout.isDisplayed();},30000);
 	}
 
 	/**
@@ -2990,7 +3010,7 @@ public class ShoppingCartPage extends BasePage {
 					this.waitForCondition(Driver->{return this.getReusableActionsInstance().isElementVisible(this.inputPayPalEmailInput) && this.inputPayPalEmailInput.isEnabled();},10000);
 					String payPalUrl = this.getDriver().getCurrentUrl();
 					if(payPalUrl.contains("paypal.com"))
-						reporter.reportLogPass("User is navigated to PayPal pop up as expected with url: "+payPalUrl);
+						reporter.reportLogPass("User is navigated to PayPal pop up as expected");
 					else
 						reporter.reportLogFail("User is not navigated to PayPal pop up as expected with url: "+payPalUrl);
 
@@ -3001,10 +3021,9 @@ public class ShoppingCartPage extends BasePage {
 						reporter.reportLogFailWithScreenshot("Email input on Pay Pal pop up is either not displayed or not enabled");
 
 					this.getDriver().close();
-					this.getReusableActionsInstance().switchToMainWindow(parentWindowHandle);
 				}
 				if(flag){
-					this.getDriver().switchTo().defaultContent();
+					this.getReusableActionsInstance().switchToMainWindow(parentWindowHandle);
 					break;
 				}
 			}

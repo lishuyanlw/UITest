@@ -134,6 +134,13 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 		lsText=select.getFirstSelectedOption().getText();
 		map.put("productQuantity",Integer.parseInt(lsText));
 
+		if(this.checkSelectQuantityEnabled(cartItem)){
+			map.put("productQuantityDisabled",false);
+		}
+		else{
+			map.put("productQuantityDisabled",true);
+		}
+
 		return map;
 	}
 

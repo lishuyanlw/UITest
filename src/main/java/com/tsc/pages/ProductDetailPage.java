@@ -2026,16 +2026,6 @@ public class ProductDetailPage extends BasePage {
 	}
 
 	/**
-	 * To go To checkout page by clicking checkout button in AddToBag Popup window
-	 */
-	public void goToCheckoutPageFromAddToBagPopup(){
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnAddToBagPopupWindowButtonSectionCheckOut);
-		this.btnAddToBagPopupWindowButtonSectionCheckOut.click();
-		RegularCheckoutPage checkoutPage= new RegularCheckoutPage(this.getDriver());
-		this.waitForCondition(Driver->{return checkoutPage.lblCheckout.isDisplayed();},20000);
-	}
-
-	/**
 	 * To go To Shopping Cart page by clicking ViewShoppingBag button in AddToBag Popup window without login first
 	 * @param - String - lsUserName
 	 * @param - String - lsPassword
