@@ -19,6 +19,8 @@ import java.util.Map;
 public class SC_TC09_VerifyShoppingCart_Free_Gift_Item_And_Blue_Jay_Donation extends BaseTest {
     /*
      * CER-852 - Shopping Cart - Add item (having associate gift item) and check sub-total and order summary
+     * CER-870 - Shopping Cart - Verify blue jays donation addition
+     * CER-866 - Shopping Cart - Verify PayPal button functionality
      */
     @Test(groups={"Regression","ShoppingCart","SauceTunnelTest"})
     public void SC_TC09_VerifyShoppingCart_Free_Gift_Item_And_Blue_Jay_Donation() throws IOException {
@@ -94,6 +96,9 @@ public class SC_TC09_VerifyShoppingCart_Free_Gift_Item_And_Blue_Jay_Donation ext
             getShoppingCartThreadLocal().verifyOrderSummaryBusinessLogic(itemAmount,savingPrice,subTotal,mapOrderSummary,null);
             getShoppingCartThreadLocal().verifyOrderSummaryContents();
 
+            //Verification of PayPal button functionality
+            reporter.reportLog("Verification of PayPal Button functionality");
+            getShoppingCartThreadLocal().verifyPayPalPopUpExistenceOnClick();
         }finally {
             //Emptying Cart for next test to run with right state
             getShoppingCartThreadLocal().emptyCart(Integer.valueOf(customerEDP),accessToken);

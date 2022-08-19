@@ -18,6 +18,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -282,6 +283,20 @@ public class ShoppingCartPage extends BasePage {
 
 	@FindBy(xpath = "//div[@class='Footer']//div[@class='blockPageWrap']")
 	public WebElement pageLoadingIndicator;
+
+	//PayPal
+	@FindBy(how = How.XPATH, using = "//div[@id='buttons-container']//div[contains(@class,'paypal-button') and @role]")
+	//@FindBy(xpath = "//div[@id='buttons-container']//div[contains(@class,'paypal-button') and @role]")
+	public WebElement btnPayPalButton;
+
+	@FindBy(xpath = "//iframe[contains(@name,'paypal')]")
+	public WebElement framePayPalFrameElement;
+
+	@FindBy(xpath = "//div[@id='splitEmail']//input[@id='email']")
+	public WebElement inputPayPalEmailInput;
+
+	@FindBy(xpath = "//div[@id='splitEmail']//button[@value='Next']")
+	public WebElement btnPayPalNextButton;
 
 	/**
 	 * To get added item amount
@@ -2899,5 +2914,52 @@ public class ShoppingCartPage extends BasePage {
 			reporter.reportLog("Verification for Blue Jays Foundation is done as expected");
 		else
 			reporter.reportLogFailWithScreenshot("Blue Jays Foundation verification is not done!!");
+	}
+
+	/**
+	 * This function verifies that Pay Pal pop up appears from checkout page
+	 */
+	public void verifyPayPalPopUpExistenceOnClick(){
+		boolean flag = false;
+		String parentWindowHandle = this.getDriver().getWindowHandle();
+		//Switch to PayPal frame
+		this.getDriver().switchTo().frame(framePayPalFrameElement);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnPayPalButton);
+		this.getReusableActionsInstance().clickIfAvailable(this.btnPayPalButton);
+		this.waitForCondition(Driver->{return this.getDriver().getWindowHandles().size()>1;},5000);
+		Set<String> windowHandles = this.getDriver().getWindowHandles();
+		if(windowHandles.size()>1){
+			for(String windowHandle:windowHandles){
+				if(!windowHandle.equalsIgnoreCase(parentWindowHandle)){
+					flag = true;
+					this.getDriver().switchTo().window(windowHandle);
+					this.waitForCondition(Driver->{return this.getReusableActionsInstance().isElementVisible(this.inputPayPalEmailInput) && this.inputPayPalEmailInput.isEnabled();},10000);
+					String payPalUrl = this.getDriver().getCurrentUrl();
+					if(payPalUrl.contains("paypal.com"))
+						reporter.reportLogPass("User is navigated to PayPal pop up as expected with url: "+payPalUrl);
+					else
+						reporter.reportLogFail("User is not navigated to PayPal pop up as expected with url: "+payPalUrl);
+
+					//Verification of email input box
+					if(this.getReusableActionsInstance().isElementVisible(this.inputPayPalEmailInput) && this.inputPayPalEmailInput.isEnabled())
+						reporter.reportLog("Email Input on Pay Pal Pop Up is enabled");
+					else
+						reporter.reportLogFailWithScreenshot("Email input on Pay Pal pop up is either not displayed or not enabled");
+
+					this.getDriver().close();
+					this.getReusableActionsInstance().switchToMainWindow(parentWindowHandle);
+				}
+				if(flag){
+					this.getDriver().switchTo().defaultContent();
+					break;
+				}
+			}
+			if(flag)
+				reporter.reportLogPass("Verification for pay pal pop is done");
+			else
+				reporter.reportLogFailWithScreenshot("Verification for pay pal pop is not done as expected!");
+		}else
+			reporter.reportLogFailWithScreenshot("Pay Pal pop up is not displayed as expected");
 	}
 }
