@@ -59,45 +59,46 @@ public class CP_TC01_VerifyLeftSection_Header_ProductList_Address_Payment extend
 		Map<String, Object> orderSummaryMapForCheckOutPage = getRegularCheckoutThreadLocal().getOrderSummaryDesc();
 		Map<String, Object> easyPaymentMapForCheckOutPage = getRegularCheckoutThreadLocal().getEasyPayDesc();
 
-		getRegularCheckoutThreadLocal().verifyOrderSummaryBusinessLogic(subTotalForCheckOutList,orderSummaryMapForCheckOutPage,null);
-		getRegularCheckoutThreadLocal().verifyInstallmentBusinessLogic(installmentsNumberForShoppingCart,orderSummaryMapForCheckOutPage);
-
-		getRegularCheckoutThreadLocal().verifyCheckoutHeaderContents();
-		getRegularCheckoutThreadLocal().verifyMandatoryContentsForCheckoutProductList();
-		getRegularCheckoutThreadLocal().verifyOptionalContentsForCheckoutProductList();
-		getRegularCheckoutThreadLocal().verifyAddressAndPaymentContents();
-		getRegularCheckoutThreadLocal().verifyOrderSummaryContents();
-		getRegularCheckoutThreadLocal().verifyEasyPayContents();
-		getRegularCheckoutThreadLocal().verifyGiftCardAndPlaceOrderContents();
-
-
-		if(getRegularCheckoutThreadLocal().checkChangeShippingMethodButtonExisting()){
-			reporter.reportLog("Verify Shipping method");
-			getRegularCheckoutThreadLocal().openAddOrChangePaymentMethodDialog();
-			getRegularCheckoutThreadLocal().chooseShippingMethodInChangeShippingMethodDialogWithGivenIndex(1);
-			getRegularCheckoutThreadLocal().closeChangeShippingMethodDialog(true);
-		}
+//		getRegularCheckoutThreadLocal().verifyOrderSummaryBusinessLogic(subTotalForCheckOutList,orderSummaryMapForCheckOutPage,null);
+//		getRegularCheckoutThreadLocal().verifyInstallmentBusinessLogic(installmentsNumberForShoppingCart,orderSummaryMapForCheckOutPage);
+//
+//		getRegularCheckoutThreadLocal().verifyCheckoutHeaderContents();
+//		getRegularCheckoutThreadLocal().verifyMandatoryContentsForCheckoutProductList();
+//		getRegularCheckoutThreadLocal().verifyOptionalContentsForCheckoutProductList();
+//		getRegularCheckoutThreadLocal().verifyAddressAndPaymentContents();
+//		getRegularCheckoutThreadLocal().verifyOrderSummaryContents();
+//		getRegularCheckoutThreadLocal().verifyEasyPayContents();
+//		getRegularCheckoutThreadLocal().verifyGiftCardAndPlaceOrderContents();
+//
+//
+//		if(getRegularCheckoutThreadLocal().checkChangeShippingMethodButtonExisting()){
+//			reporter.reportLog("Verify Shipping method");
+//			getRegularCheckoutThreadLocal().openAddOrChangePaymentMethodDialog();
+//			getRegularCheckoutThreadLocal().chooseShippingMethodInChangeShippingMethodDialogWithGivenIndex(1);
+//			getRegularCheckoutThreadLocal().closeChangeShippingMethodDialog(true);
+//		}
 
 		reporter.reportLog("Verify Payment Method");
 		getRegularCheckoutThreadLocal().openAddOrChangePaymentMethodDialog();
-		getRegularCheckoutThreadLocal().openUsingNewCardDialog();
-		getRegularCheckoutThreadLocal().addNewTSCCard();
-		getRegularCheckoutThreadLocal().closeUsingANewCardDialog(true);
+//		getRegularCheckoutThreadLocal().openUsingNewCardDialog();
+//		getRegularCheckoutThreadLocal().addNewTSCCard();
+		getRegularCheckoutThreadLocal().addOrChangePaymentMethod(false);
+		getRegularCheckoutThreadLocal().closeAddOrChangePaymentMethodDialog(true);
 
-		reporter.reportLog("Verify payment option");
-		List<String> paymentOptionList=getRegularCheckoutThreadLocal().getPaymentOptionTextList();
-		getRegularCheckoutThreadLocal().setPaymentOptionByGivenText(paymentOptionList.get(1));
-
-		reporter.reportLog("Verify shipping address");
-		getRegularCheckoutThreadLocal().openAddOrChangeAddressDialog();
-		getRegularCheckoutThreadLocal().openAddOrEditAddressDialog(getRegularCheckoutThreadLocal().btnAddOrChangeShippingAddressDialogAddNewAddressButton);
-		getRegularCheckoutThreadLocal().addOrEditAddress();
-		getRegularCheckoutThreadLocal().closeAddOrEditAddressDialog(true);
-
-		reporter.reportLog("Verify billing address");
-		getRegularCheckoutThreadLocal().openChangeBillingAddressDialog();
-		getRegularCheckoutThreadLocal().addOrEditAddress();
-		getRegularCheckoutThreadLocal().closeChangeBillingAddressDialog(true);
+//		reporter.reportLog("Verify payment option");
+//		List<String> paymentOptionList=getRegularCheckoutThreadLocal().getPaymentOptionTextList();
+//		getRegularCheckoutThreadLocal().setPaymentOptionByGivenText(paymentOptionList.get(1));
+//
+//		reporter.reportLog("Verify shipping address");
+//		getRegularCheckoutThreadLocal().openAddOrChangeAddressDialog();
+//		getRegularCheckoutThreadLocal().openAddOrEditAddressDialog(getRegularCheckoutThreadLocal().btnAddOrChangeShippingAddressDialogAddNewAddressButton);
+//		getRegularCheckoutThreadLocal().addOrEditAddress();
+//		getRegularCheckoutThreadLocal().closeAddOrEditAddressDialog(true);
+//
+//		reporter.reportLog("Verify billing address");
+//		getRegularCheckoutThreadLocal().openChangeBillingAddressDialog();
+//		getRegularCheckoutThreadLocal().addOrEditAddress();
+//		getRegularCheckoutThreadLocal().closeChangeBillingAddressDialog(true);
 
 
 

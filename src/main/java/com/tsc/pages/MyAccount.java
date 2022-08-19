@@ -1410,9 +1410,9 @@ public class MyAccount extends BasePage {
 		}
 
 		int randomNumber=0;
-		if(optionSize>1){
+		if(optionSize>2){
 			Random rand = new Random();
-			randomNumber = rand.nextInt(optionSize-1);
+			randomNumber = rand.nextInt(optionSize-2);
 		}
 
 		WebElement randomItem=this.lstOrderItemList.get(randomNumber).findElement(byOrderNo);
@@ -1670,9 +1670,9 @@ public class MyAccount extends BasePage {
 
 		int optionSize=this.lstOrderItemList.size();
 		int randomNumber=0;
-		if(optionSize>1){
+		if(optionSize>2){
 			Random rand = new Random();
-			randomNumber = rand.nextInt(optionSize-1);
+			randomNumber = rand.nextInt(optionSize-2);
 		}
 
 		WebElement randomOrderNOItem=this.lstOrderItemList.get(randomNumber).findElement(this.byOrderNo);
@@ -3192,8 +3192,11 @@ public class MyAccount extends BasePage {
 
 		if(selectedIndexInAutoSearchDropdownMenu==-1){
 			int optionSize=this.lstAddOrEditAddressAutoSearchDropdownItems.size();
-			Random rand = new Random();
-			int randomNumber = rand.nextInt(optionSize-2);
+			int randomNumber=0;
+			if(optionSize>2){
+				Random rand = new Random();
+				randomNumber = rand.nextInt(optionSize-2);
+			}
 
 			//selectedIndexInAutoSearchDropdownMenu=randomNumber;
 			selectedIndexInAutoSearchDropdownMenu=0;

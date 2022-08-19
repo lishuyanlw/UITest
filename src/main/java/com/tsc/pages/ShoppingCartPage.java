@@ -218,6 +218,9 @@ public class ShoppingCartPage extends BasePage {
 	public WebElement lblCartPricingYouAreSaving;
 
 	//EasyPay
+	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'easypay')]//div[contains(@class,'cart-installment-more')]")
+	public WebElement cntEasyPayContainer;
+
 	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'easypay')]//strong")
 	public WebElement lblCartEasyPayTitle;
 
@@ -1504,7 +1507,7 @@ public class ShoppingCartPage extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectCartEasyPayInstallmentNumber);
 		Select select = new Select(this.selectCartEasyPayInstallmentNumber);
 		select.selectByVisibleText(optionText);
-		this.applyStaticWait(10*this.getStaticWaitForApplication());
+		this.waitForEasyPaySectionLoadingFromNonInstallmentState();
 	}
 
 	/**
@@ -2644,7 +2647,6 @@ public class ShoppingCartPage extends BasePage {
 	}
 
 	/**
-<<<<<<< HEAD
 	 * To add Multiple Product EDP No
 	 * @param - String - productName
 	 * @param - String - customerEDP
@@ -2875,5 +2877,13 @@ public class ShoppingCartPage extends BasePage {
 		this.btnCartCheckoutButton.click();
 		RegularCheckoutPage checkoutPage= new RegularCheckoutPage(this.getDriver());
 		this.waitForCondition(Driver->{return checkoutPage.lblCheckout.isDisplayed();},30000);
+	}
+
+	/**
+	 * To wait For EasyPay Section Loading From NonInstallment State
+	 * @return- boolean
+	 */
+	public boolean waitForEasyPaySectionLoadingFromNonInstallmentState(){
+		return this.waitForCondition(Driver->{return this.getChildElementCount(this.cntEasyPayContainer)>1;},30000);
 	}
 }

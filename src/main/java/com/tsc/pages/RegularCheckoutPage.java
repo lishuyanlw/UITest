@@ -399,6 +399,9 @@ public class RegularCheckoutPage extends BasePage {
 	public WebElement lblOrderSummarySavingPrice;
 
 	//For Installment
+	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]/div[contains(@class,'summary')]")
+	public WebElement cntEasyPayContainer;
+
 	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'easypay__container')]//h3[@class='easypay__title--border']")
 	public WebElement lblInstallmentTitle;
 
@@ -467,6 +470,9 @@ public class RegularCheckoutPage extends BasePage {
 	public WebElement lblOrderSummaryPlaceOrderMessage;
 
 	//For footer
+	@FindBy(xpath = "//footer")
+	public WebElement cntFooterContainer;
+
 	@FindBy(xpath = "//footer//a[contains(@href,'aboutustandc')]")
 	public WebElement lnkTermsOfUse;
 
@@ -653,7 +659,7 @@ public class RegularCheckoutPage extends BasePage {
 	 * @return - boolean
 	 */
 	public boolean checkOrderSummaryWasPriceExisting(){
-		return this.checkChildElementExistingByTagName(cntOrderSummaryShippingPriceContainer,"del");
+		return !this.getElementInnerText(lblOrderSummaryShippingWasPrice).isEmpty();
 	}
 
 	/**
@@ -661,7 +667,15 @@ public class RegularCheckoutPage extends BasePage {
 	 * @return - boolean
 	 */
 	public boolean checkOrderSummarySavingPriceExisting(){
-		return this.checkChildElementExistingByTagName(cntOrderSummaryShippingPriceContainer,"del");
+		return !this.getElementInnerText(lblOrderSummaryShippingWasPrice).isEmpty();
+	}
+
+	/**
+	 * To check EasyPay Section Existing
+	 * @return - boolean
+	 */
+	public boolean checkEasyPaySectionExisting(){
+		return this.checkChildElementExistingByAttribute(cntEasyPayContainer,"class","easypay__container");
 	}
 
 	/**
@@ -994,7 +1008,7 @@ public class RegularCheckoutPage extends BasePage {
 
 		int optionSize=this.lstAddOrEditAddressDialogAddressDropDownList.size();
 		int randomNumber=0;
-		if(optionSize>1){
+		if(optionSize>2){
 			Random rand = new Random();
 			randomNumber = rand.nextInt(optionSize-2);
 		}
@@ -1052,7 +1066,8 @@ public class RegularCheckoutPage extends BasePage {
 	 */
 	public boolean openAddOrChangeAddressDialog(){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnShippingAddressAddOrChange);
-		btnShippingAddressAddOrChange.click();
+		this.clickElement(btnShippingAddressAddOrChange);
+//		btnShippingAddressAddOrChange.click();
 		return this.waitForCondition(Driver->{return this.lblAddOrChangeShippingAddressDialogTitle.isDisplayed();},10000);
 	}
 
@@ -1064,7 +1079,7 @@ public class RegularCheckoutPage extends BasePage {
 		if(bSave){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrChangeShippingAddressDialogSaveButton);
 			btnAddOrChangeShippingAddressDialogSaveButton.click();
-			this.applyStaticWait(5*getStaticWaitForApplication());
+			waitForPageLoadingSpinningStatusCompleted();
 		}
 		else{
 			if(System.getProperty("Device").equalsIgnoreCase("Mobile")){
@@ -1099,7 +1114,7 @@ public class RegularCheckoutPage extends BasePage {
 		if(bSave){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrEditAddressDialogSaveButton);
 			btnAddOrEditAddressDialogSaveButton.click();
-			this.applyStaticWait(5*getStaticWaitForApplication());
+			waitForPageLoadingSpinningStatusCompleted();
 		}
 		else{
 			if(System.getProperty("Device").equalsIgnoreCase("Mobile")){
@@ -1133,7 +1148,7 @@ public class RegularCheckoutPage extends BasePage {
 		if(bSave){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnChangeShippingMethodDialogSaveAndContinueButton);
 			btnChangeShippingMethodDialogSaveAndContinueButton.click();
-			this.applyStaticWait(5*getStaticWaitForApplication());
+			waitForPageLoadingSpinningStatusCompleted();
 		}
 		else{
 			if(System.getProperty("Device").equalsIgnoreCase("Mobile")){
@@ -1190,7 +1205,7 @@ public class RegularCheckoutPage extends BasePage {
 		if(bSave){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrChangePaymentMethodDialogSaveButton);
 			btnAddOrChangePaymentMethodDialogSaveButton.click();
-			this.applyStaticWait(5*getStaticWaitForApplication());
+			waitForPageLoadingSpinningStatusCompleted();
 		}
 		else{
 			if(System.getProperty("Device").equalsIgnoreCase("Mobile")){
@@ -1224,7 +1239,7 @@ public class RegularCheckoutPage extends BasePage {
 		if(bSave){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnUsingANewCardDialogSaveButton);
 			btnUsingANewCardDialogSaveButton.click();
-			this.applyStaticWait(5*getStaticWaitForApplication());
+			waitForPageLoadingSpinningStatusCompleted();
 		}
 		else{
 			if(System.getProperty("Device").equalsIgnoreCase("Mobile")){
@@ -1258,7 +1273,7 @@ public class RegularCheckoutPage extends BasePage {
 	 * To add a new Credit card
 	 */
 	public void addNewCreditCard(){
-		JSONObject cardData=this.getCardDataFromYamlFile("visa");
+		JSONObject cardData=this.getCardDataFromYamlFile("master");
 		String cardNumber= (String) cardData.get("Number");
 		String expiredMonth=(String) cardData.get("DisplayExpirationMonth");
 		String expiredYear=(String) cardData.get("DisplayExpirationYear");
@@ -1277,7 +1292,7 @@ public class RegularCheckoutPage extends BasePage {
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputUsingANewCardDialogCreditExpirationDateYear);
 		inputUsingANewCardDialogCreditExpirationDateYear.clear();
-		inputUsingANewCardDialogCreditExpirationDateYear.sendKeys(expiredMonth);
+		inputUsingANewCardDialogCreditExpirationDateYear.sendKeys(expiredYear);
 	}
 
 	/**
@@ -1346,7 +1361,8 @@ public class RegularCheckoutPage extends BasePage {
 	 */
 	public boolean openChangeBillingAddressDialog(){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnBillingAddressChange);
-		btnBillingAddressChange.click();
+		this.clickElement(btnBillingAddressChange);
+//		btnBillingAddressChange.click();
 		return this.waitForCondition(Driver->{return this.lblAddOrEditAddressDialogTitle.isDisplayed();},10000);
 	}
 
@@ -1358,7 +1374,7 @@ public class RegularCheckoutPage extends BasePage {
 		if(bSave){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrEditAddressDialogSaveButton);
 			btnAddOrEditAddressDialogSaveButton.click();
-			this.applyStaticWait(5*getStaticWaitForApplication());
+			waitForPageLoadingSpinningStatusCompleted();
 		}
 		else{
 			if(System.getProperty("Device").equalsIgnoreCase("Mobile")){
@@ -2920,6 +2936,14 @@ public class RegularCheckoutPage extends BasePage {
 		btnGoToShoppingBag.click();
 		ShoppingCartPage shoppingCartPage=new ShoppingCartPage(this.getDriver());
 		return this.waitForCondition(Driver->{return shoppingCartPage.lblCartTitle.isDisplayed();},20000);
+	}
+
+	/**
+	 * To wait For Page Loading Spinning Status Completed
+	 * @return - boolean
+	 */
+	public boolean waitForPageLoadingSpinningStatusCompleted(){
+		return this.waitForCondition(Driver->{return !this.checkChildElementExistingByAttribute(this.cntFooterContainer,"class","loading__overlay");},60000);
 	}
 
 
