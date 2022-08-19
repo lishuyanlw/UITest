@@ -16,14 +16,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public class SC_TC09_VerifyShoppingCart_Free_Gift_Item_And_Blue_Jay_Donation extends BaseTest {
+public class SC_TC09_VerifyShoppingCart_Free_Gift_Item_And_Blue_Jay_Donation_With_PayPal_Checkout extends BaseTest {
     /*
      * CER-852 - Shopping Cart - Add item (having associate gift item) and check sub-total and order summary
      * CER-870 - Shopping Cart - Verify blue jays donation addition
      * CER-866 - Shopping Cart - Verify PayPal button functionality
      */
     @Test(groups={"Regression","ShoppingCart","SauceTunnelTest"})
-    public void SC_TC09_VerifyShoppingCart_Free_Gift_Item_And_Blue_Jay_Donation() throws IOException {
+    public void SC_TC09_VerifyShoppingCart_Free_Gift_Item_And_Blue_Jay_Donation_With_PayPal_Checkout() throws IOException {
         getGlobalFooterPageThreadLocal().closePopupDialog();
 
         //Fetching test data from test data file
