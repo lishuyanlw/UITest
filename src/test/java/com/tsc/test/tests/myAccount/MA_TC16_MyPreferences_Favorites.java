@@ -45,14 +45,6 @@ public class MA_TC16_MyPreferences_Favorites extends BaseTest {
         //Login using valid username and password
         getGlobalLoginPageThreadLocal().Login(lblUserName, lblPassword);
 
-        String lnk_URL = TestDataHandler.constantData.getMyAccount().getLnk_myAccountFavouritesURL();
-        String expectedURL = basePage.getBaseURL() + lnk_URL;
-        if (basePage.URL().equalsIgnoreCase(expectedURL)) {
-            reporter.reportLogPass("The navigated URL is equal to expected one:" + expectedURL);
-        } else {
-            reporter.reportLogFailWithScreenshot("The actual navigated URL:" + basePage.URL() + " is not equal to expected one:" + expectedURL);
-        }
-
         String lsTestDevice = System.getProperty("Device").trim();
         String lsTestBrowser= System.getProperty("Browser").toLowerCase().trim();
         if((lsTestDevice.equalsIgnoreCase("Desktop"))||(lsTestDevice.equalsIgnoreCase("Tablet")&&lsTestBrowser.contains("ios"))){
@@ -73,6 +65,15 @@ public class MA_TC16_MyPreferences_Favorites extends BaseTest {
         }
 
         int favoriteItemAmount=getMyAccountPageThreadLocal().openSubItemWindow("My Preferences", "Favourites", getMyAccountPageThreadLocal().lblMyFavouritesTitle);
+
+        String lnk_URL = TestDataHandler.constantData.getMyAccount().getLnk_myAccountFavouritesURL();
+        String expectedURL = basePage.getBaseURL() + lnk_URL;
+        if (basePage.URL().equalsIgnoreCase(expectedURL)) {
+            reporter.reportLogPass("The navigated URL is equal to expected one:" + expectedURL);
+        } else {
+            reporter.reportLogFailWithScreenshot("The actual navigated URL:" + basePage.URL() + " is not equal to expected one:" + expectedURL);
+        }
+
         if(favoriteItemAmount>0){
             reporter.reportLog("Clear all favorite history");
             getMyAccountPageThreadLocal().clearFavoriteHistory(false);
@@ -115,7 +116,7 @@ public class MA_TC16_MyPreferences_Favorites extends BaseTest {
             reporter.reportLogPass("The favorite item amount is equal to 0");
         }
         else{
-            reporter.reportLogPass("The favorite item amount is equal to 0");
+            reporter.reportLogFailWithScreenshot("The favorite item amount is not equal to 0");
         }
         if(getMyAccountPageThreadLocal().lstNoHistoryMessage.size()>0){
             reporter.reportLogPass("No history messages are displaying correctly");

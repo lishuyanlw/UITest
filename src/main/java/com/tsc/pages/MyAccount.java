@@ -3631,21 +3631,12 @@ public class MyAccount extends BasePage {
 				reporter.reportLogFailWithScreenshot("The favorite item WasPrice is not displaying correctly");
 			}
 		}
-		if(lsProductName.length()>25){
-			if(lsFavoriteItemName.substring(0,25).equalsIgnoreCase(lsProductName.substring(0,25))){
-				reporter.reportLogPass("The product name on PRP page is equal to the favorite item name");
-			}
-			else{
-				reporter.reportLogFailWithScreenshot("The product name on PRP page:'"+lsProductName+"' is not equal to the favorite item name:'"+lsFavoriteItemName+"'");
-			}
+
+		if(lsProductName.contains(lsFavoriteItemName)||lsFavoriteItemName.contains(lsProductName)){
+			reporter.reportLogPass("The product name on PRP page is equal to the favorite item name");
 		}
 		else{
-			if(lsFavoriteItemName.equalsIgnoreCase(lsProductName)){
-				reporter.reportLogPass("The product name on PRP page is equal to the favorite item name");
-			}
-			else{
-				reporter.reportLogFailWithScreenshot("The product name on PRP page:'"+lsProductName+"' is not equal to the favorite item name:'"+lsFavoriteItemName+"'");
-			}
+			reporter.reportLogFailWithScreenshot("The product name on PRP page:'"+lsProductName+"' is not equal to the favorite item name:'"+lsFavoriteItemName+"'");
 		}
 
 		if(lsFavoriteItemNowPrice.equalsIgnoreCase(lsProductNowPrice)){

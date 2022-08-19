@@ -35,15 +35,6 @@ public class MA_TC18_MyPreferences_MyNewsletters extends BaseTest {
         //Login using valid username and password
         getGlobalLoginPageThreadLocal().Login(lblUserName, lblPassword);
 
-        /**
-        String lnk_URL = TestDataHandler.constantData.getMyAccount().getLnk_myAccountNewsLetterURL();
-        String expectedURL = basePage.getBaseURL() + lnk_URL;
-        if (basePage.URL().equalsIgnoreCase(expectedURL)) {
-            reporter.reportLogPass("The navigated URL is equal to expected one:" + expectedURL);
-        } else {
-            reporter.reportLogFailWithScreenshot("The actual navigated URL:" + basePage.URL() + " is not equal to expected one:" + expectedURL);
-        }
-        */
         String lsTestDevice = System.getProperty("Device").trim();
         String lsTestBrowser= System.getProperty("Browser").toLowerCase().trim();
         if((lsTestDevice.equalsIgnoreCase("Desktop"))||(lsTestDevice.equalsIgnoreCase("Tablet")&&lsTestBrowser.contains("ios"))){
@@ -64,6 +55,14 @@ public class MA_TC18_MyPreferences_MyNewsletters extends BaseTest {
         }
 
         getMyAccountPageThreadLocal().openSubItemWindow("My Preferences", "My Newsletters", null);
+
+        String lnk_URL = TestDataHandler.constantData.getMyAccount().getLnk_myAccountNewsLetterURL();
+        String expectedURL = basePage.getBaseURL() + lnk_URL;
+        if (basePage.URL().equalsIgnoreCase(expectedURL)) {
+            reporter.reportLogPass("The navigated URL is equal to expected one:" + expectedURL);
+        } else {
+            reporter.reportLogFailWithScreenshot("The actual navigated URL:" + basePage.URL() + " is not equal to expected one:" + expectedURL);
+        }
 
         reporter.reportLog("Verify My NewsLetter Content");
         getMyAccountPageThreadLocal().verifyMyNewsLetterContent();

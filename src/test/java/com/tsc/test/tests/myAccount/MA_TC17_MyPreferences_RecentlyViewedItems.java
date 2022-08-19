@@ -42,15 +42,6 @@ public class MA_TC17_MyPreferences_RecentlyViewedItems extends BaseTest {
         //Login using valid username and password
         getGlobalLoginPageThreadLocal().Login(lblUserName, lblPassword);
 
-        /**
-        String lnk_URL = TestDataHandler.constantData.getMyAccount().getLnk_myAccountRecentlyViewedURL();
-        String expectedURL = basePage.getBaseURL() + lnk_URL;
-        if (basePage.URL().equalsIgnoreCase(expectedURL)) {
-            reporter.reportLogPass("The navigated URL is equal to expected one:" + expectedURL);
-        } else {
-            reporter.reportLogFailWithScreenshot("The actual navigated URL:+" + basePage.URL() + " is not equal to expected one:" + expectedURL);
-        }
-        */
         String lsTestDevice = System.getProperty("Device").trim();
         String lsTestBrowser= System.getProperty("Browser").toLowerCase().trim();
         if((lsTestDevice.equalsIgnoreCase("Desktop"))||(lsTestDevice.equalsIgnoreCase("Tablet")&&lsTestBrowser.contains("ios"))){
@@ -71,6 +62,15 @@ public class MA_TC17_MyPreferences_RecentlyViewedItems extends BaseTest {
         }
 
         getMyAccountPageThreadLocal().openSubItemWindow("My Preferences", "Recently viewed items", getMyAccountPageThreadLocal().lblRecentlyViewedTitle);
+
+        String lnk_URL = TestDataHandler.constantData.getMyAccount().getLnk_myAccountRecentlyViewedURL();
+        String expectedURL = basePage.getBaseURL() + lnk_URL;
+        if (basePage.URL().equalsIgnoreCase(expectedURL)) {
+            reporter.reportLogPass("The navigated URL is equal to expected one:" + expectedURL);
+        } else {
+            reporter.reportLogFailWithScreenshot("The actual navigated URL:+" + basePage.URL() + " is not equal to expected one:" + expectedURL);
+        }
+
         if(getMyAccountPageThreadLocal().checkViewedHistoryExisting()){
             reporter.reportLog("Clear all viewed history");
             getMyAccountPageThreadLocal().clearViewingHistory();

@@ -74,7 +74,7 @@ public class MA_TC08_AccountSettings_ChangePassword extends BaseTest {
             reporter.reportLogPass("The navigated URL is equal to expected one:"+expectedURL);
         }
         else{
-            reporter.reportLogPass("The actual navigated URL:+"+basePage.URL()+" is not equal to expected one:"+expectedURL);
+            reporter.reportLogFail("The actual navigated URL:+"+basePage.URL()+" is not equal to expected one:"+expectedURL);
         }
 
         basePage.getReusableActionsInstance().javascriptScrollByVisibleElement(getMyAccountPageThreadLocal().lblAccountSettingSectionTitle);

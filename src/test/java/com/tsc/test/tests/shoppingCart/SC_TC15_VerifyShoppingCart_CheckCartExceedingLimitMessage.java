@@ -29,7 +29,7 @@ public class SC_TC15_VerifyShoppingCart_CheckCartExceedingLimitMessage extends B
 
 			//To Add 10 product EDP No with 10 quantity
 			List<String> lstKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_APISearchingKeyword();
-			getShoppingCartThreadLocal().addMultiProductEDPNo(lstKeywordList.get(2), String.valueOf(customerEDP), accessToken,10,10,10);
+			getShoppingCartThreadLocal().addMultiProductEDPNo(lstKeywordList.get(2), String.valueOf(customerEDP), accessToken,15,10,10);
 
 			//Login using valid username and password
 			getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword);
