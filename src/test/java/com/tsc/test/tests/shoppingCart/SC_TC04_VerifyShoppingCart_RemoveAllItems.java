@@ -25,7 +25,7 @@ public class SC_TC04_VerifyShoppingCart_RemoveAllItems extends BaseTest{
 		String accessToken = getApiUserSessionDataMapThreadLocal().get("access_token").toString();
 		int customerEDP = Integer.valueOf(getApiUserSessionDataMapThreadLocal().get("customerEDP").toString());
 		List<Map<String,String>> keyword = TestDataHandler.constantData.getShoppingCart().getLst_SearchKeywords();
-		List<Map<String,Object>> data = getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP,accessToken,keyword,true);
+		getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP,accessToken,keyword,true);
 
 		//Login using valid username and password
 		getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword);
@@ -59,7 +59,6 @@ public class SC_TC04_VerifyShoppingCart_RemoveAllItems extends BaseTest{
 
 		reporter.reportLog("Verify checkout section contents");
 		getShoppingCartThreadLocal().verifyCheckOutContents(true);
-
 	}
 }
 

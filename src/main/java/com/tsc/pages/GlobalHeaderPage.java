@@ -992,6 +992,7 @@ public class GlobalHeaderPage extends BasePage{
 	 */
 	public void verifyHeaderItemsOnPage(){
 		this.waitForPageToLoad();
+		getReusableActionsInstance().scrollToElement(this.lnkTSBlackHeader);
 		this.waitForCondition(Driver->{return this.lnkTSBlackHeader.isEnabled();},8000);
 		//Verifying ShowStopper
 		this.verifyElementLink(this.lnkTSBlackHeader);

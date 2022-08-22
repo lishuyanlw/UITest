@@ -122,4 +122,25 @@ public class GlobalHeaderPage_Tablet extends GlobalHeaderPage_Mobile{
         this.getReusableActionsInstance().clickIfAvailable(this.btnPopularBrand);
     }
 
+    @Override
+    public void verifyHeaderItemsOnPage(){
+        this.waitForPageToLoad();
+        getReusableActionsInstance().scrollToElement(this.lnkTSBlackHeader);
+        this.waitForCondition(Driver->{return this.lnkTSBlackHeader.isEnabled();},8000);
+        //Verifying ShowStopper
+        this.verifyElementLink(this.lnkTSBlackHeader);
+        //Verifying Shop Now
+        this.verifyElementLink(this.lblShopNowLink);
+        //Verifying Watch TSC Menu Links
+        this.verifyWatchTSCMenuItemLinks();
+        //Verifying clicking on one menu item
+        getReusableActionsInstance().clickIfAvailable(this.menuButton);
+        if(this.waitForCondition(Driver->{return this.FlyoutHeadingsMobile.isDisplayed();},6000)){
+            getReusableActionsInstance().clickIfAvailable(this.btnMenuCloseButton);
+            reporter.reportLogPass("Menu Items are displayed for ios tablet device");
+        }
+        else
+            reporter.reportLogFailWithScreenshot("Menu Items are not displayed for ios tablet device");
+    }
+
 }
