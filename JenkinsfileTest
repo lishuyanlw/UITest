@@ -57,6 +57,7 @@ pipeline {
 	    00 07 * * 1-7 %Browser=sauceandroidchrome;Language=en;Groups=ShoppingCart;ThreadCount=1;TunnelRequired=Yes;Device=Tablet;TestProfile=TSCWF-Automation
 	    00 17 * * 1-7 %Browser=sauceandroidchrome;Language=en;Groups=ShoppingCart;ThreadCount=1;TunnelRequired=Yes;Device=Tablet;TestProfile=TSCWF-Automation
 	    30 19 * * 1-7 %Browser=sauceioschrome;Language=en;Groups=ShoppingCart;ThreadCount=1;TunnelRequired=Yes;Device=Tablet;TestProfile=TSCWF-Automation
+	    30 21 * * 1-7 %Browser=saucesafari;Language=en;Groups=ShoppingCart;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
         ''':'')
     }
 
