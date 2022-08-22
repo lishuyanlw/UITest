@@ -150,6 +150,9 @@ public class MyAccount extends BasePage {
 	@FindBy(xpath = "//ng-component//span[@id='tagOrderTotal']")
 	public WebElement lblOrderDetailsHeaderOrderTotal;
 
+	@FindBy(xpath = "//div[@class='tsc-forms']//div[contains(@class,'buttons')]")
+	public WebElement cntOrderDetailsHeaderButtons;
+
 	@FindBy(xpath = "//ng-component//button[@data-link-title='Track Order']")
 	public WebElement btnOrderDetailsHeaderTrackOrder;
 
@@ -183,12 +186,15 @@ public class MyAccount extends BasePage {
 	@FindBy(xpath = "//ng-component//div[contains(@class,'order-items') and not(contains(@class,'sub-order-section'))]")
 	public List<WebElement> lstOrderDetailsOrderItemList;
 
-	public By byOrderDetailsOrderItemLink=By.xpath(".//a[contains(@href,'productdetails')][img]");
-	public By byOrderDetailsOrderItemImage=By.xpath(".//a[contains(@href,'productdetails')]//img");
-	public By byOrderDetailsOrderItemPipeStyleLink=By.xpath(".//a[contains(@href,'productdetails')][not(img)]");
+	public By byOrderDetailsOrderItemLink=By.xpath(".//div[contains(@class,'product-pic')]");
+	public By byOrderDetailsOrderItemImage=By.xpath(".//div[contains(@class,'product-pic')]//img");
+
+	public By byOrderDetailsOrderItemDescriptionContainer=By.xpath(".//div[contains(@class,'product-pic')]//img");
+	public By byOrderDetailsOrderItemPipeStyleLink=By.xpath(".//div[contains(@class,'no-pad-col')]//div[contains(@class,'item-title')]");
 	public By byOrderDetailsOrderItemProductNumber=By.xpath(".//a[contains(@href,'productdetails')][not(img)]/following-sibling::div/span[not(contains(@class,'item-title'))]");
 	public By byOrderDetailsOrderItemProductPrice=By.xpath(".//a[contains(@href,'productdetails')][not(img)]/following-sibling::div/span[contains(@class,'item-title')]");
 	public By byOrderDetailsOrderItemWriteReview=By.xpath(".//div[contains(@class,'product-review') and contains(@class,'hidden-xs')]//a[contains(@href,'openreview')]");
+
 	public By byOrderDetailsOrderItemQTYTitle=By.xpath(".//span[contains(normalize-space(.),'QTY:')]/parent::div[contains(@class,'hidden-xs')]/span[1]");
 	public By byOrderDetailsOrderItemQTY=By.xpath(".//span[contains(normalize-space(.),'QTY:')]/parent::div[contains(@class,'hidden-xs')]/span[2]");
 	public By byOrderDetailsOrderItemStatusTitle=By.xpath(".//span[contains(normalize-space(.),'Status:')]/parent::div[contains(@class,'hidden-xs')]/span[1]");
@@ -735,6 +741,23 @@ public class MyAccount extends BasePage {
 	public boolean checkOrderListExisting(){
 		this.applyStaticWait(3*this.getStaticWaitForApplication());
 		return !this.getElementInnerText(cntOrderListContainer).trim().contains("No orders yet");
+	}
+
+	/**
+	 * To check Product Number And Write Review Button Existing
+	 * @param - boolean
+	 */
+	public boolean checkProductNumberAndWriteReviewButtonExisting(WebElement orderItem){
+		WebElement item=orderItem.findElement(this.byOrderDetailsOrderItemDescriptionContainer);
+		return this.checkChildElementExistingByAttribute(item,"class","product-review");
+	}
+
+	/**
+	 * To check Track Order Button Existing
+	 * @param - boolean
+	 */
+	public boolean checkTrackOrderButtonExisting(){
+		return this.getChildElementCount(this.cntOrderDetailsHeaderButtons)>1;
 	}
 
 	/**
@@ -1904,27 +1927,47 @@ public class MyAccount extends BasePage {
 	 */
 	public void verifyOrderItemListSectionInOrderDetails(){
 		WebElement subItem=null;
-		String lsProductNO;
+		String lsProductNO,lsText;
 		for(WebElement item:lstOrderDetailsOrderItemList){
-			subItem=item.findElement(byOrderDetailsOrderItemProductNumber);
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
-			lsProductNO=subItem.getText().trim();
-			reporter.reportLog("Verify product number: "+lsProductNO);
+			if(checkProductNumberAndWriteReviewButtonExisting(item)){
+				subItem=item.findElement(byOrderDetailsOrderItemProductNumber);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
+				lsProductNO=subItem.getText().trim();
+				reporter.reportLog("Verify product number: "+lsProductNO);
 
-			if(!lsProductNO.isEmpty()){
-				reporter.reportLogPass("Product number is displaying correctly");
+				if(!lsProductNO.isEmpty()){
+					reporter.reportLogPass("Product number is displaying correctly");
+				}
+				else{
+					reporter.reportLogFailWithScreenshot("Product number is not displaying correctly");
+				}
 			}
 			else{
-				reporter.reportLogFailWithScreenshot("Product number is not displaying correctly");
+				subItem=item.findElement(byOrderDetailsOrderItemPipeStyleLink);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
+				lsText=subItem.getText();
+				reporter.reportLog("Verify donation item: "+lsText);
+				if(!lsText.isEmpty()){
+					reporter.reportLogPass("The product pipe style is displaying correctly");
+				}
+				else{
+					reporter.reportLogFailWithScreenshot("The product pipe style is not displaying correctly");
+				}
 			}
+
 
 			subItem=item.findElement(byOrderDetailsOrderItemLink);
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
-			if(!subItem.getAttribute("href").isEmpty()){
-				reporter.reportLogPass("The product link is not empty");
-			}
-			else{
-				reporter.reportLogFailWithScreenshot("The product link is empty");
+			boolean bCheckLink=this.checkChildElementExistingByTagName(subItem,"a");
+			if(bCheckLink){
+				subItem=subItem.findElement(By.xpath(".//a"));
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
+				if(!subItem.getAttribute("href").isEmpty()){
+					reporter.reportLogPass("The product link is not empty");
+				}
+				else{
+					reporter.reportLogFailWithScreenshot("The product link is empty");
+				}
 			}
 
 			subItem=item.findElement(byOrderDetailsOrderItemImage);
@@ -1936,22 +1979,15 @@ public class MyAccount extends BasePage {
 				reporter.reportLogFailWithScreenshot("The image src is empty");
 			}
 
-			subItem=item.findElement(byOrderDetailsOrderItemPipeStyleLink);
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
-			if(!subItem.getAttribute("href").isEmpty()){
-				reporter.reportLogPass("The product pipe style link is not empty");
-			}
-			else{
-				reporter.reportLogFailWithScreenshot("The product pipe style link is empty");
-			}
-
-			subItem=item.findElement(byOrderDetailsOrderItemProductPrice);
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
-			if(!subItem.getText().trim().isEmpty()){
-				reporter.reportLogPass("The product price is displaying correctly");
-			}
-			else{
-				reporter.reportLogFailWithScreenshot("The product price is not displaying correctly");
+			if(checkProductNumberAndWriteReviewButtonExisting(item)){
+				subItem=item.findElement(byOrderDetailsOrderItemProductPrice);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
+				if(!subItem.getText().trim().isEmpty()){
+					reporter.reportLogPass("The product price is displaying correctly");
+				}
+				else{
+					reporter.reportLogFailWithScreenshot("The product price is not displaying correctly");
+				}
 			}
 
 			subItem=item.findElement(byOrderDetailsOrderItemQTYTitle);
@@ -1981,9 +2017,7 @@ public class MyAccount extends BasePage {
 				reporter.reportLogFailWithScreenshot("The product order status title is not displaying correctly");
 			}
 
-			subItem=item.findElement(byOrderDetailsOrderItemStatus);
-			String lsOrderStatus=this.getElementInnerText(subItem);
-			if(!lsOrderStatus.isEmpty()){
+			if(checkProductNumberAndWriteReviewButtonExisting(item)){
 				subItem=item.findElement(byOrderDetailsOrderItemWriteReview);
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
 				if(!subItem.getText().trim().isEmpty()){

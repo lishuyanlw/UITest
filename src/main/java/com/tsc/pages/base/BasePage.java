@@ -197,13 +197,13 @@ import utils.ReusableActions;
 
 	public boolean verifyLink(String url) {
 		HttpURLConnection httpURLConnect = null;
-		int response;
+		int response=-1;
 		String responseMessage;
 		waitForPageToLoad();
 		try {
 			httpURLConnect = (HttpURLConnection) new URL(url).openConnection();
-			httpURLConnect.setConnectTimeout(10000);
-			httpURLConnect.setReadTimeout(10000);
+			httpURLConnect.setConnectTimeout(20000);
+			httpURLConnect.setReadTimeout(20000);
 			httpURLConnect.connect();
 			response = httpURLConnect.getResponseCode();
 			responseMessage = httpURLConnect.getResponseMessage();

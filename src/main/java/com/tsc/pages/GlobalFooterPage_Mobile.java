@@ -391,5 +391,100 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 		getReusableActionsInstance().waitForElementVisibility(lblCustomerServiceWhatCanWeHelpYouWith);
 	}
 
+	@Override
+	public void verifyServicesOnPage(){
+		String lsText,lsLink;
+		boolean bWork;
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblTSCCustomerHubText);
+		lsText=lblTSCCustomerHubText.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("TSC Customer Hub Text is displaying correctly");
+		}
+		else{
+			reporter.reportLogFail("TSC Customer Hub Text is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().clickIfAvailable(this.lblTSCCustomerHubText);
+		this.waitForCondition(Driver->{return this.lblTSCCustomerHubText.getAttribute("class").isEmpty();}, 30000);
+		for(WebElement item:lnkTSCCustomerHubAllLinks){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsText=item.getText();
+			if(!lsText.isEmpty()){
+				reporter.reportLogPass("'"+lsText+"' is displaying correctly");
+			}
+			else{
+				reporter.reportLogFail("'"+lsText+"' is displaying correctly");
+			}
+			lsLink=item.getAttribute("href");
+			if(!lsLink.isEmpty()){
+				reporter.reportLogPass("'"+lsText+"' link is not empty");
+			}
+			else{
+				reporter.reportLogFail("'"+lsText+"' link is empty");
+			}
+			bWork=this.verifyLink(lsLink);
+			if(bWork){
+				reporter.reportLogPass("'"+lsText+"' link is working well");
+			}
+			else{
+				reporter.reportLogFail("'"+lsText+"' link is not working well");
+			}
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAboutTSCText);
+		lsText=lblAboutTSCText.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("About TSC Text is displaying correctly");
+		}
+		else{
+			reporter.reportLogFail("About TSC Text is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().clickIfAvailable(this.lblAboutTSCText);
+		this.waitForCondition(Driver->{return this.lblAboutTSCText.getAttribute("class").isEmpty();}, 30000);
+		for(WebElement item:lnkAboutTSCAllLinks){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsText=item.getText();
+			if(!lsText.isEmpty()){
+				reporter.reportLogPass("'"+lsText+"' is displaying correctly");
+			}
+			else{
+				reporter.reportLogFail("'"+lsText+"' is displaying correctly");
+			}
+			lsLink=item.getAttribute("href");
+			if(!lsLink.isEmpty()){
+				reporter.reportLogPass("'"+lsText+"' link is not empty");
+			}
+			else{
+				reporter.reportLogFail("'"+lsText+"' link is empty");
+			}
+			bWork=this.verifyLink(lsLink);
+			if(bWork){
+				reporter.reportLogPass("'"+lsText+"' link is working well");
+			}
+			else{
+				reporter.reportLogFail("'"+lsText+"' link is not working well");
+			}
+		}
+	}
+
+	@Override
+	public void verifyRogersLogoAndCopyRightInfo(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(blkCopyright);
+		if(this.getReusableActionsInstance().isElementVisible(blkCopyright)){
+			reporter.reportLogPass("Rogers CopyRight info is displaying correctly");
+		}
+		else{
+			reporter.reportLogFail("Rogers CopyRight info is not displaying correctly");
+		}
+	}
+
+	@Override
+	public void verifyFooterItemsOnPage(){
+		verifyCustomItemsOnPage();
+		verifyServicesOnPage();
+		verifyRogersLogoAndCopyRightInfo();
+	}
 
 }

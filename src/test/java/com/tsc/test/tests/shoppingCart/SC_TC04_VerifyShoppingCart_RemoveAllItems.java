@@ -37,6 +37,7 @@ public class SC_TC04_VerifyShoppingCart_RemoveAllItems extends BaseTest{
 		catch(Exception e){
 			(new BasePage(this.getDriver())).applyStaticWait(3000);
 		}
+
 		getProductDetailPageThreadLocal().goToShoppingCartByClickingShoppingCartIconInGlobalHeader();
 
 		getShoppingCartThreadLocal().removeAllItemsFromShoppingCartList();
