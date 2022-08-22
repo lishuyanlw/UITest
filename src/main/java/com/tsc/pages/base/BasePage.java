@@ -200,7 +200,6 @@ import utils.ReusableActions;
 		int response;
 		String responseMessage;
 		waitForPageToLoad();
-		System.out.println("URL: " + getDriver().getCurrentUrl());
 		try {
 			httpURLConnect = (HttpURLConnection) new URL(url).openConnection();
 			httpURLConnect.setConnectTimeout(10000);
@@ -213,12 +212,10 @@ import utils.ReusableActions;
 			e.printStackTrace();
 			return false;
 		}
-		System.out.println("Response Code: " + response);
 		if (response >= 400) {
 			System.out.println("ResponseMessage: " + responseMessage + " is a broken link");
 			return false;
 		}
-		System.out.println("ResponseMessage: " + responseMessage + " is a link");
 		return true;
 	}
 
@@ -859,6 +856,10 @@ import utils.ReusableActions;
 		 	reporter.reportLogPass("The href element of "+lsTitle+" is not empty");
 		 else
 		 	reporter.reportLogFailWithScreenshot("The href element of "+lsTitle+" is empty");
+		 if(this.verifyLink(lsLink))
+			 reporter.reportLogPass("Link for title: "+lsTitle+" is not broken!");
+		 else
+			 reporter.reportLogFail("Link for title: "+lsTitle+" is broken: "+lsLink);
 	 }
 	 
 	 /**
