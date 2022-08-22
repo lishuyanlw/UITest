@@ -30,6 +30,9 @@ public class GlobalHeaderPage extends BasePage{
 	
 	@FindBy(xpath = "//div[contains(@class,'black-header')]//button[contains(@class,'black-header__watch-tsc')]")
 	public WebElement btnWatchTSCBlackHeader;
+
+	@FindBy(xpath = "//div[@class='black-header__promotion']/a[contains(@id,'Promotion')]")
+	public WebElement lblShopNowLink;
 	
 	//Watch TSC dropdown menu
 	@FindBy(xpath = "//div[contains(@class,'black-header')]//nav//li//a")
@@ -236,6 +239,9 @@ public class GlobalHeaderPage extends BasePage{
 
 	@FindBy(xpath = "//*[contains(@class,'primary-navigation__wrapper')]//li[@class='primary-navigation__item']")
 	public List<WebElement> headingMenuItem;
+
+	@FindBy(xpath = "//div[contains(@id,'mega-navigation')]/nav/ul/li[@class='mega-categories__item']")
+	public List<WebElement> headingSubMenuItems;
 
 	@FindBy(xpath = "//*[contains(@class,'primary-navigation__wrapper')]//a//span[contains(@class,'primary-navigation__link-text')]")
 	public List<WebElement> headingLinks;
@@ -574,47 +580,66 @@ public class GlobalHeaderPage extends BasePage{
 	 * @author Shruti Desai
 	 */
 	public String getNameAndclickSubMenuItem(String headingName,String submenuHeading, String itemName) {
-		WebElement searchResultTitle=(new ProductResultsPage(this.getDriver())).lblSearchResultTitle;
-		String xpathHeading =createXPath(".//li//a//span[contains(@class,'navigation__link-text') and contains(.,'{0}')]" ,headingName);
-		WebElement headingWebElement = FlyoutHeadings.findElement(By.xpath(xpathHeading));
-		getReusableActionsInstance().javascriptScrollByVisibleElement(headingWebElement);
-		getReusableActionsInstance().scrollToElement(headingWebElement);
-		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+		if(headingName!=null){
+			WebElement searchResultTitle=(new ProductResultsPage(this.getDriver())).lblSearchResultTitle;
+			String xpathHeading =createXPath(".//li//a//span[contains(@class,'navigation__link-text') and contains(.,'{0}')]" ,headingName);
+			WebElement headingWebElement = FlyoutHeadings.findElement(By.xpath(xpathHeading));
+			getReusableActionsInstance().javascriptScrollByVisibleElement(headingWebElement);
+			getReusableActionsInstance().scrollToElement(headingWebElement);
+			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 
-		if(headingWebElement!=null && submenuHeading==null) {
-			headingWebElement.click();
-			waitForCondition(Driver->{return searchResultTitle.isDisplayed();},90000);
-			return headingWebElement.getText().trim();
-		}
-		if(submenuHeading!=null) {
-			String xpathSubMenu =createXPath(".//li[contains(@class,'categories__item')]//a[contains(.,'{0}')]" ,submenuHeading);
-			List<WebElement> SubMenu = Categories.findElements(By.xpath(xpathSubMenu));
-			if(SubMenu.size()>0){
-				getReusableActionsInstance().javascriptScrollByVisibleElement(SubMenu.get(0));
-				getReusableActionsInstance().scrollToElement(SubMenu.get(0));
-				this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
-				if(itemName!=null) {
-					String xpathSubmenuItem=createXPath(".//li[contains(@class,'sub-items')]//a[contains(.,'{0}')]",itemName);
-					WebElement SubMenuItem=getDriver().findElement(By.xpath(xpathSubmenuItem));
-					getReusableActionsInstance().javascriptScrollByVisibleElement(SubMenuItem);
-					getReusableActionsInstance().scrollToElement(SubMenuItem);
-					String title = SubMenuItem.getText().trim();
-					SubMenuItem.click();
-					waitForCondition(Driver->{return searchResultTitle.isDisplayed();},90000);					
-					return title;
-				}else {
-					String title = SubMenu.get(0).getText().trim();
-					SubMenu.get(0).click();
+			if(headingWebElement!=null && submenuHeading==null) {
+				headingWebElement.click();
+				waitForCondition(Driver->{return searchResultTitle.isDisplayed();},90000);
+				return headingWebElement.getText().trim();
+			}
+			if(submenuHeading!=null) {
+				String xpathSubMenu =createXPath(".//li[contains(@class,'categories__item')]//a[contains(.,'{0}')]" ,submenuHeading);
+				List<WebElement> SubMenu = Categories.findElements(By.xpath(xpathSubMenu));
+				if(SubMenu.size()>0){
+					getReusableActionsInstance().javascriptScrollByVisibleElement(SubMenu.get(0));
+					getReusableActionsInstance().scrollToElement(SubMenu.get(0));
+					this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+					if(itemName!=null) {
+						String xpathSubmenuItem=createXPath(".//li[contains(@class,'sub-items')]//a[contains(.,'{0}')]",itemName);
+						WebElement SubMenuItem=getDriver().findElement(By.xpath(xpathSubmenuItem));
+						getReusableActionsInstance().javascriptScrollByVisibleElement(SubMenuItem);
+						getReusableActionsInstance().scrollToElement(SubMenuItem);
+						String title = SubMenuItem.getText().trim();
+						SubMenuItem.click();
+						waitForCondition(Driver->{return searchResultTitle.isDisplayed();},90000);
+						return title;
+					}else {
+						String title = SubMenu.get(0).getText().trim();
+						SubMenu.get(0).click();
+						waitForCondition(Driver->{return searchResultTitle.isDisplayed();},90000);
+						return title;
+					}
+					//Adding else condition to click on first element by default if passed submenu item is not present in list
+				}else{
+					WebElement element = Categories.findElement(By.xpath(".//a"));
+					String title = element.getText().trim();
+					element.click();
 					waitForCondition(Driver->{return searchResultTitle.isDisplayed();},90000);
 					return title;
 				}
-				//Adding else condition to click on first element by default if passed submenu item is not present in list
+			}
+		}else{
+			int headingMenuItems = this.headingMenuItem.size();
+			if(headingMenuItems>0){
+				getReusableActionsInstance().javascriptScrollByVisibleElement(this.headingMenuItem.get(0));
+				getReusableActionsInstance().scrollToElement(this.headingMenuItem.get(0));
+				if(this.waitForCondition(Driver->{return this.headingSubMenuItems.size()>0;},8000)){
+					reporter.reportLogPass("Sub Menu Item after clicking on header menu is displayed as expected");
+					return this.headingMenuItem.get(0).getText();
+				}
+				else{
+					reporter.reportLogFailWithScreenshot("Sub Menu Item after clicking on header menu is not displayed as expected");
+					return null;
+				}
 			}else{
-				WebElement element = Categories.findElement(By.xpath(".//a"));
-				String title = element.getText().trim();
-				element.click();
-				waitForCondition(Driver->{return searchResultTitle.isDisplayed();},90000);
-				return title;
+				reporter.reportLogFailWithScreenshot("Home Page Header Flyout menu items are not displayed on page");
+				return null;
 			}
 		}
 		return null;
@@ -962,5 +987,37 @@ public class GlobalHeaderPage extends BasePage{
 		return this.getIntegerFromString(this.getElementInnerText(CartBagCounter));
 	}
 
+	/**
+	 * This function verifies Global Header Links on Page
+	 */
+	public void verifyHeaderItemsOnPage(){
+		this.waitForPageToLoad();
+		this.waitForCondition(Driver->{return this.lnkTSBlackHeader.isEnabled();},8000);
+		//Verifying ShowStopper
+		this.verifyElementLink(this.lnkTSBlackHeader);
+		//Verifying Shop Now
+		this.verifyElementLink(this.lblShopNowLink);
+		//Verifying Watch TSC Menu Links
+		this.verifyWatchTSCMenuItemLinks();
+		//Verifying clicking on one menu item
+		this.getNameAndclickSubMenuItem(null,null,null);
+	}
+
+	/**
+	 * This function verifies Watch TSC Menu Item in Global Header
+	 */
+	public void verifyWatchTSCMenuItemLinks(){
+		this.hoverOnWatchTSC();
+		int loopSize = this.lstWatchTSCDropDown.size();
+		for(int counter=0;counter<loopSize;counter++){
+			String title=lstWatchTSCDropDown.get(counter).getText().trim();
+			String lsTitle=getUTFEnabledData(title);
+			String lsHrefInBlackHeader=this.getElementHref(lstWatchTSCDropDown.get(counter));
+			if(!lsTitle.isEmpty() && !lsHrefInBlackHeader.isEmpty())
+				reporter.reportLogPass("Watch TSC link for: "+lsTitle+" is present and not empty");
+			else
+				reporter.reportLogFailWithScreenshot("Watch TSC link for: "+lsTitle+" is not present and is empty");
+		}
+	}
 }
 

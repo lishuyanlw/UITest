@@ -828,7 +828,10 @@ import utils.ReusableActions;
 	 public void verifyElementLink(WebElement element) {
 		 String lsTitle=element.getText().trim();
 		 String lsLink=this.getElementHref(element);
-		 reporter.softAssert(!lsLink.isEmpty(),"The href of element of '"+lsTitle+"' is not empty","The href of element of '"+lsTitle+"' is empty");		 
+		 if(!lsLink.isEmpty())
+		 	reporter.reportLogPass("The href element of "+lsTitle+" is not empty");
+		 else
+		 	reporter.reportLogFailWithScreenshot("The href element of "+lsTitle+" is empty");
 	 }
 	 
 	 /**

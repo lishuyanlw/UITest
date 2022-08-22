@@ -33,6 +33,10 @@ public class SC_TC09_VerifyShoppingCart_Free_Gift_Item_And_Blue_Jay_Donation_Wit
         String authorization = TestDataHandler.constantData.getContentfulApiParams().getLbl_authorization();
         String jayCareFoundationMessage = TestDataHandler.constantData.getShoppingCart().getLblJayCareFoundationDonationMessage();
 
+        //Verification of Header Menu Items on Page
+        reporter.reportLog("Verification of Global Header on Page");
+        getglobalheaderPageThreadLocal().verifyHeaderItemsOnPage();
+
         JSONObject creditCardData = new DataConverter().readJsonFileIntoJSONObject("test-data/CreditCard.json");
 
         List<Configuration> configurations = new ConfigurationAPI().getContentFulConfigurationForFreeItem(apiEndPoint,authorization);
