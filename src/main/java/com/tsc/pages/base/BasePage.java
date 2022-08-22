@@ -195,6 +195,33 @@ import utils.ReusableActions;
 		return true;
 	}
 
+	public boolean verifyLink(String url) {
+		HttpURLConnection httpURLConnect = null;
+		int response;
+		String responseMessage;
+		waitForPageToLoad();
+		System.out.println("URL: " + getDriver().getCurrentUrl());
+		try {
+			httpURLConnect = (HttpURLConnection) new URL(url).openConnection();
+			httpURLConnect.setConnectTimeout(10000);
+			httpURLConnect.setReadTimeout(10000);
+			httpURLConnect.connect();
+			response = httpURLConnect.getResponseCode();
+			responseMessage = httpURLConnect.getResponseMessage();
+			httpURLConnect.disconnect();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		System.out.println("Response Code: " + response);
+		if (response >= 400) {
+			System.out.println("ResponseMessage: " + responseMessage + " is a broken link");
+			return false;
+		}
+		System.out.println("ResponseMessage: " + responseMessage + " is a link");
+		return true;
+	}
+
 	public void refresh() {
 		getDriver().navigate().refresh();
 	}

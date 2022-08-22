@@ -1013,6 +1013,10 @@ public class GlobalHeaderPage extends BasePage{
 			String title=lstWatchTSCDropDown.get(counter).getText().trim();
 			String lsTitle=getUTFEnabledData(title);
 			String lsHrefInBlackHeader=this.getElementHref(lstWatchTSCDropDown.get(counter));
+			if(this.verifyLink(lsHrefInBlackHeader))
+				reporter.reportLogPass("Url for link: "+title+" is not broken as expected");
+			else
+				reporter.reportLogFail("Url for link: "+title+" is broken: "+lsHrefInBlackHeader);
 			if(!lsTitle.isEmpty() && !lsHrefInBlackHeader.isEmpty())
 				reporter.reportLogPass("Watch TSC link for: "+lsTitle+" is present and not empty");
 			else
