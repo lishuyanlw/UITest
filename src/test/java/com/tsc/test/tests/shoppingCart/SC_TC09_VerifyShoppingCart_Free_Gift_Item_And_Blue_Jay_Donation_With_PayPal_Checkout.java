@@ -40,6 +40,8 @@ public class SC_TC09_VerifyShoppingCart_Free_Gift_Item_And_Blue_Jay_Donation_Wit
         JSONObject creditCardData = new DataConverter().readJsonFileIntoJSONObject("test-data/CreditCard.json");
 
         List<Configuration> configurations = new ConfigurationAPI().getContentFulConfigurationForFreeItem(apiEndPoint,authorization);
+        if(configurations==null)
+            reporter.reportLogFail("Configurations are not returned by system");
 
         //Deleting all items from cart to be added again with free shipping item
         String accessToken = getApiUserSessionDataMapThreadLocal().get("access_token").toString();
