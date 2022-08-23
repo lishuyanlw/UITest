@@ -3034,4 +3034,14 @@ public class ShoppingCartPage extends BasePage {
 		}else
 			reporter.reportLogFailWithScreenshot("Pay Pal pop up is not displayed as expected");
 	}
+
+	/**
+	 * To go To checkout page by clicking checkout button
+	 */
+	public void goToCheckoutPage(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnCartCheckoutButton);
+		this.btnCartCheckoutButton.click();
+		RegularCheckoutPage checkoutPage= new RegularCheckoutPage(this.getDriver());
+		this.waitForCondition(Driver->{return checkoutPage.lblCheckout.isDisplayed();},30000);
+	}
 }
