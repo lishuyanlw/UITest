@@ -2202,76 +2202,48 @@ public class GlobalFooterPage extends BasePage {
 	}
 
 	public void verifyCustomItemsOnPage(){
-		String lsText,lsLink;
-		boolean bWork;
+		String lsText;
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lnkCreditCard);
-		lsText=lnkCreditCard.getText();
-		if(!lsText.isEmpty()){
-			reporter.reportLogPass("Credit card is displaying correctly");
-		}
-		else{
-			reporter.reportLogFail("Credit card is not displaying correctly");
-		}
-		lsLink=lnkCreditCard.getAttribute("href");
-		if(!lsLink.isEmpty()){
-			reporter.reportLogPass("Credit card link is not empty");
-		}
-		else{
-			reporter.reportLogFail("Credit card link is empty");
-		}
-		bWork=this.verifyLink(lsLink);
-		if(bWork){
-			reporter.reportLogPass("Credit card link is working well");
-		}
-		else{
-			reporter.reportLogFail("Credit card link is not working well");
+		List<WebElement> webElementList = new ArrayList<WebElement>(
+				Arrays.asList(lnkCreditCard,lnkGiftCard,lnkSendUsFeedback));
+		for(WebElement webElement:webElementList){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(webElement);
+			lsText=webElement.getText();
+			if(!lsText.isEmpty()){
+				reporter.reportLogPass("Link is displaying correctly for top icons: "+lsText);
+			}
+			else{
+				reporter.reportLogFail("Link is not displaying correctly for top icons: "+lsText);
+			}
+			this.verifyElementLink(webElement);
 		}
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lnkGiftCard);
-		lsText=lnkGiftCard.getText();
-		if(!lsText.isEmpty()){
-			reporter.reportLogPass("Gift card is displaying correctly");
-		}
-		else{
-			reporter.reportLogFail("Gift card is not displaying correctly");
-		}
-		lsLink=lnkGiftCard.getAttribute("href");
-		if(!lsLink.isEmpty()){
-			reporter.reportLogPass("Gift card link is not empty");
-		}
-		else{
-			reporter.reportLogFail("Gift card link is empty");
-		}
-		bWork=this.verifyLink(lsLink);
-		if(bWork){
-			reporter.reportLogPass("Gift card link is working well");
-		}
-		else{
-			reporter.reportLogFail("Gift card link is not working well");
+		Map<String,WebElement> socialMediaLinkMap = new HashMap<>();
+		socialMediaLinkMap.put("facebook",lnkFacebook);
+		socialMediaLinkMap.put("twitter",lnkTwitter);
+		socialMediaLinkMap.put("instagram",lnkInstagram);
+		socialMediaLinkMap.put("youtube",lnkYoutube);
+		socialMediaLinkMap.put("pinterest",lnkPinterest);
+		for(Map.Entry<String,WebElement> entry:socialMediaLinkMap.entrySet()){
+			reporter.reportLog("Verifying social media link for: "+entry.getKey());
+			this.verifyElementLink(entry.getValue());
 		}
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lnkSendUsFeedback);
-		lsText=lnkSendUsFeedback.getText();
-		if(!lsText.isEmpty()){
-			reporter.reportLogPass("Send FeedBack is displaying correctly");
-		}
-		else{
-			reporter.reportLogFail("Send FeedBack is not displaying correctly");
-		}
-		lsLink=lnkSendUsFeedback.getAttribute("href");
-		if(!lsLink.isEmpty()){
-			reporter.reportLogPass("Send FeedBack link is not empty");
-		}
-		else{
-			reporter.reportLogFail("Send FeedBack link is empty");
-		}
-		bWork=this.verifyLink(lsLink);
-		if(bWork){
-			reporter.reportLogPass("Send FeedBack link is working well");
-		}
-		else{
-			reporter.reportLogFail("Send FeedBack link is not working well");
+		socialMediaLinkMap.clear();
+		socialMediaLinkMap.put("facebook",imgFacebook);
+		socialMediaLinkMap.put("twitter",imgTwitter);
+		socialMediaLinkMap.put("instagram",imgInstagram);
+		socialMediaLinkMap.put("youtube",imgYoutube);
+		socialMediaLinkMap.put("pinterest",imgPinterest);
+		for(Map.Entry<String,WebElement> entry:socialMediaLinkMap.entrySet()){
+			reporter.reportLog("Verifying social media image for: "+entry.getKey());
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(entry.getValue());
+			if(this.getReusableActionsInstance().isElementVisible(entry.getValue())){
+				reporter.reportLogPass("WebElement image is displayed correctly");
+			}
+			else{
+				reporter.reportLogFail("WebElement image is not displaying correctly");
+			}
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lnkLanguage);
@@ -2282,122 +2254,17 @@ public class GlobalFooterPage extends BasePage {
 		else{
 			reporter.reportLogFail("Language switch is not displaying correctly");
 		}
-		lsLink=lnkLanguage.getAttribute("href");
+		String lsLink=lnkLanguage.getAttribute("href");
 		if(!lsLink.isEmpty()){
 			reporter.reportLogPass("Language switch link is not empty");
 		}
 		else{
 			reporter.reportLogFail("Language switch link is empty");
 		}
-
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(imgFacebook);
-		if(this.getReusableActionsInstance().isElementVisible(imgFacebook)){
-			reporter.reportLogPass("FaceBook is displaying correctly");
-		}
-		else{
-			reporter.reportLogFail("FaceBook is not displaying correctly");
-		}
-		bWork=this.verifyLink(lsLink);
-		if(bWork){
-			reporter.reportLogPass("FaceBook link is working well");
-		}
-		else{
-			reporter.reportLogFail("FaceBook link is not working well");
-		}
-
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(imgTwitter);
-		if(this.getReusableActionsInstance().isElementVisible(imgTwitter)){
-			reporter.reportLogPass("Twitter is displaying correctly");
-		}
-		else{
-			reporter.reportLogFail("Twitter is not displaying correctly");
-		}
-		lsLink=lnkTwitter.getAttribute("href");
-		if(!lsLink.isEmpty()){
-			reporter.reportLogPass("Twitter link is not empty");
-		}
-		else{
-			reporter.reportLogFail("Twitter link is empty");
-		}
-		bWork=this.verifyLink(lsLink);
-		if(bWork){
-			reporter.reportLogPass("Twitter link is working well");
-		}
-		else{
-			reporter.reportLogFail("Twitter link is not working well");
-		}
-
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(imgInstagram);
-		if(this.getReusableActionsInstance().isElementVisible(imgInstagram)){
-			reporter.reportLogPass("Instagram is displaying correctly");
-		}
-		else{
-			reporter.reportLogFail("Instagram is not displaying correctly");
-		}
-		lsLink=lnkInstagram.getAttribute("href");
-		if(!lsLink.isEmpty()){
-			reporter.reportLogPass("Instagram link is not empty");
-		}
-		else{
-			reporter.reportLogFail("Instagram link is empty");
-		}
-		bWork=this.verifyLink(lsLink);
-		if(bWork){
-			reporter.reportLogPass("Instagram link is working well");
-		}
-		else{
-			reporter.reportLogFail("Instagram link is not working well");
-		}
-
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(imgYoutube);
-		if(this.getReusableActionsInstance().isElementVisible(imgYoutube)){
-			reporter.reportLogPass("Youtube is displaying correctly");
-		}
-		else{
-			reporter.reportLogFail("Youtube is not displaying correctly");
-		}
-		lsLink=lnkYoutube.getAttribute("href");
-		if(!lsLink.isEmpty()){
-			reporter.reportLogPass("Youtube link is not empty");
-		}
-		else{
-			reporter.reportLogFail("Youtube link is empty");
-		}
-		bWork=this.verifyLink(lsLink);
-		if(bWork){
-			reporter.reportLogPass("Youtube link is working well");
-		}
-		else{
-			reporter.reportLogFail("Youtube link is not working well");
-		}
-
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(imgPinterest);
-		if(this.getReusableActionsInstance().isElementVisible(imgPinterest)){
-			reporter.reportLogPass("Pinterest is displaying correctly");
-		}
-		else{
-			reporter.reportLogFail("Pinterest is not displaying correctly");
-		}
-		lsLink=lnkPinterest.getAttribute("href");
-		if(!lsLink.isEmpty()){
-			reporter.reportLogPass("Pinterest link is not empty");
-		}
-		else{
-			reporter.reportLogFail("Pinterest link is empty");
-		}
-		bWork=this.verifyLink(lsLink);
-		if(bWork){
-			reporter.reportLogPass("Pinterest link is working well");
-		}
-		else{
-			reporter.reportLogFail("Pinterest link is not working well");
-		}
 	}
 
 	public void verifyServicesOnPage(){
-		String lsText,lsLink;
-		boolean bWork;
-
+		String lsText;
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblTSCCustomerHubText);
 		lsText=lblTSCCustomerHubText.getText();
 		if(!lsText.isEmpty()){
@@ -2411,25 +2278,12 @@ public class GlobalFooterPage extends BasePage {
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 			lsText=item.getText();
 			if(!lsText.isEmpty()){
-				reporter.reportLogPass("'"+lsText+"' is displaying correctly");
+				reporter.reportLogPass("Link is displaying correctly for customer hub: "+lsText);
 			}
 			else{
-				reporter.reportLogFail("'"+lsText+"' is displaying correctly");
+				reporter.reportLogFail("Link is not displaying correctly for customer hub: "+lsText);
 			}
-			lsLink=item.getAttribute("href");
-			if(!lsLink.isEmpty()){
-				reporter.reportLogPass("'"+lsText+"' link is not empty");
-			}
-			else{
-				reporter.reportLogFail("'"+lsText+"' link is empty");
-			}
-			bWork=this.verifyLink(lsLink);
-			if(bWork){
-				reporter.reportLogPass("'"+lsText+"' link is working well");
-			}
-			else{
-				reporter.reportLogFail("'"+lsText+"' link is not working well");
-			}
+			this.verifyElementLink(item);
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAboutTSCText);
@@ -2445,25 +2299,12 @@ public class GlobalFooterPage extends BasePage {
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 			lsText=item.getText();
 			if(!lsText.isEmpty()){
-				reporter.reportLogPass("'"+lsText+"' is displaying correctly");
+				reporter.reportLogPass("Link is displaying correctly for About TSC: "+lsText);
 			}
 			else{
-				reporter.reportLogFail("'"+lsText+"' is displaying correctly");
+				reporter.reportLogFail("Link is not displaying correctly for About TSC: "+lsText);
 			}
-			lsLink=item.getAttribute("href");
-			if(!lsLink.isEmpty()){
-				reporter.reportLogPass("'"+lsText+"' link is not empty");
-			}
-			else{
-				reporter.reportLogFail("'"+lsText+"' link is empty");
-			}
-			bWork=this.verifyLink(lsLink);
-			if(bWork){
-				reporter.reportLogPass("'"+lsText+"' link is working well");
-			}
-			else{
-				reporter.reportLogFail("'"+lsText+"' link is not working well");
-			}
+			this.verifyElementLink(item);
 		}
 	}
 
@@ -2490,6 +2331,4 @@ public class GlobalFooterPage extends BasePage {
 		verifyServicesOnPage();
 		verifyRogersLogoAndCopyRightInfo();
 	}
-
-
 }
