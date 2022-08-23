@@ -1891,13 +1891,15 @@ public class RegularCheckoutPage extends BasePage {
 				reporter.reportLogFailWithScreenshot("The product quantity is not displaying correctly");
 			}
 
-			item = productItem.findElement(byProductShippingDate);
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-			lsText = item.getText().trim();
-			if (!lsText.isEmpty()) {
-				reporter.reportLogPass("The product Shipping Date is displaying correctly");
-			} else {
-				reporter.reportLogFailWithScreenshot("The product Shipping Date is not displaying correctly");
+			if(!this.checkProductShippingDateExisting()){
+				item = productItem.findElement(byProductShippingDate);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+				lsText = item.getText().trim();
+				if (!lsText.isEmpty()) {
+					reporter.reportLogPass("The product Shipping Date is displaying correctly");
+				} else {
+					reporter.reportLogFailWithScreenshot("The product Shipping Date is not displaying correctly");
+				}
 			}
 		}
 	}

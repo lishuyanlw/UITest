@@ -53,6 +53,7 @@ public class BaseTest {
 	protected static final ThreadLocal<ApiResponse> apiResponseThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<ProductAPI> productAPIThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<ShoppingCartPage> shoppingCartThreadLocal = new ThreadLocal<>();
+	protected static final ThreadLocal<RegularCheckoutPage> regularCheckoutPageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<JSONObject> apiUserSessionDataMapThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<JSONObject> apiAppSessionDataMapThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<MyAccount> myAccountPageThreadLocal = new ThreadLocal<>();
@@ -67,6 +68,9 @@ public class BaseTest {
 	public static Reporter getReporter() {
 		return reporter;
 	}
+
+	//@return regularCheckoutPageThreadLocal
+	public static RegularCheckoutPage getRegularCheckoutThreadLocal() {return regularCheckoutPageThreadLocal.get();}
 
 	//@return shoppingCartThreadLocal
 	public static ShoppingCartPage getShoppingCartThreadLocal() {return shoppingCartThreadLocal.get();}
@@ -131,6 +135,7 @@ public class BaseTest {
 		apiResponseThreadLocal.set(new ApiResponse());
 		productAPIThreadLocal.set(new ProductAPI());
 		shoppingCartThreadLocal.set(new ShoppingCartPage(getDriver()));
+		regularCheckoutPageThreadLocal.set(new RegularCheckoutPage(getDriver()));
 		myAccountPageThreadLocal.set(new MyAccount(getDriver()));
 	}
 
@@ -145,6 +150,7 @@ public class BaseTest {
 		apiResponseThreadLocal.set(new ApiResponse());
 		productAPIThreadLocal.set(new ProductAPI());
 		shoppingCartThreadLocal.set(new ShoppingCartPage_Mobile(getDriver()));
+		regularCheckoutPageThreadLocal.set(new RegularCheckoutPage_Mobile(getDriver()));
 		myAccountPageThreadLocal.set(new MyAccount_Mobile(getDriver()));
 	}
 
@@ -196,6 +202,7 @@ public class BaseTest {
 		else
 			shoppingCartThreadLocal.set(new ShoppingCartPage(getDriver()));
 
+		regularCheckoutPageThreadLocal.set(new RegularCheckoutPage(getDriver()));
 		homePageThreadLocal.set(new HomePage(getDriver()));
 	}
 
