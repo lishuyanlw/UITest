@@ -16,12 +16,16 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public class SC_TC09_VerifyShoppingCart_Free_Gift_Item extends BaseTest {
+public class SC_TC09_VerifyShoppingCart_Free_Gift_Item_And_Blue_Jay_Donation_With_PayPal_Checkout extends BaseTest {
     /*
      * CER-852 - Shopping Cart - Add item (having associate gift item) and check sub-total and order summary
+     * CER-870 - Shopping Cart - Verify blue jays donation addition
+     * CER-866 - Shopping Cart - Verify PayPal button functionality
+     * CER-864 - Global Header - Verify display of global header on all pages
+     * CER-865 - Global Footer - Verify display of global footer on all pages
      */
-    @Test(groups={"Regression","ShoppingCart"})
-    public void SC_TC09_VerifyShoppingCart_Free_Gift_Item() throws IOException {
+    @Test(groups={"Regression","ShoppingCart","SauceTunnelTest"})
+    public void SC_TC09_VerifyShoppingCart_Free_Gift_Item_And_Blue_Jay_Donation_With_PayPal_Checkout() throws IOException {
         getGlobalFooterPageThreadLocal().closePopupDialog();
 
         //Fetching test data from test data file
@@ -29,10 +33,17 @@ public class SC_TC09_VerifyShoppingCart_Free_Gift_Item extends BaseTest {
         String lsPassword= TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
         String apiEndPoint = TestDataHandler.constantData.getContentfulApiParams().getLbl_apiEndPoint();
         String authorization = TestDataHandler.constantData.getContentfulApiParams().getLbl_authorization();
+        String jayCareFoundationMessage = TestDataHandler.constantData.getShoppingCart().getLblJayCareFoundationDonationMessage();
+
+        //Verification of Header Menu Items on Page
+        reporter.reportLog("Verification of Global Header on Page");
+        getglobalheaderPageThreadLocal().verifyHeaderItemsOnPage();
 
         JSONObject creditCardData = new DataConverter().readJsonFileIntoJSONObject("test-data/CreditCard.json");
 
         List<Configuration> configurations = new ConfigurationAPI().getContentFulConfigurationForFreeItem(apiEndPoint,authorization);
+        if(configurations==null)
+            reporter.reportLogFail("Configurations are not returned by system");
 
         //Deleting all items from cart to be added again with free shipping item
         String accessToken = getApiUserSessionDataMapThreadLocal().get("access_token").toString();
@@ -64,9 +75,10 @@ public class SC_TC09_VerifyShoppingCart_Free_Gift_Item extends BaseTest {
                 (new BasePage(this.getDriver())).applyStaticWait(3000);
             }
             getProductDetailPageThreadLocal().goToShoppingCartByClickingShoppingCartIconInGlobalHeader();
+            Map<String,Object> shoppingCartMap=getShoppingCartThreadLocal().getShoppingSectionDetails("mandatory");
 
             reporter.reportLog("Verifying that free shipping item is added for user");
-            getShoppingCartThreadLocal().verifyFreeShippingItemPresentInCart();
+            getShoppingCartThreadLocal().verifyFreeGiftItemPresentInCart(shoppingCartMap, Integer.valueOf(getShoppingCartThreadLocal().getKeyValueFromContentfulConfiguration(configurations,"GWPGiftItemEdp").toString()));
 
             reporter.reportLog("Verify OrderSummary and EasyPayment sections contents");
             int itemAmount=getShoppingCartThreadLocal().GetAddedItemAmount();
@@ -77,6 +89,28 @@ public class SC_TC09_VerifyShoppingCart_Free_Gift_Item extends BaseTest {
             getShoppingCartThreadLocal().verifyOrderSummaryBusinessLogic(itemAmount,savingPrice,subTotal,mapOrderSummary,null);
             getShoppingCartThreadLocal().verifyOrderSummaryContents();
 
+            reporter.reportLog("Verify Blue Jay Donation Addition to cart for user");
+            String selectedDonation = getShoppingCartThreadLocal().selectAndGetTextForBlueJayCare();
+            getShoppingCartThreadLocal().verifyBlueJayDonationAdditionInCart(selectedDonation,jayCareFoundationMessage);
+
+            reporter.reportLog("Verify OrderSummary after adding Blue Jay Donation amount");
+            itemAmount=getShoppingCartThreadLocal().GetAddedItemAmount();
+            savingPrice=getShoppingCartThreadLocal().getSavingPriceFromShoppingCartHeader();
+            float donationAmountAddedToCart = Float.valueOf(selectedDonation.split("\\$")[1]);
+            subTotal=subTotal+donationAmountAddedToCart;
+
+            if(mapOrderSummary.size()>0)
+                mapOrderSummary.clear();
+            mapOrderSummary=getShoppingCartThreadLocal().getOrderSummaryDesc();
+            getShoppingCartThreadLocal().verifyOrderSummaryBusinessLogic(itemAmount,savingPrice,subTotal,mapOrderSummary,null);
+            getShoppingCartThreadLocal().verifyOrderSummaryContents();
+
+            //Verification of PayPal button functionality
+            //reporter.reportLog("Verification of PayPal Button functionality");
+            //getShoppingCartThreadLocal().verifyPayPalPopUpExistenceOnClick();
+
+            reporter.reportLog("Verify Global Footer on Page");
+            getGlobalFooterPageThreadLocal().verifyFooterItemsOnPage();
         }finally {
             //Emptying Cart for next test to run with right state
             getShoppingCartThreadLocal().emptyCart(Integer.valueOf(customerEDP),accessToken);

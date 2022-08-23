@@ -73,27 +73,47 @@ public class MyAccount_Mobile extends MyAccount {
 	@Override
 	public void verifyOrderItemListSectionInOrderDetails(){
 		WebElement subItem=null;
-		String lsProductNO;
+		String lsProductNO,lsText;
 		for(WebElement item:lstOrderDetailsOrderItemList){
-			subItem=item.findElement(byOrderDetailsOrderItemProductNumber);
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
-			lsProductNO=subItem.getText().trim();
-			reporter.reportLog("Verify product number: "+lsProductNO);
+			if(checkProductNumberAndWriteReviewButtonExisting(item)){
+				subItem=item.findElement(byOrderDetailsOrderItemProductNumber);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
+				lsProductNO=subItem.getText().trim();
+				reporter.reportLog("Verify product number: "+lsProductNO);
 
-			if(!lsProductNO.isEmpty()){
-				reporter.reportLogPass("Product number is displaying correctly");
+				if(!lsProductNO.isEmpty()){
+					reporter.reportLogPass("Product number is displaying correctly");
+				}
+				else{
+					reporter.reportLogFailWithScreenshot("Product number is not displaying correctly");
+				}
 			}
 			else{
-				reporter.reportLogFailWithScreenshot("Product number is not displaying correctly");
+				subItem=item.findElement(byOrderDetailsOrderItemPipeStyleLink);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
+				lsText=subItem.getText();
+				reporter.reportLog("Verify donation item: "+lsText);
+				if(!lsText.isEmpty()){
+					reporter.reportLogPass("The product pipe style is displaying correctly");
+				}
+				else{
+					reporter.reportLogFailWithScreenshot("The product pipe style is not displaying correctly");
+				}
 			}
+
 
 			subItem=item.findElement(byOrderDetailsOrderItemLink);
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
-			if(!subItem.getAttribute("href").isEmpty()){
-				reporter.reportLogPass("The product link is not empty");
-			}
-			else{
-				reporter.reportLogFailWithScreenshot("The product link is empty");
+			boolean bCheckLink=this.checkChildElementExistingByTagName(subItem,"a");
+			if(bCheckLink){
+				subItem=subItem.findElement(By.xpath(".//a"));
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
+				if(!subItem.getAttribute("href").isEmpty()){
+					reporter.reportLogPass("The product link is not empty");
+				}
+				else{
+					reporter.reportLogFailWithScreenshot("The product link is empty");
+				}
 			}
 
 			subItem=item.findElement(byOrderDetailsOrderItemImage);
@@ -105,22 +125,15 @@ public class MyAccount_Mobile extends MyAccount {
 				reporter.reportLogFailWithScreenshot("The image src is empty");
 			}
 
-			subItem=item.findElement(byOrderDetailsOrderItemPipeStyleLink);
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
-			if(!subItem.getAttribute("href").isEmpty()){
-				reporter.reportLogPass("The product pipe style link is not empty");
-			}
-			else{
-				reporter.reportLogFailWithScreenshot("The product pipe style link is empty");
-			}
-
-			subItem=item.findElement(byOrderDetailsOrderItemProductPrice);
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
-			if(!subItem.getText().trim().isEmpty()){
-				reporter.reportLogPass("The product price is displaying correctly");
-			}
-			else{
-				reporter.reportLogFailWithScreenshot("The product price is not displaying correctly");
+			if(checkProductNumberAndWriteReviewButtonExisting(item)){
+				subItem=item.findElement(byOrderDetailsOrderItemProductPrice);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
+				if(!subItem.getText().trim().isEmpty()){
+					reporter.reportLogPass("The product price is displaying correctly");
+				}
+				else{
+					reporter.reportLogFailWithScreenshot("The product price is not displaying correctly");
+				}
 			}
 
 			subItem=item.findElement(byOrderDetailsOrderItemQTYTitle);
@@ -150,9 +163,7 @@ public class MyAccount_Mobile extends MyAccount {
 				reporter.reportLogFailWithScreenshot("The product order status title is not displaying correctly");
 			}
 
-			subItem=item.findElement(byOrderDetailsOrderItemStatus);
-			String lsOrderStatus=this.getElementInnerText(subItem);
-			if(!lsOrderStatus.isEmpty()){
+			if(checkProductNumberAndWriteReviewButtonExisting(item)){
 				subItem=item.findElement(byOrderDetailsOrderItemWriteReview);
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
 				if(!subItem.getText().trim().isEmpty()){

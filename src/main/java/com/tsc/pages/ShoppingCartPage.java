@@ -18,7 +18,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.Select;
+
 import java.io.IOException;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -58,7 +60,7 @@ public class ShoppingCartPage extends BasePage {
 	public WebElement lblCartTitle;
 
 	//Hide in mobile
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart__message--top contents-head')]")
+	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'contents-head') and contains(@class,'hidden-xs')]")
 	public WebElement lblCartTopMessage;
 
 	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-notices')]")
@@ -104,9 +106,11 @@ public class ShoppingCartPage extends BasePage {
 	public By byProductPicBadge=By.xpath(".//div[contains(@class,'product-pic')]//div[@class='badgeWrap']//img");
 	public By byProductPicLink=By.xpath(".//div[contains(@class,'product-pic')]//a");
 	public By byProductPicImage=By.xpath(".//div[contains(@class,'product-pic')]//a//img");
+	public By byBlueJaysCareFoundationImage=By.xpath(".//div[@class='cartridge']//div[contains(@class,'cart-items')]//div[contains(@class,'product-pic')]/div/img[contains(@class,'responsive')]");
 
 	public By byProductDescContainer=By.xpath(".//div[contains(@class,'cart-desc') and not(contains(@class,'cart-desc-line'))]");
 	public By byProductItemDesc=By.xpath(".//div[contains(@class,'cart-desc') and not(contains(@class,'cart-desc-line'))]//div[@class='item-desc']");
+	public By byProductNumberContainer=By.xpath(".//div[contains(@class,'cart-desc') and not(contains(@class,'cart-desc-line'))]");
 	public By byProductNumber=By.xpath(".//div[contains(@class,'item-num')]");
 	public By byProductShippingDate=By.xpath(".//div[contains(@class,'cart-desc') and not(contains(@class,'cart-desc-line'))]//div[contains(@class,'estimateDate')]");
 	public By byProductRedMessage=By.xpath(".//div[contains(@class,'item-status')][span[@class='boldRedColor']]");
@@ -217,6 +221,9 @@ public class ShoppingCartPage extends BasePage {
 	public WebElement lblCartPricingYouAreSaving;
 
 	//EasyPay
+	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'easypay')]//div[contains(@class,'cart-installment-more')]")
+	public WebElement cntEasyPayContainer;
+
 	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'easypay')]//strong")
 	public WebElement lblCartEasyPayTitle;
 
@@ -257,6 +264,12 @@ public class ShoppingCartPage extends BasePage {
 	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'donationWrap')]//div[contains(@class,'donationButtonWrap')]//a")
 	public List<WebElement> lstCartCheckoutDonationButton;
 
+	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'donationWrap')]//div[contains(@class,'donationButtonWrap')]//a[contains(@class,'active')]/div")
+	public WebElement lblBlueJaySelectedDonation;
+
+	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'donationWrap')]//div[contains(@class,'donationButtonWrap')]")
+	public WebElement lblBlueJayDonation;
+
 	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'donationWrap')]//div[contains(@class,'donationRecieptMsg')]")
 	public WebElement lblCartCheckoutDonationReceiptMessage;
 
@@ -271,6 +284,20 @@ public class ShoppingCartPage extends BasePage {
 
 	@FindBy(xpath = "//div[@class='Footer']//div[@class='blockPageWrap']")
 	public WebElement pageLoadingIndicator;
+
+	//PayPal
+	@FindBy(how = How.XPATH, using = "//div[@id='buttons-container']//div[contains(@class,'paypal-button') and @role]")
+	//@FindBy(xpath = "//div[@id='buttons-container']//div[contains(@class,'paypal-button') and @role]")
+	public WebElement btnPayPalButton;
+
+	@FindBy(xpath = "//iframe[contains(@name,'paypal')]")
+	public WebElement framePayPalFrameElement;
+
+	@FindBy(xpath = "//div[@id='splitEmail']//input[@id='email']")
+	public WebElement inputPayPalEmailInput;
+
+	@FindBy(xpath = "//div[@id='splitEmail']//button[@value='Next']")
+	public WebElement btnPayPalNextButton;
 
 	/**
 	 * To get added item amount
@@ -309,6 +336,7 @@ public class ShoppingCartPage extends BasePage {
 	 * @return -String
 	 */
 	public String checkCartNoticeMessageExisting(){
+		this.applyStaticWait(3*this.getStaticWaitForApplication());
 		if(this.checkChildElementExistingByAttribute(this.cntCartNotice,"class","notice-group")){
 			if(this.lstCartNoticeMessage.size()==2){
 				return "both";
@@ -330,7 +358,7 @@ public class ShoppingCartPage extends BasePage {
 	 * @return - boolean
 	 */
 	public boolean checkProductTrueFitMessageExisting(){
-		this.applyStaticWait(3000);
+		this.applyStaticWait(5*this.getStaticWaitForApplication());
 		return !this.getElementInnerText(this.lblCartNoticeTrueFitMessage).isEmpty();
 	}
 
@@ -350,6 +378,16 @@ public class ShoppingCartPage extends BasePage {
 	public boolean checkProductBadgeExisting(WebElement cartItem){
 		WebElement item=cartItem.findElement(byProductPicBadgeContainer);
 		return this.checkChildElementExistingByAttribute(item,"class","badgeWrap");
+	}
+
+	/**
+	 * To check Product number Existing for cart item in shopping item list
+	 * @param - cartItem - item in lstCartItems
+	 * @return - boolean
+	 */
+	public boolean checkProductNumberExisting(WebElement cartItem){
+		WebElement item=cartItem.findElement(byProductNumberContainer);
+		return this.checkChildElementExistingByAttribute(item,"class","item-num");
 	}
 
 	/**
@@ -702,10 +740,15 @@ public class ShoppingCartPage extends BasePage {
 			map.put("productSize",null);
 		}
 
-		item=cartItem.findElement(byProductNumber);
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-		lsText=item.getText().replace("-","").trim();
-		map.put("productNumber",lsText);
+		if(this.checkProductNumberExisting(cartItem)){
+			item=cartItem.findElement(byProductNumber);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsText=item.getText().replace("-","").trim();
+			map.put("productNumber",lsText);
+		}
+		else{
+			map.put("productNumber",null);
+		}
 
 		item=cartItem.findElement(byProductNowPrice);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
@@ -717,6 +760,13 @@ public class ShoppingCartPage extends BasePage {
 		Select select = new Select(item);
 		lsText=select.getFirstSelectedOption().getText();
 		map.put("productQuantity",Integer.parseInt(lsText));
+
+		if(this.checkSelectQuantityEnabled(cartItem)){
+			map.put("productQuantityDisabled",false);
+		}
+		else{
+			map.put("productQuantityDisabled",true);
+		}
 
 		return map;
 	}
@@ -1487,7 +1537,7 @@ public class ShoppingCartPage extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectCartEasyPayInstallmentNumber);
 		Select select = new Select(this.selectCartEasyPayInstallmentNumber);
 		select.selectByVisibleText(optionText);
-		this.applyStaticWait(10*this.getStaticWaitForApplication());
+		this.waitForEasyPaySectionLoadingFromNonInstallmentState();
 	}
 
 	/**
@@ -1725,14 +1775,16 @@ public class ShoppingCartPage extends BasePage {
 					reporter.reportLogFailWithScreenshot("The cart item product description is not displaying correctly");
 				}
 
-				element=cartItem.findElement(byProductNumber);
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-				lsText=element.getText();
-				if(!lsText.isEmpty()){
-					reporter.reportLogPass("The cart item product product number is displaying correctly");
-				}
-				else{
-					reporter.reportLogFailWithScreenshot("The cart item product number is not displaying correctly");
+				if(this.checkProductNumberExisting(cartItem)){
+					element=cartItem.findElement(byProductNumber);
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+					lsText=element.getText();
+					if(!lsText.isEmpty()){
+						reporter.reportLogPass("The cart item product product number is displaying correctly");
+					}
+					else{
+						reporter.reportLogFailWithScreenshot("The cart item product number is not displaying correctly");
+					}
 				}
 
 				if(this.checkRemoveButtonExisting(cartItem)){
@@ -2625,7 +2677,6 @@ public class ShoppingCartPage extends BasePage {
 	}
 
 	/**
-<<<<<<< HEAD
 	 * To add Multiple Product EDP No
 	 * @param - String - productName
 	 * @param - String - customerEDP
@@ -2804,21 +2855,54 @@ public class ShoppingCartPage extends BasePage {
 
 	/**
 	 * This function verifies that free shipping item is present in cart
+	 * @param - Map<String,Object> - shopping cart map object
+	 * @param - int - edp number for free gift item
 	 */
-	public void verifyFreeShippingItemPresentInCart(){
+	public void verifyFreeGiftItemPresentInCart(Map<String,Object> shoppingCartMap,int edpNumber) throws IOException {
 		boolean flag = false;
-		for(WebElement webElement:lstCartItems){
-			if(checkFreeShippingMessageExisting(webElement)){
-				if(!checkSelectQuantityEnabled(webElement)){
+		//Fetching product edp number and name from product item number
+		if(shoppingCartMap.size()>0){
+			List<Map<String,Object>> shoppingCartItemList = (List<Map<String, Object>>) shoppingCartMap.get("shoppingList");
+			for(Map<String,Object> map:shoppingCartItemList){
+				if(Boolean.valueOf(map.get("productQuantityDisabled").toString())){
 					flag = true;
+					ProductDetailsItem productDetailsItem = new ProductAPI().getProductDetailsForSpecificProductNumber(map.get("productNumber").toString());
+					//Verifying free gift product name
+					if(productDetailsItem.getName().equalsIgnoreCase(map.get("productName").toString()))
+						reporter.reportLogPass("Product Name for free gift item is as expected: "+productDetailsItem.getName());
+					else
+						reporter.reportLogFailWithScreenshot("Product Name for free gift item is not as expected: "+productDetailsItem.getName());
+
+					//Verifying free gift product edp number
+					if(productDetailsItem.getDefaultEdp()==edpNumber)
+						reporter.reportLogPass("Edp Number for free gift item is as expected: "+edpNumber);
+					else
+						reporter.reportLogFailWithScreenshot("Edp Number for free gift item is not as expected: "+edpNumber+" actual: "+productDetailsItem.getDefaultEdp());
+
 					break;
 				}
 			}
+			if(flag)
+				reporter.reportLogPassWithScreenshot("Free Shipping item is added to cart as expected for user");
+			else
+				reporter.reportLogFailWithScreenshot("Free Shipping item is not added to cart as expected for user");
+		}else
+			reporter.reportLogFailWithScreenshot("No item is present in shopping cart!");
+	}
+
+	/**
+	 * This function returns particular config key value provided by user
+	 * @param configurations - configuration List from contentful
+	 * @param keyName - keyName whose value is to be fetched
+	 * @return - Object
+	 */
+	public Object getKeyValueFromContentfulConfiguration(List<Configuration> configurations, String keyName){
+		for(Configuration configuration:configurations){
+			if(configuration.getKey().equalsIgnoreCase(keyName)){
+				return configuration.getValue();
+			}
 		}
-		if(flag)
-			reporter.reportLogPassWithScreenshot("Free Shipping item is added to cart as expected for user");
-		else
-			reporter.reportLogFailWithScreenshot("Free Shipping item is not added to cart as expected for user");
+		return null;
 	}
 
 	/**
@@ -2838,5 +2922,116 @@ public class ShoppingCartPage extends BasePage {
 			}
 		}
 		return map;
+	}
+
+	/**
+	 * To check If CheckOut Button Disabled
+	 * @return - boolean - true for disabled and false for enabled
+	 */
+	public boolean checkIfCheckOutButtonDisabled(){
+		return this.hasElementAttribute(this.btnCartCheckoutButton,"disabled");
+	}
+
+	/**
+	 * To wait For EasyPay Section Loading From NonInstallment State
+	 * @return- boolean
+	 */
+	public boolean waitForEasyPaySectionLoadingFromNonInstallmentState(){
+		return this.waitForCondition(Driver->{return this.getChildElementCount(this.cntEasyPayContainer)>1;},30000);
+	}
+
+	/**
+	 * @return - String - selected button data to be used for verification
+	 */
+	public String selectAndGetTextForBlueJayCare(){
+		int size = this.lstCartCheckoutDonationButton.size();
+		if (size>0){
+			getReusableActionsInstance().clickIfAvailable(this.lstCartCheckoutDonationButton.get(0));
+			try{
+				this.waitForCondition(Driver->{return this.checkChildElementExistingByTagNameAndAttribute(lblBlueJayDonation,"a","class","donationButton active");},10000);
+			}catch (Exception exception){
+				this.applyStaticWait(5000);
+			}
+			String selectedDonation = getReusableActionsInstance().getElementText(this.lblBlueJaySelectedDonation).trim();
+			return selectedDonation;
+		}
+		return null;
+	}
+
+	/**
+	 * @param - String - jayCareAddedAmount added by user
+	 * @param - String - jayCareFoundationMessage message added in cart for user
+	 */
+	public void verifyBlueJayDonationAdditionInCart(String jayCareAddedAmount,String jayCareFoundationMessage){
+		boolean flag = false;
+		if(this.lstCartItems.size()>0){
+			if(!jayCareAddedAmount.contains("."))
+				jayCareAddedAmount = jayCareAddedAmount+".00";
+			for(WebElement element:this.lstCartItems){
+				String jayCareDescription = element.findElement(this.byProductItemDesc).getText();
+				if(jayCareDescription.contains(jayCareFoundationMessage)){
+					flag = true;
+					String donationAmount = element.findElement(this.byProductNowPrice).getText();
+					if(donationAmount.equalsIgnoreCase(jayCareAddedAmount))
+						reporter.reportLogPassWithScreenshot("Jay Care Foundation Donation is added with amount: "+donationAmount+" as expected");
+					else
+						reporter.reportLogFailWithScreenshot("Jay Care Foundation Donation is not added with amount: "+donationAmount+" as expected");
+				}
+				if(flag)
+					break;
+			}
+		}else
+			reporter.reportLogFailWithScreenshot("No item is present in cart for user");
+
+		if(flag)
+			reporter.reportLog("Verification for Blue Jays Foundation is done as expected");
+		else
+			reporter.reportLogFailWithScreenshot("Blue Jays Foundation verification is not done!!");
+	}
+
+	/**
+	 * This function verifies that Pay Pal pop up appears from checkout page
+	 */
+	public void verifyPayPalPopUpExistenceOnClick(){
+		boolean flag = false;
+		String parentWindowHandle = this.getDriver().getWindowHandle();
+		//Switch to PayPal frame
+		this.getDriver().switchTo().frame(framePayPalFrameElement);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnPayPalButton);
+		this.getReusableActionsInstance().clickIfAvailable(this.btnPayPalButton);
+		this.waitForCondition(Driver->{return this.getDriver().getWindowHandles().size()>1;},5000);
+		Set<String> windowHandles = this.getDriver().getWindowHandles();
+		if(windowHandles.size()>1){
+			for(String windowHandle:windowHandles){
+				if(!windowHandle.equalsIgnoreCase(parentWindowHandle)){
+					flag = true;
+					this.getDriver().switchTo().window(windowHandle);
+					this.waitForCondition(Driver->{return this.getReusableActionsInstance().isElementVisible(this.inputPayPalEmailInput) && this.inputPayPalEmailInput.isEnabled();},10000);
+					String payPalUrl = this.getDriver().getCurrentUrl();
+					if(payPalUrl.contains("paypal.com"))
+						reporter.reportLogPass("User is navigated to PayPal pop up as expected");
+					else
+						reporter.reportLogFail("User is not navigated to PayPal pop up as expected with url: "+payPalUrl);
+
+					//Verification of email input box
+					if(this.getReusableActionsInstance().isElementVisible(this.inputPayPalEmailInput) && this.inputPayPalEmailInput.isEnabled())
+						reporter.reportLog("Email Input on Pay Pal Pop Up is enabled");
+					else
+						reporter.reportLogFailWithScreenshot("Email input on Pay Pal pop up is either not displayed or not enabled");
+
+					this.getDriver().close();
+				}
+				if(flag){
+					this.getReusableActionsInstance().switchToMainWindow(parentWindowHandle);
+					break;
+				}
+			}
+			if(flag)
+				reporter.reportLogPass("Verification for pay pal pop is done");
+			else
+				reporter.reportLogFailWithScreenshot("Verification for pay pal pop is not done as expected!");
+		}else
+			reporter.reportLogFailWithScreenshot("Pay Pal pop up is not displayed as expected");
 	}
 }

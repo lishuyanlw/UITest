@@ -177,7 +177,7 @@ public class BaseTest {
 
 		if(System.getProperty("Browser").contains("ios") ||
 				(System.getProperty("chromeMobileDevice")!=null
-						&& (!System.getProperty("chromeMobileDevice").contains("iPad")))) {
+						&& (System.getProperty("chromeMobileDevice").contains("iPad")))) {
 			loginPageThreadLocal.set(new SignInPage(getDriver()));
 			myAccountPageThreadLocal.set(new MyAccount(getDriver()));
 		}
@@ -189,14 +189,12 @@ public class BaseTest {
 		reporter = new ExtentTestManager(getDriver());
 		apiResponseThreadLocal.set(new ApiResponse());
 		productAPIThreadLocal.set(new ProductAPI());
-		if(System.getProperty("Browser").contains("ios") ||
+		if(System.getProperty("Browser").contains("android") ||
 				(System.getProperty("chromeMobileDevice")!=null
-						&& (System.getProperty("chromeMobileDevice").contains("iPad")))) {
-			shoppingCartThreadLocal.set(new ShoppingCartPage(getDriver()));
-		}
-		else{
+						&& (!System.getProperty("chromeMobileDevice").contains("iPad"))))
 			shoppingCartThreadLocal.set(new ShoppingCartPage_Mobile(getDriver()));
-		}
+		else
+			shoppingCartThreadLocal.set(new ShoppingCartPage(getDriver()));
 
 		homePageThreadLocal.set(new HomePage(getDriver()));
 	}

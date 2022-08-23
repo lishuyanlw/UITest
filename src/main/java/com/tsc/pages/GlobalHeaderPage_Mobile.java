@@ -498,4 +498,20 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
             reporter.reportLogFailWithScreenshot("Language is not switched back to English from French");
     }
 
+    @Override
+    public void verifyHeaderItemsOnPage(){
+        this.waitForPageToLoad();
+        getReusableActionsInstance().scrollToElement(this.lblShopNowLink);
+        this.waitForCondition(Driver->{return this.lblShopNowLink.isEnabled();},8000);
+        //Verifying Shop Now
+        this.verifyElementLink(this.lblShopNowLink);
+        //Verifying flyout menu
+        getReusableActionsInstance().clickIfAvailable(this.menuButton);
+        if(this.waitForCondition(Driver->{return this.FlyoutHeadingsMobile.isDisplayed();},6000)){
+            getReusableActionsInstance().clickIfAvailable(this.btnMenuCloseButton);
+            reporter.reportLogPass("Menu Items are displayed for mobile device");
+        }
+        else
+            reporter.reportLogFailWithScreenshot("Menu Items are not displayed for mobile device");
+    }
 }

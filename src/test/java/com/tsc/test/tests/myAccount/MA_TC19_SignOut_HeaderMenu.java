@@ -27,11 +27,12 @@ public class MA_TC19_SignOut_HeaderMenu extends BaseTest {
 
         String lnk_landingViewURL=TestDataHandler.constantData.getMyAccount().getLnk_myAccountLandingViewURL();
         String expectedURL=basePage.getBaseURL()+lnk_landingViewURL;
+
         if(basePage.URL().equalsIgnoreCase(expectedURL)){
             reporter.reportLogPass("The navigated URL is equal to expected one:"+expectedURL);
         }
         else{
-            reporter.reportLogPass("The actual navigated URL:+"+basePage.URL()+" is not equal to expected one:"+expectedURL);
+            reporter.reportLogFailWithScreenshot("The actual navigated URL:"+basePage.URL()+" is not equal to expected one:"+expectedURL);
         }
 
         reporter.reportLog("Verify customer information");
@@ -63,7 +64,7 @@ public class MA_TC19_SignOut_HeaderMenu extends BaseTest {
             reporter.reportLogPass("The navigated URL after SignOut is equal to expected one:"+expectedURL);
         }
         else{
-            reporter.reportLogPass("The actual navigated URL after SignOut:+"+basePage.URL()+" is not equal to expected one:"+expectedURL);
+            reporter.reportLogFailWithScreenshot("The actual navigated URL after SignOut:+"+basePage.URL()+" is not equal to expected one:"+expectedURL);
         }
 
         String lblSignOutMessage = TestDataHandler.constantData.getLoginUser().getLbl_SignOutMessage();

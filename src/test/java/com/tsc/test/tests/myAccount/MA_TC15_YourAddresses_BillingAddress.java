@@ -82,7 +82,7 @@ public class MA_TC15_YourAddresses_BillingAddress extends BaseTest {
         if (basePage.URL().equalsIgnoreCase(expectedURL)) {
             reporter.reportLogPass("The navigated URL is equal to expected one:" + expectedURL);
         } else {
-            reporter.reportLogPass("The actual navigated URL:+" + basePage.URL() + " is not equal to expected one:" + expectedURL);
+            reporter.reportLogFailWithScreenshot("The actual navigated URL:+" + basePage.URL() + " is not equal to expected one:" + expectedURL);
         }
 
         reporter.reportLog("Verify address content");

@@ -2200,4 +2200,135 @@ public class GlobalFooterPage extends BasePage {
 			}
 		}
 	}
+
+	public void verifyCustomItemsOnPage(){
+		String lsText;
+
+		List<WebElement> webElementList = new ArrayList<WebElement>(
+				Arrays.asList(lnkCreditCard,lnkGiftCard,lnkSendUsFeedback));
+		for(WebElement webElement:webElementList){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(webElement);
+			lsText=webElement.getText();
+			if(!lsText.isEmpty()){
+				reporter.reportLogPass("Link is displaying correctly for top icons: "+lsText);
+			}
+			else{
+				reporter.reportLogFail("Link is not displaying correctly for top icons: "+lsText);
+			}
+			this.verifyElementLink(webElement);
+		}
+
+		Map<String,WebElement> socialMediaLinkMap = new HashMap<>();
+		socialMediaLinkMap.put("facebook",lnkFacebook);
+		socialMediaLinkMap.put("twitter",lnkTwitter);
+		socialMediaLinkMap.put("instagram",lnkInstagram);
+		socialMediaLinkMap.put("youtube",lnkYoutube);
+		socialMediaLinkMap.put("pinterest",lnkPinterest);
+		for(Map.Entry<String,WebElement> entry:socialMediaLinkMap.entrySet()){
+			reporter.reportLog("Verifying social media link for: "+entry.getKey());
+			this.verifyElementLink(entry.getValue());
+		}
+
+		socialMediaLinkMap.clear();
+		socialMediaLinkMap.put("facebook",imgFacebook);
+		socialMediaLinkMap.put("twitter",imgTwitter);
+		socialMediaLinkMap.put("instagram",imgInstagram);
+		socialMediaLinkMap.put("youtube",imgYoutube);
+		socialMediaLinkMap.put("pinterest",imgPinterest);
+		for(Map.Entry<String,WebElement> entry:socialMediaLinkMap.entrySet()){
+			reporter.reportLog("Verifying social media image for: "+entry.getKey());
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(entry.getValue());
+			if(this.getReusableActionsInstance().isElementVisible(entry.getValue())){
+				reporter.reportLogPass("WebElement image is displayed correctly");
+			}
+			else{
+				reporter.reportLogFail("WebElement image is not displaying correctly");
+			}
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lnkLanguage);
+		lsText=lnkLanguage.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("Language switch is displaying correctly");
+		}
+		else{
+			reporter.reportLogFail("Language switch is not displaying correctly");
+		}
+		String lsLink=lnkLanguage.getAttribute("href");
+		if(!lsLink.isEmpty()){
+			reporter.reportLogPass("Language switch link is not empty");
+		}
+		else{
+			reporter.reportLogFail("Language switch link is empty");
+		}
+	}
+
+	public void verifyServicesOnPage(){
+		String lsText;
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblTSCCustomerHubText);
+		lsText=lblTSCCustomerHubText.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("TSC Customer Hub Text is displaying correctly");
+		}
+		else{
+			reporter.reportLogFail("TSC Customer Hub Text is not displaying correctly");
+		}
+
+		for(WebElement item:lnkTSCCustomerHubAllLinks){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsText=item.getText();
+			if(!lsText.isEmpty()){
+				reporter.reportLogPass("Link is displaying correctly for customer hub: "+lsText);
+			}
+			else{
+				reporter.reportLogFail("Link is not displaying correctly for customer hub: "+lsText);
+			}
+			this.verifyElementLink(item);
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAboutTSCText);
+		lsText=lblAboutTSCText.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("About TSC Text is displaying correctly");
+		}
+		else{
+			reporter.reportLogFail("About TSC Text is not displaying correctly");
+		}
+
+		for(WebElement item:lnkAboutTSCAllLinks){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsText=item.getText();
+			if(!lsText.isEmpty()){
+				reporter.reportLogPass("Link is displaying correctly for About TSC: "+lsText);
+			}
+			else{
+				reporter.reportLogFail("Link is not displaying correctly for About TSC: "+lsText);
+			}
+			this.verifyElementLink(item);
+		}
+	}
+
+	public void verifyRogersLogoAndCopyRightInfo(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(imgRogersLogo);
+		if(this.getReusableActionsInstance().isElementVisible(imgRogersLogo)){
+			reporter.reportLogPass("Rogers Logo is displaying correctly");
+		}
+		else{
+			reporter.reportLogFail("Rogers Logo is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(blkCopyright);
+		if(this.getReusableActionsInstance().isElementVisible(blkCopyright)){
+			reporter.reportLogPass("Rogers CopyRight info is displaying correctly");
+		}
+		else{
+			reporter.reportLogFail("Rogers CopyRight info is not displaying correctly");
+		}
+	}
+
+	public void verifyFooterItemsOnPage(){
+		verifyCustomItemsOnPage();
+		verifyServicesOnPage();
+		verifyRogersLogoAndCopyRightInfo();
+	}
 }

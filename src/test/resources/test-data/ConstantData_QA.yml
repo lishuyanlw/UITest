@@ -239,7 +239,7 @@ myAccount:
   lbl_myNewsLettersTitle: "MY NEWSLETTERS"
   lnk_myAccountNewsLetterURL: "/pages/myaccount/newsletter"
   lbl_myNewsLettersSubscriptionSuccessMessage: "Your subscription settings have now been updated."
-  lbl_myNewsLettersUnSubscriptionSuccessMessage: "You have now been successfully unsubscribed."
+  lbl_myNewsLettersUnSubscriptionSuccessMessage: "Thank you for your changes."
   lbl_myNewsLettersNoCheckUnSubscriptionAlertMessage: "You have not chosen the unsubscribe checkbox."
   lbl_myNewsLettersCheckUnSubscriptionAlertMessage: "Are you sure you want to completely unsubscribe from all of our exciting email marketing communications?"
   lbl_noOrderRecordsMessage: "No orders yet. TSC has tons of deals to offer"
@@ -271,4 +271,4 @@ shoppingCart:
   lblOrderExceedingQuantityMessage: "The size of your order exceeds our on-line shopping limits but one of our Customer Service agents will be happy to assist you with your purchase. Please call our Customer Care Centre at 1-888-2020-888 to complete your order."
   lblProductNumberForOrderExceedingQuantity: 713070
   lblCartExceedingLimitMessage: "The size of your order exceeds our on-line shopping limits but one of our Customer Service agents will be happy to assist you with your purchase. Please call our Customer Care Centre at 1-888-2020-888 to complete your order."
-
+  lblJayCareFoundationDonationMessage: "Jays Care Foundation Donation"

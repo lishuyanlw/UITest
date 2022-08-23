@@ -1999,6 +1999,7 @@ public class ProductDetailPage extends BasePage {
 	 * To go To Shopping Cart page By Clicking Shopping Cart Icon In GlobalHeader
 	 */
 	public void goToShoppingCartByClickingShoppingCartIconInGlobalHeader(){
+		this.waitForPageToLoad();
 		GlobalHeaderPage globalHeaderPage=new GlobalHeaderPage(this.getDriver());
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeaderPage.ShoppingCartlnk);
 		globalHeaderPage.ShoppingCartlnk.click();
@@ -2006,13 +2007,14 @@ public class ProductDetailPage extends BasePage {
 		ShoppingCartPage shoppingCartPage=new ShoppingCartPage(this.getDriver());
 		this.waitForPageToLoad();
 		this.waitForCondition(Driver->{return shoppingCartPage.lblCartTitle.isDisplayed();},20000);
-		this.applyStaticWait(3*this.getStaticWaitForApplication());
+		this.applyStaticWait(5*this.getStaticWaitForApplication());
 	}
 
 	/**
 	 * To go To Shopping Cart page by clicking ViewShoppingBag button in AddToBag Popup window with login first
 	 */
 	public void goToShoppingCartFromAddToBagPopupWithLoginFirst(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnAddToBagPopupWindowButtonSectionViewShoppingBag);
 		this.btnAddToBagPopupWindowButtonSectionViewShoppingBag.click();
 		ShoppingCartPage shoppingCartPage=new ShoppingCartPage(this.getDriver());
 		try{

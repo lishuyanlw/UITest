@@ -59,7 +59,7 @@ public class MA_TC04_OrderDetails extends BaseTest {
             reporter.reportLogPass("The navigated order details URL is equal to expected one:"+expectedURL);
         }
         else{
-            reporter.reportLogPass("The actual order details navigated URL:+"+basePage.URL()+" is not equal to expected one:"+expectedURL);
+            reporter.reportLogFail("The actual order details navigated URL:+"+basePage.URL()+" is not equal to expected one:"+expectedURL);
         }
 
         //Fetching test data from test data file

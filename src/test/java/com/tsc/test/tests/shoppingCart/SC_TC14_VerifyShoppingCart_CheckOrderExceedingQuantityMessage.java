@@ -58,12 +58,28 @@ public class SC_TC14_VerifyShoppingCart_CheckOrderExceedingQuantityMessage exten
 				reporter.reportLogFailWithScreenshot("The order quantity exceeding message is not displaying correctly");
 			}
 
+			boolean bCheckoutButtonDisabled=getShoppingCartThreadLocal().checkIfCheckOutButtonDisabled();
+			if(bCheckoutButtonDisabled){
+				reporter.reportLogPass("The checkout button is disabled after choosing oversize quantity");
+			}
+			else{
+				reporter.reportLogFail("The checkout button is not disabled after choosing oversize quantity");
+			}
+
 			getShoppingCartThreadLocal().chooseShoppingItemByGivenItemIndexAndQuantity(findIndex, 1);
 			String lsCheckErrorMessage = getShoppingCartThreadLocal().checkCartNoticeMessageExisting();
 			if (lsCheckErrorMessage==null||lsCheckErrorMessage.equalsIgnoreCase("multiPackMessage")) {
 				reporter.reportLogPass("The order quantity exceeding message is not displaying as expected");
 			} else {
 				reporter.reportLogFail("The order quantity exceeding message is still displaying");
+			}
+
+			bCheckoutButtonDisabled=getShoppingCartThreadLocal().checkIfCheckOutButtonDisabled();
+			if(!bCheckoutButtonDisabled){
+				reporter.reportLogPass("The checkout button is enabled after choosing not oversize quantity");
+			}
+			else{
+				reporter.reportLogFail("The checkout button is disabled after choosing not oversize quantity");
 			}
 		}finally {
 			//To empty the cart for next run
