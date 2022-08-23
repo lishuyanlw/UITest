@@ -13,7 +13,7 @@ public class SC_TC14_VerifyShoppingCart_CheckOrderExceedingQuantityMessage exten
 	/*
 	 * CER-858
 	 */
-	@Test(groups={"Regression","ShoppingCart","SauceTunnelTest"})
+	@Test(groups={"Regression","ShoppingCart"})
 	public void SC_TC14_VerifyShoppingCart_CheckOrderExceedingQuantityMessage() throws IOException {
 
 		String lsUserName = TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();

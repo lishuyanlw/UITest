@@ -15,7 +15,7 @@ public class SC_TC10_VerifyShoppingCart_ShippingDateAndMultiPackMessage extends 
 	/*
 	 * CER-853
 	 */
-	@Test(groups={"Regression","ShoppingCart","SauceTunnelTest"})
+	@Test(groups={"Regression","ShoppingCart"})
 	public void SC_TC10_VerifyShoppingCart_ShippingDateAndMultiPackMessage() throws IOException {
 		String lsUserName = TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
 		String lsPassword = TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();

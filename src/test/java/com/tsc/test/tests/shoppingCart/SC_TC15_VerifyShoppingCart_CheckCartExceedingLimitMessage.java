@@ -13,7 +13,7 @@ public class SC_TC15_VerifyShoppingCart_CheckCartExceedingLimitMessage extends B
 	/*
 	 * CER-859
 	 */
-	@Test(groups={"Regression","ShoppingCart","SauceTunnelTest"})
+	@Test(groups={"Regression","ShoppingCart"})
 	public void SC_TC15_VerifyShoppingCart_CheckCartExceedingLimitMessage() throws IOException {
 		String lsUserName = TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
 		String lsPassword = TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
