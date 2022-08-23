@@ -2200,4 +2200,296 @@ public class GlobalFooterPage extends BasePage {
 			}
 		}
 	}
+
+	public void verifyCustomItemsOnPage(){
+		String lsText,lsLink;
+		boolean bWork;
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lnkCreditCard);
+		lsText=lnkCreditCard.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("Credit card is displaying correctly");
+		}
+		else{
+			reporter.reportLogFail("Credit card is not displaying correctly");
+		}
+		lsLink=lnkCreditCard.getAttribute("href");
+		if(!lsLink.isEmpty()){
+			reporter.reportLogPass("Credit card link is not empty");
+		}
+		else{
+			reporter.reportLogFail("Credit card link is empty");
+		}
+		bWork=this.verifyLink(lsLink);
+		if(bWork){
+			reporter.reportLogPass("Credit card link is working well");
+		}
+		else{
+			reporter.reportLogFail("Credit card link is not working well");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lnkGiftCard);
+		lsText=lnkGiftCard.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("Gift card is displaying correctly");
+		}
+		else{
+			reporter.reportLogFail("Gift card is not displaying correctly");
+		}
+		lsLink=lnkGiftCard.getAttribute("href");
+		if(!lsLink.isEmpty()){
+			reporter.reportLogPass("Gift card link is not empty");
+		}
+		else{
+			reporter.reportLogFail("Gift card link is empty");
+		}
+		bWork=this.verifyLink(lsLink);
+		if(bWork){
+			reporter.reportLogPass("Gift card link is working well");
+		}
+		else{
+			reporter.reportLogFail("Gift card link is not working well");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lnkSendUsFeedback);
+		lsText=lnkSendUsFeedback.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("Send FeedBack is displaying correctly");
+		}
+		else{
+			reporter.reportLogFail("Send FeedBack is not displaying correctly");
+		}
+		lsLink=lnkSendUsFeedback.getAttribute("href");
+		if(!lsLink.isEmpty()){
+			reporter.reportLogPass("Send FeedBack link is not empty");
+		}
+		else{
+			reporter.reportLogFail("Send FeedBack link is empty");
+		}
+		bWork=this.verifyLink(lsLink);
+		if(bWork){
+			reporter.reportLogPass("Send FeedBack link is working well");
+		}
+		else{
+			reporter.reportLogFail("Send FeedBack link is not working well");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lnkLanguage);
+		lsText=lnkLanguage.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("Language switch is displaying correctly");
+		}
+		else{
+			reporter.reportLogFail("Language switch is not displaying correctly");
+		}
+		lsLink=lnkLanguage.getAttribute("href");
+		if(!lsLink.isEmpty()){
+			reporter.reportLogPass("Language switch link is not empty");
+		}
+		else{
+			reporter.reportLogFail("Language switch link is empty");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(imgFacebook);
+		if(this.getReusableActionsInstance().isElementVisible(imgFacebook)){
+			reporter.reportLogPass("FaceBook is displaying correctly");
+		}
+		else{
+			reporter.reportLogFail("FaceBook is not displaying correctly");
+		}
+		bWork=this.verifyLink(lsLink);
+		if(bWork){
+			reporter.reportLogPass("FaceBook link is working well");
+		}
+		else{
+			reporter.reportLogFail("FaceBook link is not working well");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(imgTwitter);
+		if(this.getReusableActionsInstance().isElementVisible(imgTwitter)){
+			reporter.reportLogPass("Twitter is displaying correctly");
+		}
+		else{
+			reporter.reportLogFail("Twitter is not displaying correctly");
+		}
+		lsLink=lnkTwitter.getAttribute("href");
+		if(!lsLink.isEmpty()){
+			reporter.reportLogPass("Twitter link is not empty");
+		}
+		else{
+			reporter.reportLogFail("Twitter link is empty");
+		}
+		bWork=this.verifyLink(lsLink);
+		if(bWork){
+			reporter.reportLogPass("Twitter link is working well");
+		}
+		else{
+			reporter.reportLogFail("Twitter link is not working well");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(imgInstagram);
+		if(this.getReusableActionsInstance().isElementVisible(imgInstagram)){
+			reporter.reportLogPass("Instagram is displaying correctly");
+		}
+		else{
+			reporter.reportLogFail("Instagram is not displaying correctly");
+		}
+		lsLink=lnkInstagram.getAttribute("href");
+		if(!lsLink.isEmpty()){
+			reporter.reportLogPass("Instagram link is not empty");
+		}
+		else{
+			reporter.reportLogFail("Instagram link is empty");
+		}
+		bWork=this.verifyLink(lsLink);
+		if(bWork){
+			reporter.reportLogPass("Instagram link is working well");
+		}
+		else{
+			reporter.reportLogFail("Instagram link is not working well");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(imgYoutube);
+		if(this.getReusableActionsInstance().isElementVisible(imgYoutube)){
+			reporter.reportLogPass("Youtube is displaying correctly");
+		}
+		else{
+			reporter.reportLogFail("Youtube is not displaying correctly");
+		}
+		lsLink=lnkYoutube.getAttribute("href");
+		if(!lsLink.isEmpty()){
+			reporter.reportLogPass("Youtube link is not empty");
+		}
+		else{
+			reporter.reportLogFail("Youtube link is empty");
+		}
+		bWork=this.verifyLink(lsLink);
+		if(bWork){
+			reporter.reportLogPass("Youtube link is working well");
+		}
+		else{
+			reporter.reportLogFail("Youtube link is not working well");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(imgPinterest);
+		if(this.getReusableActionsInstance().isElementVisible(imgPinterest)){
+			reporter.reportLogPass("Pinterest is displaying correctly");
+		}
+		else{
+			reporter.reportLogFail("Pinterest is not displaying correctly");
+		}
+		lsLink=lnkPinterest.getAttribute("href");
+		if(!lsLink.isEmpty()){
+			reporter.reportLogPass("Pinterest link is not empty");
+		}
+		else{
+			reporter.reportLogFail("Pinterest link is empty");
+		}
+		bWork=this.verifyLink(lsLink);
+		if(bWork){
+			reporter.reportLogPass("Pinterest link is working well");
+		}
+		else{
+			reporter.reportLogFail("Pinterest link is not working well");
+		}
+	}
+
+	public void verifyServicesOnPage(){
+		String lsText,lsLink;
+		boolean bWork;
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblTSCCustomerHubText);
+		lsText=lblTSCCustomerHubText.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("TSC Customer Hub Text is displaying correctly");
+		}
+		else{
+			reporter.reportLogFail("TSC Customer Hub Text is not displaying correctly");
+		}
+
+		for(WebElement item:lnkTSCCustomerHubAllLinks){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsText=item.getText();
+			if(!lsText.isEmpty()){
+				reporter.reportLogPass("'"+lsText+"' is displaying correctly");
+			}
+			else{
+				reporter.reportLogFail("'"+lsText+"' is displaying correctly");
+			}
+			lsLink=item.getAttribute("href");
+			if(!lsLink.isEmpty()){
+				reporter.reportLogPass("'"+lsText+"' link is not empty");
+			}
+			else{
+				reporter.reportLogFail("'"+lsText+"' link is empty");
+			}
+			bWork=this.verifyLink(lsLink);
+			if(bWork){
+				reporter.reportLogPass("'"+lsText+"' link is working well");
+			}
+			else{
+				reporter.reportLogFail("'"+lsText+"' link is not working well");
+			}
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAboutTSCText);
+		lsText=lblAboutTSCText.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("About TSC Text is displaying correctly");
+		}
+		else{
+			reporter.reportLogFail("About TSC Text is not displaying correctly");
+		}
+
+		for(WebElement item:lnkAboutTSCAllLinks){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsText=item.getText();
+			if(!lsText.isEmpty()){
+				reporter.reportLogPass("'"+lsText+"' is displaying correctly");
+			}
+			else{
+				reporter.reportLogFail("'"+lsText+"' is displaying correctly");
+			}
+			lsLink=item.getAttribute("href");
+			if(!lsLink.isEmpty()){
+				reporter.reportLogPass("'"+lsText+"' link is not empty");
+			}
+			else{
+				reporter.reportLogFail("'"+lsText+"' link is empty");
+			}
+			bWork=this.verifyLink(lsLink);
+			if(bWork){
+				reporter.reportLogPass("'"+lsText+"' link is working well");
+			}
+			else{
+				reporter.reportLogFail("'"+lsText+"' link is not working well");
+			}
+		}
+	}
+
+	public void verifyRogersLogoAndCopyRightInfo(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(imgRogersLogo);
+		if(this.getReusableActionsInstance().isElementVisible(imgRogersLogo)){
+			reporter.reportLogPass("Rogers Logo is displaying correctly");
+		}
+		else{
+			reporter.reportLogFail("Rogers Logo is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(blkCopyright);
+		if(this.getReusableActionsInstance().isElementVisible(blkCopyright)){
+			reporter.reportLogPass("Rogers CopyRight info is displaying correctly");
+		}
+		else{
+			reporter.reportLogFail("Rogers CopyRight info is not displaying correctly");
+		}
+	}
+
+	public void verifyFooterItemsOnPage(){
+		verifyCustomItemsOnPage();
+		verifyServicesOnPage();
+		verifyRogersLogoAndCopyRightInfo();
+	}
+
+
 }

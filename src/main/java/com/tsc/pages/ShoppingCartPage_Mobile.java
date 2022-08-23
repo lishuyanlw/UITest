@@ -115,10 +115,12 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 			map.put("productSize",null);
 		}
 
-		item=cartItem.findElement(byProductNumber);
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-		lsText=item.getText().replace("-","").trim();
-		map.put("productNumber",lsText);
+		if(checkProductNumberExisting(cartItem)){
+			item=cartItem.findElement(byProductNumber);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsText=item.getText().replace("-","").trim();
+			map.put("productNumber",lsText);
+		}
 
 		item=cartItem.findElement(byProductNowPrice);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
@@ -490,14 +492,16 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 					reporter.reportLogFailWithScreenshot("The cart item product description is not displaying correctly");
 				}
 
-				element=cartItem.findElement(byProductNumber);
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-				lsText=element.getText();
-				if(!lsText.isEmpty()){
-					reporter.reportLogPass("The cart item product product number is displaying correctly");
-				}
-				else{
-					reporter.reportLogFailWithScreenshot("The cart item product number is not displaying correctly");
+				if(checkProductNumberExisting(cartItem)){
+					element=cartItem.findElement(byProductNumber);
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+					lsText=element.getText();
+					if(!lsText.isEmpty()){
+						reporter.reportLogPass("The cart item product product number is displaying correctly");
+					}
+					else{
+						reporter.reportLogFailWithScreenshot("The cart item product number is not displaying correctly");
+					}
 				}
 
 				if(this.checkRemoveButtonExisting(cartItem)){
