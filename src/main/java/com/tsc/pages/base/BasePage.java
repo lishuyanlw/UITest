@@ -1117,4 +1117,25 @@ import utils.ReusableActions;
 
 		return f;
 	}
+
+	/**
+	 * To scroll window down
+	 * @param - WebDriver - driver
+	 * @param - int - offset
+	 */
+	public void scrollWindowDown(WebDriver driver, int offset ) {
+		JavascriptExecutor jse = (JavascriptExecutor)driver;
+		jse.executeScript("window.scrollBy(0,arguments[0])", offset);
+	}
+
+	/**
+	 * To scroll window up
+	 * @param - WebDriver - driver
+	 * @param - int - offset
+	 */
+	public void scrollWindowUp(WebDriver driver, int offset ) {
+		offset=-offset;
+		JavascriptExecutor jse = (JavascriptExecutor)driver;
+		jse.executeScript("window.scrollBy(0,arguments[0])", offset);
+	}
 }
