@@ -21,6 +21,8 @@ public class SC_TC09_VerifyShoppingCart_Free_Gift_Item_And_Blue_Jay_Donation_Wit
      * CER-852 - Shopping Cart - Add item (having associate gift item) and check sub-total and order summary
      * CER-870 - Shopping Cart - Verify blue jays donation addition
      * CER-866 - Shopping Cart - Verify PayPal button functionality
+     * CER-864 - Global Header - Verify display of global header on all pages
+     * CER-865 - Global Footer - Verify display of global footer on all pages
      */
     @Test(groups={"Regression","ShoppingCart","SauceTunnelTest"})
     public void SC_TC09_VerifyShoppingCart_Free_Gift_Item_And_Blue_Jay_Donation_With_PayPal_Checkout() throws IOException {
@@ -104,8 +106,11 @@ public class SC_TC09_VerifyShoppingCart_Free_Gift_Item_And_Blue_Jay_Donation_Wit
             getShoppingCartThreadLocal().verifyOrderSummaryContents();
 
             //Verification of PayPal button functionality
-            reporter.reportLog("Verification of PayPal Button functionality");
-            getShoppingCartThreadLocal().verifyPayPalPopUpExistenceOnClick();
+            //reporter.reportLog("Verification of PayPal Button functionality");
+            //getShoppingCartThreadLocal().verifyPayPalPopUpExistenceOnClick();
+
+            reporter.reportLog("Verify Global Footer on Page");
+            getGlobalFooterPageThreadLocal().verifyFooterItemsOnPage();
         }finally {
             //Emptying Cart for next test to run with right state
             getShoppingCartThreadLocal().emptyCart(Integer.valueOf(customerEDP),accessToken);

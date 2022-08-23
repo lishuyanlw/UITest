@@ -753,21 +753,20 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 	@Override
 	public void verifyPayPalPopUpExistenceOnClick(){
 		boolean flag = false;
-		Set<String> parentWindowHandle = this.getDriver().getWindowHandles();
-		List<String> list = new ArrayList<String>(parentWindowHandle);
+		List<String> parentWindowHandle = new ArrayList<String>(this.getDriver().getWindowHandles());
 		//Switch to PayPal frame
 		this.getDriver().switchTo().frame(framePayPalFrameElement);
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnPayPalButton);
 		this.getReusableActionsInstance().clickIfAvailable(this.btnPayPalButton);
 		this.waitForCondition(Driver->{return this.getDriver().getWindowHandles().size()>1;},5000);
-		Set<String> windowHandles = this.getDriver().getWindowHandles();
+		ArrayList<String> openTabs = new ArrayList<String> (this.getDriver().getWindowHandles());
 		System.out.println(parentWindowHandle);
-		System.out.println(windowHandles);
-		if(windowHandles.size()>1){
-			for(String windowHandle:windowHandles){
-				System.out.println(windowHandle+" : "+list.get(0));
-				if(!windowHandle.equalsIgnoreCase(list.get(0))){
+		System.out.println(openTabs);
+		if(openTabs.size()>1){
+			for(String windowHandle:openTabs){
+				System.out.println(windowHandle+" : "+parentWindowHandle.get(0));
+				if(!windowHandle.equalsIgnoreCase(parentWindowHandle.get(0))){
 					flag = true;
 					this.getDriver().switchTo().window(windowHandle);
 					this.waitForCondition(Driver->{return this.getReusableActionsInstance().isElementVisible(this.inputPayPalEmailInput) && this.inputPayPalEmailInput.isEnabled();},10000);
@@ -786,7 +785,7 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 					this.getDriver().close();
 				}
 				if(flag){
-					this.getReusableActionsInstance().switchToMainWindow(list.get(0));
+					this.getReusableActionsInstance().switchToMainWindow(parentWindowHandle.get(0));
 					break;
 				}
 			}
