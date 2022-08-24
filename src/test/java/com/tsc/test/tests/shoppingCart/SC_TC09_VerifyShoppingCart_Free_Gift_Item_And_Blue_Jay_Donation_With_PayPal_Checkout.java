@@ -106,8 +106,8 @@ public class SC_TC09_VerifyShoppingCart_Free_Gift_Item_And_Blue_Jay_Donation_Wit
             getShoppingCartThreadLocal().verifyOrderSummaryContents();
 
             //Verification of PayPal button functionality
-            //reporter.reportLog("Verification of PayPal Button functionality");
-            //getShoppingCartThreadLocal().verifyPayPalPopUpExistenceOnClick();
+            reporter.reportLog("Verification of PayPal Button functionality");
+            getShoppingCartThreadLocal().verifyPayPalPopUpExistenceOnClick();
 
             reporter.reportLog("Verify Global Footer on Page");
             getGlobalFooterPageThreadLocal().verifyFooterItemsOnPage();

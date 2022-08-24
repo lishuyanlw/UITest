@@ -752,6 +752,7 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 
 	@Override
 	public void verifyPayPalPopUpExistenceOnClick(){
+		//https://sqa.stackexchange.com/questions/46791/error-with-driver-switchto-window-complaining-that-something-isnt-a-string
 		boolean flag = false;
 		List<String> parentWindowHandle = new ArrayList<String>(this.getDriver().getWindowHandles());
 		//Switch to PayPal frame
@@ -768,7 +769,7 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 				System.out.println(windowHandle+" : "+parentWindowHandle.get(0));
 				if(!windowHandle.equalsIgnoreCase(parentWindowHandle.get(0))){
 					flag = true;
-					this.getDriver().switchTo().window(windowHandle);
+					this.getDriver().switchTo().window(windowHandle.toString());
 					this.waitForCondition(Driver->{return this.getReusableActionsInstance().isElementVisible(this.inputPayPalEmailInput) && this.inputPayPalEmailInput.isEnabled();},10000);
 					String payPalUrl = this.getDriver().getCurrentUrl();
 					if(payPalUrl.contains("paypal.com"))
@@ -785,7 +786,7 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 					this.getDriver().close();
 				}
 				if(flag){
-					this.getReusableActionsInstance().switchToMainWindow(parentWindowHandle.get(0));
+					this.getReusableActionsInstance().switchToMainWindow(parentWindowHandle.get(0).toString());
 					break;
 				}
 			}
