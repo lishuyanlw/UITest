@@ -76,6 +76,23 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 	}
 
 	@Override
+	public Map<String,Object> getAllShoppingItemDesc(WebElement cartItem){
+		Map<String,Object> mapAll=new HashMap<>();
+
+		Map<String,Object> mapMandatory=this.getMandatoryShoppingItemDesc(cartItem);
+		for(Map.Entry<String,Object> entry:mapMandatory.entrySet()){
+			mapAll.put(entry.getKey(),entry.getValue());
+		}
+
+		Map<String,Object> mapOptional=this.getOptionalShoppingItemDesc(cartItem);
+		for(Map.Entry<String,Object> entry:mapOptional.entrySet()){
+			mapAll.put(entry.getKey(),entry.getValue());
+		}
+
+		return mapAll;
+	}
+
+	@Override
 	public Map<String,Object> getMandatoryShoppingItemDesc(WebElement cartItem){
 		Map<String,Object> map=new HashMap<>();
 

@@ -1138,4 +1138,32 @@ import utils.ReusableActions;
 		JavascriptExecutor jse = (JavascriptExecutor)driver;
 		jse.executeScript("window.scrollBy(0,arguments[0])", offset);
 	}
+
+	/**
+	 * This method will get element textContents With Formatting Children.
+	 * @param-WebElement element: element
+	 * @return String
+	 * @author Wei.Li
+	 */
+	public String getElementTextContentsWithFormattingChildren(WebElement element) {
+		JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
+		String lsText= (String)jse.executeScript("return arguments[0].textContents;", element);
+		return lsText.replace("&nbsp;", "").trim();
+	}
+
+	/**
+	 * This method will get element textContents Without Children.
+	 * @param-WebElement element: element
+	 * @return String
+	 * @author Wei.Li
+	 */
+	public String getElementTextContentsWithoutChildren(WebElement element) {
+		String lsWholeContent=this.getElementInnerText(element);
+		List<WebElement> lstChild=this.getChildrenList(element);
+		for(WebElement child:lstChild) {
+			String lsChildContent=this.getElementInnerText(child);
+			lsWholeContent=lsWholeContent.replace(lsChildContent,"");
+		}
+		return lsWholeContent.trim();
+	}
 }
