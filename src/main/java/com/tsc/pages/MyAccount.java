@@ -1822,12 +1822,14 @@ public class MyAccount extends BasePage {
 			reporter.reportLogFailWithScreenshot("Order total in Header is not displaying correctly");
 		}
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnOrderDetailsHeaderTrackOrder);
-		if(this.getReusableActionsInstance().isElementVisible(btnOrderDetailsHeaderTrackOrder)){
-			reporter.reportLogPass("Track order button in Header is displaying correctly");
-		}
-		else{
-			reporter.reportLogFailWithScreenshot("Track order button in Header is not displaying correctly");
+		if(this.checkTrackOrderButtonExisting()){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnOrderDetailsHeaderTrackOrder);
+			if(this.getReusableActionsInstance().isElementVisible(btnOrderDetailsHeaderTrackOrder)){
+				reporter.reportLogPass("Track order button in Header is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("Track order button in Header is not displaying correctly");
+			}
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnOrderDetailsHeaderEditOrder);
@@ -3669,7 +3671,7 @@ public class MyAccount extends BasePage {
 			}
 		}
 
-		if(lsProductName.contains(lsFavoriteItemName)||lsFavoriteItemName.contains(lsProductName)){
+		if(lsProductName.equalsIgnoreCase(lsFavoriteItemName)||lsProductName.toLowerCase().contains(lsFavoriteItemName.toLowerCase())||lsFavoriteItemName.toLowerCase().contains(lsProductName.toLowerCase())){
 			reporter.reportLogPass("The product name on PRP page is equal to the favorite item name");
 		}
 		else{
@@ -3771,21 +3773,11 @@ public class MyAccount extends BasePage {
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(pdp.lblProductName);
 		String lsPDPItemName=pdp.lblProductName.getText().trim();
-		if(lsPDPItemName.length()>25){
-			if(lsFavoriteItemName.substring(0,25).equalsIgnoreCase(lsPDPItemName.substring(0,25))){
-				reporter.reportLogPass("The favorite name is the same as the PDP product name");
-			}
-			else{
-				reporter.reportLogFailWithScreenshot("The favorite name:"+lsFavoriteItemName+" is not the same as the PDP product name:"+lsPDPItemName);
-			}
+		if(lsFavoriteItemName.equalsIgnoreCase(lsPDPItemName)||lsFavoriteItemName.toLowerCase().contains(lsPDPItemName.toLowerCase())||lsPDPItemName.toLowerCase().contains(lsFavoriteItemName.toLowerCase())){
+			reporter.reportLogPass("The favorite name is the same as the PDP product name");
 		}
 		else{
-			if(lsFavoriteItemName.equalsIgnoreCase(lsPDPItemName)){
-				reporter.reportLogPass("The favorite name is the same as the PDP product name");
-			}
-			else{
-				reporter.reportLogFailWithScreenshot("The favorite name:"+lsFavoriteItemName+" is not the same as the PDP product name:"+lsPDPItemName);
-			}
+			reporter.reportLogFailWithScreenshot("The favorite name:"+lsFavoriteItemName+" is not the same as the PDP product name:"+lsPDPItemName);
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(pdp.lblProductNowPrice);
@@ -3928,21 +3920,11 @@ public class MyAccount extends BasePage {
 		}
 
 		lsTextMap=productMap.get("productName");
-		if(lsTextMap.length()>25){
-			if(lsTextMap.substring(0,25).equalsIgnoreCase(lsText.substring(0,25))){
-				reporter.reportLogPass("The product name of recently viewing history item is the same as the one on PRP page");
-			}
-			else{
-				reporter.reportLogFail("The product name of recently viewing history item is not the same as the one on PRP page");
-			}
+		if(lsTextMap.equalsIgnoreCase(lsText)||lsTextMap.toLowerCase().contains(lsText.toLowerCase())||lsText.toLowerCase().contains(lsTextMap.toLowerCase())){
+			reporter.reportLogPass("The favorite name is the same as the PDP product name");
 		}
 		else{
-			if(lsText.equalsIgnoreCase(lsTextMap)){
-				reporter.reportLogPass("The product name of recently viewing history item is the same as the one on PRP page");
-			}
-			else{
-				reporter.reportLogFail("The product name of recently viewing history item is not the same as the one on PRP page");
-			}
+			reporter.reportLogFailWithScreenshot("The favorite name:"+lsText+" is not the same as the PDP product name:"+lsTextMap);
 		}
 
 		element=item.findElement(byRecentlyViewedItemNowPrice);
@@ -3998,7 +3980,7 @@ public class MyAccount extends BasePage {
 				reporter.reportLogPass("The product review rate of recently viewing history item is the same as the one on PRP page");
 			}
 			else{
-				reporter.reportLogFailWithScreenshot("The product review rate of recently viewing history item is not the same as the one on PRP page");
+				reporter.reportLogFailWithScreenshot("The product review rate: "+reviewRate+" of recently viewing history item is not the same as the one: "+reviewRate+" on PRP page");
 			}
 		}
 
@@ -4019,7 +4001,7 @@ public class MyAccount extends BasePage {
 				reporter.reportLogPass("The product review count of recently viewing history item is the same as the one on PRP page");
 			}
 			else{
-				reporter.reportLogFailWithScreenshot("The product review count of recently viewing history item is not the same as the one on PRP page");
+				reporter.reportLogFailWithScreenshot("The product review count: "+reviewCount+" of recently viewing history item is not the same as the one: "+lsTextMap+" on PRP page");
 			}
 		}
 	}

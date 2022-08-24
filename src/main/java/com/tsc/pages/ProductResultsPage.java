@@ -3904,6 +3904,7 @@ public class ProductResultsPage extends BasePage{
 
 		ProductDetailPage pdp=new ProductDetailPage(this.getDriver());
 
+		reporter.reportLog("Search keyword: "+lsKeyword);
 		this.getSearchResultLoad(lsKeyword,false);
 		List<WebElement> productList=this.getProductList();
 		WebElement item=productList.get(0);
