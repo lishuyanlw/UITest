@@ -23,7 +23,7 @@ mutableSafariCapabilities:
 androidChromeCapabilities:
    platformName: Android
    platformVersion: 9.0
-   appiumVersion: 1.9.1
+   appiumVersion: 1.22.1
    deviceName: Android GoogleAPI Emulator
    deviceOrientation: portrait
    deviceType: Tablet
