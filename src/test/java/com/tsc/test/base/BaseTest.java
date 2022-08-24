@@ -190,7 +190,7 @@ public class BaseTest {
 		apiResponseThreadLocal.set(new ApiResponse());
 		productAPIThreadLocal.set(new ProductAPI());
 		if(System.getProperty("Browser").contains("android") ||
-				(System.getProperty("chromeMobileDevice")!=null
+				(System.getProperty("chromeMobileDevice").length()>0
 						&& (!System.getProperty("chromeMobileDevice").contains("iPad"))))
 			shoppingCartThreadLocal.set(new ShoppingCartPage_Mobile(getDriver()));
 		else
