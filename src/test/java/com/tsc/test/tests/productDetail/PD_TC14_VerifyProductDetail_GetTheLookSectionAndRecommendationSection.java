@@ -38,8 +38,13 @@ public class PD_TC14_VerifyProductDetail_GetTheLookSectionAndRecommendationSecti
 			reporter.reportLog("Verify Prev and Next buttons in Get the look section");
 			getProductDetailPageThreadLocal().verifyPrevAndNextButtonActionInGetTheLookSection();
 
-			reporter.reportLog("Verifying Product Recommendation section details");
-			getProductResultsPageThreadLocal().verify_ProductRecommendationSection();
+			if(getProductDetailPageThreadLocal().checkRecommendationSectionExisting()){
+				reporter.reportLog("Verifying Product Recommendation section details");
+				getProductResultsPageThreadLocal().verify_ProductRecommendationSection();
+			}
+			else{
+				reporter.reportLog("Product Recommendation section is not existing");
+			}
 		}
 		else {
 			reporter.reportLogFail("Unable to find the product item with SeeMore info");
