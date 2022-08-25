@@ -24,8 +24,11 @@ public class GF_TC01_VerifySocialMedia extends BaseTest {
 			reporter.reportLogFailWithScreenshot("TSC url is incorrect");
 		}
 
-		reporter.reportLog("Global Footer Section");	
+		//Verification of Header Menu Items on Page
+		reporter.reportLog("Verification of Global Header on Page");
+		getglobalheaderPageThreadLocal().verifyHeaderItemsOnPage();
 
+		reporter.reportLog("Global Footer Section");
 		validateMajorNameAndLinks();
 		validateActionContents();
 		

@@ -56,5 +56,11 @@ public class MA_TC01_LandingView extends BaseTest {
         reporter.reportLog("Verify landing view content");
         getMyAccountPageThreadLocal().verifyLandingViewContent();
 
+        //Verification of Header Menu Items on Page
+        reporter.reportLog("Verification of Global Header on Page");
+        getglobalheaderPageThreadLocal().verifyHeaderItemsOnPage();
+
+        reporter.reportLog("Verify Global Footer on Page");
+        getGlobalFooterPageThreadLocal().verifyFooterItemsOnPage();
     }
 }
