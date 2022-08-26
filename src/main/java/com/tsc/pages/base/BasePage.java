@@ -608,7 +608,7 @@ import utils.ReusableActions;
 		JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
 		jse.executeScript("arguments[0].click();", element);			
 	}
-	
+
 	/**
 	 * This method will split keyword using space.
 	 * @param-String lsKeyword: input keyword
@@ -1152,7 +1152,7 @@ import utils.ReusableActions;
 	}
 
 	/**
-	 * This method will get element textContents Without Children.
+	 * This method will get element textContent Without Children.
 	 * @param-WebElement element: element
 	 * @return String
 	 * @author Wei.Li
