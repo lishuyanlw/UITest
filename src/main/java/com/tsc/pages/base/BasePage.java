@@ -465,7 +465,7 @@ import utils.ReusableActions;
 	 */		
 	public void setChildElementAttribute(WebElement parent,String lsAttribute,String lsValue) {
 		JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
-		jse.executeScript("return arguments[0].setAttribute(arguments[1],arguments[2]);", parent,lsAttribute,lsValue);				
+		jse.executeScript("arguments[0].setAttribute(arguments[1],arguments[2]);", parent,lsAttribute,lsValue);
 	}
 	
 	/**
@@ -1140,14 +1140,14 @@ import utils.ReusableActions;
 	}
 
 	/**
-	 * This method will get element textContents With Formatting Children.
+	 * This method will get element textContent With Formatting Children.
 	 * @param-WebElement element: element
 	 * @return String
 	 * @author Wei.Li
 	 */
 	public String getElementTextContentsWithFormattingChildren(WebElement element) {
 		JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
-		String lsText= (String)jse.executeScript("return arguments[0].textContents;", element);
+		String lsText= (String)jse.executeScript("return arguments[0].textContent;", element);
 		return lsText.replace("&nbsp;", "").trim();
 	}
 
