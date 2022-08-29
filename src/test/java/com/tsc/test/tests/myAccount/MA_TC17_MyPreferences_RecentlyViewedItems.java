@@ -84,7 +84,8 @@ public class MA_TC17_MyPreferences_RecentlyViewedItems extends BaseTest {
         }
 
         reporter.reportLog("Add Viewed history item from PRP page");
-        Map<String,String> productMap=getProductResultsPageThreadLocal().navigateFromPRPToPDP(lsKeywordDropdownList.get(0).get(0), false);
+        Map<String,String> prpMap=getProductResultsPageThreadLocal().navigateFromPRPToPDP(lsKeywordDropdownList.get(0).get(0), false);
+        //Map<String,String> pdpMap=getProductDetailPageThreadLocal().getFullInformationOnPDP(prpMap.get("productBrand")!=null,prpMap.get("productReviewRate")!=null,prpMap.get("productWasPrice")!=null,false,false);
         getGlobalLoginPageThreadLocal().goToYourProfilePage();
         getMyAccountPageThreadLocal().openSubItemWindow("My Preferences", "Recently viewed items", getMyAccountPageThreadLocal().lblRecentlyViewedTitle);
         if(getMyAccountPageThreadLocal().lstRecentlyViewedItemContainerList.size()==1){
@@ -95,7 +96,7 @@ public class MA_TC17_MyPreferences_RecentlyViewedItems extends BaseTest {
         }
 
         reporter.reportLog("Verify Viewed history page");
-        getMyAccountPageThreadLocal().verifyRecentlyViewingHistoryContent(productMap);
+        getMyAccountPageThreadLocal().verifyRecentlyViewingHistoryContent(prpMap);
 
     }
 }
