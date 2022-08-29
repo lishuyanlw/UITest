@@ -52,6 +52,12 @@ public class PD_TC01_VerifyProductDetail_LeftSection_ContentsForVideo extends Ba
 			reporter.reportLog("Verify Video off function");
 			getProductDetailPageThreadLocal().verifyVideoOff();
 
+			//Verification of Header Menu Items on Page
+			reporter.reportLog("Verification of Global Header on Page");
+			getglobalheaderPageThreadLocal().verifyHeaderItemsOnPage();
+
+			reporter.reportLog("Verify Global Footer on Page");
+			getGlobalFooterPageThreadLocal().verifyFooterItemsOnPage();
 		}
 		else {
 			reporter.reportLogFail("Unable to find the product item with Review, EasyPay, Swatch item>=4 and Video");

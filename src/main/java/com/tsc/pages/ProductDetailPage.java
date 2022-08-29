@@ -786,6 +786,10 @@ public class ProductDetailPage extends BasePage {
 
 	public By accordionContentElement = By.xpath(".//div[contains(@id,'content')]");
 
+	//For recommendation section
+	@FindBy(xpath = "//div[@class='pdp-main']//div[@id='product-recommend']")
+	public WebElement cntProductRecommendationContainer;
+
 	public ProductDetailsItem productDetailsItem = new ProductDetailsItem();
 	public Product.Products product=null;
 	public SelectedProduct selectedProduct= new SelectedProduct();
@@ -806,6 +810,14 @@ public class ProductDetailPage extends BasePage {
 	 */
 	public boolean checkIfAutoPlayVideoStatusIsON() {
 		return this.btnAutoPlayVideo.isSelected();
+	}
+
+	/**
+	 * Method to check Recommendation Section Existing
+	 * @return true/false
+	 */
+	public boolean checkRecommendationSectionExisting() {
+		return !this.getElementInnerText(this.cntProductRecommendationContainer).isEmpty();
 	}
 
 	/**

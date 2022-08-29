@@ -21,6 +21,10 @@ public class HP_TC01_VerifyTSMainImage extends BaseTest{
 		reporter.reportLog("Home Page");
 		String lsYmlNotFound=TestDataHandler.constantData.getHeaderSection().getLnk_NotFound();
 
+		//Verification of Header Menu Items on Page
+		reporter.reportLog("Verification of Global Header on Page");
+		getglobalheaderPageThreadLocal().verifyHeaderItemsOnPage();
+
 		//Method to validate TS image in the upper section
 		int totalTSImageUpperSection = homePageThreadLocal().totalTSimage("Upper");
 		reporter.reportLog("Number of total TS image in the upper section: "+totalTSImageUpperSection);
@@ -39,6 +43,9 @@ public class HP_TC01_VerifyTSMainImage extends BaseTest{
 			List<String> lsUrl_UpperSection=homePageThreadLocal().getTabUrlListTSimage();
 			homePageThreadLocal().verifyImageTabsAndURL(numberOfWindows_UpperSection,totalTSImageUpperSection,lsUrl_UpperSection,lsYmlNotFound);
 		}
+
+		reporter.reportLog("Verify Global Footer on Page");
+		getGlobalFooterPageThreadLocal().verifyFooterItemsOnPage();
 
 		/*
 		//Method to validate TS image in the Lower Section

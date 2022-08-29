@@ -27,3 +27,6 @@ test_browser = sauceandroidchrome
 For Tablet: ios
 test_device = Tablet
 test_browser = sauceioschrome
+
+Property "chromeMobileDevice" should always be empty as below in master branch as below to initialize different object for devices
+chromeMobileDevice=

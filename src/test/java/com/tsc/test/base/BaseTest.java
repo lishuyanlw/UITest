@@ -170,7 +170,7 @@ public class BaseTest {
 		}
 
 		if(System.getProperty("Browser").contains("android") ||
-				(System.getProperty("chromeMobileDevice")!=null
+				(System.getProperty("chromeMobileDevice").length()>0
 						&& (!System.getProperty("chromeMobileDevice").contains("iPad")))) {
 			productDetailPageThreadLocal.set(new ProductDetailPage_Mobile(getDriver()));
 			//globalFooterPageThreadLocal.set(new GlobalFooterPage_Mobile(getDriver()));
@@ -182,7 +182,7 @@ public class BaseTest {
 		}
 
 		if(System.getProperty("Browser").contains("ios") ||
-				(System.getProperty("chromeMobileDevice")!=null
+				(System.getProperty("chromeMobileDevice").length()>0
 						&& (System.getProperty("chromeMobileDevice").contains("iPad")))) {
 			loginPageThreadLocal.set(new SignInPage(getDriver()));
 			myAccountPageThreadLocal.set(new MyAccount(getDriver()));
@@ -195,8 +195,13 @@ public class BaseTest {
 		reporter = new ExtentTestManager(getDriver());
 		apiResponseThreadLocal.set(new ApiResponse());
 		productAPIThreadLocal.set(new ProductAPI());
-		shoppingCartThreadLocal.set(new ShoppingCartPage(getDriver()));
-		regularCheckoutPageThreadLocal.set(new RegularCheckoutPage(getDriver()));
+		if(System.getProperty("Browser").contains("android") ||
+				(System.getProperty("chromeMobileDevice").length()>0
+						&& (!System.getProperty("chromeMobileDevice").contains("iPad"))))
+			shoppingCartThreadLocal.set(new ShoppingCartPage_Mobile(getDriver()));
+		else
+			shoppingCartThreadLocal.set(new ShoppingCartPage(getDriver()));
+
 		homePageThreadLocal.set(new HomePage(getDriver()));
 	}
 
