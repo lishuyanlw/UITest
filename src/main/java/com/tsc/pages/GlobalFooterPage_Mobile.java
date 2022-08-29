@@ -411,25 +411,12 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 			lsText=item.getText();
 			if(!lsText.isEmpty()){
-				reporter.reportLogPass("'"+lsText+"' is displaying correctly");
+				reporter.reportLogPass("Link is displaying correctly for customer hub: "+lsText);
 			}
 			else{
-				reporter.reportLogFail("'"+lsText+"' is displaying correctly");
+				reporter.reportLogFail("Link is not displaying correctly for customer hub: "+lsText);
 			}
-			lsLink=item.getAttribute("href");
-			if(!lsLink.isEmpty()){
-				reporter.reportLogPass("'"+lsText+"' link is not empty");
-			}
-			else{
-				reporter.reportLogFail("'"+lsText+"' link is empty");
-			}
-			bWork=this.verifyLink(lsLink);
-			if(bWork){
-				reporter.reportLogPass("'"+lsText+"' link is working well");
-			}
-			else{
-				reporter.reportLogFail("'"+lsText+"' link is not working well");
-			}
+			this.verifyElementLink(item);
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAboutTSCText);
@@ -447,25 +434,12 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 			lsText=item.getText();
 			if(!lsText.isEmpty()){
-				reporter.reportLogPass("'"+lsText+"' is displaying correctly");
+				reporter.reportLogPass("Link is displaying correctly for customer hub: "+lsText);
 			}
 			else{
-				reporter.reportLogFail("'"+lsText+"' is displaying correctly");
+				reporter.reportLogFail("Link is not displaying correctly for customer hub: "+lsText);
 			}
-			lsLink=item.getAttribute("href");
-			if(!lsLink.isEmpty()){
-				reporter.reportLogPass("'"+lsText+"' link is not empty");
-			}
-			else{
-				reporter.reportLogFail("'"+lsText+"' link is empty");
-			}
-			bWork=this.verifyLink(lsLink);
-			if(bWork){
-				reporter.reportLogPass("'"+lsText+"' link is working well");
-			}
-			else{
-				reporter.reportLogFail("'"+lsText+"' link is not working well");
-			}
+			this.verifyElementLink(item);
 		}
 	}
 

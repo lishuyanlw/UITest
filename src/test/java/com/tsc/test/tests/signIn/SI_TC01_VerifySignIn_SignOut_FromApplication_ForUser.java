@@ -70,6 +70,13 @@ public class SI_TC01_VerifySignIn_SignOut_FromApplication_ForUser extends BaseTe
         else
             getReporter().reportLogFailWithScreenshot("User is not logged in with expected customer no: "+userCustomerNumber+" but with other customer no: "+customerNumber);
 
+        //Verification of Header Menu Items on Page
+        reporter.reportLog("Verification of Global Header on Page");
+        getglobalheaderPageThreadLocal().verifyHeaderItemsOnPage();
+
+        reporter.reportLog("Verify Global Footer on Page");
+        getGlobalFooterPageThreadLocal().verifyFooterItemsOnPage();
+
         //Sign out functionality
         getGlobalLoginPageThreadLocal().SignOut();
         getGlobalLoginPageThreadLocal().validateCurrentUrlContains("signin");

@@ -106,8 +106,14 @@ public class SC_TC09_VerifyShoppingCart_Free_Gift_Item_And_Blue_Jay_Donation_Wit
             getShoppingCartThreadLocal().verifyOrderSummaryContents();
 
             //Verification of PayPal button functionality
-            //reporter.reportLog("Verification of PayPal Button functionality");
-            //getShoppingCartThreadLocal().verifyPayPalPopUpExistenceOnClick();
+            if(System.getProperty("Browser").contains("ios") &&
+                    (System.getProperty("Device").equalsIgnoreCase("Mobile") ||
+                            System.getProperty("Device").equalsIgnoreCase("Tablet")))
+                reporter.reportLog("PayPal Button not checked for ios mobile as it is blocked due to cross origin!");
+            else{
+                reporter.reportLog("Verification of PayPal Button functionality");
+                getShoppingCartThreadLocal().verifyPayPalPopUpExistenceOnClick();
+            }
 
             reporter.reportLog("Verify Global Footer on Page");
             getGlobalFooterPageThreadLocal().verifyFooterItemsOnPage();

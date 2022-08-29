@@ -133,6 +133,12 @@ public class GlobalHeaderPage_Tablet extends GlobalHeaderPage_Mobile{
         this.verifyElementLink(this.lblShopNowLink);
         //Verifying Watch TSC Menu Links
         this.verifyWatchTSCMenuItemLinks();
+
+        //Clicking on TSC logo to refresh page
+        getReusableActionsInstance().clickIfAvailable(lnkTSClogolink);
+        this.waitForPageLoad();
+        this.waitForCondition(Driver->{return this.menuButton.isDisplayed() && this.menuButton.isEnabled();},5000);
+
         //Verifying clicking on one menu item
         getReusableActionsInstance().clickIfAvailable(this.menuButton);
         if(this.waitForCondition(Driver->{return this.FlyoutHeadingsMobile.isDisplayed();},6000)){

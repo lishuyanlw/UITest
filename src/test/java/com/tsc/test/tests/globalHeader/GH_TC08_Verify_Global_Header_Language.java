@@ -22,6 +22,10 @@ public class GH_TC08_Verify_Global_Header_Language extends BaseTest {
 		reporter.reportLog("Home Page");
 		String partialURLAtEnd = TestDataHandler.constantData.getHeaderSection().getLbl_ParialURLEndWatchTSC();
 
+		//Verification of Header Menu Items on Page
+		reporter.reportLog("Verification of Global Header on Page");
+		getglobalheaderPageThreadLocal().verifyHeaderItemsOnPage();
+
 		getGlobalFooterPageThreadLocal().switchlanguage();
 		GH_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo gh_tc01_verify_global_header_blackMenu_silverMenu_tscLogo = new GH_TC01_Verify_Global_Header_BlackMenu_SilverMenu_TSCLogo();
 		//Below part will not be executed for Mobile as section is not present for mobile
@@ -40,5 +44,8 @@ public class GH_TC08_Verify_Global_Header_Language extends BaseTest {
 			getglobalheaderPageThreadLocal().waitForPageLoad();
 		}
 		getglobalheaderPageThreadLocal().switchToEnglish(headerMap);
+
+		reporter.reportLog("Verify Global Footer on Page");
+		getGlobalFooterPageThreadLocal().verifyFooterItemsOnPage();
 	}
 }
