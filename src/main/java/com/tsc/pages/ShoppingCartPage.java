@@ -1545,6 +1545,7 @@ public class ShoppingCartPage extends BasePage {
  	 * @return - List<String>
 	 */
 	public List<String> getInstallmentOptions(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectCartEasyPayInstallmentNumber);
 		Select select = new Select(this.selectCartEasyPayInstallmentNumber);
 		List<WebElement> lstOptions=select.getOptions();
 		List<String> lstOptionText=new ArrayList<>();
