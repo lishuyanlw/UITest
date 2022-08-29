@@ -953,12 +953,12 @@ import utils.ReusableActions;
 	/**Method to click an element using JS
 	 * @param-WebElement element: input element
 	 */
-		public void clickWebElementUsingJSEvent(WebElement webElement){
-			String clickElementScript = "if(document.createEvent){var evObj = document.createEvent('MouseEvents');evObj.initEvent('click'," +
-					"true, true); arguments[0].dispatchEvent(evObj);} else if(document.createEventObject) { arguments[0].fireEvent('click');}";
-			((JavascriptExecutor) getDriver()).executeScript(clickElementScript,
-					webElement);
-		}
+	public void clickWebElementUsingJSEvent(WebElement webElement){
+		String clickElementScript = "if(document.createEvent){var evObj = document.createEvent('MouseEvents');evObj.initEvent('click'," +
+				"true, true); arguments[0].dispatchEvent(evObj);} else if(document.createEventObject) { arguments[0].fireEvent('click');}";
+		((JavascriptExecutor) getDriver()).executeScript(clickElementScript,
+				webElement);
+	}
 
 	/**
 	 * Method to get the browser name where test is executing
