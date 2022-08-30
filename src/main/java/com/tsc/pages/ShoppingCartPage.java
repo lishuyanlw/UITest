@@ -1545,6 +1545,7 @@ public class ShoppingCartPage extends BasePage {
  	 * @return - List<String>
 	 */
 	public List<String> getInstallmentOptions(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectCartEasyPayInstallmentNumber);
 		Select select = new Select(this.selectCartEasyPayInstallmentNumber);
 		List<WebElement> lstOptions=select.getOptions();
 		List<String> lstOptionText=new ArrayList<>();
@@ -3033,5 +3034,15 @@ public class ShoppingCartPage extends BasePage {
 				reporter.reportLogFailWithScreenshot("Verification for pay pal pop is not done as expected!");
 		}else
 			reporter.reportLogFailWithScreenshot("Pay Pal pop up is not displayed as expected");
+	}
+
+	/**
+	 * To go To checkout page by clicking checkout button
+	 */
+	public void goToCheckoutPage(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnCartCheckoutButton);
+		this.btnCartCheckoutButton.click();
+		RegularCheckoutPage checkoutPage= new RegularCheckoutPage(this.getDriver());
+		this.waitForCondition(Driver->{return checkoutPage.lblCheckout.isDisplayed();},30000);
 	}
 }

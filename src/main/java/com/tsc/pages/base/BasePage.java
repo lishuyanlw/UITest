@@ -465,7 +465,7 @@ import utils.ReusableActions;
 	 */		
 	public void setChildElementAttribute(WebElement parent,String lsAttribute,String lsValue) {
 		JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
-		jse.executeScript("return arguments[0].setAttribute(arguments[1],arguments[2]);", parent,lsAttribute,lsValue);				
+		jse.executeScript("arguments[0].setAttribute(arguments[1],arguments[2]);", parent,lsAttribute,lsValue);
 	}
 	
 	/**
@@ -608,7 +608,7 @@ import utils.ReusableActions;
 		JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
 		jse.executeScript("arguments[0].click();", element);			
 	}
-	
+
 	/**
 	 * This method will split keyword using space.
 	 * @param-String lsKeyword: input keyword
@@ -953,12 +953,12 @@ import utils.ReusableActions;
 	/**Method to click an element using JS
 	 * @param-WebElement element: input element
 	 */
-		public void clickWebElementUsingJSEvent(WebElement webElement){
-			String clickElementScript = "if(document.createEvent){var evObj = document.createEvent('MouseEvents');evObj.initEvent('click'," +
-					"true, true); arguments[0].dispatchEvent(evObj);} else if(document.createEventObject) { arguments[0].fireEvent('click');}";
-			((JavascriptExecutor) getDriver()).executeScript(clickElementScript,
-					webElement);
-		}
+	public void clickWebElementUsingJSEvent(WebElement webElement){
+		String clickElementScript = "if(document.createEvent){var evObj = document.createEvent('MouseEvents');evObj.initEvent('click'," +
+				"true, true); arguments[0].dispatchEvent(evObj);} else if(document.createEventObject) { arguments[0].fireEvent('click');}";
+		((JavascriptExecutor) getDriver()).executeScript(clickElementScript,
+				webElement);
+	}
 
 	/**
 	 * Method to get the browser name where test is executing
@@ -1116,5 +1116,54 @@ import utils.ReusableActions;
 		}
 
 		return f;
+	}
+
+	/**
+	 * To scroll window down
+	 * @param - WebDriver - driver
+	 * @param - int - offset
+	 */
+	public void scrollWindowDown(WebDriver driver, int offset ) {
+		JavascriptExecutor jse = (JavascriptExecutor)driver;
+		jse.executeScript("window.scrollBy(0,arguments[0])", offset);
+	}
+
+	/**
+	 * To scroll window up
+	 * @param - WebDriver - driver
+	 * @param - int - offset
+	 */
+	public void scrollWindowUp(WebDriver driver, int offset ) {
+		offset=-offset;
+		JavascriptExecutor jse = (JavascriptExecutor)driver;
+		jse.executeScript("window.scrollBy(0,arguments[0])", offset);
+	}
+
+	/**
+	 * This method will get element textContent With Formatting Children.
+	 * @param-WebElement element: element
+	 * @return String
+	 * @author Wei.Li
+	 */
+	public String getElementTextContentsWithFormattingChildren(WebElement element) {
+		JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
+		String lsText= (String)jse.executeScript("return arguments[0].textContent;", element);
+		return lsText.replace("&nbsp;", "").trim();
+	}
+
+	/**
+	 * This method will get element textContent Without Children.
+	 * @param-WebElement element: element
+	 * @return String
+	 * @author Wei.Li
+	 */
+	public String getElementTextContentsWithoutChildren(WebElement element) {
+		String lsWholeContent=this.getElementInnerText(element);
+		List<WebElement> lstChild=this.getChildrenList(element);
+		for(WebElement child:lstChild) {
+			String lsChildContent=this.getElementInnerText(child);
+			lsWholeContent=lsWholeContent.replace(lsChildContent,"");
+		}
+		return lsWholeContent.trim();
 	}
 }
