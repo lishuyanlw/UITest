@@ -3110,5 +3110,79 @@ public class RegularCheckoutPage extends BasePage {
 		return this.waitForCondition(Driver->{return !this.checkChildElementExistingByAttribute(this.cntFooterContainer,"class","loading__overlay");},60000);
 	}
 
+	/**
+	 * To verify Shipping Address on Checkout Page
+	 */
+	public void verifyShippingAddressDisplayOnCheckout() {
+		String lsText;
+
+		reporter.reportLog("Verify shipping address contents");
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblShippingAddressTitle);
+		lsText=lblShippingAddressTitle.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The Shipping Address Title is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Shipping Address Title is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblShippingAddress);
+		lsText=lblShippingAddress.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The Shipping Address is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Shipping Address is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnShippingAddressAddOrChange);
+		lsText=btnShippingAddressAddOrChange.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The Shipping Address AddOrChange button is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Shipping Address AddOrChange button is not displaying correctly");
+		}
+
+		reporter.reportLog("Verify shipping method contents");
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblShippingMethodTitle);
+		lsText=lblShippingMethodTitle.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The Shipping Method Title is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Shipping Method Title is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblShippingMethod);
+		lsText=lblShippingMethod.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The Shipping Method is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Shipping Method is not displaying correctly");
+		}
+
+		if(this.checkChangeShippingMethodButtonExisting()){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnChangeShippingMethod);
+			lsText=btnChangeShippingMethod.getText();
+			if(!lsText.isEmpty()){
+				reporter.reportLogPass("The change Shipping Method button is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The change Shipping Method button is not displaying correctly");
+			}
+		}
+
+		reporter.reportLog("Verify shipping payment method contents");
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblShippingPaymentMethodTitle);
+		lsText=lblShippingPaymentMethodTitle.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The Shipping Payment Method Title is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Shipping Payment Method Title is not displaying correctly");
+		}
+	}
 
 }
