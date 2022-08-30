@@ -13,7 +13,7 @@ public class CP_TC02_VerifyRightSection_OrderSummary_EasyPayment extends BaseTes
 	/*
 	 * CER-869
 	 */
-	@Test(groups={"Regression","ShoppingCart"})
+	@Test(groups={"Regression","Checkout"})
 	public void CP_TC02_VerifyRightSection_OrderSummary_EasyPayment() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 
