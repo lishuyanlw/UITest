@@ -230,8 +230,14 @@ public class ShoppingCartPage extends BasePage {
 	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'easypay')]//div[contains(normalize-space(text()),'Number of Installments:')]")
 	public WebElement lblCartEasyPayInstallmentNumberTitle;
 
+	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'easypay')]//div[contains(normalize-space(text()),'Number of Installments:')]//following-sibling::div[contains(@class,'tsc-forms')]")
+	public WebElement cntCartEasyPayInstallmentNumberContainer;
+
 	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'easypay')]//div[contains(normalize-space(text()),'Number of Installments:')]//following-sibling::div[contains(@class,'tsc-forms')]//select")
 	public WebElement selectCartEasyPayInstallmentNumber;
+
+	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'easypay')]//div[contains(normalize-space(text()),'Number of Installments:')]//following-sibling::div[contains(@class,'tsc-forms')]//span")
+	public WebElement lblCartEasyPayInstallmentNumber;
 
 	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'easypay')]//div[contains(normalize-space(text()),'Your Total Payment Today:')]")
 	public WebElement lblCartEasyPayTodayPaymentTitle;
@@ -481,6 +487,14 @@ public class ShoppingCartPage extends BasePage {
 	 */
 	public boolean checkShippingWasPriceExisting(){
 		return !this.getElementInnerText(lblCartPricingShippingWasPrice).isEmpty();
+	}
+
+	/**
+	 * To check if it Is Dropdown Menu For Installment Number
+	 * @return - boolean
+	 */
+	public boolean checkIsDropdownMenuForInstallmentNumber(){
+		return this.checkChildElementExistingByTagName(this.cntCartEasyPayInstallmentNumberContainer,"select");
 	}
 
 	/**
@@ -786,7 +800,7 @@ public class ShoppingCartPage extends BasePage {
 			item=cartItem.findElement(byProductShippingDate);
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 			lsText=item.getText().trim();
-			map.put("productShippingDate",lsText);
+			map.put("productShippingDate",lsText.split(":")[1].trim());
 		}
 		else{
 			map.put("productShippingDate",null);
@@ -1561,11 +1575,20 @@ public class ShoppingCartPage extends BasePage {
 	 */
 	public Map<String,Object> getEasyPayDesc(){
 		Map<String,Object> map=new HashMap<>();
+		String lsText;
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectCartEasyPayInstallmentNumber);
-		Select select=new Select(selectCartEasyPayInstallmentNumber);
-		String lsText=select.getFirstSelectedOption().getText();
-		map.put("installmentsNumber",this.getIntegerFromString(lsText));
+		if(this.checkIsDropdownMenuForInstallmentNumber()){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectCartEasyPayInstallmentNumber);
+			Select select=new Select(selectCartEasyPayInstallmentNumber);
+			lsText=select.getFirstSelectedOption().getText();
+			map.put("installmentsNumber",this.getIntegerFromString(lsText));
+		}
+		else{
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblCartEasyPayInstallmentNumber);
+			lsText=this.lblCartEasyPayInstallmentNumber.getText();
+			map.put("installmentsNumber",this.getIntegerFromString(lsText));
+		}
+
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblCartEasyPayTodayPayment);
 		lsText=this.lblCartEasyPayTodayPayment.getText();
@@ -1583,6 +1606,24 @@ public class ShoppingCartPage extends BasePage {
 	}
 
 	/**
+	 * To get Installment Number
+	 * @return - int
+	 */
+	public int getInstallmentNumber(){
+		String lsInstallmentNumber;
+		if(this.checkIsDropdownMenuForInstallmentNumber()){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectCartEasyPayInstallmentNumber);
+			Select select = new Select(this.selectCartEasyPayInstallmentNumber);
+			lsInstallmentNumber=select.getFirstSelectedOption().getText().trim();
+		}
+		else{
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblCartEasyPayInstallmentNumber);
+			lsInstallmentNumber=this.lblCartEasyPayInstallmentNumber.getText().trim();
+		}
+		return this.getIntegerFromString(lsInstallmentNumber);
+	}
+
+	/**
 	 * To get Installment business logic
 	 * @param - Map<String,Object> - orderSummaryMap
 	 */
@@ -1590,17 +1631,25 @@ public class ShoppingCartPage extends BasePage {
 		String lsText;
 		int totalInstallmentNumber;
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectCartEasyPayInstallmentNumber);
-		Select select = new Select(this.selectCartEasyPayInstallmentNumber);
-		String lsInstallmentNumber=select.getFirstSelectedOption().getText().trim();
-		if(lsInstallmentNumber.equalsIgnoreCase("-")){
-			//Selecting 2 as installment number by default for test
-			if(select.getOptions().size()>=2)
-				select.selectByValue("2");
-			totalInstallmentNumber = 2;
+		String lsInstallmentNumber;
+		if(this.checkIsDropdownMenuForInstallmentNumber()){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectCartEasyPayInstallmentNumber);
+			Select select = new Select(this.selectCartEasyPayInstallmentNumber);
+			lsInstallmentNumber=select.getFirstSelectedOption().getText().trim();
+			if(lsInstallmentNumber.equalsIgnoreCase("-")){
+				//Selecting 2 as installment number by default for test
+				if(select.getOptions().size()>=2)
+					select.selectByValue("2");
+				totalInstallmentNumber = 2;
+			}
+			else{
+				totalInstallmentNumber= Integer.parseInt(lsInstallmentNumber);
+			}
 		}
 		else{
-			totalInstallmentNumber= Integer.parseInt(lsInstallmentNumber);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblCartEasyPayInstallmentNumber);
+			lsInstallmentNumber=this.lblCartEasyPayInstallmentNumber.getText().trim();
+			totalInstallmentNumber=this.getIntegerFromString(lsInstallmentNumber);
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblCartEasyPayTodayPayment);
@@ -1700,7 +1749,6 @@ public class ShoppingCartPage extends BasePage {
 			else{
 				reporter.reportLogFailWithScreenshot("The cart top message is not displaying correctly");
 			}
-
 
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartTableHeadingITEM);
 			lsText=lblCartTableHeadingITEM.getText();
@@ -2116,17 +2164,29 @@ public class ShoppingCartPage extends BasePage {
 			reporter.reportLogFailWithScreenshot("The EasyPay installment number title is not displaying correctly");
 		}
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(selectCartEasyPayInstallmentNumber);
-		if(this.getReusableActionsInstance().isElementVisible(selectCartEasyPayInstallmentNumber)){
-			reporter.reportLogPass("The EasyPay installment options is displaying correctly");
+		if(this.checkIsDropdownMenuForInstallmentNumber()){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(selectCartEasyPayInstallmentNumber);
+			if(this.getReusableActionsInstance().isElementVisible(selectCartEasyPayInstallmentNumber)){
+				reporter.reportLogPass("The EasyPay installment options is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The EasyPay installment options is not displaying correctly");
+			}
+
+			Select select=new Select(selectCartEasyPayInstallmentNumber);
+			if(select.getFirstSelectedOption().getText().trim().equalsIgnoreCase("-")){
+				return;
+			}
 		}
 		else{
-			reporter.reportLogFailWithScreenshot("The EasyPay installment options is not displaying correctly");
-		}
-
-		Select select=new Select(selectCartEasyPayInstallmentNumber);
-		if(select.getFirstSelectedOption().getText().trim().equalsIgnoreCase("-")){
-			return;
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartEasyPayInstallmentNumber);
+			lsText=lblCartEasyPayInstallmentNumber.getText();
+			if(!lsText.isEmpty()){
+				reporter.reportLogPass("The EasyPay installment number is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The EasyPay installment number is not displaying correctly");
+			}
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartEasyPayTodayPaymentTitle);
@@ -3044,5 +3104,18 @@ public class ShoppingCartPage extends BasePage {
 		this.btnCartCheckoutButton.click();
 		RegularCheckoutPage checkoutPage= new RegularCheckoutPage(this.getDriver());
 		this.waitForCondition(Driver->{return checkoutPage.lblCheckout.isDisplayed();},30000);
+	}
+
+	/**
+	 * To get Shipping Date In Header
+	 * @return - String
+	 */
+	public String getShippingDateInHeader() {
+		if (this.checkGetItByShippingMessageExisting()) {
+			return this.getElementInnerText(lblCartGetItByDate).split(":")[1].trim();
+		}
+		else{
+			return null;
+		}
 	}
 }

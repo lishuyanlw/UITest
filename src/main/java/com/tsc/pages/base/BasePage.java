@@ -221,6 +221,7 @@ import utils.ReusableActions;
 
 	public void refresh() {
 		getDriver().navigate().refresh();
+		this.waitForPageToLoad();
 	}
 
 	public void setSessionStorage(String strUrl) {

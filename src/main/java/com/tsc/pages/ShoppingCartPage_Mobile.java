@@ -171,7 +171,7 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 			item=cartItem.findElement(byProductShippingDate);
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 			lsText=item.getText().trim();
-			map.put("productShippingDate",lsText);
+			map.put("productShippingDate",lsText.split(":")[1].trim());
 		}
 		else{
 			map.put("productShippingDate",null);

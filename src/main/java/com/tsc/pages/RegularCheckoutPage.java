@@ -600,6 +600,15 @@ public class RegularCheckoutPage extends BasePage {
 	}
 
 	/**
+	 * To check Product shipping date Existing
+	 * @param - WebElement - productItem - the item in product list
+	 * @return - boolean
+	 */
+	public boolean checkProductShippingDateExisting(WebElement productItem){
+		return this.checkChildElementExistingByAttribute(productItem,"class","estimateDateCheckout__lineItem");
+	}
+
+	/**
 	 * To check Product GetItBy shipping date Existing
 	 * @return - boolean
 	 */
@@ -853,12 +862,14 @@ public class RegularCheckoutPage extends BasePage {
 			map.put("productFreeShipping",null);
 		}
 
-
 		if(!checkProductShippingDateExisting()){
 			item=productItem.findElement(byProductShippingDate);
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 			lsText=item.getText().trim();
-			map.put("productShippingDate",lsText);
+			map.put("productShippingDate",lsText.split(":")[1].trim());
+		}
+		else{
+			map.put("productShippingDate",null);
 		}
 
 		return map;
@@ -1497,10 +1508,12 @@ public class RegularCheckoutPage extends BasePage {
 
 	/**
 	 * To get Installment Number From PaymentOption Text
-	 * @param - String - lsPaymentOptionText
 	 * @return - int
 	 */
-	public int getInstallmentNumberFromPaymentOptionText(String lsPaymentOptionText){
+	public int getInstallmentNumberFromPaymentOptionText(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectPaymentOption);
+		Select select=new Select(this.selectPaymentOption);
+		String lsPaymentOptionText=select.getFirstSelectedOption().getText();
 		if(lsPaymentOptionText.contains("Pay In Full Now")){
 			return 0;
 		}
@@ -1512,10 +1525,12 @@ public class RegularCheckoutPage extends BasePage {
 
 	/**
 	 * To get Installment amount From PaymentOption Text
-	 * @param - String - lsPaymentOptionText
 	 * @return - float
 	 */
-	public float getInstallmentAmountFromPaymentOptionText(String lsPaymentOptionText){
+	public float getInstallmentAmountFromPaymentOptionText(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectPaymentOption);
+		Select select=new Select(this.selectPaymentOption);
+		String lsPaymentOptionText=select.getFirstSelectedOption().getText();
 		if(lsPaymentOptionText.contains("Pay In Full Now")){
 			return this.getIntegerFromString(lsPaymentOptionText);
 		}
@@ -1523,6 +1538,33 @@ public class RegularCheckoutPage extends BasePage {
 			String stringContainsFloat=this.getStringAfterGivenIdentifier(lsPaymentOptionText,"of");
 			return this.getFloatFromString(stringContainsFloat,true);
 		}
+	}
+
+	/**
+	 * To set Payment Option By Given Index
+	 * @param - int - index - given index
+	 * @return - String - selected text
+	 */
+	public String setPaymentOptionByGivenIndex(int index){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectPaymentOption);
+		Select select=new Select(this.selectPaymentOption);
+		select.selectByIndex(index);
+		return select.getFirstSelectedOption().getText();
+	}
+
+	/**
+	 * To get Installment Options
+	 * @return - List<String>
+	 */
+	public List<String> getInstallmentOptions(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectPaymentOption);
+		Select select = new Select(this.selectPaymentOption);
+		List<WebElement> lstOptions=select.getOptions();
+		List<String> lstOptionText=new ArrayList<>();
+		for(WebElement option:lstOptions){
+			lstOptionText.add(this.getElementInnerText(option));
+		}
+		return lstOptionText;
 	}
 
 	/**
@@ -3108,6 +3150,19 @@ public class RegularCheckoutPage extends BasePage {
 	 */
 	public boolean waitForPageLoadingSpinningStatusCompleted(){
 		return this.waitForCondition(Driver->{return !this.checkChildElementExistingByAttribute(this.cntFooterContainer,"class","loading__overlay");},60000);
+	}
+
+	/**
+	 * To get Shipping Date In Header
+	 * @return - String
+	 */
+	public String getShippingDateInHeader() {
+		if (this.checkProductShippingDateExisting()) {
+			return this.getElementInnerText(this.lblShippingDate);
+		}
+		else{
+			return null;
+		}
 	}
 
 

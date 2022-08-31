@@ -44,8 +44,11 @@ public class SC_TC05_VerifyShoppingCart_ChangeProvinceAndCheckTax_With_OrderSumm
 
 		Map<String,Object> mapOrderSummary;
 		Map<String,Object> mapTaxRate=getShoppingCartThreadLocal().getProvinceTaxRateMap();
-		List<String> lstOptionText=getShoppingCartThreadLocal().getInstallmentOptions();
-		getShoppingCartThreadLocal().setInstallmentSetting(lstOptionText.get(1));
+		if(getShoppingCartThreadLocal().checkIsDropdownMenuForInstallmentNumber()){
+			List<String> lstOptionText=getShoppingCartThreadLocal().getInstallmentOptions();
+			getShoppingCartThreadLocal().setInstallmentSetting(lstOptionText.get(1));
+		}
+
 		for(Map.Entry<String,Object> entry:mapTaxRate.entrySet()){
 			reporter.reportLog("Verify province: "+entry.getKey());
 			getShoppingCartThreadLocal().setProvinceCodeForEstimatedTax(entry.getKey());

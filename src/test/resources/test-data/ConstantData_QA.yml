@@ -272,3 +272,17 @@ shoppingCart:
   lblProductNumberForOrderExceedingQuantity: 713070
   lblCartExceedingLimitMessage: "The size of your order exceeds our on-line shopping limits but one of our Customer Service agents will be happy to assist you with your purchase. Please call our Customer Care Centre at 1-888-2020-888 to complete your order."
   lblJayCareFoundationDonationMessage: "Jays Care Foundation Donation"
+checkoutPage:
+  lst_SearchKeywords:
+    - searchKeyword: "dress"
+      quantity: "more than 3"
+      badgeRequired: "true"
+      itemToBeAdded: "2"
+      styleExist: "true"
+      sameSizeAndStyle: "false"
+    - searchKeyword: "gym"
+      quantity: ""
+      badgeRequired: "false"
+      itemToBeAdded: "1"
+      styleExist: "false"
+      sameStyleAndSize: "false"

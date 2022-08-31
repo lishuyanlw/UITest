@@ -78,8 +78,10 @@ public class SC_TC12_VerifyShoppingCart_LeftInventoryMessage extends BaseTest{
 
 				reporter.reportLog("Verify EasyPayment section content");
 				mapOrderSummary=getShoppingCartThreadLocal().getOrderSummaryDesc();
-				List<String> lstOptionText=getShoppingCartThreadLocal().getInstallmentOptions();
-				getShoppingCartThreadLocal().setInstallmentSetting(lstOptionText.get(1));
+				if(getShoppingCartThreadLocal().checkIsDropdownMenuForInstallmentNumber()){
+					List<String> lstOptionText=getShoppingCartThreadLocal().getInstallmentOptions();
+					getShoppingCartThreadLocal().setInstallmentSetting(lstOptionText.get(1));
+				}
 				getShoppingCartThreadLocal().verifyInstallmentBusinessLogic(mapOrderSummary);
 				getShoppingCartThreadLocal().verifyEasyPaymentContents();
 
