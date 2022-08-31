@@ -28,7 +28,7 @@ public class CP_TC03_VerifyReguLarCheckout_ShippingDate_MultiPackMessage extends
 		getShoppingCartThreadLocal().emptyCart(customerEDP,accessToken);
 
 		reporter.reportLog("Verify ShippingDate in header scenario");
-		Map<String, String> keyword = TestDataHandler.constantData.getCheckoutPage().getLst_SearchKeywords().get(0);
+		Map<String, String> keyword = TestDataHandler.constantData.getCheckOut().getLst_SearchKeywords().get(0);
 		List<Map<String, String>> keywordList=new ArrayList<>();
 		keywordList.add(keyword);
 		List<Map<String, Object>> data = getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP, accessToken, keywordList,true);

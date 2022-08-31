@@ -17,15 +17,11 @@ public class ConstantData {
     private List<String> lstTestName;
     private String lblChromeBrowserVersion;
     private ShoppingCart shoppingCart;
-    private CheckoutPage checkoutPage;
+    private Checkout checkOut;
 
-    public CheckoutPage getCheckoutPage() {
-        return checkoutPage;
-    }
+    public Checkout getCheckOut() {        return checkOut;    }
 
-    public void setCheckoutPage(CheckoutPage checkoutPage) {
-        this.checkoutPage = checkoutPage;
-    }
+    public void setCheckOut(Checkout checkOut) {        this.checkOut = checkOut;    }
 
     public ContentfulApiParams getContentfulApiParams() {        return contentfulApiParams;    }
 
@@ -1373,16 +1369,17 @@ public class ConstantData {
         }
     }
 
-    public static class CheckoutPage {
-        List<Map<String, String>> lst_SearchKeywords;
+    public static class Checkout{
+        List<Map<String,String>> lst_SearchKeywords;
+        List<String> addShippingAddressErrorMessage;
 
-        public List<Map<String, String>> getLst_SearchKeywords() {
-            return lst_SearchKeywords;
-        }
+        public List<Map<String, String>> getLst_SearchKeywords() {            return lst_SearchKeywords;        }
 
-        public void setLst_SearchKeywords(List<Map<String, String>> lst_SearchKeywords) {
-            this.lst_SearchKeywords = lst_SearchKeywords;
-        }
+        public void setLst_SearchKeywords(List<Map<String, String>> lst_SearchKeywords) {            this.lst_SearchKeywords = lst_SearchKeywords;        }
+
+        public List<String> getAddShippingAddressErrorMessage() {            return addShippingAddressErrorMessage;        }
+
+        public void setAddShippingAddressErrorMessage(List<String> addShippingAddressErrorMessage) {            this.addShippingAddressErrorMessage = addShippingAddressErrorMessage;        }
     }
 
 }

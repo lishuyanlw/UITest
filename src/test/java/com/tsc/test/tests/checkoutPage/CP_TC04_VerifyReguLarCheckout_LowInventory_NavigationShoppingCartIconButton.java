@@ -26,7 +26,7 @@ public class CP_TC04_VerifyReguLarCheckout_LowInventory_NavigationShoppingCartIc
 		int customerEDP = Integer.valueOf(getApiUserSessionDataMapThreadLocal().get("customerEDP").toString());
 
 		getGlobalFooterPageThreadLocal().closePopupDialog();
-		List<Map<String, String>> keywordList = TestDataHandler.constantData.getCheckoutPage().getLst_SearchKeywords();
+		List<Map<String, String>> keywordList = TestDataHandler.constantData.getCheckOut().getLst_SearchKeywords();
 		List<Map<String, Object>> data = getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP, accessToken, keywordList, true);
 
 		//Login using valid username and password
