@@ -1173,8 +1173,9 @@ public class RegularCheckoutPage extends BasePage {
 	 * @return - boolean
 	 */
 	public boolean openChangeShippingMethodDialog(){
+		this.waitForCondition(Driver->{return this.btnChangeShippingMethod.isDisplayed();},10000);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnChangeShippingMethod);
-		btnChangeShippingMethod.click();
+		this.clickElement(btnChangeShippingMethod);
 		return this.waitForCondition(Driver->{return this.lblChangeShippingMethodDialogHeaderTitle.isDisplayed();},10000);
 	}
 
@@ -1226,12 +1227,11 @@ public class RegularCheckoutPage extends BasePage {
 			item=shippingMethodItem.findElement(byShippingMethodInput);
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 			if(!item.isSelected()){
-				item=shippingMethodItem.findElement(byShippingMethodLabel);
+				item=shippingMethodItem.findElement(byShippingMethodPrice);
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 				item.click();
 				this.applyStaticWait(300);
 
-				item=shippingMethodItem.findElement(byShippingMethodPrice);
 				return this.getFloatFromString(this.getElementInnerText(item),true);
 			}
 		}
@@ -1244,7 +1244,7 @@ public class RegularCheckoutPage extends BasePage {
 	 */
 	public void chooseShippingMethodInChangeShippingMethodDialogWithGivenIndex(int selectedIndex){
 		WebElement item=lstChangeShippingMethodDialogShippingMethodList.get(selectedIndex);
-		WebElement itemLabel=item.findElement(byShippingMethodLabel);
+		WebElement itemLabel=item.findElement(byShippingMethodPrice);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(itemLabel);
 		itemLabel.click();
 		this.applyStaticWait(300);
@@ -1267,7 +1267,7 @@ public class RegularCheckoutPage extends BasePage {
 	 */
 	public boolean openAddOrChangePaymentMethodDialog(){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrChangePaymentMethod);
-		btnAddOrChangePaymentMethod.click();
+		this.clickElement(btnAddOrChangePaymentMethod);
 		return this.waitForCondition(Driver->{return this.lblAddOrChangePaymentMethodDialogTitle.isDisplayed();},10000);
 	}
 
@@ -1501,7 +1501,6 @@ public class RegularCheckoutPage extends BasePage {
 	public boolean openChangeBillingAddressDialog(){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnBillingAddressChange);
 		this.clickElement(btnBillingAddressChange);
-//		btnBillingAddressChange.click();
 		return this.waitForCondition(Driver->{return this.lblAddOrEditAddressDialogTitle.isDisplayed();},10000);
 	}
 
@@ -2501,8 +2500,15 @@ public class RegularCheckoutPage extends BasePage {
 	public void verifyAddOrChangeAddressDialogContents() {
 		String lsText;
 
-		this.waitForCondition(Driver->{return this.btnAddOrChangeShippingAddressDialogCloseButton.isEnabled() &&
-								this.btnAddOrChangeShippingAddressDialogCloseButton.isDisplayed();},6000);
+		if(System.getProperty("Device").equalsIgnoreCase("Mobile")){
+			this.waitForCondition(Driver->{return this.btnAddOrChangeShippingAddressDialogBackButton.isEnabled() &&
+					this.btnAddOrChangeShippingAddressDialogBackButton.isDisplayed();},6000);
+		}
+		else{
+			this.waitForCondition(Driver->{return this.btnAddOrChangeShippingAddressDialogCloseButton.isEnabled() &&
+					this.btnAddOrChangeShippingAddressDialogCloseButton.isDisplayed();},6000);
+		}
+
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddOrChangeShippingAddressDialogTitle);
 		lsText = lblAddOrChangeShippingAddressDialogTitle.getText();
 		if (!lsText.isEmpty()) {
@@ -2595,8 +2601,15 @@ public class RegularCheckoutPage extends BasePage {
 	public void verifyAddOrEditAddressDialogContents() {
 		String lsText;
 
-		this.waitForCondition(Driver->{return this.btnAddOrEditAddressDialogCloseButton.isEnabled() &&
-				this.btnAddOrEditAddressDialogCloseButton.isDisplayed();},6000);
+		if(System.getProperty("Device").equalsIgnoreCase("Mobile")){
+			this.waitForCondition(Driver->{return this.btnAddOrEditAddressDialogBackButton.isEnabled() &&
+					this.btnAddOrEditAddressDialogBackButton.isDisplayed();},6000);
+		}
+		else{
+			this.waitForCondition(Driver->{return this.btnAddOrEditAddressDialogCloseButton.isEnabled() &&
+					this.btnAddOrEditAddressDialogCloseButton.isDisplayed();},6000);
+		}
+
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddOrEditAddressDialogTitle);
 		lsText = lblAddOrEditAddressDialogTitle.getText();
 		if (!lsText.isEmpty()) {
@@ -3287,8 +3300,14 @@ public class RegularCheckoutPage extends BasePage {
 	 * @return - boolean
 	 */
 	public void verifyErrorMessageOnAddNewShippingAddressDialog(List<String> expectedErrorMessageList){
-		this.waitForCondition(Driver->{return this.btnAddOrEditAddressDialogCloseButton.isEnabled() &&
-				this.btnAddOrEditAddressDialogCloseButton.isDisplayed();},6000);
+		if(System.getProperty("Device").equalsIgnoreCase("Mobile")){
+			this.waitForCondition(Driver->{return this.btnAddOrEditAddressDialogBackButton.isEnabled() &&
+					this.btnAddOrEditAddressDialogBackButton.isDisplayed();},6000);
+		}
+		else{
+			this.waitForCondition(Driver->{return this.btnAddOrEditAddressDialogCloseButton.isEnabled() &&
+					this.btnAddOrEditAddressDialogCloseButton.isDisplayed();},6000);
+		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrEditAddressDialogSaveButton);
 		this.getReusableActionsInstance().clickIfAvailable(this.btnAddOrEditAddressDialogSaveButton);
