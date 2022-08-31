@@ -1,7 +1,7 @@
 # API USER TOKEN INFO
 apiUserSessionParams:
-  lbl_username: qa2542@rogers.com
-  lbl_password: qa1234
+  lbl_username: shoppingCart@rogers.com
+  lbl_password: testMail123
   lbl_grantType: password
   lbl_apiKey: A9607F64-D061-4279-8D00-F8469EA38DD1
 
@@ -272,3 +272,20 @@ shoppingCart:
   lblProductNumberForOrderExceedingQuantity: 713070
   lblCartExceedingLimitMessage: "The size of your order exceeds our on-line shopping limits but one of our Customer Service agents will be happy to assist you with your purchase. Please call our Customer Care Centre at 1-888-2020-888 to complete your order."
   lblJayCareFoundationDonationMessage: "Jays Care Foundation Donation"
+checkOut:
+  lst_SearchKeywords:
+    - searchKeyword: "dress"
+      quantity: "more than 3"
+      badgeRequired: "true"
+      itemToBeAdded: "1"
+      styleExist: "true"
+      sameSizeAndStyle: "false"
+    - searchKeyword: "gym"
+      quantity: ""
+      badgeRequired: "false"
+      itemToBeAdded: "1"
+      styleExist: "false"
+      sameStyleAndSize: "false"
+  addShippingAddressErrorMessage: ["You have one or more missing or invalid entries. Please enter correct data and try again.",
+                                   "First name is required.","Last name is required.","Phone number is required.","Address is required.",
+                                   "City is required.","Province is required.","Postal code is required."]

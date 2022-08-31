@@ -502,6 +502,9 @@ public class RegularCheckoutPage extends BasePage {
 	@FindBy(xpath = "//footer//a[contains(@href,'aboutusprivacy')]")
 	public WebElement lnkPrivacyPolicy;
 
+	//Error Message for Mandatory Items
+	@FindBy(xpath = "//div[@class='alert alert-danger']")
+	public List<WebElement> mandatoryFieldErrorMessage;
 
 	/**
 	 * To check Alert Message In Header Existing
@@ -1090,7 +1093,6 @@ public class RegularCheckoutPage extends BasePage {
 	public boolean openAddOrChangeAddressDialog(){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnShippingAddressAddOrChange);
 		this.clickElement(btnShippingAddressAddOrChange);
-//		btnShippingAddressAddOrChange.click();
 		return this.waitForCondition(Driver->{return this.lblAddOrChangeShippingAddressDialogTitle.isDisplayed();},10000);
 	}
 
@@ -2419,6 +2421,8 @@ public class RegularCheckoutPage extends BasePage {
 	public void verifyAddOrChangeAddressDialogContents() {
 		String lsText;
 
+		this.waitForCondition(Driver->{return this.btnAddOrChangeShippingAddressDialogCloseButton.isEnabled() &&
+								this.btnAddOrChangeShippingAddressDialogCloseButton.isDisplayed();},6000);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddOrChangeShippingAddressDialogTitle);
 		lsText = lblAddOrChangeShippingAddressDialogTitle.getText();
 		if (!lsText.isEmpty()) {
@@ -2511,6 +2515,8 @@ public class RegularCheckoutPage extends BasePage {
 	public void verifyAddOrEditAddressDialogContents() {
 		String lsText;
 
+		this.waitForCondition(Driver->{return this.btnAddOrEditAddressDialogCloseButton.isEnabled() &&
+				this.btnAddOrEditAddressDialogCloseButton.isDisplayed();},6000);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddOrEditAddressDialogTitle);
 		lsText = lblAddOrEditAddressDialogTitle.getText();
 		if (!lsText.isEmpty()) {
@@ -3113,7 +3119,7 @@ public class RegularCheckoutPage extends BasePage {
 	/**
 	 * To verify Shipping Address on Checkout Page
 	 */
-	public void verifyShippingAddressDisplayOnCheckout() {
+	public String verifyShippingAddressDisplayOnCheckout() {
 		String lsText;
 
 		reporter.reportLog("Verify shipping address contents");
@@ -3143,46 +3149,58 @@ public class RegularCheckoutPage extends BasePage {
 		else{
 			reporter.reportLogFailWithScreenshot("The Shipping Address AddOrChange button is not displaying correctly");
 		}
-
-		reporter.reportLog("Verify shipping method contents");
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblShippingMethodTitle);
-		lsText=lblShippingMethodTitle.getText();
-		if(!lsText.isEmpty()){
-			reporter.reportLogPass("The Shipping Method Title is displaying correctly");
-		}
-		else{
-			reporter.reportLogFailWithScreenshot("The Shipping Method Title is not displaying correctly");
-		}
-
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblShippingMethod);
-		lsText=lblShippingMethod.getText();
-		if(!lsText.isEmpty()){
-			reporter.reportLogPass("The Shipping Method is displaying correctly");
-		}
-		else{
-			reporter.reportLogFailWithScreenshot("The Shipping Method is not displaying correctly");
-		}
-
-		if(this.checkChangeShippingMethodButtonExisting()){
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnChangeShippingMethod);
-			lsText=btnChangeShippingMethod.getText();
-			if(!lsText.isEmpty()){
-				reporter.reportLogPass("The change Shipping Method button is displaying correctly");
-			}
-			else{
-				reporter.reportLogFailWithScreenshot("The change Shipping Method button is not displaying correctly");
-			}
-		}
-
-		reporter.reportLog("Verify shipping payment method contents");
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblShippingPaymentMethodTitle);
-		lsText=lblShippingPaymentMethodTitle.getText();
-		if(!lsText.isEmpty()){
-			reporter.reportLogPass("The Shipping Payment Method Title is displaying correctly");
-		}
-		else{
-			reporter.reportLogFailWithScreenshot("The Shipping Payment Method Title is not displaying correctly");
-		}
+		return lblShippingAddress.getText();
 	}
 
+	/**
+	 * This function navigates to checkout page
+	 */
+	public void navigateToCheckoutPage(){
+		String checkoutUrl = System.getProperty("QaUrl")+"/pages/expresscheckout";
+		getDriver().navigate().to(checkoutUrl);
+		waitForPageToLoad();
+		waitForCondition(Driver->{return this.btnGoToShoppingBag.isDisplayed()
+				&& this.btnGoToShoppingBag.isEnabled();},6000);
+	}
+
+	/**
+	 * This function fetches error message from Add New Shipping Address Dialog
+	 * @return - List<String> of error message displayed on screen
+	 */
+	public List<String> getMandatoryFieldsErrorMessage(){
+		int loop = this.mandatoryFieldErrorMessage.size();
+		if(loop>0){
+			List<String> errorMessageList = new ArrayList<>();
+			for(int counter=0;counter<loop;counter++){
+				errorMessageList.add(this.mandatoryFieldErrorMessage.get(counter).getText());
+			}
+			return errorMessageList;
+		}else
+			return null;
+	}
+
+	/**
+	 * This function verifies error message on add new Shipping Address dialog with expected error message
+	 * @param  - List<String> - expectedErrorMessageList
+	 * @return - boolean
+	 */
+	public void verifyErrorMessageOnAddNewShippingAddressDialog(List<String> expectedErrorMessageList){
+		this.waitForCondition(Driver->{return this.btnAddOrEditAddressDialogCloseButton.isEnabled() &&
+				this.btnAddOrEditAddressDialogCloseButton.isDisplayed();},6000);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrEditAddressDialogSaveButton);
+		this.getReusableActionsInstance().clickIfAvailable(this.btnAddOrEditAddressDialogSaveButton);
+
+		List<String> errorMessageList = this.getMandatoryFieldsErrorMessage();
+		if(errorMessageList.size()==expectedErrorMessageList.size()){
+			for(String errorMessage:errorMessageList){
+				if(expectedErrorMessageList.contains(errorMessage)){
+					reporter.reportLogPass("Error message as expected is displayed : "+errorMessage);
+				}else
+					reporter.reportLogFailWithScreenshot("Error Message as expected is not displayed: "+errorMessage);
+			}
+		}else{
+			reporter.reportLogFailWithScreenshot("Expected and Actual Error Message list size is not same");
+		}
+	}
 }
