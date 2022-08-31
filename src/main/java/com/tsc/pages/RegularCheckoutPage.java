@@ -523,8 +523,21 @@ public class RegularCheckoutPage extends BasePage {
 	public boolean expandProductList(){
 		if(!checkProductCollapseStatus()){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnCollapseProductList);
-			btnCollapseProductList.click();
+			this.clickElement(btnCollapseProductList);
 			this.waitForCondition(Driver->{return checkProductCollapseStatus();},10000);
+		}
+		return true;
+	}
+
+	/**
+	 * To unCollapse Product List
+	 * @return - boolean
+	 */
+	public boolean unCollapseProductList(){
+		if(checkProductCollapseStatus()){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnCollapseProductList);
+			this.clickElement(btnCollapseProductList);
+			this.waitForCondition(Driver->{return !checkProductCollapseStatus();},10000);
 		}
 		return true;
 	}

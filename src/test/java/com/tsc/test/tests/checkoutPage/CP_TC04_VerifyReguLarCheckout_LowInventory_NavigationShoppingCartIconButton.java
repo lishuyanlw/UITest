@@ -74,6 +74,26 @@ public class CP_TC04_VerifyReguLarCheckout_LowInventory_NavigationShoppingCartIc
 			int installmentsNumberForShoppingCart = getShoppingCartThreadLocal().getInstallmentNumber();
 			getShoppingCartThreadLocal().goToCheckoutPage();
 
+			reporter.reportLog("Verify unCollapsing checkout item list function");
+			getRegularCheckoutThreadLocal().unCollapseProductList();
+			String lsProductListClass=getRegularCheckoutThreadLocal().cntProductListContainer.getAttribute("class");
+			if(lsProductListClass.equalsIgnoreCase("hidden")){
+				reporter.reportLogPass("The product list is hidden after unCollapsing ProductList");
+			}
+			else{
+				reporter.reportLogFail("The product list is still displaying after unCollapsing ProductList");
+			}
+
+			reporter.reportLog("Verify expanding checkout item list function");
+			getRegularCheckoutThreadLocal().expandProductList();
+			lsProductListClass=getRegularCheckoutThreadLocal().cntProductListContainer.getAttribute("class");
+			if(lsProductListClass==null||lsProductListClass.isEmpty()){
+				reporter.reportLogPass("The product list is expanded after expanding ProductList");
+			}
+			else{
+				reporter.reportLogFail("The product list is still hidden after expanding ProductList");
+			}
+
 			List<Map<String, Object>> productListMapForCheckOutPage = getRegularCheckoutThreadLocal().getCheckoutItemListDesc("all");
 			int findIndex=getShoppingCartThreadLocal().findGivenProductIndexInProductList(mapProduct,productListMapForCheckOutPage);
 			if(findIndex!=-1){
