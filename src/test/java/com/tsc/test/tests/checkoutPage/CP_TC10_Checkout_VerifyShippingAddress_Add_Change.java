@@ -24,52 +24,69 @@ public class CP_TC10_Checkout_VerifyShippingAddress_Add_Change extends BaseTest 
     public void CP_TC10_Checkout_VerifyShippingAddress_Add_Change() throws IOException, ParseException {
         getGlobalFooterPageThreadLocal().closePopupDialog();
 
+        //Fetching Data from test data yaml file
         String lsUserName = TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
         String lsPassword = TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
         List<String> expectedErrorMessage = TestDataHandler.constantData.getCheckOut().getAddShippingAddressErrorMessage();
+        Map<String,String> inputAddress = TestDataHandler.constantData.getCheckOut().getNewShippingAddressForUser();
 
         //Fetching test data from test data file
         String accessToken = getApiUserSessionDataMapThreadLocal().get("access_token").toString();
         String customerEDP = getApiUserSessionDataMapThreadLocal().get("customerEDP").toString();
+        try{
+            //Verifying that item exists in cart and if not, create a new cart for user
+            List<Map<String, String>> keyword = TestDataHandler.constantData.getCheckOut().getLst_SearchKeywords();
+            List<Map<String, Object>> data = getShoppingCartThreadLocal().verifyCartExistsForUser(Integer.valueOf(customerEDP), accessToken, keyword,true);
 
-        //Verifying that item exists in cart and if not, create a new cart for user
-        List<Map<String, String>> keyword = TestDataHandler.constantData.getShoppingCart().getLst_SearchKeywords();
-        List<Map<String, Object>> data = getShoppingCartThreadLocal().verifyCartExistsForUser(Integer.valueOf(customerEDP), accessToken, keyword,true);
+            //Verification that user has ShippingAddress associated and if not, add one to user
+            AccountAPI accountAPI = new AccountAPI();
+            Response response = accountAPI.getAccountDetailsFromCustomerEDP(customerEDP,accessToken);
+            AccountResponse accountResponse= JsonParser.getResponseObject(response.asString(), new TypeReference<AccountResponse>() {});
+            List<AccountResponse.AddressClass> getShippingAddressForUser = accountAPI.getShippingAddressForUser(accountResponse,customerEDP,accessToken);
 
-        //Verification that user has ShippingAddress associated and if not, add one to user
-        AccountAPI accountAPI = new AccountAPI();
-        Response response = accountAPI.getAccountDetailsFromCustomerEDP(customerEDP,accessToken);
-        AccountResponse accountResponse= JsonParser.getResponseObject(response.asString(), new TypeReference<AccountResponse>() {});
-        List<AccountResponse.AddressClass> getShippingAddressForUser = accountAPI.getShippingAddressForUser(accountResponse,customerEDP,accessToken);
+            //Login using valid username and password
+            getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword);
+            try {
+                getShoppingCartThreadLocal().waitForCondition(Driver -> {
+                    return Integer.valueOf(getglobalheaderPageThreadLocal().CartBagCounter.getText()) > 0;
+                }, 6000);
+            }
+            catch(Exception e){
+                (new BasePage(this.getDriver())).applyStaticWait(3000);
+            }
+            getRegularCheckoutThreadLocal().navigateToCheckoutPage();
 
-        //Login using valid username and password
-        getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword);
-        try {
-            getShoppingCartThreadLocal().waitForCondition(Driver -> {
-                return Integer.valueOf(getglobalheaderPageThreadLocal().CartBagCounter.getText()) > 0;
-            }, 6000);
+            //Verification of Shipping Address display on Checkout Page
+            getReporter().reportLog("Verification of Shipping Address display on Checkout Page");
+            String shippingAddress = getRegularCheckoutThreadLocal().verifyShippingAddressDisplayOnCheckout();
+
+            //Verification of Add/Change Shipping Address dialog box display on page
+            getReporter().reportLog("Verification of Add/Change Shipping Address Dialog Box");
+            getRegularCheckoutThreadLocal().openAddOrChangeAddressDialog();
+            getRegularCheckoutThreadLocal().verifyAddOrChangeAddressDialogContents();
+
+            //Verification of selected shipping address on Checkout is same as Add/Change Shipping Address Dialog
+            getReporter().reportLog("Verification of selected shipping address on Checkout is same as Add/Change Shipping Address Dialog");
+            getRegularCheckoutThreadLocal().verifyShippingAddressOnCheckoutWithSelectedAddressOnAddChangeDialog(shippingAddress,null);
+
+            //Verification of Add New Shipping Address dialog box display on page
+            getReporter().reportLog("Verification of Add New Shipping Address Dialog Box");
+            getRegularCheckoutThreadLocal().openAddOrEditAddressDialog(getRegularCheckoutThreadLocal().btnAddOrChangeShippingAddressDialogAddNewAddressButton);
+            getRegularCheckoutThreadLocal().verifyAddOrEditAddressDialogContents();
+
+            //Verification of error message on not entering mandatory information in Add New Shipping Address Dialog
+            getReporter().reportLog("Verification of error message on not entering mandatory information in Add New Shipping Address Dialog");
+            getRegularCheckoutThreadLocal().verifyErrorMessageOnAddNewShippingAddressDialog(expectedErrorMessage);
+            getRegularCheckoutThreadLocal().closeAddOrEditAddressDialog(false);
+
+            //Verification of addition of new shipping address for user
+            getReporter().reportLog("Verification of addition of new shipping address for user");
+            getRegularCheckoutThreadLocal().openAddOrEditAddressDialog(getRegularCheckoutThreadLocal().btnAddOrChangeShippingAddressDialogAddNewAddressButton);
+            Map<String,Object> newAddedAddress = getRegularCheckoutThreadLocal().addOrEditShippingAddress(inputAddress,true);
+
+        }finally {
+            //Emptying Cart for next test to run with right state
+            getShoppingCartThreadLocal().emptyCart(Integer.valueOf(customerEDP),accessToken);
         }
-        catch(Exception e){
-            (new BasePage(this.getDriver())).applyStaticWait(3000);
-        }
-        getRegularCheckoutThreadLocal().navigateToCheckoutPage();
-
-        //Verification of Shipping Address display on Checkout Page
-        getReporter().reportLog("Verification of Shipping Address display on Checkout Page");
-        String shippingAddress = getRegularCheckoutThreadLocal().verifyShippingAddressDisplayOnCheckout();
-
-        //Verification of Add/Change Shipping Address dialog box display on page
-        getReporter().reportLog("Verification of Add/Change Shipping Address Dialog Box");
-        getRegularCheckoutThreadLocal().openAddOrChangeAddressDialog();
-        getRegularCheckoutThreadLocal().verifyAddOrChangeAddressDialogContents();
-
-        //Verification of Add New Shipping Address dialog box display on page
-        getReporter().reportLog("Verification of Add New Shipping Address Dialog Box");
-        getRegularCheckoutThreadLocal().openAddOrEditAddressDialog(getRegularCheckoutThreadLocal().btnAddOrChangeShippingAddressDialogAddNewAddressButton);
-        getRegularCheckoutThreadLocal().verifyAddOrEditAddressDialogContents();
-
-        //Verification of error message on not entering mandatory information in Add New Shipping Address Dialog
-        getReporter().reportLog("Verification of error message on not entering mandatory information in Add New Shipping Address Dialog");
-        getRegularCheckoutThreadLocal().verifyErrorMessageOnAddNewShippingAddressDialog(expectedErrorMessage);
     }
 }
