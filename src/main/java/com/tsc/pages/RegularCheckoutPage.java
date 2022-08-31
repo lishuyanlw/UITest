@@ -222,9 +222,11 @@ public class RegularCheckoutPage extends BasePage {
 	@FindBy(xpath = "//div[contains(@class,'ReactModal__Content')]//div[@class='modal__body']//div[@class='shipmethod__container']")
 	public List<WebElement> lstChangeShippingMethodDialogShippingMethodList;
 
+	public By byShippingMethodInput=By.xpath(".//input");
 	public By byShippingMethodLabel=By.xpath(".//label");
 	public By byShippingMethodRadioButton=By.xpath(".//span[@class='shipmethod__radio-button']");
 	public By byShippingMethodDescription=By.xpath(".//div[@class='shipmethod__description']");
+	public By byShippingMethodPrice=By.xpath(".//div[@class='shipmethod__description']");
 	public By byShippingMethodDetails=By.xpath(".//div[@class='shipmethod__detail']");
 	public By byShippingMethodLearMoreLink=By.xpath(".//a[@class='shipmethod__link']");
 
@@ -1198,6 +1200,42 @@ public class RegularCheckoutPage extends BasePage {
 				this.applyStaticWait(2*getStaticWaitForApplication());
 			}
 		}
+	}
+
+	/**
+	 * To get Shipping Price From Shipping Method Section
+	 * @return - float
+	 */
+	public float getShippingPriceFromShippingMethodSection(){
+		String lsText=this.getElementInnerText(lblShippingMethod);
+		if(lsText.toLowerCase().contains("free")){
+			return 0.0f;
+		}
+		else{
+			return this.getFloatFromString(lsText,true);
+		}
+	}
+
+	/**
+	 * To change Shipping Method In Change Shipping Method Dialog
+	 * @return - float - shipping price, note that return -1.0 represents no returning value
+	 */
+	public float changeShippingMethodInChangeShippingMethodDialog(){
+		WebElement item;
+		for(WebElement shippingMethodItem:lstChangeShippingMethodDialogShippingMethodList){
+			item=shippingMethodItem.findElement(byShippingMethodInput);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			if(!item.isSelected()){
+				item=shippingMethodItem.findElement(byShippingMethodLabel);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+				item.click();
+				this.applyStaticWait(300);
+
+				item=shippingMethodItem.findElement(byShippingMethodPrice);
+				return this.getFloatFromString(this.getElementInnerText(item),true);
+			}
+		}
+		return -1.0f;
 	}
 
 	/**
@@ -2801,6 +2839,15 @@ public class RegularCheckoutPage extends BasePage {
 				reporter.reportLogFailWithScreenshot("The shipping method item radio button in Change shipping method Dialog is not displaying correctly");
 			}
 
+			item=shippingMethodItem.findElement(byShippingMethodPrice);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsText = item.getText();
+			if (!lsText.isEmpty()) {
+				reporter.reportLogPass("The shipping method item price info in Change shipping method Dialog is displaying correctly");
+			} else {
+				reporter.reportLogFailWithScreenshot("The shipping method item price info in Change shipping method Dialog is not displaying correctly");
+			}
+
 			item=shippingMethodItem.findElement(byShippingMethodDetails);
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 			lsText = item.getText();
@@ -3258,4 +3305,5 @@ public class RegularCheckoutPage extends BasePage {
 			reporter.reportLogFailWithScreenshot("Expected and Actual Error Message list size is not same");
 		}
 	}
+
 }

@@ -3,6 +3,7 @@ package com.tsc.test.tests.checkoutPage;
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
+import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
@@ -16,7 +17,7 @@ public class CP_TC04_VerifyReguLarCheckout_LowInventory_NavigationShoppingCartIc
 	 * CER-874
 	 * CER-875
 	 */
-	@Test(groups={"Regression","ShoppingCart"})
+	@Test(groups={"Regression","Checkout"})
 	public void CP_TC04_VerifyReguLarCheckout_LowInventory_NavigationShoppingCartIconButton() throws IOException {
 		String lsUserName = TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
 		String lsPassword = TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
@@ -75,7 +76,6 @@ public class CP_TC04_VerifyReguLarCheckout_LowInventory_NavigationShoppingCartIc
 
 			List<Map<String, Object>> productListMapForCheckOutPage = getRegularCheckoutThreadLocal().getCheckoutItemListDesc("all");
 			int findIndex=getShoppingCartThreadLocal().findGivenProductIndexInProductList(mapProduct,productListMapForCheckOutPage);
-			reporter.reportLog("findIndex: "+findIndex);
 			if(findIndex!=-1){
 				if(productListMapForCheckOutPage.get(findIndex).get("productLeftNumber")!=null){
 					reporter.reportLogPass("The left inventory info for product: '"+lsProductName+"' is displaying on checkout page");
@@ -91,11 +91,22 @@ public class CP_TC04_VerifyReguLarCheckout_LowInventory_NavigationShoppingCartIc
 					reporter.reportLogFail("The left inventory info for product: '"+lsProductName+"' is not displaying on checkout page");
 				}
 
-				if(findIndex==0){
-					reporter.reportLogPass("newly added item of the product: '"+lsProductName+"' with low inventory is shown on top of list of checkout items on CheckOut page.");
+				if(productListMapForCheckOutPage.get(0).get("productFreeShipping")!=null&&
+						(float)productListMapForCheckOutPage.get(0).get("productNowPrice")<0.1f){
+					if(findIndex==1){
+						reporter.reportLogPass("newly added item of the product: '"+lsProductName+"' with low inventory is shown on top of list of checkout items on CheckOut page.");
+					}
+					else{
+						reporter.reportLogFail("newly added item of the product: '"+lsProductName+"' with low inventory is not shown on top of list of checkout items on CheckOut page.");
+					}
 				}
 				else{
-					reporter.reportLogFail("newly added item of the product: '"+lsProductName+"' with low inventory is not shown on top of list of checkout items on CheckOut page.");
+					if(findIndex==0){
+						reporter.reportLogPass("newly added item of the product: '"+lsProductName+"' with low inventory is shown on top of list of checkout items on CheckOut page.");
+					}
+					else{
+						reporter.reportLogFail("newly added item of the product: '"+lsProductName+"' with low inventory is not shown on top of list of checkout items on CheckOut page.");
+					}
 				}
 			}
 			else{

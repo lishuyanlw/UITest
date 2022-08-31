@@ -13,7 +13,7 @@ public class CP_TC01_VerifyLeftSection_Header_ProductList_Address_Payment extend
 	/*
 	 * CER-868
 	 */
-	@Test(groups={"Regression","ShoppingCart"})
+	@Test(groups={"Regression","Checkout"})
 	public void CP_TC01_VerifyLeftSection_Header_ProductList_Address_Payment() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 
