@@ -1593,15 +1593,37 @@ public class RegularCheckoutPage extends BasePage {
 	}
 
 	/**
-	 * To set Payment Option By Given Index
-	 * @param - int - index - given index
+	 * To set Payment Option By Given installment Number
+	 * @param - int - installmentNumber - given installment Number
 	 * @return - String - selected text
 	 */
-	public String setPaymentOptionByGivenIndex(int index){
+	public String setPaymentOptionByGivenInstallmentNumber(int installmentNumber){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectPaymentOption);
 		Select select=new Select(this.selectPaymentOption);
-		select.selectByIndex(index);
-		return select.getFirstSelectedOption().getText();
+		String lsPaymentOption=select.getFirstSelectedOption().getText().trim();
+		if(!lsPaymentOption.contains("Pay In Full Now")){
+			String stringContainsInteger=this.getStringBeforeGivenIdentifier(lsPaymentOption,"of");
+			if(this.getIntegerFromString(stringContainsInteger)==installmentNumber){
+				return lsPaymentOption;
+			}
+		}
+
+		List<String> lstPaymentOption=getPaymentOptionTextList();
+		for(int i=0;i<lstPaymentOption.size();i++){
+			lsPaymentOption=lstPaymentOption.get(i);
+			if(!lsPaymentOption.contains("Pay In Full Now")){
+				String stringContainsInteger=this.getStringBeforeGivenIdentifier(lsPaymentOption,"of");
+				reporter.reportLog(stringContainsInteger);
+				if(this.getIntegerFromString(stringContainsInteger)==installmentNumber){
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectPaymentOption);
+					select=new Select(this.selectPaymentOption);
+					select.selectByIndex(i);
+					this.waitForPageLoadingSpinningStatusCompleted();
+					return lsPaymentOption;
+				}
+			}
+		}
+		return null;
 	}
 
 	/**
@@ -1803,7 +1825,7 @@ public class RegularCheckoutPage extends BasePage {
 			reporter.reportLogPass("The presetting installment number is equal to the installment number in installment section");
 		}
 		else{
-			reporter.reportLogFail("The presetting installment number:"+totalInstallmentNumber+" is equal to the installment number in installment section:"+currentTotalInstallmentNumber);
+			reporter.reportLogFail("The presetting installment number:"+totalInstallmentNumber+" is not equal to the installment number in installment section:"+currentTotalInstallmentNumber);
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblInstallmentTodayPayment);
@@ -1843,7 +1865,7 @@ public class RegularCheckoutPage extends BasePage {
 			reporter.reportLogPass("The calculated future monthly payment is equal to the future monthly payment in installment section: "+futureMonthlyPayment);
 		}
 		else{
-			reporter.reportLogFail("The calculated future monthly payment:"+calFutureMonthlyPayment+" is equal to the future monthly payment:"+futureMonthlyPayment+" in installment section");
+			reporter.reportLogFail("The calculated future monthly payment:"+calFutureMonthlyPayment+" is not equal to the future monthly payment:"+futureMonthlyPayment+" in installment section");
 		}
 	}
 

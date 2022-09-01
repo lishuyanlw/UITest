@@ -27,11 +27,9 @@ public class CP_TC03_VerifyReguLarCheckout_ShippingDate_MultiPackMessage extends
 		//To empty the cart
 		getShoppingCartThreadLocal().emptyCart(customerEDP,accessToken);
 
-		reporter.reportLog("Verify ShippingDate in header scenario");
-		Map<String, String> keyword = TestDataHandler.constantData.getCheckOut().getLst_SearchKeywords().get(0);
-		List<Map<String, String>> keywordList=new ArrayList<>();
-		keywordList.add(keyword);
-		List<Map<String, Object>> data = getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP, accessToken, keywordList,true);
+		reporter.reportLog("Verify the scenario of ShippingDate for each checkout item scenario with different checkout item");
+		List<Map<String, String>> keywordForDifferentProducts = TestDataHandler.constantData.getCheckOut().getLst_SearchKeywords();
+		List<Map<String, Object>> data = getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP, accessToken, keywordForDifferentProducts,true);
 
 		//Login using valid username and password
 		getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword);
@@ -52,7 +50,52 @@ public class CP_TC03_VerifyReguLarCheckout_ShippingDate_MultiPackMessage extends
 		int installmentsNumberForShoppingCart=getShoppingCartThreadLocal().getInstallmentNumber();
 		getShoppingCartThreadLocal().goToCheckoutPage();
 
+		List<Map<String,Object>> productListMapForCheckOutPage = getRegularCheckoutThreadLocal().getCheckoutItemListDesc("all");
+
+		String lsText;
+		for(Map<String,Object> checkoutItem:productListMapForCheckOutPage){
+			lsText=checkoutItem.get("productName").toString();
+			reporter.reportLog("Verify product: "+lsText);
+			if(checkoutItem.get("productShippingDate")!=null){
+				reporter.reportLogPass("The shipping date is displaying correctly");
+			}
+			else{
+				reporter.reportLogFail("The shipping date is not displaying correctly");
+			}
+		}
+
 		String lsCheckoutShippingDate=getRegularCheckoutThreadLocal().getShippingDateInHeader();
+		if(lsCheckoutShippingDate==null){
+			reporter.reportLogPass("The GetItByShippingMessage is not displaying in the checkout page separately");
+		}
+		else{
+			reporter.reportLogFail("The GetItByShippingMessage is still displaying in the checkout page separately");
+		}
+
+		productListMapForCheckOutPage = getRegularCheckoutThreadLocal().getCheckoutItemListDesc("all");
+		Map<String,Object> summaryMapForCheckOutList=getRegularCheckoutThreadLocal().getCheckoutItemCountAndSubTotal(productListMapForCheckOutPage);
+		int itemCountForCheckOutList= (int) summaryMapForCheckOutList.get("itemCount");
+		float subTotalForCheckOutList= (float) summaryMapForCheckOutList.get("subTotal");
+
+		reporter.reportLog("Verify orderSummary business logic");
+		Map<String,Object> orderSummaryMapForCheckOutPage = getRegularCheckoutThreadLocal().getOrderSummaryDesc();
+		getRegularCheckoutThreadLocal().verifyOrderSummaryBusinessLogic(subTotalForCheckOutList,orderSummaryMapForCheckOutPage,null);
+
+		reporter.reportLog("Verify installment business logic");
+		Map<String,Object> easyPaymentMapForCheckOutPage = getRegularCheckoutThreadLocal().getEasyPayDesc();
+		getRegularCheckoutThreadLocal().verifyInstallmentBusinessLogic(installmentsNumberForShoppingCart,orderSummaryMapForCheckOutPage);
+
+		reporter.reportLog("Verify the scenario of ShippingDate in header");
+		//To empty the cart
+		getShoppingCartThreadLocal().emptyCart(customerEDP,accessToken);
+
+		Map<String, String> keyword = TestDataHandler.constantData.getCheckOut().getLst_SearchKeywords().get(0);
+		List<Map<String, String>> keywordList=new ArrayList<>();
+		keywordList.add(keyword);
+		data = getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP, accessToken, keywordList,true);
+		basePage.refresh();
+
+		lsCheckoutShippingDate=getRegularCheckoutThreadLocal().getShippingDateInHeader();
 		if(lsCheckoutShippingDate!=null){
 			reporter.reportLogPass("The GetItByShippingMessage is displaying in the checkout page separately");
 		}
@@ -67,10 +110,14 @@ public class CP_TC03_VerifyReguLarCheckout_ShippingDate_MultiPackMessage extends
 			reporter.reportLogFail("The saving price in orderSummary section is not displaying correctly.");
 		}
 
-		List<Map<String,Object>> productListMapForCheckOutPage = getRegularCheckoutThreadLocal().getCheckoutItemListDesc("all");
-		Map<String,Object> summaryMapForCheckOutList=getRegularCheckoutThreadLocal().getCheckoutItemCountAndSubTotal(productListMapForCheckOutPage);
-		int itemCountForCheckOutList= (int) summaryMapForCheckOutList.get("itemCount");
-		float subTotalForCheckOutList= (float) summaryMapForCheckOutList.get("subTotal");
+		productListMapForCheckOutPage = getRegularCheckoutThreadLocal().getCheckoutItemListDesc("all");
+		if(productListMapForCheckOutPage.get(0).get("productFreeShipping")!=null&&
+				(float)productListMapForCheckOutPage.get(0).get("productNowPrice")<0.1f){
+
+		}
+		summaryMapForCheckOutList=getRegularCheckoutThreadLocal().getCheckoutItemCountAndSubTotal(productListMapForCheckOutPage);
+		itemCountForCheckOutList= (int) summaryMapForCheckOutList.get("itemCount");
+		subTotalForCheckOutList= (float) summaryMapForCheckOutList.get("subTotal");
 
 		int itemCountInHeader=getRegularCheckoutThreadLocal().getOrderItemCount();
 		if(itemCountForCheckOutList==itemCountInHeader){
@@ -81,22 +128,24 @@ public class CP_TC03_VerifyReguLarCheckout_ShippingDate_MultiPackMessage extends
 		}
 
 		reporter.reportLog("Verify orderSummary business logic");
-		Map<String, Object> orderSummaryMapForCheckOutPage = getRegularCheckoutThreadLocal().getOrderSummaryDesc();
+		orderSummaryMapForCheckOutPage = getRegularCheckoutThreadLocal().getOrderSummaryDesc();
 		getRegularCheckoutThreadLocal().verifyOrderSummaryBusinessLogic(subTotalForCheckOutList,orderSummaryMapForCheckOutPage,null);
 
 		reporter.reportLog("Verify installment business logic");
-		Map<String, Object> easyPaymentMapForCheckOutPage = getRegularCheckoutThreadLocal().getEasyPayDesc();
+		easyPaymentMapForCheckOutPage = getRegularCheckoutThreadLocal().getEasyPayDesc();
+		installmentsNumberForShoppingCart=getRegularCheckoutThreadLocal().getInstallmentNumberFromPaymentOptionText();
 		getRegularCheckoutThreadLocal().verifyInstallmentBusinessLogic(installmentsNumberForShoppingCart,orderSummaryMapForCheckOutPage);
 
-		reporter.reportLog("Verify ShippingDate for each checkout item scenario");
+		reporter.reportLog("Verify the scenario of shippingDate for each checkout item scenario with Advanced order item");
 		//Add advanced order product using API
 		String lsAdvancedOrderKeyword=TestDataHandler.constantData.getSearchResultPage().getLbl_AdvancedOrderkeyword();
 		Map<String,Object> mapAdvancedOrder=getShoppingCartThreadLocal().addSingleProductWithConditions(lsAdvancedOrderKeyword, 1,1, String.valueOf(customerEDP), accessToken,true);
 		data.add(mapAdvancedOrder);
 		basePage.refresh();
+		getRegularCheckoutThreadLocal().setPaymentOptionByGivenInstallmentNumber(installmentsNumberForShoppingCart);
+
 		productListMapForCheckOutPage = getRegularCheckoutThreadLocal().getCheckoutItemListDesc("all");
 
-		String lsText;
 		for(Map<String,Object> checkoutItem:productListMapForCheckOutPage){
 			lsText=checkoutItem.get("productName").toString();
 			reporter.reportLog("Verify product: "+lsText);
@@ -127,6 +176,7 @@ public class CP_TC03_VerifyReguLarCheckout_ShippingDate_MultiPackMessage extends
 
 		reporter.reportLog("Verify installment business logic");
 		easyPaymentMapForCheckOutPage = getRegularCheckoutThreadLocal().getEasyPayDesc();
+		installmentsNumberForShoppingCart=getRegularCheckoutThreadLocal().getInstallmentNumberFromPaymentOptionText();
 		getRegularCheckoutThreadLocal().verifyInstallmentBusinessLogic(installmentsNumberForShoppingCart,orderSummaryMapForCheckOutPage);
 	}
 }
