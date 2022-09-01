@@ -10,12 +10,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class CP_TC05_VerifyReguLarCheckout_ShippingMethod extends BaseTest{
+public class CP_TC05_VerifyReguLarCheckout_ShippingMethod_NavigationShoppingCartIconButton extends BaseTest{
 	/*
 	 * CER-880
+	 * CER-875
 	 */
 	@Test(groups={"Regression","Checkout"})
-	public void CP_TC05_VerifyReguLarCheckout_ShippingMethod() throws IOException {
+	public void CP_TC05_VerifyReguLarCheckout_ShippingMethod_NavigationShoppingCartIconButton() throws IOException {
 		String lsUserName = TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
 		String lsPassword = TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
 

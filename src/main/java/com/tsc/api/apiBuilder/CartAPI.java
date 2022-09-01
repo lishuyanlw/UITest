@@ -13,10 +13,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -746,5 +743,17 @@ public class CartAPI extends ApiClient {
         }
 
         return Double.parseDouble(lsReturn);
+    }
+
+    /**
+     * This function returns the Shipping Address associated for a user
+     * @param  - accountResponse - AccountResponse object returned from api
+     * @return - AccountResponse.AddressClass object returned for Shipping Address
+     */
+    public List<? extends Object> getShippingAddressForUser(CartResponse cartResponse, String customerEdp, String accessToken) throws IOException, ParseException {
+        if(cartResponse!=null){
+            return Arrays.asList(cartResponse.getShippingAddress());
+        }else
+            return new AccountAPI().addShippingAddressForUser(customerEdp,accessToken,true,null);
     }
 }

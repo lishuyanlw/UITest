@@ -644,4 +644,15 @@ public class AccountAPI extends ApiClient {
         }else
             return this.addShippingAddressForUser(customerEdp,accessToken,true,null);
     }
+
+    /**
+     * This function deletes shipping address for a user
+     * @param - addressId - id to be deleted
+     * @param - customerEDP - edp number
+     * @param - accessToken - access token
+     * @return - Response Object from api
+     */
+    public Response deleteShippingAddressForUser(int addressId,String customerEDP,String accessToken){
+        return deleteApiCallResponseAfterAuthentication(propertyData.get("test_apiVersion") + "/" + propertyData.get("test_language")+"/accounts/"+customerEDP+"/shippingaddresses/"+addressId, accessToken);
+    }
 }
