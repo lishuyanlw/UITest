@@ -44,6 +44,7 @@ public class SC_TC15_VerifyShoppingCart_CheckCartExceedingLimitMessage extends B
 			}
 			getProductDetailPageThreadLocal().goToShoppingCartByClickingShoppingCartIconInGlobalHeader();
 
+			reporter.reportLog("Verify cart exceeding limit scenario");
 			basePage.getReusableActionsInstance().javascriptScrollByVisibleElement(getShoppingCartThreadLocal().lblCartNoticeQuantityExceedingMessage);
 			String lsActualCartExceedingLimitMessage = getShoppingCartThreadLocal().lblCartNoticeQuantityExceedingMessage.getText().trim();
 			if (lsActualCartExceedingLimitMessage.equalsIgnoreCase(lsExpectedCartExceedingLimitMessage)) {
@@ -60,6 +61,7 @@ public class SC_TC15_VerifyShoppingCart_CheckCartExceedingLimitMessage extends B
 				reporter.reportLogFail("The checkout button is disabled after ordering oversize shopping items");
 			}
 
+			reporter.reportLog("Verify cart not exceeding limit after deleting shoppingCart items scenario");
 			for(int i=getShoppingCartThreadLocal().lstItemRemoveButtonFromCart.size()-2;i>=0;i--){
 				WebElement removeButton=getShoppingCartThreadLocal().lstItemRemoveButtonFromCart.get(i);
 				getShoppingCartThreadLocal().openRemoveDialog(removeButton);
@@ -69,7 +71,13 @@ public class SC_TC15_VerifyShoppingCart_CheckCartExceedingLimitMessage extends B
 				//as sometimes page loads but DOM is still getting refreshed and hence Stale Element Exception is thrown
 				basePage.applyStaticWait(3000);
 			}
-			getShoppingCartThreadLocal().chooseShoppingItemByGivenItemIndexAndQuantity(0, 1);
+			if(getShoppingCartThreadLocal().lstCartItems.size()>1){
+				getShoppingCartThreadLocal().chooseShoppingItemByGivenItemIndexAndQuantity(1, 1);
+			}
+			else{
+				getShoppingCartThreadLocal().chooseShoppingItemByGivenItemIndexAndQuantity(0, 1);
+			}
+
 			String lsCheckErrorMessage = getShoppingCartThreadLocal().checkCartNoticeMessageExisting();
 			if (lsCheckErrorMessage==null||lsCheckErrorMessage.equalsIgnoreCase("multiPackMessage")) {
 				reporter.reportLogPass("The cart exceeding limit message is not displaying as expected");

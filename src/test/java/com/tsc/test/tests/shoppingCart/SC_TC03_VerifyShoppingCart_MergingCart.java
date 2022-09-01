@@ -80,14 +80,14 @@ public class SC_TC03_VerifyShoppingCart_MergingCart extends BaseTest{
 			if (findIndex != -1) {
 				reporter.reportLogPass("The first added item can be found in shopping item list correctly");
 			} else {
-				reporter.reportLogFail("The first added item can be found in shopping item list correctly");
+				reporter.reportLogFail("The first added item can not be found in shopping item list correctly");
 			}
 
 			findIndex = getShoppingCartThreadLocal().findGivenProductIndexInShoppingCartItemList(PDPMapSecond, shoppingCartMap);
 			if (findIndex != -1) {
 				reporter.reportLogPass("The second added item can be found in shopping item list correctly");
 			} else {
-				reporter.reportLogFail("The second added item iscan be found in shopping item list correctly");
+				reporter.reportLogFail("The second added item can not be found in shopping item list correctly");
 			}
 
 			//To verify heading and Shopping Item List contents

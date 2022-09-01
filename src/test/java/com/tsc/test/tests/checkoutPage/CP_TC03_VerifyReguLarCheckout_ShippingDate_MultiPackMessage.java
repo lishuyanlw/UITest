@@ -1,8 +1,13 @@
 package com.tsc.test.tests.checkoutPage;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.tsc.api.apiBuilder.CartAPI;
+import com.tsc.api.pojo.AccountCartResponse;
+import com.tsc.api.util.JsonParser;
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
+import io.restassured.response.Response;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
@@ -51,6 +56,14 @@ public class CP_TC03_VerifyReguLarCheckout_ShippingDate_MultiPackMessage extends
 		getShoppingCartThreadLocal().goToCheckoutPage();
 
 		List<Map<String,Object>> productListMapForCheckOutPage = getRegularCheckoutThreadLocal().getCheckoutItemListDesc("all");
+		String lsDeletedProductNumber;
+		if(productListMapForCheckOutPage.get(0).get("productFreeShipping")!=null&&
+				(float)productListMapForCheckOutPage.get(0).get("productNowPrice")<0.1f){
+			lsDeletedProductNumber= (String) productListMapForCheckOutPage.get(1).get("productNumber");
+		}
+		else{
+			lsDeletedProductNumber= (String) productListMapForCheckOutPage.get(0).get("productNumber");
+		}
 
 		String lsText;
 		for(Map<String,Object> checkoutItem:productListMapForCheckOutPage){
@@ -73,6 +86,7 @@ public class CP_TC03_VerifyReguLarCheckout_ShippingDate_MultiPackMessage extends
 		}
 
 		productListMapForCheckOutPage = getRegularCheckoutThreadLocal().getCheckoutItemListDesc("all");
+
 		Map<String,Object> summaryMapForCheckOutList=getRegularCheckoutThreadLocal().getCheckoutItemCountAndSubTotal(productListMapForCheckOutPage);
 		int itemCountForCheckOutList= (int) summaryMapForCheckOutList.get("itemCount");
 		float subTotalForCheckOutList= (float) summaryMapForCheckOutList.get("subTotal");
@@ -86,13 +100,18 @@ public class CP_TC03_VerifyReguLarCheckout_ShippingDate_MultiPackMessage extends
 		getRegularCheckoutThreadLocal().verifyInstallmentBusinessLogic(installmentsNumberForShoppingCart,orderSummaryMapForCheckOutPage);
 
 		reporter.reportLog("Verify the scenario of ShippingDate in header");
-		//To empty the cart
-		getShoppingCartThreadLocal().emptyCart(customerEDP,accessToken);
-
-		Map<String, String> keyword = TestDataHandler.constantData.getCheckOut().getLst_SearchKeywords().get(0);
-		List<Map<String, String>> keywordList=new ArrayList<>();
-		keywordList.add(keyword);
-		data = getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP, accessToken, keywordList,true);
+		CartAPI cartAPI=new CartAPI();
+		Response responseGet=cartAPI.getAccountCartContentWithCustomerEDP(String.valueOf(customerEDP),accessToken);
+		AccountCartResponse accountCartResponseGet = JsonParser.getResponseObject(responseGet.asString(), new TypeReference<AccountCartResponse>() {});
+		String cartGuidId=accountCartResponseGet.getCartGuid();
+		List<AccountCartResponse.CartLinesClass> cartLines= accountCartResponseGet.getCartLines();
+		for(AccountCartResponse.CartLinesClass cartLine:cartLines){
+			if(cartLine.getCartLineItem().getItemNo().equalsIgnoreCase(lsDeletedProductNumber)){
+				int cartLineId=cartLine.getId();
+				Response responseDelete= cartAPI.deleteCartItemWithCartGuidAndLineId(accessToken, cartGuidId, cartLineId);
+				break;
+			}
+		}
 		basePage.refresh();
 
 		lsCheckoutShippingDate=getRegularCheckoutThreadLocal().getShippingDateInHeader();
@@ -111,10 +130,6 @@ public class CP_TC03_VerifyReguLarCheckout_ShippingDate_MultiPackMessage extends
 		}
 
 		productListMapForCheckOutPage = getRegularCheckoutThreadLocal().getCheckoutItemListDesc("all");
-		if(productListMapForCheckOutPage.get(0).get("productFreeShipping")!=null&&
-				(float)productListMapForCheckOutPage.get(0).get("productNowPrice")<0.1f){
-
-		}
 		summaryMapForCheckOutList=getRegularCheckoutThreadLocal().getCheckoutItemCountAndSubTotal(productListMapForCheckOutPage);
 		itemCountForCheckOutList= (int) summaryMapForCheckOutList.get("itemCount");
 		subTotalForCheckOutList= (float) summaryMapForCheckOutList.get("subTotal");
