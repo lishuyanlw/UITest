@@ -75,19 +75,43 @@ public class SC_TC03_VerifyShoppingCart_MergingCart extends BaseTest{
 			}
 
 			Map<String, Object> shoppingCartMap = getShoppingCartThreadLocal().getShoppingSectionDetails("all");
+			List<Map<String,Object>> shoppingCartItemList=(List<Map<String,Object>>)shoppingCartMap.get("shoppingList");
 
 			int findIndex = getShoppingCartThreadLocal().findGivenProductIndexInShoppingCartItemList(PDPMapFirst, shoppingCartMap);
 			if (findIndex != -1) {
 				reporter.reportLogPass("The first added item can be found in shopping item list correctly");
 			} else {
-				reporter.reportLogFail("The first added item can be found in shopping item list correctly");
+				reporter.reportLogFail("The first added item can not be found in shopping item list correctly");
 			}
 
 			findIndex = getShoppingCartThreadLocal().findGivenProductIndexInShoppingCartItemList(PDPMapSecond, shoppingCartMap);
 			if (findIndex != -1) {
 				reporter.reportLogPass("The second added item can be found in shopping item list correctly");
 			} else {
-				reporter.reportLogFail("The second added item iscan be found in shopping item list correctly");
+				reporter.reportLogFail("The second added item can not be found in shopping item list correctly");
+			}
+			boolean bMatch;
+			if((boolean)shoppingCartItemList.get(0).get("productQuantityDisabled")){
+				if(findIndex==1){
+					bMatch=true;
+				}
+				else{
+					bMatch=false;
+				}
+			}
+			else{
+				if(findIndex==0){
+					bMatch=true;
+				}
+				else{
+					bMatch=false;
+				}
+			}
+			if(bMatch){
+				reporter.reportLogPass("The newly added item is on the top of shoppingCart item list");
+			}
+			else{
+				reporter.reportLogFail("The newly added item is not on the top of shoppingCart item list");
 			}
 
 			//To verify heading and Shopping Item List contents
