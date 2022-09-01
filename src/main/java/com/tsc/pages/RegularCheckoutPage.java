@@ -1497,7 +1497,6 @@ public class RegularCheckoutPage extends BasePage {
 	public boolean openChangeBillingAddressDialog(){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnBillingAddressChange);
 		this.clickElement(btnBillingAddressChange);
-//		btnBillingAddressChange.click();
 		return this.waitForCondition(Driver->{return this.lblAddOrEditAddressDialogTitle.isDisplayed();},10000);
 	}
 
@@ -3387,5 +3386,22 @@ public class RegularCheckoutPage extends BasePage {
 			return true;
 		else
 			return false;
+	}
+
+	/**
+	 * This function returns billing address from checkout page
+	 * @param - billing address to be verifies
+	 * @return - String
+	 */
+	public String verifyUserBillingAddress(String billingAddress){
+		String pageBillingAddress = null;
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblBillingAddress);
+		pageBillingAddress = this.lblBillingAddress.getText();
+		if(pageBillingAddress.trim().equalsIgnoreCase(billingAddress))
+			reporter.reportLogPass("Billing Address for user is same as expected");
+		else
+			reporter.reportLogPass("Billing Address for user: "+pageBillingAddress+" is not as expected: "+billingAddress);
+
+		return pageBillingAddress;
 	}
 }

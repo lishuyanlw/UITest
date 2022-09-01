@@ -294,3 +294,4 @@ checkOut:
     lastName: "Checkout Last"
     phoneNumber: "6474567890"
     address: "50-1280 Main St W Ham"
+  lblBillingAddress: "Same as shipping address"

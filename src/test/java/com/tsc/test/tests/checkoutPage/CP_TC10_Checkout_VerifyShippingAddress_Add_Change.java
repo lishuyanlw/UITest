@@ -30,6 +30,7 @@ public class CP_TC10_Checkout_VerifyShippingAddress_Add_Change extends BaseTest 
         String lsPassword = TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
         List<String> expectedErrorMessage = TestDataHandler.constantData.getCheckOut().getAddShippingAddressErrorMessage();
         Map<String,String> inputAddress = TestDataHandler.constantData.getCheckOut().getNewShippingAddressForUser();
+        String billingAddress = TestDataHandler.constantData.getCheckOut().getLblBillingAddress();
 
         //Fetching test data from test data file
         String accessToken = getApiUserSessionDataMapThreadLocal().get("access_token").toString();
@@ -65,6 +66,10 @@ public class CP_TC10_Checkout_VerifyShippingAddress_Add_Change extends BaseTest 
             getReporter().reportLog("Verification of Shipping Address display on Checkout Page");
             String shippingAddress = getRegularCheckoutThreadLocal().verifyShippingAddressDisplayOnCheckout();
 
+            //Verification that billing address is same as Shipping Address
+            getReporter().reportLog("Verifying that Billing Address is same as shipping address");
+            getRegularCheckoutThreadLocal().verifyUserBillingAddress(billingAddress);
+
             //Verification of Add/Change Shipping Address dialog box display on page
             //Verify Shipping Address dialog is displayed
             getReporter().reportLog("Verification of Add/Change Shipping Address Dialog Box");
@@ -92,6 +97,10 @@ public class CP_TC10_Checkout_VerifyShippingAddress_Add_Change extends BaseTest 
             getRegularCheckoutThreadLocal().openAddOrEditAddressDialog(getRegularCheckoutThreadLocal().btnAddOrChangeShippingAddressDialogAddNewAddressButton);
             newAddedAddress = getRegularCheckoutThreadLocal().addOrEditShippingAddress(inputAddress,true);
             getRegularCheckoutThreadLocal().verifyShippingAddressOnCheckoutWithSelectedAddressOnAddChangeDialog(null,newAddedAddress);
+
+            //Verification that billing address is not same as Shipping Address
+            getReporter().reportLog("Verifying that Billing Address is different from shipping address");
+            getRegularCheckoutThreadLocal().verifyUserBillingAddress(shippingAddress);
         }finally {
             //Deleting the address added for next run
             getRegularCheckoutThreadLocal().deleteNewAddedAddressFromUser(newAddedAddress,customerEDP,accessToken);

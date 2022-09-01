@@ -1373,6 +1373,11 @@ public class ConstantData {
         List<Map<String,String>> lst_SearchKeywords;
         List<String> addShippingAddressErrorMessage;
         Map<String,String> newShippingAddressForUser;
+        String lblBillingAddress;
+
+        public String getLblBillingAddress() {            return lblBillingAddress;        }
+
+        public void setLblBillingAddress(String lblBillingAddress) {            this.lblBillingAddress = lblBillingAddress;        }
 
         public List<Map<String, String>> getLst_SearchKeywords() {            return lst_SearchKeywords;        }
 
