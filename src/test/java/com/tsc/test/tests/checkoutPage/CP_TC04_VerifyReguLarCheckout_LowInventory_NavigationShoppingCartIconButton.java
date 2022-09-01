@@ -65,8 +65,6 @@ public class CP_TC04_VerifyReguLarCheckout_LowInventory_NavigationShoppingCartIc
 			}, 30000);
 
 			getProductDetailPageThreadLocal().goToShoppingCartFromAddToBagPopupWithLoginFirst();
-			String lsShoppingCartURLNavigatedFromPDP=basePage.URL();
-
 			if (getShoppingCartThreadLocal().checkIsDropdownMenuForInstallmentNumber()) {
 				List<String> lstOptionText = getShoppingCartThreadLocal().getInstallmentOptions();
 				getShoppingCartThreadLocal().setInstallmentSetting(lstOptionText.get(1));
@@ -165,17 +163,6 @@ public class CP_TC04_VerifyReguLarCheckout_LowInventory_NavigationShoppingCartIc
 
 			reporter.reportLog("Verify easyPayment contents");
 			getRegularCheckoutThreadLocal().verifyEasyPayContents();
-
-			reporter.reportLog("Verify Navigation to ShoppingCart page by clicking GoToShoppingBag icon button in checkout header");
-			getRegularCheckoutThreadLocal().GoToShoppingBag();
-			String lsShoppingCartURLNavigatedFromCheckOutPage=basePage.URL();
-			if(lsShoppingCartURLNavigatedFromCheckOutPage.equalsIgnoreCase(lsShoppingCartURLNavigatedFromPDP)&&
-					lsShoppingCartURLNavigatedFromCheckOutPage.toLowerCase().contains("shoppingcart")){
-				reporter.reportLogPass("Navigated to ShoppingCart page by clicking GoToShoppingBag button in checkout header successfully");
-			}
-			else{
-				reporter.reportLogFail("Failed to navigated to ShoppingCart page by clicking GoToShoppingBag button in checkout header");
-			}
 		}
 		else{
 			reporter.reportLogFail("Unable to find the product with low inventory!");

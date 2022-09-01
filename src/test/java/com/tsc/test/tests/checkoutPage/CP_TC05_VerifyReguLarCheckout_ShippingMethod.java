@@ -42,6 +42,7 @@ public class CP_TC05_VerifyReguLarCheckout_ShippingMethod extends BaseTest{
 			(new BasePage(this.getDriver())).applyStaticWait(3000);
 		}
 		getProductDetailPageThreadLocal().goToShoppingCartByClickingShoppingCartIconInGlobalHeader();
+		String lsShoppingCartURLNavigatedFromPDP=basePage.URL();
 		if(getShoppingCartThreadLocal().checkIsDropdownMenuForInstallmentNumber()){
 			List<String> lstOptionText=getShoppingCartThreadLocal().getInstallmentOptions();
 			getShoppingCartThreadLocal().setInstallmentSetting(lstOptionText.get(1));
@@ -97,6 +98,16 @@ public class CP_TC05_VerifyReguLarCheckout_ShippingMethod extends BaseTest{
 		Map<String, Object> easyPaymentMapForCheckOutPage = getRegularCheckoutThreadLocal().getEasyPayDesc();
 		getRegularCheckoutThreadLocal().verifyInstallmentBusinessLogic(installmentsNumberForShoppingCart,orderSummaryMapChangedForCheckOutPage);
 
+		reporter.reportLog("Verify Navigation to ShoppingCart page by clicking GoToShoppingBag icon button in checkout header");
+		getRegularCheckoutThreadLocal().GoToShoppingBag();
+		String lsShoppingCartURLNavigatedFromCheckOutPage=basePage.URL();
+		if(lsShoppingCartURLNavigatedFromCheckOutPage.equalsIgnoreCase(lsShoppingCartURLNavigatedFromPDP)&&
+				lsShoppingCartURLNavigatedFromCheckOutPage.toLowerCase().contains("shoppingcart")){
+			reporter.reportLogPass("Navigated to ShoppingCart page by clicking GoToShoppingBag button in checkout header successfully");
+		}
+		else{
+			reporter.reportLogFail("Failed to navigated to ShoppingCart page by clicking GoToShoppingBag button in checkout header");
+		}
 	}
 }
 
