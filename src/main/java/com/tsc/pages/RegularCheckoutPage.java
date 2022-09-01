@@ -1,14 +1,22 @@
 package com.tsc.pages;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.tsc.api.apiBuilder.AccountAPI;
+import com.tsc.api.apiBuilder.CartAPI;
+import com.tsc.api.pojo.CartResponse;
 import com.tsc.api.util.DataConverter;
+import com.tsc.api.util.JsonParser;
 import com.tsc.pages.base.BasePage;
+import io.restassured.response.Response;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.ParseException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
 
+import java.io.IOException;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.*;
@@ -1085,6 +1093,12 @@ public class RegularCheckoutPage extends BasePage {
 		map.put("city",this.inputAddOrEditAddressDialogCity.getAttribute("value"));
 		map.put("province",this.getReusableActionsInstance().getSelectedValue(this.selectAddOrEditAddressDialogProvince));
 		map.put("postalCode",this.inputAddOrEditAddressDialogPostalCode.getAttribute("value"));
+
+		//Clicking on Save Button
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnAddOrEditAddressDialogSaveButton);
+		this.getReusableActionsInstance().clickIfAvailable(this.btnAddOrEditAddressDialogSaveButton);
+		this.waitForPageToLoad();
+		waitForPageLoadingSpinningStatusCompleted();
 
 		return map;
 	}
@@ -3229,7 +3243,11 @@ public class RegularCheckoutPage extends BasePage {
 	 * This function fetches error message from Add New Shipping Address Dialog
 	 * @return - List<String> of error message displayed on screen
 	 */
-	public List<String> getMandatoryFieldsErrorMessage(){
+	public List<String> getMandatoryFieldsErrorMessage(int expectedErrorMessage){
+		if(expectedErrorMessage==0)
+			this.waitForCondition(Driver->{return this.mandatoryFieldErrorMessage.size()>0;},6000);
+		else
+			this.waitForCondition(Driver->{return this.mandatoryFieldErrorMessage.size()==expectedErrorMessage;},6000);
 		int loop = this.mandatoryFieldErrorMessage.size();
 		if(loop>0){
 			List<String> errorMessageList = new ArrayList<>();
@@ -3253,7 +3271,7 @@ public class RegularCheckoutPage extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrEditAddressDialogSaveButton);
 		this.getReusableActionsInstance().clickIfAvailable(this.btnAddOrEditAddressDialogSaveButton);
 
-		List<String> errorMessageList = this.getMandatoryFieldsErrorMessage();
+		List<String> errorMessageList = this.getMandatoryFieldsErrorMessage(expectedErrorMessageList.size());
 		if(errorMessageList.size()==expectedErrorMessageList.size()){
 			for(String errorMessage:errorMessageList){
 				if(expectedErrorMessageList.contains(errorMessage)){
@@ -3262,17 +3280,112 @@ public class RegularCheckoutPage extends BasePage {
 					reporter.reportLogFailWithScreenshot("Error Message as expected is not displayed: "+errorMessage);
 			}
 		}else{
-			reporter.reportLogFailWithScreenshot("Expected and Actual Error Message list size is not same");
+			reporter.reportLogFailWithScreenshot("Expected Error Message list size: "+expectedErrorMessageList.size()+" is not same as Actual Error Message list size: "+errorMessageList.size());
 		}
 	}
 
-	public void verifyShippingAddressOnCheckoutWithSelectedAddressOnAddChangeDialog(String checkoutPageShippingAddress,String addChangeDialogPageSelectedAddress){
+	/**
+	 * This function verifies shipping address on checkout page with selected address on Add/Change Shipping Dialog
+	 * @param - String - checkoutPageShippingAddress
+	 * @param -String - addChangeDialogPageSelectedAddress
+	 */
+	public <T> void verifyShippingAddressOnCheckoutWithSelectedAddressOnAddChangeDialog(String checkoutPageShippingAddress,T addChangeDialogPageSelectedAddress){
+		boolean flag = false;
 		if(checkoutPageShippingAddress!=null && addChangeDialogPageSelectedAddress==null){
 			String selectedAddress = this.verifyAddressOnAddChangeShippingAddressDialogAndReturnSelectedAddress(false);
-			if(checkoutPageShippingAddress.trim().equalsIgnoreCase(selectedAddress.trim()))
+			if(checkoutPageShippingAddress.trim().equalsIgnoreCase(selectedAddress.trim())){
 				reporter.reportLogPass("Selected Address on Add/Change Dialog box is same as on checkout page");
+				flag = true;
+			}
 			else
 				reporter.reportLogFailWithScreenshot("Selected Address on Add/Change Dialog box: "+selectedAddress+" is not same as on checkout page: "+checkoutPageShippingAddress);
+		}else if(checkoutPageShippingAddress==null && addChangeDialogPageSelectedAddress!=null && addChangeDialogPageSelectedAddress.getClass() == HashMap.class){
+			//Fetching displayed address from checkout page
+			String checkoutPageAddress = this.lblShippingAddress.getText();
+			Map<String,Object> newAddress = (Map<String, Object>) addChangeDialogPageSelectedAddress;
+			if(checkoutPageAddress.trim().contains(newAddress.get("address").toString())){
+				reporter.reportLogPass("Address displayed on checkout page is new added address as expected");
+				flag = true;
+			}
+			else
+				reporter.reportLogFailWithScreenshot("Address displayed on checkout page: "+checkoutPageAddress+" is not same as new added address: "+newAddress.get("address").toString());
 		}
+		if(flag)
+			reporter.reportLog("Verification of address on checkout page is done!");
+		else
+			reporter.reportLogFail("Verification of address on checkout page is not done as expected");
+	}
+
+	/**
+	 * This function deletes address from particular user
+	 * @param - Map<String,Object> - newAddedAddress object
+	 * @param -String - customerEDP
+	 * @param -String - accessToken
+	 * @throws - IOException
+	 * @throws - ParseException
+	 */
+	public void deleteNewAddedAddressFromUser(Map<String,Object> newAddedAddress,String customerEDP,String accessToken) throws IOException, ParseException {
+		if(newAddedAddress!=null && newAddedAddress.size()>0){
+			CartAPI cartAPI = new CartAPI();
+			Response response = cartAPI.getAccountCartContentWithCustomerEDP(customerEDP,accessToken);
+			CartResponse cartResponse= JsonParser.getResponseObject(response.asString(), new TypeReference<CartResponse>() {});
+			CartResponse.AddressClass addressClass = cartResponse.getShippingAddress();
+			Response shippingAddressDeleteResponse = null;
+
+			//Verifying that address added was successful and there was no api call error while adding new address
+			if(newAddedAddress.get("address").toString().toLowerCase().equalsIgnoreCase(addressClass.getStreet())){
+				//Verifying that address to be deleted is same that was added
+				if(this.verifyAddedAddressObject(newAddedAddress,addressClass)){
+					shippingAddressDeleteResponse = new AccountAPI().deleteShippingAddressForUser(addressClass.getId(),customerEDP,accessToken);
+					if(shippingAddressDeleteResponse.getStatusCode()==200)
+						reporter.reportLog("Added address is deleted for user!");
+					else
+						reporter.reportLogFail("Added address is not deleted for user with status code from api: "+shippingAddressDeleteResponse.getStatusCode());
+				}
+			}else{
+				//Verifying that address is not present in shippingAddresses object due to api error above
+				List<CartResponse.AddressClass> shippingAddresses = cartResponse.getBuyer().getShippingAddresses();
+				for(CartResponse.AddressClass loopAddressClass:shippingAddresses){
+					//Verifying that address to be deleted is same that was added
+					if(this.verifyAddedAddressObject(newAddedAddress,loopAddressClass)){
+						shippingAddressDeleteResponse = new AccountAPI().deleteShippingAddressForUser(loopAddressClass.getId(),customerEDP,accessToken);
+						if(shippingAddressDeleteResponse.getStatusCode()==200)
+							reporter.reportLog("Added address is deleted for user from Shipping Addresses Object");
+						else
+							reporter.reportLogFail("Added address is not deleted for user from Shipping Addresses Object with status code from api: "+shippingAddressDeleteResponse.getStatusCode());
+					}
+				}
+			}
+		}else
+			reporter.reportLogFail("New Address Added Object returned is null and hence not deleted");
+	}
+
+	/**
+	 *
+	 * @param - Map<String,Object> - newAddedAddress object
+	 * @param - CartResponse addressClass object
+	 * @return - boolean
+	 */
+	public boolean verifyAddedAddressObject(Map<String,Object> newAddedAddress,CartResponse.AddressClass addressClass){
+		String state = null;
+		switch (newAddedAddress.get("province").toString().toLowerCase()){
+			case "ontario":
+				state = "ON";
+				break;
+			default:
+				state = "Invalid";
+				break;
+		}
+
+		if(newAddedAddress.get("address").toString().toLowerCase().equalsIgnoreCase(addressClass.getStreet()) &&
+				newAddedAddress.get("city").toString().toLowerCase().equalsIgnoreCase(addressClass.getCity()) &&
+				state.equalsIgnoreCase(addressClass.getState()) &&
+				newAddedAddress.get("postalCode").toString().trim().replace(" ","").toLowerCase().equalsIgnoreCase(addressClass.getZipCode()) &&
+				newAddedAddress.get("firstName").toString().toLowerCase().equalsIgnoreCase(addressClass.getFirstName()) &&
+				newAddedAddress.get("lastName").toString().toLowerCase().equalsIgnoreCase(addressClass.getLastName()) &&
+				newAddedAddress.get("phoneNumber").toString().toLowerCase().equalsIgnoreCase(addressClass.getDayPhone()))
+			return true;
+		else
+			return false;
 	}
 }
