@@ -1030,6 +1030,7 @@ public class RegularCheckoutPage extends BasePage {
 			this.getReusableActionsInstance().clickIfAvailable(this.btnEditButtonAddChangeShippingAddressDialog);
 			this.waitForCondition(Driver->{return inputAddOrEditAddressDialogFirstName.isDisplayed() &&
 					inputAddOrEditAddressDialogFirstName.isEnabled();},5000);
+			this.verifyShippingAddressIsPopulatedForEdit();
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressDialogFirstName);
@@ -3403,5 +3404,73 @@ public class RegularCheckoutPage extends BasePage {
 			reporter.reportLogPass("Billing Address for user: "+pageBillingAddress+" is not as expected: "+billingAddress);
 
 		return pageBillingAddress;
+	}
+
+	/**
+	 * This function verifies that Edit Address Dialog box is pre populated
+	 * @return - Map Object
+	 */
+	public Map<String,Object> verifyShippingAddressIsPopulatedForEdit(){
+		this.waitForCondition(Driver->{return inputAddOrEditAddressDialogFirstName.isEnabled();},5000);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressDialogFirstName);
+		String firstName = this.inputAddOrEditAddressDialogFirstName.getText();
+		if(!firstName.isEmpty())
+			reporter.reportLogPass("First Name for user is pre filled as expected: "+firstName);
+		else
+			reporter.reportLogPass("First Name for user is empty: "+firstName);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressDialogLastName);
+		String lastName = this.inputAddOrEditAddressDialogLastName.getText();
+		if(!lastName.isEmpty())
+			reporter.reportLogPass("Last Name for user is pre filled as expected: "+lastName);
+		else
+			reporter.reportLogPass("Last Name for user is empty: "+lastName);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressDialogPhoneNumber);
+		String phoneNumber = this.inputAddOrEditAddressDialogPhoneNumber.getText();
+		if(!phoneNumber.isEmpty())
+			reporter.reportLogPass("Phone Number for user is pre filled as expected: "+phoneNumber);
+		else
+			reporter.reportLogPass("Phone Number for user is empty: "+phoneNumber);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressDialogAddress);
+		String lsAddress=inputAddOrEditAddressDialogAddress.getAttribute("value").trim();
+		if(!lsAddress.isEmpty())
+			reporter.reportLogPass("Address for user is pre filled as expected: "+lsAddress);
+		else
+			reporter.reportLogPass("Address for user is empty: "+lsAddress);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressDialogCity);
+		String city=inputAddOrEditAddressDialogCity.getAttribute("value").trim();
+		if(!city.isEmpty())
+			reporter.reportLogPass("City for user is pre filled as expected: "+city);
+		else
+			reporter.reportLogPass("City for user is empty: "+city);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(selectAddOrEditAddressDialogProvince);
+		String province=this.getReusableActionsInstance().getSelectedValue(this.selectAddOrEditAddressDialogProvince).trim();
+		if(!province.isEmpty())
+			reporter.reportLogPass("Province for user is pre filled as expected: "+province);
+		else
+			reporter.reportLogPass("Province for user is empty: "+province);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressDialogPostalCode);
+		String postalCode=inputAddOrEditAddressDialogPostalCode.getAttribute("value").trim();
+		if(!postalCode.isEmpty())
+			reporter.reportLogPass("Postal Code for user is pre filled as expected: "+postalCode);
+		else
+			reporter.reportLogPass("Postal Code for user is empty: "+postalCode);
+
+		Map<String,Object> map=new HashMap<>();
+		map.put("firstName",firstName);
+		map.put("lastName",lastName);
+		map.put("phoneNumber",phoneNumber);
+		map.put("address",lsAddress);
+		map.put("city",city);
+		map.put("province",province);
+		map.put("postalCode",postalCode);
+
+		return map;
 	}
 }
