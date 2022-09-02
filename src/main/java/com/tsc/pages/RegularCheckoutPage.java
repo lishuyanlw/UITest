@@ -11,6 +11,7 @@ import io.restassured.response.Response;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -1049,6 +1050,13 @@ public class RegularCheckoutPage extends BasePage {
 		this.getReusableActionsInstance().staticWait(300);
 
 		inputAddOrEditAddressDialogAddress.clear();
+		int length = inputAddOrEditAddressDialogAddress.getAttribute("value").trim().length();
+		if(length>1){
+			inputAddOrEditAddressDialogAddress.click();
+			for(int counter=0;counter<length;counter++)
+				inputAddOrEditAddressDialogAddress.sendKeys(Keys.BACK_SPACE);
+			this.applyStaticWait(2000);
+		}
 		int sum=0;
 		for(String inputText:data){
 			if(sum>=30){
@@ -3311,7 +3319,7 @@ public class RegularCheckoutPage extends BasePage {
 				reporter.reportLogFailWithScreenshot("Selected Address on Add/Change Dialog box: "+selectedAddress+" is not same as on checkout page: "+checkoutPageShippingAddress);
 		}else if(checkoutPageShippingAddress==null && addChangeDialogPageSelectedAddress!=null && addChangeDialogPageSelectedAddress.getClass() == HashMap.class){
 			//Fetching displayed address from checkout page
-			String checkoutPageAddress = this.lblShippingAddress.getText();
+			String checkoutPageAddress = this.getAddressFromCheckoutPage("shipping");
 			Map<String,Object> newAddress = (Map<String, Object>) addChangeDialogPageSelectedAddress;
 			if(checkoutPageAddress.trim().contains(newAddress.get("address").toString())){
 				reporter.reportLogPass("Address displayed on checkout page is new added address as expected");
@@ -3496,4 +3504,18 @@ public class RegularCheckoutPage extends BasePage {
 			return this.lblShippingAddress.getText();
 		return null;
     }
+
+    public String verifyAndReturnShippingAddressFromAddEditDialogOnAddChangeDialog(Map<String,Object> addEditAddress){
+		String selectedAddress = this.verifyAddressOnAddChangeShippingAddressDialogAndReturnSelectedAddress(false);
+		if(selectedAddress.toLowerCase().contains(addEditAddress.get("address").toString().toLowerCase()) &&
+				selectedAddress.toLowerCase().contains(addEditAddress.get("firstName").toString().toLowerCase()) &&
+				selectedAddress.toLowerCase().contains(addEditAddress.get("lastName").toString().toLowerCase()) &&
+				selectedAddress.toLowerCase().contains(addEditAddress.get("city").toString().toLowerCase()) &&
+				selectedAddress.toLowerCase().contains(addEditAddress.get("postalCode").toString().toLowerCase().replace(" ","")))
+			reporter.reportLogPass("New address added or address edited is same as expected");
+		else
+			reporter.reportLogFailWithScreenshot("New address added or address edited: "+selectedAddress+" is not same");
+
+		return selectedAddress;
+	}
 }

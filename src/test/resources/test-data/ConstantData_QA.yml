@@ -1,6 +1,6 @@
 # API USER TOKEN INFO
 apiUserSessionParams:
-  lbl_username: shoppingCart@rogers.com
+  lbl_username: checkoutUser@rogers.com
   lbl_password: testMail123
   lbl_grantType: password
   lbl_apiKey: A9607F64-D061-4279-8D00-F8469EA38DD1
@@ -290,9 +290,13 @@ checkOut:
                                    "First name is required.","Last name is required.","Phone number is required.","Address is required.",
                                    "City is required.","Province is required.","Postal code is required."]
   newShippingAddressForUser:
-    firstName: "Checkout First"
-    lastName: "Checkout Last"
-    phoneNumber: "6474567890"
-    address: "50-1280 Main St W Ham"
+    - firstName: "Checkout First"
+      lastName: "Checkout Last"
+      phoneNumber: "6474567890"
+      address: "50-1280 Main St W Ham"
+    - firstName: "First Checkout"
+      lastName: "Last Checkout"
+      phoneNumber: "6474567890"
+      address: "12-530 Oxford St"
   lblBillingAddress: "Same as shipping address"
   lblExistingAddressErrorMessage: "The shipping address you are trying to add already exists."

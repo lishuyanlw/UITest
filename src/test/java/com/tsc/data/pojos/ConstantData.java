@@ -1372,7 +1372,7 @@ public class ConstantData {
     public static class Checkout{
         List<Map<String,String>> lst_SearchKeywords;
         List<String> addShippingAddressErrorMessage;
-        Map<String,String> newShippingAddressForUser;
+        List<Map<String,String>> newShippingAddressForUser;
         String lblBillingAddress;
         String lblExistingAddressErrorMessage;
 
@@ -1392,9 +1392,9 @@ public class ConstantData {
 
         public void setAddShippingAddressErrorMessage(List<String> addShippingAddressErrorMessage) {            this.addShippingAddressErrorMessage = addShippingAddressErrorMessage;        }
 
-        public Map<String, String> getNewShippingAddressForUser() {            return newShippingAddressForUser;        }
+        public List<Map<String, String>> getNewShippingAddressForUser() {            return newShippingAddressForUser;        }
 
-        public void setNewShippingAddressForUser(Map<String, String> newShippingAddressForUser) {            this.newShippingAddressForUser = newShippingAddressForUser;        }
+        public void setNewShippingAddressForUser(List<Map<String, String>> newShippingAddressForUser) {            this.newShippingAddressForUser = newShippingAddressForUser;        }
     }
 
 }
