@@ -4472,10 +4472,6 @@ public class MyAccount extends BasePage {
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblMyNewsLettersTodayShowStopperNewsLetterTitle);
-		reporter.reportLog(ckbMyNewsLettersSpecialOfferAndEventNewsLetter.getAttribute("value"));
-		if(!ckbMyNewsLettersSpecialOfferAndEventNewsLetter.isSelected()){
-			reporter.reportLog("Not checked for checkbox");
-		}
 		ckbMyNewsLettersSpecialOfferAndEventNewsLetter.click();
 		this.waitForCondition(Driver->{return checkMyNewsLettersUpdateAlertMessageVisible();},10000);
 
@@ -4562,6 +4558,79 @@ public class MyAccount extends BasePage {
 		}
 		else{
 			reporter.reportLogFail("The actual MyNewsLetters UnSubscribe alert Message: '"+lsActualAlertMessage+"' is same as the expected one: '"+lsExpectedAlertMessage+"'");
+		}
+	}
+
+	/**
+	 * To verify MyNewsLetters Initial Status
+	 */
+	public void verifyMyNewsLettersInitialStatus(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(ckbMyNewsLettersUnsubscribe);
+		if(ckbMyNewsLettersUnsubscribe.isSelected()){
+			reporter.reportLogPass("The MyNewsLetters Unsubscribe checkbox is selected as expected");
+		}
+		else{
+			reporter.reportLogFail("The MyNewsLetters Unsubscribe checkbox is not selected as expected");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblMyNewsLettersTodayShowStopperNewsLetterTitle);
+		if(!ckbMyNewsLettersTodayShowStopperNewsLetter.isSelected()){
+			reporter.reportLogPass("The TodayShowStopperNewsLetter checkbox is not selected as expected");
+		}
+		else{
+			reporter.reportLogFail("The TodayShowStopperNewsLetter checkbox is selected as expected");
+		}
+
+		if(this.hasElementAttribute(ckbMyNewsLettersTodayShowStopperNewsLetter,"disabled")){
+			reporter.reportLogPass("The TodayShowStopperNewsLetter checkbox is disabled as expected");
+		}
+		else{
+			reporter.reportLogFail("The TodayShowStopperNewsLetter checkbox is not disabled as expected");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblMyNewsLettersSpecialOfferAndEventNewsLetterTitle);
+		if(!ckbMyNewsLettersSpecialOfferAndEventNewsLetter.isSelected()){
+			reporter.reportLogPass("The SpecialOfferAndEventNewsLetter checkbox is not selected as expected");
+		}
+		else{
+			reporter.reportLogFail("The SpecialOfferAndEventNewsLetter checkbox is selected as expected");
+		}
+
+		if(this.hasElementAttribute(ckbMyNewsLettersSpecialOfferAndEventNewsLetter,"disabled")){
+			reporter.reportLogPass("The SpecialOfferAndEventNewsLetter checkbox is disabled as expected");
+		}
+		else{
+			reporter.reportLogFail("The SpecialOfferAndEventNewsLetter checkbox is not disabled as expected");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblMyNewsLettersPreferredCustomerOfferTitle);
+		if(!ckbMyNewsLettersPreferredCustomerOffer.isSelected()){
+			reporter.reportLogPass("The PreferredCustomerOffer checkbox is not selected as expected");
+		}
+		else{
+			reporter.reportLogFail("The PreferredCustomerOffer checkbox is selected as expected");
+		}
+
+		if(this.hasElementAttribute(ckbMyNewsLettersPreferredCustomerOffer,"disabled")){
+			reporter.reportLogPass("The PreferredCustomerOffer checkbox is disabled as expected");
+		}
+		else{
+			reporter.reportLogFail("The PreferredCustomerOffer checkbox is not disabled as expected");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblMyNewsLettersProductUpdatesAndAlertsTitle);
+		if(!ckbMyNewsLettersProductUpdatesAndAlerts.isSelected()){
+			reporter.reportLogPass("The ProductUpdatesAndAlerts checkbox is not selected as expected");
+		}
+		else{
+			reporter.reportLogFail("The ProductUpdatesAndAlerts checkbox is selected as expected");
+		}
+
+		if(this.hasElementAttribute(ckbMyNewsLettersProductUpdatesAndAlerts,"disabled")){
+			reporter.reportLogPass("The ProductUpdatesAndAlerts checkbox is disabled as expected");
+		}
+		else{
+			reporter.reportLogFail("The ProductUpdatesAndAlerts checkbox is not disabled as expected");
 		}
 	}
 

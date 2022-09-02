@@ -65,10 +65,18 @@ public class MA_TC18_MyPreferences_MyNewsletters extends BaseTest {
             reporter.reportLogFailWithScreenshot("The actual navigated URL:" + basePage.URL() + " is not equal to expected one:" + expectedURL);
         }
 
+        if(lsTestBrowser.contains("ios")){
+            reporter.reportLog("Test stops due to cross-origin frame issue for IOS device");
+            return;
+        }
+
         getMyAccountPageThreadLocal().getIntoMyNewsLettersIFrame();
 
         reporter.reportLog("Verify My NewsLetter Content");
         getMyAccountPageThreadLocal().verifyMyNewsLetterContent();
+
+        reporter.reportLog("Verify My NewsLetter Initial status");
+        getMyAccountPageThreadLocal().verifyMyNewsLettersInitialStatus();
 
         reporter.reportLog("Verify Subscribe Messages");
         String  lsMyNewsLettersUpdateErrorMessage=TestDataHandler.constantData.getMyAccount().getLbl_myNewsLettersUpdateErrorMessage();
