@@ -31,6 +31,7 @@ public class CP_TC10_Checkout_VerifyShippingAddress_Add_Change extends BaseTest 
         List<String> expectedErrorMessage = TestDataHandler.constantData.getCheckOut().getAddShippingAddressErrorMessage();
         Map<String,String> inputAddress = TestDataHandler.constantData.getCheckOut().getNewShippingAddressForUser();
         String billingAddress = TestDataHandler.constantData.getCheckOut().getLblBillingAddress();
+        String existingAddressErrorMessage = TestDataHandler.constantData.getCheckOut().getLblExistingAddressErrorMessage();
 
         //Fetching test data from test data file
         String accessToken = getApiUserSessionDataMapThreadLocal().get("access_token").toString();
@@ -93,14 +94,30 @@ public class CP_TC10_Checkout_VerifyShippingAddress_Add_Change extends BaseTest 
             getRegularCheckoutThreadLocal().closeAddOrEditAddressDialog(false);
 
             //Verification of addition of new shipping address for user
+            //Verify new address is displayed on Checkout page after save
             getReporter().reportLog("Verification of addition of new shipping address for user");
             getRegularCheckoutThreadLocal().openAddOrEditAddressDialog(getRegularCheckoutThreadLocal().btnAddOrChangeShippingAddressDialogAddNewAddressButton);
-            newAddedAddress = getRegularCheckoutThreadLocal().addOrEditShippingAddress(inputAddress,true);
+            newAddedAddress = getRegularCheckoutThreadLocal().addOrEditShippingAddress(inputAddress,true,false);
             getRegularCheckoutThreadLocal().verifyShippingAddressOnCheckoutWithSelectedAddressOnAddChangeDialog(null,newAddedAddress);
 
             //Verification that billing address is not same as Shipping Address
             getReporter().reportLog("Verifying that Billing Address is different from shipping address");
             getRegularCheckoutThreadLocal().verifyUserBillingAddress(shippingAddress);
+
+            //Verify new address is saved successfully and is shown in Shipping Address dialog and is displayed at first place and is selected
+            //Above part is to be checked if we have to refresh page - Asha will confirm later.
+            //String newShippingAddress = getRegularCheckoutThreadLocal().getAddressFromCheckoutPage("shipping");
+            //getRegularCheckoutThreadLocal().verifyShippingAddressOnCheckoutWithSelectedAddressOnAddChangeDialog(newShippingAddress,null);
+
+            //Verify already existing address message by adding existing address
+            getReporter().reportLog("Verification of error message while editing existing shipping address");
+            getRegularCheckoutThreadLocal().openAddOrChangeAddressDialog();
+            getRegularCheckoutThreadLocal().openAddOrEditAddressDialog(getRegularCheckoutThreadLocal().btnAddOrChangeShippingAddressDialogAddNewAddressButton);
+            newAddedAddress = getRegularCheckoutThreadLocal().addOrEditShippingAddress(inputAddress,true,true);
+            if(newAddedAddress.get("errorMessage").equals(existingAddressErrorMessage))
+                reporter.reportLogPass("Error Message is displayed as expected while adding same address: "+newAddedAddress.get("errorMessage"));
+            else
+                reporter.reportLogFailWithScreenshot("Error Message is not displayed on adding same address: "+newAddedAddress.get("address"));
         }finally {
             //Deleting the address added for next run
             getRegularCheckoutThreadLocal().deleteNewAddedAddressFromUser(newAddedAddress,customerEDP,accessToken);

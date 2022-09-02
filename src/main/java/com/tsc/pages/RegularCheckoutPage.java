@@ -1003,7 +1003,7 @@ public class RegularCheckoutPage extends BasePage {
 	 * To add new address or edit an existing address
 	 * @return - Map<String,Object> - including firstName,lastName,phoneNumber,address
 	 */
-	public Map<String,Object> addOrEditShippingAddress(Map<String,String> address,boolean addNewAddress){
+	public Map<String,Object> addOrEditShippingAddress(Map<String,String> address,boolean addNewAddress,boolean editExistingAddress){
 		String lsFirstName,lsLastName,lsPhoneNumber;
 		String[] data;
 		if(addNewAddress){
@@ -1100,7 +1100,17 @@ public class RegularCheckoutPage extends BasePage {
 		this.getReusableActionsInstance().clickIfAvailable(this.btnAddOrEditAddressDialogSaveButton);
 		this.waitForPageToLoad();
 		waitForPageLoadingSpinningStatusCompleted();
+		if(addNewAddress && editExistingAddress){
+			//Error Message will appear as we are entering same address that is already present, hence capture error message and close the dialog box
+			List<String> errorMessageList = this.getMandatoryFieldsErrorMessage(0);
+			map.put("errorMessage",errorMessageList.get(0));
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnAddOrChangeShippingAddressDialogCloseButton);
+			this.getReusableActionsInstance().clickIfAvailable(this.btnAddOrChangeShippingAddressDialogCloseButton);
+			this.waitForCondition(Driver->{return this.btnAddOrChangeShippingAddressDialogAddNewAddressButton.isDisplayed() &&
+						this.btnAddOrChangeShippingAddressDialogAddNewAddressButton.isEnabled();},5000);
+		}else if(!addNewAddress && editExistingAddress){
 
+		}
 		return map;
 	}
 
@@ -3397,7 +3407,7 @@ public class RegularCheckoutPage extends BasePage {
 	public String verifyUserBillingAddress(String billingAddress){
 		String pageBillingAddress = null;
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblBillingAddress);
-		pageBillingAddress = this.lblBillingAddress.getText();
+		pageBillingAddress = this.getAddressFromCheckoutPage("billing");
 		if(pageBillingAddress.trim().equalsIgnoreCase(billingAddress))
 			reporter.reportLogPass("Billing Address for user is same as expected");
 		else
@@ -3473,4 +3483,17 @@ public class RegularCheckoutPage extends BasePage {
 
 		return map;
 	}
+
+	/**
+	 * This function returns shipping or billing address from checkout page
+	 * @param  - addressType - type of address
+	 * @return - String Object
+	 */
+	public String getAddressFromCheckoutPage(String addressType){
+		if(addressType.toLowerCase().contains("billing"))
+			return this.lblBillingAddress.getText();
+		else if(addressType.toLowerCase().contains("shipping"))
+			return this.lblShippingAddress.getText();
+		return null;
+    }
 }
