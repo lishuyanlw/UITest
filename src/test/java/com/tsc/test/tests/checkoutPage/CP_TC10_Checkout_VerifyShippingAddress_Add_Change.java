@@ -32,6 +32,7 @@ public class CP_TC10_Checkout_VerifyShippingAddress_Add_Change extends BaseTest 
         List<Map<String,String>> inputAddress = TestDataHandler.constantData.getCheckOut().getNewShippingAddressForUser();
         String billingAddress = TestDataHandler.constantData.getCheckOut().getLblBillingAddress();
         String existingAddressErrorMessage = TestDataHandler.constantData.getCheckOut().getLblExistingAddressErrorMessage();
+        boolean addressFlagForEnvironmentCleanUp = false;
 
         //Fetching test data from test data file
         String accessToken = getApiUserSessionDataMapThreadLocal().get("access_token").toString();
@@ -121,6 +122,7 @@ public class CP_TC10_Checkout_VerifyShippingAddress_Add_Change extends BaseTest 
                 reporter.reportLogFailWithScreenshot("Error Message is not displayed on adding same address: "+newAddedAddress.get("address"));
 
             //Verifying editing the existing address
+            addressFlagForEnvironmentCleanUp = true;
             getReporter().reportLog("Verifying the existing address edit functionality for shipping address");
             //getRegularCheckoutThreadLocal().closeAddOrEditAddressDialog(false);
             //getRegularCheckoutThreadLocal().openAddOrEditAddressDialog(getRegularCheckoutThreadLocal().btnAddOrChangeShippingAddressDialogAddNewAddressButton);
@@ -128,7 +130,12 @@ public class CP_TC10_Checkout_VerifyShippingAddress_Add_Change extends BaseTest 
             getRegularCheckoutThreadLocal().verifyAndReturnShippingAddressFromAddEditDialogOnAddChangeDialog(newAddedAddress);
         }finally {
             //Deleting the address added for next run
-            getRegularCheckoutThreadLocal().deleteNewAddedAddressFromUser(newAddedAddress,customerEDP,accessToken);
+            if(addressFlagForEnvironmentCleanUp)
+                getRegularCheckoutThreadLocal().deleteNewAddedAddressFromUser(inputAddress.get(1),customerEDP,accessToken);
+            else{
+                getRegularCheckoutThreadLocal().updateShippingAddressForUser(inputAddress.get(0));
+                getRegularCheckoutThreadLocal().deleteNewAddedAddressFromUser(inputAddress.get(0),customerEDP,accessToken);
+            }
         }
     }
 }

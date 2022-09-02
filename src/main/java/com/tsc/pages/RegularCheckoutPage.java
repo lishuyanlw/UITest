@@ -1106,7 +1106,6 @@ public class RegularCheckoutPage extends BasePage {
 		//Clicking on Save Button
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnAddOrEditAddressDialogSaveButton);
 		this.getReusableActionsInstance().clickIfAvailable(this.btnAddOrEditAddressDialogSaveButton);
-		this.waitForPageToLoad();
 		waitForPageLoadingSpinningStatusCompleted();
 		if(addNewAddress && editExistingAddress){
 			//Error Message will appear as we are entering same address that is already present, hence capture error message and close the dialog box
@@ -1115,7 +1114,7 @@ public class RegularCheckoutPage extends BasePage {
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnAddOrChangeShippingAddressDialogCloseButton);
 			this.getReusableActionsInstance().clickIfAvailable(this.btnAddOrChangeShippingAddressDialogCloseButton);
 			this.waitForCondition(Driver->{return this.btnAddOrChangeShippingAddressDialogAddNewAddressButton.isDisplayed() &&
-						this.btnAddOrChangeShippingAddressDialogAddNewAddressButton.isEnabled();},5000);
+			this.btnAddOrChangeShippingAddressDialogAddNewAddressButton.isEnabled();},5000);
 		}else if(!addNewAddress && editExistingAddress){
 
 		}
@@ -3331,7 +3330,7 @@ public class RegularCheckoutPage extends BasePage {
 		if(flag)
 			reporter.reportLog("Verification of address on checkout page is done!");
 		else
-			reporter.reportLogFail("Verification of address on checkout page is not done as expected");
+			reporter.reportLogFailWithScreenshot("Verification of address on checkout page is not done as expected");
 	}
 
 	/**
@@ -3342,7 +3341,7 @@ public class RegularCheckoutPage extends BasePage {
 	 * @throws - IOException
 	 * @throws - ParseException
 	 */
-	public void deleteNewAddedAddressFromUser(Map<String,Object> newAddedAddress,String customerEDP,String accessToken) throws IOException, ParseException {
+	public <T> void deleteNewAddedAddressFromUser(Map<String,T> newAddedAddress,String customerEDP,String accessToken) throws IOException, ParseException {
 		if(newAddedAddress!=null && newAddedAddress.size()>0){
 			CartAPI cartAPI = new CartAPI();
 			Response response = cartAPI.getAccountCartContentWithCustomerEDP(customerEDP,accessToken);
@@ -3384,7 +3383,7 @@ public class RegularCheckoutPage extends BasePage {
 	 * @param - CartResponse addressClass object
 	 * @return - boolean
 	 */
-	public boolean verifyAddedAddressObject(Map<String,Object> newAddedAddress,CartResponse.AddressClass addressClass){
+	public <T> boolean verifyAddedAddressObject(Map<String,T> newAddedAddress,CartResponse.AddressClass addressClass){
 		String state = null;
 		switch (newAddedAddress.get("province").toString().toLowerCase()){
 			case "ontario":
@@ -3517,5 +3516,30 @@ public class RegularCheckoutPage extends BasePage {
 			reporter.reportLogFailWithScreenshot("New address added or address edited: "+selectedAddress+" is not same");
 
 		return selectedAddress;
+	}
+
+	public void updateShippingAddressForUser(Map<String,String> selectedShippingAddress){
+		this.navigateToCheckoutPage();
+		//Verify current shipping address
+		String address = this.getAddressFromCheckoutPage("shipping");
+		if(address.toLowerCase().contains(selectedShippingAddress.get("address").toString().toLowerCase())){
+			WebElement addressItem,item;
+			this.openAddOrChangeAddressDialog();
+			int loopSize=lstAddOrChangeShippingAddressDialogAvailableShippingAddress.size();
+			for(int i=0;i<loopSize;i++){
+				addressItem=lstAddOrChangeShippingAddressDialogAvailableShippingAddress.get(i);
+				item=addressItem.findElement(byAddOrChangeShippingAddressDialogHeaderContent);
+				String headerText = this.getElementText(item);
+				if(headerText.toLowerCase().contains("selected")){
+					continue;
+				}else{
+					this.getReusableActionsInstance().clickIfAvailable(item);
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnAddOrEditAddressDialogSaveButton);
+					this.getReusableActionsInstance().clickIfAvailable(this.btnAddOrEditAddressDialogSaveButton);
+					this.waitForPageLoadingSpinningStatusCompleted();
+					break;
+				}
+			}
+		}
 	}
 }
