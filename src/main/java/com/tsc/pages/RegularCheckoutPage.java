@@ -3,6 +3,7 @@ package com.tsc.pages;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.tsc.api.apiBuilder.AccountAPI;
 import com.tsc.api.apiBuilder.CartAPI;
+import com.tsc.api.pojo.AccountResponse;
 import com.tsc.api.pojo.CartResponse;
 import com.tsc.api.util.DataConverter;
 import com.tsc.api.util.JsonParser;
@@ -1034,6 +1035,39 @@ public class RegularCheckoutPage extends BasePage {
 			this.verifyShippingAddressIsPopulatedForEdit();
 		}
 
+		this.inputAddressOnDialog(lsFirstName,lsLastName,lsPhoneNumber,data);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressDialogAddress);
+		String lsAddress=inputAddOrEditAddressDialogAddress.getAttribute("value").trim();
+
+		Map<String,Object> map=new HashMap<>();
+		map.put("firstName",lsFirstName);
+		map.put("lastName",lsLastName);
+		map.put("phoneNumber",lsPhoneNumber);
+		map.put("address",lsAddress);
+		map.put("city",this.inputAddOrEditAddressDialogCity.getAttribute("value"));
+		map.put("province",this.getReusableActionsInstance().getSelectedValue(this.selectAddOrEditAddressDialogProvince));
+		map.put("postalCode",this.inputAddOrEditAddressDialogPostalCode.getAttribute("value"));
+
+		//Clicking on Save Button
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnAddOrEditAddressDialogSaveButton);
+		this.getReusableActionsInstance().clickIfAvailable(this.btnAddOrEditAddressDialogSaveButton);
+		waitForPageLoadingSpinningStatusCompleted();
+		if(addNewAddress && editExistingAddress){
+			//Error Message will appear as we are entering same address that is already present, hence capture error message and close the dialog box
+			List<String> errorMessageList = this.getMandatoryFieldsErrorMessage(0);
+			map.put("errorMessage",errorMessageList.get(0));
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnAddOrChangeShippingAddressDialogCloseButton);
+			this.getReusableActionsInstance().clickIfAvailable(this.btnAddOrChangeShippingAddressDialogCloseButton);
+			this.waitForCondition(Driver->{return this.btnAddOrChangeShippingAddressDialogAddNewAddressButton.isDisplayed() &&
+			this.btnAddOrChangeShippingAddressDialogAddNewAddressButton.isEnabled();},5000);
+		}else if(!addNewAddress && editExistingAddress){
+
+		}
+		return map;
+	}
+
+	public void inputAddressOnDialog(String lsFirstName,String lsLastName,String lsPhoneNumber, String[] data){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressDialogFirstName);
 		inputAddOrEditAddressDialogFirstName.clear();
 		inputAddOrEditAddressDialogFirstName.sendKeys(lsFirstName);
@@ -1090,35 +1124,6 @@ public class RegularCheckoutPage extends BasePage {
 
 		//Wait for province and postal code update
 		this.getReusableActionsInstance().staticWait(2*this.getStaticWaitForApplication());
-
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressDialogAddress);
-		String lsAddress=inputAddOrEditAddressDialogAddress.getAttribute("value").trim();
-
-		Map<String,Object> map=new HashMap<>();
-		map.put("firstName",lsFirstName);
-		map.put("lastName",lsLastName);
-		map.put("phoneNumber",lsPhoneNumber);
-		map.put("address",lsAddress);
-		map.put("city",this.inputAddOrEditAddressDialogCity.getAttribute("value"));
-		map.put("province",this.getReusableActionsInstance().getSelectedValue(this.selectAddOrEditAddressDialogProvince));
-		map.put("postalCode",this.inputAddOrEditAddressDialogPostalCode.getAttribute("value"));
-
-		//Clicking on Save Button
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnAddOrEditAddressDialogSaveButton);
-		this.getReusableActionsInstance().clickIfAvailable(this.btnAddOrEditAddressDialogSaveButton);
-		waitForPageLoadingSpinningStatusCompleted();
-		if(addNewAddress && editExistingAddress){
-			//Error Message will appear as we are entering same address that is already present, hence capture error message and close the dialog box
-			List<String> errorMessageList = this.getMandatoryFieldsErrorMessage(0);
-			map.put("errorMessage",errorMessageList.get(0));
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnAddOrChangeShippingAddressDialogCloseButton);
-			this.getReusableActionsInstance().clickIfAvailable(this.btnAddOrChangeShippingAddressDialogCloseButton);
-			this.waitForCondition(Driver->{return this.btnAddOrChangeShippingAddressDialogAddNewAddressButton.isDisplayed() &&
-			this.btnAddOrChangeShippingAddressDialogAddNewAddressButton.isEnabled();},5000);
-		}else if(!addNewAddress && editExistingAddress){
-
-		}
-		return map;
 	}
 
 	/**
@@ -3206,7 +3211,13 @@ public class RegularCheckoutPage extends BasePage {
 	 * @return - boolean
 	 */
 	public boolean waitForPageLoadingSpinningStatusCompleted(){
-		return this.waitForCondition(Driver->{return !this.checkChildElementExistingByAttribute(this.cntFooterContainer,"class","loading__overlay");},60000);
+		try{
+			this.waitForCondition(Driver->{return !this.checkChildElementExistingByAttribute(this.cntFooterContainer,"class","loading__overlay");},60000);
+		}
+		catch(Exception e){
+			this.applyStaticWait(10*this.getStaticWaitForApplication());
+		}
+		return true;
 	}
 
 	/**
@@ -3504,6 +3515,11 @@ public class RegularCheckoutPage extends BasePage {
 		return null;
     }
 
+    /**
+     * This function verifies and return address from Add/Change Dialog Box
+     * @param - Map<String,Object> - addEditAddress object
+     * @return - String
+     */
     public String verifyAndReturnShippingAddressFromAddEditDialogOnAddChangeDialog(Map<String,Object> addEditAddress){
 		String selectedAddress = this.verifyAddressOnAddChangeShippingAddressDialogAndReturnSelectedAddress(false);
 		if(selectedAddress.toLowerCase().contains(addEditAddress.get("address").toString().toLowerCase()) &&
@@ -3518,28 +3534,117 @@ public class RegularCheckoutPage extends BasePage {
 		return selectedAddress;
 	}
 
-	public void updateShippingAddressForUser(Map<String,String> selectedShippingAddress){
-		this.navigateToCheckoutPage();
+    /**
+     * This function updates shipping address for user
+     * @param - Map<String,String> - selectedShippingAddress object to be updated
+     */
+	public void updateAddressForUserOnCheckout(List<Map<String,String>> selectedAddress,String addressType,String customerEDP,String accessToken) throws IOException {
+		boolean flag;
 		//Verify current shipping address
-		String address = this.getAddressFromCheckoutPage("shipping");
-		if(address.toLowerCase().contains(selectedShippingAddress.get("address").toString().toLowerCase())){
-			WebElement addressItem,item;
-			this.openAddOrChangeAddressDialog();
-			int loopSize=lstAddOrChangeShippingAddressDialogAvailableShippingAddress.size();
-			for(int i=0;i<loopSize;i++){
-				addressItem=lstAddOrChangeShippingAddressDialogAvailableShippingAddress.get(i);
-				item=addressItem.findElement(byAddOrChangeShippingAddressDialogHeaderContent);
-				String headerText = this.getElementText(item);
-				if(headerText.toLowerCase().contains("selected")){
-					continue;
-				}else{
-					this.getReusableActionsInstance().clickIfAvailable(item);
-					this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnAddOrEditAddressDialogSaveButton);
-					this.getReusableActionsInstance().clickIfAvailable(this.btnAddOrEditAddressDialogSaveButton);
-					this.waitForPageLoadingSpinningStatusCompleted();
-					break;
+		if(addressType.equalsIgnoreCase("shipping")){
+			flag = this.verifyAddressOnCheckoutPage(selectedAddress,"shipping");
+			if(flag){
+				WebElement addressItem,item;
+				this.openAddOrChangeAddressDialog();
+				int loopSize=lstAddOrChangeShippingAddressDialogAvailableShippingAddress.size();
+				for(int i=0;i<loopSize;i++){
+					addressItem=lstAddOrChangeShippingAddressDialogAvailableShippingAddress.get(i);
+					item=addressItem.findElement(byAddOrChangeShippingAddressDialogHeaderContent);
+					String headerText = this.getElementText(item);
+					if(headerText.toLowerCase().contains("selected")){
+						continue;
+					}else{
+						this.getReusableActionsInstance().clickIfAvailable(item);
+						this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnAddOrEditAddressDialogSaveButton);
+						this.getReusableActionsInstance().clickIfAvailable(this.btnAddOrEditAddressDialogSaveButton);
+						this.waitForPageLoadingSpinningStatusCompleted();
+						break;
+					}
+				}
+			}
+		}else if(addressType.equalsIgnoreCase("billing")){
+			flag = this.verifyAddressOnCheckoutPage(selectedAddress,"billing");
+			if(flag){
+				//Getting Shipping Address to be updated as Billing Address
+				CartAPI cartAPI = new CartAPI();
+				Response response = cartAPI.getAccountCartContentWithCustomerEDP(customerEDP,accessToken);
+				CartResponse cartResponse= JsonParser.getResponseObject(response.asString(), new TypeReference<CartResponse>() {});
+				CartResponse.AddressClass addressClass = cartResponse.getShippingAddress();
+				//Click on Change Button to update Billing Address
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnBillingAddressChange);
+				this.getReusableActionsInstance().clickIfAvailable(this.btnBillingAddressChange);
+				waitForCondition(Driver->{return this.btnAddOrEditAddressDialogSaveButton.isEnabled();},4000);
+				this.inputAddressOnDialog(addressClass.getFirstName(),addressClass.getLastName(),
+						addressClass.getDayPhone(),new String[] {addressClass.getStreet()});
+				//Clicking on Save Button
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnAddOrEditAddressDialogSaveButton);
+				this.getReusableActionsInstance().clickIfAvailable(this.btnAddOrEditAddressDialogSaveButton);
+				waitForPageLoadingSpinningStatusCompleted();
+			}
+		}
+	}
+
+	/**
+	 * This function deletes input address for clean environment
+	 * @param - List<Map<String,String>>- inputAddress List Object
+	 * @param - String - customerEDP
+	 * @param - String - accessToken
+	 * @throws IOException
+	 * @throws ParseException
+	 */
+	public void deleteInputAddressForNextTestRunForUser(List<Map<String,String>> inputAddress,String customerEDP,String accessToken) throws IOException, ParseException {
+		List<Integer> addressId = new ArrayList<>();
+
+		//Update shipping address for user
+		this.updateAddressForUserOnCheckout(inputAddress,"shipping",customerEDP,accessToken);
+
+		//Update billing address for user
+		this.updateAddressForUserOnCheckout(inputAddress,"billing",customerEDP,accessToken);
+
+		//Fetching account details for user
+		AccountAPI accountAPI = new AccountAPI();
+		CartAPI cartAPI = new CartAPI();
+		Response response = accountAPI.getAccountDetailsFromCustomerEDP(customerEDP,accessToken);
+		AccountResponse accountCartResponse = JsonParser.getResponseObject(response.asString(), new TypeReference<AccountResponse>() {});
+		//Verifying if billing address contains input address and if so, fetching address if for deletion
+		for(Map<String,String> address:inputAddress){
+			if(address.get("firstName").equalsIgnoreCase(accountCartResponse.getBillingAddress().getFirstName()) &&
+					address.get("lastName").equalsIgnoreCase(accountCartResponse.getBillingAddress().getLastName()) &&
+					address.get("address").equalsIgnoreCase(accountCartResponse.getBillingAddress().getStreet())){
+				addressId.add(accountCartResponse.getBillingAddress().getId());
+				//Setting billingAddressFlag to update billing address later
+				break;
+			}
+		}
+		//Verifying if shipping address contains input address and if so, fetching address if for deletion
+		for(Map<String,String> address:inputAddress){
+			List<AccountResponse.AddressClass> shippingAddressList = accountCartResponse.getShippingAddresses();
+			for(AccountResponse.AddressClass addressClass:shippingAddressList){
+				if(address.get("firstName").equalsIgnoreCase(addressClass.getFirstName()) &&
+						address.get("lastName").equalsIgnoreCase(addressClass.getLastName()) &&
+						address.get("address").equalsIgnoreCase(addressClass.getStreet())){
+					addressId.add(addressClass.getId());
 				}
 			}
 		}
+		//Deleting the added input address from user
+		for(Integer addressIdDeleted:addressId){
+			accountAPI.deleteShippingAddressForUser(addressIdDeleted,customerEDP,accessToken);
+		}
+    }
+
+	/**
+	 * This function verifies input address is present on checkout page
+	 * @param - List<Map<String,String>> - inputAddress List Object
+	 * @param - String - addressType
+	 * @return - boolean value
+	 */
+    public boolean verifyAddressOnCheckoutPage(List<Map<String,String>> inputAddress,String addressType){
+		String screenAddress = this.getAddressFromCheckoutPage(addressType);
+		for(Map<String,String> address:inputAddress){
+			if(screenAddress.contains(address.get("address")))
+				return true;
+		}
+		return false;
 	}
 }

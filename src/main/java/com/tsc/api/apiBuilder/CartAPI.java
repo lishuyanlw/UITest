@@ -597,28 +597,32 @@ public class CartAPI extends ApiClient {
      *        - Invalid - invalid shipping address
      * @return - Map<String,Object> - including current cart shipping address Id, expected cart shipping address Id, and UPDATE API calling response
      */
-    public Map<String,Object> updateCartShippingAddress(String customerEDP,String access_token,String lsType){
+    public Map<String,Object> updateCartShippingAddress(String customerEDP,String access_token,String lsType,String shippingAddressIdToBeUpdated){
         Response getCartResponse=getAccountCartContentWithCustomerEDP(customerEDP, access_token);
         CartResponse accountCartGet= JsonParser.getResponseObject(getCartResponse.asString(), new TypeReference<CartResponse>() {});
 
         int lsCurrentCartShippingAddressId=accountCartGet.getShippingAddress().getId();
         int selectedId=lsCurrentCartShippingAddressId;
 
-        switch(lsType){
-            case "Same":
-                selectedId=lsCurrentCartShippingAddressId;
-                break;
-            case "Different":
-                List<Integer> lstId=getBuyerShippingAddressId(accountCartGet);
-                for(int id:lstId){
-                    if(id!=lsCurrentCartShippingAddressId){
-                        selectedId=id;
+        if(shippingAddressIdToBeUpdated!=null)
+            selectedId = Integer.valueOf(shippingAddressIdToBeUpdated);
+        else{
+            switch(lsType){
+                case "Same":
+                    selectedId=lsCurrentCartShippingAddressId;
+                    break;
+                case "Different":
+                    List<Integer> lstId=getBuyerShippingAddressId(accountCartGet);
+                    for(int id:lstId){
+                        if(id!=lsCurrentCartShippingAddressId){
+                            selectedId=id;
+                        }
                     }
-                }
-                break;
-            case "Invalid":
-                selectedId= Integer.parseInt(DataConverter.getSaltString(8,"numberType"));
-                break;
+                    break;
+                case "Invalid":
+                    selectedId= Integer.parseInt(DataConverter.getSaltString(8,"numberType"));
+                    break;
+            }
         }
 
         JSONObject requestParams=new JSONObject();

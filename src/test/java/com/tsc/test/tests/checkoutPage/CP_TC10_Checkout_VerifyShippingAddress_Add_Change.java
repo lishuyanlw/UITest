@@ -63,6 +63,7 @@ public class CP_TC10_Checkout_VerifyShippingAddress_Add_Change extends BaseTest 
             }
             getRegularCheckoutThreadLocal().navigateToCheckoutPage();
 
+            getRegularCheckoutThreadLocal().deleteInputAddressForNextTestRunForUser(inputAddress,customerEDP,accessToken);
             //Verification of Shipping Address display on Checkout Page
             //Verify title, button and links
             getReporter().reportLog("Verification of Shipping Address display on Checkout Page");
@@ -133,7 +134,7 @@ public class CP_TC10_Checkout_VerifyShippingAddress_Add_Change extends BaseTest 
             if(addressFlagForEnvironmentCleanUp)
                 getRegularCheckoutThreadLocal().deleteNewAddedAddressFromUser(inputAddress.get(1),customerEDP,accessToken);
             else{
-                getRegularCheckoutThreadLocal().updateShippingAddressForUser(inputAddress.get(0));
+                getRegularCheckoutThreadLocal().updateAddressForUserOnCheckout(inputAddress,"shipping",customerEDP,accessToken);
                 getRegularCheckoutThreadLocal().deleteNewAddedAddressFromUser(inputAddress.get(0),customerEDP,accessToken);
             }
         }
