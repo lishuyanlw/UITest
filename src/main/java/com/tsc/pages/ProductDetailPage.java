@@ -3289,9 +3289,15 @@ public class ProductDetailPage extends BasePage {
 		map.put("productNowPrice",lsText);
 
 		if(bWasPrice){
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblProductWasPrice);
-			lsText=String.valueOf(this.getFloatFromString(lblProductWasPrice.getText(),true));
-			map.put("productWasPrice",lsText);
+			if(this.getChildElementCount(this.cntProductPriceContainer)==1){
+				reporter.reportLogFail("productWasPrice is not displaying correctly!");
+				map.put("productWasPrice",null);
+			}
+			else{
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblProductWasPrice);
+				lsText=String.valueOf(this.getFloatFromString(lblProductWasPrice.getText(),true));
+				map.put("productWasPrice",lsText);
+			}
 		}
 		else{
 			map.put("productWasPrice",null);
@@ -3392,11 +3398,16 @@ public class ProductDetailPage extends BasePage {
 		lsTextPRP=prpMap.get("productWasPrice");
 		if(lsTextPRP!=null){
 			lsTextPDP=pdpMap.get("productWasPrice");
-			if(lsTextPRP.equalsIgnoreCase(lsTextPDP)){
-				reporter.reportLogPass("The product WasPrice:'"+lsTextPRP+"' on PRP is the same as the one:'"+lsTextPDP+"' on PDP");
+			if(lsTextPDP!=null){
+				if(lsTextPRP.equalsIgnoreCase(lsTextPDP)){
+					reporter.reportLogPass("The product WasPrice:'"+lsTextPRP+"' on PRP is the same as the one:'"+lsTextPDP+"' on PDP");
+				}
+				else{
+					reporter.reportLogFail("The product WasPrice:'"+lsTextPRP+"' on PRP is not the same as the one:'"+lsTextPDP+"' on PDP");
+				}
 			}
 			else{
-				reporter.reportLogFail("The product WasPrice:'"+lsTextPRP+"' on PRP is not the same as the one:'"+lsTextPDP+"' on PDP");
+				reporter.reportLogFail("productWasPrice is not displaying correctly!");
 			}
 		}
 
