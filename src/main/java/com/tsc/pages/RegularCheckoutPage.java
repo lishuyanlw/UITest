@@ -122,9 +122,9 @@ public class RegularCheckoutPage extends BasePage {
 
 	public By byAddOrChangeShippingAddressDialogSelectedStatus=By.xpath("./div");
 	public By byAddOrChangeShippingAddressDialogSelectLabel=By.xpath("./div/label");
-	//public By byAddOrChangeShippingAddressDialogEditButton=By.xpath(".//button[normalize-space(.)='Edit']");
+	public By byAddOrChangeShippingAddressDialogEditButton=By.xpath(".//button[normalize-space(.)='Edit']");
 	public By byAddOrChangeShippingAddressDialogHeaderContent=By.xpath(".//div[@class='card__header']");
-	public By byAddOrChangeShippingAddressDialogEditButton=By.xpath("./div/label/div[@class='card__header']/button[contains(@style,'block')]");
+	//public By byAddOrChangeShippingAddressDialogEditButton=By.xpath("./div/label/div[@class='card__header']/button[contains(@style,'block') and normalize-space(.)='Edit']");
 	public By byAddOrChangeShippingAddressDialogCardDetails=By.xpath(".//div[@class='card__address']");
 
 	@FindBy(xpath = "//div/label/div[@class='card__header']/button[contains(@style,'block')]")

@@ -125,8 +125,6 @@ public class CP_TC10_Checkout_VerifyShippingAddress_Add_Change extends BaseTest 
             //Verifying editing the existing address
             addressFlagForEnvironmentCleanUp = true;
             getReporter().reportLog("Verifying the existing address edit functionality for shipping address");
-            //getRegularCheckoutThreadLocal().closeAddOrEditAddressDialog(false);
-            //getRegularCheckoutThreadLocal().openAddOrEditAddressDialog(getRegularCheckoutThreadLocal().btnAddOrChangeShippingAddressDialogAddNewAddressButton);
             newAddedAddress = getRegularCheckoutThreadLocal().addOrEditShippingAddress(inputAddress.get(1),false,true);
             getRegularCheckoutThreadLocal().verifyAndReturnShippingAddressFromAddEditDialogOnAddChangeDialog(newAddedAddress);
         }finally {
