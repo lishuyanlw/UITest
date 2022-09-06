@@ -567,94 +567,94 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//a[@id='backToProduct']")
 	public WebElement lnkWriteReviewBackToProduct;
 
-	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//div[@role='form']//*[@class='pr-header-title']")
+	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//form[@class='pr-war']//*[@class='pr-header-title']")
 	public WebElement lblWriteReviewHeaderTitle;
 
-	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//div[@role='form']//*[@class='pr-header-product-name']//a")
+	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//form[@class='pr-war']//*[@class='pr-header-product-name']//a")
 	public WebElement lnkWriteReviewProductName;
 
-	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//div[@role='form']//*[contains(@class,'pr-header-product-img')]//img")
+	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//form[@class='pr-war']//*[contains(@class,'pr-header-product-img')]//img")
 	public WebElement imgWriteReviewProductImage;
 
-	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//div[@role='form']//div[@id='pr-war-form']//p[@class='pr-header-required']")
+	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//form[@class='pr-war']//div[@id='pr-war-form']//p[@class='pr-header-required']")
 	public WebElement lblWriteReviewRequiredQuestion;
 
-	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//div[@role='form']//div[@id='pr-war-form']//fieldset[contains(@class,'pr-rating-form-group')]//legend")
+	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//form[@class='pr-war']//div[@id='pr-war-form']//fieldset[contains(@class,'pr-rating-form-group')]//legend")
 	public WebElement lblWriteReviewYourRating;
 
-	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//div[@role='form']//div[@id='pr-war-form']//fieldset[contains(@class,'pr-rating-form-group')]//div[@id='pr-rating']//label")
+	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//form[@class='pr-war']//div[@id='pr-war-form']//fieldset[contains(@class,'pr-rating-form-group')]//div[@id='pr-rating']//label")
 	public List<WebElement> lstWriteReviewYourRatingList;
 
-	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//div[@role='form']//div[@id='pr-war-form']//div[contains(@class,'pr-headline-form-group')]//label")
+	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//form[@class='pr-war']//div[@id='pr-war-form']//div[contains(@class,'pr-headline-form-group')]//label")
 	public WebElement lblWriteReviewHeadline;
 
-	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//div[@role='form']//div[@id='pr-war-form']//div[contains(@class,'pr-headline-form-group')]//input")
+	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//form[@class='pr-war']//div[@id='pr-war-form']//div[contains(@class,'pr-headline-form-group')]//input")
 	public WebElement inputWriteReviewHeadline;
 
-	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//div[@role='form']//div[@id='pr-war-form']//div[contains(@class,'pr-comments-form-group')]//label")
+	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//form[@class='pr-war']//div[@id='pr-war-form']//div[contains(@class,'pr-comments-form-group')]//label")
 	public WebElement lblWriteReviewComments;
 
-	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//div[@role='form']//div[@id='pr-war-form']//div[contains(@class,'pr-comments-form-group')]//textarea")
+	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//form[@class='pr-war']//div[@id='pr-war-form']//div[contains(@class,'pr-comments-form-group')]//textarea")
 	public WebElement textareaWriteReviewComments;
 
-	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//div[@role='form']//div[@id='pr-war-form']//fieldset[contains(@class,'pr-bottomline-form-group')]//legend//div[@class='pr-form-control-error-wrapper']")
+	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//form[@class='pr-war']//div[@id='pr-war-form']//fieldset[contains(@class,'pr-bottomline-form-group')]//legend//div[@class='pr-form-control-error-wrapper']")
 	public WebElement lblWriteReviewBottomLine;
 
-	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//div[@role='form']//div[@id='pr-war-form']//fieldset[contains(@class,'pr-bottomline-form-group')]//legend//div[@class='pr-helper-text']")
+	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//form[@class='pr-war']//div[@id='pr-war-form']//fieldset[contains(@class,'pr-bottomline-form-group')]//legend//div[@class='pr-helper-text']")
 	public WebElement lblWriteReviewSelectOne;
 
-	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//div[@role='form']//div[@id='pr-war-form']//fieldset[contains(@class,'pr-bottomline-form-group')]//div[@role='radiogroup']//label")
+	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//form[@class='pr-war']//div[@id='pr-war-form']//fieldset[contains(@class,'pr-bottomline-form-group')]//div[@role='radiogroup']//label")
 	public List<WebElement> lstWriteReviewRecommendToFriendList;
 
-	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//div[@role='form']//div[@id='pr-war-form']//div[contains(@class,'pr-name-form-group')]//label")
+	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//form[@class='pr-war']//div[@id='pr-war-form']//div[contains(@class,'pr-name-form-group')]//label")
 	public WebElement lblWriteReviewNickName;
 
-	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//div[@role='form']//div[@id='pr-war-form']//div[contains(@class,'pr-name-form-group')]//input")
+	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//form[@class='pr-war']//div[@id='pr-war-form']//div[contains(@class,'pr-name-form-group')]//input")
 	public WebElement inputWriteReviewNickName;
 
-	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//div[@role='form']//div[@id='pr-war-form']//div[contains(@class,'pr-location-form-group')]//label")
+	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//form[@class='pr-war']//div[@id='pr-war-form']//div[contains(@class,'pr-location-form-group')]//label")
 	public WebElement lblWriteReviewLocation;
 
-	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//div[@role='form']//div[@id='pr-war-form']//div[contains(@class,'pr-location-form-group')]//input")
+	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//form[@class='pr-war']//div[@id='pr-war-form']//div[contains(@class,'pr-location-form-group')]//input")
 	public WebElement inputWriteReviewLocation;
 
-	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//div[@role='form']//div[@id='pr-war-form']//div[contains(@class,'pr-media_image-form-group')]//label")
+	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//form[@class='pr-war']//div[@id='pr-war-form']//div[contains(@class,'pr-media_image-form-group')]//label")
 	public WebElement lblWriteReviewAddImage;
 
-	//@FindBy(xpath = "//div[contains(@class,'WriteReview')]//div[@role='form']//div[@id='pr-war-form']//div[contains(@class,'pr-file-input-btn-group')]//input[@id='pr-media_image']")
+	//@FindBy(xpath = "//div[contains(@class,'WriteReview')]//form[@class='pr-war']//div[@id='pr-war-form']//div[contains(@class,'pr-file-input-btn-group')]//input[@id='pr-media_image']")
 	//public WebElement inputWriteReviewUploadImage;
 
-	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//div[@role='form']//div[@id='pr-war-form']//div[contains(@class,'pr-file-input-btn-group')]//button")
+	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//form[@class='pr-war']//div[@id='pr-war-form']//div[contains(@class,'pr-file-input-btn-group')]//button")
 	public WebElement btnWriteReviewUploadImage;
 
-	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//div[@role='form']//div[@id='pr-war-form']//div[contains(@class,'pr-media_videourl-form-group')]//label")
+	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//form[@class='pr-war']//div[@id='pr-war-form']//div[contains(@class,'pr-media_videourl-form-group')]//label")
 	public WebElement lblWriteReviewAddVideo;
 
-	//@FindBy(xpath = "//div[contains(@class,'WriteReview')]//div[@role='form']//div[@id='pr-war-form']//div[contains(@class,'pr-file-input-btn-group')]//input[@id='pr-media_videourl']")
+	//@FindBy(xpath = "//div[contains(@class,'WriteReview')]//form[@class='pr-war']//div[@id='pr-war-form']//div[contains(@class,'pr-file-input-btn-group')]//input[@id='pr-media_videourl']")
 	//public WebElement inputWriteReviewUploadVideo;
 
-	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//div[@role='form']//div[@id='pr-war-form']//div[contains(@class,'pr-media_videourl-form-group')]//button")
+	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//form[@class='pr-war']//div[@id='pr-war-form']//div[contains(@class,'pr-media_videourl-form-group')]//button")
 	public WebElement btnWriteReviewUploadVideo;
 
-	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//div[@role='form']//div[@class='pr-submit']//p[@class='pr-subscript']")
+	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//form[@class='pr-war']//div[@class='pr-submit']//p[@class='pr-subscript']")
 	public WebElement lblWriteReviewTermsAndPrivacy;
 
-	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//div[@role='form']//div[@class='pr-submit']//p[@class='pr-subscript']//a[contains(@href,'termsconditions')]")
+	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//form[@class='pr-war']//div[@class='pr-submit']//p[@class='pr-subscript']//a[contains(@href,'termsconditions')]")
 	public WebElement lnkWriteReviewTerms;
 
-	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//div[@role='form']//div[@class='pr-submit']//p[@class='pr-subscript']//a[contains(@href,'privacypolicy')]")
+	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//form[@class='pr-war']//div[@class='pr-submit']//p[@class='pr-subscript']//a[contains(@href,'privacypolicy')]")
 	public WebElement lnkWriteReviewPrivacy;
 
-	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//div[@role='form']//div[@class='pr-submit']//button[contains(@class,'pr-btn-review')]")
+	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//form[@class='pr-war']//div[@class='pr-submit']//button[contains(@class,'pr-btn-review')]")
 	public WebElement btnWriteReviewSubmitReview;
 
-	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//div[@role='form']//div[@class='pr-submit']//a[contains(@href,'powerreviews')]")
+	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//form[@class='pr-war']//div[@class='pr-submit']//a[contains(@href,'powerreviews')]")
 	public WebElement lnkWriteReviewPowerBy;
 
-	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//div[@role='form']//div[@class='pr-submit']//div[contains(@class,'pr-powered')]")
+	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//form[@class='pr-war']//div[@class='pr-submit']//div[contains(@class,'pr-powered')]")
 	public WebElement lblWriteReviewPowerBy;
 
-	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//div[@role='form']//div[@class='pr-submit']//div[contains(@class,'pr-logo-container')]//div[contains(@class,'pr-logo')]")
+	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//form[@class='pr-war']//div[@class='pr-submit']//div[contains(@class,'pr-logo-container')]//div[contains(@class,'pr-logo')]")
 	public WebElement imgWriteReviewPowerBy;
 
 	@FindBy(xpath = "//div[@class='pr-form-control-error-wrapper']//*[@class='pr-form-control-error-icon']")

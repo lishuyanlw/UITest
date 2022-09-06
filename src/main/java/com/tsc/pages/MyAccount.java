@@ -4566,6 +4566,7 @@ public class MyAccount extends BasePage {
 	 */
 	public void verifyMyNewsLettersInitialStatus(){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(ckbMyNewsLettersUnsubscribe);
+		this.waitForCondition(Driver->{return ckbMyNewsLettersUnsubscribe.isSelected();},20000);
 		if(ckbMyNewsLettersUnsubscribe.isSelected()){
 			reporter.reportLogPass("The MyNewsLetters Unsubscribe checkbox is selected as expected");
 		}
