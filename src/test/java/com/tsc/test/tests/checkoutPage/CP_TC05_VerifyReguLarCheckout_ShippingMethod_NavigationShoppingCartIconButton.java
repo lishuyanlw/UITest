@@ -42,14 +42,10 @@ public class CP_TC05_VerifyReguLarCheckout_ShippingMethod_NavigationShoppingCart
 		catch(Exception e){
 			(new BasePage(this.getDriver())).applyStaticWait(3000);
 		}
-		getProductDetailPageThreadLocal().goToShoppingCartByClickingShoppingCartIconInGlobalHeader();
-		String lsShoppingCartURLNavigatedFromPDP=basePage.URL();
-		if(getShoppingCartThreadLocal().checkIsDropdownMenuForInstallmentNumber()){
-			List<String> lstOptionText=getShoppingCartThreadLocal().getInstallmentOptions();
-			getShoppingCartThreadLocal().setInstallmentSetting(lstOptionText.get(1));
-		}
-		int installmentsNumberForShoppingCart=getShoppingCartThreadLocal().getInstallmentNumber();
-		getShoppingCartThreadLocal().goToCheckoutPage();
+
+		getRegularCheckoutThreadLocal().navigateToCheckoutPage();
+		int installmentsNumberForShoppingCart=2;
+		getRegularCheckoutThreadLocal().setPaymentOptionByGivenInstallmentNumber(installmentsNumberForShoppingCart);
 
 		reporter.reportLog("Comparison shipping price between shipping method section and OrderSummary section before changing");
 		float shippingPriceInShippingMethodSection=getRegularCheckoutThreadLocal().getShippingPriceFromShippingMethodSection();
@@ -89,21 +85,18 @@ public class CP_TC05_VerifyReguLarCheckout_ShippingMethod_NavigationShoppingCart
 
 		List<Map<String,Object>> productListMapForCheckOutPage = getRegularCheckoutThreadLocal().getCheckoutItemListDesc("all");
 		Map<String,Object> summaryMapForCheckOutList=getRegularCheckoutThreadLocal().getCheckoutItemCountAndSubTotal(productListMapForCheckOutPage);
-		int itemCountForCheckOutList= (int) summaryMapForCheckOutList.get("itemCount");
 		float subTotalForCheckOutList= (float) summaryMapForCheckOutList.get("subTotal");
 
 		reporter.reportLog("Verify orderSummary business logic");
 		getRegularCheckoutThreadLocal().verifyOrderSummaryBusinessLogic(subTotalForCheckOutList,orderSummaryMapChangedForCheckOutPage,null);
 
 		reporter.reportLog("Verify installment business logic");
-		Map<String, Object> easyPaymentMapForCheckOutPage = getRegularCheckoutThreadLocal().getEasyPayDesc();
 		getRegularCheckoutThreadLocal().verifyInstallmentBusinessLogic(installmentsNumberForShoppingCart,orderSummaryMapChangedForCheckOutPage);
 
 		reporter.reportLog("Verify Navigation to ShoppingCart page by clicking GoToShoppingBag icon button in checkout header");
 		getRegularCheckoutThreadLocal().GoToShoppingBag();
 		String lsShoppingCartURLNavigatedFromCheckOutPage=basePage.URL();
-		if(lsShoppingCartURLNavigatedFromCheckOutPage.equalsIgnoreCase(lsShoppingCartURLNavigatedFromPDP)&&
-				lsShoppingCartURLNavigatedFromCheckOutPage.toLowerCase().contains("shoppingcart")){
+		if(lsShoppingCartURLNavigatedFromCheckOutPage.toLowerCase().contains("shoppingcart")){
 			reporter.reportLogPass("Navigated to ShoppingCart page by clicking GoToShoppingBag button in checkout header successfully");
 		}
 		else{

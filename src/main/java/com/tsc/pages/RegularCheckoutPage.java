@@ -1659,7 +1659,6 @@ public class RegularCheckoutPage extends BasePage {
 			lsPaymentOption=lstPaymentOption.get(i);
 			if(!lsPaymentOption.contains("Pay In Full Now")){
 				String stringContainsInteger=this.getStringBeforeGivenIdentifier(lsPaymentOption,"of");
-				reporter.reportLog(stringContainsInteger);
 				if(this.getIntegerFromString(stringContainsInteger)==installmentNumber){
 					this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectPaymentOption);
 					select=new Select(this.selectPaymentOption);
@@ -3327,7 +3326,13 @@ public class RegularCheckoutPage extends BasePage {
 	 * @return - boolean
 	 */
 	public boolean waitForPageLoadingSpinningStatusCompleted(){
-		return this.waitForCondition(Driver->{return !this.checkChildElementExistingByAttribute(this.cntFooterContainer,"class","loading__overlay");},60000);
+		try{
+			this.waitForCondition(Driver->{return !this.checkChildElementExistingByAttribute(this.cntFooterContainer,"class","loading__overlay");},60000);
+		}
+		catch(Exception e){
+			this.applyStaticWait(10*this.getStaticWaitForApplication());
+		}
+		return true;
 	}
 
 	/**

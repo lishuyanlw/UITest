@@ -47,13 +47,10 @@ public class CP_TC03_VerifyReguLarCheckout_ShippingDate_MultiPackMessage extends
 		catch(Exception e){
 			(new BasePage(this.getDriver())).applyStaticWait(3000);
 		}
-		getProductDetailPageThreadLocal().goToShoppingCartByClickingShoppingCartIconInGlobalHeader();
-		if(getShoppingCartThreadLocal().checkIsDropdownMenuForInstallmentNumber()){
-			List<String> lstOptionText=getShoppingCartThreadLocal().getInstallmentOptions();
-			getShoppingCartThreadLocal().setInstallmentSetting(lstOptionText.get(1));
-		}
-		int installmentsNumberForShoppingCart=getShoppingCartThreadLocal().getInstallmentNumber();
-		getShoppingCartThreadLocal().goToCheckoutPage();
+
+		getRegularCheckoutThreadLocal().navigateToCheckoutPage();
+		int installmentsNumberForShoppingCart=2;
+		getRegularCheckoutThreadLocal().setPaymentOptionByGivenInstallmentNumber(installmentsNumberForShoppingCart);
 
 		List<Map<String,Object>> productListMapForCheckOutPage = getRegularCheckoutThreadLocal().getCheckoutItemListDesc("all");
 		String lsDeletedProductNumber;
@@ -109,6 +106,10 @@ public class CP_TC03_VerifyReguLarCheckout_ShippingDate_MultiPackMessage extends
 			if(cartLine.getCartLineItem().getItemNo().equalsIgnoreCase(lsDeletedProductNumber)){
 				int cartLineId=cartLine.getId();
 				Response responseDelete= cartAPI.deleteCartItemWithCartGuidAndLineId(accessToken, cartGuidId, cartLineId);
+				if(responseDelete.statusCode()!=200){
+					reporter.reportLogFail("Failed to delete the expected product using API!");
+					return;
+				}
 				break;
 			}
 		}
