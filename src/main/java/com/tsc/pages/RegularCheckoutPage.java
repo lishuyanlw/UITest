@@ -3206,7 +3206,13 @@ public class RegularCheckoutPage extends BasePage {
 	 * @return - boolean
 	 */
 	public boolean waitForPageLoadingSpinningStatusCompleted(){
-		return this.waitForCondition(Driver->{return !this.checkChildElementExistingByAttribute(this.cntFooterContainer,"class","loading__overlay");},60000);
+		try{
+			this.waitForCondition(Driver->{return !this.checkChildElementExistingByAttribute(this.cntFooterContainer,"class","loading__overlay");},60000);
+		}
+		catch(Exception e){
+			this.applyStaticWait(10*this.getStaticWaitForApplication());
+		}
+		return true;
 	}
 
 	/**
