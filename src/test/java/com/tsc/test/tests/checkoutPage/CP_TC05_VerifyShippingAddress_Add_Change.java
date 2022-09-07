@@ -19,6 +19,8 @@ import java.util.Map;
 public class CP_TC05_VerifyShippingAddress_Add_Change extends BaseTest {
     /**
      CER-876 - Checkout - Shipping address - Verify dialog display, list of addresses and other options
+     CER-877 - Checkout - Shipping address - Add new Address, required message, duplicate address message
+     CER-878 - Checkout - Shipping address - Verify edit address
     */
     @Test(groups={"Regression","CheckoutTest"})
     public void CP_TC05_VerifyShippingAddress_Add_Change() throws IOException, ParseException {
