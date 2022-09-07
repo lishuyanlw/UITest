@@ -23,12 +23,12 @@ public class IN_TC01_PRP_PDP extends BaseTest {
 
         reporter.reportLog("Compare the linkage information between PRP and PDP with full coverage");
         Map<String,String> prpMap=getProductResultsPageThreadLocal().navigateFromPRPToPDP(lsProductName, true);
-        Map<String,String> pdpMap=getProductDetailPageThreadLocal().getFullInformationOnPDP(true,true,true,true,true);
+        Map<String,String> pdpMap=getProductDetailPageThreadLocal().getFullInformationOnPDP(prpMap.get("productBrand")!=null,prpMap.get("productReviewCount")!=null,prpMap.get("productWasPrice")!=null,prpMap.get("productStyle")!=null,prpMap.get("productSize")!=null);
         getProductDetailPageThreadLocal().verifyLinkageInfoBetweenPRPAndPDP(prpMap,pdpMap);
 
         reporter.reportLog("Compare the linkage information between PRP and PDP without style and size by clicking product image action");
         prpMap=getProductResultsPageThreadLocal().navigateFromPRPToPDP(lsProductName, false);
-        pdpMap=getProductDetailPageThreadLocal().getFullInformationOnPDP(true,true,true,false,false);
+        pdpMap=getProductDetailPageThreadLocal().getFullInformationOnPDP(prpMap.get("productBrand")!=null,prpMap.get("productReviewCount")!=null,prpMap.get("productWasPrice")!=null,prpMap.get("productStyle")!=null,prpMap.get("productSize")!=null);
         getProductDetailPageThreadLocal().verifyLinkageInfoBetweenPRPAndPDP(prpMap,pdpMap);
 
     }
