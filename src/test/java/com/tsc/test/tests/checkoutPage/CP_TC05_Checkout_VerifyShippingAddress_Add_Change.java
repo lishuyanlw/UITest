@@ -16,12 +16,12 @@ import java.util.List;
 import java.util.Map;
 
 
-public class CP_TC10_Checkout_VerifyShippingAddress_Add_Change extends BaseTest {
+public class CP_TC05_Checkout_VerifyShippingAddress_Add_Change extends BaseTest {
     /**
      CER-876 - Checkout - Shipping address - Verify dialog display, list of addresses and other options
     */
     @Test(groups={"Regression","Checkout"})
-    public void CP_TC10_Checkout_VerifyShippingAddress_Add_Change() throws IOException, ParseException {
+    public void CP_TC05_Checkout_VerifyShippingAddress_Add_Change() throws IOException, ParseException {
         getGlobalFooterPageThreadLocal().closePopupDialog();
         Map<String,Object> newAddedAddress = null;
 
