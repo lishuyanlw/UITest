@@ -1373,8 +1373,13 @@ public class ConstantData {
         List<Map<String,String>> lst_SearchKeywords;
         List<String> addShippingAddressErrorMessage;
         String lblProductNumberWithMultipleShippingMethods;
-        Map<String,String> newShippingAddressForUser;
+          List<Map<String,String>> newShippingAddressForUser;
         String lblBillingAddress;
+        String lblExistingAddressErrorMessage;
+
+        public String getLblExistingAddressErrorMessage() {            return lblExistingAddressErrorMessage;        }
+
+        public void setLblExistingAddressErrorMessage(String lblExistingAddressErrorMessage) {            this.lblExistingAddressErrorMessage = lblExistingAddressErrorMessage;        }
 
         public String getLblBillingAddress() {            return lblBillingAddress;        }
 
@@ -1396,9 +1401,9 @@ public class ConstantData {
             this.lblProductNumberWithMultipleShippingMethods = lblProductNumberWithMultipleShippingMethods;
         }
 
-        public Map<String, String> getNewShippingAddressForUser() {            return newShippingAddressForUser;        }
+        public List<Map<String, String>> getNewShippingAddressForUser() {            return newShippingAddressForUser;        }
 
-        public void setNewShippingAddressForUser(Map<String, String> newShippingAddressForUser) {            this.newShippingAddressForUser = newShippingAddressForUser;        }
+        public void setNewShippingAddressForUser(List<Map<String, String>> newShippingAddressForUser) {            this.newShippingAddressForUser = newShippingAddressForUser;        }
     }
 
 }
