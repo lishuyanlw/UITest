@@ -10,7 +10,8 @@ import java.io.IOException;
 
 public class MA_TC04_OrderDetails extends BaseTest {
     /*
-     *CER-793
+     * CER-793
+     * CER-872
      */
     @Test(groups={"MyAccount","Regression"})
     public void MA_TC04_OrderDetails() throws IOException {
