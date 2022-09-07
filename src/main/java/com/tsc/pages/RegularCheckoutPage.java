@@ -360,6 +360,9 @@ public class RegularCheckoutPage extends BasePage {
 	@FindBy(xpath = "//input[@id='pan']")
 	public WebElement inputCreditCardNumberInIframe;
 
+	@FindBy(xpath = "//div[@class='card__logo--verify']//*[contains(@class,'tagCCImage')]")
+	public WebElement lblInputCreditCardNumberType;
+
 	@FindBy(xpath = "//div[contains(@aria-label,'Use A New Card')]//div[@class='standardCCBlock']//h3[@class='semafone__expiration-title']")
 	public WebElement lblUsingANewCardDialogCreditExpirationDateTitle;
 
@@ -1491,6 +1494,47 @@ public class RegularCheckoutPage extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputUsingANewCardDialogCreditExpirationDateYear);
 		inputUsingANewCardDialogCreditExpirationDateYear.clear();
 		inputUsingANewCardDialogCreditExpirationDateYear.sendKeys(expiredYear.substring(2));
+	}
+
+	/**
+	 * To get Input Credit Card Number Type
+	 * @return - String - "Visa"/"MC"/"Amex"
+	 */
+	public String getInputCreditCardNumberType(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblInputCreditCardNumberType);
+		String lsCreditCardClass=lblInputCreditCardNumberType.getAttribute("class").trim();
+		if(lsCreditCardClass.contains(" ")){
+			String[] lstCreditCardClass=lsCreditCardClass.split(" ");
+			for(String lsClass:lstCreditCardClass){
+				if(lsClass.contains("tagCCImage")){
+					if(lsClass.contains("Visa")){
+						return "Visa";
+					}
+
+					if(lsClass.contains("MC")){
+						return "MC";
+					}
+
+					if(lsClass.contains("Amex")){
+						return "Amex";
+					}
+				}
+			}
+		}
+		else{
+			if(lsCreditCardClass.contains("Visa")){
+				return "Visa";
+			}
+
+			if(lsCreditCardClass.contains("MC")){
+				return "MC";
+			}
+
+			if(lsCreditCardClass.contains("Amex")){
+				return "Amex";
+			}
+		}
+		return null;
 	}
 
 	/**
