@@ -203,6 +203,7 @@ public class BaseTest {
 			shoppingCartThreadLocal.set(new ShoppingCartPage(getDriver()));
 
 		homePageThreadLocal.set(new HomePage(getDriver()));
+		regularCheckoutPageThreadLocal.set(new RegularCheckoutPage_Mobile(getDriver()));
 	}
 
 

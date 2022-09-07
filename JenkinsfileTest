@@ -51,7 +51,7 @@ pipeline {
                     # leave spaces where you want them around the parameters. They'll be trimmed.
                     # we let the build run with the default name
 
-        03 15 * * 5 %Browser=saucechrome;Language=en;Groups=CheckoutTest;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
+        11 15 * * 1-7 %Browser=saucechrome;Language=en;Groups=CheckoutTest;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
 	    00 20 * * 1-7 %Browser=saucechrome;Language=en;Groups=CheckoutTest;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
 	    30 20 * * 1-7 %Browser=saucefirefox;Language=en;Groups=CheckoutTest;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
 	    00 21 * * 1-7 %Browser=saucesafari;Language=en;Groups=CheckoutTest;ThreadCount=1;TunnelRequired=Yes;Device=Desktop;TestProfile=TSCWF-Automation
