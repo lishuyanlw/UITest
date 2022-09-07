@@ -2558,7 +2558,7 @@ public class RegularCheckoutPage extends BasePage {
 
 					item=addressItem.findElement(byAddOrChangeShippingAddressDialogHeaderContent);
 					String headerText = this.getElementText(item);
-					if(headerText.toLowerCase().contains("selected")){
+					if(headerText.toLowerCase().replace("\n","").contains("selecteded")){
 						item=addressItem.findElement(byAddOrChangeShippingAddressDialogEditButton);
 						this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 						lsText=item.getText();
@@ -2598,8 +2598,9 @@ public class RegularCheckoutPage extends BasePage {
 				}else{
 					item=addressItem.findElement(byAddOrChangeShippingAddressDialogHeaderContent);
 					String headerText = this.getElementText(item);
-					if(headerText.toLowerCase().contains("selected")){
+					if(headerText.toLowerCase().replace("\n","").contains("selecteded")){
 						selectedAddress = addressItem.findElement(byAddOrChangeShippingAddressDialogCardDetails).getText();
+						break;
 					}
 				}
 			}

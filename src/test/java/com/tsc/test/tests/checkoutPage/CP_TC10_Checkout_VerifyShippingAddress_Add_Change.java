@@ -109,12 +109,14 @@ public class CP_TC10_Checkout_VerifyShippingAddress_Add_Change extends BaseTest 
             //Verify new address is saved successfully and is shown in Shipping Address dialog and is displayed at first place and is selected
             //Above part is to be checked if we have to refresh page - Asha will confirm later.
             getShoppingCartThreadLocal().refresh();
-            //String newShippingAddress = getRegularCheckoutThreadLocal().getAddressFromCheckoutPage("shipping");
-            //getRegularCheckoutThreadLocal().verifyShippingAddressOnCheckoutWithSelectedAddressOnAddChangeDialog(newShippingAddress,null);
+            String newShippingAddress = getRegularCheckoutThreadLocal().getAddressFromCheckoutPage("shipping");
+            //Click on Add/Change button on Checkout page
+            getRegularCheckoutThreadLocal().openAddOrChangeAddressDialog();
+            getRegularCheckoutThreadLocal().verifyShippingAddressOnCheckoutWithSelectedAddressOnAddChangeDialog(newShippingAddress,null);
 
             //Verify already existing address message by adding existing address
             getReporter().reportLog("Verification of error message while editing existing shipping address");
-            getRegularCheckoutThreadLocal().openAddOrChangeAddressDialog();
+            //getRegularCheckoutThreadLocal().openAddOrChangeAddressDialog();
             getRegularCheckoutThreadLocal().openAddOrEditAddressDialog(getRegularCheckoutThreadLocal().btnAddOrChangeShippingAddressDialogAddNewAddressButton);
             newAddedAddress = getRegularCheckoutThreadLocal().addOrEditShippingAddress(inputAddress.get(0),true,true);
             if(newAddedAddress.get("errorMessage").equals(existingAddressErrorMessage))
