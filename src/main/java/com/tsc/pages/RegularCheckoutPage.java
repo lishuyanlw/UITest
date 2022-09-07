@@ -1057,8 +1057,14 @@ public class RegularCheckoutPage extends BasePage {
 			//Error Message will appear as we are entering same address that is already present, hence capture error message and close the dialog box
 			List<String> errorMessageList = this.getMandatoryFieldsErrorMessage(0);
 			map.put("errorMessage",errorMessageList.get(0));
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnAddOrChangeShippingAddressDialogCloseButton);
-			this.getReusableActionsInstance().clickIfAvailable(this.btnAddOrChangeShippingAddressDialogCloseButton);
+			if(this.getDeviceTypeForTest(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrChangeShippingAddressDialogBackButton);
+				btnAddOrChangeShippingAddressDialogBackButton.click();
+				this.applyStaticWait(2*getStaticWaitForApplication());
+			}else{
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnAddOrChangeShippingAddressDialogCloseButton);
+				this.getReusableActionsInstance().clickIfAvailable(this.btnAddOrChangeShippingAddressDialogCloseButton);
+			}
 			this.waitForCondition(Driver->{return this.btnAddOrChangeShippingAddressDialogAddNewAddressButton.isDisplayed() &&
 			this.btnAddOrChangeShippingAddressDialogAddNewAddressButton.isEnabled();},5000);
 		}else if(!addNewAddress && editExistingAddress){
@@ -1175,16 +1181,15 @@ public class RegularCheckoutPage extends BasePage {
 			waitForPageLoadingSpinningStatusCompleted();
 		}
 		else{
-			if(System.getProperty("Device").equalsIgnoreCase("Mobile")){
+			if(this.getDeviceTypeForTest(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrChangeShippingAddressDialogBackButton);
 				btnAddOrChangeShippingAddressDialogBackButton.click();
-				this.applyStaticWait(2*getStaticWaitForApplication());
 			}
 			else{
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrChangeShippingAddressDialogCloseButton);
 				btnAddOrChangeShippingAddressDialogCloseButton.click();
-				this.applyStaticWait(2*getStaticWaitForApplication());
 			}
+			this.applyStaticWait(2*getStaticWaitForApplication());
 		}
 	}
 
@@ -1210,16 +1215,24 @@ public class RegularCheckoutPage extends BasePage {
 			waitForPageLoadingSpinningStatusCompleted();
 		}
 		else{
-			if(System.getProperty("Device").equalsIgnoreCase("Mobile")){
+			if(this.getDeviceTypeForTest(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrEditAddressDialogBackButton);
 				btnAddOrEditAddressDialogBackButton.click();
-				this.applyStaticWait(2*getStaticWaitForApplication());
 			}
+//			if(System.getProperty("Device").equalsIgnoreCase("Mobile") ||
+//					(System.getProperty("Device").equalsIgnoreCase("Tablet") &&
+//							System.getProperty("Browser").contains("android")) ||
+//					(System.getProperty("Browser").equalsIgnoreCase("chromemobile") &&
+//							!System.getProperty("chromeMobileDevice").contains("iPad"))){
+//				this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrEditAddressDialogBackButton);
+//				btnAddOrEditAddressDialogBackButton.click();
+//			}
 			else{
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrEditAddressDialogCloseButton);
-				btnAddOrEditAddressDialogCloseButton.click();
-				this.applyStaticWait(2*getStaticWaitForApplication());
+				this.clickWebElementUsingJS(btnAddOrEditAddressDialogCloseButton);
+				//btnAddOrEditAddressDialogCloseButton.click();
 			}
+			this.applyStaticWait(2*getStaticWaitForApplication());
 		}
 	}
 
@@ -1244,16 +1257,14 @@ public class RegularCheckoutPage extends BasePage {
 			waitForPageLoadingSpinningStatusCompleted();
 		}
 		else{
-			if(System.getProperty("Device").equalsIgnoreCase("Mobile")){
+			if(this.getDeviceTypeForTest(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnChangeShippingMethodDialogBackButton);
 				btnChangeShippingMethodDialogBackButton.click();
-				this.applyStaticWait(2*getStaticWaitForApplication());
-			}
-			else{
+			}else{
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnChangeShippingMethodDialogCloseButton);
 				btnChangeShippingMethodDialogCloseButton.click();
-				this.applyStaticWait(2*getStaticWaitForApplication());
 			}
+			this.applyStaticWait(2*getStaticWaitForApplication());
 		}
 	}
 
@@ -1301,16 +1312,15 @@ public class RegularCheckoutPage extends BasePage {
 			waitForPageLoadingSpinningStatusCompleted();
 		}
 		else{
-			if(System.getProperty("Device").equalsIgnoreCase("Mobile")){
+			if(this.getDeviceTypeForTest(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrChangePaymentMethodDialogBackButton);
 				btnAddOrChangePaymentMethodDialogBackButton.click();
-				this.applyStaticWait(2*getStaticWaitForApplication());
 			}
 			else{
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrChangePaymentMethodDialogCloseButton);
 				btnAddOrChangePaymentMethodDialogCloseButton.click();
-				this.applyStaticWait(2*getStaticWaitForApplication());
 			}
+			this.applyStaticWait(2*getStaticWaitForApplication());
 		}
 	}
 
@@ -1355,16 +1365,15 @@ public class RegularCheckoutPage extends BasePage {
 			waitForPageLoadingSpinningStatusCompleted();
 		}
 		else{
-			if(System.getProperty("Device").equalsIgnoreCase("Mobile")){
+			if(this.getDeviceTypeForTest(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnRemoveCardDialogGoBackButton);
 				btnRemoveCardDialogGoBackButton.click();
-				this.applyStaticWait(2*getStaticWaitForApplication());
 			}
 			else{
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnRemoveCardDialogCloseButton);
 				btnRemoveCardDialogCloseButton.click();
-				this.applyStaticWait(2*getStaticWaitForApplication());
 			}
+			this.applyStaticWait(2*getStaticWaitForApplication());
 		}
 	}
 
@@ -1400,16 +1409,15 @@ public class RegularCheckoutPage extends BasePage {
 			waitForPageLoadingSpinningStatusCompleted();
 		}
 		else{
-			if(System.getProperty("Device").equalsIgnoreCase("Mobile")){
+			if(this.getDeviceTypeForTest(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnUsingANewCardDialogBackButton);
 				btnUsingANewCardDialogBackButton.click();
-				this.applyStaticWait(2*getStaticWaitForApplication());
 			}
 			else{
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnUsingANewCardDialogCloseButton);
 				btnUsingANewCardDialogCloseButton.click();
-				this.applyStaticWait(2*getStaticWaitForApplication());
 			}
+			this.applyStaticWait(2*getStaticWaitForApplication());
 		}
 	}
 
@@ -1534,16 +1542,15 @@ public class RegularCheckoutPage extends BasePage {
 			waitForPageLoadingSpinningStatusCompleted();
 		}
 		else{
-			if(System.getProperty("Device").equalsIgnoreCase("Mobile")){
+			if(this.getDeviceTypeForTest(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrEditAddressDialogBackButton);
 				btnAddOrEditAddressDialogBackButton.click();
-				this.applyStaticWait(2*getStaticWaitForApplication());
 			}
 			else{
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrEditAddressDialogCloseButton);
 				btnAddOrEditAddressDialogCloseButton.click();
-				this.applyStaticWait(2*getStaticWaitForApplication());
 			}
+			this.applyStaticWait(2*getStaticWaitForApplication());
 		}
 	}
 
@@ -2488,8 +2495,17 @@ public class RegularCheckoutPage extends BasePage {
 	public void verifyAddOrChangeAddressDialogContents() {
 		String lsText;
 
-		this.waitForCondition(Driver->{return this.btnAddOrChangeShippingAddressDialogCloseButton.isEnabled() &&
-								this.btnAddOrChangeShippingAddressDialogCloseButton.isDisplayed();},6000);
+		if(System.getProperty("Device").equalsIgnoreCase("Desktop") ||
+				(System.getProperty("Device").equalsIgnoreCase("Tablet") &&
+						System.getProperty("Browser").contains("ios")) ||
+				(System.getProperty("Browser").equalsIgnoreCase("chromemobile") &&
+						System.getProperty("chromeMobileDevice").contains("iPad"))){
+			this.waitForCondition(Driver->{return this.btnAddOrChangeShippingAddressDialogCloseButton.isEnabled() &&
+					this.btnAddOrChangeShippingAddressDialogCloseButton.isDisplayed();},6000);
+		}else
+			this.waitForCondition(Driver->{return this.btnAddOrChangeShippingAddressDialogBackButton.isEnabled() &&
+					this.btnAddOrChangeShippingAddressDialogBackButton.isDisplayed();},6000);
+
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddOrChangeShippingAddressDialogTitle);
 		lsText = lblAddOrChangeShippingAddressDialogTitle.getText();
 		if (!lsText.isEmpty()) {
@@ -2498,7 +2514,7 @@ public class RegularCheckoutPage extends BasePage {
 			reporter.reportLogFailWithScreenshot("The title in Add Or Change Address Dialog is not displaying correctly");
 		}
 
-		if(System.getProperty("Device").equalsIgnoreCase("Mobile")){
+		if(this.getDeviceTypeForTest(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrChangeShippingAddressDialogBackButton);
 			if(this.getReusableActionsInstance().isElementVisible(btnAddOrChangeShippingAddressDialogBackButton)){
 				reporter.reportLogPass("The Back button in Add Or Change Address Dialog is displaying correctly");
@@ -2614,8 +2630,17 @@ public class RegularCheckoutPage extends BasePage {
 	public void verifyAddOrEditAddressDialogContents() {
 		String lsText;
 
-		this.waitForCondition(Driver->{return this.btnAddOrEditAddressDialogCloseButton.isEnabled() &&
-				this.btnAddOrEditAddressDialogCloseButton.isDisplayed();},6000);
+		if(System.getProperty("Device").equalsIgnoreCase("Desktop") ||
+				(System.getProperty("Device").equalsIgnoreCase("Tablet") &&
+						System.getProperty("Browser").contains("ios")) ||
+				(System.getProperty("Browser").equalsIgnoreCase("chromemobile") &&
+						System.getProperty("chromeMobileDevice").contains("iPad"))){
+			this.waitForCondition(Driver->{return this.btnAddOrChangeShippingAddressDialogCloseButton.isEnabled() &&
+					this.btnAddOrChangeShippingAddressDialogCloseButton.isDisplayed();},6000);
+		}else
+			this.waitForCondition(Driver->{return this.btnAddOrChangeShippingAddressDialogBackButton.isEnabled() &&
+					this.btnAddOrChangeShippingAddressDialogBackButton.isDisplayed();},6000);
+
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddOrEditAddressDialogTitle);
 		lsText = lblAddOrEditAddressDialogTitle.getText();
 		if (!lsText.isEmpty()) {
@@ -2624,7 +2649,7 @@ public class RegularCheckoutPage extends BasePage {
 			reporter.reportLogFailWithScreenshot("The title in Add or edit address Dialog is not displaying correctly");
 		}
 
-		if(System.getProperty("Device").equalsIgnoreCase("Mobile")){
+		if(this.getDeviceTypeForTest(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrEditAddressDialogBackButton);
 			if(this.getReusableActionsInstance().isElementVisible(btnAddOrEditAddressDialogBackButton)){
 				reporter.reportLogPass("The Back button in Add or edit address Dialog is displaying correctly");
@@ -2811,7 +2836,7 @@ public class RegularCheckoutPage extends BasePage {
 			reporter.reportLogFailWithScreenshot("The title in Change shipping method Dialog is not displaying correctly");
 		}
 
-		if(System.getProperty("Device").equalsIgnoreCase("Mobile")){
+		if(this.getDeviceTypeForTest(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnChangeShippingMethodDialogBackButton);
 			lsText = btnChangeShippingMethodDialogBackButton.getText();
 			if (!lsText.isEmpty()) {
@@ -2892,7 +2917,7 @@ public class RegularCheckoutPage extends BasePage {
 			reporter.reportLogFailWithScreenshot("The title in Add Or Change Payment Method Dialog is not displaying correctly");
 		}
 
-		if(System.getProperty("Device").equalsIgnoreCase("Mobile")){
+		if(this.getDeviceTypeForTest(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrChangePaymentMethodDialogBackButton);
 			if(this.getReusableActionsInstance().isElementVisible(btnAddOrChangePaymentMethodDialogBackButton)){
 				reporter.reportLogPass("The Back button in Add Or Change Payment Method Dialog is displaying correctly");
@@ -3010,7 +3035,7 @@ public class RegularCheckoutPage extends BasePage {
 			reporter.reportLogFailWithScreenshot("The title in remove Payment Method Dialog is not displaying correctly");
 		}
 
-		if(System.getProperty("Device").equalsIgnoreCase("Mobile")){
+		if(this.getDeviceTypeForTest(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnRemoveCardDialogGoBackButton);
 			if(this.getReusableActionsInstance().isElementVisible(btnRemoveCardDialogGoBackButton)){
 				reporter.reportLogPass("The Back button in remove Payment Method Dialog is displaying correctly");
@@ -3076,7 +3101,7 @@ public class RegularCheckoutPage extends BasePage {
 			reporter.reportLogFailWithScreenshot("The title in using a new card Dialog is not displaying correctly");
 		}
 
-		if(System.getProperty("Device").equalsIgnoreCase("Mobile")){
+		if(this.getDeviceTypeForTest(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnUsingANewCardDialogBackButton);
 			if(this.getReusableActionsInstance().isElementVisible(btnUsingANewCardDialogBackButton)){
 				reporter.reportLogPass("The Back button in using a new card Dialog is displaying correctly");
@@ -3294,8 +3319,16 @@ public class RegularCheckoutPage extends BasePage {
 	 * @return - boolean
 	 */
 	public void verifyErrorMessageOnAddNewShippingAddressDialog(List<String> expectedErrorMessageList){
-		this.waitForCondition(Driver->{return this.btnAddOrEditAddressDialogCloseButton.isEnabled() &&
-				this.btnAddOrEditAddressDialogCloseButton.isDisplayed();},6000);
+		if(System.getProperty("Device").equalsIgnoreCase("Desktop") ||
+				(System.getProperty("Device").equalsIgnoreCase("Tablet") &&
+						System.getProperty("Browser").contains("ios")) ||
+				(System.getProperty("Browser").equalsIgnoreCase("chromemobile") &&
+						System.getProperty("chromeMobileDevice").contains("iPad"))){
+			this.waitForCondition(Driver->{return this.btnAddOrChangeShippingAddressDialogCloseButton.isEnabled() &&
+					this.btnAddOrChangeShippingAddressDialogCloseButton.isDisplayed();},6000);
+		}else
+			this.waitForCondition(Driver->{return this.btnAddOrChangeShippingAddressDialogBackButton.isEnabled() &&
+					this.btnAddOrChangeShippingAddressDialogBackButton.isDisplayed();},6000);
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrEditAddressDialogSaveButton);
 		this.getReusableActionsInstance().clickIfAvailable(this.btnAddOrEditAddressDialogSaveButton);
@@ -3647,5 +3680,22 @@ public class RegularCheckoutPage extends BasePage {
 				return true;
 		}
 		return false;
+	}
+
+	/**
+	 * This function verifies the type of device being tested
+	 * @param - String - deviceType
+	 * @param - String - chromeMobileDevice for local run
+	 * @return - boolean value
+	 */
+	public boolean getDeviceTypeForTest(String deviceType,String chromeMobileDevice){
+		if("Mobile".equalsIgnoreCase(deviceType) ||
+				("Tablet".equalsIgnoreCase(deviceType) &&
+						System.getProperty("Browser").contains("android")) ||
+				(System.getProperty("chromeMobileDevice").length()>1 && System.getProperty("Browser").equalsIgnoreCase("chromemobile") &&
+						!"iPad".equalsIgnoreCase(chromeMobileDevice)))
+			return true;
+		else
+			return false;
 	}
 }

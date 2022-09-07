@@ -117,7 +117,7 @@ public class CP_TC05_VerifyShippingAddress_Add_Change extends BaseTest {
             getRegularCheckoutThreadLocal().verifyShippingAddressOnCheckoutWithSelectedAddressOnAddChangeDialog(newShippingAddress,null);
 
             //Verify already existing address message by adding existing address
-            getReporter().reportLog("Verification of error message while editing existing shipping address");
+            getReporter().reportLog("Verification of error message while adding existing shipping address");
             //getRegularCheckoutThreadLocal().openAddOrChangeAddressDialog();
             getRegularCheckoutThreadLocal().openAddOrEditAddressDialog(getRegularCheckoutThreadLocal().btnAddOrChangeShippingAddressDialogAddNewAddressButton);
             newAddedAddress = getRegularCheckoutThreadLocal().addOrEditShippingAddress(inputAddress.get(0),true,true);
