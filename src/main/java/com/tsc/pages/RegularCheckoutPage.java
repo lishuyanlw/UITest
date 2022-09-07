@@ -1472,9 +1472,10 @@ public class RegularCheckoutPage extends BasePage {
 
 	/**
 	 * To add a new Credit card
+	 * @param - String - creditCardType
 	 */
-	public void addNewCreditCard(){
-		JSONObject cardData=this.getCardDataFromYamlFile("master");
+	public void addNewCreditCard(String creditCardType){
+		JSONObject cardData=this.getCardDataFromYamlFile(creditCardType);
 		String cardNumber= (String) cardData.get("Number");
 		String expiredMonth=(String) cardData.get("DisplayExpirationMonth");
 		String expiredYear=(String) cardData.get("DisplayExpirationYear");
@@ -1508,30 +1509,30 @@ public class RegularCheckoutPage extends BasePage {
 			for(String lsClass:lstCreditCardClass){
 				if(lsClass.contains("tagCCImage")){
 					if(lsClass.contains("Visa")){
-						return "Visa";
+						return "visa";
 					}
 
 					if(lsClass.contains("MC")){
-						return "MC";
+						return "master";
 					}
 
 					if(lsClass.contains("Amex")){
-						return "Amex";
+						return "amex";
 					}
 				}
 			}
 		}
 		else{
 			if(lsCreditCardClass.contains("Visa")){
-				return "Visa";
+				return "visa";
 			}
 
 			if(lsCreditCardClass.contains("MC")){
-				return "MC";
+				return "master";
 			}
 
 			if(lsCreditCardClass.contains("Amex")){
-				return "Amex";
+				return "amex";
 			}
 		}
 		return null;
@@ -1539,17 +1540,17 @@ public class RegularCheckoutPage extends BasePage {
 
 	/**
 	 * To add/Change Payment Method
-	 * @param - boolean - bTSC - true for TSC card and false for Credit card
+	 * @param - String - cardType - "tsc"/"visa"/"master"/"amex"
 	 * @return -int
 	 */
-	public int addOrChangePaymentMethod(boolean bTSC){
+	public int addOrChangePaymentMethod(String cardType){
 		if(!this.checkAvailablePaymentMethodExisting()){
 			openUsingNewCardDialog();
-			if(bTSC){
+			if(cardType.equalsIgnoreCase("tsc")){
 				addNewTSCCard();
 			}
 			else{
-				addNewCreditCard();
+				addNewCreditCard(cardType);
 			}
 			closeUsingANewCardDialog(true);
 		}
@@ -1560,7 +1561,7 @@ public class RegularCheckoutPage extends BasePage {
 		int cartIndex=0;
 		for(int i=0;i<loopSize;i++){
 			cardItem=lstAddOrChangePaymentMethodDialogAvailableCardContainer.get(i);
-			if(bTSC){
+			if(cardType.equalsIgnoreCase("tsc")){
 				if(checkIfTSCCard(cardItem)){
 					this.getReusableActionsInstance().javascriptScrollByVisibleElement(cardItem);
 					cardItem.click();
@@ -1580,11 +1581,11 @@ public class RegularCheckoutPage extends BasePage {
 
 		if(!bFind){
 			openUsingNewCardDialog();
-			if(bTSC){
+			if(cardType.equalsIgnoreCase("tsc")){
 				addNewTSCCard();
 			}
 			else{
-				addNewCreditCard();
+				addNewCreditCard(cardType);
 			}
 			closeUsingANewCardDialog(true);
 
