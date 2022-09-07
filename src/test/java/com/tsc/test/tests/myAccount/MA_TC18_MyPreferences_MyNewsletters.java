@@ -75,9 +75,6 @@ public class MA_TC18_MyPreferences_MyNewsletters extends BaseTest {
         reporter.reportLog("Verify My NewsLetter Content");
         getMyAccountPageThreadLocal().verifyMyNewsLetterContent();
 
-        reporter.reportLog("Verify My NewsLetter Initial status");
-        getMyAccountPageThreadLocal().verifyMyNewsLettersInitialStatus();
-
         reporter.reportLog("Verify Subscribe Messages");
         String  lsMyNewsLettersUpdateErrorMessage=TestDataHandler.constantData.getMyAccount().getLbl_myNewsLettersUpdateErrorMessage();
         String  lsMyNewsLettersUpdateAlertMessage=TestDataHandler.constantData.getMyAccount().getLbl_myNewsLettersUpdateAlertMessage();
