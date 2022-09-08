@@ -1539,7 +1539,7 @@ public class ShoppingCartPage extends BasePage {
 		//method. Since two province can have same tax rate and since sub-total is same, tax will also be same
 		if(!lsTextSelectedOptionBefore.equalsIgnoreCase(lsTextSelectedOptionAfter)){
 			this.waitForPageToLoad();
-			this.applyStaticWait(5*this.getStaticWaitForApplication());
+			this.applyStaticWait(8*this.getStaticWaitForApplication());
 		}
 	}
 
