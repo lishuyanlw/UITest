@@ -13,10 +13,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -600,28 +597,32 @@ public class CartAPI extends ApiClient {
      *        - Invalid - invalid shipping address
      * @return - Map<String,Object> - including current cart shipping address Id, expected cart shipping address Id, and UPDATE API calling response
      */
-    public Map<String,Object> updateCartShippingAddress(String customerEDP,String access_token,String lsType){
+    public Map<String,Object> updateCartShippingAddress(String customerEDP,String access_token,String lsType,String shippingAddressIdToBeUpdated){
         Response getCartResponse=getAccountCartContentWithCustomerEDP(customerEDP, access_token);
         CartResponse accountCartGet= JsonParser.getResponseObject(getCartResponse.asString(), new TypeReference<CartResponse>() {});
 
         int lsCurrentCartShippingAddressId=accountCartGet.getShippingAddress().getId();
         int selectedId=lsCurrentCartShippingAddressId;
 
-        switch(lsType){
-            case "Same":
-                selectedId=lsCurrentCartShippingAddressId;
-                break;
-            case "Different":
-                List<Integer> lstId=getBuyerShippingAddressId(accountCartGet);
-                for(int id:lstId){
-                    if(id!=lsCurrentCartShippingAddressId){
-                        selectedId=id;
+        if(shippingAddressIdToBeUpdated!=null)
+            selectedId = Integer.valueOf(shippingAddressIdToBeUpdated);
+        else{
+            switch(lsType){
+                case "Same":
+                    selectedId=lsCurrentCartShippingAddressId;
+                    break;
+                case "Different":
+                    List<Integer> lstId=getBuyerShippingAddressId(accountCartGet);
+                    for(int id:lstId){
+                        if(id!=lsCurrentCartShippingAddressId){
+                            selectedId=id;
+                        }
                     }
-                }
-                break;
-            case "Invalid":
-                selectedId= Integer.parseInt(DataConverter.getSaltString(8,"numberType"));
-                break;
+                    break;
+                case "Invalid":
+                    selectedId= Integer.parseInt(DataConverter.getSaltString(8,"numberType"));
+                    break;
+            }
         }
 
         JSONObject requestParams=new JSONObject();
@@ -746,5 +747,17 @@ public class CartAPI extends ApiClient {
         }
 
         return Double.parseDouble(lsReturn);
+    }
+
+    /**
+     * This function returns the Shipping Address associated for a user
+     * @param  - accountResponse - AccountResponse object returned from api
+     * @return - AccountResponse.AddressClass object returned for Shipping Address
+     */
+    public List<? extends Object> getShippingAddressForUser(CartResponse cartResponse, String customerEdp, String accessToken) throws IOException, ParseException {
+        if(cartResponse!=null){
+            return Arrays.asList(cartResponse.getShippingAddress());
+        }else
+            return new AccountAPI().addShippingAddressForUser(customerEdp,accessToken,true,null);
     }
 }

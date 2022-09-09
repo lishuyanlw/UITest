@@ -291,3 +291,20 @@ checkOut:
   addShippingAddressErrorMessage: ["You have one or more missing or invalid entries. Please enter correct data and try again.",
                                    "First name is required.","Last name is required.","Phone number is required.","Address is required.",
                                    "City is required.","Province is required.","Postal code is required."]
+  newShippingAddressForUser:
+    - firstName: "Checkout First"
+      lastName: "Checkout Last"
+      phoneNumber: "6474567890"
+      address: "50-1280 Main St W"
+      city: "Hamilton"
+      postalCode: "L8S4S5"
+      province: "Ontario"
+    - firstName: "First Checkout"
+      lastName: "Last Checkout"
+      phoneNumber: "6474567890"
+      address: "12-530 Oxford St W"
+      city: "London"
+      postalCode: "N6H1T6"
+      province: "Ontario"
+  lblBillingAddress: "Same as shipping address"
+  lblExistingAddressErrorMessage: "The shipping address you are trying to add already exists."
