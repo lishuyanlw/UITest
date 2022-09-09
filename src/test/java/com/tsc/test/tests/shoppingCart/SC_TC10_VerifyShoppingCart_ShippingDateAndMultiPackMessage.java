@@ -63,7 +63,7 @@ public class SC_TC10_VerifyShoppingCart_ShippingDateAndMultiPackMessage extends 
 			reporter.reportLog("Verify Estimated shipping message for first shopping item");
 			Map<String, Object> shoppingCartMap = getShoppingCartThreadLocal().getShoppingSectionDetails("optional");
 			List<Map<String,Object>> shoppingList=(List<Map<String,Object>>)shoppingCartMap.get("shoppingList");
-			String lsFirstShoppingDate= (String) shoppingList.get(0).get("productShippingDate");
+			String lsFirstShoppingDate= (String) shoppingList.get(0).get("productShippingDateTitle");
 			if(lsFirstShoppingDate.contains("Est. Ship Date")){
 				reporter.reportLogPass("The first shopping item is containing 'Est. Ship Date'");
 			}
@@ -75,7 +75,7 @@ public class SC_TC10_VerifyShoppingCart_ShippingDateAndMultiPackMessage extends 
 			String lsShippingDateInfo,shippingDate;
 			for(Map<String,Object> shoppingItem:shoppingList){
 				lsShippingDateInfo= (String) shoppingItem.get("productShippingDate");
-				shippingDate=lsShippingDateInfo.split(":")[1].split(",")[1].trim();
+				shippingDate=lsShippingDateInfo.split(",")[1].trim();
 				if(lsShippingDateInfo.contains("Est. Ship Date")&&shippingDate.equalsIgnoreCase(lsEstimatedShippingDate)){
 					reporter.reportLogPass("Able to find estimated shipping date correctly");
 					break;

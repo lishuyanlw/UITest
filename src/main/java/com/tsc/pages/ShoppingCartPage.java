@@ -364,7 +364,7 @@ public class ShoppingCartPage extends BasePage {
 	 * @return - boolean
 	 */
 	public boolean checkProductTrueFitMessageExisting(){
-		this.applyStaticWait(5*this.getStaticWaitForApplication());
+		this.applyStaticWait(8*this.getStaticWaitForApplication());
 		return !this.getElementInnerText(this.lblCartNoticeTrueFitMessage).isEmpty();
 	}
 
@@ -800,9 +800,11 @@ public class ShoppingCartPage extends BasePage {
 			item=cartItem.findElement(byProductShippingDate);
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 			lsText=item.getText().trim();
+			map.put("productShippingDateTitle",lsText.split(":")[0].trim());
 			map.put("productShippingDate",lsText.split(":")[1].trim());
 		}
 		else{
+			map.put("productShippingDateTitle",null);
 			map.put("productShippingDate",null);
 		}
 
