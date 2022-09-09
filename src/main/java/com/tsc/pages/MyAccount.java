@@ -687,52 +687,106 @@ public class MyAccount extends BasePage {
 	@FindBy(xpath = "//span[contains(normalize-space(text()),'Manage your email preferences below:')]")
 	public WebElement lblMyNewsLettersManageYourEmailPreferences;
 
-	@FindBy(xpath = "//input[@id='TSnwsl']")
+	@FindBy(xpath = "//input[@id='Opt1']")
 	public WebElement ckbMyNewsLettersTodayShowStopperNewsLetter;
 
-	@FindBy(xpath = "//input[@id='TSnwsl']/parent::td/following-sibling::td//label")
+	@FindBy(xpath = "//input[@id='Opt1']/following-sibling::b")
 	public WebElement lblMyNewsLettersTodayShowStopperNewsLetterTitle;
 
-	@FindBy(xpath = "//input[@id='SOnwsl']")
+	@FindBy(xpath = "//input[@id='Opt1']/parent::td/parent::tr/following-sibling::tr[td[span]][1]")
+	public WebElement lblMyNewsLettersTodayShowStopperNewsLetterExplanationInfo;
+
+	@FindBy(xpath = "//input[@id='Opt2']")
 	public WebElement ckbMyNewsLettersSpecialOfferAndEventNewsLetter;
 
-	@FindBy(xpath = "//input[@id='SOnwsl']/parent::td/following-sibling::td//label")
+	@FindBy(xpath = "//input[@id='Opt2']/following-sibling::label")
 	public WebElement lblMyNewsLettersSpecialOfferAndEventNewsLetterTitle;
 
-	@FindBy(xpath = "//input[@id='SAOnwsl']")
+	@FindBy(xpath = "//input[@id='Opt2']/parent::td/parent::tr/following-sibling::tr[td[span]][1]")
+	public WebElement lblMyNewsLettersSpecialOfferAndEventNewsLetterExplanationInfo;
+
+	@FindBy(xpath = "//input[@id='Opt3']")
 	public WebElement ckbMyNewsLettersPreferredCustomerOffer;
 
-	@FindBy(xpath = "//input[@id='SAOnwsl']/parent::td/following-sibling::td//label")
+	@FindBy(xpath = "//input[@id='Opt3']/following-sibling::label")
 	public WebElement lblMyNewsLettersPreferredCustomerOfferTitle;
 
-	@FindBy(xpath = "//input[@id='AUAnwsl']")
+	@FindBy(xpath = "//input[@id='Opt3']/parent::td/parent::tr/following-sibling::tr[td[span]][1]")
+	public WebElement lblMyNewsLettersPreferredCustomerOfferExplanationInfo;
+
+	@FindBy(xpath = "//input[@id='Opt4']")
 	public WebElement ckbMyNewsLettersProductUpdatesAndAlerts;
 
-	@FindBy(xpath = "//input[@id='AUAnwsl']/parent::td/following-sibling::td//label")
+	@FindBy(xpath = "//input[@id='Opt4']/following-sibling::label")
 	public WebElement lblMyNewsLettersProductUpdatesAndAlertsTitle;
 
-	@FindBy(xpath = "//input[@id='btnUpdatePrefs']")
+	@FindBy(xpath = "//input[@id='Opt4']/parent::td/parent::tr/following-sibling::tr[td[span]][1]")
+	public WebElement lblMyNewsLettersProductUpdatesAndAlertsExplanationInfo;
+
+	@FindBy(xpath = "//button[@id='myButton1']")
 	public WebElement btnMyNewsLettersUpdatePrefs;
 
-	@FindBy(xpath = "//input[@id='Unsub']")
+	@FindBy(xpath = "//div[@id='preferenceNotificationErrorMsg']")
+	public WebElement lblMyNewsLettersUpdateErrorMessage;
+
+	@FindBy(xpath = "//div[@id='preferenceNotificationAlert']")
+	public WebElement lblMyNewsLettersUpdateAlertMessage;
+
+	@FindBy(xpath = "//input[@id='parent-6']")
 	public WebElement ckbMyNewsLettersUnsubscribe;
 
-	@FindBy(xpath = "//td[normalize-space(.)='Unsubscribe']")
+	@FindBy(xpath = "//input[@id='parent-6']/following-sibling::b")
 	public WebElement lblMyNewsLettersUnsubscribeTitle;
 
-	@FindBy(xpath = "//span[contains(normalize-space(text()),'Unsubscribe from all TSC emails.')]")
+	@FindBy(xpath = "//input[@id='parent-6']/parent::td/parent::tr/following-sibling::tr[td[span]][1]")
 	public WebElement lblMyNewsLettersUnsubscribeDescription;
 
-	@FindBy(xpath = "//input[@id='btnUnSub']")
+	@FindBy(xpath = "//button[@id='myButton2']")
 	public WebElement btnMyNewsLettersUnsubscribe;
+
+	@FindBy(xpath = "//div[@id='unsubscribeNotificationErrorMsg']")
+	public WebElement lblMyNewsLettersUnSubscribeErrorMessage;
+
+	@FindBy(xpath = "//div[@id='unsubscribeNotificationAlert']")
+	public WebElement lblMyNewsLettersUnSubscribeAlertMessage;
 
 	@FindBy(xpath = "//iFrame[@id='ifrmEmailSignup']")
 	public WebElement iFrameEmailSignup;
 
-	//@FindBy(xpath = "//div[@id='bodycontent']")
-	@FindBy(xpath = "//div[@id='header']/p")
+	@FindBy(xpath = "//p[contains(text(),'Thank you for your changes.')]")
 	public WebElement lblSubscriptionSuccessMessage;
 
+	/**
+	 * To check MyNewsLetters Update Error Message Visible
+ 	 * @return - boolean
+	 */
+	public boolean checkMyNewsLettersUpdateErrorMessageVisible(){
+		return !lblMyNewsLettersUpdateErrorMessage.getAttribute("style").contains("display: none");
+	}
+
+	/**
+	 * To check MyNewsLetters Update Alert Message Visible
+	 * @return - boolean
+	 */
+	public boolean checkMyNewsLettersUpdateAlertMessageVisible(){
+		return !lblMyNewsLettersUpdateAlertMessage.getAttribute("style").contains("display: none");
+	}
+
+	/**
+	 * To check MyNewsLetters UnSubscribe Error Message Visible
+	 * @return- boolean
+	 */
+	public boolean checkMyNewsLettersUnSubscribeErrorMessageVisible(){
+		return !lblMyNewsLettersUnSubscribeErrorMessage.getAttribute("style").contains("display: none");
+	}
+
+	/**
+	 * To check MyNewsLetters UnSubscribe Alert Message Visible
+	 * @return- boolean
+	 */
+	public boolean checkMyNewsLettersUnSubscribeAlertMessageVisible(){
+		return !lblMyNewsLettersUnSubscribeAlertMessage.getAttribute("style").contains("display: none");
+	}
 
 	/**
 	 * To check OrderList Existing
@@ -4007,30 +4061,49 @@ public class MyAccount extends BasePage {
 	}
 
 	/**
+	 * To get Into MyNewsLetters iFrame
+	 */
+	public void getIntoMyNewsLettersIFrame(){
+		this.getDriver().switchTo().frame(this.iFrameEmailSignup);
+	}
+
+	/**
+	 * To get out of MyNewsLetters iFrame
+	 */
+	public void getOutMyNewsLettersIFrame(){
+		this.getDriver().switchTo().defaultContent();
+	}
+
+	/**
 	 * verify Changing Subscription Success Message in NewsLetters
-	 * @param - WebElement - ckbLabel
 	 * @param - WebElement - ckbItem
 	 * @param - boolean - bCheck - if check the related Subscription checkbox
 	 * @param - String - lsExpectedMessage
 	 */
-	public void verifyNewsLettersChangingSubscriptionSuccessMessage(WebElement ckbLabel, WebElement ckbItem,boolean bCheck,String lsExpectedMessage){
-		this.getDriver().switchTo().frame(this.iFrameEmailSignup);
-
+	public void verifyNewsLettersChangingSubscriptionSuccessMessage(WebElement ckbItem,boolean bCheck,String lsExpectedMessage){
+		this.getIntoMyNewsLettersIFrame();
+		clearUnSubscribeOption();
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(ckbItem);
 		if(bCheck){
 			if(!ckbItem.isSelected()){
-				this.getReusableActionsInstance().clickIfAvailable(ckbLabel);
+				this.getReusableActionsInstance().clickIfAvailable(ckbItem);
 			}
 		}
 		else{
 			if(ckbItem.isSelected()){
-				this.getReusableActionsInstance().clickIfAvailable(ckbLabel);
+				this.getReusableActionsInstance().clickIfAvailable(ckbItem);
 			}
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnMyNewsLettersUpdatePrefs);
 		this.getReusableActionsInstance().clickIfAvailable(btnMyNewsLettersUpdatePrefs);
 
-		this.waitForCondition(Driver->{return this.lblSubscriptionSuccessMessage.isDisplayed();},10000);
+		try{
+			this.waitForCondition(Driver->{return this.lblSubscriptionSuccessMessage.isDisplayed();},30000);
+		}
+		catch(Exception e){
+			this.getReusableActionsInstance().staticWait(5*this.getStaticWaitForApplication());
+		}
 		this.getReusableActionsInstance().staticWait(5*this.getStaticWaitForApplication());
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSubscriptionSuccessMessage);
@@ -4041,9 +4114,40 @@ public class MyAccount extends BasePage {
 		else{
 			reporter.reportLogFailWithScreenshot("The subscription message is not displaying correctly");
 		}
+		this.getOutMyNewsLettersIFrame();
+	}
 
-		this.navigateBack();
-		this.getDriver().switchTo().defaultContent();
+	/**
+	 * verify UnSubscription Success Message in NewsLetters
+	 * @param - String - lsExpectedMessage
+	 */
+	public void verifyNewsLettersUnSubscriptionSuccessMessage(String lsExpectedMessage){
+		this.getIntoMyNewsLettersIFrame();
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblMyNewsLettersUnsubscribeTitle);
+		if(!ckbMyNewsLettersUnsubscribe.isSelected()){
+			ckbMyNewsLettersUnsubscribe.click();
+		}
+		this.applyStaticWait(this.getStaticWaitForApplication());
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnMyNewsLettersUnsubscribe);
+		btnMyNewsLettersUnsubscribe.click();
+		try{
+			this.waitForCondition(Driver->{return this.lblSubscriptionSuccessMessage.isDisplayed();},30000);
+		}
+		catch (Exception e){
+			this.getReusableActionsInstance().staticWait(5*this.getStaticWaitForApplication());
+		}
+		this.getReusableActionsInstance().staticWait(5*this.getStaticWaitForApplication());
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblSubscriptionSuccessMessage);
+		String lsActualMessage=this.lblSubscriptionSuccessMessage.getText();
+		if(lsActualMessage.toLowerCase().contains(lsExpectedMessage.toLowerCase())){
+			reporter.reportLogPass("The subscription message is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The subscription message is not displaying correctly");
+		}
+		this.getOutMyNewsLettersIFrame();
 	}
 
 	/**
@@ -4114,8 +4218,6 @@ public class MyAccount extends BasePage {
 	 * To verify My NewsLetter Content
 	 */
 	public void verifyMyNewsLetterContent(){
-		this.getDriver().switchTo().frame(this.iFrameEmailSignup);
-
 		String lsText;
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblMyNewsLettersTitle);
@@ -4153,6 +4255,15 @@ public class MyAccount extends BasePage {
 			reporter.reportLogFailWithScreenshot("Today Show Stopper NewsLetter checkbox label is not displaying correctly");
 		}
 
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblMyNewsLettersTodayShowStopperNewsLetterExplanationInfo);
+		lsText=lblMyNewsLettersTodayShowStopperNewsLetterExplanationInfo.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("Today Show Stopper NewsLetter checkbox Explanation Info is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Today Show Stopper NewsLetter checkbox Explanation Info is not displaying correctly");
+		}
+
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(ckbMyNewsLettersSpecialOfferAndEventNewsLetter);
 		if(this.getReusableActionsInstance().isElementVisible(ckbMyNewsLettersSpecialOfferAndEventNewsLetter)){
 			reporter.reportLogPass("Special Offer And Event NewsLetter checkbox is displaying correctly");
@@ -4168,6 +4279,15 @@ public class MyAccount extends BasePage {
 		}
 		else{
 			reporter.reportLogFailWithScreenshot("Special Offer And Event NewsLetter checkbox label is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblMyNewsLettersSpecialOfferAndEventNewsLetterExplanationInfo);
+		lsText=lblMyNewsLettersSpecialOfferAndEventNewsLetterExplanationInfo.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("Special Offer And Event NewsLetter checkbox Explanation Info is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Special Offer And Event NewsLetter checkbox Explanation Info is not displaying correctly");
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(ckbMyNewsLettersPreferredCustomerOffer);
@@ -4187,6 +4307,15 @@ public class MyAccount extends BasePage {
 			reporter.reportLogFailWithScreenshot("Preferred Customer Offer checkbox label is not displaying correctly");
 		}
 
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblMyNewsLettersPreferredCustomerOfferExplanationInfo);
+		lsText=lblMyNewsLettersPreferredCustomerOfferExplanationInfo.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("Preferred Customer Offer checkbox Explanation Info is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Preferred Customer Offer checkbox Explanation Info is not displaying correctly");
+		}
+
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(ckbMyNewsLettersProductUpdatesAndAlerts);
 		if(this.getReusableActionsInstance().isElementVisible(ckbMyNewsLettersProductUpdatesAndAlerts)){
 			reporter.reportLogPass("Product Updates And Alerts checkbox is displaying correctly");
@@ -4202,6 +4331,15 @@ public class MyAccount extends BasePage {
 		}
 		else{
 			reporter.reportLogFailWithScreenshot("Product Updates And Alerts checkbox label is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblMyNewsLettersProductUpdatesAndAlertsExplanationInfo);
+		lsText=lblMyNewsLettersProductUpdatesAndAlertsExplanationInfo.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("Product Updates And Alerts checkbox Explanation Info is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("Product Updates And Alerts checkbox Explanation Info is not displaying correctly");
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnMyNewsLettersUpdatePrefs);
@@ -4245,8 +4383,6 @@ public class MyAccount extends BasePage {
 		else{
 			reporter.reportLogFailWithScreenshot("Unsubscribe button is not displaying correctly");
 		}
-
-		this.getDriver().switchTo().defaultContent();
 	}
 
 	/**
@@ -4273,6 +4409,166 @@ public class MyAccount extends BasePage {
 		}
 	}
 
+	/**
+	 * To clear All MyNewsLetter Subscribe Options
+	 */
+	public void clearAllMyNewsLetterSubscribeOptions(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblMyNewsLettersTodayShowStopperNewsLetterTitle);
+		if(ckbMyNewsLettersTodayShowStopperNewsLetter.isSelected()){
+			ckbMyNewsLettersTodayShowStopperNewsLetter.click();
+		}
 
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblMyNewsLettersSpecialOfferAndEventNewsLetterTitle);
+		if(ckbMyNewsLettersSpecialOfferAndEventNewsLetter.isSelected()){
+			ckbMyNewsLettersSpecialOfferAndEventNewsLetter.click();
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblMyNewsLettersPreferredCustomerOfferTitle);
+		if(ckbMyNewsLettersPreferredCustomerOffer.isSelected()){
+			ckbMyNewsLettersPreferredCustomerOffer.click();
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblMyNewsLettersProductUpdatesAndAlertsTitle);
+		if(ckbMyNewsLettersProductUpdatesAndAlerts.isSelected()){
+			ckbMyNewsLettersProductUpdatesAndAlerts.click();
+		}
+		this.applyStaticWait(this.getStaticWaitForApplication());
+	}
+
+	/**
+	 * To clear UnSubscribe Option
+	 */
+	public void clearUnSubscribeOption(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblMyNewsLettersUnsubscribeTitle);
+		if(ckbMyNewsLettersUnsubscribe.isSelected()){
+			ckbMyNewsLettersUnsubscribe.click();
+		}
+		this.applyStaticWait(this.getStaticWaitForApplication());
+	}
+
+	/**
+	 * To verify Subscribe Message
+	 * @param - String - lsExpectedAlertMessage
+	 * @param - String - lsExpectedErrorMessage
+	 */
+	public void verifySubscribeMessage(String lsExpectedAlertMessage,String lsExpectedErrorMessage){
+		clearUnSubscribeOption();
+		clearAllMyNewsLetterSubscribeOptions();
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnMyNewsLettersUpdatePrefs);
+		btnMyNewsLettersUpdatePrefs.click();
+		this.applyStaticWait(this.getStaticWaitForApplication());
+		if(checkMyNewsLettersUpdateErrorMessageVisible()){
+			reporter.reportLogPass("MyNewsLetters Update Error Message is Visible");
+		}
+		else{
+			reporter.reportLogFail("MyNewsLetters Update Error Message is not Visible");
+		}
+
+		if(!checkMyNewsLettersUpdateAlertMessageVisible()){
+			reporter.reportLogPass("MyNewsLetters Update alert Message is not Visible");
+		}
+		else{
+			reporter.reportLogFail("MyNewsLetters Update alert Message is Visible");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblMyNewsLettersUpdateErrorMessage);
+		String lsActualErrorMessage=lblMyNewsLettersUpdateErrorMessage.getText().trim();
+		if(lsActualErrorMessage.equalsIgnoreCase(lsExpectedErrorMessage)){
+			reporter.reportLogPass("The actual MyNewsLetters Update Error Message is same as the expected one");
+		}
+		else{
+			reporter.reportLogFail("The actual MyNewsLetters Update Error Message: '"+lsActualErrorMessage+"' is same as the expected one: '"+lsExpectedErrorMessage+"'");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblMyNewsLettersTodayShowStopperNewsLetterTitle);
+		ckbMyNewsLettersSpecialOfferAndEventNewsLetter.click();
+		this.waitForCondition(Driver->{return checkMyNewsLettersUpdateAlertMessageVisible();},10000);
+
+		if(!checkMyNewsLettersUpdateErrorMessageVisible()){
+			reporter.reportLogPass("MyNewsLetters Update Error Message is not Visible");
+		}
+		else{
+			reporter.reportLogFail("MyNewsLetters Update Error Message is Visible");
+		}
+
+		if(checkMyNewsLettersUpdateAlertMessageVisible()){
+			reporter.reportLogPass("MyNewsLetters Update alert Message is Visible");
+		}
+		else{
+			reporter.reportLogFail("MyNewsLetters Update alert Message is not Visible");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblMyNewsLettersUpdateAlertMessage);
+		String lsActualAlertMessage=lblMyNewsLettersUpdateAlertMessage.getText().trim();
+		if(lsActualAlertMessage.equalsIgnoreCase(lsExpectedAlertMessage)){
+			reporter.reportLogPass("The actual MyNewsLetters Update alert Message is same as the expected one");
+		}
+		else{
+			reporter.reportLogFail("The actual MyNewsLetters Update alert Message: '"+lsActualAlertMessage+"' is same as the expected one: '"+lsExpectedAlertMessage+"'");
+		}
+	}
+
+	/**
+	 * To verify UnSubscribe Message
+	 * @param - String - lsExpectedAlertMessage
+	 * @param - String - lsExpectedErrorMessage
+	 */
+	public void verifyUnSubscribeMessage(String lsExpectedAlertMessage,String lsExpectedErrorMessage){
+		clearUnSubscribeOption();
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnMyNewsLettersUnsubscribe);
+		btnMyNewsLettersUnsubscribe.click();
+		this.applyStaticWait(this.getStaticWaitForApplication());
+		if(checkMyNewsLettersUnSubscribeErrorMessageVisible()){
+			reporter.reportLogPass("MyNewsLetters UnSubscribe Error Message is Visible");
+		}
+		else{
+			reporter.reportLogFail("MyNewsLetters UnSubscribe Error Message is not Visible");
+		}
+
+		if(!checkMyNewsLettersUnSubscribeAlertMessageVisible()){
+			reporter.reportLogPass("MyNewsLetters UnSubscribe alert Message is not Visible");
+		}
+		else{
+			reporter.reportLogFail("MyNewsLetters UnSubscribe alert Message is Visible");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblMyNewsLettersUnSubscribeErrorMessage);
+		String lsActualErrorMessage=lblMyNewsLettersUnSubscribeErrorMessage.getText().trim();
+		if(lsActualErrorMessage.equalsIgnoreCase(lsExpectedErrorMessage)){
+			reporter.reportLogPass("The actual MyNewsLetters UnSubscribe Error Message is same as the expected one");
+		}
+		else{
+			reporter.reportLogFail("The actual MyNewsLetters UnSubscribe Error Message: '"+lsActualErrorMessage+"' is same as the expected one: '"+lsExpectedErrorMessage+"'");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblMyNewsLettersUnsubscribeTitle);
+		this.clickElement(ckbMyNewsLettersUnsubscribe);
+		this.waitForCondition(Driver->{return checkMyNewsLettersUnSubscribeAlertMessageVisible();},10000);
+
+		if(!checkMyNewsLettersUnSubscribeErrorMessageVisible()){
+			reporter.reportLogPass("MyNewsLetters UnSubscribe Error Message is not Visible");
+		}
+		else{
+			reporter.reportLogFail("MyNewsLetters UnSubscribe Error Message is Visible");
+		}
+
+		if(checkMyNewsLettersUnSubscribeAlertMessageVisible()){
+			reporter.reportLogPass("MyNewsLetters UnSubscribe alert Message is Visible");
+		}
+		else{
+			reporter.reportLogFail("MyNewsLetters UnSubscribe alert Message is not Visible");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblMyNewsLettersUnSubscribeAlertMessage);
+		String lsActualAlertMessage=lblMyNewsLettersUnSubscribeAlertMessage.getText().trim();
+		if(lsActualAlertMessage.equalsIgnoreCase(lsExpectedAlertMessage)){
+			reporter.reportLogPass("The actual MyNewsLetters UnSubscribe alert Message is same as the expected one");
+		}
+		else{
+			reporter.reportLogFail("The actual MyNewsLetters UnSubscribe alert Message: '"+lsActualAlertMessage+"' is same as the expected one: '"+lsExpectedAlertMessage+"'");
+		}
+	}
 }
 

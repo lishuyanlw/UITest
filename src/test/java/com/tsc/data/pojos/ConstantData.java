@@ -1025,10 +1025,43 @@ public class ConstantData {
         public String lbl_myNewsLettersTitle;
         public String lnk_myAccountNewsLetterURL;
         public String lbl_myNewsLettersSubscriptionSuccessMessage;
-        public String lbl_myNewsLettersUnSubscriptionSuccessMessage;
-        public String lbl_myNewsLettersNoCheckUnSubscriptionAlertMessage;
-        public String lbl_myNewsLettersCheckUnSubscriptionAlertMessage;
+        public String lbl_myNewsLettersUpdateErrorMessage;
+        public String lbl_myNewsLettersUpdateAlertMessage;
+        public String lbl_myNewsLettersUnSubscribeErrorMessage;
+        public String lbl_myNewsLettersUnSubscribeAlertMessage;
         public String lbl_noOrderRecordsMessage;
+
+        public String getLbl_myNewsLettersUpdateErrorMessage() {
+            return lbl_myNewsLettersUpdateErrorMessage;
+        }
+
+        public void setLbl_myNewsLettersUpdateErrorMessage(String lbl_myNewsLettersUpdateErrorMessage) {
+            this.lbl_myNewsLettersUpdateErrorMessage = lbl_myNewsLettersUpdateErrorMessage;
+        }
+
+        public String getLbl_myNewsLettersUpdateAlertMessage() {
+            return lbl_myNewsLettersUpdateAlertMessage;
+        }
+
+        public void setLbl_myNewsLettersUpdateAlertMessage(String lbl_myNewsLettersUpdateAlertMessage) {
+            this.lbl_myNewsLettersUpdateAlertMessage = lbl_myNewsLettersUpdateAlertMessage;
+        }
+
+        public String getLbl_myNewsLettersUnSubscribeErrorMessage() {
+            return lbl_myNewsLettersUnSubscribeErrorMessage;
+        }
+
+        public void setLbl_myNewsLettersUnSubscribeErrorMessage(String lbl_myNewsLettersUnSubscribeErrorMessage) {
+            this.lbl_myNewsLettersUnSubscribeErrorMessage = lbl_myNewsLettersUnSubscribeErrorMessage;
+        }
+
+        public String getLbl_myNewsLettersUnSubscribeAlertMessage() {
+            return lbl_myNewsLettersUnSubscribeAlertMessage;
+        }
+
+        public void setLbl_myNewsLettersUnSubscribeAlertMessage(String lbl_myNewsLettersUnSubscribeAlertMessage) {
+            this.lbl_myNewsLettersUnSubscribeAlertMessage = lbl_myNewsLettersUnSubscribeAlertMessage;
+        }
 
         public String getLnk_addNewCardURL() {            return lnk_addNewCardURL;        }
 
@@ -1288,30 +1321,6 @@ public class ConstantData {
 
         public void setLbl_myNewsLettersSubscriptionSuccessMessage(String lbl_myNewsLettersSubscriptionSuccessMessage) {
             this.lbl_myNewsLettersSubscriptionSuccessMessage = lbl_myNewsLettersSubscriptionSuccessMessage;
-        }
-
-        public String getLbl_myNewsLettersUnSubscriptionSuccessMessage() {
-            return lbl_myNewsLettersUnSubscriptionSuccessMessage;
-        }
-
-        public void setLbl_myNewsLettersUnSubscriptionSuccessMessage(String lbl_myNewsLettersUnSubscriptionSuccessMessage) {
-            this.lbl_myNewsLettersUnSubscriptionSuccessMessage = lbl_myNewsLettersUnSubscriptionSuccessMessage;
-        }
-
-        public String getLbl_myNewsLettersNoCheckUnSubscriptionAlertMessage() {
-            return lbl_myNewsLettersNoCheckUnSubscriptionAlertMessage;
-        }
-
-        public void setLbl_myNewsLettersNoCheckUnSubscriptionAlertMessage(String lbl_myNewsLettersNoCheckUnSubscriptionAlertMessage) {
-            this.lbl_myNewsLettersNoCheckUnSubscriptionAlertMessage = lbl_myNewsLettersNoCheckUnSubscriptionAlertMessage;
-        }
-
-        public String getLbl_myNewsLettersCheckUnSubscriptionAlertMessage() {
-            return lbl_myNewsLettersCheckUnSubscriptionAlertMessage;
-        }
-
-        public void setLbl_myNewsLettersCheckUnSubscriptionAlertMessage(String lbl_myNewsLettersCheckUnSubscriptionAlertMessage) {
-            this.lbl_myNewsLettersCheckUnSubscriptionAlertMessage = lbl_myNewsLettersCheckUnSubscriptionAlertMessage;
         }
 
         public String getLbl_noOrderRecordsMessage() {

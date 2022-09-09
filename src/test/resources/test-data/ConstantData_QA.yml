@@ -1,7 +1,7 @@
 # API USER TOKEN INFO
 apiUserSessionParams:
-  lbl_username: checkoutUser@rogers.com
-  lbl_password: testMail123
+  lbl_username: qa2542@rogers.com
+  lbl_password: qa1234
   lbl_grantType: password
   lbl_apiKey: A9607F64-D061-4279-8D00-F8469EA38DD1
 
@@ -239,12 +239,14 @@ myAccount:
   lbl_myNewsLettersTitle: "MY NEWSLETTERS"
   lnk_myAccountNewsLetterURL: "/pages/myaccount/newsletter"
   lbl_myNewsLettersSubscriptionSuccessMessage: "Your subscription settings have now been updated."
-  lbl_myNewsLettersUnSubscriptionSuccessMessage: "Thank you for your changes."
-  lbl_myNewsLettersNoCheckUnSubscriptionAlertMessage: "You have not chosen the unsubscribe checkbox."
-  lbl_myNewsLettersCheckUnSubscriptionAlertMessage: "Are you sure you want to completely unsubscribe from all of our exciting email marketing communications?"
+  lbl_myNewsLettersUpdateErrorMessage: "Please select any of the above checkboxes to update your newsletter preferences"
+  lbl_myNewsLettersUpdateAlertMessage: "Please click on UPDATE PREFERENCES button to update your newsletter preferences"
+  lbl_myNewsLettersUnSubscribeErrorMessage: "Select the checkbox to unsubscribe from email"
+  lbl_myNewsLettersUnSubscribeAlertMessage: "Please click on the UNSUBSCRIBE button to unsubscribe from all email"
   lbl_noOrderRecordsMessage: "No orders yet. TSC has tons of deals to offer"
 
 lstTestName: ["MA_TC10_Payment_Options_Manage_Credit_Card",
+              "MA_TC18_MyPreferences_MyNewsletters",
               "PD_TC",
                "SC_TC"]
 lblChromeBrowserVersion: "99"

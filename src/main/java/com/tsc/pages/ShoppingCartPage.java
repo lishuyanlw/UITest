@@ -1844,48 +1844,50 @@ public class ShoppingCartPage extends BasePage {
 			}
 
 			String lsCartNoticeMessage=this.checkCartNoticeMessageExisting();
-			switch(lsCartNoticeMessage){
-				case "both":
-					this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartNoticeMultiPackMessage);
-					lsText=lblCartNoticeMultiPackMessage.getText();
-					if(!lsText.isEmpty()){
-						reporter.reportLogPass("The cart notice MultiPack message is displaying correctly");
-					}
-					else{
-						reporter.reportLogFailWithScreenshot("The cart notice MultiPack message is not displaying correctly");
-					}
+			if(lsCartNoticeMessage!=null){
+				switch(lsCartNoticeMessage){
+					case "both":
+						this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartNoticeMultiPackMessage);
+						lsText=lblCartNoticeMultiPackMessage.getText();
+						if(!lsText.isEmpty()){
+							reporter.reportLogPass("The cart notice MultiPack message is displaying correctly");
+						}
+						else{
+							reporter.reportLogFailWithScreenshot("The cart notice MultiPack message is not displaying correctly");
+						}
 
-					this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartNoticeQuantityExceedingMessage);
-					lsText=lblCartNoticeQuantityExceedingMessage.getText();
-					if(!lsText.isEmpty()){
-						reporter.reportLogPass("The cart notice quantity exceeding message is displaying correctly");
-					}
-					else{
-						reporter.reportLogFailWithScreenshot("The cart notice quantity exceeding message is not displaying correctly");
-					}
-					break;
-				case "errorMessage":
-					this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartNoticeQuantityExceedingMessage);
-					lsText=lblCartNoticeQuantityExceedingMessage.getText();
-					if(!lsText.isEmpty()){
-						reporter.reportLogPass("The cart notice quantity exceeding message is displaying correctly");
-					}
-					else{
-						reporter.reportLogFailWithScreenshot("The cart notice quantity exceeding message is not displaying correctly");
-					}
-					break;
-				case "multiPackMessage":
-					this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartNoticeMultiPackMessage);
-					lsText=lblCartNoticeMultiPackMessage.getText();
-					if(!lsText.isEmpty()){
-						reporter.reportLogPass("The cart notice MultiPack message is displaying correctly");
-					}
-					else{
-						reporter.reportLogFailWithScreenshot("The cart notice MultiPack message is not displaying correctly");
-					}
-					break;
-				default:
-					break;
+						this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartNoticeQuantityExceedingMessage);
+						lsText=lblCartNoticeQuantityExceedingMessage.getText();
+						if(!lsText.isEmpty()){
+							reporter.reportLogPass("The cart notice quantity exceeding message is displaying correctly");
+						}
+						else{
+							reporter.reportLogFailWithScreenshot("The cart notice quantity exceeding message is not displaying correctly");
+						}
+						break;
+					case "errorMessage":
+						this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartNoticeQuantityExceedingMessage);
+						lsText=lblCartNoticeQuantityExceedingMessage.getText();
+						if(!lsText.isEmpty()){
+							reporter.reportLogPass("The cart notice quantity exceeding message is displaying correctly");
+						}
+						else{
+							reporter.reportLogFailWithScreenshot("The cart notice quantity exceeding message is not displaying correctly");
+						}
+						break;
+					case "multiPackMessage":
+						this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartNoticeMultiPackMessage);
+						lsText=lblCartNoticeMultiPackMessage.getText();
+						if(!lsText.isEmpty()){
+							reporter.reportLogPass("The cart notice MultiPack message is displaying correctly");
+						}
+						else{
+							reporter.reportLogFailWithScreenshot("The cart notice MultiPack message is not displaying correctly");
+						}
+						break;
+					default:
+						break;
+				}
 			}
 
 			if(this.checkProductTrueFitMessageExisting()){
