@@ -96,9 +96,6 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//section[@class='pdp-gallery']//div[@id='pdp__gallery']")
 	public WebElement cntCurrentZoomImageGallery;
 
-	@FindBy(xpath = "//section[@class='pdp-gallery']//figure[contains(@class,'swiper-slide-active')]")
-	public WebElement currentZoomImageIndicator;
-
 	@FindBy(xpath = "//section[@class='pdp-gallery']//figure[contains(@class,'swiper-slide-active')]//a[contains(@class,'gallery__image--aspect-ratio-wrap')]")
 	public WebElement lnkCurrentZoomImage;
 
