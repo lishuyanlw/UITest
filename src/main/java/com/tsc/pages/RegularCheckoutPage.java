@@ -3930,4 +3930,51 @@ public class RegularCheckoutPage extends BasePage {
 		else
 			return false;
 	}
+
+	/**
+	 * To Apply Promote Code
+	 * @param - String - promoteCode
+	 * @param - boolean - bPositiveTest - true for positive test and false for negative test
+	 * @return - boolean
+	 */
+	public boolean ApplyPromoteCode(String promoteCode,boolean bPositiveTest){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputOrderSummaryPromoteCode);
+		inputOrderSummaryPromoteCode.sendKeys(promoteCode);
+		this.applyStaticWait(300);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnOrderSummaryPromoteCodeApply);
+		btnOrderSummaryPromoteCodeApply.click();
+		if(bPositiveTest){
+			return this.waitForCondition(Driver->{return lblOrderSummaryPromoteCodeAppliedMessage.isDisplayed();},15000);
+		}
+		else{
+			return this.waitForCondition(Driver->{return lblOrderSummaryPromoteCodeErrorMessage.isDisplayed();},15000);
+		}
+	}
+
+	/**
+	 * To Apply Gift Card
+	 * @param - String - giftCardNumber
+	 * @param - String - giftCardPin
+	 * @param - boolean - bPositiveTest - true for positive test and false for negative test
+	 * @return - boolean
+	 */
+	public boolean ApplyGiftCard(String giftCardNumber, String giftCardPin, boolean bPositiveTest){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputOrderSummaryGiftCardNumber);
+		inputOrderSummaryPromoteCode.sendKeys(giftCardNumber);
+		this.applyStaticWait(300);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputOrderSummaryGiftCardPin);
+		inputOrderSummaryGiftCardPin.sendKeys(giftCardNumber);
+		this.applyStaticWait(300);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnOrderSummaryGiftCardApply);
+		btnOrderSummaryGiftCardApply.click();
+		if(bPositiveTest){
+			return this.waitForCondition(Driver->{return lblOrderSummaryGiftCardAppliedMessage.isDisplayed();},15000);
+		}
+		else{
+			return this.waitForCondition(Driver->{return lblOrderSummaryGiftCardErrorMessage.isDisplayed();},15000);
+		}
+	}
 }
