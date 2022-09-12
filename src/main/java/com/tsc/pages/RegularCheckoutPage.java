@@ -432,6 +432,25 @@ public class RegularCheckoutPage extends BasePage {
 	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//span[@class='summary__label' and contains(text(),'Est Taxes')]/following-sibling::span[@class='summary__value']")
 	public WebElement lblOrderSummaryTax;
 
+	//For promote code
+	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//span[@class='summary__label' and contains(text(),'Est Taxes')]/parent::div/following-sibling::div[1]")
+	public WebElement cntOrderSummaryAppliedDiscount;
+
+	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//b[contains(text(),'Applied Discounts')]")
+	public WebElement lblOrderSummaryAppliedDiscountTitle;
+
+	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//b[contains(text(),'Applied Discounts')]/parent::span/parent::div/following-sibling::div//span[contains(@class,'summary__label')][not(contains(.,'Gift Card'))]")
+	public WebElement lblOrderSummaryPromoteCodeLabel;
+
+	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//b[contains(text(),'Applied Discounts')]/parent::span/parent::div/following-sibling::div//span[contains(@class,'summary__label')][not(contains(.,'Gift Card'))]/following-sibling::span[@class='summary__value']")
+	public WebElement lblOrderSummaryPromoteCodeValue;
+
+	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//b[contains(text(),'Applied Discounts')]/parent::span/parent::div/following-sibling::div//span[contains(@class,'summary__label')][contains(.,'Gift Card')]")
+	public WebElement lblOrderSummaryGiftCardLabel;
+
+	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//b[contains(text(),'Applied Discounts')]/parent::span/parent::div/following-sibling::div//span[contains(@class,'summary__label')][contains(.,'Gift Card')]/following-sibling::span[@class='summary__value']")
+	public WebElement lblOrderSummaryGiftCardValue;
+
 	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//span[contains(@class,'summary__label') and contains(text(),'TOTAL PRICE')]")
 	public WebElement lblOrderSummaryTotalPriceTitle;
 
@@ -491,6 +510,18 @@ public class RegularCheckoutPage extends BasePage {
 	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'promocode__container')]//button[@class='promocode__button--white button']")
 	public WebElement btnOrderSummaryPromoteCodeApply;
 
+	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'promocode__container')]//div[contains(@class,'promocode__code')]")
+	public WebElement lblOrderSummaryInputPromoteCode;
+
+	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'promocode__container')]//button[@class='promocode__button--remove']")
+	public WebElement btnOrderSummaryRemovePromoteCode;
+
+	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'promocode__container')]//b[@class='promocode__message']")
+	public WebElement lblOrderSummaryPromoteCodeAppliedMessage;
+
+	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'promocode__container')]//div[contains(@class,'alert-danger')]")
+	public WebElement lblOrderSummaryPromoteCodeErrorMessage;
+
 	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'giftcard__container')]//h3[@class='promocode__title']")
 	public WebElement lblOrderSummaryGiftCardTitle;
 
@@ -505,6 +536,18 @@ public class RegularCheckoutPage extends BasePage {
 
 	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'giftcard__container')]//button[contains(@class,'giftcard__button--white')]")
 	public WebElement btnOrderSummaryGiftCardApply;
+
+	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'giftcard__container')]//div[contains(@class,'promocode__code')]")
+	public WebElement lblOrderSummaryInputGiftCard;
+
+	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'giftcard__container')]//button[@class='promocode__button--remove']")
+	public WebElement btnOrderSummaryRemoveGiftCard;
+
+	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'giftcard__container')]//b")
+	public WebElement lblOrderSummaryGiftCardAppliedMessage;
+
+	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'giftcard__container')]//div[contains(@class,'alert-danger')]")
+	public WebElement lblOrderSummaryGiftCardErrorMessage;
 
 	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'placeorder__wrap')]//button[contains(@class,'placeorder__button--black')]")
 	public WebElement btnOrderSummaryPlaceOrder;
@@ -736,6 +779,14 @@ public class RegularCheckoutPage extends BasePage {
 	 */
 	public boolean checkOrderSummarySavingPriceExisting(){
 		return !this.getElementInnerText(lblOrderSummaryShippingWasPrice).isEmpty();
+	}
+
+	/**
+	 * To check Applied Discount Existing in OrderSummary
+	 * @return - boolean
+	 */
+	public boolean checkOrderSummaryAppliedDiscountExisting(){
+		return this.checkChildElementExistingByAttribute(cntOrderSummaryAppliedDiscount,"class","leftAlign");
 	}
 
 	/**
