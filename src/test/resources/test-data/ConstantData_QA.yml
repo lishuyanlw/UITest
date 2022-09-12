@@ -94,7 +94,7 @@ homePage:
   lnk_ShopByBrandViewAll: /pages/brand
   lbl_ShopByDepartment: SHOP BY DEPARTMENT
   lst_ShopByDepartmentCategories: [ FASHION, SHOES & HANDBAGS, JEWELLERY, BEAUTY, HOME & GARDEN, KITCHEN, HEALTH & FITNESS, ELECTRONICS, COINS & HOBBIES, CLEARANCE, SPORTS, MENS ]
-  lbl_TopSellers: TOP SELLERS
+  lbl_TopSellers: MOST VIEWED ITEMS
 searchResultPage:
   lbl_prp_partial_url: "/pages/productresults?"
   lst_SearchKeyword: [ "dyson vacuum","dfafasdfa","Joan Rivers","100501" ]
