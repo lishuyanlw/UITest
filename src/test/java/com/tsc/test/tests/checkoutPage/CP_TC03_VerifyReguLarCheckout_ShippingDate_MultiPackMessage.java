@@ -147,7 +147,6 @@ public class CP_TC03_VerifyReguLarCheckout_ShippingDate_MultiPackMessage extends
 		getRegularCheckoutThreadLocal().verifyOrderSummaryBusinessLogic(subTotalForCheckOutList,orderSummaryMapForCheckOutPage,null);
 
 		reporter.reportLog("Verify installment business logic");
-		easyPaymentMapForCheckOutPage = getRegularCheckoutThreadLocal().getEasyPayDesc();
 		installmentsNumberForShoppingCart=getRegularCheckoutThreadLocal().getInstallmentNumberFromPaymentOptionText();
 		getRegularCheckoutThreadLocal().verifyInstallmentBusinessLogic(installmentsNumberForShoppingCart,orderSummaryMapForCheckOutPage);
 
@@ -182,7 +181,6 @@ public class CP_TC03_VerifyReguLarCheckout_ShippingDate_MultiPackMessage extends
 
 		productListMapForCheckOutPage = getRegularCheckoutThreadLocal().getCheckoutItemListDesc("all");
 		summaryMapForCheckOutList=getRegularCheckoutThreadLocal().getCheckoutItemCountAndSubTotal(productListMapForCheckOutPage);
-		itemCountForCheckOutList= (int) summaryMapForCheckOutList.get("itemCount");
 		subTotalForCheckOutList= (float) summaryMapForCheckOutList.get("subTotal");
 
 		reporter.reportLog("Verify orderSummary business logic");
@@ -190,7 +188,6 @@ public class CP_TC03_VerifyReguLarCheckout_ShippingDate_MultiPackMessage extends
 		getRegularCheckoutThreadLocal().verifyOrderSummaryBusinessLogic(subTotalForCheckOutList,orderSummaryMapForCheckOutPage,null);
 
 		reporter.reportLog("Verify installment business logic");
-		easyPaymentMapForCheckOutPage = getRegularCheckoutThreadLocal().getEasyPayDesc();
 		installmentsNumberForShoppingCart=getRegularCheckoutThreadLocal().getInstallmentNumberFromPaymentOptionText();
 		getRegularCheckoutThreadLocal().verifyInstallmentBusinessLogic(installmentsNumberForShoppingCart,orderSummaryMapForCheckOutPage);
 	}
