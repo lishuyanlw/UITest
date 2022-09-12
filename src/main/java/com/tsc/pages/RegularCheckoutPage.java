@@ -237,9 +237,11 @@ public class RegularCheckoutPage extends BasePage {
 	@FindBy(xpath = "//div[contains(@class,'ReactModal__Content')]//div[@class='modal__body']//div[@class='shipmethod__container']")
 	public List<WebElement> lstChangeShippingMethodDialogShippingMethodList;
 
+	public By byShippingMethodInput=By.xpath(".//input");
 	public By byShippingMethodLabel=By.xpath(".//label");
 	public By byShippingMethodRadioButton=By.xpath(".//span[@class='shipmethod__radio-button']");
 	public By byShippingMethodDescription=By.xpath(".//div[@class='shipmethod__description']");
+	public By byShippingMethodPrice=By.xpath(".//div[@class='shipmethod__description']");
 	public By byShippingMethodDetails=By.xpath(".//div[@class='shipmethod__detail']");
 	public By byShippingMethodLearMoreLink=By.xpath(".//a[@class='shipmethod__link']");
 
@@ -360,6 +362,9 @@ public class RegularCheckoutPage extends BasePage {
 	@FindBy(xpath = "//input[@id='pan']")
 	public WebElement inputCreditCardNumberInIframe;
 
+	@FindBy(xpath = "//div[@class='card__logo--verify']//*[contains(@class,'tagCCImage')]")
+	public WebElement lblInputCreditCardNumberType;
+
 	@FindBy(xpath = "//div[contains(@aria-label,'Use A New Card')]//div[@class='standardCCBlock']//h3[@class='semafone__expiration-title']")
 	public WebElement lblUsingANewCardDialogCreditExpirationDateTitle;
 
@@ -427,6 +432,25 @@ public class RegularCheckoutPage extends BasePage {
 	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//span[@class='summary__label' and contains(text(),'Est Taxes')]/following-sibling::span[@class='summary__value']")
 	public WebElement lblOrderSummaryTax;
 
+	//For promote code
+	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//span[@class='summary__label' and contains(text(),'Est Taxes')]/parent::div/following-sibling::div[1]")
+	public WebElement cntOrderSummaryAppliedDiscount;
+
+	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//b[contains(text(),'Applied Discounts')]")
+	public WebElement lblOrderSummaryAppliedDiscountTitle;
+
+	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//b[contains(text(),'Applied Discounts')]/parent::span/parent::div/following-sibling::div//span[contains(@class,'summary__label')][not(contains(.,'Gift Card'))]")
+	public WebElement lblOrderSummaryPromoteCodeLabel;
+
+	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//b[contains(text(),'Applied Discounts')]/parent::span/parent::div/following-sibling::div//span[contains(@class,'summary__label')][not(contains(.,'Gift Card'))]/following-sibling::span[@class='summary__value']")
+	public WebElement lblOrderSummaryPromoteCodeValue;
+
+	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//b[contains(text(),'Applied Discounts')]/parent::span/parent::div/following-sibling::div//span[contains(@class,'summary__label')][contains(.,'Gift Card')]")
+	public WebElement lblOrderSummaryGiftCardLabel;
+
+	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//b[contains(text(),'Applied Discounts')]/parent::span/parent::div/following-sibling::div//span[contains(@class,'summary__label')][contains(.,'Gift Card')]/following-sibling::span[@class='summary__value']")
+	public WebElement lblOrderSummaryGiftCardValue;
+
 	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//span[contains(@class,'summary__label') and contains(text(),'TOTAL PRICE')]")
 	public WebElement lblOrderSummaryTotalPriceTitle;
 
@@ -486,6 +510,18 @@ public class RegularCheckoutPage extends BasePage {
 	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'promocode__container')]//button[@class='promocode__button--white button']")
 	public WebElement btnOrderSummaryPromoteCodeApply;
 
+	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'promocode__container')]//div[contains(@class,'promocode__code')]")
+	public WebElement lblOrderSummaryInputPromoteCode;
+
+	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'promocode__container')]//button[@class='promocode__button--remove']")
+	public WebElement btnOrderSummaryRemovePromoteCode;
+
+	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'promocode__container')]//b[@class='promocode__message']")
+	public WebElement lblOrderSummaryPromoteCodeAppliedMessage;
+
+	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'promocode__container')]//div[contains(@class,'alert-danger')]")
+	public WebElement lblOrderSummaryPromoteCodeErrorMessage;
+
 	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'giftcard__container')]//h3[@class='promocode__title']")
 	public WebElement lblOrderSummaryGiftCardTitle;
 
@@ -500,6 +536,18 @@ public class RegularCheckoutPage extends BasePage {
 
 	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'giftcard__container')]//button[contains(@class,'giftcard__button--white')]")
 	public WebElement btnOrderSummaryGiftCardApply;
+
+	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'giftcard__container')]//div[contains(@class,'promocode__code')]")
+	public WebElement lblOrderSummaryInputGiftCard;
+
+	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'giftcard__container')]//button[@class='promocode__button--remove']")
+	public WebElement btnOrderSummaryRemoveGiftCard;
+
+	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'giftcard__container')]//b")
+	public WebElement lblOrderSummaryGiftCardAppliedMessage;
+
+	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'giftcard__container')]//div[contains(@class,'alert-danger')]")
+	public WebElement lblOrderSummaryGiftCardErrorMessage;
 
 	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'placeorder__wrap')]//button[contains(@class,'placeorder__button--black')]")
 	public WebElement btnOrderSummaryPlaceOrder;
@@ -518,7 +566,7 @@ public class RegularCheckoutPage extends BasePage {
 	public WebElement lnkPrivacyPolicy;
 
 	//Error Message for Mandatory Items
-	@FindBy(xpath = "//div[@class='alert alert-danger']")
+	@FindBy(xpath = "//div[contains(@class,'ReactModal__Overlay')]//div[contains(@class,'alert-danger')]")
 	public List<WebElement> mandatoryFieldErrorMessage;
 
 	/**
@@ -536,8 +584,21 @@ public class RegularCheckoutPage extends BasePage {
 	public boolean expandProductList(){
 		if(!checkProductCollapseStatus()){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnCollapseProductList);
-			btnCollapseProductList.click();
+			this.clickElement(btnCollapseProductList);
 			this.waitForCondition(Driver->{return checkProductCollapseStatus();},10000);
+		}
+		return true;
+	}
+
+	/**
+	 * To unCollapse Product List
+	 * @return - boolean
+	 */
+	public boolean unCollapseProductList(){
+		if(checkProductCollapseStatus()){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnCollapseProductList);
+			this.clickElement(btnCollapseProductList);
+			this.waitForCondition(Driver->{return !checkProductCollapseStatus();},10000);
 		}
 		return true;
 	}
@@ -615,6 +676,15 @@ public class RegularCheckoutPage extends BasePage {
 	 */
 	public boolean checkProductFreeShippingExisting(WebElement productItem){
 		return this.checkChildElementExistingByAttribute(productItem,"class","productlist__right--freeship");
+	}
+
+	/**
+	 * To check Product shipping date Existing
+	 * @param - WebElement - productItem - the item in product list
+	 * @return - boolean
+	 */
+	public boolean checkProductShippingDateExisting(WebElement productItem){
+		return this.checkChildElementExistingByAttribute(productItem,"class","estimateDateCheckout__lineItem");
 	}
 
 	/**
@@ -709,6 +779,14 @@ public class RegularCheckoutPage extends BasePage {
 	 */
 	public boolean checkOrderSummarySavingPriceExisting(){
 		return !this.getElementInnerText(lblOrderSummaryShippingWasPrice).isEmpty();
+	}
+
+	/**
+	 * To check Applied Discount Existing in OrderSummary
+	 * @return - boolean
+	 */
+	public boolean checkOrderSummaryAppliedDiscountExisting(){
+		return this.checkChildElementExistingByAttribute(cntOrderSummaryAppliedDiscount,"class","leftAlign");
 	}
 
 	/**
@@ -871,12 +949,14 @@ public class RegularCheckoutPage extends BasePage {
 			map.put("productFreeShipping",null);
 		}
 
-
 		if(!checkProductShippingDateExisting()){
 			item=productItem.findElement(byProductShippingDate);
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 			lsText=item.getText().trim();
-			map.put("productShippingDate",lsText);
+			map.put("productShippingDate",lsText.split(":")[1].trim());
+		}
+		else{
+			map.put("productShippingDate",null);
 		}
 
 		return map;
@@ -1241,8 +1321,9 @@ public class RegularCheckoutPage extends BasePage {
 	 * @return - boolean
 	 */
 	public boolean openChangeShippingMethodDialog(){
+		this.waitForCondition(Driver->{return this.btnChangeShippingMethod.isDisplayed();},10000);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnChangeShippingMethod);
-		btnChangeShippingMethod.click();
+		this.clickElement(btnChangeShippingMethod);
 		return this.waitForCondition(Driver->{return this.lblChangeShippingMethodDialogHeaderTitle.isDisplayed();},10000);
 	}
 
@@ -1269,12 +1350,47 @@ public class RegularCheckoutPage extends BasePage {
 	}
 
 	/**
+	 * To get Shipping Price From Shipping Method Section
+	 * @return - float
+	 */
+	public float getShippingPriceFromShippingMethodSection(){
+		String lsText=this.getElementInnerText(lblShippingMethod);
+		if(lsText.toLowerCase().contains("free")){
+			return 0.0f;
+		}
+		else{
+			return this.getFloatFromString(lsText,true);
+		}
+	}
+
+	/**
+	 * To change Shipping Method In Change Shipping Method Dialog
+	 * @return - float - shipping price, note that return -1.0 represents no returning value
+	 */
+	public float changeShippingMethodInChangeShippingMethodDialog(){
+		WebElement item;
+		for(WebElement shippingMethodItem:lstChangeShippingMethodDialogShippingMethodList){
+			item=shippingMethodItem.findElement(byShippingMethodInput);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			if(!item.isSelected()){
+				item=shippingMethodItem.findElement(byShippingMethodPrice);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+				item.click();
+				this.applyStaticWait(300);
+
+				return this.getFloatFromString(this.getElementInnerText(item),true);
+			}
+		}
+		return -1.0f;
+	}
+
+	/**
 	 * To choose Shipping Method In Change Shipping Method Dialog with given index
 	 * @param - int - selectedIndex - given index
 	 */
 	public void chooseShippingMethodInChangeShippingMethodDialogWithGivenIndex(int selectedIndex){
 		WebElement item=lstChangeShippingMethodDialogShippingMethodList.get(selectedIndex);
-		WebElement itemLabel=item.findElement(byShippingMethodLabel);
+		WebElement itemLabel=item.findElement(byShippingMethodPrice);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(itemLabel);
 		itemLabel.click();
 		this.applyStaticWait(300);
@@ -1297,7 +1413,7 @@ public class RegularCheckoutPage extends BasePage {
 	 */
 	public boolean openAddOrChangePaymentMethodDialog(){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrChangePaymentMethod);
-		btnAddOrChangePaymentMethod.click();
+		this.clickElement(btnAddOrChangePaymentMethod);
 		return this.waitForCondition(Driver->{return this.lblAddOrChangePaymentMethodDialogTitle.isDisplayed();},10000);
 	}
 
@@ -1437,9 +1553,10 @@ public class RegularCheckoutPage extends BasePage {
 
 	/**
 	 * To add a new Credit card
+	 * @param - String - creditCardType
 	 */
-	public void addNewCreditCard(){
-		JSONObject cardData=this.getCardDataFromYamlFile("master");
+	public void addNewCreditCard(String creditCardType){
+		JSONObject cardData=this.getCardDataFromYamlFile(creditCardType);
 		String cardNumber= (String) cardData.get("Number");
 		String expiredMonth=(String) cardData.get("DisplayExpirationMonth");
 		String expiredYear=(String) cardData.get("DisplayExpirationYear");
@@ -1462,18 +1579,59 @@ public class RegularCheckoutPage extends BasePage {
 	}
 
 	/**
+	 * To get Input Credit Card Number Type
+	 * @return - String - "Visa"/"MC"/"Amex"
+	 */
+	public String getInputCreditCardNumberType(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblInputCreditCardNumberType);
+		String lsCreditCardClass=lblInputCreditCardNumberType.getAttribute("class").trim();
+		if(lsCreditCardClass.contains(" ")){
+			String[] lstCreditCardClass=lsCreditCardClass.split(" ");
+			for(String lsClass:lstCreditCardClass){
+				if(lsClass.contains("tagCCImage")){
+					if(lsClass.contains("Visa")){
+						return "visa";
+					}
+
+					if(lsClass.contains("MC")){
+						return "master";
+					}
+
+					if(lsClass.contains("Amex")){
+						return "amex";
+					}
+				}
+			}
+		}
+		else{
+			if(lsCreditCardClass.contains("Visa")){
+				return "visa";
+			}
+
+			if(lsCreditCardClass.contains("MC")){
+				return "master";
+			}
+
+			if(lsCreditCardClass.contains("Amex")){
+				return "amex";
+			}
+		}
+		return null;
+	}
+
+	/**
 	 * To add/Change Payment Method
-	 * @param - boolean - bTSC - true for TSC card and false for Credit card
+	 * @param - String - cardType - "tsc"/"visa"/"master"/"amex"
 	 * @return -int
 	 */
-	public int addOrChangePaymentMethod(boolean bTSC){
+	public int addOrChangePaymentMethod(String cardType){
 		if(!this.checkAvailablePaymentMethodExisting()){
 			openUsingNewCardDialog();
-			if(bTSC){
+			if(cardType.equalsIgnoreCase("tsc")){
 				addNewTSCCard();
 			}
 			else{
-				addNewCreditCard();
+				addNewCreditCard(cardType);
 			}
 			closeUsingANewCardDialog(true);
 		}
@@ -1484,7 +1642,7 @@ public class RegularCheckoutPage extends BasePage {
 		int cartIndex=0;
 		for(int i=0;i<loopSize;i++){
 			cardItem=lstAddOrChangePaymentMethodDialogAvailableCardContainer.get(i);
-			if(bTSC){
+			if(cardType.equalsIgnoreCase("tsc")){
 				if(checkIfTSCCard(cardItem)){
 					this.getReusableActionsInstance().javascriptScrollByVisibleElement(cardItem);
 					cardItem.click();
@@ -1504,11 +1662,11 @@ public class RegularCheckoutPage extends BasePage {
 
 		if(!bFind){
 			openUsingNewCardDialog();
-			if(bTSC){
+			if(cardType.equalsIgnoreCase("tsc")){
 				addNewTSCCard();
 			}
 			else{
-				addNewCreditCard();
+				addNewCreditCard(cardType);
 			}
 			closeUsingANewCardDialog(true);
 
@@ -1573,10 +1731,12 @@ public class RegularCheckoutPage extends BasePage {
 
 	/**
 	 * To get Installment Number From PaymentOption Text
-	 * @param - String - lsPaymentOptionText
 	 * @return - int
 	 */
-	public int getInstallmentNumberFromPaymentOptionText(String lsPaymentOptionText){
+	public int getInstallmentNumberFromPaymentOptionText(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectPaymentOption);
+		Select select=new Select(this.selectPaymentOption);
+		String lsPaymentOptionText=select.getFirstSelectedOption().getText();
 		if(lsPaymentOptionText.contains("Pay In Full Now")){
 			return 0;
 		}
@@ -1588,10 +1748,12 @@ public class RegularCheckoutPage extends BasePage {
 
 	/**
 	 * To get Installment amount From PaymentOption Text
-	 * @param - String - lsPaymentOptionText
 	 * @return - float
 	 */
-	public float getInstallmentAmountFromPaymentOptionText(String lsPaymentOptionText){
+	public float getInstallmentAmountFromPaymentOptionText(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectPaymentOption);
+		Select select=new Select(this.selectPaymentOption);
+		String lsPaymentOptionText=select.getFirstSelectedOption().getText();
 		if(lsPaymentOptionText.contains("Pay In Full Now")){
 			return this.getIntegerFromString(lsPaymentOptionText);
 		}
@@ -1599,6 +1761,54 @@ public class RegularCheckoutPage extends BasePage {
 			String stringContainsFloat=this.getStringAfterGivenIdentifier(lsPaymentOptionText,"of");
 			return this.getFloatFromString(stringContainsFloat,true);
 		}
+	}
+
+	/**
+	 * To set Payment Option By Given installment Number
+	 * @param - int - installmentNumber - given installment Number
+	 * @return - String - selected text
+	 */
+	public String setPaymentOptionByGivenInstallmentNumber(int installmentNumber){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectPaymentOption);
+		Select select=new Select(this.selectPaymentOption);
+		String lsPaymentOption=select.getFirstSelectedOption().getText().trim();
+		if(!lsPaymentOption.contains("Pay In Full Now")){
+			String stringContainsInteger=this.getStringBeforeGivenIdentifier(lsPaymentOption,"of");
+			if(this.getIntegerFromString(stringContainsInteger)==installmentNumber){
+				return lsPaymentOption;
+			}
+		}
+
+		List<String> lstPaymentOption=getPaymentOptionTextList();
+		for(int i=0;i<lstPaymentOption.size();i++){
+			lsPaymentOption=lstPaymentOption.get(i);
+			if(!lsPaymentOption.contains("Pay In Full Now")){
+				String stringContainsInteger=this.getStringBeforeGivenIdentifier(lsPaymentOption,"of");
+				if(this.getIntegerFromString(stringContainsInteger)==installmentNumber){
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectPaymentOption);
+					select=new Select(this.selectPaymentOption);
+					select.selectByIndex(i);
+					this.waitForPageLoadingSpinningStatusCompleted();
+					return lsPaymentOption;
+				}
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * To get Installment Options
+	 * @return - List<String>
+	 */
+	public List<String> getInstallmentOptions(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectPaymentOption);
+		Select select = new Select(this.selectPaymentOption);
+		List<WebElement> lstOptions=select.getOptions();
+		List<String> lstOptionText=new ArrayList<>();
+		for(WebElement option:lstOptions){
+			lstOptionText.add(this.getElementInnerText(option));
+		}
+		return lstOptionText;
 	}
 
 	/**
@@ -1785,7 +1995,7 @@ public class RegularCheckoutPage extends BasePage {
 			reporter.reportLogPass("The presetting installment number is equal to the installment number in installment section");
 		}
 		else{
-			reporter.reportLogFail("The presetting installment number:"+totalInstallmentNumber+" is equal to the installment number in installment section:"+currentTotalInstallmentNumber);
+			reporter.reportLogFail("The presetting installment number:"+totalInstallmentNumber+" is not equal to the installment number in installment section:"+currentTotalInstallmentNumber);
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblInstallmentTodayPayment);
@@ -1825,7 +2035,7 @@ public class RegularCheckoutPage extends BasePage {
 			reporter.reportLogPass("The calculated future monthly payment is equal to the future monthly payment in installment section: "+futureMonthlyPayment);
 		}
 		else{
-			reporter.reportLogFail("The calculated future monthly payment:"+calFutureMonthlyPayment+" is equal to the future monthly payment:"+futureMonthlyPayment+" in installment section");
+			reporter.reportLogFail("The calculated future monthly payment:"+calFutureMonthlyPayment+" is not equal to the future monthly payment:"+futureMonthlyPayment+" in installment section");
 		}
 	}
 
@@ -2883,6 +3093,15 @@ public class RegularCheckoutPage extends BasePage {
 				reporter.reportLogFailWithScreenshot("The shipping method item radio button in Change shipping method Dialog is not displaying correctly");
 			}
 
+			item=shippingMethodItem.findElement(byShippingMethodPrice);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsText = item.getText();
+			if (!lsText.isEmpty()) {
+				reporter.reportLogPass("The shipping method item price info in Change shipping method Dialog is displaying correctly");
+			} else {
+				reporter.reportLogFailWithScreenshot("The shipping method item price info in Change shipping method Dialog is not displaying correctly");
+			}
+
 			item=shippingMethodItem.findElement(byShippingMethodDetails);
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 			lsText = item.getText();
@@ -3247,6 +3466,19 @@ public class RegularCheckoutPage extends BasePage {
 	}
 
 	/**
+	 * To get Shipping Date In Header
+	 * @return - String
+	 */
+	public String getShippingDateInHeader() {
+		if (this.checkProductShippingDateExisting()) {
+			return this.getElementInnerText(this.lblShippingDate);
+		}
+		else{
+			return null;
+		}
+	}
+
+	/**
 	 * To verify Shipping Address on Checkout Page
 	 */
 	public String verifyShippingAddressDisplayOnCheckout() {
@@ -3299,9 +3531,9 @@ public class RegularCheckoutPage extends BasePage {
 	 */
 	public List<String> getMandatoryFieldsErrorMessage(int expectedErrorMessage){
 		if(expectedErrorMessage==0)
-			this.waitForCondition(Driver->{return this.mandatoryFieldErrorMessage.size()>0;},6000);
+			this.waitForCondition(Driver->{return this.mandatoryFieldErrorMessage.size()>0;},15000);
 		else
-			this.waitForCondition(Driver->{return this.mandatoryFieldErrorMessage.size()==expectedErrorMessage;},6000);
+			this.waitForCondition(Driver->{return this.mandatoryFieldErrorMessage.size()==expectedErrorMessage;},15000);
 		int loop = this.mandatoryFieldErrorMessage.size();
 		if(loop>0){
 			List<String> errorMessageList = new ArrayList<>();

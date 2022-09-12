@@ -1167,4 +1167,13 @@ import utils.ReusableActions;
 		}
 		return lsWholeContent.trim();
 	}
+
+	/**
+	 * To get element cursor type
+	 * @param - WebElement - element
+	 * @return String
+	 */
+	public String getElementCursorType(WebElement element) {
+		return element.getCssValue("cursor");
+	}
 }

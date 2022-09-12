@@ -47,8 +47,11 @@ public class SC_TC13_VerifyShoppingCart_ChangeItemQuantity extends BaseTest{
 				}, 30000);
 				getProductDetailPageThreadLocal().goToShoppingCartFromAddToBagPopupWithLoginFirst();
 
-				List<String> lstOptionText=getShoppingCartThreadLocal().getInstallmentOptions();
-				getShoppingCartThreadLocal().setInstallmentSetting(lstOptionText.get(1));
+				if(getShoppingCartThreadLocal().checkIsDropdownMenuForInstallmentNumber()){
+					List<String> lstOptionText=getShoppingCartThreadLocal().getInstallmentOptions();
+					getShoppingCartThreadLocal().setInstallmentSetting(lstOptionText.get(1));
+				}
+
 				Map<String, Object> shoppingCartMapBeforeChange = getShoppingCartThreadLocal().getShoppingSectionDetails("all");
 				Map<String,Object> mapOrderSummaryBeforeChange=getShoppingCartThreadLocal().getOrderSummaryDesc();
 				int itemCountInShoppingCartHeaderBeforeChange = getShoppingCartThreadLocal().GetAddedItemAmount();

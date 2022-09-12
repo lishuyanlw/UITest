@@ -501,7 +501,7 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
     @Override
     public void verifyHeaderItemsOnPage(){
         this.waitForPageToLoad();
-        getReusableActionsInstance().scrollToElement(this.lblShopNowLink);
+        this.scrollWindowUp(this.getDriver(),10000);
         this.waitForCondition(Driver->{return this.lblShopNowLink.isEnabled();},8000);
         //Verifying Shop Now
         this.verifyElementLink(this.lblShopNowLink);

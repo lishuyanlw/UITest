@@ -59,8 +59,11 @@ public class SC_TC16_VerifyShoppingCart_WithoutUserLogin extends BaseTest{
 			reporter.reportLog("To verify business logic Between Shopping Item List And SubTotal Section");
 			getShoppingCartThreadLocal().verifyBusinessLogicBetweenShoppingItemListAndSubTotalSection(shoppingCartMap);
 
-			List<String> lstOptionText=getShoppingCartThreadLocal().getInstallmentOptions();
-			getShoppingCartThreadLocal().setInstallmentSetting(lstOptionText.get(1));
+			if(getShoppingCartThreadLocal().checkIsDropdownMenuForInstallmentNumber()){
+				List<String> lstOptionText=getShoppingCartThreadLocal().getInstallmentOptions();
+				getShoppingCartThreadLocal().setInstallmentSetting(lstOptionText.get(1));
+			}
+
 			Map<String,Object> mapOrderSummary=getShoppingCartThreadLocal().getOrderSummaryDesc();
 			int itemAmount=getShoppingCartThreadLocal().GetAddedItemAmount();
 			float savingPrice=getShoppingCartThreadLocal().getSavingPriceFromShoppingCartHeader();

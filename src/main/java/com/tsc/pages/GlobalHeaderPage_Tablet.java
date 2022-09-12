@@ -125,7 +125,7 @@ public class GlobalHeaderPage_Tablet extends GlobalHeaderPage_Mobile{
     @Override
     public void verifyHeaderItemsOnPage(){
         this.waitForPageToLoad();
-        getReusableActionsInstance().scrollToElement(this.lnkTSBlackHeader);
+        this.scrollWindowUp(this.getDriver(),10000);
         this.waitForCondition(Driver->{return this.lnkTSBlackHeader.isEnabled();},8000);
         //Verifying ShowStopper
         this.verifyElementLink(this.lnkTSBlackHeader);

@@ -93,8 +93,8 @@ public class ProductDetailPage extends BasePage {
 	public WebElement btnAutoPlayVideoToolTipPopupMsgClose;
 
 	//Zoom Image part
-	@FindBy(xpath = "//section[@class='pdp-gallery']//figure[contains(@class,'swiper-slide-active')]")
-	public WebElement currentZoomImageIndicator;
+	@FindBy(xpath = "//section[@class='pdp-gallery']//div[@id='pdp__gallery']")
+	public WebElement cntCurrentZoomImageGallery;
 
 	@FindBy(xpath = "//section[@class='pdp-gallery']//figure[contains(@class,'swiper-slide-active')]//a[contains(@class,'gallery__image--aspect-ratio-wrap')]")
 	public WebElement lnkCurrentZoomImage;
@@ -3541,7 +3541,7 @@ public class ProductDetailPage extends BasePage {
 	 * @return true/false
 	 */
 	public boolean checkImageZoomingStatus(){
-		return this.currentZoomImageIndicator.getAttribute("class").contains("swiper-slide-zoomed");
+		return this.cntCurrentZoomImageGallery.getAttribute("class").contains("zoom");
 	}
 
 	/**
@@ -3556,8 +3556,7 @@ public class ProductDetailPage extends BasePage {
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lnkCurrentZoomImage);
 		lnkCurrentZoomImage.click();
-		//this.applyStaticWait(2*this.getStaticWaitForApplication());
-		this.waitForCondition(Driver->{return this.currentZoomImageIndicator.getAttribute("class").contains("swiper-slide-zoomed");},7000);
+		this.waitForCondition(Driver->{return this.cntCurrentZoomImageGallery.getAttribute("class").contains("zoom");},7000);
 		if(checkImageZoomingStatus()){
 			reporter.reportLogPass("Zooming out action is working");
 		}
