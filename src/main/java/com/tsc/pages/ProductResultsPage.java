@@ -3091,8 +3091,7 @@ public class ProductResultsPage extends BasePage{
 	public boolean checkProductItemBrandNameExisting(WebElement itemContainer) {
 		WebElement item=itemContainer.findElement(this.byProductBrand);
 		String lsText=this.getElementInnerText(item);
-
-		return !lsText.isEmpty();
+		return lsText.length()>1;
 	}
 
 	/**

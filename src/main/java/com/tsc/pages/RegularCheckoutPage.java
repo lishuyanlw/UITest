@@ -432,12 +432,18 @@ public class RegularCheckoutPage extends BasePage {
 	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//span[@class='summary__label' and contains(text(),'Est Taxes')]/following-sibling::span[@class='summary__value']")
 	public WebElement lblOrderSummaryTax;
 
-	//For promote code
+	//For applied discount items
 	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//span[@class='summary__label' and contains(text(),'Est Taxes')]/parent::div/following-sibling::div[1]")
 	public WebElement cntOrderSummaryAppliedDiscount;
 
+	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//div[@class='summary']/div[@class='summary__row']")
+	public List<WebElement> lstOrderSummaryRow;
+
 	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//b[contains(text(),'Applied Discounts')]")
 	public WebElement lblOrderSummaryAppliedDiscountTitle;
+
+	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//b[.='Applied Discounts']/parent::span/parent::div/following-sibling::div[@class='summary__row'][not(contains(@class,'justifyCenter'))][not(span[contains(@class,'bold')])]")
+	public List<WebElement> lstOrderSummaryAppliedDiscountList;
 
 	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//b[contains(text(),'Applied Discounts')]/parent::span/parent::div/following-sibling::div//span[contains(@class,'summary__label')][not(contains(.,'Gift Card'))]")
 	public WebElement lblOrderSummaryPromoteCodeLabel;
@@ -782,11 +788,29 @@ public class RegularCheckoutPage extends BasePage {
 	}
 
 	/**
-	 * To check Applied Discount Existing in OrderSummary
-	 * @return - boolean
+	 * To check Applied Discount Existing In OrderSummary()
+	 * @return
 	 */
-	public boolean checkOrderSummaryAppliedDiscountExisting(){
-		return this.checkChildElementExistingByAttribute(cntOrderSummaryAppliedDiscount,"class","leftAlign");
+	public boolean checkAppliedDiscountExistingInOrderSummary(){
+		return this.lstOrderSummaryRow.size()>4;
+	}
+
+	/**
+	 * To judge Applied Discount item Type
+	 * @return -String - "Both"/"GiftCard"/"PromoteCode"
+	 */
+	public String judgeAppliedDiscountType(){
+		if(this.lstOrderSummaryAppliedDiscountList.size()==2){
+			return "Both";
+		}
+
+		WebElement item=this.lstOrderSummaryAppliedDiscountList.get(0);
+		if(this.getElementInnerText(item).contains("Gift Card")){
+			return "GiftCard";
+		}
+		else{
+			return "PromoteCode";
+		}
 	}
 
 	/**
@@ -936,7 +960,7 @@ public class RegularCheckoutPage extends BasePage {
 			map.put("productLeftNumber",this.getIntegerFromString(lsText));
 		}
 		else{
-			map.put("productLeftNumber",null);
+			map.put("productLeftNumber",-1);
 		}
 
 		if(this.checkProductFreeShippingExisting(productItem)){
@@ -1870,6 +1894,28 @@ public class RegularCheckoutPage extends BasePage {
 	}
 
 	/**
+	 * To set PaymentOption By Random Index
+	 */
+	public void setPaymentOptionByRandomIndex(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectPaymentOption);
+		Select select=new Select(this.selectPaymentOption);
+
+		List<WebElement> lstOptions=select.getOptions();
+		int optionSize=lstOptions.size();
+		if(optionSize==1){
+			return;
+		}
+
+		if(optionSize==2){
+			select.selectByIndex(1);
+		}
+
+		int randomNumber=getRandomNumber(1, optionSize);
+		select.selectByIndex(randomNumber);
+		this.applyStaticWait(3*this.getStaticWaitForApplication());
+	}
+
+	/**
 	 * To get Shipping And Payment Description
 	 * @return - Map<String,Object>
 	 */
@@ -1915,6 +1961,56 @@ public class RegularCheckoutPage extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderSummaryTax);
 		lsText=this.lblOrderSummaryTax.getText();
 		map.put("tax",this.getFloatFromString(lsText,true));
+
+		WebElement item,subItem;
+		if(this.checkAppliedDiscountExistingInOrderSummary()){
+			String lsAppliedDiscountType=this.judgeAppliedDiscountType();
+			switch(lsAppliedDiscountType){
+				case "Both":
+					item=lstOrderSummaryAppliedDiscountList.get(0);
+					subItem=item.findElement(By.xpath("./span[1]"));
+					lsText=this.getElementInnerText(subItem).replace(":","");
+					map.put("promoteCodeTitle",lsText);
+					subItem=item.findElement(By.xpath("./span[2]"));
+					lsText=this.getElementInnerText(subItem);
+					map.put("promoteCodeValue",this.getFloatFromString(lsText,true));
+
+					item=lstOrderSummaryAppliedDiscountList.get(1);
+					subItem=item.findElement(By.xpath("./span[1]"));
+					lsText=this.getElementInnerText(subItem).replace(":","");
+					map.put("giftCardTitle",lsText);
+					subItem=item.findElement(By.xpath("./span[2]"));
+					lsText=this.getElementInnerText(subItem);
+					map.put("giftCardValue",this.getFloatFromString(lsText,true));
+					break;
+				case "PromoteCode":
+					item=lstOrderSummaryAppliedDiscountList.get(0);
+					subItem=item.findElement(By.xpath("./span[1]"));
+					lsText=this.getElementInnerText(subItem).replace(":","");
+					map.put("promoteCodeTitle",lsText);
+					subItem=item.findElement(By.xpath("./span[2]"));
+					lsText=this.getElementInnerText(subItem);
+					map.put("promoteCodeValue",this.getFloatFromString(lsText,true));
+
+					map.put("giftCardTitle",null);
+					map.put("giftCardValue",0.0f);
+					break;
+				case "GiftCard":
+					item=lstOrderSummaryAppliedDiscountList.get(0);
+					subItem=item.findElement(By.xpath("./span[1]"));
+					lsText=this.getElementInnerText(subItem).replace(":","");
+					map.put("giftCardTitle",lsText);
+					subItem=item.findElement(By.xpath("./span[2]"));
+					lsText=this.getElementInnerText(subItem);
+					map.put("giftCardValue",this.getFloatFromString(lsText,true));
+
+					map.put("promoteCodeTitle",null);
+					map.put("promoteCodeValue",0.0f);
+					break;
+				default:
+					break;
+			}
+		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderSummaryTotalPrice);
 		lsText=this.lblOrderSummaryTotalPrice.getText();
@@ -4135,23 +4231,13 @@ public class RegularCheckoutPage extends BasePage {
 			}
 		}
 
-		lsShoppingCartText=(String)shoppingCartItem.get("productLeftNumber");
-		lsCheckoutText=(String)checkoutItem.get("productLeftNumber");
-		if(lsShoppingCartText==null){
-			if(lsCheckoutText==null){
-				reporter.reportLogPass("The productLeftNumber in shoppingCart Item is the same as the one in checkout Item");
-			}
-			else{
-				reporter.reportLogFail("The productLeftNumber in shoppingCart Item is not the same as the one in checkout Item");
-			}
+		int shoppingCartLeftNumber=(int)shoppingCartItem.get("productLeftNumber");
+		int checkoutLeftNumber=(int)checkoutItem.get("productLeftNumber");
+		if(shoppingCartLeftNumber==checkoutLeftNumber){
+			reporter.reportLogPass("The productLeftNumber in shoppingCart Item is the same as the one in checkout Item");
 		}
 		else{
-			if(lsShoppingCartText.equalsIgnoreCase(lsCheckoutText)){
-				reporter.reportLogPass("The productLeftNumber in shoppingCart Item is the same as the one in checkout Item");
-			}
-			else{
-				reporter.reportLogFail("The productLeftNumber:"+lsShoppingCartText+" in shoppingCart Item is not the same as the one:"+lsCheckoutText+" in checkout Item");
-			}
+			reporter.reportLogFail("The productLeftNumber:"+shoppingCartLeftNumber+" in shoppingCart Item is not the same as the one:"+checkoutLeftNumber+" in checkout Item");
 		}
 
 		lsShoppingCartText=(String)shoppingCartItem.get("productFreeShipping");

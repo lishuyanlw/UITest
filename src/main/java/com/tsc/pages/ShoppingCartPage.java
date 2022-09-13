@@ -181,6 +181,9 @@ public class ShoppingCartPage extends BasePage {
 	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-details')]")
 	public WebElement cntCartPricingDetails;
 
+	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-details')]//div[@class='clearfix'][not(div[contains(@class,'text-center')])][not(div[contains(@class,'details-title')])]")
+	public List<WebElement> lstOrderSummaryRow;
+
 	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'details-box')]/*[contains(@class,'multipack')]")
 	public WebElement lblCartPricingMultiPackMessage;
 
@@ -210,6 +213,12 @@ public class ShoppingCartPage extends BasePage {
 
 	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-pricing')]//div[contains(normalize-space(text()),'Est. Taxes:')]/following-sibling::div[last()]")
 	public WebElement lblCartPricingShippingEstimateTax;
+
+	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-details')]//div[contains(@class,'cart-pricing')]//strong[.='APPLIED DISCOUNTS']")
+	public WebElement lblAppliedDiscountTitle;
+
+	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-details')]//div[contains(@class,'cart-pricing')]//strong[.='APPLIED DISCOUNTS']/parent::div/parent::div/following-sibling::div[not(contains(@class,'totalPrice'))][not(div[contains(@class,'text-center')])]")
+	public List<WebElement> lstAppliedDiscountList;
 
 	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-pricing')]//div[contains(normalize-space(text()),'TOTAL PRICE:')]")
 	public WebElement lblCartPricingTotalPriceTitle;
@@ -487,6 +496,32 @@ public class ShoppingCartPage extends BasePage {
 	 */
 	public boolean checkShippingWasPriceExisting(){
 		return !this.getElementInnerText(lblCartPricingShippingWasPrice).isEmpty();
+	}
+
+	/**
+	 * To check Applied Discount Existing In OrderSummary()
+	 * @return
+	 */
+	public boolean checkAppliedDiscountExistingInOrderSummary(){
+		return this.lstOrderSummaryRow.size()>3;
+	}
+
+	/**
+	 * To judge Applied Discount item Type
+	 * @return -String - "Both"/"GiftCard"/"PromoteCode"
+	 */
+	public String judgeAppliedDiscountType(){
+		if(this.lstAppliedDiscountList.size()==2){
+			return "Both";
+		}
+
+		WebElement item=this.lstAppliedDiscountList.get(0);
+		if(this.getElementInnerText(item).contains("Gift Card")){
+			return "GiftCard";
+		}
+		else{
+			return "PromoteCode";
+		}
 	}
 
 	/**
@@ -815,7 +850,7 @@ public class ShoppingCartPage extends BasePage {
 			map.put("productLeftNumber",this.getIntegerFromString(lsText));
 		}
 		else{
-			map.put("productLeftNumber",null);
+			map.put("productLeftNumber",-1);
 		}
 
 		if(this.checkFreeShippingMessageExisting(cartItem)){
@@ -1404,6 +1439,56 @@ public class ShoppingCartPage extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblCartPricingShippingEstimateTax);
 		lsText=this.lblCartPricingShippingEstimateTax.getText();
 		map.put("tax",this.getFloatFromString(lsText,true));
+
+		WebElement item,subItem;
+		if(this.checkAppliedDiscountExistingInOrderSummary()){
+			String lsAppliedDiscountType=this.judgeAppliedDiscountType();
+			switch(lsAppliedDiscountType){
+				case "Both":
+					item=lstAppliedDiscountList.get(0);
+					subItem=item.findElement(By.xpath("./div[1]"));
+					lsText=this.getElementInnerText(subItem).replace(":","");
+					map.put("promoteCodeTitle",lsText);
+					subItem=item.findElement(By.xpath("./div[2]"));
+					lsText=this.getElementInnerText(subItem);
+					map.put("promoteCodeValue",this.getFloatFromString(lsText,true));
+
+					item=lstAppliedDiscountList.get(1);
+					subItem=item.findElement(By.xpath("./div[1]"));
+					lsText=this.getElementInnerText(subItem).replace(":","");
+					map.put("giftCardTitle",lsText);
+					subItem=item.findElement(By.xpath("./div[2]"));
+					lsText=this.getElementInnerText(subItem);
+					map.put("giftCardValue",this.getFloatFromString(lsText,true));
+					break;
+				case "PromoteCode":
+					item=lstAppliedDiscountList.get(0);
+					subItem=item.findElement(By.xpath("./div[1]"));
+					lsText=this.getElementInnerText(subItem).replace(":","");
+					map.put("promoteCodeTitle",lsText);
+					subItem=item.findElement(By.xpath("./div[2]"));
+					lsText=this.getElementInnerText(subItem);
+					map.put("promoteCodeValue",this.getFloatFromString(lsText,true));
+
+					map.put("giftCardTitle",null);
+					map.put("giftCardValue",0.0f);
+					break;
+				case "GiftCard":
+					item=lstAppliedDiscountList.get(0);
+					subItem=item.findElement(By.xpath("./div[1]"));
+					lsText=this.getElementInnerText(subItem).replace(":","");
+					map.put("giftCardTitle",lsText);
+					subItem=item.findElement(By.xpath("./div[2]"));
+					lsText=this.getElementInnerText(subItem);
+					map.put("giftCardValue",this.getFloatFromString(lsText,true));
+
+					map.put("promoteCodeTitle",null);
+					map.put("promoteCodeValue",0.0f);
+					break;
+				default:
+					break;
+			}
+		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblCartPricingTotalPrice);
 		lsText=this.lblCartPricingTotalPrice.getText();

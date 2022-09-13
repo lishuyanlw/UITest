@@ -1176,4 +1176,14 @@ import utils.ReusableActions;
 	public String getElementCursorType(WebElement element) {
 		return element.getCssValue("cursor");
 	}
+
+	/**
+	 * To get random number greater or equal to given min value and less than give max value
+	 * @param - int - min - given min value
+	 * @param - max - max - given max value
+	 * @return - int
+	 */
+	public int getRandomNumber(int min, int max) {
+		return (int) ((Math.random() * (max - min)) + min);
+	}
 }

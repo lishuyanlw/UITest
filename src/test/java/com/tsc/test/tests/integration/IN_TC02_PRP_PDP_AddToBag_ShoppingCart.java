@@ -31,7 +31,7 @@ public class IN_TC02_PRP_PDP_AddToBag_ShoppingCart extends BaseTest {
         //Login using valid username and password
         getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword);
 
-        List<String> lstKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_APISearchingKeyword();
+        List<String> lstKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_ShoppingCartSearchKeyword();
         Map<String,Object> outputDataCriteria= new HashMap<String,Object>();
         outputDataCriteria.put("video", "1");
         outputDataCriteria.put("style", "1");
