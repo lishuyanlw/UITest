@@ -3930,4 +3930,38 @@ public class RegularCheckoutPage extends BasePage {
 		else
 			return false;
 	}
+
+	/**
+	 * This function deletes credit card associated with cart and with user
+	 * @param - String - customerEDP
+	 * @param - String - accessToken
+	 * @return - Boolean
+	 * @throws - IOException
+	 */
+	public Boolean deleteCreditCardForUserAndFromCart(CartResponse cartResponse, String customerEDP, String accessToken) throws IOException {
+		CartAPI cartAPI = new CartAPI();
+		AccountAPI accountAPI = new AccountAPI();
+		if(cartResponse!=null) {
+			List<CartResponse.CreditCardsClass> creditCardsClassList = cartResponse.getBuyer().getCreditCards();
+			for(CartResponse.CreditCardsClass creditCardsClass:creditCardsClassList){
+				Response creditCardDeleteResponse = null;
+				creditCardDeleteResponse = accountAPI.deleteCreditCardFromUser(creditCardsClass.getId(),customerEDP,accessToken);
+				if(creditCardDeleteResponse!=null && creditCardDeleteResponse.getStatusCode()==200)
+					continue;
+				else{
+					reporter.reportLog("Credit Card is not deleted as expected..");
+					return false;
+				}
+			}
+			int cartCreditCardId = cartResponse.getCreditCard().getId();
+			Response cartCreditCardDeleteResponse = cartAPI.deletePaymentDetailsForUserFromCart(customerEDP,String.valueOf(cartCreditCardId),accessToken);
+			if(cartCreditCardDeleteResponse.statusCode()==200)
+				return true;
+			else{
+				reporter.reportLog("Credit Card for cart payment is not deleted as expected..");
+				return false;
+			}
+		}
+		return false;
+	}
 }
