@@ -1055,6 +1055,53 @@ public class RegularCheckoutPage extends BasePage {
 	}
 
 	/**
+	 * To get promote code value in Order Summary section
+	 * @return - float
+	 */
+	public float getPromoteCodeValueInOrderSummary(){
+		String lsText=this.getElementInnerText(this.lblOrderSummaryPromoteCodeValue);
+		if(lsText.equalsIgnoreCase("-")){
+			return 0.0f;
+		}
+		else{
+			if(lsText.contains("-")){
+				return -1*this.getFloatFromString(lsText,true);
+			}
+			else{
+				return this.getFloatFromString(lsText,true);
+			}
+		}
+	}
+
+	/**
+	 * To get gift card value in Order Summary section
+	 * @return - float
+	 */
+	public float getGiftCardValueInOrderSummary(){
+		String lsText=this.getElementInnerText(this.lblOrderSummaryGiftCardValue);
+		if(lsText.equalsIgnoreCase("-")){
+			return 0.0f;
+		}
+		else{
+			if(lsText.contains("-")){
+				return -1*this.getFloatFromString(lsText,true);
+			}
+			else{
+				return this.getFloatFromString(lsText,true);
+			}
+		}
+	}
+
+	/**
+	 * To get gift card value in promote section
+	 * @return - float
+	 */
+	public float getGiftCardValueInPromoteSection(){
+		String lsText=this.getElementInnerText(this.lblOrderSummaryGiftCardAppliedMessage);
+		return this.getFloatFromString(lsText,true);
+	}
+
+	/**
 	 * To get Tax Province Code
 	 * @return - String
 	 */
@@ -1906,8 +1953,10 @@ public class RegularCheckoutPage extends BasePage {
 	 * @param - subTotalShoppingCart - float - subTotal in checkout cart
 	 * @param - orderSummaryMap - Map<String,Object>
 	 * @param - Map<String,Object> - provincialTaxRate - note that if pass null, will not calculate tax for comparison
+	 * @param - boolean - bPromoteCode
+	 * @param - boolean - bGiftCard
 	 */
-	public void verifyOrderSummaryBusinessLogic(float subTotalShoppingCart,Map<String,Object> orderSummaryMap,Map<String,Object> provincialTaxRate){
+	public void verifyOrderSummaryBusinessLogic(float subTotalShoppingCart,Map<String,Object> orderSummaryMap,Map<String,Object> provincialTaxRate,boolean bPromoteCode,boolean bGiftCard){
 		float wasPriceOrderSummary= (float) orderSummaryMap.get("wasPrice");
 		float nowPriceOrderSummary=(float) orderSummaryMap.get("nowPrice");
 		float calSavePriceOrderSummary;
@@ -1947,7 +1996,15 @@ public class RegularCheckoutPage extends BasePage {
 			}
 		}
 
-		float calTotalPrice=subTotal+tax+nowPriceOrderSummary;
+		float calTotalPrice=0.0f,promoteCodeValue=0.0f,giftCardValue=0.0f;
+		if(bPromoteCode){
+			promoteCodeValue=this.getPromoteCodeValueInOrderSummary();
+		}
+		if(bGiftCard){
+			giftCardValue=this.getGiftCardValueInOrderSummary();
+		}
+
+		calTotalPrice=subTotal+tax+nowPriceOrderSummary+promoteCodeValue+giftCardValue;
 		float totalPrice=(float) orderSummaryMap.get("totalPrice");
 		if(Math.abs(calTotalPrice-totalPrice)<0.01){
 			reporter.reportLogPass("The calculated total price in OrderSummary section is equal to the total price in OrderSummary section");
@@ -3977,4 +4034,251 @@ public class RegularCheckoutPage extends BasePage {
 			return this.waitForCondition(Driver->{return lblOrderSummaryGiftCardErrorMessage.isDisplayed();},15000);
 		}
 	}
+
+	/**
+	 * To verify product list Linkage Between ShoppingCart Page And Checkout Page
+	 * @param - Map<String,Object> - shoppingCartItem
+	 * @param - Map<String,Object> - checkoutItem
+	 */
+	public void verifyProductListLinkageBetweenShoppingCartPageAndCheckoutPage(Map<String,Object> shoppingCartItem,Map<String,Object> checkoutItem){
+		String lsShoppingCartText,lsCheckoutText;
+
+		lsShoppingCartText=(String)shoppingCartItem.get("productName");
+		lsCheckoutText=(String)checkoutItem.get("productName");
+		if(lsShoppingCartText.equalsIgnoreCase(lsCheckoutText)){
+			reporter.reportLogPass("The productName in shoppingCart Item is the same as the one in checkout Item");
+		}
+		else{
+			reporter.reportLogFail("The productName:"+lsShoppingCartText+" in shoppingCart Item is not the same as the one:"+lsCheckoutText+" in checkout Item");
+		}
+
+		lsShoppingCartText=(String)shoppingCartItem.get("productStyle");
+		lsCheckoutText=(String)checkoutItem.get("productStyle");
+		if(lsShoppingCartText==null){
+			if(lsCheckoutText==null){
+				reporter.reportLogPass("The productStyle in shoppingCart Item is the same as the one in checkout Item");
+			}
+			else{
+				reporter.reportLogFail("The productStyle in shoppingCart Item is not the same as the one in checkout Item");
+			}
+		}
+		else{
+			if(lsShoppingCartText.equalsIgnoreCase(lsCheckoutText)){
+				reporter.reportLogPass("The productStyle in shoppingCart Item is the same as the one in checkout Item");
+			}
+			else{
+				reporter.reportLogFail("The productStyle:"+lsShoppingCartText+" in shoppingCart Item is not the same as the one:"+lsCheckoutText+" in checkout Item");
+			}
+		}
+
+		lsShoppingCartText=(String)shoppingCartItem.get("productSize");
+		lsCheckoutText=(String)checkoutItem.get("productSize");
+		if(lsShoppingCartText==null){
+			if(lsCheckoutText==null){
+				reporter.reportLogPass("The productSize in shoppingCart Item is the same as the one in checkout Item");
+			}
+			else{
+				reporter.reportLogFail("The productSize in shoppingCart Item is not the same as the one in checkout Item");
+			}
+		}
+		else{
+			if(lsShoppingCartText.equalsIgnoreCase(lsCheckoutText)){
+				reporter.reportLogPass("The productSize in shoppingCart Item is the same as the one in checkout Item");
+			}
+			else{
+				reporter.reportLogFail("The productSize:"+lsShoppingCartText+" in shoppingCart Item is not the same as the one:"+lsCheckoutText+" in checkout Item");
+			}
+		}
+
+		if((boolean)shoppingCartItem.get("productBadge")==(boolean)checkoutItem.get("productBadge")){
+			reporter.reportLogPass("The productBadge in shoppingCart Item is the same as the one in checkout Item");
+		}
+		else{
+			reporter.reportLogFail("The productBadge in shoppingCart Item is not the same as the one in checkout Item");
+		}
+
+		lsShoppingCartText=(String)shoppingCartItem.get("productNumber");
+		lsCheckoutText=(String)checkoutItem.get("productNumber");
+		if(lsShoppingCartText==null){
+			if(lsCheckoutText==null){
+				reporter.reportLogPass("The productNumber in shoppingCart Item is the same as the one in checkout Item");
+			}
+			else{
+				reporter.reportLogFail("The productNumber in shoppingCart Item is not the same as the one in checkout Item");
+			}
+		}
+		else{
+			if(lsShoppingCartText.equalsIgnoreCase(lsCheckoutText)){
+				reporter.reportLogPass("The productNumber in shoppingCartItem is the same as the one in checkoutItem");
+			}
+			else{
+				reporter.reportLogFail("The productNumber:"+lsShoppingCartText+" in shoppingCart Item is not the same as the one:"+lsCheckoutText+" in checkout Item");
+			}
+		}
+
+		lsShoppingCartText=(String)shoppingCartItem.get("productShippingDate");
+		lsCheckoutText=(String)checkoutItem.get("productShippingDate");
+		if(lsShoppingCartText==null){
+			if(lsCheckoutText==null){
+				reporter.reportLogPass("The productShippingDate in shoppingCart Item is the same as the one in checkout Item");
+			}
+			else{
+				reporter.reportLogFail("The productShippingDate in shoppingCart Item is not the same as the one in checkout Item");
+			}
+		}
+		else{
+			if(lsShoppingCartText.equalsIgnoreCase(lsCheckoutText)){
+				reporter.reportLogPass("The productShippingDate in shoppingCart Item is the same as the one in checkout Item");
+			}
+			else{
+				reporter.reportLogFail("The productShippingDate:"+lsShoppingCartText+" in shoppingCart Item is not the same as the one:"+lsCheckoutText+" in checkout Item");
+			}
+		}
+
+		lsShoppingCartText=(String)shoppingCartItem.get("productLeftNumber");
+		lsCheckoutText=(String)checkoutItem.get("productLeftNumber");
+		if(lsShoppingCartText==null){
+			if(lsCheckoutText==null){
+				reporter.reportLogPass("The productLeftNumber in shoppingCart Item is the same as the one in checkout Item");
+			}
+			else{
+				reporter.reportLogFail("The productLeftNumber in shoppingCart Item is not the same as the one in checkout Item");
+			}
+		}
+		else{
+			if(lsShoppingCartText.equalsIgnoreCase(lsCheckoutText)){
+				reporter.reportLogPass("The productLeftNumber in shoppingCart Item is the same as the one in checkout Item");
+			}
+			else{
+				reporter.reportLogFail("The productLeftNumber:"+lsShoppingCartText+" in shoppingCart Item is not the same as the one:"+lsCheckoutText+" in checkout Item");
+			}
+		}
+
+		lsShoppingCartText=(String)shoppingCartItem.get("productFreeShipping");
+		lsCheckoutText=(String)checkoutItem.get("productFreeShipping");
+		if(lsShoppingCartText==null){
+			if(lsCheckoutText==null){
+				reporter.reportLogPass("The productFreeShipping in shoppingCart Item is the same as the one in checkout Item");
+			}
+			else{
+				reporter.reportLogFail("The productFreeShipping in shoppingCart Item is not the same as the one in checkout Item");
+			}
+		}
+		else{
+			if(lsShoppingCartText.equalsIgnoreCase(lsCheckoutText)){
+				reporter.reportLogPass("The productFreeShipping in shoppingCart Item is the same as the one in checkout Item");
+			}
+			else{
+				reporter.reportLogFail("The productFreeShipping:"+lsShoppingCartText+" in shoppingCart Item is not the same as the one:"+lsCheckoutText+" in checkout Item");
+			}
+		}
+	}
+
+	/**
+	 * To verify OrderSummary Linkage Between ShoppingCart Page And Checkout Page
+	 * @param - Map<String,Object> - shoppingCartItem
+	 * @param - Map<String,Object> - checkoutItem
+	 */
+	public void verifyOrderSummaryLinkageBetweenShoppingCartPageAndCheckoutPage(Map<String,Object> shoppingCartItem,Map<String,Object> checkoutItem) {
+		float shoppingCartValue, checkoutValue;
+		String lsShoppingCartText,lsCheckoutText;
+
+		shoppingCartValue = (float) shoppingCartItem.get("subTotal");
+		checkoutValue = (float) checkoutItem.get("subTotal");
+		if (Math.abs(shoppingCartValue-checkoutValue)<0.1f) {
+			reporter.reportLogPass("The subTotal in shoppingCart Item is the same as the one in checkout Item");
+		} else {
+			reporter.reportLogFail("The subTotal:"+shoppingCartValue+" in shoppingCart Item is not the same as the one:"+checkoutValue+" in checkout Item");
+		}
+
+		shoppingCartValue = (float) shoppingCartItem.get("wasPrice");
+		checkoutValue = (float) checkoutItem.get("wasPrice");
+		if (Math.abs(shoppingCartValue-checkoutValue)<0.1f) {
+			reporter.reportLogPass("The wasPrice in shoppingCart Item is the same as the one in checkout Item");
+		} else {
+			reporter.reportLogFail("The wasPrice:"+shoppingCartValue+" in shoppingCart Item is not the same as the one:"+checkoutValue+" in checkout Item");
+		}
+
+		shoppingCartValue = (float) shoppingCartItem.get("nowPrice");
+		checkoutValue = (float) checkoutItem.get("nowPrice");
+		if (Math.abs(shoppingCartValue-checkoutValue)<0.1f) {
+			reporter.reportLogPass("The nowPrice in shoppingCart Item is the same as the one in checkout Item");
+		} else {
+			reporter.reportLogFail("The nowPrice:"+shoppingCartValue+" in shoppingCart Item is not the same as the one:"+checkoutValue+" in checkout Item");
+		}
+
+		lsShoppingCartText = (String) shoppingCartItem.get("province");
+		lsCheckoutText = (String) checkoutItem.get("province");
+		if (lsShoppingCartText.equalsIgnoreCase(lsCheckoutText)) {
+			reporter.reportLogPass("The province in shoppingCart Item is the same as the one in checkout Item");
+		} else {
+			reporter.reportLogFail("The province:"+lsShoppingCartText+" in shoppingCart Item is not the same as the one:"+lsCheckoutText+" in checkout Item");
+		}
+
+		shoppingCartValue = (float) shoppingCartItem.get("tax");
+		checkoutValue = (float) checkoutItem.get("tax");
+		if (Math.abs(shoppingCartValue-checkoutValue)<0.1f) {
+			reporter.reportLogPass("The tax in shoppingCart Item is the same as the one in checkout Item");
+		} else {
+			reporter.reportLogFail("The tax:"+shoppingCartValue+" in shoppingCart Item is not the same as the one:"+checkoutValue+" in checkout Item");
+		}
+
+		shoppingCartValue = (float) shoppingCartItem.get("totalPrice");
+		checkoutValue = (float) checkoutItem.get("totalPrice");
+		if (Math.abs(shoppingCartValue-checkoutValue)<0.1f) {
+			reporter.reportLogPass("The totalPrice in shoppingCart Item is the same as the one in checkout Item");
+		} else {
+			reporter.reportLogFail("The totalPrice:"+shoppingCartValue+" in shoppingCart Item is not the same as the one:"+checkoutValue+" in checkout Item");
+		}
+
+		shoppingCartValue = (float) shoppingCartItem.get("savePrice");
+		checkoutValue = (float) checkoutItem.get("savePrice");
+		if (Math.abs(shoppingCartValue-checkoutValue)<0.1f) {
+			reporter.reportLogPass("The savePrice in shoppingCart Item is the same as the one in checkout Item");
+		} else {
+			reporter.reportLogFail("The savePrice:"+shoppingCartValue+" in shoppingCart Item is not the same as the one:"+checkoutValue+" in checkout Item");
+		}
+	}
+
+	/**
+	 * To verify EasyPayment Linkage Between ShoppingCart Page And Checkout Page
+	 * @param - Map<String,Object> - shoppingCartItem
+	 * @param - Map<String,Object> - checkoutItem
+	 */
+	public void verifyEasyPaymentLinkageBetweenShoppingCartPageAndCheckoutPage(Map<String,Object> shoppingCartItem,Map<String,Object> checkoutItem) {
+		float shoppingCartValue, checkoutValue;
+
+		int shoppingCartInstallmentsNumber = (int) shoppingCartItem.get("installmentsNumber");
+		int checkoutInstallmentsNumber = (int) checkoutItem.get("installmentsNumber");
+		if (shoppingCartInstallmentsNumber==checkoutInstallmentsNumber) {
+			reporter.reportLogPass("The installmentsNumber in shoppingCart Item is the same as the one in checkout Item");
+		} else {
+			reporter.reportLogFail("The installmentsNumber:"+shoppingCartInstallmentsNumber+" in shoppingCart Item is not the same as the one:"+checkoutInstallmentsNumber+" in checkout Item");
+		}
+
+		shoppingCartValue = (float) shoppingCartItem.get("todayPayment");
+		checkoutValue = (float) checkoutItem.get("todayPayment");
+		if (Math.abs(shoppingCartValue-checkoutValue)<0.1f) {
+			reporter.reportLogPass("The todayPayment in shoppingCart Item is the same as the one in checkout Item");
+		} else {
+			reporter.reportLogFail("The todayPayment:"+shoppingCartValue+" in shoppingCart Item is not the same as the one:"+checkoutValue+" in checkout Item");
+		}
+
+		shoppingCartValue = (float) shoppingCartItem.get("leftPayment");
+		checkoutValue = (float) checkoutItem.get("leftPayment");
+		if (Math.abs(shoppingCartValue-checkoutValue)<0.1f) {
+			reporter.reportLogPass("The leftPayment in shoppingCart Item is the same as the one in checkout Item");
+		} else {
+			reporter.reportLogFail("The leftPayment:"+shoppingCartValue+" in shoppingCart Item is not the same as the one:"+checkoutValue+" in checkout Item");
+		}
+
+		shoppingCartValue = (float) shoppingCartItem.get("futureMonthlyPayment");
+		checkoutValue = (float) checkoutItem.get("futureMonthlyPayment");
+		if (Math.abs(shoppingCartValue-checkoutValue)<0.1f) {
+			reporter.reportLogPass("The futureMonthlyPayment in shoppingCart Item is the same as the one in checkout Item");
+		} else {
+			reporter.reportLogFail("The futureMonthlyPayment:"+shoppingCartValue+" in shoppingCart Item is not the same as the one:"+checkoutValue+" in checkout Item");
+		}
+	}
+
 }

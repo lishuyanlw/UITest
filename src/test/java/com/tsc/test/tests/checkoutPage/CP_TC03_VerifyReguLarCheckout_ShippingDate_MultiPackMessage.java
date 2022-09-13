@@ -89,7 +89,7 @@ public class CP_TC03_VerifyReguLarCheckout_ShippingDate_MultiPackMessage extends
 
 		reporter.reportLog("Verify orderSummary business logic");
 		Map<String,Object> orderSummaryMapForCheckOutPage = getRegularCheckoutThreadLocal().getOrderSummaryDesc();
-		getRegularCheckoutThreadLocal().verifyOrderSummaryBusinessLogic(subTotalForCheckOutList,orderSummaryMapForCheckOutPage,null);
+		getRegularCheckoutThreadLocal().verifyOrderSummaryBusinessLogic(subTotalForCheckOutList,orderSummaryMapForCheckOutPage,null,false,false);
 
 		reporter.reportLog("Verify installment business logic");
 		Map<String,Object> easyPaymentMapForCheckOutPage = getRegularCheckoutThreadLocal().getEasyPayDesc();
@@ -144,7 +144,7 @@ public class CP_TC03_VerifyReguLarCheckout_ShippingDate_MultiPackMessage extends
 
 		reporter.reportLog("Verify orderSummary business logic");
 		orderSummaryMapForCheckOutPage = getRegularCheckoutThreadLocal().getOrderSummaryDesc();
-		getRegularCheckoutThreadLocal().verifyOrderSummaryBusinessLogic(subTotalForCheckOutList,orderSummaryMapForCheckOutPage,null);
+		getRegularCheckoutThreadLocal().verifyOrderSummaryBusinessLogic(subTotalForCheckOutList,orderSummaryMapForCheckOutPage,null,false,false);
 
 		reporter.reportLog("Verify installment business logic");
 		installmentsNumberForShoppingCart=getRegularCheckoutThreadLocal().getInstallmentNumberFromPaymentOptionText();
@@ -185,7 +185,7 @@ public class CP_TC03_VerifyReguLarCheckout_ShippingDate_MultiPackMessage extends
 
 		reporter.reportLog("Verify orderSummary business logic");
 		orderSummaryMapForCheckOutPage = getRegularCheckoutThreadLocal().getOrderSummaryDesc();
-		getRegularCheckoutThreadLocal().verifyOrderSummaryBusinessLogic(subTotalForCheckOutList,orderSummaryMapForCheckOutPage,null);
+		getRegularCheckoutThreadLocal().verifyOrderSummaryBusinessLogic(subTotalForCheckOutList,orderSummaryMapForCheckOutPage,null,false,false);
 
 		reporter.reportLog("Verify installment business logic");
 		installmentsNumberForShoppingCart=getRegularCheckoutThreadLocal().getInstallmentNumberFromPaymentOptionText();

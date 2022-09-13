@@ -309,4 +309,5 @@ checkOut:
       province: "Ontario"
   lblBillingAddress: "Same as shipping address"
   lblExistingAddressErrorMessage: "The shipping address you are trying to add already exists."
-
+  lblPromoteCode: "SHIP150"
+  lblGiftCardPromoteErrorMessage: "Gift cards cannot be used for orders that have Easy Pays."

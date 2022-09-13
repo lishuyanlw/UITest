@@ -1385,6 +1385,24 @@ public class ConstantData {
           List<Map<String,String>> newShippingAddressForUser;
         String lblBillingAddress;
         String lblExistingAddressErrorMessage;
+        String lblPromoteCode;
+        String lblGiftCardPromoteErrorMessage;
+
+        public String getLblGiftCardPromoteErrorMessage() {
+            return lblGiftCardPromoteErrorMessage;
+        }
+
+        public void setLblGiftCardPromoteErrorMessage(String lblGiftCardPromoteErrorMessage) {
+            this.lblGiftCardPromoteErrorMessage = lblGiftCardPromoteErrorMessage;
+        }
+
+        public String getLblPromoteCode() {
+            return lblPromoteCode;
+        }
+
+        public void setLblPromoteCode(String lblPromoteCode) {
+            this.lblPromoteCode = lblPromoteCode;
+        }
 
         public String getLblExistingAddressErrorMessage() {            return lblExistingAddressErrorMessage;        }
 

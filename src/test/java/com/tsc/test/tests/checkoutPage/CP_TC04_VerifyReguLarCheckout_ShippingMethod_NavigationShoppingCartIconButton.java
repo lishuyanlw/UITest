@@ -86,7 +86,7 @@ public class CP_TC04_VerifyReguLarCheckout_ShippingMethod_NavigationShoppingCart
 		float subTotalForCheckOutList= (float) summaryMapForCheckOutList.get("subTotal");
 
 		reporter.reportLog("Verify orderSummary business logic");
-		getRegularCheckoutThreadLocal().verifyOrderSummaryBusinessLogic(subTotalForCheckOutList,orderSummaryMapChangedForCheckOutPage,null);
+		getRegularCheckoutThreadLocal().verifyOrderSummaryBusinessLogic(subTotalForCheckOutList,orderSummaryMapChangedForCheckOutPage,null,false,false);
 
 		reporter.reportLog("Verify installment business logic");
 		getRegularCheckoutThreadLocal().verifyInstallmentBusinessLogic(installmentsNumberForShoppingCart,orderSummaryMapChangedForCheckOutPage);
