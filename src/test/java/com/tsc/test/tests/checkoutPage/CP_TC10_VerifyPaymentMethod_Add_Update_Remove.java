@@ -3,11 +3,13 @@ package com.tsc.test.tests.checkoutPage;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.tsc.api.apiBuilder.CartAPI;
 import com.tsc.api.pojo.CartResponse;
+import com.tsc.api.util.DataConverter;
 import com.tsc.api.util.JsonParser;
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 import io.restassured.response.Response;
+import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.testng.annotations.Test;
 
@@ -28,6 +30,11 @@ public class CP_TC10_VerifyPaymentMethod_Add_Update_Remove extends BaseTest {
         String customerEDP = getApiUserSessionDataMapThreadLocal().get("customerEDP").toString();
         String lsUserName = TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
         String lsPassword = TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
+        String paymentErrorMessage = TestDataHandler.constantData.getCheckOut().getLblPaymentMethodErrorMessage();
+        List<List<String>> addNewCardErrorMessage = TestDataHandler.constantData.getCheckOut().getLstPaymentMethodCardAdditionErrorMessage();
+        String invalidCreditCardNumber = TestDataHandler.constantData.getCheckOut().getLblInvalidCreditCardNumber();
+        List<String> creditCardType = TestDataHandler.constantData.myAccount.getLst_newCreditCardType();
+        JSONObject creditCardData = new DataConverter().readJsonFileIntoJSONObject("test-data/CreditCard.json");
 
         try{
             //Emptying Cart for test to run with right state
@@ -55,8 +62,42 @@ public class CP_TC10_VerifyPaymentMethod_Add_Update_Remove extends BaseTest {
             }
             getRegularCheckoutThreadLocal().navigateToCheckoutPage();
 
+            //Verify error message for payment type as no card is associated with user
+            reporter.reportLog("Verify error message for payment type as no card is associated with user");
+            getRegularCheckoutThreadLocal().verifyErrorMessage(getRegularCheckoutThreadLocal().lblPaymentMethodErrorMessage,paymentErrorMessage);
 
+            //Verify Add Payment Method dialog is displayed
+            reporter.reportLog("Verify Add Payment Method dialog is displayed");
+                getRegularCheckoutThreadLocal().openAddOrChangePaymentMethodDialog();
+            getRegularCheckoutThreadLocal().verifyAddOrChangePaymentMethodDialogContents();
 
+            //Verify required message for all fields and also invalid/expired message
+            reporter.reportLog("Verify required message for all fields and also invalid/expired message");
+            getRegularCheckoutThreadLocal().openUsingNewCardDialog();
+            reporter.reportLog("1 > Verify required message for all fields on Add Payment Method Dialog");
+            getRegularCheckoutThreadLocal().verifyUsingANewCardDialogContents();
+            getRegularCheckoutThreadLocal().closeAddOrChangePaymentMethodDialog(true);
+            reporter.reportLog("2 > Verify Mandatory Error Message");
+            getRegularCheckoutThreadLocal().verifyErrorMessageOnAddPaymentMethodDialog(addNewCardErrorMessage.get(0));
+            reporter.reportLog("3 > Verify Invalid Credit Card Error Message");
+            getRegularCheckoutThreadLocal().addAndVerfiyInvalidCardErrorMessage(invalidCreditCardNumber,addNewCardErrorMessage.get(1).get(0));
+            reporter.reportLog("4 > Verify Expired Credit Card Error Message");
+            getRegularCheckoutThreadLocal().addNewCreditCard("expired",true);
+            getRegularCheckoutThreadLocal().closeAddOrChangePaymentMethodDialog(true);
+            getRegularCheckoutThreadLocal().verifyErrorMessageOnAddPaymentMethodDialog(addNewCardErrorMessage.get(2));
+
+            //Verify by adding existing card
+            //Verify display of icon just after entering CC number - covered in function - addNewCreditCard()
+            reporter.reportLog("Verify by adding existing card and \n" +
+                    "Verify display of icon just after entering CC number");
+            getRegularCheckoutThreadLocal().closeAddOrChangePaymentMethodDialog(false);
+            for(String cardType:creditCardType){
+                getRegularCheckoutThreadLocal().openUsingNewCardDialog();
+                getRegularCheckoutThreadLocal().addNewCreditCard(cardType,true);
+                getRegularCheckoutThreadLocal().closeAddOrChangePaymentMethodDialog(true);
+                getRegularCheckoutThreadLocal().openAddOrChangePaymentMethodDialog();
+                getRegularCheckoutThreadLocal().verfiyAddedCardsForUserInPaymentMethod(cardType);
+            }
         }finally{
             //Emptying Cart for test to run with right state
             getShoppingCartThreadLocal().emptyCart(Integer.valueOf(customerEDP),accessToken);

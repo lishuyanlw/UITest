@@ -319,13 +319,19 @@ public class RegularCheckoutPage extends BasePage {
 
 	@FindBy(xpath = "//div[contains(@class,'ReactModal__Content')]//button[@class='modal__button--save button']")
 	public WebElement btnRemoveCardDialogCloseRemoveButton;
+
+	@FindBy(xpath = "//div[@class='card__body']//div[contains(@class,'error')]")
+	public List<WebElement> lstCreditCardMandatoryErrorMessage;
 	////////////////////////////////////////////////////////////////
 
 
 	////////////////////////////////////////////////////
 	//For the popup window by clicking using a new card button
-	@FindBy(xpath = "//div[contains(@aria-label,'Use A New Card')]//div[@class='card__header']")
+	@FindBy(xpath = "//div[@class='modal__header']/h3")
 	public WebElement lblUsingANewCardDialogTitle;
+
+	@FindBy(xpath = "//div[contains(@aria-label,'Use A New Card')]//div[@class='card__header']")
+	public WebElement lblUsingANewCardSelectTitle;
 
 	@FindBy(xpath = "//div[contains(@aria-label,'Use A New Card')]//button[contains(@class,'modal__button-back')]")
 	public WebElement btnUsingANewCardDialogBackButton;
@@ -352,6 +358,9 @@ public class RegularCheckoutPage extends BasePage {
 	public WebElement labelUsingANewCardDialogTSCCardRadio;
 
 	//For Credit card
+	@FindBy(xpath = "//span[@id='semafoneResponseSpan']")
+	public WebElement lblInvalidCreditCardErrorMessage;
+
 	@FindBy(xpath = "//div[contains(@aria-label,'Use A New Card')]//div[@class='standardCCBlock']//h3[@class='semafone__cardnumber']")
 	public WebElement lblUsingANewCardDialogCreditCardNumberTitle;
 
@@ -1422,6 +1431,7 @@ public class RegularCheckoutPage extends BasePage {
 	 * @param -boolean - bSave - true for save and false for close it directly
 	 */
 	public void closeAddOrChangePaymentMethodDialog(boolean bSave){
+		this.waitForCondition(Driver->{return this.btnAddOrChangePaymentMethodDialogSaveButton.isEnabled();},5000);
 		if(bSave){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrChangePaymentMethodDialogSaveButton);
 			btnAddOrChangePaymentMethodDialogSaveButton.click();
@@ -1501,7 +1511,7 @@ public class RegularCheckoutPage extends BasePage {
 	public boolean openUsingNewCardDialog(WebElement editButton){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(editButton);
 		editButton.click();
-		return this.waitForCondition(Driver->{return this.getElementInnerText(lblUsingANewCardDialogTitle).equalsIgnoreCase("EDIT PAYMENT CARD");},10000);
+		return this.waitForCondition(Driver->{return this.getElementInnerText(lblUsingANewCardSelectTitle).equalsIgnoreCase("EDIT PAYMENT CARD");},10000);
 	}
 
 	/**
@@ -1555,7 +1565,7 @@ public class RegularCheckoutPage extends BasePage {
 	 * To add a new Credit card
 	 * @param - String - creditCardType
 	 */
-	public void addNewCreditCard(String creditCardType){
+	public void addNewCreditCard(String creditCardType,boolean validCreditCard){
 		JSONObject cardData=this.getCardDataFromYamlFile(creditCardType);
 		String cardNumber= (String) cardData.get("Number");
 		String expiredMonth=(String) cardData.get("DisplayExpirationMonth");
@@ -1569,6 +1579,15 @@ public class RegularCheckoutPage extends BasePage {
 		inputCreditCardNumberInIframe.sendKeys(cardNumber);
 		this.getDriver().switchTo().defaultContent();
 
+		//Verify display of icon just after entering CC number
+		if(!creditCardType.equalsIgnoreCase("expired") && validCreditCard){
+			String cardType = this.getInputCreditCardNumberType();
+			if(cardType.equalsIgnoreCase(creditCardType))
+				reporter.reportLogPass("Selected Credit Card : "+creditCardType+" image is displayed as expected");
+			else
+				reporter.reportLogFailWithScreenshot("Selected Credit Card : "+creditCardType+" not image is displayed as expected");
+		}
+
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputUsingANewCardDialogCreditExpirationDateMonth);
 		inputUsingANewCardDialogCreditExpirationDateMonth.clear();
 		inputUsingANewCardDialogCreditExpirationDateMonth.sendKeys(expiredMonth);
@@ -1579,10 +1598,31 @@ public class RegularCheckoutPage extends BasePage {
 	}
 
 	/**
+	 * This function verifies addition of invalid credit card error message
+	 * @param - String - cardNumber - invalid credit card number
+	 * @param - String - expectedErrorMessage
+	 */
+	public void addAndVerfiyInvalidCardErrorMessage(String cardNumber,String expectedErrorMessage){
+		this.clickWebElementUsingJS(this.inputUsingANewCardDialogCreditCardRadio);
+		this.waitForCondition(Driver->{return this.lblUsingANewCardSelectTitle.getText().contains("CARD TYPE");},5000);
+		this.getDriver().switchTo().frame(iframeUsingANewCardDialogCreditCardNumberInput);
+		inputCreditCardNumberInIframe.clear();
+		inputCreditCardNumberInIframe.sendKeys(cardNumber);
+		this.getDriver().switchTo().defaultContent();
+		this.waitForCondition(Driver->{return !this.lblInvalidCreditCardErrorMessage.getText().isEmpty();},5000);
+		String errorMessage = this.lblInvalidCreditCardErrorMessage.getText();
+		if(errorMessage.equalsIgnoreCase(expectedErrorMessage))
+			reporter.reportLogPass("Invalid Credit Card Error Message is as expected: "+errorMessage);
+		else
+			reporter.reportLogFailWithScreenshot("Invalid Credit Card Error Message is not as expected: "+errorMessage);
+	}
+
+	/**
 	 * To get Input Credit Card Number Type
 	 * @return - String - "Visa"/"MC"/"Amex"
 	 */
 	public String getInputCreditCardNumberType(){
+		this.waitForCondition(Driver->{return !lblInputCreditCardNumberType.getAttribute("class").trim().isEmpty();},15000);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblInputCreditCardNumberType);
 		String lsCreditCardClass=lblInputCreditCardNumberType.getAttribute("class").trim();
 		if(lsCreditCardClass.contains(" ")){
@@ -1631,7 +1671,7 @@ public class RegularCheckoutPage extends BasePage {
 				addNewTSCCard();
 			}
 			else{
-				addNewCreditCard(cardType);
+				addNewCreditCard(cardType,true);
 			}
 			closeUsingANewCardDialog(true);
 		}
@@ -1666,7 +1706,7 @@ public class RegularCheckoutPage extends BasePage {
 				addNewTSCCard();
 			}
 			else{
-				addNewCreditCard(cardType);
+				addNewCreditCard(cardType,true);
 			}
 			closeUsingANewCardDialog(true);
 
@@ -3156,63 +3196,7 @@ public class RegularCheckoutPage extends BasePage {
 		}
 
 		if(this.checkAvailablePaymentMethodExisting()){
-			WebElement item, paymentItem;
-			int loopSize=lstAddOrChangePaymentMethodDialogAvailableCardContainer.size();
-			for(int i=0;i<loopSize;i++){
-				reporter.reportLog("Verify payment method "+i);
-				paymentItem=lstAddOrChangePaymentMethodDialogAvailableCardContainer.get(i);
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(paymentItem);
-				paymentItem.click();
-				this.applyStaticWait(300);
-
-				item=paymentItem.findElement(byAddOrChangePaymentMethodDialogSelectLabel);
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-				if(this.getReusableActionsInstance().isElementVisible(item)){
-					reporter.reportLogPass("The select payment is displaying correctly");
-				}
-				else{
-					reporter.reportLogFailWithScreenshot("The select payment is not displaying correctly");
-				}
-
-				item=paymentItem.findElement(byAddOrChangePaymentMethodDialogEditButton);
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-				lsText=item.getText();
-				if(!lsText.isEmpty()){
-					reporter.reportLogPass("The edit button is displaying correctly");
-				}
-				else{
-					reporter.reportLogFailWithScreenshot("The edit button is not displaying correctly");
-				}
-
-				item=paymentItem.findElement(byAddOrChangePaymentMethodDialogRemoveButton);
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-				lsText=item.getText();
-				if(!lsText.isEmpty()){
-					reporter.reportLogPass("The remove button is displaying correctly");
-				}
-				else{
-					reporter.reportLogFailWithScreenshot("The remove button is not displaying correctly");
-				}
-
-				item=paymentItem.findElement(byAddOrChangePaymentMethodDialogCardLogo);
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-				if(this.getReusableActionsInstance().isElementVisible(item)){
-					reporter.reportLogPass("The card Logo in Add Or Change Payment Method Dialog is displaying correctly");
-				}
-				else{
-					reporter.reportLogFailWithScreenshot("The card Logo in Add Or Change Payment Method Dialog is not displaying correctly");
-				}
-
-				item=paymentItem.findElement(byAddOrChangePaymentMethodDialogCardDetails);
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-				lsText=item.getText();
-				if(!lsText.isEmpty()){
-					reporter.reportLogPass("The payment details are displaying correctly");
-				}
-				else{
-					reporter.reportLogFailWithScreenshot("The payment details are not displaying correctly");
-				}
-			}
+			this.verfiyAddedCardsForUserInPaymentMethod(null);
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrChangePaymentMethodDialogUsingANewCardButton);
@@ -3237,6 +3221,103 @@ public class RegularCheckoutPage extends BasePage {
 			reporter.reportLogPass("The save Button in Add Or Change payment method Dialog is displaying correctly");
 		} else {
 			reporter.reportLogFailWithScreenshot("The save Button in Add Or Change payment method Dialog is not displaying correctly");
+		}
+	}
+
+	/**
+	 * This function verifies added cards for user
+	 */
+	public void verfiyAddedCardsForUserInPaymentMethod(String creditCardType){
+		boolean flag = false;
+		Boolean selectedCard = false;
+		String lsText,selectedText;
+		WebElement item, paymentItem;
+		int loopSize=lstAddOrChangePaymentMethodDialogAvailableCardContainer.size();
+		for(int i=0;i<loopSize;i++){
+			selectedCard = false;
+			reporter.reportLog("Verify payment method "+i);
+			paymentItem=lstAddOrChangePaymentMethodDialogAvailableCardContainer.get(i);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(paymentItem);
+			selectedText = paymentItem.getText().trim().toLowerCase();
+			selectedCard = this.getFormatStringFromPaymentAddDialogForSelectedCard(selectedText,"selectededitremove");
+
+			if(selectedCard){
+				flag = true;
+				item=paymentItem.findElement(byAddOrChangePaymentMethodDialogEditButton);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+				lsText=item.getText();
+				if(!lsText.isEmpty()){
+					reporter.reportLogPass("The edit button is displaying correctly");
+				}
+				else{
+					reporter.reportLogFailWithScreenshot("The edit button is not displaying correctly");
+				}
+
+				item=paymentItem.findElement(byAddOrChangePaymentMethodDialogRemoveButton);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+				lsText=item.getText();
+				if(!lsText.isEmpty()){
+					reporter.reportLogPass("The remove button is displaying correctly");
+				}
+				else{
+					reporter.reportLogFailWithScreenshot("The remove button is not displaying correctly");
+				}
+			}
+
+			item=paymentItem.findElement(byAddOrChangePaymentMethodDialogSelectLabel);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			if(this.getReusableActionsInstance().isElementVisible(item)){
+				reporter.reportLogPass("The select payment is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The select payment is not displaying correctly");
+			}
+
+			item=paymentItem.findElement(byAddOrChangePaymentMethodDialogCardLogo);
+			String cardlogo = item.getAttribute("class").toLowerCase();
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			if(this.getReusableActionsInstance().isElementVisible(item)){
+				reporter.reportLogPass("The card Logo in Add Or Change Payment Method Dialog is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The card Logo in Add Or Change Payment Method Dialog is not displaying correctly");
+			}
+
+			if(creditCardType!=null && cardlogo.contains(creditCardType.toLowerCase())){
+				String cardType = item.getAttribute("class");
+				if(cardType.toLowerCase().contains(creditCardType.toLowerCase()))
+					reporter.reportLogPass("Credit Card is added as expected");
+				else
+					reporter.reportLogFailWithScreenshot("Credit Card added is not as expected: "+cardType);
+			}
+
+			item=paymentItem.findElement(byAddOrChangePaymentMethodDialogCardDetails);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsText=item.getText();
+			if(!lsText.isEmpty()){
+				reporter.reportLogPass("The payment details are displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The payment details are not displaying correctly");
+			}
+		}
+		if(flag)
+			reporter.reportLog("Selected Card verification done as expected!");
+		else
+			reporter.reportLogFailWithScreenshot("Selected Card verification is not done as expected..");
+	}
+
+	public void verifyPaymentMethodOnCheckoutWithCardOnAddChangeDialog(String checkoutPaymentCardType,JSONObject cardDetails){
+		WebElement item, cardType;
+		Boolean creditCardText = false;
+		String selectedText;
+		int loopSize=lstAddOrChangePaymentMethodDialogAvailableCardContainer.size();
+		for(int i=0;i<loopSize;i++){
+			creditCardText = false;
+			cardType=lstAddOrChangePaymentMethodDialogAvailableCardContainer.get(i);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(cardType);
+			selectedText = cardType.getText();
+			creditCardText = this.getFormatStringFromPaymentAddDialogForSelectedCard(selectedText,"");
 		}
 	}
 
@@ -3340,7 +3421,7 @@ public class RegularCheckoutPage extends BasePage {
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputUsingANewCardDialogCreditCardRadio);
-		if(this.getReusableActionsInstance().isElementVisible(inputUsingANewCardDialogCreditCardRadio)){
+		if(this.inputUsingANewCardDialogCreditCardRadio.isEnabled()){
 			reporter.reportLogPass("The CreditCard Radio button in using a new card Dialog is displaying correctly");
 		}
 		else{
@@ -3353,22 +3434,6 @@ public class RegularCheckoutPage extends BasePage {
 		}
 		else{
 			reporter.reportLogFailWithScreenshot("The CreditCard Radio button label in using a new card Dialog is not displaying correctly");
-		}
-
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputUsingANewCardDialogTSCCardRadio);
-		if(this.getReusableActionsInstance().isElementVisible(inputUsingANewCardDialogTSCCardRadio)){
-			reporter.reportLogPass("The TSC Radio button in using a new card Dialog is displaying correctly");
-		}
-		else{
-			reporter.reportLogFailWithScreenshot("The TSC Radio button in using a new card Dialog is not displaying correctly");
-		}
-
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(labelUsingANewCardDialogTSCCardRadio);
-		if(this.getReusableActionsInstance().isElementVisible(labelUsingANewCardDialogTSCCardRadio)){
-			reporter.reportLogPass("The TSC Radio button label in using a new card Dialog is displaying correctly");
-		}
-		else{
-			reporter.reportLogFailWithScreenshot("The TSC Radio button label in using a new card Dialog is not displaying correctly");
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblUsingANewCardDialogCreditCardNumberTitle);
@@ -3414,6 +3479,22 @@ public class RegularCheckoutPage extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(labelUsingANewCardDialogTSCCardRadio);
 		labelUsingANewCardDialogTSCCardRadio.click();
 		this.applyStaticWait(300);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputUsingANewCardDialogTSCCardRadio);
+		if(this.inputUsingANewCardDialogTSCCardRadio.isEnabled()){
+			reporter.reportLogPass("The TSC Radio button label in using a new card Dialog is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The TSC Radio button label in using a new card Dialog is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(labelUsingANewCardDialogTSCCardRadio);
+		if(this.getReusableActionsInstance().isElementVisible(labelUsingANewCardDialogTSCCardRadio)){
+			reporter.reportLogPass("The TSC Radio button in using a new card Dialog is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The TSC Radio button in using a new card Dialog is not displaying correctly");
+		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblUsingANewCardDialogTSCCardNumberTitle);
 		lsText = lblUsingANewCardDialogTSCCardNumberTitle.getText();
@@ -3943,25 +4024,78 @@ public class RegularCheckoutPage extends BasePage {
 		AccountAPI accountAPI = new AccountAPI();
 		if(cartResponse!=null) {
 			List<CartResponse.CreditCardsClass> creditCardsClassList = cartResponse.getBuyer().getCreditCards();
-			for(CartResponse.CreditCardsClass creditCardsClass:creditCardsClassList){
-				Response creditCardDeleteResponse = null;
-				creditCardDeleteResponse = accountAPI.deleteCreditCardFromUser(creditCardsClass.getId(),customerEDP,accessToken);
-				if(creditCardDeleteResponse!=null && creditCardDeleteResponse.getStatusCode()==200)
-					continue;
-				else{
-					reporter.reportLog("Credit Card is not deleted as expected..");
-					return false;
+			if(creditCardsClassList.size()>0){
+				for(CartResponse.CreditCardsClass creditCardsClass:creditCardsClassList){
+					Response creditCardDeleteResponse = null;
+					creditCardDeleteResponse = accountAPI.deleteCreditCardFromUser(creditCardsClass.getId(),customerEDP,accessToken);
+					if(creditCardDeleteResponse!=null && creditCardDeleteResponse.getStatusCode()==200)
+						continue;
+					else{
+						reporter.reportLog("Credit Card is not deleted as expected..");
+						return false;
+					}
 				}
 			}
-			int cartCreditCardId = cartResponse.getCreditCard().getId();
-			Response cartCreditCardDeleteResponse = cartAPI.deletePaymentDetailsForUserFromCart(customerEDP,String.valueOf(cartCreditCardId),accessToken);
-			if(cartCreditCardDeleteResponse.statusCode()==200)
+			CartResponse.CreditCardsClass cartCreditCard = cartResponse.getCreditCard();
+			if(cartCreditCard!=null){
+				int cartCreditCardId = cartResponse.getCreditCard().getId();
+				Response cartCreditCardDeleteResponse = cartAPI.deletePaymentDetailsForUserFromCart(customerEDP,String.valueOf(cartCreditCardId),accessToken);
+				if(cartCreditCardDeleteResponse.statusCode()==200)
+					return true;
+				else{
+					reporter.reportLog("Credit Card for cart payment is not deleted as expected..");
+					return false;
+				}
+			}else
 				return true;
-			else{
-				reporter.reportLog("Credit Card for cart payment is not deleted as expected..");
-				return false;
-			}
 		}
 		return false;
+	}
+
+	/**
+	 * This function verifies error message on screen
+	 * @param - webElement
+	 * @param - expectedMessage
+	 * @return - Boolean value
+	 */
+	public Boolean verifyErrorMessage(WebElement webElement, String expectedMessage){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(webElement);
+		String errorMessage = webElement.getText();
+		if(errorMessage.equalsIgnoreCase(expectedMessage)){
+			reporter.reportLogPass("Error Message is as expected: "+errorMessage);
+			return true;
+		}else
+			reporter.reportLogFail("Error Message on screen: "+errorMessage+ " is not as expected: "+expectedMessage);
+		return false;
+	}
+
+	/**
+	 * This function verifies mandatory error message on Payment Type Dialog
+	 * @param - expectedErrorMessageList list Object of error message
+	 */
+	public void verifyErrorMessageOnAddPaymentMethodDialog(List<String> expectedErrorMessageList){
+		List<String> errorMessage = new ArrayList<>();
+		this.waitForCondition(Driver->{return this.lblUsingANewCardSelectTitle.getText().contains("CARD TYPE");},5000);
+		List<WebElement> errorMessageWebElementList = this.lstCreditCardMandatoryErrorMessage;
+		for(WebElement webElement:errorMessageWebElementList){
+			errorMessage.add(webElement.getText());
+		}
+		if(errorMessage.size() == expectedErrorMessageList.size()){
+			reporter.reportLogPass("Actual and Expected Error Message are same as expected");
+			for(String message:errorMessage){
+				if(expectedErrorMessageList.contains(message))
+					reporter.reportLogPass("Error Message is as expected: "+message);
+				else
+					reporter.reportLogFailWithScreenshot("Error Message is not as expected: "+message);
+			}
+		}else
+			reporter.reportLogFail("Expected Error Message size: "+expectedErrorMessageList.size()+" is not same as actual error message size: "+errorMessage.size());
+	}
+
+	public Boolean getFormatStringFromPaymentAddDialogForSelectedCard(String selectedCardText, String expectedText){
+		if(selectedCardText.trim().toLowerCase().replace("\n","").contains(expectedText.toLowerCase()))
+			return true;
+		else
+			return false;
 	}
 }
