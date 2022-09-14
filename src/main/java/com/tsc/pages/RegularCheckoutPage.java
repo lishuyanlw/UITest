@@ -1610,7 +1610,7 @@ public class RegularCheckoutPage extends BasePage {
 	 */
 	public void addAndVerifiyInvalidCardErrorMessage(String cardNumber,String expectedErrorMessage){
 		this.clickWebElementUsingJS(this.inputUsingANewCardDialogCreditCardRadio);
-		this.waitForCondition(Driver->{return this.lblUsingANewCardSelectTitle.getText().contains("CARD TYPE");},5000);
+		this.waitForCondition(Driver->{return this.lblUsingANewCardSelectTitle.getText().trim().toLowerCase().contains("card type");},5000);
 		this.getDriver().switchTo().frame(iframeUsingANewCardDialogCreditCardNumberInput);
 		inputCreditCardNumberInIframe.clear();
 		inputCreditCardNumberInIframe.sendKeys(cardNumber);
@@ -3324,14 +3324,14 @@ public class RegularCheckoutPage extends BasePage {
 			creditCardText = this.getFormatStringFromPaymentAddDialogForSelectedCard(selectedText,"selectededitremove");
 			if(creditCardText){
 				if(checkoutPaymentCardType.equalsIgnoreCase(cardDetails.get("CardType").toString()))
-					reporter.reportLog("Credit Card on checkout page is same that is selected");
+					reporter.reportLogPass("Credit Card on checkout page is same that is selected");
 				else
 					reporter.reportLogFailWithScreenshot("Credit Card on checkout page is not same as on Payment Dialog");
 
 				String inputCardNumber = cardDetails.get("Number").toString();
 				String displayCardNumber = inputCardNumber.substring(inputCardNumber.length()-4);
 				if(selectedText.trim().contains(displayCardNumber))
-					reporter.reportLog("Correct Card is added as on checkout page");
+					reporter.reportLogPass("Correct Card is added as on checkout page");
 				else
 					reporter.reportLogFailWithScreenshot("Card Number is not same as expected: "+inputCardNumber);
 
@@ -3339,7 +3339,7 @@ public class RegularCheckoutPage extends BasePage {
 			}
 		}
 		if(creditCardText)
-			reporter.reportLog("Payment method on checkout page is selected on Add/Change Payment Method Dialog as expected!");
+			reporter.reportLogPass("Payment method on checkout page is selected on Add/Change Payment Method Dialog as expected!");
 		else
 			reporter.reportLogFailWithScreenshot("Payment method on checkout page is not selected on Add/Change Payment Method Dialog as expected..");
 	}
@@ -4103,7 +4103,7 @@ public class RegularCheckoutPage extends BasePage {
 	 */
 	public Boolean verifyErrorMessage(WebElement webElement, String expectedMessage){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(webElement);
-		String errorMessage = webElement.getText();
+		String errorMessage = webElement.getText().trim();
 		if(errorMessage.equalsIgnoreCase(expectedMessage)){
 			reporter.reportLogPass("Error Message is as expected: "+errorMessage);
 			return true;
@@ -4118,7 +4118,7 @@ public class RegularCheckoutPage extends BasePage {
 	 */
 	public void verifyErrorMessageOnAddPaymentMethodDialog(List<String> expectedErrorMessageList){
 		List<String> errorMessage = new ArrayList<>();
-		this.waitForCondition(Driver->{return this.lblUsingANewCardSelectTitle.getText().contains("CARD TYPE");},5000);
+		this.waitForCondition(Driver->{return this.lblUsingANewCardSelectTitle.getText().trim().toLowerCase().contains("card type");},5000);
 		List<WebElement> errorMessageWebElementList = this.lstCreditCardMandatoryErrorMessage;
 		for(WebElement webElement:errorMessageWebElementList){
 			errorMessage.add(webElement.getText());
@@ -4126,7 +4126,7 @@ public class RegularCheckoutPage extends BasePage {
 		if(errorMessage.size() == expectedErrorMessageList.size()){
 			reporter.reportLogPass("Actual and Expected Error Message are same as expected");
 			for(String message:errorMessage){
-				if(expectedErrorMessageList.contains(message))
+				if(expectedErrorMessageList.get(0).equalsIgnoreCase(message.trim()))
 					reporter.reportLogPass("Error Message is as expected: "+message);
 				else
 					reporter.reportLogFailWithScreenshot("Error Message is not as expected: "+message);
