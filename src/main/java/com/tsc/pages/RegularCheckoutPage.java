@@ -264,6 +264,9 @@ public class RegularCheckoutPage extends BasePage {
 	@FindBy(xpath = "//article[@class='leftSide']//div[contains(@class,'paymentMethodWrap')]//button[@class='button__change']")
 	public WebElement btnAddOrChangePaymentMethod;
 
+	@FindBy(xpath = "//article[@class='leftSide']//div[contains(@class,'paymentMethodWrap')]//div[@class='paymentmethod__label']/following-sibling::div//*[contains(@class,'paymentmethod__card-svg')]")
+	public WebElement lblSelectedCardTypeForPayment;
+
 	////////////////////////////////////////////////////////////
 	//For popup dialog to add or change payment method by clicking btnAddOrChangePaymentMethod button
 	@FindBy(xpath = "//div[@class='ReactModal__Overlay ReactModal__Overlay--after-open modal__overlay']//div[@class='modal__header']//h3")
@@ -1602,7 +1605,7 @@ public class RegularCheckoutPage extends BasePage {
 	 * @param - String - cardNumber - invalid credit card number
 	 * @param - String - expectedErrorMessage
 	 */
-	public void addAndVerfiyInvalidCardErrorMessage(String cardNumber,String expectedErrorMessage){
+	public void addAndVerifiyInvalidCardErrorMessage(String cardNumber,String expectedErrorMessage){
 		this.clickWebElementUsingJS(this.inputUsingANewCardDialogCreditCardRadio);
 		this.waitForCondition(Driver->{return this.lblUsingANewCardSelectTitle.getText().contains("CARD TYPE");},5000);
 		this.getDriver().switchTo().frame(iframeUsingANewCardDialogCreditCardNumberInput);
@@ -3519,6 +3522,24 @@ public class RegularCheckoutPage extends BasePage {
 		} else {
 			reporter.reportLogFailWithScreenshot("The save button in using a new card Dialog is not displaying correctly");
 		}
+	}
+
+	/**
+	 * This function return card type from payment method selected on checkout page
+	 * @return - String
+	 */
+	public String getSelectedPaymentMethodFromCheckout(){
+		String selectedPaymentMethod = this.cntPaymentMethodContainer.getText();
+		String cardType = this.lblSelectedCardTypeForPayment.getAttribute("class").trim().toLowerCase();
+		if(cardType.contains("visa"))
+			return "visa";
+		else if(cardType.contains("master"))
+			return "master";
+		else if(cardType.contains("amex"))
+			return "amex";
+		else if(cardType.contains("tsc"))
+			return "tsc";
+		return null;
 	}
 
 	/**
