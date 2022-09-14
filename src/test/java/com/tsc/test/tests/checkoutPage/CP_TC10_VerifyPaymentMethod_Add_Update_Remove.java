@@ -68,7 +68,7 @@ public class CP_TC10_VerifyPaymentMethod_Add_Update_Remove extends BaseTest {
 
             //Verify Add Payment Method dialog is displayed
             reporter.reportLog("Verify Add Payment Method dialog is displayed");
-                getRegularCheckoutThreadLocal().openAddOrChangePaymentMethodDialog();
+            getRegularCheckoutThreadLocal().openAddOrChangePaymentMethodDialog();
             getRegularCheckoutThreadLocal().verifyAddOrChangePaymentMethodDialogContents();
 
             //Verify required message for all fields and also invalid/expired message
@@ -94,8 +94,10 @@ public class CP_TC10_VerifyPaymentMethod_Add_Update_Remove extends BaseTest {
             String selectedCard = null;
             //Verify new card is displayed on Checkout page after save - covered in function - verifyPaymentMethodOnCheckoutWithCardOnAddChangeDialog()
             reporter.reportLog("Verify new card is displayed on Checkout page after save");
+            getRegularCheckoutThreadLocal().closeAddOrChangePaymentMethodDialog(false);
             for(String cardType:creditCardType){
                 selectedCard = cardType;
+                getRegularCheckoutThreadLocal().openAddOrChangePaymentMethodDialog();
                 getRegularCheckoutThreadLocal().openUsingNewCardDialog();
                 //Verify by adding all types of cards
                 reporter.reportLog("Verify by adding all types of cards for credit card: "+cardType);
@@ -103,11 +105,12 @@ public class CP_TC10_VerifyPaymentMethod_Add_Update_Remove extends BaseTest {
                 getRegularCheckoutThreadLocal().closeAddOrChangePaymentMethodDialog(true);
                 //Store payment method saved on checkout page after adding payment method
                 String paymentMethodCardType = getRegularCheckoutThreadLocal().getSelectedPaymentMethodFromCheckout();
-                getRegularCheckoutThreadLocal().openUsingNewCardDialog();
+                getRegularCheckoutThreadLocal().openAddOrChangePaymentMethodDialog();
                 getRegularCheckoutThreadLocal().verifyPaymentMethodOnCheckoutWithCardOnAddChangeDialog(paymentMethodCardType, (JSONObject) creditCardData.get(cardType));
                 getRegularCheckoutThreadLocal().closeAddOrChangePaymentMethodDialog(false);
             }
             reporter.reportLog("Verifying selected card on PayMethod PopUp");
+            getRegularCheckoutThreadLocal().openAddOrChangePaymentMethodDialog();
             getRegularCheckoutThreadLocal().verfiyAddedCardsForUserInPaymentMethod(selectedCard);
         }finally{
             //Emptying Cart for test to run with right state

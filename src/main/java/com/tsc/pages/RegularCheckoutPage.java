@@ -264,7 +264,7 @@ public class RegularCheckoutPage extends BasePage {
 	@FindBy(xpath = "//article[@class='leftSide']//div[contains(@class,'paymentMethodWrap')]//button[@class='button__change']")
 	public WebElement btnAddOrChangePaymentMethod;
 
-	@FindBy(xpath = "//article[@class='leftSide']//div[contains(@class,'paymentMethodWrap')]//div[@class='paymentmethod__label']/following-sibling::div//*[contains(@class,'paymentmethod__card-svg')]")
+	@FindBy(xpath = "//article[@class='leftSide']//div[contains(@class,'paymentMethodWrap')]//div[@class='paymentmethod__label']/following-sibling::div//*[contains(@class,'tag')]")
 	public WebElement lblSelectedCardTypeForPayment;
 
 	////////////////////////////////////////////////////////////
@@ -1574,30 +1574,33 @@ public class RegularCheckoutPage extends BasePage {
 		String expiredMonth=(String) cardData.get("DisplayExpirationMonth");
 		String expiredYear=(String) cardData.get("DisplayExpirationYear");
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(labelUsingANewCardDialogCreditCardRadio);
-		labelUsingANewCardDialogCreditCardRadio.click();
+		if(!creditCardType.equalsIgnoreCase("tsc")){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(labelUsingANewCardDialogCreditCardRadio);
+			labelUsingANewCardDialogCreditCardRadio.click();
 
-		this.getDriver().switchTo().frame(iframeUsingANewCardDialogCreditCardNumberInput);
-		inputCreditCardNumberInIframe.clear();
-		inputCreditCardNumberInIframe.sendKeys(cardNumber);
-		this.getDriver().switchTo().defaultContent();
+			this.getDriver().switchTo().frame(iframeUsingANewCardDialogCreditCardNumberInput);
+			inputCreditCardNumberInIframe.clear();
+			inputCreditCardNumberInIframe.sendKeys(cardNumber);
+			this.getDriver().switchTo().defaultContent();
 
-		//Verify display of icon just after entering CC number
-		if(!creditCardType.equalsIgnoreCase("expired") && validCreditCard){
-			String cardType = this.getInputCreditCardNumberType();
-			if(cardType.equalsIgnoreCase(creditCardType))
-				reporter.reportLogPass("Selected Credit Card : "+creditCardType+" image is displayed as expected");
-			else
-				reporter.reportLogFailWithScreenshot("Selected Credit Card : "+creditCardType+" not image is displayed as expected");
-		}
+			//Verify display of icon just after entering CC number
+			if(!creditCardType.equalsIgnoreCase("expired") && validCreditCard){
+				String cardType = this.getInputCreditCardNumberType();
+				if(cardType.equalsIgnoreCase(creditCardType))
+					reporter.reportLogPass("Selected Credit Card : "+creditCardType+" image is displayed as expected");
+				else
+					reporter.reportLogFailWithScreenshot("Selected Credit Card : "+creditCardType+" not image is displayed as expected");
+			}
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputUsingANewCardDialogCreditExpirationDateMonth);
-		inputUsingANewCardDialogCreditExpirationDateMonth.clear();
-		inputUsingANewCardDialogCreditExpirationDateMonth.sendKeys(expiredMonth);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputUsingANewCardDialogCreditExpirationDateMonth);
+			inputUsingANewCardDialogCreditExpirationDateMonth.clear();
+			inputUsingANewCardDialogCreditExpirationDateMonth.sendKeys(expiredMonth);
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputUsingANewCardDialogCreditExpirationDateYear);
-		inputUsingANewCardDialogCreditExpirationDateYear.clear();
-		inputUsingANewCardDialogCreditExpirationDateYear.sendKeys(expiredYear.substring(2));
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputUsingANewCardDialogCreditExpirationDateYear);
+			inputUsingANewCardDialogCreditExpirationDateYear.clear();
+			inputUsingANewCardDialogCreditExpirationDateYear.sendKeys(expiredYear.substring(2));
+		}else
+			this.addNewTSCCard();
 	}
 
 	/**
@@ -3320,13 +3323,12 @@ public class RegularCheckoutPage extends BasePage {
 			selectedText = cardType.getText();
 			creditCardText = this.getFormatStringFromPaymentAddDialogForSelectedCard(selectedText,"selectededitremove");
 			if(creditCardText){
-				JSONObject cardData = (JSONObject)cardDetails.get(checkoutPaymentCardType);
-				if(checkoutPaymentCardType.equalsIgnoreCase(cardData.get("CardType").toString()))
+				if(checkoutPaymentCardType.equalsIgnoreCase(cardDetails.get("CardType").toString()))
 					reporter.reportLog("Credit Card on checkout page is same that is selected");
 				else
 					reporter.reportLogFailWithScreenshot("Credit Card on checkout page is not same as on Payment Dialog");
 
-				String inputCardNumber = cardData.get("Number").toString();
+				String inputCardNumber = cardDetails.get("Number").toString();
 				String displayCardNumber = inputCardNumber.substring(inputCardNumber.length()-4);
 				if(selectedText.trim().contains(displayCardNumber))
 					reporter.reportLog("Correct Card is added as on checkout page");
@@ -3547,11 +3549,13 @@ public class RegularCheckoutPage extends BasePage {
 	 * @return - String
 	 */
 	public String getSelectedPaymentMethodFromCheckout(){
-		String selectedPaymentMethod = this.cntPaymentMethodContainer.getText();
+		this.waitForPageToLoad();
+		this.applyStaticWait(3000);
 		String cardType = this.lblSelectedCardTypeForPayment.getAttribute("class").trim().toLowerCase();
+		reporter.reportLog("Card Type selected on checkout page: "+cardType);
 		if(cardType.contains("visa"))
 			return "visa";
-		else if(cardType.contains("master"))
+		else if(cardType.contains("mc"))
 			return "master";
 		else if(cardType.contains("amex"))
 			return "amex";
