@@ -800,16 +800,21 @@ public class RegularCheckoutPage extends BasePage {
 	 * @return -String - "Both"/"GiftCard"/"PromoteCode"
 	 */
 	public String judgeAppliedDiscountType(){
-		if(this.lstOrderSummaryAppliedDiscountList.size()==2){
-			return "Both";
-		}
+		if(checkAppliedDiscountExistingInOrderSummary()){
+			if(this.lstOrderSummaryAppliedDiscountList.size()==2){
+				return "Both";
+			}
 
-		WebElement item=this.lstOrderSummaryAppliedDiscountList.get(0);
-		if(this.getElementInnerText(item).contains("Gift Card")){
-			return "GiftCard";
+			WebElement item=this.lstOrderSummaryAppliedDiscountList.get(0);
+			if(this.getElementInnerText(item).contains("Gift Card")){
+				return "GiftCard";
+			}
+			else{
+				return "PromoteCode";
+			}
 		}
 		else{
-			return "PromoteCode";
+			return null;
 		}
 	}
 
@@ -1826,7 +1831,7 @@ public class RegularCheckoutPage extends BasePage {
 		Select select=new Select(this.selectPaymentOption);
 		String lsPaymentOptionText=select.getFirstSelectedOption().getText();
 		if(lsPaymentOptionText.contains("Pay In Full Now")){
-			return this.getIntegerFromString(lsPaymentOptionText);
+			return this.getFloatFromString(lsPaymentOptionText,true);
 		}
 		else{
 			String stringContainsFloat=this.getStringAfterGivenIdentifier(lsPaymentOptionText,"of");
@@ -1859,7 +1864,12 @@ public class RegularCheckoutPage extends BasePage {
 					this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectPaymentOption);
 					select=new Select(this.selectPaymentOption);
 					select.selectByIndex(i);
-					this.waitForPageLoadingSpinningStatusCompleted();
+					try{
+						this.waitForPageLoadingSpinningStatusCompleted();
+					}
+					catch (Exception e){
+						this.applyStaticWait(3*this.getStaticWaitForApplication());
+					}
 					return lsPaymentOption;
 				}
 			}
@@ -1890,7 +1900,28 @@ public class RegularCheckoutPage extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectPaymentOption);
 		Select select=new Select(this.selectPaymentOption);
 		select.selectByVisibleText(lsPaymentOptionText);
-		this.applyStaticWait(this.getStaticWaitForApplication());
+		try{
+			this.waitForPageLoadingSpinningStatusCompleted();
+		}
+		catch (Exception e){
+			this.applyStaticWait(3*this.getStaticWaitForApplication());
+		}
+	}
+
+	/**
+	 * To set PaymentOption By given index
+	 * @param - int - index - given index
+	 */
+	public void setPaymentOptionByGivenIndex(int index){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectPaymentOption);
+		Select select=new Select(this.selectPaymentOption);
+		select.selectByIndex(index);
+		try{
+			this.waitForPageLoadingSpinningStatusCompleted();
+		}
+		catch (Exception e){
+			this.applyStaticWait(3*this.getStaticWaitForApplication());
+		}
 	}
 
 	/**
@@ -1912,7 +1943,12 @@ public class RegularCheckoutPage extends BasePage {
 
 		int randomNumber=getRandomNumber(1, optionSize);
 		select.selectByIndex(randomNumber);
-		this.applyStaticWait(3*this.getStaticWaitForApplication());
+		try{
+			this.waitForPageLoadingSpinningStatusCompleted();
+		}
+		catch (Exception e){
+			this.applyStaticWait(3*this.getStaticWaitForApplication());
+		}
 	}
 
 	/**
@@ -2669,6 +2705,40 @@ public class RegularCheckoutPage extends BasePage {
 			reporter.reportLogPass("The OrderSummary Tax is displaying correctly");
 		} else {
 			reporter.reportLogFailWithScreenshot("The OrderSummary Tax is not displaying correctly");
+		}
+
+		if(this.checkAppliedDiscountExistingInOrderSummary()){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderSummaryAppliedDiscountTitle);
+			lsText=this.lblOrderSummaryAppliedDiscountTitle.getText();
+			if(!lsText.isEmpty()){
+				reporter.reportLogPass("The Applied Discount Title in OrderSummary is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The Applied Discount Title in OrderSummary is not displaying correctly");
+			}
+
+			WebElement subItem;
+			for(WebElement item:this.lstOrderSummaryAppliedDiscountList){
+				subItem=item.findElement(By.xpath("./span[1]"));
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
+				lsText=subItem.getText();
+				if(!lsText.isEmpty()){
+					reporter.reportLogPass("The Applied Discount item title:"+lsText+" in OrderSummary is displaying correctly");
+				}
+				else{
+					reporter.reportLogFailWithScreenshot("The Applied Discount item Title in OrderSummary is not displaying correctly");
+				}
+
+				subItem=item.findElement(By.xpath("./span[2]"));
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
+				lsText=subItem.getText();
+				if(!lsText.isEmpty()){
+					reporter.reportLogPass("The Applied Discount item value:"+lsText+" in OrderSummary is displaying correctly");
+				}
+				else{
+					reporter.reportLogFailWithScreenshot("The Applied Discount item value in OrderSummary is not displaying correctly");
+				}
+			}
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderSummaryTotalPriceTitle);
@@ -4120,50 +4190,160 @@ public class RegularCheckoutPage extends BasePage {
 	}
 
 	/**
-	 * To Apply Promote Code
-	 * @param - String - promoteCode
-	 * @param - boolean - bPositiveTest - true for positive test and false for negative test
+	 * To Apply Promote Code For Positive Scenario
+	 * @param - List<String> - promoteCodeList
 	 * @return - boolean
 	 */
-	public boolean ApplyPromoteCode(String promoteCode,boolean bPositiveTest){
+	public boolean ApplyPromoteCodeForPositiveScenario(List<String> promoteCodeList){
+		boolean bFind=false;
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputOrderSummaryPromoteCode);
+		for(String promoteCode:promoteCodeList){
+			inputOrderSummaryPromoteCode.clear();
+			inputOrderSummaryPromoteCode.sendKeys(promoteCode);
+			this.applyStaticWait(300);
+
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnOrderSummaryPromoteCodeApply);
+			btnOrderSummaryPromoteCodeApply.click();
+			try{
+				this.waitForCondition(Driver->{return lblOrderSummaryPromoteCodeAppliedMessage.isDisplayed();},15000);
+				bFind=true;
+				break;
+			}
+			catch(Exception e){
+
+			}
+		}
+
+		return bFind;
+	}
+
+	/**
+	 * To Apply Promote Code For negative Scenario
+	 * @param - String - promoteCode
+	 * @return - boolean
+	 */
+	public boolean ApplyPromoteCodeForNegativeScenario(String promoteCode){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputOrderSummaryPromoteCode);
+		inputOrderSummaryPromoteCode.clear();
 		inputOrderSummaryPromoteCode.sendKeys(promoteCode);
 		this.applyStaticWait(300);
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnOrderSummaryPromoteCodeApply);
 		btnOrderSummaryPromoteCodeApply.click();
-		if(bPositiveTest){
-			return this.waitForCondition(Driver->{return lblOrderSummaryPromoteCodeAppliedMessage.isDisplayed();},15000);
+
+		return this.waitForCondition(Driver->{return lblOrderSummaryPromoteCodeErrorMessage.isDisplayed();},15000);
+	}
+
+	/**
+	 * To remove promote code
+	 * @return - boolean
+	 */
+	public boolean RemovePromoteCode(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnOrderSummaryRemovePromoteCode);
+		this.btnOrderSummaryRemovePromoteCode.click();
+
+		return this.waitForCondition(Driver->{return this.btnOrderSummaryPromoteCodeApply.isDisplayed();},15000);
+	}
+
+	/**
+	 * To Apply Gift Card for positive scenario
+	 * @param - List<Map<String,String>> - giftCardList
+	 * @return - boolean
+	 */
+	public boolean ApplyGiftCardForPositiveScenario(List<Map<String,String>> giftCardList){
+		boolean bFind=false;
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputOrderSummaryGiftCardNumber);
+		String giftCardNumber,giftCardPin;
+		for(Map<String,String> giftCard:giftCardList){
+			giftCardNumber=giftCard.get("giftCardNumber");
+			giftCardPin=giftCard.get("giftCardPin");
+
+			inputOrderSummaryGiftCardNumber.clear();
+			inputOrderSummaryGiftCardNumber.sendKeys(giftCardNumber);
+			this.applyStaticWait(300);
+
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputOrderSummaryGiftCardPin);
+			inputOrderSummaryGiftCardPin.clear();
+			inputOrderSummaryGiftCardPin.sendKeys(giftCardPin);
+			this.applyStaticWait(300);
+
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnOrderSummaryGiftCardApply);
+			btnOrderSummaryGiftCardApply.click();
+
+			try{
+				this.waitForCondition(Driver->{return lblOrderSummaryGiftCardAppliedMessage.isDisplayed();},15000);
+				bFind=true;
+				break;
+			}
+			catch (Exception e){
+
+			}
 		}
-		else{
-			return this.waitForCondition(Driver->{return lblOrderSummaryPromoteCodeErrorMessage.isDisplayed();},15000);
-		}
+
+		return bFind;
 	}
 
 	/**
 	 * To Apply Gift Card
 	 * @param - String - giftCardNumber
 	 * @param - String - giftCardPin
-	 * @param - boolean - bPositiveTest - true for positive test and false for negative test
+	 * @param - boolean - bPositive
 	 * @return - boolean
 	 */
-	public boolean ApplyGiftCard(String giftCardNumber, String giftCardPin, boolean bPositiveTest){
+	public boolean ApplyGiftCard(String giftCardNumber, String giftCardPin,boolean bPositive){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputOrderSummaryGiftCardNumber);
-		inputOrderSummaryPromoteCode.sendKeys(giftCardNumber);
+		inputOrderSummaryGiftCardNumber.clear();
+		inputOrderSummaryGiftCardNumber.sendKeys(giftCardNumber);
 		this.applyStaticWait(300);
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputOrderSummaryGiftCardPin);
-		inputOrderSummaryGiftCardPin.sendKeys(giftCardNumber);
+		inputOrderSummaryGiftCardPin.clear();
+		inputOrderSummaryGiftCardPin.sendKeys(giftCardPin);
 		this.applyStaticWait(300);
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnOrderSummaryGiftCardApply);
 		btnOrderSummaryGiftCardApply.click();
-		if(bPositiveTest){
+
+		if(bPositive){
 			return this.waitForCondition(Driver->{return lblOrderSummaryGiftCardAppliedMessage.isDisplayed();},15000);
 		}
 		else{
 			return this.waitForCondition(Driver->{return lblOrderSummaryGiftCardErrorMessage.isDisplayed();},15000);
 		}
+	}
+
+	/**
+	 * To Apply Gift Card for negative scenario
+	 * @param - String - giftCardNumber
+	 * @param - String - giftCardPin
+	 * @return - boolean
+	 */
+	public boolean ApplyGiftCardForNegativeScenario(String giftCardNumber, String giftCardPin){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputOrderSummaryGiftCardNumber);
+		inputOrderSummaryGiftCardNumber.clear();
+		inputOrderSummaryGiftCardNumber.sendKeys(giftCardNumber);
+		this.applyStaticWait(300);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputOrderSummaryGiftCardPin);
+		inputOrderSummaryGiftCardPin.clear();
+		inputOrderSummaryGiftCardPin.sendKeys(giftCardPin);
+		this.applyStaticWait(300);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnOrderSummaryGiftCardApply);
+		btnOrderSummaryGiftCardApply.click();
+
+		return this.waitForCondition(Driver->{return lblOrderSummaryGiftCardErrorMessage.isDisplayed();},15000);
+	}
+
+	/**
+	 * To remove gift card
+	 * @return - boolean
+	 */
+	public boolean RemoveGiftCard(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnOrderSummaryRemoveGiftCard);
+		this.btnOrderSummaryRemoveGiftCard.click();
+
+		return this.waitForCondition(Driver->{return this.btnOrderSummaryGiftCardApply.isDisplayed();},15000);
 	}
 
 	/**
@@ -4342,6 +4522,27 @@ public class RegularCheckoutPage extends BasePage {
 			reporter.reportLogPass("The tax in shoppingCart Item is the same as the one in checkout Item");
 		} else {
 			reporter.reportLogFail("The tax:"+shoppingCartValue+" in shoppingCart Item is not the same as the one:"+checkoutValue+" in checkout Item");
+		}
+
+		String lsType=this.judgeAppliedDiscountType();
+		if(lsType.equalsIgnoreCase("Both")||lsType.equalsIgnoreCase("PromoteCode")){
+			shoppingCartValue = (float) shoppingCartItem.get("promoteCodeValue");
+			checkoutValue = (float) checkoutItem.get("promoteCodeValue");
+			if (Math.abs(shoppingCartValue-checkoutValue)<0.1f) {
+				reporter.reportLogPass("The promoteCode Value in shoppingCart Item is the same as the one in checkout Item");
+			} else {
+				reporter.reportLogFail("The promoteCode Value:"+shoppingCartValue+" in shoppingCart Item is not the same as the one:"+checkoutValue+" in checkout Item");
+			}
+		}
+
+		if(lsType.equalsIgnoreCase("Both")||lsType.equalsIgnoreCase("GiftCard")){
+			shoppingCartValue = (float) shoppingCartItem.get("giftCardValue");
+			checkoutValue = (float) checkoutItem.get("giftCardValue");
+			if (Math.abs(shoppingCartValue-checkoutValue)<0.1f) {
+				reporter.reportLogPass("The giftCard Value in shoppingCart Item is the same as the one in checkout Item");
+			} else {
+				reporter.reportLogFail("The giftCard Value:"+shoppingCartValue+" in shoppingCart Item is not the same as the one:"+checkoutValue+" in checkout Item");
+			}
 		}
 
 		shoppingCartValue = (float) shoppingCartItem.get("totalPrice");

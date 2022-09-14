@@ -1382,26 +1382,35 @@ public class ConstantData {
         List<Map<String,String>> lst_SearchKeywords;
         List<String> addShippingAddressErrorMessage;
         String lblProductNumberWithMultipleShippingMethods;
-          List<Map<String,String>> newShippingAddressForUser;
+        List<Map<String,String>> newShippingAddressForUser;
         String lblBillingAddress;
         String lblExistingAddressErrorMessage;
-        String lblPromoteCode;
-        String lblGiftCardPromoteErrorMessage;
+        String lblGiftCardPromoteErrorMessageForEasyPayment;
+        List<String> lst_PromoteCode;
+        List<Map<String,String>> lst_GiftCard;
 
-        public String getLblGiftCardPromoteErrorMessage() {
-            return lblGiftCardPromoteErrorMessage;
+        public List<String> getLst_PromoteCode() {
+            return lst_PromoteCode;
         }
 
-        public void setLblGiftCardPromoteErrorMessage(String lblGiftCardPromoteErrorMessage) {
-            this.lblGiftCardPromoteErrorMessage = lblGiftCardPromoteErrorMessage;
+        public void setLst_PromoteCode(List<String> lst_PromoteCode) {
+            this.lst_PromoteCode = lst_PromoteCode;
         }
 
-        public String getLblPromoteCode() {
-            return lblPromoteCode;
+        public List<Map<String, String>> getLst_GiftCard() {
+            return lst_GiftCard;
         }
 
-        public void setLblPromoteCode(String lblPromoteCode) {
-            this.lblPromoteCode = lblPromoteCode;
+        public void setLst_GiftCard(List<Map<String, String>> lst_GiftCard) {
+            this.lst_GiftCard = lst_GiftCard;
+        }
+
+        public String getLblGiftCardPromoteErrorMessageForEasyPayment() {
+            return lblGiftCardPromoteErrorMessageForEasyPayment;
+        }
+
+        public void setLblGiftCardPromoteErrorMessageForEasyPayment(String lblGiftCardPromoteErrorMessageForEasyPayment) {
+            this.lblGiftCardPromoteErrorMessageForEasyPayment = lblGiftCardPromoteErrorMessageForEasyPayment;
         }
 
         public String getLblExistingAddressErrorMessage() {            return lblExistingAddressErrorMessage;        }

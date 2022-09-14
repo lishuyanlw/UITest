@@ -1,5 +1,6 @@
 package com.tsc.test.tests.shoppingCart;
 
+import com.tsc.api.apiBuilder.CartAPI;
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
@@ -20,6 +21,11 @@ public class SC_TC13_VerifyShoppingCart_ChangeItemQuantity extends BaseTest{
 		String lsPassword = TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
 		String accessToken = getApiUserSessionDataMapThreadLocal().get("access_token").toString();
 		int customerEDP = Integer.valueOf(getApiUserSessionDataMapThreadLocal().get("customerEDP").toString());
+
+		//Delete all gift card
+		CartAPI cartAPI=new CartAPI();
+		cartAPI.deleteAllGiftCardForUser(String.valueOf(customerEDP),accessToken);
+
 		try{
 			getGlobalFooterPageThreadLocal().closePopupDialog();
 			//Fetching test data from test data file

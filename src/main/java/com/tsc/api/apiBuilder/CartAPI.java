@@ -2,6 +2,7 @@ package com.tsc.api.apiBuilder;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tsc.api.pojo.AccountCartResponse;
 import com.tsc.api.pojo.CartResponse;
 import com.tsc.api.pojo.AccountResponse;
 import com.tsc.api.pojo.Product;
@@ -730,6 +731,35 @@ public class CartAPI extends ApiClient {
     }
 
     /**
+     * @param - customerEDP
+     * @param - access_token - access token for api authentication
+     * @param - giftCardId
+     * @return - Response - API Response after Cart DELETE calling
+     */
+    public Response deleteGiftCardAppliedOnCart(String customerEDP, String access_token, int giftCardId) {
+        String apiEndPoint = propertyData.get("test_apiVersion") + "/" + propertyData.get("test_language") + "/accounts/"+customerEDP+"/cart/giftcards/"+giftCardId;
+        return deleteApiCallResponseAfterAuthentication(apiEndPoint, access_token);
+    }
+
+    /**
+     * @param - customerEDP
+     * @param - access_token - access token for api authentication
+     * @return - Response - API Response after Cart DELETE calling
+     */
+    public void deleteAllGiftCardForUser(String customerEDP, String access_token){
+        Response response=getAccountCartContentWithCustomerEDP(customerEDP, access_token);
+        AccountCartResponse accountCartGet= JsonParser.getResponseObject(response.asString(), new TypeReference<AccountCartResponse>() {});
+        if(accountCartGet.getGiftCards().isEmpty()){
+            return;
+        }
+
+        for(AccountCartResponse.GiftCardsClass giftCardsClass:accountCartGet.getGiftCards()){
+            deleteGiftCardAppliedOnCart(customerEDP, access_token, giftCardsClass.getId());
+        }
+
+    }
+
+    /**
      * This method will get double from string.
      * @param-String lsTarget: target string
      * @return double value
@@ -760,4 +790,5 @@ public class CartAPI extends ApiClient {
         }else
             return new AccountAPI().addShippingAddressForUser(customerEdp,accessToken,true,null);
     }
+
 }

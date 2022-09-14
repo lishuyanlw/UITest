@@ -1,5 +1,6 @@
 package com.tsc.test.tests.shoppingCart;
 
+import com.tsc.api.apiBuilder.CartAPI;
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
@@ -26,6 +27,10 @@ public class SC_TC02_VerifyShoppingCart_RemoveItem_CheckSubTotalAndOrderSummary 
 		int customerEDP = Integer.valueOf(getApiUserSessionDataMapThreadLocal().get("customerEDP").toString());
 		List<Map<String,String>> keyword = TestDataHandler.constantData.getShoppingCart().getLst_SearchKeywords();
 		getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP,accessToken,keyword,true);
+
+		//Delete all gift card
+		CartAPI cartAPI=new CartAPI();
+		cartAPI.deleteAllGiftCardForUser(String.valueOf(customerEDP),accessToken);
 
 		//Login using valid username and password
 		getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword);

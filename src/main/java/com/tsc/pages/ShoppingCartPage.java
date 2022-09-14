@@ -511,16 +511,21 @@ public class ShoppingCartPage extends BasePage {
 	 * @return -String - "Both"/"GiftCard"/"PromoteCode"
 	 */
 	public String judgeAppliedDiscountType(){
-		if(this.lstAppliedDiscountList.size()==2){
-			return "Both";
-		}
+		if(checkAppliedDiscountExistingInOrderSummary()){
+			if(this.lstAppliedDiscountList.size()==2){
+				return "Both";
+			}
 
-		WebElement item=this.lstAppliedDiscountList.get(0);
-		if(this.getElementInnerText(item).contains("Gift Card")){
-			return "GiftCard";
+			WebElement item=this.lstAppliedDiscountList.get(0);
+			if(this.getElementInnerText(item).contains("Gift Card")){
+				return "GiftCard";
+			}
+			else{
+				return "PromoteCode";
+			}
 		}
 		else{
-			return "PromoteCode";
+			return null;
 		}
 	}
 
@@ -2242,6 +2247,40 @@ public class ShoppingCartPage extends BasePage {
 		}
 		else{
 			reporter.reportLogFailWithScreenshot("The estimated tax in OrderSummary is not displaying correctly");
+		}
+
+		if(this.checkAppliedDiscountExistingInOrderSummary()){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAppliedDiscountTitle);
+			lsText=this.lblAppliedDiscountTitle.getText();
+			if(!lsText.isEmpty()){
+				reporter.reportLogPass("The Applied Discount Title in OrderSummary is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The Applied Discount Title in OrderSummary is not displaying correctly");
+			}
+
+			WebElement subItem;
+			for(WebElement item:this.lstAppliedDiscountList){
+				subItem=item.findElement(By.xpath("./div[1]"));
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
+				lsText=subItem.getText();
+				if(!lsText.isEmpty()){
+					reporter.reportLogPass("The Applied Discount item title:"+lsText+" in OrderSummary is displaying correctly");
+				}
+				else{
+					reporter.reportLogFailWithScreenshot("The Applied Discount item Title in OrderSummary is not displaying correctly");
+				}
+
+				subItem=item.findElement(By.xpath("./div[2]"));
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
+				lsText=subItem.getText();
+				if(!lsText.isEmpty()){
+					reporter.reportLogPass("The Applied Discount item value:"+lsText+" in OrderSummary is displaying correctly");
+				}
+				else{
+					reporter.reportLogFailWithScreenshot("The Applied Discount item value in OrderSummary is not displaying correctly");
+				}
+			}
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartPricingTotalPriceTitle);
