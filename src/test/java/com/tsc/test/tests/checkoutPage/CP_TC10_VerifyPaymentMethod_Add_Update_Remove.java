@@ -103,7 +103,9 @@ public class CP_TC10_VerifyPaymentMethod_Add_Update_Remove extends BaseTest {
                 getRegularCheckoutThreadLocal().closeAddOrChangePaymentMethodDialog(true);
                 //Store payment method saved on checkout page after adding payment method
                 String paymentMethodCardType = getRegularCheckoutThreadLocal().getSelectedPaymentMethodFromCheckout();
+                getRegularCheckoutThreadLocal().openUsingNewCardDialog();
                 getRegularCheckoutThreadLocal().verifyPaymentMethodOnCheckoutWithCardOnAddChangeDialog(paymentMethodCardType, (JSONObject) creditCardData.get(cardType));
+                getRegularCheckoutThreadLocal().closeAddOrChangePaymentMethodDialog(false);
             }
             reporter.reportLog("Verifying selected card on PayMethod PopUp");
             getRegularCheckoutThreadLocal().verfiyAddedCardsForUserInPaymentMethod(selectedCard);

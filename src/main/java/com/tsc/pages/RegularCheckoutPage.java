@@ -3237,7 +3237,6 @@ public class RegularCheckoutPage extends BasePage {
 		WebElement item, paymentItem;
 		int loopSize=lstAddOrChangePaymentMethodDialogAvailableCardContainer.size();
 		for(int i=0;i<loopSize;i++){
-			selectedCard = false;
 			reporter.reportLog("Verify payment method "+i);
 			paymentItem=lstAddOrChangePaymentMethodDialogAvailableCardContainer.get(i);
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(paymentItem);
@@ -3311,17 +3310,36 @@ public class RegularCheckoutPage extends BasePage {
 	}
 
 	public void verifyPaymentMethodOnCheckoutWithCardOnAddChangeDialog(String checkoutPaymentCardType,JSONObject cardDetails){
-		WebElement item, cardType;
+		WebElement cardType;
 		Boolean creditCardText = false;
 		String selectedText;
 		int loopSize=lstAddOrChangePaymentMethodDialogAvailableCardContainer.size();
 		for(int i=0;i<loopSize;i++){
-			creditCardText = false;
 			cardType=lstAddOrChangePaymentMethodDialogAvailableCardContainer.get(i);
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(cardType);
 			selectedText = cardType.getText();
-			creditCardText = this.getFormatStringFromPaymentAddDialogForSelectedCard(selectedText,"");
+			creditCardText = this.getFormatStringFromPaymentAddDialogForSelectedCard(selectedText,"selectededitremove");
+			if(creditCardText){
+				JSONObject cardData = (JSONObject)cardDetails.get(checkoutPaymentCardType);
+				if(checkoutPaymentCardType.equalsIgnoreCase(cardData.get("CardType").toString()))
+					reporter.reportLog("Credit Card on checkout page is same that is selected");
+				else
+					reporter.reportLogFailWithScreenshot("Credit Card on checkout page is not same as on Payment Dialog");
+
+				String inputCardNumber = cardData.get("Number").toString();
+				String displayCardNumber = inputCardNumber.substring(inputCardNumber.length()-4);
+				if(selectedText.trim().contains(displayCardNumber))
+					reporter.reportLog("Correct Card is added as on checkout page");
+				else
+					reporter.reportLogFailWithScreenshot("Card Number is not same as expected: "+inputCardNumber);
+
+				break;
+			}
 		}
+		if(creditCardText)
+			reporter.reportLog("Payment method on checkout page is selected on Add/Change Payment Method Dialog as expected!");
+		else
+			reporter.reportLogFailWithScreenshot("Payment method on checkout page is not selected on Add/Change Payment Method Dialog as expected..");
 	}
 
 	/**
