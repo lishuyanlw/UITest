@@ -142,7 +142,7 @@ public class CP_TC06_VerifyReguLarCheckout_LowInventory extends BaseTest{
 
             reporter.reportLog("Verify orderSummary business logic");
             Map<String, Object> orderSummaryMapForCheckOutPage = getRegularCheckoutThreadLocal().getOrderSummaryDesc();
-            getRegularCheckoutThreadLocal().verifyOrderSummaryBusinessLogic(subTotalForCheckOutList, orderSummaryMapForCheckOutPage, null,false,false);
+            getRegularCheckoutThreadLocal().verifyOrderSummaryBusinessLogic(subTotalForCheckOutList, orderSummaryMapForCheckOutPage, null);
 
             reporter.reportLog("Verify installment business logic");
             Map<String, Object> easyPaymentMapForCheckOutPage = getRegularCheckoutThreadLocal().getEasyPayDesc();

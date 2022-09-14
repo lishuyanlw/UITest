@@ -181,7 +181,7 @@ public class ShoppingCartPage extends BasePage {
 	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-details')]")
 	public WebElement cntCartPricingDetails;
 
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-details')]//div[@class='clearfix'][not(div[contains(@class,'text-center')])][not(div[contains(@class,'details-title')])]")
+	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-details')]//div[contains(@class,'cart-pricing')]/div[@class='clearfix'][not(div[contains(@class,'text-center')])][not(div[contains(@class,'details-title')])]")
 	public List<WebElement> lstOrderSummaryRow;
 
 	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'details-box')]/*[contains(@class,'multipack')]")
@@ -1441,6 +1441,7 @@ public class ShoppingCartPage extends BasePage {
 		map.put("tax",this.getFloatFromString(lsText,true));
 
 		WebElement item,subItem;
+		float floatValue=0.0f;
 		if(this.checkAppliedDiscountExistingInOrderSummary()){
 			String lsAppliedDiscountType=this.judgeAppliedDiscountType();
 			switch(lsAppliedDiscountType){
@@ -1451,7 +1452,19 @@ public class ShoppingCartPage extends BasePage {
 					map.put("promoteCodeTitle",lsText);
 					subItem=item.findElement(By.xpath("./div[2]"));
 					lsText=this.getElementInnerText(subItem);
-					map.put("promoteCodeValue",this.getFloatFromString(lsText,true));
+					if(lsText.contains("-")){
+						if(lsText.equalsIgnoreCase("-")){
+							map.put("promoteCodeValue",0.0f);
+						}
+						else{
+							floatValue=-1*this.getFloatFromString(lsText,true);
+							map.put("promoteCodeValue",floatValue);
+						}
+					}
+					else{
+						floatValue=-1*this.getFloatFromString(lsText,true);
+						map.put("promoteCodeValue",floatValue);
+					}
 
 					item=lstAppliedDiscountList.get(1);
 					subItem=item.findElement(By.xpath("./div[1]"));
@@ -1459,7 +1472,12 @@ public class ShoppingCartPage extends BasePage {
 					map.put("giftCardTitle",lsText);
 					subItem=item.findElement(By.xpath("./div[2]"));
 					lsText=this.getElementInnerText(subItem);
-					map.put("giftCardValue",this.getFloatFromString(lsText,true));
+					if(lsText.contains("-")){
+						map.put("giftCardValue",-1*this.getFloatFromString(lsText,true));
+					}
+					else{
+						map.put("giftCardValue",this.getFloatFromString(lsText,true));
+					}
 					break;
 				case "PromoteCode":
 					item=lstAppliedDiscountList.get(0);
@@ -1468,7 +1486,19 @@ public class ShoppingCartPage extends BasePage {
 					map.put("promoteCodeTitle",lsText);
 					subItem=item.findElement(By.xpath("./div[2]"));
 					lsText=this.getElementInnerText(subItem);
-					map.put("promoteCodeValue",this.getFloatFromString(lsText,true));
+					if(lsText.contains("-")){
+						if(lsText.equalsIgnoreCase("-")){
+							map.put("promoteCodeValue",0.0f);
+						}
+						else{
+							floatValue=-1*this.getFloatFromString(lsText,true);
+							map.put("promoteCodeValue",floatValue);
+						}
+					}
+					else{
+						floatValue=-1*this.getFloatFromString(lsText,true);
+						map.put("promoteCodeValue",floatValue);
+					}
 
 					map.put("giftCardTitle",null);
 					map.put("giftCardValue",0.0f);
@@ -1480,7 +1510,12 @@ public class ShoppingCartPage extends BasePage {
 					map.put("giftCardTitle",lsText);
 					subItem=item.findElement(By.xpath("./div[2]"));
 					lsText=this.getElementInnerText(subItem);
-					map.put("giftCardValue",this.getFloatFromString(lsText,true));
+					if(lsText.contains("-")){
+						map.put("giftCardValue",-1*this.getFloatFromString(lsText,true));
+					}
+					else{
+						map.put("giftCardValue",this.getFloatFromString(lsText,true));
+					}
 
 					map.put("promoteCodeTitle",null);
 					map.put("promoteCodeValue",0.0f);
@@ -1488,6 +1523,13 @@ public class ShoppingCartPage extends BasePage {
 				default:
 					break;
 			}
+		}
+		else{
+			map.put("promoteCodeTitle",null);
+			map.put("promoteCodeValue",0.0f);
+
+			map.put("giftCardTitle",null);
+			map.put("giftCardValue",0.0f);
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblCartPricingTotalPrice);
@@ -1581,7 +1623,10 @@ public class ShoppingCartPage extends BasePage {
 			}
 		}
 
-		float calTotalPrice=subTotal+tax+nowPriceOrderSummary;
+		float promoteCodeValue=(float) orderSummaryMap.get("promoteCodeValue");
+		float giftCardValue=(float) orderSummaryMap.get("giftCardValue");
+
+		float calTotalPrice=subTotal+tax+nowPriceOrderSummary+promoteCodeValue+giftCardValue;
 		float totalPrice=(float) orderSummaryMap.get("totalPrice");
 		if(Math.abs(calTotalPrice-totalPrice)<0.01){
 			reporter.reportLogPass("The calculated total price in OrderSummary section is equal to the total price in OrderSummary section");

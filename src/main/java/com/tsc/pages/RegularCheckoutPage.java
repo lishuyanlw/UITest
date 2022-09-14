@@ -1963,6 +1963,7 @@ public class RegularCheckoutPage extends BasePage {
 		map.put("tax",this.getFloatFromString(lsText,true));
 
 		WebElement item,subItem;
+		float floatValue=0.0f;
 		if(this.checkAppliedDiscountExistingInOrderSummary()){
 			String lsAppliedDiscountType=this.judgeAppliedDiscountType();
 			switch(lsAppliedDiscountType){
@@ -1973,7 +1974,19 @@ public class RegularCheckoutPage extends BasePage {
 					map.put("promoteCodeTitle",lsText);
 					subItem=item.findElement(By.xpath("./span[2]"));
 					lsText=this.getElementInnerText(subItem);
-					map.put("promoteCodeValue",this.getFloatFromString(lsText,true));
+					if(lsText.contains("-")){
+						if(lsText.equalsIgnoreCase("-")){
+							map.put("promoteCodeValue",0.0f);
+						}
+						else{
+							floatValue=-1*this.getFloatFromString(lsText,true);
+							map.put("promoteCodeValue",floatValue);
+						}
+					}
+					else{
+						floatValue=this.getFloatFromString(lsText,true);
+						map.put("promoteCodeValue",floatValue);
+					}
 
 					item=lstOrderSummaryAppliedDiscountList.get(1);
 					subItem=item.findElement(By.xpath("./span[1]"));
@@ -1981,7 +1994,12 @@ public class RegularCheckoutPage extends BasePage {
 					map.put("giftCardTitle",lsText);
 					subItem=item.findElement(By.xpath("./span[2]"));
 					lsText=this.getElementInnerText(subItem);
-					map.put("giftCardValue",this.getFloatFromString(lsText,true));
+					if(lsText.contains("-")){
+						map.put("giftCardValue",-1*this.getFloatFromString(lsText,true));
+					}
+					else{
+						map.put("giftCardValue",this.getFloatFromString(lsText,true));
+					}
 					break;
 				case "PromoteCode":
 					item=lstOrderSummaryAppliedDiscountList.get(0);
@@ -1990,7 +2008,19 @@ public class RegularCheckoutPage extends BasePage {
 					map.put("promoteCodeTitle",lsText);
 					subItem=item.findElement(By.xpath("./span[2]"));
 					lsText=this.getElementInnerText(subItem);
-					map.put("promoteCodeValue",this.getFloatFromString(lsText,true));
+					if(lsText.contains("-")){
+						if(lsText.equalsIgnoreCase("-")){
+							map.put("promoteCodeValue",0.0f);
+						}
+						else{
+							floatValue=-1*this.getFloatFromString(lsText,true);
+							map.put("promoteCodeValue",floatValue);
+						}
+					}
+					else{
+						floatValue=this.getFloatFromString(lsText,true);
+						map.put("promoteCodeValue",floatValue);
+					}
 
 					map.put("giftCardTitle",null);
 					map.put("giftCardValue",0.0f);
@@ -2002,7 +2032,12 @@ public class RegularCheckoutPage extends BasePage {
 					map.put("giftCardTitle",lsText);
 					subItem=item.findElement(By.xpath("./span[2]"));
 					lsText=this.getElementInnerText(subItem);
-					map.put("giftCardValue",this.getFloatFromString(lsText,true));
+					if(lsText.contains("-")){
+						map.put("giftCardValue",-1*this.getFloatFromString(lsText,true));
+					}
+					else{
+						map.put("giftCardValue",this.getFloatFromString(lsText,true));
+					}
 
 					map.put("promoteCodeTitle",null);
 					map.put("promoteCodeValue",0.0f);
@@ -2010,6 +2045,13 @@ public class RegularCheckoutPage extends BasePage {
 				default:
 					break;
 			}
+		}
+		else{
+			map.put("promoteCodeTitle",null);
+			map.put("promoteCodeValue",0.0f);
+
+			map.put("giftCardTitle",null);
+			map.put("giftCardValue",0.0f);
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderSummaryTotalPrice);
@@ -2049,10 +2091,8 @@ public class RegularCheckoutPage extends BasePage {
 	 * @param - subTotalShoppingCart - float - subTotal in checkout cart
 	 * @param - orderSummaryMap - Map<String,Object>
 	 * @param - Map<String,Object> - provincialTaxRate - note that if pass null, will not calculate tax for comparison
-	 * @param - boolean - bPromoteCode
-	 * @param - boolean - bGiftCard
 	 */
-	public void verifyOrderSummaryBusinessLogic(float subTotalShoppingCart,Map<String,Object> orderSummaryMap,Map<String,Object> provincialTaxRate,boolean bPromoteCode,boolean bGiftCard){
+	public void verifyOrderSummaryBusinessLogic(float subTotalShoppingCart,Map<String,Object> orderSummaryMap,Map<String,Object> provincialTaxRate){
 		float wasPriceOrderSummary= (float) orderSummaryMap.get("wasPrice");
 		float nowPriceOrderSummary=(float) orderSummaryMap.get("nowPrice");
 		float calSavePriceOrderSummary;
@@ -2092,15 +2132,10 @@ public class RegularCheckoutPage extends BasePage {
 			}
 		}
 
-		float calTotalPrice=0.0f,promoteCodeValue=0.0f,giftCardValue=0.0f;
-		if(bPromoteCode){
-			promoteCodeValue=this.getPromoteCodeValueInOrderSummary();
-		}
-		if(bGiftCard){
-			giftCardValue=this.getGiftCardValueInOrderSummary();
-		}
+		float promoteCodeValue=(float) orderSummaryMap.get("promoteCodeValue");
+		float giftCardValue=(float) orderSummaryMap.get("giftCardValue");
 
-		calTotalPrice=subTotal+tax+nowPriceOrderSummary+promoteCodeValue+giftCardValue;
+		float calTotalPrice=subTotal+tax+nowPriceOrderSummary+promoteCodeValue+giftCardValue+promoteCodeValue+giftCardValue;
 		float totalPrice=(float) orderSummaryMap.get("totalPrice");
 		if(Math.abs(calTotalPrice-totalPrice)<0.01){
 			reporter.reportLogPass("The calculated total price in OrderSummary section is equal to the total price in OrderSummary section");
