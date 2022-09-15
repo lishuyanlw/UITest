@@ -314,6 +314,9 @@ public class RegularCheckoutPage extends BasePage {
 	@FindBy(xpath = "//div[contains(@class,'ReactModal__Content')]//div[@class='card__logo']")
 	public WebElement iconRemoveCardDialogCloseCardLogo;
 
+	@FindBy(xpath = "//div[contains(@class,'ReactModal__Content')]//div[@class='card__logo']/*")
+	public WebElement lblRemoveCardDialogCardType;
+
 	@FindBy(xpath = "//div[contains(@class,'ReactModal__Content')]//div[@class='card__detail']")
 	public WebElement lblRemoveCardDialogCloseCardDetails;
 
@@ -1504,6 +1507,105 @@ public class RegularCheckoutPage extends BasePage {
 			}
 			this.applyStaticWait(2*getStaticWaitForApplication());
 		}
+	}
+
+	/**
+	 * This function verifies remove payment method for Payment Type
+	 * @param - boolean - removeCard
+	 */
+	public void verifyRemovePaymentMethodForUser(boolean removeCard){
+		int totalCardAfterRemove = 0;
+		int totalCardWebElements = this.lstAddOrChangePaymentMethodDialogAvailableCardContainer.size();
+		Map<String,Object> paymentMethodSelectedCard = this.getSelectedCardDetailsFromPaymentDialog();
+		WebElement removeButton = ((WebElement) paymentMethodSelectedCard.get("webElement")).findElement(this.byAddOrChangePaymentMethodDialogRemoveButton);
+		this.clickWebElementUsingJS(removeButton);
+		this.verifyRemovePaymentMethodDialogContents();
+		boolean flag = this.verifyPaymentMethodRemoveDialogData(paymentMethodSelectedCard.get("cardLogo").toString(),paymentMethodSelectedCard.get("cardDetails").toString());
+		if(removeCard){
+			this.closeRemovePaymentMethodDialog(true);
+			this.waitForPageLoadingSpinningStatusCompleted();
+			//Verify that no of cards now is one less
+			totalCardAfterRemove = this.lstAddOrChangePaymentMethodDialogAvailableCardContainer.size();
+			if(totalCardAfterRemove == totalCardWebElements-1)
+				reporter.reportLogPass("Credit Card is removed from Payment Dialog pop up for user as expected");
+			else
+				reporter.reportLogFailWithScreenshot("Credit Card is not removed from Payment Dialog for user");
+
+			//Verify selected card on payment dialog with checkout page
+			Map<String,Object> selectedPaymentMethodAfterDelete = this.getSelectedCardDetailsFromPaymentDialog();
+			this.closeRemovePaymentMethodDialog(false);
+			//Fetching Data from checkout page for selected payment method
+			String cardType = this.getSelectedPaymentMethodFromCheckout(this.lblSelectedCardTypeForPayment);
+			if(cardType.equalsIgnoreCase(selectedPaymentMethodAfterDelete.get("cardLogo").toString()))
+				reporter.reportLogPass("Card Logo selected on checkout is same as expected");
+			else
+				reporter.reportLogFailWithScreenshot("Card Logo selected on checkout: "+cardType+" is not as expected: "+selectedPaymentMethodAfterDelete.get("cardLogo").toString());
+			String cardNumber = this.lblSelectedCardTypeForPayment.getText();
+			if(selectedPaymentMethodAfterDelete.get("cardDetails").toString().contains(cardNumber))
+				reporter.reportLog("Card Number on checkout for Payment Type is same as expected");
+			else
+				reporter.reportLogFailWithScreenshot("Card Number on checkout for Payment Type is not same as expected");
+		}else{
+			this.closeRemovePaymentMethodDialog(false);
+			totalCardAfterRemove = this.lstAddOrChangePaymentMethodDialogAvailableCardContainer.size();
+			if(totalCardAfterRemove == totalCardWebElements)
+				reporter.reportLogPass("Credit Card is same as expected on Payment Dialog for user without delete");
+			else
+				reporter.reportLogFailWithScreenshot("Credit Card is removed from Payment Dialog for user");
+		}
+
+		if(flag)
+			reporter.reportLog("Remove pop up data is verified as expected");
+		else
+			reporter.reportLogFail("Remove pop up data is not verified..");
+	}
+
+	public Map<String,Object> getSelectedCardDetailsFromPaymentDialog(){
+		WebElement cardType;
+		String selectedText;
+		Boolean flag = false;
+		Map<String,Object> object = new HashMap<>();
+		int totalCardWebElements = this.lstAddOrChangePaymentMethodDialogAvailableCardContainer.size();
+		for(int counter=0;counter<totalCardWebElements;counter++){
+			cardType=lstAddOrChangePaymentMethodDialogAvailableCardContainer.get(counter);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(cardType);
+			selectedText = cardType.getText().trim().toLowerCase();
+			if(this.getFormatStringFromPaymentAddDialogForSelectedCard(selectedText,"selectededitremove")) {
+				flag = true;
+				String cardLogo = this.getSelectedPaymentMethodFromCheckout(cardType.findElement(this.byAddOrChangePaymentMethodDialogCardLogo));
+				String cardDetails = cardType.findElement(this.byAddOrChangePaymentMethodDialogCardDetails).getText();
+				object.put("cardLogo",cardLogo);
+				object.put("cardDetails",cardDetails);
+				object.put("webElement",cardType);
+			}
+			if(flag)
+				break;
+		}
+		return object;
+	}
+
+	/**
+	 * This function verifies data on Remove Dialog with Add/Change Payment Method Dialog
+	 * @param - String - cardData
+	 */
+	public boolean verifyPaymentMethodRemoveDialogData(String cardLogo, String cardData){
+		boolean flag = false;
+		//Fetching remove dialog data to be verified
+		String cardType = this.getSelectedPaymentMethodFromCheckout(this.lblRemoveCardDialogCardType);
+		if(cardLogo.equalsIgnoreCase(cardType))
+			reporter.reportLogPass("Card Type on Remove Diaolog: "+cardType+" is same as expected");
+		else
+			reporter.reportLogFailWithScreenshot("Card Type on Remove Dialog is not same as expected: "+cardType);
+
+		String cardNumber = lblRemoveCardDialogCloseCardDetails.getText();
+		if(cardData.contains(cardNumber)){
+			flag = true;
+			reporter.reportLogPass("Card Number and Expiry on Remove Dialog is same as expected: "+cardNumber);
+		}
+		else
+			reporter.reportLogFailWithScreenshot("Card Number and Expiry on Remove Dialog is not same as expected");
+
+		return flag;
 	}
 
 	/**
@@ -2830,7 +2932,8 @@ public class RegularCheckoutPage extends BasePage {
 
 					item=addressItem.findElement(byAddOrChangeShippingAddressDialogHeaderContent);
 					String headerText = this.getElementText(item);
-					if(headerText.toLowerCase().replace("\n","").contains("selecteded")){
+					if(getFormatStringFromPaymentAddDialogForSelectedCard(headerText,"selected")){
+					//if(headerText.toLowerCase().replace("\n","").contains("selecteded")){
 						item=addressItem.findElement(byAddOrChangeShippingAddressDialogEditButton);
 						this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 						lsText=item.getText();
@@ -2870,7 +2973,8 @@ public class RegularCheckoutPage extends BasePage {
 				}else{
 					item=addressItem.findElement(byAddOrChangeShippingAddressDialogHeaderContent);
 					String headerText = this.getElementText(item);
-					if(headerText.toLowerCase().replace("\n","").contains("selecteded")){
+					if(getFormatStringFromPaymentAddDialogForSelectedCard(headerText,"selected")){
+					//if(headerText.toLowerCase().replace("\n","").contains("selecteded")){
 						selectedAddress = addressItem.findElement(byAddOrChangeShippingAddressDialogCardDetails).getText();
 						break;
 					}
@@ -3312,6 +3416,11 @@ public class RegularCheckoutPage extends BasePage {
 			reporter.reportLogFailWithScreenshot("Selected Card verification is not done as expected..");
 	}
 
+	/**
+	 * This function verifies checkout payment method with Payment Add/Change Dialog
+	 * @param - String - checkoutPaymentCardType
+	 * @param -JSONObject - cardDetails
+	 */
 	public void verifyPaymentMethodOnCheckoutWithCardOnAddChangeDialog(String checkoutPaymentCardType,JSONObject cardDetails){
 		WebElement cardType;
 		Boolean creditCardText = false;
@@ -3548,11 +3657,11 @@ public class RegularCheckoutPage extends BasePage {
 	 * This function return card type from payment method selected on checkout page
 	 * @return - String
 	 */
-	public String getSelectedPaymentMethodFromCheckout(){
+	public String getSelectedPaymentMethodFromCheckout(WebElement webElement){
 		this.waitForPageToLoad();
 		this.applyStaticWait(3000);
-		String cardType = this.lblSelectedCardTypeForPayment.getAttribute("class").trim().toLowerCase();
-		reporter.reportLog("Card Type selected on checkout page: "+cardType);
+		String cardType = webElement.getAttribute("class").trim().toLowerCase();
+		reporter.reportLog("Card Type selected on page: "+cardType);
 		if(cardType.contains("visa"))
 			return "visa";
 		else if(cardType.contains("mc"))
