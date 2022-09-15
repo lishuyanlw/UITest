@@ -1388,6 +1388,9 @@ public class ConstantData {
         String lblGiftCardPromoteErrorMessageForEasyPayment;
         List<String> lst_PromoteCode;
         List<Map<String,String>> lst_GiftCard;
+        String lblPaymentMethodErrorMessage;
+        List<List<String>> lstPaymentMethodCardAdditionErrorMessage;
+        String lblInvalidCreditCardNumber;
 
         public List<String> getLst_PromoteCode() {
             return lst_PromoteCode;
@@ -1412,6 +1415,18 @@ public class ConstantData {
         public void setLblGiftCardPromoteErrorMessageForEasyPayment(String lblGiftCardPromoteErrorMessageForEasyPayment) {
             this.lblGiftCardPromoteErrorMessageForEasyPayment = lblGiftCardPromoteErrorMessageForEasyPayment;
         }
+
+        public String getLblInvalidCreditCardNumber() {            return lblInvalidCreditCardNumber;        }
+
+        public void setLblInvalidCreditCardNumber(String lblInvalidCreditCardNumber) {            this.lblInvalidCreditCardNumber = lblInvalidCreditCardNumber;        }
+
+        public List<List<String>> getLstPaymentMethodCardAdditionErrorMessage() {            return lstPaymentMethodCardAdditionErrorMessage;        }
+
+        public void setLstPaymentMethodCardAdditionErrorMessage(List<List<String>> lstPaymentMethodCardAdditionErrorMessage) {            this.lstPaymentMethodCardAdditionErrorMessage = lstPaymentMethodCardAdditionErrorMessage;        }
+
+        public String getLblPaymentMethodErrorMessage() {            return lblPaymentMethodErrorMessage;        }
+
+        public void setLblPaymentMethodErrorMessage(String lblPaymentMethodErrorMessage) {            this.lblPaymentMethodErrorMessage = lblPaymentMethodErrorMessage;        }
 
         public String getLblExistingAddressErrorMessage() {            return lblExistingAddressErrorMessage;        }
 
