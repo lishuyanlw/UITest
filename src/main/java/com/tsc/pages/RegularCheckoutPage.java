@@ -297,6 +297,9 @@ public class RegularCheckoutPage extends BasePage {
 	@FindBy(xpath = "//div[@class='ReactModal__Overlay ReactModal__Overlay--after-open modal__overlay']//div[contains(@class,'card__wrap--paypal')]//label")
 	public WebElement labelAddOrChangePaymentMethodDialogPaypalRadio;
 
+	@FindBy(xpath = "//div[@id='buttons-container']//div[contains(@class,'paypal-button-container')]")
+	public WebElement btnPayPalButton;
+
 	@FindBy(xpath = "//div[@class='ReactModal__Overlay ReactModal__Overlay--after-open modal__overlay']//button[contains(@class,'modal__button--save')]")
 	public WebElement btnAddOrChangePaymentMethodDialogSaveButton;
 
@@ -4277,5 +4280,14 @@ public class RegularCheckoutPage extends BasePage {
 				formatString = string.trim() + formatString;
 		}
 		return formatString;
+	}
+
+	/**
+	 * This function verifies pay pal functionality
+	 */
+	public void verifyPayPalFunctionality(){
+		this.clickWebElementUsingJS(this.labelAddOrChangePaymentMethodDialogPaypalRadio);
+		this.waitForCondition(Driver->{return this.btnPayPalButton.isEnabled();},5000);
+		//verifyPayPalPopUpExistenceOnClick() - this function in shopping cart can be used here to test
 	}
 }

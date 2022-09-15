@@ -18,6 +18,7 @@ import java.util.Map;
 
 public class CP_TC10_VerifyPaymentMethod_Add_Update_Remove extends BaseTest {
     /**
+     CER-881 - Checkout - Payment Method - Verify dialog display and other options
      CER-882 - Checkout - Payment Method - Add new/change payment method, required message, fields display, Remove Card
      */
     @Test(groups={"Regression","Checkout"})
@@ -113,6 +114,11 @@ public class CP_TC10_VerifyPaymentMethod_Add_Update_Remove extends BaseTest {
             getRegularCheckoutThreadLocal().verifyRemovePaymentMethodForUser(false);
             reporter.reportLog("Verify Remove dialog screen and also verify click Yes should remove the card");
             getRegularCheckoutThreadLocal().verifyRemovePaymentMethodForUser(true);
+
+            //Verify Pay Pal Option
+            reporter.reportLog("Verify PayPal option");
+            getRegularCheckoutThreadLocal().openAddOrChangePaymentMethodDialog();
+            getRegularCheckoutThreadLocal().verifyPayPalFunctionality();
         }finally{
             //Emptying Cart for test to run with right state
             getShoppingCartThreadLocal().emptyCart(Integer.valueOf(customerEDP),accessToken);
