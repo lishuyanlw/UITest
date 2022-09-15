@@ -1,5 +1,6 @@
 package com.tsc.test.tests.integration;
 
+import com.tsc.api.apiBuilder.CartAPI;
 import com.tsc.api.pojo.Product;
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.test.base.BaseTest;
@@ -26,12 +27,16 @@ public class IN_TC02_PRP_PDP_AddToBag_ShoppingCart extends BaseTest {
         int customerEDP = Integer.valueOf(getApiUserSessionDataMapThreadLocal().get("customerEDP").toString());
 		getShoppingCartThreadLocal().emptyCart(customerEDP,accessToken);
 
+        //Delete all gift cards
+        CartAPI cartAPI=new CartAPI();
+        cartAPI.deleteAllGiftCardForUser(String.valueOf(customerEDP),accessToken);
+
         String lsUserName = TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
         String lsPassword = TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
         //Login using valid username and password
         getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword);
 
-        List<String> lstKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_ShoppingCartSearchKeyword();
+        List<String> lstKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_APISearchingKeyword();
         Map<String,Object> outputDataCriteria= new HashMap<String,Object>();
         outputDataCriteria.put("video", "1");
         outputDataCriteria.put("style", "1");

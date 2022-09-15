@@ -128,6 +128,12 @@ public class CP_TC06_VerifyReguLarCheckout_LowInventory extends BaseTest{
                 reporter.reportLogFail("The product: '"+lsProductName+"' with low inventory cannot be found on CheckOut page!");
             }
 
+            reporter.reportLog("Verify Mandatory Contents For Checkout ProductList");
+            getRegularCheckoutThreadLocal().verifyMandatoryContentsForCheckoutProductList();
+
+            reporter.reportLog("Verify optional Contents For Checkout ProductList");
+            getRegularCheckoutThreadLocal().verifyOptionalContentsForCheckoutProductList();
+
             Map<String, Object> summaryMapForCheckOutList = getRegularCheckoutThreadLocal().getCheckoutItemCountAndSubTotal(productListMapForCheckOutPage);
             int itemCountForCheckOutList = (int) summaryMapForCheckOutList.get("itemCount");
             float subTotalForCheckOutList = (float) summaryMapForCheckOutList.get("subTotal");
@@ -160,6 +166,12 @@ public class CP_TC06_VerifyReguLarCheckout_LowInventory extends BaseTest{
 
             reporter.reportLog("Verify easyPayment contents");
             getRegularCheckoutThreadLocal().verifyEasyPayContents();
+
+            reporter.reportLog("Verify Promote Code contents");
+            getRegularCheckoutThreadLocal().verifyPromoteCodeContents();
+
+            reporter.reportLog("Verify GiftCard And PlaceOrder contents");
+            getRegularCheckoutThreadLocal().verifyGiftCardAndPlaceOrderContents();
         }
         else{
             reporter.reportLogFail("Unable to find the product with low inventory!");

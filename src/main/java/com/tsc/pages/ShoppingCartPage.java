@@ -1692,6 +1692,33 @@ public class ShoppingCartPage extends BasePage {
 	}
 
 	/**
+	 * To set Installment Number By Random Index
+	 */
+	public void setInstallmentNumberByRandomIndex(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectCartEasyPayInstallmentNumber);
+		Select select=new Select(this.selectCartEasyPayInstallmentNumber);
+
+		List<WebElement> lstOptions=select.getOptions();
+		int optionSize=lstOptions.size();
+		if(optionSize==1){
+			return;
+		}
+
+		if(optionSize==2){
+			select.selectByIndex(1);
+		}
+
+		int randomNumber=getRandomNumber(1, optionSize);
+		select.selectByIndex(randomNumber);
+		try{
+			this.waitForEasyPaySectionLoadingFromNonInstallmentState();
+		}
+		catch (Exception e){
+			this.applyStaticWait(3*this.getStaticWaitForApplication());
+		}
+	}
+
+	/**
 	 * To get Installment Options
  	 * @return - List<String>
 	 */

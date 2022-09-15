@@ -186,7 +186,7 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 			map.put("productLeftNumber",this.getIntegerFromString(lsText));
 		}
 		else{
-			map.put("productLeftNumber",null);
+			map.put("productLeftNumber",-1);
 		}
 
 		if(this.checkFreeShippingMessageExisting(cartItem)){

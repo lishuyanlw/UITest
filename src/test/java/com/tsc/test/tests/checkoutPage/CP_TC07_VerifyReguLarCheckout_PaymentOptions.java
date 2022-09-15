@@ -29,7 +29,7 @@ public class CP_TC07_VerifyReguLarCheckout_PaymentOptions extends BaseTest{
 		String lsKeyword=TestDataHandler.constantData.getCheckOut().getLblProductNumberWithMultipleShippingMethods();
 		Map<String,Object> mapAPI=getShoppingCartThreadLocal().addSingleProductWithConditions(lsKeyword, 1,1, String.valueOf(customerEDP), accessToken,false);
 
-		//Delete all gift card
+		//Delete all gift cards
 		CartAPI cartAPI=new CartAPI();
 		cartAPI.deleteAllGiftCardForUser(String.valueOf(customerEDP),accessToken);
 
@@ -50,8 +50,7 @@ public class CP_TC07_VerifyReguLarCheckout_PaymentOptions extends BaseTest{
 		getProductDetailPageThreadLocal().goToShoppingCartByClickingShoppingCartIconInGlobalHeader();
 
 		if (getShoppingCartThreadLocal().checkIsDropdownMenuForInstallmentNumber()) {
-			List<String> lstOptionText = getShoppingCartThreadLocal().getInstallmentOptions();
-			getShoppingCartThreadLocal().setInstallmentSetting(lstOptionText.get(1));
+			getShoppingCartThreadLocal().setInstallmentNumberByRandomIndex();
 		}
 		int installmentsNumberForShoppingCart = getShoppingCartThreadLocal().getInstallmentNumber();
 		Map<String,Object> easyPaymentMapInShoppingCart=getShoppingCartThreadLocal().getEasyPayDesc();

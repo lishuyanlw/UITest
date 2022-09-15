@@ -1186,4 +1186,21 @@ import utils.ReusableActions;
 	public int getRandomNumber(int min, int max) {
 		return (int) ((Math.random() * (max - min)) + min);
 	}
+
+	/**
+	 * This function verifies the type of device being tested
+	 * @param - String - deviceType
+	 * @param - String - chromeMobileDevice for local run
+	 * @return - boolean value
+	 */
+	public boolean getDeviceTypeForTest(String deviceType,String chromeMobileDevice){
+		if("Mobile".equalsIgnoreCase(deviceType) ||
+				("Tablet".equalsIgnoreCase(deviceType) &&
+						System.getProperty("Browser").contains("android")) ||
+				(System.getProperty("chromeMobileDevice").length()>1 && System.getProperty("Browser").equalsIgnoreCase("chromemobile") &&
+						!"iPad".equalsIgnoreCase(chromeMobileDevice)))
+			return true;
+		else
+			return false;
+	}
 }

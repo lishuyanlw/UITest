@@ -4173,23 +4173,6 @@ public class RegularCheckoutPage extends BasePage {
 	}
 
 	/**
-	 * This function verifies the type of device being tested
-	 * @param - String - deviceType
-	 * @param - String - chromeMobileDevice for local run
-	 * @return - boolean value
-	 */
-	public boolean getDeviceTypeForTest(String deviceType,String chromeMobileDevice){
-		if("Mobile".equalsIgnoreCase(deviceType) ||
-				("Tablet".equalsIgnoreCase(deviceType) &&
-						System.getProperty("Browser").contains("android")) ||
-				(System.getProperty("chromeMobileDevice").length()>1 && System.getProperty("Browser").equalsIgnoreCase("chromemobile") &&
-						!"iPad".equalsIgnoreCase(chromeMobileDevice)))
-			return true;
-		else
-			return false;
-	}
-
-	/**
 	 * To Apply Promote Code For Positive Scenario
 	 * @param - List<String> - promoteCodeList
 	 * @return - boolean
@@ -4455,22 +4438,24 @@ public class RegularCheckoutPage extends BasePage {
 			reporter.reportLogFail("The productLeftNumber:"+shoppingCartLeftNumber+" in shoppingCart Item is not the same as the one:"+checkoutLeftNumber+" in checkout Item");
 		}
 
-		lsShoppingCartText=(String)shoppingCartItem.get("productFreeShipping");
-		lsCheckoutText=(String)checkoutItem.get("productFreeShipping");
-		if(lsShoppingCartText==null){
-			if(lsCheckoutText==null){
-				reporter.reportLogPass("The productFreeShipping in shoppingCart Item is the same as the one in checkout Item");
+		if(!this.getDeviceTypeForTest(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
+			lsShoppingCartText=(String)shoppingCartItem.get("productFreeShipping");
+			lsCheckoutText=(String)checkoutItem.get("productFreeShipping");
+			if(lsShoppingCartText==null){
+				if(lsCheckoutText==null){
+					reporter.reportLogPass("The productFreeShipping in shoppingCart Item is the same as the one in checkout Item");
+				}
+				else{
+					reporter.reportLogFail("The productFreeShipping in shoppingCart Item is not the same as the one in checkout Item");
+				}
 			}
 			else{
-				reporter.reportLogFail("The productFreeShipping in shoppingCart Item is not the same as the one in checkout Item");
-			}
-		}
-		else{
-			if(lsShoppingCartText.equalsIgnoreCase(lsCheckoutText)){
-				reporter.reportLogPass("The productFreeShipping in shoppingCart Item is the same as the one in checkout Item");
-			}
-			else{
-				reporter.reportLogFail("The productFreeShipping:"+lsShoppingCartText+" in shoppingCart Item is not the same as the one:"+lsCheckoutText+" in checkout Item");
+				if(lsShoppingCartText.equalsIgnoreCase(lsCheckoutText)){
+					reporter.reportLogPass("The productFreeShipping in shoppingCart Item is the same as the one in checkout Item");
+				}
+				else{
+					reporter.reportLogFail("The productFreeShipping:"+lsShoppingCartText+" in shoppingCart Item is not the same as the one:"+lsCheckoutText+" in checkout Item");
+				}
 			}
 		}
 	}
@@ -4525,23 +4510,25 @@ public class RegularCheckoutPage extends BasePage {
 		}
 
 		String lsType=this.judgeAppliedDiscountType();
-		if(lsType.equalsIgnoreCase("Both")||lsType.equalsIgnoreCase("PromoteCode")){
-			shoppingCartValue = (float) shoppingCartItem.get("promoteCodeValue");
-			checkoutValue = (float) checkoutItem.get("promoteCodeValue");
-			if (Math.abs(shoppingCartValue-checkoutValue)<0.1f) {
-				reporter.reportLogPass("The promoteCode Value in shoppingCart Item is the same as the one in checkout Item");
-			} else {
-				reporter.reportLogFail("The promoteCode Value:"+shoppingCartValue+" in shoppingCart Item is not the same as the one:"+checkoutValue+" in checkout Item");
+		if(lsType!=null){
+			if((lsType.equalsIgnoreCase("Both")||lsType.equalsIgnoreCase("PromoteCode"))){
+				shoppingCartValue = (float) shoppingCartItem.get("promoteCodeValue");
+				checkoutValue = (float) checkoutItem.get("promoteCodeValue");
+				if (Math.abs(shoppingCartValue-checkoutValue)<0.1f) {
+					reporter.reportLogPass("The promoteCode Value in shoppingCart Item is the same as the one in checkout Item");
+				} else {
+					reporter.reportLogFail("The promoteCode Value:"+shoppingCartValue+" in shoppingCart Item is not the same as the one:"+checkoutValue+" in checkout Item");
+				}
 			}
-		}
 
-		if(lsType.equalsIgnoreCase("Both")||lsType.equalsIgnoreCase("GiftCard")){
-			shoppingCartValue = (float) shoppingCartItem.get("giftCardValue");
-			checkoutValue = (float) checkoutItem.get("giftCardValue");
-			if (Math.abs(shoppingCartValue-checkoutValue)<0.1f) {
-				reporter.reportLogPass("The giftCard Value in shoppingCart Item is the same as the one in checkout Item");
-			} else {
-				reporter.reportLogFail("The giftCard Value:"+shoppingCartValue+" in shoppingCart Item is not the same as the one:"+checkoutValue+" in checkout Item");
+			if(lsType.equalsIgnoreCase("Both")||lsType.equalsIgnoreCase("GiftCard")){
+				shoppingCartValue = (float) shoppingCartItem.get("giftCardValue");
+				checkoutValue = (float) checkoutItem.get("giftCardValue");
+				if (Math.abs(shoppingCartValue-checkoutValue)<0.1f) {
+					reporter.reportLogPass("The giftCard Value in shoppingCart Item is the same as the one in checkout Item");
+				} else {
+					reporter.reportLogFail("The giftCard Value:"+shoppingCartValue+" in shoppingCart Item is not the same as the one:"+checkoutValue+" in checkout Item");
+				}
 			}
 		}
 
