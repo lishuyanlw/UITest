@@ -1789,6 +1789,14 @@ public class RegularCheckoutPage extends BasePage {
 	}
 
 	/**
+	 * To get Billing Address on Checkout page
+	 * @return - String
+	 */
+	public String getBillingAddress(){
+		return this.getElementInnerText(lblBillingAddress);
+	}
+
+	/**
 	 * To get Payment Option text List
 	 * @return - List<String>
 	 */
