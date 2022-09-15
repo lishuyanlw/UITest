@@ -3661,7 +3661,7 @@ public class RegularCheckoutPage extends BasePage {
 		this.waitForPageToLoad();
 		this.applyStaticWait(3000);
 		String cardType = webElement.getAttribute("class").trim().toLowerCase();
-		reporter.reportLog("Card Type selected on page: "+cardType);
+		//reporter.reportLog("Card Type selected on page: "+cardType);
 		if(cardType.contains("visa"))
 			return "visa";
 		else if(cardType.contains("mc"))
