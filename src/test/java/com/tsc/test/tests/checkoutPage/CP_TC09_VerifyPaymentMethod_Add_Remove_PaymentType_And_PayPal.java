@@ -16,13 +16,13 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-public class CP_TC10_VerifyPaymentMethod_Add_Update_Remove extends BaseTest {
+public class CP_TC09_VerifyPaymentMethod_Add_Remove_PaymentType_And_PayPal extends BaseTest {
     /**
      CER-881 - Checkout - Payment Method - Verify dialog display and other options
      CER-882 - Checkout - Payment Method - Add new/change payment method, required message, fields display, Remove Card
      */
     @Test(groups={"Regression","Checkout"})
-    public void CP_TC10_VerifyPaymentMethod_Add_Update_Remove() throws IOException {
+    public void CP_TC09_VerifyPaymentMethod_Add_Remove_PaymentType_And_PayPal() throws IOException {
         getGlobalFooterPageThreadLocal().closePopupDialog();
 
         //Fetching test data from test data file
