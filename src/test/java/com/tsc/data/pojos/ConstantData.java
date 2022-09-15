@@ -1385,6 +1385,21 @@ public class ConstantData {
           List<Map<String,String>> newShippingAddressForUser;
         String lblBillingAddress;
         String lblExistingAddressErrorMessage;
+        String lblPaymentMethodErrorMessage;
+        List<List<String>> lstPaymentMethodCardAdditionErrorMessage;
+        String lblInvalidCreditCardNumber;
+
+        public String getLblInvalidCreditCardNumber() {            return lblInvalidCreditCardNumber;        }
+
+        public void setLblInvalidCreditCardNumber(String lblInvalidCreditCardNumber) {            this.lblInvalidCreditCardNumber = lblInvalidCreditCardNumber;        }
+
+        public List<List<String>> getLstPaymentMethodCardAdditionErrorMessage() {            return lstPaymentMethodCardAdditionErrorMessage;        }
+
+        public void setLstPaymentMethodCardAdditionErrorMessage(List<List<String>> lstPaymentMethodCardAdditionErrorMessage) {            this.lstPaymentMethodCardAdditionErrorMessage = lstPaymentMethodCardAdditionErrorMessage;        }
+
+        public String getLblPaymentMethodErrorMessage() {            return lblPaymentMethodErrorMessage;        }
+
+        public void setLblPaymentMethodErrorMessage(String lblPaymentMethodErrorMessage) {            this.lblPaymentMethodErrorMessage = lblPaymentMethodErrorMessage;        }
 
         public String getLblExistingAddressErrorMessage() {            return lblExistingAddressErrorMessage;        }
 

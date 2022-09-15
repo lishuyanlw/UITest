@@ -522,7 +522,7 @@ public class AccountAPI extends ApiClient {
      * @param-String - access token needed for authorization
      * @return-Response - api response after making DELETE call
      */
-    public Response deleteCreditCardFromUser(String customerEDP,int creditCardId,String access_token){
+    public Response deleteCreditCardFromUser(int creditCardId,String customerEDP,String access_token){
         return this.deleteCreditCardFromUserAfterAuthentication(propertyData.get("test_apiVersion")+"/"+propertyData.get("test_language")+"/accounts/"+customerEDP+"/creditcards/"+creditCardId,access_token);
     }
 

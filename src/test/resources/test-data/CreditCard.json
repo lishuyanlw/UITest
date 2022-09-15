@@ -54,5 +54,19 @@
     "CVV": "123",
     "CardType": "amex",
     "CardDisplayName": "American Express"
+  },
+  "expired": {
+    "Id": 0,
+    "ExpirationDate": "2045-02-01T14:44:34.633Z",
+    "Expired": false,
+    "Number": "4012888888881881",
+    "MaskedNumber": "4012888888881881",
+    "IsDefault": false,
+    "Type": "VI",
+    "DisplayExpirationMonth": "2",
+    "DisplayExpirationYear": "2020",
+    "CVV": "123",
+    "CardType": "visa",
+    "CardDisplayName": "Visa"
   }
 }
