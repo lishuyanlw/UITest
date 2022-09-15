@@ -4227,6 +4227,7 @@ public class RegularCheckoutPage extends BasePage {
 	 */
 	public void verifyErrorMessageOnAddPaymentMethodDialog(List<String> expectedErrorMessageList){
 		List<String> errorMessage = new ArrayList<>();
+		String expectedErrorMessage = this.formatStringForDelimiter(expectedErrorMessageList.get(0),".");
 		this.waitForCondition(Driver->{return this.lblUsingANewCardSelectTitle.getText().trim().toLowerCase().contains("card type");},5000);
 		List<WebElement> errorMessageWebElementList = this.lstCreditCardMandatoryErrorMessage;
 		for(WebElement webElement:errorMessageWebElementList){
@@ -4235,7 +4236,8 @@ public class RegularCheckoutPage extends BasePage {
 		if(errorMessage.size() == expectedErrorMessageList.size()){
 			reporter.reportLogPass("Actual and Expected Error Message are same as expected");
 			for(String message:errorMessage){
-				if(expectedErrorMessageList.get(0).equalsIgnoreCase(message.trim()))
+				String actualErrorMessage = this.formatStringForDelimiter(message,".");
+				if(expectedErrorMessage.equalsIgnoreCase(actualErrorMessage))
 					reporter.reportLogPass("Error Message is as expected: "+message);
 				else
 					reporter.reportLogFailWithScreenshot("Error Message is not as expected: "+message);
@@ -4244,10 +4246,36 @@ public class RegularCheckoutPage extends BasePage {
 			reporter.reportLogFail("Expected Error Message size: "+expectedErrorMessageList.size()+" is not same as actual error message size: "+errorMessage.size());
 	}
 
+	/**
+	 * This function verifies expected card type
+	 * @param - String - selectedCardText
+	 * @param - String - expectedText
+	 * @return
+	 */
 	public Boolean getFormatStringFromPaymentAddDialogForSelectedCard(String selectedCardText, String expectedText){
 		if(selectedCardText.trim().toLowerCase().replace("\n","").contains(expectedText.toLowerCase()))
 			return true;
 		else
 			return false;
+	}
+
+	/**
+	 * This function formats string on the basis of a delimiter
+	 * @param - String - inputString
+	 * @param - String - delimiter
+	 * @return
+	 */
+	public String formatStringForDelimiter(String inputString,String delimiter){
+		String formatString = null;
+		String[] formatStringArray = new String[0];
+		if(delimiter.equalsIgnoreCase("."))
+			formatStringArray = inputString.split("\\.");
+		for(String string:formatStringArray) {
+			if (formatString == null)
+				formatString = string.trim();
+			else
+				formatString = string.trim() + formatString;
+		}
+		return formatString;
 	}
 }

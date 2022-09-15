@@ -10,7 +10,6 @@ import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 import io.restassured.response.Response;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.ParseException;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
@@ -22,7 +21,7 @@ public class CP_TC10_VerifyPaymentMethod_Add_Update_Remove extends BaseTest {
      CER-882 - Checkout - Payment Method - Add new/change payment method, required message, fields display, Remove Card
      */
     @Test(groups={"Regression","Checkout"})
-    public void CP_TC10_VerifyPaymentMethod_Add_Update_Remove() throws IOException, ParseException {
+    public void CP_TC10_VerifyPaymentMethod_Add_Update_Remove() throws IOException {
         getGlobalFooterPageThreadLocal().closePopupDialog();
 
         //Fetching test data from test data file
