@@ -1789,11 +1789,116 @@ public class RegularCheckoutPage extends BasePage {
 	}
 
 	/**
-	 * To get Billing Address on Checkout page
+	 * To get current Billing Address on Checkout page
 	 * @return - String
 	 */
-	public String getBillingAddress(){
+	public String getCurrentBillingAddress(){
 		return this.getElementInnerText(lblBillingAddress);
+	}
+
+	/**
+	 * To add new address or edit an existing address With Random Values
+	 * @return - Map<String,String> - including firstName,lastName,phoneNumber,address
+	 */
+	public Map<String,String> addOrEditAddressWithRandomValues(){
+		String lsFirstName= DataConverter.getSaltString(1,"upperStringType")+DataConverter.getSaltString(5,"lowerStringType");
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressDialogFirstName);
+		inputAddOrEditAddressDialogFirstName.clear();
+		inputAddOrEditAddressDialogFirstName.sendKeys(lsFirstName);
+		this.getReusableActionsInstance().staticWait(300);
+
+		String lsLastName=DataConverter.getSaltString(1,"upperStringType")+DataConverter.getSaltString(7,"lowerStringType");
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressDialogLastName);
+		inputAddOrEditAddressDialogLastName.clear();
+		inputAddOrEditAddressDialogLastName.sendKeys(lsLastName);
+		this.getReusableActionsInstance().staticWait(300);
+
+		String lsPhoneNumber="647"+DataConverter.getSaltString(7,"numberType");
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressDialogPhoneNumber);
+		inputAddOrEditAddressDialogPhoneNumber.clear();
+		inputAddOrEditAddressDialogPhoneNumber.sendKeys(lsPhoneNumber);
+		this.getReusableActionsInstance().staticWait(300);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressDialogAddress);
+		inputAddOrEditAddressDialogAddress.clear();
+		int length = inputAddOrEditAddressDialogAddress.getAttribute("value").trim().length();
+		if(length>1){
+			inputAddOrEditAddressDialogAddress.click();
+			for(int counter=0;counter<length;counter++)
+				inputAddOrEditAddressDialogAddress.sendKeys(Keys.BACK_SPACE);
+			this.applyStaticWait(2000);
+		}
+		String lsAutoSearchKeyword = DataConverter.getSaltString(4,"numberType");
+		String[] data = lsAutoSearchKeyword.codePoints().mapToObj(cp->new String(Character.toChars(cp))).toArray(size->new String[size]);
+		int sum=0;
+		for(String inputText:data){
+			if(sum>=30){
+				break;
+			}
+			inputAddOrEditAddressDialogAddress.sendKeys(inputText);
+			//For thinking time for waiting for backend response
+			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+			sum++;
+		}
+		this.waitForCondition(Driver->{return this.cntAddOrEditAddressDialogAddressDropDownList.getAttribute("class").contains("react-autosuggest__suggestions-container--open");},20000);
+		this.getReusableActionsInstance().staticWait(2*this.getStaticWaitForApplication());
+
+		if(this.lstAddOrEditAddressDialogAddressDropDownList.size()>1){
+			reporter.reportLogPass("Getting dropdown auto search results successfully");
+		}
+		else{
+			reporter.reportLogPassWithScreenshot("Unable to get dropdown auto search results");
+		}
+
+		int optionSize=this.lstAddOrEditAddressDialogAddressDropDownList.size();
+		int randomNumber=0;
+		if(optionSize>2){
+			Random rand = new Random();
+			randomNumber = rand.nextInt(optionSize-2);
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstAddOrEditAddressDialogAddressDropDownList.get(randomNumber));
+		this.clickWebElementUsingJS(this.lstAddOrEditAddressDialogAddressDropDownList.get(randomNumber));
+		this.waitForCondition(Driver->{return !this.cntAddOrEditAddressDialogAddressDropDownList.getAttribute("class").contains("react-autosuggest__suggestions-container--open");},20000);
+
+		//Wait for province and postal code update
+		this.getReusableActionsInstance().staticWait(2*this.getStaticWaitForApplication());
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressDialogAddress);
+		String lsAddress=inputAddOrEditAddressDialogAddress.getAttribute("value").trim();
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressDialogCity);
+		String lsCity=inputAddOrEditAddressDialogCity.getAttribute("value").trim();
+
+		Select select=new Select(selectAddOrEditAddressDialogProvince);
+		String lsSelectedProvince=select.getFirstSelectedOption().getText().trim();
+		String lsProvinceValue="",lsProvinceText;
+		List<WebElement> lstProvinceOption=select.getOptions();
+		for(WebElement provinceOption:lstProvinceOption){
+			lsProvinceText=this.getElementInnerText(provinceOption);
+			if(lsProvinceText.isEmpty()){
+				continue;
+			}
+
+			if(lsProvinceText.equalsIgnoreCase(lsSelectedProvince)){
+				lsProvinceValue=provinceOption.getAttribute("value");
+				break;
+			}
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressDialogPostalCode);
+		String lsPostalCode=inputAddOrEditAddressDialogPostalCode.getAttribute("value").trim();
+
+		Map<String,String> map=new HashMap<>();
+		map.put("firstName",lsFirstName);
+		map.put("lastName",lsLastName);
+		map.put("phoneNumber",lsPhoneNumber);
+		map.put("address",lsAddress);
+		map.put("city",lsCity);
+		map.put("province",lsProvinceValue);
+		map.put("postalCode",lsPostalCode);
+
+		return map;
 	}
 
 	/**

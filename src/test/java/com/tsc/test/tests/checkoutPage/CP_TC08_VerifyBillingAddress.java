@@ -13,6 +13,7 @@ import org.testng.annotations.Test;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 
@@ -28,11 +29,6 @@ public class CP_TC08_VerifyBillingAddress extends BaseTest {
         //Fetching Data from test data yaml file
         String lsUserName = TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
         String lsPassword = TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
-        List<String> expectedErrorMessage = TestDataHandler.constantData.getCheckOut().getAddShippingAddressErrorMessage();
-        List<Map<String,String>> inputAddress = TestDataHandler.constantData.getCheckOut().getNewShippingAddressForUser();
-        String billingAddress = TestDataHandler.constantData.getCheckOut().getLblBillingAddress();
-        String existingAddressErrorMessage = TestDataHandler.constantData.getCheckOut().getLblExistingAddressErrorMessage();
-        boolean addressFlagForEnvironmentCleanUp = false;
 
         //Fetching test data from test data file
         String accessToken = getApiUserSessionDataMapThreadLocal().get("access_token").toString();
@@ -64,11 +60,23 @@ public class CP_TC08_VerifyBillingAddress extends BaseTest {
         getRegularCheckoutThreadLocal().navigateToCheckoutPage();
 
         getRegularCheckoutThreadLocal().openChangeBillingAddressDialog();
-        reporter.reportLog("verify changing Billing address dialog Contents");
+        reporter.reportLog("verify Billing address changing dialog Contents");
         getRegularCheckoutThreadLocal().verifyAddOrEditAddressDialogContents();
 
+        reporter.reportLog("verify changes in Billing address changing dialog");
+        Map<String,String> changeAddressMap=getRegularCheckoutThreadLocal().addOrEditAddressWithRandomValues();
+        getRegularCheckoutThreadLocal().closeChangeBillingAddressDialog(true);
 
-        getRegularCheckoutThreadLocal().closeChangeBillingAddressDialog(false);
+        reporter.reportLog("verify the changed Billing address");
+        String lsChangedBillingAddress=getRegularCheckoutThreadLocal().getCurrentBillingAddress().toLowerCase().replace("-","");
+        for(Map.Entry<String,String> entry:changeAddressMap.entrySet()){
+            if(lsChangedBillingAddress.contains(entry.getValue().toLowerCase().replace("-",""))){
+                reporter.reportLogPass("The changed "+entry.getKey()+" of '"+entry.getValue()+"' can be found in Billing address on Checkout page");
+            }
+            else{
+                reporter.reportLogFail("The changed "+entry.getKey()+" of '"+entry.getValue()+"' can not be found in Billing address on Checkout page");
+            }
+        }
 
     }
 }
