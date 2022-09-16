@@ -4292,6 +4292,5 @@ public class RegularCheckoutPage extends BasePage {
 		this.waitForCondition(Driver->{return this.btnPayPalButton.isEnabled();},5000);
 		this.getDriver().switchTo().defaultContent();
 		shoppingCartPage.verifyPayPalPopUpExistenceOnClick();
-		//verifyPayPalPopUpExistenceOnClick() - this function in shopping cart can be used here to test
 	}
 }
