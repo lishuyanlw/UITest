@@ -1448,7 +1448,7 @@ public class RegularCheckoutPage extends BasePage {
 	 * @return - float
 	 */
 	public float getShippingPriceFromShippingMethodSection(){
-		String lsText=this.getElementInnerText(lblShippingMethod);
+		String lsText=this.getElementInnerText(lblShippingMethod).replace("-","");
 		if(lsText.toLowerCase().contains("free")){
 			return 0.0f;
 		}
@@ -1469,10 +1469,11 @@ public class RegularCheckoutPage extends BasePage {
 			if(!item.isSelected()){
 				item=shippingMethodItem.findElement(byShippingMethodPrice);
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+				String lsText=this.getElementInnerText(item).replace("-","");
+				float shippingPrice=this.getFloatFromString(lsText,true);
 				item.click();
 				this.applyStaticWait(300);
-
-				return this.getFloatFromString(this.getElementInnerText(item),true);
+				return shippingPrice;
 			}
 		}
 		return -1.0f;
@@ -1945,6 +1946,14 @@ public class RegularCheckoutPage extends BasePage {
 	 */
 	public String getCurrentBillingAddress(){
 		return this.getElementInnerText(lblBillingAddress);
+	}
+
+	/**
+	 * To get current shipping Address on Checkout page
+	 * @return - String
+	 */
+	public String getCurrentShippingAddress(){
+		return this.getElementInnerText(this.lblShippingAddress);
 	}
 
 	/**
@@ -4053,7 +4062,7 @@ public class RegularCheckoutPage extends BasePage {
 	 */
 	public boolean GoToShoppingBag(){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnGoToShoppingBag);
-		btnGoToShoppingBag.click();
+		this.clickElement(btnGoToShoppingBag);
 		ShoppingCartPage shoppingCartPage=new ShoppingCartPage(this.getDriver());
 		return this.waitForCondition(Driver->{return shoppingCartPage.lblCartTitle.isDisplayed();},20000);
 	}

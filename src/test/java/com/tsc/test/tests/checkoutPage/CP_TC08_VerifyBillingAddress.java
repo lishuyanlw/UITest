@@ -59,6 +59,8 @@ public class CP_TC08_VerifyBillingAddress extends BaseTest {
         }
         getRegularCheckoutThreadLocal().navigateToCheckoutPage();
 
+        String lsCurrentShippingAddress=getRegularCheckoutThreadLocal().getCurrentShippingAddress().toLowerCase().replace("-","");
+        String lsCurrentBillingAddress=getRegularCheckoutThreadLocal().getCurrentBillingAddress().toLowerCase().replace("-","");
         getRegularCheckoutThreadLocal().openChangeBillingAddressDialog();
         reporter.reportLog("verify Billing address changing dialog Contents");
         getRegularCheckoutThreadLocal().verifyAddOrEditAddressDialogContents();
@@ -66,15 +68,29 @@ public class CP_TC08_VerifyBillingAddress extends BaseTest {
         reporter.reportLog("verify changes in Billing address changing dialog");
         Map<String,String> changeAddressMap=getRegularCheckoutThreadLocal().addOrEditAddressWithRandomValues();
         getRegularCheckoutThreadLocal().closeChangeBillingAddressDialog(true);
+        BasePage basePage=new BasePage(this.getDriver());
+        if(!lsCurrentBillingAddress.equalsIgnoreCase("Same as shipping address")){
+            basePage.waitForCondition(Driver->{return !lsCurrentBillingAddress.equalsIgnoreCase(getRegularCheckoutThreadLocal().getCurrentBillingAddress().toLowerCase().replace("-",""));},20000);
+        }
+        else{
+            basePage.waitForCondition(Driver->{return !lsCurrentShippingAddress.equalsIgnoreCase(getRegularCheckoutThreadLocal().getCurrentShippingAddress().toLowerCase().replace("-",""));},20000);
+        }
 
         reporter.reportLog("verify the changed Billing address");
-        String lsChangedBillingAddress=getRegularCheckoutThreadLocal().getCurrentBillingAddress().toLowerCase().replace("-","");
+        String lsTargetAddress;
+        if(!lsCurrentBillingAddress.equalsIgnoreCase("Same as shipping address")){
+            lsTargetAddress=getRegularCheckoutThreadLocal().getCurrentBillingAddress().toLowerCase().replace("-","").replace(" ","");
+        }
+        else{
+            lsTargetAddress=getRegularCheckoutThreadLocal().getCurrentShippingAddress().toLowerCase().replace("-","").replace(" ","");;
+        }
+        reporter.reportLog(lsTargetAddress);
         for(Map.Entry<String,String> entry:changeAddressMap.entrySet()){
-            if(lsChangedBillingAddress.contains(entry.getValue().toLowerCase().replace("-",""))){
-                reporter.reportLogPass("The changed "+entry.getKey()+" of '"+entry.getValue()+"' can be found in Billing address on Checkout page");
+            if(lsTargetAddress.contains(entry.getValue().toLowerCase().replace("-","").replace(" ",""))){
+                reporter.reportLogPass("The changed "+entry.getKey()+" of '"+entry.getValue()+"' can be found in target address on Checkout page");
             }
             else{
-                reporter.reportLogFail("The changed "+entry.getKey()+" of '"+entry.getValue()+"' can not be found in Billing address on Checkout page");
+                reporter.reportLogFail("The changed "+entry.getKey()+" of '"+entry.getValue()+"' can not be found in target address on Checkout page");
             }
         }
 
