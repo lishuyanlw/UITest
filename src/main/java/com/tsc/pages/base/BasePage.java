@@ -649,6 +649,27 @@ import utils.ReusableActions;
     	   			
     	return Float.parseFloat(lsReturn);
     }
+
+	/**
+	 * This method will get float from string.
+	 * @param-String lsTarget: target string
+	 * @return float value
+	 * @author Wei.Li
+	 */
+	public float getFloatFromString(String lsTarget) {
+		lsTarget=lsTarget.replace(",", "").trim();
+
+		String regex="\\d+\\.\\d+";
+		String lsReturn="";
+		Pattern pattern=Pattern.compile(regex);
+		Matcher matcher=pattern.matcher(lsTarget);
+		while(matcher.find())
+		{
+			lsReturn=matcher.group();
+		}
+
+		return Float.parseFloat(lsReturn);
+	}
     
     /**
 	 * This method will get integer from string.

@@ -525,7 +525,7 @@ public class RegularCheckoutPage extends BasePage {
 	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'promocode__container')]//h3[@class='promocode__title']//div[*[@class='promocode__tooltip']]")
 	public WebElement iconOrderSummaryPromoteCodeTooltip;
 
-	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'promocode__container')]//h3[@class='promocode__title']//div[@class='promocode__tooltip--msg']")
+	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'promocode__container')]//h3[@class='promocode__title']/*[contains(@class,'promocode__tooltip--msg')]")
 	public WebElement lblOrderSummaryPromoteCodeTooltipMessage;
 
 	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'promocode__container')]//input[@id='promo']")
@@ -4644,7 +4644,7 @@ public class RegularCheckoutPage extends BasePage {
 		this.applyStaticWait(300);
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnOrderSummaryGiftCardApply);
-		btnOrderSummaryGiftCardApply.click();
+		this.clickElement(btnOrderSummaryGiftCardApply);
 
 		if(bPositive){
 			return this.waitForCondition(Driver->{return lblOrderSummaryGiftCardAppliedMessage.isDisplayed();},15000);
