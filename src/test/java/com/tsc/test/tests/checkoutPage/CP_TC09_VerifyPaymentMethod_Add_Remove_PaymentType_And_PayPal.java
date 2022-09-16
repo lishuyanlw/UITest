@@ -20,6 +20,7 @@ public class CP_TC09_VerifyPaymentMethod_Add_Remove_PaymentType_And_PayPal exten
     /**
      CER-881 - Checkout - Payment Method - Verify dialog display and other options
      CER-882 - Checkout - Payment Method - Add new/change payment method, required message, fields display, Remove Card
+     CER-883 - Checkout - Payment Method - Verify PayPal button
      */
     @Test(groups={"Regression","Checkout"})
     public void CP_TC09_VerifyPaymentMethod_Add_Remove_PaymentType_And_PayPal() throws IOException {
