@@ -4559,7 +4559,6 @@ public class RegularCheckoutPage extends BasePage {
 	}
 
 	/**
-<<<<<<< HEAD
 	 * To Apply Promote Code For negative Scenario
 	 * @param - String - promoteCode
 	 * @return - boolean

@@ -323,4 +323,10 @@ checkOut:
     ["The credit card selected has expired."]
   ]
   lblInvalidCreditCardNumber: 4012888812371888
+  lblPromoteCodeAppliedMessage: "Applied to eligible items"
+  lblGiftCardAppliedMessage: "applied to your order today!"
+  lstInvalidPromoteCodeAndErrorMessage: ["SHIP99999","The promotional code <promoteCode> you entered is not valid."]
+  lstInvalidGiftCardAndErrorMessage: ["6006499999999999999","9999","The System could not validate the Gift Card. Please try again."]
+  lblEmptyGiftCardPinErrorMessage: "PIN is required."
+
 

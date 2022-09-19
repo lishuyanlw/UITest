@@ -1391,6 +1391,51 @@ public class ConstantData {
         String lblPaymentMethodErrorMessage;
         List<List<String>> lstPaymentMethodCardAdditionErrorMessage;
         String lblInvalidCreditCardNumber;
+        List<String> lstInvalidPromoteCodeAndErrorMessage;
+        List<String> lstInvalidGiftCardAndErrorMessage;
+        String lblEmptyGiftCardPinErrorMessage;
+        String lblPromoteCodeAppliedMessage;
+        String lblGiftCardAppliedMessage;
+
+        public String getLblPromoteCodeAppliedMessage() {
+            return lblPromoteCodeAppliedMessage;
+        }
+
+        public void setLblPromoteCodeAppliedMessage(String lblPromoteCodeAppliedMessage) {
+            this.lblPromoteCodeAppliedMessage = lblPromoteCodeAppliedMessage;
+        }
+
+        public String getLblGiftCardAppliedMessage() {
+            return lblGiftCardAppliedMessage;
+        }
+
+        public void setLblGiftCardAppliedMessage(String lblGiftCardAppliedMessage) {
+            this.lblGiftCardAppliedMessage = lblGiftCardAppliedMessage;
+        }
+
+        public List<String> getLstInvalidPromoteCodeAndErrorMessage() {
+            return lstInvalidPromoteCodeAndErrorMessage;
+        }
+
+        public void setLstInvalidPromoteCodeAndErrorMessage(List<String> lstInvalidPromoteCodeAndErrorMessage) {
+            this.lstInvalidPromoteCodeAndErrorMessage = lstInvalidPromoteCodeAndErrorMessage;
+        }
+
+        public List<String> getLstInvalidGiftCardAndErrorMessage() {
+            return lstInvalidGiftCardAndErrorMessage;
+        }
+
+        public void setLstInvalidGiftCardAndErrorMessage(List<String> lstInvalidGiftCardAndErrorMessage) {
+            this.lstInvalidGiftCardAndErrorMessage = lstInvalidGiftCardAndErrorMessage;
+        }
+
+        public String getLblEmptyGiftCardPinErrorMessage() {
+            return lblEmptyGiftCardPinErrorMessage;
+        }
+
+        public void setLblEmptyGiftCardPinErrorMessage(String lblEmptyGiftCardPinErrorMessage) {
+            this.lblEmptyGiftCardPinErrorMessage = lblEmptyGiftCardPinErrorMessage;
+        }
 
         public List<String> getLst_PromoteCode() {
             return lst_PromoteCode;
