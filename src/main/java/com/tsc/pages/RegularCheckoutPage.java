@@ -4087,9 +4087,7 @@ public class RegularCheckoutPage extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnGoToShoppingBag);
 		this.clickElement(btnGoToShoppingBag);
 		ShoppingCartPage shoppingCartPage=new ShoppingCartPage(this.getDriver());
-		this.waitForCondition(Driver->{return shoppingCartPage.lblCartTitle.isDisplayed();},40000);
-		this.applyStaticWait(5*this.getStaticWaitForApplication());
-		return true;
+		return this.waitForCondition(Driver->{return shoppingCartPage.lblCartTitle.isDisplayed()&&!this.getElementInnerText(shoppingCartPage.lblCartTitle).isEmpty();},40000);
 	}
 
 	/**
@@ -5122,5 +5120,36 @@ public class RegularCheckoutPage extends BasePage {
 		this.clickWebElementUsingJS(this.labelAddOrChangePaymentMethodDialogPaypalRadio);
 		this.waitForCondition(Driver->{return this.btnPayPalButton.isEnabled();},5000);
 		//verifyPayPalPopUpExistenceOnClick() - this function in shopping cart can be used here to test
+	}
+
+	/**
+	 * To get Gift Card Discount info From Applied Message
+	 * @return - float
+	 */
+	public float getGiftCardDiscountFromAppliedMessage(){
+		return this.getFloatFromString(this.getElementInnerText(this.lblOrderSummaryGiftCardAppliedMessage));
+	}
+
+	/**
+	 * To go to Order confirmation page
+	 */
+	public void goToOrderConfirmationPage(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement( btnOrderSummaryPlaceOrder);
+		this.clickElement( btnOrderSummaryPlaceOrder);
+
+		try{
+			this.waitForPageLoadingSpinningStatusCompleted();
+		}
+		catch (Exception e){
+			this.applyStaticWait(3*this.getStaticWaitForApplication());
+		}
+
+		try{
+			OrderConfirmationPage orderConfirmationPage=new OrderConfirmationPage(this.getDriver());
+			this.waitForCondition(Driver->{return orderConfirmationPage.lblOrderSuccessTitle.isDisplayed();},15000);
+		}
+		catch (Exception e){
+			this.applyStaticWait(3*this.getStaticWaitForApplication());
+		}
 	}
 }
