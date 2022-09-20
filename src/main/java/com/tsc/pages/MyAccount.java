@@ -9,6 +9,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -212,6 +214,10 @@ public class MyAccount extends BasePage {
 	@FindBy(xpath = "//ng-component//div[normalize-space(text())='Payment Method']/following-sibling::div[contains(@class,'order-summary')]")
 	public WebElement lblOrderDetailsPaymentMethod;
 
+	//For Order Summary
+	@FindBy(xpath = "//ng-component//div[normalize-space(text())='Order Summary']/parent::div")
+	public WebElement cntOrderDetailsOrderSummaryContainer;
+
 	@FindBy(xpath = "//ng-component//div[normalize-space(text())='Order Summary']")
 	public WebElement lblOrderDetailsOrderSummary;
 
@@ -238,6 +244,18 @@ public class MyAccount extends BasePage {
 
 	@FindBy(xpath = "//ng-component//span[normalize-space(text())='Order Total :']/following-sibling::span")
 	public WebElement lblOrderDetailsOrderTotal;
+
+	@FindBy(xpath = "//ng-component//div[normalize-space(text())='Monthly Payments with Easy Pay']")
+	public WebElement lblOrderDetailsMonthlyPaymentsWithEasyPayTitle;
+
+	@FindBy(xpath = "//ng-component//span[normalize-space(text())='No. of Easy Pays:']")
+	public WebElement lblOrderDetailsEasyPaymentNumberTitle;
+
+	@FindBy(xpath = "//ng-component//span[normalize-space(text())='No. of Easy Pays:']/following-sibling::span")
+	public WebElement lblOrderDetailsEasyPaymentNumber;
+
+	@FindBy(xpath = "//ng-component//a[contains(normalize-space(text()),'View Details')]")
+	public WebElement lnkOrderDetailsViewDetails;
 
 	//For Order cancellation and Order returns
 	@FindBy(xpath = "//div[@class='Middle']//*[contains(@class,'titleLink')]")
@@ -812,6 +830,14 @@ public class MyAccount extends BasePage {
 	 */
 	public boolean checkTrackOrderButtonExisting(){
 		return this.getChildElementCount(this.cntOrderDetailsHeaderButtons)>1;
+	}
+
+	/**
+	 * To check EasyPayment Section Existing
+	 * @param - boolean
+	 */
+	public boolean checkEasyPaymentSectionExisting(){
+		return this.checkChildElementExistingByAttribute(cntOrderDetailsOrderSummaryContainer,"class","easy-pay");
 	}
 
 	/**
@@ -2010,7 +2036,6 @@ public class MyAccount extends BasePage {
 					reporter.reportLogFailWithScreenshot("The product pipe style is not displaying correctly");
 				}
 			}
-
 
 			subItem=item.findElement(byOrderDetailsOrderItemLink);
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
@@ -4570,5 +4595,172 @@ public class MyAccount extends BasePage {
 			reporter.reportLogFail("The actual MyNewsLetters UnSubscribe alert Message: '"+lsActualAlertMessage+"' is same as the expected one: '"+lsExpectedAlertMessage+"'");
 		}
 	}
+
+	/**
+	 * To get Order Details Desc Except Order List
+	 * @return - Map<String,Object>
+	 */
+	public Map<String,Object> getOrderDetailsDescExceptOrderList() {
+		Map<String, Object> map = new HashMap<>();
+		String lsText;
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderDetailsHeaderOrderNO);
+		lsText=lblOrderDetailsHeaderOrderNO.getText().trim();
+		map.put("orderNumber",lsText);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderDetailsHeaderCustomerNO);
+		lsText=lblOrderDetailsHeaderCustomerNO.getText().trim();
+		map.put("customerNumber",lsText);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderDetailsHeaderOrderTotal);
+		lsText=lblOrderDetailsHeaderOrderTotal.getText().trim();
+		map.put("customerNumber",this.getFloatFromString(lsText));
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderDetailsSubHeaderShippingMethod);
+		lsText=lblOrderDetailsSubHeaderShippingMethod.getText().trim();
+		map.put("shippingMethod",lsText);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderDetailsSubHeaderShippingAddress);
+		lsText=lblOrderDetailsSubHeaderShippingAddress.getText().trim();
+		map.put("shippingAddress",lsText);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderDetailsBillingAddress);
+		lsText=lblOrderDetailsBillingAddress.getText().trim();
+		map.put("billingAddress",lsText);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderDetailsPaymentMethod);
+		lsText=lblOrderDetailsPaymentMethod.getText().trim();
+		map.put("paymentMethod",lsText);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderDetailsPaymentMethod);
+		lsText=lblOrderDetailsPaymentMethod.getText().trim();
+		map.put("paymentMethod",lsText);
+
+		if(this.checkEasyPaymentSectionExisting()){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderDetailsEasyPaymentNumber);
+			lsText=lblOrderDetailsEasyPaymentNumber.getText().trim();
+			map.put("installmentNumber",this.getIntegerFromString(lsText));
+		}
+		else{
+			map.put("installmentNumber",null);
+		}
+
+		return map;
+	}
+
+	/**
+	 * To get Order item Description
+	 * @param - WebElement - orderItem in lstOrderDetailsOrderItemList
+	 * @return - Map<String,Object>
+	 */
+	public Map<String,Object> getOrderItemDesc(WebElement orderItem){
+		Map<String,Object> map=new HashMap<>();
+		WebElement item;
+		String lsText;
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(orderItem);
+		item = orderItem.findElement(byOrderDetailsOrderItemPipeStyleLink);
+		lsText = this.getElementInnerText(item);
+		map.put("productDescription", lsText);
+		if(lsText.contains("|")){
+			String[] lsSplit=lsText.split("\\|");
+			if(lsSplit.length==2){
+				map.put("productName",lsSplit[0].trim());
+				map.put("productStyle",lsSplit[1].trim());
+				map.put("productSize",lsSplit[1].trim());
+			}
+			else{
+				map.put("productName",lsSplit[0].trim());
+				map.put("productStyle",lsSplit[1].trim());
+				map.put("productSize",lsSplit[2].trim());
+			}
+		}
+		else{
+			map.put("productName",lsText);
+			map.put("productStyle",null);
+			map.put("productSize",null);
+		}
+
+		item = orderItem.findElement(byOrderDetailsOrderItemProductPrice);
+		lsText = this.getElementInnerText(item);
+		map.put("productNowPrice", this.getFloatFromString(lsText));
+
+		item = orderItem.findElement(byOrderDetailsOrderItemProductNumber);
+		lsText = this.getElementInnerText(item).replace("-", "").trim();
+		if(!lsText.isEmpty()){
+			map.put("productNumber", lsText);
+		}
+		else{
+			map.put("productNumber", null);
+		}
+
+		item = orderItem.findElement(byOrderDetailsOrderItemQTY);
+		lsText = this.getElementInnerText(item);
+		map.put("productQuantity", this.getIntegerFromString(lsText));
+
+		return map;
+	}
+
+	/**
+	 * To get Order List Description
+	 * @return - List<Map<String,Object>>
+	 */
+	public List<Map<String,Object>> getOrderListDesc(){
+		List<Map<String,Object>> mapList= new ArrayList<>();
+		for(WebElement orderItem:lstOrderDetailsOrderItemList) {
+			mapList.add(getOrderItemDesc(orderItem));
+
+		}
+		return mapList;
+	}
+
+	/**
+	 * To get Checkout Item Count And SubTotal
+	 * @param - List<Map<String,Object>> - productList - Checkout product list
+	 * @return - Map<String,Object> - including itemCount and subTotal
+	 */
+	public Map<String,Object> getCheckoutItemCountAndSubTotal(List<Map<String,Object>> productList){
+		Map<String,Object> map=new HashMap<>();
+
+		int totalCount=0,itemQuantity;
+		float subTotal=0.0f,itemPrice;
+		for(Map<String,Object> productItem:productList){
+			itemQuantity= (int) productItem.get("productQuantity");
+			itemPrice= (float) productItem.get("productNowPrice");
+			totalCount+=itemQuantity;
+			subTotal+=itemQuantity*itemPrice;
+		}
+		map.put("itemCount",totalCount);
+		map.put("subTotal",subTotal);
+
+		return map;
+	}
+
+	/**
+	 * To get OrderSummary Description
+	 * @return - Map<String,Object>
+	 */
+	public Map<String,Object> getOrderSummaryDesc(){
+		Map<String,Object> map=new HashMap<>();
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderDetailsSubtotal);
+		String lsText=this.lblOrderDetailsSubtotal.getText();
+		map.put("subTotal",this.getFloatFromString(lsText));
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderDetailsShippingAndHandling);
+		lsText=this.lblOrderDetailsShippingAndHandling.getText();
+		map.put("nowPrice",this.getFloatFromString(lsText));
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderDetailsTaxes);
+		lsText=this.lblOrderDetailsTaxes.getText();
+		map.put("tax",this.getFloatFromString(lsText));
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderDetailsOrderTotal);
+		lsText=this.lblOrderDetailsOrderTotal.getText();
+		map.put("totalPrice",this.getFloatFromString(lsText));
+
+		return map;
+	}
+
 }
 
