@@ -37,7 +37,10 @@ public class CP_TC10_VerifyReguLarCheckout_PromoteCode_GiftCard extends BaseTest
 		Response response=cartAPI.getAccountCartContentWithCustomerEDP(String.valueOf(customerEDP), accessToken);
 		AccountCartResponse accountCartGet= JsonParser.getResponseObject(response.asString(), new TypeReference<AccountCartResponse>() {});
 		String GuidId=accountCartGet.getCartGuid();
-		cartAPI.deletePromoCodeAppliedOnCart(accessToken,GuidId);
+		response=cartAPI.deletePromoCodeAppliedOnCart(accessToken,GuidId);
+		if(response.getStatusCode()!=200){
+			reporter.reportLogFail("Delete applied promote code failed using API");
+		}
 		cartAPI.deleteAllGiftCardForUser(String.valueOf(customerEDP),accessToken);
 
 		getGlobalFooterPageThreadLocal().closePopupDialog();
@@ -64,34 +67,38 @@ public class CP_TC10_VerifyReguLarCheckout_PromoteCode_GiftCard extends BaseTest
 		}
 
 		getRegularCheckoutThreadLocal().navigateToCheckoutPage();
+		int initialGiftCardNumberLength=getRegularCheckoutThreadLocal().inputOrderSummaryGiftCardNumber.getAttribute("value").replace(" ","").length();
 
 		reporter.reportLog("Verify promote code");
-		reporter.reportLog("Verify invalid promote code scenario");
-		getRegularCheckoutThreadLocal().ApplyPromoteCodeForNegativeScenario(lstInvalidPromoteCodeAndErrorMessage.get(0));
-		String lblOrderSummaryPromoteCodeErrorMessage=basePage.getElementInnerText(getRegularCheckoutThreadLocal().lblOrderSummaryPromoteCodeErrorMessage);
-		if(lblOrderSummaryPromoteCodeErrorMessage.equalsIgnoreCase(lblPromoteCodeErrorMessage)){
-			reporter.reportLogPass("The error message for invalid promote code is tha same as the expected one");
-		}
-		else{
-			reporter.reportLogFail("The error message:'"+lblOrderSummaryPromoteCodeErrorMessage+"' for invalid promote code is tha same as the expected one:'"+lblPromoteCodeErrorMessage+"'");
-		}
+		String lsText;
+		if(!getRegularCheckoutThreadLocal().checkPromoteCodeRemoveButtonExisting()){
+			reporter.reportLog("Verify invalid promote code scenario");
+			getRegularCheckoutThreadLocal().ApplyPromoteCodeForNegativeScenario(lstInvalidPromoteCodeAndErrorMessage.get(0));
+			String lblOrderSummaryPromoteCodeErrorMessage=basePage.getElementInnerText(getRegularCheckoutThreadLocal().lblOrderSummaryPromoteCodeErrorMessage);
+			if(lblOrderSummaryPromoteCodeErrorMessage.equalsIgnoreCase(lblPromoteCodeErrorMessage)){
+				reporter.reportLogPass("The error message for invalid promote code is tha same as the expected one");
+			}
+			else{
+				reporter.reportLogFail("The error message:'"+lblOrderSummaryPromoteCodeErrorMessage+"' for invalid promote code is not tha same as the expected one:'"+lblPromoteCodeErrorMessage+"'");
+			}
 
-		reporter.reportLog("Verify valid promote code scenario");
-		getRegularCheckoutThreadLocal().ApplyPromoteCodeForPositiveScenario(lstPromoteCode);
-		String lblOrderSummaryPromoteCodeAppliedMessage=basePage.getElementInnerText(getRegularCheckoutThreadLocal().lblOrderSummaryPromoteCodeAppliedMessage);
-		if(lblOrderSummaryPromoteCodeAppliedMessage.equalsIgnoreCase(lblPromoteCodeAppliedMessage)){
-			reporter.reportLogPass("The applied message for valid promote code is tha same as the expected one");
-		}
-		else{
-			reporter.reportLogFail("The applied message:'"+lblOrderSummaryPromoteCodeAppliedMessage+"' for invalid promote code is tha same as the expected one:'"+lblPromoteCodeAppliedMessage+"'");
-		}
+			reporter.reportLog("Verify valid promote code scenario");
+			getRegularCheckoutThreadLocal().ApplyPromoteCodeForPositiveScenario(lstPromoteCode);
+			String lblOrderSummaryPromoteCodeAppliedMessage=basePage.getElementInnerText(getRegularCheckoutThreadLocal().lblOrderSummaryPromoteCodeAppliedMessage);
+			if(lblOrderSummaryPromoteCodeAppliedMessage.equalsIgnoreCase(lblPromoteCodeAppliedMessage)){
+				reporter.reportLogPass("The applied message for valid promote code is tha same as the expected one");
+			}
+			else{
+				reporter.reportLogFail("The applied message:'"+lblOrderSummaryPromoteCodeAppliedMessage+"' for invalid promote code is not tha same as the expected one:'"+lblPromoteCodeAppliedMessage+"'");
+			}
 
-		String lsText=basePage.getElementInnerText(getRegularCheckoutThreadLocal().btnOrderSummaryRemovePromoteCode);
-		if(!lsText.isEmpty()){
-			reporter.reportLogPass("The remove button for applied promote code is displaying correctly");
-		}
-		else{
-			reporter.reportLogFail("The remove button for applied promote code is not displaying correctly");
+			lsText=basePage.getElementInnerText(getRegularCheckoutThreadLocal().btnOrderSummaryRemovePromoteCode);
+			if(!lsText.isEmpty()){
+				reporter.reportLogPass("The remove button for applied promote code is displaying correctly");
+			}
+			else{
+				reporter.reportLogFail("The remove button for applied promote code is not displaying correctly");
+			}
 		}
 
 		getRegularCheckoutThreadLocal().setPaymentOptionByRandomIndex();
@@ -110,66 +117,69 @@ public class CP_TC10_VerifyReguLarCheckout_PromoteCode_GiftCard extends BaseTest
 		getRegularCheckoutThreadLocal().verifyInstallmentBusinessLogic(installmentNumberInPaymentOption, orderSummaryMapOnCheckoutPage);
 
 		reporter.reportLog("Verify gift card");
+		getRegularCheckoutThreadLocal().setPaymentOptionByGivenIndex(0);
 		String inValidGiftCardNumber=lstInvalidGiftCardAndErrorMessage.get(0);
 		String invalidGiftCardPin=lstInvalidGiftCardAndErrorMessage.get(1);
 		String invalidErrorMessage=lstInvalidGiftCardAndErrorMessage.get(2);
 		reporter.reportLog("Verify empty gift card pin scenario");
-		getRegularCheckoutThreadLocal().ApplyGiftCardForNegativeScenario(inValidGiftCardNumber, "");
+		getRegularCheckoutThreadLocal().ApplyGiftCardForNegativeScenario(inValidGiftCardNumber, "",initialGiftCardNumberLength);
 		String lsErrorMessage=basePage.getElementInnerText(getRegularCheckoutThreadLocal().lblOrderSummaryGiftCardErrorMessage);
 		if(lsErrorMessage.equalsIgnoreCase(lblEmptyGiftCardPinErrorMessage)){
 			reporter.reportLogPass("The error message for empty Gift card pin is the same as the expected one");
 		}
 		else{
-			reporter.reportLogFail("The error message:'"+lsErrorMessage+"' for empty Gift card pin is the same as the expected one:'"+lblEmptyGiftCardPinErrorMessage+"'");
+			reporter.reportLogFail("The error message:'"+lsErrorMessage+"' for empty Gift card pin is not the same as the expected one:'"+lblEmptyGiftCardPinErrorMessage+"'");
 		}
 
 		reporter.reportLog("Verify valid gift card with invalid pin scenario");
 		String validGiftCardNumber=lstGiftCard.get(0).get("GiftCardNumber");
-		getRegularCheckoutThreadLocal().ApplyGiftCardForNegativeScenario(validGiftCardNumber, invalidGiftCardPin);
+		getRegularCheckoutThreadLocal().ApplyGiftCardForNegativeScenario(validGiftCardNumber, invalidGiftCardPin,initialGiftCardNumberLength);
 		lsErrorMessage=basePage.getElementInnerText(getRegularCheckoutThreadLocal().lblOrderSummaryGiftCardErrorMessage);
 		if(lsErrorMessage.equalsIgnoreCase(invalidErrorMessage)){
 			reporter.reportLogPass("The error message for valid Gift card number and invalid pin is the same as the expected one");
 		}
 		else{
-			reporter.reportLogFail("The error message:'"+lsErrorMessage+"' for valid Gift card number and invalid pin is the same as the expected one:'"+invalidErrorMessage+"'");
+			reporter.reportLogFail("The error message:'"+lsErrorMessage+"' for valid Gift card number and invalid pin is not the same as the expected one:'"+invalidErrorMessage+"'");
 		}
 
 		reporter.reportLog("Verify invalid gift card scenario");
-		getRegularCheckoutThreadLocal().ApplyGiftCardForNegativeScenario(inValidGiftCardNumber, invalidGiftCardPin);
+		getRegularCheckoutThreadLocal().ApplyGiftCardForNegativeScenario(inValidGiftCardNumber, invalidGiftCardPin,initialGiftCardNumberLength);
 		lsErrorMessage=basePage.getElementInnerText(getRegularCheckoutThreadLocal().lblOrderSummaryGiftCardErrorMessage);
 		if(lsErrorMessage.equalsIgnoreCase(invalidErrorMessage)){
 			reporter.reportLogPass("The error message for invalid Gift card number is the same as the expected one");
 		}
 		else{
-			reporter.reportLogFail("The error message:'"+lsErrorMessage+"' for invalid Gift card number is the same as the expected one:'"+invalidErrorMessage+"'");
+			reporter.reportLogFail("The error message:'"+lsErrorMessage+"' for invalid Gift card number is not the same as the expected one:'"+invalidErrorMessage+"'");
 		}
 
 		reporter.reportLog("Verify valid gift card and pin scenario");
-		getRegularCheckoutThreadLocal().ApplyGiftCardForPositiveScenario(lstGiftCard);
-		String lblOrderSummaryGiftCardAppliedMessage=basePage.getElementInnerText(getRegularCheckoutThreadLocal().lblOrderSummaryGiftCardAppliedMessage);
-		if(lblOrderSummaryGiftCardAppliedMessage.equalsIgnoreCase(lblGiftCardAppliedMessage)){
-			reporter.reportLogPass("The applied message for valid gift card and pin is tha same as the expected one");
+		boolean bSuccess=getRegularCheckoutThreadLocal().ApplyGiftCardForPositiveScenario(lstGiftCard,initialGiftCardNumberLength);
+		if(bSuccess){
+			String lblOrderSummaryGiftCardAppliedMessage=basePage.getElementInnerText(getRegularCheckoutThreadLocal().lblOrderSummaryGiftCardAppliedMessage);
+			if(lblOrderSummaryGiftCardAppliedMessage.toLowerCase().contains(lblGiftCardAppliedMessage.toLowerCase())){
+				reporter.reportLogPass("The applied message for valid gift card and pin is tha same as the expected one");
+			}
+			else{
+				reporter.reportLogFail("The applied message:'"+lblOrderSummaryGiftCardAppliedMessage+"' for valid gift card and pin is not tha same as the expected one:'"+lblGiftCardAppliedMessage+"'");
+			}
+
+			lsText=basePage.getElementInnerText(getRegularCheckoutThreadLocal().btnOrderSummaryRemoveGiftCard);
+			if(!lsText.isEmpty()){
+				reporter.reportLogPass("The remove button for applied gift card is displaying correctly");
+			}
+			else{
+				reporter.reportLogFail("The remove button for applied gift card code is not displaying correctly");
+			}
+
+			reporter.reportLog("Verify OrderSummary Business Logic");
+			orderSummaryMapOnCheckoutPage=getRegularCheckoutThreadLocal().getOrderSummaryDesc();
+			getRegularCheckoutThreadLocal().verifyOrderSummaryBusinessLogic(subTotalForCheckOutList, orderSummaryMapOnCheckoutPage, null);
 		}
 		else{
-			reporter.reportLogFail("The applied message:'"+lblOrderSummaryGiftCardAppliedMessage+"' for valid gift card and pin is tha same as the expected one:'"+lblGiftCardAppliedMessage+"'");
+			reporter.reportLogFail("Failed to apply valid gift card number, please check the data in yaml file");
 		}
 
-		lsText=basePage.getElementInnerText(getRegularCheckoutThreadLocal().btnOrderSummaryRemoveGiftCard);
-		if(!lsText.isEmpty()){
-			reporter.reportLogPass("The remove button for applied gift card is displaying correctly");
-		}
-		else{
-			reporter.reportLogFail("The remove button for applied gift card code is not displaying correctly");
-		}
-
-		reporter.reportLog("Verify OrderSummary Business Logic");
-		orderSummaryMapOnCheckoutPage=getRegularCheckoutThreadLocal().getOrderSummaryDesc();
-		getRegularCheckoutThreadLocal().verifyOrderSummaryBusinessLogic(subTotalForCheckOutList, orderSummaryMapOnCheckoutPage, null);
-
-		reporter.reportLog("Verify Installment Business Logic");
-		getRegularCheckoutThreadLocal().verifyInstallmentBusinessLogic(installmentNumberInPaymentOption, orderSummaryMapOnCheckoutPage);
-
-		reporter.reportLog("Verify OrderSummary and easyPayment on ShoppingCart page");
+		reporter.reportLog("Verify OrderSummary on ShoppingCart page");
 		getRegularCheckoutThreadLocal().GoToShoppingBag();
 		int itemAmount=getShoppingCartThreadLocal().GetAddedItemAmount();
 		float savingPrice=getShoppingCartThreadLocal().getSavingPriceFromShoppingCartHeader();
@@ -178,9 +188,6 @@ public class CP_TC10_VerifyReguLarCheckout_PromoteCode_GiftCard extends BaseTest
 
 		reporter.reportLog("Verify OrderSummary Business Logic");
 		getShoppingCartThreadLocal().verifyOrderSummaryBusinessLogic(itemAmount,savingPrice,subTotal,orderSummaryMapOnShoppingCartPage,null);
-
-		reporter.reportLog("Verify Installment Business Logic");
-		getShoppingCartThreadLocal().verifyInstallmentBusinessLogic(orderSummaryMapOnShoppingCartPage);
 
 		reporter.reportLog("Verify OrderSummary Linkage Between ShoppingCart Page And Checkout Page");
 		getRegularCheckoutThreadLocal().verifyOrderSummaryLinkageBetweenShoppingCartPageAndCheckoutPage(orderSummaryMapOnShoppingCartPage,orderSummaryMapOnCheckoutPage);

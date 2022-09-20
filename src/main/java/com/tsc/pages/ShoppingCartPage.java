@@ -1832,9 +1832,11 @@ public class ShoppingCartPage extends BasePage {
 		float shippingPriceOrderSummary=(float) orderSummaryMap.get("nowPrice");
 		float taxOrderSummary=(float) orderSummaryMap.get("tax");
 		float totalPriceOrderSummary=(float) orderSummaryMap.get("totalPrice");
+		float promoteCodeValue=(float) orderSummaryMap.get("promoteCodeValue");
+		float giftCardValue=(float) orderSummaryMap.get("giftCardValue");
 
 		float eachInstallmentPayment=subTotalOrderSummary/totalInstallmentNumber;
-		float calTodayPayment=eachInstallmentPayment+shippingPriceOrderSummary+taxOrderSummary;
+		float calTodayPayment=eachInstallmentPayment+shippingPriceOrderSummary+taxOrderSummary+(promoteCodeValue+giftCardValue)/totalInstallmentNumber;
 		if(Math.abs(calTodayPayment-todayPayment)<0.1){
 			reporter.reportLogPass("The calculated today payment is equal to the today payment in installment section: "+todayPayment);
 		}

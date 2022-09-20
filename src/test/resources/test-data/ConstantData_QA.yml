@@ -309,7 +309,7 @@ checkOut:
       province: "Ontario"
   lblBillingAddress: "Same as shipping address"
   lblExistingAddressErrorMessage: "The shipping address you are trying to add already exists."
-  lst_PromoteCode: ["SHIP150","OFFER034"]
+  lst_PromoteCode: ["OFFER034","SHIP150"]
   lst_GiftCard:
     - GiftCardNumber: "6006496682999900209"
       GiftCardPin: "4020"

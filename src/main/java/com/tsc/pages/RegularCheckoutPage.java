@@ -528,6 +528,9 @@ public class RegularCheckoutPage extends BasePage {
 	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'promocode__container')]//h3[@class='promocode__title']/*[contains(@class,'promocode__tooltip--msg')]")
 	public WebElement lblOrderSummaryPromoteCodeTooltipMessage;
 
+	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'promocode__container')]")
+	public WebElement cntOrderSummaryPromoteCodeContainer;
+
 	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'promocode__container')]//input[@id='promo']")
 	public WebElement inputOrderSummaryPromoteCode;
 
@@ -545,6 +548,9 @@ public class RegularCheckoutPage extends BasePage {
 
 	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'promocode__container')]//div[contains(@class,'alert-danger')]")
 	public WebElement lblOrderSummaryPromoteCodeErrorMessage;
+
+	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'giftcard__container')]")
+	public WebElement cntOrderSummaryGiftCardContainer;
 
 	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'giftcard__container')]//h3[@class='promocode__title']")
 	public WebElement lblOrderSummaryGiftCardTitle;
@@ -850,6 +856,22 @@ public class RegularCheckoutPage extends BasePage {
 	 */
 	public boolean checkPromoteCodeTooltipMessageDisplaying(){
 		return this.checkChildElementExistingByAttribute(cntOrderSummaryPromoteCodeTooltip,"class","promocode__tooltip--msg");
+	}
+
+	/**
+	 * To check Promote Code remove button existing
+	 * @return - boolean
+	 */
+	public boolean checkPromoteCodeRemoveButtonExisting(){
+		return this.checkChildElementExistingByAttribute(cntOrderSummaryPromoteCodeContainer,"class","promoremove__container");
+	}
+
+	/**
+	 * To check Promote Code gift card button existing
+	 * @return - boolean
+	 */
+	public boolean checkGiftCardRemoveButtonExisting(){
+		return this.checkChildElementExistingByAttribute(cntOrderSummaryGiftCardContainer,"class","promoremove__container");
 	}
 
 	/**
@@ -2443,8 +2465,7 @@ public class RegularCheckoutPage extends BasePage {
 
 		float promoteCodeValue=(float) orderSummaryMap.get("promoteCodeValue");
 		float giftCardValue=(float) orderSummaryMap.get("giftCardValue");
-
-		float calTotalPrice=subTotal+tax+nowPriceOrderSummary+promoteCodeValue+giftCardValue+promoteCodeValue+giftCardValue;
+		float calTotalPrice=subTotal+tax+nowPriceOrderSummary+promoteCodeValue+giftCardValue;
 		float totalPrice=(float) orderSummaryMap.get("totalPrice");
 		if(Math.abs(calTotalPrice-totalPrice)<0.01){
 			reporter.reportLogPass("The calculated total price in OrderSummary section is equal to the total price in OrderSummary section");
@@ -2508,9 +2529,11 @@ public class RegularCheckoutPage extends BasePage {
 		float shippingPriceOrderSummary=(float) orderSummaryMap.get("nowPrice");
 		float taxOrderSummary=(float) orderSummaryMap.get("tax");
 		float totalPriceOrderSummary=(float) orderSummaryMap.get("totalPrice");
+		float promoteCodeValue=(float) orderSummaryMap.get("promoteCodeValue");
+		float giftCardValue=(float) orderSummaryMap.get("giftCardValue");
 
 		float eachInstallmentPayment=subTotalOrderSummary/totalInstallmentNumber;
-		float calTodayPayment=eachInstallmentPayment+shippingPriceOrderSummary+taxOrderSummary;
+		float calTodayPayment=eachInstallmentPayment+shippingPriceOrderSummary+taxOrderSummary+(promoteCodeValue+giftCardValue)/totalInstallmentNumber;
 		if(Math.abs(calTodayPayment-todayPayment)<0.1){
 			reporter.reportLogPass("The calculated today payment is equal to the today payment in installment section: "+todayPayment);
 		}
@@ -4064,7 +4087,9 @@ public class RegularCheckoutPage extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnGoToShoppingBag);
 		this.clickElement(btnGoToShoppingBag);
 		ShoppingCartPage shoppingCartPage=new ShoppingCartPage(this.getDriver());
-		return this.waitForCondition(Driver->{return shoppingCartPage.lblCartTitle.isDisplayed();},20000);
+		this.waitForCondition(Driver->{return shoppingCartPage.lblCartTitle.isDisplayed();},40000);
+		this.applyStaticWait(5*this.getStaticWaitForApplication());
+		return true;
 	}
 
 	/**
@@ -4546,6 +4571,13 @@ public class RegularCheckoutPage extends BasePage {
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnOrderSummaryPromoteCodeApply);
 			btnOrderSummaryPromoteCodeApply.click();
 			try{
+				this.waitForPageLoadingSpinningStatusCompleted();
+			}
+			catch (Exception e){
+
+			}
+
+			try{
 				this.waitForCondition(Driver->{return lblOrderSummaryPromoteCodeAppliedMessage.isDisplayed();},15000);
 				bFind=true;
 				break;
@@ -4589,16 +4621,22 @@ public class RegularCheckoutPage extends BasePage {
 	/**
 	 * To Apply Gift Card for positive scenario
 	 * @param - List<Map<String,String>> - giftCardList
+	 * @param - int - initialGiftCardNumberLength
 	 * @return - boolean
 	 */
-	public boolean ApplyGiftCardForPositiveScenario(List<Map<String,String>> giftCardList){
-		boolean bFind=false;
+	public boolean ApplyGiftCardForPositiveScenario(List<Map<String,String>> giftCardList,int initialGiftCardNumberLength){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputOrderSummaryGiftCardNumber);
 		String giftCardNumber,giftCardPin;
+		this.applyStaticWait(3*this.getStaticWaitForApplication());
 		for(Map<String,String> giftCard:giftCardList){
-			giftCardNumber=giftCard.get("giftCardNumber");
-			giftCardPin=giftCard.get("giftCardPin");
+			giftCardNumber=giftCard.get("GiftCardNumber");
+			giftCardPin=giftCard.get("GiftCardPin");
 
+			if(initialGiftCardNumberLength>0){
+				giftCardNumber=giftCardNumber.substring(initialGiftCardNumberLength);
+			}
+
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputOrderSummaryGiftCardNumber);
 			inputOrderSummaryGiftCardNumber.clear();
 			inputOrderSummaryGiftCardNumber.sendKeys(giftCardNumber);
 			this.applyStaticWait(300);
@@ -4607,31 +4645,40 @@ public class RegularCheckoutPage extends BasePage {
 			inputOrderSummaryGiftCardPin.clear();
 			inputOrderSummaryGiftCardPin.sendKeys(giftCardPin);
 			this.applyStaticWait(300);
-
+			
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnOrderSummaryGiftCardApply);
 			btnOrderSummaryGiftCardApply.click();
-
 			try{
-				this.waitForCondition(Driver->{return lblOrderSummaryGiftCardAppliedMessage.isDisplayed();},15000);
-				bFind=true;
-				break;
+				this.waitForPageLoadingSpinningStatusCompleted();
 			}
 			catch (Exception e){
+				this.applyStaticWait(3*this.getStaticWaitForApplication());
+			}
 
+			try{
+				this.waitForCondition(Driver->{return this.checkGiftCardRemoveButtonExisting();},15000);
+				return true;
+			}
+			catch (Exception e){
+				continue;
 			}
 		}
-
-		return bFind;
+		return false;
 	}
 
 	/**
 	 * To Apply Gift Card
 	 * @param - String - giftCardNumber
 	 * @param - String - giftCardPin
+	 * @param - int - initialGiftCardNumberLength
 	 * @param - boolean - bPositive
 	 * @return - boolean
 	 */
-	public boolean ApplyGiftCard(String giftCardNumber, String giftCardPin,boolean bPositive){
+	public boolean ApplyGiftCard(String giftCardNumber, String giftCardPin,int initialGiftCardNumberLength,boolean bPositive){
+		if(initialGiftCardNumberLength>0){
+			giftCardNumber=giftCardNumber.substring(initialGiftCardNumberLength);
+		}
+
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputOrderSummaryGiftCardNumber);
 		inputOrderSummaryGiftCardNumber.clear();
 		inputOrderSummaryGiftCardNumber.sendKeys(giftCardNumber);
@@ -4657,9 +4704,14 @@ public class RegularCheckoutPage extends BasePage {
 	 * To Apply Gift Card for negative scenario
 	 * @param - String - giftCardNumber
 	 * @param - String - giftCardPin
+	 * @param - int - initialGiftCardNumberLength
 	 * @return - boolean
 	 */
-	public boolean ApplyGiftCardForNegativeScenario(String giftCardNumber, String giftCardPin){
+	public boolean ApplyGiftCardForNegativeScenario(String giftCardNumber, String giftCardPin,int initialGiftCardNumberLength){
+		if(initialGiftCardNumberLength>0){
+			giftCardNumber=giftCardNumber.substring(initialGiftCardNumberLength);
+		}
+
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputOrderSummaryGiftCardNumber);
 		inputOrderSummaryGiftCardNumber.clear();
 		inputOrderSummaryGiftCardNumber.sendKeys(giftCardNumber);
