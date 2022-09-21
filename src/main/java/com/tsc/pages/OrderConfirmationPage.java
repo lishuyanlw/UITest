@@ -321,14 +321,32 @@ public class OrderConfirmationPage extends BasePage {
 
 	/**
 	 * To goTo OrderDetailsPage
+	 * @param - String - lsURLFromYamlFile
 	 * @return - boolean
 	 */
-	public boolean goToOrderDetailsPage(){
+	public boolean goToOrderDetailsPage(String lsURLFromYamlFile){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnGoToOrderDetails);
 		this.btnGoToOrderDetails.click();
-		MyAccount myAccount=new MyAccount(this.getDriver());
 
-		return this.waitForCondition(Driver->{return myAccount.lblOrderDetailsSectionTitle.isDisplayed();},20000);
+		String lsBaseURL=this.getBaseURL();
+		String lsExpectedURL=lsBaseURL+lsURLFromYamlFile;
+		String lsCurrentURL=this.URL();
+		this.waitForCondition(Driver->{return !this.URL().equalsIgnoreCase(lsCurrentURL);},20000);
+		if(this.URL().equalsIgnoreCase(lsExpectedURL)){
+			reporter.reportLogPass("Navigate to order details page successfully");
+		}
+		else{
+			reporter.reportLogFail("Fail to navigate to order details page");
+		}
+
+		MyAccount myAccount=new MyAccount(this.getDriver());
+		try{
+			this.waitForCondition(Driver->{return myAccount.lblOrderDetailsSectionTitle.isDisplayed();},120000);
+		}
+		catch(Exception e){
+			this.waitForCondition(Driver->{return myAccount.lblOrderDetailsSectionTitle.isDisplayed();},120000);
+		}
+		return true;
 	}
 
 	/**

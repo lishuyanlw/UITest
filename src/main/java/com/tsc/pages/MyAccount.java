@@ -214,6 +214,18 @@ public class MyAccount extends BasePage {
 	@FindBy(xpath = "//ng-component//div[normalize-space(text())='Payment Method']/following-sibling::div[contains(@class,'order-summary')]")
 	public WebElement lblOrderDetailsPaymentMethod;
 
+	@FindBy(xpath = "//ng-component//div[contains(normalize-space(text()),'Billing Address')]/parent::div")
+	public WebElement cntOrderDetailsPromotionalCodeContainer;
+
+	@FindBy(xpath = "//ng-component//div[contains(normalize-space(text()),'Promotional Code:')]")
+	public WebElement lblOrderDetailsPromotionalCodeTitle;
+
+	@FindBy(xpath = "//ng-component//div[contains(normalize-space(text()),'Promotional Code:')]/following-sibling::div[contains(@class,'order-summary')]//*[@class='svgIconCheck']")
+	public WebElement iconOrderDetailsPromotionalCodeCheck;
+
+	@FindBy(xpath = "//ng-component//div[contains(normalize-space(text()),'Promotional Code:')]/following-sibling::div[contains(@class,'order-summary')]//span")
+	public WebElement lblOrderDetailsPromotionalCode;
+
 	//For Order Summary
 	@FindBy(xpath = "//ng-component//div[normalize-space(text())='Order Summary']/parent::div")
 	public WebElement cntOrderDetailsOrderSummaryContainer;
@@ -830,6 +842,14 @@ public class MyAccount extends BasePage {
 	 */
 	public boolean checkTrackOrderButtonExisting(){
 		return this.getChildElementCount(this.cntOrderDetailsHeaderButtons)>1;
+	}
+
+	/**
+	 * To check Promotional Code Section Existing
+	 * @param - boolean
+	 */
+	public boolean checkPromotionalCodeSectionExisting(){
+		return this.getChildElementCount(this.cntOrderDetailsPromotionalCodeContainer)>4;
 	}
 
 	/**
@@ -4666,8 +4686,8 @@ public class MyAccount extends BasePage {
 			String[] lsSplit=lsText.split("\\|");
 			if(lsSplit.length==2){
 				map.put("productName",lsSplit[0].trim());
-				map.put("productStyle",lsSplit[1].trim());
-				map.put("productSize",lsSplit[1].trim());
+				map.put("productStyle",null);
+				map.put("productSize",null);
 			}
 			else{
 				map.put("productName",lsSplit[0].trim());

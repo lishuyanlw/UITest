@@ -989,6 +989,7 @@ public class ConstantData {
     }
 
     public static class MyAccount{
+        public String lnk_myAccountURL;
         public String lnk_addNewCardURL;
         public List<String> lst_newCreditCardType;
         public List<String> lbl_invalidCardErrorMessage;
@@ -1030,6 +1031,14 @@ public class ConstantData {
         public String lbl_myNewsLettersUnSubscribeErrorMessage;
         public String lbl_myNewsLettersUnSubscribeAlertMessage;
         public String lbl_noOrderRecordsMessage;
+
+        public String getLnk_myAccountURL() {
+            return lnk_myAccountURL;
+        }
+
+        public void setLnk_myAccountURL(String lnk_myAccountURL) {
+            this.lnk_myAccountURL = lnk_myAccountURL;
+        }
 
         public String getLbl_myNewsLettersUpdateErrorMessage() {
             return lbl_myNewsLettersUpdateErrorMessage;
