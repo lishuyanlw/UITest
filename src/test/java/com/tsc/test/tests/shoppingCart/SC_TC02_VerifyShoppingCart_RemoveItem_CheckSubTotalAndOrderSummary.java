@@ -26,7 +26,7 @@ public class SC_TC02_VerifyShoppingCart_RemoveItem_CheckSubTotalAndOrderSummary 
 		String accessToken = getApiUserSessionDataMapThreadLocal().get("access_token").toString();
 		int customerEDP = Integer.valueOf(getApiUserSessionDataMapThreadLocal().get("customerEDP").toString());
 		List<Map<String,String>> keyword = TestDataHandler.constantData.getShoppingCart().getLst_SearchKeywords();
-		getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP,accessToken,keyword,true);
+		getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP,accessToken,keyword,false);
 
 		//Delete all gift card
 		CartAPI cartAPI=new CartAPI();
@@ -43,6 +43,10 @@ public class SC_TC02_VerifyShoppingCart_RemoveItem_CheckSubTotalAndOrderSummary 
 			(new BasePage(this.getDriver())).applyStaticWait(3000);
 		}
 		getProductDetailPageThreadLocal().goToShoppingCartByClickingShoppingCartIconInGlobalHeader();
+		if (getShoppingCartThreadLocal().checkIsDropdownMenuForInstallmentNumber()) {
+			List<String> lstOptionText = getShoppingCartThreadLocal().getInstallmentOptions();
+			getShoppingCartThreadLocal().setInstallmentSetting(lstOptionText.get(1));
+		}
 
 		Map<String,Object> shoppingCartMap=getShoppingCartThreadLocal().getShoppingSectionDetails("mandatory");
 		reporter.reportLog("To verify business logic Between Shopping Item List And SubTotal Section");
@@ -187,8 +191,6 @@ public class SC_TC02_VerifyShoppingCart_RemoveItem_CheckSubTotalAndOrderSummary 
 
 		reporter.reportLog("Verify EasyPayment section content");
 		mapOrderSummary=getShoppingCartThreadLocal().getOrderSummaryDesc();
-		List<String> lstOptionText=getShoppingCartThreadLocal().getInstallmentOptions();
-		getShoppingCartThreadLocal().setInstallmentSetting(lstOptionText.get(1));
 		getShoppingCartThreadLocal().verifyInstallmentBusinessLogic(mapOrderSummary);
 		getShoppingCartThreadLocal().verifyEasyPaymentContents();
 	}

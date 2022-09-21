@@ -774,18 +774,18 @@ public class ShoppingCartPage extends BasePage {
 				if(lsSplit[1].contains("Size")){
 					map.put("productName",lsSplit[0].trim());
 					map.put("productStyle",null);
-					map.put("productSize",lsSplit[1].trim());
+					map.put("productSize",lsSplit[1].split(":")[1].trim());
 				}
 				else{
 					map.put("productName",lsSplit[0].trim());
-					map.put("productStyle",lsSplit[1].trim());
+					map.put("productStyle",lsSplit[1].split(":")[1].trim());
 					map.put("productSize",null);
 				}
 			}
 			else{
 				map.put("productName",lsSplit[0].trim());
-				map.put("productStyle",lsSplit[1].trim());
-				map.put("productSize",lsSplit[2].split(":")[1].trim());
+				map.put("productStyle",lsSplit[2].split(":")[1].trim());
+				map.put("productSize",lsSplit[1].split(":")[1].trim());
 			}
 		}
 		else{
@@ -911,8 +911,8 @@ public class ShoppingCartPage extends BasePage {
 
 		String[] lsSplit=lsProductDesc.split("|");
 		map.put("productName",lsSplit[0].trim());
-		map.put("productStyle",lsSplit[1].trim());
-		map.put("productSize",lsSplit[2].split(":")[1].trim());
+		map.put("productStyle",lsSplit[2].split(":")[1].trim());
+		map.put("productSize",lsSplit[1].split(":")[1].trim());
 
 		return map;
 	}
@@ -1006,22 +1006,22 @@ public class ShoppingCartPage extends BasePage {
 				if(lsSplit[1].contains("Size")){
 					map.put("productName",lsSplit[0].trim());
 					map.put("productStyle",null);
-					map.put("productSize",lsSplit[1].trim());
+					map.put("productSize",lsSplit[1].split(":")[1].trim());
 				}
 				else{
 					map.put("productName",lsSplit[0].trim());
-					map.put("productStyle",lsSplit[1].trim());
+					map.put("productStyle",lsSplit[1].split(":")[1].trim());
 					map.put("productSize",null);
 				}
 			}
 			else{
 				map.put("productName",lsSplit[0].trim());
-				map.put("productStyle",lsSplit[1].trim());
-				map.put("productSize",lsSplit[2].split(":")[1].trim());
+				map.put("productStyle",lsSplit[2].split(":")[1].trim());
+				map.put("productSize",lsSplit[1].split(":")[1].trim());
 			}
 		}
 		else{
-			map.put("productName",lsText.trim());
+			map.put("productName",lsText);
 			map.put("productStyle",null);
 			map.put("productSize",null);
 		}
@@ -1232,6 +1232,9 @@ public class ShoppingCartPage extends BasePage {
 		int loopSize=shoppingList.size();
 		for (int i=0;i<loopSize;i++) {
 			cartItemMap = shoppingList.get(i);
+			reporter.reportLog("ProductName: "+cartItemMap.get("productName"));
+			reporter.reportLog("ProductStyle: "+cartItemMap.get("productStyle"));
+			reporter.reportLog("ProductSize: "+cartItemMap.get("productSize"));
 			if (this.checkIfMatchGivenAddToBagItem(addToBagMap, cartItemMap)) {
 				return i;
 			}

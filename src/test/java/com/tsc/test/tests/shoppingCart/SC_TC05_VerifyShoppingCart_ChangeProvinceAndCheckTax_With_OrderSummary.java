@@ -42,6 +42,10 @@ public class SC_TC05_VerifyShoppingCart_ChangeProvinceAndCheckTax_With_OrderSumm
 			(new BasePage(this.getDriver())).applyStaticWait(3000);
 		}
 		getProductDetailPageThreadLocal().goToShoppingCartByClickingShoppingCartIconInGlobalHeader();
+		if (getShoppingCartThreadLocal().checkIsDropdownMenuForInstallmentNumber()) {
+			List<String> lstOptionText = getShoppingCartThreadLocal().getInstallmentOptions();
+			getShoppingCartThreadLocal().setInstallmentSetting(lstOptionText.get(1));
+		}
 
 		int itemAmount=getShoppingCartThreadLocal().GetAddedItemAmount();
 		float savingPrice=getShoppingCartThreadLocal().getSavingPriceFromShoppingCartHeader();

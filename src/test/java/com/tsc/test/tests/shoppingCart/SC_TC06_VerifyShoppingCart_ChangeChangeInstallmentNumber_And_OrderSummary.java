@@ -42,6 +42,10 @@ public class SC_TC06_VerifyShoppingCart_ChangeChangeInstallmentNumber_And_OrderS
 			(new BasePage(this.getDriver())).applyStaticWait(3000);
 		}
 		getProductDetailPageThreadLocal().goToShoppingCartByClickingShoppingCartIconInGlobalHeader();
+		if (getShoppingCartThreadLocal().checkIsDropdownMenuForInstallmentNumber()) {
+			List<String> lstOptionText = getShoppingCartThreadLocal().getInstallmentOptions();
+			getShoppingCartThreadLocal().setInstallmentSetting(lstOptionText.get(1));
+		}
 
 		reporter.reportLog("Verify EasyPayment sections contents");
 		Map<String,Object> mapOrderSummary=getShoppingCartThreadLocal().getOrderSummaryDesc();

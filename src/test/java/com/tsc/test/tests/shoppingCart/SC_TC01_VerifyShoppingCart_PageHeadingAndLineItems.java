@@ -66,12 +66,14 @@ public class SC_TC01_VerifyShoppingCart_PageHeadingAndLineItems extends BaseTest
 		for (Map<String, Object> item : data) {
 			productName=item.get("productName").toString();
 			reporter.reportLog("Verify product name: "+productName);
+			reporter.reportLog("Verify product style: "+item.get("productStyle"));
+			reporter.reportLog("Verify product size: "+item.get("productSize"));
 			findIndex=getShoppingCartThreadLocal().findGivenProductIndexInShoppingCartItemList(item, shoppingCartMap);
 			if(findIndex!=-1){
-				reporter.reportLogPass("The added product"+productName+" using API can be found in ShoppingCart list");
+				reporter.reportLogPass("The added product "+productName+" using API can be found in ShoppingCart list");
 			}
 			else{
-				reporter.reportLogFail("The added product"+productName+" using API cannot be found in ShoppingCart list");
+				reporter.reportLogFail("The added product "+productName+" using API cannot be found in ShoppingCart list");
 			}
 		}
 	}
