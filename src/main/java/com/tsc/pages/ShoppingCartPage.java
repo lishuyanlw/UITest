@@ -1232,9 +1232,6 @@ public class ShoppingCartPage extends BasePage {
 		int loopSize=shoppingList.size();
 		for (int i=0;i<loopSize;i++) {
 			cartItemMap = shoppingList.get(i);
-			reporter.reportLog("ProductName: "+cartItemMap.get("productName"));
-			reporter.reportLog("ProductStyle: "+cartItemMap.get("productStyle"));
-			reporter.reportLog("ProductSize: "+cartItemMap.get("productSize"));
 			if (this.checkIfMatchGivenAddToBagItem(addToBagMap, cartItemMap)) {
 				return i;
 			}

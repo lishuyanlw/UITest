@@ -65,9 +65,6 @@ public class SC_TC01_VerifyShoppingCart_PageHeadingAndLineItems extends BaseTest
 		int findIndex;
 		for (Map<String, Object> item : data) {
 			productName=item.get("productName").toString();
-			reporter.reportLog("Verify product name: "+productName);
-			reporter.reportLog("Verify product style: "+item.get("productStyle"));
-			reporter.reportLog("Verify product size: "+item.get("productSize"));
 			findIndex=getShoppingCartThreadLocal().findGivenProductIndexInShoppingCartItemList(item, shoppingCartMap);
 			if(findIndex!=-1){
 				reporter.reportLogPass("The added product "+productName+" using API can be found in ShoppingCart list");
