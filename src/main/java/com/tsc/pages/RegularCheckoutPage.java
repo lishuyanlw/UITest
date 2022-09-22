@@ -373,12 +373,15 @@ public class RegularCheckoutPage extends BasePage {
 	@FindBy(xpath = "//div[contains(@aria-label,'Use A New Card')]//div[@class='standardCCBlock']//h3[@class='semafone__cardnumber']")
 	public WebElement lblUsingANewCardDialogCreditCardNumberTitle;
 
-	@FindBy(xpath = "//div[contains(@aria-label,'Use A New Card')]//div[@class='standardCCBlock']//iframe")
+	@FindBy(xpath = "//div[@class='standardCCBlock']//iframe")
 	public WebElement iframeUsingANewCardDialogCreditCardNumberInput;
 
 	//The Credit card number input field in iframeUsingANewCardDialogCardNumberInput
 	@FindBy(xpath = "//input[@id='pan']")
 	public WebElement inputCreditCardNumberInIframe;
+
+	@FindBy(xpath = "//div[contains(@id,'CCNumberSemafone')]/input[@id='selectedNonTscCC']")
+	public WebElement inputEditExistingCreditCard;
 
 	@FindBy(xpath = "//div[@class='card__logo--verify']//*[contains(@class,'tagCCImage')]")
 	public WebElement lblInputCreditCardNumberType;
@@ -386,10 +389,10 @@ public class RegularCheckoutPage extends BasePage {
 	@FindBy(xpath = "//div[contains(@aria-label,'Use A New Card')]//div[@class='standardCCBlock']//h3[@class='semafone__expiration-title']")
 	public WebElement lblUsingANewCardDialogCreditExpirationDateTitle;
 
-	@FindBy(xpath = "//div[contains(@aria-label,'Use A New Card')]//div[@class='standardCCBlock']//input[@id='creditCardMonthId']")
+	@FindBy(xpath = "//div[@class='standardCCBlock']//input[@id='creditCardMonthId']")
 	public WebElement inputUsingANewCardDialogCreditExpirationDateMonth;
 
-	@FindBy(xpath = "//div[contains(@aria-label,'Use A New Card')]//div[@class='standardCCBlock']//input[@id='creditCardYearId']")
+	@FindBy(xpath = "//div[@class='standardCCBlock']//input[@id='creditCardYearId']")
 	public WebElement inputUsingANewCardDialogCreditExpirationDateYear;
 
 	@FindBy(xpath = "//div[contains(@aria-label,'Use A New Card')]//div[@class='standardCCBlock']//span[@class='semafone__expiration-title']")
@@ -1673,15 +1676,32 @@ public class RegularCheckoutPage extends BasePage {
 	 * To add a new Credit card
 	 * @param - String - creditCardType
 	 */
-	public void addNewCreditCard(String creditCardType,boolean validCreditCard){
+	public void addNewCreditOrEditExistingCard(String creditCardType,boolean validCreditCard,Boolean editExistingCreditCard){
 		JSONObject cardData=this.getCardDataFromYamlFile(creditCardType);
 		String cardNumber= (String) cardData.get("Number");
 		String expiredMonth=(String) cardData.get("DisplayExpirationMonth");
 		String expiredYear=(String) cardData.get("DisplayExpirationYear");
 
 		if(!creditCardType.equalsIgnoreCase("tsc")){
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(labelUsingANewCardDialogCreditCardRadio);
-			labelUsingANewCardDialogCreditCardRadio.click();
+			if(!editExistingCreditCard){
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(labelUsingANewCardDialogCreditCardRadio);
+				labelUsingANewCardDialogCreditCardRadio.click();
+			}else{
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputEditExistingCreditCard);
+				this.inputEditExistingCreditCard.click();
+				this.inputEditExistingCreditCard.sendKeys(Keys.BACK_SPACE);
+				this.applyStaticWait(2000);
+				//Verification that for Edit - Year and month are pre-populated
+				if(!this.inputUsingANewCardDialogCreditExpirationDateMonth.getAttribute("value").isEmpty())
+					reporter.reportLogPass("Month is pre-populated for Credit Card");
+				else
+					reporter.reportLogFailWithScreenshot("Month is not pre-populated for Credit Card");
+
+				if(!this.inputUsingANewCardDialogCreditExpirationDateYear.getAttribute("value").isEmpty())
+					reporter.reportLogPass("Year is pre-populated for Credit Card");
+				else
+					reporter.reportLogFailWithScreenshot("Year is not pre-populated for Credit Card");
+			}
 
 			this.getDriver().switchTo().frame(iframeUsingANewCardDialogCreditCardNumberInput);
 			inputCreditCardNumberInIframe.clear();
@@ -1782,7 +1802,7 @@ public class RegularCheckoutPage extends BasePage {
 				addNewTSCCard();
 			}
 			else{
-				addNewCreditCard(cardType,true);
+				addNewCreditOrEditExistingCard(cardType,true,false);
 			}
 			closeUsingANewCardDialog(true);
 		}
@@ -1817,7 +1837,7 @@ public class RegularCheckoutPage extends BasePage {
 				addNewTSCCard();
 			}
 			else{
-				addNewCreditCard(cardType,true);
+				addNewCreditOrEditExistingCard(cardType,true,false);
 			}
 			closeUsingANewCardDialog(true);
 
@@ -3424,10 +3444,11 @@ public class RegularCheckoutPage extends BasePage {
 	 * @param - String - checkoutPaymentCardType
 	 * @param -JSONObject - cardDetails
 	 */
-	public void verifyPaymentMethodOnCheckoutWithCardOnAddChangeDialog(String checkoutPaymentCardType,JSONObject cardDetails){
+	public void verifyPaymentMethodOnCheckoutWithCardOnAddChangeDialog(String checkoutPaymentCardType,JSONObject cardDetails,String expiryMonth, String expiryYear){
 		WebElement cardType;
 		Boolean creditCardText = false;
 		String selectedText;
+		String cardExpiry;
 		int loopSize=lstAddOrChangePaymentMethodDialogAvailableCardContainer.size();
 		for(int i=0;i<loopSize;i++){
 			cardType=lstAddOrChangePaymentMethodDialogAvailableCardContainer.get(i);
@@ -3435,10 +3456,12 @@ public class RegularCheckoutPage extends BasePage {
 			selectedText = cardType.getText();
 			creditCardText = this.getFormatStringFromPaymentAddDialogForSelectedCard(selectedText,"selectededitremove");
 			if(creditCardText){
-				if(checkoutPaymentCardType.equalsIgnoreCase(cardDetails.get("CardType").toString()))
-					reporter.reportLogPass("Credit Card on checkout page is same that is selected");
-				else
-					reporter.reportLogFailWithScreenshot("Credit Card on checkout page is not same as on Payment Dialog");
+				if(checkoutPaymentCardType!=null){
+					if(checkoutPaymentCardType.equalsIgnoreCase(cardDetails.get("CardType").toString()))
+						reporter.reportLogPass("Credit Card on checkout page is same that is selected");
+					else
+						reporter.reportLogFailWithScreenshot("Credit Card on checkout page is not same as on Payment Dialog");
+				}
 
 				String inputCardNumber = cardDetails.get("Number").toString();
 				String displayCardNumber = inputCardNumber.substring(inputCardNumber.length()-4);
@@ -3446,6 +3469,18 @@ public class RegularCheckoutPage extends BasePage {
 					reporter.reportLogPass("Correct Card is added as on checkout page");
 				else
 					reporter.reportLogFailWithScreenshot("Card Number is not same as expected: "+inputCardNumber);
+
+				String cardLogo = this.getSelectedPaymentMethodFromCheckout(cardType.findElement(this.byAddOrChangePaymentMethodDialogCardLogo));
+				if(!cardLogo.contains("tsc")){
+					if(expiryMonth!=null && expiryYear!=null)
+						cardExpiry = expiryMonth+"/"+expiryYear.substring(2);
+					else
+						cardExpiry = cardDetails.get("DisplayExpirationMonth")+"/"+cardDetails.get("DisplayExpirationYear").toString().substring(2);
+					if(selectedText.contains(cardExpiry))
+						reporter.reportLogPass("Credit Card expiry is same as expected: "+cardExpiry);
+					else
+						reporter.reportLogFailWithScreenshot("Credit Card expiry: "+cardExpiry+" is not same as expected: "+selectedText);
+				}
 
 				break;
 			}
@@ -4292,5 +4327,48 @@ public class RegularCheckoutPage extends BasePage {
 		this.waitForCondition(Driver->{return this.btnPayPalButton.isEnabled();},5000);
 		this.getDriver().switchTo().defaultContent();
 		shoppingCartPage.verifyPayPalPopUpExistenceOnClick();
+	}
+
+	/**
+	 * This function gets selected credit card type from payment option dialog box
+	 * @return - String
+	 */
+	public String getSelectedCardTypeOnPaymentMethodDialog(){
+		WebElement cardType;
+		String selectedText,cardLogo = null;
+		Boolean creditCardText;
+		this.waitForCondition(Driver->{return this.lstAddOrChangePaymentMethodDialogAvailableCardContainer.size()>0;},5000);
+		int loopSize=lstAddOrChangePaymentMethodDialogAvailableCardContainer.size();
+		for(int i=0;i<loopSize;i++) {
+			cardType = lstAddOrChangePaymentMethodDialogAvailableCardContainer.get(i);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(cardType);
+			selectedText = cardType.getText();
+			creditCardText = this.getFormatStringFromPaymentAddDialogForSelectedCard(selectedText,"selectededitremove");
+			if(creditCardText){
+				cardLogo = this.getSelectedPaymentMethodFromCheckout(cardType.findElement(this.byAddOrChangePaymentMethodDialogCardLogo));
+				break;
+			}
+		}
+		return cardLogo;
+	}
+
+	public void editAndVerifyAddedCreditCardInPaymentMethodForUser(String cardType, String expiredMonth, String expiredYear,JSONObject creditCardData, Boolean validCard){
+		this.addNewCreditOrEditExistingCard(cardType,validCard,true);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputUsingANewCardDialogCreditExpirationDateMonth);
+		inputUsingANewCardDialogCreditExpirationDateMonth.clear();
+		inputUsingANewCardDialogCreditExpirationDateMonth.sendKeys(expiredMonth);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputUsingANewCardDialogCreditExpirationDateYear);
+		inputUsingANewCardDialogCreditExpirationDateYear.clear();
+		inputUsingANewCardDialogCreditExpirationDateYear.sendKeys(expiredYear.substring(2));
+
+		this.closeAddOrChangePaymentMethodDialog(true);
+		//Close Payment Dialog Box
+		//this.closeAddOrChangePaymentMethodDialog(false);
+		//Store payment method saved on checkout page after adding payment method
+		//String paymentMethodCardType = this.getSelectedPaymentMethodFromCheckout(this.lblSelectedCardTypeForPayment);
+		//this.openAddOrChangePaymentMethodDialog();
+		this.verifyPaymentMethodOnCheckoutWithCardOnAddChangeDialog(null, creditCardData,expiredMonth,expiredYear);
 	}
 }
