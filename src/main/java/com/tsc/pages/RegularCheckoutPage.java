@@ -4352,6 +4352,14 @@ public class RegularCheckoutPage extends BasePage {
 		return cardLogo;
 	}
 
+	/**
+	 * This function edits and verifies added card for new expiry
+	 * @param - String - cardType
+	 * @param - String - expiredMonth
+	 * @param - String - expiredYear
+	 * @param - JSONObject - creditCardData
+	 * @param - Boolean - validCard
+	 */
 	public void editAndVerifyAddedCreditCardInPaymentMethodForUser(String cardType, String expiredMonth, String expiredYear,JSONObject creditCardData, Boolean validCard){
 		this.addNewCreditOrEditExistingCard(cardType,validCard,true);
 
@@ -4364,6 +4372,8 @@ public class RegularCheckoutPage extends BasePage {
 		inputUsingANewCardDialogCreditExpirationDateYear.sendKeys(expiredYear.substring(2));
 
 		this.closeAddOrChangePaymentMethodDialog(true);
+		//Applying static wait as UI takes some time for new expiry to be updated and there is no other condition to wait for
+		this.applyStaticWait(3000);
 		//Close Payment Dialog Box
 		//this.closeAddOrChangePaymentMethodDialog(false);
 		//Store payment method saved on checkout page after adding payment method
