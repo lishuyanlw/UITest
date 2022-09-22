@@ -12,7 +12,6 @@ public class CP_TC04_VerifyReguLarCheckout_ShippingMethod_NavigationShoppingCart
 	/*
 	 * CER-880
 	 * CER-875
-	 * CER-879
 	 */
 	@Test(groups={"Regression","Checkout"})
 	public void CP_TC04_VerifyReguLarCheckout_ShippingMethod_NavigationShoppingCartIconButton() throws IOException {

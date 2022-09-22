@@ -789,7 +789,7 @@ public class ShoppingCartPage extends BasePage {
 			}
 		}
 		else{
-			map.put("productName",lsText);
+			map.put("productName",lsText.trim());
 			map.put("productStyle",null);
 			map.put("productSize",null);
 		}
@@ -1021,7 +1021,7 @@ public class ShoppingCartPage extends BasePage {
 			}
 		}
 		else{
-			map.put("productName",lsText);
+			map.put("productName",lsText.trim());
 			map.put("productStyle",null);
 			map.put("productSize",null);
 		}
