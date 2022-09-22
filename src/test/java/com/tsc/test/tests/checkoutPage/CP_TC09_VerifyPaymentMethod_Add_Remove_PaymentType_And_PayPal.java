@@ -42,7 +42,7 @@ public class CP_TC09_VerifyPaymentMethod_Add_Remove_PaymentType_And_PayPal exten
 
             //Verifying that item exists in cart and if not, create a new cart for user
             List<Map<String, String>> keyword = TestDataHandler.constantData.getCheckOut().getLst_SearchKeywords();
-            getShoppingCartThreadLocal().verifyCartExistsForUser(Integer.valueOf(customerEDP), accessToken, keyword,true);
+            getShoppingCartThreadLocal().verifyCartExistsForUser(Integer.valueOf(customerEDP), accessToken, keyword,false);
 
             //Setting up initial test environment by deleting all cards associated with user and cart
             CartAPI cartAPI = new CartAPI();
