@@ -1717,6 +1717,7 @@ public class RegularCheckoutPage extends BasePage {
 					reporter.reportLogFailWithScreenshot("Selected Credit Card : "+creditCardType+" not image is displayed as expected");
 			}
 
+			this.waitForCondition(Driver->{return !lblInputCreditCardNumberType.getAttribute("class").trim().isEmpty();},15000);
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputUsingANewCardDialogCreditExpirationDateMonth);
 			inputUsingANewCardDialogCreditExpirationDateMonth.clear();
 			inputUsingANewCardDialogCreditExpirationDateMonth.sendKeys(expiredMonth);
