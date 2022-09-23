@@ -1705,6 +1705,14 @@ public class RegularCheckoutPage extends BasePage {
 
 			this.getDriver().switchTo().frame(iframeUsingANewCardDialogCreditCardNumberInput);
 			inputCreditCardNumberInIframe.clear();
+			try{
+				this.waitForCondition(Driver->{return this.inputCreditCardNumberInIframe.isEnabled() &&
+						this.inputCreditCardNumberInIframe.isDisplayed();},10000);
+			}catch (Exception e){
+				this.applyStaticWait(6000);
+			}
+			//Using static wait as Sauce Lab sometimes take time to load and behaviour is in-consistent
+			this.applyStaticWait(3000);
 			inputCreditCardNumberInIframe.sendKeys(cardNumber);
 			this.getDriver().switchTo().defaultContent();
 
