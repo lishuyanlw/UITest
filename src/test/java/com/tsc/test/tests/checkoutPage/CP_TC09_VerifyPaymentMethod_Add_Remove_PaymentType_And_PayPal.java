@@ -81,7 +81,7 @@ public class CP_TC09_VerifyPaymentMethod_Add_Remove_PaymentType_And_PayPal exten
             reporter.reportLog("2 > Verify Mandatory Error Message");
             getRegularCheckoutThreadLocal().verifyErrorMessageOnAddPaymentMethodDialog(addNewCardErrorMessage.get(0));
             reporter.reportLog("3 > Verify Invalid Credit Card Error Message");
-            getRegularCheckoutThreadLocal().addAndVerifiyInvalidCardErrorMessage(invalidCreditCardNumber,addNewCardErrorMessage.get(1).get(0));
+            getRegularCheckoutThreadLocal().addAndVerifyInvalidCardErrorMessage(invalidCreditCardNumber,addNewCardErrorMessage.get(1).get(0));
             reporter.reportLog("4 > Verify Expired Credit Card Error Message");
             getRegularCheckoutThreadLocal().addNewCreditOrEditExistingCard("expired",true,false);
             getRegularCheckoutThreadLocal().closeAddOrChangePaymentMethodDialog(true);
@@ -96,6 +96,7 @@ public class CP_TC09_VerifyPaymentMethod_Add_Remove_PaymentType_And_PayPal exten
             //Verify new card is displayed on Checkout page after save - covered in function - verifyPaymentMethodOnCheckoutWithCardOnAddChangeDialog()
             reporter.reportLog("Verify new card is displayed on Checkout page after save");
             for(String cardType:creditCardType){
+                getRegularCheckoutThreadLocal().refreshPageForMobileTablet();
                 selectedCard = cardType;
                 getRegularCheckoutThreadLocal().openUsingNewCardDialog();
                 //Verify by adding all types of cards

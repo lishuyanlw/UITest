@@ -1704,7 +1704,6 @@ public class RegularCheckoutPage extends BasePage {
 			}
 
 			this.getDriver().switchTo().frame(iframeUsingANewCardDialogCreditCardNumberInput);
-			inputCreditCardNumberInIframe.clear();
 			try{
 				this.waitForCondition(Driver->{return this.inputCreditCardNumberInIframe.isEnabled() &&
 						this.inputCreditCardNumberInIframe.isDisplayed();},10000);
@@ -1713,6 +1712,7 @@ public class RegularCheckoutPage extends BasePage {
 			}
 			//Using static wait as Sauce Lab sometimes take time to load and behaviour is in-consistent
 			this.applyStaticWait(3000);
+			inputCreditCardNumberInIframe.clear();
 			inputCreditCardNumberInIframe.sendKeys(cardNumber);
 			this.getDriver().switchTo().defaultContent();
 
@@ -1742,7 +1742,7 @@ public class RegularCheckoutPage extends BasePage {
 	 * @param - String - cardNumber - invalid credit card number
 	 * @param - String - expectedErrorMessage
 	 */
-	public void addAndVerifiyInvalidCardErrorMessage(String cardNumber,String expectedErrorMessage){
+	public void addAndVerifyInvalidCardErrorMessage(String cardNumber,String expectedErrorMessage){
 		this.clickWebElementUsingJS(this.inputUsingANewCardDialogCreditCardRadio);
 		this.waitForCondition(Driver->{return this.lblUsingANewCardSelectTitle.getText().trim().toLowerCase().contains("card type");},5000);
 		this.getDriver().switchTo().frame(iframeUsingANewCardDialogCreditCardNumberInput);
@@ -4383,11 +4383,16 @@ public class RegularCheckoutPage extends BasePage {
 		this.closeAddOrChangePaymentMethodDialog(true);
 		//Applying static wait as UI takes some time for new expiry to be updated and there is no other condition to wait for
 		this.applyStaticWait(3000);
-		//Close Payment Dialog Box
-		//this.closeAddOrChangePaymentMethodDialog(false);
-		//Store payment method saved on checkout page after adding payment method
-		//String paymentMethodCardType = this.getSelectedPaymentMethodFromCheckout(this.lblSelectedCardTypeForPayment);
-		//this.openAddOrChangePaymentMethodDialog();
 		this.verifyPaymentMethodOnCheckoutWithCardOnAddChangeDialog(null, creditCardData,expiredMonth,expiredYear);
+	}
+
+	public void refreshPageForMobileTablet(){
+		if(!System.getProperty("Device").equalsIgnoreCase("Desktop")){
+			this.getDriver().navigate().refresh();
+			this.waitForPageToLoad();
+			this.waitForCondition(Driver->{return this.btnAddOrChangePaymentMethod.isDisplayed() &&
+					this.btnAddOrChangePaymentMethod.isEnabled();},12000);
+			this.openAddOrChangePaymentMethodDialog();
+		}
 	}
 }
