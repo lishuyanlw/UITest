@@ -3262,6 +3262,7 @@ public class ShoppingCartPage extends BasePage {
 		this.getDriver().switchTo().frame(framePayPalFrameElement);
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnPayPalButton);
+		this.waitForCondition(Driver->{return this.btnPayPalButton.isEnabled();},6000);
 		this.getReusableActionsInstance().clickIfAvailable(this.btnPayPalButton);
 		this.waitForCondition(Driver->{return this.getDriver().getWindowHandles().size()>1;},5000);
 		Set<String> windowHandles = this.getDriver().getWindowHandles();

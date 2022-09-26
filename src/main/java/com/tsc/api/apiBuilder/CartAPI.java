@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tsc.api.pojo.AccountCartResponse;
 import com.tsc.api.pojo.CartResponse;
 import com.tsc.api.pojo.AccountResponse;
+import com.tsc.api.pojo.ErrorResponse;
 import com.tsc.api.pojo.Product;
 import com.tsc.api.util.DataConverter;
 import com.tsc.api.util.JsonParser;
@@ -791,4 +792,64 @@ public class CartAPI extends ApiClient {
             return new AccountAPI().addShippingAddressForUser(customerEdp,accessToken,true,null);
     }
 
+    /**
+     * To add a shipping address into an account
+     * POST API: https://qa-tsc.tsc.ca/api/v2/en/accounts/{customerEDP}/shippingaddresses
+     * @param accessToken - String
+     * @param customerEDP - String
+     * @param isDefault - boolean
+     * @param userData - Map<String,Object>
+     * @return Map<String,Object> - including input values and API calling response
+     * @throws IOException
+     * @throws ParseException
+     */
+    public List <CartResponse.AddressClass> addShippingAddressForUser(String customerEDP, String accessToken, boolean isDefault, Map<String,Object> userData) throws IOException, ParseException {
+        JSONObject requestParams=DataConverter.readJsonFileIntoJSONObject("test-data/DefaultShippingAddress.json");
+        String firstName = null,lastName = null,dayPhone = null,street = null;
+        if(userData!=null){
+            for(Map.Entry<String,Object> objectEntry : userData.entrySet()){
+                if(objectEntry.getKey().equalsIgnoreCase("FirstName")){
+                    firstName=objectEntry.getValue().toString();
+                    requestParams.put("FirstName",firstName);
+                }
+
+                if(objectEntry.getKey().equalsIgnoreCase("LastName")){
+                    lastName=objectEntry.getValue().toString();
+                    requestParams.put("LastName",lastName);
+                }
+
+                if(objectEntry.getKey().equalsIgnoreCase("DayPhone")){
+                    dayPhone=objectEntry.getValue().toString();
+                    requestParams.put("DayPhone",dayPhone);
+                }
+
+                if(objectEntry.getKey().equalsIgnoreCase("Street")){
+                    street=objectEntry.getValue().toString();
+                    requestParams.put("Street",street);
+                }
+            }
+        }
+
+        requestParams.put("IsDefault", isDefault);
+
+        Response response= postApiCallResponseAfterAuthenticationFromJSON(requestParams, propertyData.get("test_apiVersion") + "/" + propertyData.get("test_language")+"/accounts/"+customerEDP+"/cart/shippingaddress?orderRecap=false", accessToken);
+        if(response.statusCode()==200){
+            CartResponse cartResponse= JsonParser.getResponseObject(response.asString(), new TypeReference<CartResponse>() {});
+            return cartResponse.getBuyer().getShippingAddresses();
+        }else if(response.statusCode()==417){
+            List<ErrorResponse> errorResponses = JsonParser.getResponseObject(response.asString(), new TypeReference<List<ErrorResponse>>() {});
+            if (errorResponses.get(0).getMessage().contains("The address you are trying to add already exists."))
+                reporter.reportLog("Error Message is thrown by api as expected: ");
+            else
+                reporter.reportLogFail("Error Message thrown by api: " + errorResponses.get(0).getMessage() + " is not as expected: ");
+
+            Response rawCartResponse = this.getAccountCartContentWithCustomerEDP(customerEDP,accessToken);
+            if(rawCartResponse.getStatusCode()==200){
+                CartResponse cartResponse = JsonParser.getResponseObject(rawCartResponse.asString(),new TypeReference<CartResponse>(){});
+                return cartResponse.getBuyer().getShippingAddresses();
+            }else
+                return null;
+        }
+        return null;
+    }
 }
