@@ -207,10 +207,10 @@ public class OrderConfirmationPage extends BasePage {
 	@FindBy(xpath = "//div[@class='order-conf-summary-section']//div[@class='easy-pay-section']//div[contains(text(),'Payment Amount Left After Today:')]/following-sibling::div[last()]")
 	public WebElement lblInstallmentLeftPayment;
 
-	@FindBy(xpath = "//div[@class='order-conf-summary-section']//div[@class='easy-pay-section']//div[contains(text(),'Future Monthly Payments:')]")
+	@FindBy(xpath = "//div[@class='order-conf-summary-section']//div[@class='easy-pay-section']//div[contains(text(),'Future Monthly Payments')]")
 	public WebElement lblInstallmentFuturePaymentTitle;
 
-	@FindBy(xpath = "//div[@class='order-conf-summary-section']//div[@class='easy-pay-section']//div[contains(text(),'Future Monthly Payments:')]/following-sibling::div[last()]")
+	@FindBy(xpath = "//div[@class='order-conf-summary-section']//div[@class='easy-pay-section']//div[contains(text(),'Future Monthly Payments')]/following-sibling::div[last()]")
 	public WebElement lblInstallmentFuturePayment;
 
 	//For common questions
@@ -411,7 +411,7 @@ public class OrderConfirmationPage extends BasePage {
 				if(lsSplit[1].contains("Size")){
 					map.put("productName",lsSplit[0].trim());
 					map.put("productStyle",null);
-					map.put("productSize",lsSplit[1].trim());
+					map.put("productSize",lsSplit[1].split(":")[1].trim());
 				}
 				else{
 					map.put("productName",lsSplit[0].trim());
@@ -597,7 +597,7 @@ public class OrderConfirmationPage extends BasePage {
 	/**
 	 * To get calculated provincial tax with given province
 	 * @param - float - subTotal
-	 * @param - float - shippingAmount - refer to nowprice in OrderSummary section
+	 * @param - float - shippingAmount - refer to nowPrice in OrderSummary section
 	 * @param - String - province
 	 * @param - Map<String,Object> - provincialTaxRate
 	 * @return - float - province tax
@@ -738,9 +738,11 @@ public class OrderConfirmationPage extends BasePage {
 		float shippingPriceOrderSummary=(float) orderSummaryMap.get("nowPrice");
 		float taxOrderSummary=(float) orderSummaryMap.get("tax");
 		float totalPriceOrderSummary=(float) orderSummaryMap.get("totalPrice");
+		float promoteCodeValue=(float) orderSummaryMap.get("promoteCodeValue");
+		float giftCardValue=(float) orderSummaryMap.get("giftCardValue");
 
 		float eachInstallmentPayment=subTotalOrderSummary/totalInstallmentNumber;
-		float calTodayPayment=eachInstallmentPayment+shippingPriceOrderSummary+taxOrderSummary;
+		float calTodayPayment=eachInstallmentPayment+shippingPriceOrderSummary+taxOrderSummary+(promoteCodeValue+giftCardValue)/totalInstallmentNumber;
 		if(Math.abs(calTodayPayment-todayPayment)<0.1){
 			reporter.reportLogPass("The calculated today payment is equal to the today payment in installment section: "+todayPayment);
 		}
@@ -762,7 +764,7 @@ public class OrderConfirmationPage extends BasePage {
 			reporter.reportLogPass("The calculated future monthly payment is equal to the future monthly payment in installment section: "+futureMonthlyPayment);
 		}
 		else{
-			reporter.reportLogFail("The calculated future monthly payment:"+calFutureMonthlyPayment+" is equal to the future monthly payment:"+futureMonthlyPayment+" in installment section");
+			reporter.reportLogFail("The calculated future monthly payment:"+calFutureMonthlyPayment+" is not equal to the future monthly payment:"+futureMonthlyPayment+" in installment section");
 		}
 	}
 
@@ -1166,6 +1168,14 @@ public class OrderConfirmationPage extends BasePage {
 		}
 
 		if(this.checkAppliedDiscountExistingInOrderSummarySection()){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderSummaryAppliedDiscountTitle);
+			lsText=lblOrderSummaryAppliedDiscountTitle.getText();
+			if (!lsText.isEmpty()) {
+				reporter.reportLogPass("The OrderSummary Applied Discount Title is displaying correctly");
+			} else {
+				reporter.reportLogFailWithScreenshot("The OrderSummary Applied Discount Title is not displaying correctly");
+			}
+
 			WebElement subItem;
 			for(WebElement item:lstOrderSummaryAppliedDiscountList){
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);

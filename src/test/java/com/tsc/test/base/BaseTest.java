@@ -54,6 +54,7 @@ public class BaseTest {
 	protected static final ThreadLocal<ProductAPI> productAPIThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<ShoppingCartPage> shoppingCartThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<RegularCheckoutPage> regularCheckoutPageThreadLocal = new ThreadLocal<>();
+	protected static final ThreadLocal<OrderConfirmationPage> orderConfirmationPageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<JSONObject> apiUserSessionDataMapThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<JSONObject> apiAppSessionDataMapThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<MyAccount> myAccountPageThreadLocal = new ThreadLocal<>();
@@ -68,6 +69,9 @@ public class BaseTest {
 	public static Reporter getReporter() {
 		return reporter;
 	}
+
+	//@return orderConfirmationPageThreadLocal
+	public static OrderConfirmationPage getOrderConfirmationThreadLocal() {return orderConfirmationPageThreadLocal.get();}
 
 	//@return regularCheckoutPageThreadLocal
 	public static RegularCheckoutPage getRegularCheckoutThreadLocal() {return regularCheckoutPageThreadLocal.get();}
@@ -136,6 +140,7 @@ public class BaseTest {
 		productAPIThreadLocal.set(new ProductAPI());
 		shoppingCartThreadLocal.set(new ShoppingCartPage(getDriver()));
 		regularCheckoutPageThreadLocal.set(new RegularCheckoutPage(getDriver()));
+		orderConfirmationPageThreadLocal.set(new OrderConfirmationPage(getDriver()));
 		myAccountPageThreadLocal.set(new MyAccount(getDriver()));
 	}
 
@@ -151,6 +156,7 @@ public class BaseTest {
 		productAPIThreadLocal.set(new ProductAPI());
 		shoppingCartThreadLocal.set(new ShoppingCartPage_Mobile(getDriver()));
 		regularCheckoutPageThreadLocal.set(new RegularCheckoutPage_Mobile(getDriver()));
+		orderConfirmationPageThreadLocal.set(new OrderConfirmationPage(getDriver()));
 		myAccountPageThreadLocal.set(new MyAccount_Mobile(getDriver()));
 	}
 
@@ -204,6 +210,7 @@ public class BaseTest {
 
 		homePageThreadLocal.set(new HomePage(getDriver()));
 		regularCheckoutPageThreadLocal.set(new RegularCheckoutPage(getDriver()));
+		orderConfirmationPageThreadLocal.set(new OrderConfirmationPage(getDriver()));
 	}
 
 
@@ -219,7 +226,7 @@ public class BaseTest {
 		getDriver().quit();
 	}
 
-	public void setImplictWait(WebDriver driver, long seconds) {
+	public void setImplicitWait(WebDriver driver, long seconds) {
 		driver.manage().timeouts().implicitlyWait(seconds, TimeUnit.SECONDS);
 	}
 
@@ -264,7 +271,7 @@ public class BaseTest {
 			&& !strBrowser.toLowerCase().contains("mobile")) {
 		getDriver().manage().window().maximize();
 	}*/
-		setImplictWait(getDriver(), 60);
+		setImplicitWait(getDriver(), 60);
 		//Refreshing browser so that Access Denied issue is resolved from Sauce Lab
 		getglobalheaderPageThreadLocal().getReusableActionsInstance().staticWait(3000);
 		//if(!System.getProperty("Browser").toLowerCase().contains("safari"))

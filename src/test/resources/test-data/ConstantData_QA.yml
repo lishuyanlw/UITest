@@ -312,8 +312,6 @@ checkOut:
   lblExistingAddressErrorMessage: "The shipping address you are trying to add already exists."
   lst_PromoteCode: ["OFFER034","SHIP150"]
   lst_GiftCard:
-    - GiftCardNumber: "6006496682999900100"
-      GiftCardPin: "3707"
     - GiftCardNumber: "6006496682999900209"
       GiftCardPin: "4020"
     - GiftCardNumber: "6006496682749900319"

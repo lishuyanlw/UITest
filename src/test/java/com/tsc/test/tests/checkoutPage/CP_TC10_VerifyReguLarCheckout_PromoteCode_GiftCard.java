@@ -192,6 +192,7 @@ public class CP_TC10_VerifyReguLarCheckout_PromoteCode_GiftCard extends BaseTest
 		reporter.reportLog("Verify OrderSummary Linkage Between ShoppingCart Page And Checkout Page");
 		getRegularCheckoutThreadLocal().verifyOrderSummaryLinkageBetweenShoppingCartPageAndCheckoutPage(orderSummaryMapOnShoppingCartPage,orderSummaryMapOnCheckoutPage);
 
+
 	}
 }
 

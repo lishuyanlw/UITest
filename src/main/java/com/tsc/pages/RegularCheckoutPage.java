@@ -255,6 +255,9 @@ public class RegularCheckoutPage extends BasePage {
 	@FindBy(xpath = "//article[@class='leftSide']//div[contains(@class,'paymentMethodWrap')]//div[@class='paymentmethod__label']/following-sibling::div")
 	public WebElement cntPaymentMethodContainer;
 
+	@FindBy(xpath = "//article[@class='leftSide']//div[contains(@class,'paymentMethodWrap')]//div[@class='paymentmethod__label']/following-sibling::div//*[contains(@class,'tagCCImage')]")
+	public WebElement iconPaymentMethod;
+
 	@FindBy(xpath = "//article[@class='leftSide']//div[contains(@class,'paymentMethodWrap')]//div[@class='paymentmethod__error-wrap']")
 	public WebElement lblPaymentMethodErrorMessage;
 
@@ -755,8 +758,16 @@ public class RegularCheckoutPage extends BasePage {
 	 * To check Payment Method Existing
 	 * @return - boolean
 	 */
-	public boolean checkPaymentMethodExisting(){
+	public boolean getPaymentMethodTypeExisting(){
 		return this.checkChildElementExistingByAttribute(cntPaymentMethodContainer,"class","paymentmethod__description");
+	}
+
+	/**
+	 * To check If Payment Method Is TSC
+	 * @return - boolean
+	 */
+	public boolean checkIfPaymentMethodIsTSC(){
+		return this.iconPaymentMethod.getAttribute("class").contains("tagCCImageTSC");
 	}
 
 	/**
@@ -1828,6 +1839,14 @@ public class RegularCheckoutPage extends BasePage {
 	}
 
 	/**
+	 * To check Payment Method Existing
+	 * @return - boolean
+	 */
+	public boolean checkPaymentMethodExisting(){
+		return this.checkChildElementExistingByAttribute(cntPaymentMethodContainer,"class","paymentmethod__description");
+	}
+
+	/**
 	 * To get Input Credit Card Number Type
 	 * @return - String - "Visa"/"MC"/"Amex"
 	 */
@@ -1898,6 +1917,7 @@ public class RegularCheckoutPage extends BasePage {
 					cardItem.click();
 					bFind=true;
 					cartIndex=i;
+					closeAddOrChangePaymentMethodDialog(true);
 				}
 			}
 			else{
@@ -1906,6 +1926,7 @@ public class RegularCheckoutPage extends BasePage {
 					cardItem.click();
 					bFind=true;
 					cartIndex=i;
+					closeAddOrChangePaymentMethodDialog(true);
 				}
 			}
 		}
@@ -1919,11 +1940,6 @@ public class RegularCheckoutPage extends BasePage {
 				addNewCreditCard(cardType,true);
 			}
 			closeUsingANewCardDialog(true);
-
-			cardItem=lstAddOrChangePaymentMethodDialogAvailableCardContainer.get(0);
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(cardItem);
-			cardItem.click();
-			cartIndex=0;
 		}
 
 		return cartIndex;
@@ -4087,7 +4103,7 @@ public class RegularCheckoutPage extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnGoToShoppingBag);
 		this.clickElement(btnGoToShoppingBag);
 		ShoppingCartPage shoppingCartPage=new ShoppingCartPage(this.getDriver());
-		return this.waitForCondition(Driver->{return shoppingCartPage.lblCartTitle.isDisplayed()&&!this.getElementInnerText(shoppingCartPage.lblCartTitle).isEmpty();},40000);
+		return this.waitForCondition(Driver->{return shoppingCartPage.lblCartPricingOrderSummaryTitle.isDisplayed();},120000);
 	}
 
 	/**
