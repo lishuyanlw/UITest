@@ -3930,8 +3930,23 @@ public class RegularCheckoutPage extends BasePage {
 					}
 				}
 			}
-		}else
-			reporter.reportLogFail("New Address Added Object returned is null and hence not deleted");
+		}else{
+			AccountAPI accountAPI = new AccountAPI();
+			reporter.reportLog("Deleting all shipping address for user");
+			List<CartResponse.AddressClass> addressClass = new CartAPI().addShippingAddressForUser(customerEDP,accessToken,true,null);
+			if(addressClass.size()>0){
+				//Making shipping address as default shipping address
+				Response response = accountAPI.updatingBillingAddressForUserInCart(customerEDP,accessToken,null);
+				if(response.getStatusCode()==200)
+					reporter.reportLog("Billing address is updated as shipping address");
+				else
+					reporter.reportLogFail("Billing address is not updated as shipping address while env. cleanup..");
+			}
+
+			for(CartResponse.AddressClass address : addressClass){
+				accountAPI.deleteShippingAddressForUser(address.getId(),customerEDP,accessToken);
+			}
+		}
 	}
 
 	/**

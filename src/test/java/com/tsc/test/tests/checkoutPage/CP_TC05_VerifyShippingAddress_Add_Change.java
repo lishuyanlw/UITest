@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-
 public class CP_TC05_VerifyShippingAddress_Add_Change extends BaseTest {
     /**
      CER-876 - Checkout - Shipping address - Verify dialog display, list of addresses and other options
@@ -34,7 +33,6 @@ public class CP_TC05_VerifyShippingAddress_Add_Change extends BaseTest {
         List<Map<String,String>> inputAddress = TestDataHandler.constantData.getCheckOut().getNewShippingAddressForUser();
         String billingAddress = TestDataHandler.constantData.getCheckOut().getLblBillingAddress();
         String existingAddressErrorMessage = TestDataHandler.constantData.getCheckOut().getLblExistingAddressErrorMessage();
-        boolean addressFlagForEnvironmentCleanUp = false;
 
         //Fetching test data from test data file
         String accessToken = getApiUserSessionDataMapThreadLocal().get("access_token").toString();
@@ -48,6 +46,7 @@ public class CP_TC05_VerifyShippingAddress_Add_Change extends BaseTest {
             getShoppingCartThreadLocal().verifyCartExistsForUser(Integer.valueOf(customerEDP), accessToken, keyword,true);
 
             //Verification that user has ShippingAddress associated and if not, add one to user
+            getRegularCheckoutThreadLocal().deleteNewAddedAddressFromUser(null,customerEDP,accessToken);
             CartAPI cartAPI = new CartAPI();
             Response response = cartAPI.getAccountCartContentWithCustomerEDP(customerEDP,accessToken);
             CartResponse cartResponse= JsonParser.getResponseObject(response.asString(), new TypeReference<CartResponse>() {});
@@ -65,7 +64,7 @@ public class CP_TC05_VerifyShippingAddress_Add_Change extends BaseTest {
             }
             getRegularCheckoutThreadLocal().navigateToCheckoutPage();
 
-            getRegularCheckoutThreadLocal().deleteInputAddressForNextTestRunForUser(inputAddress,customerEDP,accessToken);
+            //getRegularCheckoutThreadLocal().deleteInputAddressForNextTestRunForUser(inputAddress,customerEDP,accessToken);
             //Verification of Shipping Address display on Checkout Page
             //Verify title, button and links
             getReporter().reportLog("Verification of Shipping Address display on Checkout Page");
@@ -127,18 +126,11 @@ public class CP_TC05_VerifyShippingAddress_Add_Change extends BaseTest {
                 reporter.reportLogFailWithScreenshot("Error Message is not displayed on adding same address: "+newAddedAddress.get("address"));
 
             //Verifying editing the existing address
-            addressFlagForEnvironmentCleanUp = true;
             getReporter().reportLog("Verifying the existing address edit functionality for shipping address");
             newAddedAddress = getRegularCheckoutThreadLocal().addOrEditShippingAddress(inputAddress.get(1),false,true);
             getRegularCheckoutThreadLocal().verifyAndReturnShippingAddressFromAddEditDialogOnAddChangeDialog(newAddedAddress);
         }finally {
-            //Deleting the address added for next run
-            if(addressFlagForEnvironmentCleanUp)
-                getRegularCheckoutThreadLocal().deleteNewAddedAddressFromUser(inputAddress.get(1),customerEDP,accessToken);
-            else{
-                getRegularCheckoutThreadLocal().updateAddressForUserOnCheckout(inputAddress,"shipping",customerEDP,accessToken);
-                getRegularCheckoutThreadLocal().deleteNewAddedAddressFromUser(inputAddress.get(0),customerEDP,accessToken);
-            }
+            getRegularCheckoutThreadLocal().deleteNewAddedAddressFromUser(null,customerEDP,accessToken);
         }
     }
 }
