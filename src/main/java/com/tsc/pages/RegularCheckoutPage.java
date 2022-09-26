@@ -1018,7 +1018,7 @@ public class RegularCheckoutPage extends BasePage {
 			map.put("productFreeShipping",null);
 		}
 
-		if(!checkProductShippingDateExisting()){
+		if(checkProductShippingDateExisting(productItem)){
 			item=productItem.findElement(byProductShippingDate);
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 			lsText=item.getText().trim();
