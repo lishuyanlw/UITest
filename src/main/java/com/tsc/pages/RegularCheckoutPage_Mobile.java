@@ -218,4 +218,14 @@ public class RegularCheckoutPage_Mobile extends RegularCheckoutPage{
 		}
 	}
 
+	@Override
+	public void verifyPayPalFunctionality(){
+		ShoppingCartPage_Mobile shoppingCartPage = new ShoppingCartPage_Mobile(this.getDriver());
+		this.clickWebElementUsingJS(this.labelAddOrChangePaymentMethodDialogPaypalRadio);
+		this.getDriver().switchTo().frame(shoppingCartPage.framePayPalFrameElement);
+		this.waitForCondition(Driver->{return this.btnPayPalButton.isEnabled();},5000);
+		this.getDriver().switchTo().defaultContent();
+		shoppingCartPage.verifyPayPalPopUpExistenceOnClick();
+	}
+
 }

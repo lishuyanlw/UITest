@@ -309,4 +309,11 @@ checkOut:
       province: "Ontario"
   lblBillingAddress: "Same as shipping address"
   lblExistingAddressErrorMessage: "The shipping address you are trying to add already exists."
+  lblPaymentMethodErrorMessage: "Please enter a payment method"
+  lstPaymentMethodCardAdditionErrorMessage: [
+    ["The credit card number entered is not valid.  Please try again."],
+    ["The credit card number you entered is not valid. Please try again."],
+    ["The credit card selected has expired."]
+  ]
+  lblInvalidCreditCardNumber: 4012888812371888
 

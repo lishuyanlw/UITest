@@ -123,40 +123,16 @@ public class AccountAPI extends ApiClient {
     /**
      * To update billing address for Street and isDefault info
      * PUT API: https://qa-tsc.tsc.ca/api/v2/en/accounts/{customerEDP}/billingaddresses
-     * @param getResponse - AccountResponse
      * @param accessToken - String
      * @param customerEDP - String
-     * @param bUpdateContents - boolean
-     * @param isDefault - boolean
      * @param userData - Map<String,Object>
-     * @return Map<String,Object> - including input values and API calling response
+     * @return
      * @throws IOException
      * @throws ParseException
      */
-    public Map<String,Object> updatingBillingAddressForContentsAndIsDefaultInfoInAccount(AccountResponse getResponse,String customerEDP,String accessToken,boolean bUpdateContents, boolean isDefault,Map<String,Object> userData) throws IOException, ParseException {
-        JSONObject requestParams= new JSONObject();
-
-        requestParams.put("Id", getResponse.getBillingAddress().getId());
-        requestParams.put("SalesForceAddressId", getResponse.getBillingAddress().getSalesForceAddressId());
-
-        String firstName=DataConverter.getSaltString(1,"upperStringType")+DataConverter.getSaltString(6,"lowerStringType");
-        requestParams.put("FirstName", firstName);
-
-        String lastName=DataConverter.getSaltString(1,"upperStringType")+DataConverter.getSaltString(6,"lowerStringType");
-        requestParams.put("LastName", lastName);
-
-        String dayPhone="647"+DataConverter.getSaltString(7,"numberType");
-        requestParams.put("DayPhone", dayPhone);
-
-        String street;
-        if(bUpdateContents){
-            street=DataConverter.getSaltString(5,"numberType")+" "+DataConverter.getSaltString(8,"stringType")+" Road";
-        }
-        else{
-            street=getResponse.getBillingAddress().getStreet();
-        }
-        requestParams.put("Street", street);
-
+    public Response updatingBillingAddressForUserInCart(String customerEDP,String accessToken,Map<String,Object> userData) {
+        JSONObject requestParams=DataConverter.readJsonFileIntoJSONObject("test-data/DefaultShippingAddress.json");
+        String firstName = null,lastName = null,dayPhone = null,street = null;
         if(userData!=null){
             for(Map.Entry<String,Object> objectEntry : userData.entrySet()){
                 if(objectEntry.getKey().equalsIgnoreCase("FirstName")){
@@ -181,54 +157,11 @@ public class AccountAPI extends ApiClient {
             }
         }
 
-        String addressRef1=getResponse.getBillingAddress().getAddressRef1();
-        requestParams.put("AddressRef1", addressRef1);
-
-        String city=getResponse.getBillingAddress().getCity();
-        requestParams.put("City", city);
-
-        String state=getResponse.getBillingAddress().getState();
-        requestParams.put("State", state);
-
-        String zipCode=getResponse.getBillingAddress().getZipCode();
-        requestParams.put("ZipCode", zipCode);
-
-        requestParams.put("IsDefault", isDefault);
-
-        String POBoxNumber=getResponse.getBillingAddress().getPOBoxNumber();
-        requestParams.put("POBoxNumber", POBoxNumber);
-
-        boolean isPOBox =getResponse.getBillingAddress().isPOBox();
-        requestParams.put("IsPOBox", isPOBox);
-
-        String address2Type=getResponse.getBillingAddress().getAddress2Type();
-        requestParams.put("Address2Type", address2Type);
-
-        String address2Value=getResponse.getBillingAddress().getAddress2Value();
-        requestParams.put("Address2Value", address2Value);
-
         Response response= updateApiCallResponseAfterAuthenticationFromJSON(requestParams, propertyData.get("test_apiVersion") + "/" + propertyData.get("test_language")+"/accounts/"+customerEDP+"/billingaddress", accessToken);
-
-        AddressDetails addressDetails=new AddressDetails();
-        addressDetails.FirstName=firstName;
-        addressDetails.LastName=lastName;
-        addressDetails.DayPhone=dayPhone;
-        addressDetails.Street=street;
-        addressDetails.AddressRef1=addressRef1;
-        addressDetails.City=city;
-        addressDetails.State=state;
-        addressDetails.ZipCode=zipCode;
-        addressDetails.IsDefault=isDefault;
-        addressDetails.POBoxNumber=POBoxNumber;
-        addressDetails.IsPOBox=isPOBox;
-        addressDetails.Address2Type=address2Type;
-        addressDetails.Address2Value=address2Value;
-
-        Map<String,Object> mapResult=new HashMap<>();
-        mapResult.put("inputValue",addressDetails);
-        mapResult.put("response",response);
-
-        return mapResult;
+        if(response.statusCode()==200)
+            return response;
+        else
+            return null;
     }
 
     /**
@@ -243,7 +176,7 @@ public class AccountAPI extends ApiClient {
      * @throws ParseException
      */
     public List<AccountResponse.AddressClass> addShippingAddressForUser(String customerEDP,String accessToken,boolean isDefault,Map<String,Object> userData) throws IOException, ParseException {
-        JSONObject requestParams=DataConverter.readJsonFileIntoJSONObject("test-data/AccountAddingShippingAddressPost.json");
+        JSONObject requestParams=DataConverter.readJsonFileIntoJSONObject("test-data/DefaultShippingAddress.json");
         String firstName = null,lastName = null,dayPhone = null,street = null;
         if(userData!=null){
             for(Map.Entry<String,Object> objectEntry : userData.entrySet()){
@@ -522,7 +455,7 @@ public class AccountAPI extends ApiClient {
      * @param-String - access token needed for authorization
      * @return-Response - api response after making DELETE call
      */
-    public Response deleteCreditCardFromUser(String customerEDP,int creditCardId,String access_token){
+    public Response deleteCreditCardFromUser(int creditCardId,String customerEDP,String access_token){
         return this.deleteCreditCardFromUserAfterAuthentication(propertyData.get("test_apiVersion")+"/"+propertyData.get("test_language")+"/accounts/"+customerEDP+"/creditcards/"+creditCardId,access_token);
     }
 
