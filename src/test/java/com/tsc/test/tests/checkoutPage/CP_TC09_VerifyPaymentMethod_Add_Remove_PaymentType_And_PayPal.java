@@ -20,6 +20,7 @@ public class CP_TC09_VerifyPaymentMethod_Add_Remove_PaymentType_And_PayPal exten
     /**
      CER-881 - Checkout - Payment Method - Verify dialog display and other options
      CER-882 - Checkout - Payment Method - Add new/change payment method, required message, fields display, Remove Card
+     CER-883 - Checkout - Payment Method - Verify PayPal button
      */
     @Test(groups={"Regression","Checkout"})
     public void CP_TC09_VerifyPaymentMethod_Add_Remove_PaymentType_And_PayPal() throws IOException {
@@ -80,9 +81,9 @@ public class CP_TC09_VerifyPaymentMethod_Add_Remove_PaymentType_And_PayPal exten
             reporter.reportLog("2 > Verify Mandatory Error Message");
             getRegularCheckoutThreadLocal().verifyErrorMessageOnAddPaymentMethodDialog(addNewCardErrorMessage.get(0));
             reporter.reportLog("3 > Verify Invalid Credit Card Error Message");
-            getRegularCheckoutThreadLocal().addAndVerifiyInvalidCardErrorMessage(invalidCreditCardNumber,addNewCardErrorMessage.get(1).get(0));
+            getRegularCheckoutThreadLocal().addAndVerifyInvalidCardErrorMessage(invalidCreditCardNumber,addNewCardErrorMessage.get(1).get(0));
             reporter.reportLog("4 > Verify Expired Credit Card Error Message");
-            getRegularCheckoutThreadLocal().addNewCreditCard("expired",true);
+            getRegularCheckoutThreadLocal().addNewCreditOrEditExistingCard("expired",true,false);
             getRegularCheckoutThreadLocal().closeAddOrChangePaymentMethodDialog(true);
             getRegularCheckoutThreadLocal().verifyErrorMessageOnAddPaymentMethodDialog(addNewCardErrorMessage.get(2));
 
@@ -95,16 +96,17 @@ public class CP_TC09_VerifyPaymentMethod_Add_Remove_PaymentType_And_PayPal exten
             //Verify new card is displayed on Checkout page after save - covered in function - verifyPaymentMethodOnCheckoutWithCardOnAddChangeDialog()
             reporter.reportLog("Verify new card is displayed on Checkout page after save");
             for(String cardType:creditCardType){
+                getRegularCheckoutThreadLocal().refreshPageForMobileTablet();
                 selectedCard = cardType;
                 getRegularCheckoutThreadLocal().openUsingNewCardDialog();
                 //Verify by adding all types of cards
                 reporter.reportLog("Verify by adding all types of cards for credit card: "+cardType);
-                getRegularCheckoutThreadLocal().addNewCreditCard(cardType,true);
+                getRegularCheckoutThreadLocal().addNewCreditOrEditExistingCard(cardType,true,false);
                 getRegularCheckoutThreadLocal().closeAddOrChangePaymentMethodDialog(true);
                 //Store payment method saved on checkout page after adding payment method
                 String paymentMethodCardType = getRegularCheckoutThreadLocal().getSelectedPaymentMethodFromCheckout(getRegularCheckoutThreadLocal().lblSelectedCardTypeForPayment);
                 getRegularCheckoutThreadLocal().openAddOrChangePaymentMethodDialog();
-                getRegularCheckoutThreadLocal().verifyPaymentMethodOnCheckoutWithCardOnAddChangeDialog(paymentMethodCardType, (JSONObject) creditCardData.get(cardType));
+                getRegularCheckoutThreadLocal().verifyPaymentMethodOnCheckoutWithCardOnAddChangeDialog(paymentMethodCardType, (JSONObject) creditCardData.get(cardType),null,null);
             }
             reporter.reportLog("Verifying selected card on PayMethod PopUp");
             getRegularCheckoutThreadLocal().verfiyAddedCardsForUserInPaymentMethod(selectedCard);
@@ -115,9 +117,16 @@ public class CP_TC09_VerifyPaymentMethod_Add_Remove_PaymentType_And_PayPal exten
             reporter.reportLog("Verify Remove dialog screen and also verify click Yes should remove the card");
             getRegularCheckoutThreadLocal().verifyRemovePaymentMethodForUser(true);
 
+            //Verify Edit Credit Card Functionality
+            reporter.reportLog("Verify Edit Selected Credit Card for User");
+            getRegularCheckoutThreadLocal().openAddOrChangePaymentMethodDialog();
+            String cardType = getRegularCheckoutThreadLocal().getSelectedCardTypeOnPaymentMethodDialog();
+            getRegularCheckoutThreadLocal().openAddOrEditAddressDialog(getDriver().findElement(getRegularCheckoutThreadLocal().byAddOrChangeShippingAddressDialogEditButton));
+            getRegularCheckoutThreadLocal().editAndVerifyAddedCreditCardInPaymentMethodForUser(cardType,"5","2039",(JSONObject) creditCardData.get(cardType),true);
+
             //Verify Pay Pal Option
             reporter.reportLog("Verify PayPal option");
-            getRegularCheckoutThreadLocal().openAddOrChangePaymentMethodDialog();
+            //getRegularCheckoutThreadLocal().openAddOrChangePaymentMethodDialog();
             getRegularCheckoutThreadLocal().verifyPayPalFunctionality();
         }finally{
             //Emptying Cart for test to run with right state

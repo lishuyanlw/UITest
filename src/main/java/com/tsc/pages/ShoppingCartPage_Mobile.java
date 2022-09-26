@@ -778,7 +778,8 @@ public class ShoppingCartPage_Mobile extends ShoppingCartPage {
 		this.getDriver().switchTo().frame(framePayPalFrameElement);
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnPayPalButton);
-		this.getReusableActionsInstance().clickIfAvailable(this.btnPayPalButton);
+		this.waitForCondition(Driver->{return this.btnPayPalButton.isEnabled();},6000);
+		this.clickWebElementUsingJS(this.btnPayPalButton);
 		this.waitForCondition(Driver->{return this.getDriver().getWindowHandles().size()>1;},5000);
 		ArrayList<String> openTabs = new ArrayList<> (this.getDriver().getWindowHandles());
 		if(openTabs.size()>1){
