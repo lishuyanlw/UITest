@@ -113,6 +113,8 @@ public class CP_TC03_VerifyReguLarCheckout_ShippingDate_MultiPackMessage extends
 			}
 		}
 		basePage.refresh();
+		basePage.waitForCondition(Driver->{return getRegularCheckoutThreadLocal().btnGoToShoppingBag.isDisplayed()
+				&& getRegularCheckoutThreadLocal().btnGoToShoppingBag.isEnabled();},12000);
 
 		lsCheckoutShippingDate=getRegularCheckoutThreadLocal().getShippingDateInHeader();
 		if(lsCheckoutShippingDate!=null){
