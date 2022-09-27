@@ -16,7 +16,7 @@ import java.util.Map;
 
 public class CP_TC12_VerifyOrderConfirmationPage_Contents_LinkageWithCheckoutPage extends BaseTest{
 	/*
-	 * CER-888
+	 * CER-889
 	 */
 	@Test(groups={"Regression","Checkout"})
 	public void CP_TC12_VerifyOrderConfirmationPage_Contents_LinkageWithCheckoutPage() throws IOException {
@@ -28,9 +28,10 @@ public class CP_TC12_VerifyOrderConfirmationPage_Contents_LinkageWithCheckoutPag
 		int customerEDP = Integer.valueOf(getApiUserSessionDataMapThreadLocal().get("customerEDP").toString());
 		//To empty the cart
 		getShoppingCartThreadLocal().emptyCart(customerEDP,accessToken);
-		//To add Product With Multiple Shipping Methods
-		String lsKeyword=TestDataHandler.constantData.getCheckOut().getLblProductNumberWithMultipleShippingMethods();
-		Map<String,Object> mapAPI=getShoppingCartThreadLocal().addSingleProductWithConditions(lsKeyword, 1,1, String.valueOf(customerEDP), accessToken,false);
+
+		//Verifying that item exists in cart and if not, create a new cart for user
+		List<Map<String, String>> keyword = TestDataHandler.constantData.getCheckOut().getLst_SearchKeywords();
+		getShoppingCartThreadLocal().verifyCartExistsForUser(Integer.valueOf(customerEDP), accessToken, keyword,true);
 
 		//Delete promote code and all gift cards
 		CartAPI cartAPI=new CartAPI();
@@ -150,12 +151,25 @@ public class CP_TC12_VerifyOrderConfirmationPage_Contents_LinkageWithCheckoutPag
 		reporter.reportLog("verify Shipping and Payment Linkage Between OrderConfirmationPage And CheckoutPage");
 		getOrderConfirmationThreadLocal().verifyShippingAndPaymentLinkageBetweenOrderConfirmationPageAndCheckoutPage(shippingAndPaymentMapForOrderConfirmationPage,shippingAndPaymentMapOnCheckoutPage);
 
+		reporter.reportLog("Verify OrderConfirmation header Contents");
 		getOrderConfirmationThreadLocal().verifyOrderConfirmationContents();
+
+		reporter.reportLog("Verify Receipt Contents");
 		getOrderConfirmationThreadLocal().verifyReceiptContents();
+
+		reporter.reportLog("Verify Order List Contents");
 		getOrderConfirmationThreadLocal().verifyOrderListContents();
+
+		reporter.reportLog("Verify Payment Card Contents");
 		getOrderConfirmationThreadLocal().verifyPaymentCardContents();
+
+		reporter.reportLog("Verify OrderSummary Contents");
 		getOrderConfirmationThreadLocal().verifyOrderSummaryContents();
+
+		reporter.reportLog("Verify EasyPayment Contents");
 		getOrderConfirmationThreadLocal().verifyEasyPayContents();
+
+		reporter.reportLog("Verify Common Questions Contents");
 		getOrderConfirmationThreadLocal().verifyCommonQuestionsContents();
 
 

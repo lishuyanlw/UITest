@@ -97,7 +97,7 @@ public class OrderConfirmationPage extends BasePage {
 	public By byProductImageLink=By.xpath(".//div[@class='review-item-img']//a");
 	public By byProductDescriptionLink=By.xpath(".//div[@class='review-item-desc']//*[@class='review-item-name']");
 	public By byProductNumberContainer=By.xpath(".//div[@class='review-item-desc']");
-	public By byProductNumber=By.xpath(".//div[@class='review-item-desc']//a/following-sibling::div");
+	public By byProductNumber=By.xpath(".//div[@class='review-item-desc']//a/following-sibling::div[not(contains(@class,'estimateDate__lineItem--desktopWrapper'))]");
 	public By byProductPriceContainer=By.xpath(".//div[@class='price-cell']");
 	public By byProductNowPrice=By.xpath(".//div[@class='price-cell']//span[@class='applied-price']");
 	public By byProductWasPrice=By.xpath(".//div[@class='price-cell']//del");
@@ -404,7 +404,6 @@ public class OrderConfirmationPage extends BasePage {
 			styleItem=subItem.findElement(By.xpath("./span[@class='spn-style']"));
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(styleItem);
 			map.put("productStyle",styleItem.getText().trim());
-			reporter.reportLog(styleItem.getText().trim());
 		}
 		else{
 			map.put("productStyle",null);
@@ -414,7 +413,6 @@ public class OrderConfirmationPage extends BasePage {
 			sizeItem=subItem.findElement(By.xpath("./span[@class='spn-size']"));
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(sizeItem);
 			map.put("productSize",sizeItem.getText().trim().split(":")[1].trim());
-			reporter.reportLog(sizeItem.getText().trim().split(":")[1].trim());
 		}
 		else{
 			map.put("productSize",null);
@@ -591,8 +589,13 @@ public class OrderConfirmationPage extends BasePage {
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderSummaryShippingAndHandlingNowPrice);
-		lsText=this.lblOrderSummaryShippingAndHandlingNowPrice.getText();
-		map.put("nowPrice",this.getFloatFromString(lsText,true));
+		lsText=this.lblOrderSummaryShippingAndHandlingNowPrice.getText().trim();
+		if(!lsText.equalsIgnoreCase("Free")){
+			map.put("nowPrice",this.getFloatFromString(lsText));
+		}
+		else{
+			map.put("nowPrice",0.0f);
+		}
 
 		map.put("province",getTaxProvinceCode());
 
@@ -1369,6 +1372,7 @@ public class OrderConfirmationPage extends BasePage {
 
 		lsOrderConfirmationText=(String)orderConfirmationItem.get("productNumber");
 		lsCheckoutText=(String)checkoutItem.get("productNumber");
+		reporter.reportLog(lsOrderConfirmationText+":"+lsCheckoutText);
 		if(lsOrderConfirmationText==null){
 			if(lsCheckoutText==null){
 				reporter.reportLogPass("The productNumber in OrderConfirmation Item is the same as the one in checkout Item");

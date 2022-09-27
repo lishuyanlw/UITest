@@ -312,10 +312,10 @@ checkOut:
   lblExistingAddressErrorMessage: "The shipping address you are trying to add already exists."
   lst_PromoteCode: ["OFFER034","SHIP150"]
   lst_GiftCard:
-    - GiftCardNumber: "6006496682999900209"
-      GiftCardPin: "4020"
-    - GiftCardNumber: "6006496682749900319"
-      GiftCardPin: "3974"
+    - GiftCardNumber: "6006496682999900712"
+      GiftCardPin: "9540"
+    - GiftCardNumber: "6006496682999900720"
+      GiftCardPin: "2714"
   lblGiftCardPromoteErrorMessageForEasyPayment: "Gift cards cannot be used for orders that have Easy Pays."
   lblPaymentMethodErrorMessage: "Please enter a payment method"
   lstPaymentMethodCardAdditionErrorMessage: [

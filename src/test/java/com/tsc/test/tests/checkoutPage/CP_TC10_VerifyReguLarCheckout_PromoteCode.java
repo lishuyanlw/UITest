@@ -28,10 +28,13 @@ public class CP_TC10_VerifyReguLarCheckout_PromoteCode extends BaseTest{
 		int customerEDP = Integer.valueOf(getApiUserSessionDataMapThreadLocal().get("customerEDP").toString());
 		//To empty the cart
 		getShoppingCartThreadLocal().emptyCart(customerEDP,accessToken);
-		//To add Product With Multiple Shipping Methods
-		String lsKeyword=TestDataHandler.constantData.getCheckOut().getLblProductNumberWithMultipleShippingMethods();
-		Map<String,Object> mapAPI=getShoppingCartThreadLocal().addSingleProductWithConditions(lsKeyword, 1,1, String.valueOf(customerEDP), accessToken,true);
+//		//To add Product With Multiple Shipping Methods
+//		String lsKeyword=TestDataHandler.constantData.getCheckOut().getLblProductNumberWithMultipleShippingMethods();
+//		Map<String,Object> mapAPI=getShoppingCartThreadLocal().addSingleProductWithConditions(lsKeyword, 1,1, String.valueOf(customerEDP), accessToken,true);
 
+		//Verifying that item exists in cart and if not, create a new cart for user
+		List<Map<String, String>> keyword = TestDataHandler.constantData.getCheckOut().getLst_SearchKeywords();
+		getShoppingCartThreadLocal().verifyCartExistsForUser(Integer.valueOf(customerEDP), accessToken, keyword,true);
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 
 		String lblPromoteCodeAppliedMessage=TestDataHandler.constantData.getCheckOut().getLblPromoteCodeAppliedMessage();
@@ -91,6 +94,7 @@ public class CP_TC10_VerifyReguLarCheckout_PromoteCode extends BaseTest{
 		int itemCountForCheckOutList = (int) summaryMapForCheckOutList.get("itemCount");
 		float subTotalForCheckOutList = (float) summaryMapForCheckOutList.get("subTotal");
 		Map<String,Object> orderSummaryMapOnCheckoutPage=getRegularCheckoutThreadLocal().getOrderSummaryDesc();
+		Map<String,Object> easyPaymentMapOnCheckoutPage=getRegularCheckoutThreadLocal().getEasyPayDesc();
 
 		reporter.reportLog("Verify OrderSummary Business Logic");
 		getRegularCheckoutThreadLocal().verifyOrderSummaryBusinessLogic(subTotalForCheckOutList, orderSummaryMapOnCheckoutPage, null);
@@ -104,6 +108,7 @@ public class CP_TC10_VerifyReguLarCheckout_PromoteCode extends BaseTest{
 		float savingPrice=getShoppingCartThreadLocal().getSavingPriceFromShoppingCartHeader();
 		float subTotal=getShoppingCartThreadLocal().getShoppingSubTotal();
 		Map<String,Object> orderSummaryMapOnShoppingCartPage=getShoppingCartThreadLocal().getOrderSummaryDesc();
+		Map<String,Object> easyPaymentMapOnShoppingCartPage=getShoppingCartThreadLocal().getEasyPayDesc();
 
 		reporter.reportLog("Verify OrderSummary Business Logic");
 		getShoppingCartThreadLocal().verifyOrderSummaryBusinessLogic(itemAmount,savingPrice,subTotal,orderSummaryMapOnShoppingCartPage,null);
@@ -111,6 +116,8 @@ public class CP_TC10_VerifyReguLarCheckout_PromoteCode extends BaseTest{
 		reporter.reportLog("Verify OrderSummary Linkage Between ShoppingCart Page And Checkout Page");
 		getRegularCheckoutThreadLocal().verifyOrderSummaryLinkageBetweenShoppingCartPageAndCheckoutPage(orderSummaryMapOnShoppingCartPage,orderSummaryMapOnCheckoutPage);
 
+		reporter.reportLog("verify EasyPayment Linkage Between ShoppingCart Page And Checkout Page");
+		getRegularCheckoutThreadLocal().verifyEasyPaymentLinkageBetweenShoppingCartPageAndCheckoutPage(easyPaymentMapOnShoppingCartPage,easyPaymentMapOnCheckoutPage);
 
 	}
 }
