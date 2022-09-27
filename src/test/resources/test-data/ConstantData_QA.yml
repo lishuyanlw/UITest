@@ -1,7 +1,7 @@
 # API USER TOKEN INFO
 apiUserSessionParams:
-  lbl_username: qa2542@rogers.com
-  lbl_password: qa1234
+  lbl_username: shoppingcart@rogers.com
+  lbl_password: TestMail123
   lbl_grantType: password
   lbl_apiKey: A9607F64-D061-4279-8D00-F8469EA38DD1
 
@@ -203,6 +203,7 @@ loginUser:
   lbl_ErrorMessageForPassword: Password is required!
   lbl_ErrorMessageForUserNameAndPassword: Hm, this email and password combination does not match our records. Please double check and try again.
 myAccount:
+  lnk_myAccountURL: "/pages/myaccount"
   lnk_addNewCardURL: "/pages/myaccount/paymentcards/addcard"
   lnk_giftCardURL: "/pages/giftcard"
   lst_newCreditCardType: [visa,master,amex,tsc]
@@ -328,5 +329,7 @@ checkOut:
   lstInvalidPromoteCodeAndErrorMessage: ["SHIP99999","The promotional code <promoteCode> you entered is not valid."]
   lstInvalidGiftCardAndErrorMessage: ["6006499999999999999","9999","The System could not validate the Gift Card. Please try again."]
   lblEmptyGiftCardPinErrorMessage: "PIN is required."
+
+
 
 

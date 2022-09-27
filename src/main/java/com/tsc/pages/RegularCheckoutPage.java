@@ -255,6 +255,9 @@ public class RegularCheckoutPage extends BasePage {
 	@FindBy(xpath = "//article[@class='leftSide']//div[contains(@class,'paymentMethodWrap')]//div[@class='paymentmethod__label']/following-sibling::div")
 	public WebElement cntPaymentMethodContainer;
 
+	@FindBy(xpath = "//article[@class='leftSide']//div[contains(@class,'paymentMethodWrap')]//div[@class='paymentmethod__label']/following-sibling::div//*[contains(@class,'tagCCImage')]")
+	public WebElement iconPaymentMethod;
+
 	@FindBy(xpath = "//article[@class='leftSide']//div[contains(@class,'paymentMethodWrap')]//div[@class='paymentmethod__error-wrap']")
 	public WebElement lblPaymentMethodErrorMessage;
 
@@ -758,8 +761,16 @@ public class RegularCheckoutPage extends BasePage {
 	 * To check Payment Method Existing
 	 * @return - boolean
 	 */
-	public boolean checkPaymentMethodExisting(){
+	public boolean checkPaymentMethodTypeExisting(){
 		return this.checkChildElementExistingByAttribute(cntPaymentMethodContainer,"class","paymentmethod__description");
+	}
+
+	/**
+	 * To check If Payment Method Is TSC
+	 * @return - boolean
+	 */
+	public boolean checkIfPaymentMethodIsTSC(){
+		return this.iconPaymentMethod.getAttribute("class").contains("tagCCImageTSC");
 	}
 
 	/**
@@ -1067,6 +1078,45 @@ public class RegularCheckoutPage extends BasePage {
 		}
 		map.put("itemCount",totalCount);
 		map.put("subTotal",subTotal);
+
+		return map;
+	}
+
+	/**
+	 * To get Shipping And Payment Description
+	 * @param - Map<String,Object> - checkoutItem
+	 * @return - Map<String,Object>
+	 */
+	public Map<String,Object> getShippingAndPaymentDesc(Map<String,Object> checkoutItem) {
+		String lsText;
+		Map<String, Object> map = new HashMap<>();
+
+		if(this.checkProductShippingDateExisting()){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblShippingDate);
+			lsText=lblShippingDate.getText().trim();
+			map.put("shippingDate",lsText);
+		}
+		else{
+			lsText=checkoutItem.get("productShippingDate").toString();
+			map.put("shippingDate",lsText);
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblShippingAddress);
+		lsText=lblShippingAddress.getText().trim();
+		map.put("shippingAddress",lsText);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblShippingMethod);
+		lsText=lblShippingMethod.getText().trim();
+		map.put("shippingMethod", lsText.split("-")[0].trim());
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblPaymentMethod);
+		lsText=lblPaymentMethod.getText().trim();
+		map.put("paymentMethodDescription",lsText);
+		map.put("paymentMethod",getSelectedPaymentMethodFromCheckout(lblSelectedCardTypeForPayment));
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblBillingAddress);
+		lsText=lblBillingAddress.getText().trim();
+		map.put("billingAddress",lsText);
 
 		return map;
 	}
@@ -1478,7 +1528,7 @@ public class RegularCheckoutPage extends BasePage {
 			return 0.0f;
 		}
 		else{
-			return this.getFloatFromString(lsText,true);
+			return this.getFloatFromString(lsText);
 		}
 	}
 
@@ -1857,6 +1907,14 @@ public class RegularCheckoutPage extends BasePage {
 	}
 
 	/**
+	 * To check Payment Method Existing
+	 * @return - boolean
+	 */
+	public boolean checkPaymentMethodExisting(){
+		return this.checkChildElementExistingByAttribute(cntPaymentMethodContainer,"class","paymentmethod__description");
+	}
+
+	/**
 	 * To get Input Credit Card Number Type
 	 * @return - String - "Visa"/"MC"/"Amex"
 	 */
@@ -1927,6 +1985,7 @@ public class RegularCheckoutPage extends BasePage {
 					cardItem.click();
 					bFind=true;
 					cartIndex=i;
+					closeAddOrChangePaymentMethodDialog(true);
 				}
 			}
 			else{
@@ -1935,6 +1994,7 @@ public class RegularCheckoutPage extends BasePage {
 					cardItem.click();
 					bFind=true;
 					cartIndex=i;
+					closeAddOrChangePaymentMethodDialog(true);
 				}
 			}
 		}
@@ -1948,11 +2008,6 @@ public class RegularCheckoutPage extends BasePage {
 				addNewCreditOrEditExistingCard(cardType,true,false);
 			}
 			closeUsingANewCardDialog(true);
-
-			cardItem=lstAddOrChangePaymentMethodDialogAvailableCardContainer.get(0);
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(cardItem);
-			cardItem.click();
-			cartIndex=0;
 		}
 
 		return cartIndex;
@@ -4131,9 +4186,7 @@ public class RegularCheckoutPage extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnGoToShoppingBag);
 		this.clickElement(btnGoToShoppingBag);
 		ShoppingCartPage shoppingCartPage=new ShoppingCartPage(this.getDriver());
-		this.waitForCondition(Driver->{return shoppingCartPage.lblCartTitle.isDisplayed();},40000);
-		this.applyStaticWait(5*this.getStaticWaitForApplication());
-		return true;
+		return this.waitForCondition(Driver->{return shoppingCartPage.lblCartPricingOrderSummaryTitle.isDisplayed();},120000);
 	}
 
 	/**
@@ -5241,6 +5294,37 @@ public class RegularCheckoutPage extends BasePage {
 			this.waitForCondition(Driver->{return this.btnAddOrChangePaymentMethod.isDisplayed() &&
 					this.btnAddOrChangePaymentMethod.isEnabled();},12000);
 			this.openAddOrChangePaymentMethodDialog();
+		}
+	}
+
+	/**
+	 * To get Gift Card Discount info From Applied Message
+	 * @return - float
+	 */
+	public float getGiftCardDiscountFromAppliedMessage(){
+		return this.getFloatFromString(this.getElementInnerText(this.lblOrderSummaryGiftCardAppliedMessage));
+	}
+
+	/**
+	 * To go to Order confirmation page
+	 */
+	public void goToOrderConfirmationPage(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement( btnOrderSummaryPlaceOrder);
+		this.clickElement( btnOrderSummaryPlaceOrder);
+
+		try{
+			this.waitForPageLoadingSpinningStatusCompleted();
+		}
+		catch (Exception e){
+			this.applyStaticWait(3*this.getStaticWaitForApplication());
+		}
+
+		try{
+			OrderConfirmationPage orderConfirmationPage=new OrderConfirmationPage(this.getDriver());
+			this.waitForCondition(Driver->{return orderConfirmationPage.lblOrderSuccessTitle.isDisplayed();},15000);
+		}
+		catch (Exception e){
+			this.applyStaticWait(3*this.getStaticWaitForApplication());
 		}
 	}
 }
