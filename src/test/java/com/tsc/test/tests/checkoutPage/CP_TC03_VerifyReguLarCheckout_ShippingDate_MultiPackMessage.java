@@ -113,6 +113,8 @@ public class CP_TC03_VerifyReguLarCheckout_ShippingDate_MultiPackMessage extends
 			}
 		}
 		basePage.refresh();
+		basePage.waitForCondition(Driver->{return getRegularCheckoutThreadLocal().btnGoToShoppingBag.isDisplayed()
+				&& getRegularCheckoutThreadLocal().btnGoToShoppingBag.isEnabled();},12000);
 
 		lsCheckoutShippingDate=getRegularCheckoutThreadLocal().getShippingDateInHeader();
 		if(lsCheckoutShippingDate!=null){
@@ -124,9 +126,6 @@ public class CP_TC03_VerifyReguLarCheckout_ShippingDate_MultiPackMessage extends
 
 		if(getRegularCheckoutThreadLocal().checkOrderSummarySavingPriceExisting()){
 			reporter.reportLogPass("The saving price in orderSummary section is displaying correctly.");
-		}
-		else{
-			reporter.reportLogFail("The saving price in orderSummary section is not displaying correctly.");
 		}
 
 		productListMapForCheckOutPage = getRegularCheckoutThreadLocal().getCheckoutItemListDesc("all");

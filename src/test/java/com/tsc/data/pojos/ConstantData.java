@@ -1382,12 +1382,84 @@ public class ConstantData {
         List<Map<String,String>> lst_SearchKeywords;
         List<String> addShippingAddressErrorMessage;
         String lblProductNumberWithMultipleShippingMethods;
-          List<Map<String,String>> newShippingAddressForUser;
+        List<Map<String,String>> newShippingAddressForUser;
         String lblBillingAddress;
         String lblExistingAddressErrorMessage;
+        String lblGiftCardPromoteErrorMessageForEasyPayment;
+        List<String> lst_PromoteCode;
+        List<Map<String,String>> lst_GiftCard;
         String lblPaymentMethodErrorMessage;
         List<List<String>> lstPaymentMethodCardAdditionErrorMessage;
         String lblInvalidCreditCardNumber;
+        List<String> lstInvalidPromoteCodeAndErrorMessage;
+        List<String> lstInvalidGiftCardAndErrorMessage;
+        String lblEmptyGiftCardPinErrorMessage;
+        String lblPromoteCodeAppliedMessage;
+        String lblGiftCardAppliedMessage;
+
+        public String getLblPromoteCodeAppliedMessage() {
+            return lblPromoteCodeAppliedMessage;
+        }
+
+        public void setLblPromoteCodeAppliedMessage(String lblPromoteCodeAppliedMessage) {
+            this.lblPromoteCodeAppliedMessage = lblPromoteCodeAppliedMessage;
+        }
+
+        public String getLblGiftCardAppliedMessage() {
+            return lblGiftCardAppliedMessage;
+        }
+
+        public void setLblGiftCardAppliedMessage(String lblGiftCardAppliedMessage) {
+            this.lblGiftCardAppliedMessage = lblGiftCardAppliedMessage;
+        }
+
+        public List<String> getLstInvalidPromoteCodeAndErrorMessage() {
+            return lstInvalidPromoteCodeAndErrorMessage;
+        }
+
+        public void setLstInvalidPromoteCodeAndErrorMessage(List<String> lstInvalidPromoteCodeAndErrorMessage) {
+            this.lstInvalidPromoteCodeAndErrorMessage = lstInvalidPromoteCodeAndErrorMessage;
+        }
+
+        public List<String> getLstInvalidGiftCardAndErrorMessage() {
+            return lstInvalidGiftCardAndErrorMessage;
+        }
+
+        public void setLstInvalidGiftCardAndErrorMessage(List<String> lstInvalidGiftCardAndErrorMessage) {
+            this.lstInvalidGiftCardAndErrorMessage = lstInvalidGiftCardAndErrorMessage;
+        }
+
+        public String getLblEmptyGiftCardPinErrorMessage() {
+            return lblEmptyGiftCardPinErrorMessage;
+        }
+
+        public void setLblEmptyGiftCardPinErrorMessage(String lblEmptyGiftCardPinErrorMessage) {
+            this.lblEmptyGiftCardPinErrorMessage = lblEmptyGiftCardPinErrorMessage;
+        }
+
+        public List<String> getLst_PromoteCode() {
+            return lst_PromoteCode;
+        }
+
+        public void setLst_PromoteCode(List<String> lst_PromoteCode) {
+            this.lst_PromoteCode = lst_PromoteCode;
+        }
+
+        public List<Map<String, String>> getLst_GiftCard() {
+            return lst_GiftCard;
+        }
+
+        public void setLst_GiftCard(List<Map<String, String>> lst_GiftCard) {
+            this.lst_GiftCard = lst_GiftCard;
+        }
+
+        public String getLblGiftCardPromoteErrorMessageForEasyPayment() {
+            return lblGiftCardPromoteErrorMessageForEasyPayment;
+        }
+
+        public void setLblGiftCardPromoteErrorMessageForEasyPayment(String lblGiftCardPromoteErrorMessageForEasyPayment) {
+            this.lblGiftCardPromoteErrorMessageForEasyPayment = lblGiftCardPromoteErrorMessageForEasyPayment;
+        }
 
         public String getLblInvalidCreditCardNumber() {            return lblInvalidCreditCardNumber;        }
 

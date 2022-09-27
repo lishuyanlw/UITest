@@ -65,13 +65,12 @@ public class SC_TC01_VerifyShoppingCart_PageHeadingAndLineItems extends BaseTest
 		int findIndex;
 		for (Map<String, Object> item : data) {
 			productName=item.get("productName").toString();
-			reporter.reportLog("Verify product name: "+productName);
 			findIndex=getShoppingCartThreadLocal().findGivenProductIndexInShoppingCartItemList(item, shoppingCartMap);
 			if(findIndex!=-1){
-				reporter.reportLogPass("The added product"+productName+" using API can be found in ShoppingCart list");
+				reporter.reportLogPass("The added product "+productName+" using API can be found in ShoppingCart list");
 			}
 			else{
-				reporter.reportLogFail("The added product"+productName+" using API cannot be found in ShoppingCart list");
+				reporter.reportLogFail("The added product "+productName+" using API cannot be found in ShoppingCart list");
 			}
 		}
 	}

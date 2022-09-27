@@ -115,19 +115,29 @@ public class RegularCheckoutPage_Mobile extends RegularCheckoutPage{
 			reporter.reportLogFailWithScreenshot("The OrderSummary Promote Code icon is not displaying correctly");
 		}
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(iconOrderSummaryPromoteCodeTooltip);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderSummaryTotalPriceTitle);
 		iconOrderSummaryPromoteCodeTooltip.click();
 		this.waitForCondition(Driver->{return this.checkPromoteCodeTooltipMessageDisplaying();},10000);
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderSummaryPromoteCodeTooltipMessage);
-		lsText= this.lblOrderSummaryPromoteCodeTooltipMessage.getText().trim();
+		String lsDeviceType=System.getProperty("Device");
+		String lsBrowserType=System.getProperty("Browser");
+		boolean bCheck=!(lsDeviceType.equalsIgnoreCase("Mobile") && lsBrowserType.toLowerCase().contains("sauce"));
+		if(bCheck){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderSummaryPromoteCodeTooltipMessage);
+			lsText= this.getElementInnerText(this.lblOrderSummaryPromoteCodeTooltipMessage);
+		}
+		else{
+			lsText= this.getElementInnerText(this.cntOrderSummaryPromoteCodeTooltip);
+		}
 		if (!lsText.isEmpty()) {
 			reporter.reportLogPass("The OrderSummary Promote Code Tooltip Message is displaying correctly");
 		} else {
 			reporter.reportLogFailWithScreenshot("The OrderSummary Promote Code Tooltip Message is not displaying correctly");
 		}
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnOrderSummaryPromoteCodeTooltipClose);
-		btnOrderSummaryPromoteCodeTooltipClose.click();
-		this.applyStaticWait(this.getStaticWaitForApplication());
+		if(bCheck){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnOrderSummaryPromoteCodeTooltipClose);
+			btnOrderSummaryPromoteCodeTooltipClose.click();
+			this.applyStaticWait(this.getStaticWaitForApplication());
+		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputOrderSummaryPromoteCode);
 		if(this.getReusableActionsInstance().isElementVisible(inputOrderSummaryPromoteCode)){

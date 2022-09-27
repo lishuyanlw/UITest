@@ -113,8 +113,7 @@ public class SC_TC16_VerifyShoppingCart_WithoutUserLogin extends BaseTest{
 			String lsSignInTitle=TestDataHandler.constantData.getLoginUser().getLbl_SignInTitleFromCheckout();
 			basePage.getReusableActionsInstance().javascriptScrollByVisibleElement(getShoppingCartThreadLocal().btnCartCheckoutButton);
 			getShoppingCartThreadLocal().btnCartCheckoutButton.click();
-			SignInPage signInPage=new SignInPage(this.getDriver());
-			basePage.waitForCondition(Driver->{return signInPage.lblSignIn.isDisplayed();},20000);
+			basePage.waitForCondition(Driver->{return getGlobalLoginPageThreadLocal().lblSignIn.isDisplayed();},20000);
 			getGlobalLoginPageThreadLocal().verifySignInTitle(lsSignInTitle);
 			if(basePage.URL().toLowerCase().contains("signin")){
 				reporter.reportLogPass("The page has been navigated to SignIn page");

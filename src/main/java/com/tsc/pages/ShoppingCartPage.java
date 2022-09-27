@@ -181,6 +181,9 @@ public class ShoppingCartPage extends BasePage {
 	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-details')]")
 	public WebElement cntCartPricingDetails;
 
+	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-details')]//div[contains(@class,'cart-pricing')]/div[@class='clearfix'][not(div[contains(@class,'text-center')])][not(div[contains(@class,'details-title')])]")
+	public List<WebElement> lstOrderSummaryRow;
+
 	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'details-box')]/*[contains(@class,'multipack')]")
 	public WebElement lblCartPricingMultiPackMessage;
 
@@ -210,6 +213,12 @@ public class ShoppingCartPage extends BasePage {
 
 	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-pricing')]//div[contains(normalize-space(text()),'Est. Taxes:')]/following-sibling::div[last()]")
 	public WebElement lblCartPricingShippingEstimateTax;
+
+	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-details')]//div[contains(@class,'cart-pricing')]//strong[.='APPLIED DISCOUNTS']")
+	public WebElement lblAppliedDiscountTitle;
+
+	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-details')]//div[contains(@class,'cart-pricing')]//strong[.='APPLIED DISCOUNTS']/parent::div/parent::div/following-sibling::div[not(contains(@class,'totalPrice'))][not(div[contains(@class,'text-center')])]")
+	public List<WebElement> lstAppliedDiscountList;
 
 	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-pricing')]//div[contains(normalize-space(text()),'TOTAL PRICE:')]")
 	public WebElement lblCartPricingTotalPriceTitle;
@@ -490,6 +499,37 @@ public class ShoppingCartPage extends BasePage {
 	}
 
 	/**
+	 * To check Applied Discount Existing In OrderSummary()
+	 * @return
+	 */
+	public boolean checkAppliedDiscountExistingInOrderSummary(){
+		return this.lstOrderSummaryRow.size()>3;
+	}
+
+	/**
+	 * To judge Applied Discount item Type
+	 * @return -String - "Both"/"GiftCard"/"PromoteCode"
+	 */
+	public String judgeAppliedDiscountType(){
+		if(checkAppliedDiscountExistingInOrderSummary()){
+			if(this.lstAppliedDiscountList.size()==2){
+				return "Both";
+			}
+
+			WebElement item=this.lstAppliedDiscountList.get(0);
+			if(this.getElementInnerText(item).contains("Gift Card")){
+				return "GiftCard";
+			}
+			else{
+				return "PromoteCode";
+			}
+		}
+		else{
+			return null;
+		}
+	}
+
+	/**
 	 * To check if it Is Dropdown Menu For Installment Number
 	 * @return - boolean
 	 */
@@ -734,22 +774,22 @@ public class ShoppingCartPage extends BasePage {
 				if(lsSplit[1].contains("Size")){
 					map.put("productName",lsSplit[0].trim());
 					map.put("productStyle",null);
-					map.put("productSize",lsSplit[1].trim());
+					map.put("productSize",lsSplit[1].split(":")[1].trim());
 				}
 				else{
 					map.put("productName",lsSplit[0].trim());
-					map.put("productStyle",lsSplit[1].trim());
+					map.put("productStyle",lsSplit[1].split(":")[1].trim());
 					map.put("productSize",null);
 				}
 			}
 			else{
 				map.put("productName",lsSplit[0].trim());
-				map.put("productStyle",lsSplit[1].trim());
-				map.put("productSize",lsSplit[2].split(":")[1].trim());
+				map.put("productStyle",lsSplit[2].split(":")[1].trim());
+				map.put("productSize",lsSplit[1].split(":")[1].trim());
 			}
 		}
 		else{
-			map.put("productName",lsText);
+			map.put("productName",lsText.trim());
 			map.put("productStyle",null);
 			map.put("productSize",null);
 		}
@@ -815,7 +855,7 @@ public class ShoppingCartPage extends BasePage {
 			map.put("productLeftNumber",this.getIntegerFromString(lsText));
 		}
 		else{
-			map.put("productLeftNumber",null);
+			map.put("productLeftNumber",-1);
 		}
 
 		if(this.checkFreeShippingMessageExisting(cartItem)){
@@ -871,8 +911,8 @@ public class ShoppingCartPage extends BasePage {
 
 		String[] lsSplit=lsProductDesc.split("|");
 		map.put("productName",lsSplit[0].trim());
-		map.put("productStyle",lsSplit[1].trim());
-		map.put("productSize",lsSplit[2].split(":")[1].trim());
+		map.put("productStyle",lsSplit[2].split(":")[1].trim());
+		map.put("productSize",lsSplit[1].split(":")[1].trim());
 
 		return map;
 	}
@@ -966,18 +1006,18 @@ public class ShoppingCartPage extends BasePage {
 				if(lsSplit[1].contains("Size")){
 					map.put("productName",lsSplit[0].trim());
 					map.put("productStyle",null);
-					map.put("productSize",lsSplit[1].trim());
+					map.put("productSize",lsSplit[1].split(":")[1].trim());
 				}
 				else{
 					map.put("productName",lsSplit[0].trim());
-					map.put("productStyle",lsSplit[1].trim());
+					map.put("productStyle",lsSplit[1].split(":")[1].trim());
 					map.put("productSize",null);
 				}
 			}
 			else{
 				map.put("productName",lsSplit[0].trim());
-				map.put("productStyle",lsSplit[1].trim());
-				map.put("productSize",lsSplit[2].split(":")[1].trim());
+				map.put("productStyle",lsSplit[2].split(":")[1].trim());
+				map.put("productSize",lsSplit[1].split(":")[1].trim());
 			}
 		}
 		else{
@@ -1405,6 +1445,98 @@ public class ShoppingCartPage extends BasePage {
 		lsText=this.lblCartPricingShippingEstimateTax.getText();
 		map.put("tax",this.getFloatFromString(lsText,true));
 
+		WebElement item,subItem;
+		float floatValue=0.0f;
+		if(this.checkAppliedDiscountExistingInOrderSummary()){
+			String lsAppliedDiscountType=this.judgeAppliedDiscountType();
+			switch(lsAppliedDiscountType){
+				case "Both":
+					item=lstAppliedDiscountList.get(0);
+					subItem=item.findElement(By.xpath("./div[1]"));
+					lsText=this.getElementInnerText(subItem).replace(":","");
+					map.put("promoteCodeTitle",lsText);
+					subItem=item.findElement(By.xpath("./div[2]"));
+					lsText=this.getElementInnerText(subItem);
+					if(lsText.contains("-")){
+						if(lsText.equalsIgnoreCase("-")){
+							map.put("promoteCodeValue",0.0f);
+						}
+						else{
+							floatValue=-1*this.getFloatFromString(lsText,true);
+							map.put("promoteCodeValue",floatValue);
+						}
+					}
+					else{
+						floatValue=-1*this.getFloatFromString(lsText,true);
+						map.put("promoteCodeValue",floatValue);
+					}
+
+					item=lstAppliedDiscountList.get(1);
+					subItem=item.findElement(By.xpath("./div[1]"));
+					lsText=this.getElementInnerText(subItem).replace(":","");
+					map.put("giftCardTitle",lsText);
+					subItem=item.findElement(By.xpath("./div[2]"));
+					lsText=this.getElementInnerText(subItem);
+					if(lsText.contains("-")){
+						map.put("giftCardValue",-1*this.getFloatFromString(lsText,true));
+					}
+					else{
+						map.put("giftCardValue",this.getFloatFromString(lsText,true));
+					}
+					break;
+				case "PromoteCode":
+					item=lstAppliedDiscountList.get(0);
+					subItem=item.findElement(By.xpath("./div[1]"));
+					lsText=this.getElementInnerText(subItem).replace(":","");
+					map.put("promoteCodeTitle",lsText);
+					subItem=item.findElement(By.xpath("./div[2]"));
+					lsText=this.getElementInnerText(subItem);
+					if(lsText.contains("-")){
+						if(lsText.equalsIgnoreCase("-")){
+							map.put("promoteCodeValue",0.0f);
+						}
+						else{
+							floatValue=-1*this.getFloatFromString(lsText,true);
+							map.put("promoteCodeValue",floatValue);
+						}
+					}
+					else{
+						floatValue=-1*this.getFloatFromString(lsText,true);
+						map.put("promoteCodeValue",floatValue);
+					}
+
+					map.put("giftCardTitle",null);
+					map.put("giftCardValue",0.0f);
+					break;
+				case "GiftCard":
+					item=lstAppliedDiscountList.get(0);
+					subItem=item.findElement(By.xpath("./div[1]"));
+					lsText=this.getElementInnerText(subItem).replace(":","");
+					map.put("giftCardTitle",lsText);
+					subItem=item.findElement(By.xpath("./div[2]"));
+					lsText=this.getElementInnerText(subItem);
+					if(lsText.contains("-")){
+						map.put("giftCardValue",-1*this.getFloatFromString(lsText,true));
+					}
+					else{
+						map.put("giftCardValue",this.getFloatFromString(lsText,true));
+					}
+
+					map.put("promoteCodeTitle",null);
+					map.put("promoteCodeValue",0.0f);
+					break;
+				default:
+					break;
+			}
+		}
+		else{
+			map.put("promoteCodeTitle",null);
+			map.put("promoteCodeValue",0.0f);
+
+			map.put("giftCardTitle",null);
+			map.put("giftCardValue",0.0f);
+		}
+
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblCartPricingTotalPrice);
 		lsText=this.lblCartPricingTotalPrice.getText();
 		map.put("totalPrice",this.getFloatFromString(lsText,true));
@@ -1496,7 +1628,10 @@ public class ShoppingCartPage extends BasePage {
 			}
 		}
 
-		float calTotalPrice=subTotal+tax+nowPriceOrderSummary;
+		float promoteCodeValue=(float) orderSummaryMap.get("promoteCodeValue");
+		float giftCardValue=(float) orderSummaryMap.get("giftCardValue");
+
+		float calTotalPrice=subTotal+tax+nowPriceOrderSummary+promoteCodeValue+giftCardValue;
 		float totalPrice=(float) orderSummaryMap.get("totalPrice");
 		if(Math.abs(calTotalPrice-totalPrice)<0.01){
 			reporter.reportLogPass("The calculated total price in OrderSummary section is equal to the total price in OrderSummary section");
@@ -1554,6 +1689,33 @@ public class ShoppingCartPage extends BasePage {
 		Select select = new Select(this.selectCartEasyPayInstallmentNumber);
 		select.selectByVisibleText(optionText);
 		this.waitForEasyPaySectionLoadingFromNonInstallmentState();
+	}
+
+	/**
+	 * To set Installment Number By Random Index
+	 */
+	public void setInstallmentNumberByRandomIndex(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectCartEasyPayInstallmentNumber);
+		Select select=new Select(this.selectCartEasyPayInstallmentNumber);
+
+		List<WebElement> lstOptions=select.getOptions();
+		int optionSize=lstOptions.size();
+		if(optionSize==1){
+			return;
+		}
+
+		if(optionSize==2){
+			select.selectByIndex(1);
+		}
+
+		int randomNumber=getRandomNumber(1, optionSize);
+		select.selectByIndex(randomNumber);
+		try{
+			this.waitForEasyPaySectionLoadingFromNonInstallmentState();
+		}
+		catch (Exception e){
+			this.applyStaticWait(3*this.getStaticWaitForApplication());
+		}
 	}
 
 	/**
@@ -1670,9 +1832,11 @@ public class ShoppingCartPage extends BasePage {
 		float shippingPriceOrderSummary=(float) orderSummaryMap.get("nowPrice");
 		float taxOrderSummary=(float) orderSummaryMap.get("tax");
 		float totalPriceOrderSummary=(float) orderSummaryMap.get("totalPrice");
+		float promoteCodeValue=(float) orderSummaryMap.get("promoteCodeValue");
+		float giftCardValue=(float) orderSummaryMap.get("giftCardValue");
 
 		float eachInstallmentPayment=subTotalOrderSummary/totalInstallmentNumber;
-		float calTodayPayment=eachInstallmentPayment+shippingPriceOrderSummary+taxOrderSummary;
+		float calTodayPayment=eachInstallmentPayment+shippingPriceOrderSummary+taxOrderSummary+(promoteCodeValue+giftCardValue)/totalInstallmentNumber;
 		if(Math.abs(calTodayPayment-todayPayment)<0.1){
 			reporter.reportLogPass("The calculated today payment is equal to the today payment in installment section: "+todayPayment);
 		}
@@ -2112,6 +2276,40 @@ public class ShoppingCartPage extends BasePage {
 		}
 		else{
 			reporter.reportLogFailWithScreenshot("The estimated tax in OrderSummary is not displaying correctly");
+		}
+
+		if(this.checkAppliedDiscountExistingInOrderSummary()){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAppliedDiscountTitle);
+			lsText=this.lblAppliedDiscountTitle.getText();
+			if(!lsText.isEmpty()){
+				reporter.reportLogPass("The Applied Discount Title in OrderSummary is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The Applied Discount Title in OrderSummary is not displaying correctly");
+			}
+
+			WebElement subItem;
+			for(WebElement item:this.lstAppliedDiscountList){
+				subItem=item.findElement(By.xpath("./div[1]"));
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
+				lsText=subItem.getText();
+				if(!lsText.isEmpty()){
+					reporter.reportLogPass("The Applied Discount item title:"+lsText+" in OrderSummary is displaying correctly");
+				}
+				else{
+					reporter.reportLogFailWithScreenshot("The Applied Discount item Title in OrderSummary is not displaying correctly");
+				}
+
+				subItem=item.findElement(By.xpath("./div[2]"));
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
+				lsText=subItem.getText();
+				if(!lsText.isEmpty()){
+					reporter.reportLogPass("The Applied Discount item value:"+lsText+" in OrderSummary is displaying correctly");
+				}
+				else{
+					reporter.reportLogFailWithScreenshot("The Applied Discount item value in OrderSummary is not displaying correctly");
+				}
+			}
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartPricingTotalPriceTitle);

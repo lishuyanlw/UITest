@@ -38,8 +38,10 @@ public class CP_TC02_VerifyRightSection_OrderSummary_EasyPayment extends BaseTes
 		}
 		getProductDetailPageThreadLocal().goToShoppingCartByClickingShoppingCartIconInGlobalHeader();
 
-		List<String> lstOptionText=getShoppingCartThreadLocal().getInstallmentOptions();
-		getShoppingCartThreadLocal().setInstallmentSetting(lstOptionText.get(1));
+		if (getShoppingCartThreadLocal().checkIsDropdownMenuForInstallmentNumber()) {
+			List<String> lstOptionText = getShoppingCartThreadLocal().getInstallmentOptions();
+			getShoppingCartThreadLocal().setInstallmentSetting(lstOptionText.get(1));
+		}
 		getShoppingCartThreadLocal().goToCheckoutPage();
 
 		reporter.reportLog("Verify OrderSummary Contents");

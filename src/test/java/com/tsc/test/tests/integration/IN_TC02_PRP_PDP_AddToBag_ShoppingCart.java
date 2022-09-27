@@ -1,5 +1,6 @@
 package com.tsc.test.tests.integration;
 
+import com.tsc.api.apiBuilder.CartAPI;
 import com.tsc.api.pojo.Product;
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.test.base.BaseTest;
@@ -12,7 +13,8 @@ import java.util.Map;
 
 public class IN_TC02_PRP_PDP_AddToBag_ShoppingCart extends BaseTest {
     /*
-     *CER-845
+     * CER-845
+     * CER-871
      */
     @Test(groups={"Integration","Regression"})
     public void IN_TC02_PRP_PDP_AddToBag_ShoppingCart() throws IOException {
@@ -24,6 +26,10 @@ public class IN_TC02_PRP_PDP_AddToBag_ShoppingCart extends BaseTest {
         String accessToken = getApiUserSessionDataMapThreadLocal().get("access_token").toString();
         int customerEDP = Integer.valueOf(getApiUserSessionDataMapThreadLocal().get("customerEDP").toString());
 		getShoppingCartThreadLocal().emptyCart(customerEDP,accessToken);
+
+        //Delete all gift cards
+        CartAPI cartAPI=new CartAPI();
+        cartAPI.deleteAllGiftCardForUser(String.valueOf(customerEDP),accessToken);
 
         String lsUserName = TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
         String lsPassword = TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
@@ -55,10 +61,65 @@ public class IN_TC02_PRP_PDP_AddToBag_ShoppingCart extends BaseTest {
         getProductDetailPageThreadLocal().goToShoppingCartFromAddToBagPopupWithLoginFirst();
 
         Map<String,Object> shoppingCartMap=getShoppingCartThreadLocal().getShoppingSectionDetails("all");
+        List<Map<String,Object>> shoppingCartProductListMap=(List<Map<String,Object>>)shoppingCartMap.get("shoppingList");
+        int shoppingCount=(int)shoppingCartMap.get("shoppingAmount");
+        float shoppingSubTotal=(float)shoppingCartMap.get("shoppingSubTotal");
+        Map<String,Object> orderSummaryInShoppingCartMap=getShoppingCartThreadLocal().getOrderSummaryDesc();
 
         //To verify Contents among PDP, AddToBag And ShoppingCartSection Details
         reporter.reportLog("Compare the linkage information between AddToBag and ShoppingCart with product name: "+lsProductName);
         getShoppingCartThreadLocal().verifyContentsOnShoppingCartSectionDetailsWithAddToBag(PDPMap,AddToBagMap,shoppingCartMap,false);
 
+        if (getShoppingCartThreadLocal().checkIsDropdownMenuForInstallmentNumber()) {
+            List<String> lstOptionText = getShoppingCartThreadLocal().getInstallmentOptions();
+            getShoppingCartThreadLocal().setInstallmentSetting(lstOptionText.get(1));
+        }
+        int installmentsNumberForShoppingCart = getShoppingCartThreadLocal().getInstallmentNumber();
+        Map<String,Object> easyPaymentInShoppingCartMap=getShoppingCartThreadLocal().getEasyPayDesc();
+
+        getShoppingCartThreadLocal().goToCheckoutPage();
+
+        List<Map<String,Object>> checkoutProductListMap=getRegularCheckoutThreadLocal().getCheckoutItemListDesc("all");
+        Map<String, Object> summaryMapForCheckOutList = getRegularCheckoutThreadLocal().getCheckoutItemCountAndSubTotal(checkoutProductListMap);
+        int checkoutCount = (int) summaryMapForCheckOutList.get("itemCount");
+        float checkoutSubTotal = (float) summaryMapForCheckOutList.get("subTotal");
+        Map<String,Object> orderSummaryInCheckoutMap=getRegularCheckoutThreadLocal().getOrderSummaryDesc();
+        Map<String,Object> easyPaymentInCheckoutMap=getRegularCheckoutThreadLocal().getEasyPayDesc();
+
+        reporter.reportLog("Verify product list linkage between ShoppingCartPage and CheckoutPage");
+        int findIndex;
+        Map<String,Object> checkoutItem;
+        for(Map<String,Object> shoppingCartItem:shoppingCartProductListMap){
+            String lsShoppingCartText=(String)shoppingCartItem.get("productName");
+            reporter.reportLog("Verify product:'"+lsShoppingCartText+"'");
+            findIndex=getShoppingCartThreadLocal().findGivenProductIndexInProductList(shoppingCartItem,checkoutProductListMap);
+            if(findIndex!=-1){
+                checkoutItem=checkoutProductListMap.get(findIndex);
+                getRegularCheckoutThreadLocal().verifyProductListLinkageBetweenShoppingCartPageAndCheckoutPage(shoppingCartItem,checkoutItem);
+            }
+            else{
+                reporter.reportLogFail("");
+            }
+        }
+
+        if(shoppingCount==checkoutCount){
+            reporter.reportLogPass("The product list count in shoppingCartItem is ths same as the one in checkoutItem");
+        }
+        else{
+            reporter.reportLogFail("The product list count in shoppingCartItem is not ths same as the one in checkoutItem");
+        }
+
+        if(Math.abs(shoppingSubTotal-checkoutSubTotal)<0.1f){
+            reporter.reportLogPass("The SubTotal in shoppingCartItem is ths same as the one in checkoutItem");
+        }
+        else{
+            reporter.reportLogFail("The SubTotal in shoppingCartItem is not ths same as the one in checkoutItem");
+        }
+
+        reporter.reportLog("verify OrderSummary Linkage Between ShoppingCartPage And CheckoutPage");
+        getRegularCheckoutThreadLocal().verifyOrderSummaryLinkageBetweenShoppingCartPageAndCheckoutPage(orderSummaryInShoppingCartMap,orderSummaryInCheckoutMap);
+
+        reporter.reportLog("verify EasyPayment Linkage Between ShoppingCartPage And CheckoutPage");
+        getRegularCheckoutThreadLocal().verifyEasyPaymentLinkageBetweenShoppingCartPageAndCheckoutPage(easyPaymentInShoppingCartMap,easyPaymentInCheckoutMap);
     }
 }

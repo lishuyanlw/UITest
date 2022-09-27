@@ -649,6 +649,27 @@ import utils.ReusableActions;
     	   			
     	return Float.parseFloat(lsReturn);
     }
+
+	/**
+	 * This method will get float from string.
+	 * @param-String lsTarget: target string
+	 * @return float value
+	 * @author Wei.Li
+	 */
+	public float getFloatFromString(String lsTarget) {
+		lsTarget=lsTarget.replace(",", "").trim();
+
+		String regex="\\d+\\.\\d+";
+		String lsReturn="";
+		Pattern pattern=Pattern.compile(regex);
+		Matcher matcher=pattern.matcher(lsTarget);
+		while(matcher.find())
+		{
+			lsReturn=matcher.group();
+		}
+
+		return Float.parseFloat(lsReturn);
+	}
     
     /**
 	 * This method will get integer from string.
@@ -1175,5 +1196,32 @@ import utils.ReusableActions;
 	 */
 	public String getElementCursorType(WebElement element) {
 		return element.getCssValue("cursor");
+	}
+
+	/**
+	 * To get random number greater or equal to given min value and less than give max value
+	 * @param - int - min - given min value
+	 * @param - max - max - given max value
+	 * @return - int
+	 */
+	public int getRandomNumber(int min, int max) {
+		return (int) ((Math.random() * (max - min)) + min);
+	}
+
+	/**
+	 * This function verifies the type of device being tested
+	 * @param - String - deviceType
+	 * @param - String - chromeMobileDevice for local run
+	 * @return - boolean value
+	 */
+	public boolean getDeviceTypeForTest(String deviceType,String chromeMobileDevice){
+		if("Mobile".equalsIgnoreCase(deviceType) ||
+				("Tablet".equalsIgnoreCase(deviceType) &&
+						System.getProperty("Browser").contains("android")) ||
+				(System.getProperty("chromeMobileDevice").length()>1 && System.getProperty("Browser").equalsIgnoreCase("chromemobile") &&
+						!"iPad".equalsIgnoreCase(chromeMobileDevice)))
+			return true;
+		else
+			return false;
 	}
 }
