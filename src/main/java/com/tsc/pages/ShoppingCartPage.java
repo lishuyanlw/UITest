@@ -3042,6 +3042,7 @@ public class ShoppingCartPage extends BasePage {
 							}
 						if(!innerFlag){
 							//Adding TSC card to user as configuration for TSC is set to true and no TSC card is present for user
+							//this.addTSCCreditCardForUser((JSONObject) creditCardData.get("tsc"),customerEDP,accessToken);
 							JSONObject tscCardObject = (JSONObject) creditCardData.get("tsc");
 							tscCardObject.put("IsDefault",true);
 							tscCardObject.put("CVV",null);
@@ -3320,5 +3321,29 @@ public class ShoppingCartPage extends BasePage {
 		else{
 			return null;
 		}
+	}
+
+	/**
+	 * This function adds TSC Credit Card to user
+	 * @param - tscCardObject
+	 * @param - customerEDP
+	 * @param - accessToken
+	 * @throws - IOException
+	 */
+	public void addTSCCreditCardForUser(JSONObject tscCardObject, String customerEDP,String accessToken) throws IOException {
+		if(tscCardObject==null){
+			JSONObject creditCardData = new DataConverter().readJsonFileIntoJSONObject("test-data/CreditCard.json");
+			tscCardObject = (JSONObject) creditCardData.get("tsc");
+		}
+		tscCardObject.put("IsDefault",true);
+		tscCardObject.put("CVV",null);
+		tscCardObject.remove("CardType");
+		tscCardObject.remove("CardDisplayName");
+		Response tscCardResponse = new AccountAPI().addCreditCardToUser(tscCardObject,customerEDP,accessToken);
+		if(tscCardResponse.statusCode()==200)
+			reporter.reportLog("New TSC Credit Card is added for user as default Card");
+		else
+			reporter.reportLogFail("New TSC Credit Card is not added for user as default Card");
+
 	}
 }

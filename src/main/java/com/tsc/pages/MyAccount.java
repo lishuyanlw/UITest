@@ -1,7 +1,9 @@
 package com.tsc.pages;
 
+import com.tsc.api.apiBuilder.AccountAPI;
 import com.tsc.api.util.DataConverter;
 import com.tsc.pages.base.BasePage;
+import io.restassured.response.Response;
 import org.json.simple.JSONObject;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
@@ -9,6 +11,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import java.io.IOException;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.*;
@@ -213,6 +216,9 @@ public class MyAccount extends BasePage {
 
 	@FindBy(xpath = "//ng-component//div[normalize-space(text())='Payment Method']/following-sibling::div[contains(@class,'order-summary')]")
 	public WebElement lblOrderDetailsPaymentMethod;
+
+	@FindBy(xpath = "//ng-component//div[normalize-space(text())='Order Summary']/following-sibling::div[contains(@class,'order-summary')]/div")
+	public List<WebElement> lstOrderSummaryDetails;
 
 	@FindBy(xpath = "//ng-component//div[contains(normalize-space(text()),'Billing Address')]/parent::div")
 	public WebElement cntOrderDetailsPromotionalCodeContainer;
@@ -4634,7 +4640,7 @@ public class MyAccount extends BasePage {
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderDetailsHeaderOrderTotal);
 		lsText=lblOrderDetailsHeaderOrderTotal.getText().trim();
-		map.put("customerNumber",this.getFloatFromString(lsText));
+		map.put("orderTotal",this.getFloatFromString(lsText));
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderDetailsSubHeaderShippingMethod);
 		lsText=lblOrderDetailsSubHeaderShippingMethod.getText().trim();
@@ -4652,9 +4658,15 @@ public class MyAccount extends BasePage {
 		lsText=lblOrderDetailsPaymentMethod.getText().trim();
 		map.put("paymentMethod",lsText);
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderDetailsPaymentMethod);
-		lsText=lblOrderDetailsPaymentMethod.getText().trim();
-		map.put("paymentMethod",lsText);
+		Map<String,String> orderSummaryMap = new HashMap<>();
+		for(int counter=0;counter<this.lstOrderSummaryDetails.size();counter++){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lstOrderSummaryDetails.get(counter));
+			lsText=lstOrderSummaryDetails.get(counter).getText().trim();
+			String[] data = lsText.split(":");
+			orderSummaryMap.put(data[0],data[1]);
+		}
+
+		map.put("orderSummary",orderSummaryMap);
 
 		if(this.checkEasyPaymentSectionExisting()){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderDetailsEasyPaymentNumber);
@@ -4671,13 +4683,11 @@ public class MyAccount extends BasePage {
 	/**
 	 * To get Order item Description
 	 * @param - WebElement - orderItem in lstOrderDetailsOrderItemList
-	 * @return - Map<String,Object>
-	 */
+	 * @return - Map<String,Object> */
 	public Map<String,Object> getOrderItemDesc(WebElement orderItem){
 		Map<String,Object> map=new HashMap<>();
 		WebElement item;
 		String lsText;
-
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(orderItem);
 		item = orderItem.findElement(byOrderDetailsOrderItemPipeStyleLink);
 		lsText = this.getElementInnerText(item);
@@ -4686,13 +4696,19 @@ public class MyAccount extends BasePage {
 			String[] lsSplit=lsText.split("\\|");
 			if(lsSplit.length==2){
 				map.put("productName",lsSplit[0].trim());
-				map.put("productStyle",null);
-				map.put("productSize",null);
+				if(lsSplit[1].toLowerCase().contains("size")){
+					map.put("productSize",lsSplit[1].split(":")[1].trim());
+					map.put("productStyle",null);
+				}
+				else{
+					map.put("productStyle",lsSplit[1].split(":")[1].trim());
+					map.put("productSize",null);
+				}
 			}
 			else{
 				map.put("productName",lsSplit[0].trim());
-				map.put("productStyle",lsSplit[1].trim());
-				map.put("productSize",lsSplit[2].trim());
+				map.put("productSize",lsSplit[1].split(":")[1].trim());
+				map.put("productStyle",lsSplit[2].split(":")[1].trim());
 			}
 		}
 		else{
@@ -4704,7 +4720,6 @@ public class MyAccount extends BasePage {
 		item = orderItem.findElement(byOrderDetailsOrderItemProductPrice);
 		lsText = this.getElementInnerText(item);
 		map.put("productNowPrice", this.getFloatFromString(lsText));
-
 		item = orderItem.findElement(byOrderDetailsOrderItemProductNumber);
 		lsText = this.getElementInnerText(item).replace("-", "").trim();
 		if(!lsText.isEmpty()){
@@ -4717,7 +4732,6 @@ public class MyAccount extends BasePage {
 		item = orderItem.findElement(byOrderDetailsOrderItemQTY);
 		lsText = this.getElementInnerText(item);
 		map.put("productQuantity", this.getIntegerFromString(lsText));
-
 		return map;
 	}
 
