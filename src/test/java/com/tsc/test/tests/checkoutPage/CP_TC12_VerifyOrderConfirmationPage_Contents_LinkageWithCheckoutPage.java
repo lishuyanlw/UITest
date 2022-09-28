@@ -18,7 +18,7 @@ public class CP_TC12_VerifyOrderConfirmationPage_Contents_LinkageWithCheckoutPag
 	/*
 	 * CER-889
 	 */
-	@Test(groups={"Regression","Checkout"})
+	@Test(groups={"Regression","OrderConfirmation"})
 	public void CP_TC12_VerifyOrderConfirmationPage_Contents_LinkageWithCheckoutPage() throws IOException {
 		String lsUserName = TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
 		String lsPassword = TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
@@ -74,6 +74,13 @@ public class CP_TC12_VerifyOrderConfirmationPage_Contents_LinkageWithCheckoutPag
 			getRegularCheckoutThreadLocal().openAddOrChangePaymentMethodDialog();
 			getRegularCheckoutThreadLocal().addNewTSCCard();
 			getRegularCheckoutThreadLocal().closeUsingANewCardDialog(true);
+		}
+		boolean bTSC=getRegularCheckoutThreadLocal().checkIfPaymentMethodIsTSC();
+		if(bTSC){
+			reporter.reportLogPass("The payment method is TSC card");
+		}
+		else{
+			reporter.reportLogFail("The payment method is not TSC card");
 		}
 
 		String lsPromoteCodeOnCheckoutPage="";

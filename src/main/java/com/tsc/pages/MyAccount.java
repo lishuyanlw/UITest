@@ -28,6 +28,9 @@ public class MyAccount extends BasePage {
 	@FindBy(xpath="//ng-component//*[@class='paymentPageTitle']")
 	public WebElement lblPageTitle;
 
+	@FindBy(xpath="//ng-component//div[contains(@class,'form-head')]//h2")
+	public WebElement lblMyAccountHeaderTitle;
+
 	//Navigation breadcrumb
 	@FindBy(xpath = "//ng-component//div[contains(@class,'go-back')]//ol[@class='breadcrumb']//li//a")
 	public List<WebElement> lstNavigationCrumbList;
@@ -39,6 +42,7 @@ public class MyAccount extends BasePage {
 	@FindBy(xpath = "//div[@class='my-account-summary-container']//div[@class='panel']")
 	public List<WebElement> lstAccountSummaryPanelList;
 
+	public By bySubHeader=By.xpath(".//div[contains(@class,'panel-heading')]");
 	public By bySubList=By.xpath(".//ul//li[not(contains(@class,'hidden'))]//a");
 
 	//For order part
@@ -787,6 +791,15 @@ public class MyAccount extends BasePage {
 	public WebElement lblSubscriptionSuccessMessage;
 
 	/**
+	 * To check Collapse Status For Account Summary Panel
+	 * @param - webelement - AccountSummaryPanel
+	 * @return - boolean - true for expanded
+	 */
+	public boolean checkCollapseStatusForAccountSummaryPanel(WebElement AccountSummaryPanel){
+		WebElement item=AccountSummaryPanel.findElement(bySubHeader);
+		return item.getAttribute("aria-expanded").equalsIgnoreCase("true");
+	}
+	/**
 	 * To check MyNewsLetters Update Error Message Visible
  	 * @return - boolean
 	 */
@@ -872,7 +885,7 @@ public class MyAccount extends BasePage {
 
 	/**
 	 * To get subitem web element through sublitem text
-	 * @param lsSubItem -  sublitem text
+	 * @param - lsSubItem -  sublitem text
 	 * @return subitem web element
 	 */
 	public WebElement getSubItem(String lsSubItem){
@@ -4786,6 +4799,54 @@ public class MyAccount extends BasePage {
 		map.put("totalPrice",this.getFloatFromString(lsText));
 
 		return map;
+	}
+
+	/**
+	 * To verify Account Summary Pane lList
+	 */
+	public void verifyAccountSummaryPanelList(){
+		String lsText;
+		if(this.getDeviceTypeForTest(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
+			for(WebElement item:lstAccountSummaryPanelList){
+				if(!this.checkCollapseStatusForAccountSummaryPanel(item)){
+					WebElement subItem=item.findElement(bySubHeader);
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
+					subItem.click();
+					this.waitForCondition(Driver->{return subItem.getAttribute("aria-expanded").equalsIgnoreCase("false");},10000);
+				}
+			}
+		}
+
+		WebElement item,subItemHeader,subItemContent;
+		int loopSize=lstAccountSummaryPanelList.size();
+		for(int i=0;i<loopSize;i++){
+			reporter.reportLog("Verify "+i+" Account Summary Pane header");
+			item=lstAccountSummaryPanelList.get(i);
+			subItemHeader=item.findElement(bySubHeader);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItemHeader);
+			lsText=subItemHeader.getText();
+			if(!lsText.isEmpty()){
+				reporter.reportLogPass("The header of '"+lsText+"' is displaying correctly");
+			}
+			else{
+				reporter.reportLogFail("The header is not displaying correctly");
+			}
+
+			List<WebElement> lstSubItem=item.findElements(bySubList);
+			int loopSizeForSubItemList=lstSubItem.size();
+			for(int j=0;j<loopSizeForSubItemList;j++){
+				reporter.reportLog("Verify "+j+" subItem in Account Summary Pane list");
+				subItemContent=lstSubItem.get(j);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItemContent);
+				lsText=subItemHeader.getText();
+				if(!lsText.isEmpty()){
+					reporter.reportLogPass("The content of '"+lsText+"' is displaying correctly");
+				}
+				else{
+					reporter.reportLogFail("The content is not displaying correctly");
+				}
+			}
+		}
 	}
 
 }

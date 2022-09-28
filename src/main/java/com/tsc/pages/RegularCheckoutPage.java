@@ -1792,7 +1792,13 @@ public class RegularCheckoutPage extends BasePage {
 		if(bSave){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnUsingANewCardDialogSaveButton);
 			btnUsingANewCardDialogSaveButton.click();
-			waitForPageLoadingSpinningStatusCompleted();
+			try {
+				waitForPageLoadingSpinningStatusCompleted();
+				this.applyStaticWait(5*getStaticWaitForApplication());
+			}
+			catch (Exception e){
+				this.applyStaticWait(5*getStaticWaitForApplication());
+			}
 		}
 		else{
 			if(this.getDeviceTypeForTest(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
