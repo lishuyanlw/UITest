@@ -312,14 +312,16 @@ public class OrderConfirmationPage extends BasePage {
 	/**
 	 * To goTo OrderDetailsPage
 	 * @param - String - lsURLFromYamlFile
+	 * @param - String - lsOrderNumber
 	 * @return - boolean
 	 */
-	public boolean goToOrderDetailsPage(String lsURLFromYamlFile){
+	public boolean goToOrderDetailsPage(String lsURLFromYamlFile,String lsOrderNumber){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnGoToOrderDetails);
 		this.btnGoToOrderDetails.click();
 
 		String lsBaseURL=this.getBaseURL();
 		String lsExpectedURL=lsBaseURL+lsURLFromYamlFile;
+		lsExpectedURL=lsExpectedURL.replace("{OrderNO}",lsOrderNumber);
 		String lsCurrentURL=this.URL();
 		this.waitForCondition(Driver->{return !this.URL().equalsIgnoreCase(lsCurrentURL);},20000);
 		if(this.URL().equalsIgnoreCase(lsExpectedURL)){
