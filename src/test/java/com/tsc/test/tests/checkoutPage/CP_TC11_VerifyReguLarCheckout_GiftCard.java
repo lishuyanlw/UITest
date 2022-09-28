@@ -40,7 +40,6 @@ public class CP_TC11_VerifyReguLarCheckout_GiftCard extends BaseTest{
 
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 
-		List<String> lstPromoteCode=TestDataHandler.constantData.getCheckOut().getLst_PromoteCode();
 		String lblGiftCardAppliedMessage=TestDataHandler.constantData.getCheckOut().getLblGiftCardAppliedMessage();
 		List<Map<String,String>> lstGiftCard=TestDataHandler.constantData.getCheckOut().getLst_GiftCard();
 		List<String> lstInvalidGiftCardAndErrorMessage=TestDataHandler.constantData.getCheckOut().getLstInvalidGiftCardAndErrorMessage();
@@ -60,7 +59,6 @@ public class CP_TC11_VerifyReguLarCheckout_GiftCard extends BaseTest{
 
 		getRegularCheckoutThreadLocal().navigateToCheckoutPage();
 
-		getRegularCheckoutThreadLocal().ApplyPromoteCodeForPositiveScenario(lstPromoteCode);
 		int initialGiftCardNumberLength=getRegularCheckoutThreadLocal().inputOrderSummaryGiftCardNumber.getAttribute("value").replace(" ","").length();
 		List<Map<String, Object>> productListMapForCheckOutPage = getRegularCheckoutThreadLocal().getCheckoutItemListDesc("all");
 		Map<String, Object> summaryMapForCheckOutList = getRegularCheckoutThreadLocal().getCheckoutItemCountAndSubTotal(productListMapForCheckOutPage);

@@ -844,7 +844,7 @@ public class RegularCheckoutPage extends BasePage {
 			}
 
 			WebElement item=this.lstOrderSummaryAppliedDiscountList.get(0);
-			if(this.getElementInnerText(item).contains("Gift Card")){
+			if(this.getElementInnerText(item).toLowerCase().contains("gift card")){
 				return "GiftCard";
 			}
 			else{
@@ -2550,7 +2550,7 @@ public class RegularCheckoutPage extends BasePage {
 		else{
 			calSavePriceOrderSummary=Math.abs(wasPriceOrderSummary-nowPriceOrderSummary);
 		}
-			calSavePriceOrderSummary=calSavePriceOrderSummary+Math.abs(promoteCodeValue);
+		calSavePriceOrderSummary=calSavePriceOrderSummary+Math.abs(promoteCodeValue);
 
 		float savePriceOrderSummary=(float) orderSummaryMap.get("savePrice");
 		if(Math.abs(calSavePriceOrderSummary-savePriceOrderSummary)<0.01){
@@ -4672,10 +4672,10 @@ public class RegularCheckoutPage extends BasePage {
 	/**
 	 * To Apply Promote Code For Positive Scenario
 	 * @param - List<String> - promoteCodeList
-	 * @return - boolean
+	 * @return - String
 	 */
-	public boolean ApplyPromoteCodeForPositiveScenario(List<String> promoteCodeList){
-		boolean bFind=false;
+	public String ApplyPromoteCodeForPositiveScenario(List<String> promoteCodeList){
+		String lsFindPromoteCode="";
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputOrderSummaryPromoteCode);
 		for(String promoteCode:promoteCodeList){
 			inputOrderSummaryPromoteCode.clear();
@@ -4693,7 +4693,7 @@ public class RegularCheckoutPage extends BasePage {
 
 			try{
 				this.waitForCondition(Driver->{return lblOrderSummaryPromoteCodeAppliedMessage.isDisplayed();},15000);
-				bFind=true;
+				lsFindPromoteCode=promoteCode;
 				break;
 			}
 			catch(Exception e){
@@ -4701,7 +4701,7 @@ public class RegularCheckoutPage extends BasePage {
 			}
 		}
 
-		return bFind;
+		return lsFindPromoteCode;
 	}
 
 	/**

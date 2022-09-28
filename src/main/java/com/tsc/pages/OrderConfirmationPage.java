@@ -1372,7 +1372,6 @@ public class OrderConfirmationPage extends BasePage {
 
 		lsOrderConfirmationText=(String)orderConfirmationItem.get("productNumber");
 		lsCheckoutText=(String)checkoutItem.get("productNumber");
-		reporter.reportLog(lsOrderConfirmationText+":"+lsCheckoutText);
 		if(lsOrderConfirmationText==null){
 			if(lsCheckoutText==null){
 				reporter.reportLogPass("The productNumber in OrderConfirmation Item is the same as the one in checkout Item");
@@ -1554,7 +1553,47 @@ public class OrderConfirmationPage extends BasePage {
 				reporter.reportLogFail("The billingAddress part:'"+item+"' in OrderConfirmation Item has not been contained in checkout billing address:'"+lsCheckoutText+"'");
 			}
 		}
+	}
 
+	/**
+	 * To verify EasyPayment Linkage Between OrderConfirmation Page And Checkout Page
+	 * @param - Map<String,Object> - orderConfirmationItem
+	 * @param - Map<String,Object> - checkoutItem
+	 */
+	public void verifyEasyPaymentLinkageBetweenOrderConfirmationPageAndCheckoutPage(Map<String,Object> orderConfirmationItem,Map<String,Object> checkoutItem) {
+		float orderConfirmationValue, checkoutValue;
+
+		int orderConfirmationInstallmentsNumber = (int) orderConfirmationItem.get("installmentsNumber");
+		int checkoutInstallmentsNumber = (int) checkoutItem.get("installmentsNumber");
+		if (orderConfirmationInstallmentsNumber==checkoutInstallmentsNumber) {
+			reporter.reportLogPass("The installmentsNumber in orderConfirmation Item is the same as the one in checkout Item");
+		} else {
+			reporter.reportLogFail("The installmentsNumber:"+orderConfirmationInstallmentsNumber+" in orderConfirmation Item is not the same as the one:"+checkoutInstallmentsNumber+" in checkout Item");
+		}
+
+		orderConfirmationValue = (float) orderConfirmationItem.get("todayPayment");
+		checkoutValue = (float) checkoutItem.get("todayPayment");
+		if (Math.abs(orderConfirmationValue-checkoutValue)<0.1f) {
+			reporter.reportLogPass("The todayPayment in orderConfirmation Item is the same as the one in checkout Item");
+		} else {
+			reporter.reportLogFail("The todayPayment:"+orderConfirmationValue+" in orderConfirmation Item is not the same as the one:"+checkoutValue+" in checkout Item");
+		}
+
+		orderConfirmationValue = (float) orderConfirmationItem.get("leftPayment");
+		checkoutValue = (float) checkoutItem.get("leftPayment");
+		if (Math.abs(orderConfirmationValue-checkoutValue)<0.1f) {
+			reporter.reportLogPass("The leftPayment in orderConfirmation Item is the same as the one in checkout Item");
+		} else {
+			reporter.reportLogFail("The leftPayment:"+orderConfirmationValue+" in orderConfirmation Item is not the same as the one:"+checkoutValue+" in checkout Item");
+		}
+
+		orderConfirmationValue = (float) orderConfirmationItem.get("futureMonthlyPayment");
+		checkoutValue = (float) checkoutItem.get("futureMonthlyPayment");
+		if (Math.abs(orderConfirmationValue-checkoutValue)<0.1f) {
+			reporter.reportLogPass("The futureMonthlyPayment in orderConfirmation Item is the same as the one in checkout Item");
+		} else {
+			reporter.reportLogFail("The futureMonthlyPayment:"+orderConfirmationValue+" in orderConfirmation Item is not the same as the one:"+checkoutValue+" in checkout Item");
+		}
 	}
 
 

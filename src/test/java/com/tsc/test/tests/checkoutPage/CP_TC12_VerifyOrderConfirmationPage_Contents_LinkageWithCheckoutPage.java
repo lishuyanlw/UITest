@@ -68,9 +68,10 @@ public class CP_TC12_VerifyOrderConfirmationPage_Contents_LinkageWithCheckoutPag
 			getRegularCheckoutThreadLocal().closeUsingANewCardDialog(true);
 		}
 
+		String lsPromoteCodeOnCheckoutPage="";
 		if(!getRegularCheckoutThreadLocal().checkPromoteCodeRemoveButtonExisting()){
 			reporter.reportLog("Add valid promote code scenario");
-			getRegularCheckoutThreadLocal().ApplyPromoteCodeForPositiveScenario(lstPromoteCode);
+			lsPromoteCodeOnCheckoutPage=getRegularCheckoutThreadLocal().ApplyPromoteCodeForPositiveScenario(lstPromoteCode);
 			String lblOrderSummaryPromoteCodeAppliedMessage=basePage.getElementInnerText(getRegularCheckoutThreadLocal().lblOrderSummaryPromoteCodeAppliedMessage);
 			if(lblOrderSummaryPromoteCodeAppliedMessage.equalsIgnoreCase(lblPromoteCodeAppliedMessage)){
 				reporter.reportLogPass("The applied message for valid promote code is tha same as the expected one");
@@ -94,6 +95,13 @@ public class CP_TC12_VerifyOrderConfirmationPage_Contents_LinkageWithCheckoutPag
 		Map<String,Object> easyPaymentMapOnCheckoutPage=getRegularCheckoutThreadLocal().getEasyPayDesc();
 
 		getRegularCheckoutThreadLocal().goToOrderConfirmationPage();
+		String lsPromoteCodeOnOrderConfirmationPage=getOrderConfirmationThreadLocal().getPromoteCode();
+		if(lsPromoteCodeOnCheckoutPage.equalsIgnoreCase(lsPromoteCodeOnOrderConfirmationPage)){
+			reporter.reportLogPass("The promote code on OrderConfirmation page is the same as the one on Checkout page");
+		}
+		else{
+			reporter.reportLogFail("The promote code on OrderConfirmation page is not the same as the one on Checkout page");
+		}
 
 		Map<String,Object> orderReceiptForOrderConfirmationPage=getOrderConfirmationThreadLocal().getReceiptDesc();
 
@@ -146,7 +154,7 @@ public class CP_TC12_VerifyOrderConfirmationPage_Contents_LinkageWithCheckoutPag
 		getOrderConfirmationThreadLocal().verifyInstallmentBusinessLogic(orderSummaryForOrderConfirmationPage);
 
 		reporter.reportLog("verify EasyPayment Linkage Between OrderConfirmationPage And CheckoutPage");
-		getRegularCheckoutThreadLocal().verifyEasyPaymentLinkageBetweenShoppingCartPageAndCheckoutPage(easyPaymentForOrderConfirmationPage,easyPaymentMapOnCheckoutPage);
+		getOrderConfirmationThreadLocal().verifyEasyPaymentLinkageBetweenOrderConfirmationPageAndCheckoutPage(easyPaymentForOrderConfirmationPage,easyPaymentMapOnCheckoutPage);
 
 		reporter.reportLog("verify Shipping and Payment Linkage Between OrderConfirmationPage And CheckoutPage");
 		getOrderConfirmationThreadLocal().verifyShippingAndPaymentLinkageBetweenOrderConfirmationPageAndCheckoutPage(shippingAndPaymentMapForOrderConfirmationPage,shippingAndPaymentMapOnCheckoutPage);
