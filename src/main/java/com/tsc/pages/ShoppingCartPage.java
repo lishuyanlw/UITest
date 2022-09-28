@@ -235,6 +235,9 @@ public class ShoppingCartPage extends BasePage {
 	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-pricing')]//span[contains(normalize-space(text()),'You’re saving')]")
 	public WebElement lblCartPricingYouAreSaving;
 
+	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-pricing')]/div[contains(@class,'clearfix')][last()]")
+	public WebElement lblCartPricingLastItem;
+
 	//EasyPay
 	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'easypay')]//div[contains(@class,'cart-installment-more')]")
 	public WebElement cntEasyPayContainer;
@@ -547,7 +550,7 @@ public class ShoppingCartPage extends BasePage {
 	 * @return - boolean
 	 */
 	public boolean checkShippingSavingExistingFromOrderSummary(){
-		return checkShippingWasPriceExisting();
+		return this.getElementInnerText(lblCartPricingLastItem).toLowerCase().contains("you’re saving");
 	}
 
 	/**

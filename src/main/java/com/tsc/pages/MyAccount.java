@@ -797,8 +797,14 @@ public class MyAccount extends BasePage {
 	 */
 	public boolean checkCollapseStatusForAccountSummaryPanel(WebElement AccountSummaryPanel){
 		WebElement item=AccountSummaryPanel.findElement(bySubHeader);
-		return item.getAttribute("aria-expanded").equalsIgnoreCase("true");
+		if(this.hasElementAttribute(item,"aria-expanded")){
+			return item.getAttribute("aria-expanded").equalsIgnoreCase("true");
+		}
+		else{
+			return false;
+		}
 	}
+
 	/**
 	 * To check MyNewsLetters Update Error Message Visible
  	 * @return - boolean
@@ -4812,7 +4818,7 @@ public class MyAccount extends BasePage {
 					WebElement subItem=item.findElement(bySubHeader);
 					this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
 					subItem.click();
-					this.waitForCondition(Driver->{return subItem.getAttribute("aria-expanded").equalsIgnoreCase("false");},10000);
+					this.applyStaticWait(2*this.getStaticWaitForApplication());
 				}
 			}
 		}

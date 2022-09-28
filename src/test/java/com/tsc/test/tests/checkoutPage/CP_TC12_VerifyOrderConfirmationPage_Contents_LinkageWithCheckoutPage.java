@@ -17,8 +17,10 @@ import java.util.Map;
 public class CP_TC12_VerifyOrderConfirmationPage_Contents_LinkageWithCheckoutPage extends BaseTest{
 	/*
 	 * CER-889
+	 * CER-894
+	 * CER-895
 	 */
-	@Test(groups={"Regression","OrderConfirmation"})
+	@Test(groups={"Regression","Checkout"})
 	public void CP_TC12_VerifyOrderConfirmationPage_Contents_LinkageWithCheckoutPage() throws IOException {
 		String lsUserName = TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
 		String lsPassword = TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();

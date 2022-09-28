@@ -14,7 +14,7 @@ public class CP_TC13_VerifyOrderConfirmationPage_GoToMyAccountPage extends BaseT
 	/*
 	 * CER-891
 	 */
-	@Test(groups={"Regression","OrderConfirmation"})
+	@Test(groups={"Regression","Checkout"})
 	public void CP_TC13_VerifyOrderConfirmationPage_GoToMyAccountPage() throws IOException {
 		String lsUserName = TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
 		String lsPassword = TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
