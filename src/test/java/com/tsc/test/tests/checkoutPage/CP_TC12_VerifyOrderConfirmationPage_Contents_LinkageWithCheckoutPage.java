@@ -16,7 +16,7 @@ import java.util.Map;
 
 public class CP_TC12_VerifyOrderConfirmationPage_Contents_LinkageWithCheckoutPage extends BaseTest{
 	/*
-	 * CER-888
+	 * CER-889
 	 */
 	@Test(groups={"Regression","Checkout"})
 	public void CP_TC12_VerifyOrderConfirmationPage_Contents_LinkageWithCheckoutPage() throws IOException {
@@ -28,9 +28,18 @@ public class CP_TC12_VerifyOrderConfirmationPage_Contents_LinkageWithCheckoutPag
 		int customerEDP = Integer.valueOf(getApiUserSessionDataMapThreadLocal().get("customerEDP").toString());
 		//To empty the cart
 		getShoppingCartThreadLocal().emptyCart(customerEDP,accessToken);
-		//To add Product With Multiple Shipping Methods
-		String lsKeyword=TestDataHandler.constantData.getCheckOut().getLblProductNumberWithMultipleShippingMethods();
-		Map<String,Object> mapAPI=getShoppingCartThreadLocal().addSingleProductWithConditions(lsKeyword, 1,1, String.valueOf(customerEDP), accessToken,false);
+
+		//Verifying that item exists in cart and if not, create a new cart for user
+		List<Map<String, String>> keyword = TestDataHandler.constantData.getCheckOut().getLst_SearchKeywords();
+		getShoppingCartThreadLocal().verifyCartExistsForUser(Integer.valueOf(customerEDP), accessToken, keyword,true);
+
+		//To add advanced order Product
+		String lsKeyword=TestDataHandler.constantData.getSearchResultPage().getLbl_AdvancedOrderkeyword();
+		Map<String,Object> mapAPI=getShoppingCartThreadLocal().addSingleProductWithConditions(lsKeyword, 1,1, String.valueOf(customerEDP), accessToken,true);
+
+		//To add auto delivery order Product
+		lsKeyword=TestDataHandler.constantData.getSearchResultPage().getLbl_AutoDeliverykeyword();
+		mapAPI=getShoppingCartThreadLocal().addSingleProductWithConditions(lsKeyword, 1,1, String.valueOf(customerEDP), accessToken,false);
 
 		//Delete promote code and all gift cards
 		CartAPI cartAPI=new CartAPI();
@@ -67,9 +76,10 @@ public class CP_TC12_VerifyOrderConfirmationPage_Contents_LinkageWithCheckoutPag
 			getRegularCheckoutThreadLocal().closeUsingANewCardDialog(true);
 		}
 
+		String lsPromoteCodeOnCheckoutPage="";
 		if(!getRegularCheckoutThreadLocal().checkPromoteCodeRemoveButtonExisting()){
 			reporter.reportLog("Add valid promote code scenario");
-			getRegularCheckoutThreadLocal().ApplyPromoteCodeForPositiveScenario(lstPromoteCode);
+			lsPromoteCodeOnCheckoutPage=getRegularCheckoutThreadLocal().ApplyPromoteCodeForPositiveScenario(lstPromoteCode);
 			String lblOrderSummaryPromoteCodeAppliedMessage=basePage.getElementInnerText(getRegularCheckoutThreadLocal().lblOrderSummaryPromoteCodeAppliedMessage);
 			if(lblOrderSummaryPromoteCodeAppliedMessage.equalsIgnoreCase(lblPromoteCodeAppliedMessage)){
 				reporter.reportLogPass("The applied message for valid promote code is tha same as the expected one");
@@ -93,6 +103,13 @@ public class CP_TC12_VerifyOrderConfirmationPage_Contents_LinkageWithCheckoutPag
 		Map<String,Object> easyPaymentMapOnCheckoutPage=getRegularCheckoutThreadLocal().getEasyPayDesc();
 
 		getRegularCheckoutThreadLocal().goToOrderConfirmationPage();
+		String lsPromoteCodeOnOrderConfirmationPage=getOrderConfirmationThreadLocal().getPromoteCode();
+		if(lsPromoteCodeOnCheckoutPage.equalsIgnoreCase(lsPromoteCodeOnOrderConfirmationPage)){
+			reporter.reportLogPass("The promote code on OrderConfirmation page is the same as the one on Checkout page");
+		}
+		else{
+			reporter.reportLogFail("The promote code on OrderConfirmation page is not the same as the one on Checkout page");
+		}
 
 		Map<String,Object> orderReceiptForOrderConfirmationPage=getOrderConfirmationThreadLocal().getReceiptDesc();
 
@@ -145,17 +162,30 @@ public class CP_TC12_VerifyOrderConfirmationPage_Contents_LinkageWithCheckoutPag
 		getOrderConfirmationThreadLocal().verifyInstallmentBusinessLogic(orderSummaryForOrderConfirmationPage);
 
 		reporter.reportLog("verify EasyPayment Linkage Between OrderConfirmationPage And CheckoutPage");
-		getRegularCheckoutThreadLocal().verifyEasyPaymentLinkageBetweenShoppingCartPageAndCheckoutPage(easyPaymentForOrderConfirmationPage,easyPaymentMapOnCheckoutPage);
+		getOrderConfirmationThreadLocal().verifyEasyPaymentLinkageBetweenOrderConfirmationPageAndCheckoutPage(easyPaymentForOrderConfirmationPage,easyPaymentMapOnCheckoutPage);
 
 		reporter.reportLog("verify Shipping and Payment Linkage Between OrderConfirmationPage And CheckoutPage");
 		getOrderConfirmationThreadLocal().verifyShippingAndPaymentLinkageBetweenOrderConfirmationPageAndCheckoutPage(shippingAndPaymentMapForOrderConfirmationPage,shippingAndPaymentMapOnCheckoutPage);
 
+		reporter.reportLog("Verify OrderConfirmation header Contents");
 		getOrderConfirmationThreadLocal().verifyOrderConfirmationContents();
+
+		reporter.reportLog("Verify Receipt Contents");
 		getOrderConfirmationThreadLocal().verifyReceiptContents();
+
+		reporter.reportLog("Verify Order List Contents");
 		getOrderConfirmationThreadLocal().verifyOrderListContents();
+
+		reporter.reportLog("Verify Payment Card Contents");
 		getOrderConfirmationThreadLocal().verifyPaymentCardContents();
+
+		reporter.reportLog("Verify OrderSummary Contents");
 		getOrderConfirmationThreadLocal().verifyOrderSummaryContents();
+
+		reporter.reportLog("Verify EasyPayment Contents");
 		getOrderConfirmationThreadLocal().verifyEasyPayContents();
+
+		reporter.reportLog("Verify Common Questions Contents");
 		getOrderConfirmationThreadLocal().verifyCommonQuestionsContents();
 
 

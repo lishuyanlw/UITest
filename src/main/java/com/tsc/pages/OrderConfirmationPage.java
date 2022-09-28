@@ -97,7 +97,7 @@ public class OrderConfirmationPage extends BasePage {
 	public By byProductImageLink=By.xpath(".//div[@class='review-item-img']//a");
 	public By byProductDescriptionLink=By.xpath(".//div[@class='review-item-desc']//*[@class='review-item-name']");
 	public By byProductNumberContainer=By.xpath(".//div[@class='review-item-desc']");
-	public By byProductNumber=By.xpath(".//div[@class='review-item-desc']//a/following-sibling::div");
+	public By byProductNumber=By.xpath(".//div[@class='review-item-desc']//a/following-sibling::div[not(contains(@class,'estimateDate__lineItem--desktopWrapper'))]");
 	public By byProductPriceContainer=By.xpath(".//div[@class='price-cell']");
 	public By byProductNowPrice=By.xpath(".//div[@class='price-cell']//span[@class='applied-price']");
 	public By byProductWasPrice=By.xpath(".//div[@class='price-cell']//del");
@@ -315,14 +315,16 @@ public class OrderConfirmationPage extends BasePage {
 	/**
 	 * To goTo OrderDetailsPage
 	 * @param - String - lsURLFromYamlFile
+	 * @param - String - lsOrderNumber
 	 * @return - boolean
 	 */
-	public boolean goToOrderDetailsPage(String lsURLFromYamlFile){
+	public boolean goToOrderDetailsPage(String lsURLFromYamlFile,String lsOrderNumber){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnGoToOrderDetails);
 		this.btnGoToOrderDetails.click();
 
 		String lsBaseURL=this.getBaseURL();
 		String lsExpectedURL=lsBaseURL+lsURLFromYamlFile;
+		lsExpectedURL=lsExpectedURL.replace("{OrderNO}",lsOrderNumber);
 		String lsCurrentURL=this.URL();
 		this.waitForCondition(Driver->{return !this.URL().equalsIgnoreCase(lsCurrentURL);},20000);
 		if(this.URL().equalsIgnoreCase(lsExpectedURL)){
@@ -407,7 +409,6 @@ public class OrderConfirmationPage extends BasePage {
 			styleItem=subItem.findElement(By.xpath("./span[@class='spn-style']"));
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(styleItem);
 			map.put("productStyle",styleItem.getText().trim());
-			reporter.reportLog(styleItem.getText().trim());
 		}
 		else{
 			map.put("productStyle",null);
@@ -417,7 +418,6 @@ public class OrderConfirmationPage extends BasePage {
 			sizeItem=subItem.findElement(By.xpath("./span[@class='spn-size']"));
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(sizeItem);
 			map.put("productSize",sizeItem.getText().trim().split(":")[1].trim());
-			reporter.reportLog(sizeItem.getText().trim().split(":")[1].trim());
 		}
 		else{
 			map.put("productSize",null);
@@ -606,8 +606,13 @@ public class OrderConfirmationPage extends BasePage {
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderSummaryShippingAndHandlingNowPrice);
-		lsText=this.lblOrderSummaryShippingAndHandlingNowPrice.getText();
-		map.put("nowPrice",this.getFloatFromString(lsText,true));
+		lsText=this.lblOrderSummaryShippingAndHandlingNowPrice.getText().trim();
+		if(!lsText.equalsIgnoreCase("Free")){
+			map.put("nowPrice",this.getFloatFromString(lsText));
+		}
+		else{
+			map.put("nowPrice",0.0f);
+		}
 
 		map.put("province",getTaxProvinceCode());
 
@@ -1565,7 +1570,47 @@ public class OrderConfirmationPage extends BasePage {
 				reporter.reportLogFail("The billingAddress part:'"+item+"' in OrderConfirmation Item has not been contained in checkout billing address:'"+lsCheckoutText+"'");
 			}
 		}
+	}
 
+	/**
+	 * To verify EasyPayment Linkage Between OrderConfirmation Page And Checkout Page
+	 * @param - Map<String,Object> - orderConfirmationItem
+	 * @param - Map<String,Object> - checkoutItem
+	 */
+	public void verifyEasyPaymentLinkageBetweenOrderConfirmationPageAndCheckoutPage(Map<String,Object> orderConfirmationItem,Map<String,Object> checkoutItem) {
+		float orderConfirmationValue, checkoutValue;
+
+		int orderConfirmationInstallmentsNumber = (int) orderConfirmationItem.get("installmentsNumber");
+		int checkoutInstallmentsNumber = (int) checkoutItem.get("installmentsNumber");
+		if (orderConfirmationInstallmentsNumber==checkoutInstallmentsNumber) {
+			reporter.reportLogPass("The installmentsNumber in orderConfirmation Item is the same as the one in checkout Item");
+		} else {
+			reporter.reportLogFail("The installmentsNumber:"+orderConfirmationInstallmentsNumber+" in orderConfirmation Item is not the same as the one:"+checkoutInstallmentsNumber+" in checkout Item");
+		}
+
+		orderConfirmationValue = (float) orderConfirmationItem.get("todayPayment");
+		checkoutValue = (float) checkoutItem.get("todayPayment");
+		if (Math.abs(orderConfirmationValue-checkoutValue)<0.1f) {
+			reporter.reportLogPass("The todayPayment in orderConfirmation Item is the same as the one in checkout Item");
+		} else {
+			reporter.reportLogFail("The todayPayment:"+orderConfirmationValue+" in orderConfirmation Item is not the same as the one:"+checkoutValue+" in checkout Item");
+		}
+
+		orderConfirmationValue = (float) orderConfirmationItem.get("leftPayment");
+		checkoutValue = (float) checkoutItem.get("leftPayment");
+		if (Math.abs(orderConfirmationValue-checkoutValue)<0.1f) {
+			reporter.reportLogPass("The leftPayment in orderConfirmation Item is the same as the one in checkout Item");
+		} else {
+			reporter.reportLogFail("The leftPayment:"+orderConfirmationValue+" in orderConfirmation Item is not the same as the one:"+checkoutValue+" in checkout Item");
+		}
+
+		orderConfirmationValue = (float) orderConfirmationItem.get("futureMonthlyPayment");
+		checkoutValue = (float) checkoutItem.get("futureMonthlyPayment");
+		if (Math.abs(orderConfirmationValue-checkoutValue)<0.1f) {
+			reporter.reportLogPass("The futureMonthlyPayment in orderConfirmation Item is the same as the one in checkout Item");
+		} else {
+			reporter.reportLogFail("The futureMonthlyPayment:"+orderConfirmationValue+" in orderConfirmation Item is not the same as the one:"+checkoutValue+" in checkout Item");
+		}
 	}
 
 	/**

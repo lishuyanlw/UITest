@@ -847,7 +847,7 @@ public class RegularCheckoutPage extends BasePage {
 			}
 
 			WebElement item=this.lstOrderSummaryAppliedDiscountList.get(0);
-			if(this.getElementInnerText(item).contains("Gift Card")){
+			if(this.getElementInnerText(item).toLowerCase().contains("gift card")){
 				return "GiftCard";
 			}
 			else{
@@ -2513,21 +2513,6 @@ public class RegularCheckoutPage extends BasePage {
 	public void verifyOrderSummaryBusinessLogic(float subTotalShoppingCart,Map<String,Object> orderSummaryMap,Map<String,Object> provincialTaxRate){
 		float wasPriceOrderSummary= (float) orderSummaryMap.get("wasPrice");
 		float nowPriceOrderSummary=(float) orderSummaryMap.get("nowPrice");
-		float calSavePriceOrderSummary;
-		if(wasPriceOrderSummary<0.01){
-			calSavePriceOrderSummary=0.0f;
-		}
-		else{
-			calSavePriceOrderSummary=Math.abs(wasPriceOrderSummary-nowPriceOrderSummary);
-		}
-
-		float savePriceOrderSummary=(float) orderSummaryMap.get("savePrice");
-		if(Math.abs(calSavePriceOrderSummary-savePriceOrderSummary)<0.01){
-			reporter.reportLogPass("The calculated saving price in OrderSummary section is equal to the saving price in OrderSummary section");
-		}
-		else{
-			reporter.reportLogFail("The calculated saving price:"+calSavePriceOrderSummary+" in OrderSummary section is not equal to the saving price:"+savePriceOrderSummary+" in OrderSummary section");
-		}
 
 		float subTotal=(float) orderSummaryMap.get("subTotal");
 		if(Math.abs(subTotal-subTotalShoppingCart)<0.01){
@@ -2559,6 +2544,23 @@ public class RegularCheckoutPage extends BasePage {
 		}
 		else{
 			reporter.reportLogFail("The calculated total price:"+calTotalPrice+" in OrderSummary section is not equal to the total price:"+totalPrice+" in OrderSummary section");
+		}
+
+		float calSavePriceOrderSummary;
+		if(wasPriceOrderSummary<0.01){
+			calSavePriceOrderSummary=0.0f;
+		}
+		else{
+			calSavePriceOrderSummary=Math.abs(wasPriceOrderSummary-nowPriceOrderSummary);
+		}
+		calSavePriceOrderSummary=calSavePriceOrderSummary+Math.abs(promoteCodeValue);
+
+		float savePriceOrderSummary=(float) orderSummaryMap.get("savePrice");
+		if(Math.abs(calSavePriceOrderSummary-savePriceOrderSummary)<0.01){
+			reporter.reportLogPass("The calculated saving price in OrderSummary section is equal to the saving price in OrderSummary section");
+		}
+		else{
+			reporter.reportLogFail("The calculated saving price:"+calSavePriceOrderSummary+" in OrderSummary section is not equal to the saving price:"+savePriceOrderSummary+" in OrderSummary section");
 		}
 	}
 
@@ -4673,10 +4675,10 @@ public class RegularCheckoutPage extends BasePage {
 	/**
 	 * To Apply Promote Code For Positive Scenario
 	 * @param - List<String> - promoteCodeList
-	 * @return - boolean
+	 * @return - String
 	 */
-	public boolean ApplyPromoteCodeForPositiveScenario(List<String> promoteCodeList){
-		boolean bFind=false;
+	public String ApplyPromoteCodeForPositiveScenario(List<String> promoteCodeList){
+		String lsFindPromoteCode="";
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputOrderSummaryPromoteCode);
 		for(String promoteCode:promoteCodeList){
 			inputOrderSummaryPromoteCode.clear();
@@ -4694,7 +4696,7 @@ public class RegularCheckoutPage extends BasePage {
 
 			try{
 				this.waitForCondition(Driver->{return lblOrderSummaryPromoteCodeAppliedMessage.isDisplayed();},15000);
-				bFind=true;
+				lsFindPromoteCode=promoteCode;
 				break;
 			}
 			catch(Exception e){
@@ -4702,7 +4704,7 @@ public class RegularCheckoutPage extends BasePage {
 			}
 		}
 
-		return bFind;
+		return lsFindPromoteCode;
 	}
 
 	/**

@@ -220,6 +220,12 @@ public class ShoppingCartPage extends BasePage {
 	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-details')]//div[contains(@class,'cart-pricing')]//strong[.='APPLIED DISCOUNTS']/parent::div/parent::div/following-sibling::div[not(contains(@class,'totalPrice'))][not(div[contains(@class,'text-center')])]")
 	public List<WebElement> lstAppliedDiscountList;
 
+	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-details')]//div[contains(@class,'cart-pricing')]//div[normalize-space(text())='Gift Card Redeemed:']")
+	public WebElement lblGiftCardRedeemTitle;
+
+	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-details')]//div[contains(@class,'cart-pricing')]//div[normalize-space(text())='Gift Card Redeemed:']/following-sibling::div")
+	public WebElement lblGiftCardRedeemValue;
+
 	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-pricing')]//div[contains(normalize-space(text()),'TOTAL PRICE:')]")
 	public WebElement lblCartPricingTotalPriceTitle;
 
@@ -512,21 +518,20 @@ public class ShoppingCartPage extends BasePage {
 	 */
 	public String judgeAppliedDiscountType(){
 		if(checkAppliedDiscountExistingInOrderSummary()){
-			if(this.lstAppliedDiscountList.size()==2){
+			if(this.lstOrderSummaryRow.size()==6){
 				return "Both";
 			}
 
-			WebElement item=this.lstAppliedDiscountList.get(0);
-			if(this.getElementInnerText(item).contains("Gift Card")){
-				return "GiftCard";
-			}
-			else{
+			if(this.lstOrderSummaryRow.size()==5){
 				return "PromoteCode";
 			}
+
+			if(this.lstOrderSummaryRow.size()==4){
+				return "GiftCard";
+			}
 		}
-		else{
-			return null;
-		}
+
+		return null;
 	}
 
 	/**
@@ -1430,7 +1435,7 @@ public class ShoppingCartPage extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblCartPricingShippingNowPrice);
 		lsText=this.lblCartPricingShippingNowPrice.getText().trim();
 		if(!lsText.equalsIgnoreCase("Free")){
-			map.put("nowPrice",this.getFloatFromString(lsText,true));
+			map.put("nowPrice",this.getFloatFromString(lsText));
 		}
 		else{
 			map.put("nowPrice",0.0f);
@@ -1509,12 +1514,8 @@ public class ShoppingCartPage extends BasePage {
 					map.put("giftCardValue",0.0f);
 					break;
 				case "GiftCard":
-					item=lstAppliedDiscountList.get(0);
-					subItem=item.findElement(By.xpath("./div[1]"));
-					lsText=this.getElementInnerText(subItem).replace(":","");
-					map.put("giftCardTitle",lsText);
-					subItem=item.findElement(By.xpath("./div[2]"));
-					lsText=this.getElementInnerText(subItem);
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblGiftCardRedeemValue);
+					lsText=lblGiftCardRedeemValue.getText();
 					if(lsText.contains("-")){
 						map.put("giftCardValue",-1*this.getFloatFromString(lsText,true));
 					}
@@ -1585,27 +1586,6 @@ public class ShoppingCartPage extends BasePage {
 
 		float wasPriceOrderSummary= (float) orderSummaryMap.get("wasPrice");
 		float nowPriceOrderSummary=(float) orderSummaryMap.get("nowPrice");
-		float calSavePriceOrderSummary;
-		if(wasPriceOrderSummary<0.01){
-			calSavePriceOrderSummary=0.0f;
-		}
-		else{
-			calSavePriceOrderSummary=Math.abs(wasPriceOrderSummary-nowPriceOrderSummary);
-			if(Math.abs(calSavePriceOrderSummary-savePriceShoppingCart)<0.01){
-				reporter.reportLogPass("The calculated saving price in OrderSummary section is equal to the one in Shopping Cart item section");
-			}
-			else{
-				reporter.reportLogFail("The calculated saving price:"+calSavePriceOrderSummary+" in OrderSummary section is not equal to the one:"+savePriceShoppingCart+" in Shopping Cart item section");
-			}
-		}
-
-		float savePriceOrderSummary=(float) orderSummaryMap.get("savePrice");
-		if(Math.abs(calSavePriceOrderSummary-savePriceOrderSummary)<0.01){
-			reporter.reportLogPass("The calculated saving price in OrderSummary section is equal to the saving price in OrderSummary section");
-		}
-		else{
-			reporter.reportLogFail("The calculated saving price:"+calSavePriceOrderSummary+" in OrderSummary section is not equal to the saving price:"+savePriceOrderSummary+" in OrderSummary section");
-		}
 
 		float subTotal=(float) orderSummaryMap.get("subTotal");
 		if(Math.abs(subTotal-subTotalShoppingCart)<0.01){
@@ -1638,6 +1618,22 @@ public class ShoppingCartPage extends BasePage {
 		}
 		else{
 			reporter.reportLogFail("The calculated total price:"+calTotalPrice+" in OrderSummary section is not equal to the total price:"+totalPrice+" in OrderSummary section");
+		}
+
+		float calSavePriceOrderSummary;
+		if(wasPriceOrderSummary<0.01){
+			calSavePriceOrderSummary=0.0f;
+		}
+		else{
+			calSavePriceOrderSummary=Math.abs(wasPriceOrderSummary-nowPriceOrderSummary);
+		}
+		calSavePriceOrderSummary=calSavePriceOrderSummary+Math.abs(promoteCodeValue);
+		float savePriceOrderSummary=(float) orderSummaryMap.get("savePrice");
+		if(Math.abs(calSavePriceOrderSummary-savePriceOrderSummary)<0.01){
+			reporter.reportLogPass("The calculated saving price in OrderSummary section is equal to the saving price in OrderSummary section");
+		}
+		else{
+			reporter.reportLogFail("The calculated saving price:"+calSavePriceOrderSummary+" in OrderSummary section is not equal to the saving price:"+savePriceOrderSummary+" in OrderSummary section");
 		}
 	}
 
@@ -2279,35 +2275,56 @@ public class ShoppingCartPage extends BasePage {
 		}
 
 		if(this.checkAppliedDiscountExistingInOrderSummary()){
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAppliedDiscountTitle);
-			lsText=this.lblAppliedDiscountTitle.getText();
-			if(!lsText.isEmpty()){
-				reporter.reportLogPass("The Applied Discount Title in OrderSummary is displaying correctly");
+			if(!this.judgeAppliedDiscountType().equalsIgnoreCase("GiftCard")){
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAppliedDiscountTitle);
+				lsText=this.lblAppliedDiscountTitle.getText();
+				if(!lsText.isEmpty()){
+					reporter.reportLogPass("The Applied Discount Title in OrderSummary is displaying correctly");
+				}
+				else{
+					reporter.reportLogFailWithScreenshot("The Applied Discount Title in OrderSummary is not displaying correctly");
+				}
+
+				WebElement subItem;
+				for(WebElement item:this.lstAppliedDiscountList){
+					subItem=item.findElement(By.xpath("./div[1]"));
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
+					lsText=subItem.getText();
+					if(!lsText.isEmpty()){
+						reporter.reportLogPass("The Applied Discount item title:"+lsText+" in OrderSummary is displaying correctly");
+					}
+					else{
+						reporter.reportLogFailWithScreenshot("The Applied Discount item Title in OrderSummary is not displaying correctly");
+					}
+
+					subItem=item.findElement(By.xpath("./div[2]"));
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
+					lsText=subItem.getText();
+					if(!lsText.isEmpty()){
+						reporter.reportLogPass("The Applied Discount item value:"+lsText+" in OrderSummary is displaying correctly");
+					}
+					else{
+						reporter.reportLogFailWithScreenshot("The Applied Discount item value in OrderSummary is not displaying correctly");
+					}
+				}
 			}
 			else{
-				reporter.reportLogFailWithScreenshot("The Applied Discount Title in OrderSummary is not displaying correctly");
-			}
-
-			WebElement subItem;
-			for(WebElement item:this.lstAppliedDiscountList){
-				subItem=item.findElement(By.xpath("./div[1]"));
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
-				lsText=subItem.getText();
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblGiftCardRedeemTitle);
+				lsText=lblGiftCardRedeemTitle.getText();
 				if(!lsText.isEmpty()){
-					reporter.reportLogPass("The Applied Discount item title:"+lsText+" in OrderSummary is displaying correctly");
+					reporter.reportLogPass("The GiftCardRedeem Title is displaying correctly");
 				}
 				else{
-					reporter.reportLogFailWithScreenshot("The Applied Discount item Title in OrderSummary is not displaying correctly");
+					reporter.reportLogFailWithScreenshot("The GiftCardRedeem Title is not displaying correctly");
 				}
 
-				subItem=item.findElement(By.xpath("./div[2]"));
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
-				lsText=subItem.getText();
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblGiftCardRedeemValue);
+				lsText=lblGiftCardRedeemValue.getText();
 				if(!lsText.isEmpty()){
-					reporter.reportLogPass("The Applied Discount item value:"+lsText+" in OrderSummary is displaying correctly");
+					reporter.reportLogPass("The GiftCardRedeem value is displaying correctly");
 				}
 				else{
-					reporter.reportLogFailWithScreenshot("The Applied Discount item value in OrderSummary is not displaying correctly");
+					reporter.reportLogFailWithScreenshot("The GiftCardRedeem value is not displaying correctly");
 				}
 			}
 		}
