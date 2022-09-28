@@ -229,6 +229,9 @@ public class OrderConfirmationPage extends BasePage {
 	@FindBy(xpath = "//div[@class='faq-section']//div[contains(@class,'faq-blk')]//a[contains(@href,'returnspage')]")
 	public WebElement lnkCommonQuestionsReturnsPage;
 
+	@FindBy(xpath = "//ng-component//div[@class='loading']/div")
+	public WebElement lblLoadingPageStatus;
+
 
 	/**
 	 * To get order number
@@ -522,6 +525,18 @@ public class OrderConfirmationPage extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblReceiptOrderShippingMethod);
 		lsText=lblReceiptOrderShippingMethod.getText().trim();
 		map.put("shippingMethod", lsText);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblReceiptOrderNumber);
+		lsText = this.lblReceiptOrderNumber.getText();
+		map.put("orderNumber",lsText);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblReceiptCustomerNumber);
+		lsText = this.lblReceiptCustomerNumber.getText();
+		map.put("customerNumber",lsText);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblReceiptOrderMethod);
+		lsText = this.lblReceiptOrderMethod.getText();
+		map.put("orderMethod",lsText);
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblPaymentCard);
 		lsText=lblPaymentCard.getText().trim();
@@ -1553,5 +1568,16 @@ public class OrderConfirmationPage extends BasePage {
 
 	}
 
+	/**
+	 * This function navigates to Order Details page under My Account
+	 */
+	public void navigateToOrderDetailsUnderMyAccountFromOrderConfirmationPage(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnGoToOrderDetails);
+		this.getReusableActionsInstance().clickIfAvailable(this.btnGoToOrderDetails);
 
+		//Applying static wait as page takes time to get Order after placing it
+		this.applyStaticWait(6000);
+
+		this.waitForCondition(Driver->{return !this.lblLoadingPageStatus.getText().equalsIgnoreCase("Loading");},20000);
+	}
 }

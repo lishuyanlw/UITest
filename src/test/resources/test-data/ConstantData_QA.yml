@@ -245,6 +245,8 @@ myAccount:
   lbl_myNewsLettersUnSubscribeErrorMessage: "Select the checkbox to unsubscribe from email"
   lbl_myNewsLettersUnSubscribeAlertMessage: "Please click on the UNSUBSCRIBE button to unsubscribe from all email"
   lbl_noOrderRecordsMessage: "No orders yet. TSC has tons of deals to offer"
+  lblOrderDetailsPageUrl: "/pages/myaccount/orderstatus/details?orderNo="
+  lblBreadCrumbNavigationPages: "MyAccount:Your Orders:Order Details"
 
 lstTestName: ["MA_TC10_Payment_Options_Manage_Credit_Card",
               "MA_TC18_MyPreferences_MyNewsletters",
@@ -330,6 +332,4 @@ checkOut:
   lstInvalidGiftCardAndErrorMessage: ["6006499999999999999","9999","The System could not validate the Gift Card. Please try again."]
   lblEmptyGiftCardPinErrorMessage: "PIN is required."
 
-
-
-
+#https://qa-tsc.tsc.ca/pages/myaccount/orderstatus/details?orderNo=Z4057821

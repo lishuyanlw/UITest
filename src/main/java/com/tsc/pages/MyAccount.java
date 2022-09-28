@@ -31,6 +31,12 @@ public class MyAccount extends BasePage {
 	@FindBy(xpath="//ng-component//*[@class='paymentPageTitle']")
 	public WebElement lblPageTitle;
 
+	@FindBy(xpath="//div[@class='tsc-forms']//div[contains(@class,'form-head')]//h2/span")
+	public WebElement lblOrderDetailsHeaderUserName;
+
+	@FindBy(xpath="//div[@class='tsc-forms']//div[contains(@class,'form-head')]//span[contains(normalize-space(text()),'Customer Number:')]/following-sibling::span")
+	public WebElement lblOrderDetailsHeaderCustomerNumber;
+
 	//Navigation breadcrumb
 	@FindBy(xpath = "//ng-component//div[contains(@class,'go-back')]//ol[@class='breadcrumb']//li//a")
 	public List<WebElement> lstNavigationCrumbList;
@@ -791,6 +797,9 @@ public class MyAccount extends BasePage {
 
 	@FindBy(xpath = "//p[contains(text(),'Thank you for your changes.')]")
 	public WebElement lblSubscriptionSuccessMessage;
+
+	@FindBy(xpath = "//ng-component//*[@class='breadcrumb']/li/a")
+	public List<WebElement> lblBreadCrumbList;
 
 	/**
 	 * To check MyNewsLetters Update Error Message Visible
@@ -4634,13 +4643,29 @@ public class MyAccount extends BasePage {
 		lsText=lblOrderDetailsHeaderOrderNO.getText().trim();
 		map.put("orderNumber",lsText);
 
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderDetailsHeaderOrderedDate);
+		lsText=this.lblOrderDetailsHeaderOrderedDate.getText();
+		map.put("orderDate",lsText);
+
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderDetailsHeaderCustomerNO);
 		lsText=lblOrderDetailsHeaderCustomerNO.getText().trim();
 		map.put("customerNumber",lsText);
 
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderDetailsHeaderOrderMethod);
+		lsText=this.lblOrderDetailsHeaderOrderMethod.getText();
+		map.put("orderMethod",lsText);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderDetailsHeaderOrderStatus);
+		lsText=this.lblOrderDetailsHeaderOrderStatus.getText();
+		map.put("orderStatus",lsText);
+
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderDetailsHeaderOrderTotal);
 		lsText=lblOrderDetailsHeaderOrderTotal.getText().trim();
 		map.put("orderTotal",this.getFloatFromString(lsText));
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderDetailsSubHeaderCustomerNO);
+		lsText=this.lblOrderDetailsSubHeaderCustomerNO.getText();
+		map.put("subOrderNumber",lsText);
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderDetailsSubHeaderShippingMethod);
 		lsText=lblOrderDetailsSubHeaderShippingMethod.getText().trim();
@@ -4794,6 +4819,77 @@ public class MyAccount extends BasePage {
 		map.put("totalPrice",this.getFloatFromString(lsText));
 
 		return map;
+	}
+
+	/**
+	 * This function verifies breadcrumb navigation pages
+	 * @param - String
+	 * @return - String
+	 */
+	public void verifyBreadCrumbNavigationLink(String expectedBreadCrumbPages){
+		String navigation=null;
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblBreadCrumbList.get(0));
+		for(int counter = 0;counter < this.lblBreadCrumbList.size();counter++){
+			if(navigation==null)
+				navigation = this.lblBreadCrumbList.get(counter).getText();
+			else
+				navigation = navigation+":"+this.lblBreadCrumbList.get(counter).getText();
+		}
+
+		if(expectedBreadCrumbPages.equalsIgnoreCase(navigation))
+			reporter.reportLogPass("Actual Breadcrumb page navigation list is as expected: "+navigation);
+		else
+			reporter.reportLogFailWithScreenshot("Actual Breadcrumb page navigation: "+navigation+" is not as expected: "+expectedBreadCrumbPages);
+	}
+
+	/**
+	 *
+	 * @param - String - pagePartialURL
+	 * @param - String - orderNumber
+	 */
+	public void verifyUserIsNavigatedToOrderDetailsPage(String pagePartialURL, String orderNumber){
+		String currentPageURL = this.getDriver().getCurrentUrl();
+		String expectedURL = System.getProperty("QaUrl")+pagePartialURL+orderNumber;
+		if(currentPageURL.equalsIgnoreCase(expectedURL))
+			reporter.reportLogPass("Actual URL for Order Details page is same as expected: "+expectedURL);
+		else
+			reporter.reportLogFailWithScreenshot("Actual URL for Order Details page: "+currentPageURL+" is not as expected: "+expectedURL);
+	}
+
+	/**
+	 *
+	 * @param userName
+	 * @param customerNumber
+	 */
+	public void verifyMyAccountOrderDetailPageTitle(String userName, String customerNumber){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderDetailsHeaderUserName);
+		String orderDetailTitleUserName = this.lblOrderDetailsHeaderUserName.getText().trim();
+		String orderDetailTitleCustomerNumber = this.lblOrderDetailsHeaderCustomerNumber.getText().trim();
+		if(orderDetailTitleUserName.equalsIgnoreCase(userName+"'S ACCOUNT"))
+			reporter.reportLogPass("User Name appears in title as expected");
+		else
+			reporter.reportLogFailWithScreenshot("User Name do not appears in title as expected: "+orderDetailTitleUserName);
+
+		if(orderDetailTitleCustomerNumber.equalsIgnoreCase(customerNumber))
+			reporter.reportLogPass("Customer Number appears in title as expected");
+		else
+			reporter.reportLogFailWithScreenshot("Customer Number do not appears in title as expected: "+customerNumber+ "actual: "+orderDetailTitleCustomerNumber);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignOutMyAccountPage);
+		if(this.btnSignOutMyAccountPage.isDisplayed() && this.btnSignOutMyAccountPage.isEnabled())
+			reporter.reportLogPass("Sign Out Button on Order Details for My Account is enabled as expected");
+		else
+			reporter.reportLogFailWithScreenshot("Sign Out Button on Order Details for My Account is not enabled as expected");
+
+		if(this.checkTrackOrderButtonExisting()){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnOrderDetailsHeaderTrackOrder);
+			if(this.getReusableActionsInstance().isElementVisible(btnOrderDetailsHeaderTrackOrder)){
+				reporter.reportLogPass("Track order button in Header is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("Track order button in Header is not displaying correctly");
+			}
+		}
 	}
 
 }

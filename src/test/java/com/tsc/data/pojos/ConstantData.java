@@ -1031,6 +1031,16 @@ public class ConstantData {
         public String lbl_myNewsLettersUnSubscribeErrorMessage;
         public String lbl_myNewsLettersUnSubscribeAlertMessage;
         public String lbl_noOrderRecordsMessage;
+        public String lblOrderDetailsPageUrl;
+        public String lblBreadCrumbNavigationPages;
+
+        public String getLblBreadCrumbNavigationPages() {            return lblBreadCrumbNavigationPages;        }
+
+        public void setLblBreadCrumbNavigationPages(String lblBreadCrumbNavigationPages) {            this.lblBreadCrumbNavigationPages = lblBreadCrumbNavigationPages;        }
+
+        public String getLblOrderDetailsPageUrl() {            return lblOrderDetailsPageUrl;        }
+
+        public void setLblOrderDetailsPageUrl(String lblOrderDetailsPageUrl) {            this.lblOrderDetailsPageUrl = lblOrderDetailsPageUrl;        }
 
         public String getLnk_myAccountURL() {
             return lnk_myAccountURL;

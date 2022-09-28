@@ -591,6 +591,9 @@ public class RegularCheckoutPage extends BasePage {
 	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'placeorder__wrap')]//div[contains(@class,'placeorder__reserve-msg')]")
 	public WebElement lblOrderSummaryPlaceOrderMessage;
 
+	@FindBy(xpath = "//div[@id='order-confirmation']//button[contains(text(),'Order Details')]")
+	public WebElement btnGoToOrderDetailsFromOrderConfirmation;
+
 	//For footer
 	@FindBy(xpath = "//footer")
 	public WebElement cntFooterContainer;
@@ -5316,7 +5319,7 @@ public class RegularCheckoutPage extends BasePage {
 			this.waitForPageLoadingSpinningStatusCompleted();
 		}
 		catch (Exception e){
-			this.applyStaticWait(3*this.getStaticWaitForApplication());
+			this.applyStaticWait(20*this.getStaticWaitForApplication());
 		}
 
 		try{

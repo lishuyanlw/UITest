@@ -25,6 +25,8 @@ public class CP_TC20_VerifyOrderDetails_MyAccount extends BaseTest {
         String advanceOrderProductNumber = TestDataHandler.constantData.getSearchResultPage().getLbl_AdvancedOrderkeyword();
         String lsUserName = TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
         String lsPassword = TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
+        String orderDetailsPartialURL = TestDataHandler.constantData.getMyAccount().getLblOrderDetailsPageUrl();
+        String breadcrumbNavigationPage = TestDataHandler.constantData.getMyAccount().getLblBreadCrumbNavigationPages();
 
         try{
             //Emptying Cart for test to run with right state
@@ -59,9 +61,28 @@ public class CP_TC20_VerifyOrderDetails_MyAccount extends BaseTest {
             //Place Order and navigate to Order Confirmation Page
             getRegularCheckoutThreadLocal().goToOrderConfirmationPage();
 
+            //Fetching details for Order Confirmation Page to be verified on Order Details Page
             List<Map<String,Object>> orderItemList = getOrderConfirmationThreadLocal().getOrderListDesc();
             Map<String,Object> shippingAndPaymentDescription = getOrderConfirmationThreadLocal().getShippingAndPaymentDesc(orderItemList.get(0));
             Map<String,Object> orderSummaryDescription = getOrderConfirmationThreadLocal().getOrderSummaryDesc();
+
+            //Navigate to Order Details Page under My Account from Order Confirmation Page
+            getOrderConfirmationThreadLocal().navigateToOrderDetailsUnderMyAccountFromOrderConfirmationPage();
+
+            //Verify User should be taken to Order Details page
+            reporter.reportLog("Verify User should be taken to Order Details page");
+            getMyAccountPageThreadLocal().verifyUserIsNavigatedToOrderDetailsPage(orderDetailsPartialURL,shippingAndPaymentDescription.get("orderNumber").toString());
+            getMyAccountPageThreadLocal().verifyBreadCrumbNavigationLink(breadcrumbNavigationPage);
+
+            //Verify the title display user name and customer number and Sign Out, Track Order Button
+            reporter.reportLog("Verify the title display user name and customer number and Sign Out, Track Order Button");
+            getMyAccountPageThreadLocal().verifyMyAccountOrderDetailPageTitle(cartResponse.getShippingAddress().getFirstName(),shippingAndPaymentDescription.get("customerNumber").toString());
+
+            //Fetching data from Order Details page for verification
+            Map<String,Object> orderDetailsSummary = getMyAccountPageThreadLocal().getOrderDetailsDescExceptOrderList();
+            List<Map<String,Object>> orderDetailsItems = getMyAccountPageThreadLocal().getOrderListDesc();
+
+            System.out.println("Test");
 
         }finally {
             //Emptying Cart for test to run with right state
