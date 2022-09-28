@@ -22,11 +22,12 @@ public class CP_TC20_VerifyOrderDetails_MyAccount extends BaseTest {
         //Fetching test data from test data file
         String accessToken = getApiUserSessionDataMapThreadLocal().get("access_token").toString();
         String customerEDP = getApiUserSessionDataMapThreadLocal().get("customerEDP").toString();
-        String advanceOrderProductNumber = TestDataHandler.constantData.getSearchResultPage().getLbl_AdvancedOrderkeyword();
+        //String advanceOrderProductNumber = TestDataHandler.constantData.getSearchResultPage().getLbl_AdvancedOrderkeyword();
         String lsUserName = TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
         String lsPassword = TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
         String orderDetailsPartialURL = TestDataHandler.constantData.getMyAccount().getLblOrderDetailsPageUrl();
         String breadcrumbNavigationPage = TestDataHandler.constantData.getMyAccount().getLblBreadCrumbNavigationPages();
+        List<Map<String, String>> keyword = TestDataHandler.constantData.getCheckOut().getLst_SearchKeywords();
 
         try{
             //Emptying Cart for test to run with right state
@@ -42,9 +43,10 @@ public class CP_TC20_VerifyOrderDetails_MyAccount extends BaseTest {
             getShoppingCartThreadLocal().addTSCCreditCardForUser(null,customerEDP,accessToken);
 
             //Verifying that item exists in cart and if not, create a new cart for user
-            List<Map<String, String>> keyword = TestDataHandler.constantData.getCheckOut().getLst_SearchKeywords();
             getShoppingCartThreadLocal().verifyCartExistsForUser(Integer.valueOf(customerEDP), accessToken, keyword,false);
-            getShoppingCartThreadLocal().addAdvanceOrderOrSingleProductToCartForUser(advanceOrderProductNumber,1,true,customerEDP,accessToken);
+            //Fetching cart response again for user name
+            cartResponse= JsonParser.getResponseObject(response.asString(), new TypeReference<CartResponse>() {});
+            //getShoppingCartThreadLocal().addAdvanceOrderOrSingleProductToCartForUser(advanceOrderProductNumber,1,true,customerEDP,accessToken);
 
             //Login using valid username and password
             getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword);
@@ -67,7 +69,7 @@ public class CP_TC20_VerifyOrderDetails_MyAccount extends BaseTest {
             Map<String,Object> orderSummaryDescription = getOrderConfirmationThreadLocal().getOrderSummaryDesc();
 
             //Navigate to Order Details Page under My Account from Order Confirmation Page
-            getOrderConfirmationThreadLocal().navigateToOrderDetailsUnderMyAccountFromOrderConfirmationPage();
+            getOrderConfirmationThreadLocal().goToOrderDetailsPage(orderDetailsPartialURL,shippingAndPaymentDescription.get("orderNumber").toString());
 
             //Verify User should be taken to Order Details page
             reporter.reportLog("Verify User should be taken to Order Details page");
@@ -76,16 +78,18 @@ public class CP_TC20_VerifyOrderDetails_MyAccount extends BaseTest {
 
             //Verify the title display user name and customer number and Sign Out, Track Order Button
             reporter.reportLog("Verify the title display user name and customer number and Sign Out, Track Order Button");
-            getMyAccountPageThreadLocal().verifyMyAccountOrderDetailPageTitle(cartResponse.getShippingAddress().getFirstName(),shippingAndPaymentDescription.get("customerNumber").toString());
+            getMyAccountPageThreadLocal().verifyMyAccountOrderDetailPageTitle(cartResponse.getBuyer().getBillingAddress().getFirstName(),shippingAndPaymentDescription.get("customerNumber").toString());
 
             //Fetching data from Order Details page for verification
             Map<String,Object> orderDetailsSummary = getMyAccountPageThreadLocal().getOrderDetailsDescExceptOrderList();
             List<Map<String,Object>> orderDetailsItems = getMyAccountPageThreadLocal().getOrderListDesc();
+            getMyAccountPageThreadLocal().sortOrderDetailListMap(orderItemList);
+            getMyAccountPageThreadLocal().sortOrderDetailListMap(orderDetailsItems);
 
             System.out.println("Test");
 
         }finally {
-            //Emptying Cart for test to run with right state
+            //Emptying Cart for test to run with right state if test fails before placing order
             getShoppingCartThreadLocal().emptyCart(Integer.valueOf(customerEDP),accessToken);
         }
 

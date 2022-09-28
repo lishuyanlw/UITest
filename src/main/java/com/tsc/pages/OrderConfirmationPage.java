@@ -323,11 +323,10 @@ public class OrderConfirmationPage extends BasePage {
 		this.btnGoToOrderDetails.click();
 
 		String lsBaseURL=this.getBaseURL();
-		String lsExpectedURL=lsBaseURL+lsURLFromYamlFile;
-		lsExpectedURL=lsExpectedURL.replace("{OrderNO}",lsOrderNumber);
+		String lsExpectedURL=lsBaseURL+lsURLFromYamlFile+lsOrderNumber;
 		String lsCurrentURL=this.URL();
-		this.waitForCondition(Driver->{return !this.URL().equalsIgnoreCase(lsCurrentURL);},20000);
-		if(this.URL().equalsIgnoreCase(lsExpectedURL)){
+		this.waitForCondition(Driver->{return lsCurrentURL.equalsIgnoreCase(lsExpectedURL);},20000);
+		if(lsCurrentURL.equalsIgnoreCase(lsExpectedURL)){
 			reporter.reportLogPass("Navigate to order details page successfully");
 		}
 		else{
@@ -339,6 +338,8 @@ public class OrderConfirmationPage extends BasePage {
 			this.waitForCondition(Driver->{return myAccount.lblOrderDetailsSectionTitle.isDisplayed();},120000);
 		}
 		catch(Exception e){
+			this.getDriver().navigate().refresh();
+			this.waitForPageToLoad();
 			this.waitForCondition(Driver->{return myAccount.lblOrderDetailsSectionTitle.isDisplayed();},120000);
 		}
 		return true;
@@ -1622,7 +1623,5 @@ public class OrderConfirmationPage extends BasePage {
 
 		//Applying static wait as page takes time to get Order after placing it
 		this.applyStaticWait(6000);
-
-		this.waitForCondition(Driver->{return !this.lblLoadingPageStatus.getText().equalsIgnoreCase("Loading");},20000);
 	}
 }

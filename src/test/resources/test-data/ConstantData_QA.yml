@@ -246,7 +246,7 @@ myAccount:
   lbl_myNewsLettersUnSubscribeAlertMessage: "Please click on the UNSUBSCRIBE button to unsubscribe from all email"
   lbl_noOrderRecordsMessage: "No orders yet. TSC has tons of deals to offer"
   lblOrderDetailsPageUrl: "/pages/myaccount/orderstatus/details?orderNo="
-  lblBreadCrumbNavigationPages: "MyAccount:Your Orders:Order Details"
+  lblBreadCrumbNavigationPages: "My Account:Your Orders:Order Details"
 
 lstTestName: ["MA_TC10_Payment_Options_Manage_Credit_Card",
               "MA_TC18_MyPreferences_MyNewsletters",

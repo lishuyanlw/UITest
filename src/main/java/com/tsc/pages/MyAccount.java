@@ -1,6 +1,7 @@
 package com.tsc.pages;
 
 import com.tsc.api.apiBuilder.AccountAPI;
+import com.tsc.api.util.CustomComparator;
 import com.tsc.api.util.DataConverter;
 import com.tsc.pages.base.BasePage;
 import io.restassured.response.Response;
@@ -21,6 +22,7 @@ import org.openqa.selenium.support.ui.Select;
 
 import java.text.ParseException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MyAccount extends BasePage {
 
@@ -241,6 +243,9 @@ public class MyAccount extends BasePage {
 	//For Order Summary
 	@FindBy(xpath = "//ng-component//div[normalize-space(text())='Order Summary']/parent::div")
 	public WebElement cntOrderDetailsOrderSummaryContainer;
+
+	@FindBy(xpath = "//ng-component//div[contains(@class,'easy-pay')]")
+	public WebElement cntOrderDetailsEasyPaySection;
 
 	@FindBy(xpath = "//ng-component//div[normalize-space(text())='Order Summary']")
 	public WebElement lblOrderDetailsOrderSummary;
@@ -872,7 +877,12 @@ public class MyAccount extends BasePage {
 	 * @param - boolean
 	 */
 	public boolean checkEasyPaymentSectionExisting(){
-		return this.checkChildElementExistingByAttribute(cntOrderDetailsOrderSummaryContainer,"class","easy-pay");
+		int childCount = this.getChildrenList(cntOrderDetailsEasyPaySection).size();
+		if(childCount>0)
+			return true;
+		else
+			return false;
+		//return this.checkChildElementExistingByAttribute(cntOrderDetailsOrderSummaryContainer,"class","easy-pay");
 	}
 
 	/**
@@ -4843,7 +4853,7 @@ public class MyAccount extends BasePage {
 	}
 
 	/**
-	 *
+	 * This function verifies that user is navigated to Order Details page
 	 * @param - String - pagePartialURL
 	 * @param - String - orderNumber
 	 */
@@ -4857,7 +4867,7 @@ public class MyAccount extends BasePage {
 	}
 
 	/**
-	 *
+	 * This function verifies My Account Order Details Page Title
 	 * @param userName
 	 * @param customerNumber
 	 */
@@ -4865,10 +4875,12 @@ public class MyAccount extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderDetailsHeaderUserName);
 		String orderDetailTitleUserName = this.lblOrderDetailsHeaderUserName.getText().trim();
 		String orderDetailTitleCustomerNumber = this.lblOrderDetailsHeaderCustomerNumber.getText().trim();
-		if(orderDetailTitleUserName.equalsIgnoreCase(userName+"'S ACCOUNT"))
+		String pageTitle = this.convertToASCII(orderDetailTitleUserName);
+		String expectedTitle = userName.toUpperCase()+"’S ACCOUNT";
+		if(pageTitle.equalsIgnoreCase(expectedTitle))
 			reporter.reportLogPass("User Name appears in title as expected");
 		else
-			reporter.reportLogFailWithScreenshot("User Name do not appears in title as expected: "+orderDetailTitleUserName);
+			reporter.reportLogFailWithScreenshot("User Name do not appears in title as expected: "+pageTitle);
 
 		if(orderDetailTitleCustomerNumber.equalsIgnoreCase(customerNumber))
 			reporter.reportLogPass("Customer Number appears in title as expected");
@@ -4889,6 +4901,18 @@ public class MyAccount extends BasePage {
 			else{
 				reporter.reportLogFailWithScreenshot("Track order button in Header is not displaying correctly");
 			}
+		}
+	}
+
+	/**
+	 *
+	 * @param sortObject
+	 */
+	public void sortOrderDetailListMap(List<Map<String,Object>> sortObject){
+		if(sortObject instanceof List){
+			Collections.sort(sortObject,CustomComparator.nameComparator);
+			Collections.sort(sortObject,CustomComparator.styleComparator);
+			Collections.sort(sortObject,CustomComparator.sizeComparator);
 		}
 	}
 
