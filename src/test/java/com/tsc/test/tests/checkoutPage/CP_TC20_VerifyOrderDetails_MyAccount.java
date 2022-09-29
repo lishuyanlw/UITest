@@ -86,7 +86,7 @@ public class CP_TC20_VerifyOrderDetails_MyAccount extends BaseTest {
             getMyAccountPageThreadLocal().sortOrderDetailListMap(orderItemList);
             getMyAccountPageThreadLocal().sortOrderDetailListMap(orderDetailsItems);
 
-            System.out.println("Test");
+
 
         }finally {
             //Emptying Cart for test to run with right state if test fails before placing order

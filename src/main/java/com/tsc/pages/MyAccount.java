@@ -4905,7 +4905,7 @@ public class MyAccount extends BasePage {
 	}
 
 	/**
-	 *
+	 * This function sorts list by name, style and then size
 	 * @param sortObject
 	 */
 	public void sortOrderDetailListMap(List<Map<String,Object>> sortObject){
@@ -4913,6 +4913,16 @@ public class MyAccount extends BasePage {
 			Collections.sort(sortObject,CustomComparator.nameComparator);
 			Collections.sort(sortObject,CustomComparator.styleComparator);
 			Collections.sort(sortObject,CustomComparator.sizeComparator);
+		}
+	}
+
+	public void verifyOrderDetailsSummary(Map<String,Object> orderDetailsSummary, Map<String,Object> orderConfirmationSummary){
+		//Verifying shipping details
+		if(orderConfirmationSummary.containsKey("shippingAddress")){
+			String orderDetailShippingAddress = orderDetailsSummary.get("shippingAddress").toString();
+			List<String> orderConfirmationShippingAddress = Collections.singletonList(orderConfirmationSummary.get("shippingAddress").toString());
+		}else{
+
 		}
 	}
 
