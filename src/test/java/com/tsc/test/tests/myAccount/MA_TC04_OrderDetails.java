@@ -7,6 +7,7 @@ import com.tsc.test.base.BaseTest;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
+import java.util.Map;
 
 public class MA_TC04_OrderDetails extends BaseTest {
     /*
@@ -82,6 +83,7 @@ public class MA_TC04_OrderDetails extends BaseTest {
         getMyAccountPageThreadLocal().verifySummarySectionInOrderDetails();
 
         reporter.reportLog("To compare subTotal and order total");
-        getMyAccountPageThreadLocal().verifySubTotalAndOrderTotal();
+        Map<String,Object> orderSummaryMap=getMyAccountPageThreadLocal().getOrderSummaryDesc();
+        getMyAccountPageThreadLocal().verifySubTotalAndOrderTotal(orderSummaryMap);
     }
 }

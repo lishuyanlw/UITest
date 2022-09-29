@@ -629,7 +629,6 @@ public class OrderConfirmationPage extends BasePage {
 		lsText=this.lblOrderSummaryTax.getText();
 		map.put("tax",this.getFloatFromString(lsText,true));
 
-		WebElement item,subItem;
 		if(checkAppliedDiscountExistingInOrderSummarySection()){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderSummaryAppliedDiscountTitle);
 			lsText=lblOrderSummaryAppliedDiscountTitle.getText().trim();
