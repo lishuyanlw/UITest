@@ -212,6 +212,9 @@ public class MyAccount extends BasePage {
 	@FindBy(xpath = "//ng-component//div[normalize-space(text())='Payment Method']/following-sibling::div[contains(@class,'order-summary')]")
 	public WebElement lblOrderDetailsPaymentMethod;
 
+	@FindBy(xpath = "//ng-component//div[normalize-space(text())='Order Summary']/following-sibling::div[contains(@class,'tab-row') and contains(@class,'order-summary')]/div")
+	public List<WebElement> lstOrderDetailsOrderSummaryItems;
+
 	@FindBy(xpath = "//ng-component//div[normalize-space(text())='Order Summary']")
 	public WebElement lblOrderDetailsOrderSummary;
 
@@ -2200,14 +2203,17 @@ public class MyAccount extends BasePage {
 	/**
 	 * To compare subTotal and order total
 	 */
-	public void verifySubTotalAndOrderTotal(){
-		List<WebElement> lstItem=new ArrayList<>();
-		lstItem.add(lblOrderDetailsSubtotal);
-		lstItem.add(lblOrderDetailsShippingAndHandling);
-		lstItem.add(lblOrderDetailsTaxes);
+	public void verifySubTotalAndOrderTotal(Map<String,Object> orderSummaryMap){
+		float subTotal= (float) orderSummaryMap.get("subTotal");
+		float nowPrice= (float) orderSummaryMap.get("nowPrice");
+		float tax= (float) orderSummaryMap.get("tax");
+		float promoteCodeValue= (float) orderSummaryMap.get("promoteCodeValue");
+		float giftCardValue= (float) orderSummaryMap.get("giftCardValue");
+		float totalPrice= (float) orderSummaryMap.get("totalPrice");
 
-		boolean bEqual=this.checkDoubleEquation(lstItem,lblOrderDetailsOrderTotal);
-		if(bEqual) {
+		float calculateTotalPrice=subTotal+nowPrice+tax-promoteCodeValue-giftCardValue;
+
+		if(Math.abs(calculateTotalPrice-totalPrice)<0.1f) {
 			reporter.reportLogPass("The subTotal is equal to the order total");
 		}
 		else{
@@ -4569,6 +4575,77 @@ public class MyAccount extends BasePage {
 		else{
 			reporter.reportLogFail("The actual MyNewsLetters UnSubscribe alert Message: '"+lsActualAlertMessage+"' is same as the expected one: '"+lsExpectedAlertMessage+"'");
 		}
+	}
+
+	/**
+	 * To check applied discount Existing In Payment Section
+	 * @return
+	 */
+	public boolean checkAppliedDiscountExistingInOrderSummarySection(){
+		return lstOrderDetailsOrderSummaryItems.size()>4;
+	}
+
+	/**
+	 * To get OrderSummary Description
+	 * @return - Map<String,Object>
+	 */
+	public Map<String,Object> getOrderSummaryDesc(){
+		Map<String,Object> map=new HashMap<>();
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderDetailsSubtotal);
+		String lsText=this.lblOrderDetailsSubtotal.getText();
+		map.put("subTotal",this.getFloatFromString(lsText));
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderDetailsShippingAndHandling);
+		lsText=this.lblOrderDetailsShippingAndHandling.getText();
+		if(!lsText.toLowerCase().contains("free")){
+			map.put("nowPrice",this.getFloatFromString(lsText));
+		}
+		else{
+			map.put("nowPrice",0.0f);
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderDetailsTaxes);
+		lsText=this.lblOrderDetailsTaxes.getText();
+		map.put("tax",this.getFloatFromString(lsText));
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderDetailsOrderTotal);
+		lsText=this.lblOrderDetailsOrderTotal.getText();
+		map.put("totalPrice",this.getFloatFromString(lsText));
+
+		map.put("promoteCodeTitle",null);
+		map.put("promoteCodeValue",0.0f);
+		map.put("giftCardTitle",null);
+		map.put("giftCardValue",0.0f);
+
+		if(checkAppliedDiscountExistingInOrderSummarySection()){
+			WebElement subItem;
+			String lsSubText;
+			for(WebElement item:lstOrderDetailsOrderSummaryItems){
+				lsText=this.getElementInnerText(item).toLowerCase();
+				if(lsText.contains("discount")){
+					subItem=item.findElement(By.xpath("./span[1]"));
+					lsSubText=this.getElementInnerText(subItem);
+					map.put("promoteCodeTitle",lsSubText);
+
+					subItem=item.findElement(By.xpath("./span[2]"));
+					lsSubText=this.getElementInnerText(subItem);
+					map.put("promoteCodeValue",this.getFloatFromString(lsSubText));
+				}
+
+				if(lsText.contains("gift card")){
+					subItem=item.findElement(By.xpath("./span[1]"));
+					lsSubText=this.getElementInnerText(subItem);
+					map.put("giftCardTitle",lsSubText);
+
+					subItem=item.findElement(By.xpath("./span[2]"));
+					lsSubText=this.getElementInnerText(subItem);
+					map.put("giftCardValue",this.getFloatFromString(lsSubText));
+				}
+			}
+		}
+
+		return map;
 	}
 }
 
