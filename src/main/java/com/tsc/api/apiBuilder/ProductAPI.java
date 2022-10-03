@@ -1590,6 +1590,9 @@ public class ProductAPI extends ApiClient {
         for(Map<String,String> data:keywordData){
             boolean outerloop = false;
             Product product = this.getProductDetailsForKeyword(data.get("searchKeyword"),null,true);
+            if(product==null){
+                continue;
+            }
             List<Product.Products> products = product.getProducts();
             Boolean badgeRequired = Boolean.valueOf(data.get("badgeRequired"));
             Boolean styleExist = Boolean.valueOf(data.get("styleExist"));
