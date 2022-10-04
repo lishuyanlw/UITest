@@ -309,7 +309,7 @@ public class OrderConfirmationPage extends BasePage {
 	 * @return
 	 */
 	public boolean checkAppliedDiscountExistingInOrderSummarySection(){
-		return this.getChildElementCount(cntOrderSummaryContainer)>5;
+		return this.getChildElementCount(cntOrderSummaryContainer)>=6;
 	}
 
 	/**
@@ -327,10 +327,10 @@ public class OrderConfirmationPage extends BasePage {
 		String lsCurrentURL=this.URL();
 		this.waitForCondition(Driver->{return lsCurrentURL.equalsIgnoreCase(lsExpectedURL);},20000);
 		if(lsCurrentURL.equalsIgnoreCase(lsExpectedURL)){
-			reporter.reportLogPass("Navigate to order details page successfully");
+			reporter.reportLogPass("Navigate to order details page successfully and url is: "+lsExpectedURL);
 		}
 		else{
-			reporter.reportLogFail("Fail to navigate to order details page");
+			reporter.reportLogFail("Fail to navigate to order details page with actual url: "+lsCurrentURL+" but expected url is: "+lsExpectedURL);
 		}
 
 		MyAccount myAccount=new MyAccount(this.getDriver());

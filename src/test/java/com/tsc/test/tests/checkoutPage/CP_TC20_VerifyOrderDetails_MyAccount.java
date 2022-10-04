@@ -69,11 +69,17 @@ public class CP_TC20_VerifyOrderDetails_MyAccount extends BaseTest {
             Map<String,Object> orderSummaryDescription = getOrderConfirmationThreadLocal().getOrderSummaryDesc();
 
             //Navigate to Order Details Page under My Account from Order Confirmation Page
-            getOrderConfirmationThreadLocal().goToOrderDetailsPage(orderDetailsPartialURL,shippingAndPaymentDescription.get("orderNumber").toString());
+            //On click View Details link should take user to /pages/myaccount/orderstatus?orderNo=<Order #>
+            reporter.reportLog("Verification of Order Details page URL");
+            Boolean orderDetailPageURL = getOrderConfirmationThreadLocal().goToOrderDetailsPage(orderDetailsPartialURL,shippingAndPaymentDescription.get("orderNumber").toString());
+            if(orderDetailPageURL)
+                reporter.reportLogPass("User is navigated to Order Details Page and page URL is as expected");
+            else
+                reporter.reportLogFailWithScreenshot("User is not navigated to Order Details Page and page URL is not as expected");
 
             //Verify User should be taken to Order Details page
             reporter.reportLog("Verify User should be taken to Order Details page");
-            getMyAccountPageThreadLocal().verifyUserIsNavigatedToOrderDetailsPage(orderDetailsPartialURL,shippingAndPaymentDescription.get("orderNumber").toString());
+            getOrderConfirmationThreadLocal().goToOrderDetailsPage(orderDetailsPartialURL,shippingAndPaymentDescription.get("orderNumber").toString());
             getMyAccountPageThreadLocal().verifyBreadCrumbNavigationLink(breadcrumbNavigationPage);
 
             //Verify the title display user name and customer number and Sign Out, Track Order Button
@@ -86,7 +92,10 @@ public class CP_TC20_VerifyOrderDetails_MyAccount extends BaseTest {
             getMyAccountPageThreadLocal().sortOrderDetailListMap(orderItemList);
             getMyAccountPageThreadLocal().sortOrderDetailListMap(orderDetailsItems);
 
-
+            //Verifying Order Details on Order Details Page
+            reporter.reportLog("Verifying Order Details on Order Details Page");
+            getMyAccountPageThreadLocal().verifyOrderDetailsSummary(orderDetailsSummary,shippingAndPaymentDescription);
+            getMyAccountPageThreadLocal().verifyOrderDetailsItems(orderItemList,orderDetailsItems);
 
         }finally {
             //Emptying Cart for test to run with right state if test fails before placing order

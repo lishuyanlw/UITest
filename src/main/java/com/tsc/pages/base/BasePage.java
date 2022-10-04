@@ -9,10 +9,9 @@ import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.text.Normalizer;
-import java.util.ArrayList;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.NoSuchElementException;
-import java.util.Random;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -1223,5 +1222,15 @@ import utils.ReusableActions;
 			return true;
 		else
 			return false;
+	}
+
+	/**
+	 * This function formats current date as per provided date format
+	 * @param - String - dateFormat
+	 * @return - String
+	 */
+	public String formatCurrentDateForProvidedFormat(String dateFormat){
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dateFormat);
+		return simpleDateFormat.format(new Date());
 	}
 }

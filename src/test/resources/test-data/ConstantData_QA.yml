@@ -279,7 +279,7 @@ shoppingCart:
   lblJayCareFoundationDonationMessage: "Jays Care Foundation Donation"
 checkOut:
   lst_SearchKeywords:
-    - searchKeyword: "dress"
+    - searchKeyword: "boots"
       quantity: "more than 3"
       badgeRequired: "true"
       itemToBeAdded: "2"
