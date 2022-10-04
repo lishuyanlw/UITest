@@ -14,9 +14,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-public class CP_TC20_VerifyOrderDetails_MyAccount extends BaseTest {
+public class CP_TC14_VerifyOrderDetails_MyAccount extends BaseTest {
     @Test(groups={"Regression","Checkout"})
-    public void CP_TC20_VerifyOrderDetails_MyAccount() throws IOException {
+    public void CP_TC14_VerifyOrderDetails_MyAccount() throws IOException {
         getGlobalFooterPageThreadLocal().closePopupDialog();
 
         //Fetching test data from test data file

@@ -335,12 +335,18 @@ public class OrderConfirmationPage extends BasePage {
 
 		MyAccount myAccount=new MyAccount(this.getDriver());
 		try{
-			this.waitForCondition(Driver->{return myAccount.lblOrderDetailsSectionTitle.isDisplayed();},120000);
+			this.waitForCondition(Driver->{return myAccount.lblOrderDetailsSectionTitle.isDisplayed();},15000);
 		}
 		catch(Exception e){
-			this.getDriver().navigate().refresh();
-			this.waitForPageToLoad();
-			this.waitForCondition(Driver->{return myAccount.lblOrderDetailsSectionTitle.isDisplayed();},120000);
+			for(int refreshCounter=0;refreshCounter<100;refreshCounter++){
+				this.getDriver().navigate().refresh();
+				this.waitForPageToLoad();
+				boolean value = this.waitForCondition(Driver->{return myAccount.lblOrderDetailsSectionTitle.isDisplayed();},15000);
+				if(value)
+					break;
+				else
+					continue;
+			}
 		}
 		return true;
 	}
