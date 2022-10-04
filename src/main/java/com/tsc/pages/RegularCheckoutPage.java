@@ -490,6 +490,9 @@ public class RegularCheckoutPage extends BasePage {
 	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//span[@class='summary__savingmsg']")
 	public WebElement lblOrderSummarySavingPrice;
 
+	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//div[@class='summary']/div[contains(@class,'summary__row')][last()]")
+	public WebElement lblOrderSummaryLastItem;
+
 	//For Installment
 	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]/div[contains(@class,'summary')]")
 	public WebElement cntEasyPayContainer;
@@ -825,7 +828,7 @@ public class RegularCheckoutPage extends BasePage {
 	 * @return - boolean
 	 */
 	public boolean checkOrderSummarySavingPriceExisting(){
-		return !this.getElementInnerText(lblOrderSummaryShippingWasPrice).isEmpty();
+		return this.getElementInnerText(lblOrderSummaryLastItem).toLowerCase().contains("you’re saving");
 	}
 
 	/**
@@ -1172,7 +1175,7 @@ public class RegularCheckoutPage extends BasePage {
 		if(this.checkOrderSummarySavingPriceExisting()){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderSummarySavingPrice);
 			String lsText=this.lblOrderSummarySavingPrice.getText();
-			return this.getFloatFromString(lsText,true);
+			return this.getFloatFromString(lsText);
 		}
 		else{
 			return 0.0f;
@@ -1795,7 +1798,13 @@ public class RegularCheckoutPage extends BasePage {
 		if(bSave){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnUsingANewCardDialogSaveButton);
 			btnUsingANewCardDialogSaveButton.click();
-			waitForPageLoadingSpinningStatusCompleted();
+			try {
+				waitForPageLoadingSpinningStatusCompleted();
+				this.applyStaticWait(5*getStaticWaitForApplication());
+			}
+			catch (Exception e){
+				this.applyStaticWait(5*getStaticWaitForApplication());
+			}
 		}
 		else{
 			if(this.getDeviceTypeForTest(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
@@ -2477,7 +2486,6 @@ public class RegularCheckoutPage extends BasePage {
 		map.put("totalPrice",this.getFloatFromString(lsText,true));
 
 		map.put("savePrice",getSavingPriceFromOrderSummary());
-
 		return map;
 	}
 

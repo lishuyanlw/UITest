@@ -313,7 +313,7 @@ public class OrderConfirmationPage extends BasePage {
 	}
 
 	/**
-	 * To goTo OrderDetailsPage
+	 * To go to OrderDetails Page
 	 * @param - String - lsURLFromYamlFile
 	 * @param - String - lsOrderNumber
 	 * @return - boolean
@@ -343,6 +343,30 @@ public class OrderConfirmationPage extends BasePage {
 			this.waitForCondition(Driver->{return myAccount.lblOrderDetailsSectionTitle.isDisplayed();},120000);
 		}
 		return true;
+	}
+
+	/**
+	 * To go to myAccount Page
+	 * @param - String - lsURLFromYamlFile
+	 * @return - boolean
+	 */
+	public boolean goToMyAccountPage(String lsURLFromYamlFile){
+		String lsCurrentURL=this.URL();
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnGoToMyAccount);
+		this.btnGoToMyAccount.click();
+
+		String lsBaseURL=this.getBaseURL();
+		String lsExpectedURL=lsBaseURL+lsURLFromYamlFile;
+		this.waitForCondition(Driver->{return !this.URL().equalsIgnoreCase(lsCurrentURL);},20000);
+		if(this.URL().equalsIgnoreCase(lsExpectedURL)){
+			reporter.reportLogPass("Navigate to myAccount page successfully");
+		}
+		else{
+			reporter.reportLogFail("Fail to navigate to myAccount page");
+		}
+
+		MyAccount myAccount=new MyAccount(this.getDriver());
+		return this.waitForCondition(Driver->{return myAccount.lblMyAccountHeaderTitle.isDisplayed();},120000);
 	}
 
 	/**
@@ -621,7 +645,6 @@ public class OrderConfirmationPage extends BasePage {
 		lsText=this.lblOrderSummaryTax.getText();
 		map.put("tax",this.getFloatFromString(lsText,true));
 
-		WebElement item,subItem;
 		if(checkAppliedDiscountExistingInOrderSummarySection()){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderSummaryAppliedDiscountTitle);
 			lsText=lblOrderSummaryAppliedDiscountTitle.getText().trim();

@@ -39,6 +39,9 @@ public class MyAccount extends BasePage {
 	@FindBy(xpath="//div[@class='tsc-forms']//div[contains(@class,'form-head')]//span[contains(normalize-space(text()),'Customer Number:')]/following-sibling::span")
 	public WebElement lblOrderDetailsHeaderCustomerNumber;
 
+	@FindBy(xpath="//ng-component//div[contains(@class,'form-head')]//h2")
+	public WebElement lblMyAccountHeaderTitle;
+
 	//Navigation breadcrumb
 	@FindBy(xpath = "//ng-component//div[contains(@class,'go-back')]//ol[@class='breadcrumb']//li//a")
 	public List<WebElement> lstNavigationCrumbList;
@@ -50,6 +53,7 @@ public class MyAccount extends BasePage {
 	@FindBy(xpath = "//div[@class='my-account-summary-container']//div[@class='panel']")
 	public List<WebElement> lstAccountSummaryPanelList;
 
+	public By bySubHeader=By.xpath(".//div[contains(@class,'panel-heading')]");
 	public By bySubList=By.xpath(".//ul//li[not(contains(@class,'hidden'))]//a");
 
 	//For order part
@@ -246,6 +250,9 @@ public class MyAccount extends BasePage {
 
 	@FindBy(xpath = "//ng-component//div[contains(@class,'easy-pay')]")
 	public WebElement cntOrderDetailsEasyPaySection;
+
+	@FindBy(xpath = "//ng-component//div[normalize-space(text())='Order Summary']/following-sibling::div[contains(@class,'tab-row') and contains(@class,'order-summary')]/div")
+	public List<WebElement> lstOrderDetailsOrderSummaryItems;
 
 	@FindBy(xpath = "//ng-component//div[normalize-space(text())='Order Summary']")
 	public WebElement lblOrderDetailsOrderSummary;
@@ -807,6 +814,21 @@ public class MyAccount extends BasePage {
 	public List<WebElement> lblBreadCrumbList;
 
 	/**
+	 * To check Collapse Status For Account Summary Panel
+	 * @param - webelement - AccountSummaryPanel
+	 * @return - boolean - true for expanded
+	 */
+	public boolean checkCollapseStatusForAccountSummaryPanel(WebElement AccountSummaryPanel){
+		WebElement item=AccountSummaryPanel.findElement(bySubHeader);
+		if(this.hasElementAttribute(item,"aria-expanded")){
+			return item.getAttribute("aria-expanded").equalsIgnoreCase("true");
+		}
+		else{
+			return false;
+		}
+	}
+
+	/**
 	 * To check MyNewsLetters Update Error Message Visible
  	 * @return - boolean
 	 */
@@ -897,7 +919,7 @@ public class MyAccount extends BasePage {
 
 	/**
 	 * To get subitem web element through sublitem text
-	 * @param lsSubItem -  sublitem text
+	 * @param - lsSubItem -  sublitem text
 	 * @return subitem web element
 	 */
 	public WebElement getSubItem(String lsSubItem){
@@ -2270,14 +2292,17 @@ public class MyAccount extends BasePage {
 	/**
 	 * To compare subTotal and order total
 	 */
-	public void verifySubTotalAndOrderTotal(){
-		List<WebElement> lstItem=new ArrayList<>();
-		lstItem.add(lblOrderDetailsSubtotal);
-		lstItem.add(lblOrderDetailsShippingAndHandling);
-		lstItem.add(lblOrderDetailsTaxes);
+	public void verifySubTotalAndOrderTotal(Map<String,Object> orderSummaryMap){
+		float subTotal= (float) orderSummaryMap.get("subTotal");
+		float nowPrice= (float) orderSummaryMap.get("nowPrice");
+		float tax= (float) orderSummaryMap.get("tax");
+		float promoteCodeValue= (float) orderSummaryMap.get("promoteCodeValue");
+		float giftCardValue= (float) orderSummaryMap.get("giftCardValue");
+		float totalPrice= (float) orderSummaryMap.get("totalPrice");
 
-		boolean bEqual=this.checkDoubleEquation(lstItem,lblOrderDetailsOrderTotal);
-		if(bEqual) {
+		float calculateTotalPrice=subTotal+nowPrice+tax-promoteCodeValue-giftCardValue;
+
+		if(Math.abs(calculateTotalPrice-totalPrice)<0.1f) {
 			reporter.reportLogPass("The subTotal is equal to the order total");
 		}
 		else{
@@ -4806,6 +4831,14 @@ public class MyAccount extends BasePage {
 	}
 
 	/**
+	 * To check applied discount Existing In Payment Section
+	 * @return
+	 */
+	public boolean checkAppliedDiscountExistingInOrderSummarySection(){
+		return lstOrderDetailsOrderSummaryItems.size()>4;
+	}
+
+	/**
 	 * To get OrderSummary Description
 	 * @return - Map<String,Object>
 	 */
@@ -4818,7 +4851,12 @@ public class MyAccount extends BasePage {
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderDetailsShippingAndHandling);
 		lsText=this.lblOrderDetailsShippingAndHandling.getText();
-		map.put("nowPrice",this.getFloatFromString(lsText));
+		if(!lsText.toLowerCase().contains("free")){
+			map.put("nowPrice",this.getFloatFromString(lsText));
+		}
+		else{
+			map.put("nowPrice",0.0f);
+		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderDetailsTaxes);
 		lsText=this.lblOrderDetailsTaxes.getText();
@@ -4827,6 +4865,38 @@ public class MyAccount extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderDetailsOrderTotal);
 		lsText=this.lblOrderDetailsOrderTotal.getText();
 		map.put("totalPrice",this.getFloatFromString(lsText));
+
+		map.put("promoteCodeTitle",null);
+		map.put("promoteCodeValue",0.0f);
+		map.put("giftCardTitle",null);
+		map.put("giftCardValue",0.0f);
+
+		if(checkAppliedDiscountExistingInOrderSummarySection()){
+			WebElement subItem;
+			String lsSubText;
+			for(WebElement item:lstOrderDetailsOrderSummaryItems){
+				lsText=this.getElementInnerText(item).toLowerCase();
+				if(lsText.contains("discount")){
+					subItem=item.findElement(By.xpath("./span[1]"));
+					lsSubText=this.getElementInnerText(subItem);
+					map.put("promoteCodeTitle",lsSubText);
+
+					subItem=item.findElement(By.xpath("./span[2]"));
+					lsSubText=this.getElementInnerText(subItem);
+					map.put("promoteCodeValue",this.getFloatFromString(lsSubText));
+				}
+
+				if(lsText.contains("gift card")){
+					subItem=item.findElement(By.xpath("./span[1]"));
+					lsSubText=this.getElementInnerText(subItem);
+					map.put("giftCardTitle",lsSubText);
+
+					subItem=item.findElement(By.xpath("./span[2]"));
+					lsSubText=this.getElementInnerText(subItem);
+					map.put("giftCardValue",this.getFloatFromString(lsSubText));
+				}
+			}
+		}
 
 		return map;
 	}
@@ -5115,6 +5185,54 @@ public class MyAccount extends BasePage {
 					reporter.reportLog("Product Quantity of item is as expected: "+orderDetailsItems.get(counter).get("productQuantity").toString());
 				else
 					reporter.reportLogFailWithScreenshot("Product Quantity of item on order details: "+orderDetailsItems.get(counter).get("productQuantity").toString()+" is not as expected: "+orderItemList.get(counter).get("productQuantity").toString());
+			}
+		}
+	}
+
+	/**
+	 * To verify Account Summary Pane lList
+	 */
+	public void verifyAccountSummaryPanelList(){
+		String lsText;
+		if(this.getDeviceTypeForTest(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
+			for(WebElement item:lstAccountSummaryPanelList){
+				if(!this.checkCollapseStatusForAccountSummaryPanel(item)){
+					WebElement subItem=item.findElement(bySubHeader);
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
+					subItem.click();
+					this.applyStaticWait(2*this.getStaticWaitForApplication());
+				}
+			}
+		}
+
+		WebElement item,subItemHeader,subItemContent;
+		int loopSize=lstAccountSummaryPanelList.size();
+		for(int i=0;i<loopSize;i++){
+			reporter.reportLog("Verify "+i+" Account Summary Pane header");
+			item=lstAccountSummaryPanelList.get(i);
+			subItemHeader=item.findElement(bySubHeader);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItemHeader);
+			lsText=subItemHeader.getText();
+			if(!lsText.isEmpty()){
+				reporter.reportLogPass("The header of '"+lsText+"' is displaying correctly");
+			}
+			else{
+				reporter.reportLogFail("The header is not displaying correctly");
+			}
+
+			List<WebElement> lstSubItem=item.findElements(bySubList);
+			int loopSizeForSubItemList=lstSubItem.size();
+			for(int j=0;j<loopSizeForSubItemList;j++){
+				reporter.reportLog("Verify "+j+" subItem in Account Summary Pane list");
+				subItemContent=lstSubItem.get(j);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItemContent);
+				lsText=subItemHeader.getText();
+				if(!lsText.isEmpty()){
+					reporter.reportLogPass("The content of '"+lsText+"' is displaying correctly");
+				}
+				else{
+					reporter.reportLogFail("The content is not displaying correctly");
+				}
 			}
 		}
 	}

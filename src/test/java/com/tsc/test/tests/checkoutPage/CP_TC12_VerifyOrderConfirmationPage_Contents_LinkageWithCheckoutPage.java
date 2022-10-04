@@ -17,6 +17,8 @@ import java.util.Map;
 public class CP_TC12_VerifyOrderConfirmationPage_Contents_LinkageWithCheckoutPage extends BaseTest{
 	/*
 	 * CER-889
+	 * CER-894
+	 * CER-895
 	 */
 	@Test(groups={"Regression","Checkout"})
 	public void CP_TC12_VerifyOrderConfirmationPage_Contents_LinkageWithCheckoutPage() throws IOException {
@@ -74,6 +76,13 @@ public class CP_TC12_VerifyOrderConfirmationPage_Contents_LinkageWithCheckoutPag
 			getRegularCheckoutThreadLocal().openAddOrChangePaymentMethodDialog();
 			getRegularCheckoutThreadLocal().addNewTSCCard();
 			getRegularCheckoutThreadLocal().closeUsingANewCardDialog(true);
+		}
+		boolean bTSC=getRegularCheckoutThreadLocal().checkIfPaymentMethodIsTSC();
+		if(bTSC){
+			reporter.reportLogPass("The payment method is TSC card");
+		}
+		else{
+			reporter.reportLogFail("The payment method is not TSC card");
 		}
 
 		String lsPromoteCodeOnCheckoutPage="";
