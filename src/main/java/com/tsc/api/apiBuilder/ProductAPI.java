@@ -257,7 +257,6 @@ public class ProductAPI extends ApiClient {
             configs = super.getProductSearchByKeywordInputConfig(searchKeyword, dimensionNumber, outputPage, defaultPageItems,super.getApiPropertyData().get("test_apiVersion3"));
         }
 
-
         repeatNumber=0;
         do{
             response = getApiCallResponse(configs, propertyData.get("test_apiVersion3")+"/"+propertyData.get("test_language")+"/products");

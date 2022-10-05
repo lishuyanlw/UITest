@@ -38,10 +38,16 @@ public class CP_TC12_VerifyOrderConfirmationPage_Contents_LinkageWithCheckoutPag
 		//To add advanced order Product
 		String lsKeyword=TestDataHandler.constantData.getSearchResultPage().getLbl_AdvancedOrderkeyword();
 		Map<String,Object> mapAPI=getShoppingCartThreadLocal().addSingleProductWithConditions(lsKeyword, 1,1, String.valueOf(customerEDP), accessToken,true);
+		if(mapAPI==null){
+			reporter.reportLogFail("Failed to add advanced order product");
+		}
 
 		//To add auto delivery order Product
 		lsKeyword=TestDataHandler.constantData.getSearchResultPage().getLbl_AutoDeliverykeyword();
 		mapAPI=getShoppingCartThreadLocal().addSingleProductWithConditions(lsKeyword, 1,1, String.valueOf(customerEDP), accessToken,false);
+		if(mapAPI==null){
+			reporter.reportLogFail("Failed to add auto delivery product");
+		}
 
 		//Delete promote code and all gift cards
 		CartAPI cartAPI=new CartAPI();

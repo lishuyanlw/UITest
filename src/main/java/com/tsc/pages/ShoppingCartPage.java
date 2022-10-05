@@ -2630,7 +2630,8 @@ public class ShoppingCartPage extends BasePage {
 			/**String cartGuidId = accountCart.getCartGuid();
 			Response response = cartApi.getCartContentWithCartGuid(cartGuidId,accessToken);
 			CartResponse cartResponse = JsonParser.getResponseObject(response.asString(), new TypeReference<CartResponse>() {});
-			*/List<CartResponse.ProductsClass> productsClassList = accountCart.getProducts();
+			*/
+			List<CartResponse.ProductsClass> productsClassList = accountCart.getProducts();
 			List<CartResponse.CartLinesClass> cartLinesClassList = accountCart.getCartLines();
 
 			for(CartResponse.CartLinesClass cartLinesClass:cartLinesClassList){
