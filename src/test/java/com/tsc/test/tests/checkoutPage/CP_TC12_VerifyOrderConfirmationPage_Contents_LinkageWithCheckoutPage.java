@@ -33,7 +33,7 @@ public class CP_TC12_VerifyOrderConfirmationPage_Contents_LinkageWithCheckoutPag
 
 		//Verifying that item exists in cart and if not, create a new cart for user
 		List<Map<String, String>> keyword = TestDataHandler.constantData.getCheckOut().getLst_SearchKeywords();
-		getShoppingCartThreadLocal().verifyCartExistsForUser(Integer.valueOf(customerEDP), accessToken, keyword,true);
+		getShoppingCartThreadLocal().verifyCartExistsForUser(Integer.valueOf(customerEDP), accessToken, keyword,false);
 
 		//To add advanced order Product
 		String lsKeyword=TestDataHandler.constantData.getSearchResultPage().getLbl_AdvancedOrderkeyword();
@@ -145,15 +145,15 @@ public class CP_TC12_VerifyOrderConfirmationPage_Contents_LinkageWithCheckoutPag
 		int findIndex;
 		Map<String,Object> checkoutItem;
 		for(Map<String,Object> orderItem:orderListMapForOrderConfirmationPage){
-			String lsShoppingCartText=(String)orderItem.get("productName");
-			reporter.reportLog("Verify product:'"+lsShoppingCartText+"'");
+			String lsText=(String)orderItem.get("productName");
+			reporter.reportLog("Verify product:'"+lsText+"'");
 			findIndex=getShoppingCartThreadLocal().findGivenProductIndexInProductList(orderItem,productListMapForCheckOutPage);
 			if(findIndex!=-1){
 				checkoutItem=productListMapForCheckOutPage.get(findIndex);
 				getOrderConfirmationThreadLocal().verifyProductListLinkageBetweenOrderConfirmationPageAndCheckoutPage(orderItem,checkoutItem);
 			}
 			else{
-				reporter.reportLogFail("");
+				reporter.reportLogFail("Unable to find '"+lsText+"' in Checkout Page");
 			}
 		}
 

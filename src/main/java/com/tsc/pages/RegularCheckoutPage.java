@@ -965,14 +965,14 @@ public class RegularCheckoutPage extends BasePage {
 				}
 				else{
 					map.put("productName",lsSplit[0].trim());
-					map.put("productStyle",lsSplit[1].trim());
+					map.put("productStyle",lsSplit[1].split(":")[1].trim());
 					map.put("productSize",null);
 				}
 			}
 			else{
 				map.put("productName",lsSplit[0].trim());
-				map.put("productStyle",lsSplit[1].trim());
-				map.put("productSize",lsSplit[2].split(":")[1].trim());
+				map.put("productStyle",lsSplit[2].split(":")[1].trim());
+				map.put("productSize",lsSplit[1].split(":")[1].trim());
 			}
 		}
 		else{

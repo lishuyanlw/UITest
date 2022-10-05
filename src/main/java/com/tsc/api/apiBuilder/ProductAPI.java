@@ -289,11 +289,11 @@ public class ProductAPI extends ApiClient {
         Response response = null;
         //boolean flag = true;
         //int repeatNumber=0;
-        ProductDetailsItem product=new ProductDetailsItem();
+        ProductDetailsItem product=null;
 
         selectedProduct.init();
         //do{
-        response = getApiCallResponse(null, propertyData.get("test_apiVersion")+"/"+propertyData.get("test_language")+"/products/"+productNumber);
+        response = getApiCallResponse(null, propertyData.get("test_apiVersion3")+"/"+propertyData.get("test_language")+"/products/"+productNumber);
         if(response!=null && response.statusCode()==200) {
             product = JsonParser.getResponseObject(response.asString(), new TypeReference<ProductDetailsItem>() {
             });

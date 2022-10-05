@@ -82,7 +82,7 @@ public class OrderConfirmationPage extends BasePage {
 	@FindBy(xpath = "//order-confirmation-cart//div[@class='review-items-table']/parent::div")
 	public WebElement cntReviewShoppingCartShippingDateContainer;
 
-	@FindBy(xpath = "//order-confirmation-cart//div[contains(@class,'col-headings') and contains(.,'Get it by:')]")
+	@FindBy(xpath = "//order-confirmation-cart//div[contains(@class,'col-headings') and (contains(.,'Get it by:') or contains(.,'Ship Date:'))]")
 	public WebElement lblReviewShoppingCartShippingDate;
 
 	//Will not display on mobile device
@@ -148,6 +148,9 @@ public class OrderConfirmationPage extends BasePage {
 
 	@FindBy(xpath = "//div[@class='order-conf-summary-section']//div[@class='order-conf-summary-title']")
 	public WebElement lblOrderSummaryTitle;
+
+	@FindBy(xpath = "//div[@class='order-conf-summary-section']//div[contains(@class,'order-conf-summary-row')]")
+	public List<WebElement> lstOrderSummaryItems;
 
 	@FindBy(xpath = "//div[@class='order-conf-summary-section']//div[contains(normalize-space(text()),'Subtotal:')]")
 	public WebElement lblOrderSummarySubTotalTitle;
@@ -306,7 +309,7 @@ public class OrderConfirmationPage extends BasePage {
 	 * @return
 	 */
 	public boolean checkAppliedDiscountExistingInOrderSummarySection(){
-		return this.getChildElementCount(cntOrderSummaryContainer)>5;
+		return lstOrderSummaryItems.size()>4;
 	}
 
 	/**
@@ -629,18 +632,36 @@ public class OrderConfirmationPage extends BasePage {
 		lsText=this.lblOrderSummaryTax.getText();
 		map.put("tax",this.getFloatFromString(lsText,true));
 
-		if(checkAppliedDiscountExistingInOrderSummarySection()){
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderSummaryAppliedDiscountTitle);
-			lsText=lblOrderSummaryAppliedDiscountTitle.getText().trim();
-			map.put("promoteCodeTitle",lsText);
+		map.put("promoteCodeTitle",null);
+		map.put("promoteCodeValue",0.0f);
+		map.put("giftCardTitle",null);
+		map.put("giftCardValue",0.0f);
 
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderSummaryAppliedDiscount);
-			lsText=lblOrderSummaryAppliedDiscount.getText().trim();
-			map.put("promoteCodeValue",this.getFloatFromString(lsText));
-		}
-		else{
-			map.put("promoteCodeTitle",null);
-			map.put("promoteCodeValue",0.0f);
+		if(checkAppliedDiscountExistingInOrderSummarySection()) {
+			WebElement subItem;
+			String lsSubText;
+			for (WebElement item : lstOrderSummaryItems) {
+				lsText = this.getElementInnerText(item).toLowerCase();
+				if (lsText.contains("discount")) {
+					subItem = item.findElement(By.xpath("./div[1]"));
+					lsSubText = this.getElementInnerText(subItem);
+					map.put("promoteCodeTitle", lsSubText);
+
+					subItem = item.findElement(By.xpath("./div[2]"));
+					lsSubText = this.getElementInnerText(subItem);
+					map.put("promoteCodeValue", this.getFloatFromString(lsSubText));
+				}
+
+				if (lsText.contains("gift card")) {
+					subItem = item.findElement(By.xpath("./div[1]"));
+					lsSubText = this.getElementInnerText(subItem);
+					map.put("giftCardTitle", lsSubText);
+
+					subItem = item.findElement(By.xpath("./div[2]"));
+					lsSubText = this.getElementInnerText(subItem);
+					map.put("giftCardValue", this.getFloatFromString(lsSubText));
+				}
+			}
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderSummaryTotalPrice);
