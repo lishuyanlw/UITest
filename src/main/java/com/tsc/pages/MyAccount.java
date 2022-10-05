@@ -5233,16 +5233,20 @@ public class MyAccount extends BasePage {
 			//Verifying shipping details
 			if(orderConfirmationAddress.containsKey("shippingAddress")){
 				Boolean flag = false;
+				int flagCounter = 0;
 				for(String confirmationAddress:orderConfirmationShippingAddress){
 					confirmationAddress.replace(",","").replace("-"," ").trim();
 					if(confirmationAddress.contains(" "))
 						confirmationAddress.replace(" ","");
-					if(orderDetailShippingAddress.toLowerCase().contains(confirmationAddress.toLowerCase()))
-						flag = true;
+					if(orderDetailShippingAddress.toLowerCase().contains(confirmationAddress.toLowerCase())){
+						if(flagCounter == 0 && flag == false){
+							flag = true;
+						}
+					}
 					else{
 						flag = false;
+						flagCounter++;
 						reporter.reportLogFailWithScreenshot("Shipping Address: "+confirmationAddress+" is not present on Order Details page as expected");
-						break;
 					}
 				}
 				if(flag)
@@ -5256,18 +5260,22 @@ public class MyAccount extends BasePage {
 			if(orderConfirmationAddress.containsKey("billingAddress")){
 				List<String> orderConfirmationBillingAddress = Collections.singletonList(((ArrayList) orderConfirmationAddress.get("billingAddress"))).get(0);
 				Boolean flag = false;
+				int flagCounter = 0;
 				String orderDetailBillingAddress = orderDetailsAddress.get("billingAddress").toString().replace(",","").replace("-"," ").trim();;
 				if(orderConfirmationBillingAddress.get(0).contains("Same as shipping address")){
 					for(String confirmationAddress:orderConfirmationShippingAddress){
 						confirmationAddress.replace(",","").replace("-"," ").trim();
 						if(confirmationAddress.contains(" "))
 							confirmationAddress.replace(" ","");
-						if(orderDetailBillingAddress.toLowerCase().contains(confirmationAddress.toLowerCase()))
-							flag = true;
+						if(orderDetailBillingAddress.toLowerCase().contains(confirmationAddress.toLowerCase())){
+							if(flagCounter == 0 && flag == false){
+								flag = true;
+							}
+						}
 						else{
+							flagCounter++;
 							flag = false;
 							reporter.reportLogFailWithScreenshot("Billing Address: "+confirmationAddress+" is not present on Order Details page as expected");
-							break;
 						}
 					}
 					if(flag)
@@ -5279,8 +5287,11 @@ public class MyAccount extends BasePage {
 						confirmationAddress.replace(",","").replace("-"," ").trim();
 						if(confirmationAddress.contains(" "))
 							confirmationAddress.replace(" ","");
-						if(orderDetailShippingAddress.contains(confirmationAddress.toLowerCase()))
-							flag = true;
+						if(orderDetailShippingAddress.contains(confirmationAddress.toLowerCase())){
+							if(flagCounter == 0 && flag == false){
+								flag = true;
+							}
+						}
 						else{
 							flag = false;
 							reporter.reportLogFailWithScreenshot("Billing Address: "+confirmationAddress+" is not present on Order Details page as expected");
