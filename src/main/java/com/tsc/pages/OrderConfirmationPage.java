@@ -82,7 +82,7 @@ public class OrderConfirmationPage extends BasePage {
 	@FindBy(xpath = "//order-confirmation-cart//div[@class='review-items-table']/parent::div")
 	public WebElement cntReviewShoppingCartShippingDateContainer;
 
-	@FindBy(xpath = "//order-confirmation-cart//div[contains(@class,'col-headings') and contains(.,'Get it by:')]")
+	@FindBy(xpath = "//order-confirmation-cart//div[contains(@class,'col-headings') and (contains(.,'Get it by:') or contains(.,'Ship Date:'))]")
 	public WebElement lblReviewShoppingCartShippingDate;
 
 	//Will not display on mobile device

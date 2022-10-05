@@ -78,8 +78,6 @@ public class CP_TC14_VerifyOrderDetails_MyAccount extends BaseTest {
                 reporter.reportLogFailWithScreenshot("User is not navigated to Order Details Page and page URL is not as expected");
 
             //Verify User should be taken to Order Details page
-            reporter.reportLog("Verify User should be taken to Order Details page");
-            getOrderConfirmationThreadLocal().goToOrderDetailsPage(orderDetailsPartialURL,shippingAndPaymentDescription.get("orderNumber").toString());
             getMyAccountPageThreadLocal().verifyBreadCrumbNavigationLink(breadcrumbNavigationPage);
 
             //Verify the title display user name and customer number and Sign Out, Track Order Button
@@ -96,7 +94,7 @@ public class CP_TC14_VerifyOrderDetails_MyAccount extends BaseTest {
             reporter.reportLog("Verifying Order Details on Order Details Page");
             getMyAccountPageThreadLocal().verifyOrderDetailsSummary(orderDetailsSummary,shippingAndPaymentDescription);
             getMyAccountPageThreadLocal().verifyOrderDetailsItems(orderItemList,orderDetailsItems);
-
+            getMyAccountPageThreadLocal().verifyOrderDetailsOrderSummary(orderDetailsSummary,orderSummaryDescription);
         }finally {
             //Emptying Cart for test to run with right state if test fails before placing order
             getShoppingCartThreadLocal().emptyCart(Integer.valueOf(customerEDP),accessToken);
