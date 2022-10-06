@@ -245,6 +245,8 @@ myAccount:
   lbl_myNewsLettersUnSubscribeErrorMessage: "Select the checkbox to unsubscribe from email"
   lbl_myNewsLettersUnSubscribeAlertMessage: "Please click on the UNSUBSCRIBE button to unsubscribe from all email"
   lbl_noOrderRecordsMessage: "No orders yet. TSC has tons of deals to offer"
+  lblOrderDetailsPageUrl: "/pages/myaccount/orderstatus/details?orderNo="
+  lblBreadCrumbNavigationPages: "My Account:Your Orders:Order Details"
 
 lstTestName: ["MA_TC10_Payment_Options_Manage_Credit_Card",
               "MA_TC18_MyPreferences_MyNewsletters",
@@ -259,18 +261,18 @@ shoppingCart:
       itemToBeAdded: "2"
       styleExist: "true"
       sameSizeAndStyle: "true"
-    - searchKeyword: "dress"
+    - searchKeyword: "pants"
       quantity: "more than 3"
       badgeRequired: "true"
       itemToBeAdded: "2"
       styleExist: "true"
       sameSizeAndStyle: "true"
-    - searchKeyword: "gym"
-      quantity: ""
-      badgeRequired: "false"
+    - searchKeyword: "jean"
+      quantity: "more than 1"
+      badgeRequired: "true"
       itemToBeAdded: "1"
-      styleExist: "false"
-      sameStyleAndSize: "true"
+      styleExist: "true"
+      sameSizeAndStyle: "true"
   lblOrderExceedingQuantityMessage: "The size of your order exceeds our on-line shopping limits but one of our Customer Service agents will be happy to assist you with your purchase. Please call our Customer Care Centre at 1-888-2020-888 to complete your order."
   lblProductNumberForOrderExceedingQuantity: 713070
   lblCartExceedingLimitMessage: "The size of your order exceeds our on-line shopping limits but one of our Customer Service agents will be happy to assist you with your purchase. Please call our Customer Care Centre at 1-888-2020-888 to complete your order."
@@ -289,6 +291,19 @@ checkOut:
       itemToBeAdded: "1"
       styleExist: "false"
       sameStyleAndSize: "true"
+  lstOrderDetailItems:
+    - searchKeyword: "jegging"
+      quantity: "more than 1"
+      badgeRequired: "true"
+      itemToBeAdded: "1"
+      styleExist: "true"
+      sameSizeAndStyle: "true"
+    - searchKeyword: "joan rivers"
+      quantity: "more than 1"
+      badgeRequired: "true"
+      itemToBeAdded: "2"
+      styleExist: "true"
+      sameSizeAndStyle: "true"
   addShippingAddressErrorMessage: ["You have one or more missing or invalid entries. Please enter correct data and try again.",
                                    "First name is required.","Last name is required.","Phone number is required.","Address is required.",
                                    "City is required.","Province is required.","Postal code is required."]
@@ -330,6 +345,4 @@ checkOut:
   lstInvalidGiftCardAndErrorMessage: ["6006499999999999999","9999","The System could not validate the Gift Card. Please try again."]
   lblEmptyGiftCardPinErrorMessage: "PIN is required."
 
-
-
-
+#https://qa-tsc.tsc.ca/pages/myaccount/orderstatus/details?orderNo=Z4057821

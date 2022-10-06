@@ -2601,6 +2601,9 @@ public class ShoppingCartPage extends BasePage {
 					if(cartResponse.getStatusCode()==200){
 						cartGuidIdValue = cartResponse.jsonPath().get("CartGuid");
 					}
+					else{
+						continue;
+					}
 				}else {
 					cartResponse = cartAPI.createNewCartOrAddItems(Arrays.asList(Integer.valueOf(cartData.get("edpNo").toString())), Integer.valueOf(cartData.get("itemToBeAdded").toString()), customerEDP, access_token, cartGuidIdValue);
 				}
@@ -2627,7 +2630,6 @@ public class ShoppingCartPage extends BasePage {
 			});
 		}
 		else{
-			reporter.reportLog("Null");
 			return null;
 		}
 
@@ -2682,10 +2684,61 @@ public class ShoppingCartPage extends BasePage {
 		else{
 			List<Map<String,Object>> data = new ProductAPI().getProductDetailsToBeAddedToCartForUser(itemsToBeAdded);
 			Response response = this.addItemsToCartForUser(data,customerEDP,accessToken,null);
-			if(response.statusCode()==200)
-				return data;
-			else
+
+			responseExisting=cartApi.getAccountCartContentWithCustomerEDP(String.valueOf(customerEDP), accessToken);
+			if(responseExisting.statusCode()==200) {
+				accountCart = JsonParser.getResponseObject(responseExisting.asString(), new TypeReference<CartResponse>() {
+				});
+			}
+			else{
 				return null;
+			}
+
+			data = new ArrayList<>();
+			/**String cartGuidId = accountCart.getCartGuid();
+			 Response response = cartApi.getCartContentWithCartGuid(cartGuidId,accessToken);
+			 CartResponse cartResponse = JsonParser.getResponseObject(response.asString(), new TypeReference<CartResponse>() {});
+			 */
+			List<CartResponse.ProductsClass> productsClassList = accountCart.getProducts();
+			List<CartResponse.CartLinesClass> cartLinesClassList = accountCart.getCartLines();
+
+			for(CartResponse.CartLinesClass cartLinesClass:cartLinesClassList){
+				CartResponse.CartLinesClass.CartLineItemClass cartLineItemClass = cartLinesClass.getCartLineItem();
+				CartResponse.CartLinesClass.InCartClass inCartClass = cartLinesClass.getInCart();
+				Map<String,Object> map = new HashMap<>();
+				map.put("productNumber",cartLineItemClass.getItemNo());
+				map.put("edpNo",cartLineItemClass.getEdpNo());
+				map.put("itemToBeAdded",inCartClass.getQuantity());
+				map.put("productStyle",cartLineItemClass.getStyle());
+				map.put("productStyleDimensionId",cartLineItemClass.getStyleDimensionId());
+				map.put("productSize",cartLineItemClass.getSize());
+				map.put("productSizeDimensionId",cartLineItemClass.getSizeDimensionId());
+				map.put("productNowPrice",this.getFloatFromString(cartLineItemClass.getAppliedPrice(),true));
+				map.put("productWasPrice",cartLineItemClass.getWasPrice());
+				map.put("productSavePrice",cartLineItemClass.getSavePrice());
+				map.put("productAppliedShipping",cartLineItemClass.getAppliedShipping());
+				map.put("advanceOrderMessage",cartLineItemClass.getSkuAvailabilityMessage());
+
+				for(CartResponse.ProductsClass productsClass:productsClassList){
+					boolean outerForLoop = false;
+					if(productsClass.getItemNo().equalsIgnoreCase(map.get("productNumber").toString())){
+						map.put("productName",productsClass.getName());
+						map.put("productBadge",productsClass.isShowBadgeImage());
+						for(CartResponse.ProductsClass.EdpsClass edps:productsClass.getEdps()){
+							if(edps.getEdpNo()==Integer.valueOf(map.get("edpNo").toString())){
+								map.put("edpsData",edps);
+								outerForLoop = true;
+								break;
+							}
+						}
+						if(outerForLoop)
+							break;
+					}
+				}
+				data.add(map);
+			}
+			return data;
+
 		}
 	}
 
@@ -3070,6 +3123,7 @@ public class ShoppingCartPage extends BasePage {
 							}
 						if(!innerFlag){
 							//Adding TSC card to user as configuration for TSC is set to true and no TSC card is present for user
+							//this.addTSCCreditCardForUser((JSONObject) creditCardData.get("tsc"),customerEDP,accessToken);
 							JSONObject tscCardObject = (JSONObject) creditCardData.get("tsc");
 							tscCardObject.put("IsDefault",true);
 							tscCardObject.put("CVV",null);
@@ -3348,5 +3402,29 @@ public class ShoppingCartPage extends BasePage {
 		else{
 			return null;
 		}
+	}
+
+	/**
+	 * This function adds TSC Credit Card to user
+	 * @param - tscCardObject
+	 * @param - customerEDP
+	 * @param - accessToken
+	 * @throws - IOException
+	 */
+	public void addTSCCreditCardForUser(JSONObject tscCardObject, String customerEDP,String accessToken) throws IOException {
+		if(tscCardObject==null){
+			JSONObject creditCardData = new DataConverter().readJsonFileIntoJSONObject("test-data/CreditCard.json");
+			tscCardObject = (JSONObject) creditCardData.get("tsc");
+		}
+		tscCardObject.put("IsDefault",true);
+		tscCardObject.put("CVV",null);
+		tscCardObject.remove("CardType");
+		tscCardObject.remove("CardDisplayName");
+		Response tscCardResponse = new AccountAPI().addCreditCardToUser(tscCardObject,customerEDP,accessToken);
+		if(tscCardResponse.statusCode()==200)
+			reporter.reportLog("New TSC Credit Card is added for user as default Card");
+		else
+			reporter.reportLogFail("New TSC Credit Card is not added for user as default Card");
+
 	}
 }

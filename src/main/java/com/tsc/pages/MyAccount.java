@@ -1,7 +1,10 @@
 package com.tsc.pages;
 
+import com.tsc.api.apiBuilder.AccountAPI;
+import com.tsc.api.util.CustomComparator;
 import com.tsc.api.util.DataConverter;
 import com.tsc.pages.base.BasePage;
+import io.restassured.response.Response;
 import org.json.simple.JSONObject;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
@@ -9,6 +12,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import java.io.IOException;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.*;
@@ -18,6 +22,7 @@ import org.openqa.selenium.support.ui.Select;
 
 import java.text.ParseException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MyAccount extends BasePage {
 
@@ -27,6 +32,12 @@ public class MyAccount extends BasePage {
 
 	@FindBy(xpath="//ng-component//*[@class='paymentPageTitle']")
 	public WebElement lblPageTitle;
+
+	@FindBy(xpath="//div[@class='tsc-forms']//div[contains(@class,'form-head')]//h2/span")
+	public WebElement lblOrderDetailsHeaderUserName;
+
+	@FindBy(xpath="//div[@class='tsc-forms']//div[contains(@class,'form-head')]//span[contains(normalize-space(text()),'Customer Number:')]/following-sibling::span")
+	public WebElement lblOrderDetailsHeaderCustomerNumber;
 
 	@FindBy(xpath="//ng-component//div[contains(@class,'form-head')]//h2")
 	public WebElement lblMyAccountHeaderTitle;
@@ -218,6 +229,9 @@ public class MyAccount extends BasePage {
 	@FindBy(xpath = "//ng-component//div[normalize-space(text())='Payment Method']/following-sibling::div[contains(@class,'order-summary')]")
 	public WebElement lblOrderDetailsPaymentMethod;
 
+	@FindBy(xpath = "//ng-component//div[normalize-space(text())='Order Summary']/following-sibling::div[contains(@class,'order-summary')]/div")
+	public List<WebElement> lstOrderSummaryDetails;
+
 	@FindBy(xpath = "//ng-component//div[contains(normalize-space(text()),'Billing Address')]/parent::div")
 	public WebElement cntOrderDetailsPromotionalCodeContainer;
 
@@ -233,6 +247,9 @@ public class MyAccount extends BasePage {
 	//For Order Summary
 	@FindBy(xpath = "//ng-component//div[normalize-space(text())='Order Summary']/parent::div")
 	public WebElement cntOrderDetailsOrderSummaryContainer;
+
+	@FindBy(xpath = "//ng-component//div[contains(@class,'easy-pay')]")
+	public WebElement cntOrderDetailsEasyPaySection;
 
 	@FindBy(xpath = "//ng-component//div[normalize-space(text())='Order Summary']/following-sibling::div[contains(@class,'tab-row') and contains(@class,'order-summary')]/div")
 	public List<WebElement> lstOrderDetailsOrderSummaryItems;
@@ -793,6 +810,9 @@ public class MyAccount extends BasePage {
 	@FindBy(xpath = "//p[contains(text(),'Thank you for your changes.')]")
 	public WebElement lblSubscriptionSuccessMessage;
 
+	@FindBy(xpath = "//ng-component//*[@class='breadcrumb']/li/a")
+	public List<WebElement> lblBreadCrumbList;
+
 	/**
 	 * To check Collapse Status For Account Summary Panel
 	 * @param - webelement - AccountSummaryPanel
@@ -879,7 +899,12 @@ public class MyAccount extends BasePage {
 	 * @param - boolean
 	 */
 	public boolean checkEasyPaymentSectionExisting(){
-		return this.checkChildElementExistingByAttribute(cntOrderDetailsOrderSummaryContainer,"class","easy-pay");
+		int childCount = this.getChildrenList(cntOrderDetailsEasyPaySection).size();
+		if(childCount>0)
+			return true;
+		else
+			return false;
+		//return this.checkChildElementExistingByAttribute(cntOrderDetailsOrderSummaryContainer,"class","easy-pay");
 	}
 
 	/**
@@ -4653,13 +4678,29 @@ public class MyAccount extends BasePage {
 		lsText=lblOrderDetailsHeaderOrderNO.getText().trim();
 		map.put("orderNumber",lsText);
 
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderDetailsHeaderOrderedDate);
+		lsText=this.lblOrderDetailsHeaderOrderedDate.getText();
+		map.put("orderDate",lsText);
+
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderDetailsHeaderCustomerNO);
 		lsText=lblOrderDetailsHeaderCustomerNO.getText().trim();
 		map.put("customerNumber",lsText);
 
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderDetailsHeaderOrderMethod);
+		lsText=this.lblOrderDetailsHeaderOrderMethod.getText();
+		map.put("orderMethod",lsText);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderDetailsHeaderOrderStatus);
+		lsText=this.lblOrderDetailsHeaderOrderStatus.getText();
+		map.put("orderStatus",lsText);
+
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderDetailsHeaderOrderTotal);
 		lsText=lblOrderDetailsHeaderOrderTotal.getText().trim();
-		map.put("customerNumber",this.getFloatFromString(lsText));
+		map.put("orderTotal",this.getFloatFromString(lsText));
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderDetailsSubHeaderCustomerNO);
+		lsText=this.lblOrderDetailsSubHeaderCustomerNO.getText();
+		map.put("subOrderNumber",lsText);
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderDetailsSubHeaderShippingMethod);
 		lsText=lblOrderDetailsSubHeaderShippingMethod.getText().trim();
@@ -4667,19 +4708,25 @@ public class MyAccount extends BasePage {
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderDetailsSubHeaderShippingAddress);
 		lsText=lblOrderDetailsSubHeaderShippingAddress.getText().trim();
-		map.put("shippingAddress",lsText);
+		map.put("shippingAddress",this.convertToASCII(lsText));
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderDetailsBillingAddress);
 		lsText=lblOrderDetailsBillingAddress.getText().trim();
-		map.put("billingAddress",lsText);
+		map.put("billingAddress",this.convertToASCII(lsText));
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderDetailsPaymentMethod);
 		lsText=lblOrderDetailsPaymentMethod.getText().trim();
 		map.put("paymentMethod",lsText);
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderDetailsPaymentMethod);
-		lsText=lblOrderDetailsPaymentMethod.getText().trim();
-		map.put("paymentMethod",lsText);
+		Map<String,String> orderSummaryMap = new HashMap<>();
+		for(int counter=0;counter<this.lstOrderSummaryDetails.size();counter++){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lstOrderSummaryDetails.get(counter));
+			lsText=lstOrderSummaryDetails.get(counter).getText().trim();
+			String[] data = lsText.split(":");
+			orderSummaryMap.put(data[0].trim(),String.valueOf(this.getFloatFromString(data[1],true)));
+		}
+
+		map.put("orderSummary",orderSummaryMap);
 
 		if(this.checkEasyPaymentSectionExisting()){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderDetailsEasyPaymentNumber);
@@ -4696,13 +4743,11 @@ public class MyAccount extends BasePage {
 	/**
 	 * To get Order item Description
 	 * @param - WebElement - orderItem in lstOrderDetailsOrderItemList
-	 * @return - Map<String,Object>
-	 */
+	 * @return - Map<String,Object> */
 	public Map<String,Object> getOrderItemDesc(WebElement orderItem){
 		Map<String,Object> map=new HashMap<>();
 		WebElement item;
 		String lsText;
-
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(orderItem);
 		item = orderItem.findElement(byOrderDetailsOrderItemPipeStyleLink);
 		lsText = this.getElementInnerText(item);
@@ -4735,7 +4780,6 @@ public class MyAccount extends BasePage {
 		item = orderItem.findElement(byOrderDetailsOrderItemProductPrice);
 		lsText = this.getElementInnerText(item);
 		map.put("productNowPrice", this.getFloatFromString(lsText));
-
 		item = orderItem.findElement(byOrderDetailsOrderItemProductNumber);
 		lsText = this.getElementInnerText(item).replace("-", "").trim();
 		if(!lsText.isEmpty()){
@@ -4748,7 +4792,6 @@ public class MyAccount extends BasePage {
 		item = orderItem.findElement(byOrderDetailsOrderItemQTY);
 		lsText = this.getElementInnerText(item);
 		map.put("productQuantity", this.getIntegerFromString(lsText));
-
 		return map;
 	}
 
@@ -4859,6 +4902,231 @@ public class MyAccount extends BasePage {
 	}
 
 	/**
+	 * This function verifies breadcrumb navigation pages
+	 * @param - String
+	 * @return - String
+	 */
+	public void verifyBreadCrumbNavigationLink(String expectedBreadCrumbPages){
+		String navigation=null;
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblBreadCrumbList.get(0));
+		for(int counter = 0;counter < this.lblBreadCrumbList.size();counter++){
+			if(navigation==null)
+				navigation = this.lblBreadCrumbList.get(counter).getText();
+			else
+				navigation = navigation+":"+this.lblBreadCrumbList.get(counter).getText();
+		}
+
+		if(expectedBreadCrumbPages.equalsIgnoreCase(navigation))
+			reporter.reportLogPass("Actual Breadcrumb page navigation list is as expected: "+navigation);
+		else
+			reporter.reportLogFailWithScreenshot("Actual Breadcrumb page navigation: "+navigation+" is not as expected: "+expectedBreadCrumbPages);
+	}
+
+	/**
+	 * This function verifies that user is navigated to Order Details page
+	 * @param - String - pagePartialURL
+	 * @param - String - orderNumber
+	 */
+	public void verifyUserIsNavigatedToOrderDetailsPage(String pagePartialURL, String orderNumber){
+		String currentPageURL = this.getDriver().getCurrentUrl();
+		String expectedURL = System.getProperty("QaUrl")+pagePartialURL+orderNumber;
+		if(currentPageURL.equalsIgnoreCase(expectedURL))
+			reporter.reportLogPass("Actual URL for Order Details page is same as expected: "+expectedURL);
+		else
+			reporter.reportLogFailWithScreenshot("Actual URL for Order Details page: "+currentPageURL+" is not as expected: "+expectedURL);
+	}
+
+	/**
+	 * This function verifies My Account Order Details Page Title
+	 * @param userName
+	 * @param customerNumber
+	 */
+	public void verifyMyAccountOrderDetailPageTitle(String userName, String customerNumber){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderDetailsHeaderUserName);
+		String orderDetailTitleUserName = this.lblOrderDetailsHeaderUserName.getText().trim();
+		String orderDetailTitleCustomerNumber = this.lblOrderDetailsHeaderCustomerNumber.getText().trim();
+		String pageTitle = this.convertToASCII(orderDetailTitleUserName);
+		String expectedTitle = userName.toUpperCase()+"’S ACCOUNT";
+		if(pageTitle.equalsIgnoreCase(expectedTitle))
+			reporter.reportLogPass("User Name appears in title as expected");
+		else
+			reporter.reportLogFailWithScreenshot("User Name do not appears in title as expected: "+pageTitle);
+
+		if(orderDetailTitleCustomerNumber.equalsIgnoreCase(customerNumber))
+			reporter.reportLogPass("Customer Number appears in title as expected");
+		else
+			reporter.reportLogFailWithScreenshot("Customer Number do not appears in title as expected: "+customerNumber+ "actual: "+orderDetailTitleCustomerNumber);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignOutMyAccountPage);
+		if(this.btnSignOutMyAccountPage.isDisplayed() && this.btnSignOutMyAccountPage.isEnabled())
+			reporter.reportLogPass("Sign Out Button on Order Details for My Account is enabled as expected");
+		else
+			reporter.reportLogFailWithScreenshot("Sign Out Button on Order Details for My Account is not enabled as expected");
+
+		if(this.checkTrackOrderButtonExisting()){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnOrderDetailsHeaderTrackOrder);
+			if(this.getReusableActionsInstance().isElementVisible(btnOrderDetailsHeaderTrackOrder)){
+				reporter.reportLogPass("Track order button in Header is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("Track order button in Header is not displaying correctly");
+			}
+		}
+	}
+
+	/**
+	 * This function sorts list by name, style and then size
+	 * @param sortObject
+	 */
+	public void sortOrderDetailListMap(List<Map<String,Object>> sortObject){
+		if(sortObject instanceof List){
+			Collections.sort(sortObject,CustomComparator.nameComparator);
+			Collections.sort(sortObject,CustomComparator.styleComparator);
+			Collections.sort(sortObject,CustomComparator.sizeComparator);
+		}
+	}
+
+	/**
+	 * This function verifies Order Details Summary Details on Order Details page from Order Confirmation page
+	 * @param - Map<String,Object> - orderDetailsSummary
+	 * @param - Map<String,Object> - orderConfirmationSummary
+	 */
+	public void verifyOrderDetailsSummary(Map<String,Object> orderDetailsSummary, Map<String,Object> orderConfirmationSummary){
+		//Verifying Order Number
+		reporter.reportLog("Verifying Order Number on Order Details page");
+		String orderDetailsPageData = orderDetailsSummary.get("orderNumber").toString();
+		String orderConfirmationPageData = orderConfirmationSummary.get("orderNumber").toString();
+		if(orderDetailsPageData.length() > orderConfirmationPageData.length()){
+			int length = orderDetailsPageData.length()-orderConfirmationPageData.length();
+			for(int counter=0;counter<length;counter++)
+                orderConfirmationPageData=orderConfirmationPageData+"0";
+		}
+		if(orderDetailsPageData.equalsIgnoreCase(orderConfirmationPageData))
+			reporter.reportLogPass("Order Number is same as expected");
+		else
+			reporter.reportLogFailWithScreenshot("Order Number on Details page: "+orderDetailsPageData+" is not as expected on Order Confirmation: "+orderConfirmationPageData);
+
+		//Verifying Order Number and sub-order Number on Order Details page are same
+		reporter.reportLog("Verifying Sub-Order Number on Order Details page");
+		if(orderDetailsPageData.equalsIgnoreCase(orderDetailsSummary.get("subOrderNumber").toString()))
+			reporter.reportLogPass("Order Number and sub order number on Order Details page are same as expected");
+		else
+			reporter.reportLogFailWithScreenshot("Order Number and sub order number on Order Details page are not same");
+
+		//Verifying Order Method
+		reporter.reportLog("Verifying Order Method on Order Details page");
+		orderDetailsPageData = orderDetailsSummary.get("orderMethod").toString();
+		orderConfirmationPageData = orderConfirmationSummary.get("orderMethod").toString();
+		if(orderDetailsPageData.equalsIgnoreCase(orderConfirmationPageData))
+			reporter.reportLogPass("Order Method is same as expected");
+		else
+			reporter.reportLogFailWithScreenshot("Order Method on Details page: "+orderDetailsPageData+" is not as expected on Order Confirmation: "+orderConfirmationPageData);
+
+		//Verifying Order Date
+		reporter.reportLog("Verifying Order Date on Order Details page");
+		orderDetailsPageData = orderDetailsSummary.get("orderDate").toString();
+		String orderDate = this.formatCurrentDateForProvidedFormat("MMMMM dd, yyyy").replaceFirst("\\s0", " ");
+		if(orderDetailsPageData.contains(orderDate))
+			reporter.reportLogPass("Order Date is same as expected");
+		else
+			reporter.reportLogFailWithScreenshot("Order Date on Order Details page: "+orderDetailsPageData+" is not same as expected: "+orderDate);
+		//Verifying Customer Number
+		reporter.reportLog("Verifying Customer Number on Order Details page");
+		orderDetailsPageData = orderDetailsSummary.get("customerNumber").toString();
+		orderConfirmationPageData = orderConfirmationSummary.get("customerNumber").toString();
+		if(orderDetailsPageData.equalsIgnoreCase(orderConfirmationPageData))
+			reporter.reportLogPass("Customer Number is same as expected");
+		else
+			reporter.reportLogFailWithScreenshot("Customer Number on Details page: "+orderDetailsPageData+" is not as expected on Order Confirmation: "+orderConfirmationPageData);
+
+		//Verifying Shipping Method
+		reporter.reportLog("Verifying Shipping Method on Order Details page");
+		orderDetailsPageData = orderDetailsSummary.get("shippingMethod").toString();
+		orderConfirmationPageData = orderConfirmationSummary.get("shippingMethod").toString();
+		if(orderDetailsPageData.equalsIgnoreCase(orderConfirmationPageData))
+			reporter.reportLogPass("Shipping Method is same as expected");
+		else
+			reporter.reportLogFailWithScreenshot("Shipping Method on Details page: "+orderDetailsPageData+" is not as expected on Order Confirmation: "+orderConfirmationPageData);
+
+		//Verifying Payment Card
+		reporter.reportLog("Verifying Payment Card on Order Details page");
+		orderDetailsPageData = orderDetailsSummary.get("paymentMethod").toString();
+		orderConfirmationPageData = orderConfirmationSummary.get("paymentMethodDescription").toString();
+		if(orderConfirmationPageData.contains(orderDetailsPageData))
+			reporter.reportLogPass("Payment Card is same as expected");
+		else
+			reporter.reportLogFailWithScreenshot("Payment Card on Details page: "+orderDetailsPageData+" is not as expected on Order Confirmation: "+orderConfirmationPageData);
+
+		//Verifying shipping details
+		reporter.reportLog("Verifying Shipping Address on Order Details page");
+		this.verifyAddressDetails(orderDetailsSummary,orderConfirmationSummary,"Shipping");
+
+		//Verifying billing details
+		reporter.reportLog("Verifying Billing Address on Order Details page");
+		this.verifyAddressDetails(orderDetailsSummary,orderConfirmationSummary,"Billing");
+	}
+
+	/**
+	 * This function verifies order items on Order Details page from Order Confirmation page
+	 * @param - List<Map<String,Object>> - orderItemList
+	 * @param - List<Map<String,Object>> - orderDetailsItems
+	 */
+	public void verifyOrderDetailsItems(List<Map<String,Object>> orderItemList, List<Map<String,Object>> orderDetailsItems){
+		if(orderItemList.size()>0 && orderDetailsItems.size()>0){
+			for(int counter=0;counter<orderItemList.size();counter++){
+				reporter.reportLog("Verifying item on Order Details: "+Integer.valueOf(counter+1));
+				//Verifying product Name
+				reporter.reportLog("Verifying product name on Order Details page");
+				if(orderItemList.get(counter).get("productName").toString().equalsIgnoreCase(orderDetailsItems.get(counter).get("productName").toString()))
+					reporter.reportLogPass("Product name of item is as expected: "+orderDetailsItems.get(counter).get("productName").toString());
+				else
+					reporter.reportLogFailWithScreenshot("Product name of item on order details: "+orderDetailsItems.get(counter).get("productName").toString()+" is not as expected: "+orderItemList.get(counter).get("productName").toString());
+
+				//Verifying product Size
+				reporter.reportLog("Verifying product size on Order Details page");
+				if(orderDetailsItems.get(counter).get("productSize")!=null){
+					if(orderItemList.get(counter).get("productSize").toString().equalsIgnoreCase(orderDetailsItems.get(counter).get("productSize").toString()))
+						reporter.reportLogPass("Product size of item is as expected: "+orderDetailsItems.get(counter).get("productSize").toString());
+					else
+						reporter.reportLogFailWithScreenshot("Product size of item on order details: "+orderDetailsItems.get(counter).get("productSize").toString()+" is not as expected: "+orderItemList.get(counter).get("productSize").toString());
+				}else
+					reporter.reportLogPass("Product Size is not present for item");
+
+				//Verifying product Style
+				reporter.reportLog("Verifying product style on Order Details page");
+				if(orderDetailsItems.get(counter).get("productStyle")!=null){
+					if(orderItemList.get(counter).get("productStyle").toString().equalsIgnoreCase(orderDetailsItems.get(counter).get("productStyle").toString()))
+						reporter.reportLogPass("Product style of item is as expected: "+orderDetailsItems.get(counter).get("productStyle").toString());
+					else
+						reporter.reportLogFailWithScreenshot("Product style of item on order details: "+orderDetailsItems.get(counter).get("productStyle").toString()+" is not as expected: "+orderItemList.get(counter).get("productStyle").toString());
+				}else
+					reporter.reportLogPass("Product style is not present for item");
+
+				//Verifying product Number
+				reporter.reportLog("Verifying product number on Order Details page");
+				if(orderItemList.get(counter).get("productNumber").toString().equalsIgnoreCase(orderDetailsItems.get(counter).get("productNumber").toString()))
+					reporter.reportLogPass("Product Number of item is as expected: "+orderDetailsItems.get(counter).get("productNumber").toString());
+				else
+					reporter.reportLogFailWithScreenshot("Product Number of item on order details: "+orderDetailsItems.get(counter).get("productNumber").toString()+" is not as expected: "+orderItemList.get(counter).get("productNumber").toString());
+
+				//Verifying product Price
+				reporter.reportLog("Verifying product price on Order Details page");
+				if(orderItemList.get(counter).get("productNowPrice").toString().equalsIgnoreCase(orderDetailsItems.get(counter).get("productNowPrice").toString()))
+					reporter.reportLogPass("Product Price of item is as expected: "+orderDetailsItems.get(counter).get("productNowPrice").toString());
+				else
+					reporter.reportLogFailWithScreenshot("Product Price of item on order details: "+orderDetailsItems.get(counter).get("productNowPrice").toString()+" is not as expected: "+orderItemList.get(counter).get("productNowPrice").toString());
+
+				//Verifying product Quantity
+				reporter.reportLog("Verifying product quantity on Order Details page");
+				if(orderItemList.get(counter).get("productQuantity").toString().equalsIgnoreCase(orderDetailsItems.get(counter).get("productQuantity").toString()))
+					reporter.reportLogPass("Product Quantity of item is as expected: "+orderDetailsItems.get(counter).get("productQuantity").toString());
+				else
+					reporter.reportLogFailWithScreenshot("Product Quantity of item on order details: "+orderDetailsItems.get(counter).get("productQuantity").toString()+" is not as expected: "+orderItemList.get(counter).get("productQuantity").toString());
+			}
+		}
+	}
+
+	/**
 	 * To verify Account Summary Pane lList
 	 */
 	public void verifyAccountSummaryPanelList(){
@@ -4906,5 +5174,138 @@ public class MyAccount extends BasePage {
 		}
 	}
 
+	/**
+	 * This function verifies Order Summary Price data from Order Confirmation Page
+	 * @param - Map<String,Object> - orderDetailsPriceSummary
+	 * @param - Map<String,Object> - orderConfirmationPriceSummary
+	 */
+	public void verifyOrderDetailsOrderSummary(Map<String,Object> orderDetailsPriceSummary, Map<String,Object> orderConfirmationPriceSummary){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstOrderSummaryDetails.get(0));
+		//Verify Sub Total
+		reporter.reportLog("Verification of order sub total");
+		Map<String,String> orderDetailPageDataMap = (Map<String, String>) orderDetailsPriceSummary.get("orderSummary");
+		String orderDetailPageData = orderDetailPageDataMap.get("Subtotal");
+		String orderConfirmationPageData = orderConfirmationPriceSummary.get("subTotal").toString();
+		if(orderDetailPageData.equalsIgnoreCase(orderConfirmationPageData))
+			reporter.reportLogPass("Order Details Price is same as expected: "+orderDetailPageData);
+		else
+			reporter.reportLogFailWithScreenshot("Order Details Price: "+orderDetailPageData+" is not as on order confirmation page: "+orderConfirmationPageData);
+
+		//Verify Shipping and Handling
+		reporter.reportLog("Verification of Shipping and Handling Data");
+		orderDetailPageData = orderDetailPageDataMap.get("Shipping & Handling");
+		orderConfirmationPageData = orderConfirmationPriceSummary.get("nowPrice").toString();
+		if(orderDetailPageData.equalsIgnoreCase(orderConfirmationPageData))
+			reporter.reportLogPass("Order Details Shipping and Handling price is same as expected: "+orderDetailPageData);
+		else
+			reporter.reportLogFailWithScreenshot("Order Details Shipping and Handling price: "+orderDetailPageData+" is not as on order confirmation page: "+orderConfirmationPageData);
+
+		//Verify Taxes
+		reporter.reportLog("Verification of Taxes");
+		orderDetailPageData = orderDetailPageDataMap.get("Taxes");
+		orderConfirmationPageData = orderConfirmationPriceSummary.get("tax").toString();
+		if(orderDetailPageData.equalsIgnoreCase(orderConfirmationPageData))
+			reporter.reportLogPass("Order Details Taxes is same as expected: "+orderDetailPageData);
+		else
+			reporter.reportLogFailWithScreenshot("Order Details Taxes: "+orderDetailPageData+" is not as on order confirmation page: "+orderConfirmationPageData);
+
+		//Verify Order Total
+		reporter.reportLog("Verification of Order Total");
+		orderDetailPageData = orderDetailPageDataMap.get("Order Total");
+		orderConfirmationPageData = orderConfirmationPriceSummary.get("totalPrice").toString();
+		if(orderDetailPageData.equalsIgnoreCase(orderConfirmationPageData))
+			reporter.reportLogPass("Order Details Total Price is same as expected: "+orderDetailPageData);
+		else
+			reporter.reportLogFailWithScreenshot("Order Details Total Price: "+orderDetailPageData+" is not as on order confirmation page: "+orderConfirmationPageData);
+	}
+
+	/**
+	 * This function verifies billing or shipping address on Order Details with Order Confirmation page
+	 * @param - Map<String,Object> - orderDetailsAddress
+	 * @param - Map<String,Object> - orderConfirmationAddress
+	 * @param - String - addressType
+	 */
+	public void verifyAddressDetails(Map<String,Object> orderDetailsAddress, Map<String,Object> orderConfirmationAddress,String addressType){
+		List<String> orderConfirmationShippingAddress = null;
+		String orderDetailShippingAddress = orderDetailsAddress.get("shippingAddress").toString().replace(",","").replace("-"," ").trim();
+		orderConfirmationShippingAddress = Collections.singletonList(((ArrayList) orderConfirmationAddress.get("shippingAddress"))).get(0);
+		if(addressType.equalsIgnoreCase("Shipping")){
+			reporter.reportLog("Verifying Shipping Address");
+			//Verifying shipping details
+			if(orderConfirmationAddress.containsKey("shippingAddress")){
+				Boolean flag = this.verifyAddress(orderConfirmationShippingAddress,orderDetailShippingAddress);
+				if(flag)
+					reporter.reportLogPass("Shipping Address on Order Details page is same as on Order Confirmation page");
+				else
+					reporter.reportLogFailWithScreenshot("Shipping Address on Order Details page: "+orderDetailShippingAddress+" is not same as on Order Confirmation page: "+orderConfirmationShippingAddress);
+			}else
+				reporter.reportLogFailWithScreenshot("Shipping Address is not present in orderConfirmationSummary object");
+		}else if(addressType.equalsIgnoreCase("Billing")){
+			reporter.reportLog("Verifying Billing Address");
+			//Verifying billing details
+			if(orderConfirmationAddress.containsKey("billingAddress")){
+				List<String> orderConfirmationBillingAddress = Collections.singletonList(((ArrayList) orderConfirmationAddress.get("billingAddress"))).get(0);
+				String orderDetailBillingAddress = orderDetailsAddress.get("billingAddress").toString().replace(",","").replace("-"," ").trim();;
+				if(orderConfirmationBillingAddress.get(0).contains("Same as shipping address")){
+					Boolean flag = this.verifyAddress(orderConfirmationShippingAddress,orderDetailBillingAddress);
+					if(flag)
+						reporter.reportLogPass("Billing Address on Order Details page is same as on Order Confirmation page");
+					else
+						reporter.reportLogFailWithScreenshot("Billing Address on Order Details page: "+orderDetailBillingAddress+" is not same as on Order Confirmation page: "+orderConfirmationBillingAddress);
+				}else{
+					Boolean flag = this.verifyAddress(orderConfirmationShippingAddress,orderDetailShippingAddress);
+					if(flag)
+						reporter.reportLogPass("Billing Address on Order Details page is same as on Order Confirmation page");
+					else
+						reporter.reportLogFailWithScreenshot("Billing Address on Order Details page: "+orderDetailBillingAddress+" is not same as on Order Confirmation page: "+orderConfirmationBillingAddress);
+				}
+			}else
+				reporter.reportLogFailWithScreenshot("Billing Address is not present in orderConfirmationSummary object");
+		}
+	}
+
+	/**
+	 * This function verifies address
+	 * @param - List<String> - orderConfirmationShippingAddress
+	 * @param - String - orderDetailShippingAddress
+	 * @return - Boolean
+	 */
+	public Boolean verifyAddress(List<String> orderConfirmationShippingAddress,String orderDetailShippingAddress){
+		String address,orderDetailAddress;
+		Boolean flag = false;
+		int flagCounter = 0;
+		for(int counter=0;counter<orderConfirmationShippingAddress.size()-1;counter++){
+			address=orderConfirmationShippingAddress.get(counter).replace(",","").replace("-"," ").replace(" ","").trim();
+			orderDetailAddress = orderDetailShippingAddress.replace(" ","").trim();
+			if(orderDetailAddress.toLowerCase().contains(address.toLowerCase())){
+				if(flagCounter == 0 && flag == false){
+					flag = true;
+				}
+			}
+			else{
+				flag = false;
+				flagCounter++;
+				reporter.reportLogFailWithScreenshot("Address: "+orderConfirmationShippingAddress.get(counter)+" is not present on Order Details page as expected");
+			}
+		}
+		return flag;
+	}
+
+	/**
+	 * This function verifies Track Order and Edit Order Button on Order Details page
+	 */
+	public void verifyOrderDetailsTrackOrderAndEditButton(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnOrderDetailsHeaderTrackOrder);
+		if(this.btnOrderDetailsHeaderTrackOrder.isEnabled() && this.btnOrderDetailsHeaderTrackOrder.isDisplayed())
+			reporter.reportLogPass("Track Order Button on Order Details page is displayed");
+		else
+			reporter.reportLogFailWithScreenshot("Track Order Button on Order Details page is not displayed");
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnOrderDetailsHeaderEditOrder);
+		if(this.btnOrderDetailsHeaderEditOrder.isDisplayed())
+			reporter.reportLogPass("Edit Order Button on Order Details page is displayed");
+		else
+			reporter.reportLogFailWithScreenshot("Edit Order Button on Order Details page is not displayed");
+	}
 }
 

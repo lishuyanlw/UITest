@@ -232,6 +232,9 @@ public class OrderConfirmationPage extends BasePage {
 	@FindBy(xpath = "//div[@class='faq-section']//div[contains(@class,'faq-blk')]//a[contains(@href,'returnspage')]")
 	public WebElement lnkCommonQuestionsReturnsPage;
 
+	@FindBy(xpath = "//ng-component//div[@class='loading']/div")
+	public WebElement lblLoadingPageStatus;
+
 
 	/**
 	 * To get order number
@@ -309,7 +312,7 @@ public class OrderConfirmationPage extends BasePage {
 	 * @return
 	 */
 	public boolean checkAppliedDiscountExistingInOrderSummarySection(){
-		return lstOrderSummaryItems.size()>4;
+		return this.getChildElementCount(cntOrderSummaryContainer)>=6;
 	}
 
 	/**
@@ -319,27 +322,34 @@ public class OrderConfirmationPage extends BasePage {
 	 * @return - boolean
 	 */
 	public boolean goToOrderDetailsPage(String lsURLFromYamlFile,String lsOrderNumber){
-		String lsCurrentURL=this.URL();
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnGoToOrderDetails);
 		this.btnGoToOrderDetails.click();
 
 		String lsBaseURL=this.getBaseURL();
-		String lsExpectedURL=lsBaseURL+lsURLFromYamlFile;
-		lsExpectedURL=lsExpectedURL.replace("{OrderNO}",lsOrderNumber);
-		this.waitForCondition(Driver->{return !this.URL().equalsIgnoreCase(lsCurrentURL);},20000);
-		if(this.URL().equalsIgnoreCase(lsExpectedURL)){
-			reporter.reportLogPass("Navigate to order details page successfully");
+		String lsExpectedURL=lsBaseURL+lsURLFromYamlFile+lsOrderNumber;
+		String lsCurrentURL=this.URL();
+		this.waitForCondition(Driver->{return lsCurrentURL.equalsIgnoreCase(lsExpectedURL);},20000);
+		if(lsCurrentURL.equalsIgnoreCase(lsExpectedURL)){
+			reporter.reportLogPass("Navigate to order details page successfully and url is: "+lsExpectedURL);
 		}
 		else{
-			reporter.reportLogFail("Fail to navigate to order details page");
+			reporter.reportLogFail("Fail to navigate to order details page with actual url: "+lsCurrentURL+" but expected url is: "+lsExpectedURL);
 		}
 
 		MyAccount myAccount=new MyAccount(this.getDriver());
 		try{
-			this.waitForCondition(Driver->{return myAccount.lblOrderDetailsSectionTitle.isDisplayed();},120000);
+			this.waitForCondition(Driver->{return myAccount.lblOrderDetailsSectionTitle.isDisplayed();},15000);
 		}
 		catch(Exception e){
-			this.waitForCondition(Driver->{return myAccount.lblOrderDetailsSectionTitle.isDisplayed();},120000);
+			for(int refreshCounter=0;refreshCounter<100;refreshCounter++){
+				this.getDriver().navigate().refresh();
+				this.waitForPageToLoad();
+				boolean value = this.waitForCondition(Driver->{return myAccount.lblOrderDetailsSectionTitle.isDisplayed();},15000);
+				if(value)
+					break;
+				else
+					continue;
+			}
 		}
 		return true;
 	}
@@ -549,6 +559,18 @@ public class OrderConfirmationPage extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblReceiptOrderShippingMethod);
 		lsText=lblReceiptOrderShippingMethod.getText().trim();
 		map.put("shippingMethod", lsText);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblReceiptOrderNumber);
+		lsText = this.lblReceiptOrderNumber.getText();
+		map.put("orderNumber",lsText);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblReceiptCustomerNumber);
+		lsText = this.lblReceiptCustomerNumber.getText();
+		map.put("customerNumber",lsText);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblReceiptOrderMethod);
+		lsText = this.lblReceiptOrderMethod.getText();
+		map.put("orderMethod",lsText);
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblPaymentCard);
 		lsText=lblPaymentCard.getText().trim();
@@ -1642,5 +1664,14 @@ public class OrderConfirmationPage extends BasePage {
 		}
 	}
 
+	/**
+	 * This function navigates to Order Details page under My Account
+	 */
+	public void navigateToOrderDetailsUnderMyAccountFromOrderConfirmationPage(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnGoToOrderDetails);
+		this.getReusableActionsInstance().clickIfAvailable(this.btnGoToOrderDetails);
 
+		//Applying static wait as page takes time to get Order after placing it
+		this.applyStaticWait(6000);
+	}
 }

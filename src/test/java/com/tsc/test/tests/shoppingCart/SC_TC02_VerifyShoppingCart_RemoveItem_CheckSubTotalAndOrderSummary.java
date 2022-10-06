@@ -153,6 +153,8 @@ public class SC_TC02_VerifyShoppingCart_RemoveItem_CheckSubTotalAndOrderSummary 
 		float subTotalShoppingCartRemove= (float) map.get("subTotalShoppingCart");
 		float subTotalOrderSummaryRemove= (float) map.get("subTotalOrderSummary");
 		float nowPrice= (float) mapRemoveDialog.get("productNowPrice");
+		int quantity= (int) mapRemoveDialog.get("productQuantity");
+		float removeCount=nowPrice*quantity;
 		if(itemCountInShoppingCartHeaderRemove==shoppingItemCountRemove&&
 				shoppingItemCountRemove==shoppingItemCountInSubtotalRemove&&
 				itemCountInShoppingCartHeaderRemove==itemCountInOrderSummaryRemove){
@@ -170,8 +172,8 @@ public class SC_TC02_VerifyShoppingCart_RemoveItem_CheckSubTotalAndOrderSummary 
 			reporter.reportLogPass("The added item count among Shopping cart header,Shopping cart list and OrderSummary after clicking remove button in remove dialog are not same as the initial ones");
 		}
 
-		if(Math.abs(subTotalShoppingCartInitial-subTotalShoppingCartRemove-nowPrice)<0.1&&
-				Math.abs(subTotalOrderSummaryInitial-subTotalOrderSummaryRemove-nowPrice)<0.1){
+		if(Math.abs(subTotalShoppingCartInitial-subTotalShoppingCartRemove-removeCount)<0.1&&
+				Math.abs(subTotalOrderSummaryInitial-subTotalOrderSummaryRemove-removeCount)<0.1){
 			reporter.reportLogPass("The difference between shopping cart subtotal and orderSummary is correct");
 		}
 		else{
