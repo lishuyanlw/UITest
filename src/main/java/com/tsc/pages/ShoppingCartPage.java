@@ -2598,7 +2598,12 @@ public class ShoppingCartPage extends BasePage {
 			for(Map<String,Object> cartData:productData){
 				if(cartGuidIdValue==null){
 					cartResponse = cartAPI.createNewCartOrAddItems(Arrays.asList(Integer.valueOf(cartData.get("edpNo").toString())),Integer.valueOf(cartData.get("itemToBeAdded").toString()),customerEDP,access_token,null);
-					cartGuidIdValue = cartResponse.jsonPath().get("CartGuid");
+					if(cartResponse.getStatusCode()==200){
+						cartGuidIdValue = cartResponse.jsonPath().get("CartGuid");
+					}
+					else{
+						continue;
+					}
 				}else
 					cartResponse = cartAPI.createNewCartOrAddItems(Arrays.asList(Integer.valueOf(cartData.get("edpNo").toString())),Integer.valueOf(cartData.get("itemToBeAdded").toString()),customerEDP,access_token,cartGuidIdValue);
 			}
