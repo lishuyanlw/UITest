@@ -4708,11 +4708,11 @@ public class MyAccount extends BasePage {
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderDetailsSubHeaderShippingAddress);
 		lsText=lblOrderDetailsSubHeaderShippingAddress.getText().trim();
-		map.put("shippingAddress",lsText);
+		map.put("shippingAddress",this.convertToASCII(lsText));
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderDetailsBillingAddress);
 		lsText=lblOrderDetailsBillingAddress.getText().trim();
-		map.put("billingAddress",lsText);
+		map.put("billingAddress",this.convertToASCII(lsText));
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderDetailsPaymentMethod);
 		lsText=lblOrderDetailsPaymentMethod.getText().trim();
@@ -5025,7 +5025,7 @@ public class MyAccount extends BasePage {
 		//Verifying Order Date
 		reporter.reportLog("Verifying Order Date on Order Details page");
 		orderDetailsPageData = orderDetailsSummary.get("orderDate").toString();
-		String orderDate = this.formatCurrentDateForProvidedFormat("EEEE dd, yyyy");
+		String orderDate = this.formatCurrentDateForProvidedFormat("MMMMM dd, yyyy").replaceFirst("\\s0", " ");
 		if(orderDetailsPageData.contains(orderDate))
 			reporter.reportLogPass("Order Date is same as expected");
 		else
@@ -5230,25 +5230,10 @@ public class MyAccount extends BasePage {
 		String orderDetailShippingAddress = orderDetailsAddress.get("shippingAddress").toString().replace(",","").replace("-"," ").trim();
 		orderConfirmationShippingAddress = Collections.singletonList(((ArrayList) orderConfirmationAddress.get("shippingAddress"))).get(0);
 		if(addressType.equalsIgnoreCase("Shipping")){
+			reporter.reportLog("Verifying Shipping Address");
 			//Verifying shipping details
 			if(orderConfirmationAddress.containsKey("shippingAddress")){
-				Boolean flag = false;
-				int flagCounter = 0;
-				for(String confirmationAddress:orderConfirmationShippingAddress){
-					confirmationAddress.replace(",","").replace("-"," ").trim();
-					if(confirmationAddress.contains(" "))
-						confirmationAddress.replace(" ","");
-					if(orderDetailShippingAddress.toLowerCase().contains(confirmationAddress.toLowerCase())){
-						if(flagCounter == 0 && flag == false){
-							flag = true;
-						}
-					}
-					else{
-						flag = false;
-						flagCounter++;
-						reporter.reportLogFailWithScreenshot("Shipping Address: "+confirmationAddress+" is not present on Order Details page as expected");
-					}
-				}
+				Boolean flag = this.verifyAddress(orderConfirmationShippingAddress,orderDetailShippingAddress);
 				if(flag)
 					reporter.reportLogPass("Shipping Address on Order Details page is same as on Order Confirmation page");
 				else
@@ -5256,48 +5241,19 @@ public class MyAccount extends BasePage {
 			}else
 				reporter.reportLogFailWithScreenshot("Shipping Address is not present in orderConfirmationSummary object");
 		}else if(addressType.equalsIgnoreCase("Billing")){
+			reporter.reportLog("Verifying Billing Address");
 			//Verifying billing details
 			if(orderConfirmationAddress.containsKey("billingAddress")){
 				List<String> orderConfirmationBillingAddress = Collections.singletonList(((ArrayList) orderConfirmationAddress.get("billingAddress"))).get(0);
-				Boolean flag = false;
-				int flagCounter = 0;
 				String orderDetailBillingAddress = orderDetailsAddress.get("billingAddress").toString().replace(",","").replace("-"," ").trim();;
 				if(orderConfirmationBillingAddress.get(0).contains("Same as shipping address")){
-					for(String confirmationAddress:orderConfirmationShippingAddress){
-						confirmationAddress.replace(",","").replace("-"," ").trim();
-						if(confirmationAddress.contains(" "))
-							confirmationAddress.replace(" ","");
-						if(orderDetailBillingAddress.toLowerCase().contains(confirmationAddress.toLowerCase())){
-							if(flagCounter == 0 && flag == false){
-								flag = true;
-							}
-						}
-						else{
-							flagCounter++;
-							flag = false;
-							reporter.reportLogFailWithScreenshot("Billing Address: "+confirmationAddress+" is not present on Order Details page as expected");
-						}
-					}
+					Boolean flag = this.verifyAddress(orderConfirmationShippingAddress,orderDetailBillingAddress);
 					if(flag)
-						reporter.reportLogPass("Shipping Address on Order Details page is same as on Order Confirmation page");
+						reporter.reportLogPass("Billing Address on Order Details page is same as on Order Confirmation page");
 					else
 						reporter.reportLogFailWithScreenshot("Billing Address on Order Details page: "+orderDetailBillingAddress+" is not same as on Order Confirmation page: "+orderConfirmationBillingAddress);
 				}else{
-					for(String confirmationAddress:orderConfirmationBillingAddress){
-						confirmationAddress.replace(",","").replace("-"," ").trim();
-						if(confirmationAddress.contains(" "))
-							confirmationAddress.replace(" ","");
-						if(orderDetailShippingAddress.contains(confirmationAddress.toLowerCase())){
-							if(flagCounter == 0 && flag == false){
-								flag = true;
-							}
-						}
-						else{
-							flag = false;
-							reporter.reportLogFailWithScreenshot("Billing Address: "+confirmationAddress+" is not present on Order Details page as expected");
-							break;
-						}
-					}
+					Boolean flag = this.verifyAddress(orderConfirmationShippingAddress,orderDetailShippingAddress);
 					if(flag)
 						reporter.reportLogPass("Billing Address on Order Details page is same as on Order Confirmation page");
 					else
@@ -5306,6 +5262,50 @@ public class MyAccount extends BasePage {
 			}else
 				reporter.reportLogFailWithScreenshot("Billing Address is not present in orderConfirmationSummary object");
 		}
+	}
+
+	/**
+	 * This function verifies address
+	 * @param - List<String> - orderConfirmationShippingAddress
+	 * @param - String - orderDetailShippingAddress
+	 * @return - Boolean
+	 */
+	public Boolean verifyAddress(List<String> orderConfirmationShippingAddress,String orderDetailShippingAddress){
+		String address,orderDetailAddress;
+		Boolean flag = false;
+		int flagCounter = 0;
+		for(int counter=0;counter<orderConfirmationShippingAddress.size()-1;counter++){
+			address=orderConfirmationShippingAddress.get(counter).replace(",","").replace("-"," ").replace(" ","").trim();
+			orderDetailAddress = orderDetailShippingAddress.replace(" ","").trim();
+			if(orderDetailAddress.toLowerCase().contains(address.toLowerCase())){
+				if(flagCounter == 0 && flag == false){
+					flag = true;
+				}
+			}
+			else{
+				flag = false;
+				flagCounter++;
+				reporter.reportLogFailWithScreenshot("Address: "+orderConfirmationShippingAddress.get(counter)+" is not present on Order Details page as expected");
+			}
+		}
+		return flag;
+	}
+
+	/**
+	 * This function verifies Track Order and Edit Order Button on Order Details page
+	 */
+	public void verifyOrderDetailsTrackOrderAndEditButton(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnOrderDetailsHeaderTrackOrder);
+		if(this.btnOrderDetailsHeaderTrackOrder.isEnabled() && this.btnOrderDetailsHeaderTrackOrder.isDisplayed())
+			reporter.reportLogPass("Track Order Button on Order Details page is displayed");
+		else
+			reporter.reportLogFailWithScreenshot("Track Order Button on Order Details page is not displayed");
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnOrderDetailsHeaderEditOrder);
+		if(this.btnOrderDetailsHeaderEditOrder.isDisplayed())
+			reporter.reportLogPass("Edit Order Button on Order Details page is displayed");
+		else
+			reporter.reportLogFailWithScreenshot("Edit Order Button on Order Details page is not displayed");
 	}
 }
 

@@ -1,6 +1,6 @@
 # API USER TOKEN INFO
 apiUserSessionParams:
-  lbl_username: shoppingcart@rogers.com
+  lbl_username: testautomationuser@test.com
   lbl_password: TestMail123
   lbl_grantType: password
   lbl_apiKey: A9607F64-D061-4279-8D00-F8469EA38DD1
@@ -279,10 +279,10 @@ shoppingCart:
   lblJayCareFoundationDonationMessage: "Jays Care Foundation Donation"
 checkOut:
   lst_SearchKeywords:
-    - searchKeyword: "boots"
-      quantity: "more than 3"
+    - searchKeyword: "jegging"
+      quantity: "more than 1"
       badgeRequired: "true"
-      itemToBeAdded: "2"
+      itemToBeAdded: "1"
       styleExist: "true"
       sameSizeAndStyle: "false"
     - searchKeyword: "gym"

@@ -79,6 +79,8 @@ public class CP_TC14_VerifyOrderDetails_MyAccount extends BaseTest {
 
             //Verify User should be taken to Order Details page
             getMyAccountPageThreadLocal().verifyBreadCrumbNavigationLink(breadcrumbNavigationPage);
+            //Verify Track Order and Edit Order Buttons
+            getMyAccountPageThreadLocal().verifyOrderDetailsTrackOrderAndEditButton();
 
             //Verify the title display user name and customer number and Sign Out, Track Order Button
             reporter.reportLog("Verify the title display user name and customer number and Sign Out, Track Order Button");
