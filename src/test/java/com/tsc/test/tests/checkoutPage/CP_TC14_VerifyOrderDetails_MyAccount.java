@@ -28,7 +28,7 @@ public class CP_TC14_VerifyOrderDetails_MyAccount extends BaseTest {
         String lsPassword = TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
         String orderDetailsPartialURL = TestDataHandler.constantData.getMyAccount().getLblOrderDetailsPageUrl();
         String breadcrumbNavigationPage = TestDataHandler.constantData.getMyAccount().getLblBreadCrumbNavigationPages();
-        List<Map<String, String>> keyword = TestDataHandler.constantData.getCheckOut().getLstOrderDetailItems();
+        List<Map<String, String>> keyword = Arrays.asList(TestDataHandler.constantData.getCheckOut().getLstOrderDetailItems().get(0));
 
         try{
             //Emptying Cart for test to run with right state
