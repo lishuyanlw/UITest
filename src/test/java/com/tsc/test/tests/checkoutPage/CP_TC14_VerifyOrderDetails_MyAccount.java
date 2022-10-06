@@ -11,6 +11,7 @@ import io.restassured.response.Response;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -27,7 +28,7 @@ public class CP_TC14_VerifyOrderDetails_MyAccount extends BaseTest {
         String lsPassword = TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
         String orderDetailsPartialURL = TestDataHandler.constantData.getMyAccount().getLblOrderDetailsPageUrl();
         String breadcrumbNavigationPage = TestDataHandler.constantData.getMyAccount().getLblBreadCrumbNavigationPages();
-        List<Map<String, String>> keyword = TestDataHandler.constantData.getCheckOut().getLst_SearchKeywords();
+        List<Map<String, String>> keyword = TestDataHandler.constantData.getCheckOut().getLstOrderDetailItems();
 
         try{
             //Emptying Cart for test to run with right state

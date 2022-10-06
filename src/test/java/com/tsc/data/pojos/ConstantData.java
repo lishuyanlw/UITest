@@ -1399,6 +1399,7 @@ public class ConstantData {
 
     public static class Checkout{
         List<Map<String,String>> lst_SearchKeywords;
+        List<Map<String,String>> lstOrderDetailItems;
         List<String> addShippingAddressErrorMessage;
         String lblProductNumberWithMultipleShippingMethods;
         List<Map<String,String>> newShippingAddressForUser;
@@ -1415,6 +1416,10 @@ public class ConstantData {
         String lblEmptyGiftCardPinErrorMessage;
         String lblPromoteCodeAppliedMessage;
         String lblGiftCardAppliedMessage;
+
+        public List<Map<String, String>> getLstOrderDetailItems() {            return lstOrderDetailItems;        }
+
+        public void setLstOrderDetailItems(List<Map<String, String>> lstOrderDetailItems) {            this.lstOrderDetailItems = lstOrderDetailItems;        }
 
         public String getLblPromoteCodeAppliedMessage() {
             return lblPromoteCodeAppliedMessage;
