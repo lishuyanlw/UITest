@@ -79,7 +79,7 @@ public class GF_TC04_VerifyLinksAndPageObjectsForTSCCustomerHub extends BaseTest
 		elementList.clear();
 
 		//Track Your Order
-		lsService="Track Your Order";
+		lsService="Track Order";
 		hashMap.clear();
 		hashMap = getGlobalFooterPageThreadLocal().getTestDataWithSpecificName(lstNameAndLinks, lsService, true);
 		reporter.reportLog(lsService);
@@ -188,12 +188,21 @@ public class GF_TC04_VerifyLinksAndPageObjectsForTSCCustomerHub extends BaseTest
 		if(lsYmlHref.isEmpty()) {
 			reporter.reportLogFail("Unable to find '"+lsService+"' link.");
 		}
-		if(getGlobalFooterPageThreadLocal().compareUrlInNewWindow(lsService, lsYmlHref,hashMap.get("parent"))){
+		String lsUrlAfterClicking=basePage.waitForPageLoadingByUrlChange(selectedItem);
+		if(lsUrlAfterClicking.contains("blog")){
 			reporter.reportLogPass("The Blog page is being navigated correctly");
 		}
 		else{
 			reporter.reportLogFailWithScreenshot("The Blog page is not being navigated correctly");
 		}
+		basePage.navigateBack();
+
+//		if(getGlobalFooterPageThreadLocal().compareUrlInNewWindow(lsService, lsYmlHref,hashMap.get("parent"))){
+//			reporter.reportLogPass("The Blog page is being navigated correctly");
+//		}
+//		else{
+//			reporter.reportLogFailWithScreenshot("The Blog page is not being navigated correctly");
+//		}
 
 		//My Account
 		lsService="My Account";
@@ -306,12 +315,12 @@ public class GF_TC04_VerifyLinksAndPageObjectsForTSCCustomerHub extends BaseTest
 		elementList.add(getGlobalFooterPageThreadLocal().lblCustomerNO);
 
 		//Add myaccount service panel headings
-		for(WebElement item:getGlobalFooterPageThreadLocal().lstMyAccountSerivePanelHeading) {
+		for(WebElement item:getGlobalFooterPageThreadLocal().lstMyAccountServicePanelHeading) {
 			elementList.add(item);
 		}
 
 		//Add myaccount service panel items
-		for(WebElement item:getGlobalFooterPageThreadLocal().lstMyAccountSerivePanelItem) {
+		for(WebElement item:getGlobalFooterPageThreadLocal().lstMyAccountServicePanelItem) {
 			elementList.add(item);
 		}
 

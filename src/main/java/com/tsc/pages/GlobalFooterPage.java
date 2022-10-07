@@ -18,114 +18,114 @@ public class GlobalFooterPage extends BasePage {
 	Map<String,String> hashMap = new HashMap<>();
 
 	// Credit Card
-	@FindBy(xpath = "//div[@class='Footer']//div[@class='custom-footer']//a[contains(@href,'creditcard')]/parent::div")
+	@FindBy(xpath = "//div[@class='Footer']//a[contains(@href,'creditcard')]/parent::div")
 	public WebElement blkCreditCard;
 
-	@FindBy(xpath = "//div[@class='Footer']//div[@class='custom-footer']//a[contains(@href,'creditcard')]/img")
+	@FindBy(xpath = "//div[@class='Footer']//a[contains(@href,'creditcard')]/img")
 	public WebElement imgCreditCard;
 
-	@FindBy(xpath = "//div[@class='Footer']//div[@class='custom-footer']//a[contains(@href,'creditcard')]/span")
+	@FindBy(xpath = "//div[@class='Footer']//a[contains(@href,'creditcard')]/span")
 	public WebElement lblCreditCardText;
 
-	@FindBy(xpath = "//div[@class='Footer']//div[@class='custom-footer']//a[contains(@href,'creditcard')]")
+	@FindBy(xpath = "//div[@class='Footer']//a[contains(@href,'creditcard')]")
 	public WebElement lnkCreditCard;
 
 	// Gift Card
-	@FindBy(xpath = "//div[@class='Footer']//div[@class='custom-footer']//a[contains(@href,'giftcard')]/parent::div")
+	@FindBy(xpath = "//div[@class='Footer']//a[contains(@href,'giftcard')]/parent::div")
 	public WebElement blkGiftCard;
 
-	@FindBy(xpath = "//div[@class='Footer']//div[@class='custom-footer']//a[contains(@href,'giftcard')]/img")
+	@FindBy(xpath = "//div[@class='Footer']//a[contains(@href,'giftcard')]/img")
 	public WebElement imgGiftCard;
 
-	@FindBy(xpath = "//div[@class='Footer']//div[@class='custom-footer']//a[contains(@href,'giftcard')]/span")
+	@FindBy(xpath = "//div[@class='Footer']//a[contains(@href,'giftcard')]/span")
 	public WebElement lblGiftCardText;
 
-	@FindBy(xpath = "//div[@class='Footer']//div[@class='custom-footer']//a[contains(@href,'giftcard')]")
+	@FindBy(xpath = "//div[@class='Footer']//a[contains(@href,'giftcard')]")
 	public WebElement lnkGiftCard;
 
 	// Send us feedback
-	@FindBy(xpath = "//div[@class='Footer']//div[@class='custom-footer']//a[contains(@href,'survey')]/parent::div")
+	@FindBy(xpath = "//div[@class='Footer']//a[contains(@href,'survey')]/parent::div")
 	public WebElement blkSendUsFeedback;
 
-	@FindBy(xpath = "//div[@class='Footer']//div[@class='custom-footer']//a[contains(@href,'survey')]/img")
+	@FindBy(xpath = "//div[@class='Footer']//a[contains(@href,'survey')]/img")
 	public WebElement imgSendUsFeedback;
 
-	@FindBy(xpath = "//div[@class='Footer']//div[@class='custom-footer']//a[contains(@href,'survey')]/span")
+	@FindBy(xpath = "//div[@class='Footer']//a[contains(@href,'survey')]/span")
 	public WebElement lblSendUsFeedbackHeadingText;
 
-	@FindBy(xpath = "//div[@class='Footer']//div[@class='custom-footer']//a[contains(@href,'survey')]")
+	@FindBy(xpath = "//div[@class='Footer']//a[contains(@href,'survey')]")
 	public WebElement lnkSendUsFeedback;
 
 	// Language switch
-	@FindBy(xpath = "//div[@class='Footer']//div[@class='custom-footer']//a[contains(@href,'switchLanguage')]")
+	@FindBy(xpath = "//div[@class='Footer']//a[contains(@href,'switchLanguage')]")
 	public WebElement lnkLanguage;
 
 	// Facebook
-	@FindBy(xpath = "//div[@class='Footer']//div[@class='custom-footer']//a[contains(@href,'facebook')]/parent::div")
+	@FindBy(xpath = "//div[@class='Footer']//a[contains(@href,'facebook')]/parent::div")
 	public WebElement blkFacebook;
 
-	@FindBy(xpath = "//div[@class='Footer']//div[@class='custom-footer']//a[contains(@href,'facebook')]/img")
+	@FindBy(xpath = "//div[@class='Footer']//a[contains(@href,'facebook')]/img")
 	public WebElement imgFacebook;
 
-	@FindBy(xpath = "//div[@class='Footer']//div[@class='custom-footer']//a[contains(@href,'facebook')]")
+	@FindBy(xpath = "//div[@class='Footer']//a[contains(@href,'facebook')]")
 	public WebElement lnkFacebook;
 
 	// Twitter
-	@FindBy(xpath = "//div[@class='Footer']//div[@class='custom-footer']//a[contains(@href,'twitter')]/parent::div")
+	@FindBy(xpath = "//div[@class='Footer']//a[contains(@href,'twitter')]/parent::div")
 	public WebElement blkTwitter;
 
-	@FindBy(xpath = "//div[@class='Footer']//div[@class='custom-footer']//a[contains(@href,'twitter')]/img")
+	@FindBy(xpath = "//div[@class='Footer']//a[contains(@href,'twitter')]/img")
 	public WebElement imgTwitter;
 
-	@FindBy(xpath = "//div[@class='Footer']//div[@class='custom-footer']//a[contains(@href,'twitter')]")
+	@FindBy(xpath = "//div[@class='Footer']//a[contains(@href,'twitter')]")
 	public WebElement lnkTwitter;
 
 	// Instagram
-	@FindBy(xpath = "//div[@class='Footer']//div[@class='custom-footer']//a[contains(@href,'instagram')]/parent::div")
+	@FindBy(xpath = "//div[@class='Footer']//a[contains(@href,'instagram')]/parent::div")
 	public WebElement blkInstagram;
 
-	@FindBy(xpath = "//div[@class='Footer']//div[@class='custom-footer']//a[contains(@href,'instagram')]/img")
+	@FindBy(xpath = "//div[@class='Footer']//a[contains(@href,'instagram')]/img")
 	public WebElement imgInstagram;
 
-	@FindBy(xpath = "//div[@class='Footer']//div[@class='custom-footer']//a[contains(@href,'instagram')]")
+	@FindBy(xpath = "//div[@class='Footer']//a[contains(@href,'instagram')]")
 	public WebElement lnkInstagram;
 
 	// Youtube
-	@FindBy(xpath = "//div[@class='Footer']//div[@class='custom-footer']//a[contains(@href,'youtube')]/parent::div")
+	@FindBy(xpath = "//div[@class='Footer']//a[contains(@href,'youtube')]/parent::div")
 	public WebElement blkYoutube;
 
-	@FindBy(xpath = "//div[@class='Footer']//div[@class='custom-footer']//a[contains(@href,'youtube')]/img")
+	@FindBy(xpath = "//div[@class='Footer']//a[contains(@href,'youtube')]/img")
 	public WebElement imgYoutube;
 
-	@FindBy(xpath = "//div[@class='Footer']//div[@class='custom-footer']//a[contains(@href,'youtube')]")
+	@FindBy(xpath = "//div[@class='Footer']//a[contains(@href,'youtube')]")
 	public WebElement lnkYoutube;
 
 	// Pinterest
-	@FindBy(xpath = "//div[@class='Footer']//div[@class='custom-footer']//a[contains(@href,'pinterest')]/parent::div")
+	@FindBy(xpath = "//div[@class='Footer']//a[contains(@href,'pinterest')]/parent::div")
 	public WebElement blkPinterest;
 
-	@FindBy(xpath = "//div[@class='Footer']//div[@class='custom-footer']//a[contains(@href,'pinterest')]/img")
+	@FindBy(xpath = "//div[@class='Footer']//a[contains(@href,'pinterest')]/img")
 	public WebElement imgPinterest;
 
-	@FindBy(xpath = "//div[@class='Footer']//div[@class='custom-footer']//a[contains(@href,'pinterest')]")
+	@FindBy(xpath = "//div[@class='Footer']//a[contains(@href,'pinterest')]")
 	public WebElement lnkPinterest;
 
 	// TSC Customer Hub
-	@FindBy(xpath = "//div[@class='Footer']//div[contains(@class,'menu-area')]/div[1]/strong")
+	@FindBy(xpath = "//div[@class='Footer']//div[contains(@class,'gbl-ftr__panel-container')]/div[@class='gbl-ftr__panel-headingblock'][1]/strong")
 	public WebElement lblTSCCustomerHubText;
 
 	@FindAll({
-			@FindBy(xpath = "//div[@class='Footer']//div[contains(@class,'menu-area')]/div[1]//ul[@class='lstMenu']/li//a"),
-			@FindBy(xpath = "//div[@class='Footer']//div[contains(@class,'menu-area')]/div[2]//ul[@class='lstMenu-with-icon']/li//a") })
+			@FindBy(xpath = "//div[@class='Footer']//div[contains(@class,'gbl-ftr__panel-container')]/div[@class='gbl-ftr__panel-headingblock'][1]//ul[@class='gbl-ftr__panel-itemsul']/li//a"),
+			@FindBy(xpath = "//div[@class='Footer']//div[contains(@class,'gbl-ftr__panel-container')]/div[@class='gbl-ftr__panel-block'][1]//ul[@class='gbl-ftr__panel-itemsul']/li//a") })
 	public List<WebElement> lnkTSCCustomerHubAllLinks;
 
 	// About TSC
-	@FindBy(xpath = "//div[@class='Footer']//div[contains(@class,'menu-area')]/div[3]/strong")
+	@FindBy(xpath = "//div[@class='Footer']//div[contains(@class,'gbl-ftr__panel-container')]/div[@class='gbl-ftr__panel-headingblock'][2]/strong")
 	public WebElement lblAboutTSCText;
 
 	@FindAll({
-			@FindBy(xpath = "//div[@class='Footer']//div[contains(@class,'menu-area')]/div[3]//ul[@class='lstMenu']/li//a"),
-			@FindBy(xpath = "//div[@class='Footer']//div[contains(@class,'menu-area')]/div[4]//ul[@class='lstMenu']/li//a") })
+			@FindBy(xpath = "//div[@class='Footer']//div[contains(@class,'gbl-ftr__panel-container')]/div[@class='gbl-ftr__panel-headingblock'][2]//ul[@class='gbl-ftr__panel-itemsul']/li//a"),
+			@FindBy(xpath = "//div[@class='Footer']//div[contains(@class,'gbl-ftr__panel-container')]/div[@class='gbl-ftr__panel-block'][2]//ul[@class='gbl-ftr__panel-itemsul']/li//a") })
 	public List<WebElement> lnkAboutTSCAllLinks;
 
 	// Rogers Logo
@@ -133,13 +133,13 @@ public class GlobalFooterPage extends BasePage {
 	public WebElement imgRogersLogo;
 
 	// Copyright Section
-	@FindBy(xpath = "//div[@class='Footer']//div[contains(@class,'copyright-msg')]/ancestor::div[contains(@class,'ftr-cell')]")
+	@FindBy(xpath = "//div[@class='Footer']//div[contains(@class,'gbl-ftr__copyright-text')]")
 	public WebElement blkCopyright;
 
-	@FindBy(xpath = "//div[@class='Footer']//div[contains(@class,'copyright-msg')][1]")
+	@FindBy(xpath = "//div[@class='Footer']//div[contains(@class,'gbl-ftr__copyright-text')]//div[@class='gbl-ftr__copyright-msg'][1]")
 	public WebElement txtCopyrightLine1;
 
-	@FindBy(xpath = "//div[@class='Footer']//div[contains(@class,'copyright-msg')][2]")
+	@FindBy(xpath = "//div[@class='Footer']//div[contains(@class,'gbl-ftr__copyright-text')]//div[@class='gbl-ftr__copyright-msg'][2]")
 	public WebElement txtCopyrightLine2;
 
 	// Customer service page objects
@@ -398,17 +398,17 @@ public class GlobalFooterPage extends BasePage {
 	public WebElement btnMyAccountSignOut;
 
 	@FindBy(xpath = "//ng-component//div[@class='my-account-summary-container']//div[contains(@class,'panel-group')]")
-	public WebElement lstMyAccountSerivePanelContainer;
+	public WebElement lstMyAccountServicePanelContainer;
 
 	public By byPanelHeading=By.xpath(".//div[contains(@class,'panel-heading')]");
 
 	public By byPanelItemList=By.xpath(".//li[not(@class='hidden')]//a");
 
 	@FindBy(xpath = "//ng-component//div[@class='my-account-summary-container']//div[contains(@class,'panel-group')]//div[contains(@class,'panel-heading')]")
-	public List<WebElement> lstMyAccountSerivePanelHeading;
+	public List<WebElement> lstMyAccountServicePanelHeading;
 
 	@FindBy(xpath = "//ng-component//div[@class='my-account-summary-container']//div[contains(@class,'panel-group')]//li[not(@class='hidden')]//a")
-	public List<WebElement> lstMyAccountSerivePanelItem;
+	public List<WebElement> lstMyAccountServicePanelItem;
 
 	// Track Your Order
 	@FindBy(xpath = "//div[contains(@class,'trackorder__wrap')]//h1")
@@ -635,10 +635,10 @@ public class GlobalFooterPage extends BasePage {
 	public List<WebElement> listOfMeetOurHostsImage;
 
 	//Rogers Copy Rights Image
-	@FindBy(xpath="//strong[contains(@id,'ftrCopyright')]")
+	@FindBy(xpath="//div[@class='gbl-ftr__copyright-msg']//strong[contains(@id,'ftrCopyright')]")
 	public WebElement RogersMedia;
 
-	@FindBy(xpath="//div[contains(@class,'copyright-msg xs-vw2 sm-px12')]//strong[contains(text(),'All')]")
+	@FindBy(xpath="//div[@class='gbl-ftr__copyright-msg']//strong[not(contains(@id,'ftrCopyright'))]")
 	public WebElement AllPrice;
 
 	@FindBy(xpath="//img[contains(@src,'Rogers.png')]")
@@ -707,7 +707,7 @@ public class GlobalFooterPage extends BasePage {
 	 */
 	public boolean verifyUrlAfterClickingElement(WebElement element, String lsExpectedUrl) {
 		lsExpectedUrl = removeProtocalHeaderFromUrl(lsExpectedUrl);
-		String lsCurrentUrl = waitForPageLoadingByUrlChange(element);
+		String lsCurrentUrl = waitForPageLoadingByUrlChangeInNewWindow(element,lsExpectedUrl);
 		lsCurrentUrl = removeProtocalHeaderFromUrl(lsCurrentUrl);
 
 		if(lsExpectedUrl.contains("instagram.com")){
@@ -873,11 +873,11 @@ public class GlobalFooterPage extends BasePage {
 	public boolean switchlanguage() {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkLanguage);
 		String lsLanguage=this.lnkLanguage.getText().trim();
+		reporter.reportLog("Initail lsLanguage: "+lsLanguage);
 		this.getReusableActionsInstance().clickIfAvailable(this.lnkLanguage);
 		this.waitForPageToLoad();
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkLanguage);
-
-		return this.waitForCondition(Driver->{return !this.lnkLanguage.getText().trim().equalsIgnoreCase(lsLanguage);}, 30000);
+		return this.waitForCondition(Driver->{return this.lnkLanguage.isDisplayed();}, 120000);
+//		return this.waitForCondition(Driver->{return !this.getElementInnerText(lnkLanguage).equalsIgnoreCase(lsLanguage);}, 120000);
 	}
 
 	/**
@@ -909,9 +909,13 @@ public class GlobalFooterPage extends BasePage {
 		if (selectedItem == null) {
 			return false;
 		}
+		else{
+			reporter.reportLog("Find "+lsService+" button");
+		}
 
-		getReusableActionsInstance().javascriptScrollByVisibleElement(selectedItem);
-		getReusableActionsInstance().clickIfAvailable(selectedItem);
+//		getReusableActionsInstance().javascriptScrollByVisibleElement(selectedItem);
+//		getReusableActionsInstance().clickIfAvailable(selectedItem);
+		this.clickElement(selectedItem);
 
 		this.waitForPageToLoad();
 		return waitForCondition(Driver -> {return lblIndicator.isDisplayed();}, 60000);
@@ -1512,17 +1516,17 @@ public class GlobalFooterPage extends BasePage {
 		for(int i=0;i<lstPanelItem.size();i++) {
 			WebElement item=lstPanelItem.get(i);
 			String lsClass=item.getAttribute("class");
-			if(lsClass.isEmpty()){
+			reporter.reportLog(this.getElementInnerText(item));
+			reporter.reportLog("expanded class: "+lsClass);
+			if(lsClass.isEmpty()||!lsClass.contains("collapsed")){
 				continue;
 			}
-			if( lsClass.equalsIgnoreCase("collapsed")) {
-				getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-				getReusableActionsInstance().clickIfAvailable(item);
-				//Need it to wait a little, otherwise will cause failure
-				getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
-				final int tempIndex=i;
-				waitForCondition(Driver->{return lstPanelItem.get(tempIndex).getAttribute("class").isEmpty();},10000);
-			}
+			getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			getReusableActionsInstance().clickIfAvailable(item);
+			//Need it to wait a little, otherwise will cause failure
+			getReusableActionsInstance().staticWait(3*this.getStaticWaitForApplication());
+//			final WebElement tempItem=item;
+//			waitForCondition(Driver->{return !tempItem.getAttribute("class").isEmpty()&&tempItem.getAttribute("class").contains("collapsed");},10000);
 		}
 	}
 
@@ -1913,7 +1917,7 @@ public class GlobalFooterPage extends BasePage {
 		}
 	}
 
-	public void verifyTSCCustomerHubLlinks(List<List<String>> lstNameAndLinks) {
+	public void verifyTSCCustomerHubLinks(List<List<String>> lstNameAndLinks) {
 		//BasePage basePage=new BasePage(this.getDriver());
 		String lsText,lsYmlHref,lsHref;
 		for(WebElement item:this.lnkTSCCustomerHubAllLinks) {
@@ -1953,7 +1957,7 @@ public class GlobalFooterPage extends BasePage {
 
 	public void verifyMyAccountServicePanelItem() {
 		ArrayList<WebElement> elementList=new ArrayList<WebElement>();
-		for(WebElement item:this.lstMyAccountSerivePanelItem) {
+		for(WebElement item:this.lstMyAccountServicePanelItem) {
 			elementList.add(item);
 		}
 		this.verifyElementListExistence(elementList);

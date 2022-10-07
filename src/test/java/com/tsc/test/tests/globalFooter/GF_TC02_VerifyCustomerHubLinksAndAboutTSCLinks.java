@@ -118,7 +118,7 @@ public class GF_TC02_VerifyCustomerHubLinksAndAboutTSCLinks extends BaseTest {
 		}
 
 		//TSC customer hub links
-		getGlobalFooterPageThreadLocal().verifyTSCCustomerHubLlinks(lstNameAndLinks);
+		getGlobalFooterPageThreadLocal().verifyTSCCustomerHubLinks(lstNameAndLinks);
 		
 		//About TSC links
 		getGlobalFooterPageThreadLocal().verifyAboutTSCLinks(lstNameAndLinks);

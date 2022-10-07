@@ -202,6 +202,8 @@ public class GF_TC03_VerifyLanguageForCustomerHubLinksAndAboutTSCLinks extends B
 		
 		//Copyright text
 		lsText=basePage.getUTFEnabledData(basePage.getElementText(getGlobalFooterPageThreadLocal().txtCopyrightLine1));
+		reporter.reportLog(lsText);
+		reporter.reportLog(lsText_Copyright_Line1_Fr);
 		if(lsText.contains(lsText_Copyright_Line1_Fr)){
 			reporter.reportLogPass("Copyright line1 French translation is correct");
 		}
@@ -210,6 +212,8 @@ public class GF_TC03_VerifyLanguageForCustomerHubLinksAndAboutTSCLinks extends B
 		}
 
 		lsText=basePage.getUTFEnabledData(basePage.getElementText(getGlobalFooterPageThreadLocal().txtCopyrightLine2));
+		reporter.reportLog(lsText);
+		reporter.reportLog(lsText_Copyright_Line2_Fr);
 		if(lsText.equalsIgnoreCase(lsText_Copyright_Line2_Fr)){
 			reporter.reportLogPass("Copyright line2 French translation is correct");
 		}

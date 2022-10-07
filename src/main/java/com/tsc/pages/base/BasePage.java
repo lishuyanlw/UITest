@@ -319,12 +319,41 @@ import utils.ReusableActions;
 		getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 		waitForCondition(Driver->{return element.isDisplayed();},90000);
 		getReusableActionsInstance().clickIfAvailable(element);
-        //element.click();
+		this.applyStaticWait(2*this.getStaticWaitForApplication());
         waitForCondition(Driver->{return !currentUrl.equalsIgnoreCase(getDriver().getCurrentUrl());},90000);
         getReusableActionsInstance().waitForPageLoad();
         getReusableActionsInstance().staticWait(3000);
         
         return getDriver().getCurrentUrl();
+	}
+
+	/**
+	 * This method will verify the page loading by url changes in new window
+	 * @param - WebElement element: the element will be clicked
+	 * @param - String - lsUrlKeyWord
+	 * @return String: changed url
+	 * @author Wei.Li
+	 */
+	public String waitForPageLoadingByUrlChangeInNewWindow(WebElement element,String lsUrlKeyWord) {
+		String currentUrl=getDriver().getCurrentUrl();
+		String mainWindowHandle=this.getDriver().getWindowHandle();
+		getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+		waitForCondition(Driver->{return element.isDisplayed();},90000);
+		getReusableActionsInstance().clickIfAvailable(element);
+		this.applyStaticWait(2*this.getStaticWaitForApplication());
+		//element.click();
+		Set<String> windowHandles=this.getDriver().getWindowHandles();
+		String lsReturnUrl=null;
+		for(String windowHandle:windowHandles){
+			this.getDriver().switchTo().window(windowHandle);
+			if(this.getDriver().getCurrentUrl().toLowerCase().contains(lsUrlKeyWord.toLowerCase())){
+				lsReturnUrl=this.getDriver().getCurrentUrl();
+				break;
+			}
+		}
+		this.getDriver().switchTo().window(mainWindowHandle);
+
+		return lsReturnUrl;
 	}
 	
 	/**
@@ -825,8 +854,9 @@ import utils.ReusableActions;
     	
     	String lsItem;
     	for(WebElement element:elementList) {
-    		getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-    		lsItem=element.getText().trim();    		
+//    		getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+    		lsItem=this.getElementInnerText(element);
+			reporter.reportLog("SubItem: "+lsItem+" : "+lsExpectedText);
     		if(lsItem.equalsIgnoreCase(lsExpectedText)) {
     			return element;
     		}
