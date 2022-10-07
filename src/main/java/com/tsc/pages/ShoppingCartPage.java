@@ -306,7 +306,7 @@ public class ShoppingCartPage extends BasePage {
 	@FindBy(xpath = "//div[@class='cartridge']//shopping-cart-privacy//a[@id='btn-learn-more']")
 	public WebElement lnkCartPrivacy;
 
-	@FindBy(xpath = "//div[@class='Footer']//div[@class='blockPageWrap']")
+	@FindBy(xpath = "//shopping-cart//div[@class='blockPageWrap']")
 	public WebElement pageLoadingIndicator;
 
 	//PayPal

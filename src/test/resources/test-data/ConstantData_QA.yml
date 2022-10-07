@@ -1,7 +1,7 @@
 # API USER TOKEN INFO
 apiUserSessionParams:
-  lbl_username: shoppingcart@rogers.com
-  lbl_password: TestMail123
+  lbl_username: qa2542@rogers.com
+  lbl_password: qa1234
   lbl_grantType: password
   lbl_apiKey: A9607F64-D061-4279-8D00-F8469EA38DD1
 
@@ -267,6 +267,11 @@ shoppingCart:
       itemToBeAdded: "1"
       styleExist: "true"
       sameSizeAndStyle: "true"
+    - searchKeyword: "gym"
+      quantity: ""
+      badgeRequired: "false"
+      itemToBeAdded: "1"
+      styleExist: "false"
   lblOrderExceedingQuantityMessage: "The size of your order exceeds our on-line shopping limits but one of our Customer Service agents will be happy to assist you with your purchase. Please call our Customer Care Centre at 1-888-2020-888 to complete your order."
   lblProductNumberForOrderExceedingQuantity: 713070
   lblCartExceedingLimitMessage: "The size of your order exceeds our on-line shopping limits but one of our Customer Service agents will be happy to assist you with your purchase. Please call our Customer Care Centre at 1-888-2020-888 to complete your order."
@@ -285,17 +290,23 @@ checkOut:
       itemToBeAdded: "2"
       styleExist: "true"
       sameSizeAndStyle: "true"
+    - searchKeyword: "gym"
+      quantity: ""
+      badgeRequired: "false"
+      itemToBeAdded: "1"
+      styleExist: "false"
+      sameSizeAndStyle: "true"
   lstOrderDetailItems:
     - searchKeyword: "jeggings"
-      quantity: "more than 3"
+      quantity: "more than 1"
       badgeRequired: "true"
-      itemToBeAdded: "2"
+      itemToBeAdded: "1"
       styleExist: "true"
       sameSizeAndStyle: "true"
     - searchKeyword: "joan rivers"
       quantity: "more than 1"
       badgeRequired: "true"
-      itemToBeAdded: "2"
+      itemToBeAdded: "1"
       styleExist: "true"
       sameSizeAndStyle: "true"
   addShippingAddressErrorMessage: ["You have one or more missing or invalid entries. Please enter correct data and try again.",
