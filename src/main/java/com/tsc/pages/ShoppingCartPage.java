@@ -2598,12 +2598,8 @@ public class ShoppingCartPage extends BasePage {
 			for(Map<String,Object> cartData:productData){
 				if(cartGuidIdValue==null){
 					cartResponse = cartAPI.createNewCartOrAddItems(Arrays.asList(Integer.valueOf(cartData.get("edpNo").toString())),Integer.valueOf(cartData.get("itemToBeAdded").toString()),customerEDP,access_token,null);
-					if(cartResponse.getStatusCode()==200){
+					if(cartResponse.getStatusCode()==200)
 						cartGuidIdValue = cartResponse.jsonPath().get("CartGuid");
-					}
-					else{
-						continue;
-					}
 				}else {
 					cartResponse = cartAPI.createNewCartOrAddItems(Arrays.asList(Integer.valueOf(cartData.get("edpNo").toString())), Integer.valueOf(cartData.get("itemToBeAdded").toString()), customerEDP, access_token, cartGuidIdValue);
 				}
@@ -2683,7 +2679,7 @@ public class ShoppingCartPage extends BasePage {
 		//If there is no cart present fo user, creating the cart for user and returning data
 		else{
 			List<Map<String,Object>> data = new ProductAPI().getProductDetailsToBeAddedToCartForUser(itemsToBeAdded);
-			Response response = this.addItemsToCartForUser(data,customerEDP,accessToken,null);
+			this.addItemsToCartForUser(data,customerEDP,accessToken,null);
 
 			responseExisting=cartApi.getAccountCartContentWithCustomerEDP(String.valueOf(customerEDP), accessToken);
 			if(responseExisting.statusCode()==200) {
