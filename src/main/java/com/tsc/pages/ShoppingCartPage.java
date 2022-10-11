@@ -2601,9 +2601,6 @@ public class ShoppingCartPage extends BasePage {
 					if(cartResponse.getStatusCode()==200){
 						cartGuidIdValue = cartResponse.jsonPath().get("CartGuid");
 					}
-					else{
-						continue;
-					}
 				}else {
 					cartResponse = cartAPI.createNewCartOrAddItems(Arrays.asList(Integer.valueOf(cartData.get("edpNo").toString())), Integer.valueOf(cartData.get("itemToBeAdded").toString()), customerEDP, access_token, cartGuidIdValue);
 				}
