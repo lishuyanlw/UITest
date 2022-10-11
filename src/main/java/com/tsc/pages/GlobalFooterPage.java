@@ -485,6 +485,28 @@ public class GlobalFooterPage extends BasePage {
 	@FindBy(xpath = "//div[contains(@class,'signin__wrap')]//button[@type='submit']")
 	public WebElement btnTrackYourOderSignIn;
 
+	// Sign Up for Email
+	@FindBy(xpath = "//div[@class='email-popup__main-content']//input[@id='FirstName']")
+	public WebElement inputFirstNameForSignUpForEmail;
+
+	@FindBy(xpath = "//div[@class='email-popup__main-content']//input[@id='LastName']")
+	public WebElement inputLastNameForSignUpForEmail;
+
+	@FindBy(xpath = "//div[@class='email-popup__main-content']//input[@id='EmailAddress']")
+	public WebElement inputEmailAddressForSignUpForEmail;
+
+	@FindBy(xpath = "//div[@class='email-popup__main-content']//select[@id='BirthMonth']")
+	public WebElement selectBirthMonthForSignUpForEmail;
+
+	@FindBy(xpath = "//div[@class='email-popup__main-content']//select[@id='BirthDay']")
+	public WebElement selectBirthDayForSignUpForEmail;
+
+	@FindBy(xpath = "//div[@class='email-popup__main-content']//button[@class='email-popup__submit-button']")
+	public WebElement btnSignUpNowForSignUpForEmail;
+
+	@FindBy(xpath = "//div[@class='email-popup__main-content']//div[contains(@class,'terms')]")
+	public List<WebElement> lstTermsAndUnSubscriptionMessageForSignUpForEmail;
+
 	// Contact Us
 	@FindBy(xpath = "//div[@id='contactus']//h1")
 	public WebElement lblContactUS;
@@ -2335,4 +2357,68 @@ public class GlobalFooterPage extends BasePage {
 		verifyServicesOnPage();
 		verifyRogersLogoAndCopyRightInfo();
 	}
+
+	/**
+	 * To verify SignUpForEmail Contents
+	 */
+	public void verifySignUpForEmailContents() {
+		String lsText;
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputFirstNameForSignUpForEmail);
+		if(this.getReusableActionsInstance().isElementVisible(this.inputFirstNameForSignUpForEmail)){
+			reporter.reportLogPass("Input First Name field in SignUpForEmail section is displaying correctly.");
+		}
+		else{
+			reporter.reportLogFail("Input First Name field in SignUpForEmail section is not displaying correctly.");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputLastNameForSignUpForEmail);
+		if(this.getReusableActionsInstance().isElementVisible(this.inputLastNameForSignUpForEmail)){
+			reporter.reportLogPass("Input Last Name field in SignUpForEmail section is displaying correctly.");
+		}
+		else{
+			reporter.reportLogFail("Input Last Name field in SignUpForEmail section is not displaying correctly.");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectBirthMonthForSignUpForEmail);
+		if(this.getReusableActionsInstance().isElementVisible(this.selectBirthMonthForSignUpForEmail)){
+			reporter.reportLogPass("Birth Month dropdown menu in SignUpForEmail section is displaying correctly.");
+		}
+		else{
+			reporter.reportLogFail("Birth Month dropdown menu in SignUpForEmail section is not displaying correctly.");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectBirthDayForSignUpForEmail);
+		if(this.getReusableActionsInstance().isElementVisible(this.selectBirthDayForSignUpForEmail)){
+			reporter.reportLogPass("Birth Day dropdown menu in SignUpForEmail section is displaying correctly.");
+		}
+		else{
+			reporter.reportLogFail("Birth Day dropdown menu in SignUpForEmail section is not displaying correctly.");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignUpNowForSignUpForEmail);
+		lsText=this.getElementInnerText(this.btnSignUpNowForSignUpForEmail);
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("SignUp Now button in SignUpForEmail section is displaying correctly.");
+		}
+		else{
+			reporter.reportLogFail("SignUp Now button in SignUpForEmail section is not displaying correctly.");
+		}
+
+		reporter.reportLog("verify text in SignUpForEmail section footer");
+		WebElement item;
+		int loopSize=lstTermsAndUnSubscriptionMessageForSignUpForEmail.size();
+		for(int i=0;i<loopSize;i++){
+			item=lstTermsAndUnSubscriptionMessageForSignUpForEmail.get(i);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsText=this.getElementInnerText(item);
+			if(!lsText.isEmpty()){
+				reporter.reportLogPass(i+" item text in SignUpForEmail section footer is displaying correctly.");
+			}
+			else{
+				reporter.reportLogFail(i+" item text in SignUpForEmail section footer is not displaying correctly.");
+			}
+		}
+	}
+
 }

@@ -140,6 +140,33 @@ public class GF_TC04_VerifyLinksAndPageObjectsForTSCCustomerHub extends BaseTest
 		}
 		elementList.clear();
 
+		//Sign Up For Email
+		lsService="Sign Up For Email";
+		hashMap.clear();
+		hashMap = getGlobalFooterPageThreadLocal().getTestDataWithSpecificName(lstNameAndLinks, lsService, true);
+		reporter.reportLog(lsService);
+		selectedItem=getGlobalFooterPageThreadLocal().getServiceWebElement(lsService,hashMap.get("parent"));
+		lsHref=basePage.getElementHref(selectedItem);
+		//lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsService,true);
+		lsYmlHref=hashMap.get("Link");
+		if(lsYmlHref.isEmpty()) {
+			reporter.reportLogFail("Unable to find '"+lsService+"' link.");
+		}
+		if(getGlobalFooterPageThreadLocal().verifyLinks(lsHref,lsYmlHref)){
+			reporter.reportLogPass("The current '"+lsService+"' href of "+lsHref+" is equal to "+lsYmlHref);
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The current '"+lsService+"' href of "+lsHref+" is not equal to "+lsYmlHref);
+		}
+
+		if(!getGlobalFooterPageThreadLocal().goToService(lsService,getGlobalFooterPageThreadLocal().btnSignUpNowForSignUpForEmail,hashMap.get("parent"))) {
+			reporter.reportLogFail("Unable to navigate to '"+lsService+"' page objects.");
+		}
+		else {
+			reporter.reportLog("Verify SignUpForEmail Contents");
+			getGlobalFooterPageThreadLocal().verifySignUpForEmailContents();
+		}
+
 		//Contact Us
 		lsService="Contact Us";
 		hashMap.clear();
