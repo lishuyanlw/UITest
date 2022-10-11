@@ -161,6 +161,8 @@ public class GF_TC03_VerifyLanguageForCustomerHubLinksAndAboutTSCLinks extends B
 
 		//Language switch
 		lsText=basePage.getUTFEnabledData(basePage.getElementText(getGlobalFooterPageThreadLocal().lnkLanguage));
+		reporter.reportLog(lsText);
+		reporter.reportLog(lsText_LanguageSwitch_En);
 		if(lsText.equalsIgnoreCase(lsText_LanguageSwitch_En)){
 			reporter.reportLogPass("Language switch French translation is correct");
 		}

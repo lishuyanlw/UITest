@@ -856,7 +856,6 @@ import utils.ReusableActions;
     	for(WebElement element:elementList) {
 //    		getReusableActionsInstance().javascriptScrollByVisibleElement(element);
     		lsItem=this.getElementInnerText(element);
-			reporter.reportLog("SubItem: "+lsItem+" : "+lsExpectedText);
     		if(lsItem.equalsIgnoreCase(lsExpectedText)) {
     			return element;
     		}

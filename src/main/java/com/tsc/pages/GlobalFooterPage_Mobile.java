@@ -134,7 +134,7 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 	public WebElement getServiceWebElement(String lsService,String footerSection) {
 		if(!this.lblTSCCustomerHubText.getAttribute("aria-expanded").equalsIgnoreCase("true")) {
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblTSCCustomerHubText);
-			this.getReusableActionsInstance().clickIfAvailable(this.lblTSCCustomerHubText);
+			this.clickElement(this.lblTSCCustomerHubText);
 			//The dom changes too fast even less than 500ms of explicit wait interval, so have to wait a little
 			getReusableActionsInstance().staticWait(5*this.getStaticWaitForApplication());
 //			this.waitForCondition(Driver->{return this.lblTSCCustomerHubText.getAttribute("aria-expanded").equalsIgnoreCase("true");}, 30000);
@@ -144,7 +144,7 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 		if (selectedItem == null) {
 			if(!this.lblAboutTSCText.getAttribute("aria-expanded").equalsIgnoreCase("true")) {
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAboutTSCText);
-				this.getReusableActionsInstance().clickIfAvailable(this.lblAboutTSCText);
+				this.clickElement(this.lblAboutTSCText);
 				//The dom changes too fast even less than 500ms of explicit wait interval, so have to wait a little
 				getReusableActionsInstance().staticWait(5*this.getStaticWaitForApplication());
 //				this.waitForCondition(Driver->{return this.lblAboutTSCText.getAttribute("aria-expanded").equalsIgnoreCase("true");}, 30000);

@@ -116,7 +116,7 @@ public class GlobalFooterPage extends BasePage {
 
 	@FindAll({
 			@FindBy(xpath = "//div[@class='Footer']//div[contains(@class,'gbl-ftr__panel-container')]/div[@class='gbl-ftr__panel-headingblock'][1]//ul[@class='gbl-ftr__panel-itemsul']/li//a"),
-			@FindBy(xpath = "//div[@class='Footer']//div[contains(@class,'gbl-ftr__panel-container')]/div[@class='gbl-ftr__panel-block'][1]//ul[@class='gbl-ftr__panel-itemsul']/li//a") })
+			@FindBy(xpath = "//div[@class='Footer']//div[contains(@class,'gbl-ftr__panel-container')]/div[@class='gbl-ftr__panel-block'][1]//ul[contains(@class,'gbl-ftr__panel-itemsul')]/li//a") })
 	public List<WebElement> lnkTSCCustomerHubAllLinks;
 
 	// About TSC
@@ -125,7 +125,7 @@ public class GlobalFooterPage extends BasePage {
 
 	@FindAll({
 			@FindBy(xpath = "//div[@class='Footer']//div[contains(@class,'gbl-ftr__panel-container')]/div[@class='gbl-ftr__panel-headingblock'][2]//ul[@class='gbl-ftr__panel-itemsul']/li//a"),
-			@FindBy(xpath = "//div[@class='Footer']//div[contains(@class,'gbl-ftr__panel-container')]/div[@class='gbl-ftr__panel-block'][2]//ul[@class='gbl-ftr__panel-itemsul']/li//a") })
+			@FindBy(xpath = "//div[@class='Footer']//div[contains(@class,'gbl-ftr__panel-container')]/div[@class='gbl-ftr__panel-block'][2]//ul[contains(@class,'gbl-ftr__panel-itemsul')]/li//a") })
 	public List<WebElement> lnkAboutTSCAllLinks;
 
 	// Rogers Logo
@@ -817,7 +817,7 @@ public class GlobalFooterPage extends BasePage {
 	 */
 	public String getFrenchWithSpecificEnglishName(List<List<String>> lstNameAndLink, String lsSpecificName) {
 		for (List<String> lstItem : lstNameAndLink) {
-			if (lsSpecificName.equalsIgnoreCase(this.getUTFEnabledData(lstItem.get(0)))) {
+			if (lsSpecificName.equalsIgnoreCase(this.getUTFEnabledData(lstItem.get(0)))||lsSpecificName.contains(this.getUTFEnabledData(lstItem.get(0)))) {
 				return this.getUTFEnabledData(lstItem.get(1).trim());
 			}
 		}
@@ -1513,16 +1513,15 @@ public class GlobalFooterPage extends BasePage {
 	 * @author Wei.Li
 	 */
 	public void expandPanelItems(List<WebElement> lstPanelItem,List<WebElement> lstPanelItemContent) {
+		this.applyStaticWait(3*this.getStaticWaitForApplication());
 		for(int i=0;i<lstPanelItem.size();i++) {
 			WebElement item=lstPanelItem.get(i);
 			String lsClass=item.getAttribute("class");
-			reporter.reportLog(this.getElementInnerText(item));
-			reporter.reportLog("expanded class: "+lsClass);
 			if(lsClass.isEmpty()||!lsClass.contains("collapsed")){
 				continue;
 			}
-			getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-			getReusableActionsInstance().clickIfAvailable(item);
+//			getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			this.clickElement(item);
 			//Need it to wait a little, otherwise will cause failure
 			getReusableActionsInstance().staticWait(3*this.getStaticWaitForApplication());
 //			final WebElement tempItem=item;
@@ -2031,10 +2030,10 @@ public class GlobalFooterPage extends BasePage {
 		for(int i=0;i<this.lnkAboutTSCAllLinks.size();i++) {
 			lsText=this.getUTFEnabledData(this.getElementText(this.lnkAboutTSCAllLinks.get(i)));
 			if(lsText.equalsIgnoreCase(lstAboutTSCFr.get(i))){
-				reporter.reportLogPass("The "+i+" AboutTSLink French transaltion of "+lsText+" is the same as "+lstAboutTSCFr.get(i));
+				reporter.reportLogPass("The "+i+" AboutTSLink French translation of "+lsText+" is the same as "+lstAboutTSCFr.get(i));
 			}
 			else{
-				reporter.reportLogFailWithScreenshot("The "+i+" AboutTSLink French transaltion of "+lsText+" is the same as "+lstAboutTSCFr.get(i));
+				reporter.reportLogFailWithScreenshot("The "+i+" AboutTSLink French translation of "+lsText+" is the same as "+lstAboutTSCFr.get(i));
 			}
 
 			lsYmlHref=this.getLinkWithSpecificName(lstNameAndLinks,lsText,false);
@@ -2076,6 +2075,7 @@ public class GlobalFooterPage extends BasePage {
 		int alphabetPathElementSize;
 		Select select=new Select(element);
 		select.selectByIndex(0);
+		this.applyStaticWait(3*this.getStaticWaitForApplication());
 		for(int i=0;i<elements.size();i++) {
 			String alphabetPath="(//div[contains(@class,'lettersDiv')]//div//span)["+counter+"]";
 			this.clickElement(elements.get(i));
