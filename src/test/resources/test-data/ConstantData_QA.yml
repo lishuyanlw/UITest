@@ -155,7 +155,7 @@ searchResultPage:
   lbl_ProductRecommendationTitlePage: ["People who viewed this item also viewed","TOP SELLERS"]
   lbl_AddToBagPopupWindowTitle: "\\d+ ITEM(S)? ADDED TO YOUR SHOPPING BAG"
   lbl_VideoDisclaimInfo: "Pre-recorded videos contain pricing or promotional offers that may have expired."
-  lbl_AdvancedOrderkeyword: 486049
+  lbl_AdvancedOrderkeyword: 603108
   lbl_AdvancedOrderMessage: "Est. Ship/Pick-up Date"
   lbl_AutoDeliverykeyword: 603108
   lbl_productTrueFitAndSizingChart: 404791
@@ -274,6 +274,12 @@ shoppingCart:
       badgeRequired: "false"
       itemToBeAdded: "1"
       styleExist: "false"
+    - searchKeyword: "jean"
+      quantity: "more than 1"
+      badgeRequired: "true"
+      itemToBeAdded: "1"
+      styleExist: "true"
+      sameSizeAndStyle: "true"
   lblOrderExceedingQuantityMessage: "The size of your order exceeds our on-line shopping limits but one of our Customer Service agents will be happy to assist you with your purchase. Please call our Customer Care Centre at 1-888-2020-888 to complete your order."
   lblProductNumberForOrderExceedingQuantity: 713070
   lblCartExceedingLimitMessage: "The size of your order exceeds our on-line shopping limits but one of our Customer Service agents will be happy to assist you with your purchase. Please call our Customer Care Centre at 1-888-2020-888 to complete your order."
