@@ -989,6 +989,7 @@ public class ConstantData {
     }
 
     public static class MyAccount{
+        public String lnk_myAccountURL;
         public String lnk_addNewCardURL;
         public List<String> lst_newCreditCardType;
         public List<String> lbl_invalidCardErrorMessage;
@@ -1030,6 +1031,24 @@ public class ConstantData {
         public String lbl_myNewsLettersUnSubscribeErrorMessage;
         public String lbl_myNewsLettersUnSubscribeAlertMessage;
         public String lbl_noOrderRecordsMessage;
+        public String lblOrderDetailsPageUrl;
+        public String lblBreadCrumbNavigationPages;
+
+        public String getLblBreadCrumbNavigationPages() {            return lblBreadCrumbNavigationPages;        }
+
+        public void setLblBreadCrumbNavigationPages(String lblBreadCrumbNavigationPages) {            this.lblBreadCrumbNavigationPages = lblBreadCrumbNavigationPages;        }
+
+        public String getLblOrderDetailsPageUrl() {            return lblOrderDetailsPageUrl;        }
+
+        public void setLblOrderDetailsPageUrl(String lblOrderDetailsPageUrl) {            this.lblOrderDetailsPageUrl = lblOrderDetailsPageUrl;        }
+
+        public String getLnk_myAccountURL() {
+            return lnk_myAccountURL;
+        }
+
+        public void setLnk_myAccountURL(String lnk_myAccountURL) {
+            this.lnk_myAccountURL = lnk_myAccountURL;
+        }
 
         public String getLbl_myNewsLettersUpdateErrorMessage() {
             return lbl_myNewsLettersUpdateErrorMessage;
@@ -1380,6 +1399,7 @@ public class ConstantData {
 
     public static class Checkout{
         List<Map<String,String>> lst_SearchKeywords;
+        List<Map<String,String>> lstOrderDetailItems;
         List<String> addShippingAddressErrorMessage;
         String lblProductNumberWithMultipleShippingMethods;
         List<Map<String,String>> newShippingAddressForUser;
@@ -1396,6 +1416,10 @@ public class ConstantData {
         String lblEmptyGiftCardPinErrorMessage;
         String lblPromoteCodeAppliedMessage;
         String lblGiftCardAppliedMessage;
+
+        public List<Map<String, String>> getLstOrderDetailItems() {            return lstOrderDetailItems;        }
+
+        public void setLstOrderDetailItems(List<Map<String, String>> lstOrderDetailItems) {            this.lstOrderDetailItems = lstOrderDetailItems;        }
 
         public String getLblPromoteCodeAppliedMessage() {
             return lblPromoteCodeAppliedMessage;

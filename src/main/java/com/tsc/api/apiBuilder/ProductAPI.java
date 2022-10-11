@@ -257,7 +257,6 @@ public class ProductAPI extends ApiClient {
             configs = super.getProductSearchByKeywordInputConfig(searchKeyword, dimensionNumber, outputPage, defaultPageItems,super.getApiPropertyData().get("test_apiVersion3"));
         }
 
-
         repeatNumber=0;
         do{
             response = getApiCallResponse(configs, propertyData.get("test_apiVersion3")+"/"+propertyData.get("test_language")+"/products");
@@ -289,11 +288,11 @@ public class ProductAPI extends ApiClient {
         Response response = null;
         //boolean flag = true;
         //int repeatNumber=0;
-        ProductDetailsItem product=new ProductDetailsItem();
+        ProductDetailsItem product=null;
 
         selectedProduct.init();
         //do{
-        response = getApiCallResponse(null, propertyData.get("test_apiVersion")+"/"+propertyData.get("test_language")+"/products/"+productNumber);
+        response = getApiCallResponse(null, propertyData.get("test_apiVersion3")+"/"+propertyData.get("test_language")+"/products/"+productNumber);
         if(response!=null && response.statusCode()==200) {
             product = JsonParser.getResponseObject(response.asString(), new TypeReference<ProductDetailsItem>() {
             });
@@ -1590,6 +1589,9 @@ public class ProductAPI extends ApiClient {
         for(Map<String,String> data:keywordData){
             boolean outerloop = false;
             Product product = this.getProductDetailsForKeyword(data.get("searchKeyword"),null,true);
+            if(product==null){
+                continue;
+            }
             List<Product.Products> products = product.getProducts();
             Boolean badgeRequired = Boolean.valueOf(data.get("badgeRequired"));
             Boolean styleExist = Boolean.valueOf(data.get("styleExist"));
@@ -1603,7 +1605,7 @@ public class ProductAPI extends ApiClient {
                     if(productsData.getVideosCount() >= 0 && productsData.getStyles().size() >= 1 && productsData.getSizes().size() >= 1&&productsData.isShowBadgeImage() && productsData.isEnabledAddToCart()){
                         if(badgeRequired && styleExist && sameSizeAndStyle){
                             for(Product.edps edpsData: productsData.getEdps()){
-                                if(!productsData.getPriceIsLabel().isEmpty()){
+                                if(!productsData.getPriceIsLabel().isEmpty()&&!edpsData.isSoldOut()){
                                     productMap = this.getEDPNumberForInputCondition(data.get("quantity"),itemToBeAdded,edpsData,productsData);
                                     if(productMap.keySet().size()>0)
                                         innerForLoop = true;
@@ -1638,7 +1640,7 @@ public class ProductAPI extends ApiClient {
                                         forLoopCounter++;
                                         Map<String,Object> productMapData = new HashMap<>();
                                         boolean secondValue = false;
-                                        if(!checkStyle.equalsIgnoreCase(edpsData.getStyle()) && edpsData.getInventory()>1){
+                                        if(!checkStyle.equalsIgnoreCase(edpsData.getStyle()) && edpsData.getInventory()>1&&!edpsData.isIsSoldOut()){
                                             if(counter==0 && productMapData.size()>0)
                                                 productMapData.clear();
                                             checkStyle = edpsData.getStyle();

@@ -220,6 +220,12 @@ public class ShoppingCartPage extends BasePage {
 	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-details')]//div[contains(@class,'cart-pricing')]//strong[.='APPLIED DISCOUNTS']/parent::div/parent::div/following-sibling::div[not(contains(@class,'totalPrice'))][not(div[contains(@class,'text-center')])]")
 	public List<WebElement> lstAppliedDiscountList;
 
+	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-details')]//div[contains(@class,'cart-pricing')]//div[normalize-space(text())='Gift Card Redeemed:']")
+	public WebElement lblGiftCardRedeemTitle;
+
+	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-details')]//div[contains(@class,'cart-pricing')]//div[normalize-space(text())='Gift Card Redeemed:']/following-sibling::div")
+	public WebElement lblGiftCardRedeemValue;
+
 	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-pricing')]//div[contains(normalize-space(text()),'TOTAL PRICE:')]")
 	public WebElement lblCartPricingTotalPriceTitle;
 
@@ -228,6 +234,9 @@ public class ShoppingCartPage extends BasePage {
 
 	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-pricing')]//span[contains(normalize-space(text()),'You’re saving')]")
 	public WebElement lblCartPricingYouAreSaving;
+
+	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-pricing')]/div[contains(@class,'clearfix')][last()]")
+	public WebElement lblCartPricingLastItem;
 
 	//EasyPay
 	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'easypay')]//div[contains(@class,'cart-installment-more')]")
@@ -297,7 +306,7 @@ public class ShoppingCartPage extends BasePage {
 	@FindBy(xpath = "//div[@class='cartridge']//shopping-cart-privacy//a[@id='btn-learn-more']")
 	public WebElement lnkCartPrivacy;
 
-	@FindBy(xpath = "//div[@class='Footer']//div[@class='blockPageWrap']")
+	@FindBy(xpath = "//shopping-cart//div[@class='blockPageWrap']")
 	public WebElement pageLoadingIndicator;
 
 	//PayPal
@@ -512,21 +521,20 @@ public class ShoppingCartPage extends BasePage {
 	 */
 	public String judgeAppliedDiscountType(){
 		if(checkAppliedDiscountExistingInOrderSummary()){
-			if(this.lstAppliedDiscountList.size()==2){
+			if(this.lstOrderSummaryRow.size()==6){
 				return "Both";
 			}
 
-			WebElement item=this.lstAppliedDiscountList.get(0);
-			if(this.getElementInnerText(item).contains("Gift Card")){
-				return "GiftCard";
-			}
-			else{
+			if(this.lstOrderSummaryRow.size()==5){
 				return "PromoteCode";
 			}
+
+			if(this.lstOrderSummaryRow.size()==4){
+				return "GiftCard";
+			}
 		}
-		else{
-			return null;
-		}
+
+		return null;
 	}
 
 	/**
@@ -542,7 +550,7 @@ public class ShoppingCartPage extends BasePage {
 	 * @return - boolean
 	 */
 	public boolean checkShippingSavingExistingFromOrderSummary(){
-		return checkShippingWasPriceExisting();
+		return this.getElementInnerText(lblCartPricingLastItem).toLowerCase().contains("you’re saving");
 	}
 
 	/**
@@ -1430,7 +1438,7 @@ public class ShoppingCartPage extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblCartPricingShippingNowPrice);
 		lsText=this.lblCartPricingShippingNowPrice.getText().trim();
 		if(!lsText.equalsIgnoreCase("Free")){
-			map.put("nowPrice",this.getFloatFromString(lsText,true));
+			map.put("nowPrice",this.getFloatFromString(lsText));
 		}
 		else{
 			map.put("nowPrice",0.0f);
@@ -1509,12 +1517,8 @@ public class ShoppingCartPage extends BasePage {
 					map.put("giftCardValue",0.0f);
 					break;
 				case "GiftCard":
-					item=lstAppliedDiscountList.get(0);
-					subItem=item.findElement(By.xpath("./div[1]"));
-					lsText=this.getElementInnerText(subItem).replace(":","");
-					map.put("giftCardTitle",lsText);
-					subItem=item.findElement(By.xpath("./div[2]"));
-					lsText=this.getElementInnerText(subItem);
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblGiftCardRedeemValue);
+					lsText=lblGiftCardRedeemValue.getText();
 					if(lsText.contains("-")){
 						map.put("giftCardValue",-1*this.getFloatFromString(lsText,true));
 					}
@@ -1585,27 +1589,6 @@ public class ShoppingCartPage extends BasePage {
 
 		float wasPriceOrderSummary= (float) orderSummaryMap.get("wasPrice");
 		float nowPriceOrderSummary=(float) orderSummaryMap.get("nowPrice");
-		float calSavePriceOrderSummary;
-		if(wasPriceOrderSummary<0.01){
-			calSavePriceOrderSummary=0.0f;
-		}
-		else{
-			calSavePriceOrderSummary=Math.abs(wasPriceOrderSummary-nowPriceOrderSummary);
-			if(Math.abs(calSavePriceOrderSummary-savePriceShoppingCart)<0.01){
-				reporter.reportLogPass("The calculated saving price in OrderSummary section is equal to the one in Shopping Cart item section");
-			}
-			else{
-				reporter.reportLogFail("The calculated saving price:"+calSavePriceOrderSummary+" in OrderSummary section is not equal to the one:"+savePriceShoppingCart+" in Shopping Cart item section");
-			}
-		}
-
-		float savePriceOrderSummary=(float) orderSummaryMap.get("savePrice");
-		if(Math.abs(calSavePriceOrderSummary-savePriceOrderSummary)<0.01){
-			reporter.reportLogPass("The calculated saving price in OrderSummary section is equal to the saving price in OrderSummary section");
-		}
-		else{
-			reporter.reportLogFail("The calculated saving price:"+calSavePriceOrderSummary+" in OrderSummary section is not equal to the saving price:"+savePriceOrderSummary+" in OrderSummary section");
-		}
 
 		float subTotal=(float) orderSummaryMap.get("subTotal");
 		if(Math.abs(subTotal-subTotalShoppingCart)<0.01){
@@ -1638,6 +1621,22 @@ public class ShoppingCartPage extends BasePage {
 		}
 		else{
 			reporter.reportLogFail("The calculated total price:"+calTotalPrice+" in OrderSummary section is not equal to the total price:"+totalPrice+" in OrderSummary section");
+		}
+
+		float calSavePriceOrderSummary;
+		if(wasPriceOrderSummary<0.01){
+			calSavePriceOrderSummary=0.0f;
+		}
+		else{
+			calSavePriceOrderSummary=Math.abs(wasPriceOrderSummary-nowPriceOrderSummary);
+		}
+		calSavePriceOrderSummary=calSavePriceOrderSummary+Math.abs(promoteCodeValue);
+		float savePriceOrderSummary=(float) orderSummaryMap.get("savePrice");
+		if(Math.abs(calSavePriceOrderSummary-savePriceOrderSummary)<0.01){
+			reporter.reportLogPass("The calculated saving price in OrderSummary section is equal to the saving price in OrderSummary section");
+		}
+		else{
+			reporter.reportLogFail("The calculated saving price:"+calSavePriceOrderSummary+" in OrderSummary section is not equal to the saving price:"+savePriceOrderSummary+" in OrderSummary section");
 		}
 	}
 
@@ -2279,35 +2278,56 @@ public class ShoppingCartPage extends BasePage {
 		}
 
 		if(this.checkAppliedDiscountExistingInOrderSummary()){
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAppliedDiscountTitle);
-			lsText=this.lblAppliedDiscountTitle.getText();
-			if(!lsText.isEmpty()){
-				reporter.reportLogPass("The Applied Discount Title in OrderSummary is displaying correctly");
+			if(!this.judgeAppliedDiscountType().equalsIgnoreCase("GiftCard")){
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAppliedDiscountTitle);
+				lsText=this.lblAppliedDiscountTitle.getText();
+				if(!lsText.isEmpty()){
+					reporter.reportLogPass("The Applied Discount Title in OrderSummary is displaying correctly");
+				}
+				else{
+					reporter.reportLogFailWithScreenshot("The Applied Discount Title in OrderSummary is not displaying correctly");
+				}
+
+				WebElement subItem;
+				for(WebElement item:this.lstAppliedDiscountList){
+					subItem=item.findElement(By.xpath("./div[1]"));
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
+					lsText=subItem.getText();
+					if(!lsText.isEmpty()){
+						reporter.reportLogPass("The Applied Discount item title:"+lsText+" in OrderSummary is displaying correctly");
+					}
+					else{
+						reporter.reportLogFailWithScreenshot("The Applied Discount item Title in OrderSummary is not displaying correctly");
+					}
+
+					subItem=item.findElement(By.xpath("./div[2]"));
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
+					lsText=subItem.getText();
+					if(!lsText.isEmpty()){
+						reporter.reportLogPass("The Applied Discount item value:"+lsText+" in OrderSummary is displaying correctly");
+					}
+					else{
+						reporter.reportLogFailWithScreenshot("The Applied Discount item value in OrderSummary is not displaying correctly");
+					}
+				}
 			}
 			else{
-				reporter.reportLogFailWithScreenshot("The Applied Discount Title in OrderSummary is not displaying correctly");
-			}
-
-			WebElement subItem;
-			for(WebElement item:this.lstAppliedDiscountList){
-				subItem=item.findElement(By.xpath("./div[1]"));
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
-				lsText=subItem.getText();
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblGiftCardRedeemTitle);
+				lsText=lblGiftCardRedeemTitle.getText();
 				if(!lsText.isEmpty()){
-					reporter.reportLogPass("The Applied Discount item title:"+lsText+" in OrderSummary is displaying correctly");
+					reporter.reportLogPass("The GiftCardRedeem Title is displaying correctly");
 				}
 				else{
-					reporter.reportLogFailWithScreenshot("The Applied Discount item Title in OrderSummary is not displaying correctly");
+					reporter.reportLogFailWithScreenshot("The GiftCardRedeem Title is not displaying correctly");
 				}
 
-				subItem=item.findElement(By.xpath("./div[2]"));
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
-				lsText=subItem.getText();
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblGiftCardRedeemValue);
+				lsText=lblGiftCardRedeemValue.getText();
 				if(!lsText.isEmpty()){
-					reporter.reportLogPass("The Applied Discount item value:"+lsText+" in OrderSummary is displaying correctly");
+					reporter.reportLogPass("The GiftCardRedeem value is displaying correctly");
 				}
 				else{
-					reporter.reportLogFailWithScreenshot("The Applied Discount item value in OrderSummary is not displaying correctly");
+					reporter.reportLogFailWithScreenshot("The GiftCardRedeem value is not displaying correctly");
 				}
 			}
 		}
@@ -2578,9 +2598,11 @@ public class ShoppingCartPage extends BasePage {
 			for(Map<String,Object> cartData:productData){
 				if(cartGuidIdValue==null){
 					cartResponse = cartAPI.createNewCartOrAddItems(Arrays.asList(Integer.valueOf(cartData.get("edpNo").toString())),Integer.valueOf(cartData.get("itemToBeAdded").toString()),customerEDP,access_token,null);
-					cartGuidIdValue = cartResponse.jsonPath().get("CartGuid");
-				}else
-					cartResponse = cartAPI.createNewCartOrAddItems(Arrays.asList(Integer.valueOf(cartData.get("edpNo").toString())),Integer.valueOf(cartData.get("itemToBeAdded").toString()),customerEDP,access_token,cartGuidIdValue);
+					if(cartResponse.getStatusCode()==200)
+						cartGuidIdValue = cartResponse.jsonPath().get("CartGuid");
+				}else {
+					cartResponse = cartAPI.createNewCartOrAddItems(Arrays.asList(Integer.valueOf(cartData.get("edpNo").toString())), Integer.valueOf(cartData.get("itemToBeAdded").toString()), customerEDP, access_token, cartGuidIdValue);
+				}
 			}
 		}
 		return cartResponse;
@@ -2599,10 +2621,13 @@ public class ShoppingCartPage extends BasePage {
 		CartAPI cartApi = new CartAPI();
 		CartResponse accountCart = null;
 		Response responseExisting=cartApi.getAccountCartContentWithCustomerEDP(String.valueOf(customerEDP), accessToken);
-		if(responseExisting.statusCode()==200)
-			accountCart = JsonParser.getResponseObject(responseExisting.asString(), new TypeReference<CartResponse>() {});
-		else
+		if(responseExisting.statusCode()==200) {
+			accountCart = JsonParser.getResponseObject(responseExisting.asString(), new TypeReference<CartResponse>() {
+			});
+		}
+		else{
 			return null;
+		}
 
 		//If there is cart present for user, returning the data in cart
 		if(bCheckExisting&&accountCart.getProducts().size()>0){
@@ -2610,7 +2635,8 @@ public class ShoppingCartPage extends BasePage {
 			/**String cartGuidId = accountCart.getCartGuid();
 			Response response = cartApi.getCartContentWithCartGuid(cartGuidId,accessToken);
 			CartResponse cartResponse = JsonParser.getResponseObject(response.asString(), new TypeReference<CartResponse>() {});
-			*/List<CartResponse.ProductsClass> productsClassList = accountCart.getProducts();
+			*/
+			List<CartResponse.ProductsClass> productsClassList = accountCart.getProducts();
 			List<CartResponse.CartLinesClass> cartLinesClassList = accountCart.getCartLines();
 
 			for(CartResponse.CartLinesClass cartLinesClass:cartLinesClassList){
@@ -2653,11 +2679,62 @@ public class ShoppingCartPage extends BasePage {
 		//If there is no cart present fo user, creating the cart for user and returning data
 		else{
 			List<Map<String,Object>> data = new ProductAPI().getProductDetailsToBeAddedToCartForUser(itemsToBeAdded);
-			Response response = this.addItemsToCartForUser(data,customerEDP,accessToken,null);
-			if(response.statusCode()==200)
-				return data;
-			else
+			this.addItemsToCartForUser(data,customerEDP,accessToken,null);
+
+			responseExisting=cartApi.getAccountCartContentWithCustomerEDP(String.valueOf(customerEDP), accessToken);
+			if(responseExisting.statusCode()==200) {
+				accountCart = JsonParser.getResponseObject(responseExisting.asString(), new TypeReference<CartResponse>() {
+				});
+			}
+			else{
 				return null;
+			}
+
+			data = new ArrayList<>();
+			/**String cartGuidId = accountCart.getCartGuid();
+			 Response response = cartApi.getCartContentWithCartGuid(cartGuidId,accessToken);
+			 CartResponse cartResponse = JsonParser.getResponseObject(response.asString(), new TypeReference<CartResponse>() {});
+			 */
+			List<CartResponse.ProductsClass> productsClassList = accountCart.getProducts();
+			List<CartResponse.CartLinesClass> cartLinesClassList = accountCart.getCartLines();
+
+			for(CartResponse.CartLinesClass cartLinesClass:cartLinesClassList){
+				CartResponse.CartLinesClass.CartLineItemClass cartLineItemClass = cartLinesClass.getCartLineItem();
+				CartResponse.CartLinesClass.InCartClass inCartClass = cartLinesClass.getInCart();
+				Map<String,Object> map = new HashMap<>();
+				map.put("productNumber",cartLineItemClass.getItemNo());
+				map.put("edpNo",cartLineItemClass.getEdpNo());
+				map.put("itemToBeAdded",inCartClass.getQuantity());
+				map.put("productStyle",cartLineItemClass.getStyle());
+				map.put("productStyleDimensionId",cartLineItemClass.getStyleDimensionId());
+				map.put("productSize",cartLineItemClass.getSize());
+				map.put("productSizeDimensionId",cartLineItemClass.getSizeDimensionId());
+				map.put("productNowPrice",this.getFloatFromString(cartLineItemClass.getAppliedPrice(),true));
+				map.put("productWasPrice",cartLineItemClass.getWasPrice());
+				map.put("productSavePrice",cartLineItemClass.getSavePrice());
+				map.put("productAppliedShipping",cartLineItemClass.getAppliedShipping());
+				map.put("advanceOrderMessage",cartLineItemClass.getSkuAvailabilityMessage());
+
+				for(CartResponse.ProductsClass productsClass:productsClassList){
+					boolean outerForLoop = false;
+					if(productsClass.getItemNo().equalsIgnoreCase(map.get("productNumber").toString())){
+						map.put("productName",productsClass.getName());
+						map.put("productBadge",productsClass.isShowBadgeImage());
+						for(CartResponse.ProductsClass.EdpsClass edps:productsClass.getEdps()){
+							if(edps.getEdpNo()==Integer.valueOf(map.get("edpNo").toString())){
+								map.put("edpsData",edps);
+								outerForLoop = true;
+								break;
+							}
+						}
+						if(outerForLoop)
+							break;
+					}
+				}
+				data.add(map);
+			}
+			return data;
+
 		}
 	}
 
@@ -3042,6 +3119,7 @@ public class ShoppingCartPage extends BasePage {
 							}
 						if(!innerFlag){
 							//Adding TSC card to user as configuration for TSC is set to true and no TSC card is present for user
+							//this.addTSCCreditCardForUser((JSONObject) creditCardData.get("tsc"),customerEDP,accessToken);
 							JSONObject tscCardObject = (JSONObject) creditCardData.get("tsc");
 							tscCardObject.put("IsDefault",true);
 							tscCardObject.put("CVV",null);
@@ -3320,5 +3398,29 @@ public class ShoppingCartPage extends BasePage {
 		else{
 			return null;
 		}
+	}
+
+	/**
+	 * This function adds TSC Credit Card to user
+	 * @param - tscCardObject
+	 * @param - customerEDP
+	 * @param - accessToken
+	 * @throws - IOException
+	 */
+	public void addTSCCreditCardForUser(JSONObject tscCardObject, String customerEDP,String accessToken) throws IOException {
+		if(tscCardObject==null){
+			JSONObject creditCardData = new DataConverter().readJsonFileIntoJSONObject("test-data/CreditCard.json");
+			tscCardObject = (JSONObject) creditCardData.get("tsc");
+		}
+		tscCardObject.put("IsDefault",true);
+		tscCardObject.put("CVV",null);
+		tscCardObject.remove("CardType");
+		tscCardObject.remove("CardDisplayName");
+		Response tscCardResponse = new AccountAPI().addCreditCardToUser(tscCardObject,customerEDP,accessToken);
+		if(tscCardResponse.statusCode()==200)
+			reporter.reportLog("New TSC Credit Card is added for user as default Card");
+		else
+			reporter.reportLogFail("New TSC Credit Card is not added for user as default Card");
+
 	}
 }

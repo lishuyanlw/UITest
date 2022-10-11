@@ -255,6 +255,9 @@ public class RegularCheckoutPage extends BasePage {
 	@FindBy(xpath = "//article[@class='leftSide']//div[contains(@class,'paymentMethodWrap')]//div[@class='paymentmethod__label']/following-sibling::div")
 	public WebElement cntPaymentMethodContainer;
 
+	@FindBy(xpath = "//article[@class='leftSide']//div[contains(@class,'paymentMethodWrap')]//div[@class='paymentmethod__label']/following-sibling::div//*[contains(@class,'tagCCImage')]")
+	public WebElement iconPaymentMethod;
+
 	@FindBy(xpath = "//article[@class='leftSide']//div[contains(@class,'paymentMethodWrap')]//div[@class='paymentmethod__error-wrap']")
 	public WebElement lblPaymentMethodErrorMessage;
 
@@ -487,6 +490,9 @@ public class RegularCheckoutPage extends BasePage {
 	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//span[@class='summary__savingmsg']")
 	public WebElement lblOrderSummarySavingPrice;
 
+	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//div[@class='summary']/div[contains(@class,'summary__row')][last()]")
+	public WebElement lblOrderSummaryLastItem;
+
 	//For Installment
 	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]/div[contains(@class,'summary')]")
 	public WebElement cntEasyPayContainer;
@@ -587,6 +593,9 @@ public class RegularCheckoutPage extends BasePage {
 
 	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'placeorder__wrap')]//div[contains(@class,'placeorder__reserve-msg')]")
 	public WebElement lblOrderSummaryPlaceOrderMessage;
+
+	@FindBy(xpath = "//div[@id='order-confirmation']//button[contains(text(),'Order Details')]")
+	public WebElement btnGoToOrderDetailsFromOrderConfirmation;
 
 	//For footer
 	@FindBy(xpath = "//footer")
@@ -758,8 +767,16 @@ public class RegularCheckoutPage extends BasePage {
 	 * To check Payment Method Existing
 	 * @return - boolean
 	 */
-	public boolean checkPaymentMethodExisting(){
+	public boolean checkPaymentMethodTypeExisting(){
 		return this.checkChildElementExistingByAttribute(cntPaymentMethodContainer,"class","paymentmethod__description");
+	}
+
+	/**
+	 * To check If Payment Method Is TSC
+	 * @return - boolean
+	 */
+	public boolean checkIfPaymentMethodIsTSC(){
+		return this.iconPaymentMethod.getAttribute("class").contains("tagCCImageTSC");
 	}
 
 	/**
@@ -811,7 +828,7 @@ public class RegularCheckoutPage extends BasePage {
 	 * @return - boolean
 	 */
 	public boolean checkOrderSummarySavingPriceExisting(){
-		return !this.getElementInnerText(lblOrderSummaryShippingWasPrice).isEmpty();
+		return this.getElementInnerText(lblOrderSummaryLastItem).toLowerCase().contains("you’re saving");
 	}
 
 	/**
@@ -833,7 +850,7 @@ public class RegularCheckoutPage extends BasePage {
 			}
 
 			WebElement item=this.lstOrderSummaryAppliedDiscountList.get(0);
-			if(this.getElementInnerText(item).contains("Gift Card")){
+			if(this.getElementInnerText(item).toLowerCase().contains("gift card")){
 				return "GiftCard";
 			}
 			else{
@@ -951,14 +968,14 @@ public class RegularCheckoutPage extends BasePage {
 				}
 				else{
 					map.put("productName",lsSplit[0].trim());
-					map.put("productStyle",lsSplit[1].trim());
+					map.put("productStyle",lsSplit[1].split(":")[1].trim());
 					map.put("productSize",null);
 				}
 			}
 			else{
 				map.put("productName",lsSplit[0].trim());
-				map.put("productStyle",lsSplit[1].trim());
-				map.put("productSize",lsSplit[2].split(":")[1].trim());
+				map.put("productStyle",lsSplit[2].split(":")[1].trim());
+				map.put("productSize",lsSplit[1].split(":")[1].trim());
 			}
 		}
 		else{
@@ -1072,6 +1089,45 @@ public class RegularCheckoutPage extends BasePage {
 	}
 
 	/**
+	 * To get Shipping And Payment Description
+	 * @param - Map<String,Object> - checkoutItem
+	 * @return - Map<String,Object>
+	 */
+	public Map<String,Object> getShippingAndPaymentDesc(Map<String,Object> checkoutItem) {
+		String lsText;
+		Map<String, Object> map = new HashMap<>();
+
+		if(this.checkProductShippingDateExisting()){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblShippingDate);
+			lsText=lblShippingDate.getText().trim();
+			map.put("shippingDate",lsText);
+		}
+		else{
+			lsText=checkoutItem.get("productShippingDate").toString();
+			map.put("shippingDate",lsText);
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblShippingAddress);
+		lsText=lblShippingAddress.getText().trim();
+		map.put("shippingAddress",lsText);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblShippingMethod);
+		lsText=lblShippingMethod.getText().trim();
+		map.put("shippingMethod", lsText.split("-")[0].trim());
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblPaymentMethod);
+		lsText=lblPaymentMethod.getText().trim();
+		map.put("paymentMethodDescription",lsText);
+		map.put("paymentMethod",getSelectedPaymentMethodFromCheckout(lblSelectedCardTypeForPayment));
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblBillingAddress);
+		lsText=lblBillingAddress.getText().trim();
+		map.put("billingAddress",lsText);
+
+		return map;
+	}
+
+	/**
 	 * To get WasPrice From OrderSummary
 	 * @return - float
 	 */
@@ -1119,7 +1175,7 @@ public class RegularCheckoutPage extends BasePage {
 		if(this.checkOrderSummarySavingPriceExisting()){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderSummarySavingPrice);
 			String lsText=this.lblOrderSummarySavingPrice.getText();
-			return this.getFloatFromString(lsText,true);
+			return this.getFloatFromString(lsText);
 		}
 		else{
 			return 0.0f;
@@ -1478,7 +1534,7 @@ public class RegularCheckoutPage extends BasePage {
 			return 0.0f;
 		}
 		else{
-			return this.getFloatFromString(lsText,true);
+			return this.getFloatFromString(lsText);
 		}
 	}
 
@@ -1742,7 +1798,13 @@ public class RegularCheckoutPage extends BasePage {
 		if(bSave){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnUsingANewCardDialogSaveButton);
 			btnUsingANewCardDialogSaveButton.click();
-			waitForPageLoadingSpinningStatusCompleted();
+			try {
+				waitForPageLoadingSpinningStatusCompleted();
+				this.applyStaticWait(5*getStaticWaitForApplication());
+			}
+			catch (Exception e){
+				this.applyStaticWait(5*getStaticWaitForApplication());
+			}
 		}
 		else{
 			if(this.getDeviceTypeForTest(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
@@ -1857,6 +1919,14 @@ public class RegularCheckoutPage extends BasePage {
 	}
 
 	/**
+	 * To check Payment Method Existing
+	 * @return - boolean
+	 */
+	public boolean checkPaymentMethodExisting(){
+		return this.checkChildElementExistingByAttribute(cntPaymentMethodContainer,"class","paymentmethod__description");
+	}
+
+	/**
 	 * To get Input Credit Card Number Type
 	 * @return - String - "Visa"/"MC"/"Amex"
 	 */
@@ -1927,6 +1997,7 @@ public class RegularCheckoutPage extends BasePage {
 					cardItem.click();
 					bFind=true;
 					cartIndex=i;
+					closeAddOrChangePaymentMethodDialog(true);
 				}
 			}
 			else{
@@ -1935,6 +2006,7 @@ public class RegularCheckoutPage extends BasePage {
 					cardItem.click();
 					bFind=true;
 					cartIndex=i;
+					closeAddOrChangePaymentMethodDialog(true);
 				}
 			}
 		}
@@ -1948,11 +2020,6 @@ public class RegularCheckoutPage extends BasePage {
 				addNewCreditOrEditExistingCard(cardType,true,false);
 			}
 			closeUsingANewCardDialog(true);
-
-			cardItem=lstAddOrChangePaymentMethodDialogAvailableCardContainer.get(0);
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(cardItem);
-			cardItem.click();
-			cartIndex=0;
 		}
 
 		return cartIndex;
@@ -2419,7 +2486,6 @@ public class RegularCheckoutPage extends BasePage {
 		map.put("totalPrice",this.getFloatFromString(lsText,true));
 
 		map.put("savePrice",getSavingPriceFromOrderSummary());
-
 		return map;
 	}
 
@@ -2455,21 +2521,6 @@ public class RegularCheckoutPage extends BasePage {
 	public void verifyOrderSummaryBusinessLogic(float subTotalShoppingCart,Map<String,Object> orderSummaryMap,Map<String,Object> provincialTaxRate){
 		float wasPriceOrderSummary= (float) orderSummaryMap.get("wasPrice");
 		float nowPriceOrderSummary=(float) orderSummaryMap.get("nowPrice");
-		float calSavePriceOrderSummary;
-		if(wasPriceOrderSummary<0.01){
-			calSavePriceOrderSummary=0.0f;
-		}
-		else{
-			calSavePriceOrderSummary=Math.abs(wasPriceOrderSummary-nowPriceOrderSummary);
-		}
-
-		float savePriceOrderSummary=(float) orderSummaryMap.get("savePrice");
-		if(Math.abs(calSavePriceOrderSummary-savePriceOrderSummary)<0.01){
-			reporter.reportLogPass("The calculated saving price in OrderSummary section is equal to the saving price in OrderSummary section");
-		}
-		else{
-			reporter.reportLogFail("The calculated saving price:"+calSavePriceOrderSummary+" in OrderSummary section is not equal to the saving price:"+savePriceOrderSummary+" in OrderSummary section");
-		}
 
 		float subTotal=(float) orderSummaryMap.get("subTotal");
 		if(Math.abs(subTotal-subTotalShoppingCart)<0.01){
@@ -2501,6 +2552,23 @@ public class RegularCheckoutPage extends BasePage {
 		}
 		else{
 			reporter.reportLogFail("The calculated total price:"+calTotalPrice+" in OrderSummary section is not equal to the total price:"+totalPrice+" in OrderSummary section");
+		}
+
+		float calSavePriceOrderSummary;
+		if(wasPriceOrderSummary<0.01){
+			calSavePriceOrderSummary=0.0f;
+		}
+		else{
+			calSavePriceOrderSummary=Math.abs(wasPriceOrderSummary-nowPriceOrderSummary);
+		}
+		calSavePriceOrderSummary=calSavePriceOrderSummary+Math.abs(promoteCodeValue);
+
+		float savePriceOrderSummary=(float) orderSummaryMap.get("savePrice");
+		if(Math.abs(calSavePriceOrderSummary-savePriceOrderSummary)<0.01){
+			reporter.reportLogPass("The calculated saving price in OrderSummary section is equal to the saving price in OrderSummary section");
+		}
+		else{
+			reporter.reportLogFail("The calculated saving price:"+calSavePriceOrderSummary+" in OrderSummary section is not equal to the saving price:"+savePriceOrderSummary+" in OrderSummary section");
 		}
 	}
 
@@ -4131,9 +4199,7 @@ public class RegularCheckoutPage extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnGoToShoppingBag);
 		this.clickElement(btnGoToShoppingBag);
 		ShoppingCartPage shoppingCartPage=new ShoppingCartPage(this.getDriver());
-		this.waitForCondition(Driver->{return shoppingCartPage.lblCartTitle.isDisplayed();},40000);
-		this.applyStaticWait(5*this.getStaticWaitForApplication());
-		return true;
+		return this.waitForCondition(Driver->{return shoppingCartPage.lblCartPricingOrderSummaryTitle.isDisplayed();},120000);
 	}
 
 	/**
@@ -4617,10 +4683,10 @@ public class RegularCheckoutPage extends BasePage {
 	/**
 	 * To Apply Promote Code For Positive Scenario
 	 * @param - List<String> - promoteCodeList
-	 * @return - boolean
+	 * @return - String
 	 */
-	public boolean ApplyPromoteCodeForPositiveScenario(List<String> promoteCodeList){
-		boolean bFind=false;
+	public String ApplyPromoteCodeForPositiveScenario(List<String> promoteCodeList){
+		String lsFindPromoteCode="";
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputOrderSummaryPromoteCode);
 		for(String promoteCode:promoteCodeList){
 			inputOrderSummaryPromoteCode.clear();
@@ -4638,7 +4704,7 @@ public class RegularCheckoutPage extends BasePage {
 
 			try{
 				this.waitForCondition(Driver->{return lblOrderSummaryPromoteCodeAppliedMessage.isDisplayed();},15000);
-				bFind=true;
+				lsFindPromoteCode=promoteCode;
 				break;
 			}
 			catch(Exception e){
@@ -4646,7 +4712,7 @@ public class RegularCheckoutPage extends BasePage {
 			}
 		}
 
-		return bFind;
+		return lsFindPromoteCode;
 	}
 
 	/**
@@ -5241,6 +5307,37 @@ public class RegularCheckoutPage extends BasePage {
 			this.waitForCondition(Driver->{return this.btnAddOrChangePaymentMethod.isDisplayed() &&
 					this.btnAddOrChangePaymentMethod.isEnabled();},12000);
 			this.openAddOrChangePaymentMethodDialog();
+		}
+	}
+
+	/**
+	 * To get Gift Card Discount info From Applied Message
+	 * @return - float
+	 */
+	public float getGiftCardDiscountFromAppliedMessage(){
+		return this.getFloatFromString(this.getElementInnerText(this.lblOrderSummaryGiftCardAppliedMessage));
+	}
+
+	/**
+	 * To go to Order confirmation page
+	 */
+	public void goToOrderConfirmationPage(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement( btnOrderSummaryPlaceOrder);
+		this.clickElement( btnOrderSummaryPlaceOrder);
+
+		try{
+			this.waitForPageLoadingSpinningStatusCompleted();
+		}
+		catch (Exception e){
+			this.applyStaticWait(20*this.getStaticWaitForApplication());
+		}
+
+		try{
+			OrderConfirmationPage orderConfirmationPage=new OrderConfirmationPage(this.getDriver());
+			this.waitForCondition(Driver->{return orderConfirmationPage.lblOrderSuccessTitle.isDisplayed();},15000);
+		}
+		catch (Exception e){
+			this.applyStaticWait(3*this.getStaticWaitForApplication());
 		}
 	}
 }

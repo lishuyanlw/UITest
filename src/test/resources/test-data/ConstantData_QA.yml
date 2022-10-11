@@ -157,7 +157,7 @@ searchResultPage:
   lbl_VideoDisclaimInfo: "Pre-recorded videos contain pricing or promotional offers that may have expired."
   lbl_AdvancedOrderkeyword: 603108
   lbl_AdvancedOrderMessage: "Est. Ship/Pick-up Date"
-  lbl_AutoDeliverykeyword: 593608
+  lbl_AutoDeliverykeyword: 603108
   lbl_productTrueFitAndSizingChart: 404791
   lbl_ProductDeliveryOptions: 289485
   lbl_SoldOutkeyword: 485939
@@ -203,6 +203,7 @@ loginUser:
   lbl_ErrorMessageForPassword: Password is required!
   lbl_ErrorMessageForUserNameAndPassword: Hm, this email and password combination does not match our records. Please double check and try again.
 myAccount:
+  lnk_myAccountURL: "/pages/myaccount"
   lnk_addNewCardURL: "/pages/myaccount/paymentcards/addcard"
   lnk_giftCardURL: "/pages/giftcard"
   lst_newCreditCardType: [visa,master,amex,tsc]
@@ -244,6 +245,8 @@ myAccount:
   lbl_myNewsLettersUnSubscribeErrorMessage: "Select the checkbox to unsubscribe from email"
   lbl_myNewsLettersUnSubscribeAlertMessage: "Please click on the UNSUBSCRIBE button to unsubscribe from all email"
   lbl_noOrderRecordsMessage: "No orders yet. TSC has tons of deals to offer"
+  lblOrderDetailsPageUrl: "/pages/myaccount/orderstatus/details?orderNo="
+  lblBreadCrumbNavigationPages: "My Account:Your Orders:Order Details"
 
 lstTestName: ["MA_TC10_Payment_Options_Manage_Credit_Card",
               "MA_TC18_MyPreferences_MyNewsletters",
@@ -252,18 +255,23 @@ lstTestName: ["MA_TC10_Payment_Options_Manage_Credit_Card",
 lblChromeBrowserVersion: "99"
 shoppingCart:
   lst_SearchKeywords:
-    - searchKeyword: "jeggings"
-      quantity: "more than 3"
+    - searchKeyword: "jean"
+      quantity: "more than 1"
       badgeRequired: "true"
-      itemToBeAdded: "2"
+      itemToBeAdded: "1"
       styleExist: "true"
       sameSizeAndStyle: "true"
     - searchKeyword: "pants"
       quantity: "more than 3"
       badgeRequired: "true"
-      itemToBeAdded: "2"
+      itemToBeAdded: "1"
       styleExist: "true"
       sameSizeAndStyle: "true"
+    - searchKeyword: "gym"
+      quantity: ""
+      badgeRequired: "false"
+      itemToBeAdded: "1"
+      styleExist: "false"
     - searchKeyword: "jean"
       quantity: "more than 1"
       badgeRequired: "true"
@@ -276,7 +284,13 @@ shoppingCart:
   lblJayCareFoundationDonationMessage: "Jays Care Foundation Donation"
 checkOut:
   lst_SearchKeywords:
-    - searchKeyword: "dress"
+    - searchKeyword: "jean"
+      quantity: "more than 1"
+      badgeRequired: "true"
+      itemToBeAdded: "1"
+      styleExist: "true"
+      sameSizeAndStyle: "true"
+    - searchKeyword: "pants"
       quantity: "more than 3"
       badgeRequired: "true"
       itemToBeAdded: "2"
@@ -287,7 +301,20 @@ checkOut:
       badgeRequired: "false"
       itemToBeAdded: "1"
       styleExist: "false"
-      sameStyleAndSize: "true"
+      sameSizeAndStyle: "true"
+  lstOrderDetailItems:
+    - searchKeyword: "jeggings"
+      quantity: "more than 1"
+      badgeRequired: "true"
+      itemToBeAdded: "1"
+      styleExist: "true"
+      sameSizeAndStyle: "true"
+    - searchKeyword: "joan rivers"
+      quantity: "more than 1"
+      badgeRequired: "true"
+      itemToBeAdded: "1"
+      styleExist: "true"
+      sameSizeAndStyle: "true"
   addShippingAddressErrorMessage: ["You have one or more missing or invalid entries. Please enter correct data and try again.",
                                    "First name is required.","Last name is required.","Phone number is required.","Address is required.",
                                    "City is required.","Province is required.","Postal code is required."]
@@ -311,10 +338,10 @@ checkOut:
   lblExistingAddressErrorMessage: "The shipping address you are trying to add already exists."
   lst_PromoteCode: ["OFFER034","SHIP150"]
   lst_GiftCard:
-    - GiftCardNumber: "6006496682999900209"
-      GiftCardPin: "4020"
-    - GiftCardNumber: "6006496682749900319"
-      GiftCardPin: "3974"
+    - GiftCardNumber: "6006496682999900712"
+      GiftCardPin: "9540"
+    - GiftCardNumber: "6006496682999900720"
+      GiftCardPin: "2714"
   lblGiftCardPromoteErrorMessageForEasyPayment: "Gift cards cannot be used for orders that have Easy Pays."
   lblPaymentMethodErrorMessage: "Please enter a payment method"
   lstPaymentMethodCardAdditionErrorMessage: [
@@ -329,4 +356,4 @@ checkOut:
   lstInvalidGiftCardAndErrorMessage: ["6006499999999999999","9999","The System could not validate the Gift Card. Please try again."]
   lblEmptyGiftCardPinErrorMessage: "PIN is required."
 
-
+#https://qa-tsc.tsc.ca/pages/myaccount/orderstatus/details?orderNo=Z4057821
