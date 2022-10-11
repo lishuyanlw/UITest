@@ -4667,7 +4667,6 @@ public class MyAccount extends BasePage {
 	}
 
 	/**
-<<<<<<< HEAD
 	 * To get Order Details Desc Except Order List
 	 * @return - Map<String,Object>
 	 */
