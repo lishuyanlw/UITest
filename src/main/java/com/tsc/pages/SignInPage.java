@@ -768,4 +768,16 @@ public class SignInPage extends BasePage {
 		return getReusableActionsInstance().isElementVisible(this.btnSignOut);
 	}
 
+	/**
+	 * To goTo Guest Checkout Page
+	 * @return - boolean
+	 */
+	public boolean goToGuestCheckoutPage(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnCreateAccountOrContinueAsGuest);
+		this.btnCreateAccountOrContinueAsGuest.click();
+
+		GuestCheckoutPage guestCheckoutPage=new GuestCheckoutPage(this.getDriver());
+		return this.waitForCondition(Driver->{return guestCheckoutPage.btnCollapseProductList.isDisplayed();},120000);
+	}
+
 }
