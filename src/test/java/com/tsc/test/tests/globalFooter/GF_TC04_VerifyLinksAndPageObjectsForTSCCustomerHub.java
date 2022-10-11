@@ -79,15 +79,7 @@ public class GF_TC04_VerifyLinksAndPageObjectsForTSCCustomerHub extends BaseTest
 		elementList.clear();
 
 		//Track Your Order
-		String strBrowser = System.getProperty("Browser").trim();
-		if (strBrowser.toLowerCase().contains("android") || strBrowser.toLowerCase().contains("ios")
-				|| strBrowser.toLowerCase().contains("mobile")) {
-			lsService="Track Order";
-		}
-		else{
-			lsService="Track Your Order";
-		}
-
+		lsService="Track Your Order";
 		hashMap.clear();
 		hashMap = getGlobalFooterPageThreadLocal().getTestDataWithSpecificName(lstNameAndLinks, lsService, true);
 		reporter.reportLog(lsService);

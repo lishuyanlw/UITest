@@ -103,7 +103,7 @@ public class GF_TC05_VerifyLinksAndPageObjectsForAboutTSCExceptBrand extends Bas
 
         //More About TSC
         String lsService = "More About TSC";
-//        testData.clear();
+        testData.clear();
         testData = getGlobalFooterPageThreadLocal().getTestDataWithSpecificName(lstNameAndLinks, lsService, true);
         reporter.reportLog(lsService);
         WebElement selectedItem = getGlobalFooterPageThreadLocal().getServiceWebElement(lsService,testData.get("parent"));
@@ -134,203 +134,203 @@ public class GF_TC05_VerifyLinksAndPageObjectsForAboutTSCExceptBrand extends Bas
         }
         elementList.clear();
 
-//        //Channel Finder
-//        String lsServiceCF = "Channel Finder";
-//        reporter.reportLog(lsServiceCF);
-//        Map<String,String> testDataCF=getGlobalFooterPageThreadLocal().getTestDataWithSpecificName(lstNameAndLinks,lsServiceCF,true);
-//        WebElement selectedItemCF=getGlobalFooterPageThreadLocal().getServiceWebElement(lsServiceCF,testDataCF.get("parent"));
-//        String lsHrefCF=basePage.getElementHref(selectedItemCF);
-//        if(testDataCF.isEmpty()) {
-//            reporter.reportLogFail("Unable to find '"+lsServiceCF+"' link.");
-//        }
-//        if(getGlobalFooterPageThreadLocal().verifyLinks(lsHrefCF,testDataCF.get("Link"))){
-//            reporter.reportLogPass("The current '"+lsServiceCF+"' href of "+lsHrefCF+" is equal to "+testDataCF.get("Link"));
-//        }
-//        else{
-//            reporter.reportLogFailWithScreenshot("The current '"+lsServiceCF+"' href of "+lsHrefCF+" is not equal to "+testDataCF.get("Link"));
-//        }
-//
-//        if(!getGlobalFooterPageThreadLocal().goToService(lsServiceCF,getGlobalFooterPageThreadLocal().lblChannelFinderTitle,testDataCF.get("parent"))) {
-//            reporter.reportLogFail("Unable to navigate to '"+lsServiceCF+"' page objects.");
-//        }
-//        else {
-//            //Verifying page title
-//            String pageTitle = getGlobalFooterPageThreadLocal().getPageTitle(getGlobalFooterPageThreadLocal().lblChannelFinderTitle);
-//            if(pageTitle.equalsIgnoreCase(lsServiceCF)){
-//                reporter.reportLogPass("Page Title matches for global footer link: "+lsServiceCF+" and  title is: "+pageTitle);
-//            }
-//            else{
-//                reporter.reportLogFailWithScreenshot("Page Title doesn't match for global footer link: "+lsServiceCF+" and  title is: "+pageTitle);
-//            }
-//
-//            //Verifying Page Elements
-//            //Find Cable Channels
-//            //reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().useourchannelfinder),"Page paragraph line exists","Page paragraph line doesn't exists");
-//            if(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lblFindCableChannelTitle)){
-//                reporter.reportLogPass("The Title Find Cable Channel is displayed");
-//            }
-//            else{
-//                reporter.reportLogFailWithScreenshot("The Title Find Cable Channel is not displayed");
-//            }
-//
-//            if(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lblselectyour)){
-//                reporter.reportLogPass("The text Select your: exists");
-//            }
-//            else{
-//                reporter.reportLogFailWithScreenshot("The text Select your: doesn't exist");
-//            }
-//
-//            if(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lblProvince)){
-//                reporter.reportLogPass("The Title Province exists");
-//            }
-//            else{
-//                reporter.reportLogFailWithScreenshot("The Title Province doesn't exist");
-//            }
-//
-//            if(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lblCableProvider)){
-//                reporter.reportLogPass("The Title Cable Provider exists");
-//            }
-//            else{
-//                reporter.reportLogFailWithScreenshot("The Title Cable Provider doesn't exist");
-//            }
-//
-//            if(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lblCity)){
-//                reporter.reportLogPass("The Title City exists");
-//            }
-//            else{
-//                reporter.reportLogFailWithScreenshot("The Title City doesn't exist");
-//            }
-//
-//            //Satellite Channels
-//            if(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lblSatelliteChannels)){
-//                reporter.reportLogPass("The Title Satellite Channels exist");
-//            }
-//            else{
-//                reporter.reportLogFailWithScreenshot("The Title Satellite Channels doesn't exist");
-//            }
-//
-//            if(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lblBellTV)){
-//                reporter.reportLogPass("The Title Satellite Channels exist");
-//            }
-//            else{
-//                reporter.reportLogFailWithScreenshot("Page paragraph line doesn't exist");
-//            }
-//
-//            if(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lblShawDirect)){
-//                reporter.reportLogPass("Page paragraph line exists");
-//            }
-//            else{
-//                reporter.reportLogFailWithScreenshot("Page paragraph line doesn't exist");
-//            }
-//
-//            if(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lblChannelsBellTV)){
-//                reporter.reportLogPass("The line under Bell TV Column exists");
-//            }
-//            else{
-//                reporter.reportLogFailWithScreenshot("The line under Bell TV Column doesn't exist");
-//            }
-//
-//            if(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lblChannelsShawDirect)){
-//                reporter.reportLogPass("The line under Shaw Direct Column exists");
-//            }
-//            else{
-//                reporter.reportLogFailWithScreenshot("The line under Shaw Direct Column exist");
-//            }
-//
-//            //Verifying Province Drop Down and its respective Cable Provider and City
-//            getGlobalFooterPageThreadLocal().verifyMultipleDropDownWithTitle(getGlobalFooterPageThreadLocal().dropDownProvince, getGlobalFooterPageThreadLocal().dropDownCableProvider, getGlobalFooterPageThreadLocal().dropDownCity);
-//        }
-//
-//        //Meet The Hosts
-//        String lsServiceMH = "Meet the Hosts";
-//        String actualPageTitle="Meet Our Hosts";
-//        Map<String,String> testDataMH=getGlobalFooterPageThreadLocal().getTestDataWithSpecificName(lstNameAndLinks,lsServiceMH,true);
-//        reporter.reportLog(lsServiceMH);
-//        WebElement selectedItemMH=getGlobalFooterPageThreadLocal().getServiceWebElement(lsServiceMH,testDataMH.get("parent"));
-//        String lsHrefMH=basePage.getElementHref(selectedItemMH);
-//        if(testDataMH.isEmpty()) {
-//            reporter.reportLogFail("Unable to find '"+lsServiceMH+"' link.");
-//        }
-//        if(getGlobalFooterPageThreadLocal().verifyLinks(lsHrefMH,testDataMH.get("Link"))){
-//            reporter.reportLogPass("The current '"+lsServiceMH+"' href of "+lsHrefMH+" is equal to "+testDataMH.get("Link"));
-//        }
-//        else{
-//            reporter.reportLogFailWithScreenshot("The current '"+lsServiceMH+"' href of "+lsHrefMH+" is not equal to "+testDataMH.get("Link"));
-//        }
-//
-//        if(!getGlobalFooterPageThreadLocal().goToService(lsServiceMH,getGlobalFooterPageThreadLocal().aboutUsPageTitle,testDataMH.get("parent"))) {
-//            reporter.reportLogFail("Unable to navigate to '"+lsServiceMH+"' page objects.");
-//        }
-//        else {
-//            //Verifying page title
-//            String pageTitle = getGlobalFooterPageThreadLocal().getPageTitle(getGlobalFooterPageThreadLocal().aboutUsPageTitle);
-//            if(pageTitle.equalsIgnoreCase(actualPageTitle)){
-//                reporter.reportLogPass("Page Title matches for global footer link: "+lsServiceMH+" and  title is: "+pageTitle);
-//            }
-//            else{
-//                reporter.reportLogFailWithScreenshot("Page Title doesn't match for global footer link: "+lsServiceMH+" and  title is: "+pageTitle);
-//            }
-//
-//            //Verifying Host Name, Link and Images in Meet The Host Page
-//            getGlobalFooterPageThreadLocal().verifyMeetTheHostInfo();
-//        }
-//
-//        //Verifying Presence of Credit Card, Gift Card and Rogers Copyrights at the GlobalFooter Page
-//        //Gift Card
-//        String lsServiceGC = "Gift Card";
-//        reporter.reportLog(lsServiceGC);
-//        String pageTitle = getGlobalFooterPageThreadLocal().getPageTitle(getGlobalFooterPageThreadLocal().lblGiftCardText);
-//        if(pageTitle.equalsIgnoreCase(lsServiceGC)){
-//            reporter.reportLogPass("Page Title matches for global footer link: "+lsServiceGC+" and  title is: "+pageTitle);
-//        }
-//        else{
-//            reporter.reportLogFailWithScreenshot("Page Title doesn't match for global footer link: "+lsServiceGC+" and  title is: "+pageTitle);
-//        }
-//        if(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lnkGiftCard)){
-//            reporter.reportLogPass("The Gift Card section exists");
-//        }
-//        else{
-//            reporter.reportLogFailWithScreenshot("The Gift Card section doesn't exist");
-//        }
-//
-//        //Credit Card
-//        String lsServiceCC = "Credit Card";
-//        reporter.reportLog(lsServiceCC);
-//        String pageTitleCC = getGlobalFooterPageThreadLocal().getPageTitle(getGlobalFooterPageThreadLocal().blkCreditCard);
-//        if(pageTitleCC.equalsIgnoreCase(lsServiceCC)){
-//           reporter.reportLogPass("Page Title matches for global footer link: "+lsServiceCC+" and  title is: "+pageTitleCC);
-//        }
-//        else{
-//            reporter.reportLogFailWithScreenshot("Page Title doesn't match for global footer link: "+lsServiceCC+" and  title is: "+pageTitleCC);
-//        }
-//        if(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lnkCreditCard)){
-//            reporter.reportLogPass("The Credit section exists");
-//        }
-//        else{
-//            reporter.reportLogFailWithScreenshot("The Credit Card section doesn't exist");
-//        }
-//
-//        //Rogers Copy Rights
-//        if(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().RogersMedia)){
-//            reporter.reportLogPass("The Copyright Section of 2021 Rogers Media is displayed");
-//        }
-//        else{
-//            reporter.reportLogFailWithScreenshot("The Copyright Section of 2021 Rogers Media is not displayed");
-//        }
-//        if(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().AllPrice)){
-//            reporter.reportLogPass("The Copyright Section of All Price in Canadian Dollars is displayed");
-//        }
-//        else{
-//            reporter.reportLogFailWithScreenshot("The Copyright Section of All Price in Canadian Dollars is not displayed");
-//        }
-//
-//        String lsImageSrc=basePage.getElementImageSrc(getGlobalFooterPageThreadLocal().RogersMediaImg);
-//        if(!lsImageSrc.isEmpty()){
-//            reporter.reportLogPass("The Rogers Media image is not empty.");
-//        }
-//        else{
-//            reporter.reportLogFailWithScreenshot("The Rogers Media image is empty.");
-//        }
+        //Channel Finder
+        String lsServiceCF = "Channel Finder";
+        reporter.reportLog(lsServiceCF);
+        Map<String,String> testDataCF=getGlobalFooterPageThreadLocal().getTestDataWithSpecificName(lstNameAndLinks,lsServiceCF,true);
+        WebElement selectedItemCF=getGlobalFooterPageThreadLocal().getServiceWebElement(lsServiceCF,testDataCF.get("parent"));
+        String lsHrefCF=basePage.getElementHref(selectedItemCF);
+        if(testDataCF.isEmpty()) {
+            reporter.reportLogFail("Unable to find '"+lsServiceCF+"' link.");
+        }
+        if(getGlobalFooterPageThreadLocal().verifyLinks(lsHrefCF,testDataCF.get("Link"))){
+            reporter.reportLogPass("The current '"+lsServiceCF+"' href of "+lsHrefCF+" is equal to "+testDataCF.get("Link"));
+        }
+        else{
+            reporter.reportLogFailWithScreenshot("The current '"+lsServiceCF+"' href of "+lsHrefCF+" is not equal to "+testDataCF.get("Link"));
+        }
+
+        if(!getGlobalFooterPageThreadLocal().goToService(lsServiceCF,getGlobalFooterPageThreadLocal().lblChannelFinderTitle,testDataCF.get("parent"))) {
+            reporter.reportLogFail("Unable to navigate to '"+lsServiceCF+"' page objects.");
+        }
+        else {
+            //Verifying page title
+            String pageTitle = getGlobalFooterPageThreadLocal().getPageTitle(getGlobalFooterPageThreadLocal().lblChannelFinderTitle);
+            if(pageTitle.equalsIgnoreCase(lsServiceCF)){
+                reporter.reportLogPass("Page Title matches for global footer link: "+lsServiceCF+" and  title is: "+pageTitle);
+            }
+            else{
+                reporter.reportLogFailWithScreenshot("Page Title doesn't match for global footer link: "+lsServiceCF+" and  title is: "+pageTitle);
+            }
+
+            //Verifying Page Elements
+            //Find Cable Channels
+            //reporter.softAssert(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().useourchannelfinder),"Page paragraph line exists","Page paragraph line doesn't exists");
+            if(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lblFindCableChannelTitle)){
+                reporter.reportLogPass("The Title Find Cable Channel is displayed");
+            }
+            else{
+                reporter.reportLogFailWithScreenshot("The Title Find Cable Channel is not displayed");
+            }
+
+            if(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lblselectyour)){
+                reporter.reportLogPass("The text Select your: exists");
+            }
+            else{
+                reporter.reportLogFailWithScreenshot("The text Select your: doesn't exist");
+            }
+
+            if(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lblProvince)){
+                reporter.reportLogPass("The Title Province exists");
+            }
+            else{
+                reporter.reportLogFailWithScreenshot("The Title Province doesn't exist");
+            }
+
+            if(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lblCableProvider)){
+                reporter.reportLogPass("The Title Cable Provider exists");
+            }
+            else{
+                reporter.reportLogFailWithScreenshot("The Title Cable Provider doesn't exist");
+            }
+
+            if(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lblCity)){
+                reporter.reportLogPass("The Title City exists");
+            }
+            else{
+                reporter.reportLogFailWithScreenshot("The Title City doesn't exist");
+            }
+
+            //Satellite Channels
+            if(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lblSatelliteChannels)){
+                reporter.reportLogPass("The Title Satellite Channels exist");
+            }
+            else{
+                reporter.reportLogFailWithScreenshot("The Title Satellite Channels doesn't exist");
+            }
+
+            if(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lblBellTV)){
+                reporter.reportLogPass("The Title Satellite Channels exist");
+            }
+            else{
+                reporter.reportLogFailWithScreenshot("Page paragraph line doesn't exist");
+            }
+
+            if(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lblShawDirect)){
+                reporter.reportLogPass("Page paragraph line exists");
+            }
+            else{
+                reporter.reportLogFailWithScreenshot("Page paragraph line doesn't exist");
+            }
+
+            if(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lblChannelsBellTV)){
+                reporter.reportLogPass("The line under Bell TV Column exists");
+            }
+            else{
+                reporter.reportLogFailWithScreenshot("The line under Bell TV Column doesn't exist");
+            }
+
+            if(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lblChannelsShawDirect)){
+                reporter.reportLogPass("The line under Shaw Direct Column exists");
+            }
+            else{
+                reporter.reportLogFailWithScreenshot("The line under Shaw Direct Column exist");
+            }
+
+            //Verifying Province Drop Down and its respective Cable Provider and City
+            getGlobalFooterPageThreadLocal().verifyMultipleDropDownWithTitle(getGlobalFooterPageThreadLocal().dropDownProvince, getGlobalFooterPageThreadLocal().dropDownCableProvider, getGlobalFooterPageThreadLocal().dropDownCity);
+        }
+
+        //Meet The Hosts
+        String lsServiceMH = "Meet the Hosts";
+        String actualPageTitle="Meet Our Hosts";
+        Map<String,String> testDataMH=getGlobalFooterPageThreadLocal().getTestDataWithSpecificName(lstNameAndLinks,lsServiceMH,true);
+        reporter.reportLog(lsServiceMH);
+        WebElement selectedItemMH=getGlobalFooterPageThreadLocal().getServiceWebElement(lsServiceMH,testDataMH.get("parent"));
+        String lsHrefMH=basePage.getElementHref(selectedItemMH);
+        if(testDataMH.isEmpty()) {
+            reporter.reportLogFail("Unable to find '"+lsServiceMH+"' link.");
+        }
+        if(getGlobalFooterPageThreadLocal().verifyLinks(lsHrefMH,testDataMH.get("Link"))){
+            reporter.reportLogPass("The current '"+lsServiceMH+"' href of "+lsHrefMH+" is equal to "+testDataMH.get("Link"));
+        }
+        else{
+            reporter.reportLogFailWithScreenshot("The current '"+lsServiceMH+"' href of "+lsHrefMH+" is not equal to "+testDataMH.get("Link"));
+        }
+
+        if(!getGlobalFooterPageThreadLocal().goToService(lsServiceMH,getGlobalFooterPageThreadLocal().aboutUsPageTitle,testDataMH.get("parent"))) {
+            reporter.reportLogFail("Unable to navigate to '"+lsServiceMH+"' page objects.");
+        }
+        else {
+            //Verifying page title
+            String pageTitle = getGlobalFooterPageThreadLocal().getPageTitle(getGlobalFooterPageThreadLocal().aboutUsPageTitle);
+            if(pageTitle.equalsIgnoreCase(actualPageTitle)){
+                reporter.reportLogPass("Page Title matches for global footer link: "+lsServiceMH+" and  title is: "+pageTitle);
+            }
+            else{
+                reporter.reportLogFailWithScreenshot("Page Title doesn't match for global footer link: "+lsServiceMH+" and  title is: "+pageTitle);
+            }
+
+            //Verifying Host Name, Link and Images in Meet The Host Page
+            getGlobalFooterPageThreadLocal().verifyMeetTheHostInfo();
+        }
+
+        //Verifying Presence of Credit Card, Gift Card and Rogers Copyrights at the GlobalFooter Page
+        //Gift Card
+        String lsServiceGC = "Gift Card";
+        reporter.reportLog(lsServiceGC);
+        String pageTitle = getGlobalFooterPageThreadLocal().getPageTitle(getGlobalFooterPageThreadLocal().lblGiftCardText);
+        if(pageTitle.equalsIgnoreCase(lsServiceGC)){
+            reporter.reportLogPass("Page Title matches for global footer link: "+lsServiceGC+" and  title is: "+pageTitle);
+        }
+        else{
+            reporter.reportLogFailWithScreenshot("Page Title doesn't match for global footer link: "+lsServiceGC+" and  title is: "+pageTitle);
+        }
+        if(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lnkGiftCard)){
+            reporter.reportLogPass("The Gift Card section exists");
+        }
+        else{
+            reporter.reportLogFailWithScreenshot("The Gift Card section doesn't exist");
+        }
+
+        //Credit Card
+        String lsServiceCC = "Credit Card";
+        reporter.reportLog(lsServiceCC);
+        String pageTitleCC = getGlobalFooterPageThreadLocal().getPageTitle(getGlobalFooterPageThreadLocal().blkCreditCard);
+        if(pageTitleCC.equalsIgnoreCase(lsServiceCC)){
+           reporter.reportLogPass("Page Title matches for global footer link: "+lsServiceCC+" and  title is: "+pageTitleCC);
+        }
+        else{
+            reporter.reportLogFailWithScreenshot("Page Title doesn't match for global footer link: "+lsServiceCC+" and  title is: "+pageTitleCC);
+        }
+        if(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().lnkCreditCard)){
+            reporter.reportLogPass("The Credit section exists");
+        }
+        else{
+            reporter.reportLogFailWithScreenshot("The Credit Card section doesn't exist");
+        }
+
+        //Rogers Copy Rights
+        if(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().RogersMedia)){
+            reporter.reportLogPass("The Copyright Section of Rogers Media is displayed");
+        }
+        else{
+            reporter.reportLogFailWithScreenshot("The Copyright Section of Rogers Media is not displayed");
+        }
+        if(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().AllPrice)){
+            reporter.reportLogPass("The Copyright Section of All Price in Canadian Dollars is displayed");
+        }
+        else{
+            reporter.reportLogFailWithScreenshot("The Copyright Section of All Price in Canadian Dollars is not displayed");
+        }
+
+        String lsImageSrc=basePage.getElementImageSrc(getGlobalFooterPageThreadLocal().RogersMediaImg);
+        if(!lsImageSrc.isEmpty()){
+            reporter.reportLogPass("The Rogers Media image is not empty.");
+        }
+        else{
+            reporter.reportLogFailWithScreenshot("The Rogers Media image is empty.");
+        }
 
     }
  }
