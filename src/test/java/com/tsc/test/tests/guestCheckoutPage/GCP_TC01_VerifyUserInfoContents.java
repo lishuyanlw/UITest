@@ -64,6 +64,13 @@ public class GCP_TC01_VerifyUserInfoContents extends BaseTest{
 			reporter.reportLog("Verify OrderSummary Contents");
 			getRegularCheckoutThreadLocal().verifyOrderSummaryContents();
 
+			reporter.reportLog("Verify OrderSummary Business Logic");
+			List<Map<String, Object>> productListMapForCheckOutPage = getRegularCheckoutThreadLocal().getCheckoutItemListDesc("all");
+			Map<String, Object> summaryMapForCheckOutList = getRegularCheckoutThreadLocal().getCheckoutItemCountAndSubTotal(productListMapForCheckOutPage);
+			float subTotalForCheckOutList = (float) summaryMapForCheckOutList.get("subTotal");
+			Map<String,Object> orderSummaryMapOnCheckoutPage=getRegularCheckoutThreadLocal().getOrderSummaryDesc();
+			getRegularCheckoutThreadLocal().verifyOrderSummaryBusinessLogic(subTotalForCheckOutList, orderSummaryMapOnCheckoutPage, null);
+
 			reporter.reportLog("Verify Promote Code Contents and ContinueToPayment Button");
 			getRegularCheckoutThreadLocal().verifyPromoteCodeContents();
 			getGuestCheckoutThreadLocal().verifyContinueToPaymentButton();

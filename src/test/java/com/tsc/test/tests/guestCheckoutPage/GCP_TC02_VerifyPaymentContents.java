@@ -65,6 +65,13 @@ public class GCP_TC02_VerifyPaymentContents extends BaseTest{
 			reporter.reportLog("Verify OrderSummary Contents");
 			getRegularCheckoutThreadLocal().verifyOrderSummaryContents();
 
+			reporter.reportLog("Verify OrderSummary Business Logic");
+			List<Map<String, Object>> productListMapForCheckOutPage = getRegularCheckoutThreadLocal().getCheckoutItemListDesc("all");
+			Map<String, Object> summaryMapForCheckOutList = getRegularCheckoutThreadLocal().getCheckoutItemCountAndSubTotal(productListMapForCheckOutPage);
+			float subTotalForCheckOutList = (float) summaryMapForCheckOutList.get("subTotal");
+			Map<String,Object> orderSummaryMapOnCheckoutPage=getRegularCheckoutThreadLocal().getOrderSummaryDesc();
+			getRegularCheckoutThreadLocal().verifyOrderSummaryBusinessLogic(subTotalForCheckOutList, orderSummaryMapOnCheckoutPage, null);
+
 			reporter.reportLog("Verify Promote Code Contents and ContinueToPayment Button");
 			getRegularCheckoutThreadLocal().verifyPromoteCodeContents();
 
@@ -77,11 +84,13 @@ public class GCP_TC02_VerifyPaymentContents extends BaseTest{
 
 			getGuestCheckoutThreadLocal().goToReviewPage();
 
-			List<Map<String, Object>> productListMapForCheckOutPage = getRegularCheckoutThreadLocal().getCheckoutItemListDesc("all");
+			reporter.reportLog("Verify Created Shipping Address Linkage with Checkout page");
+			productListMapForCheckOutPage = getRegularCheckoutThreadLocal().getCheckoutItemListDesc("all");
 			Map<String,Object> mapForShippingAddressAndPaymentOnCheckout=getRegularCheckoutThreadLocal().getShippingAndPaymentDesc(productListMapForCheckOutPage.get(0));
-			getGuestCheckoutThreadLocal().verifyCreatedShippingAddressLinkage(createdUserMap);
+			getGuestCheckoutThreadLocal().verifyCreatedShippingAddressLinkageWithCheckoutPage(createdUserMap);
 
-			getGuestCheckoutThreadLocal().verifyPaymentLinkage(mapAddedPayment,mapForShippingAddressAndPaymentOnCheckout);
+			reporter.reportLog("Verify Created payment Linkage with Checkout page");
+			getGuestCheckoutThreadLocal().verifyPaymentLinkageWithCheckoutPage(mapAddedPayment,mapForShippingAddressAndPaymentOnCheckout);
 
 		}
 	}

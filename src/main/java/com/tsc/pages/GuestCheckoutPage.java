@@ -1125,11 +1125,11 @@ public class GuestCheckoutPage extends RegularCheckoutPage {
 	}
 
 	/**
-	 * To verify created shipping address linkage
+	 * To verify created shipping address linkage with checkout page
 	 * @param - Map<String,Object> - shippingAddress object
 	 * @return
 	 */
-	public void verifyCreatedShippingAddressLinkage(Map<String,Object> shippingAddress){
+	public void verifyCreatedShippingAddressLinkageWithCheckoutPage(Map<String,Object> shippingAddress){
 		String selectedAddress = this.getElementInnerText(lblShippingAddress).replace("-","").toLowerCase();
 		if(selectedAddress.contains(shippingAddress.get("address").toString().toLowerCase().replace("-","")) &&
 				selectedAddress.contains(shippingAddress.get("firstName").toString().toLowerCase().replace("-","")) &&
@@ -1144,11 +1144,11 @@ public class GuestCheckoutPage extends RegularCheckoutPage {
 	}
 
 	/**
-	 * To verify payment linkage
+	 * To verify payment linkage With Checkout Page
 	 * @param - Map<String,Object> - payment object
 	 * @return
 	 */
-	public void verifyPaymentLinkage(Map<String,Object> createdPaymentMap,Map<String,Object> paymentMapOnCheckout){
+	public void verifyPaymentLinkageWithCheckoutPage(Map<String,Object> createdPaymentMap,Map<String,Object> paymentMapOnCheckout){
 		String cardTypeCreated=createdPaymentMap.get("cardType").toString();
 		String cardNumberCreated=createdPaymentMap.get("cardNumber").toString();
 		String cardTypeCheckout=paymentMapOnCheckout.get("paymentMethod").toString();
