@@ -3382,7 +3382,7 @@ public class ShoppingCartPage extends BasePage {
 	 */
 	public void goToCheckoutPage(){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnCartCheckoutButton);
-		this.btnCartCheckoutButton.click();
+		this.clickWebElementUsingJS(this.btnCartCheckoutButton);
 		RegularCheckoutPage checkoutPage= new RegularCheckoutPage(this.getDriver());
 		this.waitForCondition(Driver->{return checkoutPage.lblCheckout.isDisplayed();},30000);
 	}

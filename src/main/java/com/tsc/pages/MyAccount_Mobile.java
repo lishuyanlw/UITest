@@ -26,6 +26,9 @@ public class MyAccount_Mobile extends MyAccount {
 	@FindBy(xpath = "//ng-component//div[normalize-space(text())='Shipping Address:']/following-sibling::div")
 	public WebElement lblOrderDetailsSubHeaderShippingAddress;
 
+	@FindBy(xpath="//div[@class='tsc-forms']//div[contains(@class,'order-details')]//*[@id='tagOrderCustomerNo']")
+	public WebElement lblOrderDetailsHeaderCustomerNumber;
+
 	public By byOrderDetailsOrderItemWriteReview=By.xpath(".//div[contains(@class,'product-review') and contains(@class,'visible-xs-block')]//a[contains(@href,'openreview')]");
 	public By byOrderDetailsOrderItemQTYTitle=By.xpath(".//span[contains(normalize-space(.),'QTY:')]/parent::div[contains(@class,'visible-xs-block')]/span[1]");
 	public By byOrderDetailsOrderItemQTY=By.xpath(".//span[contains(normalize-space(.),'QTY:')]/parent::div[contains(@class,'visible-xs-block')]/span[2]");
@@ -234,6 +237,27 @@ public class MyAccount_Mobile extends MyAccount {
 		}
 
 		return super.openSubItemWindow(lsHeaderItem,lsSubItem,loadingIndicator);
+	}
+
+	@Override
+	public void verifyMyAccountOrderDetailPageTitle(String userName, String customerNumber){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderDetailsHeaderCustomerNumber);
+		String orderDetailTitleCustomerNumber = this.lblOrderDetailsHeaderCustomerNumber.getText().trim();
+
+		if(orderDetailTitleCustomerNumber.equalsIgnoreCase(customerNumber))
+			reporter.reportLogPass("Customer Number appears in title as expected");
+		else
+			reporter.reportLogFailWithScreenshot("Customer Number do not appears in title as expected: "+customerNumber+ "actual: "+orderDetailTitleCustomerNumber);
+
+		if(this.checkTrackOrderButtonExisting()){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnOrderDetailsHeaderTrackOrder);
+			if(this.getReusableActionsInstance().isElementVisible(btnOrderDetailsHeaderTrackOrder)){
+				reporter.reportLogPass("Track order button in Header is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("Track order button in Header is not displaying correctly");
+			}
+		}
 	}
 
 }
