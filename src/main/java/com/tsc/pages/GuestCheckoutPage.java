@@ -219,12 +219,11 @@ public class GuestCheckoutPage extends RegularCheckoutPage {
 	/**
 	 * To create a new account
 	 * @param - String - lsEmail - generated automatically if pass null
-	 * @param - boolean - bUsingPassword
 	 * @param - String - lsPassword - generated automatically if pass null
 	 * @param - boolean - bSave - true for clicking save button and false for clicking cancel button
 	 * @return - Map<String,Object> - including email and password
 	 */
-	public Map<String,Object> createNewAccount(String lsEmail,boolean bUsingPassword,String lsPassword,boolean bCreateAccount){
+	public Map<String,Object> createNewAccount(String lsEmail,String lsPassword,boolean bCreateAccount){
 		String lsFirstName= DataConverter.getSaltString(1,"upperStringType")+DataConverter.getSaltString(5,"lowerStringType");
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputFirstName);
 		inputFirstName.clear();
@@ -292,18 +291,10 @@ public class GuestCheckoutPage extends RegularCheckoutPage {
 		if(bCreateAccount){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(ckbEmailCreateAccount);
 			if(!ckbEmailCreateAccount.isSelected()){
-				ckbEmailCreateAccount.click();
+				labelEmailCreateAccount.click();
 			}
-		}
-		else{
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(ckbEmailSignup);
-			if(!ckbEmailSignup.isSelected()){
-				ckbEmailSignup.click();
-			}
-		}
-		this.getReusableActionsInstance().staticWait(300);
+			this.getReusableActionsInstance().staticWait(300);
 
-		if(bUsingPassword){
 			if(lsPassword==null){
 				lsPassword=DataConverter.getSaltString(2,"lowerStringType")+DataConverter.getSaltString(4,"numberType")+"@rogers.com";
 			}
@@ -316,6 +307,13 @@ public class GuestCheckoutPage extends RegularCheckoutPage {
 			inputConfirmPassword.clear();
 			inputConfirmPassword.sendKeys(lsPassword);
 			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+		}
+		else{
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(ckbEmailCreateAccount);
+			if(ckbEmailCreateAccount.isSelected()){
+				labelEmailCreateAccount.click();
+			}
+			this.getReusableActionsInstance().staticWait(300);
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddressLine1);
@@ -343,7 +341,7 @@ public class GuestCheckoutPage extends RegularCheckoutPage {
 		Map<String,Object> map=new HashMap<>();
 		map.put("email",lsEmail);
 
-		if(bUsingPassword){
+		if(bCreateAccount){
 			map.put("password",lsPassword);
 		}
 		else{

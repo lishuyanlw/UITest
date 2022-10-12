@@ -10,14 +10,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GCP_TC02_VerifyPaymentContents extends BaseTest{
+public class GCP_TC03_Verify_CreateAccountWithoutPassword_PaymentContentsWithCreditCard extends BaseTest{
 	/*
 	 * CER-899
 	 * CER-900
 	 * CER-901
 	 */
 	@Test(groups={"Regression","GuestCheckout"})
-	public void GCP_TC02_VerifyPaymentContents() throws IOException {
+	public void GCP_TC03_Verify_CreateAccountWithoutPassword_PaymentContentsWithCreditCard() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 		BasePage basePage=new BasePage(this.getDriver());
 		List<String> lstKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_APISearchingKeyword();
@@ -51,7 +51,7 @@ public class GCP_TC02_VerifyPaymentContents extends BaseTest{
 
 			getGlobalLoginPageThreadLocal().goToGuestCheckoutPage();
 
-			Map<String,Object> createdUserMap=getGuestCheckoutThreadLocal().createNewAccount(null,true,null,true);
+			Map<String,Object> createdUserMap=getGuestCheckoutThreadLocal().createNewAccount(null,null,false);
 
 			getGuestCheckoutThreadLocal().goToPaymentPage();
 
@@ -79,8 +79,6 @@ public class GCP_TC02_VerifyPaymentContents extends BaseTest{
 			getGuestCheckoutThreadLocal().verifyGiftCardAndContinueToReviewButtonContents();
 
 			Map<String,Object> mapAddedPayment=getGuestCheckoutThreadLocal().addNewCreditOrEditExistingCard("visa");
-
-//			Map<String,Object> mapAddedPayment=getGuestCheckoutThreadLocal().addNewCreditOrEditExistingCard("tsc");
 
 			getGuestCheckoutThreadLocal().goToReviewPage();
 
