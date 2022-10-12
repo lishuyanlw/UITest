@@ -12,7 +12,9 @@ import java.util.Map;
 
 public class GCP_TC02_VerifyPaymentContents extends BaseTest{
 	/*
+	 * CER-899
 	 * CER-900
+	 * CER-901
 	 */
 	@Test(groups={"Regression","GuestCheckout"})
 	public void GCP_TC02_VerifyPaymentContents() throws IOException {
