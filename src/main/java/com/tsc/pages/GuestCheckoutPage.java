@@ -135,6 +135,10 @@ public class GuestCheckoutPage extends RegularCheckoutPage {
 	@FindBy(xpath = "//div[@id='recaptchaId']//div[@class='grecaptcha-badge']")
 	public WebElement imgRecaptchaLogo;
 
+	//Error Message for Mandatory Items
+	@FindBy(xpath = "//div[@class='create-address__wrap']//div[contains(@class,'alert-danger')]")
+	public List<WebElement> mandatoryFieldErrorMessage;
+
 	@FindBy(xpath = "//aside[@class='rightSide']//button[contains(@class,'placeorder')]")
 	public WebElement btnContinueToPayment;
 
@@ -215,11 +219,12 @@ public class GuestCheckoutPage extends RegularCheckoutPage {
 	/**
 	 * To create a new account
 	 * @param - String - lsEmail - generated automatically if pass null
+	 * @param - boolean - bUsingPassword
 	 * @param - String - lsPassword - generated automatically if pass null
 	 * @param - boolean - bSave - true for clicking save button and false for clicking cancel button
-	 * @return - Map<String,String> - including email and password
+	 * @return - Map<String,Object> - including email and password
 	 */
-	public Map<String,String> createNewAccount(String lsEmail,String lsPassword,boolean bCreateAccount){
+	public Map<String,Object> createNewAccount(String lsEmail,boolean bUsingPassword,String lsPassword,boolean bCreateAccount){
 		String lsFirstName= DataConverter.getSaltString(1,"upperStringType")+DataConverter.getSaltString(5,"lowerStringType");
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputFirstName);
 		inputFirstName.clear();
@@ -271,7 +276,6 @@ public class GuestCheckoutPage extends RegularCheckoutPage {
 		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 
 		String lsPhoneNumber="647"+DataConverter.getSaltString(7,"numberType");
-		reporter.reportLog("Phone number: "+lsPhoneNumber);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputPhoneNumber);
 		inputPhoneNumber.clear();
 		inputPhoneNumber.sendKeys(lsPhoneNumber);
@@ -299,29 +303,61 @@ public class GuestCheckoutPage extends RegularCheckoutPage {
 		}
 		this.getReusableActionsInstance().staticWait(300);
 
-		if(lsPassword==null){
-			lsPassword=DataConverter.getSaltString(2,"lowerStringType")+DataConverter.getSaltString(4,"numberType")+"@rogers.com";
-		}
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputPassword);
-		inputPassword.clear();
-		inputPassword.sendKeys(lsPassword);
-		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+		if(bUsingPassword){
+			if(lsPassword==null){
+				lsPassword=DataConverter.getSaltString(2,"lowerStringType")+DataConverter.getSaltString(4,"numberType")+"@rogers.com";
+			}
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputPassword);
+			inputPassword.clear();
+			inputPassword.sendKeys(lsPassword);
+			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputConfirmPassword);
-		inputConfirmPassword.clear();
-		inputConfirmPassword.sendKeys(lsPassword);
-		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputConfirmPassword);
+			inputConfirmPassword.clear();
+			inputConfirmPassword.sendKeys(lsPassword);
+			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddressLine1);
 		String lsAddress=inputAddressLine1.getAttribute("value").trim();
 
-		Map<String,String> map=new HashMap<>();
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectProvince);
+		Select select=new Select(this.selectProvince);
+		String lsProvince=select.getFirstSelectedOption().getText().trim();
+		String lsOptionAbbreviatedText="",lsOptionText;
+		List<WebElement> lstProvince=select.getOptions();
+		for(WebElement item:lstProvince){
+			lsOptionAbbreviatedText=item.getAttribute("value").trim();
+			lsOptionText=this.getElementInnerText(item).trim();
+			if(lsProvince.equalsIgnoreCase(lsOptionText)){
+				break;
+			}
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputCity);
+		String lsCity=this.inputCity.getAttribute("value").trim();
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputPostalCode);
+		String lsPostalCode=this.inputPostalCode.getAttribute("value").trim();
+
+		Map<String,Object> map=new HashMap<>();
 		map.put("email",lsEmail);
-		map.put("password",lsPassword);
+
+		if(bUsingPassword){
+			map.put("password",lsPassword);
+		}
+		else{
+			map.put("password",null);
+		}
+
 		map.put("firstName",lsFirstName);
 		map.put("lastName",lsLastName);
 		map.put("phoneNumber",lsPhoneNumber);
 		map.put("address",lsAddress);
+		map.put("city",lsCity);
+		map.put("province",lsProvince);
+		map.put("abbreviatedProvince",lsOptionAbbreviatedText);
+		map.put("postalCode",lsPostalCode);
 
 		return map;
 	}
@@ -748,33 +784,21 @@ public class GuestCheckoutPage extends RegularCheckoutPage {
 	/**
 	 * To add a new Credit card
 	 * @param - String - creditCardType
+	 * @return - Map<String,String> - including cardType and cardNumber
 	 */
-	public void addNewCreditOrEditExistingCard(String creditCardType,boolean validCreditCard,Boolean editExistingCreditCard){
+	public Map<String,Object> addNewCreditOrEditExistingCard(String creditCardType){
 		JSONObject cardData=this.getCardDataFromYamlFile(creditCardType);
 		String cardNumber= (String) cardData.get("Number");
 		String expiredMonth=(String) cardData.get("DisplayExpirationMonth");
 		String expiredYear=(String) cardData.get("DisplayExpirationYear");
 
-		if(!creditCardType.equalsIgnoreCase("tsc")){
-			if(!editExistingCreditCard){
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(labelUsingANewCardDialogCreditCardRadio);
-				labelUsingANewCardDialogCreditCardRadio.click();
-			}else{
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputEditExistingCreditCard);
-				this.inputEditExistingCreditCard.click();
-				this.inputEditExistingCreditCard.sendKeys(Keys.BACK_SPACE);
-				this.applyStaticWait(2000);
-				//Verification that for Edit - Year and month are pre-populated
-				if(!this.inputUsingANewCardDialogCreditExpirationDateMonth.getAttribute("value").isEmpty())
-					reporter.reportLogPass("Month is pre-populated for Credit Card");
-				else
-					reporter.reportLogFailWithScreenshot("Month is not pre-populated for Credit Card");
+		Map<String,Object> map=new HashMap<>();
+		map.put("cardType",creditCardType);
+		map.put("cardNumber",cardNumber);
 
-				if(!this.inputUsingANewCardDialogCreditExpirationDateYear.getAttribute("value").isEmpty())
-					reporter.reportLogPass("Year is pre-populated for Credit Card");
-				else
-					reporter.reportLogFailWithScreenshot("Year is not pre-populated for Credit Card");
-			}
+		if(!creditCardType.equalsIgnoreCase("tsc")){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(labelUsingANewCardDialogCreditCardRadio);
+			labelUsingANewCardDialogCreditCardRadio.click();
 
 			this.getDriver().switchTo().frame(iframeUsingANewCardDialogCreditCardNumberInput);
 			try{
@@ -789,14 +813,11 @@ public class GuestCheckoutPage extends RegularCheckoutPage {
 			inputCreditCardNumberInIframe.sendKeys(cardNumber);
 			this.getDriver().switchTo().defaultContent();
 
-			//Verify display of icon just after entering CC number
-			if(!creditCardType.equalsIgnoreCase("expired") && validCreditCard){
-				String cardType = this.getInputCreditCardNumberType();
-				if(cardType.equalsIgnoreCase(creditCardType))
-					reporter.reportLogPass("Selected Credit Card : "+creditCardType+" image is displayed as expected");
-				else
-					reporter.reportLogFailWithScreenshot("Selected Credit Card : "+creditCardType+" not image is displayed as expected");
-			}
+			String cardType = this.getInputCreditCardNumberType();
+			if(cardType.equalsIgnoreCase(creditCardType))
+				reporter.reportLogPass("Selected Credit Card : "+creditCardType+" image is displayed as expected");
+			else
+				reporter.reportLogFailWithScreenshot("Selected Credit Card : "+creditCardType+" not image is displayed as expected");
 
 			this.waitForCondition(Driver->{return !lblInputCreditCardNumberType.getAttribute("class").trim().isEmpty();},15000);
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputUsingANewCardDialogCreditExpirationDateMonth);
@@ -806,8 +827,11 @@ public class GuestCheckoutPage extends RegularCheckoutPage {
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputUsingANewCardDialogCreditExpirationDateYear);
 			inputUsingANewCardDialogCreditExpirationDateYear.clear();
 			inputUsingANewCardDialogCreditExpirationDateYear.sendKeys(expiredYear.substring(2));
-		}else
+		}else {
 			this.addNewTSCCard();
+		}
+
+		return map;
 	}
 
 	/**
@@ -1052,19 +1076,87 @@ public class GuestCheckoutPage extends RegularCheckoutPage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnContinueToReview);
 		this.clickElement(btnContinueToReview);
 
-		try{
-			this.waitForPageLoadingSpinningStatusCompleted();
-		}
-		catch (Exception e){
-			this.applyStaticWait(3*this.getStaticWaitForApplication());
-		}
+		this.applyStaticWait(this.getStaticWaitForApplication());
 
-		try{
-			this.waitForCondition(Driver->{return btnOrderSummaryPlaceOrder.isDisplayed();},15000);
+		this.waitForCondition(Driver->{return !this.checkChildElementExistingByAttribute(this.cntFooterContainer,"class","loading__overlay");},120000);
+		this.waitForCondition(Driver->{return btnOrderSummaryPlaceOrder.isDisplayed();},15000);
+	}
+
+	/**
+	 * This function fetches error message from Shipping Address section
+	 * @return - List<String> of error message displayed on screen
+	 */
+	public List<String> getMandatoryFieldsErrorMessage(int expectedErrorMessage){
+		if(expectedErrorMessage==0)
+			this.waitForCondition(Driver->{return this.mandatoryFieldErrorMessage.size()>0;},15000);
+		else
+			this.waitForCondition(Driver->{return this.mandatoryFieldErrorMessage.size()==expectedErrorMessage;},15000);
+		int loop = this.mandatoryFieldErrorMessage.size();
+		if(loop>0){
+			List<String> errorMessageList = new ArrayList<>();
+			for(int counter=0;counter<loop;counter++){
+				errorMessageList.add(this.mandatoryFieldErrorMessage.get(counter).getText());
+			}
+			return errorMessageList;
+		}else
+			return null;
+	}
+
+	/**
+	 * This function verifies error message on Shipping Address section with expected error message
+	 * @param  - List<String> - expectedErrorMessageList
+	 * @return - boolean
+	 */
+	public void verifyErrorMessageOnShippingAddressSection(List<String> expectedErrorMessageList){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnContinueToPayment);
+		this.getReusableActionsInstance().clickIfAvailable(this.btnContinueToPayment);
+
+		List<String> errorMessageList = this.getMandatoryFieldsErrorMessage(expectedErrorMessageList.size());
+		if(errorMessageList.size()==expectedErrorMessageList.size()){
+			for(String errorMessage:errorMessageList){
+				if(expectedErrorMessageList.contains(errorMessage)){
+					reporter.reportLogPass("Error message as expected is displayed : "+errorMessage);
+				}else
+					reporter.reportLogFailWithScreenshot("Error Message as expected is not displayed: "+errorMessage);
+			}
+		}else{
+			reporter.reportLogFailWithScreenshot("Expected Error Message list size: "+expectedErrorMessageList.size()+" is not same as Actual Error Message list size: "+errorMessageList.size());
 		}
-		catch (Exception e){
-			this.applyStaticWait(3*this.getStaticWaitForApplication());
-		}
+	}
+
+	/**
+	 * To verify created shipping address linkage
+	 * @param - Map<String,Object> - shippingAddress object
+	 * @return
+	 */
+	public void verifyCreatedShippingAddressLinkage(Map<String,Object> shippingAddress){
+		String selectedAddress = this.getElementInnerText(lblShippingAddress).replace("-","").toLowerCase();
+		if(selectedAddress.contains(shippingAddress.get("address").toString().toLowerCase().replace("-","")) &&
+				selectedAddress.contains(shippingAddress.get("firstName").toString().toLowerCase().replace("-","")) &&
+				selectedAddress.contains(shippingAddress.get("lastName").toString().toLowerCase().replace("-","")) &&
+				selectedAddress.contains(shippingAddress.get("phoneNumber").toString().toLowerCase().replace("-","")) &&
+				selectedAddress.contains(shippingAddress.get("city").toString().toLowerCase().replace("-","")) &&
+				selectedAddress.contains(shippingAddress.get("abbreviatedProvince").toString().toLowerCase().replace("-","")) &&
+				selectedAddress.contains(shippingAddress.get("postalCode").toString().toLowerCase().replace(" ","")))
+			reporter.reportLogPass("The created shipping address is same as expected one on checkout page");
+		else
+			reporter.reportLogFailWithScreenshot("The created shipping address is not same as the one on checkout page: "+selectedAddress);
+	}
+
+	/**
+	 * To verify payment linkage
+	 * @param - Map<String,Object> - payment object
+	 * @return
+	 */
+	public void verifyPaymentLinkage(Map<String,Object> createdPaymentMap,Map<String,Object> paymentMapOnCheckout){
+		String cardTypeCreated=createdPaymentMap.get("cardType").toString();
+		String cardNumberCreated=createdPaymentMap.get("cardNumber").toString();
+		String cardTypeCheckout=paymentMapOnCheckout.get("paymentMethod").toString();
+		String cardNumberCheckout= String.valueOf(this.getIntegerFromString(paymentMapOnCheckout.get("paymentMethodDescription").toString()));
+		if(cardTypeCreated.equalsIgnoreCase(cardTypeCheckout)&&cardNumberCreated.contains(cardNumberCheckout))
+			reporter.reportLogPass("The created payment is same as expected one on checkout page");
+		else
+			reporter.reportLogFailWithScreenshot("The created payment is not same as the one on checkout page");
 	}
 
 }

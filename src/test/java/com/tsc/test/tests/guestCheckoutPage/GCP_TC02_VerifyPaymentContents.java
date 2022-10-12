@@ -49,7 +49,7 @@ public class GCP_TC02_VerifyPaymentContents extends BaseTest{
 
 			getGlobalLoginPageThreadLocal().goToGuestCheckoutPage();
 
-			Map<String,String> createdUserMap=getGuestCheckoutThreadLocal().createNewAccount(null,null,true);
+			Map<String,Object> createdUserMap=getGuestCheckoutThreadLocal().createNewAccount(null,true,null,true);
 
 			getGuestCheckoutThreadLocal().goToPaymentPage();
 
@@ -68,6 +68,19 @@ public class GCP_TC02_VerifyPaymentContents extends BaseTest{
 
 			reporter.reportLog("Verify Promote Code Contents and Continue To Review Button");
 			getGuestCheckoutThreadLocal().verifyGiftCardAndContinueToReviewButtonContents();
+
+			Map<String,Object> mapAddedPayment=getGuestCheckoutThreadLocal().addNewCreditOrEditExistingCard("visa");
+
+//			Map<String,Object> mapAddedPayment=getGuestCheckoutThreadLocal().addNewCreditOrEditExistingCard("tsc");
+
+			getGuestCheckoutThreadLocal().goToReviewPage();
+
+			List<Map<String, Object>> productListMapForCheckOutPage = getRegularCheckoutThreadLocal().getCheckoutItemListDesc("all");
+			Map<String,Object> mapForShippingAddressAndPaymentOnCheckout=getRegularCheckoutThreadLocal().getShippingAndPaymentDesc(productListMapForCheckOutPage.get(0));
+			getGuestCheckoutThreadLocal().verifyCreatedShippingAddressLinkage(createdUserMap);
+
+			getGuestCheckoutThreadLocal().verifyPaymentLinkage(mapAddedPayment,mapForShippingAddressAndPaymentOnCheckout);
+
 		}
 	}
 }

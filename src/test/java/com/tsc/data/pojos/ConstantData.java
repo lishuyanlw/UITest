@@ -1416,6 +1416,15 @@ public class ConstantData {
         String lblEmptyGiftCardPinErrorMessage;
         String lblPromoteCodeAppliedMessage;
         String lblGiftCardAppliedMessage;
+        List<String> lstShippingAddressErrorMessageForGuestCheckout;
+
+        public List<String> getLstShippingAddressErrorMessageForGuestCheckout() {
+            return lstShippingAddressErrorMessageForGuestCheckout;
+        }
+
+        public void setLstShippingAddressErrorMessageForGuestCheckout(List<String> lstShippingAddressErrorMessageForGuestCheckout) {
+            this.lstShippingAddressErrorMessageForGuestCheckout = lstShippingAddressErrorMessageForGuestCheckout;
+        }
 
         public List<Map<String, String>> getLstOrderDetailItems() {            return lstOrderDetailItems;        }
 

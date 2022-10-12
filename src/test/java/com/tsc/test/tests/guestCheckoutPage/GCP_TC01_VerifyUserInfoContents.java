@@ -20,6 +20,7 @@ public class GCP_TC01_VerifyUserInfoContents extends BaseTest{
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 		BasePage basePage=new BasePage(this.getDriver());
 		List<String> lstKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_APISearchingKeyword();
+		List<String> expectedErrorMessage = TestDataHandler.constantData.getCheckOut().getLstShippingAddressErrorMessageForGuestCheckout();
 
 		Map<String,Object> outputDataCriteria= new HashMap<String,Object>();
 		outputDataCriteria.put("style", "2");
@@ -56,6 +57,9 @@ public class GCP_TC01_VerifyUserInfoContents extends BaseTest{
 
 			reporter.reportLog("Verify Address Contents");
 			getGuestCheckoutThreadLocal().verifyAddressContents();
+
+			reporter.reportLog("Verify Address Contents required error message");
+			getGuestCheckoutThreadLocal().verifyErrorMessageOnShippingAddressSection(expectedErrorMessage);
 
 			reporter.reportLog("Verify OrderSummary Contents");
 			getRegularCheckoutThreadLocal().verifyOrderSummaryContents();

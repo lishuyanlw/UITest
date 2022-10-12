@@ -172,7 +172,7 @@ footerSection:
     - ["Credit Card","Cartes-cadeaux","/pages/creditcard?ic=ftr_tsccreditcard","",""]
     - ["Gift Card","Inscrivez-vous maintenant","/pages/giftcard?ic=ftr_tscgiftcard-img","",""]
     - ["Send us feedback","Dites-nous ce que vous pensez","https://rogers.qualtrics.com/","",""]
-    - ["Language - Français","Language - English","javascript:switchLanguage();","",""]
+    - ["Language - Français","Langue - English","javascript:switchLanguage();","",""]
     - ["TSC CUSTOMER HUB","ESPACE CLIENT TSC","",""]
     - ["Customer Service","Service à la clientèle","/pages/customer-service","","TSC CUSTOMER HUB - ESPACE CLIENT TSC"]
     - ["My Account","Mon compte","pages/customer-service/setting-up-an-account","","TSC CUSTOMER HUB - ESPACE CLIENT TSC"]
@@ -356,5 +356,8 @@ checkOut:
   lstInvalidPromoteCodeAndErrorMessage: ["SHIP99999","The promotional code <promoteCode> you entered is not valid."]
   lstInvalidGiftCardAndErrorMessage: ["6006499999999999999","9999","The System could not validate the Gift Card. Please try again."]
   lblEmptyGiftCardPinErrorMessage: "PIN is required."
+  lstShippingAddressErrorMessageForGuestCheckout: [ "You have one or more missing or invalid entries. Please enter correct data and try again.",
+                                    "First name is required.","Last name is required.","Phone number is required.","Address is required.",
+                                    "City is required.","Postal code is required.","Valid email is required.","Password is required." ]
 
 #https://qa-tsc.tsc.ca/pages/myaccount/orderstatus/details?orderNo=Z4057821
