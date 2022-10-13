@@ -841,7 +841,8 @@ public class CartAPI extends ApiClient {
             return cartResponse.getBuyer().getShippingAddresses();
         }else if(response.statusCode()==417){
             List<ErrorResponse> errorResponses = JsonParser.getResponseObject(response.asString(), new TypeReference<List<ErrorResponse>>() {});
-            if (errorResponses.get(0).getMessage().contains("The address you are trying to add already exists."))
+            if (errorResponses.get(0).getMessage().contains("The address you are trying to add already exists.") ||
+                    errorResponses.get(0).getMessage().contains("The shipping address you are trying to add already exists."))
                 reporter.reportLog("Error Message is thrown by api as expected: ");
             else
                 reporter.reportLogFail("Error Message thrown by api: " + errorResponses.get(0).getMessage() + " is not as expected: ");

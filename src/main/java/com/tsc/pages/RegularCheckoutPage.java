@@ -1862,6 +1862,9 @@ public class RegularCheckoutPage extends BasePage {
 					reporter.reportLogPass("Year is pre-populated for Credit Card");
 				else
 					reporter.reportLogFailWithScreenshot("Year is not pre-populated for Credit Card");
+
+				if(this.getDeviceTypeForTest(System.getProperty("Device"),System.getProperty("chromeMobileDevice")))
+					this.applyStaticWait(5000);
 			}
 
 			this.getDriver().switchTo().frame(iframeUsingANewCardDialogCreditCardNumberInput);
