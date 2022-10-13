@@ -755,6 +755,7 @@ public class GlobalFooterPage extends BasePage {
 	 */
 	public String getUrlWithSocialMediaName(List<String> lstSocialMedia, String lsSpecificMediaName) {
 		for (String lsItem : lstSocialMedia) {
+			reporter.reportLog("lsItem: "+lsItem);
 			if (lsItem.toLowerCase().contains(lsSpecificMediaName.toLowerCase())) {
 				return removeProtocalHeaderFromUrl(lsItem);
 			}

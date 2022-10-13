@@ -797,6 +797,7 @@ import utils.ReusableActions;
 	 * @author Wei.Li
 	 */
 	public String removeLastSlashFromUrl(String lsUrl) {
+		reporter.reportLog(lsUrl);
 		if(lsUrl.endsWith("/")) {
 			lsUrl=lsUrl.substring(0,lsUrl.length()-1);
         }

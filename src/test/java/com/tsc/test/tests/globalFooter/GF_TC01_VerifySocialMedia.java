@@ -61,7 +61,6 @@ public class GF_TC01_VerifySocialMedia extends BaseTest {
 
 		//Instagram
 		lsUrl=getGlobalFooterPageThreadLocal().getUrlWithSocialMediaName(lstSocialMediaLinks, "Instagram");
-		System.out.println("Yaml: "+lsUrl);
 		if(getGlobalFooterPageThreadLocal().verifyUrlAfterClickingElement(getGlobalFooterPageThreadLocal().lnkInstagram,lsUrl)){
 			reporter.reportLogPass("The Url after clicking Instagram link is "+lsUrl);
 		}
