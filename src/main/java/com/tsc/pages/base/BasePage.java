@@ -340,11 +340,12 @@ import utils.ReusableActions;
 		getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 		waitForCondition(Driver->{return element.isDisplayed();},90000);
 		getReusableActionsInstance().clickIfAvailable(element);
-		this.applyStaticWait(2*this.getStaticWaitForApplication());
+		this.applyStaticWait(5*this.getStaticWaitForApplication());
 		//element.click();
 		Set<String> windowHandles=this.getDriver().getWindowHandles();
 		String lsReturnUrl=null;
 		for(String windowHandle:windowHandles){
+			reporter.reportLog("windowHandle: "+windowHandle);
 			this.getDriver().switchTo().window(windowHandle);
 			if(this.getDriver().getCurrentUrl().toLowerCase().contains(lsUrlKeyWord.toLowerCase())){
 				lsReturnUrl=this.getDriver().getCurrentUrl();
@@ -352,7 +353,7 @@ import utils.ReusableActions;
 			}
 		}
 		this.getDriver().switchTo().window(mainWindowHandle);
-
+		reporter.reportLog("lsReturnUrl: "+lsReturnUrl);
 		return lsReturnUrl;
 	}
 	
