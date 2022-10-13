@@ -347,6 +347,7 @@ import utils.ReusableActions;
 		for(String windowHandle:windowHandles){
 			reporter.reportLog("windowHandle: "+windowHandle);
 			this.getDriver().switchTo().window(windowHandle);
+			reporter.reportLog(this.getDriver().getCurrentUrl()+" : "+lsUrlKeyWord);
 			if(this.getDriver().getCurrentUrl().toLowerCase().contains(lsUrlKeyWord.toLowerCase())){
 				lsReturnUrl=this.getDriver().getCurrentUrl();
 				break;
