@@ -335,26 +335,23 @@ import utils.ReusableActions;
 	 * @author Wei.Li
 	 */
 	public String waitForPageLoadingByUrlChangeInNewWindow(WebElement element,String lsUrlKeyWord) {
-		String currentUrl=getDriver().getCurrentUrl();
 		String mainWindowHandle=this.getDriver().getWindowHandle();
 		getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 		waitForCondition(Driver->{return element.isDisplayed();},90000);
 		getReusableActionsInstance().clickIfAvailable(element);
 		this.applyStaticWait(5*this.getStaticWaitForApplication());
-		//element.click();
+
 		Set<String> windowHandles=this.getDriver().getWindowHandles();
 		String lsReturnUrl=null;
 		for(String windowHandle:windowHandles){
-			reporter.reportLog("windowHandle: "+windowHandle);
 			this.getDriver().switchTo().window(windowHandle);
-			reporter.reportLog(this.getDriver().getCurrentUrl()+" : "+lsUrlKeyWord);
 			if(this.getDriver().getCurrentUrl().toLowerCase().contains(lsUrlKeyWord.toLowerCase())){
 				lsReturnUrl=this.getDriver().getCurrentUrl();
 				break;
 			}
 		}
 		this.getDriver().switchTo().window(mainWindowHandle);
-		reporter.reportLog("lsReturnUrl: "+lsReturnUrl);
+		
 		return lsReturnUrl;
 	}
 	

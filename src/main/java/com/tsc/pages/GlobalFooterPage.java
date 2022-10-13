@@ -731,7 +731,6 @@ public class GlobalFooterPage extends BasePage {
 	 * @author Wei.Li
 	 */
 	public boolean verifyUrlAfterClickingElement(WebElement element, String lsExpectedUrl) {
-		reporter.reportLog("lsExpectedUrl: "+lsExpectedUrl);
 		lsExpectedUrl = removeProtocalHeaderFromUrl(lsExpectedUrl);
 		if(lsExpectedUrl.contains("/")){
 			lsExpectedUrl=lsExpectedUrl.split("/")[0];
@@ -759,7 +758,6 @@ public class GlobalFooterPage extends BasePage {
 	 */
 	public String getUrlWithSocialMediaName(List<String> lstSocialMedia, String lsSpecificMediaName) {
 		for (String lsItem : lstSocialMedia) {
-			reporter.reportLog("lsItem: "+lsItem);
 			if (lsItem.toLowerCase().contains(lsSpecificMediaName.toLowerCase())) {
 				return removeProtocalHeaderFromUrl(lsItem);
 			}
