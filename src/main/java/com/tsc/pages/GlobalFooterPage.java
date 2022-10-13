@@ -733,6 +733,9 @@ public class GlobalFooterPage extends BasePage {
 	public boolean verifyUrlAfterClickingElement(WebElement element, String lsExpectedUrl) {
 		reporter.reportLog("lsExpectedUrl: "+lsExpectedUrl);
 		lsExpectedUrl = removeProtocalHeaderFromUrl(lsExpectedUrl);
+		if(lsExpectedUrl.contains("/")){
+			lsExpectedUrl=lsExpectedUrl.split("/")[0];
+		}
 		String lsCurrentUrl = waitForPageLoadingByUrlChangeInNewWindow(element,lsExpectedUrl);
 		lsCurrentUrl = removeProtocalHeaderFromUrl(lsCurrentUrl);
 
