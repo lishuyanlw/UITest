@@ -10,7 +10,7 @@ public class GlobalFooterPage_Tablet_IOS extends GlobalFooterPage{
 
 	@Override
 	public void verifyFaceBookLink(List<String> lstSocialMediaLinks) {
-		String lsCurrentUrl = waitForPageLoadingByUrlChange(this.lnkFacebook);
+		String lsCurrentUrl = waitForPageLoadingByUrlChangeInNewWindow(this.lnkFacebook,"facebook.com");
 
 		if(lsCurrentUrl.toLowerCase().contains("facebook")){
 			reporter.reportLogPass("The Url after clicking Facebook link contains facebook");
