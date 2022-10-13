@@ -11,23 +11,23 @@ import org.openqa.selenium.support.FindBy;
 public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 
 	public GlobalFooterPage_Mobile(WebDriver driver) {
-		super(driver);		
+		super(driver);
 	}
-	
+
 	// TSC Customer Hub
 	@FindBy(xpath = "//div[@id='ac-0']//button")
 	public WebElement lblTSCCustomerHubText;
-	
+
 	@FindBy(xpath = "//div[@id='ac-panel-0']//ul//li//a")
 	public List<WebElement> lnkTSCCustomerHubAllLinks;
-	
+
 	// About TSC
 	@FindBy(xpath = "//div[@id='ac-1']//button")
 	public WebElement lblAboutTSCText;
-	
+
 	@FindBy(xpath = "//div[@id='ac-panel-1']//ul//li//a")
 	public List<WebElement> lnkAboutTSCAllLinks;
-	
+
 	@FindBy(xpath = "//ng-component//div[contains(@class,'summary-logout')]//button")
 	public WebElement btnMyAccountSignOut;
 
@@ -72,8 +72,8 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 
 		String lsText,lsYmlHref,lsHref;
 		for(WebElement item:this.lnkTSCCustomerHubAllLinks) {
-			lsText=this.getElementText(item);			
-			lsYmlHref=this.getLinkWithSpecificName(lstNameAndLinks,lsText,true);			
+			lsText=this.getElementText(item);
+			lsYmlHref=this.getLinkWithSpecificName(lstNameAndLinks,lsText,true);
 			if(lsYmlHref.isEmpty()) {
 				reporter.reportLogFailWithScreenshot("Unable to find "+lsText+" link.");
 			}
@@ -87,7 +87,7 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 
 		}
 	}
-	
+
 	@Override
 	public void verifyAboutTSCLinks(List<List<String>> lstNameAndLinks) {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAboutTSCText);
@@ -129,7 +129,7 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 		this.waitForPageToLoad();
 		return waitForCondition(Driver -> {return lblIndicator.isDisplayed();}, 60000);
 	}
-	
+
 	@Override
 	public WebElement getServiceWebElement(String lsService,String footerSection) {
 		if(!this.lblTSCCustomerHubText.getAttribute("aria-expanded").equalsIgnoreCase("true")) {
@@ -139,7 +139,7 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 			getReusableActionsInstance().staticWait(5*this.getStaticWaitForApplication());
 //			this.waitForCondition(Driver->{return this.lblTSCCustomerHubText.getAttribute("aria-expanded").equalsIgnoreCase("true");}, 30000);
 		}
-			
+
 		WebElement selectedItem = this.getElementFromList(this.lnkTSCCustomerHubAllLinks, lsService);
 		if (selectedItem == null) {
 			if(!this.lblAboutTSCText.getAttribute("aria-expanded").equalsIgnoreCase("true")) {
@@ -154,7 +154,7 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 		}
 		return selectedItem;
 	}
-	
+
 	@Override
 	public void verifyMyAccountServicePanelItem() {
 		for(WebElement item: this.lstMyAccountServicePanelHeading) {
@@ -164,75 +164,72 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 				this.waitForCondition(Driver->{return !item.getAttribute("class").contains("collapsed");}, 30000);
 			}
 		}
-			
+
 		ArrayList<WebElement> elementList=new ArrayList<WebElement>();
 		for(WebElement item:this.lstMyAccountServicePanelItem) {
 			elementList.add(item);
 		}
 		elementList.add(this.btnMyAccountSignOut);
-		
+
 		this.verifyElementListExistence(elementList);
 	}
-	
+
 	@Override
 	public void verifyRogersLogo() {
-		
+
 	}
-	
+
 	@Override
 	public List<String> getCustomerHubSubItemFr(List<List<String>> lstNameAndLinks){
 		String lsText=this.getUTFEnabledData(this.getElementText(this.lblTSCCustomerHubText));
-		
 		if(!this.lblTSCCustomerHubText.getAttribute("aria-expanded").equalsIgnoreCase("true")) {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblTSCCustomerHubText);
 			getReusableActionsInstance().clickIfAvailable(this.lblTSCCustomerHubText);
 			this.waitForCondition(Driver->{return this.lblTSCCustomerHubText.getAttribute("aria-expanded").equalsIgnoreCase("true");}, 30000);
 		}
-		
+
 		List<String> lstFr=new ArrayList<String>();
 		String lsFr;
 		for(WebElement item:this.lnkTSCCustomerHubAllLinks) {
-			lsText=this.getElementText(item);	
+			lsText=this.getElementText(item);
 			lsFr=this.getFrenchWithSpecificEnglishName(lstNameAndLinks,lsText);
 			lstFr.add(lsFr);
 		}
-		
+
 		return lstFr;
 	}
-	
+
 	@Override
 	public List<String> getAboutTSCSubItemFr(List<List<String>> lstNameAndLinks){
 		String lsText=this.getUTFEnabledData(this.getElementText(this.lblAboutTSCText));
-		
 		if(!this.lblAboutTSCText.getAttribute("aria-expanded").equalsIgnoreCase("true")) {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAboutTSCText);
 			getReusableActionsInstance().clickIfAvailable(this.lblAboutTSCText);
 			this.waitForCondition(Driver->{return this.lblAboutTSCText.getAttribute("aria-expanded").equalsIgnoreCase("true");}, 30000);
 		}
-		
+
 		List<String> lstFr=new ArrayList<String>();
 		String lsFr;
 		for(WebElement item:this.lnkAboutTSCAllLinks) {
-			lsText=this.getElementText(item);	
+			lsText=this.getElementText(item);
 			lsFr=this.getFrenchWithSpecificEnglishName(lstNameAndLinks,lsText);
 			lstFr.add(lsFr);
 		}
-		
+
 		return lstFr;
 	}
-	
+
 	@Override
 	public void verifyCustomerHubSubItemFr(List<List<String>> lstNameAndLinks, List<String> lstCustomerHubFr) {
 		String lsText,lsYmlHref,lsHref;
-		
 		if(!this.lblTSCCustomerHubText.getAttribute("aria-expanded").equalsIgnoreCase("true")) {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblTSCCustomerHubText);
 			getReusableActionsInstance().clickIfAvailable(this.lblTSCCustomerHubText);
 			this.waitForCondition(Driver->{return this.lblTSCCustomerHubText.getAttribute("aria-expanded").equalsIgnoreCase("true");}, 30000);
 		}
-		
+
 		for(int i=0;i<this.lnkTSCCustomerHubAllLinks.size();i++) {
-			lsText=this.getUTFEnabledData(this.getElementText(this.lnkTSCCustomerHubAllLinks.get(i)));	
+			lsText=this.getUTFEnabledData(this.getElementText(this.lnkTSCCustomerHubAllLinks.get(i)));
 			if(lsText.equalsIgnoreCase(lstCustomerHubFr.get(i))){
 				reporter.reportLogPass("The "+i+" CustomerHubLink French translation of "+lsText+" is the same as "+lstCustomerHubFr.get(i));
 			}
@@ -240,7 +237,7 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 				reporter.reportLogFailWithScreenshot("The "+i+" CustomerHubLink French translation of "+lsText+" is not the same as "+lstCustomerHubFr.get(i));
 			}
 
-			lsYmlHref=this.getLinkWithSpecificName(lstNameAndLinks,lsText,false);			
+			lsYmlHref=this.getLinkWithSpecificName(lstNameAndLinks,lsText,false);
 			if(lsYmlHref.isEmpty()) {
 				reporter.reportLogFailWithScreenshot("Unable to find "+lsText+" link.");
 			}
@@ -253,17 +250,16 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 			}
 		}
 	}
-	
+
 	@Override
 	public void verifyAboutTSCSubItemFr(List<List<String>> lstNameAndLinks, List<String> lstAboutTSCFr) {
 		String lsText,lsYmlHref,lsHref;
-		
 		if(!this.lblAboutTSCText.getAttribute("aria-expanded").equalsIgnoreCase("true")) {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAboutTSCText);
 			getReusableActionsInstance().clickIfAvailable(this.lblAboutTSCText);
 			this.waitForCondition(Driver->{return this.lblAboutTSCText.getAttribute("aria-expanded").equalsIgnoreCase("true");}, 30000);
 		}
-		
+
 		for(int i=0;i<this.lnkAboutTSCAllLinks.size();i++) {
 			lsText=this.getUTFEnabledData(this.getElementText(this.lnkAboutTSCAllLinks.get(i)));
 			if(lsText.equalsIgnoreCase(lstAboutTSCFr.get(i))){
@@ -286,7 +282,7 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 			}
 		}
 	}
-	
+
 	@Override
 	public void verifyFaceBookLink(List<String> lstSocialMediaLinks) {
 		String lsCurrentUrl = waitForPageLoadingByUrlChangeInNewWindow(this.lnkFacebook,"facebook");
@@ -297,7 +293,7 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 			reporter.reportLogFailWithScreenshot("The Url after clicking Facebook link does not contain facebook");
 		}
 
-		String lsBaseUrl=this.getBaseURL()+"/";		
+		String lsBaseUrl=this.getBaseURL()+"/";
 		this.navigateToURL(lsBaseUrl);
 		this.waitForPageLoading();
 	}

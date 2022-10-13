@@ -486,6 +486,9 @@ public class GlobalFooterPage extends BasePage {
 	public WebElement btnTrackYourOderSignIn;
 
 	// Sign Up for Email
+	@FindBy(xpath = "//div[@id='pnlEmailPopup']")
+	public WebElement windowForSignUpForEmail;
+
 	@FindBy(xpath = "//div[@class='email-popup__main-content']//input[@id='FirstName']")
 	public WebElement inputFirstNameForSignUpForEmail;
 
@@ -729,6 +732,9 @@ public class GlobalFooterPage extends BasePage {
 	 */
 	public boolean verifyUrlAfterClickingElement(WebElement element, String lsExpectedUrl) {
 		lsExpectedUrl = removeProtocalHeaderFromUrl(lsExpectedUrl);
+		if(lsExpectedUrl.contains("/")){
+			lsExpectedUrl=lsExpectedUrl.split("/")[0];
+		}
 		String lsCurrentUrl = waitForPageLoadingByUrlChangeInNewWindow(element,lsExpectedUrl);
 		lsCurrentUrl = removeProtocalHeaderFromUrl(lsCurrentUrl);
 
@@ -922,6 +928,7 @@ public class GlobalFooterPage extends BasePage {
 	 *
 	 * @param- String     lsService: the service name
 	 * @param- WebElement lblIndicator: page loading indicator
+	 * @param- String - section
 	 * @return true/false
 	 * @author Wei.Li
 	 */
@@ -934,13 +941,32 @@ public class GlobalFooterPage extends BasePage {
 		else{
 			reporter.reportLog("Find "+lsService+" button");
 		}
-
-//		getReusableActionsInstance().javascriptScrollByVisibleElement(selectedItem);
-//		getReusableActionsInstance().clickIfAvailable(selectedItem);
 		this.clickElement(selectedItem);
-
 		this.waitForPageToLoad();
 		return waitForCondition(Driver -> {return lblIndicator.isDisplayed();}, 60000);
+	}
+
+	/**
+	 * This method is to go to SignUp for Email service.	 *
+	 * @param- String     lsService: the service name
+	 * @param- String - section
+	 * @return true/false
+	 * @author Wei.Li
+	 */
+	public boolean goToServiceForSignUpForEmail(String lsService, String section) {
+		String lsUrl=this.URL();
+		WebElement selectedItem = this.getServiceWebElement(lsService,section);
+		if (selectedItem == null) {
+			return false;
+		}
+		else{
+			reporter.reportLog("Find "+lsService+" button");
+		}
+		this.clickElement(selectedItem);
+		this.waitForPageToLoad();
+		this.applyStaticWait(3*this.getStaticWaitForApplication());
+
+		return true;
 	}
 
 	/**
@@ -2362,8 +2388,16 @@ public class GlobalFooterPage extends BasePage {
 	 * To verify SignUpForEmail Contents
 	 */
 	public void verifySignUpForEmailContents() {
-		String lsText;
+		String lsMainWindowHandle=this.getDriver().getWindowHandle();
+		Set<String> lstWindowHandles=this.getDriver().getWindowHandles();
+		for(String lsWindowHandle:lstWindowHandles){
+			if(!lsWindowHandle.equalsIgnoreCase(lsMainWindowHandle)){
+				this.getDriver().switchTo().window(lsWindowHandle);
+				break;
+			}
+		}
 
+		String lsText;
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputFirstNameForSignUpForEmail);
 		if(this.getReusableActionsInstance().isElementVisible(this.inputFirstNameForSignUpForEmail)){
 			reporter.reportLogPass("Input First Name field in SignUpForEmail section is displaying correctly.");
@@ -2419,6 +2453,7 @@ public class GlobalFooterPage extends BasePage {
 				reporter.reportLogFail(i+" item text in SignUpForEmail section footer is not displaying correctly.");
 			}
 		}
+		this.getDriver().switchTo().defaultContent();
 	}
 
 }

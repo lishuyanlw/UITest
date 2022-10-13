@@ -335,13 +335,12 @@ import utils.ReusableActions;
 	 * @author Wei.Li
 	 */
 	public String waitForPageLoadingByUrlChangeInNewWindow(WebElement element,String lsUrlKeyWord) {
-		String currentUrl=getDriver().getCurrentUrl();
 		String mainWindowHandle=this.getDriver().getWindowHandle();
 		getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 		waitForCondition(Driver->{return element.isDisplayed();},90000);
 		getReusableActionsInstance().clickIfAvailable(element);
-		this.applyStaticWait(2*this.getStaticWaitForApplication());
-		//element.click();
+		this.applyStaticWait(5*this.getStaticWaitForApplication());
+
 		Set<String> windowHandles=this.getDriver().getWindowHandles();
 		String lsReturnUrl=null;
 		for(String windowHandle:windowHandles){

@@ -15,7 +15,7 @@ public class GF_TC02_VerifyCustomerHubLinksAndAboutTSCLinks extends BaseTest {
 	@Test(groups={"Regression","GlobalFooter"})
 	public void GF_TC02_VerifyCustomerHubLinksAndAboutTSCLinks() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
-		BasePage basePage=new BasePage(this.getDriver());		
+		BasePage basePage=new BasePage(this.getDriver());
 		String lsBaseUrl=basePage.getBaseURL()+"/";
 
 		if(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl)){
@@ -25,20 +25,20 @@ public class GF_TC02_VerifyCustomerHubLinksAndAboutTSCLinks extends BaseTest {
 			reporter.reportLogFailWithScreenshot("TSC url is incorrect");
 		}
 		reporter.reportLog("Global Footer Section");
-		
+
 		validateContents();
 
 	}
-	
+
 	public void validateContents() {
 		reporter.reportLog("Global Footer Section contents for CustomerHubLinks_AboutTSCLinks");
-		
-		BasePage basePage=new BasePage(this.getDriver());		
-		
+
+		BasePage basePage=new BasePage(this.getDriver());
+
 		List<List<String>> lstNameAndLinks=TestDataHandler.constantData.getFooterSection().getLst_NameAndLinks();
-		
+
 		//Credit card
-		String lsText=basePage.getElementText(getGlobalFooterPageThreadLocal().lnkCreditCard);		
+		String lsText=basePage.getElementText(getGlobalFooterPageThreadLocal().lnkCreditCard);
 		String lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsText,true);
 		if(lsYmlHref.isEmpty()) {
 			reporter.reportLogFailWithScreenshot("Unable to find credit card link.");
@@ -60,7 +60,7 @@ public class GF_TC02_VerifyCustomerHubLinksAndAboutTSCLinks extends BaseTest {
 		}
 
 		//Gift card
-		lsText=basePage.getElementText(getGlobalFooterPageThreadLocal().lnkGiftCard);		
+		lsText=basePage.getElementText(getGlobalFooterPageThreadLocal().lnkGiftCard);
 		lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsText,true);
 		if(lsYmlHref.isEmpty()) {
 			reporter.reportLogFailWithScreenshot("Unable to find Gift card link.");
@@ -82,7 +82,7 @@ public class GF_TC02_VerifyCustomerHubLinksAndAboutTSCLinks extends BaseTest {
 		}
 
 		//Send us feedback
-		lsText=basePage.getElementText(getGlobalFooterPageThreadLocal().lnkSendUsFeedback);		
+		lsText=basePage.getElementText(getGlobalFooterPageThreadLocal().lnkSendUsFeedback);
 		lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsText,true);
 		if(lsYmlHref.isEmpty()) {
 			reporter.reportLogFailWithScreenshot("Unable to find Send us feedback link.");
@@ -104,7 +104,7 @@ public class GF_TC02_VerifyCustomerHubLinksAndAboutTSCLinks extends BaseTest {
 		}
 
 		//Language switch
-		lsText=basePage.getUTFEnabledData(basePage.getElementText(getGlobalFooterPageThreadLocal().lnkLanguage));		
+		lsText=basePage.getUTFEnabledData(basePage.getElementText(getGlobalFooterPageThreadLocal().lnkLanguage));
 		lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsText,true);
 		if(lsYmlHref.isEmpty()) {
 			reporter.reportLogFailWithScreenshot("Unable to find Language switch link.");
@@ -119,13 +119,13 @@ public class GF_TC02_VerifyCustomerHubLinksAndAboutTSCLinks extends BaseTest {
 
 		//TSC customer hub links
 		getGlobalFooterPageThreadLocal().verifyTSCCustomerHubLinks(lstNameAndLinks);
-		
+
 		//About TSC links
 		getGlobalFooterPageThreadLocal().verifyAboutTSCLinks(lstNameAndLinks);
-		
+
 		//Rogers LOGO
-		getGlobalFooterPageThreadLocal().verifyRogersLogo();		
-		
+		getGlobalFooterPageThreadLocal().verifyRogersLogo();
+
 		//Copyright text
 		lsText=basePage.getUTFEnabledData(basePage.getElementText(getGlobalFooterPageThreadLocal().txtCopyrightLine1));
 		if(getGlobalFooterPageThreadLocal().verifyEqualWithEncodingText(lstNameAndLinks, lsText)){

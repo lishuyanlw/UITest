@@ -14,7 +14,7 @@ public class GF_TC01_VerifySocialMedia extends BaseTest {
 	public void GF_TC01_VerifySocialMedia() {
 
 		getGlobalFooterPageThreadLocal().closePopupDialog();
-		BasePage basePage=new BasePage(this.getDriver());		
+		BasePage basePage=new BasePage(this.getDriver());
 		String lsBaseUrl=basePage.getBaseURL()+"/";
 
 		if(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl)){
@@ -30,24 +30,26 @@ public class GF_TC01_VerifySocialMedia extends BaseTest {
 
 		reporter.reportLog("Global Footer Section");
 		validateMajorNameAndLinks();
-		validateActionContents();
-		
+		String strBrowser = System.getProperty("Browser").trim();
+		if (!strBrowser.toLowerCase().contains("ios")) {
+			validateActionContents();
+		}
 	}
-	
+
 	public void validateActionContents() {
 		reporter.reportLog("Global Footer Section contents for SocialMedia");
-		
-		BasePage basePage=new BasePage(this.getDriver());		
+
+		BasePage basePage=new BasePage(this.getDriver());
 		String lsBaseUrl=basePage.getBaseURL()+"/";
 		String lsUrl;
-		
+
 		List<String> lstSocialMediaLinks=TestDataHandler.constantData.getFooterSection().getLst_SocialMediaLinks();
-		
+
 		//Facebook
 		getGlobalFooterPageThreadLocal().verifyFaceBookLink(lstSocialMediaLinks);
-		
+
 		//Twitter
-		lsUrl=getGlobalFooterPageThreadLocal().getUrlWithSocialMediaName(lstSocialMediaLinks, "Twitter");		
+		lsUrl=getGlobalFooterPageThreadLocal().getUrlWithSocialMediaName(lstSocialMediaLinks, "Twitter");
 		if(getGlobalFooterPageThreadLocal().verifyUrlAfterClickingElement(getGlobalFooterPageThreadLocal().lnkTwitter,lsUrl)){
 			reporter.reportLogPass("The Url after clicking Twitter link is "+lsUrl);
 		}
@@ -61,7 +63,6 @@ public class GF_TC01_VerifySocialMedia extends BaseTest {
 
 		//Instagram
 		lsUrl=getGlobalFooterPageThreadLocal().getUrlWithSocialMediaName(lstSocialMediaLinks, "Instagram");
-		System.out.println("Yaml: "+lsUrl);
 		if(getGlobalFooterPageThreadLocal().verifyUrlAfterClickingElement(getGlobalFooterPageThreadLocal().lnkInstagram,lsUrl)){
 			reporter.reportLogPass("The Url after clicking Instagram link is "+lsUrl);
 		}
@@ -72,9 +73,9 @@ public class GF_TC01_VerifySocialMedia extends BaseTest {
 		basePage.navigateToURL(lsBaseUrl);
 		getGlobalFooterPageThreadLocal().waitForPageLoading();
 		basePage.getReusableActionsInstance().staticWait(1000);
-		
+
 		//Youtube
-		lsUrl=getGlobalFooterPageThreadLocal().getUrlWithSocialMediaName(lstSocialMediaLinks, "Youtube");		
+		lsUrl=getGlobalFooterPageThreadLocal().getUrlWithSocialMediaName(lstSocialMediaLinks, "Youtube");
 		if(getGlobalFooterPageThreadLocal().verifyUrlAfterClickingElement(getGlobalFooterPageThreadLocal().lnkYoutube,lsUrl)){
 			reporter.reportLogPass("The Url after clicking Youtube link is "+lsUrl);
 		}
@@ -85,9 +86,9 @@ public class GF_TC01_VerifySocialMedia extends BaseTest {
 		basePage.navigateToURL(lsBaseUrl);
 		getGlobalFooterPageThreadLocal().waitForPageLoading();
 		basePage.getReusableActionsInstance().staticWait(1000);
-		
+
 		//Pinterest
-		lsUrl=getGlobalFooterPageThreadLocal().getUrlWithSocialMediaName(lstSocialMediaLinks, "Pinterest");		
+		lsUrl=getGlobalFooterPageThreadLocal().getUrlWithSocialMediaName(lstSocialMediaLinks, "Pinterest");
 		if(getGlobalFooterPageThreadLocal().verifyUrlAfterClickingElement(getGlobalFooterPageThreadLocal().lnkPinterest,lsUrl)){
 			reporter.reportLogPass("The Url after clicking Pinterest link is "+lsUrl);
 		}
@@ -99,7 +100,7 @@ public class GF_TC01_VerifySocialMedia extends BaseTest {
 		getGlobalFooterPageThreadLocal().waitForPageLoading();
 		basePage.getReusableActionsInstance().staticWait(1000);
 	}
-	
+
 	public void validateMajorNameAndLinks() {
 		reporter.reportLog("Global Footer Section name and links for SocialMedia");
 

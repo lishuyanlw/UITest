@@ -18,12 +18,12 @@ public class GF_TC04_VerifyLinksAndPageObjectsForTSCCustomerHub extends BaseTest
 	 * CER-175
 	 * CER-178
 	 * CER-181
-	 * CER-182	 
+	 * CER-182
 	 */
 	@Test(groups={"Regression","GlobalFooter"})
 	public void GF_TC04_VerifyLinksAndPageObjectsForTSCCustomerHub() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
-		BasePage basePage=new BasePage(this.getDriver());		
+		BasePage basePage=new BasePage(this.getDriver());
 		String lsBaseUrl=basePage.getBaseURL()+"/";
 
 		if(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl)){
@@ -33,8 +33,8 @@ public class GF_TC04_VerifyLinksAndPageObjectsForTSCCustomerHub extends BaseTest
 			reporter.reportLogFailWithScreenshot("TSC url is incorrect");
 		}
 
-		reporter.reportLog("Global Footer Section");		
-		
+		reporter.reportLog("Global Footer Section");
+
 		List<List<String>> lstNameAndLinks=TestDataHandler.constantData.getFooterSection().getLst_NameAndLinks();
 		String lsService,lsHref,lsYmlHref;
 		ArrayList<WebElement> elementList=new ArrayList<WebElement>();
@@ -159,7 +159,7 @@ public class GF_TC04_VerifyLinksAndPageObjectsForTSCCustomerHub extends BaseTest
 			reporter.reportLogFailWithScreenshot("The current '"+lsService+"' href of "+lsHref+" is not equal to "+lsYmlHref);
 		}
 
-		if(!getGlobalFooterPageThreadLocal().goToService(lsService,getGlobalFooterPageThreadLocal().btnSignUpNowForSignUpForEmail,hashMap.get("parent"))) {
+		if(!getGlobalFooterPageThreadLocal().goToServiceForSignUpForEmail(lsService,hashMap.get("parent"))) {
 			reporter.reportLogFail("Unable to navigate to '"+lsService+"' page objects.");
 		}
 		else {
@@ -209,7 +209,7 @@ public class GF_TC04_VerifyLinksAndPageObjectsForTSCCustomerHub extends BaseTest
 		hashMap = getGlobalFooterPageThreadLocal().getTestDataWithSpecificName(lstNameAndLinks, lsService, true);
 		reporter.reportLog(lsService);
 		selectedItem=getGlobalFooterPageThreadLocal().getServiceWebElement(lsService,hashMap.get("parent"));
-		lsHref=basePage.getElementHref(selectedItem);		
+		lsHref=basePage.getElementHref(selectedItem);
 		//lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsService,true);
 		lsYmlHref=hashMap.get("Link");
 		if(lsYmlHref.isEmpty()) {
@@ -267,12 +267,12 @@ public class GF_TC04_VerifyLinksAndPageObjectsForTSCCustomerHub extends BaseTest
 
 
 		verifyMyAccountNotLoginContents(lsService, lstNameAndLinks,hashMap.get("parent"));
-		
+
 		reporter.reportLog("Login for "+lsService);
 		String lsUserName=TestDataHandler.constantData.getLoginUser().getLbl_Username();
 		String lsPassword=TestDataHandler.constantData.getLoginUser().getLbl_Password();
 		String lsFirstName=TestDataHandler.constantData.getLoginUser().getLbl_FirstName();
-		if(getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword,lsFirstName)) {			
+		if(getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword,lsFirstName)) {
 //			verifyMyAccountLoginContents(lsService, lstNameAndLinks);
 			hashMap = getGlobalFooterPageThreadLocal().getTestDataWithSpecificName(lstNameAndLinks, lsService, true);
 			verifyMyAccountNotLoginContents(lsService, lstNameAndLinks,hashMap.get("parent"));
@@ -282,14 +282,14 @@ public class GF_TC04_VerifyLinksAndPageObjectsForTSCCustomerHub extends BaseTest
 		}
 	*/
 	}
-	
+
 	void verifyMyAccountNotLoginContents(String lsService, List<List<String>> lstNameAndLinks,String section) {
-		BasePage basePage=new BasePage(this.getDriver());	
+		BasePage basePage=new BasePage(this.getDriver());
 		ArrayList<WebElement> elementList=new ArrayList<WebElement>();
 
 		List<String> lstMyAccountObjectSectionTitle=TestDataHandler.constantData.getFooterSection().getLst_MyAccountObjectSectionTitle();
 		WebElement selectedItem=getGlobalFooterPageThreadLocal().getServiceWebElement(lsService,section);
-		String lsHref=basePage.getElementHref(selectedItem);		
+		String lsHref=basePage.getElementHref(selectedItem);
 		String lsYmlHref=getGlobalFooterPageThreadLocal().getLinkWithSpecificName(lstNameAndLinks,lsService,true);
 		if(lsYmlHref.isEmpty()) {
 			reporter.reportLogFail("Unable to find '"+lsService+"' link.");
@@ -316,21 +316,21 @@ public class GF_TC04_VerifyLinksAndPageObjectsForTSCCustomerHub extends BaseTest
 			getGlobalFooterPageThreadLocal().verifyServiceObjectSectionTitle(getGlobalFooterPageThreadLocal().lstMyAccountItemTitle, lstMyAccountObjectSectionTitle, true);
 
 			elementList.add(getGlobalFooterPageThreadLocal().lblMyAccount);
-			
-			//Add myaccount item section titles 
+
+			//Add myaccount item section titles
 			for(WebElement item:getGlobalFooterPageThreadLocal().lstMyAccountItemTitle) {
 				elementList.add(item);
 			}
-			
+
 			//Add myaccount item section contents
 			for(WebElement item:getGlobalFooterPageThreadLocal().lstMyAccountItemContent) {
 				elementList.add(item);
 			}
-			
+
 			getGlobalFooterPageThreadLocal().verifyElementListExistence(elementList);
 		}
 	}
-	
+
 	void verifyMyAccountLoginContents(String lsService, List<List<String>> lstNameAndLinks) {
 		BasePage basePage=new BasePage(this.getDriver());
 		basePage.getReusableActionsInstance().staticWait(1000);
