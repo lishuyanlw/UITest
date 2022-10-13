@@ -316,6 +316,7 @@ checkOut:
       itemToBeAdded: "1"
       styleExist: "true"
       sameSizeAndStyle: "true"
+  lst_SearchingKeywordForPlaceOrder: ["jeggings","joan rivers","Beauty"]
   addShippingAddressErrorMessage: ["You have one or more missing or invalid entries. Please enter correct data and try again.",
                                    "First name is required.","Last name is required.","Phone number is required.","Address is required.",
                                    "City is required.","Province is required.","Postal code is required."]

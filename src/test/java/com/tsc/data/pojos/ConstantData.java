@@ -1417,6 +1417,15 @@ public class ConstantData {
         String lblPromoteCodeAppliedMessage;
         String lblGiftCardAppliedMessage;
         List<String> lstShippingAddressErrorMessageForGuestCheckout;
+        List<String> lst_SearchingKeywordForPlaceOrder;
+
+        public List<String> getLst_SearchingKeywordForPlaceOrder() {
+            return lst_SearchingKeywordForPlaceOrder;
+        }
+
+        public void setLst_SearchingKeywordForPlaceOrder(List<String> lst_SearchingKeywordForPlaceOrder) {
+            this.lst_SearchingKeywordForPlaceOrder = lst_SearchingKeywordForPlaceOrder;
+        }
 
         public List<String> getLstShippingAddressErrorMessageForGuestCheckout() {
             return lstShippingAddressErrorMessageForGuestCheckout;

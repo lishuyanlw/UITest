@@ -19,7 +19,7 @@ public class GCP_TC01_VerifyUserInfoContents extends BaseTest{
 	public void GCP_TC01_VerifyUserInfoContents() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 		BasePage basePage=new BasePage(this.getDriver());
-		List<String> lstKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_APISearchingKeyword();
+		List<String> lstKeywordList=TestDataHandler.constantData.getCheckOut().getLst_SearchingKeywordForPlaceOrder();
 		List<String> expectedErrorMessage = TestDataHandler.constantData.getCheckOut().getLstShippingAddressErrorMessageForGuestCheckout();
 
 		Map<String,Object> outputDataCriteria= new HashMap<String,Object>();
@@ -74,6 +74,7 @@ public class GCP_TC01_VerifyUserInfoContents extends BaseTest{
 			reporter.reportLog("Verify Promote Code Contents and ContinueToPayment Button");
 			getRegularCheckoutThreadLocal().verifyPromoteCodeContents();
 			getGuestCheckoutThreadLocal().verifyContinueToPaymentButton();
+
 		}
 	}
 }

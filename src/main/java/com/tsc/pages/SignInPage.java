@@ -28,6 +28,9 @@ public class SignInPage extends BasePage {
 	@FindBy(xpath = "//div[contains(@class,'secondary-navigation__rhs-account')]//nav")
 	public WebElement cntSignInPopover;
 
+	@FindBy(xpath = "//div[contains(@class,'secondary-navigation__rhs-account')]//nav//a")
+	public List<WebElement> lstSignInDropdownMenu;
+
 	@FindBy(xpath = "//div[contains(@class,'secondary-navigation__rhs-account')]//nav//a[contains(@href,'signin')]")
 	public WebElement btnSignInNav;
 
@@ -778,6 +781,42 @@ public class SignInPage extends BasePage {
 
 		GuestCheckoutPage guestCheckoutPage=new GuestCheckoutPage(this.getDriver());
 		return this.waitForCondition(Driver->{return guestCheckoutPage.btnCollapseProductList.isDisplayed();},120000);
+	}
+
+	/**
+	 * To check SignIn Status
+	 * @return - boolean
+	 */
+	public boolean checkSignInStatus() {
+		String lsText;
+		boolean bSignIn=false;
+		getReusableActionsInstance().javascriptScrollToTopOfPage();
+		String strBrowser = System.getProperty("Browser").trim();
+		if (strBrowser.toLowerCase().contains("android") || strBrowser.toLowerCase().contains("ios")
+				|| strBrowser.toLowerCase().contains("mobile")) {
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInMainMenu);
+			this.getReusableActionsInstance().clickIfAvailable(this.btnSignInMainMenu);
+
+			getReusableActionsInstance().staticWait(3000);
+			lsText=this.getElementInnerText(lstSignInDropdownMenu.get(0));
+			if(lsText.equalsIgnoreCase("Sign In")){
+				bSignIn=false;
+			}
+			else{
+				bSignIn=true;
+			}
+			this.btnSignInMainMenu.click();
+			getReusableActionsInstance().staticWait(3000);
+		} else {
+			lsText=this.getElementInnerText(this.btnSignInMainMenu);
+			if(lsText.equalsIgnoreCase("Sign in")){
+				bSignIn=false;
+			}
+			else{
+				bSignIn=true;
+			}
+		}
+		return bSignIn;
 	}
 
 }

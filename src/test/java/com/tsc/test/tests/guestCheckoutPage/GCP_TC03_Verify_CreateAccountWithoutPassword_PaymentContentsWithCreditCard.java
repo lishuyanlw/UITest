@@ -20,7 +20,7 @@ public class GCP_TC03_Verify_CreateAccountWithoutPassword_PaymentContentsWithCre
 	public void GCP_TC03_Verify_CreateAccountWithoutPassword_PaymentContentsWithCreditCard() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 		BasePage basePage=new BasePage(this.getDriver());
-		List<String> lstKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_APISearchingKeyword();
+		List<String> lstKeywordList=TestDataHandler.constantData.getCheckOut().getLst_SearchingKeywordForPlaceOrder();
 
 		Map<String,Object> outputDataCriteria= new HashMap<String,Object>();
 		outputDataCriteria.put("style", "2");
