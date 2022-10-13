@@ -4697,7 +4697,7 @@ public class RegularCheckoutPage extends BasePage {
 			this.applyStaticWait(300);
 
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnOrderSummaryPromoteCodeApply);
-			btnOrderSummaryPromoteCodeApply.click();
+			this.clickWebElementUsingJS(btnOrderSummaryPromoteCodeApply);
 			try{
 				this.waitForPageLoadingSpinningStatusCompleted();
 			}
@@ -4851,7 +4851,7 @@ public class RegularCheckoutPage extends BasePage {
 		this.applyStaticWait(300);
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnOrderSummaryGiftCardApply);
-		btnOrderSummaryGiftCardApply.click();
+		this.clickWebElementUsingJS(btnOrderSummaryGiftCardApply);
 
 		return this.waitForCondition(Driver->{return lblOrderSummaryGiftCardErrorMessage.isDisplayed();},15000);
 	}

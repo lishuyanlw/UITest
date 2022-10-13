@@ -80,6 +80,11 @@ public class CP_TC09_VerifyPaymentMethod_Add_Remove_PaymentType_And_PayPal exten
             getRegularCheckoutThreadLocal().closeAddOrChangePaymentMethodDialog(true);
             reporter.reportLog("2 > Verify Mandatory Error Message");
             getRegularCheckoutThreadLocal().verifyErrorMessageOnAddPaymentMethodDialog(addNewCardErrorMessage.get(0));
+            if(getRegularCheckoutThreadLocal().getDeviceTypeForTest(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
+                getRegularCheckoutThreadLocal().refresh();
+                getRegularCheckoutThreadLocal().openAddOrChangePaymentMethodDialog();
+                getRegularCheckoutThreadLocal().openUsingNewCardDialog();
+            }
             reporter.reportLog("3 > Verify Invalid Credit Card Error Message");
             getRegularCheckoutThreadLocal().addAndVerifyInvalidCardErrorMessage(invalidCreditCardNumber,addNewCardErrorMessage.get(1).get(0));
             reporter.reportLog("4 > Verify Expired Credit Card Error Message");
