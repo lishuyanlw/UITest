@@ -27,7 +27,7 @@ public class CP_TC07_VerifyReguLarCheckout_PaymentOptions extends BaseTest{
 		getShoppingCartThreadLocal().emptyCart(customerEDP,accessToken);
 		//To add Product With Multiple Shipping Methods
 		String lsKeyword=TestDataHandler.constantData.getCheckOut().getLblProductNumberWithMultipleShippingMethods();
-		Map<String,Object> mapAPI=getShoppingCartThreadLocal().addSingleProductWithConditions(lsKeyword, 1,1, String.valueOf(customerEDP), accessToken,false);
+		getShoppingCartThreadLocal().addSingleProductWithConditions(lsKeyword, 1,1, String.valueOf(customerEDP), accessToken,false);
 
 		//Delete all gift cards
 		CartAPI cartAPI=new CartAPI();
