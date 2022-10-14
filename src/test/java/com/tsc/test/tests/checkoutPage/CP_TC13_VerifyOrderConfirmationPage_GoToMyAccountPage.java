@@ -46,9 +46,9 @@ public class CP_TC13_VerifyOrderConfirmationPage_GoToMyAccountPage extends BaseT
 		CartResponse cartResponse= JsonParser.getResponseObject(response.asString(), new TypeReference<CartResponse>() {});
 		getRegularCheckoutThreadLocal().deleteCreditCardForUserAndFromCart(cartResponse,String.valueOf(customerEDP),accessToken);
 
-		//Adding TSC Credit Card for user
+		//Adding Visa Credit Card for user
 		AccountAPI accountAPI = new AccountAPI();
-		Response tscCardResponse = accountAPI.addCreditCardToUser((org.json.simple.JSONObject) creditCardData.get("tsc"),String.valueOf(customerEDP),accessToken);
+		Response tscCardResponse = accountAPI.addCreditCardToUser((org.json.simple.JSONObject) creditCardData.get("visa"),String.valueOf(customerEDP),accessToken);
 		if(tscCardResponse.statusCode()==200)
 			reporter.reportLog("New TSC Credit Card is added for user as default Card");
 		else
