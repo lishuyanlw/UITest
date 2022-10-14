@@ -15,9 +15,9 @@ public class GF_TC03_VerifyLanguageForCustomerHubLinksAndAboutTSCLinks extends B
 	@Test(groups={"Regression","GlobalFooter"})
 	public void GF_TC03_VerifyLanguageForCustomerHubLinksAndAboutTSCLinks() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
-		BasePage basePage=new BasePage(this.getDriver());		
+		BasePage basePage=new BasePage(this.getDriver());
 		String lsBaseUrl=basePage.getBaseURL()+"/";
-		
+
 		if(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl)){
 			reporter.reportLogPass("TSC url is correct");
 		}
@@ -27,7 +27,7 @@ public class GF_TC03_VerifyLanguageForCustomerHubLinksAndAboutTSCLinks extends B
 		reporter.reportLog("Global Footer Section");
 
 		List<List<String>> lstNameAndLinks= TestDataHandler.constantData.getFooterSection().getLst_NameAndLinks();
-		
+
 		//Credit card
 		String lsText=basePage.getElementText(getGlobalFooterPageThreadLocal().lnkCreditCard);
 		String lsText_CreditCard_Fr=getGlobalFooterPageThreadLocal().getFrenchWithSpecificEnglishName(lstNameAndLinks,lsText);
@@ -43,29 +43,29 @@ public class GF_TC03_VerifyLanguageForCustomerHubLinksAndAboutTSCLinks extends B
 		//Language switch
 		lsText=basePage.getUTFEnabledData(basePage.getElementText(getGlobalFooterPageThreadLocal().lnkLanguage));
 		String lsText_LanguageSwitch_En=getGlobalFooterPageThreadLocal().getFrenchWithSpecificEnglishName(lstNameAndLinks,lsText);
-		
+
 		//TSC customer hub links
 		lsText=basePage.getUTFEnabledData(basePage.getElementText(getGlobalFooterPageThreadLocal().lblTSCCustomerHubText));
 		String lsText_TSCCustomerHub_Fr=getGlobalFooterPageThreadLocal().getFrenchWithSpecificEnglishName(lstNameAndLinks,lsText);
 		List<String> lstCustomerHubFr=getGlobalFooterPageThreadLocal().getCustomerHubSubItemFr(lstNameAndLinks);
-			
+
 		//About TSC links
 		lsText=basePage.getUTFEnabledData(basePage.getElementText(getGlobalFooterPageThreadLocal().lblAboutTSCText));
 		String lsText_AboutTSC_Fr=getGlobalFooterPageThreadLocal().getFrenchWithSpecificEnglishName(lstNameAndLinks,lsText);
 		List<String> lstAboutTSCFr=getGlobalFooterPageThreadLocal().getAboutTSCSubItemFr(lstNameAndLinks);
-			
+
 		//Rogers LOGO
-		getGlobalFooterPageThreadLocal().verifyRogersLogo();		
-		
+		getGlobalFooterPageThreadLocal().verifyRogersLogo();
+
 		//Copyright text
 		lsText=basePage.getUTFEnabledData(basePage.getElementText(getGlobalFooterPageThreadLocal().txtCopyrightLine1));
 		String lsText_Copyright_Line1_Fr=getGlobalFooterPageThreadLocal().getFrenchWithSpecificEnglishName(lstNameAndLinks,lsText);
-		lsText=basePage.getUTFEnabledData(basePage.getElementText(getGlobalFooterPageThreadLocal().txtCopyrightLine2));	
+		lsText=basePage.getUTFEnabledData(basePage.getElementText(getGlobalFooterPageThreadLocal().txtCopyrightLine2));
 		String lsText_Copyright_Line2_Fr=getGlobalFooterPageThreadLocal().getFrenchWithSpecificEnglishName(lstNameAndLinks,lsText);
-		
+
 		//Switch to French
 		getGlobalFooterPageThreadLocal().switchlanguage();
-		
+
 		//Credit card
 		lsText=basePage.getUTFEnabledData(basePage.getElementText(getGlobalFooterPageThreadLocal().lnkCreditCard));
 		if(lsText.equalsIgnoreCase(lsText_CreditCard_Fr)){
@@ -161,6 +161,8 @@ public class GF_TC03_VerifyLanguageForCustomerHubLinksAndAboutTSCLinks extends B
 
 		//Language switch
 		lsText=basePage.getUTFEnabledData(basePage.getElementText(getGlobalFooterPageThreadLocal().lnkLanguage));
+		reporter.reportLog(lsText);
+		reporter.reportLog(lsText_LanguageSwitch_En);
 		if(lsText.equalsIgnoreCase(lsText_LanguageSwitch_En)){
 			reporter.reportLogPass("Language switch French translation is correct");
 		}
@@ -189,7 +191,7 @@ public class GF_TC03_VerifyLanguageForCustomerHubLinksAndAboutTSCLinks extends B
 			reporter.reportLogFailWithScreenshot("Customer Hub text French translation is not correct");
 		}
 		getGlobalFooterPageThreadLocal().verifyCustomerHubSubItemFr(lstNameAndLinks, lstCustomerHubFr);
-		
+
 		//About TSC links
 		lsText=basePage.getUTFEnabledData(basePage.getElementText(getGlobalFooterPageThreadLocal().lblAboutTSCText));
 		if(lsText.equalsIgnoreCase(lsText_AboutTSC_Fr)){
@@ -199,9 +201,11 @@ public class GF_TC03_VerifyLanguageForCustomerHubLinksAndAboutTSCLinks extends B
 			reporter.reportLogFailWithScreenshot("About TSC French translation is not correct");
 		}
 		getGlobalFooterPageThreadLocal().verifyAboutTSCSubItemFr(lstNameAndLinks, lstAboutTSCFr);
-		
+
 		//Copyright text
 		lsText=basePage.getUTFEnabledData(basePage.getElementText(getGlobalFooterPageThreadLocal().txtCopyrightLine1));
+		reporter.reportLog(lsText);
+		reporter.reportLog(lsText_Copyright_Line1_Fr);
 		if(lsText.contains(lsText_Copyright_Line1_Fr)){
 			reporter.reportLogPass("Copyright line1 French translation is correct");
 		}
@@ -210,6 +214,8 @@ public class GF_TC03_VerifyLanguageForCustomerHubLinksAndAboutTSCLinks extends B
 		}
 
 		lsText=basePage.getUTFEnabledData(basePage.getElementText(getGlobalFooterPageThreadLocal().txtCopyrightLine2));
+		reporter.reportLog(lsText);
+		reporter.reportLog(lsText_Copyright_Line2_Fr);
 		if(lsText.equalsIgnoreCase(lsText_Copyright_Line2_Fr)){
 			reporter.reportLogPass("Copyright line2 French translation is correct");
 		}
@@ -219,7 +225,7 @@ public class GF_TC03_VerifyLanguageForCustomerHubLinksAndAboutTSCLinks extends B
 
 		//Switch back to English
 		getGlobalFooterPageThreadLocal().switchlanguage();
-		
+
 		//Credit card
 		lsText=basePage.getElementText(getGlobalFooterPageThreadLocal().lnkCreditCard);
 		String lsText_CreditCard_En=getGlobalFooterPageThreadLocal().getEnglishWithSpecificFrenchName(lstNameAndLinks,lsText_CreditCard_Fr);

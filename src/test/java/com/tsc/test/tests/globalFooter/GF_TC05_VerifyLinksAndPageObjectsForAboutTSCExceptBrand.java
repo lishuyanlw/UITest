@@ -11,15 +11,15 @@ import java.util.Map;
 
 public class GF_TC05_VerifyLinksAndPageObjectsForAboutTSCExceptBrand extends BaseTest {
 
-	/*
-	 * CER 184
-	 * CER 185
-	 * CER 186
-	 * CER 187
-	 * CER 188
-	 * CER 189
-	 * CER 190
-	 */
+    /*
+     * CER 184
+     * CER 185
+     * CER 186
+     * CER 187
+     * CER 188
+     * CER 189
+     * CER 190
+     */
 
     @Test(groups={"Regression","GlobalFooter"})
     public void GF_TC05_VerifyLinksAndPageObjectsForAboutTSCExceptBrand() {
@@ -28,7 +28,7 @@ public class GF_TC05_VerifyLinksAndPageObjectsForAboutTSCExceptBrand extends Bas
         String lsBaseUrl = basePage.getBaseURL() + "/";
 
         if(getglobalheaderPageThreadLocal().validateURL(lsBaseUrl)){
-           reporter.reportLogPass("TSC url is correct");
+            reporter.reportLogPass("TSC url is correct");
         }
         else{
             reporter.reportLogFailWithScreenshot("TSC url is incorrect");
@@ -298,7 +298,7 @@ public class GF_TC05_VerifyLinksAndPageObjectsForAboutTSCExceptBrand extends Bas
         reporter.reportLog(lsServiceCC);
         String pageTitleCC = getGlobalFooterPageThreadLocal().getPageTitle(getGlobalFooterPageThreadLocal().blkCreditCard);
         if(pageTitleCC.equalsIgnoreCase(lsServiceCC)){
-           reporter.reportLogPass("Page Title matches for global footer link: "+lsServiceCC+" and  title is: "+pageTitleCC);
+            reporter.reportLogPass("Page Title matches for global footer link: "+lsServiceCC+" and  title is: "+pageTitleCC);
         }
         else{
             reporter.reportLogFailWithScreenshot("Page Title doesn't match for global footer link: "+lsServiceCC+" and  title is: "+pageTitleCC);
@@ -312,10 +312,10 @@ public class GF_TC05_VerifyLinksAndPageObjectsForAboutTSCExceptBrand extends Bas
 
         //Rogers Copy Rights
         if(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().RogersMedia)){
-            reporter.reportLogPass("The Copyright Section of 2021 Rogers Media is displayed");
+            reporter.reportLogPass("The Copyright Section of Rogers Media is displayed");
         }
         else{
-            reporter.reportLogFailWithScreenshot("The Copyright Section of 2021 Rogers Media is not displayed");
+            reporter.reportLogFailWithScreenshot("The Copyright Section of Rogers Media is not displayed");
         }
         if(getGlobalFooterPageThreadLocal().verifyElementExisting(getGlobalFooterPageThreadLocal().AllPrice)){
             reporter.reportLogPass("The Copyright Section of All Price in Canadian Dollars is displayed");
@@ -333,4 +333,4 @@ public class GF_TC05_VerifyLinksAndPageObjectsForAboutTSCExceptBrand extends Bas
         }
 
     }
- }
+}
