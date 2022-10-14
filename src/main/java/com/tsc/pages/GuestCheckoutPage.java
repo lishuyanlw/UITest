@@ -760,7 +760,12 @@ public class GuestCheckoutPage extends RegularCheckoutPage {
 		this.clickElement(btnContinueToPayment);
 		this.applyStaticWait(this.getStaticWaitForApplication());
 
-		this.waitForCondition(Driver->{return !this.checkChildElementExistingByAttribute(this.cntFooterContainer,"class","loading__overlay");},60000);
+		try{
+			this.waitForCondition(Driver->{return !this.checkChildElementExistingByAttribute(this.cntFooterContainer,"class","loading__overlay");},60000);
+		}
+		catch (Exception e){
+			this.applyStaticWait(5*this.getStaticWaitForApplication());
+		}
 		this.waitForCondition(Driver->{return lblUsingANewCardSelectTitle.isDisplayed();},60000);
 		this.applyStaticWait(3*this.getStaticWaitForApplication());
 	}
@@ -1075,9 +1080,14 @@ public class GuestCheckoutPage extends RegularCheckoutPage {
 		this.clickElement(btnContinueToReview);
 
 		this.applyStaticWait(this.getStaticWaitForApplication());
-
-		this.waitForCondition(Driver->{return !this.checkChildElementExistingByAttribute(this.cntFooterContainer,"class","loading__overlay");},120000);
+		try{
+			this.waitForCondition(Driver->{return !this.checkChildElementExistingByAttribute(this.cntFooterContainer,"class","loading__overlay");},120000);
+		}
+		catch (Exception e){
+			this.applyStaticWait(5*this.getStaticWaitForApplication());
+		}
 		this.waitForCondition(Driver->{return btnOrderSummaryPlaceOrder.isDisplayed();},15000);
+		this.applyStaticWait(3*this.getStaticWaitForApplication());
 	}
 
 	/**
