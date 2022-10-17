@@ -120,7 +120,7 @@ public class RegularCheckoutPage_Mobile extends RegularCheckoutPage{
 		this.waitForCondition(Driver->{return this.checkPromoteCodeTooltipMessageDisplaying();},10000);
 		String lsDeviceType=System.getProperty("Device");
 		String lsBrowserType=System.getProperty("Browser");
-		boolean bCheck=!(lsDeviceType.equalsIgnoreCase("Mobile") && lsBrowserType.toLowerCase().contains("sauce"));
+		boolean bCheck=!((lsDeviceType.equalsIgnoreCase("Mobile")||lsDeviceType.equalsIgnoreCase("Tablet"))&& lsBrowserType.toLowerCase().contains("sauce"));
 		if(bCheck){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderSummaryPromoteCodeTooltipMessage);
 			lsText= this.getElementInnerText(this.lblOrderSummaryPromoteCodeTooltipMessage);

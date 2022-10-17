@@ -163,7 +163,7 @@ public class BaseTest {
 		regularCheckoutPageThreadLocal.set(new RegularCheckoutPage_Mobile(getDriver()));
 		orderConfirmationPageThreadLocal.set(new OrderConfirmationPage(getDriver()));
 		myAccountPageThreadLocal.set(new MyAccount_Mobile(getDriver()));
-		guestCheckoutPageThreadLocal.set(new GuestCheckoutPage(getDriver()));
+		guestCheckoutPageThreadLocal.set(new GuestCheckoutPage_Mobile(getDriver()));
 	}
 
 	private void init_Tablet() throws IOException {
@@ -215,9 +215,9 @@ public class BaseTest {
 			shoppingCartThreadLocal.set(new ShoppingCartPage(getDriver()));
 
 		homePageThreadLocal.set(new HomePage(getDriver()));
-		regularCheckoutPageThreadLocal.set(new RegularCheckoutPage(getDriver()));
+		regularCheckoutPageThreadLocal.set(new RegularCheckoutPage_Mobile(getDriver()));
 		orderConfirmationPageThreadLocal.set(new OrderConfirmationPage(getDriver()));
-		guestCheckoutPageThreadLocal.set(new GuestCheckoutPage(getDriver()));
+		guestCheckoutPageThreadLocal.set(new GuestCheckoutPage_Mobile(getDriver()));
 	}
 
 

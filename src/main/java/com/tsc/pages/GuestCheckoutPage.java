@@ -114,8 +114,11 @@ public class GuestCheckoutPage extends RegularCheckoutPage {
 	@FindBy(xpath = "//div[@class='create-address__wrap']//form//div[@class='password__right']/div[not(contains(@class,'password__tooltip--msg'))]")
 	public WebElement iconPasswordHintMessage;
 
+	@FindBy(xpath = "//div[@class='create-address__wrap']//form//div[@class='password__right']")
+	public WebElement cntPasswordTooltipMessage;
+
 	@FindBy(xpath = "//div[@class='create-address__wrap']//form//div[@class='password__right']/div[contains(@class,'password__tooltip--msg')]")
-	public WebElement lblPasswordHintMessage;
+	public WebElement lblPasswordTooltipMessage;
 
 	@FindBy(xpath = "//div[@class='create-address__wrap']//form//input[@id='Password']/following-sibling::div[contains(@class,'alert-danger')]")
 	public WebElement lblPasswordWarningMessage;
@@ -215,6 +218,14 @@ public class GuestCheckoutPage extends RegularCheckoutPage {
 	//For footer
 	@FindBy(xpath = "//footer")
 	public WebElement cntFooterContainer;
+
+	/**
+	 * To check Password Tooltip Message Displaying
+	 * @return - boolean
+	 */
+	public boolean checkPasswordTooltipMessageDisplaying(){
+		return this.checkChildElementExistingByAttribute(this.cntPasswordTooltipMessage,"class","password__tooltip--msg");
+	}
 
 	/**
 	 * To create a new account
@@ -686,21 +697,10 @@ public class GuestCheckoutPage extends RegularCheckoutPage {
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(iconPasswordHintMessage);
 		if(this.getReusableActionsInstance().isElementVisible(iconPasswordHintMessage)){
-			reporter.reportLogPass("The password hint message icon is displaying correctly");
+			reporter.reportLogPass("The icon for password hint message is displaying correctly");
 		}
 		else{
-			reporter.reportLogFailWithScreenshot("The password hint message icon is not displaying correctly");
-		}
-
-		this.getReusableActionsInstance().scrollToElement(iconPasswordHintMessage);
-		this.applyStaticWait(this.getStaticWaitForApplication());
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblPasswordHintMessage);
-		lsText=lblPasswordHintMessage.getText();
-		if(!lsText.isEmpty()){
-			reporter.reportLogPass("The password hint message is displaying correctly");
-		}
-		else{
-			reporter.reportLogFailWithScreenshot("The password hint message is not displaying correctly");
+			reporter.reportLogFailWithScreenshot("The icon for password hint message is not displaying correctly");
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblConfirmPasswordTitle);
@@ -734,6 +734,25 @@ public class GuestCheckoutPage extends RegularCheckoutPage {
 		}
 		else{
 			reporter.reportLogFailWithScreenshot("The Recaptcha Logo is not displaying correctly");
+		}
+	}
+
+	/**
+	 * To verify Tooltip Window For Password Hint Message
+	 */
+	public void verifyTooltipWindowForPasswordHintMessage(){
+		String lsText;
+
+		this.getReusableActionsInstance().scrollToElement(iconPasswordHintMessage);
+		this.waitForCondition(Driver->{return checkPasswordTooltipMessageDisplaying();},10000);
+		this.applyStaticWait(this.getStaticWaitForApplication());
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblPasswordTooltipMessage);
+		lsText=lblPasswordTooltipMessage.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The Tooltip for password hint message is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Tooltip for password hint message is not displaying correctly");
 		}
 	}
 

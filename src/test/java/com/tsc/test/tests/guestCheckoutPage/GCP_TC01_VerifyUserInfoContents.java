@@ -57,6 +57,7 @@ public class GCP_TC01_VerifyUserInfoContents extends BaseTest{
 
 			reporter.reportLog("Verify Address Contents");
 			getGuestCheckoutThreadLocal().verifyAddressContents();
+			getGuestCheckoutThreadLocal().verifyTooltipWindowForPasswordHintMessage();
 
 			reporter.reportLog("Verify Address Contents required error message");
 			getGuestCheckoutThreadLocal().verifyErrorMessageOnShippingAddressSection(expectedErrorMessage);
