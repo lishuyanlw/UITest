@@ -2687,7 +2687,7 @@ public class RegularCheckoutPage extends BasePage {
 			reporter.reportLogFailWithScreenshot("The address icon in progress bar is not displaying correctly");
 		}
 
-		if(!(System.getProperty("Device").equalsIgnoreCase("Tablet")) && System.getProperty("Browser").contains("android")){
+		if(!(System.getProperty("Device").equalsIgnoreCase("Tablet") && System.getProperty("Browser").contains("android"))){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddressProgressBar);
 			lsText = lblAddressProgressBar.getText().trim();
 			if (!lsText.isEmpty()) {
