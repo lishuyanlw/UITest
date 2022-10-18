@@ -78,7 +78,16 @@ public class GCP_TC03_Verify_CreateAccountWithoutPassword_PaymentContentsWithCre
 			reporter.reportLog("Verify Promote Code Contents and Continue To Review Button");
 			getGuestCheckoutThreadLocal().verifyGiftCardAndContinueToReviewButtonContents();
 
-			Map<String,Object> mapAddedPayment=getGuestCheckoutThreadLocal().addNewCreditOrEditExistingCard("visa");
+			String lsBrowserType=System.getProperty("Browser");
+			boolean bCheck=lsBrowserType.toLowerCase().contains("ios");
+			Map<String,Object> mapAddedPayment;
+			if(!bCheck){
+				mapAddedPayment=getGuestCheckoutThreadLocal().addNewCreditOrEditExistingCard("visa");
+			}
+			else{
+				//Adding credit card will fail due to ios blocking iframe issue on sauceLab, so instead to add tsc card
+				mapAddedPayment=getGuestCheckoutThreadLocal().addNewCreditOrEditExistingCard("tsc");
+			}
 
 			getGuestCheckoutThreadLocal().goToReviewPage();
 

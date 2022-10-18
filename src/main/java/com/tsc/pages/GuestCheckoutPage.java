@@ -796,7 +796,7 @@ public class GuestCheckoutPage extends RegularCheckoutPage {
 		JSONObject cardData=this.getCardDataFromYamlFile("tsc");
 		String TSCCardNumber= (String) cardData.get("Number");
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(labelUsingANewCardDialogTSCCardRadio);
-		labelUsingANewCardDialogTSCCardRadio.click();
+		this.clickElement(labelUsingANewCardDialogTSCCardRadio);
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputUsingANewCardDialogTSCCardNumber);
 		inputUsingANewCardDialogTSCCardNumber.clear();
@@ -820,7 +820,7 @@ public class GuestCheckoutPage extends RegularCheckoutPage {
 
 		if(!creditCardType.equalsIgnoreCase("tsc")){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(labelUsingANewCardDialogCreditCardRadio);
-			labelUsingANewCardDialogCreditCardRadio.click();
+			this.clickElement(labelUsingANewCardDialogCreditCardRadio);
 
 			this.getDriver().switchTo().frame(iframeUsingANewCardDialogCreditCardNumberInput);
 			try{
@@ -989,7 +989,7 @@ public class GuestCheckoutPage extends RegularCheckoutPage {
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(labelUsingANewCardDialogTSCCardRadio);
-		labelUsingANewCardDialogTSCCardRadio.click();
+		this.clickElement(labelUsingANewCardDialogTSCCardRadio);
 		this.applyStaticWait(300);
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputUsingANewCardDialogTSCCardRadio);
