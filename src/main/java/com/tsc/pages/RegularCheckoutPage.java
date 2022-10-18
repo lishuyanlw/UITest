@@ -2680,14 +2680,6 @@ public class RegularCheckoutPage extends BasePage {
 			reporter.reportLogFailWithScreenshot("The checkout header title is not displaying correctly");
 		}
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddressProgressBar);
-		lsText = lblAddressProgressBar.getText().trim();
-		if (!lsText.isEmpty()) {
-			reporter.reportLogPass("The address title in progress bar is displaying correctly");
-		} else {
-			reporter.reportLogFailWithScreenshot("The address title in progress bar is not displaying correctly");
-		}
-
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(iconAddressProgressBar);
 		if (this.getReusableActionsInstance().isElementVisible(iconAddressProgressBar)) {
 			reporter.reportLogPass("The address icon in progress bar is displaying correctly");
@@ -2695,12 +2687,30 @@ public class RegularCheckoutPage extends BasePage {
 			reporter.reportLogFailWithScreenshot("The address icon in progress bar is not displaying correctly");
 		}
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblPaymentProgressBar);
-		lsText = lblPaymentProgressBar.getText().trim();
-		if (!lsText.isEmpty()) {
-			reporter.reportLogPass("The payment title in progress bar is displaying correctly");
-		} else {
-			reporter.reportLogFailWithScreenshot("The payment title in progress bar is not displaying correctly");
+		if(!(System.getProperty("Device").equalsIgnoreCase("Tablet")) && System.getProperty("Browser").contains("android")){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddressProgressBar);
+			lsText = lblAddressProgressBar.getText().trim();
+			if (!lsText.isEmpty()) {
+				reporter.reportLogPass("The address title in progress bar is displaying correctly");
+			} else {
+				reporter.reportLogFailWithScreenshot("The address title in progress bar is not displaying correctly");
+			}
+
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblReviewOrderProgressBar);
+			lsText = lblReviewOrderProgressBar.getText().trim();
+			if (!lsText.isEmpty()) {
+				reporter.reportLogPass("The review order title in progress bar is displaying correctly");
+			} else {
+				reporter.reportLogFailWithScreenshot("The review order title in progress bar is not displaying correctly");
+			}
+
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblPaymentProgressBar);
+			lsText = lblPaymentProgressBar.getText().trim();
+			if (!lsText.isEmpty()) {
+				reporter.reportLogPass("The payment title in progress bar is displaying correctly");
+			} else {
+				reporter.reportLogFailWithScreenshot("The payment title in progress bar is not displaying correctly");
+			}
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(iconPaymentProgressBar);
@@ -2708,14 +2718,6 @@ public class RegularCheckoutPage extends BasePage {
 			reporter.reportLogPass("The payment icon in progress bar is displaying correctly");
 		} else {
 			reporter.reportLogFailWithScreenshot("The payment icon in progress bar is not displaying correctly");
-		}
-
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblReviewOrderProgressBar);
-		lsText = lblReviewOrderProgressBar.getText().trim();
-		if (!lsText.isEmpty()) {
-			reporter.reportLogPass("The review order title in progress bar is displaying correctly");
-		} else {
-			reporter.reportLogFailWithScreenshot("The review order title in progress bar is not displaying correctly");
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(iconReviewOrderProgressBar);
