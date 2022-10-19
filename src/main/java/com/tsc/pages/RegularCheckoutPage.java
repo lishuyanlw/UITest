@@ -88,6 +88,9 @@ public class RegularCheckoutPage extends BasePage {
 	public By byProductFreeShipping=By.xpath(".//span[@class='productlist__right--freeship']");
 	public By byProductShippingDate=By.xpath(".//div[@class='estimateDateCheckout__lineItem']");
 
+	@FindBy(xpath = "//div[@class='reviewWrap']//div[@class='estimatedlabel__left']//following-sibling::span[not(contains(.,'Get'))]")
+	public WebElement lblGetItByDate;
+
 	@FindBy(xpath = "//article[@class='leftSide']//div[contains(@class,'reviewWrap')]//div[@class='estimatedlabel__left']//span[@class='estimatedLabel__date']")
 	public WebElement lblShippingDateTitle;
 
@@ -1045,7 +1048,8 @@ public class RegularCheckoutPage extends BasePage {
 			map.put("productShippingDate",lsText.split(":")[1].trim());
 		}
 		else{
-			map.put("productShippingDate",null);
+			lsText = this.lblGetItByDate.getText();
+			map.put("productShippingDate",lsText);
 		}
 
 		return map;
