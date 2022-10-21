@@ -928,9 +928,11 @@ public class HomePage extends BasePage{
 				lsImageSrc = attriTSimageUpperSection.findElement(By.xpath(".//img")).getAttribute("src");
 				if (!lsImageSrc.equalsIgnoreCase(finalTempLsImageSrc.get())) {
 					this.waitForCondition(Driver->{return this.linksTSimageUpperSection.isDisplayed();},6000);
-					linksTSimageUpperSection.sendKeys(clickOnLinkTab);
+					//linksTSimageUpperSection.sendKeys(clickOnLinkTab);
+					((JavascriptExecutor)this.getDriver()).executeScript("popup_window=window.open(arguments[0])",lsImageSrc);
 					this.waitForPageLoad();
-					tsImageLinkSet.add(this.URL());
+					tsImageLinkSet.add(lsImageSrc);
+					((JavascriptExecutor)this.getDriver()).executeScript("popup_window.close()");
 				}
 				if(tempCounter<totalNavigateLinks && !testDevice.equalsIgnoreCase("Desktop")){
 					this.waitForCondition(Driver->{return this.btnHomePageBreadcrumb.isEnabled() &&
