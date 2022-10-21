@@ -362,7 +362,7 @@ public class OrderConfirmationPage extends BasePage {
 	public boolean goToMyAccountPage(String lsURLFromYamlFile){
 		String lsCurrentURL=this.URL();
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnGoToMyAccount);
-		this.btnGoToMyAccount.click();
+		this.clickWebElementUsingJS(this.btnGoToMyAccount);
 
 		String lsBaseURL=this.getBaseURL();
 		String lsExpectedURL=lsBaseURL+lsURLFromYamlFile;

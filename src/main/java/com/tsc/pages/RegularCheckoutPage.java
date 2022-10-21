@@ -88,6 +88,9 @@ public class RegularCheckoutPage extends BasePage {
 	public By byProductFreeShipping=By.xpath(".//span[@class='productlist__right--freeship']");
 	public By byProductShippingDate=By.xpath(".//div[@class='estimateDateCheckout__lineItem']");
 
+	@FindBy(xpath = "//div[@class='reviewWrap']//div[@class='estimatedlabel__left']//following-sibling::span[not(contains(.,'Get'))]")
+	public WebElement lblGetItByDate;
+
 	@FindBy(xpath = "//article[@class='leftSide']//div[contains(@class,'reviewWrap')]//div[@class='estimatedlabel__left']//span[@class='estimatedLabel__date']")
 	public WebElement lblShippingDateTitle;
 
@@ -1045,7 +1048,8 @@ public class RegularCheckoutPage extends BasePage {
 			map.put("productShippingDate",lsText.split(":")[1].trim());
 		}
 		else{
-			map.put("productShippingDate",null);
+			lsText = this.lblGetItByDate.getText();
+			map.put("productShippingDate",lsText);
 		}
 
 		return map;
@@ -1862,6 +1866,9 @@ public class RegularCheckoutPage extends BasePage {
 					reporter.reportLogPass("Year is pre-populated for Credit Card");
 				else
 					reporter.reportLogFailWithScreenshot("Year is not pre-populated for Credit Card");
+
+				if(this.getDeviceTypeForTest(System.getProperty("Device"),System.getProperty("chromeMobileDevice")))
+					this.applyStaticWait(5000);
 			}
 
 			this.getDriver().switchTo().frame(iframeUsingANewCardDialogCreditCardNumberInput);
@@ -2677,14 +2684,6 @@ public class RegularCheckoutPage extends BasePage {
 			reporter.reportLogFailWithScreenshot("The checkout header title is not displaying correctly");
 		}
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddressProgressBar);
-		lsText = lblAddressProgressBar.getText().trim();
-		if (!lsText.isEmpty()) {
-			reporter.reportLogPass("The address title in progress bar is displaying correctly");
-		} else {
-			reporter.reportLogFailWithScreenshot("The address title in progress bar is not displaying correctly");
-		}
-
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(iconAddressProgressBar);
 		if (this.getReusableActionsInstance().isElementVisible(iconAddressProgressBar)) {
 			reporter.reportLogPass("The address icon in progress bar is displaying correctly");
@@ -2692,12 +2691,30 @@ public class RegularCheckoutPage extends BasePage {
 			reporter.reportLogFailWithScreenshot("The address icon in progress bar is not displaying correctly");
 		}
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblPaymentProgressBar);
-		lsText = lblPaymentProgressBar.getText().trim();
-		if (!lsText.isEmpty()) {
-			reporter.reportLogPass("The payment title in progress bar is displaying correctly");
-		} else {
-			reporter.reportLogFailWithScreenshot("The payment title in progress bar is not displaying correctly");
+		if(!(System.getProperty("Device").equalsIgnoreCase("Tablet") && System.getProperty("Browser").contains("android"))){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddressProgressBar);
+			lsText = lblAddressProgressBar.getText().trim();
+			if (!lsText.isEmpty()) {
+				reporter.reportLogPass("The address title in progress bar is displaying correctly");
+			} else {
+				reporter.reportLogFailWithScreenshot("The address title in progress bar is not displaying correctly");
+			}
+
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblReviewOrderProgressBar);
+			lsText = lblReviewOrderProgressBar.getText().trim();
+			if (!lsText.isEmpty()) {
+				reporter.reportLogPass("The review order title in progress bar is displaying correctly");
+			} else {
+				reporter.reportLogFailWithScreenshot("The review order title in progress bar is not displaying correctly");
+			}
+
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblPaymentProgressBar);
+			lsText = lblPaymentProgressBar.getText().trim();
+			if (!lsText.isEmpty()) {
+				reporter.reportLogPass("The payment title in progress bar is displaying correctly");
+			} else {
+				reporter.reportLogFailWithScreenshot("The payment title in progress bar is not displaying correctly");
+			}
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(iconPaymentProgressBar);
@@ -2705,14 +2722,6 @@ public class RegularCheckoutPage extends BasePage {
 			reporter.reportLogPass("The payment icon in progress bar is displaying correctly");
 		} else {
 			reporter.reportLogFailWithScreenshot("The payment icon in progress bar is not displaying correctly");
-		}
-
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblReviewOrderProgressBar);
-		lsText = lblReviewOrderProgressBar.getText().trim();
-		if (!lsText.isEmpty()) {
-			reporter.reportLogPass("The review order title in progress bar is displaying correctly");
-		} else {
-			reporter.reportLogFailWithScreenshot("The review order title in progress bar is not displaying correctly");
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(iconReviewOrderProgressBar);
@@ -4694,7 +4703,7 @@ public class RegularCheckoutPage extends BasePage {
 			this.applyStaticWait(300);
 
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnOrderSummaryPromoteCodeApply);
-			btnOrderSummaryPromoteCodeApply.click();
+			this.clickWebElementUsingJS(btnOrderSummaryPromoteCodeApply);
 			try{
 				this.waitForPageLoadingSpinningStatusCompleted();
 			}
@@ -4848,7 +4857,7 @@ public class RegularCheckoutPage extends BasePage {
 		this.applyStaticWait(300);
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnOrderSummaryGiftCardApply);
-		btnOrderSummaryGiftCardApply.click();
+		this.clickWebElementUsingJS(btnOrderSummaryGiftCardApply);
 
 		return this.waitForCondition(Driver->{return lblOrderSummaryGiftCardErrorMessage.isDisplayed();},15000);
 	}

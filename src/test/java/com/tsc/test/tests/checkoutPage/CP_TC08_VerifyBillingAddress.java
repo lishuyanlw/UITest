@@ -21,7 +21,7 @@ public class CP_TC08_VerifyBillingAddress extends BaseTest {
     /**
      * CER-885
     */
-    @Test(groups={"Regression","Checkout"})
+    @Test(groups={"Regression","Checkout","CheckoutMobTab"})
     public void CP_TC08_VerifyBillingAddress() throws IOException, ParseException {
         getGlobalFooterPageThreadLocal().closePopupDialog();
         Map<String,Object> newAddedAddress = null;

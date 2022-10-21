@@ -18,7 +18,7 @@ public class CP_TC10_VerifyReguLarCheckout_PromoteCode extends BaseTest{
 	/*
 	 * CER-888
 	 */
-	@Test(groups={"Regression","Checkout"})
+	@Test(groups={"Regression","Checkout","CheckoutMobTab"})
 	public void CP_TC10_VerifyReguLarCheckout_PromoteCode() throws IOException {
 		String lsUserName = TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
 		String lsPassword = TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();

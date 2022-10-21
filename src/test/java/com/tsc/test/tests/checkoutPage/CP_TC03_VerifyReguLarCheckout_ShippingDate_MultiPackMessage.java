@@ -18,7 +18,7 @@ public class CP_TC03_VerifyReguLarCheckout_ShippingDate_MultiPackMessage extends
 	/*
 	 * CER-873
 	 */
-	@Test(groups={"Regression","Checkout"})
+	@Test(groups={"Regression","Checkout","CheckoutMobTab"})
 	public void CP_TC03_VerifyReguLarCheckout_ShippingDate_MultiPackMessage() throws IOException {
 		String lsUserName = TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
 		String lsPassword = TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
@@ -69,7 +69,7 @@ public class CP_TC03_VerifyReguLarCheckout_ShippingDate_MultiPackMessage extends
 				reporter.reportLogPass("The shipping date is displaying correctly");
 			}
 			else{
-				reporter.reportLogFail("The shipping date is not displaying correctly");
+				reporter.reportLogFailWithScreenshot("The shipping date is not displaying correctly");
 			}
 		}
 
@@ -138,7 +138,7 @@ public class CP_TC03_VerifyReguLarCheckout_ShippingDate_MultiPackMessage extends
 			reporter.reportLogPass("The item count: "+itemCountForCheckOutList+" in checkout item list is equal to the one: "+itemCountInHeader+" in the header");
 		}
 		else{
-			reporter.reportLogFail("The item count: "+itemCountForCheckOutList+" in checkout item list is not equal to the one: "+itemCountInHeader+" in the header");
+			reporter.reportLogFailWithScreenshot("The item count: "+itemCountForCheckOutList+" in checkout item list is not equal to the one: "+itemCountInHeader+" in the header");
 		}
 
 		reporter.reportLog("Verify orderSummary business logic");
@@ -149,6 +149,8 @@ public class CP_TC03_VerifyReguLarCheckout_ShippingDate_MultiPackMessage extends
 		installmentsNumberForShoppingCart=getRegularCheckoutThreadLocal().getInstallmentNumberFromPaymentOptionText();
 		getRegularCheckoutThreadLocal().verifyInstallmentBusinessLogic(installmentsNumberForShoppingCart,orderSummaryMapForCheckOutPage);
 
+		/**
+		 * This below code is for advance order. If we add advance order, uncomment this part
 		reporter.reportLog("Verify the scenario of shippingDate for each checkout item scenario with Advanced order item");
 		//Add advanced order product using API
 		String lsAdvancedOrderKeyword=TestDataHandler.constantData.getSearchResultPage().getLbl_AdvancedOrderkeyword();
@@ -176,7 +178,7 @@ public class CP_TC03_VerifyReguLarCheckout_ShippingDate_MultiPackMessage extends
 		}
 		else{
 			reporter.reportLogFail("The GetItByShippingMessage is still displaying in the checkout page separately");
-		}
+		}*/
 
 		productListMapForCheckOutPage = getRegularCheckoutThreadLocal().getCheckoutItemListDesc("all");
 		summaryMapForCheckOutList=getRegularCheckoutThreadLocal().getCheckoutItemCountAndSubTotal(productListMapForCheckOutPage);

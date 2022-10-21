@@ -1,13 +1,16 @@
 package com.tsc.test.tests.checkoutPage;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.tsc.api.apiBuilder.AccountAPI;
 import com.tsc.api.apiBuilder.CartAPI;
-import com.tsc.api.pojo.AccountCartResponse;
+import com.tsc.api.pojo.CartResponse;
+import com.tsc.api.util.DataConverter;
 import com.tsc.api.util.JsonParser;
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 import io.restassured.response.Response;
+import org.json.simple.JSONObject;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
@@ -20,7 +23,7 @@ public class CP_TC12_VerifyOrderConfirmationPage_Contents_LinkageWithCheckoutPag
 	 * CER-894
 	 * CER-895
 	 */
-	@Test(groups={"Regression","Checkout"})
+	@Test(groups={"Regression","Checkout","CheckoutMobTab"})
 	public void CP_TC12_VerifyOrderConfirmationPage_Contents_LinkageWithCheckoutPage() throws IOException {
 		String lsUserName = TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
 		String lsPassword = TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
@@ -28,6 +31,7 @@ public class CP_TC12_VerifyOrderConfirmationPage_Contents_LinkageWithCheckoutPag
 		//Fetching test data from test data file
 		String accessToken = getApiUserSessionDataMapThreadLocal().get("access_token").toString();
 		int customerEDP = Integer.valueOf(getApiUserSessionDataMapThreadLocal().get("customerEDP").toString());
+		JSONObject creditCardData = new DataConverter().readJsonFileIntoJSONObject("test-data/CreditCard.json");
 		//To empty the cart
 		getShoppingCartThreadLocal().emptyCart(customerEDP,accessToken);
 
@@ -49,8 +53,21 @@ public class CP_TC12_VerifyOrderConfirmationPage_Contents_LinkageWithCheckoutPag
 			reporter.reportLogFail("Failed to add auto delivery product");
 		}
 
+		//Setting up initial test environment by deleting all cards associated with user and cart and adding TSC Card
+		CartAPI cartAPI = new CartAPI();
+		Response response = cartAPI.getAccountCartContentWithCustomerEDP(String.valueOf(customerEDP),accessToken);
+		CartResponse cartResponse= JsonParser.getResponseObject(response.asString(), new TypeReference<CartResponse>() {});
+		getRegularCheckoutThreadLocal().deleteCreditCardForUserAndFromCart(cartResponse,String.valueOf(customerEDP),accessToken);
+
+		//Adding TSC Credit Card for user
+		AccountAPI accountAPI = new AccountAPI();
+		Response tscCardResponse = accountAPI.addCreditCardToUser((org.json.simple.JSONObject) creditCardData.get("tsc"),String.valueOf(customerEDP),accessToken);
+		if(tscCardResponse.statusCode()==200)
+			reporter.reportLog("New TSC Credit Card is added for user as default Card");
+		else
+			reporter.reportLogFail("New TSC Credit Card is not added for user as default Card");
+
 		//Delete promote code and all gift cards
-		CartAPI cartAPI=new CartAPI();
 		cartAPI.deleteAllGiftCardForUser(String.valueOf(customerEDP),accessToken);
 
 		getGlobalFooterPageThreadLocal().closePopupDialog();
@@ -72,6 +89,7 @@ public class CP_TC12_VerifyOrderConfirmationPage_Contents_LinkageWithCheckoutPag
 
 		getRegularCheckoutThreadLocal().navigateToCheckoutPage();
 
+		/**
 		if(!getRegularCheckoutThreadLocal().checkPaymentMethodErrorMessageExisting()){
 			if(!getRegularCheckoutThreadLocal().checkIfPaymentMethodIsTSC()){
 				getRegularCheckoutThreadLocal().openAddOrChangePaymentMethodDialog();
@@ -82,7 +100,7 @@ public class CP_TC12_VerifyOrderConfirmationPage_Contents_LinkageWithCheckoutPag
 			getRegularCheckoutThreadLocal().openAddOrChangePaymentMethodDialog();
 			getRegularCheckoutThreadLocal().addNewTSCCard();
 			getRegularCheckoutThreadLocal().closeUsingANewCardDialog(true);
-		}
+		}*/
 		boolean bTSC=getRegularCheckoutThreadLocal().checkIfPaymentMethodIsTSC();
 		if(bTSC){
 			reporter.reportLogPass("The payment method is TSC card");

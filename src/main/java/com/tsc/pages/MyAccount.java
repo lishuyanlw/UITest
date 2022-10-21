@@ -200,6 +200,9 @@ public class MyAccount extends BasePage {
 	@FindBy(xpath = "//ng-component//span[normalize-space(text())='Shipping Address:']/parent::div/following-sibling::div//span")
 	public WebElement lblOrderDetailsSubHeaderShippingAddress;
 
+	@FindBy(xpath = "//div[@class='tsc-forms']//div[contains(@class,'sub-order-section')]//div[contains(text(),'Shipping')]/following-sibling::div")
+	public WebElement lblOrderDetailsSubHeaderShippingAddressMobile;
+
 	@FindBy(xpath = "//ng-component//div[contains(@class,'order-items') and not(contains(@class,'sub-order-section'))]")
 	public List<WebElement> lstOrderDetailsOrderItemList;
 
@@ -4706,8 +4709,13 @@ public class MyAccount extends BasePage {
 		lsText=lblOrderDetailsSubHeaderShippingMethod.getText().trim();
 		map.put("shippingMethod",lsText);
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderDetailsSubHeaderShippingAddress);
-		lsText=lblOrderDetailsSubHeaderShippingAddress.getText().trim();
+		if(this.getDeviceTypeForTest(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderDetailsSubHeaderShippingAddressMobile);
+			lsText=lblOrderDetailsSubHeaderShippingAddressMobile.getText().trim();
+		}else{
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderDetailsSubHeaderShippingAddress);
+			lsText=lblOrderDetailsSubHeaderShippingAddress.getText().trim();
+		}
 		map.put("shippingAddress",this.convertToASCII(lsText));
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderDetailsBillingAddress);
@@ -5233,7 +5241,7 @@ public class MyAccount extends BasePage {
 			reporter.reportLog("Verifying Shipping Address");
 			//Verifying shipping details
 			if(orderConfirmationAddress.containsKey("shippingAddress")){
-				Boolean flag = this.verifyAddress(orderConfirmationShippingAddress,orderDetailShippingAddress);
+				Boolean flag = this.verifyAddress(orderConfirmationShippingAddress,orderDetailShippingAddress,"Shipping");
 				if(flag)
 					reporter.reportLogPass("Shipping Address on Order Details page is same as on Order Confirmation page");
 				else
@@ -5247,13 +5255,13 @@ public class MyAccount extends BasePage {
 				List<String> orderConfirmationBillingAddress = Collections.singletonList(((ArrayList) orderConfirmationAddress.get("billingAddress"))).get(0);
 				String orderDetailBillingAddress = orderDetailsAddress.get("billingAddress").toString().replace(",","").replace("-"," ").trim();;
 				if(orderConfirmationBillingAddress.get(0).contains("Same as shipping address")){
-					Boolean flag = this.verifyAddress(orderConfirmationShippingAddress,orderDetailBillingAddress);
+					Boolean flag = this.verifyAddress(orderConfirmationShippingAddress,orderDetailBillingAddress,"Billing");
 					if(flag)
 						reporter.reportLogPass("Billing Address on Order Details page is same as on Order Confirmation page");
 					else
 						reporter.reportLogFailWithScreenshot("Billing Address on Order Details page: "+orderDetailBillingAddress+" is not same as on Order Confirmation page: "+orderConfirmationBillingAddress);
 				}else{
-					Boolean flag = this.verifyAddress(orderConfirmationShippingAddress,orderDetailShippingAddress);
+					Boolean flag = this.verifyAddress(orderConfirmationShippingAddress,orderDetailShippingAddress,"Billing");
 					if(flag)
 						reporter.reportLogPass("Billing Address on Order Details page is same as on Order Confirmation page");
 					else
@@ -5270,12 +5278,15 @@ public class MyAccount extends BasePage {
 	 * @param - String - orderDetailShippingAddress
 	 * @return - Boolean
 	 */
-	public Boolean verifyAddress(List<String> orderConfirmationShippingAddress,String orderDetailShippingAddress){
-		String address,orderDetailAddress;
+	public Boolean verifyAddress(List<String> orderConfirmationShippingAddress,String orderDetailShippingAddress,String addressType){
+		String address = null,orderDetailAddress;
 		Boolean flag = false;
 		int flagCounter = 0;
-		for(int counter=0;counter<orderConfirmationShippingAddress.size()-1;counter++){
-			address=orderConfirmationShippingAddress.get(counter).replace(",","").replace("-"," ").replace(" ","").trim();
+		for(int counter=1;counter<orderConfirmationShippingAddress.size()-1;counter++){
+			if(this.getDeviceTypeForTest(System.getProperty("Device"),System.getProperty("chromeMobileDevice")) && addressType.equalsIgnoreCase("Shipping"))
+				address=orderConfirmationShippingAddress.get(counter).replace(",","").replace("-"," ").replace(" ","").trim();
+			else
+				address=orderConfirmationShippingAddress.get(counter-1).replace(",","").replace("-"," ").replace(" ","").trim();
 			orderDetailAddress = orderDetailShippingAddress.replace(" ","").trim();
 			if(orderDetailAddress.toLowerCase().contains(address.toLowerCase())){
 				if(flagCounter == 0 && flag == false){

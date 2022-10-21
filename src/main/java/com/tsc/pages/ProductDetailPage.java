@@ -2014,7 +2014,7 @@ public class ProductDetailPage extends BasePage {
 		this.waitForPageToLoad();
 		GlobalHeaderPage globalHeaderPage=new GlobalHeaderPage(this.getDriver());
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(globalHeaderPage.ShoppingCartlnk);
-		globalHeaderPage.ShoppingCartlnk.click();
+		this.clickWebElementUsingJS(globalHeaderPage.ShoppingCartlnk);
 
 		ShoppingCartPage shoppingCartPage=new ShoppingCartPage(this.getDriver());
 		this.waitForPageToLoad();
