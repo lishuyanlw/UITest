@@ -18,7 +18,7 @@ public class CP_TC03_VerifyReguLarCheckout_ShippingDate_MultiPackMessage extends
 	/*
 	 * CER-873
 	 */
-	@Test(groups={"Regression","Checkout"})
+	@Test(groups={"Regression","Checkout","CheckoutMobTab"})
 	public void CP_TC03_VerifyReguLarCheckout_ShippingDate_MultiPackMessage() throws IOException {
 		String lsUserName = TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
 		String lsPassword = TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();

@@ -14,7 +14,7 @@ public class CP_TC04_VerifyReguLarCheckout_ShippingMethod_NavigationShoppingCart
 	 * CER-875
 	 * CER-879
 	 */
-	@Test(groups={"Regression","Checkout"})
+	@Test(groups={"Regression","Checkout","CheckoutMobTab"})
 	public void CP_TC04_VerifyReguLarCheckout_ShippingMethod_NavigationShoppingCartIconButton() throws IOException {
 		String lsUserName = TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
 		String lsPassword = TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();

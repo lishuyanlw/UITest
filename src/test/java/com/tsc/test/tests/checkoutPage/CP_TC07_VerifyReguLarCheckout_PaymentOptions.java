@@ -15,7 +15,7 @@ public class CP_TC07_VerifyReguLarCheckout_PaymentOptions extends BaseTest{
 	 * CER-886
 	 * CER-887
 	 */
-	@Test(groups={"Regression","Checkout"})
+	@Test(groups={"Regression","Checkout","CheckoutMobTab"})
 	public void CP_TC07_VerifyReguLarCheckout_PaymentOptions() throws IOException {
 		String lsUserName = TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
 		String lsPassword = TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();

@@ -21,7 +21,7 @@ public class CP_TC05_VerifyShippingAddress_Add_Change extends BaseTest {
      CER-877 - Checkout - Shipping address - Add new Address, required message, duplicate address message
      CER-878 - Checkout - Shipping address - Verify edit address
     */
-    @Test(groups={"Regression","Checkout"})
+    @Test(groups={"Regression","Checkout","CheckoutMobTab"})
     public void CP_TC05_VerifyShippingAddress_Add_Change() throws IOException, ParseException {
         getGlobalFooterPageThreadLocal().closePopupDialog();
         Map<String,Object> newAddedAddress = null;
