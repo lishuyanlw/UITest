@@ -217,7 +217,7 @@ public class GlobalHeaderPage extends BasePage{
 	public WebElement SigninPageHeading;
 	
 	//Shopping Cart 
-	@FindBy(xpath = "//*[@class='Header']//a[contains(@class, 'secondary-navigation__rhs-bag')]")
+	@FindBy(xpath = "//*[@class='Header']//a[contains(@class, 'secondary-navigation__rhs-bag')]/div")
 	public WebElement ShoppingCartlnk;
  
 	@FindBy(xpath ="//*[@class='Header']//a[contains(@class, 'secondary-navigation__rhs-bag')]/span")

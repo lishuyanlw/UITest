@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 public class CP_TC14_VerifyOrderDetails_MyAccount extends BaseTest {
-    @Test(groups={"Regression","Checkout"})
+    @Test(groups={"Regression","Checkout","CheckoutMobTab"})
     public void CP_TC14_VerifyOrderDetails_MyAccount() throws IOException {
         getGlobalFooterPageThreadLocal().closePopupDialog();
 

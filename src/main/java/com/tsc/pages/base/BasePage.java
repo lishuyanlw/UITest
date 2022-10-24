@@ -824,6 +824,17 @@ import utils.ReusableActions;
 		return pattern.matcher(nfdNormalizedString).replaceAll("");
 	}
 
+	/**
+	 * This function converts unicode character to characters
+	 * @param - String - text
+	 * @return - String
+	 */
+	public static String removeAccents(String text) {
+		return text == null ? null :
+				Normalizer.normalize(text, Normalizer.Form.NFD)
+						.replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+	}
+
 	/*Method to get UTF-8 format for the list of string
 	 *param list of string: input data list
 	 *@author Shruti.Desai
