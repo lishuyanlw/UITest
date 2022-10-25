@@ -350,6 +350,13 @@ public class OrderModificationPage extends BasePage {
 
 		if(bReviewChanges){
 			this.goToOrderModificationPageForReviewChangesFromAddToBagWindow();
+			String lsText=this.getElementInnerText(btnModifyOrderChangeModOptionsAddItemsButton);
+			if(lsText.equalsIgnoreCase("CONTINUE ADDING ITEM(S)")){
+				reporter.reportLogPass("The AddItems button text changed to expected:'CONTINUE ADDING ITEM(S)'");
+			}
+			else{
+				reporter.reportLogFail("The AddItems button text did not change to expected:'CONTINUE ADDING ITEM(S)'");
+			}
 		}
 		else{
 			this.goToCheckoutPageFromAddToBagWindow();
