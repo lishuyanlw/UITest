@@ -72,7 +72,7 @@ public class CP_TC10_VerifyReguLarCheckout_PromoteCode extends BaseTest{
 			reporter.reportLogPass("The applied message for valid promote code is tha same as the expected one");
 		}
 		else{
-			reporter.reportLogFail("The applied message:'"+lblOrderSummaryPromoteCodeAppliedMessage+"' for invalid promote code is not tha same as the expected one:'"+lblPromoteCodeAppliedMessage+"'");
+			reporter.reportLogFail("The applied message:'"+lblOrderSummaryPromoteCodeAppliedMessage+"' for valid promote code is not the same as the expected one:'"+lblPromoteCodeAppliedMessage+"'");
 		}
 
 		lsText=basePage.getElementInnerText(getRegularCheckoutThreadLocal().btnOrderSummaryRemovePromoteCode);

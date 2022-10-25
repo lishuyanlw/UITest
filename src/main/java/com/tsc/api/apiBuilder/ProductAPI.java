@@ -1601,16 +1601,18 @@ public class ProductAPI extends ApiClient {
             for(Product.Products productsData:products){
                 Map<String,Object> productMap = new HashMap<>();
                 if(Boolean.valueOf(data.get("styleExist"))){
-                    //Fetching item edp number for same product with badge, style and size
+                      //Fetching item edp number for same product with badge, style and size
                     if(productsData.getVideosCount() >= 0 && productsData.getStyles().size() >= 1 && productsData.getSizes().size() >= 1&&productsData.isShowBadgeImage() && productsData.isEnabledAddToCart()){
-                        if(badgeRequired && styleExist && sameSizeAndStyle){
-                            for(Product.edps edpsData: productsData.getEdps()){
-                                if(!productsData.getPriceIsLabel().isEmpty()&&!edpsData.isSoldOut()){
+                            if(badgeRequired && styleExist && sameSizeAndStyle){
+                              for(Product.edps edpsData: productsData.getEdps()){
+                                if(!productsData.getPriceIsLabel().isEmpty()&&edpsData.getInventory()>0){
                                     productMap = this.getEDPNumberForInputCondition(data.get("quantity"),itemToBeAdded,edpsData,productsData);
-                                    if(productMap.keySet().size()>0)
-                                        innerForLoop = true;
-                                    else
-                                        continue;
+                                    if(productMap.keySet().size()>0) {
+                                      innerForLoop = true;
+                                    }
+                                    else {
+                                      continue;
+                                    }
                                 }
                                 if(productMap.keySet().size()>0){
                                     productMap.put("itemToBeAdded",itemToBeAdded);

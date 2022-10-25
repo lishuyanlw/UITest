@@ -59,6 +59,7 @@ public class BaseTest {
 	protected static final ThreadLocal<JSONObject> apiUserSessionDataMapThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<JSONObject> apiAppSessionDataMapThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<MyAccount> myAccountPageThreadLocal = new ThreadLocal<>();
+	protected static final ThreadLocal<OrderModificationPage> orderModificationPageThreadLocal = new ThreadLocal<>();
 
 	public BaseTest() {
 		browserDrivers = new BrowserDrivers();
@@ -71,7 +72,10 @@ public class BaseTest {
 		return reporter;
 	}
 
-	//@return regularCheckoutPageThreadLocal
+	//@return orderModificationPageThreadLocal
+	public static OrderModificationPage getOrderModificationThreadLocal() {return orderModificationPageThreadLocal.get();}
+
+	//@return guestCheckoutPageThreadLocal
 	public static GuestCheckoutPage getGuestCheckoutThreadLocal() {return guestCheckoutPageThreadLocal.get();}
 
 	//@return orderConfirmationPageThreadLocal
@@ -147,6 +151,7 @@ public class BaseTest {
 		orderConfirmationPageThreadLocal.set(new OrderConfirmationPage(getDriver()));
 		myAccountPageThreadLocal.set(new MyAccount(getDriver()));
 		guestCheckoutPageThreadLocal.set(new GuestCheckoutPage(getDriver()));
+		orderModificationPageThreadLocal.set(new OrderModificationPage(getDriver()));
 	}
 
 	private void init_Mobile() throws IOException {
@@ -164,6 +169,7 @@ public class BaseTest {
 		orderConfirmationPageThreadLocal.set(new OrderConfirmationPage(getDriver()));
 		myAccountPageThreadLocal.set(new MyAccount_Mobile(getDriver()));
 		guestCheckoutPageThreadLocal.set(new GuestCheckoutPage_Mobile(getDriver()));
+		orderModificationPageThreadLocal.set(new OrderModificationPage_Mobile(getDriver()));
 	}
 
 	private void init_Tablet() throws IOException {
@@ -218,6 +224,7 @@ public class BaseTest {
 		regularCheckoutPageThreadLocal.set(new RegularCheckoutPage_Mobile(getDriver()));
 		orderConfirmationPageThreadLocal.set(new OrderConfirmationPage(getDriver()));
 		guestCheckoutPageThreadLocal.set(new GuestCheckoutPage_Mobile(getDriver()));
+		orderModificationPageThreadLocal.set(new OrderModificationPage(getDriver()));
 	}
 
 

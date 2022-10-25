@@ -5318,5 +5318,15 @@ public class MyAccount extends BasePage {
 		else
 			reporter.reportLogFailWithScreenshot("Edit Order Button on Order Details page is not displayed");
 	}
+
+	/**
+	 * To goto OrderModification Page
+	 * @return - boolean
+	 */
+	public boolean goToOrderModificationPage(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnOrderDetailsHeaderEditOrder);
+		btnOrderDetailsHeaderEditOrder.click();
+		return this.waitForCondition(Driver->{return (new OrderModificationPage(this.getDriver())).lblModifyOrderHeaderTitle.isDisplayed();},60000);
+	}
 }
 

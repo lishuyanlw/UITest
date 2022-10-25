@@ -1,0 +1,267 @@
+package com.tsc.pages;
+
+import com.tsc.api.pojo.SelectedProduct;
+import com.tsc.pages.base.BasePage;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.Select;
+
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class OrderModificationPage_Mobile extends OrderModificationPage {
+
+	public OrderModificationPage_Mobile(WebDriver driver) {
+		super(driver);
+	}
+
+	@FindBy(xpath = "//shopping-cart//button[normalize-space(text())='CANCEL MODIFICATION'][contains(@class,'cancelModButton')]")
+	public WebElement btnModifyOrderCancelModificationButton;
+
+	@FindBy(xpath = "//shopping-cart//div[@class='cart-contents']//div[@id='mod-options']//div[@class='panel']//div[@id='collapseTwo']//form//div[contains(@class,'visible-xs-block')]//button[@type='submit']")
+	public WebElement btnModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyButton;
+
+	@FindBy(xpath = "//shopping-cart//div[@class='cart-contents']//div[@id='mod-options']//div[@class='panel']//div[@id='collapseTwo']//form//div[contains(@class,'visible-xs-block') and contains(@class,'promoNoteDiv')]")
+	public WebElement lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyNoteMessage;
+
+	//For newly added order items
+	public By byProductQuantityTitleForNewlyAdded=By.xpath(".//div[contains(@class,'visible-xs-inline')]//select/preceding-sibling::strong");
+	public By byProductQuantityForNewlyAdded=By.xpath(".//div[contains(@class,'visible-xs-inline')]//select");
+	public By byProductNowPrice=By.xpath(".//div[contains(@class,'cart-desc-line') and contains(@class,'visible-xs-block')]//span[contains(@class,'now-price')]");
+	public By byProductItemStatusForFreeShipping=By.xpath(".//div[contains(@class,'cart-desc')]//div[contains(@class,'item-status') and not(contains(@class,'hidden-xs'))]|//div[contains(@class,'status-line')]//span[contains(@class,'item-status') and not(contains(@class,'hidden-xs'))]/span[@class='boldBlackColor']");
+	public By byProductItemStatusForLowInventoryContainer=By.xpath(".//*[contains(@class,'status-line')]");
+	public By byProductItemStatusLowForInventory=By.xpath(".//*[contains(@class,'status-line')]/span[@class='boldRedColor']");
+
+	//For existing order item
+	public By byProductQuantity=By.xpath(".//div[contains(@class,'visible-xs-inline') and contains(@class,' tsc-forms')]");
+
+	//Add to Bag popup window part
+	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__inside-right']//div[contains(@class,'add-to-bag__subtotal')]")
+	public WebElement lblAddToBagPopupWindowButtonSectionSubtotal;
+
+	@Override
+	public boolean checkProductItemStatusForLowInventoryExisting(WebElement orderItem){
+		WebElement itemContainer=orderItem.findElement(byProductItemStatusForLowInventoryContainer);
+		return this.checkChildElementExistingByAttribute(itemContainer,"class","boldRedColor");
+	}
+
+	@Override
+	public Map<String,Object> getOrderItemDesc(WebElement orderItem,boolean bNewlyAdded){
+		Map<String,Object> map=new HashMap<>();
+		WebElement item;
+		String lsText;
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(orderItem);
+		item = orderItem.findElement(byProductDescription);
+		lsText = this.getElementInnerText(item);
+		map.put("productDescription", lsText);
+		if(lsText.contains("|")){
+			String[] lsSplit=lsText.split("\\|");
+			if(lsSplit.length==2){
+				if(lsSplit[1].contains("Size")){
+					map.put("productName",lsSplit[0].trim());
+					map.put("productStyle",null);
+					map.put("productSize",lsSplit[1].trim().split(":")[1]);
+				}
+				else{
+					map.put("productName",lsSplit[0].trim());
+					map.put("productStyle",lsSplit[1].trim().split(":")[1]);
+					map.put("productSize",null);
+				}
+			}
+			else{
+				map.put("productName",lsSplit[0].trim());
+				map.put("productStyle",lsSplit[2].trim().split(":")[1]);
+				map.put("productSize",lsSplit[1].split(":")[1].trim());
+			}
+		}
+		else{
+			map.put("productName",lsText);
+			map.put("productStyle",null);
+			map.put("productSize",null);
+		}
+
+		item = orderItem.findElement(byProductNowPrice);
+		lsText = this.getElementInnerText(item);
+		map.put("productNowPrice", this.getFloatFromString(lsText,true));
+
+		if(this.checkProductNumberExisting(orderItem)){
+			item = orderItem.findElement(byProductNumber);
+			lsText = this.getElementInnerText(item).replace("-", "").trim();
+			map.put("productNumber", lsText);
+		}
+		else{
+			map.put("productNumber", null);
+		}
+
+		if(bNewlyAdded){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			item = orderItem.findElement(byProductQuantityForNewlyAdded);
+			Select select=new Select(item);
+			lsText = select.getFirstSelectedOption().getText();
+		}
+		else{
+			item = orderItem.findElement(byProductQuantity);
+			lsText = this.getElementInnerText(item);
+		}
+		map.put("productQuantity", this.getIntegerFromString(lsText));
+
+		return map;
+	}
+
+	@Override
+	public List<Map<String,Object>> getExistingOrderListDesc(){
+		List<Map<String,Object>> mapList= new ArrayList<>();
+		for(WebElement orderItem:lstExistingOrderList) {
+			mapList.add(getOrderItemDesc(orderItem,false));
+
+		}
+		return mapList;
+	}
+
+	@Override
+	public List<Map<String,Object>> getNewlyAddedOrderListDesc(){
+		List<Map<String,Object>> mapList= new ArrayList<>();
+		for(WebElement orderItem:lstNewlyAddedOrderList) {
+			mapList.add(getOrderItemDesc(orderItem,true));
+
+		}
+		return mapList;
+	}
+
+	@Override
+	public void verifyOrderList(boolean bNewlyAdded) {
+		String lsText;
+		WebElement item;
+		List<WebElement> lstOrderList;
+		if(bNewlyAdded){
+			lstOrderList=this.lstNewlyAddedOrderList;
+		}
+		else{
+			lstOrderList=this.lstExistingOrderList;
+		}
+
+		for (WebElement productItem : lstOrderList) {
+			item = productItem.findElement(byProductImage);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsText = item.getAttribute("src");
+			if (!lsText.isEmpty()) {
+				reporter.reportLogPass("The product image source is not empty");
+			} else {
+				reporter.reportLogFailWithScreenshot("The product image source is empty");
+			}
+
+			item = productItem.findElement(byProductImageLink);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsText = item.getAttribute("href");
+			if (!lsText.isEmpty()) {
+				reporter.reportLogPass("The product link is not empty");
+			} else {
+				reporter.reportLogFailWithScreenshot("The product link is empty");
+			}
+
+			item = productItem.findElement(byProductDescription);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsText = item.getText().trim();
+			if (!lsText.isEmpty()) {
+				reporter.reportLogPass("The product description is displaying correctly");
+			} else {
+				reporter.reportLogFailWithScreenshot("The product description is not displaying correctly");
+			}
+
+			if(this.checkProductNumberExisting(productItem)){
+				item = productItem.findElement(byProductNumber);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+				lsText = item.getText().replace("-", "").trim();
+				if (!lsText.isEmpty()) {
+					reporter.reportLogPass("The product number is displaying correctly");
+				} else {
+					reporter.reportLogFailWithScreenshot("The product number is not displaying correctly");
+				}
+			}
+
+			item = productItem.findElement(byProductNowPrice);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsText = item.getText().trim();
+			if (!lsText.isEmpty()) {
+				reporter.reportLogPass("The product nowPrice is displaying correctly");
+			} else {
+				reporter.reportLogFailWithScreenshot("The product nowPrice is not displaying correctly");
+			}
+
+			if(bNewlyAdded){
+				item = productItem.findElement(byProductQuantityForNewlyAdded);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+				if (this.getReusableActionsInstance().isElementVisible(item)) {
+					reporter.reportLogPass("The product quantity is displaying correctly");
+				} else {
+					reporter.reportLogFailWithScreenshot("The product quantity is not displaying correctly");
+				}
+
+				if(checkProductItemStatusExisting(productItem)){
+					if(checkProductItemStatusForFreeShippingExisting(productItem)){
+						item = productItem.findElement(byProductItemStatusForFreeShipping);
+						this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+						lsText = item.getText();
+						if (!lsText.isEmpty()) {
+							reporter.reportLogPass("The product free shipping for item status is displaying correctly");
+						} else {
+							reporter.reportLogFailWithScreenshot("The product free shipping for item status is not displaying correctly");
+						}
+					}
+				}
+
+				if(checkProductItemStatusForLowInventoryExisting(productItem)){
+					item = productItem.findElement(byProductItemStatusForLowInventory);
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+					lsText = item.getText();
+					if (!lsText.isEmpty()) {
+						reporter.reportLogPass("The product low inventory for item status is displaying correctly");
+					} else {
+						reporter.reportLogFailWithScreenshot("The product low inventory for item status is not displaying correctly");
+					}
+				}
+
+				item = productItem.findElement(byProductRemoveButton);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+				lsText = item.getText();
+				if (!lsText.isEmpty()) {
+					reporter.reportLogPass("The product remove button is displaying correctly");
+				} else {
+					reporter.reportLogFailWithScreenshot("The product remove button is not displaying correctly");
+				}
+
+				item = productItem.findElement(byProductRemoveButton);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+				lsText = item.getText();
+				if (!lsText.isEmpty()) {
+					reporter.reportLogPass("The product remove button is displaying correctly");
+				} else {
+					reporter.reportLogFailWithScreenshot("The product remove button is not displaying correctly");
+				}
+			}
+			else{
+				item = productItem.findElement(byProductQuantity);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+				lsText = item.getText();
+				if (!lsText.isEmpty()) {
+					reporter.reportLogPass("The product quantity is displaying correctly");
+				} else {
+					reporter.reportLogFailWithScreenshot("The product quantity is not displaying correctly");
+				}
+			}
+		}
+	}
+
+	@Override
+	public void subTotal(){
+		reporter.softAssert(!this.getElementInnerText(this.lblAddToBagPopupWindowButtonSectionSubtotal).isEmpty(),"The product Subtotal in Add to Bag popup window is not empty","The product Subtotal in Add to Bag popup window is empty");
+	}
+
+}
