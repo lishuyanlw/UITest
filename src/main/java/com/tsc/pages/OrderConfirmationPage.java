@@ -1674,4 +1674,13 @@ public class OrderConfirmationPage extends BasePage {
 		//Applying static wait as page takes time to get Order after placing it
 		this.applyStaticWait(6000);
 	}
+
+	/**
+	 * To check Email in order message Is the Same As the one in GuestCheckoutPage
+	 * @param - String - lsEmail - the email input in GuestCheckoutPage
+	 * @return - boolean
+	 */
+	public boolean checkEmailIsSameAsGuestCheckoutPage(String lsEmail){
+		return this.getElementInnerText(lstOrderMessage.get(0)).toLowerCase().contains(lsEmail.toLowerCase());
+	}
 }

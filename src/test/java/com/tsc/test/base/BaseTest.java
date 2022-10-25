@@ -54,6 +54,7 @@ public class BaseTest {
 	protected static final ThreadLocal<ProductAPI> productAPIThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<ShoppingCartPage> shoppingCartThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<RegularCheckoutPage> regularCheckoutPageThreadLocal = new ThreadLocal<>();
+	protected static final ThreadLocal<GuestCheckoutPage> guestCheckoutPageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<OrderConfirmationPage> orderConfirmationPageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<JSONObject> apiUserSessionDataMapThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<JSONObject> apiAppSessionDataMapThreadLocal = new ThreadLocal<>();
@@ -69,6 +70,9 @@ public class BaseTest {
 	public static Reporter getReporter() {
 		return reporter;
 	}
+
+	//@return regularCheckoutPageThreadLocal
+	public static GuestCheckoutPage getGuestCheckoutThreadLocal() {return guestCheckoutPageThreadLocal.get();}
 
 	//@return orderConfirmationPageThreadLocal
 	public static OrderConfirmationPage getOrderConfirmationThreadLocal() {return orderConfirmationPageThreadLocal.get();}
@@ -142,6 +146,7 @@ public class BaseTest {
 		regularCheckoutPageThreadLocal.set(new RegularCheckoutPage(getDriver()));
 		orderConfirmationPageThreadLocal.set(new OrderConfirmationPage(getDriver()));
 		myAccountPageThreadLocal.set(new MyAccount(getDriver()));
+		guestCheckoutPageThreadLocal.set(new GuestCheckoutPage(getDriver()));
 	}
 
 	private void init_Mobile() throws IOException {
@@ -158,6 +163,7 @@ public class BaseTest {
 		regularCheckoutPageThreadLocal.set(new RegularCheckoutPage_Mobile(getDriver()));
 		orderConfirmationPageThreadLocal.set(new OrderConfirmationPage(getDriver()));
 		myAccountPageThreadLocal.set(new MyAccount_Mobile(getDriver()));
+		guestCheckoutPageThreadLocal.set(new GuestCheckoutPage_Mobile(getDriver()));
 	}
 
 	private void init_Tablet() throws IOException {
@@ -209,8 +215,9 @@ public class BaseTest {
 			shoppingCartThreadLocal.set(new ShoppingCartPage(getDriver()));
 
 		homePageThreadLocal.set(new HomePage(getDriver()));
-		regularCheckoutPageThreadLocal.set(new RegularCheckoutPage(getDriver()));
+		regularCheckoutPageThreadLocal.set(new RegularCheckoutPage_Mobile(getDriver()));
 		orderConfirmationPageThreadLocal.set(new OrderConfirmationPage(getDriver()));
+		guestCheckoutPageThreadLocal.set(new GuestCheckoutPage_Mobile(getDriver()));
 	}
 
 

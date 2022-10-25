@@ -1,8 +1,8 @@
 package com.tsc.test.tests.integration;
 
 import com.tsc.api.apiBuilder.CartAPI;
-import com.tsc.api.pojo.Product;
 import com.tsc.data.Handler.TestDataHandler;
+import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 import org.testng.annotations.Test;
 
@@ -11,13 +11,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class IN_TC02_PRP_PDP_AddToBag_ShoppingCart extends BaseTest {
+public class IN_TC02_PRP_PDP_AddToBag_ShoppingCart_Checkout_OrderConfirmation extends BaseTest {
     /*
      * CER-845
      * CER-871
      */
     @Test(groups={"Integration","Regression"})
-    public void IN_TC02_PRP_PDP_AddToBag_ShoppingCart() throws IOException {
+    public void IN_TC02_PRP_PDP_AddToBag_ShoppingCart_Checkout_OrderConfirmation() throws IOException {
         //Closing SignIn pop up on login
         getGlobalFooterPageThreadLocal().closePopupDialog();
 
@@ -36,7 +36,7 @@ public class IN_TC02_PRP_PDP_AddToBag_ShoppingCart extends BaseTest {
         //Login using valid username and password
         getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword);
 
-        List<String> lstKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_APISearchingKeyword();
+        List<String> lstKeywordList=TestDataHandler.constantData.getCheckOut().getLst_SearchingKeywordForPlaceOrder();
         Map<String,Object> outputDataCriteria= new HashMap<String,Object>();
         outputDataCriteria.put("video", "1");
         outputDataCriteria.put("style", "1");
@@ -79,7 +79,9 @@ public class IN_TC02_PRP_PDP_AddToBag_ShoppingCart extends BaseTest {
 
         getShoppingCartThreadLocal().goToCheckoutPage();
 
+        BasePage basePage=new BasePage(this.getDriver());
         List<Map<String,Object>> checkoutProductListMap=getRegularCheckoutThreadLocal().getCheckoutItemListDesc("all");
+        Map<String,Object> shippingAndPaymentMapOnCheckoutPage=getRegularCheckoutThreadLocal().getShippingAndPaymentDesc(checkoutProductListMap.get(0));
         Map<String, Object> summaryMapForCheckOutList = getRegularCheckoutThreadLocal().getCheckoutItemCountAndSubTotal(checkoutProductListMap);
         int checkoutCount = (int) summaryMapForCheckOutList.get("itemCount");
         float checkoutSubTotal = (float) summaryMapForCheckOutList.get("subTotal");
@@ -121,5 +123,61 @@ public class IN_TC02_PRP_PDP_AddToBag_ShoppingCart extends BaseTest {
 
         reporter.reportLog("verify EasyPayment Linkage Between ShoppingCartPage And CheckoutPage");
         getRegularCheckoutThreadLocal().verifyEasyPaymentLinkageBetweenShoppingCartPageAndCheckoutPage(easyPaymentInShoppingCartMap,easyPaymentInCheckoutMap);
+
+        reporter.reportLog("Verify the linkage between checkout page and orderConfirmation page");
+        getRegularCheckoutThreadLocal().goToOrderConfirmationPage();
+
+        Map<String,Object> orderReceiptForOrderConfirmationPage=getOrderConfirmationThreadLocal().getReceiptDesc();
+
+        List<Map<String,Object>> orderListMapForOrderConfirmationPage=getOrderConfirmationThreadLocal().getOrderListDesc();
+        Map<String,Object> itemCountAndSubTotalMap=getOrderConfirmationThreadLocal().getCheckoutItemCountAndSubTotal(orderListMapForOrderConfirmationPage);
+        int itemCountForOrderConfirmationList= (int) itemCountAndSubTotalMap.get("itemCount");
+        float subTotalForOrderConfirmationList= (float) itemCountAndSubTotalMap.get("subTotal");
+
+        reporter.reportLog("Verify product list linkage between OrderConfirmationPage and CheckoutPage");
+        if(itemCountForOrderConfirmationList==checkoutCount){
+            reporter.reportLogPass("The order item count in OrderConfirmation Page is the same as the one in CheckOut page");
+        }
+        else{
+            reporter.reportLogFail("The order item count:"+itemCountForOrderConfirmationList+" in OrderConfirmation Page is the same as the one:"+checkoutCount+" in CheckOut page");
+        }
+
+        if(Math.abs(subTotalForOrderConfirmationList-checkoutSubTotal)<0.1f){
+            reporter.reportLogPass("The order subTotal in OrderConfirmation Page is the same as the one in CheckOut page");
+        }
+        else{
+            reporter.reportLogFail("The order subTotal:"+subTotalForOrderConfirmationList+" in OrderConfirmation Page is the same as the one:"+checkoutSubTotal+" in CheckOut page");
+        }
+
+        for(Map<String,Object> orderItem:orderListMapForOrderConfirmationPage){
+            String lsText=(String)orderItem.get("productName");
+            reporter.reportLog("Verify product:'"+lsText+"'");
+            findIndex=getShoppingCartThreadLocal().findGivenProductIndexInProductList(orderItem,checkoutProductListMap);
+            if(findIndex!=-1){
+                checkoutItem=checkoutProductListMap.get(findIndex);
+                getOrderConfirmationThreadLocal().verifyProductListLinkageBetweenOrderConfirmationPageAndCheckoutPage(orderItem,checkoutItem);
+            }
+            else{
+                reporter.reportLogFail("Unable to find '"+lsText+"' in Checkout Page");
+            }
+        }
+        Map<String,Object> shippingAndPaymentMapForOrderConfirmationPage=getOrderConfirmationThreadLocal().getShippingAndPaymentDesc(orderListMapForOrderConfirmationPage.get(0));
+
+        reporter.reportLog("Verify OrderSummary Business Logic");
+        Map<String,Object> orderSummaryForOrderConfirmationPage=getOrderConfirmationThreadLocal().getOrderSummaryDesc();
+        getOrderConfirmationThreadLocal().verifyOrderSummaryBusinessLogic(subTotalForOrderConfirmationList,orderSummaryForOrderConfirmationPage,null);
+
+        reporter.reportLog("verify OrderSummary Linkage Between OrderConfirmationPage And CheckoutPage");
+        getOrderConfirmationThreadLocal().verifyOrderSummaryLinkageBetweenOrderConfirmationPageAndCheckoutPage(orderSummaryForOrderConfirmationPage,orderSummaryInCheckoutMap);
+
+        reporter.reportLog("Verify OrderSummary EasyPayment Business Logic");
+        Map<String,Object> easyPaymentForOrderConfirmationPage=getOrderConfirmationThreadLocal().getEasyPayDesc();
+        getOrderConfirmationThreadLocal().verifyInstallmentBusinessLogic(orderSummaryForOrderConfirmationPage);
+
+        reporter.reportLog("verify EasyPayment Linkage Between OrderConfirmationPage And CheckoutPage");
+        getOrderConfirmationThreadLocal().verifyEasyPaymentLinkageBetweenOrderConfirmationPageAndCheckoutPage(easyPaymentForOrderConfirmationPage,easyPaymentInCheckoutMap);
+
+        reporter.reportLog("verify Shipping and Payment Linkage Between OrderConfirmationPage And CheckoutPage");
+        getOrderConfirmationThreadLocal().verifyShippingAndPaymentLinkageBetweenOrderConfirmationPageAndCheckoutPage(shippingAndPaymentMapForOrderConfirmationPage,shippingAndPaymentMapOnCheckoutPage);
     }
 }

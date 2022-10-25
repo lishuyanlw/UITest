@@ -319,7 +319,7 @@ import utils.ReusableActions;
 		getReusableActionsInstance().javascriptScrollByVisibleElement(element);
 		waitForCondition(Driver->{return element.isDisplayed();},90000);
 		getReusableActionsInstance().clickIfAvailable(element);
-        //element.click();
+		this.applyStaticWait(2*this.getStaticWaitForApplication());
         waitForCondition(Driver->{return !currentUrl.equalsIgnoreCase(getDriver().getCurrentUrl());},90000);
         getReusableActionsInstance().waitForPageLoad();
         getReusableActionsInstance().staticWait(3000);
@@ -864,8 +864,8 @@ import utils.ReusableActions;
     	
     	String lsItem;
     	for(WebElement element:elementList) {
-    		getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-    		lsItem=element.getText().trim();    		
+//    		getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+    		lsItem=this.getElementInnerText(element);
     		if(lsItem.equalsIgnoreCase(lsExpectedText)) {
     			return element;
     		}

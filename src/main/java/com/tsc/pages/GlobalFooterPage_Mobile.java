@@ -182,7 +182,6 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 	@Override
 	public List<String> getCustomerHubSubItemFr(List<List<String>> lstNameAndLinks){
 		String lsText=this.getUTFEnabledData(this.getElementText(this.lblTSCCustomerHubText));
-
 		if(!this.lblTSCCustomerHubText.getAttribute("aria-expanded").equalsIgnoreCase("true")) {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblTSCCustomerHubText);
 			getReusableActionsInstance().clickIfAvailable(this.lblTSCCustomerHubText);
@@ -203,7 +202,6 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 	@Override
 	public List<String> getAboutTSCSubItemFr(List<List<String>> lstNameAndLinks){
 		String lsText=this.getUTFEnabledData(this.getElementText(this.lblAboutTSCText));
-
 		if(!this.lblAboutTSCText.getAttribute("aria-expanded").equalsIgnoreCase("true")) {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAboutTSCText);
 			getReusableActionsInstance().clickIfAvailable(this.lblAboutTSCText);
@@ -224,7 +222,6 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 	@Override
 	public void verifyCustomerHubSubItemFr(List<List<String>> lstNameAndLinks, List<String> lstCustomerHubFr) {
 		String lsText,lsYmlHref,lsHref;
-
 		if(!this.lblTSCCustomerHubText.getAttribute("aria-expanded").equalsIgnoreCase("true")) {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblTSCCustomerHubText);
 			getReusableActionsInstance().clickIfAvailable(this.lblTSCCustomerHubText);
@@ -257,7 +254,6 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 	@Override
 	public void verifyAboutTSCSubItemFr(List<List<String>> lstNameAndLinks, List<String> lstAboutTSCFr) {
 		String lsText,lsYmlHref,lsHref;
-
 		if(!this.lblAboutTSCText.getAttribute("aria-expanded").equalsIgnoreCase("true")) {
 			getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAboutTSCText);
 			getReusableActionsInstance().clickIfAvailable(this.lblAboutTSCText);

@@ -2396,8 +2396,8 @@ public class GlobalFooterPage extends BasePage {
 				break;
 			}
 		}
-		String lsText;
 
+		String lsText;
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputFirstNameForSignUpForEmail);
 		if(this.getReusableActionsInstance().isElementVisible(this.inputFirstNameForSignUpForEmail)){
 			reporter.reportLogPass("Input First Name field in SignUpForEmail section is displaying correctly.");
