@@ -122,14 +122,17 @@ public class GCP_TC04_Verify_CreditCardType_Paypal extends BaseTest{
 			if(!bCheck){
 				mapAddedPayment=getGuestCheckoutThreadLocal().addNewCreditOrEditExistingCard("master");
 				basePage.applyStaticWait(basePage.getStaticWaitForApplication());
+				getGuestCheckoutThreadLocal().verifyInputCreditCardType(mapAddedPayment.get("cardType").toString());
 				mapAddedPayment=getGuestCheckoutThreadLocal().addNewCreditOrEditExistingCard("amex");
 				basePage.applyStaticWait(basePage.getStaticWaitForApplication());
+				getGuestCheckoutThreadLocal().verifyInputCreditCardType(mapAddedPayment.get("cardType").toString());
 				mapAddedPayment=getGuestCheckoutThreadLocal().addNewCreditOrEditExistingCard("visa");
+				getGuestCheckoutThreadLocal().verifyInputCreditCardType(mapAddedPayment.get("cardType").toString());
 			}
 
 			reporter.reportLog("Verify PayPal Functionality");
 			getGuestCheckoutThreadLocal().verifyPayPalFunctionality();
-/*
+
 			//Adding credit card will fail due to ios blocking iframe issue on sauceLab, so instead to add tsc card
 			//Remove gift card to avoid easy payment conflict
 			if(bAddingGiftCardSuccess){
@@ -148,7 +151,7 @@ public class GCP_TC04_Verify_CreditCardType_Paypal extends BaseTest{
 			getGuestCheckoutThreadLocal().verifyPaymentLinkageWithCheckoutPage(mapAddedPayment,mapForShippingAddressAndPaymentOnCheckout);
 
 			getRegularCheckoutThreadLocal().goToOrderConfirmationPage();
- */
+
 		}
 	}
 }

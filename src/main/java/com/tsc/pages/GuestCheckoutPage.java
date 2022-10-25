@@ -1197,15 +1197,11 @@ public class GuestCheckoutPage extends RegularCheckoutPage {
 	}
 
 	/**
-	 * This function verifies pay pal functionality
+	 * This function verifies input credit card type image on screen
+	 * @param - String - creditCardType
 	 */
-	public void verifyPayPalFunctionality(){
-		ShoppingCartPage shoppingCartPage = new ShoppingCartPage(this.getDriver());
-		this.clickWebElementUsingJS(this.labelAddOrChangePaymentMethodDialogPaypalRadio);
-		this.getDriver().switchTo().frame(shoppingCartPage.framePayPalFrameElement);
-		this.waitForCondition(Driver->{return this.btnPayPalButton.isEnabled();},5000);
-		this.getDriver().switchTo().defaultContent();
-		shoppingCartPage.verifyPayPalPopUpExistenceOnClick();
+	public void verifyInputCreditCardType(String creditCardType){
+
 	}
 
 }
