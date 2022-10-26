@@ -459,9 +459,6 @@ public class RegularCheckoutPage extends BasePage {
 	@FindBy(xpath = "//article[@class='leftSide']//div[contains(@class,'paymentOptionWrap')]//div[@class='paymentoption__description']//select")
 	public WebElement selectPaymentOption;
 
-	@FindBy(xpath = "//article[@class='leftSide']//div[contains(@class,'paymentOptionWrap')]//div[@class='paymentoption__description']//div[contains(@class,'form__select')]")
-	public WebElement cntSelectPaymentOption;
-
 	@FindBy(xpath = "//article[@class='leftSide']//div[contains(@class,'paymentOptionWrap')]//div[@class='paymentoption__description']")
 	public WebElement lblPaymentOptionTextForOrderModification;
 
@@ -1096,7 +1093,12 @@ public class RegularCheckoutPage extends BasePage {
 		item=productItem.findElement(byProductNowPrice);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 		lsText=item.getText().trim();
-		map.put("productNowPrice",this.getFloatFromString(lsText,true));
+		if(lsText.toLowerCase().contains("free")){
+			map.put("productNowPrice",0.0f);
+		}
+		else{
+			map.put("productNowPrice",this.getFloatFromString(lsText));
+		}
 
 		item=productItem.findElement(byProductSelectQuantity);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
@@ -5791,27 +5793,9 @@ public class RegularCheckoutPage extends BasePage {
 		WebElement item;
 		List<WebElement> lstCheckoutOrderList;
 		if(bItemsBeingAdded){
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnItemBeingAdded);
-			lsText = btnItemBeingAdded.getText().trim();
-			if (!lsText.isEmpty()) {
-				reporter.reportLogPass("The product list collapse button for items being added is displaying correctly");
-			} else {
-				reporter.reportLogFailWithScreenshot("The product list collapse button for items being added is not displaying correctly");
-			}
-
-			expandItemBeingAddedProductSectionForOrderModification();
 			lstCheckoutOrderList=this.lstProductListForItemBeingAdded;
 		}
 		else{
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnExistingItems);
-			lsText = btnExistingItems.getText().trim();
-			if (!lsText.isEmpty()) {
-				reporter.reportLogPass("The product list collapse button for existing items is displaying correctly");
-			} else {
-				reporter.reportLogFailWithScreenshot("The product list collapse button for existing items is not displaying correctly");
-			}
-
-			expandExistingItemsProductSectionForOrderModification();
 			lstCheckoutOrderList=this.lstProductListForExistingItems;
 		}
 
@@ -5862,17 +5846,6 @@ public class RegularCheckoutPage extends BasePage {
 				reporter.reportLogPass("The product quantity is displaying correctly");
 			} else {
 				reporter.reportLogFailWithScreenshot("The product quantity is not displaying correctly");
-			}
-
-			if(!this.checkProductShippingDateExisting()){
-				item = productItem.findElement(byProductShippingDate);
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-				lsText = item.getText().trim();
-				if (!lsText.isEmpty()) {
-					reporter.reportLogPass("The product Shipping Date is displaying correctly");
-				} else {
-					reporter.reportLogFailWithScreenshot("The product Shipping Date is not displaying correctly");
-				}
 			}
 		}
 	}
@@ -6067,7 +6040,7 @@ public class RegularCheckoutPage extends BasePage {
 			reporter.reportLogFailWithScreenshot("The Payment Option text is not displaying correctly");
 		}
 
-		if(!this.checkChildElementExistingByTagName(cntSelectPaymentOption,"select")){
+		if(!this.checkChildElementExistingByAttribute(lblPaymentOptionTextForOrderModification,"class","form__select")){
 			reporter.reportLogPass("The select Payment Option is not found");
 		}
 		else{
@@ -6146,6 +6119,158 @@ public class RegularCheckoutPage extends BasePage {
 	}
 
 	/**
+	 * To get checkout Item Description in product list For Order Modification
+	 * @param - productItem - item in product list
+	 * @param - lsOption - "mandatory"/"optional"/"all"
+	 * @return - Map<String,Object> - Item detail description
+	 */
+	public Map<String,Object> getCheckoutItemDescForOrderModification(WebElement productItem, String lsOption){
+		Map<String,Object> map=null;
+		switch(lsOption){
+			case "mandatory":
+				map=this.getMandatoryCheckoutItemDescForOrderModification(productItem);
+				break;
+			case "optional":
+				map=this.getOptionalCheckoutItemDescForOrderModification(productItem);
+				break;
+			case "all":
+				map=this.getAllCheckoutItemDescForOrderModification(productItem);
+				break;
+			default:
+				break;
+		}
+
+		return map;
+	}
+
+	/**
+	 * To get all Checkout Item Description in product list For Order Modification
+	 * @param - productItem - item in product list
+	 * @return - Map<String,Object> - Item detail description
+	 */
+	public Map<String,Object> getAllCheckoutItemDescForOrderModification(WebElement productItem){
+		Map<String,Object> mapAll=new HashMap<>();
+
+		Map<String,Object> mapMandatory=this.getMandatoryCheckoutItemDescForOrderModification(productItem);
+		for(Map.Entry<String,Object> entry:mapMandatory.entrySet()){
+			mapAll.put(entry.getKey(),entry.getValue());
+		}
+
+		Map<String,Object> mapOptional=this.getOptionalCheckoutItemDescForOrderModification(productItem);
+		for(Map.Entry<String,Object> entry:mapOptional.entrySet()){
+			mapAll.put(entry.getKey(),entry.getValue());
+		}
+
+		return mapAll;
+	}
+
+	/**
+	 * To get Mandatory checkout Item Description in product list For Order Modification
+	 * @param - productItem - item in product list
+	 * @return - Map<String,Object> - Item detail description
+	 */
+	public Map<String,Object> getMandatoryCheckoutItemDescForOrderModification(WebElement productItem){
+		Map<String,Object> map=new HashMap<>();
+
+		if(this.checkProductBadgeExisting(productItem)){
+			map.put("productBadge",true);
+		}
+		else{
+			map.put("productBadge",false);
+		}
+
+		WebElement item=productItem.findElement(byProductItemDesc);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+		String lsText=item.getText().trim();
+		if(lsText.contains("|")){
+			String[] lsSplit=lsText.split("\\|");
+			if(lsSplit.length==2){
+				if(lsSplit[1].contains("Size")){
+					map.put("productName",lsSplit[0].trim());
+					map.put("productStyle",null);
+					map.put("productSize",lsSplit[1].split(":")[1].trim());
+				}
+				else{
+					map.put("productName",lsSplit[0].trim());
+					map.put("productStyle",lsSplit[1].split(":")[1].trim());
+					map.put("productSize",null);
+				}
+			}
+			else{
+				map.put("productName",lsSplit[0].trim());
+				map.put("productStyle",lsSplit[2].split(":")[1].trim());
+				map.put("productSize",lsSplit[1].split(":")[1].trim());
+			}
+		}
+		else{
+			map.put("productName",lsText.trim());
+			map.put("productStyle",null);
+			map.put("productSize",null);
+		}
+
+		if(this.checkProductNumberExisting(productItem)){
+			item=productItem.findElement(byProductNumber);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsText=item.getText().replace("-","").trim();
+			map.put("productNumber",lsText);
+		}
+		else{
+			map.put("productNumber",null);
+		}
+
+		item=productItem.findElement(byProductNowPrice);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+		lsText=item.getText().trim();
+		if(lsText.toLowerCase().contains("free")){
+			map.put("productNowPrice",0.0f);
+		}
+		else{
+			map.put("productNowPrice",this.getFloatFromString(lsText));
+		}
+
+		item=productItem.findElement(byProductSelectQuantity);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+		lsText=this.getElementInnerText(item).split(":")[1].trim();
+		map.put("productQuantity",Integer.parseInt(lsText));
+
+		return map;
+	}
+
+	/**
+	 * To get Optional checkout Item Description in product list For Order Modification
+	 * @param - productItem - item in product list
+	 * @return - Map<String,Object> - Item detail description
+	 */
+	public Map<String,Object> getOptionalCheckoutItemDescForOrderModification(WebElement productItem){
+		Map<String,Object> map=new HashMap<>();
+
+		WebElement item;
+		String lsText;
+
+		if(this.checkProductInventoryExisting(productItem)){
+			item=productItem.findElement(byProductInventory);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsText=item.getText().trim();
+			map.put("productLeftNumber",this.getIntegerFromString(lsText));
+		}
+		else{
+			map.put("productLeftNumber",-1);
+		}
+
+		if(this.checkProductFreeShippingExisting(productItem)){
+			item=productItem.findElement(byProductFreeShipping);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsText=item.getText().trim();
+			map.put("productFreeShipping",lsText);
+		}
+		else{
+			map.put("productFreeShipping",null);
+		}
+
+		return map;
+	}
+
+	/**
 	 * To get checkout Item List Description
 	 * @param - lsOption - "mandatory"/"optional"/"all"
 	 * @return - List<Map<String,Object>>
@@ -6162,10 +6287,32 @@ public class RegularCheckoutPage extends BasePage {
 		}
 
 		for(WebElement cartItem:lstCheckoutOrderList){
-			mapList.add(this.getCheckoutItemDesc(cartItem,lsOption));
+			mapList.add(this.getCheckoutItemDescForOrderModification(cartItem,lsOption));
 		}
 
 		return mapList;
+	}
+
+	/**
+	 * To verify Product Lis tExpanded Section Initial Status,Then Expanded it.
+	 */
+	public void verifyProductListExpandedSectionInitialStatusThenExpanded(){
+		if(checkItemBeingAddedProductSectionExpandedForOrderModification()){
+			reporter.reportLogPass("The Item Being Added Product Section is Expanded");
+		}
+		else{
+			reporter.reportLogFail("The Item Being Added Product Section is not Expanded");
+		}
+
+		if(!checkExistingItemsProductSectionExpandedForOrderModification()){
+			reporter.reportLogPass("The existing Item Product Section is not Expanded");
+		}
+		else{
+			reporter.reportLogFail("The existing Item Product Section is Expanded");
+		}
+
+		this.clickElement(btnExistingItems);
+		this.applyStaticWait(2*this.getStaticWaitForApplication());
 	}
 
 }

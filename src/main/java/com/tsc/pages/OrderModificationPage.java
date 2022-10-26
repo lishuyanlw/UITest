@@ -949,6 +949,12 @@ public class OrderModificationPage extends BasePage {
 		String lsText;
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblModifyOrderChangeModOptionsAddItemsHeadingTitle);
+		if(!this.checkChangeModOptionExpanded(lblModifyOrderChangeModOptionsAddItemsHeadingTitle)){
+			reporter.reportLogPass("The Adding Items section is not expanded");
+		}
+		else{
+			reporter.reportLogFail("The Adding Items section is expanded");
+		}
 		lblModifyOrderChangeModOptionsAddItemsHeadingTitle.click();
 		this.waitForCondition(Driver->{return this.checkChangeModOptionExpanded(lblModifyOrderChangeModOptionsAddItemsHeadingTitle);},10000);
 		lsText = lblModifyOrderChangeModOptionsAddItemsHeadingTitle.getText();
@@ -967,44 +973,50 @@ public class OrderModificationPage extends BasePage {
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeHeadingTitle);
+		if(!this.checkChangeModOptionExpanded(lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeHeadingTitle)){
+			reporter.reportLogPass("The Add Or Update PromoCode section is not expanded");
+		}
+		else{
+			reporter.reportLogFail("The Add Or Update PromoCode section is expanded");
+		}
 		lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeHeadingTitle.click();
 		this.waitForCondition(Driver->{return this.checkChangeModOptionExpanded(lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeHeadingTitle);},10000);
 		lsText = lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeHeadingTitle.getText();
 		if (!lsText.isEmpty()) {
-			reporter.reportLogPass("The AddOrUpdate PromoCode Heading Title is displaying correctly");
+			reporter.reportLogPass("The Add Or Update PromoCode Heading Title is displaying correctly");
 		} else {
-			reporter.reportLogFailWithScreenshot("The AddOrUpdate PromoCode Heading Title is not displaying correctly");
+			reporter.reportLogFailWithScreenshot("The Add Or Update PromoCode Heading Title is not displaying correctly");
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeLabel);
 		lsText = lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeLabel.getText();
 		if (!lsText.isEmpty()) {
-			reporter.reportLogPass("The AddOrUpdate PromoCode label is displaying correctly");
+			reporter.reportLogPass("The Add Or Update PromoCode label is displaying correctly");
 		} else {
-			reporter.reportLogFailWithScreenshot("The AddOrUpdate PromoCode label is not displaying correctly");
+			reporter.reportLogFailWithScreenshot("The Add Or Update PromoCode label is not displaying correctly");
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputModifyOrderChangeModOptionsAddOrUpdatePromoCode);
 		if (this.getReusableActionsInstance().isElementVisible(inputModifyOrderChangeModOptionsAddOrUpdatePromoCode)) {
-			reporter.reportLogPass("The input AddOrUpdate PromoCode is displaying correctly");
+			reporter.reportLogPass("The input Add Or Update PromoCode is displaying correctly");
 		} else {
-			reporter.reportLogFailWithScreenshot("The input AddOrUpdate PromoCode is not displaying correctly");
+			reporter.reportLogFailWithScreenshot("The input Add Or Update PromoCode is not displaying correctly");
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyButton);
 		lsText = btnModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyButton.getText();
 		if (!lsText.isEmpty()) {
-			reporter.reportLogPass("The AddOrUpdate PromoCode apply button is displaying correctly");
+			reporter.reportLogPass("The Add Or Update PromoCode apply button is displaying correctly");
 		} else {
-			reporter.reportLogFailWithScreenshot("The AddOrUpdate PromoCode apply button is not displaying correctly");
+			reporter.reportLogFailWithScreenshot("The Add Or Update PromoCode apply button is not displaying correctly");
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyNoteMessage);
 		lsText = lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyNoteMessage.getText();
 		if (!lsText.isEmpty()) {
-			reporter.reportLogPass("The AddOrUpdate PromoCode apply note message is displaying correctly");
+			reporter.reportLogPass("The Add Or Update PromoCode apply note message is displaying correctly");
 		} else {
-			reporter.reportLogFailWithScreenshot("The AddOrUpdate PromoCode apply note message is not displaying correctly");
+			reporter.reportLogFailWithScreenshot("The Add Or Update PromoCode apply note message is not displaying correctly");
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblModifyOrderChangeModOptionsOtherChangesHeadingTitle);
@@ -1018,6 +1030,12 @@ public class OrderModificationPage extends BasePage {
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblModifyOrderChangeModOptionsOtherChanges);
+		if(!this.checkChangeModOptionExpanded(lblModifyOrderChangeModOptionsOtherChanges)){
+			reporter.reportLogPass("The Other Changes section is not expanded");
+		}
+		else{
+			reporter.reportLogFail("The Other Changes section is expanded");
+		}
 		lsText = lblModifyOrderChangeModOptionsOtherChanges.getText();
 		if (!lsText.isEmpty()) {
 			reporter.reportLogPass("The Other Changes is displaying correctly");
@@ -1450,8 +1468,9 @@ public class OrderModificationPage extends BasePage {
 
 	/**
 	 * To verify checkout Contents
+	 * @param - boolean - bHasChanges
 	 */
-	public void verifyCheckoutContents() {
+	public void verifyCheckoutContents(boolean bHasChanges) {
 		String lsText;
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnModifyOrderCheckoutButton);
@@ -1460,6 +1479,24 @@ public class OrderModificationPage extends BasePage {
 			reporter.reportLogPass("The checkout button is displaying correctly");
 		} else {
 			reporter.reportLogFailWithScreenshot("The checkout button is not displaying correctly");
+		}
+
+		boolean bDisabled=this.hasElementAttribute(btnModifyOrderCheckoutButton,"disabled");
+		if(bHasChanges){
+			if(!bDisabled){
+				reporter.reportLogPass("Checkout button is enabled");
+			}
+			else{
+				reporter.reportLogFail("Checkout button is disabled");
+			}
+		}
+		else{
+			if(bDisabled){
+				reporter.reportLogPass("Checkout button is disabled");
+			}
+			else{
+				reporter.reportLogFail("Checkout button is enabled");
+			}
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblModifyOrderShoppingPrivacy);
@@ -1681,6 +1718,23 @@ public class OrderModificationPage extends BasePage {
 		else{
 			reporter.reportLogFail("Failed to be navigated to order status page after clicking cancel modification button.");
 		}
+	}
+
+	/**
+	 * To go to Checkout page
+	 */
+	public void goToCheckoutPage(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnModifyOrderCheckoutButton);
+		btnModifyOrderCheckoutButton.click();
+		this.waitForCondition(Driver->{return (new RegularCheckoutPage(this.getDriver())).btnItemBeingAdded.isDisplayed();},60000);
+
+		try{
+			new RegularCheckoutPage(this.getDriver()).waitForPageLoadingSpinningStatusCompleted();
+		}
+		catch (Exception e){
+			this.applyStaticWait(30*this.getStaticWaitForApplication());
+		}
+		this.applyStaticWait(30*this.getStaticWaitForApplication());
 	}
 
 

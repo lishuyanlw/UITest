@@ -5397,7 +5397,7 @@ public class MyAccount extends BasePage {
 	 * @param - PlaceOrderResponse - placeOrderObject
 	 * @param - String - myAccountOrderStatusURL
 	 */
-	public void editPlacedOrderForUser(PlaceOrderResponse placeOrderObject,String myAccountOrderStatusURL){
+	public String editPlacedOrderForUser(PlaceOrderResponse placeOrderObject,String myAccountOrderStatusURL){
 		//https://qa-tsc.tsc.ca/pages/myaccount/orderstatus?orderNo=Z40584060000
 		String orderNumber = placeOrderObject.getOrderedCart().getOrderSummary().getOrderNo();
 		int orderNumberLength = orderNumber.length();
@@ -5428,6 +5428,8 @@ public class MyAccount extends BasePage {
 			reporter.reportLogPass("User is navigated to Shopping Cart Page as expected with url as: "+currentPageURL);
 		else
 			reporter.reportLogFailWithScreenshot("User is not navigated to Shopping Cart Page: "+currentPageURL);
+
+		return orderNumber;
 	}
 }
 

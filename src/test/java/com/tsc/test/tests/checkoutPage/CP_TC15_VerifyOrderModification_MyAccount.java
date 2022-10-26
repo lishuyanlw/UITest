@@ -99,7 +99,7 @@ public class CP_TC15_VerifyOrderModification_MyAccount extends BaseTest {
             getOrderModificationThreadLocal().verifyOrderList(false);
             getOrderModificationThreadLocal().verifyOrderSummaryContents();
             getOrderModificationThreadLocal().verifyEasyPayContents();
-            getOrderModificationThreadLocal().verifyCheckoutContents();
+            getOrderModificationThreadLocal().verifyCheckoutContents(false);
 
             List<Map<String,Object>> existingOrderMapList=getOrderModificationThreadLocal().getExistingOrderListDesc();
             Map<String,Object> calculatedCheckoutItemCountAndSubTotalMap=getOrderModificationThreadLocal().getCalculatedCheckoutItemCountAndSubTotal(existingOrderMapList);
@@ -129,6 +129,7 @@ public class CP_TC15_VerifyOrderModification_MyAccount extends BaseTest {
             getOrderModificationThreadLocal().verifyOrderSummaryBusinessLogic(itemCountForNewlyAddedOrderList+itemCountForExistingOrderList,subTotalForNewlyAddedOrderList+subTotalForExistingOrderList,orderSummaryMap,null);
             easyPaymentMap=getOrderModificationThreadLocal().getEasyPayDesc();
             getOrderModificationThreadLocal().verifyInstallmentBusinessLogic(presetInstallmentNumber,orderSummaryMap);
+            getOrderModificationThreadLocal().verifyCheckoutContents(true);
 
         }finally {
             //Emptying Cart for test to run with right state if test fails before placing order
