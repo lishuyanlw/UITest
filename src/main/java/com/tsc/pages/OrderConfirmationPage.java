@@ -484,7 +484,8 @@ public class OrderConfirmationPage extends BasePage {
 			map.put("productShippingDate", lsText.split(":")[1].trim());
 		}
 		else{
-			map.put("productShippingDate", null);
+			lsText = this.getElementInnerText(getDriver().findElement(byProductShippingDate));
+			map.put("productShippingDate", lsText.split(":")[1].trim());
 		}
 
 		return map;
@@ -1487,7 +1488,7 @@ public class OrderConfirmationPage extends BasePage {
 				}
 			}
 			else{
-				reporter.reportLogFail("The productShippingDate in OrderConfirmation Item is not the same as the one:"+lsCheckoutText+" in checkout Item");
+				reporter.reportLogFailWithScreenshot("The productShippingDate in OrderConfirmation Item is not the same as the one:"+lsCheckoutText+" in checkout Item");
 			}
 
 		}
@@ -1556,7 +1557,7 @@ public class OrderConfirmationPage extends BasePage {
 		if (Math.abs(OrderConfirmationValue-checkoutValue)<0.1f) {
 			reporter.reportLogPass("The totalPrice in OrderConfirmation Item is the same as the one in checkout Item");
 		} else {
-			reporter.reportLogFail("The totalPrice:"+OrderConfirmationValue+" in OrderConfirmation Item is not the same as the one:"+checkoutValue+" in checkout Item");
+			reporter.reportLogFailWithScreenshot("The totalPrice:"+OrderConfirmationValue+" in OrderConfirmation Item is not the same as the one:"+checkoutValue+" in checkout Item");
 		}
 	}
 
@@ -1682,5 +1683,105 @@ public class OrderConfirmationPage extends BasePage {
 	 */
 	public boolean checkEmailIsSameAsGuestCheckoutPage(String lsEmail){
 		return this.getElementInnerText(lstOrderMessage.get(0)).toLowerCase().contains(lsEmail.toLowerCase());
+	}
+
+	/**
+	 * This function verifies Order Confirmation Data from checkout page
+	 * @param - List<Map<String, Object>> - productListMapForCheckOutPage
+	 * @param - Map<String,Object> - orderSummaryMapOnCheckoutPage
+	 * @param - Map<String,Object> - easyPaymentMapOnCheckoutPage
+	 * @param - Map<String,Object> - shippingAndPaymentMapOnCheckoutPage
+	 * @param - ShoppingCartPage - shoppingCartPage
+	 * @param - String - lsPromoteCodeOnCheckoutPage
+	 * @param - int - itemCountForCheckOutList
+	 * @param - float - subTotalForCheckOutList
+	 */
+	public void verifyOrderConfirmationPageContents(List<Map<String, Object>> productListMapForCheckOutPage,Map<String,Object> orderSummaryMapOnCheckoutPage,Map<String,Object> easyPaymentMapOnCheckoutPage, Map<String,Object> shippingAndPaymentMapOnCheckoutPage, ShoppingCartPage shoppingCartPage,String lsPromoteCodeOnCheckoutPage,int itemCountForCheckOutList,float subTotalForCheckOutList){
+		if(lsPromoteCodeOnCheckoutPage!=null && lsPromoteCodeOnCheckoutPage.length()>0){
+			String lsPromoteCodeOnOrderConfirmationPage=this.getPromoteCode();
+			if(lsPromoteCodeOnCheckoutPage.equalsIgnoreCase(lsPromoteCodeOnOrderConfirmationPage)){
+				reporter.reportLogPass("The promote code on OrderConfirmation page is the same as the one on Checkout page");
+			}
+			else{
+				reporter.reportLogFail("The promote code on OrderConfirmation page is not the same as the one on Checkout page");
+			}
+		}
+
+		//Map<String,Object> orderReceiptForOrderConfirmationPage=this.getReceiptDesc();
+
+		List<Map<String,Object>> orderListMapForOrderConfirmationPage=this.getOrderListDesc();
+		Map<String,Object> itemCountAndSubTotalMap=this.getCheckoutItemCountAndSubTotal(orderListMapForOrderConfirmationPage);
+		int itemCountForOrderConfirmationList= (int) itemCountAndSubTotalMap.get("itemCount");
+		float subTotalForOrderConfirmationList= (float) itemCountAndSubTotalMap.get("subTotal");
+
+		reporter.reportLog("Verify product list linkage between OrderConfirmationPage and CheckoutPage");
+		if(itemCountForOrderConfirmationList==itemCountForCheckOutList){
+			reporter.reportLogPass("The order item count in OrderConfirmation Page is the same as the one in CheckOut page");
+		}
+		else{
+			reporter.reportLogFail("The order item count:"+itemCountForOrderConfirmationList+" in OrderConfirmation Page is the same as the one:"+itemCountForCheckOutList+" in CheckOut page");
+		}
+
+		if(Math.abs(subTotalForOrderConfirmationList-subTotalForCheckOutList)<0.1f){
+			reporter.reportLogPass("The order subTotal in OrderConfirmation Page is the same as the one in CheckOut page");
+		}
+		else{
+			reporter.reportLogFail("The order subTotal:"+subTotalForOrderConfirmationList+" in OrderConfirmation Page is the same as the one:"+subTotalForCheckOutList+" in CheckOut page");
+		}
+
+		int findIndex;
+		Map<String,Object> checkoutItem;
+		for(Map<String,Object> orderItem:orderListMapForOrderConfirmationPage){
+			String lsText=(String)orderItem.get("productName");
+			reporter.reportLog("Verify product:'"+lsText+"'");
+			findIndex=shoppingCartPage.findGivenProductIndexInProductList(orderItem,productListMapForCheckOutPage);
+			if(findIndex!=-1){
+				checkoutItem=productListMapForCheckOutPage.get(findIndex);
+				this.verifyProductListLinkageBetweenOrderConfirmationPageAndCheckoutPage(orderItem,checkoutItem);
+			}
+			else{
+				reporter.reportLogFail("Unable to find '"+lsText+"' in Checkout Page");
+			}
+		}
+
+		Map<String,Object> shippingAndPaymentMapForOrderConfirmationPage=this.getShippingAndPaymentDesc(orderListMapForOrderConfirmationPage.get(0));
+
+		reporter.reportLog("Verify OrderSummary Business Logic");
+		Map<String,Object> orderSummaryForOrderConfirmationPage=this.getOrderSummaryDesc();
+		this.verifyOrderSummaryBusinessLogic(subTotalForOrderConfirmationList,orderSummaryForOrderConfirmationPage,null);
+
+		reporter.reportLog("verify OrderSummary Linkage Between OrderConfirmationPage And CheckoutPage");
+		this.verifyOrderSummaryLinkageBetweenOrderConfirmationPageAndCheckoutPage(orderSummaryForOrderConfirmationPage,orderSummaryMapOnCheckoutPage);
+
+		reporter.reportLog("Verify OrderSummary EasyPayment Business Logic");
+		Map<String,Object> easyPaymentForOrderConfirmationPage=this.getEasyPayDesc();
+		this.verifyInstallmentBusinessLogic(orderSummaryForOrderConfirmationPage);
+
+		reporter.reportLog("verify EasyPayment Linkage Between OrderConfirmationPage And CheckoutPage");
+		this.verifyEasyPaymentLinkageBetweenOrderConfirmationPageAndCheckoutPage(easyPaymentForOrderConfirmationPage,easyPaymentMapOnCheckoutPage);
+
+		reporter.reportLog("verify Shipping and Payment Linkage Between OrderConfirmationPage And CheckoutPage");
+		this.verifyShippingAndPaymentLinkageBetweenOrderConfirmationPageAndCheckoutPage(shippingAndPaymentMapForOrderConfirmationPage,shippingAndPaymentMapOnCheckoutPage);
+
+		reporter.reportLog("Verify OrderConfirmation header Contents");
+		this.verifyOrderConfirmationContents();
+
+		reporter.reportLog("Verify Receipt Contents");
+		this.verifyReceiptContents();
+
+		reporter.reportLog("Verify Order List Contents");
+		this.verifyOrderListContents();
+
+		reporter.reportLog("Verify Payment Card Contents");
+		this.verifyPaymentCardContents();
+
+		reporter.reportLog("Verify OrderSummary Contents");
+		this.verifyOrderSummaryContents();
+
+		reporter.reportLog("Verify EasyPayment Contents");
+		this.verifyEasyPayContents();
+
+		reporter.reportLog("Verify Common Questions Contents");
+		this.verifyCommonQuestionsContents();
 	}
 }

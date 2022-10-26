@@ -315,6 +315,9 @@ public class RegularCheckoutPage extends BasePage {
 	@FindBy(xpath = "//div[@class='ReactModal__Overlay ReactModal__Overlay--after-open modal__overlay']//div[contains(@class,'card__wrap--paypal')]//label")
 	public WebElement labelAddOrChangePaymentMethodDialogPaypalRadio;
 
+	@FindBy(xpath = "//div[@class='creditcard__selector--cc selector__paypal']//label[contains(@class,'card__label')]")
+	public WebElement lblAddOrChangePaymentMethodDialogPayPalRadio;
+
 	@FindBy(xpath = "//div[@id='buttons-container']//div[contains(@class,'paypal-button-container')]")
 	public WebElement btnPayPalButton;
 
@@ -2013,6 +2016,8 @@ public class RegularCheckoutPage extends BasePage {
 	 * @return - String - "Visa"/"MC"/"Amex"
 	 */
 	public String getInputCreditCardNumberType(){
+		//Applying static wait as on repeated use, stale element exception is coming for browser
+		this.applyStaticWait(2000);
 		this.waitForCondition(Driver->{return !lblInputCreditCardNumberType.getAttribute("class").trim().isEmpty();},15000);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblInputCreditCardNumberType);
 		String lsCreditCardClass=lblInputCreditCardNumberType.getAttribute("class").trim();
@@ -5331,7 +5336,8 @@ public class RegularCheckoutPage extends BasePage {
 	 */
 	public void verifyPayPalFunctionality(){
 		ShoppingCartPage shoppingCartPage = new ShoppingCartPage(this.getDriver());
-		this.clickWebElementUsingJS(this.labelAddOrChangePaymentMethodDialogPaypalRadio);
+		//this.clickWebElementUsingJS(this.labelAddOrChangePaymentMethodDialogPaypalRadio);
+		this.clickWebElementUsingJS(this.lblAddOrChangePaymentMethodDialogPayPalRadio);
 		this.getDriver().switchTo().frame(shoppingCartPage.framePayPalFrameElement);
 		this.waitForCondition(Driver->{return this.btnPayPalButton.isEnabled();},5000);
 		this.getDriver().switchTo().defaultContent();

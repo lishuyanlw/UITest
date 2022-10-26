@@ -26,23 +26,24 @@ public class GCP_TC04_Verify_CreditCardType_Paypal extends BaseTest{
 		outputDataCriteria.put("quantity", "2");
 		if(getProductDetailPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList,"ConditionsForMultipleStyleAndSize",outputDataCriteria)) {
 			String[] lstStyle = getProductDetailPageThreadLocal().getStyleList();
-			String[] lstSize0 = getProductDetailPageThreadLocal().getSizeListForGivenStyle(0);
-			String[] lstSize1 = getProductDetailPageThreadLocal().getSizeListForGivenStyle(1);
+			String[] lstSizeFirstItem = getProductDetailPageThreadLocal().getSizeListForGivenStyle(0);
+			//String[] lstSizeSecondItem = getProductDetailPageThreadLocal().getSizeListForGivenStyle(1);
 
-			getProductDetailPageThreadLocal().chooseGivenStyleAndSizeAndQuantity(lstStyle[0], lstSize0[0], 1);
+			getProductDetailPageThreadLocal().chooseGivenStyleAndSizeAndQuantity(lstStyle[0], lstSizeFirstItem[0], 1);
 			basePage.clickElement(getProductDetailPageThreadLocal().btnAddToBag);
 			basePage.waitForCondition(Driver -> {
 				return getProductDetailPageThreadLocal().lblAddToBagPopupWindowTitle.isDisplayed();
 			}, 30000);
+			/**
 			basePage.clickElement(getProductDetailPageThreadLocal().btnAddToBagPopupWindowClose);
 			basePage.applyStaticWait(basePage.getStaticWaitForApplication());
 
-			getProductDetailPageThreadLocal().chooseGivenStyleAndSizeAndQuantity(lstStyle[1], lstSize1[0], 1);
+			getProductDetailPageThreadLocal().chooseGivenStyleAndSizeAndQuantity(lstStyle[1], lstSizeSecondItem[0], 1);
 			basePage.clickElement(getProductDetailPageThreadLocal().btnAddToBag);
 			basePage.waitForCondition(Driver -> {
 				return getProductDetailPageThreadLocal().lblAddToBagPopupWindowTitle.isDisplayed();
 			}, 30000);
-
+			*/
 			basePage.getReusableActionsInstance().javascriptScrollByVisibleElement(getProductDetailPageThreadLocal().btnAddToBagPopupWindowButtonSectionCheckOut);
 			getProductDetailPageThreadLocal().btnAddToBagPopupWindowButtonSectionCheckOut.click();
 			basePage.waitForCondition(Driver->{return getGlobalLoginPageThreadLocal().btnCreateAccountOrContinueAsGuest.isDisplayed();},120000);
@@ -51,7 +52,16 @@ public class GCP_TC04_Verify_CreditCardType_Paypal extends BaseTest{
 
 			Map<String,Object> createdUserMap=getGuestCheckoutThreadLocal().createNewAccount(null,null,false);
 
-			reporter.reportLog("Add promote code on create user page");
+			reporter.reportLog("Add invalid promo code for user to verify error message");
+			List<String> lstInvalidPromoteCodeAndErrorMessage=TestDataHandler.constantData.getCheckOut().getLstInvalidPromoteCodeAndErrorMessage();
+			String lblPromoCodeExpectedErrorMessage=lstInvalidPromoteCodeAndErrorMessage.get(1).replace("<promoteCode>","\""+lstInvalidPromoteCodeAndErrorMessage.get(0)+"\"");
+			getRegularCheckoutThreadLocal().ApplyPromoteCodeForNegativeScenario(lstInvalidPromoteCodeAndErrorMessage.get(0));
+            String lblPromoCodeErrorMessage=basePage.getElementInnerText(getRegularCheckoutThreadLocal().lblOrderSummaryPromoteCodeErrorMessage);
+            if(lblPromoCodeErrorMessage.equalsIgnoreCase(lblPromoCodeExpectedErrorMessage))
+            	reporter.reportLogPass("Error Message for invalid promo code is as expected: "+lblPromoCodeErrorMessage);
+            else
+            	reporter.reportLogFailWithScreenshot("Error Message for invalid promo code: "+lblPromoCodeErrorMessage+" is not as expected: "+lblPromoCodeExpectedErrorMessage);
+			reporter.reportLog("Add promo code on create user page");
 			String lblPromoteCodeAppliedMessage=TestDataHandler.constantData.getCheckOut().getLblPromoteCodeAppliedMessage();
 			List<String> lstPromoteCode=TestDataHandler.constantData.getCheckOut().getLst_PromoteCode();
 			String lsAppliedPromoteCode=getRegularCheckoutThreadLocal().ApplyPromoteCodeForPositiveScenario(lstPromoteCode);
@@ -65,7 +75,7 @@ public class GCP_TC04_Verify_CreditCardType_Paypal extends BaseTest{
 
 			getGuestCheckoutThreadLocal().goToPaymentPage();
 
-			reporter.reportLog("Verify promote code info on payment page");
+			reporter.reportLog("Verify promo code info on payment page");
 			String lblOrderSummaryPromoteCodeAppliedCode=basePage.getElementInnerText(getRegularCheckoutThreadLocal().lblOrderSummaryInputPromoteCode);
 			if(lblOrderSummaryPromoteCodeAppliedCode.toLowerCase().equalsIgnoreCase(lsAppliedPromoteCode)){
 				reporter.reportLogPass("The applied promote codes for valid promote code is the same as the expected promote code: "+lsAppliedPromoteCode);
@@ -76,10 +86,10 @@ public class GCP_TC04_Verify_CreditCardType_Paypal extends BaseTest{
 
 			String lsText=basePage.getElementInnerText(getRegularCheckoutThreadLocal().btnOrderSummaryRemovePromoteCode);
 			if(!lsText.isEmpty()){
-				reporter.reportLogPass("The remove button for promoteCode is displaying as expected.");
+				reporter.reportLogPass("The remove button for promo Code is displaying as expected.");
 			}
 			else{
-				reporter.reportLogFail("The remove button for promoteCode is not displaying as expected.");
+				reporter.reportLogFail("The remove button for promo Code is not displaying as expected.");
 			}
 
 			reporter.reportLog("Add gift card on payment page");
@@ -139,18 +149,27 @@ public class GCP_TC04_Verify_CreditCardType_Paypal extends BaseTest{
 				getRegularCheckoutThreadLocal().RemoveGiftCard();
 			}
 			mapAddedPayment=getGuestCheckoutThreadLocal().addNewCreditOrEditExistingCard("tsc");
+			//Fetching Order Summary after removing gift card
+			orderSummaryMapOnCheckoutPage=getRegularCheckoutThreadLocal().getOrderSummaryDesc();
 
 			getGuestCheckoutThreadLocal().goToReviewPage();
 
-			reporter.reportLog("Verify Created Shipping Address Linkage with Checkout page");
+			//Fetching details from checkout page to be verified on Order Confirmation page
 			productListMapForCheckOutPage = getRegularCheckoutThreadLocal().getCheckoutItemListDesc("all");
+			summaryMapForCheckOutList = getRegularCheckoutThreadLocal().getCheckoutItemCountAndSubTotal(productListMapForCheckOutPage);
+			int itemCountForCheckOutList = (int) summaryMapForCheckOutList.get("itemCount");
 			Map<String,Object> mapForShippingAddressAndPaymentOnCheckout=getRegularCheckoutThreadLocal().getShippingAndPaymentDesc(productListMapForCheckOutPage.get(0));
+			Map<String,Object> easyPaymentMapOnCheckoutPage=getRegularCheckoutThreadLocal().getEasyPayDesc();
+
+			reporter.reportLog("Verify Created Shipping Address Linkage with Checkout page");
 			getGuestCheckoutThreadLocal().verifyCreatedShippingAddressLinkageWithCheckoutPage(createdUserMap);
 
 			reporter.reportLog("Verify Created payment Linkage with Checkout page");
 			getGuestCheckoutThreadLocal().verifyPaymentLinkageWithCheckoutPage(mapAddedPayment,mapForShippingAddressAndPaymentOnCheckout);
 
 			getRegularCheckoutThreadLocal().goToOrderConfirmationPage();
+			reporter.reportLog("Verification of guest checkout data on Order Confirmation page");
+			getOrderConfirmationThreadLocal().verifyOrderConfirmationPageContents(productListMapForCheckOutPage,orderSummaryMapOnCheckoutPage,easyPaymentMapOnCheckoutPage,mapForShippingAddressAndPaymentOnCheckout,getShoppingCartThreadLocal(),lsAppliedPromoteCode,itemCountForCheckOutList,subTotalForCheckOutList);
 
 		}
 	}

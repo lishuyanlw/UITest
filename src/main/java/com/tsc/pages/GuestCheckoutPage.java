@@ -891,6 +891,8 @@ public class GuestCheckoutPage extends RegularCheckoutPage {
 	 * @return - String - "Visa"/"MC"/"Amex"
 	 */
 	public String getInputCreditCardNumberType(){
+		//Applying static wait as on repeated use, stale element exception is coming for browser
+		this.applyStaticWait(2000);
 		this.waitForCondition(Driver->{return !lblInputCreditCardNumberType.getAttribute("class").trim().isEmpty();},15000);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblInputCreditCardNumberType);
 		String lsCreditCardClass=lblInputCreditCardNumberType.getAttribute("class").trim();
@@ -1201,7 +1203,11 @@ public class GuestCheckoutPage extends RegularCheckoutPage {
 	 * @param - String - creditCardType
 	 */
 	public void verifyInputCreditCardType(String creditCardType){
-
+		String cardImageType = this.getInputCreditCardNumberType();
+		if(cardImageType.equalsIgnoreCase(creditCardType))
+			reporter.reportLogPass("Credit Card Added of type: "+creditCardType+" displays image as expected");
+		else
+			reporter.reportLogFailWithScreenshot("Credit Card Added of type: "+creditCardType+" doesn't display image as expected: "+cardImageType);
 	}
 
 }
