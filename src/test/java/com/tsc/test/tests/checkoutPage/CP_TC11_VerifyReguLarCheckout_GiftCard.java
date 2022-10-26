@@ -1,13 +1,9 @@
 package com.tsc.test.tests.checkoutPage;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.tsc.api.apiBuilder.CartAPI;
-import com.tsc.api.pojo.AccountCartResponse;
-import com.tsc.api.util.JsonParser;
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
-import io.restassured.response.Response;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
@@ -71,7 +67,7 @@ public class CP_TC11_VerifyReguLarCheckout_GiftCard extends BaseTest{
 		String invalidGiftCardPin=lstInvalidGiftCardAndErrorMessage.get(1);
 		String invalidErrorMessage=lstInvalidGiftCardAndErrorMessage.get(2);
 		reporter.reportLog("Verify empty gift card pin scenario");
-		getRegularCheckoutThreadLocal().ApplyGiftCardForNegativeScenario(inValidGiftCardNumber, "",initialGiftCardNumberLength);
+		getRegularCheckoutThreadLocal().applyGiftCardForNegativeScenario(inValidGiftCardNumber, "",initialGiftCardNumberLength);
 		String lsErrorMessage=basePage.getElementInnerText(getRegularCheckoutThreadLocal().lblOrderSummaryGiftCardErrorMessage);
 		if(lsErrorMessage.equalsIgnoreCase(lblEmptyGiftCardPinErrorMessage)){
 			reporter.reportLogPass("The error message for empty Gift card pin is the same as the expected one");
@@ -82,7 +78,7 @@ public class CP_TC11_VerifyReguLarCheckout_GiftCard extends BaseTest{
 
 		reporter.reportLog("Verify valid gift card with invalid pin scenario");
 		String validGiftCardNumber=lstGiftCard.get(0).get("GiftCardNumber");
-		getRegularCheckoutThreadLocal().ApplyGiftCardForNegativeScenario(validGiftCardNumber, invalidGiftCardPin,initialGiftCardNumberLength);
+		getRegularCheckoutThreadLocal().applyGiftCardForNegativeScenario(validGiftCardNumber, invalidGiftCardPin,initialGiftCardNumberLength);
 		lsErrorMessage=basePage.getElementInnerText(getRegularCheckoutThreadLocal().lblOrderSummaryGiftCardErrorMessage);
 		if(lsErrorMessage.equalsIgnoreCase(invalidErrorMessage)){
 			reporter.reportLogPass("The error message for valid Gift card number and invalid pin is the same as the expected one");
@@ -92,7 +88,7 @@ public class CP_TC11_VerifyReguLarCheckout_GiftCard extends BaseTest{
 		}
 
 		reporter.reportLog("Verify invalid gift card scenario");
-		getRegularCheckoutThreadLocal().ApplyGiftCardForNegativeScenario(inValidGiftCardNumber, invalidGiftCardPin,initialGiftCardNumberLength);
+		getRegularCheckoutThreadLocal().applyGiftCardForNegativeScenario(inValidGiftCardNumber, invalidGiftCardPin,initialGiftCardNumberLength);
 		lsErrorMessage=basePage.getElementInnerText(getRegularCheckoutThreadLocal().lblOrderSummaryGiftCardErrorMessage);
 		if(lsErrorMessage.equalsIgnoreCase(invalidErrorMessage)){
 			reporter.reportLogPass("The error message for invalid Gift card number is the same as the expected one");
@@ -104,7 +100,7 @@ public class CP_TC11_VerifyReguLarCheckout_GiftCard extends BaseTest{
 		reporter.reportLog("Verify valid gift card and pin scenario");
 		String lsText;
 		Map<String,Object> orderSummaryMapOnCheckoutPage=null;
-		boolean bSuccess=getRegularCheckoutThreadLocal().ApplyGiftCardForPositiveScenario(lstGiftCard,initialGiftCardNumberLength);
+		boolean bSuccess=getRegularCheckoutThreadLocal().applyGiftCardForPositiveScenario(lstGiftCard,initialGiftCardNumberLength);
 		if(bSuccess){
 			String lblOrderSummaryGiftCardAppliedMessage=basePage.getElementInnerText(getRegularCheckoutThreadLocal().lblOrderSummaryGiftCardAppliedMessage);
 			if(lblOrderSummaryGiftCardAppliedMessage.toLowerCase().contains(lblGiftCardAppliedMessage.toLowerCase())){

@@ -119,6 +119,17 @@ public class CP_TC15_VerifyOrderModification_MyAccount extends BaseTest {
             outputDataCriteria.put("size", "1");
             String lsProductName=getProductDetailPageThreadLocal().getProductWithConditionsForVideoAndStyleAndSizeWithoutCheckingSoldOutCriteria(lstKeyword,outputDataCriteria);
             getOrderModificationThreadLocal().addProductItems(lsProductName,true);
+
+            getOrderModificationThreadLocal().verifyOrderList(true);
+            List<Map<String,Object>> newlyAddedOrderMapList=getOrderModificationThreadLocal().getNewlyAddedOrderListDesc();
+            Map<String,Object> NewlyAddedCheckoutItemCountAndSubTotalMap=getOrderModificationThreadLocal().getItemCountAndSubTotalForNewlyAddedOrderList();
+            int itemCountForNewlyAddedOrderList= (int) NewlyAddedCheckoutItemCountAndSubTotalMap.get("itemCount");
+            float subTotalForNewlyAddedOrderList= (float) NewlyAddedCheckoutItemCountAndSubTotalMap.get("subTotal");
+            orderSummaryMap=getOrderModificationThreadLocal().getOrderSummaryDesc();
+            getOrderModificationThreadLocal().verifyOrderSummaryBusinessLogic(itemCountForNewlyAddedOrderList+itemCountForExistingOrderList,subTotalForNewlyAddedOrderList+subTotalForExistingOrderList,orderSummaryMap,null);
+            easyPaymentMap=getOrderModificationThreadLocal().getEasyPayDesc();
+            getOrderModificationThreadLocal().verifyInstallmentBusinessLogic(presetInstallmentNumber,orderSummaryMap);
+
         }finally {
             //Emptying Cart for test to run with right state if test fails before placing order
             getShoppingCartThreadLocal().emptyCart(Integer.valueOf(customerEDP),accessToken);

@@ -5325,6 +5325,14 @@ public class MyAccount extends BasePage {
 	 */
 	public boolean goToOrderModificationPage(){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnOrderDetailsHeaderEditOrder);
+		String lsClass=btnOrderDetailsHeaderEditOrder.getAttribute("class");
+		if(!lsClass.contains("disabled")){
+			reporter.reportLogPass("Edit order button is enabled");
+		}
+		else{
+			reporter.reportLogFail("Edit order button is disabled");
+			return false;
+		}
 		btnOrderDetailsHeaderEditOrder.click();
 		return this.waitForCondition(Driver->{return (new OrderModificationPage(this.getDriver())).lblModifyOrderHeaderTitle.isDisplayed();},60000);
 	}

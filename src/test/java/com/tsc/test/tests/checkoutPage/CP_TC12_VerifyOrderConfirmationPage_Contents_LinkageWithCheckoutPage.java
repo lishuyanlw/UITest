@@ -112,7 +112,7 @@ public class CP_TC12_VerifyOrderConfirmationPage_Contents_LinkageWithCheckoutPag
 		String lsPromoteCodeOnCheckoutPage="";
 		if(!getRegularCheckoutThreadLocal().checkPromoteCodeRemoveButtonExisting()){
 			reporter.reportLog("Add valid promote code scenario");
-			lsPromoteCodeOnCheckoutPage=getRegularCheckoutThreadLocal().ApplyPromoteCodeForPositiveScenario(lstPromoteCode);
+			lsPromoteCodeOnCheckoutPage=getRegularCheckoutThreadLocal().applyPromoteCodeForPositiveScenario(lstPromoteCode);
 			String lblOrderSummaryPromoteCodeAppliedMessage=basePage.getElementInnerText(getRegularCheckoutThreadLocal().lblOrderSummaryPromoteCodeAppliedMessage);
 			if(lblOrderSummaryPromoteCodeAppliedMessage.equalsIgnoreCase(lblPromoteCodeAppliedMessage)){
 				reporter.reportLogPass("The applied message for valid promote code is tha same as the expected one");

@@ -108,7 +108,7 @@ public class CP_TC07_VerifyReguLarCheckout_PaymentOptions extends BaseTest{
 		String giftCardNumber=giftCardList.get(0).get("GiftCardNumber");
 		String giftCardPin=giftCardList.get(0).get("GiftCardPin");
 		String lsErrorMessageInYamlFile=TestDataHandler.constantData.getCheckOut().getLblGiftCardPromoteErrorMessageForEasyPayment();
-		getRegularCheckoutThreadLocal().ApplyGiftCard(giftCardNumber, giftCardPin,initialGiftCardNumberLength,false);
+		getRegularCheckoutThreadLocal().applyGiftCard(giftCardNumber, giftCardPin,initialGiftCardNumberLength,false);
 		String lsActualErrorMessage=basePage.getElementInnerText(getRegularCheckoutThreadLocal().lblOrderSummaryGiftCardErrorMessage);
 		if(lsActualErrorMessage.contains(lsErrorMessageInYamlFile)){
 			reporter.reportLogPass("The actual error message is the same as the one in Yaml file");

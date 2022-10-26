@@ -92,7 +92,7 @@ public class CP_TC13_VerifyOrderConfirmationPage_GoToMyAccountPage extends BaseT
 			reporter.reportLogFail("The payment method is TSC card");
 		}
 
-		getRegularCheckoutThreadLocal().ApplyPromoteCodeForPositiveScenario(lstPromoteCode);
+		getRegularCheckoutThreadLocal().applyPromoteCodeForPositiveScenario(lstPromoteCode);
 
 		getRegularCheckoutThreadLocal().goToOrderConfirmationPage();
 
