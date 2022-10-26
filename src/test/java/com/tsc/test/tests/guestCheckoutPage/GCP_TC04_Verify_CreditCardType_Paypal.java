@@ -55,7 +55,7 @@ public class GCP_TC04_Verify_CreditCardType_Paypal extends BaseTest{
 			reporter.reportLog("Add invalid promo code for user to verify error message");
 			List<String> lstInvalidPromoteCodeAndErrorMessage=TestDataHandler.constantData.getCheckOut().getLstInvalidPromoteCodeAndErrorMessage();
 			String lblPromoCodeExpectedErrorMessage=lstInvalidPromoteCodeAndErrorMessage.get(1).replace("<promoteCode>","\""+lstInvalidPromoteCodeAndErrorMessage.get(0)+"\"");
-			getRegularCheckoutThreadLocal().ApplyPromoteCodeForNegativeScenario(lstInvalidPromoteCodeAndErrorMessage.get(0));
+			getRegularCheckoutThreadLocal().applyPromoteCodeForNegativeScenario(lstInvalidPromoteCodeAndErrorMessage.get(0));
             String lblPromoCodeErrorMessage=basePage.getElementInnerText(getRegularCheckoutThreadLocal().lblOrderSummaryPromoteCodeErrorMessage);
             if(lblPromoCodeErrorMessage.equalsIgnoreCase(lblPromoCodeExpectedErrorMessage))
             	reporter.reportLogPass("Error Message for invalid promo code is as expected: "+lblPromoCodeErrorMessage);
@@ -146,7 +146,7 @@ public class GCP_TC04_Verify_CreditCardType_Paypal extends BaseTest{
 			//Adding credit card will fail due to ios blocking iframe issue on sauceLab, so instead to add tsc card
 			//Remove gift card to avoid easy payment conflict
 			if(bAddingGiftCardSuccess){
-				getRegularCheckoutThreadLocal().RemoveGiftCard();
+				getRegularCheckoutThreadLocal().removeGiftCard();
 			}
 			mapAddedPayment=getGuestCheckoutThreadLocal().addNewCreditOrEditExistingCard("tsc");
 			//Fetching Order Summary after removing gift card
