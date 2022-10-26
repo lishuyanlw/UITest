@@ -10,12 +10,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GCP_TC04_Verify_CreditCardType_Paypal extends BaseTest{
+public class GCP_TC04_Verify_GuestCheckout_OrderConfirmation_CreditCardType_Paypal extends BaseTest{
 	/*
 	 *
 	 */
 	@Test(groups={"Regression","GuestCheckout"})
-	public void GCP_TC04_Verify_CreditCardType_Paypal() throws IOException {
+	public void GCP_TC04_Verify_GuestCheckout_OrderConfirmation_CreditCardType_Paypal() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 		BasePage basePage=new BasePage(this.getDriver());
 		List<String> lstKeywordList=TestDataHandler.constantData.getCheckOut().getLst_SearchingKeywordForPlaceOrder();
