@@ -64,7 +64,7 @@ public class GCP_TC04_Verify_CreditCardType_Paypal extends BaseTest{
 			reporter.reportLog("Add promo code on create user page");
 			String lblPromoteCodeAppliedMessage=TestDataHandler.constantData.getCheckOut().getLblPromoteCodeAppliedMessage();
 			List<String> lstPromoteCode=TestDataHandler.constantData.getCheckOut().getLst_PromoteCode();
-			String lsAppliedPromoteCode=getRegularCheckoutThreadLocal().ApplyPromoteCodeForPositiveScenario(lstPromoteCode);
+			String lsAppliedPromoteCode=getRegularCheckoutThreadLocal().applyPromoteCodeForPositiveScenario(lstPromoteCode);
 			String lblOrderSummaryPromoteCodeAppliedMessage=basePage.getElementInnerText(getRegularCheckoutThreadLocal().lblOrderSummaryPromoteCodeAppliedMessage);
 			if(lblOrderSummaryPromoteCodeAppliedMessage.equalsIgnoreCase(lblPromoteCodeAppliedMessage)){
 				reporter.reportLogPass("The applied message for valid promote code is tha same as the expected one");
@@ -96,7 +96,7 @@ public class GCP_TC04_Verify_CreditCardType_Paypal extends BaseTest{
 			String lblGiftCardAppliedMessage=TestDataHandler.constantData.getCheckOut().getLblGiftCardAppliedMessage();
 			List<Map<String,String>> lstGiftCard=TestDataHandler.constantData.getCheckOut().getLst_GiftCard();
 			int initialGiftCardNumberLength=getRegularCheckoutThreadLocal().inputOrderSummaryGiftCardNumber.getAttribute("value").replace(" ","").length();
-			boolean bAddingGiftCardSuccess=getRegularCheckoutThreadLocal().ApplyGiftCardForPositiveScenario(lstGiftCard,initialGiftCardNumberLength);
+			boolean bAddingGiftCardSuccess=getRegularCheckoutThreadLocal().applyGiftCardForPositiveScenario(lstGiftCard,initialGiftCardNumberLength);
 			if(bAddingGiftCardSuccess){
 				String lblOrderSummaryGiftCardAppliedMessage=basePage.getElementInnerText(getRegularCheckoutThreadLocal().lblOrderSummaryGiftCardAppliedMessage);
 				if(lblOrderSummaryGiftCardAppliedMessage.toLowerCase().contains(lblGiftCardAppliedMessage.toLowerCase())){

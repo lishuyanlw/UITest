@@ -109,6 +109,9 @@ public class RegularCheckoutPage extends BasePage {
 	@FindBy(xpath = "//article[@class='leftSide']//div[contains(@class,'reviewWrap')]//div[@class='estimatedlabel__left']/following-sibling::span")
 	public WebElement lblShippingDate;
 
+	@FindBy(xpath = "//article[@class='leftSide']//div[contains(@class,'shippingAddressWrap')]")
+	public WebElement cntShippingAddressSection;
+
 	@FindBy(xpath = "//article[@class='leftSide']//div[contains(@class,'shippingAddressWrap')]//div[@class='shippingaddress__label']")
 	public WebElement lblShippingAddressTitle;
 
@@ -226,6 +229,9 @@ public class RegularCheckoutPage extends BasePage {
 
 	///////////////////////////////////////////////////
 
+	@FindBy(xpath = "//article[@class='leftSide']//div[contains(@class,'shippingMethodWrap')]")
+	public WebElement cntShippingMethodSection;
+
 	@FindBy(xpath = "//article[@class='leftSide']//div[contains(@class,'shippingMethodWrap')]//div[@class='shippingmethod__label']")
 	public WebElement lblShippingMethodTitle;
 
@@ -263,6 +269,8 @@ public class RegularCheckoutPage extends BasePage {
 	@FindBy(xpath = "//div[contains(@class,'ReactModal__Content')]//div[@class='modal__footer']//button")
 	public WebElement btnChangeShippingMethodDialogSaveAndContinueButton;
 	/////////////////////////////////////////////////////////////
+	@FindBy(xpath = "//article[@class='leftSide']//div[contains(@class,'paymentMethodWrap')]")
+	public WebElement cntShippingPaymentMethodSection;
 
 	@FindBy(xpath = "//article[@class='leftSide']//div[contains(@class,'paymentMethodWrap')]//div[@class='paymentmethod__label']")
 	public WebElement lblShippingPaymentMethodTitle;
@@ -354,7 +362,6 @@ public class RegularCheckoutPage extends BasePage {
 	public List<WebElement> lstCreditCardMandatoryErrorMessage;
 	////////////////////////////////////////////////////////////////
 
-
 	////////////////////////////////////////////////////
 	//For the popup window by clicking using a new card button
 	@FindBy(xpath = "//div[@class='modal__header']/h3")
@@ -431,6 +438,9 @@ public class RegularCheckoutPage extends BasePage {
 
 	/////////////////////////////////////////////////////////
 
+	@FindBy(xpath = "//article[@class='leftSide']//div[contains(@class,'billingAddressWrap')]")
+	public WebElement cntBillingAddressSection;
+
 	@FindBy(xpath = "//article[@class='leftSide']//div[contains(@class,'billingAddressWrap')]//div[@class='billingaddress__label']")
 	public WebElement lblBillingAddressTitle;
 
@@ -448,6 +458,12 @@ public class RegularCheckoutPage extends BasePage {
 
 	@FindBy(xpath = "//article[@class='leftSide']//div[contains(@class,'paymentOptionWrap')]//div[@class='paymentoption__description']//select")
 	public WebElement selectPaymentOption;
+
+	@FindBy(xpath = "//article[@class='leftSide']//div[contains(@class,'paymentOptionWrap')]//div[@class='paymentoption__description']//div[contains(@class,'form__select')]")
+	public WebElement cntSelectPaymentOption;
+
+	@FindBy(xpath = "//article[@class='leftSide']//div[contains(@class,'paymentOptionWrap')]//div[@class='paymentoption__description']")
+	public WebElement lblPaymentOptionTextForOrderModification;
 
 	//For Order Summary section
 	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//h2")
@@ -647,6 +663,8 @@ public class RegularCheckoutPage extends BasePage {
 	//Error Message for Mandatory Items
 	@FindBy(xpath = "//div[contains(@class,'ReactModal__Overlay')]//div[contains(@class,'alert-danger')]")
 	public List<WebElement> mandatoryFieldErrorMessage;
+
+	//For order modification, to identify
 
 	/**
 	 * To check Alert Message In Header Existing
@@ -3032,7 +3050,6 @@ public class RegularCheckoutPage extends BasePage {
 			reporter.reportLogFailWithScreenshot("The Shipping Payment Method Title is not displaying correctly");
 		}
 
-
 		if(!this.checkAlertMessageInHeaderExisting()){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblPaymentMethod);
 			lsText=lblPaymentMethod.getText();
@@ -4776,7 +4793,7 @@ public class RegularCheckoutPage extends BasePage {
 	 * @param - List<String> - promoteCodeList
 	 * @return - String
 	 */
-	public String ApplyPromoteCodeForPositiveScenario(List<String> promoteCodeList){
+	public String applyPromoteCodeForPositiveScenario(List<String> promoteCodeList){
 		String lsFindPromoteCode="";
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputOrderSummaryPromoteCode);
 		for(String promoteCode:promoteCodeList){
@@ -4811,7 +4828,7 @@ public class RegularCheckoutPage extends BasePage {
 	 * @param - String - promoteCode
 	 * @return - boolean
 	 */
-	public boolean ApplyPromoteCodeForNegativeScenario(String promoteCode){
+	public boolean applyPromoteCodeForNegativeScenario(String promoteCode){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputOrderSummaryPromoteCode);
 		inputOrderSummaryPromoteCode.clear();
 		inputOrderSummaryPromoteCode.sendKeys(promoteCode);
@@ -4827,7 +4844,7 @@ public class RegularCheckoutPage extends BasePage {
 	 * To remove promote code
 	 * @return - boolean
 	 */
-	public boolean RemovePromoteCode(){
+	public boolean removePromoteCode(){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnOrderSummaryRemovePromoteCode);
 		this.btnOrderSummaryRemovePromoteCode.click();
 
@@ -4840,7 +4857,7 @@ public class RegularCheckoutPage extends BasePage {
 	 * @param - int - initialGiftCardNumberLength
 	 * @return - boolean
 	 */
-	public boolean ApplyGiftCardForPositiveScenario(List<Map<String,String>> giftCardList,int initialGiftCardNumberLength){
+	public boolean applyGiftCardForPositiveScenario(List<Map<String,String>> giftCardList, int initialGiftCardNumberLength){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputOrderSummaryGiftCardNumber);
 		String giftCardNumber,giftCardPin;
 		this.applyStaticWait(3*this.getStaticWaitForApplication());
@@ -4890,7 +4907,7 @@ public class RegularCheckoutPage extends BasePage {
 	 * @param - boolean - bPositive
 	 * @return - boolean
 	 */
-	public boolean ApplyGiftCard(String giftCardNumber, String giftCardPin,int initialGiftCardNumberLength,boolean bPositive){
+	public boolean applyGiftCard(String giftCardNumber, String giftCardPin, int initialGiftCardNumberLength, boolean bPositive){
 		if(initialGiftCardNumberLength>0){
 			giftCardNumber=giftCardNumber.substring(initialGiftCardNumberLength);
 		}
@@ -4923,7 +4940,7 @@ public class RegularCheckoutPage extends BasePage {
 	 * @param - int - initialGiftCardNumberLength
 	 * @return - boolean
 	 */
-	public boolean ApplyGiftCardForNegativeScenario(String giftCardNumber, String giftCardPin,int initialGiftCardNumberLength){
+	public boolean applyGiftCardForNegativeScenario(String giftCardNumber, String giftCardPin, int initialGiftCardNumberLength){
 		if(initialGiftCardNumberLength>0){
 			giftCardNumber=giftCardNumber.substring(initialGiftCardNumberLength);
 		}
@@ -4948,7 +4965,7 @@ public class RegularCheckoutPage extends BasePage {
 	 * To remove gift card
 	 * @return - boolean
 	 */
-	public boolean RemoveGiftCard(){
+	public boolean removeGiftCard(){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnOrderSummaryRemoveGiftCard);
 		this.btnOrderSummaryRemoveGiftCard.click();
 
@@ -5754,6 +5771,401 @@ public class RegularCheckoutPage extends BasePage {
 		else{
 			reporter.reportLogFail("The originalOrder total price plus change To Order Total Price in OrderSummary section is not equal to the new total price in OrderSummary section");
 		}
-
 	}
+
+	/**
+	 * To get applied promote code
+	 * @return -String
+	 */
+	public String getAppliedPromoteCode(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderSummaryInputPromoteCode);
+		return lblOrderSummaryInputPromoteCode.getText().trim();
+	}
+
+	/**
+	 * To verify Mandatory Contents For Checkout Product List For Order Modification
+	 * @param - boolean - bItemsBeingAdded
+	 */
+	public void verifyMandatoryContentsForCheckoutProductListForOrderModification(boolean bItemsBeingAdded) {
+		String lsText;
+		WebElement item;
+		List<WebElement> lstCheckoutOrderList;
+		if(bItemsBeingAdded){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnItemBeingAdded);
+			lsText = btnItemBeingAdded.getText().trim();
+			if (!lsText.isEmpty()) {
+				reporter.reportLogPass("The product list collapse button for items being added is displaying correctly");
+			} else {
+				reporter.reportLogFailWithScreenshot("The product list collapse button for items being added is not displaying correctly");
+			}
+
+			expandItemBeingAddedProductSectionForOrderModification();
+			lstCheckoutOrderList=this.lstProductListForItemBeingAdded;
+		}
+		else{
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnExistingItems);
+			lsText = btnExistingItems.getText().trim();
+			if (!lsText.isEmpty()) {
+				reporter.reportLogPass("The product list collapse button for existing items is displaying correctly");
+			} else {
+				reporter.reportLogFailWithScreenshot("The product list collapse button for existing items is not displaying correctly");
+			}
+
+			expandExistingItemsProductSectionForOrderModification();
+			lstCheckoutOrderList=this.lstProductListForExistingItems;
+		}
+
+		for (WebElement productItem : lstCheckoutOrderList) {
+			if (this.checkProductBadgeExisting(productItem)) {
+				item = productItem.findElement(this.byProductBadge);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+				if (this.getReusableActionsInstance().isElementVisible(item)) {
+					reporter.reportLogPass("The product badge is displaying correctly");
+				} else {
+					reporter.reportLogFailWithScreenshot("The product badge is not displaying correctly");
+				}
+			}
+
+			item = productItem.findElement(byProductItemDesc);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsText = item.getText().trim();
+			if (!lsText.isEmpty()) {
+				reporter.reportLogPass("The product description is displaying correctly");
+			} else {
+				reporter.reportLogFailWithScreenshot("The product description is not displaying correctly");
+			}
+
+			if(this.checkProductNumberExisting(productItem)){
+				item = productItem.findElement(byProductNumber);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+				lsText = item.getText().replace("-", "").trim();
+				if (!lsText.isEmpty()) {
+					reporter.reportLogPass("The product number is displaying correctly");
+				} else {
+					reporter.reportLogFailWithScreenshot("The product number is not displaying correctly");
+				}
+			}
+
+			item = productItem.findElement(byProductNowPrice);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsText = item.getText().trim();
+			if (!lsText.isEmpty()) {
+				reporter.reportLogPass("The product nowPrice is displaying correctly");
+			} else {
+				reporter.reportLogFailWithScreenshot("The product nowPrice is not displaying correctly");
+			}
+
+			item=productItem.findElement(byProductSelectQuantity);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsText=this.getElementInnerText(item).split(":")[1].trim();
+			if (!lsText.isEmpty()) {
+				reporter.reportLogPass("The product quantity is displaying correctly");
+			} else {
+				reporter.reportLogFailWithScreenshot("The product quantity is not displaying correctly");
+			}
+
+			if(!this.checkProductShippingDateExisting()){
+				item = productItem.findElement(byProductShippingDate);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+				lsText = item.getText().trim();
+				if (!lsText.isEmpty()) {
+					reporter.reportLogPass("The product Shipping Date is displaying correctly");
+				} else {
+					reporter.reportLogFailWithScreenshot("The product Shipping Date is not displaying correctly");
+				}
+			}
+		}
+	}
+
+	/**
+	 * To verify Optional Contents For Checkout Product List For Order Modification
+	 * @param - boolean - bItemsBeingAdded
+	 */
+	public void verifyOptionalContentsForCheckoutProductListForOrderModification(boolean bItemsBeingAdded) {
+		String lsText;
+		WebElement item;
+
+		List<WebElement> lstCheckoutOrderList;
+		if(bItemsBeingAdded){
+			expandItemBeingAddedProductSectionForOrderModification();
+			lstCheckoutOrderList=this.lstProductListForItemBeingAdded;
+		}
+		else{
+			expandExistingItemsProductSectionForOrderModification();
+			lstCheckoutOrderList=this.lstProductListForExistingItems;
+		}
+
+		for (WebElement productItem : lstCheckoutOrderList) {
+			if(this.checkProductInventoryExisting(productItem)){
+				item=productItem.findElement(byProductInventory);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+				lsText=item.getText().trim();
+				if (!lsText.isEmpty()) {
+					reporter.reportLogPass("The product Inventory is displaying correctly");
+				} else {
+					reporter.reportLogFailWithScreenshot("The product Inventory is not displaying correctly");
+				}
+			}
+
+			if(this.checkProductFreeShippingExisting(productItem)){
+				item=productItem.findElement(byProductFreeShipping);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+				lsText=item.getText().trim();
+				if (!lsText.isEmpty()) {
+					reporter.reportLogPass("The product Free Shipping is displaying correctly");
+				} else {
+					reporter.reportLogFailWithScreenshot("The product Free Shipping is not displaying correctly");
+				}
+			}
+		}
+
+		if(this.checkProductShippingDateExisting()){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblShippingDateTitle);
+			lsText = this.lblShippingDateTitle.getText().trim();
+			if (!lsText.isEmpty()) {
+				reporter.reportLogPass("The GetItBy date title is displaying correctly");
+			} else {
+				reporter.reportLogFailWithScreenshot("The GetItBy date title is not displaying correctly");
+			}
+
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblShippingDate);
+			lsText = this.lblShippingDate.getText().trim();
+			if (!lsText.isEmpty()) {
+				reporter.reportLogPass("The GetItBy date is displaying correctly");
+			} else {
+				reporter.reportLogFailWithScreenshot("The GetItBy date is not displaying correctly");
+			}
+		}
+	}
+
+	/**
+	 * To verify Address And Payment Contents for order modification
+	 */
+	public void verifyAddressAndPaymentContentsForOrderModification() {
+		String lsText;
+
+		reporter.reportLog("Verify shipping address contents");
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblShippingAddressTitle);
+		lsText=lblShippingAddressTitle.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The Shipping Address Title is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Shipping Address Title is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblShippingAddress);
+		lsText=lblShippingAddress.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The Shipping Address is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Shipping Address is not displaying correctly");
+		}
+
+		if(!this.checkChildElementExistingByTagName(cntShippingAddressSection,"button")){
+			reporter.reportLogPass("The Shipping Address AddOrChange button is not found");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Shipping Address AddOrChange button is found");
+		}
+
+		reporter.reportLog("Verify shipping method contents");
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblShippingMethodTitle);
+		lsText=lblShippingMethodTitle.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The Shipping Method Title is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Shipping Method Title is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblShippingMethod);
+		lsText=lblShippingMethod.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The Shipping Method is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Shipping Method is not displaying correctly");
+		}
+
+		if(!this.checkChildElementExistingByTagName(cntShippingMethodSection,"button")){
+			reporter.reportLogPass("The change Shipping Method button is not found");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The change Shipping Method button is found");
+		}
+
+		reporter.reportLog("Verify shipping payment method contents");
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblShippingPaymentMethodTitle);
+		lsText=lblShippingPaymentMethodTitle.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The Shipping Payment Method Title is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Shipping Payment Method Title is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblPaymentMethod);
+		lsText=lblPaymentMethod.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The Payment Method is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Payment Method is not displaying correctly");
+		}
+
+		if(!this.checkChildElementExistingByTagName(cntShippingPaymentMethodSection,"button")){
+			reporter.reportLogPass("The AddOrChange Payment Method button is not found");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The AddOrChange Payment Method button is found");
+		}
+
+		reporter.reportLog("Verify billing address contents");
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblBillingAddressTitle);
+		lsText=lblBillingAddressTitle.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The Billing Address Title is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Billing Address Title is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblBillingAddress);
+		lsText=lblBillingAddress.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The Billing Address is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Billing Address is not displaying correctly");
+		}
+
+		if(!this.checkChildElementExistingByTagName(cntBillingAddressSection,"button")){
+			reporter.reportLogPass("The Billing Address Change button is not found");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Billing Address Change button is found");
+		}
+
+		reporter.reportLog("Verify payment option contents");
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblPaymentOptionTitle);
+		lsText=lblPaymentOptionTitle.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The Payment Option Title is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Payment Option Title is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblPaymentOptionText);
+		lsText=lblPaymentOptionText.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The Payment Option text is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Payment Option text is not displaying correctly");
+		}
+
+		if(!this.checkChildElementExistingByTagName(cntSelectPaymentOption,"select")){
+			reporter.reportLogPass("The select Payment Option is not found");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The select Payment Option is found");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblPaymentOptionTextForOrderModification);
+		lsText=lblPaymentOptionTextForOrderModification.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The Payment Option is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Payment Option is not displaying correctly");
+		}
+	}
+
+	/**
+	 * To verify Promote Code Contents for order modification
+	 * @param - String - lsExpectedPromoteCode
+	 */
+	public void verifyPromoteCodeContentsForOrderModification(String lsExpectedPromoteCode) {
+		String lsText;
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderSummaryPromoteCodeTitle);
+		lsText = lblOrderSummaryPromoteCodeTitle.getText();
+		if (!lsText.isEmpty()) {
+			reporter.reportLogPass("The OrderSummary Promote Code Title is displaying correctly");
+		} else {
+			reporter.reportLogFailWithScreenshot("The OrderSummary Promote Code Title is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(iconOrderSummaryPromoteCodeTooltip);
+		if(this.getReusableActionsInstance().isElementVisible(iconOrderSummaryPromoteCodeTooltip)){
+			reporter.reportLogPass("The OrderSummary Promote Code icon is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The OrderSummary Promote Code icon is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(iconOrderSummaryPromoteCodeTooltip);
+		this.getReusableActionsInstance().scrollToElement(iconOrderSummaryPromoteCodeTooltip);
+		this.waitForCondition(Driver->{return this.checkPromoteCodeTooltipMessageDisplaying();},10000);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderSummaryPromoteCodeTooltipMessage);
+		lsText= this.lblOrderSummaryPromoteCodeTooltipMessage.getText().trim();
+		if (!lsText.isEmpty()) {
+			reporter.reportLogPass("The OrderSummary Promote Code Tooltip Message is displaying correctly");
+		} else {
+			reporter.reportLogFailWithScreenshot("The OrderSummary Promote Code Tooltip Message is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderSummaryInputPromoteCode);
+		lsText=this.getAppliedPromoteCode();
+		if(lsText.equalsIgnoreCase(lsExpectedPromoteCode)){
+			reporter.reportLogPass("The applied promote code:"+lsText+" is the same as expected:"+lsExpectedPromoteCode);
+		}
+		else{
+			reporter.reportLogFail("The applied promote code:"+lsText+" is not the same as expected:"+lsExpectedPromoteCode);
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnOrderSummaryRemovePromoteCode);
+		lsText=this.btnOrderSummaryRemovePromoteCode.getText().trim();
+		if(lsText.equalsIgnoreCase("Edit")){
+			reporter.reportLogPass("The edit promote code button is displaying correctly");
+		}
+		else{
+			reporter.reportLogFail("The edit promote code button is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderSummaryPromoteCodeAppliedMessage);
+		lsText = lblOrderSummaryPromoteCodeAppliedMessage.getText();
+		if (!lsText.isEmpty()) {
+			reporter.reportLogPass("The Promote Code Applied Message is displaying correctly");
+		} else {
+			reporter.reportLogFailWithScreenshot("The Promote Code Applied Message is not displaying correctly");
+		}
+	}
+
+	/**
+	 * To get checkout Item List Description
+	 * @param - lsOption - "mandatory"/"optional"/"all"
+	 * @return - List<Map<String,Object>>
+	 */
+	public List<Map<String,Object>> getCheckoutItemListDescForOrderModification(String lsOption,boolean bItemsBeingAdded){
+		List<Map<String,Object>> mapList=new ArrayList<>();
+
+		List<WebElement> lstCheckoutOrderList;
+		if(bItemsBeingAdded){
+			lstCheckoutOrderList=this.lstProductListForItemBeingAdded;
+		}
+		else{
+			lstCheckoutOrderList=this.lstProductListForExistingItems;
+		}
+
+		for(WebElement cartItem:lstCheckoutOrderList){
+			mapList.add(this.getCheckoutItemDesc(cartItem,lsOption));
+		}
+
+		return mapList;
+	}
+
 }

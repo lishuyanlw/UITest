@@ -1,13 +1,8 @@
 package com.tsc.test.tests.checkoutPage;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.tsc.api.apiBuilder.CartAPI;
-import com.tsc.api.pojo.AccountCartResponse;
-import com.tsc.api.util.JsonParser;
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
-import io.restassured.response.Response;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
@@ -56,7 +51,7 @@ public class CP_TC10_VerifyReguLarCheckout_PromoteCode extends BaseTest{
 		reporter.reportLog("Verify promote code");
 		String lsText;
 		reporter.reportLog("Verify invalid promote code scenario");
-		getRegularCheckoutThreadLocal().ApplyPromoteCodeForNegativeScenario(lstInvalidPromoteCodeAndErrorMessage.get(0));
+		getRegularCheckoutThreadLocal().applyPromoteCodeForNegativeScenario(lstInvalidPromoteCodeAndErrorMessage.get(0));
 		String lblOrderSummaryPromoteCodeErrorMessage=basePage.getElementInnerText(getRegularCheckoutThreadLocal().lblOrderSummaryPromoteCodeErrorMessage);
 		if(lblOrderSummaryPromoteCodeErrorMessage.equalsIgnoreCase(lblPromoteCodeErrorMessage)){
 			reporter.reportLogPass("The error message for invalid promote code is tha same as the expected one");
@@ -66,7 +61,7 @@ public class CP_TC10_VerifyReguLarCheckout_PromoteCode extends BaseTest{
 		}
 
 		reporter.reportLog("Verify valid promote code scenario");
-		getRegularCheckoutThreadLocal().ApplyPromoteCodeForPositiveScenario(lstPromoteCode);
+		getRegularCheckoutThreadLocal().applyPromoteCodeForPositiveScenario(lstPromoteCode);
 		String lblOrderSummaryPromoteCodeAppliedMessage=basePage.getElementInnerText(getRegularCheckoutThreadLocal().lblOrderSummaryPromoteCodeAppliedMessage);
 		if(lblOrderSummaryPromoteCodeAppliedMessage.equalsIgnoreCase(lblPromoteCodeAppliedMessage)){
 			reporter.reportLogPass("The applied message for valid promote code is tha same as the expected one");

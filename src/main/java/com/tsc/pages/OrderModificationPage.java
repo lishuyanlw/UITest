@@ -9,6 +9,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
 
 import java.math.RoundingMode;
+import java.sql.Driver;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -119,8 +120,8 @@ public class OrderModificationPage extends BasePage {
 	public By byProductItemStatusContainer=By.xpath(".//div[@class='clearfix']/div[contains(@class,'cart-desc')]");
 	//Note that it is a list for byProductItemStatus
 	public By byProductItemStatus=By.xpath(".//div[contains(@class,'item-status')]");
-	public By byProductItemStatusForFreeShipping=By.xpath("./span[@class='boldBlackColor']");
-	public By byProductItemStatusForLowInventory=By.xpath("./span[@class='boldRedColor']");
+	public By byProductItemStatusForFreeShipping=By.xpath(".//span[@class='boldBlackColor']");
+	public By byProductItemStatusForLowInventory=By.xpath(".//span[@class='boldRedColor']");
 
 	//Not display for mobile device
 	public By byProductFreeShippingContainer=By.xpath(".//div[contains(@class,'cart-desc-line') and not(contains(@class,'visible-xs-block'))]//span[contains(@class,'now-price')]/ancestor::div[contains(@class,'col-sm-3')]");
@@ -380,6 +381,15 @@ public class OrderModificationPage extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyButton);
 		btnModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyButton.click();
 		this.waitForCondition(Driver->{return lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeAppliedPromoteMessage.isDisplayed();},20000);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeAppliedPromoteCode);
+		String lsText=lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeAppliedPromoteCode.getText().trim();
+		if(lsText.equalsIgnoreCase(lsPromoteCode)){
+			reporter.reportLogPass("The applied promote code:"+lsText+" is the same as inputting promote code:"+lsPromoteCode);
+		}
+		else{
+			reporter.reportLogFail("The applied promote code:"+lsText+" is not the same as inputting promote code:"+lsPromoteCode);
+		}
 	}
 
 	/**
@@ -1194,7 +1204,7 @@ public class OrderModificationPage extends BasePage {
 
 				if(checkProductItemStatusExisting(productItem)){
 					if(checkProductItemStatusForFreeShippingExisting(productItem)){
-						item = productItem.findElement(byProductItemStatusForFreeShipping);
+						item = productItem.findElement(byProductItemStatusContainer).findElement(byProductItemStatusForFreeShipping);
 						this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 						lsText = item.getText();
 						if (!lsText.isEmpty()) {
@@ -1215,22 +1225,24 @@ public class OrderModificationPage extends BasePage {
 						}
 					}
 				}
-				item = productItem.findElement(byProductRemoveButton);
+
+				item = productItem.findElement(byProductQuantityForNewlyAdded);
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-				lsText = item.getText();
-				if (!lsText.isEmpty()) {
-					reporter.reportLogPass("The product remove button is displaying correctly");
+				if (this.getReusableActionsInstance().isElementVisible(item)) {
+					reporter.reportLogPass("The product quantity dropdown menu is displaying correctly");
 				} else {
-					reporter.reportLogFailWithScreenshot("The product remove button is not displaying correctly");
+					reporter.reportLogFailWithScreenshot("The product quantity dropdown menu is not displaying correctly");
 				}
 
-				item = productItem.findElement(byProductRemoveButton);
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-				lsText = item.getText();
-				if (!lsText.isEmpty()) {
-					reporter.reportLogPass("The product remove button is displaying correctly");
-				} else {
-					reporter.reportLogFailWithScreenshot("The product remove button is not displaying correctly");
+				if(!this.hasElementAttribute(item,"disabled")){
+					item = productItem.findElement(byProductRemoveButton);
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+					lsText = item.getText();
+					if (!lsText.isEmpty()) {
+						reporter.reportLogPass("The product remove button is displaying correctly");
+					} else {
+						reporter.reportLogFailWithScreenshot("The product remove button is not displaying correctly");
+					}
 				}
 			}
 			else{
@@ -1640,8 +1652,35 @@ public class OrderModificationPage extends BasePage {
 	 */
 	public boolean goToOrderModificationPageForReviewChangesFromAddToBagWindow(){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddToBagPopupWindowButtonSectionReviewChanges);
+		String lsText=this.getElementInnerText(btnAddToBagPopupWindowButtonSectionReviewChanges);
+		if(lsText.equalsIgnoreCase("Review Changes")){
+			reporter.reportLogPass("Review Changes button is displaying correctly");
+		}
+		else{
+			reporter.reportLogFail("Review Changes button is not displaying correctly");
+		}
 		btnAddToBagPopupWindowButtonSectionReviewChanges.click();
 		return this.waitForCondition(Driver->{return this.lblModifyOrderHeaderTitle.isDisplayed();},60000);
+	}
+
+	/**
+	 * To verify Navigated Page After Clicking Cancel Modification Button
+	 * @param - String - lsURL
+	 */
+	public void verifyNavigatedPageAfterClickingCancelModificationButton(String lsURL){
+		String lsExpectedUrl=this.getBaseURL();
+		lsExpectedUrl=lsExpectedUrl+lsURL;
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnModifyOrderCancelModificationButton);
+		btnModifyOrderCancelModificationButton.click();
+		this.waitForCondition(Driver->{return (new MyAccount(this.getDriver())).inputAccountOrderSearch.isDisplayed();},60000);
+
+		if(this.URL().equalsIgnoreCase(lsExpectedUrl)){
+			reporter.reportLogPass("Navigated to order status page after clicking cancel modification button.");
+		}
+		else{
+			reporter.reportLogFail("Failed to be navigated to order status page after clicking cancel modification button.");
+		}
 	}
 
 

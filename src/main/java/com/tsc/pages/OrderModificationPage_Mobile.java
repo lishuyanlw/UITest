@@ -206,7 +206,7 @@ public class OrderModificationPage_Mobile extends OrderModificationPage {
 
 				if(checkProductItemStatusExisting(productItem)){
 					if(checkProductItemStatusForFreeShippingExisting(productItem)){
-						item = productItem.findElement(byProductItemStatusForFreeShipping);
+						item = productItem.findElement(byProductItemStatusContainer).findElement(byProductItemStatusForFreeShipping);
 						this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 						lsText = item.getText();
 						if (!lsText.isEmpty()) {
@@ -262,6 +262,125 @@ public class OrderModificationPage_Mobile extends OrderModificationPage {
 	@Override
 	public void subTotal(){
 		reporter.softAssert(!this.getElementInnerText(this.lblAddToBagPopupWindowButtonSectionSubtotal).isEmpty(),"The product Subtotal in Add to Bag popup window is not empty","The product Subtotal in Add to Bag popup window is empty");
+	}
+
+	@Override
+	public void verifyModifyOrderCancelModificationButton() {
+		String lsText;
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnModifyOrderCancelModificationButton);
+		lsText = btnModifyOrderCancelModificationButton.getText();
+		if (!lsText.isEmpty()) {
+			reporter.reportLogPass("The modify order Cancel Modification Button is displaying correctly");
+		} else {
+			reporter.reportLogFailWithScreenshot("The modify order Cancel Modification Button is not displaying correctly");
+		}
+	}
+
+	@Override
+	public void addPromoteCode(String lsPromoteCode){
+		if(lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeHeadingTitle.getAttribute("aria-expanded").equalsIgnoreCase("false")){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeHeadingTitle);
+			lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeHeadingTitle.click();
+			this.waitForCondition(Driver->{return lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeHeadingTitle.getAttribute("aria-expanded").equalsIgnoreCase("true");},10000);
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputModifyOrderChangeModOptionsAddOrUpdatePromoCode);
+		inputModifyOrderChangeModOptionsAddOrUpdatePromoCode.sendKeys(lsPromoteCode);
+		this.applyStaticWait(300);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyButton);
+		btnModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyButton.click();
+		this.waitForCondition(Driver->{return lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeAppliedPromoteMessage.isDisplayed();},20000);
+	}
+
+	@Override
+	public void verifyModifyOrderChangeModeContents() {
+		String lsText;
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblModifyOrderChangeModOptionsAddItemsHeadingTitle);
+		lblModifyOrderChangeModOptionsAddItemsHeadingTitle.click();
+		this.waitForCondition(Driver->{return this.checkChangeModOptionExpanded(lblModifyOrderChangeModOptionsAddItemsHeadingTitle);},10000);
+		lsText = lblModifyOrderChangeModOptionsAddItemsHeadingTitle.getText();
+		if (!lsText.isEmpty()) {
+			reporter.reportLogPass("The Adding Items Heading Title is displaying correctly");
+		} else {
+			reporter.reportLogFailWithScreenshot("The Adding Items Heading Title is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnModifyOrderChangeModOptionsAddItemsButton);
+		lsText = btnModifyOrderChangeModOptionsAddItemsButton.getText();
+		if (!lsText.isEmpty()) {
+			reporter.reportLogPass("The Adding Items button is displaying correctly");
+		} else {
+			reporter.reportLogFailWithScreenshot("The Adding Items button is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeHeadingTitle);
+		lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeHeadingTitle.click();
+		this.waitForCondition(Driver->{return this.checkChangeModOptionExpanded(lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeHeadingTitle);},10000);
+		lsText = lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeHeadingTitle.getText();
+		if (!lsText.isEmpty()) {
+			reporter.reportLogPass("The AddOrUpdate PromoCode Heading Title is displaying correctly");
+		} else {
+			reporter.reportLogFailWithScreenshot("The AddOrUpdate PromoCode Heading Title is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeLabel);
+		lsText = lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeLabel.getText();
+		if (!lsText.isEmpty()) {
+			reporter.reportLogPass("The AddOrUpdate PromoCode label is displaying correctly");
+		} else {
+			reporter.reportLogFailWithScreenshot("The AddOrUpdate PromoCode label is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputModifyOrderChangeModOptionsAddOrUpdatePromoCode);
+		if (this.getReusableActionsInstance().isElementVisible(inputModifyOrderChangeModOptionsAddOrUpdatePromoCode)) {
+			reporter.reportLogPass("The input AddOrUpdate PromoCode is displaying correctly");
+		} else {
+			reporter.reportLogFailWithScreenshot("The input AddOrUpdate PromoCode is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyButton);
+		lsText = btnModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyButton.getText();
+		if (!lsText.isEmpty()) {
+			reporter.reportLogPass("The AddOrUpdate PromoCode apply button is displaying correctly");
+		} else {
+			reporter.reportLogFailWithScreenshot("The AddOrUpdate PromoCode apply button is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyNoteMessage);
+		lsText = lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyNoteMessage.getText();
+		if (!lsText.isEmpty()) {
+			reporter.reportLogPass("The AddOrUpdate PromoCode apply note message is displaying correctly");
+		} else {
+			reporter.reportLogFailWithScreenshot("The AddOrUpdate PromoCode apply note message is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblModifyOrderChangeModOptionsOtherChangesHeadingTitle);
+		lblModifyOrderChangeModOptionsOtherChangesHeadingTitle.click();
+		this.waitForCondition(Driver->{return this.checkChangeModOptionExpanded(lblModifyOrderChangeModOptionsOtherChangesHeadingTitle);},10000);
+		lsText = lblModifyOrderChangeModOptionsOtherChangesHeadingTitle.getText();
+		if (!lsText.isEmpty()) {
+			reporter.reportLogPass("The Other Changes Heading Title is displaying correctly");
+		} else {
+			reporter.reportLogFailWithScreenshot("The Other Changes Heading Title is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblModifyOrderChangeModOptionsOtherChanges);
+		lsText = lblModifyOrderChangeModOptionsOtherChanges.getText();
+		if (!lsText.isEmpty()) {
+			reporter.reportLogPass("The Other Changes is displaying correctly");
+		} else {
+			reporter.reportLogFailWithScreenshot("The Other Changes is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblModifyOrderCombinedMessage);
+		lsText = lblModifyOrderCombinedMessage.getText();
+		if (!lsText.isEmpty()) {
+			reporter.reportLogPass("The Combined Message is displaying correctly");
+		} else {
+			reporter.reportLogFailWithScreenshot("The Combined Message is not displaying correctly");
+		}
 	}
 
 }
