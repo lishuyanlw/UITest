@@ -2655,6 +2655,7 @@ public class ShoppingCartPage extends BasePage {
 				map.put("productSavePrice",cartLineItemClass.getSavePrice());
 				map.put("productAppliedShipping",cartLineItemClass.getAppliedShipping());
 				map.put("advanceOrderMessage",cartLineItemClass.getSkuAvailabilityMessage());
+				map.put("cartGuid",accountCart.getCartGuid());
 
 				for(CartResponse.ProductsClass productsClass:productsClassList){
 					boolean outerForLoop = false;
@@ -2679,7 +2680,7 @@ public class ShoppingCartPage extends BasePage {
 		//If there is no cart present fo user, creating the cart for user and returning data
 		else{
 			List<Map<String,Object>> data = new ProductAPI().getProductDetailsToBeAddedToCartForUser(itemsToBeAdded);
-			System.out.println(data.toString());
+			//System.out.println(data.toString());
 			this.addItemsToCartForUser(data,customerEDP,accessToken,null);
 
 			responseExisting=cartApi.getAccountCartContentWithCustomerEDP(String.valueOf(customerEDP), accessToken);
@@ -2715,6 +2716,7 @@ public class ShoppingCartPage extends BasePage {
 				map.put("productSavePrice",cartLineItemClass.getSavePrice());
 				map.put("productAppliedShipping",cartLineItemClass.getAppliedShipping());
 				map.put("advanceOrderMessage",cartLineItemClass.getSkuAvailabilityMessage());
+				map.put("cartGuid",accountCart.getCartGuid());
 
 				for(CartResponse.ProductsClass productsClass:productsClassList){
 					boolean outerForLoop = false;
