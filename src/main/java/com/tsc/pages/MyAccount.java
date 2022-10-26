@@ -2,7 +2,9 @@ package com.tsc.pages;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.tsc.api.apiBuilder.AccountAPI;
+import com.tsc.api.apiBuilder.CartAPI;
 import com.tsc.api.apiBuilder.OrderAPI;
+import com.tsc.api.pojo.CartResponse;
 import com.tsc.api.pojo.PlaceOrderResponse;
 import com.tsc.api.util.CustomComparator;
 import com.tsc.api.util.DataConverter;
@@ -5345,12 +5347,15 @@ public class MyAccount extends BasePage {
 	 * @param - int - customerEDP
 	 * @param - String - access token
 	 * @param - List<Map<String,Object> - itemsToBeAdded
+	 * @param  - int - easyPayInstallment
 	 * @param - boolean - bCheckExisting
 	 * @return - PlaceOrderResponse
 	 */
-	public PlaceOrderResponse placeOrderForUser(int customerEDP, String accessToken, List<Map<String,String>> itemsToBeAdded, boolean bCheckExisting) throws IOException {
+	public PlaceOrderResponse placeOrderForUser(int customerEDP, String accessToken, List<Map<String,String>> itemsToBeAdded, int easyPayInstallment, boolean bCheckExisting) throws IOException {
 		List<Map<String,Object>> shoppingCartObject = new ShoppingCartPage(this.getDriver()).verifyCartExistsForUser(customerEDP,accessToken,itemsToBeAdded,bCheckExisting);
-		if(shoppingCartObject.size()>0){
+		//Add easy pay installment for user
+		CartResponse cartResponse = new CartAPI().putInstallmentNumberInCartForUser(shoppingCartObject.get(0).get("cartGuid").toString(),easyPayInstallment,accessToken);
+		if(cartResponse.getOrderSummary().getEasyPay().getNoOfInstallments()==easyPayInstallment && shoppingCartObject.size()>0){
 			Response response = new OrderAPI().placeOrder(shoppingCartObject.get(0).get("cartGuid").toString(),String.valueOf(customerEDP),accessToken,null);
 			PlaceOrderResponse placeOrderResponse = JsonParser.getResponseObject(response.asString(), new TypeReference<PlaceOrderResponse>() {});
 			return placeOrderResponse;
