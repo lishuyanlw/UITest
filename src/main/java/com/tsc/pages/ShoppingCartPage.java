@@ -2622,8 +2622,7 @@ public class ShoppingCartPage extends BasePage {
 		CartResponse accountCart = null;
 		Response responseExisting=cartApi.getAccountCartContentWithCustomerEDP(String.valueOf(customerEDP), accessToken);
 		if(responseExisting.statusCode()==200) {
-			accountCart = JsonParser.getResponseObject(responseExisting.asString(), new TypeReference<CartResponse>() {
-			});
+			accountCart = JsonParser.getResponseObject(responseExisting.asString(), new TypeReference<CartResponse>() {});
 		}
 		else{
 			return null;
@@ -2685,8 +2684,7 @@ public class ShoppingCartPage extends BasePage {
 
 			responseExisting=cartApi.getAccountCartContentWithCustomerEDP(String.valueOf(customerEDP), accessToken);
 			if(responseExisting.statusCode()==200) {
-				accountCart = JsonParser.getResponseObject(responseExisting.asString(), new TypeReference<CartResponse>() {
-				});
+				accountCart = JsonParser.getResponseObject(responseExisting.asString(), new TypeReference<CartResponse>() {});
 			}
 			else{
 				return null;

@@ -2,11 +2,7 @@ package com.tsc.api.apiBuilder;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tsc.api.pojo.AccountCartResponse;
-import com.tsc.api.pojo.CartResponse;
-import com.tsc.api.pojo.AccountResponse;
-import com.tsc.api.pojo.ErrorResponse;
-import com.tsc.api.pojo.Product;
+import com.tsc.api.pojo.*;
 import com.tsc.api.util.DataConverter;
 import com.tsc.api.util.JsonParser;
 import io.restassured.response.Response;
@@ -855,5 +851,23 @@ public class CartAPI extends ApiClient {
                 return null;
         }
         return null;
+    }
+
+    /**
+     * This api call adds easy pay number to added cart for user
+     * @param - String - cartGuid
+     * @param - int - easyPayInstallmentNumber
+     * @param - String - appToken
+     * @return
+     */
+    public CartResponse putInstallmentNumberInCartForUser(String cartGuid,int easyPayInstallmentNumber,String appToken){
+        JSONObject noOfInstallmentBody = new JSONObject();
+        noOfInstallmentBody.put("NoOfInstallments",easyPayInstallmentNumber);
+        String apiEndPoint = propertyData.get("test_apiVersion") + "/" + propertyData.get("test_language") + "/carts/"+cartGuid+"/installment";
+        Response response= updateApiCallResponseAfterAuthenticationFromJSON(noOfInstallmentBody, apiEndPoint, appToken);
+        if(response.getStatusCode()==200)
+          return JsonParser.getResponseObject(response.asString(), new TypeReference<CartResponse>() {});
+        else
+            return null;
     }
 }

@@ -77,8 +77,8 @@ public class ApiResponse extends ApiConfigs {
         //Api Call to get access token
         Response response = given().
                 contentType("application/x-www-form-urlencoded").
-                header("Authorization",
-                        "Bearer " + access_token).
+                //header("Authorization",
+                //        "Bearer " + access_token).
                 formParam("userName",userName).
                 formParam("password",password).
                 formParam("grant_type",grant_type).
