@@ -5352,6 +5352,7 @@ public class MyAccount extends BasePage {
 		List<Map<String,Object>> shoppingCartObject = new ShoppingCartPage(this.getDriver()).verifyCartExistsForUser(customerEDP,accessToken,itemsToBeAdded,bCheckExisting);
 		if(shoppingCartObject.size()>0){
 			Response response = new OrderAPI().placeOrder(shoppingCartObject.get(0).get("cartGuid").toString(),String.valueOf(customerEDP),accessToken,null);
+			System.out.println(response.asString());
 			PlaceOrderResponse placeOrderResponse = JsonParser.getResponseObject(response.asString(), new TypeReference<PlaceOrderResponse>() {});
 			return placeOrderResponse;
 		}else
