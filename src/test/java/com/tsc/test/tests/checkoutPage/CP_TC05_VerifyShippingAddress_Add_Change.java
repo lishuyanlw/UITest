@@ -43,7 +43,7 @@ public class CP_TC05_VerifyShippingAddress_Add_Change extends BaseTest {
 
             //Verifying that item exists in cart and if not, create a new cart for user
             List<Map<String, String>> keyword = TestDataHandler.constantData.getCheckOut().getLst_SearchKeywords();
-            getShoppingCartThreadLocal().verifyCartExistsForUser(Integer.valueOf(customerEDP), accessToken, keyword,true);
+            getShoppingCartThreadLocal().verifyCartExistsForUser(Integer.valueOf(customerEDP), accessToken, keyword,"all",true);
 
             //Verification that user has ShippingAddress associated and if not, add one to user
             getRegularCheckoutThreadLocal().deleteNewAddedAddressFromUser(null,customerEDP,accessToken);

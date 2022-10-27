@@ -33,7 +33,7 @@ public class CP_TC03_VerifyReguLarCheckout_ShippingDate_MultiPackMessage extends
 
 		reporter.reportLog("Verify the scenario of ShippingDate for each checkout item scenario with different checkout item");
 		List<Map<String, String>> keywordForDifferentProducts = TestDataHandler.constantData.getCheckOut().getLst_SearchKeywords();
-		List<Map<String, Object>> data = getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP, accessToken, keywordForDifferentProducts,true);
+		List<Map<String, Object>> data = getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP, accessToken, keywordForDifferentProducts,"all",true);
 
 		//Login using valid username and password
 		getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword);

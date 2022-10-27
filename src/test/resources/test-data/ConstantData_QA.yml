@@ -256,7 +256,7 @@ lstTestName: ["MA_TC10_Payment_Options_Manage_Credit_Card",
 lblChromeBrowserVersion: "99"
 shoppingCart:
   lst_SearchKeywords:
-    - searchKeyword: "jean"
+    - searchKeyword: "boots"
       quantity: "more than 1"
       badgeRequired: "true"
       itemToBeAdded: "1"
@@ -273,7 +273,7 @@ shoppingCart:
       badgeRequired: "false"
       itemToBeAdded: "1"
       styleExist: "false"
-    - searchKeyword: "jean"
+    - searchKeyword: "legging"
       quantity: "more than 1"
       badgeRequired: "true"
       itemToBeAdded: "1"

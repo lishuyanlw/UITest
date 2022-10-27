@@ -25,7 +25,7 @@ public class SC_TC14_VerifyShoppingCart_CheckOrderExceedingQuantityMessage exten
 		try{
 			getGlobalFooterPageThreadLocal().closePopupDialog();
 			List<Map<String, String>> keyword = TestDataHandler.constantData.getShoppingCart().getLst_SearchKeywords();
-			List<Map<String, Object>> data = getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP, accessToken, keyword,true);
+			List<Map<String, Object>> data = getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP, accessToken, keyword,"all",true);
 
 			//Add the product with over 10 item in the inventory
 			String lsProductNumberForOrderExceedingQuantity=TestDataHandler.constantData.getShoppingCart().getLblProductNumberForOrderExceedingQuantity();

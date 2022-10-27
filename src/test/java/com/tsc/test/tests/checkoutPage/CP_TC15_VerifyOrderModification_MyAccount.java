@@ -43,7 +43,7 @@ public class CP_TC15_VerifyOrderModification_MyAccount extends BaseTest {
             getShoppingCartThreadLocal().addTSCCreditCardForUser(null,customerEDP,accessToken);
 
             //Verifying that item exists in cart and if not, create a new cart for user
-            getShoppingCartThreadLocal().verifyCartExistsForUser(Integer.valueOf(customerEDP), accessToken, keyword,false);
+            getShoppingCartThreadLocal().verifyCartExistsForUser(Integer.valueOf(customerEDP), accessToken, keyword,"all",false);
             //Fetching cart response again for user name
             cartResponse= JsonParser.getResponseObject(response.asString(), new TypeReference<CartResponse>() {});
 
