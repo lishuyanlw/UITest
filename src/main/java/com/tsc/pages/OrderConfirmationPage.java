@@ -1504,9 +1504,7 @@ public class OrderConfirmationPage extends BasePage {
 			else{
 				reporter.reportLogFailWithScreenshot("The productShippingDate in OrderConfirmation Item is not the same as the one:"+lsCheckoutText+" in checkout Item");
 			}
-
 		}
-
 	}
 
 	/**
@@ -1872,11 +1870,104 @@ public class OrderConfirmationPage extends BasePage {
 			findIndex=shoppingCartPage.findGivenProductIndexInProductList(orderItem,orderListMapForCheckout);
 			if(findIndex!=-1){
 				checkoutItem=orderListMapForCheckout.get(findIndex);
-				this.verifyProductListLinkageBetweenOrderConfirmationPageAndCheckoutPage(orderItem,checkoutItem);
+				this.verifyProductListLinkageBetweenOrderConfirmationPageAndCheckoutPageForOrderModification(orderItem,checkoutItem);
 			}
 			else{
 				reporter.reportLogFail("Unable to find '"+lsText+"' in Checkout Page");
 			}
+		}
+	}
+
+	/**
+	 * To verify product list Linkage Between OrderConfirmation Page And Checkout Page for order modification
+	 * @param - Map<String,Object> - orderConfirmationItem
+	 * @param - Map<String,Object> - checkoutItem
+	 */
+	public void verifyProductListLinkageBetweenOrderConfirmationPageAndCheckoutPageForOrderModification(Map<String,Object> orderConfirmationItem,Map<String,Object> checkoutItem){
+		String lsOrderConfirmationText,lsCheckoutText;
+
+		lsOrderConfirmationText=(String)orderConfirmationItem.get("productName");
+		lsCheckoutText=(String)checkoutItem.get("productName");
+		if(lsOrderConfirmationText.equalsIgnoreCase(lsCheckoutText)){
+			reporter.reportLogPass("The productName in OrderConfirmation Item is the same as the one in checkout Item");
+		}
+		else{
+			reporter.reportLogFail("The productName:"+lsOrderConfirmationText+" in OrderConfirmation Item is not the same as the one:"+lsCheckoutText+" in checkout Item");
+		}
+
+		lsOrderConfirmationText=(String)orderConfirmationItem.get("productStyle");
+		lsCheckoutText=(String)checkoutItem.get("productStyle");
+		if(lsOrderConfirmationText==null){
+			if(lsCheckoutText==null){
+				reporter.reportLogPass("The productStyle in OrderConfirmation Item is the same as the one in checkout Item");
+			}
+			else{
+				reporter.reportLogFail("The productStyle in OrderConfirmation Item is not the same as the one in checkout Item");
+			}
+		}
+		else{
+			if(lsOrderConfirmationText.equalsIgnoreCase(lsCheckoutText)){
+				reporter.reportLogPass("The productStyle in OrderConfirmation Item is the same as the one in checkout Item");
+			}
+			else{
+				reporter.reportLogFail("The productStyle:"+lsOrderConfirmationText+" in OrderConfirmation Item is not the same as the one:"+lsCheckoutText+" in checkout Item");
+			}
+		}
+
+		lsOrderConfirmationText=(String)orderConfirmationItem.get("productSize");
+		lsCheckoutText=(String)checkoutItem.get("productSize");
+		if(lsOrderConfirmationText==null){
+			if(lsCheckoutText==null){
+				reporter.reportLogPass("The productSize in OrderConfirmation Item is the same as the one in checkout Item");
+			}
+			else{
+				reporter.reportLogFail("The productSize in OrderConfirmation Item is not the same as the one in checkout Item");
+			}
+		}
+		else{
+			if(lsOrderConfirmationText.equalsIgnoreCase(lsCheckoutText)){
+				reporter.reportLogPass("The productSize in OrderConfirmation Item is the same as the one in checkout Item");
+			}
+			else{
+				reporter.reportLogFail("The productSize:"+lsOrderConfirmationText+" in OrderConfirmation Item is not the same as the one:"+lsCheckoutText+" in checkout Item");
+			}
+		}
+
+		lsOrderConfirmationText=(String)orderConfirmationItem.get("productNumber");
+		lsCheckoutText=(String)checkoutItem.get("productNumber");
+		if(lsOrderConfirmationText==null){
+			if(lsCheckoutText==null){
+				reporter.reportLogPass("The productNumber in OrderConfirmation Item is the same as the one in checkout Item");
+			}
+			else{
+				reporter.reportLogFail("The productNumber in OrderConfirmation Item is not the same as the one in checkout Item");
+			}
+		}
+		else{
+			if(lsOrderConfirmationText.equalsIgnoreCase(lsCheckoutText)){
+				reporter.reportLogPass("The productNumber in OrderConfirmation item is the same as the one in checkoutItem");
+			}
+			else{
+				reporter.reportLogFail("The productNumber:"+lsOrderConfirmationText+" in OrderConfirmation Item is not the same as the one:"+lsCheckoutText+" in checkout Item");
+			}
+		}
+
+		float orderConfirmationNowPrice=(float)orderConfirmationItem.get("productNowPrice");
+		float checkoutNowPrice=(float)checkoutItem.get("productNowPrice");
+		if(Math.abs(orderConfirmationNowPrice-checkoutNowPrice)<0.1f){
+			reporter.reportLogPass("The productNowPrice in OrderConfirmation Item is the same as the one in checkout Item");
+		}
+		else{
+			reporter.reportLogFail("The productNowPrice:"+orderConfirmationNowPrice+" in OrderConfirmation Item is not the same as the one:"+checkoutNowPrice+" in checkout Item");
+		}
+
+		int orderConfirmationQuantity=(int)orderConfirmationItem.get("productQuantity");
+		int checkoutQuantity=(int)checkoutItem.get("productQuantity");
+		if(orderConfirmationQuantity==checkoutQuantity){
+			reporter.reportLogPass("The productQuantity in OrderConfirmation Item is the same as the one in checkout Item");
+		}
+		else{
+			reporter.reportLogFail("The productQuantity:"+orderConfirmationQuantity+" in OrderConfirmation Item is not the same as the one:"+checkoutQuantity+" in checkout Item");
 		}
 	}
 

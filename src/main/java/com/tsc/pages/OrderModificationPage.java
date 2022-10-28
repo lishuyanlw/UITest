@@ -1755,4 +1755,22 @@ public class OrderModificationPage extends BasePage {
 	}
 
 
+	/**
+	 * To verify Linkage Between AddToBag Item And Newly Added Order List
+	 * @param - List<Map<String,Object>> - orderListMapForOrderModification
+	 * @param - Map<String,Object> - addToBagItem
+	 */
+	public void verifyLinkageBetweenAddToBagItemAndNewlyAddedOrderList(List<Map<String,Object>> orderListMapForOrderModification,Map<String,Object> addToBagItem){
+		ShoppingCartPage shoppingCartPage=new ShoppingCartPage(this.getDriver());
+		String lsProductName= (String) addToBagItem.get("ProductName");
+		int findIndex=shoppingCartPage.findGivenProductIndexInProductList(addToBagItem,orderListMapForOrderModification);
+		if(findIndex!=-1){
+			reporter.reportLogPass("The AddToBag product:'"+lsProductName+" ' can be found in newly added order list on orderModificationPage");
+		}
+		else{
+			reporter.reportLogFail("The AddToBag product:'"+lsProductName+" ' cannot be found in newly added order list on orderModificationPage");
+		}
+	}
+
+
 }

@@ -55,6 +55,7 @@ public class CP_TC16_VerifyOrderModification_Checkout extends BaseTest {
         getMyAccountPageThreadLocal().editPlacedOrderForUser(placeOrderResponse,myAccountOrderStatusURL);
 
         int presetInstallmentNumber=2;
+        String lsOrderNumberForOrderModification=getOrderModificationThreadLocal().getOrderNumber();
 
         List<Map<String,Object>> existingOrderMapList=getOrderModificationThreadLocal().getExistingOrderListDesc();
 
@@ -62,8 +63,19 @@ public class CP_TC16_VerifyOrderModification_Checkout extends BaseTest {
         getOrderModificationThreadLocal().addPromoteCode(lsPromoteCode);
 
         Map<String,Object> addToBagPopUpData = getProductDetailPageThreadLocal().addItemsToModifiedOrderForUser(newItemToBeAddedKeyword);
+        String lsOrderNumberOnAddToBagWindow= (String) addToBagPopUpData.get("productOrderNumber");
+        if(lsOrderNumberForOrderModification.equalsIgnoreCase(lsOrderNumberOnAddToBagWindow)){
+            reporter.reportLogPass("The order number:"+lsOrderNumberForOrderModification+" for order modification is the same as the one:"+lsOrderNumberOnAddToBagWindow+" for add to bag popup window.");
+        }
+        else{
+            reporter.reportLogFail("The order number:"+lsOrderNumberForOrderModification+" for order modification is not the same as the one:"+lsOrderNumberOnAddToBagWindow+" for add to bag popup window.");
+        }
 
         List<Map<String,Object>> newlyAddedOrderMapList=getOrderModificationThreadLocal().getNewlyAddedOrderListDesc();
+
+        reporter.reportLog("Verify Linkage Between AddToBag Item And Newly Added Order List");
+        getOrderModificationThreadLocal().verifyLinkageBetweenAddToBagItemAndNewlyAddedOrderList(newlyAddedOrderMapList,addToBagPopUpData);
+
         Map<String,Object> orderSummaryMap=getOrderModificationThreadLocal().getOrderSummaryDesc();
         Map<String,Object> easyPaymentMap=getOrderModificationThreadLocal().getEasyPayDesc();
 

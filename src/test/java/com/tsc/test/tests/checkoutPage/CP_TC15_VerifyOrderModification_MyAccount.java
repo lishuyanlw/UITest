@@ -56,6 +56,7 @@ public class CP_TC15_VerifyOrderModification_MyAccount extends BaseTest {
 
         int presetInstallmentNumber=2;
         String lsOrderNumberForOrderModification=getOrderModificationThreadLocal().getOrderNumber();
+
         reporter.reportLog("Verify Header Contents for Modify Order ");
         getOrderModificationThreadLocal().verifyModifyOrderHeaderContents();
 
@@ -119,6 +120,9 @@ public class CP_TC15_VerifyOrderModification_MyAccount extends BaseTest {
         Map<String,Object> NewlyAddedCheckoutItemCountAndSubTotalMap=getOrderModificationThreadLocal().getItemCountAndSubTotalForNewlyAddedOrderList();
         int itemCountForNewlyAddedOrderList= (int) NewlyAddedCheckoutItemCountAndSubTotalMap.get("itemCount");
         float subTotalForNewlyAddedOrderList= (float) NewlyAddedCheckoutItemCountAndSubTotalMap.get("subTotal");
+
+        reporter.reportLog("Verify Linkage Between AddToBag Item And Newly Added Order List");
+        getOrderModificationThreadLocal().verifyLinkageBetweenAddToBagItemAndNewlyAddedOrderList(newlyAddedOrderMapList,addToBagPopUpData);
 
         reporter.reportLog("Verify OrderSummary Business Logic after adding new order list");
         orderSummaryMap=getOrderModificationThreadLocal().getOrderSummaryDesc();

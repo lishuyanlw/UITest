@@ -6636,6 +6636,4 @@ public class RegularCheckoutPage extends BasePage {
 		return map;
 	}
 
-
-
 }

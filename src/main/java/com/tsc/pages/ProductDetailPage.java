@@ -4083,7 +4083,7 @@ public class ProductDetailPage extends BasePage {
 			reporter.reportLogFailWithScreenshot("Review Changes Button is not displayed for user");
 
 		//Fetching Data from Add To Bag popup window
-		addToBagPopUpWindowData.put("orderNumber",this.getElementInnerText(this.lblAddToBagOrderNumber).split("-")[1].trim());
+		addToBagPopUpWindowData.put("productOrderNumber",this.getElementInnerText(this.lblAddToBagOrderNumber).split("-")[1].trim());
 		addToBagPopUpWindowData.put("productName",this.getElementInnerText(this.lblAddToBagPopupWindowDetailsProductName));
 		addToBagPopUpWindowData.put("productStyle",this.getElementInnerText(this.lblAddToBagPopupWindowDetailsProductStyle));
 		addToBagPopUpWindowData.put("productSize",this.getElementInnerText(this.lblAddToBagPopupWindowDetailsProductSize));
