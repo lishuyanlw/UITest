@@ -29,7 +29,7 @@ public class SC_TC10_VerifyShoppingCart_ShippingDateAndMultiPackMessage extends 
 			getShoppingCartThreadLocal().emptyCart(customerEDP,accessToken);
 
 			List<Map<String, String>> keyword = TestDataHandler.constantData.getShoppingCart().getLst_SearchKeywords();
-			List<Map<String, Object>> data = getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP, accessToken, keyword,true);
+			List<Map<String, Object>> data = getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP, accessToken, keyword,"all",true);
 
 			//Add advanced order product using API
 			String lsAdvancedOrderKeyword=TestDataHandler.constantData.getSearchResultPage().getLbl_AdvancedOrderkeyword();

@@ -2620,7 +2620,7 @@ public class ShoppingCartPage extends BasePage {
 	 * @return - List<Map<String,Object> - List of map object for all items in cart for user
 	 * @throws IOException
 	 */
-	public List<Map<String,Object>> verifyCartExistsForUser(int customerEDP, String accessToken,List<Map<String,String>> itemsToBeAdded,boolean bCheckExisting) throws IOException {
+	public List<Map<String,Object>> verifyCartExistsForUser(int customerEDP, String accessToken,List<Map<String,String>> itemsToBeAdded,String noOfItemsToBeAdded,boolean bCheckExisting) throws IOException {
 		CartAPI cartApi = new CartAPI();
 		CartResponse accountCart = null;
 		Response responseExisting=cartApi.getAccountCartContentWithCustomerEDP(String.valueOf(customerEDP), accessToken);
@@ -2681,7 +2681,7 @@ public class ShoppingCartPage extends BasePage {
 		}
 		//If there is no cart present fo user, creating the cart for user and returning data
 		else{
-			List<Map<String,Object>> data = new ProductAPI().getProductDetailsToBeAddedToCartForUser(itemsToBeAdded);
+			List<Map<String,Object>> data = new ProductAPI().getProductDetailsToBeAddedToCartForUser(itemsToBeAdded,noOfItemsToBeAdded);
 			//System.out.println(data.toString());
 			this.addItemsToCartForUser(data,customerEDP,accessToken,null);
 

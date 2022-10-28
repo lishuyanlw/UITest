@@ -5351,8 +5351,8 @@ public class MyAccount extends BasePage {
 	 * @param - boolean - bCheckExisting
 	 * @return - PlaceOrderResponse
 	 */
-	public PlaceOrderResponse placeOrderForUser(int customerEDP, String accessToken, List<Map<String,String>> itemsToBeAdded, int easyPayInstallment, boolean bCheckExisting) throws IOException {
-		List<Map<String,Object>> shoppingCartObject = new ShoppingCartPage(this.getDriver()).verifyCartExistsForUser(customerEDP,accessToken,itemsToBeAdded,bCheckExisting);
+	public PlaceOrderResponse placeOrderForUser(int customerEDP, String accessToken, List<Map<String,String>> itemsToBeAdded, int easyPayInstallment, String noOfItemsToBeAdded, boolean bCheckExisting) throws IOException {
+		List<Map<String,Object>> shoppingCartObject = new ShoppingCartPage(this.getDriver()).verifyCartExistsForUser(customerEDP,accessToken,itemsToBeAdded,noOfItemsToBeAdded,bCheckExisting);
 		//Add easy pay installment for user
 		CartResponse cartResponse = new CartAPI().putInstallmentNumberInCartForUser(shoppingCartObject.get(0).get("cartGuid").toString(),easyPayInstallment,accessToken);
 		if(cartResponse.getOrderSummary().getEasyPay().getNoOfInstallments()==easyPayInstallment && shoppingCartObject.size()>0){
