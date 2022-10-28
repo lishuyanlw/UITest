@@ -6607,6 +6607,35 @@ public class RegularCheckoutPage extends BasePage {
 		return allProductListMap;
 	}
 
+	/**
+	 * To get Shipping And Payment Description for order modification
+	 * @param - Map<String,Object> - checkoutItem
+	 * @return - Map<String,Object>
+	 */
+	public Map<String,Object> getShippingAndPaymentDescForOrderModification() {
+		String lsText;
+		Map<String, Object> map = new HashMap<>();
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblShippingAddress);
+		lsText=lblShippingAddress.getText().trim();
+		map.put("shippingAddress",lsText);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblShippingMethod);
+		lsText=lblShippingMethod.getText().trim();
+		map.put("shippingMethod", lsText.split("-")[0].trim());
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblPaymentMethod);
+		lsText=lblPaymentMethod.getText().trim();
+		map.put("paymentMethodDescription",lsText);
+		map.put("paymentMethod",getSelectedPaymentMethodFromCheckout(lblSelectedCardTypeForPayment));
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblBillingAddress);
+		lsText=lblBillingAddress.getText().trim();
+		map.put("billingAddress",lsText);
+
+		return map;
+	}
+
 
 
 }
