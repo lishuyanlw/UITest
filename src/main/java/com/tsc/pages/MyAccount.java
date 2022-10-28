@@ -5353,15 +5353,25 @@ public class MyAccount extends BasePage {
 	 */
 	public PlaceOrderResponse placeOrderForUser(int customerEDP, String accessToken, List<Map<String,String>> itemsToBeAdded, int easyPayInstallment, String noOfItemsToBeAdded, boolean bCheckExisting) throws IOException {
 		List<Map<String,Object>> shoppingCartObject = new ShoppingCartPage(this.getDriver()).verifyCartExistsForUser(customerEDP,accessToken,itemsToBeAdded,noOfItemsToBeAdded,bCheckExisting);
-		//Add easy pay installment for user
-		CartResponse cartResponse = new CartAPI().putInstallmentNumberInCartForUser(shoppingCartObject.get(0).get("cartGuid").toString(),easyPayInstallment,accessToken);
-		if(cartResponse.getOrderSummary().getEasyPay().getNoOfInstallments()==easyPayInstallment && shoppingCartObject.size()>0){
-			Response response = new OrderAPI().placeOrder(shoppingCartObject.get(0).get("cartGuid").toString(),String.valueOf(customerEDP),accessToken,null);
-			System.out.println(response.asString());
-			PlaceOrderResponse placeOrderResponse = JsonParser.getResponseObject(response.asString(), new TypeReference<PlaceOrderResponse>() {});
+		Response response;
+		PlaceOrderResponse placeOrderResponse;
+
+		if(easyPayInstallment==0){
+			response = new OrderAPI().placeOrder(shoppingCartObject.get(0).get("cartGuid").toString(),String.valueOf(customerEDP),accessToken,null);
+			placeOrderResponse = JsonParser.getResponseObject(response.asString(), new TypeReference<PlaceOrderResponse>() {});
 			return placeOrderResponse;
-		}else
-			return null;
+		}
+		else{
+			//Add easy pay installment for user
+			CartResponse cartResponse = new CartAPI().putInstallmentNumberInCartForUser(shoppingCartObject.get(0).get("cartGuid").toString(),easyPayInstallment,accessToken);
+			if(cartResponse.getOrderSummary().getEasyPay().getNoOfInstallments()==easyPayInstallment && shoppingCartObject.size()>0){
+				response = new OrderAPI().placeOrder(shoppingCartObject.get(0).get("cartGuid").toString(),String.valueOf(customerEDP),accessToken,null);
+				placeOrderResponse = JsonParser.getResponseObject(response.asString(), new TypeReference<PlaceOrderResponse>() {});
+				return placeOrderResponse;
+			}else
+				return null;
+		}
+
 	}
 
 	/**
@@ -5416,7 +5426,7 @@ public class MyAccount extends BasePage {
 		this.getDriver().navigate().to(orderURL);
 		this.waitForPageToLoad();
 		this.waitForCondition(Driver->{return this.btnOrderDetailsHeaderEditOrder.isDisplayed() &&
-								this.btnOrderDetailsHeaderEditOrder.isEnabled();},10000);
+								this.btnOrderDetailsHeaderEditOrder.isEnabled();},120000);
 		//Click on Edit Order Button
 		this.clickWebElementUsingJS(this.btnOrderDetailsHeaderEditOrder);
 

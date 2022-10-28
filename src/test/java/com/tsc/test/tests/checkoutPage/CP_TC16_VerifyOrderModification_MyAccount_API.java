@@ -22,7 +22,7 @@ public class CP_TC16_VerifyOrderModification_MyAccount_API extends BaseTest {
     public void CP_TC16_VerifyOrderModification_MyAccount_API() throws IOException {
         getGlobalFooterPageThreadLocal().closePopupDialog();
 
-        /*
+
         String accessToken = getApiUserSessionDataMapThreadLocal().get("access_token").toString();
         String customerEDP = getApiUserSessionDataMapThreadLocal().get("customerEDP").toString();
         String lsUserName = TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
@@ -42,7 +42,7 @@ public class CP_TC16_VerifyOrderModification_MyAccount_API extends BaseTest {
         String myAccountOrderStatusURL = TestDataHandler.constantData.getMyAccount().getLnk_orderStatusURL();
         List<String> newItemToBeAddedKeyword = TestDataHandler.constantData.getSearchResultPage().getLst_ShoppingCartSearchKeyword();
         List<Map<String,String>> itemsToBeAdded = TestDataHandler.constantData.getCheckOut().getLstOrderDetailItems();
-        PlaceOrderResponse placeOrderResponse = getMyAccountPageThreadLocal().placeOrderForUser(Integer.parseInt(customerEDP),accessToken,itemsToBeAdded,2,true);
+        PlaceOrderResponse placeOrderResponse = getMyAccountPageThreadLocal().placeOrderForUser(Integer.parseInt(customerEDP),accessToken,itemsToBeAdded,2,"1",true);
         //Login using valid username and password
         getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword);
         try {
@@ -54,40 +54,41 @@ public class CP_TC16_VerifyOrderModification_MyAccount_API extends BaseTest {
             (new BasePage(this.getDriver())).applyStaticWait(3000);
         }
         getMyAccountPageThreadLocal().editPlacedOrderForUser(placeOrderResponse,myAccountOrderStatusURL);
-*/
-        //To empty the cart
-        //Fetching test data from test data file
-        String accessToken = getApiUserSessionDataMapThreadLocal().get("access_token").toString();
-        int customerEDP = Integer.valueOf(getApiUserSessionDataMapThreadLocal().get("customerEDP").toString());
-        getShoppingCartThreadLocal().emptyCart(customerEDP,accessToken);
 
-        //Delete all gift cards
-        CartAPI cartAPI=new CartAPI();
-        cartAPI.deleteAllGiftCardForUser(String.valueOf(customerEDP),accessToken);
+//        //To empty the cart
+//        //Fetching test data from test data file
+//        String accessToken = getApiUserSessionDataMapThreadLocal().get("access_token").toString();
+//        int customerEDP = Integer.valueOf(getApiUserSessionDataMapThreadLocal().get("customerEDP").toString());
+//        getShoppingCartThreadLocal().emptyCart(customerEDP,accessToken);
+//
+//        //Delete all gift cards
+//        CartAPI cartAPI=new CartAPI();
+//        cartAPI.deleteAllGiftCardForUser(String.valueOf(customerEDP),accessToken);
+//
+//        String lsUserName = TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
+//        String lsPassword = TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
+//        //Login using valid username and password
+//        getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword);
+//
+//        List<String> lstKeywordList=TestDataHandler.constantData.getCheckOut().getLst_SearchingKeywordForPlaceOrder();
+//        Map<String,Object> outputDataCriteria= new HashMap<String,Object>();
+//        outputDataCriteria.put("video", "1");
+//        outputDataCriteria.put("style", "1");
+//        outputDataCriteria.put("size", "1");
+//        outputDataCriteria.put("quantity", "2");
+//        String lsProductName=getProductDetailPageThreadLocal().getProductWithConditionsForVideoAndStyleAndSizeWithoutCheckingSoldOutCriteria(lstKeywordList,outputDataCriteria);
+//        Map<String,String> prpMap=getProductResultsPageThreadLocal().navigateFromPRPToPDP(lsProductName, true);
+//        getProductDetailPageThreadLocal().chooseGivenStyleAndSize(getProductDetailPageThreadLocal().selectedProduct.productEDPColor,getProductDetailPageThreadLocal().selectedProduct.productEDPSize);
+//
+//        getProductDetailPageThreadLocal().openAddToBagPopupWindow();
+//        getProductDetailPageThreadLocal().goToShoppingCartFromAddToBagPopupWithLoginFirst();
+//        int presetInstallmentNumber=getShoppingCartThreadLocal().setInstallmentNumberByRandomIndex();
+//        getShoppingCartThreadLocal().goToCheckoutPage();
+//        getRegularCheckoutThreadLocal().goToOrderConfirmationPage();
+//        getOrderConfirmationThreadLocal().goToOrderDetailsPage(null,null);
+//        getMyAccountPageThreadLocal().goToOrderModificationPage();
 
-        String lsUserName = TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
-        String lsPassword = TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
-        //Login using valid username and password
-        getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword);
-
-        List<String> lstKeywordList=TestDataHandler.constantData.getCheckOut().getLst_SearchingKeywordForPlaceOrder();
-        Map<String,Object> outputDataCriteria= new HashMap<String,Object>();
-        outputDataCriteria.put("video", "1");
-        outputDataCriteria.put("style", "1");
-        outputDataCriteria.put("size", "1");
-        outputDataCriteria.put("quantity", "2");
-        String lsProductName=getProductDetailPageThreadLocal().getProductWithConditionsForVideoAndStyleAndSizeWithoutCheckingSoldOutCriteria(lstKeywordList,outputDataCriteria);
-        Map<String,String> prpMap=getProductResultsPageThreadLocal().navigateFromPRPToPDP(lsProductName, true);
-        getProductDetailPageThreadLocal().chooseGivenStyleAndSize(getProductDetailPageThreadLocal().selectedProduct.productEDPColor,getProductDetailPageThreadLocal().selectedProduct.productEDPSize);
-
-        getProductDetailPageThreadLocal().openAddToBagPopupWindow();
-        getProductDetailPageThreadLocal().goToShoppingCartFromAddToBagPopupWithLoginFirst();
-        int presetInstallmentNumber=getShoppingCartThreadLocal().setInstallmentNumberByRandomIndex();
-        getShoppingCartThreadLocal().goToCheckoutPage();
-        getRegularCheckoutThreadLocal().goToOrderConfirmationPage();
-        getOrderConfirmationThreadLocal().goToOrderDetailsPage(null,null);
-        getMyAccountPageThreadLocal().goToOrderModificationPage();
-
+        int presetInstallmentNumber=2;
         String lsOrderNumberForOrderModification=getOrderModificationThreadLocal().getOrderNumber();
         getOrderModificationThreadLocal().verifyModifyOrderHeaderContents();
         getOrderModificationThreadLocal().verifyModifyOrderCancelModificationButton();
@@ -111,10 +112,10 @@ public class CP_TC16_VerifyOrderModification_MyAccount_API extends BaseTest {
         getOrderModificationThreadLocal().addPromoteCode(lsPromoteCode);
 
         List<String> lstKeyword = TestDataHandler.constantData.getCheckOut().getLst_SearchingKeywordForPlaceOrder();
-        outputDataCriteria= new HashMap<String,Object>();
+        Map<String,Object> outputDataCriteria= new HashMap<String,Object>();
         outputDataCriteria.put("style", "1");
         outputDataCriteria.put("size", "1");
-        lsProductName=getProductDetailPageThreadLocal().getProductWithConditionsForVideoAndStyleAndSizeWithoutCheckingSoldOutCriteria(lstKeyword,outputDataCriteria);
+        String lsProductName=getProductDetailPageThreadLocal().getProductWithConditionsForVideoAndStyleAndSizeWithoutCheckingSoldOutCriteria(lstKeyword,outputDataCriteria);
         Map<String,Object> addToBagPopUpData=getOrderModificationThreadLocal().addProductItems(lsProductName,true);
 
         String lsOrderNumberOnAddToBagWindow= (String) addToBagPopUpData.get("productOrderNumber");
