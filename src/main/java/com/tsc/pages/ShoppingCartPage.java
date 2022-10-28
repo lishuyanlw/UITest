@@ -1692,15 +1692,16 @@ public class ShoppingCartPage extends BasePage {
 
 	/**
 	 * To set Installment Number By Random Index
+	 * @return - int - the setting of installment number
 	 */
-	public void setInstallmentNumberByRandomIndex(){
+	public int setInstallmentNumberByRandomIndex(){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectCartEasyPayInstallmentNumber);
 		Select select=new Select(this.selectCartEasyPayInstallmentNumber);
 
 		List<WebElement> lstOptions=select.getOptions();
 		int optionSize=lstOptions.size();
 		if(optionSize==1){
-			return;
+			return 0;
 		}
 
 		if(optionSize==2){
@@ -1715,6 +1716,8 @@ public class ShoppingCartPage extends BasePage {
 		catch (Exception e){
 			this.applyStaticWait(3*this.getStaticWaitForApplication());
 		}
+
+		return this.getIntegerFromString(select.getFirstSelectedOption().getText());
 	}
 
 	/**

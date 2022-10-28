@@ -748,7 +748,16 @@ public class RegularCheckoutPage extends BasePage {
 	 * @return - boolean
 	 */
 	public boolean checkItemBeingAddedProductSectionExpandedForOrderModification(){
-		return btnItemBeingAdded.getAttribute("class").contains("collapse");
+		boolean bFound=false;
+		String[] lstClass=btnItemBeingAdded.getAttribute("class").split(" ");
+		for(String lsClass:lstClass){
+			if(lsClass.equalsIgnoreCase("collapse")){
+				bFound=true;
+				break;
+			}
+		}
+
+		return bFound;
 	}
 
 	/**
@@ -756,7 +765,16 @@ public class RegularCheckoutPage extends BasePage {
 	 * @return - boolean
 	 */
 	public boolean checkExistingItemsProductSectionExpandedForOrderModification(){
-		return btnExistingItems.getAttribute("class").contains("collapse");
+		boolean bFound=false;
+		String[] lstClass=btnExistingItems.getAttribute("class").split(" ");
+		for(String lsClass:lstClass){
+			if(lsClass.equalsIgnoreCase("collapse")){
+				bFound=true;
+				break;
+			}
+		}
+
+		return bFound;
 	}
 
 	/**
@@ -2734,7 +2752,7 @@ public class RegularCheckoutPage extends BasePage {
 		float subTotalOrderSummary= (float) orderSummaryMap.get("subTotal");
 		float shippingPriceOrderSummary=(float) orderSummaryMap.get("nowPrice");
 		float taxOrderSummary=(float) orderSummaryMap.get("tax");
-		float totalPriceOrderSummary=(float) orderSummaryMap.get("totalPrice");
+		float totalPriceOrderSummary=(float) orderSummaryMap.get("newTotalPrice");
 		float promoteCodeValue=(float) orderSummaryMap.get("promoteCodeValue");
 		float giftCardValue=(float) orderSummaryMap.get("giftCardValue");
 
@@ -5062,7 +5080,7 @@ public class RegularCheckoutPage extends BasePage {
 				reporter.reportLogPass("The productShippingDate in shoppingCart Item is the same as the one in checkout Item");
 			}
 			else{
-				reporter.reportLogFail("The productShippingDate in shoppingCart Item is not the same as the one in checkout Item");
+				reporter.reportLogFail("The productShippingDate in shoppingCart Item is not the same as the one in checkout Item:'"+lsCheckoutText+"'");
 			}
 		}
 		else{
@@ -5568,11 +5586,8 @@ public class RegularCheckoutPage extends BasePage {
 	 * @return - Map<String,Object>
 	 */
 	public Map<String,Object> getOrderSummaryDescForOrderModification(){
+		String lsText;
 		Map<String,Object> map=new HashMap<>();
-
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderSummaryTitle);
-		String lsText=lblOrderSummaryTitle.getText();
-		map.put("itemCount",this.getIntegerFromString(lsText));
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderSummarySubTotal);
 		lsText=this.lblOrderSummarySubTotal.getText();
@@ -5716,20 +5731,11 @@ public class RegularCheckoutPage extends BasePage {
 
 	/**
 	 * To verify OrderSummary business Logic for order modification
-	 * @param - itemAmountShoppingCart - int - Shopping item amount in checkout cart
 	 * @param - subTotalShoppingCart - float - subTotal in checkout cart
 	 * @param - orderSummaryMap - Map<String,Object>
 	 * @param - Map<String,Object> - provincialTaxRate - note that if pass null, will not calculate tax for comparison
 	 */
-	public void verifyOrderSummaryBusinessLogicForOrderModification(int itemAmountShoppingCart,float subTotalShoppingCart,Map<String,Object> orderSummaryMap,Map<String,Object> provincialTaxRate){
-		int itemAmountOrderSummary= (int) orderSummaryMap.get("itemCount");
-		if(itemAmountOrderSummary==itemAmountShoppingCart){
-			reporter.reportLogPass("The item count in OrderSummary section is equal to the one for order list");
-		}
-		else{
-			reporter.reportLogFail("The item count:"+itemAmountOrderSummary+" in OrderSummary section is not equal to the one:"+itemAmountShoppingCart+" for order list");
-		}
-
+	public void verifyOrderSummaryBusinessLogicForOrderModification(float subTotalShoppingCart,Map<String,Object> orderSummaryMap,Map<String,Object> provincialTaxRate){
 		float nowPriceOrderSummary=(float) orderSummaryMap.get("nowPrice");
 
 		float subTotal=(float) orderSummaryMap.get("subTotal");
@@ -6124,17 +6130,17 @@ public class RegularCheckoutPage extends BasePage {
 	 * @param - lsOption - "mandatory"/"optional"/"all"
 	 * @return - Map<String,Object> - Item detail description
 	 */
-	public Map<String,Object> getCheckoutItemDescForOrderModification(WebElement productItem, String lsOption){
+	public Map<String,Object> getCheckoutItemDescForOrderModification(WebElement productItem, String lsOption,boolean bItemsBeingAdded){
 		Map<String,Object> map=null;
 		switch(lsOption){
 			case "mandatory":
-				map=this.getMandatoryCheckoutItemDescForOrderModification(productItem);
+				map=this.getMandatoryCheckoutItemDescForOrderModification(productItem,bItemsBeingAdded);
 				break;
 			case "optional":
 				map=this.getOptionalCheckoutItemDescForOrderModification(productItem);
 				break;
 			case "all":
-				map=this.getAllCheckoutItemDescForOrderModification(productItem);
+				map=this.getAllCheckoutItemDescForOrderModification(productItem,bItemsBeingAdded);
 				break;
 			default:
 				break;
@@ -6148,10 +6154,10 @@ public class RegularCheckoutPage extends BasePage {
 	 * @param - productItem - item in product list
 	 * @return - Map<String,Object> - Item detail description
 	 */
-	public Map<String,Object> getAllCheckoutItemDescForOrderModification(WebElement productItem){
+	public Map<String,Object> getAllCheckoutItemDescForOrderModification(WebElement productItem,boolean bItemsBeingAdded){
 		Map<String,Object> mapAll=new HashMap<>();
 
-		Map<String,Object> mapMandatory=this.getMandatoryCheckoutItemDescForOrderModification(productItem);
+		Map<String,Object> mapMandatory=this.getMandatoryCheckoutItemDescForOrderModification(productItem,bItemsBeingAdded);
 		for(Map.Entry<String,Object> entry:mapMandatory.entrySet()){
 			mapAll.put(entry.getKey(),entry.getValue());
 		}
@@ -6169,7 +6175,7 @@ public class RegularCheckoutPage extends BasePage {
 	 * @param - productItem - item in product list
 	 * @return - Map<String,Object> - Item detail description
 	 */
-	public Map<String,Object> getMandatoryCheckoutItemDescForOrderModification(WebElement productItem){
+	public Map<String,Object> getMandatoryCheckoutItemDescForOrderModification(WebElement productItem,boolean bItemsBeingAdded){
 		Map<String,Object> map=new HashMap<>();
 
 		if(this.checkProductBadgeExisting(productItem)){
@@ -6182,31 +6188,61 @@ public class RegularCheckoutPage extends BasePage {
 		WebElement item=productItem.findElement(byProductItemDesc);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 		String lsText=item.getText().trim();
-		if(lsText.contains("|")){
-			String[] lsSplit=lsText.split("\\|");
-			if(lsSplit.length==2){
-				if(lsSplit[1].contains("Size")){
-					map.put("productName",lsSplit[0].trim());
-					map.put("productStyle",null);
-					map.put("productSize",lsSplit[1].split(":")[1].trim());
+		if(bItemsBeingAdded){
+			if(lsText.contains("|")){
+				String[] lsSplit=lsText.split("\\|");
+				if(lsSplit.length==2){
+					if(lsSplit[1].contains("Size")){
+						map.put("productName",lsSplit[0].trim());
+						map.put("productStyle",null);
+						map.put("productSize",lsSplit[1].split(":")[1].trim());
+					}
+					else{
+						map.put("productName",lsSplit[0].trim());
+						map.put("productStyle",lsSplit[1].split(":")[1].trim());
+						map.put("productSize",null);
+					}
 				}
 				else{
 					map.put("productName",lsSplit[0].trim());
-					map.put("productStyle",lsSplit[1].split(":")[1].trim());
-					map.put("productSize",null);
+					map.put("productStyle",lsSplit[2].split(":")[1].trim());
+					map.put("productSize",lsSplit[1].split(":")[1].trim());
 				}
 			}
 			else{
-				map.put("productName",lsSplit[0].trim());
-				map.put("productStyle",lsSplit[2].split(":")[1].trim());
-				map.put("productSize",lsSplit[1].split(":")[1].trim());
+				map.put("productName",lsText.trim());
+				map.put("productStyle",null);
+				map.put("productSize",null);
 			}
 		}
 		else{
-			map.put("productName",lsText.trim());
-			map.put("productStyle",null);
-			map.put("productSize",null);
+			if(lsText.contains("|")){
+				String[] lsSplit=lsText.split("\\|");
+				if(lsSplit.length==2){
+					if(lsSplit[1].contains("Size")){
+						map.put("productName",lsSplit[0].trim());
+						map.put("productStyle",null);
+						map.put("productSize",lsSplit[1].split(":")[1].trim());
+					}
+					else{
+						map.put("productName",lsSplit[0].trim());
+						map.put("productStyle",lsSplit[1].trim());
+						map.put("productSize",null);
+					}
+				}
+				else{
+					map.put("productName",lsSplit[0].trim());
+					map.put("productStyle",lsSplit[1].trim());
+					map.put("productSize",lsSplit[2].split(":")[1].trim());
+				}
+			}
+			else{
+				map.put("productName",lsText.trim());
+				map.put("productStyle",null);
+				map.put("productSize",null);
+			}
 		}
+
 
 		if(this.checkProductNumberExisting(productItem)){
 			item=productItem.findElement(byProductNumber);
@@ -6287,7 +6323,7 @@ public class RegularCheckoutPage extends BasePage {
 		}
 
 		for(WebElement cartItem:lstCheckoutOrderList){
-			mapList.add(this.getCheckoutItemDescForOrderModification(cartItem,lsOption));
+			mapList.add(this.getCheckoutItemDescForOrderModification(cartItem,lsOption,bItemsBeingAdded));
 		}
 
 		return mapList;
@@ -6311,8 +6347,266 @@ public class RegularCheckoutPage extends BasePage {
 			reporter.reportLogFail("The existing Item Product Section is Expanded");
 		}
 
+		reporter.reportLog("btnExistingItems class:"+btnExistingItems.getAttribute("class"));
+
 		this.clickElement(btnExistingItems);
 		this.applyStaticWait(2*this.getStaticWaitForApplication());
 	}
+
+	/**
+	 * To verify Order List Linkage Between Order Modification Page And Checkout Page
+	 * @param - List<Map<String,Object>> - orderListMapForOrderModification
+	 * @param - List<Map<String,Object>> - orderListMapForCheckout
+	 */
+	public void verifyOrderListLinkageBetweenOrderModificationPageAndCheckoutPage(List<Map<String,Object>> orderListMapForOrderModification,List<Map<String,Object>> orderListMapForCheckout){
+		int findIndex;
+		ShoppingCartPage shoppingCartPage=new ShoppingCartPage(this.getDriver());
+		Map<String,Object> checkoutItem;
+		for(Map<String,Object> orderItem:orderListMapForOrderModification){
+			String lsText=(String)orderItem.get("productName");
+			reporter.reportLog("Verify product:'"+lsText+"'");
+			findIndex=shoppingCartPage.findGivenProductIndexInProductList(orderItem,orderListMapForCheckout);
+			if(findIndex!=-1){
+				checkoutItem=orderListMapForCheckout.get(findIndex);
+				this.verifyOrderItemLinkageBetweenOrderModificationPageAndCheckoutPage(orderItem,checkoutItem);
+			}
+			else{
+				reporter.reportLogFail("Unable to find '"+lsText+"' in Checkout Page");
+			}
+		}
+	}
+
+	/**
+	 * To verify Order Item Linkage Between Order Modification Page And Checkout Page
+	 * @param - Map<String,Object> - orderItem
+	 * @param - Map<String,Object> - checkoutItem
+	 */
+	public void verifyOrderItemLinkageBetweenOrderModificationPageAndCheckoutPage(Map<String,Object> orderItem,Map<String,Object> checkoutItem){
+		String lsOrderText,lsCheckoutText;
+
+		lsOrderText=(String)orderItem.get("productName");
+		lsCheckoutText=(String)checkoutItem.get("productName");
+		if(lsOrderText.equalsIgnoreCase(lsCheckoutText)){
+			reporter.reportLogPass("The productName in Order Item is the same as the one in checkout Item");
+		}
+		else{
+			reporter.reportLogFail("The productName:"+lsOrderText+" in Order Item is not the same as the one:"+lsCheckoutText+" in checkout Item");
+		}
+
+		lsOrderText=(String)orderItem.get("productStyle");
+		lsCheckoutText=(String)checkoutItem.get("productStyle");
+		if(lsOrderText==null){
+			if(lsCheckoutText==null){
+				reporter.reportLogPass("The productStyle in Order Item is the same as the one in checkout Item");
+			}
+			else{
+				reporter.reportLogFail("The productStyle in Order Item is not the same as the one in checkout Item");
+			}
+		}
+		else{
+			if(lsOrderText.equalsIgnoreCase(lsCheckoutText)){
+				reporter.reportLogPass("The productStyle in Order Item is the same as the one in checkout Item");
+			}
+			else{
+				reporter.reportLogFail("The productStyle:"+lsOrderText+" in OrderConfirmation Item is not the same as the one:"+lsCheckoutText+" in checkout Item");
+			}
+		}
+
+		lsOrderText=(String)orderItem.get("productSize");
+		lsCheckoutText=(String)checkoutItem.get("productSize");
+		if(lsOrderText==null){
+			if(lsCheckoutText==null){
+				reporter.reportLogPass("The productSize in Order Item is the same as the one in checkout Item");
+			}
+			else{
+				reporter.reportLogFail("The productSize in Order Item is not the same as the one in checkout Item");
+			}
+		}
+		else{
+			if(lsOrderText.equalsIgnoreCase(lsCheckoutText)){
+				reporter.reportLogPass("The productSize in Order Item is the same as the one in checkout Item");
+			}
+			else{
+				reporter.reportLogFail("The productSize:"+lsOrderText+" in Order Item is not the same as the one:"+lsCheckoutText+" in checkout Item");
+			}
+		}
+
+		lsOrderText=(String)orderItem.get("productNumber");
+		lsCheckoutText=(String)checkoutItem.get("productNumber");
+		if(lsOrderText==null){
+			if(lsCheckoutText==null){
+				reporter.reportLogPass("The productNumber in Order Item is the same as the one in checkout Item");
+			}
+			else{
+				reporter.reportLogFail("The productNumber in Order Item is not the same as the one in checkout Item");
+			}
+		}
+		else{
+			if(lsOrderText.equalsIgnoreCase(lsCheckoutText)){
+				reporter.reportLogPass("The productNumber in Order item is the same as the one in checkoutItem");
+			}
+			else{
+				reporter.reportLogFail("The productNumber:"+lsOrderText+" in OrderConfirmation Item is not the same as the one:"+lsCheckoutText+" in checkout Item");
+			}
+		}
+
+		float orderNowPrice=(float)orderItem.get("productNowPrice");
+		float checkoutNowPrice=(float)checkoutItem.get("productNowPrice");
+		if(Math.abs(orderNowPrice-checkoutNowPrice)<0.1f){
+			reporter.reportLogPass("The productNowPrice in Order Item is the same as the one in checkout Item");
+		}
+		else{
+			reporter.reportLogFail("The productNowPrice:"+orderNowPrice+" in Order Item is not the same as the one:"+checkoutNowPrice+" in checkout Item");
+		}
+
+		int orderQuantity=(int)orderItem.get("productQuantity");
+		int checkoutQuantity=(int)checkoutItem.get("productQuantity");
+		if(orderQuantity==checkoutQuantity){
+			reporter.reportLogPass("The productQuantity in Order Item is the same as the one in checkout Item");
+		}
+		else{
+			reporter.reportLogFail("The productQuantity:"+orderQuantity+" in Order Item is not the same as the one:"+checkoutQuantity+" in checkout Item");
+		}
+	}
+
+	/**
+	 * To verify Order summary Linkage Between Order Modification Page And Checkout Page
+	 * @param - Map<String,Object> - orderItem
+	 * @param - Map<String,Object> - checkoutItem
+	 */
+	public void verifyOrderSummaryLinkageBetweenOrderModificationPageAndCheckoutPage(Map<String,Object> orderItem,Map<String,Object> checkoutItem){
+		float orderValue,checkoutValue;
+		String lsOrderText,lsCheckoutText;
+
+		orderValue= (float) orderItem.get("subTotal");
+		checkoutValue= (float) checkoutItem.get("subTotal");
+		if(Math.abs(orderValue-checkoutValue)<0.1f){
+			reporter.reportLogPass("The subtotal in Order Item is the same as the one in checkout Item");
+		}
+		else{
+			reporter.reportLogFail("The subtotal:"+orderValue+" in Order Item is not the same as the one:"+checkoutValue+" in checkout Item");
+		}
+
+		orderValue= (float) orderItem.get("nowPrice");
+		checkoutValue= (float) checkoutItem.get("nowPrice");
+		if(Math.abs(orderValue-checkoutValue)<0.1f){
+			reporter.reportLogPass("The nowPrice in Order Item is the same as the one in checkout Item");
+		}
+		else{
+			reporter.reportLogFail("The nowPrice:"+orderValue+" in Order Item is not the same as the one:"+checkoutValue+" in checkout Item");
+		}
+
+		lsOrderText= (String) orderItem.get("province");
+		lsCheckoutText= (String) checkoutItem.get("province");
+		if(lsOrderText.equalsIgnoreCase(lsCheckoutText)){
+			reporter.reportLogPass("The province code in Order Item is the same as the one in checkout Item");
+		}
+		else{
+			reporter.reportLogFail("The provice code:"+lsOrderText+" in Order Item is not the same as the one:"+lsCheckoutText+" in checkout Item");
+		}
+
+		orderValue= (float) orderItem.get("tax");
+		checkoutValue= (float) checkoutItem.get("tax");
+		if(Math.abs(orderValue-checkoutValue)<0.1f){
+			reporter.reportLogPass("The tax in Order Item is the same as the one in checkout Item");
+		}
+		else{
+			reporter.reportLogFail("The tax:"+orderValue+" in Order Item is not the same as the one:"+checkoutValue+" in checkout Item");
+		}
+
+		orderValue= (float) orderItem.get("newTotalPrice");
+		checkoutValue= (float) checkoutItem.get("newTotalPrice");
+		if(Math.abs(orderValue-checkoutValue)<0.1f){
+			reporter.reportLogPass("The newTotalPrice in Order Item is the same as the one in checkout Item");
+		}
+		else{
+			reporter.reportLogFail("The newTotalPrice:"+orderValue+" in Order Item is not the same as the one:"+checkoutValue+" in checkout Item");
+		}
+
+		orderValue= (float) orderItem.get("changeToOrderTotal");
+		checkoutValue= (float) checkoutItem.get("changeToOrderTotal");
+		if(Math.abs(orderValue-checkoutValue)<0.1f){
+			reporter.reportLogPass("The changeToOrderTotal in Order Item is the same as the one in checkout Item");
+		}
+		else{
+			reporter.reportLogFail("The changeToOrderTotal:"+orderValue+" in Order Item is not the same as the one:"+checkoutValue+" in checkout Item");
+		}
+
+		orderValue= (float) orderItem.get("promoteCodeValue");
+		checkoutValue= (float) checkoutItem.get("promoteCodeValue");
+		if(Math.abs(orderValue-checkoutValue)<0.1f){
+			reporter.reportLogPass("The promoteCodeValue in Order Item is the same as the one in checkout Item");
+		}
+		else{
+			reporter.reportLogFail("The promoteCodeValue:"+orderValue+" in Order Item is not the same as the one:"+checkoutValue+" in checkout Item");
+		}
+	}
+
+	/**
+	 * To verify easyPayment Linkage Between Order Modification Page And Checkout Page
+	 * @param - Map<String,Object> - orderItem
+	 * @param - Map<String,Object> - checkoutItem
+	 */
+	public void verifyEasyPaymentLinkageBetweenOrderModificationPageAndCheckoutPage(Map<String,Object> orderItem,Map<String,Object> checkoutItem){
+		float orderValue,checkoutValue;
+		int lsOrderText,lsCheckoutText;
+
+		lsOrderText= (int) orderItem.get("installmentsNumber");
+		lsCheckoutText= (int) checkoutItem.get("installmentsNumber");
+		if(lsOrderText==lsCheckoutText){
+			reporter.reportLogPass("The installmentsNumber in Order Item is the same as the one in checkout Item");
+		}
+		else{
+			reporter.reportLogFail("The installmentsNumber:"+lsOrderText+" in Order Item is not the same as the one:"+lsCheckoutText+" in checkout Item");
+		}
+
+		orderValue= (float) orderItem.get("todayPayment");
+		checkoutValue= (float) checkoutItem.get("todayPayment");
+		if(Math.abs(orderValue-checkoutValue)<0.1f){
+			reporter.reportLogPass("The todayPayment in Order Item is the same as the one in checkout Item");
+		}
+		else{
+			reporter.reportLogFail("The todayPayment:"+orderValue+" in Order Item is not the same as the one:"+checkoutValue+" in checkout Item");
+		}
+
+		orderValue= (float) orderItem.get("leftPayment");
+		checkoutValue= (float) checkoutItem.get("leftPayment");
+		if(Math.abs(orderValue-checkoutValue)<0.1f){
+			reporter.reportLogPass("The leftPayment in Order Item is the same as the one in checkout Item");
+		}
+		else{
+			reporter.reportLogFail("The leftPayment:"+orderValue+" in Order Item is not the same as the one:"+checkoutValue+" in checkout Item");
+		}
+
+		orderValue= (float) orderItem.get("futureMonthlyPayment");
+		checkoutValue= (float) checkoutItem.get("futureMonthlyPayment");
+		if(Math.abs(orderValue-checkoutValue)<0.1f){
+			reporter.reportLogPass("The futureMonthlyPayment in Order Item is the same as the one in checkout Item");
+		}
+		else{
+			reporter.reportLogFail("The futureMonthlyPayment:"+orderValue+" in Order Item is not the same as the one:"+checkoutValue+" in checkout Item");
+		}
+	}
+
+	/**
+	 * To get All Order List Map With NewlyAdded And Existing Items
+	 * @param - List<Map<String,Object>> - productListMapForItemsBeingAdded
+	 * @param - List<Map<String,Object>> - productListMapForExistingItems
+	 * @return - List<Map<String,Object>>
+	 */
+	public List<Map<String,Object>> getAllOrderListMapWithNewlyAddedAndExistingItems(List<Map<String,Object>> productListMapForItemsBeingAdded,List<Map<String,Object>> productListMapForExistingItems){
+		List<Map<String,Object>> allProductListMap=new ArrayList<>();
+		for(Map<String,Object> productListMap:productListMapForItemsBeingAdded){
+			allProductListMap.add(productListMap);
+		}
+
+		for(Map<String,Object> productListMap:productListMapForExistingItems){
+			allProductListMap.add(productListMap);
+		}
+
+		return allProductListMap;
+	}
+
+
 
 }

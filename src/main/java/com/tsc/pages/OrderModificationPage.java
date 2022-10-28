@@ -31,10 +31,10 @@ public class OrderModificationPage extends BasePage {
 	@FindBy(xpath = "//shopping-cart//div[contains(@class,'orderModCartBox')]//strong[normalize-space(text())='ORDERED:']/parent::span/following-sibling::span")
 	public WebElement lblModifyOrderOrderedDate;
 
-	@FindBy(xpath = "//shopping-cart//div[contains(@class,'orderModCartBox')]//strong[normalize-space(text())='ORDERED:']")
+	@FindBy(xpath = "//shopping-cart//div[contains(@class,'orderModCartBox')]//strong[normalize-space(text())='ORDER NUMBER:']")
 	public WebElement lblModifyOrderOrderNumberTitle;
 
-	@FindBy(xpath = "//shopping-cart//div[contains(@class,'orderModCartBox')]//strong[normalize-space(text())='ORDER NUMBER:']")
+	@FindBy(xpath = "//shopping-cart//div[contains(@class,'orderModCartBox')]//strong[normalize-space(text())='ORDER NUMBER:']/parent::span/following-sibling::span")
 	public WebElement lblModifyOrderOrderNumber;
 
 	@FindBy(xpath = "//shopping-cart//div[contains(@class,'orderModCartBox')]//strong[normalize-space(text())='ORDER Method:']")
@@ -317,6 +317,13 @@ public class OrderModificationPage extends BasePage {
 	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__footer']")
 	public WebElement lblAddToBagPopupWindowFooterInfo;
 
+	/**
+	 * To get order number
+	 * @return
+	 */
+	public String getOrderNumber(){
+		return this.getElementInnerText(lblModifyOrderOrderNumber);
+	}
 
 	/**
 	 * To check ChangeModOption Expanded status
@@ -331,8 +338,9 @@ public class OrderModificationPage extends BasePage {
 	 * To add product items
 	 * @param - String - lsProductName
 	 * @param - boolean - bReviewChanges
+	 * @return - Map<String,Object> - the data map for add to bag window
 	 */
-	public void addProductItems(String lsProductName,boolean bReviewChanges){
+	public Map<String,Object> addProductItems(String lsProductName,boolean bReviewChanges){
 		if(lblModifyOrderChangeModOptionsAddItemsHeadingTitle.getAttribute("aria-expanded").equalsIgnoreCase("false")){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblModifyOrderChangeModOptionsAddItemsHeadingTitle);
 			lblModifyOrderChangeModOptionsAddItemsHeadingTitle.click();
@@ -349,6 +357,8 @@ public class OrderModificationPage extends BasePage {
 		this.clickElement(pdp.btnAddToBag);
 		this.waitForCondition(Driver->{return this.lblAddToBagPopupWindowTitle.isDisplayed();},60000);
 
+		Map<String,Object> addToBagMap=this.getAddToBagDesc();
+
 		if(bReviewChanges){
 			this.goToOrderModificationPageForReviewChangesFromAddToBagWindow();
 			String lsText=this.getElementInnerText(btnModifyOrderChangeModOptionsAddItemsButton);
@@ -362,6 +372,8 @@ public class OrderModificationPage extends BasePage {
 		else{
 			this.goToCheckoutPageFromAddToBagWindow();
 		}
+
+		return addToBagMap;
 	}
 
 	/**
@@ -487,17 +499,17 @@ public class OrderModificationPage extends BasePage {
 				if(lsSplit[1].contains("Size")){
 					map.put("productName",lsSplit[0].trim());
 					map.put("productStyle",null);
-					map.put("productSize",lsSplit[1].trim().split(":")[1]);
+					map.put("productSize",lsSplit[1].trim().split(":")[1].trim());
 				}
 				else{
 					map.put("productName",lsSplit[0].trim());
-					map.put("productStyle",lsSplit[1].trim().split(":")[1]);
+					map.put("productStyle",lsSplit[1].trim().split(":")[1].trim());
 					map.put("productSize",null);
 				}
 			}
 			else{
 				map.put("productName",lsSplit[0].trim());
-				map.put("productStyle",lsSplit[2].trim().split(":")[1]);
+				map.put("productStyle",lsSplit[2].trim().split(":")[1].trim());
 				map.put("productSize",lsSplit[1].split(":")[1].trim());
 			}
 		}
@@ -616,6 +628,7 @@ public class OrderModificationPage extends BasePage {
 	public Map<String,Object> getOrderSummaryDesc(){
 		Map<String,Object> map=new HashMap<>();
 
+		this.waitForCondition(Driver->{return lblOrderSummaryTitle.isDisplayed();},60000);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderSummaryTitle);
 		String lsText=lblOrderSummaryTitle.getText();
 		map.put("itemCount",this.getIntegerFromString(lsText));
@@ -1029,8 +1042,8 @@ public class OrderModificationPage extends BasePage {
 			reporter.reportLogFailWithScreenshot("The Other Changes Heading Title is not displaying correctly");
 		}
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblModifyOrderChangeModOptionsOtherChanges);
-		if(!this.checkChangeModOptionExpanded(lblModifyOrderChangeModOptionsOtherChanges)){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblModifyOrderChangeModOptionsOtherChangesHeadingTitle);
+		if(!this.checkChangeModOptionExpanded(lblModifyOrderChangeModOptionsOtherChangesHeadingTitle)){
 			reporter.reportLogPass("The Other Changes section is not expanded");
 		}
 		else{
@@ -1559,6 +1572,10 @@ public class OrderModificationPage extends BasePage {
 		else{
 			map.put("productBadge",false);
 		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAddToBagPopupWindowOrderNumber);
+		lsText=this.lblAddToBagPopupWindowOrderNumber.getText();
+		map.put("productOrderNumber",lsText.split("-")[1].trim());
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddToBagPopupWindowDetailsProductName);
 		lsText=lblAddToBagPopupWindowDetailsProductName.getText();

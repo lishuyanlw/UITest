@@ -331,15 +331,17 @@ public class OrderConfirmationPage extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnGoToOrderDetails);
 		this.btnGoToOrderDetails.click();
 
-		String lsBaseURL=this.getBaseURL();
-		String lsExpectedURL=lsBaseURL+lsURLFromYamlFile+lsOrderNumber;
-		String lsCurrentURL=this.URL();
-		this.waitForCondition(Driver->{return lsCurrentURL.equalsIgnoreCase(lsExpectedURL);},20000);
-		if(lsCurrentURL.equalsIgnoreCase(lsExpectedURL)){
-			reporter.reportLogPass("Navigate to order details page successfully and url is: "+lsExpectedURL);
-		}
-		else{
-			reporter.reportLogFail("Fail to navigate to order details page with actual url: "+lsCurrentURL+" but expected url is: "+lsExpectedURL);
+		if(lsURLFromYamlFile!=null&&lsOrderNumber!=null){
+			String lsBaseURL=this.getBaseURL();
+			String lsExpectedURL=lsBaseURL+lsURLFromYamlFile+lsOrderNumber;
+			String lsCurrentURL=this.URL();
+			this.waitForCondition(Driver->{return lsCurrentURL.equalsIgnoreCase(lsExpectedURL);},20000);
+			if(lsCurrentURL.equalsIgnoreCase(lsExpectedURL)){
+				reporter.reportLogPass("Navigate to order details page successfully and url is: "+lsExpectedURL);
+			}
+			else{
+				reporter.reportLogFail("Fail to navigate to order details page with actual url: "+lsCurrentURL+" but expected url is: "+lsExpectedURL);
+			}
 		}
 
 		MyAccount myAccount=new MyAccount(this.getDriver());
@@ -350,7 +352,13 @@ public class OrderConfirmationPage extends BasePage {
 			for(int refreshCounter=0;refreshCounter<100;refreshCounter++){
 				this.getDriver().navigate().refresh();
 				this.waitForPageToLoad();
-				boolean value = this.waitForCondition(Driver->{return myAccount.lblOrderDetailsSectionTitle.isDisplayed();},15000);
+				boolean value=false;
+				try{
+					value = this.waitForCondition(Driver->{return myAccount.lblOrderDetailsSectionTitle.isDisplayed();},15000);
+				}
+				catch (Exception ex){
+
+				}
 				if(value)
 					break;
 				else
@@ -1789,5 +1797,86 @@ public class OrderConfirmationPage extends BasePage {
 
 		reporter.reportLog("Verify Common Questions Contents");
 		this.verifyCommonQuestionsContents();
+	}
+
+	/**
+	 * To verify OrderSummary Linkage Between OrderConfirmation Page And Checkout Page For Order Modification
+	 * @param - Map<String,Object> - OrderConfirmation
+	 * @param - Map<String,Object> - checkoutItem
+	 */
+	public void verifyOrderSummaryLinkageBetweenOrderConfirmationPageAndCheckoutPageForOrderModification(Map<String,Object> OrderConfirmationItem,Map<String,Object> checkoutItem) {
+		float OrderConfirmationValue, checkoutValue;
+		String lsOrderConfirmationText,lsCheckoutText;
+
+		OrderConfirmationValue = (float) OrderConfirmationItem.get("subTotal");
+		checkoutValue = (float) checkoutItem.get("subTotal");
+		if (Math.abs(OrderConfirmationValue-checkoutValue)<0.1f) {
+			reporter.reportLogPass("The subTotal in OrderConfirmation Item is the same as the one in checkout Item");
+		} else {
+			reporter.reportLogFail("The subTotal:"+OrderConfirmationValue+" in OrderConfirmation Item is not the same as the one:"+checkoutValue+" in checkout Item");
+		}
+
+		OrderConfirmationValue = (float) OrderConfirmationItem.get("nowPrice");
+		checkoutValue = (float) checkoutItem.get("nowPrice");
+		if (Math.abs(OrderConfirmationValue-checkoutValue)<0.1f) {
+			reporter.reportLogPass("The nowPrice in OrderConfirmation Item is the same as the one in checkout Item");
+		} else {
+			reporter.reportLogFail("The nowPrice:"+OrderConfirmationValue+" in OrderConfirmation Item is not the same as the one:"+checkoutValue+" in checkout Item");
+		}
+
+		lsOrderConfirmationText = (String) OrderConfirmationItem.get("province");
+		lsCheckoutText = (String) checkoutItem.get("province");
+		if (lsOrderConfirmationText.equalsIgnoreCase(lsCheckoutText)) {
+			reporter.reportLogPass("The province in OrderConfirmation Item is the same as the one in checkout Item");
+		} else {
+			reporter.reportLogFail("The province:"+lsOrderConfirmationText+" in OrderConfirmation Item is not the same as the one:"+lsCheckoutText+" in checkout Item");
+		}
+
+		OrderConfirmationValue = (float) OrderConfirmationItem.get("tax");
+		checkoutValue = (float) checkoutItem.get("tax");
+		if (Math.abs(OrderConfirmationValue-checkoutValue)<0.1f) {
+			reporter.reportLogPass("The tax in OrderConfirmation Item is the same as the one in checkout Item");
+		} else {
+			reporter.reportLogFail("The tax:"+OrderConfirmationValue+" in OrderConfirmation Item is not the same as the one:"+checkoutValue+" in checkout Item");
+		}
+
+		OrderConfirmationValue = (float) OrderConfirmationItem.get("promoteCodeValue");
+		checkoutValue = (float) checkoutItem.get("promoteCodeValue");
+		if (Math.abs(Math.abs(OrderConfirmationValue)-Math.abs(checkoutValue))<0.1f) {
+			reporter.reportLogPass("The promoteCode Value in OrderConfirmation Item is the same as the one in checkout Item");
+		} else {
+			reporter.reportLogFail("The promoteCode Value:"+OrderConfirmationValue+" in OrderConfirmation Item is not the same as the one:"+checkoutValue+" in checkout Item");
+		}
+
+		OrderConfirmationValue = (float) OrderConfirmationItem.get("totalPrice");
+		checkoutValue = (float) checkoutItem.get("newTotalPrice");
+		if (Math.abs(OrderConfirmationValue-checkoutValue)<0.1f) {
+			reporter.reportLogPass("The totalPrice in OrderConfirmation Item is the same as the one in checkout Item");
+		} else {
+			reporter.reportLogFailWithScreenshot("The totalPrice:"+OrderConfirmationValue+" in OrderConfirmation Item is not the same as the one:"+checkoutValue+" in checkout Item");
+		}
+	}
+
+	/**
+	 * To verify Order List Linkage Between Order Confirmation Page And Checkout Page for order modification
+	 * @param - List<Map<String,Object>> - orderListMapForOrderConfirmation
+	 * @param - List<Map<String,Object>> - orderListMapForCheckout
+	 */
+	public void verifyOrderListLinkageBetweenOrderConfirmationPageAndCheckoutPageForOrderModification(List<Map<String,Object>> orderListMapForOrderConfirmation,List<Map<String,Object>> orderListMapForCheckout){
+		int findIndex;
+		ShoppingCartPage shoppingCartPage=new ShoppingCartPage(this.getDriver());
+		Map<String,Object> checkoutItem;
+		for(Map<String,Object> orderItem:orderListMapForOrderConfirmation){
+			String lsText=(String)orderItem.get("productName");
+			reporter.reportLog("Verify product:'"+lsText+"'");
+			findIndex=shoppingCartPage.findGivenProductIndexInProductList(orderItem,orderListMapForCheckout);
+			if(findIndex!=-1){
+				checkoutItem=orderListMapForCheckout.get(findIndex);
+				this.verifyProductListLinkageBetweenOrderConfirmationPageAndCheckoutPage(orderItem,checkoutItem);
+			}
+			else{
+				reporter.reportLogFail("Unable to find '"+lsText+"' in Checkout Page");
+			}
+		}
 	}
 }
