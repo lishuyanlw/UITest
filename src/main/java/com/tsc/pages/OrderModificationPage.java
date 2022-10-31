@@ -630,15 +630,15 @@ public class OrderModificationPage extends BasePage {
 
 		this.waitForCondition(Driver->{return lblOrderSummaryTitle.isDisplayed();},60000);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderSummaryTitle);
-		String lsText=lblOrderSummaryTitle.getText();
+		String lsText=this.getElementInnerText(lblOrderSummaryTitle);
 		map.put("itemCount",this.getIntegerFromString(lsText));
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderSummarySubTotal);
-		lsText=this.lblOrderSummarySubTotal.getText();
+		lsText=this.getElementInnerText(this.lblOrderSummarySubTotal);
 		map.put("subTotal",this.getFloatFromString(lsText,true));
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderSummaryShippingWasPrice);
-		lsText=this.lblOrderSummaryShippingWasPrice.getText();
+		lsText=this.getElementInnerText(this.lblOrderSummaryShippingWasPrice);
 		if(lsText.isEmpty()){
 			map.put("wasPrice",0.0f);
 		}
@@ -647,7 +647,7 @@ public class OrderModificationPage extends BasePage {
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderSummaryShippingNowPrice);
-		lsText=this.lblOrderSummaryShippingNowPrice.getText();
+		lsText=this.getElementInnerText(this.lblOrderSummaryShippingNowPrice);
 		if(lsText.toLowerCase().contains("free")){
 			map.put("nowPrice",0.0f);
 		}
@@ -658,19 +658,19 @@ public class OrderModificationPage extends BasePage {
 		map.put("province",getTaxProvinceCode());
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderSummaryTax);
-		lsText=this.lblOrderSummaryTax.getText();
+		lsText=this.getElementInnerText(this.lblOrderSummaryTax);
 		map.put("tax",this.getFloatFromString(lsText,true));
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderSummaryNewTotalPrice);
-		lsText=this.lblOrderSummaryNewTotalPrice.getText();
+		lsText=this.getElementInnerText(this.lblOrderSummaryNewTotalPrice);
 		map.put("newTotalPrice",this.getFloatFromString(lsText,true));
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderSummaryOriginalOrderTotal);
-		lsText=this.lblOrderSummaryOriginalOrderTotal.getText();
+		lsText=this.getElementInnerText(this.lblOrderSummaryOriginalOrderTotal);
 		map.put("originalOrderTotal",this.getFloatFromString(lsText,true));
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderSummaryChangeToOrderTotal);
-		lsText=this.lblOrderSummaryChangeToOrderTotal.getText();
+		lsText=this.getElementInnerText(this.lblOrderSummaryChangeToOrderTotal);
 		if(lsText.contains("-")){
 			map.put("changeToOrderTotal",-1.0f*this.getFloatFromString(lsText));
 		}
@@ -1033,8 +1033,6 @@ public class OrderModificationPage extends BasePage {
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblModifyOrderChangeModOptionsOtherChangesHeadingTitle);
-		lblModifyOrderChangeModOptionsOtherChangesHeadingTitle.click();
-		this.waitForCondition(Driver->{return this.checkChangeModOptionExpanded(lblModifyOrderChangeModOptionsOtherChangesHeadingTitle);},10000);
 		lsText = lblModifyOrderChangeModOptionsOtherChangesHeadingTitle.getText();
 		if (!lsText.isEmpty()) {
 			reporter.reportLogPass("The Other Changes Heading Title is displaying correctly");
@@ -1049,6 +1047,10 @@ public class OrderModificationPage extends BasePage {
 		else{
 			reporter.reportLogFail("The Other Changes section is expanded");
 		}
+
+		lblModifyOrderChangeModOptionsOtherChangesHeadingTitle.click();
+		this.waitForCondition(Driver->{return this.checkChangeModOptionExpanded(lblModifyOrderChangeModOptionsOtherChangesHeadingTitle);},10000);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblModifyOrderChangeModOptionsOtherChanges);
 		lsText = lblModifyOrderChangeModOptionsOtherChanges.getText();
 		if (!lsText.isEmpty()) {
 			reporter.reportLogPass("The Other Changes is displaying correctly");
