@@ -3388,6 +3388,8 @@ public class ShoppingCartPage extends BasePage {
 				}
 				if(flag){
 					this.getReusableActionsInstance().switchToMainWindow(parentWindowHandle);
+					//Applying static wait as page takes time to load and all elements are already available in dom, hence applying waitForCondition will not help
+					this.applyStaticWait(3000);
 					break;
 				}
 			}
