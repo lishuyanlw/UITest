@@ -62,9 +62,16 @@ public class CP_TC16_VerifyOrderModification_Checkout extends BaseTest {
         String lsPromoteCode=TestDataHandler.constantData.getCheckOut().getLst_PromoteCode().get(0);
         getOrderModificationThreadLocal().addPromoteCode(lsPromoteCode);
 
-        Map<String,Object> addToBagPopUpData = getProductDetailPageThreadLocal().addItemsToModifiedOrderForUser(newItemToBeAddedKeyword);
+        List<String> lstKeyword = TestDataHandler.constantData.getCheckOut().getLst_SearchingKeywordForPlaceOrder();
+        Map<String,Object> outputDataCriteria= new HashMap<String,Object>();
+        outputDataCriteria.put("style", "1");
+        outputDataCriteria.put("size", "1");
+        String lsProductName=getProductDetailPageThreadLocal().getProductWithConditionsForVideoAndStyleAndSizeWithoutCheckingSoldOutCriteria(lstKeyword,outputDataCriteria);
+        Map<String,Object> addToBagPopUpData=getOrderModificationThreadLocal().addProductItems(lsProductName,true);
+
+//        Map<String,Object> addToBagPopUpData = getProductDetailPageThreadLocal().addItemsToModifiedOrderForUser(newItemToBeAddedKeyword,getOrderModificationThreadLocal());
         String lsOrderNumberOnAddToBagWindow= (String) addToBagPopUpData.get("productOrderNumber");
-        if(lsOrderNumberForOrderModification.equalsIgnoreCase(lsOrderNumberOnAddToBagWindow)){
+        if(lsOrderNumberForOrderModification.substring(0,7).equalsIgnoreCase(lsOrderNumberOnAddToBagWindow.substring(0,7))){
             reporter.reportLogPass("The order number:"+lsOrderNumberForOrderModification+" for order modification is the same as the one:"+lsOrderNumberOnAddToBagWindow+" for add to bag popup window.");
         }
         else{

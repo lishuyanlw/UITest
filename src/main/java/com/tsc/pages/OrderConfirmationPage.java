@@ -506,6 +506,65 @@ public class OrderConfirmationPage extends BasePage {
 	}
 
 	/**
+	 * To get Order item Description for order Modification
+	 * @param - WebElement - orderItem in lstOrderList
+	 * @return - Map<String,Object>
+	 */
+	public Map<String,Object> getOrderItemDescForOrderModification(WebElement orderItem){
+		Map<String,Object> map=new HashMap<>();
+		WebElement item,subItem,styleItem,sizeItem;
+		String lsText;
+
+		if(this.checkProductBadgeExisting(orderItem)){
+			map.put("productBadge",true);
+		}
+		else{
+			map.put("productBadge",false);
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(orderItem);
+		item = orderItem.findElement(byProductDescriptionLink);
+		lsText = this.getElementInnerText(item);
+		map.put("productDescription", lsText);
+
+		subItem=item.findElement(By.xpath("./div[1]"));
+		map.put("productName",subItem.getText().trim());
+
+		subItem=item.findElement(By.xpath("./div[2]"));
+		if(this.checkChildElementExistingByAttribute(subItem,"class","spn-style")){
+			styleItem=subItem.findElement(By.xpath("./span[@class='spn-style']"));
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(styleItem);
+			map.put("productStyle",styleItem.getText().trim());
+		}
+		else{
+			map.put("productStyle",null);
+		}
+
+		if(this.checkChildElementExistingByAttribute(subItem,"class","spn-size")){
+			sizeItem=subItem.findElement(By.xpath("./span[@class='spn-size']"));
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(sizeItem);
+			map.put("productSize",sizeItem.getText().trim().split(":")[1].trim());
+		}
+		else{
+			map.put("productSize",null);
+		}
+
+		item = orderItem.findElement(byProductNowPrice);
+		lsText = this.getElementInnerText(item);
+		map.put("productNowPrice", this.getFloatFromString(lsText,true));
+
+		item = orderItem.findElement(byProductNumber);
+		lsText = this.getElementInnerText(item).replace("-", "").trim();
+		map.put("productNumber", lsText);
+
+		item = orderItem.findElement(byProductQuantity);
+		lsText = this.getElementInnerText(item);
+		map.put("productQuantity", this.getIntegerFromString(lsText));
+
+		return map;
+	}
+
+	/**
 	 * To get Order List Description
 	 * @return - List<Map<String,Object>>
 	 */
@@ -513,6 +572,20 @@ public class OrderConfirmationPage extends BasePage {
 		List<Map<String,Object>> mapList= new ArrayList<>();
 		for(WebElement orderItem:lstOrderList) {
 			mapList.add(getOrderItemDesc(orderItem));
+
+		}
+		return mapList;
+	}
+
+	/**
+	 * To get Order List Description for order Modification
+	 * @return - List<Map<String,Object>>
+	 */
+	public List<Map<String,Object>> getOrderListDescForOrderModification(){
+		this.waitForCondition(Driver->{return lstOrderList.size()>0;},120000);
+		List<Map<String,Object>> mapList= new ArrayList<>();
+		for(WebElement orderItem:lstOrderList) {
+			mapList.add(getOrderItemDescForOrderModification(orderItem));
 
 		}
 		return mapList;
@@ -1982,12 +2055,15 @@ public class OrderConfirmationPage extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblReceiptOrderShippingAddressTitle);
 		String lsSubItem;
 		List<String> lstShippingAddress=new ArrayList<>();
+		String lsShippingAddress="";
 		for(WebElement item:lstReceiptOrderShippingAddressDetails){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 			lsSubItem=item.getText().trim();
+			lsShippingAddress+=lsSubItem;
 			lstShippingAddress.add(lsSubItem);
 		}
 		map.put("shippingAddress",lstShippingAddress);
+		map.put("wholeShippingAddress",lsShippingAddress);
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblReceiptOrderShippingMethod);
 		lsText=lblReceiptOrderShippingMethod.getText().trim();
@@ -2012,12 +2088,15 @@ public class OrderConfirmationPage extends BasePage {
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblBillingAddressTitle);
 		List<String> lstBillingAddress=new ArrayList<>();
+		String lsBillingAddress="";
 		for(WebElement item:lstBillingAddressDetails){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 			lsSubItem=item.getText().trim();
+			lsBillingAddress+=lsSubItem;
 			lstBillingAddress.add(lsSubItem);
 		}
 		map.put("billingAddress",lstBillingAddress);
+		map.put("wholeBillingAddress",lsBillingAddress);
 
 		return map;
 	}
@@ -2030,15 +2109,25 @@ public class OrderConfirmationPage extends BasePage {
 	public void verifyShippingAndPaymentLinkageBetweenOrderConfirmationPageAndCheckoutPageForOrderModification(Map<String,Object> OrderConfirmationItem,Map<String,Object> checkoutItem) {
 		String lsOrderConfirmationText,lsCheckoutText;
 
-		List<String> lstShippingAddress = (List<String>) OrderConfirmationItem.get("shippingAddress");
+		lsOrderConfirmationText = (String) OrderConfirmationItem.get("wholeShippingAddress");
+		reporter.reportLog(lsOrderConfirmationText);
 		lsCheckoutText = (String) checkoutItem.get("shippingAddress");
+		reporter.reportLog(lsCheckoutText);
+		lsOrderConfirmationText=lsOrderConfirmationText.replace(",","").replace(" ","").toLowerCase();
 		lsCheckoutText=lsCheckoutText.replace(",","").toLowerCase();
-		for(String item:lstShippingAddress){
-			if (lsCheckoutText.contains(item.trim().replace(",","").toLowerCase())) {
-				reporter.reportLogPass("The shippingAddress part:'"+item+"' in OrderConfirmation Item has been contained in checkout shipping address:'"+lsCheckoutText+"'");
-			} else {
-				reporter.reportLogFail("The shippingAddress part:'"+item+"' in OrderConfirmation Item has not been contained in checkout shipping address:'"+lsCheckoutText+"'");
+		String[] lstSpit=lsCheckoutText.split("\\s+");
+		boolean bMatch=true;
+		for(String lsSplit:lstSpit){
+			reporter.reportLog(lsSplit);
+			if(!lsOrderConfirmationText.contains(lsSplit)){
+				bMatch=false;
+				break;
 			}
+		}
+		if (bMatch) {
+			reporter.reportLogPass("The shipping Address in OrderConfirmation is the same as the one in checkout shipping address.");
+		} else {
+			reporter.reportLogFail("The shipping Address:'"+lsOrderConfirmationText+"' in OrderConfirmation is not the same as the one:'"+lsCheckoutText+"' in checkout shipping address.");
 		}
 
 		lsOrderConfirmationText = (String) OrderConfirmationItem.get("shippingMethod");
@@ -2065,15 +2154,39 @@ public class OrderConfirmationPage extends BasePage {
 			reporter.reportLogFail("The paymentMethodDescription:"+lsOrderConfirmationText+" in OrderConfirmation Item is not the same as the one:"+lsCheckoutText+" in checkout Item");
 		}
 
-		List<String> lstBillingAddress = (List<String>) OrderConfirmationItem.get("billingAddress");
-		lsCheckoutText = (String) checkoutItem.get("billingAddress");
-		lsCheckoutText=lsCheckoutText.replace(",","").toLowerCase();
-		for(String item:lstBillingAddress){
-			if (lsCheckoutText.contains(item.trim().replace(",","").toLowerCase())){
-				reporter.reportLogPass("The billingAddress part:'"+item+"' in OrderConfirmation Item has been contained in checkout billing address:'"+lsCheckoutText+"'");
+		lsOrderConfirmationText = (String) OrderConfirmationItem.get("wholeBillingAddress");
+		if(!lsOrderConfirmationText.equalsIgnoreCase("Same as shipping address")){
+			lsCheckoutText = (String) checkoutItem.get("billingAddress");
+			lsOrderConfirmationText=lsOrderConfirmationText.replace(",","").replace(" ","").toLowerCase();
+			lsCheckoutText=lsCheckoutText.replace(",","").replace(" ","").toLowerCase();
+			if (lsOrderConfirmationText.contains(lsCheckoutText)) {
+				reporter.reportLogPass("The billing Address in OrderConfirmation is the same as the one in checkout billing address.");
 			} else {
-				reporter.reportLogFail("The billingAddress part:'"+item+"' in OrderConfirmation Item has not been contained in checkout billing address:'"+lsCheckoutText+"'");
+				reporter.reportLogFail("The billing Address:'"+lsOrderConfirmationText+"' in OrderConfirmation is not the same as the one:'"+lsCheckoutText+"' in checkout billing address.");
 			}
 		}
+		else{
+			lsOrderConfirmationText = (String) OrderConfirmationItem.get("wholeShippingAddress");
+			reporter.reportLog(lsOrderConfirmationText);
+			lsCheckoutText = (String) checkoutItem.get("billingAddress");
+			reporter.reportLog(lsCheckoutText);
+			lsOrderConfirmationText=lsOrderConfirmationText.replace(",","").replace(" ","").toLowerCase();
+			lsCheckoutText=lsCheckoutText.replace(",","").toLowerCase();
+			lstSpit=lsCheckoutText.split("\\s+");
+			bMatch=true;
+			for(String lsSplit:lstSpit){
+				reporter.reportLog(lsSplit);
+				if(!lsOrderConfirmationText.contains(lsSplit)){
+					bMatch=false;
+					break;
+				}
+			}
+			if (bMatch) {
+				reporter.reportLogPass("The billing Address in OrderConfirmation is the same as the one in checkout billing address.");
+			} else {
+				reporter.reportLogFail("The billing Address:'"+lsOrderConfirmationText+"' in OrderConfirmation is the same as the one:'"+lsCheckoutText+"' in checkout billing address.");
+			}
+		}
+
 	}
 }

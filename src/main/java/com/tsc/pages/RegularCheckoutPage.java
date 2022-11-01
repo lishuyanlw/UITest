@@ -6330,7 +6330,7 @@ public class RegularCheckoutPage extends BasePage {
 	}
 
 	/**
-	 * To verify Product Lis tExpanded Section Initial Status,Then Expanded it.
+	 * To verify Product List Expanded Section Initial Status,Then Expanded it.
 	 */
 	public void verifyProductListExpandedSectionInitialStatusThenExpanded(){
 		if(checkItemBeingAddedProductSectionExpandedForOrderModification()){
@@ -6351,6 +6351,21 @@ public class RegularCheckoutPage extends BasePage {
 
 		this.clickElement(btnExistingItems);
 		this.applyStaticWait(2*this.getStaticWaitForApplication());
+	}
+
+	/**
+	 * To verify expand Both New And Existing Order List Section
+	 */
+	public void expandBothNewAndExistingOrderListSection(){
+		if(!checkItemBeingAddedProductSectionExpandedForOrderModification()){
+			this.clickElement(btnItemBeingAdded);
+			this.applyStaticWait(2*this.getStaticWaitForApplication());
+		}
+
+		if(!checkExistingItemsProductSectionExpandedForOrderModification()){
+			this.clickElement(btnExistingItems);
+			this.applyStaticWait(2*this.getStaticWaitForApplication());
+		}
 	}
 
 	/**

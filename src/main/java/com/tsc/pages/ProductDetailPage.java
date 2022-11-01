@@ -4066,7 +4066,7 @@ public class ProductDetailPage extends BasePage {
 	 * @return - Map<String,Object>
 	 * @throws IOException
 	 */
-	public Map<String,Object> addItemsToModifiedOrderForUser(List<String> lstKeyword) throws IOException {
+	public Map<String,Object> addItemsToModifiedOrderForUser(List<String> lstKeyword,OrderModificationPage orderModificationPage) throws IOException {
 		Map<String, Object> addToBagPopUpWindowData = new HashMap<>();
 		this.goToProductItemWithPreConditions(lstKeyword,"AddToBag",null);
 		Map<String,Object> pdpSelectedItemData = this.getPDPDesc();
@@ -4082,14 +4082,7 @@ public class ProductDetailPage extends BasePage {
 		else
 			reporter.reportLogFailWithScreenshot("Review Changes Button is not displayed for user");
 
-		//Fetching Data from Add To Bag popup window
-		addToBagPopUpWindowData.put("productOrderNumber",this.getElementInnerText(this.lblAddToBagOrderNumber).split("-")[1].trim());
-		addToBagPopUpWindowData.put("productName",this.getElementInnerText(this.lblAddToBagPopupWindowDetailsProductName));
-		addToBagPopUpWindowData.put("productStyle",this.getElementInnerText(this.lblAddToBagPopupWindowDetailsProductStyle));
-		addToBagPopUpWindowData.put("productSize",this.getElementInnerText(this.lblAddToBagPopupWindowDetailsProductSize));
-		addToBagPopUpWindowData.put("productNumber",this.getElementInnerText(this.lblAddToBagPopupWindowDetailsProductNumber));
-		addToBagPopUpWindowData.put("subTotal",this.getElementInnerText(this.lblAddToBagPopupWindowButtonSectionSubtotal).split("\\$")[1].trim());
-		addToBagPopUpWindowData.put("pdpPageData",pdpSelectedItemData);
+		addToBagPopUpWindowData=orderModificationPage.getAddToBagDesc();
 
 		this.clickWebElementUsingJS(this.btnReviewChangesForPlacedOrder);
 		this.waitForPageToLoad();
