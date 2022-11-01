@@ -1168,6 +1168,80 @@ public class OrderConfirmationPage extends BasePage {
 	}
 
 	/**
+	 * To verify Existing order List contents for order modification
+	 */
+	public void verifyOrderListContentsForOrderModification() {
+		String lsText;
+		WebElement item;
+		for (WebElement productItem : this.lstOrderList) {
+			item = productItem.findElement(byProductImage);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsText = item.getAttribute("src");
+			if (!lsText.isEmpty()) {
+				reporter.reportLogPass("The product image source is not empty");
+			} else {
+				reporter.reportLogFailWithScreenshot("The product image source is empty");
+			}
+
+			item = productItem.findElement(byProductImageLink);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsText = item.getAttribute("href");
+			if (!lsText.isEmpty()) {
+				reporter.reportLogPass("The product link is not empty");
+			} else {
+				reporter.reportLogFailWithScreenshot("The product link is empty");
+			}
+
+			item = productItem.findElement(byProductDescriptionLink);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsText = item.getText().trim();
+			if (!lsText.isEmpty()) {
+				reporter.reportLogPass("The product description is displaying correctly");
+			} else {
+				reporter.reportLogFailWithScreenshot("The product description is not displaying correctly");
+			}
+
+			item = productItem.findElement(byProductNumber);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsText = item.getText().replace("-", "").trim();
+			if (!lsText.isEmpty()) {
+				reporter.reportLogPass("The product number is displaying correctly");
+			} else {
+				reporter.reportLogFailWithScreenshot("The product number is not displaying correctly");
+			}
+
+			item = productItem.findElement(byProductNowPrice);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsText = item.getText().trim();
+			if (!lsText.isEmpty()) {
+				reporter.reportLogPass("The product nowPrice is displaying correctly");
+			} else {
+				reporter.reportLogFailWithScreenshot("The product nowPrice is not displaying correctly");
+			}
+
+			item = productItem.findElement(byProductQuantity);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsText = item.getText();
+			if (!lsText.isEmpty()) {
+				reporter.reportLogPass("The product quantity is displaying correctly");
+			} else {
+				reporter.reportLogFailWithScreenshot("The product quantity is not displaying correctly");
+			}
+
+			if(this.checkFreeShippingExistingInOrderList(productItem)){
+				item = productItem.findElement(byProductFreeShipping);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+				lsText = item.getText();
+				if (!lsText.isEmpty()) {
+					reporter.reportLogPass("The product free shipping is displaying correctly");
+				} else {
+					reporter.reportLogFailWithScreenshot("The product free shipping is not displaying correctly");
+				}
+			}
+		}
+	}
+
+	/**
 	 * To verify payment card Contents
 	 */
 	public void verifyPaymentCardContents() {
@@ -1245,6 +1319,29 @@ public class OrderConfirmationPage extends BasePage {
 			} else {
 				reporter.reportLogFailWithScreenshot("The Promote Code is not displaying correctly");
 			}
+		}
+	}
+
+	/**
+	 * To verify payment card Contents for order modification
+	 */
+	public void verifyPaymentCardContentsForOrderModification() {
+		String lsText;
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblPaymentCardTitle);
+		lsText = lblPaymentCardTitle.getText();
+		if (!lsText.isEmpty()) {
+			reporter.reportLogPass("The payment card title is displaying correctly");
+		} else {
+			reporter.reportLogFailWithScreenshot("The payment card title is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblPaymentCard);
+		lsText = lblPaymentCard.getText();
+		if (!lsText.isEmpty()) {
+			reporter.reportLogPass("The payment card is displaying correctly");
+		} else {
+			reporter.reportLogFailWithScreenshot("The payment card is not displaying correctly");
 		}
 	}
 
@@ -2110,15 +2207,12 @@ public class OrderConfirmationPage extends BasePage {
 		String lsOrderConfirmationText,lsCheckoutText;
 
 		lsOrderConfirmationText = (String) OrderConfirmationItem.get("wholeShippingAddress");
-		reporter.reportLog(lsOrderConfirmationText);
 		lsCheckoutText = (String) checkoutItem.get("shippingAddress");
-		reporter.reportLog(lsCheckoutText);
 		lsOrderConfirmationText=lsOrderConfirmationText.replace(",","").replace(" ","").toLowerCase();
 		lsCheckoutText=lsCheckoutText.replace(",","").toLowerCase();
-		String[] lstSpit=lsCheckoutText.split("\\s+");
+		String[] lstSpit=this.getStringListWithSpaceDelimiter(lsCheckoutText);
 		boolean bMatch=true;
 		for(String lsSplit:lstSpit){
-			reporter.reportLog(lsSplit);
 			if(!lsOrderConfirmationText.contains(lsSplit)){
 				bMatch=false;
 				break;
@@ -2167,15 +2261,12 @@ public class OrderConfirmationPage extends BasePage {
 		}
 		else{
 			lsOrderConfirmationText = (String) OrderConfirmationItem.get("wholeShippingAddress");
-			reporter.reportLog(lsOrderConfirmationText);
 			lsCheckoutText = (String) checkoutItem.get("billingAddress");
-			reporter.reportLog(lsCheckoutText);
 			lsOrderConfirmationText=lsOrderConfirmationText.replace(",","").replace(" ","").toLowerCase();
 			lsCheckoutText=lsCheckoutText.replace(",","").toLowerCase();
-			lstSpit=lsCheckoutText.split("\\s+");
+			lstSpit=this.getStringListWithSpaceDelimiter(lsCheckoutText);
 			bMatch=true;
 			for(String lsSplit:lstSpit){
-				reporter.reportLog(lsSplit);
 				if(!lsOrderConfirmationText.contains(lsSplit)){
 					bMatch=false;
 					break;

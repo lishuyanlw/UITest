@@ -1272,4 +1272,13 @@ import utils.ReusableActions;
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dateFormat);
 		return simpleDateFormat.format(new Date());
 	}
+
+	/**
+	 * To get String List With Space Delimiter
+	 * @param - String - lsTargetString
+	 * @return - String[]
+	 */
+	public String[] getStringListWithSpaceDelimiter(String lsTargetString){
+		return lsTargetString.split("\\s+");
+	}
 }

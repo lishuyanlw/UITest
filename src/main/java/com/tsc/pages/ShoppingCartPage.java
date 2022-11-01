@@ -933,32 +933,50 @@ public class ShoppingCartPage extends BasePage {
 	 */
 	public boolean checkIfMatchGivenAddToBagItem(Map<String,Object> addToBagMap,Map<String,Object> shoppingItemMap){
 		if(shoppingItemMap.get("productStyle")!=null&&shoppingItemMap.get("productSize")!=null){
-			if(addToBagMap.get("productName").toString().equalsIgnoreCase(shoppingItemMap.get("productName").toString())&&
-					addToBagMap.get("productStyle").toString().equalsIgnoreCase(shoppingItemMap.get("productStyle").toString())&&
-					addToBagMap.get("productSize").toString().equalsIgnoreCase(shoppingItemMap.get("productSize").toString())){
-				return true;
+			if(addToBagMap.get("productStyle")!=null&&addToBagMap.get("productSize")!=null){
+				if(addToBagMap.get("productName").toString().equalsIgnoreCase(shoppingItemMap.get("productName").toString())&&
+						addToBagMap.get("productStyle").toString().equalsIgnoreCase(shoppingItemMap.get("productStyle").toString())&&
+						addToBagMap.get("productSize").toString().equalsIgnoreCase(shoppingItemMap.get("productSize").toString())){
+					return true;
+				}
+				else{
+					return false;
+				}
 			}
 			else{
+				reporter.reportLogFail("The Style or Size is null.");
 				return false;
 			}
 		}
 
 		if(shoppingItemMap.get("productStyle")!=null&&shoppingItemMap.get("productSize")==null){
-			if(addToBagMap.get("productName").toString().equalsIgnoreCase(shoppingItemMap.get("productName").toString())&&
-					addToBagMap.get("productStyle").toString().equalsIgnoreCase(shoppingItemMap.get("productStyle").toString())){
-				return true;
+			if(addToBagMap.get("productStyle")!=null){
+				if(addToBagMap.get("productName").toString().equalsIgnoreCase(shoppingItemMap.get("productName").toString())&&
+						addToBagMap.get("productStyle").toString().equalsIgnoreCase(shoppingItemMap.get("productStyle").toString())){
+					return true;
+				}
+				else{
+					return false;
+				}
 			}
 			else{
+				reporter.reportLogFail("The Style is null.");
 				return false;
 			}
 		}
 
 		if(shoppingItemMap.get("productStyle")==null&&shoppingItemMap.get("productSize")!=null){
-			if(addToBagMap.get("productName").toString().equalsIgnoreCase(shoppingItemMap.get("productName").toString())&&
-					addToBagMap.get("productSize").toString().equalsIgnoreCase(shoppingItemMap.get("productSize").toString())){
-				return true;
+			if(addToBagMap.get("productSize")!=null){
+				if(addToBagMap.get("productName").toString().equalsIgnoreCase(shoppingItemMap.get("productName").toString())&&
+						addToBagMap.get("productSize").toString().equalsIgnoreCase(shoppingItemMap.get("productSize").toString())){
+					return true;
+				}
+				else{
+					return false;
+				}
 			}
 			else{
+				reporter.reportLogFail("The Size is null.");
 				return false;
 			}
 		}

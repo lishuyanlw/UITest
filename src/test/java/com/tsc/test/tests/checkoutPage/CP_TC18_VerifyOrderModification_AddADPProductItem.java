@@ -12,14 +12,15 @@ import io.restassured.response.Response;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CP_TC15_VerifyOrderModification_MyAccount extends BaseTest {
+public class CP_TC18_VerifyOrderModification_AddADPProductItem extends BaseTest {
+    /*
+     * CER-906
+     */
     @Test(groups={"Regression","Checkout","CheckoutMobTab"})
-    public void CP_TC15_VerifyOrderModification_MyAccount() throws IOException {
+    public void CP_TC18_VerifyOrderModification_AddADPProductItem() throws IOException {
         getGlobalFooterPageThreadLocal().closePopupDialog();
 
         String accessToken = getApiUserSessionDataMapThreadLocal().get("access_token").toString();
@@ -98,13 +99,9 @@ public class CP_TC15_VerifyOrderModification_MyAccount extends BaseTest {
         String lsPromoteCode=TestDataHandler.constantData.getCheckOut().getLst_PromoteCode().get(0);
         getOrderModificationThreadLocal().addPromoteCode(lsPromoteCode);
 
-        reporter.reportLog("Add new order item through UI");
-        List<String> lstKeyword = TestDataHandler.constantData.getCheckOut().getLst_SearchingKeywordForPlaceOrder();
-        Map<String,Object> outputDataCriteria= new HashMap<String,Object>();
-        outputDataCriteria.put("style", "1");
-        outputDataCriteria.put("size", "1");
-        String lsProductName=getProductDetailPageThreadLocal().getProductWithConditionsForVideoAndStyleAndSizeWithoutCheckingSoldOutCriteria(lstKeyword,outputDataCriteria);
-        Map<String,Object> addToBagPopUpData=getOrderModificationThreadLocal().addProductItems(lsProductName,true);
+        reporter.reportLog("Add ADP product item through UI");
+        String lsADPProductNumber = TestDataHandler.constantData.getSearchResultPage().getLbl_AutoDeliverykeyword();
+        Map<String,Object> addToBagPopUpData=getOrderModificationThreadLocal().addProductItems(lsADPProductNumber,true);
 
         String lsOrderNumberOnAddToBagWindow= (String) addToBagPopUpData.get("productOrderNumber");
         if(lsOrderNumberForOrderModification.equalsIgnoreCase(lsOrderNumberOnAddToBagWindow)){

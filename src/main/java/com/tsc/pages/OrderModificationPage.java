@@ -353,7 +353,13 @@ public class OrderModificationPage extends BasePage {
 
 		ProductResultsPage prp=new ProductResultsPage(this.getDriver());
 		ProductDetailPage pdp=new ProductDetailPage(this.getDriver());
-		Map<String,String> prpMap=prp.navigateFromPRPToPDP(lsProductName, false);
+		if(lsProductName.matches("\\d+")){
+			prp.getSearchResultLoad(lsProductName,true);
+		}
+		else{
+			Map<String,String> prpMap=prp.navigateFromPRPToPDP(lsProductName, false);
+		}
+
 		this.clickElement(pdp.btnAddToBag);
 		this.waitForCondition(Driver->{return this.lblAddToBagPopupWindowTitle.isDisplayed();},60000);
 
