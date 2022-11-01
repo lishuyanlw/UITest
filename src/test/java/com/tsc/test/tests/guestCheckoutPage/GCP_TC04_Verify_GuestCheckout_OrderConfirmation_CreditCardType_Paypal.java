@@ -12,7 +12,9 @@ import java.util.Map;
 
 public class GCP_TC04_Verify_GuestCheckout_OrderConfirmation_CreditCardType_Paypal extends BaseTest{
 	/*
-	 *
+	 * CER-902 - Checkout - Guest Checkout (Confirmation Page) - Verify Page header, line items, different section and its data. Also perform Place Order
+	 * CER-907 - Checkout - Guest Checkout (Paypal) - Verify PayPal button
+	 * CER-908 - Checkout - Guest Checkout (Promo Code) - Verify Promo Code, Gift Card
 	 */
 	@Test(groups={"Regression","GuestCheckout"})
 	public void GCP_TC04_Verify_GuestCheckout_OrderConfirmation_CreditCardType_Paypal() throws IOException {
@@ -52,6 +54,7 @@ public class GCP_TC04_Verify_GuestCheckout_OrderConfirmation_CreditCardType_Payp
 
 			Map<String,Object> createdUserMap=getGuestCheckoutThreadLocal().createNewAccount(null,null,false);
 
+			//CER-908 - Checkout - Guest Checkout (Promo Code) - Verify Promo Code, Gift Card
 			reporter.reportLog("Add invalid promo code for user to verify error message");
 			List<String> lstInvalidPromoteCodeAndErrorMessage=TestDataHandler.constantData.getCheckOut().getLstInvalidPromoteCodeAndErrorMessage();
 			String lblPromoCodeExpectedErrorMessage=lstInvalidPromoteCodeAndErrorMessage.get(1).replace("<promoteCode>","\""+lstInvalidPromoteCodeAndErrorMessage.get(0)+"\"");
@@ -140,6 +143,7 @@ public class GCP_TC04_Verify_GuestCheckout_OrderConfirmation_CreditCardType_Payp
 				getGuestCheckoutThreadLocal().verifyInputCreditCardType(mapAddedPayment.get("cardType").toString());
 			}
 
+			//CER-907 - Checkout - Guest Checkout (Paypal) - Verify PayPal button
 			reporter.reportLog("Verify PayPal Functionality");
 			getGuestCheckoutThreadLocal().verifyPayPalFunctionality();
 
