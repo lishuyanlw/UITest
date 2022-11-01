@@ -6651,4 +6651,14 @@ public class RegularCheckoutPage extends BasePage {
 		return map;
 	}
 
+	/**
+	 * This function checks if easy payment is there and if not, sets it to given installment number
+	 * @param installmentNumber
+	 */
+	public void setEasyPayForProduct(int installmentNumber){
+		if(!this.checkEasyPaySectionExisting()){
+			this.setPaymentOptionByGivenInstallmentNumber(installmentNumber);
+		}
+	}
+
 }

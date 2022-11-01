@@ -26,7 +26,7 @@ public class GCP_TC04_Verify_GuestCheckout_OrderConfirmation_CreditCardType_Payp
 		outputDataCriteria.put("style", "2");
 		outputDataCriteria.put("size", "2");
 		outputDataCriteria.put("quantity", "2");
-		if(getProductDetailPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList,"ConditionsForMultipleStyleAndSize",outputDataCriteria)) {
+		if(getProductDetailPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList,"AddToBag",outputDataCriteria)) {
 			String[] lstStyle = getProductDetailPageThreadLocal().getStyleList();
 			String[] lstSizeFirstItem = getProductDetailPageThreadLocal().getSizeListForGivenStyle(0);
 			//String[] lstSizeSecondItem = getProductDetailPageThreadLocal().getSizeListForGivenStyle(1);
@@ -156,6 +156,7 @@ public class GCP_TC04_Verify_GuestCheckout_OrderConfirmation_CreditCardType_Payp
 			//Fetching Order Summary after removing gift card
 			orderSummaryMapOnCheckoutPage=getRegularCheckoutThreadLocal().getOrderSummaryDesc();
 
+			reporter.reportLog("Navigate to Review Screen");
 			getGuestCheckoutThreadLocal().goToReviewPage();
 
 			//Fetching details from checkout page to be verified on Order Confirmation page
@@ -163,6 +164,9 @@ public class GCP_TC04_Verify_GuestCheckout_OrderConfirmation_CreditCardType_Payp
 			summaryMapForCheckOutList = getRegularCheckoutThreadLocal().getCheckoutItemCountAndSubTotal(productListMapForCheckOutPage);
 			int itemCountForCheckOutList = (int) summaryMapForCheckOutList.get("itemCount");
 			Map<String,Object> mapForShippingAddressAndPaymentOnCheckout=getRegularCheckoutThreadLocal().getShippingAndPaymentDesc(productListMapForCheckOutPage.get(0));
+			//Setting up easy pay installment if not there
+			reporter.reportLog("Verifying if easy pay exists for placed order and adding easy payment");
+			getRegularCheckoutThreadLocal().setEasyPayForProduct(2);
 			Map<String,Object> easyPaymentMapOnCheckoutPage=getRegularCheckoutThreadLocal().getEasyPayDesc();
 
 			reporter.reportLog("Verify Created Shipping Address Linkage with Checkout page");
