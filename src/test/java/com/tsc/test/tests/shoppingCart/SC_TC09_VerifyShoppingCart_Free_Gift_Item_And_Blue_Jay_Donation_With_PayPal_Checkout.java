@@ -55,14 +55,19 @@ public class SC_TC09_VerifyShoppingCart_Free_Gift_Item_And_Blue_Jay_Donation_Wit
             getShoppingCartThreadLocal().verifyAndUpdateCreditCardAsPerSystemConfiguration(configurations,creditCardData,customerEDP,accessToken);
 
             //Adding item to cart for user for dimensionId fetched from configuration
-            Map<String,Object> configData = getShoppingCartThreadLocal().getRequiredDetailsFromContentFulConfiguration(configurations, Arrays.asList("GWPCategoryFacetIdsIncluded","GWPCartSubTotalThreshold"));
-            String dimensionId = configData.get("GWPCategoryFacetIdsIncluded").toString().split(",")[0];
-            //Calling api to get product item no to be added to bag for user that has free shipping condition satisfied
-            List<Product.edps> edpNoForFreeShippingProduct = new ProductAPI().getEDPNoForFreeShippingProduct(dimensionId,1);
-            if(edpNoForFreeShippingProduct.size()>0)
-                getShoppingCartThreadLocal().addAdvanceOrderOrSingleProductToCartForUser(edpNoForFreeShippingProduct.get(0).getItemNo(),1,false,customerEDP,accessToken);
-            else
-                reporter.reportLogFail("Product is not fetched from dimension number fetched from configuration api");
+            Map<String,Object> configData = getShoppingCartThreadLocal().getRequiredDetailsFromContentFulConfiguration(configurations, Arrays.asList("GWPCategoryFacetIdsIncluded","GWPCartSubTotalThreshold","GWPItemNosIncluded"));
+            if(configData.get("GWPCategoryFacetIdsIncluded")!=null){
+                String dimensionId = configData.get("GWPCategoryFacetIdsIncluded").toString().split(",")[0];
+                //Calling api to get product item no to be added to bag for user that has free shipping condition satisfied
+                List<Product.edps> edpNoForFreeShippingProduct = new ProductAPI().getEDPNoForFreeShippingProduct(dimensionId,1);
+                if(edpNoForFreeShippingProduct.size()>0)
+                    getShoppingCartThreadLocal().addAdvanceOrderOrSingleProductToCartForUser(edpNoForFreeShippingProduct.get(0).getItemNo(),1,false,customerEDP,accessToken);
+                else
+                    reporter.reportLogFail("Product is not fetched from dimension number fetched from configuration api");
+            }else{
+                String itemNoToBeAddedForFreeShipping = configData.get("GWPItemNosIncluded").toString();
+                getShoppingCartThreadLocal().addAdvanceOrderOrSingleProductToCartForUser(itemNoToBeAddedForFreeShipping,1,false,customerEDP,accessToken);
+            }
 
             //Login using valid username and password
             getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword);
