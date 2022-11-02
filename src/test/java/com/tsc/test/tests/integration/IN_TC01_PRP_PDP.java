@@ -19,6 +19,8 @@ public class IN_TC01_PRP_PDP extends BaseTest {
         List<List<String>> lsKeywordDropdownList=TestDataHandler.constantData.getSearchResultPage().getLst_SearchKeyword_DropDown();
         Product.Products product=getProductAPIThreadLocal().getActiveProductWithFullInfoFromKeyword(lsKeywordDropdownList.get(0).get(0));
         String lsProductName=product.getName();
+        if(lsProductName.contains("\""))
+            lsProductName = lsProductName.replace("\"","");
         reporter.reportLog("Product name: "+lsProductName);
 
         reporter.reportLog("Compare the linkage information between PRP and PDP with full coverage");

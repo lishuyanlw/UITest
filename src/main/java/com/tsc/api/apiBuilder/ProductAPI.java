@@ -1158,11 +1158,14 @@ public class ProductAPI extends ApiClient {
 
         List<Product.Products> dataList;
         do{
-            dataList =product.Products.stream().filter(item->item.getEdps().stream().anyMatch(subItem->subItem.getAppliedShipping().isEmpty()&&subItem.getInventory()>2)).collect(Collectors.toList());
+            //subItem->subItem.getAppliedShipping().isEmpty()&&
+            dataList =product.Products.stream().filter(item->item.getEdps().stream().anyMatch(subItem->subItem.getInventory()>2)).collect(Collectors.toList());
             for(Product.Products data:dataList) {
                 lsNowPrice=data.getIsPriceRange();
                 lsWasPrice=data.getWasPriceRange();
-                if (data.isActive()&&data.getStyles().size() >= 0 && data.getSizes().size() >= 0&&data.isShowBadgeImage()&&data.getProductReviewRating()>0&&data.getProductReviewCount()>0&&!lsNowPrice.equalsIgnoreCase(lsWasPrice)) {
+                //&&data.isShowBadgeImage()
+                if (data.isActive()&&data.getStyles().size() >= 0 && data.getSizes().size() >= 0&&data.getProductReviewRating()>0&&data.getProductReviewCount()>0&&!lsNowPrice.equalsIgnoreCase(lsWasPrice)) {
+                    /**
                     if(data.getBrand()!=null) {
                         if(data.getBrand().isEmpty()) {
                             continue;
@@ -1170,7 +1173,7 @@ public class ProductAPI extends ApiClient {
                     }
                     else {
                         continue;
-                    }
+                    }*/
                     productItem=data;
                     flag = false;
                     break;
