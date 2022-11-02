@@ -1586,12 +1586,12 @@ public class OrderModificationPage extends BasePage {
 		map.put("productOrderNumber",lsText.split("-")[1].trim());
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddToBagPopupWindowDetailsProductName);
-		lsText=lblAddToBagPopupWindowDetailsProductName.getText();
+		lsText=lblAddToBagPopupWindowDetailsProductName.getText().trim();
 		map.put("productName",lsText);
 
 		if(checkProductStyleExistingInAddToBagPopup()){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddToBagPopupWindowDetailsProductStyle);
-			lsText=lblAddToBagPopupWindowDetailsProductStyle.getText();
+			lsText=lblAddToBagPopupWindowDetailsProductStyle.getText().trim();
 			map.put("productStyle",lsText);
 		}
 		else{
@@ -1770,7 +1770,7 @@ public class OrderModificationPage extends BasePage {
 	 */
 	public void verifyLinkageBetweenAddToBagItemAndNewlyAddedOrderList(List<Map<String,Object>> orderListMapForOrderModification,Map<String,Object> addToBagItem){
 		ShoppingCartPage shoppingCartPage=new ShoppingCartPage(this.getDriver());
-		String lsProductName= (String) addToBagItem.get("ProductName");
+		String lsProductName= (String) addToBagItem.get("productName");
 		int findIndex=shoppingCartPage.findGivenProductIndexInProductList(addToBagItem,orderListMapForOrderModification);
 		if(findIndex!=-1){
 			reporter.reportLogPass("The AddToBag product:'"+lsProductName+" ' can be found in newly added order list on orderModificationPage");

@@ -106,6 +106,7 @@ public class CP_TC15_VerifyOrderModification_AddRegularProductItem extends BaseT
         outputDataCriteria.put("style", "1");
         outputDataCriteria.put("size", "1");
         String lsProductName=getProductDetailPageThreadLocal().getProductWithConditionsForVideoAndStyleAndSizeWithoutCheckingSoldOutCriteria(lstKeyword,outputDataCriteria);
+        reporter.reportLog("lsProductName: "+lsProductName);
         Map<String,Object> addToBagPopUpData=getOrderModificationThreadLocal().addProductItems(lsProductName,true);
 
         String lsOrderNumberOnAddToBagWindow= (String) addToBagPopUpData.get("productOrderNumber");
