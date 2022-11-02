@@ -12,13 +12,15 @@ import io.restassured.response.Response;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CP_TC16_VerifyOrderModification_Checkout extends BaseTest {
+public class CP_TC19_VerifyOrderModification_Checkout_AddADPProductItem extends BaseTest {
+    /*
+     * CER-906
+     */
     @Test(groups={"Regression","Checkout","CheckoutMobTab"})
-    public void CP_TC16_VerifyOrderModification_Checkout() throws IOException {
+    public void CP_TC19_VerifyOrderModification_Checkout_AddADPProductItem() throws IOException {
         getGlobalFooterPageThreadLocal().closePopupDialog();
         String accessToken = getApiUserSessionDataMapThreadLocal().get("access_token").toString();
         String customerEDP = getApiUserSessionDataMapThreadLocal().get("customerEDP").toString();
@@ -37,7 +39,7 @@ public class CP_TC16_VerifyOrderModification_Checkout extends BaseTest {
         getShoppingCartThreadLocal().addTSCCreditCardForUser(null,customerEDP,accessToken);
 
         String myAccountOrderStatusURL = TestDataHandler.constantData.getMyAccount().getLnk_orderStatusURL();
-        List<String> newItemToBeAddedKeyword = TestDataHandler.constantData.getSearchResultPage().getLst_ShoppingCartSearchKeyword();
+        List<String> newItemToBeAddedKeyword = TestDataHandler.constantData.getCheckOut().getLst_SearchingKeywordForPlaceOrder();
         List<Map<String,String>> itemsToBeAdded = TestDataHandler.constantData.getCheckOut().getLstOrderDetailItems();
         PlaceOrderResponse placeOrderResponse = getMyAccountPageThreadLocal().placeOrderForUser(Integer.parseInt(customerEDP),accessToken,itemsToBeAdded,2,"1",true);
         //Login using valid username and password
@@ -62,14 +64,10 @@ public class CP_TC16_VerifyOrderModification_Checkout extends BaseTest {
         String lsPromoteCode=TestDataHandler.constantData.getCheckOut().getLst_PromoteCode().get(0);
         getOrderModificationThreadLocal().addPromoteCode(lsPromoteCode);
 
-        List<String> lstKeyword = TestDataHandler.constantData.getCheckOut().getLst_SearchingKeywordForPlaceOrder();
-        Map<String,Object> outputDataCriteria= new HashMap<String,Object>();
-        outputDataCriteria.put("style", "1");
-        outputDataCriteria.put("size", "1");
-        String lsProductName=getProductDetailPageThreadLocal().getProductWithConditionsForVideoAndStyleAndSizeWithoutCheckingSoldOutCriteria(lstKeyword,outputDataCriteria);
-        Map<String,Object> addToBagPopUpData=getOrderModificationThreadLocal().addProductItems(lsProductName,true);
+        reporter.reportLog("Add ADP product item through UI");
+        String lsADPProductNumber = TestDataHandler.constantData.getSearchResultPage().getLbl_AutoDeliverykeyword();
+        Map<String,Object> addToBagPopUpData=getOrderModificationThreadLocal().addProductItems(lsADPProductNumber,true);
 
-//        Map<String,Object> addToBagPopUpData = getProductDetailPageThreadLocal().addItemsToModifiedOrderForUser(newItemToBeAddedKeyword,getOrderModificationThreadLocal());
         String lsOrderNumberOnAddToBagWindow= (String) addToBagPopUpData.get("productOrderNumber");
         if(lsOrderNumberForOrderModification.substring(0,7).equalsIgnoreCase(lsOrderNumberOnAddToBagWindow.substring(0,7))){
             reporter.reportLogPass("The order number:"+lsOrderNumberForOrderModification+" for order modification is the same as the one:"+lsOrderNumberOnAddToBagWindow+" for add to bag popup window.");

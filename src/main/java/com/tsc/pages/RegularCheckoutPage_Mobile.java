@@ -159,6 +159,77 @@ public class RegularCheckoutPage_Mobile extends RegularCheckoutPage{
 	}
 
 	@Override
+	public void verifyPromoteCodeContentsForOrderModification(String lsExpectedPromoteCode) {
+		String lsText;
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderSummaryPromoteCodeTitle);
+		lsText = lblOrderSummaryPromoteCodeTitle.getText();
+		if (!lsText.isEmpty()) {
+			reporter.reportLogPass("The OrderSummary Promote Code Title is displaying correctly");
+		} else {
+			reporter.reportLogFailWithScreenshot("The OrderSummary Promote Code Title is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(iconOrderSummaryPromoteCodeTooltip);
+		if(this.getReusableActionsInstance().isElementVisible(iconOrderSummaryPromoteCodeTooltip)){
+			reporter.reportLogPass("The OrderSummary Promote Code icon is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The OrderSummary Promote Code icon is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderSummaryTotalPriceTitle);
+		iconOrderSummaryPromoteCodeTooltip.click();
+		this.waitForCondition(Driver->{return this.checkPromoteCodeTooltipMessageDisplaying();},10000);
+		String lsDeviceType=System.getProperty("Device");
+		String lsBrowserType=System.getProperty("Browser");
+		boolean bCheck=!((lsDeviceType.equalsIgnoreCase("Mobile")||lsDeviceType.equalsIgnoreCase("Tablet"))&& lsBrowserType.toLowerCase().contains("sauce"));
+		if(bCheck){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderSummaryPromoteCodeTooltipMessage);
+			lsText= this.getElementInnerText(this.lblOrderSummaryPromoteCodeTooltipMessage);
+		}
+		else{
+			lsText= this.getElementInnerText(this.cntOrderSummaryPromoteCodeTooltip);
+		}
+		if (!lsText.isEmpty()) {
+			reporter.reportLogPass("The OrderSummary Promote Code Tooltip Message is displaying correctly");
+		} else {
+			reporter.reportLogFailWithScreenshot("The OrderSummary Promote Code Tooltip Message is not displaying correctly");
+		}
+		if(bCheck){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnOrderSummaryPromoteCodeTooltipClose);
+			btnOrderSummaryPromoteCodeTooltipClose.click();
+			this.applyStaticWait(this.getStaticWaitForApplication());
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderSummaryInputPromoteCode);
+		lsText=this.getAppliedPromoteCode();
+		if(lsText.equalsIgnoreCase(lsExpectedPromoteCode)){
+			reporter.reportLogPass("The applied promote code:"+lsText+" is the same as expected:"+lsExpectedPromoteCode);
+		}
+		else{
+			reporter.reportLogFail("The applied promote code:"+lsText+" is not the same as expected:"+lsExpectedPromoteCode);
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnOrderSummaryRemovePromoteCode);
+		lsText=this.btnOrderSummaryRemovePromoteCode.getText().trim();
+		if(lsText.equalsIgnoreCase("Edit")){
+			reporter.reportLogPass("The edit promote code button is displaying correctly");
+		}
+		else{
+			reporter.reportLogFail("The edit promote code button is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderSummaryPromoteCodeAppliedMessage);
+		lsText = lblOrderSummaryPromoteCodeAppliedMessage.getText();
+		if (!lsText.isEmpty()) {
+			reporter.reportLogPass("The Promote Code Applied Message is displaying correctly");
+		} else {
+			reporter.reportLogFailWithScreenshot("The Promote Code Applied Message is not displaying correctly");
+		}
+	}
+
+	@Override
 	public void verifyGiftCardAndPlaceOrderContents() {
 		String lsText;
 

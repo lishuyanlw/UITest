@@ -1,6 +1,6 @@
 # API USER TOKEN INFO
 apiUserSessionParams:
-  lbl_username: shoppingCart@rogers.com
+  lbl_username: shoppingcart@rogers.com
   lbl_password: testMail123
   lbl_grantType: password
   lbl_apiKey: A9607F64-D061-4279-8D00-F8469EA38DD1
@@ -155,7 +155,7 @@ searchResultPage:
   lbl_ProductRecommendationTitlePage: ["People who viewed this item also viewed","TOP SELLERS"]
   lbl_AddToBagPopupWindowTitle: "\\d+ ITEM(S)? ADDED TO YOUR SHOPPING BAG"
   lbl_VideoDisclaimInfo: "Pre-recorded videos contain pricing or promotional offers that may have expired."
-  lbl_AdvancedOrderkeyword: 603108
+  lbl_AdvancedOrderkeyword: 486049
   lbl_AdvancedOrderMessage: "Est. Ship/Pick-up Date"
   lbl_AutoDeliverykeyword: 603108
   lbl_productTrueFitAndSizingChart: 404791

@@ -67,17 +67,17 @@ public class OrderModificationPage_Mobile extends OrderModificationPage {
 				if(lsSplit[1].contains("Size")){
 					map.put("productName",lsSplit[0].trim());
 					map.put("productStyle",null);
-					map.put("productSize",lsSplit[1].trim().split(":")[1]);
+					map.put("productSize",lsSplit[1].trim().split(":")[1].trim());
 				}
 				else{
 					map.put("productName",lsSplit[0].trim());
-					map.put("productStyle",lsSplit[1].trim().split(":")[1]);
+					map.put("productStyle",lsSplit[1].trim().split(":")[1].trim());
 					map.put("productSize",null);
 				}
 			}
 			else{
 				map.put("productName",lsSplit[0].trim());
-				map.put("productStyle",lsSplit[2].trim().split(":")[1]);
+				map.put("productStyle",lsSplit[2].trim().split(":")[1].trim());
 				map.put("productSize",lsSplit[1].split(":")[1].trim());
 			}
 		}
@@ -290,7 +290,7 @@ public class OrderModificationPage_Mobile extends OrderModificationPage {
 		this.applyStaticWait(300);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyButton);
 		btnModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyButton.click();
-		this.waitForCondition(Driver->{return lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeAppliedPromoteMessage.isDisplayed();},20000);
+		this.waitForCondition(Driver->{return lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeAppliedPromoteMessage.isDisplayed();},120000);
 	}
 
 	@Override
@@ -381,6 +381,114 @@ public class OrderModificationPage_Mobile extends OrderModificationPage {
 		} else {
 			reporter.reportLogFailWithScreenshot("The Combined Message is not displaying correctly");
 		}
+	}
+
+	@Override
+	public void verifyNavigatedPageAfterClickingCancelModificationButton(String lsURL){
+		String lsExpectedUrl=this.getBaseURL();
+		lsExpectedUrl=lsExpectedUrl+lsURL;
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnModifyOrderCancelModificationButton);
+		btnModifyOrderCancelModificationButton.click();
+		this.waitForCondition(Driver->{return (new MyAccount(this.getDriver())).inputAccountOrderSearch.isDisplayed();},60000);
+
+		if(this.URL().equalsIgnoreCase(lsExpectedUrl)){
+			reporter.reportLogPass("Navigated to order status page after clicking cancel modification button.");
+		}
+		else{
+			reporter.reportLogFail("Failed to be navigated to order status page after clicking cancel modification button.");
+		}
+	}
+
+	@Override
+	public void verifyExistingOrderHeaderContents() {
+		String lsText;
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblModifyOrderExistingOrderHeaderTitle);
+		lsText = lblModifyOrderExistingOrderHeaderTitle.getText();
+		if (!lsText.isEmpty()) {
+			reporter.reportLogPass("The header Title in existing order section is displaying correctly");
+		} else {
+			reporter.reportLogFailWithScreenshot("The header Title in existing order section is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblModifyOrderExistingOrderSubHeaderTitle);
+		lsText = lblModifyOrderExistingOrderSubHeaderTitle.getText();
+		if (!lsText.isEmpty()) {
+			reporter.reportLogPass("The subheader Title in existing order section is displaying correctly");
+		} else {
+			reporter.reportLogFailWithScreenshot("The subheader Title in existing order section is not displaying correctly");
+		}
+	}
+
+	@Override
+	public int getOrderAmountFromSubTotalInAddToBagModel(){
+		String lsText=this.getElementInnerText(lblAddToBagPopupWindowButtonSectionSubtotal);
+		lsText=lsText.split(":")[0];
+
+		return this.getIntegerFromString(lsText);
+	}
+
+	@Override
+	public float getOrderSubTotalInAddToBagModel(){
+		String lsText=this.getElementInnerText(lblAddToBagPopupWindowButtonSectionSubtotal);
+		lsText=lsText.split(":")[1];
+
+		return this.getFloatFromString(lsText,true);
+	}
+
+	@Override
+	public Map<String,Object> getAddToBagDesc(){
+		Map<String,Object> map=new HashMap<>();
+		String lsText;
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddToBagPopupWindowTitle);
+		lsText= String.valueOf(this.getIntegerFromString(this.getElementInnerText(lblAddToBagPopupWindowTitle)));
+		map.put("productQuantity",lsText);
+
+		if(this.checkProductBadgeInAddToBagPopupDisplaying()){
+			map.put("productBadge",true);
+		}
+		else{
+			map.put("productBadge",false);
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAddToBagPopupWindowOrderNumber);
+		lsText=this.lblAddToBagPopupWindowOrderNumber.getText();
+		map.put("productOrderNumber",lsText.split("-")[1].trim());
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddToBagPopupWindowDetailsProductName);
+		lsText=lblAddToBagPopupWindowDetailsProductName.getText().trim();
+		map.put("productName",lsText);
+
+		if(checkProductStyleExistingInAddToBagPopup()){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddToBagPopupWindowDetailsProductStyle);
+			lsText=lblAddToBagPopupWindowDetailsProductStyle.getText().trim();
+			map.put("productStyle",lsText);
+		}
+		else{
+			map.put("productStyle",null);
+		}
+
+		if(checkProductSizeExistingInAddToBagPopup()){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddToBagPopupWindowDetailsProductSize);
+			lsText=lblAddToBagPopupWindowDetailsProductSize.getText();
+			lsText=lsText.split(":")[1].trim();
+			map.put("productSize",lsText);
+		}
+		else{
+			map.put("productSize",null);
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddToBagPopupWindowDetailsProductNumber);
+		lsText=lblAddToBagPopupWindowDetailsProductNumber.getText().replace("-","").trim();
+		map.put("productNumber",lsText);
+
+		map.put("itemAmount",getOrderAmountFromSubTotalInAddToBagModel());
+
+		map.put("SubTotal",getOrderSubTotalInAddToBagModel());
+
+		return map;
 	}
 
 }

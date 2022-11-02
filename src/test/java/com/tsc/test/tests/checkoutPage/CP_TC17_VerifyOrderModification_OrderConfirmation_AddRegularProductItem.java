@@ -12,13 +12,15 @@ import io.restassured.response.Response;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CP_TC17_VerifyOrderModification_OrderConfirmation extends BaseTest {
+public class CP_TC17_VerifyOrderModification_OrderConfirmation_AddRegularProductItem extends BaseTest {
+    /*
+     * CER-905
+     */
     @Test(groups={"Regression","Checkout","CheckoutMobTab"})
-    public void CP_TC17_VerifyOrderModification_OrderConfirmation() throws IOException {
+    public void CP_TC17_VerifyOrderModification_OrderConfirmation_AddRegularProductItem() throws IOException {
         getGlobalFooterPageThreadLocal().closePopupDialog();
         String accessToken = getApiUserSessionDataMapThreadLocal().get("access_token").toString();
         String customerEDP = getApiUserSessionDataMapThreadLocal().get("customerEDP").toString();
@@ -37,7 +39,7 @@ public class CP_TC17_VerifyOrderModification_OrderConfirmation extends BaseTest 
         getShoppingCartThreadLocal().addTSCCreditCardForUser(null,customerEDP,accessToken);
 
         String myAccountOrderStatusURL = TestDataHandler.constantData.getMyAccount().getLnk_orderStatusURL();
-        List<String> newItemToBeAddedKeyword = TestDataHandler.constantData.getSearchResultPage().getLst_ShoppingCartSearchKeyword();
+        List<String> newItemToBeAddedKeyword = TestDataHandler.constantData.getCheckOut().getLst_SearchingKeywordForPlaceOrder();
         List<Map<String,String>> itemsToBeAdded = TestDataHandler.constantData.getCheckOut().getLstOrderDetailItems();
         PlaceOrderResponse placeOrderResponse = getMyAccountPageThreadLocal().placeOrderForUser(Integer.parseInt(customerEDP),accessToken,itemsToBeAdded,2,"1",true);
         //Login using valid username and password
@@ -58,14 +60,7 @@ public class CP_TC17_VerifyOrderModification_OrderConfirmation extends BaseTest 
         String lsPromoteCode=TestDataHandler.constantData.getCheckOut().getLst_PromoteCode().get(0);
         getOrderModificationThreadLocal().addPromoteCode(lsPromoteCode);
 
-        List<String> lstKeyword = TestDataHandler.constantData.getCheckOut().getLst_SearchingKeywordForPlaceOrder();
-        Map<String,Object> outputDataCriteria= new HashMap<String,Object>();
-        outputDataCriteria.put("style", "1");
-        outputDataCriteria.put("size", "1");
-        String lsProductName=getProductDetailPageThreadLocal().getProductWithConditionsForVideoAndStyleAndSizeWithoutCheckingSoldOutCriteria(lstKeyword,outputDataCriteria);
-        Map<String,Object> addToBagPopUpData=getOrderModificationThreadLocal().addProductItems(lsProductName,true);
-
-//        Map<String,Object> addToBagPopUpData = getProductDetailPageThreadLocal().addItemsToModifiedOrderForUser(newItemToBeAddedKeyword,getOrderModificationThreadLocal());
+        Map<String,Object> addToBagPopUpData = getProductDetailPageThreadLocal().addItemsToModifiedOrderForUser(newItemToBeAddedKeyword,getOrderModificationThreadLocal());
 
         reporter.reportLog("Go to checkout page");
         getOrderModificationThreadLocal().goToCheckoutPage();
@@ -82,6 +77,27 @@ public class CP_TC17_VerifyOrderModification_OrderConfirmation extends BaseTest 
         reporter.reportLog("Go to Order Confirmation page");
         getRegularCheckoutThreadLocal().goToOrderConfirmationPage();
 
+        reporter.reportLog("Verify OrderConfirmation header Contents");
+        getOrderConfirmationThreadLocal().verifyOrderConfirmationContents();
+
+        reporter.reportLog("Verify Receipt Contents");
+        getOrderConfirmationThreadLocal().verifyReceiptContents();
+
+        reporter.reportLog("Verify Order List Contents");
+        getOrderConfirmationThreadLocal().verifyOrderListContentsForOrderModification();
+
+        reporter.reportLog("Verify Payment Card Contents");
+        getOrderConfirmationThreadLocal().verifyPaymentCardContentsForOrderModification();
+
+        reporter.reportLog("Verify OrderSummary Contents");
+        getOrderConfirmationThreadLocal().verifyOrderSummaryContents();
+
+        reporter.reportLog("Verify EasyPayment Contents");
+        getOrderConfirmationThreadLocal().verifyEasyPayContents();
+
+        reporter.reportLog("Verify Common Questions Contents");
+        getOrderConfirmationThreadLocal().verifyCommonQuestionsContents();
+
         String lsOrderNumberForOrderConfirmationPage=getOrderConfirmationThreadLocal().getOrderNumber();
         if(lsOrderNumberForOrderModification.substring(0,7).equalsIgnoreCase(lsOrderNumberForOrderConfirmationPage.substring(0,7))){
             reporter.reportLogPass("The order number:"+lsOrderNumberForOrderModification+" for order modification is the same as the one:"+lsOrderNumberForOrderConfirmationPage+" for order confirmation.");
@@ -90,16 +106,26 @@ public class CP_TC17_VerifyOrderModification_OrderConfirmation extends BaseTest 
             reporter.reportLogFail("The order number:"+lsOrderNumberForOrderModification+" for order modification is not the same as the one:"+lsOrderNumberForOrderConfirmationPage+" for order confirmation.");
         }
 
-        reporter.reportLog("Verify Order List Linkage Between OrderConfirmationPage And CheckoutPage");
         List<Map<String,Object>> orderListMapOnOrderConfirmationPage=getOrderConfirmationThreadLocal().getOrderListDescForOrderModification();
+        Map<String,Object> itemCountAndSubTotalMapOnOrderConfirmationPage=getOrderConfirmationThreadLocal().getCheckoutItemCountAndSubTotal(orderListMapOnOrderConfirmationPage);
+        int itemCountForOrderConfirmationList= (int) itemCountAndSubTotalMapOnOrderConfirmationPage.get("itemCount");
+        float subTotalForOrderConfirmationList= (float) itemCountAndSubTotalMapOnOrderConfirmationPage.get("subTotal");
+
+        reporter.reportLog("Verify OrderSummary Business Logic");
+        Map<String,Object> orderSummaryMapOnOrderConfirmationPage =getOrderConfirmationThreadLocal().getOrderSummaryDesc();
+        getOrderConfirmationThreadLocal().verifyOrderSummaryBusinessLogic(subTotalForOrderConfirmationList,orderSummaryMapOnOrderConfirmationPage,null);
+
+        reporter.reportLog("Verify OrderSummary EasyPayment Business Logic");
+        Map<String,Object> easyPaymentMapOnOrderConfirmationPage=getOrderConfirmationThreadLocal().getEasyPayDesc();
+        getOrderConfirmationThreadLocal().verifyInstallmentBusinessLogic(orderSummaryMapOnOrderConfirmationPage);
+
+        reporter.reportLog("Verify Order List Linkage Between OrderConfirmationPage And CheckoutPage");
         getOrderConfirmationThreadLocal().verifyOrderListLinkageBetweenOrderConfirmationPageAndCheckoutPageForOrderModification(orderListMapOnOrderConfirmationPage,allOrderListMapWithNewlyAddedAndExistingItems);
 
         reporter.reportLog("Verify OrderSummary Linkage Between OrderConfirmationPage And CheckoutPage");
-        Map<String,Object> orderSummaryMapOnOrderConfirmationPage =getOrderConfirmationThreadLocal().getOrderSummaryDesc();
         getOrderConfirmationThreadLocal().verifyOrderSummaryLinkageBetweenOrderConfirmationPageAndCheckoutPageForOrderModification(orderSummaryMapOnOrderConfirmationPage, orderSummaryDescMapOnCheckoutPageForOrderModification);
 
         reporter.reportLog("Verify EasyPayment Linkage Between OrderConfirmationPage And CheckoutPage");
-        Map<String,Object> easyPaymentMapOnOrderConfirmationPage=getOrderConfirmationThreadLocal().getEasyPayDesc();
         getOrderConfirmationThreadLocal().verifyEasyPaymentLinkageBetweenOrderConfirmationPageAndCheckoutPage(easyPaymentMapOnOrderConfirmationPage,easyPaymentDescMapOnCheckoutPageForOrderModification);
 
         reporter.reportLog("Verify Shipping And Payment Linkage Between OrderConfirmationPage And CheckoutPage");
