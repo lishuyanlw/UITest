@@ -71,7 +71,7 @@ public class CP_TC17_VerifyOrderModification_OrderConfirmation_AddRegularProduct
         Map<String,Object> orderSummaryDescMapOnCheckoutPageForOrderModification =getRegularCheckoutThreadLocal().getOrderSummaryDescForOrderModification();
         Map<String,Object> easyPaymentDescMapOnCheckoutPageForOrderModification =getRegularCheckoutThreadLocal().getEasyPayDesc();
         List<Map<String,Object>> allOrderListMapWithNewlyAddedAndExistingItems=getRegularCheckoutThreadLocal().getAllOrderListMapWithNewlyAddedAndExistingItems(productListMapForItemsBeingAdded,productListMapForExistingItems);
-
+        List<Map<String,Object>> calculateLineItemPriceByGivenPromoteCodeDiscountMap=getRegularCheckoutThreadLocal().calculateLineItemPriceByGivenPromoteCodeDiscount(allOrderListMapWithNewlyAddedAndExistingItems,orderSummaryDescMapOnCheckoutPageForOrderModification);
         Map<String,Object> shippingAndPaymentMapOnCheckoutPage=getRegularCheckoutThreadLocal().getShippingAndPaymentDescForOrderModification();
 
         reporter.reportLog("Go to Order Confirmation page");
@@ -113,14 +113,14 @@ public class CP_TC17_VerifyOrderModification_OrderConfirmation_AddRegularProduct
 
         reporter.reportLog("Verify OrderSummary Business Logic");
         Map<String,Object> orderSummaryMapOnOrderConfirmationPage =getOrderConfirmationThreadLocal().getOrderSummaryDesc();
-        getOrderConfirmationThreadLocal().verifyOrderSummaryBusinessLogic(subTotalForOrderConfirmationList,orderSummaryMapOnOrderConfirmationPage,null);
+        getOrderConfirmationThreadLocal().verifyOrderSummaryBusinessLogicForOrderModification(subTotalForOrderConfirmationList,orderSummaryMapOnOrderConfirmationPage,null);
 
         reporter.reportLog("Verify OrderSummary EasyPayment Business Logic");
         Map<String,Object> easyPaymentMapOnOrderConfirmationPage=getOrderConfirmationThreadLocal().getEasyPayDesc();
         getOrderConfirmationThreadLocal().verifyInstallmentBusinessLogic(orderSummaryMapOnOrderConfirmationPage);
 
         reporter.reportLog("Verify Order List Linkage Between OrderConfirmationPage And CheckoutPage");
-        getOrderConfirmationThreadLocal().verifyOrderListLinkageBetweenOrderConfirmationPageAndCheckoutPageForOrderModification(orderListMapOnOrderConfirmationPage,allOrderListMapWithNewlyAddedAndExistingItems);
+        getOrderConfirmationThreadLocal().verifyOrderListLinkageBetweenOrderConfirmationPageAndCheckoutPageForOrderModification(orderListMapOnOrderConfirmationPage,allOrderListMapWithNewlyAddedAndExistingItems,calculateLineItemPriceByGivenPromoteCodeDiscountMap);
 
         reporter.reportLog("Verify OrderSummary Linkage Between OrderConfirmationPage And CheckoutPage");
         getOrderConfirmationThreadLocal().verifyOrderSummaryLinkageBetweenOrderConfirmationPageAndCheckoutPageForOrderModification(orderSummaryMapOnOrderConfirmationPage, orderSummaryDescMapOnCheckoutPageForOrderModification);

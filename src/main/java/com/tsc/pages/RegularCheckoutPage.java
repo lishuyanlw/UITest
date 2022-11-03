@@ -6661,4 +6661,36 @@ public class RegularCheckoutPage extends BasePage {
 		}
 	}
 
+	/**
+	 * To calculate Line Item Price By Given Promote Code Discount
+	 * @param - List<Map<String,Object>> - checkoutListMap
+	 * @param - Map<String,Object> - orderSummaryMap
+	 * @return - List<Map<String,Object>>
+	 */
+	public List<Map<String,Object>> calculateLineItemPriceByGivenPromoteCodeDiscount(List<Map<String,Object>> checkoutListMap,Map<String,Object> orderSummaryMap){
+		List<Map<String,Object>> mapList=new ArrayList<>();
+		float promoteCodeValue= Math.abs((float) orderSummaryMap.get("promoteCodeValue"));
+		Map<String,Object> checkoutItemCountAndSubTotal=this.getCheckoutItemCountAndSubTotal(checkoutListMap);
+		float subTotal= (float) checkoutItemCountAndSubTotal.get("subTotal");
+
+		for(Map<String,Object> itemMap:checkoutListMap){
+			Map<String,Object> mapItem=new HashMap<>();
+			String productName= (String) itemMap.get("productName");
+			String productStyle= (String) itemMap.get("productStyle");
+			String productSize= (String) itemMap.get("productSize");
+			float productNowPrice= (float) itemMap.get("productNowPrice");
+			int productQuantity= (int) itemMap.get("productQuantity");
+			float subTotalForItem=productNowPrice*productQuantity;
+			float productPriceForPromoteCodeDiscount=productNowPrice-subTotalForItem/subTotal*promoteCodeValue/productQuantity;
+
+			mapItem.put("productName",productName);
+			mapItem.put("productStyle",productStyle);
+			mapItem.put("productSize",productSize);
+			mapItem.put("productPriceForPromoteCodeDiscount",productPriceForPromoteCodeDiscount);
+			mapList.add(mapItem);
+		}
+
+		return mapList;
+	}
+
 }

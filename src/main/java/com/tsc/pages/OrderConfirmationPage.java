@@ -846,6 +846,48 @@ public class OrderConfirmationPage extends BasePage {
 	}
 
 	/**
+	 * To verify OrderSummary business Logic for order modification
+	 * @param - subTotalShoppingCart - float - subTotal in checkout cart
+	 * @param - orderSummaryMap - Map<String,Object>
+	 * @param - Map<String,Object> - provincialTaxRate - note that if pass null, will not calculate tax for comparison
+	 */
+	public void verifyOrderSummaryBusinessLogicForOrderModification(float subTotalShoppingCart,Map<String,Object> orderSummaryMap,Map<String,Object> provincialTaxRate){
+		float wasPriceOrderSummary= (float) orderSummaryMap.get("wasPrice");
+		float nowPriceOrderSummary=(float) orderSummaryMap.get("nowPrice");
+
+		float promoteCodeValue=Math.abs((float) orderSummaryMap.get("promoteCodeValue"));
+		float subTotal=(float) orderSummaryMap.get("subTotal");
+		if(Math.abs(subTotal-subTotalShoppingCart-promoteCodeValue)<0.01){
+			reporter.reportLogPass("The subtotal price in OrderSummary section is equal to the subtotal price in shopping cart section");
+		}
+		else{
+			reporter.reportLogFail("The subtotal price:"+subTotal+" in OrderSummary section is not equal to the subtotal price:"+subTotalShoppingCart+" in shopping cart section");
+		}
+
+		float tax=(float) orderSummaryMap.get("tax");
+		if(provincialTaxRate!=null){
+			final DecimalFormat df = new DecimalFormat("0.00");
+			String province=orderSummaryMap.get("province").toString();
+			float calProvinceTax=getCalculatedProvinceTax(subTotal,(float) orderSummaryMap.get("nowPrice"),province,provincialTaxRate);
+			if(Math.abs(Float.parseFloat(df.format(calProvinceTax-tax)))<0.02){
+				reporter.reportLogPass("The calculated tax in OrderSummary section is equal to the tax in OrderSummary section");
+			}
+			else{
+				reporter.reportLogFail("The calculated tax:"+calProvinceTax+" in OrderSummary section for province: "+province+" is not equal to the tax:"+tax+" in OrderSummary section");
+			}
+		}
+
+		float calTotalPrice=subTotal+tax+nowPriceOrderSummary-promoteCodeValue;
+		float totalPrice=(float) orderSummaryMap.get("totalPrice");
+		if(Math.abs(calTotalPrice-totalPrice)<0.01){
+			reporter.reportLogPass("The calculated total price in OrderSummary section is equal to the total price in OrderSummary section");
+		}
+		else{
+			reporter.reportLogFail("The calculated total price:"+calTotalPrice+" in OrderSummary section is not equal to the total price:"+totalPrice+" in OrderSummary section");
+		}
+	}
+
+	/**
 	 * To get EasyPay Description
 	 * @return - Map<String,Object>
 	 */
@@ -2029,18 +2071,20 @@ public class OrderConfirmationPage extends BasePage {
 	 * To verify Order List Linkage Between Order Confirmation Page And Checkout Page for order modification
 	 * @param - List<Map<String,Object>> - orderListMapForOrderConfirmation
 	 * @param - List<Map<String,Object>> - orderListMapForCheckout
+	 * @param - List<Map<String,Object>> - orderListMapForPriceDiscount
 	 */
-	public void verifyOrderListLinkageBetweenOrderConfirmationPageAndCheckoutPageForOrderModification(List<Map<String,Object>> orderListMapForOrderConfirmation,List<Map<String,Object>> orderListMapForCheckout){
+	public void verifyOrderListLinkageBetweenOrderConfirmationPageAndCheckoutPageForOrderModification(List<Map<String,Object>> orderListMapForOrderConfirmation,List<Map<String,Object>> orderListMapForCheckout,List<Map<String,Object>> orderListMapForPriceDiscount){
 		int findIndex;
 		ShoppingCartPage shoppingCartPage=new ShoppingCartPage(this.getDriver());
-		Map<String,Object> checkoutItem;
+		Map<String,Object> checkoutItem,priceDiscountItem;
 		for(Map<String,Object> orderItem:orderListMapForOrderConfirmation){
 			String lsText=(String)orderItem.get("productName");
 			reporter.reportLog("Verify product:'"+lsText+"'");
 			findIndex=shoppingCartPage.findGivenProductIndexInProductList(orderItem,orderListMapForCheckout);
 			if(findIndex!=-1){
 				checkoutItem=orderListMapForCheckout.get(findIndex);
-				this.verifyProductListLinkageBetweenOrderConfirmationPageAndCheckoutPageForOrderModification(orderItem,checkoutItem);
+				priceDiscountItem=orderListMapForPriceDiscount.get(findIndex);
+				this.verifyProductListLinkageBetweenOrderConfirmationPageAndCheckoutPageForOrderModification(orderItem,checkoutItem,priceDiscountItem);
 			}
 			else{
 				reporter.reportLogFail("Unable to find '"+lsText+"' in Checkout Page");
@@ -2052,8 +2096,9 @@ public class OrderConfirmationPage extends BasePage {
 	 * To verify product list Linkage Between OrderConfirmation Page And Checkout Page for order modification
 	 * @param - Map<String,Object> - orderConfirmationItem
 	 * @param - Map<String,Object> - checkoutItem
+	 * @param - Map<String,Object> - priceDiscountItem
 	 */
-	public void verifyProductListLinkageBetweenOrderConfirmationPageAndCheckoutPageForOrderModification(Map<String,Object> orderConfirmationItem,Map<String,Object> checkoutItem){
+	public void verifyProductListLinkageBetweenOrderConfirmationPageAndCheckoutPageForOrderModification(Map<String,Object> orderConfirmationItem,Map<String,Object> checkoutItem,Map<String,Object> priceDiscountItem){
 		String lsOrderConfirmationText,lsCheckoutText;
 
 		lsOrderConfirmationText=(String)orderConfirmationItem.get("productName");
@@ -2123,7 +2168,7 @@ public class OrderConfirmationPage extends BasePage {
 		}
 
 		float orderConfirmationNowPrice=(float)orderConfirmationItem.get("productNowPrice");
-		float checkoutNowPrice=(float)checkoutItem.get("productNowPrice");
+		float checkoutNowPrice=(float)priceDiscountItem.get("productPriceForPromoteCodeDiscount");
 		if(Math.abs(orderConfirmationNowPrice-checkoutNowPrice)<0.1f){
 			reporter.reportLogPass("The productNowPrice in OrderConfirmation Item is the same as the one in checkout Item");
 		}
