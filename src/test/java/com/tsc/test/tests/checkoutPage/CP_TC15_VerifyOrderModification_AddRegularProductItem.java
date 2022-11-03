@@ -124,6 +124,10 @@ public class CP_TC15_VerifyOrderModification_AddRegularProductItem extends BaseT
         int itemCountForNewlyAddedOrderList= (int) NewlyAddedCheckoutItemCountAndSubTotalMap.get("itemCount");
         float subTotalForNewlyAddedOrderList= (float) NewlyAddedCheckoutItemCountAndSubTotalMap.get("subTotal");
 
+        reporter.reportLog("Verify Item Count And SubTotal For NewlyAddedOrderList");
+        Map<String,Object> calculatedNewlyAddedCheckoutItemCountAndSubTotalMap=getOrderModificationThreadLocal().getCalculatedCheckoutItemCountAndSubTotal(newlyAddedOrderMapList);
+        getOrderModificationThreadLocal().verifyItemCountAndSubTotalForNewlyAddedOrderList(NewlyAddedCheckoutItemCountAndSubTotalMap, calculatedNewlyAddedCheckoutItemCountAndSubTotalMap);
+
         reporter.reportLog("Verify Linkage Between AddToBag Item And Newly Added Order List");
         getOrderModificationThreadLocal().verifyLinkageBetweenAddToBagItemAndNewlyAddedOrderList(newlyAddedOrderMapList,addToBagPopUpData);
 

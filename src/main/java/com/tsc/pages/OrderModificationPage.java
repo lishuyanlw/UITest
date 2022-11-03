@@ -53,10 +53,6 @@ public class OrderModificationPage extends BasePage {
 	@FindBy(xpath = "//shopping-cart//button[normalize-space(text())='CANCEL MODIFICATION'][not(contains(@class,'cancelModButton'))]")
 	public WebElement btnModifyOrderCancelModificationButton;
 
-	//For mobile device
-//	@FindBy(xpath = "//shopping-cart//button[normalize-space(text())='CANCEL MODIFICATION'][contains(@class,'cancelModButton')]")
-//	public WebElement btnModifyOrderCancelModificationButton;
-
 	//Not occurs for mobile device
 	@FindBy(xpath = "//shopping-cart//div[@class='cart-contents']//div[contains(@class,'cart__message--top--ordermod')]")
 	public WebElement lblModifyOrderCartMessage;
@@ -91,13 +87,6 @@ public class OrderModificationPage extends BasePage {
 
 	@FindBy(xpath = "//shopping-cart//div[@class='promoMsg']/div[@class='table-cell'][not(*[@class='errorLogo'])]")
 	public WebElement lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeAppliedPromoteMessage;
-
-	//For mobile device
-//	@FindBy(xpath = "//shopping-cart//div[@class='cart-contents']//div[@id='mod-options']//div[@class='panel']//div[@id='collapseTwo']//form//div[contains(@class,'visible-xs-block')]//button[@type='submit']")
-//  public WebElement btnModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyButton;
-
-//	@FindBy(xpath = "//shopping-cart//div[@class='cart-contents']//div[@id='mod-options']//div[@class='panel']//div[@id='collapseTwo']//form//div[contains(@class,'visible-xs-block') and contains(@class,'promoNoteDiv')]")
-//	public WebElement lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyNoteMessage;
 
 	@FindBy(xpath = "//shopping-cart//div[@class='cart-contents']//div[@id='mod-options']//div[@class='panel']//div[@id='headingThree']//a")
 	public WebElement lblModifyOrderChangeModOptionsOtherChangesHeadingTitle;
@@ -1295,6 +1284,16 @@ public class OrderModificationPage extends BasePage {
 				}
 			}
 		}
+
+		if(bNewlyAdded){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblNewlyAddedSubTotal);
+			lsText=lblNewlyAddedSubTotal.getText();
+			if (!lsText.isEmpty()) {
+				reporter.reportLogPass("The subtotal for newly added items is displaying correctly");
+			} else {
+				reporter.reportLogFailWithScreenshot("The subtotal for newly added items is not displaying correctly");
+			}
+		}
 	}
 
 	/**
@@ -1777,6 +1776,33 @@ public class OrderModificationPage extends BasePage {
 		}
 		else{
 			reporter.reportLogFail("The AddToBag product:'"+lsProductName+" ' cannot be found in newly added order list on orderModificationPage");
+		}
+	}
+
+	/**
+	 * To verify Item Count And SubTotal For NewlyAddedOrderList
+	 * @param - Map<String,Object> - subTotalAndItemCountOnOrderModificationPage
+	 * @param - Map<String,Object> - calculatedSubTotalAndItemCount
+	 */
+	public void verifyItemCountAndSubTotalForNewlyAddedOrderList(Map<String,Object> subTotalAndItemCountOnOrderModificationPage, Map<String,Object> calculatedSubTotalAndItemCount){
+		int itemCountOnOrderModificationPage= (int) subTotalAndItemCountOnOrderModificationPage.get("itemCount");
+		float subTotalOnOrderModificationPage= (float) subTotalAndItemCountOnOrderModificationPage.get("subTotal");
+
+		int calculatedItemCount= (int) calculatedSubTotalAndItemCount.get("itemCount");
+		float calculatedSubTotal= (float) calculatedSubTotalAndItemCount.get("subTotal");
+
+		if(itemCountOnOrderModificationPage==calculatedItemCount){
+			reporter.reportLogPass("The item count:"+itemCountOnOrderModificationPage+" in subtotal section is the same as calculated one:"+calculatedItemCount+" from newly added order list.");
+		}
+		else{
+			reporter.reportLogFail("The item count:"+itemCountOnOrderModificationPage+" in subtotal section is not the same as calculated one:"+calculatedItemCount+" from newly added order list.");
+		}
+
+		if(Math.abs(subTotalOnOrderModificationPage-calculatedSubTotal)<0.1f){
+			reporter.reportLogPass("The subtotal:"+subTotalOnOrderModificationPage+" in subtotal section is the same as calculated one:"+calculatedSubTotal+" from newly added order list.");
+		}
+		else{
+			reporter.reportLogFail("The subtotal:"+subTotalOnOrderModificationPage+" in subtotal section is not the same as calculated one:"+calculatedSubTotal+" from newly added order list.");
 		}
 	}
 

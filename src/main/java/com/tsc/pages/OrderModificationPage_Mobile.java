@@ -257,6 +257,16 @@ public class OrderModificationPage_Mobile extends OrderModificationPage {
 				}
 			}
 		}
+
+		if(bNewlyAdded){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblNewlyAddedSubTotal);
+			lsText=lblNewlyAddedSubTotal.getText();
+			if (!lsText.isEmpty()) {
+				reporter.reportLogPass("The subtotal for newly added items is displaying correctly");
+			} else {
+				reporter.reportLogFailWithScreenshot("The subtotal for newly added items is not displaying correctly");
+			}
+		}
 	}
 
 	@Override

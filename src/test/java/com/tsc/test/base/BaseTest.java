@@ -224,7 +224,7 @@ public class BaseTest {
 		regularCheckoutPageThreadLocal.set(new RegularCheckoutPage_Mobile(getDriver()));
 		orderConfirmationPageThreadLocal.set(new OrderConfirmationPage(getDriver()));
 		guestCheckoutPageThreadLocal.set(new GuestCheckoutPage_Mobile(getDriver()));
-		orderModificationPageThreadLocal.set(new OrderModificationPage(getDriver()));
+		orderModificationPageThreadLocal.set(new OrderModificationPage_Tablet(getDriver()));
 	}
 
 
