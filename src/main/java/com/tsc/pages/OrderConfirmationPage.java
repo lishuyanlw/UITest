@@ -2072,24 +2072,30 @@ public class OrderConfirmationPage extends BasePage {
 	 * @param - List<Map<String,Object>> - orderListMapForOrderConfirmation
 	 * @param - List<Map<String,Object>> - orderListMapForCheckout
 	 * @param - List<Map<String,Object>> - orderListMapForPriceDiscount
+	 * @return - boolean
 	 */
-	public void verifyOrderListLinkageBetweenOrderConfirmationPageAndCheckoutPageForOrderModification(List<Map<String,Object>> orderListMapForOrderConfirmation,List<Map<String,Object>> orderListMapForCheckout,List<Map<String,Object>> orderListMapForPriceDiscount){
+	public boolean verifyOrderListLinkageBetweenOrderConfirmationPageAndCheckoutPageForOrderModification(List<Map<String,Object>> orderListMapForOrderConfirmation,List<Map<String,Object>> orderListMapForCheckout,List<Map<String,Object>> orderListMapForPriceDiscount){
 		int findIndex;
 		ShoppingCartPage shoppingCartPage=new ShoppingCartPage(this.getDriver());
-		Map<String,Object> checkoutItem,priceDiscountItem;
+		Map<String,Object> checkoutItem;//,priceDiscountItem;
+		boolean bFinalChanges=false,bPriceChange;
 		for(Map<String,Object> orderItem:orderListMapForOrderConfirmation){
 			String lsText=(String)orderItem.get("productName");
 			reporter.reportLog("Verify product:'"+lsText+"'");
 			findIndex=shoppingCartPage.findGivenProductIndexInProductList(orderItem,orderListMapForCheckout);
 			if(findIndex!=-1){
 				checkoutItem=orderListMapForCheckout.get(findIndex);
-				priceDiscountItem=orderListMapForPriceDiscount.get(findIndex);
-				this.verifyProductListLinkageBetweenOrderConfirmationPageAndCheckoutPageForOrderModification(orderItem,checkoutItem,priceDiscountItem);
+				//priceDiscountItem=orderListMapForPriceDiscount.get(findIndex);
+				bPriceChange=this.verifyProductListLinkageBetweenOrderConfirmationPageAndCheckoutPageForOrderModification(orderItem,checkoutItem,null);
+				if(bPriceChange){
+					bFinalChanges=true;
+				}
 			}
 			else{
 				reporter.reportLogFail("Unable to find '"+lsText+"' in Checkout Page");
 			}
 		}
+		return bFinalChanges;
 	}
 
 	/**
@@ -2097,8 +2103,9 @@ public class OrderConfirmationPage extends BasePage {
 	 * @param - Map<String,Object> - orderConfirmationItem
 	 * @param - Map<String,Object> - checkoutItem
 	 * @param - Map<String,Object> - priceDiscountItem
+	 * @return - boolean
 	 */
-	public void verifyProductListLinkageBetweenOrderConfirmationPageAndCheckoutPageForOrderModification(Map<String,Object> orderConfirmationItem,Map<String,Object> checkoutItem,Map<String,Object> priceDiscountItem){
+	public boolean verifyProductListLinkageBetweenOrderConfirmationPageAndCheckoutPageForOrderModification(Map<String,Object> orderConfirmationItem,Map<String,Object> checkoutItem,Map<String,Object> priceDiscountItem){
 		String lsOrderConfirmationText,lsCheckoutText;
 
 		lsOrderConfirmationText=(String)orderConfirmationItem.get("productName");
@@ -2167,13 +2174,16 @@ public class OrderConfirmationPage extends BasePage {
 			}
 		}
 
-		float orderConfirmationNowPrice=(float)orderConfirmationItem.get("productNowPrice");
-		float checkoutNowPrice=(float)priceDiscountItem.get("productPriceForPromoteCodeDiscount");
-		if(Math.abs(orderConfirmationNowPrice-checkoutNowPrice)<0.1f){
-			reporter.reportLogPass("The productNowPrice in OrderConfirmation Item is the same as the one in checkout Item");
-		}
-		else{
-			reporter.reportLogFail("The productNowPrice:"+orderConfirmationNowPrice+" in OrderConfirmation Item is not the same as the one:"+checkoutNowPrice+" in checkout Item");
+
+		if(priceDiscountItem!=null){
+			float orderConfirmationNowPrice=(float)orderConfirmationItem.get("productNowPrice");
+			float checkoutNowPrice=(float)priceDiscountItem.get("productPriceForPromoteCodeDiscount");
+			if(Math.abs(orderConfirmationNowPrice-checkoutNowPrice)<0.1f){
+				reporter.reportLogPass("The productNowPrice in OrderConfirmation Item is the same as the one in checkout Item");
+			}
+			else{
+				reporter.reportLogFail("The productNowPrice:"+orderConfirmationNowPrice+" in OrderConfirmation Item is not the same as the one:"+checkoutNowPrice+" in checkout Item");
+			}
 		}
 
 		int orderConfirmationQuantity=(int)orderConfirmationItem.get("productQuantity");
@@ -2183,6 +2193,15 @@ public class OrderConfirmationPage extends BasePage {
 		}
 		else{
 			reporter.reportLogFail("The productQuantity:"+orderConfirmationQuantity+" in OrderConfirmation Item is not the same as the one:"+checkoutQuantity+" in checkout Item");
+		}
+
+		float orderConfirmationNowPrice=(float)orderConfirmationItem.get("productNowPrice");
+		float checkoutNowPrice=(float)checkoutItem.get("productNowPrice");
+		if(Math.abs(orderConfirmationNowPrice-checkoutNowPrice)<0.1f){
+			return false;
+		}
+		else{
+			return true;
 		}
 	}
 

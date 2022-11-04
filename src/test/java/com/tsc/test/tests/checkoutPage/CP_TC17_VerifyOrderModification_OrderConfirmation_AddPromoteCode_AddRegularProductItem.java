@@ -80,7 +80,10 @@ public class CP_TC17_VerifyOrderModification_OrderConfirmation_AddPromoteCode_Ad
 
         Map<String,Object> easyPaymentDescMapOnCheckoutPageForOrderModification =getRegularCheckoutThreadLocal().getEasyPayDesc();
         List<Map<String,Object>> allOrderListMapWithNewlyAddedAndExistingItems=getRegularCheckoutThreadLocal().getAllOrderListMapWithNewlyAddedAndExistingItems(productListMapForItemsBeingAdded,productListMapForExistingItems);
-        List<Map<String,Object>> calculateLineItemPriceByGivenPromoteCodeDiscountMap=getRegularCheckoutThreadLocal().calculateLineItemPriceByGivenPromoteCodeDiscount(allOrderListMapWithNewlyAddedAndExistingItems,orderSummaryDescMapOnCheckoutPageForOrderModification);
+        Map<String,Object> itemCountAndSubTotalMapForCheckoutProductList=getRegularCheckoutThreadLocal().getCheckoutItemCountAndSubTotal(allOrderListMapWithNewlyAddedAndExistingItems);
+        int itemCountForCheckoutProductList= (int) itemCountAndSubTotalMapForCheckoutProductList.get("itemCount");
+        float subTotalForCheckoutProductList= (float) itemCountAndSubTotalMapForCheckoutProductList.get("subTotal");
+//        List<Map<String,Object>> calculateLineItemPriceByGivenPromoteCodeDiscountMap=getRegularCheckoutThreadLocal().calculateLineItemPriceByGivenPromoteCodeDiscount(allOrderListMapWithNewlyAddedAndExistingItems,orderSummaryDescMapOnCheckoutPageForOrderModification);
         Map<String,Object> shippingAndPaymentMapOnCheckoutPage=getRegularCheckoutThreadLocal().getShippingAndPaymentDescForOrderModification();
 
         reporter.reportLog("Go to Order Confirmation page");
@@ -136,7 +139,29 @@ public class CP_TC17_VerifyOrderModification_OrderConfirmation_AddPromoteCode_Ad
         getOrderConfirmationThreadLocal().verifyInstallmentBusinessLogic(orderSummaryMapOnOrderConfirmationPage);
 
         reporter.reportLog("Verify Order List Linkage Between OrderConfirmationPage And CheckoutPage");
-        getOrderConfirmationThreadLocal().verifyOrderListLinkageBetweenOrderConfirmationPageAndCheckoutPageForOrderModification(orderListMapOnOrderConfirmationPage,allOrderListMapWithNewlyAddedAndExistingItems,calculateLineItemPriceByGivenPromoteCodeDiscountMap);
+        boolean bPriceChanges=getOrderConfirmationThreadLocal().verifyOrderListLinkageBetweenOrderConfirmationPageAndCheckoutPageForOrderModification(orderListMapOnOrderConfirmationPage,allOrderListMapWithNewlyAddedAndExistingItems,null);
+        if(itemCountForCheckoutProductList==itemCountForOrderConfirmationList){
+            reporter.reportLogPass("The item count on checkout page is equal to the item count on orderConfirmation page");
+        }
+        else{
+            reporter.reportLogPass("The item count on checkout page is equal to the item count on orderConfirmation page");
+        }
+        if(bPriceChanges){
+            if(Math.abs(subTotalForCheckoutProductList-subTotalForOrderConfirmationList-lsPromoteCodeDiscountForOrderConfirmation)<0.1f){
+                reporter.reportLogPass("The difference between the subtotal:"+subTotalForCheckoutProductList+" on checkout page and the subtotal:"+subTotalForOrderConfirmationList+" on orderConfirmation page is equal to the applied promote code discount:"+lsPromoteCodeDiscountForOrderConfirmation+" for line items scenario");
+            }
+            else{
+                reporter.reportLogFail("The difference between the subtotal:"+subTotalForCheckoutProductList+" on checkout page and the subtotal:"+subTotalForOrderConfirmationList+" on orderConfirmation page is not equal to the applied promote code discount:"+lsPromoteCodeDiscountForOrderConfirmation+" for line items scenario");
+            }
+        }
+        else{
+            if(Math.abs(subTotalForCheckoutProductList-subTotalForOrderConfirmationList)<0.1f){
+                reporter.reportLogPass("The difference between the subtotal:"+subTotalForCheckoutProductList+" on checkout page and the subtotal:"+subTotalForOrderConfirmationList+" on orderConfirmation page is 0 for not line item scenario");
+            }
+            else{
+                reporter.reportLogFail("The difference between the subtotal:"+subTotalForCheckoutProductList+" on checkout page and the subtotal:"+subTotalForOrderConfirmationList+" on orderConfirmation page is not 0 for not line item scenario");
+            }
+        }
 
         reporter.reportLog("Verify OrderSummary Linkage Between OrderConfirmationPage And CheckoutPage");
         getOrderConfirmationThreadLocal().verifyOrderSummaryLinkageBetweenOrderConfirmationPageAndCheckoutPageForOrderModification(orderSummaryMapOnOrderConfirmationPage, orderSummaryDescMapOnCheckoutPageForOrderModification);
