@@ -12,15 +12,16 @@ import io.restassured.response.Response;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CP_TC18_VerifyOrderModification_AddADPProductItem extends BaseTest {
+public class CP_TC15_VerifyOrderModification_AddPromoteCode_AddRegularProductItem extends BaseTest {
     /*
-     * CER-906
+     * CER-904
      */
     @Test(groups={"Regression","Checkout","CheckoutMobTab"})
-    public void CP_TC18_VerifyOrderModification_AddADPProductItem() throws IOException {
+    public void CP_TC15_VerifyOrderModification_AddPromoteCode_AddRegularProductItem() throws IOException {
         getGlobalFooterPageThreadLocal().closePopupDialog();
 
         String accessToken = getApiUserSessionDataMapThreadLocal().get("access_token").toString();
@@ -99,9 +100,14 @@ public class CP_TC18_VerifyOrderModification_AddADPProductItem extends BaseTest 
         String lsPromoteCode=TestDataHandler.constantData.getCheckOut().getLst_PromoteCode().get(0);
         getOrderModificationThreadLocal().addPromoteCode(lsPromoteCode);
 
-        reporter.reportLog("Add ADP product item through UI");
-        String lsADPProductNumber = TestDataHandler.constantData.getSearchResultPage().getLbl_AutoDeliverykeyword();
-        Map<String,Object> addToBagPopUpData=getOrderModificationThreadLocal().addProductItems(lsADPProductNumber,true);
+        reporter.reportLog("Add new order item through UI");
+        List<String> lstKeyword = TestDataHandler.constantData.getCheckOut().getLst_SearchingKeywordForPlaceOrder();
+        Map<String,Object> outputDataCriteria= new HashMap<String,Object>();
+        outputDataCriteria.put("style", "1");
+        outputDataCriteria.put("size", "1");
+        String lsProductName=getProductDetailPageThreadLocal().getProductWithConditionsForVideoAndStyleAndSizeWithoutCheckingSoldOutCriteria(lstKeyword,outputDataCriteria);
+        reporter.reportLog("lsProductName: "+lsProductName);
+        Map<String,Object> addToBagPopUpData=getOrderModificationThreadLocal().addProductItems(lsProductName,true);
 
         String lsOrderNumberOnAddToBagWindow= (String) addToBagPopUpData.get("productOrderNumber");
         if(lsOrderNumberForOrderModification.equalsIgnoreCase(lsOrderNumberOnAddToBagWindow)){
@@ -127,6 +133,13 @@ public class CP_TC18_VerifyOrderModification_AddADPProductItem extends BaseTest 
 
         reporter.reportLog("Verify OrderSummary Business Logic after adding new order list");
         orderSummaryMap=getOrderModificationThreadLocal().getOrderSummaryDesc();
+        float lsPromoteCodeDiscountForOrderModification= (float) orderSummaryMap.get("promoteCodeValue");
+        if(Math.abs(lsPromoteCodeDiscountForOrderModification)>0.1f){
+            reporter.reportLogPass("The applied promote code discount:"+Math.abs(lsPromoteCodeDiscountForOrderModification)+" is greater than 0");
+        }
+        else{
+            reporter.reportLogFail("The applied promote code discount:"+Math.abs(lsPromoteCodeDiscountForOrderModification)+" is not greater than 0");
+        }
         getOrderModificationThreadLocal().verifyOrderSummaryBusinessLogic(itemCountForNewlyAddedOrderList+itemCountForExistingOrderList,subTotalForNewlyAddedOrderList+subTotalForExistingOrderList,orderSummaryMap,null);
 
         reporter.reportLog("Verify easy payment Business Logic after adding new order list");

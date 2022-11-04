@@ -15,12 +15,12 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-public class CP_TC16_VerifyOrderModification_Checkout_AddRegularProductItem extends BaseTest {
+public class CP_TC16_VerifyOrderModification_Checkout_AddPromoteCode_AddRegularProductItem extends BaseTest {
     /*
      * CER-905
      */
     @Test(groups={"Regression","Checkout","CheckoutMobTab"})
-    public void CP_TC16_VerifyOrderModification_Checkout_AddRegularProductItem() throws IOException {
+    public void CP_TC16_VerifyOrderModification_Checkout_AddPromoteCode_AddRegularProductItem() throws IOException {
         getGlobalFooterPageThreadLocal().closePopupDialog();
         String accessToken = getApiUserSessionDataMapThreadLocal().get("access_token").toString();
         String customerEDP = getApiUserSessionDataMapThreadLocal().get("customerEDP").toString();
@@ -79,6 +79,14 @@ public class CP_TC16_VerifyOrderModification_Checkout_AddRegularProductItem exte
         getOrderModificationThreadLocal().verifyLinkageBetweenAddToBagItemAndNewlyAddedOrderList(newlyAddedOrderMapList,addToBagPopUpData);
 
         Map<String,Object> orderSummaryMap=getOrderModificationThreadLocal().getOrderSummaryDesc();
+        float lsPromoteCodeDiscountForOrderModification= (float) orderSummaryMap.get("promoteCodeValue");
+        if(Math.abs(lsPromoteCodeDiscountForOrderModification)>0.1f){
+            reporter.reportLogPass("The applied promote code discount:"+Math.abs(lsPromoteCodeDiscountForOrderModification)+" is greater than 0");
+        }
+        else{
+            reporter.reportLogFail("The applied promote code discount:"+Math.abs(lsPromoteCodeDiscountForOrderModification)+" is not greater than 0");
+        }
+
         Map<String,Object> easyPaymentMap=getOrderModificationThreadLocal().getEasyPayDesc();
 
         reporter.reportLog("Go to checkout page");
@@ -113,6 +121,13 @@ public class CP_TC16_VerifyOrderModification_Checkout_AddRegularProductItem exte
 
         reporter.reportLog("Verify Order Summary Business Logic");
         Map<String,Object> orderSummaryDescMapOnCheckoutPageForOrderModification =getRegularCheckoutThreadLocal().getOrderSummaryDescForOrderModification();
+        float lsPromoteCodeDiscountForCheckout= (float) orderSummaryDescMapOnCheckoutPageForOrderModification.get("promoteCodeValue");
+        if(Math.abs(Math.abs(lsPromoteCodeDiscountForOrderModification)-Math.abs(lsPromoteCodeDiscountForCheckout))<0.1f){
+            reporter.reportLogPass("The applied promote code discount:"+Math.abs(lsPromoteCodeDiscountForOrderModification)+" on order Modification Page is the same as the one:"+Math.abs(lsPromoteCodeDiscountForCheckout)+" on Checkout page");
+        }
+        else{
+            reporter.reportLogFail("The applied promote code discount:"+Math.abs(lsPromoteCodeDiscountForOrderModification)+" on order Modification Page is not the same as the one:"+Math.abs(lsPromoteCodeDiscountForCheckout)+" on Checkout page");
+        }
         getRegularCheckoutThreadLocal().verifyOrderSummaryBusinessLogicForOrderModification(subTotalForItemsBeingAddedProductList+subTotalForExistingItemsProductList, orderSummaryDescMapOnCheckoutPageForOrderModification,null);
 
         reporter.reportLog("Verify easy payment Business Logic");

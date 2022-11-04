@@ -15,12 +15,12 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-public class CP_TC20_VerifyOrderModification_OrderConfirmation_AddADPProductItem extends BaseTest {
+public class CP_TC20_VerifyOrderModification_OrderConfirmation_AddPromoteCode_AddADPProductItem extends BaseTest {
     /*
      * CER-906
      */
     @Test(groups={"Regression","Checkout","CheckoutMobTab"})
-    public void CP_TC20_VerifyOrderModification_OrderConfirmation_AddADPProductItem() throws IOException {
+    public void CP_TC20_VerifyOrderModification_OrderConfirmation_AddPromoteCode_AddADPProductItem() throws IOException {
         getGlobalFooterPageThreadLocal().closePopupDialog();
         String accessToken = getApiUserSessionDataMapThreadLocal().get("access_token").toString();
         String customerEDP = getApiUserSessionDataMapThreadLocal().get("customerEDP").toString();
@@ -70,7 +70,16 @@ public class CP_TC20_VerifyOrderModification_OrderConfirmation_AddADPProductItem
 
         List<Map<String,Object>> productListMapForItemsBeingAdded=getRegularCheckoutThreadLocal().getCheckoutItemListDescForOrderModification("all",true);
         List<Map<String,Object>> productListMapForExistingItems=getRegularCheckoutThreadLocal().getCheckoutItemListDescForOrderModification("all",false);
+
         Map<String,Object> orderSummaryDescMapOnCheckoutPageForOrderModification =getRegularCheckoutThreadLocal().getOrderSummaryDescForOrderModification();
+        float lsPromoteCodeDiscountForCheckout= (float) orderSummaryDescMapOnCheckoutPageForOrderModification.get("promoteCodeValue");
+        if(Math.abs(lsPromoteCodeDiscountForCheckout)>0.1f){
+            reporter.reportLogPass("The applied promote code discount:"+Math.abs(lsPromoteCodeDiscountForCheckout)+" is greater than 0");
+        }
+        else{
+            reporter.reportLogFail("The applied promote code discount:"+Math.abs(lsPromoteCodeDiscountForCheckout)+" is not greater than 0");
+        }
+
         Map<String,Object> easyPaymentDescMapOnCheckoutPageForOrderModification =getRegularCheckoutThreadLocal().getEasyPayDesc();
         List<Map<String,Object>> allOrderListMapWithNewlyAddedAndExistingItems=getRegularCheckoutThreadLocal().getAllOrderListMapWithNewlyAddedAndExistingItems(productListMapForItemsBeingAdded,productListMapForExistingItems);
         List<Map<String,Object>> calculateLineItemPriceByGivenPromoteCodeDiscountMap=getRegularCheckoutThreadLocal().calculateLineItemPriceByGivenPromoteCodeDiscount(allOrderListMapWithNewlyAddedAndExistingItems,orderSummaryDescMapOnCheckoutPageForOrderModification);
@@ -115,6 +124,13 @@ public class CP_TC20_VerifyOrderModification_OrderConfirmation_AddADPProductItem
 
         reporter.reportLog("Verify OrderSummary Business Logic");
         Map<String,Object> orderSummaryMapOnOrderConfirmationPage =getOrderConfirmationThreadLocal().getOrderSummaryDesc();
+        float lsPromoteCodeDiscountForOrderConfirmation= (float) orderSummaryMapOnOrderConfirmationPage.get("promoteCodeValue");
+        if(Math.abs(Math.abs(lsPromoteCodeDiscountForOrderConfirmation)-Math.abs(lsPromoteCodeDiscountForCheckout))<0.1f){
+            reporter.reportLogPass("The applied promote code discount:"+Math.abs(lsPromoteCodeDiscountForOrderConfirmation)+" on order order Confirmation Page is the same as the one:"+Math.abs(lsPromoteCodeDiscountForCheckout)+" on Checkout page");
+        }
+        else{
+            reporter.reportLogFail("The applied promote code discount:"+Math.abs(lsPromoteCodeDiscountForOrderConfirmation)+" on order confirmation Page is not the same as the one:"+Math.abs(lsPromoteCodeDiscountForCheckout)+" on Checkout page");
+        }
         getOrderConfirmationThreadLocal().verifyOrderSummaryBusinessLogicForOrderModification(subTotalForOrderConfirmationList,orderSummaryMapOnOrderConfirmationPage,null);
 
         reporter.reportLog("Verify OrderSummary EasyPayment Business Logic");
