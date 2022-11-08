@@ -275,7 +275,6 @@ import utils.ReusableActions;
 	 */	
 	public void navigateToURL(String strURL) {
 		getReusableActionsInstance().openSpecificUrl(strURL,30);
-
 	}
 	
 	/**

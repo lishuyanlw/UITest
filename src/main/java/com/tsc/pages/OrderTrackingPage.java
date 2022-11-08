@@ -120,6 +120,10 @@ public class OrderTrackingPage extends BasePage {
                 map.put("productStyle", splitString[1].trim());
                 map.put("productSize", splitString[2].trim());
             }
+            else{
+                map.put("productStyle", splitString[1].trim());
+                map.put("productSize", splitString[1].trim());
+            }
         }
 
         if(this.checkProductNumberExisting(trackOrderItem)){
@@ -450,6 +454,7 @@ public class OrderTrackingPage extends BasePage {
             reporter.reportLogFail("The productQuantity:"+orderTrackingQuantity+" in OrderTracking Item is not the same as the one:"+orderDetailsQuantity+" in orderDetails Item");
         }
     }
+
 
 
 }

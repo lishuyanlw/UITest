@@ -1,7 +1,6 @@
 package com.tsc.pages;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.tsc.api.apiBuilder.AccountAPI;
 import com.tsc.api.apiBuilder.CartAPI;
 import com.tsc.api.apiBuilder.OrderAPI;
 import com.tsc.api.pojo.CartResponse;
@@ -17,18 +16,13 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-
 import java.io.IOException;
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import org.openqa.selenium.support.ui.Select;
-
 import java.text.ParseException;
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 public class MyAccount extends BasePage {
 

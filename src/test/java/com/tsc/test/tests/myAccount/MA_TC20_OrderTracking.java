@@ -62,13 +62,29 @@ public class MA_TC20_OrderTracking extends BaseTest {
         if(getMyAccountPageThreadLocal().checkOrderItemExisting()){
             getMyAccountPageThreadLocal().goToOrderDetailsPage();
             Map<String,Object> dataDescExceptOrderListForOrderDetails=getMyAccountPageThreadLocal().getOrderDetailsDescExceptOrderList();
+            String lsOrderNumberForOrderDetails= (String) dataDescExceptOrderListForOrderDetails.get("orderNumber");
+            String lsOrderDateForOrderDetails= (String) dataDescExceptOrderListForOrderDetails.get("orderDate");
+
             List<Map<String,Object>> orderListMapForOrderDetails=getMyAccountPageThreadLocal().getOrderListDesc();
 
             getMyAccountPageThreadLocal().goToOrderTrackingPage();
+            String lsOrderNumberForOrderTracking=getOrderTrackingThreadLocal().getOrderTrackingNumber();
+            
             List<Map<String,Object>> orderListMapForOrderTracking=getOrderTrackingThreadLocal().getOrderListDesc();
+
+            reporter.reportLog("Verify Order Tracking Header Section");
             getOrderTrackingThreadLocal().verifyOrderTrackingHeaderSection();
-            getOrderTrackingThreadLocal().verifyOrderTrackingItemsSection();
+
+            reporter.reportLog("Verify Order Tracking Status Section");
             getOrderTrackingThreadLocal().verifyOrderTrackingStatusSection();
+
+            reporter.reportLog("Verify Order Tracking Delivery EstimateDate Section");
+            getOrderTrackingThreadLocal().verifyOrderTrackingDeliveryEstimateDateSection();
+
+            reporter.reportLog("Verify Order Tracking Items Section");
+            getOrderTrackingThreadLocal().verifyOrderTrackingItemsSection();
+
+            reporter.reportLog("Verify Order List Linkage Between OrderDetailsPage And OrderTrackingPage");
             getOrderTrackingThreadLocal().verifyOrderListLinkageBetweenOrderDetailsPageAndOrderTrackingPage(orderListMapForOrderDetails,orderListMapForOrderTracking);
         }
         else{
