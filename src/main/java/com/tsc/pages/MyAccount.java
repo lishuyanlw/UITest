@@ -5432,7 +5432,7 @@ public class MyAccount extends BasePage {
 
 		//Need to update below code once new xpath for shopping cart are added by removing SpinningMehtod below
 		try{
-			new RegularCheckoutPage(this.getDriver()).waitForPageLoadingSpinningordStatusCompleted();
+			new RegularCheckoutPage(this.getDriver()).waitForPageLoadingSpinningStatusCompleted();
 		}
 		catch (Exception e){
 			this.applyStaticWait(1*this.getStaticWaitForApplication());
@@ -5446,6 +5446,16 @@ public class MyAccount extends BasePage {
 			reporter.reportLogFailWithScreenshot("User is not navigated to Shopping Cart Page: "+currentPageURL);
 
 		return orderNumber;
+	}
+
+	/**
+	 * To go To Order Tracking Page
+	 * @return - boolean
+	 */
+	public boolean goToOrderTrackingPage(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnOrderDetailsHeaderTrackOrder);
+		this.btnOrderDetailsHeaderTrackOrder.click();
+		return this.waitForCondition(Driver->{return (new OrderTrackingPage(this.getDriver())).lblTrackOrderTitle.isDisplayed();},120000);
 	}
 }
 

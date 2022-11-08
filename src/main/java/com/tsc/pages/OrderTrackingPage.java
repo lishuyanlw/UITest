@@ -111,7 +111,7 @@ public class OrderTrackingPage extends BasePage {
         lsText = this.getElementInnerText(item);
         map.put("productDescription", lsText);
 
-        if (!lsText.contains("\\|")) {
+        if (!lsText.contains("|")) {
             map.put("productName", lsText);
         } else {
             splitString = lsText.split("\\|");
