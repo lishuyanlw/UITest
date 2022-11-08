@@ -181,6 +181,9 @@ public class GuestCheckoutPage extends RegularCheckoutPage {
 	@FindBy(xpath = "//input[@id='pan']")
 	public WebElement inputCreditCardNumberInIframe;
 
+	@FindBy(xpath = "//input[@id='maskedPan']")
+	public WebElement inputCreditCardMaskNumberInIframe;
+
 	@FindBy(xpath = "//div[contains(@id,'CCNumberSemafone')]/input[@id='selectedNonTscCC']")
 	public WebElement inputEditExistingCreditCard;
 
@@ -210,7 +213,7 @@ public class GuestCheckoutPage extends RegularCheckoutPage {
 	public WebElement inputUsingANewCardDialogPaypalRadio;
 
 	@FindBy(xpath = "//div[@class='create-payment__wrap']//div[contains(@class,'selector__paypal')]//label")
-	public WebElement labelUsingANewCardDialogPaypalRadio;
+	public WebElement labelAddOrChangePaymentMethodDialogPaypalRadio;
 
 	@FindBy(xpath = "//aside[@class='rightSide']//button[@data-link-title='continue to review']")
 	public WebElement btnContinueToReview;
@@ -831,8 +834,15 @@ public class GuestCheckoutPage extends RegularCheckoutPage {
 			}
 			//Using static wait as Sauce Lab sometimes take time to load and behaviour is in-consistent
 			this.applyStaticWait(3000);
-			inputCreditCardNumberInIframe.clear();
-			inputCreditCardNumberInIframe.sendKeys(cardNumber);
+			if(inputCreditCardNumberInIframe.getAttribute("style").contains("display: inline")){
+				inputCreditCardNumberInIframe.clear();
+				inputCreditCardNumberInIframe.sendKeys(cardNumber);
+			}
+			else{
+				inputCreditCardMaskNumberInIframe.click();
+				this.applyStaticWait(this.getStaticWaitForApplication());
+				inputCreditCardNumberInIframe.sendKeys(cardNumber);
+			}
 			this.getDriver().switchTo().defaultContent();
 
 			String cardType = this.getInputCreditCardNumberType();
@@ -881,6 +891,8 @@ public class GuestCheckoutPage extends RegularCheckoutPage {
 	 * @return - String - "Visa"/"MC"/"Amex"
 	 */
 	public String getInputCreditCardNumberType(){
+		//Applying static wait as on repeated use, stale element exception is coming for browser
+		this.applyStaticWait(2000);
 		this.waitForCondition(Driver->{return !lblInputCreditCardNumberType.getAttribute("class").trim().isEmpty();},15000);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblInputCreditCardNumberType);
 		String lsCreditCardClass=lblInputCreditCardNumberType.getAttribute("class").trim();
@@ -1032,8 +1044,8 @@ public class GuestCheckoutPage extends RegularCheckoutPage {
 			reporter.reportLogFailWithScreenshot("The Paypal Radio button is not displaying correctly");
 		}
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(labelUsingANewCardDialogPaypalRadio);
-		if(this.getReusableActionsInstance().isElementVisible(labelUsingANewCardDialogPaypalRadio)){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(labelAddOrChangePaymentMethodDialogPaypalRadio);
+		if(this.getReusableActionsInstance().isElementVisible(labelAddOrChangePaymentMethodDialogPaypalRadio)){
 			reporter.reportLogPass("The Paypal Radio button label is displaying correctly");
 		}
 		else{
@@ -1184,6 +1196,18 @@ public class GuestCheckoutPage extends RegularCheckoutPage {
 			reporter.reportLogPass("The created payment is same as expected one on checkout page");
 		else
 			reporter.reportLogFailWithScreenshot("The created payment is not same as the one on checkout page");
+	}
+
+	/**
+	 * This function verifies input credit card type image on screen
+	 * @param - String - creditCardType
+	 */
+	public void verifyInputCreditCardType(String creditCardType){
+		String cardImageType = this.getInputCreditCardNumberType();
+		if(cardImageType.equalsIgnoreCase(creditCardType))
+			reporter.reportLogPass("Credit Card Added of type: "+creditCardType+" displays image as expected");
+		else
+			reporter.reportLogFailWithScreenshot("Credit Card Added of type: "+creditCardType+" doesn't display image as expected: "+cardImageType);
 	}
 
 }

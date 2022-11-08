@@ -933,32 +933,50 @@ public class ShoppingCartPage extends BasePage {
 	 */
 	public boolean checkIfMatchGivenAddToBagItem(Map<String,Object> addToBagMap,Map<String,Object> shoppingItemMap){
 		if(shoppingItemMap.get("productStyle")!=null&&shoppingItemMap.get("productSize")!=null){
-			if(addToBagMap.get("productName").toString().equalsIgnoreCase(shoppingItemMap.get("productName").toString())&&
-					addToBagMap.get("productStyle").toString().equalsIgnoreCase(shoppingItemMap.get("productStyle").toString())&&
-					addToBagMap.get("productSize").toString().equalsIgnoreCase(shoppingItemMap.get("productSize").toString())){
-				return true;
+			if(addToBagMap.get("productStyle")!=null&&addToBagMap.get("productSize")!=null){
+				if(addToBagMap.get("productName").toString().equalsIgnoreCase(shoppingItemMap.get("productName").toString())&&
+						addToBagMap.get("productStyle").toString().equalsIgnoreCase(shoppingItemMap.get("productStyle").toString())&&
+						addToBagMap.get("productSize").toString().equalsIgnoreCase(shoppingItemMap.get("productSize").toString())){
+					return true;
+				}
+				else{
+					return false;
+				}
 			}
 			else{
+				reporter.reportLogFail("The Style or Size is null.");
 				return false;
 			}
 		}
 
 		if(shoppingItemMap.get("productStyle")!=null&&shoppingItemMap.get("productSize")==null){
-			if(addToBagMap.get("productName").toString().equalsIgnoreCase(shoppingItemMap.get("productName").toString())&&
-					addToBagMap.get("productStyle").toString().equalsIgnoreCase(shoppingItemMap.get("productStyle").toString())){
-				return true;
+			if(addToBagMap.get("productStyle")!=null){
+				if(addToBagMap.get("productName").toString().equalsIgnoreCase(shoppingItemMap.get("productName").toString())&&
+						addToBagMap.get("productStyle").toString().equalsIgnoreCase(shoppingItemMap.get("productStyle").toString())){
+					return true;
+				}
+				else{
+					return false;
+				}
 			}
 			else{
+				reporter.reportLogFail("The Style is null.");
 				return false;
 			}
 		}
 
 		if(shoppingItemMap.get("productStyle")==null&&shoppingItemMap.get("productSize")!=null){
-			if(addToBagMap.get("productName").toString().equalsIgnoreCase(shoppingItemMap.get("productName").toString())&&
-					addToBagMap.get("productSize").toString().equalsIgnoreCase(shoppingItemMap.get("productSize").toString())){
-				return true;
+			if(addToBagMap.get("productSize")!=null){
+				if(addToBagMap.get("productName").toString().equalsIgnoreCase(shoppingItemMap.get("productName").toString())&&
+						addToBagMap.get("productSize").toString().equalsIgnoreCase(shoppingItemMap.get("productSize").toString())){
+					return true;
+				}
+				else{
+					return false;
+				}
 			}
 			else{
+				reporter.reportLogFail("The Size is null.");
 				return false;
 			}
 		}
@@ -1692,15 +1710,16 @@ public class ShoppingCartPage extends BasePage {
 
 	/**
 	 * To set Installment Number By Random Index
+	 * @return - int - the setting of installment number
 	 */
-	public void setInstallmentNumberByRandomIndex(){
+	public int setInstallmentNumberByRandomIndex(){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectCartEasyPayInstallmentNumber);
 		Select select=new Select(this.selectCartEasyPayInstallmentNumber);
 
 		List<WebElement> lstOptions=select.getOptions();
 		int optionSize=lstOptions.size();
 		if(optionSize==1){
-			return;
+			return 0;
 		}
 
 		if(optionSize==2){
@@ -1715,6 +1734,8 @@ public class ShoppingCartPage extends BasePage {
 		catch (Exception e){
 			this.applyStaticWait(3*this.getStaticWaitForApplication());
 		}
+
+		return this.getIntegerFromString(select.getFirstSelectedOption().getText());
 	}
 
 	/**
@@ -2617,13 +2638,12 @@ public class ShoppingCartPage extends BasePage {
 	 * @return - List<Map<String,Object> - List of map object for all items in cart for user
 	 * @throws IOException
 	 */
-	public List<Map<String,Object>> verifyCartExistsForUser(int customerEDP, String accessToken,List<Map<String,String>> itemsToBeAdded,boolean bCheckExisting) throws IOException {
+	public List<Map<String,Object>> verifyCartExistsForUser(int customerEDP, String accessToken,List<Map<String,String>> itemsToBeAdded,String noOfItemsToBeAdded,boolean bCheckExisting) throws IOException {
 		CartAPI cartApi = new CartAPI();
 		CartResponse accountCart = null;
 		Response responseExisting=cartApi.getAccountCartContentWithCustomerEDP(String.valueOf(customerEDP), accessToken);
 		if(responseExisting.statusCode()==200) {
-			accountCart = JsonParser.getResponseObject(responseExisting.asString(), new TypeReference<CartResponse>() {
-			});
+			accountCart = JsonParser.getResponseObject(responseExisting.asString(), new TypeReference<CartResponse>() {});
 		}
 		else{
 			return null;
@@ -2655,6 +2675,7 @@ public class ShoppingCartPage extends BasePage {
 				map.put("productSavePrice",cartLineItemClass.getSavePrice());
 				map.put("productAppliedShipping",cartLineItemClass.getAppliedShipping());
 				map.put("advanceOrderMessage",cartLineItemClass.getSkuAvailabilityMessage());
+				map.put("cartGuid",accountCart.getCartGuid());
 
 				for(CartResponse.ProductsClass productsClass:productsClassList){
 					boolean outerForLoop = false;
@@ -2678,13 +2699,13 @@ public class ShoppingCartPage extends BasePage {
 		}
 		//If there is no cart present fo user, creating the cart for user and returning data
 		else{
-			List<Map<String,Object>> data = new ProductAPI().getProductDetailsToBeAddedToCartForUser(itemsToBeAdded);
+			List<Map<String,Object>> data = new ProductAPI().getProductDetailsToBeAddedToCartForUser(itemsToBeAdded,noOfItemsToBeAdded);
+			//System.out.println(data.toString());
 			this.addItemsToCartForUser(data,customerEDP,accessToken,null);
 
 			responseExisting=cartApi.getAccountCartContentWithCustomerEDP(String.valueOf(customerEDP), accessToken);
 			if(responseExisting.statusCode()==200) {
-				accountCart = JsonParser.getResponseObject(responseExisting.asString(), new TypeReference<CartResponse>() {
-				});
+				accountCart = JsonParser.getResponseObject(responseExisting.asString(), new TypeReference<CartResponse>() {});
 			}
 			else{
 				return null;
@@ -2714,6 +2735,7 @@ public class ShoppingCartPage extends BasePage {
 				map.put("productSavePrice",cartLineItemClass.getSavePrice());
 				map.put("productAppliedShipping",cartLineItemClass.getAppliedShipping());
 				map.put("advanceOrderMessage",cartLineItemClass.getSkuAvailabilityMessage());
+				map.put("cartGuid",accountCart.getCartGuid());
 
 				for(CartResponse.ProductsClass productsClass:productsClassList){
 					boolean outerForLoop = false;
@@ -3366,6 +3388,8 @@ public class ShoppingCartPage extends BasePage {
 				}
 				if(flag){
 					this.getReusableActionsInstance().switchToMainWindow(parentWindowHandle);
+					//Applying static wait as page takes time to load and all elements are already available in dom, hence applying waitForCondition will not help
+					this.applyStaticWait(3000);
 					break;
 				}
 			}

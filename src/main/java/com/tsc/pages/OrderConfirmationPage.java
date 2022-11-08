@@ -1,11 +1,17 @@
 package com.tsc.pages;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.tsc.api.apiBuilder.OrderAPI;
+import com.tsc.api.pojo.PlaceOrderResponse;
+import com.tsc.api.util.JsonParser;
 import com.tsc.pages.base.BasePage;
+import io.restassured.response.Response;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import java.io.IOException;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -325,15 +331,17 @@ public class OrderConfirmationPage extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnGoToOrderDetails);
 		this.btnGoToOrderDetails.click();
 
-		String lsBaseURL=this.getBaseURL();
-		String lsExpectedURL=lsBaseURL+lsURLFromYamlFile+lsOrderNumber;
-		String lsCurrentURL=this.URL();
-		this.waitForCondition(Driver->{return lsCurrentURL.equalsIgnoreCase(lsExpectedURL);},20000);
-		if(lsCurrentURL.equalsIgnoreCase(lsExpectedURL)){
-			reporter.reportLogPass("Navigate to order details page successfully and url is: "+lsExpectedURL);
-		}
-		else{
-			reporter.reportLogFail("Fail to navigate to order details page with actual url: "+lsCurrentURL+" but expected url is: "+lsExpectedURL);
+		if(lsURLFromYamlFile!=null&&lsOrderNumber!=null){
+			String lsBaseURL=this.getBaseURL();
+			String lsExpectedURL=lsBaseURL+lsURLFromYamlFile+lsOrderNumber;
+			String lsCurrentURL=this.URL();
+			this.waitForCondition(Driver->{return lsCurrentURL.equalsIgnoreCase(lsExpectedURL);},20000);
+			if(lsCurrentURL.equalsIgnoreCase(lsExpectedURL)){
+				reporter.reportLogPass("Navigate to order details page successfully and url is: "+lsExpectedURL);
+			}
+			else{
+				reporter.reportLogFail("Fail to navigate to order details page with actual url: "+lsCurrentURL+" but expected url is: "+lsExpectedURL);
+			}
 		}
 
 		MyAccount myAccount=new MyAccount(this.getDriver());
@@ -344,7 +352,13 @@ public class OrderConfirmationPage extends BasePage {
 			for(int refreshCounter=0;refreshCounter<100;refreshCounter++){
 				this.getDriver().navigate().refresh();
 				this.waitForPageToLoad();
-				boolean value = this.waitForCondition(Driver->{return myAccount.lblOrderDetailsSectionTitle.isDisplayed();},15000);
+				boolean value=false;
+				try{
+					value = this.waitForCondition(Driver->{return myAccount.lblOrderDetailsSectionTitle.isDisplayed();},15000);
+				}
+				catch (Exception ex){
+
+				}
 				if(value)
 					break;
 				else
@@ -484,8 +498,68 @@ public class OrderConfirmationPage extends BasePage {
 			map.put("productShippingDate", lsText.split(":")[1].trim());
 		}
 		else{
-			map.put("productShippingDate", null);
+			lsText = this.getElementInnerText(getDriver().findElement(byProductShippingDate));
+			map.put("productShippingDate", lsText.split(":")[1].trim());
 		}
+
+		return map;
+	}
+
+	/**
+	 * To get Order item Description for order Modification
+	 * @param - WebElement - orderItem in lstOrderList
+	 * @return - Map<String,Object>
+	 */
+	public Map<String,Object> getOrderItemDescForOrderModification(WebElement orderItem){
+		Map<String,Object> map=new HashMap<>();
+		WebElement item,subItem,styleItem,sizeItem;
+		String lsText;
+
+		if(this.checkProductBadgeExisting(orderItem)){
+			map.put("productBadge",true);
+		}
+		else{
+			map.put("productBadge",false);
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(orderItem);
+		item = orderItem.findElement(byProductDescriptionLink);
+		lsText = this.getElementInnerText(item);
+		map.put("productDescription", lsText);
+
+		subItem=item.findElement(By.xpath("./div[1]"));
+		map.put("productName",subItem.getText().trim());
+
+		subItem=item.findElement(By.xpath("./div[2]"));
+		if(this.checkChildElementExistingByAttribute(subItem,"class","spn-style")){
+			styleItem=subItem.findElement(By.xpath("./span[@class='spn-style']"));
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(styleItem);
+			map.put("productStyle",styleItem.getText().trim());
+		}
+		else{
+			map.put("productStyle",null);
+		}
+
+		if(this.checkChildElementExistingByAttribute(subItem,"class","spn-size")){
+			sizeItem=subItem.findElement(By.xpath("./span[@class='spn-size']"));
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(sizeItem);
+			map.put("productSize",sizeItem.getText().trim().split(":")[1].trim());
+		}
+		else{
+			map.put("productSize",null);
+		}
+
+		item = orderItem.findElement(byProductNowPrice);
+		lsText = this.getElementInnerText(item);
+		map.put("productNowPrice", this.getFloatFromString(lsText,true));
+
+		item = orderItem.findElement(byProductNumber);
+		lsText = this.getElementInnerText(item).replace("-", "").trim();
+		map.put("productNumber", lsText);
+
+		item = orderItem.findElement(byProductQuantity);
+		lsText = this.getElementInnerText(item);
+		map.put("productQuantity", this.getIntegerFromString(lsText));
 
 		return map;
 	}
@@ -498,6 +572,20 @@ public class OrderConfirmationPage extends BasePage {
 		List<Map<String,Object>> mapList= new ArrayList<>();
 		for(WebElement orderItem:lstOrderList) {
 			mapList.add(getOrderItemDesc(orderItem));
+
+		}
+		return mapList;
+	}
+
+	/**
+	 * To get Order List Description for order Modification
+	 * @return - List<Map<String,Object>>
+	 */
+	public List<Map<String,Object>> getOrderListDescForOrderModification(){
+		this.waitForCondition(Driver->{return lstOrderList.size()>0;},120000);
+		List<Map<String,Object>> mapList= new ArrayList<>();
+		for(WebElement orderItem:lstOrderList) {
+			mapList.add(getOrderItemDescForOrderModification(orderItem));
 
 		}
 		return mapList;
@@ -747,6 +835,48 @@ public class OrderConfirmationPage extends BasePage {
 		}
 
 		float promoteCodeValue=(float) orderSummaryMap.get("promoteCodeValue");
+		float calTotalPrice=subTotal+tax+nowPriceOrderSummary-promoteCodeValue;
+		float totalPrice=(float) orderSummaryMap.get("totalPrice");
+		if(Math.abs(calTotalPrice-totalPrice)<0.01){
+			reporter.reportLogPass("The calculated total price in OrderSummary section is equal to the total price in OrderSummary section");
+		}
+		else{
+			reporter.reportLogFail("The calculated total price:"+calTotalPrice+" in OrderSummary section is not equal to the total price:"+totalPrice+" in OrderSummary section");
+		}
+	}
+
+	/**
+	 * To verify OrderSummary business Logic for order modification
+	 * @param - subTotalShoppingCart - float - subTotal in checkout cart
+	 * @param - orderSummaryMap - Map<String,Object>
+	 * @param - Map<String,Object> - provincialTaxRate - note that if pass null, will not calculate tax for comparison
+	 */
+	public void verifyOrderSummaryBusinessLogicForOrderModification(float subTotalShoppingCart,Map<String,Object> orderSummaryMap,Map<String,Object> provincialTaxRate){
+		float wasPriceOrderSummary= (float) orderSummaryMap.get("wasPrice");
+		float nowPriceOrderSummary=(float) orderSummaryMap.get("nowPrice");
+
+		float promoteCodeValue=Math.abs((float) orderSummaryMap.get("promoteCodeValue"));
+		float subTotal=(float) orderSummaryMap.get("subTotal");
+		if(Math.abs(subTotal-subTotalShoppingCart-promoteCodeValue)<0.01){
+			reporter.reportLogPass("The subtotal price in OrderSummary section is equal to the subtotal price in shopping cart section");
+		}
+		else{
+			reporter.reportLogFail("The subtotal price:"+subTotal+" in OrderSummary section is not equal to the subtotal price:"+subTotalShoppingCart+" in shopping cart section");
+		}
+
+		float tax=(float) orderSummaryMap.get("tax");
+		if(provincialTaxRate!=null){
+			final DecimalFormat df = new DecimalFormat("0.00");
+			String province=orderSummaryMap.get("province").toString();
+			float calProvinceTax=getCalculatedProvinceTax(subTotal,(float) orderSummaryMap.get("nowPrice"),province,provincialTaxRate);
+			if(Math.abs(Float.parseFloat(df.format(calProvinceTax-tax)))<0.02){
+				reporter.reportLogPass("The calculated tax in OrderSummary section is equal to the tax in OrderSummary section");
+			}
+			else{
+				reporter.reportLogFail("The calculated tax:"+calProvinceTax+" in OrderSummary section for province: "+province+" is not equal to the tax:"+tax+" in OrderSummary section");
+			}
+		}
+
 		float calTotalPrice=subTotal+tax+nowPriceOrderSummary-promoteCodeValue;
 		float totalPrice=(float) orderSummaryMap.get("totalPrice");
 		if(Math.abs(calTotalPrice-totalPrice)<0.01){
@@ -1080,6 +1210,80 @@ public class OrderConfirmationPage extends BasePage {
 	}
 
 	/**
+	 * To verify Existing order List contents for order modification
+	 */
+	public void verifyOrderListContentsForOrderModification() {
+		String lsText;
+		WebElement item;
+		for (WebElement productItem : this.lstOrderList) {
+			item = productItem.findElement(byProductImage);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsText = item.getAttribute("src");
+			if (!lsText.isEmpty()) {
+				reporter.reportLogPass("The product image source is not empty");
+			} else {
+				reporter.reportLogFailWithScreenshot("The product image source is empty");
+			}
+
+			item = productItem.findElement(byProductImageLink);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsText = item.getAttribute("href");
+			if (!lsText.isEmpty()) {
+				reporter.reportLogPass("The product link is not empty");
+			} else {
+				reporter.reportLogFailWithScreenshot("The product link is empty");
+			}
+
+			item = productItem.findElement(byProductDescriptionLink);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsText = item.getText().trim();
+			if (!lsText.isEmpty()) {
+				reporter.reportLogPass("The product description is displaying correctly");
+			} else {
+				reporter.reportLogFailWithScreenshot("The product description is not displaying correctly");
+			}
+
+			item = productItem.findElement(byProductNumber);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsText = item.getText().replace("-", "").trim();
+			if (!lsText.isEmpty()) {
+				reporter.reportLogPass("The product number is displaying correctly");
+			} else {
+				reporter.reportLogFailWithScreenshot("The product number is not displaying correctly");
+			}
+
+			item = productItem.findElement(byProductNowPrice);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsText = item.getText().trim();
+			if (!lsText.isEmpty()) {
+				reporter.reportLogPass("The product nowPrice is displaying correctly");
+			} else {
+				reporter.reportLogFailWithScreenshot("The product nowPrice is not displaying correctly");
+			}
+
+			item = productItem.findElement(byProductQuantity);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsText = item.getText();
+			if (!lsText.isEmpty()) {
+				reporter.reportLogPass("The product quantity is displaying correctly");
+			} else {
+				reporter.reportLogFailWithScreenshot("The product quantity is not displaying correctly");
+			}
+
+			if(this.checkFreeShippingExistingInOrderList(productItem)){
+				item = productItem.findElement(byProductFreeShipping);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+				lsText = item.getText();
+				if (!lsText.isEmpty()) {
+					reporter.reportLogPass("The product free shipping is displaying correctly");
+				} else {
+					reporter.reportLogFailWithScreenshot("The product free shipping is not displaying correctly");
+				}
+			}
+		}
+	}
+
+	/**
 	 * To verify payment card Contents
 	 */
 	public void verifyPaymentCardContents() {
@@ -1157,6 +1361,29 @@ public class OrderConfirmationPage extends BasePage {
 			} else {
 				reporter.reportLogFailWithScreenshot("The Promote Code is not displaying correctly");
 			}
+		}
+	}
+
+	/**
+	 * To verify payment card Contents for order modification
+	 */
+	public void verifyPaymentCardContentsForOrderModification() {
+		String lsText;
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblPaymentCardTitle);
+		lsText = lblPaymentCardTitle.getText();
+		if (!lsText.isEmpty()) {
+			reporter.reportLogPass("The payment card title is displaying correctly");
+		} else {
+			reporter.reportLogFailWithScreenshot("The payment card title is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblPaymentCard);
+		lsText = lblPaymentCard.getText();
+		if (!lsText.isEmpty()) {
+			reporter.reportLogPass("The payment card is displaying correctly");
+		} else {
+			reporter.reportLogFailWithScreenshot("The payment card is not displaying correctly");
 		}
 	}
 
@@ -1487,11 +1714,9 @@ public class OrderConfirmationPage extends BasePage {
 				}
 			}
 			else{
-				reporter.reportLogFail("The productShippingDate in OrderConfirmation Item is not the same as the one:"+lsCheckoutText+" in checkout Item");
+				reporter.reportLogFailWithScreenshot("The productShippingDate in OrderConfirmation Item is not the same as the one:"+lsCheckoutText+" in checkout Item");
 			}
-
 		}
-
 	}
 
 	/**
@@ -1556,7 +1781,7 @@ public class OrderConfirmationPage extends BasePage {
 		if (Math.abs(OrderConfirmationValue-checkoutValue)<0.1f) {
 			reporter.reportLogPass("The totalPrice in OrderConfirmation Item is the same as the one in checkout Item");
 		} else {
-			reporter.reportLogFail("The totalPrice:"+OrderConfirmationValue+" in OrderConfirmation Item is not the same as the one:"+checkoutValue+" in checkout Item");
+			reporter.reportLogFailWithScreenshot("The totalPrice:"+OrderConfirmationValue+" in OrderConfirmation Item is not the same as the one:"+checkoutValue+" in checkout Item");
 		}
 	}
 
@@ -1682,5 +1907,441 @@ public class OrderConfirmationPage extends BasePage {
 	 */
 	public boolean checkEmailIsSameAsGuestCheckoutPage(String lsEmail){
 		return this.getElementInnerText(lstOrderMessage.get(0)).toLowerCase().contains(lsEmail.toLowerCase());
+	}
+
+	/**
+	 * This function verifies Order Confirmation Data from checkout page
+	 * @param - List<Map<String, Object>> - productListMapForCheckOutPage
+	 * @param - Map<String,Object> - orderSummaryMapOnCheckoutPage
+	 * @param - Map<String,Object> - easyPaymentMapOnCheckoutPage
+	 * @param - Map<String,Object> - shippingAndPaymentMapOnCheckoutPage
+	 * @param - ShoppingCartPage - shoppingCartPage
+	 * @param - String - lsPromoteCodeOnCheckoutPage
+	 * @param - int - itemCountForCheckOutList
+	 * @param - float - subTotalForCheckOutList
+	 */
+	public void verifyOrderConfirmationPageContents(List<Map<String, Object>> productListMapForCheckOutPage,Map<String,Object> orderSummaryMapOnCheckoutPage,Map<String,Object> easyPaymentMapOnCheckoutPage, Map<String,Object> shippingAndPaymentMapOnCheckoutPage, ShoppingCartPage shoppingCartPage,String lsPromoteCodeOnCheckoutPage,int itemCountForCheckOutList,float subTotalForCheckOutList){
+		if(lsPromoteCodeOnCheckoutPage!=null && lsPromoteCodeOnCheckoutPage.length()>0){
+			String lsPromoteCodeOnOrderConfirmationPage=this.getPromoteCode();
+			if(lsPromoteCodeOnCheckoutPage.equalsIgnoreCase(lsPromoteCodeOnOrderConfirmationPage)){
+				reporter.reportLogPass("The promote code on OrderConfirmation page is the same as the one on Checkout page");
+			}
+			else{
+				reporter.reportLogFail("The promote code on OrderConfirmation page is not the same as the one on Checkout page");
+			}
+		}
+
+		//Map<String,Object> orderReceiptForOrderConfirmationPage=this.getReceiptDesc();
+
+		List<Map<String,Object>> orderListMapForOrderConfirmationPage=this.getOrderListDesc();
+		Map<String,Object> itemCountAndSubTotalMap=this.getCheckoutItemCountAndSubTotal(orderListMapForOrderConfirmationPage);
+		int itemCountForOrderConfirmationList= (int) itemCountAndSubTotalMap.get("itemCount");
+		float subTotalForOrderConfirmationList= (float) itemCountAndSubTotalMap.get("subTotal");
+
+		reporter.reportLog("Verify product list linkage between OrderConfirmationPage and CheckoutPage");
+		if(itemCountForOrderConfirmationList==itemCountForCheckOutList){
+			reporter.reportLogPass("The order item count in OrderConfirmation Page is the same as the one in CheckOut page");
+		}
+		else{
+			reporter.reportLogFail("The order item count:"+itemCountForOrderConfirmationList+" in OrderConfirmation Page is the same as the one:"+itemCountForCheckOutList+" in CheckOut page");
+		}
+
+		if(Math.abs(subTotalForOrderConfirmationList-subTotalForCheckOutList)<0.1f){
+			reporter.reportLogPass("The order subTotal in OrderConfirmation Page is the same as the one in CheckOut page");
+		}
+		else{
+			reporter.reportLogFail("The order subTotal:"+subTotalForOrderConfirmationList+" in OrderConfirmation Page is the same as the one:"+subTotalForCheckOutList+" in CheckOut page");
+		}
+
+		int findIndex;
+		Map<String,Object> checkoutItem;
+		for(Map<String,Object> orderItem:orderListMapForOrderConfirmationPage){
+			String lsText=(String)orderItem.get("productName");
+			reporter.reportLog("Verify product:'"+lsText+"'");
+			findIndex=shoppingCartPage.findGivenProductIndexInProductList(orderItem,productListMapForCheckOutPage);
+			if(findIndex!=-1){
+				checkoutItem=productListMapForCheckOutPage.get(findIndex);
+				this.verifyProductListLinkageBetweenOrderConfirmationPageAndCheckoutPage(orderItem,checkoutItem);
+			}
+			else{
+				reporter.reportLogFail("Unable to find '"+lsText+"' in Checkout Page");
+			}
+		}
+
+		Map<String,Object> shippingAndPaymentMapForOrderConfirmationPage=this.getShippingAndPaymentDesc(orderListMapForOrderConfirmationPage.get(0));
+
+		reporter.reportLog("Verify OrderSummary Business Logic");
+		Map<String,Object> orderSummaryForOrderConfirmationPage=this.getOrderSummaryDesc();
+		this.verifyOrderSummaryBusinessLogic(subTotalForOrderConfirmationList,orderSummaryForOrderConfirmationPage,null);
+
+		reporter.reportLog("verify OrderSummary Linkage Between OrderConfirmationPage And CheckoutPage");
+		this.verifyOrderSummaryLinkageBetweenOrderConfirmationPageAndCheckoutPage(orderSummaryForOrderConfirmationPage,orderSummaryMapOnCheckoutPage);
+
+		reporter.reportLog("Verify OrderSummary EasyPayment Business Logic");
+		Map<String,Object> easyPaymentForOrderConfirmationPage=this.getEasyPayDesc();
+		this.verifyInstallmentBusinessLogic(orderSummaryForOrderConfirmationPage);
+
+		reporter.reportLog("verify EasyPayment Linkage Between OrderConfirmationPage And CheckoutPage");
+		this.verifyEasyPaymentLinkageBetweenOrderConfirmationPageAndCheckoutPage(easyPaymentForOrderConfirmationPage,easyPaymentMapOnCheckoutPage);
+
+		reporter.reportLog("verify Shipping and Payment Linkage Between OrderConfirmationPage And CheckoutPage");
+		this.verifyShippingAndPaymentLinkageBetweenOrderConfirmationPageAndCheckoutPage(shippingAndPaymentMapForOrderConfirmationPage,shippingAndPaymentMapOnCheckoutPage);
+
+		reporter.reportLog("Verify OrderConfirmation header Contents");
+		this.verifyOrderConfirmationContents();
+
+		reporter.reportLog("Verify Receipt Contents");
+		this.verifyReceiptContents();
+
+		reporter.reportLog("Verify Order List Contents");
+		this.verifyOrderListContents();
+
+		reporter.reportLog("Verify Payment Card Contents");
+		this.verifyPaymentCardContents();
+
+		reporter.reportLog("Verify OrderSummary Contents");
+		this.verifyOrderSummaryContents();
+
+		reporter.reportLog("Verify EasyPayment Contents");
+		this.verifyEasyPayContents();
+
+		reporter.reportLog("Verify Common Questions Contents");
+		this.verifyCommonQuestionsContents();
+	}
+
+	/**
+	 * To verify OrderSummary Linkage Between OrderConfirmation Page And Checkout Page For Order Modification
+	 * @param - Map<String,Object> - OrderConfirmation
+	 * @param - Map<String,Object> - checkoutItem
+	 */
+	public void verifyOrderSummaryLinkageBetweenOrderConfirmationPageAndCheckoutPageForOrderModification(Map<String,Object> OrderConfirmationItem,Map<String,Object> checkoutItem) {
+		float OrderConfirmationValue, checkoutValue;
+		String lsOrderConfirmationText,lsCheckoutText;
+
+		OrderConfirmationValue = (float) OrderConfirmationItem.get("subTotal");
+		checkoutValue = (float) checkoutItem.get("subTotal");
+		if (Math.abs(OrderConfirmationValue-checkoutValue)<0.1f) {
+			reporter.reportLogPass("The subTotal in OrderConfirmation Item is the same as the one in checkout Item");
+		} else {
+			reporter.reportLogFail("The subTotal:"+OrderConfirmationValue+" in OrderConfirmation Item is not the same as the one:"+checkoutValue+" in checkout Item");
+		}
+
+		OrderConfirmationValue = (float) OrderConfirmationItem.get("nowPrice");
+		checkoutValue = (float) checkoutItem.get("nowPrice");
+		if (Math.abs(OrderConfirmationValue-checkoutValue)<0.1f) {
+			reporter.reportLogPass("The nowPrice in OrderConfirmation Item is the same as the one in checkout Item");
+		} else {
+			reporter.reportLogFail("The nowPrice:"+OrderConfirmationValue+" in OrderConfirmation Item is not the same as the one:"+checkoutValue+" in checkout Item");
+		}
+
+		lsOrderConfirmationText = (String) OrderConfirmationItem.get("province");
+		lsCheckoutText = (String) checkoutItem.get("province");
+		if (lsOrderConfirmationText.equalsIgnoreCase(lsCheckoutText)) {
+			reporter.reportLogPass("The province in OrderConfirmation Item is the same as the one in checkout Item");
+		} else {
+			reporter.reportLogFail("The province:"+lsOrderConfirmationText+" in OrderConfirmation Item is not the same as the one:"+lsCheckoutText+" in checkout Item");
+		}
+
+		OrderConfirmationValue = (float) OrderConfirmationItem.get("tax");
+		checkoutValue = (float) checkoutItem.get("tax");
+		if (Math.abs(OrderConfirmationValue-checkoutValue)<0.1f) {
+			reporter.reportLogPass("The tax in OrderConfirmation Item is the same as the one in checkout Item");
+		} else {
+			reporter.reportLogFail("The tax:"+OrderConfirmationValue+" in OrderConfirmation Item is not the same as the one:"+checkoutValue+" in checkout Item");
+		}
+
+		OrderConfirmationValue = (float) OrderConfirmationItem.get("promoteCodeValue");
+		checkoutValue = (float) checkoutItem.get("promoteCodeValue");
+		if (Math.abs(Math.abs(OrderConfirmationValue)-Math.abs(checkoutValue))<0.1f) {
+			reporter.reportLogPass("The promoteCode Value in OrderConfirmation Item is the same as the one in checkout Item");
+		} else {
+			reporter.reportLogFail("The promoteCode Value:"+OrderConfirmationValue+" in OrderConfirmation Item is not the same as the one:"+checkoutValue+" in checkout Item");
+		}
+
+		OrderConfirmationValue = (float) OrderConfirmationItem.get("totalPrice");
+		checkoutValue = (float) checkoutItem.get("newTotalPrice");
+		if (Math.abs(OrderConfirmationValue-checkoutValue)<0.1f) {
+			reporter.reportLogPass("The totalPrice in OrderConfirmation Item is the same as the one in checkout Item");
+		} else {
+			reporter.reportLogFailWithScreenshot("The totalPrice:"+OrderConfirmationValue+" in OrderConfirmation Item is not the same as the one:"+checkoutValue+" in checkout Item");
+		}
+	}
+
+	/**
+	 * To verify Order List Linkage Between Order Confirmation Page And Checkout Page for order modification
+	 * @param - List<Map<String,Object>> - orderListMapForOrderConfirmation
+	 * @param - List<Map<String,Object>> - orderListMapForCheckout
+	 * @param - List<Map<String,Object>> - orderListMapForPriceDiscount
+	 * @return - boolean
+	 */
+	public boolean verifyOrderListLinkageBetweenOrderConfirmationPageAndCheckoutPageForOrderModification(List<Map<String,Object>> orderListMapForOrderConfirmation,List<Map<String,Object>> orderListMapForCheckout,List<Map<String,Object>> orderListMapForPriceDiscount){
+		int findIndex;
+		ShoppingCartPage shoppingCartPage=new ShoppingCartPage(this.getDriver());
+		Map<String,Object> checkoutItem;//,priceDiscountItem;
+		boolean bFinalChanges=false,bPriceChange;
+		for(Map<String,Object> orderItem:orderListMapForOrderConfirmation){
+			String lsText=(String)orderItem.get("productName");
+			reporter.reportLog("Verify product:'"+lsText+"'");
+			findIndex=shoppingCartPage.findGivenProductIndexInProductList(orderItem,orderListMapForCheckout);
+			if(findIndex!=-1){
+				checkoutItem=orderListMapForCheckout.get(findIndex);
+				//priceDiscountItem=orderListMapForPriceDiscount.get(findIndex);
+				bPriceChange=this.verifyProductListLinkageBetweenOrderConfirmationPageAndCheckoutPageForOrderModification(orderItem,checkoutItem,null);
+				if(bPriceChange){
+					bFinalChanges=true;
+				}
+			}
+			else{
+				reporter.reportLogFail("Unable to find '"+lsText+"' in Checkout Page");
+			}
+		}
+		return bFinalChanges;
+	}
+
+	/**
+	 * To verify product list Linkage Between OrderConfirmation Page And Checkout Page for order modification
+	 * @param - Map<String,Object> - orderConfirmationItem
+	 * @param - Map<String,Object> - checkoutItem
+	 * @param - Map<String,Object> - priceDiscountItem
+	 * @return - boolean
+	 */
+	public boolean verifyProductListLinkageBetweenOrderConfirmationPageAndCheckoutPageForOrderModification(Map<String,Object> orderConfirmationItem,Map<String,Object> checkoutItem,Map<String,Object> priceDiscountItem){
+		String lsOrderConfirmationText,lsCheckoutText;
+
+		lsOrderConfirmationText=(String)orderConfirmationItem.get("productName");
+		lsCheckoutText=(String)checkoutItem.get("productName");
+		if(lsOrderConfirmationText.equalsIgnoreCase(lsCheckoutText)){
+			reporter.reportLogPass("The productName in OrderConfirmation Item is the same as the one in checkout Item");
+		}
+		else{
+			reporter.reportLogFail("The productName:"+lsOrderConfirmationText+" in OrderConfirmation Item is not the same as the one:"+lsCheckoutText+" in checkout Item");
+		}
+
+		lsOrderConfirmationText=(String)orderConfirmationItem.get("productStyle");
+		lsCheckoutText=(String)checkoutItem.get("productStyle");
+		if(lsOrderConfirmationText==null){
+			if(lsCheckoutText==null){
+				reporter.reportLogPass("The productStyle in OrderConfirmation Item is the same as the one in checkout Item");
+			}
+			else{
+				reporter.reportLogFail("The productStyle in OrderConfirmation Item is not the same as the one in checkout Item");
+			}
+		}
+		else{
+			if(lsOrderConfirmationText.equalsIgnoreCase(lsCheckoutText)){
+				reporter.reportLogPass("The productStyle in OrderConfirmation Item is the same as the one in checkout Item");
+			}
+			else{
+				reporter.reportLogFail("The productStyle:"+lsOrderConfirmationText+" in OrderConfirmation Item is not the same as the one:"+lsCheckoutText+" in checkout Item");
+			}
+		}
+
+		lsOrderConfirmationText=(String)orderConfirmationItem.get("productSize");
+		lsCheckoutText=(String)checkoutItem.get("productSize");
+		if(lsOrderConfirmationText==null){
+			if(lsCheckoutText==null){
+				reporter.reportLogPass("The productSize in OrderConfirmation Item is the same as the one in checkout Item");
+			}
+			else{
+				reporter.reportLogFail("The productSize in OrderConfirmation Item is not the same as the one in checkout Item");
+			}
+		}
+		else{
+			if(lsOrderConfirmationText.equalsIgnoreCase(lsCheckoutText)){
+				reporter.reportLogPass("The productSize in OrderConfirmation Item is the same as the one in checkout Item");
+			}
+			else{
+				reporter.reportLogFail("The productSize:"+lsOrderConfirmationText+" in OrderConfirmation Item is not the same as the one:"+lsCheckoutText+" in checkout Item");
+			}
+		}
+
+		lsOrderConfirmationText=(String)orderConfirmationItem.get("productNumber");
+		lsCheckoutText=(String)checkoutItem.get("productNumber");
+		if(lsOrderConfirmationText==null){
+			if(lsCheckoutText==null){
+				reporter.reportLogPass("The productNumber in OrderConfirmation Item is the same as the one in checkout Item");
+			}
+			else{
+				reporter.reportLogFail("The productNumber in OrderConfirmation Item is not the same as the one in checkout Item");
+			}
+		}
+		else{
+			if(lsOrderConfirmationText.equalsIgnoreCase(lsCheckoutText)){
+				reporter.reportLogPass("The productNumber in OrderConfirmation item is the same as the one in checkoutItem");
+			}
+			else{
+				reporter.reportLogFail("The productNumber:"+lsOrderConfirmationText+" in OrderConfirmation Item is not the same as the one:"+lsCheckoutText+" in checkout Item");
+			}
+		}
+
+
+		if(priceDiscountItem!=null){
+			float orderConfirmationNowPrice=(float)orderConfirmationItem.get("productNowPrice");
+			float checkoutNowPrice=(float)priceDiscountItem.get("productPriceForPromoteCodeDiscount");
+			if(Math.abs(orderConfirmationNowPrice-checkoutNowPrice)<0.1f){
+				reporter.reportLogPass("The productNowPrice in OrderConfirmation Item is the same as the one in checkout Item");
+			}
+			else{
+				reporter.reportLogFail("The productNowPrice:"+orderConfirmationNowPrice+" in OrderConfirmation Item is not the same as the one:"+checkoutNowPrice+" in checkout Item");
+			}
+		}
+
+		int orderConfirmationQuantity=(int)orderConfirmationItem.get("productQuantity");
+		int checkoutQuantity=(int)checkoutItem.get("productQuantity");
+		if(orderConfirmationQuantity==checkoutQuantity){
+			reporter.reportLogPass("The productQuantity in OrderConfirmation Item is the same as the one in checkout Item");
+		}
+		else{
+			reporter.reportLogFail("The productQuantity:"+orderConfirmationQuantity+" in OrderConfirmation Item is not the same as the one:"+checkoutQuantity+" in checkout Item");
+		}
+
+		float orderConfirmationNowPrice=(float)orderConfirmationItem.get("productNowPrice");
+		float checkoutNowPrice=(float)checkoutItem.get("productNowPrice");
+		if(Math.abs(orderConfirmationNowPrice-checkoutNowPrice)<0.1f){
+			return false;
+		}
+		else{
+			return true;
+		}
+	}
+
+	/**
+	 * To get Shipping And Payment Description for order modification
+	 * @return - Map<String,Object>
+	 */
+	public Map<String,Object> getShippingAndPaymentDescForOrderModification() {
+		String lsText;
+		Map<String, Object> map = new HashMap<>();
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblReceiptOrderShippingAddressTitle);
+		String lsSubItem;
+		List<String> lstShippingAddress=new ArrayList<>();
+		String lsShippingAddress="";
+		for(WebElement item:lstReceiptOrderShippingAddressDetails){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsSubItem=item.getText().trim();
+			lsShippingAddress+=lsSubItem;
+			lstShippingAddress.add(lsSubItem);
+		}
+		map.put("shippingAddress",lstShippingAddress);
+		map.put("wholeShippingAddress",lsShippingAddress);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblReceiptOrderShippingMethod);
+		lsText=lblReceiptOrderShippingMethod.getText().trim();
+		map.put("shippingMethod", lsText);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblReceiptOrderNumber);
+		lsText = this.lblReceiptOrderNumber.getText();
+		map.put("orderNumber",lsText);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblReceiptCustomerNumber);
+		lsText = this.lblReceiptCustomerNumber.getText();
+		map.put("customerNumber",lsText);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblReceiptOrderMethod);
+		lsText = this.lblReceiptOrderMethod.getText();
+		map.put("orderMethod",lsText);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblPaymentCard);
+		lsText=lblPaymentCard.getText().trim();
+		map.put("paymentMethodDescription",lsText);
+		map.put("paymentMethod", getPaymentCardType());
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblBillingAddressTitle);
+		List<String> lstBillingAddress=new ArrayList<>();
+		String lsBillingAddress="";
+		for(WebElement item:lstBillingAddressDetails){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsSubItem=item.getText().trim();
+			lsBillingAddress+=lsSubItem;
+			lstBillingAddress.add(lsSubItem);
+		}
+		map.put("billingAddress",lstBillingAddress);
+		map.put("wholeBillingAddress",lsBillingAddress);
+
+		return map;
+	}
+
+	/**
+	 * To verify Shipping and Payment Linkage Between OrderConfirmation Page And Checkout Page for order modification
+	 * @param - Map<String,Object> - OrderConfirmation
+	 * @param - Map<String,Object> - checkoutItem
+	 */
+	public void verifyShippingAndPaymentLinkageBetweenOrderConfirmationPageAndCheckoutPageForOrderModification(Map<String,Object> OrderConfirmationItem,Map<String,Object> checkoutItem) {
+		String lsOrderConfirmationText,lsCheckoutText;
+
+		lsOrderConfirmationText = (String) OrderConfirmationItem.get("wholeShippingAddress");
+		lsCheckoutText = (String) checkoutItem.get("shippingAddress");
+		lsOrderConfirmationText=lsOrderConfirmationText.replace(",","").replace(" ","").toLowerCase();
+		lsCheckoutText=lsCheckoutText.replace(",","").toLowerCase();
+		String[] lstSpit=this.getStringListWithSpaceDelimiter(lsCheckoutText);
+		boolean bMatch=true;
+		for(String lsSplit:lstSpit){
+			if(!lsOrderConfirmationText.contains(lsSplit)){
+				bMatch=false;
+				break;
+			}
+		}
+		if (bMatch) {
+			reporter.reportLogPass("The shipping Address in OrderConfirmation is the same as the one in checkout shipping address.");
+		} else {
+			reporter.reportLogFail("The shipping Address:'"+lsOrderConfirmationText+"' in OrderConfirmation is not the same as the one:'"+lsCheckoutText+"' in checkout shipping address.");
+		}
+
+		lsOrderConfirmationText = (String) OrderConfirmationItem.get("shippingMethod");
+		lsCheckoutText = (String) checkoutItem.get("shippingMethod");
+		if (lsOrderConfirmationText.equalsIgnoreCase(lsCheckoutText)) {
+			reporter.reportLogPass("The shippingMethod in OrderConfirmation Item is the same as the one in checkout Item");
+		} else {
+			reporter.reportLogFail("The shippingMethod:"+lsOrderConfirmationText+" in OrderConfirmation Item is not the same as the one:"+lsCheckoutText+" in checkout Item");
+		}
+
+		lsOrderConfirmationText = (String) OrderConfirmationItem.get("paymentMethod");
+		lsCheckoutText = (String) checkoutItem.get("paymentMethod");
+		if (lsOrderConfirmationText.equalsIgnoreCase(lsCheckoutText)) {
+			reporter.reportLogPass("The paymentMethod in OrderConfirmation Item is the same as the one in checkout Item");
+		} else {
+			reporter.reportLogFail("The paymentMethod:"+lsOrderConfirmationText+" in OrderConfirmation Item is not the same as the one:"+lsCheckoutText+" in checkout Item");
+		}
+
+		lsOrderConfirmationText = (String) OrderConfirmationItem.get("paymentMethodDescription");
+		lsCheckoutText = (String) checkoutItem.get("paymentMethodDescription");
+		if (lsOrderConfirmationText.toLowerCase().contains(lsCheckoutText.toLowerCase())) {
+			reporter.reportLogPass("The paymentMethodDescription in OrderConfirmation Item is the same as the one in checkout Item");
+		} else {
+			reporter.reportLogFail("The paymentMethodDescription:"+lsOrderConfirmationText+" in OrderConfirmation Item is not the same as the one:"+lsCheckoutText+" in checkout Item");
+		}
+
+		lsOrderConfirmationText = (String) OrderConfirmationItem.get("wholeBillingAddress");
+		if(!lsOrderConfirmationText.equalsIgnoreCase("Same as shipping address")){
+			lsCheckoutText = (String) checkoutItem.get("billingAddress");
+			lsOrderConfirmationText=lsOrderConfirmationText.replace(",","").replace(" ","").toLowerCase();
+			lsCheckoutText=lsCheckoutText.replace(",","").replace(" ","").toLowerCase();
+			if (lsOrderConfirmationText.contains(lsCheckoutText)) {
+				reporter.reportLogPass("The billing Address in OrderConfirmation is the same as the one in checkout billing address.");
+			} else {
+				reporter.reportLogFail("The billing Address:'"+lsOrderConfirmationText+"' in OrderConfirmation is not the same as the one:'"+lsCheckoutText+"' in checkout billing address.");
+			}
+		}
+		else{
+			lsOrderConfirmationText = (String) OrderConfirmationItem.get("wholeShippingAddress");
+			lsCheckoutText = (String) checkoutItem.get("billingAddress");
+			lsOrderConfirmationText=lsOrderConfirmationText.replace(",","").replace(" ","").toLowerCase();
+			lsCheckoutText=lsCheckoutText.replace(",","").toLowerCase();
+			lstSpit=this.getStringListWithSpaceDelimiter(lsCheckoutText);
+			bMatch=true;
+			for(String lsSplit:lstSpit){
+				if(!lsOrderConfirmationText.contains(lsSplit)){
+					bMatch=false;
+					break;
+				}
+			}
+			if (bMatch) {
+				reporter.reportLogPass("The billing Address in OrderConfirmation is the same as the one in checkout billing address.");
+			} else {
+				reporter.reportLogFail("The billing Address:'"+lsOrderConfirmationText+"' in OrderConfirmation is the same as the one:'"+lsCheckoutText+"' in checkout billing address.");
+			}
+		}
+
 	}
 }

@@ -72,6 +72,18 @@ public class RegularCheckoutPage extends BasePage {
 	@FindBy(xpath = "//article[@class='leftSide']//div[@id='collapse__productlist']")
 	public WebElement cntProductListContainer;
 
+	@FindBy(xpath = "//article[@class='leftSide']//button[contains(normalize-space(text()),'Items Being Added')]")
+	public WebElement btnItemBeingAdded;
+
+	@FindBy(xpath = "//article[@class='leftSide']//button[contains(normalize-space(text()),'Existing Items')]/preceding-sibling::div[@id='collapse__productlist']//div[@class='productlist']")
+	public List<WebElement> lstProductListForItemBeingAdded;
+
+	@FindBy(xpath = "//article[@class='leftSide']//button[contains(normalize-space(text()),'Existing Items')]")
+	public WebElement btnExistingItems;
+
+	@FindBy(xpath = "//article[@class='leftSide']//button[contains(normalize-space(text()),'Existing Items')]/following-sibling::div[@id='collapse__productlist']//div[@class='productlist']")
+	public List<WebElement> lstProductListForExistingItems;
+
 	@FindBy(xpath = "//article[@class='leftSide']//div[@id='collapse__productlist']//div[@class='productlist']")
 	public List<WebElement> lstProductList;
 
@@ -96,6 +108,9 @@ public class RegularCheckoutPage extends BasePage {
 
 	@FindBy(xpath = "//article[@class='leftSide']//div[contains(@class,'reviewWrap')]//div[@class='estimatedlabel__left']/following-sibling::span")
 	public WebElement lblShippingDate;
+
+	@FindBy(xpath = "//article[@class='leftSide']//div[contains(@class,'shippingAddressWrap')]")
+	public WebElement cntShippingAddressSection;
 
 	@FindBy(xpath = "//article[@class='leftSide']//div[contains(@class,'shippingAddressWrap')]//div[@class='shippingaddress__label']")
 	public WebElement lblShippingAddressTitle;
@@ -214,6 +229,9 @@ public class RegularCheckoutPage extends BasePage {
 
 	///////////////////////////////////////////////////
 
+	@FindBy(xpath = "//article[@class='leftSide']//div[contains(@class,'shippingMethodWrap')]")
+	public WebElement cntShippingMethodSection;
+
 	@FindBy(xpath = "//article[@class='leftSide']//div[contains(@class,'shippingMethodWrap')]//div[@class='shippingmethod__label']")
 	public WebElement lblShippingMethodTitle;
 
@@ -251,6 +269,8 @@ public class RegularCheckoutPage extends BasePage {
 	@FindBy(xpath = "//div[contains(@class,'ReactModal__Content')]//div[@class='modal__footer']//button")
 	public WebElement btnChangeShippingMethodDialogSaveAndContinueButton;
 	/////////////////////////////////////////////////////////////
+	@FindBy(xpath = "//article[@class='leftSide']//div[contains(@class,'paymentMethodWrap')]")
+	public WebElement cntShippingPaymentMethodSection;
 
 	@FindBy(xpath = "//article[@class='leftSide']//div[contains(@class,'paymentMethodWrap')]//div[@class='paymentmethod__label']")
 	public WebElement lblShippingPaymentMethodTitle;
@@ -303,6 +323,9 @@ public class RegularCheckoutPage extends BasePage {
 	@FindBy(xpath = "//div[@class='ReactModal__Overlay ReactModal__Overlay--after-open modal__overlay']//div[contains(@class,'card__wrap--paypal')]//label")
 	public WebElement labelAddOrChangePaymentMethodDialogPaypalRadio;
 
+	@FindBy(xpath = "//div[@class='creditcard__selector--cc selector__paypal']//label[contains(@class,'card__label')]")
+	public WebElement lblAddOrChangePaymentMethodDialogPayPalRadio;
+
 	@FindBy(xpath = "//div[@id='buttons-container']//div[contains(@class,'paypal-button-container')]")
 	public WebElement btnPayPalButton;
 
@@ -338,7 +361,6 @@ public class RegularCheckoutPage extends BasePage {
 	@FindBy(xpath = "//div[@class='card__body']//div[contains(@class,'error')]")
 	public List<WebElement> lstCreditCardMandatoryErrorMessage;
 	////////////////////////////////////////////////////////////////
-
 
 	////////////////////////////////////////////////////
 	//For the popup window by clicking using a new card button
@@ -416,6 +438,9 @@ public class RegularCheckoutPage extends BasePage {
 
 	/////////////////////////////////////////////////////////
 
+	@FindBy(xpath = "//article[@class='leftSide']//div[contains(@class,'billingAddressWrap')]")
+	public WebElement cntBillingAddressSection;
+
 	@FindBy(xpath = "//article[@class='leftSide']//div[contains(@class,'billingAddressWrap')]//div[@class='billingaddress__label']")
 	public WebElement lblBillingAddressTitle;
 
@@ -433,6 +458,9 @@ public class RegularCheckoutPage extends BasePage {
 
 	@FindBy(xpath = "//article[@class='leftSide']//div[contains(@class,'paymentOptionWrap')]//div[@class='paymentoption__description']//select")
 	public WebElement selectPaymentOption;
+
+	@FindBy(xpath = "//article[@class='leftSide']//div[contains(@class,'paymentOptionWrap')]//div[@class='paymentoption__description']")
+	public WebElement lblPaymentOptionTextForOrderModification;
 
 	//For Order Summary section
 	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//h2")
@@ -495,6 +523,25 @@ public class RegularCheckoutPage extends BasePage {
 
 	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//div[@class='summary']/div[contains(@class,'summary__row')][last()]")
 	public WebElement lblOrderSummaryLastItem;
+
+	// Changes for orderModificationPage
+	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//span[contains(@class,'summary__label') and contains(text(),'NEW TOTAL PRICE')]")
+	public WebElement lblOrderSummaryNewTotalPriceTitle;
+
+	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//span[contains(@class,'summary__label') and contains(text(),'NEW TOTAL PRICE')]/following-sibling::span[last()]")
+	public WebElement lblOrderSummaryNewTotalPrice;
+
+	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//span[contains(@class,'summary__label') and contains(text(),'Original Order Total')]")
+	public WebElement lblOrderSummaryOriginalOrderTotalTitle;
+
+	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//span[contains(@class,'summary__label') and contains(text(),'Original Order Total')]/following-sibling::span[last()]")
+	public WebElement lblOrderSummaryOriginalOrderTotal;
+
+	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//span[contains(@class,'summary__label') and contains(text(),'Change to Order Total')]")
+	public WebElement lblOrderSummaryChangeToOrderTotalTitle;
+
+	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//span[contains(@class,'summary__label') and contains(text(),'Change to Order Total')]/following-sibling::span[last()]")
+	public WebElement lblOrderSummaryChangeToOrderTotal;
 
 	//For Installment
 	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]/div[contains(@class,'summary')]")
@@ -614,6 +661,8 @@ public class RegularCheckoutPage extends BasePage {
 	@FindBy(xpath = "//div[contains(@class,'ReactModal__Overlay')]//div[contains(@class,'alert-danger')]")
 	public List<WebElement> mandatoryFieldErrorMessage;
 
+	//For order modification, to identify
+
 	/**
 	 * To check Alert Message In Header Existing
 	 * @return - boolean
@@ -692,6 +741,60 @@ public class RegularCheckoutPage extends BasePage {
 	public boolean checkProductBadgeExisting(WebElement productItem){
 		WebElement badgeItem=productItem.findElement(this.byProductBadgeContainer);
 		return this.checkChildElementExistingByAttribute(badgeItem,"class","productlist__badge");
+	}
+
+	/**
+	 * To check Item Being Added Product Section Expanded For OrderModification
+	 * @return - boolean
+	 */
+	public boolean checkItemBeingAddedProductSectionExpandedForOrderModification(){
+		boolean bFound=false;
+		String[] lstClass=btnItemBeingAdded.getAttribute("class").split(" ");
+		for(String lsClass:lstClass){
+			if(lsClass.equalsIgnoreCase("collapse")){
+				bFound=true;
+				break;
+			}
+		}
+
+		return bFound;
+	}
+
+	/**
+	 * To check existing Items Product Section Expanded For OrderModification
+	 * @return - boolean
+	 */
+	public boolean checkExistingItemsProductSectionExpandedForOrderModification(){
+		boolean bFound=false;
+		String[] lstClass=btnExistingItems.getAttribute("class").split(" ");
+		for(String lsClass:lstClass){
+			if(lsClass.equalsIgnoreCase("collapse")){
+				bFound=true;
+				break;
+			}
+		}
+
+		return bFound;
+	}
+
+	/**
+	 * To expand Item Being Added Product Section For OrderModification
+	 */
+	public void expandItemBeingAddedProductSectionForOrderModification(){
+		if(!checkItemBeingAddedProductSectionExpandedForOrderModification()){
+			this.clickElement(btnItemBeingAdded);
+			this.waitForCondition(Driver->{return checkItemBeingAddedProductSectionExpandedForOrderModification();},10000);
+		}
+	}
+
+	/**
+	 * To expand existing items Product Section For OrderModification
+	 */
+	public void expandExistingItemsProductSectionForOrderModification(){
+		if(!checkExistingItemsProductSectionExpandedForOrderModification()){
+			this.clickElement(btnExistingItems);
+			this.waitForCondition(Driver->{return checkExistingItemsProductSectionExpandedForOrderModification();},10000);
+		}
 	}
 
 	/**
@@ -835,11 +938,19 @@ public class RegularCheckoutPage extends BasePage {
 	}
 
 	/**
-	 * To check Applied Discount Existing In OrderSummary()
-	 * @return
+	 * To check Applied Discount Existing In OrderSummary
+	 * @return - boolean
 	 */
 	public boolean checkAppliedDiscountExistingInOrderSummary(){
 		return this.lstOrderSummaryRow.size()>4;
+	}
+
+	/**
+	 * To check Applied Discount Existing In OrderSummary for orderModification
+	 * @return - boolean
+	 */
+	public boolean checkAppliedDiscountExistingInOrderSummaryForOrderModification(){
+		return this.lstOrderSummaryRow.size()>6;
 	}
 
 	/**
@@ -1000,7 +1111,12 @@ public class RegularCheckoutPage extends BasePage {
 		item=productItem.findElement(byProductNowPrice);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 		lsText=item.getText().trim();
-		map.put("productNowPrice",this.getFloatFromString(lsText,true));
+		if(lsText.toLowerCase().contains("free")){
+			map.put("productNowPrice",0.0f);
+		}
+		else{
+			map.put("productNowPrice",this.getFloatFromString(lsText));
+		}
 
 		item=productItem.findElement(byProductSelectQuantity);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
@@ -1938,6 +2054,8 @@ public class RegularCheckoutPage extends BasePage {
 	 * @return - String - "Visa"/"MC"/"Amex"
 	 */
 	public String getInputCreditCardNumberType(){
+		//Applying static wait as on repeated use, stale element exception is coming for browser
+		this.applyStaticWait(2000);
 		this.waitForCondition(Driver->{return !lblInputCreditCardNumberType.getAttribute("class").trim().isEmpty();},15000);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblInputCreditCardNumberType);
 		String lsCreditCardClass=lblInputCreditCardNumberType.getAttribute("class").trim();
@@ -2325,14 +2443,14 @@ public class RegularCheckoutPage extends BasePage {
 	/**
 	 * To set PaymentOption By Random Index
 	 */
-	public void setPaymentOptionByRandomIndex(){
+	public int setPaymentOptionByRandomIndex(){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectPaymentOption);
 		Select select=new Select(this.selectPaymentOption);
 
 		List<WebElement> lstOptions=select.getOptions();
 		int optionSize=lstOptions.size();
 		if(optionSize==1){
-			return;
+			this.getInstallmentNumberFromPaymentOptionText();
 		}
 
 		if(optionSize==2){
@@ -2347,6 +2465,8 @@ public class RegularCheckoutPage extends BasePage {
 		catch (Exception e){
 			this.applyStaticWait(3*this.getStaticWaitForApplication());
 		}
+
+		return this.getInstallmentNumberFromPaymentOptionText();
 	}
 
 	/**
@@ -2632,7 +2752,7 @@ public class RegularCheckoutPage extends BasePage {
 		float subTotalOrderSummary= (float) orderSummaryMap.get("subTotal");
 		float shippingPriceOrderSummary=(float) orderSummaryMap.get("nowPrice");
 		float taxOrderSummary=(float) orderSummaryMap.get("tax");
-		float totalPriceOrderSummary=(float) orderSummaryMap.get("totalPrice");
+		float totalPriceOrderSummary=(float) orderSummaryMap.get("newTotalPrice");
 		float promoteCodeValue=(float) orderSummaryMap.get("promoteCodeValue");
 		float giftCardValue=(float) orderSummaryMap.get("giftCardValue");
 
@@ -2949,7 +3069,6 @@ public class RegularCheckoutPage extends BasePage {
 		else{
 			reporter.reportLogFailWithScreenshot("The Shipping Payment Method Title is not displaying correctly");
 		}
-
 
 		if(!this.checkAlertMessageInHeaderExisting()){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblPaymentMethod);
@@ -4694,7 +4813,7 @@ public class RegularCheckoutPage extends BasePage {
 	 * @param - List<String> - promoteCodeList
 	 * @return - String
 	 */
-	public String ApplyPromoteCodeForPositiveScenario(List<String> promoteCodeList){
+	public String applyPromoteCodeForPositiveScenario(List<String> promoteCodeList){
 		String lsFindPromoteCode="";
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputOrderSummaryPromoteCode);
 		for(String promoteCode:promoteCodeList){
@@ -4729,7 +4848,7 @@ public class RegularCheckoutPage extends BasePage {
 	 * @param - String - promoteCode
 	 * @return - boolean
 	 */
-	public boolean ApplyPromoteCodeForNegativeScenario(String promoteCode){
+	public boolean applyPromoteCodeForNegativeScenario(String promoteCode){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputOrderSummaryPromoteCode);
 		inputOrderSummaryPromoteCode.clear();
 		inputOrderSummaryPromoteCode.sendKeys(promoteCode);
@@ -4745,7 +4864,7 @@ public class RegularCheckoutPage extends BasePage {
 	 * To remove promote code
 	 * @return - boolean
 	 */
-	public boolean RemovePromoteCode(){
+	public boolean removePromoteCode(){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnOrderSummaryRemovePromoteCode);
 		this.btnOrderSummaryRemovePromoteCode.click();
 
@@ -4758,7 +4877,7 @@ public class RegularCheckoutPage extends BasePage {
 	 * @param - int - initialGiftCardNumberLength
 	 * @return - boolean
 	 */
-	public boolean ApplyGiftCardForPositiveScenario(List<Map<String,String>> giftCardList,int initialGiftCardNumberLength){
+	public boolean applyGiftCardForPositiveScenario(List<Map<String,String>> giftCardList, int initialGiftCardNumberLength){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputOrderSummaryGiftCardNumber);
 		String giftCardNumber,giftCardPin;
 		this.applyStaticWait(3*this.getStaticWaitForApplication());
@@ -4808,7 +4927,7 @@ public class RegularCheckoutPage extends BasePage {
 	 * @param - boolean - bPositive
 	 * @return - boolean
 	 */
-	public boolean ApplyGiftCard(String giftCardNumber, String giftCardPin,int initialGiftCardNumberLength,boolean bPositive){
+	public boolean applyGiftCard(String giftCardNumber, String giftCardPin, int initialGiftCardNumberLength, boolean bPositive){
 		if(initialGiftCardNumberLength>0){
 			giftCardNumber=giftCardNumber.substring(initialGiftCardNumberLength);
 		}
@@ -4841,7 +4960,7 @@ public class RegularCheckoutPage extends BasePage {
 	 * @param - int - initialGiftCardNumberLength
 	 * @return - boolean
 	 */
-	public boolean ApplyGiftCardForNegativeScenario(String giftCardNumber, String giftCardPin,int initialGiftCardNumberLength){
+	public boolean applyGiftCardForNegativeScenario(String giftCardNumber, String giftCardPin, int initialGiftCardNumberLength){
 		if(initialGiftCardNumberLength>0){
 			giftCardNumber=giftCardNumber.substring(initialGiftCardNumberLength);
 		}
@@ -4866,7 +4985,7 @@ public class RegularCheckoutPage extends BasePage {
 	 * To remove gift card
 	 * @return - boolean
 	 */
-	public boolean RemoveGiftCard(){
+	public boolean removeGiftCard(){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnOrderSummaryRemoveGiftCard);
 		this.btnOrderSummaryRemoveGiftCard.click();
 
@@ -4961,7 +5080,7 @@ public class RegularCheckoutPage extends BasePage {
 				reporter.reportLogPass("The productShippingDate in shoppingCart Item is the same as the one in checkout Item");
 			}
 			else{
-				reporter.reportLogFail("The productShippingDate in shoppingCart Item is not the same as the one in checkout Item");
+				reporter.reportLogFail("The productShippingDate in shoppingCart Item is not the same as the one in checkout Item:'"+lsCheckoutText+"'");
 			}
 		}
 		else{
@@ -5254,7 +5373,8 @@ public class RegularCheckoutPage extends BasePage {
 	 */
 	public void verifyPayPalFunctionality(){
 		ShoppingCartPage shoppingCartPage = new ShoppingCartPage(this.getDriver());
-		this.clickWebElementUsingJS(this.labelAddOrChangePaymentMethodDialogPaypalRadio);
+		//this.clickWebElementUsingJS(this.labelAddOrChangePaymentMethodDialogPaypalRadio);
+		this.clickWebElementUsingJS(this.lblAddOrChangePaymentMethodDialogPayPalRadio);
 		this.getDriver().switchTo().frame(shoppingCartPage.framePayPalFrameElement);
 		this.waitForCondition(Driver->{return this.btnPayPalButton.isEnabled();},5000);
 		this.getDriver().switchTo().defaultContent();
@@ -5349,4 +5469,1228 @@ public class RegularCheckoutPage extends BasePage {
 			this.applyStaticWait(3*this.getStaticWaitForApplication());
 		}
 	}
+
+	/**
+	 * To verify OrderSummary Contents For OrderModification
+	 */
+	public void verifyOrderSummaryContentsForOrderModification() {
+		String lsText;
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderSummaryTitle);
+		lsText = lblOrderSummaryTitle.getText();
+		if (!lsText.isEmpty()) {
+			reporter.reportLogPass("The OrderSummary Title is displaying correctly");
+		} else {
+			reporter.reportLogFailWithScreenshot("The OrderSummary Title is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderSummarySubTotalTitle);
+		lsText = lblOrderSummarySubTotalTitle.getText();
+		if (!lsText.isEmpty()) {
+			reporter.reportLogPass("The OrderSummary SubTotal Title is displaying correctly");
+		} else {
+			reporter.reportLogFailWithScreenshot("The OrderSummary SubTotal Title is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderSummarySubTotal);
+		lsText = lblOrderSummarySubTotal.getText();
+		if (!lsText.isEmpty()) {
+			reporter.reportLogPass("The OrderSummary SubTotal is displaying correctly");
+		} else {
+			reporter.reportLogFailWithScreenshot("The OrderSummary SubTotal is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderSummaryShippingTitle);
+		lsText = lblOrderSummaryShippingTitle.getText();
+		if (!lsText.isEmpty()) {
+			reporter.reportLogPass("The OrderSummary Shipping Title is displaying correctly");
+		} else {
+			reporter.reportLogFailWithScreenshot("The OrderSummary Shipping Title is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(cntOrderSummaryShippingPriceContainer);
+		lsText = cntOrderSummaryShippingPriceContainer.getText();
+		if (!lsText.isEmpty()) {
+			reporter.reportLogPass("The OrderSummary Shipping NowPrice is displaying correctly");
+		} else {
+			reporter.reportLogFailWithScreenshot("The OrderSummary Shipping NowPrice is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderSummaryTaxTitle);
+		lsText = lblOrderSummaryTaxTitle.getText();
+		if (!lsText.isEmpty()) {
+			reporter.reportLogPass("The OrderSummary Tax Title is displaying correctly");
+		} else {
+			reporter.reportLogFailWithScreenshot("The OrderSummary Tax Title is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderSummaryTax);
+		lsText = lblOrderSummaryTax.getText();
+		if (!lsText.isEmpty()) {
+			reporter.reportLogPass("The OrderSummary Tax is displaying correctly");
+		} else {
+			reporter.reportLogFailWithScreenshot("The OrderSummary Tax is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderSummaryNewTotalPriceTitle);
+		lsText = lblOrderSummaryNewTotalPriceTitle.getText();
+		if (!lsText.isEmpty()) {
+			reporter.reportLogPass("The OrderSummary new Total Price Title is displaying correctly");
+		} else {
+			reporter.reportLogFailWithScreenshot("The OrderSummary new Total Price Title is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderSummaryNewTotalPrice);
+		lsText = lblOrderSummaryNewTotalPrice.getText();
+		if (!lsText.isEmpty()) {
+			reporter.reportLogPass("The OrderSummary new Total Price is displaying correctly");
+		} else {
+			reporter.reportLogFailWithScreenshot("The OrderSummary new Total Price is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderSummaryOriginalOrderTotalTitle);
+		lsText = lblOrderSummaryOriginalOrderTotalTitle.getText();
+		if (!lsText.isEmpty()) {
+			reporter.reportLogPass("The OrderSummary Original Order Total title is displaying correctly");
+		} else {
+			reporter.reportLogFailWithScreenshot("The OrderSummary Original Order Total title is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderSummaryOriginalOrderTotal);
+		lsText = lblOrderSummaryOriginalOrderTotal.getText();
+		if (!lsText.isEmpty()) {
+			reporter.reportLogPass("The OrderSummary Original Order Total is displaying correctly");
+		} else {
+			reporter.reportLogFailWithScreenshot("The OrderSummary Original Order Total is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderSummaryChangeToOrderTotalTitle);
+		lsText = lblOrderSummaryChangeToOrderTotalTitle.getText();
+		if (!lsText.isEmpty()) {
+			reporter.reportLogPass("The OrderSummary Change To Order Total title is displaying correctly");
+		} else {
+			reporter.reportLogFailWithScreenshot("The OrderSummary Change To Order Total title is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderSummaryChangeToOrderTotal);
+		lsText = lblOrderSummaryChangeToOrderTotal.getText();
+		if (!lsText.isEmpty()) {
+			reporter.reportLogPass("The OrderSummary Change To Order Total is displaying correctly");
+		} else {
+			reporter.reportLogFailWithScreenshot("The OrderSummary Change To Order Total is not displaying correctly");
+		}
+	}
+
+	/**
+	 * To get OrderSummary Description for order modification
+	 * @return - Map<String,Object>
+	 */
+	public Map<String,Object> getOrderSummaryDescForOrderModification(){
+		String lsText;
+		Map<String,Object> map=new HashMap<>();
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderSummarySubTotal);
+		lsText=this.lblOrderSummarySubTotal.getText();
+		map.put("subTotal",this.getFloatFromString(lsText,true));
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderSummaryShippingWasPrice);
+		lsText=this.lblOrderSummaryShippingWasPrice.getText();
+		if(lsText.isEmpty()){
+			map.put("wasPrice",0.0f);
+		}
+		else{
+			map.put("wasPrice",this.getFloatFromString(lsText,true));
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(cntOrderSummaryShippingPriceContainer);
+		lsText=this.cntOrderSummaryShippingPriceContainer.getText();
+		if(lsText.toLowerCase().contains("free")){
+			map.put("nowPrice",0.0f);
+		}
+		else{
+			map.put("nowPrice",this.getNowPriceFromOrderSummary());
+		}
+
+		map.put("province",getTaxProvinceCode());
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderSummaryTax);
+		lsText=this.lblOrderSummaryTax.getText();
+		map.put("tax",this.getFloatFromString(lsText,true));
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderSummaryNewTotalPrice);
+		lsText=this.lblOrderSummaryNewTotalPrice.getText();
+		map.put("newTotalPrice",this.getFloatFromString(lsText,true));
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderSummaryOriginalOrderTotal);
+		lsText=this.lblOrderSummaryOriginalOrderTotal.getText();
+		map.put("originalOrderTotal",this.getFloatFromString(lsText,true));
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderSummaryChangeToOrderTotal);
+		lsText=this.lblOrderSummaryChangeToOrderTotal.getText();
+		if(lsText.contains("-")){
+			map.put("changeToOrderTotal",-1.0f*this.getFloatFromString(lsText));
+		}
+		else{
+			map.put("changeToOrderTotal",this.getFloatFromString(lsText));
+		}
+
+		WebElement item,subItem;
+		float floatValue=0.0f;
+		if(this.checkAppliedDiscountExistingInOrderSummaryForOrderModification()){
+			String lsAppliedDiscountType=this.judgeAppliedDiscountType();
+			switch(lsAppliedDiscountType){
+				case "Both":
+					item=lstOrderSummaryAppliedDiscountList.get(0);
+					subItem=item.findElement(By.xpath("./span[1]"));
+					lsText=this.getElementInnerText(subItem).replace(":","");
+					map.put("promoteCodeTitle",lsText);
+					subItem=item.findElement(By.xpath("./span[2]"));
+					lsText=this.getElementInnerText(subItem);
+					if(lsText.contains("-")){
+						if(lsText.equalsIgnoreCase("-")){
+							map.put("promoteCodeValue",0.0f);
+						}
+						else{
+							floatValue=-1*this.getFloatFromString(lsText,true);
+							map.put("promoteCodeValue",floatValue);
+						}
+					}
+					else{
+						floatValue=this.getFloatFromString(lsText,true);
+						map.put("promoteCodeValue",floatValue);
+					}
+
+					item=lstOrderSummaryAppliedDiscountList.get(1);
+					subItem=item.findElement(By.xpath("./span[1]"));
+					lsText=this.getElementInnerText(subItem).replace(":","");
+					map.put("giftCardTitle",lsText);
+					subItem=item.findElement(By.xpath("./span[2]"));
+					lsText=this.getElementInnerText(subItem);
+					if(lsText.contains("-")){
+						map.put("giftCardValue",-1*this.getFloatFromString(lsText,true));
+					}
+					else{
+						map.put("giftCardValue",this.getFloatFromString(lsText,true));
+					}
+					break;
+				case "PromoteCode":
+					item=lstOrderSummaryAppliedDiscountList.get(0);
+					subItem=item.findElement(By.xpath("./span[1]"));
+					lsText=this.getElementInnerText(subItem).replace(":","");
+					map.put("promoteCodeTitle",lsText);
+					subItem=item.findElement(By.xpath("./span[2]"));
+					lsText=this.getElementInnerText(subItem);
+					if(lsText.contains("-")){
+						if(lsText.equalsIgnoreCase("-")){
+							map.put("promoteCodeValue",0.0f);
+						}
+						else{
+							floatValue=-1*this.getFloatFromString(lsText,true);
+							map.put("promoteCodeValue",floatValue);
+						}
+					}
+					else{
+						floatValue=this.getFloatFromString(lsText,true);
+						map.put("promoteCodeValue",floatValue);
+					}
+
+					map.put("giftCardTitle",null);
+					map.put("giftCardValue",0.0f);
+					break;
+				case "GiftCard":
+					item=lstOrderSummaryAppliedDiscountList.get(0);
+					subItem=item.findElement(By.xpath("./span[1]"));
+					lsText=this.getElementInnerText(subItem).replace(":","");
+					map.put("giftCardTitle",lsText);
+					subItem=item.findElement(By.xpath("./span[2]"));
+					lsText=this.getElementInnerText(subItem);
+					if(lsText.contains("-")){
+						map.put("giftCardValue",-1*this.getFloatFromString(lsText,true));
+					}
+					else{
+						map.put("giftCardValue",this.getFloatFromString(lsText,true));
+					}
+
+					map.put("promoteCodeTitle",null);
+					map.put("promoteCodeValue",0.0f);
+					break;
+				default:
+					break;
+			}
+		}
+		else{
+			map.put("promoteCodeTitle",null);
+			map.put("promoteCodeValue",0.0f);
+
+			map.put("giftCardTitle",null);
+			map.put("giftCardValue",0.0f);
+		}
+
+		return map;
+	}
+
+	/**
+	 * To verify OrderSummary business Logic for order modification
+	 * @param - subTotalShoppingCart - float - subTotal in checkout cart
+	 * @param - orderSummaryMap - Map<String,Object>
+	 * @param - Map<String,Object> - provincialTaxRate - note that if pass null, will not calculate tax for comparison
+	 */
+	public void verifyOrderSummaryBusinessLogicForOrderModification(float subTotalShoppingCart,Map<String,Object> orderSummaryMap,Map<String,Object> provincialTaxRate){
+		float nowPriceOrderSummary=(float) orderSummaryMap.get("nowPrice");
+
+		float subTotal=(float) orderSummaryMap.get("subTotal");
+		if(Math.abs(subTotal-subTotalShoppingCart)<0.01){
+			reporter.reportLogPass("The subtotal price in OrderSummary section is equal to the subtotal price for order list");
+		}
+		else{
+			reporter.reportLogFail("The subtotal price:"+subTotal+" in OrderSummary section is not equal to the subtotal price:"+subTotalShoppingCart+" for order list");
+		}
+
+		float tax=(float) orderSummaryMap.get("tax");
+		if(provincialTaxRate!=null){
+			final DecimalFormat df = new DecimalFormat("0.00");
+			String province=orderSummaryMap.get("province").toString();
+			float calProvinceTax=getCalculatedProvinceTax(subTotal,(float) orderSummaryMap.get("nowPrice"),province,provincialTaxRate);
+			if(Math.abs(Float.parseFloat(df.format(calProvinceTax-tax)))<0.02){
+				reporter.reportLogPass("The calculated tax in OrderSummary section is equal to the tax in OrderSummary section");
+			}
+			else{
+				reporter.reportLogFail("The calculated tax:"+calProvinceTax+" in OrderSummary section for province: "+province+" is not equal to the tax:"+tax+" in OrderSummary section");
+			}
+		}
+
+		float promoteCodePrice=(float) orderSummaryMap.get("promoteCodeValue");
+		float giftCardPrice=(float) orderSummaryMap.get("giftCardValue");
+
+		float calTotalPrice=subTotal+tax+nowPriceOrderSummary+promoteCodePrice+giftCardPrice;
+		float newTotalPrice=(float) orderSummaryMap.get("newTotalPrice");
+		if(Math.abs(calTotalPrice-newTotalPrice)<0.01){
+			reporter.reportLogPass("The calculated total price in OrderSummary section is equal to the new total price in OrderSummary section");
+		}
+		else{
+			reporter.reportLogFail("The calculated total price:"+calTotalPrice+" in OrderSummary section is not equal to the new total price:"+newTotalPrice+" in OrderSummary section");
+		}
+
+		float originalOrderTotalPrice=(float) orderSummaryMap.get("originalOrderTotal");
+		float changeToOrderTotalPrice=(float) orderSummaryMap.get("changeToOrderTotal");
+		if(Math.abs(Math.abs(originalOrderTotalPrice+changeToOrderTotalPrice)-newTotalPrice)<0.1f){
+			reporter.reportLogPass("The originalOrder total price plus change To Order Total Price in OrderSummary section is equal to the new total price in OrderSummary section");
+		}
+		else{
+			reporter.reportLogFail("The originalOrder total price plus change To Order Total Price in OrderSummary section is not equal to the new total price in OrderSummary section");
+		}
+	}
+
+	/**
+	 * To get applied promote code
+	 * @return -String
+	 */
+	public String getAppliedPromoteCode(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderSummaryInputPromoteCode);
+		return lblOrderSummaryInputPromoteCode.getText().trim();
+	}
+
+	/**
+	 * To verify Mandatory Contents For Checkout Product List For Order Modification
+	 * @param - boolean - bItemsBeingAdded
+	 */
+	public void verifyMandatoryContentsForCheckoutProductListForOrderModification(boolean bItemsBeingAdded) {
+		String lsText;
+		WebElement item;
+		List<WebElement> lstCheckoutOrderList;
+		if(bItemsBeingAdded){
+			lstCheckoutOrderList=this.lstProductListForItemBeingAdded;
+		}
+		else{
+			lstCheckoutOrderList=this.lstProductListForExistingItems;
+		}
+
+		for (WebElement productItem : lstCheckoutOrderList) {
+			if (this.checkProductBadgeExisting(productItem)) {
+				item = productItem.findElement(this.byProductBadge);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+				if (this.getReusableActionsInstance().isElementVisible(item)) {
+					reporter.reportLogPass("The product badge is displaying correctly");
+				} else {
+					reporter.reportLogFailWithScreenshot("The product badge is not displaying correctly");
+				}
+			}
+
+			item = productItem.findElement(byProductItemDesc);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsText = item.getText().trim();
+			if (!lsText.isEmpty()) {
+				reporter.reportLogPass("The product description is displaying correctly");
+			} else {
+				reporter.reportLogFailWithScreenshot("The product description is not displaying correctly");
+			}
+
+			if(this.checkProductNumberExisting(productItem)){
+				item = productItem.findElement(byProductNumber);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+				lsText = item.getText().replace("-", "").trim();
+				if (!lsText.isEmpty()) {
+					reporter.reportLogPass("The product number is displaying correctly");
+				} else {
+					reporter.reportLogFailWithScreenshot("The product number is not displaying correctly");
+				}
+			}
+
+			item = productItem.findElement(byProductNowPrice);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsText = item.getText().trim();
+			if (!lsText.isEmpty()) {
+				reporter.reportLogPass("The product nowPrice is displaying correctly");
+			} else {
+				reporter.reportLogFailWithScreenshot("The product nowPrice is not displaying correctly");
+			}
+
+			item=productItem.findElement(byProductSelectQuantity);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsText=this.getElementInnerText(item).split(":")[1].trim();
+			if (!lsText.isEmpty()) {
+				reporter.reportLogPass("The product quantity is displaying correctly");
+			} else {
+				reporter.reportLogFailWithScreenshot("The product quantity is not displaying correctly");
+			}
+		}
+	}
+
+	/**
+	 * To verify Optional Contents For Checkout Product List For Order Modification
+	 * @param - boolean - bItemsBeingAdded
+	 */
+	public void verifyOptionalContentsForCheckoutProductListForOrderModification(boolean bItemsBeingAdded) {
+		String lsText;
+		WebElement item;
+
+		List<WebElement> lstCheckoutOrderList;
+		if(bItemsBeingAdded){
+			expandItemBeingAddedProductSectionForOrderModification();
+			lstCheckoutOrderList=this.lstProductListForItemBeingAdded;
+		}
+		else{
+			expandExistingItemsProductSectionForOrderModification();
+			lstCheckoutOrderList=this.lstProductListForExistingItems;
+		}
+
+		for (WebElement productItem : lstCheckoutOrderList) {
+			if(this.checkProductInventoryExisting(productItem)){
+				item=productItem.findElement(byProductInventory);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+				lsText=item.getText().trim();
+				if (!lsText.isEmpty()) {
+					reporter.reportLogPass("The product Inventory is displaying correctly");
+				} else {
+					reporter.reportLogFailWithScreenshot("The product Inventory is not displaying correctly");
+				}
+			}
+
+			if(this.checkProductFreeShippingExisting(productItem)){
+				item=productItem.findElement(byProductFreeShipping);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+				lsText=item.getText().trim();
+				if (!lsText.isEmpty()) {
+					reporter.reportLogPass("The product Free Shipping is displaying correctly");
+				} else {
+					reporter.reportLogFailWithScreenshot("The product Free Shipping is not displaying correctly");
+				}
+			}
+		}
+
+		if(this.checkProductShippingDateExisting()){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblShippingDateTitle);
+			lsText = this.lblShippingDateTitle.getText().trim();
+			if (!lsText.isEmpty()) {
+				reporter.reportLogPass("The GetItBy date title is displaying correctly");
+			} else {
+				reporter.reportLogFailWithScreenshot("The GetItBy date title is not displaying correctly");
+			}
+
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblShippingDate);
+			lsText = this.lblShippingDate.getText().trim();
+			if (!lsText.isEmpty()) {
+				reporter.reportLogPass("The GetItBy date is displaying correctly");
+			} else {
+				reporter.reportLogFailWithScreenshot("The GetItBy date is not displaying correctly");
+			}
+		}
+	}
+
+	/**
+	 * To verify Address And Payment Contents for order modification
+	 */
+	public void verifyAddressAndPaymentContentsForOrderModification() {
+		String lsText;
+
+		reporter.reportLog("Verify shipping address contents");
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblShippingAddressTitle);
+		lsText=lblShippingAddressTitle.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The Shipping Address Title is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Shipping Address Title is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblShippingAddress);
+		lsText=lblShippingAddress.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The Shipping Address is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Shipping Address is not displaying correctly");
+		}
+
+		if(!this.checkChildElementExistingByTagName(cntShippingAddressSection,"button")){
+			reporter.reportLogPass("The Shipping Address AddOrChange button is not found");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Shipping Address AddOrChange button is found");
+		}
+
+		reporter.reportLog("Verify shipping method contents");
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblShippingMethodTitle);
+		lsText=lblShippingMethodTitle.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The Shipping Method Title is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Shipping Method Title is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblShippingMethod);
+		lsText=lblShippingMethod.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The Shipping Method is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Shipping Method is not displaying correctly");
+		}
+
+		if(!this.checkChildElementExistingByTagName(cntShippingMethodSection,"button")){
+			reporter.reportLogPass("The change Shipping Method button is not found");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The change Shipping Method button is found");
+		}
+
+		reporter.reportLog("Verify shipping payment method contents");
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblShippingPaymentMethodTitle);
+		lsText=lblShippingPaymentMethodTitle.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The Shipping Payment Method Title is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Shipping Payment Method Title is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblPaymentMethod);
+		lsText=lblPaymentMethod.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The Payment Method is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Payment Method is not displaying correctly");
+		}
+
+		if(!this.checkChildElementExistingByTagName(cntShippingPaymentMethodSection,"button")){
+			reporter.reportLogPass("The AddOrChange Payment Method button is not found");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The AddOrChange Payment Method button is found");
+		}
+
+		reporter.reportLog("Verify billing address contents");
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblBillingAddressTitle);
+		lsText=lblBillingAddressTitle.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The Billing Address Title is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Billing Address Title is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblBillingAddress);
+		lsText=lblBillingAddress.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The Billing Address is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Billing Address is not displaying correctly");
+		}
+
+		if(!this.checkChildElementExistingByTagName(cntBillingAddressSection,"button")){
+			reporter.reportLogPass("The Billing Address Change button is not found");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Billing Address Change button is found");
+		}
+
+		reporter.reportLog("Verify payment option contents");
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblPaymentOptionTitle);
+		lsText=lblPaymentOptionTitle.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The Payment Option Title is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Payment Option Title is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblPaymentOptionText);
+		lsText=lblPaymentOptionText.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The Payment Option text is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Payment Option text is not displaying correctly");
+		}
+
+		if(!this.checkChildElementExistingByAttribute(lblPaymentOptionTextForOrderModification,"class","form__select")){
+			reporter.reportLogPass("The select Payment Option is not found");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The select Payment Option is found");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblPaymentOptionTextForOrderModification);
+		lsText=lblPaymentOptionTextForOrderModification.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The Payment Option is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Payment Option is not displaying correctly");
+		}
+	}
+
+	/**
+	 * To verify Promote Code Contents for order modification
+	 * @param - String - lsExpectedPromoteCode
+	 */
+	public void verifyPromoteCodeContentsForOrderModification(String lsExpectedPromoteCode) {
+		String lsText;
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderSummaryPromoteCodeTitle);
+		lsText = lblOrderSummaryPromoteCodeTitle.getText();
+		if (!lsText.isEmpty()) {
+			reporter.reportLogPass("The OrderSummary Promote Code Title is displaying correctly");
+		} else {
+			reporter.reportLogFailWithScreenshot("The OrderSummary Promote Code Title is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(iconOrderSummaryPromoteCodeTooltip);
+		if(this.getReusableActionsInstance().isElementVisible(iconOrderSummaryPromoteCodeTooltip)){
+			reporter.reportLogPass("The OrderSummary Promote Code icon is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The OrderSummary Promote Code icon is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(iconOrderSummaryPromoteCodeTooltip);
+		this.getReusableActionsInstance().scrollToElement(iconOrderSummaryPromoteCodeTooltip);
+		this.waitForCondition(Driver->{return this.checkPromoteCodeTooltipMessageDisplaying();},10000);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderSummaryPromoteCodeTooltipMessage);
+		lsText= this.lblOrderSummaryPromoteCodeTooltipMessage.getText().trim();
+		if (!lsText.isEmpty()) {
+			reporter.reportLogPass("The OrderSummary Promote Code Tooltip Message is displaying correctly");
+		} else {
+			reporter.reportLogFailWithScreenshot("The OrderSummary Promote Code Tooltip Message is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderSummaryInputPromoteCode);
+		lsText=this.getAppliedPromoteCode();
+		if(lsText.equalsIgnoreCase(lsExpectedPromoteCode)){
+			reporter.reportLogPass("The applied promote code:"+lsText+" is the same as expected:"+lsExpectedPromoteCode);
+		}
+		else{
+			reporter.reportLogFail("The applied promote code:"+lsText+" is not the same as expected:"+lsExpectedPromoteCode);
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnOrderSummaryRemovePromoteCode);
+		lsText=this.btnOrderSummaryRemovePromoteCode.getText().trim();
+		if(lsText.equalsIgnoreCase("Edit")){
+			reporter.reportLogPass("The edit promote code button is displaying correctly");
+		}
+		else{
+			reporter.reportLogFail("The edit promote code button is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderSummaryPromoteCodeAppliedMessage);
+		lsText = lblOrderSummaryPromoteCodeAppliedMessage.getText();
+		if (!lsText.isEmpty()) {
+			reporter.reportLogPass("The Promote Code Applied Message is displaying correctly");
+		} else {
+			reporter.reportLogFailWithScreenshot("The Promote Code Applied Message is not displaying correctly");
+		}
+	}
+
+	/**
+	 * To get checkout Item Description in product list For Order Modification
+	 * @param - productItem - item in product list
+	 * @param - lsOption - "mandatory"/"optional"/"all"
+	 * @return - Map<String,Object> - Item detail description
+	 */
+	public Map<String,Object> getCheckoutItemDescForOrderModification(WebElement productItem, String lsOption,boolean bItemsBeingAdded){
+		Map<String,Object> map=null;
+		switch(lsOption){
+			case "mandatory":
+				map=this.getMandatoryCheckoutItemDescForOrderModification(productItem,bItemsBeingAdded);
+				break;
+			case "optional":
+				map=this.getOptionalCheckoutItemDescForOrderModification(productItem);
+				break;
+			case "all":
+				map=this.getAllCheckoutItemDescForOrderModification(productItem,bItemsBeingAdded);
+				break;
+			default:
+				break;
+		}
+
+		return map;
+	}
+
+	/**
+	 * To get all Checkout Item Description in product list For Order Modification
+	 * @param - productItem - item in product list
+	 * @return - Map<String,Object> - Item detail description
+	 */
+	public Map<String,Object> getAllCheckoutItemDescForOrderModification(WebElement productItem,boolean bItemsBeingAdded){
+		Map<String,Object> mapAll=new HashMap<>();
+
+		Map<String,Object> mapMandatory=this.getMandatoryCheckoutItemDescForOrderModification(productItem,bItemsBeingAdded);
+		for(Map.Entry<String,Object> entry:mapMandatory.entrySet()){
+			mapAll.put(entry.getKey(),entry.getValue());
+		}
+
+		Map<String,Object> mapOptional=this.getOptionalCheckoutItemDescForOrderModification(productItem);
+		for(Map.Entry<String,Object> entry:mapOptional.entrySet()){
+			mapAll.put(entry.getKey(),entry.getValue());
+		}
+
+		return mapAll;
+	}
+
+	/**
+	 * To get Mandatory checkout Item Description in product list For Order Modification
+	 * @param - productItem - item in product list
+	 * @return - Map<String,Object> - Item detail description
+	 */
+	public Map<String,Object> getMandatoryCheckoutItemDescForOrderModification(WebElement productItem,boolean bItemsBeingAdded){
+		Map<String,Object> map=new HashMap<>();
+
+		if(this.checkProductBadgeExisting(productItem)){
+			map.put("productBadge",true);
+		}
+		else{
+			map.put("productBadge",false);
+		}
+
+		WebElement item=productItem.findElement(byProductItemDesc);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+		String lsText=item.getText().trim();
+		if(bItemsBeingAdded){
+			if(lsText.contains("|")){
+				String[] lsSplit=lsText.split("\\|");
+				if(lsSplit.length==2){
+					if(lsSplit[1].contains("Size")){
+						map.put("productName",lsSplit[0].trim());
+						map.put("productStyle",null);
+						map.put("productSize",lsSplit[1].split(":")[1].trim());
+					}
+					else{
+						map.put("productName",lsSplit[0].trim());
+						map.put("productStyle",lsSplit[1].split(":")[1].trim());
+						map.put("productSize",null);
+					}
+				}
+				else{
+					map.put("productName",lsSplit[0].trim());
+					map.put("productStyle",lsSplit[2].split(":")[1].trim());
+					map.put("productSize",lsSplit[1].split(":")[1].trim());
+				}
+			}
+			else{
+				map.put("productName",lsText.trim());
+				map.put("productStyle",null);
+				map.put("productSize",null);
+			}
+		}
+		else{
+			if(lsText.contains("|")){
+				String[] lsSplit=lsText.split("\\|");
+				if(lsSplit.length==2){
+					if(lsSplit[1].contains("Size")){
+						map.put("productName",lsSplit[0].trim());
+						map.put("productStyle",null);
+						map.put("productSize",lsSplit[1].split(":")[1].trim());
+					}
+					else{
+						map.put("productName",lsSplit[0].trim());
+						map.put("productStyle",lsSplit[1].trim());
+						map.put("productSize",null);
+					}
+				}
+				else{
+					map.put("productName",lsSplit[0].trim());
+					map.put("productStyle",lsSplit[1].trim());
+					map.put("productSize",lsSplit[2].split(":")[1].trim());
+				}
+			}
+			else{
+				map.put("productName",lsText.trim());
+				map.put("productStyle",null);
+				map.put("productSize",null);
+			}
+		}
+
+
+		if(this.checkProductNumberExisting(productItem)){
+			item=productItem.findElement(byProductNumber);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsText=item.getText().replace("-","").trim();
+			map.put("productNumber",lsText);
+		}
+		else{
+			map.put("productNumber",null);
+		}
+
+		item=productItem.findElement(byProductNowPrice);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+		lsText=item.getText().trim();
+		if(lsText.toLowerCase().contains("free")){
+			map.put("productNowPrice",0.0f);
+		}
+		else{
+			map.put("productNowPrice",this.getFloatFromString(lsText));
+		}
+
+		item=productItem.findElement(byProductSelectQuantity);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+		lsText=this.getElementInnerText(item).split(":")[1].trim();
+		map.put("productQuantity",Integer.parseInt(lsText));
+
+		return map;
+	}
+
+	/**
+	 * To get Optional checkout Item Description in product list For Order Modification
+	 * @param - productItem - item in product list
+	 * @return - Map<String,Object> - Item detail description
+	 */
+	public Map<String,Object> getOptionalCheckoutItemDescForOrderModification(WebElement productItem){
+		Map<String,Object> map=new HashMap<>();
+
+		WebElement item;
+		String lsText;
+
+		if(this.checkProductInventoryExisting(productItem)){
+			item=productItem.findElement(byProductInventory);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsText=item.getText().trim();
+			map.put("productLeftNumber",this.getIntegerFromString(lsText));
+		}
+		else{
+			map.put("productLeftNumber",-1);
+		}
+
+		if(this.checkProductFreeShippingExisting(productItem)){
+			item=productItem.findElement(byProductFreeShipping);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsText=item.getText().trim();
+			map.put("productFreeShipping",lsText);
+		}
+		else{
+			map.put("productFreeShipping",null);
+		}
+
+		return map;
+	}
+
+	/**
+	 * To get checkout Item List Description
+	 * @param - lsOption - "mandatory"/"optional"/"all"
+	 * @return - List<Map<String,Object>>
+	 */
+	public List<Map<String,Object>> getCheckoutItemListDescForOrderModification(String lsOption,boolean bItemsBeingAdded){
+		List<Map<String,Object>> mapList=new ArrayList<>();
+
+		List<WebElement> lstCheckoutOrderList;
+		if(bItemsBeingAdded){
+			lstCheckoutOrderList=this.lstProductListForItemBeingAdded;
+		}
+		else{
+			lstCheckoutOrderList=this.lstProductListForExistingItems;
+		}
+
+		for(WebElement cartItem:lstCheckoutOrderList){
+			mapList.add(this.getCheckoutItemDescForOrderModification(cartItem,lsOption,bItemsBeingAdded));
+		}
+
+		return mapList;
+	}
+
+	/**
+	 * To verify Product List Expanded Section Initial Status,Then Expanded it.
+	 */
+	public void verifyProductListExpandedSectionInitialStatusThenExpanded(){
+		if(checkItemBeingAddedProductSectionExpandedForOrderModification()){
+			reporter.reportLogPass("The Item Being Added Product Section is Expanded");
+		}
+		else{
+			reporter.reportLogFail("The Item Being Added Product Section is not Expanded");
+		}
+
+		if(!checkExistingItemsProductSectionExpandedForOrderModification()){
+			reporter.reportLogPass("The existing Item Product Section is not Expanded");
+		}
+		else{
+			reporter.reportLogFail("The existing Item Product Section is Expanded");
+		}
+
+		reporter.reportLog("btnExistingItems class:"+btnExistingItems.getAttribute("class"));
+
+		this.clickElement(btnExistingItems);
+		this.applyStaticWait(2*this.getStaticWaitForApplication());
+	}
+
+	/**
+	 * To verify expand Both New And Existing Order List Section
+	 */
+	public void expandBothNewAndExistingOrderListSection(){
+		if(!checkItemBeingAddedProductSectionExpandedForOrderModification()){
+			this.clickElement(btnItemBeingAdded);
+			this.applyStaticWait(2*this.getStaticWaitForApplication());
+		}
+
+		if(!checkExistingItemsProductSectionExpandedForOrderModification()){
+			this.clickElement(btnExistingItems);
+			this.applyStaticWait(2*this.getStaticWaitForApplication());
+		}
+	}
+
+	/**
+	 * To verify Order List Linkage Between Order Modification Page And Checkout Page
+	 * @param - List<Map<String,Object>> - orderListMapForOrderModification
+	 * @param - List<Map<String,Object>> - orderListMapForCheckout
+	 */
+	public void verifyOrderListLinkageBetweenOrderModificationPageAndCheckoutPage(List<Map<String,Object>> orderListMapForOrderModification,List<Map<String,Object>> orderListMapForCheckout){
+		int findIndex;
+		ShoppingCartPage shoppingCartPage=new ShoppingCartPage(this.getDriver());
+		Map<String,Object> checkoutItem;
+		for(Map<String,Object> orderItem:orderListMapForOrderModification){
+			String lsText=(String)orderItem.get("productName");
+			reporter.reportLog("Verify product:'"+lsText+"'");
+			findIndex=shoppingCartPage.findGivenProductIndexInProductList(orderItem,orderListMapForCheckout);
+			if(findIndex!=-1){
+				checkoutItem=orderListMapForCheckout.get(findIndex);
+				this.verifyOrderItemLinkageBetweenOrderModificationPageAndCheckoutPage(orderItem,checkoutItem);
+			}
+			else{
+				reporter.reportLogFail("Unable to find '"+lsText+"' in Checkout Page");
+			}
+		}
+	}
+
+	/**
+	 * To verify Order Item Linkage Between Order Modification Page And Checkout Page
+	 * @param - Map<String,Object> - orderItem
+	 * @param - Map<String,Object> - checkoutItem
+	 */
+	public void verifyOrderItemLinkageBetweenOrderModificationPageAndCheckoutPage(Map<String,Object> orderItem,Map<String,Object> checkoutItem){
+		String lsOrderText,lsCheckoutText;
+
+		lsOrderText=(String)orderItem.get("productName");
+		lsCheckoutText=(String)checkoutItem.get("productName");
+		if(lsOrderText.equalsIgnoreCase(lsCheckoutText)){
+			reporter.reportLogPass("The productName in Order Item is the same as the one in checkout Item");
+		}
+		else{
+			reporter.reportLogFail("The productName:"+lsOrderText+" in Order Item is not the same as the one:"+lsCheckoutText+" in checkout Item");
+		}
+
+		lsOrderText=(String)orderItem.get("productStyle");
+		lsCheckoutText=(String)checkoutItem.get("productStyle");
+		if(lsOrderText==null){
+			if(lsCheckoutText==null){
+				reporter.reportLogPass("The productStyle in Order Item is the same as the one in checkout Item");
+			}
+			else{
+				reporter.reportLogFail("The productStyle in Order Item is not the same as the one in checkout Item");
+			}
+		}
+		else{
+			if(lsOrderText.equalsIgnoreCase(lsCheckoutText)){
+				reporter.reportLogPass("The productStyle in Order Item is the same as the one in checkout Item");
+			}
+			else{
+				reporter.reportLogFail("The productStyle:"+lsOrderText+" in OrderConfirmation Item is not the same as the one:"+lsCheckoutText+" in checkout Item");
+			}
+		}
+
+		lsOrderText=(String)orderItem.get("productSize");
+		lsCheckoutText=(String)checkoutItem.get("productSize");
+		if(lsOrderText==null){
+			if(lsCheckoutText==null){
+				reporter.reportLogPass("The productSize in Order Item is the same as the one in checkout Item");
+			}
+			else{
+				reporter.reportLogFail("The productSize in Order Item is not the same as the one in checkout Item");
+			}
+		}
+		else{
+			if(lsOrderText.equalsIgnoreCase(lsCheckoutText)){
+				reporter.reportLogPass("The productSize in Order Item is the same as the one in checkout Item");
+			}
+			else{
+				reporter.reportLogFail("The productSize:"+lsOrderText+" in Order Item is not the same as the one:"+lsCheckoutText+" in checkout Item");
+			}
+		}
+
+		lsOrderText=(String)orderItem.get("productNumber");
+		lsCheckoutText=(String)checkoutItem.get("productNumber");
+		if(lsOrderText==null){
+			if(lsCheckoutText==null){
+				reporter.reportLogPass("The productNumber in Order Item is the same as the one in checkout Item");
+			}
+			else{
+				reporter.reportLogFail("The productNumber in Order Item is not the same as the one in checkout Item");
+			}
+		}
+		else{
+			if(lsOrderText.equalsIgnoreCase(lsCheckoutText)){
+				reporter.reportLogPass("The productNumber in Order item is the same as the one in checkoutItem");
+			}
+			else{
+				reporter.reportLogFail("The productNumber:"+lsOrderText+" in OrderConfirmation Item is not the same as the one:"+lsCheckoutText+" in checkout Item");
+			}
+		}
+
+		float orderNowPrice=(float)orderItem.get("productNowPrice");
+		float checkoutNowPrice=(float)checkoutItem.get("productNowPrice");
+		if(Math.abs(orderNowPrice-checkoutNowPrice)<0.1f){
+			reporter.reportLogPass("The productNowPrice in Order Item is the same as the one in checkout Item");
+		}
+		else{
+			reporter.reportLogFail("The productNowPrice:"+orderNowPrice+" in Order Item is not the same as the one:"+checkoutNowPrice+" in checkout Item");
+		}
+
+		int orderQuantity=(int)orderItem.get("productQuantity");
+		int checkoutQuantity=(int)checkoutItem.get("productQuantity");
+		if(orderQuantity==checkoutQuantity){
+			reporter.reportLogPass("The productQuantity in Order Item is the same as the one in checkout Item");
+		}
+		else{
+			reporter.reportLogFail("The productQuantity:"+orderQuantity+" in Order Item is not the same as the one:"+checkoutQuantity+" in checkout Item");
+		}
+	}
+
+	/**
+	 * To verify Order summary Linkage Between Order Modification Page And Checkout Page
+	 * @param - Map<String,Object> - orderItem
+	 * @param - Map<String,Object> - checkoutItem
+	 */
+	public void verifyOrderSummaryLinkageBetweenOrderModificationPageAndCheckoutPage(Map<String,Object> orderItem,Map<String,Object> checkoutItem){
+		float orderValue,checkoutValue;
+		String lsOrderText,lsCheckoutText;
+
+		orderValue= (float) orderItem.get("subTotal");
+		checkoutValue= (float) checkoutItem.get("subTotal");
+		if(Math.abs(orderValue-checkoutValue)<0.1f){
+			reporter.reportLogPass("The subtotal in Order Item is the same as the one in checkout Item");
+		}
+		else{
+			reporter.reportLogFail("The subtotal:"+orderValue+" in Order Item is not the same as the one:"+checkoutValue+" in checkout Item");
+		}
+
+		orderValue= (float) orderItem.get("nowPrice");
+		checkoutValue= (float) checkoutItem.get("nowPrice");
+		if(Math.abs(orderValue-checkoutValue)<0.1f){
+			reporter.reportLogPass("The nowPrice in Order Item is the same as the one in checkout Item");
+		}
+		else{
+			reporter.reportLogFail("The nowPrice:"+orderValue+" in Order Item is not the same as the one:"+checkoutValue+" in checkout Item");
+		}
+
+		lsOrderText= (String) orderItem.get("province");
+		lsCheckoutText= (String) checkoutItem.get("province");
+		if(lsOrderText.equalsIgnoreCase(lsCheckoutText)){
+			reporter.reportLogPass("The province code in Order Item is the same as the one in checkout Item");
+		}
+		else{
+			reporter.reportLogFail("The provice code:"+lsOrderText+" in Order Item is not the same as the one:"+lsCheckoutText+" in checkout Item");
+		}
+
+		orderValue= (float) orderItem.get("tax");
+		checkoutValue= (float) checkoutItem.get("tax");
+		if(Math.abs(orderValue-checkoutValue)<0.1f){
+			reporter.reportLogPass("The tax in Order Item is the same as the one in checkout Item");
+		}
+		else{
+			reporter.reportLogFail("The tax:"+orderValue+" in Order Item is not the same as the one:"+checkoutValue+" in checkout Item");
+		}
+
+		orderValue= (float) orderItem.get("newTotalPrice");
+		checkoutValue= (float) checkoutItem.get("newTotalPrice");
+		if(Math.abs(orderValue-checkoutValue)<0.1f){
+			reporter.reportLogPass("The newTotalPrice in Order Item is the same as the one in checkout Item");
+		}
+		else{
+			reporter.reportLogFail("The newTotalPrice:"+orderValue+" in Order Item is not the same as the one:"+checkoutValue+" in checkout Item");
+		}
+
+		orderValue= (float) orderItem.get("changeToOrderTotal");
+		checkoutValue= (float) checkoutItem.get("changeToOrderTotal");
+		if(Math.abs(orderValue-checkoutValue)<0.1f){
+			reporter.reportLogPass("The changeToOrderTotal in Order Item is the same as the one in checkout Item");
+		}
+		else{
+			reporter.reportLogFail("The changeToOrderTotal:"+orderValue+" in Order Item is not the same as the one:"+checkoutValue+" in checkout Item");
+		}
+
+		orderValue= (float) orderItem.get("promoteCodeValue");
+		checkoutValue= (float) checkoutItem.get("promoteCodeValue");
+		if(Math.abs(orderValue-checkoutValue)<0.1f){
+			reporter.reportLogPass("The promoteCodeValue in Order Item is the same as the one in checkout Item");
+		}
+		else{
+			reporter.reportLogFail("The promoteCodeValue:"+orderValue+" in Order Item is not the same as the one:"+checkoutValue+" in checkout Item");
+		}
+	}
+
+	/**
+	 * To verify easyPayment Linkage Between Order Modification Page And Checkout Page
+	 * @param - Map<String,Object> - orderItem
+	 * @param - Map<String,Object> - checkoutItem
+	 */
+	public void verifyEasyPaymentLinkageBetweenOrderModificationPageAndCheckoutPage(Map<String,Object> orderItem,Map<String,Object> checkoutItem){
+		float orderValue,checkoutValue;
+		int lsOrderText,lsCheckoutText;
+
+		lsOrderText= (int) orderItem.get("installmentsNumber");
+		lsCheckoutText= (int) checkoutItem.get("installmentsNumber");
+		if(lsOrderText==lsCheckoutText){
+			reporter.reportLogPass("The installmentsNumber in Order Item is the same as the one in checkout Item");
+		}
+		else{
+			reporter.reportLogFail("The installmentsNumber:"+lsOrderText+" in Order Item is not the same as the one:"+lsCheckoutText+" in checkout Item");
+		}
+
+		orderValue= (float) orderItem.get("todayPayment");
+		checkoutValue= (float) checkoutItem.get("todayPayment");
+		if(Math.abs(orderValue-checkoutValue)<0.1f){
+			reporter.reportLogPass("The todayPayment in Order Item is the same as the one in checkout Item");
+		}
+		else{
+			reporter.reportLogFail("The todayPayment:"+orderValue+" in Order Item is not the same as the one:"+checkoutValue+" in checkout Item");
+		}
+
+		orderValue= (float) orderItem.get("leftPayment");
+		checkoutValue= (float) checkoutItem.get("leftPayment");
+		if(Math.abs(orderValue-checkoutValue)<0.1f){
+			reporter.reportLogPass("The leftPayment in Order Item is the same as the one in checkout Item");
+		}
+		else{
+			reporter.reportLogFail("The leftPayment:"+orderValue+" in Order Item is not the same as the one:"+checkoutValue+" in checkout Item");
+		}
+
+		orderValue= (float) orderItem.get("futureMonthlyPayment");
+		checkoutValue= (float) checkoutItem.get("futureMonthlyPayment");
+		if(Math.abs(orderValue-checkoutValue)<0.1f){
+			reporter.reportLogPass("The futureMonthlyPayment in Order Item is the same as the one in checkout Item");
+		}
+		else{
+			reporter.reportLogFail("The futureMonthlyPayment:"+orderValue+" in Order Item is not the same as the one:"+checkoutValue+" in checkout Item");
+		}
+	}
+
+	/**
+	 * To get All Order List Map With NewlyAdded And Existing Items
+	 * @param - List<Map<String,Object>> - productListMapForItemsBeingAdded
+	 * @param - List<Map<String,Object>> - productListMapForExistingItems
+	 * @return - List<Map<String,Object>>
+	 */
+	public List<Map<String,Object>> getAllOrderListMapWithNewlyAddedAndExistingItems(List<Map<String,Object>> productListMapForItemsBeingAdded,List<Map<String,Object>> productListMapForExistingItems){
+		List<Map<String,Object>> allProductListMap=new ArrayList<>();
+		for(Map<String,Object> productListMap:productListMapForItemsBeingAdded){
+			allProductListMap.add(productListMap);
+		}
+
+		for(Map<String,Object> productListMap:productListMapForExistingItems){
+			allProductListMap.add(productListMap);
+		}
+
+		return allProductListMap;
+	}
+
+	/**
+	 * To get Shipping And Payment Description for order modification
+	 * @param - Map<String,Object> - checkoutItem
+	 * @return - Map<String,Object>
+	 */
+	public Map<String,Object> getShippingAndPaymentDescForOrderModification() {
+		String lsText;
+		Map<String, Object> map = new HashMap<>();
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblShippingAddress);
+		lsText=lblShippingAddress.getText().trim();
+		map.put("shippingAddress",lsText);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblShippingMethod);
+		lsText=lblShippingMethod.getText().trim();
+		map.put("shippingMethod", lsText.split("-")[0].trim());
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblPaymentMethod);
+		lsText=lblPaymentMethod.getText().trim();
+		map.put("paymentMethodDescription",lsText);
+		map.put("paymentMethod",getSelectedPaymentMethodFromCheckout(lblSelectedCardTypeForPayment));
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblBillingAddress);
+		lsText=lblBillingAddress.getText().trim();
+		map.put("billingAddress",lsText);
+
+		return map;
+	}
+
+	/**
+	 * This function checks if easy payment is there and if not, sets it to given installment number
+	 * @param installmentNumber
+	 */
+	public void setEasyPayForProduct(int installmentNumber){
+		if(!this.checkEasyPaySectionExisting()){
+			this.setPaymentOptionByGivenInstallmentNumber(installmentNumber);
+		}
+	}
+
+	/**
+	 * To calculate Line Item Price By Given Promote Code Discount
+	 * @param - List<Map<String,Object>> - checkoutListMap
+	 * @param - Map<String,Object> - orderSummaryMap
+	 * @return - List<Map<String,Object>>
+	 */
+	public List<Map<String,Object>> calculateLineItemPriceByGivenPromoteCodeDiscount(List<Map<String,Object>> checkoutListMap,Map<String,Object> orderSummaryMap){
+		List<Map<String,Object>> mapList=new ArrayList<>();
+		float promoteCodeValue= Math.abs((float) orderSummaryMap.get("promoteCodeValue"));
+		Map<String,Object> checkoutItemCountAndSubTotal=this.getCheckoutItemCountAndSubTotal(checkoutListMap);
+		float subTotal= (float) checkoutItemCountAndSubTotal.get("subTotal");
+
+		for(Map<String,Object> itemMap:checkoutListMap){
+			Map<String,Object> mapItem=new HashMap<>();
+			String productName= (String) itemMap.get("productName");
+			String productStyle= (String) itemMap.get("productStyle");
+			String productSize= (String) itemMap.get("productSize");
+			float productNowPrice= (float) itemMap.get("productNowPrice");
+			int productQuantity= (int) itemMap.get("productQuantity");
+			float subTotalForItem=productNowPrice*productQuantity;
+			float productPriceForPromoteCodeDiscount=productNowPrice-subTotalForItem/subTotal*promoteCodeValue/productQuantity;
+
+			mapItem.put("productName",productName);
+			mapItem.put("productStyle",productStyle);
+			mapItem.put("productSize",productSize);
+			mapItem.put("productPriceForPromoteCodeDiscount",productPriceForPromoteCodeDiscount);
+			mapList.add(mapItem);
+		}
+
+		return mapList;
+	}
+
 }

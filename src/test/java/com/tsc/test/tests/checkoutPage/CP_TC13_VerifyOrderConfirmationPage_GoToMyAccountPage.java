@@ -35,7 +35,7 @@ public class CP_TC13_VerifyOrderConfirmationPage_GoToMyAccountPage extends BaseT
 
 		//Verifying that item exists in cart and if not, create a new cart for user
 		List<Map<String, String>> keyword = TestDataHandler.constantData.getCheckOut().getLstOrderDetailItems();
-		getShoppingCartThreadLocal().verifyCartExistsForUser(Integer.valueOf(customerEDP), accessToken, keyword,true);
+		getShoppingCartThreadLocal().verifyCartExistsForUser(Integer.valueOf(customerEDP), accessToken, keyword,"1",true);
 
 		//Delete all gift cards
 		CartAPI cartAPI=new CartAPI();
@@ -92,7 +92,7 @@ public class CP_TC13_VerifyOrderConfirmationPage_GoToMyAccountPage extends BaseT
 			reporter.reportLogFail("The payment method is TSC card");
 		}
 
-		getRegularCheckoutThreadLocal().ApplyPromoteCodeForPositiveScenario(lstPromoteCode);
+		getRegularCheckoutThreadLocal().applyPromoteCodeForPositiveScenario(lstPromoteCode);
 
 		getRegularCheckoutThreadLocal().goToOrderConfirmationPage();
 

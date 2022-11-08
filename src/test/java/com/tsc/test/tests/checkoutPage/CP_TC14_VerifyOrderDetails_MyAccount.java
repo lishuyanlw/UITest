@@ -44,7 +44,7 @@ public class CP_TC14_VerifyOrderDetails_MyAccount extends BaseTest {
             getShoppingCartThreadLocal().addTSCCreditCardForUser(null,customerEDP,accessToken);
 
             //Verifying that item exists in cart and if not, create a new cart for user
-            getShoppingCartThreadLocal().verifyCartExistsForUser(Integer.valueOf(customerEDP), accessToken, keyword,false);
+            getShoppingCartThreadLocal().verifyCartExistsForUser(Integer.valueOf(customerEDP), accessToken, keyword,"2",false);
             //Fetching cart response again for user name
             cartResponse= JsonParser.getResponseObject(response.asString(), new TypeReference<CartResponse>() {});
             //getShoppingCartThreadLocal().addAdvanceOrderOrSingleProductToCartForUser(advanceOrderProductNumber,1,true,customerEDP,accessToken);

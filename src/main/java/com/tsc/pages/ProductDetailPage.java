@@ -689,6 +689,9 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag-title']")
 	public WebElement lblAddToBagPopupWindowTitle;
 
+	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag-order-number']")
+	public WebElement lblAddToBagOrderNumber;
+
 	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__content-wrap']//div[@class='add-to-bag__details']//div[@class='add-to-bag__inside-left']//div[@class='add-to-bag__img']")
 	public WebElement cntAddToBagPopupWindowDetailsLeftSectionImage;
 
@@ -730,6 +733,9 @@ public class ProductDetailPage extends BasePage {
 
 	@FindBy(xpath = "//div[contains(@class,'cart-section')]//div[@class='add-to-bag__footer']")
 	public WebElement lblAddToBagPopupWindowFooterInfo;
+
+	@FindBy(xpath = "//div[contains(@id,'pdpAddToBag')]//button[contains(.,'Review')]")
+	public WebElement btnReviewChangesForPlacedOrder;
 
 	//Bread Crumb Navigation
 	@FindBy(xpath = "//nav[@class='breadcrumb__nav']//li//a")
@@ -4050,6 +4056,37 @@ public class ProductDetailPage extends BasePage {
 		}
 		else
 			reporter.reportLogFailWithScreenshot("Review Images are not displayed in Histogram section of review");
+	}
+
+	/**
+	 * This function adds items to placed order
+	 * @param - List<String> - lstKeyword
+	 * @param - int - customerEDP
+	 * @param - String - accessToken
+	 * @return - Map<String,Object>
+	 * @throws IOException
+	 */
+	public Map<String,Object> addItemsToModifiedOrderForUser(List<String> lstKeyword,OrderModificationPage orderModificationPage) throws IOException {
+		Map<String, Object> addToBagPopUpWindowData = new HashMap<>();
+		this.goToProductItemWithPreConditions(lstKeyword,"AddToBag",null);
+		Map<String,Object> pdpSelectedItemData = this.getPDPDesc();
+
+		//Click on Add to Bag Button
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnAddToBag);
+		this.getReusableActionsInstance().clickIfAvailable(this.btnAddToBag);
+		this.waitForCondition(Driver->{return this.btnAddToBagPopupWindowButtonSectionCheckOut.isEnabled() &&
+							this.btnAddToBagPopupWindowButtonSectionCheckOut.isDisplayed();},10000);
+
+		if(this.btnReviewChangesForPlacedOrder.isEnabled() && this.btnReviewChangesForPlacedOrder.isEnabled())
+			reporter.reportLogPassWithScreenshot("Review Changes Button is displayed for user and is enabled");
+		else
+			reporter.reportLogFailWithScreenshot("Review Changes Button is not displayed for user");
+
+		addToBagPopUpWindowData=orderModificationPage.getAddToBagDesc();
+
+		this.clickWebElementUsingJS(this.btnReviewChangesForPlacedOrder);
+		this.waitForPageToLoad();
+		return addToBagPopUpWindowData;
 	}
 
 }

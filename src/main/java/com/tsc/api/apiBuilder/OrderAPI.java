@@ -37,7 +37,9 @@ public class OrderAPI extends ApiClient {
 
         //Generate Json body
         jsonObject.put("CartGuid", GuidId);
-        jsonObject.put("RelatedCartIds", relatedCartIds);
+        if(relatedCartIds!=null && relatedCartIds.size()>0){
+            jsonObject.put("RelatedCartIds", relatedCartIds);
+        }
         jsonObject.put("EsmUserId", "");
         jsonObject.put("DeviceInfo", "");
         jsonObject.put("TrackingCode", "");

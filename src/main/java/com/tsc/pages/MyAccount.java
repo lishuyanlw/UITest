@@ -1,8 +1,14 @@
 package com.tsc.pages;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.tsc.api.apiBuilder.AccountAPI;
+import com.tsc.api.apiBuilder.CartAPI;
+import com.tsc.api.apiBuilder.OrderAPI;
+import com.tsc.api.pojo.CartResponse;
+import com.tsc.api.pojo.PlaceOrderResponse;
 import com.tsc.api.util.CustomComparator;
 import com.tsc.api.util.DataConverter;
+import com.tsc.api.util.JsonParser;
 import com.tsc.pages.base.BasePage;
 import io.restassured.response.Response;
 import org.json.simple.JSONObject;
@@ -5317,6 +5323,129 @@ public class MyAccount extends BasePage {
 			reporter.reportLogPass("Edit Order Button on Order Details page is displayed");
 		else
 			reporter.reportLogFailWithScreenshot("Edit Order Button on Order Details page is not displayed");
+	}
+
+	/**
+	 * To goto OrderModification Page
+	 * @return - boolean
+	 */
+	public boolean goToOrderModificationPage(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnOrderDetailsHeaderEditOrder);
+		String lsClass=btnOrderDetailsHeaderEditOrder.getAttribute("class");
+		if(!lsClass.contains("disabled")){
+			reporter.reportLogPass("Edit order button is enabled");
+		}
+		else{
+			reporter.reportLogFail("Edit order button is disabled");
+			return false;
+		}
+		btnOrderDetailsHeaderEditOrder.click();
+		return this.waitForCondition(Driver->{return (new OrderModificationPage(this.getDriver())).lblModifyOrderHeaderTitle.isDisplayed();},60000);
+	}
+
+	/**
+	 * @param - int - customerEDP
+	 * @param - String - access token
+	 * @param - List<Map<String,Object> - itemsToBeAdded
+	 * @param  - int - easyPayInstallment
+	 * @param - boolean - bCheckExisting
+	 * @return - PlaceOrderResponse
+	 */
+	public PlaceOrderResponse placeOrderForUser(int customerEDP, String accessToken, List<Map<String,String>> itemsToBeAdded, int easyPayInstallment, String noOfItemsToBeAdded, boolean bCheckExisting) throws IOException {
+		List<Map<String,Object>> shoppingCartObject = new ShoppingCartPage(this.getDriver()).verifyCartExistsForUser(customerEDP,accessToken,itemsToBeAdded,noOfItemsToBeAdded,bCheckExisting);
+		Response response;
+		PlaceOrderResponse placeOrderResponse;
+
+		if(easyPayInstallment==0){
+			response = new OrderAPI().placeOrder(shoppingCartObject.get(0).get("cartGuid").toString(),String.valueOf(customerEDP),accessToken,null);
+			placeOrderResponse = JsonParser.getResponseObject(response.asString(), new TypeReference<PlaceOrderResponse>() {});
+			return placeOrderResponse;
+		}
+		else{
+			//Add easy pay installment for user
+			CartResponse cartResponse = new CartAPI().putInstallmentNumberInCartForUser(shoppingCartObject.get(0).get("cartGuid").toString(),easyPayInstallment,accessToken);
+			if(cartResponse.getOrderSummary().getEasyPay().getNoOfInstallments()==easyPayInstallment && shoppingCartObject.size()>0){
+				response = new OrderAPI().placeOrder(shoppingCartObject.get(0).get("cartGuid").toString(),String.valueOf(customerEDP),accessToken,null);
+				placeOrderResponse = JsonParser.getResponseObject(response.asString(), new TypeReference<PlaceOrderResponse>() {});
+				return placeOrderResponse;
+			}else
+				return null;
+		}
+
+	}
+
+	/**
+	 * This function selects specific order and clicks on View Details for that order
+	 * @param - String - orderNumber
+	 * @return - Boolean
+	 */
+	public boolean selectOrderNumberFromPlacedOrders(String orderNumber){
+		int totalOrderList = this.lstOrderItemList.size();
+		boolean flag = false;
+		if(totalOrderList>0){
+			WebElement orderNumberElement;
+			String applicationOrderNumber;
+			for(WebElement order:lstOrderItemList){
+				orderNumberElement = order.findElement(this.byOrderNo);
+				applicationOrderNumber = this.getElementInnerText(orderNumberElement);
+				if(applicationOrderNumber.equalsIgnoreCase(orderNumber)){
+					WebElement viewDetailsButton = order.findElement(this.byOrderViewDetails);
+					this.clickWebElementUsingJS(viewDetailsButton);
+					//Wait for page to load
+					this.waitForPageToLoad();
+					this.waitForCondition(Driver->{return this.btnOrderDetailsHeaderEditOrder.isDisplayed() &&
+							this.btnOrderDetailsHeaderEditOrder.isEnabled();},20000);
+					flag = true;
+				}
+				if(flag)
+					break;
+			}
+			if(flag)
+				return true;
+			else
+				return false;
+		}else
+			return false;
+	}
+
+	/**
+	 * This function navigates to placed order and Edit that order
+	 * @param - PlaceOrderResponse - placeOrderObject
+	 * @param - String - myAccountOrderStatusURL
+	 */
+	public String editPlacedOrderForUser(PlaceOrderResponse placeOrderObject,String myAccountOrderStatusURL){
+		//https://qa-tsc.tsc.ca/pages/myaccount/orderstatus?orderNo=Z40584060000
+		String orderNumber = placeOrderObject.getOrderedCart().getOrderSummary().getOrderNo();
+		int orderNumberLength = orderNumber.length();
+		if(orderNumberLength<12){
+			for(int counter = orderNumberLength;counter<12;counter++){
+				orderNumber = orderNumber+"0";
+			}
+		}
+		String orderURL = System.getProperty("QaUrl")+myAccountOrderStatusURL+"?orderNo="+orderNumber;
+		this.getDriver().navigate().to(orderURL);
+		this.waitForPageToLoad();
+		this.waitForCondition(Driver->{return this.btnOrderDetailsHeaderEditOrder.isDisplayed() &&
+								this.btnOrderDetailsHeaderEditOrder.isEnabled();},120000);
+		//Click on Edit Order Button
+		this.clickWebElementUsingJS(this.btnOrderDetailsHeaderEditOrder);
+
+		//Need to update below code once new xpath for shopping cart are added by removing SpinningMehtod below
+		try{
+			new RegularCheckoutPage(this.getDriver()).waitForPageLoadingSpinningStatusCompleted();
+		}
+		catch (Exception e){
+			this.applyStaticWait(1*this.getStaticWaitForApplication());
+		}
+
+		//Verifying that user is navigated to shopping cart page
+		String currentPageURL = this.URL();
+		if(currentPageURL.contains("shoppingcart"))
+			reporter.reportLogPass("User is navigated to Shopping Cart Page as expected with url as: "+currentPageURL);
+		else
+			reporter.reportLogFailWithScreenshot("User is not navigated to Shopping Cart Page: "+currentPageURL);
+
+		return orderNumber;
 	}
 }
 

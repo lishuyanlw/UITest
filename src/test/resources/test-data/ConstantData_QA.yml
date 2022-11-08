@@ -155,7 +155,7 @@ searchResultPage:
   lbl_ProductRecommendationTitlePage: ["People who viewed this item also viewed","TOP SELLERS"]
   lbl_AddToBagPopupWindowTitle: "\\d+ ITEM(S)? ADDED TO YOUR SHOPPING BAG"
   lbl_VideoDisclaimInfo: "Pre-recorded videos contain pricing or promotional offers that may have expired."
-  lbl_AdvancedOrderkeyword: 603108
+  lbl_AdvancedOrderkeyword: 486049
   lbl_AdvancedOrderMessage: "Est. Ship/Pick-up Date"
   lbl_AutoDeliverykeyword: 603108
   lbl_productTrueFitAndSizingChart: 404791
@@ -256,7 +256,7 @@ lstTestName: ["MA_TC10_Payment_Options_Manage_Credit_Card",
 lblChromeBrowserVersion: "99"
 shoppingCart:
   lst_SearchKeywords:
-    - searchKeyword: "jean"
+    - searchKeyword: "boots"
       quantity: "more than 1"
       badgeRequired: "true"
       itemToBeAdded: "1"
@@ -273,7 +273,7 @@ shoppingCart:
       badgeRequired: "false"
       itemToBeAdded: "1"
       styleExist: "false"
-    - searchKeyword: "jean"
+    - searchKeyword: "legging"
       quantity: "more than 1"
       badgeRequired: "true"
       itemToBeAdded: "1"
