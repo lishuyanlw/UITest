@@ -60,6 +60,7 @@ public class BaseTest {
 	protected static final ThreadLocal<JSONObject> apiAppSessionDataMapThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<MyAccount> myAccountPageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<OrderModificationPage> orderModificationPageThreadLocal = new ThreadLocal<>();
+	protected static final ThreadLocal<OrderTrackingPage> orderTrackingPageThreadLocal = new ThreadLocal<>();
 
 	public BaseTest() {
 		browserDrivers = new BrowserDrivers();
@@ -71,6 +72,9 @@ public class BaseTest {
 	public static Reporter getReporter() {
 		return reporter;
 	}
+
+	//@return orderTrackingPageThreadLocal
+	public static OrderTrackingPage getOrderTrackingThreadLocal() {return orderTrackingPageThreadLocal.get();}
 
 	//@return orderModificationPageThreadLocal
 	public static OrderModificationPage getOrderModificationThreadLocal() {return orderModificationPageThreadLocal.get();}
@@ -152,6 +156,7 @@ public class BaseTest {
 		myAccountPageThreadLocal.set(new MyAccount(getDriver()));
 		guestCheckoutPageThreadLocal.set(new GuestCheckoutPage(getDriver()));
 		orderModificationPageThreadLocal.set(new OrderModificationPage(getDriver()));
+		orderTrackingPageThreadLocal.set(new OrderTrackingPage(getDriver()));
 	}
 
 	private void init_Mobile() throws IOException {
@@ -170,6 +175,7 @@ public class BaseTest {
 		myAccountPageThreadLocal.set(new MyAccount_Mobile(getDriver()));
 		guestCheckoutPageThreadLocal.set(new GuestCheckoutPage_Mobile(getDriver()));
 		orderModificationPageThreadLocal.set(new OrderModificationPage_Mobile(getDriver()));
+		orderTrackingPageThreadLocal.set(new OrderTrackingPage(getDriver()));
 	}
 
 	private void init_Tablet() throws IOException {
@@ -225,6 +231,7 @@ public class BaseTest {
 		orderConfirmationPageThreadLocal.set(new OrderConfirmationPage(getDriver()));
 		guestCheckoutPageThreadLocal.set(new GuestCheckoutPage_Mobile(getDriver()));
 		orderModificationPageThreadLocal.set(new OrderModificationPage_Tablet(getDriver()));
+		orderTrackingPageThreadLocal.set(new OrderTrackingPage(getDriver()));
 	}
 
 

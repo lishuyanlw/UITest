@@ -5432,7 +5432,7 @@ public class MyAccount extends BasePage {
 
 		//Need to update below code once new xpath for shopping cart are added by removing SpinningMehtod below
 		try{
-			new RegularCheckoutPage(this.getDriver()).waitForPageLoadingSpinningStatusCompleted();
+			new RegularCheckoutPage(this.getDriver()).waitForPageLoadingSpinningordStatusCompleted();
 		}
 		catch (Exception e){
 			this.applyStaticWait(1*this.getStaticWaitForApplication());
