@@ -16,6 +16,70 @@ public class OrderTrackingPage extends BasePage {
         super(driver);
     }
 
+    ////////////////////////////////////////
+    //For order tracking portal
+    @FindBy(xpath = "//div[@class='TrackOrder']//h1[@class='step1__title']")
+    public WebElement lblTrackOrderPortalTitle;
+
+    @FindBy(xpath = "//div[@class='TrackOrder']//div[@class='required-fields']")
+    public WebElement lblTrackOrderPortalRequiredFields;
+
+    @FindBy(xpath = "//div[@class='TrackOrder']//div[@class='order-lookup__wrap']//h2")
+    public WebElement lblTrackOrderPortalOrderNumberTitle;
+
+    @FindBy(xpath = "//div[@class='TrackOrder']//div[@class='order-lookup__wrap']//label[@id='OrderNumberlbl']")
+    public WebElement labelTrackOrderPortalOrderNumber;
+
+    @FindBy(xpath = "//div[@class='TrackOrder']//div[@class='order-lookup__wrap']//input[@id='OrderNumber']")
+    public WebElement inputTrackOrderPortalOrderNumber;
+
+    @FindBy(xpath = "//div[@class='TrackOrder']//div[@class='order-lookup__wrap']//label[@id='BillingPostallbl']")
+    public WebElement labelTrackOrderPortalBillingPostal;
+
+    @FindBy(xpath = "//div[@class='TrackOrder']//div[@class='order-lookup__wrap']//input[@id='BillingPostal']")
+    public WebElement inputTrackOrderPortalBillingPostal;
+
+    @FindBy(xpath = "//div[@class='TrackOrder']//div[@class='order-lookup__wrap']//button")
+    public WebElement btnTrackOrderPortalSubmit;
+
+    @FindBy(xpath = "//div[@class='TrackOrder']//div[@class='order-lookup__wrap']//div[contains(@class,'alert-danger')]")
+    public List<WebElement> lstTrackOrderPortalErrorMessageForOrderNumberAndPostalCode;
+
+    @FindBy(xpath = "//div[@class='TrackOrder']//div[@class='signin__wrap']//h2")
+    public WebElement lblTrackOrderPortalSignInTitle;
+
+    @FindBy(xpath = "//div[@class='TrackOrder']//div[@class='signin__wrap']//label[@id='EmailAddresslbl']")
+    public WebElement labelTrackOrderPortalEmail;
+
+    @FindBy(xpath = "//div[@class='TrackOrder']//div[@class='signin__wrap']//input[@id='EmailAddress']")
+    public WebElement inputTrackOrderPortalEmail;
+
+    @FindBy(xpath = "//div[@class='TrackOrder']//div[@class='signin__wrap']//label[@id='Passwordlbl']")
+    public WebElement labelTrackOrderPortalPassword;
+
+    @FindBy(xpath = "//div[@class='TrackOrder']//div[@class='signin__wrap']//input[@id='Password']")
+    public WebElement inputTrackOrderPortalPassword;
+
+    @FindBy(xpath = "//div[@class='TrackOrder']//div[@class='signin__wrap']//button[@class='form__button-show-password']")
+    public WebElement btnTrackOrderPortalShowPassword;
+
+    @FindBy(xpath = "//div[@class='TrackOrder']//div[@id='recaptchaId']")
+    public WebElement cntTrackOrderPortalRecaptcha;
+
+    @FindBy(xpath = "//div[@class='TrackOrder']//div[@class='signin__wrap']//button[@id='submit']")
+    public WebElement btnTrackOrderPortalSignIn;
+
+    @FindBy(xpath = "//div[@class='TrackOrder']//div[@class='signin__wrap']//div[contains(@class,'alert-danger')]")
+    public List<WebElement> lstTrackOrderPortalErrorMessageForSignIn;
+
+    @FindBy(xpath = "//div[@class='TrackOrder']//div[@class='forgot-password']//a")
+    public WebElement lnkTrackOrderPortalForgotPassword;
+
+    @FindBy(xpath = "//div[@class='TrackOrder']//div[@class='not-found__message']")
+    public WebElement lblTrackOrderPortalNotFoundMessage;
+
+    //////////////////////////////////////////
+    //For order tracking page
     @FindBy(xpath = "//div[@id='trackorder']//h1[@class='trackorder__title']")
     public WebElement lblTrackOrderTitle;
 
@@ -170,6 +234,278 @@ public class OrderTrackingPage extends BasePage {
         }
 
         return totalCount;
+    }
+
+    /**
+     * To verify Order Track Portal contents
+     */
+    public void verifyOrderTrackPortalContents() {
+        String lsText;
+
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblTrackOrderPortalTitle);
+        lsText = lblTrackOrderPortalTitle.getText().trim();
+        if (!lsText.isEmpty()) {
+            reporter.reportLogPass("The track order portal title is displaying correctly");
+        } else {
+            reporter.reportLogFailWithScreenshot("The track order portal title is not displaying correctly");
+        }
+
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblTrackOrderPortalRequiredFields);
+        lsText = lblTrackOrderPortalRequiredFields.getText().trim();
+        if (!lsText.isEmpty()) {
+            reporter.reportLogPass("The track order portal Required Fields is displaying correctly");
+        } else {
+            reporter.reportLogFailWithScreenshot("The track order portal Required Fields is not displaying correctly");
+        }
+
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblTrackOrderPortalOrderNumberTitle);
+        lsText = lblTrackOrderPortalOrderNumberTitle.getText().trim();
+        if (!lsText.isEmpty()) {
+            reporter.reportLogPass("The track order portal Order Number Title is displaying correctly");
+        } else {
+            reporter.reportLogFailWithScreenshot("The track order portal Order Number Title is not displaying correctly");
+        }
+
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(labelTrackOrderPortalOrderNumber);
+        lsText = labelTrackOrderPortalOrderNumber.getText().trim();
+        if (!lsText.isEmpty()) {
+            reporter.reportLogPass("The track order portal Order Number label is displaying correctly");
+        } else {
+            reporter.reportLogFailWithScreenshot("The track order portal Order Number label is not displaying correctly");
+        }
+
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputTrackOrderPortalOrderNumber);
+        if (this.getReusableActionsInstance().isElementVisible(inputTrackOrderPortalOrderNumber)) {
+            reporter.reportLogPass("The track order portal Order Number input is displaying correctly");
+        } else {
+            reporter.reportLogFailWithScreenshot("The track order portal Order Number input is not displaying correctly");
+        }
+
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(labelTrackOrderPortalBillingPostal);
+        lsText = labelTrackOrderPortalBillingPostal.getText().trim();
+        if (!lsText.isEmpty()) {
+            reporter.reportLogPass("The track order portal Billing Postal code label is displaying correctly");
+        } else {
+            reporter.reportLogFailWithScreenshot("The track order portal Billing Postal code label is not displaying correctly");
+        }
+
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputTrackOrderPortalBillingPostal);
+        if (this.getReusableActionsInstance().isElementVisible(inputTrackOrderPortalBillingPostal)) {
+            reporter.reportLogPass("The track order portal Billing Postal code input is displaying correctly");
+        } else {
+            reporter.reportLogFailWithScreenshot("The track order portal Billing Postal code input is not displaying correctly");
+        }
+
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnTrackOrderPortalSubmit);
+        lsText = btnTrackOrderPortalSubmit.getText().trim();
+        if (!lsText.isEmpty()) {
+            reporter.reportLogPass("The track order portal submit button is displaying correctly");
+        } else {
+            reporter.reportLogFailWithScreenshot("The track order portal submit button is not displaying correctly");
+        }
+
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblTrackOrderPortalSignInTitle);
+        lsText = lblTrackOrderPortalSignInTitle.getText().trim();
+        if (!lsText.isEmpty()) {
+            reporter.reportLogPass("The track order portal signIn Title is displaying correctly");
+        } else {
+            reporter.reportLogFailWithScreenshot("The track order portal signIn Title is not displaying correctly");
+        }
+
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(labelTrackOrderPortalEmail);
+        lsText = labelTrackOrderPortalEmail.getText().trim();
+        if (!lsText.isEmpty()) {
+            reporter.reportLogPass("The track order portal email label is displaying correctly");
+        } else {
+            reporter.reportLogFailWithScreenshot("The track order portal email label is not displaying correctly");
+        }
+
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputTrackOrderPortalEmail);
+        if (this.getReusableActionsInstance().isElementVisible(inputTrackOrderPortalEmail)) {
+            reporter.reportLogPass("The track order portal email input is displaying correctly");
+        } else {
+            reporter.reportLogFailWithScreenshot("The track order portal email input is not displaying correctly");
+        }
+
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(labelTrackOrderPortalPassword);
+        lsText = labelTrackOrderPortalPassword.getText().trim();
+        if (!lsText.isEmpty()) {
+            reporter.reportLogPass("The track order portal password label is displaying correctly");
+        } else {
+            reporter.reportLogFailWithScreenshot("The track order portal password label is not displaying correctly");
+        }
+
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputTrackOrderPortalPassword);
+        if (this.getReusableActionsInstance().isElementVisible(inputTrackOrderPortalPassword)) {
+            reporter.reportLogPass("The track order portal password input is displaying correctly");
+        } else {
+            reporter.reportLogFailWithScreenshot("The track order portal password input is not displaying correctly");
+        }
+
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnTrackOrderPortalShowPassword);
+        lsText = btnTrackOrderPortalShowPassword.getText().trim();
+        if (!lsText.isEmpty()) {
+            reporter.reportLogPass("The track order portal Show Password button is displaying correctly");
+        } else {
+            reporter.reportLogFailWithScreenshot("The track order portal Show Password button is not displaying correctly");
+        }
+
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(cntTrackOrderPortalRecaptcha);
+        if (this.getReusableActionsInstance().isElementVisible(cntTrackOrderPortalRecaptcha)) {
+            reporter.reportLogPass("The track order portal Recaptcha is displaying correctly");
+        } else {
+            reporter.reportLogFailWithScreenshot("The track order portal Recaptcha is not displaying correctly");
+        }
+
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnTrackOrderPortalSignIn);
+        lsText = btnTrackOrderPortalSignIn.getText().trim();
+        if (!lsText.isEmpty()) {
+            reporter.reportLogPass("The track order portal signIn button is displaying correctly");
+        } else {
+            reporter.reportLogFailWithScreenshot("The track order portal signIn button is not displaying correctly");
+        }
+
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(lnkTrackOrderPortalForgotPassword);
+        lsText = lnkTrackOrderPortalForgotPassword.getAttribute("href");
+        if (!lsText.isEmpty()) {
+            reporter.reportLogPass("The track order portal forgot password link is not empty");
+        } else {
+            reporter.reportLogFailWithScreenshot("The track order portal forgot password link is empty");
+        }
+
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(lnkTrackOrderPortalForgotPassword);
+        lsText = lnkTrackOrderPortalForgotPassword.getText();
+        if (!lsText.isEmpty()) {
+            reporter.reportLogPass("The track order portal forgot password link is displaying correctly");
+        } else {
+            reporter.reportLogFailWithScreenshot("The track order portal forgot password link is not displaying correctly");
+        }
+    }
+
+    /**
+     * To verify Order Track Portal Error Messages For No Input
+     * @param - List<String> - lstTrackOrderPortalErrorMessageForOrderNumberAndPostalCodeFromYml
+     * @param - List<String> - lstTrackOrderPortalErrorMessageForSignInFromYml
+     */
+    public void verifyOrderTrackPortalErrorMessagesForNoInput(List<String> lstTrackOrderPortalErrorMessageForOrderNumberAndPostalCodeFromYml,List<String> lstTrackOrderPortalErrorMessageForSignInFromYml) {
+        String lsActual,lsExpected;
+        WebElement item;
+
+        reporter.reportLog("Verify error message for order number and postal code");
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnTrackOrderPortalSubmit);
+        this.btnTrackOrderPortalSubmit.click();
+        this.waitForCondition(Driver->{return lstTrackOrderPortalErrorMessageForOrderNumberAndPostalCode.size()>0;},10000);
+
+        int loopSize=lstTrackOrderPortalErrorMessageForOrderNumberAndPostalCode.size();
+        for(int i=0;i<loopSize;i++){
+            item=lstTrackOrderPortalErrorMessageForOrderNumberAndPostalCode.get(i);
+            this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+            lsActual=item.getText().trim();
+            lsExpected=lstTrackOrderPortalErrorMessageForOrderNumberAndPostalCodeFromYml.get(i);
+            if(lsActual.equalsIgnoreCase(lsExpected)){
+                reporter.reportLogPass("The actual error message:'"+lsActual+"' is the same as the expected:'"+lsExpected+"'");
+            }
+            else{
+                reporter.reportLogFail("The actual error message:'"+lsActual+"' is the same as the expected:'"+lsExpected+"'");
+            }
+        }
+
+        reporter.reportLog("Verify error message for signIn");
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnTrackOrderPortalSignIn);
+        this.btnTrackOrderPortalSignIn.click();
+        this.waitForCondition(Driver->{return lstTrackOrderPortalErrorMessageForSignIn.size()>0;},10000);
+
+        loopSize=lstTrackOrderPortalErrorMessageForSignIn.size();
+        for(int i=0;i<loopSize;i++){
+            item=lstTrackOrderPortalErrorMessageForSignIn.get(i);
+            this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+            lsActual=item.getText().trim();
+            lsExpected=lstTrackOrderPortalErrorMessageForSignInFromYml.get(i);
+            if(lsActual.equalsIgnoreCase(lsExpected)){
+                reporter.reportLogPass("The actual error message:'"+lsActual+"' is the same as the expected:'"+lsExpected+"'");
+            }
+            else{
+                reporter.reportLogFail("The actual error message:'"+lsActual+"' is the same as the expected:'"+lsExpected+"'");
+            }
+        }
+    }
+
+    /**
+     * To goTo Track Order Portal Through Clicking TrackYourOrder Item On GlobalFooter
+     * @param - GlobalFooterPage - gf
+     * @param - List<List<String>> - lstNameAndLinks
+     */
+    public void goToTrackOrderPortalThroughClickingTrackYourOrderItemOnGlobalFooter(GlobalFooterPage gf,List<List<String>> lstNameAndLinks){
+        String lsService="Track Your Order";
+        Map<String,String> hashMap = gf.getTestDataWithSpecificName(lstNameAndLinks, lsService, true);
+        gf.goToService(lsService,lblTrackOrderPortalTitle,hashMap.get("parent"));
+    }
+
+    /**
+     * To go To Order Tracking Page By Order Number And Billing Postal
+     * @param - String - orderNumber
+     * @param - String - billingPostal
+     */
+    public void goToOrderTrackingPageByOrderNumberAndBillingPostal(String orderNumber,String billingPostal){
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputTrackOrderPortalOrderNumber);
+        this.inputTrackOrderPortalOrderNumber.clear();
+        this.inputTrackOrderPortalOrderNumber.sendKeys(orderNumber);
+        this.applyStaticWait(300);
+
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputTrackOrderPortalBillingPostal);
+        this.inputTrackOrderPortalBillingPostal.clear();
+        this.inputTrackOrderPortalBillingPostal.sendKeys(orderNumber);
+        this.applyStaticWait(300);
+
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnTrackOrderPortalSubmit);
+        this.btnTrackOrderPortalSubmit.click();
+        this.waitForCondition(Driver->{return lblTrackOrderTitle.isDisplayed();},120000);
+    }
+
+    /**
+     * To go To Order Tracking Page By userName and password
+     * @param - String - userName
+     * @param - String - password
+     */
+    public void goToOrderTrackingPageByUserNameAndPassword(String userName,String password){
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputTrackOrderPortalEmail);
+        this.inputTrackOrderPortalEmail.clear();
+        this.inputTrackOrderPortalEmail.sendKeys(userName);
+        this.applyStaticWait(300);
+
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputTrackOrderPortalPassword);
+        this.inputTrackOrderPortalPassword.clear();
+        this.inputTrackOrderPortalPassword.sendKeys(password);
+        this.applyStaticWait(300);
+
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnTrackOrderPortalSignIn);
+        this.btnTrackOrderPortalSignIn.click();
+        this.waitForCondition(Driver->{return (new MyAccount(this.getDriver())).lblOrderStatusSectionTitle.isDisplayed();},120000);
+    }
+
+    public void verifyNotFoundMessageForTrackPortalWithWrongOrderNumber(String lsExpectedNotFoundMessage){
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputTrackOrderPortalOrderNumber);
+        this.inputTrackOrderPortalOrderNumber.clear();
+        this.inputTrackOrderPortalOrderNumber.sendKeys("WRONG123456789");
+        this.applyStaticWait(300);
+
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputTrackOrderPortalBillingPostal);
+        this.inputTrackOrderPortalBillingPostal.clear();
+        this.inputTrackOrderPortalBillingPostal.sendKeys("L3P2G3");
+        this.applyStaticWait(300);
+
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnTrackOrderPortalSubmit);
+        this.btnTrackOrderPortalSubmit.click();
+        this.waitForCondition(Driver->{return lblTrackOrderPortalNotFoundMessage.isDisplayed();},120000);
+
+        String lsText=this.getElementInnerText(lblTrackOrderPortalNotFoundMessage).toLowerCase();
+
+        if(lsText.contains(lsExpectedNotFoundMessage.toLowerCase())){
+            reporter.reportLogPass("The error message for wrong order number or billing postal is displaying as expected.");
+        }
+        else{
+            reporter.reportLogFailWithScreenshot("The error message for wrong order number or billing postal is not displaying as expected.");
+        }
     }
 
     /**

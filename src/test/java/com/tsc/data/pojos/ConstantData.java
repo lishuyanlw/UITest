@@ -1033,6 +1033,33 @@ public class ConstantData {
         public String lbl_noOrderRecordsMessage;
         public String lblOrderDetailsPageUrl;
         public String lblBreadCrumbNavigationPages;
+        public List<String> lstTrackingOrderPortalErrorMessageForOrderNumberAndPostalCode;
+        public List<String> lstTrackingOrderPortalErrorMessageForSignIn;
+        public String lblTrackingOrderPortalNotFoundMessage;
+
+        public List<String> getLstTrackingOrderPortalErrorMessageForOrderNumberAndPostalCode() {
+            return lstTrackingOrderPortalErrorMessageForOrderNumberAndPostalCode;
+        }
+
+        public void setLstTrackingOrderPortalErrorMessageForOrderNumberAndPostalCode(List<String> lstTrackingOrderPortalErrorMessageForOrderNumberAndPostalCode) {
+            this.lstTrackingOrderPortalErrorMessageForOrderNumberAndPostalCode = lstTrackingOrderPortalErrorMessageForOrderNumberAndPostalCode;
+        }
+
+        public List<String> getLstTrackingOrderPortalErrorMessageForSignIn() {
+            return lstTrackingOrderPortalErrorMessageForSignIn;
+        }
+
+        public void setLstTrackingOrderPortalErrorMessageForSignIn(List<String> lstTrackingOrderPortalErrorMessageForSignIn) {
+            this.lstTrackingOrderPortalErrorMessageForSignIn = lstTrackingOrderPortalErrorMessageForSignIn;
+        }
+
+        public String getLblTrackingOrderPortalNotFoundMessage() {
+            return lblTrackingOrderPortalNotFoundMessage;
+        }
+
+        public void setLblTrackingOrderPortalNotFoundMessage(String lblTrackingOrderPortalNotFoundMessage) {
+            this.lblTrackingOrderPortalNotFoundMessage = lblTrackingOrderPortalNotFoundMessage;
+        }
 
         public String getLblBreadCrumbNavigationPages() {            return lblBreadCrumbNavigationPages;        }
 

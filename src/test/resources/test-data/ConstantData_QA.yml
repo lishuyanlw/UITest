@@ -248,6 +248,11 @@ myAccount:
   lbl_noOrderRecordsMessage: "No orders yet. TSC has tons of deals to offer"
   lblOrderDetailsPageUrl: "/pages/myaccount/orderstatus/details?orderNo="
   lblBreadCrumbNavigationPages: "My Account:Your Orders:Order Details"
+  lstTrackingOrderPortalErrorMessageForOrderNumberAndPostalCode: ["Valid order number is required.","Postal code is required."]
+  lstTrackingOrderPortalErrorMessageForSignIn: ["You have one or more missing or invalid entries. Please enter correct data and try again.",
+                                                "Valid email address is required.",
+                                                "Password is required."]
+  lblTrackingOrderPortalNotFoundMessage: "We are sorry! The page you are trying to reach cannot be found."
 
 lstTestName: ["MA_TC10_Payment_Options_Manage_Credit_Card",
               "MA_TC18_MyPreferences_MyNewsletters",
