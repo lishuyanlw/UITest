@@ -5451,5 +5451,40 @@ public class MyAccount extends BasePage {
 		this.btnOrderDetailsHeaderTrackOrder.click();
 		return this.waitForCondition(Driver->{return (new OrderTrackingPage(this.getDriver())).lblTrackOrderTitle.isDisplayed();},120000);
 	}
+
+	/**
+	 * To goTo Order Details Page By Given Order Number Searching
+	 * @param - String - orderNumber
+	 * @param - String - lsOrderDetailsURL - the order details url from yaml file
+	 */
+	public void goToOrderDetailsPageByGivenOrderNumberSearching(String orderNumber,String lsOrderDetailsURL){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputAccountOrderSearch);
+		this.inputAccountOrderSearch.clear();
+		this.inputAccountOrderSearch.sendKeys(orderNumber);
+		this.applyStaticWait(300);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnAccountOrderSearch);
+		this.btnAccountOrderSearch.click();
+
+		this.waitForCondition(Driver->{ return this.lblOrderDetailsSectionTitle.isDisplayed();},50000);
+
+		lsOrderDetailsURL=lsOrderDetailsURL.replace("{OrderNO}",orderNumber);
+		String lsExpectedURL=this.getBaseURL()+lsOrderDetailsURL;
+		if(this.URL().equalsIgnoreCase(lsExpectedURL)){
+			reporter.reportLogPass("The page is navigated to order details page correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The page is not navigated to order details page correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderDetailsHeaderCustomerNO);
+		String lsOrderNumberInOrderDetails=this.lblOrderDetailsHeaderCustomerNO.getText().trim();
+		if(lsOrderNumberInOrderDetails.equalsIgnoreCase(orderNumber)){
+			reporter.reportLogPass("Order number in order details page is the same as the one in order status page");
+		}
+		else{
+			reporter.reportLogPass("Order number:"+lsOrderNumberInOrderDetails+" in order details page is not the same as the one:"+orderNumber+" in order status page");
+		}
+	}
 }
 

@@ -81,13 +81,13 @@ public class CreateAccountPage extends BasePage {
     @FindBy(xpath = "//create-account-app//label[contains(.,'Phone Number')]")
     public WebElement lblPhoneNumberTitle;
 
-    @FindBy(xpath = "//create-account-app//input[@id='phoneNumber1']")
+    @FindBy(xpath = "//create-account-app//input[@formcontrolname='phoneNumber1']")
     public WebElement inputPhoneNumber1;
 
-    @FindBy(xpath = "//create-account-app//input[@id='phoneNumber2']")
+    @FindBy(xpath = "//create-account-app//input[@formcontrolname='phoneNumber2']")
     public WebElement inputPhoneNumber2;
 
-    @FindBy(xpath = "//create-account-app//input[@id='phoneNumber3']")
+    @FindBy(xpath = "//create-account-app//input[@formcontrolname='phoneNumber3']")
     public WebElement inputPhoneNumber3;
 
     @FindBy(xpath = "//create-account-app//label[@for='email']")
@@ -104,6 +104,9 @@ public class CreateAccountPage extends BasePage {
 
     @FindBy(xpath = "//create-account-app//input[@id='subscribe']")
     public WebElement ckbEmailSubscribe;
+
+    @FindBy(xpath = "//create-account-app//span[@class='notes']")
+    public WebElement lblEmailSubscribeNotes;
 
     @FindBy(xpath = "//create-account-app//label[@for='password']")
     public WebElement lblPasswordTitle;
@@ -219,11 +222,11 @@ public class CreateAccountPage extends BasePage {
         this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(ckbEmailSubscribe);
-        ckbEmailSubscribe.click();
+        labelEmailSubscribe.click();
         this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 
         if(lsPassword==null){
-            lsPassword=DataConverter.getSaltString(2,"lowerStringType")+DataConverter.getSaltString(4,"numberType")+"@rogers.com";
+            lsPassword=DataConverter.getSaltString(5,"lowerStringType")+DataConverter.getSaltString(1,"numberType");
         }
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputPassword);
         inputPassword.clear();
@@ -483,20 +486,20 @@ public class CreateAccountPage extends BasePage {
         }
 
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(labelEmailSubscribe);
-        lsText=labelEmailSubscribe.getText();
-        if(!lsText.isEmpty()){
+        if(this.getReusableActionsInstance().isElementVisible(labelEmailSubscribe)){
             reporter.reportLogPass("The Email Subscribe info is displaying correctly");
         }
         else{
             reporter.reportLogFailWithScreenshot("The Email Subscribe info is not displaying correctly");
         }
 
-        this.getReusableActionsInstance().javascriptScrollByVisibleElement(ckbEmailSubscribe);
-        if(this.getReusableActionsInstance().isElementVisible(ckbEmailSubscribe)){
-            reporter.reportLogPass("The Email Subscribe checkbox is displaying correctly");
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblEmailSubscribeNotes);
+        lsText=lblEmailSubscribeNotes.getText();
+        if(!lsText.isEmpty()){
+            reporter.reportLogPass("The Email Subscribe notes is displaying correctly");
         }
         else{
-            reporter.reportLogFailWithScreenshot("The Email Subscribe checkbox is not displaying correctly");
+            reporter.reportLogFailWithScreenshot("The Email Subscribe notes is not displaying correctly");
         }
 
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblPasswordTitle);

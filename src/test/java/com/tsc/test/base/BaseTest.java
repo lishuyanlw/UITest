@@ -61,6 +61,7 @@ public class BaseTest {
 	protected static final ThreadLocal<MyAccount> myAccountPageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<OrderModificationPage> orderModificationPageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<OrderTrackingPage> orderTrackingPageThreadLocal = new ThreadLocal<>();
+	protected static final ThreadLocal<CreateAccountPage> createAccountPageThreadLocal = new ThreadLocal<>();
 
 	public BaseTest() {
 		browserDrivers = new BrowserDrivers();
@@ -72,6 +73,9 @@ public class BaseTest {
 	public static Reporter getReporter() {
 		return reporter;
 	}
+
+	//@return createAccountPageThreadLocal
+	public static CreateAccountPage getCreateAccountThreadLocal() {return createAccountPageThreadLocal.get();}
 
 	//@return orderTrackingPageThreadLocal
 	public static OrderTrackingPage getOrderTrackingThreadLocal() {return orderTrackingPageThreadLocal.get();}
@@ -157,6 +161,7 @@ public class BaseTest {
 		guestCheckoutPageThreadLocal.set(new GuestCheckoutPage(getDriver()));
 		orderModificationPageThreadLocal.set(new OrderModificationPage(getDriver()));
 		orderTrackingPageThreadLocal.set(new OrderTrackingPage(getDriver()));
+		createAccountPageThreadLocal.set(new CreateAccountPage(getDriver()));
 	}
 
 	private void init_Mobile() throws IOException {
@@ -176,6 +181,7 @@ public class BaseTest {
 		guestCheckoutPageThreadLocal.set(new GuestCheckoutPage_Mobile(getDriver()));
 		orderModificationPageThreadLocal.set(new OrderModificationPage_Mobile(getDriver()));
 		orderTrackingPageThreadLocal.set(new OrderTrackingPage(getDriver()));
+		createAccountPageThreadLocal.set(new CreateAccountPage(getDriver()));
 	}
 
 	private void init_Tablet() throws IOException {
@@ -232,6 +238,7 @@ public class BaseTest {
 		guestCheckoutPageThreadLocal.set(new GuestCheckoutPage_Mobile(getDriver()));
 		orderModificationPageThreadLocal.set(new OrderModificationPage_Tablet(getDriver()));
 		orderTrackingPageThreadLocal.set(new OrderTrackingPage(getDriver()));
+		createAccountPageThreadLocal.set(new CreateAccountPage(getDriver()));
 	}
 
 
