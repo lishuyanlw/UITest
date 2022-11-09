@@ -9,7 +9,10 @@ import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.text.Normalizer;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
 import java.util.*;
 import java.util.NoSuchElementException;
 import java.util.function.Function;
@@ -1270,6 +1273,16 @@ import utils.ReusableActions;
 	public String formatCurrentDateForProvidedFormat(String dateFormat){
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dateFormat);
 		return simpleDateFormat.format(new Date());
+	}
+
+	/**
+	 * This function formats input date as per given format to provided date format
+	 * @param - String - dateFormat
+	 * @return - String
+	 */
+	public String formatDateToProvidedFormat(String inputDate, String inputDateFormat, String outputDateFormat) throws ParseException {
+		TemporalAccessor inputDateTemporalAccessor = DateTimeFormatter.ofPattern(inputDateFormat).withLocale(Locale.getDefault()).parse(inputDate);
+		return DateTimeFormatter.ofPattern(outputDateFormat).withLocale(Locale.getDefault()).format(inputDateTemporalAccessor);
 	}
 
 	/**
