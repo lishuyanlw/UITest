@@ -822,8 +822,11 @@ public class OrderTrackingPage extends BasePage {
             List orderDetails = this.getOrderDetailsForOrderNumber(userSessionData.get("customerEDP").toString(),userSessionData.get("access_token").toString(),orderNumberForFetchingDetails);
             if(orderDetails.size()>0){
                 Map<String,Object> orderNumberDetailsForUser = new HashMap<>();
-                orderNumberDetailsForUser.put("OrderNumber",orderNumberForFetchingDetails);
-                orderNumberDetailsForUser.put("OrderDetails",orderDetails);
+                orderNumberDetailsForUser.put("orderNumber",orderNumberForFetchingDetails);
+                orderNumberDetailsForUser.put("orderDetails",orderDetails);
+                String formatDate = this.formatDateToProvidedFormat(((HashMap)((List)orderNumberDetailsForUser.get("orderDetails")).get(0)).get("orderDateTime").toString(),"yyyy-MM-dd'T'k:m:s","MMMM dd, yyyy h:m a");
+                orderNumberDetailsForUser.put("orderPlacedDateTime",this.formatInputDateAsPerApplication(formatDate));
+                orderNumberDetailsForUser.put("quantity",((HashMap)((List)orderNumberDetailsForUser.get("orderDetails")).get(0)).get("orderQuantity"));
                 orderList.add(orderNumberDetailsForUser);
             }
         }else{
@@ -840,14 +843,14 @@ public class OrderTrackingPage extends BasePage {
                             break;
                         else{
                             if(orderSummary.getQuantity()>1){
-                                orderNumberDetailsForUser.put("OrderNumber",orderSummary.getOrderNo());
+                                orderNumberDetailsForUser.put("orderNumber",orderSummary.getOrderNo());
                                 String formatDate = this.formatDateToProvidedFormat(orderSummary.getOrderDateTime(),"yyyy-MM-dd'T'k:m:s","MMMM dd, yyyy h:m a");
                                 orderNumberDetailsForUser.put("orderPlacedDateTime",this.formatInputDateAsPerApplication(formatDate));
-                                orderNumberDetailsForUser.put("Quantity",orderSummary.getQuantity());
+                                orderNumberDetailsForUser.put("quantity",orderSummary.getQuantity());
                                 //Fetching order details for products in Order
                                 List orderDetails = this.getOrderDetailsForOrderNumber(userSessionData.get("customerEDP").toString(),userSessionData.get("access_token").toString(),orderSummary.getOrderNo());
                                 if(orderDetails.size()>0){
-                                    orderNumberDetailsForUser.put("OrderDetails",orderDetails);
+                                    orderNumberDetailsForUser.put("orderDetails",orderDetails);
                                     orderList.add(orderNumberDetailsForUser);
                                     totalOrderToBeFetched++;
                                 }
@@ -883,6 +886,8 @@ public class OrderTrackingPage extends BasePage {
                 if(itemsList.size()>0){
                     for(DetailedOrderSummary.Items items:itemsList){
                         Map<String,Object> productDetails = new HashMap<>();
+                        productDetails.put("orderDateTime",detailedOrderSummary.getOrderSummary().getOrderDateTime());
+                        productDetails.put("orderQuantity",detailedOrderSummary.getOrderSummary().getQuantity());
                         productDetails.put("productName",items.getDescription());
                         productDetails.put("productStyle",items.getStyle());
                         productDetails.put("productSize",items.getSize());
