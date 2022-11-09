@@ -496,7 +496,7 @@ public class OrderTrackingPage extends BasePage {
     public void verifyNotFoundMessageForTrackPortalWithWrongOrderNumber(String lsExpectedNotFoundMessage){
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputTrackOrderPortalOrderNumber);
         this.inputTrackOrderPortalOrderNumber.clear();
-        this.inputTrackOrderPortalOrderNumber.sendKeys("WRONG123456789");
+        this.inputTrackOrderPortalOrderNumber.sendKeys("WRG123456789");
         this.applyStaticWait(300);
 
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputTrackOrderPortalBillingPostal);
@@ -798,6 +798,37 @@ public class OrderTrackingPage extends BasePage {
         }
         else{
             reporter.reportLogFail("The productQuantity:"+orderTrackingQuantity+" in OrderTracking Item is not the same as the one:"+orderDetailsQuantity+" in orderDetails Item");
+        }
+    }
+
+    /**
+<<<<<<< HEAD
+     * To go To Order Tracking Page By userName and password
+     * @param - String - userName
+     * @param - String - password
+     */
+    public void verifyErrorMessageWithInvalidUserNameAndPassword(String lsErrorMessageWithInvalidUserNameAndPassword){
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputTrackOrderPortalEmail);
+        this.inputTrackOrderPortalEmail.clear();
+        this.inputTrackOrderPortalEmail.sendKeys("InvalidEmail@invalid.com");
+        this.applyStaticWait(300);
+
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputTrackOrderPortalPassword);
+        this.inputTrackOrderPortalPassword.clear();
+        this.inputTrackOrderPortalPassword.sendKeys("invalid1");
+        this.applyStaticWait(300);
+
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnTrackOrderPortalSignIn);
+        this.btnTrackOrderPortalSignIn.click();
+        this.waitForCondition(Driver->{return lstTrackOrderPortalErrorMessageForSignIn.size()>0;},120000);
+
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(lstTrackOrderPortalErrorMessageForSignIn.get(0));
+        String lsText=lstTrackOrderPortalErrorMessageForSignIn.get(0).getText().trim();
+        if(lsText.equalsIgnoreCase(lsErrorMessageWithInvalidUserNameAndPassword)){
+            reporter.reportLogPass("The error message for invalid username and password is displaying correctly");
+        }
+        else{
+            reporter.reportLogFailWithScreenshot("The error message for invalid username and password is not displaying correctly");
         }
     }
 

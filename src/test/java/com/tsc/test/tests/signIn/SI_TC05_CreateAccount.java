@@ -22,12 +22,19 @@ public class SI_TC05_CreateAccount extends BaseTest {
         BasePage basePage=new BasePage(this.getDriver());
 
         getGlobalLoginPageThreadLocal().goToCreateAccountPageThroughHeader();
+
+        reporter.reportLog("Verify contents");
         getCreateAccountThreadLocal().verifyContents();
+
+        reporter.reportLog("Verify error messages");
+        List<String> lstErrorMessage=TestDataHandler.constantData.getLoginUser().getLstErrorMessageForCreateAccount();
+        getCreateAccountThreadLocal().verifyErrorMessages(lstErrorMessage);
+
         Map<String,String> createdLoginMap=getCreateAccountThreadLocal().createNewAccount(null,null,true);
 
         String lblUserName = createdLoginMap.get("email");
         String lblPassword = createdLoginMap.get("password");
-
+        reporter.reportLog("Login with newly created email:"+lblUserName+" and password:"+lblPassword);
         boolean bSignIn=getGlobalLoginPageThreadLocal().checkSignInStatus();
         if(bSignIn){
             reporter.reportLogPass("Login successfully with newly created email:"+lblUserName+" and password:"+lblPassword);
