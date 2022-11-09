@@ -1,14 +1,24 @@
 package com.tsc.pages;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.tsc.api.apiBuilder.ApiResponse;
+import com.tsc.api.apiBuilder.OrderAPI;
+import com.tsc.api.pojo.DetailedOrderSummary;
+import com.tsc.api.pojo.OrderListResponse;
+import com.tsc.api.pojo.OrderSummary;
+import com.tsc.api.util.JsonParser;
 import com.tsc.pages.base.BasePage;
+import io.restassured.response.Response;
+import org.json.JSONObject;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import org.springframework.core.annotation.Order;
+
+import java.io.IOException;
+import java.text.ParseException;
+import java.util.*;
 
 public class OrderTrackingPage extends BasePage {
 
@@ -791,6 +801,131 @@ public class OrderTrackingPage extends BasePage {
         }
     }
 
+    /**
+     * This function fetches order details for user
+     * @param - String - userName
+     * @param - String - password
+     * @param - String - grantType
+     * @param - String - apiKey
+     * @return - List<Map<String,Object>>
+     * @throws - IOException
+     */
+    public List<Map<String,Object>> getPlacedOrderListForUser(String userName, String password,String grantType, String apiKey, int noOfOrderDetailsToBeFetched, String orderNumberForFetchingDetails) throws IOException, ParseException {
+        List orderList = new ArrayList();
 
+        //Fetching user token details to be used
+        JSONObject userSessionData = new ApiResponse().getApiUserSessionData(userName,password,grantType,apiKey);
 
+        //Fetching list of Orders for user
+        OrderAPI orderAPI = new OrderAPI();
+        if(orderNumberForFetchingDetails!=null){
+            List orderDetails = this.getOrderDetailsForOrderNumber(userSessionData.get("customerEDP").toString(),userSessionData.get("access_token").toString(),orderNumberForFetchingDetails);
+            if(orderDetails.size()>0){
+                Map<String,Object> orderNumberDetailsForUser = new HashMap<>();
+                orderNumberDetailsForUser.put("OrderNumber",orderNumberForFetchingDetails);
+                orderNumberDetailsForUser.put("OrderDetails",orderDetails);
+                orderList.add(orderNumberDetailsForUser);
+            }
+        }else{
+            Response orderLists = orderAPI.getOrderList(userSessionData.get("customerEDP").toString(),userSessionData.get("access_token").toString());
+            if(orderLists.getStatusCode()==200){
+                OrderListResponse orderListResponseList = JsonParser.getResponseObject(orderLists.asString(),new TypeReference<OrderListResponse>() {});
+                int totalOrderToBeFetched = 0;
+                //Fetching required product details from list to be used in test
+                if(orderListResponseList.getOrderSummary().size()>0){
+                    List<OrderSummary> orderSummaryList = orderListResponseList.getOrderSummary();
+                    for(OrderSummary orderSummary:orderSummaryList){
+                        Map<String,Object> orderNumberDetailsForUser = new HashMap<>();
+                        if(noOfOrderDetailsToBeFetched!=0 && totalOrderToBeFetched == noOfOrderDetailsToBeFetched)
+                            break;
+                        else{
+                            if(orderSummary.getQuantity()>1){
+                                orderNumberDetailsForUser.put("OrderNumber",orderSummary.getOrderNo());
+                                String formatDate = this.formatDateToProvidedFormat(orderSummary.getOrderDateTime(),"yyyy-MM-dd'T'k:m:s","MMMM dd, yyyy h:m a");
+                                orderNumberDetailsForUser.put("orderPlacedDateTime",this.formatInputDateAsPerApplication(formatDate));
+                                orderNumberDetailsForUser.put("Quantity",orderSummary.getQuantity());
+                                //Fetching order details for products in Order
+                                List orderDetails = this.getOrderDetailsForOrderNumber(userSessionData.get("customerEDP").toString(),userSessionData.get("access_token").toString(),orderSummary.getOrderNo());
+                                if(orderDetails.size()>0){
+                                    orderNumberDetailsForUser.put("OrderDetails",orderDetails);
+                                    orderList.add(orderNumberDetailsForUser);
+                                    totalOrderToBeFetched++;
+                                }
+                            }
+                        }
+                    }
+                }else{
+                    //Placing Order for user to be used in test
+                }
+            }else
+                reporter.reportLogFail("Order List for user :"+userName+" is not fetched with status code as: "+orderLists.getStatusCode()+" and error message as: "+orderLists.getBody().asString());
+        }
+
+        return orderList;
+    }
+
+    /**
+     * This function fetches data for a particular Order Number
+     * @param - String - customerEDP
+     * @param - String - accessToken
+     * @param - String - orderNumber
+     * @return - Map<String,Object>
+     * @throws - IOException
+     */
+    public List<Map<String,Object>> getOrderDetailsForOrderNumber(String customerEDP, String accessToken,String orderNumber) throws IOException {
+        List<Map<String,Object>> productData = new ArrayList();
+        Response response = new OrderAPI().getGivenOrder(customerEDP,accessToken,orderNumber);
+        if(response.getStatusCode()==200){
+            DetailedOrderSummary detailedOrderSummary = JsonParser.getResponseObject(response.asString(), new TypeReference<DetailedOrderSummary>() {});
+            List<DetailedOrderSummary.ShipLevels> shipLevelsList = detailedOrderSummary.getShipLevels();
+            for(com.tsc.api.pojo.DetailedOrderSummary.ShipLevels shipLevels:shipLevelsList){
+                List<DetailedOrderSummary.Items> itemsList = shipLevels.getItems();
+                if(itemsList.size()>0){
+                    for(DetailedOrderSummary.Items items:itemsList){
+                        Map<String,Object> productDetails = new HashMap<>();
+                        productDetails.put("productName",items.getDescription());
+                        productDetails.put("productStyle",items.getStyle());
+                        productDetails.put("productSize",items.getSize());
+                        productDetails.put("productNumber",items.getItemNoForDisplay());
+                        productDetails.put("productQuantity",items.getItemQuantity());
+                        if(!items.getStyle().isEmpty() && !items.getSize().isEmpty())
+                            productDetails.put("productInfoForDisplay",(items.getDescription()+" | "+items.getStyle()+" | "+items.getSize()).trim());
+                        else if(items.getStyle().isEmpty() && !items.getSize().isEmpty())
+                            productDetails.put("productInfoForDisplay",(items.getDescription()+" | "+items.getSize()).trim());
+                        else if(!items.getStyle().isEmpty() && items.getSize().isEmpty())
+                            productDetails.put("productInfoForDisplay",(items.getDescription()+" | "+items.getStyle()).trim());
+                        else
+                            productDetails.put("productInfoForDisplay",(items.getDescription()).trim());
+
+                        productData.add(productDetails);
+                    }
+                }
+            }
+        }else
+            reporter.reportLogFail("Order Details for product with Order Number:" +orderNumber+" is not fetched by api with status code: "+response.getStatusCode()+ "and error message: "+response.getBody().asString());
+
+        if(productData.size()>0){
+            return productData;
+        }
+        else
+            return null;
+    }
+
+    public String formatInputDateAsPerApplication(String inputDate){
+        String formatDate = null;
+        String[] formatDateArray = inputDate.split(" ");
+        if(formatDateArray[1].contains("0"))
+            formatDateArray[1] = formatDateArray[1].replace("0","");
+
+        if(formatDateArray[formatDateArray.length-1].contains("."))
+            formatDateArray[formatDateArray.length-1] = formatDateArray[formatDateArray.length-1].replace(".","").toUpperCase();
+
+        for(String data:formatDateArray){
+            if(formatDate==null)
+                formatDate = data;
+            else
+                formatDate = formatDate+" "+data;
+        }
+        return formatDate;
+    }
 }
