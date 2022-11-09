@@ -90,6 +90,9 @@ public class OrderTrackingPage extends BasePage {
 
     //////////////////////////////////////////
     //For order tracking page
+    @FindBy(xpath = "//div[@id='trackorder']//button[@class='back-button__button']")
+    public WebElement btnTrackOrderBackButton;
+
     @FindBy(xpath = "//div[@id='trackorder']//h1[@class='trackorder__title']")
     public WebElement lblTrackOrderTitle;
 
@@ -523,6 +526,14 @@ public class OrderTrackingPage extends BasePage {
      */
     public void verifyOrderTrackingHeaderSection() {
         String lsText;
+
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnTrackOrderBackButton);
+        lsText = btnTrackOrderBackButton.getText().trim();
+        if (!lsText.isEmpty()) {
+            reporter.reportLogPass("The order tracking back button is displaying correctly");
+        } else {
+            reporter.reportLogFailWithScreenshot("The order tracking back button is not displaying correctly");
+        }
 
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblTrackOrderTitle);
         lsText = lblTrackOrderTitle.getText().trim();
@@ -969,5 +980,25 @@ public class OrderTrackingPage extends BasePage {
                 formatDate = formatDate+" "+data;
         }
         return formatDate;
+    }
+
+    /**
+     * To verify Back Button in header
+     * @param - String - lsUrlBeforeGoToOrderTrackingPage
+     */
+    public void verifyBackButton(String lsUrlBeforeGoToOrderTrackingPage){
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnTrackOrderBackButton);
+        String lsUrlBeforeClickingBackButton=this.URL();
+        this.btnTrackOrderBackButton.click();
+        this.waitForCondition(Driver->{return !this.URL().equalsIgnoreCase(lsUrlBeforeClickingBackButton);},30000);
+
+        String lsUrlAfterClickingBackButton=this.URL();
+        if(lsUrlAfterClickingBackButton.equalsIgnoreCase(lsUrlBeforeGoToOrderTrackingPage)){
+            reporter.reportLogPass("The Url:'"+lsUrlAfterClickingBackButton+"' after clicking Back button is the same as expected:'"+lsUrlBeforeGoToOrderTrackingPage+"'");
+        }
+        else{
+            reporter.reportLogFail("The Url:'"+lsUrlAfterClickingBackButton+"' after clicking Back button is the same as expected:'"+lsUrlBeforeGoToOrderTrackingPage+"'");
+        }
+
     }
 }

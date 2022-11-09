@@ -22,14 +22,29 @@ public class MA_TC21_OrderTracking extends BaseTest {
 
         reporter.reportLog("Verify SignIn");
         BasePage basePage=new BasePage(this.getDriver());
-        String lblUserName = TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
-        String lblPassword = TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
+        String userName = TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
+        String password = TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
+        String grantType = TestDataHandler.constantData.getApiUserSessionParams().getLbl_grantType();
+        String apiKey = TestDataHandler.constantData.getApiUserSessionParams().getLbl_apiKey();
+
+        List<Map<String,Object>> apiDataMap=getOrderTrackingThreadLocal().getPlacedOrderListForUser(userName, password,grantType, apiKey, 2, null);
+
+        //Fetching test data from test data file
+        ConstantData.APIUserSessionParams apiUserSessionParams = TestDataHandler.constantData.getApiUserSessionParams();
+        apiUserSessionData = apiResponseThreadLocal.get().getApiUserSessionData(lblUserName,lblPassword,apiUserSessionParams.getLbl_grantType(),apiUserSessionParams.getLbl_apiKey());
+
+        String accessToken = apiUserSessionData.get("access_token").toString();
+        String customerEDP = apiUserSessionData.get("customerEDP").toString();
+        String customerNumber = getApiResponseThreadLocal().getUserDetailsFromCustomerEDP(customerEDP,accessToken).getCustomerNo();
+
+
 
         //Login using valid username and password
 //        getGlobalLoginPageThreadLocal().Login(lblUserName, lblPassword);
 
         List<List<String>> lstNameAndLinks=TestDataHandler.constantData.getFooterSection().getLst_NameAndLinks();
         getOrderTrackingThreadLocal().goToTrackOrderPortalThroughClickingTrackYourOrderItemOnGlobalFooter( getGlobalFooterPageThreadLocal() ,lstNameAndLinks);
+
 
 
         getOrderTrackingThreadLocal().goToOrderTrackingPageByUserNameAndPassword(lblUserName,lblPassword);
@@ -43,6 +58,7 @@ public class MA_TC21_OrderTracking extends BaseTest {
 
             List<Map<String,Object>> orderListMapForOrderDetails=getMyAccountPageThreadLocal().getOrderListDesc();
 
+            String lsUrlBeforeGoToOrderTrackingPage=basePage.URL();
             getMyAccountPageThreadLocal().goToOrderTrackingPage();
             String lsOrderNumberForOrderTracking=getOrderTrackingThreadLocal().getOrderTrackingNumber();
             
@@ -62,6 +78,9 @@ public class MA_TC21_OrderTracking extends BaseTest {
 
             reporter.reportLog("Verify Order List Linkage Between OrderDetailsPage And OrderTrackingPage");
             getOrderTrackingThreadLocal().verifyOrderListLinkageBetweenOrderDetailsPageAndOrderTrackingPage(orderListMapForOrderDetails,orderListMapForOrderTracking);
+
+            reporter.reportLog("Verify Back button in header");
+            getOrderTrackingThreadLocal().verifyBackButton(lsUrlBeforeGoToOrderTrackingPage);
         }
         else{
             getMyAccountPageThreadLocal().verifyNoOrderRecordsMessage(expectedNoOrderRecorderMessage);
