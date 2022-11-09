@@ -841,16 +841,24 @@ public class OrderTrackingPage extends BasePage {
      * @return - List<Map<String,Object>>
      * @throws - IOException
      */
-    public List<Map<String,Object>> getPlacedOrderListForUser(String userName, String password,String grantType, String apiKey, int noOfOrderDetailsToBeFetched, String orderNumberForFetchingDetails) throws IOException, ParseException {
+    public List<Map<String,Object>> getPlacedOrderListForUser(int noOfOrderDetailsToBeFetched, String orderNumberForFetchingDetails,String customerEDP, String accessToken, String userName, String password,String grantType, String apiKey) throws IOException, ParseException {
         List orderList = new ArrayList();
-
+        JSONObject userSessionData = null;
+        String customerEDPNumber, access_token;
         //Fetching user token details to be used
-        JSONObject userSessionData = new ApiResponse().getApiUserSessionData(userName,password,grantType,apiKey);
+        if(customerEDP==null){
+            userSessionData = new ApiResponse().getApiUserSessionData(userName,password,grantType,apiKey);
+            customerEDPNumber = userSessionData.get("customerEDP").toString();
+            access_token = userSessionData.get("access_token").toString();
+        }else{
+            customerEDPNumber = customerEDP;
+            access_token = accessToken;
+        }
 
         //Fetching list of Orders for user
         OrderAPI orderAPI = new OrderAPI();
         if(orderNumberForFetchingDetails!=null){
-            List orderDetails = this.getOrderDetailsForOrderNumber(userSessionData.get("customerEDP").toString(),userSessionData.get("access_token").toString(),orderNumberForFetchingDetails);
+            List orderDetails = this.getOrderDetailsForOrderNumber(customerEDPNumber,access_token,orderNumberForFetchingDetails);
             if(orderDetails.size()>0){
                 Map<String,Object> orderNumberDetailsForUser = new HashMap<>();
                 orderNumberDetailsForUser.put("orderNumber",orderNumberForFetchingDetails);
@@ -858,6 +866,7 @@ public class OrderTrackingPage extends BasePage {
                 String formatDate = this.formatDateToProvidedFormat(((HashMap)((List)orderNumberDetailsForUser.get("orderDetails")).get(0)).get("orderDateTime").toString(),"yyyy-MM-dd'T'k:m:s","MMMM dd, yyyy h:m a");
                 orderNumberDetailsForUser.put("orderPlacedDateTime",this.formatInputDateAsPerApplication(formatDate));
                 orderNumberDetailsForUser.put("quantity",((HashMap)((List)orderNumberDetailsForUser.get("orderDetails")).get(0)).get("orderQuantity"));
+                orderNumberDetailsForUser.put("postalCode",((HashMap)orderDetails.get(0)).get("postalCode").toString());
                 orderList.add(orderNumberDetailsForUser);
             }
         }else{
@@ -882,6 +891,7 @@ public class OrderTrackingPage extends BasePage {
                                 List orderDetails = this.getOrderDetailsForOrderNumber(userSessionData.get("customerEDP").toString(),userSessionData.get("access_token").toString(),orderSummary.getOrderNo());
                                 if(orderDetails.size()>0){
                                     orderNumberDetailsForUser.put("orderDetails",orderDetails);
+                                    orderNumberDetailsForUser.put("postalCode",((HashMap)orderDetails.get(0)).get("postalCode").toString());
                                     orderList.add(orderNumberDetailsForUser);
                                     totalOrderToBeFetched++;
                                 }
@@ -925,6 +935,7 @@ public class OrderTrackingPage extends BasePage {
                         productDetails.put("productNumber",items.getItemNoForDisplay());
                         productDetails.put("productQuantity",items.getItemQuantity());
                         productDetails.put("productURL",items.getItemURL());
+                        productDetails.put("postalCode",this.getPostalCodeForOrder(shipLevels.getShipCityProvincePostalCode()));
                         if(!items.getStyle().isEmpty() && !items.getSize().isEmpty())
                             productDetails.put("productInfoForDisplay",(items.getDescription()+" | "+items.getStyle()+" | "+items.getSize()).trim());
                         else if(items.getStyle().isEmpty() && !items.getSize().isEmpty())
@@ -969,5 +980,15 @@ public class OrderTrackingPage extends BasePage {
                 formatDate = formatDate+" "+data;
         }
         return formatDate;
+    }
+
+    /**
+     * This function formats postal code for placed order
+     * @param - String - postalCodeInput
+     * @return - String
+     */
+    public String getPostalCodeForOrder(String postalCodeInput){
+        String[] postalCodeArray = postalCodeInput.split("-");
+        return postalCodeArray[postalCodeArray.length-1].replace(" ","").trim();
     }
 }
