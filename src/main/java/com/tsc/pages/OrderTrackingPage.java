@@ -911,6 +911,11 @@ public class OrderTrackingPage extends BasePage {
             return null;
     }
 
+    /**
+     * This function formats date that is displayed in UI
+     * @param - String - inputDate
+     * @return
+     */
     public String formatInputDateAsPerApplication(String inputDate){
         String formatDate = null;
         String[] formatDateArray = inputDate.split(" ");
