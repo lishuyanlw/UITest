@@ -144,6 +144,9 @@ public class CreateAccountPage extends BasePage {
     @FindBy(xpath = "//create-account-app//button[normalize-space(.)='Cancel']")
     public WebElement btnCancel;
 
+    @FindBy(xpath = "//create-account-app//div[contains(@class,'text-danger')]")
+    public List<WebElement> lstAllErrorMessage;
+
     /**
      * To create a new account
      * @param - String - lsEmail - generated automatically if pass null
@@ -585,6 +588,55 @@ public class CreateAccountPage extends BasePage {
         }
         else{
             reporter.reportLogFailWithScreenshot("The Cancel button is not displaying correctly");
+        }
+    }
+
+    /**
+     * To verify Error Messages
+     * @param - List<String> - lstErrorMessageFromYml
+     */
+    public void verifyErrorMessages(List<String> lstErrorMessageFromYml){
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputFirstName);
+        this.inputFirstName.clear();
+        this.inputFirstName.sendKeys("test1");
+        this.applyStaticWait(300);
+
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputLastName);
+        this.inputLastName.clear();
+        this.inputLastName.sendKeys("test1");
+        this.applyStaticWait(300);
+
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputPostalCode1);
+        this.inputPostalCode1.clear();
+        this.inputPostalCode1.sendKeys("111");
+        this.inputPostalCode2.clear();
+        this.inputPostalCode2.sendKeys("111");
+        this.applyStaticWait(300);
+
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputEmail);
+        this.inputEmail.clear();
+        this.inputEmail.sendKeys("test");
+        this.applyStaticWait(300);
+
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSave);
+        this.clickElement(this.btnSave);
+        waitForCondition(Driver->{return lstAllErrorMessage.size()>0;},60000);
+        this.applyStaticWait(3*this.getStaticWaitForApplication());
+
+        String lsActual,lsExpected;
+        WebElement item;
+        int loopSize=lstAllErrorMessage.size();
+        for(int i=0;i<loopSize;i++){
+            item=lstAllErrorMessage.get(i);
+            this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+            lsActual=item.getText().trim();
+            lsExpected=lstErrorMessageFromYml.get(i);
+            if(lsActual.equalsIgnoreCase(lsExpected)){
+                reporter.reportLogPass("The error message:'"+lsActual+"' is the same as the expected:'"+lsExpected+"'");
+            }
+            else{
+                reporter.reportLogFail("The error message:'"+lsActual+"' is not the same as the expected:'"+lsExpected+"'");
+            }
         }
     }
 

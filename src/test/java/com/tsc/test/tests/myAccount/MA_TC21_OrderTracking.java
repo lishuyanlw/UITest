@@ -11,12 +11,12 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-public class MA_TC20_OrderTracking extends BaseTest {
+public class MA_TC21_OrderTracking extends BaseTest {
     /*
      *CER-789
      */
     @Test(groups={"MyAccount","Regression"})
-    public void MA_TC20_OrderTracking() throws IOException {
+    public void MA_TC21_OrderTracking() throws IOException {
         //Closing SignIn pop up on login
         getGlobalFooterPageThreadLocal().closePopupDialog();
 
@@ -30,6 +30,7 @@ public class MA_TC20_OrderTracking extends BaseTest {
 
         List<List<String>> lstNameAndLinks=TestDataHandler.constantData.getFooterSection().getLst_NameAndLinks();
         getOrderTrackingThreadLocal().goToTrackOrderPortalThroughClickingTrackYourOrderItemOnGlobalFooter( getGlobalFooterPageThreadLocal() ,lstNameAndLinks);
+
 
         getOrderTrackingThreadLocal().goToOrderTrackingPageByUserNameAndPassword(lblUserName,lblPassword);
 

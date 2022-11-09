@@ -914,6 +914,15 @@ public class ConstantData {
         private String lbl_ErrorMessageForUserName;
         private String lbl_ErrorMessageForPassword;
         private String lbl_ErrorMessageForUserNameAndPassword;
+        private List<String> lstErrorMessageForCreateAccount;
+
+        public List<String> getLstErrorMessageForCreateAccount() {
+            return lstErrorMessageForCreateAccount;
+        }
+
+        public void setLstErrorMessageForCreateAccount(List<String> lstErrorMessageForCreateAccount) {
+            this.lstErrorMessageForCreateAccount = lstErrorMessageForCreateAccount;
+        }
 
         public String getLbl_SignOutMessage() {            return lbl_SignOutMessage;        }
 
@@ -1036,6 +1045,15 @@ public class ConstantData {
         public List<String> lstTrackingOrderPortalErrorMessageForOrderNumberAndPostalCode;
         public List<String> lstTrackingOrderPortalErrorMessageForSignIn;
         public String lblTrackingOrderPortalNotFoundMessage;
+        public String lblErrorMessageWithInvalidUserNameAndPasswordForOrderTrackingPortal;
+
+        public String getLblErrorMessageWithInvalidUserNameAndPasswordForOrderTrackingPortal() {
+            return lblErrorMessageWithInvalidUserNameAndPasswordForOrderTrackingPortal;
+        }
+
+        public void setLblErrorMessageWithInvalidUserNameAndPasswordForOrderTrackingPortal(String lblErrorMessageWithInvalidUserNameAndPasswordForOrderTrackingPortal) {
+            this.lblErrorMessageWithInvalidUserNameAndPasswordForOrderTrackingPortal = lblErrorMessageWithInvalidUserNameAndPasswordForOrderTrackingPortal;
+        }
 
         public List<String> getLstTrackingOrderPortalErrorMessageForOrderNumberAndPostalCode() {
             return lstTrackingOrderPortalErrorMessageForOrderNumberAndPostalCode;

@@ -203,6 +203,11 @@ loginUser:
   lbl_ErrorMessageForUserName: A valid email is required!
   lbl_ErrorMessageForPassword: Password is required!
   lbl_ErrorMessageForUserNameAndPassword: Hm, this email and password combination does not match our records. Please double check and try again.
+  lstErrorMessageForCreateAccount: ["You have one or more missing or invalid entries. Please enter correct data and try again.",
+                                    "Numbers and special characters are not allowed.",
+                                    "Numbers and special characters are not allowed.",
+                                    "Please enter valid postal code",
+                                    "Please enter your email address in the format john@example.com"]
 myAccount:
   lnk_myAccountURL: "/pages/myaccount"
   lnk_addNewCardURL: "/pages/myaccount/paymentcards/addcard"
@@ -252,6 +257,7 @@ myAccount:
   lstTrackingOrderPortalErrorMessageForSignIn: ["You have one or more missing or invalid entries. Please enter correct data and try again.",
                                                 "Valid email address is required.",
                                                 "Password is required."]
+  lblErrorMessageWithInvalidUserNameAndPasswordForOrderTrackingPortal: "This email and password combination does not match our records. Please double check and try again."
   lblTrackingOrderPortalNotFoundMessage: "We are sorry! The page you are trying to reach cannot be found."
 
 lstTestName: ["MA_TC10_Payment_Options_Manage_Credit_Card",
