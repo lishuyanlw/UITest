@@ -888,6 +888,7 @@ public class OrderTrackingPage extends BasePage {
                         productDetails.put("productSize",items.getSize());
                         productDetails.put("productNumber",items.getItemNoForDisplay());
                         productDetails.put("productQuantity",items.getItemQuantity());
+                        productDetails.put("productURL",items.getItemURL());
                         if(!items.getStyle().isEmpty() && !items.getSize().isEmpty())
                             productDetails.put("productInfoForDisplay",(items.getDescription()+" | "+items.getStyle()+" | "+items.getSize()).trim());
                         else if(items.getStyle().isEmpty() && !items.getSize().isEmpty())
