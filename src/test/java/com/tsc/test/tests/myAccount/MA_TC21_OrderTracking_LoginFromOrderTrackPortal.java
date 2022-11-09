@@ -2,34 +2,29 @@ package com.tsc.test.tests.myAccount;
 
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.data.pojos.ConstantData;
-import com.tsc.pages.GlobalFooterPage;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
-public class MA_TC21_OrderTracking extends BaseTest {
+public class MA_TC21_OrderTracking_LoginFromOrderTrackPortal extends BaseTest {
     /*
      *CER-789
      */
     @Test(groups={"MyAccount","Regression"})
-    public void MA_TC21_OrderTracking() throws IOException {
+    public void MA_TC21_OrderTracking_LoginFromOrderTrackPortal() throws IOException, ParseException {
         //Closing SignIn pop up on login
         getGlobalFooterPageThreadLocal().closePopupDialog();
 
         reporter.reportLog("Verify SignIn");
         BasePage basePage=new BasePage(this.getDriver());
-        String userName = TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
-        String password = TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
-        String grantType = TestDataHandler.constantData.getApiUserSessionParams().getLbl_grantType();
-        String apiKey = TestDataHandler.constantData.getApiUserSessionParams().getLbl_apiKey();
-
-        List<Map<String,Object>> apiDataMap=getOrderTrackingThreadLocal().getPlacedOrderListForUser(userName, password,grantType, apiKey, 2, null);
-
         //Fetching test data from test data file
+        String lblUserName = TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
+        String lblPassword = TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
         ConstantData.APIUserSessionParams apiUserSessionParams = TestDataHandler.constantData.getApiUserSessionParams();
         apiUserSessionData = apiResponseThreadLocal.get().getApiUserSessionData(lblUserName,lblPassword,apiUserSessionParams.getLbl_grantType(),apiUserSessionParams.getLbl_apiKey());
 
@@ -37,21 +32,20 @@ public class MA_TC21_OrderTracking extends BaseTest {
         String customerEDP = apiUserSessionData.get("customerEDP").toString();
         String customerNumber = getApiResponseThreadLocal().getUserDetailsFromCustomerEDP(customerEDP,accessToken).getCustomerNo();
 
-
-
-        //Login using valid username and password
-//        getGlobalLoginPageThreadLocal().Login(lblUserName, lblPassword);
+        List<Map<String,Object>> dataList = getOrderTrackingThreadLocal().getPlacedOrderListForUser(2,null,customerEDP,accessToken,null,null,null,null);
+        Map<String,Object> dataMapItem=dataList.get(0);
+        String lsOrderNumberFromApi= (String) dataMapItem.get("orderNumber");
 
         List<List<String>> lstNameAndLinks=TestDataHandler.constantData.getFooterSection().getLst_NameAndLinks();
         getOrderTrackingThreadLocal().goToTrackOrderPortalThroughClickingTrackYourOrderItemOnGlobalFooter( getGlobalFooterPageThreadLocal() ,lstNameAndLinks);
 
-
-
-        getOrderTrackingThreadLocal().goToOrderTrackingPageByUserNameAndPassword(lblUserName,lblPassword);
+        getOrderTrackingThreadLocal().goToOrderStatusPageByUserNameAndPasswordInOrderTrackingPortalPage(lblUserName,lblPassword);
 
         String expectedNoOrderRecorderMessage=TestDataHandler.constantData.getMyAccount().getLbl_noOrderRecordsMessage();
         if(getMyAccountPageThreadLocal().checkOrderItemExisting()){
-            getMyAccountPageThreadLocal().goToOrderDetailsPage();
+            String lsOrderDetailsURL= TestDataHandler.constantData.getMyAccount().getLnk_orderDetailsURL();
+            getMyAccountPageThreadLocal().goToOrderDetailsPageByGivenOrderNumberSearching(lsOrderNumberFromApi,lsOrderDetailsURL);
+//            getMyAccountPageThreadLocal().goToOrderDetailsPage();
             Map<String,Object> dataDescExceptOrderListForOrderDetails=getMyAccountPageThreadLocal().getOrderDetailsDescExceptOrderList();
             String lsOrderNumberForOrderDetails= (String) dataDescExceptOrderListForOrderDetails.get("orderNumber");
             String lsOrderDateForOrderDetails= (String) dataDescExceptOrderListForOrderDetails.get("orderDate");

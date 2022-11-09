@@ -14,7 +14,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.springframework.core.annotation.Order;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -467,7 +466,7 @@ public class OrderTrackingPage extends BasePage {
 
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputTrackOrderPortalBillingPostal);
         this.inputTrackOrderPortalBillingPostal.clear();
-        this.inputTrackOrderPortalBillingPostal.sendKeys(orderNumber);
+        this.inputTrackOrderPortalBillingPostal.sendKeys(billingPostal);
         this.applyStaticWait(300);
 
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnTrackOrderPortalSubmit);
@@ -480,7 +479,7 @@ public class OrderTrackingPage extends BasePage {
      * @param - String - userName
      * @param - String - password
      */
-    public void goToOrderTrackingPageByUserNameAndPassword(String userName,String password){
+    public void goToOrderStatusPageByUserNameAndPasswordInOrderTrackingPortalPage(String userName, String password){
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputTrackOrderPortalEmail);
         this.inputTrackOrderPortalEmail.clear();
         this.inputTrackOrderPortalEmail.sendKeys(userName);
@@ -745,41 +744,45 @@ public class OrderTrackingPage extends BasePage {
             reporter.reportLogFail("The productName:"+lsOrderTrackingText+" in OrderTracking Item is not the same as the one:"+lsOrderDetailsText+" in orderDetails Item");
         }
 
-        lsOrderTrackingText=(String)orderTrackingItem.get("productStyle");
-        lsOrderDetailsText=(String)orderDetailsItem.get("productStyle");
-        if(lsOrderTrackingText==null){
-            if(lsOrderDetailsText==null){
-                reporter.reportLogPass("The productStyle in OrderTracking Item is the same as the one in orderDetails Item");
+        if(orderTrackingItem.get("productStyle")!=null&&orderDetailsItem.get("productStyle")!=null){
+            lsOrderTrackingText=(String)orderTrackingItem.get("productStyle");
+            lsOrderDetailsText=(String)orderDetailsItem.get("productStyle");
+            if(lsOrderTrackingText==null){
+                if(lsOrderDetailsText==null){
+                    reporter.reportLogPass("The productStyle in OrderTracking Item is the same as the one in orderDetails Item");
+                }
+                else{
+                    reporter.reportLogFail("The productStyle in OrderTracking Item is not the same as the one in orderDetails Item");
+                }
             }
             else{
-                reporter.reportLogFail("The productStyle in OrderTracking Item is not the same as the one in orderDetails Item");
-            }
-        }
-        else{
-            if(lsOrderTrackingText.equalsIgnoreCase(lsOrderDetailsText)){
-                reporter.reportLogPass("The productStyle in OrderTracking Item is the same as the one in orderDetails Item");
-            }
-            else{
-                reporter.reportLogFail("The productStyle:"+lsOrderTrackingText+" in OrderTracking Item is not the same as the one:"+lsOrderDetailsText+" in orderDetails Item");
+                if(lsOrderTrackingText.equalsIgnoreCase(lsOrderDetailsText)){
+                    reporter.reportLogPass("The productStyle in OrderTracking Item is the same as the one in orderDetails Item");
+                }
+                else{
+                    reporter.reportLogFail("The productStyle:"+lsOrderTrackingText+" in OrderTracking Item is not the same as the one:"+lsOrderDetailsText+" in orderDetails Item");
+                }
             }
         }
 
-        lsOrderTrackingText=(String)orderTrackingItem.get("productSize");
-        lsOrderDetailsText=(String)orderDetailsItem.get("productSize");
-        if(lsOrderTrackingText==null){
-            if(lsOrderDetailsText==null){
-                reporter.reportLogPass("The productSize in OrderTracking Item is the same as the one in orderDetails Item");
+        if(orderTrackingItem.get("productSize")!=null&&orderDetailsItem.get("productSize")!=null){
+            lsOrderTrackingText=(String)orderTrackingItem.get("productSize");
+            lsOrderDetailsText=(String)orderDetailsItem.get("productSize");
+            if(lsOrderTrackingText==null){
+                if(lsOrderDetailsText==null){
+                    reporter.reportLogPass("The productSize in OrderTracking Item is the same as the one in orderDetails Item");
+                }
+                else{
+                    reporter.reportLogFail("The productSize in OrderTracking Item is not the same as the one in orderDetails Item");
+                }
             }
             else{
-                reporter.reportLogFail("The productSize in OrderTracking Item is not the same as the one in orderDetails Item");
-            }
-        }
-        else{
-            if(lsOrderTrackingText.equalsIgnoreCase(lsOrderDetailsText)){
-                reporter.reportLogPass("The productSize in OrderTracking Item is the same as the one in orderDetails Item");
-            }
-            else{
-                reporter.reportLogFail("The productSize:"+lsOrderTrackingText+" in OrderTracking Item is not the same as the one:"+lsOrderDetailsText+" in orderDetails Item");
+                if(lsOrderTrackingText.equalsIgnoreCase(lsOrderDetailsText)){
+                    reporter.reportLogPass("The productSize in OrderTracking Item is the same as the one in orderDetails Item");
+                }
+                else{
+                    reporter.reportLogFail("The productSize:"+lsOrderTrackingText+" in OrderTracking Item is not the same as the one:"+lsOrderDetailsText+" in orderDetails Item");
+                }
             }
         }
 
@@ -852,16 +855,24 @@ public class OrderTrackingPage extends BasePage {
      * @return - List<Map<String,Object>>
      * @throws - IOException
      */
-    public List<Map<String,Object>> getPlacedOrderListForUser(String userName, String password,String grantType, String apiKey, int noOfOrderDetailsToBeFetched, String orderNumberForFetchingDetails) throws IOException, ParseException {
+    public List<Map<String,Object>> getPlacedOrderListForUser(int noOfOrderDetailsToBeFetched, String orderNumberForFetchingDetails,String customerEDP, String accessToken, String userName, String password,String grantType, String apiKey) throws IOException, ParseException {
         List orderList = new ArrayList();
-
+        JSONObject userSessionData = null;
+        String customerEDPNumber, access_token;
         //Fetching user token details to be used
-        JSONObject userSessionData = new ApiResponse().getApiUserSessionData(userName,password,grantType,apiKey);
+        if(customerEDP==null){
+            userSessionData = new ApiResponse().getApiUserSessionData(userName,password,grantType,apiKey);
+            customerEDPNumber = userSessionData.get("customerEDP").toString();
+            access_token = userSessionData.get("access_token").toString();
+        }else{
+            customerEDPNumber = customerEDP;
+            access_token = accessToken;
+        }
 
         //Fetching list of Orders for user
         OrderAPI orderAPI = new OrderAPI();
         if(orderNumberForFetchingDetails!=null){
-            List orderDetails = this.getOrderDetailsForOrderNumber(userSessionData.get("customerEDP").toString(),userSessionData.get("access_token").toString(),orderNumberForFetchingDetails);
+            List orderDetails = this.getOrderDetailsForOrderNumber(customerEDPNumber,access_token,orderNumberForFetchingDetails);
             if(orderDetails.size()>0){
                 Map<String,Object> orderNumberDetailsForUser = new HashMap<>();
                 orderNumberDetailsForUser.put("orderNumber",orderNumberForFetchingDetails);
@@ -869,10 +880,11 @@ public class OrderTrackingPage extends BasePage {
                 String formatDate = this.formatDateToProvidedFormat(((HashMap)((List)orderNumberDetailsForUser.get("orderDetails")).get(0)).get("orderDateTime").toString(),"yyyy-MM-dd'T'k:m:s","MMMM dd, yyyy h:m a");
                 orderNumberDetailsForUser.put("orderPlacedDateTime",this.formatInputDateAsPerApplication(formatDate));
                 orderNumberDetailsForUser.put("quantity",((HashMap)((List)orderNumberDetailsForUser.get("orderDetails")).get(0)).get("orderQuantity"));
+                orderNumberDetailsForUser.put("postalCode",((HashMap)orderDetails.get(0)).get("postalCode").toString());
                 orderList.add(orderNumberDetailsForUser);
             }
         }else{
-            Response orderLists = orderAPI.getOrderList(userSessionData.get("customerEDP").toString(),userSessionData.get("access_token").toString());
+            Response orderLists = orderAPI.getOrderList(customerEDPNumber,access_token);
             if(orderLists.getStatusCode()==200){
                 OrderListResponse orderListResponseList = JsonParser.getResponseObject(orderLists.asString(),new TypeReference<OrderListResponse>() {});
                 int totalOrderToBeFetched = 0;
@@ -890,9 +902,10 @@ public class OrderTrackingPage extends BasePage {
                                 orderNumberDetailsForUser.put("orderPlacedDateTime",this.formatInputDateAsPerApplication(formatDate));
                                 orderNumberDetailsForUser.put("quantity",orderSummary.getQuantity());
                                 //Fetching order details for products in Order
-                                List orderDetails = this.getOrderDetailsForOrderNumber(userSessionData.get("customerEDP").toString(),userSessionData.get("access_token").toString(),orderSummary.getOrderNo());
+                                List orderDetails = this.getOrderDetailsForOrderNumber(customerEDPNumber,access_token,orderSummary.getOrderNo());
                                 if(orderDetails.size()>0){
                                     orderNumberDetailsForUser.put("orderDetails",orderDetails);
+                                    orderNumberDetailsForUser.put("postalCode",((HashMap)orderDetails.get(0)).get("postalCode").toString());
                                     orderList.add(orderNumberDetailsForUser);
                                     totalOrderToBeFetched++;
                                 }
@@ -930,12 +943,23 @@ public class OrderTrackingPage extends BasePage {
                         Map<String,Object> productDetails = new HashMap<>();
                         productDetails.put("orderDateTime",detailedOrderSummary.getOrderSummary().getOrderDateTime());
                         productDetails.put("orderQuantity",detailedOrderSummary.getOrderSummary().getQuantity());
-                        productDetails.put("productName",items.getDescription());
-                        productDetails.put("productStyle",items.getStyle());
-                        productDetails.put("productSize",items.getSize());
-                        productDetails.put("productNumber",items.getItemNoForDisplay());
-                        productDetails.put("productQuantity",items.getItemQuantity());
+                        productDetails.put("productName",items.getDescription().trim());
+                        if(items.getStyle()==null||items.getStyle().isEmpty()){
+                            productDetails.put("productStyle",null);
+                        }
+                        else{
+                            productDetails.put("productStyle",items.getStyle().trim());
+                        }
+                        if(items.getSize()==null||items.getSize().isEmpty()){
+                            productDetails.put("productSize",null);
+                        }
+                        else{
+                            productDetails.put("productSize",items.getSize().trim());
+                        }
+                        productDetails.put("productNumber",items.getItemNoForDisplay().replace("-","").trim());
+                        productDetails.put("productQuantity",this.getIntegerFromString(items.getItemQuantity()));
                         productDetails.put("productURL",items.getItemURL());
+                        productDetails.put("postalCode",this.getPostalCodeForOrder(shipLevels.getShipCityProvincePostalCode()));
                         if(!items.getStyle().isEmpty() && !items.getSize().isEmpty())
                             productDetails.put("productInfoForDisplay",(items.getDescription()+" | "+items.getStyle()+" | "+items.getSize()).trim());
                         else if(items.getStyle().isEmpty() && !items.getSize().isEmpty())
@@ -986,19 +1010,29 @@ public class OrderTrackingPage extends BasePage {
      * To verify Back Button in header
      * @param - String - lsUrlBeforeGoToOrderTrackingPage
      */
-    public void verifyBackButton(String lsUrlBeforeGoToOrderTrackingPage){
+    public void verifyBackButton(String lsUrlBeforeGoToOrderTrackingPage) {
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnTrackOrderBackButton);
-        String lsUrlBeforeClickingBackButton=this.URL();
+        String lsUrlBeforeClickingBackButton = this.URL();
         this.btnTrackOrderBackButton.click();
-        this.waitForCondition(Driver->{return !this.URL().equalsIgnoreCase(lsUrlBeforeClickingBackButton);},30000);
+        this.waitForCondition(Driver -> {
+            return !this.URL().equalsIgnoreCase(lsUrlBeforeClickingBackButton);
+        }, 30000);
 
-        String lsUrlAfterClickingBackButton=this.URL();
-        if(lsUrlAfterClickingBackButton.equalsIgnoreCase(lsUrlBeforeGoToOrderTrackingPage)){
-            reporter.reportLogPass("The Url:'"+lsUrlAfterClickingBackButton+"' after clicking Back button is the same as expected:'"+lsUrlBeforeGoToOrderTrackingPage+"'");
+        String lsUrlAfterClickingBackButton = this.URL();
+        if (lsUrlAfterClickingBackButton.equalsIgnoreCase(lsUrlBeforeGoToOrderTrackingPage)) {
+            reporter.reportLogPass("The Url:'" + lsUrlAfterClickingBackButton + "' after clicking Back button is the same as expected:'" + lsUrlBeforeGoToOrderTrackingPage + "'");
+        } else {
+            reporter.reportLogFail("The Url:'" + lsUrlAfterClickingBackButton + "' after clicking Back button is the same as expected:'" + lsUrlBeforeGoToOrderTrackingPage + "'");
         }
-        else{
-            reporter.reportLogFail("The Url:'"+lsUrlAfterClickingBackButton+"' after clicking Back button is the same as expected:'"+lsUrlBeforeGoToOrderTrackingPage+"'");
-        }
+    }
 
+    /**
+     * This function formats postal code for placed order
+     * @param - String - postalCodeInput
+     * @return - String
+     */
+    public String getPostalCodeForOrder(String postalCodeInput){
+        String[] postalCodeArray = postalCodeInput.split("-");
+        return postalCodeArray[postalCodeArray.length-1].replace(" ","").trim();
     }
 }
