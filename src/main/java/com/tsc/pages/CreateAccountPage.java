@@ -2,7 +2,6 @@ package com.tsc.pages;
 
 import com.tsc.api.util.DataConverter;
 import com.tsc.pages.base.BasePage;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -115,7 +114,7 @@ public class CreateAccountPage extends BasePage {
     public WebElement inputPassword;
 
     @FindBy(xpath = "//create-account-app//button[@id='pwdShowBtn']")
-    public WebElement btnPasswordShow;
+    public WebElement btnShowOrHidePassword;
 
     @FindBy(xpath = "//create-account-app//label[@for='password']/parent::div/following-sibling::div[@class='text-danger'][1]")
     public WebElement lblPasswordWarningMessage;
@@ -279,17 +278,17 @@ public class CreateAccountPage extends BasePage {
      * @param - WebElement - showPasswordButton - for password or confirm password
      * @return - boolean - true for show and false for hide
      */
-    public boolean checkPassWordShowBtnStatus(WebElement showPasswordButton){
+    public boolean getShowButtonStatus(WebElement showPasswordButton){
         return this.getElementInnerText(showPasswordButton).equalsIgnoreCase("Show");
     }
 
     /**
      * To check Input PassWord Field Status
-     * @param - WebElement - inputPassword - for password or confirm password
+     * @param - WebElement - inputPasswordForBothNewAndConfirm - for password or confirm password
      * @return - boolean - true for password and false for text
      */
-    public boolean checkInputPassWordFieldStatus(WebElement inputPassword){
-        return inputPassword.getAttribute("type").equalsIgnoreCase("password");
+    public boolean getInputPasswordStatus(WebElement inputPasswordForBothNewAndConfirm){
+        return inputPasswordForBothNewAndConfirm.getAttribute("type").equalsIgnoreCase("password");
     }
 
     /**
@@ -536,8 +535,8 @@ public class CreateAccountPage extends BasePage {
             reporter.reportLogFailWithScreenshot("The password input is not displaying correctly");
         }
 
-        this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnPasswordShow);
-        if(this.getReusableActionsInstance().isElementVisible(btnPasswordShow)){
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnShowOrHidePassword);
+        if(this.getReusableActionsInstance().isElementVisible(btnShowOrHidePassword)){
             reporter.reportLogPass("The password show button is displaying correctly");
         }
         else{
@@ -632,10 +631,23 @@ public class CreateAccountPage extends BasePage {
         this.inputEmail.sendKeys("test");
         this.applyStaticWait(300);
 
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputPassword);
+        this.inputPassword.clear();
+        this.inputPassword.sendKeys("testMail123");
+        this.applyStaticWait(300);
+
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputConfirmPassword);
+        this.inputConfirmPassword.clear();
+        this.inputConfirmPassword.sendKeys("testMail112");
+        this.applyStaticWait(300);
+
+        this.inputPhoneNumber1.click();
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSave);
         this.clickElement(this.btnSave);
         waitForCondition(Driver->{return lstAllErrorMessage.size()>0;},60000);
         this.applyStaticWait(3*this.getStaticWaitForApplication());
+        this.clickElement(this.btnSave);
+        this.applyStaticWait(this.getStaticWaitForApplication());
 
         String lsActual,lsExpected;
         WebElement item;
@@ -651,6 +663,79 @@ public class CreateAccountPage extends BasePage {
             else{
                 reporter.reportLogFail("The error message:'"+lsActual+"' is not the same as the expected:'"+lsExpected+"'");
             }
+        }
+    }
+
+    /**
+     * To verify Show Or Hide Password Function
+     */
+    public void verifyShowOrHidePasswordFunction(){
+        reporter.reportLog("Check new password");
+        reporter.reportLog("Check the initial status");
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnShowOrHidePassword);
+        if(getInputPasswordStatus(this.inputPassword)){
+            reporter.reportLogPass("The input type is password");
+        }
+        else{
+            reporter.reportLogFailWithScreenshot("The input type is not password");
+        }
+
+        if(getShowButtonStatus(this.btnShowOrHidePassword)){
+            reporter.reportLogPass("The button text is 'show'");
+        }
+        else{
+            reporter.reportLogFailWithScreenshot("The button text is not 'show'");
+        }
+
+        reporter.reportLog("Check the status after clicking the button");
+        this.getReusableActionsInstance().clickIfAvailable(this.btnShowOrHidePassword);
+        this.waitForCondition(Driver->{return !getShowButtonStatus(this.inputPassword);},5000);
+        if(!getInputPasswordStatus(this.btnShowOrHidePassword)){
+            reporter.reportLogPass("The input type is text");
+        }
+        else{
+            reporter.reportLogFailWithScreenshot("The input type is not text");
+        }
+
+        if(!getShowButtonStatus(btnShowOrHidePassword)){
+            reporter.reportLogPass("The button text is 'hide'");
+        }
+        else{
+            reporter.reportLogFailWithScreenshot("The button text is not 'hide'");
+        }
+
+        reporter.reportLog("Check confirmed password");
+        reporter.reportLog("Check the initial status");
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnConfirmPasswordShow);
+        if(getInputPasswordStatus(this.inputConfirmPassword)){
+            reporter.reportLogPass("The input type is password");
+        }
+        else{
+            reporter.reportLogFailWithScreenshot("The input type is not password");
+        }
+
+        if(getShowButtonStatus(this.btnConfirmPasswordShow)){
+            reporter.reportLogPass("The button text is 'show'");
+        }
+        else{
+            reporter.reportLogFailWithScreenshot("The button text is not 'show'");
+        }
+
+        reporter.reportLog("Check the status after clicking the button");
+        this.getReusableActionsInstance().clickIfAvailable(this.btnConfirmPasswordShow);
+        this.waitForCondition(Driver->{return !getShowButtonStatus(this.inputConfirmPassword);},5000);
+        if(!getInputPasswordStatus(this.btnConfirmPasswordShow)){
+            reporter.reportLogPass("The input type is text");
+        }
+        else{
+            reporter.reportLogFailWithScreenshot("The input type is not text");
+        }
+
+        if(!getShowButtonStatus(btnConfirmPasswordShow)){
+            reporter.reportLogPass("The button text is 'hide'");
+        }
+        else{
+            reporter.reportLogFailWithScreenshot("The button text is not 'hide'");
         }
     }
 

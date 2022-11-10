@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class SI_TC05_CreateAccount extends BaseTest {
     /*
-     *CER-789
+     * CER-914
      */
     @Test(groups={"MyAccount","Regression"})
     public void SI_TC05_CreateAccount() throws IOException {
@@ -25,6 +25,9 @@ public class SI_TC05_CreateAccount extends BaseTest {
 
         reporter.reportLog("Verify contents");
         getCreateAccountThreadLocal().verifyContents();
+
+        reporter.reportLog("Verify show or hide password function");
+        getCreateAccountThreadLocal().verifyShowOrHidePasswordFunction();
 
         reporter.reportLog("Verify error messages");
         List<String> lstErrorMessage=TestDataHandler.constantData.getLoginUser().getLstErrorMessageForCreateAccount();

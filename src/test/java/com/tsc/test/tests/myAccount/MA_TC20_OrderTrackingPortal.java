@@ -11,7 +11,8 @@ import java.util.Map;
 
 public class MA_TC20_OrderTrackingPortal extends BaseTest {
     /*
-     *CER-789
+     * CER-910
+     * CER-911
      */
     @Test(groups={"MyAccount","Regression"})
     public void MA_TC20_OrderTrackingPortal() throws IOException {
