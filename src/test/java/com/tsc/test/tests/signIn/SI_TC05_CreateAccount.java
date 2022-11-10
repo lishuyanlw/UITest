@@ -30,8 +30,22 @@ public class SI_TC05_CreateAccount extends BaseTest {
         List<String> lstErrorMessage=TestDataHandler.constantData.getLoginUser().getLstErrorMessageForCreateAccount();
         getCreateAccountThreadLocal().verifyErrorMessages(lstErrorMessage);
 
-        Map<String,String> createdLoginMap=getCreateAccountThreadLocal().createNewAccount(null,null,true);
+        reporter.reportLog("Verify create account with an existing email error message");
+        String lblUserNameForExistingEmail = TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
+        String lblPasswordForExistingEmail = TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
+        String lsErrorMessageForExistingEmailFromYml=TestDataHandler.constantData.getLoginUser().getLblErrorMessageForExistingEmail();
+        lsErrorMessageForExistingEmailFromYml=lsErrorMessageForExistingEmailFromYml.replace("<email>",lblUserNameForExistingEmail);
+        Map<String,String> createdLoginMap=getCreateAccountThreadLocal().createNewAccount(lblUserNameForExistingEmail,lblPasswordForExistingEmail,true,true);
+        String lsErrorMessageForExistingEmail=createdLoginMap.get("errorMessage");
+        if(lsErrorMessageForExistingEmail.equalsIgnoreCase(lsErrorMessageForExistingEmailFromYml)){
+            reporter.reportLogPass("The error message:'"+lsErrorMessageForExistingEmail+"' for existing email is the same as expected:'"+lsErrorMessageForExistingEmailFromYml+"'");
+        }
+        else{
+            reporter.reportLogFail("The error message:'"+lsErrorMessageForExistingEmail+"' for existing email is not the same as expected:'"+lsErrorMessageForExistingEmailFromYml+"'");
+        }
 
+        reporter.reportLog("Verify create an new account with a valid email");
+        createdLoginMap=getCreateAccountThreadLocal().createNewAccount(null,null,true,false);
         String lblUserName = createdLoginMap.get("email");
         String lblPassword = createdLoginMap.get("password");
         reporter.reportLog("Login with newly created email:"+lblUserName+" and password:"+lblPassword);

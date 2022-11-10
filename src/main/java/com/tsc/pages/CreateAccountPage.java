@@ -152,9 +152,10 @@ public class CreateAccountPage extends BasePage {
      * @param - String - lsEmail - generated automatically if pass null
      * @param - String - lsPassword - generated automatically if pass null
      * @param - boolean - bSave - true for clicking save button and false for clicking cancel button
+     * @param - boolean - bExistingEmail - if input an existing email
      * @return - Map<String,String> - including email and password
      */
-    public Map<String,String> createNewAccount(String lsEmail,String lsPassword,boolean bSave){
+    public Map<String,String> createNewAccount(String lsEmail,String lsPassword,boolean bSave,boolean bExistingEmail){
         String lsFirstName= DataConverter.getSaltString(1,"upperStringType")+DataConverter.getSaltString(5,"lowerStringType");
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputFirstName);
         inputFirstName.clear();
@@ -244,8 +245,13 @@ public class CreateAccountPage extends BasePage {
         if(bSave){
             this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSave);
             this.btnSave.click();
-            SignInPage signInPage=new SignInPage(this.getDriver());
-            this.waitForCondition(Driver->{return signInPage.lblSignInPageTitle.isDisplayed();},120000);
+            if(bExistingEmail){
+                this.waitForCondition(Driver->{return this.getElementInnerText(this.lstAllErrorMessage.get(0)).contains("already exist!!!");},120000);
+            }
+            else{
+                SignInPage signInPage=new SignInPage(this.getDriver());
+                this.waitForCondition(Driver->{return signInPage.lblSignInPageTitle.isDisplayed();},120000);
+            }
         }
         else{
             this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnCancel);
@@ -254,8 +260,16 @@ public class CreateAccountPage extends BasePage {
         }
 
         Map<String,String> map=new HashMap<>();
-        map.put("email",lsEmail);
-        map.put("password",lsPassword);
+        if(bExistingEmail){
+            map.put("email",null);
+            map.put("password",null);
+            map.put("errorMessage",this.getElementInnerText(this.lstAllErrorMessage.get(0)));
+        }
+        else{
+            map.put("email",lsEmail);
+            map.put("password",lsPassword);
+            map.put("errorMessage",null);
+        }
 
         return map;
     }

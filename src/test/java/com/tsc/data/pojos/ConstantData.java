@@ -915,6 +915,15 @@ public class ConstantData {
         private String lbl_ErrorMessageForPassword;
         private String lbl_ErrorMessageForUserNameAndPassword;
         private List<String> lstErrorMessageForCreateAccount;
+        private String lblErrorMessageForExistingEmail;
+
+        public String getLblErrorMessageForExistingEmail() {
+            return lblErrorMessageForExistingEmail;
+        }
+
+        public void setLblErrorMessageForExistingEmail(String lblErrorMessageForExistingEmail) {
+            this.lblErrorMessageForExistingEmail = lblErrorMessageForExistingEmail;
+        }
 
         public List<String> getLstErrorMessageForCreateAccount() {
             return lstErrorMessageForCreateAccount;

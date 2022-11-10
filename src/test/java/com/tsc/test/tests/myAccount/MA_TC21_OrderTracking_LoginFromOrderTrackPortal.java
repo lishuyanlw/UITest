@@ -9,6 +9,7 @@ import org.testng.annotations.Test;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class MA_TC21_OrderTracking_LoginFromOrderTrackPortal extends BaseTest {
@@ -35,6 +36,7 @@ public class MA_TC21_OrderTracking_LoginFromOrderTrackPortal extends BaseTest {
         List<Map<String,Object>> dataList = getOrderTrackingThreadLocal().getPlacedOrderListForUser(2,null,customerEDP,accessToken,null,null,null,null);
         Map<String,Object> dataMapItem=dataList.get(0);
         String lsOrderNumberFromApi= (String) dataMapItem.get("orderNumber");
+        String lsOrderPlacedDateTimeFromApi= (String) dataMapItem.get("orderPlacedDateTime");
 
         List<List<String>> lstNameAndLinks=TestDataHandler.constantData.getFooterSection().getLst_NameAndLinks();
         getOrderTrackingThreadLocal().goToTrackOrderPortalThroughClickingTrackYourOrderItemOnGlobalFooter( getGlobalFooterPageThreadLocal() ,lstNameAndLinks);
@@ -55,7 +57,22 @@ public class MA_TC21_OrderTracking_LoginFromOrderTrackPortal extends BaseTest {
             String lsUrlBeforeGoToOrderTrackingPage=basePage.URL();
             getMyAccountPageThreadLocal().goToOrderTrackingPage();
             String lsOrderNumberForOrderTracking=getOrderTrackingThreadLocal().getOrderTrackingNumber();
-            
+            String lsOrderDateForOrderTracking=getOrderTrackingThreadLocal().getOrderDate();
+
+            if(lsOrderNumberForOrderDetails.substring(7).equalsIgnoreCase(lsOrderNumberForOrderTracking.substring(7))){
+                reporter.reportLogPass("The order number:"+lsOrderNumberForOrderTracking+" on order tracking page is the same as the one:"+lsOrderNumberForOrderDetails+" on order details page");
+            }
+            else{
+                reporter.reportLogFail("The order number:"+lsOrderNumberForOrderTracking+" on order tracking page is not the same as the one:"+lsOrderNumberForOrderDetails+" on order details page");
+            }
+
+            if(basePage.replaceBlank(lsOrderDateForOrderDetails).replace(",","").toLowerCase().equalsIgnoreCase(basePage.replaceBlank(lsOrderDateForOrderTracking).replace(",","").toLowerCase())){
+                reporter.reportLogPass("The order date:"+lsOrderDateForOrderTracking+" on order tracking page is the same as the one:"+lsOrderDateForOrderDetails+" on order details page");
+            }
+            else{
+                reporter.reportLogFail("The order date:"+lsOrderDateForOrderTracking+" on order tracking page is not the same as the one:"+lsOrderDateForOrderDetails+" on order details page");
+            }
+
             List<Map<String,Object>> orderListMapForOrderTracking=getOrderTrackingThreadLocal().getOrderListDesc();
 
             reporter.reportLog("Verify Order Tracking Header Section");

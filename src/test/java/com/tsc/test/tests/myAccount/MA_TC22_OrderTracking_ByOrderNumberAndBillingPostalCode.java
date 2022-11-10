@@ -36,6 +36,8 @@ public class MA_TC22_OrderTracking_ByOrderNumberAndBillingPostalCode extends Bas
         Map<String,Object> dataMapItem=dataList.get(0);
         String lsOrderNumberFromApi= (String) dataMapItem.get("orderNumber");
         String lsPostalCodeFromApi= (String) dataMapItem.get("postalCode");
+        String lsOrderPlacedDateTimeFromApi= (String) dataMapItem.get("orderPlacedDateTime");
+
         List<Map<String,Object>> orderDetailsMapFromApi= (List<Map<String, Object>>) dataMapItem.get("orderDetails");
 
         List<List<String>> lstNameAndLinks=TestDataHandler.constantData.getFooterSection().getLst_NameAndLinks();
@@ -45,6 +47,21 @@ public class MA_TC22_OrderTracking_ByOrderNumberAndBillingPostalCode extends Bas
         getOrderTrackingThreadLocal().goToOrderTrackingPageByOrderNumberAndBillingPostal(lsOrderNumberFromApi,lsPostalCodeFromApi);
 
         String lsOrderNumberForOrderTracking=getOrderTrackingThreadLocal().getOrderTrackingNumber();
+        String lsOrderDateForOrderTracking=getOrderTrackingThreadLocal().getOrderDate();
+
+        if(lsOrderNumberFromApi.substring(7).equalsIgnoreCase(lsOrderNumberForOrderTracking.substring(7))){
+            reporter.reportLogPass("The order number:"+lsOrderNumberForOrderTracking+" on order tracking page is the same as the one:"+lsOrderNumberFromApi+" from API calling");
+        }
+        else{
+            reporter.reportLogFail("The order number:"+lsOrderNumberForOrderTracking+" on order tracking page is not the same as the one:"+lsOrderNumberFromApi+" from API calling");
+        }
+
+        if(basePage.replaceBlank(lsOrderPlacedDateTimeFromApi).equalsIgnoreCase(basePage.replaceBlank(lsOrderDateForOrderTracking))){
+            reporter.reportLogPass("The order date:"+lsOrderDateForOrderTracking+" on order tracking page is the same as the one:"+lsOrderPlacedDateTimeFromApi+" from API calling");
+        }
+        else{
+            reporter.reportLogFail("The order date:"+lsOrderDateForOrderTracking+" on order tracking page is not the same as the one:"+lsOrderPlacedDateTimeFromApi+" from API calling");
+        }
 
         List<Map<String,Object>> orderListMapForOrderTracking=getOrderTrackingThreadLocal().getOrderListDesc();
 

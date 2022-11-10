@@ -208,6 +208,7 @@ loginUser:
                                     "Numbers and special characters are not allowed.",
                                     "Please enter valid postal code",
                                     "Please enter your email address in the format john@example.com"]
+  lblErrorMessageForExistingEmail: "Email <email> already exist!!!"
 myAccount:
   lnk_myAccountURL: "/pages/myaccount"
   lnk_addNewCardURL: "/pages/myaccount/paymentcards/addcard"

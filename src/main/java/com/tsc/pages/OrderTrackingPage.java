@@ -163,6 +163,14 @@ public class OrderTrackingPage extends BasePage {
     }
 
     /**
+     * To get Order date
+     * @return -String - Order date
+     */
+    public String getOrderDate(){
+        return this.getElementInnerText(lblTrackOrderDeliveryStatusPlaceOrderDate);
+    }
+
+    /**
      * To check ProgressBar Item Status
      * @param - WebElement - progressBarItem
      * @return - boolean - true for checked
@@ -808,7 +816,7 @@ public class OrderTrackingPage extends BasePage {
         int orderTrackingQuantity=(int)orderTrackingItem.get("productQuantity");
         int orderDetailsQuantity=(int)orderDetailsItem.get("productQuantity");
         if(orderTrackingQuantity==orderDetailsQuantity){
-            reporter.reportLogPass("The productQuantity in OrderTracking Item is the same as the one in checkout Item");
+            reporter.reportLogPass("The productQuantity in OrderTracking Item is the same as the one in orderDetails Item");
         }
         else{
             reporter.reportLogFail("The productQuantity:"+orderTrackingQuantity+" in OrderTracking Item is not the same as the one:"+orderDetailsQuantity+" in orderDetails Item");
@@ -816,7 +824,6 @@ public class OrderTrackingPage extends BasePage {
     }
 
     /**
-<<<<<<< HEAD
      * To go To Order Tracking Page By userName and password
      * @param - String - userName
      * @param - String - password

@@ -5479,11 +5479,11 @@ public class MyAccount extends BasePage {
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderDetailsHeaderCustomerNO);
 		String lsOrderNumberInOrderDetails=this.lblOrderDetailsHeaderCustomerNO.getText().trim();
-		if(lsOrderNumberInOrderDetails.equalsIgnoreCase(orderNumber)){
+		if(lsOrderNumberInOrderDetails.substring(7).equalsIgnoreCase(orderNumber.substring(7))){
 			reporter.reportLogPass("Order number in order details page is the same as the one in order status page");
 		}
 		else{
-			reporter.reportLogPass("Order number:"+lsOrderNumberInOrderDetails+" in order details page is not the same as the one:"+orderNumber+" in order status page");
+			reporter.reportLogFail("Order number:"+lsOrderNumberInOrderDetails+" in order details page is not the same as the one:"+orderNumber+" in order status page");
 		}
 	}
 }

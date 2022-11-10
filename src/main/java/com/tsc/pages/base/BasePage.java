@@ -1293,4 +1293,19 @@ import utils.ReusableActions;
 	public String[] getStringListWithSpaceDelimiter(String lsTargetString){
 		return lsTargetString.split("\\s+");
 	}
+
+	/**
+	 * To replace Blank
+	 * @param - String - str
+	 * @return - String
+	 */
+	public String replaceBlank(String str){
+		String dest="";
+		if(str!=null||!str.isEmpty()){
+			Pattern p=Pattern.compile("\\s*|\r|\t|\n");
+			Matcher m=p.matcher(str);
+			dest=m.replaceAll("");
+		}
+		return dest;
+	}
 }
