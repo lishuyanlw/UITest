@@ -30,7 +30,7 @@ public class MA_TC22_OrderTracking_ByOrderNumberAndBillingPostalCode extends Bas
 
         String accessToken = apiUserSessionData.get("access_token").toString();
         String customerEDP = apiUserSessionData.get("customerEDP").toString();
-        String customerNumber = getApiResponseThreadLocal().getUserDetailsFromCustomerEDP(customerEDP,accessToken).getCustomerNo();
+        getApiResponseThreadLocal().getUserDetailsFromCustomerEDP(customerEDP,accessToken).getCustomerNo();
 
         List<Map<String,Object>> dataList = getOrderTrackingThreadLocal().getPlacedOrderListForUser(2,null,customerEDP,accessToken,null,null,null,null);
         Map<String,Object> dataMapItem=dataList.get(0);
