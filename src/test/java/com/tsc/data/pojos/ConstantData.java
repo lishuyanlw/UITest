@@ -916,6 +916,15 @@ public class ConstantData {
         private String lbl_ErrorMessageForUserNameAndPassword;
         private List<String> lstErrorMessageForCreateAccount;
         private String lblErrorMessageForExistingEmail;
+        private String lnkSignInPage;
+
+        public String getLnkSignInPage() {
+            return lnkSignInPage;
+        }
+
+        public void setLnkSignInPage(String lnkSignInPage) {
+            this.lnkSignInPage = lnkSignInPage;
+        }
 
         public String getLblErrorMessageForExistingEmail() {
             return lblErrorMessageForExistingEmail;

@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-public class SI_TC05_CreateAccount_ByCreateAccountInSignInMenuOnHeader extends BaseTest {
+public class SI_TC05_CreateAccount_VerifyContents_ByCreateAccountInSignInMenuOnHeader extends BaseTest {
     /*
      * CER-914
      */
@@ -47,28 +47,15 @@ public class SI_TC05_CreateAccount_ByCreateAccountInSignInMenuOnHeader extends B
             reporter.reportLogFail("The error message:'"+lsErrorMessageForExistingEmail+"' for existing email is not the same as expected:'"+lsErrorMessageForExistingEmailFromYml+"'");
         }
 
-        reporter.reportLog("Verify create an new account with a valid email");
-        createdLoginMap=getCreateAccountThreadLocal().createNewAccount(null,null,true,false);
-        String lblUserName = createdLoginMap.get("email");
-        String lblPassword = createdLoginMap.get("password");
-        String firstName = createdLoginMap.get("firstName");
-
-        reporter.reportLog("Login with newly created email:"+lblUserName+" and password:"+lblPassword);
-        boolean bSignIn=getGlobalLoginPageThreadLocal().checkSignInStatus();
-        if(bSignIn){
-            reporter.reportLogPass("Login successfully with newly created email:"+lblUserName+" and password:"+lblPassword);
+        reporter.reportLog("Verify create an new account and clicking cancel button");
+        getCreateAccountThreadLocal().createNewAccount(null,null,false,false);
+        String lsSignInUrlFromYml=basePage.getBaseURL()+TestDataHandler.constantData.getLoginUser().getLnkSignInPage();
+        String currentUrl=basePage.URL();
+        if(currentUrl.equalsIgnoreCase(lsSignInUrlFromYml)){
+            reporter.reportLogPass("The navigated Url:'"+currentUrl+"' after clicking cancel button is the same as the expected:'"+lsSignInUrlFromYml+"'");
         }
         else{
-            reporter.reportLogFailWithScreenshot("Login failed with newly created email:"+lblUserName+" and password:"+lblPassword);
+            reporter.reportLogFail("The navigated Url:'"+currentUrl+"' after clicking cancel button is not the same as the expected:'"+lsSignInUrlFromYml+"'");
         }
-
-        String firstNameOnMyAccountPage=getMyAccountPageThreadLocal().getFirstNameInHeader();
-        if(firstName.equalsIgnoreCase(firstNameOnMyAccountPage)){
-            reporter.reportLogPass("The first name:"+firstNameOnMyAccountPage+" on MyAccount page is the same as the expected:"+firstName+" for creating guest account");
-        }
-        else{
-            reporter.reportLogFail("The first name:"+firstNameOnMyAccountPage+" on MyAccount page is not the same as the expected:"+firstName+" for creating guest account");
-        }
-
     }
 }

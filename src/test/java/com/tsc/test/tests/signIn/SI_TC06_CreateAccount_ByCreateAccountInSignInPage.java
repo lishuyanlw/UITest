@@ -23,32 +23,8 @@ public class SI_TC06_CreateAccount_ByCreateAccountInSignInPage extends BaseTest 
 
         getGlobalLoginPageThreadLocal().goToCreateAccountPageThroughSignInPage();
 
-        reporter.reportLog("Verify contents");
-        getCreateAccountThreadLocal().verifyContents();
-
-        reporter.reportLog("Verify show or hide password function");
-        getCreateAccountThreadLocal().verifyShowOrHidePasswordFunction();
-
-        reporter.reportLog("Verify error messages");
-        List<String> lstErrorMessage=TestDataHandler.constantData.getLoginUser().getLstErrorMessageForCreateAccount();
-        getCreateAccountThreadLocal().verifyErrorMessages(lstErrorMessage);
-
-        reporter.reportLog("Verify create account with an existing email error message");
-        String lblUserNameForExistingEmail = TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
-        String lblPasswordForExistingEmail = TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
-        String lsErrorMessageForExistingEmailFromYml=TestDataHandler.constantData.getLoginUser().getLblErrorMessageForExistingEmail();
-        lsErrorMessageForExistingEmailFromYml=lsErrorMessageForExistingEmailFromYml.replace("<email>",lblUserNameForExistingEmail);
-        Map<String,String> createdLoginMap=getCreateAccountThreadLocal().createNewAccount(lblUserNameForExistingEmail,lblPasswordForExistingEmail,true,true);
-        String lsErrorMessageForExistingEmail=createdLoginMap.get("errorMessage");
-        if(lsErrorMessageForExistingEmail.equalsIgnoreCase(lsErrorMessageForExistingEmailFromYml)){
-            reporter.reportLogPass("The error message:'"+lsErrorMessageForExistingEmail+"' for existing email is the same as expected:'"+lsErrorMessageForExistingEmailFromYml+"'");
-        }
-        else{
-            reporter.reportLogFail("The error message:'"+lsErrorMessageForExistingEmail+"' for existing email is not the same as expected:'"+lsErrorMessageForExistingEmailFromYml+"'");
-        }
-
         reporter.reportLog("Verify create an new account with a valid email");
-        createdLoginMap=getCreateAccountThreadLocal().createNewAccount(null,null,true,false);
+        Map<String,String> createdLoginMap=getCreateAccountThreadLocal().createNewAccount(null,null,true,false);
         String lblUserName = createdLoginMap.get("email");
         String lblPassword = createdLoginMap.get("password");
         String firstName = createdLoginMap.get("firstName");
@@ -64,10 +40,10 @@ public class SI_TC06_CreateAccount_ByCreateAccountInSignInPage extends BaseTest 
 
         String firstNameOnMyAccountPage=getMyAccountPageThreadLocal().getFirstNameInHeader();
         if(firstName.equalsIgnoreCase(firstNameOnMyAccountPage)){
-            reporter.reportLogPass("The first name:"+firstNameOnMyAccountPage+" on MyAccount page is the same as the expected:"+firstName+" for creating guest account");
+            reporter.reportLogPass("The first name:"+firstNameOnMyAccountPage+" on MyAccount page is the same as the expected:"+firstName+" for creating new account");
         }
         else{
-            reporter.reportLogFail("The first name:"+firstNameOnMyAccountPage+" on MyAccount page is not the same as the expected:"+firstName+" for creating guest account");
+            reporter.reportLogFail("The first name:"+firstNameOnMyAccountPage+" on MyAccount page is not the same as the expected:"+firstName+" for creating new account");
         }
 
     }
