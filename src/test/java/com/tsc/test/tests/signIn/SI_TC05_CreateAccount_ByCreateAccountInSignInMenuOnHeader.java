@@ -9,12 +9,12 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-public class SI_TC05_CreateAccount extends BaseTest {
+public class SI_TC05_CreateAccount_ByCreateAccountInSignInMenuOnHeader extends BaseTest {
     /*
      * CER-914
      */
-    @Test(groups={"MyAccount","Regression"})
-    public void SI_TC05_CreateAccount() throws IOException {
+    @Test(groups={"SignIn","Regression"})
+    public void SI_TC05_CreateAccount_ByCreateAccountInSignInMenuOnHeader() throws IOException {
         //Closing SignIn pop up on login
         getGlobalFooterPageThreadLocal().closePopupDialog();
 

@@ -14,7 +14,7 @@ public class OT_TC04_OrderTracking_GuestCheckout_ByOrderNumberAndBillingPostalCo
 	/*
 	 * CER-916
 	 */
-	@Test(groups={"Regression","GuestCheckout"})
+	@Test(groups={"OrderTracking","Regression"})
 	public void OT_TC04_OrderTracking_GuestCheckout_ByOrderNumberAndBillingPostalCode() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 		BasePage basePage=new BasePage(this.getDriver());
