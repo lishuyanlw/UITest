@@ -10,12 +10,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class OT_TC04_OrderTracking_GestCheckout_ByOrderNumberAndBillingPostalCode extends BaseTest{
+public class OT_TC04_OrderTracking_GuestCheckout_ByOrderNumberAndBillingPostalCode extends BaseTest{
 	/*
 	 * CER-916
 	 */
 	@Test(groups={"Regression","GuestCheckout"})
-	public void OT_TC04_OrderTracking_GestCheckout_ByOrderNumberAndBillingPostalCode() throws IOException {
+	public void OT_TC04_OrderTracking_GuestCheckout_ByOrderNumberAndBillingPostalCode() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 		BasePage basePage=new BasePage(this.getDriver());
 		List<String> lstKeywordList=TestDataHandler.constantData.getCheckOut().getLst_SearchingKeywordForPlaceOrder();
