@@ -24,7 +24,7 @@ public class GCP_TC05_Verify_GuestCheckout_OrderTracking extends BaseTest{
 		outputDataCriteria.put("style", "2");
 		outputDataCriteria.put("size", "2");
 		outputDataCriteria.put("quantity", "2");
-		if(getProductDetailPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList,"AddToBag",outputDataCriteria)) {
+		if(getProductDetailPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList,"ConditionsForMultipleStyleAndSize",outputDataCriteria)) {
 			String[] lstStyle = getProductDetailPageThreadLocal().getStyleList();
 			String[] lstSizeFirstItem = getProductDetailPageThreadLocal().getSizeListForGivenStyle(0);
 			//String[] lstSizeSecondItem = getProductDetailPageThreadLocal().getSizeListForGivenStyle(1);
@@ -45,18 +45,6 @@ public class GCP_TC05_Verify_GuestCheckout_OrderTracking extends BaseTest{
 			Map<String,Object> createdUserMap=getGuestCheckoutThreadLocal().createNewAccount(null,null,false);
 			String postalCode= (String) createdUserMap.get("postalCode");
 
-			reporter.reportLog("Add promo code on create user page");
-			String lblPromoteCodeAppliedMessage=TestDataHandler.constantData.getCheckOut().getLblPromoteCodeAppliedMessage();
-			List<String> lstPromoteCode=TestDataHandler.constantData.getCheckOut().getLst_PromoteCode();
-			String lsAppliedPromoteCode=getRegularCheckoutThreadLocal().applyPromoteCodeForPositiveScenario(lstPromoteCode);
-			String lblOrderSummaryPromoteCodeAppliedMessage=basePage.getElementInnerText(getRegularCheckoutThreadLocal().lblOrderSummaryPromoteCodeAppliedMessage);
-			if(lblOrderSummaryPromoteCodeAppliedMessage.equalsIgnoreCase(lblPromoteCodeAppliedMessage)){
-				reporter.reportLogPass("The applied message for valid promote code is tha same as the expected one");
-			}
-			else{
-				reporter.reportLogFail("The applied message:'"+lblOrderSummaryPromoteCodeAppliedMessage+"' for invalid promote code is not tha same as the expected one:'"+lblPromoteCodeAppliedMessage+"'");
-			}
-
 			getGuestCheckoutThreadLocal().goToPaymentPage();
 			getGuestCheckoutThreadLocal().addNewCreditOrEditExistingCard("tsc");
 
@@ -67,6 +55,7 @@ public class GCP_TC05_Verify_GuestCheckout_OrderTracking extends BaseTest{
 			String orderNumber=getOrderConfirmationThreadLocal().getOrderNumber();
 			Map<String,Object> receiptMap=getOrderConfirmationThreadLocal().getReceiptDesc();
 			String orderDateOnOrderConfirmationPage= (String) receiptMap.get("orderDate");
+			List<Map<String,Object>> orderItemListMapForOrderConfirmation=getOrderConfirmationThreadLocal().getOrderListDesc();
 
 			List<List<String>> lstNameAndLinks=TestDataHandler.constantData.getFooterSection().getLst_NameAndLinks();
 			getOrderTrackingThreadLocal().goToTrackOrderPortalThroughClickingTrackYourOrderItemOnGlobalFooter( getGlobalFooterPageThreadLocal() ,lstNameAndLinks);
@@ -105,8 +94,8 @@ public class GCP_TC05_Verify_GuestCheckout_OrderTracking extends BaseTest{
 			reporter.reportLog("Verify Order Tracking Items Section");
 			getOrderTrackingThreadLocal().verifyOrderTrackingItemsSection();
 
-			reporter.reportLog("Verify Order List Linkage Between OrderDetailsPage And OrderTrackingPage");
-			getOrderTrackingThreadLocal().verifyOrderListLinkageBetweenOrderDetailsPageAndOrderTrackingPage(checkoutItemListMap,orderListMapForOrderTracking);
+			reporter.reportLog("Verify Order List Linkage Between OrderConfirmationPage And OrderTrackingPage");
+			getOrderTrackingThreadLocal().verifyOrderListLinkageBetweenOrderDetailsPageAndOrderTrackingPage(orderItemListMapForOrderConfirmation,orderListMapForOrderTracking,"orderConfirmationPage");
 
 			reporter.reportLog("Verify Back button in header");
 			getOrderTrackingThreadLocal().verifyBackButton(lsUrlBeforeGoToOrderTrackingPage);

@@ -716,8 +716,28 @@ public class OrderTrackingPage extends BasePage {
      * To verify Order List Linkage Between Order details Page And order tracking Page
      * @param - List<Map<String,Object>> - orderListMapForOrderDetails
      * @param - List<Map<String,Object>> - orderListMapForOrderTracking
+     * @param - String - dataSourceToCompareWithOrderTracking - "orderDetailsPage"/"API"/"orderConfirmationPage"
      */
-    public void verifyOrderListLinkageBetweenOrderDetailsPageAndOrderTrackingPage(List<Map<String,Object>> orderListMapForOrderDetails,List<Map<String,Object>> orderListMapForOrderTracking){
+    public void verifyOrderListLinkageBetweenOrderDetailsPageAndOrderTrackingPage(List<Map<String,Object>> orderListMapForOrderDetails,List<Map<String,Object>> orderListMapForOrderTracking,String dataSourceToCompareWithOrderTracking){
+        String lsOptionForOrderList="",lsOptionForOrderItem="";
+        switch(dataSourceToCompareWithOrderTracking){
+            case "orderDetailsPage":
+                lsOptionForOrderList="on order details page";
+                lsOptionForOrderItem="in order details item";
+                break;
+            case "API":
+                lsOptionForOrderList="from API calling";
+                lsOptionForOrderItem="in API calling item";
+                break;
+            case "orderConfirmationPage":
+                lsOptionForOrderList="on order confirmation page";
+                lsOptionForOrderItem="in order confirmation item";
+                break;
+            default:
+                break;
+
+
+        }
         int findIndex;
         ShoppingCartPage shoppingCartPage=new ShoppingCartPage(this.getDriver());
         Map<String,Object> orderDetailsItem;
@@ -727,10 +747,10 @@ public class OrderTrackingPage extends BasePage {
             findIndex=shoppingCartPage.findGivenProductIndexInProductList(orderTrackingItem,orderListMapForOrderDetails);
             if(findIndex!=-1){
                 orderDetailsItem=orderListMapForOrderDetails.get(findIndex);
-                this.verifyProductItemLinkageBetweenOrderDetailsPageAndOrderTrackingPage(orderDetailsItem,orderTrackingItem);
+                this.verifyProductItemLinkageBetweenOrderDetailsPageAndOrderTrackingPage(orderDetailsItem,orderTrackingItem,lsOptionForOrderItem);
             }
             else{
-                reporter.reportLogFail("Unable to find '"+lsText+"' in orderDetails Page");
+                reporter.reportLogFail("Unable to find '"+lsText+"' "+lsOptionForOrderList);
             }
         }
     }
@@ -739,17 +759,18 @@ public class OrderTrackingPage extends BasePage {
      * To verify product list Linkage Between OrderTracking Page And orderDetails Page
      * @param - Map<String,Object> - orderTrackingItem
      * @param - Map<String,Object> - orderDetailsItem
+     * @param - String - dataSourceToCompareWithOrderTracking - "orderDetailsPage"/"API"/"orderConfirmationPage"
      */
-    public void verifyProductItemLinkageBetweenOrderDetailsPageAndOrderTrackingPage(Map<String,Object> orderDetailsItem,Map<String,Object> orderTrackingItem){
+    public void verifyProductItemLinkageBetweenOrderDetailsPageAndOrderTrackingPage(Map<String,Object> orderDetailsItem,Map<String,Object> orderTrackingItem,String dataSourceToCompareWithOrderTracking){
         String lsOrderTrackingText,lsOrderDetailsText;
 
         lsOrderTrackingText=(String)orderTrackingItem.get("productName");
         lsOrderDetailsText=(String)orderDetailsItem.get("productName");
         if(lsOrderTrackingText.equalsIgnoreCase(lsOrderDetailsText)){
-            reporter.reportLogPass("The productName in OrderTracking Item is the same as the one in orderDetails Item");
+            reporter.reportLogPass("The productName in OrderTracking Item is the same as the one "+dataSourceToCompareWithOrderTracking);
         }
         else{
-            reporter.reportLogFail("The productName:"+lsOrderTrackingText+" in OrderTracking Item is not the same as the one:"+lsOrderDetailsText+" in orderDetails Item");
+            reporter.reportLogFail("The productName:"+lsOrderTrackingText+" in OrderTracking Item is not the same as the one:"+lsOrderDetailsText+" "+dataSourceToCompareWithOrderTracking);
         }
 
         if(orderTrackingItem.get("productStyle")!=null&&orderDetailsItem.get("productStyle")!=null){
@@ -757,18 +778,18 @@ public class OrderTrackingPage extends BasePage {
             lsOrderDetailsText=(String)orderDetailsItem.get("productStyle");
             if(lsOrderTrackingText==null){
                 if(lsOrderDetailsText==null){
-                    reporter.reportLogPass("The productStyle in OrderTracking Item is the same as the one in orderDetails Item");
+                    reporter.reportLogPass("The productStyle in OrderTracking Item is the same as the one "+dataSourceToCompareWithOrderTracking);
                 }
                 else{
-                    reporter.reportLogFail("The productStyle in OrderTracking Item is not the same as the one in orderDetails Item");
+                    reporter.reportLogFail("The productStyle in OrderTracking Item is not the same as the one "+dataSourceToCompareWithOrderTracking);
                 }
             }
             else{
                 if(lsOrderTrackingText.equalsIgnoreCase(lsOrderDetailsText)){
-                    reporter.reportLogPass("The productStyle in OrderTracking Item is the same as the one in orderDetails Item");
+                    reporter.reportLogPass("The productStyle in OrderTracking Item is the same as the one "+dataSourceToCompareWithOrderTracking);
                 }
                 else{
-                    reporter.reportLogFail("The productStyle:"+lsOrderTrackingText+" in OrderTracking Item is not the same as the one:"+lsOrderDetailsText+" in orderDetails Item");
+                    reporter.reportLogFail("The productStyle:"+lsOrderTrackingText+" in OrderTracking Item is not the same as the one:"+lsOrderDetailsText+" "+dataSourceToCompareWithOrderTracking);
                 }
             }
         }
@@ -778,18 +799,18 @@ public class OrderTrackingPage extends BasePage {
             lsOrderDetailsText=(String)orderDetailsItem.get("productSize");
             if(lsOrderTrackingText==null){
                 if(lsOrderDetailsText==null){
-                    reporter.reportLogPass("The productSize in OrderTracking Item is the same as the one in orderDetails Item");
+                    reporter.reportLogPass("The productSize in OrderTracking Item is the same as the one "+dataSourceToCompareWithOrderTracking);
                 }
                 else{
-                    reporter.reportLogFail("The productSize in OrderTracking Item is not the same as the one in orderDetails Item");
+                    reporter.reportLogFail("The productSize in OrderTracking Item is not the same as the one "+dataSourceToCompareWithOrderTracking);
                 }
             }
             else{
                 if(lsOrderTrackingText.equalsIgnoreCase(lsOrderDetailsText)){
-                    reporter.reportLogPass("The productSize in OrderTracking Item is the same as the one in orderDetails Item");
+                    reporter.reportLogPass("The productSize in OrderTracking Item is the same as the one "+dataSourceToCompareWithOrderTracking);
                 }
                 else{
-                    reporter.reportLogFail("The productSize:"+lsOrderTrackingText+" in OrderTracking Item is not the same as the one:"+lsOrderDetailsText+" in orderDetails Item");
+                    reporter.reportLogFail("The productSize:"+lsOrderTrackingText+" in OrderTracking Item is not the same as the one:"+lsOrderDetailsText+" "+dataSourceToCompareWithOrderTracking);
                 }
             }
         }
@@ -798,28 +819,28 @@ public class OrderTrackingPage extends BasePage {
         lsOrderDetailsText=(String)orderDetailsItem.get("productNumber");
         if(lsOrderTrackingText==null){
             if(lsOrderDetailsText==null){
-                reporter.reportLogPass("The productNumber in OrderTracking Item is the same as the one in orderDetails Item");
+                reporter.reportLogPass("The productNumber in OrderTracking Item is the same as the one "+dataSourceToCompareWithOrderTracking);
             }
             else{
-                reporter.reportLogFail("The productNumber in OrderTracking Item is not the same as the one in orderDetails Item");
+                reporter.reportLogFail("The productNumber in OrderTracking Item is not the same as the one "+dataSourceToCompareWithOrderTracking);
             }
         }
         else{
             if(lsOrderTrackingText.equalsIgnoreCase(lsOrderDetailsText)){
-                reporter.reportLogPass("The productNumber in OrderTracking Item is the same as the one in orderDetails Item");
+                reporter.reportLogPass("The productNumber in OrderTracking Item is the same as the one "+dataSourceToCompareWithOrderTracking);
             }
             else{
-                reporter.reportLogFail("The productNumber:"+lsOrderTrackingText+" in OrderTracking Item is not the same as the one:"+lsOrderDetailsText+" in orderDetails Item");
+                reporter.reportLogFail("The productNumber:"+lsOrderTrackingText+" in OrderTracking Item is not the same as the one:"+lsOrderDetailsText+" "+dataSourceToCompareWithOrderTracking);
             }
         }
 
         int orderTrackingQuantity=(int)orderTrackingItem.get("productQuantity");
         int orderDetailsQuantity=(int)orderDetailsItem.get("productQuantity");
         if(orderTrackingQuantity==orderDetailsQuantity){
-            reporter.reportLogPass("The productQuantity in OrderTracking Item is the same as the one in orderDetails Item");
+            reporter.reportLogPass("The productQuantity in OrderTracking Item is the same as the one "+dataSourceToCompareWithOrderTracking);
         }
         else{
-            reporter.reportLogFail("The productQuantity:"+orderTrackingQuantity+" in OrderTracking Item is not the same as the one:"+orderDetailsQuantity+" in orderDetails Item");
+            reporter.reportLogFail("The productQuantity:"+orderTrackingQuantity+" in OrderTracking Item is not the same as the one:"+orderDetailsQuantity+" "+dataSourceToCompareWithOrderTracking);
         }
     }
 

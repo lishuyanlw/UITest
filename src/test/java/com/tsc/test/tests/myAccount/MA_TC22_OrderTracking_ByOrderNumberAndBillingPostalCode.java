@@ -78,7 +78,7 @@ public class MA_TC22_OrderTracking_ByOrderNumberAndBillingPostalCode extends Bas
         getOrderTrackingThreadLocal().verifyOrderTrackingItemsSection();
 
         reporter.reportLog("Verify Order List Linkage Between OrderDetailsPage And OrderTrackingPage");
-        getOrderTrackingThreadLocal().verifyOrderListLinkageBetweenOrderDetailsPageAndOrderTrackingPage(orderDetailsMapFromApi,orderListMapForOrderTracking);
+        getOrderTrackingThreadLocal().verifyOrderListLinkageBetweenOrderDetailsPageAndOrderTrackingPage(orderDetailsMapFromApi,orderListMapForOrderTracking,"API");
 
         reporter.reportLog("Verify Back button in header");
         getOrderTrackingThreadLocal().verifyBackButton(lsUrlBeforeGoToOrderTrackingPage);
