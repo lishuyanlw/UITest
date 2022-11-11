@@ -465,8 +465,9 @@ public class OrderTrackingPage extends BasePage {
      * To go To Order Tracking Page By Order Number And Billing Postal
      * @param - String - orderNumber
      * @param - String - billingPostal
+     * @return - boolean
      */
-    public void goToOrderTrackingPageByOrderNumberAndBillingPostal(String orderNumber,String billingPostal){
+    public boolean goToOrderTrackingPageByOrderNumberAndBillingPostal(String orderNumber,String billingPostal){
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputTrackOrderPortalOrderNumber);
         this.inputTrackOrderPortalOrderNumber.clear();
         this.inputTrackOrderPortalOrderNumber.sendKeys(orderNumber);
@@ -479,7 +480,30 @@ public class OrderTrackingPage extends BasePage {
 
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnTrackOrderPortalSubmit);
         this.btnTrackOrderPortalSubmit.click();
-        this.waitForCondition(Driver->{return lblTrackOrderTitle.isDisplayed();},120000);
+
+        boolean bPass=false;
+        try{
+            this.waitForCondition(Driver->{return lblTrackOrderTitle.isDisplayed();},120000);
+            bPass=true;
+        }
+        catch (Exception e){
+            for(int i=0;i<5;i++){
+                this.refresh();
+                this.applyStaticWait(10000);
+                try{
+                    this.waitForCondition(Driver->{return lblTrackOrderTitle.isDisplayed();},120000);
+                    bPass=true;
+                }
+                catch (Exception ex){
+
+                }
+                if(bPass){
+                    break;
+                }
+            }
+        }
+
+        return bPass;
     }
 
     /**

@@ -44,7 +44,11 @@ public class OT_TC03_OrderTracking_ByOrderNumberAndBillingPostalCode extends Bas
         getOrderTrackingThreadLocal().goToTrackOrderPortalThroughClickingTrackYourOrderItemOnGlobalFooter( getGlobalFooterPageThreadLocal() ,lstNameAndLinks);
 
         String lsUrlBeforeGoToOrderTrackingPage=basePage.URL();
-        getOrderTrackingThreadLocal().goToOrderTrackingPageByOrderNumberAndBillingPostal(lsOrderNumberFromApi,lsPostalCodeFromApi);
+
+        if(!getOrderTrackingThreadLocal().goToOrderTrackingPageByOrderNumberAndBillingPostal(lsOrderNumberFromApi,lsPostalCodeFromApi)){
+            reporter.reportLogFailWithScreenshot("Unable to navigate to order tracking page");
+            return;
+        }
 
         String lsOrderNumberForOrderTracking=getOrderTrackingThreadLocal().getOrderTrackingNumber();
         String lsOrderDateForOrderTracking=getOrderTrackingThreadLocal().getOrderDate();
