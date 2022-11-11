@@ -1,4 +1,4 @@
-package com.tsc.test.tests.guestCheckoutPage;
+package com.tsc.test.tests.orderTracking;
 
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
@@ -10,12 +10,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GCP_TC05_Verify_GuestCheckout_OrderTracking extends BaseTest{
+public class OT_TC04_OrderTracking_GestCheckout_ByOrderNumberAndBillingPostalCode extends BaseTest{
 	/*
 	 * CER-916
 	 */
 	@Test(groups={"Regression","GuestCheckout"})
-	public void GCP_TC05_Verify_GuestCheckout_OrderTracking() throws IOException {
+	public void OT_TC04_OrderTracking_GestCheckout_ByOrderNumberAndBillingPostalCode() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 		BasePage basePage=new BasePage(this.getDriver());
 		List<String> lstKeywordList=TestDataHandler.constantData.getCheckOut().getLst_SearchingKeywordForPlaceOrder();
