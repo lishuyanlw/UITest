@@ -1,4 +1,4 @@
-package com.tsc.test.tests.myAccount;
+package com.tsc.test.tests.orderTracking;
 
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.data.pojos.ConstantData;
@@ -11,12 +11,12 @@ import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
-public class MA_TC22_OrderTracking_ByOrderNumberAndBillingPostalCode extends BaseTest {
+public class OT_TC03_OrderTracking_ByOrderNumberAndBillingPostalCode extends BaseTest {
     /*
      *CER-911
      */
-    @Test(groups={"MyAccount","Regression"})
-    public void MA_TC22_OrderTracking_ByOrderNumberAndBillingPostalCode() throws IOException, ParseException {
+    @Test(groups={"OrderTracking","Regression"})
+    public void OT_TC03_OrderTracking_ByOrderNumberAndBillingPostalCode() throws IOException, ParseException {
         //Closing SignIn pop up on login
         getGlobalFooterPageThreadLocal().closePopupDialog();
 

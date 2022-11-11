@@ -1,4 +1,4 @@
-package com.tsc.test.tests.myAccount;
+package com.tsc.test.tests.orderTracking;
 
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
@@ -9,13 +9,13 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-public class MA_TC20_OrderTrackingPortal extends BaseTest {
+public class OT_TC01_OrderTrackingPortal extends BaseTest {
     /*
      * CER-910
      * CER-911
      */
-    @Test(groups={"MyAccount","Regression"})
-    public void MA_TC20_OrderTrackingPortal() throws IOException {
+    @Test(groups={"OrderTracking","Regression"})
+    public void OT_TC01_OrderTrackingPortal() throws IOException {
         //Closing SignIn pop up on login
         getGlobalFooterPageThreadLocal().closePopupDialog();
 

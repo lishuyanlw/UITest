@@ -1,4 +1,4 @@
-package com.tsc.test.tests.checkoutPage;
+package com.tsc.test.tests.orderModification;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.tsc.api.apiBuilder.CartAPI;
@@ -12,15 +12,16 @@ import io.restassured.response.Response;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CP_TC18_VerifyOrderModification_AddPromoteCode_AddADPProductItem extends BaseTest {
+public class OM_TC01_VerifyOrderModification_AddPromoteCode_AddRegularProductItem extends BaseTest {
     /*
-     * CER-906
+     * CER-904
      */
-    @Test(groups={"Regression","Checkout","CheckoutMobTab"})
-    public void CP_TC18_VerifyOrderModification_AddPromoteCode_AddADPProductItem() throws IOException {
+    @Test(groups={"Regression","OrderModification"})
+    public void OM_TC01_VerifyOrderModification_AddPromoteCode_AddRegularProductItem() throws IOException {
         getGlobalFooterPageThreadLocal().closePopupDialog();
 
         String accessToken = getApiUserSessionDataMapThreadLocal().get("access_token").toString();
@@ -99,9 +100,14 @@ public class CP_TC18_VerifyOrderModification_AddPromoteCode_AddADPProductItem ex
         String lsPromoteCode=TestDataHandler.constantData.getCheckOut().getLst_PromoteCode().get(0);
         getOrderModificationThreadLocal().addPromoteCode(lsPromoteCode);
 
-        reporter.reportLog("Add ADP product item through UI");
-        String lsADPProductNumber = TestDataHandler.constantData.getSearchResultPage().getLbl_AutoDeliverykeyword();
-        Map<String,Object> addToBagPopUpData=getOrderModificationThreadLocal().addProductItems(lsADPProductNumber,true);
+        reporter.reportLog("Add new order item through UI");
+        List<String> lstKeyword = TestDataHandler.constantData.getCheckOut().getLst_SearchingKeywordForPlaceOrder();
+        Map<String,Object> outputDataCriteria= new HashMap<String,Object>();
+        outputDataCriteria.put("style", "1");
+        outputDataCriteria.put("size", "1");
+        String lsProductName=getProductDetailPageThreadLocal().getProductWithConditionsForVideoAndStyleAndSizeWithoutCheckingSoldOutCriteria(lstKeyword,outputDataCriteria);
+        reporter.reportLog("lsProductName: "+lsProductName);
+        Map<String,Object> addToBagPopUpData=getOrderModificationThreadLocal().addProductItems(lsProductName,true);
 
         String lsOrderNumberOnAddToBagWindow= (String) addToBagPopUpData.get("productOrderNumber");
         if(lsOrderNumberForOrderModification.equalsIgnoreCase(lsOrderNumberOnAddToBagWindow)){
