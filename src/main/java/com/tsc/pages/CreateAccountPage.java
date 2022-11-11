@@ -260,14 +260,13 @@ public class CreateAccountPage extends BasePage {
 
         Map<String,String> map=new HashMap<>();
         if(bExistingEmail){
-            map.put("email",null);
-            map.put("password",null);
             map.put("errorMessage",this.getElementInnerText(this.lstAllErrorMessage.get(0)));
         }
         else{
+            map.put("firstName",lsFirstName);
+            map.put("lastName",lsLastName);
             map.put("email",lsEmail);
             map.put("password",lsPassword);
-            map.put("errorMessage",null);
         }
 
         return map;

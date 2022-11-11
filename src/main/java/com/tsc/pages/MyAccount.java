@@ -33,10 +33,10 @@ public class MyAccount extends BasePage {
 	@FindBy(xpath="//ng-component//*[@class='paymentPageTitle']")
 	public WebElement lblPageTitle;
 
-	@FindBy(xpath="//div[@class='tsc-forms']//div[contains(@class,'form-head')]//h2/span")
+	@FindBy(xpath="//div[contains(@class,'tsc-forms')]//div[contains(@class,'form-head')]//h2/span")
 	public WebElement lblOrderDetailsHeaderUserName;
 
-	@FindBy(xpath="//div[@class='tsc-forms']//div[contains(@class,'form-head')]//span[contains(normalize-space(text()),'Customer Number:')]/following-sibling::span")
+	@FindBy(xpath="//div[contains(@class,'tsc-forms')]//div[contains(@class,'form-head')]//span[contains(normalize-space(text()),'Customer Number:')]/following-sibling::span")
 	public WebElement lblOrderDetailsHeaderCustomerNumber;
 
 	@FindBy(xpath="//ng-component//div[contains(@class,'form-head')]//h2")
@@ -815,6 +815,22 @@ public class MyAccount extends BasePage {
 
 	@FindBy(xpath = "//ng-component//*[@class='breadcrumb']/li/a")
 	public List<WebElement> lblBreadCrumbList;
+
+	/**
+	 * To get first name in header
+	 * @return - String
+	 */
+	public String getFirstNameInHeader(){
+		return this.getElementInnerText(this.lblOrderDetailsHeaderUserName).split("’")[0];
+	}
+
+	/**
+	 * To get Customer Number in header
+	 * @return - String
+	 */
+	public String getCustomerNumberInHeader(){
+		return this.getElementInnerText(this.lblOrderDetailsHeaderCustomerNumber);
+	}
 
 	/**
 	 * To check Collapse Status For Account Summary Panel

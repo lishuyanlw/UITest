@@ -51,6 +51,8 @@ public class SI_TC05_CreateAccount_ByCreateAccountInSignInMenuOnHeader extends B
         createdLoginMap=getCreateAccountThreadLocal().createNewAccount(null,null,true,false);
         String lblUserName = createdLoginMap.get("email");
         String lblPassword = createdLoginMap.get("password");
+        String firstName = createdLoginMap.get("firstName");
+
         reporter.reportLog("Login with newly created email:"+lblUserName+" and password:"+lblPassword);
         boolean bSignIn=getGlobalLoginPageThreadLocal().checkSignInStatus();
         if(bSignIn){
@@ -58,6 +60,14 @@ public class SI_TC05_CreateAccount_ByCreateAccountInSignInMenuOnHeader extends B
         }
         else{
             reporter.reportLogFailWithScreenshot("Login failed with newly created email:"+lblUserName+" and password:"+lblPassword);
+        }
+
+        String firstNameOnMyAccountPage=getMyAccountPageThreadLocal().getFirstNameInHeader();
+        if(firstName.equalsIgnoreCase(firstNameOnMyAccountPage)){
+            reporter.reportLogPass("The first name:"+firstNameOnMyAccountPage+" on MyAccount page is the same as the expected:"+firstName+" for creating guest account");
+        }
+        else{
+            reporter.reportLogFail("The first name:"+firstNameOnMyAccountPage+" on MyAccount page is not the same as the expected:"+firstName+" for creating guest account");
         }
 
     }
