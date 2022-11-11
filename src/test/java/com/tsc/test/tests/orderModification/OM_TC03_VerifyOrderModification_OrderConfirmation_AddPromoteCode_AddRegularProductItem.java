@@ -1,4 +1,4 @@
-package com.tsc.test.tests.checkoutPage;
+package com.tsc.test.tests.orderModification;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.tsc.api.apiBuilder.CartAPI;
@@ -15,12 +15,12 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-public class CP_TC17_VerifyOrderModification_OrderConfirmation_AddPromoteCode_AddRegularProductItem extends BaseTest {
+public class OM_TC03_VerifyOrderModification_OrderConfirmation_AddPromoteCode_AddRegularProductItem extends BaseTest {
     /*
      * CER-905
      */
-    @Test(groups={"Regression","Checkout","CheckoutMobTab"})
-    public void CP_TC17_VerifyOrderModification_OrderConfirmation_AddPromoteCode_AddRegularProductItem() throws IOException {
+    @Test(groups={"Regression","OrderModification"})
+    public void OM_TC03_VerifyOrderModification_OrderConfirmation_AddPromoteCode_AddRegularProductItem() throws IOException {
         getGlobalFooterPageThreadLocal().closePopupDialog();
         String accessToken = getApiUserSessionDataMapThreadLocal().get("access_token").toString();
         String customerEDP = getApiUserSessionDataMapThreadLocal().get("customerEDP").toString();
