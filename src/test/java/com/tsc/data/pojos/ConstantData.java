@@ -917,6 +917,15 @@ public class ConstantData {
         private List<String> lstErrorMessageForCreateAccount;
         private String lblErrorMessageForExistingEmail;
         private String lnkSignInPage;
+        private List<String> lstErrorMessageForTransferPhoneAccount;
+
+        public List<String> getLstErrorMessageForTransferPhoneAccount() {
+            return lstErrorMessageForTransferPhoneAccount;
+        }
+
+        public void setLstErrorMessageForTransferPhoneAccount(List<String> lstErrorMessageForTransferPhoneAccount) {
+            this.lstErrorMessageForTransferPhoneAccount = lstErrorMessageForTransferPhoneAccount;
+        }
 
         public String getLnkSignInPage() {
             return lnkSignInPage;

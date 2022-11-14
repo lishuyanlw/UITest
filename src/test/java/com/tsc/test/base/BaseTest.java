@@ -62,6 +62,7 @@ public class BaseTest {
 	protected static final ThreadLocal<OrderModificationPage> orderModificationPageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<OrderTrackingPage> orderTrackingPageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<CreateAccountPage> createAccountPageThreadLocal = new ThreadLocal<>();
+	protected static final ThreadLocal<TransferPhoneAccountPage> transferPhoneAccountPageThreadLocal = new ThreadLocal<>();
 
 	public BaseTest() {
 		browserDrivers = new BrowserDrivers();
@@ -73,6 +74,9 @@ public class BaseTest {
 	public static Reporter getReporter() {
 		return reporter;
 	}
+
+	//@return transferPhoneAccountPageThreadLocal
+	public static TransferPhoneAccountPage getTransferPhoneAccountThreadLocal() {return transferPhoneAccountPageThreadLocal.get();}
 
 	//@return createAccountPageThreadLocal
 	public static CreateAccountPage getCreateAccountThreadLocal() {return createAccountPageThreadLocal.get();}
@@ -162,6 +166,7 @@ public class BaseTest {
 		orderModificationPageThreadLocal.set(new OrderModificationPage(getDriver()));
 		orderTrackingPageThreadLocal.set(new OrderTrackingPage(getDriver()));
 		createAccountPageThreadLocal.set(new CreateAccountPage(getDriver()));
+		transferPhoneAccountPageThreadLocal.set(new TransferPhoneAccountPage(getDriver()));
 	}
 
 	private void init_Mobile() throws IOException {
@@ -182,6 +187,7 @@ public class BaseTest {
 		orderModificationPageThreadLocal.set(new OrderModificationPage_Mobile(getDriver()));
 		orderTrackingPageThreadLocal.set(new OrderTrackingPage(getDriver()));
 		createAccountPageThreadLocal.set(new CreateAccountPage(getDriver()));
+		transferPhoneAccountPageThreadLocal.set(new TransferPhoneAccountPage_Mobile(getDriver()));
 	}
 
 	private void init_Tablet() throws IOException {
@@ -239,6 +245,7 @@ public class BaseTest {
 		orderModificationPageThreadLocal.set(new OrderModificationPage_Tablet(getDriver()));
 		orderTrackingPageThreadLocal.set(new OrderTrackingPage(getDriver()));
 		createAccountPageThreadLocal.set(new CreateAccountPage(getDriver()));
+		transferPhoneAccountPageThreadLocal.set(new TransferPhoneAccountPage(getDriver()));
 	}
 
 

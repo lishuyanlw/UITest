@@ -211,6 +211,11 @@ loginUser:
                                     "The passwords you've entered do not match. Please try again."]
   lblErrorMessageForExistingEmail: "Email <email> already exist!!!"
   lnkSignInPage: "/pages/signin"
+  lstErrorMessageForTransferPhoneAccount: [ "Please enter 10 digit Number.",
+                                            "Please enter your 10 digit phone number, including your area code",
+                                            "Please enter your email address in the format john@example.com",
+                                            "The passwords you've entered do not match. Please try again.",
+                                            "You have one or more missing or invalid entries. Please enter correct data and try again." ]
 myAccount:
   lnk_myAccountURL: "/pages/myaccount"
   lnk_addNewCardURL: "/pages/myaccount/paymentcards/addcard"

@@ -38,7 +38,7 @@ public class SignInPage extends BasePage {
 	public WebElement btnCreateAccountInNav;
 
 	@FindBy(xpath = "//div[contains(@class,'secondary-navigation__rhs-account')]//nav//ul//li//a[contains(@href,'createphoneaccount')]")
-	public WebElement btnCreatePhoneAccountInNav;
+	public WebElement btnTransferPhoneAccountInNav;
 
 	@FindBy(xpath = "//div[contains(@class,'secondary-navigation__rhs-account')]//nav//ul//li//a[contains(@href,'orderstatus')]")
 	public WebElement btnOrderStatusInNav;
@@ -321,6 +321,28 @@ public class SignInPage extends BasePage {
 	}
 
 	/**
+	 * Go to Transfer phone Account page through header
+	 * @return - boolean
+	 */
+	public boolean goToTransferPhoneAccountPageThroughHeader() {
+		getReusableActionsInstance().javascriptScrollToTopOfPage();
+		String strBrowser = System.getProperty("Browser").trim();
+		if (strBrowser.toLowerCase().contains("android") || strBrowser.toLowerCase().contains("ios")
+				|| strBrowser.toLowerCase().contains("mobile")) {
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInMainMenu);
+			this.getReusableActionsInstance().clickIfAvailable(this.btnSignInMainMenu);
+			//this.btnSignInMainMenu.click();
+		} else {
+			this.getReusableActionsInstance().scrollToElement(this.btnSignInMainMenu);
+		}
+		getReusableActionsInstance().staticWait(3000);
+
+		this.getReusableActionsInstance().clickIfAvailable(this.btnTransferPhoneAccountInNav);
+
+		return waitForCondition(Driver->{return (new TransferPhoneAccountPage(this.getDriver())).lblHeaderTitle.isDisplayed();},300000);
+	}
+
+	/**
 	 * Go to Create Account Page through signIn page
 	 * @return
 	 */
@@ -330,6 +352,18 @@ public class SignInPage extends BasePage {
 		this.getReusableActionsInstance().clickIfAvailable(this.btnCreateAccountOrContinueAsGuest);
 
 		return waitForCondition(Driver->{return (new CreateAccountPage(this.getDriver())).lblHeaderTitle.isDisplayed();},300000);
+	}
+
+	/**
+	 * Go to Transfer Phone Account Page through signIn page
+	 * @return - boolean
+	 */
+	public boolean goToTransferPhoneAccountPageThroughSignInPage() {
+		this.goToSignInPage();
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnTransferMyPhoneAccount);
+		this.getReusableActionsInstance().clickIfAvailable(this.btnTransferMyPhoneAccount);
+
+		return waitForCondition(Driver->{return (new TransferPhoneAccountPage(this.getDriver())).lblHeaderTitle.isDisplayed();},300000);
 	}
 
 	/**
