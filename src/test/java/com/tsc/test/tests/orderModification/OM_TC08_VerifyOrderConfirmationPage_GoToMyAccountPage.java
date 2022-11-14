@@ -1,4 +1,4 @@
-package com.tsc.test.tests.checkoutPage;
+package com.tsc.test.tests.orderModification;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.tsc.api.apiBuilder.AccountAPI;
@@ -17,12 +17,12 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-public class CP_TC13_VerifyOrderConfirmationPage_GoToMyAccountPage extends BaseTest{
+public class OM_TC08_VerifyOrderConfirmationPage_GoToMyAccountPage extends BaseTest{
 	/*
 	 * CER-891
 	 */
-	@Test(groups={"Regression","Checkout","CheckoutMobTab"})
-	public void CP_TC13_VerifyOrderConfirmationPage_GoToMyAccountPage() throws IOException {
+	@Test(groups={"Regression","OrderModification"})
+	public void OM_TC08_VerifyOrderConfirmationPage_GoToMyAccountPage() throws IOException {
 		String lsUserName = TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
 		String lsPassword = TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
 
@@ -48,7 +48,7 @@ public class CP_TC13_VerifyOrderConfirmationPage_GoToMyAccountPage extends BaseT
 
 		//Adding Visa Credit Card for user
 		AccountAPI accountAPI = new AccountAPI();
-		Response tscCardResponse = accountAPI.addCreditCardToUser((org.json.simple.JSONObject) creditCardData.get("visa"),String.valueOf(customerEDP),accessToken);
+		Response tscCardResponse = accountAPI.addCreditCardToUser((JSONObject) creditCardData.get("visa"),String.valueOf(customerEDP),accessToken);
 		if(tscCardResponse.statusCode()==200)
 			reporter.reportLog("New TSC Credit Card is added for user as default Card");
 		else
