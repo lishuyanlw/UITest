@@ -5,7 +5,6 @@ import com.tsc.data.pojos.ConstantData;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 import org.testng.annotations.Test;
-
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;

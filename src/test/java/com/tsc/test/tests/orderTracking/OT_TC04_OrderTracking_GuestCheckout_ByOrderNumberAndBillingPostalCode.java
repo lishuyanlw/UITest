@@ -4,7 +4,6 @@ import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 import org.testng.annotations.Test;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -27,7 +26,6 @@ public class OT_TC04_OrderTracking_GuestCheckout_ByOrderNumberAndBillingPostalCo
 		if(getProductDetailPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList,"ConditionsForMultipleStyleAndSize",outputDataCriteria)) {
 			String[] lstStyle = getProductDetailPageThreadLocal().getStyleList();
 			String[] lstSizeFirstItem = getProductDetailPageThreadLocal().getSizeListForGivenStyle(0);
-			//String[] lstSizeSecondItem = getProductDetailPageThreadLocal().getSizeListForGivenStyle(1);
 
 			getProductDetailPageThreadLocal().chooseGivenStyleAndSizeAndQuantity(lstStyle[0], lstSizeFirstItem[0], 1);
 			basePage.clickElement(getProductDetailPageThreadLocal().btnAddToBag);
@@ -40,7 +38,6 @@ public class OT_TC04_OrderTracking_GuestCheckout_ByOrderNumberAndBillingPostalCo
 			basePage.waitForCondition(Driver->{return getGlobalLoginPageThreadLocal().btnCreateAccountOrContinueAsGuest.isDisplayed();},120000);
 
 			getGlobalLoginPageThreadLocal().goToGuestCheckoutPage();
-			List<Map<String,Object>> checkoutItemListMap=getGuestCheckoutThreadLocal().getCheckoutItemListDesc("mandatory");
 
 			Map<String,Object> createdUserMap=getGuestCheckoutThreadLocal().createNewAccount(null,null,false);
 			String postalCode= (String) createdUserMap.get("postalCode");

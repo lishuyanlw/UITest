@@ -5,11 +5,9 @@ import com.tsc.data.pojos.ConstantData;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 import org.testng.annotations.Test;
-
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 public class OT_TC02_OrderTracking_LoginFromOrderTrackPortal extends BaseTest {
@@ -31,12 +29,10 @@ public class OT_TC02_OrderTracking_LoginFromOrderTrackPortal extends BaseTest {
 
         String accessToken = apiUserSessionData.get("access_token").toString();
         String customerEDP = apiUserSessionData.get("customerEDP").toString();
-        String customerNumber = getApiResponseThreadLocal().getUserDetailsFromCustomerEDP(customerEDP,accessToken).getCustomerNo();
 
         List<Map<String,Object>> dataList = getOrderTrackingThreadLocal().getPlacedOrderListForUser(2,null,customerEDP,accessToken,null,null,null,null);
         Map<String,Object> dataMapItem=dataList.get(0);
         String lsOrderNumberFromApi= (String) dataMapItem.get("orderNumber");
-        String lsOrderPlacedDateTimeFromApi= (String) dataMapItem.get("orderPlacedDateTime");
 
         List<List<String>> lstNameAndLinks=TestDataHandler.constantData.getFooterSection().getLst_NameAndLinks();
         getOrderTrackingThreadLocal().goToTrackOrderPortalThroughClickingTrackYourOrderItemOnGlobalFooter( getGlobalFooterPageThreadLocal() ,lstNameAndLinks);
@@ -47,7 +43,7 @@ public class OT_TC02_OrderTracking_LoginFromOrderTrackPortal extends BaseTest {
         if(getMyAccountPageThreadLocal().checkOrderItemExisting()){
             String lsOrderDetailsURL= TestDataHandler.constantData.getMyAccount().getLnk_orderDetailsURL();
             getMyAccountPageThreadLocal().goToOrderDetailsPageByGivenOrderNumberSearching(lsOrderNumberFromApi,lsOrderDetailsURL);
-//            getMyAccountPageThreadLocal().goToOrderDetailsPage();
+
             Map<String,Object> dataDescExceptOrderListForOrderDetails=getMyAccountPageThreadLocal().getOrderDetailsDescExceptOrderList();
             String lsOrderNumberForOrderDetails= (String) dataDescExceptOrderListForOrderDetails.get("orderNumber");
             String lsOrderDateForOrderDetails= (String) dataDescExceptOrderListForOrderDetails.get("orderDate");

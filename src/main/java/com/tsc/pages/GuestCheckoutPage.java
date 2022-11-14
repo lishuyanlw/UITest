@@ -779,7 +779,7 @@ public class GuestCheckoutPage extends RegularCheckoutPage {
 	 */
 	public void goToPaymentPage(){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnContinueToPayment);
-		this.clickElement(btnContinueToPayment);
+		this.getReusableActionsInstance().clickIfAvailable(btnContinueToPayment);
 		this.applyStaticWait(this.getStaticWaitForApplication());
 
 		try{

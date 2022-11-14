@@ -1,13 +1,11 @@
 package com.tsc.test.tests.orderTracking;
 
 import com.tsc.data.Handler.TestDataHandler;
-import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 import org.testng.annotations.Test;
-
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
+
 
 public class OT_TC01_OrderTrackingPortal extends BaseTest {
     /*
@@ -20,10 +18,6 @@ public class OT_TC01_OrderTrackingPortal extends BaseTest {
         getGlobalFooterPageThreadLocal().closePopupDialog();
 
         reporter.reportLog("Verify SignIn");
-        BasePage basePage=new BasePage(this.getDriver());
-        String lblUserName = TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
-        String lblPassword = TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
-
         List<List<String>> lstNameAndLinks=TestDataHandler.constantData.getFooterSection().getLst_NameAndLinks();
         getOrderTrackingThreadLocal().goToTrackOrderPortalThroughClickingTrackYourOrderItemOnGlobalFooter( getGlobalFooterPageThreadLocal() ,lstNameAndLinks);
 
