@@ -1,11 +1,17 @@
 package com.tsc.pages;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.tsc.api.apiBuilder.AccountAPI;
+import com.tsc.api.pojo.AccountResponse;
 import com.tsc.api.util.DataConverter;
+import com.tsc.api.util.JsonParser;
 import com.tsc.pages.base.BasePage;
+import io.restassured.response.Response;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -736,6 +742,22 @@ public class CreateAccountPage extends BasePage {
         else{
             reporter.reportLogFailWithScreenshot("The button text is not 'hide'");
         }
+    }
+
+    /**
+     * This function creates a new user and returns Account Response object for newly created user
+     * @param - String - accessToken
+     * @return - AccountResponse Object
+     * @throws - IOException
+     */
+    public AccountResponse getNewUserAccountDetails(String accessToken) throws IOException {
+        AccountAPI accountAPI = new AccountAPI();
+        Response newUserAccount = accountAPI.createNormalAccount(accessToken,null,null);
+        AccountResponse accountResponse=null;
+        if(newUserAccount.statusCode()==200){
+            accountResponse = JsonParser.getResponseObject(newUserAccount.asString(), new TypeReference<AccountResponse>() {});
+        }
+        return accountResponse;
     }
 
 }
