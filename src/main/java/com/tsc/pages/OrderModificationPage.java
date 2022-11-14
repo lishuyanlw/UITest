@@ -387,7 +387,7 @@ public class OrderModificationPage extends BasePage {
 		this.applyStaticWait(300);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyButton);
 		btnModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyButton.click();
-		this.waitForCondition(Driver->{return lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeAppliedPromoteMessage.isDisplayed();},20000);
+		this.waitForCondition(Driver->{return lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeAppliedPromoteMessage.isDisplayed();},120000);
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeAppliedPromoteCode);
 		String lsText=lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeAppliedPromoteCode.getText().trim();
@@ -623,7 +623,8 @@ public class OrderModificationPage extends BasePage {
 	public Map<String,Object> getOrderSummaryDesc(){
 		Map<String,Object> map=new HashMap<>();
 
-		this.waitForCondition(Driver->{return lblOrderSummaryTitle.isDisplayed();},60000);
+		this.waitForCondition(Driver->{return lblOrderSummaryTitle.isDisplayed();},120000);
+		this.applyStaticWait(2*this.getStaticWaitForApplication());
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderSummaryTitle);
 		String lsText=this.getElementInnerText(lblOrderSummaryTitle);
 		map.put("itemCount",this.getIntegerFromString(lsText));

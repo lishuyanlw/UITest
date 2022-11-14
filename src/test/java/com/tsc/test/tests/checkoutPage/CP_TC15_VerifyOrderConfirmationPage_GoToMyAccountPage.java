@@ -1,4 +1,4 @@
-package com.tsc.test.tests.orderModification;
+package com.tsc.test.tests.checkoutPage;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.tsc.api.apiBuilder.AccountAPI;
@@ -17,12 +17,12 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-public class OM_TC08_VerifyOrderConfirmationPage_GoToMyAccountPage extends BaseTest{
+public class CP_TC15_VerifyOrderConfirmationPage_GoToMyAccountPage extends BaseTest{
 	/*
 	 * CER-891
 	 */
-	@Test(groups={"Regression","OrderModification"})
-	public void OM_TC08_VerifyOrderConfirmationPage_GoToMyAccountPage() throws IOException {
+	@Test(groups={"Regression","Checkout","CheckoutMobTab"})
+	public void CP_TC15_VerifyOrderConfirmationPage_GoToMyAccountPage() throws IOException {
 		String lsUserName = TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
 		String lsPassword = TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
 
