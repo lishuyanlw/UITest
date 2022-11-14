@@ -1164,8 +1164,13 @@ public class RegularCheckoutPage extends BasePage {
 			map.put("productShippingDate",lsText.split(":")[1].trim());
 		}
 		else{
-			lsText = this.lblGetItByDate.getText();
-			map.put("productShippingDate",lsText);
+			if(this.checkProductShippingDateExisting()){
+				lsText = this.lblGetItByDate.getText();
+				map.put("productShippingDate",lsText);
+			}
+			else{
+				map.put("productShippingDate",null);
+			}
 		}
 
 		return map;

@@ -779,16 +779,16 @@ public class GuestCheckoutPage extends RegularCheckoutPage {
 	 */
 	public void goToPaymentPage(){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnContinueToPayment);
-		this.clickElement(btnContinueToPayment);
+		this.getReusableActionsInstance().clickIfAvailable(btnContinueToPayment);
 		this.applyStaticWait(this.getStaticWaitForApplication());
 
 		try{
-			this.waitForCondition(Driver->{return !this.checkChildElementExistingByAttribute(this.cntFooterContainer,"class","loading__overlay");},60000);
+			this.waitForCondition(Driver->{return !this.checkChildElementExistingByAttribute(this.cntFooterContainer,"class","loading__overlay");},120000);
 		}
 		catch (Exception e){
-			this.applyStaticWait(5*this.getStaticWaitForApplication());
+			this.applyStaticWait(10*this.getStaticWaitForApplication());
 		}
-		this.waitForCondition(Driver->{return lblUsingANewCardSelectTitle.isDisplayed();},60000);
+		this.waitForCondition(Driver->{return lblUsingANewCardSelectTitle.isDisplayed();},120000);
 		this.applyStaticWait(3*this.getStaticWaitForApplication());
 	}
 
