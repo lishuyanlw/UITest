@@ -5,7 +5,6 @@ import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 import org.testng.annotations.Test;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -14,7 +13,7 @@ public class SI_TC05_CreateAccount_VerifyContents_ByCreateAccountInSignInMenuOnH
      * CER-914
      */
     @Test(groups={"SignIn","Regression"})
-    public void SI_TC05_CreateAccount_ByCreateAccountInSignInMenuOnHeader() throws IOException {
+    public void SI_TC05_CreateAccount_ByCreateAccountInSignInMenuOnHeader() {
         //Closing SignIn pop up on login
         getGlobalFooterPageThreadLocal().closePopupDialog();
 
