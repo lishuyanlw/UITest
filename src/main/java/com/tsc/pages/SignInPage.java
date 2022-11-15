@@ -224,10 +224,16 @@ public class SignInPage extends BasePage {
 	 * Go to Your Profile page
 	 */
 	public void goToYourProfilePage() {
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.cntBlackHeaderContainer);
-		getReusableActionsInstance().staticWait(2000);
-
-		this.clickElement(this.btnSignInMainMenu);
+		getReusableActionsInstance().javascriptScrollToTopOfPage();
+		String strBrowser = System.getProperty("Browser").trim();
+		if (strBrowser.toLowerCase().contains("android") || strBrowser.toLowerCase().contains("ios")
+				|| strBrowser.toLowerCase().contains("mobile")) {
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInMainMenu);
+			this.getReusableActionsInstance().clickIfAvailable(this.btnSignInMainMenu);
+			//this.btnSignInMainMenu.click();
+		} else {
+			this.getReusableActionsInstance().scrollToElement(this.btnSignInMainMenu);
+		}
 		getReusableActionsInstance().staticWait(3000);
 
 		this.btnYourProfileNav.click();
@@ -241,10 +247,16 @@ public class SignInPage extends BasePage {
 	 * Go to Your Orders page through header
 	 */
 	public void goToYourOrdersPageThroughHeader() {
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.cntBlackHeaderContainer);
-		getReusableActionsInstance().staticWait(2000);
-
-		this.clickElement(this.btnSignInMainMenu);
+		getReusableActionsInstance().javascriptScrollToTopOfPage();
+		String strBrowser = System.getProperty("Browser").trim();
+		if (strBrowser.toLowerCase().contains("android") || strBrowser.toLowerCase().contains("ios")
+				|| strBrowser.toLowerCase().contains("mobile")) {
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInMainMenu);
+			this.getReusableActionsInstance().clickIfAvailable(this.btnSignInMainMenu);
+			//this.btnSignInMainMenu.click();
+		} else {
+			this.getReusableActionsInstance().scrollToElement(this.btnSignInMainMenu);
+		}
 		getReusableActionsInstance().staticWait(3000);
 
 		this.btnYourOrdersNav.click();
@@ -318,6 +330,28 @@ public class SignInPage extends BasePage {
 		this.getReusableActionsInstance().clickIfAvailable(this.btnCreateAccountInNav);
 
 		return waitForCondition(Driver->{return (new CreateAccountPage(this.getDriver())).lblHeaderTitle.isDisplayed();},300000);
+	}
+
+	/**
+	 * To Sign out
+	 * @return - boolean
+	 */
+	public boolean signOut() {
+		getReusableActionsInstance().javascriptScrollToTopOfPage();
+		String strBrowser = System.getProperty("Browser").trim();
+		if (strBrowser.toLowerCase().contains("android") || strBrowser.toLowerCase().contains("ios")
+				|| strBrowser.toLowerCase().contains("mobile")) {
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInMainMenu);
+			this.getReusableActionsInstance().clickIfAvailable(this.btnSignInMainMenu);
+			//this.btnSignInMainMenu.click();
+		} else {
+			this.getReusableActionsInstance().scrollToElement(this.btnSignInMainMenu);
+		}
+		getReusableActionsInstance().staticWait(3000);
+
+		this.getReusableActionsInstance().clickIfAvailable(this.btnSignOutNav);
+
+		return waitForCondition(Driver->{return this.lblSignOut.isDisplayed();},300000);
 	}
 
 	/**
@@ -916,6 +950,31 @@ public class SignInPage extends BasePage {
 			}
 		}
 		return bSignIn;
+	}
+
+	/**
+	 * To go To Forgot Password Page
+	 * @param - String - lsExpectedUrlFromYml
+	 * @return - boolean
+	 */
+	public boolean goToForgotPasswordPage(String lsExpectedUrlFromYml){
+		String lsUrlBeforeClicking=this.URL();
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkForgotPassword);
+		this.lnkForgotPassword.click();
+
+		if(lsExpectedUrlFromYml!=null){
+			this.waitForCondition(Driver->{return !this.URL().equalsIgnoreCase(lsUrlBeforeClicking);},20000);
+			String lsExpectedUrl=this.getBaseURL()+this.URL();
+			String lsUrlAfterClicking=this.URL();
+			if(lsUrlAfterClicking.equalsIgnoreCase(lsExpectedUrl)){
+				reporter.reportLogPass("The navigated URL:'"+lsUrlAfterClicking+" ' is the same as expected:'"+lsExpectedUrl+"'");
+			}
+			else{
+				reporter.reportLogFail("The navigated URL:'"+lsUrlAfterClicking+" ' is not the same as expected:'"+lsExpectedUrl+"'");
+			}
+		}
+		ForgotPasswordPage forgotPasswordPage=new ForgotPasswordPage(this.getDriver());
+		return this.waitForCondition(Driver->{return forgotPasswordPage.lblResetPasswordHeaderTitle.isDisplayed();},120000);
 	}
 
 }

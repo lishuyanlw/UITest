@@ -2787,10 +2787,12 @@ public class MyAccount extends BasePage {
 		Map<String,Object> map=new HashMap<>();
 		if(bSubmit){
 			map.put("SelectedIndex",randomNumber);
+			map.put("SelectText",lsOption);
 			map.put("Answer",lsAnswer);
 		}
 		else{
 			map.put("SelectedIndex",0);
+			map.put("SelectText",lsOption);
 			map.put("Answer","");
 		}
 

@@ -63,6 +63,7 @@ public class BaseTest {
 	protected static final ThreadLocal<OrderTrackingPage> orderTrackingPageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<CreateAccountPage> createAccountPageThreadLocal = new ThreadLocal<>();
 	protected static final ThreadLocal<TransferPhoneAccountPage> transferPhoneAccountPageThreadLocal = new ThreadLocal<>();
+	protected static final ThreadLocal<ForgotPasswordPage> forgotPasswordPageThreadLocal = new ThreadLocal<>();
 
 	public BaseTest() {
 		browserDrivers = new BrowserDrivers();
@@ -74,6 +75,9 @@ public class BaseTest {
 	public static Reporter getReporter() {
 		return reporter;
 	}
+
+	//@return forgotPasswordPageThreadLocal
+	public static ForgotPasswordPage getForgotPasswordPageThreadLocal() {return forgotPasswordPageThreadLocal.get();}
 
 	//@return transferPhoneAccountPageThreadLocal
 	public static TransferPhoneAccountPage getTransferPhoneAccountThreadLocal() {return transferPhoneAccountPageThreadLocal.get();}
@@ -167,6 +171,7 @@ public class BaseTest {
 		orderTrackingPageThreadLocal.set(new OrderTrackingPage(getDriver()));
 		createAccountPageThreadLocal.set(new CreateAccountPage(getDriver()));
 		transferPhoneAccountPageThreadLocal.set(new TransferPhoneAccountPage(getDriver()));
+		forgotPasswordPageThreadLocal.set(new ForgotPasswordPage(this.getDriver()));
 	}
 
 	private void init_Mobile() throws IOException {
@@ -188,6 +193,7 @@ public class BaseTest {
 		orderTrackingPageThreadLocal.set(new OrderTrackingPage(getDriver()));
 		createAccountPageThreadLocal.set(new CreateAccountPage(getDriver()));
 		transferPhoneAccountPageThreadLocal.set(new TransferPhoneAccountPage_Mobile(getDriver()));
+		forgotPasswordPageThreadLocal.set(new ForgotPasswordPage(this.getDriver()));
 	}
 
 	private void init_Tablet() throws IOException {
@@ -246,6 +252,7 @@ public class BaseTest {
 		orderTrackingPageThreadLocal.set(new OrderTrackingPage(getDriver()));
 		createAccountPageThreadLocal.set(new CreateAccountPage(getDriver()));
 		transferPhoneAccountPageThreadLocal.set(new TransferPhoneAccountPage(getDriver()));
+		forgotPasswordPageThreadLocal.set(new ForgotPasswordPage(this.getDriver()));
 	}
 
 
