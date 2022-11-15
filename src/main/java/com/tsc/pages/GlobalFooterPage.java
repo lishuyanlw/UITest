@@ -129,7 +129,8 @@ public class GlobalFooterPage extends BasePage {
 	public List<WebElement> lnkAboutTSCAllLinks;
 
 	// Rogers Logo
-	@FindBy(xpath = "//div[@class='Footer']//img[contains(@src,'Rogers.png')]")
+	//@FindBy(xpath = "//div[@class='Footer']//img[contains(@src,'Rogers.png')]")
+	@FindBy(xpath = "//div[@class='Footer']//div[contains(@class,'copyright')]/img[contains(@src,'rogers')]")
 	public WebElement imgRogersLogo;
 
 	// Copyright Section

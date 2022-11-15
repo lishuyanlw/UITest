@@ -52,12 +52,12 @@ public class ProductDetailPage extends BasePage {
 	public List<WebElement> lstThumbnailImageButtonWithoutVideoList;
 
 	/**
-	@FindBy(xpath = "//section[@class='pdp-gallery']//div[@id='thumbGallery']//div[@id='pdp__galleryThumb']//button[contains(@class,'swiper-slide-visible')][@data-styleid]//img")
-	public List<WebElement> lstThumbnailImageWithoutVideoList;
+	 @FindBy(xpath = "//section[@class='pdp-gallery']//div[@id='thumbGallery']//div[@id='pdp__galleryThumb']//button[contains(@class,'swiper-slide-visible')][@data-styleid]//img")
+	 public List<WebElement> lstThumbnailImageWithoutVideoList;
 
-	@FindBy(xpath = "//section[@class='pdp-gallery']//div[@id='thumbGallery']//div[@id='pdp__galleryThumb']//button[contains(@class,'swiper-slide-thumb-active')][@data-styleid]//img")
-	public WebElement imgCurrentThumbnail;
-	*/
+	 @FindBy(xpath = "//section[@class='pdp-gallery']//div[@id='thumbGallery']//div[@id='pdp__galleryThumb']//button[contains(@class,'swiper-slide-thumb-active')][@data-styleid]//img")
+	 public WebElement imgCurrentThumbnail;
+	 */
 	@FindBy(xpath = "//section[@class='pdp-gallery']//div[@id='thumbGallery']//div[@id='pdp__galleryThumb']//button[contains(@class,'swiper-slide-thumb-active')][@data-styleid]")
 	public WebElement currentThumbnailItem;
 
@@ -314,34 +314,34 @@ public class ProductDetailPage extends BasePage {
 
 	//Brand prompt
 	/**
-	@FindBy(xpath = "//div[contains(@class,'tfp-app')]//div[@class='main-content']//button[@aria-label='Search all brands']")
-	public WebElement btnProductTrueFitIframePageSearchAllBrands;
+	 @FindBy(xpath = "//div[contains(@class,'tfp-app')]//div[@class='main-content']//button[@aria-label='Search all brands']")
+	 public WebElement btnProductTrueFitIframePageSearchAllBrands;
 
-	@FindBy(xpath = "//div[contains(@class,'tfp-app')]//div[@class='suggested-brands-paged-wrapper']")
-	public WebElement cntProductTrueFitIframeSuggestedBrandContainer;
+	 @FindBy(xpath = "//div[contains(@class,'tfp-app')]//div[@class='suggested-brands-paged-wrapper']")
+	 public WebElement cntProductTrueFitIframeSuggestedBrandContainer;
 
-	@FindBy(xpath = "//div[contains(@class,'tfp-app')]//div[@class='main-content']//div[@class='suggested-brands-paged']//button")
-	public List<WebElement> lstProductTrueFitIframeSuggestedBrandList;
+	 @FindBy(xpath = "//div[contains(@class,'tfp-app')]//div[@class='main-content']//div[@class='suggested-brands-paged']//button")
+	 public List<WebElement> lstProductTrueFitIframeSuggestedBrandList;
 
-	@FindBy(xpath = "//div[contains(@class,'tfp-app')]//div[@class='main-content']//button[contains(@class,'prev')]")
-	public WebElement btnProductTrueFitIframePagePrevButton;
+	 @FindBy(xpath = "//div[contains(@class,'tfp-app')]//div[@class='main-content']//button[contains(@class,'prev')]")
+	 public WebElement btnProductTrueFitIframePagePrevButton;
 
-	@FindBy(xpath = "//div[contains(@class,'tfp-app')]//div[@class='main-content']//button[contains(@class,'prev')]//img")
-	public WebElement imgProductTrueFitIframePagePrevButton;
+	 @FindBy(xpath = "//div[contains(@class,'tfp-app')]//div[@class='main-content']//button[contains(@class,'prev')]//img")
+	 public WebElement imgProductTrueFitIframePagePrevButton;
 
-	@FindBy(xpath = "//div[contains(@class,'tfp-app')]//div[@class='main-content']//button[contains(@class,'next')]")
-	public WebElement btnProductTrueFitIframePageNextButton;
+	 @FindBy(xpath = "//div[contains(@class,'tfp-app')]//div[@class='main-content']//button[contains(@class,'next')]")
+	 public WebElement btnProductTrueFitIframePageNextButton;
 
-	@FindBy(xpath = "//div[contains(@class,'tfp-app')]//div[@class='main-content']//button[contains(@class,'next')]//img")
-	public WebElement imgProductTrueFitIframePageNextButton;
+	 @FindBy(xpath = "//div[contains(@class,'tfp-app')]//div[@class='main-content']//button[contains(@class,'next')]//img")
+	 public WebElement imgProductTrueFitIframePageNextButton;
 
-	//Height prompt
-	@FindBy(xpath = "//div[contains(@class,'tfp-app')]//div[@class='main-content']//div[contains(@class,'height')]//div[@class='slider-input-box']//input[1]")
-	public WebElement inputProductTrueFitIframeMeasureInput1;
+	 //Height prompt
+	 @FindBy(xpath = "//div[contains(@class,'tfp-app')]//div[@class='main-content']//div[contains(@class,'height')]//div[@class='slider-input-box']//input[1]")
+	 public WebElement inputProductTrueFitIframeMeasureInput1;
 
-	@FindBy(xpath = "//div[contains(@class,'tfp-app')]//div[@class='main-content']//div[contains(@class,'height')]//div[@class='slider-input-box']//input[2]")
-	public WebElement inputProductTrueFitIframeMeasureInput2;
-	*/
+	 @FindBy(xpath = "//div[contains(@class,'tfp-app')]//div[@class='main-content']//div[contains(@class,'height')]//div[@class='slider-input-box']//input[2]")
+	 public WebElement inputProductTrueFitIframeMeasureInput2;
+	 */
 
 	@FindBy(xpath = "//div[contains(@class,'tfp-app')]//div[@class='footer']")
 	public WebElement lblProductTrueFitIframeConfirmMessage;
@@ -391,15 +391,15 @@ public class ProductDetailPage extends BasePage {
 	public WebElement btnRadioProductSizeSelected;
 
 	//For dropdown menu style
-	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__form__sizes__selected']")
-	public WebElement lblDropDownProductSizeStatic;
-	*/
+	 @FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__form__sizes__selected']")
+	 public WebElement lblDropDownProductSizeStatic;
+	 */
 	@FindBy(xpath = "//section[contains(@class,'pdp-description')]//div[contains(@class,'pdp-description__form__sizes__selections')]//select")
 	public WebElement selectSizeOption;
 	/**
-	@FindBy(xpath = "//section[contains(@class,'pdp-description')]//div[contains(@class,'pdp-description__form__sizes__selections')]//select//option[not(@disabled)]")
-	public List<WebElement> lstSizeOption;
-	*/
+	 @FindBy(xpath = "//section[contains(@class,'pdp-description')]//div[contains(@class,'pdp-description__form__sizes__selections')]//select//option[not(@disabled)]")
+	 public List<WebElement> lstSizeOption;
+	 */
 	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__form__size-chart-wrapper']//button[@class='pdp-description__form__size-chart-link']")
 	public WebElement lnkSizingChart;
 
@@ -456,9 +456,9 @@ public class ProductDetailPage extends BasePage {
 	public WebElement btnFavIconPopupClose;
 
 	//For Accordions
-	@FindBy(xpath = "//div[@id='accordion']//div[@class='field-wrapper']")
-	public List<WebElement> lstAccordionSections;
-	*/
+	 @FindBy(xpath = "//div[@id='accordion']//div[@class='field-wrapper']")
+	 public List<WebElement> lstAccordionSections;
+	 */
 	@FindBy(xpath = "//div[@id='accordion']//div[@class='field-wrapper']//div[@class='field-wrapper__accordion-heading']//span[@class='field-wrapper__accordion-heading__text']")
 	public List<WebElement> lstAccordionSectionHeadings;
 
@@ -513,16 +513,16 @@ public class ProductDetailPage extends BasePage {
 
 	/**public By byReviewTabHeader=By.xpath(".//header");
 
-	public By byReviewTabDescriptionSection=By.xpath(".//section[contains(@class,'pr-rd-description')]");
+	 public By byReviewTabDescriptionSection=By.xpath(".//section[contains(@class,'pr-rd-description')]");
 
-	public By byReviewTabImagesSection=By.xpath(".//div[@class='pr-rating-stars']");
+	 public By byReviewTabImagesSection=By.xpath(".//div[@class='pr-rating-stars']");
 
-	public By byReviewTabRatingDecimal=By.xpath(".//div[@class='pr-snippet-rating-decimal']");
+	 public By byReviewTabRatingDecimal=By.xpath(".//div[@class='pr-snippet-rating-decimal']");
 
-	public By byReviewTabReviewAccessibleText=By.xpath(".//span[@class='pr-accessible-text']");
+	 public By byReviewTabReviewAccessibleText=By.xpath(".//span[@class='pr-accessible-text']");
 
-	public By byReviewTabAuthorLocation=By.xpath(".//section[contains(@class,'pr-rd-description')]//div[contains(@class,'pr-rd-right')]//p[contains(@class,'pr-rd-author-location')]");
-	*/
+	 public By byReviewTabAuthorLocation=By.xpath(".//section[contains(@class,'pr-rd-description')]//div[contains(@class,'pr-rd-right')]//p[contains(@class,'pr-rd-author-location')]");
+	 */
 	public By byReviewRatingStarDecimal=By.xpath(".//div[@class='pr-rating-stars']/div[contains(@class,'100-filled')]");
 
 	public By byReviewTabFooter=By.xpath(".//footer");
@@ -560,9 +560,9 @@ public class ProductDetailPage extends BasePage {
 	/**@FindBy(xpath = "//div[@id='productReviewSection']//section[@id='pr-review-display']//a[@aria-label='Previous']")
 	public WebElement lnkReviewTabPrev;
 
-	@FindBy(xpath = "//div[@id='productReviewSection']//section[@id='pr-review-display']//a[@aria-label='Next']")
-	public WebElement lnkReviewTabNext;
-	*/
+	 @FindBy(xpath = "//div[@id='productReviewSection']//section[@id='pr-review-display']//a[@aria-label='Next']")
+	 public WebElement lnkReviewTabNext;
+	 */
 	//Write a review part
 	@FindBy(xpath = "//div[contains(@class,'WriteReview')]//a[@id='backToProduct']")
 	public WebElement lnkWriteReviewBackToProduct;
@@ -980,11 +980,19 @@ public class ProductDetailPage extends BasePage {
 	}
 
 	public boolean checkThumbnailPrevButtonExisting(){
-		return this.checkChildElementExistingByAttribute(this.cntThumbnailContainer,"class","gallery-button-prev");
+		if(this.btnThumbnailPrev.getAttribute("aria-disabled").equalsIgnoreCase("true"))
+			return false;
+		else
+			return true;
+		//return this.checkChildElementExistingByAttribute(this.cntThumbnailContainer,"class","gallery-button-prev");
 	}
 
 	public boolean checkThumbnailNextButtonExisting(){
-		return this.checkChildElementExistingByAttribute(this.cntThumbnailContainer,"class","gallery-button-next");
+		if(this.btnThumbnailNext.getAttribute("aria-disabled").equalsIgnoreCase("true"))
+			return false;
+		else
+			return true;
+		//return this.checkChildElementExistingByAttribute(this.cntThumbnailContainer,"class","gallery-button-next");
 	}
 
 	/**
@@ -2652,7 +2660,7 @@ public class ProductDetailPage extends BasePage {
 		this.textareaWriteReviewComments.click();
 		this.textareaWriteReviewComments.sendKeys("Test");
 		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
-		
+
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstWriteReviewRecommendToFriendList.get(0));
 		this.lstWriteReviewRecommendToFriendList.get(0).click();
 		this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
@@ -2951,19 +2959,19 @@ public class ProductDetailPage extends BasePage {
 			reporter.reportLogFailWithScreenshot("SignIn Link with text: " + favIconPopUpSignInText + " and Register link with text: " + favIconPopUpRegisterText + " on FavoIcon popup dialog is not displaying correctly");
 		}
 		/**
-		if(!this.lnkFavIconPopupSignIn.isDisplayed()){
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavIcon);
-		}
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavIconPopupRegister);
-		if(!this.lnkFavIconPopupRegister.getText().isEmpty()){
-			reporter.reportLogPass("Register link on FavoIcon popup dialog is displaying correctly");
-			//Applying static wait here as fav sign in pop up closes
-			this.applyStaticWait(3000);
-		}
-		else{
-			reporter.reportLogFailWithScreenshot("Register link on FavoIcon popup dialog is not displaying correctly");
-		}
-		*/
+		 if(!this.lnkFavIconPopupSignIn.isDisplayed()){
+		 this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavIcon);
+		 }
+		 this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavIconPopupRegister);
+		 if(!this.lnkFavIconPopupRegister.getText().isEmpty()){
+		 reporter.reportLogPass("Register link on FavoIcon popup dialog is displaying correctly");
+		 //Applying static wait here as fav sign in pop up closes
+		 this.applyStaticWait(3000);
+		 }
+		 else{
+		 reporter.reportLogFailWithScreenshot("Register link on FavoIcon popup dialog is not displaying correctly");
+		 }
+		 */
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavIcon);
 		this.clickElement(this.lnkFavIcon);
 //		this.applyStaticWait(300);
@@ -3640,7 +3648,6 @@ public class ProductDetailPage extends BasePage {
 	 * @return true/false
 	 */
 	public boolean setPrevButtonDisplayingInThumbnailList(){
-		WebElement firstItem=this.lstThumbnailImageList.get(0);
 		if(checkThumbnailPrevButtonExisting()){
 			return true;
 		}
@@ -3656,7 +3663,7 @@ public class ProductDetailPage extends BasePage {
 				return false;
 			}
 		}
-		while(checkThumbnailPrevButtonExisting());
+		while(!checkThumbnailPrevButtonExisting());
 
 		return true;
 	}
@@ -3674,7 +3681,7 @@ public class ProductDetailPage extends BasePage {
 		int sum=0;
 		do{
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnThumbnailPrev);
-			this.getReusableActionsInstance().clickIfAvailable(this.btnThumbnailPrev);
+			this.clickWebElementUsingJS(this.btnThumbnailPrev);
 			//Keep it to wait for clicking action result
 			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 			sum++;
@@ -3682,7 +3689,7 @@ public class ProductDetailPage extends BasePage {
 				return false;
 			}
 		}
-		while(checkThumbnailNextButtonExisting());
+		while(!checkThumbnailNextButtonExisting());
 
 		return true;
 	}
@@ -3697,7 +3704,7 @@ public class ProductDetailPage extends BasePage {
 		int sum=0;
 		do{
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnThumbnailNext);
-			this.getReusableActionsInstance().clickIfAvailable(this.btnThumbnailNext);
+			this.clickWebElementUsingJS(this.btnThumbnailNext);
 			//Keep it to wait for clicking action result
 			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 			sum++;
@@ -3720,7 +3727,7 @@ public class ProductDetailPage extends BasePage {
 		int sum=0;
 		do{
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnThumbnailPrev);
-			this.getReusableActionsInstance().clickIfAvailable(this.btnThumbnailPrev);
+			this.clickWebElementUsingJS(this.btnThumbnailPrev);
 			//Keep it to wait for clicking action result
 			this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 			sum++;
@@ -3728,7 +3735,7 @@ public class ProductDetailPage extends BasePage {
 				return false;
 			}
 		}
-		while(!checkThumbnailPrevButtonExisting());
+		while(checkThumbnailPrevButtonExisting());
 
 		return true;
 	}
@@ -3965,7 +3972,7 @@ public class ProductDetailPage extends BasePage {
 			//this.lblReviewPicturesInHistogram.findElement(By.xpath("./button")).click();
 			this.clickWebElementUsingJS(this.lblReviewPicturesInHistogram.findElement(By.xpath("./button")));
 			waitForCondition(Driver->{return this.lblReviewImagePopUpModelCloseButton.isDisplayed() &&
-							this.lblReviewImagePopUpModelCloseButton.isEnabled();},6000);
+					this.lblReviewImagePopUpModelCloseButton.isEnabled();},6000);
 
 			//Verifying data on image window for user comments
 			//Fetching map data to be used for verification
@@ -4004,13 +4011,13 @@ public class ProductDetailPage extends BasePage {
 				//this.lnlFlagImageOnPopUpWindow.click();
 				this.clickWebElementUsingJS(this.lnlFlagImageOnPopUpWindow);
 				waitForCondition(Driver->{return this.lblFlagImageEmailText.isEnabled() &&
-								this.lblFlagImageEmailText.isDisplayed();},5000);
+						this.lblFlagImageEmailText.isDisplayed();},5000);
 				reporter.reportLogPassWithScreenshot("Flag Image is a link and navigates to pop-up window on clicking as expected");
 				this.getReusableActionsInstance().scrollToElement(this.btnFlagImagePopUpWindowCancelButton);
 				//this.getReusableActionsInstance().clickIfAvailable(this.btnFlagImagePopUpWindowCancelButton);
 				this.clickWebElementUsingJS(this.btnFlagImagePopUpWindowCancelButton);
 				waitForCondition(Driver -> {return this.lnlFlagImageOnPopUpWindow.isDisplayed() &&
-								this.lnlFlagImageOnPopUpWindow.isEnabled();},6000);
+						this.lnlFlagImageOnPopUpWindow.isEnabled();},6000);
 
 			}else
 				reporter.reportLogFailWithScreenshot("Flag Image Link is not displayed on review window");
@@ -4020,7 +4027,7 @@ public class ProductDetailPage extends BasePage {
 			//this.getReusableActionsInstance().clickIfAvailable(this.btnReadReviewOnPopUpWindowBtn);
 			this.clickWebElementUsingJS(this.btnReadReviewOnPopUpWindowBtn);
 			if(waitForCondition(Driver->{return this.btnBackToMediaBtn.isEnabled() &&
-				this.btnBackToMediaBtn.isDisplayed();},6000)){
+					this.btnBackToMediaBtn.isDisplayed();},6000)){
 				reporter.reportLogPassWithScreenshot("Read Review pop up window is displayed as expected");
 				//Verifying comment provided
 				this.getReusableActionsInstance().scrollToElement(this.lblComment);
@@ -4075,7 +4082,7 @@ public class ProductDetailPage extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnAddToBag);
 		this.getReusableActionsInstance().clickIfAvailable(this.btnAddToBag);
 		this.waitForCondition(Driver->{return this.btnAddToBagPopupWindowButtonSectionCheckOut.isEnabled() &&
-							this.btnAddToBagPopupWindowButtonSectionCheckOut.isDisplayed();},10000);
+				this.btnAddToBagPopupWindowButtonSectionCheckOut.isDisplayed();},10000);
 
 		if(this.btnReviewChangesForPlacedOrder.isEnabled() && this.btnReviewChangesForPlacedOrder.isEnabled())
 			reporter.reportLogPassWithScreenshot("Review Changes Button is displayed for user and is enabled");

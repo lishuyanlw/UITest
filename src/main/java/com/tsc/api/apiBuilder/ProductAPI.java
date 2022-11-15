@@ -33,7 +33,7 @@ public class ProductAPI extends ApiClient {
         apiProperty = this.getApiInfo();
     }
 
-     /**
+    /**
      *This method adds credit card details to user
      * @param-JSONObject jsonObject containing credit card details to be added
      * @param-String customerEDP for CC addition
@@ -79,7 +79,8 @@ public class ProductAPI extends ApiClient {
                 for(Product.Products data:product.getProducts()) {
                     lsNowPrice=data.getIsPriceRange();
                     lsWasPrice=data.getWasPriceRange();
-                    if (data.getVideosCount() >= 1 && data.getStyles().size() >= 1 && data.getSizes().size() >= 1&&data.isShowBadgeImage()&&data.getProductReviewRating()>0&&data.getProductReviewCount()>0&&!lsNowPrice.equalsIgnoreCase(lsWasPrice)&&data.isEnabledAddToCart()) {
+                    //data.isShowBadgeImage()
+                    if (data.getVideosCount() >= 1 && data.getStyles().size() >= 1 && data.getSizes().size() >= 1&&!data.getPriceIsLabel().isEmpty()&&data.getProductReviewRating()>0&&data.getProductReviewCount()>0&&!lsNowPrice.equalsIgnoreCase(lsWasPrice)&&data.isEnabledAddToCart()) {
                         if(data.getBrand()!=null) {
                             if(data.getBrand().isEmpty()) {
                                 continue;
@@ -416,10 +417,10 @@ public class ProductAPI extends ApiClient {
             }
             else {
                 if(videoCount!=-1){
-                    flag = (videoCount==0 ? data.getVideosCount()==videoCount : data.getVideosCount()>=videoCount) && data.getStyles().size() >= styleCount && data.getSizes().size() >= sizeCount && data.isShowBadgeImage() && data.getProductReviewRating() > 0 &&data.getProductReviewCount()>0&& !lsNowPrice.equalsIgnoreCase(lsWasPrice) && data.isEnabledAddToCart();
+                    flag = (videoCount==0 ? data.getVideosCount()==videoCount : data.getVideosCount()>=videoCount) && data.getStyles().size() >= styleCount && data.getSizes().size() >= sizeCount && !data.getPriceIsLabel().isEmpty() && data.getProductReviewRating() > 0 &&data.getProductReviewCount()>0&& !lsNowPrice.equalsIgnoreCase(lsWasPrice) && data.isEnabledAddToCart();
                 }
                 else{
-                    flag = data.getStyles().size() >= styleCount && data.getSizes().size() >= sizeCount && data.isShowBadgeImage() && data.getProductReviewRating() > 0 &&data.getProductReviewCount()>0&& !lsNowPrice.equalsIgnoreCase(lsWasPrice) && data.isEnabledAddToCart();
+                    flag = data.getStyles().size() >= styleCount && data.getSizes().size() >= sizeCount && !data.getPriceIsLabel().isEmpty() && data.getProductReviewRating() > 0 &&data.getProductReviewCount()>0&& !lsNowPrice.equalsIgnoreCase(lsWasPrice) && data.isEnabledAddToCart();
                 }
             }
             if(flag) {
@@ -1166,14 +1167,14 @@ public class ProductAPI extends ApiClient {
                 //&&data.isShowBadgeImage()
                 if (data.isActive()&&data.getStyles().size() >= 0 && data.getSizes().size() >= 0&&data.getProductReviewRating()>0&&data.getProductReviewCount()>0&&!lsNowPrice.equalsIgnoreCase(lsWasPrice)) {
                     /**
-                    if(data.getBrand()!=null) {
-                        if(data.getBrand().isEmpty()) {
-                            continue;
-                        }
-                    }
-                    else {
-                        continue;
-                    }*/
+                     if(data.getBrand()!=null) {
+                     if(data.getBrand().isEmpty()) {
+                     continue;
+                     }
+                     }
+                     else {
+                     continue;
+                     }*/
                     productItem=data;
                     flag = false;
                     break;
@@ -1607,28 +1608,28 @@ public class ProductAPI extends ApiClient {
                 if(productMap.size()>0)
                     productMap = new HashMap<>();
                 if(Boolean.valueOf(data.get("styleExist"))){
-                      //Fetching item edp number for same product with badge, style and size
-                     //&&productsData.isShowBadgeImage()
+                    //Fetching item edp number for same product with badge, style and size
+                    //&&productsData.isShowBadgeImage()
                     if(productsData.getVideosCount() >= 0 && productsData.getStyles().size() >= 1 && productsData.getSizes().size() >= 1 && productsData.isEnabledAddToCart()){
-                            if(badgeRequired && styleExist && sameSizeAndStyle){
-                              for(Product.edps edpsData: productsData.getEdps()){
-                                  if(productMap.size()>0)
-                                      productMap = new HashMap<>();
-                                  innerForLoop = false;
+                        if(badgeRequired && styleExist && sameSizeAndStyle){
+                            for(Product.edps edpsData: productsData.getEdps()){
+                                if(productMap.size()>0)
+                                    productMap = new HashMap<>();
+                                innerForLoop = false;
                                 //if(!productsData.getPriceIsLabel().isEmpty()&&edpsData.getInventory()>0){
-                                  if(edpsData.getInventory()>0 && !edpsData.isSoldOut()){
+                                if(edpsData.getInventory()>0 && !edpsData.isSoldOut()){
                                     productMap = this.getEDPNumberForInputCondition(data.get("quantity"),itemToBeAdded,edpsData,productsData);
                                     if(productMap.keySet().size()>0) {
-                                      innerForLoop = true;
+                                        innerForLoop = true;
                                     }
                                     else {
-                                      continue;
+                                        continue;
                                     }
-                                  if(productMap.keySet().size()>0){
-                                      productMap.put("itemToBeAdded",itemToBeAdded);
-                                      productList.add(productMap);
-                                      itemsCounter++;
-                                  }
+                                    if(productMap.keySet().size()>0){
+                                        productMap.put("itemToBeAdded",itemToBeAdded);
+                                        productList.add(productMap);
+                                        itemsCounter++;
+                                    }
                                 }
                                 if(innerForLoop && itemsToBeAdded.equalsIgnoreCase("all")){
                                     outerloop = true;
@@ -1637,8 +1638,8 @@ public class ProductAPI extends ApiClient {
                                 }else{
                                     continue;
                                 }
-                              if(innerForLoop)
-                                  break;
+                                if(innerForLoop)
+                                    break;
                             }
                         }
                         //Fetching item edp numbers for same product with badge, style but with different style and size
@@ -1663,7 +1664,7 @@ public class ProductAPI extends ApiClient {
                                                 productMapData.clear();
                                             checkStyle = edpsData.getStyle();
                                             productMapData.put("productName",productsData.getName());
-                                            productMapData.put("productBadge",productsData.isShowBadgeImage());
+                                            productMapData.put("productBadge",productsData.getPriceIsLabel());
                                             productMapData.put("productNumber",productsData.getItemNo());
                                             productMapData.put("edpNo",edpsData.getEdpNo());
                                             productMapData.put("edpsData",edpsData);
@@ -1721,17 +1722,17 @@ public class ProductAPI extends ApiClient {
                         }
                     }
                 }
-            if(outerloop)
+                if(outerloop)
+                    break;
+                else
+                    continue;
+            }
+            if(itemsToBeAdded.equalsIgnoreCase("all"))
+                continue;
+            else if(!itemsToBeAdded.equalsIgnoreCase("all") && Integer.parseInt(itemsToBeAdded)==itemsCounter)
                 break;
             else
                 continue;
-            }
-        if(itemsToBeAdded.equalsIgnoreCase("all"))
-            continue;
-        else if(!itemsToBeAdded.equalsIgnoreCase("all") && Integer.parseInt(itemsToBeAdded)==itemsCounter)
-            break;
-        else
-            continue;
         }
         return productList;
     }
@@ -1765,7 +1766,7 @@ public class ProductAPI extends ApiClient {
 
         if(productMap.keySet().contains("edpsData")){
             productMap.put("productName",productsData.getName());
-            productMap.put("productBadge",productsData.isShowBadgeImage());
+            productMap.put("productBadge",productsData.getPriceIsLabel());
             productMap.put("productNumber",productsData.getItemNo());
             productMap.put("edpNo",edpsData.getEdpNo());
             productMap.put("productStyle",edpsData.getStyle());
@@ -1824,11 +1825,11 @@ public class ProductAPI extends ApiClient {
         Map<String, Object> initialConfig=new HashMap<>();
 
         initialConfig.put("dimensions", dimensionNumber);
-            try{
-                response = getApiCallResponse(initialConfig,propertyData.get("test_apiVersion3")+"/"+propertyData.get("test_language")+"/products");
-            }catch (Exception exception){
-                exception.printStackTrace();
-            }
+        try{
+            response = getApiCallResponse(initialConfig,propertyData.get("test_apiVersion3")+"/"+propertyData.get("test_language")+"/products");
+        }catch (Exception exception){
+            exception.printStackTrace();
+        }
 
         if(response!=null && response.statusCode()==200) {
             product = JsonParser.getResponseObject(response.asString(), new TypeReference<Product>() {});
