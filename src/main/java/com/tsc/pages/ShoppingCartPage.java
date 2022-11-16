@@ -944,7 +944,6 @@ public class ShoppingCartPage extends BasePage {
 				}
 			}
 			else{
-				reporter.reportLogFail("The Style or Size is null.");
 				return false;
 			}
 		}
@@ -960,7 +959,6 @@ public class ShoppingCartPage extends BasePage {
 				}
 			}
 			else{
-				reporter.reportLogFail("The Style is null.");
 				return false;
 			}
 		}
@@ -976,7 +974,6 @@ public class ShoppingCartPage extends BasePage {
 				}
 			}
 			else{
-				reporter.reportLogFail("The Size is null.");
 				return false;
 			}
 		}
