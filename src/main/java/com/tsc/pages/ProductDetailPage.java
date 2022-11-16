@@ -15,6 +15,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
 import com.tsc.api.pojo.Product;
@@ -179,7 +180,7 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__prices--layout']")
 	public WebElement cntProductPriceContainer;
 
-	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__prices--is-price']")
+	@FindBy(xpath = "//section[@class='pdp-description']//div[@id='pricesPortal']//div[@class='pdp-description__prices--is-price']")
 	public WebElement lblProductNowPrice;
 
 	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__prices--was-price']")
@@ -227,12 +228,18 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//section[@class='pdp-description']//form[@class='pdp-description__form']")
 	public WebElement cntProductStyleAndSizeJudgeIndicator;
 
-	@FindBy(xpath = "//section[@class='pdp-description']//div[contains(@class,'pdp-description__form__colours__selections')]")
+	@FindAll({
+			@FindBy(xpath = "//section[@class='pdp-description']//div[contains(@class,'pdp-description__form__colours__selections')]"),
+			@FindBy(xpath = "//section[@class='pdp-description']//div[contains(@class,'auto-delivery')]")
+	})
 	public WebElement cntProductStyleSection;
 
 	//For radio style
 	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__form__colours__selected']")
 	public WebElement lblRadioProductStyleStatic;
+
+	@FindBy(xpath = "//section[@class='pdp-description']//*[@class='pdp-description__form']")
+	public WebElement lblProductStyleStaticText;
 
 	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__form__colours__selected']")
 	public WebElement lblRadioProductStyleTitle;
@@ -259,13 +266,22 @@ public class ProductDetailPage extends BasePage {
 	public List<WebElement> lstRadioStyleLabelNotSelectedList;
 
 	//For dropdown menu style
-	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__form__colours__selected']")
+	@FindAll({
+			@FindBy(xpath="//section[@class='pdp-description']//div[contains(@class,'auto-delivery')]/b"),
+			@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__form__colours__selected']")
+	})
 	public WebElement lblDropDownProductStyleStatic;
 
-	@FindBy(xpath = "//section[@class='pdp-description']//div[contains(@class,'pdp-description__form__colours__selections')]//select")
+	@FindAll({
+			@FindBy(xpath = "//section[@class='pdp-description']//div[contains(@class,'pdp-description__form__auto')]//select"),
+			@FindBy(xpath = "//section[@class='pdp-description']//div[contains(@class,'pdp-description__form__colours__selections')]//select")
+	})
 	public WebElement selectProductStyle;
 
-	@FindBy(xpath = "//section[@class='pdp-description']//div[contains(@class,'pdp-description__form__colours__selections')]//select//option[not(@disabled)]")
+	@FindAll({
+			@FindBy(xpath = "//section[@class='pdp-description']//div[contains(@class,'pdp-description__form__auto')]//select//option[not(@disabled)]"),
+			@FindBy(xpath = "//section[@class='pdp-description']//div[contains(@class,'pdp-description__form__colours__selections')]//select//option[not(@disabled)]")
+	})
 	public List<WebElement> lstDropdownProductStyle;
 
 	//TrueFit part
@@ -910,7 +926,10 @@ public class ProductDetailPage extends BasePage {
 	 * @author Wei.Li
 	 */
 	public String getCurrentSwatchStyle() {
-		return this.getElementInnerText(lblRadioProductStyleTitle).split(":")[1].trim();
+		if(this.checkChildElementExistingByTagNameAndAttribute(lblProductStyleStaticText,"div","class","pdp-description__form__colours__selected"))
+			return this.getElementInnerText(lblRadioProductStyleTitle).split(":")[1].trim();
+		else
+			return null;
 	}
 
 	/**
@@ -1660,12 +1679,14 @@ public class ProductDetailPage extends BasePage {
 				this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
 				lsStyle=this.getCurrentSwatchStyle();
 
-				if(this.judgeStyleSizeAvailable(false)) {
-					verifyQuantityLeftMessageForProductSize(lsStyle, quantityNumberToShowLeftItemInfo);
-				}
-				else {
-					lsMsg=lsStyle+" Style";
-					verifySingleItemQuantityLeftMessage(lsMsg,quantityNumberToShowLeftItemInfo);
+				if(lsStyle!=null){
+					if(this.judgeStyleSizeAvailable(false)) {
+						verifyQuantityLeftMessageForProductSize(lsStyle, quantityNumberToShowLeftItemInfo);
+					}
+					else {
+						lsMsg=lsStyle+" Style";
+						verifySingleItemQuantityLeftMessage(lsMsg,quantityNumberToShowLeftItemInfo);
+					}
 				}
 			}
 		}
