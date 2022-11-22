@@ -197,6 +197,8 @@ public class OrderTrackingPage extends BasePage {
 
         if (!lsText.contains("|")) {
             map.put("productName", lsText);
+            map.put("productStyle",null);
+            map.put("productSize",null);
         } else {
             splitString = lsText.split("\\|");
             map.put("productName", splitString[0].trim());

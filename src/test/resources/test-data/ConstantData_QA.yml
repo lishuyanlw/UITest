@@ -1,6 +1,6 @@
 # API USER TOKEN INFO
 apiUserSessionParams:
-  lbl_username: trackingOrder@rogers.com
+  lbl_username: qa2542@rogers.com
   lbl_password: qa1234
   lbl_grantType: password
   lbl_apiKey: A9607F64-D061-4279-8D00-F8469EA38DD1
@@ -161,7 +161,7 @@ searchResultPage:
   lbl_productTrueFitAndSizingChart: 404791
   lbl_ProductDeliveryOptions: 289485
   lbl_SoldOutkeyword: 485939
-  lbl_QuantityNumberToShowLeftItemInfo: 7
+  lbl_QuantityNumberToShowLeftItemInfo: 10
   lst_WriteReviewSubmitMessage: ["THANK YOU!","We will process your review and publish it within 3-7 business days."]
   lbl_TellYourFriendsSentMessage: "Your message has been sent!"
   lbl_ProductNumberWithBandAndReviewAndSeeMore: 402173 #525780-This is product no for review with image
@@ -189,6 +189,7 @@ footerSection:
     - ["Channel Finder","Guide des chaînes","/pages/channelfinder","","ABOUT TSC - À PROPOS DE TSC"]
     - ["Meet the Hosts","Nos animateurs","/pages/hosts","","ABOUT TSC - À PROPOS DE TSC"]
     - ["Rogers Media - Proudly Canadian","Rogers Media - entreprise fièrement canadienne","",""]
+    - ["© 1999 -2022 Rogers Sports & Media - Proudly Canadian","© 1999 -2022 Rogers Sports & Média - Entreprise fièrement Canadienne",""]
     - ["All prices in Canadian dollars - TSC.ca","Tous les prix sont en dollars canadiens - TSC.ca","",""]
   lst_MyAccountObjectSectionTitle: ["SETTING UP AN ACCOUNT","PHONE BASED ACCOUNTS","PASSWORD RECOVERY"]
   lst_TrackYourOrderObjectSectionTitle: ["ORDER NUMBER","BILLING POSTAL CODE","SUBMIT"]

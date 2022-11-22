@@ -554,8 +554,8 @@ public class TransferPhoneAccountPage extends BasePage {
 
 		reporter.reportLog("Check the status after clicking the button");
 		this.getReusableActionsInstance().clickIfAvailable(this.btnPasswordShow);
-		this.waitForCondition(Driver->{return !getShowButtonStatus(this.inputPassword);},5000);
-		if(!getInputPasswordStatus(this.btnPasswordShow)){
+		this.waitForCondition(Driver->{return !getShowButtonStatus(this.btnPasswordShow);},5000);
+		if(!getInputPasswordStatus(this.inputPassword)){
 			reporter.reportLogPass("The input type is text");
 		}
 		else{
@@ -588,8 +588,8 @@ public class TransferPhoneAccountPage extends BasePage {
 
 		reporter.reportLog("Check the status after clicking the button");
 		this.getReusableActionsInstance().clickIfAvailable(this.btnConfirmPasswordShow);
-		this.waitForCondition(Driver->{return !getShowButtonStatus(this.inputConfirmPassword);},5000);
-		if(!getInputPasswordStatus(this.btnConfirmPasswordShow)){
+		this.waitForCondition(Driver->{return !getShowButtonStatus(this.btnConfirmPasswordShow);},5000);
+		if(!getInputPasswordStatus(this.inputConfirmPassword)){
 			reporter.reportLogPass("The input type is text");
 		}
 		else{

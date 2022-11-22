@@ -59,7 +59,7 @@ public class OT_TC03_OrderTracking_ByOrderNumberAndBillingPostalCode extends Bas
             reporter.reportLogFail("The order number:"+lsOrderNumberForOrderTracking+" on order tracking page is not the same as the one:"+lsOrderNumberFromApi+" from API calling");
         }
 
-        if(basePage.replaceBlank(lsOrderPlacedDateTimeFromApi).equalsIgnoreCase(basePage.replaceBlank(lsOrderDateForOrderTracking))){
+        if(basePage.replaceBlank(lsOrderPlacedDateTimeFromApi.split(":")[0]).equalsIgnoreCase(basePage.replaceBlank(lsOrderDateForOrderTracking.split(":")[0]))){
             reporter.reportLogPass("The order date:"+lsOrderDateForOrderTracking+" on order tracking page is the same as the one:"+lsOrderPlacedDateTimeFromApi+" from API calling");
         }
         else{

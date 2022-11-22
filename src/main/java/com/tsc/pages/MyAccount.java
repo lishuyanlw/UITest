@@ -211,8 +211,8 @@ public class MyAccount extends BasePage {
 
 	public By byOrderDetailsOrderItemDescriptionContainer=By.xpath(".//div[contains(@class,'product-pic')]//img");
 	public By byOrderDetailsOrderItemPipeStyleLink=By.xpath(".//div[contains(@class,'no-pad-col')]//div[contains(@class,'item-title')]");
-	public By byOrderDetailsOrderItemProductNumber=By.xpath(".//a[contains(@href,'productdetails')][not(img)]/following-sibling::div/span[not(contains(@class,'item-title'))]");
-	public By byOrderDetailsOrderItemProductPrice=By.xpath(".//a[contains(@href,'productdetails')][not(img)]/following-sibling::div/span[contains(@class,'item-title')]");
+	public By byOrderDetailsOrderItemProductNumber=By.xpath(".//a[contains(@href,'productdetails')][not(img)]/following-sibling::div/span[not(contains(@class,'item-title'))]|.//div[contains(@class,'no-pad-col')]//div[contains(@class,'item-title')]/following-sibling::div/span[not(contains(@class,'item-title'))]");
+	public By byOrderDetailsOrderItemProductPrice=By.xpath(".//a[contains(@href,'productdetails')][not(img)]/following-sibling::div/span[contains(@class,'item-title')]|.//div[contains(@class,'no-pad-col')]//div[contains(@class,'item-title')]/following-sibling::div/span[contains(@class,'item-title')]");
 	public By byOrderDetailsOrderItemWriteReview=By.xpath(".//div[contains(@class,'product-review') and contains(@class,'hidden-xs')]//a[contains(@href,'openreview')]");
 
 	public By byOrderDetailsOrderItemQTYTitle=By.xpath(".//span[contains(normalize-space(.),'QTY:')]/parent::div[contains(@class,'hidden-xs')]/span[1]");
@@ -1801,15 +1801,6 @@ public class MyAccount extends BasePage {
 		}
 		else{
 			reporter.reportLogFailWithScreenshot("The page is not navigated to order details page correctly");
-		}
-
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderDetailsHeaderCustomerNO);
-		String lsOrderNumberInOrderDetails=this.lblOrderDetailsHeaderCustomerNO.getText().trim();
-		if(lsOrderNumberInOrderDetails.equalsIgnoreCase(orderNumber)){
-			reporter.reportLogPass("Order number in order details page is the same as the one in order status page");
-		}
-		else{
-			reporter.reportLogPass("Order number:"+lsOrderNumberInOrderDetails+" in order details page is not the same as the one:"+orderNumber+" in order status page");
 		}
 	}
 
@@ -5493,15 +5484,6 @@ public class MyAccount extends BasePage {
 		}
 		else{
 			reporter.reportLogFailWithScreenshot("The page is not navigated to order details page correctly");
-		}
-
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderDetailsHeaderCustomerNO);
-		String lsOrderNumberInOrderDetails=this.lblOrderDetailsHeaderCustomerNO.getText().trim();
-		if(lsOrderNumberInOrderDetails.substring(7).equalsIgnoreCase(orderNumber.substring(7))){
-			reporter.reportLogPass("Order number in order details page is the same as the one in order status page");
-		}
-		else{
-			reporter.reportLogFail("Order number:"+lsOrderNumberInOrderDetails+" in order details page is not the same as the one:"+orderNumber+" in order status page");
 		}
 	}
 }
