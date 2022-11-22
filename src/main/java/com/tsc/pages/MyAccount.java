@@ -1,7 +1,6 @@
 package com.tsc.pages;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.tsc.api.apiBuilder.AccountAPI;
 import com.tsc.api.apiBuilder.CartAPI;
 import com.tsc.api.apiBuilder.OrderAPI;
 import com.tsc.api.pojo.CartResponse;
@@ -17,18 +16,13 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-
 import java.io.IOException;
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import org.openqa.selenium.support.ui.Select;
-
 import java.text.ParseException;
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 public class MyAccount extends BasePage {
 
@@ -39,10 +33,10 @@ public class MyAccount extends BasePage {
 	@FindBy(xpath="//ng-component//*[@class='paymentPageTitle']")
 	public WebElement lblPageTitle;
 
-	@FindBy(xpath="//div[@class='tsc-forms']//div[contains(@class,'form-head')]//h2/span")
+	@FindBy(xpath="//div[contains(@class,'tsc-forms')]//div[contains(@class,'form-head')]//h2/span")
 	public WebElement lblOrderDetailsHeaderUserName;
 
-	@FindBy(xpath="//div[@class='tsc-forms']//div[contains(@class,'form-head')]//span[contains(normalize-space(text()),'Customer Number:')]/following-sibling::span")
+	@FindBy(xpath="//div[contains(@class,'tsc-forms')]//div[contains(@class,'form-head')]//span[contains(normalize-space(text()),'Customer Number:')]/following-sibling::span")
 	public WebElement lblOrderDetailsHeaderCustomerNumber;
 
 	@FindBy(xpath="//ng-component//div[contains(@class,'form-head')]//h2")
@@ -217,8 +211,8 @@ public class MyAccount extends BasePage {
 
 	public By byOrderDetailsOrderItemDescriptionContainer=By.xpath(".//div[contains(@class,'product-pic')]//img");
 	public By byOrderDetailsOrderItemPipeStyleLink=By.xpath(".//div[contains(@class,'no-pad-col')]//div[contains(@class,'item-title')]");
-	public By byOrderDetailsOrderItemProductNumber=By.xpath(".//a[contains(@href,'productdetails')][not(img)]/following-sibling::div/span[not(contains(@class,'item-title'))]");
-	public By byOrderDetailsOrderItemProductPrice=By.xpath(".//a[contains(@href,'productdetails')][not(img)]/following-sibling::div/span[contains(@class,'item-title')]");
+	public By byOrderDetailsOrderItemProductNumber=By.xpath(".//a[contains(@href,'productdetails')][not(img)]/following-sibling::div/span[not(contains(@class,'item-title'))]|.//div[contains(@class,'no-pad-col')]//div[contains(@class,'item-title')]/following-sibling::div/span[not(contains(@class,'item-title'))]");
+	public By byOrderDetailsOrderItemProductPrice=By.xpath(".//a[contains(@href,'productdetails')][not(img)]/following-sibling::div/span[contains(@class,'item-title')]|.//div[contains(@class,'no-pad-col')]//div[contains(@class,'item-title')]/following-sibling::div/span[contains(@class,'item-title')]");
 	public By byOrderDetailsOrderItemWriteReview=By.xpath(".//div[contains(@class,'product-review') and contains(@class,'hidden-xs')]//a[contains(@href,'openreview')]");
 
 	public By byOrderDetailsOrderItemQTYTitle=By.xpath(".//span[contains(normalize-space(.),'QTY:')]/parent::div[contains(@class,'hidden-xs')]/span[1]");
@@ -821,6 +815,22 @@ public class MyAccount extends BasePage {
 
 	@FindBy(xpath = "//ng-component//*[@class='breadcrumb']/li/a")
 	public List<WebElement> lblBreadCrumbList;
+
+	/**
+	 * To get first name in header
+	 * @return - String
+	 */
+	public String getFirstNameInHeader(){
+		return this.getElementInnerText(this.lblOrderDetailsHeaderUserName).split("’")[0];
+	}
+
+	/**
+	 * To get Customer Number in header
+	 * @return - String
+	 */
+	public String getCustomerNumberInHeader(){
+		return this.getElementInnerText(this.lblOrderDetailsHeaderCustomerNumber);
+	}
 
 	/**
 	 * To check Collapse Status For Account Summary Panel
@@ -1791,15 +1801,6 @@ public class MyAccount extends BasePage {
 		}
 		else{
 			reporter.reportLogFailWithScreenshot("The page is not navigated to order details page correctly");
-		}
-
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderDetailsHeaderCustomerNO);
-		String lsOrderNumberInOrderDetails=this.lblOrderDetailsHeaderCustomerNO.getText().trim();
-		if(lsOrderNumberInOrderDetails.equalsIgnoreCase(orderNumber)){
-			reporter.reportLogPass("Order number in order details page is the same as the one in order status page");
-		}
-		else{
-			reporter.reportLogPass("Order number:"+lsOrderNumberInOrderDetails+" in order details page is not the same as the one:"+orderNumber+" in order status page");
 		}
 	}
 
@@ -5446,6 +5447,42 @@ public class MyAccount extends BasePage {
 			reporter.reportLogFailWithScreenshot("User is not navigated to Shopping Cart Page: "+currentPageURL);
 
 		return orderNumber;
+	}
+
+	/**
+	 * To go To Order Tracking Page
+	 * @return - boolean
+	 */
+	public boolean goToOrderTrackingPage(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnOrderDetailsHeaderTrackOrder);
+		this.btnOrderDetailsHeaderTrackOrder.click();
+		return this.waitForCondition(Driver->{return (new OrderTrackingPage(this.getDriver())).lblTrackOrderTitle.isDisplayed();},120000);
+	}
+
+	/**
+	 * To goTo Order Details Page By Given Order Number Searching
+	 * @param - String - orderNumber
+	 * @param - String - lsOrderDetailsURL - the order details url from yaml file
+	 */
+	public void goToOrderDetailsPageByGivenOrderNumberSearching(String orderNumber,String lsOrderDetailsURL){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputAccountOrderSearch);
+		this.inputAccountOrderSearch.clear();
+		this.inputAccountOrderSearch.sendKeys(orderNumber);
+		this.applyStaticWait(300);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnAccountOrderSearch);
+		this.btnAccountOrderSearch.click();
+
+		this.waitForCondition(Driver->{ return this.lblOrderDetailsSectionTitle.isDisplayed();},50000);
+
+		lsOrderDetailsURL=lsOrderDetailsURL.replace("{OrderNO}",orderNumber);
+		String lsExpectedURL=this.getBaseURL()+lsOrderDetailsURL;
+		if(this.URL().equalsIgnoreCase(lsExpectedURL)){
+			reporter.reportLogPass("The page is navigated to order details page correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The page is not navigated to order details page correctly");
+		}
 	}
 }
 

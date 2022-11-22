@@ -944,7 +944,6 @@ public class ShoppingCartPage extends BasePage {
 				}
 			}
 			else{
-				reporter.reportLogFail("The Style or Size is null.");
 				return false;
 			}
 		}
@@ -960,7 +959,6 @@ public class ShoppingCartPage extends BasePage {
 				}
 			}
 			else{
-				reporter.reportLogFail("The Style is null.");
 				return false;
 			}
 		}
@@ -976,7 +974,6 @@ public class ShoppingCartPage extends BasePage {
 				}
 			}
 			else{
-				reporter.reportLogFail("The Size is null.");
 				return false;
 			}
 		}
@@ -2700,7 +2697,7 @@ public class ShoppingCartPage extends BasePage {
 		//If there is no cart present fo user, creating the cart for user and returning data
 		else{
 			List<Map<String,Object>> data = new ProductAPI().getProductDetailsToBeAddedToCartForUser(itemsToBeAdded,noOfItemsToBeAdded);
-			//System.out.println(data.toString());
+			System.out.println(data.toString());
 			this.addItemsToCartForUser(data,customerEDP,accessToken,null);
 
 			responseExisting=cartApi.getAccountCartContentWithCustomerEDP(String.valueOf(customerEDP), accessToken);

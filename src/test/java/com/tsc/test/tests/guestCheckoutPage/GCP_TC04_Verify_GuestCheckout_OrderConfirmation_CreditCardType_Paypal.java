@@ -26,7 +26,7 @@ public class GCP_TC04_Verify_GuestCheckout_OrderConfirmation_CreditCardType_Payp
 		outputDataCriteria.put("style", "2");
 		outputDataCriteria.put("size", "2");
 		outputDataCriteria.put("quantity", "2");
-		if(getProductDetailPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList,"AddToBag",outputDataCriteria)) {
+		if(getProductDetailPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList,"ConditionsForMultipleStyleAndSize",outputDataCriteria)) {
 			String[] lstStyle = getProductDetailPageThreadLocal().getStyleList();
 			String[] lstSizeFirstItem = getProductDetailPageThreadLocal().getSizeListForGivenStyle(0);
 			//String[] lstSizeSecondItem = getProductDetailPageThreadLocal().getSizeListForGivenStyle(1);

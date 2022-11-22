@@ -1,4 +1,4 @@
-package com.tsc.test.tests.checkoutPage;
+package com.tsc.test.tests.orderModification;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.tsc.api.apiBuilder.CartAPI;
@@ -15,12 +15,12 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-public class CP_TC16_VerifyOrderModification_Checkout_AddPromoteCode_AddRegularProductItem extends BaseTest {
+public class OM_TC05_VerifyOrderModification_Checkout_AddPromoteCode_AddADPProductItem extends BaseTest {
     /*
-     * CER-905
+     * CER-906
      */
-    @Test(groups={"Regression","Checkout","CheckoutMobTab"})
-    public void CP_TC16_VerifyOrderModification_Checkout_AddPromoteCode_AddRegularProductItem() throws IOException {
+    @Test(groups={"Regression","OrderModification"})
+    public void OM_TC05_VerifyOrderModification_Checkout_AddPromoteCode_AddADPProductItem() throws IOException {
         getGlobalFooterPageThreadLocal().closePopupDialog();
         String accessToken = getApiUserSessionDataMapThreadLocal().get("access_token").toString();
         String customerEDP = getApiUserSessionDataMapThreadLocal().get("customerEDP").toString();
@@ -64,7 +64,10 @@ public class CP_TC16_VerifyOrderModification_Checkout_AddPromoteCode_AddRegularP
         String lsPromoteCode=TestDataHandler.constantData.getCheckOut().getLst_PromoteCode().get(0);
         getOrderModificationThreadLocal().addPromoteCode(lsPromoteCode);
 
-        Map<String,Object> addToBagPopUpData = getProductDetailPageThreadLocal().addItemsToModifiedOrderForUser(newItemToBeAddedKeyword,getOrderModificationThreadLocal());
+        reporter.reportLog("Add ADP product item through UI");
+        String lsADPProductNumber = TestDataHandler.constantData.getSearchResultPage().getLbl_AutoDeliverykeyword();
+        Map<String,Object> addToBagPopUpData=getOrderModificationThreadLocal().addProductItems(lsADPProductNumber,true);
+
         String lsOrderNumberOnAddToBagWindow= (String) addToBagPopUpData.get("productOrderNumber");
         if(lsOrderNumberForOrderModification.substring(0,7).equalsIgnoreCase(lsOrderNumberOnAddToBagWindow.substring(0,7))){
             reporter.reportLogPass("The order number:"+lsOrderNumberForOrderModification+" for order modification is the same as the one:"+lsOrderNumberOnAddToBagWindow+" for add to bag popup window.");

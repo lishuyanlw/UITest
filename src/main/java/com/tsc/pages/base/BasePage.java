@@ -9,7 +9,10 @@ import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.text.Normalizer;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
 import java.util.*;
 import java.util.NoSuchElementException;
 import java.util.function.Function;
@@ -275,7 +278,6 @@ import utils.ReusableActions;
 	 */	
 	public void navigateToURL(String strURL) {
 		getReusableActionsInstance().openSpecificUrl(strURL,30);
-
 	}
 	
 	/**
@@ -1274,11 +1276,36 @@ import utils.ReusableActions;
 	}
 
 	/**
+	 * This function formats input date as per given format to provided date format
+	 * @param - String - dateFormat
+	 * @return - String
+	 */
+	public String formatDateToProvidedFormat(String inputDate, String inputDateFormat, String outputDateFormat) throws ParseException {
+		TemporalAccessor inputDateTemporalAccessor = DateTimeFormatter.ofPattern(inputDateFormat).withLocale(Locale.getDefault()).parse(inputDate);
+		return DateTimeFormatter.ofPattern(outputDateFormat).withLocale(Locale.getDefault()).format(inputDateTemporalAccessor);
+	}
+
+	/**
 	 * To get String List With Space Delimiter
 	 * @param - String - lsTargetString
 	 * @return - String[]
 	 */
 	public String[] getStringListWithSpaceDelimiter(String lsTargetString){
 		return lsTargetString.split("\\s+");
+	}
+
+	/**
+	 * To replace Blank
+	 * @param - String - str
+	 * @return - String
+	 */
+	public String replaceBlank(String str){
+		String dest="";
+		if(str!=null||!str.isEmpty()){
+			Pattern p=Pattern.compile("\\s*|\r|\t|\n");
+			Matcher m=p.matcher(str);
+			dest=m.replaceAll("");
+		}
+		return dest;
 	}
 }

@@ -204,6 +204,19 @@ loginUser:
   lbl_ErrorMessageForUserName: A valid email is required!
   lbl_ErrorMessageForPassword: Password is required!
   lbl_ErrorMessageForUserNameAndPassword: Hm, this email and password combination does not match our records. Please double check and try again.
+  lstErrorMessageForCreateAccount: ["You have one or more missing or invalid entries. Please enter correct data and try again.",
+                                    "Numbers and special characters are not allowed.",
+                                    "Numbers and special characters are not allowed.",
+                                    "Please enter valid postal code",
+                                    "Please enter your email address in the format john@example.com",
+                                    "The passwords you've entered do not match. Please try again."]
+  lblErrorMessageForExistingEmail: "Email <email> already exist!!!"
+  lnkSignInPage: "/pages/signin"
+  lstErrorMessageForTransferPhoneAccount: [ "Please enter 10 digit Number.",
+                                            "Please enter your 10 digit phone number, including your area code",
+                                            "Please enter your email address in the format john@example.com",
+                                            "The passwords you've entered do not match. Please try again.",
+                                            "You have one or more missing or invalid entries. Please enter correct data and try again." ]
 myAccount:
   lnk_myAccountURL: "/pages/myaccount"
   lnk_addNewCardURL: "/pages/myaccount/paymentcards/addcard"
@@ -249,6 +262,12 @@ myAccount:
   lbl_noOrderRecordsMessage: "No orders yet. TSC has tons of deals to offer"
   lblOrderDetailsPageUrl: "/pages/myaccount/orderstatus/details?orderNo="
   lblBreadCrumbNavigationPages: "My Account:Your Orders:Order Details"
+  lstTrackingOrderPortalErrorMessageForOrderNumberAndPostalCode: ["Valid order number is required.","Postal code is required."]
+  lstTrackingOrderPortalErrorMessageForSignIn: ["You have one or more missing or invalid entries. Please enter correct data and try again.",
+                                                "Valid email address is required.",
+                                                "Password is required."]
+  lblErrorMessageWithInvalidUserNameAndPasswordForOrderTrackingPortal: "This email and password combination does not match our records. Please double check and try again."
+  lblTrackingOrderPortalNotFoundMessage: "We are sorry! The page you are trying to reach cannot be found."
 
 lstTestName: ["MA_TC10_Payment_Options_Manage_Credit_Card",
               "MA_TC18_MyPreferences_MyNewsletters",

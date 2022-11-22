@@ -34,6 +34,15 @@ public class SignInPage extends BasePage {
 	@FindBy(xpath = "//div[contains(@class,'secondary-navigation__rhs-account')]//nav//a[contains(@href,'signin')]")
 	public WebElement btnSignInNav;
 
+	@FindBy(xpath = "//div[contains(@class,'secondary-navigation__rhs-account')]//nav//ul//li//a[contains(@href,'createaccount')]")
+	public WebElement btnCreateAccountInNav;
+
+	@FindBy(xpath = "//div[contains(@class,'secondary-navigation__rhs-account')]//nav//ul//li//a[contains(@href,'createphoneaccount')]")
+	public WebElement btnTransferPhoneAccountInNav;
+
+	@FindBy(xpath = "//div[contains(@class,'secondary-navigation__rhs-account')]//nav//ul//li//a[contains(@href,'orderstatus')]")
+	public WebElement btnOrderStatusInNav;
+
 	@FindBy(xpath = "//div[contains(@class,'secondary-navigation__rhs-account')]//nav//a[@href='/pages/myaccount']")
 	public WebElement btnYourProfileNav;
 
@@ -229,9 +238,9 @@ public class SignInPage extends BasePage {
 	}
 
 	/**
-	 * Go to Your Orders page
+	 * Go to Your Orders page through header
 	 */
-	public void goToYourOrdersPage() {
+	public void goToYourOrdersPageThroughHeader() {
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.cntBlackHeaderContainer);
 		getReusableActionsInstance().staticWait(2000);
 
@@ -265,6 +274,96 @@ public class SignInPage extends BasePage {
 		this.getReusableActionsInstance().clickIfAvailable(this.btnSignInNav);
 
 		return waitForCondition(Driver->{return this.lblSignIn.isDisplayed();},300000);
+	}
+
+	/**
+	 * Go to track order page Through Header
+	 * @return
+	 */
+	public boolean goToTrackOrderPageThroughHeader() {
+		getReusableActionsInstance().javascriptScrollToTopOfPage();
+		String strBrowser = System.getProperty("Browser").trim();
+		if (strBrowser.toLowerCase().contains("android") || strBrowser.toLowerCase().contains("ios")
+				|| strBrowser.toLowerCase().contains("mobile")) {
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInMainMenu);
+			this.getReusableActionsInstance().clickIfAvailable(this.btnSignInMainMenu);
+			//this.btnSignInMainMenu.click();
+		} else {
+			this.getReusableActionsInstance().scrollToElement(this.btnSignInMainMenu);
+		}
+		getReusableActionsInstance().staticWait(3000);
+
+		this.getReusableActionsInstance().clickIfAvailable(this.btnOrderStatusInNav);
+
+		return waitForCondition(Driver->{return (new OrderTrackingPage(this.getDriver())).lblTrackOrderPortalTitle.isDisplayed();},300000);
+	}
+
+	/**
+	 * Go to Create Account page through header
+	 * @return
+	 */
+	public boolean goToCreateAccountPageThroughHeader() {
+		getReusableActionsInstance().javascriptScrollToTopOfPage();
+		String strBrowser = System.getProperty("Browser").trim();
+		if (strBrowser.toLowerCase().contains("android") || strBrowser.toLowerCase().contains("ios")
+				|| strBrowser.toLowerCase().contains("mobile")) {
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInMainMenu);
+			this.getReusableActionsInstance().clickIfAvailable(this.btnSignInMainMenu);
+			//this.btnSignInMainMenu.click();
+		} else {
+			this.getReusableActionsInstance().scrollToElement(this.btnSignInMainMenu);
+		}
+		getReusableActionsInstance().staticWait(3000);
+
+		this.getReusableActionsInstance().clickIfAvailable(this.btnCreateAccountInNav);
+
+		return waitForCondition(Driver->{return (new CreateAccountPage(this.getDriver())).lblHeaderTitle.isDisplayed();},300000);
+	}
+
+	/**
+	 * Go to Transfer phone Account page through header
+	 * @return - boolean
+	 */
+	public boolean goToTransferPhoneAccountPageThroughHeader() {
+		getReusableActionsInstance().javascriptScrollToTopOfPage();
+		String strBrowser = System.getProperty("Browser").trim();
+		if (strBrowser.toLowerCase().contains("android") || strBrowser.toLowerCase().contains("ios")
+				|| strBrowser.toLowerCase().contains("mobile")) {
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInMainMenu);
+			this.getReusableActionsInstance().clickIfAvailable(this.btnSignInMainMenu);
+			//this.btnSignInMainMenu.click();
+		} else {
+			this.getReusableActionsInstance().scrollToElement(this.btnSignInMainMenu);
+		}
+		getReusableActionsInstance().staticWait(3000);
+
+		this.getReusableActionsInstance().clickIfAvailable(this.btnTransferPhoneAccountInNav);
+
+		return waitForCondition(Driver->{return (new TransferPhoneAccountPage(this.getDriver())).lblHeaderTitle.isDisplayed();},300000);
+	}
+
+	/**
+	 * Go to Create Account Page through signIn page
+	 * @return
+	 */
+	public boolean goToCreateAccountPageThroughSignInPage() {
+		this.goToSignInPage();
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnCreateAccountOrContinueAsGuest);
+		this.getReusableActionsInstance().clickIfAvailable(this.btnCreateAccountOrContinueAsGuest);
+
+		return waitForCondition(Driver->{return (new CreateAccountPage(this.getDriver())).lblHeaderTitle.isDisplayed();},300000);
+	}
+
+	/**
+	 * Go to Transfer Phone Account Page through signIn page
+	 * @return - boolean
+	 */
+	public boolean goToTransferPhoneAccountPageThroughSignInPage() {
+		this.goToSignInPage();
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnTransferMyPhoneAccount);
+		this.getReusableActionsInstance().clickIfAvailable(this.btnTransferMyPhoneAccount);
+
+		return waitForCondition(Driver->{return (new TransferPhoneAccountPage(this.getDriver())).lblHeaderTitle.isDisplayed();},300000);
 	}
 
 	/**
