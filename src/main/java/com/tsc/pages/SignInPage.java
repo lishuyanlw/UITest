@@ -342,8 +342,7 @@ public class SignInPage extends BasePage {
 		if (strBrowser.toLowerCase().contains("android") || strBrowser.toLowerCase().contains("ios")
 				|| strBrowser.toLowerCase().contains("mobile")) {
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInMainMenu);
-			this.getReusableActionsInstance().clickIfAvailable(this.btnSignInMainMenu);
-			//this.btnSignInMainMenu.click();
+			this.clickElement(this.btnSignInMainMenu);
 		} else {
 			this.getReusableActionsInstance().scrollToElement(this.btnSignInMainMenu);
 		}
@@ -964,7 +963,7 @@ public class SignInPage extends BasePage {
 
 		if(lsExpectedUrlFromYml!=null){
 			this.waitForCondition(Driver->{return !this.URL().equalsIgnoreCase(lsUrlBeforeClicking);},20000);
-			String lsExpectedUrl=this.getBaseURL()+this.URL();
+			String lsExpectedUrl=this.getBaseURL()+lsExpectedUrlFromYml;
 			String lsUrlAfterClicking=this.URL();
 			if(lsUrlAfterClicking.equalsIgnoreCase(lsExpectedUrl)){
 				reporter.reportLogPass("The navigated URL:'"+lsUrlAfterClicking+" ' is the same as expected:'"+lsExpectedUrl+"'");

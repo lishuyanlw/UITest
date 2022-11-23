@@ -1,12 +1,18 @@
 package com.tsc.pages;
 
+import com.tsc.api.apiBuilder.AccountAPI;
+import com.tsc.api.pojo.SecurityQuestionResponse;
 import com.tsc.pages.base.BasePage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
 
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 public class ForgotPasswordPage extends BasePage {
 
@@ -313,9 +319,9 @@ public class ForgotPasswordPage extends BasePage {
     }
 
     /**
-     * To verify Input registered Email Page Contents
+     * To verify Security Questions And Reset By Email contents by Input registered Email
      */
-    public void verifyInputRegisteredEmailPageContents() {
+    public void verifySecurityQuestionsAndResetByEmailContentsByInputRegisteredEmail() {
         String lsText;
 
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAnswerSecurityQuestionsHeaderTitle);
@@ -423,14 +429,6 @@ public class ForgotPasswordPage extends BasePage {
             reporter.reportLogPass("The input Question3 For Security Answer is displaying correctly");
         } else {
             reporter.reportLogFailWithScreenshot("The input Question3 For Security Answer is not displaying correctly");
-        }
-
-        this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblSecurityQuestionAnswerRequired);
-        lsText = lblSecurityQuestionAnswerRequired.getText().trim();
-        if(!lsText.isEmpty()) {
-            reporter.reportLogPass("The required Security Question Answer info is displaying correctly");
-        } else {
-            reporter.reportLogFailWithScreenshot("The required Security Question Answer info is not displaying correctly");
         }
 
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnResetPassword);
@@ -715,7 +713,10 @@ public class ForgotPasswordPage extends BasePage {
      */
     public boolean goToRestPasswordPage(){
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnResetPassword);
-        this.getReusableActionsInstance().clickIfAvailable(btnResetPassword);
+        this.setElementEnabled(this.btnResetPassword);
+        this.applyStaticWait(3000);
+        this.clickElement(this.btnResetPassword);
+        //this.getReusableActionsInstance().clickIfAvailable(btnResetPassword);
         return this.waitForCondition(Driver->{return this.lblCreateNewPasswordTitle.isDisplayed();},60000);
     }
 
@@ -760,7 +761,56 @@ public class ForgotPasswordPage extends BasePage {
     }
 
     /**
-     * To verify Clicking CreateAccount Button On TryAgain Page
+     * To verify Clicking Try again button On TryAgain Page
+     */
+    public void verifyClickingTryAgainButtonOnTryAgainPage(){
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnTryAgain);
+        this.btnTryAgain.click();
+
+        this.waitForCondition(Driver->{return this.lblResetPasswordHeaderTitle.isDisplayed();},60000);
+        if(this.lblResetPasswordHeaderTitle.isDisplayed()){
+            reporter.reportLogPass("To be navigated back to Forgot password page after clicking Try again button successfully");
+        }
+        else{
+            reporter.reportLogFail("Failed to be navigated back to Forgot password page after clicking Try again button");
+        }
+    }
+
+    /**
+     * To verify CreateAccount Button link On TryAgain Page
+     * @param - String - lsExpectedUrlFromYml
+     */
+    public void verifyCreateAccountButtonLinkOnTryAgainPage(String lsExpectedUrlFromYml){
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnCreateNewAccount);
+        String lsNavigatedUrl=this.btnCreateNewAccount.getAttribute("href");
+        lsExpectedUrlFromYml=this.getBaseURL()+lsExpectedUrlFromYml;
+        if(lsNavigatedUrl.equalsIgnoreCase(lsExpectedUrlFromYml)){
+            reporter.reportLogPass("The navigated Url:'"+lsNavigatedUrl+"' is the same as the expected:'"+lsExpectedUrlFromYml+"'");
+        }
+        else{
+            reporter.reportLogFail("The navigated Url:'"+lsNavigatedUrl+"' is not the same as the expected:'"+lsExpectedUrlFromYml+"'");
+        }
+    }
+
+    /**
+     * To verify Transfer Phone Account Button On TryAgain Page
+     * @param - String - lsExpectedUrlFromYml
+     */
+    public void verifyTransferPhoneAccountButtonLinkOnTryAgainPage(String lsExpectedUrlFromYml){
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnTransferMyPhoneAccount);
+        String lsNavigatedUrl=this.btnTransferMyPhoneAccount.getAttribute("href");
+        lsExpectedUrlFromYml=this.getBaseURL()+lsExpectedUrlFromYml;
+        if(lsNavigatedUrl.equalsIgnoreCase(lsExpectedUrlFromYml)){
+            reporter.reportLogPass("The navigated Url:'"+lsNavigatedUrl+"' is the same as the expected:'"+lsExpectedUrlFromYml+"'");
+        }
+        else{
+            reporter.reportLogFail("The navigated Url:'"+lsNavigatedUrl+"' is not the same as the expected:'"+lsExpectedUrlFromYml+"'");
+        }
+    }
+
+
+    /**
+     * To verify Clicking Create new account Button On TryAgain Page
      * @param - String - lsExpectedUrlFromYml
      */
     public void verifyClickingCreateAccountButtonOnTryAgainPage(String lsExpectedUrlFromYml){
@@ -772,10 +822,10 @@ public class ForgotPasswordPage extends BasePage {
         String lsExpectedUrl=this.getBaseURL()+lsExpectedUrlFromYml;
         String lsNavigatedUrl=this.URL();
         if(lsNavigatedUrl.equalsIgnoreCase(lsExpectedUrl)){
-            reporter.reportLogPass("The navigated Url:'"+lsNavigatedUrl+"' after clicking cancel button is the same as the expected:'"+lsExpectedUrl+"'");
+            reporter.reportLogPass("The navigated Url:'"+lsNavigatedUrl+"' after clicking create new account button is the same as the expected:'"+lsExpectedUrl+"'");
         }
         else{
-            reporter.reportLogFail("The navigated Url:'"+lsNavigatedUrl+"' after clicking cancel button is not the same as the expected:'"+lsExpectedUrl+"'");
+            reporter.reportLogFail("The navigated Url:'"+lsNavigatedUrl+"' after clicking create new account button is not the same as the expected:'"+lsExpectedUrl+"'");
         }
     }
 
@@ -792,26 +842,20 @@ public class ForgotPasswordPage extends BasePage {
         String lsExpectedUrl=this.getBaseURL()+lsExpectedUrlFromYml;
         String lsNavigatedUrl=this.URL();
         if(lsNavigatedUrl.equalsIgnoreCase(lsExpectedUrl)){
-            reporter.reportLogPass("The navigated Url:'"+lsNavigatedUrl+"' after clicking cancel button is the same as the expected:'"+lsExpectedUrl+"'");
+            reporter.reportLogPass("The navigated Url:'"+lsNavigatedUrl+"' after clicking Transfer My Phone Account button is the same as the expected:'"+lsExpectedUrl+"'");
         }
         else{
-            reporter.reportLogFail("The navigated Url:'"+lsNavigatedUrl+"' after clicking cancel button is not the same as the expected:'"+lsExpectedUrl+"'");
+            reporter.reportLogFail("The navigated Url:'"+lsNavigatedUrl+"' after clicking Transfer My Phone Account button is not the same as the expected:'"+lsExpectedUrl+"'");
         }
     }
 
     /**
-     * To reset password
-     * @param - String - email
+     * To fill Answer Security Questions Form
      * @param - String - phoneNumber
      * @param - String - postalCode
      * @param - String - securityQuestionAnswer
-     * @param - String - newPassword
-     * @param - String - newSecurityQuestionAnswer
-     * @return - boolean
      */
-    public boolean resetPassword(String email,String phoneNumber,String postalCode,String securityQuestionAnswer,String newPassword,String newSecurityQuestionAnswer){
-        this.goToAnswerSecurityQuestionsPageWithRegisteredEmail(email);
-
+    public void fillAnswerSecurityQuestionsForm(String phoneNumber,String postalCode,String securityQuestionAnswer){
         String phoneNumberField1=phoneNumber.substring(0,3);
         String phoneNumberField2=phoneNumber.substring(3,6);
         String phoneNumberField3=phoneNumber.substring(6);
@@ -831,24 +875,22 @@ public class ForgotPasswordPage extends BasePage {
         this.inputQuestion1ForPhoneNumberField3.sendKeys(phoneNumberField3);
         this.applyStaticWait(300);
 
-        reporter.reportLog(phoneNumberField1+":"+phoneNumberField2+":"+phoneNumberField3);
-
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputQuestion2ForPostalCode);
         this.inputQuestion2ForPostalCode.clear();
         this.inputQuestion2ForPostalCode.sendKeys(postalCode);
         this.applyStaticWait(300);
 
-        reporter.reportLog("Postcode: "+postalCode);
-
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputQuestion3ForSecurityAnswer);
         this.inputQuestion3ForSecurityAnswer.clear();
         this.inputQuestion3ForSecurityAnswer.sendKeys(securityQuestionAnswer);
         this.applyStaticWait(300);
+    }
 
-        reporter.reportLog("Answer: "+securityQuestionAnswer);
-
-        this.goToRestPasswordPage();
-
+    /**
+     * To fill New Password Form
+     * @param - String - newPassword
+     */
+    public void fillNewPasswordForm(String newPassword){
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputNewPassword);
         this.inputNewPassword.clear();
         this.inputNewPassword.sendKeys(newPassword);
@@ -858,9 +900,13 @@ public class ForgotPasswordPage extends BasePage {
         this.inputConfirmNewPassword.clear();
         this.inputConfirmNewPassword.sendKeys(newPassword);
         this.applyStaticWait(300);
+    }
 
-        this.goToAddSecurityQuestionForNewPasswordPage();
-
+    /**
+     * To fill Add Security Question Form
+     * @param - String - newSecurityQuestionAnswer
+     */
+    public void fillAddSecurityQuestionForm(String newSecurityQuestionAnswer){
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectSecurityQuestion);
         Select select=new Select(this.selectSecurityQuestion);
         select.selectByIndex(1);
@@ -870,11 +916,60 @@ public class ForgotPasswordPage extends BasePage {
         this.inputSecurityQuestionAnswer.clear();
         this.inputSecurityQuestionAnswer.sendKeys(newSecurityQuestionAnswer);
         this.applyStaticWait(300);
+    }
 
+    /**
+     * To clicking Save Button On Add Security Question Page
+     * @return - boolean
+     */
+    public boolean clickingSaveButtonOnAddSecurityQuestionPage(){
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSaveAndContinue);
         this.getReusableActionsInstance().clickIfAvailable(this.btnSaveAndContinue);
         MyAccount myAccount=new MyAccount(this.getDriver());
+
         return this.waitForCondition(Driver->{return myAccount.lblMyAccountHeaderTitle.isDisplayed();},120000);
+    }
+
+    /**
+     * To reset password
+     * @param - String - email
+     * @param - String - phoneNumber
+     * @param - String - postalCode
+     * @param - String - securityQuestionAnswer
+     * @param - String - newPassword
+     * @param - String - newSecurityQuestionAnswer
+     */
+    public void resetPassword(String email,String phoneNumber,String postalCode,String securityQuestionAnswer,String newPassword,String newSecurityQuestionAnswer){
+        this.goToAnswerSecurityQuestionsPageWithRegisteredEmail(email);
+
+        this.fillAnswerSecurityQuestionsForm(phoneNumber,postalCode,securityQuestionAnswer);
+        this.goToRestPasswordPage();
+
+        this.fillNewPasswordForm(newPassword);
+        this.goToAddSecurityQuestionForNewPasswordPage();
+
+        this.fillAddSecurityQuestionForm(newSecurityQuestionAnswer);
+        this.clickingSaveButtonOnAddSecurityQuestionPage();
+    }
+
+    /**
+     * To verify Clicking Cancel Button On Answer Security Question Page
+     * @param - String - lsExpectedUrlFromYml
+     */
+    public void verifyClickingCancelButtonOnAnswerSecurityQuestionPage(String lsExpectedUrlFromYml){
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnResetPasswordCancel);
+        this.btnResetPasswordCancel.click();
+
+        SignInPage signInPage=new SignInPage(this.getDriver());
+        this.waitForCondition(Driver->{return signInPage.lblSignIn.isDisplayed();},60000);
+        String lsExpectedUrl=this.getBaseURL()+lsExpectedUrlFromYml;
+        String lsNavigatedUrl=this.URL();
+        if(lsNavigatedUrl.equalsIgnoreCase(lsExpectedUrl)){
+            reporter.reportLogPass("The navigated Url:'"+lsNavigatedUrl+"' after clicking cancel button on answer security questions page is the same as the expected:'"+lsExpectedUrl+"'");
+        }
+        else{
+            reporter.reportLogFail("The navigated Url:'"+lsNavigatedUrl+"' after clicking cancel button on answer security questions page is not the same as the expected:'"+lsExpectedUrl+"'");
+        }
     }
 
     /**
@@ -889,7 +984,8 @@ public class ForgotPasswordPage extends BasePage {
         this.applyStaticWait(300);
 
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnContinue);
-        this.waitForCondition(Driver->{return lblEmailRequiredErrorMessage.isDisplayed(); },10000);
+        this.btnContinue.click();
+        this.waitForCondition(Driver->{return lblEmailRequiredErrorMessage.isDisplayed(); },60000);
 
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblEmailRequiredErrorMessage);
         String lsText=lblEmailRequiredErrorMessage.getText().trim();
@@ -906,7 +1002,8 @@ public class ForgotPasswordPage extends BasePage {
         this.applyStaticWait(300);
 
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnContinue);
-        this.waitForCondition(Driver->{return lblEmailRequiredErrorMessage.isDisplayed(); },10000);
+        this.btnContinue.click();
+        this.waitForCondition(Driver->{return lblEmailRequiredErrorMessage.isDisplayed(); },60000);
 
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblEmailRequiredErrorMessage);
         lsText=lblEmailRequiredErrorMessage.getText().trim();
@@ -980,9 +1077,12 @@ public class ForgotPasswordPage extends BasePage {
         this.inputQuestion3ForSecurityAnswer.sendKeys("Error");
         this.applyStaticWait(300);
 
-
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnResetPassword);
-        btnResetPassword.click();
+        setElementEnabled(btnResetPassword);
+        this.applyStaticWait(3000);
+        this.clickElement(btnResetPassword);
+        //btnResetPassword.click();
+        this.waitForCondition(Driver->{return lstAllErrorMessageForSecurityQuestions.size()>0;},60000);
         this.applyStaticWait(3*this.getStaticWaitForApplication());
 
         WebElement item=lstAllErrorMessageForSecurityQuestions.get(0);
@@ -1150,37 +1250,71 @@ public class ForgotPasswordPage extends BasePage {
     public void verifyShowOrHideSecurityQuestionAnswerFunction(){
         reporter.reportLog("Check the initial status");
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnShowAnswer);
-        if(getInputPasswordStatus(this.inputSecurityQuestionAnswer)){
-            reporter.reportLogPass("The input type is encrypted");
+        if(!getInputPasswordStatus(this.inputSecurityQuestionAnswer)){
+            reporter.reportLogPass("The input type is not encrypted");
         }
         else{
-            reporter.reportLogFailWithScreenshot("The input type is not encrypted");
+            reporter.reportLogFailWithScreenshot("The input type is encrypted");
         }
 
-        if(getShowButtonStatus(this.btnShowAnswer)){
-            reporter.reportLogPass("The button text is 'show'");
-        }
-        else{
-            reporter.reportLogFailWithScreenshot("The button text is not 'show'");
-        }
-
-        reporter.reportLog("Check the status after clicking the button");
-        this.getReusableActionsInstance().clickIfAvailable(this.btnShowAnswer);
-        this.waitForCondition(Driver->{return !getShowButtonStatus(this.inputSecurityQuestionAnswer);},5000);
-        if(!getInputPasswordStatus(this.btnShowAnswer)){
-            reporter.reportLogPass("The input type is text");
-        }
-        else{
-            reporter.reportLogFailWithScreenshot("The input type is not text");
-        }
-
-        if(!getShowButtonStatus(btnShowAnswer)){
+        if(!getShowButtonStatus(this.btnShowAnswer)){
             reporter.reportLogPass("The button text is 'hide'");
         }
         else{
             reporter.reportLogFailWithScreenshot("The button text is not 'hide'");
         }
+
+        reporter.reportLog("Check the status after clicking the button");
+        this.getReusableActionsInstance().clickIfAvailable(this.btnShowAnswer);
+        this.waitForCondition(Driver->{return getShowButtonStatus(this.btnShowAnswer);},5000);
+        if(getInputPasswordStatus(this.inputSecurityQuestionAnswer)){
+            reporter.reportLogPass("The input type is password type");
+        }
+        else{
+            reporter.reportLogFailWithScreenshot("The input type is text");
+        }
+
+        if(getShowButtonStatus(btnShowAnswer)){
+            reporter.reportLogPass("The button text is 'show'");
+        }
+        else{
+            reporter.reportLogFailWithScreenshot("The button text is not 'show'");
+        }
     }
 
+    /**
+     * To change user security question
+     * @param - String - customerEDP
+     * @param - String - accessToken
+     * @return - Map<String,Object> - contains selected question and answer
+     */
+    public Map<String,Object> changeUserSecurityQuestion(String customerEDP,String accessToken) throws IOException {
+        AccountAPI accountAPI=new AccountAPI();
+
+        List<SecurityQuestionResponse> securityQuestionList=accountAPI.getUserSecurityQuestionList(accessToken);
+        int count=securityQuestionList.size();
+
+        Random rand = new Random();
+        int randomNumber = rand.nextInt(count-1);
+
+        String lsOption=securityQuestionList.get(randomNumber).getQuestion();
+        int questionId=securityQuestionList.get(randomNumber).getQuestionId();
+
+        String lsAnswer;
+        if(lsOption.contains("born")){
+            lsAnswer="1950";
+        }
+        else{
+            lsAnswer="Answer";
+        }
+
+        accountAPI.setUserSecurityQuestionAnswer(customerEDP,accessToken,questionId,lsAnswer);
+
+        Map<String,Object> map=new HashMap<>();
+        map.put("SelectText",lsOption);
+        map.put("Answer",lsAnswer);
+
+        return map;
+    }
 
 }

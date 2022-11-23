@@ -427,6 +427,10 @@ public class OrderModificationPage extends BasePage {
 	public boolean checkProductItemStatusForFreeShippingExisting(WebElement orderItem){
 		WebElement itemContainer=orderItem.findElement(byProductItemStatusContainer);
 		List<WebElement> itemList=itemContainer.findElements(byProductItemStatus);
+		if(itemList.size()==0){
+			return false;
+		}
+
 		boolean bFind=false;
 		for(WebElement item:itemList){
 			if(this.checkChildElementExistingByAttribute(item,"class","boldBlackColor")){

@@ -497,6 +497,16 @@ import utils.ReusableActions;
 		JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
 		jse.executeScript("arguments[0].setAttribute(arguments[1],arguments[2]);", parent,lsAttribute,lsValue);
 	}
+
+	/**
+	 * This method will set element enabled.
+	 * @param-WebElement parent: parent element
+	 * @author Wei.Li
+	 */
+	public void setElementEnabled(WebElement parent) {
+		JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
+		jse.executeScript("arguments[0].disabled=false;", parent);
+	}
 	
 	/**
 	 * This method will return childElement.
