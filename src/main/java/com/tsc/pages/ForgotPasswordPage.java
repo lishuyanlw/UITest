@@ -270,6 +270,13 @@ public class ForgotPasswordPage extends BasePage {
     public void verifyInputNotRegisteredEmailPageContents() {
         String lsText;
 
+        try {
+            this.waitForCondition(Driver->{return lblNotRegisteredEmailHeaderTitle.isDisplayed();},60000);
+        }
+        catch (Exception ex){
+            this.applyStaticWait(5*this.getStaticWaitForApplication());
+        }
+
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblNotRegisteredEmailHeaderTitle);
         lsText = lblNotRegisteredEmailHeaderTitle.getText().trim();
         if(!lsText.isEmpty()) {
@@ -682,13 +689,6 @@ public class ForgotPasswordPage extends BasePage {
         } else {
             reporter.reportLogFailWithScreenshot("The Resend Password link text is not displaying correctly");
         }
-
-        lsText = lnkResendPassword.getAttribute("href");
-        if (!lsText.isEmpty()) {
-            reporter.reportLogPass("The Resend Password link is not empty");
-        } else {
-            reporter.reportLogFailWithScreenshot("The Resend Password link is empty");
-        }
     }
 
 
@@ -713,16 +713,21 @@ public class ForgotPasswordPage extends BasePage {
 
     /**
      * To go To Try Again Page With Not Registered Email
-     * @return - boolean
      */
-    public boolean goToTryAgainPageWithNotRegisteredEmail(){
+    public void goToTryAgainPageWithNotRegisteredEmail(){
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputEmail);
         this.inputEmail.clear();
         this.inputEmail.sendKeys("InvalidEmail@invalid.com");
 
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnContinue);
         this.getReusableActionsInstance().clickIfAvailable(this.btnContinue);
-        return this.waitForCondition(Driver->{return this.lblNotRegisteredEmailHeaderTitle.isDisplayed();},60000);
+
+        try{
+            this.waitForCondition(Driver->{return this.lblNotRegisteredEmailHeaderTitle.isDisplayed();},60000);
+        }
+        catch(Exception ex){
+            this.applyStaticWait(5*this.getStaticWaitForApplication());
+        }
     }
 
     /**
