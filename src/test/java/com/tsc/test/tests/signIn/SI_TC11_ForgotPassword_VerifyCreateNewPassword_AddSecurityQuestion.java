@@ -49,7 +49,7 @@ public class SI_TC11_ForgotPassword_VerifyCreateNewPassword_AddSecurityQuestion 
         reporter.reportLog("Go To Answer Security Questions Page With Registered Email");
         getForgotPasswordPageThreadLocal().goToAnswerSecurityQuestionsPageWithRegisteredEmail(email);
 
-        reporter.reportLog("Go To Rest Password Page");
+        reporter.reportLog("Go To Reset Password Page");
         getForgotPasswordPageThreadLocal().fillAnswerSecurityQuestionsForm(phoneNumber,postalCode,presetSecurityQuestionAnswer);
         getForgotPasswordPageThreadLocal().goToRestPasswordPage();
 

@@ -720,15 +720,20 @@ public class ForgotPasswordPage extends BasePage {
 
     /**
      * To go To Reset password Page
-     * @return - boolean
      */
-    public boolean goToRestPasswordPage(){
+    public void goToRestPasswordPage(){
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnResetPassword);
         this.setElementEnabled(this.btnResetPassword);
         this.applyStaticWait(3000);
         this.clickElement(this.btnResetPassword);
         //this.getReusableActionsInstance().clickIfAvailable(btnResetPassword);
-        return this.waitForCondition(Driver->{return this.lblCreateNewPasswordTitle.isDisplayed();},60000);
+        try{
+            this.waitForCondition(Driver->{return this.lblCreateNewPasswordTitle.isDisplayed();},60000);
+        }
+        catch (Exception ex){
+            this.applyStaticWait(5*this.getStaticWaitForApplication());
+        }
+
     }
 
     /**
