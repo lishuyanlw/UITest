@@ -9,6 +9,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
 
 import java.io.IOException;
+import java.sql.Driver;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -486,6 +487,12 @@ public class ForgotPasswordPage extends BasePage {
     public void verifyCreateNewPasswordPageContents() {
         String lsText;
 
+        try{
+            this.waitForCondition(Driver->{return lblCreateNewPasswordTitle.isDisplayed();},60000);
+        }
+        catch (Exception ex){
+            this.applyStaticWait(5*this.getStaticWaitForApplication());
+        }
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCreateNewPasswordTitle);
         lsText = lblCreateNewPasswordTitle.getText().trim();
         if(!lsText.isEmpty()) {
