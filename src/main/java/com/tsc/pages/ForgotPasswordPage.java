@@ -666,6 +666,13 @@ public class ForgotPasswordPage extends BasePage {
     public void verifySentEmailPageContents() {
         String lsText;
 
+        try{
+            this.waitForCondition(Driver->{return this.lblResetPasswordEmailHasBeenSent.isDisplayed();},60000);
+        }
+        catch (Exception ex){
+            this.applyStaticWait(5*this.getStaticWaitForApplication());
+        }
+
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblResetPasswordEmailHasBeenSent);
         lsText = lblResetPasswordEmailHasBeenSent.getText().trim();
         if (!lsText.isEmpty()) {
@@ -774,7 +781,7 @@ public class ForgotPasswordPage extends BasePage {
             this.waitForCondition(Driver->{return this.lblResetPasswordEmailHasBeenSent.isDisplayed();},60000);
         }
         catch (Exception ex){
-            this.applyStaticWait(5*this.getStaticWaitForApplication());
+            this.applyStaticWait(8*this.getStaticWaitForApplication());
         }
     }
 
