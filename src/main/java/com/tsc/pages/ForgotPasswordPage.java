@@ -681,16 +681,20 @@ public class ForgotPasswordPage extends BasePage {
     /**
      * To go To Answer Security Questions Page With Registered Email
      * @param - String - lsRegisteredEmail
-     * @return - boolean
      */
-    public boolean goToAnswerSecurityQuestionsPageWithRegisteredEmail(String lsRegisteredEmail){
+    public void goToAnswerSecurityQuestionsPageWithRegisteredEmail(String lsRegisteredEmail){
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.inputEmail);
         this.inputEmail.clear();
         this.inputEmail.sendKeys(lsRegisteredEmail);
 
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnContinue);
         this.getReusableActionsInstance().clickIfAvailable(this.btnContinue);
-        return this.waitForCondition(Driver->{return this.lblAnswerSecurityQuestionsHeaderTitle.isDisplayed();},60000);
+        try{
+            this.waitForCondition(Driver->{return this.lblAnswerSecurityQuestionsHeaderTitle.isDisplayed();},60000);
+        }
+        catch (Exception ex){
+            this.applyStaticWait(5*this.getStaticWaitForApplication());
+        }
     }
 
     /**
