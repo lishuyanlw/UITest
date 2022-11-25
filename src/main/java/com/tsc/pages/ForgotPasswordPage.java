@@ -569,6 +569,7 @@ public class ForgotPasswordPage extends BasePage {
     public void verifyAddSecurityQuestionPageContents() {
         String lsText;
 
+        this.waitForCondition(Driver->{return lblAddSecurityQuestionTitle.isDisplayed();},30000);
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddSecurityQuestionTitle);
         lsText = lblAddSecurityQuestionTitle.getText().trim();
         if(!lsText.isEmpty()) {
