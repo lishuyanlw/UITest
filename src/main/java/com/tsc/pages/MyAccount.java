@@ -821,6 +821,7 @@ public class MyAccount extends BasePage {
 	 * @return - String
 	 */
 	public String getFirstNameInHeader(){
+		this.waitForCondition(Driver->{return this.lblOrderDetailsHeaderUserName.isDisplayed();},60000);
 		return this.getElementInnerText(this.lblOrderDetailsHeaderUserName).split("’")[0];
 	}
 
