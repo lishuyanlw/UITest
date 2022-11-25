@@ -286,7 +286,7 @@ myAccount:
 lstTestName: ["MA_TC10_Payment_Options_Manage_Credit_Card",
               "MA_TC18_MyPreferences_MyNewsletters",
               "PD_TC",
-               "SC_TC"]
+              "SC_TC"]
 lblChromeBrowserVersion: "99"
 shoppingCart:
   lst_SearchKeywords:
