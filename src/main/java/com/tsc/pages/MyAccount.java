@@ -829,6 +829,7 @@ public class MyAccount extends BasePage {
 	 * @return - String
 	 */
 	public String getCustomerNumberInHeader(){
+		this.waitForCondition(Driver->{return this.lblOrderDetailsHeaderCustomerNumber.isDisplayed();},60000);
 		return this.getElementInnerText(this.lblOrderDetailsHeaderCustomerNumber);
 	}
 
