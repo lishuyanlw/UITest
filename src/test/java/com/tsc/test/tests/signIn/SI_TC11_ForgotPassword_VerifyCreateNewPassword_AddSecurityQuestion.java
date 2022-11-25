@@ -16,7 +16,7 @@ public class SI_TC11_ForgotPassword_VerifyCreateNewPassword_AddSecurityQuestion 
     /*
      * CER-924
      */
-    @Test(groups={"Regression","SignIn"})
+    @Test(groups={"Regression","SignIn","ForgotPassword"})
     public void SI_TC11_ForgotPassword_VerifyCreateNewPassword_AddSecurityQuestion() throws IOException {
         getGlobalFooterPageThreadLocal().closePopupDialog();
 

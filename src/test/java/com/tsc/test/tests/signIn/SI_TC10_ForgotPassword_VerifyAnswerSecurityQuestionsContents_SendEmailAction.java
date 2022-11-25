@@ -16,7 +16,7 @@ public class SI_TC10_ForgotPassword_VerifyAnswerSecurityQuestionsContents_SendEm
     /*
      * CER-923
      */
-    @Test(groups={"Regression","SignIn"})
+    @Test(groups={"Regression","SignIn","ForgotPassword"})
     public void SI_TC10_ForgotPassword_VerifyAnswerSecurityQuestionsContents_SendEmailAction() throws IOException {
         getGlobalFooterPageThreadLocal().closePopupDialog();
 
