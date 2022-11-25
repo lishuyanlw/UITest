@@ -999,7 +999,7 @@ public class ForgotPasswordPage extends BasePage {
         this.btnResetPasswordCancel.click();
 
         SignInPage signInPage=new SignInPage(this.getDriver());
-        this.waitForCondition(Driver->{return signInPage.lblSignIn.isDisplayed();},60000);
+        this.waitForCondition(Driver->{return signInPage.lblSignIn.isDisplayed();},120000);
         String lsExpectedUrl=this.getBaseURL()+lsExpectedUrlFromYml;
         String lsNavigatedUrl=this.URL();
         if(lsNavigatedUrl.equalsIgnoreCase(lsExpectedUrl)){
