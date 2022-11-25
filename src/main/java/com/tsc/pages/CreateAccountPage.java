@@ -649,7 +649,7 @@ public class CreateAccountPage extends BasePage {
         this.inputPhoneNumber1.click();
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSave);
         this.clickElement(this.btnSave);
-        waitForCondition(Driver->{return lstAllErrorMessage.size()>0;},60000);
+        waitForCondition(Driver->{return lstAllErrorMessage.size()>0;},120000);
         this.applyStaticWait(3*this.getStaticWaitForApplication());
         this.clickElement(this.btnSave);
         this.applyStaticWait(this.getStaticWaitForApplication());

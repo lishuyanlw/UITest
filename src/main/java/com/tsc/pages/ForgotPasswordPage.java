@@ -271,10 +271,10 @@ public class ForgotPasswordPage extends BasePage {
         String lsText;
 
         try {
-            this.waitForCondition(Driver->{return lblNotRegisteredEmailHeaderTitle.isDisplayed();},60000);
+            this.waitForCondition(Driver->{return lblNotRegisteredEmailHeaderTitle.isDisplayed();},120000);
         }
         catch (Exception ex){
-            this.applyStaticWait(5*this.getStaticWaitForApplication());
+            this.applyStaticWait(15*this.getStaticWaitForApplication());
         }
 
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblNotRegisteredEmailHeaderTitle);
@@ -495,10 +495,10 @@ public class ForgotPasswordPage extends BasePage {
         String lsText;
 
         try{
-            this.waitForCondition(Driver->{return lblCreateNewPasswordTitle.isDisplayed();},60000);
+            this.waitForCondition(Driver->{return lblCreateNewPasswordTitle.isDisplayed();},120000);
         }
         catch (Exception ex){
-            this.applyStaticWait(5*this.getStaticWaitForApplication());
+            this.applyStaticWait(15*this.getStaticWaitForApplication());
         }
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCreateNewPasswordTitle);
         lsText = lblCreateNewPasswordTitle.getText().trim();
@@ -587,7 +587,7 @@ public class ForgotPasswordPage extends BasePage {
             this.waitForCondition(Driver->{return lblAddSecurityQuestionTitle.isDisplayed();},5000);
         }
         catch (Exception ex){
-            this.applyStaticWait(5*this.getStaticWaitForApplication());
+            this.applyStaticWait(15*this.getStaticWaitForApplication());
         }
 
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddSecurityQuestionTitle);
@@ -667,7 +667,7 @@ public class ForgotPasswordPage extends BasePage {
         String lsText;
 
         try{
-            this.waitForCondition(Driver->{return this.lblResetPasswordEmailHasBeenSent.isDisplayed();},60000);
+            this.waitForCondition(Driver->{return this.lblResetPasswordEmailHasBeenSent.isDisplayed();},120000);
         }
         catch (Exception ex){
             this.applyStaticWait(15*this.getStaticWaitForApplication());
@@ -703,10 +703,10 @@ public class ForgotPasswordPage extends BasePage {
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnContinue);
         this.getReusableActionsInstance().clickIfAvailable(this.btnContinue);
         try{
-            this.waitForCondition(Driver->{return this.lblAnswerSecurityQuestionsHeaderTitle.isDisplayed();},60000);
+            this.waitForCondition(Driver->{return this.lblAnswerSecurityQuestionsHeaderTitle.isDisplayed();},120000);
         }
         catch (Exception ex){
-            this.applyStaticWait(5*this.getStaticWaitForApplication());
+            this.applyStaticWait(15*this.getStaticWaitForApplication());
         }
     }
 
@@ -722,10 +722,10 @@ public class ForgotPasswordPage extends BasePage {
         this.getReusableActionsInstance().clickIfAvailable(this.btnContinue);
 
         try{
-            this.waitForCondition(Driver->{return this.lblNotRegisteredEmailHeaderTitle.isDisplayed();},60000);
+            this.waitForCondition(Driver->{return this.lblNotRegisteredEmailHeaderTitle.isDisplayed();},120000);
         }
         catch(Exception ex){
-            this.applyStaticWait(5*this.getStaticWaitForApplication());
+            this.applyStaticWait(15*this.getStaticWaitForApplication());
         }
     }
 
@@ -739,10 +739,10 @@ public class ForgotPasswordPage extends BasePage {
         this.clickElement(this.btnResetPassword);
         //this.getReusableActionsInstance().clickIfAvailable(btnResetPassword);
         try{
-            this.waitForCondition(Driver->{return this.lblCreateNewPasswordTitle.isDisplayed();},60000);
+            this.waitForCondition(Driver->{return this.lblCreateNewPasswordTitle.isDisplayed();},120000);
         }
         catch (Exception ex){
-            this.applyStaticWait(5*this.getStaticWaitForApplication());
+            this.applyStaticWait(15*this.getStaticWaitForApplication());
         }
 
     }
@@ -755,10 +755,10 @@ public class ForgotPasswordPage extends BasePage {
         this.getReusableActionsInstance().clickIfAvailable(btnCreateNewPassword);
 
         try{
-            this.waitForCondition(Driver->{return this.lblAddSecurityQuestionTitle.isDisplayed();},60000);
+            this.waitForCondition(Driver->{return this.lblAddSecurityQuestionTitle.isDisplayed();},120000);
         }
         catch (Exception ex){
-            this.applyStaticWait(5*this.getStaticWaitForApplication());
+            this.applyStaticWait(15*this.getStaticWaitForApplication());
         }
 
     }
@@ -770,7 +770,7 @@ public class ForgotPasswordPage extends BasePage {
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSendEmail);
         this.getReusableActionsInstance().clickIfAvailable(btnSendEmail);
         try{
-            this.waitForCondition(Driver->{return this.lblResetPasswordEmailHasBeenSent.isDisplayed();},60000);
+            this.waitForCondition(Driver->{return this.lblResetPasswordEmailHasBeenSent.isDisplayed();},120000);
         }
         catch (Exception ex){
             this.applyStaticWait(15*this.getStaticWaitForApplication());
@@ -786,7 +786,7 @@ public class ForgotPasswordPage extends BasePage {
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnEmailInputCancel);
         this.btnEmailInputCancel.click();
 
-        this.waitForCondition(Driver->{return !this.URL().equalsIgnoreCase(lsUrlBeforeClicking);},60000);
+        this.waitForCondition(Driver->{return !this.URL().equalsIgnoreCase(lsUrlBeforeClicking);},120000);
         String lsExpectedUrl=this.getBaseURL()+lsUrlForSignInFromYml;
         String lsNavigatedUrl=this.URL();
         if(lsNavigatedUrl.equalsIgnoreCase(lsExpectedUrl)){
@@ -804,7 +804,7 @@ public class ForgotPasswordPage extends BasePage {
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnTryAgain);
         this.btnTryAgain.click();
 
-        this.waitForCondition(Driver->{return this.lblResetPasswordHeaderTitle.isDisplayed();},60000);
+        this.waitForCondition(Driver->{return this.lblResetPasswordHeaderTitle.isDisplayed();},120000);
         if(this.lblResetPasswordHeaderTitle.isDisplayed()){
             reporter.reportLogPass("To be navigated back to Forgot password page after clicking Try again button successfully");
         }
@@ -855,7 +855,7 @@ public class ForgotPasswordPage extends BasePage {
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnCreateNewAccount);
         this.btnCreateNewAccount.click();
 
-        this.waitForCondition(Driver->{return !this.URL().equalsIgnoreCase(lsUrlBeforeClicking);},60000);
+        this.waitForCondition(Driver->{return !this.URL().equalsIgnoreCase(lsUrlBeforeClicking);},120000);
         String lsExpectedUrl=this.getBaseURL()+lsExpectedUrlFromYml;
         String lsNavigatedUrl=this.URL();
         if(lsNavigatedUrl.equalsIgnoreCase(lsExpectedUrl)){
@@ -875,7 +875,7 @@ public class ForgotPasswordPage extends BasePage {
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnTransferMyPhoneAccount);
         this.btnTransferMyPhoneAccount.click();
 
-        this.waitForCondition(Driver->{return !this.URL().equalsIgnoreCase(lsUrlBeforeClicking);},60000);
+        this.waitForCondition(Driver->{return !this.URL().equalsIgnoreCase(lsUrlBeforeClicking);},120000);
         String lsExpectedUrl=this.getBaseURL()+lsExpectedUrlFromYml;
         String lsNavigatedUrl=this.URL();
         if(lsNavigatedUrl.equalsIgnoreCase(lsExpectedUrl)){
@@ -1022,7 +1022,7 @@ public class ForgotPasswordPage extends BasePage {
 
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnContinue);
         this.btnContinue.click();
-        this.waitForCondition(Driver->{return lblEmailRequiredErrorMessage.isDisplayed(); },60000);
+        this.waitForCondition(Driver->{return lblEmailRequiredErrorMessage.isDisplayed(); },120000);
 
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblEmailRequiredErrorMessage);
         String lsText=lblEmailRequiredErrorMessage.getText().trim();
@@ -1040,7 +1040,7 @@ public class ForgotPasswordPage extends BasePage {
 
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnContinue);
         this.btnContinue.click();
-        this.waitForCondition(Driver->{return lblEmailRequiredErrorMessage.isDisplayed(); },60000);
+        this.waitForCondition(Driver->{return lblEmailRequiredErrorMessage.isDisplayed(); },120000);
 
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblEmailRequiredErrorMessage);
         lsText=lblEmailRequiredErrorMessage.getText().trim();
@@ -1059,7 +1059,7 @@ public class ForgotPasswordPage extends BasePage {
     public void verifyErrorMessagesForBlankAnswersForSecurityQuestions(List<String> lstErrorMessageFromYml){
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnResetPassword);
         btnResetPassword.click();
-        waitForCondition(Driver->{return lstAllErrorMessageForSecurityQuestions.size()>0;},60000);
+        waitForCondition(Driver->{return lstAllErrorMessageForSecurityQuestions.size()>0;},120000);
 
         String lsActual,lsExpected;
         WebElement item;
@@ -1119,7 +1119,7 @@ public class ForgotPasswordPage extends BasePage {
         this.applyStaticWait(3000);
         this.clickElement(btnResetPassword);
         //btnResetPassword.click();
-        this.waitForCondition(Driver->{return lstAllErrorMessageForSecurityQuestions.size()>0;},60000);
+        this.waitForCondition(Driver->{return lstAllErrorMessageForSecurityQuestions.size()>0;},120000);
         this.applyStaticWait(3*this.getStaticWaitForApplication());
 
         WebElement item=lstAllErrorMessageForSecurityQuestions.get(0);
@@ -1140,7 +1140,7 @@ public class ForgotPasswordPage extends BasePage {
     public void verifyErrorMessagesForBlankPasswordInput(List<String> lstErrorMessageFromYml){
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnCreateNewPassword);
         this.btnCreateNewPassword.click();
-        waitForCondition(Driver->{return lstAllErrorMessageForPasswordInput.size()>0;},60000);
+        waitForCondition(Driver->{return lstAllErrorMessageForPasswordInput.size()>0;},120000);
 
         String lsActual,lsExpected;
         WebElement item;
@@ -1176,7 +1176,7 @@ public class ForgotPasswordPage extends BasePage {
 
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnCreateNewPassword);
         this.btnCreateNewPassword.click();
-        waitForCondition(Driver->{return lstAllErrorMessageForPasswordInput.size()>0;},60000);
+        waitForCondition(Driver->{return lstAllErrorMessageForPasswordInput.size()>0;},120000);
         this.applyStaticWait(this.getStaticWaitForApplication());
 
         WebElement item=lstAllErrorMessageForPasswordInput.get(0);

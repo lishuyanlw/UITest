@@ -366,7 +366,7 @@ public class GlobalHeaderPage extends BasePage{
 		getReusableActionsInstance().javascriptScrollByVisibleElement(lnkTSClogo);
 		getReusableActionsInstance().clickIfAvailable(lnkTSClogo);
 		getReusableActionsInstance().waitForPageLoad();
-		waitForCondition(Driver->{return this.searchBox.isEnabled() && this.searchBox.isDisplayed();},60000);
+		waitForCondition(Driver->{return this.searchBox.isEnabled() && this.searchBox.isDisplayed();},120000);
 	}
 
 	//Search box visible
@@ -831,14 +831,14 @@ public class GlobalHeaderPage extends BasePage{
 	 */
 	public String getHeadingForLandingPage() {
 		this.waitForPageLoad();
-		waitForCondition(Driver->{return (this.lblPageTitleCategorySection.isDisplayed());},60000);
+		waitForCondition(Driver->{return (this.lblPageTitleCategorySection.isDisplayed());},120000);
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblPageTitleCategorySection);
 		//this static wait is necessary because even after applying wait above, page refreshes for mobile
 		this.getReusableActionsInstance().staticWait(1000);
 		getReusableActionsInstance().scrollToElement(this.lblPageTitleCategorySection);
 		String title = this.getElementInnerText(this.lblPageTitleCategorySection);
 		reporter.reportLog("Title of page is: "+title);
-		waitForCondition(Driver->{return !title.isEmpty();},60000);
+		waitForCondition(Driver->{return !title.isEmpty();},120000);
 		return title;
 	}
 

@@ -917,7 +917,7 @@ public class ProductDetailPage extends BasePage {
 	 * @author Wei.Li
 	 */
 	public boolean productTrueFitIframeLoading() {
-		return waitForCondition(Driver->{return !this.iframeProductTrueFitLoadingIndicator.getAttribute("style").contains("display: block;");},60000);
+		return waitForCondition(Driver->{return !this.iframeProductTrueFitLoadingIndicator.getAttribute("style").contains("display: block;");},120000);
 	}
 
 	/**
@@ -3020,7 +3020,7 @@ public class ProductDetailPage extends BasePage {
 
 		}
 
-		this.waitForCondition(Driver->{return this.lblProductName.isDisplayed();},60000);
+		this.waitForCondition(Driver->{return this.lblProductName.isDisplayed();},120000);
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavIcon);
 		this.clickElement(this.lnkFavIcon);
@@ -3051,7 +3051,7 @@ public class ProductDetailPage extends BasePage {
 
 		}
 
-		this.waitForCondition(Driver->{return this.lblProductName.isDisplayed();},60000);
+		this.waitForCondition(Driver->{return this.lblProductName.isDisplayed();},120000);
 	}
 
 	/**

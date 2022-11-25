@@ -400,7 +400,7 @@ public class OrderModificationPage_Mobile extends OrderModificationPage {
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnModifyOrderCancelModificationButton);
 		btnModifyOrderCancelModificationButton.click();
-		this.waitForCondition(Driver->{return (new MyAccount(this.getDriver())).inputAccountOrderSearch.isDisplayed();},60000);
+		this.waitForCondition(Driver->{return (new MyAccount(this.getDriver())).inputAccountOrderSearch.isDisplayed();},120000);
 
 		if(this.URL().equalsIgnoreCase(lsExpectedUrl)){
 			reporter.reportLogPass("Navigated to order status page after clicking cancel modification button.");

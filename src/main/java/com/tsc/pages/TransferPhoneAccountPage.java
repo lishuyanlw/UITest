@@ -509,7 +509,7 @@ public class TransferPhoneAccountPage extends BasePage {
 		this.inputPhoneNumber2.click();
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnCreateAccount);
 		this.clickElement(this.btnCreateAccount);
-		waitForCondition(Driver->{return lstAllErrorMessage.size()>0;},60000);
+		waitForCondition(Driver->{return lstAllErrorMessage.size()>0;},120000);
 		this.applyStaticWait(3*this.getStaticWaitForApplication());
 		this.clickElement(this.btnCreateAccount);
 		this.applyStaticWait(this.getStaticWaitForApplication());

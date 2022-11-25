@@ -4341,7 +4341,7 @@ public class RegularCheckoutPage extends BasePage {
 	 */
 	public boolean waitForPageLoadingSpinningStatusCompleted(){
 		try{
-			this.waitForCondition(Driver->{return !this.checkChildElementExistingByAttribute(this.cntFooterContainer,"class","loading__overlay");},60000);
+			this.waitForCondition(Driver->{return !this.checkChildElementExistingByAttribute(this.cntFooterContainer,"class","loading__overlay");},120000);
 		}
 		catch(Exception e){
 			this.applyStaticWait(30*this.getStaticWaitForApplication());

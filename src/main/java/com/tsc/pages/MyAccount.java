@@ -821,7 +821,7 @@ public class MyAccount extends BasePage {
 	 * @return - String
 	 */
 	public String getFirstNameInHeader(){
-		this.waitForCondition(Driver->{return this.lblOrderDetailsHeaderUserName.isDisplayed();},60000);
+		this.waitForCondition(Driver->{return this.lblOrderDetailsHeaderUserName.isDisplayed();},120000);
 		return this.getElementInnerText(this.lblOrderDetailsHeaderUserName).split("’")[0];
 	}
 
@@ -830,7 +830,7 @@ public class MyAccount extends BasePage {
 	 * @return - String
 	 */
 	public String getCustomerNumberInHeader(){
-		this.waitForCondition(Driver->{return this.lblOrderDetailsHeaderCustomerNumber.isDisplayed();},60000);
+		this.waitForCondition(Driver->{return this.lblOrderDetailsHeaderCustomerNumber.isDisplayed();},120000);
 		return this.getElementInnerText(this.lblOrderDetailsHeaderCustomerNumber);
 	}
 
@@ -5345,7 +5345,7 @@ public class MyAccount extends BasePage {
 			return false;
 		}
 		btnOrderDetailsHeaderEditOrder.click();
-		return this.waitForCondition(Driver->{return (new OrderModificationPage(this.getDriver())).lblModifyOrderHeaderTitle.isDisplayed();},60000);
+		return this.waitForCondition(Driver->{return (new OrderModificationPage(this.getDriver())).lblModifyOrderHeaderTitle.isDisplayed();},120000);
 	}
 
 	/**
@@ -5419,7 +5419,7 @@ public class MyAccount extends BasePage {
 	 * @param - String - myAccountOrderStatusURL
 	 */
 	public String editPlacedOrderForUser(PlaceOrderResponse placeOrderObject,String myAccountOrderStatusURL){
-		//https://qa-tsc.tsc.ca/pages/myaccount/orderstatus?orderNo=Z40584060000
+		//https://qa-tsc.tsc.ca/pages/myaccount/orderstatus?orderNo=Z405840120000
 		String orderNumber = placeOrderObject.getOrderedCart().getOrderSummary().getOrderNo();
 		int orderNumberLength = orderNumber.length();
 		if(orderNumberLength<12){
