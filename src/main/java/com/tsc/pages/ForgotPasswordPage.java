@@ -688,14 +688,6 @@ public class ForgotPasswordPage extends BasePage {
         } else {
             reporter.reportLogFailWithScreenshot("The Reset Password Sub Contents is not displaying correctly");
         }
-
-        this.getReusableActionsInstance().javascriptScrollByVisibleElement(lnkResendPassword);
-        lsText = lnkResendPassword.getText().trim();
-        if (!lsText.isEmpty()) {
-            reporter.reportLogPass("The Resend Password link text is displaying correctly");
-        } else {
-            reporter.reportLogFailWithScreenshot("The Resend Password link text is not displaying correctly");
-        }
     }
 
 
