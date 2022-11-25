@@ -738,22 +738,32 @@ public class ForgotPasswordPage extends BasePage {
 
     /**
      * To go To Add Security Question For New Password Page
-     * @return - boolean
      */
-    public boolean goToAddSecurityQuestionForNewPasswordPage(){
+    public void goToAddSecurityQuestionForNewPasswordPage(){
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnCreateNewPassword);
         this.getReusableActionsInstance().clickIfAvailable(btnCreateNewPassword);
-        return this.waitForCondition(Driver->{return this.lblAddSecurityQuestionTitle.isDisplayed();},60000);
+
+        try{
+            this.waitForCondition(Driver->{return this.lblAddSecurityQuestionTitle.isDisplayed();},60000);
+        }
+        catch (Exception ex){
+            this.applyStaticWait(5*this.applyStaticWait(););
+        }
+
     }
 
     /**
      * To go To send Email Page
-     * @return - boolean
      */
-    public boolean goToSendEmailPage(){
+    public void goToSendEmailPage(){
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSendEmail);
         this.getReusableActionsInstance().clickIfAvailable(btnSendEmail);
-        return this.waitForCondition(Driver->{return this.lblResetPasswordEmailHasBeenSent.isDisplayed();},60000);
+        try{
+            this.waitForCondition(Driver->{return this.lblResetPasswordEmailHasBeenSent.isDisplayed();},60000);
+        }
+        catch (Exception ex){
+            this.applyStaticWait(5*this.applyStaticWait(););
+        }
     }
 
     /**
