@@ -681,8 +681,8 @@ public class ForgotPasswordPage extends BasePage {
             reporter.reportLogFailWithScreenshot("The sent email message is not displaying correctly");
         }
 
-        this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblResetPasswordSubContents);
-        lsText = lblResetPasswordSubContents.getText().trim();
+//        this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblResetPasswordSubContents);
+        lsText = this.getElementInnerText(lblResetPasswordSubContents);
         if (!lsText.isEmpty()) {
             reporter.reportLogPass("The Reset Password Sub Contents is displaying correctly");
         } else {
