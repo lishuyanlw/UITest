@@ -1239,21 +1239,28 @@ public class ForgotPasswordPage extends BasePage {
             reporter.reportLogFailWithScreenshot("The button text is not 'show'");
         }
 
-        reporter.reportLog("Check the status after clicking the button");
-        this.getReusableActionsInstance().clickIfAvailable(this.btnShowNewPassword);
-        this.waitForCondition(Driver->{return !getShowButtonStatus(this.btnShowNewPassword);},5000);
-        if(!getInputPasswordStatus(this.inputNewPassword)){
-            reporter.reportLogPass("The input type is text");
-        }
-        else{
-            reporter.reportLogFailWithScreenshot("The input type is not text");
-        }
+        if(!(System.getProperty("Browser").contains("ios") ||
+                (System.getProperty("chromeMobileDevice").length()>0
+                        && (System.getProperty("chromeMobileDevice").contains("iPad"))))) {
+            reporter.reportLog("Check the status after clicking the button");
+            this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnShowNewPassword);
+            this.setElementEnabled(this.btnShowNewPassword);
+            this.applyStaticWait(300);
+            this.clickElement(this.btnShowNewPassword);
+            this.waitForCondition(Driver->{return !getShowButtonStatus(this.btnShowNewPassword);},5000);
+            if(!getInputPasswordStatus(this.inputNewPassword)){
+                reporter.reportLogPass("The input type is text");
+            }
+            else{
+                reporter.reportLogFailWithScreenshot("The input type is not text");
+            }
 
-        if(!getShowButtonStatus(btnShowNewPassword)){
-            reporter.reportLogPass("The button text is 'hide'");
-        }
-        else{
-            reporter.reportLogFailWithScreenshot("The button text is not 'hide'");
+            if(!getShowButtonStatus(btnShowNewPassword)){
+                reporter.reportLogPass("The button text is 'hide'");
+            }
+            else{
+                reporter.reportLogFailWithScreenshot("The button text is not 'hide'");
+            }
         }
 
         reporter.reportLog("Check confirmed password");
@@ -1273,21 +1280,28 @@ public class ForgotPasswordPage extends BasePage {
             reporter.reportLogFailWithScreenshot("The button text is not 'show'");
         }
 
-        reporter.reportLog("Check the status after clicking the button");
-        this.getReusableActionsInstance().clickIfAvailable(this.btnShowConfirmNewPassword);
-        this.waitForCondition(Driver->{return !getShowButtonStatus(this.btnShowConfirmNewPassword);},5000);
-        if(!getInputPasswordStatus(this.inputConfirmNewPassword)){
-            reporter.reportLogPass("The input type is text");
-        }
-        else{
-            reporter.reportLogFailWithScreenshot("The input type is not text");
-        }
+        if(!(System.getProperty("Browser").contains("ios") ||
+                (System.getProperty("chromeMobileDevice").length()>0
+                        && (System.getProperty("chromeMobileDevice").contains("iPad"))))) {
+            reporter.reportLog("Check the status after clicking the button");
+            this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnShowConfirmNewPassword);
+            this.setElementEnabled(this.btnShowConfirmNewPassword);
+            this.applyStaticWait(300);
+            this.clickElement(this.btnShowConfirmNewPassword);
+            this.waitForCondition(Driver->{return !getShowButtonStatus(this.btnShowConfirmNewPassword);},5000);
+            if(!getInputPasswordStatus(this.inputConfirmNewPassword)){
+                reporter.reportLogPass("The input type is text");
+            }
+            else{
+                reporter.reportLogFailWithScreenshot("The input type is not text");
+            }
 
-        if(!getShowButtonStatus(this.btnShowConfirmNewPassword)){
-            reporter.reportLogPass("The button text is 'hide'");
-        }
-        else{
-            reporter.reportLogFailWithScreenshot("The button text is not 'hide'");
+            if(!getShowButtonStatus(this.btnShowConfirmNewPassword)){
+                reporter.reportLogPass("The button text is 'hide'");
+            }
+            else{
+                reporter.reportLogFailWithScreenshot("The button text is not 'hide'");
+            }
         }
     }
 
@@ -1311,21 +1325,25 @@ public class ForgotPasswordPage extends BasePage {
             reporter.reportLogFailWithScreenshot("The button text is not 'hide'");
         }
 
-        reporter.reportLog("Check the status after clicking the button");
-        this.getReusableActionsInstance().clickIfAvailable(this.btnShowAnswer);
-        this.waitForCondition(Driver->{return getShowButtonStatus(this.btnShowAnswer);},5000);
-        if(getInputPasswordStatus(this.inputSecurityQuestionAnswer)){
-            reporter.reportLogPass("The input type is password type");
-        }
-        else{
-            reporter.reportLogFailWithScreenshot("The input type is text");
-        }
+        if(!(System.getProperty("Browser").contains("ios") ||
+                (System.getProperty("chromeMobileDevice").length()>0
+                        && (System.getProperty("chromeMobileDevice").contains("iPad"))))) {
+            reporter.reportLog("Check the status after clicking the button");
+            this.getReusableActionsInstance().clickIfAvailable(this.btnShowAnswer);
+            this.waitForCondition(Driver->{return getShowButtonStatus(this.btnShowAnswer);},5000);
+            if(getInputPasswordStatus(this.inputSecurityQuestionAnswer)){
+                reporter.reportLogPass("The input type is password type");
+            }
+            else{
+                reporter.reportLogFailWithScreenshot("The input type is text");
+            }
 
-        if(getShowButtonStatus(btnShowAnswer)){
-            reporter.reportLogPass("The button text is 'show'");
-        }
-        else{
-            reporter.reportLogFailWithScreenshot("The button text is not 'show'");
+            if(getShowButtonStatus(btnShowAnswer)){
+                reporter.reportLogPass("The button text is 'show'");
+            }
+            else{
+                reporter.reportLogFailWithScreenshot("The button text is not 'show'");
+            }
         }
     }
 
