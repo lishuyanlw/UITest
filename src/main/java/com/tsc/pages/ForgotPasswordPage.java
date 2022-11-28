@@ -995,7 +995,9 @@ public class ForgotPasswordPage extends BasePage {
      */
     public void verifyClickingCancelButtonOnAnswerSecurityQuestionPage(String lsExpectedUrlFromYml){
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnResetPasswordCancel);
-        this.btnResetPasswordCancel.click();
+        this.setElementEnabled(this.btnResetPasswordCancel);
+        this.applyStaticWait(300);
+        this.clickElement(this.btnResetPasswordCancel);
 
         SignInPage signInPage=new SignInPage(this.getDriver());
         this.waitForCondition(Driver->{return signInPage.lblSignIn.isDisplayed();},120000);
