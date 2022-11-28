@@ -1326,7 +1326,10 @@ public class ForgotPasswordPage extends BasePage {
         }
 
         reporter.reportLog("Check the status after clicking the button");
-        this.getReusableActionsInstance().clickIfAvailable(this.btnShowAnswer);
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnShowAnswer);
+        this.setElementEnabled(this.btnShowAnswer);
+        this.applyStaticWait(300);
+        this.clickElement(this.btnShowAnswer);
         this.waitForCondition(Driver->{return getShowButtonStatus(this.btnShowAnswer);},60000);
         if(getInputPasswordStatus(this.inputSecurityQuestionAnswer)){
             reporter.reportLogPass("The input type is password type");
