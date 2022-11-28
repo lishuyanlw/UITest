@@ -1325,46 +1325,29 @@ public class ForgotPasswordPage extends BasePage {
             reporter.reportLogFailWithScreenshot("The button text is not 'hide'");
         }
 
-        reporter.reportLog("Check the status after clicking the button");
-        this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnShowAnswer);
-        this.setElementEnabled(this.btnShowAnswer);
-        this.applyStaticWait(300);
-        this.clickElement(this.btnShowAnswer);
-        this.waitForCondition(Driver->{return getShowButtonStatus(this.btnShowAnswer);},60000);
-        if(getInputPasswordStatus(this.inputSecurityQuestionAnswer)){
-            reporter.reportLogPass("The input type is password type");
-        }
-        else{
-            reporter.reportLogFailWithScreenshot("The input type is text");
-        }
+        if(!(System.getProperty("Browser").contains("ios") ||
+                (System.getProperty("chromeMobileDevice").length()>0
+                        && (System.getProperty("chromeMobileDevice").contains("iPad"))))) {
+            reporter.reportLog("Check the status after clicking the button");
+            this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnShowAnswer);
+            this.setElementEnabled(this.btnShowAnswer);
+            this.applyStaticWait(300);
+            this.clickElement(this.btnShowAnswer);
+            this.waitForCondition(Driver->{return getShowButtonStatus(this.btnShowAnswer);},60000);
+            if(getInputPasswordStatus(this.inputSecurityQuestionAnswer)){
+                reporter.reportLogPass("The input type is password type");
+            }
+            else{
+                reporter.reportLogFailWithScreenshot("The input type is text");
+            }
 
-        if(getShowButtonStatus(btnShowAnswer)){
-            reporter.reportLogPass("The button text is 'show'");
+            if(getShowButtonStatus(btnShowAnswer)){
+                reporter.reportLogPass("The button text is 'show'");
+            }
+            else{
+                reporter.reportLogFailWithScreenshot("The button text is not 'show'");
+            }
         }
-        else{
-            reporter.reportLogFailWithScreenshot("The button text is not 'show'");
-        }
-
-//        if(!(System.getProperty("Browser").contains("ios") ||
-//                (System.getProperty("chromeMobileDevice").length()>0
-//                        && (System.getProperty("chromeMobileDevice").contains("iPad"))))) {
-//            reporter.reportLog("Check the status after clicking the button");
-//            this.getReusableActionsInstance().clickIfAvailable(this.btnShowAnswer);
-//            this.waitForCondition(Driver->{return getShowButtonStatus(this.btnShowAnswer);},60000);
-//            if(getInputPasswordStatus(this.inputSecurityQuestionAnswer)){
-//                reporter.reportLogPass("The input type is password type");
-//            }
-//            else{
-//                reporter.reportLogFailWithScreenshot("The input type is text");
-//            }
-//
-//            if(getShowButtonStatus(btnShowAnswer)){
-//                reporter.reportLogPass("The button text is 'show'");
-//            }
-//            else{
-//                reporter.reportLogFailWithScreenshot("The button text is not 'show'");
-//            }
-//        }
     }
 
     /**
