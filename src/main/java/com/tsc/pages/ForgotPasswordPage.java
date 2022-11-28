@@ -332,6 +332,13 @@ public class ForgotPasswordPage extends BasePage {
     public void verifySecurityQuestionsAndResetByEmailContentsByInputRegisteredEmail() {
         String lsText;
 
+        try {
+            this.waitForCondition(Driver->{return lblAnswerSecurityQuestionsHeaderTitle.isDisplayed();},12000);
+        }
+        catch (Exception ex){
+            this.applyStaticWait(8*this.getStaticWaitForApplication());
+        }
+
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAnswerSecurityQuestionsHeaderTitle);
         lsText = lblAnswerSecurityQuestionsHeaderTitle.getText().trim();
         if(!lsText.isEmpty()) {
