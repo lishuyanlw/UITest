@@ -15,7 +15,7 @@ public class SI_TC09_ForgotPassword_VerifyInputEmail_TryAgainPageContents extend
     /*
      * CER-919
      */
-    @Test(groups={"Regression","SignIn"})
+    @Test(groups={"Regression","SignIn","ForgotPassword"})
     public void SI_TC09_ForgotPassword_VerifyInputEmail_TryAgainPageContents() throws IOException {
         getGlobalFooterPageThreadLocal().closePopupDialog();
 
