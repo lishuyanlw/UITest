@@ -501,7 +501,7 @@ public class ForgotPasswordPage extends BasePage {
         String lsText;
 
         try{
-            this.waitForCondition(Driver->{return lblCreateNewPasswordTitle.isDisplayed();},120000);
+            this.waitForCondition(Driver->{return lblCreateNewPasswordTitle.isDisplayed();},8000);
             this.applyStaticWait(this.getStaticWaitForApplication());
         }
         catch (Exception ex){
