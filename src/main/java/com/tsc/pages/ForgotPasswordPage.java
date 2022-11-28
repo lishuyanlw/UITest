@@ -965,14 +965,18 @@ public class ForgotPasswordPage extends BasePage {
 
     /**
      * To clicking Save Button On Add Security Question Page
-     * @return - boolean
      */
-    public boolean clickingSaveButtonOnAddSecurityQuestionPage(){
+    public void clickingSaveButtonOnAddSecurityQuestionPage(){
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSaveAndContinue);
         this.getReusableActionsInstance().clickIfAvailable(this.btnSaveAndContinue);
         MyAccount myAccount=new MyAccount(this.getDriver());
 
-        return this.waitForCondition(Driver->{return myAccount.lblMyAccountHeaderTitle.isDisplayed();},120000);
+        try{
+            this.waitForCondition(Driver->{return myAccount.lblMyAccountHeaderTitle.isDisplayed();},120000);
+        }
+        catch(Exception ex){
+            this.applyStaticWait(8*this.getStaticWaitForApplication());
+        }
     }
 
     /**
