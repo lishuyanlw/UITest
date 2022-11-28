@@ -51,7 +51,7 @@ public class SI_TC11_ForgotPassword_VerifyCreateNewPassword_AddSecurityQuestion 
 
         reporter.reportLog("Go To Reset Password Page");
         getForgotPasswordPageThreadLocal().fillAnswerSecurityQuestionsForm(phoneNumber,postalCode,presetSecurityQuestionAnswer);
-        getForgotPasswordPageThreadLocal().goToRestPasswordPage();
+        getForgotPasswordPageThreadLocal().goToResetPasswordPage();
 
         reporter.reportLog("Verify Create New Password Page Contents");
         getForgotPasswordPageThreadLocal().verifyCreateNewPasswordPageContents();

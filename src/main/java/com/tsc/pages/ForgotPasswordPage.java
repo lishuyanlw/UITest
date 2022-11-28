@@ -9,7 +9,6 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
 
 import java.io.IOException;
-import java.sql.Driver;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -741,7 +740,7 @@ public class ForgotPasswordPage extends BasePage {
     /**
      * To go To Reset password Page
      */
-    public void goToRestPasswordPage(){
+    public void goToResetPasswordPage(){
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnResetPassword);
         this.setElementEnabled(this.btnResetPassword);
         this.applyStaticWait(3000);
@@ -751,7 +750,7 @@ public class ForgotPasswordPage extends BasePage {
             this.waitForCondition(Driver->{return this.lblCreateNewPasswordTitle.isDisplayed();},120000);
         }
         catch (Exception ex){
-            this.applyStaticWait(15*this.getStaticWaitForApplication());
+            this.applyStaticWait(8*this.getStaticWaitForApplication());
         }
 
     }
@@ -989,7 +988,7 @@ public class ForgotPasswordPage extends BasePage {
         this.goToAnswerSecurityQuestionsPageWithRegisteredEmail(email);
 
         this.fillAnswerSecurityQuestionsForm(phoneNumber,postalCode,securityQuestionAnswer);
-        this.goToRestPasswordPage();
+        this.goToResetPasswordPage();
 
         this.fillNewPasswordForm(newPassword);
         this.goToAddSecurityQuestionForNewPasswordPage();
