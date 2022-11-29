@@ -1437,7 +1437,7 @@ public class RegularCheckoutPage extends BasePage {
 			//Error Message will appear as we are entering same address that is already present, hence capture error message and close the dialog box
 			List<String> errorMessageList = this.getMandatoryFieldsErrorMessage(0);
 			map.put("errorMessage",errorMessageList.get(0));
-			if(this.getDeviceTypeForTest(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
+			if(this.checkIfDeviceTypeNotDesktop(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrChangeShippingAddressDialogBackButton);
 				btnAddOrChangeShippingAddressDialogBackButton.click();
 				this.applyStaticWait(2*getStaticWaitForApplication());
@@ -1561,7 +1561,7 @@ public class RegularCheckoutPage extends BasePage {
 			waitForPageLoadingSpinningStatusCompleted();
 		}
 		else{
-			if(this.getDeviceTypeForTest(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
+			if(this.checkIfDeviceTypeNotDesktop(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrChangeShippingAddressDialogBackButton);
 				btnAddOrChangeShippingAddressDialogBackButton.click();
 			}
@@ -1595,7 +1595,7 @@ public class RegularCheckoutPage extends BasePage {
 			waitForPageLoadingSpinningStatusCompleted();
 		}
 		else{
-			if(this.getDeviceTypeForTest(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
+			if(this.checkIfDeviceTypeNotDesktop(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrEditAddressDialogBackButton);
 				btnAddOrEditAddressDialogBackButton.click();
 			}
@@ -1638,7 +1638,7 @@ public class RegularCheckoutPage extends BasePage {
 			waitForPageLoadingSpinningStatusCompleted();
 		}
 		else{
-			if(this.getDeviceTypeForTest(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
+			if(this.checkIfDeviceTypeNotDesktop(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnChangeShippingMethodDialogBackButton);
 				btnChangeShippingMethodDialogBackButton.click();
 			}else{
@@ -1730,7 +1730,7 @@ public class RegularCheckoutPage extends BasePage {
 			waitForPageLoadingSpinningStatusCompleted();
 		}
 		else{
-			if(this.getDeviceTypeForTest(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
+			if(this.checkIfDeviceTypeNotDesktop(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrChangePaymentMethodDialogBackButton);
 				btnAddOrChangePaymentMethodDialogBackButton.click();
 			}
@@ -1783,7 +1783,7 @@ public class RegularCheckoutPage extends BasePage {
 			waitForPageLoadingSpinningStatusCompleted();
 		}
 		else{
-			if(this.getDeviceTypeForTest(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
+			if(this.checkIfDeviceTypeNotDesktop(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnRemoveCardDialogGoBackButton);
 				btnRemoveCardDialogGoBackButton.click();
 			}
@@ -1932,7 +1932,7 @@ public class RegularCheckoutPage extends BasePage {
 			}
 		}
 		else{
-			if(this.getDeviceTypeForTest(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
+			if(this.checkIfDeviceTypeNotDesktop(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnUsingANewCardDialogBackButton);
 				btnUsingANewCardDialogBackButton.click();
 			}
@@ -1988,7 +1988,7 @@ public class RegularCheckoutPage extends BasePage {
 				else
 					reporter.reportLogFailWithScreenshot("Year is not pre-populated for Credit Card");
 
-				if(this.getDeviceTypeForTest(System.getProperty("Device"),System.getProperty("chromeMobileDevice")))
+				if(this.checkIfDeviceTypeNotDesktop(System.getProperty("Device"),System.getProperty("chromeMobileDevice")))
 					this.applyStaticWait(5000);
 			}
 
@@ -2176,7 +2176,7 @@ public class RegularCheckoutPage extends BasePage {
 			waitForPageLoadingSpinningStatusCompleted();
 		}
 		else{
-			if(this.getDeviceTypeForTest(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
+			if(this.checkIfDeviceTypeNotDesktop(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrEditAddressDialogBackButton);
 				btnAddOrEditAddressDialogBackButton.click();
 			}
@@ -3508,7 +3508,7 @@ public class RegularCheckoutPage extends BasePage {
 			reporter.reportLogFailWithScreenshot("The title in Add Or Change Address Dialog is not displaying correctly");
 		}
 
-		if(this.getDeviceTypeForTest(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
+		if(this.checkIfDeviceTypeNotDesktop(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrChangeShippingAddressDialogBackButton);
 			if(this.getReusableActionsInstance().isElementVisible(btnAddOrChangeShippingAddressDialogBackButton)){
 				reporter.reportLogPass("The Back button in Add Or Change Address Dialog is displaying correctly");
@@ -3645,7 +3645,7 @@ public class RegularCheckoutPage extends BasePage {
 			reporter.reportLogFailWithScreenshot("The title in Add or edit address Dialog is not displaying correctly");
 		}
 
-		if(this.getDeviceTypeForTest(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
+		if(this.checkIfDeviceTypeNotDesktop(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrEditAddressDialogBackButton);
 			if(this.getReusableActionsInstance().isElementVisible(btnAddOrEditAddressDialogBackButton)){
 				reporter.reportLogPass("The Back button in Add or edit address Dialog is displaying correctly");
@@ -3832,7 +3832,7 @@ public class RegularCheckoutPage extends BasePage {
 			reporter.reportLogFailWithScreenshot("The title in Change shipping method Dialog is not displaying correctly");
 		}
 
-		if(this.getDeviceTypeForTest(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
+		if(this.checkIfDeviceTypeNotDesktop(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnChangeShippingMethodDialogBackButton);
 			lsText = btnChangeShippingMethodDialogBackButton.getText();
 			if (!lsText.isEmpty()) {
@@ -3922,7 +3922,7 @@ public class RegularCheckoutPage extends BasePage {
 			reporter.reportLogFailWithScreenshot("The title in Add Or Change Payment Method Dialog is not displaying correctly");
 		}
 
-		if(this.getDeviceTypeForTest(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
+		if(this.checkIfDeviceTypeNotDesktop(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddOrChangePaymentMethodDialogBackButton);
 			if(this.getReusableActionsInstance().isElementVisible(btnAddOrChangePaymentMethodDialogBackButton)){
 				reporter.reportLogPass("The Back button in Add Or Change Payment Method Dialog is displaying correctly");
@@ -4118,7 +4118,7 @@ public class RegularCheckoutPage extends BasePage {
 			reporter.reportLogFailWithScreenshot("The title in remove Payment Method Dialog is not displaying correctly");
 		}
 
-		if(this.getDeviceTypeForTest(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
+		if(this.checkIfDeviceTypeNotDesktop(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnRemoveCardDialogGoBackButton);
 			if(this.getReusableActionsInstance().isElementVisible(btnRemoveCardDialogGoBackButton)){
 				reporter.reportLogPass("The Back button in remove Payment Method Dialog is displaying correctly");
@@ -4184,7 +4184,7 @@ public class RegularCheckoutPage extends BasePage {
 			reporter.reportLogFailWithScreenshot("The title in using a new card Dialog is not displaying correctly");
 		}
 
-		if(this.getDeviceTypeForTest(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
+		if(this.checkIfDeviceTypeNotDesktop(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnUsingANewCardDialogBackButton);
 			if(this.getReusableActionsInstance().isElementVisible(btnUsingANewCardDialogBackButton)){
 				reporter.reportLogPass("The Back button in using a new card Dialog is displaying correctly");
@@ -5106,7 +5106,7 @@ public class RegularCheckoutPage extends BasePage {
 			reporter.reportLogFail("The productLeftNumber:"+shoppingCartLeftNumber+" in shoppingCart Item is not the same as the one:"+checkoutLeftNumber+" in checkout Item");
 		}
 
-		if(!this.getDeviceTypeForTest(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
+		if(!this.checkIfDeviceTypeNotDesktop(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
 			lsShoppingCartText=(String)shoppingCartItem.get("productFreeShipping");
 			lsCheckoutText=(String)checkoutItem.get("productFreeShipping");
 			if(lsShoppingCartText==null){

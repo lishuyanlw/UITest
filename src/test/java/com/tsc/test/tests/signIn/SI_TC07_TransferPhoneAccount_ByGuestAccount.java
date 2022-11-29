@@ -14,7 +14,7 @@ public class SI_TC07_TransferPhoneAccount_ByGuestAccount extends BaseTest{
     /*
      * CER-917
      */
-    @Test(groups={"Regression","SignIn"})
+    @Test(groups={"Regression","SignIn","CreateAccount"})
     public void SI_TC07_TransferPhoneAccount_ByGuestAccount() throws IOException {
         getGlobalFooterPageThreadLocal().closePopupDialog();
         BasePage basePage=new BasePage(this.getDriver());

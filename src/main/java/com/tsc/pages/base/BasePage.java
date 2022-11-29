@@ -1264,7 +1264,7 @@ import utils.ReusableActions;
 	 * @param - String - chromeMobileDevice for local run
 	 * @return - boolean value
 	 */
-	public boolean getDeviceTypeForTest(String deviceType,String chromeMobileDevice){
+	public boolean checkIfDeviceTypeNotDesktop(String deviceType, String chromeMobileDevice){
 		if("Mobile".equalsIgnoreCase(deviceType) ||
 				("Tablet".equalsIgnoreCase(deviceType) &&
 						System.getProperty("Browser").contains("android")) ||

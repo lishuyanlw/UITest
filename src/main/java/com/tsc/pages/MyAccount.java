@@ -17,7 +17,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import org.openqa.selenium.support.ui.Select;
 import java.text.ParseException;
@@ -4720,7 +4719,7 @@ public class MyAccount extends BasePage {
 		lsText=lblOrderDetailsSubHeaderShippingMethod.getText().trim();
 		map.put("shippingMethod",lsText);
 
-		if(this.getDeviceTypeForTest(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
+		if(this.checkIfDeviceTypeNotDesktop(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderDetailsSubHeaderShippingAddressMobile);
 			lsText=lblOrderDetailsSubHeaderShippingAddressMobile.getText().trim();
 		}else{
@@ -5150,7 +5149,7 @@ public class MyAccount extends BasePage {
 	 */
 	public void verifyAccountSummaryPanelList(){
 		String lsText;
-		if(this.getDeviceTypeForTest(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
+		if(this.checkIfDeviceTypeNotDesktop(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
 			for(WebElement item:lstAccountSummaryPanelList){
 				if(!this.checkCollapseStatusForAccountSummaryPanel(item)){
 					WebElement subItem=item.findElement(bySubHeader);
@@ -5294,7 +5293,7 @@ public class MyAccount extends BasePage {
 		Boolean flag = false;
 		int flagCounter = 0;
 		for(int counter=1;counter<orderConfirmationShippingAddress.size()-1;counter++){
-			if(this.getDeviceTypeForTest(System.getProperty("Device"),System.getProperty("chromeMobileDevice")) && addressType.equalsIgnoreCase("Shipping"))
+			if(this.checkIfDeviceTypeNotDesktop(System.getProperty("Device"),System.getProperty("chromeMobileDevice")) && addressType.equalsIgnoreCase("Shipping"))
 				address=orderConfirmationShippingAddress.get(counter).replace(",","").replace("-"," ").replace(" ","").trim();
 			else
 				address=orderConfirmationShippingAddress.get(counter-1).replace(",","").replace("-"," ").replace(" ","").trim();

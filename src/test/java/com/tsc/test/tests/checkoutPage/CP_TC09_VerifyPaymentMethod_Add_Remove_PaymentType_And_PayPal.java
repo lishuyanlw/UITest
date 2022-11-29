@@ -80,7 +80,7 @@ public class CP_TC09_VerifyPaymentMethod_Add_Remove_PaymentType_And_PayPal exten
             getRegularCheckoutThreadLocal().closeAddOrChangePaymentMethodDialog(true);
             reporter.reportLog("2 > Verify Mandatory Error Message");
             getRegularCheckoutThreadLocal().verifyErrorMessageOnAddPaymentMethodDialog(addNewCardErrorMessage.get(0));
-            if(getRegularCheckoutThreadLocal().getDeviceTypeForTest(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
+            if(getRegularCheckoutThreadLocal().checkIfDeviceTypeNotDesktop(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
                 getRegularCheckoutThreadLocal().refresh();
                 getRegularCheckoutThreadLocal().openAddOrChangePaymentMethodDialog();
                 getRegularCheckoutThreadLocal().openUsingNewCardDialog();

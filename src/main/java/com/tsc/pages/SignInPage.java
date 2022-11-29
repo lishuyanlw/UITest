@@ -389,14 +389,18 @@ public class SignInPage extends BasePage {
 
 	/**
 	 * Go to Transfer Phone Account Page through signIn page
-	 * @return - boolean
 	 */
-	public boolean goToTransferPhoneAccountPageThroughSignInPage() {
+	public void goToTransferPhoneAccountPageThroughSignInPage() {
 		this.goToSignInPage();
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnTransferMyPhoneAccount);
 		this.getReusableActionsInstance().clickIfAvailable(this.btnTransferMyPhoneAccount);
 
-		return waitForCondition(Driver->{return (new TransferPhoneAccountPage(this.getDriver())).lblHeaderTitle.isDisplayed();},300000);
+		try{
+			waitForCondition(Driver->{return (new TransferPhoneAccountPage(this.getDriver())).lblHeaderTitle.isDisplayed();},60000);
+		}
+		catch (Exception ex){
+			this.applyStaticWait(8*this.getStaticWaitForApplication());
+		}
 	}
 
 	/**
@@ -927,7 +931,7 @@ public class SignInPage extends BasePage {
 		if (strBrowser.toLowerCase().contains("android") || strBrowser.toLowerCase().contains("ios")
 				|| strBrowser.toLowerCase().contains("mobile")) {
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInMainMenu);
-			this.getReusableActionsInstance().clickIfAvailable(this.btnSignInMainMenu);
+			this.clickElement(this.btnSignInMainMenu);
 
 			getReusableActionsInstance().staticWait(3000);
 			lsText=this.getElementInnerText(lstSignInDropdownMenu.get(0));

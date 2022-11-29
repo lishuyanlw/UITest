@@ -10,7 +10,7 @@ public class SI_TC06_CreateAccount_ByCreateAccountInSignInPage extends BaseTest 
     /*
      * CER-914
      */
-    @Test(groups={"SignIn","Regression"})
+    @Test(groups={"SignIn","Regression","CreateAccount"})
     public void SI_TC06_CreateAccount_ByCreateAccountInSignInPage() {
         //Closing SignIn pop up on login
         getGlobalFooterPageThreadLocal().closePopupDialog();

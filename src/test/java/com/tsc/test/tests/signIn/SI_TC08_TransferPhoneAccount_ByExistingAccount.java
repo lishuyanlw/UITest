@@ -16,7 +16,7 @@ public class SI_TC08_TransferPhoneAccount_ByExistingAccount extends BaseTest{
     /*
      * CER-917
      */
-    @Test(groups={"Regression","SignIn"})
+    @Test(groups={"Regression","SignIn","CreateAccount"})
     public void SI_TC08_TransferPhoneAccount_ByExistingAccount() throws IOException {
         getGlobalFooterPageThreadLocal().closePopupDialog();
 

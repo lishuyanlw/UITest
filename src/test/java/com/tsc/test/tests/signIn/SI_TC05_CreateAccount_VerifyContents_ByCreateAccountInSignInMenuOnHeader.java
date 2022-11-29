@@ -12,7 +12,7 @@ public class SI_TC05_CreateAccount_VerifyContents_ByCreateAccountInSignInMenuOnH
     /*
      * CER-914
      */
-    @Test(groups={"SignIn","Regression"})
+    @Test(groups={"SignIn","Regression","CreateAccount"})
     public void SI_TC05_CreateAccount_ByCreateAccountInSignInMenuOnHeader() {
         //Closing SignIn pop up on login
         getGlobalFooterPageThreadLocal().closePopupDialog();

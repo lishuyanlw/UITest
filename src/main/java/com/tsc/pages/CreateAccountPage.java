@@ -693,8 +693,9 @@ public class CreateAccountPage extends BasePage {
         }
 
         reporter.reportLog("Check the status after clicking the button");
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnShowOrHidePassword);
         this.getReusableActionsInstance().clickIfAvailable(this.btnShowOrHidePassword);
-        this.waitForCondition(Driver->{return !getShowButtonStatus(this.btnShowOrHidePassword);},5000);
+        this.waitForCondition(Driver->{return !getInputPasswordStatus(this.inputPassword);},60000);
         if(!getInputPasswordStatus(this.inputPassword)){
             reporter.reportLogPass("The input type is text");
         }
@@ -727,8 +728,9 @@ public class CreateAccountPage extends BasePage {
         }
 
         reporter.reportLog("Check the status after clicking the button");
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnConfirmPasswordShow);
         this.getReusableActionsInstance().clickIfAvailable(this.btnConfirmPasswordShow);
-        this.waitForCondition(Driver->{return !getShowButtonStatus(this.btnConfirmPasswordShow);},5000);
+        this.waitForCondition(Driver->{return !getShowButtonStatus(this.btnConfirmPasswordShow);},60000);
         if(!getInputPasswordStatus(this.inputConfirmPassword)){
             reporter.reportLogPass("The input type is text");
         }
