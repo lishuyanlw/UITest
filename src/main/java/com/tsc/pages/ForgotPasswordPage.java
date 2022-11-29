@@ -760,6 +760,8 @@ public class ForgotPasswordPage extends BasePage {
      */
     public void goToAddSecurityQuestionForNewPasswordPage(){
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnCreateNewPassword);
+        this.setElementEnabled(this.btnCreateNewPassword);
+        this.applyStaticWait(300);
         this.getReusableActionsInstance().clickIfAvailable(btnCreateNewPassword);
 
         try{
