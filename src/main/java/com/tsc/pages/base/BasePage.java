@@ -214,7 +214,6 @@ import utils.ReusableActions;
 			e.printStackTrace();
 			return false;
 		}
-		System.out.println("Response Code: " + response);
 		if (response >= 400) {
 			System.out.println("ResponseMessage: " + responseMessage + " is a broken link");
 			return false;
@@ -919,12 +918,12 @@ import utils.ReusableActions;
 		 	reporter.reportLogPass("The href element of "+lsTitle+" is not empty");
 		 else
 		 	reporter.reportLogFailWithScreenshot("The href element of "+lsTitle+" is empty");
-		 if (lsLink.contains("instagram")) {
-			 getReusableActionsInstance().staticWait(5000);
-		 }
 		 if(this.verifyLink(lsLink))
 			 reporter.reportLogPass("Link for title: "+lsTitle+" is not broken!");
 		 else
+			 if (lsLink.contains("instagram"))
+				 reporter.reportLog("Link for title: " + lsTitle + " is broken: " + lsLink);
+			 else
 				 reporter.reportLogFail("Link for title: " + lsTitle + " is broken: " + lsLink);
 	 }
 	 
