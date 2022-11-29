@@ -766,7 +766,7 @@ public class ForgotPasswordPage extends BasePage {
             this.waitForCondition(Driver->{return this.lblAddSecurityQuestionTitle.isDisplayed();},120000);
         }
         catch (Exception ex){
-            this.applyStaticWait(15*this.getStaticWaitForApplication());
+            this.applyStaticWait(8*this.getStaticWaitForApplication());
         }
 
     }
