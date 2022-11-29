@@ -215,7 +215,7 @@ import utils.ReusableActions;
 			return false;
 		}
 		if (response >= 400) {
-			System.out.println("ResponseMessage: " + responseMessage + " is a broken link");
+			reporter.reportLog("ResponseMessage: " + responseMessage + " is a broken link");
 			return false;
 		}
 		return true;
@@ -921,7 +921,9 @@ import utils.ReusableActions;
 		 if(this.verifyLink(lsLink))
 			 reporter.reportLogPass("Link for title: "+lsTitle+" is not broken!");
 		 else
-			 reporter.reportLogFail("Link for title: "+lsTitle+" is broken: "+lsLink);
+			 //if (!lsLink.contains("instagram")) {
+				 reporter.reportLogFail("Link for title: " + lsTitle + " is broken: " + lsLink);
+			 //}
 	 }
 	 
 	 /**
