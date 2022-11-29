@@ -5352,8 +5352,8 @@ public class MyAccount extends BasePage {
 	 * @param - boolean - bCheckExisting
 	 * @return - PlaceOrderResponse
 	 */
-	public PlaceOrderResponse placeOrderForUser(int customerEDP, String accessToken, List<Map<String,String>> itemsToBeAdded, int easyPayInstallment, String noOfItemsToBeAdded, boolean bCheckExisting) throws IOException {
-		List<Map<String,Object>> shoppingCartObject = new ShoppingCartPage(this.getDriver()).verifyCartExistsForUser(customerEDP,accessToken,itemsToBeAdded,noOfItemsToBeAdded,bCheckExisting);
+	public PlaceOrderResponse placeOrderForUser(int customerEDP, String accessToken, List<Map<String,String>> itemsToBeAdded, int easyPayInstallment, String noOfItemsToBeAdded, boolean bCheckExisting,int itemToBeAdded) throws IOException {
+		List<Map<String,Object>> shoppingCartObject = new ShoppingCartPage(this.getDriver()).verifyCartExistsForUser(customerEDP,accessToken,itemsToBeAdded,noOfItemsToBeAdded,bCheckExisting,itemToBeAdded);
 		Response response;
 		PlaceOrderResponse placeOrderResponse;
 

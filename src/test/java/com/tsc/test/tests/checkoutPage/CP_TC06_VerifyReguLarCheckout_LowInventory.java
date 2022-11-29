@@ -25,7 +25,7 @@ public class CP_TC06_VerifyReguLarCheckout_LowInventory extends BaseTest{
 
         getGlobalFooterPageThreadLocal().closePopupDialog();
         List<Map<String, String>> keywordList = TestDataHandler.constantData.getCheckOut().getLst_SearchKeywords();
-        List<Map<String, Object>> data = getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP, accessToken, keywordList, "all",true);
+        List<Map<String, Object>> data = getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP, accessToken, keywordList, "all",true,0);
 
         //Login using valid username and password
         getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword);

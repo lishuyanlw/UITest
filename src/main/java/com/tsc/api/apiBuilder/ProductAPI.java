@@ -1586,153 +1586,184 @@ public class ProductAPI extends ApiClient {
      * @return - List<Map<String,String>> - List of Map Object that are added to cart
      * @throws IOException
      */
-    public List<Map<String,Object>> getProductDetailsToBeAddedToCartForUser(List<Map<String,String>> keywordData,String itemsToBeAdded) {
+    public List<Map<String,Object>> getProductDetailsToBeAddedToCartForUser(List<Map<String,String>> keywordData,String itemsToBeAdded, int itemNoToBeAdded) {
         int itemsCounter = 0;
         List<Map<String,Object>> productList = new ArrayList<>();
         List<Map<String,Object>> tempDataList = null;
         boolean innerForLoop;
         boolean outerloop = false;
-        for(Map<String,String> data:keywordData){
-            Product product = this.getProductDetailsForKeyword(data.get("searchKeyword"),null,true);
-            if(product==null){
-                continue;
-            }
-            List<Product.Products> products = product.getProducts();
-            Boolean badgeRequired = Boolean.valueOf(data.get("badgeRequired"));
-            Boolean styleExist = Boolean.valueOf(data.get("styleExist"));
-            Boolean sameSizeAndStyle = Boolean.valueOf(data.get("sameSizeAndStyle"));
-            int itemToBeAdded = Integer.valueOf(data.get("itemToBeAdded"));
-
+        if(itemNoToBeAdded!=0){
+            boolean flag = false;
             Map<String,Object> productMap = new HashMap<>();
-            for(Product.Products productsData:products){
-                if(productMap.size()>0)
-                    productMap = new HashMap<>();
-                if(Boolean.valueOf(data.get("styleExist"))){
-                    //Fetching item edp number for same product with badge, style and size
-                    //&&productsData.isShowBadgeImage()
-                    if(productsData.getVideosCount() >= 0 && productsData.getStyles().size() >= 1 && productsData.getSizes().size() >= 1 && productsData.isEnabledAddToCart()){
-                        if(badgeRequired && styleExist && sameSizeAndStyle){
-                            for(Product.edps edpsData: productsData.getEdps()){
-                                if(productMap.size()>0)
-                                    productMap = new HashMap<>();
-                                innerForLoop = false;
-                                //if(!productsData.getPriceIsLabel().isEmpty()&&edpsData.getInventory()>0){
-                                if(edpsData.getInventory()>0 && !edpsData.isSoldOut()){
-                                    productMap = this.getEDPNumberForInputCondition(data.get("quantity"),itemToBeAdded,edpsData,productsData);
-                                    if(productMap.keySet().size()>0) {
-                                        innerForLoop = true;
+            ProductDetailsItem productDetailsItem = this.getProductDetailsForSpecificProductNumber(String.valueOf(itemNoToBeAdded));
+            productMap.put("productName",productDetailsItem.getName());
+            productMap.put("productBadge",productDetailsItem.getPriceIsLabel());
+            productMap.put("productNumber",productDetailsItem.getItemNo());
+            for(ProductDetailsItem.Edp edpData:productDetailsItem.getEdps()){
+                if(edpData.getInventory()>=2){
+                    productMap.put("edpNo",edpData.getEdpNo());
+                    productMap.put("productStyle",edpData.getStyle());
+                    productMap.put("productStyleDimensionId",edpData.getStyleDimensionId());
+                    productMap.put("productSize",edpData.getSize());
+                    productMap.put("productSizeDimensionId",edpData.getSizeDimensionId());
+                    productMap.put("productNowPrice",this.getFloatFromString(edpData.getAppliedPrice(),true));
+                    productMap.put("productWasPrice",edpData.getWasPrice());
+                    productMap.put("productSavePrice",edpData.getSavePrice());
+                    productMap.put("productAppliedShipping",edpData.getAppliedShipping());
+                    productMap.put("advanceOrderMessage",edpData.getSkuAvailabilityMessage());
+                    flag = true;
+                }
+                if(flag){
+                    productMap.put("itemToBeAdded",1);
+                    productList.add(productMap);
+                    break;
+                }
+                else
+                    continue;
+            }
+        }else{
+            for(Map<String,String> data:keywordData){
+                Product product = this.getProductDetailsForKeyword(data.get("searchKeyword"),null,true);
+                if(product==null){
+                    continue;
+                }
+                List<Product.Products> products = product.getProducts();
+                Boolean badgeRequired = Boolean.valueOf(data.get("badgeRequired"));
+                Boolean styleExist = Boolean.valueOf(data.get("styleExist"));
+                Boolean sameSizeAndStyle = Boolean.valueOf(data.get("sameSizeAndStyle"));
+                int itemToBeAdded = Integer.valueOf(data.get("itemToBeAdded"));
+
+                Map<String,Object> productMap = new HashMap<>();
+                for(Product.Products productsData:products){
+                    if(productMap.size()>0)
+                        productMap = new HashMap<>();
+                    if(Boolean.valueOf(data.get("styleExist"))){
+                        //Fetching item edp number for same product with badge, style and size
+                        //&&productsData.isShowBadgeImage()
+                        if(productsData.getVideosCount() >= 0 && productsData.getStyles().size() >= 1 && productsData.getSizes().size() >= 1 && productsData.isEnabledAddToCart()){
+                            if(badgeRequired && styleExist && sameSizeAndStyle){
+                                for(Product.edps edpsData: productsData.getEdps()){
+                                    if(productMap.size()>0)
+                                        productMap = new HashMap<>();
+                                    innerForLoop = false;
+                                    //if(!productsData.getPriceIsLabel().isEmpty()&&edpsData.getInventory()>0){
+                                    if(edpsData.getInventory()>0 && !edpsData.isSoldOut()){
+                                        productMap = this.getEDPNumberForInputCondition(data.get("quantity"),itemToBeAdded,edpsData,productsData);
+                                        if(productMap.keySet().size()>0) {
+                                            innerForLoop = true;
+                                        }
+                                        else {
+                                            continue;
+                                        }
+                                        if(productMap.keySet().size()>0){
+                                            productMap.put("itemToBeAdded",itemToBeAdded);
+                                            productList.add(productMap);
+                                            itemsCounter++;
+                                        }
                                     }
-                                    else {
+                                    if(innerForLoop && itemsToBeAdded.equalsIgnoreCase("all")){
+                                        outerloop = true;
+                                    }else if(innerForLoop && !itemsToBeAdded.equalsIgnoreCase("all") && Integer.parseInt(itemsToBeAdded)==itemsCounter){
+                                        outerloop = true;
+                                    }else{
                                         continue;
                                     }
-                                    if(productMap.keySet().size()>0){
-                                        productMap.put("itemToBeAdded",itemToBeAdded);
-                                        productList.add(productMap);
-                                        itemsCounter++;
+                                    if(innerForLoop)
+                                        break;
+                                }
+                            }
+                            //Fetching item edp numbers for same product with badge, style but with different style and size
+                            //True Fit condition scenario
+                            else if(badgeRequired && styleExist && !sameSizeAndStyle){
+                                ProductDetailsItem productDetailsItem=null;
+                                if(tempDataList==null)
+                                    tempDataList = new ArrayList<>();
+                                if(productsData.getVideosCount() >= 0 && productsData.getStyles().size() >= 1 && productsData.getSizes().size() >= 1 && productsData.isEnabledAddToCart()){
+                                    productDetailsItem=getProductDetailsForSpecificProductNumber(productsData.getItemNo());
+                                    List<ProductDetailsItem.Edp> edpsList=productDetailsItem.getEdps();
+                                    List<ProductDetailsItem.Edp> dataList=edpsList.stream().filter(item->item.getInventory()>0).sorted((p1,p2)->p1.getStyle().compareTo(p2.getStyle())).collect(Collectors.toList());
+                                    String checkStyle="FirstItem";
+                                    if(dataList.size()>1){
+                                        int counter = 0,forLoopCounter = 0;
+                                        for(ProductDetailsItem.Edp edpsData:dataList) {
+                                            forLoopCounter++;
+                                            Map<String,Object> productMapData = new HashMap<>();
+                                            boolean secondValue = false;
+                                            if(!checkStyle.equalsIgnoreCase(edpsData.getStyle()) && edpsData.getInventory()>1&&!edpsData.isIsSoldOut()){
+                                                if(counter==0 && productMapData.size()>0)
+                                                    productMapData.clear();
+                                                checkStyle = edpsData.getStyle();
+                                                productMapData.put("productName",productsData.getName());
+                                                productMapData.put("productBadge",productsData.getPriceIsLabel());
+                                                productMapData.put("productNumber",productsData.getItemNo());
+                                                productMapData.put("edpNo",edpsData.getEdpNo());
+                                                productMapData.put("edpsData",edpsData);
+                                                productMapData.put("productStyle",edpsData.getStyle());
+                                                productMapData.put("productStyleDimensionId",edpsData.getStyleDimensionId());
+                                                productMapData.put("productSize",edpsData.getSize());
+                                                productMapData.put("productSizeDimensionId",edpsData.getSizeDimensionId());
+                                                productMapData.put("productNowPrice",this.getFloatFromString(edpsData.getAppliedPrice(),true));
+                                                productMapData.put("productWasPrice",edpsData.getWasPrice());
+                                                productMapData.put("productSavePrice",edpsData.getSavePrice());
+                                                productMapData.put("productAppliedShipping",edpsData.getAppliedShipping());
+                                                productMapData.put("advanceOrderMessage",edpsData.getSkuAvailabilityMessage());
+                                                secondValue = true;
+                                                counter++;
+                                            }
+                                            if(secondValue){
+                                                productMapData.put("itemToBeAdded",1);
+                                                tempDataList.add(productMapData);
+                                            }
+                                            if(forLoopCounter == dataList.size() && counter!=itemToBeAdded)
+                                                tempDataList.clear();
+                                            if(counter==itemToBeAdded){
+                                                itemsCounter++;
+                                                tempDataList.forEach(item->{productList.add(item);});
+                                                outerloop = true;
+                                                break;
+                                            }
+                                        }
                                     }
                                 }
-                                if(innerForLoop && itemsToBeAdded.equalsIgnoreCase("all")){
-                                    outerloop = true;
-                                }else if(innerForLoop && !itemsToBeAdded.equalsIgnoreCase("all") && Integer.parseInt(itemsToBeAdded)==itemsCounter){
-                                    outerloop = true;
-                                }else{
-                                    continue;
+                            }
+                        }
+                    }
+                    //Fetching item edp number for product with badge and has no style and size available
+                    else if(!styleExist && data.get("quantity").isEmpty()){
+                        if(productsData.getVideosCount() >= 0 && productsData.getStyles().size() == 0 && productsData.getSizes().size() == 0 && productsData.isEnabledAddToCart()){
+                            for(Product.edps edpsData: productsData.getEdps()){
+                                innerForLoop = false;
+                                if(!edpsData.isSoldOut()){
+                                    productMap = this.getEDPNumberForInputCondition(null,itemToBeAdded,edpsData,productsData);
+                                    if(productMap.keySet().size()>0)
+                                        innerForLoop = true;
+                                    else
+                                        continue;
                                 }
-                                if(innerForLoop)
+                                if(productMap.keySet().size()>0){
+                                    productMap.put("itemToBeAdded",itemToBeAdded);
+                                    productList.add(productMap);
+                                }
+                                if(innerForLoop){
+                                    itemsCounter++;
+                                    outerloop = true;
                                     break;
-                            }
-                        }
-                        //Fetching item edp numbers for same product with badge, style but with different style and size
-                        //True Fit condition scenario
-                        else if(badgeRequired && styleExist && !sameSizeAndStyle){
-                            ProductDetailsItem productDetailsItem=null;
-                            if(tempDataList==null)
-                                tempDataList = new ArrayList<>();
-                            if(productsData.getVideosCount() >= 0 && productsData.getStyles().size() >= 1 && productsData.getSizes().size() >= 1 && productsData.isEnabledAddToCart()){
-                                productDetailsItem=getProductDetailsForSpecificProductNumber(productsData.getItemNo());
-                                List<ProductDetailsItem.Edp> edpsList=productDetailsItem.getEdps();
-                                List<ProductDetailsItem.Edp> dataList=edpsList.stream().filter(item->item.getInventory()>0).sorted((p1,p2)->p1.getStyle().compareTo(p2.getStyle())).collect(Collectors.toList());
-                                String checkStyle="FirstItem";
-                                if(dataList.size()>1){
-                                    int counter = 0,forLoopCounter = 0;
-                                    for(ProductDetailsItem.Edp edpsData:dataList) {
-                                        forLoopCounter++;
-                                        Map<String,Object> productMapData = new HashMap<>();
-                                        boolean secondValue = false;
-                                        if(!checkStyle.equalsIgnoreCase(edpsData.getStyle()) && edpsData.getInventory()>1&&!edpsData.isIsSoldOut()){
-                                            if(counter==0 && productMapData.size()>0)
-                                                productMapData.clear();
-                                            checkStyle = edpsData.getStyle();
-                                            productMapData.put("productName",productsData.getName());
-                                            productMapData.put("productBadge",productsData.getPriceIsLabel());
-                                            productMapData.put("productNumber",productsData.getItemNo());
-                                            productMapData.put("edpNo",edpsData.getEdpNo());
-                                            productMapData.put("edpsData",edpsData);
-                                            productMapData.put("productStyle",edpsData.getStyle());
-                                            productMapData.put("productStyleDimensionId",edpsData.getStyleDimensionId());
-                                            productMapData.put("productSize",edpsData.getSize());
-                                            productMapData.put("productSizeDimensionId",edpsData.getSizeDimensionId());
-                                            productMapData.put("productNowPrice",this.getFloatFromString(edpsData.getAppliedPrice(),true));
-                                            productMapData.put("productWasPrice",edpsData.getWasPrice());
-                                            productMapData.put("productSavePrice",edpsData.getSavePrice());
-                                            productMapData.put("productAppliedShipping",edpsData.getAppliedShipping());
-                                            productMapData.put("advanceOrderMessage",edpsData.getSkuAvailabilityMessage());
-                                            secondValue = true;
-                                            counter++;
-                                        }
-                                        if(secondValue){
-                                            productMapData.put("itemToBeAdded",1);
-                                            tempDataList.add(productMapData);
-                                        }
-                                        if(forLoopCounter == dataList.size() && counter!=itemToBeAdded)
-                                            tempDataList.clear();
-                                        if(counter==itemToBeAdded){
-                                            itemsCounter++;
-                                            tempDataList.forEach(item->{productList.add(item);});
-                                            outerloop = true;
-                                            break;
-                                        }
-                                    }
                                 }
                             }
                         }
                     }
+                    if(outerloop)
+                        break;
+                    else
+                        continue;
                 }
-                //Fetching item edp number for product with badge and has no style and size available
-                else if(!styleExist && data.get("quantity").isEmpty()){
-                    if(productsData.getVideosCount() >= 0 && productsData.getStyles().size() == 0 && productsData.getSizes().size() == 0 && productsData.isEnabledAddToCart()){
-                        for(Product.edps edpsData: productsData.getEdps()){
-                            innerForLoop = false;
-                            if(!edpsData.isSoldOut()){
-                                productMap = this.getEDPNumberForInputCondition(null,itemToBeAdded,edpsData,productsData);
-                                if(productMap.keySet().size()>0)
-                                    innerForLoop = true;
-                                else
-                                    continue;
-                            }
-                            if(productMap.keySet().size()>0){
-                                productMap.put("itemToBeAdded",itemToBeAdded);
-                                productList.add(productMap);
-                            }
-                            if(innerForLoop){
-                                itemsCounter++;
-                                outerloop = true;
-                                break;
-                            }
-                        }
-                    }
-                }
-                if(outerloop)
+                if(itemsToBeAdded.equalsIgnoreCase("all"))
+                    continue;
+                else if(!itemsToBeAdded.equalsIgnoreCase("all") && Integer.parseInt(itemsToBeAdded)==itemsCounter)
                     break;
                 else
                     continue;
             }
-            if(itemsToBeAdded.equalsIgnoreCase("all"))
-                continue;
-            else if(!itemsToBeAdded.equalsIgnoreCase("all") && Integer.parseInt(itemsToBeAdded)==itemsCounter)
-                break;
-            else
-                continue;
         }
         return productList;
     }

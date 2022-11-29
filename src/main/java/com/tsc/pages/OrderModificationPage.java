@@ -427,6 +427,28 @@ public class OrderModificationPage extends BasePage {
 	public boolean checkProductItemStatusForFreeShippingExisting(WebElement orderItem){
 		WebElement itemContainer=orderItem.findElement(byProductItemStatusContainer);
 		List<WebElement> itemList=itemContainer.findElements(byProductItemStatus);
+		Boolean flag = false;
+		boolean removeButtonStatus;
+		for(WebElement element:itemList){
+			if(element.getText().equalsIgnoreCase("FREE SHIPPING")){
+				if(System.getProperty("Browser").equalsIgnoreCase("Desktop")){
+					removeButtonStatus = new ShoppingCartPage(this.getDriver()).checkSelectQuantityEnabled(orderItem);
+				}else{
+					removeButtonStatus = new ShoppingCartPage_Mobile(this.getDriver()).checkSelectQuantityEnabled(orderItem);
+				}
+				if(!removeButtonStatus) {}
+				else{
+					flag = true;
+				}
+				break;
+			}
+			else{
+				continue;
+			}
+		}
+		if(!flag){
+			return false;
+		}
 		boolean bFind=false;
 		for(WebElement item:itemList){
 			if(this.checkChildElementExistingByAttribute(item,"class","boldBlackColor")){
@@ -623,7 +645,7 @@ public class OrderModificationPage extends BasePage {
 	public Map<String,Object> getOrderSummaryDesc(){
 		Map<String,Object> map=new HashMap<>();
 
-		this.waitForCondition(Driver->{return lblOrderSummaryTitle.isDisplayed();},120000);
+		this.waitForCondition(Driver->{return lblOrderSummaryTitle.isDisplayed();},240000);
 		this.applyStaticWait(2*this.getStaticWaitForApplication());
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderSummaryTitle);
 		String lsText=this.getElementInnerText(lblOrderSummaryTitle);
