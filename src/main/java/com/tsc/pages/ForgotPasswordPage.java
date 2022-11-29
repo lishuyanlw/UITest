@@ -1248,10 +1248,8 @@ public class ForgotPasswordPage extends BasePage {
                         && (System.getProperty("chromeMobileDevice").contains("iPad"))))) {
             reporter.reportLog("Check the status after clicking the button");
             this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnShowNewPassword);
-            this.setElementEnabled(this.btnShowNewPassword);
-            this.applyStaticWait(300);
-            this.clickElement(this.btnShowNewPassword);
-            this.waitForCondition(Driver->{return !getShowButtonStatus(this.btnShowNewPassword);},60000);
+            this.getReusableActionsInstance().clickIfAvailable(this.btnShowNewPassword);
+            this.waitForCondition(Driver->{return !getInputPasswordStatus(this.inputNewPassword);},60000);
             if(!getInputPasswordStatus(this.inputNewPassword)){
                 reporter.reportLogPass("The input type is text");
             }
@@ -1289,10 +1287,8 @@ public class ForgotPasswordPage extends BasePage {
                         && (System.getProperty("chromeMobileDevice").contains("iPad"))))) {
             reporter.reportLog("Check the status after clicking the button");
             this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnShowConfirmNewPassword);
-            this.setElementEnabled(this.btnShowConfirmNewPassword);
-            this.applyStaticWait(300);
-            this.clickElement(this.btnShowConfirmNewPassword);
-            this.waitForCondition(Driver->{return !getShowButtonStatus(this.btnShowConfirmNewPassword);},60000);
+            this.getReusableActionsInstance().clickIfAvailable(this.btnShowConfirmNewPassword);
+            this.waitForCondition(Driver->{return !getInputPasswordStatus(this.inputConfirmNewPassword);},60000);
             if(!getInputPasswordStatus(this.inputConfirmNewPassword)){
                 reporter.reportLogPass("The input type is text");
             }
@@ -1334,10 +1330,8 @@ public class ForgotPasswordPage extends BasePage {
                         && (System.getProperty("chromeMobileDevice").contains("iPad"))))) {
             reporter.reportLog("Check the status after clicking the button");
             this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnShowAnswer);
-            this.setElementEnabled(this.btnShowAnswer);
-            this.applyStaticWait(300);
-            this.clickElement(this.btnShowAnswer);
-            this.waitForCondition(Driver->{return getShowButtonStatus(this.btnShowAnswer);},60000);
+            this.getReusableActionsInstance().clickIfAvailable(this.btnShowAnswer);
+            this.waitForCondition(Driver->{return getInputPasswordStatus(this.inputSecurityQuestionAnswer);},60000);
             if(getInputPasswordStatus(this.inputSecurityQuestionAnswer)){
                 reporter.reportLogPass("The input type is password type");
             }
