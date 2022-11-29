@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.tsc.test.tests.globalFooter.GF_TC05_VerifyLinksAndPageObjectsForAboutTSCExceptBrand" tests="1" skipped="0" failures="0" errors="0" timestamp="2022-11-29T19:44:43" hostname="VDSMDC000198" time="238.223">
+  <properties/>
+  <testcase name="GF_TC05_VerifyLinksAndPageObjectsForAboutTSCExceptBrand" classname="com.tsc.test.tests.globalFooter.GF_TC05_VerifyLinksAndPageObjectsForAboutTSCExceptBrand" time="238.223"/>
+  <system-out><![CDATA[ in onTestStart method GF_TC05_VerifyLinksAndPageObjectsForAboutTSCExceptBrand-0 start
+ in onTestSuccess method GF_TC05_VerifyLinksAndPageObjectsForAboutTSCExceptBrand succeed
+SauceOnDemandSessionID=d0426901b0034942a719032c7d791b7d job-name=GF_TC05_VerifyLinksAndPageObjectsForAboutTSCExceptBrand
+]]></system-out>
+  <system-err><![CDATA[Nov 29, 2022 2:44:27 PM org.openqa.selenium.remote.ProtocolHandshake createSession
+INFO: Detected dialect: W3C
+]]></system-err>
+</testsuite>

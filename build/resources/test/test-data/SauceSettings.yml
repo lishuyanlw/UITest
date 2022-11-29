@@ -1,0 +1,44 @@
+# sauce capabilities, microsoftedge
+---
+sauceOptions:
+   seleniumVersion: 3.141.59
+   name: TSC Web Factory
+   maxDuration: 1200
+   commandTimeout: 400
+   idleTimeout: 180
+   build: TSC Web Factory
+   screenResolution: 1280x960
+mutableFireFoxCapabilities:  
+   platformName: Windows 10
+   browserVersion: latest
+mutableChromeCapabilities:   
+   platformName: Windows 10
+   browserVersion: latest
+mutableEdgeCapabilities:   
+   platformName: Windows 10
+   browserVersion: latest 
+mutableSafariCapabilities:   
+   platformName: macOS 11.00
+   browserVersion: latest   
+androidChromeCapabilities:
+   platformName: Android
+   platformVersion: 9.0
+   appiumVersion: 1.22.1
+   deviceName: Android GoogleAPI Emulator
+   deviceOrientation: portrait
+   deviceType: Tablet
+iosSafariCapabilities:
+   platformName: iOS
+   platformVersion: 14.3 #15.0
+   appiumVersion: 1.20.1 #1.22.0
+   deviceName: iPhone XS Simulator
+   deviceOrientation: portrait
+   deviceType: Phone
+iosSafariCapabilitiesTablet:
+   platformName: iOS
+   platformVersion: 14.3 #15.0
+   appiumVersion: 1.21.0 #1.22.0
+   deviceName: iPad (6th generation) Simulator
+   deviceOrientation: portrait
+   deviceType: Tablet
+...
