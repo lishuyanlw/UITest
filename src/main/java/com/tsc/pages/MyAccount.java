@@ -1117,9 +1117,9 @@ public class MyAccount extends BasePage {
 		getReusableActionsInstance().staticWait(5000);
 		//waitForCondition(Driver->{return !this.getChildElementAttribute(this.getLblMaskedCardNumberForNewCreditCard,"value").isEmpty();},10000);
 		if(isNewCard)
-			getDriver().switchTo().defaultContent();
+			getDriver().switchTo().parentFrame();
 		else if(!selectedCreditCardType.toLowerCase().contains("tsc"))
-			getDriver().switchTo().defaultContent();
+			getDriver().switchTo().parentFrame();
 	}
 
 	/**
@@ -3206,6 +3206,16 @@ public class MyAccount extends BasePage {
 		}
 		catch (Exception e){
 			this.getReusableActionsInstance().staticWait(10*getStaticWaitForApplication());
+			if (this.lblAddOrEditAddressExistingErrorMessage.getText().contains("Account.AddShippingAddressError")){
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSave);
+				this.clickElement(this.btnSave);
+				try{
+					this.waitForCondition(Driver->{return this.lblShippingAddressSectionTitle.isDisplayed();},40000);
+				}
+				catch (Exception ex) {
+					this.getReusableActionsInstance().staticWait(10 * getStaticWaitForApplication());
+				}
+			}
 		}
 		this.getReusableActionsInstance().staticWait(5*getStaticWaitForApplication());
 	}
@@ -3400,11 +3410,17 @@ public class MyAccount extends BasePage {
 
 		try{
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstAddOrEditAddressAutoSearchDropdownItems.get(selectedIndexInAutoSearchDropdownMenu));
+			if (this.lstAddOrEditAddressAutoSearchDropdownItems.get(selectedIndexInAutoSearchDropdownMenu).getText().length() >= 30){
+				selectedIndexInAutoSearchDropdownMenu=2;
+			}
 			this.getReusableActionsInstance().clickIfAvailable(this.lstAddOrEditAddressAutoSearchDropdownItems.get(selectedIndexInAutoSearchDropdownMenu));
 			this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: none;");},20000);
 		}
 		catch(Exception e){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstAddOrEditAddressAutoSearchDropdownItems.get(selectedIndexInAutoSearchDropdownMenu));
+			if (this.lstAddOrEditAddressAutoSearchDropdownItems.get(selectedIndexInAutoSearchDropdownMenu).getText().length() >= 30){
+				selectedIndexInAutoSearchDropdownMenu=2;
+			}
 			this.getReusableActionsInstance().clickIfAvailable(this.lstAddOrEditAddressAutoSearchDropdownItems.get(selectedIndexInAutoSearchDropdownMenu));
 			this.waitForCondition(Driver->{return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: none;");},20000);
 		}
