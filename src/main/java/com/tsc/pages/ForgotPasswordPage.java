@@ -599,7 +599,7 @@ public class ForgotPasswordPage extends BasePage {
         }
 
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblAddSecurityQuestionTitle);
-        lsText = lblAddSecurityQuestionTitle.getText().trim();
+        lsText = this.getElementInnerText(lblAddSecurityQuestionTitle);
         if(!lsText.isEmpty()) {
             reporter.reportLogPass("The Add Security Question title is displaying correctly");
         } else {
@@ -615,7 +615,7 @@ public class ForgotPasswordPage extends BasePage {
         }
 
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblSelectSecurityQuestionExplainText);
-        lsText = lblSelectSecurityQuestionExplainText.getText().trim();
+        lsText = this.getElementInnerText(lblSelectSecurityQuestionExplainText);
         if(!lsText.isEmpty()) {
             reporter.reportLogPass("The Select Security Question Below Explain Text is displaying correctly");
         } else {
@@ -623,7 +623,7 @@ public class ForgotPasswordPage extends BasePage {
         }
 
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(labelSecurityQuestion);
-        lsText = labelSecurityQuestion.getText().trim();
+        lsText = this.getElementInnerText(labelSecurityQuestion);
         if(!lsText.isEmpty()) {
             reporter.reportLogPass("The security Question label is displaying correctly");
         } else {
@@ -638,7 +638,7 @@ public class ForgotPasswordPage extends BasePage {
         }
 
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(labelSecurityQuestionAnswer);
-        lsText = labelSecurityQuestionAnswer.getText().trim();
+        lsText = this.getElementInnerText(labelSecurityQuestionAnswer);
         if(!lsText.isEmpty()) {
             reporter.reportLogPass("The security Question answer label is displaying correctly");
         } else {
@@ -660,7 +660,7 @@ public class ForgotPasswordPage extends BasePage {
         }
 
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnSaveAndContinue);
-        lsText = btnSaveAndContinue.getText().trim();
+        lsText = this.getElementInnerText(btnSaveAndContinue);
         if(!lsText.isEmpty()) {
             reporter.reportLogPass("The save and continue button is displaying correctly");
         } else {
