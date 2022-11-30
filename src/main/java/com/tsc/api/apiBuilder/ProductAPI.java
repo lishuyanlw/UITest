@@ -206,7 +206,7 @@ public class ProductAPI extends ApiClient {
      * determines as if the call is made first time or not
      * @return - Product - Product Object from api Response
      */
-    private Product getProductDetailsForKeyword(String searchKeyword,String defaultPageItems,boolean firstTimeFunctionCall){
+    public Product getProductDetailsForKeyword(String searchKeyword,String defaultPageItems,boolean firstTimeFunctionCall){
         Response response = null;
         Product product = null;
         boolean flag = true;
