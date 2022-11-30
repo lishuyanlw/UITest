@@ -387,6 +387,7 @@ public class OrderModificationPage extends BasePage {
 		this.applyStaticWait(300);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyButton);
 		btnModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyButton.click();
+		this.waitForPageToLoad();
 		this.waitForCondition(Driver->{return lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeAppliedPromoteMessage.isDisplayed();},120000);
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeAppliedPromoteCode);
@@ -986,7 +987,7 @@ public class OrderModificationPage extends BasePage {
 		else{
 			reporter.reportLogFail("The Adding Items section is expanded");
 		}
-		lblModifyOrderChangeModOptionsAddItemsHeadingTitle.click();
+		this.clickWebElementUsingJS(lblModifyOrderChangeModOptionsAddItemsHeadingTitle);
 		this.waitForCondition(Driver->{return this.checkChangeModOptionExpanded(lblModifyOrderChangeModOptionsAddItemsHeadingTitle);},10000);
 		lsText = lblModifyOrderChangeModOptionsAddItemsHeadingTitle.getText();
 		if (!lsText.isEmpty()) {
@@ -1010,7 +1011,7 @@ public class OrderModificationPage extends BasePage {
 		else{
 			reporter.reportLogFail("The Add Or Update PromoCode section is expanded");
 		}
-		lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeHeadingTitle.click();
+		this.clickWebElementUsingJS(lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeHeadingTitle);
 		this.waitForCondition(Driver->{return this.checkChangeModOptionExpanded(lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeHeadingTitle);},10000);
 		lsText = lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeHeadingTitle.getText();
 		if (!lsText.isEmpty()) {
@@ -1066,7 +1067,7 @@ public class OrderModificationPage extends BasePage {
 			reporter.reportLogFail("The Other Changes section is expanded");
 		}
 
-		lblModifyOrderChangeModOptionsOtherChangesHeadingTitle.click();
+		this.clickWebElementUsingJS(lblModifyOrderChangeModOptionsOtherChangesHeadingTitle);
 		this.waitForCondition(Driver->{return this.checkChangeModOptionExpanded(lblModifyOrderChangeModOptionsOtherChangesHeadingTitle);},10000);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblModifyOrderChangeModOptionsOtherChanges);
 		lsText = lblModifyOrderChangeModOptionsOtherChanges.getText();
