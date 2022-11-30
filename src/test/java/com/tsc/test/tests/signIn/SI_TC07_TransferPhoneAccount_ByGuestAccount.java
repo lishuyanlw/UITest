@@ -52,6 +52,12 @@ public class SI_TC07_TransferPhoneAccount_ByGuestAccount extends BaseTest{
             getGuestCheckoutThreadLocal().goToReviewPage();
 
             getRegularCheckoutThreadLocal().goToOrderConfirmationPage();
+
+            String lsDeviceType=System.getProperty("Device").toLowerCase();
+            if(lsDeviceType.contains("ios")){
+                getGlobalFooterPageThreadLocal().closePopupDialog();
+            }
+
             Map<String,Object> receiptMap=getOrderConfirmationThreadLocal().getReceiptDesc();
             String customerNumber= (String) receiptMap.get("customerNumber");
 
