@@ -249,7 +249,7 @@ public class CreateAccountPage extends BasePage {
 
         if(bSave){
             this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSave);
-            this.btnSave.click();
+            this.clickElement(this.btnSave);
             if(bExistingEmail){
                 this.waitForCondition(Driver->{return this.getElementInnerText(this.lstAllErrorMessage.get(0)).contains("already exist!!!");},120000);
             }
@@ -260,7 +260,7 @@ public class CreateAccountPage extends BasePage {
         }
         else{
             this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnCancel);
-            this.btnCancel.click();
+            this.clickElement(this.btnCancel);
             this.applyStaticWait(3*this.getStaticWaitForApplication());
         }
 

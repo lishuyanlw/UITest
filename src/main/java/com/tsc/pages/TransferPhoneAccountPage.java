@@ -187,13 +187,13 @@ public class TransferPhoneAccountPage extends BasePage {
 
 		if(bCreateAccount){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnCreateAccount);
-			this.btnCreateAccount.click();
+			this.clickElement(this.btnCreateAccount);
 			MyAccount myAccount=new MyAccount(this.getDriver());
 			this.waitForCondition(Driver->{return myAccount.lblMyAccountHeaderTitle.isDisplayed();},120000);
 		}
 		else{
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnCancel);
-			this.btnCancel.click();
+			this.clickElement(this.btnCancel);
 			SignInPage signInPage=new SignInPage(this.getDriver());
 			this.waitForCondition(Driver->{return signInPage.lblSignInPageTitle.isDisplayed();},120000);
 		}
