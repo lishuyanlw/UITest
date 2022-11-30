@@ -41,7 +41,7 @@ public class OM_TC03_VerifyOrderModification_OrderConfirmation_AddPromoteCode_Ad
         String myAccountOrderStatusURL = TestDataHandler.constantData.getMyAccount().getLnk_orderStatusURL();
         List<String> newItemToBeAddedKeyword = TestDataHandler.constantData.getCheckOut().getLst_SearchingKeywordForPlaceOrder();
         List<Map<String,String>> itemsToBeAdded = TestDataHandler.constantData.getCheckOut().getLstOrderDetailItems();
-        PlaceOrderResponse placeOrderResponse = getMyAccountPageThreadLocal().placeOrderForUser(Integer.parseInt(customerEDP),accessToken,itemsToBeAdded,2,"1",true,517281);
+        PlaceOrderResponse placeOrderResponse = getMyAccountPageThreadLocal().placeOrderForUser(Integer.parseInt(customerEDP),accessToken,itemsToBeAdded,2,"1",true,536115);
         //Login using valid username and password
         getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword);
         try {
@@ -144,7 +144,7 @@ public class OM_TC03_VerifyOrderModification_OrderConfirmation_AddPromoteCode_Ad
             reporter.reportLogPass("The item count on checkout page is equal to the item count on orderConfirmation page");
         }
         else{
-            reporter.reportLogPass("The item count on checkout page is equal to the item count on orderConfirmation page");
+            reporter.reportLogFailWithScreenshot("The item count on checkout page is equal to the item count on orderConfirmation page");
         }
         if(bPriceChanges){
             if(Math.abs(subTotalForCheckoutProductList-subTotalForOrderConfirmationList-lsPromoteCodeDiscountForOrderConfirmation)<0.1f){
