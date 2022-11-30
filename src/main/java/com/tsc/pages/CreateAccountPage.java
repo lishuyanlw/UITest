@@ -251,11 +251,21 @@ public class CreateAccountPage extends BasePage {
             this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSave);
             this.clickElement(this.btnSave);
             if(bExistingEmail){
-                this.waitForCondition(Driver->{return this.getElementInnerText(this.lstAllErrorMessage.get(0)).contains("already exist!!!");},120000);
+                try{
+                    this.waitForCondition(Driver->{return this.getElementInnerText(this.lstAllErrorMessage.get(0)).contains("already exist");},120000);
+                }
+                catch (Exception ex){
+                    this.applyStaticWait(8*this.getStaticWaitForApplication());
+                }
             }
             else{
                 SignInPage signInPage=new SignInPage(this.getDriver());
-                this.waitForCondition(Driver->{return signInPage.lblSignInPageTitle.isDisplayed();},120000);
+                try{
+                    this.waitForCondition(Driver->{return signInPage.lblSignInPageTitle.isDisplayed();},120000);
+                }
+                catch (Exception ex){
+                    this.applyStaticWait(8*this.getStaticWaitForApplication());
+                }
             }
         }
         else{

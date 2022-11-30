@@ -681,7 +681,7 @@ public class GlobalFooterPage extends BasePage {
 	public void closePopupDialog() {
 		HomePage homePage = new HomePage(getDriver());
 		try{
-			if(waitForCondition(Driver->{return homePage.btnClose.isDisplayed();},120000)){
+			if(waitForCondition(Driver->{return homePage.btnClose.isDisplayed();},180000)){
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(homePage.btnClose);
 				this.getReusableActionsInstance().clickIfAvailable(homePage.btnClose,3000);
 			}
