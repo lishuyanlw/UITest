@@ -251,7 +251,16 @@ public class BaseTest {
 		orderModificationPageThreadLocal.set(new OrderModificationPage_Tablet(getDriver()));
 		orderTrackingPageThreadLocal.set(new OrderTrackingPage(getDriver()));
 		createAccountPageThreadLocal.set(new CreateAccountPage(getDriver()));
-		transferPhoneAccountPageThreadLocal.set(new TransferPhoneAccountPage(getDriver()));
+
+		if(System.getProperty("Browser").contains("android") ||
+				(System.getProperty("chromeMobileDevice").length()>0
+						&& (!System.getProperty("chromeMobileDevice").contains("iPad")))){
+			transferPhoneAccountPageThreadLocal.set(new TransferPhoneAccountPage_Mobile(getDriver()));
+		}
+		else{
+			transferPhoneAccountPageThreadLocal.set(new TransferPhoneAccountPage(getDriver()));
+		}
+
 		forgotPasswordPageThreadLocal.set(new ForgotPasswordPage(this.getDriver()));
 	}
 
