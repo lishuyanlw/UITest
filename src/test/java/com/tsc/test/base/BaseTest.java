@@ -242,7 +242,10 @@ public class BaseTest {
 		regularCheckoutPageThreadLocal.set(new RegularCheckoutPage_Mobile(getDriver()));
 		orderConfirmationPageThreadLocal.set(new OrderConfirmationPage(getDriver()));
 		guestCheckoutPageThreadLocal.set(new GuestCheckoutPage_Mobile(getDriver()));
-		orderModificationPageThreadLocal.set(new OrderModificationPage_Tablet(getDriver()));
+		if(System.getProperty("Browser").contains("ios"))
+			orderModificationPageThreadLocal.set(new OrderModificationPage_Tablet(getDriver()));
+		else
+			orderModificationPageThreadLocal.set(new OrderModificationPage_Mobile(getDriver()));
 		orderTrackingPageThreadLocal.set(new OrderTrackingPage(getDriver()));
 		createAccountPageThreadLocal.set(new CreateAccountPage(getDriver()));
 		transferPhoneAccountPageThreadLocal.set(new TransferPhoneAccountPage(getDriver()));
