@@ -33,7 +33,7 @@ public class SI_TC07_TransferPhoneAccount_ByGuestAccount extends BaseTest{
             basePage.clickElement(getProductDetailPageThreadLocal().btnAddToBag);
             basePage.waitForCondition(Driver -> {
                 return getProductDetailPageThreadLocal().lblAddToBagPopupWindowTitle.isDisplayed();
-            }, 30000);
+            }, 120000);
 
             basePage.getReusableActionsInstance().javascriptScrollByVisibleElement(getProductDetailPageThreadLocal().btnAddToBagPopupWindowButtonSectionCheckOut);
             getProductDetailPageThreadLocal().btnAddToBagPopupWindowButtonSectionCheckOut.click();
