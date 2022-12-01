@@ -5463,7 +5463,7 @@ public class RegularCheckoutPage extends BasePage {
 			this.waitForPageLoadingSpinningStatusCompleted();
 		}
 		catch (Exception e){
-			this.applyStaticWait(20*this.getStaticWaitForApplication());
+			this.applyStaticWait(8*this.getStaticWaitForApplication());
 		}
 
 		try{
@@ -5471,7 +5471,7 @@ public class RegularCheckoutPage extends BasePage {
 			this.waitForCondition(Driver->{return orderConfirmationPage.lblOrderSuccessTitle.isDisplayed();},15000);
 		}
 		catch (Exception e){
-			this.applyStaticWait(3*this.getStaticWaitForApplication());
+			this.applyStaticWait(8*this.getStaticWaitForApplication());
 		}
 	}
 

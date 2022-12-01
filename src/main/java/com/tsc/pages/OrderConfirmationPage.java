@@ -400,6 +400,13 @@ public class OrderConfirmationPage extends BasePage {
 		Map<String, Object> map = new HashMap<>();
 		String lsText;
 
+		try{
+			this.waitForCondition(Driver->{return lblReceiptDate.isDisplayed();},120000);
+		}
+		catch (Exception ex){
+			this.applyStaticWait(8*this.getStaticWaitForApplication());
+		}
+
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblReceiptDate);
 		lsText=lblReceiptDate.getText().trim();
 		map.put("orderDate",lsText);
