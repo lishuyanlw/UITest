@@ -9,6 +9,7 @@ import com.tsc.api.pojo.PlaceOrderResponse;
 import com.tsc.api.pojo.Product;
 import com.tsc.api.util.JsonParser;
 import com.tsc.data.Handler.TestDataHandler;
+import com.tsc.pages.OrderModificationPage_Mobile;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 import io.restassured.response.Response;
@@ -72,7 +73,7 @@ public class OM_TC05_VerifyOrderModification_Checkout_AddPromoteCode_AddADPProdu
         Map<String,Object> addToBagPopUpData = new HashMap<String,Object>();;
         String lsADPProductNumber = TestDataHandler.constantData.getSearchResultPage().getLbl_AutoDeliverykeyword();
         //Map<String,Object> addToBagPopUpData=getOrderModificationThreadLocal().addProductItems(lsADPProductNumber,true);
-        if(System.getProperty("Browser").equalsIgnoreCase("Desktop"))
+        if(System.getProperty("Device").equalsIgnoreCase("Desktop"))
             addToBagPopUpData=getOrderModificationThreadLocal().addProductItems(lsADPProductNumber,true);
         else{
             //Product.Products product = new ProductAPI().getProductOfPDPForAddToBagFromKeyword(lsADPProductNumber);
@@ -102,7 +103,12 @@ public class OM_TC05_VerifyOrderModification_Checkout_AddPromoteCode_AddADPProdu
             reporter.reportLogFail("The order number:"+lsOrderNumberForOrderModification+" for order modification is not the same as the one:"+lsOrderNumberOnAddToBagWindow+" for add to bag popup window.");
         }
 
-        List<Map<String,Object>> newlyAddedOrderMapList=getOrderModificationThreadLocal().getNewlyAddedOrderListDesc();
+        List<Map<String,Object>> newlyAddedOrderMapList = null;
+        if(System.getProperty("Device").equalsIgnoreCase("Desktop") ||
+                (System.getProperty("Device").equalsIgnoreCase("Tablet") && System.getProperty("Browser").contains("ios")))
+            newlyAddedOrderMapList=getOrderModificationThreadLocal().getNewlyAddedOrderListDesc();
+        else
+            newlyAddedOrderMapList=new OrderModificationPage_Mobile(this.getDriver()).getNewlyAddedOrderListDesc();
 
         reporter.reportLog("Verify Linkage Between AddToBag Item And Newly Added Order List");
         getOrderModificationThreadLocal().verifyLinkageBetweenAddToBagItemAndNewlyAddedOrderList(newlyAddedOrderMapList,addToBagPopUpData);

@@ -111,7 +111,7 @@ public class OM_TC01_VerifyOrderModification_AddPromoteCode_AddRegularProductIte
         outputDataCriteria.put("size", "1");
         String lsProductName=getProductDetailPageThreadLocal().getProductWithConditionsForVideoAndStyleAndSizeWithoutCheckingSoldOutCriteria(lstKeyword,outputDataCriteria);
         reporter.reportLog("lsProductName: "+lsProductName);
-        if(System.getProperty("Browser").equalsIgnoreCase("Desktop"))
+        if(System.getProperty("Device").equalsIgnoreCase("Desktop"))
             addToBagPopUpData=getOrderModificationThreadLocal().addProductItems(lsProductName,true);
         else{
             Product.Products product = new ProductAPI().getProductOfPDPForAddToBagFromKeyword(lsProductName);

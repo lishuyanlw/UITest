@@ -384,7 +384,7 @@ public class OrderModificationPage extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputModifyOrderChangeModOptionsAddOrUpdatePromoCode);
 		inputModifyOrderChangeModOptionsAddOrUpdatePromoCode.sendKeys(lsPromoteCode);
 		this.applyStaticWait(300);
-		if(System.getProperty("Browser").equalsIgnoreCase("Desktop") || (System.getProperty("Browser").equalsIgnoreCase("Tablet") && System.getProperty("Browser").contains("ios"))){
+		if(System.getProperty("Device").equalsIgnoreCase("Desktop") || (System.getProperty("Device").equalsIgnoreCase("Tablet") && System.getProperty("Browser").contains("ios"))){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyButton);
 			btnModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyButton.click();
 		}else{
@@ -437,7 +437,7 @@ public class OrderModificationPage extends BasePage {
 		boolean removeButtonStatus;
 		for(WebElement element:itemList){
 			if(element.getText().equalsIgnoreCase("FREE SHIPPING")){
-				if(System.getProperty("Browser").equalsIgnoreCase("Desktop")){
+				if(System.getProperty("Device").equalsIgnoreCase("Desktop")){
 					removeButtonStatus = new ShoppingCartPage(this.getDriver()).checkSelectQuantityEnabled(orderItem);
 				}else{
 					removeButtonStatus = new ShoppingCartPage_Mobile(this.getDriver()).checkSelectQuantityEnabled(orderItem);
@@ -1041,7 +1041,7 @@ public class OrderModificationPage extends BasePage {
 		}
 
 		OrderModificationPage_Mobile orderModificationPage_mobile = new OrderModificationPage_Mobile(this.getDriver());
-		if(System.getProperty("Browser").equalsIgnoreCase("Desktop") || (System.getProperty("Browser").equalsIgnoreCase("Tablet") && System.getProperty("Browser").contains("ios"))){
+		if(System.getProperty("Device").equalsIgnoreCase("Desktop") || (System.getProperty("Device").equalsIgnoreCase("Tablet") && System.getProperty("Browser").contains("ios"))){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyButton);
 			lsText = btnModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyButton.getText();
 		}else{
@@ -1054,7 +1054,7 @@ public class OrderModificationPage extends BasePage {
 			reporter.reportLogFailWithScreenshot("The Add Or Update PromoCode apply button is not displaying correctly");
 		}
 
-		if(System.getProperty("Browser").equalsIgnoreCase("Desktop") || (System.getProperty("Browser").equalsIgnoreCase("Tablet") && System.getProperty("Browser").contains("ios"))){
+		if(System.getProperty("Device").equalsIgnoreCase("Desktop") || (System.getProperty("Device").equalsIgnoreCase("Tablet") && System.getProperty("Browser").contains("ios"))){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyNoteMessage);
 			lsText = lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyNoteMessage.getText();
 		}else{
