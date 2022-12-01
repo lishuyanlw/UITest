@@ -9,7 +9,6 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
 
 import java.math.RoundingMode;
-import java.sql.Driver;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -385,8 +384,14 @@ public class OrderModificationPage extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputModifyOrderChangeModOptionsAddOrUpdatePromoCode);
 		inputModifyOrderChangeModOptionsAddOrUpdatePromoCode.sendKeys(lsPromoteCode);
 		this.applyStaticWait(300);
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyButton);
-		btnModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyButton.click();
+		if(System.getProperty("Browser").equalsIgnoreCase("Desktop") || (System.getProperty("Browser").equalsIgnoreCase("Tablet") && System.getProperty("Browser").contains("ios"))){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyButton);
+			btnModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyButton.click();
+		}else{
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(new OrderModificationPage_Mobile(this.getDriver()).btnModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyButton);
+			new OrderModificationPage_Mobile(this.getDriver()).btnModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyButton.click();
+		}
+
 		this.waitForPageToLoad();
 		this.waitForCondition(Driver->{return lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeAppliedPromoteMessage.isDisplayed();},120000);
 
@@ -1035,16 +1040,27 @@ public class OrderModificationPage extends BasePage {
 			reporter.reportLogFailWithScreenshot("The input Add Or Update PromoCode is not displaying correctly");
 		}
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyButton);
-		lsText = btnModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyButton.getText();
+		OrderModificationPage_Mobile orderModificationPage_mobile = new OrderModificationPage_Mobile(this.getDriver());
+		if(System.getProperty("Browser").equalsIgnoreCase("Desktop") || (System.getProperty("Browser").equalsIgnoreCase("Tablet") && System.getProperty("Browser").contains("ios"))){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyButton);
+			lsText = btnModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyButton.getText();
+		}else{
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(orderModificationPage_mobile.btnModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyButton);
+			lsText = orderModificationPage_mobile.btnModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyButton.getText();
+		}
 		if (!lsText.isEmpty()) {
 			reporter.reportLogPass("The Add Or Update PromoCode apply button is displaying correctly");
 		} else {
 			reporter.reportLogFailWithScreenshot("The Add Or Update PromoCode apply button is not displaying correctly");
 		}
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyNoteMessage);
-		lsText = lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyNoteMessage.getText();
+		if(System.getProperty("Browser").equalsIgnoreCase("Desktop") || (System.getProperty("Browser").equalsIgnoreCase("Tablet") && System.getProperty("Browser").contains("ios"))){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyNoteMessage);
+			lsText = lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyNoteMessage.getText();
+		}else{
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(orderModificationPage_mobile.lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyNoteMessage);
+			lsText = orderModificationPage_mobile.lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyNoteMessage.getText();
+		}
 		if (!lsText.isEmpty()) {
 			reporter.reportLogPass("The Add Or Update PromoCode apply note message is displaying correctly");
 		} else {

@@ -1,9 +1,12 @@
 package com.tsc.test.tests.orderModification;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.tsc.api.apiBuilder.ApiClient;
 import com.tsc.api.apiBuilder.CartAPI;
+import com.tsc.api.apiBuilder.ProductAPI;
 import com.tsc.api.pojo.CartResponse;
 import com.tsc.api.pojo.PlaceOrderResponse;
+import com.tsc.api.pojo.Product;
 import com.tsc.api.util.JsonParser;
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
@@ -12,6 +15,7 @@ import io.restassured.response.Response;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -65,8 +69,30 @@ public class OM_TC05_VerifyOrderModification_Checkout_AddPromoteCode_AddADPProdu
         getOrderModificationThreadLocal().addPromoteCode(lsPromoteCode);
 
         reporter.reportLog("Add ADP product item through UI");
+        Map<String,Object> addToBagPopUpData = new HashMap<String,Object>();;
         String lsADPProductNumber = TestDataHandler.constantData.getSearchResultPage().getLbl_AutoDeliverykeyword();
-        Map<String,Object> addToBagPopUpData=getOrderModificationThreadLocal().addProductItems(lsADPProductNumber,true);
+        //Map<String,Object> addToBagPopUpData=getOrderModificationThreadLocal().addProductItems(lsADPProductNumber,true);
+        if(System.getProperty("Browser").equalsIgnoreCase("Desktop"))
+            addToBagPopUpData=getOrderModificationThreadLocal().addProductItems(lsADPProductNumber,true);
+        else{
+            //Product.Products product = new ProductAPI().getProductOfPDPForAddToBagFromKeyword(lsADPProductNumber);
+            Product.Products product = new ProductAPI().getProductInfoWithProductNumberAsSearchKeyword(lsADPProductNumber,null);
+            ApiClient apiClient = new ApiClient();
+            final String pdpPageURL = apiClient.getApiPropertyData().get("test_qaURL") + "/" + product.getName().trim() + apiClient.getApiPropertyData().get("test_partial_url_pdp") + lsADPProductNumber;
+            try{
+                this.getDriver().get(pdpPageURL);
+            }
+            catch (Exception e){}
+            getProductResultsPageThreadLocal().waitForPageToLoad();
+            getProductResultsPageThreadLocal().waitForPDPPageLoading();
+            //Clicking on Add to Bag pop up button
+            getOrderModificationThreadLocal().waitForCondition(Driver->{return getProductDetailPageThreadLocal().btnAddToBag.isDisplayed() &&
+                    getProductDetailPageThreadLocal().btnAddToBag.isEnabled();},6000);
+            getProductDetailPageThreadLocal().openAddToBagPopupWindow();
+            addToBagPopUpData=getOrderModificationThreadLocal().getAddToBagDesc();
+            addToBagPopUpData.put("productOrderNumber",getProductDetailPageThreadLocal().getOrderNumberFromAddToBagPopUp());
+            getOrderModificationThreadLocal().goToOrderModificationPageForReviewChangesFromAddToBagWindow();
+        }
 
         String lsOrderNumberOnAddToBagWindow= (String) addToBagPopUpData.get("productOrderNumber");
         if(lsOrderNumberForOrderModification.substring(0,7).equalsIgnoreCase(lsOrderNumberOnAddToBagWindow.substring(0,7))){

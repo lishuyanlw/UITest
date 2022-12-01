@@ -106,7 +106,7 @@ public class OM_TC01_VerifyOrderModification_AddPromoteCode_AddRegularProductIte
         reporter.reportLog("Add new order item through UI");
         List<String> lstKeyword = TestDataHandler.constantData.getCheckOut().getLst_SearchingKeywordForPlaceOrder();
         Map<String,Object> outputDataCriteria= new HashMap<String,Object>();
-        Map<String,Object> addToBagPopUpData = new HashMap<String,Object>();;
+        Map<String,Object> addToBagPopUpData = new HashMap<String,Object>();
         outputDataCriteria.put("style", "1");
         outputDataCriteria.put("size", "1");
         String lsProductName=getProductDetailPageThreadLocal().getProductWithConditionsForVideoAndStyleAndSizeWithoutCheckingSoldOutCriteria(lstKeyword,outputDataCriteria);
