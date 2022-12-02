@@ -5426,8 +5426,11 @@ public class MyAccount extends BasePage {
 		String orderURL = System.getProperty("QaUrl")+myAccountOrderStatusURL+"?orderNo="+orderNumber;
 		this.getDriver().navigate().to(orderURL);
 		this.waitForPageToLoad();
-		this.waitForCondition(Driver->{return this.btnOrderDetailsHeaderEditOrder.isDisplayed() &&
-								this.btnOrderDetailsHeaderEditOrder.isEnabled();},120000);
+		this.waitForCondition(Driver->{return this.btnOrderDetailsHeaderEditOrder.isDisplayed();},20000);
+		if(!this.btnOrderDetailsHeaderEditOrder.isEnabled()){
+			this.setElementEnabled(btnOrderDetailsHeaderEditOrder);
+		}
+		this.waitForCondition(Driver->{return this.btnOrderDetailsHeaderEditOrder.isEnabled();},120000);
 		//Click on Edit Order Button
 		this.clickWebElementUsingJS(this.btnOrderDetailsHeaderEditOrder);
 
