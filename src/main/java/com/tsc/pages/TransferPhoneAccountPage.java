@@ -193,7 +193,14 @@ public class TransferPhoneAccountPage extends BasePage {
 				this.waitForCondition(Driver->{return myAccount.lblMyAccountHeaderTitle.isDisplayed();},120000);
 			}
 			catch (Exception ex){
-				this.applyStaticWait(8*this.getStaticWaitForApplication());
+				this.clickElement(this.btnCreateAccount);
+				try{
+					this.waitForCondition(Driver->{return myAccount.lblMyAccountHeaderTitle.isDisplayed();},120000);
+				}
+				catch (Exception ex1){
+					this.clickElement(this.btnCreateAccount);
+					this.waitForCondition(Driver->{return myAccount.lblMyAccountHeaderTitle.isDisplayed();},120000);
+				}
 			}
 		}
 		else{
