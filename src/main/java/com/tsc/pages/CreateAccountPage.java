@@ -198,8 +198,11 @@ public class CreateAccountPage extends BasePage {
         }
 
         int optionSize=this.lstAddressLine1DropdownMenuList.size();
-        Random rand = new Random();
-        int randomNumber = rand.nextInt(optionSize-2);
+        int randomNumber=0;
+        if(optionSize>1){
+            Random rand = new Random();
+            randomNumber = rand.nextInt(optionSize-2);
+        }
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstAddressLine1DropdownMenuList.get(randomNumber));
         this.getReusableActionsInstance().clickIfAvailable(this.lstAddressLine1DropdownMenuList.get(randomNumber));
         this.waitForCondition(Driver->{return this.cntAddressLine1DropdownMenuListContainer.getAttribute("style").contains("display: none;");},20000);

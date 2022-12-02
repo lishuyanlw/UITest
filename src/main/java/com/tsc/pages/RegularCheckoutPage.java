@@ -5463,7 +5463,7 @@ public class RegularCheckoutPage extends BasePage {
 			this.waitForPageLoadingSpinningStatusCompleted();
 		}
 		catch (Exception e){
-			this.applyStaticWait(8*this.getStaticWaitForApplication());
+			this.applyStaticWait(20*this.getStaticWaitForApplication());
 		}
 
 		try{

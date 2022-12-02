@@ -37,7 +37,20 @@ public class SI_TC05_CreateAccount_VerifyContents_ByCreateAccountInSignInMenuOnH
         String lblPasswordForExistingEmail = TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
         String lsErrorMessageForExistingEmailFromYml=TestDataHandler.constantData.getLoginUser().getLblErrorMessageForExistingEmail();
         lsErrorMessageForExistingEmailFromYml=lsErrorMessageForExistingEmailFromYml.replace("<email>",lblUserNameForExistingEmail);
-        Map<String,String> createdLoginMap=getCreateAccountThreadLocal().createNewAccount(lblUserNameForExistingEmail,lblPasswordForExistingEmail,true,true);
+
+        Map<String,String> createdLoginMap;
+        try{
+            createdLoginMap=getCreateAccountThreadLocal().createNewAccount(lblUserNameForExistingEmail,lblPasswordForExistingEmail,true,true);
+        }
+        catch(Exception ex){
+            try{
+                createdLoginMap=getCreateAccountThreadLocal().createNewAccount(lblUserNameForExistingEmail,lblPasswordForExistingEmail,true,true);
+            }
+            catch(Exception ex1){
+                createdLoginMap=getCreateAccountThreadLocal().createNewAccount(lblUserNameForExistingEmail,lblPasswordForExistingEmail,true,true);
+            }
+        }
+
         String lsErrorMessageForExistingEmail=createdLoginMap.get("errorMessage");
         if(lsErrorMessageForExistingEmail.equalsIgnoreCase(lsErrorMessageForExistingEmailFromYml)){
             reporter.reportLogPass("The error message:'"+lsErrorMessageForExistingEmail+"' for existing email is the same as expected:'"+lsErrorMessageForExistingEmailFromYml+"'");

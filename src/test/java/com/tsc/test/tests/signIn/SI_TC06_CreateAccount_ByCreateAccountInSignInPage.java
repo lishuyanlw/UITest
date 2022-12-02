@@ -21,7 +21,19 @@ public class SI_TC06_CreateAccount_ByCreateAccountInSignInPage extends BaseTest 
         getGlobalLoginPageThreadLocal().goToCreateAccountPageThroughSignInPage();
 
         reporter.reportLog("Verify create an new account with a valid email");
-        Map<String,String> createdLoginMap=getCreateAccountThreadLocal().createNewAccount(null,null,true,false);
+        Map<String,String> createdLoginMap;
+        try{
+            createdLoginMap=getCreateAccountThreadLocal().createNewAccount(null,null,true,false);
+        }
+        catch(Exception ex){
+            try{
+                createdLoginMap=getCreateAccountThreadLocal().createNewAccount(null,null,true,false);
+            }
+            catch(Exception ex1){
+                createdLoginMap=getCreateAccountThreadLocal().createNewAccount(null,null,true,false);
+            }
+        }
+
         String lblUserName = createdLoginMap.get("email");
         String lblPassword = createdLoginMap.get("password");
         String firstName = createdLoginMap.get("firstName");
