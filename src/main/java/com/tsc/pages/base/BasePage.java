@@ -1311,4 +1311,14 @@ import utils.ReusableActions;
 		}
 		return dest;
 	}
+
+	/**
+	 * This method will set element enabled.
+	 * @param-WebElement parent: parent element
+	 * @author Wei.Li
+	 */
+	public void setElementEnabled(WebElement parent) {
+		JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
+		jse.executeScript("arguments[0].disabled=false;", parent);
+	}
 }

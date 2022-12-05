@@ -28,7 +28,7 @@ public class SC_TC11_VerifyShoppingCart_TrueFitMessage extends BaseTest{
 			getGlobalFooterPageThreadLocal().closePopupDialog();
 			//Fetching test data from test data file
 			List<Map<String, String>> keyword = TestDataHandler.constantData.getShoppingCart().getLst_SearchKeywords();
-			List<Map<String, Object>> data = getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP, accessToken, keyword,"all",true);
+			List<Map<String, Object>> data = getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP, accessToken, keyword,"all",true,0);
 			List<String> lstKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_APISearchingKeyword();
 
 			//Login using valid username and password

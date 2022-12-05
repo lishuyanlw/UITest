@@ -7,11 +7,14 @@ import com.tsc.api.util.DataConverter;
 import com.tsc.api.util.JsonParser;
 import com.tsc.pages.base.BasePage;
 import io.restassured.response.Response;
+import org.openqa.selenium.ElementNotVisibleException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.FluentWait;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

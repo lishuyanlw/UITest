@@ -228,22 +228,15 @@ public class OrderModificationPage_Mobile extends OrderModificationPage {
 					}
 				}
 
-				item = productItem.findElement(byProductRemoveButton);
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-				lsText = item.getText();
-				if (!lsText.isEmpty()) {
-					reporter.reportLogPass("The product remove button is displaying correctly");
-				} else {
-					reporter.reportLogFailWithScreenshot("The product remove button is not displaying correctly");
-				}
-
-				item = productItem.findElement(byProductRemoveButton);
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-				lsText = item.getText();
-				if (!lsText.isEmpty()) {
-					reporter.reportLogPass("The product remove button is displaying correctly");
-				} else {
-					reporter.reportLogFailWithScreenshot("The product remove button is not displaying correctly");
+				if(new ShoppingCartPage_Mobile(this.getDriver()).checkSelectQuantityEnabled(productItem)){
+					item = productItem.findElement(byProductRemoveButton);
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+					lsText = item.getText();
+					if (!lsText.isEmpty()) {
+						reporter.reportLogPass("The product remove button is displaying correctly");
+					} else {
+						reporter.reportLogFailWithScreenshot("The product remove button is not displaying correctly");
+					}
 				}
 			}
 			else{
@@ -308,7 +301,7 @@ public class OrderModificationPage_Mobile extends OrderModificationPage {
 		String lsText;
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblModifyOrderChangeModOptionsAddItemsHeadingTitle);
-		lblModifyOrderChangeModOptionsAddItemsHeadingTitle.click();
+		this.clickWebElementUsingJS(lblModifyOrderChangeModOptionsAddItemsHeadingTitle);
 		this.waitForCondition(Driver->{return this.checkChangeModOptionExpanded(lblModifyOrderChangeModOptionsAddItemsHeadingTitle);},10000);
 		lsText = lblModifyOrderChangeModOptionsAddItemsHeadingTitle.getText();
 		if (!lsText.isEmpty()) {
@@ -326,7 +319,7 @@ public class OrderModificationPage_Mobile extends OrderModificationPage {
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeHeadingTitle);
-		lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeHeadingTitle.click();
+		this.clickWebElementUsingJS(lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeHeadingTitle);
 		this.waitForCondition(Driver->{return this.checkChangeModOptionExpanded(lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeHeadingTitle);},10000);
 		lsText = lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeHeadingTitle.getText();
 		if (!lsText.isEmpty()) {
@@ -367,7 +360,7 @@ public class OrderModificationPage_Mobile extends OrderModificationPage {
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblModifyOrderChangeModOptionsOtherChangesHeadingTitle);
-		lblModifyOrderChangeModOptionsOtherChangesHeadingTitle.click();
+		this.clickWebElementUsingJS(lblModifyOrderChangeModOptionsOtherChangesHeadingTitle);
 		this.waitForCondition(Driver->{return this.checkChangeModOptionExpanded(lblModifyOrderChangeModOptionsOtherChangesHeadingTitle);},10000);
 		lsText = lblModifyOrderChangeModOptionsOtherChangesHeadingTitle.getText();
 		if (!lsText.isEmpty()) {
@@ -399,7 +392,7 @@ public class OrderModificationPage_Mobile extends OrderModificationPage {
 		lsExpectedUrl=lsExpectedUrl+lsURL;
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnModifyOrderCancelModificationButton);
-		btnModifyOrderCancelModificationButton.click();
+		this.clickWebElementUsingJS(btnModifyOrderCancelModificationButton);
 		this.waitForCondition(Driver->{return (new MyAccount(this.getDriver())).inputAccountOrderSearch.isDisplayed();},60000);
 
 		if(this.URL().equalsIgnoreCase(lsExpectedUrl)){

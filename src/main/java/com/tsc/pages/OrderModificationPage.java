@@ -9,7 +9,6 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
 
 import java.math.RoundingMode;
-import java.sql.Driver;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -385,8 +384,18 @@ public class OrderModificationPage extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputModifyOrderChangeModOptionsAddOrUpdatePromoCode);
 		inputModifyOrderChangeModOptionsAddOrUpdatePromoCode.sendKeys(lsPromoteCode);
 		this.applyStaticWait(300);
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyButton);
-		btnModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyButton.click();
+		if(System.getProperty("Device").equalsIgnoreCase("Desktop") ||
+				(System.getProperty("Device").equalsIgnoreCase("Tablet")
+						&& System.getProperty("Browser").contains("ios")) ||
+				(System.getProperty("Browser").equalsIgnoreCase("chromemobile") && System.getProperty("chromeMobileDevice").length()>0 && System.getProperty("chromeMobileDevice").equalsIgnoreCase("iPad"))){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyButton);
+			btnModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyButton.click();
+		}else{
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(new OrderModificationPage_Mobile(this.getDriver()).btnModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyButton);
+			new OrderModificationPage_Mobile(this.getDriver()).btnModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyButton.click();
+		}
+
+		this.waitForPageToLoad();
 		this.waitForCondition(Driver->{return lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeAppliedPromoteMessage.isDisplayed();},120000);
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeAppliedPromoteCode);
@@ -427,6 +436,28 @@ public class OrderModificationPage extends BasePage {
 	public boolean checkProductItemStatusForFreeShippingExisting(WebElement orderItem){
 		WebElement itemContainer=orderItem.findElement(byProductItemStatusContainer);
 		List<WebElement> itemList=itemContainer.findElements(byProductItemStatus);
+		Boolean flag = false;
+		boolean removeButtonStatus;
+		for(WebElement element:itemList){
+			if(element.getText().equalsIgnoreCase("FREE SHIPPING")){
+				if(System.getProperty("Device").equalsIgnoreCase("Desktop")){
+					removeButtonStatus = new ShoppingCartPage(this.getDriver()).checkSelectQuantityEnabled(orderItem);
+				}else{
+					removeButtonStatus = new ShoppingCartPage_Mobile(this.getDriver()).checkSelectQuantityEnabled(orderItem);
+				}
+				if(!removeButtonStatus) {}
+				else{
+					flag = true;
+				}
+				break;
+			}
+			else{
+				continue;
+			}
+		}
+		if(!flag){
+			return false;
+		}
 		boolean bFind=false;
 		for(WebElement item:itemList){
 			if(this.checkChildElementExistingByAttribute(item,"class","boldBlackColor")){
@@ -623,7 +654,7 @@ public class OrderModificationPage extends BasePage {
 	public Map<String,Object> getOrderSummaryDesc(){
 		Map<String,Object> map=new HashMap<>();
 
-		this.waitForCondition(Driver->{return lblOrderSummaryTitle.isDisplayed();},120000);
+		this.waitForCondition(Driver->{return lblOrderSummaryTitle.isDisplayed();},240000);
 		this.applyStaticWait(2*this.getStaticWaitForApplication());
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderSummaryTitle);
 		String lsText=this.getElementInnerText(lblOrderSummaryTitle);
@@ -964,7 +995,7 @@ public class OrderModificationPage extends BasePage {
 		else{
 			reporter.reportLogFail("The Adding Items section is expanded");
 		}
-		lblModifyOrderChangeModOptionsAddItemsHeadingTitle.click();
+		this.clickWebElementUsingJS(lblModifyOrderChangeModOptionsAddItemsHeadingTitle);
 		this.waitForCondition(Driver->{return this.checkChangeModOptionExpanded(lblModifyOrderChangeModOptionsAddItemsHeadingTitle);},10000);
 		lsText = lblModifyOrderChangeModOptionsAddItemsHeadingTitle.getText();
 		if (!lsText.isEmpty()) {
@@ -988,7 +1019,7 @@ public class OrderModificationPage extends BasePage {
 		else{
 			reporter.reportLogFail("The Add Or Update PromoCode section is expanded");
 		}
-		lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeHeadingTitle.click();
+		this.clickWebElementUsingJS(lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeHeadingTitle);
 		this.waitForCondition(Driver->{return this.checkChangeModOptionExpanded(lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeHeadingTitle);},10000);
 		lsText = lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeHeadingTitle.getText();
 		if (!lsText.isEmpty()) {
@@ -1012,16 +1043,33 @@ public class OrderModificationPage extends BasePage {
 			reporter.reportLogFailWithScreenshot("The input Add Or Update PromoCode is not displaying correctly");
 		}
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyButton);
-		lsText = btnModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyButton.getText();
+		OrderModificationPage_Mobile orderModificationPage_mobile = new OrderModificationPage_Mobile(this.getDriver());
+		if(System.getProperty("Device").equalsIgnoreCase("Desktop") ||
+				(System.getProperty("Device").equalsIgnoreCase("Tablet")
+						&& System.getProperty("Browser").contains("ios")) ||
+				(System.getProperty("Browser").equalsIgnoreCase("chromemobile") && System.getProperty("chromeMobileDevice").length()>0 && System.getProperty("chromeMobileDevice").equalsIgnoreCase("iPad"))){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyButton);
+			lsText = btnModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyButton.getText();
+		}else{
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(orderModificationPage_mobile.btnModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyButton);
+			lsText = orderModificationPage_mobile.btnModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyButton.getText();
+		}
 		if (!lsText.isEmpty()) {
 			reporter.reportLogPass("The Add Or Update PromoCode apply button is displaying correctly");
 		} else {
 			reporter.reportLogFailWithScreenshot("The Add Or Update PromoCode apply button is not displaying correctly");
 		}
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyNoteMessage);
-		lsText = lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyNoteMessage.getText();
+		if(System.getProperty("Device").equalsIgnoreCase("Desktop") ||
+				(System.getProperty("Device").equalsIgnoreCase("Tablet")
+						&& System.getProperty("Browser").contains("ios")) ||
+			(System.getProperty("Browser").equalsIgnoreCase("chromemobile") && System.getProperty("chromeMobileDevice").length()>0 && System.getProperty("chromeMobileDevice").equalsIgnoreCase("iPad"))){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyNoteMessage);
+			lsText = lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyNoteMessage.getText();
+		}else{
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(orderModificationPage_mobile.lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyNoteMessage);
+			lsText = orderModificationPage_mobile.lblModifyOrderChangeModOptionsAddOrUpdatePromoCodeApplyNoteMessage.getText();
+		}
 		if (!lsText.isEmpty()) {
 			reporter.reportLogPass("The Add Or Update PromoCode apply note message is displaying correctly");
 		} else {
@@ -1044,7 +1092,7 @@ public class OrderModificationPage extends BasePage {
 			reporter.reportLogFail("The Other Changes section is expanded");
 		}
 
-		lblModifyOrderChangeModOptionsOtherChangesHeadingTitle.click();
+		this.clickWebElementUsingJS(lblModifyOrderChangeModOptionsOtherChangesHeadingTitle);
 		this.waitForCondition(Driver->{return this.checkChangeModOptionExpanded(lblModifyOrderChangeModOptionsOtherChangesHeadingTitle);},10000);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblModifyOrderChangeModOptionsOtherChanges);
 		lsText = lblModifyOrderChangeModOptionsOtherChanges.getText();

@@ -5368,8 +5368,8 @@ public class MyAccount extends BasePage {
 	 * @param - boolean - bCheckExisting
 	 * @return - PlaceOrderResponse
 	 */
-	public PlaceOrderResponse placeOrderForUser(int customerEDP, String accessToken, List<Map<String,String>> itemsToBeAdded, int easyPayInstallment, String noOfItemsToBeAdded, boolean bCheckExisting) throws IOException {
-		List<Map<String,Object>> shoppingCartObject = new ShoppingCartPage(this.getDriver()).verifyCartExistsForUser(customerEDP,accessToken,itemsToBeAdded,noOfItemsToBeAdded,bCheckExisting);
+	public PlaceOrderResponse placeOrderForUser(int customerEDP, String accessToken, List<Map<String,String>> itemsToBeAdded, int easyPayInstallment, String noOfItemsToBeAdded, boolean bCheckExisting,int itemToBeAdded) throws IOException {
+		List<Map<String,Object>> shoppingCartObject = new ShoppingCartPage(this.getDriver()).verifyCartExistsForUser(customerEDP,accessToken,itemsToBeAdded,noOfItemsToBeAdded,bCheckExisting,itemToBeAdded);
 		Response response;
 		PlaceOrderResponse placeOrderResponse;
 
@@ -5442,8 +5442,15 @@ public class MyAccount extends BasePage {
 		String orderURL = System.getProperty("QaUrl")+myAccountOrderStatusURL+"?orderNo="+orderNumber;
 		this.getDriver().navigate().to(orderURL);
 		this.waitForPageToLoad();
-		this.waitForCondition(Driver->{return this.btnOrderDetailsHeaderEditOrder.isDisplayed() &&
-								this.btnOrderDetailsHeaderEditOrder.isEnabled();},120000);
+		this.waitForCondition(Driver->{return this.btnOrderDetailsHeaderEditOrder.isDisplayed();},20000);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnOrderDetailsHeaderEditOrder);
+		//******************************************//
+		//Need to remove this condition as we are enabling Edit Button for test if not enabled
+		if(!this.btnOrderDetailsHeaderEditOrder.isEnabled()){
+			this.setElementEnabled(btnOrderDetailsHeaderEditOrder);
+		}
+		//******************************************//
+		this.waitForCondition(Driver->{return this.btnOrderDetailsHeaderEditOrder.isEnabled();},120000);
 		//Click on Edit Order Button
 		this.clickWebElementUsingJS(this.btnOrderDetailsHeaderEditOrder);
 
@@ -5452,7 +5459,7 @@ public class MyAccount extends BasePage {
 			new RegularCheckoutPage(this.getDriver()).waitForPageLoadingSpinningStatusCompleted();
 		}
 		catch (Exception e){
-			this.applyStaticWait(1*this.getStaticWaitForApplication());
+			this.applyStaticWait(10*this.getStaticWaitForApplication());
 		}
 
 		//Verifying that user is navigated to shopping cart page

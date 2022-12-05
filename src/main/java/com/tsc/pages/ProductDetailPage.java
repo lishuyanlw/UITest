@@ -2176,6 +2176,12 @@ public class ProductDetailPage extends BasePage {
 		return map;
 	}
 
+	public String getOrderNumberFromAddToBagPopUp(){
+		this.waitForCondition(Driver->{return this.lblAddToBagOrderNumber.isDisplayed();},6000);
+		String orderNumber = this.lblAddToBagOrderNumber.getText().split("-")[1].trim();
+		return orderNumber;
+	}
+
 	/**
 	 * To get PDP description
 	 * @return - Map<String,Object> - including product name/style/size
@@ -3205,7 +3211,6 @@ public class ProductDetailPage extends BasePage {
 	 * @throws IOException
 	 */
 	public String getProductWithConditionsForVideoAndStyleAndSizeWithoutCheckingSoldOutCriteria(List<String> lstKeyword,Map<String,Object> dataCriteria) throws IOException {
-		ProductResultsPage prp=new ProductResultsPage(this.getDriver());
 		ProductAPI productAPI=new ProductAPI();
 		productAPI.lsUrlType="-";
 

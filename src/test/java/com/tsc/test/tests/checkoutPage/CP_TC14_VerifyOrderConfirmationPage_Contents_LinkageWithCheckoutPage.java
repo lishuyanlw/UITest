@@ -37,7 +37,7 @@ public class CP_TC14_VerifyOrderConfirmationPage_Contents_LinkageWithCheckoutPag
 
 		//Verifying that item exists in cart and if not, create a new cart for user
 		List<Map<String, String>> keyword = TestDataHandler.constantData.getCheckOut().getLstOrderDetailItems();
-		getShoppingCartThreadLocal().verifyCartExistsForUser(Integer.valueOf(customerEDP), accessToken, keyword,"all",false);
+		getShoppingCartThreadLocal().verifyCartExistsForUser(Integer.valueOf(customerEDP), accessToken, keyword,"all",false,0);
 
 		//To add advanced order Product
 		String lsKeyword=TestDataHandler.constantData.getSearchResultPage().getLbl_AdvancedOrderkeyword();
