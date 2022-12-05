@@ -187,7 +187,7 @@ public class CreateAccountPage extends BasePage {
             this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
             sum++;
         }
-        this.waitForCondition(Driver->{return this.cntAddressLine1DropdownMenuListContainer.getAttribute("style").contains("display: block;");},20000);
+        this.waitForCondition(Driver->{return this.cntAddressLine1DropdownMenuListContainer.getAttribute("style").contains("display: block;");},60000);
         this.getReusableActionsInstance().staticWait(2*this.getStaticWaitForApplication());
 
         if(lstAddressLine1DropdownMenuList.size()>1){
@@ -205,7 +205,7 @@ public class CreateAccountPage extends BasePage {
         }
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstAddressLine1DropdownMenuList.get(randomNumber));
         this.getReusableActionsInstance().clickIfAvailable(this.lstAddressLine1DropdownMenuList.get(randomNumber));
-        this.waitForCondition(Driver->{return this.cntAddressLine1DropdownMenuListContainer.getAttribute("style").contains("display: none;");},20000);
+        this.waitForCondition(Driver->{return this.cntAddressLine1DropdownMenuListContainer.getAttribute("style").contains("display: none;");},60000);
 
         String lsPhoneNumber1="647";
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputPhoneNumber1);
