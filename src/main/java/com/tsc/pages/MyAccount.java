@@ -5427,6 +5427,7 @@ public class MyAccount extends BasePage {
 		this.getDriver().navigate().to(orderURL);
 		this.waitForPageToLoad();
 		this.waitForCondition(Driver->{return this.btnOrderDetailsHeaderEditOrder.isDisplayed();},20000);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnOrderDetailsHeaderEditOrder);
 		//******************************************//
 		//Need to remove this condition as we are enabling Edit Button for test if not enabled
 		if(!this.btnOrderDetailsHeaderEditOrder.isEnabled()){
@@ -5442,7 +5443,7 @@ public class MyAccount extends BasePage {
 			new RegularCheckoutPage(this.getDriver()).waitForPageLoadingSpinningStatusCompleted();
 		}
 		catch (Exception e){
-			this.applyStaticWait(1*this.getStaticWaitForApplication());
+			this.applyStaticWait(10*this.getStaticWaitForApplication());
 		}
 
 		//Verifying that user is navigated to shopping cart page
