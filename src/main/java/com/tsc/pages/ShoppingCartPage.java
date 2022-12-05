@@ -122,7 +122,6 @@ public class ShoppingCartPage extends BasePage {
 	public By byProductNowPrice=By.xpath(".//div[contains(@class,'cart-desc-line') and not(contains(@class,'visible-xs-block'))]//span[contains(@class,'now-price')]");
 	public By byProductSelectQuantity=By.xpath(".//div[@class='tsc-forms']//select");
 	public By byProductRemoveButton=By.xpath(".//a[contains(@class,'cta-remove')]");
-
 	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-subtotal')]")
 	public WebElement lblCartTableSubTotal;
 
@@ -2635,7 +2634,7 @@ public class ShoppingCartPage extends BasePage {
 	 * @return - List<Map<String,Object> - List of map object for all items in cart for user
 	 * @throws IOException
 	 */
-	public List<Map<String,Object>> verifyCartExistsForUser(int customerEDP, String accessToken,List<Map<String,String>> itemsToBeAdded,String noOfItemsToBeAdded,boolean bCheckExisting) throws IOException {
+	public List<Map<String,Object>> verifyCartExistsForUser(int customerEDP, String accessToken,List<Map<String,String>> itemsToBeAdded,String noOfItemsToBeAdded,boolean bCheckExisting,int itemNoToBeAdded) throws IOException {
 		CartAPI cartApi = new CartAPI();
 		CartResponse accountCart = null;
 		Response responseExisting=cartApi.getAccountCartContentWithCustomerEDP(String.valueOf(customerEDP), accessToken);
@@ -2696,7 +2695,7 @@ public class ShoppingCartPage extends BasePage {
 		}
 		//If there is no cart present fo user, creating the cart for user and returning data
 		else{
-			List<Map<String,Object>> data = new ProductAPI().getProductDetailsToBeAddedToCartForUser(itemsToBeAdded,noOfItemsToBeAdded);
+			List<Map<String,Object>> data = new ProductAPI().getProductDetailsToBeAddedToCartForUser(itemsToBeAdded,noOfItemsToBeAdded,itemNoToBeAdded);
 			System.out.println(data.toString());
 			this.addItemsToCartForUser(data,customerEDP,accessToken,null);
 
@@ -3429,19 +3428,18 @@ public class ShoppingCartPage extends BasePage {
 	 * @throws - IOException
 	 */
 	public void addTSCCreditCardForUser(JSONObject tscCardObject, String customerEDP,String accessToken) throws IOException {
-		if(tscCardObject==null){
+		if (tscCardObject == null) {
 			JSONObject creditCardData = new DataConverter().readJsonFileIntoJSONObject("test-data/CreditCard.json");
 			tscCardObject = (JSONObject) creditCardData.get("tsc");
 		}
-		tscCardObject.put("IsDefault",true);
-		tscCardObject.put("CVV",null);
+		tscCardObject.put("IsDefault", true);
+		tscCardObject.put("CVV", null);
 		tscCardObject.remove("CardType");
 		tscCardObject.remove("CardDisplayName");
-		Response tscCardResponse = new AccountAPI().addCreditCardToUser(tscCardObject,customerEDP,accessToken);
-		if(tscCardResponse.statusCode()==200)
+		Response tscCardResponse = new AccountAPI().addCreditCardToUser(tscCardObject, customerEDP, accessToken);
+		if (tscCardResponse.statusCode() == 200)
 			reporter.reportLog("New TSC Credit Card is added for user as default Card");
 		else
 			reporter.reportLogFail("New TSC Credit Card is not added for user as default Card");
-
 	}
 }

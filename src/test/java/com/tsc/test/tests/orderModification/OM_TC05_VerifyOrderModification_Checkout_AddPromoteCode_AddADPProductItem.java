@@ -1,17 +1,22 @@
 package com.tsc.test.tests.orderModification;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.tsc.api.apiBuilder.ApiClient;
 import com.tsc.api.apiBuilder.CartAPI;
+import com.tsc.api.apiBuilder.ProductAPI;
 import com.tsc.api.pojo.CartResponse;
 import com.tsc.api.pojo.PlaceOrderResponse;
+import com.tsc.api.pojo.Product;
 import com.tsc.api.util.JsonParser;
 import com.tsc.data.Handler.TestDataHandler;
+import com.tsc.pages.OrderModificationPage_Mobile;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 import io.restassured.response.Response;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -41,7 +46,7 @@ public class OM_TC05_VerifyOrderModification_Checkout_AddPromoteCode_AddADPProdu
         String myAccountOrderStatusURL = TestDataHandler.constantData.getMyAccount().getLnk_orderStatusURL();
         List<String> newItemToBeAddedKeyword = TestDataHandler.constantData.getCheckOut().getLst_SearchingKeywordForPlaceOrder();
         List<Map<String,String>> itemsToBeAdded = TestDataHandler.constantData.getCheckOut().getLstOrderDetailItems();
-        PlaceOrderResponse placeOrderResponse = getMyAccountPageThreadLocal().placeOrderForUser(Integer.parseInt(customerEDP),accessToken,itemsToBeAdded,2,"1",true);
+        PlaceOrderResponse placeOrderResponse = getMyAccountPageThreadLocal().placeOrderForUser(Integer.parseInt(customerEDP),accessToken,itemsToBeAdded,2,"1",true,517281);
         //Login using valid username and password
         getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword);
         try {
@@ -65,8 +70,30 @@ public class OM_TC05_VerifyOrderModification_Checkout_AddPromoteCode_AddADPProdu
         getOrderModificationThreadLocal().addPromoteCode(lsPromoteCode);
 
         reporter.reportLog("Add ADP product item through UI");
+        Map<String,Object> addToBagPopUpData = new HashMap<String,Object>();;
         String lsADPProductNumber = TestDataHandler.constantData.getSearchResultPage().getLbl_AutoDeliverykeyword();
-        Map<String,Object> addToBagPopUpData=getOrderModificationThreadLocal().addProductItems(lsADPProductNumber,true);
+        //Map<String,Object> addToBagPopUpData=getOrderModificationThreadLocal().addProductItems(lsADPProductNumber,true);
+        if(System.getProperty("Device").equalsIgnoreCase("Desktop"))
+            addToBagPopUpData=getOrderModificationThreadLocal().addProductItems(lsADPProductNumber,true);
+        else{
+            //Product.Products product = new ProductAPI().getProductOfPDPForAddToBagFromKeyword(lsADPProductNumber);
+            Product.Products product = new ProductAPI().getProductInfoWithProductNumberAsSearchKeyword(lsADPProductNumber,null);
+            ApiClient apiClient = new ApiClient();
+            final String pdpPageURL = apiClient.getApiPropertyData().get("test_qaURL") + "/" + product.getName().trim() + apiClient.getApiPropertyData().get("test_partial_url_pdp") + lsADPProductNumber;
+            try{
+                this.getDriver().get(pdpPageURL);
+            }
+            catch (Exception e){}
+            getProductResultsPageThreadLocal().waitForPageToLoad();
+            getProductResultsPageThreadLocal().waitForPDPPageLoading();
+            //Clicking on Add to Bag pop up button
+            getOrderModificationThreadLocal().waitForCondition(Driver->{return getProductDetailPageThreadLocal().btnAddToBag.isDisplayed() &&
+                    getProductDetailPageThreadLocal().btnAddToBag.isEnabled();},6000);
+            getProductDetailPageThreadLocal().openAddToBagPopupWindow();
+            addToBagPopUpData=getOrderModificationThreadLocal().getAddToBagDesc();
+            addToBagPopUpData.put("productOrderNumber",getProductDetailPageThreadLocal().getOrderNumberFromAddToBagPopUp());
+            getOrderModificationThreadLocal().goToOrderModificationPageForReviewChangesFromAddToBagWindow();
+        }
 
         String lsOrderNumberOnAddToBagWindow= (String) addToBagPopUpData.get("productOrderNumber");
         if(lsOrderNumberForOrderModification.substring(0,7).equalsIgnoreCase(lsOrderNumberOnAddToBagWindow.substring(0,7))){
@@ -76,7 +103,12 @@ public class OM_TC05_VerifyOrderModification_Checkout_AddPromoteCode_AddADPProdu
             reporter.reportLogFail("The order number:"+lsOrderNumberForOrderModification+" for order modification is not the same as the one:"+lsOrderNumberOnAddToBagWindow+" for add to bag popup window.");
         }
 
-        List<Map<String,Object>> newlyAddedOrderMapList=getOrderModificationThreadLocal().getNewlyAddedOrderListDesc();
+        List<Map<String,Object>> newlyAddedOrderMapList = null;
+        if(System.getProperty("Device").equalsIgnoreCase("Desktop") ||
+                (System.getProperty("Device").equalsIgnoreCase("Tablet") && System.getProperty("Browser").contains("ios")))
+            newlyAddedOrderMapList=getOrderModificationThreadLocal().getNewlyAddedOrderListDesc();
+        else
+            newlyAddedOrderMapList=new OrderModificationPage_Mobile(this.getDriver()).getNewlyAddedOrderListDesc();
 
         reporter.reportLog("Verify Linkage Between AddToBag Item And Newly Added Order List");
         getOrderModificationThreadLocal().verifyLinkageBetweenAddToBagItemAndNewlyAddedOrderList(newlyAddedOrderMapList,addToBagPopUpData);

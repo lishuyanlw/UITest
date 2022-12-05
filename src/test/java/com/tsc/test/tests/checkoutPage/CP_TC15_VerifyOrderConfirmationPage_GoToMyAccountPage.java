@@ -35,7 +35,7 @@ public class CP_TC15_VerifyOrderConfirmationPage_GoToMyAccountPage extends BaseT
 
 		//Verifying that item exists in cart and if not, create a new cart for user
 		List<Map<String, String>> keyword = TestDataHandler.constantData.getCheckOut().getLstOrderDetailItems();
-		getShoppingCartThreadLocal().verifyCartExistsForUser(Integer.valueOf(customerEDP), accessToken, keyword,"1",true);
+		getShoppingCartThreadLocal().verifyCartExistsForUser(Integer.valueOf(customerEDP), accessToken, keyword,"1",true,0);
 
 		//Delete all gift cards
 		CartAPI cartAPI=new CartAPI();

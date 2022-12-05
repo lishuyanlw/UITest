@@ -931,7 +931,10 @@ import utils.ReusableActions;
 		 if(this.verifyLink(lsLink))
 			 reporter.reportLogPass("Link for title: "+lsTitle+" is not broken!");
 		 else
-			 reporter.reportLogFail("Link for title: "+lsTitle+" is broken: "+lsLink);
+			 if (lsLink.contains("instagram"))
+				 reporter.reportLog("Link for title: " + lsTitle + " is broken: " + lsLink);
+			 else
+				 reporter.reportLogFail("Link for title: " + lsTitle + " is broken: " + lsLink);
 	 }
 	 
 	 /**
@@ -1318,4 +1321,5 @@ import utils.ReusableActions;
 		}
 		return dest;
 	}
+
 }
