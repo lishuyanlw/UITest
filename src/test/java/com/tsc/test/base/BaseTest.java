@@ -527,6 +527,21 @@ public class BaseTest {
 		map.put("customerEDP",apiUserSessionData.get("customerEDP").toString());
 		return map;
 	}
+
+	/*
+	Fetch access token and customer edp for a specific user
+	 */
+	private HashMap<String,String> getAccessTokenAndCustomerEDPForUser(String userName, String password) throws IOException {
+		if(userName.isEmpty() || userName==null)
+			return getAccessTokenAndCustomerEDPForUser();
+		else{
+			HashMap<String,String> map = new HashMap<>();
+			JSONObject jsonObject = apiResponseThreadLocal.get().getApiUserSessionData(userName,password,TestDataHandler.constantData.getApiUserSessionParams().getLbl_grantType(),TestDataHandler.constantData.getApiUserSessionParams().getLbl_apiKey());
+			map.put("access_token",jsonObject.get("access_token").toString());
+			map.put("customerEDP",jsonObject.get("customerEDP").toString());
+			return map;
+		}
+	}
 	/**
 	 * To add place order once no order within 75 days
 	 */
