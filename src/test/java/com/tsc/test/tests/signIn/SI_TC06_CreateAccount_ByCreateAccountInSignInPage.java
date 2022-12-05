@@ -16,8 +16,6 @@ public class SI_TC06_CreateAccount_ByCreateAccountInSignInPage extends BaseTest 
         getGlobalFooterPageThreadLocal().closePopupDialog();
 
         reporter.reportLog("Verify SignIn");
-        BasePage basePage=new BasePage(this.getDriver());
-
         getGlobalLoginPageThreadLocal().goToCreateAccountPageThroughSignInPage();
 
         reporter.reportLog("Verify create an new account with a valid email");

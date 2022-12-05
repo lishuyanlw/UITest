@@ -31,8 +31,6 @@ public class SI_TC10_ForgotPassword_VerifyAnswerSecurityQuestionsContents_SendEm
         String phoneNumber= accountResponse.getBillingAddress().getDayPhone();
         String postalCode=accountResponse.getBillingAddress().getZipCode();
         String email= accountResponse.getEmail();
-        String customerNumber= accountResponse.getCustomerNo();
-        String firstName=accountResponse.getBillingAddress().getFirstName();
         JSONObject requestParams= DataConverter.readJsonFileIntoJSONObject("test-data/NewUser.json");
         String password= (String) requestParams.get("Password");
 

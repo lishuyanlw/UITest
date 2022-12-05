@@ -27,7 +27,6 @@ public class SI_TC07_TransferPhoneAccount_ByGuestAccount extends BaseTest{
         if(getProductDetailPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList,"ConditionsForMultipleStyleAndSize",outputDataCriteria)) {
             String[] lstStyle = getProductDetailPageThreadLocal().getStyleList();
             String[] lstSizeFirstItem = getProductDetailPageThreadLocal().getSizeListForGivenStyle(0);
-            //String[] lstSizeSecondItem = getProductDetailPageThreadLocal().getSizeListForGivenStyle(1);
 
             getProductDetailPageThreadLocal().chooseGivenStyleAndSizeAndQuantity(lstStyle[0], lstSizeFirstItem[0], 1);
             basePage.clickElement(getProductDetailPageThreadLocal().btnAddToBag);
