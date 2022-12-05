@@ -1,0 +1,1453 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Automation Report</title>
+<link rel="apple-touch-icon" href="https://cdn.jsdelivr.net/gh/extent-framework/extent-github-cdn@b00a2d0486596e73dd7326beacf352c639623a0e/commons/img/logo.png">
+<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/extent-framework/extent-github-cdn@b00a2d0486596e73dd7326beacf352c639623a0e/commons/img/logo.png">
+<link href="https://cdn.jsdelivr.net/gh/extent-framework/extent-github-cdn@d6562a79075e061305ccfdb82f01e5e195e2d307/spark/css/spark-style.css" rel="stylesheet" />
+<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/gh/extent-framework/extent-github-cdn@7cc78ce/spark/js/jsontree.js"></script>
+<style type="text/css"></style></head><body class="spa -report standard">
+  <div class="app">
+    <div class="layout">
+<div class="header navbar">
+<div class="vheader">
+<div class="nav-logo">
+<a href="#">
+<div class="logo" style="background-image: url('https://cdn.jsdelivr.net/gh/extent-framework/extent-github-cdn@b00a2d0486596e73dd7326beacf352c639623a0e/commons/img/logo.png')"></div>
+</a>
+</div>
+<ul class="nav-left">
+<li class="search-box">
+<a class="search-toggle" href="#">
+<i class="search-icon fa fa-search"></i>
+<i class="search-icon-close fa fa-close"></i>
+</a>
+</li>
+<li class="search-input"><input id="search-tests" class="form-control" type="text" placeholder="Search..."></li>
+</ul>
+<ul class="nav-right">
+<li class="m-r-10">
+<a href="#"><span class="badge badge-primary"></span></a>
+</li>
+<li class="m-r-10">
+<a href="#"><span class="badge badge-primary">Nov 29, 2022 02:37:51 PM</span></a>
+</li>
+</ul>
+</div>
+</div><div class="side-nav">
+<div class="side-nav-inner">
+<ul class="side-nav-menu">
+<li class="nav-item dropdown" onclick="toggleView('test-view')">
+<a id="nav-test" class="dropdown-toggle" href="#">
+<span class="ico"><i class="fa fa-list"></i></span>
+</a>
+</li>
+<li class="nav-item dropdown" onclick="toggleView('category-view')">
+<a id="nav-category" class="dropdown-toggle" href="#">
+<span class="ico"><i class="fa fa-tag"></i></span>
+</a>
+</li>
+<li class="nav-item dropdown" onclick="toggleView('device-view')">
+<a id="nav-device" class="dropdown-toggle" href="#">
+<span class="ico"><i class="fa fa-tablet"></i></span>
+</a>
+</li>
+<li class="nav-item dropdown" onclick="toggleView('dashboard-view')">
+<a id="nav-dashboard" class="dropdown-toggle" href="#">
+<span class="ico"><i class="fa fa-bar-chart"></i></span>
+</a>
+</li>
+</ul>
+</div>
+</div>      <div class="vcontainer">
+        <div class="main-content">
+<div class="test-wrapper row view test-view">
+  <div class="test-list">
+    <div class="test-list-tools">
+<ul class="tools pull-left">
+<li><a href="#"><span class="font-size-14">Tests</span></a></li>
+</ul>
+<ul class="tools text-right">
+<li class="dropdown">
+<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-exclamation-circle"></i></a>
+<ul id="status-toggle" class="dropdown-menu dropdown-md p-v-0">
+<a class="dropdown-item" status="pass" href="#"><span>Pass</span><span class="status success"></span></a>
+<div class="dropdown-divider"></div>
+<a status="clear" class="dropdown-item" href="#"><span>Clear</span><span class="pull-right"><i class="fa fa-close"></i></span></a>
+</ul>
+</li>
+<li class="dropdown">
+<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-tag"></i></a>
+<ul id="tag-toggle" class="dropdown-menu dropdown-md p-v-0">
+<a class="dropdown-item" href="#">Regression</a><a class="dropdown-item" href="#">GlobalFooter</a>
+</ul>
+</li>
+<li class="dropdown">
+<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-tablet"></i></a>
+<ul id="device-toggle" class="dropdown-menu dropdown-md p-v-0">
+<a class="dropdown-item" href="#">chrome</a>
+</ul>
+</li>
+</ul>
+</div>    <div class="test-list-wrapper scrollable">
+      <ul class="test-list-item">
+        <li class="test-item"  status="pass" test-id="1"
+          author=""
+          tag="Regression GlobalFooter"
+          device="chrome">
+          <div class="test-detail">
+            <p class="name">GF_TC05_VerifyLinksAndPageObjectsForAboutTSCExceptBrand_chrome_EN</p>
+            <p class="text-sm">
+              <span>2:38:05 PM</span> / <span>00:01:41:103</span>
+              <span class="badge pass-bg log float-right">Pass</span>
+            </p>
+          </div>
+          <div class="test-contents d-none">
+<div class="detail-head">
+<div class="p-v-10">
+<div class="info">
+<h5 class="test-status text-pass">GF_TC05_VerifyLinksAndPageObjectsForAboutTSCExceptBrand_chrome_EN</h5>
+<span class='badge badge-success'>11.29.2022 2:38:05 PM</span>
+<span class='badge badge-danger'>11.29.2022 2:39:46 PM</span>
+<span class='badge badge-default'>00:01:41:103</span>
+&middot; <span class='uri-anchor badge badge-default'>#test-id=1</span>
+<span class='badge badge-default pointer float-right ml-1 et'><i class="fa fa-chevron-down"></i></span>
+<span class='badge badge-default pointer float-right ct'><i class="fa fa-chevron-up"></i></span>
+</div>
+<div class="m-t-15"><span class="badge badge-pill badge-default">Regression</span>
+<span class="badge badge-pill badge-default">GlobalFooter</span>
+<span class="badge badge-pill badge-default">chrome</span></div>
+<div class="m-t-10 m-l-5">GF_TC05_VerifyLinksAndPageObjectsForAboutTSCExceptBrand</div>
+</div>
+</div><div class="detail-body mt-4">
+<table class="table table-sm">
+  <thead><tr><th class="status-col">Status</th><th class="timestamp-col">Timestamp</th><th class="details-col">Details</th></tr></thead>
+  <tbody>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:38:09 PM</td>
+        <td>
+          TSC url is correct
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log info-bg">Info</span></td>
+        <td>2:38:09 PM</td>
+        <td>
+          Global Footer Section
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log info-bg">Info</span></td>
+        <td>2:38:09 PM</td>
+        <td>
+          Terms of Use
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:38:09 PM</td>
+        <td>
+          The current 'Terms of Use' href of https://qa-tsc.tsc.ca/go/aboutus/aboutustandc is equal to https://qa-tsc.tsc.ca/go/aboutus/aboutustandc
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log info-bg">Info</span></td>
+        <td>2:38:09 PM</td>
+        <td>
+          Find Terms of Use button
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:38:16 PM</td>
+        <td>
+          Page Title matches for global footer link: Terms of Use and title is: ABOUT OUR SERVICES
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:38:19 PM</td>
+        <td>
+          Section for Terms of Use on page: ABOUT OUR SERVICES is open after navigating
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:38:37 PM</td>
+        <td>
+          The href of element of 'COMPANY OVERVIEW' is not empty
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:38:37 PM</td>
+        <td>
+          The href of element of 'TSC RETAIL TERMS & CONDITIONS' is not empty
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:38:38 PM</td>
+        <td>
+          The href of element of 'PRIVACY POLICY & SECURITY' is not empty
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:38:38 PM</td>
+        <td>
+          The href of element of 'MOBILE OFFER ALERTS' is not empty
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:38:38 PM</td>
+        <td>
+          The href of element of 'OPTING OUT OF EMAIL MARKETING' is not empty
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:38:38 PM</td>
+        <td>
+          The href of element of 'PROMO CODE TERMS & CONDITIONS' is not empty
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:38:38 PM</td>
+        <td>
+          The element of 'Headquartered in Mississauga, ON, TSC is a leading interactive, multi-channel retailer, offering a v...' is existing
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:38:38 PM</td>
+        <td>
+          The element of 'Last updated: October 30, 2017
+
+TSC Retail Terms & Conditions
+Rogers Media Terms and Conditions of U...' is existing
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:38:38 PM</td>
+        <td>
+          The element of 'Privacy Policy
+At TSC, we are committed to protecting the privacy of our customers' personal informa...' is existing
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:38:38 PM</td>
+        <td>
+          The element of 'What will I receive in TSC Mobile Alerts?
+TSC Mobile Alerts are an entirely mobile experience. TSC M...' is existing
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:38:38 PM</td>
+        <td>
+          The element of 'There are 3 ways to opt out of email marketing communications from TSC:
+During Account Sign-Up: When...' is existing
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:38:38 PM</td>
+        <td>
+          The element of '*Offer is subject to change without notice. Only one Promo Code can be redeemed per order, per custo...' is existing
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log info-bg">Info</span></td>
+        <td>2:38:38 PM</td>
+        <td>
+          Privacy Policy
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:38:38 PM</td>
+        <td>
+          The current 'Privacy Policy' href of https://qa-tsc.tsc.ca/go/aboutus/aboutusprivacy is equal to https://qa-tsc.tsc.ca/go/aboutus/aboutusprivacy
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log info-bg">Info</span></td>
+        <td>2:38:39 PM</td>
+        <td>
+          Find Privacy Policy button
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:38:44 PM</td>
+        <td>
+          Page Title matches for global footer link: Privacy Policy and title is: ABOUT OUR SERVICES
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:38:47 PM</td>
+        <td>
+          Section for Privacy Policy on page: ABOUT OUR SERVICES is open after navigating
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:06 PM</td>
+        <td>
+          The href of element of 'COMPANY OVERVIEW' is not empty
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:06 PM</td>
+        <td>
+          The href of element of 'TSC RETAIL TERMS & CONDITIONS' is not empty
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:06 PM</td>
+        <td>
+          The href of element of 'PRIVACY POLICY & SECURITY' is not empty
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:06 PM</td>
+        <td>
+          The href of element of 'MOBILE OFFER ALERTS' is not empty
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:06 PM</td>
+        <td>
+          The href of element of 'OPTING OUT OF EMAIL MARKETING' is not empty
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:06 PM</td>
+        <td>
+          The href of element of 'PROMO CODE TERMS & CONDITIONS' is not empty
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:06 PM</td>
+        <td>
+          The element of 'Headquartered in Mississauga, ON, TSC is a leading interactive, multi-channel retailer, offering a v...' is existing
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:06 PM</td>
+        <td>
+          The element of 'Last updated: October 30, 2017
+
+TSC Retail Terms & Conditions
+Rogers Media Terms and Conditions of U...' is existing
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:06 PM</td>
+        <td>
+          The element of 'Privacy Policy
+At TSC, we are committed to protecting the privacy of our customers' personal informa...' is existing
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:06 PM</td>
+        <td>
+          The element of 'What will I receive in TSC Mobile Alerts?
+TSC Mobile Alerts are an entirely mobile experience. TSC M...' is existing
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:07 PM</td>
+        <td>
+          The element of 'There are 3 ways to opt out of email marketing communications from TSC:
+During Account Sign-Up: When...' is existing
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:07 PM</td>
+        <td>
+          The element of '*Offer is subject to change without notice. Only one Promo Code can be redeemed per order, per custo...' is existing
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log info-bg">Info</span></td>
+        <td>2:39:07 PM</td>
+        <td>
+          Become a Vendor
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:07 PM</td>
+        <td>
+          The current 'Become a Vendor' href of https://qa-tsc.tsc.ca/go/aboutus/aboutusvendor is equal to https://qa-tsc.tsc.ca/go/aboutus/aboutusvendor
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log info-bg">Info</span></td>
+        <td>2:39:07 PM</td>
+        <td>
+          Find Become a Vendor button
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:13 PM</td>
+        <td>
+          Page Title matches for global footer link: Become a Vendor and title is: BECOME A PARTNER
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:16 PM</td>
+        <td>
+          Section for Become a Vendor on page: BECOME A PARTNER is open after navigating
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:26 PM</td>
+        <td>
+          The href of element of 'BECOMING A VENDOR' is not empty
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:26 PM</td>
+        <td>
+          The href of element of 'AFFILIATE PROGRAM' is not empty
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:26 PM</td>
+        <td>
+          The href of element of 'CAREERS' is not empty
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:26 PM</td>
+        <td>
+          The element of 'Please submit your proposal to TSCVendor.Inquiries@rci.rogers.com.
+What You Should Know Before Meeti...' is existing
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:26 PM</td>
+        <td>
+          The element of 'TSC.ca's Affiliate Program makes it possible for you to earn money by promoting our products on your...' is existing
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:26 PM</td>
+        <td>
+          The element of 'Thanks for your interest in joining TSC team!
+We are part of the Rogers Group of Companies and our c...' is existing
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log info-bg">Info</span></td>
+        <td>2:39:26 PM</td>
+        <td>
+          More About TSC
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:26 PM</td>
+        <td>
+          The current 'More About TSC' href of https://qa-tsc.tsc.ca/go/aboutus/aboutus is equal to https://qa-tsc.tsc.ca/go/aboutus/aboutus
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log info-bg">Info</span></td>
+        <td>2:39:27 PM</td>
+        <td>
+          Find More About TSC button
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:32 PM</td>
+        <td>
+          The element of 'LOOKING TO BECOME A PARTNER?' is existing
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:32 PM</td>
+        <td>
+          The element of 'LEARN MORE ABOUT OUR SERVICES' is existing
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:32 PM</td>
+        <td>
+          The href of element of 'Become a Vendor' is not empty
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:32 PM</td>
+        <td>
+          The href of element of 'Affiliate Program' is not empty
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:32 PM</td>
+        <td>
+          The href of element of 'Careers' is not empty
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:32 PM</td>
+        <td>
+          The href of element of 'Company Overview' is not empty
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:32 PM</td>
+        <td>
+          The href of element of 'Mobile Offer Alerts' is not empty
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:32 PM</td>
+        <td>
+          The href of element of 'Retail Terms & Conditions' is not empty
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:32 PM</td>
+        <td>
+          The href of element of 'Opting Out of Email Marketing' is not empty
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:32 PM</td>
+        <td>
+          The href of element of 'Privacy Policy & Security' is not empty
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:32 PM</td>
+        <td>
+          The href of element of 'Email Popup Terms & Conditions' is not empty
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log info-bg">Info</span></td>
+        <td>2:39:32 PM</td>
+        <td>
+          Channel Finder
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:32 PM</td>
+        <td>
+          The current 'Channel Finder' href of https://qa-tsc.tsc.ca/pages/channelfinder is equal to https://qa-tsc.tsc.ca/pages/channelfinder
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log info-bg">Info</span></td>
+        <td>2:39:33 PM</td>
+        <td>
+          Find Channel Finder button
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:37 PM</td>
+        <td>
+          Page Title matches for global footer link: Channel Finder and  title is: CHANNEL FINDER
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:37 PM</td>
+        <td>
+          The Title Find Cable Channel is displayed
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:37 PM</td>
+        <td>
+          The text Select your: exists
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:37 PM</td>
+        <td>
+          The Title Province exists
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:38 PM</td>
+        <td>
+          The Title Cable Provider exists
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:38 PM</td>
+        <td>
+          The Title City exists
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:38 PM</td>
+        <td>
+          The Title Satellite Channels exist
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:38 PM</td>
+        <td>
+          The Title Satellite Channels exist
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:38 PM</td>
+        <td>
+          Page paragraph line exists
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:38 PM</td>
+        <td>
+          The line under Bell TV Column exists
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:38 PM</td>
+        <td>
+          The line under Shaw Direct Column exists
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log info-bg">Info</span></td>
+        <td>2:39:38 PM</td>
+        <td>
+           Dropdown Selected Province is Alberta
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:38 PM</td>
+        <td>
+           Dropdown Selected Province is Alberta and not NULL
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log info-bg">Info</span></td>
+        <td>2:39:39 PM</td>
+        <td>
+           Dropdown Selected Province is Alberta and Dropdown Selected Cable Provider is Cable TV of Camrose Inc.
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:39 PM</td>
+        <td>
+           Dropdown Selected Cable provider is Cable TV of Camrose Inc. and not NULL
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log info-bg">Info</span></td>
+        <td>2:39:39 PM</td>
+        <td>
+          Dropdown Selected Province is Alberta and Dropdown Selected Cable Provider is Cable TV of Camrose Inc. Dropdown Selected City is Camrose
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:39 PM</td>
+        <td>
+           Dropdown Selected City is Camrose and not NULL
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log info-bg">Info</span></td>
+        <td>2:39:39 PM</td>
+        <td>
+          Meet the Hosts
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:39 PM</td>
+        <td>
+          The current 'Meet the Hosts' href of https://qa-tsc.tsc.ca/pages/hosts is equal to https://qa-tsc.tsc.ca/pages/hosts
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log info-bg">Info</span></td>
+        <td>2:39:40 PM</td>
+        <td>
+          Find Meet the Hosts button
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:44 PM</td>
+        <td>
+          Page Title matches for global footer link: Meet the Hosts and  title is: MEET OUR HOSTS
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log info-bg">Info</span></td>
+        <td>2:39:44 PM</td>
+        <td>
+          Host Name is Andrea Perry
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log info-bg">Info</span></td>
+        <td>2:39:45 PM</td>
+        <td>
+          Host Name URL is https://qa-tsc.tsc.ca/go/hosts/andrea-perry
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log info-bg">Info</span></td>
+        <td>2:39:45 PM</td>
+        <td>
+          Host Image URL is https://src.tscimg.ca/Content/en_CA/Images/Marketing/MeetOurHosts/tb//180220_MOH_Andrea.jpg
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:45 PM</td>
+        <td>
+          Host Name Andrea Perry Host Link https://qa-tsc.tsc.ca/go/hosts/andrea-perry and Host Image https://src.tscimg.ca/Content/en_CA/Images/Marketing/MeetOurHosts/tb//180220_MOH_Andrea.jpg are not Null
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log info-bg">Info</span></td>
+        <td>2:39:45 PM</td>
+        <td>
+          Host Name is Anne-Marie Sweeney
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log info-bg">Info</span></td>
+        <td>2:39:45 PM</td>
+        <td>
+          Host Name URL is https://qa-tsc.tsc.ca/go/hosts/anne-marie-sweeney
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log info-bg">Info</span></td>
+        <td>2:39:45 PM</td>
+        <td>
+          Host Image URL is https://src.tscimg.ca/Content/en_CA/Images/Marketing/MeetOurHosts/tb/180220_MOH_AnneMarie.jpg
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:45 PM</td>
+        <td>
+          Host Name Anne-Marie Sweeney Host Link https://qa-tsc.tsc.ca/go/hosts/anne-marie-sweeney and Host Image https://src.tscimg.ca/Content/en_CA/Images/Marketing/MeetOurHosts/tb/180220_MOH_AnneMarie.jpg are not Null
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log info-bg">Info</span></td>
+        <td>2:39:45 PM</td>
+        <td>
+          Host Name is Ashaw Noorhasan
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log info-bg">Info</span></td>
+        <td>2:39:45 PM</td>
+        <td>
+          Host Name URL is https://qa-tsc.tsc.ca/go/hosts/ashaw-noorhasan
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log info-bg">Info</span></td>
+        <td>2:39:45 PM</td>
+        <td>
+          Host Image URL is https://src.tscimg.ca/Content/en_CA/Images/Marketing/MeetOurHosts/tb//210108_MOH_Ashaw.jpg
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:45 PM</td>
+        <td>
+          Host Name Ashaw Noorhasan Host Link https://qa-tsc.tsc.ca/go/hosts/ashaw-noorhasan and Host Image https://src.tscimg.ca/Content/en_CA/Images/Marketing/MeetOurHosts/tb//210108_MOH_Ashaw.jpg are not Null
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log info-bg">Info</span></td>
+        <td>2:39:45 PM</td>
+        <td>
+          Host Name is Carrie Olver
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log info-bg">Info</span></td>
+        <td>2:39:45 PM</td>
+        <td>
+          Host Name URL is https://qa-tsc.tsc.ca/go/hosts/carrie-olver
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log info-bg">Info</span></td>
+        <td>2:39:45 PM</td>
+        <td>
+          Host Image URL is https://src.tscimg.ca/Content/en_CA/Images/Marketing/MeetOurHosts/tb//180220_MOH_Carrie.jpg
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:45 PM</td>
+        <td>
+          Host Name Carrie Olver Host Link https://qa-tsc.tsc.ca/go/hosts/carrie-olver and Host Image https://src.tscimg.ca/Content/en_CA/Images/Marketing/MeetOurHosts/tb//180220_MOH_Carrie.jpg are not Null
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log info-bg">Info</span></td>
+        <td>2:39:45 PM</td>
+        <td>
+          Host Name is Dawn Chubai
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log info-bg">Info</span></td>
+        <td>2:39:45 PM</td>
+        <td>
+          Host Name URL is https://qa-tsc.tsc.ca/go/hosts/dawn-chubai
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log info-bg">Info</span></td>
+        <td>2:39:45 PM</td>
+        <td>
+          Host Image URL is https://src.tscimg.ca/Content/en_CA/Images/Marketing/MeetOurHosts/tb//180220_MOH_Dawn.jpg
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:45 PM</td>
+        <td>
+          Host Name Dawn Chubai Host Link https://qa-tsc.tsc.ca/go/hosts/dawn-chubai and Host Image https://src.tscimg.ca/Content/en_CA/Images/Marketing/MeetOurHosts/tb//180220_MOH_Dawn.jpg are not Null
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log info-bg">Info</span></td>
+        <td>2:39:45 PM</td>
+        <td>
+          Host Name is Denise Wade
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log info-bg">Info</span></td>
+        <td>2:39:45 PM</td>
+        <td>
+          Host Name URL is https://qa-tsc.tsc.ca/go/hosts/denise-wade
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log info-bg">Info</span></td>
+        <td>2:39:45 PM</td>
+        <td>
+          Host Image URL is https://src.tscimg.ca/Content/en_CA/Images/Marketing/MeetOurHosts/tb//180220_MOH_Denise.jpg
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:45 PM</td>
+        <td>
+          Host Name Denise Wade Host Link https://qa-tsc.tsc.ca/go/hosts/denise-wade and Host Image https://src.tscimg.ca/Content/en_CA/Images/Marketing/MeetOurHosts/tb//180220_MOH_Denise.jpg are not Null
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log info-bg">Info</span></td>
+        <td>2:39:45 PM</td>
+        <td>
+          Host Name is Greta Culliford
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log info-bg">Info</span></td>
+        <td>2:39:45 PM</td>
+        <td>
+          Host Name URL is https://qa-tsc.tsc.ca/go/hosts/greta-culliford
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log info-bg">Info</span></td>
+        <td>2:39:45 PM</td>
+        <td>
+          Host Image URL is https://src.tscimg.ca/Content/en_CA/Images/Marketing/MeetOurHosts/tb//180220_MOH_Greta.jpg
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:45 PM</td>
+        <td>
+          Host Name Greta Culliford Host Link https://qa-tsc.tsc.ca/go/hosts/greta-culliford and Host Image https://src.tscimg.ca/Content/en_CA/Images/Marketing/MeetOurHosts/tb//180220_MOH_Greta.jpg are not Null
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log info-bg">Info</span></td>
+        <td>2:39:45 PM</td>
+        <td>
+          Host Name is Natalie Belmont
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log info-bg">Info</span></td>
+        <td>2:39:45 PM</td>
+        <td>
+          Host Name URL is https://qa-tsc.tsc.ca/go/hosts/natalie-belmont
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log info-bg">Info</span></td>
+        <td>2:39:45 PM</td>
+        <td>
+          Host Image URL is https://src.tscimg.ca/Content/en_CA/Images/Marketing/2017/MeetOurHosts//180401_MOH_Natalie_TEMP.jpg
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:45 PM</td>
+        <td>
+          Host Name Natalie Belmont Host Link https://qa-tsc.tsc.ca/go/hosts/natalie-belmont and Host Image https://src.tscimg.ca/Content/en_CA/Images/Marketing/2017/MeetOurHosts//180401_MOH_Natalie_TEMP.jpg are not Null
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log info-bg">Info</span></td>
+        <td>2:39:45 PM</td>
+        <td>
+          Host Name is Nick Vescio
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log info-bg">Info</span></td>
+        <td>2:39:45 PM</td>
+        <td>
+          Host Name URL is https://qa-tsc.tsc.ca/go/hosts/nick-vescio
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log info-bg">Info</span></td>
+        <td>2:39:46 PM</td>
+        <td>
+          Host Image URL is https://src.tscimg.ca/Content/en_CA/Images/Marketing/MeetOurHosts/tb//180220_MOH_Nick.jpg
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:46 PM</td>
+        <td>
+          Host Name Nick Vescio Host Link https://qa-tsc.tsc.ca/go/hosts/nick-vescio and Host Image https://src.tscimg.ca/Content/en_CA/Images/Marketing/MeetOurHosts/tb//180220_MOH_Nick.jpg are not Null
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log info-bg">Info</span></td>
+        <td>2:39:46 PM</td>
+        <td>
+          Host Name is Renee Deighton
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log info-bg">Info</span></td>
+        <td>2:39:46 PM</td>
+        <td>
+          Host Name URL is https://qa-tsc.tsc.ca/go/hosts/renee-deighton
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log info-bg">Info</span></td>
+        <td>2:39:46 PM</td>
+        <td>
+          Host Image URL is https://src.tscimg.ca/Content/en_CA/Images/Marketing/MeetOurHosts/tb//180220_MOH_Renee.jpg
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:46 PM</td>
+        <td>
+          Host Name Renee Deighton Host Link https://qa-tsc.tsc.ca/go/hosts/renee-deighton and Host Image https://src.tscimg.ca/Content/en_CA/Images/Marketing/MeetOurHosts/tb//180220_MOH_Renee.jpg are not Null
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log info-bg">Info</span></td>
+        <td>2:39:46 PM</td>
+        <td>
+          Host Name is Sandy Gold
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log info-bg">Info</span></td>
+        <td>2:39:46 PM</td>
+        <td>
+          Host Name URL is https://qa-tsc.tsc.ca/go/hosts/sandy-gold
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log info-bg">Info</span></td>
+        <td>2:39:46 PM</td>
+        <td>
+          Host Image URL is https://src.tscimg.ca/Content/en_CA/Images/Marketing/MeetOurHosts/tb//200228_MOH_SandyGold.jpg
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:46 PM</td>
+        <td>
+          Host Name Sandy Gold Host Link https://qa-tsc.tsc.ca/go/hosts/sandy-gold and Host Image https://src.tscimg.ca/Content/en_CA/Images/Marketing/MeetOurHosts/tb//200228_MOH_SandyGold.jpg are not Null
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log info-bg">Info</span></td>
+        <td>2:39:46 PM</td>
+        <td>
+          Host Name is Sean Keane
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log info-bg">Info</span></td>
+        <td>2:39:46 PM</td>
+        <td>
+          Host Name URL is https://qa-tsc.tsc.ca/go/hosts/sean-keane
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log info-bg">Info</span></td>
+        <td>2:39:46 PM</td>
+        <td>
+          Host Image URL is https://src.tscimg.ca/Content/en_CA/Images/Marketing/MeetOurHosts/tb//180220_MOH_Sean.jpg
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:46 PM</td>
+        <td>
+          Host Name Sean Keane Host Link https://qa-tsc.tsc.ca/go/hosts/sean-keane and Host Image https://src.tscimg.ca/Content/en_CA/Images/Marketing/MeetOurHosts/tb//180220_MOH_Sean.jpg are not Null
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log info-bg">Info</span></td>
+        <td>2:39:46 PM</td>
+        <td>
+          Gift Card
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:46 PM</td>
+        <td>
+          Page Title matches for global footer link: Gift Card and  title is: Gift Card
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:46 PM</td>
+        <td>
+          The Gift Card section exists
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log info-bg">Info</span></td>
+        <td>2:39:46 PM</td>
+        <td>
+          Credit Card
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:46 PM</td>
+        <td>
+          Page Title matches for global footer link: Credit Card and  title is: Credit Card
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:46 PM</td>
+        <td>
+          The Credit section exists
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:46 PM</td>
+        <td>
+          The Copyright Section of Rogers Media is displayed
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:46 PM</td>
+        <td>
+          The Copyright Section of All Price in Canadian Dollars is displayed
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:46 PM</td>
+        <td>
+          The Rogers Media image is not empty.
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>2:39:46 PM</td>
+        <td>
+          Test passed
+        </td>
+      </tr>
+  </tbody>
+</table>
+</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+<div class="test-content scrollable">
+<div class="test-content-tools">
+<ul><li><a class="back-to-test" href="#"><i class="fa fa-arrow-left"></i></a></li></ul>
+</div>
+<div class="test-content-detail"><div class="detail-body"></div></div>
+</div></div>
+<div class="test-wrapper row view category-view attributes-view">
+<div class="test-list">
+<div class="test-list-tools">
+<ul class="tools pull-left"><li><a href=""><span class="font-size-14">Category</span></a></li></ul>
+<ul class="tools text-right"><li><a href="#"><span class="badge badge-primary">2</span></a></li></ul>
+</div>
+<div class="test-list-wrapper scrollable">
+<ul class="test-list-item">
+<li class="test-item">
+<div class="test-detail">
+<span class="meta">
+<span class='badge log pass-bg'>1</span>
+</span>
+<p class="name">Regression</p>
+<p class="duration text-sm">1 tests</p>
+</div>
+<div class="test-contents d-none">
+<div class="info">
+<h4>Regression</h4>
+<span status="pass" class='badge log pass-bg'>1 passed</span>
+</div>
+<table class='table table-sm mt-4'>
+<thead>
+<tr>
+<th class="status-col">Status</th>
+<th class="timestamp-col">Timestamp</th>
+<th>TestName</th>
+</tr>
+</thead>
+<tbody>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>14:38:05 PM</td>
+<td>
+<a href="#" class="linked" test-id='1' id='1'>GF_TC05_VerifyLinksAndPageObjectsForAboutTSCExceptBrand_chrome_EN</a>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</li>
+<li class="test-item">
+<div class="test-detail">
+<span class="meta">
+<span class='badge log pass-bg'>1</span>
+</span>
+<p class="name">GlobalFooter</p>
+<p class="duration text-sm">1 tests</p>
+</div>
+<div class="test-contents d-none">
+<div class="info">
+<h4>GlobalFooter</h4>
+<span status="pass" class='badge log pass-bg'>1 passed</span>
+</div>
+<table class='table table-sm mt-4'>
+<thead>
+<tr>
+<th class="status-col">Status</th>
+<th class="timestamp-col">Timestamp</th>
+<th>TestName</th>
+</tr>
+</thead>
+<tbody>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>14:38:05 PM</td>
+<td>
+<a href="#" class="linked" test-id='1' id='1'>GF_TC05_VerifyLinksAndPageObjectsForAboutTSCExceptBrand_chrome_EN</a>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="test-content scrollable">
+<div class="test-content-detail">
+<div class="detail-body"></div>
+</div>
+</div>
+</div><div class="test-wrapper row view device-view attributes-view">
+<div class="test-list">
+<div class="test-list-tools">
+<ul class="tools pull-left"><li><a href=""><span class="font-size-14">Device</span></a></li></ul>
+<ul class="tools text-right"><li><a href="#"><span class="badge badge-primary">1</span></a></li></ul>
+</div>
+<div class="test-list-wrapper scrollable">
+<ul class="test-list-item">
+<li class="test-item">
+<div class="test-detail">
+<span class="meta">
+<span class='badge log pass-bg'>1</span>
+</span>
+<p class="name">chrome</p>
+<p class="duration text-sm">1 tests</p>
+</div>
+<div class="test-contents d-none">
+<div class="info">
+<h4>chrome</h4>
+<span status="pass" class='badge log pass-bg'>1 passed</span>
+</div>
+<table class='table table-sm mt-4'>
+<thead>
+<tr>
+<th class="status-col">Status</th>
+<th class="timestamp-col">Timestamp</th>
+<th>TestName</th>
+</tr>
+</thead>
+<tbody>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>14:38:05 PM</td>
+<td>
+<a href="#" class="linked" test-id='1' id='1'>GF_TC05_VerifyLinksAndPageObjectsForAboutTSCExceptBrand_chrome_EN</a>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="test-content scrollable">
+<div class="test-content-detail">
+<div class="detail-body"></div>
+</div>
+</div>
+</div><div class="container-fluid p-4 view dashboard-view">
+<div class="row">
+<div class="col-md-3">
+<div class="card"><div class="card-body">
+<p class="m-b-0">Started</p>
+<h3>Nov 29, 2022 02:37:51 PM</h3>
+</div></div>
+</div>
+<div class="col-md-3">
+<div class="card"><div class="card-body">
+<p class="m-b-0">Ended</p>
+<h3>Nov 29, 2022 02:39:50 PM</h3>
+</div></div>
+</div>
+<div class="col-md-3">
+<div class="card"><div class="card-body">
+<p class="m-b-0 text-pass">Tests Passed</p>
+<h3>1</h3>
+</div></div>
+</div>
+<div class="col-md-3">
+<div class="card"><div class="card-body">
+<p class="m-b-0 text-fail">Tests Failed</p>
+<h3>0</h3>
+</div></div>
+</div>
+</div>
+<div class="row">
+<div class="col-md-6">
+<div class="card">
+<div class="card-header">
+<h6 class="card-title">Tests</h6>
+</div>
+<div class="card-body">
+<div class="">
+<canvas id='parent-analysis' width='115' height='90'></canvas>
+</div>
+</div>
+<div class="card-footer">
+<div><small data-tooltip='100%'>
+<b>1</b> tests passed
+</small>
+</div>
+<div>
+<small data-tooltip='0%'><b>0</b> tests failed,
+<b>0</b> skipped, <b data-tooltip='0%'>0</b> others
+</small>
+</div>
+</div>
+</div>
+</div>
+<div class="col-md-6">
+<div class="card">
+<div class="card-header">
+<h6 class="card-title">Log events</h6>
+</div>
+<div class="card-body">
+<div class="">
+<canvas id='events-analysis' width='115' height='90'></canvas>
+</div>
+</div>
+<div class="card-footer">
+<div><small data-tooltip='62%'><b>89</b> events passed</small></div>
+<div>
+<small data-tooltip='0%'><b>0</b> events failed,
+<b data-tooltip='%'>54</b> others
+</small>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="row"><div class="col-md-12">
+<div class="card"><div class="card-header"><p>Timeline</p></div>
+<div class="card-body pt-0"><div>
+<canvas id="timeline" height="120"></canvas>
+</div></div>
+</div>
+</div></div>
+<script>
+var timeline = {
+"GF_TC05_VerifyLinksAndPageObjectsForAboutTSCExceptBrand_chrome_EN":101.103
+};
+</script>
+<div class="row">
+<div class="col-lg-6 col-md-12 category-container">
+<div class="card">
+<div class="card-header"><p>Tags</p></div>
+<div class="card-body pb-0 pt-0"><table class="table table-sm table-bordered">
+<thead><tr class="bg-gray"><th>Name</th><th>Passed</th><th>Failed</th><th>Skipped</th><th>Others</th><th>Passed %</th></tr></thead><tbody>
+<tr>
+<td>Regression</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+</tr>
+<tr>
+<td>GlobalFooter</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<div class="col-lg-6 col-md-12 device-container">
+<div class="card">
+<div class="card-header"><p>Device</p></div>
+<div class="card-body pb-0 pt-0"><table class="table table-sm table-bordered">
+<thead><tr class="bg-gray"><th>Name</th><th>Passed</th><th>Failed</th><th>Skipped</th><th>Others</th><th>Passed %</th></tr></thead>
+<tbody>
+<tr>
+<td>chrome</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+</div>
+<script>
+var statusGroup = {
+parentCount: 5,
+passParent: 1,
+failParent: 0,
+warningParent: 0,
+skipParent: 0,
+childCount: 5,
+passChild: 0,
+failChild: 0,
+warningChild: 0,
+skipChild: 0,
+infoChild: 0,
+grandChildCount: 5,
+passGrandChild: 0,
+failGrandChild: 0,
+warningGrandChild: 0,
+skipGrandChild: 0,
+infoGrandChild: 0,
+eventsCount: 5,
+passEvents: 89,
+failEvents: 0,
+warningEvents: 0,
+skipEvents: 0,
+infoEvents: 54
+};
+</script>        </div>
+      </div>
+    </div>
+  </div>
+<script src="https://cdn.jsdelivr.net/gh/extent-framework/extent-github-cdn@d6562a79075e061305ccfdb82f01e5e195e2d307/spark/js/spark-script.js"></script>
+<script type="text/javascript"></script></body>
+</html>

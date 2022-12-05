@@ -1,0 +1,23 @@
+{
+  "IsGuest": false,
+  "IsPhoneCustomer": false,
+  "Email": "Test11112345678@rogers.com",
+  "Subscribe": true,
+  "Phone": "6478866570",
+  "Password": "testMail123",
+  "RetypedPassword": "testMail123",
+  "CustomerNumber": "12345",
+  "FirstName": "Test",
+  "LastName": "Test123",
+  "Address1": "131313 Drake Rd L3P1H1",
+  "Address2": "",
+  "Address2Type": "",
+  "Address2Value": "",
+  "IsPOBox": false,
+  "POBox": "",
+  "City": "Markham",
+  "Province": "ON",
+  "PostalCode": "L3P1H1",
+  "IsReCaptchaRequired": false,
+  "ReCaptchaToken": ""
+}
