@@ -5427,9 +5427,12 @@ public class MyAccount extends BasePage {
 		this.getDriver().navigate().to(orderURL);
 		this.waitForPageToLoad();
 		this.waitForCondition(Driver->{return this.btnOrderDetailsHeaderEditOrder.isDisplayed();},20000);
+		//******************************************//
+		//Need to remove this condition as we are enabling Edit Button for test if not enabled
 		if(!this.btnOrderDetailsHeaderEditOrder.isEnabled()){
 			this.setElementEnabled(btnOrderDetailsHeaderEditOrder);
 		}
+		//******************************************//
 		this.waitForCondition(Driver->{return this.btnOrderDetailsHeaderEditOrder.isEnabled();},120000);
 		//Click on Edit Order Button
 		this.clickWebElementUsingJS(this.btnOrderDetailsHeaderEditOrder);
