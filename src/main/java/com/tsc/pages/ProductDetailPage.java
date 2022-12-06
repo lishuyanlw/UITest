@@ -228,10 +228,7 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//section[@class='pdp-description']//form[@class='pdp-description__form']")
 	public WebElement cntProductStyleAndSizeJudgeIndicator;
 
-	@FindAll({
-			@FindBy(xpath = "//section[@class='pdp-description']//div[contains(@class,'pdp-description__form__colours__selections')]"),
-			@FindBy(xpath = "//section[@class='pdp-description']//div[contains(@class,'auto-delivery')]")
-	})
+	@FindBy(xpath = "//section[@class='pdp-description']//div[contains(@class,'pdp-description__form__colours__selections')]|//section[@class='pdp-description']//div[contains(@class,'auto-delivery')]")
 	public WebElement cntProductStyleSection;
 
 	//For radio style
@@ -266,22 +263,13 @@ public class ProductDetailPage extends BasePage {
 	public List<WebElement> lstRadioStyleLabelNotSelectedList;
 
 	//For dropdown menu style
-	@FindAll({
-			@FindBy(xpath="//section[@class='pdp-description']//div[contains(@class,'auto-delivery')]/b"),
-			@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__form__colours__selected']")
-	})
+	@FindBy(xpath = "//section[@class='pdp-description']//div[contains(@class,'auto-delivery')]/b|//section[@class='pdp-description']//div[@class='pdp-description__form__colours__selected']")
 	public WebElement lblDropDownProductStyleStatic;
 
-	@FindAll({
-			@FindBy(xpath = "//section[@class='pdp-description']//div[contains(@class,'pdp-description__form__auto')]//select"),
-			@FindBy(xpath = "//section[@class='pdp-description']//div[contains(@class,'pdp-description__form__colours__selections')]//select")
-	})
+	@FindBy(xpath = "//section[@class='pdp-description']//div[contains(@class,'pdp-description__form__auto')]//select|//section[@class='pdp-description']//div[contains(@class,'pdp-description__form__colours__selections')]//select")
 	public WebElement selectProductStyle;
 
-	@FindAll({
-			@FindBy(xpath = "//section[@class='pdp-description']//div[contains(@class,'pdp-description__form__auto')]//select//option[not(@disabled)]"),
-			@FindBy(xpath = "//section[@class='pdp-description']//div[contains(@class,'pdp-description__form__colours__selections')]//select//option[not(@disabled)]")
-	})
+	@FindBy(xpath = "//section[@class='pdp-description']//div[contains(@class,'pdp-description__form__auto')]//select//option[not(@disabled)]|//section[@class='pdp-description']//div[contains(@class,'pdp-description__form__colours__selections')]//select//option[not(@disabled)]")
 	public List<WebElement> lstDropdownProductStyle;
 
 	//TrueFit part
