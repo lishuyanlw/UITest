@@ -187,13 +187,25 @@ public class TransferPhoneAccountPage extends BasePage {
 
 		if(bCreateAccount){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnCreateAccount);
-			this.btnCreateAccount.click();
+			this.clickElement(this.btnCreateAccount);
 			MyAccount myAccount=new MyAccount(this.getDriver());
-			this.waitForCondition(Driver->{return myAccount.lblMyAccountHeaderTitle.isDisplayed();},120000);
+			try{
+				this.waitForCondition(Driver->{return myAccount.lblMyAccountHeaderTitle.isDisplayed();},120000);
+			}
+			catch (Exception ex){
+				this.clickElement(this.btnCreateAccount);
+				try{
+					this.waitForCondition(Driver->{return myAccount.lblMyAccountHeaderTitle.isDisplayed();},120000);
+				}
+				catch (Exception ex1){
+					this.clickElement(this.btnCreateAccount);
+					this.waitForCondition(Driver->{return myAccount.lblMyAccountHeaderTitle.isDisplayed();},120000);
+				}
+			}
 		}
 		else{
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnCancel);
-			this.btnCancel.click();
+			this.clickElement(this.btnCancel);
 			SignInPage signInPage=new SignInPage(this.getDriver());
 			this.waitForCondition(Driver->{return signInPage.lblSignInPageTitle.isDisplayed();},120000);
 		}
@@ -509,7 +521,7 @@ public class TransferPhoneAccountPage extends BasePage {
 		this.inputPhoneNumber2.click();
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnCreateAccount);
 		this.clickElement(this.btnCreateAccount);
-		waitForCondition(Driver->{return lstAllErrorMessage.size()>0;},60000);
+		waitForCondition(Driver->{return lstAllErrorMessage.size()>0;},120000);
 		this.applyStaticWait(3*this.getStaticWaitForApplication());
 		this.clickElement(this.btnCreateAccount);
 		this.applyStaticWait(this.getStaticWaitForApplication());

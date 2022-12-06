@@ -389,7 +389,7 @@ public class GlobalHeaderPage_Mobile extends GlobalHeaderPage {
         getReusableActionsInstance().javascriptScrollByVisibleElement(headingWebElement);
         getReusableActionsInstance().scrollToElement(headingWebElement);
         getReusableActionsInstance().clickIfAvailable(headingWebElement);
-        waitForCondition(Driver->{return this.popularBrandsMobile.isEnabled();},60000);
+        waitForCondition(Driver->{return this.popularBrandsMobile.isEnabled();},120000);
         getReusableActionsInstance().clickIfAvailable(this.popularBrandsMobile);
         getReusableActionsInstance().waitForPageLoad();
         if(!(System.getProperty("Device").equalsIgnoreCase("Tablet") &&

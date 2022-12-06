@@ -14,7 +14,7 @@ public class SI_TC07_TransferPhoneAccount_ByGuestAccount extends BaseTest{
     /*
      * CER-917
      */
-    @Test(groups={"Regression","SignIn"})
+    @Test(groups={"Regression","SignIn","CreateAccount"})
     public void SI_TC07_TransferPhoneAccount_ByGuestAccount() throws IOException {
         getGlobalFooterPageThreadLocal().closePopupDialog();
         BasePage basePage=new BasePage(this.getDriver());
@@ -27,13 +27,12 @@ public class SI_TC07_TransferPhoneAccount_ByGuestAccount extends BaseTest{
         if(getProductDetailPageThreadLocal().goToProductItemWithPreConditions(lstKeywordList,"ConditionsForMultipleStyleAndSize",outputDataCriteria)) {
             String[] lstStyle = getProductDetailPageThreadLocal().getStyleList();
             String[] lstSizeFirstItem = getProductDetailPageThreadLocal().getSizeListForGivenStyle(0);
-            //String[] lstSizeSecondItem = getProductDetailPageThreadLocal().getSizeListForGivenStyle(1);
 
             getProductDetailPageThreadLocal().chooseGivenStyleAndSizeAndQuantity(lstStyle[0], lstSizeFirstItem[0], 1);
             basePage.clickElement(getProductDetailPageThreadLocal().btnAddToBag);
             basePage.waitForCondition(Driver -> {
                 return getProductDetailPageThreadLocal().lblAddToBagPopupWindowTitle.isDisplayed();
-            }, 30000);
+            }, 120000);
 
             basePage.getReusableActionsInstance().javascriptScrollByVisibleElement(getProductDetailPageThreadLocal().btnAddToBagPopupWindowButtonSectionCheckOut);
             getProductDetailPageThreadLocal().btnAddToBagPopupWindowButtonSectionCheckOut.click();
@@ -52,6 +51,12 @@ public class SI_TC07_TransferPhoneAccount_ByGuestAccount extends BaseTest{
             getGuestCheckoutThreadLocal().goToReviewPage();
 
             getRegularCheckoutThreadLocal().goToOrderConfirmationPage();
+
+            String lsDeviceType=System.getProperty("Device").toLowerCase();
+            if(lsDeviceType.contains("ios")){
+                getGlobalFooterPageThreadLocal().closePopupDialog();
+            }
+
             Map<String,Object> receiptMap=getOrderConfirmationThreadLocal().getReceiptDesc();
             String customerNumber= (String) receiptMap.get("customerNumber");
 

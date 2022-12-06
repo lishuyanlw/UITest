@@ -497,6 +497,16 @@ import utils.ReusableActions;
 		JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
 		jse.executeScript("arguments[0].setAttribute(arguments[1],arguments[2]);", parent,lsAttribute,lsValue);
 	}
+
+	/**
+	 * This method will set element enabled.
+	 * @param-WebElement parent: parent element
+	 * @author Wei.Li
+	 */
+	public void setElementEnabled(WebElement parent) {
+		JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
+		jse.executeScript("arguments[0].disabled=false;", parent);
+	}
 	
 	/**
 	 * This method will return childElement.
@@ -1257,7 +1267,7 @@ import utils.ReusableActions;
 	 * @param - String - chromeMobileDevice for local run
 	 * @return - boolean value
 	 */
-	public boolean getDeviceTypeForTest(String deviceType,String chromeMobileDevice){
+	public boolean checkIfDeviceTypeNotDesktop(String deviceType, String chromeMobileDevice){
 		if("Mobile".equalsIgnoreCase(deviceType) ||
 				("Tablet".equalsIgnoreCase(deviceType) &&
 						System.getProperty("Browser").contains("android")) ||
@@ -1312,13 +1322,4 @@ import utils.ReusableActions;
 		return dest;
 	}
 
-	/**
-	 * This method will set element enabled.
-	 * @param-WebElement parent: parent element
-	 * @author Wei.Li
-	 */
-	public void setElementEnabled(WebElement parent) {
-		JavascriptExecutor jse = (JavascriptExecutor)(this.getDriver());
-		jse.executeScript("arguments[0].disabled=false;", parent);
-	}
 }

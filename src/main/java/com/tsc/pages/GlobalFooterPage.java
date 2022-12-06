@@ -681,7 +681,7 @@ public class GlobalFooterPage extends BasePage {
 	public void closePopupDialog() {
 		HomePage homePage = new HomePage(getDriver());
 		try{
-			if(waitForCondition(Driver->{return homePage.btnClose.isDisplayed();},60000)){
+			if(waitForCondition(Driver->{return homePage.btnClose.isDisplayed();},180000)){
 				this.getReusableActionsInstance().javascriptScrollByVisibleElement(homePage.btnClose);
 				this.getReusableActionsInstance().clickIfAvailable(homePage.btnClose,3000);
 			}
@@ -944,7 +944,7 @@ public class GlobalFooterPage extends BasePage {
 		}
 		this.clickElement(selectedItem);
 		this.waitForPageToLoad();
-		return waitForCondition(Driver -> {return lblIndicator.isDisplayed();}, 60000);
+		return waitForCondition(Driver -> {return lblIndicator.isDisplayed();}, 120000);
 	}
 
 	/**

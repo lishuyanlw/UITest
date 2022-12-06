@@ -70,18 +70,6 @@ public class SignInPage_Mobile extends SignInPage{
         }
     }
 
-    @Override
-    public boolean goToSignInPage() {
-        this.clickElement(this.btnSignInMainMenu);
-        //getReusableActionsInstance().clickIfAvailable(this.SignInIcon);
-        //getReusableActionsInstance().staticWait(2000);
-        getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInNav);
-        this.btnSignInNav.click();
-        (new GlobalFooterPage(this.getDriver())).waitForPageLoading();
-
-        return waitForCondition(Driver->{return this.lblSignIn.isDisplayed();},30000);
-    }
-
     //@Override
     public boolean verifySignOutButtonVisibilityOnPage(){
         getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignOut);

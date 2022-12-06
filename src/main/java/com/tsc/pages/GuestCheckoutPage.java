@@ -779,7 +779,7 @@ public class GuestCheckoutPage extends RegularCheckoutPage {
 	 */
 	public void goToPaymentPage(){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnContinueToPayment);
-		this.getReusableActionsInstance().clickIfAvailable(btnContinueToPayment);
+		this.clickElement(btnContinueToPayment);
 		this.applyStaticWait(this.getStaticWaitForApplication());
 
 		try{
@@ -788,6 +788,7 @@ public class GuestCheckoutPage extends RegularCheckoutPage {
 		catch (Exception e){
 			this.applyStaticWait(10*this.getStaticWaitForApplication());
 		}
+
 		this.waitForCondition(Driver->{return lblUsingANewCardSelectTitle.isDisplayed();},120000);
 		this.applyStaticWait(3*this.getStaticWaitForApplication());
 	}

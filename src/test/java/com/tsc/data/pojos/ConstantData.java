@@ -918,6 +918,87 @@ public class ConstantData {
         private String lblErrorMessageForExistingEmail;
         private String lnkSignInPage;
         private List<String> lstErrorMessageForTransferPhoneAccount;
+        private String lnkForgotPasswordPage;
+        private String lnkCreateAccountPage;
+        private String lnkTransferPhoneAccountPage;
+        private String lblErrorMessageForBlankEmailCheckingForForgotPassword;
+        private String lblErrorMessageForInvalidEmailFormatCheckingForForgotPassword;
+        private List<String> lstErrorMessageForAnswerSecurityQuestionsForForgotPassword;
+        private String lblErrorMessageForInvalidSecurityQuestionAnswerForForgotPassword;
+        private List<String> lstErrorMessageForResetPasswordForForgotPassword;
+        private String lblErrorMessageForPasswordsNotMatchForForgotPassword;
+
+        public String getLblErrorMessageForInvalidSecurityQuestionAnswerForForgotPassword() {
+            return lblErrorMessageForInvalidSecurityQuestionAnswerForForgotPassword;
+        }
+
+        public void setLblErrorMessageForInvalidSecurityQuestionAnswerForForgotPassword(String lblErrorMessageForInvalidSecurityQuestionAnswerForForgotPassword) {
+            this.lblErrorMessageForInvalidSecurityQuestionAnswerForForgotPassword = lblErrorMessageForInvalidSecurityQuestionAnswerForForgotPassword;
+        }
+
+        public String getLblErrorMessageForBlankEmailCheckingForForgotPassword() {
+            return lblErrorMessageForBlankEmailCheckingForForgotPassword;
+        }
+
+        public void setLblErrorMessageForBlankEmailCheckingForForgotPassword(String lblErrorMessageForBlankEmailCheckingForForgotPassword) {
+            this.lblErrorMessageForBlankEmailCheckingForForgotPassword = lblErrorMessageForBlankEmailCheckingForForgotPassword;
+        }
+
+        public String getLblErrorMessageForInvalidEmailFormatCheckingForForgotPassword() {
+            return lblErrorMessageForInvalidEmailFormatCheckingForForgotPassword;
+        }
+
+        public void setLblErrorMessageForInvalidEmailFormatCheckingForForgotPassword(String lblErrorMessageForInvalidEmailFormatCheckingForForgotPassword) {
+            this.lblErrorMessageForInvalidEmailFormatCheckingForForgotPassword = lblErrorMessageForInvalidEmailFormatCheckingForForgotPassword;
+        }
+
+        public List<String> getLstErrorMessageForAnswerSecurityQuestionsForForgotPassword() {
+            return lstErrorMessageForAnswerSecurityQuestionsForForgotPassword;
+        }
+
+        public void setLstErrorMessageForAnswerSecurityQuestionsForForgotPassword(List<String> lstErrorMessageForAnswerSecurityQuestionsForForgotPassword) {
+            this.lstErrorMessageForAnswerSecurityQuestionsForForgotPassword = lstErrorMessageForAnswerSecurityQuestionsForForgotPassword;
+        }
+
+        public List<String> getLstErrorMessageForResetPasswordForForgotPassword() {
+            return lstErrorMessageForResetPasswordForForgotPassword;
+        }
+
+        public void setLstErrorMessageForResetPasswordForForgotPassword(List<String> lstErrorMessageForResetPasswordForForgotPassword) {
+            this.lstErrorMessageForResetPasswordForForgotPassword = lstErrorMessageForResetPasswordForForgotPassword;
+        }
+
+        public String getLblErrorMessageForPasswordsNotMatchForForgotPassword() {
+            return lblErrorMessageForPasswordsNotMatchForForgotPassword;
+        }
+
+        public void setLblErrorMessageForPasswordsNotMatchForForgotPassword(String lblErrorMessageForPasswordsNotMatchForForgotPassword) {
+            this.lblErrorMessageForPasswordsNotMatchForForgotPassword = lblErrorMessageForPasswordsNotMatchForForgotPassword;
+        }
+
+        public String getLnkTransferPhoneAccountPage() {
+            return lnkTransferPhoneAccountPage;
+        }
+
+        public void setLnkTransferPhoneAccountPage(String lnkTransferPhoneAccountPage) {
+            this.lnkTransferPhoneAccountPage = lnkTransferPhoneAccountPage;
+        }
+
+        public String getLnkCreateAccountPage() {
+            return lnkCreateAccountPage;
+        }
+
+        public void setLnkCreateAccountPage(String lnkCreateAccountPage) {
+            this.lnkCreateAccountPage = lnkCreateAccountPage;
+        }
+
+        public String getLnkForgotPasswordPage() {
+            return lnkForgotPasswordPage;
+        }
+
+        public void setLnkForgotPasswordPage(String lnkForgotPasswordPage) {
+            this.lnkForgotPasswordPage = lnkForgotPasswordPage;
+        }
 
         public List<String> getLstErrorMessageForTransferPhoneAccount() {
             return lstErrorMessageForTransferPhoneAccount;

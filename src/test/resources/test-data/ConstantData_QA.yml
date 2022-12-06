@@ -217,6 +217,20 @@ loginUser:
                                             "Please enter your email address in the format john@example.com",
                                             "The passwords you've entered do not match. Please try again.",
                                             "You have one or more missing or invalid entries. Please enter correct data and try again." ]
+  lnkForgotPasswordPage: "/pages/passwordrequest"
+  lnkCreateAccountPage: "/pages/createaccount"
+  lnkTransferPhoneAccountPage: "/pages/createphoneaccount"
+  lblErrorMessageForBlankEmailCheckingForForgotPassword: "Email is required."
+  lblErrorMessageForInvalidEmailFormatCheckingForForgotPassword: "Please enter your email address in the format john@example.com"
+  lstErrorMessageForAnswerSecurityQuestionsForForgotPassword: ["You have one or more missing or invalid entries. Please enter correct data and try again.",
+                                                               "Phone number is required.",
+                                                               "Postal code is required.",
+                                                               "Security question answer is required."]
+  lblErrorMessageForInvalidSecurityQuestionAnswerForForgotPassword: "Your answers could not be validated."
+  lstErrorMessageForResetPasswordForForgotPassword: [ "Password is required.",
+                                                      "Please type your password again."]
+  lblErrorMessageForPasswordsNotMatchForForgotPassword: "The passwords you've entered do not match. Please try again."
+
 myAccount:
   lnk_myAccountURL: "/pages/myaccount"
   lnk_addNewCardURL: "/pages/myaccount/paymentcards/addcard"
@@ -271,8 +285,7 @@ myAccount:
 
 lstTestName: ["MA_TC10_Payment_Options_Manage_Credit_Card",
               "MA_TC18_MyPreferences_MyNewsletters",
-              "PD_TC",
-               "SC_TC"]
+              "PD_TC"]
 lblChromeBrowserVersion: "99"
 shoppingCart:
   lst_SearchKeywords:

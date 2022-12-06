@@ -224,10 +224,16 @@ public class SignInPage extends BasePage {
 	 * Go to Your Profile page
 	 */
 	public void goToYourProfilePage() {
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.cntBlackHeaderContainer);
-		getReusableActionsInstance().staticWait(2000);
-
-		this.clickElement(this.btnSignInMainMenu);
+		getReusableActionsInstance().javascriptScrollToTopOfPage();
+		String strBrowser = System.getProperty("Browser").trim();
+		if (strBrowser.toLowerCase().contains("android") || strBrowser.toLowerCase().contains("ios")
+				|| strBrowser.toLowerCase().contains("mobile")) {
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInMainMenu);
+			this.getReusableActionsInstance().clickIfAvailable(this.btnSignInMainMenu);
+			//this.btnSignInMainMenu.click();
+		} else {
+			this.getReusableActionsInstance().scrollToElement(this.btnSignInMainMenu);
+		}
 		getReusableActionsInstance().staticWait(3000);
 
 		this.btnYourProfileNav.click();
@@ -241,10 +247,16 @@ public class SignInPage extends BasePage {
 	 * Go to Your Orders page through header
 	 */
 	public void goToYourOrdersPageThroughHeader() {
-		getReusableActionsInstance().javascriptScrollByVisibleElement(this.cntBlackHeaderContainer);
-		getReusableActionsInstance().staticWait(2000);
-
-		this.clickElement(this.btnSignInMainMenu);
+		getReusableActionsInstance().javascriptScrollToTopOfPage();
+		String strBrowser = System.getProperty("Browser").trim();
+		if (strBrowser.toLowerCase().contains("android") || strBrowser.toLowerCase().contains("ios")
+				|| strBrowser.toLowerCase().contains("mobile")) {
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInMainMenu);
+			this.getReusableActionsInstance().clickIfAvailable(this.btnSignInMainMenu);
+			//this.btnSignInMainMenu.click();
+		} else {
+			this.getReusableActionsInstance().scrollToElement(this.btnSignInMainMenu);
+		}
 		getReusableActionsInstance().staticWait(3000);
 
 		this.btnYourOrdersNav.click();
@@ -321,6 +333,27 @@ public class SignInPage extends BasePage {
 	}
 
 	/**
+	 * To Sign out
+	 * @return - boolean
+	 */
+	public boolean signOut() {
+		getReusableActionsInstance().javascriptScrollToTopOfPage();
+		String strBrowser = System.getProperty("Browser").trim();
+		if (strBrowser.toLowerCase().contains("android") || strBrowser.toLowerCase().contains("ios")
+				|| strBrowser.toLowerCase().contains("mobile")) {
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInMainMenu);
+			this.clickElement(this.btnSignInMainMenu);
+		} else {
+			this.getReusableActionsInstance().scrollToElement(this.btnSignInMainMenu);
+		}
+		getReusableActionsInstance().staticWait(3000);
+
+		this.getReusableActionsInstance().clickIfAvailable(this.btnSignOutNav);
+
+		return waitForCondition(Driver->{return this.lblSignOut.isDisplayed();},300000);
+	}
+
+	/**
 	 * Go to Transfer phone Account page through header
 	 * @return - boolean
 	 */
@@ -356,14 +389,18 @@ public class SignInPage extends BasePage {
 
 	/**
 	 * Go to Transfer Phone Account Page through signIn page
-	 * @return - boolean
 	 */
-	public boolean goToTransferPhoneAccountPageThroughSignInPage() {
+	public void goToTransferPhoneAccountPageThroughSignInPage() {
 		this.goToSignInPage();
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnTransferMyPhoneAccount);
 		this.getReusableActionsInstance().clickIfAvailable(this.btnTransferMyPhoneAccount);
 
-		return waitForCondition(Driver->{return (new TransferPhoneAccountPage(this.getDriver())).lblHeaderTitle.isDisplayed();},300000);
+		try{
+			waitForCondition(Driver->{return (new TransferPhoneAccountPage(this.getDriver())).lblHeaderTitle.isDisplayed();},60000);
+		}
+		catch (Exception ex){
+			this.applyStaticWait(8*this.getStaticWaitForApplication());
+		}
 	}
 
 	/**
@@ -894,7 +931,7 @@ public class SignInPage extends BasePage {
 		if (strBrowser.toLowerCase().contains("android") || strBrowser.toLowerCase().contains("ios")
 				|| strBrowser.toLowerCase().contains("mobile")) {
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSignInMainMenu);
-			this.getReusableActionsInstance().clickIfAvailable(this.btnSignInMainMenu);
+			this.clickElement(this.btnSignInMainMenu);
 
 			getReusableActionsInstance().staticWait(3000);
 			lsText=this.getElementInnerText(lstSignInDropdownMenu.get(0));
@@ -916,6 +953,31 @@ public class SignInPage extends BasePage {
 			}
 		}
 		return bSignIn;
+	}
+
+	/**
+	 * To go To Forgot Password Page
+	 * @param - String - lsExpectedUrlFromYml
+	 * @return - boolean
+	 */
+	public boolean goToForgotPasswordPage(String lsExpectedUrlFromYml){
+		String lsUrlBeforeClicking=this.URL();
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkForgotPassword);
+		this.lnkForgotPassword.click();
+
+		if(lsExpectedUrlFromYml!=null){
+			this.waitForCondition(Driver->{return !this.URL().equalsIgnoreCase(lsUrlBeforeClicking);},20000);
+			String lsExpectedUrl=this.getBaseURL()+lsExpectedUrlFromYml;
+			String lsUrlAfterClicking=this.URL();
+			if(lsUrlAfterClicking.equalsIgnoreCase(lsExpectedUrl)){
+				reporter.reportLogPass("The navigated URL:'"+lsUrlAfterClicking+" ' is the same as expected:'"+lsExpectedUrl+"'");
+			}
+			else{
+				reporter.reportLogFail("The navigated URL:'"+lsUrlAfterClicking+" ' is not the same as expected:'"+lsExpectedUrl+"'");
+			}
+		}
+		ForgotPasswordPage forgotPasswordPage=new ForgotPasswordPage(this.getDriver());
+		return this.waitForCondition(Driver->{return forgotPasswordPage.lblResetPasswordHeaderTitle.isDisplayed();},120000);
 	}
 
 }

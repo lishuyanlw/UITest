@@ -190,7 +190,7 @@ public class CreateAccountPage extends BasePage {
             this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
             sum++;
         }
-        this.waitForCondition(Driver->{return this.cntAddressLine1DropdownMenuListContainer.getAttribute("style").contains("display: block;");},20000);
+        this.waitForCondition(Driver->{return this.cntAddressLine1DropdownMenuListContainer.getAttribute("style").contains("display: block;");},60000);
         this.getReusableActionsInstance().staticWait(2*this.getStaticWaitForApplication());
 
         if(lstAddressLine1DropdownMenuList.size()>1){
@@ -201,11 +201,14 @@ public class CreateAccountPage extends BasePage {
         }
 
         int optionSize=this.lstAddressLine1DropdownMenuList.size();
-        Random rand = new Random();
-        int randomNumber = rand.nextInt(optionSize-2);
+        int randomNumber=0;
+        if(optionSize>1){
+            Random rand = new Random();
+            randomNumber = rand.nextInt(optionSize-2);
+        }
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstAddressLine1DropdownMenuList.get(randomNumber));
         this.getReusableActionsInstance().clickIfAvailable(this.lstAddressLine1DropdownMenuList.get(randomNumber));
-        this.waitForCondition(Driver->{return this.cntAddressLine1DropdownMenuListContainer.getAttribute("style").contains("display: none;");},20000);
+        this.waitForCondition(Driver->{return this.cntAddressLine1DropdownMenuListContainer.getAttribute("style").contains("display: none;");},60000);
 
         String lsPhoneNumber1="647";
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputPhoneNumber1);
@@ -252,18 +255,28 @@ public class CreateAccountPage extends BasePage {
 
         if(bSave){
             this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSave);
-            this.btnSave.click();
+            this.clickElement(this.btnSave);
             if(bExistingEmail){
-                this.waitForCondition(Driver->{return this.getElementInnerText(this.lstAllErrorMessage.get(0)).contains("already exist!!!");},120000);
+                try{
+                    this.waitForCondition(Driver->{return this.getElementInnerText(this.lstAllErrorMessage.get(0)).contains("already exist");},120000);
+                }
+                catch (Exception ex){
+                    this.applyStaticWait(8*this.getStaticWaitForApplication());
+                }
             }
             else{
                 SignInPage signInPage=new SignInPage(this.getDriver());
-                this.waitForCondition(Driver->{return signInPage.lblSignInPageTitle.isDisplayed();},120000);
+                try{
+                    this.waitForCondition(Driver->{return signInPage.lblSignInPageTitle.isDisplayed();},120000);
+                }
+                catch (Exception ex){
+                    this.applyStaticWait(8*this.getStaticWaitForApplication());
+                }
             }
         }
         else{
             this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnCancel);
-            this.btnCancel.click();
+            this.clickElement(this.btnCancel);
             this.applyStaticWait(3*this.getStaticWaitForApplication());
         }
 
@@ -652,7 +665,7 @@ public class CreateAccountPage extends BasePage {
         this.inputPhoneNumber1.click();
         this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSave);
         this.clickElement(this.btnSave);
-        waitForCondition(Driver->{return lstAllErrorMessage.size()>0;},60000);
+        waitForCondition(Driver->{return lstAllErrorMessage.size()>0;},120000);
         this.applyStaticWait(3*this.getStaticWaitForApplication());
         this.clickElement(this.btnSave);
         this.applyStaticWait(this.getStaticWaitForApplication());
@@ -696,8 +709,9 @@ public class CreateAccountPage extends BasePage {
         }
 
         reporter.reportLog("Check the status after clicking the button");
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnShowOrHidePassword);
         this.getReusableActionsInstance().clickIfAvailable(this.btnShowOrHidePassword);
-        this.waitForCondition(Driver->{return !getShowButtonStatus(this.btnShowOrHidePassword);},5000);
+        this.waitForCondition(Driver->{return !getInputPasswordStatus(this.inputPassword);},60000);
         if(!getInputPasswordStatus(this.inputPassword)){
             reporter.reportLogPass("The input type is text");
         }
@@ -730,8 +744,9 @@ public class CreateAccountPage extends BasePage {
         }
 
         reporter.reportLog("Check the status after clicking the button");
+        this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnConfirmPasswordShow);
         this.getReusableActionsInstance().clickIfAvailable(this.btnConfirmPasswordShow);
-        this.waitForCondition(Driver->{return !getShowButtonStatus(this.btnConfirmPasswordShow);},5000);
+        this.waitForCondition(Driver->{return !getShowButtonStatus(this.btnConfirmPasswordShow);},60000);
         if(!getInputPasswordStatus(this.inputConfirmPassword)){
             reporter.reportLogPass("The input type is text");
         }

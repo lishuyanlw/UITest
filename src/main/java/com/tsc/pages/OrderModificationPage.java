@@ -337,7 +337,7 @@ public class OrderModificationPage extends BasePage {
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnModifyOrderChangeModOptionsAddItemsButton);
 		btnModifyOrderChangeModOptionsAddItemsButton.click();
-		this.waitForCondition(Driver->{return (new GlobalHeaderPage(this.getDriver())).searchBox.isDisplayed();},60000);
+		this.waitForCondition(Driver->{return (new GlobalHeaderPage(this.getDriver())).searchBox.isDisplayed();},120000);
 
 		ProductResultsPage prp=new ProductResultsPage(this.getDriver());
 		ProductDetailPage pdp=new ProductDetailPage(this.getDriver());
@@ -349,7 +349,7 @@ public class OrderModificationPage extends BasePage {
 		}
 
 		this.clickElement(pdp.btnAddToBag);
-		this.waitForCondition(Driver->{return this.lblAddToBagPopupWindowTitle.isDisplayed();},60000);
+		this.waitForCondition(Driver->{return this.lblAddToBagPopupWindowTitle.isDisplayed();},120000);
 
 		Map<String,Object> addToBagMap=this.getAddToBagDesc();
 
@@ -436,6 +436,9 @@ public class OrderModificationPage extends BasePage {
 	public boolean checkProductItemStatusForFreeShippingExisting(WebElement orderItem){
 		WebElement itemContainer=orderItem.findElement(byProductItemStatusContainer);
 		List<WebElement> itemList=itemContainer.findElements(byProductItemStatus);
+		if(itemList.size()==0){
+			return false;
+		}
 		Boolean flag = false;
 		boolean removeButtonStatus;
 		for(WebElement element:itemList){
@@ -1753,7 +1756,7 @@ public class OrderModificationPage extends BasePage {
 	public boolean goToCheckoutPageFromAddToBagWindow(){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnAddToBagPopupWindowButtonSectionCheckOut);
 		btnAddToBagPopupWindowButtonSectionCheckOut.click();
-		return this.waitForCondition(Driver->{return (new RegularCheckoutPage(this.getDriver())).btnCollapseProductList.isDisplayed();},60000);
+		return this.waitForCondition(Driver->{return (new RegularCheckoutPage(this.getDriver())).btnCollapseProductList.isDisplayed();},120000);
 	}
 
 	/**
@@ -1770,7 +1773,7 @@ public class OrderModificationPage extends BasePage {
 			reporter.reportLogFail("Review Changes button is not displaying correctly");
 		}
 		btnAddToBagPopupWindowButtonSectionReviewChanges.click();
-		return this.waitForCondition(Driver->{return this.lblModifyOrderHeaderTitle.isDisplayed();},60000);
+		return this.waitForCondition(Driver->{return this.lblModifyOrderHeaderTitle.isDisplayed();},120000);
 	}
 
 	/**
@@ -1783,7 +1786,7 @@ public class OrderModificationPage extends BasePage {
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnModifyOrderCancelModificationButton);
 		btnModifyOrderCancelModificationButton.click();
-		this.waitForCondition(Driver->{return (new MyAccount(this.getDriver())).inputAccountOrderSearch.isDisplayed();},60000);
+		this.waitForCondition(Driver->{return (new MyAccount(this.getDriver())).inputAccountOrderSearch.isDisplayed();},120000);
 
 		if(this.URL().equalsIgnoreCase(lsExpectedUrl)){
 			reporter.reportLogPass("Navigated to order status page after clicking cancel modification button.");
@@ -1799,7 +1802,7 @@ public class OrderModificationPage extends BasePage {
 	public void goToCheckoutPage(){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnModifyOrderCheckoutButton);
 		btnModifyOrderCheckoutButton.click();
-		this.waitForCondition(Driver->{return (new RegularCheckoutPage(this.getDriver())).btnItemBeingAdded.isDisplayed();},60000);
+		this.waitForCondition(Driver->{return (new RegularCheckoutPage(this.getDriver())).btnItemBeingAdded.isDisplayed();},120000);
 
 		try{
 			new RegularCheckoutPage(this.getDriver()).waitForPageLoadingSpinningStatusCompleted();

@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tsc.api.pojo.AccountResponse;
+import com.tsc.api.pojo.ErrorResponse;
+import com.tsc.api.pojo.SecurityQuestionResponse;
 import com.tsc.api.util.DataConverter;
 import com.tsc.api.util.JsonParser;
 import io.restassured.response.Response;
@@ -587,5 +589,32 @@ public class AccountAPI extends ApiClient {
      */
     public Response deleteShippingAddressForUser(int addressId,String customerEDP,String accessToken){
         return deleteApiCallResponseAfterAuthentication(propertyData.get("test_apiVersion") + "/" + propertyData.get("test_language")+"/accounts/"+customerEDP+"/shippingaddresses/"+addressId, accessToken);
+    }
+
+    /**
+     * To get User Security Question List
+     * @param - accessToken
+     * @return
+     */
+    public List<SecurityQuestionResponse> getUserSecurityQuestionList(String accessToken){
+        String apiEndPoint = propertyData.get("test_apiVersion") + "/" + propertyData.get("test_language")+"/securityquestions";
+        Response response=getApiCallResponseAfterAuthentication(null, apiEndPoint, accessToken);
+        return JsonParser.getResponseObject(response.asString(), new TypeReference<List<SecurityQuestionResponse>>() {});
+    }
+
+    /**
+     * To set User Security Question Answer
+     * @param - String - customerEDP
+     * @param - String - accessToken
+     * @param - int - QuestionId
+     * @param - -String - Answer
+     * @return - Response
+     */
+    public Response setUserSecurityQuestionAnswer(String customerEDP,String accessToken, int QuestionId, String Answer){
+        String apiEndPoint = propertyData.get("test_apiVersion") + "/" + propertyData.get("test_language")+"/accounts/"+customerEDP+"/securityquestion";
+        JSONObject requestParams=new JSONObject();
+        requestParams.put("QuestionId",QuestionId);
+        requestParams.put("Answer",Answer);
+        return postApiCallResponseAfterAuthenticationFromJSON(requestParams,apiEndPoint,accessToken);
     }
 }

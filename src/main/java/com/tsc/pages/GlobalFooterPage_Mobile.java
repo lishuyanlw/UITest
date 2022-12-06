@@ -127,7 +127,7 @@ public class GlobalFooterPage_Mobile extends GlobalFooterPage{
 		this.clickElement(selectedItem);
 
 		this.waitForPageToLoad();
-		return waitForCondition(Driver -> {return lblIndicator.isDisplayed();}, 60000);
+		return waitForCondition(Driver -> {return lblIndicator.isDisplayed();}, 120000);
 	}
 
 	@Override
