@@ -2752,7 +2752,6 @@ public class ShoppingCartPage extends BasePage {
 				data.add(map);
 			}
 			return data;
-
 		}
 	}
 
