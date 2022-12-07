@@ -21,6 +21,7 @@ public class SC_TC13_VerifyShoppingCart_ChangeItemQuantity extends BaseTest{
 		String lsPassword = TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
 		String accessToken = getApiUserSessionDataMapThreadLocal().get("access_token").toString();
 		int customerEDP = Integer.valueOf(getApiUserSessionDataMapThreadLocal().get("customerEDP").toString());
+		getShoppingCartThreadLocal().emptyCart(Integer.valueOf(customerEDP),accessToken);
 
 		//Delete all gift card
 		CartAPI cartAPI=new CartAPI();
