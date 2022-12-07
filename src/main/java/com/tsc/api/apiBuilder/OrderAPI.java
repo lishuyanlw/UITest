@@ -10,9 +10,11 @@ import org.json.simple.JSONObject;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -71,6 +73,32 @@ public class OrderAPI extends ApiClient {
         String lsQueryParam="?page=1&pageSize=10&fromDate="+fromDate+"&toDate="+toDate+"&validate=false";
         apiEndPoint+=lsQueryParam;
 //        reporter.reportLog(apiEndPoint);
+
+        response = this.getApiCallResponseAfterAuthentication(null,apiEndPoint, access_token);
+
+        return response;
+    }
+
+    /**
+     * @param - customerEDP - Customer EDP Number where cart is created
+     * @param - access_token - access token for api authentication
+     * @return - Response - API Calling Response
+     */
+    public Response getOrderList(String customerEDP,String access_token,boolean existingOrder){
+        Response response = null;
+        String apiEndPoint = null;
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        TimeZone timeZone = TimeZone.getTimeZone(ZoneId.of("America/New_York"));
+        final Calendar cal = Calendar.getInstance(timeZone);
+        cal.add(Calendar.HOUR_OF_DAY, -3);
+        String fromDate=dateFormat.format(cal.getTime());
+        cal.add(Calendar.HOUR_OF_DAY, +3);
+        String toDate=dateFormat.format(cal.getTime());
+
+        apiEndPoint = propertyData.get("test_apiVersion") + "/" + propertyData.get("test_language") + "/accounts/" + customerEDP + "/orders";
+        String lsQueryParam="?page=1&pageSize=10&fromDate="+fromDate+"&toDate="+toDate+"&validate=false";
+        apiEndPoint+=lsQueryParam;
 
         response = this.getApiCallResponseAfterAuthentication(null,apiEndPoint, access_token);
 
