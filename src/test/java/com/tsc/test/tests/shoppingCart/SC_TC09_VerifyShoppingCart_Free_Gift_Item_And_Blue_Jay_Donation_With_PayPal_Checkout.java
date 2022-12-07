@@ -57,12 +57,17 @@ public class SC_TC09_VerifyShoppingCart_Free_Gift_Item_And_Blue_Jay_Donation_Wit
             //Adding item to cart for user for dimensionId fetched from configuration
             Map<String,Object> configData = getShoppingCartThreadLocal().getRequiredDetailsFromContentFulConfiguration(configurations, Arrays.asList("GWPCategoryFacetIdsIncluded","GWPCartSubTotalThreshold","GWPItemNosIncluded"));
             if(configData.get("GWPCategoryFacetIdsIncluded")!=null){
-                String dimensionId = configData.get("GWPCategoryFacetIdsIncluded").toString().split(",")[0];
-                //Calling api to get product item no to be added to bag for user that has free shipping condition satisfied
-                List<Product.edps> edpNoForFreeShippingProduct = new ProductAPI().getEDPNoForFreeShippingProduct(dimensionId,1);
-                if(edpNoForFreeShippingProduct.size()>0)
-                    getShoppingCartThreadLocal().addAdvanceOrderOrSingleProductToCartForUser(edpNoForFreeShippingProduct.get(0).getItemNo(),1,false,customerEDP,accessToken);
-                else
+                List<Product.edps> edpNoForFreeShippingProduct = null;
+                String[] dimensionIds = configData.get("GWPCategoryFacetIdsIncluded").toString().split(",");
+                for(String dimensionId:dimensionIds){
+                    edpNoForFreeShippingProduct = new ProductAPI().getEDPNoForFreeShippingProduct(dimensionId,1);
+                    if(edpNoForFreeShippingProduct.size()>0){
+                        //Calling api to get product item no to be added to bag for user that has free shipping condition satisfied
+                        getShoppingCartThreadLocal().addAdvanceOrderOrSingleProductToCartForUser(edpNoForFreeShippingProduct.get(0).getItemNo(),1,false,customerEDP,accessToken);
+                        break;
+                    }
+                }
+                if(edpNoForFreeShippingProduct.size()==0)
                     reporter.reportLogFail("Product is not fetched from dimension number fetched from configuration api");
             }else{
                 String itemNoToBeAddedForFreeShipping = configData.get("GWPItemNosIncluded").toString();
