@@ -33,7 +33,11 @@ public class CP_TC03_VerifyReguLarCheckout_ShippingDate_MultiPackMessage extends
 
 		reporter.reportLog("Verify the scenario of ShippingDate for each checkout item scenario with different checkout item");
 		List<Map<String, String>> keywordForDifferentProducts = TestDataHandler.constantData.getCheckOut().getLst_SearchKeywords();
-		List<Map<String, Object>> data = getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP, accessToken, keywordForDifferentProducts,"all",true,0);
+		List<Map<String, Object>> data = getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP, accessToken, keywordForDifferentProducts,"all",false,0);
+		if(data.size()<=1){
+			keywordForDifferentProducts = TestDataHandler.constantData.getShoppingCart().getLst_SearchKeywords();
+			getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP,accessToken,keywordForDifferentProducts,"all",false,0);
+		}
 
 		//Login using valid username and password
 		getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword);
@@ -62,24 +66,36 @@ public class CP_TC03_VerifyReguLarCheckout_ShippingDate_MultiPackMessage extends
 		}
 
 		String lsText;
+		boolean bProductShippingDateForAll=true;
 		for(Map<String,Object> checkoutItem:productListMapForCheckOutPage){
-			lsText=checkoutItem.get("productName").toString();
-			reporter.reportLog("Verify product: "+lsText);
-			if(checkoutItem.get("productShippingDate")!=null){
-				reporter.reportLogPass("The shipping date is displaying correctly");
+			bProductShippingDateForAll=(boolean)checkoutItem.get("productShippingDateForAll");
+			break;
+		}
+		if(bProductShippingDateForAll){
+			String lsCheckoutShippingDate=getRegularCheckoutThreadLocal().getShippingDateInHeader();
+			reporter.reportLog("GetItBy: "+lsCheckoutShippingDate);
+			if(lsCheckoutShippingDate!=null){
+				reporter.reportLogPass("The GetItByShippingMessage is displaying in the checkout page separately");
 			}
 			else{
-				reporter.reportLogFailWithScreenshot("The shipping date is not displaying correctly");
+				reporter.reportLogFail("The GetItByShippingMessage is not displaying in the checkout page separately");
+			}
+		}
+		else{
+			for(Map<String,Object> checkoutItem:productListMapForCheckOutPage){
+				lsText=checkoutItem.get("productName").toString();
+				reporter.reportLog("Verify product: "+lsText);
+				if(checkoutItem.get("productShippingDate")!=null){
+					reporter.reportLogPass("The shipping date is displaying correctly");
+				}
+				else{
+					reporter.reportLogFailWithScreenshot("The shipping date is not displaying correctly");
+				}
 			}
 		}
 
-		String lsCheckoutShippingDate=getRegularCheckoutThreadLocal().getShippingDateInHeader();
-		if(lsCheckoutShippingDate==null){
-			reporter.reportLogPass("The GetItByShippingMessage is not displaying in the checkout page separately");
-		}
-		else{
-			reporter.reportLogFail("The GetItByShippingMessage is still displaying in the checkout page separately");
-		}
+
+
 
 		productListMapForCheckOutPage = getRegularCheckoutThreadLocal().getCheckoutItemListDesc("all");
 
@@ -116,7 +132,7 @@ public class CP_TC03_VerifyReguLarCheckout_ShippingDate_MultiPackMessage extends
 		basePage.waitForCondition(Driver->{return getRegularCheckoutThreadLocal().btnGoToShoppingBag.isDisplayed()
 				&& getRegularCheckoutThreadLocal().btnGoToShoppingBag.isEnabled();},12000);
 
-		lsCheckoutShippingDate=getRegularCheckoutThreadLocal().getShippingDateInHeader();
+		String lsCheckoutShippingDate=getRegularCheckoutThreadLocal().getShippingDateInHeader();
 		if(lsCheckoutShippingDate!=null){
 			reporter.reportLogPass("The GetItByShippingMessage is displaying in the checkout page separately");
 		}

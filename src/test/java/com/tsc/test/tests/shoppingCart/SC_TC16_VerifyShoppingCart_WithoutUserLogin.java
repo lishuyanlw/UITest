@@ -20,9 +20,6 @@ public class SC_TC16_VerifyShoppingCart_WithoutUserLogin extends BaseTest{
 	public void SC_TC16_VerifyShoppingCart_WithoutUserLogin() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 
-		String lsUserName = TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
-		String lsPassword = TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
-
 		//Fetching test data from test data file
 		String accessToken = getApiUserSessionDataMapThreadLocal().get("access_token").toString();
 		int customerEDP = Integer.valueOf(getApiUserSessionDataMapThreadLocal().get("customerEDP").toString());

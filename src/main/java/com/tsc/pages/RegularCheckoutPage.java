@@ -323,7 +323,7 @@ public class RegularCheckoutPage extends BasePage {
 	@FindBy(xpath = "//div[@class='ReactModal__Overlay ReactModal__Overlay--after-open modal__overlay']//div[contains(@class,'card__wrap--paypal')]//label")
 	public WebElement labelAddOrChangePaymentMethodDialogPaypalRadio;
 
-	@FindBy(xpath = "//div[@class='creditcard__selector--cc selector__paypal']//label[contains(@class,'card__label')]")
+	@FindBy(xpath = "//div[@class='card__wrap card__wrap--paypal']//label[contains(@class,'card__label')]")
 	public WebElement lblAddOrChangePaymentMethodDialogPayPalRadio;
 
 	@FindBy(xpath = "//div[@id='buttons-container']//div[contains(@class,'paypal-button-container')]")
@@ -1162,14 +1162,17 @@ public class RegularCheckoutPage extends BasePage {
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 			lsText=item.getText().trim();
 			map.put("productShippingDate",lsText.split(":")[1].trim());
+			map.put("productShippingDateForAll",false);
 		}
 		else{
 			if(this.checkProductShippingDateExisting()){
 				lsText = this.lblGetItByDate.getText();
 				map.put("productShippingDate",lsText);
+				map.put("productShippingDateForAll",true);
 			}
 			else{
 				map.put("productShippingDate",null);
+				map.put("productShippingDateForAll",false);
 			}
 		}
 
@@ -2757,7 +2760,15 @@ public class RegularCheckoutPage extends BasePage {
 		float subTotalOrderSummary= (float) orderSummaryMap.get("subTotal");
 		float shippingPriceOrderSummary=(float) orderSummaryMap.get("nowPrice");
 		float taxOrderSummary=(float) orderSummaryMap.get("tax");
-		float totalPriceOrderSummary=(float) orderSummaryMap.get("newTotalPrice");
+
+		float totalPriceOrderSummary=0.0f;
+		for(Map.Entry<String,Object> entry:orderSummaryMap.entrySet()){
+			if(entry.getKey().toLowerCase().contains("totalprice")){
+				totalPriceOrderSummary= (float) entry.getValue();
+				break;
+			}
+		}
+
 		float promoteCodeValue=(float) orderSummaryMap.get("promoteCodeValue");
 		float giftCardValue=(float) orderSummaryMap.get("giftCardValue");
 
@@ -5380,8 +5391,10 @@ public class RegularCheckoutPage extends BasePage {
 		ShoppingCartPage shoppingCartPage = new ShoppingCartPage(this.getDriver());
 		//this.clickWebElementUsingJS(this.labelAddOrChangePaymentMethodDialogPaypalRadio);
 		this.clickWebElementUsingJS(this.lblAddOrChangePaymentMethodDialogPayPalRadio);
+		this.applyStaticWait(5*this.getStaticWaitForApplication());
 		this.getDriver().switchTo().frame(shoppingCartPage.framePayPalFrameElement);
 		this.waitForCondition(Driver->{return this.btnPayPalButton.isEnabled();},5000);
+		this.clickElement(this.btnPayPalButton);
 		this.getDriver().switchTo().defaultContent();
 		shoppingCartPage.verifyPayPalPopUpExistenceOnClick();
 	}

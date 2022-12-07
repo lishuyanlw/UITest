@@ -23,6 +23,7 @@ public class CP_TC02_VerifyRightSection_OrderSummary_EasyPayment extends BaseTes
 		//Fetching test data from test data file
 		String accessToken = getApiUserSessionDataMapThreadLocal().get("access_token").toString();
 		int customerEDP = Integer.valueOf(getApiUserSessionDataMapThreadLocal().get("customerEDP").toString());
+		getShoppingCartThreadLocal().emptyCart(Integer.valueOf(customerEDP),accessToken);
 		List<Map<String, String>> keyword = TestDataHandler.constantData.getShoppingCart().getLst_SearchKeywords();
 		List<Map<String, Object>> data = getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP, accessToken, keyword,"all",true,0);
 
