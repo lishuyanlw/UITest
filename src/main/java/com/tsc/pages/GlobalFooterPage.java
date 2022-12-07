@@ -2279,7 +2279,7 @@ public class GlobalFooterPage extends BasePage {
 		socialMediaLinkMap.put("pinterest",lnkPinterest);
 		for(Map.Entry<String,WebElement> entry:socialMediaLinkMap.entrySet()){
 			reporter.reportLog("Verifying social media link for: "+entry.getKey());
-			this.verifyElementLink(entry.getValue());
+			this.verifyElementLink(entry.getValue(),true);
 		}
 
 		socialMediaLinkMap.clear();
