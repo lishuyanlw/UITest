@@ -2353,37 +2353,4 @@ public class OrderConfirmationPage extends BasePage {
 		}
 
 	}
-
-	/**
-	 * This function fetches if any order is there that is editable and required info for that order
-	 * @param - String - customerEDP
-	 * @param -String - access_token
-	 * @throws - IOException
-	 */
-	public void getExistingOrderInEditableMode(String customerEDP, String access_token) throws IOException {
-		OrderAPI orderAPI = new OrderAPI();
-		Response response = orderAPI.getOrderList(customerEDP,access_token,true);
-		if(response.getStatusCode() == 200){
-			boolean flag = false;
-			OrderListResponse orderListResponse = JsonParser.getResponseObject(response.getBody().asString(), new TypeReference<OrderListResponse>() {});
-			List<OrderSummary> orderSummaries = orderListResponse.getOrderSummary();
-			if(orderSummaries.size()>0){
-				String orderNumber = null;
-				for(OrderSummary orderSummary:orderSummaries){
-					boolean editable = orderSummary.getEditable();
-					if(editable){
-						flag = true;
-						orderNumber = orderSummary.getOrderNo();
-						break;
-					}else
-						continue;
-				}
-			}
-		if(flag){
-			//Calling api here to fetch details for Order
-		}else
-			reporter.reportLog("No editable item is available for user at this time");
-		}else
-			reporter.reportLogFail("No Order Details are fetched by api for customer: "+customerEDP+" with status code as: "+response.getStatusCode());
-	}
 }
