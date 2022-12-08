@@ -5,6 +5,7 @@ import com.tsc.api.apiBuilder.ApiClient;
 import com.tsc.api.apiBuilder.CartAPI;
 import com.tsc.api.apiBuilder.ProductAPI;
 import com.tsc.api.pojo.CartResponse;
+import com.tsc.api.pojo.GetGivenOrderResponse;
 import com.tsc.api.pojo.PlaceOrderResponse;
 import com.tsc.api.pojo.Product;
 import com.tsc.api.util.JsonParser;
@@ -33,6 +34,7 @@ public class OM_TC05_VerifyOrderModification_Checkout_AddPromoteCode_AddADPProdu
         String lsPassword = TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
 
         getShoppingCartThreadLocal().emptyCart(Integer.valueOf(customerEDP),accessToken);
+        String orderNumber = null;
 
         //Setting up initial test environment by deleting all cards associated with user and cart
         CartAPI cartAPI = new CartAPI();
@@ -46,12 +48,20 @@ public class OM_TC05_VerifyOrderModification_Checkout_AddPromoteCode_AddADPProdu
         String myAccountOrderStatusURL = TestDataHandler.constantData.getMyAccount().getLnk_orderStatusURL();
         List<String> newItemToBeAddedKeyword = TestDataHandler.constantData.getCheckOut().getLst_SearchingKeywordForPlaceOrder();
         List<Map<String,String>> itemsToBeAdded = TestDataHandler.constantData.getCheckOut().getLstOrderDetailItems();
-        PlaceOrderResponse placeOrderResponse = getMyAccountPageThreadLocal().placeOrderForUser(Integer.parseInt(customerEDP),accessToken,itemsToBeAdded,2,"1",true,517281);
+        //PlaceOrderResponse placeOrderResponse = getMyAccountPageThreadLocal().placeOrderForUser(Integer.parseInt(customerEDP),accessToken,itemsToBeAdded,2,"1",true,517281);
+        PlaceOrderResponse placeOrderResponse = null;
+        GetGivenOrderResponse getGivenOrderResponse = getMyAccountPageThreadLocal().getExistingOrderInEditableMode(2,customerEDP,accessToken);
+        if(getGivenOrderResponse==null){
+            placeOrderResponse = getMyAccountPageThreadLocal().placeOrderForUser(Integer.parseInt(customerEDP),accessToken,itemsToBeAdded,2,"1",true,0);
+            orderNumber = placeOrderResponse.getOrderedCart().getOrderSummary().getOrderNo();
+        }else
+            orderNumber = getGivenOrderResponse.getOrderSummary().getOrderNo();
+
         //Login using valid username and password
         getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword);
         try {
             getShoppingCartThreadLocal().waitForCondition(Driver -> {
-                return Integer.valueOf(getglobalheaderPageThreadLocal().CartBagCounter.getText()) > 0;
+                return Integer.valueOf(getglobalheaderPageThreadLocal().CartBagCounter.getText()) >= 0;
             }, 6000);
         }
         catch(Exception e){
@@ -59,7 +69,7 @@ public class OM_TC05_VerifyOrderModification_Checkout_AddPromoteCode_AddADPProdu
         }
 
         reporter.reportLog("Go to order modification page");
-        getMyAccountPageThreadLocal().editPlacedOrderForUser(placeOrderResponse,myAccountOrderStatusURL);
+        getMyAccountPageThreadLocal().editPlacedOrderForUser(orderNumber,myAccountOrderStatusURL);
 
         int presetInstallmentNumber=2;
         String lsOrderNumberForOrderModification=getOrderModificationThreadLocal().getOrderNumber();

@@ -3,8 +3,7 @@ package com.tsc.pages;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.tsc.api.apiBuilder.CartAPI;
 import com.tsc.api.apiBuilder.OrderAPI;
-import com.tsc.api.pojo.CartResponse;
-import com.tsc.api.pojo.PlaceOrderResponse;
+import com.tsc.api.pojo.*;
 import com.tsc.api.util.CustomComparator;
 import com.tsc.api.util.DataConverter;
 import com.tsc.api.util.JsonParser;
@@ -5364,6 +5363,38 @@ public class MyAccount extends BasePage {
 	}
 
 	/**
+	 * This function fetches if any order is there that is editable and required info for that order
+	 * @param - String - customerEDP
+	 * @param -String - access_token
+	 * @throws - IOException
+	 */
+	public GetGivenOrderResponse getExistingOrderInEditableMode(int noOfInstallments, String customerEDP, String access_token) throws IOException {
+		OrderAPI orderAPI = new OrderAPI();
+		Response response = orderAPI.getOrderList(customerEDP,access_token,true);
+		if(response.getStatusCode() == 200){
+			String orderNumber = null;
+			OrderListResponse orderListResponse = JsonParser.getResponseObject(response.getBody().asString(), new TypeReference<OrderListResponse>() {});
+			List<OrderSummary> orderSummaries = orderListResponse.getOrderSummary();
+			if(orderSummaries.size()>0){
+				for(OrderSummary orderSummary:orderSummaries){
+					orderNumber = orderSummary.getOrderNo();
+					Response orderInfoResponse = orderAPI.getGivenOrder(customerEDP,access_token,orderNumber);
+					if(orderInfoResponse.getStatusCode()==200){
+						GetGivenOrderResponse getGivenOrderResponse = JsonParser.getResponseObject(orderInfoResponse.getBody().asString(), new TypeReference<GetGivenOrderResponse>() {});
+						if(getGivenOrderResponse.getNoOfEasyPays().equals(String.valueOf(noOfInstallments)) && getGivenOrderResponse.getOrderSummary().isEditable()==true){
+							return getGivenOrderResponse;
+						}
+					}else
+						reporter.reportLogFail("Response is not returned for order number: "+orderNumber+" from api with status code as: "+orderInfoResponse.getStatusCode());
+				}
+			}
+		}else
+			reporter.reportLogFail("No Order Details are fetched by api for customer: "+customerEDP+" with status code as: "+response.getStatusCode());
+
+		return null;
+	}
+
+	/**
 	 * @param - int - customerEDP
 	 * @param - String - access token
 	 * @param - List<Map<String,Object> - itemsToBeAdded
@@ -5391,7 +5422,6 @@ public class MyAccount extends BasePage {
 			}else
 				return null;
 		}
-
 	}
 
 	/**
@@ -5433,9 +5463,8 @@ public class MyAccount extends BasePage {
 	 * @param - PlaceOrderResponse - placeOrderObject
 	 * @param - String - myAccountOrderStatusURL
 	 */
-	public String editPlacedOrderForUser(PlaceOrderResponse placeOrderObject,String myAccountOrderStatusURL){
+	public String editPlacedOrderForUser(String orderNumber,String myAccountOrderStatusURL){
 		//https://qa-tsc.tsc.ca/pages/myaccount/orderstatus?orderNo=Z405840120000
-		String orderNumber = placeOrderObject.getOrderedCart().getOrderSummary().getOrderNo();
 		int orderNumberLength = orderNumber.length();
 		if(orderNumberLength<12){
 			for(int counter = orderNumberLength;counter<12;counter++){

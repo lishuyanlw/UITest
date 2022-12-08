@@ -115,7 +115,7 @@ public class OrderAPI extends ApiClient {
         Response response = null;
         String apiEndPoint = null;
 
-        apiEndPoint = propertyData.get("test_apiVersion") + "/" + propertyData.get("test_language") + "/accounts/" + customerEDP + "/orders/"+orderNO;
+        apiEndPoint = propertyData.get("test_apiVersion") + "/" + propertyData.get("test_language") + "/accounts/" + customerEDP + "/orders/"+orderNO+"?validate=true";
 
         response = this.getApiCallResponseAfterAuthentication(null,apiEndPoint, access_token);
 
