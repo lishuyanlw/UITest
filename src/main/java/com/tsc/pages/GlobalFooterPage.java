@@ -2274,12 +2274,11 @@ public class GlobalFooterPage extends BasePage {
 		Map<String,WebElement> socialMediaLinkMap = new HashMap<>();
 		socialMediaLinkMap.put("facebook",lnkFacebook);
 		socialMediaLinkMap.put("twitter",lnkTwitter);
-		socialMediaLinkMap.put("instagram",lnkInstagram);
 		socialMediaLinkMap.put("youtube",lnkYoutube);
 		socialMediaLinkMap.put("pinterest",lnkPinterest);
 		for(Map.Entry<String,WebElement> entry:socialMediaLinkMap.entrySet()){
 			reporter.reportLog("Verifying social media link for: "+entry.getKey());
-			this.verifyElementLink(entry.getValue(),true);
+			this.verifyElementLink(entry.getValue());
 		}
 
 		socialMediaLinkMap.clear();
@@ -2383,6 +2382,7 @@ public class GlobalFooterPage extends BasePage {
 		verifyCustomItemsOnPage();
 		verifyServicesOnPage();
 		verifyRogersLogoAndCopyRightInfo();
+		verifyInstagramLink();
 	}
 
 	/**
@@ -2455,6 +2455,43 @@ public class GlobalFooterPage extends BasePage {
 			}
 		}
 		this.getDriver().switchTo().defaultContent();
+	}
+
+	/**
+	 * To verify Instagram Link
+	 */
+	public void verifyInstagramLink(){
+		reporter.reportLog("Verify instagram link");
+		String mainWindowHandle=this.getDriver().getWindowHandle();
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkInstagram);
+		String lsLink=this.lnkInstagram.getAttribute("href");
+		reporter.reportLog("Instagram link: "+lsLink);
+		if(!lsLink.isEmpty()){
+			reporter.reportLogPass("The href for instagram element of "+lsLink+" is not empty");
+		}
+		else{
+			reporter.reportLogFail("The href for instagram element is not empty");
+		}
+
+		this.lnkInstagram.click();
+		this.waitForCondition(Driver->{return this.getDriver().getWindowHandles().size()>1;},30000);
+
+		Set<String> windowHandles=this.getDriver().getWindowHandles();
+		boolean bFound=false;
+		for(String windowHandle:windowHandles){
+			this.getDriver().switchTo().window(windowHandle);
+			if(this.getDriver().getCurrentUrl().contains("instagram")){
+				bFound=true;
+				break;
+			}
+		}
+		this.getDriver().switchTo().window(mainWindowHandle);
+		if(bFound){
+			reporter.reportLogPass("The window switched to instagram page correctly");
+		}
+		else{
+			reporter.reportLogPass("The window can not be switched to instagram page");
+		}
 	}
 
 }

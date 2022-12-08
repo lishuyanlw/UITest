@@ -25,7 +25,11 @@ public class SC_TC07_VerifyShoppingCart_VerifyOrderSummary_Section extends BaseT
 		int customerEDP = Integer.valueOf(getApiUserSessionDataMapThreadLocal().get("customerEDP").toString());
 		getShoppingCartThreadLocal().emptyCart(Integer.valueOf(customerEDP),accessToken);
 		List<Map<String,String>> keyword = TestDataHandler.constantData.getShoppingCart().getLst_SearchKeywords();
-		getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP,accessToken,keyword,"all",true,0);
+		List<Map<String, Object>> data = getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP,accessToken,keyword,"all",true,0);
+		if(data.size()==0){
+			keyword = TestDataHandler.constantData.getCheckOut().getLst_SearchKeywords();
+			data = getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP, accessToken, keyword,"all",false,0);
+		}
 
 		//Login using valid username and password
 		getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword);

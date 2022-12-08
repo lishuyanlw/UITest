@@ -73,7 +73,6 @@ public class CP_TC03_VerifyReguLarCheckout_ShippingDate_MultiPackMessage extends
 		}
 		if(bProductShippingDateForAll){
 			String lsCheckoutShippingDate=getRegularCheckoutThreadLocal().getShippingDateInHeader();
-			reporter.reportLog("GetItBy: "+lsCheckoutShippingDate);
 			if(lsCheckoutShippingDate!=null){
 				reporter.reportLogPass("The GetItByShippingMessage is displaying in the checkout page separately");
 			}

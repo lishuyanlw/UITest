@@ -39,7 +39,11 @@ public class CP_TC08_VerifyBillingAddress extends BaseTest {
 
         //Verifying that item exists in cart and if not, create a new cart for user
         List<Map<String, String>> keyword = TestDataHandler.constantData.getCheckOut().getLst_SearchKeywords();
-        getShoppingCartThreadLocal().verifyCartExistsForUser(Integer.valueOf(customerEDP), accessToken, keyword,"all",true,0);
+        List<Map<String, Object>> data = getShoppingCartThreadLocal().verifyCartExistsForUser(Integer.valueOf(customerEDP), accessToken, keyword,"all",true,0);
+        if(data.size()==0){
+            keyword = TestDataHandler.constantData.getShoppingCart().getLst_SearchKeywords();
+            data = getShoppingCartThreadLocal().verifyCartExistsForUser(Integer.parseInt(customerEDP), accessToken, keyword,"all",true,0);
+        }
 
         //Verification that user has ShippingAddress associated and if not, add one to user
         CartAPI cartAPI = new CartAPI();
