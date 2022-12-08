@@ -27,11 +27,14 @@ public class SC_TC02_VerifyShoppingCart_RemoveItem_CheckSubTotalAndOrderSummary 
 		int customerEDP = Integer.valueOf(getApiUserSessionDataMapThreadLocal().get("customerEDP").toString());
 		List<Map<String,String>> keyword = TestDataHandler.constantData.getShoppingCart().getLst_SearchKeywords();
 		List<Map<String,Object>> addedItemMapList=getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP,accessToken,keyword,"all",false,0);
-		if(addedItemMapList.size()<=1){
+		if(addedItemMapList.size()==0){
 			keyword = TestDataHandler.constantData.getCheckOut().getLst_SearchKeywords();
-			getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP,accessToken,keyword,"all",false,0);
+			addedItemMapList=getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP,accessToken,keyword,"all",false,0);
+			if(addedItemMapList.size()<=1){
+				keyword = TestDataHandler.constantData.getShoppingCart().getLst_SearchKeywords();
+				addedItemMapList=getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP,accessToken,keyword,"all",false,0);
+			}
 		}
-
 
 		//Delete all gift card
 		CartAPI cartAPI=new CartAPI();

@@ -52,7 +52,7 @@ public class SC_TC12_VerifyShoppingCart_LeftInventoryMessage extends BaseTest{
 				basePage.clickElement(getProductDetailPageThreadLocal().btnAddToBag);
 				basePage.waitForCondition(Driver -> {
 					return getProductDetailPageThreadLocal().lblAddToBagPopupWindowTitle.isDisplayed();
-				}, 30000);
+				}, 120000);
 				getProductDetailPageThreadLocal().goToShoppingCartFromAddToBagPopupWithLoginFirst();
 
 				Map<String, Object> shoppingCartMap = getShoppingCartThreadLocal().getShoppingSectionDetails("all");
