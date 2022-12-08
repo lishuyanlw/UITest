@@ -2461,6 +2461,7 @@ public class GlobalFooterPage extends BasePage {
 	 * To verify Instagram Link
 	 */
 	public void verifyInstagramLink(){
+		reporter.reportLog("Verify instagram link");
 		String mainWindowHandle=this.getDriver().getWindowHandle();
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkInstagram);
 		String lsLink=this.lnkInstagram.getAttribute("href");
