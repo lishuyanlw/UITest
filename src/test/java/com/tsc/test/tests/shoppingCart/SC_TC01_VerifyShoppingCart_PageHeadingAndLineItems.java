@@ -47,23 +47,7 @@ public class SC_TC01_VerifyShoppingCart_PageHeadingAndLineItems extends BaseTest
 
 		//To verify heading and Shopping Item List contents
 		reporter.reportLog("To verify heading and Shopping Item List contents");
-		getShoppingCartThreadLocal().verifyShoppingCartContents("all");
-
-		//To verify business logic Between Shopping Item List And SubTotal Section
-		reporter.reportLog("To verify business logic Between Shopping Item List And SubTotal Section");
-		getShoppingCartThreadLocal().verifyBusinessLogicBetweenShoppingItemListAndSubTotalSection(shoppingCartMap);
-
-		int itemAmountInShoppingCartHeader = getShoppingCartThreadLocal().GetAddedItemAmount();
-		int shoppingItemListAmount = getShoppingCartThreadLocal().getItemCountFromShoppingList((List<Map<String, Object>>) shoppingCartMap.get("shoppingList"));
-		int shoppingAmountInSubtotal = (int) shoppingCartMap.get("shoppingAmount");
-		int itemAmountInOrderSummary = getShoppingCartThreadLocal().getShoppingItemAmountFromOrderSummarySection();
-		if (itemAmountInShoppingCartHeader == shoppingItemListAmount &&
-				shoppingItemListAmount == shoppingAmountInSubtotal &&
-				itemAmountInShoppingCartHeader == itemAmountInOrderSummary) {
-			reporter.reportLogPass("The added item amount among Shopping cart header,Shopping cart list and OrderSummary are same");
-		} else {
-			reporter.reportLogFail("The added item amount among Shopping cart header,Shopping cart list and OrderSummary are not same");
-		}
+		getShoppingCartThreadLocal().verifyShoppingCartContents();
 
 		reporter.reportLog("Verify added products using API");
 		String productName;

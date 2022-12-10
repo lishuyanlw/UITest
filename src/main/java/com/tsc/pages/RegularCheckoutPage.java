@@ -661,6 +661,9 @@ public class RegularCheckoutPage extends BasePage {
 	@FindBy(xpath = "//div[contains(@class,'ReactModal__Overlay')]//div[contains(@class,'alert-danger')]")
 	public List<WebElement> mandatoryFieldErrorMessage;
 
+	@FindBy(xpath = "//iframe[contains(@name,'paypal')]")
+	public WebElement framePayPalFrameElement;
+
 	//For order modification, to identify
 
 	/**
@@ -5392,7 +5395,7 @@ public class RegularCheckoutPage extends BasePage {
 		//this.clickWebElementUsingJS(this.labelAddOrChangePaymentMethodDialogPaypalRadio);
 		this.clickWebElementUsingJS(this.lblAddOrChangePaymentMethodDialogPayPalRadio);
 		this.applyStaticWait(5*this.getStaticWaitForApplication());
-		this.getDriver().switchTo().frame(shoppingCartPage.framePayPalFrameElement);
+		this.getDriver().switchTo().frame(this.framePayPalFrameElement);
 		this.waitForCondition(Driver->{return this.btnPayPalButton.isEnabled();},5000);
 		this.clickElement(this.btnPayPalButton);
 		this.getDriver().switchTo().defaultContent();

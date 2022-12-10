@@ -57,9 +57,6 @@ public class SC_TC02_VerifyShoppingCart_RemoveItem_CheckSubTotalAndOrderSummary 
 		}
 
 		Map<String,Object> shoppingCartMap=getShoppingCartThreadLocal().getShoppingSectionDetails("mandatory");
-		reporter.reportLog("To verify business logic Between Shopping Item List And SubTotal Section");
-		getShoppingCartThreadLocal().verifyBusinessLogicBetweenShoppingItemListAndSubTotalSection(shoppingCartMap);
-
 		Map<String,Object> map=getShoppingCartThreadLocal().getItemCountAndPriceInfo(shoppingCartMap,false);
 		int itemCountInShoppingCartHeaderInitial= (int) map.get("itemCountInShoppingCartHeader");
 		int shoppingItemCountInitial= (int) map.get("shoppingItemCount");
@@ -93,9 +90,7 @@ public class SC_TC02_VerifyShoppingCart_RemoveItem_CheckSubTotalAndOrderSummary 
 
 		reporter.reportLog("Verify clicking cancel button action in remove dialog");
 		getShoppingCartThreadLocal().closeRemoveDialogWithoutRemoveAction(true);
-		shoppingCartMap=getShoppingCartThreadLocal().getShoppingSectionDetails("mandatory");
-		reporter.reportLog("To verify business logic Between Shopping Item List And SubTotal Section");
-		getShoppingCartThreadLocal().verifyBusinessLogicBetweenShoppingItemListAndSubTotalSection(shoppingCartMap);
+		shoppingCartMap=getShoppingCartThreadLocal().getShoppingSectionDetails("all");
 
 		int findIndex=getShoppingCartThreadLocal().findGivenProductIndexInShoppingCartItemList(mapRemoveDialog,shoppingCartMap);
 		if(findIndex!=-1){
@@ -142,8 +137,6 @@ public class SC_TC02_VerifyShoppingCart_RemoveItem_CheckSubTotalAndOrderSummary 
 		reporter.reportLog("Verify clicking remove button action in remove dialog");
 		getShoppingCartThreadLocal().closeRemoveDialogWithRemoveAction();
 		shoppingCartMap=getShoppingCartThreadLocal().getShoppingSectionDetails("mandatory");
-		reporter.reportLog("To verify business logic Between Shopping Item List And SubTotal Section");
-		getShoppingCartThreadLocal().verifyBusinessLogicBetweenShoppingItemListAndSubTotalSection(shoppingCartMap);
 
 		findIndex=getShoppingCartThreadLocal().findGivenProductIndexInShoppingCartItemList(mapRemoveDialog,shoppingCartMap);
 		if(findIndex==-1){
