@@ -442,14 +442,9 @@ public class OrderModificationPage extends BasePage {
 		Boolean flag = false;
 		boolean removeButtonStatus;
 		for(WebElement element:itemList){
-			if(element.getText().equalsIgnoreCase("FREE SHIPPING")){
-				if(System.getProperty("Device").equalsIgnoreCase("Desktop")){
-					removeButtonStatus = new ShoppingCartPage(this.getDriver()).checkSelectQuantityEnabled(orderItem);
-				}else{
-					removeButtonStatus = new ShoppingCartPage_Mobile(this.getDriver()).checkSelectQuantityEnabled(orderItem);
-				}
-				if(!removeButtonStatus) {}
-				else{
+			if(this.getElementInnerText(element).equalsIgnoreCase("FREE SHIPPING")){
+				WebElement item = orderItem.findElement(byProductQuantityForNewlyAdded);
+				if(!this.hasElementAttribute(item,"disabled")){
 					flag = true;
 				}
 				break;

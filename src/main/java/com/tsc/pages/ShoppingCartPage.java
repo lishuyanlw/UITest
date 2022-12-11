@@ -3365,4 +3365,12 @@ public class ShoppingCartPage extends BasePage {
 
 		return this.getInstallmentNumberFromPaymentOptionText();
 	}
+
+	/**
+	 * To get Installment Number
+	 * @return - int
+	 */
+	public int getInstallmentNumber(){
+		return this.getIntegerFromString(this.getElementInnerText(lblCartEasyPayInstallmentsNumber));
+	}
 }

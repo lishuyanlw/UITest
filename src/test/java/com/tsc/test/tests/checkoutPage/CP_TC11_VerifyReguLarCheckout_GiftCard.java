@@ -132,13 +132,11 @@ public class CP_TC11_VerifyReguLarCheckout_GiftCard extends BaseTest{
 
 		reporter.reportLog("Verify OrderSummary on ShoppingCart page");
 		getRegularCheckoutThreadLocal().GoToShoppingBag();
-		int itemAmount=getShoppingCartThreadLocal().GetAddedItemAmount();
-		float savingPrice=getShoppingCartThreadLocal().getSavingPriceFromShoppingCartHeader();
-		float subTotal=getShoppingCartThreadLocal().getShoppingSubTotal();
+		float subTotal=getShoppingCartThreadLocal().getOrderSummarySubTotal();
 		Map<String,Object> orderSummaryMapOnShoppingCartPage=getShoppingCartThreadLocal().getOrderSummaryDesc();
 
 		reporter.reportLog("Verify OrderSummary Business Logic");
-		getShoppingCartThreadLocal().verifyOrderSummaryBusinessLogic(itemAmount,savingPrice,subTotal,orderSummaryMapOnShoppingCartPage,null);
+		getShoppingCartThreadLocal().verifyOrderSummaryBusinessLogic(subTotal,orderSummaryMapOnShoppingCartPage,null);
 
 		reporter.reportLog("Verify OrderSummary Linkage Between ShoppingCart Page And Checkout Page");
 		getRegularCheckoutThreadLocal().verifyOrderSummaryLinkageBetweenShoppingCartPageAndCheckoutPage(orderSummaryMapOnShoppingCartPage,orderSummaryMapOnCheckoutPage);
