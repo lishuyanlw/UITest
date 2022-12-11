@@ -51,15 +51,6 @@ public class SC_TC10_VerifyShoppingCart_ShippingDateAndMultiPackMessage extends 
 			}
 			getProductDetailPageThreadLocal().goToShoppingCartByClickingShoppingCartIconInGlobalHeader();
 
-			reporter.reportLog("Verify shipping message in shopping cart header");
-			boolean bCheckGetItByShippingMessage=getShoppingCartThreadLocal().checkGetItByShippingMessageExisting();
-			if(!bCheckGetItByShippingMessage){
-				reporter.reportLogPass("The GetItByShippingMessage is not displaying in the shopping cart header");
-			}
-			else{
-				reporter.reportLogFail("The GetItByShippingMessage is still displaying in the shopping cart header");
-			}
-
 			reporter.reportLog("Verify Estimated shipping message for first shopping item");
 			Map<String, Object> shoppingCartMap = getShoppingCartThreadLocal().getShoppingSectionDetails("optional");
 			List<Map<String,Object>> shoppingList=(List<Map<String,Object>>)shoppingCartMap.get("shoppingList");
@@ -85,14 +76,6 @@ public class SC_TC10_VerifyShoppingCart_ShippingDateAndMultiPackMessage extends 
 				}
 			}
 
-			reporter.reportLog("Verify the MultiPack message in shopping cart header");
-			String lsCartNoticeMessage=getShoppingCartThreadLocal().checkCartNoticeMessageExisting();
-			if(!lsCartNoticeMessage.equalsIgnoreCase("errorMessage")){
-				reporter.reportLogPass("The MultiPack message is displaying correctly");
-			}
-			else{
-				reporter.reportLogFail("The MultiPack message is not displaying correctly");
-			}
 		}finally {
 			//To empty the cart
 			getShoppingCartThreadLocal().emptyCart(customerEDP,accessToken);

@@ -59,13 +59,6 @@ public class SC_TC11_VerifyShoppingCart_TrueFitMessage extends BaseTest{
 				}, 30000);
 				getProductDetailPageThreadLocal().goToShoppingCartFromAddToBagPopupWithLoginFirst();
 
-				boolean bCheckTrueFitMessage = getShoppingCartThreadLocal().checkProductTrueFitMessageExisting();
-				if (bCheckTrueFitMessage) {
-					reporter.reportLogPass("Able to find TrueFit message in shopping cart header");
-				} else {
-					reporter.reportLogFail("Unable to find TrueFit message in shopping cart header");
-				}
-
 				Map<String, Object> shoppingCartMap = getShoppingCartThreadLocal().getShoppingSectionDetails("mandatory");
 				boolean bCheckDuplicatedStyleAndSize = getShoppingCartThreadLocal().checkProductWithSameStyleAndDifferentSizesInShoppingItemList(shoppingCartMap);
 				if (bCheckDuplicatedStyleAndSize) {

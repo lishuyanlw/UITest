@@ -51,9 +51,8 @@ public class SC_TC05_VerifyShoppingCart_ChangeProvinceAndCheckTax_With_OrderSumm
 			getShoppingCartThreadLocal().setInstallmentSetting(lstOptionText.get(1));
 		}
 
-		int itemAmount=getShoppingCartThreadLocal().GetAddedItemAmount();
-		float savingPrice=getShoppingCartThreadLocal().getSavingPriceFromShoppingCartHeader();
-		float subTotal=getShoppingCartThreadLocal().getShoppingSubTotal();
+		Map<String, Object> shoppingCartMap = getShoppingCartThreadLocal().getShoppingSectionDetails("all");
+		float subTotal=getShoppingCartThreadLocal().getSubTotalFromShoppingList((List<Map<String,Object>>)shoppingCartMap.get("shoppingList"));
 
 		Map<String,Object> mapOrderSummary;
 		Map<String,Object> mapTaxRate=getShoppingCartThreadLocal().getProvinceTaxRateMap();
@@ -66,7 +65,7 @@ public class SC_TC05_VerifyShoppingCart_ChangeProvinceAndCheckTax_With_OrderSumm
 			reporter.reportLog("Verify province: "+entry.getKey());
 			getShoppingCartThreadLocal().setProvinceCodeForEstimatedTax(entry.getKey());
 			mapOrderSummary=getShoppingCartThreadLocal().getOrderSummaryDesc();
-			getShoppingCartThreadLocal().verifyOrderSummaryBusinessLogic(itemAmount,savingPrice,subTotal,mapOrderSummary,mapTaxRate);
+			getShoppingCartThreadLocal().verifyOrderSummaryBusinessLogic(subTotal,mapOrderSummary,mapTaxRate);
 
 			reporter.reportLog("Verify EasyPayment section content related to "+entry.getKey());
 			getShoppingCartThreadLocal().verifyInstallmentBusinessLogic(mapOrderSummary);

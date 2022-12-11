@@ -44,16 +44,15 @@ public class SC_TC07_VerifyShoppingCart_VerifyOrderSummary_Section extends BaseT
 		getProductDetailPageThreadLocal().goToShoppingCartByClickingShoppingCartIconInGlobalHeader();
 
 		reporter.reportLog("Verify OrderSummary and EasyPayment sections contents");
-		int itemAmount=getShoppingCartThreadLocal().GetAddedItemAmount();
-		float savingPrice=getShoppingCartThreadLocal().getSavingPriceFromShoppingCartHeader();
-		float subTotal=getShoppingCartThreadLocal().getShoppingSubTotal();
+		Map<String, Object> shoppingCartMap = getShoppingCartThreadLocal().getShoppingSectionDetails("all");
+		float subTotal=getShoppingCartThreadLocal().getSubTotalFromShoppingList((List<Map<String,Object>>)shoppingCartMap.get("shoppingList"));
 
 		Map<String,Object> mapOrderSummary=getShoppingCartThreadLocal().getOrderSummaryDesc();
-		getShoppingCartThreadLocal().verifyOrderSummaryBusinessLogic(itemAmount,savingPrice,subTotal,mapOrderSummary,null);
+		getShoppingCartThreadLocal().verifyOrderSummaryBusinessLogic(subTotal,mapOrderSummary,null);
 		getShoppingCartThreadLocal().verifyOrderSummaryContents();
 
 		reporter.reportLog("Verify checkout section contents");
-		getShoppingCartThreadLocal().verifyCheckOutContents(false);
+		getShoppingCartThreadLocal().verifyCheckOutContents();
 	}
 }
 

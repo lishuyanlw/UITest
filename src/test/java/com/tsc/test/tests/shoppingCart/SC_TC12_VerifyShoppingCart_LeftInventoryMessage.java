@@ -68,18 +68,15 @@ public class SC_TC12_VerifyShoppingCart_LeftInventoryMessage extends BaseTest{
 				}
 
 				reporter.reportLog("Verify Shopping cart section content");
-				getShoppingCartThreadLocal().verifyBusinessLogicBetweenShoppingItemListAndSubTotalSection(shoppingCartMap);
-				getShoppingCartThreadLocal().verifyShoppingCartContents("all");
+				getShoppingCartThreadLocal().verifyShoppingCartContents();
 
 				reporter.reportLog("Verify OrderSummary section content");
-				int itemAmount=getShoppingCartThreadLocal().GetAddedItemAmount();
-				float savingPrice=getShoppingCartThreadLocal().getSavingPriceFromShoppingCartHeader();
-				float subTotal=getShoppingCartThreadLocal().getShoppingSubTotal();
+				float subTotal=getShoppingCartThreadLocal().getSubTotalFromShoppingList((List<Map<String,Object>>)shoppingCartMap.get("shoppingList"));
 
 				Map<String,Object> mapTaxRate=getShoppingCartThreadLocal().getProvinceTaxRateMap();
 				getShoppingCartThreadLocal().setProvinceCodeForEstimatedTax("BC");
 				Map<String,Object> mapOrderSummary=getShoppingCartThreadLocal().getOrderSummaryDesc();
-				getShoppingCartThreadLocal().verifyOrderSummaryBusinessLogic(itemAmount,savingPrice,subTotal,mapOrderSummary,mapTaxRate);
+				getShoppingCartThreadLocal().verifyOrderSummaryBusinessLogic(subTotal,mapOrderSummary,mapTaxRate);
 				getShoppingCartThreadLocal().verifyOrderSummaryContents();
 
 				reporter.reportLog("Verify EasyPayment section content");

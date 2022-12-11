@@ -91,12 +91,10 @@ public class SC_TC09_VerifyShoppingCart_Free_Gift_Item_And_Blue_Jay_Donation_Wit
             getShoppingCartThreadLocal().verifyFreeGiftItemPresentInCart(shoppingCartMap, Integer.valueOf(getShoppingCartThreadLocal().getKeyValueFromContentfulConfiguration(configurations,"GWPGiftItemEdp").toString()));
 
             reporter.reportLog("Verify OrderSummary and EasyPayment sections contents");
-            int itemAmount=getShoppingCartThreadLocal().GetAddedItemAmount();
-            float savingPrice=getShoppingCartThreadLocal().getSavingPriceFromShoppingCartHeader();
-            float subTotal=getShoppingCartThreadLocal().getShoppingSubTotal();
+            float subTotal=getShoppingCartThreadLocal().getSubTotalFromShoppingList((List<Map<String,Object>>)shoppingCartMap.get("shoppingList"));
 
             Map<String,Object> mapOrderSummary=getShoppingCartThreadLocal().getOrderSummaryDesc();
-            getShoppingCartThreadLocal().verifyOrderSummaryBusinessLogic(itemAmount,savingPrice,subTotal,mapOrderSummary,null);
+            getShoppingCartThreadLocal().verifyOrderSummaryBusinessLogic(subTotal,mapOrderSummary,null);
             getShoppingCartThreadLocal().verifyOrderSummaryContents();
 
             reporter.reportLog("Verify Blue Jay Donation Addition to cart for user");

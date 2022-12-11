@@ -68,13 +68,6 @@ public class SC_TC03_VerifyShoppingCart_MergingCart extends BaseTest{
 
 			//Login using valid username and password
 			getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword);
-			getProductDetailPageThreadLocal().goToShoppingCartByClickingShoppingCartIconInGlobalHeader();
-			if(getShoppingCartThreadLocal().checkContainPreviouslyAddedItemsMessageExisting()){
-				reporter.reportLogPass("The Cart containing previously added items message is displaying correctly");
-			}
-			else{
-				reporter.reportLogPassWithScreenshot("The Cart containing previously added items message is not displaying correctly");
-			}
 
 			Map<String, Object> shoppingCartMap = getShoppingCartThreadLocal().getShoppingSectionDetails("all");
 			List<Map<String,Object>> shoppingCartItemList=(List<Map<String,Object>>)shoppingCartMap.get("shoppingList");
@@ -118,11 +111,9 @@ public class SC_TC03_VerifyShoppingCart_MergingCart extends BaseTest{
 
 			//To verify heading and Shopping Item List contents
 			reporter.reportLog("To verify heading and Shopping Item List contents");
-			getShoppingCartThreadLocal().verifyShoppingCartContents("all");
+			getShoppingCartThreadLocal().verifyShoppingCartContents();
 
 			//To verify business logic Between Shopping Item List And SubTotal Section
-			reporter.reportLog("To verify business logic Between Shopping Item List And SubTotal Section");
-			getShoppingCartThreadLocal().verifyBusinessLogicBetweenShoppingItemListAndSubTotalSection(shoppingCartMap);
 
 			Map<String,Object> map=getShoppingCartThreadLocal().getItemCountAndPriceInfo(shoppingCartMap,true);
 			int itemCountInShoppingCartHeader= (int) map.get("itemCountInShoppingCartHeader");
@@ -138,7 +129,7 @@ public class SC_TC03_VerifyShoppingCart_MergingCart extends BaseTest{
 			}
 
 			reporter.reportLog("Verify checkout section contents");
-			getShoppingCartThreadLocal().verifyCheckOutContents(false);
+			getShoppingCartThreadLocal().verifyCheckOutContents();
 		}
 		else {
 			reporter.reportLogFail("Unable to find the matched product item");

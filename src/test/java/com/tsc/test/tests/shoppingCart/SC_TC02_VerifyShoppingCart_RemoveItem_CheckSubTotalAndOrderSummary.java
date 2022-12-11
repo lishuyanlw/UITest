@@ -136,7 +136,7 @@ public class SC_TC02_VerifyShoppingCart_RemoveItem_CheckSubTotalAndOrderSummary 
 
 		reporter.reportLog("Verify clicking remove button action in remove dialog");
 		getShoppingCartThreadLocal().closeRemoveDialogWithRemoveAction();
-		shoppingCartMap=getShoppingCartThreadLocal().getShoppingSectionDetails("mandatory");
+		shoppingCartMap=getShoppingCartThreadLocal().getShoppingSectionDetails("all");
 
 		findIndex=getShoppingCartThreadLocal().findGivenProductIndexInShoppingCartItemList(mapRemoveDialog,shoppingCartMap);
 		if(findIndex==-1){
@@ -182,14 +182,12 @@ public class SC_TC02_VerifyShoppingCart_RemoveItem_CheckSubTotalAndOrderSummary 
 		}
 
 		reporter.reportLog("Verify OrderSummary section content");
-		int itemAmount=getShoppingCartThreadLocal().GetAddedItemAmount();
-		float savingPrice=getShoppingCartThreadLocal().getSavingPriceFromShoppingCartHeader();
-		float subTotal=getShoppingCartThreadLocal().getShoppingSubTotal();
+		float subTotal=getShoppingCartThreadLocal().getOrderSummarySubTotal();
 
 		Map<String,Object> mapTaxRate=getShoppingCartThreadLocal().getProvinceTaxRateMap();
 		getShoppingCartThreadLocal().setProvinceCodeForEstimatedTax("BC");
 		Map<String,Object> mapOrderSummary=getShoppingCartThreadLocal().getOrderSummaryDesc();
-		getShoppingCartThreadLocal().verifyOrderSummaryBusinessLogic(itemAmount,savingPrice,subTotal,mapOrderSummary,mapTaxRate);
+		getShoppingCartThreadLocal().verifyOrderSummaryBusinessLogic(subTotal,mapOrderSummary,mapTaxRate);
 		getShoppingCartThreadLocal().verifyOrderSummaryContents();
 
 		reporter.reportLog("Verify EasyPayment section content");

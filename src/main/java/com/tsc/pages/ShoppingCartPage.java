@@ -292,6 +292,14 @@ public class ShoppingCartPage extends BasePage {
 //	}
 
 	/**
+	 * To check If OrderSummary And EasyPayment Not Existing
+	 * @return - boolean
+	 */
+	public boolean checkIfOrderSummaryAndEasyPaymentNotExisting(){
+		return this.getChildElementCount(cntOrderSummaryContainer)<2;
+	}
+
+	/**
 	 * To check If it Is a FreeShipping Item
 	 * @param - WebElement - cartItem
 	 * @return - boolean
@@ -2652,9 +2660,8 @@ public class ShoppingCartPage extends BasePage {
 
 	/**
 	 * To verify CheckOut section Contents
-	 * @param - boolean - bBlueJaysOnly
 	 */
-	public void verifyCheckOutContents(boolean bBlueJaysOnly){
+	public void verifyCheckOutContents(){
 		expandJaysCareDonationSection();
 
 		String lsText;

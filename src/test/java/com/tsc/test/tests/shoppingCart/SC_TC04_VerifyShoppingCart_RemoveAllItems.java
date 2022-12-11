@@ -47,24 +47,22 @@ public class SC_TC04_VerifyShoppingCart_RemoveAllItems extends BaseTest{
 
 		getShoppingCartThreadLocal().removeAllItemsFromShoppingCartList();
 
-		boolean bCheckEmptyCartMessageExisting=getShoppingCartThreadLocal().checkEmptyCartMessageExisting();
-		if(bCheckEmptyCartMessageExisting){
+		if(getShoppingCartThreadLocal().lblCartParaMessageForEmptyCart.size()==2){
 			reporter.reportLogPass("The empty cart message is displaying correctly");
 		}
 		else{
 			reporter.reportLogFail("The empty cart message is not displaying correctly");
 		}
 
-		boolean bCheckOrderSummaryAndEasyPaymentExisting=getShoppingCartThreadLocal().checkOrderSummaryAndEasyPaymentSectionsExisting();
-		if(!bCheckOrderSummaryAndEasyPaymentExisting){
-			reporter.reportLogPass("The OrderSummary and EasyPayment are not displaying");
+		if(getShoppingCartThreadLocal().checkIfOrderSummaryAndEasyPaymentNotExisting()){
+			reporter.reportLogPass("OrderSummary And EasyPayment is Not Existing");
 		}
 		else{
-			reporter.reportLogFail("The OrderSummary and EasyPayment are still displaying");
+			reporter.reportLogFail("OrderSummary And EasyPayment is still Existing");
 		}
 
 		reporter.reportLog("Verify checkout section contents");
-		getShoppingCartThreadLocal().verifyCheckOutContents(true);
+		getShoppingCartThreadLocal().verifyCheckOutContents();
 	}
 }
 
