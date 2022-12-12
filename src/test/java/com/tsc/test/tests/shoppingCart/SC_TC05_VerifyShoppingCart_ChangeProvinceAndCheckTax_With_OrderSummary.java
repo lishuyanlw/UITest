@@ -46,21 +46,13 @@ public class SC_TC05_VerifyShoppingCart_ChangeProvinceAndCheckTax_With_OrderSumm
 			(new BasePage(this.getDriver())).applyStaticWait(3000);
 		}
 		getProductDetailPageThreadLocal().goToShoppingCartByClickingShoppingCartIconInGlobalHeader();
-		if (getShoppingCartThreadLocal().checkIsDropdownMenuForInstallmentNumber()) {
-			List<String> lstOptionText = getShoppingCartThreadLocal().getInstallmentOptions();
-			getShoppingCartThreadLocal().setInstallmentSetting(lstOptionText.get(1));
-		}
+		getShoppingCartThreadLocal().setInstallmentNumberByRandomIndex();
 
 		Map<String, Object> shoppingCartMap = getShoppingCartThreadLocal().getShoppingSectionDetails("all");
 		float subTotal=getShoppingCartThreadLocal().getSubTotalFromShoppingList((List<Map<String,Object>>)shoppingCartMap.get("shoppingList"));
 
 		Map<String,Object> mapOrderSummary;
 		Map<String,Object> mapTaxRate=getShoppingCartThreadLocal().getProvinceTaxRateMap();
-		if(getShoppingCartThreadLocal().checkIsDropdownMenuForInstallmentNumber()){
-			List<String> lstOptionText=getShoppingCartThreadLocal().getInstallmentOptions();
-			getShoppingCartThreadLocal().setInstallmentSetting(lstOptionText.get(1));
-		}
-
 		for(Map.Entry<String,Object> entry:mapTaxRate.entrySet()){
 			reporter.reportLog("Verify province: "+entry.getKey());
 			getShoppingCartThreadLocal().setProvinceCodeForEstimatedTax(entry.getKey());

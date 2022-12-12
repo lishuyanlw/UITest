@@ -1,6 +1,6 @@
 # API USER TOKEN INFO
 apiUserSessionParams:
-  lbl_username: qa2542@rogers.com
+  lbl_username: shoppingcartnew@rogers.com
   lbl_password: qa1234
   lbl_grantType: password
   lbl_apiKey: A9607F64-D061-4279-8D00-F8469EA38DD1
@@ -289,13 +289,13 @@ shoppingCart:
   lst_SearchKeywords:
     - searchKeyword: "boots"
       quantity: "more than 1"
-      badgeRequired: "true"
+      badgeRequired: "false"
       itemToBeAdded: "1"
       styleExist: "true"
       sameSizeAndStyle: "true"
     - searchKeyword: "pants"
       quantity: "more than 3"
-      badgeRequired: "true"
+      badgeRequired: "false"
       itemToBeAdded: "1"
       styleExist: "true"
       sameSizeAndStyle: "true"
@@ -306,7 +306,7 @@ shoppingCart:
       styleExist: "false"
     - searchKeyword: "legging"
       quantity: "more than 1"
-      badgeRequired: "true"
+      badgeRequired: "false"
       itemToBeAdded: "1"
       styleExist: "true"
       sameSizeAndStyle: "true"

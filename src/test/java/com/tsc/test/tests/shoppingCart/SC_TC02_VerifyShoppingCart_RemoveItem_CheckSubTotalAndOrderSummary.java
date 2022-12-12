@@ -51,26 +51,41 @@ public class SC_TC02_VerifyShoppingCart_RemoveItem_CheckSubTotalAndOrderSummary 
 			(new BasePage(this.getDriver())).applyStaticWait(3000);
 		}
 		getProductDetailPageThreadLocal().goToShoppingCartByClickingShoppingCartIconInGlobalHeader();
-		if (getShoppingCartThreadLocal().checkIsDropdownMenuForInstallmentNumber()) {
-			List<String> lstOptionText = getShoppingCartThreadLocal().getInstallmentOptions();
-			getShoppingCartThreadLocal().setInstallmentSetting(lstOptionText.get(1));
-		}
+		getShoppingCartThreadLocal().setInstallmentNumberByRandomIndex();
 
 		Map<String,Object> shoppingCartMap=getShoppingCartThreadLocal().getShoppingSectionDetails("mandatory");
 		Map<String,Object> map=getShoppingCartThreadLocal().getItemCountAndPriceInfo(shoppingCartMap,false);
-		int itemCountInShoppingCartHeaderInitial= (int) map.get("itemCountInShoppingCartHeader");
 		int shoppingItemCountInitial= (int) map.get("shoppingItemCount");
-		int shoppingItemCountInSubtotalInitial= (int) map.get("shoppingItemCountInSubtotal");
 		int itemCountInOrderSummaryInitial= (int) map.get("itemCountInOrderSummary");
+		int shoppingItemCountOnCheckoutButton= (int) map.get("itemCountOnCheckoutButton");
 		float subTotalShoppingCartInitial= (float) map.get("subTotalShoppingCart");
 		float subTotalOrderSummaryInitial= (float) map.get("subTotalOrderSummary");
-		if(itemCountInShoppingCartHeaderInitial==shoppingItemCountInitial&&
-				shoppingItemCountInitial==shoppingItemCountInSubtotalInitial&&
-				itemCountInShoppingCartHeaderInitial==itemCountInOrderSummaryInitial){
-			reporter.reportLogPass("The initial added item count among Shopping cart header,Shopping cart list and OrderSummary are same");
+
+		float donationValue=0.0f;
+		int donationCount=0;
+		if(getShoppingCartThreadLocal().checkJaysCareDonationExistingInOrderSummary()){
+			donationValue=getShoppingCartThreadLocal().getJaysCareDonationValueInOrderSummary();
+			donationCount=1;
+		}
+		if((itemCountInOrderSummaryInitial-shoppingItemCountInitial)==donationCount){
+			reporter.reportLogPass("The initial added item count in Shopping cart list plus donation count is equal to then one in OrderSummary");
 		}
 		else{
-			reporter.reportLogFail("The initial added item count Shopping cart header,Shopping cart list and OrderSummary are not same");
+			reporter.reportLogFail("The initial added item count in Shopping cart list plus donation count is not equal to then one in OrderSummary");
+		}
+
+		if(itemCountInOrderSummaryInitial==shoppingItemCountOnCheckoutButton){
+			reporter.reportLogPass("The initial added item count in Shopping cart list plus donation count is equal to then one in OrderSummary");
+		}
+		else{
+			reporter.reportLogFail("The initial added item count in Shopping cart list plus donation count is not equal to then one in OrderSummary");
+		}
+
+		if(Math.abs(Math.abs(subTotalOrderSummaryInitial-subTotalShoppingCartInitial)-donationValue)<0.1f){
+			reporter.reportLogPass("The subTotal in orderSummary minus donation value is equal to the one in shopping cart list");
+		}
+		else{
+			reporter.reportLogFail("The subTotal in orderSummary minus donation value is not equal to the one in shopping cart list");
 		}
 
 		Map<String, WebElement> mapButtons=getShoppingCartThreadLocal().getFirstCartItemWithAvailableRemoveButton();
@@ -101,28 +116,26 @@ public class SC_TC02_VerifyShoppingCart_RemoveItem_CheckSubTotalAndOrderSummary 
 		}
 
 		map=getShoppingCartThreadLocal().getItemCountAndPriceInfo(shoppingCartMap,false);
-		int itemCountInShoppingCartHeaderCancel= (int) map.get("itemCountInShoppingCartHeader");
 		int shoppingItemCountCancel= (int) map.get("shoppingItemCount");
-		int shoppingItemCountInSubtotalCancel= (int) map.get("shoppingItemCountInSubtotal");
 		int itemCountInOrderSummaryCancel= (int) map.get("itemCountInOrderSummary");
+		int shoppingItemCountOnCheckoutButtonCancel= (int) map.get("itemCountOnCheckoutButton");
 		float subTotalShoppingCartCancel= (float) map.get("subTotalShoppingCart");
 		float subTotalOrderSummaryCancel= (float) map.get("subTotalOrderSummary");
-		if(itemCountInShoppingCartHeaderCancel==shoppingItemCountCancel&&
-				shoppingItemCountCancel==shoppingItemCountInSubtotalCancel&&
-				itemCountInShoppingCartHeaderCancel==itemCountInOrderSummaryCancel){
-			reporter.reportLogPass("The added item count among Shopping cart header,Shopping cart list and OrderSummary are same after clicking cancel button in remove dialog");
+
+		if((itemCountInOrderSummaryCancel-shoppingItemCountCancel)==donationCount){
+			reporter.reportLogPass("The initial added item count in Shopping cart list plus donation count is equal to then one in OrderSummary after clicking Cancel button");
 		}
 		else{
-			reporter.reportLogFail("The added item count among Shopping cart header,Shopping cart list and OrderSummary are not same after clicking cancel button in remove dialog");
+			reporter.reportLogFail("The initial added item count in Shopping cart list plus donation count is not equal to then one in OrderSummary after clicking Cancel button");
 		}
-		if(itemCountInShoppingCartHeaderCancel==shoppingItemCountInitial&&
-				shoppingItemCountCancel==shoppingItemCountInSubtotalInitial&&
-				itemCountInShoppingCartHeaderCancel==itemCountInOrderSummaryInitial){
-			reporter.reportLogPass("The added item count among Shopping cart header,Shopping cart list and OrderSummary after clicking cancel button in remove dialog are same as the initial ones");
+
+		if(itemCountInOrderSummaryCancel==shoppingItemCountOnCheckoutButtonCancel){
+			reporter.reportLogPass("The initial added item count in Shopping cart list plus donation count is equal to then one in OrderSummary after clicking Cancel button");
 		}
 		else{
-			reporter.reportLogFail("The added item count among Shopping cart header,Shopping cart list and OrderSummary after clicking cancel button in remove dialog are not same as the initial ones");
+			reporter.reportLogFail("The initial added item count in Shopping cart list plus donation count is not equal to then one in OrderSummary after clicking Cancel button");
 		}
+
 		if(Math.abs(subTotalShoppingCartInitial-subTotalShoppingCartCancel)<0.1&&
 				Math.abs(subTotalOrderSummaryInitial-subTotalOrderSummaryCancel)<0.1){
 			reporter.reportLogPass("No changes for the subtotal in both shopping cart and orderSummary");
@@ -147,30 +160,27 @@ public class SC_TC02_VerifyShoppingCart_RemoveItem_CheckSubTotalAndOrderSummary 
 		}
 
 		map=getShoppingCartThreadLocal().getItemCountAndPriceInfo(shoppingCartMap,false);
-		int itemCountInShoppingCartHeaderRemove= (int) map.get("itemCountInShoppingCartHeader");
 		int shoppingItemCountRemove= (int) map.get("shoppingItemCount");
-		int shoppingItemCountInSubtotalRemove= (int) map.get("shoppingItemCountInSubtotal");
 		int itemCountInOrderSummaryRemove= (int) map.get("itemCountInOrderSummary");
+		int shoppingItemCountOnCheckoutButtonRemove= (int) map.get("itemCountOnCheckoutButton");
 		float subTotalShoppingCartRemove= (float) map.get("subTotalShoppingCart");
 		float subTotalOrderSummaryRemove= (float) map.get("subTotalOrderSummary");
 		float nowPrice= (float) mapRemoveDialog.get("productNowPrice");
 		int quantity= (int) mapRemoveDialog.get("productQuantity");
 		float removeCount=nowPrice*quantity;
-		if(itemCountInShoppingCartHeaderRemove==shoppingItemCountRemove&&
-				shoppingItemCountRemove==shoppingItemCountInSubtotalRemove&&
-				itemCountInShoppingCartHeaderRemove==itemCountInOrderSummaryRemove){
-			reporter.reportLogPass("The added item count among Shopping cart header,Shopping cart list and OrderSummary are same after clicking remove button in remove dialog");
+
+		if((itemCountInOrderSummaryRemove-shoppingItemCountRemove)==donationCount){
+			reporter.reportLogPass("The added item count in Shopping cart list plus donation count is equal to then one in OrderSummary after clicking Remove button");
 		}
 		else{
-			reporter.reportLogFail("The added item count among Shopping cart header,Shopping cart list and OrderSummary are not same after clicking remove button in remove dialog");
+			reporter.reportLogFail("The added item count in Shopping cart list plus donation count is not equal to then one in OrderSummary after clicking Remove button");
 		}
-		if((itemCountInShoppingCartHeaderInitial-1)==shoppingItemCountRemove&&
-				(shoppingItemCountInitial-1)==shoppingItemCountInSubtotalRemove&&
-				(itemCountInShoppingCartHeaderInitial-1)==itemCountInOrderSummaryRemove){
-			reporter.reportLogPass("The added item count among Shopping cart header,Shopping cart list and OrderSummary after clicking remove button in remove dialog are same as the initial ones");
+
+		if(itemCountInOrderSummaryRemove==shoppingItemCountOnCheckoutButtonRemove){
+			reporter.reportLogPass("The added item count in Shopping cart list plus donation count is equal to then one in OrderSummary after clicking Remove button");
 		}
 		else{
-			reporter.reportLogPass("The added item count among Shopping cart header,Shopping cart list and OrderSummary after clicking remove button in remove dialog are not same as the initial ones");
+			reporter.reportLogFail("The added item count in Shopping cart list plus donation count is not equal to then one in OrderSummary after clicking Remove button");
 		}
 
 		if(Math.abs(subTotalShoppingCartInitial-subTotalShoppingCartRemove-removeCount)<0.1&&

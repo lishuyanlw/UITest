@@ -54,6 +54,7 @@ public class SC_TC12_VerifyShoppingCart_LeftInventoryMessage extends BaseTest{
 					return getProductDetailPageThreadLocal().lblAddToBagPopupWindowTitle.isDisplayed();
 				}, 120000);
 				getProductDetailPageThreadLocal().goToShoppingCartFromAddToBagPopupWithLoginFirst();
+				getShoppingCartThreadLocal().setInstallmentNumberByRandomIndex();
 
 				Map<String, Object> shoppingCartMap = getShoppingCartThreadLocal().getShoppingSectionDetails("all");
 				int findIndex=getShoppingCartThreadLocal().findGivenProductIndexInShoppingCartItemList(PDPMap, shoppingCartMap);

@@ -68,6 +68,7 @@ public class SC_TC03_VerifyShoppingCart_MergingCart extends BaseTest{
 
 			//Login using valid username and password
 			getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword);
+			getProductDetailPageThreadLocal().goToShoppingCartByClickingShoppingCartIconInGlobalHeader();
 
 			Map<String, Object> shoppingCartMap = getShoppingCartThreadLocal().getShoppingSectionDetails("all");
 			List<Map<String,Object>> shoppingCartItemList=(List<Map<String,Object>>)shoppingCartMap.get("shoppingList");
@@ -113,19 +114,38 @@ public class SC_TC03_VerifyShoppingCart_MergingCart extends BaseTest{
 			reporter.reportLog("To verify heading and Shopping Item List contents");
 			getShoppingCartThreadLocal().verifyShoppingCartContents();
 
-			//To verify business logic Between Shopping Item List And SubTotal Section
+			Map<String,Object> map=getShoppingCartThreadLocal().getItemCountAndPriceInfo(shoppingCartMap,false);
+			int shoppingItemCountInitial= (int) map.get("shoppingItemCount");
+			int itemCountInOrderSummaryInitial= (int) map.get("itemCountInOrderSummary");
+			int shoppingItemCountOnCheckoutButton= (int) map.get("itemCountOnCheckoutButton");
+			float subTotalShoppingCartInitial= (float) map.get("subTotalShoppingCart");
+			float subTotalOrderSummaryInitial= (float) map.get("subTotalOrderSummary");
 
-			Map<String,Object> map=getShoppingCartThreadLocal().getItemCountAndPriceInfo(shoppingCartMap,true);
-			int itemCountInShoppingCartHeader= (int) map.get("itemCountInShoppingCartHeader");
-			int shoppingItemCount= (int) map.get("shoppingItemCount");
-			int shoppingItemCountInSubtotal= (int) map.get("shoppingItemCountInSubtotal");
-			int itemCountInOrderSummary= (int) map.get("itemCountInOrderSummary");
-			if (itemCountInShoppingCartHeader == shoppingItemCount &&
-					shoppingItemCount == shoppingItemCountInSubtotal &&
-					itemCountInShoppingCartHeader == itemCountInOrderSummary) {
-				reporter.reportLogPass("The added item count among Shopping cart header,Shopping cart list and OrderSummary are same");
-			} else {
-				reporter.reportLogFail("The added item count among Shopping cart header,Shopping cart list and OrderSummary are not same");
+			float donationValue=0.0f;
+			int donationCount=0;
+			if(getShoppingCartThreadLocal().checkJaysCareDonationExistingInOrderSummary()){
+				donationValue=getShoppingCartThreadLocal().getJaysCareDonationValueInOrderSummary();
+				donationCount=1;
+			}
+			if((itemCountInOrderSummaryInitial-shoppingItemCountInitial)==donationCount){
+				reporter.reportLogPass("The initial added item count in Shopping cart list plus donation count is equal to then one in OrderSummary");
+			}
+			else{
+				reporter.reportLogFail("The initial added item count in Shopping cart list plus donation count is not equal to then one in OrderSummary");
+			}
+
+			if(itemCountInOrderSummaryInitial==shoppingItemCountOnCheckoutButton){
+				reporter.reportLogPass("The initial added item count in Shopping cart list plus donation count is equal to then one in OrderSummary");
+			}
+			else{
+				reporter.reportLogFail("The initial added item count in Shopping cart list plus donation count is not equal to then one in OrderSummary");
+			}
+
+			if(Math.abs(Math.abs(subTotalOrderSummaryInitial-subTotalShoppingCartInitial)-donationValue)<0.1f){
+				reporter.reportLogPass("The subTotal in orderSummary minus donation value is equal to the one in shopping cart list");
+			}
+			else{
+				reporter.reportLogFail("The subTotal in orderSummary minus donation value is not equal to the one in shopping cart list");
 			}
 
 			reporter.reportLog("Verify checkout section contents");

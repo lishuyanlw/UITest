@@ -56,15 +56,7 @@ public class SC_TC16_VerifyShoppingCart_WithoutUserLogin extends BaseTest{
 			Map<String, Object> PDPMap = getProductDetailPageThreadLocal().getPDPDesc();
 			getProductDetailPageThreadLocal().goToShoppingCartByClickingShoppingCartIconInGlobalHeader();
 			Map<String, Object> shoppingCartMap = getShoppingCartThreadLocal().getShoppingSectionDetails("all");
-
-			//To verify heading and Shopping Item List contents
-			reporter.reportLog("To verify heading and Shopping Item List contents");
-			getShoppingCartThreadLocal().verifyShoppingCartContents();
-
-			if(getShoppingCartThreadLocal().checkIsDropdownMenuForInstallmentNumber()){
-				List<String> lstOptionText=getShoppingCartThreadLocal().getInstallmentOptions();
-				getShoppingCartThreadLocal().setInstallmentSetting(lstOptionText.get(1));
-			}
+			getShoppingCartThreadLocal().setInstallmentNumberByRandomIndex();
 
 			Map<String,Object> mapOrderSummary=getShoppingCartThreadLocal().getOrderSummaryDesc();
 			float subTotal=getShoppingCartThreadLocal().getSubTotalFromShoppingList((List<Map<String,Object>>)shoppingCartMap.get("shoppingList"));

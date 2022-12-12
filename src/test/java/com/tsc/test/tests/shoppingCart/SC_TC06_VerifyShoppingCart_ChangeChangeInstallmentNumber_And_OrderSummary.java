@@ -47,10 +47,7 @@ public class SC_TC06_VerifyShoppingCart_ChangeChangeInstallmentNumber_And_OrderS
 			(new BasePage(this.getDriver())).applyStaticWait(3000);
 		}
 		getProductDetailPageThreadLocal().goToShoppingCartByClickingShoppingCartIconInGlobalHeader();
-		if (getShoppingCartThreadLocal().checkIsDropdownMenuForInstallmentNumber()) {
-			List<String> lstOptionText = getShoppingCartThreadLocal().getInstallmentOptions();
-			getShoppingCartThreadLocal().setInstallmentSetting(lstOptionText.get(1));
-		}
+		getShoppingCartThreadLocal().setInstallmentNumberByRandomIndex();
 
 		reporter.reportLog("Verify EasyPayment sections contents");
 		Map<String,Object> mapOrderSummary=getShoppingCartThreadLocal().getOrderSummaryDesc();
@@ -59,9 +56,7 @@ public class SC_TC06_VerifyShoppingCart_ChangeChangeInstallmentNumber_And_OrderS
 		int loopSize=lstOptionText.size();
 		for(int i=1;i<loopSize;i++){
 			getShoppingCartThreadLocal().setInstallmentSetting(lstOptionText.get(i));
-			int easyPayNumber = Integer.valueOf(lstOptionText.get(i));
-			getShoppingCartThreadLocal().waitForCondition(Driver->{return
-					getShoppingCartThreadLocal().getFutureMonthlyPaymentNumber()==easyPayNumber-1;},20000);
+			getShoppingCartThreadLocal().waitForShoppingCardPageLoadingCompleted();
 			reporter.reportLog("Verify installment number "+ lstOptionText.get(i));
 			getShoppingCartThreadLocal().verifyInstallmentBusinessLogic(mapOrderSummary);
 			getShoppingCartThreadLocal().verifyEasyPaymentContents();
