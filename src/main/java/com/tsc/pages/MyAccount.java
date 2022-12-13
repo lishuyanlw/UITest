@@ -3180,7 +3180,6 @@ public class MyAccount extends BasePage {
 	public void closeAddOrEditAddressWindow(boolean bSave) {
 		if (bSave) {
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSave);
-			//btnSave.click();
 			this.clickElement(this.btnSave);
 
 			try {
@@ -3190,7 +3189,7 @@ public class MyAccount extends BasePage {
 
 			} catch (Exception e) {
 				this.getReusableActionsInstance().staticWait(10 * getStaticWaitForApplication());
-				if (this.lblAddOrEditAddressExistingErrorMessage.getText().contains("Account.AddShippingAddressError")) {
+				if (this.getElementInnerText(lblAddOrEditAddressExistingErrorMessage).contains("Account.AddShippingAddressError")) {
 					this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSave);
 					this.clickElement(this.btnSave);
 
@@ -3199,18 +3198,59 @@ public class MyAccount extends BasePage {
 							return this.lblShippingAddressSectionTitle.isDisplayed();
 						}, 20000);
 
-					} catch (Exception ex) {
-
+					} catch(Exception ex) {
 						this.getReusableActionsInstance().staticWait(10 * getStaticWaitForApplication());
+						String lsErrorMessage = this.getElementInnerText(this.lblAddOrEditAddressExistingErrorMessage).toLowerCase();
+						if(lsErrorMessage.contains("the shipping address you are trying to add already exists")) {
+							this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnCancel);
+							this.clickElement(this.btnCancel);
+							this.waitForCondition(Driver -> {
+								return this.lblShippingAddressSectionTitle.isDisplayed();
+							}, 40000);
+						}
+
+						if(this.getElementInnerText(this.lblAddOrEditAddressExistingErrorMessage).toLowerCase().contains("you have one or more missing or invalid entries") ||
+								this.getElementInnerText(this.lblAddressLin1ErrorMessage).toLowerCase().contains("address Line 1 cannot be more than 30 characters long")) {
+							String lsAutoSearchKeywordAdd = DataConverter.getSaltString(4, "numberType");
+							this.editAddress(null, lsAutoSearchKeywordAdd);
+
+							this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSave);
+							this.clickElement(this.btnSave);
+
+							try {
+								this.waitForCondition(Driver -> {
+									return this.lblShippingAddressSectionTitle.isDisplayed();
+								}, 40000);
+
+							} catch (Exception e1) {
+								this.getReusableActionsInstance().staticWait(10 * getStaticWaitForApplication());
+								if (this.getElementInnerText(lblAddOrEditAddressExistingErrorMessage).contains("Account.AddShippingAddressError")) {
+									this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSave);
+									this.clickElement(this.btnSave);
+
+									try {
+										this.waitForCondition(Driver -> {
+											return this.lblShippingAddressSectionTitle.isDisplayed();
+										}, 20000);
+
+									} catch (Exception ex1) {
+										this.getReusableActionsInstance().staticWait(10 * getStaticWaitForApplication());
+										lsErrorMessage = this.getElementInnerText(this.lblAddOrEditAddressExistingErrorMessage).toLowerCase();
+										this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnCancel);
+										this.clickElement(this.btnCancel);
+										this.waitForCondition(Driver -> {
+											return this.lblShippingAddressSectionTitle.isDisplayed();
+										}, 40000);
+									}
+								}
+							}
+						}
 					}
-					this.EditorCancelAddressWindow();
 				}
-
 			}
 		} else {
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnCancel);
 			this.clickElement(this.btnCancel);
-			//btnCancel.click();
 			this.waitForCondition(Driver -> {
 				return this.lblShippingAddressSectionTitle.isDisplayed();
 			}, 40000);
@@ -3219,59 +3259,59 @@ public class MyAccount extends BasePage {
 		this.getReusableActionsInstance().staticWait(5 * getStaticWaitForApplication());
 	}
 
-	/**
-	 * To close add or edit an address window
-	 *
-	 * @param - boolean - bSave - clicking Save/Cancel button
-	 */
-
-	public void EditorCancelAddressWindow() {
-		String lsAutoSearchKeywordEdit = DataConverter.getSaltString(4,"numberType");
-		String lsFirstNameEdit=DataConverter.getSaltString(1,"upperStringType")+DataConverter.getSaltString(5,"lowerStringType");
-		String lsLastNameEdit=DataConverter.getSaltString(1,"upperStringType")+DataConverter.getSaltString(7,"lowerStringType");
-		Map<String,String> mapEditInput=new HashMap<>();
-		mapEditInput.put("firstName",lsFirstNameEdit);
-		mapEditInput.put("lastName",lsLastNameEdit);
-		WebElement editButton=this.getGivenShippingAddressEditButton(0);
-		reporter.reportLog(lsAutoSearchKeywordEdit);
-		reporter.reportLog(lsFirstNameEdit);
-		reporter.reportLog(lsLastNameEdit);
-		reporter.reportLog(editButton.getText());
-		reporter.reportLog(editButton.getTagName());
-
-
-		if (this.getElementInnerText(this.lblAddOrEditAddressExistingErrorMessage).toLowerCase().contains("The shipping address you are trying to add already exists")) {
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnCancel);
-			this.clickElement(this.btnCancel);
-			Map<String,String> mapLastShippingAddress=this.getGivenShippingOrBillingAddress(0);
-			editButton=this.getGivenShippingAddressEditButton(this.lstShippingAddressContainer.size()-1);
-			this.openAddOrEditAddressWindow("editShippingAddress",editButton);
-			this.editAddress(mapLastShippingAddress,null);
-			try {
-				this.waitForCondition(Driver -> {
-					return this.lblShippingAddressSectionTitle.isDisplayed();
-				}, 20000);
-
-			} catch (Exception ex) {
-				this.getReusableActionsInstance().staticWait(10 * getStaticWaitForApplication());
-				if (this.getElementInnerText(this.lblAddOrEditAddressExistingErrorMessage).toLowerCase().contains("You have one or more missing or invalid entries") ||
-						this.getElementInnerText(this.lblAddressLin1ErrorMessage).toLowerCase().contains("Address Line 1 cannot be more than 30 characters long")) {
-					this.editAddress(mapLastShippingAddress,null);
-				}
-
-			}
-
-		} else {
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnCancel);
-			this.clickElement(this.btnCancel);
-			//btnCancel.click();
-			this.waitForCondition(Driver -> {
-				return this.lblShippingAddressSectionTitle.isDisplayed();
-			}, 40000);
-		}
-
-		this.getReusableActionsInstance().staticWait(5 * getStaticWaitForApplication());
-	}
+//	/**
+//	 * To close add or edit an address window
+//	 *
+//	 * @param - boolean - bSave - clicking Save/Cancel button
+//	 */
+//
+//	public void EditorCancelAddressWindow() {
+//		String lsAutoSearchKeywordEdit = DataConverter.getSaltString(4,"numberType");
+//		String lsFirstNameEdit=DataConverter.getSaltString(1,"upperStringType")+DataConverter.getSaltString(5,"lowerStringType");
+//		String lsLastNameEdit=DataConverter.getSaltString(1,"upperStringType")+DataConverter.getSaltString(7,"lowerStringType");
+//		Map<String,String> mapEditInput=new HashMap<>();
+//		mapEditInput.put("firstName",lsFirstNameEdit);
+//		mapEditInput.put("lastName",lsLastNameEdit);
+//		WebElement editButton=this.getGivenShippingAddressEditButton(0);
+//		reporter.reportLog(lsAutoSearchKeywordEdit);
+//		reporter.reportLog(lsFirstNameEdit);
+//		reporter.reportLog(lsLastNameEdit);
+//		reporter.reportLog(editButton.getText());
+//		reporter.reportLog(editButton.getTagName());
+//
+//
+//		if(this.getElementInnerText(this.lblAddOrEditAddressExistingErrorMessage).toLowerCase().contains("the shipping address you are trying to add already exists")) {
+//			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnCancel);
+//			this.clickElement(this.btnCancel);
+//			Map<String,String> mapLastShippingAddress=this.getGivenShippingOrBillingAddress(0);
+//			editButton=this.getGivenShippingAddressEditButton(this.lstShippingAddressContainer.size()-1);
+//			this.openAddOrEditAddressWindow("editShippingAddress",editButton);
+//			this.editAddress(mapLastShippingAddress,null);
+//			try {
+//				this.waitForCondition(Driver -> {
+//					return this.lblShippingAddressSectionTitle.isDisplayed();
+//				}, 20000);
+//
+//			} catch (Exception ex) {
+//				this.getReusableActionsInstance().staticWait(10 * getStaticWaitForApplication());
+//				if (this.getElementInnerText(this.lblAddOrEditAddressExistingErrorMessage).toLowerCase().contains("You have one or more missing or invalid entries") ||
+//						this.getElementInnerText(this.lblAddressLin1ErrorMessage).toLowerCase().contains("Address Line 1 cannot be more than 30 characters long")) {
+//					this.editAddress(mapLastShippingAddress,null);
+//				}
+//
+//			}
+//
+//		} else {
+//			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnCancel);
+//			this.clickElement(this.btnCancel);
+//			//btnCancel.click();
+//			this.waitForCondition(Driver -> {
+//				return this.lblShippingAddressSectionTitle.isDisplayed();
+//			}, 40000);
+//		}
+//
+//		this.getReusableActionsInstance().staticWait(5 * getStaticWaitForApplication());
+//	}
 
 	/**
 	 * To verify your address content
@@ -3493,82 +3533,84 @@ public class MyAccount extends BasePage {
 	 * @param - String - address
 	 */
 	public String editAddress(Map<String, String> map, String lsAuoSearchKeyword) {
-		for (Map.Entry<String, String> entry : map.entrySet()) {
-			switch (entry.getKey()) {
-				case "firstName":
-					this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressFirstName);
-					inputAddOrEditAddressFirstName.clear();
-					inputAddOrEditAddressFirstName.sendKeys(entry.getValue().toString());
-					this.getReusableActionsInstance().staticWait(300);
-					break;
-				case "lastName":
-					this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressLastName);
-					inputAddOrEditAddressLastName.clear();
-					inputAddOrEditAddressLastName.sendKeys(entry.getValue().toString());
-					this.getReusableActionsInstance().staticWait(300);
-					break;
-				case "phoneNumber1":
-					this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPhoneNumber1);
-					inputAddOrEditAddressPhoneNumber1.clear();
-					inputAddOrEditAddressPhoneNumber1.sendKeys(entry.getValue().toString());
-					this.getReusableActionsInstance().staticWait(300);
-					break;
-				case "phoneNumber2":
-					this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPhoneNumber2);
-					inputAddOrEditAddressPhoneNumber2.clear();
-					inputAddOrEditAddressPhoneNumber2.sendKeys(entry.getValue().toString());
-					this.getReusableActionsInstance().staticWait(300);
-					break;
-				case "phoneNumber3":
-					this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPhoneNumber3);
-					inputAddOrEditAddressPhoneNumber3.clear();
-					inputAddOrEditAddressPhoneNumber3.sendKeys(entry.getValue().toString());
-					this.getReusableActionsInstance().staticWait(300);
-					break;
-				case "address":
-					this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressLine1);
-					inputAddOrEditAddressLine1.clear();
-					String[] data = entry.getValue().toString().codePoints().mapToObj(cp -> new String(Character.toChars(cp))).toArray(size -> new String[size]);
-					int sum = 0;
-					for (String inputText : data) {
-						if (sum >= 30) {
-							break;
+		if(map!=null){
+			for (Map.Entry<String, String> entry : map.entrySet()) {
+				switch (entry.getKey()) {
+					case "firstName":
+						this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressFirstName);
+						inputAddOrEditAddressFirstName.clear();
+						inputAddOrEditAddressFirstName.sendKeys(entry.getValue().toString());
+						this.getReusableActionsInstance().staticWait(300);
+						break;
+					case "lastName":
+						this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressLastName);
+						inputAddOrEditAddressLastName.clear();
+						inputAddOrEditAddressLastName.sendKeys(entry.getValue().toString());
+						this.getReusableActionsInstance().staticWait(300);
+						break;
+					case "phoneNumber1":
+						this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPhoneNumber1);
+						inputAddOrEditAddressPhoneNumber1.clear();
+						inputAddOrEditAddressPhoneNumber1.sendKeys(entry.getValue().toString());
+						this.getReusableActionsInstance().staticWait(300);
+						break;
+					case "phoneNumber2":
+						this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPhoneNumber2);
+						inputAddOrEditAddressPhoneNumber2.clear();
+						inputAddOrEditAddressPhoneNumber2.sendKeys(entry.getValue().toString());
+						this.getReusableActionsInstance().staticWait(300);
+						break;
+					case "phoneNumber3":
+						this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressPhoneNumber3);
+						inputAddOrEditAddressPhoneNumber3.clear();
+						inputAddOrEditAddressPhoneNumber3.sendKeys(entry.getValue().toString());
+						this.getReusableActionsInstance().staticWait(300);
+						break;
+					case "address":
+						this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputAddOrEditAddressLine1);
+						inputAddOrEditAddressLine1.clear();
+						String[] data = entry.getValue().toString().codePoints().mapToObj(cp -> new String(Character.toChars(cp))).toArray(size -> new String[size]);
+						int sum = 0;
+						for (String inputText : data) {
+							if (sum >= 30) {
+								break;
+							}
+							inputAddOrEditAddressLine1.sendKeys(inputText);
+							//For thinking time for waiting for backend response
+							this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+							sum++;
 						}
-						inputAddOrEditAddressLine1.sendKeys(inputText);
-						//For thinking time for waiting for backend response
-						this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
-						sum++;
-					}
-					this.waitForCondition(Driver -> {
-						return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: block;");
-					}, 20000);
-					this.getReusableActionsInstance().staticWait(2 * this.getStaticWaitForApplication());
-
-					if (this.lstAddOrEditAddressAutoSearchDropdownItems.size() >= 1) {
-						reporter.reportLogPass("Getting dropdown auto search results successfully");
-					} else {
-						reporter.reportLogPassWithScreenshot("Unable to get dropdown auto search results");
-					}
-
-					try {
-						this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
-						this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
-						this.clickWebElementUsingJS(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
 						this.waitForCondition(Driver -> {
-							return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: none;");
+							return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: block;");
 						}, 20000);
-					} catch (Exception e) {
-						this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
-						this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
-						this.clickWebElementUsingJS(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
-						this.waitForCondition(Driver -> {
-							return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: none;");
-						}, 20000);
-					}
-					this.getReusableActionsInstance().staticWait(3 * this.getStaticWaitForApplication());
-					break;
-				default:
-					break;
+						this.getReusableActionsInstance().staticWait(2 * this.getStaticWaitForApplication());
+
+						if (this.lstAddOrEditAddressAutoSearchDropdownItems.size() >= 1) {
+							reporter.reportLogPass("Getting dropdown auto search results successfully");
+						} else {
+							reporter.reportLogPassWithScreenshot("Unable to get dropdown auto search results");
+						}
+
+						try {
+							this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
+							this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+							this.clickWebElementUsingJS(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
+							this.waitForCondition(Driver -> {
+								return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: none;");
+							}, 20000);
+						} catch (Exception e) {
+							this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
+							this.getReusableActionsInstance().staticWait(this.getStaticWaitForApplication());
+							this.clickWebElementUsingJS(this.lstAddOrEditAddressAutoSearchDropdownItems.get(0));
+							this.waitForCondition(Driver -> {
+								return this.cntAddOrEditAddressAutoSearch.getAttribute("style").contains("display: none;");
+							}, 20000);
+						}
+						this.getReusableActionsInstance().staticWait(3 * this.getStaticWaitForApplication());
+						break;
+					default:
+						break;
+				}
 			}
 		}
 

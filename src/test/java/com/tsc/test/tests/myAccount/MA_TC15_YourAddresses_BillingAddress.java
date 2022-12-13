@@ -204,23 +204,7 @@ public class MA_TC15_YourAddresses_BillingAddress extends BaseTest {
         mapEditInput.put("lastName",lsLastNameEdit);
         getMyAccountPageThreadLocal().openAddOrEditAddressWindow("editBillingAddress",null);
         String lsAddressEdit=getMyAccountPageThreadLocal().editAddress(mapEditInput,lsAutoSearchKeywordEdit);
-
-        //To avoid duplicated data issue
-        try{
-            getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
-        }
-        catch(Exception e){
-            lsAutoSearchKeywordEdit = DataConverter.getSaltString(4,"numberType");
-            lsAddressEdit=getMyAccountPageThreadLocal().editAddress(mapEditInput,lsAutoSearchKeywordEdit);
-            try{
-                getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
-            }
-            catch (Exception ex){
-                lsAutoSearchKeywordEdit = DataConverter.getSaltString(4,"numberType");
-                lsAddressEdit=getMyAccountPageThreadLocal().editAddress(mapEditInput,lsAutoSearchKeywordEdit);
-                getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
-            }
-        }
+        getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
 
         Map<String,String> mapAfterEdit=getMyAccountPageThreadLocal().getGivenShippingOrBillingAddress(-1);
         String lsFirstName=mapAfterEdit.get("firstName");

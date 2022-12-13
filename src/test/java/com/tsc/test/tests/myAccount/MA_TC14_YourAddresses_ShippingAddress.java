@@ -84,24 +84,8 @@ public class MA_TC14_YourAddresses_ShippingAddress extends BaseTest {
         getMyAccountPageThreadLocal().openAddOrEditAddressWindow("addShippingAddress",null);
         String lsAutoSearchKeywordAdd = DataConverter.getSaltString(4,"numberType");
         getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeywordAdd, false, false, -1);
+        getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
         Map<String,String> mapAdd;
-
-        //To avoid duplicated data issue
-        try{
-            getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
-        }
-        catch(Exception e){
-            lsAutoSearchKeywordAdd = DataConverter.getSaltString(4,"numberType");
-            mapAdd=getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeywordAdd,false,false,-1);
-            try{
-                getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
-            }
-            catch(Exception ex){
-                lsAutoSearchKeywordAdd = DataConverter.getSaltString(4,"numberType");
-                mapAdd=getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeywordAdd,false,false,-1);
-                getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
-            }
-        }
 
         getMyAccountPageThreadLocal().openAddOrEditAddressWindow("addShippingAddress",null);
         lsAutoSearchKeywordAdd = DataConverter.getSaltString(4,"numberType");
