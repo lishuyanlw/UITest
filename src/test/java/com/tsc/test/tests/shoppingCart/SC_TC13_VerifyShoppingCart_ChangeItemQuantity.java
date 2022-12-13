@@ -4,6 +4,7 @@ import com.tsc.api.apiBuilder.CartAPI;
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
+import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
@@ -22,6 +23,7 @@ public class SC_TC13_VerifyShoppingCart_ChangeItemQuantity extends BaseTest{
 		String accessToken = getApiUserSessionDataMapThreadLocal().get("access_token").toString();
 		int customerEDP = Integer.valueOf(getApiUserSessionDataMapThreadLocal().get("customerEDP").toString());
 		getShoppingCartThreadLocal().emptyCart(Integer.valueOf(customerEDP),accessToken);
+		(new CartAPI()).deletePromoCodeAppliedOnCart(String.valueOf(customerEDP),accessToken);
 
 		//Delete all gift card
 		CartAPI cartAPI=new CartAPI();
@@ -73,7 +75,7 @@ public class SC_TC13_VerifyShoppingCart_ChangeItemQuantity extends BaseTest{
 
 				Map<String, Object> shoppingCartMapAfterChange = getShoppingCartThreadLocal().getShoppingSectionDetails("all");
 				Map<String,Object> mapOrderSummaryAfterChange=getShoppingCartThreadLocal().getOrderSummaryDesc();
-						int itemCountShoppingListAfterChange= (int) shoppingCartMapAfterChange.get("shoppingAmount");
+				int itemCountShoppingListAfterChange= (int) shoppingCartMapAfterChange.get("shoppingAmount");
 				float itemSubTotalShoppingListAfterChange= (float) shoppingCartMapAfterChange.get("shoppingSubTotal");
 				int itemCountOrderSummaryAfterChange= (int) mapOrderSummaryAfterChange.get("itemAmount");
 				float itemSubTotalOrderSummaryAfterChange= (float) mapOrderSummaryAfterChange.get("subTotal");
@@ -108,6 +110,28 @@ public class SC_TC13_VerifyShoppingCart_ChangeItemQuantity extends BaseTest{
 
 				reporter.reportLog("Verify EasyPayment business logic");
 				getShoppingCartThreadLocal().verifyInstallmentBusinessLogic(mapOrderSummaryAfterChange);
+
+				reporter.reportLog("Verify product quantity control actions");
+				int maximumProductQuantity=getShoppingCartThreadLocal().getMaximumQuantityByGivenShoppingCartItemIndex(findIndex);
+				reporter.reportLog("Set the product quantity to the maximal number:"+maximumProductQuantity);
+				getShoppingCartThreadLocal().chooseShoppingItemByGivenItemIndexAndQuantity(findIndex,maximumProductQuantity);
+				WebElement item=getShoppingCartThreadLocal().lstCartItems.get(findIndex);
+				if(!getShoppingCartThreadLocal().checkProductQuantityPlusButtonEnabled(item)){
+					reporter.reportLogPass("The Plus quantity button has been disabled when reaching the maximal product quantity");
+				}
+				else{
+					reporter.reportLogFail("The Plus quantity button has not been disabled when reaching the maximal product quantity");
+				}
+
+				reporter.reportLog("Set the product quantity to the minimal number:1");
+				getShoppingCartThreadLocal().chooseShoppingItemByGivenItemIndexAndQuantity(findIndex,1);
+				item=getShoppingCartThreadLocal().lstCartItems.get(findIndex);
+				if(!getShoppingCartThreadLocal().checkProductQuantityMinusButtonEnabled(item)){
+					reporter.reportLogPass("The Minus quantity button has been disabled when reaching the minimal product quantity");
+				}
+				else{
+					reporter.reportLogFail("The Minus quantity button has not been disabled when reaching the minimal product quantity");
+				}
 
 			}
 		}finally {

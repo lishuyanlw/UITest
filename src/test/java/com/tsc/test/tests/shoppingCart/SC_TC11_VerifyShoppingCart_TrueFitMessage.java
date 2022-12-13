@@ -1,5 +1,6 @@
 package com.tsc.test.tests.shoppingCart;
 
+import com.tsc.api.apiBuilder.CartAPI;
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
@@ -24,6 +25,7 @@ public class SC_TC11_VerifyShoppingCart_TrueFitMessage extends BaseTest{
 		try{
 			//To empty the cart
 			getShoppingCartThreadLocal().emptyCart(customerEDP,accessToken);
+			(new CartAPI()).deletePromoCodeAppliedOnCart(String.valueOf(customerEDP),accessToken);
 
 			getGlobalFooterPageThreadLocal().closePopupDialog();
 			//Fetching test data from test data file
@@ -57,7 +59,10 @@ public class SC_TC11_VerifyShoppingCart_TrueFitMessage extends BaseTest{
 				basePage.waitForCondition(Driver -> {
 					return getProductDetailPageThreadLocal().lblAddToBagPopupWindowTitle.isDisplayed();
 				}, 30000);
-				getProductDetailPageThreadLocal().goToShoppingCartFromAddToBagPopupWithLoginFirst();
+				basePage.clickElement(getProductDetailPageThreadLocal().btnAddToBagPopupWindowClose);
+				basePage.applyStaticWait(2000);
+
+				getProductDetailPageThreadLocal().goToShoppingCartByClickingShoppingCartIconInGlobalHeader();
 
 				Map<String, Object> shoppingCartMap = getShoppingCartThreadLocal().getShoppingSectionDetails("mandatory");
 				boolean bCheckDuplicatedStyleAndSize = getShoppingCartThreadLocal().checkProductWithSameStyleAndDifferentSizesInShoppingItemList(shoppingCartMap);

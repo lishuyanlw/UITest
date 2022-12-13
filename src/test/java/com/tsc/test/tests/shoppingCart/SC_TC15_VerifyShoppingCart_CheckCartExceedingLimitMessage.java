@@ -1,5 +1,6 @@
 package com.tsc.test.tests.shoppingCart;
 
+import com.tsc.api.apiBuilder.CartAPI;
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
@@ -26,6 +27,7 @@ public class SC_TC15_VerifyShoppingCart_CheckCartExceedingLimitMessage extends B
 			String lsExpectedCartExceedingLimitMessage=TestDataHandler.constantData.getShoppingCart().getLblCartExceedingLimitMessage();
 			//To empty the cart
 			getShoppingCartThreadLocal().emptyCart(customerEDP,accessToken);
+			(new CartAPI()).deletePromoCodeAppliedOnCart(String.valueOf(customerEDP),accessToken);
 
 			//To Add 10 product EDP No with 10 quantity
 			List<String> lstKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_APISearchingKeyword();

@@ -1,5 +1,6 @@
 package com.tsc.test.tests.shoppingCart;
 
+import com.tsc.api.apiBuilder.CartAPI;
 import com.tsc.api.apiBuilder.ConfigurationAPI;
 import com.tsc.api.apiBuilder.ProductAPI;
 import com.tsc.api.pojo.Configuration;
@@ -16,16 +17,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public class SC_TC09_VerifyShoppingCart_Free_Gift_Item_And_Blue_Jay_Donation_With_PayPal_Checkout extends BaseTest {
+public class SC_TC09_VerifyShoppingCart_Free_Gift_Item extends BaseTest {
     /*
      * CER-852 - Shopping Cart - Add item (having associate gift item) and check sub-total and order summary
-     * CER-870 - Shopping Cart - Verify blue jays donation addition
-     * CER-866 - Shopping Cart - Verify PayPal button functionality
      * CER-864 - Global Header - Verify display of global header on all pages
      * CER-865 - Global Footer - Verify display of global footer on all pages
      */
     @Test(groups={"Regression","ShoppingCart","SauceTunnelTest"})
-    public void SC_TC09_VerifyShoppingCart_Free_Gift_Item_And_Blue_Jay_Donation_With_PayPal_Checkout() throws IOException {
+    public void SC_TC09_VerifyShoppingCart_Free_Gift_Item_And_Blue_Jay_Donation_Checkout() throws IOException {
         getGlobalFooterPageThreadLocal().closePopupDialog();
 
         //Fetching test data from test data file
@@ -50,6 +49,7 @@ public class SC_TC09_VerifyShoppingCart_Free_Gift_Item_And_Blue_Jay_Donation_Wit
         String customerEDP = getApiUserSessionDataMapThreadLocal().get("customerEDP").toString();
         try{
             getShoppingCartThreadLocal().emptyCart(Integer.valueOf(customerEDP),accessToken);
+            (new CartAPI()).deletePromoCodeAppliedOnCart(String.valueOf(customerEDP),accessToken);
 
             //Verifying configurations and adding necessary credit Card for user
             getShoppingCartThreadLocal().verifyAndUpdateCreditCardAsPerSystemConfiguration(configurations,creditCardData,customerEDP,accessToken);
@@ -96,16 +96,6 @@ public class SC_TC09_VerifyShoppingCart_Free_Gift_Item_And_Blue_Jay_Donation_Wit
             float subTotal=getShoppingCartThreadLocal().getSubTotalFromShoppingList((List<Map<String,Object>>)shoppingCartMap.get("shoppingList"));
 
             Map<String,Object> mapOrderSummary=getShoppingCartThreadLocal().getOrderSummaryDesc();
-            getShoppingCartThreadLocal().verifyOrderSummaryBusinessLogic(subTotal,mapOrderSummary,null);
-            getShoppingCartThreadLocal().verifyOrderSummaryContents();
-
-            reporter.reportLog("Verify Blue Jay Donation Addition to cart for user");
-            float presetDonationValue=getShoppingCartThreadLocal().setRandomJaysCareDonationItem();
-            getShoppingCartThreadLocal().verifyBlueJayDonationAdditionInCart(presetDonationValue);
-            getShoppingCartThreadLocal().verifyCheckOutContents();
-
-            reporter.reportLog("Verify OrderSummary after adding Blue Jay Donation amount");
-            mapOrderSummary=getShoppingCartThreadLocal().getOrderSummaryDesc();
             getShoppingCartThreadLocal().verifyOrderSummaryBusinessLogic(subTotal,mapOrderSummary,null);
             getShoppingCartThreadLocal().verifyOrderSummaryContents();
 

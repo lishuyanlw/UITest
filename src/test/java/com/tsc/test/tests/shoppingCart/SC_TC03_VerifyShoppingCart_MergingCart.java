@@ -1,14 +1,9 @@
 package com.tsc.test.tests.shoppingCart;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.tsc.api.apiBuilder.AccountAPI;
 import com.tsc.api.apiBuilder.CartAPI;
-import com.tsc.api.pojo.AccountCartResponse;
-import com.tsc.api.util.JsonParser;
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
-import io.restassured.response.Response;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
@@ -32,6 +27,7 @@ public class SC_TC03_VerifyShoppingCart_MergingCart extends BaseTest{
 		reporter.reportLog("ProductDetail Page");
 
 		getShoppingCartThreadLocal().emptyCart(Integer.valueOf(customerEDP),accessToken);
+		(new CartAPI()).deletePromoCodeAppliedOnCart(String.valueOf(customerEDP),accessToken);
 
 		List<String> lstKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_APISearchingKeyword();
 		String lsUserName = TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
@@ -114,42 +110,11 @@ public class SC_TC03_VerifyShoppingCart_MergingCart extends BaseTest{
 			reporter.reportLog("To verify heading and Shopping Item List contents");
 			getShoppingCartThreadLocal().verifyShoppingCartContents();
 
-			Map<String,Object> map=getShoppingCartThreadLocal().getItemCountAndPriceInfo(shoppingCartMap,false);
-			int shoppingItemCountInitial= (int) map.get("shoppingItemCount");
-			int itemCountInOrderSummaryInitial= (int) map.get("itemCountInOrderSummary");
-			int shoppingItemCountOnCheckoutButton= (int) map.get("itemCountOnCheckoutButton");
-			float subTotalShoppingCartInitial= (float) map.get("subTotalShoppingCart");
-			float subTotalOrderSummaryInitial= (float) map.get("subTotalOrderSummary");
-
-			float donationValue=0.0f;
-			int donationCount=0;
-			if(getShoppingCartThreadLocal().checkJaysCareDonationExistingInOrderSummary()){
-				donationValue=getShoppingCartThreadLocal().getJaysCareDonationValueInOrderSummary();
-				donationCount=1;
-			}
-			if((itemCountInOrderSummaryInitial-shoppingItemCountInitial)==donationCount){
-				reporter.reportLogPass("The initial added item count in Shopping cart list plus donation count is equal to then one in OrderSummary");
-			}
-			else{
-				reporter.reportLogFail("The initial added item count in Shopping cart list plus donation count is not equal to then one in OrderSummary");
-			}
-
-			if(itemCountInOrderSummaryInitial==shoppingItemCountOnCheckoutButton){
-				reporter.reportLogPass("The initial added item count in Shopping cart list plus donation count is equal to then one in OrderSummary");
-			}
-			else{
-				reporter.reportLogFail("The initial added item count in Shopping cart list plus donation count is not equal to then one in OrderSummary");
-			}
-
-			if(Math.abs(Math.abs(subTotalOrderSummaryInitial-subTotalShoppingCartInitial)-donationValue)<0.1f){
-				reporter.reportLogPass("The subTotal in orderSummary minus donation value is equal to the one in shopping cart list");
-			}
-			else{
-				reporter.reportLogFail("The subTotal in orderSummary minus donation value is not equal to the one in shopping cart list");
-			}
+			reporter.reportLog("To verify Linkage Between Shopping Cart List And OrderSummary");
+			getShoppingCartThreadLocal().verifyLinkageBetweenShoppingCartListAndOrderSummary(shoppingCartMap);
 
 			reporter.reportLog("Verify checkout section contents");
-			getShoppingCartThreadLocal().verifyCheckOutContents();
+			getShoppingCartThreadLocal().verifyJaysCareDonationContents();
 		}
 		else {
 			reporter.reportLogFail("Unable to find the matched product item");

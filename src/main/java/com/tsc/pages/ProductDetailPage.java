@@ -443,7 +443,7 @@ public class ProductDetailPage extends BasePage {
 	@FindBy(xpath = "//section[@class='pdp-description']//span[@class='pdp-description__add-to-bag__favorite__text']")
 	public WebElement lblAddToFavoriteText;
 
-	@FindBy(xpath = "//section[@class='pdp-description']//button[@class='pdp-description__add-to-bag__favorite__icon-wrapper']")
+	@FindBy(xpath = "//section[@class='pdp-description']//div[@class='pdp-description__add-to-bag']//button[@class='pdp-description__add-to-bag__favorite__icon-wrapper']")
 	public WebElement lnkFavIcon;
 
 	//For popup window after clicking Fav Icon
@@ -4108,6 +4108,17 @@ public class ProductDetailPage extends BasePage {
 		this.clickWebElementUsingJS(this.btnReviewChangesForPlacedOrder);
 		this.waitForPageToLoad();
 		return addToBagPopUpWindowData;
+	}
+
+	/**
+	 * To highLighted Favorite Icon
+	 */
+	public void highLightedFavoriteIcon(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lnkFavIcon);
+		if(!checkIfFavShareMobileHighlighted()){
+			this.clickElement(this.lnkFavIcon);
+			this.waitForCondition(Driver->{return checkIfFavShareMobileHighlighted();},20000);
+		}
 	}
 
 }
