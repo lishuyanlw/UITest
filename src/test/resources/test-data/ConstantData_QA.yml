@@ -1,7 +1,7 @@
 # API USER TOKEN INFO
 apiUserSessionParams:
-  lbl_username: qa2542@rogers.com
-  lbl_password: qa1234
+  lbl_username: testautomation@rogers.com
+  lbl_password: testMail123
   lbl_grantType: password
   lbl_apiKey: A9607F64-D061-4279-8D00-F8469EA38DD1
 

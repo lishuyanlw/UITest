@@ -25,7 +25,7 @@ public class MA_TC11_Payment_Options_Add_New_Credit_Card extends BaseTest {
     /*
     *CER-802
      */
-    @Test(groups={"MyAccount","Regression"})
+    @Test(groups={"MyAccount","Regression","BugTest"})
     public void MA_TC11_Payment_Options_Add_New_Credit_Card() throws ParseException, IOException {
         //Closing SignIn pop up on login
         getGlobalFooterPageThreadLocal().closePopupDialog();

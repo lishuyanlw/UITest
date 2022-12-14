@@ -19,7 +19,7 @@ public class MA_TC14_YourAddresses_ShippingAddress extends BaseTest {
     /*
      *CER-804
      */
-    @Test(groups={"MyAccount","Regression"})
+    @Test(groups={"MyAccount","Regression","BugTest"})
     public void MA_TC14_YourAddresses_ShippingAddress() throws IOException, org.json.simple.parser.ParseException {
         //Closing SignIn pop up on login
         getGlobalFooterPageThreadLocal().closePopupDialog();
@@ -90,23 +90,7 @@ public class MA_TC14_YourAddresses_ShippingAddress extends BaseTest {
         getMyAccountPageThreadLocal().openAddOrEditAddressWindow("addShippingAddress",null);
         lsAutoSearchKeywordAdd = DataConverter.getSaltString(4,"numberType");
         mapAdd=getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeywordAdd,false,false,-1);
-
-        //To avoid duplicated data issue
-        try{
-            getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
-        }
-        catch(Exception e){
-            lsAutoSearchKeywordAdd = DataConverter.getSaltString(4,"numberType");
-            mapAdd=getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeywordAdd,false,false,-1);
-            try{
-                getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
-            }
-            catch(Exception ex){
-                lsAutoSearchKeywordAdd = DataConverter.getSaltString(4,"numberType");
-                mapAdd=getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeywordAdd,false,false,-1);
-                getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
-            }
-        }
+        getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
 
         String lsFirstNameAdd=mapAdd.get("firstName").toString();
         int addressAmountAfterAdding=getMyAccountPageThreadLocal().lstShippingAddressContainer.size();

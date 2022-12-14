@@ -10,7 +10,7 @@ import java.text.ParseException;
 import java.util.Map;
 
 public class MA_TC10_Payment_Options_Manage_Credit_Card extends BaseTest {
-    @Test(groups={"MyAccount","Regression"})
+    @Test(groups={"MyAccount","Regression","BugTest"})
     public void MA_TC10_Payment_Options_Manage_Credit_Card() throws ParseException {
         //Closing SignIn pop up on login
         getGlobalFooterPageThreadLocal().closePopupDialog();

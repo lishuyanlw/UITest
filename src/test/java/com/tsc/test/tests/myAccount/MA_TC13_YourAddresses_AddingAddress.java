@@ -17,7 +17,7 @@ public class MA_TC13_YourAddresses_AddingAddress extends BaseTest {
     /*
      *CER-805
      */
-    @Test(groups={"MyAccount","Regression"})
+    @Test(groups={"MyAccount","Regression","BugTest"})
     public void MA_TC13_YourAddresses_AddingAddress() throws IOException, org.json.simple.parser.ParseException {
         //Closing SignIn pop up on login
         getGlobalFooterPageThreadLocal().closePopupDialog();
@@ -78,7 +78,7 @@ public class MA_TC13_YourAddresses_AddingAddress extends BaseTest {
         reporter.reportLog("Adding a new shipping address");
         String lsAutoSearchKeywordAdd = DataConverter.getSaltString(4,"numberType");
         Map<String,String> map;
-         map=getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeywordAdd,false,false,-1);
+        map=getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeywordAdd,false,false,-1);
         getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
 
         int addressAmountAfterAdding=getMyAccountPageThreadLocal().lstShippingAddressContainer.size();

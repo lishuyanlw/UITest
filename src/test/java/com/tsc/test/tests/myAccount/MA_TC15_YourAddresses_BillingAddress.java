@@ -20,7 +20,7 @@ public class MA_TC15_YourAddresses_BillingAddress extends BaseTest {
     /*
      *CER-806
      */
-    @Test(groups={"MyAccount","Regression"})
+    @Test(groups={"MyAccount","Regression","BugTest"})
     public void MA_TC15_YourAddresses_BillingAddress() throws IOException, org.json.simple.parser.ParseException {
         //Closing SignIn pop up on login
         getGlobalFooterPageThreadLocal().closePopupDialog();
