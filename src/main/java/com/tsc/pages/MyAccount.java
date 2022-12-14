@@ -1128,34 +1128,24 @@ public class MyAccount extends BasePage {
 	/**
 	 * This function adds Credit Card number for new Card addition
 	 */
-	public void addNewOrEditExistingCreditCardNumber(String cardType, String cardNumber, boolean isNewCard) {
+	public void addNewOrEditExistingCreditCardNumber(String cardType, String cardNumber, boolean isNewCard){
 		this.waitForPageToLoad();
-		String selectedCreditCardType = this.getChildElementAttribute(this.lblSelectedNewCreditCardToBeAdded, "alt");
-			if (isNewCard) {
-
+		String selectedCreditCardType = this.getChildElementAttribute(this.lblSelectedNewCreditCardToBeAdded,"alt");
+		if(isNewCard)
+			getDriver().switchTo().frame(iFrameForNewCreditCard);
+		else if(!selectedCreditCardType.toLowerCase().contains("tsc"))
 			getDriver().switchTo().frame(iFrameForNewCreditCard);
 
-		} else if (!selectedCreditCardType.toLowerCase().contains("tsc"))
-			getDriver().switchTo().frame(iFrameForNewCreditCard);
-
-		if (!selectedCreditCardType.toLowerCase().contains("tsc")) {
-
-			waitForCondition(Driver -> {
-				return this.lblCardNumberForNewCreditCard.isEnabled() &&
-						this.lblCardNumberForNewCreditCard.isDisplayed();
-			}, 15000);
+		if(!selectedCreditCardType.toLowerCase().contains("tsc")){
+			waitForCondition(Driver->{return this.lblCardNumberForNewCreditCard.isEnabled() &&
+					this.lblCardNumberForNewCreditCard.isDisplayed();},15000);
 			//Adding Credit Card Number
-
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblCardNumberForNewCreditCard);
-
 			this.clickWebElementUsingJS(this.lblCardNumberForNewCreditCard);
 			this.lblCardNumberForNewCreditCard.sendKeys(cardNumber);
-
-		} else {
-			waitForCondition(Driver -> {
-				return this.lblCardNumberForNewTSCCreditCard.isEnabled() &&
-						this.lblCardNumberForNewTSCCreditCard.isDisplayed();
-			}, 15000);
+		}else{
+			waitForCondition(Driver->{return this.lblCardNumberForNewTSCCreditCard.isEnabled() &&
+					this.lblCardNumberForNewTSCCreditCard.isDisplayed();},15000);
 			//Adding Credit Card Number
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblCardNumberForNewTSCCreditCard);
 			this.clickWebElementUsingJS(this.lblCardNumberForNewTSCCreditCard);
@@ -1164,13 +1154,10 @@ public class MyAccount extends BasePage {
 
 		//Using static wait of 5 seconds here as wait for condition is throwing target frame detached error
 		getReusableActionsInstance().staticWait(5000);
-
 		//waitForCondition(Driver->{return !this.getChildElementAttribute(this.getLblMaskedCardNumberForNewCreditCard,"value").isEmpty();},10000);
-		if (isNewCard) {
-
-			//getDriver().switchTo().parentFrame();
-
-		} else if (!selectedCreditCardType.toLowerCase().contains("tsc"))
+		if(isNewCard)
+			getDriver().switchTo().parentFrame();
+		else if(!selectedCreditCardType.toLowerCase().contains("tsc"))
 			getDriver().switchTo().parentFrame();
 	}
 
