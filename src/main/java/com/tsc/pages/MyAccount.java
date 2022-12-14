@@ -1131,27 +1131,26 @@ public class MyAccount extends BasePage {
 	public void addNewOrEditExistingCreditCardNumber(String cardType, String cardNumber, boolean isNewCard) {
 		this.waitForPageToLoad();
 		String selectedCreditCardType = this.getChildElementAttribute(this.lblSelectedNewCreditCardToBeAdded, "alt");
-		reporter.reportLog("Test1:" + selectedCreditCardType);
-		if (isNewCard) {
-			reporter.reportLog("test2");
+			if (isNewCard) {
+
 			getDriver().switchTo().frame(iFrameForNewCreditCard);
-			reporter.reportLog("test3");
+
 		} else if (!selectedCreditCardType.toLowerCase().contains("tsc"))
 			getDriver().switchTo().frame(iFrameForNewCreditCard);
 
 		if (!selectedCreditCardType.toLowerCase().contains("tsc")) {
-			reporter.reportLog("test4");
+
 			waitForCondition(Driver -> {
 				return this.lblCardNumberForNewCreditCard.isEnabled() &&
 						this.lblCardNumberForNewCreditCard.isDisplayed();
 			}, 15000);
 			//Adding Credit Card Number
-			reporter.reportLog("test5");
+
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblCardNumberForNewCreditCard);
-			reporter.reportLog("test6");
+
 			this.clickWebElementUsingJS(this.lblCardNumberForNewCreditCard);
 			this.lblCardNumberForNewCreditCard.sendKeys(cardNumber);
-			reporter.reportLog("test7");
+
 		} else {
 			waitForCondition(Driver -> {
 				return this.lblCardNumberForNewTSCCreditCard.isEnabled() &&
@@ -1165,12 +1164,12 @@ public class MyAccount extends BasePage {
 
 		//Using static wait of 5 seconds here as wait for condition is throwing target frame detached error
 		getReusableActionsInstance().staticWait(5000);
-		reporter.reportLog("test8");
+
 		//waitForCondition(Driver->{return !this.getChildElementAttribute(this.getLblMaskedCardNumberForNewCreditCard,"value").isEmpty();},10000);
 		if (isNewCard) {
-			reporter.reportLog("test9");
+
 			//getDriver().switchTo().parentFrame();
-			reporter.reportLog("test10");
+
 		} else if (!selectedCreditCardType.toLowerCase().contains("tsc"))
 			getDriver().switchTo().parentFrame();
 	}
@@ -1181,7 +1180,6 @@ public class MyAccount extends BasePage {
 	 * @param -Map<String,String> - cardData
 	 */
 	public void addExpirationMonthAndYear(Map<String, String> cardData) {
-		reporter.reportLog("test16" + cardData.get("expirationMonth"));
 		getReusableActionsInstance().selectWhenReady(this.lblMonthForNewCreditCard, cardData.get("expirationMonth"), 6000);
 		getReusableActionsInstance().selectWhenReady(this.lblExpirationYearForNewCreditCard, cardData.get("expirationYear"), 6000);
 	}
@@ -1453,13 +1451,11 @@ public class MyAccount extends BasePage {
 			this.selectGivenCreditCard(cardNumber, cardType, expirationMonthAndYear, false);
 		} else {
 			cardData = this.getFirstCreditCardDetailsAndSelect();
-			reporter.reportLog("Test11" + cardData.get(0));
 			//String cardTypeAdded = this.getCreditCardTypeName(cardData.get("cardType"));
 			JSONObject creditCard = (JSONObject) creditCardsData.get(cardData.get("cardType"));
 			cardNumber = creditCard.get("Number").toString();
 			cardData.put("cardNumber", cardNumber);
-			reporter.reportLog("Test12");
-		}
+				}
 		this.addNewOrEditExistingCreditCardNumber(cardType, cardNumber, false);
 
 		if (expirationMonthAndYear != null) {
@@ -1470,12 +1466,9 @@ public class MyAccount extends BasePage {
 			cardData.put("expirationYear", String.valueOf(updatedYear));
 		}
 		if (!cardData.get("cardType").toLowerCase().contains("tsc")) {
-			reporter.reportLog("Test13");
 			this.addExpirationMonthAndYear(cardData);
-			reporter.reportLog("Test14");
 			this.waitForPageToLoad();
-			reporter.reportLog("Test15");
-		}
+			}
 		getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSaveAddCreditCardForNewCreditCard);
 
 		if (editCard) {
