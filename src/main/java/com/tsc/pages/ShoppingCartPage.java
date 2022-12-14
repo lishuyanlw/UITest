@@ -3276,7 +3276,11 @@ public class ShoppingCartPage extends BasePage {
 		if(shoppingCartMap.size()>0){
 			List<Map<String,Object>> shoppingCartItemList = (List<Map<String, Object>>) shoppingCartMap.get("shoppingList");
 			for(Map<String,Object> map:shoppingCartItemList){
-				if(Boolean.valueOf(map.get("productQuantityDisabled").toString())){
+				if(map.get("productNumber")==null){
+					continue;
+				}
+
+				if(!Boolean.valueOf(map.get("productQuantityDisabled").toString())){
 					flag = true;
 					ProductDetailsItem productDetailsItem = new ProductAPI().getProductDetailsForSpecificProductNumber(map.get("productNumber").toString());
 					//Verifying free gift product name
@@ -3286,10 +3290,18 @@ public class ShoppingCartPage extends BasePage {
 						reporter.reportLogFailWithScreenshot("Product Name for free gift item is not as expected: "+productDetailsItem.getName());
 
 					//Verifying free gift product edp number
-					if(productDetailsItem.getDefaultEdp()==edpNumber)
-						reporter.reportLogPass("Edp Number for free gift item is as expected: "+edpNumber);
+					boolean bFindEdp=false;
+					List<ProductDetailsItem.Edp> edpList=productDetailsItem.getEdps();
+					for(ProductDetailsItem.Edp edp:edpList){
+						if(edp.getEdpNo()==edpNumber){
+							bFindEdp=true;
+							break;
+						}
+					}
+					if(bFindEdp)
+						reporter.reportLogPass("Edp Number for free gift item can be found as expected");
 					else
-						reporter.reportLogFailWithScreenshot("Edp Number for free gift item is not as expected: "+edpNumber+" actual: "+productDetailsItem.getDefaultEdp());
+						reporter.reportLogFailWithScreenshot("Edp Number for free gift item can not be found");
 
 					break;
 				}
