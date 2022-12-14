@@ -89,8 +89,16 @@ public class SC_TC09_VerifyShoppingCart_Free_Gift_Item extends BaseTest {
 
             Map<String,Object> shoppingCartMap=getShoppingCartThreadLocal().getShoppingSectionDetails("mandatory");
 
+            int freeShippingItemIndex=getShoppingCartThreadLocal().checkFreeShippingItemExistingInShoppingList();
+            if(freeShippingItemIndex!=-1){
+                reporter.reportLogPass("Found free gift item in Shopping Cart list");
+            }
+            else{
+                reporter.reportLogFail("Unable to find free gift item in Shopping Cart list");
+            }
+
             reporter.reportLog("Verifying that free shipping item is added for user");
-            getShoppingCartThreadLocal().verifyFreeGiftItemPresentInCart(shoppingCartMap, Integer.valueOf(getShoppingCartThreadLocal().getKeyValueFromContentfulConfiguration(configurations,"GWPGiftItemEdp").toString()));
+            getShoppingCartThreadLocal().verifyFreeGiftItemPresentInCart(shoppingCartMap);
 
             reporter.reportLog("Verify OrderSummary and EasyPayment sections contents");
             float subTotal=getShoppingCartThreadLocal().getSubTotalFromShoppingList((List<Map<String,Object>>)shoppingCartMap.get("shoppingList"));

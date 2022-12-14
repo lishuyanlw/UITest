@@ -3270,7 +3270,7 @@ public class ShoppingCartPage extends BasePage {
 	 * @param - Map<String,Object> - shopping cart map object
 	 * @param - int - edp number for free gift item
 	 */
-	public void verifyFreeGiftItemPresentInCart(Map<String,Object> shoppingCartMap,int edpNumber) throws IOException {
+	public void verifyFreeGiftItemPresentInCart(Map<String,Object> shoppingCartMap) throws IOException {
 		boolean flag = false;
 		//Fetching product edp number and name from product item number
 		if(shoppingCartMap.size()>0){
@@ -3288,20 +3288,6 @@ public class ShoppingCartPage extends BasePage {
 						reporter.reportLogPass("Product Name for free gift item is as expected: "+productDetailsItem.getName());
 					else
 						reporter.reportLogFailWithScreenshot("Product Name for free gift item is not as expected: "+productDetailsItem.getName());
-
-					//Verifying free gift product edp number
-					boolean bFindEdp=false;
-					List<ProductDetailsItem.Edp> edpList=productDetailsItem.getEdps();
-					for(ProductDetailsItem.Edp edp:edpList){
-						if(edp.getEdpNo()==edpNumber){
-							bFindEdp=true;
-							break;
-						}
-					}
-					if(bFindEdp)
-						reporter.reportLogPass("Edp Number for free gift item can be found as expected");
-					else
-						reporter.reportLogFailWithScreenshot("Edp Number for free gift item can not be found");
 
 					break;
 				}
