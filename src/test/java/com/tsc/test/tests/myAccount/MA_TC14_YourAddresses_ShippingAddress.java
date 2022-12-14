@@ -145,8 +145,8 @@ public class MA_TC14_YourAddresses_ShippingAddress extends BaseTest {
         editButton=getMyAccountPageThreadLocal().getGivenShippingAddressEditButton(0);
         getMyAccountPageThreadLocal().openAddOrEditAddressWindow("editShippingAddress",editButton);
         String lsAddressEdit=getMyAccountPageThreadLocal().editAddress(mapEditInput,lsAutoSearchKeywordEdit);
-
-        //To avoid duplicated data issue
+        getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
+        /*//To avoid duplicated data issue
         try{
             getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
         }
@@ -161,7 +161,7 @@ public class MA_TC14_YourAddresses_ShippingAddress extends BaseTest {
                 lsAddressEdit=getMyAccountPageThreadLocal().editAddress(mapEditInput,lsAutoSearchKeywordEdit);
                 getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
             }
-        }
+        }*/
         Map<String,String> mapAfterEdit=getMyAccountPageThreadLocal().getGivenShippingOrBillingAddress(0);
         String lsFirstName=mapAfterEdit.get("firstName");
         String lsLastName=mapAfterEdit.get("lastName");

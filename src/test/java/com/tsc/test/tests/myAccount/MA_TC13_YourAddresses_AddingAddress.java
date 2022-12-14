@@ -77,7 +77,8 @@ public class MA_TC13_YourAddresses_AddingAddress extends BaseTest {
 
         reporter.reportLog("Adding a new shipping address");
         String lsAutoSearchKeywordAdd = DataConverter.getSaltString(4,"numberType");
-        Map<String,String> map=getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeywordAdd,false,false,-1);
+        Map<String,String> map;
+         map=getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeywordAdd,false,false,-1);
         getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
 
         int addressAmountAfterAdding=getMyAccountPageThreadLocal().lstShippingAddressContainer.size();
