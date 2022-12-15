@@ -20,7 +20,7 @@ public class MA_TC15_YourAddresses_BillingAddress extends BaseTest {
     /*
      *CER-806
      */
-    @Test(groups={"MyAccount","Regression"})
+    @Test(groups={"MyAccount","Regression","BugTest"})
     public void MA_TC15_YourAddresses_BillingAddress() throws IOException, org.json.simple.parser.ParseException {
         //Closing SignIn pop up on login
         getGlobalFooterPageThreadLocal().closePopupDialog();
@@ -97,8 +97,17 @@ public class MA_TC15_YourAddresses_BillingAddress extends BaseTest {
         getMyAccountPageThreadLocal().openAddOrEditAddressWindow("addShippingAddress",null);
         String lsAutoSearchKeywordAdd = DataConverter.getSaltString(4,"numberType");
         Map<String,String> mapAdd=getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeywordAdd,false,false,-1);
+        getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
 
-        //To avoid duplicated data issue
+        int addressAmountAfterAdding=getMyAccountPageThreadLocal().lstShippingAddressContainer.size();
+        if((addressAmountAfterAdding-addressAmountBeforeAdding)>=1){
+            reporter.reportLogPass("Adding a new address successfully");
+        }
+        else{
+            reporter.reportLogFail("Adding a new address failed");
+            return;
+        }
+        /*//To avoid duplicated data issue
         try{
             getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
         }
@@ -113,11 +122,11 @@ public class MA_TC15_YourAddresses_BillingAddress extends BaseTest {
                 mapAdd=getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeywordAdd,false,false,-1);
                 getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
             }
-        }
+        }*/
         String lsFirstNameAdd=mapAdd.get("firstName").toString();
         reporter.reportLog("lsFirstNameAdd: "+lsFirstNameAdd);
         int selectedIndex= Integer.parseInt(mapAdd.get("selectedIndex"));
-        int addressAmountAfterAdding=getMyAccountPageThreadLocal().lstShippingAddressContainer.size();
+         addressAmountAfterAdding=getMyAccountPageThreadLocal().lstShippingAddressContainer.size();
         if((addressAmountAfterAdding-addressAmountBeforeAdding)>=1){
             reporter.reportLogPass("Adding a new address successfully");
         }
@@ -129,8 +138,18 @@ public class MA_TC15_YourAddresses_BillingAddress extends BaseTest {
         getMyAccountPageThreadLocal().openAddOrEditAddressWindow("addShippingAddress",null);
         lsAutoSearchKeywordAdd = DataConverter.getSaltString(4,"numberType");
         mapAdd=getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeywordAdd,false,false,-1);
+        getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
 
-        //To avoid duplicated data issue
+        addressAmountAfterAdding=getMyAccountPageThreadLocal().lstShippingAddressContainer.size();
+        if((addressAmountAfterAdding-addressAmountBeforeAdding)>=1){
+            reporter.reportLogPass("Adding a new address successfully");
+        }
+        else{
+            reporter.reportLogFail("Adding a new address failed");
+            return;
+        }
+
+        /*//To avoid duplicated data issue
         try{
             getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
         }
@@ -145,7 +164,7 @@ public class MA_TC15_YourAddresses_BillingAddress extends BaseTest {
                 mapAdd=getMyAccountPageThreadLocal().addNewAddress(lsAutoSearchKeywordAdd,false,false,-1);
                 getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
             }
-        }
+        }*/
         lsFirstNameAdd=mapAdd.get("firstName").toString();
         reporter.reportLog("lsFirstNameAdd: "+lsFirstNameAdd);
         addressAmountAfterAdding=getMyAccountPageThreadLocal().lstShippingAddressContainer.size();
@@ -204,23 +223,7 @@ public class MA_TC15_YourAddresses_BillingAddress extends BaseTest {
         mapEditInput.put("lastName",lsLastNameEdit);
         getMyAccountPageThreadLocal().openAddOrEditAddressWindow("editBillingAddress",null);
         String lsAddressEdit=getMyAccountPageThreadLocal().editAddress(mapEditInput,lsAutoSearchKeywordEdit);
-
-        //To avoid duplicated data issue
-        try{
-            getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
-        }
-        catch(Exception e){
-            lsAutoSearchKeywordEdit = DataConverter.getSaltString(4,"numberType");
-            lsAddressEdit=getMyAccountPageThreadLocal().editAddress(mapEditInput,lsAutoSearchKeywordEdit);
-            try{
-                getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
-            }
-            catch (Exception ex){
-                lsAutoSearchKeywordEdit = DataConverter.getSaltString(4,"numberType");
-                lsAddressEdit=getMyAccountPageThreadLocal().editAddress(mapEditInput,lsAutoSearchKeywordEdit);
-                getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
-            }
-        }
+        getMyAccountPageThreadLocal().closeAddOrEditAddressWindow(true);
 
         Map<String,String> mapAfterEdit=getMyAccountPageThreadLocal().getGivenShippingOrBillingAddress(-1);
         String lsFirstName=mapAfterEdit.get("firstName");

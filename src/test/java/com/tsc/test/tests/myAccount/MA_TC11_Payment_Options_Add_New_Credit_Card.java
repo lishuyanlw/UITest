@@ -25,13 +25,21 @@ public class MA_TC11_Payment_Options_Add_New_Credit_Card extends BaseTest {
     /*
     *CER-802
      */
-    @Test(groups={"MyAccount","Regression"})
+    @Test(groups={"MyAccount","Regression","BugTest"})
     public void MA_TC11_Payment_Options_Add_New_Credit_Card() throws ParseException, IOException {
         //Closing SignIn pop up on login
         getGlobalFooterPageThreadLocal().closePopupDialog();
         /**
          Scenario for adding a new Credit Card to user
          */
+
+        BasePage basePage=new BasePage(this.getDriver());
+        //The switching frame for not DeskTop device is not working, so bypass it
+        if(basePage.checkIfDeviceTypeNotDesktop(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
+            reporter.reportLog("The switching frame for not DeskTop device is not working!");
+            return;
+        }
+
         reporter.reportLog("Scenario for adding new Credit Card to user for all four types");
 
         //Fetching test data from test data file
@@ -64,7 +72,6 @@ public class MA_TC11_Payment_Options_Add_New_Credit_Card extends BaseTest {
         //Login using valid username and password
         getGlobalLoginPageThreadLocal().Login(lblUserName, lblPassword);
 
-        BasePage basePage=new BasePage(this.getDriver());
         String lsTestDevice = System.getProperty("Device").trim();
         if(lsTestDevice.equalsIgnoreCase("Desktop")) {
             WebElement item=(new GlobalHeaderPage(this.getDriver())).Signinlnk;
