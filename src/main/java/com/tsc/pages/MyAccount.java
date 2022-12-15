@@ -3167,68 +3167,41 @@ public class MyAccount extends BasePage {
 					return this.lblShippingAddressSectionTitle.isDisplayed();
 				}, 40000);
 
-			} catch (Exception e) {
+			}
+			catch (Exception e) {
 				this.getReusableActionsInstance().staticWait(10 * getStaticWaitForApplication());
-				if (this.getElementInnerText(lblAddOrEditAddressExistingErrorMessage).contains("Account.AddShippingAddressError")) {
+
+				String lsErrorMessage=this.getElementInnerText(this.lblAddOrEditAddressExistingErrorMessage).toLowerCase();
+				if(lsErrorMessage.contains("you have one or more missing or invalid entries") ||
+						lsErrorMessage.contains("address Line 1 cannot be more than 30 characters long")) {
+					String lsAutoSearchKeywordAdd = DataConverter.getSaltString(4, "numberType");
+					this.editAddress(null, lsAutoSearchKeywordAdd);
+
 					this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSave);
 					this.clickElement(this.btnSave);
 
 					try {
 						this.waitForCondition(Driver -> {
 							return this.lblShippingAddressSectionTitle.isDisplayed();
-						}, 20000);
+						}, 40000);
 
-					} catch(Exception ex) {
+					} catch (Exception e1) {
 						this.getReusableActionsInstance().staticWait(10 * getStaticWaitForApplication());
-						String lsErrorMessage = this.getElementInnerText(this.lblAddOrEditAddressExistingErrorMessage).toLowerCase();
-						if(lsErrorMessage.contains("the shipping address you are trying to add already exists")) {
-							this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnCancel);
-							this.clickElement(this.btnCancel);
-							this.waitForCondition(Driver -> {
-								return this.lblShippingAddressSectionTitle.isDisplayed();
-							}, 40000);
-						}
-
-						if(this.getElementInnerText(this.lblAddOrEditAddressExistingErrorMessage).toLowerCase().contains("you have one or more missing or invalid entries") ||
-								this.getElementInnerText(this.lblAddressLin1ErrorMessage).toLowerCase().contains("address Line 1 cannot be more than 30 characters long")) {
-							String lsAutoSearchKeywordAdd = DataConverter.getSaltString(4, "numberType");
-							this.editAddress(null, lsAutoSearchKeywordAdd);
-
-							this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSave);
-							this.clickElement(this.btnSave);
-
-							try {
-								this.waitForCondition(Driver -> {
-									return this.lblShippingAddressSectionTitle.isDisplayed();
-								}, 40000);
-
-							} catch (Exception e1) {
-								this.getReusableActionsInstance().staticWait(10 * getStaticWaitForApplication());
-								if (this.getElementInnerText(lblAddOrEditAddressExistingErrorMessage).contains("Account.AddShippingAddressError")) {
-									this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSave);
-									this.clickElement(this.btnSave);
-
-									try {
-										this.waitForCondition(Driver -> {
-											return this.lblShippingAddressSectionTitle.isDisplayed();
-										}, 20000);
-
-									} catch (Exception ex1) {
-										this.getReusableActionsInstance().staticWait(10 * getStaticWaitForApplication());
-										lsErrorMessage = this.getElementInnerText(this.lblAddOrEditAddressExistingErrorMessage).toLowerCase();
-										this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnCancel);
-										this.clickElement(this.btnCancel);
-										this.waitForCondition(Driver -> {
-											return this.lblShippingAddressSectionTitle.isDisplayed();
-										}, 40000);
-									}
-								}
-							}
+						lsErrorMessage=this.getElementInnerText(lblAddOrEditAddressExistingErrorMessage).toLowerCase();
+						if (lsErrorMessage.contains("account.addshippingaddresserror")) {
+							this.handleAddShippingAddressErrorIssue();
+							return;
 						}
 					}
 				}
+
+				if (lsErrorMessage.contains("account.addshippingaddresserror")) {
+					this.handleAddShippingAddressErrorIssue();
+					return;
+				}
 			}
-		} else {
+		}
+		else {
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnCancel);
 			this.clickElement(this.btnCancel);
 			this.waitForCondition(Driver -> {
@@ -3239,59 +3212,30 @@ public class MyAccount extends BasePage {
 		this.getReusableActionsInstance().staticWait(5 * getStaticWaitForApplication());
 	}
 
-//	/**
-//	 * To close add or edit an address window
-//	 *
-//	 * @param - boolean - bSave - clicking Save/Cancel button
-//	 */
-//
-//	public void EditorCancelAddressWindow() {
-//		String lsAutoSearchKeywordEdit = DataConverter.getSaltString(4,"numberType");
-//		String lsFirstNameEdit=DataConverter.getSaltString(1,"upperStringType")+DataConverter.getSaltString(5,"lowerStringType");
-//		String lsLastNameEdit=DataConverter.getSaltString(1,"upperStringType")+DataConverter.getSaltString(7,"lowerStringType");
-//		Map<String,String> mapEditInput=new HashMap<>();
-//		mapEditInput.put("firstName",lsFirstNameEdit);
-//		mapEditInput.put("lastName",lsLastNameEdit);
-//		WebElement editButton=this.getGivenShippingAddressEditButton(0);
-//		reporter.reportLog(lsAutoSearchKeywordEdit);
-//		reporter.reportLog(lsFirstNameEdit);
-//		reporter.reportLog(lsLastNameEdit);
-//		reporter.reportLog(editButton.getText());
-//		reporter.reportLog(editButton.getTagName());
-//
-//
-//		if(this.getElementInnerText(this.lblAddOrEditAddressExistingErrorMessage).toLowerCase().contains("the shipping address you are trying to add already exists")) {
-//			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnCancel);
-//			this.clickElement(this.btnCancel);
-//			Map<String,String> mapLastShippingAddress=this.getGivenShippingOrBillingAddress(0);
-//			editButton=this.getGivenShippingAddressEditButton(this.lstShippingAddressContainer.size()-1);
-//			this.openAddOrEditAddressWindow("editShippingAddress",editButton);
-//			this.editAddress(mapLastShippingAddress,null);
-//			try {
-//				this.waitForCondition(Driver -> {
-//					return this.lblShippingAddressSectionTitle.isDisplayed();
-//				}, 20000);
-//
-//			} catch (Exception ex) {
-//				this.getReusableActionsInstance().staticWait(10 * getStaticWaitForApplication());
-//				if (this.getElementInnerText(this.lblAddOrEditAddressExistingErrorMessage).toLowerCase().contains("You have one or more missing or invalid entries") ||
-//						this.getElementInnerText(this.lblAddressLin1ErrorMessage).toLowerCase().contains("Address Line 1 cannot be more than 30 characters long")) {
-//					this.editAddress(mapLastShippingAddress,null);
-//				}
-//
-//			}
-//
-//		} else {
-//			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnCancel);
-//			this.clickElement(this.btnCancel);
-//			//btnCancel.click();
-//			this.waitForCondition(Driver -> {
-//				return this.lblShippingAddressSectionTitle.isDisplayed();
-//			}, 40000);
-//		}
-//
-//		this.getReusableActionsInstance().staticWait(5 * getStaticWaitForApplication());
-//	}
+	/**
+	 * To handle Account.AddShippingAddressError Issue
+	 */
+	public void handleAddShippingAddressErrorIssue(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnSave);
+		this.clickElement(this.btnSave);
+
+		try {
+			this.waitForCondition(Driver -> {
+				return this.lblShippingAddressSectionTitle.isDisplayed();
+			}, 40000);
+
+		} catch(Exception ex) {
+			this.getReusableActionsInstance().staticWait(10 * getStaticWaitForApplication());
+			String lsErrorMessage = this.getElementInnerText(this.lblAddOrEditAddressExistingErrorMessage).toLowerCase();
+			if(lsErrorMessage.contains("the shipping address you are trying to add already exists")) {
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnCancel);
+				this.clickElement(this.btnCancel);
+				this.waitForCondition(Driver -> {
+					return this.lblShippingAddressSectionTitle.isDisplayed();
+				}, 40000);
+			}
+		}
+	}
 
 	/**
 	 * To verify your address content
