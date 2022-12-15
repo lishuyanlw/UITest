@@ -2,6 +2,7 @@ package com.tsc.test.tests.myAccount;
 
 import com.tsc.api.util.DataConverter;
 import com.tsc.data.Handler.TestDataHandler;
+import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
 import org.json.simple.JSONObject;
 import org.testng.annotations.Test;
@@ -17,6 +18,14 @@ public class MA_TC10_Payment_Options_Manage_Credit_Card extends BaseTest {
         /**
          Scenario for verifying Edit functionality on Manage Credit Card
          */
+
+        BasePage basePage=new BasePage(this.getDriver());
+        //The switching frame for not DeskTop device is not working, so bypass it
+        if(basePage.checkIfDeviceTypeNotDesktop(System.getProperty("Device"),System.getProperty("chromeMobileDevice"))){
+            reporter.reportLog("The switching frame for not DeskTop device is not working!");
+            return;
+        }
+
         reporter.reportLog("Scenario for verifying Edit functionality on Manage Credit Card");
 
         //Fetching Credit Card Data from application
