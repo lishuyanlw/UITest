@@ -437,11 +437,11 @@ public class BaseTest {
 
 	@AfterSuite(alwaysRun = true)
 	public void afterSuite() throws IOException, InterruptedException {
-		if (!placeOrderValue) {
-			addPlaceOrder();
-		}
-		//Emptying the cart for user in Shopping Cart
-		emptyCart();
+//		if (!placeOrderValue) {
+//			addPlaceOrder();
+//		}
+//		//Emptying the cart for user in Shopping Cart
+//		emptyCart();
 	}
 
 	public void validateText(String strActualText, List<String> listExpectedText, String validationMsg) {
