@@ -10,12 +10,12 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-public class SC_TC08_VerifyShoppingCart_BackToShopping extends BaseTest{
+public class SC_TC08_VerifyShoppingCart_CheckoutSectionContents_BackToShopping extends BaseTest{
 	/*
 	 * CER-857
 	 */
 	@Test(groups={"Regression","ShoppingCart"})
-	public void SC_TC08_VerifyShoppingCart_BackToShopping() throws IOException {
+	public void SC_TC08_VerifyShoppingCart_CheckoutSectionContents_BackToShopping() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 
 		String lsUserName=TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
@@ -47,6 +47,8 @@ public class SC_TC08_VerifyShoppingCart_BackToShopping extends BaseTest{
 			(new BasePage(this.getDriver())).applyStaticWait(3000);
 		}
 		getProductDetailPageThreadLocal().goToShoppingCartByClickingShoppingCartIconInGlobalHeader();
+
+		getShoppingCartThreadLocal().verifyCheckoutSectionContents();
 
 		BasePage basePage=new BasePage(this.getDriver());
 		String currentURL=basePage.URL();
