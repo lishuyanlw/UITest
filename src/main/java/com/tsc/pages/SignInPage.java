@@ -916,7 +916,7 @@ public class SignInPage extends BasePage {
 		this.btnCreateAccountOrContinueAsGuest.click();
 
 		GuestCheckoutPage guestCheckoutPage=new GuestCheckoutPage(this.getDriver());
-		return this.waitForCondition(Driver->{return guestCheckoutPage.btnCollapseProductList.isDisplayed();},120000);
+		return this.waitForCondition(Driver->{return guestCheckoutPage.btnCollapseProductList.isDisplayed();},60000);
 	}
 
 	/**

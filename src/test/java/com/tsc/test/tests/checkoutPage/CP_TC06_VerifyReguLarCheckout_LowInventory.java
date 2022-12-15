@@ -22,10 +22,15 @@ public class CP_TC06_VerifyReguLarCheckout_LowInventory extends BaseTest{
         //Fetching test data from test data file
         String accessToken = getApiUserSessionDataMapThreadLocal().get("access_token").toString();
         int customerEDP = Integer.valueOf(getApiUserSessionDataMapThreadLocal().get("customerEDP").toString());
+        getShoppingCartThreadLocal().emptyCart(customerEDP,accessToken);
 
         getGlobalFooterPageThreadLocal().closePopupDialog();
         List<Map<String, String>> keywordList = TestDataHandler.constantData.getCheckOut().getLst_SearchKeywords();
         List<Map<String, Object>> data = getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP, accessToken, keywordList, "all",true,0);
+        if(data.size()==0){
+            keywordList = TestDataHandler.constantData.getShoppingCart().getLst_SearchKeywords();
+            data = getShoppingCartThreadLocal().verifyCartExistsForUser(Integer.valueOf(customerEDP), accessToken, keywordList,"all",true,0);
+        }
 
         //Login using valid username and password
         getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword);

@@ -1,5 +1,6 @@
 package com.tsc.test.tests.shoppingCart;
 
+import com.tsc.api.apiBuilder.CartAPI;
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.SignInPage;
 import com.tsc.pages.base.BasePage;
@@ -19,6 +20,13 @@ public class SC_TC16_VerifyShoppingCart_WithoutUserLogin extends BaseTest{
 	@Test(groups={"Regression","ShoppingCart"})
 	public void SC_TC16_VerifyShoppingCart_WithoutUserLogin() throws IOException {
 		getGlobalFooterPageThreadLocal().closePopupDialog();
+
+		//Fetching test data from test data file
+		String accessToken = getApiUserSessionDataMapThreadLocal().get("access_token").toString();
+		int customerEDP = Integer.valueOf(getApiUserSessionDataMapThreadLocal().get("customerEDP").toString());
+		getShoppingCartThreadLocal().emptyCart(Integer.valueOf(customerEDP),accessToken);
+		(new CartAPI()).deletePromoCodeAppliedOnCart(String.valueOf(customerEDP),accessToken);
+
 		BasePage basePage=new BasePage(this.getDriver());
 		List<String> lstKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_APISearchingKeyword();
 
@@ -50,28 +58,14 @@ public class SC_TC16_VerifyShoppingCart_WithoutUserLogin extends BaseTest{
 			Map<String, Object> PDPMap = getProductDetailPageThreadLocal().getPDPDesc();
 			getProductDetailPageThreadLocal().goToShoppingCartByClickingShoppingCartIconInGlobalHeader();
 			Map<String, Object> shoppingCartMap = getShoppingCartThreadLocal().getShoppingSectionDetails("all");
-
-			//To verify heading and Shopping Item List contents
-			reporter.reportLog("To verify heading and Shopping Item List contents");
-			getShoppingCartThreadLocal().verifyShoppingCartContents("all");
-
-			//To verify business logic Between Shopping Item List And SubTotal Section
-			reporter.reportLog("To verify business logic Between Shopping Item List And SubTotal Section");
-			getShoppingCartThreadLocal().verifyBusinessLogicBetweenShoppingItemListAndSubTotalSection(shoppingCartMap);
-
-			if(getShoppingCartThreadLocal().checkIsDropdownMenuForInstallmentNumber()){
-				List<String> lstOptionText=getShoppingCartThreadLocal().getInstallmentOptions();
-				getShoppingCartThreadLocal().setInstallmentSetting(lstOptionText.get(1));
-			}
+			getShoppingCartThreadLocal().setInstallmentNumberByRandomIndex();
 
 			Map<String,Object> mapOrderSummary=getShoppingCartThreadLocal().getOrderSummaryDesc();
-			int itemAmount=getShoppingCartThreadLocal().GetAddedItemAmount();
-			float savingPrice=getShoppingCartThreadLocal().getSavingPriceFromShoppingCartHeader();
-			float subTotal=getShoppingCartThreadLocal().getShoppingSubTotal();
+			float subTotal=getShoppingCartThreadLocal().getSubTotalFromShoppingList((List<Map<String,Object>>)shoppingCartMap.get("shoppingList"));
 			reporter.reportLog("Verify OrderSummary section contents");
 			getShoppingCartThreadLocal().verifyOrderSummaryContents();
 			reporter.reportLog("Verify OrderSummary business logic");
-			getShoppingCartThreadLocal().verifyOrderSummaryBusinessLogic(itemAmount,savingPrice,subTotal,mapOrderSummary,null);
+			getShoppingCartThreadLocal().verifyOrderSummaryBusinessLogic(subTotal,mapOrderSummary,null);
 
 			reporter.reportLog("Verify EasyPayment section contents");
 			getShoppingCartThreadLocal().verifyEasyPaymentContents();
@@ -98,8 +92,6 @@ public class SC_TC16_VerifyShoppingCart_WithoutUserLogin extends BaseTest{
 			reporter.reportLog("Verify clicking remove button action in remove dialog");
 			getShoppingCartThreadLocal().closeRemoveDialogWithRemoveAction();
 			shoppingCartMap=getShoppingCartThreadLocal().getShoppingSectionDetails("mandatory");
-			reporter.reportLog("To verify business logic Between Shopping Item List And SubTotal Section");
-			getShoppingCartThreadLocal().verifyBusinessLogicBetweenShoppingItemListAndSubTotalSection(shoppingCartMap);
 
 			int findIndex=getShoppingCartThreadLocal().findGivenProductIndexInShoppingCartItemList(mapRemoveDialog,shoppingCartMap);
 			if(findIndex==-1){

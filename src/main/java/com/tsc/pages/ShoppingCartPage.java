@@ -18,7 +18,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.Select;
 
 import java.io.IOException;
@@ -41,437 +40,412 @@ public class ShoppingCartPage extends BasePage {
 
 	////////////////For Shopping bag section////////////////////////////
 
-	@FindBy(xpath = "//div[@class='cartridge']")
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[@class='bag__wrapper']")
 	public WebElement cntCart;
 
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-contents')]")
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[@class='bag__wrapper']/div[@class='blockPageWrap']")
+	public WebElement loadingIndicator;
+
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[@class='bag__details']")
 	public WebElement cntCartContents;
 
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-contents')]//div[@class='emptyContents']")
-	public WebElement lblEmptyCartMessage;
-
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-title')]/parent::div")
-	public WebElement cntCartContainPreviouslyAddedItemsMessage;
-
-	@FindBy(xpath = "//shopping-cart//span[normalize-space(text())='Shopping Bag contains previously added items.']")
-	public WebElement lblCartContainPreviouslyAddedItemsMessage;
-
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-title')]")
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[@class='bag__details']//*[@class='bag__title']")
 	public WebElement lblCartTitle;
 
-	//Hide in mobile
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'contents-head') and contains(@class,'hidden-xs')]")
-	public WebElement lblCartTopMessage;
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[@class='bag__details']//p[@class='bag__para--full']")
+	public WebElement lblCartParaMessage;
 
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-notices')]")
-	public WebElement cntCartNotice;
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[@class='bag__details']//p[@class='bag__para']")
+	public List<WebElement> lblCartParaMessageForEmptyCart;
 
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-notices')]//div[@class='notice-title']")
-	public WebElement lblCartNoticeTitle;
+	//For mobile device
+//	@FindBy(xpath = "//div[@id='shopping-bag']//div[@class='bag__details']//button[contains(@class,'button__black mobileOnly')]")
+//	public WebElement btnCartCheckoutButton;
 
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-notices')]//div[@class='notice-group'][div[strong]]")
-	public WebElement lblCartNoticeMultiPackMessage;
+	//For shopping item
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[@class='bag__details']//div[@class='bag__fulfilled--title']")
+	public List<WebElement> lstShoppingBagFulfilledTitle;
 
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-notices')]//div[@class='notice-group']")
-	public List<WebElement> lstCartNoticeMessage;
-
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-notices')]//div[@class='notice-group'][div[span]]")
-	public WebElement lblCartNoticeQuantityExceedingMessage;
-
-	@FindBy(xpath = "//div[@class='cartridge']//div[@id='tf-cart-wrapper']")
-	public WebElement lblCartNoticeTrueFitMessage;
-
-	@FindBy(xpath = "//div[@class='cartridge']//div[@id='tf-cart-wrapper']//a[contains(@class,'tfc-popup-click-open')]")
-	public WebElement lnkCartNoticeTrueFit;
-
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'estimateDate__wrapper')]")
-	public WebElement lblCartGetItByDate;
-
-	//Hide in mobile
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart__table--heading')]//div[contains(normalize-space(.),'ITEM')]")
-	public WebElement lblCartTableHeadingITEM;
-
-	//Hide in mobile
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart__table--heading')]//div[contains(normalize-space(.),'PRICE')]")
-	public WebElement lblCartTableHeadingPRICE;
-
-	//Hide in mobile
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart__table--heading')]//div[contains(normalize-space(.),'QUANTITY')]")
-	public WebElement lblCartTableHeadingQUANTITY;
-
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-items')]")
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[contains(@class,'bag__itemlist')]//div[contains(@class,'item__container')]")
 	public List<WebElement> lstCartItems;
 
-	public By byProductPicBadgeContainer=By.xpath(".//div[contains(@class,'product-pic')]");
-	public By byProductPicBadge=By.xpath(".//div[contains(@class,'product-pic')]//div[@class='badgeWrap']//img");
-	public By byProductPicLink=By.xpath(".//div[contains(@class,'product-pic')]//a");
-	public By byProductPicImage=By.xpath(".//div[contains(@class,'product-pic')]//a//img");
-	public By byBlueJaysCareFoundationImage=By.xpath(".//div[@class='cartridge']//div[contains(@class,'cart-items')]//div[contains(@class,'product-pic')]/div/img[contains(@class,'responsive')]");
+	public By byProductPicBadgeContainer=By.xpath(".//div[@class='item__image']");
+	public By byProductPicBadge=By.xpath(".//div[@class='item__description']//div[@class='item__badge']");
+	public By byProductPicLink=By.xpath(".//div[@class='item__image']//a");
+	public By byProductPicImage=By.xpath(".//div[@class='item__image']//img");
 
-	public By byProductDescContainer=By.xpath(".//div[contains(@class,'cart-desc') and not(contains(@class,'cart-desc-line'))]");
-	public By byProductItemDesc=By.xpath(".//div[contains(@class,'cart-desc') and not(contains(@class,'cart-desc-line'))]//div[@class='item-desc']");
-	public By byProductNumberContainer=By.xpath(".//div[contains(@class,'cart-desc') and not(contains(@class,'cart-desc-line'))]");
-	public By byProductNumber=By.xpath(".//div[contains(@class,'item-num')]");
-	public By byProductShippingDate=By.xpath(".//div[contains(@class,'cart-desc') and not(contains(@class,'cart-desc-line'))]//div[contains(@class,'estimateDate')]");
-	public By byProductRedMessage=By.xpath(".//div[contains(@class,'item-status')][span[@class='boldRedColor']]");
+	public By byProductDescContainer=By.xpath(".//div[@class='item__description']");
+	public By byProductItemDesc=By.xpath(".//div[@class='item__description']//h3");
+	public By byProductNumber=By.xpath(".//div[@class='item__description']//div[@class='item__number']");
+	public By byProductStyleAndSize=By.xpath(".//div[@class='item__description']//div[@class='item__style']");
+	public By byProductStockUrgentMessage=By.xpath(".//div[@class='item__description']//div[@class='item__stock-level--urgent']");
 
-	//Hide in mobile
-	public By byProductBlackMessageContainer=By.xpath(".//div[contains(@class,'cart-desc-line') and not(contains(@class,'visible-xs-block'))][div[span[@class='now-price']]]/..");
-	public By byProductBlackMessage=By.xpath(".//div[contains(@class,'item-status')][span[@class='boldBlackColor']]");
+	public By byProductFavButton=By.xpath(".//div[@class='item__fav']//div[@class='bag-items__favorite']//button");
+	public By byProductFavText=By.xpath(".//div[@class='item__fav']//div[@class='bag-items__favorite']//span");
 
-	public By byProductNowPrice=By.xpath(".//div[contains(@class,'cart-desc-line') and not(contains(@class,'visible-xs-block'))]//span[contains(@class,'now-price')]");
-	public By byProductSelectQuantity=By.xpath(".//div[@class='tsc-forms']//select");
-	public By byProductRemoveButton=By.xpath(".//a[contains(@class,'cta-remove')]");
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-subtotal')]")
-	public WebElement lblCartTableSubTotal;
+	public By byProductQuantityMinusButton=By.xpath(".//div[@class='item__qty']//div[@class='quantity__container']//button[@class='quantity__minus']");
+	public By byProductQuantityPlusButton=By.xpath(".//div[@class='item__qty']//div[@class='quantity__container']//button[@class='quantity__plus']");
+	public By byProductQuantityDisplayText=By.xpath(".//div[@class='item__qty']//div[@class='quantity__container']//div[@class='quantity__display']");
+	public By byProductQuantityRemoveButton=By.xpath(".//div[@class='item__qty']//button[@class='item__remove']");
+
+	public By byProductPriceContainer=By.xpath(".//div[@class='item__price']/div");
+	public By byProductNowPrice=By.xpath(".//div[@class='item__price']//span[@class='item__is-price']");
+	public By byProductWasPrice=By.xpath(".//div[@class='item__price']//span[@class='item__was-price']");
+	public By byProductFreeShipping=By.xpath(".//div[@class='item__price']//span[@class='item__free-shipping']");
+	public By byProductEstimatedShippingDate=By.xpath(".//div[@class='item__price']//button[@class='item__estimated-date']");
+	public By byProductShippingIcon=By.xpath(".//div[@class='item__price']//button[@class='item__estimated-date']//div[contains(@class,'shipping__icon')]");
+	public By byProductShippingPriceLabel=By.xpath(".//div[@class='item__price']//span[@class='item__estimated-shipping--label']");
+	public By byProductShippingPrice=By.xpath(".//div[@class='item__price']//span[@class='item__estimated-shipping--is']");
+	public By byProductFreeShippingUnderEstimatedShippingDate=By.xpath(".//div[@class='item__price']//div[@class='item__free-shipping--text']");
 
 	//Remove popup window after clicking remove button
-	@FindBy(xpath = "//div[@class='cartridge']//div[@id='removeItemModal']")
-	public WebElement removeDialogLoadingIndicator;
-
-	@FindBy(xpath = "//div[@class='cartridge']//div[@id='removeItemModal']//button[@class='close']")
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[contains(@class,'removeDialog')]//button[@class='dialog__card__close-button']")
 	public WebElement btnRemoveDialogClose;
 
-	@FindBy(xpath = "//div[@class='cartridge']//div[@id='removeItemModal']//*[@class='modal-title']")
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[contains(@class,'removeDialog')]//*[@class='dialog__card__copy-heading']")
 	public WebElement lblRemoveDialogTitle;
 
-	@FindBy(xpath = "//div[@class='cartridge']//div[@id='removeItemModal']//img[contains(@class,'img-responsive')]/parent::div")
-	public WebElement cntRemoveDialogImageContainer;
-
-	@FindBy(xpath = "//div[@class='cartridge']//div[@id='removeItemModal']//div[@class='badgeWrap']//img")
-	public WebElement imgRemoveDialogProductBadge;
-
-	@FindBy(xpath = "//div[@class='cartridge']//div[@id='removeItemModal']//img[contains(@class,'img-responsive')]")
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[contains(@class,'removeDialog')]//div[@class='item__image']//img")
 	public WebElement imgRemoveDialogProductImage;
 
-	@FindBy(xpath = "//div[@class='cartridge']//div[@id='removeItemModal']//div[@class='item-desc']")
-	public WebElement lblRemoveDialogProductItemDesc;
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[contains(@class,'removeDialog')]//div[@class='item__image']//a")
+	public WebElement lnkRemoveDialogProductImageLink;
 
-	@FindBy(xpath = "//div[@class='cartridge']//div[@id='removeItemModal']//div[contains(@class,'item-num')]")
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[contains(@class,'removeDialog')]//div[@class='item__description']")
+	public WebElement cntRemoveDialogDescriptionContainer;
+
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[contains(@class,'removeDialog')]//div[@class='item__description']//div[@class='item__badge']")
+	public WebElement imgRemoveDialogProductBadge;
+
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[contains(@class,'removeDialog')]//div[@class='item__description']//a")
+	public WebElement lnkRemoveDialogProductItemDesc;
+
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[contains(@class,'removeDialog')]//div[@class='item__description']//div[@class='item__number']")
 	public WebElement lblRemoveDialogProductItemNumber;
 
-	@FindBy(xpath = "//div[@class='cartridge']//div[@id='removeItemModal']//*[contains(normalize-space(text()),'PRICE:')]")
-	public WebElement lblRemoveDialogProductItemPriceTitle;
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[contains(@class,'removeDialog')]//div[@class='item__description']//div[@class='item__style'][span]")
+	public WebElement lblRemoveDialogProductStyleAndSize;
 
-	@FindBy(xpath = "//div[@class='cartridge']//div[@id='removeItemModal']//*[contains(normalize-space(text()),'PRICE:')]/following-sibling::span")
-	public WebElement lblRemoveDialogProductItemPrice;
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[contains(@class,'removeDialog')]//div[@class='item__description']//div[@class='item__style'][not(span)]")
+	public WebElement lblRemoveDialogProductQuantity;
 
-	@FindBy(xpath = "//div[@class='cartridge']//div[@id='removeItemModal']//*[contains(normalize-space(text()),'QUANTITY:')]")
-	public WebElement lblRemoveDialogProductItemQuantityTitle;
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[contains(@class,'removeDialog')]//div[@class='item__description']//div[@class='item__style']")
+	public List<WebElement> lstRemoveDialogProductStyleAndSizeAndQuantity;
 
-	@FindBy(xpath = "//div[@class='cartridge']//div[@id='removeItemModal']//*[contains(normalize-space(text()),'QUANTITY:')]/following-sibling::span")
-	public WebElement lblRemoveDialogProductItemQuantity;
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[contains(@class,'removeDialog')]//div[@class='item__price']/div")
+	public WebElement cntRemoveDialogProductPriceContainer;
 
-	@FindBy(xpath = "//div[@class='cartridge']//div[@id='removeItemModal']//button[contains(normalize-space(text()),'REMOVE')]")
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[contains(@class,'removeDialog')]//div[@class='item__price']/div/div[1]/span[@class='item__is-price']")
+	public WebElement lblRemoveDialogProductNowPrice;
+
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[contains(@class,'removeDialog')]//div[@class='item__price']/div/div[1]/span[@class='item__was-price']")
+	public WebElement lblRemoveDialogProductWasPrice;
+
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[contains(@class,'removeDialog')]//div[@class='item__price']/div/div[last()]")
+	public WebElement lblRemoveDialogProductFreeShipping;
+
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[contains(@class,'removeDialog')]//div[@class='dialog__buttons--container']//button[contains(@class,'remove')]")
 	public WebElement btnRemoveDialogRemove;
 
-	@FindBy(xpath = "//div[@class='cartridge']//div[@id='removeItemModal']//button[@aria-label='Cancel']")
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[contains(@class,'removeDialog')]//div[@class='dialog__buttons--container']//button[contains(@class,'cancel')]")
 	public WebElement btnRemoveDialogCancel;
 
-	@FindBy(xpath="//shopping-cart//div[contains(@class,'cart-items')]//div/a[contains(@class,'pull-right')]")
+	@FindBy(xpath="//div[@id='shopping-bag']//div[contains(@class,'bag__itemlist')]//div[contains(@class,'item__container')]//div[@class='item__qty']//button[@class='item__remove']")
 	public List<WebElement> lstItemRemoveButtonFromCart;
 
 	////////////////For Order summary section////////////////////////////
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[@class='summary']")
+	public WebElement cntOrderSummaryContainer;
 
-	//Pricing
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'details-box')]")
-	public WebElement cntCartPricingMultiPack;
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[@class='summary']//div[@class='donation__wrap']//button[@class='donation__card']")
+	public WebElement btnJaysCareDonationButton;
 
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-details')]")
-	public WebElement cntCartPricingDetails;
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[@class='summary']//div[@class='donation__wrap']//div[@class='donation__image']//img")
+	public WebElement imgJaysCareDonation;
 
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-details')]//div[contains(@class,'cart-pricing')]/div[@class='clearfix'][not(div[contains(@class,'text-center')])][not(div[contains(@class,'details-title')])]")
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[@class='summary']//div[@class='donation__wrap']//div[contains(@class,'donation__icon')]")
+	public WebElement iconJaysCareDonationForExpansionStatus;
+
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[@class='summary']//div[@class='donation__wrap']//div[contains(@class,'donation__message')]")
+	public WebElement lblJaysCareDonationMessage;
+
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[@class='summary']//div[@class='donation__wrap']//div[contains(@class,'donation__selector')]//input")
+	public List<WebElement> lstJaysCareDonationCheckbox;
+
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[@class='summary']//div[@class='donation__wrap']//div[contains(@class,'donation__selector')]//label")
+	public List<WebElement> lstJaysCareDonationCheckboxLabel;
+
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[@class='summary']//div[@class='donation__wrap']//div[contains(@class,'donation__sub-message')]")
+	public WebElement lblJaysCareDonationSubMessage;
+
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[@class='summary']//div[@class='summary__easypay--wrap']/preceding-sibling::div[@class='summary__row']")
 	public List<WebElement> lstOrderSummaryRow;
 
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'details-box')]/*[contains(@class,'multipack')]")
-	public WebElement lblCartPricingMultiPackMessage;
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[@class='summary']//div[@class='summary__row']//div[contains(normalize-space(text()),'Jays Care Donation')]")
+	public WebElement lblCartPricingJaysCareDonationTitle;
 
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-pricing')]//div[contains(@class,'details-title')]")
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[@class='summary']//div[@class='summary__row']//div[contains(normalize-space(text()),'Jays Care Donation')]//button")
+	public WebElement btnCartPricingJaysCareDonationRemoveButton;
+
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[@class='summary']//div[@class='summary__row']//div[contains(normalize-space(text()),'Jays Care Donation')]/following-sibling::div[last()]")
+	public WebElement lblCartPricingJaysCareDonation;
+
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[@class='summary']//*[@class='summary__title']")
 	public WebElement lblCartPricingOrderSummaryTitle;
 
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-pricing')]//div[contains(normalize-space(text()),'Subtotal:')]")
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[@class='summary']//div[@class='summary__row']//span[contains(normalize-space(text()),'Subtotal')]/parent::div")
 	public WebElement lblCartPricingSubTotalTitle;
 
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-pricing')]//div[contains(normalize-space(text()),'Subtotal:')]/following-sibling::div[last()]")
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[@class='summary']//div[@class='summary__row']//span[contains(normalize-space(text()),'Subtotal')]/parent::div/following-sibling::div[last()]")
 	public WebElement lblCartPricingSubTotal;
 
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-pricing')]//div[contains(normalize-space(text()),'Shipping:')]")
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[@class='summary']//div[@class='summary__row']//span[contains(normalize-space(text()),'Shipping')]/parent::div")
 	public WebElement lblCartPricingShippingTitle;
 
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-pricing')]//div[contains(normalize-space(text()),'Shipping:')]/following-sibling::div[del]")
-	public WebElement lblCartPricingShippingWasPrice;
-
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-pricing')]//div[contains(normalize-space(text()),'Shipping:')]/following-sibling::div[last()]")
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[@class='summary']//div[@class='summary__row']//span[contains(normalize-space(text()),'Shipping')]/parent::div/following-sibling::div[last()]")
 	public WebElement lblCartPricingShippingNowPrice;
 
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-pricing')]//div[contains(normalize-space(text()),'Est. Taxes:')]")
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[@class='summary']//div[@class='summary__row']//span[contains(normalize-space(text()),'Est. Taxes')]/parent::div")
 	public WebElement lblCartPricingEstimateTaxTitle;
 
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-pricing')]//div[contains(normalize-space(text()),'Est. Taxes:')]//select")
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[@class='summary']//div[@class='summary__row']//span[contains(normalize-space(text()),'Est. Taxes')]/following-sibling::select")
 	public WebElement selectCartPricingShippingEstimateTaxProvince;
 
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-pricing')]//div[contains(normalize-space(text()),'Est. Taxes:')]/following-sibling::div[last()]")
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[@class='summary']//div[@class='summary__row']//span[contains(normalize-space(text()),'Est. Taxes')]/parent::div/following-sibling::div[last()]")
 	public WebElement lblCartPricingShippingEstimateTax;
 
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-details')]//div[contains(@class,'cart-pricing')]//strong[.='APPLIED DISCOUNTS']")
-	public WebElement lblAppliedDiscountTitle;
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[@class='summary']//div[@class='summary__row']//span[contains(normalize-space(text()),'Multipack shipping discount')]/parent::div")
+	public WebElement lblMultiPackShippingDiscountTitle;
 
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-details')]//div[contains(@class,'cart-pricing')]//strong[.='APPLIED DISCOUNTS']/parent::div/parent::div/following-sibling::div[not(contains(@class,'totalPrice'))][not(div[contains(@class,'text-center')])]")
-	public List<WebElement> lstAppliedDiscountList;
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[@class='summary']//div[@class='summary__row']//span[contains(normalize-space(text()),'Multipack shipping discount')]/parent::div/following-sibling::div[last()]")
+	public WebElement lblMultiPackShippingDiscount;
 
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-details')]//div[contains(@class,'cart-pricing')]//div[normalize-space(text())='Gift Card Redeemed:']")
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[@class='summary']//div[@class='summary__row']//span[contains(normalize-space(text()),'Gift Card')]/parent::div")
 	public WebElement lblGiftCardRedeemTitle;
 
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-details')]//div[contains(@class,'cart-pricing')]//div[normalize-space(text())='Gift Card Redeemed:']/following-sibling::div")
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[@class='summary']//div[@class='summary__row']//span[contains(normalize-space(text()),'Gift Card')]/parent::div/following-sibling::div[last()]")
 	public WebElement lblGiftCardRedeemValue;
 
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-pricing')]//div[contains(normalize-space(text()),'TOTAL PRICE:')]")
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[@class='summary']//div[@class='summary__row']//span[contains(normalize-space(text()),'Total')]/parent::div")
 	public WebElement lblCartPricingTotalPriceTitle;
 
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-pricing')]//div[contains(normalize-space(text()),'TOTAL PRICE:')]/following-sibling::div[last()]")
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[@class='summary']//div[@class='summary__row']//span[contains(normalize-space(text()),'Total')]/parent::div/following-sibling::div[last()]")
 	public WebElement lblCartPricingTotalPrice;
 
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-pricing')]//span[contains(normalize-space(text()),'You’re saving')]")
-	public WebElement lblCartPricingYouAreSaving;
-
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'cart-pricing')]/div[contains(@class,'clearfix')][last()]")
-	public WebElement lblCartPricingLastItem;
-
 	//EasyPay
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'easypay')]//div[contains(@class,'cart-installment-more')]")
-	public WebElement cntEasyPayContainer;
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[@class='summary']//div[@class='summary__easypay--wrap']//input[@id='easyPayCheckbox']")
+	public WebElement ckbEasyPayCheckbox;
 
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'easypay')]//strong")
-	public WebElement lblCartEasyPayTitle;
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[@class='summary']//div[@class='summary__easypay--wrap']//label")
+	public WebElement labelEasyPayCheckbox;
 
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'easypay')]//div[contains(normalize-space(text()),'Number of Installments:')]")
-	public WebElement lblCartEasyPayInstallmentNumberTitle;
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[@class='summary']//div[@class='summary__easypay--wrap']//button")
+	public WebElement btnEasyPayLink;
 
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'easypay')]//div[contains(normalize-space(text()),'Number of Installments:')]//following-sibling::div[contains(@class,'tsc-forms')]")
-	public WebElement cntCartEasyPayInstallmentNumberContainer;
-
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'easypay')]//div[contains(normalize-space(text()),'Number of Installments:')]//following-sibling::div[contains(@class,'tsc-forms')]//select")
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[@class='summary']//select[@class='summary__easypay--select']")
 	public WebElement selectCartEasyPayInstallmentNumber;
 
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'easypay')]//div[contains(normalize-space(text()),'Number of Installments:')]//following-sibling::div[contains(@class,'tsc-forms')]//span")
-	public WebElement lblCartEasyPayInstallmentNumber;
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[@class='summary']//select[@class='summary__easypay--select']/option")
+	public List<WebElement> lstEasyPayInstallmentNumberOptions;
 
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'easypay')]//div[contains(normalize-space(text()),'Your Total Payment Today:')]")
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[@class='summary']//div[@class='summary__row']//span[contains(normalize-space(text()),'Your total payment today')]")
 	public WebElement lblCartEasyPayTodayPaymentTitle;
 
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'easypay')]//div[contains(normalize-space(text()),'Your Total Payment Today:')]/following-sibling::div[last()]")
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[@class='summary']//div[@class='summary__row']//span[contains(normalize-space(text()),'Your total payment today')]/parent::div/following-sibling::div[last()]//span")
 	public WebElement lblCartEasyPayTodayPayment;
 
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'easypay')]//div[contains(normalize-space(text()),'Payment Amount Left After Today:')]")
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[@class='summary']//div[@class='summary__row']//span[contains(normalize-space(text()),'Payment amount left after today')]")
 	public WebElement lblCartEasyPayLeftPaymentTitle;
 
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'easypay')]//div[contains(normalize-space(text()),'Payment Amount Left After Today:')]/following-sibling::div[last()]")
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[@class='summary']//div[@class='summary__row']//span[contains(normalize-space(text()),'Payment amount left after today')]/parent::div/following-sibling::div[last()]//span")
 	public WebElement lblCartEasyPayLeftPayment;
 
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'easypay')]//div[contains(normalize-space(text()),'Future Monthly Payments:')]")
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[@class='summary']//div[@class='summary__row']//span[contains(normalize-space(text()),'future monthly payments')]/parent::div")
 	public WebElement lblCartEasyPayFutureMonthlyPaymentTitle;
 
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'easypay')]//div[contains(normalize-space(text()),'Future Monthly Payments:')]/following-sibling::div[last()]")
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[@class='summary']//div[@class='summary__row']//span[contains(normalize-space(text()),'future monthly payments')]/parent::div/following-sibling::div[last()]//span")
 	public WebElement lblCartEasyPayFutureMonthlyPayment;
 
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[@class='summary']//div[@class='summary__row']//span[contains(normalize-space(text()),'*Shipping and taxes have been added to your first payment.')]")
+	public WebElement lblCartEasyPayCommentsForShippingAndTax;
+
 	//Checkout
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'checkout')]//div[@class='cart-info']")
-	public WebElement lblCartCheckoutRedeemMessage;
-
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'donationWrap')]//div[contains(@class,'donationLogo')]//img")
-	public WebElement imgCartCheckoutDonationLogo;
-
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'donationWrap')]//div[contains(@class,'donationDesc')]")
-	public WebElement imgCartCheckoutDonationDesc;
-
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'donationWrap')]//div[contains(@class,'donationButtonWrap')]//a")
-	public List<WebElement> lstCartCheckoutDonationButton;
-
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'donationWrap')]//div[contains(@class,'donationButtonWrap')]//a[contains(@class,'active')]/div")
-	public WebElement lblBlueJaySelectedDonation;
-
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'donationWrap')]//div[contains(@class,'donationButtonWrap')]")
-	public WebElement lblBlueJayDonation;
-
-	@FindBy(xpath = "//div[@class='cartridge']//div[contains(@class,'donationWrap')]//div[contains(@class,'donationRecieptMsg')]")
-	public WebElement lblCartCheckoutDonationReceiptMessage;
-
-	@FindBy(xpath = "//div[@class='cartridge']//button[contains(@class,'checkoutColorBtn')]")
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[@class='bag__summary']//button[contains(@class,'summary__button') and not(contains(@class,'button__black mobileOnly'))]")
 	public WebElement btnCartCheckoutButton;
 
-	@FindBy(xpath = "//div[@class='cartridge']//shopping-cart-privacy")
-	public WebElement lblCartPrivacy;
+	@FindBy(xpath = "//div[@id='shopping-bag']//div[@class='bag__summary']//div[@class='summary__have-giftcard']")
+	public WebElement lblCartTipMessageForDiscountAndGiftCard;
 
-	@FindBy(xpath = "//div[@class='cartridge']//shopping-cart-privacy//a[@id='btn-learn-more']")
-	public WebElement lnkCartPrivacy;
-
-	@FindBy(xpath = "//shopping-cart//div[@class='blockPageWrap']")
-	public WebElement pageLoadingIndicator;
-
-	//PayPal
-	@FindBy(how = How.XPATH, using = "//div[@id='buttons-container']//div[contains(@class,'paypal-button') and @role]")
-	//@FindBy(xpath = "//div[@id='buttons-container']//div[contains(@class,'paypal-button') and @role]")
-	public WebElement btnPayPalButton;
-
-	@FindBy(xpath = "//iframe[contains(@name,'paypal')]")
-	public WebElement framePayPalFrameElement;
-
-	@FindBy(xpath = "//div[@id='splitEmail']//input[@id='email']")
-	public WebElement inputPayPalEmailInput;
-
-	@FindBy(xpath = "//div[@id='splitEmail']//button[@value='Next']")
-	public WebElement btnPayPalNextButton;
+//	/**
+//	 * To check empty cart message Existing
+//	 * @return -boolean
+//	 */
+//	public boolean checkEmptyCartMessageExisting() {
+//		return this.checkChildElementExistingByAttribute(this.cntCartContents, "class", "emptyContents");
+//	}
 
 	/**
-	 * To get added item amount
+	 * To check If OrderSummary And EasyPayment Not Existing
+	 * @return - boolean
 	 */
-	public int GetAddedItemAmount(){
-		return this.getIntegerFromString(this.getElementInnerText(this.lblCartTitle));
+	public boolean checkIfOrderSummaryAndEasyPaymentNotExisting(){
+		return this.getChildElementCount(cntOrderSummaryContainer)<2;
 	}
 
 	/**
-	 * To check Contain Previously Added Items Message Existing
-	 * @return
+	 * To check If it Is a FreeShipping Item
+	 * @param - WebElement - cartItem
+	 * @return - boolean
 	 */
-	public boolean checkContainPreviouslyAddedItemsMessageExisting(){
-		return this.checkChildElementExistingByAttribute(this.cntCartContainPreviouslyAddedItemsMessage,"class","cart-merge");
-	}
-
-
-	/**
-	 * To check empty cart message Existing
-	 * @return -boolean
-	 */
-	public boolean checkEmptyCartMessageExisting() {
-		return this.checkChildElementExistingByAttribute(this.cntCartContents, "class", "emptyContents");
-	}
-
-	/**
-	 * To check Cart Notice Title Existing
-	 * @return -boolean
-	 */
-	public boolean checkCartNoticeTitleExisting(){
-		return this.checkChildElementExistingByAttribute(this.cntCartNotice,"class","notice-title");
-	}
-
-	/**
-	 * To check Cart Notice Message Existing
-	 * @return -String
-	 */
-	public String checkCartNoticeMessageExisting(){
-		this.applyStaticWait(3*this.getStaticWaitForApplication());
-		if(this.checkChildElementExistingByAttribute(this.cntCartNotice,"class","notice-group")){
-			if(this.lstCartNoticeMessage.size()==2){
-				return "both";
-			}
-			else{
-				if(this.checkChildElementExistingByAttribute(this.lstCartNoticeMessage.get(0),"class","clearfix")){
-					return "errorMessage";
-				}
-				else{
-					return "multiPackMessage";
-				}
-			}
+	public boolean checkIfIsFreeShippingItem(WebElement cartItem){
+		WebElement item=cartItem.findElement(byProductItemDesc);
+		WebElement parentItem=item.findElement(By.xpath("./parent::*"));
+		if(parentItem.getTagName().equalsIgnoreCase("a")){
+			return false;
 		}
-		return null;
+		return true;
 	}
 
 	/**
-	 * To check Product TrueFit Message Existing, note that 2 different size for same product will show TrueFit message
-	 * @return - boolean
-	 */
-	public boolean checkProductTrueFitMessageExisting(){
-		this.applyStaticWait(8*this.getStaticWaitForApplication());
-		return !this.getElementInnerText(this.lblCartNoticeTrueFitMessage).isEmpty();
-	}
-
-	/**
-	 * To check GetItBy Shipping Message Existing, note that false means advanced order
-	 * @return - boolean
-	 */
-	public boolean checkGetItByShippingMessageExisting(){
-		return this.checkChildElementExistingByAttribute(cntCartContents,"class","estimateDate__wrapper");
-	}
-
-	/**
-	 * To check Product Badge Existing for cart item in shopping item list
-	 * @param - cartItem - item in lstCartItems
+	 * To check Product Badge Existing
+	 * @param - WebElement - cartItem
 	 * @return - boolean
 	 */
 	public boolean checkProductBadgeExisting(WebElement cartItem){
-		WebElement item=cartItem.findElement(byProductPicBadgeContainer);
-		return this.checkChildElementExistingByAttribute(item,"class","badgeWrap");
+		WebElement item=cartItem.findElement(byProductDescContainer);
+		return this.checkChildElementExistingByAttribute(item,"class","item__badge");
 	}
 
 	/**
-	 * To check Product number Existing for cart item in shopping item list
-	 * @param - cartItem - item in lstCartItems
+	 * To check Product Style And Size section Existing
+	 * @param - WebElement - cartItem
 	 * @return - boolean
 	 */
-	public boolean checkProductNumberExisting(WebElement cartItem){
-		WebElement item=cartItem.findElement(byProductNumberContainer);
-		return this.checkChildElementExistingByAttribute(item,"class","item-num");
+	public boolean checkProductStyleAndSizeSectionExisting(WebElement cartItem){
+		WebElement item=cartItem.findElement(byProductDescContainer);
+		return this.checkChildElementExistingByAttribute(item,"class","item__style");
 	}
 
 	/**
-	 * To check Select Quantity Enabled for cart item
-	 * @param - cartItem - item in lstCartItems
+	 * To check Product Stock Urgent Message Existing
+	 * @param - WebElement - cartItem
 	 * @return - boolean
 	 */
-	public boolean checkSelectQuantityEnabled(WebElement cartItem){
-		WebElement item=cartItem.findElement(byProductSelectQuantity);
+	public boolean checkProductStockUrgentMessageExisting(WebElement cartItem){
+		WebElement item=cartItem.findElement(byProductDescContainer);
+		return this.checkChildElementExistingByAttribute(item,"class","item__stock-level--urgent");
+	}
+
+	/**
+	 * To check Product WasPrice Existing
+	 * @param - WebElement - cartItem
+	 * @return - boolean
+	 */
+	public boolean checkProductWasPriceExisting(WebElement cartItem){
+		WebElement itemPriceContainer=cartItem.findElement(byProductPriceContainer);
+		WebElement item=itemPriceContainer.findElement(By.xpath("./div[1]"));
+		return this.getChildElementCount(item)>1;
+	}
+
+	/**
+	 * To check Product Free Shipping Message Existing
+	 * @param - WebElement - cartItem
+	 * @return - boolean
+	 */
+	public boolean checkProductFreeShippingMessageExisting(WebElement cartItem){
+		WebElement itemPriceContainer=cartItem.findElement(byProductPriceContainer);
+		WebElement item=itemPriceContainer.findElement(By.xpath("./div[2]"));
+		return this.getElementInnerText(item).equalsIgnoreCase("Free shipping");
+	}
+
+	/**
+	 * To check Product Estimated Shipping Date Existing
+	 * @param - WebElement - cartItem
+	 * @return - boolean
+	 */
+	public boolean checkProductEstimatedShippingDateExisting(WebElement cartItem){
+		WebElement item=cartItem.findElement(byProductPriceContainer);
+		return this.checkChildElementExistingByTagName(item,"button");
+	}
+
+	/**
+	 * To check Product Shipping Price section expanded
+	 * @param - WebElement - cartItem
+	 * @return - boolean
+	 */
+	public boolean checkProductShippingPriceSectionExpanded(WebElement cartItem){
+		WebElement item=cartItem.findElement(byProductShippingIcon);
+		return item.getAttribute("class").contains("icon-minus");
+	}
+
+	/**
+	 * To check Product Shipping Price existing
+	 * @param - WebElement - cartItem
+	 * @return - boolean
+	 */
+	public boolean checkProductShippingPriceExisting(WebElement cartItem){
+		WebElement itemPriceContainer=cartItem.findElement(byProductPriceContainer);
+		return this.checkChildElementExistingByAttribute(itemPriceContainer,"class","item__estimated-shipping--is");
+	}
+
+	/**
+	 * To check Product Free Shipping Existing In Shipping Price Section
+	 * @param - WebElement - cartItem
+	 * @return - boolean
+	 */
+	public boolean checkProductFreeShippingExistingInShippingPriceSection(WebElement cartItem){
+		WebElement itemPriceContainer=cartItem.findElement(byProductPriceContainer);
+		return this.checkChildElementExistingByAttribute(itemPriceContainer,"class","item__free-shipping--text");
+	}
+
+	/**
+	 * To check Product Quantity Plus Button Enabled
+	 * @param - WebElement - cartItem
+	 * @return - boolean
+	 */
+	public boolean checkProductQuantityPlusButtonEnabled(WebElement cartItem){
+		WebElement item=cartItem.findElement(byProductQuantityPlusButton);
 		return !this.hasElementAttribute(item,"disabled");
 	}
 
 	/**
-	 * To check Shipping date message existing for cart item in the shopping item list
-	 * @param - cartItem - item in lstCartItems
+	 * To check Product Quantity Minus Button Enabled
+	 * @param - WebElement - cartItem
 	 * @return - boolean
 	 */
-	public boolean checkShippingDateExisting(WebElement cartItem){
-		WebElement item=cartItem.findElement(byProductDescContainer);
-		return this.checkChildElementExistingByAttribute(item,"class","estimateDate");
-	}
-
-	/**
-	 * To check Red message existing for cart item in the shopping item list
-	 * @param - cartItem - item in lstCartItems
-	 * @return - boolean
-	 */
-	public boolean checkRedMessageExisting(WebElement cartItem){
-		WebElement item=cartItem.findElement(byProductDescContainer);
-		if(this.checkChildElementExistingByAttribute(item,"class","item-status")){
-			item=item.findElement(By.xpath("./div[contains(@class,'item-status')]"));
-			if(!this.getElementInnerText(item).isEmpty()){
-				return true;
-			}
-			else{
-				return false;
-			}
-		}
-		else{
-			return false;
-		}
-	}
-
-	/**
-	 * To check Free Shipping message existing for cart item in the shopping item list
-	 * @param - cartItem - item in lstCartItems
-	 * @return - boolean
-	 */
-	public boolean checkFreeShippingMessageExisting(WebElement cartItem){
-		WebElement item=cartItem.findElement(this.byProductBlackMessageContainer);
-		return this.checkChildElementExistingByAttribute(item,"class","item-status");
-	}
-
-	/**
-	 * To check Remove button existing for cart item in the shopping item list, for example, for free shipping scenario
-	 * @param - cartItem - item in lstCartItems
-	 * @return - boolean
-	 */
-	public boolean checkRemoveButtonExisting(WebElement cartItem){
-		WebElement item=cartItem.findElement(byProductSelectQuantity);
+	public boolean checkProductQuantityMinusButtonEnabled(WebElement cartItem){
+		WebElement item=cartItem.findElement(byProductQuantityMinusButton);
 		return !this.hasElementAttribute(item,"disabled");
+	}
+
+	/**
+	 * To check If Product FavIcon has been Clicked
+	 * @param - WebElement - cartItem
+	 * @return - boolean
+	 */
+	public boolean checkIfProductFavIconHighLighted(WebElement cartItem){
+		WebElement item=cartItem.findElement(byProductFavText);
+		return this.getElementInnerText(item).contains("addedToFavourite");
+	}
+
+	/**
+	 * To check if Jays Care Donation section Expanded
+	 * @return - boolean
+	 */
+	public boolean checkJaysCareDonationExpanded(){
+		return this.iconJaysCareDonationForExpansionStatus.getAttribute("class").contains("icon-minus");
+	}
+
+	/**
+	 * To wait For Shopping Card Page Loading Completed
+	 */
+	public void  waitForShoppingCardPageLoadingCompleted(){
+		try{
+			this.waitForCondition(Driver->{return !this.checkChildElementExistingByAttribute(cntCart,"class","blockPageWrap");},60000);
+		}
+		catch(Exception ex){
+			this.applyStaticWait(5*this.getStaticWaitForApplication());
+		}
 	}
 
 	/**
@@ -479,61 +453,142 @@ public class ShoppingCartPage extends BasePage {
 	 * @return - boolean
 	 */
 	public boolean checkRemoveDialogBadgeExisting(){
-		return this.checkChildElementExistingByAttribute(cntRemoveDialogImageContainer,"class","badgeWrap");
+		return this.checkChildElementExistingByAttribute(cntRemoveDialogDescriptionContainer,"class","item__badge");
 	}
 
 	/**
-	 * To check OrderSummary And EasyPayment Sections Existing
+	 * To check Style And Size Section existing in remove dialog
 	 * @return - boolean
 	 */
-	public boolean checkOrderSummaryAndEasyPaymentSectionsExisting(){
-		return this.checkChildElementExistingByAttribute(this.cntCartPricingDetails,"class","details-box");
+	public boolean checkRemoveDialogStyleAndSizeSectionExisting(){
+		return this.lstRemoveDialogProductStyleAndSizeAndQuantity.size()>1;
 	}
 
 	/**
-	 * To check MultiPack Message In OrderSummary Section Existing
+	 * To check WasPrice existing in remove dialog
 	 * @return - boolean
 	 */
-	public boolean checkMultiPackMessageInOrderSummarySectionExisting(){
-		return this.checkChildElementExistingByAttribute(this.cntCartPricingMultiPack,"class","multipack");
+	public boolean checkRemoveDialogWasPriceExisting(){
+		WebElement priceContainer=cntRemoveDialogProductPriceContainer.findElement(By.xpath("./div[1]"));
+		return this.getChildElementCount(priceContainer)>1;
 	}
 
 	/**
-	 * To check ShippingWasPrice in orderSummary section Existing
+	 * To check Free Shipping Message existing in remove dialog
 	 * @return - boolean
 	 */
-	public boolean checkShippingWasPriceExisting(){
-		return !this.getElementInnerText(lblCartPricingShippingWasPrice).isEmpty();
+	public boolean checkRemoveDialogFreeShippingMessageExisting(){
+		WebElement freeShippingContainer=cntRemoveDialogProductPriceContainer.findElement(By.xpath("./div[last()]"));
+		return !this.getElementInnerText(freeShippingContainer).isEmpty();
 	}
 
 	/**
-	 * To check Applied Discount Existing In OrderSummary()
-	 * @return
+	 * To check EasyPayment Sections Existing
+	 * @return - boolean
 	 */
-	public boolean checkAppliedDiscountExistingInOrderSummary(){
-		return this.lstOrderSummaryRow.size()>3;
-	}
-
-	/**
-	 * To judge Applied Discount item Type
-	 * @return -String - "Both"/"GiftCard"/"PromoteCode"
-	 */
-	public String judgeAppliedDiscountType(){
-		if(checkAppliedDiscountExistingInOrderSummary()){
-			if(this.lstOrderSummaryRow.size()==6){
-				return "Both";
-			}
-
-			if(this.lstOrderSummaryRow.size()==5){
-				return "PromoteCode";
-			}
-
-			if(this.lstOrderSummaryRow.size()==4){
-				return "GiftCard";
-			}
+	public boolean checkEasyPaymentSectionsExisting(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.labelEasyPayCheckbox);
+		if(!this.ckbEasyPayCheckbox.isSelected()){
+			return false;
 		}
 
-		return null;
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectCartEasyPayInstallmentNumber);
+		Select select=new Select(this.selectCartEasyPayInstallmentNumber);
+		String lsSelectedOption=select.getFirstSelectedOption().getText().trim();
+		if(!lsSelectedOption.contains("Easy Pays")){
+			return true;
+		}
+
+		return true;
+	}
+
+	/**
+	 * To check Jays Care Donation Existing In OrderSummary()
+	 * @return - boolean
+	 */
+	public boolean checkJaysCareDonationExistingInOrderSummary(){
+		boolean bFind=false;
+		for(WebElement item:this.lstOrderSummaryRow){
+			WebElement subItem=item.findElement(By.xpath("./div[1]"));
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
+			String lsTitle=this.getElementInnerText(subItem);
+			if(lsTitle.contains("Jays Care Donation")){
+				bFind=true;
+				break;
+			}
+		}
+		return bFind;
+	}
+
+	/**
+	 * To get Jays Care Donation Value In OrderSummary section
+	 * @return - float
+	 */
+	public float getJaysCareDonationValueInOrderSummary(){
+		if(this.checkJaysCareDonationExistingInOrderSummary()){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartPricingJaysCareDonation);
+			String lsText=lblCartPricingJaysCareDonation.getText();
+
+			return this.getFloatFromString(lsText);
+		}
+		return 0.0f;
+	}
+
+	/**
+	 * To check MultiPackShipping Discount Existing In OrderSummary()
+	 * @return - boolean
+	 */
+	public boolean checkMultiPackShippingDiscountExistingInOrderSummary(){
+		boolean bFind=false;
+		for(WebElement item:this.lstOrderSummaryRow){
+			WebElement subItem=item.findElement(By.xpath("./div[1]"));
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
+			String lsTitle=subItem.getText().toLowerCase().trim();
+			if(lsTitle.contains("multipack shipping discount")){
+				bFind=true;
+				break;
+			}
+		}
+		return bFind;
+	}
+
+	/**
+	 * To check promote code Discount Existing In OrderSummary()
+	 * @return - boolean
+	 */
+	public boolean checkPromoteCodeDiscountExistingInOrderSummary(){
+		boolean bFind=false;
+		for(WebElement item:this.lstOrderSummaryRow){
+			WebElement subItemTitle=item.findElement(By.xpath("./div[1]"));
+			WebElement subItemValue=item.findElement(By.xpath("./div[last()]"));
+			if(this.getElementInnerText(subItemValue).contains("-")){
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItemTitle);
+				String lsTitle=this.getElementInnerText(subItemTitle).toLowerCase();
+				if(!lsTitle.contains("multipack shipping discount")&&!lsTitle.contains("gift card")){
+					bFind=true;
+					break;
+				}
+			}
+		}
+		return bFind;
+	}
+
+	/**
+	 * To check Gift Card Existing In OrderSummary()
+	 * @return - boolean
+	 */
+	public boolean checkGiftCardExistingInOrderSummary(){
+		boolean bFind=false;
+		for(WebElement item:this.lstOrderSummaryRow){
+			WebElement subItem=item.findElement(By.xpath("./div[1]"));
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
+			String lsTitle=this.getElementInnerText(subItem).toLowerCase().trim();
+			if(lsTitle.contains("gift card")){
+				bFind=true;
+				break;
+			}
+		}
+		return bFind;
 	}
 
 	/**
@@ -541,32 +596,7 @@ public class ShoppingCartPage extends BasePage {
 	 * @return - boolean
 	 */
 	public boolean checkIsDropdownMenuForInstallmentNumber(){
-		return this.checkChildElementExistingByTagName(this.cntCartEasyPayInstallmentNumberContainer,"select");
-	}
-
-	/**
-	 * To check Shipping saving in orderSummary section Existing
-	 * @return - boolean
-	 */
-	public boolean checkShippingSavingExistingFromOrderSummary(){
-		return this.getElementInnerText(lblCartPricingLastItem).toLowerCase().contains("you’re saving");
-	}
-
-	/**
-	 * To get saving price from Shopping Cart Header
-	 * @return - float
-	 */
-	public float getSavingPriceFromShoppingCartHeader(){
-		if(this.checkCartNoticeMessageExisting()==null){
-			return 0.0f;
-		}
-
-		if(!this.checkCartNoticeMessageExisting().equalsIgnoreCase("errorMessage")){
-			return this.getFloatFromString(this.getElementInnerText(lblCartNoticeMultiPackMessage),true);
-		}
-		else{
-			return 0.0f;
-		}
+		return this.checkChildElementExistingByTagName(this.cntOrderSummaryContainer,"select");
 	}
 
 	/**
@@ -574,9 +604,7 @@ public class ShoppingCartPage extends BasePage {
 	 * @return - int - shopping amount
 	 */
 	public int getShoppingAmount(){
-		String lsText=this.getElementInnerText(lblCartTableSubTotal);
-		lsText=lsText.split(":")[0];
-
+		String lsText=this.getElementInnerText(lblCartPricingOrderSummaryTitle);
 		return this.getIntegerFromString(lsText);
 	}
 
@@ -586,18 +614,16 @@ public class ShoppingCartPage extends BasePage {
 	 */
 	public float getOrderSummarySubTotal(){
 		String lsText=this.getElementInnerText(lblCartPricingSubTotal);
-		return this.getFloatFromString(lsText,true);
+		return this.getFloatFromString(lsText);
 	}
 
 	/**
-	 * To get Shopping subtotal
-	 * @return - float - shopping subtotal
+	 * To get shipping price from OrderSummary section
+	 * @return - float - Subtotal
 	 */
-	public float getShoppingSubTotal(){
-		String lsText=this.getElementInnerText(lblCartTableSubTotal);
-		lsText=lsText.split(":")[1];
-
-		return this.getFloatFromString(lsText,true);
+	public float getOrderSummaryShippingPrice(){
+		String lsText=this.getElementInnerText(lblCartPricingShippingNowPrice);
+		return this.getFloatFromString(lsText);
 	}
 
 	/**
@@ -609,7 +635,64 @@ public class ShoppingCartPage extends BasePage {
 		for(Map<String,Object> cartItem:mapShoppingCartList){
 			sum+=(int)cartItem.get("productQuantity");
 		}
+
 		return sum;
+	}
+
+	/**
+	 * To get SubTotal from Shopping cart List
+	 * @return - int
+	 */
+	public float getSubTotalFromShoppingList(List<Map<String,Object>> mapShoppingCartList){
+		float sum=0.0f;
+		for(Map<String,Object> cartItem:mapShoppingCartList){
+			sum+=(float)cartItem.get("productNowPrice")*(int)cartItem.get("productQuantity");
+		}
+
+		return sum;
+	}
+
+	/**
+	 * To get Shipping price Total from Shopping cart List
+	 * @return - int
+	 */
+	public float getShippingPriceTotalFromShoppingList(List<Map<String,Object>> mapShoppingCartList){
+		float sum=0.0f;
+		for(Map<String,Object> cartItem:mapShoppingCartList){
+			sum+=(float)cartItem.get("productShippingPrice");
+		}
+
+		return sum;
+	}
+
+	/**
+	 * To check Free Shipping Item Existing In Shopping List
+	 * @return - int
+	 */
+	public int checkFreeShippingItemExistingInShoppingList(){
+		int loopSize=this.lstCartItems.size();
+		for(int i=0;i<loopSize;i++){
+			WebElement cartItem=this.lstCartItems.get(i);
+			if(this.checkIfIsFreeShippingItem(cartItem)){
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	/**
+	 * To get First Not Free Shipping Cart Item In Shopping List
+	 * @return - int
+	 */
+	public int getFirstNotFreeShippingCartItemInShoppingList(){
+		int loopSize=this.lstCartItems.size();
+		for(int i=0;i<loopSize;i++){
+			WebElement cartItem=this.lstCartItems.get(i);
+			if(!this.checkIfIsFreeShippingItem(cartItem)){
+				return i;
+			}
+		}
+		return -1;
 	}
 
 	/**
@@ -620,9 +703,9 @@ public class ShoppingCartPage extends BasePage {
 		Map<String,WebElement> map=new HashMap<>();
 
 		for(WebElement cartItem:this.lstCartItems){
-			if(this.checkRemoveButtonExisting(cartItem)){
+			if(!this.checkIfIsFreeShippingItem(cartItem)){
 				map.put("cartItem",cartItem);
-				WebElement removeButton=cartItem.findElement(this.byProductRemoveButton);
+				WebElement removeButton=cartItem.findElement(this.byProductQuantityRemoveButton);
 				map.put("removeButton",removeButton);
 				return map;
 			}
@@ -638,7 +721,7 @@ public class ShoppingCartPage extends BasePage {
 	public boolean openRemoveDialog(WebElement removeButtonInOrderList){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(removeButtonInOrderList);
 		removeButtonInOrderList.click();
-		return this.waitForCondition(Driver->{return removeDialogLoadingIndicator.getAttribute("style").contains("display: block;");},15000);
+		return this.waitForCondition(Driver->{return lblRemoveDialogTitle.isDisplayed();},15000);
 	}
 
 	/**
@@ -646,7 +729,7 @@ public class ShoppingCartPage extends BasePage {
 	 * @param - boolean - bCancel - true for clicking Cancel button while false for clicking close button
 	 * @return - boolean
 	 */
-	public boolean closeRemoveDialogWithoutRemoveAction(boolean bCancel){
+	public void closeRemoveDialogWithoutRemoveAction(boolean bCancel){
 		if(bCancel){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnRemoveDialogCancel);
 			btnRemoveDialogCancel.click();
@@ -655,17 +738,21 @@ public class ShoppingCartPage extends BasePage {
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnRemoveDialogClose);
 			btnRemoveDialogClose.click();
 		}
-		return this.waitForCondition(Driver->{return removeDialogLoadingIndicator.getAttribute("style").contains("display: none;");},15000);
+		this.applyStaticWait(3*this.getStaticWaitForApplication());
 	}
 
 	/**
 	 * To close remove dialog with remove action
-	 * @return - boolean
 	 */
-	public boolean closeRemoveDialogWithRemoveAction(){
+	public void closeRemoveDialogWithRemoveAction(){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnRemoveDialogRemove);
 		btnRemoveDialogRemove.click();
-		return this.waitForCondition(Driver->{return removeDialogLoadingIndicator.getAttribute("style").contains("display: none;");},15000);
+		try{
+			this.waitForShoppingCardPageLoadingCompleted();
+		}
+		catch (Exception ex){
+			this.applyStaticWait(3*this.getStaticWaitForApplication());
+		}
 	}
 
 	/**
@@ -765,6 +852,25 @@ public class ShoppingCartPage extends BasePage {
 	public Map<String,Object> getMandatoryShoppingItemDesc(WebElement cartItem){
 		Map<String,Object> map=new HashMap<>();
 
+		WebElement item=cartItem.findElement(byProductItemDesc);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+		String lsText=item.getText().trim();
+		map.put("productName",lsText);
+
+		if(this.checkIfIsFreeShippingItem(cartItem)){
+			map.put("productBadge",false);
+			map.put("productStyle",null);
+			map.put("productSize",null);
+			map.put("productNumber",null);
+			map.put("productNowPrice",0.0f);
+			map.put("productNowPrice",0.0f);
+			map.put("productQuantity",1);
+			map.put("productQuantityDisabled",true);
+			map.put("freeShippingItem",true);
+
+			return map;
+		}
+
 		if(this.checkProductBadgeExisting(cartItem)){
 			map.put("productBadge",true);
 		}
@@ -772,62 +878,92 @@ public class ShoppingCartPage extends BasePage {
 			map.put("productBadge",false);
 		}
 
-		WebElement item=cartItem.findElement(byProductItemDesc);
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-		String lsText=item.getText().trim();
-		if(lsText.contains("|")){
-			String[] lsSplit=lsText.split("\\|");
-			if(lsSplit.length==2){
-				if(lsSplit[1].contains("Size")){
-					map.put("productName",lsSplit[0].trim());
-					map.put("productStyle",null);
-					map.put("productSize",lsSplit[1].split(":")[1].trim());
-				}
-				else{
-					map.put("productName",lsSplit[0].trim());
-					map.put("productStyle",lsSplit[1].split(":")[1].trim());
-					map.put("productSize",null);
-				}
-			}
-			else{
-				map.put("productName",lsSplit[0].trim());
-				map.put("productStyle",lsSplit[2].split(":")[1].trim());
-				map.put("productSize",lsSplit[1].split(":")[1].trim());
-			}
-		}
-		else{
-			map.put("productName",lsText.trim());
+		if(!this.checkProductStyleAndSizeSectionExisting(cartItem)){
 			map.put("productStyle",null);
 			map.put("productSize",null);
 		}
-
-		if(this.checkProductNumberExisting(cartItem)){
-			item=cartItem.findElement(byProductNumber);
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-			lsText=item.getText().replace("-","").trim();
-			map.put("productNumber",lsText);
-		}
 		else{
-			map.put("productNumber",null);
+			item=cartItem.findElement(byProductStyleAndSize);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsText=item.getText().trim();
+			if(lsText.contains("|")){
+				String[] lsSplit=lsText.split("\\|");
+				map.put("productSize",lsSplit[0].split(":")[1].trim());
+				map.put("productStyle",lsSplit[1].split(":")[1].trim());
+			}
+			else{
+				if(lsText.contains("Style")){
+					map.put("productStyle",lsText.split(":")[1].trim());
+					map.put("productSize",null);
+				}
+				else{
+					map.put("productSize",lsText.split(":")[1].trim());
+					map.put("productStyle",null);
+				}
+			}
 		}
+
+		item=cartItem.findElement(byProductNumber);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+		lsText=item.getText().replace("-","").trim();
+		map.put("productNumber",lsText);
 
 		item=cartItem.findElement(byProductNowPrice);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 		lsText=item.getText().trim();
-		map.put("productNowPrice",this.getFloatFromString(lsText,true));
+		map.put("productNowPrice",this.getFloatFromString(lsText));
 
-		item=cartItem.findElement(byProductSelectQuantity);
+		if(this.checkProductWasPriceExisting(cartItem)){
+			item=cartItem.findElement(byProductWasPrice);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsText=item.getText().trim();
+			map.put("productWasPrice",this.getFloatFromString(lsText));
+		}
+		else{
+			map.put("productWasPrice",0.0f);
+		}
+
+		item=cartItem.findElement(byProductQuantityDisplayText);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-		Select select = new Select(item);
-		lsText=select.getFirstSelectedOption().getText();
+		lsText=item.getText();
 		map.put("productQuantity",Integer.parseInt(lsText));
 
-		if(this.checkSelectQuantityEnabled(cartItem)){
+		if(this.checkProductQuantityPlusButtonEnabled(cartItem)){
 			map.put("productQuantityDisabled",false);
 		}
 		else{
 			map.put("productQuantityDisabled",true);
 		}
+
+		if(checkProductEstimatedShippingDateExisting(cartItem)){
+			item=cartItem.findElement(byProductEstimatedShippingDate);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+			lsText=item.getText().trim();
+			map.put("productShippingDateTitle",lsText.split(":")[0].trim());
+			map.put("productShippingDate",lsText.split(":")[1].trim());
+
+			if(!this.checkProductShippingPriceSectionExpanded(cartItem)){
+				this.clickElement(item);
+				this.waitForCondition(Driver->{return this.checkProductShippingPriceSectionExpanded(cartItem);},10000);
+			}
+
+			if(checkProductShippingPriceExisting(cartItem)){
+				WebElement subItem=cartItem.findElement(byProductShippingPrice);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
+				lsText=subItem.getText().trim();
+				map.put("productShippingPrice",this.getFloatFromString(lsText));
+			}
+			else{
+				map.put("productShippingPrice",0.0f);
+			}
+		}
+		else{
+			map.put("productShippingDateTitle",null);
+			map.put("productShippingDate",null);
+			map.put("productShippingPrice",0.0f);
+		}
+
+		map.put("freeShippingItem",false);
 
 		return map;
 	}
@@ -843,20 +979,8 @@ public class ShoppingCartPage extends BasePage {
 		WebElement item;
 		String lsText;
 
-		if(this.checkShippingDateExisting(cartItem)){
-			item=cartItem.findElement(byProductShippingDate);
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
-			lsText=item.getText().trim();
-			map.put("productShippingDateTitle",lsText.split(":")[0].trim());
-			map.put("productShippingDate",lsText.split(":")[1].trim());
-		}
-		else{
-			map.put("productShippingDateTitle",null);
-			map.put("productShippingDate",null);
-		}
-
-		if(this.checkRedMessageExisting(cartItem)){
-			item=cartItem.findElement(byProductRedMessage);
+		if(this.checkProductStockUrgentMessageExisting(cartItem)){
+			item=cartItem.findElement(byProductStockUrgentMessage);
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 			lsText=item.getText().trim();
 			map.put("productLeftNumber",this.getIntegerFromString(lsText));
@@ -865,8 +989,8 @@ public class ShoppingCartPage extends BasePage {
 			map.put("productLeftNumber",-1);
 		}
 
-		if(this.checkFreeShippingMessageExisting(cartItem)){
-			item=cartItem.findElement(byProductBlackMessage);
+		if(this.checkProductFreeShippingMessageExisting(cartItem)){
+			item=cartItem.findElement(byProductFreeShipping);
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 			lsText=item.getText().trim();
 			map.put("productFreeShipping",lsText);
@@ -901,25 +1025,10 @@ public class ShoppingCartPage extends BasePage {
 	public Map<String,Object> getShoppingSectionDetails(String lsOption){
 		Map<String,Object> map=new HashMap<>();
 
-		map.put("shoppingList",this.getShoppingItemListDesc(lsOption));
-		map.put("shoppingAmount",this.getShoppingAmount());
-		map.put("shoppingSubTotal",this.getShoppingSubTotal());
-
-		return map;
-	}
-
-	/**
-	 * To get Product Name, Style and Size through splitting product description string with pipeline separator
-	 * @param - lsProductDesc - the given product description string with pipeline separator
-	 * @return - map<String,Object> - including Product Name, Style and Size
-	 */
-	public Map<String,Object> getProductNameAndStyleAndSize(String lsProductDesc){
-		Map<String,Object> map=new HashMap<>();
-
-		String[] lsSplit=lsProductDesc.split("|");
-		map.put("productName",lsSplit[0].trim());
-		map.put("productStyle",lsSplit[2].split(":")[1].trim());
-		map.put("productSize",lsSplit[1].split(":")[1].trim());
+		List<Map<String,Object>> shoppingList=this.getShoppingItemListDesc(lsOption);
+		map.put("shoppingList",shoppingList);
+		map.put("shoppingAmount",this.getItemCountFromShoppingList(shoppingList));
+		map.put("shoppingSubTotal",this.getSubTotalFromShoppingList(shoppingList));
 
 		return map;
 	}
@@ -1020,45 +1129,63 @@ public class ShoppingCartPage extends BasePage {
 			map.put("productBadge",false);
 		}
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblRemoveDialogProductItemDesc);
-		lsText=lblRemoveDialogProductItemDesc.getText();
-		if(lsText.contains("|")){
-			String[] lsSplit=lsText.split("\\|");
-			if(lsSplit.length==2){
-				if(lsSplit[1].contains("Size")){
-					map.put("productName",lsSplit[0].trim());
-					map.put("productStyle",null);
-					map.put("productSize",lsSplit[1].split(":")[1].trim());
-				}
-				else{
-					map.put("productName",lsSplit[0].trim());
-					map.put("productStyle",lsSplit[1].split(":")[1].trim());
-					map.put("productSize",null);
-				}
-			}
-			else{
-				map.put("productName",lsSplit[0].trim());
-				map.put("productStyle",lsSplit[2].split(":")[1].trim());
-				map.put("productSize",lsSplit[1].split(":")[1].trim());
-			}
-		}
-		else{
-			map.put("productName",lsText.trim());
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lnkRemoveDialogProductItemDesc);
+		lsText=lnkRemoveDialogProductItemDesc.getText().trim();
+		map.put("productName",lsText);
+
+		if(!checkRemoveDialogStyleAndSizeSectionExisting()){
 			map.put("productStyle",null);
 			map.put("productSize",null);
+		}
+		else{
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblRemoveDialogProductStyleAndSize);
+			lsText=lblRemoveDialogProductStyleAndSize.getText().trim();
+			if(lsText.contains("|")){
+				String[] lsSplit=lsText.split("\\|");
+				map.put("productSize",lsSplit[0].split(":")[1].trim());
+				map.put("productStyle",lsSplit[1].split(":")[1].trim());
+			}
+			else{
+				if(lsText.contains("Style")){
+					map.put("productStyle",lsText.split(":")[1].trim());
+					map.put("productSize",null);
+				}
+				else{
+					map.put("productSize",lsText.split(":")[1].trim());
+					map.put("productStyle",null);
+				}
+			}
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblRemoveDialogProductItemNumber);
 		lsText=lblRemoveDialogProductItemNumber.getText().trim();
 		map.put("productNumber",lsText.replace("-",""));
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblRemoveDialogProductItemPrice);
-		lsText=lblRemoveDialogProductItemPrice.getText();
-		map.put("productNowPrice",this.getFloatFromString(lsText,true));
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblRemoveDialogProductNowPrice);
+		lsText=lblRemoveDialogProductNowPrice.getText();
+		map.put("productNowPrice",this.getFloatFromString(lsText));
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblRemoveDialogProductItemQuantity);
-		lsText=lblRemoveDialogProductItemQuantity.getText();
-		map.put("productQuantity",Integer.parseInt(lsText));
+		if(this.checkRemoveDialogWasPriceExisting()){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblRemoveDialogProductWasPrice);
+			lsText=lblRemoveDialogProductWasPrice.getText();
+			map.put("productWasPrice",this.getFloatFromString(lsText));
+		}
+		else{
+			map.put("productWasPrice",0.0f);
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblRemoveDialogProductQuantity);
+		lsText=lblRemoveDialogProductQuantity.getText();
+		map.put("productQuantity",this.getIntegerFromString(lsText));
+
+		if(this.checkRemoveDialogFreeShippingMessageExisting()){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblRemoveDialogProductFreeShipping);
+			lsText=lblRemoveDialogProductFreeShipping.getText().trim();
+			map.put("productFreeShipping",lsText);
+		}
+		else{
+			map.put("productFreeShipping",null);
+		}
 
 		return map;
 	}
@@ -1127,6 +1254,17 @@ public class ShoppingCartPage extends BasePage {
 			reporter.reportLogFail("The product now price:"+cartItemProductNowPrice+" in cart item is not equal to the one:"+removeDialogProductNowPrice+" in remove dialog");
 		}
 
+		if((float)cartItemMap.get("productWasPrice")>0.1f){
+			float cartItemProductWasPrice= (float) cartItemMap.get("productWasPrice");
+			float removeDialogProductWasPrice= (float) removeDialogMap.get("productWasPrice");
+			if(Math.abs(cartItemProductWasPrice-removeDialogProductWasPrice)<0.1){
+				reporter.reportLogPass("The product was price in cart item is equal to the one in remove dialog");
+			}
+			else{
+				reporter.reportLogFail("The product was price:"+cartItemProductWasPrice+" in cart item is not equal to the one:"+removeDialogProductWasPrice+" in remove dialog");
+			}
+		}
+
 		int cartItemProductQuantity= (int) cartItemMap.get("productQuantity");
 		int removeDialogProductQuantity= (int) removeDialogMap.get("productQuantity");
 		if(cartItemProductQuantity==removeDialogProductQuantity){
@@ -1134,6 +1272,17 @@ public class ShoppingCartPage extends BasePage {
 		}
 		else{
 			reporter.reportLogFail("The product Quantity:"+cartItemProductQuantity+" in cart item is not equal to the one:"+removeDialogProductQuantity+" in remove dialog");
+		}
+
+		if(cartItemMap.get("productFreeShipping")!=null){
+			String cartItemProductFreeShipping= cartItemMap.get("productFreeShipping").toString();
+			String removeDialogProductFreeShipping= removeDialogMap.get("productFreeShipping").toString();
+			if(cartItemProductFreeShipping.equalsIgnoreCase(removeDialogProductFreeShipping)){
+				reporter.reportLogPass("The product FreeShipping in cart item is the same as the one in remove dialog");
+			}
+			else{
+				reporter.reportLogFail("The product FreeShipping:"+cartItemProductFreeShipping+" in cart item is not the same as the one:"+removeDialogProductFreeShipping+" in remove dialog");
+			}
 		}
 	}
 
@@ -1345,8 +1494,9 @@ public class ShoppingCartPage extends BasePage {
 	/**
 	 * To verify business logic Between ShoppingItem List And SubTotalSection
 	 * @param - Map<String,Object> - shoppingCartMap
+	 * @param - Map<String,Object> - orderSummaryMap
 	 */
-	public void verifyBusinessLogicBetweenShoppingItemListAndSubTotalSection(Map<String,Object> shoppingCartMap){
+	public void verifyBusinessLogicBetweenShoppingItemListAndSubTotalSection(Map<String,Object> shoppingCartMap,Map<String,Object> orderSummaryMap){
 		List<Map<String,Object>> shoppingList=(List<Map<String,Object>>)shoppingCartMap.get("shoppingList");
 		int shoppingAmount= (int) shoppingCartMap.get("shoppingAmount");
 		float shoppingSubTotal= (float) shoppingCartMap.get("shoppingSubTotal");
@@ -1354,6 +1504,11 @@ public class ShoppingCartPage extends BasePage {
 		Map<String,Object> calculateMap=calculateItemCountAndSubTotalFromShoppingCartList(shoppingList);
 		int quantityAmount= (int) calculateMap.get("itemCount");
 		float priceAmount= (float) calculateMap.get("subTotal");
+
+		if(this.checkJaysCareDonationExistingInOrderSummary()){
+			quantityAmount+=1;
+			priceAmount+=(float)orderSummaryMap.get("donationValue");
+		}
 
 		if(shoppingAmount==quantityAmount){
 			reporter.reportLogPass("The quantity amount in shopping item list is equal to item amount in subtotal section");
@@ -1426,6 +1581,14 @@ public class ShoppingCartPage extends BasePage {
 	}
 
 	/**
+	 * To get Shopping Item Amount on checkout button
+	 * @return - int
+	 */
+	public int getShoppingItemAmountOnCheckoutButton(){
+		return this.getIntegerFromString(this.getElementInnerText(this.btnCartCheckoutButton));
+	}
+
+	/**
 	 * To get OrderSummary Description
 	 * @return - Map<String,Object>
 	 */
@@ -1439,15 +1602,6 @@ public class ShoppingCartPage extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblCartPricingSubTotal);
 		lsText=this.lblCartPricingSubTotal.getText();
 		map.put("subTotal",this.getFloatFromString(lsText,true));
-
-		if(this.checkShippingWasPriceExisting()){
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblCartPricingShippingWasPrice);
-			lsText=this.lblCartPricingShippingWasPrice.getText();
-			map.put("wasPrice",this.getFloatFromString(lsText,true));
-		}
-		else{
-			map.put("wasPrice",0.0f);
-		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblCartPricingShippingNowPrice);
 		lsText=this.lblCartPricingShippingNowPrice.getText().trim();
@@ -1467,91 +1621,74 @@ public class ShoppingCartPage extends BasePage {
 		lsText=this.lblCartPricingShippingEstimateTax.getText();
 		map.put("tax",this.getFloatFromString(lsText,true));
 
-		WebElement item,subItem;
+		if(this.checkJaysCareDonationExistingInOrderSummary()){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartPricingJaysCareDonation);
+			lsText=lblCartPricingJaysCareDonation.getText();
+			map.put("donationValue",this.getFloatFromString(lsText));
+		}
+		else{
+			map.put("donationValue",0.0f);
+		}
+
 		float floatValue=0.0f;
-		if(this.checkAppliedDiscountExistingInOrderSummary()){
-			String lsAppliedDiscountType=this.judgeAppliedDiscountType();
-			switch(lsAppliedDiscountType){
-				case "Both":
-					item=lstAppliedDiscountList.get(0);
-					subItem=item.findElement(By.xpath("./div[1]"));
-					lsText=this.getElementInnerText(subItem).replace(":","");
-					map.put("promoteCodeTitle",lsText);
-					subItem=item.findElement(By.xpath("./div[2]"));
-					lsText=this.getElementInnerText(subItem);
-					if(lsText.contains("-")){
-						if(lsText.equalsIgnoreCase("-")){
-							map.put("promoteCodeValue",0.0f);
-						}
-						else{
-							floatValue=-1*this.getFloatFromString(lsText,true);
-							map.put("promoteCodeValue",floatValue);
-						}
-					}
-					else{
-						floatValue=-1*this.getFloatFromString(lsText,true);
-						map.put("promoteCodeValue",floatValue);
-					}
-
-					item=lstAppliedDiscountList.get(1);
-					subItem=item.findElement(By.xpath("./div[1]"));
-					lsText=this.getElementInnerText(subItem).replace(":","");
-					map.put("giftCardTitle",lsText);
-					subItem=item.findElement(By.xpath("./div[2]"));
-					lsText=this.getElementInnerText(subItem);
-					if(lsText.contains("-")){
-						map.put("giftCardValue",-1*this.getFloatFromString(lsText,true));
-					}
-					else{
-						map.put("giftCardValue",this.getFloatFromString(lsText,true));
-					}
-					break;
-				case "PromoteCode":
-					item=lstAppliedDiscountList.get(0);
-					subItem=item.findElement(By.xpath("./div[1]"));
-					lsText=this.getElementInnerText(subItem).replace(":","");
-					map.put("promoteCodeTitle",lsText);
-					subItem=item.findElement(By.xpath("./div[2]"));
-					lsText=this.getElementInnerText(subItem);
-					if(lsText.contains("-")){
-						if(lsText.equalsIgnoreCase("-")){
-							map.put("promoteCodeValue",0.0f);
-						}
-						else{
-							floatValue=-1*this.getFloatFromString(lsText,true);
-							map.put("promoteCodeValue",floatValue);
-						}
-					}
-					else{
-						floatValue=-1*this.getFloatFromString(lsText,true);
-						map.put("promoteCodeValue",floatValue);
-					}
-
-					map.put("giftCardTitle",null);
-					map.put("giftCardValue",0.0f);
-					break;
-				case "GiftCard":
-					this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblGiftCardRedeemValue);
-					lsText=lblGiftCardRedeemValue.getText();
-					if(lsText.contains("-")){
-						map.put("giftCardValue",-1*this.getFloatFromString(lsText,true));
-					}
-					else{
-						map.put("giftCardValue",this.getFloatFromString(lsText,true));
-					}
-
-					map.put("promoteCodeTitle",null);
-					map.put("promoteCodeValue",0.0f);
-					break;
-				default:
-					break;
+		if(this.checkMultiPackShippingDiscountExistingInOrderSummary()){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblMultiPackShippingDiscount);
+			lsText= lblMultiPackShippingDiscount.getText();
+			if(lsText.contains("-")){
+				if(lsText.equalsIgnoreCase("-")){
+					map.put("multiPackShippingDiscountValue",0.0f);
+				}
+				else{
+					floatValue=-1*this.getFloatFromString(lsText);
+					map.put("multiPackShippingDiscountValue",floatValue);
+				}
+			}
+			else{
+				floatValue=this.getFloatFromString(lsText);
+				map.put("multiPackShippingDiscountValue",floatValue);
 			}
 		}
 		else{
-			map.put("promoteCodeTitle",null);
-			map.put("promoteCodeValue",0.0f);
+			map.put("multiPackShippingDiscountValue",0.0f);
+		}
 
-			map.put("giftCardTitle",null);
+		if(this.checkPromoteCodeDiscountExistingInOrderSummary()) {
+			map.put("promoteCodeValue", 0.0f);
+			for (WebElement item : this.lstOrderSummaryRow) {
+				WebElement subItemTitle = item.findElement(By.xpath("./div[1]"));
+				WebElement subItemValue = item.findElement(By.xpath("./div[last()]"));
+				if (this.getElementInnerText(subItemValue).contains("-")) {
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItemTitle);
+					String lsTitle = this.getElementInnerText(subItemTitle).toLowerCase();
+					if (!lsTitle.contains("multipack shipping discount") && !lsTitle.contains("gift card")) {
+						String lsValue=this.getElementInnerText(subItemValue);
+						if (lsValue.contains("-")) {
+							floatValue = -1*this.getFloatFromString(lsValue);
+						}
+						else{
+							floatValue = this.getFloatFromString(lsValue);
+						}
+						map.put("promoteCodeValue", floatValue);
+						break;
+					}
+				}
+			}
+		}
+		else{
+			map.put("promoteCodeValue",0.0f);
+		}
+
+		if(this.checkGiftCardExistingInOrderSummary()){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblGiftCardRedeemValue);
+			lsText=lblGiftCardRedeemValue.getText();
+			if(lsText.contains("-")){
+				map.put("giftCardValue",-1*this.getFloatFromString(lsText));
+			}
+			else{
+				map.put("giftCardValue",this.getFloatFromString(lsText));
+			}
+		}
+		else{
 			map.put("giftCardValue",0.0f);
 		}
 
@@ -1559,14 +1696,6 @@ public class ShoppingCartPage extends BasePage {
 		lsText=this.lblCartPricingTotalPrice.getText();
 		map.put("totalPrice",this.getFloatFromString(lsText,true));
 
-		if(this.checkShippingSavingExistingFromOrderSummary()){
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblCartPricingYouAreSaving);
-			lsText=this.lblCartPricingYouAreSaving.getText();
-			map.put("savePrice",this.getFloatFromString(lsText,true));
-		}
-		else{
-			map.put("savePrice",0.0f);
-		}
 		return map;
 	}
 
@@ -1592,24 +1721,19 @@ public class ShoppingCartPage extends BasePage {
 	 * @param - orderSummaryMap - Map<String,Object>
 	 * @param - Map<String,Object> - provincialTaxRate - note that if pass null, will not calculate tax for comparison
 	 */
-	public void verifyOrderSummaryBusinessLogic(int itemAmountShoppingCart,float savePriceShoppingCart,float subTotalShoppingCart,Map<String,Object> orderSummaryMap,Map<String,Object> provincialTaxRate){
-		int itemAmountOrderSummary= (int) orderSummaryMap.get("itemAmount");
-		if(itemAmountOrderSummary==itemAmountShoppingCart){
-			reporter.reportLogPass("The item amount in OrderSummary section is equal to the one in Shopping Cart item section");
-		}
-		else{
-			reporter.reportLogFail("The item amount:"+itemAmountOrderSummary+" in OrderSummary section is not equal to the one:"+itemAmountShoppingCart+" in Shopping Cart item section");
-		}
-
-		float wasPriceOrderSummary= (float) orderSummaryMap.get("wasPrice");
+	public void verifyOrderSummaryBusinessLogic(float subTotalShoppingCart,Map<String,Object> orderSummaryMap,Map<String,Object> provincialTaxRate){
 		float nowPriceOrderSummary=(float) orderSummaryMap.get("nowPrice");
 
 		float subTotal=(float) orderSummaryMap.get("subTotal");
-		if(Math.abs(subTotal-subTotalShoppingCart)<0.01){
-			reporter.reportLogPass("The subtotal price in OrderSummary section is equal to the subtotal price in shopping cart section");
+		float donationValue=0.0f;
+		if(this.checkJaysCareDonationExistingInOrderSummary()){
+			donationValue=(float) orderSummaryMap.get("donationValue");
+		}
+		if(Math.abs(subTotal-subTotalShoppingCart-donationValue)<0.01){
+			reporter.reportLogPass("The (subtotal price - donation value) in OrderSummary section is matching the subtotal price in shopping cart section");
 		}
 		else{
-			reporter.reportLogFail("The subtotal price:"+subTotal+" in OrderSummary section is not equal to the subtotal price:"+subTotalShoppingCart+" in shopping cart section");
+			reporter.reportLogFail("The (subtotal price - donation value):"+(subTotal-donationValue)+" in OrderSummary section is not matching the subtotal price:"+subTotalShoppingCart+" in shopping cart section");
 		}
 
 		float tax=(float) orderSummaryMap.get("tax");
@@ -1627,7 +1751,6 @@ public class ShoppingCartPage extends BasePage {
 
 		float promoteCodeValue=(float) orderSummaryMap.get("promoteCodeValue");
 		float giftCardValue=(float) orderSummaryMap.get("giftCardValue");
-
 		float calTotalPrice=subTotal+tax+nowPriceOrderSummary+promoteCodeValue+giftCardValue;
 		float totalPrice=(float) orderSummaryMap.get("totalPrice");
 		if(Math.abs(calTotalPrice-totalPrice)<0.01){
@@ -1635,22 +1758,6 @@ public class ShoppingCartPage extends BasePage {
 		}
 		else{
 			reporter.reportLogFail("The calculated total price:"+calTotalPrice+" in OrderSummary section is not equal to the total price:"+totalPrice+" in OrderSummary section");
-		}
-
-		float calSavePriceOrderSummary;
-		if(wasPriceOrderSummary<0.01){
-			calSavePriceOrderSummary=0.0f;
-		}
-		else{
-			calSavePriceOrderSummary=Math.abs(wasPriceOrderSummary-nowPriceOrderSummary);
-		}
-		calSavePriceOrderSummary=calSavePriceOrderSummary+Math.abs(promoteCodeValue);
-		float savePriceOrderSummary=(float) orderSummaryMap.get("savePrice");
-		if(Math.abs(calSavePriceOrderSummary-savePriceOrderSummary)<0.01){
-			reporter.reportLogPass("The calculated saving price in OrderSummary section is equal to the saving price in OrderSummary section");
-		}
-		else{
-			reporter.reportLogFail("The calculated saving price:"+calSavePriceOrderSummary+" in OrderSummary section is not equal to the saving price:"+savePriceOrderSummary+" in OrderSummary section");
 		}
 	}
 
@@ -1684,13 +1791,7 @@ public class ShoppingCartPage extends BasePage {
 		Select select = new Select(this.selectCartPricingShippingEstimateTaxProvince);
 		String lsTextSelectedOptionBefore=select.getFirstSelectedOption().getText();
 		select.selectByVisibleText(provinceCode);
-		String lsTextSelectedOptionAfter=select.getFirstSelectedOption().getText();
-		//Checking this condition and applying static wait as there is no other check for waitForConditoin
-		//method. Since two province can have same tax rate and since sub-total is same, tax will also be same
-		if(!lsTextSelectedOptionBefore.equalsIgnoreCase(lsTextSelectedOptionAfter)){
-			this.waitForPageToLoad();
-			this.applyStaticWait(8*this.getStaticWaitForApplication());
-		}
+		this.waitForShoppingCardPageLoadingCompleted();
 	}
 
 	/**
@@ -1701,7 +1802,7 @@ public class ShoppingCartPage extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectCartEasyPayInstallmentNumber);
 		Select select = new Select(this.selectCartEasyPayInstallmentNumber);
 		select.selectByVisibleText(optionText);
-		this.waitForEasyPaySectionLoadingFromNonInstallmentState();
+		this.waitForShoppingCardPageLoadingCompleted();
 	}
 
 	/**
@@ -1709,6 +1810,7 @@ public class ShoppingCartPage extends BasePage {
 	 * @return - int - the setting of installment number
 	 */
 	public int setInstallmentNumberByRandomIndex(){
+		this.expandEasyPaymentSection();
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectCartEasyPayInstallmentNumber);
 		Select select=new Select(this.selectCartEasyPayInstallmentNumber);
 
@@ -1725,7 +1827,7 @@ public class ShoppingCartPage extends BasePage {
 		int randomNumber=getRandomNumber(1, optionSize);
 		select.selectByIndex(randomNumber);
 		try{
-			this.waitForEasyPaySectionLoadingFromNonInstallmentState();
+			this.waitForShoppingCardPageLoadingCompleted();
 		}
 		catch (Exception e){
 			this.applyStaticWait(3*this.getStaticWaitForApplication());
@@ -1736,7 +1838,7 @@ public class ShoppingCartPage extends BasePage {
 
 	/**
 	 * To get Installment Options
- 	 * @return - List<String>
+	 * @return - List<String>
 	 */
 	public List<String> getInstallmentOptions(){
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectCartEasyPayInstallmentNumber);
@@ -1756,51 +1858,21 @@ public class ShoppingCartPage extends BasePage {
 	public Map<String,Object> getEasyPayDesc(){
 		Map<String,Object> map=new HashMap<>();
 		String lsText;
-
-		if(this.checkIsDropdownMenuForInstallmentNumber()){
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectCartEasyPayInstallmentNumber);
-			Select select=new Select(selectCartEasyPayInstallmentNumber);
-			lsText=select.getFirstSelectedOption().getText();
-			map.put("installmentsNumber",this.getIntegerFromString(lsText));
-		}
-		else{
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblCartEasyPayInstallmentNumber);
-			lsText=this.lblCartEasyPayInstallmentNumber.getText();
-			map.put("installmentsNumber",this.getIntegerFromString(lsText));
-		}
-
+		map.put("installmentsNumber",this.getInstallmentNumberFromPaymentOptionText());
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblCartEasyPayTodayPayment);
 		lsText=this.lblCartEasyPayTodayPayment.getText();
-		map.put("todayPayment",this.getFloatFromString(lsText,true));
+		map.put("todayPayment",this.getFloatFromString(lsText));
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblCartEasyPayLeftPayment);
 		lsText=this.lblCartEasyPayLeftPayment.getText();
-		map.put("leftPayment",this.getFloatFromString(lsText,true));
+		map.put("leftPayment",this.getFloatFromString(lsText));
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblCartEasyPayFutureMonthlyPayment);
 		lsText=this.lblCartEasyPayFutureMonthlyPayment.getText();
-		map.put("futureMonthlyPayment",this.getFloatFromString(lsText,true));
+		map.put("futureMonthlyPayment",this.getFloatFromString(lsText));
 
 		return map;
-	}
-
-	/**
-	 * To get Installment Number
-	 * @return - int
-	 */
-	public int getInstallmentNumber(){
-		String lsInstallmentNumber;
-		if(this.checkIsDropdownMenuForInstallmentNumber()){
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectCartEasyPayInstallmentNumber);
-			Select select = new Select(this.selectCartEasyPayInstallmentNumber);
-			lsInstallmentNumber=select.getFirstSelectedOption().getText().trim();
-		}
-		else{
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblCartEasyPayInstallmentNumber);
-			lsInstallmentNumber=this.lblCartEasyPayInstallmentNumber.getText().trim();
-		}
-		return this.getIntegerFromString(lsInstallmentNumber);
 	}
 
 	/**
@@ -1808,29 +1880,7 @@ public class ShoppingCartPage extends BasePage {
 	 * @param - Map<String,Object> - orderSummaryMap
 	 */
 	public void verifyInstallmentBusinessLogic(Map<String,Object> orderSummaryMap){
-		String lsText;
-		int totalInstallmentNumber;
-
-		String lsInstallmentNumber;
-		if(this.checkIsDropdownMenuForInstallmentNumber()){
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectCartEasyPayInstallmentNumber);
-			Select select = new Select(this.selectCartEasyPayInstallmentNumber);
-			lsInstallmentNumber=select.getFirstSelectedOption().getText().trim();
-			if(lsInstallmentNumber.equalsIgnoreCase("-")){
-				//Selecting 2 as installment number by default for test
-				if(select.getOptions().size()>=2)
-					select.selectByValue("2");
-				totalInstallmentNumber = 2;
-			}
-			else{
-				totalInstallmentNumber= Integer.parseInt(lsInstallmentNumber);
-			}
-		}
-		else{
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblCartEasyPayInstallmentNumber);
-			lsInstallmentNumber=this.lblCartEasyPayInstallmentNumber.getText().trim();
-			totalInstallmentNumber=this.getIntegerFromString(lsInstallmentNumber);
-		}
+		int totalInstallmentNumber = getInstallmentNumberFromPaymentOptionText();
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblCartEasyPayTodayPayment);
 		float todayPayment=this.getFloatFromString(this.lblCartEasyPayTodayPayment.getText(),true);
@@ -1850,9 +1900,9 @@ public class ShoppingCartPage extends BasePage {
 		float totalPriceOrderSummary=(float) orderSummaryMap.get("totalPrice");
 		float promoteCodeValue=(float) orderSummaryMap.get("promoteCodeValue");
 		float giftCardValue=(float) orderSummaryMap.get("giftCardValue");
-
 		float eachInstallmentPayment=subTotalOrderSummary/totalInstallmentNumber;
-		float calTodayPayment=eachInstallmentPayment+shippingPriceOrderSummary+taxOrderSummary+(promoteCodeValue+giftCardValue)/totalInstallmentNumber;
+ 		float calTodayPayment=eachInstallmentPayment+shippingPriceOrderSummary+taxOrderSummary+(promoteCodeValue+giftCardValue)/totalInstallmentNumber;
+
 		if(Math.abs(calTodayPayment-todayPayment)<0.1){
 			reporter.reportLogPass("The calculated today payment is equal to the today payment in installment section: "+todayPayment);
 		}
@@ -1887,310 +1937,238 @@ public class ShoppingCartPage extends BasePage {
 
 	/**
 	 * To verify Shopping Cart Contents
-	 * @param - String - lsOption - "mandatory"/"Optional"/"all"
 	 */
-	public void verifyShoppingCartContents(String lsOption){
-		switch(lsOption){
-			case "mandatory":
-				verifyMandatoryOrOptionalShoppingCartContents(true);
-				break;
-			case "optional":
-				verifyMandatoryOrOptionalShoppingCartContents(false);
-				break;
-			case "all":
-				verifyMandatoryOrOptionalShoppingCartContents(true);
-				verifyMandatoryOrOptionalShoppingCartContents(false);
-				break;
-			default:
-				break;
-		}
-	}
-
-	/**
-	 * To verify Mandatory/Optional Shopping Cart Contents
-	 * @param - boolean - bMandatory
-	 */
-	public void verifyMandatoryOrOptionalShoppingCartContents(boolean bMandatory){
+	public void verifyShoppingCartContents(){
 		String lsText;
 
-		if(bMandatory){
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartTitle);
-			lsText=lblCartTitle.getText();
-			if(!lsText.isEmpty()){
-				reporter.reportLogPass("The cart title is displaying correctly");
-			}
-			else{
-				reporter.reportLogFailWithScreenshot("The cart title is not displaying correctly");
-			}
-
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartTopMessage);
-			lsText=lblCartTopMessage.getText();
-			if(!lsText.isEmpty()){
-				reporter.reportLogPass("The cart top message is displaying correctly");
-			}
-			else{
-				reporter.reportLogFailWithScreenshot("The cart top message is not displaying correctly");
-			}
-
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartTableHeadingITEM);
-			lsText=lblCartTableHeadingITEM.getText();
-			if(!lsText.isEmpty()){
-				reporter.reportLogPass("The cart table heading ITEM title is displaying correctly");
-			}
-			else{
-				reporter.reportLogFailWithScreenshot("The cart table heading ITEM title is not displaying correctly");
-			}
-
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartTableHeadingPRICE);
-			lsText=lblCartTableHeadingPRICE.getText();
-			if(!lsText.isEmpty()){
-				reporter.reportLogPass("The cart table heading PRICE title is displaying correctly");
-			}
-			else{
-				reporter.reportLogFailWithScreenshot("The cart table heading PRICE title is not displaying correctly");
-			}
-
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartTableHeadingQUANTITY);
-			lsText=lblCartTableHeadingQUANTITY.getText();
-			if(!lsText.isEmpty()){
-				reporter.reportLogPass("The cart table heading QUANTITY title is displaying correctly");
-			}
-			else{
-				reporter.reportLogFailWithScreenshot("The cart table heading QUANTITY title is not displaying correctly");
-			}
-
-			WebElement element;
-			int index=0;
-			for(WebElement cartItem:lstCartItems){
-				reporter.reportLog("Verify cart item "+index);
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(cartItem);
-				if(checkProductBadgeExisting(cartItem)){
-					element=cartItem.findElement(byProductPicBadge);
-					this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-					lsText=element.getAttribute("src");
-					if(!lsText.isEmpty()){
-						reporter.reportLogPass("The cart item badge is displaying correctly");
-					}
-					else{
-						reporter.reportLogFailWithScreenshot("The cart item badge is not displaying correctly");
-					}
-				}
-
-				element=cartItem.findElement(byProductPicLink);
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-				lsText=element.getAttribute("href");
-				if(!lsText.isEmpty()){
-					reporter.reportLogPass("The cart item pic link is not empty");
-				}
-				else{
-					reporter.reportLogFailWithScreenshot("The cart item pic link is empty");
-				}
-
-				element=cartItem.findElement(byProductPicImage);
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-				lsText=element.getAttribute("src");
-				if(!lsText.isEmpty()){
-					reporter.reportLogPass("The cart item pic src is not empty");
-				}
-				else{
-					reporter.reportLogFailWithScreenshot("The cart item pic src is empty");
-				}
-
-				element=cartItem.findElement(byProductItemDesc);
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-				lsText=element.getText();
-				if(!lsText.isEmpty()){
-					reporter.reportLogPass("The cart item product description is displaying correctly");
-				}
-				else{
-					reporter.reportLogFailWithScreenshot("The cart item product description is not displaying correctly");
-				}
-
-				if(this.checkProductNumberExisting(cartItem)){
-					element=cartItem.findElement(byProductNumber);
-					this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-					lsText=element.getText();
-					if(!lsText.isEmpty()){
-						reporter.reportLogPass("The cart item product product number is displaying correctly");
-					}
-					else{
-						reporter.reportLogFailWithScreenshot("The cart item product number is not displaying correctly");
-					}
-				}
-
-				if(this.checkRemoveButtonExisting(cartItem)){
-					element=cartItem.findElement(byProductRemoveButton);
-					this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-					lsText=element.getText();
-					if(!lsText.isEmpty()){
-						reporter.reportLogPass("The cart item remove button is displaying correctly");
-					}
-					else{
-						reporter.reportLogFailWithScreenshot("The cart item remove button is not displaying correctly");
-					}
-				}
-
-				element=cartItem.findElement(byProductSelectQuantity);
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-				if(this.getReusableActionsInstance().isElementVisible(element)){
-					reporter.reportLogPass("The cart item shopping quantity is displaying correctly");
-				}
-				else{
-					reporter.reportLogFailWithScreenshot("The cart item shopping quantity is not displaying correctly");
-				}
-				index++;
-			}
-
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartTableSubTotal);
-			lsText=lblCartTableSubTotal.getText();
-			if(!lsText.isEmpty()){
-				reporter.reportLogPass("The cart table subtotal is displaying correctly");
-			}
-			else{
-				reporter.reportLogFailWithScreenshot("The cart table subtotal is not displaying correctly");
-			}
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartTitle);
+		lsText=lblCartTitle.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The cart title is displaying correctly");
 		}
 		else{
-			if(this.checkContainPreviouslyAddedItemsMessageExisting()){
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblCartContainPreviouslyAddedItemsMessage);
-				lsText=this.lblCartContainPreviouslyAddedItemsMessage.getText();
-				if(!lsText.isEmpty()){
-					reporter.reportLogPass("The Cart Containing Previously Added Items Message is displaying correctly");
+			reporter.reportLogFailWithScreenshot("The cart title is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartParaMessage);
+		lsText=lblCartParaMessage.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The cart top message is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The cart top message is not displaying correctly");
+		}
+
+		if(lstShoppingBagFulfilledTitle.size()>0){
+			reporter.reportLogPass("The Shopping Bag Fulfilled Titles containing no less than 1 title");
+		}
+		else{
+			reporter.reportLogFail("The Shopping Bag Fulfilled Titles do not contain any title");
+		}
+
+		WebElement element;
+		int index=0;
+		for(WebElement cartItem:lstCartItems) {
+			reporter.reportLog("Verify cart item " + index);
+			element = cartItem.findElement(byProductPicImage);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+			lsText = element.getAttribute("src");
+			if (!lsText.isEmpty()) {
+				reporter.reportLogPass("The cart item pic src is not empty");
+			} else {
+				reporter.reportLogFailWithScreenshot("The cart item pic src is empty");
+			}
+
+			element = cartItem.findElement(byProductItemDesc);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+			lsText = element.getText();
+			if (!lsText.isEmpty()) {
+				reporter.reportLogPass("The cart item product description is displaying correctly");
+			} else {
+				reporter.reportLogFailWithScreenshot("The cart item product description is not displaying correctly");
+			}
+
+			element = cartItem.findElement(byProductNowPrice);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+			lsText = element.getText();
+			if (!lsText.isEmpty()) {
+				reporter.reportLogPass("The cart item product NowPrice is displaying correctly");
+			} else {
+				reporter.reportLogFailWithScreenshot("The cart item product NowPrice is not displaying correctly");
+			}
+
+			if (this.checkIfIsFreeShippingItem(cartItem)) {
+				element = cartItem.findElement(byProductFreeShipping);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+				lsText = element.getText();
+				if (!lsText.isEmpty()) {
+					reporter.reportLogPass("The cart item product FreeShipping message is displaying correctly");
+				} else {
+					reporter.reportLogFailWithScreenshot("The cart item product FreeShipping message is not displaying correctly");
 				}
-				else{
-					reporter.reportLogFailWithScreenshot("The Cart Containing Previously Added Items Message is not displaying correctly");
+				continue;
+			}
+
+			if (this.checkProductStyleAndSizeSectionExisting(cartItem)) {
+				element = cartItem.findElement(byProductStyleAndSize);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+				lsText = element.getText().trim();
+				if (!lsText.isEmpty()) {
+					reporter.reportLogPass("The cart item product Size&Style is displaying correctly");
+				} else {
+					reporter.reportLogFailWithScreenshot("The cart item product Size&Style is not displaying correctly");
 				}
 			}
 
-			if(this.checkCartNoticeTitleExisting()){
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartNoticeTitle);
-				lsText=lblCartNoticeTitle.getText();
-				if(!lsText.isEmpty()){
-					reporter.reportLogPass("The cart notice title is displaying correctly");
-				}
-				else{
-					reporter.reportLogFailWithScreenshot("The cart notice title is not displaying correctly");
-				}
-			}
-
-			String lsCartNoticeMessage=this.checkCartNoticeMessageExisting();
-			if(lsCartNoticeMessage!=null){
-				switch(lsCartNoticeMessage){
-					case "both":
-						this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartNoticeMultiPackMessage);
-						lsText=lblCartNoticeMultiPackMessage.getText();
-						if(!lsText.isEmpty()){
-							reporter.reportLogPass("The cart notice MultiPack message is displaying correctly");
-						}
-						else{
-							reporter.reportLogFailWithScreenshot("The cart notice MultiPack message is not displaying correctly");
-						}
-
-						this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartNoticeQuantityExceedingMessage);
-						lsText=lblCartNoticeQuantityExceedingMessage.getText();
-						if(!lsText.isEmpty()){
-							reporter.reportLogPass("The cart notice quantity exceeding message is displaying correctly");
-						}
-						else{
-							reporter.reportLogFailWithScreenshot("The cart notice quantity exceeding message is not displaying correctly");
-						}
-						break;
-					case "errorMessage":
-						this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartNoticeQuantityExceedingMessage);
-						lsText=lblCartNoticeQuantityExceedingMessage.getText();
-						if(!lsText.isEmpty()){
-							reporter.reportLogPass("The cart notice quantity exceeding message is displaying correctly");
-						}
-						else{
-							reporter.reportLogFailWithScreenshot("The cart notice quantity exceeding message is not displaying correctly");
-						}
-						break;
-					case "multiPackMessage":
-						this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartNoticeMultiPackMessage);
-						lsText=lblCartNoticeMultiPackMessage.getText();
-						if(!lsText.isEmpty()){
-							reporter.reportLogPass("The cart notice MultiPack message is displaying correctly");
-						}
-						else{
-							reporter.reportLogFailWithScreenshot("The cart notice MultiPack message is not displaying correctly");
-						}
-						break;
-					default:
-						break;
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(cartItem);
+			if (checkProductBadgeExisting(cartItem)) {
+				element = cartItem.findElement(byProductPicBadge);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+				if (this.getReusableActionsInstance().isElementVisible(element)) {
+					reporter.reportLogPass("The cart item badge is displaying correctly");
+				} else {
+					reporter.reportLogFailWithScreenshot("The cart item badge is not displaying correctly");
 				}
 			}
 
-			if(this.checkProductTrueFitMessageExisting()){
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartNoticeTrueFitMessage);
-				lsText=lblCartNoticeTrueFitMessage.getText();
-				if(!lsText.isEmpty()){
-					reporter.reportLogPass("The cart TrueFit message is displaying correctly");
-				}
-				else{
-					reporter.reportLogFailWithScreenshot("The cart TrueFit message is not displaying correctly");
-				}
+			element = cartItem.findElement(byProductPicLink);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+			lsText = element.getAttribute("href");
+			if (!lsText.isEmpty()) {
+				reporter.reportLogPass("The cart item pic link is not empty");
+			} else {
+				reporter.reportLogFailWithScreenshot("The cart item pic link is empty");
+			}
 
-				this.applyStaticWait(5*this.getStaticWaitForApplication());
-				lsText=lnkCartNoticeTrueFit.getAttribute("href");
-				if(!lsText.isEmpty()){
-					reporter.reportLogPass("The cart TrueFit link is not empty");
-				}
-				else{
-					reporter.reportLogFailWithScreenshot("The cart TrueFit link is empty");
+			element = cartItem.findElement(byProductNumber);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+			lsText = element.getText();
+			if (!lsText.isEmpty()) {
+				reporter.reportLogPass("The cart item product product number is displaying correctly");
+			} else {
+				reporter.reportLogFailWithScreenshot("The cart item product number is not displaying correctly");
+			}
+
+			if (this.checkProductStockUrgentMessageExisting(cartItem)) {
+				element = cartItem.findElement(byProductStockUrgentMessage);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+				lsText = element.getText().trim();
+				if (!lsText.isEmpty()) {
+					reporter.reportLogPass("The cart item product product inventory is displaying correctly");
+				} else {
+					reporter.reportLogFailWithScreenshot("The cart item product inventory is not displaying correctly");
 				}
 			}
 
-			if(this.checkGetItByShippingMessageExisting()){
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartGetItByDate);
-				lsText=lblCartGetItByDate.getText();
-				if(!lsText.isEmpty()){
-					reporter.reportLogPass("The cart GetByDate message is displaying correctly");
-				}
-				else{
-					reporter.reportLogFailWithScreenshot("The cart GetByDate message is not displaying correctly");
+			element = cartItem.findElement(byProductQuantityMinusButton);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+			if (this.getReusableActionsInstance().isElementVisible(element)) {
+				reporter.reportLogPass("The cart item product product quantity minus button is displaying correctly");
+			} else {
+				reporter.reportLogFailWithScreenshot("The cart item product quantity minus button is not displaying correctly");
+			}
+
+			element = cartItem.findElement(byProductQuantityPlusButton);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+			if (this.getReusableActionsInstance().isElementVisible(element)) {
+				reporter.reportLogPass("The cart item product product quantity plus button is displaying correctly");
+			} else {
+				reporter.reportLogFailWithScreenshot("The cart item product quantity plus button is not displaying correctly");
+			}
+
+			element = cartItem.findElement(byProductQuantityRemoveButton);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+			if (this.getReusableActionsInstance().isElementVisible(element)) {
+				reporter.reportLogPass("The cart item product product quantity remove button is displaying correctly");
+			} else {
+				reporter.reportLogFailWithScreenshot("The cart item product quantity remove button is not displaying correctly");
+			}
+
+			element = cartItem.findElement(byProductQuantityDisplayText);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+			if (!lsText.isEmpty()) {
+				reporter.reportLogPass("The cart item product product quantity is displaying correctly");
+			} else {
+				reporter.reportLogFailWithScreenshot("The cart item product quantity is not displaying correctly");
+			}
+
+			element = cartItem.findElement(byProductFavButton);
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+			if (this.getReusableActionsInstance().isElementVisible(element)) {
+				reporter.reportLogPass("The cart item product product Favorite Button is displaying correctly");
+			} else {
+				reporter.reportLogFailWithScreenshot("The cart item product quantity Favorite Button is not displaying correctly");
+			}
+
+			if (this.checkProductWasPriceExisting(cartItem)) {
+				element = cartItem.findElement(byProductWasPrice);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+				lsText = element.getText();
+				if (!lsText.isEmpty()) {
+					reporter.reportLogPass("The cart item product WasPrice is displaying correctly");
+				} else {
+					reporter.reportLogFailWithScreenshot("The cart item product WasPrice is not displaying correctly");
 				}
 			}
 
-			WebElement element;
-			int index=0;
-			for(WebElement cartItem:lstCartItems){
-				reporter.reportLog("Verify cart item "+index);
-				if(this.checkShippingDateExisting(cartItem)){
-					element=cartItem.findElement(byProductShippingDate);
+			if (this.checkProductFreeShippingMessageExisting(cartItem)) {
+				element = cartItem.findElement(byProductFreeShipping);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+				lsText = element.getText().trim();
+				if (!lsText.isEmpty()) {
+					reporter.reportLogPass("The cart item product FreeShipping message is displaying correctly");
+				} else {
+					reporter.reportLogFailWithScreenshot("The cart item product FreeShipping message is not displaying correctly");
+				}
+			}
+
+			if(checkProductEstimatedShippingDateExisting(cartItem)){
+				element = cartItem.findElement(byProductEstimatedShippingDate);
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+				lsText = element.getText().trim();
+				if (!lsText.isEmpty()) {
+					reporter.reportLogPass("The cart item product estimated shipping date is displaying correctly");
+				} else {
+					reporter.reportLogFailWithScreenshot("The cart item product estimated shipping date is not displaying correctly");
+				}
+
+				if(!this.checkProductShippingPriceSectionExpanded(cartItem)){
+					this.clickElement(element);
+					this.waitForCondition(Driver -> {
+						return this.checkProductShippingPriceSectionExpanded(cartItem);
+					}, 10000);
+				}
+
+				if(checkProductShippingPriceExisting(cartItem)){
+					element = cartItem.findElement(byProductShippingPriceLabel);
 					this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-					lsText=element.getText();
-					if(!lsText.isEmpty()){
-						reporter.reportLogPass("The cart item product shipping date is displaying correctly");
+					lsText = element.getText().trim();
+					if (!lsText.isEmpty()) {
+						reporter.reportLogPass("The cart item product price label is displaying correctly");
+					} else {
+						reporter.reportLogFailWithScreenshot("The cart item product price label is not displaying correctly");
 					}
-					else{
-						reporter.reportLogFailWithScreenshot("The cart item product shipping date is not displaying correctly");
+
+					element = cartItem.findElement(byProductShippingPrice);
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
+					lsText = element.getText().trim();
+					if (!lsText.isEmpty()) {
+						reporter.reportLogPass("The cart item product price is displaying correctly");
+					} else {
+						reporter.reportLogFailWithScreenshot("The cart item product price is not displaying correctly");
 					}
 				}
 
-				if(this.checkRedMessageExisting(cartItem)){
-					element=cartItem.findElement(byProductRedMessage);
+				if(checkProductFreeShippingExistingInShippingPriceSection(cartItem)){
+					element = cartItem.findElement(byProductFreeShippingUnderEstimatedShippingDate);
 					this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-					lsText=element.getText();
-					if(!lsText.isEmpty()){
-						reporter.reportLogPass("The cart item red message is displaying correctly");
-					}
-					else{
-						reporter.reportLogFailWithScreenshot("The cart item red message is not displaying correctly");
+					lsText = element.getText().trim();
+					if (!lsText.isEmpty()) {
+						reporter.reportLogPass("The cart item product Free Shipping Under EstimatedShipping Date section is displaying correctly");
+					} else {
+						reporter.reportLogFailWithScreenshot("The cart item product Free Shipping Under EstimatedShipping Date section is not displaying correctly");
 					}
 				}
-
-				if(this.checkFreeShippingMessageExisting(cartItem)){
-					element=cartItem.findElement(byProductBlackMessage);
-					this.getReusableActionsInstance().javascriptScrollByVisibleElement(element);
-					lsText=element.getText();
-					if(!lsText.isEmpty()){
-						reporter.reportLogPass("The cart item free shipping message is displaying correctly");
-					}
-					else{
-						reporter.reportLogFailWithScreenshot("The cart item free shipping message is not displaying correctly");
-					}
-				}
-				index++;
 			}
 		}
 	}
@@ -2201,17 +2179,6 @@ public class ShoppingCartPage extends BasePage {
 	public void verifyOrderSummaryContents(){
 		String lsText;
 
-		if(this.checkMultiPackMessageInOrderSummarySectionExisting()){
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartPricingMultiPackMessage);
-			lsText=lblCartPricingMultiPackMessage.getText();
-			if(!lsText.isEmpty()){
-				reporter.reportLogPass("The MultiPack Message in OrderSummary is displaying correctly");
-			}
-			else{
-				reporter.reportLogFailWithScreenshot("The MultiPack Message in OrderSummary is not displaying correctly");
-			}
-		}
-
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartPricingOrderSummaryTitle);
 		lsText=lblCartPricingOrderSummaryTitle.getText();
 		if(!lsText.isEmpty()){
@@ -2219,6 +2186,34 @@ public class ShoppingCartPage extends BasePage {
 		}
 		else{
 			reporter.reportLogFailWithScreenshot("The cart pricing title in OrderSummary is not displaying correctly");
+		}
+
+		if(this.checkJaysCareDonationExistingInOrderSummary()){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartPricingJaysCareDonationTitle);
+			lsText=lblCartPricingJaysCareDonationTitle.getText();
+			if(!lsText.isEmpty()){
+				reporter.reportLogPass("The Jays Care Donation title in OrderSummary is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The Jays Care Donation title in OrderSummary is not displaying correctly");
+			}
+
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnCartPricingJaysCareDonationRemoveButton);
+			if(this.getReusableActionsInstance().isElementVisible(btnCartPricingJaysCareDonationRemoveButton)){
+				reporter.reportLogPass("The Jays Care Donation remove button in OrderSummary is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The Jays Care Donation remove button in OrderSummary is not displaying correctly");
+			}
+
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartPricingJaysCareDonation);
+			lsText=lblCartPricingJaysCareDonation.getText();
+			if(!lsText.isEmpty()){
+				reporter.reportLogPass("The Jays Care Donation value in OrderSummary is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The Jays Care Donation value in OrderSummary is not displaying correctly");
+			}
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartPricingSubTotalTitle);
@@ -2248,17 +2243,6 @@ public class ShoppingCartPage extends BasePage {
 			reporter.reportLogFailWithScreenshot("The shipping price title in OrderSummary is not displaying correctly");
 		}
 
-		if(checkShippingWasPriceExisting()){
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartPricingShippingWasPrice);
-			lsText=lblCartPricingShippingWasPrice.getText();
-			if(!lsText.isEmpty()){
-				reporter.reportLogPass("The shipping Was price in OrderSummary is displaying correctly");
-			}
-			else{
-				reporter.reportLogFailWithScreenshot("The shipping Was price in OrderSummary is not displaying correctly");
-			}
-		}
-
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartPricingShippingNowPrice);
 		lsText=lblCartPricingShippingNowPrice.getText();
 		if(!lsText.isEmpty()){
@@ -2266,6 +2250,46 @@ public class ShoppingCartPage extends BasePage {
 		}
 		else{
 			reporter.reportLogFailWithScreenshot("The shipping Now price in OrderSummary is not displaying correctly");
+		}
+
+		if(this.checkPromoteCodeDiscountExistingInOrderSummary()) {
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblMultiPackShippingDiscountTitle);
+			lsText = lblMultiPackShippingDiscountTitle.getText();
+			if(!lsText.isEmpty()){
+				reporter.reportLogPass("The promote code Title in OrderSummary is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The promote code Title in OrderSummary is not displaying correctly");
+			}
+
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblMultiPackShippingDiscount);
+			lsText = lblMultiPackShippingDiscount.getText();
+			if(!lsText.isEmpty()){
+				reporter.reportLogPass("The promote code value in OrderSummary is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The promote code value in OrderSummary is not displaying correctly");
+			}
+		}
+
+		if(this.checkGiftCardExistingInOrderSummary()){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblGiftCardRedeemTitle);
+			lsText = lblGiftCardRedeemTitle.getText();
+			if(!lsText.isEmpty()){
+				reporter.reportLogPass("The gift card title in OrderSummary is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The gift card title in OrderSummary is not displaying correctly");
+			}
+
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblGiftCardRedeemValue);
+			lsText = lblGiftCardRedeemValue.getText();
+			if(!lsText.isEmpty()){
+				reporter.reportLogPass("The gift card value in OrderSummary is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The gift card value in OrderSummary is not displaying correctly");
+			}
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartPricingEstimateTaxTitle);
@@ -2294,61 +2318,6 @@ public class ShoppingCartPage extends BasePage {
 			reporter.reportLogFailWithScreenshot("The estimated tax in OrderSummary is not displaying correctly");
 		}
 
-		if(this.checkAppliedDiscountExistingInOrderSummary()){
-			if(!this.judgeAppliedDiscountType().equalsIgnoreCase("GiftCard")){
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblAppliedDiscountTitle);
-				lsText=this.lblAppliedDiscountTitle.getText();
-				if(!lsText.isEmpty()){
-					reporter.reportLogPass("The Applied Discount Title in OrderSummary is displaying correctly");
-				}
-				else{
-					reporter.reportLogFailWithScreenshot("The Applied Discount Title in OrderSummary is not displaying correctly");
-				}
-
-				WebElement subItem;
-				for(WebElement item:this.lstAppliedDiscountList){
-					subItem=item.findElement(By.xpath("./div[1]"));
-					this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
-					lsText=subItem.getText();
-					if(!lsText.isEmpty()){
-						reporter.reportLogPass("The Applied Discount item title:"+lsText+" in OrderSummary is displaying correctly");
-					}
-					else{
-						reporter.reportLogFailWithScreenshot("The Applied Discount item Title in OrderSummary is not displaying correctly");
-					}
-
-					subItem=item.findElement(By.xpath("./div[2]"));
-					this.getReusableActionsInstance().javascriptScrollByVisibleElement(subItem);
-					lsText=subItem.getText();
-					if(!lsText.isEmpty()){
-						reporter.reportLogPass("The Applied Discount item value:"+lsText+" in OrderSummary is displaying correctly");
-					}
-					else{
-						reporter.reportLogFailWithScreenshot("The Applied Discount item value in OrderSummary is not displaying correctly");
-					}
-				}
-			}
-			else{
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblGiftCardRedeemTitle);
-				lsText=lblGiftCardRedeemTitle.getText();
-				if(!lsText.isEmpty()){
-					reporter.reportLogPass("The GiftCardRedeem Title is displaying correctly");
-				}
-				else{
-					reporter.reportLogFailWithScreenshot("The GiftCardRedeem Title is not displaying correctly");
-				}
-
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblGiftCardRedeemValue);
-				lsText=lblGiftCardRedeemValue.getText();
-				if(!lsText.isEmpty()){
-					reporter.reportLogPass("The GiftCardRedeem value is displaying correctly");
-				}
-				else{
-					reporter.reportLogFailWithScreenshot("The GiftCardRedeem value is not displaying correctly");
-				}
-			}
-		}
-
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartPricingTotalPriceTitle);
 		lsText=lblCartPricingTotalPriceTitle.getText();
 		if(!lsText.isEmpty()){
@@ -2366,17 +2335,6 @@ public class ShoppingCartPage extends BasePage {
 		else{
 			reporter.reportLogFailWithScreenshot("The total price in OrderSummary is not displaying correctly");
 		}
-
-		if(checkShippingSavingExistingFromOrderSummary()){
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartPricingYouAreSaving);
-			lsText=lblCartPricingYouAreSaving.getText();
-			if(!lsText.isEmpty()){
-				reporter.reportLogPass("The saving price in OrderSummary is displaying correctly");
-			}
-			else{
-				reporter.reportLogFailWithScreenshot("The saving price in OrderSummary is not displaying correctly");
-			}
-		}
 	}
 
 	/**
@@ -2385,47 +2343,38 @@ public class ShoppingCartPage extends BasePage {
 	public void verifyEasyPaymentContents(){
 		String lsText;
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartEasyPayTitle);
-		lsText=lblCartEasyPayTitle.getText();
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(ckbEasyPayCheckbox);
+		if(this.getReusableActionsInstance().isElementVisible(ckbEasyPayCheckbox)){
+			reporter.reportLogPass("The EasyPay checkbox is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The EasyPay checkbox is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(labelEasyPayCheckbox);
+		lsText=labelEasyPayCheckbox.getText();
 		if(!lsText.isEmpty()){
-			reporter.reportLogPass("The EasyPay title is displaying correctly");
+			reporter.reportLogPass("The EasyPay checkbox label is displaying correctly");
 		}
 		else{
-			reporter.reportLogFailWithScreenshot("The EasyPay title is not displaying correctly");
+			reporter.reportLogFailWithScreenshot("The EasyPay checkbox label is not displaying correctly");
 		}
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartEasyPayInstallmentNumberTitle);
-		lsText=lblCartEasyPayInstallmentNumberTitle.getText();
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnEasyPayLink);
+		lsText=btnEasyPayLink.getText();
 		if(!lsText.isEmpty()){
-			reporter.reportLogPass("The EasyPay installment number title is displaying correctly");
+			reporter.reportLogPass("The EasyPay link button is displaying correctly");
 		}
 		else{
-			reporter.reportLogFailWithScreenshot("The EasyPay installment number title is not displaying correctly");
+			reporter.reportLogFailWithScreenshot("The EasyPay link button is not displaying correctly");
 		}
 
-		if(this.checkIsDropdownMenuForInstallmentNumber()){
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(selectCartEasyPayInstallmentNumber);
-			if(this.getReusableActionsInstance().isElementVisible(selectCartEasyPayInstallmentNumber)){
-				reporter.reportLogPass("The EasyPay installment options is displaying correctly");
-			}
-			else{
-				reporter.reportLogFailWithScreenshot("The EasyPay installment options is not displaying correctly");
-			}
-
-			Select select=new Select(selectCartEasyPayInstallmentNumber);
-			if(select.getFirstSelectedOption().getText().trim().equalsIgnoreCase("-")){
-				return;
-			}
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(selectCartEasyPayInstallmentNumber);
+		if(this.getReusableActionsInstance().isElementVisible(selectCartEasyPayInstallmentNumber)){
+			reporter.reportLogPass("The EasyPay installment options is displaying correctly");
 		}
 		else{
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartEasyPayInstallmentNumber);
-			lsText=lblCartEasyPayInstallmentNumber.getText();
-			if(!lsText.isEmpty()){
-				reporter.reportLogPass("The EasyPay installment number is displaying correctly");
-			}
-			else{
-				reporter.reportLogFailWithScreenshot("The EasyPay installment number is not displaying correctly");
-			}
+			reporter.reportLogFailWithScreenshot("The EasyPay installment options is not displaying correctly");
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartEasyPayTodayPaymentTitle);
@@ -2481,6 +2430,15 @@ public class ShoppingCartPage extends BasePage {
 		else{
 			reporter.reportLogFailWithScreenshot("The Future monthly payment is not displaying correctly");
 		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartEasyPayCommentsForShippingAndTax);
+		lsText=lblCartEasyPayCommentsForShippingAndTax.getText();
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The EasyPayment comments is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The EasyPayment comments is not displaying correctly");
+		}
 	}
 
 	/**
@@ -2508,8 +2466,7 @@ public class ShoppingCartPage extends BasePage {
 
 		if(checkRemoveDialogBadgeExisting()){
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(imgRemoveDialogProductBadge);
-			lsText=imgRemoveDialogProductBadge.getAttribute("src");
-			if(!lsText.isEmpty()){
+			if(this.getReusableActionsInstance().isElementVisible(imgRemoveDialogProductBadge)){
 				reporter.reportLogPass("The product badge in Remove dialog is displaying correctly");
 			}
 			else{
@@ -2520,19 +2477,37 @@ public class ShoppingCartPage extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(imgRemoveDialogProductImage);
 		lsText=imgRemoveDialogProductImage.getAttribute("src");
 		if(!lsText.isEmpty()){
-			reporter.reportLogPass("The product image in Remove dialog is displaying correctly");
+			reporter.reportLogPass("The product image src in Remove dialog is not empty");
 		}
 		else{
-			reporter.reportLogFailWithScreenshot("The product image in Remove dialog is not displaying correctly");
+			reporter.reportLogFailWithScreenshot("The product image src in Remove dialog is empty");
 		}
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblRemoveDialogProductItemDesc);
-		lsText=lblRemoveDialogProductItemDesc.getText();
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lnkRemoveDialogProductImageLink);
+		lsText=lnkRemoveDialogProductImageLink.getAttribute("href");
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The product link in Remove dialog is not empty");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The product link in Remove dialog is empty");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lnkRemoveDialogProductItemDesc);
+		lsText=lnkRemoveDialogProductItemDesc.getText();
 		if(!lsText.isEmpty()){
 			reporter.reportLogPass("The product description in Remove dialog is displaying correctly");
 		}
 		else{
 			reporter.reportLogFailWithScreenshot("The product description in Remove dialog is not displaying correctly");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lnkRemoveDialogProductItemDesc);
+		lsText=lnkRemoveDialogProductItemDesc.getAttribute("href");
+		if(!lsText.isEmpty()){
+			reporter.reportLogPass("The product description link in Remove dialog is not empty");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The product description link in Remove dialog is empty");
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblRemoveDialogProductItemNumber);
@@ -2544,40 +2519,55 @@ public class ShoppingCartPage extends BasePage {
 			reporter.reportLogFailWithScreenshot("The product item number in Remove dialog is not displaying correctly");
 		}
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblRemoveDialogProductItemPriceTitle);
-		lsText=lblRemoveDialogProductItemPriceTitle.getText();
-		if(!lsText.isEmpty()){
-			reporter.reportLogPass("The product item price title in Remove dialog is displaying correctly");
-		}
-		else{
-			reporter.reportLogFailWithScreenshot("The product item price title in Remove dialog is not displaying correctly");
-		}
-
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblRemoveDialogProductItemPrice);
-		lsText=lblRemoveDialogProductItemPrice.getText();
-		if(!lsText.isEmpty()){
-			reporter.reportLogPass("The product item price in Remove dialog is displaying correctly");
-		}
-		else{
-			reporter.reportLogFailWithScreenshot("The product item price in Remove dialog is not displaying correctly");
+		if(checkRemoveDialogStyleAndSizeSectionExisting()) {
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblRemoveDialogProductStyleAndSize);
+			lsText = lblRemoveDialogProductStyleAndSize.getText().trim();
+			if(!lsText.isEmpty()){
+				reporter.reportLogPass("The product item Size&Style in Remove dialog is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The product item Size&Style in Remove dialog is not displaying correctly");
+			}
 		}
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblRemoveDialogProductItemQuantityTitle);
-		lsText=lblRemoveDialogProductItemQuantityTitle.getText();
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblRemoveDialogProductNowPrice);
+		lsText=lblRemoveDialogProductNowPrice.getText();
 		if(!lsText.isEmpty()){
-			reporter.reportLogPass("The product item quantity title in Remove dialog is displaying correctly");
+			reporter.reportLogPass("The product item NowPrice in Remove dialog is displaying correctly");
 		}
 		else{
-			reporter.reportLogFailWithScreenshot("The product item quantity title in Remove dialog is not displaying correctly");
+			reporter.reportLogFailWithScreenshot("The product item NowPrice in Remove dialog is not displaying correctly");
 		}
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblRemoveDialogProductItemQuantity);
-		lsText=lblRemoveDialogProductItemQuantity.getText();
+		if(this.checkRemoveDialogWasPriceExisting()){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblRemoveDialogProductWasPrice);
+			lsText=lblRemoveDialogProductWasPrice.getText();
+			if(!lsText.isEmpty()){
+				reporter.reportLogPass("The product item WasPrice in Remove dialog is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The product item WasPrice in Remove dialog is not displaying correctly");
+			}
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblRemoveDialogProductQuantity);
+		lsText=lblRemoveDialogProductQuantity.getText();
 		if(!lsText.isEmpty()){
 			reporter.reportLogPass("The product item quantity in Remove dialog is displaying correctly");
 		}
 		else{
 			reporter.reportLogFailWithScreenshot("The product item quantity in Remove dialog is not displaying correctly");
+		}
+
+		if(this.checkRemoveDialogFreeShippingMessageExisting()){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblRemoveDialogProductFreeShipping);
+			lsText=lblRemoveDialogProductFreeShipping.getText().trim();
+			if(!lsText.isEmpty()){
+				reporter.reportLogPass("The product item Free Shipping message in Remove dialog is displaying correctly");
+			}
+			else{
+				reporter.reportLogFailWithScreenshot("The product item Free Shipping message in Remove dialog is not displaying correctly");
+			}
 		}
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnRemoveDialogRemove);
@@ -2649,9 +2639,9 @@ public class ShoppingCartPage extends BasePage {
 		if(bCheckExisting&&accountCart.getProducts().size()>0){
 			List<Map<String,Object>> data = new ArrayList<>();
 			/**String cartGuidId = accountCart.getCartGuid();
-			Response response = cartApi.getCartContentWithCartGuid(cartGuidId,accessToken);
-			CartResponse cartResponse = JsonParser.getResponseObject(response.asString(), new TypeReference<CartResponse>() {});
-			*/
+			 Response response = cartApi.getCartContentWithCartGuid(cartGuidId,accessToken);
+			 CartResponse cartResponse = JsonParser.getResponseObject(response.asString(), new TypeReference<CartResponse>() {});
+			 */
 			List<CartResponse.ProductsClass> productsClassList = accountCart.getProducts();
 			List<CartResponse.CartLinesClass> cartLinesClassList = accountCart.getCartLines();
 
@@ -2779,94 +2769,159 @@ public class ShoppingCartPage extends BasePage {
 	public Map<String,Object> getItemCountAndPriceInfo(Map<String,Object> shoppingCartMap,boolean bItemCountOnly){
 		Map<String,Object> map=new HashMap<>();
 
-		int itemCountInShoppingCartHeader=this.GetAddedItemAmount();
-		map.put("itemCountInShoppingCartHeader",itemCountInShoppingCartHeader);
-
 		int shoppingItemListCount=this.getItemCountFromShoppingList((List<Map<String,Object>>)shoppingCartMap.get("shoppingList"));
 		map.put("shoppingItemCount",shoppingItemListCount);
-
-		int shoppingItemCountInSubtotal=(int)shoppingCartMap.get("shoppingAmount");
-		map.put("shoppingItemCountInSubtotal",shoppingItemCountInSubtotal);
 
 		int itemCountInOrderSummary=this.getShoppingItemAmountFromOrderSummarySection();
 		map.put("itemCountInOrderSummary",itemCountInOrderSummary);
 
+		int itemCountOnCheckoutButton=this.getShoppingItemAmountOnCheckoutButton();
+		map.put("itemCountOnCheckoutButton",itemCountOnCheckoutButton);
+
 		if(!bItemCountOnly){
-			float subTotalShoppingCart=this.getShoppingSubTotal();
+			float subTotalShoppingCart=this.getSubTotalFromShoppingList((List<Map<String,Object>>)shoppingCartMap.get("shoppingList"));
 			map.put("subTotalShoppingCart",subTotalShoppingCart);
+
+			float subTotalShippingPriceShoppingCart=this.getShippingPriceTotalFromShoppingList((List<Map<String,Object>>)shoppingCartMap.get("shoppingList"));
+			map.put("subTotalShippingPriceShoppingCart",subTotalShippingPriceShoppingCart);
 
 			float subTotalOrderSummary=this.getOrderSummarySubTotal();
 			map.put("subTotalOrderSummary",subTotalOrderSummary);
+
+			float subTotalShippingPriceOrderSummary=this.getOrderSummaryShippingPrice();
+			map.put("subTotalShippingPriceOrderSummary",subTotalShippingPriceOrderSummary);
 		}
 
 		return map;
 	}
 
 	/**
-	 * To verify CheckOut section Contents
-	 * @param - boolean - bBlueJaysOnly
+	 * To expand Jays Care Donation Section
 	 */
-	public void verifyCheckOutContents(boolean bBlueJaysOnly){
+	public void expandJaysCareDonationSection(){
+		if(!this.checkJaysCareDonationExpanded()){
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnJaysCareDonationButton);
+			btnJaysCareDonationButton.click();
+			this.waitForCondition(Driver->{return this.checkJaysCareDonationExpanded();},10000);
+		}
+	}
+
+	/**
+	 * To set Random Jays Care Donation Item
+	 * @return - float - donation value
+	 */
+	public float setRandomJaysCareDonationItem(){
+		expandJaysCareDonationSection();
+
+		int optionSize= lstJaysCareDonationCheckboxLabel.size();
+		int randomNumber=getRandomNumber(0, optionSize);
+		WebElement selectItem= lstJaysCareDonationCheckboxLabel.get(randomNumber);
+		int donationValue=this.getIntegerFromString(this.getElementInnerText(selectItem));
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(selectItem);
+		selectItem.click();
+		this.waitForShoppingCardPageLoadingCompleted();
+		this.applyStaticWait(this.getStaticWaitForApplication());
+
+		return donationValue*1.0f;
+	}
+
+	/**
+	 * To remove Jays Care Donation Item From OrderSummary
+	 */
+	public void removeJaysCareDonationItemFromOrderSummary(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnCartPricingJaysCareDonationRemoveButton);
+		this.btnCartPricingJaysCareDonationRemoveButton.click();
+		this.waitForShoppingCardPageLoadingCompleted();
+		this.applyStaticWait(this.getStaticWaitForApplication());
+	}
+
+	/**
+	 * To get Selected Jays Care Donation Item Index
+	 * @return - int
+	 */
+	public int getSelectedJaysCareDonationItemIndex(){
+		int loopSize=this.lstJaysCareDonationCheckbox.size();
+		for(int i=0;i<loopSize;i++){
+			WebElement item=this.lstJaysCareDonationCheckbox.get(i);
+			if(item.isSelected()){
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	/**
+	 * To verify Jays Care Donation section Contents
+	 */
+	public void verifyJaysCareDonationContents(){
+		expandJaysCareDonationSection();
+
 		String lsText;
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(imgCartCheckoutDonationLogo);
-		if(this.getReusableActionsInstance().isElementVisible(imgCartCheckoutDonationLogo)){
-			reporter.reportLogPass("The checkout donation logo is displaying correctly");
-		}
-		else{
-			reporter.reportLogFailWithScreenshot("The checkout donation logo is not displaying correctly");
-		}
-
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(imgCartCheckoutDonationLogo);
-		lsText=imgCartCheckoutDonationLogo.getAttribute("src");
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnJaysCareDonationButton);
+		lsText=btnJaysCareDonationButton.getText();
 		if(!lsText.isEmpty()){
-			reporter.reportLogPass("The image source of checkout donation logo is not empty");
+			reporter.reportLogPass("The Jays Care Donation button is displaying correctly");
 		}
 		else{
-			reporter.reportLogFailWithScreenshot("The image source of checkout donation logo is empty");
+			reporter.reportLogFailWithScreenshot("The Jays Care Donation button is not displaying correctly");
 		}
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(imgCartCheckoutDonationDesc);
-		lsText=imgCartCheckoutDonationDesc.getText();
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(imgJaysCareDonation);
+		lsText=imgJaysCareDonation.getAttribute("src");
 		if(!lsText.isEmpty()){
-			reporter.reportLogPass("The checkout donation description is displaying correctly");
+			reporter.reportLogPass("The image source of Jays Cars Donation logo is not empty");
 		}
 		else{
-			reporter.reportLogFailWithScreenshot("The checkout donation description is not displaying correctly");
+			reporter.reportLogFailWithScreenshot("The image source of Jays Cars Donation logo is empty");
 		}
 
-		for(WebElement button:lstCartCheckoutDonationButton){
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(button);
-			lsText=button.getText().trim();
-			if(!lsText.isEmpty()){
-				reporter.reportLogPass("The "+lsText+" button is displaying correctly");
-			}
-			else{
-				reporter.reportLogFailWithScreenshot("The "+lsText+" button is not displaying correctly");
-			}
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(iconJaysCareDonationForExpansionStatus);
+		if(this.getReusableActionsInstance().isElementVisible(iconJaysCareDonationForExpansionStatus)){
+			reporter.reportLogPass("The Jays Care Donation icon is displaying correctly");
+		}
+		else{
+			reporter.reportLogFailWithScreenshot("The Jays Care Donation icon is not displaying correctly");
 		}
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartCheckoutDonationReceiptMessage);
-		lsText=lblCartCheckoutDonationReceiptMessage.getText();
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblJaysCareDonationMessage);
+		lsText=lblJaysCareDonationMessage.getText();
 		if(!lsText.isEmpty()){
-			reporter.reportLogPass("The checkout donation receipt message is displaying correctly");
+			reporter.reportLogPass("The Jays Care Donation message is displaying correctly");
 		}
 		else{
-			reporter.reportLogFailWithScreenshot("The checkout donation receipt message is not displaying correctly");
+			reporter.reportLogFailWithScreenshot("The Jays Care Donation message is not displaying correctly");
 		}
 
-		if(bBlueJaysOnly){
-			return;
+		if(lstJaysCareDonationCheckbox.size()>0){
+			reporter.reportLogPass("The Jays Care Donation checkbox list is containing no less than 1 item");
+		}
+		else{
+			reporter.reportLogFail("The Jays Care Donation checkbox list does not contain any items");
 		}
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartCheckoutRedeemMessage);
-		lsText=lblCartCheckoutRedeemMessage.getText();
+		if(lstJaysCareDonationCheckboxLabel.size()>0){
+			reporter.reportLogPass("The Jays Care Donation checkbox label list is containing no less than 1 item");
+		}
+		else{
+			reporter.reportLogFail("The Jays Care Donation checkbox label list does not contain any items");
+		}
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblJaysCareDonationSubMessage);
+		lsText=lblJaysCareDonationSubMessage.getText();
 		if(!lsText.isEmpty()){
-			reporter.reportLogPass("The checkout redeem message is displaying correctly");
+			reporter.reportLogPass("The Jays Care Donation sub message is displaying correctly");
 		}
 		else{
-			reporter.reportLogFailWithScreenshot("The checkout redeem message is not displaying correctly");
+			reporter.reportLogFailWithScreenshot("The Jays Care Donation sub message is not displaying correctly");
 		}
+	}
+
+	/**
+	 * To verify Checkout Section Contents
+	 */
+	public void verifyCheckoutSectionContents(){
+		String lsText;
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(btnCartCheckoutButton);
 		lsText=btnCartCheckoutButton.getText();
@@ -2877,24 +2932,14 @@ public class ShoppingCartPage extends BasePage {
 			reporter.reportLogFailWithScreenshot("The checkout button is not displaying correctly");
 		}
 
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartPrivacy);
-		lsText=lblCartPrivacy.getText();
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblCartTipMessageForDiscountAndGiftCard);
+		lsText=lblCartTipMessageForDiscountAndGiftCard.getText();
 		if(!lsText.isEmpty()){
-			reporter.reportLogPass("The cart privacy message is displaying correctly");
+			reporter.reportLogPass("The tip message for promote and gift card is displaying correctly");
 		}
 		else{
-			reporter.reportLogFailWithScreenshot("The cart privacy message is not displaying correctly");
+			reporter.reportLogFailWithScreenshot("The tip message for promote and gift card is not displaying correctly");
 		}
-
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(lnkCartPrivacy);
-		lsText=lnkCartPrivacy.getAttribute("href");
-		if(!lsText.isEmpty()){
-			reporter.reportLogPass("The link of cart privacy is not empty");
-		}
-		else{
-			reporter.reportLogFailWithScreenshot("The link of cart privacy is empty");
-		}
-
 	}
 
 	/**
@@ -2905,7 +2950,6 @@ public class ShoppingCartPage extends BasePage {
 		return Integer.valueOf(this.lblCartEasyPayFutureMonthlyPaymentTitle.getText().trim().split(" ")[0]);
 	}
 
-
 	/**
 	 * To change Shopping Item Quantity by given shopping item index
 	 * @param - int - given shopping Item Index
@@ -2913,41 +2957,18 @@ public class ShoppingCartPage extends BasePage {
 	 */
 	public Map<String,Object> changeShoppingItemQuantityByGivenIndex(int shoppingItemIndex) {
 		WebElement shoppingItem = this.lstCartItems.get(shoppingItemIndex);
-		WebElement selectQuantity = shoppingItem.findElement(this.byProductSelectQuantity);
-		Select select = new Select(selectQuantity);
-
+		WebElement selectQuantity = shoppingItem.findElement(this.byProductQuantityDisplayText);
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(selectQuantity);
-		int quantityBeforeChange = this.getIntegerFromString(select.getFirstSelectedOption().getText());
-		float price = this.getFloatFromString(this.getElementInnerText(shoppingItem.findElement(this.byProductNowPrice)), true);
-		float itemTotalBeforeChange = price * quantityBeforeChange;
+		float price = this.getFloatFromString(this.getElementInnerText(shoppingItem.findElement(this.byProductNowPrice)));
 
-		int itemQuantityDifference = 0;
-		List<WebElement> quantityOptionItemList = select.getOptions();
-		for (WebElement option : quantityOptionItemList) {
-			String optionText = this.getElementInnerText(option);
-			int optionIndex = Integer.parseInt(optionText.trim());
-			if (optionIndex != quantityBeforeChange) {
-				itemQuantityDifference = optionIndex - quantityBeforeChange;
-				this.getReusableActionsInstance().javascriptScrollByVisibleElement(selectQuantity);
-				select.selectByVisibleText(optionText);
-				this.waitForCondition(Driver -> {
-					return this.pageLoadingIndicator.getAttribute("style").contains("display: none");
-				}, 20000);
-				break;
-			}
-		}
-
-		shoppingItem = this.lstCartItems.get(shoppingItemIndex);
-		selectQuantity = shoppingItem.findElement(this.byProductSelectQuantity);
-		select = new Select(selectQuantity);
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(selectQuantity);
-		int quantityAfterChange = this.getIntegerFromString(select.getFirstSelectedOption().getText());
-		price = this.getFloatFromString(this.getElementInnerText(shoppingItem.findElement(this.byProductNowPrice)), true);
-		float itemTotalAfterChange = price * quantityAfterChange;
+		WebElement plusButton = shoppingItem.findElement(this.byProductQuantityPlusButton);
+		plusButton.click();
+		this.waitForShoppingCardPageLoadingCompleted();
+		this.applyStaticWait(this.getStaticWaitForApplication());
 
 		Map<String, Object> map = new HashMap<>();
-		map.put("itemTotalDifference", itemTotalAfterChange - itemTotalBeforeChange);
-		map.put("itemQuantityDifference", itemQuantityDifference);
+		map.put("itemTotalDifference", price);
+		map.put("itemQuantityDifference", 1);
 
 		return map;
 	}
@@ -2956,18 +2977,50 @@ public class ShoppingCartPage extends BasePage {
 	 * To choose Shopping Item By Given Item Index And Quantity
 	 * @param - int - given shopping Item Index
 	 * @param - int - given item quantity
-	 * @return - boolean
 	 */
-	public boolean chooseShoppingItemByGivenItemIndexAndQuantity(int shoppingItemIndex,int quantity) {
+	public void chooseShoppingItemByGivenItemIndexAndQuantity(int shoppingItemIndex,int quantity) {
 		WebElement shoppingItem = this.lstCartItems.get(shoppingItemIndex);
-		WebElement selectQuantity = shoppingItem.findElement(this.byProductSelectQuantity);
+		WebElement selectQuantity = shoppingItem.findElement(this.byProductQuantityDisplayText);
+		int quantityBeforeChange=this.getIntegerFromString(this.getElementInnerText(selectQuantity));
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(selectQuantity);
-		Select select = new Select(selectQuantity);
-		select.selectByVisibleText(String.valueOf(quantity));
+		float price = this.getFloatFromString(this.getElementInnerText(shoppingItem.findElement(this.byProductNowPrice)));
 
-		return this.waitForCondition(Driver -> {
-			return this.pageLoadingIndicator.getAttribute("style").contains("display: none");
-		}, 20000);
+		int loopClicking=quantity-quantityBeforeChange;
+		if(loopClicking==0){
+			return;
+		}
+
+		if(loopClicking>0){
+			WebElement plusButton = shoppingItem.findElement(this.byProductQuantityPlusButton);
+			for(int i=0;i<loopClicking;i++){
+				plusButton.click();
+				this.waitForShoppingCardPageLoadingCompleted();
+				this.applyStaticWait(this.getStaticWaitForApplication());
+			}
+		}
+		else{
+			WebElement minusButton = shoppingItem.findElement(this.byProductQuantityMinusButton);
+			loopClicking=-loopClicking;
+			for(int i=0;i<loopClicking;i++){
+				minusButton.click();
+				this.waitForShoppingCardPageLoadingCompleted();
+				this.applyStaticWait(this.getStaticWaitForApplication());
+			}
+		}
+	}
+
+	/**
+	 * To get Maximum product Quantity By Given Shopping Cart Item Index
+	 * @param - int - shoppingCartItemIndex
+	 * @return - int
+	 */
+	public int getMaximumQuantityByGivenShoppingCartItemIndex(int shoppingCartItemIndex){
+		WebElement item=this.lstCartItems.get(shoppingCartItemIndex);
+		if(this.checkProductStockUrgentMessageExisting(item)){
+			WebElement subItem=item.findElement(byProductStockUrgentMessage);
+			return this.getIntegerFromString(this.getElementInnerText(subItem));
+		}
+		return 10;
 	}
 
 	/**
@@ -3135,21 +3188,21 @@ public class ShoppingCartPage extends BasePage {
 									innerFlag = true;
 								}
 							}
-						if(!innerFlag){
-							//Adding TSC card to user as configuration for TSC is set to true and no TSC card is present for user
-							//this.addTSCCreditCardForUser((JSONObject) creditCardData.get("tsc"),customerEDP,accessToken);
-							JSONObject tscCardObject = (JSONObject) creditCardData.get("tsc");
-							tscCardObject.put("IsDefault",true);
-							tscCardObject.put("CVV",null);
-							tscCardObject.remove("CardType");
-							tscCardObject.remove("CardDisplayName");
-							Response tscCardResponse = accountAPI.addCreditCardToUser((org.json.simple.JSONObject) creditCardData.get("tsc"),customerEDP,accessToken);
-							if(tscCardResponse.statusCode()==200)
-								reporter.reportLog("New TSC Credit Card is added for user as default Card");
-							else
-								reporter.reportLogFail("New TSC Credit Card is not added for user as default Card");
-							outerFlag = true;
-						}
+							if(!innerFlag){
+								//Adding TSC card to user as configuration for TSC is set to true and no TSC card is present for user
+								//this.addTSCCreditCardForUser((JSONObject) creditCardData.get("tsc"),customerEDP,accessToken);
+								JSONObject tscCardObject = (JSONObject) creditCardData.get("tsc");
+								tscCardObject.put("IsDefault",true);
+								tscCardObject.put("CVV",null);
+								tscCardObject.remove("CardType");
+								tscCardObject.remove("CardDisplayName");
+								Response tscCardResponse = accountAPI.addCreditCardToUser((org.json.simple.JSONObject) creditCardData.get("tsc"),customerEDP,accessToken);
+								if(tscCardResponse.statusCode()==200)
+									reporter.reportLog("New TSC Credit Card is added for user as default Card");
+								else
+									reporter.reportLogFail("New TSC Credit Card is not added for user as default Card");
+								outerFlag = true;
+							}
 						}else{
 							reporter.reportLogFail("Account Cart Response is not fetched as expected for Credit Card!");
 							outerFlag = true;
@@ -3217,13 +3270,17 @@ public class ShoppingCartPage extends BasePage {
 	 * @param - Map<String,Object> - shopping cart map object
 	 * @param - int - edp number for free gift item
 	 */
-	public void verifyFreeGiftItemPresentInCart(Map<String,Object> shoppingCartMap,int edpNumber) throws IOException {
+	public void verifyFreeGiftItemPresentInCart(Map<String,Object> shoppingCartMap) throws IOException {
 		boolean flag = false;
 		//Fetching product edp number and name from product item number
 		if(shoppingCartMap.size()>0){
 			List<Map<String,Object>> shoppingCartItemList = (List<Map<String, Object>>) shoppingCartMap.get("shoppingList");
 			for(Map<String,Object> map:shoppingCartItemList){
-				if(Boolean.valueOf(map.get("productQuantityDisabled").toString())){
+				if(map.get("productNumber")==null){
+					continue;
+				}
+
+				if(!Boolean.valueOf(map.get("productQuantityDisabled").toString())){
 					flag = true;
 					ProductDetailsItem productDetailsItem = new ProductAPI().getProductDetailsForSpecificProductNumber(map.get("productNumber").toString());
 					//Verifying free gift product name
@@ -3231,12 +3288,6 @@ public class ShoppingCartPage extends BasePage {
 						reporter.reportLogPass("Product Name for free gift item is as expected: "+productDetailsItem.getName());
 					else
 						reporter.reportLogFailWithScreenshot("Product Name for free gift item is not as expected: "+productDetailsItem.getName());
-
-					//Verifying free gift product edp number
-					if(productDetailsItem.getDefaultEdp()==edpNumber)
-						reporter.reportLogPass("Edp Number for free gift item is as expected: "+edpNumber);
-					else
-						reporter.reportLogFailWithScreenshot("Edp Number for free gift item is not as expected: "+edpNumber+" actual: "+productDetailsItem.getDefaultEdp());
 
 					break;
 				}
@@ -3251,8 +3302,8 @@ public class ShoppingCartPage extends BasePage {
 
 	/**
 	 * This function returns particular config key value provided by user
-	 * @param configurations - configuration List from contentful
-	 * @param keyName - keyName whose value is to be fetched
+	 * @param - configurations - configuration List from contentful
+	 * @param - keyName - keyName whose value is to be fetched
 	 * @return - Object
 	 */
 	public Object getKeyValueFromContentfulConfiguration(List<Configuration> configurations, String keyName){
@@ -3292,109 +3343,23 @@ public class ShoppingCartPage extends BasePage {
 	}
 
 	/**
-	 * To wait For EasyPay Section Loading From NonInstallment State
-	 * @return- boolean
+	 * @param - float - presetDonationValue
 	 */
-	public boolean waitForEasyPaySectionLoadingFromNonInstallmentState(){
-		return this.waitForCondition(Driver->{return this.getChildElementCount(this.cntEasyPayContainer)>1;},30000);
-	}
-
-	/**
-	 * @return - String - selected button data to be used for verification
-	 */
-	public String selectAndGetTextForBlueJayCare(){
-		int size = this.lstCartCheckoutDonationButton.size();
-		if (size>0){
-			getReusableActionsInstance().clickIfAvailable(this.lstCartCheckoutDonationButton.get(0));
-			try{
-				this.waitForCondition(Driver->{return this.checkChildElementExistingByTagNameAndAttribute(lblBlueJayDonation,"a","class","donationButton active");},10000);
-			}catch (Exception exception){
-				this.applyStaticWait(5000);
-			}
-			String selectedDonation = getReusableActionsInstance().getElementText(this.lblBlueJaySelectedDonation).trim();
-			return selectedDonation;
+	public void verifyBlueJayDonationAdditionInCart(float presetDonationValue){
+		if(this.checkJaysCareDonationExistingInOrderSummary()){
+			reporter.reportLogPass("The Jays Care Donation item can be found in orderSummary section");
 		}
-		return null;
-	}
+		else{
+			reporter.reportLogFail("The Jays Care Donation item cannot be found in orderSummary section");
+		}
 
-	/**
-	 * @param - String - jayCareAddedAmount added by user
-	 * @param - String - jayCareFoundationMessage message added in cart for user
-	 */
-	public void verifyBlueJayDonationAdditionInCart(String jayCareAddedAmount,String jayCareFoundationMessage){
-		boolean flag = false;
-		if(this.lstCartItems.size()>0){
-			if(!jayCareAddedAmount.contains("."))
-				jayCareAddedAmount = jayCareAddedAmount+".00";
-			for(WebElement element:this.lstCartItems){
-				String jayCareDescription = element.findElement(this.byProductItemDesc).getText();
-				if(jayCareDescription.contains(jayCareFoundationMessage)){
-					flag = true;
-					String donationAmount = element.findElement(this.byProductNowPrice).getText();
-					if(donationAmount.equalsIgnoreCase(jayCareAddedAmount))
-						reporter.reportLogPassWithScreenshot("Jay Care Foundation Donation is added with amount: "+donationAmount+" as expected");
-					else
-						reporter.reportLogFailWithScreenshot("Jay Care Foundation Donation is not added with amount: "+donationAmount+" as expected");
-				}
-				if(flag)
-					break;
-			}
-		}else
-			reporter.reportLogFailWithScreenshot("No item is present in cart for user");
-
-		if(flag)
-			reporter.reportLog("Verification for Blue Jays Foundation is done as expected");
-		else
-			reporter.reportLogFailWithScreenshot("Blue Jays Foundation verification is not done!!");
-	}
-
-	/**
-	 * This function verifies that Pay Pal pop up appears from checkout page
-	 */
-	public void verifyPayPalPopUpExistenceOnClick(){
-		boolean flag = false;
-		String parentWindowHandle = this.getDriver().getWindowHandle();
-		//Switch to PayPal frame
-		this.getDriver().switchTo().frame(framePayPalFrameElement);
-
-		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnPayPalButton);
-		this.waitForCondition(Driver->{return this.btnPayPalButton.isEnabled();},6000);
-		this.getReusableActionsInstance().clickIfAvailable(this.btnPayPalButton);
-		this.waitForCondition(Driver->{return this.getDriver().getWindowHandles().size()>1;},5000);
-		Set<String> windowHandles = this.getDriver().getWindowHandles();
-		if(windowHandles.size()>1){
-			for(String windowHandle:windowHandles){
-				if(!windowHandle.equalsIgnoreCase(parentWindowHandle)){
-					flag = true;
-					this.getDriver().switchTo().window(windowHandle);
-					this.waitForCondition(Driver->{return this.getReusableActionsInstance().isElementVisible(this.inputPayPalEmailInput) && this.inputPayPalEmailInput.isEnabled();},10000);
-					String payPalUrl = this.getDriver().getCurrentUrl();
-					if(payPalUrl.contains("paypal.com"))
-						reporter.reportLogPass("User is navigated to PayPal pop up as expected");
-					else
-						reporter.reportLogFail("User is not navigated to PayPal pop up as expected with url: "+payPalUrl);
-
-					//Verification of email input box
-					if(this.getReusableActionsInstance().isElementVisible(this.inputPayPalEmailInput) && this.inputPayPalEmailInput.isEnabled())
-						reporter.reportLog("Email Input on Pay Pal Pop Up is enabled");
-					else
-						reporter.reportLogFailWithScreenshot("Email input on Pay Pal pop up is either not displayed or not enabled");
-
-					this.getDriver().close();
-				}
-				if(flag){
-					this.getReusableActionsInstance().switchToMainWindow(parentWindowHandle);
-					//Applying static wait as page takes time to load and all elements are already available in dom, hence applying waitForCondition will not help
-					this.applyStaticWait(3000);
-					break;
-				}
-			}
-			if(flag)
-				reporter.reportLogPass("Verification for pay pal pop is done");
-			else
-				reporter.reportLogFailWithScreenshot("Verification for pay pal pop is not done as expected!");
-		}else
-			reporter.reportLogFailWithScreenshot("Pay Pal pop up is not displayed as expected");
+		float donationValue=this.getJaysCareDonationValueInOrderSummary();
+		if(Math.abs(presetDonationValue-donationValue)<0.1f){
+			reporter.reportLogPass("The Jays Care Donation value: "+donationValue+ " in orderSummary section is equal to the preset donation value: "+presetDonationValue);
+		}
+		else{
+			reporter.reportLogFail("The Jays Care Donation value: "+donationValue+ " in orderSummary section is not equal to the preset donation value: "+presetDonationValue);
+		}
 	}
 
 	/**
@@ -3405,19 +3370,6 @@ public class ShoppingCartPage extends BasePage {
 		this.clickWebElementUsingJS(this.btnCartCheckoutButton);
 		RegularCheckoutPage checkoutPage= new RegularCheckoutPage(this.getDriver());
 		this.waitForCondition(Driver->{return checkoutPage.lblCheckout.isDisplayed();},30000);
-	}
-
-	/**
-	 * To get Shipping Date In Header
-	 * @return - String
-	 */
-	public String getShippingDateInHeader() {
-		if (this.checkGetItByShippingMessageExisting()) {
-			return this.getElementInnerText(lblCartGetItByDate).split(":")[1].trim();
-		}
-		else{
-			return null;
-		}
 	}
 
 	/**
@@ -3441,5 +3393,258 @@ public class ShoppingCartPage extends BasePage {
 			reporter.reportLog("New TSC Credit Card is added for user as default Card");
 		else
 			reporter.reportLogFail("New TSC Credit Card is not added for user as default Card");
+	}
+
+	/**
+	 * To expand EasyPayment Section
+	 */
+	public void expandEasyPaymentSection(){
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.labelEasyPayCheckbox);
+		if(!this.ckbEasyPayCheckbox.isSelected()){
+			this.labelEasyPayCheckbox.click();
+			this.applyStaticWait(this.getStaticWaitForApplication());
+		}
+	}
+
+	/**
+	 * To get Payment Option text List
+	 * @return - List<String>
+	 */
+	public List<String> getPaymentOptionTextList(){
+		expandEasyPaymentSection();
+		List<String> list=new ArrayList<>();
+
+		Select select=new Select(this.selectCartEasyPayInstallmentNumber);
+		List<WebElement> optionList=select.getOptions();
+		String lsText;
+		for(WebElement option:optionList){
+			lsText=this.getElementInnerText(option);
+			list.add(lsText);
+		}
+		return list;
+	}
+
+	/**
+	 * To get Installment Number From PaymentOption Text
+	 * @return - int
+	 */
+	public int getInstallmentNumberFromPaymentOptionText(){
+		expandEasyPaymentSection();
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectCartEasyPayInstallmentNumber);
+		Select select=new Select(this.selectCartEasyPayInstallmentNumber);
+		String lsPaymentOptionText=select.getFirstSelectedOption().getText();
+		if(lsPaymentOptionText.contains("Number of Installments")){
+			return 0;
+		}
+		else{
+			String stringContainsInteger=this.getStringBeforeGivenIdentifier(lsPaymentOptionText,"of");
+			return this.getIntegerFromString(stringContainsInteger);
+		}
+	}
+
+	/**
+	 * To get Installment amount From PaymentOption Text
+	 * @return - float
+	 */
+	public float getInstallmentAmountFromPaymentOptionText(){
+		expandEasyPaymentSection();
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectCartEasyPayInstallmentNumber);
+		Select select=new Select(this.selectCartEasyPayInstallmentNumber);
+		String lsPaymentOptionText=select.getFirstSelectedOption().getText();
+		if(lsPaymentOptionText.contains("Number of Installments")){
+			return -1*0.0f;
+		}
+		else{
+			String stringContainsFloat=this.getStringAfterGivenIdentifier(lsPaymentOptionText,"of");
+			return this.getFloatFromString(stringContainsFloat);
+		}
+	}
+
+	/**
+	 * To set Payment Option By Given installment Number
+	 * @param - int - installmentNumber - given installment Number
+	 * @return - String - selected text
+	 */
+	public String setPaymentOptionByGivenInstallmentNumber(int installmentNumber){
+		expandEasyPaymentSection();
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectCartEasyPayInstallmentNumber);
+		Select select=new Select(this.selectCartEasyPayInstallmentNumber);
+		String lsPaymentOption=select.getFirstSelectedOption().getText().trim();
+		if(!lsPaymentOption.contains("Number of Installments")){
+			String stringContainsInteger=this.getStringBeforeGivenIdentifier(lsPaymentOption,"of");
+			if(this.getIntegerFromString(stringContainsInteger)==installmentNumber){
+				return lsPaymentOption;
+			}
+		}
+
+		List<String> lstPaymentOption=getPaymentOptionTextList();
+		for(int i=0;i<lstPaymentOption.size();i++){
+			lsPaymentOption=lstPaymentOption.get(i);
+			if(!lsPaymentOption.contains("Number of Installments")){
+				String stringContainsInteger=this.getStringBeforeGivenIdentifier(lsPaymentOption,"of");
+				if(this.getIntegerFromString(stringContainsInteger)==installmentNumber){
+					this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectCartEasyPayInstallmentNumber);
+					select=new Select(this.selectCartEasyPayInstallmentNumber);
+					select.selectByIndex(i);
+					try{
+						this.waitForShoppingCardPageLoadingCompleted();
+					}
+					catch (Exception e){
+						this.applyStaticWait(3*this.getStaticWaitForApplication());
+					}
+					return lsPaymentOption;
+				}
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * To set PaymentOption By given text
+	 * @param - String - lsPaymentOptionText
+	 */
+	public void setPaymentOptionByGivenText(String lsPaymentOptionText){
+		expandEasyPaymentSection();
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectCartEasyPayInstallmentNumber);
+		Select select=new Select(this.selectCartEasyPayInstallmentNumber);
+		select.selectByVisibleText(lsPaymentOptionText);
+		try{
+			this.waitForShoppingCardPageLoadingCompleted();
+		}
+		catch (Exception e){
+			this.applyStaticWait(3*this.getStaticWaitForApplication());
+		}
+	}
+
+	/**
+	 * To set PaymentOption By given index
+	 * @param - int - index - given index
+	 */
+	public void setPaymentOptionByGivenIndex(int index){
+		expandEasyPaymentSection();
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectCartEasyPayInstallmentNumber);
+		Select select=new Select(this.selectCartEasyPayInstallmentNumber);
+		select.selectByIndex(index);
+		try{
+			this.waitForShoppingCardPageLoadingCompleted();
+		}
+		catch (Exception e){
+			this.applyStaticWait(3*this.getStaticWaitForApplication());
+		}
+	}
+
+	/**
+	 * To set PaymentOption By Random Index
+	 */
+	public int setPaymentOptionByRandomIndex(){
+		expandEasyPaymentSection();
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.selectCartEasyPayInstallmentNumber);
+		Select select=new Select(this.selectCartEasyPayInstallmentNumber);
+
+		List<WebElement> lstOptions=select.getOptions();
+		int optionSize=lstOptions.size();
+		if(optionSize==1){
+			this.getInstallmentNumberFromPaymentOptionText();
+		}
+
+		if(optionSize==2){
+			select.selectByIndex(1);
+		}
+
+		int randomNumber=getRandomNumber(1, optionSize);
+		select.selectByIndex(randomNumber);
+		try{
+			this.waitForShoppingCardPageLoadingCompleted();
+		}
+		catch (Exception e){
+			this.applyStaticWait(3*this.getStaticWaitForApplication());
+		}
+
+		return this.getInstallmentNumberFromPaymentOptionText();
+	}
+
+	/**
+	 * To get Installment Number
+	 * @return - int
+	 */
+	public int getInstallmentNumber(){
+		return this.getInstallmentNumberFromPaymentOptionText();
+	}
+
+	/**
+	 * To verify Linkage Between Shopping Cart List And OrderSummary
+	 * @param - Map<String,Object> - shoppingCartMap
+	 */
+	public void verifyLinkageBetweenShoppingCartListAndOrderSummary(Map<String,Object> shoppingCartMap){
+		Map<String,Object> map=this.getItemCountAndPriceInfo(shoppingCartMap,false);
+		int shoppingItemCount= (int) map.get("shoppingItemCount");
+		int itemCountInOrderSummary= (int) map.get("itemCountInOrderSummary");
+		int shoppingItemCountOnCheckoutButton= (int) map.get("itemCountOnCheckoutButton");
+		float subTotalShoppingCart= (float) map.get("subTotalShoppingCart");
+		float subTotalOrderSummary= (float) map.get("subTotalOrderSummary");
+		float subTotalShippingPriceShoppingCart= (float) map.get("subTotalShippingPriceShoppingCart");
+		float subTotalShippingPriceOrderSummary= (float) map.get("subTotalShippingPriceOrderSummary");
+
+		float donationValue=0.0f;
+		int donationCount=0;
+		if(this.checkJaysCareDonationExistingInOrderSummary()){
+			donationValue=this.getJaysCareDonationValueInOrderSummary();
+			donationCount=1;
+		}
+		if((itemCountInOrderSummary-shoppingItemCount)==donationCount){
+			reporter.reportLogPass("The item count in Shopping cart list plus donation count is equal to then one in OrderSummary");
+		}
+		else{
+			reporter.reportLogFail("The item count:"+shoppingItemCount+" in Shopping cart list plus donation count:"+donationCount+" is not equal to then one:"+itemCountInOrderSummary+" in OrderSummary");
+		}
+
+		if(itemCountInOrderSummary==shoppingItemCountOnCheckoutButton){
+			reporter.reportLogPass("The item count in orderSummary is equal to then one on checkout button");
+		}
+		else{
+			reporter.reportLogFail("The item count:"+itemCountInOrderSummary+" in orderSummary is equal to then one:"+shoppingItemCountOnCheckoutButton+" on checkout button");
+		}
+
+		if(Math.abs(Math.abs(subTotalOrderSummary-subTotalShoppingCart)-donationValue)<0.1f){
+			reporter.reportLogPass("The subTotal in orderSummary minus donation value is equal to the one in shopping cart list");
+		}
+		else{
+			reporter.reportLogFail("The subTotal:"+subTotalOrderSummary+" in orderSummary minus donation value:"+donationValue+" is not equal to the one:"+subTotalShoppingCart+" in shopping cart list");
+		}
+
+		if(Math.abs(subTotalShippingPriceShoppingCart-subTotalShippingPriceOrderSummary)<0.1f){
+			reporter.reportLogPass("The shipping price in orderSummary is equal to the one in shopping cart list");
+		}
+		else{
+			reporter.reportLogFail("The shipping price:"+subTotalShippingPriceShoppingCart+" in orderSummary is not equal to the one:"+subTotalShippingPriceShoppingCart+" in shopping cart list");
+		}
+	}
+
+	/**
+	 * To highLighted Favorite Icon
+	 */
+	public void highLightedFavoriteIcon(){
+		int firstNotFreeShippingItemIndex=this.getFirstNotFreeShippingCartItemInShoppingList();
+		WebElement item=this.lstCartItems.get(firstNotFreeShippingItemIndex);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+		WebElement subItem=item.findElement(byProductFavButton);
+		if(!checkIfProductFavIconHighLighted(item)){
+			this.clickElement(subItem);
+			this.waitForCondition(Driver->{return checkIfProductFavIconHighLighted(item);},20000);
+		}
+	}
+
+	/**
+	 * To unhighLighted Favorite Icon
+	 */
+	public void unHighLightedFavoriteIcon(){
+		int firstNotFreeShippingItemIndex=this.getFirstNotFreeShippingCartItemInShoppingList();
+		WebElement item=this.lstCartItems.get(firstNotFreeShippingItemIndex);
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
+		WebElement subItem=item.findElement(byProductFavButton);
+		if(checkIfProductFavIconHighLighted(item)){
+			this.clickElement(subItem);
+			this.waitForCondition(Driver->{return !checkIfProductFavIconHighLighted(item);},20000);
+		}
 	}
 }

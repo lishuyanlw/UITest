@@ -28,7 +28,11 @@ public class CP_TC11_VerifyReguLarCheckout_GiftCard extends BaseTest{
 
 		//Verifying that item exists in cart and if not, create a new cart for user
 		List<Map<String, String>> keyword = TestDataHandler.constantData.getCheckOut().getLst_SearchKeywords();
-		getShoppingCartThreadLocal().verifyCartExistsForUser(Integer.valueOf(customerEDP), accessToken, keyword,"all",true,0);
+		List<Map<String, Object>> data = getShoppingCartThreadLocal().verifyCartExistsForUser(Integer.valueOf(customerEDP), accessToken, keyword,"all",false,0);
+		if(data.size()==0){
+			keyword = TestDataHandler.constantData.getShoppingCart().getLst_SearchKeywords();
+			data = getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP, accessToken, keyword,"all",false,0);
+		}
 
 		//Delete promote code and all gift cards
 		CartAPI cartAPI=new CartAPI();
@@ -128,13 +132,11 @@ public class CP_TC11_VerifyReguLarCheckout_GiftCard extends BaseTest{
 
 		reporter.reportLog("Verify OrderSummary on ShoppingCart page");
 		getRegularCheckoutThreadLocal().GoToShoppingBag();
-		int itemAmount=getShoppingCartThreadLocal().GetAddedItemAmount();
-		float savingPrice=getShoppingCartThreadLocal().getSavingPriceFromShoppingCartHeader();
-		float subTotal=getShoppingCartThreadLocal().getShoppingSubTotal();
+		float subTotal=getShoppingCartThreadLocal().getOrderSummarySubTotal();
 		Map<String,Object> orderSummaryMapOnShoppingCartPage=getShoppingCartThreadLocal().getOrderSummaryDesc();
 
 		reporter.reportLog("Verify OrderSummary Business Logic");
-		getShoppingCartThreadLocal().verifyOrderSummaryBusinessLogic(itemAmount,savingPrice,subTotal,orderSummaryMapOnShoppingCartPage,null);
+		getShoppingCartThreadLocal().verifyOrderSummaryBusinessLogic(subTotal,orderSummaryMapOnShoppingCartPage,null);
 
 		reporter.reportLog("Verify OrderSummary Linkage Between ShoppingCart Page And Checkout Page");
 		getRegularCheckoutThreadLocal().verifyOrderSummaryLinkageBetweenShoppingCartPageAndCheckoutPage(orderSummaryMapOnShoppingCartPage,orderSummaryMapOnCheckoutPage);

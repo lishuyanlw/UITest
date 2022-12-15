@@ -24,8 +24,15 @@ public class SC_TC06_VerifyShoppingCart_ChangeChangeInstallmentNumber_And_OrderS
 		//Fetching test data from test data file
 		String accessToken = getApiUserSessionDataMapThreadLocal().get("access_token").toString();
 		int customerEDP = Integer.valueOf(getApiUserSessionDataMapThreadLocal().get("customerEDP").toString());
+		getShoppingCartThreadLocal().emptyCart(Integer.valueOf(customerEDP),accessToken);
+		(new CartAPI()).deletePromoCodeAppliedOnCart(String.valueOf(customerEDP),accessToken);
+
 		List<Map<String,String>> keyword = TestDataHandler.constantData.getShoppingCart().getLst_SearchKeywords();
-		List<Map<String,Object>> data = getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP,accessToken,keyword,"all",true,0);
+		List<Map<String, Object>> data = getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP,accessToken,keyword,"all",true,0);
+		if(data.size()==0){
+			keyword = TestDataHandler.constantData.getCheckOut().getLst_SearchKeywords();
+			data = getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP, accessToken, keyword,"all",false,0);
+		}
 
 		//Delete all gift card
 		CartAPI cartAPI=new CartAPI();
@@ -42,10 +49,7 @@ public class SC_TC06_VerifyShoppingCart_ChangeChangeInstallmentNumber_And_OrderS
 			(new BasePage(this.getDriver())).applyStaticWait(3000);
 		}
 		getProductDetailPageThreadLocal().goToShoppingCartByClickingShoppingCartIconInGlobalHeader();
-		if (getShoppingCartThreadLocal().checkIsDropdownMenuForInstallmentNumber()) {
-			List<String> lstOptionText = getShoppingCartThreadLocal().getInstallmentOptions();
-			getShoppingCartThreadLocal().setInstallmentSetting(lstOptionText.get(1));
-		}
+		getShoppingCartThreadLocal().setInstallmentNumberByRandomIndex();
 
 		reporter.reportLog("Verify EasyPayment sections contents");
 		Map<String,Object> mapOrderSummary=getShoppingCartThreadLocal().getOrderSummaryDesc();
@@ -54,9 +58,7 @@ public class SC_TC06_VerifyShoppingCart_ChangeChangeInstallmentNumber_And_OrderS
 		int loopSize=lstOptionText.size();
 		for(int i=1;i<loopSize;i++){
 			getShoppingCartThreadLocal().setInstallmentSetting(lstOptionText.get(i));
-			int easyPayNumber = Integer.valueOf(lstOptionText.get(i));
-			getShoppingCartThreadLocal().waitForCondition(Driver->{return
-					getShoppingCartThreadLocal().getFutureMonthlyPaymentNumber()==easyPayNumber-1;},20000);
+			getShoppingCartThreadLocal().waitForShoppingCardPageLoadingCompleted();
 			reporter.reportLog("Verify installment number "+ lstOptionText.get(i));
 			getShoppingCartThreadLocal().verifyInstallmentBusinessLogic(mapOrderSummary);
 			getShoppingCartThreadLocal().verifyEasyPaymentContents();

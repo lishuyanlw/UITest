@@ -923,20 +923,25 @@ import utils.ReusableActions;
 	 */	
 	 public void verifyElementLink(WebElement element) {
 		 String lsTitle=element.getText().trim();
+		 if(lsTitle.isEmpty()){
+			 if(this.hasElementAttribute(element,"href")){
+				 lsTitle=element.getAttribute("href");
+			 }
+			 else{
+				 reporter.reportLogFail("Can not get element title content!");
+			 }
+		 }
 		 String lsLink=this.getElementHref(element);
 		 if(!lsLink.isEmpty())
-		 	reporter.reportLogPass("The href element of "+lsTitle+" is not empty");
+		 	reporter.reportLogPass("The element href of "+lsTitle+" is not empty");
 		 else
-		 	reporter.reportLogFailWithScreenshot("The href element of "+lsTitle+" is empty");
+		 	reporter.reportLogFailWithScreenshot("The element href of "+lsTitle+" is empty");
 		 if(this.verifyLink(lsLink))
 			 reporter.reportLogPass("Link for title: "+lsTitle+" is not broken!");
 		 else
-			 if (lsLink.contains("instagram"))
-				 reporter.reportLog("Link for title: " + lsTitle + " is broken: " + lsLink);
-			 else
-				 reporter.reportLogFail("Link for title: " + lsTitle + " is broken: " + lsLink);
+			 reporter.reportLogFail("Link for title: " + lsTitle + " is broken: " + lsLink);
 	 }
-	 
+
 	 /**
 	  * This method will return search result page title.	  
 	  * @author Wei.Li

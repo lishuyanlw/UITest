@@ -1623,6 +1623,8 @@ public class ProductAPI extends ApiClient {
             }
         }else{
             for(Map<String,String> data:keywordData){
+                outerloop=false;
+                innerForLoop=false;
                 Product product = this.getProductDetailsForKeyword(data.get("searchKeyword"),null,true);
                 if(product==null){
                     continue;
@@ -1646,8 +1648,37 @@ public class ProductAPI extends ApiClient {
                                     if(productMap.size()>0)
                                         productMap = new HashMap<>();
                                     innerForLoop = false;
-                                    //if(!productsData.getPriceIsLabel().isEmpty()&&edpsData.getInventory()>0){
-                                    if(edpsData.getInventory()>0 && !edpsData.isSoldOut()){
+                                    if(!productsData.getPriceIsLabel().isEmpty()&&!edpsData.isSoldOut()){
+                                        productMap = this.getEDPNumberForInputCondition(data.get("quantity"),itemToBeAdded,edpsData,productsData);
+                                        if(productMap.keySet().size()>0) {
+                                            innerForLoop = true;
+                                        }
+                                        else {
+                                            continue;
+                                        }
+                                        if(productMap.keySet().size()>0){
+                                            productMap.put("itemToBeAdded",itemToBeAdded);
+                                            productList.add(productMap);
+                                            itemsCounter++;
+                                        }
+                                    }
+                                    if(innerForLoop && itemsToBeAdded.equalsIgnoreCase("all")){
+                                        outerloop = true;
+                                    }else if(innerForLoop && !itemsToBeAdded.equalsIgnoreCase("all") && Integer.parseInt(itemsToBeAdded)==itemsCounter){
+                                        outerloop = true;
+                                    }else{
+                                        continue;
+                                    }
+                                    if(innerForLoop)
+                                        break;
+                                }
+                            }
+                            if(!badgeRequired && styleExist && sameSizeAndStyle){
+                                for(Product.edps edpsData: productsData.getEdps()){
+                                    if(productMap.size()>0)
+                                        productMap = new HashMap<>();
+                                    innerForLoop = false;
+                                    if(productsData.getPriceIsLabel().isEmpty()&&!edpsData.isSoldOut()){
                                         productMap = this.getEDPNumberForInputCondition(data.get("quantity"),itemToBeAdded,edpsData,productsData);
                                         if(productMap.keySet().size()>0) {
                                             innerForLoop = true;

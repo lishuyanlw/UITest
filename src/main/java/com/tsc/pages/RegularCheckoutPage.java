@@ -323,7 +323,7 @@ public class RegularCheckoutPage extends BasePage {
 	@FindBy(xpath = "//div[@class='ReactModal__Overlay ReactModal__Overlay--after-open modal__overlay']//div[contains(@class,'card__wrap--paypal')]//label")
 	public WebElement labelAddOrChangePaymentMethodDialogPaypalRadio;
 
-	@FindBy(xpath = "//div[@class='creditcard__selector--cc selector__paypal']//label[contains(@class,'card__label')]")
+	@FindBy(xpath = "//div[@class='card__wrap card__wrap--paypal']//label[contains(@class,'card__label')]")
 	public WebElement lblAddOrChangePaymentMethodDialogPayPalRadio;
 
 	@FindBy(xpath = "//div[@id='buttons-container']//div[contains(@class,'paypal-button-container')]")
@@ -660,6 +660,16 @@ public class RegularCheckoutPage extends BasePage {
 	//Error Message for Mandatory Items
 	@FindBy(xpath = "//div[contains(@class,'ReactModal__Overlay')]//div[contains(@class,'alert-danger')]")
 	public List<WebElement> mandatoryFieldErrorMessage;
+
+	//PayPal
+	@FindBy(xpath = "//iframe[contains(@name,'paypal')]")
+	public WebElement framePayPalFrameElement;
+
+	@FindBy(xpath = "//div[@id='splitEmail']//input[@id='email']")
+	public WebElement inputPayPalEmailInput;
+
+	@FindBy(xpath = "//div[@id='splitEmail']//button[@value='Next']")
+	public WebElement btnPayPalNextButton;
 
 	//For order modification, to identify
 
@@ -1162,14 +1172,17 @@ public class RegularCheckoutPage extends BasePage {
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 			lsText=item.getText().trim();
 			map.put("productShippingDate",lsText.split(":")[1].trim());
+			map.put("productShippingDateForAll",false);
 		}
 		else{
 			if(this.checkProductShippingDateExisting()){
 				lsText = this.lblGetItByDate.getText();
 				map.put("productShippingDate",lsText);
+				map.put("productShippingDateForAll",true);
 			}
 			else{
 				map.put("productShippingDate",null);
+				map.put("productShippingDateForAll",false);
 			}
 		}
 
@@ -2757,7 +2770,15 @@ public class RegularCheckoutPage extends BasePage {
 		float subTotalOrderSummary= (float) orderSummaryMap.get("subTotal");
 		float shippingPriceOrderSummary=(float) orderSummaryMap.get("nowPrice");
 		float taxOrderSummary=(float) orderSummaryMap.get("tax");
-		float totalPriceOrderSummary=(float) orderSummaryMap.get("newTotalPrice");
+
+		float totalPriceOrderSummary=0.0f;
+		for(Map.Entry<String,Object> entry:orderSummaryMap.entrySet()){
+			if(entry.getKey().toLowerCase().contains("totalprice")){
+				totalPriceOrderSummary= (float) entry.getValue();
+				break;
+			}
+		}
+
 		float promoteCodeValue=(float) orderSummaryMap.get("promoteCodeValue");
 		float giftCardValue=(float) orderSummaryMap.get("giftCardValue");
 
@@ -5380,10 +5401,61 @@ public class RegularCheckoutPage extends BasePage {
 		ShoppingCartPage shoppingCartPage = new ShoppingCartPage(this.getDriver());
 		//this.clickWebElementUsingJS(this.labelAddOrChangePaymentMethodDialogPaypalRadio);
 		this.clickWebElementUsingJS(this.lblAddOrChangePaymentMethodDialogPayPalRadio);
-		this.getDriver().switchTo().frame(shoppingCartPage.framePayPalFrameElement);
+		this.applyStaticWait(5*this.getStaticWaitForApplication());
+		this.getDriver().switchTo().frame(this.framePayPalFrameElement);
 		this.waitForCondition(Driver->{return this.btnPayPalButton.isEnabled();},5000);
+		this.clickElement(this.btnPayPalButton);
 		this.getDriver().switchTo().defaultContent();
-		shoppingCartPage.verifyPayPalPopUpExistenceOnClick();
+		this.verifyPayPalPopUpExistenceOnClick();
+	}
+
+	/**
+	 * This function verifies that Pay Pal pop up appears from checkout page
+	 */
+	public void verifyPayPalPopUpExistenceOnClick(){
+		boolean flag = false;
+		String parentWindowHandle = this.getDriver().getWindowHandle();
+		//Switch to PayPal frame
+		this.getDriver().switchTo().frame(framePayPalFrameElement);
+
+		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.btnPayPalButton);
+		this.waitForCondition(Driver->{return this.btnPayPalButton.isEnabled();},6000);
+		this.getReusableActionsInstance().clickIfAvailable(this.btnPayPalButton);
+		this.waitForCondition(Driver->{return this.getDriver().getWindowHandles().size()>1;},5000);
+		Set<String> windowHandles = this.getDriver().getWindowHandles();
+		if(windowHandles.size()>1){
+			for(String windowHandle:windowHandles){
+				if(!windowHandle.equalsIgnoreCase(parentWindowHandle)){
+					flag = true;
+					this.getDriver().switchTo().window(windowHandle);
+					this.waitForCondition(Driver->{return this.getReusableActionsInstance().isElementVisible(this.inputPayPalEmailInput) && this.inputPayPalEmailInput.isEnabled();},10000);
+					String payPalUrl = this.getDriver().getCurrentUrl();
+					if(payPalUrl.contains("paypal.com"))
+						reporter.reportLogPass("User is navigated to PayPal pop up as expected");
+					else
+						reporter.reportLogFail("User is not navigated to PayPal pop up as expected with url: "+payPalUrl);
+
+					//Verification of email input box
+					if(this.getReusableActionsInstance().isElementVisible(this.inputPayPalEmailInput) && this.inputPayPalEmailInput.isEnabled())
+						reporter.reportLog("Email Input on Pay Pal Pop Up is enabled");
+					else
+						reporter.reportLogFailWithScreenshot("Email input on Pay Pal pop up is either not displayed or not enabled");
+
+					this.getDriver().close();
+				}
+				if(flag){
+					this.getReusableActionsInstance().switchToMainWindow(parentWindowHandle);
+					//Applying static wait as page takes time to load and all elements are already available in dom, hence applying waitForCondition will not help
+					this.applyStaticWait(3000);
+					break;
+				}
+			}
+			if(flag)
+				reporter.reportLogPass("Verification for pay pal pop is done");
+			else
+				reporter.reportLogFailWithScreenshot("Verification for pay pal pop is not done as expected!");
+		}else
+			reporter.reportLogFailWithScreenshot("Pay Pal pop up is not displayed as expected");
 	}
 
 	/**

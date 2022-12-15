@@ -1,14 +1,9 @@
 package com.tsc.test.tests.shoppingCart;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.tsc.api.apiBuilder.AccountAPI;
 import com.tsc.api.apiBuilder.CartAPI;
-import com.tsc.api.pojo.AccountCartResponse;
-import com.tsc.api.util.JsonParser;
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
-import io.restassured.response.Response;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
@@ -30,6 +25,9 @@ public class SC_TC03_VerifyShoppingCart_MergingCart extends BaseTest{
 
 		reporter.softAssert(getglobalheaderPageThreadLocal().validateURL(basePage.getBaseURL() + "/"), "TSC url is correct", "TSC url is incorrect");
 		reporter.reportLog("ProductDetail Page");
+
+		getShoppingCartThreadLocal().emptyCart(Integer.valueOf(customerEDP),accessToken);
+		(new CartAPI()).deletePromoCodeAppliedOnCart(String.valueOf(customerEDP),accessToken);
 
 		List<String> lstKeywordList=TestDataHandler.constantData.getSearchResultPage().getLst_APISearchingKeyword();
 		String lsUserName = TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
@@ -67,12 +65,6 @@ public class SC_TC03_VerifyShoppingCart_MergingCart extends BaseTest{
 			//Login using valid username and password
 			getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword);
 			getProductDetailPageThreadLocal().goToShoppingCartByClickingShoppingCartIconInGlobalHeader();
-			if(getShoppingCartThreadLocal().checkContainPreviouslyAddedItemsMessageExisting()){
-				reporter.reportLogPass("The Cart containing previously added items message is displaying correctly");
-			}
-			else{
-				reporter.reportLogPassWithScreenshot("The Cart containing previously added items message is not displaying correctly");
-			}
 
 			Map<String, Object> shoppingCartMap = getShoppingCartThreadLocal().getShoppingSectionDetails("all");
 			List<Map<String,Object>> shoppingCartItemList=(List<Map<String,Object>>)shoppingCartMap.get("shoppingList");
@@ -116,27 +108,13 @@ public class SC_TC03_VerifyShoppingCart_MergingCart extends BaseTest{
 
 			//To verify heading and Shopping Item List contents
 			reporter.reportLog("To verify heading and Shopping Item List contents");
-			getShoppingCartThreadLocal().verifyShoppingCartContents("all");
+			getShoppingCartThreadLocal().verifyShoppingCartContents();
 
-			//To verify business logic Between Shopping Item List And SubTotal Section
-			reporter.reportLog("To verify business logic Between Shopping Item List And SubTotal Section");
-			getShoppingCartThreadLocal().verifyBusinessLogicBetweenShoppingItemListAndSubTotalSection(shoppingCartMap);
-
-			Map<String,Object> map=getShoppingCartThreadLocal().getItemCountAndPriceInfo(shoppingCartMap,true);
-			int itemCountInShoppingCartHeader= (int) map.get("itemCountInShoppingCartHeader");
-			int shoppingItemCount= (int) map.get("shoppingItemCount");
-			int shoppingItemCountInSubtotal= (int) map.get("shoppingItemCountInSubtotal");
-			int itemCountInOrderSummary= (int) map.get("itemCountInOrderSummary");
-			if (itemCountInShoppingCartHeader == shoppingItemCount &&
-					shoppingItemCount == shoppingItemCountInSubtotal &&
-					itemCountInShoppingCartHeader == itemCountInOrderSummary) {
-				reporter.reportLogPass("The added item count among Shopping cart header,Shopping cart list and OrderSummary are same");
-			} else {
-				reporter.reportLogFail("The added item count among Shopping cart header,Shopping cart list and OrderSummary are not same");
-			}
+			reporter.reportLog("To verify Linkage Between Shopping Cart List And OrderSummary");
+			getShoppingCartThreadLocal().verifyLinkageBetweenShoppingCartListAndOrderSummary(shoppingCartMap);
 
 			reporter.reportLog("Verify checkout section contents");
-			getShoppingCartThreadLocal().verifyCheckOutContents(false);
+			getShoppingCartThreadLocal().verifyJaysCareDonationContents();
 		}
 		else {
 			reporter.reportLogFail("Unable to find the matched product item");

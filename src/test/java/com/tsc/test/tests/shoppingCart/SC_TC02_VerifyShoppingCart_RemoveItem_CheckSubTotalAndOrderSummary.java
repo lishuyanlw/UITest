@@ -25,8 +25,20 @@ public class SC_TC02_VerifyShoppingCart_RemoveItem_CheckSubTotalAndOrderSummary 
 		//Fetching test data from test data file
 		String accessToken = getApiUserSessionDataMapThreadLocal().get("access_token").toString();
 		int customerEDP = Integer.valueOf(getApiUserSessionDataMapThreadLocal().get("customerEDP").toString());
+
+		getShoppingCartThreadLocal().emptyCart(customerEDP,accessToken);
+		(new CartAPI()).deletePromoCodeAppliedOnCart(String.valueOf(customerEDP),accessToken);
+
 		List<Map<String,String>> keyword = TestDataHandler.constantData.getShoppingCart().getLst_SearchKeywords();
-		getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP,accessToken,keyword,"all",false,0);
+		List<Map<String,Object>> addedItemMapList=getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP,accessToken,keyword,"all",false,0);
+		if(addedItemMapList.size()==0){
+			keyword = TestDataHandler.constantData.getCheckOut().getLst_SearchKeywords();
+			addedItemMapList=getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP,accessToken,keyword,"all",false,0);
+			if(addedItemMapList.size()<=1){
+				keyword = TestDataHandler.constantData.getShoppingCart().getLst_SearchKeywords();
+				addedItemMapList=getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP,accessToken,keyword,"all",false,0);
+			}
+		}
 
 		//Delete all gift card
 		CartAPI cartAPI=new CartAPI();
@@ -43,30 +55,11 @@ public class SC_TC02_VerifyShoppingCart_RemoveItem_CheckSubTotalAndOrderSummary 
 			(new BasePage(this.getDriver())).applyStaticWait(3000);
 		}
 		getProductDetailPageThreadLocal().goToShoppingCartByClickingShoppingCartIconInGlobalHeader();
-		if (getShoppingCartThreadLocal().checkIsDropdownMenuForInstallmentNumber()) {
-			List<String> lstOptionText = getShoppingCartThreadLocal().getInstallmentOptions();
-			getShoppingCartThreadLocal().setInstallmentSetting(lstOptionText.get(1));
-		}
+		getShoppingCartThreadLocal().setInstallmentNumberByRandomIndex();
 
+		reporter.reportLog("To verify Linkage Between Shopping Cart List And OrderSummary at initial stage");
 		Map<String,Object> shoppingCartMap=getShoppingCartThreadLocal().getShoppingSectionDetails("mandatory");
-		reporter.reportLog("To verify business logic Between Shopping Item List And SubTotal Section");
-		getShoppingCartThreadLocal().verifyBusinessLogicBetweenShoppingItemListAndSubTotalSection(shoppingCartMap);
-
-		Map<String,Object> map=getShoppingCartThreadLocal().getItemCountAndPriceInfo(shoppingCartMap,false);
-		int itemCountInShoppingCartHeaderInitial= (int) map.get("itemCountInShoppingCartHeader");
-		int shoppingItemCountInitial= (int) map.get("shoppingItemCount");
-		int shoppingItemCountInSubtotalInitial= (int) map.get("shoppingItemCountInSubtotal");
-		int itemCountInOrderSummaryInitial= (int) map.get("itemCountInOrderSummary");
-		float subTotalShoppingCartInitial= (float) map.get("subTotalShoppingCart");
-		float subTotalOrderSummaryInitial= (float) map.get("subTotalOrderSummary");
-		if(itemCountInShoppingCartHeaderInitial==shoppingItemCountInitial&&
-				shoppingItemCountInitial==shoppingItemCountInSubtotalInitial&&
-				itemCountInShoppingCartHeaderInitial==itemCountInOrderSummaryInitial){
-			reporter.reportLogPass("The initial added item count among Shopping cart header,Shopping cart list and OrderSummary are same");
-		}
-		else{
-			reporter.reportLogFail("The initial added item count Shopping cart header,Shopping cart list and OrderSummary are not same");
-		}
+		getShoppingCartThreadLocal().verifyLinkageBetweenShoppingCartListAndOrderSummary(shoppingCartMap);
 
 		Map<String, WebElement> mapButtons=getShoppingCartThreadLocal().getFirstCartItemWithAvailableRemoveButton();
 		WebElement cartItem=mapButtons.get("cartItem");
@@ -85,9 +78,7 @@ public class SC_TC02_VerifyShoppingCart_RemoveItem_CheckSubTotalAndOrderSummary 
 
 		reporter.reportLog("Verify clicking cancel button action in remove dialog");
 		getShoppingCartThreadLocal().closeRemoveDialogWithoutRemoveAction(true);
-		shoppingCartMap=getShoppingCartThreadLocal().getShoppingSectionDetails("mandatory");
-		reporter.reportLog("To verify business logic Between Shopping Item List And SubTotal Section");
-		getShoppingCartThreadLocal().verifyBusinessLogicBetweenShoppingItemListAndSubTotalSection(shoppingCartMap);
+		shoppingCartMap=getShoppingCartThreadLocal().getShoppingSectionDetails("all");
 
 		int findIndex=getShoppingCartThreadLocal().findGivenProductIndexInShoppingCartItemList(mapRemoveDialog,shoppingCartMap);
 		if(findIndex!=-1){
@@ -97,45 +88,15 @@ public class SC_TC02_VerifyShoppingCart_RemoveItem_CheckSubTotalAndOrderSummary 
 			reporter.reportLogFail("Unable to find the removed item");
 		}
 
-		map=getShoppingCartThreadLocal().getItemCountAndPriceInfo(shoppingCartMap,false);
-		int itemCountInShoppingCartHeaderCancel= (int) map.get("itemCountInShoppingCartHeader");
-		int shoppingItemCountCancel= (int) map.get("shoppingItemCount");
-		int shoppingItemCountInSubtotalCancel= (int) map.get("shoppingItemCountInSubtotal");
-		int itemCountInOrderSummaryCancel= (int) map.get("itemCountInOrderSummary");
-		float subTotalShoppingCartCancel= (float) map.get("subTotalShoppingCart");
-		float subTotalOrderSummaryCancel= (float) map.get("subTotalOrderSummary");
-		if(itemCountInShoppingCartHeaderCancel==shoppingItemCountCancel&&
-				shoppingItemCountCancel==shoppingItemCountInSubtotalCancel&&
-				itemCountInShoppingCartHeaderCancel==itemCountInOrderSummaryCancel){
-			reporter.reportLogPass("The added item count among Shopping cart header,Shopping cart list and OrderSummary are same after clicking cancel button in remove dialog");
-		}
-		else{
-			reporter.reportLogFail("The added item count among Shopping cart header,Shopping cart list and OrderSummary are not same after clicking cancel button in remove dialog");
-		}
-		if(itemCountInShoppingCartHeaderCancel==shoppingItemCountInitial&&
-				shoppingItemCountCancel==shoppingItemCountInSubtotalInitial&&
-				itemCountInShoppingCartHeaderCancel==itemCountInOrderSummaryInitial){
-			reporter.reportLogPass("The added item count among Shopping cart header,Shopping cart list and OrderSummary after clicking cancel button in remove dialog are same as the initial ones");
-		}
-		else{
-			reporter.reportLogFail("The added item count among Shopping cart header,Shopping cart list and OrderSummary after clicking cancel button in remove dialog are not same as the initial ones");
-		}
-		if(Math.abs(subTotalShoppingCartInitial-subTotalShoppingCartCancel)<0.1&&
-				Math.abs(subTotalOrderSummaryInitial-subTotalOrderSummaryCancel)<0.1){
-			reporter.reportLogPass("No changes for the subtotal in both shopping cart and orderSummary");
-		}
-		else{
-			reporter.reportLogFail("There are changes for the subtotal in both shopping cart and orderSummary");
-		}
+		reporter.reportLog("To verify Linkage Between Shopping Cart List And OrderSummary after clicking cancel button on remove dialog");
+		getShoppingCartThreadLocal().verifyLinkageBetweenShoppingCartListAndOrderSummary(shoppingCartMap);
 
 		getShoppingCartThreadLocal().openRemoveDialog(removeButton);
 		mapRemoveDialog=getShoppingCartThreadLocal().getRemoveDialogDesc();
 
 		reporter.reportLog("Verify clicking remove button action in remove dialog");
 		getShoppingCartThreadLocal().closeRemoveDialogWithRemoveAction();
-		shoppingCartMap=getShoppingCartThreadLocal().getShoppingSectionDetails("mandatory");
-		reporter.reportLog("To verify business logic Between Shopping Item List And SubTotal Section");
-		getShoppingCartThreadLocal().verifyBusinessLogicBetweenShoppingItemListAndSubTotalSection(shoppingCartMap);
+		shoppingCartMap=getShoppingCartThreadLocal().getShoppingSectionDetails("all");
 
 		findIndex=getShoppingCartThreadLocal().findGivenProductIndexInShoppingCartItemList(mapRemoveDialog,shoppingCartMap);
 		if(findIndex==-1){
@@ -145,50 +106,16 @@ public class SC_TC02_VerifyShoppingCart_RemoveItem_CheckSubTotalAndOrderSummary 
 			reporter.reportLogFail("Still able to find the removed item");
 		}
 
-		map=getShoppingCartThreadLocal().getItemCountAndPriceInfo(shoppingCartMap,false);
-		int itemCountInShoppingCartHeaderRemove= (int) map.get("itemCountInShoppingCartHeader");
-		int shoppingItemCountRemove= (int) map.get("shoppingItemCount");
-		int shoppingItemCountInSubtotalRemove= (int) map.get("shoppingItemCountInSubtotal");
-		int itemCountInOrderSummaryRemove= (int) map.get("itemCountInOrderSummary");
-		float subTotalShoppingCartRemove= (float) map.get("subTotalShoppingCart");
-		float subTotalOrderSummaryRemove= (float) map.get("subTotalOrderSummary");
-		float nowPrice= (float) mapRemoveDialog.get("productNowPrice");
-		int quantity= (int) mapRemoveDialog.get("productQuantity");
-		float removeCount=nowPrice*quantity;
-		if(itemCountInShoppingCartHeaderRemove==shoppingItemCountRemove&&
-				shoppingItemCountRemove==shoppingItemCountInSubtotalRemove&&
-				itemCountInShoppingCartHeaderRemove==itemCountInOrderSummaryRemove){
-			reporter.reportLogPass("The added item count among Shopping cart header,Shopping cart list and OrderSummary are same after clicking remove button in remove dialog");
-		}
-		else{
-			reporter.reportLogFail("The added item count among Shopping cart header,Shopping cart list and OrderSummary are not same after clicking remove button in remove dialog");
-		}
-		if((itemCountInShoppingCartHeaderInitial-1)==shoppingItemCountRemove&&
-				(shoppingItemCountInitial-1)==shoppingItemCountInSubtotalRemove&&
-				(itemCountInShoppingCartHeaderInitial-1)==itemCountInOrderSummaryRemove){
-			reporter.reportLogPass("The added item count among Shopping cart header,Shopping cart list and OrderSummary after clicking remove button in remove dialog are same as the initial ones");
-		}
-		else{
-			reporter.reportLogPass("The added item count among Shopping cart header,Shopping cart list and OrderSummary after clicking remove button in remove dialog are not same as the initial ones");
-		}
-
-		if(Math.abs(subTotalShoppingCartInitial-subTotalShoppingCartRemove-removeCount)<0.1&&
-				Math.abs(subTotalOrderSummaryInitial-subTotalOrderSummaryRemove-removeCount)<0.1){
-			reporter.reportLogPass("The difference between shopping cart subtotal and orderSummary is correct");
-		}
-		else{
-			reporter.reportLogFail("The difference between shopping cart subtotal and orderSummary is not correct");
-		}
+		reporter.reportLog("To verify Linkage Between Shopping Cart List And OrderSummary after clicking remove button on remove dialog");
+		getShoppingCartThreadLocal().verifyLinkageBetweenShoppingCartListAndOrderSummary(shoppingCartMap);
 
 		reporter.reportLog("Verify OrderSummary section content");
-		int itemAmount=getShoppingCartThreadLocal().GetAddedItemAmount();
-		float savingPrice=getShoppingCartThreadLocal().getSavingPriceFromShoppingCartHeader();
-		float subTotal=getShoppingCartThreadLocal().getShoppingSubTotal();
+		float subTotal=getShoppingCartThreadLocal().getOrderSummarySubTotal();
 
 		Map<String,Object> mapTaxRate=getShoppingCartThreadLocal().getProvinceTaxRateMap();
 		getShoppingCartThreadLocal().setProvinceCodeForEstimatedTax("BC");
 		Map<String,Object> mapOrderSummary=getShoppingCartThreadLocal().getOrderSummaryDesc();
-		getShoppingCartThreadLocal().verifyOrderSummaryBusinessLogic(itemAmount,savingPrice,subTotal,mapOrderSummary,mapTaxRate);
+		getShoppingCartThreadLocal().verifyOrderSummaryBusinessLogic(subTotal,mapOrderSummary,mapTaxRate);
 		getShoppingCartThreadLocal().verifyOrderSummaryContents();
 
 		reporter.reportLog("Verify EasyPayment section content");

@@ -228,7 +228,7 @@ public class OrderModificationPage_Mobile extends OrderModificationPage {
 					}
 				}
 
-				if(new ShoppingCartPage_Mobile(this.getDriver()).checkSelectQuantityEnabled(productItem)){
+				if(!this.hasElementAttribute(productItem.findElement(byProductQuantityForNewlyAdded),"disabled")){
 					item = productItem.findElement(byProductRemoveButton);
 					this.getReusableActionsInstance().javascriptScrollByVisibleElement(item);
 					lsText = item.getText();

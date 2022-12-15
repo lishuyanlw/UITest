@@ -720,12 +720,15 @@ public class CartAPI extends ApiClient {
     }
 
     /**
+     * @param - customerEDP
      * @param - access_token - access token for api authentication
-     * @param - CartGuid - Cart Guid
-     * @param - LineId- Cart Lines Id
      * @return - Response - API Response after Cart DELETE calling
      */
-    public Response deletePromoCodeAppliedOnCart(String access_token, String cartGuidId) {
+    public Response deletePromoCodeAppliedOnCart(String customerEDP,String access_token) {
+        Response response=getAccountCartContentWithCustomerEDP(customerEDP, access_token);
+        AccountCartResponse accountCartGet= JsonParser.getResponseObject(response.asString(), new TypeReference<AccountCartResponse>() {});
+        String cartGuidId=accountCartGet.getCartGuid();
+
         String apiEndPoint = propertyData.get("test_apiVersion") + "/" + propertyData.get("test_language") + "/carts/"+cartGuidId+"/promocode";
         return deleteApiCallResponseAfterAuthentication(apiEndPoint, access_token);
     }

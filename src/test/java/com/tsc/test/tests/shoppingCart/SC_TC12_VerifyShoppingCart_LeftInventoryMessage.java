@@ -21,6 +21,8 @@ public class SC_TC12_VerifyShoppingCart_LeftInventoryMessage extends BaseTest{
 		String lsPassword = TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
 		String accessToken = getApiUserSessionDataMapThreadLocal().get("access_token").toString();
 		int customerEDP = Integer.valueOf(getApiUserSessionDataMapThreadLocal().get("customerEDP").toString());
+		getShoppingCartThreadLocal().emptyCart(Integer.valueOf(customerEDP),accessToken);
+		(new CartAPI()).deletePromoCodeAppliedOnCart(String.valueOf(customerEDP),accessToken);
 
 		//Delete all gift card
 		CartAPI cartAPI=new CartAPI();
@@ -51,8 +53,9 @@ public class SC_TC12_VerifyShoppingCart_LeftInventoryMessage extends BaseTest{
 				basePage.clickElement(getProductDetailPageThreadLocal().btnAddToBag);
 				basePage.waitForCondition(Driver -> {
 					return getProductDetailPageThreadLocal().lblAddToBagPopupWindowTitle.isDisplayed();
-				}, 30000);
+				}, 120000);
 				getProductDetailPageThreadLocal().goToShoppingCartFromAddToBagPopupWithLoginFirst();
+				getShoppingCartThreadLocal().setInstallmentNumberByRandomIndex();
 
 				Map<String, Object> shoppingCartMap = getShoppingCartThreadLocal().getShoppingSectionDetails("all");
 				int findIndex=getShoppingCartThreadLocal().findGivenProductIndexInShoppingCartItemList(PDPMap, shoppingCartMap);
@@ -67,18 +70,15 @@ public class SC_TC12_VerifyShoppingCart_LeftInventoryMessage extends BaseTest{
 				}
 
 				reporter.reportLog("Verify Shopping cart section content");
-				getShoppingCartThreadLocal().verifyBusinessLogicBetweenShoppingItemListAndSubTotalSection(shoppingCartMap);
-				getShoppingCartThreadLocal().verifyShoppingCartContents("all");
+				getShoppingCartThreadLocal().verifyShoppingCartContents();
 
 				reporter.reportLog("Verify OrderSummary section content");
-				int itemAmount=getShoppingCartThreadLocal().GetAddedItemAmount();
-				float savingPrice=getShoppingCartThreadLocal().getSavingPriceFromShoppingCartHeader();
-				float subTotal=getShoppingCartThreadLocal().getShoppingSubTotal();
+				float subTotal=getShoppingCartThreadLocal().getSubTotalFromShoppingList((List<Map<String,Object>>)shoppingCartMap.get("shoppingList"));
 
 				Map<String,Object> mapTaxRate=getShoppingCartThreadLocal().getProvinceTaxRateMap();
 				getShoppingCartThreadLocal().setProvinceCodeForEstimatedTax("BC");
 				Map<String,Object> mapOrderSummary=getShoppingCartThreadLocal().getOrderSummaryDesc();
-				getShoppingCartThreadLocal().verifyOrderSummaryBusinessLogic(itemAmount,savingPrice,subTotal,mapOrderSummary,mapTaxRate);
+				getShoppingCartThreadLocal().verifyOrderSummaryBusinessLogic(subTotal,mapOrderSummary,mapTaxRate);
 				getShoppingCartThreadLocal().verifyOrderSummaryContents();
 
 				reporter.reportLog("Verify EasyPayment section content");

@@ -3,6 +3,7 @@ package com.tsc.test.tests.checkoutPage;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.tsc.api.apiBuilder.CartAPI;
 import com.tsc.api.pojo.CartResponse;
+import com.tsc.api.pojo.GetGivenOrderResponse;
 import com.tsc.api.pojo.PlaceOrderResponse;
 import com.tsc.api.util.JsonParser;
 import com.tsc.data.Handler.TestDataHandler;
@@ -37,11 +38,18 @@ public class CP_TC13_VerifyOrderModification_OrderConfirmation_AddPromoteCode_Ad
 
         //Adding TSC Credit Card to user for test
         getShoppingCartThreadLocal().addTSCCreditCardForUser(null,customerEDP,accessToken);
+        String orderNumber = null;
 
         String myAccountOrderStatusURL = TestDataHandler.constantData.getMyAccount().getLnk_orderStatusURL();
         List<String> newItemToBeAddedKeyword = TestDataHandler.constantData.getCheckOut().getLst_SearchingKeywordForPlaceOrder();
         List<Map<String,String>> itemsToBeAdded = TestDataHandler.constantData.getCheckOut().getLstOrderDetailItems();
-        PlaceOrderResponse placeOrderResponse = getMyAccountPageThreadLocal().placeOrderForUser(Integer.parseInt(customerEDP),accessToken,itemsToBeAdded,2,"1",true,0);
+        PlaceOrderResponse placeOrderResponse = null;
+        GetGivenOrderResponse getGivenOrderResponse = getMyAccountPageThreadLocal().getExistingOrderInEditableMode(2,customerEDP,accessToken);
+        if(getGivenOrderResponse==null){
+            placeOrderResponse = getMyAccountPageThreadLocal().placeOrderForUser(Integer.parseInt(customerEDP),accessToken,itemsToBeAdded,2,"1",true,0);
+            orderNumber = placeOrderResponse.getOrderedCart().getOrderSummary().getOrderNo();
+        }else
+            orderNumber = getGivenOrderResponse.getOrderSummary().getOrderNo();
         //Login using valid username and password
         getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword);
         try {
@@ -54,7 +62,7 @@ public class CP_TC13_VerifyOrderModification_OrderConfirmation_AddPromoteCode_Ad
         }
 
         reporter.reportLog("Go to order modification page");
-        getMyAccountPageThreadLocal().editPlacedOrderForUser(placeOrderResponse,myAccountOrderStatusURL);
+        getMyAccountPageThreadLocal().editPlacedOrderForUser(orderNumber,myAccountOrderStatusURL);
         String lsOrderNumberForOrderModification=getOrderModificationThreadLocal().getOrderNumber();
 
         String lsPromoteCode=TestDataHandler.constantData.getCheckOut().getLst_PromoteCode().get(0);

@@ -2,6 +2,8 @@ package com.tsc.pages;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.tsc.api.apiBuilder.OrderAPI;
+import com.tsc.api.pojo.OrderListResponse;
+import com.tsc.api.pojo.OrderSummary;
 import com.tsc.api.pojo.PlaceOrderResponse;
 import com.tsc.api.util.JsonParser;
 import com.tsc.pages.base.BasePage;
@@ -1950,14 +1952,14 @@ public class OrderConfirmationPage extends BasePage {
 			reporter.reportLogPass("The order item count in OrderConfirmation Page is the same as the one in CheckOut page");
 		}
 		else{
-			reporter.reportLogFail("The order item count:"+itemCountForOrderConfirmationList+" in OrderConfirmation Page is the same as the one:"+itemCountForCheckOutList+" in CheckOut page");
+			reporter.reportLogFail("The order item count:"+itemCountForOrderConfirmationList+" in OrderConfirmation Page is not the same as the one:"+itemCountForCheckOutList+" in CheckOut page");
 		}
 
 		if(Math.abs(subTotalForOrderConfirmationList-subTotalForCheckOutList)<0.1f){
 			reporter.reportLogPass("The order subTotal in OrderConfirmation Page is the same as the one in CheckOut page");
 		}
 		else{
-			reporter.reportLogFail("The order subTotal:"+subTotalForOrderConfirmationList+" in OrderConfirmation Page is the same as the one:"+subTotalForCheckOutList+" in CheckOut page");
+			reporter.reportLogFail("The order subTotal:"+subTotalForOrderConfirmationList+" in OrderConfirmation Page is not the same as the one:"+subTotalForCheckOutList+" in CheckOut page");
 		}
 
 		int findIndex;

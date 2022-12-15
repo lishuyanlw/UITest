@@ -24,9 +24,15 @@ public class SC_TC05_VerifyShoppingCart_ChangeProvinceAndCheckTax_With_OrderSumm
 		//Fetching test data from test data file
 		String accessToken = getApiUserSessionDataMapThreadLocal().get("access_token").toString();
 		int customerEDP = Integer.valueOf(getApiUserSessionDataMapThreadLocal().get("customerEDP").toString());
-		List<Map<String,String>> keyword = TestDataHandler.constantData.getShoppingCart().getLst_SearchKeywords();
-		getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP,accessToken,keyword,"all",true,0);
+		getShoppingCartThreadLocal().emptyCart(Integer.valueOf(customerEDP),accessToken);
+		(new CartAPI()).deletePromoCodeAppliedOnCart(String.valueOf(customerEDP),accessToken);
 
+		List<Map<String,String>> keyword = TestDataHandler.constantData.getShoppingCart().getLst_SearchKeywords();
+		List<Map<String, Object>> data = getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP,accessToken,keyword,"all",true,0);
+		if(data.size()==0){
+			keyword = TestDataHandler.constantData.getCheckOut().getLst_SearchKeywords();
+			data = getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP, accessToken, keyword,"all",false,0);
+		}
 		//Delete all gift card
 		CartAPI cartAPI=new CartAPI();
 		cartAPI.deleteAllGiftCardForUser(String.valueOf(customerEDP),accessToken);
@@ -42,27 +48,18 @@ public class SC_TC05_VerifyShoppingCart_ChangeProvinceAndCheckTax_With_OrderSumm
 			(new BasePage(this.getDriver())).applyStaticWait(3000);
 		}
 		getProductDetailPageThreadLocal().goToShoppingCartByClickingShoppingCartIconInGlobalHeader();
-		if (getShoppingCartThreadLocal().checkIsDropdownMenuForInstallmentNumber()) {
-			List<String> lstOptionText = getShoppingCartThreadLocal().getInstallmentOptions();
-			getShoppingCartThreadLocal().setInstallmentSetting(lstOptionText.get(1));
-		}
+		getShoppingCartThreadLocal().setInstallmentNumberByRandomIndex();
 
-		int itemAmount=getShoppingCartThreadLocal().GetAddedItemAmount();
-		float savingPrice=getShoppingCartThreadLocal().getSavingPriceFromShoppingCartHeader();
-		float subTotal=getShoppingCartThreadLocal().getShoppingSubTotal();
+		Map<String, Object> shoppingCartMap = getShoppingCartThreadLocal().getShoppingSectionDetails("all");
+		float subTotal=getShoppingCartThreadLocal().getSubTotalFromShoppingList((List<Map<String,Object>>)shoppingCartMap.get("shoppingList"));
 
 		Map<String,Object> mapOrderSummary;
 		Map<String,Object> mapTaxRate=getShoppingCartThreadLocal().getProvinceTaxRateMap();
-		if(getShoppingCartThreadLocal().checkIsDropdownMenuForInstallmentNumber()){
-			List<String> lstOptionText=getShoppingCartThreadLocal().getInstallmentOptions();
-			getShoppingCartThreadLocal().setInstallmentSetting(lstOptionText.get(1));
-		}
-
 		for(Map.Entry<String,Object> entry:mapTaxRate.entrySet()){
 			reporter.reportLog("Verify province: "+entry.getKey());
 			getShoppingCartThreadLocal().setProvinceCodeForEstimatedTax(entry.getKey());
 			mapOrderSummary=getShoppingCartThreadLocal().getOrderSummaryDesc();
-			getShoppingCartThreadLocal().verifyOrderSummaryBusinessLogic(itemAmount,savingPrice,subTotal,mapOrderSummary,mapTaxRate);
+			getShoppingCartThreadLocal().verifyOrderSummaryBusinessLogic(subTotal,mapOrderSummary,mapTaxRate);
 
 			reporter.reportLog("Verify EasyPayment section content related to "+entry.getKey());
 			getShoppingCartThreadLocal().verifyInstallmentBusinessLogic(mapOrderSummary);

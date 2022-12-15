@@ -1,9 +1,9 @@
 package com.tsc.test.tests.shoppingCart;
 
+import com.tsc.api.apiBuilder.CartAPI;
 import com.tsc.data.Handler.TestDataHandler;
 import com.tsc.pages.base.BasePage;
 import com.tsc.test.base.BaseTest;
-import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
@@ -24,8 +24,15 @@ public class SC_TC04_VerifyShoppingCart_RemoveAllItems extends BaseTest{
 		//Fetching test data from test data file
 		String accessToken = getApiUserSessionDataMapThreadLocal().get("access_token").toString();
 		int customerEDP = Integer.valueOf(getApiUserSessionDataMapThreadLocal().get("customerEDP").toString());
+		getShoppingCartThreadLocal().emptyCart(Integer.valueOf(customerEDP),accessToken);
+		(new CartAPI()).deletePromoCodeAppliedOnCart(String.valueOf(customerEDP),accessToken);
+
 		List<Map<String,String>> keyword = TestDataHandler.constantData.getShoppingCart().getLst_SearchKeywords();
-		getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP,accessToken,keyword,"all",true,0);
+		List<Map<String, Object>> data = getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP,accessToken,keyword,"all",true,0);
+		if(data.size()==0){
+			keyword = TestDataHandler.constantData.getCheckOut().getLst_SearchKeywords();
+			data = getShoppingCartThreadLocal().verifyCartExistsForUser(customerEDP, accessToken, keyword,"all",false,0);
+		}
 
 		//Login using valid username and password
 		getGlobalLoginPageThreadLocal().Login(lsUserName, lsPassword);
@@ -42,24 +49,22 @@ public class SC_TC04_VerifyShoppingCart_RemoveAllItems extends BaseTest{
 
 		getShoppingCartThreadLocal().removeAllItemsFromShoppingCartList();
 
-		boolean bCheckEmptyCartMessageExisting=getShoppingCartThreadLocal().checkEmptyCartMessageExisting();
-		if(bCheckEmptyCartMessageExisting){
+		if(getShoppingCartThreadLocal().lblCartParaMessageForEmptyCart.size()==2){
 			reporter.reportLogPass("The empty cart message is displaying correctly");
 		}
 		else{
 			reporter.reportLogFail("The empty cart message is not displaying correctly");
 		}
 
-		boolean bCheckOrderSummaryAndEasyPaymentExisting=getShoppingCartThreadLocal().checkOrderSummaryAndEasyPaymentSectionsExisting();
-		if(!bCheckOrderSummaryAndEasyPaymentExisting){
-			reporter.reportLogPass("The OrderSummary and EasyPayment are not displaying");
+		if(getShoppingCartThreadLocal().checkIfOrderSummaryAndEasyPaymentNotExisting()){
+			reporter.reportLogPass("OrderSummary And EasyPayment is Not Existing");
 		}
 		else{
-			reporter.reportLogFail("The OrderSummary and EasyPayment are still displaying");
+			reporter.reportLogFail("OrderSummary And EasyPayment is still Existing");
 		}
 
 		reporter.reportLog("Verify checkout section contents");
-		getShoppingCartThreadLocal().verifyCheckOutContents(true);
+		getShoppingCartThreadLocal().verifyJaysCareDonationContents();
 	}
 }
 
