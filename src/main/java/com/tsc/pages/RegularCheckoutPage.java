@@ -414,6 +414,9 @@ public class RegularCheckoutPage extends BasePage {
 	@FindBy(xpath = "//div[@class='card__logo--verify']//*[contains(@class,'tagCCImage')]")
 	public WebElement lblInputCreditCardNumberType;
 
+	@FindBy(xpath = "//div[@id='CCNumberSemafoneInput']/following-sibling::div")
+	public WebElement cntUsingANewCardDialogCreditExpirationContainer;
+
 	@FindBy(xpath = "//div[contains(@aria-label,'Use A New Card')]//div[@class='standardCCBlock']//h3[@class='semafone__expiration-title']")
 	public WebElement lblUsingANewCardDialogCreditExpirationDateTitle;
 
@@ -425,6 +428,18 @@ public class RegularCheckoutPage extends BasePage {
 
 	@FindBy(xpath = "//div[contains(@aria-label,'Use A New Card')]//div[@class='standardCCBlock']//span[@class='semafone__expiration-title']")
 	public WebElement lblUsingANewCardDialogCreditExpirationDateSlashBetweenMonthAndYear;
+
+	@FindBy(xpath = "//div[@id='CCNumberSemafoneInput']/following-sibling::div//*[@class='semafone__cvv-title']")
+	public WebElement lblUsingANewCardDialogCreditCVVTitle;
+
+	@FindBy(xpath = "//div[@id='CCNumberSemafoneInput']/following-sibling::div//*[@class='semafone__cvv-title']/div[not(@class='cvv__tooltip--msg')]")
+	public WebElement iconUsingANewCardDialogCreditCVVTooltip;
+
+	@FindBy(xpath = "//div[@id='CCNumberSemafoneInput']/following-sibling::div//*[@class='semafone__cvv-title']/div[@class='cvv__tooltip--msg']")
+	public WebElement lblUsingANewCardDialogCreditCVVTooltipMessage;
+
+	@FindBy(xpath = "//div[@id='CCNumberSemafoneInput']/following-sibling::div//input[@id='creditCardCvvId']")
+	public WebElement inputUsingANewCardDialogCreditCVV;
 
 	//For TSC card
 	@FindBy(xpath = "//div[contains(@aria-label,'Use A New Card')]//div[@class='tscBlock']//h3[@class='semafone__cardnumber']")
@@ -466,25 +481,25 @@ public class RegularCheckoutPage extends BasePage {
 	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//h2")
 	public WebElement lblOrderSummaryTitle;
 
-	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//span[@class='summary__label' and contains(text(),'Sub-total')]")
+	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//span[@class='summary__label' and contains(text(),'Sub-total')]|//div[contains(@class,'summary')]//div[@class='summary__label--wide' and contains(.,'Subtotal')]")
 	public WebElement lblOrderSummarySubTotalTitle;
 
-	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//span[@class='summary__label' and contains(text(),'Sub-total')]/following-sibling::span[@class='summary__value']")
+	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//span[@class='summary__label' and contains(text(),'Sub-total')]/following-sibling::span[@class='summary__value']|//div[contains(@class,'summary')]//div[@class='summary__label--wide' and contains(.,'Subtotal')]/following-sibling::div[@class='summary__value']")
 	public WebElement lblOrderSummarySubTotal;
 
-	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//span[@class='summary__label' and contains(text(),'Shipping')]")
+	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//span[@class='summary__label' and contains(text(),'Shipping')]|//div[contains(@class,'summary')]//div[@class='summary__label--wide' and contains(.,'Shipping')]")
 	public WebElement lblOrderSummaryShippingTitle;
 
-	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//span[@class='summary__label' and contains(text(),'Shipping')]/following-sibling::span[@class='summary__value']")
+	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//span[@class='summary__label' and contains(text(),'Shipping')]/following-sibling::span[@class='summary__value']|//div[contains(@class,'summary')]//div[@class='summary__label--wide' and contains(.,'Shipping')]/following-sibling::div[@class='summary__value']")
 	public WebElement cntOrderSummaryShippingPriceContainer;
 
 	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//span[@class='summary__label' and contains(text(),'Shipping')]/following-sibling::span[@class='summary__value']//del")
 	public WebElement lblOrderSummaryShippingWasPrice;
 
-	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//span[@class='summary__label' and contains(text(),'Est Taxes')]")
+	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//span[@class='summary__label' and contains(text(),'Est Taxes')]|//div[contains(@class,'summary')]//div[@class='summary__label--wide' and contains(.,'Est. Taxes')]")
 	public WebElement lblOrderSummaryTaxTitle;
 
-	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//span[@class='summary__label' and contains(text(),'Est Taxes')]/following-sibling::span[@class='summary__value']")
+	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//span[@class='summary__label' and contains(text(),'Est Taxes')]/following-sibling::span[@class='summary__value']|//div[contains(@class,'summary')]//div[@class='summary__label--wide' and contains(.,'Est. Taxes')]/following-sibling::div[@class='summary__value']")
 	public WebElement lblOrderSummaryTax;
 
 	//For applied discount items
@@ -512,14 +527,11 @@ public class RegularCheckoutPage extends BasePage {
 	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//b[contains(text(),'Applied Discounts')]/parent::span/parent::div/following-sibling::div//span[contains(@class,'summary__label')][contains(.,'Gift Card')]/following-sibling::span[@class='summary__value']")
 	public WebElement lblOrderSummaryGiftCardValue;
 
-	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//span[contains(@class,'summary__label') and contains(text(),'TOTAL PRICE')]")
+	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//span[contains(@class,'summary__label') and contains(text(),'TOTAL PRICE')]|//div[contains(@class,'summary')]//div[@class='summary__label--wide' and contains(.,'Total')]")
 	public WebElement lblOrderSummaryTotalPriceTitle;
 
-	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//span[contains(@class,'summary__label') and contains(text(),'TOTAL PRICE')]/following-sibling::span[contains(@class,'summary__value')]")
+	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//span[contains(@class,'summary__label') and contains(text(),'TOTAL PRICE')]/following-sibling::span[contains(@class,'summary__value')]|//div[contains(@class,'summary')]//div[@class='summary__label--wide' and contains(.,'Total')]/following-sibling::div[@class='summary__value']")
 	public WebElement lblOrderSummaryTotalPrice;
-
-	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//span[@class='summary__savingmsg']")
-	public WebElement lblOrderSummarySavingPrice;
 
 	@FindBy(xpath = "//aside[@class='rightSide']//div[contains(@class,'OrderSummaryWrap')]//div[@class='summary']/div[contains(@class,'summary__row')][last()]")
 	public WebElement lblOrderSummaryLastItem;
@@ -936,7 +948,13 @@ public class RegularCheckoutPage extends BasePage {
 	 * @return - boolean
 	 */
 	public boolean checkOrderSummaryWasPriceExisting(){
-		return !this.getElementInnerText(lblOrderSummaryShippingWasPrice).isEmpty();
+		boolean bDel=this.checkChildElementExistingByTagName(cntOrderSummaryShippingPriceContainer,"del");
+		if(bDel){
+			return !this.getElementInnerText(lblOrderSummaryShippingWasPrice).isEmpty();
+		}
+		else{
+			return false;
+		}
 	}
 
 	/**
@@ -1302,21 +1320,6 @@ public class RegularCheckoutPage extends BasePage {
 			else{
 				return this.getMultiFloatFromString(lsText).get(0);
 			}
-		}
-	}
-
-	/**
-	 * To get Saving Price From OrderSummary
-	 * @return - float
-	 */
-	public float getSavingPriceFromOrderSummary(){
-		if(this.checkOrderSummarySavingPriceExisting()){
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderSummarySavingPrice);
-			String lsText=this.lblOrderSummarySavingPrice.getText();
-			return this.getFloatFromString(lsText);
-		}
-		else{
-			return 0.0f;
 		}
 	}
 
@@ -1980,6 +1983,7 @@ public class RegularCheckoutPage extends BasePage {
 		String cardNumber= (String) cardData.get("Number");
 		String expiredMonth=(String) cardData.get("DisplayExpirationMonth");
 		String expiredYear=(String) cardData.get("DisplayExpirationYear");
+		String cardCVV=(String) cardData.get("CVV");
 
 		if(!creditCardType.equalsIgnoreCase("tsc")){
 			if(!editExistingCreditCard){
@@ -2035,6 +2039,12 @@ public class RegularCheckoutPage extends BasePage {
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputUsingANewCardDialogCreditExpirationDateYear);
 			inputUsingANewCardDialogCreditExpirationDateYear.clear();
 			inputUsingANewCardDialogCreditExpirationDateYear.sendKeys(expiredYear.substring(2));
+
+			if(this.checkCVVSectionExisting()){
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputUsingANewCardDialogCreditCVV);
+				inputUsingANewCardDialogCreditCVV.clear();
+				inputUsingANewCardDialogCreditCVV.sendKeys(cardCVV);
+			}
 		}else
 			this.addNewTSCCard();
 	}
@@ -2522,7 +2532,7 @@ public class RegularCheckoutPage extends BasePage {
 
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(this.lblOrderSummarySubTotal);
 		String lsText=this.lblOrderSummarySubTotal.getText();
-		map.put("subTotal",this.getFloatFromString(lsText,true));
+		map.put("subTotal",this.getFloatFromString(lsText));
 
 		map.put("wasPrice",getWasPriceFromOrderSummary());
 
@@ -2630,7 +2640,6 @@ public class RegularCheckoutPage extends BasePage {
 		lsText=this.lblOrderSummaryTotalPrice.getText();
 		map.put("totalPrice",this.getFloatFromString(lsText,true));
 
-		map.put("savePrice",getSavingPriceFromOrderSummary());
 		return map;
 	}
 
@@ -2707,14 +2716,6 @@ public class RegularCheckoutPage extends BasePage {
 			calSavePriceOrderSummary=Math.abs(wasPriceOrderSummary-nowPriceOrderSummary);
 		}
 		calSavePriceOrderSummary=calSavePriceOrderSummary+Math.abs(promoteCodeValue);
-
-		float savePriceOrderSummary=(float) orderSummaryMap.get("savePrice");
-		if(Math.abs(calSavePriceOrderSummary-savePriceOrderSummary)<0.01){
-			reporter.reportLogPass("The calculated saving price in OrderSummary section is equal to the saving price in OrderSummary section");
-		}
-		else{
-			reporter.reportLogFail("The calculated saving price:"+calSavePriceOrderSummary+" in OrderSummary section is not equal to the saving price:"+savePriceOrderSummary+" in OrderSummary section");
-		}
 	}
 
 	/**
@@ -3302,16 +3303,6 @@ public class RegularCheckoutPage extends BasePage {
 			reporter.reportLogPass("The OrderSummary Total Price is displaying correctly");
 		} else {
 			reporter.reportLogFailWithScreenshot("The OrderSummary Total Price is not displaying correctly");
-		}
-
-		if(checkOrderSummarySavingPriceExisting()){
-			this.getReusableActionsInstance().javascriptScrollByVisibleElement(lblOrderSummarySavingPrice);
-			lsText = lblOrderSummarySavingPrice.getText();
-			if (!lsText.isEmpty()) {
-				reporter.reportLogPass("The OrderSummary Saving Price is displaying correctly");
-			} else {
-				reporter.reportLogFailWithScreenshot("The OrderSummary Saving Price is not displaying correctly");
-			}
 		}
 	}
 
@@ -5166,12 +5157,14 @@ public class RegularCheckoutPage extends BasePage {
 			reporter.reportLogFail("The subTotal:"+shoppingCartValue+" in shoppingCart Item is not the same as the one:"+checkoutValue+" in checkout Item");
 		}
 
-		shoppingCartValue = (float) shoppingCartItem.get("wasPrice");
-		checkoutValue = (float) checkoutItem.get("wasPrice");
-		if (Math.abs(shoppingCartValue-checkoutValue)<0.1f) {
-			reporter.reportLogPass("The wasPrice in shoppingCart Item is the same as the one in checkout Item");
-		} else {
-			reporter.reportLogFail("The wasPrice:"+shoppingCartValue+" in shoppingCart Item is not the same as the one:"+checkoutValue+" in checkout Item");
+		if(this.checkOrderSummaryWasPriceExisting()){
+			shoppingCartValue = (float) shoppingCartItem.get("wasPrice");
+			checkoutValue = (float) checkoutItem.get("wasPrice");
+			if (Math.abs(shoppingCartValue-checkoutValue)<0.1f) {
+				reporter.reportLogPass("The wasPrice in shoppingCart Item is the same as the one in checkout Item");
+			} else {
+				reporter.reportLogFail("The wasPrice:"+shoppingCartValue+" in shoppingCart Item is not the same as the one:"+checkoutValue+" in checkout Item");
+			}
 		}
 
 		shoppingCartValue = (float) shoppingCartItem.get("nowPrice");
@@ -5227,14 +5220,6 @@ public class RegularCheckoutPage extends BasePage {
 			reporter.reportLogPass("The totalPrice in shoppingCart Item is the same as the one in checkout Item");
 		} else {
 			reporter.reportLogFail("The totalPrice:"+shoppingCartValue+" in shoppingCart Item is not the same as the one:"+checkoutValue+" in checkout Item");
-		}
-
-		shoppingCartValue = (float) shoppingCartItem.get("savePrice");
-		checkoutValue = (float) checkoutItem.get("savePrice");
-		if (Math.abs(shoppingCartValue-checkoutValue)<0.1f) {
-			reporter.reportLogPass("The savePrice in shoppingCart Item is the same as the one in checkout Item");
-		} else {
-			reporter.reportLogFail("The savePrice:"+shoppingCartValue+" in shoppingCart Item is not the same as the one:"+checkoutValue+" in checkout Item");
 		}
 	}
 
@@ -5499,6 +5484,13 @@ public class RegularCheckoutPage extends BasePage {
 		this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputUsingANewCardDialogCreditExpirationDateYear);
 		inputUsingANewCardDialogCreditExpirationDateYear.clear();
 		inputUsingANewCardDialogCreditExpirationDateYear.sendKeys(expiredYear.substring(2));
+
+		if(this.checkCVVSectionExisting()){
+			String cardCVV= (String) creditCardData.get("CVV");
+			this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputUsingANewCardDialogCreditCVV);
+			inputUsingANewCardDialogCreditCVV.clear();
+			inputUsingANewCardDialogCreditCVV.sendKeys(cardCVV);
+		}
 
 		this.closeAddOrChangePaymentMethodDialog(true);
 		//Applying static wait as UI takes some time for new expiry to be updated and there is no other condition to wait for
@@ -6768,6 +6760,22 @@ public class RegularCheckoutPage extends BasePage {
 		}
 
 		return mapList;
+	}
+
+	/**
+	 * To check CVV Section Existing
+	 * @return - boolean
+	 */
+	public boolean checkCVVSectionExisting(){
+		return this.checkChildElementExistingByAttribute(cntUsingANewCardDialogCreditExpirationContainer,"class","creditcard__cvv-wrap");
+	}
+
+	/**
+	 * To check CVV Tooltip Displaying
+	 * @return - boolean
+	 */
+	public boolean checkCVVTooltipDisplaying(){
+		return this.checkChildElementExistingByAttribute(lblUsingANewCardDialogCreditCVVTitle,"class","cvv__tooltip--msg");
 	}
 
 }

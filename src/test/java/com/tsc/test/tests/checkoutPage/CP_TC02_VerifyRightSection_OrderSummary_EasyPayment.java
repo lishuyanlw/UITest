@@ -42,11 +42,7 @@ public class CP_TC02_VerifyRightSection_OrderSummary_EasyPayment extends BaseTes
 			(new BasePage(this.getDriver())).applyStaticWait(3000);
 		}
 		getProductDetailPageThreadLocal().goToShoppingCartByClickingShoppingCartIconInGlobalHeader();
-
-		if (getShoppingCartThreadLocal().checkIsDropdownMenuForInstallmentNumber()) {
-			List<String> lstOptionText = getShoppingCartThreadLocal().getInstallmentOptions();
-			getShoppingCartThreadLocal().setInstallmentSetting(lstOptionText.get(1));
-		}
+		getShoppingCartThreadLocal().setInstallmentNumberByRandomIndex();
 		getShoppingCartThreadLocal().goToCheckoutPage();
 
 		reporter.reportLog("Verify OrderSummary Contents");

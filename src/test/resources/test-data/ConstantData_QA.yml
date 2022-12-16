@@ -1,6 +1,6 @@
 # API USER TOKEN INFO
 apiUserSessionParams:
-  lbl_username: qa1234@rogers.com
+  lbl_username: testautomation2@rogers.com
   lbl_password: qa1234
   lbl_grantType: password
   lbl_apiKey: A9607F64-D061-4279-8D00-F8469EA38DD1
@@ -40,7 +40,7 @@ headerSection:
   lbl_SignInLandingPage: /pages/signin
   lbl_SearchBoxPlaceholder: Search
   lbl_ShoppingCartLinkName: Bag
-  lnk_ShoppingCartLink: /pages/shoppingcart
+  lnk_ShoppingCartLink: /pages/shoppingbag
   lst_HeaderNameAndLinksMap: {
     Today's Showstopper: ["Today's Showstopper","Today's Showstopper-FR","/pages/todaysshowstopper?ic=HP_TodaysShowstopper"],
     Watch TSC:  ["Watch TSC","Watch TSC-FR",""],
@@ -287,13 +287,13 @@ lstTestName: []
 lblChromeBrowserVersion: "99"
 shoppingCart:
   lst_SearchKeywords:
-    - searchKeyword: "boots"
+    - searchKeyword: "furniture"
       quantity: "more than 1"
       badgeRequired: "false"
       itemToBeAdded: "1"
       styleExist: "true"
       sameSizeAndStyle: "true"
-    - searchKeyword: "pants"
+    - searchKeyword: "rings"
       quantity: "more than 3"
       badgeRequired: "false"
       itemToBeAdded: "1"
@@ -316,15 +316,15 @@ shoppingCart:
   lblJayCareFoundationDonationMessage: "Jays Care Foundation Donation"
 checkOut:
   lst_SearchKeywords:
-    - searchKeyword: "jean"
+    - searchKeyword: "furniture"
       quantity: "more than 1"
-      badgeRequired: "true"
+      badgeRequired: "false"
       itemToBeAdded: "1"
       styleExist: "true"
       sameSizeAndStyle: "true"
-    - searchKeyword: "pants"
+    - searchKeyword: "rings"
       quantity: "more than 3"
-      badgeRequired: "true"
+      badgeRequired: "false"
       itemToBeAdded: "2"
       styleExist: "true"
       sameSizeAndStyle: "true"
@@ -335,19 +335,20 @@ checkOut:
       styleExist: "false"
       sameSizeAndStyle: "true"
   lstOrderDetailItems:
-    - searchKeyword: "jeggings"
+    - searchKeyword: "furniture"
       quantity: "more than 1"
-      badgeRequired: "true"
+      badgeRequired: "false"
       itemToBeAdded: "1"
       styleExist: "true"
       sameSizeAndStyle: "true"
-    - searchKeyword: "joan rivers"
+    - searchKeyword: "rings"
       quantity: "more than 1"
-      badgeRequired: "true"
+      badgeRequired: "false"
       itemToBeAdded: "1"
       styleExist: "true"
       sameSizeAndStyle: "true"
-  lst_SearchingKeywordForPlaceOrder: ["jeggings","joan rivers","Beauty"]
+  #lst_SearchingKeywordForPlaceOrder: ["jeggings","joan rivers","Beauty"]
+  lst_SearchingKeywordForPlaceOrder: ["furniture","rings","gym"]
   addShippingAddressErrorMessage: ["You have one or more missing or invalid entries. Please enter correct data and try again.",
                                    "First name is required.","Last name is required.","Phone number is required.","Address is required.",
                                    "City is required.","Province is required.","Postal code is required."]

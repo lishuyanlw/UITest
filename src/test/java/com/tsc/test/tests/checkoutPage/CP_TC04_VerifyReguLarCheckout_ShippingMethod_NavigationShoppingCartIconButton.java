@@ -95,7 +95,7 @@ public class CP_TC04_VerifyReguLarCheckout_ShippingMethod_NavigationShoppingCart
 		reporter.reportLog("Verify Navigation to ShoppingCart page by clicking GoToShoppingBag icon button in checkout header");
 		getRegularCheckoutThreadLocal().GoToShoppingBag();
 		String lsShoppingCartURLNavigatedFromCheckOutPage=basePage.URL();
-		if(lsShoppingCartURLNavigatedFromCheckOutPage.toLowerCase().contains("shoppingcart")){
+		if(lsShoppingCartURLNavigatedFromCheckOutPage.toLowerCase().contains("shoppingbag")){
 			reporter.reportLogPass("Navigated to ShoppingCart page by clicking GoToShoppingBag button in checkout header successfully");
 		}
 		else{

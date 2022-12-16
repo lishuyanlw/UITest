@@ -190,6 +190,9 @@ public class GuestCheckoutPage extends RegularCheckoutPage {
 	@FindBy(xpath = "//div[@class='card__logo--verify']//*[contains(@class,'tagCCImage')]")
 	public WebElement lblInputCreditCardNumberType;
 
+	@FindBy(xpath = "//div[@id='CCNumberSemafoneInput']/following-sibling::div")
+	public WebElement cntUsingANewCardDialogCreditExpirationContainer;
+
 	@FindBy(xpath = "//div[@class='create-payment__wrap']//div[@class='standardCCBlock']//h3[@class='semafone__expiration-title']")
 	public WebElement lblUsingANewCardDialogCreditExpirationDateTitle;
 
@@ -201,6 +204,18 @@ public class GuestCheckoutPage extends RegularCheckoutPage {
 
 	@FindBy(xpath = "//div[@class='create-payment__wrap']//div[@class='standardCCBlock']//span[@class='semafone__expiration-title']")
 	public WebElement lblUsingANewCardDialogCreditExpirationDateSlashBetweenMonthAndYear;
+
+	@FindBy(xpath = "//div[@id='CCNumberSemafoneInput']/following-sibling::div//*[@class='semafone__cvv-title']")
+	public WebElement lblUsingANewCardDialogCreditCVVTitle;
+
+	@FindBy(xpath = "//div[@id='CCNumberSemafoneInput']/following-sibling::div//*[@class='semafone__cvv-title']/div[not(@class='cvv__tooltip--msg')]")
+	public WebElement iconUsingANewCardDialogCreditCVVTooltip;
+
+	@FindBy(xpath = "//div[@id='CCNumberSemafoneInput']/following-sibling::div//*[@class='semafone__cvv-title']/div[@class='cvv__tooltip--msg']")
+	public WebElement lblUsingANewCardDialogCreditCVVTooltipMessage;
+
+	@FindBy(xpath = "//div[@id='CCNumberSemafoneInput']/following-sibling::div//input[@id='creditCardCvvId']")
+	public WebElement inputUsingANewCardDialogCreditCVV;
 
 	//For TSC card
 	@FindBy(xpath = "//div[@class='create-payment__wrap']//div[@class='tscBlock']//h3[@class='semafone__cardnumber']")
@@ -817,6 +832,7 @@ public class GuestCheckoutPage extends RegularCheckoutPage {
 		String cardNumber= (String) cardData.get("Number");
 		String expiredMonth=(String) cardData.get("DisplayExpirationMonth");
 		String expiredYear=(String) cardData.get("DisplayExpirationYear");
+		String cardCVV= (String) cardData.get("CVV");
 
 		Map<String,Object> map=new HashMap<>();
 		map.put("cardType",creditCardType);
@@ -860,6 +876,12 @@ public class GuestCheckoutPage extends RegularCheckoutPage {
 			this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputUsingANewCardDialogCreditExpirationDateYear);
 			inputUsingANewCardDialogCreditExpirationDateYear.clear();
 			inputUsingANewCardDialogCreditExpirationDateYear.sendKeys(expiredYear.substring(2));
+
+			if(checkCVVTooltipDisplaying()){
+				this.getReusableActionsInstance().javascriptScrollByVisibleElement(inputUsingANewCardDialogCreditCVV);
+				inputUsingANewCardDialogCreditCVV.clear();
+				inputUsingANewCardDialogCreditCVV.sendKeys(cardCVV);
+			}
 		}else {
 			this.addNewTSCCard();
 		}
@@ -1209,6 +1231,22 @@ public class GuestCheckoutPage extends RegularCheckoutPage {
 			reporter.reportLogPass("Credit Card Added of type: "+creditCardType+" displays image as expected");
 		else
 			reporter.reportLogFailWithScreenshot("Credit Card Added of type: "+creditCardType+" doesn't display image as expected: "+cardImageType);
+	}
+
+	/**
+	 * To check CVV Section Existing
+	 * @return - boolean
+	 */
+	public boolean checkCVVSectionExisting(){
+		return this.checkChildElementExistingByAttribute(cntUsingANewCardDialogCreditExpirationContainer,"class","creditcard__cvv-wrap");
+	}
+
+	/**
+	 * To check CVV Tooltip Displaying
+	 * @return - boolean
+	 */
+	public boolean checkCVVTooltipDisplaying(){
+		return this.checkChildElementExistingByAttribute(lblUsingANewCardDialogCreditCVVTitle,"class","cvv__tooltip--msg");
 	}
 
 }

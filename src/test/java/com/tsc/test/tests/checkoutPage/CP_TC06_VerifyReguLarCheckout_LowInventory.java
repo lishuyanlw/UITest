@@ -67,10 +67,7 @@ public class CP_TC06_VerifyReguLarCheckout_LowInventory extends BaseTest{
             }, 30000);
 
             getProductDetailPageThreadLocal().goToShoppingCartFromAddToBagPopupWithLoginFirst();
-            if (getShoppingCartThreadLocal().checkIsDropdownMenuForInstallmentNumber()) {
-                List<String> lstOptionText = getShoppingCartThreadLocal().getInstallmentOptions();
-                getShoppingCartThreadLocal().setInstallmentSetting(lstOptionText.get(1));
-            }
+            getShoppingCartThreadLocal().setInstallmentNumberByRandomIndex();
             int installmentsNumberForShoppingCart = getShoppingCartThreadLocal().getInstallmentNumber();
             getShoppingCartThreadLocal().goToCheckoutPage();
 

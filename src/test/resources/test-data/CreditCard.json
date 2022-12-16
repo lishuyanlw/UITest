@@ -52,7 +52,7 @@
     "Type": "AX",
     "DisplayExpirationMonth": "4",
     "DisplayExpirationYear": "2053",
-    "CVV": "123",
+    "CVV": "1234",
     "CardType": "amex",
     "CardDisplayName": "American Express"
   },

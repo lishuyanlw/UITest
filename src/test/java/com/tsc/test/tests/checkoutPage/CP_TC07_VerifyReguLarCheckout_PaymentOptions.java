@@ -49,9 +49,7 @@ public class CP_TC07_VerifyReguLarCheckout_PaymentOptions extends BaseTest{
 
 		getProductDetailPageThreadLocal().goToShoppingCartByClickingShoppingCartIconInGlobalHeader();
 
-		if (getShoppingCartThreadLocal().checkIsDropdownMenuForInstallmentNumber()) {
-			getShoppingCartThreadLocal().setInstallmentNumberByRandomIndex();
-		}
+		getShoppingCartThreadLocal().setInstallmentNumberByRandomIndex();
 		int installmentsNumberForShoppingCart = getShoppingCartThreadLocal().getInstallmentNumber();
 		Map<String,Object> easyPaymentMapInShoppingCart=getShoppingCartThreadLocal().getEasyPayDesc();
 		float installmentAmountInShoppingCart= (float) easyPaymentMapInShoppingCart.get("futureMonthlyPayment");
