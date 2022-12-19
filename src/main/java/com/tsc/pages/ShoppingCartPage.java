@@ -596,6 +596,7 @@ public class ShoppingCartPage extends BasePage {
 	 * @return - boolean
 	 */
 	public boolean checkIsDropdownMenuForInstallmentNumber(){
+		this.expandEasyPaymentSection();
 		return this.checkChildElementExistingByTagName(this.cntOrderSummaryContainer,"select");
 	}
 

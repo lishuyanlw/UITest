@@ -48,7 +48,7 @@ public class MA_TC11_Payment_Options_Add_New_Credit_Card extends BaseTest {
         String addCreditCardPageURL = TestDataHandler.constantData.getMyAccount().getLnk_addNewCardURL();
         List<String> errorMessage = TestDataHandler.constantData.getMyAccount().getLbl_invalidCardErrorMessage();
         JSONObject creditCard;
-        String cardType,cardDisplayName,cardNumber;
+        String cardType,cardDisplayName,cardNumber,cardCVV;
 
         String lblUserName = TestDataHandler.constantData.getApiUserSessionParams().getLbl_username();
         String lblPassword = TestDataHandler.constantData.getApiUserSessionParams().getLbl_password();
@@ -90,12 +90,13 @@ public class MA_TC11_Payment_Options_Add_New_Credit_Card extends BaseTest {
             creditCard = (JSONObject) creditCardData.get(inputCardType);
             cardType = creditCard.get("CardType").toString();
             cardNumber = creditCard.get("Number").toString();
+            cardCVV = creditCard.get("CVV").toString();
             cardDisplayName = creditCard.get("CardDisplayName").toString();
 
             getMyAccountPageThreadLocal().clickOnPaymentOptionSubMenuItemsOnMyAccount("Add");
             String landingPageURL = System.getProperty("QaUrl")+addCreditCardPageURL;
             getGlobalLoginPageThreadLocal().validateCurrentUrl(landingPageURL);
-            Map<String,String> addedCreditCardData = getMyAccountPageThreadLocal().addNewValidCreditCardForUser(cardType,cardNumber,true);
+            Map<String,String> addedCreditCardData = getMyAccountPageThreadLocal().addNewValidCreditCardForUser(cardType,cardNumber,cardCVV,true);
             getMyAccountPageThreadLocal().verifyNewAddedCreditCardForUser(cardType,cardDisplayName,cardNumber,addedCreditCardData.get("expirationMonth"),addedCreditCardData.get("expirationYear"),true);
             //Navigating back to Add New Credit Card Page
             getMyAccountPageThreadLocal().navigateToMyAccountFromBreadCrumb();
@@ -106,7 +107,7 @@ public class MA_TC11_Payment_Options_Add_New_Credit_Card extends BaseTest {
          */
         for(String inputCardType:creditCardTypes){
             getMyAccountPageThreadLocal().clickOnPaymentOptionSubMenuItemsOnMyAccount("Add");
-            getMyAccountPageThreadLocal().addNewValidCreditCardForUser(inputCardType,"1234",false);
+            getMyAccountPageThreadLocal().addNewValidCreditCardForUser(inputCardType,"1234","123",false);
             reporter.reportLog("Validating Error Message for Card Type: "+inputCardType);
             if(inputCardType.toLowerCase().contains("tsc"))
                 getMyAccountPageThreadLocal().verifyInvalidCreditCardErrorMessage(errorMessage.get(1));

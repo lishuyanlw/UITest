@@ -1,0 +1,47 @@
+{
+  "tsc": {
+    "Id": 0,
+    "ExpirationDate": "2050-01-01T05:00:00.000Z",
+    "Expired": false,
+    "Number": "6060160100000807",
+    "MaskedNumber": "************0807",
+    "IsDefault": true,
+    "Type": "FI",
+    "DisplayExpirationMonth": "01",
+    "DisplayExpirationYear": "2050",
+    "CVV": "123"
+  },
+  "master": {
+    "Id": 0,
+    "Expired": false,
+    "Number": "9595163713314444",
+    "MaskedNumber": "************4444",
+    "IsDefault": false,
+    "Type": "MC",
+    "DisplayExpirationMonth": "03",
+    "DisplayExpirationYear": "2050",
+    "CVV": "123"
+  },
+  "visa": {
+    "Id": 0,
+    "Expired": false,
+    "Number": "9524538438361881",
+    "MaskedNumber": "************1881",
+    "IsDefault": false,
+    "Type": "VI",
+    "DisplayExpirationMonth": "02",
+    "DisplayExpirationYear": "2045",
+    "CVV": "123"
+  },
+  "amex": {
+    "Id": 0,
+    "Expired": false,
+    "Number": "9258443387430005",
+    "MaskedNumber": "************0005",
+    "IsDefault": false,
+    "Type": "AX",
+    "DisplayExpirationMonth": "04",
+    "DisplayExpirationYear": "2053",
+    "CVV": "1234"
+  }
+}

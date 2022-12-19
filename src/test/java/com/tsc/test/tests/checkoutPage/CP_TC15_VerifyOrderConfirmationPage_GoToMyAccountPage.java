@@ -29,30 +29,41 @@ public class CP_TC15_VerifyOrderConfirmationPage_GoToMyAccountPage extends BaseT
 		//Fetching test data from test data file
 		String accessToken = getApiUserSessionDataMapThreadLocal().get("access_token").toString();
 		int customerEDP = Integer.valueOf(getApiUserSessionDataMapThreadLocal().get("customerEDP").toString());
-		JSONObject creditCardData = new DataConverter().readJsonFileIntoJSONObject("test-data/CreditCard.json");
+		JSONObject creditCardData = new DataConverter().readJsonFileIntoJSONObject("test-data/TokenizedCreditCard.json");
 		//To empty the cart
 		getShoppingCartThreadLocal().emptyCart(customerEDP,accessToken);
 
 		//Verifying that item exists in cart and if not, create a new cart for user
-		List<Map<String, String>> keyword = TestDataHandler.constantData.getCheckOut().getLstOrderDetailItems();
-		getShoppingCartThreadLocal().verifyCartExistsForUser(Integer.valueOf(customerEDP), accessToken, keyword,"1",true,0);
+		List<Map<String, String>> keyword = TestDataHandler.constantData.getCheckOut().getLst_SearchKeywords();
+		getShoppingCartThreadLocal().verifyCartExistsForUser(Integer.valueOf(customerEDP), accessToken, keyword,"all",false,0);
 
 		//Delete all gift cards
 		CartAPI cartAPI=new CartAPI();
 		cartAPI.deleteAllGiftCardForUser(String.valueOf(customerEDP),accessToken);
 
 		//Setting up initial test environment by deleting all cards associated with user and cart and adding TSC Card
-		Response response = cartAPI.getAccountCartContentWithCustomerEDP(String.valueOf(customerEDP),accessToken);
-		CartResponse cartResponse= JsonParser.getResponseObject(response.asString(), new TypeReference<CartResponse>() {});
-		getRegularCheckoutThreadLocal().deleteCreditCardForUserAndFromCart(cartResponse,String.valueOf(customerEDP),accessToken);
+//		Response response = cartAPI.getAccountCartContentWithCustomerEDP(String.valueOf(customerEDP),accessToken);
+//		CartResponse cartResponse= JsonParser.getResponseObject(response.asString(), new TypeReference<CartResponse>() {});
+//		getRegularCheckoutThreadLocal().deleteCreditCardForUserAndFromCart(cartResponse,String.valueOf(customerEDP),accessToken);
 
-		//Adding Visa Credit Card for user
 		AccountAPI accountAPI = new AccountAPI();
-		Response tscCardResponse = accountAPI.addCreditCardToUser((JSONObject) creditCardData.get("visa"),String.valueOf(customerEDP),accessToken);
-		if(tscCardResponse.statusCode()==200)
-			reporter.reportLog("New TSC Credit Card is added for user as default Card");
-		else
-			reporter.reportLogFail("New TSC Credit Card is not added for user as default Card");
+		accountAPI.removeAllCreditCard(String.valueOf(customerEDP), accessToken);
+		//Adding Visa Credit Card for user
+		JSONObject cardData=(JSONObject) creditCardData.get("visa");
+		Response tscCardResponse=null;
+		for(int i=0;i<5;i++){
+			tscCardResponse = accountAPI.addCreditCardToUser(cardData,String.valueOf(customerEDP),accessToken);
+			if(tscCardResponse.statusCode()==200) {
+				break;
+			}
+		}
+		if(tscCardResponse.statusCode()==200) {
+			reporter.reportLog("New Credit Card is added for user as default Card");
+		}
+		else {
+			reporter.reportLogFail("New Credit Card is not added for user as default Card");
+			return;
+		}
 
 		getGlobalFooterPageThreadLocal().closePopupDialog();
 

@@ -42,8 +42,11 @@ public class MA_TC10_Payment_Options_Manage_Credit_Card extends BaseTest {
 
         //Verifying if any card is attached to user for Editing and if not adding card first
         boolean cardAddedStatus = getMyAccountPageThreadLocal().verifyMinimumOneCardIsPresentForUser();
-        if(!cardAddedStatus)
-            getMyAccountPageThreadLocal().addNewValidCreditCardForUser("visa",((JSONObject)creditCardData.get("visa")).get("Number").toString(),false);
+        if(!cardAddedStatus){
+            String lsCardNumber=((JSONObject)creditCardData.get("visa")).get("Number").toString();
+            String lsCardCVV=((JSONObject)creditCardData.get("visa")).get("CVV").toString();
+            getMyAccountPageThreadLocal().addNewValidCreditCardForUser("visa",lsCardNumber,lsCardCVV,false);
+        }
 
         //Edit Functionality
         getMyAccountPageThreadLocal().editAndVerifyCreditCardAttachedToUser(null,null,null,null,creditCardData,true);
